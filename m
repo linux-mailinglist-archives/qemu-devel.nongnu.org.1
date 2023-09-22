@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDC37AADB4
+	by mail.lfdr.de (Postfix) with ESMTPS id 896587AADB5
 	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 11:21:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjcKE-0000Gr-9u; Fri, 22 Sep 2023 05:19:50 -0400
+	id 1qjcLC-0000XY-1k; Fri, 22 Sep 2023 05:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjcKC-0000F8-M1
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:19:48 -0400
+ id 1qjcL8-0000VV-4m
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:20:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjcKA-0000dQ-NR
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:19:48 -0400
+ id 1qjcL4-0000yc-Me
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:20:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695374385;
+ s=mimecast20190719; t=1695374442;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=53rY/Mmg8rF2vlMlkoZfmGurJi9nAqUG1CDk+zRxgk0=;
- b=bE2xH5ndrOI/dma9BQMIrROw1FejjTk/pzBdgnQfgiur3wVMfhnoFMWHuC+5FPlPAfDq5f
- DKb2NNzTIt4vXgYKXvKDmWczxYpohng9kf8wbbtTFMRrp9zUl/gmTuU+U5nSJ6DVDjYTeM
- Cl377Q638tOnsGCqtQUAy5a7uOoCTTQ=
-Received: from mail-vs1-f69.google.com (mail-vs1-f69.google.com
- [209.85.217.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=l2Y88LBUNMolB5acaRDTbaBR/Cap9O8PmqKs2/QD3bA=;
+ b=CfWwGzJ3ofXeHrA7441o7SaXq2UuJN399NfJjLEYuAOI1PAMO0JBbTUZqdObzIXnmGNTj6
+ pvFcvJSwWp1Wm8TcozCaE1aStBmHSbuchJw1sTWoeuoVAQW+K+yenGaRkhi2kflo6eHBbR
+ LpqKjQ/T/22uRqnKs4rXNSBmVCv09ks=
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
+ [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-491-MqS5UsfRMyuUA9FDLSHMDg-1; Fri, 22 Sep 2023 05:19:43 -0400
-X-MC-Unique: MqS5UsfRMyuUA9FDLSHMDg-1
-Received: by mail-vs1-f69.google.com with SMTP id
- ada2fe7eead31-45289b05c67so828994137.2
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 02:19:42 -0700 (PDT)
+ us-mta-665-cmF8x0_qN_GHXbB-7-FZ-g-1; Fri, 22 Sep 2023 05:20:40 -0400
+X-MC-Unique: cmF8x0_qN_GHXbB-7-FZ-g-1
+Received: by mail-vs1-f70.google.com with SMTP id
+ ada2fe7eead31-45289b05c67so829241137.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 02:20:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695374382; x=1695979182;
+ d=1e100.net; s=20230601; t=1695374439; x=1695979239;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=53rY/Mmg8rF2vlMlkoZfmGurJi9nAqUG1CDk+zRxgk0=;
- b=tjbQAjMpqAIvc7qRCPHqm2gvoW5gKyim11A5nsKxQZmXUNqkz+q8B518RiZ/tkxh9s
- BLZC2BrzYwOz1XynG8X7ZdXUOzGilywqHmO7uU7zyWfBBgh6sqbQ/v6n29QAQGnk3J86
- 4YaDmTnkj0eSSY2mBIqFsLSBOiZI85Nm2JMIOs6PfzHHdmDjcj/cd1Xarh6ORovAZYKB
- L7xip5IrzSYScA2Q7CB4wuIWd051yWAxupKtTOpGLWWVCiC7TgtA/hpoEXVAUfxZuI19
- z5tS+V50bLx6Cb9llZNmecY97tTxfXJUMQi9EKSgIHG6gboS2vF2wohIa4AHN+zeQ5v3
- 6/TA==
-X-Gm-Message-State: AOJu0YxRGjh+zA9L0EnF496/aUTRvkKLA5mNBKhYCzvcnB4pL36rinF6
- 7J2kRl01PFtE7TdwpNkPQgryQnZlDIL5cjruF2AKfQsUvEmmGqZbNZApGXCY8LS0Cwp36gIs4na
- nqxAqKoblkyIdiUH1ZdlSIxqXpzDceYE=
-X-Received: by 2002:a05:6102:284c:b0:450:f96c:f238 with SMTP id
- az12-20020a056102284c00b00450f96cf238mr8961040vsb.8.1695374382492; 
- Fri, 22 Sep 2023 02:19:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFv76pzzfFaXq2pazgFwfVCFZ50LgEsjtZhdWsHFnOsON3+v6WWcs2Rw5C8iIZUFx3+s+OAltTgBDKBOKTJyrk=
-X-Received: by 2002:a05:6102:284c:b0:450:f96c:f238 with SMTP id
- az12-20020a056102284c00b00450f96cf238mr8961027vsb.8.1695374382185; Fri, 22
- Sep 2023 02:19:42 -0700 (PDT)
+ bh=l2Y88LBUNMolB5acaRDTbaBR/Cap9O8PmqKs2/QD3bA=;
+ b=UstwR5D66EaNyf4VWUby8zq3cOF57TPzbiypIm3uMLJJUoCHapTTm6yKJoA0tODY4A
+ NmnDSzpKpSyzMANlHqKzgngzCt9Gi3eWwvuyV32UkEj9CpsA0k07Q5vROkA6huvMhAXi
+ EElHqkkgZwH9EUDN4M/4ZSSj4VXnnvukj/jIUAw56wuRJ7VQ73SqeupGWkO5a/ZsdQwS
+ Oyj71Sp0GDLuTO8IMXT0THpIaOzbhW7Q5Vy5acMQxDoDx66n+7j0mNvHQHsFZwPd3TOn
+ 6bhO28+c/dvJp4NHjXDwlUcaXqJx2zzsk8wDR5oaPWJELGWeQxThXt84w8ZrdZOJ4bdN
+ TgFg==
+X-Gm-Message-State: AOJu0YwttGDl5DSiMQTZV1NYb5QMZ3GDgtXoTOd0AHQ56YnRCGXPYQdO
+ edDil1HGdTbUsB1H9XvG2N6AxRBAsLvDReh5DJdgMVbgHrj+UJcHm2SqHux4Jt77eDXYK9LRAjK
+ MgzvNwJK8JdWgJRkQU5BSPewQbe6pOT6wiHRXTyo=
+X-Received: by 2002:a67:f947:0:b0:452:8422:1318 with SMTP id
+ u7-20020a67f947000000b0045284221318mr8208150vsq.27.1695374438968; 
+ Fri, 22 Sep 2023 02:20:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHG/qOKWbmbOpvY5zfuxh6bOXPee836XAXVfOYP3W7ejY68a4bxXaVAF32afF+spmZC1dj7N9ldVw1PbkNdCWc=
+X-Received: by 2002:a67:f947:0:b0:452:8422:1318 with SMTP id
+ u7-20020a67f947000000b0045284221318mr8208140vsq.27.1695374438666; Fri, 22 Sep
+ 2023 02:20:38 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230921121051.192355-1-pbonzini@redhat.com>
- <20230921121051.192355-2-pbonzini@redhat.com>
- <052e2425-f2fa-76ee-dd40-639d88210b4c@redhat.com>
-In-Reply-To: <052e2425-f2fa-76ee-dd40-639d88210b4c@redhat.com>
+ <20230921121051.192355-3-pbonzini@redhat.com>
+ <9ad33139-93e3-12af-a67d-c7a3906198ce@redhat.com>
+In-Reply-To: <9ad33139-93e3-12af-a67d-c7a3906198ce@redhat.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 22 Sep 2023 11:19:31 +0200
-Message-ID: <CABgObfYgc2iF-89rPGL1siqvwXCGWPgP9Zs-2uOjj0j6jXVEfA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] pc_piix: remove pc-i440fx-1.4 up to pc-i440fx-1.7
+Date: Fri, 22 Sep 2023 11:20:28 +0200
+Message-ID: <CABgObfZ1RcxkV57+HNjQcUS9a1ciPQnxvaAr33bzE7OJx5w5sQ@mail.gmail.com>
+Subject: Re: [PATCH 2/2] seabios: remove PCI drivers from bios.bin
 To: Thomas Huth <thuth@redhat.com>
 Cc: qemu-devel <qemu-devel@nongnu.org>, "Hoffmann, Gerd" <kraxel@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000cfd52e0605ef1b5d"
+Content-Type: multipart/alternative; boundary="0000000000002da9c90605ef1f40"
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -94,281 +94,169 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000cfd52e0605ef1b5d
+--0000000000002da9c90605ef1f40
 Content-Type: text/plain; charset="UTF-8"
 
-Il ven 22 set 2023, 08:43 Thomas Huth <thuth@redhat.com> ha scritto:
+Il ven 22 set 2023, 08:49 Thomas Huth <thuth@redhat.com> ha scritto:
 
+> On 21/09/2023 14.10, Paolo Bonzini wrote:
+> > bios.bin is now used only by ISA PC, so PCI drivers are not necessary.
+> >
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> > ---
+> >   pc-bios/bios.bin         | Bin 131072 -> 131072 bytes
+> >   roms/config.seabios-128k |  30 ++++++++++++++++++++++--------
+> >   2 files changed, 22 insertions(+), 8 deletions(-)
+> ...
+> > diff --git a/roms/config.seabios-128k b/roms/config.seabios-128k
+> > index d18c802c46e..06f4ba35bbe 100644
+> > --- a/roms/config.seabios-128k
+> > +++ b/roms/config.seabios-128k
+> > @@ -1,21 +1,35 @@
+> > -# for qemu machine types 1.7 + older
+> > -# need to turn off features (xhci,uas) to make it fit into 128k
+> > +# SeaBIOS Configuration for -M isapc
+> > +
+> > +#
+> > +# General Features
+> > +#
+> >   CONFIG_QEMU=y
+> >   CONFIG_ROM_SIZE=128
+> >   CONFIG_ATA_DMA=n
+> >   CONFIG_BOOTSPLASH=n
+> >   CONFIG_XEN=n
+> > -CONFIG_USB_OHCI=n
+> > -CONFIG_USB_XHCI=n
+> > -CONFIG_USB_UAS=n
+> > +CONFIG_ATA_PIO32=n
+> > +CONFIG_AHCI=n
+> >   CONFIG_SDCARD=n
+> >   CONFIG_TCGBIOS=n
+> > -CONFIG_MPT_SCSI=n
+> > -CONFIG_ESP_SCSI=n
+> > -CONFIG_MEGASAS=n
+> > +CONFIG_VIRTIO_BLK=n
+> > +CONFIG_VIRTIO_SCSI=n
+> >   CONFIG_PVSCSI=n
+> > +CONFIG_ESP_SCSI=n
+> > +CONFIG_LSI_SCSI=n
+> > +CONFIG_MEGASAS=n
+> > +CONFIG_MPT_SCSI=n
 >
-> While you're at it ... do we maybe want to start deprecating the next
-> batch
-> of machine types already? (Say pc-i440fx-2.0 up to pc-i440fx-2.2 maybe?)
+> Why did you change the order of MPT, ESP and MEGASAS?
 >
 
-It depends on the benefit. We would have to check the compat options that
-are not needed anymore, and whether they'd be something that is useful
-anyway for debugging.
-
-Also it would be useful to check if isapc can drop some of the compat code
-and realign itself to the 2.0 i440fx machine in terms of QEMU-specific
-features.
-
-Because of all this todo, I decided not to proceed further with
-deprecations. The 128k ROM on the other hand does provide immediate benefit.
+Because the previous .config was written by hand while this one is
+generated by "make menu config" (other than the comments at the top).
 
 Paolo
 
 
-> > -
-> >   Backend options
-> >   ---------------
-> >
-> > diff --git a/docs/about/removed-features.rst
-> b/docs/about/removed-features.rst
-> > index 39468b6e926..56e078ad126 100644
-> > --- a/docs/about/removed-features.rst
-> > +++ b/docs/about/removed-features.rst
-> > @@ -730,7 +730,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)
-> >
-> >   This machine has been renamed ``fuloong2e``.
-> >
-> > -``pc-0.10`` up to ``pc-1.3`` (removed in 4.0 up to 6.0)
-> > +``pc-0.10`` up to ``pc-1.7`` (removed in 4.0 up to 8.2)
-> >   '''''''''''''''''''''''''''''''''''''''''''''''''''''''
+> Apart from that, wrt to the config file changes:
+> Reviewed-by: Thomas Huth <thuth@redhat.com>
 >
-> The names started to change with version 1.4, so it's "pc-i440fx-1.7" and
-> not "pc-1.7".
->
-> >   These machine types were very old and likely could not be used for live
-> > diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> > index 54838c0c411..1c7898a2d34 100644
-> > --- a/hw/i386/pc.c
-> > +++ b/hw/i386/pc.c
-> > @@ -359,60 +359,6 @@ GlobalProperty pc_compat_2_0[] = {
-> >   };
-> >   const size_t pc_compat_2_0_len = G_N_ELEMENTS(pc_compat_2_0);
-> >
-> > -GlobalProperty pc_compat_1_7[] = {
-> > -    PC_CPU_MODEL_IDS("1.7.0")
-> > -    { TYPE_USB_DEVICE, "msos-desc", "no" },
-> > -    { "PIIX4_PM", ACPI_PM_PROP_ACPI_PCIHP_BRIDGE, "off" },
-> > -    { "hpet", HPET_INTCAP, "4" },
-> > -};
-> > -const size_t pc_compat_1_7_len = G_N_ELEMENTS(pc_compat_1_7);
-> > -
-> > -GlobalProperty pc_compat_1_6[] = {
-> > -    PC_CPU_MODEL_IDS("1.6.0")
-> > -    { "e1000", "mitigation", "off" },
-> > -    { "qemu64-" TYPE_X86_CPU, "model", "2" },
-> > -    { "qemu32-" TYPE_X86_CPU, "model", "3" },
-> > -    { "i440FX-pcihost", "short_root_bus", "1" },
-> > -    { "q35-pcihost", "short_root_bus", "1" },
-> > -};
-> > -const size_t pc_compat_1_6_len = G_N_ELEMENTS(pc_compat_1_6);
-> > -
-> > -GlobalProperty pc_compat_1_5[] = {
-> > -    PC_CPU_MODEL_IDS("1.5.0")
-> > -    { "Conroe-" TYPE_X86_CPU, "model", "2" },
-> > -    { "Conroe-" TYPE_X86_CPU, "min-level", "2" },
-> > -    { "Penryn-" TYPE_X86_CPU, "model", "2" },
-> > -    { "Penryn-" TYPE_X86_CPU, "min-level", "2" },
-> > -    { "Nehalem-" TYPE_X86_CPU, "model", "2" },
-> > -    { "Nehalem-" TYPE_X86_CPU, "min-level", "2" },
-> > -    { "virtio-net-pci", "any_layout", "off" },
-> > -    { TYPE_X86_CPU, "pmu", "on" },
-> > -    { "i440FX-pcihost", "short_root_bus", "0" },
-> > -    { "q35-pcihost", "short_root_bus", "0" },
-> > -};
-> > -const size_t pc_compat_1_5_len = G_N_ELEMENTS(pc_compat_1_5);
-> > -
-> > -GlobalProperty pc_compat_1_4[] = {
-> > -    PC_CPU_MODEL_IDS("1.4.0")
-> > -    { "scsi-hd", "discard_granularity", "0" },
-> > -    { "scsi-cd", "discard_granularity", "0" },
-> > -    { "ide-hd", "discard_granularity", "0" },
-> > -    { "ide-cd", "discard_granularity", "0" },
-> > -    { "virtio-blk-pci", "discard_granularity", "0" },
-> > -    /* DEV_NVECTORS_UNSPECIFIED as a uint32_t string: */
-> > -    { "virtio-serial-pci", "vectors", "0xFFFFFFFF" },
-> > -    { "virtio-net-pci", "ctrl_guest_offloads", "off" },
-> > -    { "e1000", "romfile", "pxe-e1000.rom" },
-> > -    { "ne2k_pci", "romfile", "pxe-ne2k_pci.rom" },
-> > -    { "pcnet", "romfile", "pxe-pcnet.rom" },
-> > -    { "rtl8139", "romfile", "pxe-rtl8139.rom" },
-> > -    { "virtio-net-pci", "romfile", "pxe-virtio.rom" },
-> > -    { "486-" TYPE_X86_CPU, "model", "0" },
-> > -    { "n270" "-" TYPE_X86_CPU, "movbe", "off" },
-> > -    { "Westmere" "-" TYPE_X86_CPU, "pclmulqdq", "off" },
-> > -};
-> > -const size_t pc_compat_1_4_len = G_N_ELEMENTS(pc_compat_1_4);
->
-> It might be worth to have a closer look at the above settings in the
-> various
-> devices - maybe we can get rid of some compatibility handling code in the
-> devices now, in case the properties are not set by other targets as well.
->
->   Thomas
+> >   CONFIG_NVME=n
+> >   CONFIG_USE_SMM=n
+> >   CONFIG_VGAHOOKS=n
+> >   CONFIG_HOST_BIOS_GEOMETRY=n
+> > +CONFIG_PS2PORT=n
+> > +CONFIG_USB=n
+> > +CONFIG_PMTIMER=n
+> > +CONFIG_PCIBIOS=n
+> > +CONFIG_DISABLE_A20=n
+> > +CONFIG_WRITABLE_UPPERMEMORY=n
+> > +CONFIG_ACPI=n
+> >   CONFIG_ACPI_PARSE=n
+> > +CONFIG_DEBUG_SERIAL=n
+> > +CONFIG_DEBUG_SERIAL_MMIO=n
 >
 >
 
---000000000000cfd52e0605ef1b5d
+--0000000000002da9c90605ef1f40
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">Il ven 22 set 2023, 08:43 Thomas Huth &lt;<a href=3D"m=
+class=3D"gmail_attr">Il ven 22 set 2023, 08:49 Thomas Huth &lt;<a href=3D"m=
 ailto:thuth@redhat.com">thuth@redhat.com</a>&gt; ha scritto:<br></div><bloc=
 kquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #cc=
-c solid;padding-left:1ex"><br>
-While you&#39;re at it ... do we maybe want to start deprecating the next b=
-atch <br>
-of machine types already? (Say pc-i440fx-2.0 up to pc-i440fx-2.2 maybe?)<br=
-></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto">It =
-depends on the benefit. We would have to check the compat options that are =
-not needed anymore, and whether they&#39;d be something that is useful anyw=
-ay for debugging.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Also i=
-t would be useful to check if isapc can drop some of the compat code and re=
-align itself to the 2.0 i440fx machine in terms of QEMU-specific features.<=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto">Because of all this todo=
-, I decided not to proceed further with deprecations. The 128k ROM on the o=
-ther hand does provide immediate benefit.</div><div dir=3D"auto"><br></div>=
-<div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=3D"auto">=
-<div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+c solid;padding-left:1ex">On 21/09/2023 14.10, Paolo Bonzini wrote:<br>
+&gt; bios.bin is now used only by ISA PC, so PCI drivers are not necessary.=
 <br>
-&gt; -<br>
-&gt;=C2=A0 =C2=A0Backend options<br>
-&gt;=C2=A0 =C2=A0---------------<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; diff --git a/docs/about/removed-features.rst b/docs/about/removed-feat=
-ures.rst<br>
-&gt; index 39468b6e926..56e078ad126 100644<br>
-&gt; --- a/docs/about/removed-features.rst<br>
-&gt; +++ b/docs/about/removed-features.rst<br>
-&gt; @@ -730,7 +730,7 @@ mips ``fulong2e`` machine alias (removed in 6.0)<b=
-r>
-&gt;=C2=A0 =C2=A0<br>
-&gt;=C2=A0 =C2=A0This machine has been renamed ``fuloong2e``.<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; -``pc-0.10`` up to ``pc-1.3`` (removed in 4.0 up to 6.0)<br>
-&gt; +``pc-0.10`` up to ``pc-1.7`` (removed in 4.0 up to 8.2)<br>
-&gt;=C2=A0 =C2=A0&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#3=
-9;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#3=
-9;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#3=
-9;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;<br>
+&gt; <br>
+&gt; Signed-off-by: Paolo Bonzini &lt;<a href=3D"mailto:pbonzini@redhat.com=
+" target=3D"_blank" rel=3D"noreferrer">pbonzini@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0pc-bios/bios.bin=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| Bin 13=
+1072 -&gt; 131072 bytes<br>
+&gt;=C2=A0 =C2=A0roms/config.seabios-128k |=C2=A0 30 ++++++++++++++++++++++=
+--------<br>
+&gt;=C2=A0 =C2=A02 files changed, 22 insertions(+), 8 deletions(-)<br>
+...<br>
+&gt; diff --git a/roms/config.seabios-128k b/roms/config.seabios-128k<br>
+&gt; index d18c802c46e..06f4ba35bbe 100644<br>
+&gt; --- a/roms/config.seabios-128k<br>
+&gt; +++ b/roms/config.seabios-128k<br>
+&gt; @@ -1,21 +1,35 @@<br>
+&gt; -# for qemu machine types 1.7 + older<br>
+&gt; -# need to turn off features (xhci,uas) to make it fit into 128k<br>
+&gt; +# SeaBIOS Configuration for -M isapc<br>
+&gt; +<br>
+&gt; +#<br>
+&gt; +# General Features<br>
+&gt; +#<br>
+&gt;=C2=A0 =C2=A0CONFIG_QEMU=3Dy<br>
+&gt;=C2=A0 =C2=A0CONFIG_ROM_SIZE=3D128<br>
+&gt;=C2=A0 =C2=A0CONFIG_ATA_DMA=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_BOOTSPLASH=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_XEN=3Dn<br>
+&gt; -CONFIG_USB_OHCI=3Dn<br>
+&gt; -CONFIG_USB_XHCI=3Dn<br>
+&gt; -CONFIG_USB_UAS=3Dn<br>
+&gt; +CONFIG_ATA_PIO32=3Dn<br>
+&gt; +CONFIG_AHCI=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_SDCARD=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_TCGBIOS=3Dn<br>
+&gt; -CONFIG_MPT_SCSI=3Dn<br>
+&gt; -CONFIG_ESP_SCSI=3Dn<br>
+&gt; -CONFIG_MEGASAS=3Dn<br>
+&gt; +CONFIG_VIRTIO_BLK=3Dn<br>
+&gt; +CONFIG_VIRTIO_SCSI=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_PVSCSI=3Dn<br>
+&gt; +CONFIG_ESP_SCSI=3Dn<br>
+&gt; +CONFIG_LSI_SCSI=3Dn<br>
+&gt; +CONFIG_MEGASAS=3Dn<br>
+&gt; +CONFIG_MPT_SCSI=3Dn<br>
 <br>
-The names started to change with version 1.4, so it&#39;s &quot;pc-i440fx-1=
-.7&quot; and <br>
-not &quot;pc-1.7&quot;.<br>
+Why did you change the order of MPT, ESP and MEGASAS?<br></blockquote></div=
+></div><div dir=3D"auto"><br></div><div dir=3D"auto">Because the previous .=
+config was written by hand while this one is generated by &quot;make menu c=
+onfig&quot; (other than the comments at the top).</div><div dir=3D"auto"><b=
+r></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br></div><div dir=
+=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
 <br>
-&gt;=C2=A0 =C2=A0These machine types were very old and likely could not be =
-used for live<br>
-&gt; diff --git a/hw/i386/pc.c b/hw/i386/pc.c<br>
-&gt; index 54838c0c411..1c7898a2d34 100644<br>
-&gt; --- a/hw/i386/pc.c<br>
-&gt; +++ b/hw/i386/pc.c<br>
-&gt; @@ -359,60 +359,6 @@ GlobalProperty pc_compat_2_0[] =3D {<br>
-&gt;=C2=A0 =C2=A0};<br>
-&gt;=C2=A0 =C2=A0const size_t pc_compat_2_0_len =3D G_N_ELEMENTS(pc_compat_=
-2_0);<br>
-&gt;=C2=A0 =C2=A0<br>
-&gt; -GlobalProperty pc_compat_1_7[] =3D {<br>
-&gt; -=C2=A0 =C2=A0 PC_CPU_MODEL_IDS(&quot;1.7.0&quot;)<br>
-&gt; -=C2=A0 =C2=A0 { TYPE_USB_DEVICE, &quot;msos-desc&quot;, &quot;no&quot=
-; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;PIIX4_PM&quot;, ACPI_PM_PROP_ACPI_PCIHP_BRIDGE,=
- &quot;off&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;hpet&quot;, HPET_INTCAP, &quot;4&quot; },<br>
-&gt; -};<br>
-&gt; -const size_t pc_compat_1_7_len =3D G_N_ELEMENTS(pc_compat_1_7);<br>
-&gt; -<br>
-&gt; -GlobalProperty pc_compat_1_6[] =3D {<br>
-&gt; -=C2=A0 =C2=A0 PC_CPU_MODEL_IDS(&quot;1.6.0&quot;)<br>
-&gt; -=C2=A0 =C2=A0 { &quot;e1000&quot;, &quot;mitigation&quot;, &quot;off&=
-quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;qemu64-&quot; TYPE_X86_CPU, &quot;model&quot;, =
-&quot;2&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;qemu32-&quot; TYPE_X86_CPU, &quot;model&quot;, =
-&quot;3&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;i440FX-pcihost&quot;, &quot;short_root_bus&quot=
-;, &quot;1&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;q35-pcihost&quot;, &quot;short_root_bus&quot;, =
-&quot;1&quot; },<br>
-&gt; -};<br>
-&gt; -const size_t pc_compat_1_6_len =3D G_N_ELEMENTS(pc_compat_1_6);<br>
-&gt; -<br>
-&gt; -GlobalProperty pc_compat_1_5[] =3D {<br>
-&gt; -=C2=A0 =C2=A0 PC_CPU_MODEL_IDS(&quot;1.5.0&quot;)<br>
-&gt; -=C2=A0 =C2=A0 { &quot;Conroe-&quot; TYPE_X86_CPU, &quot;model&quot;, =
-&quot;2&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;Conroe-&quot; TYPE_X86_CPU, &quot;min-level&quo=
-t;, &quot;2&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;Penryn-&quot; TYPE_X86_CPU, &quot;model&quot;, =
-&quot;2&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;Penryn-&quot; TYPE_X86_CPU, &quot;min-level&quo=
-t;, &quot;2&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;Nehalem-&quot; TYPE_X86_CPU, &quot;model&quot;,=
- &quot;2&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;Nehalem-&quot; TYPE_X86_CPU, &quot;min-level&qu=
-ot;, &quot;2&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;virtio-net-pci&quot;, &quot;any_layout&quot;, &=
-quot;off&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { TYPE_X86_CPU, &quot;pmu&quot;, &quot;on&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;i440FX-pcihost&quot;, &quot;short_root_bus&quot=
-;, &quot;0&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;q35-pcihost&quot;, &quot;short_root_bus&quot;, =
-&quot;0&quot; },<br>
-&gt; -};<br>
-&gt; -const size_t pc_compat_1_5_len =3D G_N_ELEMENTS(pc_compat_1_5);<br>
-&gt; -<br>
-&gt; -GlobalProperty pc_compat_1_4[] =3D {<br>
-&gt; -=C2=A0 =C2=A0 PC_CPU_MODEL_IDS(&quot;1.4.0&quot;)<br>
-&gt; -=C2=A0 =C2=A0 { &quot;scsi-hd&quot;, &quot;discard_granularity&quot;,=
- &quot;0&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;scsi-cd&quot;, &quot;discard_granularity&quot;,=
- &quot;0&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;ide-hd&quot;, &quot;discard_granularity&quot;, =
-&quot;0&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;ide-cd&quot;, &quot;discard_granularity&quot;, =
-&quot;0&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;virtio-blk-pci&quot;, &quot;discard_granularity=
-&quot;, &quot;0&quot; },<br>
-&gt; -=C2=A0 =C2=A0 /* DEV_NVECTORS_UNSPECIFIED as a uint32_t string: */<br=
->
-&gt; -=C2=A0 =C2=A0 { &quot;virtio-serial-pci&quot;, &quot;vectors&quot;, &=
-quot;0xFFFFFFFF&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;virtio-net-pci&quot;, &quot;ctrl_guest_offloads=
-&quot;, &quot;off&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;e1000&quot;, &quot;romfile&quot;, &quot;pxe-e10=
-00.rom&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;ne2k_pci&quot;, &quot;romfile&quot;, &quot;pxe-=
-ne2k_pci.rom&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;pcnet&quot;, &quot;romfile&quot;, &quot;pxe-pcn=
-et.rom&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;rtl8139&quot;, &quot;romfile&quot;, &quot;pxe-r=
-tl8139.rom&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;virtio-net-pci&quot;, &quot;romfile&quot;, &quo=
-t;pxe-virtio.rom&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;486-&quot; TYPE_X86_CPU, &quot;model&quot;, &qu=
-ot;0&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;n270&quot; &quot;-&quot; TYPE_X86_CPU, &quot;mo=
-vbe&quot;, &quot;off&quot; },<br>
-&gt; -=C2=A0 =C2=A0 { &quot;Westmere&quot; &quot;-&quot; TYPE_X86_CPU, &quo=
-t;pclmulqdq&quot;, &quot;off&quot; },<br>
-&gt; -};<br>
-&gt; -const size_t pc_compat_1_4_len =3D G_N_ELEMENTS(pc_compat_1_4);<br>
+Apart from that, wrt to the config file changes:<br>
+Reviewed-by: Thomas Huth &lt;<a href=3D"mailto:thuth@redhat.com" target=3D"=
+_blank" rel=3D"noreferrer">thuth@redhat.com</a>&gt;<br>
 <br>
-It might be worth to have a closer look at the above settings in the variou=
-s <br>
-devices - maybe we can get rid of some compatibility handling code in the <=
-br>
-devices now, in case the properties are not set by other targets as well.<b=
-r>
-<br>
-=C2=A0 Thomas<br>
+&gt;=C2=A0 =C2=A0CONFIG_NVME=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_USE_SMM=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_VGAHOOKS=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_HOST_BIOS_GEOMETRY=3Dn<br>
+&gt; +CONFIG_PS2PORT=3Dn<br>
+&gt; +CONFIG_USB=3Dn<br>
+&gt; +CONFIG_PMTIMER=3Dn<br>
+&gt; +CONFIG_PCIBIOS=3Dn<br>
+&gt; +CONFIG_DISABLE_A20=3Dn<br>
+&gt; +CONFIG_WRITABLE_UPPERMEMORY=3Dn<br>
+&gt; +CONFIG_ACPI=3Dn<br>
+&gt;=C2=A0 =C2=A0CONFIG_ACPI_PARSE=3Dn<br>
+&gt; +CONFIG_DEBUG_SERIAL=3Dn<br>
+&gt; +CONFIG_DEBUG_SERIAL_MMIO=3Dn<br>
 <br>
 </blockquote></div></div></div>
 
---000000000000cfd52e0605ef1b5d--
+--0000000000002da9c90605ef1f40--
 
 
