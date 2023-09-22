@@ -2,104 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA617AA744
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 05:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE317AA7A9
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 06:18:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjWg0-000227-Tc; Thu, 21 Sep 2023 23:17:56 -0400
+	id 1qjXaz-0001z7-FT; Fri, 22 Sep 2023 00:16:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qjWfz-00021l-CT
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 23:17:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjXap-0001yp-KK
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 00:16:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qjWfx-0004Lr-AX
- for qemu-devel@nongnu.org; Thu, 21 Sep 2023 23:17:54 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjXan-0007A6-BF
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 00:16:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695352671;
+ s=mimecast20190719; t=1695356193;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=VKRFydK7gHJIGc1An0jO34UIyrf6X6QxSb8Wda3PFS4=;
- b=SLqm9b9JeLb5cLUaGKGSDCESjE/sQwdFHMzBCIpS8m6nJaiWBvWuLRunn6sTtQdi2z44sj
- QRi+tB/VnZXVQcQg1ERfJ822Qf+/7YWeaYIV/XmiyA9IVDklpdTgOdJvKK7PB9VWPCLYMG
- puz2Ua6xnfVnpPDxLDrqqHyD3nqXE+g=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Oz44f+j+t5IyC8AEBV2pi7uq7lDQ3/FLShPUlsqmt44=;
+ b=K3qPzdYrHw5GYRn5eTi4dTGeIArqN0XNldLhI2xvEFeP2T7kc+dob+fYOuNahsdXXNU1Wj
+ GoVqkTLt3ooQq88SQbSOZdTq9Y2C7XBy0JHqI+JVPpn6GGx5zpE74yQ4sQiUUmy0bklHIW
+ BRg+30uZkrS1fnmpKAhsWRACT7KS7BQ=
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com
+ [209.85.210.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-1UikpufSMZuvckqg-AI1Tg-1; Thu, 21 Sep 2023 23:17:49 -0400
-X-MC-Unique: 1UikpufSMZuvckqg-AI1Tg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-50433ca6d81so914652e87.3
- for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 20:17:49 -0700 (PDT)
+ us-mta-608-U6YulqP0My-LrkIoyVVtBQ-1; Fri, 22 Sep 2023 00:16:31 -0400
+X-MC-Unique: U6YulqP0My-LrkIoyVVtBQ-1
+Received: by mail-pf1-f197.google.com with SMTP id
+ d2e1a72fcca58-690f7d73c68so1543188b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 21 Sep 2023 21:16:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695352668; x=1695957468;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VKRFydK7gHJIGc1An0jO34UIyrf6X6QxSb8Wda3PFS4=;
- b=IxmeLh2AYM9hLI3wwC6Sf7e3qmePDMQTiSTi3m7EcwS2n0sXrA0ydj4aHXwFZI1M2h
- f9EVdtIJ9cAOpK7JJ9baxacry7U1dD0D3PrpwN6hnnZ/8+Ee2p0azgPHJYKoTxmS6JbN
- pJ2ZhagYh13HvyRDH/iqVZGKOPLhtoUjggaNMpjP0x7773Ofs9drBafo3IhKN3SHk1cf
- rTVgFmCOKDKxpDKTwPnNgBVdu4E5e3bKBYbG0reXL4EVoKUmJHJu4OrQv6CmstH03o7K
- butyPQUhyKuspJE9wwyR42IhK7MO2Pi9DPhG0zFithGiOJb4aDbg+gc9i617/KEa5Oo4
- RlpA==
-X-Gm-Message-State: AOJu0Yx/eOOqn43ySX0F1myGz1rtf6AvxzgNEBTkZMkSYgezsFGhvXr3
- vvknpnn3yUjxZupj8YtS/3oiYLF76+2fesfQGASlfHR5Nz/aNf4f9MV5ZkT22Yk4QMtuiLkC14I
- UlfC502CL3yQZL+CA8y3aKyObPbqWp0k=
-X-Received: by 2002:a05:6512:b21:b0:503:3278:3221 with SMTP id
- w33-20020a0565120b2100b0050332783221mr7377465lfu.69.1695352667964; 
- Thu, 21 Sep 2023 20:17:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6jLFAWQobQu7YJsr0/J9NeK5RMThuSKcfHKr41/y/dxVLwUK0Y97f/SS/vWZNDHC+0xxpwdioFz9c/eyEV7A=
-X-Received: by 2002:a05:6512:b21:b0:503:3278:3221 with SMTP id
- w33-20020a0565120b2100b0050332783221mr7377433lfu.69.1695352667519; Thu, 21
- Sep 2023 20:17:47 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695356191; x=1695960991;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Oz44f+j+t5IyC8AEBV2pi7uq7lDQ3/FLShPUlsqmt44=;
+ b=V6n7kdyU7u9zILQFSMH7aaKSX3IZQECMn6Daeyb8JOD20CWqu4T5FR1HcphCURJuS4
+ ozyqQ7GHe+zhhaMPMlF2L7AWa6y+aCIAbUVvcAXOpFR//WhoKnC4AZup1D1xYGZkss3d
+ 2/Mk9J0r+MrICLfQlJNrDNAdsKH1x4PfoaRSzn/+zxilr2bx9Qk3VSQ6+En2hMn7LNmj
+ Iu3bBwzPwfbaNCmJ+stvp2qNYWazsvOUYXCc9wyAZ91SPmm/SOvIvfpZ94ZojPkdIOYG
+ vDSr71C6j8UPRz8s+gblZz0A6V3f3LklgSREHrBdt4mqCTvyvqUkfryIUIejau2fhbdR
+ uPjw==
+X-Gm-Message-State: AOJu0YxZuuso/tROuzxy2gnzQrH1UZA4ISqfjhA9r4trxK9jq2zg97Nc
+ GSMlLxWoOHrZ7FUV3kJ3snok6PqwNJ7yo8H/SYlZdwQvw+RozscgQKOSJJdGHwYSoqLPf2lq90R
+ HBLHM1La7LVvLUk4=
+X-Received: by 2002:a05:6a20:561b:b0:133:b3a9:90d with SMTP id
+ ir27-20020a056a20561b00b00133b3a9090dmr6429660pzc.36.1695356190517; 
+ Thu, 21 Sep 2023 21:16:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHTSBc4A7a6WYy0omr49zPpMMLfxHlOC6GsnPWhPStRdEaOxk0McXdW+wA3+iCuEzhNUtB1Mw==
+X-Received: by 2002:a05:6a20:561b:b0:133:b3a9:90d with SMTP id
+ ir27-20020a056a20561b00b00133b3a9090dmr6429650pzc.36.1695356190102; 
+ Thu, 21 Sep 2023 21:16:30 -0700 (PDT)
+Received: from localhost.localdomain ([116.73.132.49])
+ by smtp.googlemail.com with ESMTPSA id
+ z2-20020a17090a1fc200b00263b9e75aecsm2441396pjz.41.2023.09.21.21.16.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 21 Sep 2023 21:16:29 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: david@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>
+Cc: philmd@linaro.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH v4] hw/i386/pc: improve physical address space bound check for
+ 32-bit x86 systems
+Date: Fri, 22 Sep 2023 09:46:19 +0530
+Message-Id: <20230922041619.3909-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-References: <20230919114242.2283646-1-Jiqian.Chen@amd.com>
- <20230919114242.2283646-2-Jiqian.Chen@amd.com>
- <CACGkMEuEXk2UzXU7sFUk-nHEeE7QoB3kbjnHgktY7KWuK71Xrg@mail.gmail.com>
- <BL1PR12MB58490A484087B2B2C37B6E43E7F8A@BL1PR12MB5849.namprd12.prod.outlook.com>
-In-Reply-To: <BL1PR12MB58490A484087B2B2C37B6E43E7F8A@BL1PR12MB5849.namprd12.prod.outlook.com>
-From: Jason Wang <jasowang@redhat.com>
-Date: Fri, 22 Sep 2023 11:17:35 +0800
-Message-ID: <CACGkMEtx-i_9dgdONFzEmmWYNRhaoJQZX7a5OmLfDvGoUaajPQ@mail.gmail.com>
-Subject: Re: [virtio-dev] Re: [VIRTIO PCI PATCH v5 1/1] transport-pci: Add
- freeze_mode to virtio_pci_common_cfg
-To: "Chen, Jiqian" <Jiqian.Chen@amd.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>, 
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>, 
- Gurchetan Singh <gurchetansingh@chromium.org>,
- Chia-I Wu <olvaffe@gmail.com>, 
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>, 
- Robert Beckett <bob.beckett@collabora.com>, 
- Mikhail Golubev-Ciuchea <Mikhail.Golubev-Ciuchea@opensynergy.com>,
- Parav Pandit <parav@nvidia.com>, 
- "virtio-comment@lists.oasis-open.org" <virtio-comment@lists.oasis-open.org>, 
- "virtio-dev@lists.oasis-open.org" <virtio-dev@lists.oasis-open.org>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, 
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Stefano Stabellini <sstabellini@kernel.org>, 
- =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
- "Deucher, Alexander" <Alexander.Deucher@amd.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- "Hildebrand, Stewart" <Stewart.Hildebrand@amd.com>,
- Xenia Ragiadakou <burzalodowa@gmail.com>, 
- "Huang, Honglei1" <Honglei1.Huang@amd.com>, "Zhang,
- Julia" <Julia.Zhang@amd.com>, "Huang, Ray" <Ray.Huang@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,102 +103,271 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 21, 2023 at 2:28=E2=80=AFPM Chen, Jiqian <Jiqian.Chen@amd.com> =
-wrote:
->
-> Hi Jason,
->
-> On 2023/9/21 12:22, Jason Wang wrote:
-> > On Tue, Sep 19, 2023 at 7:43=E2=80=AFPM Jiqian Chen <Jiqian.Chen@amd.co=
-m> wrote:
-> >>
-> >> When guest vm does S3, Qemu will reset and clear some things of virtio
-> >> devices, but guest can't aware that, so that may cause some problems.
-> >> For excample, Qemu calls virtio_reset->virtio_gpu_gl_reset when guest
-> >> resume, that function will destroy render resources of virtio-gpu. As
-> >> a result, after guest resume, the display can't come back and we only
-> >> saw a black screen. Due to guest can't re-create all the resources, so
-> >> we need to let Qemu not to destroy them when S3.
-> >>
-> >> For above purpose, we need a mechanism that allows guests and QEMU to
-> >> negotiate their reset behavior. So this patch add a new parameter
-> >> named freeze_mode to struct virtio_pci_common_cfg. And when guest
-> >> suspends, it can write freeze_mode to be FREEZE_S3, and then virtio
-> >> devices can change their reset behavior on Qemu side according to
-> >> freeze_mode. What's more, freeze_mode can be used for all virtio
-> >> devices to affect the behavior of Qemu, not just virtio gpu device.
-> >
-> > A simple question, why is this issue specific to pci?
-> I thought you possibly missed the previous version patches. At the beginn=
-ing, I just wanted to add a new feature flag VIRTIO_GPU_F_FREEZE_S3 for vir=
-tio-gpu since I encountered virtio-gpu issue during guest S3, so that the g=
-uest and qemu can negotiate and change the reset behavior during S3. But Pa=
-rav and Mikhail hoped me can improve the feature to a pci level, then other=
- virtio devices can also benefit from it. Although I am not sure if expandi=
-ng its influence is appropriate, I have not received any feedback from othe=
-rs, so I change it to the pci level and made this version.
-> If you are interested, please see the previous version: https://lists.oas=
-is-open.org/archives/virtio-comment/202307/msg00209.html, thank you.
+32-bit x86 systems do not have a reserved memory for hole64. On those 32-bit
+systems without PSE36 or PAE CPU features, hotplugging memory devices are not
+supported by QEMU as QEMU always places hotplugged memory above 4 GiB boundary
+which is beyond the physical address space of the processor. Linux guests also
+does not support memory hotplug on those systems. Please see Linux
+kernel commit b59d02ed08690 ("mm/memory_hotplug: disable the functionality
+for 32b") for more details.
 
-This is not a good answer. Let me ask you differently, why don't you
-see it in other forms of transport like virtio-gpu-mmio?
+Therefore, the maximum limit of the guest physical address in the absence of
+additional memory devices effectively coincides with the end of
+"above 4G memory space" region for 32-bit x86 without PAE/PSE36. When users
+configure additional memory devices, after properly accounting for the
+additional device memory region to find the maximum value of the guest
+physical address, the address will be outside the range of the processor's
+physical address space.
 
-Thanks
+This change adds improvements to take above into consideration.
 
->
-> >
-> > Thanks
-> >
-> >
-> >>
-> >> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
-> >> ---
-> >>  transport-pci.tex | 7 +++++++
-> >>  1 file changed, 7 insertions(+)
-> >>
-> >> diff --git a/transport-pci.tex b/transport-pci.tex
-> >> index a5c6719..2543536 100644
-> >> --- a/transport-pci.tex
-> >> +++ b/transport-pci.tex
-> >> @@ -319,6 +319,7 @@ \subsubsection{Common configuration structure layo=
-ut}\label{sec:Virtio Transport
-> >>          le64 queue_desc;                /* read-write */
-> >>          le64 queue_driver;              /* read-write */
-> >>          le64 queue_device;              /* read-write */
-> >> +        le16 freeze_mode;               /* read-write */
-> >>          le16 queue_notif_config_data;   /* read-only for driver */
-> >>          le16 queue_reset;               /* read-write */
-> >>
-> >> @@ -393,6 +394,12 @@ \subsubsection{Common configuration structure lay=
-out}\label{sec:Virtio Transport
-> >>  \item[\field{queue_device}]
-> >>          The driver writes the physical address of Device Area here.  =
-See section \ref{sec:Basic Facilities of a Virtio Device / Virtqueues}.
-> >>
-> >> +\item[\field{freeze_mode}]
-> >> +        The driver writes this to set the freeze mode of virtio pci.
-> >> +        VIRTIO_PCI_FREEZE_MODE_UNFREEZE - virtio-pci is running;
-> >> +        VIRTIO_PCI_FREEZE_MODE_FREEZE_S3 - guest vm is doing S3, and =
-virtio-pci enters S3 suspension;
-> >> +        Other values are reserved for future use, like S4, etc.
-> >> +
-> >>  \item[\field{queue_notif_config_data}]
-> >>          This field exists only if VIRTIO_F_NOTIF_CONFIG_DATA has been=
- negotiated.
-> >>          The driver will use this value when driver sends available bu=
-ffer
-> >> --
-> >> 2.34.1
-> >>
-> >
-> >
-> > ---------------------------------------------------------------------
-> > To unsubscribe, e-mail: virtio-dev-unsubscribe@lists.oasis-open.org
-> > For additional commands, e-mail: virtio-dev-help@lists.oasis-open.org
-> >
->
-> --
-> Best regards,
-> Jiqian Chen.
+For example, previously this was allowed:
+
+$ ./qemu-system-x86_64 -cpu pentium -m size=10G
+
+With this change now it is no longer allowed:
+
+$ ./qemu-system-x86_64 -cpu pentium -m size=10G
+qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff phys-bits too low (32)
+
+However, the following are allowed since on both cases physical address
+space of the processor is 36 bits:
+
+$ ./qemu-system-x86_64 -cpu pentium2 -m size=10G
+$ ./qemu-system-x86_64 -cpu pentium,pse36=on -m size=10G
+
+For 32-bit, without PAE/PSE36, hotplugging additional memory is no longer allowed.
+
+$ ./qemu-system-i386 -m size=1G,maxmem=3G,slots=2
+qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bits too low (32)
+$ ./qemu-system-i386 -machine q35 -m size=1G,maxmem=3G,slots=2
+qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bits too low (32)
+
+A new compatibility flag is introduced to make sure pc_max_used_gpa() keeps
+returning the old value for machines 8.1 and older.
+Therefore, the above is still allowed for older machine types in order to support
+compatibility. Hence, the following still works:
+
+$ ./qemu-system-i386 -machine pc-i440fx-8.1 -m size=1G,maxmem=3G,slots=2
+$ ./qemu-system-i386 -machine pc-q35-8.1 -m size=1G,maxmem=3G,slots=2
+
+Further, following is also allowed as with PSE36, the processor has 36-bit
+address space:
+
+$ ./qemu-system-i386 -cpu 486,pse36=on -m size=1G,maxmem=3G,slots=2
+
+After calling CPUID with EAX=0x80000001, all AMD64 compliant processors
+have the longmode-capable-bit turned on in the extended feature flags (bit 29)
+in EDX. The absence of CPUID longmode can be used to differentiate between
+32-bit and 64-bit processors and is the recommended approach. QEMU takes this
+approach elsewhere (for example, please see x86_cpu_realizefn()), With
+this change, pc_max_used_gpa() also uses the same method to detect 32-bit
+processors.
+
+Unit tests are modified to not run 32-bit x86 tests that use memory hotplug.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+---
+ hw/i386/pc.c                   | 31 ++++++++++++++++++++++++++++---
+ hw/i386/pc_piix.c              |  4 ++++
+ hw/i386/pc_q35.c               |  2 ++
+ include/hw/i386/pc.h           |  6 ++++++
+ tests/qtest/bios-tables-test.c | 26 ++++++++++++++++++--------
+ tests/qtest/numa-test.c        |  7 ++++++-
+ 6 files changed, 64 insertions(+), 12 deletions(-)
+
+changelog:
+v4: address comments from v3. Fix a bug where compat knob was absent
+from q35 machines. Commit message adjustment.
+v3: still accounting for additional memory device region above 4G.
+unit tests fixed (not running for 32-bit where mem hotplug is used).
+v2: removed memory hotplug region from max_gpa. added compat knobs.
+
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 54838c0c41..2a689cf0bd 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -907,12 +907,37 @@ static uint64_t pc_get_cxl_range_end(PCMachineState *pcms)
+ static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_size)
+ {
+     X86CPU *cpu = X86_CPU(first_cpu);
++    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
++    MachineState *ms = MACHINE(pcms);
++    uint64_t devmem_start = 0;
++    ram_addr_t devmem_size = 0;
+ 
+-    /* 32-bit systems don't have hole64 thus return max CPU address */
+-    if (cpu->phys_bits <= 32) {
+-        return ((hwaddr)1 << cpu->phys_bits) - 1;
++    /*
++     * 32-bit systems don't have hole64 but they might have a region for
++     * memory devices. Even if additional hotplugged memory devices might
++     * not be usable by most guest OSes, we need to still consider them for
++     * calculating the highest possible GPA so that we can properly report
++     * if someone configures them on a CPU that cannot possibly address them.
++     */
++    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
++        /* 32-bit systems */
++        if (!pcmc->broken_32bit_mem_addr_check) {
++            if (pcmc->has_reserved_memory &&
++                (ms->ram_size < ms->maxram_size)) {
++                pc_get_device_memory_range(pcms, &devmem_start,
++                                           &devmem_size);
++                devmem_start += devmem_size;
++                return devmem_start - 1;
++            } else {
++                return pc_above_4g_end(pcms) - 1;
++            }
++        } else {
++            /* old value for compatibility reasons */
++            return ((hwaddr)1 << cpu->phys_bits) - 1;
++        }
+     }
+ 
++    /* 64-bit systems */
+     return pc_pci_hole64_start() + pci_hole64_size - 1;
+ }
+ 
+diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
+index 8321f36f97..71003759bb 100644
+--- a/hw/i386/pc_piix.c
++++ b/hw/i386/pc_piix.c
+@@ -517,9 +517,13 @@ DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
+ 
+ static void pc_i440fx_8_1_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
++
+     pc_i440fx_8_2_machine_options(m);
+     m->alias = NULL;
+     m->is_default = false;
++    pcmc->broken_32bit_mem_addr_check = true;
++
+     compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
+     compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
+ }
+diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
+index 2dd1158b70..a7386f2ca2 100644
+--- a/hw/i386/pc_q35.c
++++ b/hw/i386/pc_q35.c
+@@ -394,8 +394,10 @@ DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
+ 
+ static void pc_q35_8_1_machine_options(MachineClass *m)
+ {
++    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
+     pc_q35_8_2_machine_options(m);
+     m->alias = NULL;
++    pcmc->broken_32bit_mem_addr_check = true;
+     compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
+     compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
+ }
+diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
+index 0fabece236..bec38cb92c 100644
+--- a/include/hw/i386/pc.h
++++ b/include/hw/i386/pc.h
+@@ -129,6 +129,12 @@ struct PCMachineClass {
+ 
+     /* resizable acpi blob compat */
+     bool resizable_acpi_blob;
++
++    /*
++     * whether the machine type implements broken 32-bit address space bound
++     * check for memory.
++     */
++    bool broken_32bit_mem_addr_check;
+ };
+ 
+ #define TYPE_PC_MACHINE "generic-pc-machine"
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index d1b80149f2..f8e03dfd46 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -2080,7 +2080,6 @@ int main(int argc, char *argv[])
+                            test_acpi_piix4_no_acpi_pci_hotplug);
+             qtest_add_func("acpi/piix4/ipmi", test_acpi_piix4_tcg_ipmi);
+             qtest_add_func("acpi/piix4/cpuhp", test_acpi_piix4_tcg_cphp);
+-            qtest_add_func("acpi/piix4/memhp", test_acpi_piix4_tcg_memhp);
+             qtest_add_func("acpi/piix4/numamem", test_acpi_piix4_tcg_numamem);
+             qtest_add_func("acpi/piix4/nosmm", test_acpi_piix4_tcg_nosmm);
+             qtest_add_func("acpi/piix4/smm-compat",
+@@ -2088,9 +2087,15 @@ int main(int argc, char *argv[])
+             qtest_add_func("acpi/piix4/smm-compat-nosmm",
+                            test_acpi_piix4_tcg_smm_compat_nosmm);
+             qtest_add_func("acpi/piix4/nohpet", test_acpi_piix4_tcg_nohpet);
+-            qtest_add_func("acpi/piix4/dimmpxm", test_acpi_piix4_tcg_dimm_pxm);
+-            qtest_add_func("acpi/piix4/acpihmat",
+-                           test_acpi_piix4_tcg_acpi_hmat);
++
++            /* i386 does not support memory hotplug */
++            if (strcmp(arch, "i386")) {
++                qtest_add_func("acpi/piix4/memhp", test_acpi_piix4_tcg_memhp);
++                qtest_add_func("acpi/piix4/dimmpxm",
++                               test_acpi_piix4_tcg_dimm_pxm);
++                qtest_add_func("acpi/piix4/acpihmat",
++                               test_acpi_piix4_tcg_acpi_hmat);
++            }
+ #ifdef CONFIG_POSIX
+             qtest_add_func("acpi/piix4/acpierst", test_acpi_piix4_acpi_erst);
+ #endif
+@@ -2108,11 +2113,9 @@ int main(int argc, char *argv[])
+                            test_acpi_q35_tcg_no_acpi_hotplug);
+             qtest_add_func("acpi/q35/multif-bridge",
+                            test_acpi_q35_multif_bridge);
+-            qtest_add_func("acpi/q35/mmio64", test_acpi_q35_tcg_mmio64);
+             qtest_add_func("acpi/q35/ipmi", test_acpi_q35_tcg_ipmi);
+             qtest_add_func("acpi/q35/smbus/ipmi", test_acpi_q35_tcg_smbus_ipmi);
+             qtest_add_func("acpi/q35/cpuhp", test_acpi_q35_tcg_cphp);
+-            qtest_add_func("acpi/q35/memhp", test_acpi_q35_tcg_memhp);
+             qtest_add_func("acpi/q35/numamem", test_acpi_q35_tcg_numamem);
+             qtest_add_func("acpi/q35/nosmm", test_acpi_q35_tcg_nosmm);
+             qtest_add_func("acpi/q35/smm-compat",
+@@ -2120,10 +2123,17 @@ int main(int argc, char *argv[])
+             qtest_add_func("acpi/q35/smm-compat-nosmm",
+                            test_acpi_q35_tcg_smm_compat_nosmm);
+             qtest_add_func("acpi/q35/nohpet", test_acpi_q35_tcg_nohpet);
+-            qtest_add_func("acpi/q35/dimmpxm", test_acpi_q35_tcg_dimm_pxm);
+-            qtest_add_func("acpi/q35/acpihmat", test_acpi_q35_tcg_acpi_hmat);
+             qtest_add_func("acpi/q35/acpihmat-noinitiator",
+                            test_acpi_q35_tcg_acpi_hmat_noinitiator);
++
++            /* i386 does not support memory hotplug */
++            if (strcmp(arch, "i386")) {
++                qtest_add_func("acpi/q35/memhp", test_acpi_q35_tcg_memhp);
++                qtest_add_func("acpi/q35/dimmpxm", test_acpi_q35_tcg_dimm_pxm);
++                qtest_add_func("acpi/q35/acpihmat",
++                               test_acpi_q35_tcg_acpi_hmat);
++                qtest_add_func("acpi/q35/mmio64", test_acpi_q35_tcg_mmio64);
++            }
+ #ifdef CONFIG_POSIX
+             qtest_add_func("acpi/q35/acpierst", test_acpi_q35_acpi_erst);
+ #endif
+diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
+index c5eb13f349..4f4404a4b1 100644
+--- a/tests/qtest/numa-test.c
++++ b/tests/qtest/numa-test.c
+@@ -568,7 +568,7 @@ int main(int argc, char **argv)
+     qtest_add_data_func("/numa/mon/cpus/partial", args, test_mon_partial);
+     qtest_add_data_func("/numa/qmp/cpus/query-cpus", args, test_query_cpus);
+ 
+-    if (!strcmp(arch, "i386") || !strcmp(arch, "x86_64")) {
++    if (!strcmp(arch, "x86_64")) {
+         qtest_add_data_func("/numa/pc/cpu/explicit", args, pc_numa_cpu);
+         qtest_add_data_func("/numa/pc/dynamic/cpu", args, pc_dynamic_cpu_cfg);
+         qtest_add_data_func("/numa/pc/hmat/build", args, pc_hmat_build_cfg);
+@@ -576,6 +576,11 @@ int main(int argc, char **argv)
+         qtest_add_data_func("/numa/pc/hmat/erange", args, pc_hmat_erange_cfg);
+     }
+ 
++    if (!strcmp(arch, "i386")) {
++        qtest_add_data_func("/numa/pc/cpu/explicit", args, pc_numa_cpu);
++        qtest_add_data_func("/numa/pc/dynamic/cpu", args, pc_dynamic_cpu_cfg);
++    }
++
+     if (!strcmp(arch, "ppc64")) {
+         qtest_add_data_func("/numa/spapr/cpu/explicit", args, spapr_numa_cpu);
+     }
+-- 
+2.39.1
 
 
