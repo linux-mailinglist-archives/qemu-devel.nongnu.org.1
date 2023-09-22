@@ -2,68 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B140C7AA8B0
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 08:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8039A7AA8B6
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 08:03:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjZDx-0006AV-Ju; Fri, 22 Sep 2023 02:01:09 -0400
+	id 1qjZGL-0006yc-FR; Fri, 22 Sep 2023 02:03:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjZDq-00068a-2Z
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 02:01:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjZDf-0002RI-NI
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 02:01:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695362449;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ui+wE2nBi84wnQXIUsdSxnPYvmq0IuswJ3AzG7nl26w=;
- b=h2jGGI44a9jD9ny5521016H2pUy91bLnYNiSfV/X81hJ4PZpEJ4t5uoDFLBrdY9NFVFOp5
- Uw7KsFnRksYTjEzBJgle8ZhvSu+fTbb9+h4lM1hNFVRlzjsFDEfCtHaHCqENz1DJiF5S4c
- QKSDbGqzy8m+EU8i4dnEzUu8Gjo36vQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-639-0s31ys7mMHmuclaawqrrZw-1; Fri, 22 Sep 2023 02:00:45 -0400
-X-MC-Unique: 0s31ys7mMHmuclaawqrrZw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6289285A5BD;
- Fri, 22 Sep 2023 06:00:45 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 235A220268D7;
- Fri, 22 Sep 2023 06:00:45 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1555C21E6900; Fri, 22 Sep 2023 08:00:44 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: James Bottomley <jejb@linux.ibm.com>
-Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>, Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v6 2/2] tpm: add backend for mssim
-References: <20230109161532.6892-1-jejb@linux.ibm.com>
- <20230109161532.6892-3-jejb@linux.ibm.com>
-Date: Fri, 22 Sep 2023 08:00:44 +0200
-In-Reply-To: <20230109161532.6892-3-jejb@linux.ibm.com> (James Bottomley's
- message of "Mon, 9 Jan 2023 11:15:32 -0500")
-Message-ID: <87bkduwxv7.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qjZGJ-0006wo-HW; Fri, 22 Sep 2023 02:03:35 -0400
+Received: from mail-vs1-xe32.google.com ([2607:f8b0:4864:20::e32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qjZGI-0002sQ-3l; Fri, 22 Sep 2023 02:03:35 -0400
+Received: by mail-vs1-xe32.google.com with SMTP id
+ ada2fe7eead31-45271a44cc4so795402137.2; 
+ Thu, 21 Sep 2023 23:03:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695362612; x=1695967412; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=+B5d2ijOxTqrh7YS7jQgnYSz0iUfepkY2EVyW6WJPfo=;
+ b=HEb7VU79nPD87fGlgDMV/0NzrG3+sL3tAEvpmj4KMVJ1NiJcosX3TT5V4qmmmxhqsc
+ gwU9RyN/g4ZIU8yrhjJUD3/cBWl83lpE1xKaW5PkmMwSWnFrpI7gDnPgQAe6ulZ7xyE8
+ QdDQVPcnJALVCQqpSQdfryJt/do4KNFg4JPG7ns0Zj5WgPyxzu1gp9NJ6UEvo9lYJXf0
+ BTllWSABXywDXwusAbzbfFih03d43U5NIGCC6yuLNPydBn94UFrg7Yur76ZhpC7b0h9I
+ VtYR/OKZVTnsZxiwujY+u2LkT1DLtOGsRdsNPBpBe8wtX6SSDSZ9F2h3t59Mwywg9H4a
+ yP/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695362612; x=1695967412;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=+B5d2ijOxTqrh7YS7jQgnYSz0iUfepkY2EVyW6WJPfo=;
+ b=xGORLqZovW/h1NOLLE08ISLWCR0a/r44e3JKcZkNUQFS7FQefWLWgRagnsxB2iNEMg
+ aJ40NOZ/28cniBL/Dt3w9s9vPjEmyYkYlrRTEBh9fzITTfvmgJOn5nsoQsJi8vLq5AWB
+ 1SEJy6V1PwdrvBWIBDbc9uUxr8LNH9WpldkttFXe4m2IKQ9MQemXJjoYKJmeEso/ImYC
+ BqTRUp5hqN8zaY0yUbUDehRQ6D6SC8v4LbuKCPIFizWnf0m01YAFEKDVtZK9S61MKF5O
+ Q56lfq8BnmM4h98E2Hh4fGI+MOv2aYrwemP47XW5wydg4z1GTjGxAITUxYOJKTfOO0cy
+ 7lPg==
+X-Gm-Message-State: AOJu0Yw3kdmO3FryxOyktZY2TZKWpv2bIiD00VPgxwwprBrtPFeXB5lM
+ PJptP3HxAbiRyH+oLmV209G1cMBzw5eMHdR5CWk=
+X-Google-Smtp-Source: AGHT+IFoBouslO43cFTOOVL36pEhfjORvVLFHJomhrG2NJcmIxrWHAWZJbME54aqeO6MAYwjbKUdUVIBQcattUCojrc=
+X-Received: by 2002:a05:6102:11e4:b0:452:829e:ac90 with SMTP id
+ e4-20020a05610211e400b00452829eac90mr6843838vsg.28.1695362612510; Thu, 21 Sep
+ 2023 23:03:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230920112020.651006-1-dbarboza@ventanamicro.com>
+ <20230920112020.651006-10-dbarboza@ventanamicro.com>
+In-Reply-To: <20230920112020.651006-10-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 22 Sep 2023 16:03:05 +1000
+Message-ID: <CAKmqyKM+Jxp2Xp3GgDmBS9yTjNqVX-wH0_iLcJR+6kdPA=aBDw@mail.gmail.com>
+Subject: Re: [PATCH v3 09/19] target/riscv: make
+ riscv_add_satp_mode_properties() public
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, philmd@linaro.org, ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e32;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe32.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,264 +89,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Found this cleaning out old mail, sorry for missing it until now!
-
-I think we owe James a quick decision wether we're willing to take the
-feature.  Stefan, thoughts?
-
-James Bottomley <jejb@linux.ibm.com> writes:
-
-> From: James Bottomley <James.Bottomley@HansenPartnership.com>
+On Wed, Sep 20, 2023 at 9:24=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-> The Microsoft Simulator (mssim) is the reference emulation platform
-> for the TCG TPM 2.0 specification.
+> This function is used for both accelerators. Make it public, and call it
+> from kvm_riscv_cpu_add_kvm_properties(). This will make it easier to
+> split KVM specific code for the KVM accelerator class in the next patch.
 >
-> https://github.com/Microsoft/ms-tpm-20-ref.git
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
+> ---
+>  target/riscv/cpu.c | 5 ++---
+>  target/riscv/cpu.h | 1 +
+>  target/riscv/kvm.c | 1 +
+>  3 files changed, 4 insertions(+), 3 deletions(-)
 >
-> It exports a fairly simple network socket based protocol on two
-> sockets, one for command (default 2321) and one for control (default
-> 2322).  This patch adds a simple backend that can speak the mssim
-> protocol over the network.  It also allows the two sockets to be
-> specified on the command line.  The benefits are twofold: firstly it
-> gives us a backend that actually speaks a standard TPM emulation
-> protocol instead of the linux specific TPM driver format of the
-> current emulated TPM backend and secondly, using the microsoft
-> protocol, the end point of the emulator can be anywhere on the
-> network, facilitating the cloud use case where a central TPM service
-> can be used over a control network.
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 0dc9b3201d..50be127f36 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1115,7 +1115,7 @@ static void cpu_riscv_set_satp(Object *obj, Visitor=
+ *v, const char *name,
+>      satp_map->init |=3D 1 << satp;
+>  }
 >
-> The implementation does basic control commands like power off/on, but
-> doesn't implement cancellation or startup.  The former because
-> cancellation is pretty much useless on a fast operating TPM emulator
-> and the latter because this emulator is designed to be used with OVMF
-> which itself does TPM startup and I wanted to validate that.
+> -static void riscv_add_satp_mode_properties(Object *obj)
+> +void riscv_add_satp_mode_properties(Object *obj)
+>  {
+>      RISCVCPU *cpu =3D RISCV_CPU(obj);
 >
-> To run this, simply download an emulator based on the MS specification
-> (package ibmswtpm2 on openSUSE) and run it, then add these two lines
-> to the qemu command and it will use the emulator.
+> @@ -1589,12 +1589,11 @@ static void riscv_cpu_add_multiext_prop_array(Obj=
+ect *obj,
+>  static void riscv_cpu_add_user_properties(Object *obj)
+>  {
+>  #ifndef CONFIG_USER_ONLY
+> -    riscv_add_satp_mode_properties(obj);
+> -
+>      if (kvm_enabled()) {
+>          kvm_riscv_cpu_add_kvm_properties(obj);
+>          return;
+>      }
+> +    riscv_add_satp_mode_properties(obj);
+>  #endif
 >
->     -tpmdev mssim,id=tpm0 \
->     -device tpm-crb,tpmdev=tpm0 \
+>      riscv_cpu_add_misa_properties(obj);
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 9dc4113812..cb13464ba6 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -726,6 +726,7 @@ extern const RISCVCPUMultiExtConfig riscv_cpu_experim=
+ental_exts[];
+>  extern Property riscv_cpu_options[];
 >
-> to use a remote emulator replace the first line with
+>  void riscv_cpu_add_misa_properties(Object *cpu_obj);
+> +void riscv_add_satp_mode_properties(Object *obj);
 >
->     -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':inet,'host':'remote','port':'2321'}}"
+>  /* CSR function table */
+>  extern riscv_csr_operations csr_ops[CSR_TABLE_SIZE];
+> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+> index e682a70311..e5e957121f 100644
+> --- a/target/riscv/kvm.c
+> +++ b/target/riscv/kvm.c
+> @@ -1323,6 +1323,7 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+>      DeviceState *dev =3D DEVICE(obj);
 >
-> tpm-tis also works as the backend.
+>      riscv_init_user_properties(obj);
+> +    riscv_add_satp_mode_properties(obj);
+>      riscv_cpu_add_misa_properties(obj);
 >
-> Signed-off-by: James Bottomley <jejb@linux.ibm.com>
-
-[...]
-
-> diff --git a/docs/specs/tpm.rst b/docs/specs/tpm.rst
-> index 535912a92b..1398735956 100644
-> --- a/docs/specs/tpm.rst
-> +++ b/docs/specs/tpm.rst
-> @@ -270,6 +270,38 @@ available as a module (assuming a TPM 2 is passed through):
->    /sys/devices/LNXSYSTEM:00/LNXSYBUS:00/MSFT0101:00/tpm/tpm0/pcr-sha256/9
->    ...
->  
-> +The QEMU TPM Microsoft Simulator Device
-> +---------------------------------------
-> +
-> +The TCG provides a reference implementation for TPM 2.0 written by
-
-
-Suggest to copy the cover letter's nice introductory paragraph here:
-
-  The Microsoft Simulator (mssim) is the reference emulation platform
-  for the TCG TPM 2.0 specification.
-
-  It provides a reference implementation for TPM 2.0 written by
-
-> +Microsoft (See `ms-tpm-20-ref`_ on github).  The reference implementation
-> +starts a network server and listens for TPM commands on port 2321 and
-> +TPM Platform control commands on port 2322, although these can be
-> +altered.  The QEMU mssim TPM backend talks to this implementation.  By
-> +default it connects to the default ports on localhost:
-> +
-> +.. code-block:: console
-> +
-> +  qemu-system-x86_64 <qemu-options> \
-> +    -tpmdev mssim,id=tpm0 \
-> +    -device tpm-crb,tpmdev=tpm0
-> +
-> +
-> +Although it can also communicate with a remote host, which must be
-> +specified as a SocketAddress via json on the command line for each of
-
-Is the "via JSON" part in "must be specified ... on the command line"
-correct?  I'd expect to be able to use dotted keys as well, like
-
-    -tpmdev type=mssim,id=tpm0,command.type=inet,command.host=remote,command.port=2321',control.type=inet,control.host=remote,control.port=2322
-
-Aside: I do recommend management applications stick to JSON.
-
-> +the command and control ports:
-> +
-> +.. code-block:: console
-> +
-> +  qemu-system-x86_64 <qemu-options> \
-> +    -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':'inet','host':'remote','port':'2321'},'control':{'type':'inet','host':'remote','port':'2322'}}" \
-> +    -device tpm-crb,tpmdev=tpm0
-> +
-> +
-> +The mssim backend supports snapshotting and migration, but the state
-> +of the Microsoft Simulator server must be preserved (or the server
-> +kept running) outside of QEMU for restore to be successful.
-> +
->  The QEMU TPM emulator device
->  ----------------------------
->  
-> @@ -526,3 +558,6 @@ the following:
->  
->  .. _SWTPM protocol:
->     https://github.com/stefanberger/swtpm/blob/master/man/man3/swtpm_ioctls.pod
-> +
-> +.. _ms-tpm-20-ref:
-> +   https://github.com/microsoft/ms-tpm-20-ref
-> diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-> index ed78a87ddd..12482368d0 100644
-> --- a/monitor/hmp-cmds.c
-> +++ b/monitor/hmp-cmds.c
-> @@ -731,6 +731,7 @@ void hmp_info_tpm(Monitor *mon, const QDict *qdict)
->      unsigned int c = 0;
->      TPMPassthroughOptions *tpo;
->      TPMEmulatorOptions *teo;
-> +    TPMmssimOptions *tmo;
->  
->      info_list = qmp_query_tpm(&err);
->      if (err) {
-> @@ -764,6 +765,14 @@ void hmp_info_tpm(Monitor *mon, const QDict *qdict)
->              teo = ti->options->u.emulator.data;
->              monitor_printf(mon, ",chardev=%s", teo->chardev);
->              break;
-> +        case TPM_TYPE_MSSIM:
-> +            tmo = &ti->options->u.mssim;
-> +            monitor_printf(mon, ",command=%s:%s,control=%s:%s",
-> +                           tmo->command->u.inet.host,
-> +                           tmo->command->u.inet.port,
-> +                           tmo->control->u.inet.host,
-> +                           tmo->control->u.inet.port);
-> +            break;
->          case TPM_TYPE__MAX:
->              break;
->          }
-> diff --git a/qapi/tpm.json b/qapi/tpm.json
-> index 2b491c28b4..f9dde35377 100644
-> --- a/qapi/tpm.json
-> +++ b/qapi/tpm.json
-> @@ -5,6 +5,7 @@
->  ##
->  # = TPM (trusted platform module) devices
->  ##
-
-Blank line, please.
-
-> +{ 'include': 'sockets.json' }
->  
->  ##
->  # @TpmModel:
-> @@ -49,7 +50,7 @@
-   #
-   # @passthrough: TPM passthrough type
-   #
-   # @emulator: Software Emulator TPM type (since 2.11)
->  #
-
-Missing member documentation:
-
-   # @mssim: <brief description here> (since 8.2)
-
->  # Since: 1.5
->  ##
-> -{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator' ],
-> +{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator', 'mssim' ],
->    'if': 'CONFIG_TPM' }
->  
->  ##
-> @@ -64,7 +65,7 @@
->  # Example:
->  #
->  # -> { "execute": "query-tpm-types" }
-> -# <- { "return": [ "passthrough", "emulator" ] }
-> +# <- { "return": [ "passthrough", "emulator", "mssim" ] }
-
-Thanks for updating the example.
-
->  #
->  ##
->  { 'command': 'query-tpm-types', 'returns': ['TpmType'],
-> @@ -117,6 +118,22 @@
->    'data': { 'data': 'TPMEmulatorOptions' },
->    'if': 'CONFIG_TPM' }
->  
-> +##
-> +# @TPMmssimOptions:
-
-Please capitalize similar to TPMPassthroughOptions and
-TPMEmulatorOptions: TPMMssimOptions.
-
-> +#
-> +# Information for the mssim emulator connection
-> +#
-> +# @command: command socket for the TPM emulator
-
-Blank line, please.
-
-> +# @control: control socket for the TPM emulator
-> +#
-> +# Since: 7.2.0
-
-Since 8.2
-
-> +##
-> +{ 'struct': 'TPMmssimOptions',
-> +  'data': {
-> +      '*command': 'SocketAddress',
-> +      '*control': 'SocketAddress' },
-
-Locally consistent indentation is
-
-     'data': { '*command': 'SocketAddress',
-               '*control': 'SocketAddress' },
-
-> +  'if': 'CONFIG_TPM' }
-> +
->  ##
->  # @TpmTypeOptions:
->  #
-> @@ -124,6 +141,7 @@
->  #
->  # @type: - 'passthrough' The configuration options for the TPM passthrough type
->  #        - 'emulator' The configuration options for TPM emulator backend type
-> +#        - 'mssim' The configuration options for TPM emulator mssim type
->  #
->  # Since: 1.5
->  ##
-> @@ -131,7 +149,8 @@
->    'base': { 'type': 'TpmType' },
->    'discriminator': 'type',
->    'data': { 'passthrough' : 'TPMPassthroughOptionsWrapper',
-> -            'emulator': 'TPMEmulatorOptionsWrapper' },
-> +            'emulator': 'TPMEmulatorOptionsWrapper',
-> +            'mssim' : 'TPMmssimOptions' },
->    'if': 'CONFIG_TPM' }
->  
->  ##
-> @@ -150,7 +169,8 @@
->              'id' : 'str' },
->    'discriminator': 'type',
->    'data': { 'passthrough' : 'TPMPassthroughOptions',
-> -            'emulator': 'TPMEmulatorOptions' },
-> +            'emulator': 'TPMEmulatorOptions',
-> +            'mssim': 'TPMmssimOptions' },
->    'if': 'CONFIG_TPM' }
->  
->  ##
-
-Address my nitpicking, and you may add
-
-Acked-by: Markus Armbruster <armbru@redhat.com>
-
+>      riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_extensions);
+> --
+> 2.41.0
+>
+>
 
