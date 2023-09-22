@@ -2,76 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91E717AB4F9
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 17:43:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9607AB4F6
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 17:43:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjiIj-0008LT-Ud; Fri, 22 Sep 2023 11:42:41 -0400
+	id 1qjiIl-0008Mq-Mw; Fri, 22 Sep 2023 11:42:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjiIi-0008KN-0c
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 11:42:40 -0400
+ id 1qjiIk-0008Lb-1m
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 11:42:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjiIg-0002nn-F0
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 11:42:39 -0400
+ id 1qjiIi-0002oA-L8
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 11:42:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695397357;
+ s=mimecast20190719; t=1695397360;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MXr0dDzaioo9uY5bLIe7ScF/gjUT2yjP9YjbogdmloQ=;
- b=gE4EMh9MWA/LGdam27TNhwgheAKaoivdrGpgH6k20yR9DFICIwDWqJLKgOyqCDmRGl3WRu
- l9uvEXPugk0nqOybi53GaGvH8ga4k6mElGwjHnA3pP5Q+DotN9eWkNbEChQkemx0NQ7oAe
- hvOraAL5woknS0NMVhhpSbtj/d+DeNw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SrSO+Hs9yQZxcMhy+G9BaGpwPutEpMTpch02fxbPNas=;
+ b=IrW8f6m5n+OobKRX/qKwI0Fv5zUqwyLVpf5s0bNpy6hYCc7fjSbyhjB4RzLltxuMK49Z3k
+ w7ymh2Zf9mTW89A2h70Z/9YJAwMvOt3Hx3vW+e80CdARvvjpPNWdq3l2K5Lzh/o8Vk4hPs
+ NfKJrcryQl3qrHtjC/0ohKCwmiu6m18=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-256-ndXJE3MMNv-JM6aJe62ryw-1; Fri, 22 Sep 2023 11:42:36 -0400
-X-MC-Unique: ndXJE3MMNv-JM6aJe62ryw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32153a4533eso1540614f8f.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 08:42:36 -0700 (PDT)
+ us-mta-484-MTFSTXTcPhqRl5YlULKnLQ-1; Fri, 22 Sep 2023 11:42:38 -0400
+X-MC-Unique: MTFSTXTcPhqRl5YlULKnLQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-402cba95486so17804475e9.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 08:42:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695397354; x=1696002154;
+ d=1e100.net; s=20230601; t=1695397356; x=1696002156;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MXr0dDzaioo9uY5bLIe7ScF/gjUT2yjP9YjbogdmloQ=;
- b=Jyd0n05LmJN6DZtaCdzfN1N9y0PK/uojWcSvZPluxx/RQ46wgoT/twtr/Z8BlpBkoA
- I3RKdBWLYx2ryHMArjmc61B9m3SFBUpPt7AzXKovE3X7oJQrnwKHkW2phcr7qsKXJkCg
- iET2CHzD+G2tZs+nmBdl2RbduhHSrEew9aU+UTItg+AyKTVcK/v9T1qhrtJ4+ZQ6f+Nh
- xT7ln5QnsTuRe1ubKjlJIQAlYmDjzIZrsKict1AwM1Z+yD9rI0U9yzCyPGYiYb1LoJCd
- pOOtmbJtxA1UeQDAj2cG+yux2YEIUMhCVZD/2+CCHpbGaye3ecdjwfMBrb4ReJzNM7cZ
- W2FQ==
-X-Gm-Message-State: AOJu0YzDXdnJzspiDrZbYR80kjKr+2VpLO2OeHFecCUt+Jiy++U4j0Xi
- a0UdzvqJgV2/V0r9PtDDhV/9iLLnbN7mlVdiXwpBBPTvc4i8/A+tTMv8+PN3uH27bZtdduZkQTs
- aAcStBr6Ac5xBhj8W6v87hfoG+fgzfCPC0YsPi3z44EThjSRytkYZEbEGMfoNx89LiDR8yhQ15X
- Q=
-X-Received: by 2002:adf:e78a:0:b0:319:7bec:4f31 with SMTP id
- n10-20020adfe78a000000b003197bec4f31mr63270wrm.10.1695397354720; 
- Fri, 22 Sep 2023 08:42:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IElUq3wsuglnbZZwXXz0TjE7gjDmHqopvrpvIVthbnJ0D663NnFECJl00yKI96ph/EUnXTeyw==
-X-Received: by 2002:adf:e78a:0:b0:319:7bec:4f31 with SMTP id
- n10-20020adfe78a000000b003197bec4f31mr63244wrm.10.1695397354238; 
- Fri, 22 Sep 2023 08:42:34 -0700 (PDT)
+ bh=SrSO+Hs9yQZxcMhy+G9BaGpwPutEpMTpch02fxbPNas=;
+ b=s1xu4LLMCoBRtlJlIBtbKxfo9K6KmHc6lAhMu92A3g7nVl6hudN360gOt5Svf3bgtj
+ WJRNb/U9cz8EBbixugNl78YkARb5kUA8Ju/VgQbukRmm02TfQJTFYmmGpVQK1FIgbAWU
+ usaCpnPlGOc4RyoDpT9Cs+FHYV+U11Ket4s+GAQ6d938/pGbh9KBRGFXmXFnX+1MrO70
+ 90Wu0PRaEbN5jKY4cLhKQplNnZWWjlNPnXkM5j+7QQO3Iav+xC0OLY5kIGClv/xn+Oqd
+ aYM7yxpGpM3ZEESXC+ZKDmhzqytYfUteYXbZ5dm5Zl8dEb7jztsXlIR5Gvf7dWKezneZ
+ EHdA==
+X-Gm-Message-State: AOJu0YxhuPy/WT0pQ2s2Io2oCBw3Piw7qw+D8aocV0Nv3gjP/gfwJBfE
+ DG89M44vZLyrOgBIoZEjEV5cmnPqwXKHQR50LBb3MyEUjP+TPZv6qHQDHbEe+koh4JpPjT6bHqo
+ AH/8fSQlQxTVi2Qu4zgGAD5cKyA874f87ILNPg0aid5eqhtb36CY4lnR2sT+oAHqG/3XDzLVBG0
+ 8=
+X-Received: by 2002:a05:600c:1da9:b0:405:3a65:1b4c with SMTP id
+ p41-20020a05600c1da900b004053a651b4cmr3314794wms.6.1695397356701; 
+ Fri, 22 Sep 2023 08:42:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFU9KGbGLxWyMfZnyUoJ3MdMOiQ/jtXaGyHNFBHjyGd4Jl1CCBdFFgBS8Jgol4vxmB8EJS6YA==
+X-Received: by 2002:a05:600c:1da9:b0:405:3a65:1b4c with SMTP id
+ p41-20020a05600c1da900b004053a651b4cmr3314778wms.6.1695397356349; 
+ Fri, 22 Sep 2023 08:42:36 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- o11-20020a056000010b00b0031c52e81490sm4763698wrx.72.2023.09.22.08.42.32
+ l18-20020a1c7912000000b003fef3180e7asm7869578wme.44.2023.09.22.08.42.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 08:42:33 -0700 (PDT)
+ Fri, 22 Sep 2023 08:42:35 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: balaton@eik.bme.hu, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Jack Wang <jinpu.wang@ionos.com>,
- Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Subject: [PULL 2/9] target/i386: Export GDS_NO bit to guests
-Date: Fri, 22 Sep 2023 17:42:21 +0200
-Message-ID: <20230922154228.304933-3-pbonzini@redhat.com>
+Cc: balaton@eik.bme.hu,
+	LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PULL 3/9] qemu/timer: Add host ticks function for RISC-V
+Date: Fri, 22 Sep 2023 17:42:22 +0200
+Message-ID: <20230922154228.304933-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230922154228.304933-1-pbonzini@redhat.com>
 References: <20230922154228.304933-1-pbonzini@redhat.com>
@@ -102,39 +101,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-Gather Data Sampling (GDS) is a side-channel attack using Gather
-instructions. Some Intel processors will set ARCH_CAP_GDS_NO bit in
-MSR IA32_ARCH_CAPABILITIES to report that they are not vulnerable to
-GDS.
-
-Make this bit available to guests.
-
-Closes: https://lore.kernel.org/qemu-devel/CAMGffEmG6TNq0n3+4OJAgXc8J0OevY60KHZekXCBs3LoK9vehA@mail.gmail.com/
-Reported-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Tested-by: Jack Wang <jinpu.wang@ionos.com>
-Tested-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Message-ID: <fde42d81ce454477ca8e27d5429a190b7366fe86.1692074650.git.pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Message-ID: <20230911063223.742-1-zhiwei_liu@linux.alibaba.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/cpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/qemu/timer.h | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index d48607b4e1e..f9e51a9d87e 100644
---- a/target/i386/cpu.c
-+++ b/target/i386/cpu.c
-@@ -1155,7 +1155,7 @@ FeatureWordInfo feature_word_info[FEATURE_WORDS] = {
-             NULL, "sbdr-ssdp-no", "fbsdp-no", "psdp-no",
-             NULL, "fb-clear", NULL, NULL,
-             NULL, NULL, NULL, NULL,
--            "pbrsb-no", NULL, NULL, NULL,
-+            "pbrsb-no", NULL, "gds-no", NULL,
-             NULL, NULL, NULL, NULL,
-         },
-         .msr = {
+diff --git a/include/qemu/timer.h b/include/qemu/timer.h
+index 9a91cb1248a..9a366e551fb 100644
+--- a/include/qemu/timer.h
++++ b/include/qemu/timer.h
+@@ -979,6 +979,28 @@ static inline int64_t cpu_get_host_ticks(void)
+     return cur - ofs;
+ }
+ 
++#elif defined(__riscv) && __riscv_xlen == 32
++static inline int64_t cpu_get_host_ticks(void)
++{
++    uint32_t lo, hi, tmph;
++    do {
++        asm volatile("RDTIMEH %0\n\t"
++                     "RDTIME %1\n\t"
++                     "RDTIMEH %2"
++                     : "=r"(hi), "=r"(lo), "=r"(tmph));
++    } while (unlikely(tmph != hi));
++    return lo | (uint64_t)hi << 32;
++}
++
++#elif defined(__riscv) && __riscv_xlen > 32
++static inline int64_t cpu_get_host_ticks(void)
++{
++    int64_t val;
++
++    asm volatile("RDTIME %0" : "=r"(val));
++    return val;
++}
++
+ #else
+ /* The host CPU doesn't have an easily accessible cycle counter.
+    Just return a monotonically increasing value.  This will be
 -- 
 2.41.0
 
