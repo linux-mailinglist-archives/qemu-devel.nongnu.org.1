@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE457AB291
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 15:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C6D7AB1E2
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 14:11:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjfxo-00048n-EK; Fri, 22 Sep 2023 09:12:56 -0400
+	id 1qjezC-0001I2-E7; Fri, 22 Sep 2023 08:10:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjfxm-00048Z-5M
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 09:12:54 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjfxk-0003q9-E7
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 09:12:53 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-405361bba99so16703645e9.2
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 06:12:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695388370; x=1695993170; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=MUOIKBUB4c3+iZVb9Uxr+PtbJJdynO5hs/C8XB6GJSU=;
- b=kpaBazQ4nojH8RHTo0oiCrbpjsEGsFNN3yQHHFFlHHlFgerZ5FQwdJ4iEImjaPzsDd
- gRYtG2bmlLpUQAPC2t2lxEVdy4scL5C1k9iYJQROi2wdeI1x/8g0OHdRXq8v+E3yNkZu
- 3tkwokfnKTYyFtVokWRx+701YsoCEoRouGxWrVdYF3u0tuEKUCuvkS1/XaIrNOYFEOGE
- VTuuh51j3eR4CRayw8xU5E+DZFfK/qn5RqWRovOrZmMvKa5m2JOOj5PaNOrmuSLpUxYd
- ubVz9R1BxhFv75+Ehwlnrbs4KluP7y14cUJGuM9vyT8xHTW5jMFXNR9WL3DXA3XDr1lm
- G30g==
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1qjez4-0001HI-3R
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:10:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
+ id 1qjeyz-0005Is-CU
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:10:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695384603;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=uuWiaManMtBBSMjg6XtohxhxpYJP4xrlEQR3HAEe07M=;
+ b=ZGN+CeBxTuBess2Y1y1xd+wyrFK+5Hb5Oht7kzFUPnjWQ23ZfJ8cTjNd7GuA9RHXlKyz3t
+ Bkt/WDK0vV90UvZg+dXhR9oaS15M5/e6fPOVa9neuCVkpCiD0u5fjIOYcrfX6WQclx2Ks7
+ xVCtJ8VkmKfABdjBp+Q+eQLOFicoEKc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-663-TPrBc5E7NeCeFWyxtn3hBg-1; Fri, 22 Sep 2023 08:08:28 -0400
+X-MC-Unique: TPrBc5E7NeCeFWyxtn3hBg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9adc78b386cso145484266b.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 05:08:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695388370; x=1695993170;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MUOIKBUB4c3+iZVb9Uxr+PtbJJdynO5hs/C8XB6GJSU=;
- b=H17hkRTxvzxs1chhKQ84Rq10WjdGF+24pCOK+XJkfZFCIKI49mhig9xnzJyaVtNaxX
- jCbqxyzT31Xn5KhvOCX5rO3X9hzxi315OUp9sM0ktN1rAnWxPpVRF4dv9D64lquPNnsG
- /2E8O4BfBowZhBwF3Qi0wLwa7FVIclmuTHPoyxbnu+bhj6YAOQzJPf0w5dGk3OHjXGIC
- dKt7CwXCgeftF2iiw+KVtwUauK5Pam6CE8kMlJCIiXRn+EF1F7fv1QDX32Vw6us7sE5A
- AVxSUo9sIlVY7I7ccL4xIRWz/ArBUu0kZ7/TNwnhP2RALzTQIZKl3Okpd9CO+Wm3HFr9
- 25gA==
-X-Gm-Message-State: AOJu0YzBXPxIyfChZnCE2TIVYIRwu4SlqVavFDthWG9TRyZqtj7soGrE
- /Xj16QP4nyt/Ain7ms40NjeR0C/FLt09rLoNNpXpzA==
-X-Google-Smtp-Source: AGHT+IGS61Glo0Vt2OIHy4uDhT5RDzZISHfi44vZTIAyHBYL43m59ucA1vTjIOKX9KqS5yyO7qhONQ==
-X-Received: by 2002:a05:600c:4f50:b0:405:3d83:2b76 with SMTP id
- m16-20020a05600c4f5000b004053d832b76mr1824897wmq.13.1695388370491; 
- Fri, 22 Sep 2023 06:12:50 -0700 (PDT)
-Received: from [192.168.211.175] ([77.205.47.127])
+ d=1e100.net; s=20230601; t=1695384507; x=1695989307;
+ h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=uuWiaManMtBBSMjg6XtohxhxpYJP4xrlEQR3HAEe07M=;
+ b=Ghm4gzkCmF73Nti45+imYXU7YVrNkRJ0grCYlwruhJyDN0DUuIKrMjXsrMnkSPcZCx
+ +pNX+Bk2qjW0p8knuTUGkddnlQJ1oPaSrm2CMZrndZi7gnk1MWIq+849Duf0GYLTn6zC
+ SBPd9NwBoy2MEM82dArOAi8rYm85Ms2AG8eodrb1/tSArLUwiuCiq4TRu5K1cMsnwHcx
+ j7zSm3lNR6fRokMjQ8ovf4RPfMUQiMgb2DpwWgco9MuBQWXOINd/tipmcrGB6gV7CN55
+ oXLcJ3u3kBahPERusq/CrGCIkh32L3pBulwam+ndOMhtCLz6JycNB5glqByKbibFZg2h
+ 1R6g==
+X-Gm-Message-State: AOJu0YzYH4w1+gg9Swgexkn8MF7jzPIY6cIQMhKNhZ3F3mQPSbcdxn8a
+ YnQ5ZGs5v7+AKF37Hb6LfZG2Yv6OCIaanxhhq60CyptR5HjUrgQq2uDCOkW2X0+fcTNR/br3hCj
+ rFEnYlF5TUkP2mgc=
+X-Received: by 2002:a17:906:314e:b0:9a2:1b05:24c6 with SMTP id
+ e14-20020a170906314e00b009a21b0524c6mr6801200eje.22.1695384507396; 
+ Fri, 22 Sep 2023 05:08:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMay0AeBO+YDYuSaifgli8IjBzsTkAzYMsJiG1UQRF90XKttOWMfVT6n9RpEu83wkriHpdIA==
+X-Received: by 2002:a17:906:314e:b0:9a2:1b05:24c6 with SMTP id
+ e14-20020a170906314e00b009a21b0524c6mr6801189eje.22.1695384507120; 
+ Fri, 22 Sep 2023 05:08:27 -0700 (PDT)
+Received: from fedora (g2.ign.cz. [91.219.240.8])
  by smtp.gmail.com with ESMTPSA id
- 23-20020a05600c229700b00403b63e87f2sm4657582wmf.32.2023.09.22.06.12.46
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Sep 2023 06:12:50 -0700 (PDT)
-Message-ID: <6875fff1-fda9-5bab-2356-406193c2bb5a@linaro.org>
-Date: Fri, 22 Sep 2023 13:17:41 +0200
+ j8-20020a170906050800b009934855d8f1sm2591418eja.34.2023.09.22.05.08.24
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Sep 2023 05:08:25 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>
+Subject: Re: [PATCH 0/2] i386: Fix Hyper-V Gen1 guests stuck on boot with
+ 'hv-passthrough'
+In-Reply-To: <87mszgmd9j.fsf@redhat.com>
+References: <20230612084201.294248-1-vkuznets@redhat.com>
+ <875y79paq6.fsf@redhat.com> <87mszgmd9j.fsf@redhat.com>
+Date: Fri, 22 Sep 2023 14:08:24 +0200
+Message-ID: <87ediqcsw7.fsf@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 8/9] audio: Make AUD_register_card fallible and require
- audiodev=
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: mkletzan@redhat.com
-References: <20230922094459.265509-1-pbonzini@redhat.com>
- <20230922094459.265509-9-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230922094459.265509-9-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=vkuznets@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,35 +97,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/9/23 11:44, Paolo Bonzini wrote:
-> From: Martin Kletzander <mkletzan@redhat.com>
-> 
-> Now that all callers support error reporting with errp and all machine-default
-> devices use an explicit audiodev, this can be changed.  To make the detection
-> easier make AUD_register_card() return false on error.
-> 
-> Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   audio/audio.c        | 7 +++++--
->   audio/audio.h        | 2 +-
->   hw/arm/omap2.c       | 2 +-
->   hw/audio/ac97.c      | 6 +++++-
->   hw/audio/adlib.c     | 6 ++++--
->   hw/audio/cs4231a.c   | 6 ++++--
->   hw/audio/es1370.c    | 5 ++++-
->   hw/audio/gus.c       | 6 ++++--
->   hw/audio/hda-codec.c | 5 ++++-
->   hw/audio/lm4549.c    | 8 +++++---
->   hw/audio/pcspk.c     | 4 +---
->   hw/audio/sb16.c      | 6 ++++--
->   hw/audio/via-ac97.c  | 6 ++++--
->   hw/audio/wm8750.c    | 5 ++++-
->   hw/display/xlnx_dp.c | 6 ++++--
->   hw/input/tsc210x.c   | 2 +-
->   hw/usb/dev-audio.c   | 5 ++++-
->   17 files changed, 59 insertions(+), 28 deletions(-)
+Vitaly Kuznetsov <vkuznets@redhat.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Vitaly Kuznetsov <vkuznets@redhat.com> writes:
+>
+>> Vitaly Kuznetsov <vkuznets@redhat.com> writes:
+>>
+>>> Hyper-V Gen1 guests are getting stuck on boot when 'hv-passthrough' is
+>>> used. While 'hv-passthrough' is a debug only feature, this significantly
+>>> limit its usefullness. While debugging the problem, I found that there are
+>>> two loosely connected issues:
+>>> - 'hv-passthrough' enables 'hv-syndbg' and this is undesired.
+>>> - 'hv-syndbg's support by KVM is detected incorrectly when !CONFIG_SYNDBG.
+>>>
+>>> Fix both issues; exclude 'hv-syndbg' from 'hv-passthrough' and don't allow
+>>> to turn on 'hv-syndbg' for !CONFIG_SYNDBG builds. 
+>>>
+>>> Vitaly Kuznetsov (2):
+>>>   i386: Fix conditional CONFIG_SYNDBG enablement
+>>>   i386: Exclude 'hv-syndbg' from 'hv-passthrough'
+>>>
+>>>  docs/system/i386/hyperv.rst | 13 +++++++++----
+>>>  target/i386/cpu.c           |  2 ++
+>>>  target/i386/kvm/kvm.c       | 18 ++++++++++++------
+>>>  3 files changed, 23 insertions(+), 10 deletions(-)
+>
+> Monthly ping)
+
+Turns out these patches were never merged and honestly I forgot about
+them myself. Will resend shortly.
+
+-- 
+Vitaly
 
 
