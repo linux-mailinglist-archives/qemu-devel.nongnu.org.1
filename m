@@ -2,75 +2,161 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480227ABB01
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 23:21:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5E1B7ABBD3
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 00:34:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjnZy-0001bG-Mu; Fri, 22 Sep 2023 17:20:50 -0400
+	id 1qjoiG-0002cY-H1; Fri, 22 Sep 2023 18:33:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <crauer@google.com>) id 1qjnZw-0001aZ-6R
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:20:48 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <crauer@google.com>) id 1qjnZt-0000rY-JH
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:20:47 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-690d9cda925so2579698b3a.3
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 14:20:44 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <elena.ufimtseva@oracle.com>)
+ id 1qjoiE-0002cP-53
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 18:33:26 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <elena.ufimtseva@oracle.com>)
+ id 1qjoiC-0006w2-3U
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 18:33:25 -0400
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38MLXw1e004334; Fri, 22 Sep 2023 22:33:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2023-03-30;
+ bh=tuLj9dBdz30EbOl6TI12xUMjLrRrGSrOSOWAT/Mcm1g=;
+ b=BUAgRJJggKTGCprWxaPYJsb3A3C9Bzh2ldxhcGqtxkA1EaaqPojOUxSp38XcFrKCbNq3
+ 4WT7+mXxmyxixRAxqNN7ySCO1F7wo8wIEJbFbiArmjiW/k2DDIEDF7DYwAUeGYaDV4yw
+ ljKmFH434Mzbp1viFvJM136cCqcaztnzq5eM7bebqQkQT9P7wJweSmhtw4o52Rnw3nGD
+ sbMBw/IjHyjgexYnMd/e8OeCTv3XPcBzkgrZifZOpV2ifOrf6OYD+UqgLzdiag/pIZK9
+ rMX2Q0beXNimMtaUU+nQ/ztaBnYQzG58Qb2cALcXEt2HpkQdkx5lad90mghC81+xM4/e 4g== 
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
+ (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t8tswk0xs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 22 Sep 2023 22:33:22 +0000
+Received: from pps.filterd
+ (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 38MLI4P3007773; Fri, 22 Sep 2023 22:33:21 GMT
+Received: from nam11-co1-obe.outbound.protection.outlook.com
+ (mail-co1nam11lp2175.outbound.protection.outlook.com [104.47.56.175])
+ by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3t8uhdd9un-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 22 Sep 2023 22:33:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Qqg0adDUumtksh7Z05CUos63C7mFnREQAqu8+9Ia9CXSHdNrodkWLsIFbPMp44sLtXfP6Hem/NH0dKEVITFFgT/Hg88VrzTCQYf5mqOxyVW6QsYmesd43HIba5WLGswq4+OPrsCAPvyp6rux6EhEY3RpClLWH+gc+6lELGAVJz+cAuGlkk4Kk6kjNk+HmTCCfIVOqManYtTP3wIqFs8SW3GgERQuu4cpuG/e8Kj38zeLB+pbhQeIK8qQqoLn8BExtNq7KLEKogyD6gzMh87+oOqgFMbqV/ntgWv8PKYzeAbIShnMQ77TJfmFVQPfT0XLXAxwEIRrTYOhiWK7D348WA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tuLj9dBdz30EbOl6TI12xUMjLrRrGSrOSOWAT/Mcm1g=;
+ b=c33jpDUWe5d5yU28JM51898NlVeXtFLmF4AinAmumYr2DbrrFIt15OjGwzGcPAb6M/GnkYATiNmK4EWa25sOGr9l/6gAGNhtF1ifiagNY7redVsS8dcL/rD+PV+k8iI44mR/Fr/ovcEChCe7iT5d80zfbBfuWcPhjzB1QMsrTRL13TkWyinI5YTSMNCaalR0QepOakwD2iypg43+OHTSXdXj4Ux52WTz6lssWUk9f9MrP5tGG2TyFIKeRalxx9DHn0ewIyZM17+r3/yLDPA4VHK/pCmctbE2drmDSXE82avGBa7FJSi1iUILrlv94Hl5t7Irrqnr42eye3gwYdQljw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1695417643; x=1696022443; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=8tTiA2/3rErjRJAJbqEVAZaDi9MtkjTW8NXaO0a17vw=;
- b=uXLFrMopvIBipXlHTxcQM++90rfRwbVjinjS3kiZjXGVcXngu3W/pJGRmYmydY79SH
- JMv01s9eI9TDi64WZANdX2x10eTBIZ01guGxjjCw7R26bAXqqkAnW0fFJ8GdgQMMT1AO
- +GqmPj/04FGv4tsJqqIcwxp+QGQkeFFPmNslBu4A9UzvdtGguXAPJNvavOFDIwZghYy0
- KpbIfA9STKJXmeav601W4i5hJZ6BM1j8E6rc8PIda4vFkKAhDtTdk0G35vFkIvXbkoVY
- aGw2jrXpnM8oYqHAv44g4U176hGYFRKYKL1BqNzvvEsVHhOApYFKS8xPCr2nbPBEyTij
- zJmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695417643; x=1696022443;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=8tTiA2/3rErjRJAJbqEVAZaDi9MtkjTW8NXaO0a17vw=;
- b=BatpC09G8OluCuFNgI+Brw0gGYpJggbLjGxADzjWnJc3WVP4LRkM3n2DVJZ5qwq1lr
- WgNfWjYHwS5fdv29k2kXnIoRlgmXmjj/PTXSM5N6Ejfpq283Gi9HkPackt3JHcOdQ6e3
- uW6WSko5UuJarqhooqW0FXlApeSSpcVJKyudNhWV0lCK1HEM5KK+A1fbZYt9uCXnp0IE
- KqlxN8r+M8PH2t3tmuUp8UHU9rc1XPsVCm8+JdY87DUMG6DGqwzyTygAOzhJsvYTUXVp
- E4ro+M/la8Bd7WRODorzZ2T9STBW2JmHOiWQ7PngCWakgzQoBMSgy1lxntOo4TsITUfT
- t7fw==
-X-Gm-Message-State: AOJu0YxXey5cV4PO91vuYQn7ePL6PgZMeE5thN6fynm4xRDFnjM46US5
- +DlA8tkVFO9+YtmKwMG0ObxNpGBRaf7ITxWNSxLQqA==
-X-Google-Smtp-Source: AGHT+IEFFwSoD37AFO1oozVcau/BbZ/A8RVnYgQDwi0XiRaSeP0ztMHZ5X2AukC7V9h39ac4j8t2hOQOQqCosOI4smM=
-X-Received: by 2002:a05:6a21:3d87:b0:154:e7e6:85c8 with SMTP id
- bj7-20020a056a213d8700b00154e7e685c8mr768214pzc.31.1695417643066; Fri, 22 Sep
- 2023 14:20:43 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tuLj9dBdz30EbOl6TI12xUMjLrRrGSrOSOWAT/Mcm1g=;
+ b=bJWfpjA0uiOdp5GNY46TTqs/oDoXP1sKPqUJyt6xSFoctVb5ImY80O4Ut3+pGiyiUCOS+CVRO2gDSsS6jyuxpNugtOVunZyQsI4lBm8GlpH4BMPj78qmUeuKb1ST4OP73FdgKOfWBKnvgw4HKlmLlsXLDReyaMuhROh82nmJnwY=
+Received: from BYAPR10MB2869.namprd10.prod.outlook.com (2603:10b6:a03:85::17)
+ by PH8PR10MB6313.namprd10.prod.outlook.com (2603:10b6:510:1cc::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Fri, 22 Sep
+ 2023 22:33:19 +0000
+Received: from BYAPR10MB2869.namprd10.prod.outlook.com
+ ([fe80::427f:78d:bdc0:3798]) by BYAPR10MB2869.namprd10.prod.outlook.com
+ ([fe80::427f:78d:bdc0:3798%4]) with mapi id 15.20.6813.024; Fri, 22 Sep 2023
+ 22:33:19 +0000
+Date: Fri, 22 Sep 2023 15:33:10 -0700
+From: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [RFC PATCH 1/3] migration/multifd: Move channels_ready semaphore
+Message-ID: <o66r3yvserkbkfxczdweqpr3vzo2fj5jix2dv4hs22g32alqqh@lwk6qjp3fi74>
+References: <20230922145319.27380-1-farosas@suse.de>
+ <20230922145319.27380-2-farosas@suse.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230922145319.27380-2-farosas@suse.de>
+X-ClientProxiedBy: BYAPR02CA0029.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::42) To BYAPR10MB2869.namprd10.prod.outlook.com
+ (2603:10b6:a03:85::17)
 MIME-Version: 1.0
-References: <20230922181411.2697135-1-crauer@google.com>
- <CAGcCb128kdfZTTBB808iGONtdM9cnJF5CGxXhd+aS+eg2U=3Gg@mail.gmail.com>
-In-Reply-To: <CAGcCb128kdfZTTBB808iGONtdM9cnJF5CGxXhd+aS+eg2U=3Gg@mail.gmail.com>
-From: Chris Rauer <crauer@google.com>
-Date: Fri, 22 Sep 2023 14:20:31 -0700
-Message-ID: <CAFtMCFXaS-TTPXbBiVWVxdgK9zFUVj1Ft119p5Hzi_wj+=bSKw@mail.gmail.com>
-Subject: Re: [PATCH] hw/timer/npcm7xx_timer: Prevent timer from counting down
- past zero
-To: Hao Wu <wuhaotsh@google.com>
-Cc: peter.maydell@linaro.org, kfting@nuvoton.com, qemu-arm@nongnu.org, 
- qemu-devel@nongnu.org
-Content-Type: multipart/alternative; boundary="0000000000005d0fb80605f92e17"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=crauer@google.com; helo=mail-pf1-x430.google.com
-X-Spam_score_int: -175
-X-Spam_score: -17.6
-X-Spam_bar: -----------------
-X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=unavailable autolearn_force=no
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR10MB2869:EE_|PH8PR10MB6313:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0add092f-56aa-4a6a-bdb3-08dbbbbbebad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: +WSUf6cv8yocl5vj9IY1pGC4x6Lpnhvkdf1GgKtMBCob2oHL2Xc/oqwvowa3dRnjtYYfS2z80Drs3ULlRFQ7dHX1dejOpIif/xr4IwsLMYb0dLoX4mQJh06B6nPB44/kFg8r9+Et2nylPBEbpsjx7zFTSQd1rxa4dXcm1sYyxyYfXUYO/0nKg0opyqQaomv1Kxw1jBu/wLR53ajruyAkQSRa7sSvGmWetbAUOfxmxf023yYo4gE+pNOxfXFXlkiwRQrOOmpsxQmz5Ag8exuE7FKDBnaK9opslTccYoZObjp4WpxTdREpLVqsv8on3mZh8SNZ7NbAdE+t3YOCrQ5KCeo+UOWA7XwQWPaF6b0aW/2xlHG87mvmTm163sTFMSVBbAmYlID2+iaJyyrH1ZY7psIigwLGTQ4IIIHy1N9kKRL1X1U10eTb6kVaXayOlQk4LjafaLSYWPUermD20u3m7vMcLDtYG4uj1CtxwBhtSCRbYq29vdGUDuX0c0aWm7a9vTYjFyy/yKPU50Q4CNwWW0l7ztqgebhUAJCR6H9C+W0ThmBPGajBvkCFlpQxPgHJ
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BYAPR10MB2869.namprd10.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(7916004)(366004)(376002)(346002)(136003)(39860400002)(396003)(186009)(1800799009)(451199024)(33716001)(6512007)(9686003)(316002)(26005)(6916009)(38100700002)(66946007)(54906003)(66556008)(66476007)(41300700001)(478600001)(6506007)(6486002)(6666004)(4326008)(2906002)(83380400001)(86362001)(8676002)(8936002)(44832011)(5660300002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FokFuE0KoqU4bTy6HOrnjbZCJkawNZ8O53CnKc6wkjc9fl597y4EPY31id0X?=
+ =?us-ascii?Q?5d1uBqaTbn612vJgotfqGvIGeJPERzuc/UjIYWRbitCkqyLDJDqzkqfM7kRK?=
+ =?us-ascii?Q?GYDt5j+pvI1+DZLbOOoatEx4UPdFab8IFjpSVYGDrjjUgo1kIAzwujYlfwXo?=
+ =?us-ascii?Q?jbBU1u/++6iA7IdS0TznFErOv1V2f6TwwXUrZXflT6+LJRduQMcmwngkSrtj?=
+ =?us-ascii?Q?Ni9TdoDRyC9s9MoJcoxTtHcWAiMIDBwY62qsu74Aw90zGX0zGyl/RVzdPzCn?=
+ =?us-ascii?Q?g+ksMMK94VLbI4QAQU8L57AV1i7mnD4MKVUTSKmpRKslO7Dd//+lR08kV4rQ?=
+ =?us-ascii?Q?p4apW6P9BkfEU+8NrhjD+BFlBurvVDfrRWYO1J5Ey08PPrBpoSj26FPqXYWh?=
+ =?us-ascii?Q?QuIbE9TrSXfzC+IP01BFTOD9UxZ3nRXGdakiYRXYdFluy/PRdIAoMMUSE2cY?=
+ =?us-ascii?Q?ok2rV+T4Jo0dmbfqKyrhy8xPP/Zccg8bZbp9c78+/GtPD2YtJ/cHh2nU50FK?=
+ =?us-ascii?Q?iebvLjcSVRfHOITwFUzHIpJhNZHjAKW9030qEWyoSkZRPt79VpAKzyMdh5Nt?=
+ =?us-ascii?Q?SqHqbKRPPZpKXH4PijHdFqfaAiyorSLvkOniXAb2JQVKlMyvg0fn57Uslssx?=
+ =?us-ascii?Q?GEGnN2J8s6hgmPDydy2gSauSqwzCqGX1ihVWpWB4KxhyqyM3UfavWfX7jlYd?=
+ =?us-ascii?Q?+ikvKXBovaXJjS08Ll0ZEWwnX5wQBBI56XTEeoDOaPLaGZHGHuhfHYYmv0ff?=
+ =?us-ascii?Q?JhC0ytK+BFuM+2l1KzB+KiLjQs2j9lriSzuZi2Akr4pyWLo3z3dx4QgJoSD9?=
+ =?us-ascii?Q?+hyPHhbGx4FheK0cmDDY4An7z/E4CZ8XybmL+IV1k4hGBlAV1PPEPrMMjJcC?=
+ =?us-ascii?Q?CODhcmx34W7j/z3JdWI+MsV8QN/0hh/6wHsJodHGs/1d0Eg/d4N5AbHsWAK4?=
+ =?us-ascii?Q?wOA+VEFIMd53rFN2m3XwZ2zejl0xyhhQ6PGf48VqkDi5QWMgfwiG97zeo4bX?=
+ =?us-ascii?Q?vrU5iU8A5rChyk907eOSrEc07nq68/Ub36LRk2/kqBC/rqfu9rem+dsyagm5?=
+ =?us-ascii?Q?cU0jPe7Yl3SqTlvObFu4f4RPNbzcHJ1xPTVitNE4fp+Ih5NUY+l6Cw7Kn7+4?=
+ =?us-ascii?Q?W0WOeyehJrCk/gskWd4+AX+yyH1Nca3ZgN5doehhg5Qhx9fLrCj3iyKo6Lzk?=
+ =?us-ascii?Q?vL5OE24dPjXPVxYK0o2+fX5ZVGLzk/b2vCjvMQZZAT0XpWLqPmEq22w+u7R4?=
+ =?us-ascii?Q?HHUJBL+AVwX+3FLxtud32Qp9sSPHeixghtcRbxnf47xUkUPomdzoyjqkHmba?=
+ =?us-ascii?Q?RjZAFKyGHXJBQpvd/Jy4ikPR2yFo8g8VYxp2qwjU7iw5AvtZ7dHnXY/ZsJ0E?=
+ =?us-ascii?Q?15gyGf7a6taG8wQAacKz3zSBZqRH1IH4FGgDrAnMEs9D7atFnwpbErvvMeDW?=
+ =?us-ascii?Q?QK9/YIKPrz5/RRkEQh2oWs4hnfKu1dLjOXgMOWPNTjmsRFzKYidSbGyQ7J5O?=
+ =?us-ascii?Q?oGEcSEuYUQdIIu6PtDv1YjV+3gVYzhUlSOXJlT52tMmpggt5sSVhi2F9pM7o?=
+ =?us-ascii?Q?68+9BmhkpZuwfHmN0M4xsziQBAC6zN7xslSbQrG6VG4xrZP/Bx9IlbDmSmrH?=
+ =?us-ascii?Q?NQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: jeDCzLo7FhiyFD/EgI6RFF5ubQrfkNdy6v6b1hLBrMjNy+NpyDGPofmGg2JKi3hPxNi0SHpwZV2ov5h1Q1qkC0Kvn5r2334CUPIJnuzO4rtlyGi3wGuZBcwjOLXxXQpw/4/P1JxucFh21rm2AVAt8sNlpj4blo2XhqmtCZlmvnpD6CsHvGcFjb05qJCuVbEa0EtpZce+DjOAq9myKS9kFPM59TQt407gBMaKbz+zA11S72jFCv4dMPp7J9q0BXVBIBo+dx8mrjiGql+xKgiZwVXuFYgeb3WBl4RnBC2uPotprKhtKKeCisQYBGrOebSP8yGQtg05U+lr1v6cF0GIh3QLEorrPBtkrHgJkC9hHhKJ8L0OzUzoKTogj1oSa+rnTwaJjmCXhRSLBbCKudU50+sKE1hzlYthl3sJUrniq9EtM37cgGnVhZViobfE5peqOTpRU5inJ7FpTyCvtQuzpkrf3WN0Xvon8tkXfYQNrK6kNmu8n8zA/IPaR6yrR0b8MRbLu6x2skJnXbwRpshS7LuldcFSxxnEVUYEb2cdQ2i0nLAiUp8ZZ1rnEHHhuIEJHF6oWGqx7DeFf2CyKyFcuNhdkcUBc7XGvxmNRcwFQQBKfaeihp0YCiY6LGrb6BShnX4pzip+CZqb+9G6PpRf9CPaaeuLvePL6LzdPGqKn5SiltSAEdmcWLBerDMU5GgIEjORDjyuXN1S0eaac/C6xAOyGEDVhrXaPgE4iwku8AgajXSMff3GJdtlzjusSXWBu6iv636uzs0YTTyHVZt5P3tonkgFr4E/8rZKMi+tR4Q=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0add092f-56aa-4a6a-bdb3-08dbbbbbebad
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR10MB2869.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2023 22:33:19.3809 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: RSOYGLQiD5HCSchJ78OjvfgFwfC101gKbDOirDeWR5OZIXTWcM8V5OiyfuG7mtDeBTGIVDWGBJjqkHHNMuD9KpeHNNlNA1R9qG51j0Z5Rz4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6313
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-22_19,2023-09-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
+ malwarescore=0 mlxscore=0
+ bulkscore=0 mlxlogscore=768 phishscore=0 suspectscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309220193
+X-Proofpoint-GUID: eExav6rTe9TBdsGwp0yUCBhuvwTndYYU
+X-Proofpoint-ORIG-GUID: eExav6rTe9TBdsGwp0yUCBhuvwTndYYU
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=elena.ufimtseva@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,112 +172,105 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---0000000000005d0fb80605f92e17
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-No.  This patch does not address that issue and is not related.  I was able
-to reproduce it about 2/1000 iterations with and without this patch.  I
-will look into that issue separately.
-
--Chris
-
-
-On Fri, Sep 22, 2023 at 11:24=E2=80=AFAM Hao Wu <wuhaotsh@google.com> wrote=
-:
-
-> Is this related to this error?
+On Fri, Sep 22, 2023 at 11:53:17AM -0300, Fabiano Rosas wrote:
+> Commit d2026ee117 ("multifd: Fix the number of channels ready") moved
+> the "post" of channels_ready to the start of the multifd_send_thread()
+> loop and added a missing "wait" at multifd_send_sync_main(). While it
+> does work, the placement of the wait goes against what the rest of the
+> code does.
+> 
+> The sequence at multifd_send_thread() is:
+> 
+>     qemu_sem_post(&multifd_send_state->channels_ready);
+>     qemu_sem_wait(&p->sem);
+>     <work>
+>     if (flags & MULTIFD_FLAG_SYNC) {
+>         qemu_sem_post(&p->sem_sync);
+>     }
+> 
+> Which means that the sending thread makes itself available
+> (channels_ready) and waits for more work (sem). So the sequence in the
+> migration thread should be to check if any channel is available
+> (channels_ready), give it some work and set it off (sem):
+> 
+>     qemu_sem_wait(&multifd_send_state->channels_ready);
+>     <enqueue work>
+>     qemu_sem_post(&p->sem);
+>     if (flags & MULTIFD_FLAG_SYNC) {
+>         qemu_sem_wait(&p->sem_sync);
+>     }
+> 
+> The reason there's no deadlock today is that the migration thread
+> enqueues the SYNC packet right before the wait on channels_ready and
+> we end up taking advantage of the out-of-order post to sem:
+> 
+>         ...
+>         qemu_sem_post(&p->sem);
+>     }
+>     for (i = 0; i < migrate_multifd_channels(); i++) {
+>         MultiFDSendParams *p = &multifd_send_state->params[i];
+> 
+>         qemu_sem_wait(&multifd_send_state->channels_ready);
+>         trace_multifd_send_sync_main_wait(p->id);
+>         qemu_sem_wait(&p->sem_sync);
+> 	...
+> 
+> Move the channels_ready wait before the sem post to keep the sequence
+> consistent. Also fix the error path to post to channels_ready and
+> sem_sync in the correct order.
 >
-> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html
->
-> On Fri, Sep 22, 2023 at 11:14=E2=80=AFAM Chris Rauer <crauer@google.com> =
-wrote:
->
->> The counter register is only 24-bits and counts down.  If the timer is
->> running but the qtimer to reset it hasn't fired off yet, there is a chan=
-ce
->> the regster read can return an invalid result.
->>
->> Signed-off-by: Chris Rauer <crauer@google.com>
->> ---
->>  hw/timer/npcm7xx_timer.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c
->> index 32f5e021f8..a8bd93aeb2 100644
->> --- a/hw/timer/npcm7xx_timer.c
->> +++ b/hw/timer/npcm7xx_timer.c
->> @@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTime=
-r
->> *t, uint32_t count)
->>  /* Convert a time interval in nanoseconds to a timer cycle count. */
->>  static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns)
->>  {
->> +    if (ns < 0) {
->> +        return 0;
->> +    }
->>      return clock_ns_to_ticks(t->ctrl->clock, ns) /
->>          npcm7xx_tcsr_prescaler(t->tcsr);
->>  }
->> --
->> 2.42.0.515.g380fc7ccd1-goog
->>
->>
 
---0000000000005d0fb80605f92e17
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you Fabiano,
 
-<div dir=3D"ltr">No.=C2=A0 This patch does not address that issue and is no=
-t related.=C2=A0 I was able to reproduce it about=C2=A02/1000 iterations wi=
-th and without this patch.=C2=A0 I will look into that issue separately.<di=
-v><br></div><div>-Chris<br><div><br></div></div></div><br><div class=3D"gma=
-il_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 22, 2023 at 11:=
-24=E2=80=AFAM Hao Wu &lt;<a href=3D"mailto:wuhaotsh@google.com">wuhaotsh@go=
-ogle.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
-"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
-ft:1ex"><div dir=3D"ltr">Is this related to this error?<br><br><a href=3D"h=
-ttps://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html" target=
-=3D"_blank">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.=
-html</a><br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"=
-gmail_attr">On Fri, Sep 22, 2023 at 11:14=E2=80=AFAM Chris Rauer &lt;<a hre=
-f=3D"mailto:crauer@google.com" target=3D"_blank">crauer@google.com</a>&gt; =
-wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
-px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">The count=
-er register is only 24-bits and counts down.=C2=A0 If the timer is<br>
-running but the qtimer to reset it hasn&#39;t fired off yet, there is a cha=
-nce<br>
-the regster read can return an invalid result.<br>
-<br>
-Signed-off-by: Chris Rauer &lt;<a href=3D"mailto:crauer@google.com" target=
-=3D"_blank">crauer@google.com</a>&gt;<br>
----<br>
-=C2=A0hw/timer/npcm7xx_timer.c | 3 +++<br>
-=C2=A01 file changed, 3 insertions(+)<br>
-<br>
-diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c<br>
-index 32f5e021f8..a8bd93aeb2 100644<br>
---- a/hw/timer/npcm7xx_timer.c<br>
-+++ b/hw/timer/npcm7xx_timer.c<br>
-@@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTimer *=
-t, uint32_t count)<br>
-=C2=A0/* Convert a time interval in nanoseconds to a timer cycle count. */<=
-br>
-=C2=A0static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns=
-)<br>
-=C2=A0{<br>
-+=C2=A0 =C2=A0 if (ns &lt; 0) {<br>
-+=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
-+=C2=A0 =C2=A0 }<br>
-=C2=A0 =C2=A0 =C2=A0return clock_ns_to_ticks(t-&gt;ctrl-&gt;clock, ns) /<br=
->
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0npcm7xx_tcsr_prescaler(t-&gt;tcsr);<br>
-=C2=A0}<br>
--- <br>
-2.42.0.515.g380fc7ccd1-goog<br>
-<br>
-</blockquote></div>
-</blockquote></div>
+Your solution is more complete. I also had in mind getting rid of
+sem_sync.
 
---0000000000005d0fb80605f92e17--
+With your second patch, this one could be merged with it?
+
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> ---
+>  migration/multifd.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/migration/multifd.c b/migration/multifd.c
+> index a7c7a947e3..d626740f2f 100644
+> --- a/migration/multifd.c
+> +++ b/migration/multifd.c
+> @@ -618,6 +618,7 @@ int multifd_send_sync_main(QEMUFile *f)
+>  
+>          trace_multifd_send_sync_main_signal(p->id);
+>  
+> +        qemu_sem_wait(&multifd_send_state->channels_ready);
+>          qemu_mutex_lock(&p->mutex);
+>  
+>          if (p->quit) {
+> @@ -635,7 +636,6 @@ int multifd_send_sync_main(QEMUFile *f)
+>      for (i = 0; i < migrate_multifd_channels(); i++) {
+>          MultiFDSendParams *p = &multifd_send_state->params[i];
+>  
+> -        qemu_sem_wait(&multifd_send_state->channels_ready);
+>          trace_multifd_send_sync_main_wait(p->id);
+>          qemu_sem_wait(&p->sem_sync);
+>  
+> @@ -763,8 +763,8 @@ out:
+>       * who pay attention to me.
+>       */
+>      if (ret != 0) {
+> -        qemu_sem_post(&p->sem_sync);
+>          qemu_sem_post(&multifd_send_state->channels_ready);
+> +        qemu_sem_post(&p->sem_sync);
+
+Can this thread in this error case be woken up again between
+these two qemu_sem_posts?
+I see in other places p->quit is set to true before it.
+Or maybe it should one more patch to make these consistent 
+as well.
+
+Elena U.
+>      }
+>  
+>      qemu_mutex_lock(&p->mutex);
+> -- 
+> 2.35.3
+> 
 
