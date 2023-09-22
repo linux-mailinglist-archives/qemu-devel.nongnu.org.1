@@ -2,88 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF987AAF64
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE7507AAF82
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:30:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjdJs-0003bL-1e; Fri, 22 Sep 2023 06:23:32 -0400
+	id 1qjdPZ-0005h2-QF; Fri, 22 Sep 2023 06:29:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjdJp-0003aq-UO
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:23:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjdJm-0006Go-J7
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:23:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695378205;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MOpPYxL42GKs0jJm+ztk/5+3c6vMTjxmqEKKWtoWqqE=;
- b=Pjos0H91EkPOtEOPzcUJuK3CUMfaBnJnIbh7ScATfAz9C7gunNNOdh7X6CguF7e8bhXH/k
- dTY3kYRrt+WViqm2FS+DzFatJMIDuUSnNCFTSX9epoyoai4RGhmS/CGi5fKGi8ltS9ji4X
- fVF76NmypZZKu9kyYv/MwBBX9o/xMr8=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-Wo56DK6hNUCsRN5HdWKJdg-1; Fri, 22 Sep 2023 06:23:24 -0400
-X-MC-Unique: Wo56DK6hNUCsRN5HdWKJdg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9ae12311183so156469366b.2
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 03:23:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjdPX-0005gD-BA
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:29:23 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjdPV-0007yo-CK
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:29:23 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-5033918c09eso3170826e87.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 03:29:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695378559; x=1695983359; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=dtqr/bwW/e0727PreleJLDQ/WfEhK5yG5v4iGEkskj8=;
+ b=lNVIOLm1ziqaZ+aZhPszE68qEjXVNF4wbXn+fPI8gbKa9c4mh/A1eXx+B3U1FY1HVz
+ onGFk8P2m7ZV+n+MwHuFxl1Ur1/JZ1PwlmMuIEfZ3VLgR4aAcvpDtU+iCIRT6vLPyaTy
+ 53Ic/4iVosgHDTwbM+Z5PzFIcflmdzekT/fFdPadtOm4ONVmgf5AeHIB3JZFizOz/vZl
+ bqwrFzQkyuQqRB6R8EXZ/tp7KybTingJa5DpMZbwr5oigOAh0ZiZlof+ggIE3PRu6nkW
+ YK7lNGYah7pe7iyiif9nTRquPNFjhPXT+SlPquRISj42syYjI0hvMSaotKw/P7d23Bo0
+ +SDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695378203; x=1695983003;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1695378559; x=1695983359;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=MOpPYxL42GKs0jJm+ztk/5+3c6vMTjxmqEKKWtoWqqE=;
- b=xRw9Ie2HGTrurO7HfECpp+W7gsojlxKrdADSbOSf7WEFjeXrfzmQS5CA8F/PZQBUwg
- O0Gski9T80+L8Vg6+VWNplaO7tcZwPBXM35+EGE36RMUGjAxNGdqqKdZ2s3X+6SqGsn5
- 06civtVbL+AtGd4mFC3GBcVU9NCaq08YSb41sIoui+Y+ZB2BELGs7Qk5erhn4TpMDue8
- ZPXyEESE3on4G7bC2+ft1xvqdd4idin/zMHGrlPlMdiKcv20kcURBIl6+evSXQNfdyjD
- nKqtw8bbLpfnt0vpEnOzsRgQVzI/flQ/5cdamR31ckTQN/nTDLattTKCK0eJz7DRkio3
- oAmw==
-X-Gm-Message-State: AOJu0YwvQVj50m3y7j+1cuiTqBS+rVMBZunlDcyr3gFfbHkS6T7Q8pVn
- BtXEwY3lcHPW9vd/mbJKv+uWR1N0DGVVfEo5MmDJdFvHcFSzLLG9CM1ADQ/6KZfmrD88H6XGAo/
- jy3HgG/RdBLR6KPw=
-X-Received: by 2002:a17:906:159:b0:9a1:f21e:cdff with SMTP id
- 25-20020a170906015900b009a1f21ecdffmr8216736ejh.23.1695378202676; 
- Fri, 22 Sep 2023 03:23:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG0Na5qYZdgcyXXYnEbBJZ8Xsqj172ijeEG71mN3id7uiA6+RyRP76+T6DGqqJzns6tlKXy+g==
-X-Received: by 2002:a17:906:159:b0:9a1:f21e:cdff with SMTP id
- 25-20020a170906015900b009a1f21ecdffmr8216717ejh.23.1695378202381; 
- Fri, 22 Sep 2023 03:23:22 -0700 (PDT)
-Received: from redhat.com ([2.52.150.187]) by smtp.gmail.com with ESMTPSA id
- lv23-20020a170906bc9700b0099d798a6bb5sm2494904ejb.67.2023.09.22.03.23.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 03:23:21 -0700 (PDT)
-Date: Fri, 22 Sep 2023 06:23:17 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- qemu-block@nongnu.org, qemu-arm@nongnu.org, Coiby Xu <Coiby.Xu@gmail.com>
-Subject: Re: [PATCH v2 17/22] util/vhost-user-server: Clean up local variable
- shadowing
-Message-ID: <20230922062306-mutt-send-email-mst@kernel.org>
-References: <20230904161235.84651-1-philmd@linaro.org>
- <20230904161235.84651-18-philmd@linaro.org>
+ bh=dtqr/bwW/e0727PreleJLDQ/WfEhK5yG5v4iGEkskj8=;
+ b=Cf4xDrSUXDvvk7r+b39cUFiqaRexl73+dkg8cWwC7eywNVdlt3FDDvV8sALZkiaC3a
+ /eJQ1IJbb5GjgdguuMZd9cmfi1FCltzQ5nFW8ZzGnv5ETxTgytFIQdkldA+nmtAbNacM
+ anS1LNzvHK66AL1xUCS3/qRqPM3Pl/A3VbGwqScRw0sJe6bazbliil2GHcuevJlvOeqK
+ JjLNNGe0TuxfcDdex0ZiJQsTVzUCwURJvsLrCFo+O8CRAryNB3Q13iT7i1ozI84bcnbR
+ uLzcedJZaecQ2eWmRRalZsgfeuHAMtMwg3Ilzbfq1UICpuLi9aKi5pgWM0JTTSir1qmK
+ 2rZg==
+X-Gm-Message-State: AOJu0YzONd4KkyCLG6muwk6XiVSs7gVcAesSph2PFLg+WprwUWOvXyZc
+ pzo5LcKO8ELNzi0LaWsh0ENA7w==
+X-Google-Smtp-Source: AGHT+IGX58hs8A+zQFvjpIM5qp2bh5Rp0UOjPxZKNiyGvrfvj/4gEZyQdq2cXmtpPQWHbziL4NCsMw==
+X-Received: by 2002:a05:6512:2312:b0:504:3c1f:cbda with SMTP id
+ o18-20020a056512231200b005043c1fcbdamr1143063lfu.1.1695378559213; 
+ Fri, 22 Sep 2023 03:29:19 -0700 (PDT)
+Received: from [192.168.144.175] ([93.23.15.147])
+ by smtp.gmail.com with ESMTPSA id
+ t7-20020a5d49c7000000b003176aa612b1sm4068903wrs.38.2023.09.22.03.29.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 22 Sep 2023 03:29:18 -0700 (PDT)
+Message-ID: <d1d3f256-ec18-80fb-aef9-a3d558057733@linaro.org>
+Date: Fri, 22 Sep 2023 12:29:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] hw/sd/sdhci: Block Size Register bits [14:12] is lost
+Content-Language: en-US
+To: "Gao, Lu" <Lu.Gao@verisilicon.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Cc: "Wen, Jianxian" <Jianxian.Wen@verisilicon.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ "open list:SD (Secure Card)" <qemu-block@nongnu.org>,
+ Alexander Bulekov <alxndr@bu.edu>, Prasad J Pandit <pjp@fedoraproject.org>
+References: <20220321055618.4026-1-lu.gao@verisilicon.com>
+ <f15d8c9a-2a6f-1126-785f-0176eb78c3ec@amsat.org>
+ <34781C803212B140A51E6B66D9092E5D01FA5C9937@SHASXM03.verisilicon.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <34781C803212B140A51E6B66D9092E5D01FA5C9937@SHASXM03.verisilicon.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230904161235.84651-18-philmd@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,44 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 04, 2023 at 06:12:29PM +0200, Philippe Mathieu-Daudé wrote:
-> Fix:
+On 22/12/22 09:54, Gao, Lu wrote:
+> Hello,
 > 
->   util/vhost-user-server.c: In function ‘set_watch’:
->   util/vhost-user-server.c:274:20: warning: declaration of ‘vu_fd_watch’ shadows a previous local [-Wshadow=compatible-local]
->     274 |         VuFdWatch *vu_fd_watch = g_new0(VuFdWatch, 1);
->         |                    ^~~~~~~~~~~
->   util/vhost-user-server.c:271:16: note: shadowed declaration is here
->     271 |     VuFdWatch *vu_fd_watch = find_vu_fd_watch(server, fd);
->         |                ^~~~~~~~~~~
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Just want to check whether we can have it merged? Any other comments?
 
+Oops sorry, I see I had this patch tagged for a merge request
+but I lost track of it (likely when switching emails).
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Patch queued!
 
-feel free to merge.
-
-> ---
->  util/vhost-user-server.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/util/vhost-user-server.c b/util/vhost-user-server.c
-> index cd17fb5326..5073f775ed 100644
-> --- a/util/vhost-user-server.c
-> +++ b/util/vhost-user-server.c
-> @@ -271,7 +271,7 @@ set_watch(VuDev *vu_dev, int fd, int vu_evt,
->      VuFdWatch *vu_fd_watch = find_vu_fd_watch(server, fd);
->  
->      if (!vu_fd_watch) {
-> -        VuFdWatch *vu_fd_watch = g_new0(VuFdWatch, 1);
-> +        vu_fd_watch = g_new0(VuFdWatch, 1);
->  
->          QTAILQ_INSERT_TAIL(&server->vu_fd_watches, vu_fd_watch, next);
->  
-> -- 
-> 2.41.0
+> Thanks a lot!
+> B.R.
 > 
+> -----Original Message-----
+> From: Philippe Mathieu-Daudé [mailto:philippe.mathieu.daude@gmail.com] On Behalf Of Philippe Mathieu-Daudé
+> Sent: Tuesday, May 31, 2022 6:09 PM
+> To: Gao, Lu; qemu-devel@nongnu.org
+> Cc: Wen, Jianxian; Bin Meng; open list:SD (Secure Card); Alexander Bulekov; Prasad J Pandit
+> Subject: Re: [PATCH] hw/sd/sdhci: Block Size Register bits [14:12] is lost
 > 
+> On 21/3/22 06:56, Lu Gao wrote:
+>> Block Size Register bits [14:12] is SDMA Buffer Boundary, it is missed
+>> in register write, but it is needed in SDMA transfer. e.g. it will be
+>> used in sdhci_sdma_transfer_multi_blocks to calculate boundary_ variables.
+>>
+>> Missing this field will cause wrong operation for different SDMA Buffer
+>> Boundary settings.
+> 
+> Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
+> Fixes: dfba99f17f ("hw/sdhci: Fix DMA Transfer Block Size field")
+> 
+> Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+> 
+>> Signed-off-by: Lu Gao <lu.gao@verisilicon.com>
+>> Signed-off-by: Jianxian Wen <jianxian.wen@verisilicon.com>
+>> ---
+>>    hw/sd/sdhci.c | 15 +++++++++++----
+>>    1 file changed, 11 insertions(+), 4 deletions(-)
 
 
