@@ -2,76 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574537AB126
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 13:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EDAB7AB12E
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 13:49:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjebx-0007DM-Pl; Fri, 22 Sep 2023 07:46:17 -0400
+	id 1qjeeo-00084g-Q1; Fri, 22 Sep 2023 07:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qjebr-0007Bu-T8
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:46:12 -0400
-Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qjeel-00083i-S0
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:49:12 -0400
+Received: from mail-pj1-x1042.google.com ([2607:f8b0:4864:20::1042])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qjebp-0000XX-VM
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:46:11 -0400
-Received: by mail-qt1-x82f.google.com with SMTP id
- d75a77b69052e-412989e3b7bso12591191cf.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 04:46:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qjeeh-0000cW-Qr
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:49:10 -0400
+Received: by mail-pj1-x1042.google.com with SMTP id
+ 98e67ed59e1d1-276c68e6279so1332670a91.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 04:47:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695383164; x=1695987964; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1695383223; x=1695988023;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=IKlKVMzbhNC6QnFM5serjBzBN+trg+W5rm99fZZVjWA=;
- b=NVMagNQ4N4LMZfXYrdQwk4kW8tKTrc0+SC48HOsy86QtqKspQIcQf+CR/BvocKtvR9
- ODWqrJvx81mNQ0GOMbSct5PIGP1KuY8Fey/bO8cO4loESOBZVNUyEjzuuJBnbS47O86f
- XN86JW5keoVbz0hXqm3E8a9auowHVGwgqkH8kOA6NZJzVIbD3zp/xZ5V8PYrWyVIkniL
- uuNCn7bfpixuJBJTnkWaNWdN36KvTHdbcsezXp/GcqK9P/wqzdkxwYmOeOlBoZCgC9Py
- ZZo5zFkvH07HTb8NDgQ8UCVnNM1Hi6cLyPvgxQ93mx2ccG25vg9dS8HLrhdb43i/7lgI
- KFSA==
+ bh=JeVUKWHnoSNLiNfGNoUhmGLrJbUwKabWLt+p+Vj7x4I=;
+ b=txl5Mami8VgR+OBTqIhVNRQLkBQkYYg0T5hd4pa4OXF+YosvtcmgqLDBkgFGXXdC/n
+ uLcgmAd3aTva8KSisjnpJYvhZ0rUBDBWh1lPQV+PJ6ct4jF4dY42Ysf/P9a2taRTE2qR
+ i4xgbhTAu3RwlapVRNgGwILSBbkz/0N1+FUq/pSOdxHzyzNSk8phOrMxm1mByHR/Cvhc
+ u/ZHgGlydH9fpSfPmiCqxePzWxBgsTQkvKodvky+37U2LWYLf8g+FuJ2UsuFNZUuRr2t
+ An1UmmVxa0QLeOacDEQy10yUSq8lsvV64/972njhwDpa0vgvfGbbg39pyqF/Qbo8pGy4
+ KAdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695383164; x=1695987964;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1695383223; x=1695988023;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=IKlKVMzbhNC6QnFM5serjBzBN+trg+W5rm99fZZVjWA=;
- b=FSBGkPjNfHgHZBQlg4t5R5J7Vho7U517QeJBMgxhES+CmsyRwEDfzQTUYqD0pH09Y8
- AygnNWYYx6oLovqPbuc0UsIj5n703qNEOZbBE8VuvYrJ2LS4rv3VFRdU2F140K8D8xPE
- mpeWgtBpoiXbT8I/5cqRvWh4GKvFdQpPn6IU/Tuw7YB0evBdq3kw1SrM+nQ1V/PNsyEw
- tQ4xJkdt83PJiagDkMR8LH3gM0FhzodXv5dK4EJvAcRm9ikgjYBeprj9ro5coaDJNe3p
- uyFhOG625YzKBu4nE4yQu99haaxtwlUkmjaOFhuTFMoML1NLvFv9FCq4PBHtSgD6LZeV
- oKyg==
-X-Gm-Message-State: AOJu0Yw4ir+Ye2FBWOrG97fx2QgoLa3vD7uI98MIKwBm12i4YqULszHK
- zAtddKVk7D5AS8kS2GyLYlsdOZfXhVggbBRzjgY=
-X-Google-Smtp-Source: AGHT+IEEyf3rWZ9WKp8jbGtFmMjStTw+8qz8YHZHGF5SBzky94JQnxym1o2PP/2cdqcjUyh4+faszCK1bthxEBYAzgM=
-X-Received: by 2002:ac8:5fcf:0:b0:412:bf83:e759 with SMTP id
- k15-20020ac85fcf000000b00412bf83e759mr8288286qta.42.1695383164037; Fri, 22
- Sep 2023 04:46:04 -0700 (PDT)
+ bh=JeVUKWHnoSNLiNfGNoUhmGLrJbUwKabWLt+p+Vj7x4I=;
+ b=VW43P4rkrwVuIpESI6QN5X+bBVlKCyZWxGCY/LU7OQIoIKFb6oDjOzjhV7JeNTwvNY
+ 7r3jnBMJTgexpjBRLVI6ZH/IAVs86uMyJCXIbB7nA6BjH+OkCuNM0buDW/FdJuzz0Yzb
+ XjlbT8josx4WEYzWQ3LfN+0UZGCBp76VKpboXWJiGKDCxy6OR8IpQqDuZMPLgpkBHgjZ
+ p4gRL8ISCPtjRlVl7mHe5miMjl5fbY6cxEbYF0lAX/znfoXz2Ip4ZOZwFNn/9SvpRYUX
+ APi5sOjKTrIYRPI/LCMIoza6NuptAmkNLDbwSMgV+ux4KNu0fNrrP5bA4UrGTrszgEPQ
+ Ee3Q==
+X-Gm-Message-State: AOJu0YxEJVeJOEvk4KlVxTtjE2c7ZyZgw+3GMSgtYePoGJHKbWtXr5hK
+ ll0QAjNO23SSCKFWcez5mZE94Q==
+X-Google-Smtp-Source: AGHT+IF6+jawGl7DaGFawoRo+bz2fdYBC8C80XiHktaBFxyO+sFjORWi1kODXZLBcLcbEWCwmzFYrA==
+X-Received: by 2002:a17:90b:1d84:b0:274:6135:8363 with SMTP id
+ pf4-20020a17090b1d8400b0027461358363mr7638495pjb.33.1695383221862; 
+ Fri, 22 Sep 2023 04:47:01 -0700 (PDT)
+Received: from 64217.gitgo.cc ([8.210.91.195])
+ by smtp.gmail.com with ESMTPSA id
+ r6-20020a17090a438600b00263f41a655esm3303961pjg.43.2023.09.22.04.46.58
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Sep 2023 04:47:01 -0700 (PDT)
+From: Li Feng <fengli@smartx.com>
+To: Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>,
+ qemu-block@nongnu.org (open list:Block layer core),
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Cc: Li Feng <fengli@smartx.com>
+Subject: [PATCH v6 0/5] Implement reconnect for vhost-user-scsi
+Date: Fri, 22 Sep 2023 19:46:10 +0800
+Message-ID: <20230922114625.5786-1-fengli@smartx.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230721105205.1714449-1-fengli@smartx.com>
+References: <20230721105205.1714449-1-fengli@smartx.com>
 MIME-Version: 1.0
-References: <20230922094459.265509-1-pbonzini@redhat.com>
- <20230922094459.265509-2-pbonzini@redhat.com>
-In-Reply-To: <20230922094459.265509-2-pbonzini@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Fri, 22 Sep 2023 15:45:52 +0400
-Message-ID: <CAJ+F1C+Vg4n9v26t+PQLnELasdEajADXn7TJwbVabs_uNz3wdg@mail.gmail.com>
-Subject: Re: [PATCH 1/9] audio: Add easy dummy audio initialiser
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, mkletzan@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82f.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::1042;
+ envelope-from=fengli@smartx.com; helo=mail-pj1-x1042.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,115 +97,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Changes for v6:
+- [PATCH] vhost-user: fix lost reconnect
+  - Fix missing assign event_cb.
 
-On Fri, Sep 22, 2023 at 1:46=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> From: Martin Kletzander <mkletzan@redhat.com>
->
-> In case of sound devices which are created by default (some of them even =
-with
-> -nodefaults) it would not be nice to users if qemu required explicit:
->
->   -audiodev driver=3Dnone,id=3Daudio0 -machine audiodev=3Daudio0
->
-> when they just want to run a VM and not care about any audio output.  Ins=
-tead
-> this little helper makes it easy to create a dummy audiodev (driver=3Dnon=
-e) in
-> case there is no audiodev specified for the machine.  To make sure users
-> are not surprised by no sound output a helping message is also printed ou=
-t.
->
-> Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  audio/audio.c | 34 ++++++++++++++++++++++++++++++++++
->  audio/audio.h |  2 ++
->  2 files changed, 36 insertions(+)
->
-> diff --git a/audio/audio.c b/audio/audio.c
-> index d72e7db7fb9..8c74bc6b88c 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -41,6 +41,7 @@
->  #include "sysemu/runstate.h"
->  #include "ui/qemu-spice.h"
->  #include "trace.h"
-> +#include "hw/boards.h"
->
->  #define AUDIO_CAP "audio"
->  #include "audio_int.h"
-> @@ -2174,6 +2175,39 @@ bool audio_init_audiodevs(void)
->      return true;
->  }
->
-> +static void audio_init_dummy(const char *id)
-> +{
-> +    Audiodev *dev =3D g_new0(Audiodev, 1);
-> +    AudiodevListEntry *e =3D g_new0(AudiodevListEntry, 1);
-> +
-> +    dev->driver =3D AUDIODEV_DRIVER_NONE;
-> +    dev->id =3D g_strdup(id);
-> +
-> +    audio_validate_opts(dev, &error_abort);
-> +    audio_init(dev, NULL);
-> +
-> +    e->dev =3D dev;
-> +    QSIMPLEQ_INSERT_TAIL(&audiodevs, e, next);
-> +}
-> +
-> +const char *audio_maybe_init_dummy(const char *default_id)
-> +{
-> +    MachineState *ms =3D MACHINE(qdev_get_machine());
-> +
-> +    if (ms->default_audiodev) {
-> +        return ms->default_audiodev;
-> +    }
+Changes for v5:
+- No logic has been changed, just move part of the code from patch 4 to patch 5.
 
-../audio/audio.c:2197:11: error: =E2=80=98MachineState=E2=80=99 {aka =E2=80=
-=98struct
-MachineState=E2=80=99} has no member named =E2=80=98default_audiodev=E2=80=
-=99
- 2197 |     if (ms->default_audiodev) {
+Changes for v4:
+- Merge
+  https://lore.kernel.org/all/20230830045722.611224-1-fengli@smartx.com/ to
+  this series.
+- Add ERRP_GUARD in vhost_user_scsi_realize;
+- Reword the commit messages.
 
-introduced in next patch
+Changes for v3:
+- Split the vhost_user_scsi_handle_output to a separate patch;
+- Move the started_vu from vhost scsi common header to vhost-user-scsi header;
+- Fix a log print error;
 
-> +
-> +    dolog("warning: No audiodev specified for implicit machine devices, =
-"
-> +          "no audio output will be available for these. "
-> +          "For setting a backend audiodev for such devices try using "
-> +          "the audiodev machine option.\n");
-> +
-> +    audio_init_dummy(default_id);
-> +
-> +    return default_id;
-> +}
-> +
->  audsettings audiodev_to_audsettings(AudiodevPerDirectionOptions *pdo)
->  {
->      return (audsettings) {
-> diff --git a/audio/audio.h b/audio/audio.h
-> index a276ec13eba..81d39526625 100644
-> --- a/audio/audio.h
-> +++ b/audio/audio.h
-> @@ -176,6 +176,8 @@ void audio_help(void);
->  AudioState *audio_state_by_name(const char *name);
->  const char *audio_get_id(QEMUSoundCard *card);
->
-> +const char *audio_maybe_init_dummy(const char *default_id);
-> +
->  #define DEFINE_AUDIO_PROPERTIES(_s, _f)         \
->      DEFINE_PROP_AUDIODEV("audiodev", _s, _f)
->
-> --
-> 2.41.0
->
->
+Changes for v2:
+- Split the v1 patch to small separate patchset;
+- New patch for fixing fd leak, which has sent to reviewers in another
+  mail;
+- Implement the `vhost_user_scsi_handle_output`;
+- Add the started_vu safe check;
+- Fix error handler;
+- Check the inflight before set/get inflight fd.
 
+Li Feng (5):
+  vhost-user-common: send get_inflight_fd once
+  vhost: move and rename the conn retry times
+  vhost-user-scsi: support reconnect to backend
+  vhost-user-scsi: start vhost when guest kicks
+  vhost-user: fix lost reconnect
 
---=20
-Marc-Andr=C3=A9 Lureau
+ hw/block/vhost-user-blk.c             |   6 +-
+ hw/scsi/vhost-scsi-common.c           |  47 ++---
+ hw/scsi/vhost-scsi.c                  |   5 +-
+ hw/scsi/vhost-user-scsi.c             | 253 +++++++++++++++++++++++---
+ hw/virtio/vhost-user-gpio.c           |   5 +-
+ hw/virtio/vhost-user.c                |  10 +-
+ include/hw/virtio/vhost-scsi-common.h |   2 +-
+ include/hw/virtio/vhost-user-scsi.h   |   4 +
+ include/hw/virtio/vhost-user.h        |   3 +-
+ include/hw/virtio/vhost.h             |   2 +
+ 10 files changed, 277 insertions(+), 60 deletions(-)
+
+-- 
+2.41.0
+
 
