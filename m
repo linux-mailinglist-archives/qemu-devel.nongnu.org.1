@@ -2,56 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A247AB325
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 15:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E57AD7AB324
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 15:56:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjgcT-0002qc-Um; Fri, 22 Sep 2023 09:54:57 -0400
+	id 1qjgcV-0002r8-JM; Fri, 22 Sep 2023 09:54:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qjgcR-0002qK-Vc
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 09:54:55 -0400
+ id 1qjgcT-0002qT-2H
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 09:54:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qjgcQ-0004ft-1o
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 09:54:55 -0400
+ id 1qjgcQ-0004gD-Lu
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 09:54:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695390891;
+ s=mimecast20190719; t=1695390894;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=BMuaAZubXRRn0SRchP36y7BXyUjan7zw+Ls5APR3X2U=;
- b=HR6mnIgvq2S3VNKSe0iSvjxKxvYllMV2CubfVI7HKYp1NEiYS/t/dA8kkGfeTwllaKAvgf
- 9ugceK+Q4g8JsGlP+ezIZ+jxtHbncQaAUEcCqNEWW+B/QNimoZYoHZrZqu52zt+g/G5RJ/
- pMkfXnPLZamNnRd9tmPeMRbPcJZdxz4=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ALAbXdEx2Tvf92hxHdWqx0ajT7YAbZJH8GA8oJxTWVk=;
+ b=D5iFsdJmJcTohF5oujICUIFgQXfj5jpkYd1yAizCCkGvbf5vu8sVUwJeB/0WQb8g41AoTz
+ UCRrFDFXyYMWDGy/UskirGOuwHBWfz5wfMqfK3CvP34QVBI4sjXCgQPVq5Sip/s+hFxplP
+ U0r1Rc9ALSQ4qRDOeB709RSLMM1YiNU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-62-k-po4xGiPYih6NxiBJy8YQ-1; Fri, 22 Sep 2023 09:54:48 -0400
-X-MC-Unique: k-po4xGiPYih6NxiBJy8YQ-1
+ us-mta-146-KCClApS5PQab_l3fgCDPvg-1; Fri, 22 Sep 2023 09:54:50 -0400
+X-MC-Unique: KCClApS5PQab_l3fgCDPvg-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F436101A529;
- Fri, 22 Sep 2023 13:54:48 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A2A685A5A8;
+ Fri, 22 Sep 2023 13:54:50 +0000 (UTC)
 Received: from toolbox.redhat.com (unknown [10.42.28.51])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 5F0B210F1BE7;
- Fri, 22 Sep 2023 13:54:46 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4C6481005B96;
+ Fri, 22 Sep 2023 13:54:48 +0000 (UTC)
 From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH 0/1] Improve _FORTIFY_SOURCE robustness
-Date: Fri, 22 Sep 2023 14:54:44 +0100
-Message-ID: <20230922135445.241520-1-berrange@redhat.com>
+Subject: [PATCH 1/1] configure: support passthrough of -Dxxx args to meson
+Date: Fri, 22 Sep 2023 14:54:45 +0100
+Message-ID: <20230922135445.241520-2-berrange@redhat.com>
+In-Reply-To: <20230922135445.241520-1-berrange@redhat.com>
+References: <20230922135445.241520-1-berrange@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
@@ -78,16 +81,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This ensures that we don't turn on _FORTIFY_SOURCE when the user
-turns off optimizations via CFLAGS env variable. See patch 2 for
-the full details.
+This can be useful for setting some meson global options, such as the
+optimization level or debug state, which don't have an analogous
+option explicitly defined in QEMU's configure wrapper script.
 
-Daniel P. Berrangé (1):
-  configure: support passthrough of -Dxxx args to meson
-
+Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+---
  configure | 2 ++
  1 file changed, 2 insertions(+)
 
+diff --git a/configure b/configure
+index e08127045d..cbd7e03e9f 100755
+--- a/configure
++++ b/configure
+@@ -931,6 +931,8 @@ cat << EOF
+   bsd-user        all BSD usermode emulation targets
+   pie             Position Independent Executables
+ 
++  -Dmesonoptname=val      passthrough option to meson unmodified
++
+ NOTE: The object files are built at the place where configure is launched
+ EOF
+ exit 0
 -- 
 2.41.0
 
