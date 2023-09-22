@@ -2,88 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4FF7AB3BD
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 16:35:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C387AB3C2
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 16:36:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjhFe-00057l-8O; Fri, 22 Sep 2023 10:35:26 -0400
+	id 1qjhGP-0005tO-OT; Fri, 22 Sep 2023 10:36:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjhFF-000578-4y
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:35:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qjhGN-0005t8-Hh
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:36:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qjhFD-0005O1-Mg
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:35:00 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qjhGL-0005qu-Ph
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:36:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695393297;
+ s=mimecast20190719; t=1695393368;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bIdsgT1QYA3UMLVcdGTOHHI+qUwslHKYT6fB8m7ao2U=;
- b=FUtR6FxQxfYJAc6/AjhZdoFDhiX/6Ti2oruyKhJPvKM+pgjZSTkIG52Iv+sequSieWD3CB
- fTDX1zBreAn17WXhW7FNfok09jRRcS2wWo1PDnBO7ridDtIYgtL1O1t7W1cOB8/sCAOwsQ
- aeVRxE9zMEcTOGnUuaTvpkAA1dT/3O4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hQVbL+2bqC/Rari9b6OXNf+PyCBA5yKZ6eVhvHX62L8=;
+ b=jL20j7gJo9e3oS6gtlHQtKafTzfLJiw/toNO4igV76EVVcKqDRY0/jf8lDwlg2mMKUfQqI
+ AL00+96o1PdEqPMqBmHSrzpIBIA6onqku4+OcHaQq1uoLpMNr7tMigUzebwnBTBvgAHfBJ
+ dbknUfURwEg0W+wgnBM+cehtkpdXtbY=
+Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
+ [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-vsZArzDdNyO9GK3yEq9KuA-1; Fri, 22 Sep 2023 10:34:56 -0400
-X-MC-Unique: vsZArzDdNyO9GK3yEq9KuA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fd0fa4d08cso16445555e9.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 07:34:55 -0700 (PDT)
+ us-mta-472-i1E2dh7eP8aup1lqyNFu-A-1; Fri, 22 Sep 2023 10:36:06 -0400
+X-MC-Unique: i1E2dh7eP8aup1lqyNFu-A-1
+Received: by mail-yb1-f197.google.com with SMTP id
+ 3f1490d57ef6-d814634fe4bso2837836276.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 07:36:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695393295; x=1695998095;
+ d=1e100.net; s=20230601; t=1695393365; x=1695998165;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=bIdsgT1QYA3UMLVcdGTOHHI+qUwslHKYT6fB8m7ao2U=;
- b=KowRjCbVOGAcoVTKtRLo5FHp+Y01DwVkvukV+aoILhF+UO1EQIp6v+3dKz6b54EEp7
- /mvX1c3wpaWlSRrYrqjQtws0l1ZOINbLOWqdThGF439zD9sxG9O3qr1PYKnrZe1hG19l
- XMd9gcpyq3Aqz3+noyRFdaip2E3VVTGhaeqxaIaQVuDCJYbX04TA4T9AfgZNT2kzn6eE
- cWuUbziv9/Qz3YdSCyuvqgey5TX/BDjZeXenrB5rod2EdVkcGq4EbFzaa97tyQrIoF56
- dum02eVxhukuxaU0SHcuD5/Yb3HxajnPYVjj72t/VmEyoWbGDWbL9RQiIe9JeXyebV75
- /fzg==
-X-Gm-Message-State: AOJu0Yx2bfXvIrxVuQBb5nOGYfZsrj9pV8GtoviC1DrezSbd8OGggsFj
- S6CP0zVgN0nHqXRjibGaWQO3DzNpgnxxdYu/64CKcFOL218usxmdAyfyKiCrMF7Ywxe1gvIG/yR
- U+momDyCRPUB0t/s=
-X-Received: by 2002:a05:600c:4fc4:b0:405:49aa:d578 with SMTP id
- o4-20020a05600c4fc400b0040549aad578mr221748wmq.37.1695393294954; 
- Fri, 22 Sep 2023 07:34:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH8H8hpQGBxvs/GhhXk/hOv/b4Fn8jEue1ARm6U8fx2BiPHAXSU484/mBBOkD9PP4SPdFEsyQ==
-X-Received: by 2002:a05:600c:4fc4:b0:405:49aa:d578 with SMTP id
- o4-20020a05600c4fc400b0040549aad578mr221732wmq.37.1695393294612; 
- Fri, 22 Sep 2023 07:34:54 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:3f78:514a:4f03:fdc0?
- ([2a01:e0a:280:24f0:3f78:514a:4f03:fdc0])
- by smtp.gmail.com with ESMTPSA id
- p22-20020a05600c205600b003fbe4cecc3bsm7605002wmg.16.2023.09.22.07.34.53
+ bh=hQVbL+2bqC/Rari9b6OXNf+PyCBA5yKZ6eVhvHX62L8=;
+ b=KxUhvddFbZvKb5AQguFN2tdhMt7cSRkYydp2rX7hVMI7qE1fCMwMuoNH5fmoqf4agt
+ adaK6WX6idLNJglpRnpPcexoi7w45uXNOptXxC4xmRtqIk4uvW9m40y2N/jATItO0I+n
+ +wurG78dr4bDlGD8uKyLh4wo/1zgi6kZ3KNaOmF773hIYuH4eMVJvL9q2nk6r4kdrbfE
+ 5jG/xZJHMHzDyKsjLDxtIx4H77n6SU1C86/A0opdlBif1bHqGAIqfwOM4onIE6idKvLN
+ bYJS9jn0o2QjrRjHU8AjuSJPSY1r8Uvb409Ttfjd3Z29LME5cQXMInpVRj2csxKJHCL5
+ D95g==
+X-Gm-Message-State: AOJu0YwB8yF9HKtSsldzrF/qi49HpwQxBkGcKafAof3nxkj3F6ReCE58
+ Ps2Uohz96+sis48VVibHwRiHMfmBC9e5tnKe9V6eXwu2ADoijJf0aSVkqg0YJdTR2UIdajyYER5
+ WtTSe5j3I3BY5cKs=
+X-Received: by 2002:a25:850e:0:b0:d0a:a1fa:b8e4 with SMTP id
+ w14-20020a25850e000000b00d0aa1fab8e4mr8995448ybk.38.1695393364865; 
+ Fri, 22 Sep 2023 07:36:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzmFEgqsi0TTtNVXehCzRZ2NhxwTsPjT8H3zplhtYPohCmINS6Dij/CKhtbKJN97r8oBwzSg==
+X-Received: by 2002:a25:850e:0:b0:d0a:a1fa:b8e4 with SMTP id
+ w14-20020a25850e000000b00d0aa1fab8e4mr8995427ybk.38.1695393364594; 
+ Fri, 22 Sep 2023 07:36:04 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-48.web.vodafone.de.
+ [109.43.176.48]) by smtp.gmail.com with ESMTPSA id
+ t11-20020a0cde0b000000b0065359e0a3efsm1479547qvk.36.2023.09.22.07.36.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Sep 2023 07:34:53 -0700 (PDT)
-Message-ID: <141f1a39-6d54-598e-b44a-a313ca7c2c2c@redhat.com>
-Date: Fri, 22 Sep 2023 16:34:52 +0200
+ Fri, 22 Sep 2023 07:36:04 -0700 (PDT)
+Message-ID: <7949b0a2-c05e-2b8e-b10f-b1e5ac910501@redhat.com>
+Date: Fri, 22 Sep 2023 16:36:00 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] vfio/pci: rename vfio_put_device to vfio_pci_put_device
+Subject: Re: [PATCH 1/2] configure: support passthrough of -Dxxx args to meson
 Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, chao.p.peng@intel.com
-References: <20230922025223.1091821-1-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230922025223.1091821-1-zhenzhong.duan@intel.com>
+To: Peter Maydell <peter.maydell@linaro.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
+ <marcandre.lureau@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+References: <20230922135555.241809-1-berrange@redhat.com>
+ <20230922135555.241809-2-berrange@redhat.com>
+ <CAFEAcA8gPOx6hH9gZxHOvcTwpSuLO5mCc0zqpTEBSidf0_QaaA@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <CAFEAcA8gPOx6hH9gZxHOvcTwpSuLO5mCc0zqpTEBSidf0_QaaA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -101,48 +107,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/22/23 04:52, Zhenzhong Duan wrote:
-> vfio_put_device() is a VFIO PCI specific function, rename it with
-> 'vfio_pci' prefix to avoid confusing.
+On 22/09/2023 16.00, Peter Maydell wrote:
+> On Fri, 22 Sept 2023 at 14:56, Daniel P. Berrangé <berrange@redhat.com> wrote:
+>>
+>> This can be useful for setting some meson global options, such as the
+>> optimization level or debug state, which don't have an analogous
+>> option explicitly defined in QEMU's configure wrapper script.
+>>
+>> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
 > 
-> No functional change.
-
-There is more to be done but it can wait after the big code reshuffle.
-
-> Suggested-by: Cédric Le Goater <clg@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-
-Applied to vfio-next.
-
-Thanks,
-
-C.
-
-> ---
->   hw/vfio/pci.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
+> The commit message says it's adding support for a new feature...
 > 
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 3b2ca3c24ca2..b2d5010b9f0e 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2826,7 +2826,7 @@ static void vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
->       }
->   }
->   
-> -static void vfio_put_device(VFIOPCIDevice *vdev)
-> +static void vfio_pci_put_device(VFIOPCIDevice *vdev)
->   {
->       g_free(vdev->vbasedev.name);
->       g_free(vdev->msix);
-> @@ -3317,7 +3317,7 @@ static void vfio_instance_finalize(Object *obj)
->        *
->        * g_free(vdev->igd_opregion);
->        */
-> -    vfio_put_device(vdev);
-> +    vfio_pci_put_device(vdev);
->       vfio_put_group(group);
->   }
->   
+>> ---
+>>   configure | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/configure b/configure
+>> index e08127045d..cbd7e03e9f 100755
+>> --- a/configure
+>> +++ b/configure
+>> @@ -931,6 +931,8 @@ cat << EOF
+>>     bsd-user        all BSD usermode emulation targets
+>>     pie             Position Independent Executables
+>>
+>> +  -Dmesonoptname=val      passthrough option to meson unmodified
+>> +
+>>   NOTE: The object files are built at the place where configure is launched
+>>   EOF
+>>   exit 0
+> 
+> ...but the patch is only updating the --help text. Is there
+> a missing piece of code here ?
+
+The patch has already been merged, see commit ff136d2a99253483f ... and IIRC 
+I slightly modified it when picking it up (according to the patch 
+description), so this here is likely a left-over of a rebase. Daniel, I 
+think you can drop this patch here.
+
+  Thomas
+
 
 
