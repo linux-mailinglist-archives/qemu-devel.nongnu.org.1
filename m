@@ -2,77 +2,138 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933CE7AA86F
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 07:35:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91F4C7AA87E
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 07:46:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjYoL-0006LB-KT; Fri, 22 Sep 2023 01:34:41 -0400
+	id 1qjYyM-000855-03; Fri, 22 Sep 2023 01:45:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qjYoI-0006Kq-HR; Fri, 22 Sep 2023 01:34:38 -0400
-Received: from mail-vk1-xa35.google.com ([2607:f8b0:4864:20::a35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qjYoD-0004rB-Vy; Fri, 22 Sep 2023 01:34:37 -0400
-Received: by mail-vk1-xa35.google.com with SMTP id
- 71dfb90a1353d-496a2ff7780so749660e0c.2; 
- Thu, 21 Sep 2023 22:34:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695360871; x=1695965671; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=PCVgv+eeeWB1OzO4jmZzyd/dw7dEt9GfRDf04UZho3U=;
- b=CRi3X4tsQDy40ylTB01T8zrXSsPJ79PIOLVUQWTx6QVUGngAYW6O+tFsL6eWqOBBqN
- H54FgoGx5VEvfDXXrMrKw0QzSmzI47mE5+m04Ks9idiFgIkEn5xlm5kRPmNYlUEP61H3
- mbwmtpnhd/qCGvlaJeoBkOHOebjaVmULt48/FmxBT9Y+xF/meLZm3rfPYpuaoLH2Vv1N
- 8UGnaNKzIog5pxCez+2APGijS/9AVnMs/7p+U71mst9GBKPo5S0a5PYEc0qara2vaxVB
- GtdlBGki5J7yUS1oXD6KjMSzwVWYyLEQmFY/Vz1VDkfhdFelxY3xqVcYQnn4tExGJxJ5
- sB7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695360871; x=1695965671;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=PCVgv+eeeWB1OzO4jmZzyd/dw7dEt9GfRDf04UZho3U=;
- b=GwT0pPnBtzkbKt5c28T6CVaeeK5Vb4N/FEk2gjc8C/T3YlMEt1HFtq1k3/CCjMID59
- 8prjXv/x0prfUnGc25ibKB/X08oTHwOh3z8+FXALaxyFPp0iqCImWRL+sdOhgjmYwlYD
- uZjI5cgt3I+UjDCGQzSV3GNw9Cqt39+487my6eO0r0ykqjx2zvnlw/bpoUcIGtA/4WYq
- fB+ZIZoA4A1FuF5A4BGA2DrJTH2mtergMv6uMosYFCW2nTiZ/Q0FiDdEdnGiXFG4QZz2
- UpKmoz3kPUBPZHbf1mlkdi5MZN/lz9V6iwTrKQV1R9hfrOFKsScDpomPPAX3NTmD6mrt
- 1gGw==
-X-Gm-Message-State: AOJu0YwcLJzhv9NQBBu+c3dwNWfx8Xexs+dc2ql2CET5vbpb7g3lnuLV
- n1uJIKKQ8pAIOgf2+12YA6TK0AzVyjIi/zmsmZR1AxKOEio=
-X-Google-Smtp-Source: AGHT+IG8CkGWxM/EOWxg5JNI1xdQdvxAqyN8RE2qQ/zTTTWU2k8aLoecQN/e8UO2kT8P1SvntHt2WZjWFmqvSrUKvFU=
-X-Received: by 2002:a1f:d546:0:b0:495:ba08:79dd with SMTP id
- m67-20020a1fd546000000b00495ba0879ddmr8823649vkg.5.1695360871352; Thu, 21 Sep
- 2023 22:34:31 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230920112020.651006-1-dbarboza@ventanamicro.com>
- <20230920112020.651006-5-dbarboza@ventanamicro.com>
-In-Reply-To: <20230920112020.651006-5-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 22 Sep 2023 15:34:04 +1000
-Message-ID: <CAKmqyKN9jq=O6zWNT7vUx8LGopX_p6EVux3sMb2+7RCik8Fmrg@mail.gmail.com>
-Subject: Re: [PATCH v3 04/19] target/riscv: move riscv_tcg_ops to tcg-cpu.c
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, philmd@linaro.org, ajones@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1qjYyF-00084i-Bv; Fri, 22 Sep 2023 01:44:55 -0400
+Received: from mail-bn8nam12on2062c.outbound.protection.outlook.com
+ ([2a01:111:f400:fe5b::62c]
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com)
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
+ id 1qjYyB-0007Ia-A1; Fri, 22 Sep 2023 01:44:55 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KjGDm02+iRYDDpnq80rtyceCuyK3yFjXpSVMKtN/yfThUIq/dw02MBoIjD2XPAaAaM4rZssSEz+qKW3LXHWY6wa/PY36W9d7QWs1qjG4lhJIn1wnrjabFgZuOOy3ZNG/9jXSjC00Q6XhcfgDwJJHqDdSlHR27RjnlPkgEev2HCsiPhVLOlIq5ikUMTfMj8VQnUHqJ8OCGpYWhpso7A/iVyQHEIm/opmiqFnCffxZNxZFv0bqjvUpwLnUTzo1RObL9QNZJfHtBLKg27GOOUXBVGrMmo4GjB2Uz4XV+24ASUK/xp9puc9asRJWdHCr7feW2XWOWr6H6yhPWfCL9HhIkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AaLG/PgY9V9SN0h5O2V5eg17RgGaC/seQCPyHNpH3LQ=;
+ b=mqBbZNVS66Xj2cmt+1lJ2wR+Iq1wMC09GEKmYnuj1B1FrKT75kRkz7l4svaXjUdqGIsM1kND3Ew7e5qa0/I3xaiunKmJD6fi36txb9T1zo2A1+Fb5tlkSo4mwkK3AmQ676bLQwvP31sY0Xtzgsk7kGVN9oP4hANddDt9rP71Hgg+EKpbswLxCtRlQCqEwcv/vSPm/g5EfG9Xmi3SJTJ39StpTVp3ulKIagHJmBDzjW1GG26Fdk2pO84Ch2xUxN5+dXHAHAFz74hxOmSKUEOU2T7pYQlpntUL8WqZCzUkkS2vw/EUPgxnXescZDo1q1wfIXh6QiB2n3wfRf/vf/Fumg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=AaLG/PgY9V9SN0h5O2V5eg17RgGaC/seQCPyHNpH3LQ=;
+ b=Y+0d26+7lrK98sbxW2mn+zLTqvfHgtTS9uAiUlg2bPiKS8loIfluc4vb7yVtHCS/arFkX6NC8sJ5O8cSqoKpiGU5WXZkSXzBA2pVni0tAjsj3EcIoDkozG/0NzyTnQNe90+JaERSG7MFRiPRVjYNVaFNQDmIWNkeltbjBCtPJ4pXsbImJnt02IcCOJAJpiIVam9bwqn0hpJzd3c/6rGq1aBsmocP78ZVqHvn9k6Rmj+uuPi7atAZB8wW2n6t/4QmLVsyIifO+Buol696gC2DXANNnCA6U1q8fjIo4yaDA0FSz+YqIT196UnfTjEAOLNu674PFpjiTZAkTbTODrWc3A==
+Received: from BY5PR12MB3763.namprd12.prod.outlook.com (2603:10b6:a03:1a8::24)
+ by DM4PR12MB7597.namprd12.prod.outlook.com (2603:10b6:8:10b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.21; Fri, 22 Sep
+ 2023 05:44:44 +0000
+Received: from BY5PR12MB3763.namprd12.prod.outlook.com
+ ([fe80::9e7a:4853:fa35:a060]) by BY5PR12MB3763.namprd12.prod.outlook.com
+ ([fe80::9e7a:4853:fa35:a060%2]) with mapi id 15.20.6813.017; Fri, 22 Sep 2023
+ 05:44:44 +0000
+From: Ankit Agrawal <ankita@nvidia.com>
+To: Igor Mammedov <imammedo@redhat.com>, Jonathan Cameron via
+ <qemu-devel@nongnu.org>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>
+CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Jason Gunthorpe
+ <jgg@nvidia.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
+ <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
+ <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
+ (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Andy
+ Currid <ACurrid@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "mst@redhat.com" <mst@redhat.com>
+Subject: RE: [PATCH v1 1/4] vfio: new command line params for device memory
+ NUMA nodes
+Thread-Topic: [PATCH v1 1/4] vfio: new command line params for device memory
+ NUMA nodes
+Thread-Index: AQHZ537GOvmKk8o8AEmeuxweOgaO6LAb8d6AgAAGk4CACmHCkA==
+Date: Fri, 22 Sep 2023 05:44:43 +0000
+Message-ID: <BY5PR12MB376336ED0A6E20B2AA6FEF33B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
+References: <20230915024559.6565-1-ankita@nvidia.com>
+ <20230915024559.6565-2-ankita@nvidia.com>
+ <20230915152509.00003788@Huawei.com>
+ <20230915164841.15d20ecc@imammedo.users.ipa.redhat.com>
+In-Reply-To: <20230915164841.15d20ecc@imammedo.users.ipa.redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BY5PR12MB3763:EE_|DM4PR12MB7597:EE_
+x-ms-office365-filtering-correlation-id: 619dec22-4545-4e60-5294-08dbbb2f05dc
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: SpzSHA3vZ9HJvHEHRkuh3zEk0oYHTZq0wsZahKQrgkZ9VFn8gS3Dtv+7kUyErbmeCaKQezXzT6Zmftl38EJ9SODAmSQWIM67sSOiLiLafLQTCS8VZfjFbMna+TimYTvgwJVBNSR6mOc7Av2c8sVrFfnAp9PW+5oTyOWgJM8R/FudvqnUkkZbYe7RaiGkGoZABtvIFVmyqgNYlcCkrnGkveFtqa//HOozxxN4xNZrY617WqmvzeBiba4mpdPXP8DKyd9LOYjXEjhr8d3DQUpULxCSay+lMEMYZjohJ5Pnk/LLtbpQLhEWbP89eL869RlkJALiSU/bL3UpAHTZ9vwl7Xye+DwibfGEMw5Da3ctN2/kbYfrQIqMJLt5WRG81I4PFZ1O+3q63Fl4mWwaopAR1KcvRExYfCCmeQV2gY6YZT/Wg14TdhZhx0O6TrtMEO4GS63ZMGnaj0C5QsLZfZMd+/UO80Fc+RtOGUE1z5yJCWZawsKu2/kowjWO4VWNScbfleWCMBDO8+bVUdC+zvpb9csXdNnHhNPyJsWpPJ5TosLDGnntU8ejbjDHIX8m1lwfwNkvh6qAuM83hVf86ad8Wg8r8OS5m7R5IXK2CvhFU/M=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:BY5PR12MB3763.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(396003)(366004)(346002)(136003)(39860400002)(1800799009)(186009)(451199024)(83380400001)(9686003)(26005)(7416002)(54906003)(64756008)(41300700001)(316002)(66476007)(8676002)(110136005)(66446008)(5660300002)(4326008)(8936002)(52536014)(66946007)(71200400001)(7696005)(6506007)(478600001)(2906002)(66556008)(76116006)(55016003)(33656002)(86362001)(38070700005)(38100700002)(122000001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?OhPhMHHLHx8wFqFDqKzANrOCSqstnW90oYnnS2exz9S2KUCjV8tcnYiizj/e?=
+ =?us-ascii?Q?3zyV6i78M8Mq2ydCZARXvgEvi5AY4zQxa5LG9WvOJPFzLxoQoscaE0IofxgU?=
+ =?us-ascii?Q?r1P4aYX8KB/MNELvLT5O/vFRV9G2+qRQq7uiX/cqVdEn6D+RwNETU/Ed9auz?=
+ =?us-ascii?Q?NpY/5tjy+zCylyueXCSGJHZpVImJDcT+56uHxnhNV2wVEq4IxCOShkGcgGYh?=
+ =?us-ascii?Q?JKX5iMdiJvEJbcbaBsvROIDFPXlOumhClh/qJjzOqHXYXR+fcey0MIge/I8P?=
+ =?us-ascii?Q?ISd25oW5N7JWFC880uIB6UwgaU4xKPhfzSLoGGjJ7bAaWIJAn/PpuXFWi/ej?=
+ =?us-ascii?Q?VJ4PVS/+EMsa38pvY/stxbSoWklZrtS7q9OAUmQHXFx3W8R0isgQjQb/Oayq?=
+ =?us-ascii?Q?iEePuUTMo0Zt/MEZ5eOu8I0NgcFl4e5wXue/DFCmq80T57RxxIy1Iw4JxFax?=
+ =?us-ascii?Q?5bFwKsNcPB1zA1ld0VZJVCGjcQMyyty/hqg1y1PDUu55IGAX+TLuZpNOv50Z?=
+ =?us-ascii?Q?3FvsNqg4Qj3GnVhZd6dhl1HFqsPAqqj1M9dzdjdmIuAMOSD7zQ6fi/qS4p0M?=
+ =?us-ascii?Q?8SV3DPJz9xnonTiiXLuNWVYl8agroXyeQVtGQzowpKW0DLESQ4vJYX2YX4ka?=
+ =?us-ascii?Q?iYOlW3Up8N2oW38uxQ1+j/698fZ49b2+5TphA909IBKvT3RLSLkI9Eqpu0jV?=
+ =?us-ascii?Q?TccyJ/CJgN90AGJb2HMwTy86dOGCvaHd4Ik+sCTF2EP5vf8dmt6m5X2ywu0y?=
+ =?us-ascii?Q?sjMKvS2qol6XM1aUcUzLM4NoLLdsJxbzgGotPnrVX1ujlmm0Exh3/RUUgwx0?=
+ =?us-ascii?Q?17p7a8xDQbrFVWIVUP95Up22b/SweKR6uE1HjoHd9wBwpSRzsJkRVsRvg7in?=
+ =?us-ascii?Q?fTRcJTPWyrX2wA+teKEnML1PzR2mzzYvoTSgHlZMYgUGehpLhHyUxMBbxTJ2?=
+ =?us-ascii?Q?pSt2GecZxcQnIZRlCwmwEphgUiGNjjRYv50k5AIRLO+jlIbYBJym9f6zuRPk?=
+ =?us-ascii?Q?Je9y3zCnf4vC/LrLSjgd+9Ysiq97sWW6303JNrBe7X2GVTsg67g/GnWyWLWR?=
+ =?us-ascii?Q?T65XYk4rc6qFdQYEbbu63wibYD81UgfcFU3gGPP70J41yq36x52bplT03xcW?=
+ =?us-ascii?Q?U4IAlXxH0lwpeWNPJUZgMYJt4sH6GZRfhpN6JyQo/1tetpw1P3P10K+CcYEi?=
+ =?us-ascii?Q?q2ReaS81qw+FLUMGWdJD9YRRQJoXzPt7vwcRjeVadPmC6p2KsalvXA7r28Oc?=
+ =?us-ascii?Q?aBOifIV6PRl5kZx54iISXrZbPC8a4vbQkeTlg7HyFiHrf/PedEZeAIhhprh5?=
+ =?us-ascii?Q?W2B+6sA5SAEjWfCTg4yeMiEGF0i9b6wfpQVNQEoPZ58/L9Cjt2Dw7dQRTbLG?=
+ =?us-ascii?Q?xKWU/P/kNRpomCzFn2iq2VyPzpVoyTwdNOR+Bv07rQDkmQH/nEUoXjenieLq?=
+ =?us-ascii?Q?W6IM/iHLhXzN65YreE5bknCYyyOsSXEWp4Ye/o0WpCF1Ar+lBAUZbgQo0/Ab?=
+ =?us-ascii?Q?jl/LLjJ2+X8RdUM5c0O5wzE0EQdFwY7o+7inllXhV/h1y3xiX8oq0bB6A3lL?=
+ =?us-ascii?Q?XyNpTjt7kec0bcDP0Jkx7tf9k81l215O5hirq/3X?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::a35;
- envelope-from=alistair23@gmail.com; helo=mail-vk1-xa35.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+MIME-Version: 1.0
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB3763.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 619dec22-4545-4e60-5294-08dbbb2f05dc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Sep 2023 05:44:43.9098 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: MGsybIY/7ut5lMw++UY+cjVhZ7bw6qreAn4I1p3WTm4rxMkCpWnaUbfhRv9caHzCR8LYJCAWfT1irlZmKStNng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7597
+Received-SPF: softfail client-ip=2a01:111:f400:fe5b::62c;
+ envelope-from=ankita@nvidia.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,210 +149,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 20, 2023 at 9:21=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Move the remaining of riscv_tcg_ops now that we have a working realize()
-> implementation.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+> Also, good to say why multiple nodes per device are needed.
+This is to support the GPU's MIG (Mult-Instance GPUs) feature,
+(https://www.nvidia.com/en-in/technologies/multi-instance-gpu/) which
+allows partitioning of the GPU device resources (including device memory) i=
+nto
+several isolated instances. We are creating multiple NUMA nodes to give
+each partition their own node. Now the partitions are not fixed and they=20
+can be created/deleted and updated in (memory) sizes at runtime. This is
+the reason these nodes are tagged as MEM_AFFINITY_HOTPLUGGABLE. Such
+setting allows flexibility in the VM to associate a desired partition/range=
+=20
+of device memory to a node (that is adjustable). Note that we are replicati=
+ng
+the behavior on baremetal here.
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+I will also put this detail on the cover letter in the next version.
 
-Alistair
+> QEMU have already means to assign NUMA node affinity
+> to PCI hierarchies in generic way by using a PBX per node
+> (also done 'backwards') by setting node option on it.
+> So every device behind it should belong to that node as well
+> and guest OS shall pickup device affinity from PCI tree it belongs to.
 
-> ---
->  target/riscv/cpu.c         | 58 ------------------------------------
->  target/riscv/cpu.h         |  4 ---
->  target/riscv/tcg/tcg-cpu.c | 60 +++++++++++++++++++++++++++++++++++++-
->  3 files changed, 59 insertions(+), 63 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 7215a29324..9426b3b9d6 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -838,24 +838,6 @@ static vaddr riscv_cpu_get_pc(CPUState *cs)
->      return env->pc;
->  }
->
-> -static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-> -                                          const TranslationBlock *tb)
-> -{
-> -    if (!(tb_cflags(tb) & CF_PCREL)) {
-> -        RISCVCPU *cpu =3D RISCV_CPU(cs);
-> -        CPURISCVState *env =3D &cpu->env;
-> -        RISCVMXL xl =3D FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> -
-> -        tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
-> -
-> -        if (xl =3D=3D MXL_RV32) {
-> -            env->pc =3D (int32_t) tb->pc;
-> -        } else {
-> -            env->pc =3D tb->pc;
-> -        }
-> -    }
-> -}
-> -
->  static bool riscv_cpu_has_work(CPUState *cs)
->  {
->  #ifndef CONFIG_USER_ONLY
-> @@ -871,29 +853,6 @@ static bool riscv_cpu_has_work(CPUState *cs)
->  #endif
->  }
->
-> -static void riscv_restore_state_to_opc(CPUState *cs,
-> -                                       const TranslationBlock *tb,
-> -                                       const uint64_t *data)
-> -{
-> -    RISCVCPU *cpu =3D RISCV_CPU(cs);
-> -    CPURISCVState *env =3D &cpu->env;
-> -    RISCVMXL xl =3D FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> -    target_ulong pc;
-> -
-> -    if (tb_cflags(tb) & CF_PCREL) {
-> -        pc =3D (env->pc & TARGET_PAGE_MASK) | data[0];
-> -    } else {
-> -        pc =3D data[0];
-> -    }
-> -
-> -    if (xl =3D=3D MXL_RV32) {
-> -        env->pc =3D (int32_t)pc;
-> -    } else {
-> -        env->pc =3D pc;
-> -    }
-> -    env->bins =3D data[1];
-> -}
-> -
->  static void riscv_cpu_reset_hold(Object *obj)
->  {
->  #ifndef CONFIG_USER_ONLY
-> @@ -1809,23 +1768,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops =
-=3D {
->  };
->  #endif
->
-> -const struct TCGCPUOps riscv_tcg_ops =3D {
-> -    .initialize =3D riscv_translate_init,
-> -    .synchronize_from_tb =3D riscv_cpu_synchronize_from_tb,
-> -    .restore_state_to_opc =3D riscv_restore_state_to_opc,
-> -
-> -#ifndef CONFIG_USER_ONLY
-> -    .tlb_fill =3D riscv_cpu_tlb_fill,
-> -    .cpu_exec_interrupt =3D riscv_cpu_exec_interrupt,
-> -    .do_interrupt =3D riscv_cpu_do_interrupt,
-> -    .do_transaction_failed =3D riscv_cpu_do_transaction_failed,
-> -    .do_unaligned_access =3D riscv_cpu_do_unaligned_access,
-> -    .debug_excp_handler =3D riscv_cpu_debug_excp_handler,
-> -    .debug_check_breakpoint =3D riscv_cpu_debug_check_breakpoint,
-> -    .debug_check_watchpoint =3D riscv_cpu_debug_check_watchpoint,
-> -#endif /* !CONFIG_USER_ONLY */
-> -};
-> -
->  static bool riscv_cpu_is_dynamic(Object *cpu_obj)
->  {
->      return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) !=3D NUL=
-L;
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 409d198635..b2e558f730 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -706,10 +706,6 @@ enum riscv_pmu_event_idx {
->      RISCV_PMU_EVENT_CACHE_ITLB_PREFETCH_MISS =3D 0x10021,
->  };
->
-> -/* Export tcg_ops until we move everything to tcg/tcg-cpu.c */
-> -#include "hw/core/tcg-cpu-ops.h"
-> -extern const struct TCGCPUOps riscv_tcg_ops;
-> -
->  /* used by tcg/tcg-cpu.c*/
->  void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en)=
-;
->  bool cpu_cfg_ext_is_user_set(uint32_t ext_offset);
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index d86172f725..e480b9f726 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -28,7 +28,66 @@
->  #include "qemu/error-report.h"
->  #include "qemu/log.h"
->  #include "hw/core/accel-cpu.h"
-> +#include "hw/core/tcg-cpu-ops.h"
-> +#include "tcg/tcg.h"
->
-> +static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-> +                                          const TranslationBlock *tb)
-> +{
-> +    if (!(tb_cflags(tb) & CF_PCREL)) {
-> +        RISCVCPU *cpu =3D RISCV_CPU(cs);
-> +        CPURISCVState *env =3D &cpu->env;
-> +        RISCVMXL xl =3D FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> +
-> +        tcg_debug_assert(!(cs->tcg_cflags & CF_PCREL));
-> +
-> +        if (xl =3D=3D MXL_RV32) {
-> +            env->pc =3D (int32_t) tb->pc;
-> +        } else {
-> +            env->pc =3D tb->pc;
-> +        }
-> +    }
-> +}
-> +
-> +static void riscv_restore_state_to_opc(CPUState *cs,
-> +                                       const TranslationBlock *tb,
-> +                                       const uint64_t *data)
-> +{
-> +    RISCVCPU *cpu =3D RISCV_CPU(cs);
-> +    CPURISCVState *env =3D &cpu->env;
-> +    RISCVMXL xl =3D FIELD_EX32(tb->flags, TB_FLAGS, XL);
-> +    target_ulong pc;
-> +
-> +    if (tb_cflags(tb) & CF_PCREL) {
-> +        pc =3D (env->pc & TARGET_PAGE_MASK) | data[0];
-> +    } else {
-> +        pc =3D data[0];
-> +    }
-> +
-> +    if (xl =3D=3D MXL_RV32) {
-> +        env->pc =3D (int32_t)pc;
-> +    } else {
-> +        env->pc =3D pc;
-> +    }
-> +    env->bins =3D data[1];
-> +}
-> +
-> +static const struct TCGCPUOps riscv_tcg_ops =3D {
-> +    .initialize =3D riscv_translate_init,
-> +    .synchronize_from_tb =3D riscv_cpu_synchronize_from_tb,
-> +    .restore_state_to_opc =3D riscv_restore_state_to_opc,
-> +
-> +#ifndef CONFIG_USER_ONLY
-> +    .tlb_fill =3D riscv_cpu_tlb_fill,
-> +    .cpu_exec_interrupt =3D riscv_cpu_exec_interrupt,
-> +    .do_interrupt =3D riscv_cpu_do_interrupt,
-> +    .do_transaction_failed =3D riscv_cpu_do_transaction_failed,
-> +    .do_unaligned_access =3D riscv_cpu_do_unaligned_access,
-> +    .debug_excp_handler =3D riscv_cpu_debug_excp_handler,
-> +    .debug_check_breakpoint =3D riscv_cpu_debug_check_breakpoint,
-> +    .debug_check_watchpoint =3D riscv_cpu_debug_check_watchpoint,
-> +#endif /* !CONFIG_USER_ONLY */
-> +};
->
->  static void cpu_cfg_ext_auto_update(RISCVCPU *cpu, uint32_t ext_offset,
->                                      bool value)
-> @@ -515,7 +574,6 @@ static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu=
-, CPUClass *cc)
->  {
->      /*
->       * All cpus use the same set of operations.
-> -     * riscv_tcg_ops is being imported from cpu.c for now.
->       */
->      cc->tcg_ops =3D &riscv_tcg_ops;
->  }
-> --
-> 2.41.0
->
->
+Yes, but the problem is that only one node may be associated this way
+and we have several.
 
