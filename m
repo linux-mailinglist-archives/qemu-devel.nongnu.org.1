@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E837AB348
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBD07AB349
 	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 16:11:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjgqv-0002vF-4R; Fri, 22 Sep 2023 10:09:53 -0400
+	id 1qjgqx-0002xy-A2; Fri, 22 Sep 2023 10:09:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1qjgqm-0002u6-1X
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:09:44 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1qjgqp-0002uv-Dq
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:09:47 -0400
+Received: from mail-lj1-x22e.google.com ([2a00:1450:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <phil@philjordan.eu>)
- id 1qjgqk-0008P3-Js
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:09:43 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-31fe2c8db0dso1925941f8f.3
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 07:09:42 -0700 (PDT)
+ id 1qjgqn-0008PY-Ub
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:09:47 -0400
+Received: by mail-lj1-x22e.google.com with SMTP id
+ 38308e7fff4ca-2c007d6159aso37174111fa.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 07:09:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1695391781; x=1695996581;
+ d=philjordan-eu.20230601.gappssmtp.com; s=20230601; t=1695391784; x=1695996584;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=NwlBBf3rtKK44LxBF31RQ5uFpkLivnaBoZpAWCqLFCs=;
- b=yhjg11L28hHZw8onSiiyz0iJ8CTuC9ATQ7JVX+O+jlfSrNnNHbvUq0wB41HuUZbWum
- 0PgNOPsR7JGcKnkSPty7wjsE04SudNyF6cDAdrinRtbYtR3ESg2xuDO+vAMtFgbOgGN4
- snf3pV7BODov6fV9MfSvwE5XGTpJm5O+77TUQYMckV+vVYzOB+cTPZ5SwjPJQi9MqA9n
- qziL7N4VqPWXohLJ5YDNHPPxp7o5zyVS73z40YmkaB/+k18JS46ELEliIP6RlVWz1riq
- Bct1ATj4vvlfmcEb9njIw4fKm8FShqTaShDBoLQR84oFwsB/F/JVJLXFgH2Q98AlaZrh
- bQoA==
+ bh=RwgPyvay9DFmsLuOUJUHjUScLN28OjxwI/Y1FI48aMc=;
+ b=RUwVJC1EJcctYPFti4fCvVIX+NkdzJtzSZeUljmJsL1hj+qZILfjB51Z7bvMR4Tz3U
+ p6OITbZz+E6E0Dc6rQFzCZZ9nK5HHbDJq4C8Ap8iRp7tCj5NHp4yrfvH4jn+hN14YCis
+ itDahkmERN1DWTlXgNiH3e1YTBTWPY1UwhV50btxmHlv6ZGKjXxa2AYKUUR69R0hyst2
+ bX3MiigiZuqHugzdRCqDfc3MSWGkhc8pr+uKgEHsyJD0ozmNAFda7MvqNelAaDdCJi8H
+ c9Rjc9G9sI/3iJJH33LrBNse82eHeb/PYiOOfRdV/oQrlpDronGYYxhMLTrwbRIo2q1d
+ b+NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695391781; x=1695996581;
+ d=1e100.net; s=20230601; t=1695391784; x=1695996584;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=NwlBBf3rtKK44LxBF31RQ5uFpkLivnaBoZpAWCqLFCs=;
- b=AfDbBmKmQCLvkPbfRkBU6FV/0lxify0JqrOCaK5fP3ZB0bF8W3W69Oy98pVY/tDLeD
- 581CZHs9ForvhqTfT4LrSsGyohHtC2N9hLlhsQdvok6qEgrUTl+GfFAOedRuAnvPnxNW
- ze8f13yZ7CMij/Vah43o0IOBEld4zJ26DmJSldInjPGE853SUTJu54NLgVpQGdj5jUbl
- ftBnaTtQ6jP+ZvAPVhQZXxEghaTV1osF8YK+ig5zlJTpSvBO9SHhg/WuRbs7d/Gvx6W5
- WGfxYIGI87qck0eXNph6CAQI7SJwS+kXm/lARYo32qpHjh5Vv7PK+zK6YPftmC4N4hCU
- WxEQ==
-X-Gm-Message-State: AOJu0Yw7k0cWRkFgLYnOOJObzazsfwvCMSX4BdialyOVHqZ1kZ4I0UuL
- pLEL+UzLX81G3Q0u/6CmTYQ39dYDl+x3/3QQyUM=
-X-Google-Smtp-Source: AGHT+IHoBMN1jFEO04emIPxLz8c1aKi9bFLbR7D1HioY0UNIggIa6G/4kdSgIBW8PxmbAPfQoQAh9g==
-X-Received: by 2002:adf:fc92:0:b0:31f:fa61:961d with SMTP id
- g18-20020adffc92000000b0031ffa61961dmr8334632wrr.63.1695391781119; 
- Fri, 22 Sep 2023 07:09:41 -0700 (PDT)
+ bh=RwgPyvay9DFmsLuOUJUHjUScLN28OjxwI/Y1FI48aMc=;
+ b=t/OA3C7qDNtxddUqS0ylPkg6fZ4pUsQaoX9jGwtyFzKTrirenA5ZYw+8NChv4GFhV+
+ 36I/Ftbn1hU79j60ERay7NyY3o55e4nlzGhz3p5NSP2z3rpBC/5difot0N1swAWRRcQP
+ 3NzRoFrXfUyXJRxM5V8/OlwIba0xwZH9m7h5CKnXUI3OFBczu9NbM40LdI73Usfp5ZrH
+ 5B4UG8kbqxLTlD32cSZiWwBjBHRdbyVzf+2gkkdSr44RJ9jFOy1PNB2zwtSYX+tsqAFm
+ frAkREC1+RRIc48ZzRKQOiR/qa2a2JlThN8JwoYDozCOGF47azF6/+6hNi9hSi7mo7jr
+ IRVw==
+X-Gm-Message-State: AOJu0YzQBH7hZffvqmgysXw2yF+5NWmwtaQJM8/6PXlbyd5GOxLk5Tm2
+ pAiyZ/Q2YKY2EIpnwZrQjHTueqSiIU51jQCn9Ek=
+X-Google-Smtp-Source: AGHT+IETnI/4u8YyfHlagvukoYXzlEM9QY8mUCNmZocylHYkU7Q/8cYIrAIgdBXhby/cWT4JpsiIbA==
+X-Received: by 2002:a2e:9b86:0:b0:2bf:fb49:6619 with SMTP id
+ z6-20020a2e9b86000000b002bffb496619mr7325385lji.23.1695391784123; 
+ Fri, 22 Sep 2023 07:09:44 -0700 (PDT)
 Received: from localhost.localdomain (89-104-8-249.customer.bnet.at.
  [89.104.8.249]) by smtp.gmail.com with ESMTPSA id
- g27-20020a170906395b00b009ae587ce128sm2725823eje.216.2023.09.22.07.09.40
+ g27-20020a170906395b00b009ae587ce128sm2725823eje.216.2023.09.22.07.09.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 07:09:40 -0700 (PDT)
+ Fri, 22 Sep 2023 07:09:43 -0700 (PDT)
 From: Phil Dennis-Jordan <phil@philjordan.eu>
 To: qemu-devel@nongnu.org
 Cc: dirty@apple.com, rbolshakov@ddn.com, lists@philjordan.eu,
  Phil Dennis-Jordan <phil@philjordan.eu>
-Subject: [PATCH 1/3] i386: hvf: Adds support for INVTSC cpuid bit
-Date: Fri, 22 Sep 2023 16:09:12 +0200
-Message-Id: <20230922140914.13906-2-phil@philjordan.eu>
+Subject: [PATCH 2/3] i386: hvf: In kick_vcpu use hv_vcpu_interrupt to force
+ exit
+Date: Fri, 22 Sep 2023 16:09:13 +0200
+Message-Id: <20230922140914.13906-3-phil@philjordan.eu>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20230922140914.13906-1-phil@philjordan.eu>
 References: <20230922140914.13906-1-phil@philjordan.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: neutral client-ip=2a00:1450:4864:20::429;
- envelope-from=phil@philjordan.eu; helo=mail-wr1-x429.google.com
+Received-SPF: neutral client-ip=2a00:1450:4864:20::22e;
+ envelope-from=phil@philjordan.eu; helo=mail-lj1-x22e.google.com
 X-Spam_score_int: -10
 X-Spam_score: -1.1
 X-Spam_bar: -
@@ -92,37 +93,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch adds the INVTSC bit to the Hypervisor.framework accelerator's
-CPUID bit passthrough allow-list. Previously, specifying +invtsc in the CPU
-configuration would fail with the following warning despite the host CPU
-advertising the feature:
+When interrupting a vCPU thread, this patch actually tells the hypervisor to
+stop running guest code on that vCPU.
 
-qemu-system-x86_64: warning: host doesn't support requested feature:
-CPUID.80000007H:EDX.invtsc [bit 8]
+Calling hv_vcpu_interrupt actually forces a vCPU exit, analogously to
+hv_vcpus_exit on aarch64.
 
-x86 macOS itself relies on a fixed rate TSC for its own Mach absolute time
-timestamp mechanism, so there's no reason we can't enable this bit for guests.
+Previously, hvf_kick_vcpu_thread relied upon hv_vcpu_run returning very
+frequently, including many spurious exits, which made it less of a problem that
+nothing was actively done to stop the vCPU thread running guest code.
+The newer, more efficient hv_vcpu_run_until exits much more rarely, so a true
+"kick" is needed.
 
 Signed-off-by: Phil Dennis-Jordan <phil@philjordan.eu>
 ---
- target/i386/hvf/x86_cpuid.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ target/i386/hvf/hvf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
-index 7323a7a94b..d2721bd2a7 100644
---- a/target/i386/hvf/x86_cpuid.c
-+++ b/target/i386/hvf/x86_cpuid.c
-@@ -145,6 +145,10 @@ uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
-                 CPUID_EXT3_3DNOWPREFETCH | CPUID_EXT3_OSVW | CPUID_EXT3_XOP |
-                 CPUID_EXT3_FMA4 | CPUID_EXT3_TBM;
-         break;
-+    case 0x80000007:
-+        edx &= CPUID_APM_INVTSC;
-+        eax = ebx = ecx = 0;
-+        break;
-     default:
-         return 0;
-     }
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index cb2cd0b02f..55bd7d2af8 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -209,7 +209,10 @@ static inline bool apic_bus_freq_is_known(CPUX86State *env)
+ 
+ void hvf_kick_vcpu_thread(CPUState *cpu)
+ {
++    hv_vcpuid_t hvf_vcpuid;
+     cpus_kick_thread(cpu);
++    hvf_vcpuid = cpu->accel->fd;
++    hv_vcpu_interrupt(&hvf_vcpuid, 1);
+ }
+ 
+ int hvf_arch_init(void)
 -- 
 2.36.1
 
