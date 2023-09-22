@@ -2,72 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBEB17AB338
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 16:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D957AB33D
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 16:01:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjghX-0006qd-57; Fri, 22 Sep 2023 10:00:11 -0400
+	id 1qjgiK-0007QP-RH; Fri, 22 Sep 2023 10:01:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjghV-0006qG-7x
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:00:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjghR-0005qP-W9
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:00:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695391198;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=8+D1RE33DKPVBC0jFZ1pXRWmz6S/+yl8DY6ABWfjglA=;
- b=BB9YrhLdYbQUCjWopIZ+cPfFRnLszUeqQETl6+mKvUpI7vXI+GV3JPt6d3nq/Uoy3sK2jo
- 4qnJPEjEXVzoeM5nWRHfVsit7btsE3VeHeK9WzB504OpX1n/Ne3PWWADiODl3/RKyeiVF8
- ZcCWzr02xtPh2IkibEBIf0Ccoo0W+ZI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-83-wwqwdAEIO4ynR5cf6uV2kg-1; Fri, 22 Sep 2023 09:59:56 -0400
-X-MC-Unique: wwqwdAEIO4ynR5cf6uV2kg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 42E84280AA22;
- Fri, 22 Sep 2023 13:59:56 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 20C02492C37;
- Fri, 22 Sep 2023 13:59:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 1554921E6900; Fri, 22 Sep 2023 15:59:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-devel@nongnu.org,  berrange@redhat.com,  peter.maydell@linaro.org,
- pbonzini@redhat.com
-Subject: Re: [PATCH 09/11] hw/rx/rx62n: Use qdev_prop_set_array()
-References: <20230908143703.172758-1-kwolf@redhat.com>
- <20230908143703.172758-10-kwolf@redhat.com>
-Date: Fri, 22 Sep 2023 15:59:55 +0200
-In-Reply-To: <20230908143703.172758-10-kwolf@redhat.com> (Kevin Wolf's message
- of "Fri, 8 Sep 2023 16:37:00 +0200")
-Message-ID: <87wmwis3z8.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qjgiF-0007Os-HR
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:00:55 -0400
+Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qjgiD-0006Ly-Rt
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:00:55 -0400
+Received: by mail-ed1-x535.google.com with SMTP id
+ 4fb4d7f45d1cf-5230a22cfd1so2593629a12.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 07:00:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695391252; x=1695996052; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=O+8rdA7E3EgjYuq/xY5hpkSawi+9QLoNb/NftKSrgH8=;
+ b=OrdHDxLgmeopfGIYRJNfaU1H7DSvtP7T/F6hTQMwcLxSmKHVY41KiqvhhvBfnD7moA
+ YnDzSqGs3f9j7ZcvbzKQk/TzC5ze12y/L1h4DiqGqdKyXAi6YIhW37dURdPGKywCb+EY
+ Enam74DUNvFz66XLcnNSaW35++q6na1EpHtUYUG78WQoGoeoeED4KqyNEKi2A7AhLHbB
+ EcaPUmzBY40xukY6BLSyM26jXj0yGDbv24h0VXdpPteS4DF/Pp7vhQfD6GZiI0DaQFDB
+ gI7uFm1ArBYpAw4raDWdnZ1rlXmN9rnORu4I/aKxb3u7CPrWj5sPNH6yo+81YfVC2j1q
+ uQ5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695391252; x=1695996052;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=O+8rdA7E3EgjYuq/xY5hpkSawi+9QLoNb/NftKSrgH8=;
+ b=OObtomF/2Pc/HpwEZGHmj+/pD/7XlJWG0lxAgZJLAQOkE1LwI7cMrL96lm8TBQLAZn
+ RifzfEprUIE3ZvesZQeNSjYpoiMGwlt68C7PxNKZQzxV7Oz6QeFmBsaO1dbAjD/XtkBT
+ /GJeT6n6ILBBuG2Epw9/WMhNBFSKkwvMEuni4ciqzabVSVkoTZwg1ZLXVCCMWWP+wr7W
+ wvIDfu1eByRQ1uzbq7YMEjYwNnriWvttKV0s8t0/kUMZFEizPGzRlNE64aUyrFyv6lcZ
+ HiTDqeqPAxUtdfH6uEi3//2v1AbtR42DHaytox5cUpv/ad13EpMC6bt1ZDeqJvbXSMKR
+ Gong==
+X-Gm-Message-State: AOJu0YylBI898LVuhb0oGGK5/MU+4CL7Lfm0ADNarLgLh/hnREyUqFr6
+ mckdSjcTc6xpKlVeDznpPbR+94+Vc5KOYJ5x+2Napw==
+X-Google-Smtp-Source: AGHT+IEj3k/xD5542LGi9Y8Ych01KBqzKtXUC9nwQgqVT0V/banlrsoJeuF2Q5MKOi1kvV8e4CF3J0cNvG+EQ/zjfEY=
+X-Received: by 2002:aa7:d1c5:0:b0:52f:3b4c:d06e with SMTP id
+ g5-20020aa7d1c5000000b0052f3b4cd06emr6656592edp.12.1695391251178; Fri, 22 Sep
+ 2023 07:00:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230922135555.241809-1-berrange@redhat.com>
+ <20230922135555.241809-2-berrange@redhat.com>
+In-Reply-To: <20230922135555.241809-2-berrange@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Fri, 22 Sep 2023 15:00:32 +0100
+Message-ID: <CAFEAcA8gPOx6hH9gZxHOvcTwpSuLO5mCc0zqpTEBSidf0_QaaA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] configure: support passthrough of -Dxxx args to meson
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Kevin Wolf <kwolf@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::535;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x535.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,69 +92,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Kevin Wolf <kwolf@redhat.com> writes:
-
-> Instead of manually setting "foo-len" and "foo[i]" properties, build a
-> QList and use the new qdev_prop_set_array() helper to set the whole
-> array property with a single call.
+On Fri, 22 Sept 2023 at 14:56, Daniel P. Berrang=C3=A9 <berrange@redhat.com=
+> wrote:
 >
-> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+> This can be useful for setting some meson global options, such as the
+> optimization level or debug state, which don't have an analogous
+> option explicitly defined in QEMU's configure wrapper script.
+>
+> Signed-off-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+
+The commit message says it's adding support for a new feature...
+
 > ---
->  hw/rx/rx62n.c | 19 ++++++++++---------
->  1 file changed, 10 insertions(+), 9 deletions(-)
+>  configure | 2 ++
+>  1 file changed, 2 insertions(+)
 >
-> diff --git a/hw/rx/rx62n.c b/hw/rx/rx62n.c
-> index 3e887a0fc7..6990096642 100644
-> --- a/hw/rx/rx62n.c
-> +++ b/hw/rx/rx62n.c
-> @@ -28,6 +28,7 @@
->  #include "hw/sysbus.h"
->  #include "hw/qdev-properties.h"
->  #include "sysemu/sysemu.h"
-> +#include "qapi/qmp/qlist.h"
->  #include "qom/object.h"
->=20=20
->  /*
-> @@ -130,22 +131,22 @@ static void register_icu(RX62NState *s)
->  {
->      int i;
->      SysBusDevice *icu;
-> +    QList *ipr_map, *trigger_level;
->=20=20
->      object_initialize_child(OBJECT(s), "icu", &s->icu, TYPE_RX_ICU);
->      icu =3D SYS_BUS_DEVICE(&s->icu);
-> -    qdev_prop_set_uint32(DEVICE(icu), "len-ipr-map", NR_IRQS);
+> diff --git a/configure b/configure
+> index e08127045d..cbd7e03e9f 100755
+> --- a/configure
+> +++ b/configure
+> @@ -931,6 +931,8 @@ cat << EOF
+>    bsd-user        all BSD usermode emulation targets
+>    pie             Position Independent Executables
+>
+> +  -Dmesonoptname=3Dval      passthrough option to meson unmodified
 > +
-> +    ipr_map =3D qlist_new();
->      for (i =3D 0; i < NR_IRQS; i++) {
-> -        char propname[32];
-> -        snprintf(propname, sizeof(propname), "ipr-map[%d]", i);
-> -        qdev_prop_set_uint32(DEVICE(icu), propname, ipr_table[i]);
-> +        qlist_append_int(ipr_map, ipr_table[i]);
->      }
-> -    qdev_prop_set_uint32(DEVICE(icu), "len-trigger-level",
-> -                         ARRAY_SIZE(levelirq));
-> +    qdev_prop_set_array(sysctl, "ipr-map", ipr_map);
+>  NOTE: The object files are built at the place where configure is launche=
+d
+>  EOF
+>  exit 0
 
-../hw/rx/rx62n.c:143:25: error: =E2=80=98sysctl=E2=80=99 undeclared (first =
-use in this function); did you mean =E2=80=98syscall=E2=80=99?
+...but the patch is only updating the --help text. Is there
+a missing piece of code here ?
 
-Should be DEVICE(icu), I guess.
-
-> +
-> +    trigger_level =3D qlist_new();
->      for (i =3D 0; i < ARRAY_SIZE(levelirq); i++) {
-> -        char propname[32];
-> -        snprintf(propname, sizeof(propname), "trigger-level[%d]", i);
-> -        qdev_prop_set_uint32(DEVICE(icu), propname, levelirq[i]);
-> +        qlist_append_int(trigger_level, levelirq[i]);
->      }
-> +    qdev_prop_set_array(sysctl, "trigger-level", trigger_level);
-
-Again.
-
->=20=20
->      for (i =3D 0; i < NR_IRQS; i++) {
->          s->irq[i] =3D qdev_get_gpio_in(DEVICE(icu), i);
-
+thanks
+-- PMM
 
