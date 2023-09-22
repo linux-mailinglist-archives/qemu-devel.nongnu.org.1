@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A85A7AAE85
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 11:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95BA67AAE88
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 11:45:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjciq-00020L-P0; Fri, 22 Sep 2023 05:45:16 -0400
+	id 1qjcis-000213-QP; Fri, 22 Sep 2023 05:45:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjcil-0001zg-Tu
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:45:12 -0400
+ id 1qjcip-000201-W2
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:45:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjcii-000656-Pe
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:45:10 -0400
+ id 1qjcik-00065H-Ho
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:45:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695375907;
+ s=mimecast20190719; t=1695375908;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=zCxmX/sA/KVkmCXBwpEBmXlLd6ry3Z+OC3PJAGREtq0=;
- b=g+LNxsF8Z4Pw1I5n8w2pKwHIsJ5CCaoXiJVeBm8Wh9sbU1L+cUPnrIpS7Qx2t4GSVL5XP3
- XJsCZNId0bjoIGe5IdrTRuuYxT/Mvyi/InYsseQogKDmM9enooyV0Nj0AbVrYSO7CqjA+k
- BqTeLhpI6M3J5PKsyw3OqvNlnq77fUc=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=3/uW7JqmfdvTEgpNRrC5GI+FBcbtRDs5b03TvjBCV5Y=;
+ b=EfJjg5oB0PjMTIgSM3cljeAfoyWH7Bt+pEPU6rpo29V9qHZZRVLF8GDuEv65XDZ7JWrMcL
+ jhXO/eXqoqJ1NhSIWwaNyLODdCbvehHKuXI3795rzFYvNiPorubj4pk+ud796IrGP4/nT4
+ CRZg9vqU+WpKotr0JH/E4t4H/3C9Ekc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-yAV8Dk1VPxG5n_D8p6HGaQ-1; Fri, 22 Sep 2023 05:45:05 -0400
-X-MC-Unique: yAV8Dk1VPxG5n_D8p6HGaQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32153a4533eso1281827f8f.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 02:45:05 -0700 (PDT)
+ us-mta-329-E96ArzKYMd--Usu7rfyzug-1; Fri, 22 Sep 2023 05:45:07 -0400
+X-MC-Unique: E96ArzKYMd--Usu7rfyzug-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fbdf341934so14852845e9.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 02:45:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695375904; x=1695980704;
+ d=1e100.net; s=20230601; t=1695375905; x=1695980705;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=zCxmX/sA/KVkmCXBwpEBmXlLd6ry3Z+OC3PJAGREtq0=;
- b=cAgNywWDPuljHtJ4+AMvBFlnZKS/ODe8nWiNHpa2l58iURU4VcRDeHbLUACqB/UuFv
- Qi2M93j7Rj3TWM3yEqYWKT7MYNEZL3HgfjmkYIJw2/a+LLBqQ4RjPqbRaJOQ2XnzTI5b
- bJgOegoOQAEw9Kefd7W4uGwtJagJc+K65W8iuRAYsrbjqQ62SAd37e5rJqGefJqRdXf5
- z9wnzoaiJN/Q0kqK+gxeD3sEC+YSISdQpQtoyNDcyenRD3clDa0z6wBgIIRr8W1hYIxR
- T52S7oPqmHGToy8E6L7d+Y84L+mX/RFESIU5+2OxYOUgko83+oLLfgrR2aX85d/JDjrj
- h97Q==
-X-Gm-Message-State: AOJu0YwzAdS7hiEpvg6rywprZcQkicS97zAALsULfyxTHm1zAktvlWhQ
- qk4x63AWsJ1FES4DnhtOoE9T/Exfy7eBmrDHqlo7SpCOazuIFP4TAJGBaPL3pzwYZCFLyNaPF8n
- OisUtJ9dlFRzPO1QtMQEqDvkwAym/zTrYZy85BLhMDqdP/4S0Be8uni1QzrdNOR1/rxDjsMm1Qk
- A=
-X-Received: by 2002:a5d:4f84:0:b0:321:5b64:f744 with SMTP id
- d4-20020a5d4f84000000b003215b64f744mr6805790wru.20.1695375903747; 
- Fri, 22 Sep 2023 02:45:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFAQAN/DwS1LkOYGvQ/BPhGRL0ROjVspExMz6lZUMb3dHS36qsP5fXn8FQXYCUkailhA3J/Qg==
-X-Received: by 2002:a5d:4f84:0:b0:321:5b64:f744 with SMTP id
- d4-20020a5d4f84000000b003215b64f744mr6805771wru.20.1695375903349; 
- Fri, 22 Sep 2023 02:45:03 -0700 (PDT)
+ bh=3/uW7JqmfdvTEgpNRrC5GI+FBcbtRDs5b03TvjBCV5Y=;
+ b=W1urLm9sqJjfkGqccTqGe9ngfJynN2Y1eTLFXH5yq4XAy6GXWVQaMB8KLgL7KvZ+uF
+ GUSZ7mH9bmsVCrMubdZfRtp9wn6MxuX1g9xfaXKZ50g82qthDhQpgIfYQHSHgOW17N+p
+ IEsgScuyFQfju5eJ9AWW5sqpDoOOWC5RRIv8p26h+VMEaKHdcDhHsS1wqu8SuPg8wqxu
+ xxdSYKLrQayFXqtsSPJYTJbkfrk3nDUFha6UqDN+SPq3iefvA2XvUpui0tQb6xvn1pVH
+ hr49cyyCDFIP8PRRDuM2zWBOmtH9zhUlgxoK0GZqgxOizVW70+xUZlDte30EoOguddP3
+ RsCQ==
+X-Gm-Message-State: AOJu0YwXIKwecERzjI9CREV3R51GGbWNUA4HWR1IA/kLD9/Q8E1IwGme
+ YXxzc5MpEzrXjT6iujFadV755sPzdeZ5wHSjfVl7MyYtSuqijRnWC7SnC4dz0Ryt1ooWtthj/Vl
+ 0vOqFHHziP/K2WuLjit6b7jFn0qWDvlKHyTfi51B40Zng66jO68L8ZJX7jvgABwS2r6/i27KI+U
+ 0=
+X-Received: by 2002:a05:600c:3654:b0:3f5:fff8:d4f3 with SMTP id
+ y20-20020a05600c365400b003f5fff8d4f3mr6977134wmq.7.1695375905640; 
+ Fri, 22 Sep 2023 02:45:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGesIG9fvtIemulmGGJ9VIz71SzOE+mINu6DJt6b/Hat8DYOMTA2X5NHcgPPKupQ4MH11P6zw==
+X-Received: by 2002:a05:600c:3654:b0:3f5:fff8:d4f3 with SMTP id
+ y20-20020a05600c365400b003f5fff8d4f3mr6977116wmq.7.1695375905254; 
+ Fri, 22 Sep 2023 02:45:05 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- p2-20020a5d68c2000000b0031431fb40fasm4004176wrw.89.2023.09.22.02.45.01
+ x14-20020a05600c21ce00b003fefcbe7fa8sm4175572wmj.28.2023.09.22.02.45.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 02:45:02 -0700 (PDT)
+ Fri, 22 Sep 2023 02:45:04 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mkletzan@redhat.com
-Subject: [PATCH 1/9] audio: Add easy dummy audio initialiser
-Date: Fri, 22 Sep 2023 11:44:51 +0200
-Message-ID: <20230922094459.265509-2-pbonzini@redhat.com>
+Subject: [PATCH 2/9] Introduce machine property "audiodev"
+Date: Fri, 22 Sep 2023 11:44:52 +0200
+Message-ID: <20230922094459.265509-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230922094459.265509-1-pbonzini@redhat.com>
 References: <20230922094459.265509-1-pbonzini@redhat.com>
@@ -102,88 +102,113 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Martin Kletzander <mkletzan@redhat.com>
 
-In case of sound devices which are created by default (some of them even with
--nodefaults) it would not be nice to users if qemu required explicit:
-
-  -audiodev driver=none,id=audio0 -machine audiodev=audio0
-
-when they just want to run a VM and not care about any audio output.  Instead
-this little helper makes it easy to create a dummy audiodev (driver=none) in
-case there is no audiodev specified for the machine.  To make sure users
-are not surprised by no sound output a helping message is also printed out.
+Many machine types have default audio devices with no way to set the underlying
+audiodev.  Instead of adding an option for each and every one of them, this new
+property can be used as a default during machine initialisation when creating
+such devices.
 
 Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
+[Make the property optional, instead of including it in all machines. - Paolo]
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- audio/audio.c | 34 ++++++++++++++++++++++++++++++++++
- audio/audio.h |  2 ++
- 2 files changed, 36 insertions(+)
+ audio/audio.c       |  4 ++--
+ hw/core/machine.c   | 28 ++++++++++++++++++++++++++++
+ include/hw/boards.h |  7 +++++++
+ 3 files changed, 37 insertions(+), 2 deletions(-)
 
 diff --git a/audio/audio.c b/audio/audio.c
-index d72e7db7fb9..8c74bc6b88c 100644
+index 8c74bc6b88c..62047ea3069 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -41,6 +41,7 @@
- #include "sysemu/runstate.h"
- #include "ui/qemu-spice.h"
- #include "trace.h"
-+#include "hw/boards.h"
+@@ -2194,8 +2194,8 @@ const char *audio_maybe_init_dummy(const char *default_id)
+ {
+     MachineState *ms = MACHINE(qdev_get_machine());
  
- #define AUDIO_CAP "audio"
- #include "audio_int.h"
-@@ -2174,6 +2175,39 @@ bool audio_init_audiodevs(void)
-     return true;
+-    if (ms->default_audiodev) {
+-        return ms->default_audiodev;
++    if (ms->audiodev) {
++        return ms->audiodev;
+     }
+ 
+     dolog("warning: No audiodev specified for implicit machine devices, "
+diff --git a/hw/core/machine.c b/hw/core/machine.c
+index da699cf4e14..f677e96a223 100644
+--- a/hw/core/machine.c
++++ b/hw/core/machine.c
+@@ -682,6 +682,22 @@ bool device_type_is_dynamic_sysbus(MachineClass *mc, const char *type)
+     return allowed;
  }
  
-+static void audio_init_dummy(const char *id)
++static char *machine_get_audiodev(Object *obj, Error **errp)
 +{
-+    Audiodev *dev = g_new0(Audiodev, 1);
-+    AudiodevListEntry *e = g_new0(AudiodevListEntry, 1);
++    MachineState *ms = MACHINE(obj);
 +
-+    dev->driver = AUDIODEV_DRIVER_NONE;
-+    dev->id = g_strdup(id);
-+
-+    audio_validate_opts(dev, &error_abort);
-+    audio_init(dev, NULL);
-+
-+    e->dev = dev;
-+    QSIMPLEQ_INSERT_TAIL(&audiodevs, e, next);
++    return g_strdup(ms->audiodev);
 +}
 +
-+const char *audio_maybe_init_dummy(const char *default_id)
++static void machine_set_audiodev(Object *obj, const char *value,
++                                         Error **errp)
 +{
-+    MachineState *ms = MACHINE(qdev_get_machine());
++    MachineState *ms = MACHINE(obj);
 +
-+    if (ms->default_audiodev) {
-+        return ms->default_audiodev;
-+    }
-+
-+    dolog("warning: No audiodev specified for implicit machine devices, "
-+          "no audio output will be available for these. "
-+          "For setting a backend audiodev for such devices try using "
-+          "the audiodev machine option.\n");
-+
-+    audio_init_dummy(default_id);
-+
-+    return default_id;
++    g_free(ms->audiodev);
++    ms->audiodev = g_strdup(value);
 +}
 +
- audsettings audiodev_to_audsettings(AudiodevPerDirectionOptions *pdo)
+ HotpluggableCPUList *machine_query_hotpluggable_cpus(MachineState *machine)
  {
-     return (audsettings) {
-diff --git a/audio/audio.h b/audio/audio.h
-index a276ec13eba..81d39526625 100644
---- a/audio/audio.h
-+++ b/audio/audio.h
-@@ -176,6 +176,8 @@ void audio_help(void);
- AudioState *audio_state_by_name(const char *name);
- const char *audio_get_id(QEMUSoundCard *card);
+     int i;
+@@ -927,6 +943,17 @@ out_free:
+     qapi_free_BootConfiguration(config);
+ }
  
-+const char *audio_maybe_init_dummy(const char *default_id);
++void machine_add_audiodev_property(MachineClass *mc)
++{
++    ObjectClass *oc = OBJECT_CLASS(mc);
 +
- #define DEFINE_AUDIO_PROPERTIES(_s, _f)         \
-     DEFINE_PROP_AUDIODEV("audiodev", _s, _f)
++    object_class_property_add_str(oc, "audiodev",
++                                  machine_get_audiodev,
++                                  machine_set_audiodev);
++    object_class_property_set_description(oc, "audiodev",
++                                          "Audiodev to use for default machine devices");
++}
++
+ static void machine_class_init(ObjectClass *oc, void *data)
+ {
+     MachineClass *mc = MACHINE_CLASS(oc);
+@@ -1132,6 +1159,7 @@ static void machine_finalize(Object *obj)
+     g_free(ms->device_memory);
+     g_free(ms->nvdimms_state);
+     g_free(ms->numa_state);
++    g_free(ms->audiodev);
+ }
  
+ bool machine_usb(MachineState *machine)
+diff --git a/include/hw/boards.h b/include/hw/boards.h
+index 6c67af196a3..b5153f5f85b 100644
+--- a/include/hw/boards.h
++++ b/include/hw/boards.h
+@@ -24,6 +24,7 @@ OBJECT_DECLARE_TYPE(MachineState, MachineClass, MACHINE)
+ 
+ extern MachineState *current_machine;
+ 
++void machine_add_audiodev_property(MachineClass *mc);
+ void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp);
+ bool machine_usb(MachineState *machine);
+ int machine_phandle_start(MachineState *machine);
+@@ -358,6 +359,12 @@ struct MachineState {
+     MemoryRegion *ram;
+     DeviceMemoryState *device_memory;
+ 
++    /*
++     * Included in MachineState for simplicity, but not supported
++     * unless machine_add_audiodev_property is called.
++     */
++    char *audiodev;
++
+     ram_addr_t ram_size;
+     ram_addr_t maxram_size;
+     uint64_t   ram_slots;
 -- 
 2.41.0
 
