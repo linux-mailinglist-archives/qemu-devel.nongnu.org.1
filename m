@@ -2,87 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D882B7AB091
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 13:26:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0977AAFE0
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:46:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjeIo-0002Os-JF; Fri, 22 Sep 2023 07:26:30 -0400
+	id 1qjdfz-0005Y3-1d; Fri, 22 Sep 2023 06:46:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjeIj-0002Kz-EU
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:26:25 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjeIg-0004kQ-2a
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 07:26:25 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3214d4ecd39so1832242f8f.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 04:26:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695381976; x=1695986776; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=3f5AAQuDUNgIGq7Ya7PBZKORmhvNYQsT/kGNPGLNH/w=;
- b=wVMy9INyt5YKSHxs0hfMW+tvuK6t7/Fitm3yzCqeUId0Q6rnlWoGNRWfeeRv8TDEGm
- 9tc7DJZDvhojfBxMxApKaHldzute42k7KGQ/qauyhPqm1tMeGbRd0yf49dg8mU4rKqpd
- gFtbiiRHqek2L+Hu4DnR/ms/b7z9vPcPevhm7xVYq2Win+gb9scTBhVmMSiCjEsLye3m
- 0JBnun6dRzgbAkKHzTRx8cJV5x2EYdd/CsQ4GNO/lW7sYO2cwmPetynkmkw2M6Fw+Fhi
- FY2bPfq5HSF9mq0Ac98a3EmAwHtZL3A0VbIOwC2DPbjG4x5orp02tzMEeGngCUyPawKS
- 1CPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695381976; x=1695986776;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3f5AAQuDUNgIGq7Ya7PBZKORmhvNYQsT/kGNPGLNH/w=;
- b=LzogQRX3MEMOe5uXehINLip62OjPifL/35VY7Pnd3ak38+YJc5pbj0BQDa18ZHpYxA
- Ycgn/c2NhkdthOGzbgYLkPYhgWhirgw2qbiaOuhMbCHCeJ3s269etn7zWsvyooT+LhIO
- NXz3Ufu4vpO8kmAFWk3nptKrZAdp1p+lmWRHVYzUdot1aGo0+ny+pTfInnupk9IJsA1N
- 284eV2bZ85+Wt+8DHDTeBii1PJqs2Fmrv3i/qyx8QSZqkjWOpHorOjtQ/vxOMbwZZHdD
- t8RMDv1My/kAndr5lKC7wZSaU2L0TfJiq5dfwo+GwdHhdUa4fDc9qATkBp/GiRoLPMEB
- S2ew==
-X-Gm-Message-State: AOJu0YxzX/zyfm1DB8y2aLVi+pw/yzSDUhjznA9obSbuJaevhINFsyAL
- n34qrmtlK6SQsNQSGIibc96WPQ==
-X-Google-Smtp-Source: AGHT+IGZbXtPh5Wm+QgX1Yt4yG/hCYymc/BVPdTyl+1Qo5JwLQS2E1wvPtEYSp/NanHMJ7Pu0ywU0w==
-X-Received: by 2002:a5d:45c4:0:b0:31f:f99c:6009 with SMTP id
- b4-20020a5d45c4000000b0031ff99c6009mr7147654wrs.22.1695381976390; 
- Fri, 22 Sep 2023 04:26:16 -0700 (PDT)
-Received: from [192.168.5.175] ([79.95.86.254])
- by smtp.gmail.com with ESMTPSA id
- o7-20020a1c7507000000b004051f8d6207sm4440904wmc.6.2023.09.22.04.26.14
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Sep 2023 04:26:16 -0700 (PDT)
-Message-ID: <60f44bdf-36cc-8402-bfbb-c6a964fe74db@linaro.org>
-Date: Fri, 22 Sep 2023 12:42:42 +0200
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qjdfw-0005Xs-6R
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:46:20 -0400
+Received: from rev.ng ([5.9.113.41])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qjdfu-0002ob-BX
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:46:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject
+ :Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=Hv36ZLSGm+4m05APNXiowcHwuXCDuKBxbkV/j/JLZqE=; b=xkujC1o6cajS6Ndwe70BPCaMwp
+ AcqG9IXajWfeINagtG6ac/QkSgJ8ilu+XIRw7K2feZ9ecHXUYovJs0HNYWpR1QGNFGqZ8Nhplx+jW
+ qbWmaAoAq0XCFmNiBKjLjFIm2soNVdIDoEFAKjN1VGExxYEjT48b4PxLrQ7m7VHQlF4s=;
+Date: Fri, 22 Sep 2023 12:45:51 +0200
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org, ale@rev.ng, richard.henderson@linaro.org, 
+ pbonzini@redhat.com, philmd@linaro.org, agraf@csgraf.de, dirty@apple.com, 
+ rbolshakov@ddn.com, anielhb413@gmail.com, pasic@linux.ibm.com, 
+ borntraeger@linux.ibm.com, palmer@dabbelt.com, alistair.francis@wdc.com, 
+ bin.meng@windriver.com, ysato@users.sourceforge.jp, peter.maydell@linaro.org
+Subject: Re: [PATCH 0/9] Replace remaining target_ulong in system-mode accel
+Message-ID: <2c7usd46qtdk42zsvc3kpuv35f7xzfz5gw4o6egb5u4cpqhz5f@dej5s6imgnyu>
+References: <20230807155706.9580-1-anjo@rev.ng>
+ <b284644e-5777-f20c-bf57-3354f9724f69@tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v4] hw/i386/pc: improve physical address space bound check
- for 32-bit x86 systems
-Content-Language: en-US
-To: Ani Sinha <anisinha@redhat.com>, david@redhat.com,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>
-Cc: qemu-devel@nongnu.org
-References: <20230922041619.3909-1-anisinha@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230922041619.3909-1-anisinha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b284644e-5777-f20c-bf57-3354f9724f69@tls.msk.ru>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,135 +59,59 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/9/23 06:16, Ani Sinha wrote:
-> 32-bit x86 systems do not have a reserved memory for hole64. On those 32-bit
-> systems without PSE36 or PAE CPU features, hotplugging memory devices are not
-> supported by QEMU as QEMU always places hotplugged memory above 4 GiB boundary
-> which is beyond the physical address space of the processor. Linux guests also
-> does not support memory hotplug on those systems. Please see Linux
-> kernel commit b59d02ed08690 ("mm/memory_hotplug: disable the functionality
-> for 32b") for more details.
+On 21/09/23, Michael Tokarev wrote:
+> 07.08.2023 18:56, Anton Johansson via wrote:
+> > This patchset replaces the remaining uses of target_ulong in the accel/
+> > directory.  Specifically, the address type of a few kvm/hvf functions
+> > is widened to vaddr, and the address type of the cpu_[st|ld]*()
+> > functions is changed to abi_ptr (which is re-typedef'd to vaddr in
+> > system mode).
+> > 
+> > As a starting point, my goal is to be able to build cputlb.c once for
+> > system mode, and this is a step in that direction by reducing the
+> > target-dependence of accel/.
+> > 
+> > * Changes in v2:
+> >      - Removed explicit target_ulong casts from 3rd and 4th patches.
+> > 
+> > Anton Johansson (9):
+> >    accel/kvm: Widen pc/saved_insn for kvm_sw_breakpoint
+> >    accel/hvf: Widen pc/saved_insn for hvf_sw_breakpoint
+> >    target: Use vaddr for kvm_arch_[insert|remove]_hw_breakpoint
+> >    target: Use vaddr for hvf_arch_[insert|remove]_hw_breakpoint
+> >    Replace target_ulong with abi_ptr in cpu_[st|ld]*()
+> >    include/exec: typedef abi_ptr to vaddr in softmmu
+> >    include/exec: Widen tlb_hit/tlb_hit_page()
+> >    accel/tcg: Widen address arg. in tlb_compare_set()
+> >    accel/tcg: Update run_on_cpu_data static assert
 > 
-> Therefore, the maximum limit of the guest physical address in the absence of
-> additional memory devices effectively coincides with the end of
-> "above 4G memory space" region for 32-bit x86 without PAE/PSE36. When users
-> configure additional memory devices, after properly accounting for the
-> additional device memory region to find the maximum value of the guest
-> physical address, the address will be outside the range of the processor's
-> physical address space.
+> Pinging a relatively old patchset, - which fixes from here needs to
+> go to stable-8.1?
 > 
-> This change adds improvements to take above into consideration.
+> The context: https://lore.kernel.org/qemu-devel/20230721205827.7502-1-anjo@rev.ng/
+> And according to this email:
 > 
-> For example, previously this was allowed:
+> https://lore.kernel.org/qemu-devel/00e9e08eae1004ef67fe8dca3aaf5043e6863faa.camel@gmail.com/
 > 
-> $ ./qemu-system-x86_64 -cpu pentium -m size=10G
+> at least "include/exec: Widen tlb_hit/tlb_hit_page()" should go to 8.1,
+> something else?
 > 
-> With this change now it is no longer allowed:
+> Thanks,
 > 
-> $ ./qemu-system-x86_64 -cpu pentium -m size=10G
-> qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff phys-bits too low (32)
-> 
-> However, the following are allowed since on both cases physical address
-> space of the processor is 36 bits:
-> 
-> $ ./qemu-system-x86_64 -cpu pentium2 -m size=10G
-> $ ./qemu-system-x86_64 -cpu pentium,pse36=on -m size=10G
-> 
-> For 32-bit, without PAE/PSE36, hotplugging additional memory is no longer allowed.
-> 
-> $ ./qemu-system-i386 -m size=1G,maxmem=3G,slots=2
-> qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bits too low (32)
-> $ ./qemu-system-i386 -machine q35 -m size=1G,maxmem=3G,slots=2
-> qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bits too low (32)
-> 
-> A new compatibility flag is introduced to make sure pc_max_used_gpa() keeps
-> returning the old value for machines 8.1 and older.
-> Therefore, the above is still allowed for older machine types in order to support
-> compatibility. Hence, the following still works:
-> 
-> $ ./qemu-system-i386 -machine pc-i440fx-8.1 -m size=1G,maxmem=3G,slots=2
-> $ ./qemu-system-i386 -machine pc-q35-8.1 -m size=1G,maxmem=3G,slots=2
-> 
-> Further, following is also allowed as with PSE36, the processor has 36-bit
-> address space:
-> 
-> $ ./qemu-system-i386 -cpu 486,pse36=on -m size=1G,maxmem=3G,slots=2
-> 
-> After calling CPUID with EAX=0x80000001, all AMD64 compliant processors
-> have the longmode-capable-bit turned on in the extended feature flags (bit 29)
-> in EDX. The absence of CPUID longmode can be used to differentiate between
-> 32-bit and 64-bit processors and is the recommended approach. QEMU takes this
-> approach elsewhere (for example, please see x86_cpu_realizefn()), With
-> this change, pc_max_used_gpa() also uses the same method to detect 32-bit
-> processors.
-> 
-> Unit tests are modified to not run 32-bit x86 tests that use memory hotplug.
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> ---
->   hw/i386/pc.c                   | 31 ++++++++++++++++++++++++++++---
->   hw/i386/pc_piix.c              |  4 ++++
->   hw/i386/pc_q35.c               |  2 ++
->   include/hw/i386/pc.h           |  6 ++++++
->   tests/qtest/bios-tables-test.c | 26 ++++++++++++++++++--------
->   tests/qtest/numa-test.c        |  7 ++++++-
->   6 files changed, 64 insertions(+), 12 deletions(-)
+> /mjt
 
+If the patch above is the only one needed to fix the segfault (haven't
+tested myself), pulling it in isolation is fine as it doesn't depend on 
+any of the other patches.
 
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 54838c0c41..2a689cf0bd 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -907,12 +907,37 @@ static uint64_t pc_get_cxl_range_end(PCMachineState *pcms)
->   static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_size)
->   {
->       X86CPU *cpu = X86_CPU(first_cpu);
-> +    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-> +    MachineState *ms = MACHINE(pcms);
-> +    uint64_t devmem_start = 0;
-> +    ram_addr_t devmem_size = 0;
->   
-> -    /* 32-bit systems don't have hole64 thus return max CPU address */
-> -    if (cpu->phys_bits <= 32) {
-> -        return ((hwaddr)1 << cpu->phys_bits) - 1;
-> +    /*
-> +     * 32-bit systems don't have hole64 but they might have a region for
-> +     * memory devices. Even if additional hotplugged memory devices might
-> +     * not be usable by most guest OSes, we need to still consider them for
-> +     * calculating the highest possible GPA so that we can properly report
-> +     * if someone configures them on a CPU that cannot possibly address them.
-> +     */
-> +    if (!(cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM)) {
-> +        /* 32-bit systems */
-> +        if (!pcmc->broken_32bit_mem_addr_check) {
+The rest of the patches can be delayed without issue.
 
-Nitpicking, code is simplified if you invert this condition check.
-
-> +            if (pcmc->has_reserved_memory &&
-> +                (ms->ram_size < ms->maxram_size)) {
-> +                pc_get_device_memory_range(pcms, &devmem_start,
-> +                                           &devmem_size);
-> +                devmem_start += devmem_size;
-> +                return devmem_start - 1;
-> +            } else {
-> +                return pc_above_4g_end(pcms) - 1;
-> +            }
-> +        } else {
-> +            /* old value for compatibility reasons */
-> +            return ((hwaddr)1 << cpu->phys_bits) - 1;
-
-Since you change this line, can we convert to
-MAKE_64BIT_MASK(0, cpu->phys_bits) ?
-
-> +        }
->       }
->   
-> +    /* 64-bit systems */
->       return pc_pci_hole64_start() + pci_hole64_size - 1;
->   }
-
+-- 
+Anton Johansson
+rev.ng Labs Srl.
 
