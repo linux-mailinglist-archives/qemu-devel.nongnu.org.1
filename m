@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82D27AA8C6
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 08:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD037AA8CD
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 08:14:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjZLd-0000ev-Cb; Fri, 22 Sep 2023 02:09:05 -0400
+	id 1qjZPy-0002Q4-Jg; Fri, 22 Sep 2023 02:13:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qjZLb-0000eX-GA; Fri, 22 Sep 2023 02:09:03 -0400
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qjZLZ-0004Dk-Pq; Fri, 22 Sep 2023 02:09:03 -0400
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-7a50a1d1246so719842241.3; 
- Thu, 21 Sep 2023 23:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695362940; x=1695967740; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=SBLneNxOAvtpfozu5uMbazUpX/oS89zzQ07hqYthoMo=;
- b=JYP6oIcm0Iwiy1/+YWulazzr1aLyfns4RsgU47LHs42RpvlAL9g1/UMuJ8WDN4M0vg
- Yn5eefa8+AIEA1Bo4sN6Tpdcfno4l8eO6ACmwYuOIX3+s/2Bd0X+HgVBKMe8yvktlJXF
- Rb/AJtdAzJDNj6bgPmwewv/01TF406WR4AyFuDJKfr6YhrNWFia1o4Pb5LiH+kQO1QHQ
- jan8RzPsWHSTLq504z3lUPj0d8Wn/BaxUf6GjOu7RFPub3vLi8kwhk0GMQJA/i1HBiys
- c6Rvbliqs9v/fRcr2COv41MGPPA+K4jUuS9NuSlnKhRVqG2l00rK/Bvo87J3hTe/7vDs
- iRHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695362940; x=1695967740;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=SBLneNxOAvtpfozu5uMbazUpX/oS89zzQ07hqYthoMo=;
- b=rLc53CWhyY45gs40/hchsWw2jenFr+SR9ZY2j1qzjG3z1At8uQIVk8CNZFvcq4kXwj
- TYnbaEx4dclCt2QvesoidFAfCnpfQv9cv5Yb37eOrzMeEQ2n3mJfB7BRz02bkHpFcXDq
- vKxr+54ycip67jGG2smaoZRIzQ6wMHETsJ8Hyrvn3LC4NLbJ0Sqq2e4N9YAfmj1Rxo3m
- H2yYxZTQ4KALJY9Sk1h8gtHRBxMq32TbGXzjLKWlFUmE5hkMT/5I0oeIYBvNYa2H2Gj5
- VEh9LI8gU2TDzzDTsNUd3Jth3EwhRDA41r0s5WkGYOy8s2wkanaAIDDaG+w3C5iiyxPc
- qNRQ==
-X-Gm-Message-State: AOJu0YyhFWgnZh7FpJPalm+vQ/zP0ltMqXhgFEzUE20Alo+Wc6pX6jXn
- k+40HRNyH8hGLM+mRScVPrHIWGDWPgCf3MX6b0Y=
-X-Google-Smtp-Source: AGHT+IG8DB/K+tqwDkXxvM/I2OuJvq5xyiqZR7VPDbT3I+U5fLSCGtqjG/XaAkryUg2h+VmctFtcjILgxR/y/YA2p5A=
-X-Received: by 2002:a67:eb16:0:b0:452:8ee0:659f with SMTP id
- a22-20020a67eb16000000b004528ee0659fmr7298323vso.28.1695362940186; Thu, 21
- Sep 2023 23:09:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjZPw-0002P2-9I
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 02:13:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjZPt-0004xx-PC
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 02:13:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695363208;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=byZD4yGSpvmvkgWrlaKRkrdtWNIgwQxyAZkvbNTokCQ=;
+ b=cTfOMZP34lBpUM6i+yq90mUerK3yxybtrmbdwyjboIWsDbtcam3TAYn45ZeTOZG4F5ujSC
+ s/mgW7YU3mHFX3u8fT0L3hV4VVjbykg5UlxRTYLJXfpfriclud01+E7KmGwiOBMC0e2ul7
+ BrKAEYIXCSm+GwnVDZKtPie6JoCdlVk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-675-4YAKhK2XNgq5GxpQ9yPP0w-1; Fri, 22 Sep 2023 02:13:25 -0400
+X-MC-Unique: 4YAKhK2XNgq5GxpQ9yPP0w-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31AF0280FED6;
+ Fri, 22 Sep 2023 06:13:24 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C498B2156702;
+ Fri, 22 Sep 2023 06:13:23 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B735421E6900; Fri, 22 Sep 2023 08:13:22 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+Cc: qemu-devel@nongnu.org,  qemu-s390x@nongnu.org,  Eduardo Habkost
+ <eduardo@habkost.net>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,  Richard Henderson
+ <richard.henderson@linaro.org>,  David Hildenbrand <david@redhat.com>,
+ Halil Pasic <pasic@linux.ibm.com>,  Christian Borntraeger
+ <borntraeger@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,  Thomas
+ Huth <thuth@redhat.com>,  Eric Blake <eblake@redhat.com>,  Michael Roth
+ <michael.roth@amd.com>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,  "Daniel P." =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9?=
+ <berrange@redhat.com>,  Ilya Leoshkevich <iii@linux.ibm.com>,  Cleber Rosa
+ <crosa@redhat.com>,  Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>,  Pierre Morel <pmorel@linux.ibm.com>
+Subject: Re: [PATCH v23 01/20] CPU topology: extend with s390 specifics
+References: <20230914120650.1318932-1-nsg@linux.ibm.com>
+ <20230914120650.1318932-2-nsg@linux.ibm.com>
+ <87ediuwcrt.fsf@pond.sub.org>
+ <e6ab27f4ef55d88f9585101434f900bd066145d6.camel@linux.ibm.com>
+ <875y45kt8i.fsf@pond.sub.org>
+ <4bcf0aa2c2846f300a2ffcf4257a38f1d39647ef.camel@linux.ibm.com>
+Date: Fri, 22 Sep 2023 08:13:22 +0200
+In-Reply-To: <4bcf0aa2c2846f300a2ffcf4257a38f1d39647ef.camel@linux.ibm.com>
+ (Nina Schoetterl-Glausch's message of "Thu, 21 Sep 2023 21:02:02
+ +0200")
+Message-ID: <87y1gyvipp.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230920112020.651006-1-dbarboza@ventanamicro.com>
- <20230920112020.651006-12-dbarboza@ventanamicro.com>
-In-Reply-To: <20230920112020.651006-12-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 22 Sep 2023 16:08:33 +1000
-Message-ID: <CAKmqyKP-NhsnOMnqEnKHq6gKzWbyQ3tVCR_xRFHj3jq7QLU3HQ@mail.gmail.com>
-Subject: Re: [PATCH v3 11/19] target/riscv: introduce KVM AccelCPUClass
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com, philmd@linaro.org, ajones@ventanamicro.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
- envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,144 +98,279 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 20, 2023 at 9:23=E2=80=AFPM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> Add a KVM accelerator class like we did with TCG. The difference is
-> that, at least for now, we won't be using a realize() implementation for
-> this accelerator.
->
-> We'll start by assiging kvm_riscv_cpu_add_kvm_properties(), renamed to
-> kvm_cpu_instance_init(), as a 'cpu_instance_init' implementation. Change
-> riscv_cpu_post_init() to invoke accel_cpu_instance_init(), which will go
-> through the 'cpu_instance_init' impl of the current acceleration (if
-> available) and execute it. The end result is that the KVM initial setup,
-> i.e. starting registers and adding its specific properties, will be done
-> via this hook.
->
-> Add a 'tcg_enabled()' condition in riscv_cpu_post_init() to avoid
-> calling riscv_cpu_add_user_properties() when running KVM. We'll remove
-> this condition when the TCG accel class get its own 'cpu_instance_init'
-> implementation.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> On Wed, 2023-09-20 at 12:57 +0200, Markus Armbruster wrote:
+>> Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
+>> 
+>> > On Tue, 2023-09-19 at 14:47 +0200, Markus Armbruster wrote:
+>> > > Nina Schoetterl-Glausch <nsg@linux.ibm.com> writes:
+>> > > 
+>> > > > From: Pierre Morel <pmorel@linux.ibm.com>
+>> > > > 
+>> > > > S390 adds two new SMP levels, drawers and books to the CPU
+>> > > > topology.
+>> > > > S390 CPUs have specific topology features like dedication and
+>> > > > entitlement. These indicate to the guest information on host
+>> > > > vCPU scheduling and help the guest make better scheduling decisions.
+>> > > > 
+>> > > > Let us provide the SMP properties with books and drawers levels
+>> > > > and S390 CPU with dedication and entitlement,
+>> > > > 
+>> > > > Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+>> > > > Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+>> > > > Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+>> > > > Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+>> > > > ---
+>> > > >  qapi/machine-common.json            | 21 +++++++++++++
+>> > > >  qapi/machine.json                   | 19 ++++++++++--
+>> > > >  include/hw/boards.h                 | 10 +++++-
+>> > > >  include/hw/qdev-properties-system.h |  4 +++
+>> > > >  target/s390x/cpu.h                  |  6 ++++
+>> > > >  hw/core/machine-smp.c               | 48 ++++++++++++++++++++++++-----
+>> > > >  hw/core/machine.c                   |  4 +++
+>> > > >  hw/core/qdev-properties-system.c    | 13 ++++++++
+>> > > >  hw/s390x/s390-virtio-ccw.c          |  4 +++
+>> > > >  softmmu/vl.c                        |  6 ++++
+>> > > >  target/s390x/cpu.c                  |  7 +++++
+>> > > >  qapi/meson.build                    |  1 +
+>> > > >  qemu-options.hx                     |  7 +++--
+>> > > >  13 files changed, 137 insertions(+), 13 deletions(-)
+>> > > >  create mode 100644 qapi/machine-common.json
+>> > > > 
+>> > > > diff --git a/qapi/machine-common.json b/qapi/machine-common.json
+>> > > > new file mode 100644
+>> > > > index 0000000000..e40421bb37
+>> > > > --- /dev/null
+>> > > > +++ b/qapi/machine-common.json
+>> > > 
+>> > > Why do you need a separate QAPI sub-module?
+>> > 
+>> > See here https://lore.kernel.org/qemu-devel/d8da6f7d1e3addcb63614f548ed77ac1b8895e63.camel@linux.ibm.com/
+>> 
+>> Quote:
+>> 
+>>     CpuS390Entitlement would be useful in both machine.json and machine-target.json
+>> 
+>> This is not obvious from this patch.  I figure this patch could add it
+>> to machine.json just fine.  The use in machine-target.json in appears
+>> only in PATCH 08.
+>
+> Want me to add the rational to the commit message?
 
-Alistair
+Would work for me.
 
-> ---
->  target/riscv/cpu.c       |  8 +++-----
->  target/riscv/kvm.c       | 26 ++++++++++++++++++++++++--
->  target/riscv/kvm_riscv.h |  1 -
->  3 files changed, 27 insertions(+), 8 deletions(-)
+If the target-specific stuff in machine.json (discussed below) bothers
+us, we can clean up on top.
+
+>>     because query-cpu-fast is defined in machine.json and set-cpu-topology is defined
+>>     in machine-target.json.
+>> 
+>>     So then the question is where best to define CpuS390Entitlement.
+>>     In machine.json and include machine.json in machine-target.json?
+>>     Or define it in another file and include it from both?
+>> 
+>> You do the latter in this patch.
+>> 
+>> I figure the former would be tolerable, too.
+>> 
+>> That said, having target-specific stuff in machine.json feels... odd.
+>> Before this series, we have CpuInfoS390 and CpuS390State there, for
+>> query-cpus-fast.  That command returns a list of objects where common
+>> members are target-independent, and the variant members are
+>> target-dependent.  qmp_query_cpus_fast() uses a CPU method to populate
+>> the target-dependent members.
+>> 
+>> I'm not sure splitting query-cpus-fast into a target-dependent and a
+>> target-independent part is worth the bother.
+>> 
+>> In this patch, you work with the structure you found.  Can't fault you
+>> for that :)
+>> 
+>> > > > @@ -0,0 +1,21 @@
+>> > > > +# -*- Mode: Python -*-
+>> > > > +# vim: filetype=python
+>> > > > +#
+>> > > > +# This work is licensed under the terms of the GNU GPL, version 2 or later.
+>> > > > +# See the COPYING file in the top-level directory.
+>> > > > +
+>> > > > +##
+>> > > > +# = Machines S390 data types
+>> > > > +##
+>> > > > +
+>> > > > +##
+>> > > > +# @CpuS390Entitlement:
+>> > > > +#
+>> > > > +# An enumeration of cpu entitlements that can be assumed by a virtual
+>> > > > +# S390 CPU
+>> > > > +#
+>> > > > +# Since: 8.2
+>> > > > +##
+>> > > > +{ 'enum': 'CpuS390Entitlement',
+>> > > > +  'prefix': 'S390_CPU_ENTITLEMENT',
+>> > > > +  'data': [ 'auto', 'low', 'medium', 'high' ] }
+>> > > > diff --git a/qapi/machine.json b/qapi/machine.json
+>> > > > index a08b6576ca..a63cb951d2 100644
+>> > > > --- a/qapi/machine.json
+>> > > > +++ b/qapi/machine.json
+>> > > > @@ -9,6 +9,7 @@
+>> > >    ##
+>> > >    # = Machines
+>> > > >  ##
+>> > > >  
+>> > > >  { 'include': 'common.json' }
+>> > > > +{ 'include': 'machine-common.json' }
+>> > > 
+>> > > Section structure is borked :)
+>> > > 
+>> > > Existing section "Machine" now ends at the new "Machines S390 data
+>> > > types" you pull in here.  The contents of below moves from "Machines" to
+>> > > "Machines S390 data types".
+>> > > 
+>> > > Before I explain how to avoid this, I'd like to understand why we need a
+>> > > new sub-module.
+>> > > 
+>> > > >  
+>> > > >  ##
+>> > > >  # @SysEmuTarget:
+>> > > > @@ -71,7 +72,7 @@
+>> > >    ##
+>> > >    # @CpuInfoFast:
+>> > >    #
+>> > >    # Information about a virtual CPU
+>> > >    #
+>> > >    # @cpu-index: index of the virtual CPU
+>> > >    #
+>> > >    # @qom-path: path to the CPU object in the QOM tree
+>> > > >  #
+>> > > >  # @thread-id: ID of the underlying host thread
+>> > > >  #
+>> > > > -# @props: properties describing to which node/socket/core/thread
+>> > > > +# @props: properties describing to which node/drawer/book/socket/core/thread
+>> > > >  #     virtual CPU belongs to, provided if supported by board
+>> > > 
+>> > > Is this description accurate?
+>> > 
+>> > Kinda, although the wording might not be the best.
+>> > All the CpuInstanceProperties fields are optional, it's like a superset of possible
+>> > properties across architectures.
+>> > Only a subset might be returned by query-cpus-fast.
+>> 
+>> Let's see whether I got this right...
+>> 
+>> The members of CpuInstanceProperties are properties you can pass to
+>> device_add for some targets.
 >
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 50be127f36..c8a19be1af 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1219,7 +1219,9 @@ static bool riscv_cpu_has_user_properties(Object *c=
-pu_obj)
+> Yes.
 >
->  static void riscv_cpu_post_init(Object *obj)
->  {
-> -    if (riscv_cpu_has_user_properties(obj)) {
-> +    accel_cpu_instance_init(CPU(obj));
-> +
-> +    if (tcg_enabled() && riscv_cpu_has_user_properties(obj)) {
->          riscv_cpu_add_user_properties(obj);
->      }
+>> 
+>> The members present in a response from query-cpus-fast are properties
+>> you must pass to device_add in this VM.  Or is that a "may pass"?
 >
-> @@ -1589,10 +1591,6 @@ static void riscv_cpu_add_multiext_prop_array(Obje=
-ct *obj,
->  static void riscv_cpu_add_user_properties(Object *obj)
->  {
->  #ifndef CONFIG_USER_ONLY
-> -    if (kvm_enabled()) {
-> -        kvm_riscv_cpu_add_kvm_properties(obj);
-> -        return;
-> -    }
->      riscv_add_satp_mode_properties(obj);
->  #endif
+> On x86 must pass, s390x may pass, I haven't checked other architectures.
+> s390x shows the defaults calculated.
+
+Asking you to figure this out for all the targets wouldn't be fair, so I
+won't.
+
+Perhaps the documentation should state explicitly that properties may or
+may not be optional, and ideally point to documentation that tells you
+more, like the stuff you show below.  This might also address my
+"undocumented magic" remark below.
+
+Again, I'm not asking you to create documentation for the other targets.
+
+>> On what exactly does the set of present members depend?  Just the
+>> target?  The machine type?  The CPU?  Anything else?
 >
-> diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
-> index e5e957121f..606fdab223 100644
-> --- a/target/riscv/kvm.c
-> +++ b/target/riscv/kvm.c
-> @@ -31,6 +31,7 @@
->  #include "sysemu/kvm_int.h"
->  #include "cpu.h"
->  #include "trace.h"
-> +#include "hw/core/accel-cpu.h"
->  #include "hw/pci/pci.h"
->  #include "exec/memattrs.h"
->  #include "exec/address-spaces.h"
-> @@ -1318,8 +1319,9 @@ void kvm_riscv_aia_create(MachineState *machine, ui=
-nt64_t group_shift,
->      kvm_msi_via_irqfd_allowed =3D kvm_irqfds_enabled();
->  }
+> The target and the machine I'd say.
+> On x86 if you have one die per socket you don't need to provide a die_id on device_add.
+>> 
+>> > Also die and cluster are missing.
+>> 
+>> Does this need fixing?
 >
-> -void kvm_riscv_cpu_add_kvm_properties(Object *obj)
-> +static void kvm_cpu_instance_init(CPUState *cs)
->  {
-> +    Object *obj =3D OBJECT(RISCV_CPU(cs));
->      DeviceState *dev =3D DEVICE(obj);
+> Only if we keep the list of properties here.
+
+Makes sense.  Let's replace it.
+
+>> > > @props is of type CpuInstanceProperties, shown below.  Its documentation
+>> > > describes it as "properties to be used for hotplugging a CPU instance,
+>> > > it should be passed by management with device_add command when a CPU is
+>> > > being hotplugged."  Hmm.
+>> > > 
+>> > > I figure details ("node/drawer/book/socket/core/thread") are better left
+>> > > to CpuInstanceProperties.
+>> > > 
+>> > > The "provided if supported by board" part makes no sense to me.  If
+>> > > @props is there, it lists the properties we need to provide with
+>> > > device_add.  What if it's not there?  Same as empty list, i.e. we don't
+>> > > need to provide properties with device_add?
+>> > 
+>> > There are default values/default logic.
+>> > For s390x, socket, book, drawer are calculated from the core id
+>> > if not provided with device_add.
+>> > Partial specifications are rejected.
+>> 
+>> Undocumented magic?
 >
->      riscv_init_user_properties(obj);
-> @@ -1331,7 +1333,7 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
->      riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_ext=
-s);
+> Patch 13 documents it:
 >
->      for (Property *prop =3D riscv_cpu_options; prop && prop->name; prop+=
-+) {
-> -        /* Check if KVM created the property already */
-> +        /* Check if we have a specific KVM handler for the option */
->          if (object_property_find(obj, prop->name)) {
->              continue;
->          }
-> @@ -1339,6 +1341,26 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
->      }
->  }
+> Default topology usage
+> ----------------------
 >
-> +static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
-> +{
-> +    AccelCPUClass *acc =3D ACCEL_CPU_CLASS(oc);
-> +
-> +    acc->cpu_instance_init =3D kvm_cpu_instance_init;
-> +}
-> +
-> +static const TypeInfo kvm_cpu_accel_type_info =3D {
-> +    .name =3D ACCEL_CPU_NAME("kvm"),
-> +
-> +    .parent =3D TYPE_ACCEL_CPU,
-> +    .class_init =3D kvm_cpu_accel_class_init,
-> +    .abstract =3D true,
-> +};
-> +static void kvm_cpu_accel_register_types(void)
-> +{
-> +    type_register_static(&kvm_cpu_accel_type_info);
-> +}
-> +type_init(kvm_cpu_accel_register_types);
-> +
->  static void riscv_host_cpu_init(Object *obj)
->  {
->      CPURISCVState *env =3D &RISCV_CPU(obj)->env;
-> diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
-> index da9630c4af..8329cfab82 100644
-> --- a/target/riscv/kvm_riscv.h
-> +++ b/target/riscv/kvm_riscv.h
-> @@ -19,7 +19,6 @@
->  #ifndef QEMU_KVM_RISCV_H
->  #define QEMU_KVM_RISCV_H
+> [...]
 >
-> -void kvm_riscv_cpu_add_kvm_properties(Object *obj);
->  void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
->  void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
->  void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
-> --
-> 2.41.0
+> When a CPU is defined by the ``-device`` command argument, the
+> tree topology attributes must all be defined or all not defined.
+>
+> .. code-block:: bash
+>
+>     -device gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=1
+>
+> or
+>
+> .. code-block:: bash
+>
+>     -device gen16b-s390x-cpu,core-id=1,dedicated=true
+>
+> If none of the tree attributes (drawer, book, sockets), are specified
+> for the ``-device`` argument, like for all CPUs defined with the ``-smp``
+> command argument the topology tree attributes will be set by simply
+> adding the CPUs to the topology based on the core-id.
+>
+> QEMU will not try to resolve collisions and will report an error if the
+> CPU topology defined explicitly or implicitly on a ``-device``
+> argument collides with the definition of a CPU implicitly defined
+> on the ``-smp`` argument.
+>
+> When the topology modifier attributes are not defined for the
+> ``-device`` command argument they takes following default values:
+>
+> - dedicated: ``false``
+> - entitlement: ``medium``
 >
 >
+> Hot plug
+> ++++++++
+>
+> New CPUs can be plugged using the device_add hmp command as in:
+>
+> .. code-block:: bash
+>
+>   (qemu) device_add gen16b-s390x-cpu,core-id=9
+>
+> The placement of the CPU is derived from the core-id as described above.
+>
+> The topology can of course also be fully defined:
+>
+> .. code-block:: bash
+>
+>     (qemu) device_add gen16b-s390x-cpu,drawer-id=1,book-id=1,socket-id=2,core-id=1
+>> 
+>> > > Not your patch's fault, but let's get this in shape if we can.
+>> 
+>> [...]
+>> 
+
 
