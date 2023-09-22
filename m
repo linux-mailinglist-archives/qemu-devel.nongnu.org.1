@@ -2,89 +2,141 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41597AB576
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 18:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CC57AB593
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 18:09:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjidJ-0005jg-O5; Fri, 22 Sep 2023 12:03:57 -0400
+	id 1qjiiN-0006uO-GI; Fri, 22 Sep 2023 12:09:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjid8-0005fG-Al
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:03:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1qjiiM-0006uF-2R
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:09:10 -0400
+Received: from mail-co1nam11on2077.outbound.protection.outlook.com
+ ([40.107.220.77] helo=NAM11-CO1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjid5-0006se-SI
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:03:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695398621;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=cD8SIe1x39yfwRlBv/yZdOZZV0kos4JswNNq4wOEygg=;
- b=KliE2JJz4KRoI3pYN7KpuRh0WXKf7MJHmIIE4cPH31JforDQSTeHSaXVRefDn0hWiD97CB
- Q2HcaGO8WXCluAi5pJySZCfltgQBHVM3Bgj4HpllcXR4GRS9iRlUhPCelhrer1+t9/XnLW
- Xz/ZA10ypcWXVj4OFMR3ZnKmVsND5k4=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-kjIFuzjwN2u2qPlfoy0h1Q-1; Fri, 22 Sep 2023 12:03:40 -0400
-X-MC-Unique: kjIFuzjwN2u2qPlfoy0h1Q-1
-Received: by mail-lj1-f197.google.com with SMTP id
- 38308e7fff4ca-2c012f7ca56so31299201fa.1
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 09:03:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695398615; x=1696003415;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=cD8SIe1x39yfwRlBv/yZdOZZV0kos4JswNNq4wOEygg=;
- b=mDEcg0K/SYUcD+50eR0jb0G6lCttWt4+m6p4Elp8O6yCmUCol/hdvJJu+QXE4csugP
- 5URXnbP+orY7b9rH2c2J+oTmaQCgOBYm3xzPVIh3UCjZbudIPYbezAME2HvHBJzThUCq
- vYMI0lhQ5oZNyrgS8zIw3TPPb0iP2bDxV+a4Go/hxIVJVFqiukdr922whCH4R3hWpPCB
- QQxR9hKqjWNIujqRayLjt0aMyl+Kpe+UdmqsmiBmCqvnDz/Bfx1eZ+WEh8AHZnAbgwOS
- ImsADukfRPwMr+GXH0qjeJJI+Yf4/cAQOsapRIQ1aNuj33zlPIiRJNeKiAzgY8D8s3zQ
- DWjw==
-X-Gm-Message-State: AOJu0Yx9KSZPl0FUnbFQ3Yy7yQUfWd367f/CU/GWYESo0qVxSlrjhxSM
- Zy/xENtNcp4sOX9AykZ0dgzL4pz0m1Uxd9GMpPQWskNzjPDOR0hV6Y8wBST2QzCHqgfOilQRXKU
- qgprMlFKfsQn7vO8=
-X-Received: by 2002:a05:651c:144:b0:2bf:7fad:229b with SMTP id
- c4-20020a05651c014400b002bf7fad229bmr7113605ljd.37.1695398615441; 
- Fri, 22 Sep 2023 09:03:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFihekB3fI0JPc8suzqtlZSp95gyfnjYuCwd88P/A8G16dvu8UnFgh3pRXKdqm/W5dlfCkiFQ==
-X-Received: by 2002:a05:651c:144:b0:2bf:7fad:229b with SMTP id
- c4-20020a05651c014400b002bf7fad229bmr7113570ljd.37.1695398615023; 
- Fri, 22 Sep 2023 09:03:35 -0700 (PDT)
-Received: from redhat.com ([2.52.150.187]) by smtp.gmail.com with ESMTPSA id
- g5-20020a17090670c500b009a13fdc139fsm2875615ejk.183.2023.09.22.09.03.32
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 09:03:33 -0700 (PDT)
-Date: Fri, 22 Sep 2023 12:03:29 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1qjiiI-0008Uy-Uw
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:09:09 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GPCINf4dPTGM8ovKhHN++PBZtbPhfjc7LW7HoYjaMM1ITGWq3XJKGuITiRwLlSGlvU0olhsLCdd8yvc0XfVsaRR0ByqSzqkPkUFZ75xRqdx47DSCgcLmzR9GVXxvAB6G2AR89P83bY8yQ6k71M7MvziH1OgEMPb14TyeR/SMS36JTjSys5W/VkadY1XCfcnav3F65RLJUfw02UQVElNgWBavUJR/PVaIfqSzo1var7y8SWNK/xW0N0nY17EM8Xd0qUkyK1Hk6NzGUwU81+qXiiAEy4bDODJQRXjmlRAFv7BW7/jUigsI25/Rl8xu4Y+fAdTfsPgbmK0iG1sHEyUVbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nG8yCyz4DN+Sfl4TfQqCRpn/IG9V7paN18YXNgAz/g4=;
+ b=DL8ZGp4HWcVoWNOuy2uWkoqetOreZwOF6CFwuwFKLyxwmhA/1Z9Mx8DUqKWcMsvA4qXokhoN8EPq4a6Uv8YCnz3xVcR4LrAF12b2OxiUdtFEavMbnwZIirhL1jQf+zknKeGtUKJ/DVAEVPOG5AKJp7l7jUG2loIqDFjdVaG8Ymvl92BlL5zhAluv1ESj3GcjgVn2c94O4T1gBVLv1oLZu36Qz+4bB+Hb/Qho7iCqFnWZ9dLp/lsmi+Kk9yOgdl9llaVY7ksk6xqPyXR5iMM8aPT8HDROtjZzF317qGDVdkHa2ptEK+yXSphzPez3pSvAtXE7C35qscxy/6JuVZOeKw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nG8yCyz4DN+Sfl4TfQqCRpn/IG9V7paN18YXNgAz/g4=;
+ b=An6o5xSSwyMGEKUbIXliNWJ1A1j2SUGXMwlPudz31tT2sCZD9DOg/23Tis4V7F0lJm3/eiJag8iqs0/Q+KkmBZ6mR+f8sq3PjPYEZRUUyYUIUtX3v8Xm0PmSrcqyauR/BIYo2d7Z1S/v+/uU5O2qVxEbqQXnCQL9W1yYqO5CL3o=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
+ by IA0PR12MB9012.namprd12.prod.outlook.com (2603:10b6:208:485::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.21; Fri, 22 Sep
+ 2023 16:03:59 +0000
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::fbfe:ec9c:b106:437e]) by MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::fbfe:ec9c:b106:437e%5]) with mapi id 15.20.6813.017; Fri, 22 Sep 2023
+ 16:03:59 +0000
+Message-ID: <a82a9b64-9b24-c592-96d9-2248b8a10acb@amd.com>
+Date: Fri, 22 Sep 2023 11:03:55 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v4 00/21] Support smp.clusters for x86 in QEMU
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
  Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>, qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/acpi: changes towards enabling -Wshadow=local
-Message-ID: <20230922120201-mutt-send-email-mst@kernel.org>
-References: <20230922124203.127110-1-anisinha@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SN4PR0501CA0030.namprd05.prod.outlook.com
+ (2603:10b6:803:40::43) To MW3PR12MB4553.namprd12.prod.outlook.com
+ (2603:10b6:303:2c::19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230922124203.127110-1-anisinha@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|IA0PR12MB9012:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f7b8a6f-3331-403e-a3a4-08dbbb858801
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: zA0s8rKs04jVDqD06iSt4s3HLuf8vO5sNlrnGvumLKKc3BZimioYWZ/FEsrfhKj0vrjmpRs/0QfHADVFSsKlTLCNcbcZyhNfwRw2WGGlpSIDfA/fqxo38v0oFyRygR0MXNNaS07hrdtZOIwY/uwNJLTtbnNgIV4JwPbi5Az2vCXr7Q/+WNoKkKpk9XkdnTOmd6/SpBi5wMu2t7OUA1A2IrZrWYTNzG7u+X5/EHQdlWfMkFVh7ktVaEV4Wn3cBPawIzdGNq6Eafbg4WekLsvsSonwB5zWZME591+YU0GXmQb/WlUJYo2pr1p79VvbWj403LlMmZZQhZhUez5pwB8cs6zlayYtg5slRjSpdbctbpLvgZ7RMl0YpT9nP7d9uo9acaBZkWwoUmJpJwx/1ovVcj4feX78YDO3Zz1FTo1g66MpP21MYvtj3pcJFQoIpDMYfIkJgssLzmw3TtFT42AE/24tDQP2uulkSJxcUyNg2KQ2ES9gvIziu9eOmAwKLgoZZ81eLaUhukLs4kedhw1ixABicc6X3wG8RPtkCGcicJVC+t/i8HgVmaLd5e5Eq9BFL904DY+WUvVrRM+695LHThZOZ6OUID12UkdHDaG9lmiBy60sqbc/I6aemXppxBX4jhGTLfQvo9ixVT5hjTiIhJRTFwQcDrg/7+OMiA1ae0E=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(396003)(366004)(136003)(39860400002)(346002)(451199024)(1800799009)(186009)(53546011)(6512007)(66899024)(6486002)(6506007)(83380400001)(36756003)(6666004)(38100700002)(31696002)(2616005)(26005)(110136005)(54906003)(41300700001)(7416002)(66946007)(316002)(66556008)(66476007)(2906002)(5660300002)(8936002)(4326008)(31686004)(966005)(478600001)(8676002)(45980500001)(43740500002);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L24xVGEwcyt4TE02Um1FY1BsRmdFWmxxUjdjalFwVjEvOFN6eFphK2c0NnFV?=
+ =?utf-8?B?NXVsUmhKNHJPdk9ITmpsYXczeXB3c3JzVi9wMUxVcWUzYVlZaG1PbWt0eVdP?=
+ =?utf-8?B?dlJXQ1VnZHBCYmFDK2F6Um95Y2h5RDNtR2Mvam55TDFDR0FORFZsTW5lak1W?=
+ =?utf-8?B?MlZoNlpNVlpGVXMySHpjVTZQYkUwUTJ0c3pxc3RQWWZqbW5BMXJaM0RIVk5l?=
+ =?utf-8?B?cjdIMnpJams4RmQ4NVZTRm5DR0tZNXFNV3lhem1YSkRzMGc1VjBGdHA3NGE1?=
+ =?utf-8?B?cXdJOFh0Y1RVVTVrR0J6K2tWa1R2VnFJVjIvaUVvTnlKT2JIUVZ6V2lYcEJh?=
+ =?utf-8?B?U0QrTTBSbnRaZHllZ3FZVXV6MVh1eFBqUHZRemdUMXc0YWQwUDRzK2c3OG5l?=
+ =?utf-8?B?cUxVMkwzd1lWM0lJanNQVHJxZzFXKzg2YmVxSkVYcFlJZzM0UXJNcFhGVGNn?=
+ =?utf-8?B?OHhmYjVNOGFRbkhySmVMaUphaWVlc2w1WmZaWVlRYXB4dGlGTW5VK2E5QjJB?=
+ =?utf-8?B?bVA3N1NCV1ljM0N3WjZObzRUR0I4K0JCdmpQNWFvWDdBYlkxQ3Q1WVpxamM1?=
+ =?utf-8?B?VFFlWitmamZPRnhuTk00d0hNQW95K1NubHNIekZrWkFvWkFoTzZrSlNGcjF0?=
+ =?utf-8?B?UG8vdUZCNEp6RE9tWSs4KzNnbDhGdVhZUUV6RGtvWmIvYVAyVVY0MStwdHox?=
+ =?utf-8?B?Yk0wRnNVMm55MVdWbUlITDNPVmllcTdIbHBvQjRHcmsrRzlWU1BKMkhQcGg5?=
+ =?utf-8?B?OHZnTC9YNU90NzFVVTJJdDdtZ1c1TWJ5UFdkUzE5WkxmTzM3WU5sVktrSHla?=
+ =?utf-8?B?SnVFeVY3M2FTS2x3NWJZZW81WUdWSktjWERwcjdSZHJqaWl5TUdadjNsc1o2?=
+ =?utf-8?B?aE43WWZEMUpocXhmdFB4c25UOC8yTjFuZmRJOUpwYVgveHNoTkl5eEFmQ0dm?=
+ =?utf-8?B?MjEyS0hueHpQOFZLWlFrRTdTRkQ3MGd4NFRWZ2tIUUNremluTWhmdEJqQ2p2?=
+ =?utf-8?B?MDZHVzlDU1FRRzJUMGxlajE5dUFLWWx5NlYwcXBNTVIxQis5MHBQU0ZLV3Jm?=
+ =?utf-8?B?MWpBYW5JWXBlOVRLcjR2S3hmVzRmYm9YbnV6cWEwRTNvV3hRdVJzckRBc2dC?=
+ =?utf-8?B?TS9ESkk3dTZDZm5SampVU1YrTnd2cHVvTzF0bFdRNHYrUEhrYVdONlM3emN6?=
+ =?utf-8?B?NkUzSk52Z2Ivc3pUcndYV3loOFZsc3EyN0l5bnF5a3hCWjh3N1N1djBJS2FL?=
+ =?utf-8?B?aTEzeDNlZTg5UzdPUGhLU3Z5amZQMk9MZktucHUwQkxGNStvcjl5N1JORTBF?=
+ =?utf-8?B?c2dGdGpqYSsxQS9IWE5BZktHT3Q1TVlSOVgwNXl0MW5DQVlCOGR3WFhvc2dM?=
+ =?utf-8?B?bG9CT3R4UzFLc2d3akp1cVl1NUZ6NVFLaEIyYTV4RUg5b2REQVhVZ0hQbmw3?=
+ =?utf-8?B?Q3REUUxTUFR6aWdKa3hoMHhaZG96Qmhmc25nN0RoVWxRUHpsN0Z6c2czRVcw?=
+ =?utf-8?B?VTRNTWVoM1h0aFRmMVJGL2Z4V0tTSXRzeDFHTWRXcjBTeE8wZEJxVEVsL1lZ?=
+ =?utf-8?B?S2hraGRWWUtCa09tUHg2aDBoVE1OaUVXTSt2TzNKSGFuTTRESEVSeWdvK1dM?=
+ =?utf-8?B?QTB6MCt5bjZ5QndwYmZtdEZJaVVHUEVCUnZPTjcremZ3dnBnWnh2ZlVHenBz?=
+ =?utf-8?B?NXVEcm1XQTRjcit3UjBLcFRUTjJ2L2tiZ3NqaGVNL2taYTE0cW1uUDVtWXRT?=
+ =?utf-8?B?QUxtZG01VWU1aExRbUx4dzB6NDJtMTJWS25DcUpaZHZzMkd1QzJkY296SmYr?=
+ =?utf-8?B?NWZOWlJMcFFOUERSREtIRDY3VE05K21lODFEeEF4LzBpQ0h4WVhkVTdFWTRW?=
+ =?utf-8?B?MmNSWTgzMnJaV2grUEZMWm1ZSUkzZ2FxQXN2UjAvWjlNL3dtT1FGeTNzdHpR?=
+ =?utf-8?B?NnVXaTMwUk9HeW0vczJWdEl3YW5NTklNbi9saElNdkt2SldHV0h6ZXFBQU1T?=
+ =?utf-8?B?dDVZZkhEaTB0dldTSDBlZi9wczUxL3cvdnlIUit6SDhSN2k4dVNpejA1OVlL?=
+ =?utf-8?B?NjQyRU9UZDhZMmtOOWJWcnVKbXRQWllSNVk0azJ0clBqYStsVmwrU0NJTXFB?=
+ =?utf-8?Q?bH3VvPtj0uVxUUW1JtLKVabfe?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f7b8a6f-3331-403e-a3a4-08dbbb858801
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2023 16:03:59.1305 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bgTHLTLMLjNJ8XBtaNvlakq6K9bQXh7ERqUGKVT0HWiGIN9jqnO6NGd5aT/06Em5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB9012
+Received-SPF: softfail client-ip=40.107.220.77;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM11-CO1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,224 +149,276 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 22, 2023 at 06:12:02PM +0530, Ani Sinha wrote:
-> Code changes in acpi that addresses all compiler complaints coming from enabling
-> -Wshadow flags. Enabling -Wshadow catches cases of local variables shadowing
-> other local variables or parameters. These makes the code confusing and/or adds
-> bugs that are difficult to catch.
-> 
-> The code is tested to build with and without the flag turned on.
-> 
-> CC: Markus Armbruster <armbru@redhat.com>
-> CC: Philippe Mathieu-Daude <philmd@linaro.org>
-> CC: mst@redhat.com
-> CC: imammedo@redhat.com
-> Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Tested the series on AMD system. Created a VM and ran some basic commands.
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Everything looks good.
+
+Tested-by: Babu Moger <babu.moger@amd.com>
 
 
+On 9/14/2023 2:21 AM, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
+>
+> Hi list,
+>
+> (CC kvm@vger.kernel.org for better browsing.)
+>
+> This is the our v4 patch series, rebased on the master branch at the
+> commit 9ef497755afc2 ("Merge tag 'pull-vfio-20230911' of
+> https://github.com/legoater/qemu into staging").
+>
+> Comparing with v3 [1], v4 mainly refactors the CPUID[0x1F] encoding and
+> exposes module level in CPUID[0x1F] with these new patches:
+>
+> * [PATCH v4 08/21] i386: Split topology types of CPUID[0x1F] from the
+> definitions of CPUID[0xB]
+> * [PATCH v4 09/21] i386: Decouple CPUID[0x1F] subleaf with specific
+> topology level
+> * [PATCH v4 12/21] i386: Expose module level in CPUID[0x1F]
+>
+> v4 also fixes compile warnings and fixes cache topology uninitialization
+> bugs for some AMD CPUs.
+>
+> Welcome your comments!
+>
+>
+> # Introduction
+>
+> This series add the cluster support for x86 PC machine, which allows
+> x86 can use smp.clusters to configure the module level CPU topology
+> of x86.
+>
+> And since the compatibility issue (see section: ## Why not share L2
+> cache in cluster directly), this series also introduce a new command
+> to adjust the topology of the x86 L2 cache.
+>
+> Welcome your comments!
+>
+>
+> # Background
+>
+> The "clusters" parameter in "smp" is introduced by ARM [2], but x86
+> hasn't supported it.
+>
+> At present, x86 defaults L2 cache is shared in one core, but this is
+> not enough. There're some platforms that multiple cores share the
+> same L2 cache, e.g., Alder Lake-P shares L2 cache for one module of
+> Atom cores [3], that is, every four Atom cores shares one L2 cache.
+> Therefore, we need the new CPU topology level (cluster/module).
+>
+> Another reason is for hybrid architecture. cluster support not only
+> provides another level of topology definition in x86, but would also
+> provide required code change for future our hybrid topology support.
+>
+>
+> # Overview
+>
+> ## Introduction of module level for x86
+>
+> "cluster" in smp is the CPU topology level which is between "core" and
+> die.
+>
+> For x86, the "cluster" in smp is corresponding to the module level [4],
+> which is above the core level. So use the "module" other than "cluster"
+> in x86 code.
+>
+> And please note that x86 already has a cpu topology level also named
+> "cluster" [4], this level is at the upper level of the package. Here,
+> the cluster in x86 cpu topology is completely different from the
+> "clusters" as the smp parameter. After the module level is introduced,
+> the cluster as the smp parameter will actually refer to the module level
+> of x86.
+>
+>
+> ## Why not share L2 cache in cluster directly
+>
+> Though "clusters" was introduced to help define L2 cache topology
+> [2], using cluster to define x86's L2 cache topology will cause the
+> compatibility problem:
+>
+> Currently, x86 defaults that the L2 cache is shared in one core, which
+> actually implies a default setting "cores per L2 cache is 1" and
+> therefore implicitly defaults to having as many L2 caches as cores.
+>
+> For example (i386 PC machine):
+> -smp 16,sockets=2,dies=2,cores=2,threads=2,maxcpus=16 (*)
+>
+> Considering the topology of the L2 cache, this (*) implicitly means "1
+> core per L2 cache" and "2 L2 caches per die".
+>
+> If we use cluster to configure L2 cache topology with the new default
+> setting "clusters per L2 cache is 1", the above semantics will change
+> to "2 cores per cluster" and "1 cluster per L2 cache", that is, "2
+> cores per L2 cache".
+>
+> So the same command (*) will cause changes in the L2 cache topology,
+> further affecting the performance of the virtual machine.
+>
+> Therefore, x86 should only treat cluster as a cpu topology level and
+> avoid using it to change L2 cache by default for compatibility.
+>
+>
+> ## module level in CPUID
+>
+> Linux kernel (from v6.4, with commit edc0a2b595765 ("x86/topology: Fix
+> erroneous smp_num_siblings on Intel Hybrid platforms") is able to
+> handle platforms with Module level enumerated via CPUID.1F.
+>
+> Expose the module level in CPUID[0x1F] (for Intel CPUs) if the machine
+> has more than 1 modules since v3.
+>
+> We can configure CPUID.04H.02H (L2 cache topology) with module level by
+> a new command:
+>
+>          "-cpu,x-l2-cache-topo=cluster"
+>
+> More information about this command, please see the section: "## New
+> property: x-l2-cache-topo".
+>
+>
+> ## New cache topology info in CPUCacheInfo
+>
+> Currently, by default, the cache topology is encoded as:
+> 1. i/d cache is shared in one core.
+> 2. L2 cache is shared in one core.
+> 3. L3 cache is shared in one die.
+>
+> This default general setting has caused a misunderstanding, that is, the
+> cache topology is completely equated with a specific cpu topology, such
+> as the connection between L2 cache and core level, and the connection
+> between L3 cache and die level.
+>
+> In fact, the settings of these topologies depend on the specific
+> platform and are not static. For example, on Alder Lake-P, every
+> four Atom cores share the same L2 cache [2].
+>
+> Thus, in this patch set, we explicitly define the corresponding cache
+> topology for different cpu models and this has two benefits:
+> 1. Easy to expand to new CPU models in the future, which has different
+>     cache topology.
+> 2. It can easily support custom cache topology by some command (e.g.,
+>     x-l2-cache-topo).
+>
+>
+> ## New property: x-l2-cache-topo
+>
+> The property x-l2-cache-topo will be used to change the L2 cache
+> topology in CPUID.04H.
+>
+> Now it allows user to set the L2 cache is shared in core level or
+> cluster level.
+>
+> If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
+> topology will be overrode by the new topology setting.
+>
+> Since CPUID.04H is used by Intel CPUs, this property is available on
+> Intel CPUs as for now.
+>
+> When necessary, it can be extended to CPUID[0x8000001D] for AMD CPUs.
+>
+>
+> # Patch description
+>
+> patch 1-2 Cleanups about coding style and test name.
+>
+> patch 3-5 Fixes about x86 topology and Intel l1 cache topology.
+>
+> patch 6-7 Cleanups about topology related CPUID encoding and QEMU
+>            topology variables.
+>
+> patch 8-9 Refactor CPUID[0x1F] encoding to prepare to introduce module
+>            level.
+>
+> patch 10-16 Add the module as the new CPU topology level in x86, and it
+>              is corresponding to the cluster level in generic code.
+>
+> patch 17,18,20 Add cache topology information in cache models.
+>
+> patch 19 Update AMD CPUs' cache topology encoding.
+>
+> patch 21 Introduce a new command to configure L2 cache topology.
+>
+>
+> [1]: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00022.html
+> [2]: https://patchew.org/QEMU/20211228092221.21068-1-wangyanan55@huawei.com/
+> [3]: https://www.intel.com/content/www/us/en/products/platforms/details/alder-lake-p.html
+> [4]: SDM, vol.3, ch.9, 9.9.1 Hierarchical Mapping of Shared Resources.
+>
+> Best Regards,
+> Zhao
 > ---
->  hw/acpi/cpu_hotplug.c | 25 +++++++++++++------------
->  hw/i386/acpi-build.c  | 24 ++++++++++++------------
->  hw/smbios/smbios.c    | 37 +++++++++++++++++++------------------
->  3 files changed, 44 insertions(+), 42 deletions(-)
-> 
-> diff --git a/hw/acpi/cpu_hotplug.c b/hw/acpi/cpu_hotplug.c
-> index ff14c3f410..634bbecb31 100644
-> --- a/hw/acpi/cpu_hotplug.c
-> +++ b/hw/acpi/cpu_hotplug.c
-> @@ -265,26 +265,27 @@ void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
->  
->      /* build Processor object for each processor */
->      for (i = 0; i < apic_ids->len; i++) {
-> -        int apic_id = apic_ids->cpus[i].arch_id;
-> +        int cpu_apic_id = apic_ids->cpus[i].arch_id;
->  
-> -        assert(apic_id < ACPI_CPU_HOTPLUG_ID_LIMIT);
-> +        assert(cpu_apic_id < ACPI_CPU_HOTPLUG_ID_LIMIT);
->  
-> -        dev = aml_processor(i, 0, 0, "CP%.02X", apic_id);
-> +        dev = aml_processor(i, 0, 0, "CP%.02X", cpu_apic_id);
->  
->          method = aml_method("_MAT", 0, AML_NOTSERIALIZED);
->          aml_append(method,
-> -            aml_return(aml_call2(CPU_MAT_METHOD, aml_int(apic_id), aml_int(i))
-> +            aml_return(aml_call2(CPU_MAT_METHOD,
-> +                                 aml_int(cpu_apic_id), aml_int(i))
->          ));
->          aml_append(dev, method);
->  
->          method = aml_method("_STA", 0, AML_NOTSERIALIZED);
->          aml_append(method,
-> -            aml_return(aml_call1(CPU_STATUS_METHOD, aml_int(apic_id))));
-> +            aml_return(aml_call1(CPU_STATUS_METHOD, aml_int(cpu_apic_id))));
->          aml_append(dev, method);
->  
->          method = aml_method("_EJ0", 1, AML_NOTSERIALIZED);
->          aml_append(method,
-> -            aml_return(aml_call2(CPU_EJECT_METHOD, aml_int(apic_id),
-> +            aml_return(aml_call2(CPU_EJECT_METHOD, aml_int(cpu_apic_id),
->                  aml_arg(0)))
->          );
->          aml_append(dev, method);
-> @@ -298,11 +299,11 @@ void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
->      /* Arg0 = APIC ID */
->      method = aml_method(AML_NOTIFY_METHOD, 2, AML_NOTSERIALIZED);
->      for (i = 0; i < apic_ids->len; i++) {
-> -        int apic_id = apic_ids->cpus[i].arch_id;
-> +        int cpu_apic_id = apic_ids->cpus[i].arch_id;
->  
-> -        if_ctx = aml_if(aml_equal(aml_arg(0), aml_int(apic_id)));
-> +        if_ctx = aml_if(aml_equal(aml_arg(0), aml_int(cpu_apic_id)));
->          aml_append(if_ctx,
-> -            aml_notify(aml_name("CP%.02X", apic_id), aml_arg(1))
-> +            aml_notify(aml_name("CP%.02X", cpu_apic_id), aml_arg(1))
->          );
->          aml_append(method, if_ctx);
->      }
-> @@ -319,13 +320,13 @@ void build_legacy_cpu_hotplug_aml(Aml *ctx, MachineState *machine,
->                                          aml_varpackage(x86ms->apic_id_limit);
->  
->      for (i = 0, apic_idx = 0; i < apic_ids->len; i++) {
-> -        int apic_id = apic_ids->cpus[i].arch_id;
-> +        int cpu_apic_id = apic_ids->cpus[i].arch_id;
->  
-> -        for (; apic_idx < apic_id; apic_idx++) {
-> +        for (; apic_idx < cpu_apic_id; apic_idx++) {
->              aml_append(pkg, aml_int(0));
->          }
->          aml_append(pkg, aml_int(apic_ids->cpus[i].cpu ? 1 : 0));
-> -        apic_idx = apic_id + 1;
-> +        apic_idx = cpu_apic_id + 1;
->      }
->      aml_append(sb_scope, aml_name_decl(CPU_ON_BITMAP, pkg));
->      aml_append(ctx, sb_scope);
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index 4d2d40bab5..95199c8900 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -1585,12 +1585,12 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->              aml_append(dev, aml_name_decl("_UID", aml_int(bus_num)));
->              aml_append(dev, aml_name_decl("_BBN", aml_int(bus_num)));
->              if (pci_bus_is_cxl(bus)) {
-> -                struct Aml *pkg = aml_package(2);
-> +                struct Aml *aml_pkg = aml_package(2);
->  
->                  aml_append(dev, aml_name_decl("_HID", aml_string("ACPI0016")));
-> -                aml_append(pkg, aml_eisaid("PNP0A08"));
-> -                aml_append(pkg, aml_eisaid("PNP0A03"));
-> -                aml_append(dev, aml_name_decl("_CID", pkg));
-> +                aml_append(aml_pkg, aml_eisaid("PNP0A08"));
-> +                aml_append(aml_pkg, aml_eisaid("PNP0A03"));
-> +                aml_append(dev, aml_name_decl("_CID", aml_pkg));
->                  build_cxl_osc_method(dev);
->              } else if (pci_bus_is_express(bus)) {
->                  aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A08")));
-> @@ -1783,14 +1783,14 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->          Object *pci_host = acpi_get_i386_pci_host();
->  
->          if (pci_host) {
-> -            PCIBus *bus = PCI_HOST_BRIDGE(pci_host)->bus;
-> -            Aml *scope = aml_scope("PCI0");
-> +            PCIBus *pbus = PCI_HOST_BRIDGE(pci_host)->bus;
-> +            Aml *ascope = aml_scope("PCI0");
->              /* Scan all PCI buses. Generate tables to support hotplug. */
-> -            build_append_pci_bus_devices(scope, bus);
-> -            if (object_property_find(OBJECT(bus), ACPI_PCIHP_PROP_BSEL)) {
-> -                build_append_pcihp_slots(scope, bus);
-> +            build_append_pci_bus_devices(ascope, pbus);
-> +            if (object_property_find(OBJECT(pbus), ACPI_PCIHP_PROP_BSEL)) {
-> +                build_append_pcihp_slots(ascope, pbus);
->              }
-> -            aml_append(sb_scope, scope);
-> +            aml_append(sb_scope, ascope);
->          }
->      }
->  
-> @@ -1842,10 +1842,10 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->          bool has_pcnt;
->  
->          Object *pci_host = acpi_get_i386_pci_host();
-> -        PCIBus *bus = PCI_HOST_BRIDGE(pci_host)->bus;
-> +        PCIBus *b = PCI_HOST_BRIDGE(pci_host)->bus;
->  
->          scope = aml_scope("\\_SB.PCI0");
-> -        has_pcnt = build_append_notfication_callback(scope, bus);
-> +        has_pcnt = build_append_notfication_callback(scope, b);
->          if (has_pcnt) {
->              aml_append(dsdt, scope);
->          }
-> diff --git a/hw/smbios/smbios.c b/hw/smbios/smbios.c
-> index b753705856..2a90601ac5 100644
-> --- a/hw/smbios/smbios.c
-> +++ b/hw/smbios/smbios.c
-> @@ -1423,13 +1423,14 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
->              if (!qemu_opts_validate(opts, qemu_smbios_type8_opts, errp)) {
->                  return;
->              }
-> -            struct type8_instance *t;
-> -            t = g_new0(struct type8_instance, 1);
-> -            save_opt(&t->internal_reference, opts, "internal_reference");
-> -            save_opt(&t->external_reference, opts, "external_reference");
-> -            t->connector_type = qemu_opt_get_number(opts, "connector_type", 0);
-> -            t->port_type = qemu_opt_get_number(opts, "port_type", 0);
-> -            QTAILQ_INSERT_TAIL(&type8, t, next);
-> +            struct type8_instance *t8_i;
-> +            t8_i = g_new0(struct type8_instance, 1);
-> +            save_opt(&t8_i->internal_reference, opts, "internal_reference");
-> +            save_opt(&t8_i->external_reference, opts, "external_reference");
-> +            t8_i->connector_type = qemu_opt_get_number(opts,
-> +                                                       "connector_type", 0);
-> +            t8_i->port_type = qemu_opt_get_number(opts, "port_type", 0);
-> +            QTAILQ_INSERT_TAIL(&type8, t8_i, next);
->              return;
->          case 11:
->              if (!qemu_opts_validate(opts, qemu_smbios_type11_opts, errp)) {
-> @@ -1452,27 +1453,27 @@ void smbios_entry_add(QemuOpts *opts, Error **errp)
->              type17.speed = qemu_opt_get_number(opts, "speed", 0);
->              return;
->          case 41: {
-> -            struct type41_instance *t;
-> +            struct type41_instance *t41_i;
->              Error *local_err = NULL;
->  
->              if (!qemu_opts_validate(opts, qemu_smbios_type41_opts, errp)) {
->                  return;
->              }
-> -            t = g_new0(struct type41_instance, 1);
-> -            save_opt(&t->designation, opts, "designation");
-> -            t->kind = qapi_enum_parse(&type41_kind_lookup,
-> -                                      qemu_opt_get(opts, "kind"),
-> -                                      0, &local_err) + 1;
-> -            t->kind |= 0x80;     /* enabled */
-> +            t41_i = g_new0(struct type41_instance, 1);
-> +            save_opt(&t41_i->designation, opts, "designation");
-> +            t41_i->kind = qapi_enum_parse(&type41_kind_lookup,
-> +                                          qemu_opt_get(opts, "kind"),
-> +                                          0, &local_err) + 1;
-> +            t41_i->kind |= 0x80;     /* enabled */
->              if (local_err != NULL) {
->                  error_propagate(errp, local_err);
-> -                g_free(t);
-> +                g_free(t41_i);
->                  return;
->              }
-> -            t->instance = qemu_opt_get_number(opts, "instance", 1);
-> -            save_opt(&t->pcidev, opts, "pcidev");
-> +            t41_i->instance = qemu_opt_get_number(opts, "instance", 1);
-> +            save_opt(&t41_i->pcidev, opts, "pcidev");
->  
-> -            QTAILQ_INSERT_TAIL(&type41, t, next);
-> +            QTAILQ_INSERT_TAIL(&type41, t41_i, next);
->              return;
->          }
->          default:
-> -- 
-> 2.39.1
-
+> Changelog:
+>
+> Changes since v3 (main changes):
+>   * Expose module level in CPUID[0x1F].
+>   * Fix compile warnings. (Babu)
+>   * Fixes cache topology uninitialization bugs for some AMD CPUs. (Babu)
+>
+> Changes since v2:
+>   * Add "Tested-by", "Reviewed-by" and "ACKed-by" tags.
+>   * Use newly added wrapped helper to get cores per socket in
+>     qemu_init_vcpu().
+>
+> Changes since v1:
+>   * Reordered patches. (Yanan)
+>   * Deprecated the patch to fix comment of machine_parse_smp_config().
+>     (Yanan)
+>   * Rename test-x86-cpuid.c to test-x86-topo.c. (Yanan)
+>   * Split the intel's l1 cache topology fix into a new separate patch.
+>     (Yanan)
+>   * Combined module_id and APIC ID for module level support into one
+>     patch. (Yanan)
+>   * Make cache_into_passthrough case of cpuid 0x04 leaf in
+>   * cpu_x86_cpuid() use max_processor_ids_for_cache() and
+>     max_core_ids_in_package() to encode CPUID[4]. (Yanan)
+>   * Add the prefix "CPU_TOPO_LEVEL_*" for CPU topology level names.
+>     (Yanan)
+> ---
+> Zhao Liu (14):
+>    i386: Fix comment style in topology.h
+>    tests: Rename test-x86-cpuid.c to test-x86-topo.c
+>    hw/cpu: Update the comments of nr_cores and nr_dies
+>    i386/cpu: Fix i/d-cache topology to core level for Intel CPU
+>    i386/cpu: Use APIC ID offset to encode cache topo in CPUID[4]
+>    i386/cpu: Consolidate the use of topo_info in cpu_x86_cpuid()
+>    i386: Split topology types of CPUID[0x1F] from the definitions of
+>      CPUID[0xB]
+>    i386: Decouple CPUID[0x1F] subleaf with specific topology level
+>    i386: Expose module level in CPUID[0x1F]
+>    i386: Add cache topology info in CPUCacheInfo
+>    i386: Use CPUCacheInfo.share_level to encode CPUID[4]
+>    i386: Use offsets get NumSharingCache for CPUID[0x8000001D].EAX[bits
+>      25:14]
+>    i386: Use CPUCacheInfo.share_level to encode
+>      CPUID[0x8000001D].EAX[bits 25:14]
+>    i386: Add new property to control L2 cache topo in CPUID.04H
+>
+> Zhuocheng Ding (7):
+>    softmmu: Fix CPUSTATE.nr_cores' calculation
+>    i386: Introduce module-level cpu topology to CPUX86State
+>    i386: Support modules_per_die in X86CPUTopoInfo
+>    i386: Support module_id in X86CPUTopoIDs
+>    i386/cpu: Introduce cluster-id to X86CPU
+>    tests: Add test case of APIC ID for module level parsing
+>    hw/i386/pc: Support smp.clusters for x86 PC machine
+>
+>   MAINTAINERS                                   |   2 +-
+>   hw/i386/pc.c                                  |   1 +
+>   hw/i386/x86.c                                 |  49 ++-
+>   include/hw/core/cpu.h                         |   2 +-
+>   include/hw/i386/topology.h                    |  68 ++--
+>   qemu-options.hx                               |  10 +-
+>   softmmu/cpus.c                                |   2 +-
+>   target/i386/cpu.c                             | 322 ++++++++++++++----
+>   target/i386/cpu.h                             |  46 ++-
+>   target/i386/kvm/kvm.c                         |   2 +-
+>   tests/unit/meson.build                        |   4 +-
+>   .../{test-x86-cpuid.c => test-x86-topo.c}     |  58 ++--
+>   12 files changed, 437 insertions(+), 129 deletions(-)
+>   rename tests/unit/{test-x86-cpuid.c => test-x86-topo.c} (73%)
+>
 
