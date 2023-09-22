@@ -2,91 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7507AAF82
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA757AAFC6
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:42:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjdPZ-0005h2-QF; Fri, 22 Sep 2023 06:29:25 -0400
+	id 1qjdbd-0003hp-Tg; Fri, 22 Sep 2023 06:41:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjdPX-0005gD-BA
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:29:23 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qjdPV-0007yo-CK
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:29:23 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5033918c09eso3170826e87.2
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 03:29:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695378559; x=1695983359; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=dtqr/bwW/e0727PreleJLDQ/WfEhK5yG5v4iGEkskj8=;
- b=lNVIOLm1ziqaZ+aZhPszE68qEjXVNF4wbXn+fPI8gbKa9c4mh/A1eXx+B3U1FY1HVz
- onGFk8P2m7ZV+n+MwHuFxl1Ur1/JZ1PwlmMuIEfZ3VLgR4aAcvpDtU+iCIRT6vLPyaTy
- 53Ic/4iVosgHDTwbM+Z5PzFIcflmdzekT/fFdPadtOm4ONVmgf5AeHIB3JZFizOz/vZl
- bqwrFzQkyuQqRB6R8EXZ/tp7KybTingJa5DpMZbwr5oigOAh0ZiZlof+ggIE3PRu6nkW
- YK7lNGYah7pe7iyiif9nTRquPNFjhPXT+SlPquRISj42syYjI0hvMSaotKw/P7d23Bo0
- +SDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695378559; x=1695983359;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=dtqr/bwW/e0727PreleJLDQ/WfEhK5yG5v4iGEkskj8=;
- b=Cf4xDrSUXDvvk7r+b39cUFiqaRexl73+dkg8cWwC7eywNVdlt3FDDvV8sALZkiaC3a
- /eJQ1IJbb5GjgdguuMZd9cmfi1FCltzQ5nFW8ZzGnv5ETxTgytFIQdkldA+nmtAbNacM
- anS1LNzvHK66AL1xUCS3/qRqPM3Pl/A3VbGwqScRw0sJe6bazbliil2GHcuevJlvOeqK
- JjLNNGe0TuxfcDdex0ZiJQsTVzUCwURJvsLrCFo+O8CRAryNB3Q13iT7i1ozI84bcnbR
- uLzcedJZaecQ2eWmRRalZsgfeuHAMtMwg3Ilzbfq1UICpuLi9aKi5pgWM0JTTSir1qmK
- 2rZg==
-X-Gm-Message-State: AOJu0YzONd4KkyCLG6muwk6XiVSs7gVcAesSph2PFLg+WprwUWOvXyZc
- pzo5LcKO8ELNzi0LaWsh0ENA7w==
-X-Google-Smtp-Source: AGHT+IGX58hs8A+zQFvjpIM5qp2bh5Rp0UOjPxZKNiyGvrfvj/4gEZyQdq2cXmtpPQWHbziL4NCsMw==
-X-Received: by 2002:a05:6512:2312:b0:504:3c1f:cbda with SMTP id
- o18-20020a056512231200b005043c1fcbdamr1143063lfu.1.1695378559213; 
- Fri, 22 Sep 2023 03:29:19 -0700 (PDT)
-Received: from [192.168.144.175] ([93.23.15.147])
- by smtp.gmail.com with ESMTPSA id
- t7-20020a5d49c7000000b003176aa612b1sm4068903wrs.38.2023.09.22.03.29.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 22 Sep 2023 03:29:18 -0700 (PDT)
-Message-ID: <d1d3f256-ec18-80fb-aef9-a3d558057733@linaro.org>
-Date: Fri, 22 Sep 2023 12:29:15 +0200
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1qjdbP-0003hH-6W
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:41:40 -0400
+Received: from smtp-relay-services-0.canonical.com ([185.125.188.250])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <noreply@launchpad.net>)
+ id 1qjdbL-0001sb-E0
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:41:37 -0400
+Received: from juju-98d295-prod-launchpad-16.localdomain (unknown
+ [10.131.215.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by smtp-relay-services-0.canonical.com (Postfix) with ESMTPSA id D10BD42CFA
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 10:41:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=launchpad.net;
+ s=20210803; t=1695379280;
+ bh=6fpjuSo9rT9pWm2IUo1vuCU1InRrxp9xzLYNwQQxW3Q=;
+ h=MIME-Version:Content-Type:Date:From:To:Reply-To:References:
+ Message-Id:Subject;
+ b=Ix4AlOAvRywSWGnr7wVHT1nzowrBFvXa1t1VyLZS5U9Cpbmm86RHM/byPODTPJrJ3
+ niGYXsGCvlUHbqhCKtEmiszcCW39fdFLx6XlYtXlGgYSzwwYtBoUsPgOobGd4o4VKQ
+ 73MsC+JLBVYNdk7rJwUr1I8mzlTilbiJHdHMZi5I8FQIyMj3u88kAJHjoNd5S8sxrs
+ mO256l5K4Y49T8L5tx4PYWk2pVg66Y9kgC/1WmA6LB8uKjnygbsq/DStdJX1HN8pXD
+ dWRT2fFSb9ltp2ViPVuJ/Eh9hL39Zr8GQVv7o8HGk+WwdLldds4atdj2bjAdzXEMCf
+ hF+SvP6Rmls/Q==
+Received: from [10.131.215.246] (localhost [127.0.0.1])
+ by juju-98d295-prod-launchpad-16.localdomain (Postfix) with ESMTP id
+ 68DB57E16C
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 10:40:57 +0000 (UTC)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] hw/sd/sdhci: Block Size Register bits [14:12] is lost
-Content-Language: en-US
-To: "Gao, Lu" <Lu.Gao@verisilicon.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: "Wen, Jianxian" <Jianxian.Wen@verisilicon.com>,
- Bin Meng <bin.meng@windriver.com>,
- "open list:SD (Secure Card)" <qemu-block@nongnu.org>,
- Alexander Bulekov <alxndr@bu.edu>, Prasad J Pandit <pjp@fedoraproject.org>
-References: <20220321055618.4026-1-lu.gao@verisilicon.com>
- <f15d8c9a-2a6f-1126-785f-0176eb78c3ec@amsat.org>
- <34781C803212B140A51E6B66D9092E5D01FA5C9937@SHASXM03.verisilicon.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <34781C803212B140A51E6B66D9092E5D01FA5C9937@SHASXM03.verisilicon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 22 Sep 2023 10:33:20 -0000
+From: Michael Tokarev <1819289@bugs.launchpad.net>
+To: qemu-devel@nongnu.org
+X-Launchpad-Notification-Type: bug
+X-Launchpad-Bug: product=qemu; status=Fix Released; importance=Undecided;
+ assignee=None; 
+X-Launchpad-Bug-Tags: mttcg
+X-Launchpad-Bug-Information-Type: Public
+X-Launchpad-Bug-Private: no
+X-Launchpad-Bug-Security-Vulnerability: no
+X-Launchpad-Bug-Commenters: cbparker curryrice71 dgilbert-h mjt+launchpad-tls
+ philmd pmaydell th-huth
+X-Launchpad-Bug-Reporter: John M (curryrice71)
+X-Launchpad-Bug-Modifier: Michael Tokarev (mjt+launchpad-tls)
+References: <155216177409.9624.16357609956497374456.malonedeb@gac.canonical.com>
+Message-Id: <169537880058.567449.11387712062645322172.malone@juju-98d295-prod-launchpad-7>
+Subject: [Bug 1819289] Re: Windows 95 and Windows 98 will not install or run
+X-Launchpad-Message-Rationale: Subscriber (QEMU) @qemu-devel-ml
+X-Launchpad-Message-For: qemu-devel-ml
+Precedence: bulk
+X-Generated-By: Launchpad (canonical.com);
+ Revision="d47b73632f1fccdd9fdd4e6145a4784874303779";
+ Instance="launchpad-scripts"
+X-Launchpad-Hash: e2fca51f6b06aa98970b9dcfe2e33aaae227b45b
+Received-SPF: pass client-ip=185.125.188.250;
+ envelope-from=noreply@launchpad.net; helo=smtp-relay-services-0.canonical.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -95,47 +86,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Bug 1819289 <1819289@bugs.launchpad.net>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/12/22 09:54, Gao, Lu wrote:
-> Hello,
-> 
-> Just want to check whether we can have it merged? Any other comments?
+I found a win98 iso image and gave this a try with qemu 8.1.  It works
+here just fine - either kvm or tcg mode, either qemu x86_64 or i386.
+Without any extra options, just this:
 
-Oops sorry, I see I had this patch tagged for a merge request
-but I lost track of it (likely when switching emails).
 
-Patch queued!
+  qemu-system-i386 -cdrom w98.iso -drive file=3Dw98.img,format=3Draw
 
-> 
-> Thanks a lot!
-> B.R.
-> 
-> -----Original Message-----
-> From: Philippe Mathieu-Daudé [mailto:philippe.mathieu.daude@gmail.com] On Behalf Of Philippe Mathieu-Daudé
-> Sent: Tuesday, May 31, 2022 6:09 PM
-> To: Gao, Lu; qemu-devel@nongnu.org
-> Cc: Wen, Jianxian; Bin Meng; open list:SD (Secure Card); Alexander Bulekov; Prasad J Pandit
-> Subject: Re: [PATCH] hw/sd/sdhci: Block Size Register bits [14:12] is lost
-> 
-> On 21/3/22 06:56, Lu Gao wrote:
->> Block Size Register bits [14:12] is SDMA Buffer Boundary, it is missed
->> in register write, but it is needed in SDMA transfer. e.g. it will be
->> used in sdhci_sdma_transfer_multi_blocks to calculate boundary_ variables.
->>
->> Missing this field will cause wrong operation for different SDMA Buffer
->> Boundary settings.
-> 
-> Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
-> Fixes: dfba99f17f ("hw/sdhci: Fix DMA Transfer Block Size field")
-> 
-> Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-> 
->> Signed-off-by: Lu Gao <lu.gao@verisilicon.com>
->> Signed-off-by: Jianxian Wen <jianxian.wen@verisilicon.com>
->> ---
->>    hw/sd/sdhci.c | 15 +++++++++++----
->>    1 file changed, 11 insertions(+), 4 deletions(-)
+It also works fine with a few previous versions of qemu (tried 5.2 and
+7.2).  Everything tested on debian bookworm (with various versions of
+qemu debian packages).
+
+--=20
+You received this bug notification because you are a member of qemu-
+devel-ml, which is subscribed to QEMU.
+https://bugs.launchpad.net/bugs/1819289
+
+Title:
+  Windows 95 and Windows 98 will not install or run
+
+Status in QEMU:
+  Fix Released
+
+Bug description:
+  The last version of QEMU I have been able to run Windows 95 or Windows
+  98 on was 2.7 or 2.8. Recent versions since then even up to 3.1 will
+  either not install or will not run 95 or 98 at all. I have tried every
+  combination of options like isapc or no isapc, cpu pentium  or cpu as
+  486. Tried different memory configurations, but they just don't work
+  anymore.
+
+To manage notifications about this bug go to:
+https://bugs.launchpad.net/qemu/+bug/1819289/+subscriptions
 
 
