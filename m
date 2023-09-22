@@ -2,69 +2,108 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9CD7AB205
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 14:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B967AB258
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 14:42:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjf81-0004Ep-EZ; Fri, 22 Sep 2023 08:19:25 -0400
+	id 1qjfTP-00048n-Fw; Fri, 22 Sep 2023 08:41:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1qjf7z-0004EZ-T3
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:19:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qjfTM-00048T-M4
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:41:28 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vkuznets@redhat.com>)
- id 1qjf7y-0007jA-9m
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:19:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695385161;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=J9NRn7HoslbcYQajMTe7ud5tpZSjR8KjTHMmKv/0PHE=;
- b=G9RePsjzMEkvRLpZHJgWUAQ4w0a+MiSGXrsvFaKp/sJk2aHKLu3GB8v1y6u1VzgtGOeYJv
- y+EsjKeBP+7zkINOfxVMsfuW/qPdnRlS0E4qLFI/V8s+3hDZCdZT/X+EJyoj3MFyVT7ntf
- sPw0GXKRvVDTpiQ/OsmSivyVNnT5VC8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-378-75kclpzAOX6HUE17uSCrtw-1; Fri, 22 Sep 2023 08:19:19 -0400
-X-MC-Unique: 75kclpzAOX6HUE17uSCrtw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7A6F1280D58A
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 12:19:19 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.45.225.101])
- by smtp.corp.redhat.com (Postfix) with ESMTP id C457D711291;
- Fri, 22 Sep 2023 12:19:18 +0000 (UTC)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: qemu-devel@nongnu.org,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH RESEND 2/2] i386: Exclude 'hv-syndbg' from 'hv-passthrough'
-Date: Fri, 22 Sep 2023 14:19:15 +0200
-Message-ID: <20230922121915.566591-3-vkuznets@redhat.com>
-In-Reply-To: <20230922121915.566591-1-vkuznets@redhat.com>
-References: <20230922121915.566591-1-vkuznets@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qjfTK-0004WC-2Q
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 08:41:28 -0400
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38MCcSPY015922
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 12:41:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=J1YEduTOEczH9J2VCayI1pgLSyqYeO+bCOosjKqbx5k=;
+ b=UTAXM+XE+1iwR/i1rKPZtrut+WX+Y16lJL5KYAySv0Yf+92HAV2kjD3iNvu9+nsUuM5e
+ Xt/PN7BMo9f0jbG4L9PoK+hyhELwq2dggqyRi2n5uNv2TWYpOAQs2u3PgQ7ceAkGt8cx
+ MC6PypLoiwZGlA4NAMb9d6z29NDINXst76uE2NJCyWlG9czp//5/zbs8odEmyPiijcTN
+ epVnrNCHeI+76ztUvfSaThQAr8JnxssEgg3drqV6Qv6/mCx3gSoq3ERDOIKM4zFghP6+
+ O5j6hXjhoxPjNBbfa1NRPvFDPp5CQOpuwGPHKNr6Pa8HhLERZafftzn61JXFTGFBy0qd Uw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t990s3bvr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 12:41:22 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38MCcwWB016429
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 12:41:22 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t990s3bvc-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Sep 2023 12:41:21 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38MCacHQ018810; Fri, 22 Sep 2023 12:41:21 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t8tsp1mu3-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 22 Sep 2023 12:41:21 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com
+ [10.241.53.102])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38MCfKUp2491038
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Fri, 22 Sep 2023 12:41:20 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A2EA358061;
+ Fri, 22 Sep 2023 12:41:20 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5502058056;
+ Fri, 22 Sep 2023 12:41:20 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Fri, 22 Sep 2023 12:41:20 +0000 (GMT)
+Message-ID: <2629ce63-e4dd-67f3-6341-d477c39b29f7@linux.ibm.com>
+Date: Fri, 22 Sep 2023 08:41:19 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v6 2/2] tpm: add backend for mssim
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>, James Bottomley <jejb@linux.ibm.com>
+Cc: qemu-devel@nongnu.org, =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>
+References: <20230109161532.6892-1-jejb@linux.ibm.com>
+ <20230109161532.6892-3-jejb@linux.ibm.com> <87bkduwxv7.fsf@pond.sub.org>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <87bkduwxv7.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Rq565-hH-hWEtIu9HCRBWnlzDfcYMwkD
+X-Proofpoint-GUID: Ni-jc7TVhT01NT50M2j5281Id1hq7k8z
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=vkuznets@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-22_10,2023-09-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 malwarescore=0
+ mlxscore=0 spamscore=0 impostorscore=0 suspectscore=0 bulkscore=0
+ mlxlogscore=999 priorityscore=1501 adultscore=0 phishscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309220107
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,89 +119,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Windows with Hyper-V role enabled doesn't boot with 'hv-passthrough' when
-no debugger is configured, this significantly limits the usefulness of the
-feature as there's no support for subtracting Hyper-V features from CPU
-flags at this moment (e.g. "-cpu host,hv-passthrough,-hv-syndbg" does not
-work). While this is also theoretically fixable, 'hv-syndbg' is likely
-very special and unneeded in the default set. Genuine Hyper-V doesn't seem
-to enable it either.
 
-Introduce 'skip_passthrough' flag to 'kvm_hyperv_properties' and use it as
-one-off to skip 'hv-syndbg' when enabling features in 'hv-passthrough'
-mode. Note, "-cpu host,hv-passthrough,hv-syndbg" can still be used if
-needed.
+On 9/22/23 02:00, Markus Armbruster wrote:
+> Found this cleaning out old mail, sorry for missing it until now!
+>
+> I think we owe James a quick decision wether we're willing to take the
+> feature.  Stefan, thoughts?
 
-As both 'hv-passthrough' and 'hv-syndbg' are debug features, the change
-should not have any effect on production environments.
+I thought we discusses it back then. Does it handle snapshotting and 
+migration correctly?
 
-Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
----
- docs/system/i386/hyperv.rst | 13 +++++++++----
- target/i386/kvm/kvm.c       |  7 +++++--
- 2 files changed, 14 insertions(+), 6 deletions(-)
+   Stefan
 
-diff --git a/docs/system/i386/hyperv.rst b/docs/system/i386/hyperv.rst
-index 2505dc4c86e0..009947e39141 100644
---- a/docs/system/i386/hyperv.rst
-+++ b/docs/system/i386/hyperv.rst
-@@ -262,14 +262,19 @@ Supplementary features
- ``hv-passthrough``
-   In some cases (e.g. during development) it may make sense to use QEMU in
-   'pass-through' mode and give Windows guests all enlightenments currently
--  supported by KVM. This pass-through mode is enabled by "hv-passthrough" CPU
--  flag.
-+  supported by KVM.
- 
-   Note: ``hv-passthrough`` flag only enables enlightenments which are known to QEMU
-   (have corresponding 'hv-' flag) and copies ``hv-spinlocks`` and ``hv-vendor-id``
-   values from KVM to QEMU. ``hv-passthrough`` overrides all other 'hv-' settings on
--  the command line. Also, enabling this flag effectively prevents migration as the
--  list of enabled enlightenments may differ between target and destination hosts.
-+  the command line.
-+
-+  Note: ``hv-passthrough`` does not enable ``hv-syndbg`` which can prevent certain
-+  Windows guests from booting when used without proper configuration. If needed,
-+  ``hv-syndbg`` can be enabled additionally.
-+
-+  Note: ``hv-passthrough`` effectively prevents migration as the list of enabled
-+  enlightenments may differ between target and destination hosts.
- 
- ``hv-enforce-cpuid``
-   By default, KVM allows the guest to use all currently supported Hyper-V
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index 51b381a2fbbc..cfb24ba87df5 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -871,6 +871,7 @@ static struct {
-         uint32_t bits;
-     } flags[2];
-     uint64_t dependencies;
-+    bool skip_passthrough;
- } kvm_hyperv_properties[] = {
-     [HYPERV_FEAT_RELAXED] = {
-         .desc = "relaxed timing (hv-relaxed)",
-@@ -999,7 +1000,8 @@ static struct {
-             {.func = HV_CPUID_FEATURES, .reg = R_EDX,
-              .bits = HV_FEATURE_DEBUG_MSRS_AVAILABLE}
-         },
--        .dependencies = BIT(HYPERV_FEAT_SYNIC) | BIT(HYPERV_FEAT_RELAXED)
-+        .dependencies = BIT(HYPERV_FEAT_SYNIC) | BIT(HYPERV_FEAT_RELAXED),
-+        .skip_passthrough = true,
-     },
-     [HYPERV_FEAT_MSR_BITMAP] = {
-         .desc = "enlightened MSR-Bitmap (hv-emsr-bitmap)",
-@@ -1408,7 +1410,8 @@ bool kvm_hyperv_expand_features(X86CPU *cpu, Error **errp)
-          * hv_build_cpuid_leaf() uses this info to build guest CPUIDs.
-          */
-         for (feat = 0; feat < ARRAY_SIZE(kvm_hyperv_properties); feat++) {
--            if (hyperv_feature_supported(cs, feat)) {
-+            if (hyperv_feature_supported(cs, feat) &&
-+                !kvm_hyperv_properties[feat].skip_passthrough) {
-                 cpu->hyperv_features |= BIT(feat);
-             }
-         }
--- 
-2.41.0
-
+>
+> James Bottomley <jejb@linux.ibm.com> writes:
+>
+>> From: James Bottomley <James.Bottomley@HansenPartnership.com>
+>>
+>> The Microsoft Simulator (mssim) is the reference emulation platform
+>> for the TCG TPM 2.0 specification.
+>>
+>> https://github.com/Microsoft/ms-tpm-20-ref.git
+>>
+>> It exports a fairly simple network socket based protocol on two
+>> sockets, one for command (default 2321) and one for control (default
+>> 2322).  This patch adds a simple backend that can speak the mssim
+>> protocol over the network.  It also allows the two sockets to be
+>> specified on the command line.  The benefits are twofold: firstly it
+>> gives us a backend that actually speaks a standard TPM emulation
+>> protocol instead of the linux specific TPM driver format of the
+>> current emulated TPM backend and secondly, using the microsoft
+>> protocol, the end point of the emulator can be anywhere on the
+>> network, facilitating the cloud use case where a central TPM service
+>> can be used over a control network.
+>>
+>> The implementation does basic control commands like power off/on, but
+>> doesn't implement cancellation or startup.  The former because
+>> cancellation is pretty much useless on a fast operating TPM emulator
+>> and the latter because this emulator is designed to be used with OVMF
+>> which itself does TPM startup and I wanted to validate that.
+>>
+>> To run this, simply download an emulator based on the MS specification
+>> (package ibmswtpm2 on openSUSE) and run it, then add these two lines
+>> to the qemu command and it will use the emulator.
+>>
+>>      -tpmdev mssim,id=tpm0 \
+>>      -device tpm-crb,tpmdev=tpm0 \
+>>
+>> to use a remote emulator replace the first line with
+>>
+>>      -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':inet,'host':'remote','port':'2321'}}"
+>>
+>> tpm-tis also works as the backend.
+>>
+>> Signed-off-by: James Bottomley <jejb@linux.ibm.com>
+> [...]
+>
+>> diff --git a/docs/specs/tpm.rst b/docs/specs/tpm.rst
+>> index 535912a92b..1398735956 100644
+>> --- a/docs/specs/tpm.rst
+>> +++ b/docs/specs/tpm.rst
+>> @@ -270,6 +270,38 @@ available as a module (assuming a TPM 2 is passed through):
+>>     /sys/devices/LNXSYSTEM:00/LNXSYBUS:00/MSFT0101:00/tpm/tpm0/pcr-sha256/9
+>>     ...
+>>   
+>> +The QEMU TPM Microsoft Simulator Device
+>> +---------------------------------------
+>> +
+>> +The TCG provides a reference implementation for TPM 2.0 written by
+>
+> Suggest to copy the cover letter's nice introductory paragraph here:
+>
+>    The Microsoft Simulator (mssim) is the reference emulation platform
+>    for the TCG TPM 2.0 specification.
+>
+>    It provides a reference implementation for TPM 2.0 written by
+>
+>> +Microsoft (See `ms-tpm-20-ref`_ on github).  The reference implementation
+>> +starts a network server and listens for TPM commands on port 2321 and
+>> +TPM Platform control commands on port 2322, although these can be
+>> +altered.  The QEMU mssim TPM backend talks to this implementation.  By
+>> +default it connects to the default ports on localhost:
+>> +
+>> +.. code-block:: console
+>> +
+>> +  qemu-system-x86_64 <qemu-options> \
+>> +    -tpmdev mssim,id=tpm0 \
+>> +    -device tpm-crb,tpmdev=tpm0
+>> +
+>> +
+>> +Although it can also communicate with a remote host, which must be
+>> +specified as a SocketAddress via json on the command line for each of
+> Is the "via JSON" part in "must be specified ... on the command line"
+> correct?  I'd expect to be able to use dotted keys as well, like
+>
+>      -tpmdev type=mssim,id=tpm0,command.type=inet,command.host=remote,command.port=2321',control.type=inet,control.host=remote,control.port=2322
+>
+> Aside: I do recommend management applications stick to JSON.
+>
+>> +the command and control ports:
+>> +
+>> +.. code-block:: console
+>> +
+>> +  qemu-system-x86_64 <qemu-options> \
+>> +    -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':'inet','host':'remote','port':'2321'},'control':{'type':'inet','host':'remote','port':'2322'}}" \
+>> +    -device tpm-crb,tpmdev=tpm0
+>> +
+>> +
+>> +The mssim backend supports snapshotting and migration, but the state
+>> +of the Microsoft Simulator server must be preserved (or the server
+>> +kept running) outside of QEMU for restore to be successful.
+>> +
+>>   The QEMU TPM emulator device
+>>   ----------------------------
+>>   
+>> @@ -526,3 +558,6 @@ the following:
+>>   
+>>   .. _SWTPM protocol:
+>>      https://github.com/stefanberger/swtpm/blob/master/man/man3/swtpm_ioctls.pod
+>> +
+>> +.. _ms-tpm-20-ref:
+>> +   https://github.com/microsoft/ms-tpm-20-ref
+>> diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
+>> index ed78a87ddd..12482368d0 100644
+>> --- a/monitor/hmp-cmds.c
+>> +++ b/monitor/hmp-cmds.c
+>> @@ -731,6 +731,7 @@ void hmp_info_tpm(Monitor *mon, const QDict *qdict)
+>>       unsigned int c = 0;
+>>       TPMPassthroughOptions *tpo;
+>>       TPMEmulatorOptions *teo;
+>> +    TPMmssimOptions *tmo;
+>>   
+>>       info_list = qmp_query_tpm(&err);
+>>       if (err) {
+>> @@ -764,6 +765,14 @@ void hmp_info_tpm(Monitor *mon, const QDict *qdict)
+>>               teo = ti->options->u.emulator.data;
+>>               monitor_printf(mon, ",chardev=%s", teo->chardev);
+>>               break;
+>> +        case TPM_TYPE_MSSIM:
+>> +            tmo = &ti->options->u.mssim;
+>> +            monitor_printf(mon, ",command=%s:%s,control=%s:%s",
+>> +                           tmo->command->u.inet.host,
+>> +                           tmo->command->u.inet.port,
+>> +                           tmo->control->u.inet.host,
+>> +                           tmo->control->u.inet.port);
+>> +            break;
+>>           case TPM_TYPE__MAX:
+>>               break;
+>>           }
+>> diff --git a/qapi/tpm.json b/qapi/tpm.json
+>> index 2b491c28b4..f9dde35377 100644
+>> --- a/qapi/tpm.json
+>> +++ b/qapi/tpm.json
+>> @@ -5,6 +5,7 @@
+>>   ##
+>>   # = TPM (trusted platform module) devices
+>>   ##
+> Blank line, please.
+>
+>> +{ 'include': 'sockets.json' }
+>>   
+>>   ##
+>>   # @TpmModel:
+>> @@ -49,7 +50,7 @@
+>     #
+>     # @passthrough: TPM passthrough type
+>     #
+>     # @emulator: Software Emulator TPM type (since 2.11)
+>>   #
+> Missing member documentation:
+>
+>     # @mssim: <brief description here> (since 8.2)
+>
+>>   # Since: 1.5
+>>   ##
+>> -{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator' ],
+>> +{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator', 'mssim' ],
+>>     'if': 'CONFIG_TPM' }
+>>   
+>>   ##
+>> @@ -64,7 +65,7 @@
+>>   # Example:
+>>   #
+>>   # -> { "execute": "query-tpm-types" }
+>> -# <- { "return": [ "passthrough", "emulator" ] }
+>> +# <- { "return": [ "passthrough", "emulator", "mssim" ] }
+> Thanks for updating the example.
+>
+>>   #
+>>   ##
+>>   { 'command': 'query-tpm-types', 'returns': ['TpmType'],
+>> @@ -117,6 +118,22 @@
+>>     'data': { 'data': 'TPMEmulatorOptions' },
+>>     'if': 'CONFIG_TPM' }
+>>   
+>> +##
+>> +# @TPMmssimOptions:
+> Please capitalize similar to TPMPassthroughOptions and
+> TPMEmulatorOptions: TPMMssimOptions.
+>
+>> +#
+>> +# Information for the mssim emulator connection
+>> +#
+>> +# @command: command socket for the TPM emulator
+> Blank line, please.
+>
+>> +# @control: control socket for the TPM emulator
+>> +#
+>> +# Since: 7.2.0
+> Since 8.2
+>
+>> +##
+>> +{ 'struct': 'TPMmssimOptions',
+>> +  'data': {
+>> +      '*command': 'SocketAddress',
+>> +      '*control': 'SocketAddress' },
+> Locally consistent indentation is
+>
+>       'data': { '*command': 'SocketAddress',
+>                 '*control': 'SocketAddress' },
+>
+>> +  'if': 'CONFIG_TPM' }
+>> +
+>>   ##
+>>   # @TpmTypeOptions:
+>>   #
+>> @@ -124,6 +141,7 @@
+>>   #
+>>   # @type: - 'passthrough' The configuration options for the TPM passthrough type
+>>   #        - 'emulator' The configuration options for TPM emulator backend type
+>> +#        - 'mssim' The configuration options for TPM emulator mssim type
+>>   #
+>>   # Since: 1.5
+>>   ##
+>> @@ -131,7 +149,8 @@
+>>     'base': { 'type': 'TpmType' },
+>>     'discriminator': 'type',
+>>     'data': { 'passthrough' : 'TPMPassthroughOptionsWrapper',
+>> -            'emulator': 'TPMEmulatorOptionsWrapper' },
+>> +            'emulator': 'TPMEmulatorOptionsWrapper',
+>> +            'mssim' : 'TPMmssimOptions' },
+>>     'if': 'CONFIG_TPM' }
+>>   
+>>   ##
+>> @@ -150,7 +169,8 @@
+>>               'id' : 'str' },
+>>     'discriminator': 'type',
+>>     'data': { 'passthrough' : 'TPMPassthroughOptions',
+>> -            'emulator': 'TPMEmulatorOptions' },
+>> +            'emulator': 'TPMEmulatorOptions',
+>> +            'mssim': 'TPMmssimOptions' },
+>>     'if': 'CONFIG_TPM' }
+>>   
+>>   ##
+> Address my nitpicking, and you may add
+>
+> Acked-by: Markus Armbruster <armbru@redhat.com>
+>
 
