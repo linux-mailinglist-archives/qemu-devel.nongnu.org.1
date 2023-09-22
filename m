@@ -2,48 +2,114 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFFE7AAABF
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 09:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2812E7AAAA6
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 09:45:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjauM-0007Wl-Oe; Fri, 22 Sep 2023 03:49:02 -0400
+	id 1qjaoD-0004KW-Io; Fri, 22 Sep 2023 03:42:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <estarriol@SSLAB-3090Ti>)
- id 1qjauK-0007WT-SK; Fri, 22 Sep 2023 03:49:00 -0400
-Received: from [140.112.90.93] (helo=SSLAB-3090Ti)
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qjao8-0004HS-IH
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 03:42:36 -0400
+Received: from out4-smtp.messagingengine.com ([66.111.4.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <estarriol@SSLAB-3090Ti>)
- id 1qjauE-00082R-MN; Fri, 22 Sep 2023 03:49:00 -0400
-Received: from SSLAB-3090Ti (localhost [127.0.0.1])
- by SSLAB-3090Ti (8.15.2/8.15.2/Debian-18) with ESMTP id 38M7dq6Y520002;
- Fri, 22 Sep 2023 15:39:52 +0800
-Received: (from estarriol@localhost)
- by SSLAB-3090Ti (8.15.2/8.15.2/Submit) id 38M7dp5C519996;
- Fri, 22 Sep 2023 15:39:51 +0800
-From: Jianlin Li <ljianlin99@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-trivial@nongnu.org, thomas.lendacky@amd.com, dovmurik@linux.ibm.com, 
- Jianlin Li <ljianlin99@gmail.com>
-Subject: [PATCH] Update AMD memory encryption document links.
-Date: Fri, 22 Sep 2023 15:38:35 +0800
-Message-Id: <20230922073834.519945-1-ljianlin99@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ (Exim 4.90_1) (envelope-from <hi@alyssa.is>) id 1qjao5-00072O-Eu
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 03:42:35 -0400
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+ by mailout.nyi.internal (Postfix) with ESMTP id AAD2D5C02B3;
+ Fri, 22 Sep 2023 03:42:30 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+ by compute2.internal (MEProxy); Fri, 22 Sep 2023 03:42:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-type:content-type:date:date:from:from:in-reply-to
+ :in-reply-to:message-id:mime-version:references:reply-to:sender
+ :subject:subject:to:to; s=fm1; t=1695368550; x=1695454950; bh=k6
+ 4X2p2VwoRCcxIEmILfU1Ile1Borr2azLvc7cFXmsM=; b=bOauwSytSvxCBYLJCp
+ 5iMYlbyZXt1KiskmL2vOCPuUC13MdANwe4OmYegi2l5ufISVK6jtT4BTk0AD6fEu
+ xC/+6dUPmtkWrESP8ZUXETa42osg7Ylsdl3AHg1QjdSGxGllJFRn4pbQuz2FJzAu
+ NifSlp0EklHjiowSgQ7uZcOHnsazW+m6TsJgnLqVg9ZpztQCguyJl2Pd4tnHWj/7
+ rKGs2dK9cjLl4ktz0xiYapy7UKkvCIFtBclYQUU2xbuCHsmSNC55OUmP76xkSXD8
+ ysbcP9vJBs5EXWlgpR6vJC2O5Wx104n3pMbS9RZ2vGCwKIYsEDK5WRekXNtWao7O
+ U9SA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; t=1695368550; x=1695454950; bh=k64X2p2VwoRCc
+ xIEmILfU1Ile1Borr2azLvc7cFXmsM=; b=Bj4Q2anne6tMsUIhRmSt38pm6nPHs
+ ecVY34km4V+BKfwiX5iOE4Ha/reivVecOAfwbZ45yx4Oha7g+MqPgfR7BE7bx/7D
+ gO1jD/9cIg6ZnYBPsuz+cAv3qcLvwO97EKuxMGCcvckQ6JxI/16/VRMnY2GTY4qM
+ 0zK5NLmN8m+wcIc188t0HL+P9LtVJ59+FGsnpSVpHkFZcQKgTzicuzAE1UotOm0P
+ BWJerTwwjshu5lpUC1CcJKFQn8ODFyRQ2ELsqoMPloFlX5fIAlt2g5EbenYFBgwg
+ YK3egIcdR3HRSoba9M1QfgBz3r5w9T+pqJFLh7m4ah89tpUo1pVbS6Chg==
+X-ME-Sender: <xms:ZkUNZRcxJpNTfy_WnvleWcQYvr3flawWHd6tzFU535Bj9q9blgqrUQ>
+ <xme:ZkUNZfOsh3KXW1IAZPitiXgDkmkpKFKITpfZ2sVqzfTLZkxkxZr8MJaXamX64JRHA
+ 0j8a1tF4mi-hCHJ3A>
+X-ME-Received: <xmr:ZkUNZahNi8qwyisHiN4_X3jTfq0rl05KaaUDulHaKLf7yGpc5_QdezqCzthO4_TfJlvmqsk6UENkr1Fsr6U>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudekjedguddulecutefuodetggdotefrod
+ ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+ necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+ enucfjughrpefhvfevufgjfhffkfggtgesghdtreertddttdenucfhrhhomheptehlhihs
+ shgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnhepie
+ duffeuieelgfetgfdttddtkeekheekgfehkedufeevteegfeeiffetvdetueevnecuvehl
+ uhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhephhhisegrlhihsh
+ hsrgdrihhs
+X-ME-Proxy: <xmx:ZkUNZa9s2PAqSptq63tF5yFrxiom9CjvcWIX-eFDUjYt1-8rETh7kA>
+ <xmx:ZkUNZdtEYy10L9XorIN4Tnge7fJwzF5q9B_xOTO9lbRaCjHw8kB0DA>
+ <xmx:ZkUNZZGv62c3n_dRALyZe3Nuyhj9PAmHW0ObSqgM9ixonwrfaYrMbA>
+ <xmx:ZkUNZdf4eY3SoaBZzSj76J1Tehew6ivJegkQo0CJlnqk0WfEP6Fmzw>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 Sep 2023 03:42:29 -0400 (EDT)
+Received: by x220.qyliss.net (Postfix, from userid 1000)
+ id 73A198982; Fri, 22 Sep 2023 07:42:28 +0000 (UTC)
+From: Alyssa Ross <hi@alyssa.is>
+To: Akihiko Odaki <akihiko.odaki@gmail.com>, Gurchetan Singh
+ <gurchetansingh@chromium.org>, Mark Cave-Ayland
+ <mark.cave-ayland@ilande.co.uk>
+Cc: qemu-devel@nongnu.org, Xenia Ragiadakou <xenia.ragiadakou@amd.com>,
+ marcandre.lureau@redhat.com, ray.huang@amd.com, alex.bennee@linaro.org,
+ shentey@gmail.com, ernunes@redhat.com, manos.pitsidianakis@linaro.org,
+ philmd@linaro.org, Gerd Hoffmann <kraxel@redhat.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Anthony PERARD <anthony.perard@citrix.com>,
+ Antonio Caggiano <quic_acaggian@quicinc.com>,
+ "Dr . David Alan Gilbert" <dgilbert@redhat.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ xen-devel@lists.xenproject.org, Albert Esteve <aesteve@redhat.com>,
+ Roger Pau =?utf-8?Q?Monn=C3=A9?= <roger.pau@citrix.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>,
+ Honglei Huang <honglei1.huang@amd.com>,
+ Julia Zhang <julia.zhang@amd.com>, Chen Jiqian <Jiqian.Chen@amd.com>
+Subject: Re: [PATCH v13 6/9] gfxstream + rutabaga: add initial support for
+ gfxstream
+In-Reply-To: <6256f069-ee39-495e-a8c3-ea2328f085a2@gmail.com>
+References: <20230829003629.410-1-gurchetansingh@chromium.org>
+ <20230829003629.410-7-gurchetansingh@chromium.org>
+ <2620fca0-a5b4-49d0-bf91-fd359ee4999b@gmail.com>
+ <3830bf8d-8c25-950c-f901-8d70dbfc06a6@ilande.co.uk>
+ <CAAfnVBknhG=QYn=OFjNW9h=KbDtQ=xq3AEs5Pg=AG3LTO=LZ6w@mail.gmail.com>
+ <6256f069-ee39-495e-a8c3-ea2328f085a2@gmail.com>
+Date: Fri, 22 Sep 2023 07:42:25 +0000
+Message-ID: <87lecyejry.fsf@alyssa.is>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Host-Lookup-Failed: Reverse DNS lookup failed for 140.112.90.93 (failed)
-Received-SPF: none client-ip=140.112.90.93;
- envelope-from=estarriol@SSLAB-3090Ti; helo=SSLAB-3090Ti
-X-Spam_score_int: 15
-X-Spam_score: 1.5
-X-Spam_bar: +
-X-Spam_report: (1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_CUSTOM_MED=0.001,
- FORGED_GMAIL_RCVD=1, FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
- FSL_HELO_NON_FQDN_1=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
- HELO_NO_DOMAIN=0.178, NML_ADSP_CUSTOM_MED=0.9, RDNS_NONE=0.793, SPF_NONE=0.001,
- SPOOFED_FREEMAIL=0.001, SPOOFED_FREEMAIL_NO_RDNS=0.001,
- SPOOF_GMAIL_MID=0.001 autolearn=no autolearn_force=no
+Content-Type: multipart/signed; boundary="=-=-=";
+ micalg=pgp-sha256; protocol="application/pgp-signature"
+Received-SPF: pass client-ip=66.111.4.28; envelope-from=hi@alyssa.is;
+ helo=out4-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,44 +125,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The previous links for the white paper and programmer's manual 
-are no longer available. Replace them with the new ones.
+--=-=-=
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Jianlin Li <ljianlin99@gmail.com>
----
- docs/system/i386/amd-memory-encryption.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Akihiko Odaki <akihiko.odaki@gmail.com> writes:
 
-diff --git a/docs/system/i386/amd-memory-encryption.rst b/docs/system/i386/amd-memory-encryption.rst
-index dcf4add0e7..e9bc142bc1 100644
---- a/docs/system/i386/amd-memory-encryption.rst
-+++ b/docs/system/i386/amd-memory-encryption.rst
-@@ -183,13 +183,13 @@ References
- ----------
- 
- `AMD Memory Encryption whitepaper
--<https://developer.amd.com/wordpress/media/2013/12/AMD_Memory_Encryption_Whitepaper_v7-Public.pdf>`_
-+<https://www.amd.com/content/dam/amd/en/documents/epyc-business-docs/white-papers/memory-encryption-white-paper.pdf>`_
- 
- .. [SEVAPI] `Secure Encrypted Virtualization API
-    <https://www.amd.com/system/files/TechDocs/55766_SEV-KM_API_Specification.pdf>`_
- 
- .. [APMVOL2] `AMD64 Architecture Programmer's Manual Volume 2: System Programming
--   <https://www.amd.com/system/files/TechDocs/24593.pdf>`_
-+   <https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24593.pdf>`_
- 
- KVM Forum slides:
- 
-@@ -199,7 +199,7 @@ KVM Forum slides:
-   <https://www.linux-kvm.org/images/9/94/Extending-Secure-Encrypted-Virtualization-with-SEV-ES-Thomas-Lendacky-AMD.pdf>`_
- 
- `AMD64 Architecture Programmer's Manual:
--<http://support.amd.com/TechDocs/24593.pdf>`_
-+<https://www.amd.com/content/dam/amd/en/documents/processor-tech-docs/programmer-references/24593.pdf>`_
- 
- * SME is section 7.10
- * SEV is section 15.34
--- 
-2.25.1
+> Practically there is very low chance to hit the bug. I think only=20
+> fuzzers and malicious actors will trigger it, and probably no one will=20
+> dare using virtio-gpu-rutabaga or virtio-gpu-gl in a security-sensitive=20
+> context.
 
+Well, this is exactly what Chrome OS does, albiet with crosvm rather
+than QEMU, right?
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmUNRWEACgkQ+dvtSFmy
+ccBxGg//dcsfGgRKdv8Y2vhhzZlfuKKWbz7u93kMnMRywPinims++Ly+iU7qpaJv
+Ppts5R/DmBdzxG1+b8/v2KDv40d4vy9ehB6XnVEFIdGjhMXOyWGSMw2vN1ndc1jz
+RCkaDr0p3WZQxT91o1kQ1g0wM633zmL3oPbIFC5JFGdw8v/6Tn2jx52TZGN1YQF9
+W41N5kstGQSvPI2M08OupGKPFU/e6zSw92WY9z/PGVKJPR2iCazQFI3Q9Yb2ttR5
++W0LNEfgy2NviwlaI7Wdx+E21aWgmyfwHS+AZDuyEP90yWledJ7RR2Ah9hqeGh4l
+wryHd8zrm1RZ81i/v6DDWZV/vuPzeK9eQQcVEprZi8vGyhoeOafG2CfBTki+Acf+
+L/uj3BlyHo6SUIWiPNR89xW6zHWeTT3Fpnt5ZONmdTIw4cWLkvgVOH8MNAZH3HgE
+/+iG1nqlrEd1P8AoLc5vt0rsPAl2IXgQ8NAWVEtn+G50FPMDVLx1DcSfnS3BDTsw
+NLzDkTU5KZ60mp6jqLUBeATLq6TJw6aNdf5nkbLThka6g9C7KOZaX8EkC8I+71VV
+40uc1iTxvmLMIT66XK2e3xDXU1c7nGCh4Z6EuM9/JGWn6uRJ3sjcZn69AGZa3OkN
+XImxWk+TBV15JTGcBKsxODqETiDqUrLCqBIeJOcAiMmoB5eF3xU=
+=jP0G
+-----END PGP SIGNATURE-----
+--=-=-=--
 
