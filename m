@@ -2,60 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24607AAEB7
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 11:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D97F07AAF5C
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 12:23:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjcn1-0000yn-91; Fri, 22 Sep 2023 05:49:35 -0400
+	id 1qjdIF-0002Ql-18; Fri, 22 Sep 2023 06:21:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qjcmx-0000yJ-H8
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:49:31 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qjdID-0002Ph-1L
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:21:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qjcmv-00071H-Kb
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 05:49:31 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1E689243AD;
- Fri, 22 Sep 2023 12:49:49 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id BF99829FC1;
- Fri, 22 Sep 2023 12:49:25 +0300 (MSK)
-Message-ID: <a95cb9f0-cdef-a0e9-c472-31f5534e58c1@tls.msk.ru>
-Date: Fri, 22 Sep 2023 12:49:25 +0300
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qjdIB-00067Z-Gd
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 06:21:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695378105;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=HuSfO03bL729B1NoYjfCBKlx0a+Y9oZ3bIRSwCKqsxw=;
+ b=AyePlNCmenh5rTlx+wmNbrEuV31AIrkFELH2qauvSgvWVthdyrhsmHkyvrC+dYAqSDj2RR
+ Uc77S5AJfwx7bHnK3X6wHU6zEYfWy+UlULK1OfZ5EBCgj/9OUUF5Q+OZ1SMZNqljY2YUJr
+ oh/3wcN7j+i0FIGxNBR5AlZzgPD+egc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-rfsmd6BRM_i1sglLsXIueA-1; Fri, 22 Sep 2023 06:21:43 -0400
+X-MC-Unique: rfsmd6BRM_i1sglLsXIueA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40478e6abd0so14387025e9.1
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 03:21:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695378102; x=1695982902;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=HuSfO03bL729B1NoYjfCBKlx0a+Y9oZ3bIRSwCKqsxw=;
+ b=AjEkkvBZ/RcPB8XzLkFLk5bGs80xACFeUjQ6f5DcfCQMg0A3GZklbGBAvifuHfKlA8
+ Zk9qLlqCz6oGs2L+Raj/pvje9kCqlXXt+x4VH1lngwrNzB+nc6dl4GFY3UymPgvxPly4
+ PVhdie/dSHcLAy7rHJ/LPOpqnfKXXYZXWbOqnu8aCdqcyhyUR5PwIB49JcYCsacK16Hi
+ 7yGdkglDaFn18W2gR75h+eLVm5LacZBlg7LeryXVGlUeV7eDfLmXi0RY+/QT5HZOLAzb
+ 6+2N89JDGDUWn2DS/iul/r92O9qFzLC/3uHhVeJHHyIOPDQvsNYDsjBRvD/x260rWuJf
+ jrtQ==
+X-Gm-Message-State: AOJu0YzmtpgBgfak6yaG03HRiANpKd0fAOnmlvLQ7Yy1ylVmYgUsnLJE
+ LsPo4tdpksQ6AZsD/0Xmd0O+l/O8ITmRADdfagxH8osEOrsM/R0sqp7BZou0kHL7l16HkpgZGBN
+ ae53U0eOLqgVsr4Y=
+X-Received: by 2002:adf:f104:0:b0:320:77f:a97c with SMTP id
+ r4-20020adff104000000b00320077fa97cmr6588603wro.63.1695378102029; 
+ Fri, 22 Sep 2023 03:21:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5LOLDWapg8ZnLulxbdLgGvfdLHmK9pO13GHCkdyUogu1jJ2aFfMtfYhywj9RBXqNp2O723w==
+X-Received: by 2002:adf:f104:0:b0:320:77f:a97c with SMTP id
+ r4-20020adff104000000b00320077fa97cmr6588595wro.63.1695378101665; 
+ Fri, 22 Sep 2023 03:21:41 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-48.web.vodafone.de.
+ [109.43.176.48]) by smtp.gmail.com with ESMTPSA id
+ j3-20020a5d5643000000b0032167e49619sm4089625wrw.5.2023.09.22.03.21.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 22 Sep 2023 03:21:41 -0700 (PDT)
+Message-ID: <d2af7bf6-3079-366b-1ee4-280e2ca38659@redhat.com>
+Date: Fri, 22 Sep 2023 12:21:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH for-8.1] vfio/display: Fix missing update to set backing
- fields
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] pc_piix: remove pc-i440fx-1.4 up to pc-i440fx-1.7
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>,
- Alex Williamson <alex.williamson@redhat.com>, kraxel@redhat.com
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
- "Kim, Dongwon" <dongwon.kim@intel.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
-References: <20230816215550.1723696-1-alex.williamson@redhat.com>
- <a3a6f8ec-ca61-4472-45b4-1077dd27bb52@linaro.org>
- <acddfb4a-fe42-ba8c-e920-edc7e9ff5268@intel.com>
- <CAJ+F1C+YiDgRuyWcGeUPhaNO4SdjOSFSHKBY1wBS3dJFLO-k2w@mail.gmail.com>
- <20230904081129.3908c083.alex.williamson@redhat.com>
- <CAJ+F1CJFiHCu4FTbSFfLgSANiHJHEowJg7Um3j+ZMiHb_S21aQ@mail.gmail.com>
- <20230905090907.2b70b6a0.alex.williamson@redhat.com>
- <20230913131827.3bfe7bcb.alex.williamson@redhat.com>
- <b138199a-ceaa-4bf9-4d91-50a05ccc3267@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <b138199a-ceaa-4bf9-4d91-50a05ccc3267@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, "Hoffmann, Gerd" <kraxel@redhat.com>
+References: <20230921121051.192355-1-pbonzini@redhat.com>
+ <20230921121051.192355-2-pbonzini@redhat.com>
+ <052e2425-f2fa-76ee-dd40-639d88210b4c@redhat.com>
+ <CABgObfYgc2iF-89rPGL1siqvwXCGWPgP9Zs-2uOjj0j6jXVEfA@mail.gmail.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <CABgObfYgc2iF-89rPGL1siqvwXCGWPgP9Zs-2uOjj0j6jXVEfA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,23 +103,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-22.09.2023 12:38, Cédric Le Goater wrote:
-> On 9/13/23 21:18, Alex Williamson wrote:
->>
->> Hi Gerd,
->>
->> Some consultation would be appreciated on this thread to get this patch
->> out of limbo.  Is there a better solution that what I've proposed?
+On 22/09/2023 11.19, Paolo Bonzini wrote:
 > 
-> This does fix a regression reproducible on systems with an Intel Gen 8,
-> my T480 laptop for instance.
 > 
-> Tested-by: Cédric Le Goater <clg@redhat.com>
+> Il ven 22 set 2023, 08:43 Thomas Huth <thuth@redhat.com 
+> <mailto:thuth@redhat.com>> ha scritto:
 > 
-> Also, queuing it in vfio-next.
->
+> 
+>     While you're at it ... do we maybe want to start deprecating the next batch
+>     of machine types already? (Say pc-i440fx-2.0 up to pc-i440fx-2.2 maybe?)
+> 
+> 
+> It depends on the benefit. We would have to check the compat options that 
+> are not needed anymore, and whether they'd be something that is useful 
+> anyway for debugging.
+> 
+> Also it would be useful to check if isapc can drop some of the compat code 
+> and realign itself to the 2.0 i440fx machine in terms of QEMU-specific features.
+> 
+> Because of all this todo, I decided not to proceed further with 
+> deprecations. The 128k ROM on the other hand does provide immediate benefit.
 
-Is it not https://gitlab.com/qemu-project/qemu/-/issues/1891 ?
+FWIW, when I was working on deprecating the old pc machine types, I 
+originally wanted to stop with pc-1.3 (since I was most bugged by the 
+different naming between "pc" and "pc-i44fx" in the help output). I then 
+only put the 1.4 to 1.7 machine types on the deprecation list without 
+anything in mind. Now this became useful for the 128k bios rework... so 
+maybe we should continue deprecating older machine types for other future 
+reworks that we don't envision yet.
 
-/mjt
+  Thomas
+
 
