@@ -2,135 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666D77AA891
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 07:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A8A17AA89A
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 07:52:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjZ3A-0000tb-4C; Fri, 22 Sep 2023 01:50:00 -0400
+	id 1qjZ51-0001pq-DD; Fri, 22 Sep 2023 01:51:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1qjZ38-0000tI-48; Fri, 22 Sep 2023 01:49:58 -0400
-Received: from mail-co1nam11on20623.outbound.protection.outlook.com
- ([2a01:111:f400:7eab::623]
- helo=NAM11-CO1-obe.outbound.protection.outlook.com)
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1qjZ36-0008I4-1b; Fri, 22 Sep 2023 01:49:57 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SKqOlkoGvX4yX8HjK+RewRSKZAEeAYNCyWGiTH3b7gSlHtb+qm9c2JMlNseWV3/5jhaOBTnV2jpYyJvDIE9ZwcriizXCd35puiDQKdp7woeethUGmsvE+D9cTwMwYE/EFB8CBIp8KkoJpUUdouuDJovCGKd5gvnPejamyhgC5xExjCHC6rUeafaygZ+UCR87/Pg0IJYpFV4K4F31qiIyfGtHH8a4j2KAmCHaRh6Fz4fC03Uu0Zv6ewxszIVMmH7zMYcbVOPZp1OguDahnxR09RIouigKV8imWUl+qwywcD7QCbd2ACybg/pblIVLagyhHxbeel3T5XmaqHF0fqdi8w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z6W6zIOSY23Dhm3XcFI6BbclJRTeK/LlytJSZg6u5Qg=;
- b=ARc3iTG3GuQ3X/yH3C9/mUAmRkDUXBmCrUuG9SQZpvpKap/dO85RKE8BT9rWL9kjSz+Hyz9s6VXeWP2VvQpWyGVMKz17Br0N9kNoBvUPSe7d+CxbEwOdOUwPL4SiWcs43MlFjf/o7MJYhquNEFB22BpvY7YHk19Cn1EqeabGbI5QAfnQAc0g2aMHe+Lx32Vmzq2Ayy0RVgpl0RAYU7IUOb4g/7KpzSf0+r+fDkNZMnHWFhJqybYEMMX0VzOZcqXywhdhZADzQxpB0Dg8C+CgQmxrwL3IO2omwMMjbErU1uYZVSfyikanZQfi9VzJ4YQ4qvMJDAlFOeI6fTiAB9++Sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z6W6zIOSY23Dhm3XcFI6BbclJRTeK/LlytJSZg6u5Qg=;
- b=CB0OQLg/6mush0DFeuRnF0ypUXS5lXf2zfxjLqai9n7AAbJQ1BXG+R8eD+DoBW5TpYgczkQRtKiCyfLGhfKx5OScEFRYO/qSoqE+spa79ry0uxbBTxQrERNdtTmb9ShejrQkoWwxI1WdQSI1MTvATlHy2KDeLXwLGPT1woGUS7TdCTTJd1ibO5XCedfsWIQ6r4Sj/W6SiiBA9GtcPbCALBpB9TMVcCP87rMjyPyeS9yZncKruhHI5TE4qjU2Sg+aonZTF7wRSw0pzLtHU85k7Lsr82feJWVPDN8uZsX82bPx3K9oiNA8MFdDWDj8JqU0qRp1lKGrUL2M+ufNc45P3g==
-Received: from BY5PR12MB3763.namprd12.prod.outlook.com (2603:10b6:a03:1a8::24)
- by DM4PR12MB7597.namprd12.prod.outlook.com (2603:10b6:8:10b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.21; Fri, 22 Sep
- 2023 05:49:46 +0000
-Received: from BY5PR12MB3763.namprd12.prod.outlook.com
- ([fe80::9e7a:4853:fa35:a060]) by BY5PR12MB3763.namprd12.prod.outlook.com
- ([fe80::9e7a:4853:fa35:a060%2]) with mapi id 15.20.6813.017; Fri, 22 Sep 2023
- 05:49:46 +0000
-From: Ankit Agrawal <ankita@nvidia.com>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
- <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
- (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, Andy
- Currid <ACurrid@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: RE: [PATCH v1 3/4] hw/arm/virt-acpi-build: patch guest SRAT for NUMA
- nodes
-Thread-Topic: [PATCH v1 3/4] hw/arm/virt-acpi-build: patch guest SRAT for NUMA
- nodes
-Thread-Index: AQHZ537HoMkIAkADME+0ZStkB7Hp17Ab9V0AgApsEEA=
-Date: Fri, 22 Sep 2023 05:49:46 +0000
-Message-ID: <BY5PR12MB3763BC1EB9402223B020ABF8B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
-References: <20230915024559.6565-1-ankita@nvidia.com>
- <20230915024559.6565-4-ankita@nvidia.com>
- <20230915153740.00006185@Huawei.com>
-In-Reply-To: <20230915153740.00006185@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BY5PR12MB3763:EE_|DM4PR12MB7597:EE_
-x-ms-office365-filtering-correlation-id: 32b6054e-cee9-4d57-2f9a-08dbbb2fba0a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: XE29KvS5E/Zj7dAF9CXVZU8bxgS6at4AVVYezQ+M9po6S61u0HEo1hXxGC0dIm1oXahzO40BeB31axJH0jDHt+dx2qbIBX/jYbc3cE/vPGQApoMHmmSHQ3O1Ff06iuLilMGMAt3JcEwrfG/rtfBZAldwDb5jP7DOxyDSFLrb85iNv+AyhQRO/zyHtcE+H2BzIARh+p/6VBZxENdsjAGtycjYVzcMp+CdZFGRAr1aVxHZxcBhACsJ+iUJv0qVy49fyWdh89HJtNsFsXOh1r2hqxrH3dqT6YPfMbPZ9bhJ+SmVp3hnhTZgtRiMNax64PocBy23gFUzsG1tN2q8RMMqF9KSMXGoV6f0QFZQYzO9mkO9wud09yciawS4iQWF1liDRJOVzeMDZuTYJBW6+KoNIbmu6xiNx5HSRG6bqtolQ524EVSIve/NkyOc/a+6r9x0U5SPtsLEgrTT5A2AIqwSGl610pxNUYLOo/y5G0IfhT4hBz5ZWab5mciI6bvg5ipRIs1BunudpCkVDxD0nVJZwaMyhpQwnC+YHicUkcIdl5f3sQFW0WGbM+kTgmyMNhzJ6EYV33B5Jy+qi88AUdPXO6K5+15RanBw5J4/YPo88VQIeHry8AX2wknGJ931uBiY
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BY5PR12MB3763.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(136003)(366004)(396003)(376002)(346002)(186009)(451199024)(1800799009)(122000001)(38070700005)(38100700002)(33656002)(86362001)(6506007)(7696005)(2906002)(478600001)(66446008)(5660300002)(8676002)(66946007)(71200400001)(8936002)(4326008)(52536014)(55016003)(66556008)(76116006)(9686003)(54906003)(66476007)(64756008)(6916009)(41300700001)(316002)(26005);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?tqkAqgEBjxOuOQWMg60LBRblg1gDRC0c2MHX7K4nkqLeV5zrCC6T25UParMG?=
- =?us-ascii?Q?7bOmHAZtUXQEYKrb93QsG9mVwqtY96QPQJzmYjlwcYtrbtE1sgbUJFYGRrd3?=
- =?us-ascii?Q?dcBGyX84021kYv6JZKK2ytC35UfNGo2AN9BzGQyHSvTvwb8Mxbff4SOPEsJC?=
- =?us-ascii?Q?9BdnEiGR5L/MSVJFniFUcEy4B39t1OpIeOZw7gD/TkkSLRX3NrUNiL8m0l9q?=
- =?us-ascii?Q?GcZlMR4rj8KNdrJWUFng0WBeQpL6041QX9UW/be4FJ2vPrtIpKJUbqd2vrf0?=
- =?us-ascii?Q?d86exUDE6TbpYw4lDjtULeKdNN+WPI8Ol1ika0bDfXFzWqZvSZ9zxkM6qgVq?=
- =?us-ascii?Q?h+9NhmX2Y4M7lkjRUgh8g2DOyuLXyudZS85njdZKDK/oSDV54BG6avTuLKbM?=
- =?us-ascii?Q?s/GeSdtuqQ4uqrOHfy3bEQp5GNickyVPFI1MQLMvsbz89fzQXSgfML9DkMgt?=
- =?us-ascii?Q?BHWD0CFkoiihW1tK/YI9nVAar6GhS6kcHg2dtaFajJe2ZTPOxQnYOkQBs9B8?=
- =?us-ascii?Q?W7jgYQDS4S+zZ29YYS7SkYYaNU1rBAIPQRDvHUlx0rql5IJt78djAW42ihnx?=
- =?us-ascii?Q?VCu9SEu/xLG3qbaSdzEupRfHYD242ESYeAKBnzu2954C3sjO5G5YyOarnoFS?=
- =?us-ascii?Q?LxculGW3tdbsgL2bbLeufAxRWwckdPk4/19x6E1rW1elH5dZhzOtTrJ/UxNr?=
- =?us-ascii?Q?Slu8doNP3rVWp5+ntxogtBAExxCSeqSiaGRZjE0okY8ZQn29NjAz4d2M/ATg?=
- =?us-ascii?Q?4MQRsXXMZPBCYrEuD2gTgC5aPT9TzZaSSjUS/vecsEE1H6LPm4G/pHrJS9S5?=
- =?us-ascii?Q?eHHV2U/PxRUkYru03JX8WX0GXkLMtR7HiPbrWWc3x7Xnr9oRQlj2kbXUC94k?=
- =?us-ascii?Q?tvW7oFyAbnp+yeqVazmzrzFobEMb9D3OU3oadBz63UYWV/EKeiDU5kXmRHfg?=
- =?us-ascii?Q?VvihQgN0l1wjK4wWWJD2brSUsJLm+aIXCRXoAW6oxRHZVvmqRnekC92MZHFY?=
- =?us-ascii?Q?fHvH/Oo1eToouqrUbFxUx65dfVB+qPbRqleSZiJGusQIDcOPck2DnMuCuy6T?=
- =?us-ascii?Q?APhs/pxQRrUpnoxJFExRGMETIseNfWXMQVebCbZXrLVMAPiqoXjEj17R5xGp?=
- =?us-ascii?Q?UZniN3D8srM4TuJskOy7xkhka9xlYLoPw5qPS5CghZu1YT7EZUfu9A2WFiOK?=
- =?us-ascii?Q?XNoFG8krA24+MCLhMpA5+OMo2PmdsCa0IRBQ3W526KwEoqNfOfYmobDixyj/?=
- =?us-ascii?Q?qI9jZSFB+iwcqusdZFY2eS5ageRTmqeICqcgNLX4CFVnDVOrA3Ed6ZwzV1Lu?=
- =?us-ascii?Q?y+fCxFNlhzYPMNo1qB66y8FiK0CO1srNQ/A05viFj+9wS2zn+rvk2vTFGMdL?=
- =?us-ascii?Q?Sw6AB9gV4aQzz7n52cuCi9Y6NTTEttumtLe5lf+jmZylmpDwLRL1cbpXdezr?=
- =?us-ascii?Q?BZylu3jkZRANEoidjwBrCX8uosfM4GsgR3TRNiHu7aUFRigb968WWL5vrEky?=
- =?us-ascii?Q?SGky83GOtSlwLzFU2GPYp47HaO/0E420JQw8N6caKlvltMmVHcOq9e1Lv46v?=
- =?us-ascii?Q?YI4GzvehGANMs4Yo4t4fyTW/Mqcv7YCZEmqzhMbq?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qjZ4y-0001pY-5X; Fri, 22 Sep 2023 01:51:52 -0400
+Received: from mail-vs1-xe2f.google.com ([2607:f8b0:4864:20::e2f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qjZ4w-0000Fm-F8; Fri, 22 Sep 2023 01:51:51 -0400
+Received: by mail-vs1-xe2f.google.com with SMTP id
+ ada2fe7eead31-45281e0b1cbso900239137.0; 
+ Thu, 21 Sep 2023 22:51:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695361909; x=1695966709; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JXi07TfGkSwiECecQETBIRaqhWnkwhpQ9zkY3A3dhAc=;
+ b=O5yas47Y1KZbVWnRMi3U+A8IxtUw5gcOFSEMtg+hUkKoc7E6f4EeGannBTVifOKcIq
+ 3Gt08myW8NFR+PnBx51zYe1HYo28qo8nFp4fnoqy54m70w48AULcJlxp/tEdhIHBnXly
+ 7Gurt2f3fmGL+zyWrVy5fC3N4LeIeRDeR7SJqkh90RzRnlptEij3IVBX32zbdTeuonZA
+ II7TnFRaDs+mEdImIHzBNkW0j4DXG3dIaN1N+0Ds1CjVroZYw/4230C9tQvF/ErZEHh6
+ ASxrPkyNj8ZhyS+5Ncs9PBQYdIc5TL6db22hwAg/9zLknfCITNZKDQgmqH0+NdncnU6W
+ iBaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695361909; x=1695966709;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=JXi07TfGkSwiECecQETBIRaqhWnkwhpQ9zkY3A3dhAc=;
+ b=eh9/K+N5O62aO3VQjyEMoCYJnvM06TbuY1oU/dzLVN1kzfa1Ae+4DboPRadKN/0qzJ
+ HsokFCH/lbvypyZ4zFUK4dO7yWdb01fKg6rzyYEdtky+RwzTEh21+NL9GcS7VEXWaN4g
+ bDbIRQ2mxxVgzpB8FWGDi+S9ZlwqHsCB6Il6Wbo0M8WC8wBYWu4Gn3CWG4vxdUuVd+7o
+ YBdDqvqswwX0akQCJwXIAE5oaOU9W5l5reA5khNRRN/+e9SJiOzEqKI2Hde7U48WVk8E
+ wFKG4hkPRhiqFnZ1kO7rD6GswHqcEK7SK6kJTsTJrDEhEh++ztI6G8L9JcT29ZHwf5JV
+ hcsw==
+X-Gm-Message-State: AOJu0YxSZVCsJOK+hDablz3xtFSU+aBh90OJgPSIYWgzS3iTFh+UYNhY
+ CyEAbWHN8U/+6xBb7+Ic0W5A6fkIsFooQFGudlQ=
+X-Google-Smtp-Source: AGHT+IHmV76vxVEE9PXAHT4g/XNNIecncLHk6t8T8KlqGmVi3sQjDGn51sJfwbnxgUZARH4p+H2uVT2ITQ1+ii0jpIg=
+X-Received: by 2002:a05:6102:3a79:b0:44e:a216:59a6 with SMTP id
+ bf25-20020a0561023a7900b0044ea21659a6mr8318404vsb.4.1695361908962; Thu, 21
+ Sep 2023 22:51:48 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB3763.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32b6054e-cee9-4d57-2f9a-08dbbb2fba0a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Sep 2023 05:49:46.1882 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rgk9xxOegJRq3Lo3aeByOh89KjOXjcDh8ajCv4TItZXPFarU1c0mB5WxqsK4U2h5ISSJ7gsnqUBTr3SG+bttrA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7597
-Received-SPF: softfail client-ip=2a01:111:f400:7eab::623;
- envelope-from=ankita@nvidia.com;
- helo=NAM11-CO1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230920112020.651006-1-dbarboza@ventanamicro.com>
+ <20230920112020.651006-6-dbarboza@ventanamicro.com>
+In-Reply-To: <20230920112020.651006-6-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Fri, 22 Sep 2023 15:51:22 +1000
+Message-ID: <CAKmqyKM0RtwMjqxjjmtSzWTmi1P8+fiCbKxgqPH8+_WPibCnyw@mail.gmail.com>
+Subject: Re: [PATCH v3 05/19] target/riscv/cpu.c: add .instance_post_init()
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, philmd@linaro.org, ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2f;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2f.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -146,39 +88,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan
-
-> > +        if (pcidev->pdev.has_coherent_memory) {
-> > +            uint64_t start_node =3D object_property_get_uint(obj,
-> > +                                  "dev_mem_pxm_start", &error_abort);
-> > +            uint64_t node_count =3D object_property_get_uint(obj,
-> > +                                  "dev_mem_pxm_count", &error_abort);
-> > +            uint64_t node_index;
-> > +
-> > +            /*
-> > +             * Add the node_count PXM domains starting from start_node=
- as
-> > +             * hot pluggable. The VM kernel parse the PXM domains and
-> > +             * creates NUMA nodes.
-> > +             */
-> > +            for (node_index =3D 0; node_index < node_count; node_index=
-++)
-> > +                build_srat_memory(table_data, 0, 0, start_node + node_=
-index,
-> > +                    MEM_AFFINITY_ENABLED |
-> > + MEM_AFFINITY_HOTPLUGGABLE);
->=20
-> 0 size SRAT entries for memory? That's not valid.
-
-Can you explain in what sense are these invalid? The Linux kernel accepts
-such setting and I had tested it.
-
-> Seems like you've run into the same issue CXL has with dynamic addition o=
-f
-> nodes to the kernel and all you want to do here is make sure it thinks th=
-ere are
-> enough nodes so initializes various structures large enough.
+On Wed, Sep 20, 2023 at 9:24=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
 >
-Yes, exactly.
+> All generic CPUs call riscv_cpu_add_user_properties(). The 'max' CPU
+> calls riscv_init_max_cpu_extensions(). Both can be moved to a common
+> instance_post_init() callback, implemented in riscv_cpu_post_init(),
+> called by all CPUs. The call order then becomes:
+>
+> riscv_cpu_init() -> cpu_init() of each CPU -> .instance_post_init()
+>
+> In the near future riscv_cpu_post_init() will call the init() function
+> of the current accelerator, providing a hook for KVM and TCG accel
+> classes to change the init() process of the CPU.
+>
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+
+Alistair
+
+> ---
+>  target/riscv/cpu.c | 43 ++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 32 insertions(+), 11 deletions(-)
+>
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 9426b3b9d6..848b58e7c4 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -427,8 +427,6 @@ static void riscv_max_cpu_init(Object *obj)
+>      mlx =3D MXL_RV32;
+>  #endif
+>      set_misa(env, mlx, 0);
+> -    riscv_cpu_add_user_properties(obj);
+> -    riscv_init_max_cpu_extensions(obj);
+>      env->priv_ver =3D PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+>      set_satp_mode_max_supported(RISCV_CPU(obj), mlx =3D=3D MXL_RV32 ?
+> @@ -442,7 +440,6 @@ static void rv64_base_cpu_init(Object *obj)
+>      CPURISCVState *env =3D &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV64, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver =3D PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -566,7 +563,6 @@ static void rv128_base_cpu_init(Object *obj)
+>      CPURISCVState *env =3D &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV128, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver =3D PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -579,7 +575,6 @@ static void rv32_base_cpu_init(Object *obj)
+>      CPURISCVState *env =3D &RISCV_CPU(obj)->env;
+>      /* We set this in the realise function */
+>      set_misa(env, MXL_RV32, 0);
+> -    riscv_cpu_add_user_properties(obj);
+>      /* Set latest version of privileged specification */
+>      env->priv_ver =3D PRIV_VERSION_LATEST;
+>  #ifndef CONFIG_USER_ONLY
+> @@ -666,7 +661,6 @@ static void riscv_host_cpu_init(Object *obj)
+>  #elif defined(TARGET_RISCV64)
+>      set_misa(env, MXL_RV64, 0);
+>  #endif
+> -    riscv_cpu_add_user_properties(obj);
+>  }
+>  #endif /* CONFIG_KVM */
+>
+> @@ -1215,6 +1209,37 @@ static void riscv_cpu_set_irq(void *opaque, int ir=
+q, int level)
+>  }
+>  #endif /* CONFIG_USER_ONLY */
+>
+> +static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+> +{
+> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) !=3D NUL=
+L;
+> +}
+> +
+> +static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
+> +{
+> +    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) !=3D NULL;
+> +}
+> +
+> +static bool riscv_cpu_has_user_properties(Object *cpu_obj)
+> +{
+> +    if (kvm_enabled() &&
+> +        object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_HOST) !=3D NULL) {
+> +        return true;
+> +    }
+> +
+> +    return riscv_cpu_is_dynamic(cpu_obj);
+> +}
+> +
+> +static void riscv_cpu_post_init(Object *obj)
+> +{
+> +    if (riscv_cpu_has_user_properties(obj)) {
+> +        riscv_cpu_add_user_properties(obj);
+> +    }
+> +
+> +    if (riscv_cpu_has_max_extensions(obj)) {
+> +        riscv_init_max_cpu_extensions(obj);
+> +    }
+> +}
+> +
+>  static void riscv_cpu_init(Object *obj)
+>  {
+>      RISCVCPU *cpu =3D RISCV_CPU(obj);
+> @@ -1768,11 +1793,6 @@ static const struct SysemuCPUOps riscv_sysemu_ops =
+=3D {
+>  };
+>  #endif
+>
+> -static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+> -{
+> -    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) !=3D NUL=
+L;
+> -}
+> -
+>  static void cpu_set_mvendorid(Object *obj, Visitor *v, const char *name,
+>                                void *opaque, Error **errp)
+>  {
+> @@ -2009,6 +2029,7 @@ static const TypeInfo riscv_cpu_type_infos[] =3D {
+>          .instance_size =3D sizeof(RISCVCPU),
+>          .instance_align =3D __alignof__(RISCVCPU),
+>          .instance_init =3D riscv_cpu_init,
+> +        .instance_post_init =3D riscv_cpu_post_init,
+>          .abstract =3D true,
+>          .class_size =3D sizeof(RISCVCPUClass),
+>          .class_init =3D riscv_cpu_class_init,
+> --
+> 2.41.0
+>
+>
 
