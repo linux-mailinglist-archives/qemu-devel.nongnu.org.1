@@ -2,86 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 125577ABAF3
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 23:17:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 480227ABB01
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 23:21:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjnV1-0000f8-Hy; Fri, 22 Sep 2023 17:15:43 -0400
+	id 1qjnZy-0001bG-Mu; Fri, 22 Sep 2023 17:20:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjnUz-0000ev-Nx
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:15:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qjnUx-00084z-Md
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:15:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695417338;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=P54pBQCeTJShX2EL3ApIniN2rCE550cJC1NEGVviVQw=;
- b=gN4AKOyHOHyOZj9NpTYD7fSOOOstkXh80oHtll4EFchi1qHugI2POfCoveOQFy9QE0CI0s
- LnaznaHwEv07FmG5HKg7i5Z5p33jHbjyQUATMjeYsdlXXqTp8xl/QiearObZKVFG/w/sy3
- VnjkLXPShKAxDpk0Aqtcp2Xanup3uA4=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-263-99H2JtIXPY6Pe0VfUwAPhA-1; Fri, 22 Sep 2023 17:15:36 -0400
-X-MC-Unique: 99H2JtIXPY6Pe0VfUwAPhA-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9a621359127so219294866b.0
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 14:15:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <crauer@google.com>) id 1qjnZw-0001aZ-6R
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:20:48 -0400
+Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <crauer@google.com>) id 1qjnZt-0000rY-JH
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 17:20:47 -0400
+Received: by mail-pf1-x430.google.com with SMTP id
+ d2e1a72fcca58-690d9cda925so2579698b3a.3
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 14:20:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20230601; t=1695417643; x=1696022443; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8tTiA2/3rErjRJAJbqEVAZaDi9MtkjTW8NXaO0a17vw=;
+ b=uXLFrMopvIBipXlHTxcQM++90rfRwbVjinjS3kiZjXGVcXngu3W/pJGRmYmydY79SH
+ JMv01s9eI9TDi64WZANdX2x10eTBIZ01guGxjjCw7R26bAXqqkAnW0fFJ8GdgQMMT1AO
+ +GqmPj/04FGv4tsJqqIcwxp+QGQkeFFPmNslBu4A9UzvdtGguXAPJNvavOFDIwZghYy0
+ KpbIfA9STKJXmeav601W4i5hJZ6BM1j8E6rc8PIda4vFkKAhDtTdk0G35vFkIvXbkoVY
+ aGw2jrXpnM8oYqHAv44g4U176hGYFRKYKL1BqNzvvEsVHhOApYFKS8xPCr2nbPBEyTij
+ zJmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695417335; x=1696022135;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=P54pBQCeTJShX2EL3ApIniN2rCE550cJC1NEGVviVQw=;
- b=JC+Vzs9UkqXKmuJDGssgBz3FJ51Z0rY1j4xvarQnOJAHhOeGyXBnUyf8/pL2b9e/E8
- 58LDXvOMleEDOjSq02Msm8imCn3whlpfo3sl2J8EkRtyIhjec4PswUjD96oPEUSOiC+R
- r4t8hIOGtP6aMSmBnOElk/FrVG1gKwD3z+5dPeRz7SuxEW76lXfGmRKHde4bpyH2jXtS
- ulgpt7Reixuqta38pGbgCNQnEP2OvoLHw3xKHroaHw9MoiwFt4mo7GhpCdspVRPo1SHF
- 1KXSms6wnCcOzQsUDhX74pCuIg0dluCgwMi72swY00LFAp2gpClEUm/cNEYzHaj7Tfka
- jgbw==
-X-Gm-Message-State: AOJu0Yz1WXrmcmkUxjsjMCoDH4ZgkbLHaumUcsKTEJznzYrIKpGZ5xTU
- R4hPOM6oHn0Lbcbej86ZkpGbgl1xUf+cXNJVsQZW+Yz6yz5vmWreHdhmZ67YJV24R5sUY+rKS3B
- 7uiGibg83QgSbKXo=
-X-Received: by 2002:a17:906:109:b0:9ae:72b8:4a84 with SMTP id
- 9-20020a170906010900b009ae72b84a84mr381715eje.41.1695417335810; 
- Fri, 22 Sep 2023 14:15:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEtUkGyBQfhVx3jl8GM0nMWwBs7Tc5mhM35aWBEKJUa5lkZi9iRaRqIYFEB8OiuUFWuocswsg==
-X-Received: by 2002:a17:906:109:b0:9ae:72b8:4a84 with SMTP id
- 9-20020a170906010900b009ae72b84a84mr381706eje.41.1695417335472; 
- Fri, 22 Sep 2023 14:15:35 -0700 (PDT)
-Received: from redhat.com ([2.52.150.187]) by smtp.gmail.com with ESMTPSA id
- cb25-20020a170906a45900b009ad778a68c5sm3222112ejb.60.2023.09.22.14.15.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 14:15:34 -0700 (PDT)
-Date: Fri, 22 Sep 2023 17:15:31 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH] intel_iommu: Fix shadow local variables on "size"
-Message-ID: <20230922171523-mutt-send-email-mst@kernel.org>
-References: <20230922160410.138786-1-peterx@redhat.com>
+ d=1e100.net; s=20230601; t=1695417643; x=1696022443;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8tTiA2/3rErjRJAJbqEVAZaDi9MtkjTW8NXaO0a17vw=;
+ b=BatpC09G8OluCuFNgI+Brw0gGYpJggbLjGxADzjWnJc3WVP4LRkM3n2DVJZ5qwq1lr
+ WgNfWjYHwS5fdv29k2kXnIoRlgmXmjj/PTXSM5N6Ejfpq283Gi9HkPackt3JHcOdQ6e3
+ uW6WSko5UuJarqhooqW0FXlApeSSpcVJKyudNhWV0lCK1HEM5KK+A1fbZYt9uCXnp0IE
+ KqlxN8r+M8PH2t3tmuUp8UHU9rc1XPsVCm8+JdY87DUMG6DGqwzyTygAOzhJsvYTUXVp
+ E4ro+M/la8Bd7WRODorzZ2T9STBW2JmHOiWQ7PngCWakgzQoBMSgy1lxntOo4TsITUfT
+ t7fw==
+X-Gm-Message-State: AOJu0YxXey5cV4PO91vuYQn7ePL6PgZMeE5thN6fynm4xRDFnjM46US5
+ +DlA8tkVFO9+YtmKwMG0ObxNpGBRaf7ITxWNSxLQqA==
+X-Google-Smtp-Source: AGHT+IEFFwSoD37AFO1oozVcau/BbZ/A8RVnYgQDwi0XiRaSeP0ztMHZ5X2AukC7V9h39ac4j8t2hOQOQqCosOI4smM=
+X-Received: by 2002:a05:6a21:3d87:b0:154:e7e6:85c8 with SMTP id
+ bj7-20020a056a213d8700b00154e7e685c8mr768214pzc.31.1695417643066; Fri, 22 Sep
+ 2023 14:20:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230922160410.138786-1-peterx@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+References: <20230922181411.2697135-1-crauer@google.com>
+ <CAGcCb128kdfZTTBB808iGONtdM9cnJF5CGxXhd+aS+eg2U=3Gg@mail.gmail.com>
+In-Reply-To: <CAGcCb128kdfZTTBB808iGONtdM9cnJF5CGxXhd+aS+eg2U=3Gg@mail.gmail.com>
+From: Chris Rauer <crauer@google.com>
+Date: Fri, 22 Sep 2023 14:20:31 -0700
+Message-ID: <CAFtMCFXaS-TTPXbBiVWVxdgK9zFUVj1Ft119p5Hzi_wj+=bSKw@mail.gmail.com>
+Subject: Re: [PATCH] hw/timer/npcm7xx_timer: Prevent timer from counting down
+ past zero
+To: Hao Wu <wuhaotsh@google.com>
+Cc: peter.maydell@linaro.org, kfting@nuvoton.com, qemu-arm@nongnu.org, 
+ qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="0000000000005d0fb80605f92e17"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
+ envelope-from=crauer@google.com; helo=mail-pf1-x430.google.com
+X-Spam_score_int: -175
+X-Spam_score: -17.6
+X-Spam_bar: -----------------
+X-Spam_report: (-17.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ ENV_AND_HDR_SPF_MATCH=-0.5, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001, USER_IN_DEF_DKIM_WL=-7.5,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,65 +86,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 22, 2023 at 12:04:10PM -0400, Peter Xu wrote:
-> This patch fixes the warning of shadowed local variable:
-> 
-> ../hw/i386/intel_iommu.c: In function ‘vtd_address_space_unmap’:
-> ../hw/i386/intel_iommu.c:3773:18: warning: declaration of ‘size’ shadows a previous local [-Wshadow=compatible-local]
->  3773 |         uint64_t size = mask + 1;
->       |                  ^~~~
-> ../hw/i386/intel_iommu.c:3747:12: note: shadowed declaration is here
->  3747 |     hwaddr size, remain;
->       |            ^~~~
-> 
-> Cc: Jason Wang <jasowang@redhat.com>
-> Cc: Eric Auger <eric.auger@redhat.com>
-> Cc: Michael S. Tsirkin <mst@redhat.com>
-> Cc: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+--0000000000005d0fb80605f92e17
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+No.  This patch does not address that issue and is not related.  I was able
+to reproduce it about 2/1000 iterations with and without this patch.  I
+will look into that issue separately.
 
-> ---
->  hw/i386/intel_iommu.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index c9961ef752..ae30c2b469 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -3744,7 +3744,7 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
->  /* Unmap the whole range in the notifier's scope. */
->  static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
->  {
-> -    hwaddr size, remain;
-> +    hwaddr total, remain;
->      hwaddr start = n->start;
->      hwaddr end = n->end;
->      IntelIOMMUState *s = as->iommu_state;
-> @@ -3765,7 +3765,7 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
->      }
->  
->      assert(start <= end);
-> -    size = remain = end - start + 1;
-> +    total = remain = end - start + 1;
->  
->      while (remain >= VTD_PAGE_SIZE) {
->          IOMMUTLBEvent event;
-> @@ -3793,10 +3793,10 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
->      trace_vtd_as_unmap_whole(pci_bus_num(as->bus),
->                               VTD_PCI_SLOT(as->devfn),
->                               VTD_PCI_FUNC(as->devfn),
-> -                             n->start, size);
-> +                             n->start, total);
->  
->      map.iova = n->start;
-> -    map.size = size - 1; /* Inclusive */
-> +    map.size = total - 1; /* Inclusive */
->      iova_tree_remove(as->iova_tree, map);
->  }
->  
-> -- 
-> 2.41.0
+-Chris
 
+
+On Fri, Sep 22, 2023 at 11:24=E2=80=AFAM Hao Wu <wuhaotsh@google.com> wrote=
+:
+
+> Is this related to this error?
+>
+> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html
+>
+> On Fri, Sep 22, 2023 at 11:14=E2=80=AFAM Chris Rauer <crauer@google.com> =
+wrote:
+>
+>> The counter register is only 24-bits and counts down.  If the timer is
+>> running but the qtimer to reset it hasn't fired off yet, there is a chan=
+ce
+>> the regster read can return an invalid result.
+>>
+>> Signed-off-by: Chris Rauer <crauer@google.com>
+>> ---
+>>  hw/timer/npcm7xx_timer.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c
+>> index 32f5e021f8..a8bd93aeb2 100644
+>> --- a/hw/timer/npcm7xx_timer.c
+>> +++ b/hw/timer/npcm7xx_timer.c
+>> @@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTime=
+r
+>> *t, uint32_t count)
+>>  /* Convert a time interval in nanoseconds to a timer cycle count. */
+>>  static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns)
+>>  {
+>> +    if (ns < 0) {
+>> +        return 0;
+>> +    }
+>>      return clock_ns_to_ticks(t->ctrl->clock, ns) /
+>>          npcm7xx_tcsr_prescaler(t->tcsr);
+>>  }
+>> --
+>> 2.42.0.515.g380fc7ccd1-goog
+>>
+>>
+
+--0000000000005d0fb80605f92e17
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">No.=C2=A0 This patch does not address that issue and is no=
+t related.=C2=A0 I was able to reproduce it about=C2=A02/1000 iterations wi=
+th and without this patch.=C2=A0 I will look into that issue separately.<di=
+v><br></div><div>-Chris<br><div><br></div></div></div><br><div class=3D"gma=
+il_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 22, 2023 at 11:=
+24=E2=80=AFAM Hao Wu &lt;<a href=3D"mailto:wuhaotsh@google.com">wuhaotsh@go=
+ogle.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D=
+"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-le=
+ft:1ex"><div dir=3D"ltr">Is this related to this error?<br><br><a href=3D"h=
+ttps://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.html" target=
+=3D"_blank">https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg04903.=
+html</a><br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"=
+gmail_attr">On Fri, Sep 22, 2023 at 11:14=E2=80=AFAM Chris Rauer &lt;<a hre=
+f=3D"mailto:crauer@google.com" target=3D"_blank">crauer@google.com</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">The count=
+er register is only 24-bits and counts down.=C2=A0 If the timer is<br>
+running but the qtimer to reset it hasn&#39;t fired off yet, there is a cha=
+nce<br>
+the regster read can return an invalid result.<br>
+<br>
+Signed-off-by: Chris Rauer &lt;<a href=3D"mailto:crauer@google.com" target=
+=3D"_blank">crauer@google.com</a>&gt;<br>
+---<br>
+=C2=A0hw/timer/npcm7xx_timer.c | 3 +++<br>
+=C2=A01 file changed, 3 insertions(+)<br>
+<br>
+diff --git a/hw/timer/npcm7xx_timer.c b/hw/timer/npcm7xx_timer.c<br>
+index 32f5e021f8..a8bd93aeb2 100644<br>
+--- a/hw/timer/npcm7xx_timer.c<br>
++++ b/hw/timer/npcm7xx_timer.c<br>
+@@ -138,6 +138,9 @@ static int64_t npcm7xx_timer_count_to_ns(NPCM7xxTimer *=
+t, uint32_t count)<br>
+=C2=A0/* Convert a time interval in nanoseconds to a timer cycle count. */<=
+br>
+=C2=A0static uint32_t npcm7xx_timer_ns_to_count(NPCM7xxTimer *t, int64_t ns=
+)<br>
+=C2=A0{<br>
++=C2=A0 =C2=A0 if (ns &lt; 0) {<br>
++=C2=A0 =C2=A0 =C2=A0 =C2=A0 return 0;<br>
++=C2=A0 =C2=A0 }<br>
+=C2=A0 =C2=A0 =C2=A0return clock_ns_to_ticks(t-&gt;ctrl-&gt;clock, ns) /<br=
+>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0npcm7xx_tcsr_prescaler(t-&gt;tcsr);<br>
+=C2=A0}<br>
+-- <br>
+2.42.0.515.g380fc7ccd1-goog<br>
+<br>
+</blockquote></div>
+</blockquote></div>
+
+--0000000000005d0fb80605f92e17--
 
