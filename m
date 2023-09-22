@@ -2,71 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124547AB36B
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 16:20:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E8207AB392
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 16:27:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjgzl-0006wj-1M; Fri, 22 Sep 2023 10:19:01 -0400
+	id 1qjh6X-0001sn-HL; Fri, 22 Sep 2023 10:26:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qjgzj-0006wV-Ao
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:18:59 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qjgzg-0001ql-LP
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:18:59 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 16E1921CA4;
- Fri, 22 Sep 2023 14:18:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695392333; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjh6D-0001rH-E6
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:25:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjh6B-0003gG-17
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 10:25:41 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695392737;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VAvGJQI/dGf1vgh0OYWBpmCQH7kFoLK/nhQu7gj74f8=;
- b=fJ4S1H+xbveWBpUxInd9Cpr39VsnRb8zwE/qAl0dpHCT2EFMTdOneRfNKy1TQRHnFAOZUX
- UlpuE1f3tQVQoaTAmZIbaxsrjuKG6Dr1/dkL7fpDChSuj0Mx77HKu4G09n/SfC8rwWkt9m
- 9Ea5FquwdOaau2Ed/U1jxaTnbrtzXoM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695392333;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=VAvGJQI/dGf1vgh0OYWBpmCQH7kFoLK/nhQu7gj74f8=;
- b=K+QeMTa31P1R+IbWLqhDXr9HAxHuBLGJE+zbpt8CLy3ApoLEhUaXskG7BZGLNq6PrsLBRo
- aPmIRcXABeJMQ0Bw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ bh=NZJaJO09DDoslawxeSDUkultBT0JJOS8aIhHOOAgAnk=;
+ b=UU/PtLkIHFrnYbGVr3h0h0mR/C6bt69a5dLMaCmbwRYlYH4mqBgXXWZQkSRI7Aiy6Xs/lm
+ 2vgN9JBF7eXffcj7WQOzr3nXj18zQ2XUupQuCEBiAlX2wqu4NPlZzstwZhXzKBk1Esfxe1
+ V5iJv4qEKZxtOjjIxEWl8gDYUkfI2C4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-3-WLjKiNqwPDmqqXBnHLP_Kg-1; Fri, 22 Sep 2023 10:25:35 -0400
+X-MC-Unique: WLjKiNqwPDmqqXBnHLP_Kg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 94B1B13478;
- Fri, 22 Sep 2023 14:18:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 7nAQGEyiDWUTeQAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 22 Sep 2023 14:18:52 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Elena Ufimtseva <elena.ufimtseva@oracle.com>, quintela@redhat.com,
- peterx@redhat.com, leobras@redhat.com
-Cc: elena.ufimtseva@oracle.com, qemu-devel@nongnu.org
-Subject: Re: [PATCH 0/4] multifd: various fixes
-In-Reply-To: <20230922065625.21848-1-elena.ufimtseva@oracle.com>
-References: <20230922065625.21848-1-elena.ufimtseva@oracle.com>
-Date: Fri, 22 Sep 2023 11:18:50 -0300
-Message-ID: <877coi70l1.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 50D9285A5A8;
+ Fri, 22 Sep 2023 14:25:35 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2EFBA40C2064;
+ Fri, 22 Sep 2023 14:25:35 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3A5B521E6900; Fri, 22 Sep 2023 16:25:34 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: Kevin Wolf <kwolf@redhat.com>,  qemu-devel@nongnu.org,
+ berrange@redhat.com,  peter.maydell@linaro.org,  pbonzini@redhat.com
+Subject: Re: [PATCH 01/11] qdev: Add qdev_prop_set_array()
+References: <20230908143703.172758-1-kwolf@redhat.com>
+ <20230908143703.172758-2-kwolf@redhat.com>
+ <53c2cf8d-28ba-c866-876b-126714045ea6@linaro.org>
+Date: Fri, 22 Sep 2023 16:25:34 +0200
+In-Reply-To: <53c2cf8d-28ba-c866-876b-126714045ea6@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 11 Sep 2023 22:54:35
+ +0200")
+Message-ID: <87r0mqs2sh.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,51 +84,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Elena Ufimtseva <elena.ufimtseva@oracle.com> writes:
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> Hello
+> On 8/9/23 16:36, Kevin Wolf wrote:
+>> Instead of exposing the ugly hack of how we represent arrays in qdev (a
+>> static "foo-len" property and after it is set, dynamically created
+>> "foo[i]" properties) to boards, add an interface that allows setting the
+>> whole array at once.
+>> Once all internal users of devices with array properties have been
+>> converted to use this function, we can change the implementation to move
+>> away from this hack.
+>> Signed-off-by: Kevin Wolf <kwolf@redhat.com>
+>> ---
+>>   include/hw/qdev-properties.h |  3 +++
+>>   hw/core/qdev-properties.c    | 21 +++++++++++++++++++++
+>>   2 files changed, 24 insertions(+)
 >
-> While working and testing various live migration scenarios,
-> a few issues were found.
 >
-> This is my first patches in live migration and I will
-> appreciate the suggestions from the community if these
-> patches could be done differently.
+>> +void qdev_prop_set_array(DeviceState *dev, const char *name, QList *val=
+ues)
+>> +{
+>> +    const QListEntry *entry;
+>> +    g_autofree char *prop_len =3D g_strdup_printf("len-%s", name);
+>> +    uint32_t i =3D 0;
 >
-> [PATCH 1/4] multifd: wait for channels_ready before sending sync
-> I am not certain about this change since it seems that
-> the sync flag could be the part of the packets with pages that are
-> being sent out currently.
-> But the traces show this is not always the case:
-> multifd_send 230.873 pid=55477 id=0x0 packet_num=0x6f4 normal=0x40 flags=0x1 next_packet_size=0x40000
-> multifd_send 14.718 pid=55477 id=0x1 packet_num=0x6f5 normal=0x0 flags=0x1 next_packet_size=0x80000
-> If the sync packet is indeed can be a standalone one, then waiting for
-> channels_ready before seem to be appropriate, but waisting iteration on
-> sync only packet.
+> "unsigned"? Anyway,
 
-I haven't looked at this code for a while, so there's some context
-switching to be made, but you're definitely on the right track here. I
-actually have an unsent patch doing almost the same as your patch
-1/4. I'll comment more there.
+Yes, or even plain int.  It all gets replaced in the last patch, though.
 
-About the sync being standalone, I would expect that to always be the
-case since we're incrementing packet_num at that point.
+> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+>
+>> +
+>> +    object_property_set_int(OBJECT(dev), prop_len, qlist_size(values),
+>> +                            &error_abort);
+>> +
+>> +    QLIST_FOREACH_ENTRY(values, entry) {
+>> +        g_autofree char *prop_idx =3D g_strdup_printf("%s[%u]", name, i=
+);
+>> +        object_property_set_qobject(OBJECT(dev), prop_idx, entry->value,
+>> +                                    &error_abort);
+>> +        i++;
+>> +    }
+>> +
+>> +    qobject_unref(values);
+>> +}
 
-> [PATCH 4/4] is also relevant to 1/4, but fixes the over-accounting in
-> case of sync only packet.
->
->
-> Thank you in advance and looking forward for your feedback.
->
-> Elena
->
-> Elena Ufimtseva (4):
->   multifd: wait for channels_ready before sending sync
->   migration: check for rate_limit_max for RATE_LIMIT_DISABLED
->   multifd: fix counters in multifd_send_thread
->   multifd: reset next_packet_len after sending pages
->
->  migration/migration-stats.c |  8 ++++----
->  migration/multifd.c         | 11 ++++++-----
->  2 files changed, 10 insertions(+), 9 deletions(-)
 
