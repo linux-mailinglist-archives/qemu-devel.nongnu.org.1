@@ -2,92 +2,143 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F2D7AB586
-	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 18:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A4A7AB580
+	for <lists+qemu-devel@lfdr.de>; Fri, 22 Sep 2023 18:07:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjidv-0006lH-7l; Fri, 22 Sep 2023 12:04:35 -0400
+	id 1qjifm-0000Vr-RL; Fri, 22 Sep 2023 12:06:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qjidr-0006bd-Vn
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:04:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1qjifV-0000JW-Op
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:06:15 -0400
+Received: from mail-bn7nam10on2060d.outbound.protection.outlook.com
+ ([2a01:111:f400:7e8a::60d]
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qjidp-0007LC-PI
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:04:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695398668;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=0Ta1XKgeHbvXKAWRgwmuzAI6+0PGyyMFw8o7yNbU7Dg=;
- b=WsP6W9s24TupYRCbgDz2cKQfcx9vJje2fOKLfu59e/GTZ/RuZsJC+EGJ8zWPVGgHqzJL0p
- 6BI9W0wsfjg85acNgYMjhpid9dpNx1MYlrQudZ++o2gsXC5fhjpx0w/HsRWF09Lbu50tBP
- hFt0mdOGD8aAICHHKE22fIW6EYdTrE4=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-462-Q9ONJaMHO3SpEhqlJRPrmQ-1; Fri, 22 Sep 2023 12:04:26 -0400
-X-MC-Unique: Q9ONJaMHO3SpEhqlJRPrmQ-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1c456e605easo19683385ad.2
- for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 09:04:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695398665; x=1696003465;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=0Ta1XKgeHbvXKAWRgwmuzAI6+0PGyyMFw8o7yNbU7Dg=;
- b=vwfiIUD+TPZopNWRJOH2CXpd7DinP2vw7tdHNjFCBxrEjytfREEGVxOnpqdxU8kpMM
- SPGWQWmbNqgq4MyH7G2K5xE1M7ebI73Xb6CD2gczYACoZfLu63PqSu8LK+BMAtA1UFxl
- T2Oo/Fgqumvt7G6IMfkm7R9qWNyQy0/5KL2p80InAUxbZrx7T1B0q+pIDx9mKFgGdt3e
- 5EK1wxBWGaNtagGhHKATo/Dq0suOU93xW0/Rk4/16VtpWVTOMei10DWj1Fyzq5i+k+cZ
- fRV5KmsIkoeQeudiVgSYP9p3uncHjh4ukhLALSAze9NECnCvuMQ+S4kYvQb1dq41nGg+
- CfqQ==
-X-Gm-Message-State: AOJu0Yw7jCD97Rj4P6byi0bqVBxV8lko+qoasv/GXQwLpjDMNFgA1cJ7
- kzFcvrxPjQbk9/KiRXhH3W9T94voiifWdo8Jk13xqZuY91YznrEXqN7JQ2gET/zaN1Nj8dv+Cw+
- cSUTQJq4jO8BsfSE=
-X-Received: by 2002:a17:902:d48f:b0:1c3:6d97:e89e with SMTP id
- c15-20020a170902d48f00b001c36d97e89emr10136979plg.58.1695398664919; 
- Fri, 22 Sep 2023 09:04:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExxAuWrur1tZRB7qASYh3SpmaR4OWz39k62QT6eN15thPUky94Eapfq3bxRJZ6dLMeQxjrMQ==
-X-Received: by 2002:a17:902:d48f:b0:1c3:6d97:e89e with SMTP id
- c15-20020a170902d48f00b001c36d97e89emr10136933plg.58.1695398664480; 
- Fri, 22 Sep 2023 09:04:24 -0700 (PDT)
-Received: from localhost.localdomain ([116.73.132.49])
- by smtp.googlemail.com with ESMTPSA id
- l19-20020a170902d35300b001bf5e24b2a8sm3650988plk.174.2023.09.22.09.04.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 22 Sep 2023 09:04:24 -0700 (PDT)
-From: Ani Sinha <anisinha@redhat.com>
-To: david@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ (Exim 4.90_1) (envelope-from <Babu.Moger@amd.com>)
+ id 1qjifR-0007tZ-GM
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 12:06:12 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=np/vBuLebS0B6ewtZimWvBMUVKzhD73oO4P5ZaG6svEnk2Jn96iP73nZ0h8UyEpe9iaiSa+fMAWTQ+gMe/IATx0+VY579HqCQJXnhZYWtIq1KsWLwyFH8PJJVBxlaTqt8BQYXXOrV3shvSRQMBZfeA8U596ZBYaHodOFpw0rPI9HGHd8G92vg+MyBKtBgeWgzjHTZKmDithb0/kpX1qjM6GqEtn4tBU7foxY2N742215tM2TmsRPNjFdsGZ2Uu563rgjLqJ7/dtJjhJ1v+NGrj6iadVpXB5fuQNS3NnKsKXtoq6m1G5W5uoigIMpbQHFrUX7bf19cA78HSjOeDnICQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cGVBz0LuLqyIQ98NqGaxFeDPnLimx3SHocxOjpcGo4Y=;
+ b=lCpOxcy2T4w/fKT5P8j5msO1HJ0r+jAK1nETmJFw4RRPuiescQvc2XIREBUK8sBPfItRCUumo9FJAhy9X5m2h0KbPRZKLEDqk+aGEz4nf6o64cMTC41dQcKD4+CVXZ0RyxxMbO/itzyFORH+VAXx8ofSQtHQKqwRv9r/try6hQJOVCuw9wVoj0yquXaCAHoJ1kJ/ggFp951l5/qQYcFdqzUmhYAiGinA7we7AVmyZm0Xcw6E/SZbBgx3az2+XYLQAFta5atQFaiQU+GpzW48Xfi4ARfX36v2CDZ07+mIJ14Kz7FXc2tg0kUh+L+/NAAO9FrYS1VjiNam67n6AEcRAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cGVBz0LuLqyIQ98NqGaxFeDPnLimx3SHocxOjpcGo4Y=;
+ b=JZcux8ckagM3PVXVvYxT+IQJiNkhJdNgMS7xmW91LQIUT9HHE7643BM79sMkBw2NEX6kicpVNfPeGD7WIXKmly73sVWLtR+ZW+/6Sfx3SdtaSNKH9/rPJkmpENktrrmLYJz+xLkhGwtVBQS6E/plQehV+wGiZy2utJzGrYmW7QU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com (2603:10b6:303:2c::19)
+ by MW3PR12MB4507.namprd12.prod.outlook.com (2603:10b6:303:2c::17)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.23; Fri, 22 Sep
+ 2023 16:06:02 +0000
+Received: from MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::fbfe:ec9c:b106:437e]) by MW3PR12MB4553.namprd12.prod.outlook.com
+ ([fe80::fbfe:ec9c:b106:437e%5]) with mapi id 15.20.6813.017; Fri, 22 Sep 2023
+ 16:06:02 +0000
+Message-ID: <316dfbed-5b67-4140-8502-d0f32dec5162@amd.com>
+Date: Fri, 22 Sep 2023 11:05:59 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v4 01/21] i386: Fix comment style in topology.h
+Content-Language: en-US
+To: Zhao Liu <zhao1.liu@linux.intel.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>
-Cc: philmd@linaro.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v6] hw/i386/pc: improve physical address space bound check for
- 32-bit x86 systems
-Date: Fri, 22 Sep 2023 21:34:13 +0530
-Message-Id: <20230922160413.165702-1-anisinha@redhat.com>
-X-Mailer: git-send-email 2.39.1
-MIME-Version: 1.0
+ Paolo Bonzini <pbonzini@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>,
+ Babu Moger <babu.moger@amd.com>, Zhao Liu <zhao1.liu@intel.com>
+References: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
+ <20230914072159.1177582-2-zhao1.liu@linux.intel.com>
+From: "Moger, Babu" <bmoger@amd.com>
+In-Reply-To: <20230914072159.1177582-2-zhao1.liu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-ClientProxiedBy: SA9PR13CA0033.namprd13.prod.outlook.com
+ (2603:10b6:806:22::8) To MW3PR12MB4553.namprd12.prod.outlook.com
+ (2603:10b6:303:2c::19)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR12MB4553:EE_|MW3PR12MB4507:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cdc5b48-16c2-48c3-4deb-08dbbb85d172
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: EvKsy40TH1EY1jkU133Bnoxpgk084ouembTeHNyXSW9Ge1r260Bf8Jja3DFdRNcHjRpCYIOIZdOfqTpqF90kzxl+Yqj0UzZJGVsj6Zy/5w8NfIITDhcc6sDYnen2K91gBVvMzuJ0M2JuAgxZOLhttS8CowMZoIoiBiIKLlrfkQnRODFifYqn/W93yReQs8G8TKsBbEpKsdhZT4M4+ovLsFMojkRmU2qvUuzypGWFXT3atfwua7t6WgswwV8102t7f5ETMEHpsjdsSRK7hzkCwsz/tX6kwGTKP3f0xWK0n+FvJrT/9QUwAO0nfGwT+/MQktXE02mfSMAEKvOQS/+8qIb6mZvmY4gOOAmJ9tCuZTkNRF0XfZNoehyX2sXgvT39iwR1wAoOKlQE7eGyPJHTAlEQbf3XVeutMTMf8EaZV9BxR1ivK2UpbnZwYYn63N8azv6P/uxbO+V26IdDdOtqvz0gaGCZsbgyYy1sSHW4Jq44n46Zi5sEvgUE1uOdNx96I2RrvLFYQh1/ifyI7QA/i+vSo/QEGnQOl1pltrsxkAmwRPeInvxXIVrQEy313OnjYtZe0+PsPabCzSg5PCmAUS63lEQC+/Jepx/7iWAGaiHe5SDLU01KVLSgcIF4u2rYxWLXckbymK/s3zh4Q4Z7Kg==
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR12MB4553.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(346002)(376002)(366004)(396003)(39860400002)(136003)(186009)(1800799009)(451199024)(38100700002)(5660300002)(31696002)(36756003)(966005)(2906002)(54906003)(66476007)(66556008)(110136005)(66946007)(478600001)(2616005)(6666004)(6486002)(6506007)(6512007)(53546011)(316002)(8676002)(4326008)(8936002)(7416002)(31686004)(41300700001)(83380400001)(26005)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N1E1TzIwNzNKaGhHT3hlVUpiVGM1Y0hJOXkxTUZrbUFNUTUrU05TSytXK1Bt?=
+ =?utf-8?B?MWVNOHRLa0pvZ2tqT29tUmhnTlpuNkpuOG5tUC9kRlR4dzRvSWs2M0pRc20y?=
+ =?utf-8?B?NGU5SnIxMFo3azU5UjMyL1dZY3FkYnl1a2ZCNTRuMmdJRUREQ081aFdyQXli?=
+ =?utf-8?B?MFdOaVRTZU9mU25DR3FmcXlpbHVVOWdhQ0FrRllvb0M3cE0rYU9ZZ2VBaGpE?=
+ =?utf-8?B?VU5UcXBHdERRdVNkSUdOTSttTkxKb05aek1LSUM1SXV0SW44Qk5Sa25memRV?=
+ =?utf-8?B?VEtaODBxellIS1lzZWRrSUV0Tkc2WlhueGw0bThIeU11TFJOQ3E0VFFhZkVJ?=
+ =?utf-8?B?a3lobTEwL2lTOXBkRWlMWVkzZncwb0w4RVRPbVB2czVCOGtrSEsreTNXYnUx?=
+ =?utf-8?B?S0tPS0dYK29vOHE0NnRVOUxQNXRmZ3BON1pYZXFwWThtRzdhUCttR2VlQ3lX?=
+ =?utf-8?B?cUxmRlJxM0YzQ0ZZdlh2c0ZDZkJ0K091NXVVTlVQZFkzTjVCY2hTN0FaVWhW?=
+ =?utf-8?B?N3lFSjlWR01aSkFWUEFDZHJhZ1FjeDJsQUdwdUdpbmpiTjE5YnVkNjNNcUxC?=
+ =?utf-8?B?VHhNak9tZ2xDalpVdkRlbVN1enc2bEpDVHhIcG92WU9iNVZsT3dHMGJSS2di?=
+ =?utf-8?B?UDBqaVM3RVU5NmhXWXNDbXJVdHExbEc3NUlzVUx3N2JDQUg3Q1o2UFRYVWc5?=
+ =?utf-8?B?YWtKanBERzd6OERDSCt6K25WT2QzcWNkOW4vNFVCc2diSi9rdTNySFhXZGR3?=
+ =?utf-8?B?aU5uWnpqRm9EV3pYeFY5ZW5DMFpkbVhDY0NrYzIxN2pXOVNOdVN2eG5lM1Iv?=
+ =?utf-8?B?U1JObkhNUGRFOHp3aytlVlZwRkExZXFTTnpzVEhQeS9hSGtrNWNtVklTbjQy?=
+ =?utf-8?B?QkFBa1JBaWdlZDZ1K0lVbnFkVzNsR3c3VHZ0c3ppQlZKZzZWU2Nqb2YvQ3hR?=
+ =?utf-8?B?UkF6ckMza05xc3ppQlpPZ3Q3S0JsWEdoVFl1QlNhR0dVWnRZaXZyQlRwRTJ1?=
+ =?utf-8?B?YnVtZ1pDSDJSMzlUQVFBYWZETUtGWG9ESWJtdG4xTVZselF5YmxlSVFSTWQ3?=
+ =?utf-8?B?bjRHQ3ErcU0yUWZ6VGtWQjk3eURjNzIxVks5Sm9CQ2FUZU1OQnVvdGtCa1dD?=
+ =?utf-8?B?Mkk1b1VkcjdZNCtUcEI1SUhHRS9QV21EYm5rZDFoaE83NjdsWlpVRHArU2Rr?=
+ =?utf-8?B?ZEt6NW1IanhEckVBS256WG1reTRwLys5VXhxQnZoeGdIaFJjTVVGQjNLVTFx?=
+ =?utf-8?B?Q1NnMWd3NmI4UlRlK0NWUVpsNVU4MGpoVGd0WVluNlhCejBUNEg2YnNSWFhs?=
+ =?utf-8?B?RW00N2FHcmJtQUxUZnI2aG1PV3VnVWkzdW0wQ05mMTlWYndVK25DRFJvWWYz?=
+ =?utf-8?B?ZVRSNFJuZ3ZWZkwzdTJIdmtaRWsvenR0eWRoZjROUCtKUnROYWNHeStLQmNn?=
+ =?utf-8?B?a1VTQ1Z4bjZiamtEMG1lWDNOUWNUMDdrci8yUmY0WGozY05rT2RaYmhSRGJs?=
+ =?utf-8?B?T0VpeVRkd1dmQ0dQbEg1dFZtS0FPSDMzSE9SM01waURhclZ4SlRxQklyQnFl?=
+ =?utf-8?B?VW14MG9KL1ZXRTlVQVZwLytQNzlHU1ArOWlQbE9hSTRFZFhEWHBvNEZPazFK?=
+ =?utf-8?B?SEljOEI5dTNHVU4wQjI5L1Q5ZGQ0Q2tTNGZrTGdCSFNURU16anZHMldMT2Nx?=
+ =?utf-8?B?enZLMFI1eEwxb25NQWFQT1pFRE83b1c3Qkl5MmR3L2VlSzcwMWdzVEk1bkZB?=
+ =?utf-8?B?S0ZQSS8ya0RKZlpveTRMRFR3QjJ3aklNTXFHZGZuMTRYVU01d3V0cGRJVXdw?=
+ =?utf-8?B?SHRoSUdsZ3BLK3FoS1dIUThUZ01lVDFiWHovTWYxdFBlQ0FqVDJLeERBRjFn?=
+ =?utf-8?B?TXltYzJFeWtHR1JhamlkcGxiL29ZbHVMbVJUNXVWM0tNcWRhYVBQc2pYZTJV?=
+ =?utf-8?B?ckt4SklNdGIzRlAybEYrbU5NK0l0eUxxRk5UWVptN2NEK1VLMkVmMGFGRGRx?=
+ =?utf-8?B?Z0s5UUNjK3BuTk00K29qOWg0Z3A2UTB5aXE1UHJ3STI0Qm9SWWhDZ25yZm8x?=
+ =?utf-8?B?Qitaa0RVZUlOQlhGMDh3QzJZeEtZNHZpRzNERnJUUXBlRkpYbjZRYnlZWUUw?=
+ =?utf-8?Q?6YYw=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cdc5b48-16c2-48c3-4deb-08dbbb85d172
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR12MB4553.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2023 16:06:02.3306 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rhxTEPbPFtoqHfZsQDyJGcqENv+YOPDnFuNLqXtYUpIUCqafJ70hFa7n/W3eYUGM
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4507
+Received-SPF: softfail client-ip=2a01:111:f400:7e8a::60d;
+ envelope-from=Babu.Moger@amd.com;
+ helo=NAM10-BN7-obe.outbound.protection.outlook.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,279 +151,146 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: babu.moger@amd.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-32-bit x86 systems do not have a reserved memory for hole64. On those 32-bit
-systems without PSE36 or PAE CPU features, hotplugging memory devices are not
-supported by QEMU as QEMU always places hotplugged memory above 4 GiB boundary
-which is beyond the physical address space of the processor. Linux guests also
-does not support memory hotplug on those systems. Please see Linux
-kernel commit b59d02ed08690 ("mm/memory_hotplug: disable the functionality
-for 32b") for more details.
 
-Therefore, the maximum limit of the guest physical address in the absence of
-additional memory devices effectively coincides with the end of
-"above 4G memory space" region for 32-bit x86 without PAE/PSE36. When users
-configure additional memory devices, after properly accounting for the
-additional device memory region to find the maximum value of the guest
-physical address, the address will be outside the range of the processor's
-physical address space.
+On 9/14/2023 2:21 AM, Zhao Liu wrote:
+> From: Zhao Liu <zhao1.liu@intel.com>
+>
+> For function comments in this file, keep the comment style consistent
+> with other files in the directory.
+>
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Reviewed-by: Yanan Wang <wangyanan55@huawei.com>
+> Reviewed-by: Xiaoyao Li <xiaoyao.li@Intel.com>
+> Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-This change adds improvements to take above into consideration.
+Reviewed-by: Babu Moger <babu.moger@amd.com>
 
-For example, previously this was allowed:
+Thanks
 
-$ ./qemu-system-x86_64 -cpu pentium -m size=10G
+Babu
 
-With this change now it is no longer allowed:
 
-$ ./qemu-system-x86_64 -cpu pentium -m size=10G
-qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff phys-bits too low (32)
-
-However, the following are allowed since on both cases physical address
-space of the processor is 36 bits:
-
-$ ./qemu-system-x86_64 -cpu pentium2 -m size=10G
-$ ./qemu-system-x86_64 -cpu pentium,pse36=on -m size=10G
-
-For 32-bit, without PAE/PSE36, hotplugging additional memory is no longer allowed.
-
-$ ./qemu-system-i386 -m size=1G,maxmem=3G,slots=2
-qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bits too low (32)
-$ ./qemu-system-i386 -machine q35 -m size=1G,maxmem=3G,slots=2
-qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bits too low (32)
-
-A new compatibility flag is introduced to make sure pc_max_used_gpa() keeps
-returning the old value for machines 8.1 and older.
-Therefore, the above is still allowed for older machine types in order to support
-compatibility. Hence, the following still works:
-
-$ ./qemu-system-i386 -machine pc-i440fx-8.1 -m size=1G,maxmem=3G,slots=2
-$ ./qemu-system-i386 -machine pc-q35-8.1 -m size=1G,maxmem=3G,slots=2
-
-Further, following is also allowed as with PSE36, the processor has 36-bit
-address space:
-
-$ ./qemu-system-i386 -cpu 486,pse36=on -m size=1G,maxmem=3G,slots=2
-
-After calling CPUID with EAX=0x80000001, all AMD64 compliant processors
-have the longmode-capable-bit turned on in the extended feature flags (bit 29)
-in EDX. The absence of CPUID longmode can be used to differentiate between
-32-bit and 64-bit processors and is the recommended approach. QEMU takes this
-approach elsewhere (for example, please see x86_cpu_realizefn()), With
-this change, pc_max_used_gpa() also uses the same method to detect 32-bit
-processors.
-
-Unit tests are modified to not run 32-bit x86 tests that use memory hotplug.
-
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
----
- hw/i386/pc.c                   | 32 +++++++++++++++++++++++++++++---
- hw/i386/pc_piix.c              |  4 ++++
- hw/i386/pc_q35.c               |  2 ++
- include/hw/i386/pc.h           |  6 ++++++
- tests/qtest/bios-tables-test.c | 26 ++++++++++++++++++--------
- tests/qtest/numa-test.c        |  7 ++++++-
- 6 files changed, 65 insertions(+), 12 deletions(-)
-
-changelog:
-v6: more code messaging. incorporated another of phil's suggestions.
-v5: addressed phil's suggestions in code reorg to make it cleaner.
-v4: address comments from v3. Fix a bug where compat knob was absent
-from q35 machines. Commit message adjustment.
-v3: still accounting for additional memory device region above 4G.
-unit tests fixed (not running for 32-bit where mem hotplug is used).
-v2: removed memory hotplug region from max_gpa. added compat knobs.
-
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index 3db0743f31..a532d42cf4 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -907,13 +907,39 @@ static uint64_t pc_get_cxl_range_end(PCMachineState *pcms)
- static hwaddr pc_max_used_gpa(PCMachineState *pcms, uint64_t pci_hole64_size)
- {
-     X86CPU *cpu = X86_CPU(first_cpu);
-+    PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
-+    MachineState *ms = MACHINE(pcms);
- 
--    /* 32-bit systems don't have hole64 thus return max CPU address */
--    if (cpu->phys_bits <= 32) {
-+    if (cpu->env.features[FEAT_8000_0001_EDX] & CPUID_EXT2_LM) {
-+        /* 64-bit systems */
-+        return pc_pci_hole64_start() + pci_hole64_size - 1;
-+    }
-+
-+    /* 32-bit systems */
-+    if (pcmc->broken_32bit_mem_addr_check) {
-+        /* old value for compatibility reasons */
-         return ((hwaddr)1 << cpu->phys_bits) - 1;
-     }
- 
--    return pc_pci_hole64_start() + pci_hole64_size - 1;
-+    /*
-+     * 32-bit systems don't have hole64 but they might have a region for
-+     * memory devices. Even if additional hotplugged memory devices might
-+     * not be usable by most guest OSes, we need to still consider them for
-+     * calculating the highest possible GPA so that we can properly report
-+     * if someone configures them on a CPU that cannot possibly address them.
-+     */
-+    if (pcmc->has_reserved_memory &&
-+        (ms->ram_size < ms->maxram_size)) {
-+        hwaddr devmem_start;
-+        ram_addr_t devmem_size;
-+
-+        pc_get_device_memory_range(pcms, &devmem_start, &devmem_size);
-+        devmem_start += devmem_size;
-+        return devmem_start - 1;
-+    }
-+
-+    /* configuration without any memory hotplug */
-+    return pc_above_4g_end(pcms) - 1;
- }
- 
- /*
-diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index 8321f36f97..71003759bb 100644
---- a/hw/i386/pc_piix.c
-+++ b/hw/i386/pc_piix.c
-@@ -517,9 +517,13 @@ DEFINE_I440FX_MACHINE(v8_2, "pc-i440fx-8.2", NULL,
- 
- static void pc_i440fx_8_1_machine_options(MachineClass *m)
- {
-+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-+
-     pc_i440fx_8_2_machine_options(m);
-     m->alias = NULL;
-     m->is_default = false;
-+    pcmc->broken_32bit_mem_addr_check = true;
-+
-     compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
-     compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
- }
-diff --git a/hw/i386/pc_q35.c b/hw/i386/pc_q35.c
-index 2dd1158b70..a7386f2ca2 100644
---- a/hw/i386/pc_q35.c
-+++ b/hw/i386/pc_q35.c
-@@ -394,8 +394,10 @@ DEFINE_Q35_MACHINE(v8_2, "pc-q35-8.2", NULL,
- 
- static void pc_q35_8_1_machine_options(MachineClass *m)
- {
-+    PCMachineClass *pcmc = PC_MACHINE_CLASS(m);
-     pc_q35_8_2_machine_options(m);
-     m->alias = NULL;
-+    pcmc->broken_32bit_mem_addr_check = true;
-     compat_props_add(m->compat_props, hw_compat_8_1, hw_compat_8_1_len);
-     compat_props_add(m->compat_props, pc_compat_8_1, pc_compat_8_1_len);
- }
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index 0fabece236..bec38cb92c 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -129,6 +129,12 @@ struct PCMachineClass {
- 
-     /* resizable acpi blob compat */
-     bool resizable_acpi_blob;
-+
-+    /*
-+     * whether the machine type implements broken 32-bit address space bound
-+     * check for memory.
-+     */
-+    bool broken_32bit_mem_addr_check;
- };
- 
- #define TYPE_PC_MACHINE "generic-pc-machine"
-diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
-index d1b80149f2..f8e03dfd46 100644
---- a/tests/qtest/bios-tables-test.c
-+++ b/tests/qtest/bios-tables-test.c
-@@ -2080,7 +2080,6 @@ int main(int argc, char *argv[])
-                            test_acpi_piix4_no_acpi_pci_hotplug);
-             qtest_add_func("acpi/piix4/ipmi", test_acpi_piix4_tcg_ipmi);
-             qtest_add_func("acpi/piix4/cpuhp", test_acpi_piix4_tcg_cphp);
--            qtest_add_func("acpi/piix4/memhp", test_acpi_piix4_tcg_memhp);
-             qtest_add_func("acpi/piix4/numamem", test_acpi_piix4_tcg_numamem);
-             qtest_add_func("acpi/piix4/nosmm", test_acpi_piix4_tcg_nosmm);
-             qtest_add_func("acpi/piix4/smm-compat",
-@@ -2088,9 +2087,15 @@ int main(int argc, char *argv[])
-             qtest_add_func("acpi/piix4/smm-compat-nosmm",
-                            test_acpi_piix4_tcg_smm_compat_nosmm);
-             qtest_add_func("acpi/piix4/nohpet", test_acpi_piix4_tcg_nohpet);
--            qtest_add_func("acpi/piix4/dimmpxm", test_acpi_piix4_tcg_dimm_pxm);
--            qtest_add_func("acpi/piix4/acpihmat",
--                           test_acpi_piix4_tcg_acpi_hmat);
-+
-+            /* i386 does not support memory hotplug */
-+            if (strcmp(arch, "i386")) {
-+                qtest_add_func("acpi/piix4/memhp", test_acpi_piix4_tcg_memhp);
-+                qtest_add_func("acpi/piix4/dimmpxm",
-+                               test_acpi_piix4_tcg_dimm_pxm);
-+                qtest_add_func("acpi/piix4/acpihmat",
-+                               test_acpi_piix4_tcg_acpi_hmat);
-+            }
- #ifdef CONFIG_POSIX
-             qtest_add_func("acpi/piix4/acpierst", test_acpi_piix4_acpi_erst);
- #endif
-@@ -2108,11 +2113,9 @@ int main(int argc, char *argv[])
-                            test_acpi_q35_tcg_no_acpi_hotplug);
-             qtest_add_func("acpi/q35/multif-bridge",
-                            test_acpi_q35_multif_bridge);
--            qtest_add_func("acpi/q35/mmio64", test_acpi_q35_tcg_mmio64);
-             qtest_add_func("acpi/q35/ipmi", test_acpi_q35_tcg_ipmi);
-             qtest_add_func("acpi/q35/smbus/ipmi", test_acpi_q35_tcg_smbus_ipmi);
-             qtest_add_func("acpi/q35/cpuhp", test_acpi_q35_tcg_cphp);
--            qtest_add_func("acpi/q35/memhp", test_acpi_q35_tcg_memhp);
-             qtest_add_func("acpi/q35/numamem", test_acpi_q35_tcg_numamem);
-             qtest_add_func("acpi/q35/nosmm", test_acpi_q35_tcg_nosmm);
-             qtest_add_func("acpi/q35/smm-compat",
-@@ -2120,10 +2123,17 @@ int main(int argc, char *argv[])
-             qtest_add_func("acpi/q35/smm-compat-nosmm",
-                            test_acpi_q35_tcg_smm_compat_nosmm);
-             qtest_add_func("acpi/q35/nohpet", test_acpi_q35_tcg_nohpet);
--            qtest_add_func("acpi/q35/dimmpxm", test_acpi_q35_tcg_dimm_pxm);
--            qtest_add_func("acpi/q35/acpihmat", test_acpi_q35_tcg_acpi_hmat);
-             qtest_add_func("acpi/q35/acpihmat-noinitiator",
-                            test_acpi_q35_tcg_acpi_hmat_noinitiator);
-+
-+            /* i386 does not support memory hotplug */
-+            if (strcmp(arch, "i386")) {
-+                qtest_add_func("acpi/q35/memhp", test_acpi_q35_tcg_memhp);
-+                qtest_add_func("acpi/q35/dimmpxm", test_acpi_q35_tcg_dimm_pxm);
-+                qtest_add_func("acpi/q35/acpihmat",
-+                               test_acpi_q35_tcg_acpi_hmat);
-+                qtest_add_func("acpi/q35/mmio64", test_acpi_q35_tcg_mmio64);
-+            }
- #ifdef CONFIG_POSIX
-             qtest_add_func("acpi/q35/acpierst", test_acpi_q35_acpi_erst);
- #endif
-diff --git a/tests/qtest/numa-test.c b/tests/qtest/numa-test.c
-index c5eb13f349..4f4404a4b1 100644
---- a/tests/qtest/numa-test.c
-+++ b/tests/qtest/numa-test.c
-@@ -568,7 +568,7 @@ int main(int argc, char **argv)
-     qtest_add_data_func("/numa/mon/cpus/partial", args, test_mon_partial);
-     qtest_add_data_func("/numa/qmp/cpus/query-cpus", args, test_query_cpus);
- 
--    if (!strcmp(arch, "i386") || !strcmp(arch, "x86_64")) {
-+    if (!strcmp(arch, "x86_64")) {
-         qtest_add_data_func("/numa/pc/cpu/explicit", args, pc_numa_cpu);
-         qtest_add_data_func("/numa/pc/dynamic/cpu", args, pc_dynamic_cpu_cfg);
-         qtest_add_data_func("/numa/pc/hmat/build", args, pc_hmat_build_cfg);
-@@ -576,6 +576,11 @@ int main(int argc, char **argv)
-         qtest_add_data_func("/numa/pc/hmat/erange", args, pc_hmat_erange_cfg);
-     }
- 
-+    if (!strcmp(arch, "i386")) {
-+        qtest_add_data_func("/numa/pc/cpu/explicit", args, pc_numa_cpu);
-+        qtest_add_data_func("/numa/pc/dynamic/cpu", args, pc_dynamic_cpu_cfg);
-+    }
-+
-     if (!strcmp(arch, "ppc64")) {
-         qtest_add_data_func("/numa/spapr/cpu/explicit", args, spapr_numa_cpu);
-     }
--- 
-2.39.1
-
+> ---
+> Changes since v3:
+>   * Optimized the description in commit message: Change "with other
+>     places" to "with other files in the directory". (Babu)
+> ---
+>   include/hw/i386/topology.h | 33 +++++++++++++++++----------------
+>   1 file changed, 17 insertions(+), 16 deletions(-)
+>
+> diff --git a/include/hw/i386/topology.h b/include/hw/i386/topology.h
+> index 81573f6cfde0..5a19679f618b 100644
+> --- a/include/hw/i386/topology.h
+> +++ b/include/hw/i386/topology.h
+> @@ -24,7 +24,8 @@
+>   #ifndef HW_I386_TOPOLOGY_H
+>   #define HW_I386_TOPOLOGY_H
+>   
+> -/* This file implements the APIC-ID-based CPU topology enumeration logic,
+> +/*
+> + * This file implements the APIC-ID-based CPU topology enumeration logic,
+>    * documented at the following document:
+>    *   Intel® 64 Architecture Processor Topology Enumeration
+>    *   http://software.intel.com/en-us/articles/intel-64-architecture-processor-topology-enumeration/
+> @@ -41,7 +42,8 @@
+>   
+>   #include "qemu/bitops.h"
+>   
+> -/* APIC IDs can be 32-bit, but beware: APIC IDs > 255 require x2APIC support
+> +/*
+> + * APIC IDs can be 32-bit, but beware: APIC IDs > 255 require x2APIC support
+>    */
+>   typedef uint32_t apic_id_t;
+>   
+> @@ -58,8 +60,7 @@ typedef struct X86CPUTopoInfo {
+>       unsigned threads_per_core;
+>   } X86CPUTopoInfo;
+>   
+> -/* Return the bit width needed for 'count' IDs
+> - */
+> +/* Return the bit width needed for 'count' IDs */
+>   static unsigned apicid_bitwidth_for_count(unsigned count)
+>   {
+>       g_assert(count >= 1);
+> @@ -67,15 +68,13 @@ static unsigned apicid_bitwidth_for_count(unsigned count)
+>       return count ? 32 - clz32(count) : 0;
+>   }
+>   
+> -/* Bit width of the SMT_ID (thread ID) field on the APIC ID
+> - */
+> +/* Bit width of the SMT_ID (thread ID) field on the APIC ID */
+>   static inline unsigned apicid_smt_width(X86CPUTopoInfo *topo_info)
+>   {
+>       return apicid_bitwidth_for_count(topo_info->threads_per_core);
+>   }
+>   
+> -/* Bit width of the Core_ID field
+> - */
+> +/* Bit width of the Core_ID field */
+>   static inline unsigned apicid_core_width(X86CPUTopoInfo *topo_info)
+>   {
+>       return apicid_bitwidth_for_count(topo_info->cores_per_die);
+> @@ -87,8 +86,7 @@ static inline unsigned apicid_die_width(X86CPUTopoInfo *topo_info)
+>       return apicid_bitwidth_for_count(topo_info->dies_per_pkg);
+>   }
+>   
+> -/* Bit offset of the Core_ID field
+> - */
+> +/* Bit offset of the Core_ID field */
+>   static inline unsigned apicid_core_offset(X86CPUTopoInfo *topo_info)
+>   {
+>       return apicid_smt_width(topo_info);
+> @@ -100,14 +98,14 @@ static inline unsigned apicid_die_offset(X86CPUTopoInfo *topo_info)
+>       return apicid_core_offset(topo_info) + apicid_core_width(topo_info);
+>   }
+>   
+> -/* Bit offset of the Pkg_ID (socket ID) field
+> - */
+> +/* Bit offset of the Pkg_ID (socket ID) field */
+>   static inline unsigned apicid_pkg_offset(X86CPUTopoInfo *topo_info)
+>   {
+>       return apicid_die_offset(topo_info) + apicid_die_width(topo_info);
+>   }
+>   
+> -/* Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
+> +/*
+> + * Make APIC ID for the CPU based on Pkg_ID, Core_ID, SMT_ID
+>    *
+>    * The caller must make sure core_id < nr_cores and smt_id < nr_threads.
+>    */
+> @@ -120,7 +118,8 @@ static inline apic_id_t x86_apicid_from_topo_ids(X86CPUTopoInfo *topo_info,
+>              topo_ids->smt_id;
+>   }
+>   
+> -/* Calculate thread/core/package IDs for a specific topology,
+> +/*
+> + * Calculate thread/core/package IDs for a specific topology,
+>    * based on (contiguous) CPU index
+>    */
+>   static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
+> @@ -137,7 +136,8 @@ static inline void x86_topo_ids_from_idx(X86CPUTopoInfo *topo_info,
+>       topo_ids->smt_id = cpu_index % nr_threads;
+>   }
+>   
+> -/* Calculate thread/core/package IDs for a specific topology,
+> +/*
+> + * Calculate thread/core/package IDs for a specific topology,
+>    * based on APIC ID
+>    */
+>   static inline void x86_topo_ids_from_apicid(apic_id_t apicid,
+> @@ -155,7 +155,8 @@ static inline void x86_topo_ids_from_apicid(apic_id_t apicid,
+>       topo_ids->pkg_id = apicid >> apicid_pkg_offset(topo_info);
+>   }
+>   
+> -/* Make APIC ID for the CPU 'cpu_index'
+> +/*
+> + * Make APIC ID for the CPU 'cpu_index'
+>    *
+>    * 'cpu_index' is a sequential, contiguous ID for the CPU.
+>    */
 
