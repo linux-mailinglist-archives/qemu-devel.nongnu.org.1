@@ -2,49 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D1C7AC204
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 14:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AA87AC211
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 14:34:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qk1fv-0001bl-1l; Sat, 23 Sep 2023 08:23:55 -0400
+	id 1qk1pJ-0003j6-UJ; Sat, 23 Sep 2023 08:33:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qk1fs-0001bK-5t
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 08:23:52 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qk1fp-0002rV-9R
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 08:23:51 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 843D07456AA;
- Sat, 23 Sep 2023 14:23:24 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id BCD007456A7; Sat, 23 Sep 2023 14:23:23 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id BB495745681;
- Sat, 23 Sep 2023 14:23:23 +0200 (CEST)
-Date: Sat, 23 Sep 2023 14:23:23 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-cc: qemu-devel@nongnu.org, mkletzan@redhat.com, vr_qemu@t-online.de
-Subject: Re: [PATCH 11/13] vt82c686: Support machine-default audiodev with
- fallback
-In-Reply-To: <20230923085507.399260-12-pbonzini@redhat.com>
-Message-ID: <8395a8cf-c902-7da6-cb4e-0d4488a2a5dd@eik.bme.hu>
-References: <20230923085507.399260-1-pbonzini@redhat.com>
- <20230923085507.399260-12-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qk1pG-0003ia-9f
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 08:33:34 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qk1pE-0004pw-J5
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 08:33:34 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-533c92e65c9so705337a12.3
+ for <qemu-devel@nongnu.org>; Sat, 23 Sep 2023 05:33:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695472411; x=1696077211; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=0UozXDt2FVjz4WU2zDwO87bbufcl+ghw8iAmB6466n4=;
+ b=yrp627Gv55teH+ciVQ8VIVuKytAZEkEplc/h6dhZ4aujbVT7QlT0NtpwhnDVEkaKjE
+ KRGBq05PPF+dMhicxs9puMYfuRFfvVP1FHhlahxxx+auO2WwLOoV1TPS5jqRXE+6pBwL
+ Lfx7DA0OGOUjWdKfq02F5S+PPgYtIWw7YsSnXaDdcfcTzwdXHKTGolrkamkzmBAKm7ZT
+ ocmWMgRIINOx5D9nuHy/HCiB0ROS1P29Ry7KabKhGER8OoVSz+NJUjAMEcIgphkmXhnb
+ zxXFMc69XxWjhxy2isvnTckfZtpAiAjs8umQ82e+mn41INLppEyza1Su2SdrhXEF2OBR
+ rVZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695472411; x=1696077211;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=0UozXDt2FVjz4WU2zDwO87bbufcl+ghw8iAmB6466n4=;
+ b=afOK921/tkHYHZ+1r549s5OmtPUdnjzrg/7Heol3OdJuWoK/E+Tv/TygsjQ9JOow5l
+ arGQcpXES0UBMasXGbmEzp7C1I4reFU3m4PvjPtSDCVCxc8/Wxqg6M2iMps8ZeLiXO5Z
+ kijI9rTT5dqj4Jpw+99WKHIjyxSww/OPQr4BIr53nRKTrEnaBOR58q1G5MhpUplB6CNA
+ /pcjGxYfnVbahcLaDcarJQTAVS5af76XbZIXGnjckzmPMMS5j7tP5CqCqPoPi147wo0N
+ BvDcAxgPO/bg9hbXRsq2CO0XDY/9mLekw0lRob2U24hAwvAUknwdAx0mYYWjM1kICJsn
+ Hw9A==
+X-Gm-Message-State: AOJu0YyjnGjygmHM87x3s+WbLGH1D0PSy0fz5neNZV1gkTCYIlPR/aBh
+ a2t0oabiiGW6nO6K6Gv8hfuc0xHy1RFY4IWLQkm0+w==
+X-Google-Smtp-Source: AGHT+IFaHMfDCZ2BvZhUKxrAHLMZHr/UJD6+ZEER+ARdBfG4L8LMUIpCKrXd8R5fE2XziBW4ObT5ALS+4r3pMut3zjU=
+X-Received: by 2002:a05:6402:b05:b0:533:45b3:1963 with SMTP id
+ bm5-20020a0564020b0500b0053345b31963mr1820035edb.28.1695472410865; Sat, 23
+ Sep 2023 05:33:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+References: <87r0mqlf9x.fsf@pond.sub.org>
+ <f7fca6b0-ed28-8f72-e960-f73f2bc8fcbe@gmail.com>
+ <CAFEAcA9Mi0rwUo5x0ejQdvosokALc5XFT2oLqgHuaXLZWNom0w@mail.gmail.com>
+ <CANCZdfpKyAf+pSwv-A7JeDFF0+Q4jiV_Dmg=SGJG_+w-68LzRw@mail.gmail.com>
+In-Reply-To: <CANCZdfpKyAf+pSwv-A7JeDFF0+Q4jiV_Dmg=SGJG_+w-68LzRw@mail.gmail.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Sat, 23 Sep 2023 13:33:11 +0100
+Message-ID: <CAFEAcA9QKUYYpqnpKQfKrhPOWpzmwNcuz+PcJgnSNJ2cDec87Q@mail.gmail.com>
+Subject: Re: Help wanted for enabling -Wshadow=local
+To: Warner Losh <imp@bsdimp.com>
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org, 
+ Alberto Garcia <berto@igalia.com>, Alistair Francis <alistair.francis@wdc.com>,
+ Andrew Jeffery <andrew@aj.id.au>, Ani Sinha <anisinha@redhat.com>,
+ Brian Cain <bcain@quicinc.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ "Daniel P. Berrange" <berrange@redhat.com>,
+ David Gibson <david@gibson.dropbear.id.au>, 
+ Eduardo Habkost <eduardo@habkost.net>, Eric Auger <eric.auger@redhat.com>, 
+ Eric Blake <eblake@redhat.com>, Fam Zheng <fam@euphon.net>,
+ Fan Ni <fan.ni@samsung.com>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Jason Wang <jasowang@redhat.com>, Joel Stanley <joel@jms.id.au>, 
+ Jonathan Cameron <jonathan.cameron@huawei.com>, Keith Busch <kbusch@kernel.org>,
+ Klaus Jensen <its@irrelevant.dk>, Laurent Vivier <laurent@vivier.eu>, 
+ Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Nicholas Piggin <npiggin@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Peter Xu <peterx@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>, Thomas Huth <thuth@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,117 +112,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 23 Sep 2023, Paolo Bonzini wrote:
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
-> hw/isa/vt82c686.c   |  2 ++
-> hw/mips/fuloong2e.c | 13 ++++++++++---
-> hw/ppc/pegasos2.c   | 10 ++++++++--
-> 3 files changed, 20 insertions(+), 5 deletions(-)
+On Fri, 22 Sept 2023 at 19:59, Warner Losh <imp@bsdimp.com> wrote:
+> The third one, though, makes me ask the question: When should we
+> pass in cpu_env to functions and when should we use the global value?
+>
+> I have a lot of changes that look like:
+>
+> -static inline abi_long do_freebsd_thr_exit(CPUArchState *cpu_env,
+> +static inline abi_long do_freebsd_thr_exit(CPUArchState *env,
+>          abi_ulong tid_addr)
+>  {
+> -    CPUState *cpu = env_cpu(cpu_env);
+> +    CPUState *cpu = env_cpu(env);
+>      TaskState *ts;
+> ...
+> <other cases of cpu_env -> env>
+>
+> Should I just drop the arg, or do the arg rename? Or "Gee, Warner,
+> that really depends since it's context sensitive" in which case
+> I'll just post a review to the list.
 
-This looks better but I still wonder if this machine audiodev propery is 
-needed at all. If there's one -audiodev option specified it's already 
-picked up by default devices and if there are more one could use -global 
-to set it. Why isn't that enough?
+Is this the "extern TCGv_env cpu_env;" in tcg/tcg.h ?
+As a TCGv_env, that is only of any use in the TCG frontends,
+not in the bsd-user/ or linux-user/ code. In fact almost
+all of tcg/tcg.h is intended for the TCG frontends, so the
+"ideal" solution to this would be to not include it in the
+bsd-user code. This might mean figuring out what parts of
+it need to be split out into different headers. (linux-user
+also includes tcg/tcg.h.)
 
-If you still want a machine audiodev propery then could the device handle 
-it without needing changes to the machine? Like in via_isa_realize() add
+However, this isn't necessary for the current effort, because
+-Wshadow=local only warns about local-to-local shadowing,
+not cases where a local shadows a global.
 
-if (current_machine->audiodev) {
-     qdev_prop_set_string(DEVICE(pci_dev), "audiodev", machine->audiodev);
-}
-
-before qdev_realize(DEVICE(&s->ac97) then no need to change the device 
-creation in board code.
-
-Regards,
-BALATON Zoltan
-
-> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-> index 57bdfb4e78c..3ec8e43708a 100644
-> --- a/hw/isa/vt82c686.c
-> +++ b/hw/isa/vt82c686.c
-> @@ -578,6 +578,8 @@ static void via_isa_init(Object *obj)
->     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
->     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
->     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
-> +
-> +    object_property_add_alias(obj, "audiodev", OBJECT(&s->ac97), "audiodev");
-> }
->
-> static const TypeInfo via_isa_info = {
-> diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
-> index c827f615f3b..df2be188257 100644
-> --- a/hw/mips/fuloong2e.c
-> +++ b/hw/mips/fuloong2e.c
-> @@ -41,6 +41,7 @@
-> #include "sysemu/reset.h"
-> #include "sysemu/sysemu.h"
-> #include "qemu/error-report.h"
-> +#include "audio/audio.h"
->
-> #define ENVP_PADDR              0x2000
-> #define ENVP_VADDR              cpu_mips_phys_to_kseg0(NULL, ENVP_PADDR)
-> @@ -295,9 +296,13 @@ static void mips_fuloong2e_init(MachineState *machine)
->     pci_bus = bonito_init((qemu_irq *)&(env->irq[2]));
->
->     /* South bridge -> IP5 */
-> -    pci_dev = pci_create_simple_multifunction(pci_bus,
-> -                                              PCI_DEVFN(FULOONG2E_VIA_SLOT, 0),
-> -                                              TYPE_VT82C686B_ISA);
-> +    pci_dev = pci_new_multifunction(PCI_DEVFN(FULOONG2E_VIA_SLOT, 0),
-> +                                    TYPE_VT82C686B_ISA);
-> +    if (machine->audiodev) {
-> +        qdev_prop_set_string(DEVICE(pci_dev), "audiodev", machine->audiodev);
-> +    }
-> +    pci_realize_and_unref(pci_dev, pci_bus, &error_abort);
-> +
->     object_property_add_alias(OBJECT(machine), "rtc-time",
->                               object_resolve_path_component(OBJECT(pci_dev),
->                                                             "rtc"),
-> @@ -337,6 +342,8 @@ static void mips_fuloong2e_machine_init(MachineClass *mc)
->     mc->default_ram_size = 256 * MiB;
->     mc->default_ram_id = "fuloong2e.ram";
->     mc->minimum_page_bits = 14;
-> +
-> +    machine_add_audiodev_property(mc);
-> }
->
-> DEFINE_MACHINE("fuloong2e", mips_fuloong2e_machine_init)
-> diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
-> index bd397cf2b5c..61c302895c9 100644
-> --- a/hw/ppc/pegasos2.c
-> +++ b/hw/ppc/pegasos2.c
-> @@ -37,6 +37,7 @@
-> #include "qemu/datadir.h"
-> #include "sysemu/device_tree.h"
-> #include "hw/ppc/vof.h"
-> +#include "audio/audio.h"
->
-> #include <libfdt.h>
->
-> @@ -180,8 +181,11 @@ static void pegasos2_init(MachineState *machine)
->     pci_bus_irqs(pci_bus, pegasos2_pci_irq, pm, PCI_NUM_PINS);
->
->     /* VIA VT8231 South Bridge (multifunction PCI device) */
-> -    via = OBJECT(pci_create_simple_multifunction(pci_bus, PCI_DEVFN(12, 0),
-> -                                                 TYPE_VT8231_ISA));
-> +    via = OBJECT(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
-> +    if (machine->audiodev) {
-> +        qdev_prop_set_string(DEVICE(via), "audiodev", machine->audiodev);
-> +    }
-> +    pci_realize_and_unref(PCI_DEVICE(via), pci_bus, &error_abort);
->     for (i = 0; i < PCI_NUM_PINS; i++) {
->         pm->via_pirq[i] = qdev_get_gpio_in_named(DEVICE(via), "pirq", i);
->     }
-> @@ -564,6 +568,8 @@ static void pegasos2_machine_class_init(ObjectClass *oc, void *data)
->     vhc->encode_hpt_for_kvm_pr = vhyp_encode_hpt_for_kvm_pr;
->
->     vmc->setprop = pegasos2_setprop;
-> +
-> +    machine_add_audiodev_property(mc);
-> }
->
-> static const TypeInfo pegasos2_machine_info = {
->
+thanks
+-- PMM
 
