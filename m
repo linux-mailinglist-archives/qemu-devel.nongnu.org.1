@@ -2,52 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB167ABE48
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 09:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7413F7ABE4B
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 09:14:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjwoI-0002Dc-Bf; Sat, 23 Sep 2023 03:12:14 -0400
+	id 1qjwqF-0002yw-Tv; Sat, 23 Sep 2023 03:14:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=33G5=FH=kaod.org=clg@ozlabs.org>)
- id 1qjwoG-0002DP-Jy; Sat, 23 Sep 2023 03:12:12 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjwq4-0002xx-IP
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:14:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=33G5=FH=kaod.org=clg@ozlabs.org>)
- id 1qjwoF-0007FS-0W; Sat, 23 Sep 2023 03:12:12 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rt0gr55stz4xPg;
- Sat, 23 Sep 2023 17:12:08 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjwq2-0007dQ-81
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:14:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695453237;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5PuitPEavMpgxfNRjSKRyUWbURuUmzXU2EvZSbwb2oA=;
+ b=Cj6VD1aM/cXNplqfNiVNrYNDdrbWS1tAs2bVQYYxyRJIKWtAYrAHGSAdDvL7vbPImwo1Fs
+ mfAMgk1pbPKs30ClzB25YNSeoQ3Yggk85fg4l1msn/Efq1rh767Dn/M/RNynA/K40sADCP
+ v/c9y/XzH2C9xiQSiPo5UhErhSh3wH4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-412-hu45Gv8APieRUwTsGtn12A-1; Sat, 23 Sep 2023 03:13:51 -0400
+X-MC-Unique: hu45Gv8APieRUwTsGtn12A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rt0gp4LSvz4xPf;
- Sat, 23 Sep 2023 17:12:06 +1000 (AEST)
-From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-To: qemu-ppc@nongnu.org,
-	qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH] target/ppc: Rename variables to avoid local variable
- shadowing in VUPKPX
-Date: Sat, 23 Sep 2023 09:12:03 +0200
-Message-ID: <20230923071203.1209663-1-clg@kaod.org>
-X-Mailer: git-send-email 2.41.0
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4012285A5A8;
+ Sat, 23 Sep 2023 07:13:51 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id EF4892156701;
+ Sat, 23 Sep 2023 07:13:50 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id B8FCE21E6900; Sat, 23 Sep 2023 09:13:49 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org,  Joel Stanley <joel@jms.id.au>,  Andrew Jeffery
+ <andrew@aj.id.au>
+Subject: Re: [PATCH 0/4] aspeed: Clean up local variable shadowing
+References: <20230922155924.1172019-1-clg@kaod.org>
+ <f7cdbd47-1833-af1a-ae09-363c86c2e74e@linaro.org>
+ <838837dc-0d95-1d6c-3cfc-e321c9c01a7d@kaod.org>
+Date: Sat, 23 Sep 2023 09:13:49 +0200
+In-Reply-To: <838837dc-0d95-1d6c-3cfc-e321c9c01a7d@kaod.org>
+ (=?utf-8?Q?=22C=C3=A9dric?= Le
+ Goater"'s message of "Fri, 22 Sep 2023 21:00:37 +0200")
+Message-ID: <87msxdmkeq.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
- envelope-from=SRS0=33G5=FH=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,47 +86,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-and fix such warnings :
+C=C3=A9dric Le Goater <clg@kaod.org> writes:
 
-  ../target/ppc/int_helper.c: In function ‘helper_vupklpx’:
-  ../target/ppc/int_helper.c:2025:21: warning: declaration of ‘r’ shadows a parameter [-Wshadow=local]
-   2025 |             uint8_t r = (e >> 10) & 0x1f;                               \
-        |                     ^
-  ../target/ppc/int_helper.c:2033:1: note: in expansion of macro ‘VUPKPX’
-   2033 | VUPKPX(lpx, UPKLO)
-        | ^~~~~~
-  ../target/ppc/int_helper.c:2017:41: note: shadowed declaration is here
-   2017 |     void helper_vupk##suffix(ppc_avr_t *r, ppc_avr_t *b)                \
-        |                              ~~~~~~~~~~~^
-  ../target/ppc/int_helper.c:2033:1: note: in expansion of macro ‘VUPKPX’
-   2033 | VUPKPX(lpx, UPKLO)
-        | ^~~~~~
+> On 9/22/23 20:20, Philippe Mathieu-Daud=C3=A9 wrote:
+>> On 22/9/23 17:59, C=C3=A9dric Le Goater wrote:
+>>> Hello,
+>>>
+>>> Here are cleanups for local variable shadowing warnings in aspeed model=
+s.
+>>>
+>>> Joel, Andrew,
+>>>
+>>> Could you please double check patch 4 ?
+>> Could Markus' MAKE_IDENTFIER() help there?
+>
+> ah ! you typed too fast and I also read too fast, as :
+>
+>   MARKUS_IDENTIFIER()
+>
+> and I liked it :)
 
-Signed-off-by: Cédric Le Goater <clg@kaod.org>
----
- target/ppc/int_helper.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+LOL
 
-diff --git a/target/ppc/int_helper.c b/target/ppc/int_helper.c
-index 6fd00684a5b9..8719ac6e6265 100644
---- a/target/ppc/int_helper.c
-+++ b/target/ppc/int_helper.c
-@@ -2022,11 +2022,11 @@ void helper_vsum4ubs(CPUPPCState *env, ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
-         for (i = 0; i < ARRAY_SIZE(r->u32); i++) {                      \
-             uint16_t e = b->u16[hi ? i : i + 4];                        \
-             uint8_t a = (e >> 15) ? 0xff : 0;                           \
--            uint8_t r = (e >> 10) & 0x1f;                               \
-+            uint8_t _r = (e >> 10) & 0x1f;                              \
-             uint8_t g = (e >> 5) & 0x1f;                                \
--            uint8_t b = e & 0x1f;                                       \
-+            uint8_t _b = e & 0x1f;                                      \
-                                                                         \
--            result.u32[i] = (a << 24) | (r << 16) | (g << 8) | b;       \
-+            result.u32[i] = (a << 24) | (_r << 16) | (g << 8) | _b;     \
-         }                                                               \
-         *r = result;                                                    \
-     }
--- 
-2.41.0
+>                   but what is MAKE_IDENTIFIER  ? really, please explain.
+
+Philippe is referring to
+
+    [PATCH v3 7/7] qobject atomics osdep: Make a few macros more hygienic
+    Message-ID: <20230921121312.1301864-8-armbru@redhat.com>
+
+which tweaks MAX() to permit nesting without shadowing.  Your PATCH 4
+may not be needed if you base on it.
+
+MAKE_IDENTIFIER() is a helper macro introduced in that patch.
+
+You can fetch the patch from https://repo.or.cz/qemu/armbru.git branch
+shadow-next, along with collected other shadowing patches.
+
+Questions?
 
 
