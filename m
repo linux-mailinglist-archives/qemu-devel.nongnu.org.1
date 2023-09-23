@@ -2,92 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBF87ABE56
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 09:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 774167ABE5F
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 09:34:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjwyV-0004tl-NX; Sat, 23 Sep 2023 03:22:47 -0400
+	id 1qjx8e-0006fL-Qb; Sat, 23 Sep 2023 03:33:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjwyT-0004sR-FK
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:22:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from
+ <BATV+2af1b740e79ef42f4e75+7335+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qjx8a-0006fC-VJ
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:33:13 -0400
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjwyR-00013c-C3
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:22:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695453762;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=l+3QMfxhf69We6jQBSoRgGQetOF6uu6pM3U1q6y4vlQ=;
- b=S9iqxBZyz5dJygAttQMHeRRRZvmc6UAAwPjF9DFR1FFPyj8helYkDX6qX63ZM5VYe3wxd1
- Y0pWFV//N//0GsjqbPRgAn2ZKtRX2Pa5B3lI79MTBbaLi8PGvyxMK5kllu8/5y8CBeWyIL
- 53pKPhf3qZ/ETR2fd0JZ3PElguVR5bo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-576-0aid-6PmPO6swUmSsogqTw-1; Sat, 23 Sep 2023 03:22:36 -0400
-X-MC-Unique: 0aid-6PmPO6swUmSsogqTw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55B6C1C0759D;
- Sat, 23 Sep 2023 07:22:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id F147710F1BE7;
- Sat, 23 Sep 2023 07:22:32 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0C66121E6900; Sat, 23 Sep 2023 09:22:32 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  Alberto Garcia <berto@igalia.com>,  Alistair
- Francis <alistair.francis@wdc.com>,  Andrew Jeffery <andrew@aj.id.au>,
- Ani Sinha <anisinha@redhat.com>,  Brian Cain <bcain@quicinc.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,  Daniel Henrique Barboza
- <danielhb413@gmail.com>,  Daniel P. Berrange <berrange@redhat.com>,  David
- Gibson <david@gibson.dropbear.id.au>,  Eduardo Habkost
- <eduardo@habkost.net>,  Eric Auger <eric.auger@redhat.com>,  Eric Blake
- <eblake@redhat.com>,  Fam Zheng <fam@euphon.net>,  Fan Ni
- <fan.ni@samsung.com>,  Gerd Hoffmann <kraxel@redhat.com>,  Igor Mammedov
- <imammedo@redhat.com>,  Jason Wang <jasowang@redhat.com>,  Joel Stanley
- <joel@jms.id.au>,  Jonathan Cameron <jonathan.cameron@huawei.com>,  Keith
- Busch <kbusch@kernel.org>,  Klaus Jensen <its@irrelevant.dk>,  Laurent
- Vivier <laurent@vivier.eu>,  Laurent Vivier <lvivier@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,  Marcel
- Apfelbaum
- <marcel.apfelbaum@gmail.com>,  Marcelo Tosatti <mtosatti@redhat.com>,
- Michael S. Tsirkin <mst@redhat.com>,  Nicholas Piggin
- <npiggin@gmail.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Peter Xu <peterx@redhat.com>,  Richard
- Henderson <richard.henderson@linaro.org>,  Song Gao <gaosong@loongson.cn>,
- Thomas Huth <thuth@redhat.com>,  Vladimir Sementsov-Ogievskiy
- <vsementsov@yandex-team.ru>,  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: Help wanted for enabling -Wshadow=local
-References: <87r0mqlf9x.fsf@pond.sub.org> <87jzsho1wn.fsf@pond.sub.org>
-Date: Sat, 23 Sep 2023 09:22:32 +0200
-In-Reply-To: <87jzsho1wn.fsf@pond.sub.org> (Markus Armbruster's message of
- "Sat, 23 Sep 2023 08:10:32 +0200")
-Message-ID: <878r8xmk07.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from
+ <BATV+2af1b740e79ef42f4e75+7335+infradead.org+dwmw2@casper.srs.infradead.org>)
+ id 1qjx8Y-0003D1-Ag
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:33:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+ In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description;
+ bh=xBJZuMV+F2XahPc7YF/aCIz3Hq4JHHO+vEpdmO4hNQY=; b=a8pAxDRJ1ZxFg2oi+BD4YaNHKi
+ w0ZSuxSnOCFzOHNl5xV0pr3S07YWn5skccTxdu/cJInl+f7V7khu4qBqu/mKPDODTFKHTMXJqKb+8
+ YskcUqdB83iKJv/VnpBGIb+kZxvHcOCez67xkTIYtKA4UWm0qO0NoUJbCB7YyyzlA1Ggu+qNoF00/
+ cDymiQj0l7kKdDsBp6LIn6f8YRPMO41Tazn/U5nErPZQpf03Brhsu+/RH84BQ0R8k8aVTfFNJV8A+
+ UMb0plnKGPEyV/9wv8hC9Iy+mSSqkObOxon/C32MX+eQuSa9/1MtOj0JGErNWOt75p+i2VxFZ0TUZ
+ EHAvi0AA==;
+Received: from [2001:8b0:10b:5:114:553c:a48f:b7ec]
+ (helo=u3832b3a9db3152.ant.amazon.com)
+ by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+ id 1qjx8B-005foK-L1; Sat, 23 Sep 2023 07:32:47 +0000
+Message-ID: <61ee7baa277d69aa9c4a56df4aace9aa00bd0919.camel@infradead.org>
+Subject: Re: [RFC PATCH v2 07/21] i386/pc: Drop pc_machine_kvm_type()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Xiaoyao Li <xiaoyao.li@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Hildenbrand <david@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Peter Xu <peterx@redhat.com>, Philippe
+ =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Cornelia Huck
+ <cohuck@redhat.com>, "Daniel P." =?ISO-8859-1?Q?Berrang=E9?=
+ <berrange@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org, Michael Roth
+ <michael.roth@amd.com>, isaku.yamahata@gmail.com, Sean Christopherson
+ <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
+Date: Sat, 23 Sep 2023 08:32:46 +0100
+In-Reply-To: <20230914035117.3285885-8-xiaoyao.li@intel.com>
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-8-xiaoyao.li@intel.com>
+Content-Type: multipart/signed; micalg="sha-256";
+ protocol="application/pkcs7-signature"; 
+ boundary="=-CDq5aI6X81AmpLz2bfTy"
+User-Agent: Evolution 3.44.4-0ubuntu2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by
+ casper.infradead.org. See http://www.infradead.org/rpr.html
+Received-SPF: none client-ip=2001:8b0:10b:1236::1;
+ envelope-from=BATV+2af1b740e79ef42f4e75+7335+infradead.org+dwmw2@casper.srs.infradead.org;
+ helo=casper.infradead.org
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,342 +85,144 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
 
-> Markus Armbruster <armbru@redhat.com> writes:
->
->> If you are in To:, we need your help to enable -Wshadow=3Dlocal.
->>
->> Local variables shadowing other local variables or parameters make the
->> code needlessly hard to understand.  Bugs love to hide in such code.
->> Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
->> on polling error".
->>
->> Enabling -Wshadow would prevent bugs like this one.  But we have to
->> clean up all the offenders first.
->>
->> I collected the patches posted so far:
->>
->>     [PATCH v3 0/7] Steps towards enabling -Wshadow=3Dlocal
->>     Message-ID: <20230921121312.1301864-1-armbru@redhat.com>
->>
->>     [PATCH v2 00/22] (few more) Steps towards enabling -Wshadow
->>     Message-ID: <20230904161235.84651-1-philmd@linaro.org>
->>
->>     [PATCH 0/3] (few more) Steps towards enabling -Wshadow [3 more]
->>     Message-ID: <20230904162824.85385-1-philmd@linaro.org>
->>
->>     [PATCH 0/8] ppc: Clean up local variable shadowing
->>     Message-ID: <20230918145850.241074-1-clg@kaod.org>
->>
->> Thanks, Philippe & Cedric!
->
-> Collected since:
->
->       [PATCH] test-throttle: don't shadow 'index' variable in do_test_acc=
-ounting()
->       Message-Id: <20230922105742.81317-1-berto@igalia.com>
->
->       [PATCH] hw/acpi: changes towards enabling -Wshadow=3Dlocal
->       Message-Id: <20230922124203.127110-1-anisinha@redhat.com>
->
->       [PATCH 0/4] arm: fix some -Wshadow warnings
->       Message-Id: <20230922152944.3583438-1-peter.maydell@linaro.org>
->
->       [PATCH 0/4] aspeed: Clean up local variable shadowing
->       Message-ID: <20230922155924.1172019-1-clg@kaod.org>
->
->       [PATCH] intel_iommu: Fix shadow local variables on "size"
->       Message-ID: <20230922160410.138786-1-peterx@redhat.com>
->
->       [PATCH 0/2] remove some variable shadowing
->       Message-ID: <20230922160644.438631-1-berrange@redhat.com>
->
->       [PATCH] tests/qtest/m48t59-test: Silence compiler warning with -Wsh=
-adow
->       Message-ID: <20230922163742.149444-1-thuth@redhat.com>
->
-> Thanks Berto, Ani, Peter, C=C3=A9dric, Peter, Daniel, and Thomas!
+--=-CDq5aI6X81AmpLz2bfTy
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-More:
+On Wed, 2023-09-13 at 23:51 -0400, Xiaoyao Li wrote:
+> pc_machine_kvm_type() was introduced by commit e21be724eaf5
+> ("i386/xen:
+> add pc_machine_kvm_type to initialize XEN_EMULATE mode") to do Xen
+> specific initialization by utilizing kvm_type method.
+>=20
+> commit eeedfe6c6316 ("hw/xen: Simplify emulated Xen platform init")
+> moves the Xen specific initialization to pc_basic_device_init().
+>=20
+> There is no need to keep the PC specific kvm_type() implementation
+> anymore. On the other hand, later patch will implement kvm_type()
+> method for all x86/i386 machines to support KVM_X86_SW_PROTECTED_VM.
+>=20
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
 
-        [PATCH] qemu-nbd: changes towards enabling -Wshadow=3Dlocal
-        Message-ID: <20230922205019.2755352-2-eblake@redhat.com>
+Indeed, I added it and then later ripped everything out of it and left
+it empty, as you nicely describe (thanks) in your commit message. I
+have no designs on using it again, so
 
-        [PATCH] target/ppc: Rename variables to avoid local variable shadow=
-ing in VUPKPX
-        Message-ID: <20230923071203.1209663-1-clg@kaod.org>
+Acked-by: David Woodhouse <dwmw@amazon.co.uk>
 
-Thanks Eric and C=C3=A9dric!
+--=-CDq5aI6X81AmpLz2bfTy
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
->> In my local build with -Wshadow=3Dlocal, warnings remain in just 56 file=
-s.
->
-> Down to 42.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkQw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhQwggT8oAMCAQICEQDGvhmWZ0DEAx0oURL6O6l+MA0GCSqGSIb3
+DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYD
+VQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28g
+UlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMB4XDTIyMDEwNzAw
+MDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJARYTZHdtdzJAaW5mcmFkZWFkLm9y
+ZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3GpC2bomUqk+91wLYBzDMcCj5C9m6
+oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZHh7htyAkWYVoFsFPrwHounto8xTsy
+SSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT9YgcBqKCo65pTFmOnR/VVbjJk4K2
+xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNjP+qDrh0db7PAjO1D4d5ftfrsf+kd
+RR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy2U+eITZ5LLE5s45mX2oPFknWqxBo
+bQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3BgBEmfsYWlBXO8rVXfvPgLs32VdV
+NZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/7auNVRmPB3v5SWEsH8xi4Bez2V9U
+KxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmdlFYhAflWKQ03Ufiu8t3iBE3VJbc2
+5oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9aelIl6vtbhMA+l0nfrsORMa4kobqQ5
+C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMBAAGjggHMMIIByDAfBgNVHSMEGDAW
+gBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeDMcimo0oz8o1R1Nver3ZVpSkwDgYD
+VR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwQGCCsGAQUFBwMC
+MEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGln
+by5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2VjdGln
+b1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUFBwEB
+BH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xpZW50
+QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDovL29j
+c3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5mcmFkZWFkLm9yZzANBgkqhkiG9w0B
+AQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQvQ/fzPXmtR9t54rpmI2TfyvcKgOXp
+qa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvIlSPrzIB4Z2wyIGQpaPLlYflrrVFK
+v9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9ChWFfgSXvrWDZspnU3Gjw/rMHrGnql
+Htlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0whpBtXdyDjzBtQTaZJ7zTT/vlehc/
+tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9IzCCBhQwggT8oAMCAQICEQDGvhmW
+Z0DEAx0oURL6O6l+MA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTIyMDEwNzAwMDAwMFoXDTI1MDEwNjIzNTk1OVowJDEiMCAGCSqGSIb3DQEJ
+ARYTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBALQ3
+GpC2bomUqk+91wLYBzDMcCj5C9m6oZaHwvmIdXftOgTbCJXADo6G9T7BBAebw2JV38EINgKpy/ZH
+h7htyAkWYVoFsFPrwHounto8xTsySSePMiPlmIdQ10BcVSXMUJ3Juu16GlWOnAMJY2oYfEzmE7uT
+9YgcBqKCo65pTFmOnR/VVbjJk4K2xE34GC2nAdUQkPFuyaFisicc6HRMOYXPuF0DuwITEKnjxgNj
+P+qDrh0db7PAjO1D4d5ftfrsf+kdRR4gKVGSk8Tz2WwvtLAroJM4nXjNPIBJNT4w/FWWc/5qPHJy
+2U+eITZ5LLE5s45mX2oPFknWqxBobQZ8a9dsZ3dSPZBvE9ZrmtFLrVrN4eo1jsXgAp1+p7bkfqd3
+BgBEmfsYWlBXO8rVXfvPgLs32VdVNZxb/CDWPqBsiYv0Hv3HPsz07j5b+/cVoWqyHDKzkaVbxfq/
+7auNVRmPB3v5SWEsH8xi4Bez2V9UKxfYCnqsjp8RaC2/khxKt0A552Eaxnz/4ly/2C7wkwTQnBmd
+lFYhAflWKQ03Ufiu8t3iBE3VJbc25oMrglj7TRZrmKq3CkbFnX0fyulB+kHimrt6PIWn7kgyl9ae
+lIl6vtbhMA+l0nfrsORMa4kobqQ5C5rveVgmcIad67EDa+UqEKy/GltUwlSh6xy+TrK1tzDvAgMB
+AAGjggHMMIIByDAfBgNVHSMEGDAWgBQJwPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUzMeD
+Mcimo0oz8o1R1Nver3ZVpSkwDgYDVR0PAQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwHQYDVR0lBBYw
+FAYIKwYBBQUHAwQGCCsGAQUFBwMCMEAGA1UdIAQ5MDcwNQYMKwYBBAGyMQECAQEBMCUwIwYIKwYB
+BQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+cmwuc2VjdGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1h
+aWxDQS5jcmwwgYoGCCsGAQUFBwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdv
+LmNvbS9TZWN0aWdvUlNBQ2xpZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAj
+BggrBgEFBQcwAYYXaHR0cDovL29jc3Auc2VjdGlnby5jb20wHgYDVR0RBBcwFYETZHdtdzJAaW5m
+cmFkZWFkLm9yZzANBgkqhkiG9w0BAQsFAAOCAQEAyW6MUir5dm495teKqAQjDJwuFCi35h4xgnQv
+Q/fzPXmtR9t54rpmI2TfyvcKgOXpqa7BGXNFfh1JsqexVkIqZP9uWB2J+uVMD+XZEs/KYNNX2PvI
+lSPrzIB4Z2wyIGQpaPLlYflrrVFKv9CjT2zdqvy2maK7HKOQRt3BiJbVG5lRiwbbygldcALEV9Ch
+WFfgSXvrWDZspnU3Gjw/rMHrGnqlHtlyebp3pf3fSS9kzQ1FVtVIDrL6eqhTwJxe+pXSMMqFiN0w
+hpBtXdyDjzBtQTaZJ7zTT/vlehc/tDuqZwGHm/YJy883Ll+GP3NvOkgaRGWEuYWJJ6hFCkXYjyR9
+IzGCBMcwggTDAgEBMIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVz
+dGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMT
+NVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEA
+xr4ZlmdAxAMdKFES+jupfjANBglghkgBZQMEAgEFAKCCAeswGAYJKoZIhvcNAQkDMQsGCSqGSIb3
+DQEHATAcBgkqhkiG9w0BCQUxDxcNMjMwOTIzMDczMjQ2WjAvBgkqhkiG9w0BCQQxIgQgLYz62S7q
+EDCJaBrUMSSrxAgYxNUwoPK4O2FZFxoNeCkwgb0GCSsGAQQBgjcQBDGBrzCBrDCBljELMAkGA1UE
+BhMCR0IxGzAZBgNVBAgTEkdyZWF0ZXIgTWFuY2hlc3RlcjEQMA4GA1UEBxMHU2FsZm9yZDEYMBYG
+A1UEChMPU2VjdGlnbyBMaW1pdGVkMT4wPAYDVQQDEzVTZWN0aWdvIFJTQSBDbGllbnQgQXV0aGVu
+dGljYXRpb24gYW5kIFNlY3VyZSBFbWFpbCBDQQIRAMa+GZZnQMQDHShREvo7qX4wgb8GCyqGSIb3
+DQEJEAILMYGvoIGsMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhEAxr4Z
+lmdAxAMdKFES+jupfjANBgkqhkiG9w0BAQEFAASCAgAv8BUPqoHqOyCrBNerxlpXeNA8tf5IIibj
+F+NRXG3ciCTsD7F4mYybSCGpUpqI79dRBVn6W85nfM93/1/jN4/fjlxozenVc332XVSd46HlQvqO
+lQ1RiAx9nYc/k6VWK3lk9P9wOOFvMDkjhGXaa+tPKXB858EzqJDdGkhy8I+aJKaCjGK/lmpj7UeP
+04oMNd3jiu7HQeGcFhy/D1yPXgT07ipncBIeg811zwoIYtErP6v6ExGe8nTTpQoshQnfhXo1ad7N
+K4qNAOEl01ocL8BcZNDcRaDwA4rLln0BndFD/ljcMJIMNSxFcVnhGWOlGJuV9m9aWN8ZpG4syh5A
+Zkff6RskWrzWggkjGok8WBQRcsnbN9ApmcOAiy4W5nT8NUOEqMekcNEGie3p7B3drdi3+4Ic8A1j
+CwHX+9tVx/5AtQbLRJzay5dMsbSUNBHPhBGZqMojT1WaYUKX/1ycn5TvUQfepMQgBX9pNI81AZm5
+SnlkeFe+uIs0luB2hP6rewnUAToW+xPuf/z1BGmLb0/5glrQz82UVRo0axxr0qdzE74vrCls3J0g
+AdFiKok2zHdXJ9JpvLDduTX0wYmaplM3ZfDHSMJfqhjIzokC/N5t8SWF9xXEGZxoR8xbNtmXtj29
++rQNhe/YeR/pli0cp2vGypQwAc13XgJF6Q+HU9EisAAAAAAAAA==
 
-Down to 40.
 
->> Sorted by subsystems, files covered by multiple subsystems marked
->> "(*NUMBER*)", files not covered in MAINTAINERS marked (*guess*):
->>
->> Guest CPU cores (TCG)
->> ---------------------
->> ARM TCG CPUs
->> M: Peter Maydell <peter.maydell@linaro.org>
->>     hw/arm/smmuv3-internal.h(*2*)
->>     hw/arm/smmuv3.c(*2*)
->
-> Subsystem appears clean now.
->
->> ARM SMMU
->> M: Eric Auger <eric.auger@redhat.com>
->>     hw/arm/smmuv3-internal.h(*2*)
->>     hw/arm/smmuv3.c(*2*)
->
-> Subsystem appears clean now.
->
->> Hexagon TCG CPUs
->> M: Brian Cain <bcain@quicinc.com>
->>     target/hexagon/gen_helper_funcs.py
->>     target/hexagon/mmvec/macros.h
->>     target/hexagon/op_helper.c
->>     target/hexagon/translate.c
->>
->> M68K TCG CPUs
->> M: Laurent Vivier <laurent@vivier.eu>
->>     disas/m68k.c
->>
->> PowerPC TCG CPUs
->> M: Nicholas Piggin <npiggin@gmail.com>
->> M: Daniel Henrique Barboza <danielhb413@gmail.com>
->> R: C=C3=A9dric Le Goater <clg@kaod.org>
->>     target/ppc/int_helper.c
-
-Subsystem appears clean now.
-
->> RISC-V TCG CPUs
->>     hw/riscv/opentitan.c(*2*)
->>     target/riscv/cpu.c
->>     target/riscv/vector_helper.c
->>
->> X86 TCG CPUs
->> M: Paolo Bonzini <pbonzini@redhat.com>
->> M: Richard Henderson <richard.henderson@linaro.org>
->> M: Eduardo Habkost <eduardo@habkost.net>
->>     hw/i386/acpi-build.c(*3*)
->
-> File appears clean now.
->
->>     hw/i386/acpi-microvm.c(*2*)
->>     hw/i386/intel_iommu.c(*3*)
->
-> File appears clean now.
->
->>     hw/i386/pc.c(*2*)
->>     hw/i386/x86.c(*2*)
->>     target/i386/cpu.c(*guess*)
->>     target/i386/tcg/seg_helper.c
->>     target/i386/tcg/sysemu/svm_helper.c
->>     target/i386/tcg/translate.c
->>
->> Guest CPU Cores (KVM)
->> ---------------------
->> X86 KVM CPUs
->> M: Paolo Bonzini <pbonzini@redhat.com>
->> M: Marcelo Tosatti <mtosatti@redhat.com>
->>     target/i386/kvm/kvm.c
->>
->> ARM Machines
->> ------------
->> ARM cores
->> M: Peter Maydell <peter.maydell@linaro.org>
->>     hw/intc/arm_gicv3_its.c
->
-> Subsystem appears clean now.
->
->> Versatile PB
->> M: Peter Maydell <peter.maydell@linaro.org>
->>     hw/misc/arm_sysctl.c
->
-> Subsystem appears clean now.
->
->> ASPEED BMCs
->> M: C=C3=A9dric Le Goater <clg@kaod.org>
->> M: Peter Maydell <peter.maydell@linaro.org>
->> R: Andrew Jeffery <andrew@aj.id.au>
->> R: Joel Stanley <joel@jms.id.au>
->>     hw/i2c/aspeed_i2c.c
->>     hw/misc/aspeed_i3c.c
->
-> Subsystem appears clean now.
->
->> LoongArch Machines
->> ------------------
->> Virt
->> M: Xiaojuan Yang <yangxiaojuan@loongson.cn>
->> M: Song Gao <gaosong@loongson.cn>
->>     hw/loongarch/virt.c
->>
->> RISC-V Machines
->> ---------------
->> OpenTitan
->> M: Alistair Francis <Alistair.Francis@wdc.com>
->>     hw/riscv/opentitan.c(*2*)
->>
->> X86 Machines
->> ------------
->> PC
->> M: Michael S. Tsirkin <mst@redhat.com>
->> M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
->>     hw/i386/acpi-build.c(*3*)
->
-> File appears clean now.
->
->>     hw/i386/acpi-microvm.c(*2*)
->>     hw/i386/intel_iommu.c(*3*)
->
-> File appears clean now.
->
->>     hw/i386/pc.c(*2*)
->>     hw/i386/x86.c(*2*)
->>
->> PC Chipset
->> M: Michael S. Tsirkin <mst@redhat.com>
->> M: Paolo Bonzini <pbonzini@redhat.com>
->>     hw/i2c/pm_smbus.c
->>
->> Devices
->> -------
->> ACPI/SMBIOS
->> M: Michael S. Tsirkin <mst@redhat.com>
->> M: Igor Mammedov <imammedo@redhat.com>
->> R: Ani Sinha <anisinha@redhat.com>
->>     hw/acpi/cpu_hotplug.c
->>     hw/i386/acpi-build.c(*3*)
->>     hw/smbios/smbios.c
->
-> Subsystem appears clean now.
->
->> Network devices
->> M: Jason Wang <jasowang@redhat.com>
->>     hw/net/vhost_net.c(*2*)
->>
->> SCSI
->> M: Paolo Bonzini <pbonzini@redhat.com>
->> R: Fam Zheng <fam@euphon.net>
->>     hw/scsi/mptsas.c
->>
->> USB
->> M: Gerd Hoffmann <kraxel@redhat.com>
->>     hw/usb/desc.c
->>     hw/usb/dev-hub.c
->>     hw/usb/dev-storage.c
->>     hw/usb/hcd-xhci.c
->>     hw/usb/host-libusb.c
->>
->> vhost
->> M: Michael S. Tsirkin <mst@redhat.com>
->>     contrib/vhost-user-gpu/vhost-user-gpu.c(*2*)
->>     contrib/vhost-user-gpu/vugpu.h(*2*)
->>     hw/net/vhost_net.c(*2*)
->>     hw/virtio/vhost.c
->>
->> virtio
->> M: Michael S. Tsirkin <mst@redhat.com>
->>     hw/virtio/virtio-pci.c
->>     include/hw/virtio/virtio-gpu.h(*2*)
->>
->> nvme
->> M: Keith Busch <kbusch@kernel.org>
->> M: Klaus Jensen <its@irrelevant.dk>
->>     hw/nvme/ns.c
->>
->> virtio-gpu
->> M: Gerd Hoffmann <kraxel@redhat.com>
->>     include/hw/virtio/virtio-gpu.h(*2*)
->>
->> vhost-user-gpu
->> M: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->> R: Gerd Hoffmann <kraxel@redhat.com>
->>     contrib/vhost-user-gpu/vhost-user-gpu.c(*2*)
->>     contrib/vhost-user-gpu/vugpu.h(*2*)
->>
->> Subsystems
->> ----------
->> Overall Audio backends
->> M: Gerd Hoffmann <kraxel@redhat.com>
->> M: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->>     audio/audio.c
->>
->> Open Sound System (OSS) Audio backend
->> M: Gerd Hoffmann <kraxel@redhat.com>
->>     audio/ossaudio.c
->>
->> Compute Express Link
->> M: Jonathan Cameron <jonathan.cameron@huawei.com>
->> R: Fan Ni <fan.ni@samsung.com>
->>     include/hw/cxl/cxl_device.h
->>
->> Device Tree
->> M: Alistair Francis <alistair.francis@wdc.com>
->> R: David Gibson <david@gibson.dropbear.id.au>
->>     softmmu/device_tree.c
->>
->> Dump
->> M: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
->>     dump/dump.c
->>
->> Main loop
->> M: Paolo Bonzini <pbonzini@redhat.com>
->>     softmmu/vl.c
->>
->> qtest
->> M: Thomas Huth <thuth@redhat.com>
->> M: Laurent Vivier <lvivier@redhat.com>
->> R: Paolo Bonzini <pbonzini@redhat.com>
->>     tests/qtest/m48t59-test.c
->
-> Subsystem appears clean now.
->
->> Seccomp
->> M: Daniel P. Berrange <berrange@redhat.com>
->>     softmmu/qemu-seccomp.c
->>
->> Cryptography
->> M: Daniel P. Berrange <berrange@redhat.com>
->>     crypto/tls-cipher-suites.c
->
-> Subsystem appears clean now.
->
->> Throttling infrastructure
->> M: Alberto Garcia <berto@igalia.com>
->>     tests/unit/test-throttle.c
->
-> Subsystem appears clean now.
->
->> VT-d Emulation
->> M: Michael S. Tsirkin <mst@redhat.com>
->> M: Peter Xu <peterx@redhat.com>
->> R: Jason Wang <jasowang@redhat.com>
->>     hw/i386/intel_iommu.c(*3*)
->
-> Subsystem appears clean now.
->
->> Usermode Emulation
->> ------------------
->> Linux user
->> M: Laurent Vivier <laurent@vivier.eu>
->>     linux-user/flatload.c
->>     linux-user/mmap.c
->>     linux-user/syscall.c
->>
->> Block drivers
->> -------------
->> Network Block Device (NBD)
->> M: Eric Blake <eblake@redhat.com>
->> M: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>     qemu-nbd.c
-
-Subsystem appears clean now.
-
+--=-CDq5aI6X81AmpLz2bfTy--
 
