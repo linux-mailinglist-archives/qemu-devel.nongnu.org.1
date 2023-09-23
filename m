@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD547ABE43
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 09:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4B647ABE44
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 09:11:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjwls-0000nc-5p; Sat, 23 Sep 2023 03:09:44 -0400
+	id 1qjwnO-0001SU-24; Sat, 23 Sep 2023 03:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qjwlo-0000nS-1a
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:09:40 -0400
-Received: from mailout11.t-online.de ([194.25.134.85])
+ (Exim 4.90_1) (envelope-from <SRS0=33G5=FH=kaod.org=clg@ozlabs.org>)
+ id 1qjwnK-0001SI-Qh; Sat, 23 Sep 2023 03:11:14 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vr_qemu@t-online.de>)
- id 1qjwll-0006dF-TR
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 03:09:39 -0400
-Received: from fwd71.aul.t-online.de (fwd71.aul.t-online.de [10.223.144.97])
- by mailout11.t-online.de (Postfix) with SMTP id 9C92327878;
- Sat, 23 Sep 2023 09:09:35 +0200 (CEST)
-Received: from [192.168.211.200] ([79.208.31.195]) by fwd71.t-online.de
- with (TLSv1.3:TLS_AES_256_GCM_SHA384 encrypted)
- esmtp id 1qjwlh-37Z3Sr0; Sat, 23 Sep 2023 09:09:33 +0200
-Message-ID: <7c123058-4004-48d9-9e4f-815d65e0b2e1@t-online.de>
-Date: Sat, 23 Sep 2023 09:09:33 +0200
+ (Exim 4.90_1) (envelope-from <SRS0=33G5=FH=kaod.org=clg@ozlabs.org>)
+ id 1qjwnI-00072F-DG; Sat, 23 Sep 2023 03:11:14 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rt0fW5Hf9z4xPh;
+ Sat, 23 Sep 2023 17:10:59 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rt0fT5wfmz4xPf;
+ Sat, 23 Sep 2023 17:10:57 +1000 (AEST)
+Message-ID: <ba96ed2a-b954-c8e4-f2dc-340bfe8d72cf@kaod.org>
+Date: Sat, 23 Sep 2023 09:10:54 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/20] audio: add Apple Sound Chip (ASC) emulation
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 2/4] aspeed: Clean up local variable shadowing
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Joel Stanley
+ <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>
+References: <20230922155924.1172019-1-clg@kaod.org>
+ <20230922155924.1172019-3-clg@kaod.org> <87pm29mm7w.fsf@pond.sub.org>
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, laurent@vivier.eu
-Cc: qemu-devel@nongnu.org
-References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
- <20230909094827.33871-8-mark.cave-ayland@ilande.co.uk>
- <373b3abd-a726-e795-eaee-0389a25c662f@t-online.de>
- <f3e9aa48-d450-c11d-9639-a7a852719a64@ilande.co.uk>
-From: =?UTF-8?Q?Volker_R=C3=BCmelin?= <vr_qemu@t-online.de>
-In-Reply-To: <f3e9aa48-d450-c11d-9639-a7a852719a64@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <87pm29mm7w.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TOI-EXPURGATEID: 150726::1695452973-C497F103-4E0A3277/0/0 CLEAN NORMAL
-X-TOI-MSGID: c24e4500-4ca0-42e6-ba0a-805adfd3edaa
-Received-SPF: none client-ip=194.25.134.85; envelope-from=vr_qemu@t-online.de;
- helo=mailout11.t-online.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=33G5=FH=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,108 +65,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 20.09.23 um 17:39 schrieb Mark Cave-Ayland:
-> On 14/09/2023 08:06, Volker Rümelin wrote:
->
->> Am 09.09.23 um 11:48 schrieb Mark Cave-Ayland:
->>> The Apple Sound Chip was primarily used by the Macintosh II to
->>> generate sound
->>> in hardware which was previously handled by the toolbox ROM with
->>> software
->>> interrupts.
->>>
->>> Implement both the standard ASC and also the enhanced ASC (EASC)
->>> functionality
->>> which is used in the Quadra 800.
->>>
->>> Note that whilst real ASC hardware uses AUDIO_FORMAT_S8, this
->>> implementation uses
->>> AUDIO_FORMAT_U8 instead because AUDIO_FORMAT_S8 is rarely used and
->>> not supported
->>> by some audio backends like PulseAudio and DirectSound when played
->>> directly with
->>> -audiodev out.mixing-engine=off.
->>>
->>> Co-developed-by: Laurent Vivier <laurent@vivier.eu>
->>> Co-developed-by: Volker Rümelin <vr_qemu@t-online.de>
->>> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
->>> ---
->>>   MAINTAINERS            |   2 +
->>>   hw/audio/Kconfig       |   3 +
->>>   hw/audio/asc.c         | 699
->>> +++++++++++++++++++++++++++++++++++++++++
->>>   hw/audio/meson.build   |   1 +
->>>   hw/audio/trace-events  |  10 +
->>>   hw/m68k/Kconfig        |   1 +
->>>   include/hw/audio/asc.h |  84 +++++
->>>   7 files changed, 800 insertions(+)
->>>   create mode 100644 hw/audio/asc.c
->>>   create mode 100644 include/hw/audio/asc.h
+On 9/23/23 08:34, Markus Armbruster wrote:
+> Cédric Le Goater <clg@kaod.org> writes:
+> 
+>> Remove superfluous local 'irq' variables and use the one define at the
+>> top of the routine. This fixes warnings in aspeed_soc_ast2600_realize()
+>> such as :
 >>
->> Hi Mark,
+>>    ../hw/arm/aspeed_ast2600.c: In function ‘aspeed_soc_ast2600_realize’:
+>>    ../hw/arm/aspeed_ast2600.c:420:18: warning: declaration of ‘irq’ shadows a previous local [-Wshadow=compatible-local]
+>>      420 |         qemu_irq irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+>>          |                  ^~~
+>>    ../hw/arm/aspeed_ast2600.c:312:14: note: shadowed declaration is here
+>>      312 |     qemu_irq irq;
+>>          |              ^~~
 >>
->> the function generate_fifo() has four issues. Only the first one
->> is noticeable.
+>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>> ---
+>>   hw/arm/aspeed_ast2600.c | 10 +++++-----
+>>   1 file changed, 5 insertions(+), 5 deletions(-)
 >>
->> 1. The calculation of the variable limit assumes generate_fifo()
->> generates one output sample from every input byte. This is correct
->> for the raw mode, but not for the CD-XA BRR mode. This mode
->> generates 28 output samples from 15 input bytes. This is the
->> reason for the stuttering end of a CD-XA BRR mode sound. Every
->> generate_fifo() call generates approximately only half of the
->> possible samples when the fifo bytes are running low.
->>
->> 2. generate_fifo() doesn't generate the last output sample from
->> a CD-XA BRR mode sound. The last sample is generated from internal
->> state and the code will not be called without at least one byte
->> in the fifo.
->>
->> 3. It's not necessary to wait for a complete 15 byte packet in
->> CD-XA BRR mode. Audio playback devices should write all
->> requested samples immediately if possible.
->>
->> 4. The saturation function in CD-XA BRR mode works with 16 bit
->> integers. It should saturate at +32767 and -32768.
->>
->> Since I think a few lines of code explain the issues better
->> than my words, I've attached a patch below.
->>
->> With best regards,
->> Volker
->
-> Hi Volker,
->
-> Thanks for detailed explanation above - everything makes sense based
-> upon previous discussions. My only question is in comment 3 where you
-> say "Audio playback devices should write all requested samples
-> immediately if possible": can you clarify does this mean that the
-> supplied length to the audio callback represents a *required* rather
-> than a *maximum* number of samples?
->
+>> diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
+>> index a8b3a8065a11..e122e1c32d42 100644
+>> --- a/hw/arm/aspeed_ast2600.c
+>> +++ b/hw/arm/aspeed_ast2600.c
+>> @@ -388,7 +388,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>>       aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->timerctrl), 0,
+>>                       sc->memmap[ASPEED_DEV_TIMER1]);
+>>       for (i = 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
+>> -        qemu_irq irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+>> +        irq = aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
+>>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
+>>       }
+>>   
+>> @@ -413,8 +413,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>>       }
+>>       aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->i2c), 0, sc->memmap[ASPEED_DEV_I2C]);
+>>       for (i = 0; i < ASPEED_I2C_GET_CLASS(&s->i2c)->num_busses; i++) {
+>> -        qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore),
+>> -                                        sc->irqmap[ASPEED_DEV_I2C] + i);
+>> +        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore),
+>> +                               sc->irqmap[ASPEED_DEV_I2C] + i);
+>>           /* The AST2600 I2C controller has one IRQ per bus. */
+>>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c.busses[i]), 0, irq);
+>>       }
+>> @@ -611,8 +611,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *dev, Error **errp)
+>>       }
+>>       aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->i3c), 0, sc->memmap[ASPEED_DEV_I3C]);
+>>       for (i = 0; i < ASPEED_I3C_NR_DEVICES; i++) {
+>> -        qemu_irq irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore),
+>> -                                        sc->irqmap[ASPEED_DEV_I3C] + i);
+>> +        irq = qdev_get_gpio_in(DEVICE(&s->a7mpcore),
+>> +                               sc->irqmap[ASPEED_DEV_I3C] + i);
+>>           /* The AST2600 I3C controller has one IRQ per bus. */
+>>           sysbus_connect_irq(SYS_BUS_DEVICE(&s->i3c.devices[i]), 0, irq);
+>>       }
+> 
+> Clashes with Philippe's
+> 
+>      [PATCH v2 10/22] hw/arm/aspeed: Clean up local variable shadowing
+>      Message-ID: <20230904161235.84651-11-philmd@linaro.org>
+> 
+> The difference is a matter of taste: one @irq in function scope vs. four
+> in nested scopes.  I'd prefer the former, i.e. this patch, but
+> maintainers' preference matter more than mine.  If you want me to merge
+> together with other shadowing patches, tell me your preference, if any.
 
-Hi Mark,
+You are the one gathering patches. Please choose. I don't mind.
 
-the supplied length is the number of bytes needed to fill the downstream
-audio buffer completely or as fast as possible. An incompletely filled
-buffer increases the probability of dropouts. The supplied length is
-also the maximum number of bytes AUD_write() will write.
+Thanks,
 
-So it's better to write as many bytes as possible, but if you can't it
-won't cause audio problems immediately in most cases.
-
-With best regards,
-Volker
-
-> Regardless of this I've had some time to test on Windows this
-> afternoon, and I can confirm that your changes fix the outstanding
-> audio issues. I've squashed your changes locally and I'll included
-> them in the next revision of the series, although I'll likely wait a
-> bit first to see if any more reviews are forthcoming.
->
->
-> Many thanks,
->
-> Mark.
->
+C.
 
 
