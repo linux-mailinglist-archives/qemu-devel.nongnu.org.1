@@ -2,72 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43A67ABE1E
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 08:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A4E7ABE24
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 08:46:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjwEC-0004Xm-1j; Sat, 23 Sep 2023 02:34:56 -0400
+	id 1qjwOQ-00063B-5c; Sat, 23 Sep 2023 02:45:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjwE9-0004XW-4J
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 02:34:54 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjwOM-00061G-5U
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 02:45:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qjwE7-0000MP-0g
- for qemu-devel@nongnu.org; Sat, 23 Sep 2023 02:34:52 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qjwOK-0002KL-0U
+ for qemu-devel@nongnu.org; Sat, 23 Sep 2023 02:45:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695450889;
+ s=mimecast20190719; t=1695451522;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xY0RE85F9Zj48GXlDh1ZscB2JLhkKIE5yrvgqmbFlws=;
- b=Ow+Ez2yFOwMo8NwTpalwdMryirEq911kaYmg4/RZjQZEfkbK+519rsEfGLe9aPsfEH3BQD
- LcIwJkxvtNUioB/HoPDcNduW3VQZoPegyOBaqblp6A2ihZqONTW3JsMkbWkZNoopt/mE/p
- 0C4zpqq1GWIacbyXPtzLKKBA9I8wCCk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-540-_dsdcnLWNnSY204rsiukSA-1; Sat, 23 Sep 2023 02:34:44 -0400
-X-MC-Unique: _dsdcnLWNnSY204rsiukSA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B0BD85A5BE;
- Sat, 23 Sep 2023 06:34:44 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 47B22711282;
- Sat, 23 Sep 2023 06:34:44 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 57DC821E6900; Sat, 23 Sep 2023 08:34:43 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
-Cc: qemu-arm@nongnu.org,  qemu-devel@nongnu.org,  Joel Stanley
- <joel@jms.id.au>,  Andrew Jeffery <andrew@aj.id.au>
-Subject: Re: [PATCH 2/4] aspeed: Clean up local variable shadowing
-References: <20230922155924.1172019-1-clg@kaod.org>
- <20230922155924.1172019-3-clg@kaod.org>
-Date: Sat, 23 Sep 2023 08:34:43 +0200
-In-Reply-To: <20230922155924.1172019-3-clg@kaod.org> (=?utf-8?Q?=22C=C3=A9?=
- =?utf-8?Q?dric?= Le Goater"'s
- message of "Fri, 22 Sep 2023 17:59:22 +0200")
-Message-ID: <87pm29mm7w.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=TCWr3Q+m0+yoocfKom/ZoXFffFGYPnSEzsg4wIRUFSI=;
+ b=FHaM9KNp6uJ7Vv+4sohQxjNO+zapBcZ6URt/7WjQt4EHgvAu2Hza9HgzFmiZeXLF+maCy+
+ S/hs8CjrOmB3puQyfkA/oi7a1S81tIrBElWxvsw0oA1/XfDSLeWb8VSXV5dcbWYEztT1nz
+ RW9Mxvv9ksLo6Jo7aRy+drAEfSNlfhc=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-492-DR0guO-zNN2yDllcCxP9dw-1; Sat, 23 Sep 2023 02:45:21 -0400
+X-MC-Unique: DR0guO-zNN2yDllcCxP9dw-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99bca0b9234so238204066b.2
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 23:45:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695451520; x=1696056320;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TCWr3Q+m0+yoocfKom/ZoXFffFGYPnSEzsg4wIRUFSI=;
+ b=P8mNLvIDykVTNrYObT+0u+qTGQUQEoNc+2Oj+ULFIDd5+AcQOsyDzDHhIanPHcvNmX
+ gwu0+9gY1GMQiwcbybYCV99d+7VPtR5h0N8PlfGhYIFlZbwh2iCw4A9ongrVXrD/sYCm
+ DNt1MeVQDIzWWDAfG9ZYSYntmwlRpiKbe+1Igrj8MoZFaCYwnV85DTGJVLDpqlrj3eBa
+ SMXrSabKHnii6M+q2f8EZ1bWLbAHznJ+hTXnEH0cDaR02pHEHDu3AgHS3lOLboDWm8NN
+ pJYEBYCNKPdBbjVqxcbu6Q6CD/PGW+Ep4cQsbPZ1Z1BihQDVi/jxIRaYHXxAQdEYEmZA
+ yLSA==
+X-Gm-Message-State: AOJu0YwW5ytycJd/v3OUPB+2Qi3WYbTpiZZtg0BJF8bnqUOzRGbf2lNg
+ DU4ckqssq96YxPBWjzroje4MmTQt8t3Ym+BLj5u7w/Nr63I+ATWvcjL3gQ/0ZZoLm0gJ5ih6vAv
+ u+4JnTtamDx49Tf77OMegeou+xkKktIM=
+X-Received: by 2002:a17:906:8a64:b0:9ae:577b:caed with SMTP id
+ hy4-20020a1709068a6400b009ae577bcaedmr1208897ejc.26.1695451520033; 
+ Fri, 22 Sep 2023 23:45:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVY/NhtogggG7KyO7F18csFEqeZnOJ95u4joc1Vt0vSXoz1emyk1KePYq0SSEF0fCFTJLOCcgA3pUdzFUFd+g=
+X-Received: by 2002:a17:906:8a64:b0:9ae:577b:caed with SMTP id
+ hy4-20020a1709068a6400b009ae577bcaedmr1208878ejc.26.1695451519699; Fri, 22
+ Sep 2023 23:45:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+References: <20230922160413.165702-1-anisinha@redhat.com>
+ <4535dfe6-a8cd-65e5-3079-498d04233750@linaro.org>
+In-Reply-To: <4535dfe6-a8cd-65e5-3079-498d04233750@linaro.org>
+From: Ani Sinha <anisinha@redhat.com>
+Date: Sat, 23 Sep 2023 12:15:07 +0530
+Message-ID: <CAK3XEhO4A_K1Ho6Aq8Wxnmapt7DzcZBfP=uArybL4qkSZaxJOQ@mail.gmail.com>
+Subject: Re: [PATCH v6] hw/i386/pc: improve physical address space bound check
+ for 32-bit x86 systems
+To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
+Cc: David Hildenbrand <david@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, 
+ Igor Mammedov <imammedo@redhat.com>, Thomas Huth <thuth@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="00000000000090dfc306060111d8"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,77 +100,279 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-C=C3=A9dric Le Goater <clg@kaod.org> writes:
+--00000000000090dfc306060111d8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Remove superfluous local 'irq' variables and use the one define at the
-> top of the routine. This fixes warnings in aspeed_soc_ast2600_realize()
-> such as :
+On Fri, 22 Sept, 2023, 10:25 pm Philippe Mathieu-Daud=C3=A9, <philmd@linaro=
+.org>
+wrote:
+
+> On 22/9/23 18:04, Ani Sinha wrote:
+> > 32-bit x86 systems do not have a reserved memory for hole64. On those
+> 32-bit
+> > systems without PSE36 or PAE CPU features, hotplugging memory devices
+> are not
+> > supported by QEMU as QEMU always places hotplugged memory above 4 GiB
+> boundary
+> > which is beyond the physical address space of the processor. Linux
+> guests also
+> > does not support memory hotplug on those systems. Please see Linux
+> > kernel commit b59d02ed08690 ("mm/memory_hotplug: disable the
+> functionality
+> > for 32b") for more details.
+> >
+> > Therefore, the maximum limit of the guest physical address in the
+> absence of
+> > additional memory devices effectively coincides with the end of
+> > "above 4G memory space" region for 32-bit x86 without PAE/PSE36. When
+> users
+> > configure additional memory devices, after properly accounting for the
+> > additional device memory region to find the maximum value of the guest
+> > physical address, the address will be outside the range of the
+> processor's
+> > physical address space.
+> >
+> > This change adds improvements to take above into consideration.
+> >
+> > For example, previously this was allowed:
+> >
+> > $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
+> >
+> > With this change now it is no longer allowed:
+> >
+> > $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G
+> > qemu-system-x86_64: Address space limit 0xffffffff < 0x2bfffffff
+> phys-bits too low (32)
+> >
+> > However, the following are allowed since on both cases physical address
+> > space of the processor is 36 bits:
+> >
+> > $ ./qemu-system-x86_64 -cpu pentium2 -m size=3D10G
+> > $ ./qemu-system-x86_64 -cpu pentium,pse36=3Don -m size=3D10G
+> >
+> > For 32-bit, without PAE/PSE36, hotplugging additional memory is no
+> longer allowed.
+> >
+> > $ ./qemu-system-i386 -m size=3D1G,maxmem=3D3G,slots=3D2
+> > qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bit=
+s
+> too low (32)
+> > $ ./qemu-system-i386 -machine q35 -m size=3D1G,maxmem=3D3G,slots=3D2
+> > qemu-system-i386: Address space limit 0xffffffff < 0x1ffffffff phys-bit=
+s
+> too low (32)
+> >
+> > A new compatibility flag is introduced to make sure pc_max_used_gpa()
+> keeps
+> > returning the old value for machines 8.1 and older.
+> > Therefore, the above is still allowed for older machine types in order
+> to support
+> > compatibility. Hence, the following still works:
+> >
+> > $ ./qemu-system-i386 -machine pc-i440fx-8.1 -m size=3D1G,maxmem=3D3G,sl=
+ots=3D2
+> > $ ./qemu-system-i386 -machine pc-q35-8.1 -m size=3D1G,maxmem=3D3G,slots=
+=3D2
+> >
+> > Further, following is also allowed as with PSE36, the processor has
+> 36-bit
+> > address space:
+> >
+> > $ ./qemu-system-i386 -cpu 486,pse36=3Don -m size=3D1G,maxmem=3D3G,slots=
+=3D2
+> >
+> > After calling CPUID with EAX=3D0x80000001, all AMD64 compliant processo=
+rs
+> > have the longmode-capable-bit turned on in the extended feature flags
+> (bit 29)
+> > in EDX. The absence of CPUID longmode can be used to differentiate
+> between
+> > 32-bit and 64-bit processors and is the recommended approach. QEMU take=
+s
+> this
+> > approach elsewhere (for example, please see x86_cpu_realizefn()), With
+> > this change, pc_max_used_gpa() also uses the same method to detect 32-b=
+it
+> > processors.
+> >
+> > Unit tests are modified to not run 32-bit x86 tests that use memory
+> hotplug.
+> >
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> > Reviewed-by: David Hildenbrand <david@redhat.com>
+> > ---
+> >   hw/i386/pc.c                   | 32 +++++++++++++++++++++++++++++---
+> >   hw/i386/pc_piix.c              |  4 ++++
+> >   hw/i386/pc_q35.c               |  2 ++
+> >   include/hw/i386/pc.h           |  6 ++++++
+> >   tests/qtest/bios-tables-test.c | 26 ++++++++++++++++++--------
+> >   tests/qtest/numa-test.c        |  7 ++++++-
+> >   6 files changed, 65 insertions(+), 12 deletions(-)
+> >
+> > changelog:
+> > v6: more code messaging. incorporated another of phil's suggestions.
 >
->   ../hw/arm/aspeed_ast2600.c: In function =E2=80=98aspeed_soc_ast2600_rea=
-lize=E2=80=99:
->   ../hw/arm/aspeed_ast2600.c:420:18: warning: declaration of =E2=80=98irq=
-=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
->     420 |         qemu_irq irq =3D aspeed_soc_get_irq(s, ASPEED_DEV_TIMER=
-1 + i);
->         |                  ^~~
->   ../hw/arm/aspeed_ast2600.c:312:14: note: shadowed declaration is here
->     312 |     qemu_irq irq;
->         |              ^~~
+> Thank you Ani, appreciated!
 >
-> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
-> ---
->  hw/arm/aspeed_ast2600.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+
+The code looks lot cleaner now. Thanks for the suggestions.
+
+> v5: addressed phil's suggestions in code reorg to make it cleaner.
+> > v4: address comments from v3. Fix a bug where compat knob was absent
+> > from q35 machines. Commit message adjustment.
+> > v3: still accounting for additional memory device region above 4G.
+> > unit tests fixed (not running for 32-bit where mem hotplug is used).
+> > v2: removed memory hotplug region from max_gpa. added compat knobs.
 >
-> diff --git a/hw/arm/aspeed_ast2600.c b/hw/arm/aspeed_ast2600.c
-> index a8b3a8065a11..e122e1c32d42 100644
-> --- a/hw/arm/aspeed_ast2600.c
-> +++ b/hw/arm/aspeed_ast2600.c
-> @@ -388,7 +388,7 @@ static void aspeed_soc_ast2600_realize(DeviceState *d=
-ev, Error **errp)
->      aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->timerctrl), 0,
->                      sc->memmap[ASPEED_DEV_TIMER1]);
->      for (i =3D 0; i < ASPEED_TIMER_NR_TIMERS; i++) {
-> -        qemu_irq irq =3D aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
-> +        irq =3D aspeed_soc_get_irq(s, ASPEED_DEV_TIMER1 + i);
->          sysbus_connect_irq(SYS_BUS_DEVICE(&s->timerctrl), i, irq);
->      }
->=20=20
-> @@ -413,8 +413,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *d=
-ev, Error **errp)
->      }
->      aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->i2c), 0, sc->memmap[ASPEED_DEV=
-_I2C]);
->      for (i =3D 0; i < ASPEED_I2C_GET_CLASS(&s->i2c)->num_busses; i++) {
-> -        qemu_irq irq =3D qdev_get_gpio_in(DEVICE(&s->a7mpcore),
-> -                                        sc->irqmap[ASPEED_DEV_I2C] + i);
-> +        irq =3D qdev_get_gpio_in(DEVICE(&s->a7mpcore),
-> +                               sc->irqmap[ASPEED_DEV_I2C] + i);
->          /* The AST2600 I2C controller has one IRQ per bus. */
->          sysbus_connect_irq(SYS_BUS_DEVICE(&s->i2c.busses[i]), 0, irq);
->      }
-> @@ -611,8 +611,8 @@ static void aspeed_soc_ast2600_realize(DeviceState *d=
-ev, Error **errp)
->      }
->      aspeed_mmio_map(s, SYS_BUS_DEVICE(&s->i3c), 0, sc->memmap[ASPEED_DEV=
-_I3C]);
->      for (i =3D 0; i < ASPEED_I3C_NR_DEVICES; i++) {
-> -        qemu_irq irq =3D qdev_get_gpio_in(DEVICE(&s->a7mpcore),
-> -                                        sc->irqmap[ASPEED_DEV_I3C] + i);
-> +        irq =3D qdev_get_gpio_in(DEVICE(&s->a7mpcore),
-> +                               sc->irqmap[ASPEED_DEV_I3C] + i);
->          /* The AST2600 I3C controller has one IRQ per bus. */
->          sysbus_connect_irq(SYS_BUS_DEVICE(&s->i3c.devices[i]), 0, irq);
->      }
+>
 
-Clashes with Philippe's
+--00000000000090dfc306060111d8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-    [PATCH v2 10/22] hw/arm/aspeed: Clean up local variable shadowing
-    Message-ID: <20230904161235.84651-11-philmd@linaro.org>
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Fri, 22 Sept, 2023, 10:25 pm Philippe Mathieu-Daud=
+=C3=A9, &lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8e=
+x;border-left:1px #ccc solid;padding-left:1ex">On 22/9/23 18:04, Ani Sinha =
+wrote:<br>
+&gt; 32-bit x86 systems do not have a reserved memory for hole64. On those =
+32-bit<br>
+&gt; systems without PSE36 or PAE CPU features, hotplugging memory devices =
+are not<br>
+&gt; supported by QEMU as QEMU always places hotplugged memory above 4 GiB =
+boundary<br>
+&gt; which is beyond the physical address space of the processor. Linux gue=
+sts also<br>
+&gt; does not support memory hotplug on those systems. Please see Linux<br>
+&gt; kernel commit b59d02ed08690 (&quot;mm/memory_hotplug: disable the func=
+tionality<br>
+&gt; for 32b&quot;) for more details.<br>
+&gt; <br>
+&gt; Therefore, the maximum limit of the guest physical address in the abse=
+nce of<br>
+&gt; additional memory devices effectively coincides with the end of<br>
+&gt; &quot;above 4G memory space&quot; region for 32-bit x86 without PAE/PS=
+E36. When users<br>
+&gt; configure additional memory devices, after properly accounting for the=
+<br>
+&gt; additional device memory region to find the maximum value of the guest=
+<br>
+&gt; physical address, the address will be outside the range of the process=
+or&#39;s<br>
+&gt; physical address space.<br>
+&gt; <br>
+&gt; This change adds improvements to take above into consideration.<br>
+&gt; <br>
+&gt; For example, previously this was allowed:<br>
+&gt; <br>
+&gt; $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G<br>
+&gt; <br>
+&gt; With this change now it is no longer allowed:<br>
+&gt; <br>
+&gt; $ ./qemu-system-x86_64 -cpu pentium -m size=3D10G<br>
+&gt; qemu-system-x86_64: Address space limit 0xffffffff &lt; 0x2bfffffff ph=
+ys-bits too low (32)<br>
+&gt; <br>
+&gt; However, the following are allowed since on both cases physical addres=
+s<br>
+&gt; space of the processor is 36 bits:<br>
+&gt; <br>
+&gt; $ ./qemu-system-x86_64 -cpu pentium2 -m size=3D10G<br>
+&gt; $ ./qemu-system-x86_64 -cpu pentium,pse36=3Don -m size=3D10G<br>
+&gt; <br>
+&gt; For 32-bit, without PAE/PSE36, hotplugging additional memory is no lon=
+ger allowed.<br>
+&gt; <br>
+&gt; $ ./qemu-system-i386 -m size=3D1G,maxmem=3D3G,slots=3D2<br>
+&gt; qemu-system-i386: Address space limit 0xffffffff &lt; 0x1ffffffff phys=
+-bits too low (32)<br>
+&gt; $ ./qemu-system-i386 -machine q35 -m size=3D1G,maxmem=3D3G,slots=3D2<b=
+r>
+&gt; qemu-system-i386: Address space limit 0xffffffff &lt; 0x1ffffffff phys=
+-bits too low (32)<br>
+&gt; <br>
+&gt; A new compatibility flag is introduced to make sure pc_max_used_gpa() =
+keeps<br>
+&gt; returning the old value for machines 8.1 and older.<br>
+&gt; Therefore, the above is still allowed for older machine types in order=
+ to support<br>
+&gt; compatibility. Hence, the following still works:<br>
+&gt; <br>
+&gt; $ ./qemu-system-i386 -machine pc-i440fx-8.1 -m size=3D1G,maxmem=3D3G,s=
+lots=3D2<br>
+&gt; $ ./qemu-system-i386 -machine pc-q35-8.1 -m size=3D1G,maxmem=3D3G,slot=
+s=3D2<br>
+&gt; <br>
+&gt; Further, following is also allowed as with PSE36, the processor has 36=
+-bit<br>
+&gt; address space:<br>
+&gt; <br>
+&gt; $ ./qemu-system-i386 -cpu 486,pse36=3Don -m size=3D1G,maxmem=3D3G,slot=
+s=3D2<br>
+&gt; <br>
+&gt; After calling CPUID with EAX=3D0x80000001, all AMD64 compliant process=
+ors<br>
+&gt; have the longmode-capable-bit turned on in the extended feature flags =
+(bit 29)<br>
+&gt; in EDX. The absence of CPUID longmode can be used to differentiate bet=
+ween<br>
+&gt; 32-bit and 64-bit processors and is the recommended approach. QEMU tak=
+es this<br>
+&gt; approach elsewhere (for example, please see x86_cpu_realizefn()), With=
+<br>
+&gt; this change, pc_max_used_gpa() also uses the same method to detect 32-=
+bit<br>
+&gt; processors.<br>
+&gt; <br>
+&gt; Unit tests are modified to not run 32-bit x86 tests that use memory ho=
+tplug.<br>
+&gt; <br>
+&gt; Suggested-by: David Hildenbrand &lt;<a href=3D"mailto:david@redhat.com=
+" target=3D"_blank" rel=3D"noreferrer">david@redhat.com</a>&gt;<br>
+&gt; Signed-off-by: Ani Sinha &lt;<a href=3D"mailto:anisinha@redhat.com" ta=
+rget=3D"_blank" rel=3D"noreferrer">anisinha@redhat.com</a>&gt;<br>
+&gt; Reviewed-by: David Hildenbrand &lt;<a href=3D"mailto:david@redhat.com"=
+ target=3D"_blank" rel=3D"noreferrer">david@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0hw/i386/pc.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0| 32 +++++++++++++++++++++++++++++---<br>
+&gt;=C2=A0 =C2=A0hw/i386/pc_piix.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 |=C2=A0 4 ++++<br>
+&gt;=C2=A0 =C2=A0hw/i386/pc_q35.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0|=C2=A0 2 ++<br>
+&gt;=C2=A0 =C2=A0include/hw/i386/pc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0|=C2=A0 6 ++++++<br>
+&gt;=C2=A0 =C2=A0tests/qtest/bios-tables-test.c | 26 ++++++++++++++++++----=
+----<br>
+&gt;=C2=A0 =C2=A0tests/qtest/numa-test.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0=
+ 7 ++++++-<br>
+&gt;=C2=A0 =C2=A06 files changed, 65 insertions(+), 12 deletions(-)<br>
+&gt; <br>
+&gt; changelog:<br>
+&gt; v6: more code messaging. incorporated another of phil&#39;s suggestion=
+s.<br>
+<br>
+Thank you Ani, appreciated!<br></blockquote></div></div><div dir=3D"auto"><=
+br></div><div dir=3D"auto">The code looks lot cleaner now. Thanks for the s=
+uggestions.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=
+=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8=
+ex;border-left:1px #ccc solid;padding-left:1ex">
+&gt; v5: addressed phil&#39;s suggestions in code reorg to make it cleaner.=
+<br>
+&gt; v4: address comments from v3. Fix a bug where compat knob was absent<b=
+r>
+&gt; from q35 machines. Commit message adjustment.<br>
+&gt; v3: still accounting for additional memory device region above 4G.<br>
+&gt; unit tests fixed (not running for 32-bit where mem hotplug is used).<b=
+r>
+&gt; v2: removed memory hotplug region from max_gpa. added compat knobs.<br=
+>
+<br>
+</blockquote></div></div></div>
 
-The difference is a matter of taste: one @irq in function scope vs. four
-in nested scopes.  I'd prefer the former, i.e. this patch, but
-maintainers' preference matter more than mine.  If you want me to merge
-together with other shadowing patches, tell me your preference, if any.
+--00000000000090dfc306060111d8--
 
 
