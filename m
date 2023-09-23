@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC6C7ABF0C
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 10:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A327ABF09
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 10:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjyQN-0002x0-0n; Sat, 23 Sep 2023 04:55:39 -0400
+	id 1qjyQN-0002x4-Lb; Sat, 23 Sep 2023 04:55:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjyQK-0002w6-Jp
+ id 1qjyQK-0002w7-Jh
  for qemu-devel@nongnu.org; Sat, 23 Sep 2023 04:55:36 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qjyQH-0000YE-16
+ id 1qjyQH-0000YM-TT
  for qemu-devel@nongnu.org; Sat, 23 Sep 2023 04:55:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695459332;
+ s=mimecast20190719; t=1695459333;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=5QcmQw2PVuW7Kd2iuNxUNyWZSEU9TNIASS3C9a1HLJI=;
- b=P2yZikTg5iN04G/w4ecVdxOOF1JZziyRszjAsxNlnDsepd0LwcgsvoT5yIpKAfx9vjHSAG
- wX35M+t7P8373XgskiAa5QXLQf5rkPzxV2V27W778pRszAeS77mE5YgwisCUxvNEK4O7kx
- pqAwilbWrOFZbf/JE45ce8ntD+zIoOQ=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vorMlXXWqm9+sRu8PR5rNyx/Cs0unkBXlZ5UKunaMu4=;
+ b=AxuwXFSjTMhC4vvZbulqr2ywQLk43+TEQ83WCuet8NnqJOph2hQ1XwXH5eX8KjQLIH/1jf
+ gXrZ493LsZsfKIWlEUSqkygJXD5AhY9XOS6V3HINNXpQH8i/fY8M1TdY2zASZCRSQCJQ+3
+ QdQYDrlc9P/wAfnQKIKqacv+4JXDdpQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-148-CDU6GxJGMhOeCtaqVxeLMQ-1; Sat, 23 Sep 2023 04:55:30 -0400
-X-MC-Unique: CDU6GxJGMhOeCtaqVxeLMQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f5df65fa35so26868005e9.3
- for <qemu-devel@nongnu.org>; Sat, 23 Sep 2023 01:55:30 -0700 (PDT)
+ us-mta-212-afRqk72GM0WoGVIX795tWg-1; Sat, 23 Sep 2023 04:55:31 -0400
+X-MC-Unique: afRqk72GM0WoGVIX795tWg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-405629826ccso2999065e9.0
+ for <qemu-devel@nongnu.org>; Sat, 23 Sep 2023 01:55:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695459328; x=1696064128;
+ d=1e100.net; s=20230601; t=1695459330; x=1696064130;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=5QcmQw2PVuW7Kd2iuNxUNyWZSEU9TNIASS3C9a1HLJI=;
- b=vpUpyYICxfqMYqi30ZsOvgbiiyfTxAF9y3k3gBdpK97wY8/h/BDNyckmIA3DunOBjd
- pzLQlCiA9pXfv7zVEtqjr4gK2Pq8feymmTfScBaCwrvPNKt0wVvqKoaZbTHK0g853V/l
- 3MmFbqzGxsJpmE78+zTKvVW9rvb5rGax7082Inya+Jr3NmL0tsWrX94J5R/ylUaDfDxj
- jzNBPADaf2lc/QZNkk2oRnTnARULL2Mm4jtxXQSzPRkcr3q3jTwD+zX1mExFR+/ZzXir
- fZkvUs0u9vjil0RDnn309zQR/pePdcERZebYWaqO66I4OgPIdX3/aU1tbnU32KcxcVql
- oM+A==
-X-Gm-Message-State: AOJu0Yw/cfNto/p+6yD13kqoOrKmSnBxFxIO3cMgDnzlIeRUq80Vafji
- bX08xY9QowRI5xPdyHhjKvX1vsSF9r7u9UpU7qW2JWeMKRleKKMp5OnS1p4P1KGl5zq5j4naTug
- bpSO5dUyhU/wHbz/Mipbwu1nVAchOzHJnH6lsVsoqp65tShJMhWanXurBOTCUSLjk9DFbLRSpaQ
- Q=
-X-Received: by 2002:a7b:ce93:0:b0:405:3ae6:2400 with SMTP id
- q19-20020a7bce93000000b004053ae62400mr1270645wmj.23.1695459328682; 
- Sat, 23 Sep 2023 01:55:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG99dLGvM9KyFf+pHPA+1u8E1hzV47sWyTWqSMO+pYFMbKO3UNEV8YEVZ1DiPzwNy2IQC3reg==
-X-Received: by 2002:a7b:ce93:0:b0:405:3ae6:2400 with SMTP id
- q19-20020a7bce93000000b004053ae62400mr1270631wmj.23.1695459328351; 
- Sat, 23 Sep 2023 01:55:28 -0700 (PDT)
+ bh=vorMlXXWqm9+sRu8PR5rNyx/Cs0unkBXlZ5UKunaMu4=;
+ b=WFQ3ZJ6RYIw+q42LDBCc8stlwjKhOsIqfTUbPfmHV6u1c/nhKvQkrt9CTxe3EuYs1E
+ tS3Dc4F0DtApI1LhW2b01JhlN9w7EdhIgw93l922/2Z9ca0hH8ROZS6h2A00jIAakCYT
+ 4G69YuyUQWpJX3E6K5Xrx8/wPbTTTyugLH4jglq41R7I4Q5eGp9AgRlQaH9QNCUrHccd
+ D8eZm1rSlFkM+4u7YSH9FKnPrV8zhQGi/iF/Cb7m9eIvAaqIvLVgB7VCmxLG4XIVz5Lx
+ 16t9Nzl0HcZ7Mekad8Oz4hvFsx7JvvMcC5+4YUd1Xy3/m+pxS7UX3UH1vCVBiPsBFIWx
+ axgg==
+X-Gm-Message-State: AOJu0YyjrP0/K2Pz7kvJcEkKab/+A2hC9BTdjf0kt2LT+pmT0sJZY7Hd
+ j9+tjNeW1HmWla5O/66+URTB9G0Onaoz769POMwmKLE8mZmx4yuOSwrqqDXrobeer3Dckk2yHlb
+ CQD18RF4MTJbxWTV8aN16xgizbtrsFboufYo1Epxp099VGCSyaL+D08G0gNq0E6RxFWXlDPhoso
+ s=
+X-Received: by 2002:a05:600c:240a:b0:3f9:255e:ee3b with SMTP id
+ 10-20020a05600c240a00b003f9255eee3bmr1293337wmp.30.1695459330291; 
+ Sat, 23 Sep 2023 01:55:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1jy3mz7jMWfrHFSipw/I9Q968tGq6M0rlA/l4Yt/2k6FDmLofvOW+GZ6UBPi/d8SBmiAvhw==
+X-Received: by 2002:a05:600c:240a:b0:3f9:255e:ee3b with SMTP id
+ 10-20020a05600c240a00b003f9255eee3bmr1293327wmp.30.1695459330030; 
+ Sat, 23 Sep 2023 01:55:30 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a05600c240c00b003fc02e8ea68sm9526563wmp.13.2023.09.23.01.55.26
+ c9-20020a05600c0ac900b003fbb25da65bsm6701341wmr.30.2023.09.23.01.55.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 23 Sep 2023 01:55:26 -0700 (PDT)
+ Sat, 23 Sep 2023 01:55:29 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: mkletzan@redhat.com,
 	vr_qemu@t-online.de,
 	balaton@eik.bme.hu
-Subject: [PATCH 10/13] hw/ppc: Support machine-default audiodev with fallback
-Date: Sat, 23 Sep 2023 10:55:03 +0200
-Message-ID: <20230923085507.399260-11-pbonzini@redhat.com>
+Subject: [PATCH 11/13] vt82c686: Support machine-default audiodev with fallback
+Date: Sat, 23 Sep 2023 10:55:04 +0200
+Message-ID: <20230923085507.399260-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230923085507.399260-1-pbonzini@redhat.com>
 References: <20230923085507.399260-1-pbonzini@redhat.com>
@@ -102,46 +102,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Martin Kletzander <mkletzan@redhat.com>
-
-Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/ppc/prep.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ hw/isa/vt82c686.c   |  2 ++
+ hw/mips/fuloong2e.c | 13 ++++++++++---
+ hw/ppc/pegasos2.c   | 10 ++++++++--
+ 3 files changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/hw/ppc/prep.c b/hw/ppc/prep.c
-index f6fd35fcb9e..137276bcb92 100644
---- a/hw/ppc/prep.c
-+++ b/hw/ppc/prep.c
-@@ -45,6 +45,7 @@
- #include "trace.h"
- #include "elf.h"
- #include "qemu/units.h"
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index 57bdfb4e78c..3ec8e43708a 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -578,6 +578,8 @@ static void via_isa_init(Object *obj)
+     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
+     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
+     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
++
++    object_property_add_alias(obj, "audiodev", OBJECT(&s->ac97), "audiodev");
+ }
+ 
+ static const TypeInfo via_isa_info = {
+diff --git a/hw/mips/fuloong2e.c b/hw/mips/fuloong2e.c
+index c827f615f3b..df2be188257 100644
+--- a/hw/mips/fuloong2e.c
++++ b/hw/mips/fuloong2e.c
+@@ -41,6 +41,7 @@
+ #include "sysemu/reset.h"
+ #include "sysemu/sysemu.h"
+ #include "qemu/error-report.h"
 +#include "audio/audio.h"
  
- /* SMP is not enabled, for now */
- #define MAX_CPUS 1
-@@ -310,6 +311,10 @@ static void ibm_40p_init(MachineState *machine)
-         dev = DEVICE(isa_dev);
-         qdev_prop_set_uint32(dev, "iobase", 0x830);
-         qdev_prop_set_uint32(dev, "irq", 10);
-+
-+        if (machine->audiodev) {
-+            qdev_prop_set_string(dev, "audiodev", machine->audiodev);
-+        }
-         isa_realize_and_unref(isa_dev, isa_bus, &error_fatal);
+ #define ENVP_PADDR              0x2000
+ #define ENVP_VADDR              cpu_mips_phys_to_kseg0(NULL, ENVP_PADDR)
+@@ -295,9 +296,13 @@ static void mips_fuloong2e_init(MachineState *machine)
+     pci_bus = bonito_init((qemu_irq *)&(env->irq[2]));
  
-         isa_dev = isa_new("pc87312");
-@@ -426,6 +431,8 @@ static void ibm_40p_machine_init(MachineClass *mc)
-     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("604");
-     mc->default_display = "std";
-     mc->default_nic = "pcnet";
+     /* South bridge -> IP5 */
+-    pci_dev = pci_create_simple_multifunction(pci_bus,
+-                                              PCI_DEVFN(FULOONG2E_VIA_SLOT, 0),
+-                                              TYPE_VT82C686B_ISA);
++    pci_dev = pci_new_multifunction(PCI_DEVFN(FULOONG2E_VIA_SLOT, 0),
++                                    TYPE_VT82C686B_ISA);
++    if (machine->audiodev) {
++        qdev_prop_set_string(DEVICE(pci_dev), "audiodev", machine->audiodev);
++    }
++    pci_realize_and_unref(pci_dev, pci_bus, &error_abort);
++
+     object_property_add_alias(OBJECT(machine), "rtc-time",
+                               object_resolve_path_component(OBJECT(pci_dev),
+                                                             "rtc"),
+@@ -337,6 +342,8 @@ static void mips_fuloong2e_machine_init(MachineClass *mc)
+     mc->default_ram_size = 256 * MiB;
+     mc->default_ram_id = "fuloong2e.ram";
+     mc->minimum_page_bits = 14;
 +
 +    machine_add_audiodev_property(mc);
  }
  
- DEFINE_MACHINE("40p", ibm_40p_machine_init)
+ DEFINE_MACHINE("fuloong2e", mips_fuloong2e_machine_init)
+diff --git a/hw/ppc/pegasos2.c b/hw/ppc/pegasos2.c
+index bd397cf2b5c..61c302895c9 100644
+--- a/hw/ppc/pegasos2.c
++++ b/hw/ppc/pegasos2.c
+@@ -37,6 +37,7 @@
+ #include "qemu/datadir.h"
+ #include "sysemu/device_tree.h"
+ #include "hw/ppc/vof.h"
++#include "audio/audio.h"
+ 
+ #include <libfdt.h>
+ 
+@@ -180,8 +181,11 @@ static void pegasos2_init(MachineState *machine)
+     pci_bus_irqs(pci_bus, pegasos2_pci_irq, pm, PCI_NUM_PINS);
+ 
+     /* VIA VT8231 South Bridge (multifunction PCI device) */
+-    via = OBJECT(pci_create_simple_multifunction(pci_bus, PCI_DEVFN(12, 0),
+-                                                 TYPE_VT8231_ISA));
++    via = OBJECT(pci_new_multifunction(PCI_DEVFN(12, 0), TYPE_VT8231_ISA));
++    if (machine->audiodev) {
++        qdev_prop_set_string(DEVICE(via), "audiodev", machine->audiodev);
++    }
++    pci_realize_and_unref(PCI_DEVICE(via), pci_bus, &error_abort);
+     for (i = 0; i < PCI_NUM_PINS; i++) {
+         pm->via_pirq[i] = qdev_get_gpio_in_named(DEVICE(via), "pirq", i);
+     }
+@@ -564,6 +568,8 @@ static void pegasos2_machine_class_init(ObjectClass *oc, void *data)
+     vhc->encode_hpt_for_kvm_pr = vhyp_encode_hpt_for_kvm_pr;
+ 
+     vmc->setprop = pegasos2_setprop;
++
++    machine_add_audiodev_property(mc);
+ }
+ 
+ static const TypeInfo pegasos2_machine_info = {
 -- 
 2.41.0
 
