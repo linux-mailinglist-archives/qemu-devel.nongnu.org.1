@@ -2,52 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33A387ABC72
-	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 01:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEA07ABC85
+	for <lists+qemu-devel@lfdr.de>; Sat, 23 Sep 2023 02:07:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qjpzS-0005Ux-AG; Fri, 22 Sep 2023 19:55:18 -0400
+	id 1qjqAD-0007fw-Ep; Fri, 22 Sep 2023 20:06:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qjpzP-0005Ua-FW
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 19:55:15 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qjpzN-0004b3-5t
- for qemu-devel@nongnu.org; Fri, 22 Sep 2023 19:55:15 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 48B7C748FF4;
- Sat, 23 Sep 2023 01:54:50 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0F964745681; Sat, 23 Sep 2023 01:54:50 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 0DBDA7456AA;
- Sat, 23 Sep 2023 01:54:50 +0200 (CEST)
-Date: Sat, 23 Sep 2023 01:54:50 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-cc: qemu-devel@nongnu.org, mkletzan@redhat.com
-Subject: Re: [PATCH 6/9] vt82c686: Support machine-default audiodev with
- fallback
-In-Reply-To: <CABgObfaz+kzZkx_Xb-3rB27fkrefmE_P5=gF_LU9gF=y-rATAw@mail.gmail.com>
-Message-ID: <43743daa-892b-4c42-02e6-49ebca525692@eik.bme.hu>
-References: <20230922094459.265509-1-pbonzini@redhat.com>
- <20230922094459.265509-7-pbonzini@redhat.com>
- <fa8a8e3f-b17c-f5fc-a4ae-13a0fa233fb7@eik.bme.hu>
- <CABgObfaz+kzZkx_Xb-3rB27fkrefmE_P5=gF_LU9gF=y-rATAw@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qjqAA-0007ff-Es
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 20:06:22 -0400
+Received: from mail-yw1-x1144.google.com ([2607:f8b0:4864:20::1144])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <gourry.memverge@gmail.com>)
+ id 1qjqA8-0006XP-Sl
+ for qemu-devel@nongnu.org; Fri, 22 Sep 2023 20:06:22 -0400
+Received: by mail-yw1-x1144.google.com with SMTP id
+ 00721157ae682-59c0442a359so35829467b3.0
+ for <qemu-devel@nongnu.org>; Fri, 22 Sep 2023 17:06:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695427578; x=1696032378; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=BblDtyq6+zOk7FwEfAtvrtpIxNgkfCtaoxoUkBjZCfE=;
+ b=gr8V8makx68X2/mLon6OV8mi1t48RP9ShTfdeEAT/aZoXf7wv6jxdxxXAU9T5Vaamq
+ nGlC663pauWYBMkUCabkxY6w1lB2IbdRDpa/3jUSWZrLgcifTKZJTg4nvsTP80fgqJNZ
+ 0ehTt3152UL1pKhlVWWvEcJxiKtGLErAc6es+CTJ3ZmwId+aYORIDuyRI5Zuyy17RDfI
+ V+PtsgG7qQ5hCm2B1XKH0WufF2fFk3CJG3oL2WomZ5uYucGZWTClmxeSjTDwaQkI2zIX
+ L7fphZ2QJeyEE+tg9kJckA+UffahnDtl9kBKOQAkSMu4QzB9e98tNsZxkYawB8i/dO4N
+ 6j8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695427578; x=1696032378;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=BblDtyq6+zOk7FwEfAtvrtpIxNgkfCtaoxoUkBjZCfE=;
+ b=Syo2rRMo1IOF73QRcv2rIgeyNj7ORcn+mvVb3ISB8LUtofKXoT8lJAnfnqJoZ0GJu6
+ GsWFpZEnephaE9hcWg8fZuTc/vNcNw4YCPGsRE1ohkJfRDB1wigpDoc1SNPaPrw3a1Rm
+ AhVRhZOf4/Qqcz5EQIRB3Pd63a9Qgdo135RlgfnhvQzz7APXM9OZfSwKzHQv0mo1Ou7d
+ GHpuIQQ/IXz10nt4b7/HP/eMzD2aOzKi57qMgitkdBcoW+8ImWUjZlc2J1Xn2U3t6HxO
+ g7j7YCb2lSkdy1lmXUqrBijTl1XPOebxzdub4if+nV9yVi5WCaBI7OwBOC4OcJvYJUJ4
+ PXbw==
+X-Gm-Message-State: AOJu0YydQNAGiybeJpM8asznnmoiu06l7/xHTF26L8kg2gTat6YhMzVQ
+ gSesdNU5CWtpAZtK5bvStozIfwpFzsLihIo=
+X-Google-Smtp-Source: AGHT+IE1QkKcBHxJqbhffV3fi3mCdasHAS6LUeQMM/2Scc3A+uq4eIPgDRVGvdKu+jS1jth8EFZV1Q==
+X-Received: by 2002:a0d:cc0a:0:b0:59b:e622:f820 with SMTP id
+ o10-20020a0dcc0a000000b0059be622f820mr1194437ywd.13.1695427578190; 
+ Fri, 22 Sep 2023 17:06:18 -0700 (PDT)
+Received: from fedora.mshome.net (pool-173-79-56-208.washdc.fios.verizon.net.
+ [173.79.56.208]) by smtp.gmail.com with ESMTPSA id
+ a198-20020a0dd8cf000000b0059b3c406af3sm1168006ywe.82.2023.09.22.17.06.17
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 22 Sep 2023 17:06:17 -0700 (PDT)
+From: Gregory Price <gourry.memverge@gmail.com>
+X-Google-Original-From: Gregory Price <gregory.price@memverge.com>
+To: qemu-devel@nongnu.org
+Cc: jonathan.cameron@huawei.com, linux-cxl@vger.kernel.org,
+ Gregory Price <gregory.price@memverge.com>
+Subject: [PATCH v2] cxl/vendor: update niagara to only build on linux,
+ add KConfig options
+Date: Fri, 22 Sep 2023 20:05:44 -0400
+Message-Id: <20230923000543.598681-1-gregory.price@memverge.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-497835468-1695426890=:40094"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1144;
+ envelope-from=gourry.memverge@gmail.com; helo=mail-yw1-x1144.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -64,64 +91,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Niagara uses <sys/shm.h> which presently limits its compatibility to
+linux hosts.  Change build to only build it on linux.
 
---3866299591-497835468-1695426890=:40094
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Add Kconfig file for skhynix directory, and make niagara depend on
+CXL_MEM_DEVICE and LINUX.  Add an explicit flag for niagara.
 
-On Fri, 22 Sep 2023, Paolo Bonzini wrote:
-> On Fri, Sep 22, 2023 at 2:17 PM BALATON Zoltan <balaton@eik.bme.hu> wrote:
->>>     mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("460exb");
->>>     mc->default_ram_size = 512 * MiB;
->>>     mc->default_ram_id = "ppc4xx.sdram";
->>> +
->>> +    machine_add_audiodev_property(mc);
->>
->> This hunk has nothing to do with vt82686 so probably should be in
->> previoius patch. Also sam460ex embedded sound part is not emulated and can
->> only use PCI sound cards. What this line is needed for?
->
-> No, this line shouldn't be there.
->
->> If every machine
->> now needs this call, can it be added in some generic machine init func in
->> hw/core/machine.c instead?
->
-> It is not needed by every machine, only by every machine that has
-> embedded sound.
->
->> I'm not sure about this whole series. Looks like it gets rid of 71 lines
->> but adding 158 and makes the users' life harder by requireing them to
->> specify drivers they may not even know about. What's the point? Is there
->> still a default to use the normally used audiodev for the platform or
->> people will now get errors and no sound unless they change their command
->> lines?
->
-> I think you're right, I should have sent this series without the last
-> two patches.
->
-> The first seven add more functionality, because they let you use
-> -audiodev for configuration of embedded boards. This is why they add
-> some lines of code.
->
-> The last two patches instead are the ones that make -audio or
-> -audiodev mandatory. They should be separate and they may not be a
-> good idea without something like "-audio default". And if no "-audio
-> default" is added, there is more code that can go (for example the
-> --audio-drv-list option to configure and CONFIG_AUDIO_DRIVERS).
+Signed-off-by: Gregory Price <gregory.price@memverge.com>
+---
+ hw/cxl/Kconfig                    | 2 ++
+ hw/cxl/vendor/Kconfig             | 1 +
+ hw/cxl/vendor/skhynix/Kconfig     | 4 ++++
+ hw/cxl/vendor/skhynix/meson.build | 2 +-
+ 4 files changed, 8 insertions(+), 1 deletion(-)
+ create mode 100644 hw/cxl/vendor/Kconfig
+ create mode 100644 hw/cxl/vendor/skhynix/Kconfig
 
-I still don't see the point, because it already works without these 
-changes. With current master one can specify -audiodev for -M paegasos2 
-and it gives a warning but does the right thing and sets the audiodev for 
-via-ac97. I think the warning can be avoided by using -global to set the 
-via-ac97 audiodev property but since it picks up the -audiodev there's no 
-need to. Apart from the warning this is convenient for the user, what's 
-proposed in this series seems less so. What is the issue this series tries 
-to solve?
+diff --git a/hw/cxl/Kconfig b/hw/cxl/Kconfig
+index dd6c54b54d..88022008c7 100644
+--- a/hw/cxl/Kconfig
++++ b/hw/cxl/Kconfig
+@@ -1,3 +1,5 @@
++source vendor/Kconfig
++
+ config CXL
+     bool
+     default y if PCI_EXPRESS
+diff --git a/hw/cxl/vendor/Kconfig b/hw/cxl/vendor/Kconfig
+new file mode 100644
+index 0000000000..aa23bb051b
+--- /dev/null
++++ b/hw/cxl/vendor/Kconfig
+@@ -0,0 +1 @@
++source skhynix/Kconfig
+diff --git a/hw/cxl/vendor/skhynix/Kconfig b/hw/cxl/vendor/skhynix/Kconfig
+new file mode 100644
+index 0000000000..20942cffc2
+--- /dev/null
++++ b/hw/cxl/vendor/skhynix/Kconfig
+@@ -0,0 +1,4 @@
++config CXL_SKHYNIX_NIAGARA
++    bool
++    depends on CXL_MEM_DEVICE && LINUX
++    default y if CXL_VENDOR
+diff --git a/hw/cxl/vendor/skhynix/meson.build b/hw/cxl/vendor/skhynix/meson.build
+index 4e57db65f1..e3cb00e848 100644
+--- a/hw/cxl/vendor/skhynix/meson.build
++++ b/hw/cxl/vendor/skhynix/meson.build
+@@ -1 +1 @@
+-system_ss.add(when: 'CONFIG_CXL_VENDOR', if_true: files('skhynix_niagara.c',))
++system_ss.add(when: 'CONFIG_CXL_SKHYNIX_NIAGARA', if_true: files('skhynix_niagara.c',))
+-- 
+2.39.1
 
-Regards,
-BALATON Zoltan
---3866299591-497835468-1695426890=:40094--
 
