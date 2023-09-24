@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B9AC7ACA2C
-	for <lists+qemu-devel@lfdr.de>; Sun, 24 Sep 2023 16:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E70A87ACA98
+	for <lists+qemu-devel@lfdr.de>; Sun, 24 Sep 2023 17:44:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkQYF-0004Md-FE; Sun, 24 Sep 2023 10:57:39 -0400
+	id 1qkRG2-0005Q2-Jf; Sun, 24 Sep 2023 11:42:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qkQYB-0004Lz-Fo
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 10:57:35 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qkRG0-0005PI-UD
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 11:42:52 -0400
+Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qkQY6-0006Cd-3i
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 10:57:35 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40572aeb673so14064165e9.0
- for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 07:57:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qkRFy-0007G8-8k
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 11:42:52 -0400
+Received: by mail-ej1-x629.google.com with SMTP id
+ a640c23a62f3a-9a65f9147ccso600793666b.1
+ for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 08:42:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695567448; x=1696172248; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=UcZcMfrbmOHyaV1oGmDgeTnYK9FIoyarn8ThHTcWbo0=;
- b=R5wmqHTu3hiODGv5rV4DDtvN8a9BYpnEwpQXY3/GkMrINUgN/1bXmYvMyH2LcnluFB
- JHklpe9ZCkgD9cPA478nwzdD8x48YjJdfU2IHrZ1cz3/CmrG3lyXcd9lNn16lJu5EXUU
- w3muBV865iWvm8YdVb/3T7kKyFXbRoNa04l8mVgi0ndTpPvxX9PLxqRJhTGjSZyXe5jF
- BJdlMCesBft1eE5I/L/mfX0NjBfq96vHX9dQtXh/GneD/TuNANHFHRvx4Xk+KL+aBk58
- zW39Y2CXLYoU0V3+B4Ume3m1ftppimtAKx6COkAga/lg7fD4ZXFj2OEX3MgIxCAg0UYs
- DKnw==
+ d=gmail.com; s=20230601; t=1695570168; x=1696174968; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=LWBG+YH766oJNTrELCkIiNWNPaRxfIwWYhgiFOEvuKg=;
+ b=C1nxQqdp4EB6CtQ35Qw2ZgmO4rtgg09Z+XwdHhhp0orw/lXivaKYV3GnfaGmmiFvvF
+ wcA1SLHXVC2F9/hQ14xxFa/Z8XPNR9XTAkZyofpttA2nW5KUu3XZUiKSmMrc4b6Qrite
+ 4P9ftYeBWVrlY4YcRPY7YgK+XZYpvpcrRmxEci8m8qlNEAsImTLqKuFGTvLhjp6QWHUM
+ C9LlPIp4ByJhxH2hFsBYrS4z5zsg7Aw67E1533HEUSqysxYLLdPqd4zAto0nPVIykCI0
+ bTGgj8DgG5TeAz2f21JJRkMpHMJf5X8GoeB8b+aVio9Qjbl7joti8MhUAYBqu3cpAmaj
+ PMPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695567448; x=1696172248;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UcZcMfrbmOHyaV1oGmDgeTnYK9FIoyarn8ThHTcWbo0=;
- b=uweQt1QLKJ6KfgmZmLO58cyH0wXQgcDdYUB4rlU4Ig/OkFwzZHBfu6wGMDfq2p1VAt
- KlSWWxN2BAa0ivuWvJTsWHjU23xyaTG6jnWkaQ2plVp2ykIW+x4vzIPfXSDrDZS63467
- XNnlTGKCsQllUMNh1/1jr1tAwhYrhUQ3qqjGo5wbDp7ty5E+7/BdgXuc9EZx/gFaI2ha
- okxZ2ldcMA/mJEIUrznIJviZu3ktg3MwpJqGOnd0Xfws7hznoKNQ2MiHm8oOjaed9VR8
- 8tMzuHgpNZNPyguxtWSO0BhI1Ug0Q9k2dVl+PxyPLy8Rko2Rtn6yujdDt5A4QTi+vZJj
- Ry/Q==
-X-Gm-Message-State: AOJu0Yy7vCYNA+6TQFpyQQEGUnkYPYpxZ5cdwzZ0rEJwblHKHJ0QiEEN
- dUj5DfHm3tNs5YDNFfW2mbs0CILxsAjHPsGV1/Q=
-X-Google-Smtp-Source: AGHT+IFySJAwLyj8rBaJFPauYpZgiH9KtyeqKEz/3t/lKzZilP0B8pllKHC+YkUIMOAqj+3Py0ufkQ==
-X-Received: by 2002:a1c:f70c:0:b0:405:1c19:476d with SMTP id
- v12-20020a1cf70c000000b004051c19476dmr3656299wmh.39.1695567447657; 
- Sun, 24 Sep 2023 07:57:27 -0700 (PDT)
-Received: from [192.168.69.115] (and27-h01-176-172-57-73.dsl.sta.abo.bbox.fr.
- [176.172.57.73]) by smtp.gmail.com with ESMTPSA id
- x17-20020a5d6b51000000b0031980294e9fsm9445720wrw.116.2023.09.24.07.57.26
+ d=1e100.net; s=20230601; t=1695570168; x=1696174968;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=LWBG+YH766oJNTrELCkIiNWNPaRxfIwWYhgiFOEvuKg=;
+ b=pQo5OeyN3t9Ug0PwrUqzPSursamnmytEmFFYGzNer7oD+LYWxT5bgCqEcX6W0bdHzP
+ w5dSouncXBfsvc+qa85uc3ZqyUjLQkzSYL4gj1kfJnkOvR7Dp6iorvAlrDnLSomOsic8
+ iiZY4PCF3OhCMvOM+VIMhY2v0MqpHEth0dgv8da0acMUtJePdDzZh4x0BVi9I7KtWE00
+ QpMG4DFeMRxf5oiyCV6vRuC/VPrxOwGyLSWPWDutPvyzEGI/cS10NVyhHtzsQ2rJVy0+
+ AJBY+HQwOsq9CuZyL0Yeocys5bxIoLfWPhirCxcyf19qtnP5i6LL2wBf4PekhDjK1d0D
+ pfow==
+X-Gm-Message-State: AOJu0Yzk/KgIElxYV0exCjfvu5BoWkte/wlLnpcilLeA9oIiiTC16peF
+ FZCLp4IiWDtrFAB8162y/cM=
+X-Google-Smtp-Source: AGHT+IGPnzNMZCBk+2gBWnkiDWgieKr3VB50FHyY5+zKG+3R7UkW+kmw8eSQ6bRZTQpMn944x+9hyw==
+X-Received: by 2002:a17:906:3089:b0:9a2:1e03:1572 with SMTP id
+ 9-20020a170906308900b009a21e031572mr4325758ejv.19.1695570168028; 
+ Sun, 24 Sep 2023 08:42:48 -0700 (PDT)
+Received: from [127.0.0.1] ([45.156.240.107]) by smtp.gmail.com with ESMTPSA id
+ cb8-20020a170906a44800b00988dbbd1f7esm5084289ejb.213.2023.09.24.08.42.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 24 Sep 2023 07:57:27 -0700 (PDT)
-Message-ID: <1a6c49b1-5e5e-481d-96d8-8c08d5aefcdc@linaro.org>
-Date: Fri, 22 Sep 2023 20:28:58 +0200
+ Sun, 24 Sep 2023 08:42:47 -0700 (PDT)
+Date: Sun, 24 Sep 2023 15:41:54 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: Chuck Zmudzinski <brchuckz@aol.com>, Jason Andryuk <jandryuk@gmail.com>,
+ Anthony PERARD <anthony.perard@citrix.com>
+CC: qemu-devel@nongnu.org, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, David Woodhouse <dwmw@amazon.co.uk>,
+ =?ISO-8859-1?Q?Herv=E9_Poussineau?= <hpoussin@reactos.org>,
+ Aurelien Jarno <aurelien@aurel32.net>, Eduardo Habkost <eduardo@habkost.net>, 
+ Paul Durrant <paul@xen.org>, xen-devel@lists.xenproject.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3_2/6=5D_hw/isa/piix3=3A_Reuse?=
+ =?US-ASCII?Q?_piix3=5Frealize=28=29_in_piix3=5Fxen=5Frealize=28=29?=
+In-Reply-To: <6cd8d49f-2b69-471c-84b7-890f31f585b5@aol.com>
+References: <20230312120221.99183-1-shentey@gmail.com>
+ <20230312120221.99183-3-shentey@gmail.com>
+ <f52c41f7-e662-4afd-8ac9-ce2c0da2b1be@perard>
+ <7F45B51F-F1E3-4F04-A46F-4C80509C7195@gmail.com>
+ <622b9674-fffd-4634-ac30-d0db3230478e@perard>
+ <CAKf6xpvxf=F52etJ8o3eLQV4JVD5WM57znGoP3ctONRf7uPisA@mail.gmail.com>
+ <B0FF78F4-1193-495B-919C-84A1FF8ADF12@gmail.com>
+ <6cd8d49f-2b69-471c-84b7-890f31f585b5@aol.com>
+Message-ID: <2541916E-6DA9-4DB9-A022-CD865B70F453@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 3/4] aspeed/i3c: Rename variable shadowing a local
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
- Markus Armbruster <armbru@redhat.com>
-References: <20230922155924.1172019-1-clg@kaod.org>
- <20230922155924.1172019-4-clg@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230922155924.1172019-4-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -21
-X-Spam_score: -2.2
-X-Spam_bar: --
-X-Spam_report: (-2.2 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_24_48=1.34,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::629;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x629.google.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,60 +106,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/9/23 17:59, Cédric Le Goater wrote:
-> to fix warning :
-> 
->    ../hw/i3c/aspeed_i3c.c: In function ‘aspeed_i3c_realize’:
->    ../hw/i3c/aspeed_i3c.c:1959:17: warning: declaration of ‘dev’ shadows a parameter [-Wshadow=local]
->     1959 |         Object *dev = OBJECT(&s->devices[i]);
->          |                 ^~~
->    ../hw/i3c/aspeed_i3c.c:1942:45: note: shadowed declaration is here
->     1942 | static void aspeed_i3c_realize(DeviceState *dev, Error **errp)
->          |                                ~~~~~~~~~~~~~^~~
-> 
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   hw/misc/aspeed_i3c.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/hw/misc/aspeed_i3c.c b/hw/misc/aspeed_i3c.c
-> index f54f5da522b3..d1ff61767167 100644
-> --- a/hw/misc/aspeed_i3c.c
-> +++ b/hw/misc/aspeed_i3c.c
-> @@ -296,13 +296,13 @@ static void aspeed_i3c_realize(DeviceState *dev, Error **errp)
 
-Alternatively:
 
--- >8 --
+Am 20=2E September 2023 14:44:23 UTC schrieb Chuck Zmudzinski <brchuckz@ao=
+l=2Ecom>:
+>On 9/19/2023 4:02 PM, Bernhard Beschow wrote:
+>>=20
+>>=20
+>> Am 3=2E April 2023 12:27:14 UTC schrieb Jason Andryuk <jandryuk@gmail=
+=2Ecom>:
+>>>On Mon, Apr 3, 2023 at 5:33=E2=80=AFAM Anthony PERARD <anthony=2Eperard=
+@citrix=2Ecom> wrote:
+>>>>
+>>>> On Sat, Apr 01, 2023 at 10:36:45PM +0000, Bernhard Beschow wrote:
+>>>> >
+>>>> >
+>>>> > Am 30=2E M=C3=A4rz 2023 13:00:25 UTC schrieb Anthony PERARD <anthon=
+y=2Eperard@citrix=2Ecom>:
+>>>> > >On Sun, Mar 12, 2023 at 01:02:17PM +0100, Bernhard Beschow wrote:
+>>>> > >> This is a preparational patch for the next one to make the follo=
+wing
+>>>> > >> more obvious:
+>>>> > >>
+>>>> > >> First, pci_bus_irqs() is now called twice in case of Xen where t=
+he
+>>>> > >> second call overrides the pci_set_irq_fn with the Xen variant=2E
+>>>> > >
+>>>> > >pci_bus_irqs() does allocates pci_bus->irq_count, so the second ca=
+ll in
+>>>> > >piix3_xen_realize() will leak `pci_bus->irq_count`=2E Could you lo=
+ok if
+>>>> > >pci_bus_irqs_cleanup() can be called before the second pci_bus_irq=
+s()
+>>>> > >call, or maybe some other way to avoid the leak?
+>>>> >
+>>>> > Thanks for catching this! I'll post a v4=2E
+>>>> >
+>>>> > I think the most fool-proof way to fix this is to free irq_count ju=
+st before the assignment=2E pci_bus_irqs_cleanup() would then have to NULL =
+the attribute such that pci_bus_irqs() can be called afterwards=2E
+>>>> >
+>>>> > BTW: I tried running qemu-system-x86_64 with PIIX4 rather than PIIX=
+3 as Xen guest with my pc-piix4 branch without success=2E This branch essen=
+tially just provides slightly different PCI IDs for PIIX=2E Does xl or some=
+thing else in Xen check these? If not then this means I'm still missing som=
+ething=2E Under KVM this branch works just fine=2E Any idea?
+>>>>
+>>>> Maybe the ACPI tables provided by libxl needs to be updated=2E
+>>>> Or maybe something in the firmware (SeaBIOS or OVMF/OvmfXen) check th=
+e
+>>>> id (I know that the PCI id of the root bus is checked, but I don't kn=
+ow
+>>>> if that's the one that's been changed)=2E
+>>>
+>>>Xen also has hvmloader, which runs before SeaBIOS/OVMF=2E  Looking at
+>>>tools/firmware/hvmloader/pci=2Ec, it has
+>>>        ASSERT((devfn !=3D PCI_ISA_DEVFN) ||
+>>>               ((vendor_id =3D=3D 0x8086) && (device_id =3D=3D 0x7000))=
+);
+>>>
+>>>From QEMU, it looks like 0x7000 is PCI_DEVICE_ID_INTEL_82371SB_0, but
+>>>PIIX4 uses 0x7110 (PCI_DEVICE_ID_INTEL_82371AB_0)=2E  Maybe try removin=
+g
+>>>that check?
+>>=20
+>> I was finally able to build Xen successfully (without my distribution p=
+roviding too recent dependencies that prevent compilation)=2E With 0x7110 a=
+dded in the line above I could indeed run a Xen guest with PIIX4=2E Yay!
+>>=20
+>> Now I just need to respin my PIIX consolidation series=2E=2E=2E
+>
+>Welcome to the world of running guests on Xen! I am the one who tested yo=
+ur earlier patches with Xen guests,
 
--static void aspeed_i3c_realize(DeviceState *dev, Error **errp)
-+static void aspeed_i3c_realize(DeviceState *ctrl, Error **errp)
-  {
-      int i;
--    AspeedI3CState *s = ASPEED_I3C(dev);
--    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    AspeedI3CState *s = ASPEED_I3C(ctrl);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(ctrl);
+Thanks, I remember for sure!
 
----
+> and I just wanted to say thanks for keeping me in the loop=2E Please Cc =
+me when you post your respin of the PIIX consolidation series since I would=
+ like to also test it in my Xen environment=2E I understand I will also nee=
+d to patch hvmloader=2Ec on the Xen side to set the correct device id=2E
 
->       memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
->   
->       for (i = 0; i < ASPEED_I3C_NR_DEVICES; ++i) {
-> -        Object *dev = OBJECT(&s->devices[i]);
-> +        Object *i3c_dev = OBJECT(&s->devices[i]);
->   
-> -        if (!object_property_set_uint(dev, "device-id", i, errp)) {
-> +        if (!object_property_set_uint(i3c_dev, "device-id", i, errp)) {
->               return;
->           }
->   
-> -        if (!sysbus_realize(SYS_BUS_DEVICE(dev), errp)) {
-> +        if (!sysbus_realize(SYS_BUS_DEVICE(i3c_dev), errp)) {
->               return;
->           }
->   
+I'd add your e-mail to the recipients list in my Git then=2E
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+For those who want a sneak preview of PIIX4 in the PC machine may compile =
+https://github=2Ecom/shentok/qemu/tree/piix-consolidate and run `qemu-syste=
+m-x86_64 -M pc,south-bridge=3Dpiix4-isa`=2E It should work with all availab=
+le virtualization technologies=2E
 
+Best regards,
+Bernhard
+
+>
+>Kind regards,
+>
+>Chuck
+>
+>>=20
+>> Best regards,
+>> Bernhard
+>>=20
+>>>
+>>>Regards,
+>>>Jason
+>
 
