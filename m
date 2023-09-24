@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE29C7ACE45
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 04:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26ADA7ACE48
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 04:39:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkbT1-0003ZY-Ex; Sun, 24 Sep 2023 22:36:59 -0400
+	id 1qkbT3-0003bE-FW; Sun, 24 Sep 2023 22:37:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbSz-0003Y7-3D
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:57 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ id 1qkbT0-0003ZD-PQ
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:58 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbSx-000083-6t
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:56 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3232be274a0so212637f8f.1
- for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 19:36:54 -0700 (PDT)
+ id 1qkbSy-00008N-Vk
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:58 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-405361bb9cdso52650355e9.0
+ for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 19:36:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695609413; x=1696214213; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695609415; x=1696214215; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TztszCQiHOclcaF2WsULwVYzhpKz4VJgE5PYB7dlSh4=;
- b=m7JB1IhAPdMEp1HkD6OVBLBe3mjZd5zq2De+shiCNMPNeygDIASFwrLSbUYucRFMBt
- wd8I+NWv6OkaJk4U0rjgkyPX1XMbPl4kkw9qRWXoL0gsU62WF2VODvmxBO2nxvTdOrsu
- MrLRn7uHUtY7AB2wYCTcIlKt8KaO74/MaESrLdTFxkkftiugNIoi0kGFjKdDNJekvBjh
- G3xFmh+QCGhSupsR8DLf8TbaEMncsZY5epy9QLP8pirNSskTxQpGox3TFK1mgZ2SjVr3
- jcQVsUJkPxaSdq9h+2cmBC2W53XETRsBBZvMc86D50g23/sktsrs8lIYdFc/mrgr1KoG
- neOw==
+ bh=uxI2BautFYuM9X/6LgOM/mAy2btm9htJw+uHfz45eMY=;
+ b=hWsMTM23syj0f0o4d1Olv5aeblW/Y74PKdQJyBFD1pVoxN71Cz5MqJ+9LnCtP+sXT8
+ u+Ro4Sb8d6oqmUnBAuHBj20lljRod5sEeZjj3M4j2PwqN5M9tLHovew83XDXw39O5eXb
+ rkel3KJFxqEUGWBFa7xfZesBigy0BDvlZRb98qO7EU2ZgpRzasu1GgUK0up39QUs5AUl
+ TWFXxndz7nhgaZScC4Xa10+VvhOz9nXXt0nK6f7FnvOMNK232VvSwq/643lZhK+cuqnY
+ gyyZmS2yGZ7aTJSmaKIjhlDokbpJwCwL95GmSlRQeCTPBfZCcKzV0UCfu5HilUgMW2ow
+ xHkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695609413; x=1696214213;
+ d=1e100.net; s=20230601; t=1695609415; x=1696214215;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TztszCQiHOclcaF2WsULwVYzhpKz4VJgE5PYB7dlSh4=;
- b=bxBuyhUg/qCY9F1vgfW90Mclikermno4a+MJ1OcqxsK1JbKc6QBYfqtNi1vS/7ZVQ6
- 1w7mNgFYYPOQT9xWBp60m16wl7x8opWHM05jQ7nsqqQshYfUKv8PJlyS9Ph5VPLVlY0W
- j76yXztDWLvTKj1bACss6yKUASGtsGN8gJUIr62AkblVWL6H0AMZh1zvMuPrP3/b6tkz
- 6UzlI1TEm2Md0TKgFiefWoTg7iGzWRf/NKqdT/6bNw0f1aNesqeGKFVGarwAGRHMtV7W
- 3NU5UOxPJFimBB2etACEbuJPxVvlMz7KxJRPTWMUI3oaewLqvV9cbfpYNl3PzPodl23d
- WZgg==
-X-Gm-Message-State: AOJu0YzFh8iSxeVlBsojx1pIZEtYWrlbEdkwh14YBiTWopXwvyw1LIVd
- QmtDS5qarKPelK1ZHT2UlayP3MMKOq0=
-X-Google-Smtp-Source: AGHT+IErIMyUPsx2nwBVYXMyigAHyHhnHd4TKbyKeO2x9wtFQI2OcCQ757lq2KSbhC+W3oYPJ5tpvw==
-X-Received: by 2002:adf:cc8c:0:b0:320:2b29:7041 with SMTP id
- p12-20020adfcc8c000000b003202b297041mr6539361wrj.24.1695609413407; 
- Sun, 24 Sep 2023 19:36:53 -0700 (PDT)
+ bh=uxI2BautFYuM9X/6LgOM/mAy2btm9htJw+uHfz45eMY=;
+ b=ss0IHPZoTJ/hdlnsJirZcHlpS1QRyy0ZxO1SQuLcZwP6CktFi1rOJiP3ExwBfotMtu
+ rmqNKeo9e9A9oJBcA1CpSQgl4YxUeePOl9hrJmOkA5lJkTuxsIggARpNYNRR4Mel7UQp
+ 9czbtdtOsfav5a8T9lmrHxJle7APKXqv2VQIQp04LMcfgtc3n1Oik/MbDcKL2MTK44H0
+ 6urQxKELdTyFSy3z/LccgSkItWhQimGWRPwCuCxRIk0UgrQP8NZDsJfqCdUChVBoovJD
+ isc1c6m9AU/9aM4tE5UCApNbBFtinEdMTG7o9waPbC4sEOLsscKC5wAhiO8ML8WqwJ3m
+ GmYA==
+X-Gm-Message-State: AOJu0YxjlEZr0sRZa7DIZUKhE/VcT4fGgzNr14hee9uZJWOkqcSfoH/G
+ l8EooZGZmMx7Ru+iqePOAqkgEuZ1AFg=
+X-Google-Smtp-Source: AGHT+IEtOW9AO6wp817Eb1i2j5DAYxVRm4LGCNtDrWuuA8zmpMSfa+tBuNJABSn3oIuUK48F9ZBwwg==
+X-Received: by 2002:a7b:ce16:0:b0:402:f8eb:28d8 with SMTP id
+ m22-20020a7bce16000000b00402f8eb28d8mr4713066wmc.6.1695609414673; 
+ Sun, 24 Sep 2023 19:36:54 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- s28-20020adfa29c000000b003232f167df5sm1683wra.108.2023.09.24.19.36.52
+ s28-20020adfa29c000000b003232f167df5sm1683wra.108.2023.09.24.19.36.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Sep 2023 19:36:52 -0700 (PDT)
+ Sun, 24 Sep 2023 19:36:54 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
- Warner Losh <imp@bsdimp.com>, Karim Taha <kariem.taha2.7@gmail.com>,
- Stacey Son <sson@FreeBSD.org>
-Subject: [PATCH v4 19/28] bsd-user: Implement get_filename_from_fd.
-Date: Mon, 25 Sep 2023 00:01:27 +0300
-Message-ID: <20230924210136.11966-20-kariem.taha2.7@gmail.com>
+ Warner Losh <imp@bsdimp.com>, Stacey Son <sson@FreeBSD.org>,
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v4 20/28] bsd-user: Implement freebsd_exec_common,
+ used in implementing execve/fexecve.
+Date: Mon, 25 Sep 2023 00:01:28 +0300
+Message-ID: <20230924210136.11966-21-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
 References: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -94,113 +95,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Stacey Son <sson@FreeBSD.org>
+
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/meson.build |  1 +
- bsd-user/freebsd/os-proc.c   | 80 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 81 insertions(+)
- create mode 100644 bsd-user/freebsd/os-proc.c
+ bsd-user/freebsd/os-proc.c | 177 +++++++++++++++++++++++++++++++++++++
+ bsd-user/main.c            |   2 +-
+ bsd-user/qemu.h            |   1 +
+ 3 files changed, 179 insertions(+), 1 deletion(-)
 
-diff --git a/bsd-user/freebsd/meson.build b/bsd-user/freebsd/meson.build
-index f2f047cca3..8fd6c7cfb8 100644
---- a/bsd-user/freebsd/meson.build
-+++ b/bsd-user/freebsd/meson.build
-@@ -1,5 +1,6 @@
- bsd_user_ss.add(files(
-   'os-stat.c',
-+  'os-proc.c',
-   'os-sys.c',
-   'os-syscall.c',
- ))
 diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c
-new file mode 100644
-index 0000000000..cb35f29f10
---- /dev/null
+index cb35f29f10..12d78b7fc9 100644
+--- a/bsd-user/freebsd/os-proc.c
 +++ b/bsd-user/freebsd/os-proc.c
-@@ -0,0 +1,80 @@
+@@ -78,3 +78,180 @@ out:
+     return ret;
+ }
+ 
 +/*
-+ *  FreeBSD process related emulation code
-+ *
-+ *  Copyright (c) 2013-15 Stacey D. Son
-+ *
-+ *  This program is free software; you can redistribute it and/or modify
-+ *  it under the terms of the GNU General Public License as published by
-+ *  the Free Software Foundation; either version 2 of the License, or
-+ *  (at your option) any later version.
-+ *
-+ *  This program is distributed in the hope that it will be useful,
-+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ *  GNU General Public License for more details.
-+ *
-+ *  You should have received a copy of the GNU General Public License
-+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ * execve/fexecve
 + */
-+#include "qemu/osdep.h"
-+
-+#include <sys/param.h>
-+#include <sys/queue.h>
-+#include <sys/sysctl.h>
-+struct kinfo_proc;
-+#include <libprocstat.h>
-+
-+#include "qemu.h"
-+
-+/*
-+ * Get the filename for the given file descriptor.
-+ * Note that this may return NULL (fail) if no longer cached in the kernel.
-+ */
-+static char *
-+get_filename_from_fd(pid_t pid, int fd, char *filename, size_t len)
++abi_long freebsd_exec_common(abi_ulong path_or_fd, abi_ulong guest_argp,
++        abi_ulong guest_envp, int do_fexec)
 +{
-+    char *ret = NULL;
-+    unsigned int cnt;
-+    struct procstat *procstat = NULL;
-+    struct kinfo_proc *kp = NULL;
-+    struct filestat_list *head = NULL;
-+    struct filestat *fst;
++    char **argp, **envp, **qargp, **qarg1, **qarg0, **qargend;
++    int argc, envc;
++    abi_ulong gp;
++    abi_ulong addr;
++    char **q;
++    int total_size = 0;
++    void *p;
++    abi_long ret;
 +
-+    procstat = procstat_open_sysctl();
-+    if (procstat == NULL) {
-+        goto out;
-+    }
-+
-+    kp = procstat_getprocs(procstat, KERN_PROC_PID, pid, &cnt);
-+    if (kp == NULL) {
-+        goto out;
-+    }
-+
-+    head = procstat_getfiles(procstat, kp, 0);
-+    if (head == NULL) {
-+        goto out;
-+    }
-+
-+    STAILQ_FOREACH(fst, head, next) {
-+        if (fd == fst->fs_fd) {
-+            if (fst->fs_path != NULL) {
-+                (void)strlcpy(filename, fst->fs_path, len);
-+                ret = filename;
-+            }
++    argc = 0;
++    for (gp = guest_argp; gp; gp += sizeof(abi_ulong)) {
++        if (get_user_ual(addr, gp)) {
++            return -TARGET_EFAULT;
++        }
++        if (!addr) {
 +            break;
 +        }
++        argc++;
++    }
++    envc = 0;
++    for (gp = guest_envp; gp; gp += sizeof(abi_ulong)) {
++        if (get_user_ual(addr, gp)) {
++            return -TARGET_EFAULT;
++        }
++        if (!addr) {
++            break;
++        }
++        envc++;
 +    }
 +
-+out:
-+    if (head != NULL) {
-+        procstat_freefiles(procstat, head);
++    qarg0 = argp = g_new0(char *, argc + 9);
++    /* save the first agrument for the emulator */
++    *argp++ = (char *)getprogname();
++    qargp = argp;
++    *argp++ = (char *)getprogname();
++    qarg1 = argp;
++    envp = g_new0(char *, envc + 1);
++    for (gp = guest_argp, q = argp; gp; gp += sizeof(abi_ulong), q++) {
++        if (get_user_ual(addr, gp)) {
++            ret = -TARGET_EFAULT;
++            goto execve_end;
++        }
++        if (!addr) {
++            break;
++        }
++        *q = lock_user_string(addr);
++        if (*q == NULL) {
++            ret = -TARGET_EFAULT;
++            goto execve_end;
++        }
++        total_size += strlen(*q) + 1;
 +    }
-+    if (kp != NULL) {
-+        procstat_freeprocs(procstat, kp);
++    *q++ = NULL;
++    qargend = q;
++
++    for (gp = guest_envp, q = envp; gp; gp += sizeof(abi_ulong), q++) {
++        if (get_user_ual(addr, gp)) {
++            ret = -TARGET_EFAULT;
++            goto execve_end;
++        }
++        if (!addr) {
++            break;
++        }
++        *q = lock_user_string(addr);
++        if (*q == NULL) {
++            ret = -TARGET_EFAULT;
++            goto execve_end;
++        }
++        total_size += strlen(*q) + 1;
 +    }
-+    if (procstat != NULL) {
-+        procstat_close(procstat);
++    *q = NULL;
++
++    /*
++     * This case will not be caught by the host's execve() if its
++     * page size is bigger than the target's.
++     */
++    if (total_size > MAX_ARG_PAGES * TARGET_PAGE_SIZE) {
++        ret = -TARGET_E2BIG;
++        goto execve_end;
 +    }
++
++    if (do_fexec) {
++        if (((int)path_or_fd > 0 &&
++            is_target_elf_binary((int)path_or_fd)) == 1) {
++            char execpath[PATH_MAX];
++
++            /*
++             * The executable is an elf binary for the target
++             * arch.  execve() it using the emulator if we can
++             * determine the filename path from the fd.
++             */
++            if (get_filename_from_fd(getpid(), (int)path_or_fd, execpath,
++                        sizeof(execpath)) != NULL) {
++                memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
++                qarg1[1] = qarg1[0];
++                qarg1[0] = (char *)"-0";
++                qarg1 += 2;
++                qargend += 2;
++                *qarg1 = execpath;
++#ifndef DONT_INHERIT_INTERP_PREFIX
++                memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
++                *qarg1++ = (char *)"-L";
++                *qarg1++ = (char *)interp_prefix;
++#endif
++                ret = get_errno(execve(qemu_proc_pathname, qargp, envp));
++            } else {
++                /* Getting the filename path failed. */
++                ret = -TARGET_EBADF;
++                goto execve_end;
++            }
++        } else {
++            ret = get_errno(fexecve((int)path_or_fd, argp, envp));
++        }
++    } else {
++        int fd;
++
++        p = lock_user_string(path_or_fd);
++        if (p == NULL) {
++            ret = -TARGET_EFAULT;
++            goto execve_end;
++        }
++
++        /*
++         * Check the header and see if it a target elf binary.  If so
++         * then execute using qemu user mode emulator.
++         */
++        fd = open(p, O_RDONLY | O_CLOEXEC);
++        if (fd > 0 && is_target_elf_binary(fd) == 1) {
++            close(fd);
++            /* execve() as a target binary using emulator. */
++            memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
++            qarg1[1] = qarg1[0];
++            qarg1[0] = (char *)"-0";
++            qarg1 += 2;
++            qargend += 2;
++            *qarg1 = (char *)p;
++#ifndef DONT_INHERIT_INTERP_PREFIX
++            memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
++            *qarg1++ = (char *)"-L";
++            *qarg1++ = (char *)interp_prefix;
++#endif
++            ret = get_errno(execve(qemu_proc_pathname, qargp, envp));
++        } else {
++            close(fd);
++            /* Execve() as a host native binary. */
++            ret = get_errno(execve(p, argp, envp));
++        }
++        unlock_user(p, path_or_fd, 0);
++    }
++
++execve_end:
++    for (gp = guest_argp, q = argp; *q; gp += sizeof(abi_ulong), q++) {
++        if (get_user_ual(addr, gp) || !addr) {
++            break;
++        }
++        unlock_user(*q, addr, 0);
++    }
++
++    for (gp = guest_envp, q = envp; *q; gp += sizeof(abi_ulong), q++) {
++        if (get_user_ual(addr, gp) || !addr) {
++            break;
++        }
++        unlock_user(*q, addr, 0);
++    }
++
++    g_free(qarg0);
++    g_free(envp);
++
 +    return ret;
 +}
 +
+diff --git a/bsd-user/main.c b/bsd-user/main.c
+index f913cb55a7..a12b4be80f 100644
+--- a/bsd-user/main.c
++++ b/bsd-user/main.c
+@@ -88,7 +88,7 @@ unsigned long reserved_va = MAX_RESERVED_VA;
+ unsigned long reserved_va;
+ #endif
+ 
+-static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
++const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
+ const char *qemu_uname_release;
+ char qemu_proc_pathname[PATH_MAX];  /* full path to exeutable */
+ 
+diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
+index 41c7bd31d3..6047805ae3 100644
+--- a/bsd-user/qemu.h
++++ b/bsd-user/qemu.h
+@@ -111,6 +111,7 @@ typedef struct TaskState {
+ } __attribute__((aligned(16))) TaskState;
+ 
+ void stop_all_tasks(void);
++extern const char *interp_prefix;
+ extern const char *qemu_uname_release;
+ 
+ /*
 -- 
 2.42.0
 
