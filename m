@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549B27ACE34
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 04:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F402A7ACE36
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 04:38:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkbT9-0003fg-Rn; Sun, 24 Sep 2023 22:37:07 -0400
+	id 1qkbTB-0003kM-EM; Sun, 24 Sep 2023 22:37:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbT6-0003f2-VK
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:37:04 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ id 1qkbT8-0003fi-54
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:37:06 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbT5-00009w-AQ
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:37:04 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-31ff985e292so5152651f8f.1
- for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 19:37:02 -0700 (PDT)
+ id 1qkbT6-0000AB-Mn
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:37:05 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4053c6f1087so45543315e9.0
+ for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 19:37:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695609422; x=1696214222; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695609423; x=1696214223; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hAKBN+FJFhjMRdTpRlb02p0v4uScFILIgAl2mVAC1ik=;
- b=UCx5rpgqvGpl7Dv/Inc9PVtDpe5A6Wkg80mQub6mouBPtzSnW3PCmBiGeAcbqQ3CG8
- NkZIydbXdBEzJgGJ+5DFVO7Fom7RHmBLJv/CKhFBHzW9/wiZxvehbK9X+Jj/KS7i6RG8
- ZSfQICX/UaqUffSS7b7aSBO74dSe5RltkUu3d9be6OwafNl341N27C2Cywl2+4E3yAxj
- iN6NjJNnmXxor7kjwvgZ174ZOAT9CV6rE9fLlo5B7DSStfzAJMznDwk2SKSgzH15M6vU
- Ldb2X/XmqcAZhJdJSOSvtibh2JhWnfmXhoZOv4wYVaFWKWv0BbkCyE4l2oeh9DWa9oyC
- cH9A==
+ bh=ApAZc94aZDAcSIMEKeIK9l509Mfqm71ecKv5+mWNoME=;
+ b=cYpjw2zaJ1/CVeW9Kb969Nx8ZBkXqRPuCrA5UgtSvoAvOAvmOZpVXQkPW/t+n+zuFJ
+ P73oAukdMaT2blgqfLIpVuZ3V2l5NypRBBv3sM1lkkzJuoHOAeWYKyO9nQiEeqVMQVKK
+ D4CorKXnxQXooqL9H4kz3vADHcWyp92PQUyaV3n256k9Kjt5OdKvUdXxr2KQC+KECogk
+ Rw5e3tg1jrUrLkjblxZrmL5kjzV4eV/zir9umZXcKBaL5MZ5pWYLL1SyJ0+/M80crPkA
+ 0HsOtC2ahUlxnjaExhPOuImrgSxc1F0Epgk/D5H6SROeQwcf5ihBQngK7E01VQQ7Rkbx
+ NZcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695609422; x=1696214222;
+ d=1e100.net; s=20230601; t=1695609423; x=1696214223;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hAKBN+FJFhjMRdTpRlb02p0v4uScFILIgAl2mVAC1ik=;
- b=T/ES1w6MnjfWqLPDoQCKvS9KysUTA6IJC7ngwQB4WEvLuHxtbFPBK0icVNPOmalaxW
- WmJPTZqBvz+L9I7ZrAHc3aktI87OG93lRgGtQMlsggm4pT7Zuzx0T9wrPSl1Lr3Yd1ay
- uKXyRx+EmHSXgs3q+fAXV4rNcfjsq+YLhlRKNihvrPtL+lQRlJTfZvrhoS5z0fG4Anim
- 8o+lulOkz4SuWaP6iOgfPeeNE/ptGL45JoOHa/7QyInuV7UdS3xsPC6CiNVhSTmlgXr2
- xXhIkFzs6lB0auRIP1LF3sFdwKHoDmCGE0TxXnOOD/Ad1ObVltvjLMYux5Bo+MYOMZJx
- NF7Q==
-X-Gm-Message-State: AOJu0YwoXZTQ/dI4UkcGvxhohtLOoyQAtbKwNb1kLB4huR9mq5zHy31C
- CB9QzHWHV7nEMQVPI63N5CMIaNJDqkY=
-X-Google-Smtp-Source: AGHT+IFxQOQggnmeqnj4xbJO8I4lG+/GcvaODYAcfvDwFG+m+E7IhU6vwoy3P1yatVgoMk5NVpzo/Q==
-X-Received: by 2002:a05:6000:10e:b0:311:1dba:ca65 with SMTP id
- o14-20020a056000010e00b003111dbaca65mr4875930wrx.51.1695609421685; 
- Sun, 24 Sep 2023 19:37:01 -0700 (PDT)
+ bh=ApAZc94aZDAcSIMEKeIK9l509Mfqm71ecKv5+mWNoME=;
+ b=N4tvc/zPrHbH3KypvFvgQiDRL9RxNdgAPuK13ewNEHy/q8Q12lTcKikSYOTGbxq6Sm
+ ptvvgOE7WUMfroxLamzMqflmdY9Q2diRQuObInxFLOKENUd4gmCk/Q9uqzLdsaRKraGt
+ amrKmqUB68ah3eXx1b3Koqil329Mf/vs4isTfjcQSXv7O2q0c9Ex6LbwY1LtuxnyHk/J
+ Fa0XQaloX13BqHmWn1NL5GEO9MaI3nOMDE6CmXOOjAERIesUvGFevcQWmx2YRq+wbErm
+ shuBaacePQz2gFiIUOBN26qsQQbZ6jFApEhxGzd080vsOiRAxKCXgNR5vUwviKebGnrH
+ cUUw==
+X-Gm-Message-State: AOJu0YwDuAMo90UdtM1oSLQlYzR+RiSk9AAZUBO3x/aKKuhkpTMAUOps
+ T9NwI3mWohU/TO+3PULOFHlRjNUvqFA=
+X-Google-Smtp-Source: AGHT+IG5D1I3wdq9PU6/gcEpbemyqpBgzbYNBEsZCz9g2C/uKM1Dpm06hxBQ2+uwFyxZH/xYDCV8YQ==
+X-Received: by 2002:adf:f4ca:0:b0:31a:dc58:cdd9 with SMTP id
+ h10-20020adff4ca000000b0031adc58cdd9mr3843686wrp.60.1695609423098; 
+ Sun, 24 Sep 2023 19:37:03 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- s28-20020adfa29c000000b003232f167df5sm1683wra.108.2023.09.24.19.37.00
+ s28-20020adfa29c000000b003232f167df5sm1683wra.108.2023.09.24.19.37.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Sep 2023 19:37:01 -0700 (PDT)
+ Sun, 24 Sep 2023 19:37:02 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Warner Losh <imp@bsdimp.com>, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v4 25/28] bsd-user: Implement pdgetpid(2) and the undocumented
- setugid.
-Date: Mon, 25 Sep 2023 00:01:33 +0300
-Message-ID: <20230924210136.11966-26-kariem.taha2.7@gmail.com>
+Subject: [PATCH v4 26/28] bsd-user: Implement fork(2) and vfork(2) system
+ calls.
+Date: Mon, 25 Sep 2023 00:01:34 +0300
+Message-ID: <20230924210136.11966-27-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
 References: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -100,68 +100,73 @@ From: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-proc.h    | 23 +++++++++++++++++++++++
+ bsd-user/freebsd/os-proc.h    | 34 ++++++++++++++++++++++++++++++++++
  bsd-user/freebsd/os-syscall.c |  8 ++++++++
- 2 files changed, 31 insertions(+)
+ 2 files changed, 42 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index 2eaba141dc..42bdd61904 100644
+index 42bdd61904..7b2e6a9f79 100644
 --- a/bsd-user/freebsd/os-proc.h
 +++ b/bsd-user/freebsd/os-proc.h
-@@ -34,6 +34,8 @@ pid_t safe_wait4(pid_t wpid, int *status, int options, struct rusage *rusage);
- pid_t safe_wait6(idtype_t idtype, id_t id, int *status, int options,
-     struct __wrusage *wrusage, siginfo_t *infop);
- 
-+extern int __setugid(int flag);
-+
- /* execve(2) */
- static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong argp,
-         abi_ulong envp)
-@@ -162,4 +164,25 @@ static inline abi_long do_freebsd_getloginclass(abi_ulong arg1, abi_ulong arg2)
-     return ret;
+@@ -185,4 +185,38 @@ static inline abi_long do_freebsd___setugid(abi_long arg1)
+     return -TARGET_ENOSYS;
  }
  
-+/* pdgetpid(2) */
-+static inline abi_long do_freebsd_pdgetpid(abi_long fd, abi_ulong target_pidp)
++/* fork(2) */
++static inline abi_long do_freebsd_fork(void *cpu_env)
 +{
 +    abi_long ret;
-+    pid_t pid;
++    abi_ulong child_flag;
 +
-+    ret = get_errno(pdgetpid(fd, &pid));
-+    if (!is_error(ret)) {
-+        if (put_user_u32(pid, target_pidp)) {
-+            return -TARGET_EFAULT;
-+        }
++    fork_start();
++    ret = fork();
++    if (ret == 0) {
++        /* child */
++        child_flag = 1;
++        target_cpu_clone_regs(cpu_env, 0);
++    } else {
++        /* parent */
++        child_flag = 0;
 +    }
++
++    /*
++     * The fork system call sets a child flag in the second return
++     * value: 0 for parent process, 1 for child process.
++     */
++    set_second_rval(cpu_env, child_flag);
++
++    fork_end(child_flag);
++
 +    return ret;
 +}
 +
-+/* undocumented __setugid */
-+static inline abi_long do_freebsd___setugid(abi_long arg1)
++/* vfork(2) */
++static inline abi_long do_freebsd_vfork(void *cpu_env)
 +{
-+    return -TARGET_ENOSYS;
++    return do_freebsd_fork(cpu_env);
 +}
 +
  #endif /* BSD_USER_FREEBSD_OS_PROC_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index d614409e69..99af0f6b15 100644
+index 99af0f6b15..cb9425c9ba 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -383,6 +383,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_freebsd_getloginclass(arg1, arg2);
-         break;
- 
-+    case TARGET_FREEBSD_NR_pdgetpid: /* pdgetpid(2) */
-+        ret = do_freebsd_pdgetpid(arg1, arg2);
+@@ -226,6 +226,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         /*
+          * process system calls
+          */
++    case TARGET_FREEBSD_NR_fork: /* fork(2) */
++        ret = do_freebsd_fork(cpu_env);
 +        break;
 +
-+    case TARGET_FREEBSD_NR___setugid: /* undocumented */
-+        ret = do_freebsd___setugid(arg1);
++    case TARGET_FREEBSD_NR_vfork: /* vfork(2) */
++        ret = do_freebsd_vfork(cpu_env);
 +        break;
 +
-     case TARGET_FREEBSD_NR_utrace: /* utrace(2) */
-         ret = do_bsd_utrace(arg1, arg2);
+     case TARGET_FREEBSD_NR_execve: /* execve(2) */
+         ret = do_freebsd_execve(arg1, arg2, arg3);
          break;
 -- 
 2.42.0
