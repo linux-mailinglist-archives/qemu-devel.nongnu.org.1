@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47A57ACE4B
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 04:39:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 364D87ACE42
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 04:38:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkbT0-0003Yy-KT; Sun, 24 Sep 2023 22:36:58 -0400
+	id 1qkbT0-0003Z5-RP; Sun, 24 Sep 2023 22:36:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbSw-0003Vf-HN
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:54 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qkbSx-0003WN-Rj
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:55 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbSv-00007R-0N
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:54 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-404314388ceso60771565e9.2
- for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 19:36:52 -0700 (PDT)
+ id 1qkbSw-00007o-8N
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:36:55 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-31c5cac3ae2so5245155f8f.3
+ for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 19:36:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695609411; x=1696214211; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695609412; x=1696214212; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QhivGYb84XE/TlLEmop+Tew1vEbaCLi2YOrvGhy8DCw=;
- b=DTc/8nxN6cFQf6Z8b25P25wbH/xgbZlyqPa97vUgRMTcrjtZ15ZAPmxjNgmmFTLsSk
- gJq7N2GnTE9nfy6ikJuiRUD4kMk6erhviI+u38ghU8tU/4A8YqeKQm/w4FKMeIFOnzMK
- iCN8tc1rOnyem06oK/bZHwjokjMAhwvpjujmg9XKnoAiVrRYWvvOd3tEt1QIl8TsF4ID
- 1SrrylRh/Rt2xvxwzpHPgyD1Lw6qFdumMifjilVIDrqn2zmLJMloX8axl0Hs9g2nElSC
- 1+7RxhHm/R2v9OCQoVupkynbg7zwmwVGChgGgD6/m1Duwu9Izjl7jNqJOuWDzgO+iLc/
- P6Sw==
+ bh=NJNgA7i1skSBgo3G8Dhw1FER8/CjFW3btNuWKszZ4Dk=;
+ b=P7gOFedIEqO5lwno00loIF3wfUPtm2MA2slXBdGRx/P1iOZbRmc4lMkiXkGu6hPbAs
+ CsKKWc/5CN9ujDBQci9r3NGZ34TLrfeLdMbAV64VHi9C7QsTJJwBHzIroPgOx95LjAxI
+ qA5vT5DgB6EisD5y87rPveXmD9NjXunf5F9E201WPGw5gtL7WF/e/SDm/QgZYj1o2Ggm
+ Ki44TbJRKLK5JsWtPY3z7bpOYw7Fz5uylZW/y58brq/uFbz7R4B7EogY0goos6vGoR7G
+ cMNNakhYbO/Waa6TVrKJjK7Mv33EctQEnUP1PCT9P6zpxdjVqnVvmizjuwucX8DAMAmn
+ Znag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695609411; x=1696214211;
+ d=1e100.net; s=20230601; t=1695609412; x=1696214212;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QhivGYb84XE/TlLEmop+Tew1vEbaCLi2YOrvGhy8DCw=;
- b=UEFhmh+RSMn5osWEW6492GYaCCrX+c9UfZuEWWXHzLs04E/hLBtMnBaBX7clioEaAy
- hAjD2dWi82zeDF0g8MD22RDY2Kwv+Y3YhuZz8U6Ffk3CzQYzubtO9snN6ysWYf1HlilB
- ndf/EpZbeygdbSLW+yE3p765B/MTdwdJoh1XmwIm0ExYp7TmCkE1zsKleMjn4/a5jiYY
- RPYio2pEsjZsRLLdrDD6rJ/lEBCVSrHencqfb3EtJn6ReMRLP4OF6lSPFrNv+hRPcNCk
- +11COqEqw+XumbOv/A+P5ZicyFVWVwGEpOJAbZi6NupK1OCFelMwbchg5NIhZrkEBJzO
- 07vQ==
-X-Gm-Message-State: AOJu0Ywry7FRPWe2j8eMz7VsmiapBKqZynirbgT08qJYGtlbQpO2UoWG
- PR1c3Hf57EV5YItH6VR70sFEHf40rNI=
-X-Google-Smtp-Source: AGHT+IG1MqMDYN3DAuKPH9SZU3IkrPm+hA0BRB+xC0oWlkS7lnxpUvv8G930MYTpTTTwQYBTRpfefw==
-X-Received: by 2002:adf:ed82:0:b0:31a:ed75:75e9 with SMTP id
- c2-20020adfed82000000b0031aed7575e9mr5905924wro.13.1695609410878; 
- Sun, 24 Sep 2023 19:36:50 -0700 (PDT)
+ bh=NJNgA7i1skSBgo3G8Dhw1FER8/CjFW3btNuWKszZ4Dk=;
+ b=I3ACTuPJG3Ip6v2ZFScXUfFVUzSQtF0o5MnY8gbsz9J5woE9RvFqITBbni54/QOuos
+ Xvqcw+X9w5NVPySIGhh+zdiPh8BKKBrEXBz1wEOgxMxKPrC3Wwr5C67ebpE2sbwp2a+z
+ ktg9/lEVR390PJVzlNPAPQCj99WPx5ytvljIjjFChqiNkbHoKzTGLsvm/tc/hmiWwqoT
+ ZiEoSeuEaF1ZR/bVSeCtRak7qdk6k9UTckav1AZTGimwlws70z7ynk5+yC38ecpwB7Dd
+ OzXjjxLt8EHsuvxo4p2tyjdVD04kwjunrBiZ4hbv/xSEHNl2KSyDEMCJhccz6iQO3S+Z
+ HOlw==
+X-Gm-Message-State: AOJu0Yw+vBSmArriPHZc87th8WLoTRo84IFaRt5UGyX/iPnejIIAQkOm
+ HdIn4CZxssLrOc1kpe1cnFJamAm3bm0=
+X-Google-Smtp-Source: AGHT+IG/lu12jtLuQtzmCYGOrHexLypslvCGGe8vvy3qGGiPAkAxQadjpqAdVFlRbsYZZ9UA0U7hvw==
+X-Received: by 2002:a05:6000:1c7:b0:320:261:b87f with SMTP id
+ t7-20020a05600001c700b003200261b87fmr5342430wrx.62.1695609412069; 
+ Sun, 24 Sep 2023 19:36:52 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- s28-20020adfa29c000000b003232f167df5sm1683wra.108.2023.09.24.19.36.49
+ s28-20020adfa29c000000b003232f167df5sm1683wra.108.2023.09.24.19.36.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Sep 2023 19:36:50 -0700 (PDT)
+ Sun, 24 Sep 2023 19:36:51 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Richard Henderson <richard.henderson@linaro.org>,
  Warner Losh <imp@bsdimp.com>, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v4 17/28] bsd-user: Add stubs for profil(2), ktrace(2),
- utrace(2) and ptrace(2).
-Date: Mon, 25 Sep 2023 00:01:25 +0300
-Message-ID: <20230924210136.11966-18-kariem.taha2.7@gmail.com>
+Subject: [PATCH v4 18/28] bsd-user: Implement getpriority(2) and
+ setpriority(2).
+Date: Mon, 25 Sep 2023 00:01:26 +0300
+Message-ID: <20230924210136.11966-19-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
 References: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -2
 X-Spam_score: -0.3
 X-Spam_bar: /
@@ -99,72 +99,59 @@ From: Stacey Son <sson@FreeBSD.org>
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/bsd-proc.h           | 28 ++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c | 16 ++++++++++++++++
- 2 files changed, 44 insertions(+)
+ bsd-user/bsd-proc.h           | 24 ++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  8 ++++++++
+ 2 files changed, 32 insertions(+)
 
 diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-index a5f301c72f..2c1a9ae22f 100644
+index 2c1a9ae22f..9a8912361f 100644
 --- a/bsd-user/bsd-proc.h
 +++ b/bsd-user/bsd-proc.h
-@@ -362,4 +362,32 @@ static inline abi_long do_bsd_issetugid(void)
-     return get_errno(issetugid());
+@@ -390,4 +390,28 @@ static inline abi_long do_bsd_ptrace(abi_long arg1, abi_long arg2,
+     return -TARGET_ENOSYS;
  }
  
-+/* profil(2) */
-+static inline abi_long do_bsd_profil(abi_long arg1, abi_long arg2,
-+                                     abi_long arg3, abi_long arg4)
++/* getpriority(2) */
++static inline abi_long do_bsd_getpriority(abi_long which, abi_long who)
 +{
-+    return -TARGET_ENOSYS;
++    abi_long ret;
++    /*
++     * Note that negative values are valid for getpriority, so we must
++     * differentiate based on errno settings.
++     */
++    errno = 0;
++    ret = getpriority(which, who);
++    if (ret == -1 && errno != 0) {
++        return -host_to_target_errno(errno);
++    }
++
++    return ret;
 +}
 +
-+/* ktrace(2) */
-+static inline abi_long do_bsd_ktrace(abi_long arg1, abi_long arg2,
-+                                     abi_long arg3, abi_long arg4)
++/* setpriority(2) */
++static inline abi_long do_bsd_setpriority(abi_long which, abi_long who,
++                                          abi_long prio)
 +{
-+    return -TARGET_ENOSYS;
-+}
-+
-+/* utrace(2) */
-+static inline abi_long do_bsd_utrace(abi_long arg1, abi_long arg2)
-+{
-+    return -TARGET_ENOSYS;
-+}
-+
-+
-+/* ptrace(2) */
-+static inline abi_long do_bsd_ptrace(abi_long arg1, abi_long arg2,
-+        abi_long arg3, abi_long arg4)
-+{
-+    return -TARGET_ENOSYS;
++    return get_errno(setpriority(which, who, prio));
 +}
 +
  #endif /* !BSD_PROC_H_ */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 7b51f4f16e..1a760b1380 100644
+index 1a760b1380..71a2657dd0 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -343,6 +343,22 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_issetugid();
+@@ -359,6 +359,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_ptrace(arg1, arg2, arg3, arg4);
          break;
  
-+    case TARGET_FREEBSD_NR_profil: /* profil(2) */
-+        ret = do_bsd_profil(arg1, arg2, arg3, arg4);
++    case TARGET_FREEBSD_NR_getpriority: /* getpriority(2) */
++        ret = do_bsd_getpriority(arg1, arg2);
 +        break;
 +
-+    case TARGET_FREEBSD_NR_ktrace: /* ktrace(2) */
-+        ret = do_bsd_ktrace(arg1, arg2, arg3, arg4);
-+        break;
-+
-+    case TARGET_FREEBSD_NR_utrace: /* utrace(2) */
-+        ret = do_bsd_utrace(arg1, arg2);
-+        break;
-+
-+    case TARGET_FREEBSD_NR_ptrace: /* ptrace(2) */
-+        ret = do_bsd_ptrace(arg1, arg2, arg3, arg4);
++    case TARGET_FREEBSD_NR_setpriority: /* setpriority(2) */
++        ret = do_bsd_setpriority(arg1, arg2, arg3);
 +        break;
 +
  
