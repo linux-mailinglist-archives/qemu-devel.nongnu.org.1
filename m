@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102BC7ADA5E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1207ADAC0
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:56:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmsp-0000du-Hv; Mon, 25 Sep 2023 10:48:23 -0400
+	id 1qkmsn-0000do-Aj; Mon, 25 Sep 2023 10:48:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkmsP-0000ZX-MW
+ id 1qkmsR-0000ZY-2l
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:48:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkmsN-00082j-Md
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:47:57 -0400
+ id 1qkmsP-00082z-CA
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:47:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695653274;
+ s=mimecast20190719; t=1695653276;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=pB/+oAlvM0PMibN+xNHGS68dbXihDZgvECTdvH0ZLeY=;
- b=clqr4OCNdIPoVDhsIg/nXG9jL/pKRhTOJfKWdSs+x6aYIb9XFrcRJziVTPmzqovQoNwepm
- S+DbCIloqJf7RteUGczsMIoigriCrfKqkIbXWvNSWIcyA1o0oSTWJwqrA8e+qo5b8lHyLe
- DTYBm6+TuflOT/hWY6MYcsN70Wqoag0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=W99wLLFYhtnwHpHG7W/UEXV5+jth7FT6o0DfSkLFFJI=;
+ b=jEv1uml47hMDYG+czy1kRjL7jrsyz/PkWcEZx1IqB8wTEP/HHu9Trh59qq9c4Enmch0hMk
+ bQo9dXB6oR8SjaBi7vxJcCFikQZ8Zp8Do/6z0QvK92EVoH6TzB7yyj/lPiH+rTFsaN2Ny8
+ Zl7mEpcPC8msDYiTfmarJtijStcjj9Q=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-wq4vAZnmOAajlyq0NhAkjg-1; Mon, 25 Sep 2023 10:47:52 -0400
-X-MC-Unique: wq4vAZnmOAajlyq0NhAkjg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3232c3df248so1282342f8f.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:47:52 -0700 (PDT)
+ us-mta-185-SAtfV3h8MQKsCWrTxB7jXw-1; Mon, 25 Sep 2023 10:47:54 -0400
+X-MC-Unique: SAtfV3h8MQKsCWrTxB7jXw-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fbdf341934so60679215e9.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:47:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653270; x=1696258070;
+ d=1e100.net; s=20230601; t=1695653272; x=1696258072;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=pB/+oAlvM0PMibN+xNHGS68dbXihDZgvECTdvH0ZLeY=;
- b=xI0SdOMEfRQzT3UmJTTAwDcgwP712CnoiSRMO5fiAqxE3ZuRaH6nHtzy85/0YBpnqw
- ZhfyfDYcJul1i3++OBBcZ6y3KQH3C55ZfWXMGFUbdfqC40G4sBtp+LY7Mb/LBz95x06c
- hs32WW3/DQeJr8sOnJNob9zd57pRo3XIxqXXL1TWaskPBGVDJGdwKpjYMNyc+vfJjQRz
- 0CUG5dvZvDoS7v1fl3zpKbF4w0ZdeCmXZXUXydAYordF6quA5YHnvQPPf8HsqaNY3EGe
- EepgKKfzc1Qfmcq1JznQS3Wt9z0hW1E+4zZJ4rRrpmogSa0s/Vg1pOaf2qLMxdxYoYa0
- mZ5Q==
-X-Gm-Message-State: AOJu0YwQWKXVQPlgdawkrn+TSMQpi/1kbyPsu4G0kAj8j1eLB5B8HadW
- afIEpVa+SPSuAn+XEOnacVxiiAHpsxF0ANpxubzlpRSifM78m28FS8xVZtv/2PEFxupYhDDqsOE
- 76bnPDEsJlQfBN4S8MQpGAVYRL77k/dUy0R0CRR11ZCtWrcZVuZKxT6Eb7UjtAMq3ytZLhI3+OJ
- A=
-X-Received: by 2002:a7b:cd85:0:b0:400:57d1:4911 with SMTP id
- y5-20020a7bcd85000000b0040057d14911mr5834315wmj.16.1695653270575; 
- Mon, 25 Sep 2023 07:47:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSqZQkbQ+yIuZh0y6s3HwcLbF+L/4xxKsLj7CqQPLp7ueFAMP98jO83X5X8f2Z+FoFlzc9Hw==
-X-Received: by 2002:a7b:cd85:0:b0:400:57d1:4911 with SMTP id
- y5-20020a7bcd85000000b0040057d14911mr5834302wmj.16.1695653270195; 
- Mon, 25 Sep 2023 07:47:50 -0700 (PDT)
+ bh=W99wLLFYhtnwHpHG7W/UEXV5+jth7FT6o0DfSkLFFJI=;
+ b=kgjf0bxXRxhXoAIu7fQnGKm3ohZ99KYKoENARjNLLDui078NsD5KMyqdk2kO4GOl5w
+ 3YvmKXkh9meCG8QyuaKSEw4RFis5bgBWcFiIgWLBd6D1MUuRdCFNa/7RtgoTILKdA/gK
+ NaWAXIxs7xGLMT5f5hx2fetNPEcc4vJVN3hDbcYjuI4xyp72/Pk3hfjpC96OIs4CnLQL
+ 4IUQVxdThwRDFOWstx+x8BlNgh6eMYbvilqfRCIWBSFhvszkq+RlkJsaQfPhQzk0hPZI
+ wRDS1zXQJKN7wtCdbQdB98Z0WmWNQm/kU2o/zz4J6nZx+Rp5O4R11RlETMVgn6xR0x/f
+ e4GQ==
+X-Gm-Message-State: AOJu0Yywi/AbvCtL84njZNV9zQYCCGjXIrZ+8VaJ72Xudz6Ze2FWFy7O
+ Ryv5bkheJX3xUm5IQI42KO1qgabNTLrTkdFwjY1So/vNfHNt7Wc9zIQABQMmNGq13a4IubSIa2H
+ XR9baYsqpqJ71Aqt7DxdI/6H46f7FPEZWNEMWwP+xwV94dmqICBu2AUr+8+ahQcxW+GyXTP6tq8
+ Q=
+X-Received: by 2002:a1c:770c:0:b0:405:3d41:5641 with SMTP id
+ t12-20020a1c770c000000b004053d415641mr6338407wmi.15.1695653272567; 
+ Mon, 25 Sep 2023 07:47:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGaGXKnEo6gev1D35KKhspeXM4ALXqdEhXeN2/xaMzsFp3+tSoXrfQN2WXMa7eLbjJOBWBk9g==
+X-Received: by 2002:a1c:770c:0:b0:405:3d41:5641 with SMTP id
+ t12-20020a1c770c000000b004053d415641mr6338384wmi.15.1695653272127; 
+ Mon, 25 Sep 2023 07:47:52 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- c9-20020a05600c0ac900b003fbb25da65bsm12499690wmr.30.2023.09.25.07.47.48
+ j2-20020a5d4642000000b00317e77106dbsm12056524wrs.48.2023.09.25.07.47.50
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 07:47:48 -0700 (PDT)
+ Mon, 25 Sep 2023 07:47:50 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com
-Subject: [PATCH] m48t59-test: remove shadowed variables and cleanup
-Date: Mon, 25 Sep 2023 16:47:40 +0200
-Message-ID: <20230925144744.527958-3-pbonzini@redhat.com>
+Subject: [PATCH] vl: remove shadowed local variables
+Date: Mon, 25 Sep 2023 16:47:41 +0200
+Message-ID: <20230925144744.527958-4-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -98,48 +98,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename the variable "s" and, while at it, avoid the chance of an overflow in the
-computation of ABS(t - s).
-
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/qtest/m48t59-test.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ softmmu/vl.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/tests/qtest/m48t59-test.c b/tests/qtest/m48t59-test.c
-index 843d2ced8e2..6c0b3dd6463 100644
---- a/tests/qtest/m48t59-test.c
-+++ b/tests/qtest/m48t59-test.c
-@@ -192,19 +192,22 @@ static void bcd_check_time(void)
-     }
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index 0d23054ccd2..cafb1a98427 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -3210,7 +3210,6 @@ void qemu_init(int argc, char **argv)
+                 }
+                 break;
+             case QEMU_OPTION_watchdog_action: {
+-                QemuOpts *opts;
+                 opts = qemu_opts_create(qemu_find_opts("action"), NULL, 0, &error_abort);
+                 qemu_opt_set(opts, "watchdog", optarg, &error_abort);
+                 break;
+@@ -3521,16 +3520,16 @@ void qemu_init(int argc, char **argv)
+                 break;
+             case QEMU_OPTION_compat:
+                 {
+-                    CompatPolicy *opts;
++                    CompatPolicy *opts_policy;
+                     Visitor *v;
  
-     if (!(tm_cmp(&start, datep) <= 0 && tm_cmp(datep, &end) <= 0)) {
--        long t, s;
-+        long date_s, start_s;
-+        unsigned long diff;
+                     v = qobject_input_visitor_new_str(optarg, NULL,
+                                                       &error_fatal);
  
-         start.tm_isdst = datep->tm_isdst;
+-                    visit_type_CompatPolicy(v, NULL, &opts, &error_fatal);
+-                    QAPI_CLONE_MEMBERS(CompatPolicy, &compat_policy, opts);
++                    visit_type_CompatPolicy(v, NULL, &opts_policy, &error_fatal);
++                    QAPI_CLONE_MEMBERS(CompatPolicy, &compat_policy, opts_policy);
  
--        t = (long)mktime(datep);
--        s = (long)mktime(&start);
--        if (t < s) {
--            g_test_message("RTC is %ld second(s) behind wall-clock", (s - t));
-+        date_s = (long)mktime(datep);
-+        start_s = (long)mktime(&start);
-+        if (date_s < start_s) {
-+            diff = start_s - date_s;
-+            g_test_message("RTC is %ld second(s) behind wall-clock", diff);
-         } else {
--            g_test_message("RTC is %ld second(s) ahead of wall-clock", (t - s));
-+            diff = date_s - start_s;
-+            g_test_message("RTC is %ld second(s) ahead of wall-clock", diff);
-         }
- 
--        g_assert_cmpint(ABS(t - s), <=, wiggle);
-+        g_assert_cmpint(diff, <=, wiggle);
-     }
- 
-     qtest_quit(s);
+-                    qapi_free_CompatPolicy(opts);
++                    qapi_free_CompatPolicy(opts_policy);
+                     visit_free(v);
+                     break;
+                 }
 -- 
 2.41.0
 
