@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9817ADF10
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB9A7ADF15
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:37:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqK4-00084Y-7l; Mon, 25 Sep 2023 14:28:44 -0400
+	id 1qkqK4-00085a-De; Mon, 25 Sep 2023 14:28:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqJz-0007x4-5V
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:39 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qkqK0-0007zv-1o
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:40 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqJx-0007j9-H3
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:38 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3226b8de467so5744410f8f.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:28:36 -0700 (PDT)
+ id 1qkqJy-0007jE-86
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:39 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-405505b07dfso29567905e9.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666515; x=1696271315; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666516; x=1696271316; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gRkHnja7nexQbKWQ5sBDhgIEYNSvl8qtBM9POpCGcAI=;
- b=Q6Qovr9S4nhEWYwNRVgBzOHWCc7DIBX9Pv/xJwDYRCG1uE+msXcI3cSDi2XQuvuepa
- ACWDdeBsOGg02XBLbGTPw1AW0r+dYUE86AN1m0PpVtUUOxelmIkgblN12k5kDFOBFS3o
- bYKeWQMcm1Xwm2RKuuK0jx31JLjQbk1O7V3O5W+egwyV0p+Ht6JHR+/yH5UXeYR+u1eh
- tPZIZiilUP/v1XUyUvVHDVUbzyLSp0x1eER+DiGaNgRL7AOUiwWH6A6u+OEVPhzP52BK
- xFFdwF0wHzRhasLRKlDF4Pfvt3wfs6SYcu/1oo5sX0pvM+PSWNRXnitansVMA8aeP6/U
- j8KQ==
+ bh=kVq1uGHM9oV6angmlbXbZLjFliHdEcoHMR8Uy2q0vLA=;
+ b=ZY5uWpV8F/RElbx2KCBqDdB2Or5CyGCpW5LllpD34aF1aUFsIwtqHSywixGNDZazBK
+ nuCvEPKYKZCe8pDDlCkpYvQILvdSKJz8G2e+pRdu6pMlpZiwnpJfJYz4zzwD4OUTYC4j
+ yIGwfeDMbmDef6r9CQANLJ/0bFr+/l42I1/pjIQCmIDQh6O3H0Dxiv6rhIDf4KcGV3EZ
+ KkQ8lnMSVjlaT1S03iq0ua6r1g24qGZcpkil+JlLIxuqThM+JZZGB5c+9xV7YYV9TQXw
+ /chMIisqtfcJ06l5ZVd4vVnf95mjoWcBgQp3UUSub3EEmzSm5vgFx1HVRGuYQ/u0r6ch
+ 5yIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666515; x=1696271315;
+ d=1e100.net; s=20230601; t=1695666516; x=1696271316;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gRkHnja7nexQbKWQ5sBDhgIEYNSvl8qtBM9POpCGcAI=;
- b=CYmNWxCtffqnOifWmufJRfUQY9E/ZYd7RrV2XAYctBGw5v+uULD9FoSdyTufttIaJZ
- kNdCBfNXe7wGopm+DVsoDdftxXSLjv5VaWQpC8fjagEy5tY/OgYNR4C47DCy/3IF6lk0
- o6M6JaeYd4p0cTshFSeMI7hXrKfXhazMcfUfFH81D3i2Z8yCKPhAsl7w5FXLDZzFyHTa
- 5rKssvKIsifCy+qLid7kYbUoP5YbRJvRMxfra4DubPMTuWX+Uj340kfbYP2K6/nKmvGU
- 965O9clezppMPv3aAGPe/u9IchWGXSqTRDunG1Q5/aB7xEn1x4OXiI5J6mFlSwGZi+OJ
- C02w==
-X-Gm-Message-State: AOJu0YwVK7KaeFrFAu2b5TxIKIsk0aw6rjwZlvIoP1syvvsilwgduUCa
- qTmmCzIepz2GoKXkbk0UNG4uYew/TgY=
-X-Google-Smtp-Source: AGHT+IH5yUau2s6NVt8t3XffovWW54G/Os2vJc+COdqH1WOoJAYnq06ZYCPqBMoAlcwYVAUXDnA/KA==
-X-Received: by 2002:a5d:6044:0:b0:31a:d7ce:927a with SMTP id
- j4-20020a5d6044000000b0031ad7ce927amr6360386wrt.3.1695666515078; 
- Mon, 25 Sep 2023 11:28:35 -0700 (PDT)
+ bh=kVq1uGHM9oV6angmlbXbZLjFliHdEcoHMR8Uy2q0vLA=;
+ b=ifvzb1/0mE+6ldQVy3Z+Ck75BnXbXGVc9a5KrHhRyktLzljko9tMEwBfMIYJDNew9f
+ WthrecoDi5eHz3Ox8Q3h3DR3YgsmD+F3o0d2EWlp3MG4ZJZiEsVr0LZ1yQVWnK6DSHwi
+ Hr427QlkWSDEN3iE9s9OpJqqapLjdJ7yJT4hxkwxPNvgeNMZYwl2YdFSs5DR8ci4lQTM
+ 9ZEt1NmdWb7gyC+2cMuLpdFOc0obsXMmMidDZFC5J5TzTBhJe61sO4OJBYWQfCZ/0K+R
+ IagJOlr5Lj+GqKpvV7jGg596KwUiqFCOMrhCWfGIC6PFJWyb1QmHrOsU3ZooxhVrc4jx
+ j6Cg==
+X-Gm-Message-State: AOJu0YzKsW/PH+TLBJcFgR1K0BlzqLOL/9myJTzRwpW1MELuDskpz7Kq
+ MbIb2mnO+wzr48oVRq99noAvuMrwddA=
+X-Google-Smtp-Source: AGHT+IFTsePQ4fIi27R3SK/LCPCBtO9NG6H2qF21lCov2D2ymkArF5u2tKpYYgtnsResuXJfUPB3Fg==
+X-Received: by 2002:a5d:4fc5:0:b0:31f:ebb5:cd51 with SMTP id
+ h5-20020a5d4fc5000000b0031febb5cd51mr303443wrw.33.1695666516333; 
+ Mon, 25 Sep 2023 11:28:36 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.34
+ u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:28:34 -0700 (PDT)
+ Mon, 25 Sep 2023 11:28:35 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v6 02/23] bsd-user: Implement struct target_shmid_ds
-Date: Mon, 25 Sep 2023 21:26:48 +0300
-Message-ID: <20230925182709.4834-3-kariem.taha2.7@gmail.com>
+Subject: [PATCH v6 03/23] bsd-user: Declarations for ipc_perm and shmid_ds
+ conversion functions
+Date: Mon, 25 Sep 2023 21:26:49 +0300
+Message-ID: <20230925182709.4834-4-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 References: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -101,40 +102,61 @@ Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/syscall_defs.h | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ bsd-user/qemu-bsd.h | 45 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
+ create mode 100644 bsd-user/qemu-bsd.h
 
-diff --git a/bsd-user/syscall_defs.h b/bsd-user/syscall_defs.h
-index 4deb4fed35..f4a5ae2a12 100644
---- a/bsd-user/syscall_defs.h
-+++ b/bsd-user/syscall_defs.h
-@@ -72,6 +72,26 @@ struct target_ipc_perm {
- #define TARGET_IPC_SET  1   /* set options */
- #define TARGET_IPC_STAT 2   /* get options */
- 
+diff --git a/bsd-user/qemu-bsd.h b/bsd-user/qemu-bsd.h
+new file mode 100644
+index 0000000000..46572ece7d
+--- /dev/null
++++ b/bsd-user/qemu-bsd.h
+@@ -0,0 +1,45 @@
 +/*
-+ * sys/shm.h
++ *  BSD conversion extern declarations
++ *
++ *  Copyright (c) 2013 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
 + */
-+struct target_shmid_ds {
-+    struct  target_ipc_perm shm_perm; /* peration permission structure */
-+    abi_ulong   shm_segsz;  /* size of segment in bytes */
-+    int32_t     shm_lpid;   /* process ID of last shared memory op */
-+    int32_t     shm_cpid;   /* process ID of creator */
-+    int32_t     shm_nattch; /* number of current attaches */
-+    target_time_t shm_atime;  /* time of last shmat() */
-+    target_time_t shm_dtime;  /* time of last shmdt() */
-+    target_time_t shm_ctime;  /* time of last change by shmctl() */
-+};
 +
-+#define N_BSD_SHM_REGIONS   32
-+struct bsd_shm_regions {
-+    abi_long start;
-+    abi_long size;
-+};
++#ifndef QEMU_BSD_H
++#define QEMU_BSD_H
 +
- /*
-  *  sys/mman.h
-  */
++#include <sys/types.h>
++#include <sys/ipc.h>
++#include <sys/msg.h>
++#include <sys/resource.h>
++#include <sys/sem.h>
++#include <sys/shm.h>
++#include <sys/socket.h>
++#include <sys/un.h>
++#include <sys/uuid.h>
++#include <sys/wait.h>
++#include <netinet/in.h>
++
++/* bsd-mem.c */
++void target_to_host_ipc_perm__locked(struct ipc_perm *host_ip,
++        struct target_ipc_perm *target_ip);
++void host_to_target_ipc_perm__locked(struct target_ipc_perm *target_ip,
++        struct ipc_perm *host_ip);
++abi_long target_to_host_shmid_ds(struct shmid_ds *host_sd,
++        abi_ulong target_addr);
++abi_long host_to_target_shmid_ds(abi_ulong target_addr,
++        struct shmid_ds *host_sd);
++
++#endif /* QEMU_BSD_H */
 -- 
 2.42.0
 
