@@ -2,77 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06B597AD6A1
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 769577AD6A2
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:05:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkjNO-00049b-DU; Mon, 25 Sep 2023 07:03:42 -0400
+	id 1qkjOH-0004gf-PA; Mon, 25 Sep 2023 07:04:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkjNC-00045J-86
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:03:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkjNA-0001an-6t
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:03:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695639806;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6DxNozPzgF3LGS1IahjfMicaHDWoP65RXmhYqEEHTJ4=;
- b=aeQb9T5zrttF/t0HCYNHjm0RYBTm5OBBuIjIaU0JTmnOlDMwVdvBOeWqXw/ilIiHsOElwD
- V6AxWM0DP4sAXra5iiriv1BoPVUwz00x+Qdd0vnzpUb6wwsz3u3EKjka4bXu4ztMwIPHFd
- kJe+IMle7z+s7ESWxnrCfpLzzx5SEWg=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-93-NQ0Oq3qOMVawMN3_IyGUpA-1; Mon, 25 Sep 2023 07:03:24 -0400
-X-MC-Unique: NQ0Oq3qOMVawMN3_IyGUpA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6BB9F29AB3EC;
- Mon, 25 Sep 2023 11:03:24 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 451BB40C2064;
- Mon, 25 Sep 2023 11:03:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D8B1F21E6900; Mon, 25 Sep 2023 13:03:22 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: David Gibson <david@gibson.dropbear.id.au>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org,
- qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,  Eduardo Habkost
- <eduardo@habkost.net>,  Gerd Hoffmann <kraxel@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH v2 13/15] hw/qdev: Remove DEFINE_PROP_DMAADDR() and
- 'hw/qdev-dma.h'
-References: <20230203145536.17585-1-philmd@linaro.org>
- <20230203145536.17585-14-philmd@linaro.org>
- <87zg1a8r5v.fsf@pond.sub.org>
-Date: Mon, 25 Sep 2023 13:03:22 +0200
-In-Reply-To: <87zg1a8r5v.fsf@pond.sub.org> (Markus Armbruster's message of
- "Mon, 25 Sep 2023 12:48:28 +0200")
-Message-ID: <87bkdq8qh1.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qkjOE-0004eI-HP
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:04:35 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qkjOC-0002UA-RL
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:04:34 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-404fbfac998so68863085e9.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 04:04:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695639871; x=1696244671; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=u1W6wTk6TumYLIo0sM/EwzlteheKi0DHnJGq1BRYnmk=;
+ b=yRyqlOQbPdOIF8L7f0ydCMDbVUAe5xc5APkcK0v7B5oJpcqnixbGJh2ImJTlPzy7rb
+ 3MqiBOvHQplExHBTBpWTAsYPG0ofHYSNnGv+qiSOAs0U4U3kErUC5Flymixi8dfdQ0AG
+ C2iwhQ77Ccv2BwHnWM6H3zX/1qvy/ckefZejc6VWQo3tl5GanVWSxZ9ZO96ivORDW0ZL
+ 1BR1hjSnfhUfs8SSpwTm8ZuWCJChgoXuINElEeLdihThxH7xQ+pDb0I/EztTIBJqIfYB
+ PtahQ/9ceWsQm2vuWNFHx2R9xsXREmUcjKpYg8QQI0JReQUFgRP78To1m8B9mqUD7nKX
+ yy1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695639871; x=1696244671;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=u1W6wTk6TumYLIo0sM/EwzlteheKi0DHnJGq1BRYnmk=;
+ b=sFIamHja6eiS3HpwXMCGaBZw1KR6m1OycW9BPUPzLzeErxA31CQ3rVO8A/FXs0N2HM
+ 9/7KwBkPmiS6T3tidIezRWuDVJULA2jrP+FIcT0nRTGqGeUadBbz2WBp6WnGpVaBV7UO
+ JFnoIubukP7OOfhUCqkXBdRwY+8hQN+sjW5niP4uSuiei86FoWvAaGoGvmZqFQaWaj/Y
+ oTUmubZZYvdGM5bMEqDGrJEdt6+m/PJwEFW1rVXoY+GAqB0xkAJ96kdwDSK7W9l6O2Fr
+ 92RIDzdZPSp1cnx77MokugA4HrRcJS8Ac+mjG40/9oaDKGBc/eJnIXOCGyQSHVtoowkE
+ waXw==
+X-Gm-Message-State: AOJu0Yx/X6Wr9xzUl7AP0ge3xAHNDMu+D8EfHFdI6VbUGm8r/eH/I7E2
+ HzqEbrFLk9tWf8MxXLu+sxrLkQ==
+X-Google-Smtp-Source: AGHT+IGQUtcBoqOa474NYb+M8sKqMWgWqc61rt5qvB6KRcOD+atTeDPP801eXrlX6icjs+N0ackO9w==
+X-Received: by 2002:a5d:4a04:0:b0:31f:f9e5:ef05 with SMTP id
+ m4-20020a5d4a04000000b0031ff9e5ef05mr6042442wrq.1.1695639871080; 
+ Mon, 25 Sep 2023 04:04:31 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
+ by smtp.gmail.com with ESMTPSA id
+ n6-20020a05600c294600b0040472ad9a3dsm11806803wmd.14.2023.09.25.04.04.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Sep 2023 04:04:30 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH] target/arm/kvm64.c: Remove unused include
+Date: Mon, 25 Sep 2023 12:04:29 +0100
+Message-Id: <20230925110429.3917202-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,25 +87,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-+David
+The include of hw/arm/virt.h in kvm64.c is unnecessary and also a
+layering violation since the generic KVM code shouldn't need to know
+anything about board-specifics.  The include line is an accidental
+leftover from commit 15613357ba53a4763, where we cleaned up the code
+to not depend on virt board internals but forgot to also remove the
+now-redundant include line.
 
-Markus Armbruster <armbru@redhat.com> writes:
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/kvm64.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
->
->> DEFINE_PROP_DMAADDR() is only used once. Since it doesn't
->> add much value, simply remove it, along with the header
->> defining it.
->>
->> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
->
-> DEFINE_PROP_DMAADDR() lets you wrap a property around a dma_addr_t
-> member without assuming anything about dma_addr_t.
->
-> If we use its (trivial) expansion instead, we assume dma_addr_t is
-> uint64_t.
->
-> Whether that's worth avoiding I can't say.  Depends on how much the
-> abstraction leaks in other ways.  Thoughts?
+diff --git a/target/arm/kvm64.c b/target/arm/kvm64.c
+index 5e95c496bb9..3ea9f1d6743 100644
+--- a/target/arm/kvm64.c
++++ b/target/arm/kvm64.c
+@@ -30,7 +30,6 @@
+ #include "internals.h"
+ #include "hw/acpi/acpi.h"
+ #include "hw/acpi/ghes.h"
+-#include "hw/arm/virt.h"
+ 
+ static bool have_guest_debug;
+ 
+-- 
+2.34.1
 
 
