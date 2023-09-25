@@ -2,35 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091847AD862
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7617AD85C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkl8p-0008Km-7f; Mon, 25 Sep 2023 08:56:47 -0400
+	id 1qkl8s-0008M2-T4; Mon, 25 Sep 2023 08:56:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qkdjv-0001eU-Sb
+ id 1qkdjv-0001eT-Q4
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 01:02:35 -0400
 Received: from mta01.start.ca ([162.250.196.97])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qkdjt-0004oh-I1
+ id 1qkdjt-0004om-Ii
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 01:02:35 -0400
 Received: from mta01.start.ca (localhost [127.0.0.1])
- by mta01.start.ca (Postfix) with ESMTP id 5849620786;
+ by mta01.start.ca (Postfix) with ESMTP id B123F2078F;
  Mon, 25 Sep 2023 01:02:32 -0400 (EDT)
 Received: from localhost (dhcp-24-53-241-2.cable.user.start.ca [24.53.241.2])
- by mta01.start.ca (Postfix) with ESMTPS id 31AE220784;
+ by mta01.start.ca (Postfix) with ESMTPS id 8B3C620784;
  Mon, 25 Sep 2023 01:02:32 -0400 (EDT)
 From: Nick Bowler <nbowler@draconx.ca>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH 6/8] target/sparc: Fix VIS fpmerge input registers.
-Date: Mon, 25 Sep 2023 01:03:55 -0400
-Message-ID: <20230925050545.30912-7-nbowler@draconx.ca>
+Subject: [PATCH 7/8] target/sparc: Fix VIS fexpand input register.
+Date: Mon, 25 Sep 2023 01:03:56 -0400
+Message-ID: <20230925050545.30912-8-nbowler@draconx.ca>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230925050545.30912-1-nbowler@draconx.ca>
 References: <20230925050545.30912-1-nbowler@draconx.ca>
@@ -60,90 +60,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On a real UltraSparc II CPU, the fpmerge instruction reads two
-single-precision input registers, but the emulator is reading
-from double-precision input registers instead.
+This instruction is documented to get its input from the second
+single-precision input operand; the first operand is ignored.
+This is exactly what a real UltraSparc II does.  Meanwhile, the
+the emulator uses only the irrelevant first operand, treating
+it as a double-precision register, and ignores the second.
 
-These are unlikely to contain the correct data so in most instances
-the results of the emulation are just garbage in most instances.
+This will not normally contain the correct data so the emulated
+instruction usually just produces garbage.
 
 Signed-off-by: Nick Bowler <nbowler@draconx.ca>
 ---
- target/sparc/helper.h     |  2 +-
- target/sparc/translate.c  |  6 +++++-
- target/sparc/vis_helper.c | 26 +++++++++++++-------------
- 3 files changed, 19 insertions(+), 15 deletions(-)
+ target/sparc/helper.h     | 2 +-
+ target/sparc/translate.c  | 5 ++++-
+ target/sparc/vis_helper.c | 5 ++---
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
 diff --git a/target/sparc/helper.h b/target/sparc/helper.h
-index 7a588f3068..b71688079f 100644
+index b71688079f..81d44e7618 100644
 --- a/target/sparc/helper.h
 +++ b/target/sparc/helper.h
-@@ -125,7 +125,7 @@ DEF_HELPER_FLAGS_2(fstox, TCG_CALL_NO_RWG, s64, env, f32)
- DEF_HELPER_FLAGS_2(fdtox, TCG_CALL_NO_RWG, s64, env, f64)
- DEF_HELPER_FLAGS_1(fqtox, TCG_CALL_NO_RWG, s64, env)
- 
--DEF_HELPER_FLAGS_2(fpmerge, TCG_CALL_NO_RWG_SE, i64, i64, i64)
-+DEF_HELPER_FLAGS_2(fpmerge, TCG_CALL_NO_RWG_SE, i64, i32, i32)
- DEF_HELPER_FLAGS_2(fmul8x16, TCG_CALL_NO_RWG_SE, i64, i32, i64)
- DEF_HELPER_FLAGS_2(fmul8x16al, TCG_CALL_NO_RWG_SE, i64, i32, i32)
- DEF_HELPER_FLAGS_2(fmul8x16au, TCG_CALL_NO_RWG_SE, i64, i32, i32)
+@@ -133,7 +133,7 @@ DEF_HELPER_FLAGS_2(fmul8sux16, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+ DEF_HELPER_FLAGS_2(fmul8ulx16, TCG_CALL_NO_RWG_SE, i64, i64, i64)
+ DEF_HELPER_FLAGS_2(fmuld8sux16, TCG_CALL_NO_RWG_SE, i64, i32, i32)
+ DEF_HELPER_FLAGS_2(fmuld8ulx16, TCG_CALL_NO_RWG_SE, i64, i32, i32)
+-DEF_HELPER_FLAGS_2(fexpand, TCG_CALL_NO_RWG_SE, i64, i64, i64)
++DEF_HELPER_FLAGS_1(fexpand, TCG_CALL_NO_RWG_SE, i64, i32)
+ DEF_HELPER_FLAGS_3(pdist, TCG_CALL_NO_RWG_SE, i64, i64, i64, i64)
+ DEF_HELPER_FLAGS_2(fpack16, TCG_CALL_NO_RWG_SE, i32, i64, i64)
+ DEF_HELPER_FLAGS_3(fpack32, TCG_CALL_NO_RWG_SE, i64, i64, i64, i64)
 diff --git a/target/sparc/translate.c b/target/sparc/translate.c
-index cfccd95c3a..241ac429ca 100644
+index 241ac429ca..4e92c27768 100644
 --- a/target/sparc/translate.c
 +++ b/target/sparc/translate.c
-@@ -4825,7 +4825,11 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
+@@ -4837,7 +4837,10 @@ static void disas_sparc_insn(DisasContext * dc, unsigned int insn)
                      break;
-                 case 0x04b: /* VIS I fpmerge */
+                 case 0x04d: /* VIS I fexpand */
                      CHECK_FPU_FEATURE(dc, VIS1);
--                    gen_ne_fop_DDD(dc, rd, rs1, rs2, gen_helper_fpmerge);
-+                    cpu_src1_32 = gen_load_fpr_F(dc, rs1);
+-                    gen_ne_fop_DDD(dc, rd, rs1, rs2, gen_helper_fexpand);
 +                    cpu_src2_32 = gen_load_fpr_F(dc, rs2);
 +                    cpu_dst_64 = gen_dest_fpr_D(dc, rd);
-+                    gen_helper_fpmerge(cpu_dst_64, cpu_src1_32, cpu_src2_32);
++                    gen_helper_fexpand(cpu_dst_64, cpu_src2_32);
 +                    gen_store_fpr_D(dc, rd, cpu_dst_64);
                      break;
-                 case 0x04c: /* VIS II bshuffle */
-                     CHECK_FPU_FEATURE(dc, VIS2);
+                 case 0x050: /* VIS I fpadd16 */
+                     CHECK_FPU_FEATURE(dc, VIS1);
 diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
-index 306383ba60..029aad3923 100644
+index 029aad3923..3903beaf5d 100644
 --- a/target/sparc/vis_helper.c
 +++ b/target/sparc/vis_helper.c
-@@ -77,22 +77,22 @@ typedef union {
-     float32 f;
- } VIS32;
- 
--uint64_t helper_fpmerge(uint64_t src1, uint64_t src2)
-+uint64_t helper_fpmerge(uint32_t src1, uint32_t src2)
- {
--    VIS64 s, d;
-+    VIS32 s1, s2;
-+    VIS64 d;
- 
--    s.ll = src1;
--    d.ll = src2;
-+    s1.l = src1;
-+    s2.l = src2;
- 
--    /* Reverse calculation order to handle overlap */
--    d.VIS_B64(7) = s.VIS_B64(3);
--    d.VIS_B64(6) = d.VIS_B64(3);
--    d.VIS_B64(5) = s.VIS_B64(2);
--    d.VIS_B64(4) = d.VIS_B64(2);
--    d.VIS_B64(3) = s.VIS_B64(1);
--    d.VIS_B64(2) = d.VIS_B64(1);
--    d.VIS_B64(1) = s.VIS_B64(0);
--    /* d.VIS_B64(0) = d.VIS_B64(0); */
-+    d.VIS_B64(0) = s2.VIS_B32(0);
-+    d.VIS_B64(1) = s1.VIS_B32(0);
-+    d.VIS_B64(2) = s2.VIS_B32(1);
-+    d.VIS_B64(3) = s1.VIS_B32(1);
-+    d.VIS_B64(4) = s2.VIS_B32(2);
-+    d.VIS_B64(5) = s1.VIS_B32(2);
-+    d.VIS_B64(6) = s2.VIS_B32(3);
-+    d.VIS_B64(7) = s1.VIS_B32(3);
- 
+@@ -260,13 +260,12 @@ uint64_t helper_fmuld8ulx16(uint32_t src1, uint32_t src2)
      return d.ll;
  }
+ 
+-uint64_t helper_fexpand(uint64_t src1, uint64_t src2)
++uint64_t helper_fexpand(uint32_t src2)
+ {
+     VIS32 s;
+     VIS64 d;
+ 
+-    s.l = (uint32_t)src1;
+-    d.ll = src2;
++    s.l = src2;
+     d.VIS_W64(0) = s.VIS_B32(0) << 4;
+     d.VIS_W64(1) = s.VIS_B32(1) << 4;
+     d.VIS_W64(2) = s.VIS_B32(2) << 4;
 -- 
 2.41.0
 
