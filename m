@@ -2,119 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B87867ACD0E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 02:26:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1754D7ACD58
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 02:57:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkZOp-0003Ke-KB; Sun, 24 Sep 2023 20:24:31 -0400
+	id 1qkZtE-0007i6-RI; Sun, 24 Sep 2023 20:55:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qkZOn-0003Jr-JI
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 20:24:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qkZOk-00075I-Up
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 20:24:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695601465;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aPk3ge9QXMJ1XbAnO/Cqt8Jm9Bz3ZpC9BoVYrzsRNtg=;
- b=MKbVMTFVIbnTIIQ48JgEiI60oBzfO5m8HcqiLgo8QXjqflKm149iFSOF1mT0HvX57tjkBI
- yJwiTXr5j0efv6fGe2qm4EKkcVh8KxhIW6d7oXvyLjEyTTo1GWPnZRjJEs6vhErRCgDY7/
- 4renfwX4LPVgj4qYgecW57RNrEQi4vU=
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com
- [209.85.210.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-qNUXs_lKNKeTkh3qk5mTBg-1; Sun, 24 Sep 2023 20:24:23 -0400
-X-MC-Unique: qNUXs_lKNKeTkh3qk5mTBg-1
-Received: by mail-pf1-f199.google.com with SMTP id
- d2e1a72fcca58-6927dfe8c75so3809433b3a.2
- for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 17:24:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qkZtC-0007hh-CF
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 20:55:54 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yong.huang@smartx.com>)
+ id 1qkZt9-0005Uc-GI
+ for qemu-devel@nongnu.org; Sun, 24 Sep 2023 20:55:54 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-57b5ef5b947so3232231eaf.0
+ for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 17:53:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1695603227; x=1696208027;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=u0vz8ZdhcITKudvgRDvEZOlBWS0ISWtLBk3scuv/Mb4=;
+ b=CcJJEfsPaOmALvW01fyTltbJxTe8y2lT3ylMTytCdkPc7XGu1ftqDw93RLzX9vq+Vo
+ YW1ci/j3Ox4hNCeykZTx09Lkjz3gJElK5gG04v/OOpTzz9DvzXMcwPWr/BmA13g69UW6
+ vhUKAfJ1LsGynwm5uLlvGf91sPbfeh+LRUuSBk3Njt76bZVzwWIgln4Pd7vaxDsJeqby
+ R17h5b726bxJYp04w6mVYDCHMp0nUGubpblv74rEU2pbz880W1/TdWJM7HsJ/RihRxKj
+ TNHUMizAp/qYdR5CecGVbsqVyXMLH3HOCkEOMk8LskdcqJAWngkpSmb80ygqNX235sfU
+ hYAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695601463; x=1696206263;
- h=content-transfer-encoding:in-reply-to:references:cc:to:from
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=aPk3ge9QXMJ1XbAnO/Cqt8Jm9Bz3ZpC9BoVYrzsRNtg=;
- b=rhSCHIqSbprbIqByQangL6pNHddENRXjaQqPLWTXjlQylHjjt2rV45e/Evk7ZyDLkL
- yqYJ/GYDlIwzha7m/HXXRCAid/yyJgRXO6vIcR+lV2VKG4E6mCNCiK3zTyKq9tkLDjxm
- tOrzeRCC+yG6D34CCzoYX5GUD8YfZDLozGVYwz46KtLE8GJdWdfpqPUsasb9YSsdC96n
- NKSgDeTDw/DL85lMxm8Vjg2B7B/8u4hSlAkGvgKWhmwFZyHe1IrPtFiCe6c9iI2dlGvc
- 0lcxIw0TtzbF2m1RAIt9qVnL/pYs6/A88eAH7ar92TzXl4i3vktTEpkC7a1jh6ux+7ge
- 9fHQ==
-X-Gm-Message-State: AOJu0Ywj1SCEcJuU+uhGiIJDPIaJWneramCUQMsWvjGVrvI4EtqcUYWf
- 8TL5vGAUBPNyQJMJuTAJyL9JgBGRyBqtxrEYqbluaDUaGQk/b9FvqYSBa8+67G8EJo54FE8N36i
- XjTjpOZ2X91o4GzA=
-X-Received: by 2002:a05:6a00:1748:b0:68e:399e:70db with SMTP id
- j8-20020a056a00174800b0068e399e70dbmr4446381pfc.6.1695601462743; 
- Sun, 24 Sep 2023 17:24:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7kXbdwEQD1GHwmR8IHYWPV5gVi0bNVYVlSZD8uh17vaFrkGYUwuUAURW0v154406zN7nGpQ==
-X-Received: by 2002:a05:6a00:1748:b0:68e:399e:70db with SMTP id
- j8-20020a056a00174800b0068e399e70dbmr4446338pfc.6.1695601462370; 
- Sun, 24 Sep 2023 17:24:22 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- e15-20020a62ee0f000000b00686fe7b7b48sm6728499pfi.121.2023.09.24.17.24.08
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 24 Sep 2023 17:24:21 -0700 (PDT)
-Message-ID: <a42dd7a0-e73f-8410-d096-8298da03f70d@redhat.com>
-Date: Mon, 25 Sep 2023 10:24:04 +1000
+ d=1e100.net; s=20230601; t=1695603227; x=1696208027;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=u0vz8ZdhcITKudvgRDvEZOlBWS0ISWtLBk3scuv/Mb4=;
+ b=g0snby23XrNdAhRbvxdl+D44UDF6sN008v3t3jef20m3lU21Jyt4PEQuZ/fRd/Timg
+ j3xwWe30OGlhgt/KuBMbUheSXgYiEzozap5G9eSvw/1EhoKuDmAalmVlo89qI0JnCVMX
+ 1q2mIAfdnYHYzFxaluldCXMAyinKVk6qtx61h+yjzi4veXPRqpsApdukx/lsdoqUubpv
+ wHBtvkakHcKCGZ13Irpi1ivIZJT4sqQYcizhrI4BJ+XQmV8mr3F+fVnmIYdqW59JGNHz
+ BJun1dO0NY/41afVX/PC3LpGW5XmBRs0HflYH3Y1HiLNVZQMNrqz7ebJEBxZxu/8rS7L
+ vqHg==
+X-Gm-Message-State: AOJu0Yz/CU48RMoArQhYKVrbXHXnHKc4j7zgdOTiENfLxRbeNU7szSPc
+ KTLnKNUx/hfyJ8iOQ1t6BqABK9KLF+QZS5aWqLb5GQ==
+X-Google-Smtp-Source: AGHT+IGr7znkPJHMgLSQGtkZuUVnK42+X6SZ3q6xgQ2y0zvMQFlzRlekfXa4W98TocOCfX6MwKeZ61nipUXHxBNIEwM=
+X-Received: by 2002:a05:6358:912:b0:134:e631:fd2b with SMTP id
+ r18-20020a056358091200b00134e631fd2bmr6152643rwi.0.1695603227422; Sun, 24 Sep
+ 2023 17:53:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 3/4] hw/cpu: Introduce CPUClass::cpu_resolving_type field
-Content-Language: en-US
-From: Gavin Shan <gshan@redhat.com>
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>
-Cc: Chris Wulff <crwulff@gmail.com>,
- David Gibson <david@gibson.dropbear.id.au>, qemu-s390x@nongnu.org,
- Weiwei Li <liweiwei@iscas.ac.cn>, qemu-arm@nongnu.org,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Richard Henderson <richard.henderson@linaro.org>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Eduardo Habkost <eduardo@habkost.net>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Greg Kurz <groug@kaod.org>, "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- qemu-ppc@nongnu.org, Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Marek Vasut <marex@denx.de>, Palmer Dabbelt <palmer@dabbelt.com>,
- Michael Rolnik <mrolnik@gmail.com>, Laurent Vivier <laurent@vivier.eu>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
- Aurelien Jarno <aurelien@aurel32.net>, Bin Meng <bin.meng@windriver.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Artyom Tarasenko <atar4qemu@gmail.com>, Song Gao <gaosong@loongson.cn>,
- Stafford Horne <shorne@gmail.com>, Yanan Wang <wangyanan55@huawei.com>,
- Alistair Francis <alistair.francis@wdc.com>, Brian Cain <bcain@quicinc.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Thomas Huth <thuth@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
-References: <20230908112235.75914-1-philmd@linaro.org>
- <20230908112235.75914-4-philmd@linaro.org>
- <87cb0174-c652-aa44-be7c-49e78e0a5003@redhat.com>
- <af78b6c9-14e5-3256-9670-c106f4942140@linaro.org>
- <35653f53-a977-02ea-28f6-6fe85b1efd5a@redhat.com>
-In-Reply-To: <35653f53-a977-02ea-28f6-6fe85b1efd5a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <399861531e3b24a1ecea2ba453fb2c3d129fb03a.1693905328.git.gudkov.andrei@huawei.com>
+In-Reply-To: <399861531e3b24a1ecea2ba453fb2c3d129fb03a.1693905328.git.gudkov.andrei@huawei.com>
+From: Yong Huang <yong.huang@smartx.com>
+Date: Mon, 25 Sep 2023 08:53:31 +0800
+Message-ID: <CAK9dgmZrztaWv8dzS0wHV-nEAbbHmefGfMy0O6L51EGAKmUvOw@mail.gmail.com>
+Subject: Re: [PATCH] migration/dirtyrate: use QEMU_CLOCK_HOST to report
+ start-time
+To: Andrei Gudkov <gudkov.andrei@huawei.com>
+Cc: qemu-devel@nongnu.org, quintela@redhat.com, peterx@redhat.com, 
+ leobras@redhat.com, eblake@redhat.com, armbru@redhat.com
+Content-Type: multipart/alternative; boundary="0000000000000d080106062464be"
+Received-SPF: none client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=yong.huang@smartx.com; helo=mail-oo1-xc35.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -130,112 +86,302 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Philippe,
+--0000000000000d080106062464be
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/12/23 08:40, Gavin Shan wrote:
-> On 9/11/23 19:43, Philippe Mathieu-Daudé wrote:
->> On 11/9/23 01:28, Gavin Shan wrote:
->>> On 9/8/23 21:22, Philippe Mathieu-Daudé wrote:
->>>> Add a field to return the QOM type name of a CPU class.
->>>>
->>>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>>> ---
->>>>   include/hw/core/cpu.h   | 2 ++
->>>>   hw/core/cpu-common.c    | 2 +-
->>>>   target/alpha/cpu.c      | 1 +
->>>>   target/arm/cpu.c        | 1 +
->>>>   target/avr/cpu.c        | 1 +
->>>>   target/cris/cpu.c       | 1 +
->>>>   target/hexagon/cpu.c    | 1 +
->>>>   target/hppa/cpu.c       | 1 +
->>>>   target/i386/cpu.c       | 1 +
->>>>   target/loongarch/cpu.c  | 1 +
->>>>   target/m68k/cpu.c       | 1 +
->>>>   target/microblaze/cpu.c | 1 +
->>>>   target/mips/cpu.c       | 1 +
->>>>   target/nios2/cpu.c      | 1 +
->>>>   target/openrisc/cpu.c   | 1 +
->>>>   target/ppc/cpu_init.c   | 1 +
->>>>   target/riscv/cpu.c      | 1 +
->>>>   target/rx/cpu.c         | 1 +
->>>>   target/s390x/cpu.c      | 1 +
->>>>   target/sh4/cpu.c        | 1 +
->>>>   target/sparc/cpu.c      | 1 +
->>>>   target/tricore/cpu.c    | 1 +
->>>>   target/xtensa/cpu.c     | 1 +
->>>>   23 files changed, 24 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
->>>> index 129d179937..e469efd409 100644
->>>> --- a/include/hw/core/cpu.h
->>>> +++ b/include/hw/core/cpu.h
->>>> @@ -100,6 +100,7 @@ struct SysemuCPUOps;
->>>>   /**
->>>>    * CPUClass:
->>>> + * @cpu_resolving_type: CPU QOM type name
->>>>    * @class_by_name: Callback to map -cpu command line model name to an
->>>>    *                 instantiatable CPU type.
->>>>    * @parse_features: Callback to parse command line arguments.
->>>> @@ -148,6 +149,7 @@ struct CPUClass {
->>>>       DeviceClass parent_class;
->>>>       /*< public >*/
->>>> +    const char *cpu_resolving_type;
->>>>       ObjectClass *(*class_by_name)(const char *cpu_model);
->>>>       void (*parse_features)(const char *typename, char *str, Error **errp);
->>>
->>> The question is why not use CPU_RESOLVING_TYPE directly? It seems CPU_RESOLVING_TYPE
->>> is exactly what you want here.
->>
->> Unfortunately CPU_RESOLVING_TYPE is target-specific, we want
->> hw/core/cpu-common.c to be target-agnostic (build once for all
->> targets). This is particularly important in the context of
->> heterogeneous QEMU, where a single binary will be able to create
->> CPUs from different targets.
->>
-> 
-> CPU_RESOLVING_TYPE and CPUClass::cpu_resolving_type is duplicate to
-> each other. There are two options I can figure out to avoid the
-> duplication.
-> 
-> (a) move cpu_class_by_name() from hw/core/cpu-common.c to cpu.c, so that
->      CPU_RESOLVING_TYPE can be seen. cpu.c::list_cpus() is the example.
-> 
-> (b) remove hw/core/cpu-common.c::cpu_calss_by_name() and squeeze its
->      logic to cpu.c::parse_cpu_option() since there are not too much
->      users for it. target/arm and target/s390 needs some tweaks so that
->      hw/core/cpu-common.c::cpu_calss_by_name() can be removed.
-> 
->      [gshan@gshan q]$ git grep \ cpu_class_by_name\(
->      cpu.c:    oc = cpu_class_by_name(CPU_RESOLVING_TYPE, model_pieces[0]);
->      target/arm/arm-qmp-cmds.c:    oc = cpu_class_by_name(TYPE_ARM_CPU, model->name);
->      target/s390x/cpu_models_sysemu.c:    oc = cpu_class_by_name(TYPE_S390_CPU, info->name);
-> 
-> When option (b) is taken, this series to have the checks against @oc
-> in hw/core/cpu-common.c::cpu_calss_by_name() becomes non-sense. Instead,
-> we need the same (and complete) checks in CPUClass::class_by_name() for
-> individual targets. Further more, an inline helper can be provided to do
-> the check in CPUClass::class_by_name() for individual targets.
-> 
->     include/hw/core/cpu.h
-> 
->     static inline bool cpu_class_is_valid(ObjectClass *oc, const char *parent)
->     {
->         if (!object_class_dynamic_cast(oc, parent) ||
->             object_class_is_abstract(oc)) {
->             return false;
->         }
-> 
->         return true;
->     }
-> 
+On Tue, Sep 5, 2023 at 5:19=E2=80=AFPM Andrei Gudkov <gudkov.andrei@huawei.=
+com>
+wrote:
 
-Since my series to make CPU type check unified depends on this series, could
-you please share your thoughts? If you don't have bandwidth for this, I can
-improve the code based on your thoughts, and include your patches to my series
-so that they can be reviewed at once. Please just let me know.
+> Currently query-dirty-rate uses QEMU_CLOCK_REALTIME as
+> the source for start-time field. This translates to
+> clock_gettime(CLOCK_MONOTONIC), i.e. number of seconds
+> since host boot. This is not very useful. The only
+> reasonable use case of start-time I can imagine is to
+> check whether previously completed measurements are
+> too old or not. But this makes sense only if start-time
+> is reported as host wall-clock time.
+>
+> This patch replaces source of start-time from
+> QEMU_CLOCK_REALTIME to QEMU_CLOCK_HOST.
+>
+> Signed-off-by: Andrei Gudkov <gudkov.andrei@huawei.com>
+> ---
+>  qapi/migration.json   |  4 ++--
+>  migration/dirtyrate.c | 15 ++++++---------
+>  2 files changed, 8 insertions(+), 11 deletions(-)
+>
+> diff --git a/qapi/migration.json b/qapi/migration.json
+> index 8843e74b59..63deb8e387 100644
+> --- a/qapi/migration.json
+> +++ b/qapi/migration.json
+> @@ -1941,12 +1941,12 @@
+>  # 1. Measurement is in progress:
+>  #
+>  # <- {"status": "measuring", "sample-pages": 512,
+> -#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
+> +#     "mode": "page-sampling", "start-time": 1693900454, "calc-time": 10=
+}
+>  #
+>  # 2. Measurement has been completed:
+>  #
+>  # <- {"status": "measured", "sample-pages": 512, "dirty-rate": 108,
+> -#     "mode": "page-sampling", "start-time": 3665220, "calc-time": 10}
+> +#     "mode": "page-sampling", "start-time": 1693900454, "calc-time": 10=
+}
+>  ##
+>  { 'command': 'query-dirty-rate', 'returns': 'DirtyRateInfo' }
+>
+> diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c
+> index bccb3515e3..0510d68765 100644
+> --- a/migration/dirtyrate.c
+> +++ b/migration/dirtyrate.c
+> @@ -259,11 +259,10 @@ static struct DirtyRateInfo
+> *query_dirty_rate_info(void)
+>      return info;
+>  }
+>
+> -static void init_dirtyrate_stat(int64_t start_time,
+> -                                struct DirtyRateConfig config)
+> +static void init_dirtyrate_stat(struct DirtyRateConfig config)
+>  {
+>      DirtyStat.dirty_rate =3D -1;
+> -    DirtyStat.start_time =3D start_time;
+> +    DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+>      DirtyStat.calc_time =3D config.sample_period_seconds;
+>      DirtyStat.sample_pages =3D config.sample_pages_per_gigabytes;
+>
+> @@ -600,7 +599,7 @@ static void calculate_dirtyrate_dirty_bitmap(struct
+> DirtyRateConfig config)
+>      record_dirtypages_bitmap(&dirty_pages, true);
+>
+>      start_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+> -    DirtyStat.start_time =3D start_time / 1000;
+> +    DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+>
+>      msec =3D config.sample_period_seconds * 1000;
+>      msec =3D dirty_stat_wait(msec, start_time);
+> @@ -628,7 +627,7 @@ static void calculate_dirtyrate_dirty_ring(struct
+> DirtyRateConfig config)
+>      /* start log sync */
+>      global_dirty_log_change(GLOBAL_DIRTY_DIRTY_RATE, true);
+>
+> -    DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME) / 10=
+00;
+> +    DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+>
+>      /* calculate vcpu dirtyrate */
+>      duration =3D vcpu_calculate_dirtyrate(config.sample_period_seconds *
+> 1000,
+> @@ -657,6 +656,7 @@ static void calculate_dirtyrate_sample_vm(struct
+> DirtyRateConfig config)
+>
+>      rcu_read_lock();
+>      initial_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
+> +    DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) / 1000;
+>      if (!record_ramblock_hash_info(&block_dinfo, config, &block_count)) =
+{
+>          goto out;
+>      }
+> @@ -664,7 +664,6 @@ static void calculate_dirtyrate_sample_vm(struct
+> DirtyRateConfig config)
+>
+>      msec =3D config.sample_period_seconds * 1000;
+>      msec =3D dirty_stat_wait(msec, initial_time);
+> -    DirtyStat.start_time =3D initial_time / 1000;
+>      DirtyStat.calc_time =3D msec / 1000;
+>
+>      rcu_read_lock();
+> @@ -727,7 +726,6 @@ void qmp_calc_dirty_rate(int64_t calc_time,
+>      static struct DirtyRateConfig config;
+>      QemuThread thread;
+>      int ret;
+> -    int64_t start_time;
+>
+>      /*
+>       * If the dirty rate is already being measured, don't attempt to
+> start.
+> @@ -799,8 +797,7 @@ void qmp_calc_dirty_rate(int64_t calc_time,
+>       **/
+>      dirtyrate_mode =3D mode;
+>
+> -    start_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME) / 1000;
+> -    init_dirtyrate_stat(start_time, config);
+> +    init_dirtyrate_stat(config);
+>
+>      qemu_thread_create(&thread, "get_dirtyrate", get_dirtyrate_thread,
+>                         (void *)&config, QEMU_THREAD_DETACHED);
+> --
+> 2.30.2
+>
+>
 
-Thanks,
-Gavin
+Reviewed-by: Hyman Huang <yong.huang@smartx.com>
 
+--=20
+Best regards
 
+--0000000000000d080106062464be
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div class=3D"gmail_default" style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif"><br></div></div><br><div cla=
+ss=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Sep 5, 202=
+3 at 5:19=E2=80=AFPM Andrei Gudkov &lt;<a href=3D"mailto:gudkov.andrei@huaw=
+ei.com">gudkov.andrei@huawei.com</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;bo=
+rder-left-style:solid;border-left-color:rgb(204,204,204);padding-left:1ex">=
+Currently query-dirty-rate uses QEMU_CLOCK_REALTIME as<br>
+the source for start-time field. This translates to<br>
+clock_gettime(CLOCK_MONOTONIC), i.e. number of seconds<br>
+since host boot. This is not very useful. The only<br>
+reasonable use case of start-time I can imagine is to<br>
+check whether previously completed measurements are<br>
+too old or not. But this makes sense only if start-time<br>
+is reported as host wall-clock time.<br>
+<br>
+This patch replaces source of start-time from<br>
+QEMU_CLOCK_REALTIME to QEMU_CLOCK_HOST.<br>
+<br>
+Signed-off-by: Andrei Gudkov &lt;<a href=3D"mailto:gudkov.andrei@huawei.com=
+" target=3D"_blank">gudkov.andrei@huawei.com</a>&gt;<br>
+---<br>
+=C2=A0qapi/migration.json=C2=A0 =C2=A0|=C2=A0 4 ++--<br>
+=C2=A0migration/dirtyrate.c | 15 ++++++---------<br>
+=C2=A02 files changed, 8 insertions(+), 11 deletions(-)<br>
+<br>
+diff --git a/qapi/migration.json b/qapi/migration.json<br>
+index 8843e74b59..63deb8e387 100644<br>
+--- a/qapi/migration.json<br>
++++ b/qapi/migration.json<br>
+@@ -1941,12 +1941,12 @@<br>
+=C2=A0# 1. Measurement is in progress:<br>
+=C2=A0#<br>
+=C2=A0# &lt;- {&quot;status&quot;: &quot;measuring&quot;, &quot;sample-page=
+s&quot;: 512,<br>
+-#=C2=A0 =C2=A0 =C2=A0&quot;mode&quot;: &quot;page-sampling&quot;, &quot;st=
+art-time&quot;: 3665220, &quot;calc-time&quot;: 10}<br>
++#=C2=A0 =C2=A0 =C2=A0&quot;mode&quot;: &quot;page-sampling&quot;, &quot;st=
+art-time&quot;: 1693900454, &quot;calc-time&quot;: 10}<br>
+=C2=A0#<br>
+=C2=A0# 2. Measurement has been completed:<br>
+=C2=A0#<br>
+=C2=A0# &lt;- {&quot;status&quot;: &quot;measured&quot;, &quot;sample-pages=
+&quot;: 512, &quot;dirty-rate&quot;: 108,<br>
+-#=C2=A0 =C2=A0 =C2=A0&quot;mode&quot;: &quot;page-sampling&quot;, &quot;st=
+art-time&quot;: 3665220, &quot;calc-time&quot;: 10}<br>
++#=C2=A0 =C2=A0 =C2=A0&quot;mode&quot;: &quot;page-sampling&quot;, &quot;st=
+art-time&quot;: 1693900454, &quot;calc-time&quot;: 10}<br>
+=C2=A0##<br>
+=C2=A0{ &#39;command&#39;: &#39;query-dirty-rate&#39;, &#39;returns&#39;: &=
+#39;DirtyRateInfo&#39; }<br>
+<br>
+diff --git a/migration/dirtyrate.c b/migration/dirtyrate.c<br>
+index bccb3515e3..0510d68765 100644<br>
+--- a/migration/dirtyrate.c<br>
++++ b/migration/dirtyrate.c<br>
+@@ -259,11 +259,10 @@ static struct DirtyRateInfo *query_dirty_rate_info(vo=
+id)<br>
+=C2=A0 =C2=A0 =C2=A0return info;<br>
+=C2=A0}<br>
+<br>
+-static void init_dirtyrate_stat(int64_t start_time,<br>
+-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 struct DirtyRateConfig config)<br>
++static void init_dirtyrate_stat(struct DirtyRateConfig config)<br>
+=C2=A0{<br>
+=C2=A0 =C2=A0 =C2=A0DirtyStat.dirty_rate =3D -1;<br>
+-=C2=A0 =C2=A0 DirtyStat.start_time =3D start_time;<br>
++=C2=A0 =C2=A0 DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) =
+/ 1000;<br>
+=C2=A0 =C2=A0 =C2=A0DirtyStat.calc_time =3D config.sample_period_seconds;<b=
+r>
+=C2=A0 =C2=A0 =C2=A0DirtyStat.sample_pages =3D config.sample_pages_per_giga=
+bytes;<br>
+<br>
+@@ -600,7 +599,7 @@ static void calculate_dirtyrate_dirty_bitmap(struct Dir=
+tyRateConfig config)<br>
+=C2=A0 =C2=A0 =C2=A0record_dirtypages_bitmap(&amp;dirty_pages, true);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0start_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME);<=
+br>
+-=C2=A0 =C2=A0 DirtyStat.start_time =3D start_time / 1000;<br>
++=C2=A0 =C2=A0 DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) =
+/ 1000;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0msec =3D config.sample_period_seconds * 1000;<br>
+=C2=A0 =C2=A0 =C2=A0msec =3D dirty_stat_wait(msec, start_time);<br>
+@@ -628,7 +627,7 @@ static void calculate_dirtyrate_dirty_ring(struct Dirty=
+RateConfig config)<br>
+=C2=A0 =C2=A0 =C2=A0/* start log sync */<br>
+=C2=A0 =C2=A0 =C2=A0global_dirty_log_change(GLOBAL_DIRTY_DIRTY_RATE, true);=
+<br>
+<br>
+-=C2=A0 =C2=A0 DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTI=
+ME) / 1000;<br>
++=C2=A0 =C2=A0 DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) =
+/ 1000;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0/* calculate vcpu dirtyrate */<br>
+=C2=A0 =C2=A0 =C2=A0duration =3D vcpu_calculate_dirtyrate(config.sample_per=
+iod_seconds * 1000,<br>
+@@ -657,6 +656,7 @@ static void calculate_dirtyrate_sample_vm(struct DirtyR=
+ateConfig config)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0rcu_read_lock();<br>
+=C2=A0 =C2=A0 =C2=A0initial_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME)=
+;<br>
++=C2=A0 =C2=A0 DirtyStat.start_time =3D qemu_clock_get_ms(QEMU_CLOCK_HOST) =
+/ 1000;<br>
+=C2=A0 =C2=A0 =C2=A0if (!record_ramblock_hash_info(&amp;block_dinfo, config=
+, &amp;block_count)) {<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0goto out;<br>
+=C2=A0 =C2=A0 =C2=A0}<br>
+@@ -664,7 +664,6 @@ static void calculate_dirtyrate_sample_vm(struct DirtyR=
+ateConfig config)<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0msec =3D config.sample_period_seconds * 1000;<br>
+=C2=A0 =C2=A0 =C2=A0msec =3D dirty_stat_wait(msec, initial_time);<br>
+-=C2=A0 =C2=A0 DirtyStat.start_time =3D initial_time / 1000;<br>
+=C2=A0 =C2=A0 =C2=A0DirtyStat.calc_time =3D msec / 1000;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0rcu_read_lock();<br>
+@@ -727,7 +726,6 @@ void qmp_calc_dirty_rate(int64_t calc_time,<br>
+=C2=A0 =C2=A0 =C2=A0static struct DirtyRateConfig config;<br>
+=C2=A0 =C2=A0 =C2=A0QemuThread thread;<br>
+=C2=A0 =C2=A0 =C2=A0int ret;<br>
+-=C2=A0 =C2=A0 int64_t start_time;<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0/*<br>
+=C2=A0 =C2=A0 =C2=A0 * If the dirty rate is already being measured, don&#39=
+;t attempt to start.<br>
+@@ -799,8 +797,7 @@ void qmp_calc_dirty_rate(int64_t calc_time,<br>
+=C2=A0 =C2=A0 =C2=A0 **/<br>
+=C2=A0 =C2=A0 =C2=A0dirtyrate_mode =3D mode;<br>
+<br>
+-=C2=A0 =C2=A0 start_time =3D qemu_clock_get_ms(QEMU_CLOCK_REALTIME) / 1000=
+;<br>
+-=C2=A0 =C2=A0 init_dirtyrate_stat(start_time, config);<br>
++=C2=A0 =C2=A0 init_dirtyrate_stat(config);<br>
+<br>
+=C2=A0 =C2=A0 =C2=A0qemu_thread_create(&amp;thread, &quot;get_dirtyrate&quo=
+t;, get_dirtyrate_thread,<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 (void *)&amp;config, QEMU_THREAD_DETACHED);<br>
+-- <br>
+2.30.2<br>
+<br>
+</blockquote></div><div><br></div><br clear=3D"all"><div><span style=3D"fon=
+t-family:&quot;comic sans ms&quot;,sans-serif">Reviewed-by: Hyman Huang &lt=
+;</span><a href=3D"mailto:yong.huang@smartx.com" target=3D"_blank" style=3D=
+"font-family:&quot;comic sans ms&quot;,sans-serif">yong.huang@smartx.com</a=
+><span style=3D"font-family:&quot;comic sans ms&quot;,sans-serif">&gt;</spa=
+n><br></div><div><span style=3D"font-family:&quot;comic sans ms&quot;,sans-=
+serif"><br></span></div><span class=3D"gmail_signature_prefix">-- </span><b=
+r><div dir=3D"ltr" class=3D"gmail_signature"><div dir=3D"ltr"><font face=3D=
+"comic sans ms, sans-serif">Best regards</font></div></div></div>
+
+--0000000000000d080106062464be--
 
