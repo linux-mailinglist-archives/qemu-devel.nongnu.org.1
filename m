@@ -2,51 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D047AD410
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 11:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D2EA7AD40A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 11:02:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkhTG-0002F5-Fv; Mon, 25 Sep 2023 05:01:38 -0400
+	id 1qkhTH-0002GZ-8D; Mon, 25 Sep 2023 05:01:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qkhSo-000259-JJ
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qkhSo-000258-JJ
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 05:01:12 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qkhSm-0002a6-Fx
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qkhSm-0002aA-PS
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 05:01:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695632467;
+ s=mimecast20190719; t=1695632468;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=f564zeEwTP2NCJ75yge0S7XrtEHt1dbx2+S/usTLRFA=;
- b=gyn5lizE/vC46KmzvFW2x3Sk0TqRg7EBcZBd/AzN7hGR5y+HFXtWpjYMPazEkiiB4SHmG2
- boIgZmNxYhIdst8Mu434I2omVQdpAo+HeZi7XEv0MB4E2tOmcZAZKUBqTh4fHp4+T93AYv
- k5hS+hgx2X2GKT1IccyZs7f2zPbIRkA=
+ bh=YNbt4mMQxIZuSano7DrCZJSwVfbGCiAqy4We2eNG4zk=;
+ b=i2KF0Vmc4zyP+2YNpwCml0+KZUW6w4l3a+2mGgDDNM9fE5M842h/TTZAeugVy6xTIoozCg
+ LLgZiLziDTeBf711gtA/24q2LVwS2DUwTVYiSdAwTrIvX2L0he5pIT5UGj2rJetY6s/tkT
+ NproTZ41ruXpWVOZpOK3BXHpdUesL3o=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-450-OOukDnTNMx65NHjz9N9iOw-1; Mon, 25 Sep 2023 05:01:05 -0400
-X-MC-Unique: OOukDnTNMx65NHjz9N9iOw-1
+ us-mta-462-Z4jmOnyDOtGrmumF1tXFJA-1; Mon, 25 Sep 2023 05:01:06 -0400
+X-MC-Unique: Z4jmOnyDOtGrmumF1tXFJA-1
 Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
  [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16C55802C1A
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:01:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 31D5D185A790
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:01:06 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.192.92])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 7768B140E953;
- Mon, 25 Sep 2023 09:01:04 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 5BEBF140E953;
+ Mon, 25 Sep 2023 09:01:05 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
 To: qemu-devel@nongnu.org,
 	Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 3/7] tests/qtest/m48t59-test: Silence compiler warning with
- -Wshadow
-Date: Mon, 25 Sep 2023 11:00:56 +0200
-Message-ID: <20230925090100.45632-4-thuth@redhat.com>
+Subject: [PULL 4/7] tests/qtest/netdev-socket: Do not test multicast on Darwin
+Date: Mon, 25 Sep 2023 11:00:57 +0200
+Message-ID: <20230925090100.45632-5-thuth@redhat.com>
 In-Reply-To: <20230925090100.45632-1-thuth@redhat.com>
 References: <20230925090100.45632-1-thuth@redhat.com>
 MIME-Version: 1.0
@@ -77,66 +76,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When compiling this file with -Wshadow=local , we get:
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-../tests/qtest/m48t59-test.c: In function ‘bcd_check_time’:
-../tests/qtest/m48t59-test.c:195:17: warning: declaration of ‘s’
- shadows a previous local [-Wshadow=local]
-  195 |         long t, s;
-      |                 ^
-../tests/qtest/m48t59-test.c:158:17: note: shadowed declaration is here
-  158 |     QTestState *s = m48t59_qtest_start();
-      |                 ^
+Do not run this test on Darwin, otherwise we get:
 
-Rename the QTestState variable to "qts" which is the common
-naming for such a variable in other tests.
+  qemu-system-arm: -netdev dgram,id=st0,remote.type=inet,remote.host=230.0.0.1,remote.port=1234:
+   can't add socket to multicast group 230.0.0.1: Can't assign requested address
+  Broken pipe
+  ../../tests/qtest/libqtest.c:191: kill_qemu() tried to terminate QEMU
+   process but encountered exit status 1 (expected 0)
+  Abort trap: 6
 
-Reported-by: Markus Armbruster <armbru@redhat.com>
-Message-ID: <20230922163742.149444-1-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20230918062549.2363-1-philmd@linaro.org>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/qtest/m48t59-test.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/qtest/netdev-socket.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tests/qtest/m48t59-test.c b/tests/qtest/m48t59-test.c
-index 843d2ced8e..9487faff1a 100644
---- a/tests/qtest/m48t59-test.c
-+++ b/tests/qtest/m48t59-test.c
-@@ -155,7 +155,7 @@ static void bcd_check_time(void)
-     struct tm *datep;
-     time_t ts;
-     const int wiggle = 2;
--    QTestState *s = m48t59_qtest_start();
-+    QTestState *qts = m48t59_qtest_start();
- 
-     /*
-      * This check assumes a few things.  First, we cannot guarantee that we get
-@@ -173,10 +173,10 @@ static void bcd_check_time(void)
-     ts = time(NULL);
-     gmtime_r(&ts, &start);
- 
--    cmos_get_date_time(s, &date[0]);
--    cmos_get_date_time(s, &date[1]);
--    cmos_get_date_time(s, &date[2]);
--    cmos_get_date_time(s, &date[3]);
-+    cmos_get_date_time(qts, &date[0]);
-+    cmos_get_date_time(qts, &date[1]);
-+    cmos_get_date_time(qts, &date[2]);
-+    cmos_get_date_time(qts, &date[3]);
- 
-     ts = time(NULL);
-     gmtime_r(&ts, &end);
-@@ -207,7 +207,7 @@ static void bcd_check_time(void)
-         g_assert_cmpint(ABS(t - s), <=, wiggle);
-     }
- 
--    qtest_quit(s);
-+    qtest_quit(qts);
+diff --git a/tests/qtest/netdev-socket.c b/tests/qtest/netdev-socket.c
+index b2501d72a1..7ba1eff120 100644
+--- a/tests/qtest/netdev-socket.c
++++ b/tests/qtest/netdev-socket.c
+@@ -401,7 +401,7 @@ static void test_dgram_inet(void)
+     qtest_quit(qts0);
  }
  
- /* success if no crash or abort */
+-#ifndef _WIN32
++#if !defined(_WIN32) && !defined(CONFIG_DARWIN)
+ static void test_dgram_mcast(void)
+ {
+     QTestState *qts;
+@@ -414,7 +414,9 @@ static void test_dgram_mcast(void)
+ 
+     qtest_quit(qts);
+ }
++#endif
+ 
++#ifndef _WIN32
+ static void test_dgram_unix(void)
+ {
+     QTestState *qts0, *qts1;
+@@ -511,7 +513,7 @@ int main(int argc, char **argv)
+     if (has_ipv4) {
+         qtest_add_func("/netdev/stream/inet/ipv4", test_stream_inet_ipv4);
+         qtest_add_func("/netdev/dgram/inet", test_dgram_inet);
+-#ifndef _WIN32
++#if !defined(_WIN32) && !defined(CONFIG_DARWIN)
+         qtest_add_func("/netdev/dgram/mcast", test_dgram_mcast);
+ #endif
+     }
 -- 
 2.41.0
 
