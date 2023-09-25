@@ -2,59 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1054D7AD3A3
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 10:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B2CA7AD3D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 10:55:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkhDI-0005j5-4w; Mon, 25 Sep 2023 04:45:08 -0400
+	id 1qkhLz-0007kD-0f; Mon, 25 Sep 2023 04:54:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qkhDG-0005ir-36
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 04:45:06 -0400
-Received: from mout.kundenserver.de ([217.72.192.73])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qkhLw-0007j9-PH
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 04:54:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qkhDE-0008T8-A1
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 04:45:05 -0400
-Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue109
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1MV6G0-1rCiUh32pS-00SB2c; Mon, 25
- Sep 2023 10:44:57 +0200
-From: Laurent Vivier <laurent@vivier.eu>
-To: qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH] disas/m68k: clean up local variable shadowing
-Date: Mon, 25 Sep 2023 10:44:55 +0200
-Message-ID: <20230925084455.395150-1-laurent@vivier.eu>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qkhLv-0001Te-6D
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 04:54:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695632042;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=7T6Q3CR7JaT1rHUh/kN9bqSYLtMX6JCgLfnsTHS7FXE=;
+ b=bY4Z5F5k8K7vdydMY6MTIvnecBOf7QvdUfO+1XvHDb1l5HBPxtDL/aiLCTQSo/BRLKayKj
+ t6zFsBJnv09slghkoki5zCz064mp0arBnfNtWrGJv+OITMpnU050prJeFbpf0v25PxmUDp
+ Tc5jtEkG4cVBqedqeqZkJBjjTYlUFbM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-604-nOR_slmYMBKQpG2ja4CHCA-1; Mon, 25 Sep 2023 04:53:59 -0400
+X-MC-Unique: nOR_slmYMBKQpG2ja4CHCA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C41EE29A9D42;
+ Mon, 25 Sep 2023 08:53:58 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.40])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 960C340C2070;
+ Mon, 25 Sep 2023 08:53:57 +0000 (UTC)
+Date: Mon, 25 Sep 2023 09:53:55 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, armbru@redhat.com,
+ philmd@linaro.org, Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: Re: [PATCH] qemu-nbd: changes towards enabling -Wshadow=local
+Message-ID: <ZRFKo+PzSY5/zLBB@redhat.com>
+References: <20230922205019.2755352-2-eblake@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:w9Xc5IXrQvt3haz2KTcSi1nxmxTQ0zQ15RLdOj87X4BkTdTOy4r
- wCXxJb17lNEOWDl5L9jcgdkSCQl4k2AXeFCNmNwXjnjdGK1aMPXgKGvmlyrtZNdgl+bJbwe
- hlv4vFVG5Uj50YubG6bSMFsiXWL3EravSsRx1GAD/TQFc7MOHh+h9IKchihvNCZEnQCn+L9
- ZnXXYPUTNZs4v070CXBkQ==
-UI-OutboundReport: notjunk:1;M01:P0:vG+g2/lMua4=;pKIivCpj+O11dMDaba3Rkaj1WBP
- uYdzvAoKqX+bWVnTL6aSJ2zQa7s0z0cUo9Xf5ejlWr1Hff1mvWcWavS7F0K0iqHUw156znqD+
- Rm+3JnobxGnXuXfyNtV0ZftsSIWiGyfFJctrPzRtem2sHY1QOwlkxSTQT9SMSTCwKSqYkP9YH
- a8yM9D1oiyWk2Zbc3ZucU8Bulw58XMLsCu9jFR1O8Oiu3sHx33FePxec9vEaTUzgCCAmZTJHT
- mY/K6v1i+tegmp8Pyd6BO0NNxqPLFJas5YSKg9/mmCLkeX/rxw6uiCdSEkobz7iNDu9GhZlz0
- ykDFpbQ1CSE9J7Gcw5SvlURmgEJES8lTuWN+3QhBws2LaWqLnB8mv6JlnfNQlym4XVabLVWnu
- AH8DVX8krK+Edfwk872Ku/FFkdo2Prn3zY1bybGB4LW87SEdDGXFYFl7evLaffmP7zdvPUPPM
- l8rQvRDxZozOZYnF0SRa7fvkyuw22jjuV0yM6Vh8VuCYzWgpUu1WuFMowP6Pj0n8CslTSEDUI
- YKsdtzMv9Jf/xJeN1L0fJWjmvTTHPX0jWgrvERrbBDGxtyBb3iu5eNteb56rW3KF7CbcJmhJH
- oxu5sv3lcUY5kjBz0rVV0iS51srhvVT58cmxVG3Kfvm84/WdNYtTYMaV1OmyaW/xMMMUE1M0g
- UOPby18wtVOCBC3V326kDTxt9pK75aGFqt9grNa0KG2GXU1wP7UVUrpK1bd9LVPXfJcGfSclG
- wQGdBTACJlVxoZDDdNMCsJSmvYtNzB/+aPzB9T4cY/Mrl8pfyn/DixBb1UwRXvC1yol1PuR1W
- 8aIo/Vlf6fzWEARbhIKgGvW92sIXzXqlhYp2MEPisd+zebQELlvNGunrvw5HB4yiT+OxeAiXK
- mS4AdsKJ5HWQpDw==
-Received-SPF: none client-ip=217.72.192.73; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230922205019.2755352-2-eblake@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,57 +80,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix following warnings
+On Fri, Sep 22, 2023 at 03:50:20PM -0500, Eric Blake wrote:
+> Address all compiler complaints from -Wshadow in qemu-nbd.  Several
+> instances of 'int ret' became shadows when commit 4fbec260 added 'ret'
+> at a higher scope in main.  More interesting was the 'void *ret'
+> capturing the result of a pthread; where we were conceptually doing
+> '(void*)(intptr_t)EXIT_FAILURE != NULL' which just feels wrong (even
+> though it happens to compile correctly), so it was worth a better
+> cleanup.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+> 
+> I'm happy to let Markus collect this with the growing pile on
+> shadow-next, instead of going through my NBD tree.
+> 
+>  qemu-nbd.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 
-.../disas/m68k.c: In function ‘print_insn_arg’:
-.../disas/m68k.c:1635:13: warning: declaration of ‘val’ shadows a previous local [-Wshadow=compatible-local]
- 1635 |         int val = fetch_arg (buffer, place, 5, info);
-      |             ^~~
-.../disas/m68k.c:1093:7: note: shadowed declaration is here
- 1093 |   int val = 0;
-      |       ^~~
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-Signed-off-by: Laurent Vivier <laurent@vivier.eu>
----
- disas/m68k.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/disas/m68k.c b/disas/m68k.c
-index aefaecfbd6cb..1f16e295ab41 100644
---- a/disas/m68k.c
-+++ b/disas/m68k.c
-@@ -1632,10 +1632,10 @@ print_insn_arg (const char *d,
-     case '2':
-     case '3':
-       {
--	int val = fetch_arg (buffer, place, 5, info);
-+	int reg = fetch_arg (buffer, place, 5, info);
-         const char *name = 0;
- 
--	switch (val)
-+	switch (reg)
- 	  {
- 	  case 2: name = "%tt0"; break;
- 	  case 3: name = "%tt1"; break;
-@@ -1655,12 +1655,12 @@ print_insn_arg (const char *d,
- 	      int break_reg = ((buffer[3] >> 2) & 7);
- 
- 	      (*info->fprintf_func)
--		(info->stream, val == 0x1c ? "%%bad%d" : "%%bac%d",
-+		(info->stream, reg == 0x1c ? "%%bad%d" : "%%bac%d",
- 		 break_reg);
- 	    }
- 	    break;
- 	  default:
--	    (*info->fprintf_func) (info->stream, "<mmu register %d>", val);
-+	    (*info->fprintf_func) (info->stream, "<mmu register %d>", reg);
- 	  }
- 	if (name)
- 	  (*info->fprintf_func) (info->stream, "%s", name);
+With regards,
+Daniel
 -- 
-2.41.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
