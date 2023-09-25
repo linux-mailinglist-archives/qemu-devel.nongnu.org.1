@@ -2,110 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E487ADD87
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344837ADD73
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:51:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkowN-00056l-Ri; Mon, 25 Sep 2023 13:00:11 -0400
+	id 1qkonW-00027M-F9; Mon, 25 Sep 2023 12:51:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkow3-00053t-VN
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:59:54 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkovy-0008Dt-0V
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:59:50 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32172a50356so6504250f8f.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:59:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695661184; x=1696265984; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jqSYDNSnY0nwFQ8ea2zEwJYdCQ/Mr4rxDQZrmwu1t7w=;
- b=wqReEPgdfY8RpEfLrRoJbR9Gb80YuscvDiY/MOnXNcAES8OVABaJJ7ujF9L8v8oxR0
- Vp11A8ay4h/FYewK8Ay2ahhoYjOA0LNH65ggaVJOt3REnGzEggeI9z1N1Pm+dB0aNEvK
- /gXI0m4s+HOI9JtPvbN8UgwO71WCMur6d77j2ML1MfxAjdlLpv1VIjQkaguhrhZzY7J4
- 9QKh9tfKulzkNW5UF+zxFggjizGvGgs/96zdnBAvAW7KyLJjnGO0vxmjxaZIc7HjG3fL
- JX6UY4z6Px4PWSgN64EGmbng/v3IoMLAmHo2iDwDtANnA0hk2s8deZ1AOTt9XPv5LMmk
- zQOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695661184; x=1696265984;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=jqSYDNSnY0nwFQ8ea2zEwJYdCQ/Mr4rxDQZrmwu1t7w=;
- b=PyHoxkwC/vJSCAFQ8kwuBRh9Pp4rXLyVRNCtsVt8lu8nNkssmWtrCFayD/sUmTqm5/
- HWLJrs2BxI8rimZ7m6wRniEy9Vga8Ife6ASGPVyNAQf7rRB6cZqESkOS2abG2EezLwcS
- oJeeYKYVxJ+zbZAIiv8pa6Y3gHkaR+eY6kHfplBvQLhIF8KimihX7LPmnPXz7P5Q5yd8
- eWros0zGoBseNrZqYAZTV2xh91cKHBoJ8rkqlXZMqo3hvcJ3HgOtfJV9YgBhga8h7HKh
- DwwJiqjRRSlA3u3C5lDaCtMx75Gf8IuhJW8/kDWlCrmR/RehY7Ey+kNOJUlP2e0/ptUn
- WJQQ==
-X-Gm-Message-State: AOJu0YzTaCG0l95hu8QULV1cEMDL0gz7ac2aW57LyoAyqsFUWwHwZ0OZ
- 9ZwPlpy0eITtAH0Feq8esfFwhQ==
-X-Google-Smtp-Source: AGHT+IH9GA9KAW7V6RTdPfPWmm0ieGHhT0nlwhyE1erZLl7CIQ3DNh/kh+xH1BH131U5wIFtJYFBMg==
-X-Received: by 2002:a05:6000:1cd1:b0:31f:d32c:a38d with SMTP id
- bf17-20020a0560001cd100b0031fd32ca38dmr6872948wrb.8.1695661184124; 
- Mon, 25 Sep 2023 09:59:44 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- b1-20020a5d4d81000000b003215c6e30cbsm12215349wru.104.2023.09.25.09.59.43
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 09:59:43 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 1651F1FFBB;
- Mon, 25 Sep 2023 17:59:43 +0100 (BST)
-References: <20230925144854.1872513-1-alex.bennee@linaro.org>
- <20230925144854.1872513-5-alex.bennee@linaro.org>
- <ZRG1g/2hWi8+AzNn@redhat.com>
-User-agent: mu4e 1.11.20; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, Marcin Juszkiewicz
- <marcin.juszkiewicz@linaro.org>, John Snow <jsnow@redhat.com>,
- libvir-list@redhat.com, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>, Daniel Henrique
- Barboza <danielhb413@gmail.com>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, Bastian Koppelmann
- <kbastian@mail.uni-paderborn.de>, Liu Zhiwei
- <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas
- Piggin <npiggin@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>, Eduardo
- Habkost <eduardo@habkost.net>, Cleber Rosa <crosa@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
- <thuth@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, Bin Meng
- <bin.meng@windriver.com>, Alexandre Iooss <erdnaxe@crans.org>, Xiaojuan
- Yang <yangxiaojuan@loongson.cn>, qemu-ppc@nongnu.org, David Hildenbrand
- <david@redhat.com>, Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
- <peter.maydell@linaro.org>, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Palmer Dabbelt <palmer@dabbelt.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Laurent Vivier <lvivier@redhat.com>, Yoshinori Sato
- <ysato@users.sourceforge.jp>, Leif Lindholm <quic_llindhol@quicinc.com>,
- Beraldo Leal <bleal@redhat.com>, Rabin Vincent <rabinv@axis.com>, "Edgar E
- . Iglesias" <edgar.iglesias@xilinx.com>
-Subject: Re: [PATCH 04/31] docs: mark CRIS support as deprecated
-Date: Mon, 25 Sep 2023 17:50:22 +0100
-In-reply-to: <ZRG1g/2hWi8+AzNn@redhat.com>
-Message-ID: <878r8urxxc.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qkonS-00027C-Kq
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:50:58 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qkonP-0006uT-Fd
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:50:58 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvTN2241sz6DBDW;
+ Tue, 26 Sep 2023 00:48:34 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 25 Sep
+ 2023 17:50:51 +0100
+Date: Mon, 25 Sep 2023 17:50:50 +0100
+To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Michael Tsirkin
+ <mst@redhat.com>, <linuxarm@huawei.com>
+CC: Fan Ni <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
+ <philmd@linaro.org>, Davidlohr Bueso <dave@stgolabs.net>, Gregory Price
+ <gregory.price@memverge.com>, Klaus Jensen <its@irrelevant.dk>, "Corey
+ Minyard" <cminyard@mvista.com>, Klaus Jensen <k.jensen@samsung.com>
+Subject: Re: [PATCH 00/19] QEMU: CXL mailbox rework and features
+Message-ID: <20230925173615.0000262d@huawei.com>
+In-Reply-To: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
+References: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -118,62 +65,53 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 25 Sep 2023 17:11:05 +0100
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+> Based on: [PATCH] hw/cxl: Fix local variable shadowing of cap_hdrs
+> Based on: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
+Missed one. 
+Based on: [PATCH v4 0/4] hw/cxl: Support emulating 4 HDM decoders throughout topology
 
-> On Mon, Sep 25, 2023 at 03:48:27PM +0100, Alex Benn=C3=A9e wrote:
->> This might be premature but while streamling the avocado tests I
->> realised the only tests we have are "check-tcg" ones. The aging
->> fedora-criss-cross image works well enough for developers but can't be
->> used in CI as we need supported build platforms to build QEMU.
->>=20
->> Does this mean the writing is on the wall for this architecture?
->>=20
->> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
->> Cc: Rabin Vincent <rabinv@axis.com>
->> Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
->> ---
->>  docs/about/deprecated.rst | 11 +++++++++++
->>  1 file changed, 11 insertions(+)
->>=20
->> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index dc4da95329..7cfe313aa6 100644
->> --- a/docs/about/deprecated.rst
->> +++ b/docs/about/deprecated.rst
->> @@ -399,6 +399,17 @@ Specifying the iSCSI password in plain text on the =
-command line using the
->>  used instead, to refer to a ``--object secret...`` instance that provid=
-es
->>  a password via a file, or encrypted.
->>=20=20
->> +TCG CPUs
->> +--------
->> +
->> +CRIS CPU architecture (since 8.1)
->> +'''''''''''''''''''''''''''''''''
->> +
->> +The CRIS architecture was pulled from Linux in 4.17 and the compiler
->> +is no longer packaged in any distro making it harder to run the
->> +``check-tcg`` tests. Unless we can improve the testing situation there
->> +is a chance the code will bitrot without anyone noticing.
->
-> Deprecated is generally a warning that we intend to delete the
-> feature.   If we're just going to relegate it to untested
-> status (what I'd call "tier 3" quality), then we should document
-> that elsewhere.  I don't mind which way we go.
+> Based on: [PATCH V2] hw/pci-bridge/cxl-upstream: Add serial number extended capability support
+> Based on: [PATCH v3 0/4] hw/cxl: Line length reduction and related
+> Based on: [PATCH v6 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management interface model
+> 
+> I'm assuming this last dependency will go via a different tree though there
+> is an outstanding request for tests. That equally applies to the CXL setup,
+> but there are lot of moving parts. I'll experiment with basic testing
+> of the MCTP I2C device whilst this is being reviewed.
+> 
+> Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230913132523.29780-1-Jonathan.Cameron@huawei.com
+> Based on: Message ID: 20230913133615.29876-1-Jonathan.Cameron@huawei.com
+> Based on: Message ID: 20230919093434.1194-1-Jonathan.Cameron@huawei.com
+> Based on: Message ID: 20230925152258.5444-1-Jonathan.Cameron@huawei.com
+And to match above, the above should have been first.
 
-We do have reasonably good coverage with tests/tcg/cris but of course
-without a compiler we can't build them.
+> Based on: Message ID: 20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com
 
-Both nios2 and microblaze have build-toolchain scripts which can be used
-to re-create containers. However my preference is having pre-built
-toolchains hosted by others like we do for loongarch, hexagon, xtensa
-and tricore. Then the docker image can simply curl them into an image.
+So should be
+Based on: [PATCH] hw/cxl: Fix local variable shadowing of cap_hdrs
+Based on: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
+Based on: [PATCH v4 0/4] hw/cxl: Support emulating 4 HDM decoders throughout topology
+Based on: [PATCH V2] hw/pci-bridge/cxl-upstream: Add serial number extended capability support
+Based on: [PATCH v3 0/4] hw/cxl: Line length reduction and related
+Based on: [PATCH v6 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management interface model
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230913132523.29780-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230913133615.29876-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230919093434.1194-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com
+
+Sorry about that.
+
+Jonathan
 
