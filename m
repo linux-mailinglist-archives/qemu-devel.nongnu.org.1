@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F080C7AD6BD
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E9C7AD6BE
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:11:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkjTZ-0000hO-Pc; Mon, 25 Sep 2023 07:10:05 -0400
+	id 1qkjUJ-00013E-6l; Mon, 25 Sep 2023 07:10:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1qkjTV-0000gf-Bj
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:10:01 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qkjU5-0000vQ-IA
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:10:41 -0400
+Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
- id 1qkjTT-0005aL-In
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:10:01 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1c44a25bd0bso52805885ad.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 04:09:58 -0700 (PDT)
+ id 1qkjU3-00063O-US
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:10:37 -0400
+Received: by mail-pl1-x62c.google.com with SMTP id
+ d9443c01a7336-1c5c91bece9so43878915ad.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 04:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695640198; x=1696244998; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1695640234; x=1696245034; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=TS+cakekHUbEFVZDWRxMWd3aE9uo+32F1PaZKZpCiHg=;
- b=hEYOhAQfXAWGrHDziqlfnxmfMvnOdrwmKRWZOOmWIbhxsbd98FUrQfafFi1G880tvJ
- TJgY6Eg4ARpLWQrExyglM4EMK20/XrDrluZ3X82jRaiShNJayDBvijiFJYstEhHp92E/
- Zv2z2fgbvz1LllfSKRozWxBXXJmMe5actZ/yITJ1mGTJ1c0DyAhQU/JBIR6EeCACAnud
- NHx+MVCMA0guqjMLkpIydvO8G/2cOpWwvZlE+FferN5hduQVNt/3T3MdZLhjfc1RXH8j
- sDGyz4hl58Ad4EcJ6FOjzmtVXnaQIQ0cFJzQBV26kNRuFvBQtMGZrqwXyEVz7xuUfVWk
- 7TvQ==
+ bh=BvX2+sVn3mYCB1tN/Qo4MV8jbyR8oE8a/ORQJtmCsgc=;
+ b=ZM8SPrZ/PmtYSeBF+n8ADEBDIoTSuaYSy6XzHMxxKivlFegsgw19LCZ0TSZF4FujtJ
+ ejv2ZpKvCleR99+p35u1BE9u5XyAYNA7PtJxPvwzruX+nJYtWq511qJ3QdBXuUPdKDL5
+ 7t84cvppuTppI0Dakav0OU71h9fBLO8H3V20Bhjro/qQ/CO8ZYILvqIF7sRrHWfJBt/C
+ cLS9CZnpxzSd1nnkm95bzEmWCqi1OiMh34URQGkAyTjj04XJ2b6Mq3k31GiEsfY9ojkQ
+ sKhOxJontvcoCFOYzG/r+sc4o3pvZ9IJJUuxfHMAXA/0ispuPmXBvbyWt6R+10NBSruZ
+ XxGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695640198; x=1696244998;
+ d=1e100.net; s=20230601; t=1695640234; x=1696245034;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=TS+cakekHUbEFVZDWRxMWd3aE9uo+32F1PaZKZpCiHg=;
- b=IFP/7JZr54Gdfy+bqhS0Olt6H3y1/j+pPrUGRuKHXR6pBuDRZr6ZeB54kDvZI3TXB/
- CBaqOQmhhV+KlSI4eDTIns+7DE4SFcRPwi+QtuAbmyyy7qdOd0wj2Hr7nFFeL9NVUSY/
- Z7zkyLMfloygHduRV/CHir7paCdBbvojQs1L92/BdAYNyX5xUqRLEDAdNxI4bRV6/DVQ
- HUhEAxohzK39rOKlPpRZerzjQo4k/R4m1TqH7pBA1GnJkeP5B4guj+L9xnEFAfF3J78J
- hj8oKqqdQUgvA9alELmbfC2RtsUKREitvNO+pug7i5ydbEjYm1eIqthca56wg6o1wzCg
- rKuQ==
-X-Gm-Message-State: AOJu0YwHrHOAoVZrY7fOdNP/fWkbOS/JIIa5N/gCneUceXY6US66VAzs
- 9n2bFUHZQdRsGGcRuzPgPOu+SA==
-X-Google-Smtp-Source: AGHT+IHlXWS+1Jvt+0R/H0zebZ45LCA9h74+cHYJdZypCzqheKbiEDMdGmnISMzHIT45QNAZhfLSpg==
-X-Received: by 2002:a17:902:d483:b0:1b8:a67f:1c15 with SMTP id
- c3-20020a170902d48300b001b8a67f1c15mr15645373plg.25.1695640197417; 
- Mon, 25 Sep 2023 04:09:57 -0700 (PDT)
+ bh=BvX2+sVn3mYCB1tN/Qo4MV8jbyR8oE8a/ORQJtmCsgc=;
+ b=rm7sFZFWHgImvGtHj6hT8jCbEoPDd0chY9gArzS1I++6N10k/AYdsgfqxacUw2z2vB
+ ls02psWw4BPBVVYezImcy38gcTc+bXevwG5TxOaYI9cAoN2WrAFglAf/EyuOEKV9RkwL
+ dVVAP/pJGqL9wBRMmcMlh84ThoM61RPjuW6RRYizxSMntZdljRQoTirxzPU/uaBQ8Vh4
+ CzFrO5Vr7M6mQW9+4fFIfZU+TsTzNGii23lgtDAXpGWfsfp3jOiiwVVxlV2/3kO8faNp
+ 0fnVFOze07C2NDh6R3ZTMThanMs3RMK5SzOR4XgoXKHK7lHqiB0wg13KyxhAeBvYfMSl
+ IZlw==
+X-Gm-Message-State: AOJu0Yw6MnBlrdPFYIZ4kqra3kISaUz7RO/DuvJXAALaxWGBUIhBV8Vb
+ AWh7iapZ8BW8WweBFQSD1cdLSQ==
+X-Google-Smtp-Source: AGHT+IHZL8Q7lLAUUnCqbzWnlc1zd8CEkgGl1WcMIWfpOuk/KZGaEFEIPuTXhKUKMHY0bK/vDQNXOQ==
+X-Received: by 2002:a17:902:ab1a:b0:1c5:cc30:7329 with SMTP id
+ ik26-20020a170902ab1a00b001c5cc307329mr4466578plb.54.1695640234560; 
+ Mon, 25 Sep 2023 04:10:34 -0700 (PDT)
 Received: from mchitale-vm.. ([103.97.165.210])
  by smtp.googlemail.com with ESMTPSA id
- b8-20020a170902d50800b001c44c8d857esm8461096plg.120.2023.09.25.04.09.54
+ n11-20020a170902d2cb00b001c06dcd453csm8527791plc.236.2023.09.25.04.10.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 04:09:56 -0700 (PDT)
+ Mon, 25 Sep 2023 04:10:34 -0700 (PDT)
 From: Mayuresh Chitale <mchitale@ventanamicro.com>
 To: qemu-riscv@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Mayuresh Chitale <mchitale@ventanamicro.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH] target/riscv: pmp: Clear pmp/smepmp bits on reset
-Date: Mon, 25 Sep 2023 16:39:46 +0530
-Message-Id: <20230925110946.541019-1-mchitale@ventanamicro.com>
+Subject: [PATCH v2] target/riscv: pmp: Ignore writes when RW=01
+Date: Mon, 25 Sep 2023 16:40:25 +0530
+Message-Id: <20230925111025.543094-1-mchitale@ventanamicro.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=mchitale@ventanamicro.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
+ envelope-from=mchitale@ventanamicro.com; helo=mail-pl1-x62c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,73 +90,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-As per the Priv and Smepmp specifications, certain bits such as the 'L'
-bit of pmp entries and mseccfg.MML can only be cleared upon reset and it
-is necessary to do so to allow 'M' mode firmware to correctly reinitialize
-the pmp/smpemp state across reboots.
+As per the Priv spec: "The R, W, and X fields form a collective WARL
+field for which the combinations with R=0 and W=1 are reserved."
+However currently such writes are not ignored as ought to be. The
+combinations with RW=01 are allowed only when the Smepmp extension
+is enabled and mseccfg.MML is set.
 
 Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
 ---
- target/riscv/cpu.c | 11 +++++++++++
- target/riscv/pmp.c | 10 ++++++++++
- target/riscv/pmp.h |  1 +
- 3 files changed, 22 insertions(+)
+ target/riscv/pmp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 0fb01788e7..561567651e 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -761,6 +761,17 @@ static void riscv_cpu_reset_hold(Object *obj)
-     }
-     /* mmte is supposed to have pm.current hardwired to 1 */
-     env->mmte |= (EXT_STATUS_INITIAL | MMTE_M_PM_CURRENT);
-+
-+    /*
-+     * Clear mseccfg and unlock all the PMP entries upon reset.
-+     * This is allowed as per the priv and smepmp specifications
-+     * and is needed to clear stale entries across reboots.
-+     */
-+    if (riscv_cpu_cfg(env)->ext_smepmp) {
-+        env->mseccfg = 0;
-+    }
-+
-+    pmp_unlock_entries(env);
- #endif
-     env->xl = riscv_cpu_mxl(env);
-     riscv_cpu_update_mask(env);
 diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
-index f498e414f0..5b14eb511a 100644
+index 5b14eb511a..8e25f145e0 100644
 --- a/target/riscv/pmp.c
 +++ b/target/riscv/pmp.c
-@@ -129,6 +129,16 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
-     }
- }
- 
-+void pmp_unlock_entries(CPURISCVState *env)
-+{
-+    uint32_t pmp_num = pmp_get_num_rules(env);
-+    int i;
-+
-+    for (i = 0; i < pmp_num; i++) {
-+        env->pmp_state.pmp[i].cfg_reg &= ~PMP_LOCK;
-+    }
-+}
-+
- static void pmp_decode_napot(target_ulong a, target_ulong *sa,
-                              target_ulong *ea)
- {
-diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
-index b296ea1fc6..0ab60fe15f 100644
---- a/target/riscv/pmp.h
-+++ b/target/riscv/pmp.h
-@@ -82,6 +82,7 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
- void pmp_update_rule_nums(CPURISCVState *env);
- uint32_t pmp_get_num_rules(CPURISCVState *env);
- int pmp_priv_to_page_prot(pmp_priv_t pmp_priv);
-+void pmp_unlock_entries(CPURISCVState *env);
- 
- #define MSECCFG_MML_ISSET(env) get_field(env->mseccfg, MSECCFG_MML)
- #define MSECCFG_MMWP_ISSET(env) get_field(env->mseccfg, MSECCFG_MMWP)
+@@ -120,6 +120,11 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+         if (locked) {
+             qemu_log_mask(LOG_GUEST_ERROR, "ignoring pmpcfg write - locked\n");
+         } else {
++            /* If !mseccfg.MML then ignore writes with encoding RW=01 */
++            if ((val & PMP_WRITE) && !(val & PMP_READ) &&
++                !MSECCFG_MML_ISSET(env)) {
++                val &= ~(PMP_WRITE | PMP_READ);
++            }
+             env->pmp_state.pmp[pmp_index].cfg_reg = val;
+             pmp_update_rule(env, pmp_index);
+         }
 -- 
 2.34.1
 
