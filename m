@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF7B7ADEC9
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957407ADF03
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:36:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqHe-0001JM-Fy; Mon, 25 Sep 2023 14:26:14 -0400
+	id 1qkqHh-0001KY-FL; Mon, 25 Sep 2023 14:26:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHd-0001IW-7B
+ id 1qkqHd-0001JL-Uq
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:13 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHa-0007Kt-Ib
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:12 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-401d6f6b2e0so55319645e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:26:10 -0700 (PDT)
+ id 1qkqHc-0007LJ-5u
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:13 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4053d53a1bfso58994465e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:26:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666369; x=1696271169; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666370; x=1696271170; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=lQFZwC0LDHIWACO0/rcAxG3mL7h/9iuVdTmtYhQ4JHQ=;
- b=TblBe7Eb5Hlaeg1b2jEfJS+BbIr0XYYIfYZgo9gLYXsYSKTGnr907DDal9RNTfhWvU
- R1IiwInby3/Q8IE3QkZ9fx4kxltGdp+SE8bSQtit43qMHzrrJc2RCBGNkwoTx2fijmno
- HOQn1S/6Te706KFb5CquXOnj1or30uC7dBmt+tBqcv+St4hBCfUQ9uZ/670vWXGzklMT
- gq96ew2X5F7nnTNUm0RaQZR73JKA4Fr2mQiiBl8rlw3k+09t8seNxWEpapKz+9r6tVZY
- x9bAkcl5BV7YsD4AL8Lw1Vrp+WycWr/YXsJo0RFUjYxP16qXGMj8/uRMzeZlfFJkb12m
- GacA==
+ bh=+e4yFlvYdu/hYdNO+o3b9LtvOAePOEZiwqvJAYO+t24=;
+ b=J4vW5JbB9w0ezf8PyPBgJuvfgW7Oo7buoMrqqf148JG5LXO5xjBfIU+U76fXeHhpX0
+ V5up92XM3UoY7XJRHLh8YkjbpIsuSD+tFysKilbaY85lFRWCPxpr/P03iGmMvd1bRgsP
+ xZ87xmP7MpsDs7aj0tGN5hHYWdiclJWb41yNZGylLNNJbb7ZZyH8kthL5dueRprssqbW
+ gkZnAXhPiAUFk5bqEi3TfkDtA8mo/YI40B9sO7Wf20+VO5ehNjG2vp35+yZwHatVSCkl
+ cFUk2AruWWAeVdqweX7thR7FzJk+9mmaM3QwIUNP3AuRJXD7m7xcghz0c0Z7wVQXWMiq
+ Ko4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666369; x=1696271169;
+ d=1e100.net; s=20230601; t=1695666370; x=1696271170;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lQFZwC0LDHIWACO0/rcAxG3mL7h/9iuVdTmtYhQ4JHQ=;
- b=wtK8djPEnb7ZPMW3u7C02noNBIee98yr74JnT2jjvJD4ZfvOohJhdLU13QLFnqtQbl
- ISanbxwR9nfOxjTaZFRPUAae9DPLDcMkKRa0RSjHOZZ7TloCB0rsdeGEiRt+dJgI3qoK
- zoP9385qIGnFr7rHXhSk3mNC+mKu6viNaor5YJDXioHN9AmP51fdag1lxneYSdRpfKnp
- +xrR745+KcTeKc6xW1in/0eRLke/6dVNq9S/v+CeIxaiAM/rq6XKZfLbdQp3JVTs/KAm
- t/ftj9BIxMOeHWqrU4z1VcgW33/ckMPd8mW/cf0dD9Z/uAac8Wd6kM0BSSO9uIgVN3fp
- bXTA==
-X-Gm-Message-State: AOJu0YypWth66vwA7VVGKnlNN2eOS4SZt1deSyUTti8EsLH9mJXMZ9cJ
- v4Bv4W3tOye7FAcuFY5Hn6+8j2P0E8Y=
-X-Google-Smtp-Source: AGHT+IH8wG8BWytw0VdBSk+SCDdZfFsKuSoHvetMch+K2Fa6rMj1IvOH9dg6SYnzRTvgRLP/x5uBoQ==
-X-Received: by 2002:a05:600c:22ca:b0:401:b0f2:88d3 with SMTP id
- 10-20020a05600c22ca00b00401b0f288d3mr323974wmg.19.1695666368851; 
- Mon, 25 Sep 2023 11:26:08 -0700 (PDT)
+ bh=+e4yFlvYdu/hYdNO+o3b9LtvOAePOEZiwqvJAYO+t24=;
+ b=O4uDyKKZ/x7iq298LlEVkRjgAtHviOu3ZocqlIsQvsCxr7yCCvKArYrTl/f71NoR0w
+ OyjtNAZWxfRFXj1vPyklxpeh46FKqyy0h0XRvKTSXvwVNCg9Bhc9UT3ELX+BdoEmp4z/
+ hNEfShdAC/0PoQM+8JkS3eonaald+FGY9Jcank27nEQZgu1xmQ7Oy4JdXFKhb8KjlTON
+ hAxLVs7AkwE5WL49AsTow5MVHLvW7umZfNsu04v1GNkWhkvRW/h6HURroc8WG6/hgVoj
+ TCbehjvZCk2E1+uKb713ejLL8EtF3YOm+I+W4b6PA+RewT1rGFib4urQANJcaW4/1/d0
+ lYGQ==
+X-Gm-Message-State: AOJu0Yzbjdoh/cJhXChKOAbrEEtBVwLUdukqlg1uXMr+nj0QgvD8gfTd
+ PlCdjcHeO5G4elbFgOvgLj187JIcBdE=
+X-Google-Smtp-Source: AGHT+IErLCkzzfphTceps2SLpibn8bI7BSNAnHLgeYYC7sndT6BqbEywdb6MCWv8GXHO4xAkaaplmA==
+X-Received: by 2002:a7b:c456:0:b0:405:4c3a:796f with SMTP id
+ l22-20020a7bc456000000b004054c3a796fmr7088676wmi.2.1695666370192; 
+ Mon, 25 Sep 2023 11:26:10 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.26.07
+ 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.26.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:26:08 -0700 (PDT)
+ Mon, 25 Sep 2023 11:26:09 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v5 14/28] bsd-user: Implement getrlimit(2) and setrlimit(2)
-Date: Mon, 25 Sep 2023 21:24:11 +0300
-Message-ID: <20230925182425.3163-15-kariem.taha2.7@gmail.com>
+Subject: [PATCH v5 15/28] bsd-user: Implement several get/set system calls:
+Date: Mon, 25 Sep 2023 21:24:12 +0300
+Message-ID: <20230925182425.3163-16-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 References: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -96,97 +96,185 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
+getpid(2), getppid(2), getpgrp(2)
+setreuid(2), setregid(2)
+getuid(2), geteuid(2), getgid(2), getegid(2), getpgid(2)
+setuid(2), seteuid(2), setgid(2), setegid(2), setpgid(2)
+
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/bsd-proc.h           | 59 +++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  8 +++++
- 2 files changed, 67 insertions(+)
+ bsd-user/bsd-proc.h           | 90 +++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 60 +++++++++++++++++++++++
+ 2 files changed, 150 insertions(+)
 
 diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-index 133c1b0eaf..38d1324034 100644
+index 38d1324034..6ff07c0ac3 100644
 --- a/bsd-user/bsd-proc.h
 +++ b/bsd-user/bsd-proc.h
-@@ -137,4 +137,63 @@ static inline abi_long do_bsd_getrusage(abi_long who, abi_ulong target_addr)
+@@ -196,4 +196,94 @@ static inline abi_long do_bsd_setrlimit(abi_long arg1, abi_ulong arg2)
      return ret;
  }
  
-+/* getrlimit(2) */
-+static inline abi_long do_bsd_getrlimit(abi_long arg1, abi_ulong arg2)
++/* getpid(2) */
++static inline abi_long do_bsd_getpid(void)
 +{
-+    abi_long ret;
-+    int resource = target_to_host_resource(arg1);
-+    struct target_rlimit *target_rlim;
-+    struct rlimit rlim;
-+
-+    switch (resource) {
-+    case RLIMIT_STACK:
-+        rlim.rlim_cur = target_dflssiz;
-+        rlim.rlim_max = target_maxssiz;
-+        ret = 0;
-+        break;
-+
-+    case RLIMIT_DATA:
-+        rlim.rlim_cur = target_dfldsiz;
-+        rlim.rlim_max = target_maxdsiz;
-+        ret = 0;
-+        break;
-+
-+    default:
-+        ret = get_errno(getrlimit(resource, &rlim));
-+        break;
-+    }
-+    if (!is_error(ret)) {
-+        if (!lock_user_struct(VERIFY_WRITE, target_rlim, arg2, 0)) {
-+            return -TARGET_EFAULT;
-+        }
-+        target_rlim->rlim_cur = host_to_target_rlim(rlim.rlim_cur);
-+        target_rlim->rlim_max = host_to_target_rlim(rlim.rlim_max);
-+        unlock_user_struct(target_rlim, arg2, 1);
-+    }
-+    return ret;
++    return get_errno(getpid());
 +}
 +
-+/* setrlimit(2) */
-+static inline abi_long do_bsd_setrlimit(abi_long arg1, abi_ulong arg2)
++/* getppid(2) */
++static inline abi_long do_bsd_getppid(void)
 +{
-+    abi_long ret;
-+    int resource = target_to_host_resource(arg1);
-+    struct target_rlimit *target_rlim;
-+    struct rlimit rlim;
++    return get_errno(getppid());
++}
 +
-+    if (RLIMIT_STACK == resource) {
-+        /* XXX We should, maybe, allow the stack size to shrink */
-+        ret = -TARGET_EPERM;
-+    } else {
-+        if (!lock_user_struct(VERIFY_READ, target_rlim, arg2, 1)) {
-+            return -TARGET_EFAULT;
-+        }
-+        rlim.rlim_cur = target_to_host_rlim(target_rlim->rlim_cur);
-+        rlim.rlim_max = target_to_host_rlim(target_rlim->rlim_max);
-+        unlock_user_struct(target_rlim, arg2, 0);
-+        ret = get_errno(setrlimit(resource, &rlim));
-+    }
-+    return ret;
++/* getuid(2) */
++static inline abi_long do_bsd_getuid(void)
++{
++    return get_errno(getuid());
++}
++
++/* geteuid(2) */
++static inline abi_long do_bsd_geteuid(void)
++{
++    return get_errno(geteuid());
++}
++
++/* getgid(2) */
++static inline abi_long do_bsd_getgid(void)
++{
++    return get_errno(getgid());
++}
++
++/* getegid(2) */
++static inline abi_long do_bsd_getegid(void)
++{
++    return get_errno(getegid());
++}
++
++/* setuid(2) */
++static inline abi_long do_bsd_setuid(abi_long arg1)
++{
++    return get_errno(setuid(arg1));
++}
++
++/* seteuid(2) */
++static inline abi_long do_bsd_seteuid(abi_long arg1)
++{
++    return get_errno(seteuid(arg1));
++}
++
++/* setgid(2) */
++static inline abi_long do_bsd_setgid(abi_long arg1)
++{
++    return get_errno(setgid(arg1));
++}
++
++/* setegid(2) */
++static inline abi_long do_bsd_setegid(abi_long arg1)
++{
++    return get_errno(setegid(arg1));
++}
++
++/* getpgid(2) */
++static inline abi_long do_bsd_getpgid(pid_t pid)
++{
++    return get_errno(getpgid(pid));
++}
++
++/* setpgid(2) */
++static inline abi_long do_bsd_setpgid(int pid, int pgrp)
++{
++    return get_errno(setpgid(pid, pgrp));
++}
++
++/* getpgrp(2) */
++static inline abi_long do_bsd_getpgrp(void)
++{
++    return get_errno(getpgrp());
++}
++
++/* setreuid(2) */
++static inline abi_long do_bsd_setreuid(abi_long arg1, abi_long arg2)
++{
++    return get_errno(setreuid(arg1, arg2));
++}
++
++/* setregid(2) */
++static inline abi_long do_bsd_setregid(abi_long arg1, abi_long arg2)
++{
++    return get_errno(setregid(arg1, arg2));
 +}
 +
  #endif /* !BSD_PROC_H_ */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 5d8693ed55..5cb6086230 100644
+index 5cb6086230..7565e69e76 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -247,6 +247,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_getrusage(arg1, arg2);
+@@ -255,6 +255,66 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_setrlimit(arg1, arg2);
          break;
  
-+    case TARGET_FREEBSD_NR_getrlimit: /* getrlimit(2) */
-+        ret = do_bsd_getrlimit(arg1, arg2);
++    case TARGET_FREEBSD_NR_getpid: /* getpid(2) */
++        ret = do_bsd_getpid();
 +        break;
 +
-+    case TARGET_FREEBSD_NR_setrlimit: /* setrlimit(2) */
-+        ret = do_bsd_setrlimit(arg1, arg2);
++    case TARGET_FREEBSD_NR_getppid: /* getppid(2) */
++        ret = do_bsd_getppid();
++        break;
++
++    case TARGET_FREEBSD_NR_getuid: /* getuid(2) */
++        ret = do_bsd_getuid();
++        break;
++
++    case TARGET_FREEBSD_NR_geteuid: /* geteuid(2) */
++        ret = do_bsd_geteuid();
++        break;
++
++    case TARGET_FREEBSD_NR_getgid: /* getgid(2) */
++        ret = do_bsd_getgid();
++        break;
++
++    case TARGET_FREEBSD_NR_getegid: /* getegid(2) */
++        ret = do_bsd_getegid();
++        break;
++
++    case TARGET_FREEBSD_NR_setuid: /* setuid(2) */
++        ret = do_bsd_setuid(arg1);
++        break;
++
++    case TARGET_FREEBSD_NR_seteuid: /* seteuid(2) */
++        ret = do_bsd_seteuid(arg1);
++        break;
++
++    case TARGET_FREEBSD_NR_setgid: /* setgid(2) */
++        ret = do_bsd_setgid(arg1);
++        break;
++
++    case TARGET_FREEBSD_NR_setegid: /* setegid(2) */
++        ret = do_bsd_setegid(arg1);
++        break;
++
++    case TARGET_FREEBSD_NR_getpgrp: /* getpgrp(2) */
++        ret = do_bsd_getpgrp();
++        break;
++
++    case TARGET_FREEBSD_NR_getpgid: /* getpgid(2) */
++         ret = do_bsd_getpgid(arg1);
++         break;
++
++    case TARGET_FREEBSD_NR_setpgid: /* setpgid(2) */
++         ret = do_bsd_setpgid(arg1, arg2);
++         break;
++
++    case TARGET_FREEBSD_NR_setreuid: /* setreuid(2) */
++        ret = do_bsd_setreuid(arg1, arg2);
++        break;
++
++    case TARGET_FREEBSD_NR_setregid: /* setregid(2) */
++        ret = do_bsd_setregid(arg1, arg2);
 +        break;
 +
  
