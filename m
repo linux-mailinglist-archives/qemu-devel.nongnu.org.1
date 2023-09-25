@@ -2,83 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04ED57ADE9D
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E28FD7ADE9B
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:26:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqHY-0001GJ-Q2; Mon, 25 Sep 2023 14:26:08 -0400
+	id 1qkqHW-0001Dn-S3; Mon, 25 Sep 2023 14:26:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHT-0001Cg-CC
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:03 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qkqHS-0001CJ-Qz
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:02 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHO-0007HO-AY
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:03 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40572aeb6d0so35482595e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:25:57 -0700 (PDT)
+ id 1qkqHP-0007Hd-Sj
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:02 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4054496bde3so53072745e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:25:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666356; x=1696271156; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666358; x=1696271158; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gtr4AZcHHxXXmu6rDPP2dwqMNgqNWW0hP+jIdi1BnOc=;
- b=j9B6hG6qi+qaMPpqu6MGAxaaLprEw5afbtaMPug3tcB3Q6hCzLLZHePlNL96SNreVe
- savVbVVLtJawpvFl39/6tthLD0a5B02ecrX8GhRKAbEgtgAwHYLfd5NcWiji5wxR8yKj
- 6rzEn/e8jMKs+sSp/npNAhl7i5lqUJ0p6LbAucBpl9cLi35zmiRpKszNN3VJsOdbZOhr
- y63A5ss/rH3GdSZdHFeZXxa55j7WD0wxRWmrSJ5Jkq79zNcnyz1i8FsMq9nSvoD22FHF
- scej8lFF6hvdY8MvIOgv5kBUpMB/F0rDrDcVcQJu1E1njKcBBY+x3T8S2JOs3TlVt8Hx
- Pm9Q==
+ bh=8NgIQuhS1pWjXF2WQJZ+g0h0EHjHQYwR2fjodfnfROY=;
+ b=HaHy4kgnI5RQBZInNMicEXkHMpj/04PyhUEWMRziMJueRTtifBVrd80Sca29e6eX8l
+ CfEi+cReHOodSLceH0ghpMOcSgCyhxSC/ajMmw4rZX5qqt3SpIh7nMX7ZaIRQjLWMHVP
+ +wZ1zyWFBWJOlNRHAv6uCaHMx6shY3Fqx28aCTpDeGGjRczk/fVMyc+RoZGmGAfDQMmH
+ v/gjbJii36z6NdHgJALwIoGqbsuLn1GiQBAuSCoChUPJMMjYaq4pXXQpiN0puznIU2K+
+ /1DNpeFq2yYDjHKPPM8bPLeWzXjcUNy6oEJ3/1IKmkNQFdI6QpyQhE3RB7gOPPMuI61/
+ Gr6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666356; x=1696271156;
+ d=1e100.net; s=20230601; t=1695666358; x=1696271158;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gtr4AZcHHxXXmu6rDPP2dwqMNgqNWW0hP+jIdi1BnOc=;
- b=XELmzJDwkXMyPbSyytoW4mTi+vreqqViZW72IDZyHmECduj9z4RhQh2QNU9C7nS3rR
- 852YGuZejl+HDnYD/lmaOec/1Bs+df0PSwXyVGI2oMsrA6x8jSRi7T263lHD8ksYwH9y
- lHDJ5LK9DRKitbtpHvEKcuWPZuLaKl77hPKF3eMOyJYYrf/jUIUO6CjWomEJ7j3Snbpo
- ZAHifgSjB2S1HQd63EXuvDSzwYU5toCoY3XQuJU1zImDDtSQXgmycMHkt0bXiTJAl2Mu
- wzVvd35CIAXj/xrVpCH5lnA7TToSb6pr1OPpD3cLa1hHAVW335UHhRweZe+9XvEsWeE0
- BdcA==
-X-Gm-Message-State: AOJu0Yxn4qBie00MXMVAIp1HKJqV33x1/tLs1v8fyzLnDHprhmBjKnW4
- vKrtvwjjWGSo5bUwjzyxw05DA7jemLg=
-X-Google-Smtp-Source: AGHT+IE5f7q5rBCBufMF0L41T+vobyWXvQa2+BGFjrwUNc7leNB6idDWz/Nf61ttjC0zfMgeiDgQCQ==
-X-Received: by 2002:a05:600c:22d8:b0:3fb:b3aa:1c8a with SMTP id
- 24-20020a05600c22d800b003fbb3aa1c8amr6027292wmg.16.1695666356506; 
- Mon, 25 Sep 2023 11:25:56 -0700 (PDT)
+ bh=8NgIQuhS1pWjXF2WQJZ+g0h0EHjHQYwR2fjodfnfROY=;
+ b=bV1aEc94lTYwu8Vm3imbKnuR38n+Q5D02cFziPdE7Cmkeuz9DitVNz4VmCWFhBgi91
+ 9Uh+WSBnenGqqRBhIXeVLr6eoxdSb3/v78xdyAYLGOhK5xSXaCXb6JZuQEwXW1jMK/WR
+ V0C3mYfU8LimIFVwQst1lFbt5qGlII6TsTwVIZf1+Z38VTHVmEEqBviqIjkrEQwA2457
+ 5E+zEeWMETEGfzY1fuo9P36k97RzoNCbFXukXUj+yx+fGIqrmEeh1i1doijv39dVWVqo
+ /DGwNxriYCyZF5RvTDbruM4speZBM/52D8nd/vbR5Pm1VCcNnDHsmeSP6GpFDpN5EbC2
+ mmrg==
+X-Gm-Message-State: AOJu0YxLWSYxt76XBravKQ4CkhV7aVoji/B0BQkXne8by0lq/BREx8pN
+ 8UN3FBjtUXrtcU5HCX+AARY8/cuMT2k=
+X-Google-Smtp-Source: AGHT+IHRyj/YD2I3GFwx2hw34y/o9RgqA2T75SICF+xjNWSla6Bj6PAFBd06/MAcuepCRPcoXSudCg==
+X-Received: by 2002:a7b:c390:0:b0:402:f07c:4b48 with SMTP id
+ s16-20020a7bc390000000b00402f07c4b48mr6283145wmj.28.1695666357683; 
+ Mon, 25 Sep 2023 11:25:57 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.25.55
+ 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.25.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:25:56 -0700 (PDT)
+ Mon, 25 Sep 2023 11:25:57 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v5 04/28] bsd-user: Add freebsd_exec_common and
- do_freebsd_procctl to qemu.h.
-Date: Mon, 25 Sep 2023 21:24:01 +0300
-Message-ID: <20230925182425.3163-5-kariem.taha2.7@gmail.com>
+Subject: [PATCH v5 05/28] bsd-user: add extern declarations for bsd-proc.c
+ conversion functions
+Date: Mon, 25 Sep 2023 21:24:02 +0300
+Message-ID: <20230925182425.3163-6-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 References: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,26 +102,54 @@ Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/qemu.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ bsd-user/qemu-bsd.h | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
+ create mode 100644 bsd-user/qemu-bsd.h
 
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index d9507137cc..41c7bd31d3 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -249,6 +249,12 @@ abi_long get_errno(abi_long ret);
- bool is_error(abi_long ret);
- int host_to_target_errno(int err);
- 
-+/* os-proc.c */
-+abi_long freebsd_exec_common(abi_ulong path_or_fd, abi_ulong guest_argp,
-+        abi_ulong guest_envp, int do_fexec);
-+abi_long do_freebsd_procctl(void *cpu_env, int idtype, abi_ulong arg2,
-+        abi_ulong arg3, abi_ulong arg4, abi_ulong arg5, abi_ulong arg6);
+diff --git a/bsd-user/qemu-bsd.h b/bsd-user/qemu-bsd.h
+new file mode 100644
+index 0000000000..b93a0b7fd5
+--- /dev/null
++++ b/bsd-user/qemu-bsd.h
+@@ -0,0 +1,38 @@
++/*
++ *  BSD conversion extern declarations
++ *
++ *  Copyright (c) 2013 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
 +
- /* os-sys.c */
- abi_long do_freebsd_sysctl(CPUArchState *env, abi_ulong namep, int32_t namelen,
-         abi_ulong oldp, abi_ulong oldlenp, abi_ulong newp, abi_ulong newlen);
++#ifndef QEMU_BSD_H
++#define QEMU_BSD_H
++
++#include <sys/types.h>
++#include <sys/resource.h>
++
++/* bsd-proc.c */
++int target_to_host_resource(int code);
++rlim_t target_to_host_rlim(abi_llong target_rlim);
++abi_llong host_to_target_rlim(rlim_t rlim);
++abi_long host_to_target_rusage(abi_ulong target_addr,
++        const struct rusage *rusage);
++abi_long host_to_target_wrusage(abi_ulong target_addr,
++        const struct __wrusage *wrusage);
++int host_to_target_waitstatus(int status);
++void h2g_rusage(const struct rusage *rusage,
++        struct target_freebsd_rusage *target_rusage);
++
++#endif /* QEMU_BSD_H */
 -- 
 2.42.0
 
