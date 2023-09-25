@@ -2,75 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874CF7ADEB4
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:29:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E2B7ADEC8
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:31:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqK9-0008Hy-5L; Mon, 25 Sep 2023 14:28:49 -0400
+	id 1qkqKC-0008N8-Sh; Mon, 25 Sep 2023 14:28:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqK5-0008Cr-O0
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:45 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qkqK6-0008DW-7f
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:46 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqK3-0007kh-0x
+ id 1qkqK4-0007ko-8k
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:45 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-32320381a07so2993216f8f.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:28:42 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-32333fb6beeso191066f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666521; x=1696271321; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666522; x=1696271322; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=tWanWC67jhmn9FXRwvcRc23eY0xLvKm6663P3+ePW3g=;
- b=JgCCS0oR3cOwKwu/Jh+7z0S3jZ6diEkpJuAmgrAPZrgjnIVfI3A5PWTPXEPWr1fKsg
- of3l6YiHGAvr+ulScpUr499JkVSTL8VUgrdfTn87rYe8d/POOBhVcnAcTX1DGUJ2O9Li
- 7GNPk54kQPgN/2kPI/xTZa+ZE18PZEoLJtMgEp7hLOekFD/rn5diMbPIXb2zmuHEjb8k
- WPMGyA3wnxa6EvLcGS5mi2TLhuOSQZeMcL2jMBg+8bpg80JUqmoI81/j2Wc5Ln7Ax0OS
- KMhJ0kAflP5tQ1wXo5h7I0UxhRdyetYtZjVeI88ixrHdguPzaq6x2ZyZ77hm9h3Lbtft
- 00jg==
+ bh=Zuun86h4+Ki7eEXQiRwiN35p7fie3LoCiJTVqacEJnk=;
+ b=UCOP7AKBMYMp4ktGtuQ5DK1lVJ3G20xwGGP86TavUsJpTyP+X5xwZ2krtnB77Ej7E8
+ 2fKAbS55Gqb9QO090bRptNMgmOLKUlf3ETAiRN6Sn2sNQ9ov0T2RfZjPoDA0nLLQwY4/
+ 0TaFFxUnl10Bk8ZtL/XyddFsOK9hHcvaGOZEVOQUzlTPh/jG2+Tqa5p7KqPF3AHwsuvd
+ xk6aqbOEiUubwVgW72csig1L2D8aDn/p1XjEGLBxJCSxTNCaPJpmK9AV2H2eL9oHIpti
+ CbOPiaZ/Hs1DwqL5XxZ8Zk8sw8dqZEd0aIV3MjcCeSW7oDs/hm7qjG/aMxjnuRkl5fBk
+ Wkdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666521; x=1696271321;
+ d=1e100.net; s=20230601; t=1695666522; x=1696271322;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=tWanWC67jhmn9FXRwvcRc23eY0xLvKm6663P3+ePW3g=;
- b=SpfquESzi40LNbyrHrORPTBLV4uabt9NTomp5jkKGu+w4/Sxh6TbnSOD7If1Q70G3M
- +u4G+e2PlpFnK/wzSkxxqlw1f1kM7dHzYJqYskphaj/80QmcYsIiCtAFqooenJGqY4yR
- TJELJXCFrc1lP/orWGjZvlDVdDAaeZe6iV5SrOZL0BZqn0G2ni1F/LyG89PhIQ5qziWy
- Lo7/wjNtOBwge1RDfyjk13qm29h6Ocv8faHRHDANrtwVmQ9BhfE+5RJxt4T7uXP4MMEq
- +HjcYj0wZD3g5Lf7uCbsXd1TL3uUISSufvK0BAgZR9ynOG4gpzKnaWq3srDnCkKcP31l
- C77g==
-X-Gm-Message-State: AOJu0Yxxk8Q4o0jw7JCikJSrFpqeHB5O4/Dyuye9yx/GHy6CCG9Zdf7n
- OuJDhFB0o02DiH3ax70JPLJoCNdXpfY=
-X-Google-Smtp-Source: AGHT+IGcM9cb8jNiwOQ4luwwaG+iC8P/Dcg0MmjKZ10uTQvKgw71c3hDC1NkXuqysqSsn0Vhvjm3bQ==
-X-Received: by 2002:a5d:414d:0:b0:31f:eb8d:481f with SMTP id
- c13-20020a5d414d000000b0031feb8d481fmr6316407wrq.29.1695666521246; 
- Mon, 25 Sep 2023 11:28:41 -0700 (PDT)
+ bh=Zuun86h4+Ki7eEXQiRwiN35p7fie3LoCiJTVqacEJnk=;
+ b=TmxhR8xFVMVfRLpu7oO6Hwa6IBsocdTMzNMoNPP9R9bnt0S1yDH5EDzi5XwcUbAnip
+ W08gXguKP8ArbmwwkwbB5KTnam87q/dvaHO1vlwvlc/oNskQ8mIuA+TvUDyDVjbRGEqa
+ sZGLrG88tiyYqYrI/6pP6SpNg9pO4aF5A1CW2Wi7KDq7oMx2Pw7KZeus4D3fz3EoJs5r
+ s3/5+BvqqmDW2OFRHTSPxnv0t0l2scYvb4xPeDACHKudCQcFFUSZ56G+qsq0gVp1vump
+ ZDYgo2Pwp1XfCIybd07ULYAEygY6unuOQiWIeafzmCdp8f6YLTdI154/W8vYzd24nsXG
+ 9zdA==
+X-Gm-Message-State: AOJu0YxyZE6xQajve6Zd0EMeL/xfhQqnMq39B3UPf0frNbjK0amn1sP1
+ UstH7Suf2N1N9B5Orp2d8QQJGuzKGpA=
+X-Google-Smtp-Source: AGHT+IHS5m6gT3nIscK1qyodPO1eiiiDcMwBe81UW0YK09rOiWqiaRkFrJACi6H+HEzMCULCncM4fg==
+X-Received: by 2002:a5d:52c9:0:b0:314:3e77:f210 with SMTP id
+ r9-20020a5d52c9000000b003143e77f210mr6082787wrv.59.1695666522472; 
+ Mon, 25 Sep 2023 11:28:42 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.40
+ u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:28:40 -0700 (PDT)
+ Mon, 25 Sep 2023 11:28:42 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
+ Stacey Son <sson@FreeBSD.org>,
+ =?UTF-8?q?Mika=C3=ABl=20Urankar?= <mikael.urankar@gmail.com>,
  Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v6 07/23] bsd-user: Add bsd-mem.c to meson.build
-Date: Mon, 25 Sep 2023 21:26:53 +0300
-Message-ID: <20230925182709.4834-8-kariem.taha2.7@gmail.com>
+Subject: [PATCH v6 08/23] bsd-user: Implement target_set_brk function in
+ bsd-mem.c instead of os-syscall.c
+Date: Mon, 25 Sep 2023 21:26:54 +0300
+Message-ID: <20230925182709.4834-9-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 References: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,30 +98,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: Stacey Son <sson@FreeBSD.org>
+
+The definitions and variables names matches the corresponding ones in
+linux-user/syscall.c, for making later implementation of do_obreak easier
+
+Co-authored-by: Mikaël Urankar <mikael.urankar@gmail.com>
+Signed-off-by: Mikaël Urankar <mikael.urankar@gmail.com>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/bsd-mem.c   | 0
- bsd-user/meson.build | 1 +
- 2 files changed, 1 insertion(+)
- create mode 100644 bsd-user/bsd-mem.c
+ bsd-user/bsd-mem.c            | 32 ++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  4 ----
+ 2 files changed, 32 insertions(+), 4 deletions(-)
 
 diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/bsd-user/meson.build b/bsd-user/meson.build
-index 5243122fc5..6ee68fdfe7 100644
---- a/bsd-user/meson.build
-+++ b/bsd-user/meson.build
-@@ -7,6 +7,7 @@ bsd_user_ss = ss.source_set()
- common_user_inc += include_directories('include')
+index e69de29bb2..8834ab2e58 100644
+--- a/bsd-user/bsd-mem.c
++++ b/bsd-user/bsd-mem.c
+@@ -0,0 +1,32 @@
++/*
++ *  memory management system conversion routines
++ *
++ *  Copyright (c) 2013 Stacey D. Son
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
++ */
++#include "qemu/osdep.h"
++#include "qemu.h"
++#include "qemu-bsd.h"
++
++struct bsd_shm_regions bsd_shm_regions[N_BSD_SHM_REGIONS];
++
++abi_ulong target_brk;
++abi_ulong initial_target_brk;
++
++void target_set_brk(abi_ulong new_brk)
++{
++    target_brk = TARGET_PAGE_ALIGN(new_brk);
++    initial_target_brk = target_brk;
++}
+diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
+index ae92a2314c..4c99760a21 100644
+--- a/bsd-user/freebsd/os-syscall.c
++++ b/bsd-user/freebsd/os-syscall.c
+@@ -60,10 +60,6 @@ safe_syscall3(ssize_t, writev, int, fd, const struct iovec *, iov, int, iovcnt);
+ safe_syscall4(ssize_t, pwritev, int, fd, const struct iovec *, iov, int, iovcnt,
+     off_t, offset);
  
- bsd_user_ss.add(files(
-+  'bsd-mem.c',
-   'bsdload.c',
-   'elfload.c',
-   'main.c',
+-void target_set_brk(abi_ulong new_brk)
+-{
+-}
+-
+ /*
+  * errno conversion.
+  */
 -- 
 2.42.0
 
