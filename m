@@ -2,50 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAF897ADFB8
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 21:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 540F47ADFB1
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 21:42:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkrSI-0002h1-Jz; Mon, 25 Sep 2023 15:41:18 -0400
+	id 1qkrSI-0002ft-1b; Mon, 25 Sep 2023 15:41:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qkrSG-0002es-C9
+ id 1qkrSG-0002er-Aa
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 15:41:16 -0400
 Received: from forwardcorp1b.mail.yandex.net
  ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qkrSC-0004lF-N5
+ id 1qkrSC-0004lM-Mp
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 15:41:16 -0400
 Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 53C9E63731;
- Mon, 25 Sep 2023 22:41:07 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id AC27163737;
+ Mon, 25 Sep 2023 22:41:08 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:6422::1:2a])
  by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id geUBjG0OhCg0-7T42CIWK; Mon, 25 Sep 2023 22:41:06 +0300
+ ESMTPSA id geUBjG0OhCg0-fV5f2sNy; Mon, 25 Sep 2023 22:41:08 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695670866;
- bh=IrCX98+BsHKhBATyxoue5K4vzQ6/d4/0Hs7S3KTK9FM=;
+ s=default; t=1695670868;
+ bh=JAF11x7KyYuN+fvzvEHiESvT4PFt8h3GAP26ItWhJ6M=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=WGZW/wygsfeliGPn25AjtNhNIVpXVOgTDqbham4jhZvUohndryQ3Mo7d+FWvKs90C
- fHPKXf2l96/0s9JemCWZeDqCPdNLuf4TeibA+w8ZFbMcO2f+IEvQ8tGCpMaeEJh8K+
- PQNeaDWqJAqikwackXCjLrLOH+v6L4YTiXUWH5Pg=
+ b=cw3NglVq6g/ugwSg4d5R0q3qyGNCI40/cg4oGDFbNo5uj89piwcn3IXWRbgf+zvpx
+ JqWHEaOgT3EnlkioWGl0DemDVAT2u9iFJeKVG59coYj44qSkW4V74Syz+leWHBsVSf
+ 8O3XhT+4Vy29FBNuMoYJmC4441VtHpP7MScJYxN8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, vsementsov@yandex-team.ru,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH 01/12] hw/core/loader: load_at(): check size
-Date: Mon, 25 Sep 2023 22:40:29 +0300
-Message-Id: <20230925194040.68592-2-vsementsov@yandex-team.ru>
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH 02/12] hw/i386/intel_iommu: vtd_slpte_nonzero_rsvd(): reduce
+ magic numbers
+Date: Mon, 25 Sep 2023 22:40:30 +0300
+Message-Id: <20230925194040.68592-3-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230925194040.68592-1-vsementsov@yandex-team.ru>
 References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
@@ -75,48 +78,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This @size parameter often comes from fd. We'd better check it before
-doing read and allocation.
-
-Chose 1G as high enough empiric bound.
+Add a constant and clear assertion. The assertion also tells Coverity
+that we are not going to overflow the array.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/core/loader.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ hw/i386/intel_iommu.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 4dd5a71fb7..4b67543046 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -281,11 +281,26 @@ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index c0ce896668..2233dbe13a 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -1028,12 +1028,17 @@ static dma_addr_t vtd_get_iova_pgtbl_base(IntelIOMMUState *s,
+  *     vtd_spte_rsvd 4k pages
+  *     vtd_spte_rsvd_large large pages
+  */
+-static uint64_t vtd_spte_rsvd[5];
+-static uint64_t vtd_spte_rsvd_large[5];
++#define VTD_SPTE_RSVD_LEN 5
++static uint64_t vtd_spte_rsvd[VTD_SPTE_RSVD_LEN];
++static uint64_t vtd_spte_rsvd_large[VTD_SPTE_RSVD_LEN];
  
- /* ELF loader */
- 
-+#define ELF_LOAD_MAX (1024 * 1024 * 1024)
-+
- static void *load_at(int fd, off_t offset, size_t size)
+ static bool vtd_slpte_nonzero_rsvd(uint64_t slpte, uint32_t level)
  {
-     void *ptr;
--    if (lseek(fd, offset, SEEK_SET) < 0)
+-    uint64_t rsvd_mask = vtd_spte_rsvd[level];
++    uint64_t rsvd_mask;
 +
-+    /*
-+     * We often come here with @size, which was previously read from file
-+     * descriptor too. That's not good to read and allocate for unchecked
-+     * number of bytes. Coverity also doesn't like it and generate problems.
-+     * So, let's limit all load_at() calls to ELF_LOAD_MAX at least.
-+     */
-+    if (size > ELF_LOAD_MAX) {
-         return NULL;
-+    }
++    assert(level < VTD_SPTE_RSVD_LEN);
 +
-+    if (lseek(fd, offset, SEEK_SET) < 0) {
-+        return NULL;
-+    }
-+
-     ptr = g_malloc(size);
-     if (read(fd, ptr, size) != size) {
-         g_free(ptr);
++    rsvd_mask = vtd_spte_rsvd[level];
+ 
+     if ((level == VTD_SL_PD_LEVEL || level == VTD_SL_PDP_LEVEL) &&
+         (slpte & VTD_SL_PT_PAGE_SIZE_MASK)) {
 -- 
 2.34.1
 
