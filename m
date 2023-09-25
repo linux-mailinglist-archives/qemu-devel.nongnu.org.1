@@ -2,74 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B69B7AD6A6
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:06:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A4627AD6B3
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:08:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkjPP-0006dS-2P; Mon, 25 Sep 2023 07:05:47 -0400
+	id 1qkjRh-000815-Oi; Mon, 25 Sep 2023 07:08:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkjPM-0006bs-8z
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:05:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkjPK-0003VX-Cz
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:05:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695639941;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=tSiXhg7O6fxSFsDaE+jTLIFbtfmyKZG1tiIh/KHykFc=;
- b=FDE/RZt1v60PI0n2w22YsPjWN2yp97+x+ayj1An5TIOUaJ3+kiXiuOQP08j+Nwwxk1Bf50
- LJcvNZ+PIAtIsU3/FnJS1nVsqgaPMDbrd+mC81dRjqjXgMD6PhmT8EXUTGZYbBQPhQwkJw
- 3kRSsKpvrRg6/UQ7E6oxs/u2pnDK+Fo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-576-KRqn2h0aO22BKQkZTTMpRg-1; Mon, 25 Sep 2023 07:05:37 -0400
-X-MC-Unique: KRqn2h0aO22BKQkZTTMpRg-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C598A29A9D4F;
- Mon, 25 Sep 2023 11:05:36 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A28A140C2064;
- Mon, 25 Sep 2023 11:05:36 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A02EB21E6900; Mon, 25 Sep 2023 13:05:35 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: Re: [PATCH v2 00/15] hw: Use QOM alias properties and few QOM/QDev
- cleanups
-References: <20230203145536.17585-1-philmd@linaro.org>
- <06ed6fa4-1891-998c-f962-bf5a635c23fd@linaro.org>
-Date: Mon, 25 Sep 2023 13:05:35 +0200
-In-Reply-To: <06ed6fa4-1891-998c-f962-bf5a635c23fd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Tue, 19 Sep 2023 14:35:34
- +0200")
-Message-ID: <877coe8qdc.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
+ id 1qkjRd-00080O-5j
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:08:05 -0400
+Received: from mail-pj1-x102d.google.com ([2607:f8b0:4864:20::102d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mchitale@ventanamicro.com>)
+ id 1qkjRb-0004yi-99
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:08:04 -0400
+Received: by mail-pj1-x102d.google.com with SMTP id
+ 98e67ed59e1d1-2776fa0fac2so269784a91.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 04:08:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1695640082; x=1696244882; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=TkihxOb1Ze9kBNwOpxN1B7IxndIuM622YRcEJSQozbo=;
+ b=NmRkVsRCCSOlFXF8T2eXWxi1v+of5pCJAVLve/EGPE+RG0lPfTANSo0wDYT7cYufyN
+ BfXdyiDhs7CFkyQjU2q0+61Tn1SrEnSRmfP81Izy6umN8rnraYApT80m3Wk5MW+zerD6
+ /Yv0UmHhpNxQ6ArEdButhqmrxzwKUtdDAO3LBTShoTCe05Zn89vEOKGLEHgya119g26p
+ 5avEvW3XUu93JIErwprrFMI4gCpvSAOcnnLX1MUC0i0Yi/1iuh9APBQB8MTUKXMSOFK/
+ /n5kYL0hnNYBgVQXXM2CMk5i3MRiAU67AlP5zhmy1PNgxrepDJzb1D/RKFKA1BCJiyCN
+ 17KQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695640082; x=1696244882;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=TkihxOb1Ze9kBNwOpxN1B7IxndIuM622YRcEJSQozbo=;
+ b=p4EMqF+wCCYORZKoVA6nHfKxZDLygGD/hUYaHlcNtaB6Rwg350g6z2Abz7MUdCh26F
+ MwfdBZBUAi7/LEVZTWnYF+Pbid+/DBJ9bStSTymunGv1qjU6PLnr/X78Npv20GKvshHP
+ fD3m/GxSMyHfcB0CigdB5FuSpQ2pFVsQ62hw+K29XOV+Z8FEIRptvPdq2WlXepQuSM/j
+ 28VJ8BMPZ0SySPqdkHLVSfUamcpAxr7P8GpuBexpDkWJl4gqxP1akwaljZBWQFAVZhjw
+ VQqfVRHMsM1p0i/MoumByPC9KD1jeTsvIiQI3qQlLKNxyppVbiT3bfd3u/NOQy4f9Pul
+ Br2g==
+X-Gm-Message-State: AOJu0YwyzFEZhBlAgjkBljfz7Uqa5QqKdys3nc+j28Cox8//h4DAWd9p
+ 8V/sPBIiGzuEyPe938FrZc6k6g==
+X-Google-Smtp-Source: AGHT+IGBlDvzcoAGYUEfg4CdsdnIsqmzNM8rRHVxIBNGC2DSqX1miXyUy1aOYUvpXk3MtRZMlZTIcA==
+X-Received: by 2002:a17:90a:bc47:b0:274:751a:3f3 with SMTP id
+ t7-20020a17090abc4700b00274751a03f3mr14995417pjv.7.1695640081563; 
+ Mon, 25 Sep 2023 04:08:01 -0700 (PDT)
+Received: from mchitale-vm.. ([103.97.165.210])
+ by smtp.googlemail.com with ESMTPSA id
+ x4-20020a17090abc8400b00262eccfa29fsm9464026pjr.33.2023.09.25.04.07.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Sep 2023 04:08:00 -0700 (PDT)
+From: Mayuresh Chitale <mchitale@ventanamicro.com>
+To: qemu-riscv@nongnu.org,
+	qemu-devel@nongnu.org
+Cc: Himanshu Chauhan <hchauhan@ventanamicro.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Mayuresh Chitale <mchitale@ventanamicro.com>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH] Add epmp to extensions list and rename it to smepmp
+Date: Mon, 25 Sep 2023 16:37:47 +0530
+Message-Id: <20230925110747.534238-1-mchitale@ventanamicro.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102d;
+ envelope-from=mchitale@ventanamicro.com; helo=mail-pj1-x102d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,40 +92,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+From: Himanshu Chauhan <hchauhan@ventanamicro.com>
 
-> On 3/2/23 15:55, Philippe Mathieu-Daud=C3=A9 wrote:
->> Since v1:
->> - Addressed Markus & Zoltan review comments
->> - Introduce/use qdev_unrealize_and_unref()
->> These patches are extracted from a QOM/QDev refactor series,
->> so they are preliminary cleanups noticed while working on it:
->> - Use correct type when calling qdev_prop_set_xxx()
->> - Unify some qdev properties in MIPS models
->> - Replace intermediate properties by link properties
->> - Remove DEFINE_PROP_DMAADDR() macro which is used one time
->> - Use qdev_realize_and_unref() instead of open-coding it
->> Philippe Mathieu-Daud=C3=A9 (15):
->>    hw/pci/pcie_sriov: Replace fprintf(error_pretty) ->
->>      warn_reportf_err()
->>    hw/qdev: Introduce qdev_unrealize_and_unref()
->>    linux-user/syscall: Do not open-code qdev_unrealize_and_unref()
->>    hw/pci/pcie_sriov: Do not open-code qdev_unrealize_and_unref()
->>    hw/i386/sgx: Do not open-code qdev_realize_and_unref()
->>    hw/ppc/sam460ex: Correctly set MAL properties
->>    hw/arm/nrf51: Alias 'flash-size' QOM property in SoC object
->>    hw/arm/fsl-imx: Alias 'phy-num' QOM property in SoC object
->>    hw/usb/hcd-ohci: Include missing 'sysbus.h' header
->>    hw/display/sm501: Embed OHCI QOM child in chipset
->>    hw/display/sm501: Alias 'dma-offset' QOM property in chipset object
->>    hw/display/sm501: Unify common QOM properties
->>    hw/qdev: Remove DEFINE_PROP_DMAADDR() and 'hw/qdev-dma.h'
->>    hw/mips: Declare all length properties as unsigned
->>    hw/mips/itu: Pass SAAR using QOM link property
->
-> Ping for review?
+Smepmp is a ratified extension which qemu refers to as epmp.
+Rename epmp to smepmp and add it to extension list so that
+it is added to the isa string.
 
-Needs a rebase.  I reviewed some all the same.  If you want more from me
-before you respin, let me know.
+Signed-off-by: Himanshu Chauhan <hchauhan@ventanamicro.com>
+Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/cpu.c |  9 +++++----
+ target/riscv/cpu.h |  2 +-
+ target/riscv/csr.c |  6 +++---
+ target/riscv/pmp.c | 12 ++++++------
+ 4 files changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index befa64528f..0fb01788e7 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -126,6 +126,7 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(svinval, PRIV_VERSION_1_12_0, ext_svinval),
+     ISA_EXT_DATA_ENTRY(svnapot, PRIV_VERSION_1_12_0, ext_svnapot),
+     ISA_EXT_DATA_ENTRY(svpbmt, PRIV_VERSION_1_12_0, ext_svpbmt),
++    ISA_EXT_DATA_ENTRY(smepmp, PRIV_VERSION_1_12_0, ext_smepmp),
+     ISA_EXT_DATA_ENTRY(xtheadba, PRIV_VERSION_1_11_0, ext_xtheadba),
+     ISA_EXT_DATA_ENTRY(xtheadbb, PRIV_VERSION_1_11_0, ext_xtheadbb),
+     ISA_EXT_DATA_ENTRY(xtheadbs, PRIV_VERSION_1_11_0, ext_xtheadbs),
+@@ -488,7 +489,7 @@ static void rv32_ibex_cpu_init(Object *obj)
+ #ifndef CONFIG_USER_ONLY
+     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
+ #endif
+-    cpu->cfg.epmp = true;
++    cpu->cfg.ext_smepmp = true;
+ }
+ 
+ static void rv32_imafcu_nommu_cpu_init(Object *obj)
+@@ -1198,12 +1199,12 @@ static void riscv_cpu_realize(DeviceState *dev, Error **errp)
+         }
+     }
+ 
+-    if (cpu->cfg.epmp && !cpu->cfg.pmp) {
++    if (cpu->cfg.ext_smepmp && !cpu->cfg.pmp) {
+         /*
+          * Enhanced PMP should only be available
+          * on harts with PMP support
+          */
+-        error_setg(errp, "Invalid configuration: EPMP requires PMP support");
++        error_setg(errp, "Invalid configuration: Smepmp requires PMP support");
+         return;
+     }
+ 
+@@ -1560,7 +1561,7 @@ static Property riscv_cpu_extensions[] = {
+     DEFINE_PROP_BOOL("x-zcmt", RISCVCPU, cfg.ext_zcmt, false),
+ 
+     /* ePMP 0.9.3 */
+-    DEFINE_PROP_BOOL("x-epmp", RISCVCPU, cfg.epmp, false),
++    DEFINE_PROP_BOOL("smepmp", RISCVCPU, cfg.ext_smepmp, false),
+     DEFINE_PROP_BOOL("x-smaia", RISCVCPU, cfg.ext_smaia, false),
+     DEFINE_PROP_BOOL("x-ssaia", RISCVCPU, cfg.ext_ssaia, false),
+ 
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index de7e43126a..9b4b012896 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -434,6 +434,7 @@ struct RISCVCPUConfig {
+     bool ext_zvfh;
+     bool ext_zvfhmin;
+     bool ext_smaia;
++    bool ext_smepmp;
+     bool ext_ssaia;
+     bool ext_sscofpmf;
+     bool rvv_ta_all_1s;
+@@ -468,7 +469,6 @@ struct RISCVCPUConfig {
+     uint16_t cboz_blocksize;
+     bool mmu;
+     bool pmp;
+-    bool epmp;
+     bool debug;
+     bool misa_w;
+ 
+diff --git a/target/riscv/csr.c b/target/riscv/csr.c
+index 4451bd1263..d9ecc222e7 100644
+--- a/target/riscv/csr.c
++++ b/target/riscv/csr.c
+@@ -519,9 +519,9 @@ static RISCVException pmp(CPURISCVState *env, int csrno)
+     return RISCV_EXCP_ILLEGAL_INST;
+ }
+ 
+-static RISCVException epmp(CPURISCVState *env, int csrno)
++static RISCVException smepmp(CPURISCVState *env, int csrno)
+ {
+-    if (riscv_cpu_cfg(env)->epmp) {
++    if (riscv_cpu_cfg(env)->ext_smepmp) {
+         return RISCV_EXCP_NONE;
+     }
+ 
+@@ -4337,7 +4337,7 @@ riscv_csr_operations csr_ops[CSR_TABLE_SIZE] = {
+     [CSR_VSIPH]       = { "vsiph",       aia_hmode32, NULL, NULL, rmw_vsiph },
+ 
+     /* Physical Memory Protection */
+-    [CSR_MSECCFG]    = { "mseccfg",  epmp, read_mseccfg, write_mseccfg,
++    [CSR_MSECCFG]    = { "mseccfg", smepmp, read_mseccfg, write_mseccfg,
+                          .min_priv_ver = PRIV_VERSION_1_11_0           },
+     [CSR_PMPCFG0]    = { "pmpcfg0",   pmp, read_pmpcfg,  write_pmpcfg  },
+     [CSR_PMPCFG1]    = { "pmpcfg1",   pmp, read_pmpcfg,  write_pmpcfg  },
+diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+index 1f5aca42e8..f498e414f0 100644
+--- a/target/riscv/pmp.c
++++ b/target/riscv/pmp.c
+@@ -88,7 +88,7 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+     if (pmp_index < MAX_RISCV_PMPS) {
+         bool locked = true;
+ 
+-        if (riscv_cpu_cfg(env)->epmp) {
++        if (riscv_cpu_cfg(env)->ext_smepmp) {
+             /* mseccfg.RLB is set */
+             if (MSECCFG_RLB_ISSET(env)) {
+                 locked = false;
+@@ -243,7 +243,7 @@ static bool pmp_hart_has_privs_default(CPURISCVState *env, target_ulong addr,
+ {
+     bool ret;
+ 
+-    if (riscv_cpu_cfg(env)->epmp) {
++    if (riscv_cpu_cfg(env)->ext_smepmp) {
+         if (MSECCFG_MMWP_ISSET(env)) {
+             /*
+              * The Machine Mode Whitelist Policy (mseccfg.MMWP) is set
+@@ -354,9 +354,9 @@ int pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+ 
+         /*
+          * Convert the PMP permissions to match the truth table in the
+-         * ePMP spec.
++         * Smepmp spec.
+          */
+-        const uint8_t epmp_operation =
++        const uint8_t smepmp_operation =
+             ((env->pmp_state.pmp[i].cfg_reg & PMP_LOCK) >> 4) |
+             ((env->pmp_state.pmp[i].cfg_reg & PMP_READ) << 2) |
+             (env->pmp_state.pmp[i].cfg_reg & PMP_WRITE) |
+@@ -381,7 +381,7 @@ int pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+                  * If mseccfg.MML Bit set, do the enhanced pmp priv check
+                  */
+                 if (mode == PRV_M) {
+-                    switch (epmp_operation) {
++                    switch (smepmp_operation) {
+                     case 0:
+                     case 1:
+                     case 4:
+@@ -412,7 +412,7 @@ int pmp_hart_has_privs(CPURISCVState *env, target_ulong addr,
+                         g_assert_not_reached();
+                     }
+                 } else {
+-                    switch (epmp_operation) {
++                    switch (smepmp_operation) {
+                     case 0:
+                     case 8:
+                     case 9:
+-- 
+2.34.1
 
 
