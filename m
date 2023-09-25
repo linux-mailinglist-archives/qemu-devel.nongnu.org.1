@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA4E7ADB09
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AE67ADB0A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:11:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qknEV-0008Je-OC; Mon, 25 Sep 2023 11:10:47 -0400
+	id 1qknEd-0008Ux-1C; Mon, 25 Sep 2023 11:10:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEM-0008Dq-9G
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEN-0008EL-6O
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:39 -0400
 Received: from mout.kundenserver.de ([212.227.126.134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEK-0005LB-Cw
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEK-0005LI-Nz
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:38 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MgNMV-1rJ3aR0KHn-00htAs; Mon, 25
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1MJmX3-1r4OXp2F0T-00K9Ym; Mon, 25
  Sep 2023 17:10:32 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 3/5] linux-user/syscall.c: clean up local variable shadowing
- in do_ioctl_dm()
-Date: Mon, 25 Sep 2023 17:10:27 +0200
-Message-ID: <20230925151029.461358-4-laurent@vivier.eu>
+Subject: [PATCH 4/5] linux-user/syscall.c: clean up local variable shadowing
+ in TARGET_NR_getcpu
+Date: Mon, 25 Sep 2023 17:10:28 +0200
+Message-ID: <20230925151029.461358-5-laurent@vivier.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230925151029.461358-1-laurent@vivier.eu>
 References: <20230925151029.461358-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:xjUKcxF5dVPOhm09IN9+CEoO6jTC//sS6ONqZJTuCQ5ZS41iXjR
- yNoIZUvHEd8oaf61MB7CF5aOh7WgZ445KBUXzSt6m+hVPCXbaB99u+Ds3CIHetX9vH/g+Hp
- WK5qlCU6wkZnMUuo9UmHe+WOTxdrBcM7IeGK9WYUEOMisKFqMrpPdkENkE1Upk+ApUMUqQA
- esb4iKcjMf/Dd596e2yAw==
-UI-OutboundReport: notjunk:1;M01:P0:7QU5inpb/5w=;MReOPhqRPJu6xEPguvwSMlzxASd
- fOg6h8NQhwRu1nL2RVT3yl1GyZnUkiqXyj0c1yLniOWvKdcriCT7PNZI5XVO0jWFzVgrFH8pH
- 76H84jSbAo5LDe0a8XEvKp096ZteCE1QZG/FT2RDlMsYOznD/Y9EM4jvuI4dCL1tGhRK5LKIL
- b2cILuOtY7i9jgI3p8iOVGs/wbxbhsZ5OnjXk2GxYinJwyNeb5St6vU1ZmMKgISWhkOHAWc0O
- EXq6Rx7zy8LKxitwm+64PSXEsejB0QNGDD7gGZyjtmjCGDrJorY92S4lQfNj91ch029DAZJPH
- Y/tSl6CnRF+i0A09wL69DtnKF2tYj9V7mnWFGR2QouSGqHiTN7tpibdWs5lkSqbSc7ldlEKjv
- aS6q7VYs7PM8Q7VsqufoINCPtc+RKsXUjcRdC/vs8tit1clDJCnXEosNFssD4O7TPcybPH6KT
- zQoN3MxVEl87nzWcBbwLIOaG8dtIbYxyq27+dY9hddW9xutLEDdl4bdhi4EIBOS4IRLd8XWuI
- gQBfzWdlobNC9Qz6nQNMOcblt+8jofkyenGZId54LWH+zeGK4cDhmBmDlkh6CJiphXwcvFYab
- Zs3yzYS2i8NHe4qkUBjz+XsvNQUIXIwDWCViwpFg1beV+UtKO1AZ0F0iX2DEZ/S3xq/FlYOzn
- 78W1Wjig0tI4+Gnmw8Q6pn9Qx6Vs2bsYongbcn1q0KOViOgSzBTSEbveMIOVpDcBmJ0agCUTt
- XOiHA0zM71JQM0J8URjHz5yIF4MV+xPhN2XYddpEFOS00Fx9oTx3Lr5092aUdoFGg/zHOCYcw
- uzhqubkLPFZC17R4Ftql9cSn/TU4xgIrnZQOCvunWyumL/i3Nyt8is6SHr/8IvdWlvWXBisg0
- Kx7Mpkh8rtgrkqA==
+X-Provags-ID: V03:K1:cp5dII6cz88MTj0fA1R1qPDmWd1psJxUUAR6VVu3GthE25r/YIl
+ TEs+hoOHlRnUjcnNPQFhXoz5lhb/Hm0O/T6afo8Sq+ROEcfF4k8wcVyadvRfjLjLApz6PtD
+ mIGrXp6Z8A7KiTidIaW1DS5/NgvNR554049Ke/QC56enQZvmcwXpZxYS2LSt0VuT5ycBO3b
+ 1BrEKA7LSVhmwmDdHUI8Q==
+UI-OutboundReport: notjunk:1;M01:P0:j471AQwSMtM=;vlXNSr11vhmXo9Cc37ngCW+XZcc
+ Yv7dtsmGHUmyMibeo9nJ/a57/tI6EU2XVbt8wd7BHmTitfo6QZF105+dSe/+eJYaU6UoiyecS
+ Rcl0ylyAyvPQC+L+v0VdyFvRQLGfFlSCQx8enM+U1K0CkYY5lq37I1Nd3hq0292eM5uHvOmuB
+ ZVIwXxHzBOj4xT+EiGNYj6c9VkmMtj2+nu7VcNbctkEcsC1h4NtALpaYBYs0M02y4w5LWo2xd
+ ufZqnISd4JpjyE4LR0+JRKeWeiJWbHRl2/c8eZ/AsvTjyeKPM2LyVJz6ZJ1ltoLCqaS9T1qyK
+ KKrBZwM7wzdGAjo9npyavZ7QNv5bg+Y8hVPSoUFqxPJ3D59WAyHPNb46YN1AGdXIIa9IrwUEt
+ oJwM5wI64i5YrtECoDDm2aQTT6yOK/iRCUvezR61r1XJnPysWJe5QmkhYAURrORamH6BRkbWt
+ qyueo7EcAo3e8EBexsbZDJzaSCLIlhHoZxaWCuziq0eGoKBg6O1urU4gHCBxxQ6yW31MQ1bKQ
+ ITQm03JWfAMOhWhcXvGY5XfkItxlJLU2iXmRF5hBGPu4kHpQHluMmMvUh9Ja3C/AMgJyR2hYd
+ XPghZZTJG7zgDCvXCUvDUqZEfGKDgHE8CpQRrnBtCTxk09YAQ+X3ztRxll8/QHBLL/VVV2Qjp
+ GiF6s8EVJb4tHNQuL66gf1SsrtAS+LtYt88y8S93poNNfhjHgrBiYpH10AiTPwaAuN2CiF+0Z
+ 6xxP9cC6LSjAZ3rXZg57Mf1g0qDTDrqTx5ECADsBkwFToTILdIYHYnGhLH7pmvJllTnHwYaY8
+ idiXQY/XA1WMl0ldEKuqZF7VkyEQYta5lR9F1srmscwH4Z0/fWQE1FSQiHdhd+AG7a88KwyCd
+ nn28P1/3fX9fQ5w==
 Received-SPF: none client-ip=212.227.126.134; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
@@ -74,119 +74,41 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix following warnings:
 
-.../linux-user/syscall.c: In function 'do_ioctl_dm':
-.../linux-user/syscall.c:5053:23: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
- 5053 |         const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
-      |                       ^~~~~~~~
-.../linux-user/syscall.c:4991:20: note: shadowed declaration is here
- 4991 |     const argtype *arg_type = ie->arg_type;
-      |                    ^~~~~~~~
-...//linux-user/syscall.c:5102:27: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
- 5102 |             const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_name_list) };
-      |                           ^~~~~~~~
-.../linux-user/syscall.c:4991:20: note: shadowed declaration is here
- 4991 |     const argtype *arg_type = ie->arg_type;
-      |                    ^~~~~~~~
-.../linux-user/syscall.c:5130:27: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
- 5130 |             const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
-      |                           ^~~~~~~~
-.../linux-user/syscall.c:4991:20: note: shadowed declaration is here
- 4991 |     const argtype *arg_type = ie->arg_type;
-      |                    ^~~~~~~~
-.../linux-user/syscall.c:5170:27: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
- 5170 |             const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_versions) };
-      |                           ^~~~~~~~
-.../linux-user/syscall.c:4991:20: note: shadowed declaration is here
- 4991 |     const argtype *arg_type = ie->arg_type;
-      |                    ^~~~~~~~
+.../linux-user/syscall.c: In function 'do_syscall1':
+.../linux-user/syscall.c:11180:22: warning: declaration of 'cpu' shadows a previous local [-Wshadow=local]
+11180 |             unsigned cpu, node;
+      |                      ^~~
+.../linux-user/syscall.c:8963:15: note: shadowed declaration is here
+ 8963 |     CPUState *cpu = env_cpu(cpu_env);
+      |               ^~~
 
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/syscall.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ linux-user/syscall.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index 3521a2d70b00..c81e8d344486 100644
+index c81e8d344486..6139c00ddceb 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -5050,8 +5050,8 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
-     {
-         void *gspec = argptr;
-         void *cur_data = host_data;
--        const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
--        int spec_size = thunk_type_size(arg_type, 0);
-+        const argtype dm_arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
-+        int spec_size = thunk_type_size(dm_arg_type, 0);
-         int i;
- 
-         for (i = 0; i < host_dm->target_count; i++) {
-@@ -5059,7 +5059,7 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
-             uint32_t next;
-             int slen;
- 
--            thunk_convert(spec, gspec, arg_type, THUNK_HOST);
-+            thunk_convert(spec, gspec, dm_arg_type, THUNK_HOST);
-             slen = strlen((char*)gspec + spec_size) + 1;
-             next = spec->next;
-             spec->next = sizeof(*spec) + slen;
-@@ -5099,7 +5099,7 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
-             struct dm_name_list *nl = (void*)host_dm + host_dm->data_start;
-             uint32_t remaining_data = guest_data_size;
-             void *cur_data = argptr;
--            const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_name_list) };
-+            const argtype dm_arg_type[] = { MK_STRUCT(STRUCT_dm_name_list) };
-             int nl_size = 12; /* can't use thunk_size due to alignment */
- 
-             while (1) {
-@@ -5111,7 +5111,7 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
-                     host_dm->flags |= DM_BUFFER_FULL_FLAG;
-                     break;
-                 }
--                thunk_convert(cur_data, nl, arg_type, THUNK_TARGET);
-+                thunk_convert(cur_data, nl, dm_arg_type, THUNK_TARGET);
-                 strcpy(cur_data + nl_size, nl->name);
-                 cur_data += nl->next;
-                 remaining_data -= nl->next;
-@@ -5127,8 +5127,8 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
+@@ -11177,14 +11177,14 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+         }
+     case TARGET_NR_getcpu:
          {
-             struct dm_target_spec *spec = (void*)host_dm + host_dm->data_start;
-             void *cur_data = argptr;
--            const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
--            int spec_size = thunk_type_size(arg_type, 0);
-+            const argtype dm_arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
-+            int spec_size = thunk_type_size(dm_arg_type, 0);
-             int i;
- 
-             for (i = 0; i < host_dm->target_count; i++) {
-@@ -5139,7 +5139,7 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
-                     host_dm->flags |= DM_BUFFER_FULL_FLAG;
-                     break;
-                 }
--                thunk_convert(cur_data, spec, arg_type, THUNK_TARGET);
-+                thunk_convert(cur_data, spec, dm_arg_type, THUNK_TARGET);
-                 strcpy(cur_data + spec_size, (char*)&spec[1]);
-                 cur_data = argptr + spec->next;
-                 spec = (void*)host_dm + host_dm->data_start + next;
-@@ -5167,8 +5167,8 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
-             struct dm_target_versions *vers = (void*)host_dm + host_dm->data_start;
-             uint32_t remaining_data = guest_data_size;
-             void *cur_data = argptr;
--            const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_versions) };
--            int vers_size = thunk_type_size(arg_type, 0);
-+            const argtype dm_arg_type[] = { MK_STRUCT(STRUCT_dm_target_versions) };
-+            int vers_size = thunk_type_size(dm_arg_type, 0);
- 
-             while (1) {
-                 uint32_t next = vers->next;
-@@ -5179,7 +5179,7 @@ static abi_long do_ioctl_dm(const IOCTLEntry *ie, uint8_t *buf_temp, int fd,
-                     host_dm->flags |= DM_BUFFER_FULL_FLAG;
-                     break;
-                 }
--                thunk_convert(cur_data, vers, arg_type, THUNK_TARGET);
-+                thunk_convert(cur_data, vers, dm_arg_type, THUNK_TARGET);
-                 strcpy(cur_data + vers_size, vers->name);
-                 cur_data += vers->next;
-                 remaining_data -= vers->next;
+-            unsigned cpu, node;
+-            ret = get_errno(sys_getcpu(arg1 ? &cpu : NULL,
++            unsigned cpuid, node;
++            ret = get_errno(sys_getcpu(arg1 ? &cpuid : NULL,
+                                        arg2 ? &node : NULL,
+                                        NULL));
+             if (is_error(ret)) {
+                 return ret;
+             }
+-            if (arg1 && put_user_u32(cpu, arg1)) {
++            if (arg1 && put_user_u32(cpuid, arg1)) {
+                 return -TARGET_EFAULT;
+             }
+             if (arg2 && put_user_u32(node, arg2)) {
 -- 
 2.41.0
 
