@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A185B7ADC78
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:57:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD0B7ADC80
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:58:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qknwj-0003DO-LZ; Mon, 25 Sep 2023 11:56:29 -0400
+	id 1qknxz-000538-LJ; Mon, 25 Sep 2023 11:57:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qknwi-0003Ct-71
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:56:28 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qknxj-0004mF-Oi
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:57:32 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qknwg-0005RT-Ms
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:56:27 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2bffc55af02so109123341fa.2
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 08:56:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qknxg-0005cE-5q
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:57:30 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9adb9fa7200so1540368466b.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 08:57:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695657385; x=1696262185;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695657446; x=1696262246;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=NfHpgZzEjyvoxzvkkKxWNUs6R0zE8YQxn3ooYbkq4B4=;
- b=s1/mQoKeMhYvb+Y7YEni3lMY+lb+bWgfBkQNCIb77ntg6Fw0DrbbCAwBrAfsHPOHos
- vNGYsByU4h+3XHY4Ec881AvcYSdsLStD3lPu33YGZfKw+3siWgu0kr2qzQmbsu8IFgrw
- 0sNmh3QBugu/NwTd0V0SUSwibjFkeu6cVUUUBgzNLSEtO39MukOuSrp9mhU/Ph4uP7ry
- t7NIIJYp1Rlb8/wNBPLwmY3x4iXMQVEMhz323jNpZmmZBTcwrAXD2vKLDlfmKiYA6y7d
- 7tHQ3aVSN8ITpv9NkHu4kAOetLT9RBmigusVmhcPcJ+F014CXSRUoMhge0XTjJTDciFR
- uxtQ==
+ bh=rzm796MbOkaZus6R0TkYciD0vGThfaHHpROKVQ88huo=;
+ b=Yf4wgA7KiBfpRQIedPvg0QWHQDC4j+zeS2rIV/JuNB+0ZKrMqdFdU7rY/dLlUNzPQR
+ vFRsnsvC+rd87oJ0Frdw3NKzfmrGWCqCFbL9QmHV7rCcgB6gmnvSKnQeH409dSmPe4T0
+ KkgwsWB0xIWFl6GFFr5ncljkxyt0eScuQwLMWo6JqCqcgMxdFG6kFElEAVlLiiRREPyw
+ vtp3ERkgEoJ4r9X2VoMM6EZ8X1K6rme+rmV1f9yathq2bO36hjMjn1ht0EuMOnD3lVO6
+ KLj3+vwxJdb39wSeXjfQVeFx6QP/KS4zGbR0KOSrbdMX+UYf/cZqUSEFrqJzRh9Sz3rJ
+ fmpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695657385; x=1696262185;
+ d=1e100.net; s=20230601; t=1695657446; x=1696262246;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=NfHpgZzEjyvoxzvkkKxWNUs6R0zE8YQxn3ooYbkq4B4=;
- b=pE0BG/zGGvGMNlm2KGPcLsNqRvYYEi89o6/db4WY4tN+CriunGwVwIOGYtguJbno9E
- CE+kgcGFHy0D+WZ02hlJ7EqHYFMU3AX/Udsi5kKGvKngyTWmUQN0R+joFFjJBb4BrqS8
- XMCL8rFVGGsyJtmRxTKE4iiHEFliiG5ZdQ4a/hyXxTo8P1/0p4COUa1oXmnL+ClBLS9r
- luh6fobe1KNsf7LJ7sh6qE1OmNCLcRMFeURRZhBDj4FA59cWsdBo3pDXQUdBClJsI7l5
- a1Wdy+RZkoQOGB+TJMCA/TzG2qdiqunA9vReW8fKyC4ObXDhfSHusjmICeCAbgpEWhvC
- 0TUQ==
-X-Gm-Message-State: AOJu0YwTSQniE1LdA9/QA/t2aC/EPBgupLRRfu/F1cuKHfvxsbjFS3CU
- xlOY8gbXxGCacKs80D8h7mQcBpJKXKU7poBdutLdkw==
-X-Google-Smtp-Source: AGHT+IFLCRT+9nUbkteUYz1Q3nEEi8+J8j+Oc8rmEpfGhdn2jfZFXpFMXNssrCsVp1UU9v/p6waI0mmZ6E1rHx9yC6k=
-X-Received: by 2002:a05:6512:1283:b0:500:9969:60bf with SMTP id
- u3-20020a056512128300b00500996960bfmr7080618lfs.68.1695657384709; Mon, 25 Sep
- 2023 08:56:24 -0700 (PDT)
+ bh=rzm796MbOkaZus6R0TkYciD0vGThfaHHpROKVQ88huo=;
+ b=QgNHA5pqNjNi5O5NhG8Yagysk3HQxFkfo7Y6w2c8epebDIw159BPk3t8xvEC+jzkZz
+ M+DwQjwWDPDqz3xJ2aaQDL8PoKy5D0Cvh4CrHEdcJKpkAUmy8k2zUjshbDIqpWzEEq1P
+ J5Sm3qCVwCnhHPKdMeIr0Qnl2wJ0oWfa7di/DaMkMS6fwwNNgx9nZjb7fNTUlguKN+bG
+ epyu74pT1ow4J/CnNNn22w0V7/pldh6VaK2DvTKOkQqeHoSPr032ja33FRoL1mc1arRv
+ YdH2C7nFaNOJpROZX+6BmQ4GQHjy/axUoH2F1MD+MYHpvSb2MwY3fcPoKENd6bRZRfH4
+ pu1w==
+X-Gm-Message-State: AOJu0YyTUvbM4bgsITrd2vLB9uu8CjlNwUkyJXDAKJK78bdg0J4csYJZ
+ QxzSXc+kXnxrFqCb9fVNrDacHpsqytlYVHSzG3rMRg==
+X-Google-Smtp-Source: AGHT+IHANbPelqhCfwMQEhVEPTRxllD5TYoLOo2QXlqIJYCJmqUiuHFLic1fP0xvTb+JV8pw+GmIWro6YcZ2RBLesrQ=
+X-Received: by 2002:a17:906:530b:b0:9a1:b85d:c952 with SMTP id
+ h11-20020a170906530b00b009a1b85dc952mr58045ejo.12.1695657445976; Mon, 25 Sep
+ 2023 08:57:25 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
- <20230924210136.11966-25-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230924210136.11966-25-kariem.taha2.7@gmail.com>
+ <20230924210136.11966-26-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230924210136.11966-26-kariem.taha2.7@gmail.com>
 From: Warner Losh <imp@bsdimp.com>
-Date: Mon, 25 Sep 2023 09:56:13 -0600
-Message-ID: <CANCZdfrmem2-9yw8-+5t7MJHy_HRFFsB3cBj-27TiY0P3BTG3A@mail.gmail.com>
-Subject: Re: [PATCH v4 24/28] bsd-user: Implement setloginclass(2) and
- getloginclass(2) system calls.
+Date: Mon, 25 Sep 2023 09:57:15 -0600
+Message-ID: <CANCZdfqxp=yeAg-3S+7SDKcBfWzvTWztJ5rH5k-DAjHJ=+9k0A@mail.gmail.com>
+Subject: Re: [PATCH v4 25/28] bsd-user: Implement pdgetpid(2) and the
+ undocumented setugid.
 To: Karim Taha <kariem.taha2.7@gmail.com>
 Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
  Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="00000000000013a9f00606310090"
-Received-SPF: none client-ip=2a00:1450:4864:20::22a;
- envelope-from=wlosh@bsdimp.com; helo=mail-lj1-x22a.google.com
+Content-Type: multipart/alternative; boundary="000000000000ba8e2a060631032f"
+Received-SPF: none client-ip=2a00:1450:4864:20::62f;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -85,7 +85,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000013a9f00606310090
+--000000000000ba8e2a060631032f
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -96,15 +96,16 @@ m> wrote:
 >
 > Signed-off-by: Stacey Son <sson@FreeBSD.org>
 > Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->  bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-proc.h    | 23 +++++++++++++++++++++++
 >  bsd-user/freebsd/os-syscall.c |  8 ++++++++
->  2 files changed, 40 insertions
-
+>  2 files changed, 31 insertions(+)
+>
 
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 
---00000000000013a9f00606310090
+--000000000000ba8e2a060631032f
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
@@ -118,13 +119,15 @@ PM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
 Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
 Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
 arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
+Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
+ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
 ---<br>
-=C2=A0bsd-user/freebsd/os-proc.h=C2=A0 =C2=A0 | 32 ++++++++++++++++++++++++=
-++++++++<br>
+=C2=A0bsd-user/freebsd/os-proc.h=C2=A0 =C2=A0 | 23 +++++++++++++++++++++++<=
+br>
 =C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 8 ++++++++<br>
-=C2=A02 files changed, 40 insertions</blockquote><div><br></div><div>Review=
-ed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.com</a>=
-&gt;=C2=A0</div></div></div>
+=C2=A02 files changed, 31 insertions(+)<br></blockquote><div><br></div><div=
+>Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
+com</a>&gt;</div><div>=C2=A0</div></div></div>
 
---00000000000013a9f00606310090--
+--000000000000ba8e2a060631032f--
 
