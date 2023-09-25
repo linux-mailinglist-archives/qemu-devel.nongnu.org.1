@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4427ADD5D
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E487ADD87
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:01:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkoht-0008CP-OQ; Mon, 25 Sep 2023 12:45:13 -0400
+	id 1qkowN-00056l-Ri; Mon, 25 Sep 2023 13:00:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkohq-0008BL-1a
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:45:10 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ id 1qkow3-00053t-VN
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:59:54 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkohi-0005oG-Ii
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:45:09 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-405524e6768so45960525e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:45:02 -0700 (PDT)
+ id 1qkovy-0008Dt-0V
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:59:50 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-32172a50356so6504250f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:59:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695660300; x=1696265100; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695661184; x=1696265984; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
  :message-id:reply-to;
- bh=fPIkwzhPt1ncv5Tdd9l0QJC7UJmsuiM/hxU7gX511UU=;
- b=rLjs5GLKMZGEzpnAnlA8sR72+mUan78UyIxjZ/HYtRFueaBhLib4Oga03RsInKHaf2
- fjDbTm/4MJfE0+hvZ0L5c00OyH53XonAGYp8vRNHwhfOAIXBbLtSXr0slQI77aJbyvDT
- a3gB6A3YKX2aZfXmez4HYXAOtJGlFA3VdCGKBKOKJPID+RWn1peRb6AmEKIqQuDtCCrd
- wC5GNhsYjWG7mIa9ZMzkds35mWkQImSdIj+2wDYCasvJHfGYZPO/HzttDpp9SsN001Qx
- RgFcAVKeiulQxHIMb+QZ4qfsFhdhboseNg4s0Vxv0RKKzkA7fNJMFdIi7w9rkcexXpQC
- 1R8g==
+ bh=jqSYDNSnY0nwFQ8ea2zEwJYdCQ/Mr4rxDQZrmwu1t7w=;
+ b=wqReEPgdfY8RpEfLrRoJbR9Gb80YuscvDiY/MOnXNcAES8OVABaJJ7ujF9L8v8oxR0
+ Vp11A8ay4h/FYewK8Ay2ahhoYjOA0LNH65ggaVJOt3REnGzEggeI9z1N1Pm+dB0aNEvK
+ /gXI0m4s+HOI9JtPvbN8UgwO71WCMur6d77j2ML1MfxAjdlLpv1VIjQkaguhrhZzY7J4
+ 9QKh9tfKulzkNW5UF+zxFggjizGvGgs/96zdnBAvAW7KyLJjnGO0vxmjxaZIc7HjG3fL
+ JX6UY4z6Px4PWSgN64EGmbng/v3IoMLAmHo2iDwDtANnA0hk2s8deZ1AOTt9XPv5LMmk
+ zQOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695660300; x=1696265100;
+ d=1e100.net; s=20230601; t=1695661184; x=1696265984;
  h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
  :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
  :cc:subject:date:message-id:reply-to;
- bh=fPIkwzhPt1ncv5Tdd9l0QJC7UJmsuiM/hxU7gX511UU=;
- b=wA7jevRZNYnNbGiQRaBOKrlwK0IaeYoCj1hVfkvBlMLXn7wCgv/w8amnwu8R5SeCYe
- c8QBhSuQgd+PnCXFy43hnuAkZb9pqez4qrEwHC7R43A3U34OSregV7IDBD/FNBAW7nZd
- XKKsrhSsQeHVJY4DL/gDp2ZfxMQyeF7xFYE/KSoflqPhmKg7RFUymZBOs4bP34GPThs8
- mN39AXPkLGzqXAorPfOHqarfeV22OCR2kMVYZqh24U9PtKJsL6D97TVD3ERGKmjmaRdA
- OIVLi0nl8+Nd+mhfE95kcUCfQeUZcfHxVz1Hgmkd8Z9Mt6yGj/7K5RV1DJyK9JqViV+D
- icPg==
-X-Gm-Message-State: AOJu0YzmA/0mYoHxgH4xqb/bikdDeDUeiobkzLyO1B8kbZMfx2ayQo9w
- S8VaOyyXRCa+18zC4nPTiAy0FQ==
-X-Google-Smtp-Source: AGHT+IGvqsoujhj6gaKh4dH1+e6xuQ64Ou0OQJB4cHEcxp/P+2N9tmNWJ18n6nuSFZ6094TNB0QrIw==
-X-Received: by 2002:a7b:ca53:0:b0:403:bb3:28c9 with SMTP id
- m19-20020a7bca53000000b004030bb328c9mr6084672wml.38.1695660299821; 
- Mon, 25 Sep 2023 09:44:59 -0700 (PDT)
+ bh=jqSYDNSnY0nwFQ8ea2zEwJYdCQ/Mr4rxDQZrmwu1t7w=;
+ b=PyHoxkwC/vJSCAFQ8kwuBRh9Pp4rXLyVRNCtsVt8lu8nNkssmWtrCFayD/sUmTqm5/
+ HWLJrs2BxI8rimZ7m6wRniEy9Vga8Ife6ASGPVyNAQf7rRB6cZqESkOS2abG2EezLwcS
+ oJeeYKYVxJ+zbZAIiv8pa6Y3gHkaR+eY6kHfplBvQLhIF8KimihX7LPmnPXz7P5Q5yd8
+ eWros0zGoBseNrZqYAZTV2xh91cKHBoJ8rkqlXZMqo3hvcJ3HgOtfJV9YgBhga8h7HKh
+ DwwJiqjRRSlA3u3C5lDaCtMx75Gf8IuhJW8/kDWlCrmR/RehY7Ey+kNOJUlP2e0/ptUn
+ WJQQ==
+X-Gm-Message-State: AOJu0YzTaCG0l95hu8QULV1cEMDL0gz7ac2aW57LyoAyqsFUWwHwZ0OZ
+ 9ZwPlpy0eITtAH0Feq8esfFwhQ==
+X-Google-Smtp-Source: AGHT+IH9GA9KAW7V6RTdPfPWmm0ieGHhT0nlwhyE1erZLl7CIQ3DNh/kh+xH1BH131U5wIFtJYFBMg==
+X-Received: by 2002:a05:6000:1cd1:b0:31f:d32c:a38d with SMTP id
+ bf17-20020a0560001cd100b0031fd32ca38dmr6872948wrb.8.1695661184124; 
+ Mon, 25 Sep 2023 09:59:44 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- q25-20020a7bce99000000b00405ee9dc69esm366355wmj.18.2023.09.25.09.44.59
+ b1-20020a5d4d81000000b003215c6e30cbsm12215349wru.104.2023.09.25.09.59.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 09:44:59 -0700 (PDT)
+ Mon, 25 Sep 2023 09:59:43 -0700 (PDT)
 Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id CEEA41FFBB;
- Mon, 25 Sep 2023 17:44:58 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 1651F1FFBB;
+ Mon, 25 Sep 2023 17:59:43 +0100 (BST)
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
- <20230925144854.1872513-9-alex.bennee@linaro.org>
- <908ae9aa-11fc-8584-bd60-e269a1026e37@redhat.com>
+ <20230925144854.1872513-5-alex.bennee@linaro.org>
+ <ZRG1g/2hWi8+AzNn@redhat.com>
 User-agent: mu4e 1.11.20; emacs 29.1.50
 From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
 Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
  =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, Marcin Juszkiewicz
  <marcin.juszkiewicz@linaro.org>, John Snow <jsnow@redhat.com>,
@@ -75,10 +75,9 @@ Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
  <marcel.apfelbaum@gmail.com>, Bastian Koppelmann
  <kbastian@mail.uni-paderborn.de>, Liu Zhiwei
  <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas
- Piggin <npiggin@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
- Habkost <eduardo@habkost.net>,
- Cleber Rosa <crosa@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Piggin <npiggin@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>, Eduardo
+ Habkost <eduardo@habkost.net>, Cleber Rosa <crosa@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
  <thuth@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>, Bin Meng
@@ -89,22 +88,24 @@ Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
  Palmer Dabbelt <palmer@dabbelt.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
  Laurent Vivier <lvivier@redhat.com>, Yoshinori Sato
  <ysato@users.sourceforge.jp>, Leif Lindholm <quic_llindhol@quicinc.com>,
- Beraldo Leal <bleal@redhat.com>
-Subject: Re: [PATCH 08/31] configure: ensure dependency for cross-compile setup
-Date: Mon, 25 Sep 2023 17:42:22 +0100
-In-reply-to: <908ae9aa-11fc-8584-bd60-e269a1026e37@redhat.com>
-Message-ID: <87cyy6rylx.fsf@linaro.org>
+ Beraldo Leal <bleal@redhat.com>, Rabin Vincent <rabinv@axis.com>, "Edgar E
+ . Iglesias" <edgar.iglesias@xilinx.com>
+Subject: Re: [PATCH 04/31] docs: mark CRIS support as deprecated
+Date: Mon, 25 Sep 2023 17:50:22 +0100
+In-reply-to: <ZRG1g/2hWi8+AzNn@redhat.com>
+Message-ID: <878r8urxxc.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -121,45 +122,56 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
-> On 9/25/23 16:48, Alex Benn=C3=A9e wrote:
->> If we update configure we should make sure we regenerate all the
->> compiler details. We should also ensure those details are upto date
->> before building the TCG tests.
+> On Mon, Sep 25, 2023 at 03:48:27PM +0100, Alex Benn=C3=A9e wrote:
+>> This might be premature but while streamling the avocado tests I
+>> realised the only tests we have are "check-tcg" ones. The aging
+>> fedora-criss-cross image works well enough for developers but can't be
+>> used in CI as we need supported build platforms to build QEMU.
+>>=20
+>> Does this mean the writing is on the wall for this architecture?
+>>=20
 >> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> Cc: Rabin Vincent <rabinv@axis.com>
+>> Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
 >> ---
->>   configure | 2 ++
->>   1 file changed, 2 insertions(+)
->> diff --git a/configure b/configure
->> index e83872571d..a95e0f5767 100755
->> --- a/configure
->> +++ b/configure
->> @@ -1788,6 +1788,8 @@ for target in $target_list; do
->>             echo "HOST_GDB_SUPPORTS_ARCH=3Dy" >> "$config_target_mak"
->>         fi
->>   +      echo "$config_target_mak: configure" >> Makefile.prereqs
+>>  docs/about/deprecated.rst | 11 +++++++++++
+>>  1 file changed, 11 insertions(+)
+>>=20
+>> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+>> index dc4da95329..7cfe313aa6 100644
+>> --- a/docs/about/deprecated.rst
+>> +++ b/docs/about/deprecated.rst
+>> @@ -399,6 +399,17 @@ Specifying the iSCSI password in plain text on the =
+command line using the
+>>  used instead, to refer to a ``--object secret...`` instance that provid=
+es
+>>  a password via a file, or encrypted.
+>>=20=20
+>> +TCG CPUs
+>> +--------
+>> +
+>> +CRIS CPU architecture (since 8.1)
+>> +'''''''''''''''''''''''''''''''''
+>> +
+>> +The CRIS architecture was pulled from Linux in 4.17 and the compiler
+>> +is no longer packaged in any distro making it harder to run the
+>> +``check-tcg`` tests. Unless we can improve the testing situation there
+>> +is a chance the code will bitrot without anyone noticing.
 >
-> This in practice is not adding anything; if "configure" changes then
-> Makefile's dependency on config-host.mak will trigger a configure
-> rerun anyway.
->
-> If you want to add it, you should also add it for other config-*.mak
-> files.  However, I'd remove this line and just change
->
-> -# 1. ensure config-host.mak is up-to-date
-> +# 1. ensure config-host.mak is up-to-date.  All other config-*.mak
-> +# files for subdirectories will be updated as well.
+> Deprecated is generally a warning that we intend to delete the
+> feature.   If we're just going to relegate it to untested
+> status (what I'd call "tier 3" quality), then we should document
+> that elsewhere.  I don't mind which way we go.
 
-Peter ran into a mismatch between config-host.mak and
-tests/tcg/foo/config-target.mak in his build system so it didn't get
-picked up at one point.
+We do have reasonably good coverage with tests/tcg/cris but of course
+without a compiler we can't build them.
 
->
-> in the Makefile.
->
-> Paolo
-
+Both nios2 and microblaze have build-toolchain scripts which can be used
+to re-create containers. However my preference is having pre-built
+toolchains hosted by others like we do for loongarch, hexagon, xtensa
+and tricore. Then the docker image can simply curl them into an image.
 
 --=20
 Alex Benn=C3=A9e
