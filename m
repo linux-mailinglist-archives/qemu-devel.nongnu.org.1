@@ -2,59 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 039327AD71B
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C40E17AD71E
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 13:43:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkjxG-0004EZ-Nz; Mon, 25 Sep 2023 07:40:46 -0400
+	id 1qkjyy-0005dk-TL; Mon, 25 Sep 2023 07:42:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1qkjxE-0004EO-9V
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:40:44 -0400
-Received: from apollo.dupie.be ([51.159.20.238])
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qkjyw-0005dN-5l
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:42:30 -0400
+Received: from rev.ng ([5.9.113.41])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jean-louis@dupond.be>)
- id 1qkjxB-0004Nv-6R
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:40:44 -0400
-Received: from [IPV6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b] (unknown
- [IPv6:2a02:a03f:eaf7:ff01:ecd9:958e:7098:f62b])
- by apollo.dupie.be (Postfix) with ESMTPSA id 786831520C25;
- Mon, 25 Sep 2023 13:40:34 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dupond.be; s=dkim;
- t=1695642035;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xdzMrzAIJUNsoaGtXNO3OJXF0kbqdihYOb3ENZ+i/CA=;
- b=TnzskA1MSm/U+c3oGQD5xLi5JVJDSAq+E2MbMT70LY6stDtXFq7mrsbtoT04UOV1IZFJDL
- Mov1+YAdu4rZiOhEah0YKIWrOdLiIdbOpnmRqbnK/V0AyQca5r5DVh/1qNZ0HA25Uz83Iw
- abVjtpWzw/efLKj+Ov3QxZLgDpx3FJGk+abz/+kZPDWqPCZGQ5XxP4Bt7ZxQCA8vPw4CeT
- vdBaFmQoas2hGwu4FJwFyTXZpPFzdO5WjpKbh/+5zQWXSZff110i7XMSXoDYo5hDE77uu7
- PLKVsdKeDFAt0f4OPBxg0W2qbau4hovxB8BB8hPTlYrj8av5mnuV9e/xzVgDSA==
-Message-ID: <0208337f-92ac-4019-909b-2c3d333c46de@dupond.be>
-Date: Mon, 25 Sep 2023 13:40:34 +0200
+ (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qkjyt-0004cC-Ut
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 07:42:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
+ s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject
+ :Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+ List-Post:List-Owner:List-Archive;
+ bh=cgd/ev+BmnR/w2lcJXPwYRC9PySswDgc7TBWPFhO268=; b=X5FW01/VBKwuDLnK4UQbJswBFv
+ 1hnq7u0iP7EekrF1bgq0WwMJC3nc5xLXuLTdQ/JBoFMkvXmu5HoiFE3scQfZwZS3ycM70xjzlmfWs
+ EPW7yFdUkgbZda1qL7bHErmxTbRxA7tSDrHN9i2+AJOu/lBQ1azIKAHf2S7luQMfh5lI=;
+Date: Mon, 25 Sep 2023 13:41:59 +0200
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH 0/9] Replace remaining target_ulong in system-mode accel
+Message-ID: <rsieaihh2dxc4a4ag5sbul2kvyh4zuudu7ys6dev5rrnh3ne7k@3ojxrt7jnk6k>
+References: <20230807155706.9580-1-anjo@rev.ng>
+ <b284644e-5777-f20c-bf57-3354f9724f69@tls.msk.ru>
+ <2c7usd46qtdk42zsvc3kpuv35f7xzfz5gw4o6egb5u4cpqhz5f@dej5s6imgnyu>
+ <2ea2d21c-e788-b44d-4302-b3a8f58c0e82@tls.msk.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] qcow2: keep reference on zeroize with discard-no-unref
- enabled
-To: Hanna Czenczek <hreitz@redhat.com>, qemu-devel@nongnu.org, kwolf@redhat.com
-References: <20230905130839.923041-2-jean-louis@dupond.be>
- <1088caf4-3f59-84be-25d4-f2574674cb2a@redhat.com>
-Content-Language: en-US
-From: Jean-Louis Dupond <jean-louis@dupond.be>
-In-Reply-To: <1088caf4-3f59-84be-25d4-f2574674cb2a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=51.159.20.238; envelope-from=jean-louis@dupond.be;
- helo=apollo.dupie.be
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2ea2d21c-e788-b44d-4302-b3a8f58c0e82@tls.msk.ru>
+Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -68,44 +57,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Anton Johansson <anjo@rev.ng>
+From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 15/09/2023 13:21, Hanna Czenczek wrote:
-> On 05.09.23 15:08, Jean-Louis Dupond wrote:
->> When the discard-no-unref flag is enabled, we keep the reference for
->> normal discard requests.
->> But when a discard is executed on a snapshot/qcow2 image with backing,
->> the discards are saved as zero clusters in the snapshot image.
->>
->> When committing the snapshot to the backing file, not
->> discard_in_l2_slice is called but zero_in_l2_slice. Which did not had
->> any logic to keep the reference when discard-no-unref is enabled.
->>
->> Therefor we add logic in the zero_in_l2_slice call to keep the reference
->> on commit.
->>
->> Fixes: https://gitlab.com/qemu-project/qemu/-/issues/1621
->> Signed-off-by: Jean-Louis Dupond <jean-louis@dupond.be>
->> ---
->>   block/qcow2-cluster.c | 22 ++++++++++++++++++----
->>   1 file changed, 18 insertions(+), 4 deletions(-)
->
-> The code looks OK, but the obvious problem I find is that this is not 
-> what the discard-no-unref option describes.  It talks about discards, 
-> but this now changes the zero-write path.
-But it's still touching the discard code in the zeroize code path.
-Cause we modify the way zeroize does its discard (when BDRV_REQ_MAY_UNMAP)
->
-> I’m fairly certain that you are the only one using this option for 
-> now, so we might as well change its definition to include zero writes 
-> for 8.2, but we should do that.
-I agree. How would you name the option then? Cause it still involves 
-discard-only code.
-Next to that, the option was already added to libvirt also (so this 
-needs to be fixed afterwards also).
->
-> Hanna
->
+On 23/09/23, Michael Tokarev wrote:
+> [Trimming Cc list]
+> 
+> 22.09.2023 13:45, Anton Johansson:
+> > On 21/09/23, Michael Tokarev wrote:
+> 
+> > > > Anton Johansson (9):
+> > > >     accel/kvm: Widen pc/saved_insn for kvm_sw_breakpoint
+> > > >     accel/hvf: Widen pc/saved_insn for hvf_sw_breakpoint
+> > > >     target: Use vaddr for kvm_arch_[insert|remove]_hw_breakpoint
+> > > >     target: Use vaddr for hvf_arch_[insert|remove]_hw_breakpoint
+> > > >     Replace target_ulong with abi_ptr in cpu_[st|ld]*()
+> > > >     include/exec: typedef abi_ptr to vaddr in softmmu
+> > > >     include/exec: Widen tlb_hit/tlb_hit_page()
+> > > >     accel/tcg: Widen address arg. in tlb_compare_set()
+> > > >     accel/tcg: Update run_on_cpu_data static assert
+> > > 
+> > > Pinging a relatively old patchset, - which fixes from here needs to
+> > > go to stable-8.1?
+> ...
+> > The rest of the patches can be delayed without issue.
+> 
+> Now I'm confused.  What do you mean "delayed"?
+> Should the rest be picked up for 8.1.2 or 8.1.3 or maybe 8.1.4?
+> 
+> The whole series has been accepted/applied to master, I asked which
+> changes should be picked up for stable-8.1, - there's no delay involved,
+> it is either picked up or not, either needed in stable or not.
+> 
+> Yes, "Widen tlb_hit/tlb_hit_page()" fixes a known bug and I picked
+> up that one, - unfortunately it missed 8.1.1 release.  The question
+> is about the other changes in this patch set, - do they fix other
+> similar, not yet discovered, bugs in other places, or not fixing
+> anything? Or should we delay picking them up until a bug is reported? :)
+> 
+> Thank you for the changes and the reply!
+> 
+> /mjt
 
+Oh I see what you mean now, thanks for the clarification!:) I'm not that 
+used to think in terms of what patches end up in stable.
+
+The other patches in this series are refactors to reduce 
+target-dependence in accel/, and they do not fix any bugs directly. 
+Eventually we'll need to pick them up for compiling cputlb.c once for 
+system mode etc., or other patches that depend on the refactor, but they 
+are not critical to get in due to fixing some bug, that's what I meant 
+by "can be delayed without issue".
+
+How do you usually deal with these types of refactor heavy changes? 
+Picking asap vs delaying until absolutely needed?
+
+Thanks again for the explanation, I hope this was of some help.
+
+//Anton
 
