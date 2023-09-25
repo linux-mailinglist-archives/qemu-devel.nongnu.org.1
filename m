@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113207ADABA
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:56:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 442457ADA4C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:49:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmsu-0000el-B1; Mon, 25 Sep 2023 10:48:28 -0400
+	id 1qkmsp-0000dv-I4; Mon, 25 Sep 2023 10:48:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkmsX-0000bQ-Ie
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:48:09 -0400
+ id 1qkmsh-0000ce-Do
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:48:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkmsT-00083V-QA
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:48:03 -0400
+ id 1qkmsf-000868-3j
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:48:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695653280;
+ s=mimecast20190719; t=1695653289;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=0i85JQMgZeBziBZVnevU+Vblkj1/JGCW+rRqcYXuLaM=;
- b=bjB9lDnKCKfT40WXbN7YSorqfOk1dpE95gb26O3r8DLORMTAeV1dO3S0yL6Fln3InoGVvN
- jfcsw5OEdxBeYAzZnAGWJ+MiFw2uUsDA3b0R3zsVaEU/f5nkuKoT1o8VEo25QuT3Nj3uAF
- lbneUUjQwze2w+YN+EEb/RCObeID2es=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=yXh2gOGuGydxlcHn0MJWkG6oNwaWADlluHpoQ0K5Bu4=;
+ b=RN/IHMMFCQlG08GxlyougszrhUio5BaGL61AMtFqkSSiN3WLxHM66sGnj1xJpjkN+fLhTZ
+ 76CbshWQW5k2oV1MXh2P1LfBpXCkLN5un/uGs7cXdJW6dl3eQ5ZH9giGZoqvk8hIyP3NOZ
+ SPRr39MCX1CsAfqWU1jl6I195vE5p7A=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-QrowrVglOo2gNa7Kki1LkA-1; Mon, 25 Sep 2023 10:47:59 -0400
-X-MC-Unique: QrowrVglOo2gNa7Kki1LkA-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-404f81fe7cfso41631205e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:47:59 -0700 (PDT)
+ us-mta-312-d2r-GsXBPfKq5njlI25t8Q-1; Mon, 25 Sep 2023 10:48:08 -0400
+X-MC-Unique: d2r-GsXBPfKq5njlI25t8Q-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-3fe1521678fso60369655e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653277; x=1696258077;
+ d=1e100.net; s=20230601; t=1695653286; x=1696258086;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=0i85JQMgZeBziBZVnevU+Vblkj1/JGCW+rRqcYXuLaM=;
- b=H0vrJ6idUECmmjsNv2EsxOweJe4IeXoPH7VJTwTkruPzsPkWJ4lCH0uunjqFm+S6w5
- qDhmT7z48uSIZkOpU8eeC9c1/kdXCCgY/IzmMo+rzv4zjWPXk5++a8lZJnqITdWcw2kP
- K/BN0DAGdNez+kZYVj/T/t0ekXUDf2Te/Po9FPmkf4as4xX3enKgavGvMN8pRKozH+PT
- ngIyIi+h8eX66hIBhpj6rLSTagzqk8yMUrUZ1x2+E3zIZ4TVk4D23YVhN+xoxYdXG2GF
- /UjdM8IS6m4v2+LtwOcSvPdU2JKQ7elrGrSm8GB9wc8jcrVubpWW+zS1FTvcZOt60k0M
- SJhQ==
-X-Gm-Message-State: AOJu0Yzll5bIRDl2Vst/eFcOgVsUSbf3qJmg00/rM56uad4kqg08iOqD
- Noov4c0ATjsDD0Sf0eVo89xKBmTgsk/v9+gVj6WviY2KTlntKVUAQGaMYgRqm/HUvGMKm2Xo3yx
- ioBTylfDohGsLpPflTnYuP1VsmJLdlgRfHQ6YKuNzxcTECRAOhNMWG3WZk1L/aDTzEp9hhl3Ic5
- 0=
-X-Received: by 2002:a05:600c:501e:b0:405:2d29:1648 with SMTP id
- n30-20020a05600c501e00b004052d291648mr7899454wmr.19.1695653277497; 
- Mon, 25 Sep 2023 07:47:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGJgAZ7qUDLXPHmAMKyp2JyQYWexNPSpDBn8WXBaAPER9oEggACzBR+6I7+/ZakCMTgkG4vww==
-X-Received: by 2002:a05:600c:501e:b0:405:2d29:1648 with SMTP id
- n30-20020a05600c501e00b004052d291648mr7899446wmr.19.1695653277255; 
- Mon, 25 Sep 2023 07:47:57 -0700 (PDT)
+ bh=yXh2gOGuGydxlcHn0MJWkG6oNwaWADlluHpoQ0K5Bu4=;
+ b=WF+GK09fHC0XsSV4FWi9jm4oz9jSiEf7G9HujGnH6eWSq/2qWCIXDALLwix9RwvNGo
+ 9GKORJMIFonCVV50DJT+K7CcaLndOFHAvTfD0HEVQRkr8HYj8nsMlmXvZv9XcPwybG51
+ 4+USZPyy8SdfsGwfbtebF276JayH8OAS+YzFUXFjLup1psJJppSC1HIiKNITwrExkPoL
+ fzuEGr0g+oG0fgWZe94R7bixqpgpqxpVE4ZygMZSqGv5AjDCGdJHwGQ6RUKX2xZgQ1IE
+ mIyCWwLPawazczCkzc4wjZz8hMoHxkDgpT8bkZIiQO4GuHnY10AfopqBk9MrFRrQgzBA
+ t7Xg==
+X-Gm-Message-State: AOJu0YwbJX9qCjjV3RmTVY/vA8zsg5kKSgWsCzzUHOwUMKm4xE5WwDG/
+ LtPzsbfufVIx4OwwJLiRzHvyZbdJXazKlbstUHbWFGKaMxJnWxHUaa+dqCD8+dG/REidZZWahJG
+ tssiU9VNl2MlSjpddy/RZgyzFNoAtEy5cRDoYCaCV19zAQg+yooxkJd9AV9aI1V5ulGEr518Kuq
+ Y=
+X-Received: by 2002:a05:600c:1d99:b0:405:7400:1e3d with SMTP id
+ p25-20020a05600c1d9900b0040574001e3dmr4065676wms.32.1695653286391; 
+ Mon, 25 Sep 2023 07:48:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGMqoWL1ZL+HJ/gSv1GJasXeX0HeIkHTYZsmIoLsowkY4DQiuptyFm+dybWeynQN8v9VRy2PA==
+X-Received: by 2002:a05:600c:1d99:b0:405:7400:1e3d with SMTP id
+ p25-20020a05600c1d9900b0040574001e3dmr4065655wms.32.1695653285970; 
+ Mon, 25 Sep 2023 07:48:05 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- e20-20020a05600c219400b003fe1c332810sm15251466wme.33.2023.09.25.07.47.56
+ c23-20020a7bc857000000b003fefca26c72sm12479683wml.23.2023.09.25.07.48.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 07:47:56 -0700 (PDT)
+ Mon, 25 Sep 2023 07:48:05 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: armbru@redhat.com
-Subject: [PATCH] target/i386/translate: avoid shadowed local variables
-Date: Mon, 25 Sep 2023 16:47:44 +0200
-Message-ID: <20230925144744.527958-7-pbonzini@redhat.com>
+Subject: [PATCH] target/i386/svm_helper: eliminate duplicate local variable
+Date: Mon, 25 Sep 2023 16:48:04 +0200
+Message-ID: <20230925144804.528508-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -97,36 +97,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just remove the declaration.  There is nothing in the function after the
-switch statement, so it is safe to do.
+This shadows an outer "cs" variable that is initialized to the
+same expression.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/i386/tcg/sysemu/svm_helper.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index e0a622941cb..26b9308d350 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -3242,7 +3242,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0x30 ... 0x35:
-     case 0x38 ... 0x3d:
-         {
--            int op, f, val;
-+            int f;
-             op = (b >> 3) & 7;
-             f = (b >> 1) & 3;
+diff --git a/target/i386/tcg/sysemu/svm_helper.c b/target/i386/tcg/sysemu/svm_helper.c
+index 2d27731b608..32ff0dbb13c 100644
+--- a/target/i386/tcg/sysemu/svm_helper.c
++++ b/target/i386/tcg/sysemu/svm_helper.c
+@@ -387,8 +387,6 @@ void helper_vmrun(CPUX86State *env, int aflag, int next_eip_addend)
+     env->hflags2 |= HF2_GIF_MASK;
  
-@@ -3302,8 +3302,6 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0x81:
-     case 0x83:
-         {
--            int val;
+     if (ctl_has_irq(env)) {
+-        CPUState *cs = env_cpu(env);
 -
-             ot = mo_b_d(b, dflag);
+         cs->interrupt_request |= CPU_INTERRUPT_VIRQ;
+     }
  
-             modrm = x86_ldub_code(env, s);
 -- 
 2.41.0
 
