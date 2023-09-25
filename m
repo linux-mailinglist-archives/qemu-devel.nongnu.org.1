@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C9F7ADAD3
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D207ADACA
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:00:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkn3P-0000Jm-Pf; Mon, 25 Sep 2023 10:59:19 -0400
+	id 1qkn3N-0000Fe-RN; Mon, 25 Sep 2023 10:59:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkn3A-0008T5-4f
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:59:07 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qkn35-0008Kr-8E
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:59:00 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkn2u-0002HR-AW
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:59:03 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-405361bb93bso63072685e9.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:58:47 -0700 (PDT)
+ id 1qkn2q-0002D1-MD
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:58:52 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-32172a50356so6225551f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:58:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653927; x=1696258727; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653922; x=1696258722; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VWYhOQMznQlDFerIuEfFly6GjEqfzxxsRGSOgMHMHjQ=;
- b=EITU6Bmk/KZ7EoeEAKgC8FW47z8Lk6tBvcmCwDACzlytgXN1f2clNAjxjDPIXlvcsv
- VFPDmRPzUqiwu7EXLI03AO1O88rNBz55edM0LGrUvS3T2nk6/46ypVOrVf/TQCjQhf7t
- rLt17akKd64eyun7cd7uoFdu8KsiBhxsov2VcsabNbmPGE/Sjnzx8VSZ1ghZzeCI0UEI
- DObmxeF8DLYC2A9doV0lH8vcZb7tU8mfvyrBiS4Ca7SrmxaCITGf4315t2TgiYA3p3/x
- UAELhyPpm7M+ewSutfSxbcDqBC2z7eoTyzqaGt3B7tdjqsQIpxadA8+Xuzo1XBfGRaLC
- PPiw==
+ bh=54vdWxoInkKQLiHeicKKqmeJW+RARqhkyr/iqwsF+dM=;
+ b=N0JGQ1ACzErPhj5/RVKIZPU3P9/fhZ2N2vT87IdLax6i2mzk8syvv0taLKXvF84ZDu
+ SrcEqRbxC1rwkKCeOsXeQlTWFka7FQTBT1R76QItknkjO35mghSpH9NkwBA3Qcd+bXGe
+ hV5PV/kBtFtAry+toxYcD7SALKDPk9K16G4SxvrQeXwcuZD24vcFWWBgRMCFBCQcur0a
+ a5tcJJQA7E7+hLOk3VglpARWZWP7LkaFRio8q2TSfUVIWk043vukSXxhg0zRU27x6i31
+ cVrq1MLlI95v8pqp9uuVf3Io2oreMXlIfEim1eimN+zTKpuyPmTF1adKIsLB9JJd6ddo
+ ej0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653927; x=1696258727;
+ d=1e100.net; s=20230601; t=1695653922; x=1696258722;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VWYhOQMznQlDFerIuEfFly6GjEqfzxxsRGSOgMHMHjQ=;
- b=uTDR+hqbLyCZOglW6VNWGvB1nimfElqBMwwQrMM+OIHLkKwgHn9oKR/YMZEsmrLtwh
- U9j6uoiYRHXaIy5Fo2Qmd442o/zaiN8T8teyPhaf+k1lsvKMkxn/P16E0UVHTu3jYZxB
- ARyNyEC6OEoHFH+GXWMAVi0NOzqyhNpkhGavR5K6EAVZ++sZKrNW+UAVgTxwBK4XIPHc
- HKNmoQHDpB9Ra19WItYaRwJ/+KzIXRcxir3d5pO56H7P7Vsd8EhG47DsR1epLKy0VoYA
- /ka0LGGblzsq1mEd7mr0lZbLHPFnoLEDFY1vaFLKoEMbrl9O1XmYCVVxHrnAgP0VNK7S
- 45wQ==
-X-Gm-Message-State: AOJu0Yx6TW7E5nvIfoysaTGKFOZmuCmhBMUvMMgn60x1mqfa+9N57yM5
- EvH+GhmlwImuJZ0g6Bqi9g0fVA==
-X-Google-Smtp-Source: AGHT+IGHhcyszvNWqg8cEs9rJ+gdnn6azFdoW2Twyip98CgdpKdtGrCIPGnliDpBidqk815HgNQJgw==
-X-Received: by 2002:a05:600c:4a9a:b0:405:9657:9ab4 with SMTP id
- b26-20020a05600c4a9a00b0040596579ab4mr919003wmp.6.1695653926893; 
- Mon, 25 Sep 2023 07:58:46 -0700 (PDT)
+ bh=54vdWxoInkKQLiHeicKKqmeJW+RARqhkyr/iqwsF+dM=;
+ b=KL2CB8d+V2RmvZrRnfXpaRjQjGPXyN6cHxA0P9EcC9T7xhOamMl5BWsizcog2hTATg
+ eaAxvQtmvJrBhJvFTd0OrQasSPNlr+d9+4VXK9rjwRARdsSS2wQ600Ijqx8UGzsPIQ4C
+ 4VyOk2uTUbeb0gi7HwB2a0Y2ZzNJ3glY7l8qdctykwzzOL6dNdfROEWAIb5XGkp+QRrN
+ QVHPFxGyIF27MMKYTCo/MCLObVCCnjPoNFWPo2WKsQOAjDm7ADFQjdM0NjA4MNAh1nWx
+ 68om7ZCXIwzAax4OM90PNX4fFtE4IIODpCegmk3oi/FrWJowUMa6fVo0h2boOrg4o9KI
+ zL6A==
+X-Gm-Message-State: AOJu0YwhHoLTOBXv5rkKW4du1H2T0v5Syku2XZ95bOnoH0Jd37XCna8v
+ TcbPExXPVTBu+RqQGAlHs8esiQ==
+X-Google-Smtp-Source: AGHT+IETYE8gGZUvi5YSKhCE7iA0Eg4AKr99jrnWwLoe6ct7K7zw2dvLkEWkX477WRraNOiMP25uTg==
+X-Received: by 2002:adf:fe85:0:b0:319:f9d6:a769 with SMTP id
+ l5-20020adffe85000000b00319f9d6a769mr5600388wrr.45.1695653922406; 
+ Mon, 25 Sep 2023 07:58:42 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- t18-20020a1c7712000000b00405959469afsm1657004wmi.3.2023.09.25.07.58.42
+ x17-20020a5d6511000000b0031fd849e797sm12075216wru.105.2023.09.25.07.58.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 07:58:45 -0700 (PDT)
+ Mon, 25 Sep 2023 07:58:41 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 2129D1FFC9;
+ by zen.linaroharston (Postfix) with ESMTP id 3C22E1FFCA;
  Mon, 25 Sep 2023 15:48:57 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,24 +92,24 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 17/31] target/arm: Remove references to gdb_has_xml
-Date: Mon, 25 Sep 2023 15:48:40 +0100
-Message-Id: <20230925144854.1872513-18-alex.bennee@linaro.org>
+Subject: [PATCH 18/31] target/ppc: Remove references to gdb_has_xml
+Date: Mon, 25 Sep 2023 15:48:41 +0100
+Message-Id: <20230925144854.1872513-19-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -131,63 +131,62 @@ GDB has XML support since 6.7 which was released in 2007.
 It's time to remove support for old GDB versions without XML support.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230912224107.29669-10-akihiko.odaki@daynix.com>
+Message-Id: <20230912224107.29669-11-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- target/arm/gdbstub.c | 32 ++------------------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ target/ppc/gdbstub.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
-index 8fc8351df7..b7ace24bfc 100644
---- a/target/arm/gdbstub.c
-+++ b/target/arm/gdbstub.c
-@@ -46,21 +46,7 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
-         /* Core integer register.  */
-         return gdb_get_reg32(mem_buf, env->regs[n]);
+diff --git a/target/ppc/gdbstub.c b/target/ppc/gdbstub.c
+index 778ef73bd7..ec5731e5d6 100644
+--- a/target/ppc/gdbstub.c
++++ b/target/ppc/gdbstub.c
+@@ -54,12 +54,6 @@ static int ppc_gdb_register_len(int n)
+     case 0 ... 31:
+         /* gprs */
+         return sizeof(target_ulong);
+-    case 32 ... 63:
+-        /* fprs */
+-        if (gdb_has_xml()) {
+-            return 0;
+-        }
+-        return 8;
+     case 66:
+         /* cr */
+     case 69:
+@@ -74,12 +68,6 @@ static int ppc_gdb_register_len(int n)
+     case 68:
+         /* ctr */
+         return sizeof(target_ulong);
+-    case 70:
+-        /* fpscr */
+-        if (gdb_has_xml()) {
+-            return 0;
+-        }
+-        return sizeof(target_ulong);
+     default:
+         return 0;
      }
--    if (n < 24) {
--        /* FPA registers.  */
--        if (gdb_has_xml()) {
--            return 0;
--        }
--        return gdb_get_zeroes(mem_buf, 12);
--    }
--    switch (n) {
--    case 24:
--        /* FPA status register.  */
--        if (gdb_has_xml()) {
--            return 0;
--        }
--        return gdb_get_reg32(mem_buf, 0);
--    case 25:
-+    if (n == 25) {
-         /* CPSR, or XPSR for M-profile */
-         if (arm_feature(env, ARM_FEATURE_M)) {
-             return gdb_get_reg32(mem_buf, xpsr_read(env));
-@@ -100,21 +86,7 @@ int arm_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
-         env->regs[n] = tmp;
-         return 4;
+@@ -132,9 +120,6 @@ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
+     if (n < 32) {
+         /* gprs */
+         gdb_get_regl(buf, env->gpr[n]);
+-    } else if (n < 64) {
+-        /* fprs */
+-        gdb_get_reg64(buf, *cpu_fpr_ptr(env, n - 32));
+     } else {
+         switch (n) {
+         case 64:
+@@ -158,9 +143,6 @@ int ppc_cpu_gdb_read_register(CPUState *cs, GByteArray *buf, int n)
+         case 69:
+             gdb_get_reg32(buf, cpu_read_xer(env));
+             break;
+-        case 70:
+-            gdb_get_reg32(buf, env->fpscr);
+-            break;
+         }
      }
--    if (n < 24) { /* 16-23 */
--        /* FPA registers (ignored).  */
--        if (gdb_has_xml()) {
--            return 0;
--        }
--        return 12;
--    }
--    switch (n) {
--    case 24:
--        /* FPA status register (ignored).  */
--        if (gdb_has_xml()) {
--            return 0;
--        }
--        return 4;
--    case 25:
-+    if (n == 25) {
-         /* CPSR, or XPSR for M-profile */
-         if (arm_feature(env, ARM_FEATURE_M)) {
-             /*
+     mem_buf = buf->data + buf->len - r;
 -- 
 2.39.2
 
