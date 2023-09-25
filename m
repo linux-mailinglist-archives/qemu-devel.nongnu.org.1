@@ -2,80 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5117AD85D
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5097AD7C6
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:13:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkl8p-0008K5-97; Mon, 25 Sep 2023 08:56:47 -0400
+	id 1qkkRy-00057u-R5; Mon, 25 Sep 2023 08:12:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1qkfoG-0003sz-0t
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 03:15:12 -0400
-Received: from mx2.zhaoxin.com ([203.110.167.99])
+ (Exim 4.90_1) (envelope-from <jejb@linux.ibm.com>)
+ id 1qkkRu-00057e-Cp
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 08:12:26 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
- id 1qkfoB-0008Fn-VG
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 03:15:10 -0400
-X-ASG-Debug-ID: 1695626094-1eb14e75133b550001-jgbH7p
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
- mx2.zhaoxin.com with ESMTP id MSxhqgC9b91u0ZgS (version=TLSv1.2
- cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
- Mon, 25 Sep 2023 15:14:54 +0800 (CST)
-X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 25 Sep
- 2023 15:14:54 +0800
-Received: from ewan-server.zhaoxin.com (10.28.66.44) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 25 Sep
- 2023 15:14:53 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-From: EwanHai <ewanhai-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
-To: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <kvm@vger.kernel.org>
-CC: <qemu-devel@nongnu.org>
-Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for backward
- compatibility
-Date: Mon, 25 Sep 2023 03:14:53 -0400
-X-ASG-Orig-Subj: [PATCH] target/i386/kvm: Refine VMX controls setting for
- backward compatibility
-Message-ID: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
+ (Exim 4.90_1) (envelope-from <jejb@linux.ibm.com>)
+ id 1qkkRs-0002HT-1J
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 08:12:25 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38PBdG1L020538
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 12:12:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=JbUtwG7KpZKI+I+NM1KXgmphHyrHWU9cXY7C7s1L9mk=;
+ b=EbZVmwvdBqBlsy97eo2mxP+MikE/Eb3E3FCN1A8ICINX9V5WCdAciBsphuMD+kPhqPHy
+ oQ9vuVyuRRhmUF4YsLBwlnQMzD61aEfR0UMj/jJYC8HvYMSczTXjd2756Be1CAHae/0o
+ t1AP6a8uSprVGPpYq6w1TOVRe0ObUFF/Vp4xNxV6cCq/6fRzDgfqXT8Vno8Pno8xCuDu
+ 4KZ64ybZggzyXhaU9+XGGQrqoBvmr4RQgM0+wwnQoV05aeEhDxHx7RV0GqL4SuL89Xpw
+ LPJbfa8teAcNC4LMrZm70GcctAMFhy+Hjc6WUijKbikrvUd4po3T3zawYtCXvqam/gMn sw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ta53qtgq6-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 12:12:20 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38PBpHa5029710
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 12:12:20 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ta53qtgpu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Sep 2023 12:12:20 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38PBSPH7008192; Mon, 25 Sep 2023 12:12:19 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tabbmsx9d-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Sep 2023 12:12:19 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38PCCJwV33424112
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 25 Sep 2023 12:12:19 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0E5F858058;
+ Mon, 25 Sep 2023 12:12:19 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0447B58057;
+ Mon, 25 Sep 2023 12:12:18 +0000 (GMT)
+Received: from lingrow.int.hansenpartnership.com (unknown [9.67.144.155])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Mon, 25 Sep 2023 12:12:17 +0000 (GMT)
+Message-ID: <db47b1e842d94994d0844021a4ab5423c9525a83.camel@linux.ibm.com>
+Subject: Re: [PATCH v6 2/2] tpm: add backend for mssim
+From: James Bottomley <jejb@linux.ibm.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, "Daniel P."
+ =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
+Date: Mon, 25 Sep 2023 08:12:16 -0400
+In-Reply-To: <b2d53350-ce67-4c29-5d3d-6dee6484c8ed@linux.ibm.com>
+References: <20230109161532.6892-1-jejb@linux.ibm.com>
+ <20230109161532.6892-3-jejb@linux.ibm.com> <87bkduwxv7.fsf@pond.sub.org>
+ <2629ce63-e4dd-67f3-6341-d477c39b29f7@linux.ibm.com>
+ <ZQ2QdBr1a90RX7Wm@redhat.com>
+ <b2d53350-ce67-4c29-5d3d-6dee6484c8ed@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.28.66.44]
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1695626094
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 1962
-X-Barracuda-BRTS-Status: 0
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No,
- SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
- QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.114571
- Rule breakdown below
- pts rule name              description
- ---- ---------------------- --------------------------------------------------
-Received-SPF: pass client-ip=203.110.167.99;
- envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: dfJa09kDNpWbuoh0yQTWm1XW8Yse4KGa
+X-Proofpoint-ORIG-GUID: cfb7kBj0VFCbQtBjCTp5fby_NH3ZgeYh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-25_08,2023-09-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 mlxscore=0 phishscore=0 clxscore=1011
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309250090
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=jejb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
-X-Mailman-Approved-At: Mon, 25 Sep 2023 08:56:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,59 +116,56 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: jejb@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
-execution controls") implemented a workaround for hosts that have
-specific CPUID features but do not support the corresponding VMX
-controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
+On Fri, 2023-09-22 at 09:27 -0400, Stefan Berger wrote:
+> 
+> On 9/22/23 09:02, Daniel P. Berrangé wrote:
+> > On Fri, Sep 22, 2023 at 08:41:19AM -0400, Stefan Berger wrote:
+> > > On 9/22/23 02:00, Markus Armbruster wrote:
+> > > > Found this cleaning out old mail, sorry for missing it until
+> > > > now!
+> > > > 
+> > > > I think we owe James a quick decision wether we're willing to
+> > > > take the feature.  Stefan, thoughts?
+> > > I thought we discusses it back then. Does it handle snapshotting
+> > > and migration correctly?
+> > To quote the patch itself:
+> > 
+> >    +The mssim backend supports snapshotting and migration, but the
+> > state
+> >    +of the Microsoft Simulator server must be preserved (or the
+> > server
+> >    +kept running) outside of QEMU for restore to be successful.
+> 
+> How does 'it' support snapshotting where the state of the TPM can be 
+> completely different depending on the snapshot?
 
-In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
-If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
-use KVM's settings, avoiding any modifications to this MSR.
+In the same way we support things like external disk devices across
+snapshot and migration: it's up to the owner of the device to preserve
+the state for the next resume. If you muck with the state (or connect
+the wrong device) all bets are off.
 
-However, this commit (4a910e1) didn’t account for cases in older Linux
-kernels(e.g., linux-4.19.90) where `MSR_IA32_VMX_PROCBASED_CTLS2` is
-in `kvm_feature_msrs`—obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
-but not in `kvm_msr_list`—obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
-As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
-on `kvm_msr_list` alone, even though KVM maintains the value of this MSR.
+>   I know what it took to support this feature with swtpm/libtpms but
+> I don't see the equivalent here in this backend driver nor in the TCG
+> reference code that the underlying TPM 2 simulator is based upon.
+> 
+> I do not want to stand in the way of it being merged but please 
+> understand that I will also neither maintain nor fix bugs related to
+> it nor its related underlying simulator -- with James being the
+> maintainer of it, this should be clear. I have reason why I am saying
+> this and they come from dealing with the upstream TPM 2 reference
+> code.
 
-This patch supplements the above logic, ensuring that
-`has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
-lists, thus maintaining compatibility with older kernels.
+I already said I'll support this, and added a Maintainers entry and a
+specific exclusion from your TPM maintainer entry. I'm not sure what
+additional assurances I can give?
 
-Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
----
- target/i386/kvm/kvm.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+James
 
-diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
-index af101fcdf6..6299284de4 100644
---- a/target/i386/kvm/kvm.c
-+++ b/target/i386/kvm/kvm.c
-@@ -2343,6 +2343,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
- static int kvm_get_supported_feature_msrs(KVMState *s)
- {
-     int ret = 0;
-+    int i;
- 
-     if (kvm_feature_msrs != NULL) {
-         return 0;
-@@ -2377,6 +2378,11 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
-         return ret;
-     }
- 
-+    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
-+        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
-+            has_msr_vmx_procbased_ctls2 = true;
-+        }
-+    }
-     return 0;
- }
- 
--- 
-2.34.1
+
+
 
 
