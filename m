@@ -2,53 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648147ADFAE
+	by mail.lfdr.de (Postfix) with ESMTPS id 505EA7ADFAC
 	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 21:42:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkrSJ-0002hd-So; Mon, 25 Sep 2023 15:41:19 -0400
+	id 1qkrSK-0002iM-Fy; Mon, 25 Sep 2023 15:41:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qkrSH-0002fo-IB
+ id 1qkrSH-0002fi-Fg
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 15:41:17 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qkrSE-0004mx-1n
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 15:41:17 -0400
+ id 1qkrSD-0004n1-TO
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 15:41:16 -0400
 Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id A246C6373E;
- Mon, 25 Sep 2023 22:41:11 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 583B163743;
+ Mon, 25 Sep 2023 22:41:12 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:6422::1:2a])
  by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id geUBjG0OhCg0-6y8RApFp; Mon, 25 Sep 2023 22:41:11 +0300
+ ESMTPSA id geUBjG0OhCg0-ezVntqZu; Mon, 25 Sep 2023 22:41:11 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
  s=default; t=1695670871;
- bh=3MG107ct8Ug6ljNO236hrBkDgC4FelsYjZS2SdUxMYM=;
+ bh=3bfRsX2bcaRNysuZopQT1GUhW00NrecV1SjNahVWt/I=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=wqVpT8lbJncgL1EtXeJNFufIxjNy0HuwBM9KyBc2xw3Opa3e/y/rusX4r/nvUhzvb
- sHgLNiZjJLPOEw6Yu+VdJGoe2WLZBJt9IjFAFo85594ZUMDQN0uLM3YD5qayXTvj0h
- 9Ob57AoldyPR7LFm6A73qy2QW7I5KeK5aPZpJOtQ=
+ b=OYRLkIWw32ZmXjpQZKiBWh2L7dGx3v25cPagkFXjtll4+rOP9yr9luxzNoSwSyhZu
+ cTduvbZq0QaBU2Z1Kce9DoDxcA09OrNxJSNHjh2sAq3SLN37vLzSZPG3LG1I5if1Nv
+ dsJ0JvmfIEP1koIEITolVSTiOJpvL2nhK6s+DXSI=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-devel@nongnu.org
 Cc: pbonzini@redhat.com, vsementsov@yandex-team.ru,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 06/12] mc146818rtc: rtc_set_time(): initialize tm to zeroes
-Date: Mon, 25 Sep 2023 22:40:34 +0300
-Message-Id: <20230925194040.68592-7-vsementsov@yandex-team.ru>
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PATCH 07/12] pcie_sriov: unregister_vfs(): fix error path
+Date: Mon, 25 Sep 2023 22:40:35 +0300
+Message-Id: <20230925194040.68592-8-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230925194040.68592-1-vsementsov@yandex-team.ru>
 References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -72,27 +74,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-set_time() function doesn't set all the fields, so it's better to
-initialize tm structure. And Coverity will be happier about it.
+local_err must be NULL before calling object_property_set_bool(), so we
+must clear it on each iteration. Let's also use more convenient
+error_reportf_err().
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- hw/rtc/mc146818rtc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/pci/pcie_sriov.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/hw/rtc/mc146818rtc.c b/hw/rtc/mc146818rtc.c
-index c27c362db9..b63e1aeaea 100644
---- a/hw/rtc/mc146818rtc.c
-+++ b/hw/rtc/mc146818rtc.c
-@@ -599,7 +599,7 @@ static void rtc_get_time(MC146818RtcState *s, struct tm *tm)
+diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+index 76a3b6917e..5ef8950940 100644
+--- a/hw/pci/pcie_sriov.c
++++ b/hw/pci/pcie_sriov.c
+@@ -196,19 +196,16 @@ static void register_vfs(PCIDevice *dev)
  
- static void rtc_set_time(MC146818RtcState *s)
+ static void unregister_vfs(PCIDevice *dev)
  {
--    struct tm tm;
-+    struct tm tm = {0};
-     g_autofree const char *qom_path = object_get_canonical_path(OBJECT(s));
+-    Error *local_err = NULL;
+     uint16_t num_vfs = dev->exp.sriov_pf.num_vfs;
+     uint16_t i;
  
-     rtc_get_time(s, &tm);
+     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
+                                PCI_FUNC(dev->devfn), num_vfs);
+     for (i = 0; i < num_vfs; i++) {
++        Error *err = NULL;
+         PCIDevice *vf = dev->exp.sriov_pf.vf[i];
+-        object_property_set_bool(OBJECT(vf), "realized", false, &local_err);
+-        if (local_err) {
+-            fprintf(stderr, "Failed to unplug: %s\n",
+-                    error_get_pretty(local_err));
+-            error_free(local_err);
++        if (!object_property_set_bool(OBJECT(vf), "realized", false, &err)) {
++            error_reportf_err(err, "Failed to unplug: ");
+         }
+         object_unparent(OBJECT(vf));
+         object_unref(OBJECT(vf));
 -- 
 2.34.1
 
