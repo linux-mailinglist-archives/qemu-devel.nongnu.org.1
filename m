@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240527ADAB5
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A3F7ADA9C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:51:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmu4-0001tI-9A; Mon, 25 Sep 2023 10:49:40 -0400
+	id 1qkmtl-0001O7-Nk; Mon, 25 Sep 2023 10:49:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtl-0001Pr-6d
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:21 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qkmtc-00014j-TB
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:13 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtT-0008HA-3n
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:20 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4053d53a1bfso53743265e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:01 -0700 (PDT)
+ id 1qkmtQ-0008Fj-Po
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:12 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3226b8de467so5266765f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653339; x=1696258139; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653338; x=1696258138; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Tmt0on2gqtEUKqiKbv0NO0bzg7ahn0zMA7M5ykdCtXI=;
- b=vY1SmGV5G79fgZkVlnyyaHJV6nVLQ4vV1Wx3B0Ud1rV87XGurr3OzpP+bEccFbNA0c
- RCKSYDU4sxKDCTenAnxuRbZvQGj8AbuRwQ1RegzOOSZ066NA7KoF1PXjFxBV/fN9sMhU
- LNIogWKuWEbEl+4jUNI6L7JznNLLQsPdnD9HLK49hATH9YRpdbz5qYKx3bTZAn9M7UM1
- 3Jq/m3U1M1lz0US5DNTvGXb2KfGPmyPqL5mDn9/qZPt0ucAtRYoK4nMbJb+60N9X1q2+
- yCRJiDlr9PrUQlcnsoDvAtLRh7PVtiKqgoksT9vBGBkIA27+BCTCFzS+uF3HFR3cF2LN
- ZWDQ==
+ bh=iR1iGRTKQhM4i1nnnC3x69E8sH/nb//WSFW8YZTcQR4=;
+ b=gTfmiDciHGcnHOh675FpFqs/r5NIxBNOqK82gDzZ5UuhEENXMMqJniNZwLO8fCI3yh
+ 8597T5mxVWpeQRWw7uLleJNXCBPh2/gDC14B/BOexxxMnzbbj+7eOTiU072hFpRDw8F+
+ RVhPdE5wfZT/zamQZW+FIqukOgny3i5B5MN3Fae3q4YG4rVngkqsdleH0dKzVyli83/W
+ YEAwU8latFZa+R/FuMirndy+xK8EDN8qM/20n0qS2DrE+go/ocdVpcQbaquL9CI1MQzn
+ a3BTux1Y7afAPq+dw/P3F2Rh/kYHzwFhdHA9pgHcgwDYE0jlz7y9x3XB7r2EOCykf7q+
+ suYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653339; x=1696258139;
+ d=1e100.net; s=20230601; t=1695653338; x=1696258138;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Tmt0on2gqtEUKqiKbv0NO0bzg7ahn0zMA7M5ykdCtXI=;
- b=ltZ5uMA6uGr/AkK6MfJhvOUlXle+AC6YiEjT1vjIZmRi57yLxYTkBWx/6+e8tviffL
- A5ED0hRkDRpFcn/dILzzxzR6upSbETuh+HZy/FddS3KgXF3fOCZx9Wa4B4QnvJOdDd0x
- UIabeCYBCbwRHW6uyVao9f+naKTYM0XQS3XWzFTuEvwRo0m9VAopXu7SQPPER7YOAjvJ
- UYYdwW4xvQErZnWdxmZBz2Qb2eNMFWITug+UVLsL8yt7i6MXj/yPmLN0VlF56nsoEEL9
- id6eYKNiFsB5w1Rdm12yBEAwewHNjd9YZgWh0uG/fxkDG/YQKcshRTSSveZtrZp+iKEN
- 5Jxw==
-X-Gm-Message-State: AOJu0YyENwUmiYsEYh+9ZvvhHwiQIDty+0m6pr78EdiKD6YcZhtPdrrI
- ObZSJyIrPaLy9AWZUPQASQN8Sw==
-X-Google-Smtp-Source: AGHT+IHCrryrBzsPj/q9XxzJDXcaN/RZ559iKlhX9u2qSpA9P1GQgog7di0ZG4gtChK2Ua0luo0V0w==
-X-Received: by 2002:a05:600c:3b89:b0:405:9666:5242 with SMTP id
- n9-20020a05600c3b8900b0040596665242mr767794wms.31.1695653339270; 
- Mon, 25 Sep 2023 07:48:59 -0700 (PDT)
+ bh=iR1iGRTKQhM4i1nnnC3x69E8sH/nb//WSFW8YZTcQR4=;
+ b=Vq3n1xTXlk0qx9wglJI1XODI2zKHX0SvQAuaYXYG5WYC44QYIEAoe0fAqxywWbH/Di
+ EgFW+mnso7j9O+4UsPfn/dfJsDShEcL0ZsieduKNGN5On0qx4+2jInTI2L//vI4XppFy
+ 1Tt/hkyfYnxwFHMHSX4ShhkQfDpOVzQXYUCSByroquXRMm16oSCpF1oP2Q94oroJZwLl
+ cfYEs/3Q4lnhfXBQaT+Rfo4rzkbNrR1wr8RsUWfB6NEJIA+Kilh3YkEI6u7czeJG4jgZ
+ Fjfoa6PrFM30Ua5EVWeJtHtma5S1f4HgDHbb/0fdJdRsUDJVxDWb5W5f1/zzEFpjoT1u
+ aKrQ==
+X-Gm-Message-State: AOJu0Yx72HLg2SUOMmb2ejClM8XlXYsHTMyZypMVyuw3bYfS7AHx3BwQ
+ 9CN9k7spSvZi4lBk16u76Go3cQ==
+X-Google-Smtp-Source: AGHT+IHugUQ5tOq6CRzPkYCzsBd9E4Yy/hi2wf4KRfr4/Tz70/a43yWShtUDMYE1btwRst1FJhQGdw==
+X-Received: by 2002:adf:eb84:0:b0:31f:bab8:a31a with SMTP id
+ t4-20020adfeb84000000b0031fbab8a31amr5254791wrn.39.1695653337710; 
+ Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- c22-20020a05600c171600b00405442edc69sm8244128wmn.14.2023.09.25.07.48.56
+ bw10-20020a0560001f8a00b0032326908972sm3557423wrb.17.2023.09.25.07.48.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id DA6341FFBC;
+ by zen.linaroharston (Postfix) with ESMTP id F3B991FFC2;
  Mon, 25 Sep 2023 15:48:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,17 +91,17 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 07/31] configure: remove gcc version suffixes
-Date: Mon, 25 Sep 2023 15:48:30 +0100
-Message-Id: <20230925144854.1872513-8-alex.bennee@linaro.org>
+Subject: [PATCH 08/31] configure: ensure dependency for cross-compile setup
+Date: Mon, 25 Sep 2023 15:48:31 +0100
+Message-Id: <20230925144854.1872513-9-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,36 +124,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The modern packaging of cross GCC's doesn't need the explicit version
-number at the end.
+If we update configure we should make sure we regenerate all the
+compiler details. We should also ensure those details are upto date
+before building the TCG tests.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configure | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ configure | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/configure b/configure
-index ebad155d9e..e83872571d 100755
+index e83872571d..a95e0f5767 100755
 --- a/configure
 +++ b/configure
-@@ -1334,7 +1334,7 @@ probe_target_compiler() {
-         # We don't have any bigendian build tools so we only use this for AArch64
-         container_image=debian-arm64-cross
-         container_cross_prefix=aarch64-linux-gnu-
--        container_cross_cc=${container_cross_prefix}gcc-10
-+        container_cross_cc=${container_cross_prefix}gcc
-         ;;
-       alpha)
-         container_image=debian-alpha-cross
-@@ -1397,7 +1397,7 @@ probe_target_compiler() {
-       ppc)
-         container_image=debian-powerpc-test-cross
-         container_cross_prefix=powerpc-linux-gnu-
--        container_cross_cc=${container_cross_prefix}gcc-10
-+        container_cross_cc=${container_cross_prefix}gcc
-         ;;
-       ppc64|ppc64le)
-         container_image=debian-powerpc-test-cross
+@@ -1788,6 +1788,8 @@ for target in $target_list; do
+           echo "HOST_GDB_SUPPORTS_ARCH=y" >> "$config_target_mak"
+       fi
+ 
++      echo "$config_target_mak: configure" >> Makefile.prereqs
++      echo "build-tcg-tests-$target: $config_target_mak" >> Makefile.prereqs
+       echo "run-tcg-tests-$target: $qemu\$(EXESUF)" >> Makefile.prereqs
+       tcg_tests_targets="$tcg_tests_targets $target"
+   fi
 -- 
 2.39.2
 
