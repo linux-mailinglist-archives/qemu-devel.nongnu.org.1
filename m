@@ -2,99 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20B97ADDAB
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAFF7ADDBC
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:19:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkp8b-0006Uh-OZ; Mon, 25 Sep 2023 13:12:49 -0400
+	id 1qkpDq-0000UO-Fq; Mon, 25 Sep 2023 13:18:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qkp8X-0006Tf-Vn
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:12:46 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qkp8W-0002iS-2j
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:12:45 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qkp8F-0000uH-Gz; Mon, 25 Sep 2023 19:12:27 +0200
-Message-ID: <d38753d5-ac73-4b44-abfa-14e81888a4e9@maciej.szmigiero.name>
-Date: Mon, 25 Sep 2023 19:12:21 +0200
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1qkpDo-0000Tu-8k; Mon, 25 Sep 2023 13:18:12 -0400
+Received: from mail-ed1-x52a.google.com ([2a00:1450:4864:20::52a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <edgar.iglesias@gmail.com>)
+ id 1qkpDm-0003dK-9z; Mon, 25 Sep 2023 13:18:12 -0400
+Received: by mail-ed1-x52a.google.com with SMTP id
+ 4fb4d7f45d1cf-533c5d10dc7so4666931a12.3; 
+ Mon, 25 Sep 2023 10:18:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695662287; x=1696267087; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=J7i4KFEZ3VCP5ao6donJP8NRNxv/HImiLAsDiEO+CNs=;
+ b=ejyfV+J4lexhaOdsynJ1EAVU8xl0Xs/gAegWTcFye5z2LsFVJh498rPPVGDcNtVy0W
+ iomGvz+ilhKKXyRtxRTEY6Gpw3rlGsqYaMfOoM1wncEiqXMHdHLh1bdM4Vf/1ySMOlXM
+ F+OB57hthwbw2yom7TfuRIxG1MYkmY11x/lKJITw/DXl7JJUDY2TJ4ynBKUUIyzyiG1n
+ 8a220yk6YT7vKu/BoEsbgZydkeezMBpMqvkCk2CUgrQOGt7HVmc0WpWmyTmP8ZV8fU9T
+ DHs1rMqPeb7GNyPPQxYWFsKTkgHY2nB4wJHhsbw0vKaNe/kA7eiSt+MdM3th9VLg4SyI
+ 2a8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695662287; x=1696267087;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=J7i4KFEZ3VCP5ao6donJP8NRNxv/HImiLAsDiEO+CNs=;
+ b=FuEpM9aPZe9lG5435Ie7CSk06+4afIAu0itizwrfK9V9e8sUoGM/oXXo44z9vFw9bJ
+ EMKw2MrXq/65OszVh5t4Q6mDy4LD2q/qscsypzqOeRBiDCG01+YOxCAgS2YMsbMpa/x1
+ 0Cawf9f8m+/eNHL6RnTSGbbD4ekokwFtAE4aQm3/peo2CbpoDw2/VPiRYNZc/MlIR+bb
+ MmI/r967mT5Gr3CQbk6eQ8qAdgZLQq4odpiKRcv2wslh3k0gwiMgKkd3kIRbbkkRTXtW
+ TATh0b//1QrnfvbK+s+iCIuiLw4sL1WRv6oDXbHx8ylaCLMW9V4+9atEKFgSLzsZFiLO
+ lNbQ==
+X-Gm-Message-State: AOJu0YxTWL8JQqetQL9+u/CXLVQkEFapp0XgRAt4bTGbj7uh2OCz92Vp
+ yjvuU6BC93faPFGfzHYkjD3JZ2qnuquq6OzmT18=
+X-Google-Smtp-Source: AGHT+IHId3K4ZlyRzAJu2r7w01srVv7LxA32JQH7GqoUjVrYfGGNqXF3V8Fv4352u0A+BA+WTOGy9U10f/cQsC6uWqo=
+X-Received: by 2002:a05:6402:b5b:b0:533:d1cd:62c5 with SMTP id
+ bx27-20020a0564020b5b00b00533d1cd62c5mr4789176edb.17.1695662286812; Mon, 25
+ Sep 2023 10:18:06 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 6/7] qapi: Add HV_BALLOON_STATUS_REPORT event and its
- QMP query command
-Content-Language: en-US, pl-PL
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, David Hildenbrand <david@redhat.com>,
- "Michael S . Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>,
+References: <20230925144854.1872513-1-alex.bennee@linaro.org>
+ <20230925144854.1872513-5-alex.bennee@linaro.org>
+ <ZRG1g/2hWi8+AzNn@redhat.com> <878r8urxxc.fsf@linaro.org>
+In-Reply-To: <878r8urxxc.fsf@linaro.org>
+From: "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Date: Mon, 25 Sep 2023 19:17:55 +0200
+Message-ID: <CAJy5ezoucKM=VvYsHeFep7r0i1PV_JUCgq6gs4JJQVHqq3Yz3Q@mail.gmail.com>
+Subject: Re: [PATCH 04/31] docs: mark CRIS support as deprecated
+To: =?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>
+Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+ qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>, 
+ =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, 
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ John Snow <jsnow@redhat.com>, libvir-list@redhat.com, 
+ =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>, 
+ qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, 
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, 
+ Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas Piggin <npiggin@gmail.com>, 
+ Radoslaw Biernacki <rad@semihalf.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Cleber Rosa <crosa@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>, 
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
-References: <cover.1693240836.git.maciej.szmigiero@oracle.com>
- <03f58582c27a729ab305f8337ca2d2b8034bdd3b.1693240836.git.maciej.szmigiero@oracle.com>
- <87jzse79rj.fsf@pond.sub.org>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <87jzse79rj.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>, 
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>, 
+ Alexandre Iooss <erdnaxe@crans.org>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ qemu-ppc@nongnu.org, 
+ David Hildenbrand <david@redhat.com>, Yanan Wang <wangyanan55@huawei.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Ilya Leoshkevich <iii@linux.ibm.com>, 
+ Laurent Vivier <lvivier@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>, 
+ Rabin Vincent <rabinv@axis.com>
+Content-Type: multipart/alternative; boundary="00000000000043bf2a060632243a"
+Received-SPF: pass client-ip=2a00:1450:4864:20::52a;
+ envelope-from=edgar.iglesias@gmail.com; helo=mail-ed1-x52a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,120 +113,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25.09.2023 13:49, Markus Armbruster wrote:
-> "Maciej S. Szmigiero" <mail@maciej.szmigiero.name> writes:
-> 
->> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
->>
->> Used by the hv-balloon driver for (optional) guest memory status reports.
->>
->> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-> 
-> [...]
-> 
->>   static void hv_balloon_handle_unballoon_response(HvBalloon *balloon,
->> diff --git a/monitor/monitor.c b/monitor/monitor.c
->> index dc352f9e9d95..81513c642691 100644
->> --- a/monitor/monitor.c
->> +++ b/monitor/monitor.c
->> @@ -315,6 +315,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
->>       [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
->>       [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
->>       [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
->> +    [QAPI_EVENT_HV_BALLOON_STATUS_REPORT] = { 1000 * SCALE_MS },
->>   };
->>   
->>   /*
->> diff --git a/qapi/machine.json b/qapi/machine.json
->> index 5ede977cf2bc..f592876964af 100644
->> --- a/qapi/machine.json
->> +++ b/qapi/machine.json
->> @@ -1113,6 +1113,70 @@
->>   { 'event': 'BALLOON_CHANGE',
->>     'data': { 'actual': 'int' } }
->>   
->> +##
->> +# @HvBalloonInfo:
->> +#
->> +# hv-balloon guest-provided memory status information.
->> +#
->> +# @committed: the amount of memory in use inside the guest plus the
->> +#     amount of the memory unusable inside the guest (ballooned out,
->> +#     offline, etc.)
->> +#
->> +# @available: the amount of the memory inside the guest available for
->> +#     new allocations ("free")
->> +#
->> +# Since: 8.2
->> +##
->> +{ 'struct': 'HvBalloonInfo', 'data': { 'committed': 'size', 'available': 'size' } }
->> +
->> +##
->> +# @query-hv-balloon-status-report:
->> +#
->> +# Returns the hv-balloon driver data contained in the last received "STATUS"
->> +# message from the guest.
->> +#
->> +# Returns:
->> +# - @HvBalloonInfo on success
->> +# - If no hv-balloon device is present, DeviceNotFound
->> +# - If guest memory status reporting not enabled or no guest memory status
->> +#     report received yet, GenericError
-> 
-> Indentation is off, confusing Sphinx.
-> 
-> Do you actually need to tell the two failures apart?
+--00000000000043bf2a060632243a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Technically no, it's just for the API consumer convenience.
+On Mon, Sep 25, 2023 at 7:00=E2=80=AFPM Alex Benn=C3=A9e <alex.bennee@linar=
+o.org> wrote:
 
-> Do me a favour and break the lines a bit earlier, like
-> 
->     # Returns the hv-balloon driver data contained in the last received
->     # "STATUS" message from the guest.
->     #
->     # Returns:
->     # - @HvBalloonInfo on success
->     # - If no hv-balloon device is present, DeviceNotFound
->     # - If guest memory status reporting not enabled or no guest memory
->     #   status report received yet, GenericError
+>
+> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>
+> > On Mon, Sep 25, 2023 at 03:48:27PM +0100, Alex Benn=C3=A9e wrote:
+> >> This might be premature but while streamling the avocado tests I
+> >> realised the only tests we have are "check-tcg" ones. The aging
+> >> fedora-criss-cross image works well enough for developers but can't be
+> >> used in CI as we need supported build platforms to build QEMU.
+> >>
+> >> Does this mean the writing is on the wall for this architecture?
+> >>
+> >> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> >> Cc: Rabin Vincent <rabinv@axis.com>
+> >> Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
+> >> ---
+> >>  docs/about/deprecated.rst | 11 +++++++++++
+> >>  1 file changed, 11 insertions(+)
+> >>
+> >> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> >> index dc4da95329..7cfe313aa6 100644
+> >> --- a/docs/about/deprecated.rst
+> >> +++ b/docs/about/deprecated.rst
+> >> @@ -399,6 +399,17 @@ Specifying the iSCSI password in plain text on th=
+e
+> command line using the
+> >>  used instead, to refer to a ``--object secret...`` instance that
+> provides
+> >>  a password via a file, or encrypted.
+> >>
+> >> +TCG CPUs
+> >> +--------
+> >> +
+> >> +CRIS CPU architecture (since 8.1)
+> >> +'''''''''''''''''''''''''''''''''
+> >> +
+> >> +The CRIS architecture was pulled from Linux in 4.17 and the compiler
+> >> +is no longer packaged in any distro making it harder to run the
+> >> +``check-tcg`` tests. Unless we can improve the testing situation ther=
+e
+> >> +is a chance the code will bitrot without anyone noticing.
+> >
+> > Deprecated is generally a warning that we intend to delete the
+> > feature.   If we're just going to relegate it to untested
+> > status (what I'd call "tier 3" quality), then we should document
+> > that elsewhere.  I don't mind which way we go.
+>
+> We do have reasonably good coverage with tests/tcg/cris but of course
+> without a compiler we can't build them.
+>
+> Both nios2 and microblaze have build-toolchain scripts which can be used
+> to re-create containers. However my preference is having pre-built
+> toolchains hosted by others like we do for loongarch, hexagon, xtensa
+> and tricore. Then the docker image can simply curl them into an image.
+>
+>
+Yeah, I guess it's time to deprecate it...
 
-Will do.
+Cheers,
+Edgar
 
->> +#
->> +# Since: 8.2
->> +#
->> +# Example:
->> +#
->> +# -> { "execute": "query-hv-balloon-status-report" }
->> +# <- { "return": {
->> +#          "committed": 816640000,
->> +#          "available": 3333054464
->> +#       }
->> +#    }
->> +##
->> +{ 'command': 'query-hv-balloon-status-report', 'returns': 'HvBalloonInfo' }
->> +
->> +##
->> +# @HV_BALLOON_STATUS_REPORT:
->> +#
->> +# Emitted when the hv-balloon driver receives a "STATUS" message from
->> +# the guest.
->> +#
->> +# @data - a @HvBalloonInfo equivalent to the one returned by the
-> 
-> This needs to be
-> 
->     # @data: ... text ...
-> 
-> to be rendered correctly.
-> 
-> Suggest
-> 
->     # @data: contents of "STATUS" message received from the guest.
 
-Will do.
+> --
+> Alex Benn=C3=A9e
+> Virtualisation Tech Lead @ Linaro
+>
+>
 
-Thanks,
-Maciej
+--00000000000043bf2a060632243a
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
+ dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 25, 2023 at 7:00=E2=80=AFPM A=
+lex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@linaro.org">alex.bennee@l=
+inaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex"><br>
+Daniel P. Berrang=C3=A9 &lt;<a href=3D"mailto:berrange@redhat.com" target=
+=3D"_blank">berrange@redhat.com</a>&gt; writes:<br>
+<br>
+&gt; On Mon, Sep 25, 2023 at 03:48:27PM +0100, Alex Benn=C3=A9e wrote:<br>
+&gt;&gt; This might be premature but while streamling the avocado tests I<b=
+r>
+&gt;&gt; realised the only tests we have are &quot;check-tcg&quot; ones. Th=
+e aging<br>
+&gt;&gt; fedora-criss-cross image works well enough for developers but can&=
+#39;t be<br>
+&gt;&gt; used in CI as we need supported build platforms to build QEMU.<br>
+&gt;&gt; <br>
+&gt;&gt; Does this mean the writing is on the wall for this architecture?<b=
+r>
+&gt;&gt; <br>
+&gt;&gt; Signed-off-by: Alex Benn=C3=A9e &lt;<a href=3D"mailto:alex.bennee@=
+linaro.org" target=3D"_blank">alex.bennee@linaro.org</a>&gt;<br>
+&gt;&gt; Cc: Rabin Vincent &lt;<a href=3D"mailto:rabinv@axis.com" target=3D=
+"_blank">rabinv@axis.com</a>&gt;<br>
+&gt;&gt; Cc: Edgar E. Iglesias &lt;<a href=3D"mailto:edgar.iglesias@xilinx.=
+com" target=3D"_blank">edgar.iglesias@xilinx.com</a>&gt;<br>
+&gt;&gt; ---<br>
+&gt;&gt;=C2=A0 docs/about/deprecated.rst | 11 +++++++++++<br>
+&gt;&gt;=C2=A0 1 file changed, 11 insertions(+)<br>
+&gt;&gt; <br>
+&gt;&gt; diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst=
+<br>
+&gt;&gt; index dc4da95329..7cfe313aa6 100644<br>
+&gt;&gt; --- a/docs/about/deprecated.rst<br>
+&gt;&gt; +++ b/docs/about/deprecated.rst<br>
+&gt;&gt; @@ -399,6 +399,17 @@ Specifying the iSCSI password in plain text o=
+n the command line using the<br>
+&gt;&gt;=C2=A0 used instead, to refer to a ``--object secret...`` instance =
+that provides<br>
+&gt;&gt;=C2=A0 a password via a file, or encrypted.<br>
+&gt;&gt;=C2=A0 <br>
+&gt;&gt; +TCG CPUs<br>
+&gt;&gt; +--------<br>
+&gt;&gt; +<br>
+&gt;&gt; +CRIS CPU architecture (since 8.1)<br>
+&gt;&gt; +&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;=
+&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;&#39;=
+&#39;&#39;&#39;&#39;&#39;<br>
+&gt;&gt; +<br>
+&gt;&gt; +The CRIS architecture was pulled from Linux in 4.17 and the compi=
+ler<br>
+&gt;&gt; +is no longer packaged in any distro making it harder to run the<b=
+r>
+&gt;&gt; +``check-tcg`` tests. Unless we can improve the testing situation =
+there<br>
+&gt;&gt; +is a chance the code will bitrot without anyone noticing.<br>
+&gt;<br>
+&gt; Deprecated is generally a warning that we intend to delete the<br>
+&gt; feature.=C2=A0 =C2=A0If we&#39;re just going to relegate it to unteste=
+d<br>
+&gt; status (what I&#39;d call &quot;tier 3&quot; quality), then we should =
+document<br>
+&gt; that elsewhere.=C2=A0 I don&#39;t mind which way we go.<br>
+<br>
+We do have reasonably good coverage with tests/tcg/cris but of course<br>
+without a compiler we can&#39;t build them.<br>
+<br>
+Both nios2 and microblaze have build-toolchain scripts which can be used<br=
+>
+to re-create containers. However my preference is having pre-built<br>
+toolchains hosted by others like we do for loongarch, hexagon, xtensa<br>
+and tricore. Then the docker image can simply curl them into an image.<br>
+<br></blockquote><div><br></div><div>Yeah, I guess it&#39;s time to depreca=
+te it...</div><div><br></div><div>Cheers,</div><div>Edgar</div><div>=C2=A0<=
+/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
+rder-left:1px solid rgb(204,204,204);padding-left:1ex">
+-- <br>
+Alex Benn=C3=A9e<br>
+Virtualisation Tech Lead @ Linaro<br>
+<br>
+</blockquote></div></div>
+
+--00000000000043bf2a060632243a--
 
