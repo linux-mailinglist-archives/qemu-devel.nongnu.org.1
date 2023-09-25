@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9F97AE04C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 22:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2626C7AE072
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 22:50:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qksAN-0002xH-F6; Mon, 25 Sep 2023 16:26:51 -0400
+	id 1qksVr-0000qh-1w; Mon, 25 Sep 2023 16:49:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qksAL-0002x9-6O
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:26:50 -0400
+ id 1qksVn-0000qW-8j
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:48:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qksAJ-0004eT-Jh
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:26:48 -0400
+ id 1qksVl-0008Iq-Kg
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:48:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695673606;
+ s=mimecast20190719; t=1695674936;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=BJ/MKCNU048gVbUOsQ25u5SLku4+W/IXk9vdMzCNLMw=;
- b=fG+5SIcq6yEdKrIITb6pk3RoEPQeBuXI5U7RbBCm76s39l0bDHPFFRzuuT1pB5QqJpVYng
- l21ePYn/xqPoeCE9Uu3QeThEZAzAm6L7tT+XTiMAcZcOAdRW7rAjYwwLmT+yrClFWCVVay
- zu0KmfOFs4gYAPjnGgJwkfT/xZgZ0Ck=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-374-mkC1R8A5MoqSO0iOup2bPA-1; Mon, 25 Sep 2023 16:26:44 -0400
-X-MC-Unique: mkC1R8A5MoqSO0iOup2bPA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=w0laCva8ewqaj8VSEUV8AI1AzlcgK+Ql7Aop35jA0eM=;
+ b=Nt1WFXufA+Gbh3TqgEtebOf5m6m359WZVH83tdmxHXwBEH2gGH6eIxDjBEADWs74bMWIC/
+ j423SjC7iwAd/xDDdaDAeHjDOxzD7lBIpARA3aA2DsYy/kNRZp0wHxCJive+gCLmt9mrbO
+ BTvu9cyQO9nB7T73AhNGPCht0e3J5is=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-50-IilV92PfMvGBUsRFjvEzeg-1; Mon, 25 Sep 2023 16:48:54 -0400
+X-MC-Unique: IilV92PfMvGBUsRFjvEzeg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 90E6585A5BA;
- Mon, 25 Sep 2023 20:26:44 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 13E3C3C0DF6A
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 20:48:54 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.68])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E32CC40C2070;
- Mon, 25 Sep 2023 20:26:43 +0000 (UTC)
-Date: Mon, 25 Sep 2023 16:26:42 -0400
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 61470711286;
+ Mon, 25 Sep 2023 20:48:53 +0000 (UTC)
+Date: Mon, 25 Sep 2023 16:48:52 -0400
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: Hanna Czenczek <hreitz@redhat.com>
 Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
  "Michael S . Tsirkin" <mst@redhat.com>,
  Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Anton Kuchin <antonkuchin@yandex-team.ru>
-Subject: Re: [PATCH v3 5/5] vhost-user-fs: Implement internal migration
-Message-ID: <20230925202642.GF323580@fedora>
+ German Maglione <gmaglione@redhat.com>
+Subject: Re: [PATCH v3 0/5] vhost-user: Back-end state migration
+Message-ID: <20230925204852.GG323580@fedora>
 References: <20230915102531.55894-1-hreitz@redhat.com>
- <20230915102531.55894-6-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="d5khHiGNigsVFP+D"
+ protocol="application/pgp-signature"; boundary="K/zCvWGQCDPOsVDG"
 Content-Disposition: inline
-In-Reply-To: <20230915102531.55894-6-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+In-Reply-To: <20230915102531.55894-1-hreitz@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,165 +83,110 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
---d5khHiGNigsVFP+D
-Content-Type: text/plain; charset=us-ascii
+--K/zCvWGQCDPOsVDG
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 15, 2023 at 12:25:30PM +0200, Hanna Czenczek wrote:
-> A virtio-fs device's VM state consists of:
-> - the virtio device (vring) state (VMSTATE_VIRTIO_DEVICE)
-> - the back-end's (virtiofsd's) internal state
+On Fri, Sep 15, 2023 at 12:25:25PM +0200, Hanna Czenczek wrote:
+> RFC:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-03/msg04263.html
 >=20
-> We get/set the latter via the new vhost operations to transfer migratory
-> state.  It is its own dedicated subsection, so that for external
-> migration, it can be disabled.
+> v1:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg01575.html
 >=20
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> ---
->  hw/virtio/vhost-user-fs.c | 101 +++++++++++++++++++++++++++++++++++++-
->  1 file changed, 100 insertions(+), 1 deletion(-)
+> v2:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg02604.html
+>=20
+> Hi,
+>=20
+> I=E2=80=99ve decided not to work on vhost-user SUSPEND/RESUME for now =E2=
+=80=93 it is
+> not technically required for virtio-fs migration, which is the actual
+> priority for me now.  While we do want to have SUSPEND/RESUME at some
+> point, the only practically existing reason for it is to be able to
+> implement vhost-level resetting in virtiofsd, but that is not related to
+> migration.
 
-CCing Anton so he is aware that internal migration is being added.
+QEMU sends VHOST_USER_SET_STATUS 0 in vhost_dev_stop(). Are you assuming
+that virtiofs back-ends do not reset the device upon receiving this
+message?
 
+> So one of the changes in v3 is that it no longer depends on the
+> vhost-user SUSPEND/RESUME series, and describes the migration protocol
+> without the device being suspended at any point, but merely that the
+> vrings are stopped.
 >=20
-> diff --git a/hw/virtio/vhost-user-fs.c b/hw/virtio/vhost-user-fs.c
-> index 49d699ffc2..eb91723855 100644
-> --- a/hw/virtio/vhost-user-fs.c
-> +++ b/hw/virtio/vhost-user-fs.c
-> @@ -298,9 +298,108 @@ static struct vhost_dev *vuf_get_vhost(VirtIODevice=
- *vdev)
->      return &fs->vhost_dev;
->  }
-> =20
-> +/**
-> + * Fetch the internal state from virtiofsd and save it to `f`.
-> + */
-> +static int vuf_save_state(QEMUFile *f, void *pv, size_t size,
-> +                          const VMStateField *field, JSONWriter *vmdesc)
-> +{
-> +    VirtIODevice *vdev =3D pv;
-> +    VHostUserFS *fs =3D VHOST_USER_FS(vdev);
-> +    Error *local_error =3D NULL;
-> +    int ret;
-> +
-> +    ret =3D vhost_save_backend_state(&fs->vhost_dev, f, &local_error);
-> +    if (ret < 0) {
-> +        error_reportf_err(local_error,
-> +                          "Error saving back-end state of %s device %s "
-> +                          "(tag: \"%s\"): ",
-> +                          vdev->name, vdev->parent_obj.canonical_path,
-> +                          fs->conf.tag ?: "<none>");
-> +        return ret;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +/**
-> + * Load virtiofsd's internal state from `f` and send it over to virtiofs=
-d.
-> + */
-> +static int vuf_load_state(QEMUFile *f, void *pv, size_t size,
-> +                          const VMStateField *field)
-> +{
-> +    VirtIODevice *vdev =3D pv;
-> +    VHostUserFS *fs =3D VHOST_USER_FS(vdev);
-> +    Error *local_error =3D NULL;
-> +    int ret;
-> +
-> +    ret =3D vhost_load_backend_state(&fs->vhost_dev, f, &local_error);
-> +    if (ret < 0) {
-> +        error_reportf_err(local_error,
-> +                          "Error loading back-end state of %s device %s "
-> +                          "(tag: \"%s\"): ",
-> +                          vdev->name, vdev->parent_obj.canonical_path,
-> +                          fs->conf.tag ?: "<none>");
-> +        return ret;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static bool vuf_is_internal_migration(void *opaque)
-> +{
-> +    /* TODO: Return false when an external migration is requested */
-> +    return true;
-> +}
-> +
-> +static int vuf_check_migration_support(void *opaque)
-> +{
-> +    VirtIODevice *vdev =3D opaque;
-> +    VHostUserFS *fs =3D VHOST_USER_FS(vdev);
-> +
-> +    if (!vhost_supports_device_state(&fs->vhost_dev)) {
-> +        error_report("Back-end of %s device %s (tag: \"%s\") does not su=
-pport "
-> +                     "migration through qemu",
-> +                     vdev->name, vdev->parent_obj.canonical_path,
-> +                     fs->conf.tag ?: "<none>");
-> +        return -ENOTSUP;
-> +    }
-> +
-> +    return 0;
-> +}
-> +
-> +static const VMStateDescription vuf_backend_vmstate;
-> +
->  static const VMStateDescription vuf_vmstate =3D {
->      .name =3D "vhost-user-fs",
-> -    .unmigratable =3D 1,
-> +    .version_id =3D 0,
-> +    .fields =3D (VMStateField[]) {
-> +        VMSTATE_VIRTIO_DEVICE,
-> +        VMSTATE_END_OF_LIST()
-> +    },
-> +    .subsections =3D (const VMStateDescription * []) {
-> +        &vuf_backend_vmstate,
-> +        NULL,
-> +    }
-> +};
-> +
-> +static const VMStateDescription vuf_backend_vmstate =3D {
-> +    .name =3D "vhost-user-fs-backend",
-> +    .version_id =3D 0,
-> +    .needed =3D vuf_is_internal_migration,
-> +    .pre_load =3D vuf_check_migration_support,
-> +    .pre_save =3D vuf_check_migration_support,
-> +    .fields =3D (VMStateField[]) {
-> +        {
-> +            .name =3D "back-end",
-> +            .info =3D &(const VMStateInfo) {
-> +                .name =3D "virtio-fs back-end state",
-> +                .get =3D vuf_load_state,
-> +                .put =3D vuf_save_state,
-> +            },
-> +        },
-> +        VMSTATE_END_OF_LIST()
-> +    },
->  };
-> =20
->  static Property vuf_properties[] =3D {
+> Other changes include:
+>=20
+> - Patch 1:
+>   - Rephrased a lot
+>   - Added a description for the VHOST_USER_SET_DEVICE_STATE_FD
+>     parameters
+>   - Renamed VHOST_USER_PROTOCOL_F_MIGRATORY_STATE to
+>     VHOST_USER_PROTOCOL_F_DEVICE_STATE
+>   - enum variants changed in value due to dropping the SUSPEND/RESUME
+>     dependency
+>=20
+> - Patch 2:
+>   - Pulled in, was a stand-alone patch before
+>   - Dropped a sentence about ring state before feature negotiations, as
+>     the rings are not to be used during that period anyway
+>   - Bit of rephrasing
+>=20
+> - Patch 3:
+>   - Renamed =E2=80=9Cmigratory state=E2=80=9D to =E2=80=9Cdevice state=E2=
+=80=9D
+>   - enum variants changed in value due to dropping the SUSPEND/RESUME
+>     dependency
+>=20
+> - Patch 4:
+>   - Changed `f` to @f (referencing parameter =E2=80=9Cf=E2=80=9D) in comm=
+ents
+>   - Use g_autofree for the transfer buffer
+>   - Note SUSPEND state as a future feature, not currently existing
+>   - Wrap read() and write() in RETRY_ON_EINTR()
+>=20
+> - Patch 5:
+>   - Renamed =E2=80=9Cmigratory state=E2=80=9D to =E2=80=9Cdevice state=E2=
+=80=9D
+>   - (kept R-b still)
+>=20
+>=20
+> Hanna Czenczek (5):
+>   vhost-user.rst: Migrating back-end-internal state
+>   vhost-user.rst: Clarify enabling/disabling vrings
+>   vhost-user: Interface for migration state transfer
+>   vhost: Add high-level state save/load functions
+>   vhost-user-fs: Implement internal migration
+>=20
+>  docs/interop/vhost-user.rst       | 188 ++++++++++++++++++++++-
+>  include/hw/virtio/vhost-backend.h |  24 +++
+>  include/hw/virtio/vhost.h         | 114 ++++++++++++++
+>  hw/virtio/vhost-user-fs.c         | 101 ++++++++++++-
+>  hw/virtio/vhost-user.c            | 148 ++++++++++++++++++
+>  hw/virtio/vhost.c                 | 241 ++++++++++++++++++++++++++++++
+>  6 files changed, 810 insertions(+), 6 deletions(-)
+>=20
 > --=20
 > 2.41.0
 >=20
 
---d5khHiGNigsVFP+D
+--K/zCvWGQCDPOsVDG
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEyBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUR7QIACgkQnKSrs4Gr
-c8hWOQf4lTXUOU2gOOGvvnfaMIpciHn+yEYaANnHB9OYIGqW2lIrhEJhX79nL0/H
-dRU+oduy+zya4lZd1Dt/Hmr/hecYo4IYRIIIp01RU7x9/QEk35BJalOcPlXTxx1K
-xEWQt6zLjip7XP8w3uenYqBS3aAQnzkcHCF78HVtYvrDR458Xq0d+slTfhgUTxch
-kqdH9Lzllle5tYzVWmnUB2df5J91NtbN6Kq7APpdY3VD0wRNAF7j8G9RJEyAZVDh
-Q68Cy1vIH+qdTo+wWaJYjSD5qYMAjJx1OpBif4iGMhzgjUgI+dTlZPG3xrK6jq4U
-pWW/+YfS/E+03GeWofilxJ2leBfH
-=D7XB
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUR8jMACgkQnKSrs4Gr
+c8jKKwf8C5etjvYMEZYDYIJGeOPOVSRiR04zFVZS+/VEolLYYRW0lUzWinu1wjhF
+PuPo+jaMNKTbuj/MAFiAhx6agRzKu/M57M1kQxjECSWHYYkKD0CkEz3xOQe0hvVu
+hP3MDse57FlX3whkKNnUSE1aTBcwj4l7pMXLljUpM+UwkzjqlnbZq8DI7XdUe2jG
+sTp9hYhA0h03V4ACXjd9Ov90QZWWRoOB1BvAawe4PClVdgaQQWM6DiPAsi8ELH6T
+9Vyo403dpuek4UvySNWLe7yBDlCT0wv48oXo2NNttzHcJ3G2TfxiFQFma3KlX0Od
+nlW5mEYBk8qwOgxXKjQU+dFjvRxKKg==
+=qDLO
 -----END PGP SIGNATURE-----
 
---d5khHiGNigsVFP+D--
+--K/zCvWGQCDPOsVDG--
 
 
