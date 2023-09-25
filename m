@@ -2,105 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1396C7AD7D2
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21C37AD7E8
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:22:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkkVP-0006Ir-Qu; Mon, 25 Sep 2023 08:16:03 -0400
+	id 1qkkaK-0008JO-Lk; Mon, 25 Sep 2023 08:21:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jejb@linux.ibm.com>)
- id 1qkkVM-0006IY-E2
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 08:16:00 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jejb@linux.ibm.com>)
- id 1qkkVJ-00032t-VB
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 08:16:00 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38PBFuL2007999
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 12:15:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : content-transfer-encoding : mime-version; s=pp1;
- bh=UW/OrTzQrquODByE0dIhRORDx1M0+8TkXQjdsFeOISk=;
- b=qdjXCxHwJ0KzZFfa+nS6TcPJDqpT81wjH7hwNCvAlCG0n2eD0zBxlFY+kiNalvwOfFjB
- XkUTLMQt6+aoddQVZdtWF5YKWLr1zp53x2Ht8oOfExwHR6/MLX6aft5AHSW3m/4Zxche
- U8MWqCa4xLCNFjXrT/ppozxQza+MGN9GkZL140g3ATOcbLgoFslXq0Q+wqvK27oJHhZL
- HCBj+Otj8S+tffzVTXWvUGGd0Xdjd6OY3g0syVqfoJfOkTTJsGkAnvsBetD1XbMur53Y
- 0iVEhhJDkGcn+52P4wSyG1irxdlnb27MAXmD6xiVusm3My+HPZAgVUX9R8gmFAVYafnV 1Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tb7vuurvc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 12:15:55 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38PBlK8q015986
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 12:15:55 GMT
-Received: from ppma11.dal12v.mail.ibm.com
- (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tb7vuurv4-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 Sep 2023 12:15:55 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
- by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38PAQGvs030489; Mon, 25 Sep 2023 12:15:54 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
- by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tad219drx-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 25 Sep 2023 12:15:54 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 38PCFriV66912670
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 25 Sep 2023 12:15:53 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 7ED665805D;
- Mon, 25 Sep 2023 12:15:53 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 690B358057;
- Mon, 25 Sep 2023 12:15:52 +0000 (GMT)
-Received: from lingrow.int.hansenpartnership.com (unknown [9.67.144.155])
- by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon, 25 Sep 2023 12:15:52 +0000 (GMT)
-Message-ID: <eaf68b96049efd85f1a42dee4f6c1fdd2f45716f.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 2/2] tpm: add backend for mssim
-From: James Bottomley <jejb@linux.ibm.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, "Daniel P ." =?ISO-8859-1?Q?Berrang=E9?=
- <berrange@redhat.com>, Stefan Berger <stefanb@linux.ibm.com>
-Date: Mon, 25 Sep 2023 08:15:50 -0400
-In-Reply-To: <87bkduwxv7.fsf@pond.sub.org>
-References: <20230109161532.6892-1-jejb@linux.ibm.com>
- <20230109161532.6892-3-jejb@linux.ibm.com> <87bkduwxv7.fsf@pond.sub.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: e8obMm0C4MthhfP15gS_3vK5ZZO_aQmi
-X-Proofpoint-GUID: gYZvXynN69jTTN7kvevgiW8SqhQ4x9gd
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qkkaI-0008J7-GB
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 08:21:06 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qkkaG-0003xm-9f
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 08:21:06 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id CB4D61F459;
+ Mon, 25 Sep 2023 12:21:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1695644460; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=g6Rzl9xglP9iAKdHa1upppdJZLEcr2kn+D5TSZcey4s=;
+ b=PtwLSOZz41PvNKG7JFUz8X9w36mDR1RrKCB+6BaIqog0WO9k81l//GR5AHmyt46QFjWRM1
+ lV83EzOFD+4HRyViNAflHF/A1BGjkbeWvvVChNQuoW5O8/sowGVs9xLrPdfTy4jmUCamQT
+ fm1Y6LUuBkywC5/afZQ2r/I/0QwmpAA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1695644460;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=g6Rzl9xglP9iAKdHa1upppdJZLEcr2kn+D5TSZcey4s=;
+ b=u7qLz9q5An41eMqnBkCm0NlzcisUMCdg8d+VW7T1qaejfnWfvELekioYTYk8DYliRIo4tQ
+ RyE81pN02mG0jiDg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5E49B13580;
+ Mon, 25 Sep 2023 12:21:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 0Z71Cix7EWWlZwAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 25 Sep 2023 12:21:00 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Lukas Straub <lukasstraub2@web.de>, Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Leonardo
+ Bras <leobras@redhat.com>, Daniel P. =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>
+Subject: Re: [PATCH v6 09/10] migration/yank: Keep track of registered yank
+ instances
+In-Reply-To: <20230925093607.7f3ab989@penguin>
+References: <20230911171320.24372-1-farosas@suse.de>
+ <20230911171320.24372-10-farosas@suse.de> <ZQIX+KUgL5V6H/gj@x1n>
+ <87jzstkaen.fsf@suse.de> <ZQJKQLNNZe772MUA@x1n> <87h6nwkhwl.fsf@suse.de>
+ <ZQMfa38ulqQiRZ3d@x1n> <20230925093607.7f3ab989@penguin>
+Date: Mon, 25 Sep 2023 09:20:58 -0300
+Message-ID: <87y1gu4f6d.fsf@suse.de>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-25_08,2023-09-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 mlxlogscore=999 adultscore=0
- impostorscore=0 clxscore=1015 priorityscore=1501 mlxscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2309250090
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=jejb@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,317 +84,195 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: jejb@linux.ibm.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 2023-09-22 at 08:00 +0200, Markus Armbruster wrote:
-> Found this cleaning out old mail, sorry for missing it until now!
-> 
-> I think we owe James a quick decision wether we're willing to take
-> the
-> feature.  Stefan, thoughts?
-> 
-> James Bottomley <jejb@linux.ibm.com> writes:
-> 
-> > From: James Bottomley <James.Bottomley@HansenPartnership.com>
-> > 
-> > The Microsoft Simulator (mssim) is the reference emulation platform
-> > for the TCG TPM 2.0 specification.
-> > 
-> > https://github.com/Microsoft/ms-tpm-20-ref.git
-> > 
-> > It exports a fairly simple network socket based protocol on two
-> > sockets, one for command (default 2321) and one for control
-> > (default
-> > 2322).  This patch adds a simple backend that can speak the mssim
-> > protocol over the network.  It also allows the two sockets to be
-> > specified on the command line.  The benefits are twofold: firstly
-> > it
-> > gives us a backend that actually speaks a standard TPM emulation
-> > protocol instead of the linux specific TPM driver format of the
-> > current emulated TPM backend and secondly, using the microsoft
-> > protocol, the end point of the emulator can be anywhere on the
-> > network, facilitating the cloud use case where a central TPM
-> > service
-> > can be used over a control network.
-> > 
-> > The implementation does basic control commands like power off/on,
-> > but
-> > doesn't implement cancellation or startup.  The former because
-> > cancellation is pretty much useless on a fast operating TPM
-> > emulator
-> > and the latter because this emulator is designed to be used with
-> > OVMF
-> > which itself does TPM startup and I wanted to validate that.
-> > 
-> > To run this, simply download an emulator based on the MS
-> > specification
-> > (package ibmswtpm2 on openSUSE) and run it, then add these two
-> > lines
-> > to the qemu command and it will use the emulator.
-> > 
-> >     -tpmdev mssim,id=tpm0 \
-> >     -device tpm-crb,tpmdev=tpm0 \
-> > 
-> > to use a remote emulator replace the first line with
-> > 
-> >     -tpmdev
-> > "{'type':'mssim','id':'tpm0','command':{'type':inet,'host':'remote'
-> > ,'port':'2321'}}"
-> > 
-> > tpm-tis also works as the backend.
-> > 
-> > Signed-off-by: James Bottomley <jejb@linux.ibm.com>
-> 
-> [...]
-> 
-> > diff --git a/docs/specs/tpm.rst b/docs/specs/tpm.rst
-> > index 535912a92b..1398735956 100644
-> > --- a/docs/specs/tpm.rst
-> > +++ b/docs/specs/tpm.rst
-> > @@ -270,6 +270,38 @@ available as a module (assuming a TPM 2 is
-> > passed through):
-> >    /sys/devices/LNXSYSTEM:00/LNXSYBUS:00/MSFT0101:00/tpm/tpm0/pcr-
-> > sha256/9
-> >    ...
-> >  
-> > +The QEMU TPM Microsoft Simulator Device
-> > +---------------------------------------
-> > +
-> > +The TCG provides a reference implementation for TPM 2.0 written by
-> 
-> 
-> Suggest to copy the cover letter's nice introductory paragraph here:
-> 
->   The Microsoft Simulator (mssim) is the reference emulation platform
->   for the TCG TPM 2.0 specification.
-> 
->   It provides a reference implementation for TPM 2.0 written by
+CC: Daniel for the QIOChannel discussion
 
-Sure, that's easy.
+Lukas Straub <lukasstraub2@web.de> writes:
+> On Thu, 14 Sep 2023 10:57:47 -0400
+> Peter Xu <peterx@redhat.com> wrote:
+>
+>> On Thu, Sep 14, 2023 at 10:23:38AM -0300, Fabiano Rosas wrote:
+>> > Peter Xu <peterx@redhat.com> writes:
+>> >   
+>> > > On Wed, Sep 13, 2023 at 06:53:20PM -0300, Fabiano Rosas wrote:  
+>> > >> Peter Xu <peterx@redhat.com> writes:
+>> > >>   
+>> > >> > On Mon, Sep 11, 2023 at 02:13:19PM -0300, Fabiano Rosas wrote:  
+>> > >> >> The core yank code is strict about balanced registering and
+>> > >> >> unregistering of yank functions.
+>> > >> >> 
+>> > >> >> This creates a difficulty because the migration code registers one
+>> > >> >> yank function per QIOChannel, but each QIOChannel can be referenced by
+>> > >> >> more than one QEMUFile. The yank function should not be removed until
+>> > >> >> all QEMUFiles have been closed.
+>> > >> >> 
+>> > >> >> Keep a reference count of how many QEMUFiles are using a QIOChannel
+>> > >> >> that has a yank function. Only unregister the yank function when all
+>> > >> >> QEMUFiles have been closed.
+>> > >> >> 
+>> > >> >> This improves the current code by removing the need for the programmer
+>> > >> >> to know which QEMUFile is the last one to be cleaned up and fixes the
+>> > >> >> theoretical issue of removing the yank function while another QEMUFile
+>> > >> >> could still be using the ioc and require a yank.
+>> > >> >> 
+>> > >> >> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> > >> >> ---
+>> > >> >>  migration/yank_functions.c | 81 ++++++++++++++++++++++++++++++++++----
+>> > >> >>  migration/yank_functions.h |  8 ++++
+>> > >> >>  2 files changed, 81 insertions(+), 8 deletions(-)  
+>> > >> >
+>> > >> > I worry this over-complicate things.  
+>> > >> 
+>> > >> It does. We ran out of simple options.
+>> > >>   
+>> > >> > If you prefer the cleaness that we operate always on qemufile level, can we
+>> > >> > just register each yank function per-qemufile?  
+>> > >> 
+>> > >> "just" hehe
+>> > >> 
+>> > >> we could, but:
+>> > >> 
+>> > >> i) the yank is a per-channel operation, so this is even more unintuitive;  
+>> > >
+>> > > I mean we can provide something like:
+>> > >
+>> > > void migration_yank_qemufile(void *opaque)
+>> > > {
+>> > >     QEMUFile *file = opaque;
+>> > >     QIOChannel *ioc = file->ioc;
+>> > >
+>> > >     qio_channel_shutdown(ioc, QIO_CHANNEL_SHUTDOWN_BOTH, NULL);
+>> > > }
+>> > >
+>> > > void migration_qemufile_register_yank(QEMUFile *file)
+>> > > {
+>> > >     if (migration_ioc_yank_supported(file->ioc)) {
+>> > >         yank_register_function(MIGRATION_YANK_INSTANCE,
+>> > >                                migration_yank_qemufile,
+>> > >                                file);
+>> > >     }
+>> > > }  
+>> > 
+>> > Sure, this is what I was thinking as well. IMO it will be yet another
+>> > operation that happens on the channel, but it performed via the
+>> > file. Just like qio_channel_close() at qemu_fclose(). Not the end of the
+>> > world, of course, I just find it error-prone.
+>> >   
+>> > >> 
+>> > >> ii) multifd doesn't have a QEMUFile, so it will have to continue using
+>> > >>     the ioc;  
+>> > >
+>> > > We can keep using migration_ioc_[un]register_yank() for them if there's no
+>> > > qemufile attached.  As long as the function will all be registered under
+>> > > MIGRATION_YANK_INSTANCE we should be fine having different yank func.
+>> > >  
+>> > 
+>> > ok
+>> >   
+>> > >> 
+>> > >> iii) we'll have to add a yank to every new QEMUFile created during the
+>> > >>      incoming migration (colo, rdma, etc), otherwise the incoming side
+>> > >>      will be left using iocs while the src uses the QEMUFile;  
+>> > >
+>> > > For RDMA, IIUC it'll simply be a noop as migration_ioc_yank_supported()
+>> > > will be a noop for it for either reg/unreg.
+>> > >
+>> > > Currently it seems we will also unreg the ioc even for RDMA (even though we
+>> > > don't reg for it).  But since unreg will be a noop it seems all fine even
+>> > > if not paired.. maybe we should still try to pair it, e.g. register also in
+>> > > rdma_start_outgoing_migration() for the rdma ioc so at least they're paired.
+>> > >
+>> > > I don't see why COLO is special here, though.  Maybe I missed something.  
+>> > 
+>> > For colo I was thinking we'd have to register the yank just to be sure
+>> > that all paths unregistering it have something to unregister.
+>> > 
+>> > Maybe I should move the register into qemu_file_new_impl() with a
+>> > matching unregister at qemu_fclose().  
+>> 
+>> Sounds good.  Or...
+>> 
+>> >   
+>> > >> 
+>> > >> iv) this is a functional change of the yank feature for which we have no
+>> > >>     tests.  
+>> > >
+>> > > Having yank tested should be preferrable.  Lukas is in the loop, let's see
+>> > > whether he has something. We can still smoke test it before a selftest
+>> > > being there.
+>> > >
+>
+> Hi All,
+> Sorry for the late reply.
+>
+> Yes, testing missing. I'll work on it.
+>
+>> > > Taking one step back.. I doubt whether anyone is using yank for migration?
+>> > > Knowing that migration already have migrate-cancel (for precopy) and
+>> > > migrate-pause (for postcopy).  
+>> > 
+>> > Right, both already call qio_channel_shutdown().
+>> >   
+>> > > I never used it myself, and I don't think
+>> > > it's supported for RHEL.  How's that in suse's case?  
+>> > 
+>> > Never heard mention of it and I don't see it in our virtualization
+>> > documentation.
+>> >   
+>> > >
+>> > > If no one is using it, maybe we can even avoid registering migration to
+>> > > yank?
+>> > >  
+>> > 
+>> > Seems reasonable to me.  
+>> 
+>> ... let's wait for a few days from Lukas to see whether he as any more
+>> input, or I'd vote for dropping yank for migration as a whole. It caused
+>> mostly more crashes that I knew than benefits, so far..
+>> 
+>> I also checked libvirt is not using yank.
+>> 
+>
+> The main user for yank is COLO. It can't be replaced by 'migrate_pause'
+> or 'migrate_cancel', because:
+>
+> 1) It needs to work while the main lock is taken by the migration
+>    thread, so it needs to be an OOB qmp command. There are places
+>    where the migration thread can hang on a socket while the main lock
+>    is taken. 'migrate_pause' is OOB, but not usable in the COLO case (it
+>    doesn't support postcopy).
+>
+> 2) In COLO, it needs to work both on outgoing and on incoming side, since
+>    both sides have a completely healthy and ready to takeover guest state.
+>
+> I agree that the migration yank code was not well thought out :(.
 
-> > +Microsoft (See `ms-tpm-20-ref`_ on github).  The reference
-> > implementation
-> > +starts a network server and listens for TPM commands on port 2321
-> > and
-> > +TPM Platform control commands on port 2322, although these can be
-> > +altered.  The QEMU mssim TPM backend talks to this
-> > implementation.  By
-> > +default it connects to the default ports on localhost:
-> > +
-> > +.. code-block:: console
-> > +
-> > +  qemu-system-x86_64 <qemu-options> \
-> > +    -tpmdev mssim,id=tpm0 \
-> > +    -device tpm-crb,tpmdev=tpm0
-> > +
-> > +
-> > +Although it can also communicate with a remote host, which must be
-> > +specified as a SocketAddress via json on the command line for each
-> > of
-> 
-> Is the "via JSON" part in "must be specified ... on the command line"
-> correct?  I'd expect to be able to use dotted keys as well, like
-> 
->     -tpmdev
-> type=mssim,id=tpm0,command.type=inet,command.host=remote,command.port
-> =2321',control.type=inet,control.host=remote,control.port=2322
+I'd say the QIOChannel being referenced via multiple QEMUFiles throws a
+curve ball to the yank design.
 
-Yes, I've verified that the dot notation works as well.  However, I
-thought QEMU was calling all stuff like this JSON notation?  If not,
-what do you usually call it? "json or dot notation"?
+> I had the idea back then to create child class of the IOCs, e.g.
+> YankableQIOChannelSocket and YankableQIOChannelTLS. It's not
+> perfect, but then the lifetime of the yank functions is directly
+> coupled with the iochannel. Then the IOCs can be used just as usual in
+> the rest of the migration code.
 
-> 
-> Aside: I do recommend management applications stick to JSON.
-> 
-> > +the command and control ports:
-> > +
-> > +.. code-block:: console
-> > +
-> > +  qemu-system-x86_64 <qemu-options> \
-> > +    -tpmdev
-> > "{'type':'mssim','id':'tpm0','command':{'type':'inet','host':'remot
-> > e','port':'2321'},'control':{'type':'inet','host':'remote','port':'
-> > 2322'}}" \
-> > +    -device tpm-crb,tpmdev=tpm0
-> > +
-> > +
-> > +The mssim backend supports snapshotting and migration, but the
-> > state
-> > +of the Microsoft Simulator server must be preserved (or the server
-> > +kept running) outside of QEMU for restore to be successful.
-> > +
-> >  The QEMU TPM emulator device
-> >  ----------------------------
-> >  
-> > @@ -526,3 +558,6 @@ the following:
-> >  
-> >  .. _SWTPM protocol:
-> >    
-> > https://github.com/stefanberger/swtpm/blob/master/man/man3/swtpm_ioctls.pod
-> > +
-> > +.. _ms-tpm-20-ref:
-> > +   https://github.com/microsoft/ms-tpm-20-ref
-> > diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-> > index ed78a87ddd..12482368d0 100644
-> > --- a/monitor/hmp-cmds.c
-> > +++ b/monitor/hmp-cmds.c
-> > @@ -731,6 +731,7 @@ void hmp_info_tpm(Monitor *mon, const QDict
-> > *qdict)
-> >      unsigned int c = 0;
-> >      TPMPassthroughOptions *tpo;
-> >      TPMEmulatorOptions *teo;
-> > +    TPMmssimOptions *tmo;
-> >  
-> >      info_list = qmp_query_tpm(&err);
-> >      if (err) {
-> > @@ -764,6 +765,14 @@ void hmp_info_tpm(Monitor *mon, const QDict
-> > *qdict)
-> >              teo = ti->options->u.emulator.data;
-> >              monitor_printf(mon, ",chardev=%s", teo->chardev);
-> >              break;
-> > +        case TPM_TYPE_MSSIM:
-> > +            tmo = &ti->options->u.mssim;
-> > +            monitor_printf(mon, ",command=%s:%s,control=%s:%s",
-> > +                           tmo->command->u.inet.host,
-> > +                           tmo->command->u.inet.port,
-> > +                           tmo->control->u.inet.host,
-> > +                           tmo->control->u.inet.port);
-> > +            break;
-> >          case TPM_TYPE__MAX:
-> >              break;
-> >          }
-> > diff --git a/qapi/tpm.json b/qapi/tpm.json
-> > index 2b491c28b4..f9dde35377 100644
-> > --- a/qapi/tpm.json
-> > +++ b/qapi/tpm.json
-> > @@ -5,6 +5,7 @@
-> >  ##
-> >  # = TPM (trusted platform module) devices
-> >  ##
-> 
-> Blank line, please.
-> 
-> > +{ 'include': 'sockets.json' }
-> >  
-> >  ##
-> >  # @TpmModel:
-> > @@ -49,7 +50,7 @@
->    #
->    # @passthrough: TPM passthrough type
->    #
->    # @emulator: Software Emulator TPM type (since 2.11)
-> >  #
-> 
-> Missing member documentation:
-> 
->    # @mssim: <brief description here> (since 8.2)
-> 
-> >  # Since: 1.5
-> >  ##
-> > -{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator' ],
-> > +{ 'enum': 'TpmType', 'data': [ 'passthrough', 'emulator', 'mssim'
-> > ],
-> >    'if': 'CONFIG_TPM' }
-> >  
-> >  ##
-> > @@ -64,7 +65,7 @@
-> >  # Example:
-> >  #
-> >  # -> { "execute": "query-tpm-types" }
-> > -# <- { "return": [ "passthrough", "emulator" ] }
-> > +# <- { "return": [ "passthrough", "emulator", "mssim" ] }
-> 
-> Thanks for updating the example.
-> 
-> >  #
-> >  ##
-> >  { 'command': 'query-tpm-types', 'returns': ['TpmType'],
-> > @@ -117,6 +118,22 @@
-> >    'data': { 'data': 'TPMEmulatorOptions' },
-> >    'if': 'CONFIG_TPM' }
-> >  
-> > +##
-> > +# @TPMmssimOptions:
-> 
-> Please capitalize similar to TPMPassthroughOptions and
-> TPMEmulatorOptions: TPMMssimOptions.
+The yank really wants to be tied to the channel. We should do that.
 
-OK
+I'm just thinking whether a feature bit + setter would be simpler to
+implement. It wouldn't require changing any of the object creation code,
+just add a qio_channel_enable_yank() at the start of migration and let
+the channel take care of the rest.
 
-> 
-> > +#
-> > +# Information for the mssim emulator connection
-> > +#
-> > +# @command: command socket for the TPM emulator
-> 
-> Blank line, please.
+> Another problem area was to be that there was no clear point in
+> migration code where all channels are closed to unregister the yank
+> instance itself. That seems to be solved now?
 
-OK
+I'm inclined to add reference counting all over instead of trying to
+squint at the code and figure out where these cleanups should
+go. Specially since we have these pause/recovery scenarios.
 
-> 
-> > +# @control: control socket for the TPM emulator
-> > +#
-> > +# Since: 7.2.0
-> 
-> Since 8.2
-
-Heh, yes, that keeps creeping with every release ..
-
-> 
-> > +##
-> > +{ 'struct': 'TPMmssimOptions',
-> > +  'data': {
-> > +      '*command': 'SocketAddress',
-> > +      '*control': 'SocketAddress' },
-> 
-> Locally consistent indentation is
-> 
->      'data': { '*command': 'SocketAddress',
->                '*control': 'SocketAddress' },
-> 
-> > +  'if': 'CONFIG_TPM' }
-> > +
-> >  ##
-> >  # @TpmTypeOptions:
-> >  #
-> > @@ -124,6 +141,7 @@
-> >  #
-> >  # @type: - 'passthrough' The configuration options for the TPM
-> > passthrough type
-> >  #        - 'emulator' The configuration options for TPM emulator
-> > backend type
-> > +#        - 'mssim' The configuration options for TPM emulator
-> > mssim type
-> >  #
-> >  # Since: 1.5
-> >  ##
-> > @@ -131,7 +149,8 @@
-> >    'base': { 'type': 'TpmType' },
-> >    'discriminator': 'type',
-> >    'data': { 'passthrough' : 'TPMPassthroughOptionsWrapper',
-> > -            'emulator': 'TPMEmulatorOptionsWrapper' },
-> > +            'emulator': 'TPMEmulatorOptionsWrapper',
-> > +            'mssim' : 'TPMmssimOptions' },
-> >    'if': 'CONFIG_TPM' }
-> >  
-> >  ##
-> > @@ -150,7 +169,8 @@
-> >              'id' : 'str' },
-> >    'discriminator': 'type',
-> >    'data': { 'passthrough' : 'TPMPassthroughOptions',
-> > -            'emulator': 'TPMEmulatorOptions' },
-> > +            'emulator': 'TPMEmulatorOptions',
-> > +            'mssim': 'TPMmssimOptions' },
-> >    'if': 'CONFIG_TPM' }
-> >  
-> >  ##
-> 
-> Address my nitpicking, and you may add
-> 
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-
-James
-
+That said, I haven't looked closely at the instance unregister, but I
+don't think this series changes anything that would help in that regard.
 
