@@ -2,91 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F37F7AE178
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 00:02:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DFA7AE193
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 00:13:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qktdO-0007NB-Cz; Mon, 25 Sep 2023 18:00:55 -0400
+	id 1qktoc-0004pk-6V; Mon, 25 Sep 2023 18:12:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qktd4-0007HC-V2
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 18:00:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qktoZ-0004pJ-TZ
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 18:12:27 -0400
+Received: from relay4-d.mail.gandi.net ([2001:4b98:dc4:8::224])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qktd2-0003eO-HO
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 18:00:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695679230;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ThlyCO4gVzuW2Y3UB0uv+FoM5vC0QsMhuX1bqv/xnk0=;
- b=DAICSoeWB600WE5dCkdwvKW5/qXFLbyrtBkZP+pEatMhcwVM+YudKQJEZyK77Vey9zq/rs
- +uIepDsYfbkjjd/6xmWdIroa7SsC2TcrHOmAZ3dr2cBp1pUjh8M0o//Kz14dfJG7t5t3iY
- EYY6RP0UmOxY3oHnISdAx5fr5LqH+6o=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-435--Msd3CgZP5GC_O0SWX8Nhw-1; Mon, 25 Sep 2023 18:00:28 -0400
-X-MC-Unique: -Msd3CgZP5GC_O0SWX8Nhw-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-65b107812f0so42706126d6.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 15:00:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695679228; x=1696284028;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ThlyCO4gVzuW2Y3UB0uv+FoM5vC0QsMhuX1bqv/xnk0=;
- b=rrXFwau1OfabWFwmE4UD3/5qb/581f9riHR/nL0I01NY/LulxX0vUfhZMf0EehUBhN
- Pndo+W/SmmSUfcGdKSb0jZnf+9Vc3q+89gaUO3I6ZKH4ExAZQe09lz6zGGnM8T2bgZ87
- 10BBAMx0uULbAZ5qDJ+lWvM+8mtawKsIJsyfShmNzHA2QBtkDF8XjSBnrXwmwuKPJEXf
- OjpC+FdPBgHnAp52dLDPuVuW0JiYC7dkgoE5UXc9vgtc5k9rcoR5Luf/INxzJWO6QTk5
- B7Moh7rMuNgZIMSj1RLiulatHW9v8JAm3lcHmihFPEQ0DpFbnP/2hZrnaNjXcq+GnUk2
- a/Fg==
-X-Gm-Message-State: AOJu0YzyNUk5zFt06Pfl/hONorY1uaP+oBRMIf33lrktzQxA3NbCsXwh
- 1C7kdW2y6sG5ezkKJpiR4RUjayBx0Ue7aGft5n0u4hkV8zRCteGP+i03vgJ/BsZpZNFMB93Kx8b
- yJc2YlyxoC3u+PXI=
-X-Received: by 2002:a0c:c992:0:b0:65b:540:ed77 with SMTP id
- b18-20020a0cc992000000b0065b0540ed77mr5444247qvk.26.1695679227955; 
- Mon, 25 Sep 2023 15:00:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGm04NN4MDG4UgUlx8ysyY9yyme4wI/bXqYq7JtUiDOTpPPn7trEhvM/r/zrwvM0qhjj3BpeQ==
-X-Received: by 2002:a0c:c992:0:b0:65b:540:ed77 with SMTP id
- b18-20020a0cc992000000b0065b0540ed77mr5444230qvk.26.1695679227692; 
- Mon, 25 Sep 2023 15:00:27 -0700 (PDT)
-Received: from redhat.com ([185.184.228.174]) by smtp.gmail.com with ESMTPSA id
- i10-20020a05620a0a0a00b00774133fb9a3sm3640101qka.114.2023.09.25.15.00.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 15:00:26 -0700 (PDT)
-Date: Mon, 25 Sep 2023 18:00:21 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
-Subject: Re: [PATCH v3 0/6] hw/virtio: Build vhost-vdpa.o once for all targets
-Message-ID: <20230925175915-mutt-send-email-mst@kernel.org>
-References: <20230710094931.84402-1-philmd@linaro.org>
- <ad508b5a-6cff-7138-1350-62a5bc513299@linaro.org>
- <1d971e7a-f6b6-3647-7cb7-5620d4f1532a@linaro.org>
- <c55cf435-c8ce-c1ff-d639-905ecf721ba3@linaro.org>
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qktoX-0005Nt-GD
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 18:12:27 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 068A4E0005;
+ Mon, 25 Sep 2023 22:12:19 +0000 (UTC)
+Message-ID: <c12950b0-8222-23db-0f25-55a106b98e0c@ovn.org>
+Date: Tue, 26 Sep 2023 00:13:11 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c55cf435-c8ce-c1ff-d639-905ecf721ba3@linaro.org>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: i.maximets@ovn.org, Stefan Hajnoczi <stefanha@gmail.com>,
+ qemu-devel@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+References: <20230825170448.1953409-1-i.maximets@ovn.org>
+ <CAJSP0QW1Ck2+XG3c9cJM5+K05ypckXjEnxrJkGwx+PVt6m_3Lg@mail.gmail.com>
+ <213042b9-5ccd-bbde-2be0-ff1d32b9c52e@ovn.org>
+ <CAJSP0QVf_=LgSTMDL8uyjWtHmJyPQZ-Mt6aPGvHQbRH_v9ZREw@mail.gmail.com>
+ <3251b5ee-a53d-68ed-963d-5cfe893d8079@ovn.org>
+ <CAJSP0QVNskqOqSW19f-SapHF8LcXeB8uweL+XHkp9zKvCZS6mg@mail.gmail.com>
+ <db6df992-75a2-3e30-1ab3-affcc98b7956@ovn.org>
+ <20230925172143-mutt-send-email-mst@kernel.org>
+From: Ilya Maximets <i.maximets@ovn.org>
+Subject: Re: [PATCH] virtio: use shadow_avail_idx while checking number of
+ heads
+In-Reply-To: <20230925172143-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: i.maximets@ovn.org
+Received-SPF: neutral client-ip=2001:4b98:dc4:8::224;
+ envelope-from=i.maximets@ovn.org; helo=relay4-d.mail.gandi.net
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_NEUTRAL=0.779 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,44 +68,149 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 12:42:02PM +0200, Philippe Mathieu-Daudé wrote:
-> Hi Michael,
+On 9/25/23 23:24, Michael S. Tsirkin wrote:
+> On Mon, Sep 25, 2023 at 10:58:05PM +0200, Ilya Maximets wrote:
+>> On 9/25/23 17:38, Stefan Hajnoczi wrote:
+>>> On Mon, 25 Sept 2023 at 11:36, Ilya Maximets <i.maximets@ovn.org> wrote:
+>>>>
+>>>> On 9/25/23 17:12, Stefan Hajnoczi wrote:
+>>>>> On Mon, 25 Sept 2023 at 11:02, Ilya Maximets <i.maximets@ovn.org> wrote:
+>>>>>>
+>>>>>> On 9/25/23 16:23, Stefan Hajnoczi wrote:
+>>>>>>> On Fri, 25 Aug 2023 at 13:04, Ilya Maximets <i.maximets@ovn.org> wrote:
+>>>>>>>>
+>>>>>>>> We do not need the most up to date number of heads, we only want to
+>>>>>>>> know if there is at least one.
+>>>>>>>>
+>>>>>>>> Use shadow variable as long as it is not equal to the last available
+>>>>>>>> index checked.  This avoids expensive qatomic dereference of the
+>>>>>>>> RCU-protected memory region cache as well as the memory access itself
+>>>>>>>> and the subsequent memory barrier.
+>>>>>>>>
+>>>>>>>> The change improves performance of the af-xdp network backend by 2-3%.
+>>>>>>>>
+>>>>>>>> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+>>>>>>>> ---
+>>>>>>>>  hw/virtio/virtio.c | 10 +++++++++-
+>>>>>>>>  1 file changed, 9 insertions(+), 1 deletion(-)
+>>>>>>>>
+>>>>>>>> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+>>>>>>>> index 309038fd46..04bf7cc977 100644
+>>>>>>>> --- a/hw/virtio/virtio.c
+>>>>>>>> +++ b/hw/virtio/virtio.c
+>>>>>>>> @@ -999,7 +999,15 @@ void virtqueue_push(VirtQueue *vq, const VirtQueueElement *elem,
+>>>>>>>>  /* Called within rcu_read_lock().  */
+>>>>>>>>  static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
+>>>>>>>>  {
+>>>>>>>> -    uint16_t num_heads = vring_avail_idx(vq) - idx;
+>>>>>>>> +    uint16_t num_heads;
+>>>>>>>> +
+>>>>>>>> +    if (vq->shadow_avail_idx != idx) {
+>>>>>>>> +        num_heads = vq->shadow_avail_idx - idx;
+>>>>>>>> +
+>>>>>>>> +        return num_heads;
+>>>>>>>
+>>>>>>> This still needs to check num_heads > vq->vring.num and return -EINVAL
+>>>>>>> as is done below.
+>>>>>>
+>>>>>> Hmm, yeas, you're right.  If the value was incorrect initially, the shadow
+>>>>>> will be incorrect.  However, I think we should just not return here in this
+>>>>>> case and let vring_avail_idx() to grab an actual new value below.  Otherwise
+>>>>>> we may never break out of this error.
+>>>>>>
+>>>>>> Does that make sense?
+>>>>>
+>>>>> No, because virtio_error() marks the device as broken. The device
+>>>>> requires a reset in order to function again. Fetching
+>>>>> vring_avail_idx() again won't help.
+>>>>
+>>>> OK, I see.  In this case we're talking about situation where
+>>>> vring_avail_idx() was called in some other place and stored a bad value
+>>>> in the shadow variable, then virtqueue_num_heads() got called.  Right?
+>>
+>> Hmm, I suppose we also need a read barrier after all even if we use
+>> a shadow index.  Assuming the index is correct, but the shadow variable
+>> was updated by a call outside of this function, then we may miss a
+>> barrier and read the descriptor out of order, in theory.  Read barrier
+>> is going to be a compiler barrier on x86, so the performance gain from
+>> this patch should still be mostly there.  I'll test that.
 > 
-> On 6/9/23 08:31, Philippe Mathieu-Daudé wrote:
-> > On 30/8/23 15:35, Philippe Mathieu-Daudé wrote:
-> > > 
-> > > This series is now fully reviewed.
-> > > 
-> > > On 10/7/23 11:49, Philippe Mathieu-Daudé wrote:
-> > > > Missing review: patch #4
-> > > > 
-> > > > Since v2:
-> > > > - Added R-b tags
-> > > > - Addressed Richard's review comment: page_mask = -page_size
-> > > > 
-> > > > Philippe Mathieu-Daudé (6):
-> > > >    hw/virtio: Propagate page_mask to
-> > > >      vhost_vdpa_listener_skipped_section()
-> > > >    hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
-> > > >    hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
-> > > >    hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
-> > > >    hw/virtio: Build vhost-vdpa.o once
-> > > >    hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
-> > 
-> > Michael, I have another series unifying virtio endianness blocked
-> > by this one. I can merge it if you provide your Ack-by.
-> 
-> Unless you object, I'll merge this series. Since we are early enough
-> in the development window, if something breaks, we'll catch it in
-> time and fix or revert.
-> 
-> Regards,
-> 
-> Phil.
+> I can't say I understand generally. shadow is under qemu control,
+> I don't think it can be updated concurrently by multiple CPUs.
 
-It's actually in my tree, and should go out in a couple of days finally.
+It can't, I agree.  Scenario I'm thinking about is the following:
 
--- 
-MST
+1. vring_avail_idx() is called from one of the places other than
+   virtqueue_num_heads().  Shadow is updated with the current value.
+   Some users of vring_avail_idx() do not use barriers after the call.
+
+2. virtqueue_split_get_avail_bytes() is called.
+
+3. virtqueue_split_get_avail_bytes() calls virtqueue_num_heads().
+
+4. virtqueue_num_heads() checks the shadow and returns early.
+
+5. virtqueue_split_get_avail_bytes() calls vring_split_desc_read() and
+   reads the descriptor.
+
+If between steps 1 and 5 we do not have a read barrier, we potentially
+risk reading descriptor data that is not yet fully written, because
+there is no guarantee that reading the last_avail_idx on step 1 wasn't
+reordered with the descriptor read.
+
+In current code we always have smp_rmb() in virtqueue_num_heads().
+But if we return from this function without a barrier, we may have an
+issue, IIUC.
+
+I agree that it's kind of a very unlikely scenario and we will probably
+have a control dependency between steps 1 and 5 that will prevent the
+issue, but it might be safer to just have an explicit barrier in
+virtqueue_num_heads().
+
+Does that make sense?  Or am I missing something else here?
+
+> 
+> 
+>>>>
+>>>> AFAIU, we can still just fall through here and let vring_avail_idx()
+>>>> to read the index again and fail the existing check.  That would happen
+>>>> today without this patch applied.
+>>>
+>>> Yes, that is fine.
+>>>
+>>>>
+>>>> I'm jut trying to avoid duplication of the virtio_error call, i.e.:
+>>>>
+>>>>     if (vq->shadow_avail_idx != idx) {
+>>>>         num_heads = vq->shadow_avail_idx - idx;
+>>>>
+>>>>         /* Check it isn't doing very strange things with descriptor numbers. */
+>>>>         if (num_heads > vq->vring.num) {
+>>>>             virtio_error(vq->vdev, "Guest moved used index from %u to %u",
+>>>>                          idx, vq->shadow_avail_idx);
+>>>>             return -EINVAL;
+>>>>         }
+>>>>         return num_heads;
+>>>>     }
+>>>>
+>>>> vs
+>>>>
+>>>>     if (vq->shadow_avail_idx != idx) {
+>>>>         num_heads = vq->shadow_avail_idx - idx;
+>>>>
+>>>>         /* Only use the shadow value if it was good initially. */
+>>>>         if (num_heads <= vq->vring.num) {
+>>>>             return num_heads;
+>>>>         }
+>>>>     }
+>>>>
+>>>>
+>>>> What do you think?
+>>>
+>>> Sounds good.
+>>>
+>>>>
+>>>> Best regards, Ilya Maximets.
+> 
 
 
