@@ -2,63 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C1CA7ADDC1
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 957F97ADDED
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:46:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkpFr-0002b8-I3; Mon, 25 Sep 2023 13:20:21 -0400
+	id 1qkpdg-00034H-8I; Mon, 25 Sep 2023 13:44:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qkpFb-0002Y3-VJ
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:20:04 -0400
-Received: from mout.kundenserver.de ([212.227.126.187])
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qkpdZ-00033R-A6; Mon, 25 Sep 2023 13:44:50 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qkpFY-0003qA-5d
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:20:02 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue012 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MIKs0-1qqNg20rp6-00EPYp; Mon, 25 Sep 2023 19:19:58 +0200
-Message-ID: <1e3be6f8-d3a2-dfc2-417a-bfb0b770d707@vivier.eu>
-Date: Mon, 25 Sep 2023 19:19:57 +0200
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qkpdX-0007zF-4L; Mon, 25 Sep 2023 13:44:49 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38PFwZmf001189; Mon, 25 Sep 2023 17:44:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=vL58WR5n4SYbu4yv3d++Qo/xtoc57VBt4twz7u760Lo=;
+ b=WGDT9Q4AbtJQ7PA9bmCW6MVo6SNiZLggP6bBSg29SjBoUrwlpHQmZEaWzidm2fpMWPKZ
+ h5CPuLjB3p0LDKmP9VtopL3gUsl1UAvsVek6Ey5a/U8PIbhcEs8q+sQEUAkVCq58W3Hs
+ 7NgjXCHtSmjfEONrVTYZ7INghasFIwRrEEC+drGf0afQpxALGCdj1DWsZeNejkmwpJhg
+ 1cY2WELEcw11ggQakkyua8VoK5D3x/Ld/cWXf41Ed5SLho1v91LlTGv5fd5QruxsW3PX
+ b0Ok9aclXo1KO9zzsk49CCqFGdWJ+57wfVtZ/xSXU7Gkcl+lmbfD5wrYxQ3PgMM/XaDN /w== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tbbhexk9f-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Sep 2023 17:44:23 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38PHZH9k028458;
+ Mon, 25 Sep 2023 17:44:22 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tbbhexk98-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Sep 2023 17:44:22 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38PHO2up008185; Mon, 25 Sep 2023 17:44:21 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3taaqy4b2y-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 25 Sep 2023 17:44:21 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com
+ [10.39.53.229])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38PHiKOP4981496
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 25 Sep 2023 17:44:20 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6B82D5805B;
+ Mon, 25 Sep 2023 17:44:20 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 5334858058;
+ Mon, 25 Sep 2023 17:44:20 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon, 25 Sep 2023 17:44:20 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
+ by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id 80CAD16A065F;
+ Mon, 25 Sep 2023 12:44:19 -0500 (CDT)
+Received: (from mglenn@localhost)
+ by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38PHiIQn618672;
+ Mon, 25 Sep 2023 12:44:18 -0500
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-ppc@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-devel@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>
+Subject: [PATCH v3 0/4] Add BHRB Facility Support
+Date: Mon, 25 Sep 2023 12:43:47 -0500
+Message-Id: <20230925174351.617891-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
- <20230909094827.33871-9-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-Subject: Re: [PATCH v2 08/20] asc: generate silence if FIFO empty but engine
- still running
-In-Reply-To: <20230909094827.33871-9-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:BMwqT9xhbP1sf3/kzrjgvAEdEYibe2biTEsCDq/JG4EmxfGoKLR
- M/PHcLfeCxUe5FBxtGGKSHCe9TLYWnBxp5s0tNw9Nu+CsaHqkoZhUysPO5c2mbnlod4fEjd
- /p+rjlWggFriqu93XjcW1cAQslinb4C16E6hMm8Jqk+4mqIH0MwubzwPTOYqr6pxLaNflI5
- +qUAe0f1B0rOTcd6R50pA==
-UI-OutboundReport: notjunk:1;M01:P0:BTUN1mdyBhI=;2VgV42kxt4A3uG1B+UYLglnYHVE
- WfAwYWarNq1+zgzf8lB/mtFj3RYE+iN/wMiHYqHgUFbbK4uuxpKpaT/DO/DP18Aut0f0GB3s6
- m0Q2F/NmWFE5izEGGsVAa8RGZPtpZcQB/iojdTSiI87wIfgcnIE5XY0L/MWollGUA7/HqKu/g
- DeENOxEXMtXRbfNjg/Ex7oyTCcmmzQIhlA8XgA9tqJbEVWIsRpRaimv62QYcH/ivZPOcC+GSR
- Ohj1mWYc9MInbPMsXB1fblpH4iL5lSmopejkA9moSpE6wfXEIotCg37YHRZ7naIj7y53kHcee
- bt9RwbltQgoMMJq6YZxa9txCH7sIsfllP9wKjvSjGGgcn/Rt09uImcGNgaaik4FGhcedzUbj0
- Zoi3X1SLYQQcJng6QoKwxDP8bfgUsxeMNZmbVEc6bJ+SidPxMHkJJ6C7Jsyq1Bo3iNytnYKQ+
- AmWTNpX/cAOV3YTgdkoSY1xCSXtYixOMJPlCsZB0FViHO9r6ilGiMzfOgeGZeh1nBPaqb9BnB
- V0BxoZWIk6Hly56lmNbAOS43LI7BTl/+SGbokNohPhbciHEK5h49f7NyBcANm9ZinBs7Pm5zq
- LCMY8lh4WwRYFYXgk2b+KHuLa89EwoDhoCxAAJC4hYVHSr1Ithy1uwsh3AD0NG6eNUXGpDoGg
- b7voWLZxH1KLwpiQ5OawYRzG1aVlBssDI3uWbxLhQDe8NaAA0zyE0Rsp3u6VWlyHMei6QWd/q
- QF3vpT33QYp0HT1umKKkgE/265+4EjI3bBLHPMaFuD5ZosqvJNwXnqDFydQvi7PfZI/aCmhCq
- BPTda6OUPLqJK0kfKvqAjvHPJi2UUKoiK19/Zl4jQQCqBysQ2RfA2YxWs51lm13nXlB4OYzZi
- ETlGVlLgxunM/Ow==
-Received-SPF: none client-ip=212.227.126.187; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Y7it-zQN4oEGFtumU5SaR3thQZ-u6cq2
+X-Proofpoint-ORIG-GUID: Mk_8TVbGH3N5sAkBwuumlOPqcSOPaG44
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-25_15,2023-09-25_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0
+ clxscore=1015 bulkscore=0 priorityscore=1501 adultscore=0 impostorscore=0
+ mlxlogscore=321 spamscore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309250137
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,90 +118,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 09/09/2023 à 11:48, Mark Cave-Ayland a écrit :
-> MacOS (un)helpfully leaves the FIFO engine running even when all the samples have
-> been written to the hardware, and expects the FIFO status flags and IRQ to be
-> updated continuously.
-> 
-> There is an additional problem in that not all audio backends guarantee an
-> all-zero output when there is no FIFO data available, in particular the Windows
-> dsound backend which re-uses its internal circular buffer causing the last played
-> sound to loop indefinitely.
-> 
-> Whilst this is effectively a bug in the Windows dsound backend, work around it
-> for now using a simple heuristic: if the FIFO remains empty for half a cycle
-> (~23ms) then continuously fill the generated buffer with empty silence.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/audio/asc.c         | 19 +++++++++++++++++++
->   include/hw/audio/asc.h |  2 ++
->   2 files changed, 21 insertions(+)
-> 
-> diff --git a/hw/audio/asc.c b/hw/audio/asc.c
-> index 336ace0cd6..b01b285512 100644
-> --- a/hw/audio/asc.c
-> +++ b/hw/audio/asc.c
-> @@ -334,6 +334,21 @@ static void asc_out_cb(void *opaque, int free_b)
->       }
->   
->       if (!generated) {
-> +        /* Workaround for audio underflow bug on Windows dsound backend */
-> +        int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-> +        int silent_samples = muldiv64(now - s->fifo_empty_ns,
-> +                                      NANOSECONDS_PER_SECOND, ASC_FREQ);
-> +
-> +        if (silent_samples > ASC_FIFO_CYCLE_TIME / 2) {
-> +            /*
-> +             * No new FIFO data within half a cycle time (~23ms) so fill the
-> +             * entire available buffer with silence. This prevents an issue
-> +             * with the Windows dsound backend whereby the sound appears to
-> +             * loop because the FIFO has run out of data, and the driver
-> +             * reuses the stale content in its circular audio buffer.
-> +             */
-> +            AUD_write(s->voice, s->silentbuf, samples << s->shift);
-> +        }
->           return;
->       }
->   
-> @@ -611,6 +626,7 @@ static void asc_unrealize(DeviceState *dev)
->       ASCState *s = ASC(dev);
->   
->       g_free(s->mixbuf);
-> +    g_free(s->silentbuf);
->   
->       AUD_remove_card(&s->card);
->   }
-> @@ -633,6 +649,9 @@ static void asc_realize(DeviceState *dev, Error **errp)
->       s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
->       s->mixbuf = g_malloc0(s->samples << s->shift);
->   
-> +    s->silentbuf = g_malloc0(s->samples << s->shift);
-> +    memset(s->silentbuf, 0x80, s->samples << s->shift);
-> +
->       /* Add easc registers if required */
->       if (s->type == ASC_TYPE_EASC) {
->           memory_region_add_subregion(&s->asc, ASC_EXTREG_OFFSET,
-> diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
-> index d9412815c3..4741f92c46 100644
-> --- a/include/hw/audio/asc.h
-> +++ b/include/hw/audio/asc.h
-> @@ -68,6 +68,8 @@ struct ASCState {
->       int samples;
->       int shift;
->   
-> +    uint8_t *silentbuf;
-> +
->       /* Time when we were last able to generate samples */
->       int64_t fifo_empty_ns;
->   
+This is a series of patches for adding support for the Branch History
+Rolling Buffer (BHRB) facility.  This was added to the Power ISA
+starting with version 2.07.  Changes were subsequently made in version
+3.1 to limit BHRB recording to instructions run in problem state only
+and to add a control bit to disable recording (MMCRA[BHRBRD]).
 
-If it's specific to Windows why not using "#if defined(CONFIG_WIN32) && 
-defined(CONFIG_AUDIO_DSOUND)" to clearly identify this piece of code as specific to a windows bug 
-with dsound?
+Version 3 of this series disables branch recording on P8 and P9 due
+to a drop in performance caused by recording branches outside of
+problem state.
 
-Anyway, code looks good:
+Glenn Miles (4):
+  target/ppc: Add new hflags to support BHRB
+  target/ppc: Add recording of taken branches to BHRB
+  target/ppc: Add clrbhrb and mfbhrbe instructions
+  target/ppc: Add migration support for BHRB
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+ target/ppc/cpu.h                       |  24 ++++++
+ target/ppc/cpu_init.c                  |  39 +++++++++-
+ target/ppc/helper.h                    |   5 ++
+ target/ppc/helper_regs.c               |  35 +++++++++
+ target/ppc/insn32.decode               |   8 ++
+ target/ppc/machine.c                   |  23 +++++-
+ target/ppc/misc_helper.c               |  46 +++++++++++
+ target/ppc/power8-pmu-regs.c.inc       |   5 ++
+ target/ppc/power8-pmu.c                |  48 +++++++++++-
+ target/ppc/power8-pmu.h                |  11 ++-
+ target/ppc/spr_common.h                |   1 +
+ target/ppc/translate.c                 | 101 +++++++++++++++++++++++--
+ target/ppc/translate/bhrb-impl.c.inc   |  43 +++++++++++
+ target/ppc/translate/branch-impl.c.inc |   2 +-
+ 14 files changed, 374 insertions(+), 17 deletions(-)
+ create mode 100644 target/ppc/translate/bhrb-impl.c.inc
+
+-- 
+2.31.1
 
 
