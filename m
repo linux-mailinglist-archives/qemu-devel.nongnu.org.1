@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9797ADE47
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E3297ADE44
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:59:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkpqC-0000gG-KL; Mon, 25 Sep 2023 13:57:52 -0400
+	id 1qkpqH-0000mZ-Dm; Mon, 25 Sep 2023 13:57:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qkpqA-0000fi-CZ
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:57:50 -0400
-Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ id 1qkpqF-0000lr-TB
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:57:55 -0400
+Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qkpq8-0002Dc-9b
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:57:50 -0400
-Received: by mail-pg1-x529.google.com with SMTP id
- 41be03b00d2f7-578b4997decso5429170a12.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 10:57:47 -0700 (PDT)
+ id 1qkpqA-0002Du-Uw
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:57:55 -0400
+Received: by mail-pg1-x531.google.com with SMTP id
+ 41be03b00d2f7-578d0d94986so5032146a12.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 10:57:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695664666; x=1696269466; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1695664669; x=1696269469; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=9tWUy+Y3YjrpIBChvCNNHtWPQ0l+kZDqCFnD8gAcXHs=;
- b=ETTugtjFSbJBLMCxcMpV0Ikmas+q9fBXB+svUJ6K57uVn0+zS7dwWAOpbE2dHKCCYw
- AnsCT2hrGLwqgQDXj61aqarFQJlJzaFxiN6IBpwuuwDghYgdKbqP39+HvJSe4P+8hB+n
- 6JN5QXEQH0bXQG1g17bWnzCggLCyOoPWYQrE9vwUjXmR3E+qKnFBnOb97nozkg+8VNeI
- 3y1LXWUw/j5hoZzpjkTjIZvUQcQH53gqvJxUaKKtzhG5OiSEz5HyJSZ84vQLGObP4eYx
- sMmlzgfi9uINrTr7y9eFF1x9NM6RN4gF4AgQeyTSHGOmWWxNPQnckFjou9wierEioD/p
- joJQ==
+ bh=lDVkCr5LYXxfDA6GCy65wJeT7zywjPXlKXx4Zd0pAI8=;
+ b=I2IGWpQIWX14A3FIm9Q+qQMqxvupae3+XlwwGko9LnFjNey0YqwwDySR97xRvgOVYj
+ s2wZU+dLTaB2DRfe6yQuctlspxg1iBUetdHLEouEoadZMOOD9ZRWCbLE1W2ioMwyM0Sc
+ JkpX1BjQdbU6nHIDGvQHv3QlILjexT1fXwKtHaZY946h/AS7HmIgNDkFgCJ1f1mtMpZ3
+ ZiDGOrJsANLehkMojReBYzgyG0FD2+JgJrL1NvI7vQHAWBnK1TgWq9wtjWPCO7/Z4zcF
+ TZNtHRjYlmNLahu/0sFDVwJziiiZkEY0hpHea5cnLAQgXGTaE8CSrDHp9rIMg5HUUgmA
+ oqMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695664666; x=1696269466;
+ d=1e100.net; s=20230601; t=1695664669; x=1696269469;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9tWUy+Y3YjrpIBChvCNNHtWPQ0l+kZDqCFnD8gAcXHs=;
- b=vmZDeWPvvWA0ACxeMJozDony5Mc8DKcTyH5poZhfPoCDBAPX9NvzufLDMab+0BcVQd
- u8YLZc41NJHP/a60Jn2aX8wPBcH8ccnNvIDhmjuvF/CHjgwK62ZGVaMGnt1beSQX/x3y
- jJYFKnt4duZO0saS62daymkKy61EASNWr+jkgJWHAsRGXHBDTQywFQC3CN/RUvXQnR/U
- QAmsRYW2ap/PyNniQAuvJ9Bh3eZz2qj462I3l5sJkEjFT+B3LMjEZULAJzFZ+gGPPy71
- ouW5+Jrsu5SKp4tAYBIZ9+CqUiwd90d3+Xbmj+M89fCBXE24Bku3KeENVtmwoBUzyES5
- xCVQ==
-X-Gm-Message-State: AOJu0Yx1vAAH3jmJCLYvvYeF3D2Mn9MkRQGY3aCsrWUEePbty/L7Ckq9
- TWirlBxc0bg88iI5YUJBTirJZhqpxqLl9vbmCWI=
-X-Google-Smtp-Source: AGHT+IFouv1EeVQ6IF/T8kTz+c1M7MbDEfQYsj53W7J/d5FrM2oOyOwL/lVuqNOB0jkEmkMA/bSHLQ==
-X-Received: by 2002:a17:90b:4ace:b0:262:f06d:c0fc with SMTP id
- mh14-20020a17090b4ace00b00262f06dc0fcmr6227116pjb.7.1695664666159; 
- Mon, 25 Sep 2023 10:57:46 -0700 (PDT)
+ bh=lDVkCr5LYXxfDA6GCy65wJeT7zywjPXlKXx4Zd0pAI8=;
+ b=EeU/hPcYlcXrBYouTwWPJ2T6UxhWftl+U+y4DalxGr5gVeWOq1KLQJaB0THF98LVyB
+ epg3yffa8APtNMTcuJMP8zjF21jUffuEIbkKszQigyeyxyiUWi8ULmtewYaCfwWTnbp3
+ Yy4abtsGNUyYEQhyyXun0Vrs9pcEYX+uSqM+W3y3xmW6iFsgIUA+7o59xgFpFbF0dyyR
+ S2T9Sb5ghT/A7BuRvcRK9i1LmhxkTvqrZwVJi+9idFtzoKQA5UQdeChjvyTu9J6BwChT
+ OtsgSpkIn2ktU445QP3+bhBvzM+QVZ3GFLEoWc3xA+p9Ns2Hteg2QH8iF3S2i7iUfzaT
+ IKgQ==
+X-Gm-Message-State: AOJu0Yyd7/WwT1Lh0AAiTpQcyX5Fwg11O1YFpbiP8LjZzQGFpPnVbmIA
+ IZ8og1rIWflFi3WNt/VSUXyC4Dwf3a0+Xbe6yB4=
+X-Google-Smtp-Source: AGHT+IGxzZSztogBu83hK4+jrL94X0bUoVdEM9JjYCU3cP4hU6tG3wYT+MW5JphU2GDmbP7S8VFRvQ==
+X-Received: by 2002:a17:90a:bf11:b0:26b:534e:234 with SMTP id
+ c17-20020a17090abf1100b0026b534e0234mr6474257pjs.35.1695664669326; 
+ Mon, 25 Sep 2023 10:57:49 -0700 (PDT)
 Received: from grind.. ([177.94.42.59]) by smtp.gmail.com with ESMTPSA id
- i3-20020a17090a65c300b00262ca945cecsm3312722pjs.54.2023.09.25.10.57.43
+ i3-20020a17090a65c300b00262ca945cecsm3312722pjs.54.2023.09.25.10.57.46
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 10:57:45 -0700 (PDT)
+ Mon, 25 Sep 2023 10:57:48 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v4 10/19] target/riscv: remove kvm-stub.c
-Date: Mon, 25 Sep 2023 14:57:00 -0300
-Message-ID: <20230925175709.35696-11-dbarboza@ventanamicro.com>
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PATCH v4 11/19] target/riscv: introduce KVM AccelCPUClass
+Date: Mon, 25 Sep 2023 14:57:01 -0300
+Message-ID: <20230925175709.35696-12-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230925175709.35696-1-dbarboza@ventanamicro.com>
 References: <20230925175709.35696-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x529.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pg1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,68 +93,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This file is not needed for some time now. Both kvm_riscv_reset_vcpu()
-and kvm_riscv_set_irq() have public declarations in kvm_riscv.h and are
-wrapped in 'if kvm_enabled()' blocks that the compiler will rip it out
-in non-KVM builds.
+Add a KVM accelerator class like we did with TCG. The difference is
+that, at least for now, we won't be using a realize() implementation for
+this accelerator.
+
+We'll start by assiging kvm_riscv_cpu_add_kvm_properties(), renamed to
+kvm_cpu_instance_init(), as a 'cpu_instance_init' implementation. Change
+riscv_cpu_post_init() to invoke accel_cpu_instance_init(), which will go
+through the 'cpu_instance_init' impl of the current acceleration (if
+available) and execute it. The end result is that the KVM initial setup,
+i.e. starting registers and adding its specific properties, will be done
+via this hook.
+
+Add a 'tcg_enabled()' condition in riscv_cpu_post_init() to avoid
+calling riscv_cpu_add_user_properties() when running KVM. We'll remove
+this condition when the TCG accel class get its own 'cpu_instance_init'
+implementation.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/kvm-stub.c  | 30 ------------------------------
- target/riscv/meson.build |  2 +-
- 2 files changed, 1 insertion(+), 31 deletions(-)
- delete mode 100644 target/riscv/kvm-stub.c
+ target/riscv/cpu.c       |  8 +++-----
+ target/riscv/kvm.c       | 26 ++++++++++++++++++++++++--
+ target/riscv/kvm_riscv.h |  1 -
+ 3 files changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/target/riscv/kvm-stub.c b/target/riscv/kvm-stub.c
-deleted file mode 100644
-index 4e8fc31a21..0000000000
---- a/target/riscv/kvm-stub.c
-+++ /dev/null
-@@ -1,30 +0,0 @@
--/*
-- * QEMU KVM RISC-V specific function stubs
-- *
-- * Copyright (c) 2020 Huawei Technologies Co., Ltd
-- *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms and conditions of the GNU General Public License,
-- * version 2 or later, as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope it will be useful, but WITHOUT
-- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-- * more details.
-- *
-- * You should have received a copy of the GNU General Public License along with
-- * this program.  If not, see <http://www.gnu.org/licenses/>.
-- */
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "kvm_riscv.h"
--
--void kvm_riscv_reset_vcpu(RISCVCPU *cpu)
--{
--    abort();
--}
--
--void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level)
--{
--    abort();
--}
-diff --git a/target/riscv/meson.build b/target/riscv/meson.build
-index f0486183fa..3323b78b84 100644
---- a/target/riscv/meson.build
-+++ b/target/riscv/meson.build
-@@ -24,7 +24,7 @@ riscv_ss.add(files(
-   'zce_helper.c',
-   'vcrypto_helper.c'
- ))
--riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files('kvm-stub.c'))
-+riscv_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index 50be127f36..c8a19be1af 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -1219,7 +1219,9 @@ static bool riscv_cpu_has_user_properties(Object *cpu_obj)
  
- riscv_system_ss = ss.source_set()
- riscv_system_ss.add(files(
+ static void riscv_cpu_post_init(Object *obj)
+ {
+-    if (riscv_cpu_has_user_properties(obj)) {
++    accel_cpu_instance_init(CPU(obj));
++
++    if (tcg_enabled() && riscv_cpu_has_user_properties(obj)) {
+         riscv_cpu_add_user_properties(obj);
+     }
+ 
+@@ -1589,10 +1591,6 @@ static void riscv_cpu_add_multiext_prop_array(Object *obj,
+ static void riscv_cpu_add_user_properties(Object *obj)
+ {
+ #ifndef CONFIG_USER_ONLY
+-    if (kvm_enabled()) {
+-        kvm_riscv_cpu_add_kvm_properties(obj);
+-        return;
+-    }
+     riscv_add_satp_mode_properties(obj);
+ #endif
+ 
+diff --git a/target/riscv/kvm.c b/target/riscv/kvm.c
+index e5e957121f..606fdab223 100644
+--- a/target/riscv/kvm.c
++++ b/target/riscv/kvm.c
+@@ -31,6 +31,7 @@
+ #include "sysemu/kvm_int.h"
+ #include "cpu.h"
+ #include "trace.h"
++#include "hw/core/accel-cpu.h"
+ #include "hw/pci/pci.h"
+ #include "exec/memattrs.h"
+ #include "exec/address-spaces.h"
+@@ -1318,8 +1319,9 @@ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
+     kvm_msi_via_irqfd_allowed = kvm_irqfds_enabled();
+ }
+ 
+-void kvm_riscv_cpu_add_kvm_properties(Object *obj)
++static void kvm_cpu_instance_init(CPUState *cs)
+ {
++    Object *obj = OBJECT(RISCV_CPU(cs));
+     DeviceState *dev = DEVICE(obj);
+ 
+     riscv_init_user_properties(obj);
+@@ -1331,7 +1333,7 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+     riscv_cpu_add_kvm_unavail_prop_array(obj, riscv_cpu_experimental_exts);
+ 
+     for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
+-        /* Check if KVM created the property already */
++        /* Check if we have a specific KVM handler for the option */
+         if (object_property_find(obj, prop->name)) {
+             continue;
+         }
+@@ -1339,6 +1341,26 @@ void kvm_riscv_cpu_add_kvm_properties(Object *obj)
+     }
+ }
+ 
++static void kvm_cpu_accel_class_init(ObjectClass *oc, void *data)
++{
++    AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
++
++    acc->cpu_instance_init = kvm_cpu_instance_init;
++}
++
++static const TypeInfo kvm_cpu_accel_type_info = {
++    .name = ACCEL_CPU_NAME("kvm"),
++
++    .parent = TYPE_ACCEL_CPU,
++    .class_init = kvm_cpu_accel_class_init,
++    .abstract = true,
++};
++static void kvm_cpu_accel_register_types(void)
++{
++    type_register_static(&kvm_cpu_accel_type_info);
++}
++type_init(kvm_cpu_accel_register_types);
++
+ static void riscv_host_cpu_init(Object *obj)
+ {
+     CPURISCVState *env = &RISCV_CPU(obj)->env;
+diff --git a/target/riscv/kvm_riscv.h b/target/riscv/kvm_riscv.h
+index da9630c4af..8329cfab82 100644
+--- a/target/riscv/kvm_riscv.h
++++ b/target/riscv/kvm_riscv.h
+@@ -19,7 +19,6 @@
+ #ifndef QEMU_KVM_RISCV_H
+ #define QEMU_KVM_RISCV_H
+ 
+-void kvm_riscv_cpu_add_kvm_properties(Object *obj);
+ void kvm_riscv_reset_vcpu(RISCVCPU *cpu);
+ void kvm_riscv_set_irq(RISCVCPU *cpu, int irq, int level);
+ void kvm_riscv_aia_create(MachineState *machine, uint64_t group_shift,
 -- 
 2.41.0
 
