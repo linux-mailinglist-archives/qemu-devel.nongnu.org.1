@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642A67ADE42
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:59:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 885BB7ADE37
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:58:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkpqU-0001WK-7O; Mon, 25 Sep 2023 13:58:10 -0400
+	id 1qkpqi-00020h-33; Mon, 25 Sep 2023 13:58:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qkpqR-0001JQ-NA
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:07 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qkpqW-0001vS-AP
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:12 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qkpqQ-0002G9-3A
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:07 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c364fb8a4cso63287965ad.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 10:58:05 -0700 (PDT)
+ id 1qkpqU-0002Hu-B4
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:12 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-2776ca9adb7so1057477a91.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 10:58:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695664684; x=1696269484; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1695664687; x=1696269487; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=pPRdKO6FGSbBSFrOgeddG0LVwoijigHLj3i7YRRgCqE=;
- b=bZVEw0B8qGTISaDvP4ChJtEd4XdCPsuKOyl/ItS4qFPlaetnCFQ1dZpesr0uzBf7j1
- jZVpUMWysCVI0lFPEMVSDM9pv+yvvZpjrYOT4xMSSuQG9/dmoA3MF7DBxe0ysCmANqEj
- D2adjpWid9G2FJw0ExThs6mHeADG7p4dirwa3vgtrsGhiZe42ilBroBzFOJDXRssYdrL
- O3ixOGqfxRpJTlkzkMV+7y2/eT3vkP/tdfTESZ3dJyK+I1IUuNoPbsyUEXY5cMDH/bco
- Gb59RqSN1sDua6AcBJlqO3zJkYSK4m3fPW6E6XWQ7f1ODhbatQHp42Nhfp/Z5Ub8yhVY
- f3PA==
+ bh=kho0Cg0LudHauk4flCAc4GR46StMyKT+p69RKBrUZjA=;
+ b=TuAc9lUw78I8Umh+U+WAPyfh4tTOargMRagftdz3XlqF5QUMZd5SyEA76CLd5E8TSy
+ FAKUJolBG5ui3vX83+O6ztZcfnZFIoNMYoz2SJCsGmxIhYxUlp0Kw3ikgRpw9ZKaptJl
+ nyrmS1+kSht0ppEpsi0Mz1tdnUOJuK8WF1eJ224Ca7x+WBB8sCiiLtXzJymr/ro8P+Dr
+ 8J4TNm7SGi9Lx8ONkIJbHJed2Zw89NLo8SNaTYpKVJLIekAwOYBmZd8dXzeBCTWug698
+ m8XntON379DDfa3di1bXtZgF91GWoBl29CKrQcU11PLTwR8e0/krwTOR047+kHXZ+X84
+ WBrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695664684; x=1696269484;
+ d=1e100.net; s=20230601; t=1695664687; x=1696269487;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=pPRdKO6FGSbBSFrOgeddG0LVwoijigHLj3i7YRRgCqE=;
- b=RMNTfWw08UvIaUrdrfEthRdWz/bLpXYl+bhxXccuVI78Is1r6Ko91i8H2xuoeys0Ny
- 9T52FIbr95lPtx5ox1tm5XnaKqUkjiWgKE7UZNyulKKAMq51xfP15QHAlLjwT3GvKEAR
- FOpoiHJHpHvUk/C3CzqCfpmdjUwFuZ4mYof6otU4nE5INoUGiPGL2lRvdxVT0qA8rAla
- yNW1N0tYXswHGFZFxXKrCleJFmtkZbRGbxqHUb8dosLM1cd7tNDGP14oAeTQ/A9PPsNS
- bBHpLXzMN+RGbUk/A/1kCIiijiHdWiuLf8gs3PPBu9MnOWXEg3t0Z9zIMAgvUfNuklCZ
- XItA==
-X-Gm-Message-State: AOJu0YyB4eBRQzIAdPRDMzp7CQIeBwdmkMZhnnkR6NkAsbZNjQgHWFOX
- 5xqdcfVHKbn0wuyGpS+RxAPABVDPR8DvRHgfdkg=
-X-Google-Smtp-Source: AGHT+IGfNaRjGmUdIh3FiQU3HIdOStWD2B2D4tTS1lm3Q/cYDWu6XS+O/P/+dUa6eg6E/eDVQJiojw==
-X-Received: by 2002:a17:90a:9745:b0:277:2d2d:9a37 with SMTP id
- i5-20020a17090a974500b002772d2d9a37mr5537539pjw.4.1695664684573; 
- Mon, 25 Sep 2023 10:58:04 -0700 (PDT)
+ bh=kho0Cg0LudHauk4flCAc4GR46StMyKT+p69RKBrUZjA=;
+ b=lnMeNWEq28hiyWz7eeI4qdNwsEF17mOe1h0mNiJrQ7thm+1JcmG4nzaJ5KgfcaBeu7
+ f1aTVkXlTVesCC7lyJZHpBF88zHfeK5RX1FhTVhY+xy/Qot7/BXHUZUGE3oG5JPmmKCQ
+ 4jw7E5LVNy+kyfsyx1iTTthDGcF/OV9BSFyPOT+1iF3ztN1IuZ1lu/yGHBhAO/KTVkhH
+ ORtRhE+j2MQVNrj9mTiL9gIm+uJbSIygMqDdmWtnvmUU3BSAI4zikYk3uyNIdK2tFHsc
+ 4MVt6HKpMpO0Ehikd1fe076Cy4tArPbnhiNwCmrUOl2ADtxRWX881QMkZ7UWLlsuByZ5
+ EsXg==
+X-Gm-Message-State: AOJu0YzvMocaix3JkqAwCop0pYB7kmZEvrcx0kOgdiCcI2etd8xGTLg2
+ nMJF2dwKVrKS5kkSdbE8blbTmG8AK6sN0205+tM=
+X-Google-Smtp-Source: AGHT+IEzTxiECIFJJgUUVcif2Pdv9fbcVAo+g9k+6dapo42/BMn8UjabhBrAkCr2/Clnk89+aPp4BA==
+X-Received: by 2002:a17:90a:728e:b0:274:6503:26d with SMTP id
+ e14-20020a17090a728e00b002746503026dmr4901847pjg.33.1695664687605; 
+ Mon, 25 Sep 2023 10:58:07 -0700 (PDT)
 Received: from grind.. ([177.94.42.59]) by smtp.gmail.com with ESMTPSA id
- i3-20020a17090a65c300b00262ca945cecsm3312722pjs.54.2023.09.25.10.58.01
+ i3-20020a17090a65c300b00262ca945cecsm3312722pjs.54.2023.09.25.10.58.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 10:58:04 -0700 (PDT)
+ Mon, 25 Sep 2023 10:58:07 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Andrew Jones <ajones@ventanamicro.com>
-Subject: [PATCH v4 16/19] target/riscv/cpu.c: make misa_ext_cfgs[] 'const'
-Date: Mon, 25 Sep 2023 14:57:06 -0300
-Message-ID: <20230925175709.35696-17-dbarboza@ventanamicro.com>
+Subject: [PATCH v4 17/19] target/riscv/tcg: move
+ riscv_cpu_add_misa_properties() to tcg-cpu.c
+Date: Mon, 25 Sep 2023 14:57:07 -0300
+Message-ID: <20230925175709.35696-18-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230925175709.35696-1-dbarboza@ventanamicro.com>
 References: <20230925175709.35696-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -93,80 +94,241 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The array isn't marked as 'const' because we're initializing their
-elements in riscv_cpu_add_misa_properties(), 'name' and 'description'
-fields.
+All code related to MISA TCG properties is also moved.
 
-In a closer look we can see that we're not using these 2 fields after
-creating the MISA properties. And we can create the properties by using
-riscv_get_misa_ext_name() and riscv_get_misa_ext_description()
-directly.
-
-Remove the 'name' and 'description' fields from RISCVCPUMisaExtConfig
-and make misa_ext_cfgs[] a const array.
+At this point, all TCG properties handling is done in tcg-cpu.c, all KVM
+properties handling is done in kvm-cpu.c.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+ target/riscv/cpu.c         | 90 --------------------------------------
+ target/riscv/cpu.h         |  1 -
+ target/riscv/tcg/tcg-cpu.c | 90 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 90 insertions(+), 91 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 8616c9e2f5..4875feded7 100644
+index 4875feded7..46263e55d5 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1212,8 +1212,6 @@ static void riscv_cpu_init(Object *obj)
+@@ -1211,47 +1211,6 @@ static void riscv_cpu_init(Object *obj)
+ #endif /* CONFIG_USER_ONLY */
  }
  
- typedef struct RISCVCPUMisaExtConfig {
--    const char *name;
--    const char *description;
-     target_ulong misa_bit;
-     bool enabled;
- } RISCVCPUMisaExtConfig;
-@@ -1317,7 +1315,7 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
- #define MISA_CFG(_bit, _enabled) \
-     {.misa_bit = _bit, .enabled = _enabled}
- 
--static RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-+static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-     MISA_CFG(RVA, true),
-     MISA_CFG(RVC, true),
-     MISA_CFG(RVD, true),
-@@ -1344,25 +1342,22 @@ void riscv_cpu_add_misa_properties(Object *cpu_obj)
-     int i;
- 
-     for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
--        RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
-+        const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
-         int bit = misa_cfg->misa_bit;
+-typedef struct RISCVCPUMisaExtConfig {
+-    target_ulong misa_bit;
+-    bool enabled;
+-} RISCVCPUMisaExtConfig;
 -
--        misa_cfg->name = riscv_get_misa_ext_name(bit);
--        misa_cfg->description = riscv_get_misa_ext_description(bit);
+-static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+-                                 void *opaque, Error **errp)
+-{
+-    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
+-    target_ulong misa_bit = misa_ext_cfg->misa_bit;
+-    RISCVCPU *cpu = RISCV_CPU(obj);
+-    CPURISCVState *env = &cpu->env;
+-    bool value;
+-
+-    if (!visit_type_bool(v, name, &value, errp)) {
+-        return;
+-    }
+-
+-    if (value) {
+-        env->misa_ext |= misa_bit;
+-        env->misa_ext_mask |= misa_bit;
+-    } else {
+-        env->misa_ext &= ~misa_bit;
+-        env->misa_ext_mask &= ~misa_bit;
+-    }
+-}
+-
+-static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
+-                                 void *opaque, Error **errp)
+-{
+-    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
+-    target_ulong misa_bit = misa_ext_cfg->misa_bit;
+-    RISCVCPU *cpu = RISCV_CPU(obj);
+-    CPURISCVState *env = &cpu->env;
+-    bool value;
+-
+-    value = env->misa_ext & misa_bit;
+-
+-    visit_type_bool(v, name, &value, errp);
+-}
+-
+ typedef struct misa_ext_info {
+     const char *name;
+     const char *description;
+@@ -1312,55 +1271,6 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
+     return val;
+ }
+ 
+-#define MISA_CFG(_bit, _enabled) \
+-    {.misa_bit = _bit, .enabled = _enabled}
+-
+-static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
+-    MISA_CFG(RVA, true),
+-    MISA_CFG(RVC, true),
+-    MISA_CFG(RVD, true),
+-    MISA_CFG(RVF, true),
+-    MISA_CFG(RVI, true),
+-    MISA_CFG(RVE, false),
+-    MISA_CFG(RVM, true),
+-    MISA_CFG(RVS, true),
+-    MISA_CFG(RVU, true),
+-    MISA_CFG(RVH, true),
+-    MISA_CFG(RVJ, false),
+-    MISA_CFG(RVV, false),
+-    MISA_CFG(RVG, false),
+-};
+-
+-/*
+- * We do not support user choice tracking for MISA
+- * extensions yet because, so far, we do not silently
+- * change MISA bits during realize() (RVG enables MISA
+- * bits but the user is warned about it).
+- */
+-void riscv_cpu_add_misa_properties(Object *cpu_obj)
+-{
+-    int i;
+-
+-    for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
+-        const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
+-        int bit = misa_cfg->misa_bit;
+-        const char *name = riscv_get_misa_ext_name(bit);
+-        const char *desc = riscv_get_misa_ext_description(bit);
+-
+-        /* Check if KVM already created the property */
+-        if (object_property_find(cpu_obj, name)) {
+-            continue;
+-        }
+-
+-        object_property_add(cpu_obj, name, "bool",
+-                            cpu_get_misa_ext_cfg,
+-                            cpu_set_misa_ext_cfg,
+-                            NULL, (void *)misa_cfg);
+-        object_property_set_description(cpu_obj, name, desc);
+-        object_property_set_bool(cpu_obj, name, misa_cfg->enabled, NULL);
+-    }
+-}
+-
+ #define MULTI_EXT_CFG_BOOL(_name, _prop, _defval) \
+     {.name = _name, .offset = CPU_CFG_OFFSET(_prop), \
+      .enabled = _defval}
+diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+index 01cbcbe119..aba8192c74 100644
+--- a/target/riscv/cpu.h
++++ b/target/riscv/cpu.h
+@@ -726,7 +726,6 @@ extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
+ extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
+ extern Property riscv_cpu_options[];
+ 
+-void riscv_cpu_add_misa_properties(Object *cpu_obj);
+ void riscv_add_satp_mode_properties(Object *obj);
+ 
+ /* CSR function table */
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index ac3cf4c035..8065572703 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -580,6 +580,96 @@ static bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
+     return true;
+ }
+ 
++typedef struct RISCVCPUMisaExtConfig {
++    target_ulong misa_bit;
++    bool enabled;
++} RISCVCPUMisaExtConfig;
++
++static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
++                                 void *opaque, Error **errp)
++{
++    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
++    target_ulong misa_bit = misa_ext_cfg->misa_bit;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    CPURISCVState *env = &cpu->env;
++    bool value;
++
++    if (!visit_type_bool(v, name, &value, errp)) {
++        return;
++    }
++
++    if (value) {
++        env->misa_ext |= misa_bit;
++        env->misa_ext_mask |= misa_bit;
++    } else {
++        env->misa_ext &= ~misa_bit;
++        env->misa_ext_mask &= ~misa_bit;
++    }
++}
++
++static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
++                                 void *opaque, Error **errp)
++{
++    const RISCVCPUMisaExtConfig *misa_ext_cfg = opaque;
++    target_ulong misa_bit = misa_ext_cfg->misa_bit;
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    CPURISCVState *env = &cpu->env;
++    bool value;
++
++    value = env->misa_ext & misa_bit;
++
++    visit_type_bool(v, name, &value, errp);
++}
++
++#define MISA_CFG(_bit, _enabled) \
++    {.misa_bit = _bit, .enabled = _enabled}
++
++static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
++    MISA_CFG(RVA, true),
++    MISA_CFG(RVC, true),
++    MISA_CFG(RVD, true),
++    MISA_CFG(RVF, true),
++    MISA_CFG(RVI, true),
++    MISA_CFG(RVE, false),
++    MISA_CFG(RVM, true),
++    MISA_CFG(RVS, true),
++    MISA_CFG(RVU, true),
++    MISA_CFG(RVH, true),
++    MISA_CFG(RVJ, false),
++    MISA_CFG(RVV, false),
++    MISA_CFG(RVG, false),
++};
++
++/*
++ * We do not support user choice tracking for MISA
++ * extensions yet because, so far, we do not silently
++ * change MISA bits during realize() (RVG enables MISA
++ * bits but the user is warned about it).
++ */
++static void riscv_cpu_add_misa_properties(Object *cpu_obj)
++{
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(misa_ext_cfgs); i++) {
++        const RISCVCPUMisaExtConfig *misa_cfg = &misa_ext_cfgs[i];
++        int bit = misa_cfg->misa_bit;
 +        const char *name = riscv_get_misa_ext_name(bit);
 +        const char *desc = riscv_get_misa_ext_description(bit);
- 
-         /* Check if KVM already created the property */
--        if (object_property_find(cpu_obj, misa_cfg->name)) {
++
++        /* Check if KVM already created the property */
 +        if (object_property_find(cpu_obj, name)) {
-             continue;
-         }
- 
--        object_property_add(cpu_obj, misa_cfg->name, "bool",
++            continue;
++        }
++
 +        object_property_add(cpu_obj, name, "bool",
-                             cpu_get_misa_ext_cfg,
-                             cpu_set_misa_ext_cfg,
-                             NULL, (void *)misa_cfg);
--        object_property_set_description(cpu_obj, misa_cfg->name,
--                                        misa_cfg->description);
--        object_property_set_bool(cpu_obj, misa_cfg->name,
--                                 misa_cfg->enabled, NULL);
++                            cpu_get_misa_ext_cfg,
++                            cpu_set_misa_ext_cfg,
++                            NULL, (void *)misa_cfg);
 +        object_property_set_description(cpu_obj, name, desc);
 +        object_property_set_bool(cpu_obj, name, misa_cfg->enabled, NULL);
-     }
- }
- 
++    }
++}
++
+ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+                                   void *opaque, Error **errp)
+ {
 -- 
 2.41.0
 
