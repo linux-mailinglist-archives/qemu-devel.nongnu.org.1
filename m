@@ -2,63 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A7237AD9A0
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBA47AD99F
 	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 15:56:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkm3D-0005KD-Md; Mon, 25 Sep 2023 09:55:03 -0400
+	id 1qkm3Z-0005OB-Ue; Mon, 25 Sep 2023 09:55:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qkm3A-0005Hr-GH; Mon, 25 Sep 2023 09:55:00 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkm3Y-0005Ni-1k
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:55:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qkm37-0006OC-Tt; Mon, 25 Sep 2023 09:55:00 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvPPj5XGvz6K9h1;
- Mon, 25 Sep 2023 21:49:45 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 25 Sep
- 2023 14:54:42 +0100
-Date: Mon, 25 Sep 2023 14:54:40 +0100
-To: Ankit Agrawal <ankita@nvidia.com>
-CC: Jason Gunthorpe <jgg@nvidia.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
- <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
- (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, "Andy
- Currid" <ACurrid@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v1 3/4] hw/arm/virt-acpi-build: patch guest SRAT for
- NUMA nodes
-Message-ID: <20230925145440.00005072@Huawei.com>
-In-Reply-To: <BY5PR12MB3763BC1EB9402223B020ABF8B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
-References: <20230915024559.6565-1-ankita@nvidia.com>
- <20230915024559.6565-4-ankita@nvidia.com>
- <20230915153740.00006185@Huawei.com>
- <BY5PR12MB3763BC1EB9402223B020ABF8B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkm3O-0006cZ-RD
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:55:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695650113;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+GO3FDGo0gpmW/3m5oH5gjD2slFhzSLVeWiAtW2rptc=;
+ b=MEuwmIssNB/2Hb7x2Atr/ftlzenBUKbgv6ddraRPakNMETKXMHdWEOQNS5mP4kWShrTSJ0
+ G/IjZ9U5reD6v6b5UBotlITE0AXeYDUbnuWib/BGkk9M5iO7by8GlkLFS1h6ljhiCmY6+A
+ 3Ku6VXOwaLPukpi67GvFXBmQZGIJ8cY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-336-zSKz7mR4OyW-A4rYBbo3dA-1; Mon, 25 Sep 2023 09:55:10 -0400
+X-MC-Unique: zSKz7mR4OyW-A4rYBbo3dA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0169F811E94;
+ Mon, 25 Sep 2023 13:55:10 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D285A40C2009;
+ Mon, 25 Sep 2023 13:55:09 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id C259E21E6900; Mon, 25 Sep 2023 15:55:08 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,  Juan
+ Quintela <quintela@redhat.com>,  Zhijian Li <lizhijian@fujitsu.com>,
+ Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH] MAINTAINERS: Add entry for rdma migration
+References: <20230925133441.265455-1-peterx@redhat.com>
+Date: Mon, 25 Sep 2023 15:55:08 +0200
+In-Reply-To: <20230925133441.265455-1-peterx@redhat.com> (Peter Xu's message
+ of "Mon, 25 Sep 2023 09:34:41 -0400")
+Message-ID: <8734z2s6gz.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,65 +80,87 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 22 Sep 2023 05:49:46 +0000
-Ankit Agrawal <ankita@nvidia.com> wrote:
+Peter Xu <peterx@redhat.com> writes:
 
-> Hi Jonathan
+> It's not obvious to many that RDMA migration is in Odd Fixes stage for a
+> long time.  Add an explicit sub entry for it (besides migration, which
+> already covers the rdma files) to be clear on that, meanwhile add Zhijian
+> as Reviewer, so Zhijian can see the patches and review when he still has
+> the bandwidth.
+>
+> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Cc: Juan Quintela <quintela@redhat.com>
+> Cc: Markus Armbruster <armbru@redhat.com>
+> Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
+> Cc: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>  MAINTAINERS | 5 +++++
+>  1 file changed, 5 insertions(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 355b1960ce..f6b21da753 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3217,6 +3217,11 @@ F: qapi/migration.json
+>  F: tests/migration/
+>  F: util/userfaultfd.c
+>=20=20
+> +RDMA Migration
+> +R: Li Zhijian <lizhijian@fujitsu.com>
+> +S: Odd Fixes
+> +F: migration/rdma*
+> +
+>  Migration dirty limit and dirty page rate
+>  M: Hyman Huang <yong.huang@smartx.com>
+>  S: Maintained
 
-Hi Ankit,
+Hmm...
 
-> 
-> > > +        if (pcidev->pdev.has_coherent_memory) {
-> > > +            uint64_t start_node = object_property_get_uint(obj,
-> > > +                                  "dev_mem_pxm_start", &error_abort);
-> > > +            uint64_t node_count = object_property_get_uint(obj,
-> > > +                                  "dev_mem_pxm_count", &error_abort);
-> > > +            uint64_t node_index;
-> > > +
-> > > +            /*
-> > > +             * Add the node_count PXM domains starting from start_node as
-> > > +             * hot pluggable. The VM kernel parse the PXM domains and
-> > > +             * creates NUMA nodes.
-> > > +             */
-> > > +            for (node_index = 0; node_index < node_count; node_index++)
-> > > +                build_srat_memory(table_data, 0, 0, start_node + node_index,
-> > > +                    MEM_AFFINITY_ENABLED |
-> > > + MEM_AFFINITY_HOTPLUGGABLE);  
-> > 
-> > 0 size SRAT entries for memory? That's not valid.  
-> 
-> Can you explain in what sense are these invalid? The Linux kernel accepts
-> such setting and I had tested it.
+    $ scripts/get_maintainer.pl --status -f migration/rdma.cLi Zhijian <liz=
+hijian@fujitsu.com> (reviewer:RDMA Migration)
+    Juan Quintela <quintela@redhat.com> (maintainer:Migration)
+    Peter Xu <peterx@redhat.com> (reviewer:Migration)
+    Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
+    qemu-devel@nongnu.org (open list:All patches CC here)
+    Odd Fixes
+    Maintained
 
-ACPI specification doesn't define any means of 'updating' the memory range,
-so whilst I guess they are not specifically disallowed without a spec definition
-of what it means this is walking into a mine field. In particular the 
-description of the hot pluggable bit worries me:
-"The system hardware supports hot-add and hot-remove of this memory region."
-So I think your definition is calling out that you can hot plug memory into
-a region of zero size. To me that's nonsensical so a paranoid OS writer
-might just spit out firmware error message and refuse to boot.
+Contradictory status.  Do we care?
 
-There is no guarantee other operating systems won't blow up if they see one
-of these. To be able to do this safely I think you probably need an ACPI
-spec update to say what such a zero length, zero base region means.
+To avoid, try something like the appended patch.  With that one:
 
-Possible the ASWG folk would say this is fine and I'm reading too much into
-the spec, but I'd definitely suggest asking them via the appropriate path,
-or throwing in a code first proposal for a comment on this special case and
-see what response you get - my guess is it will be 'fix Linux' :(
+    $ scripts/get_maintainer.pl --status -f migration/rdma.c
+    Juan Quintela <quintela@redhat.com> (odd fixer:RDMA Migration)
+    Li Zhijian <lizhijian@fujitsu.com> (reviewer:RDMA Migration)
+    Peter Xu <peterx@redhat.com> (reviewer:RDMA Migration)
+    Leonardo Bras <leobras@redhat.com> (reviewer:RDMA Migration)
+    qemu-devel@nongnu.org (open list:All patches CC here)
+    Odd Fixes
 
-> 
-> > Seems like you've run into the same issue CXL has with dynamic addition of
-> > nodes to the kernel and all you want to do here is make sure it thinks there are
-> > enough nodes so initializes various structures large enough.
-> >  
-> Yes, exactly.
-> 
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 355b1960ce..3e80857eab 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3216,6 +3216,15 @@ F: docs/devel/migration.rst
+ F: qapi/migration.json
+ F: tests/migration/
+ F: util/userfaultfd.c
++X: migration/rdma*
++
++RDMA Migration
++M: Juan Quintela <quintela@redhat.com>
++R: Li Zhijian <lizhijian@fujitsu.com>
++R: Peter Xu <peterx@redhat.com>
++R: Leonardo Bras <leobras@redhat.com>
++S: Odd Fixes
++F: migration/rdma*
+=20
+ Migration dirty limit and dirty page rate
+ M: Hyman Huang <yong.huang@smartx.com>
 
 
