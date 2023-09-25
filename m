@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 441F67ADA9A
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2783D7ADA9D
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:52:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmtX-0000zb-OV; Mon, 25 Sep 2023 10:49:07 -0400
+	id 1qkmtW-0000yh-5Q; Mon, 25 Sep 2023 10:49:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtU-0000xJ-2K
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:04 -0400
-Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ id 1qkmtT-0000x9-P4
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:03 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtN-0008Ee-S2
+ id 1qkmtO-0008EU-TL
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:03 -0400
-Received: by mail-wr1-x42c.google.com with SMTP id
- ffacd0b85a97d-32164a6af64so5588365f8f.2
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4053c6f1087so56289565e9.0
  for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1695653336; x=1696258136; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1YtSf2Ab2f4lgt/V/Wma19HlFhyxKexuv024AXVfN/4=;
- b=nHBdJMy9QbFN10TL3Ur3S03nznYDytkSKQettq8QbUFITNVpj9rftt+AfhfJUKJ9RJ
- VAKmg2TQIkwSgk0+Rf+fuvcW9Y+EcWw1HmuLZ0ka/QnrUViH5wHlLBFDsunyLcoqDXDj
- O8DBcQRLI4Gf9Ns88q4pqU4wgGgwpJGVirwSlhHbqv2lk4rdmmoIdUzWm2CeGFw1L15Q
- HnrmP4izRsF7bzBtS8cSzlrNAIHRrE0yNL8XZ71yxhBlDGNLWETeR5dOTSP/SDU0YmK0
- CE9VQJRZQh7JmwM1n80Xj0tYxGDdkvlEHO/qcaYFQIeQA34HtAhrJstUSEEdgZZU9kmP
- calg==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=i/NxOuLXpZoY7AKhUkjRhpOIcVG1WqxnVG0wjWhT+R4=;
+ b=lrK3xPKSkWbMQTJIMaEdcHOecIZ98V4bvJ9ZO1dcAeafvlwSeanOoJ8rPoWkyVnCru
+ Jl2w/DKpsQjX6P8ZTfDK3un5htEDN3nO/xK0TJxSaczjtcURpuDxNfEP5SHYJzISXYoP
+ rdIYPDfU3k/TEBoo9NmYoT6REdMqGx6vEdaGyHKSiV7VvvxT/YM9jwGEaWM8rR6BKeSc
+ 9yYqfw8wIvzLpk/lNc3IPLAdSEKo3w45IpFtRTj+Ol7a+dTeuV+63DYHexTum3Jm20uq
+ UwlJss2KyroxYOov/g7Fvd1vCq0MEUs3l4K+5GKvRpbIanjkzFPpU1iX4mfxnpalMBlz
+ 8nlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1695653336; x=1696258136;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1YtSf2Ab2f4lgt/V/Wma19HlFhyxKexuv024AXVfN/4=;
- b=CnfZQmoVi3YFNj+RTJodiUXxG3dyxU9Iio4BEzedTNq9bN3aNniGmObRnIfyAu7sSq
- GEkeEo1CQe6Mm/hODDtybOwqClzGuzPwre9hxpi3Gmz/kP3C8vGuB2Izd2F3E8GacHKr
- 4m4/dfuU5vX6Lf5azM9j0md7oLYwPWrsF6BltogaE2jpG0bG8SZhD0E5G833VGmg+Oz3
- 4PSNJ5x8kiJgNC5ePgZFfjnCf7InE01zndFG4fp2YWn/HeqjqOsAoUrbONIXid5z0hI0
- UsdH5RuHIk5dfubP1vQpfuB2x1Qof2hiqmlAephZyKgK1ywe84+ehQnBWNUBGPRfgbsq
- l3Gg==
-X-Gm-Message-State: AOJu0Yw0GU67R8MTcGa72+5jh5WOeiNTgF7W3ep0cCnkFN4VSbn1cWNm
- 3g5P+qXgKy/TrV1wHSTMl2WCtw==
-X-Google-Smtp-Source: AGHT+IHyqmt/cMcJ6b3wfHWrx0g+TBl8VfxxMFoVDskoCx7kqVU/YCV3BArbLs4sV2zVLg22ZRMeQw==
-X-Received: by 2002:a5d:510f:0:b0:31f:fedd:83ad with SMTP id
- s15-20020a5d510f000000b0031ffedd83admr6868879wrt.4.1695653335938; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=i/NxOuLXpZoY7AKhUkjRhpOIcVG1WqxnVG0wjWhT+R4=;
+ b=qpttuxGKW9cMmemiIykOFiDXGEyO2hwIhl8oLQxV78q/+bibHkRypA6S21rkmz1zTZ
+ ZL9pofpMFsxzVaSOLBpjgXQx/tX8XNGISRA0o0CS3Zfh5qsKc0ijINh0RPGb5grTxwiu
+ u5vCNbO4ZHYUnpdZn9Wl+UT17mGRsgbD4YSNbTVcv+mLPBC6w7SaLP0njMkERtv23cIV
+ 6E118vPPfBdzdi60t2kGzdmqng/MoNoEoiYcGGUAJD4ENq33OXakvQgPSPfe8GFNwuhW
+ 7b2u/tPvdjNMha/96whbHN7PWbXqatJfpYd5kpHnSnaR8BbTEkSOOhl6a0XSGMjA06uE
+ l81A==
+X-Gm-Message-State: AOJu0Yx9DEUwTuGmHebtCRpSuKOLNxVMrmZeY/ucTWVoT9HGTb13670Q
+ n5DYU/5CnpZWK3zs206ZLqyqMA==
+X-Google-Smtp-Source: AGHT+IHlCGeK/tvgna3gzkxwfVFAY6TBWSp276ajeWZiDVI1lQWGadbKDsxgUtYGPZunOy0YBBalYg==
+X-Received: by 2002:a05:600c:2215:b0:405:1baf:cedd with SMTP id
+ z21-20020a05600c221500b004051bafceddmr5505385wml.1.1695653335748; 
  Mon, 25 Sep 2023 07:48:55 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- w12-20020a5d608c000000b0031c6e1ea4c7sm12057674wrt.90.2023.09.25.07.48.55
+ b12-20020a5d634c000000b0031773a8e5c4sm12032016wrw.37.2023.09.25.07.48.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Sep 2023 07:48:55 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E44CB1FFBB;
- Mon, 25 Sep 2023 15:48:54 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 0B0B31FFBC;
+ Mon, 25 Sep 2023 15:48:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair.francis@wdc.com>,
@@ -90,15 +91,18 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 00/31] September maintainer omnibus (tests, gdbstub, plugins)
-Date: Mon, 25 Sep 2023 15:48:23 +0100
-Message-Id: <20230925144854.1872513-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/31] tests/avocado: update firmware to enable
+ sbsa-ref/neoverse-v1
+Date: Mon, 25 Sep 2023 15:48:24 +0100
+Message-Id: <20230925144854.1872513-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
+References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -121,163 +125,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-This wraps up my current testing, gdbstub and plugin trees in an
-attempt to do my part to reduce the qemu-devel fire hose.
+Update prebuilt firmware images to have TF-A with Neoverse V1 support enabled.
+This allowed us to enable test for this cpu in sbsa-ref machine.
 
-For testing we have a number of cleanups to configure to better handle
-selecting the container engine (removing the ability to dynamically
-switch). I had to do this as one of my build boxes has recently
-acquired a broken podman install. There are also some updates to
-avocado sbsa-ref as well as tweaks to the gitlab setup to minimise the
-amount of wheel spinning we do. The deprecation of CRIS is a little
-provocative but if we do want to keep it we need to stop relying on a
-rapidly dated fedora image to do it. Finally we include the swtpm
-package to widen the testing we do through avocado.
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Acked-by: Leif Lindholm <quic_llindhol@quicinc.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230915113519.269290-1-marcin.juszkiewicz@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ tests/avocado/machine_aarch64_sbsaref.py | 25 ++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-The gdbstub updates are from Akihiko and include a bunch of clean-ups
-that will hopefully pave the way for another series which allows the
-plugins to access register values using the gdb backend to source the
-data.
-
-Finally the plugins has a few fixes which includes a tweak to make SH4
-atomic modelling more plugin friendly. This allows for Matt's fix to
-deal with non-regular instruction encoding spanning pages. I also fix
-a number of coverity warnings.
-
-The final time control patches are still RFC and not ready for merging
-but I include them for completeness.
-
-The following still need review:
-
-  contrib/plugins: add iops plugin example for cost modelling
-  plugins: add time control API
-  sysemu: generalise qtest_warp_clock as qemu_clock_advance_virtual_time
-  qtest: use cpu interface in qtest_clock_warp (1 acks, 1 sobs, 0 tbs)
-  contrib/plugins: fix coverity warning in hotblocks
-  contrib/plugins: fix coverity warning in lockstep
-  contrib/plugins: fix coverity warning in cache
-  configure: ensure dependency for cross-compile setup
-  configure: remove gcc version suffixes
-  configure: allow user to override docker engine
-  tests/docker: make docker engine choice entirely configure driven
-  docs: mark CRIS support as deprecated
-  tests/lcitool: add swtpm to the package list
-
-Akihiko Odaki (12):
-  gdbstub: Fix target_xml initialization
-  gdbstub: Fix target.xml response
-  plugins: Check if vCPU is realized
-  contrib/plugins: Use GRWLock in execlog
-  gdbstub: Introduce GDBFeature structure
-  target/arm: Move the reference to arm-core.xml
-  hw/core/cpu: Return static value with gdb_arch_name()
-  gdbstub: Use g_markup_printf_escaped()
-  target/arm: Remove references to gdb_has_xml
-  target/ppc: Remove references to gdb_has_xml
-  gdbstub: Remove gdb_has_xml variable
-  gdbstub: Replace gdb_regs with an array
-
-Alex Bennée (15):
-  tests/lcitool: add swtpm to the package list
-  gitlab: shuffle some targets and reduce avocado noise
-  docs: mark CRIS support as deprecated
-  tests/docker: make docker engine choice entirely configure driven
-  configure: allow user to override docker engine
-  configure: remove gcc version suffixes
-  configure: ensure dependency for cross-compile setup
-  contrib/plugins: fix coverity warning in cache
-  contrib/plugins: fix coverity warning in lockstep
-  contrib/plugins: fix coverity warning in hotblocks
-  sysemu: add set_virtual_time to accel ops
-  qtest: use cpu interface in qtest_clock_warp
-  sysemu: generalise qtest_warp_clock as qemu_clock_advance_virtual_time
-  plugins: add time control API
-  contrib/plugins: add iops plugin example for cost modelling
-
-Marcin Juszkiewicz (1):
-  tests/avocado: update firmware to enable sbsa-ref/neoverse-v1
-
-Matt Borgerson (1):
-  plugins: Set final instruction count in plugin_gen_tb_end
-
-Richard Henderson (2):
-  accel/tcg: Add plugin_enabled to DisasContextBase
-  target/sh4: Disable decode_gusa when plugins enabled
-
- MAINTAINERS                                   |   2 +-
- docs/about/deprecated.rst                     |  11 +
- configure                                     |  15 +-
- meson.build                                   |   2 +-
- gdbstub/internals.h                           |   2 -
- include/exec/gdbstub.h                        |  17 +-
- include/exec/plugin-gen.h                     |   4 +-
- include/exec/translator.h                     |   2 +
- include/hw/core/cpu.h                         |   4 +-
- include/qemu/qemu-plugin.h                    |  19 ++
- include/qemu/timer.h                          |  15 +
- include/sysemu/accel-ops.h                    |  18 +-
- include/sysemu/cpu-timers.h                   |  27 +-
- include/sysemu/qtest.h                        |   1 +
- target/ppc/internal.h                         |   2 +-
- accel/qtest/qtest.c                           |   1 +
- accel/tcg/plugin-gen.c                        |   6 +-
- accel/tcg/translator.c                        |   3 +-
- contrib/plugins/cache.c                       |  18 +-
- contrib/plugins/execlog.c                     |  16 +-
- contrib/plugins/hotblocks.c                   |   2 +-
- contrib/plugins/iops.c                        | 261 ++++++++++++++++++
- contrib/plugins/lockstep.c                    |  13 +-
- gdbstub/gdbstub.c                             |  95 +++----
- gdbstub/softmmu.c                             |   2 +-
- plugins/api.c                                 |  28 ++
- plugins/core.c                                |   2 +-
- softmmu/cpus.c                                |  11 +
- softmmu/qtest.c                               |  26 +-
- ...t-virtual-clock.c => cpus-virtual-clock.c} |   5 +
- stubs/gdbstub.c                               |   6 +-
- target/arm/cpu.c                              |   9 +-
- target/arm/cpu64.c                            |   4 +-
- target/arm/gdbstub.c                          |  32 +--
- target/i386/cpu.c                             |   6 +-
- target/loongarch/cpu.c                        |   8 +-
- target/ppc/gdbstub.c                          |  24 +-
- target/riscv/cpu.c                            |   6 +-
- target/s390x/cpu.c                            |   4 +-
- target/sh4/translate.c                        |  41 ++-
- target/tricore/cpu.c                          |   4 +-
- util/qemu-timer.c                             |  26 ++
- .gitlab-ci.d/buildtest.yml                    |  15 +-
- .gitlab-ci.d/cirrus/macos-12.vars             |   2 +-
- contrib/plugins/Makefile                      |   1 +
- plugins/qemu-plugins.symbols                  |   2 +
- scripts/feature_to_c.py                       |  48 ++++
- scripts/feature_to_c.sh                       |  69 -----
- stubs/meson.build                             |   2 +-
- tests/avocado/machine_aarch64_sbsaref.py      |  25 +-
- tests/docker/Makefile.include                 |   7 +-
- tests/docker/dockerfiles/alpine.docker        |   1 +
- tests/docker/dockerfiles/centos8.docker       |   1 +
- .../dockerfiles/debian-amd64-cross.docker     |   1 +
- tests/docker/dockerfiles/debian-amd64.docker  |   1 +
- .../dockerfiles/debian-arm64-cross.docker     |   1 +
- .../dockerfiles/debian-armhf-cross.docker     |   1 +
- .../dockerfiles/debian-ppc64el-cross.docker   |   1 +
- .../dockerfiles/debian-s390x-cross.docker     |   1 +
- .../dockerfiles/fedora-win32-cross.docker     |   1 +
- .../dockerfiles/fedora-win64-cross.docker     |   1 +
- tests/docker/dockerfiles/fedora.docker        |   1 +
- tests/docker/dockerfiles/opensuse-leap.docker |   1 +
- tests/docker/dockerfiles/ubuntu2204.docker    |   1 +
- tests/lcitool/libvirt-ci                      |   2 +-
- tests/lcitool/projects/qemu.yml               |   1 +
- 66 files changed, 689 insertions(+), 298 deletions(-)
- create mode 100644 contrib/plugins/iops.c
- rename stubs/{cpus-get-virtual-clock.c => cpus-virtual-clock.c} (68%)
- create mode 100755 scripts/feature_to_c.py
- delete mode 100644 scripts/feature_to_c.sh
-
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index a794245e7e..b39f5566d7 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -28,33 +28,32 @@ def fetch_firmware(self):
+         """
+         Flash volumes generated using:
+ 
+-        - Fedora GNU Toolchain version 13.1.1 20230511 (Red Hat 13.1.1-2)
++        - Fedora GNU Toolchain version 13.2.1 20230728 (Red Hat 13.2.1-1)
+ 
+         - Trusted Firmware-A
+-          https://github.com/ARM-software/arm-trusted-firmware/tree/c0d8ee38
++          https://github.com/ARM-software/arm-trusted-firmware/tree/cc933e1d
+ 
+         - Tianocore EDK II
+-          https://github.com/tianocore/edk2/tree/0f9283429dd4
+-          https://github.com/tianocore/edk2-non-osi/tree/f0bb00937ad6
+-          https://github.com/tianocore/edk2-platforms/tree/7880b92e2a04
++          https://github.com/tianocore/edk2/tree/29cce3356aec
++          https://github.com/tianocore/edk2-platforms/tree/fc22c0e69709
+         """
+ 
+         # Secure BootRom (TF-A code)
+         fs0_xz_url = (
+-            "https://fileserver.linaro.org/s/HrYMCjP7MEccjRP/"
++            "https://fileserver.linaro.org/s/g4C3WzJzNBES2p2/"
+             "download/SBSA_FLASH0.fd.xz"
+         )
+-        fs0_xz_hash = "447eff64a90b84ce47703c6ec41fbfc25befaaea"
++        fs0_xz_hash = "374738599f7ba38c22924b2075ec5355c2b24a47"
+         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash)
+         archive.extract(tar_xz_path, self.workdir)
+         fs0_path = os.path.join(self.workdir, "SBSA_FLASH0.fd")
+ 
+         # Non-secure rom (UEFI and EFI variables)
+         fs1_xz_url = (
+-            "https://fileserver.linaro.org/s/t8foNnMPz74DZZy/"
++            "https://fileserver.linaro.org/s/scJRninsAFTwEct/"
+             "download/SBSA_FLASH1.fd.xz"
+         )
+-        fs1_xz_hash = "13a9a262953787c7fc5a9155dfaa26e703631e02"
++        fs1_xz_hash = "5d3f156ebd6c6374da2121e15c7c8f4ed0351dcc"
+         tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash)
+         archive.extract(tar_xz_path, self.workdir)
+         fs1_path = os.path.join(self.workdir, "SBSA_FLASH1.fd")
+@@ -144,10 +143,16 @@ def test_sbsaref_alpine_linux_cortex_a57(self):
+ 
+     def test_sbsaref_alpine_linux_neoverse_n1(self):
+         """
+-        :avocado: tags=cpu:max
++        :avocado: tags=cpu:neoverse-n1
+         """
+         self.boot_alpine_linux("neoverse-n1")
+ 
++    def test_sbsaref_alpine_linux_neoverse_v1(self):
++        """
++        :avocado: tags=cpu:neoverse-v1
++        """
++        self.boot_alpine_linux("neoverse-v1,pauth-impdef=on")
++
+     def test_sbsaref_alpine_linux_max(self):
+         """
+         :avocado: tags=cpu:max
 -- 
 2.39.2
 
