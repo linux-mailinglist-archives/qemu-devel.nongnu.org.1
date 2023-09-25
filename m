@@ -2,59 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AA07ACF27
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 06:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F717ACF2A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 06:32:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkdF3-0002pk-Hk; Mon, 25 Sep 2023 00:30:41 -0400
+	id 1qkdF7-0002qL-7h; Mon, 25 Sep 2023 00:30:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qkdF0-0002p0-2L; Mon, 25 Sep 2023 00:30:38 -0400
-Received: from mail-pg1-x52f.google.com ([2607:f8b0:4864:20::52f])
+ id 1qkdF3-0002pr-Of; Mon, 25 Sep 2023 00:30:41 -0400
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qkdEw-0007V5-Hm; Mon, 25 Sep 2023 00:30:37 -0400
-Received: by mail-pg1-x52f.google.com with SMTP id
- 41be03b00d2f7-578a3069f1eso3433199a12.1; 
- Sun, 24 Sep 2023 21:30:33 -0700 (PDT)
+ id 1qkdF2-0007Vn-97; Mon, 25 Sep 2023 00:30:41 -0400
+Received: by mail-pj1-x102e.google.com with SMTP id
+ 98e67ed59e1d1-27763d36661so391880a91.3; 
+ Sun, 24 Sep 2023 21:30:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695616232; x=1696221032; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=W3yybX3dRFoORug1HysTE/1Zuv/08SYd9d+hOJaZiLI=;
- b=Og+lxxqlEe0jWDhh+eDJG7oFRteNpkxvIQvkSFP3JLLrMR074bs/UB0jUFZTpyUyxi
- sWeqGOO3VxxFBL0PxdHp8hUYKsYDp4byYYUZ1Ekzo3+MDFbrwGGMY7Xk32klkJcjwjAG
- IFMwtRBWxjZ9rYoIrMWyDgL6jwe3IdUn+NVYHJvKpDORshzLC0qGWZpW5uDVM0vbieKs
- FKGESyzk96H9nu0uwSxAj4+UIjMGEIXeC8pSVENYQkUvpT5LtNHYsYuMHci7+DeqkPTw
- +onQIq3shikSULxJ3z+EuXLlZWy54xJiwcNpw2EnkMpoPiswqzBRxJUT62tbuIkv5PvT
- aNIA==
+ d=gmail.com; s=20230601; t=1695616238; x=1696221038; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xNNI0O3SzKHU7vUAvRWqz/iywCW4aWcpOWziFo+dg/k=;
+ b=fo+tZC+N3bkmMktvaNf8zyf0oyxmBCVJ6Bgnqb3E8KYnWG6hhf/0l999xm0uIFcBRt
+ Xis9Y19fdvJI80eBSy9Ec9HnVDbGweejqvXtsWlhNnGTzpxjj8tfWFMiHb8intRAjVQI
+ FF/ooch+mpdDdd1oBs6Kmcwrf3XjZC+6ftAsa+MZej1fjxA+Aj0ELgAOUIwxxxaTIwTU
+ EtHLD1DAhElBOqWvQQ2dyeuR5e0XE3CRmWRx+zILklgysxyLbFDH8giuPX2zNXUeCB3h
+ 7LmTki238h9sOUz5viR9jDDrmtUEliFggTQscVxJTjApaJ0wwlExcHiM/CKP5VboxdLo
+ mB9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695616232; x=1696221032;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=W3yybX3dRFoORug1HysTE/1Zuv/08SYd9d+hOJaZiLI=;
- b=oY3ZvROXKHWI2uGVCVDier4vPNy9xrI/QGmxCz19aYcq9OFDTWt9olLRo5zRBVurN4
- EiPCN+ssGIZcJ+GSpUGmOY8yEy1bM9uK64BVyd0UEhab6saGOiGi/YAyuYWNdri0q9Hn
- UkNvK979QSofvrzc8rfxxzlTIyF6cGNoeDANBBU5/EOjts0/zY32qli5UaJ7/kSGqIJf
- nQ/CN0jazvxTyqIYYkq8tjD+XXP2/y3/AhW5rZ8jymKE2beOA3PvHXWaylv72mHpUHq8
- 9vEQGWfm7i/YpQmhK0Hvrx6INU98OHUvh+kdKxmakGdjPzCmnfTM3dr/51qeDK71r0v/
- ikzQ==
-X-Gm-Message-State: AOJu0YxzXmg8ayAbu6ut6oKUQMWQraaJndd29A/YvCyWpB7vv8OHaCuw
- im2SnmJFqyHwjQDuI91II0RQn8zPs0DPQg==
-X-Google-Smtp-Source: AGHT+IFkN/P2I8oja1vvL4eiViV8MCy70j/k0Dy3vsFaL+/OcYkwdeZvOYCctWO/2cXdp0ps6fGjkg==
-X-Received: by 2002:a05:6a21:a59e:b0:14c:ad99:22a9 with SMTP id
- gd30-20020a056a21a59e00b0014cad9922a9mr4702502pzc.32.1695616232492; 
- Sun, 24 Sep 2023 21:30:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695616238; x=1696221038;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xNNI0O3SzKHU7vUAvRWqz/iywCW4aWcpOWziFo+dg/k=;
+ b=McaE2xOtGDU+kApDCNdp6W8MvhM0DjZxnyzWc9EasqPGA9zVGY9RCOl9dIfB6qCD9I
+ OeUoRHNJ1HEWGPt0p/Qu0q6zkUXiM5WJ+9SmPKkfIFWMc012NvsY5O2CNFMQ303WSTzH
+ xn3GOCVFCE3yO7IRkOtKnkFCezU4LAs9F8bPhujbtQCG3ocZ1y2XJxxEqN+RAcZIS+ki
+ TLfAuH4o3LGhzrEfhnPolml2P46c6Gq53vaNdz5pLtfN1t4JMxRT8KgFvszuhhQ9byr0
+ BRWxDg0H2Ems0gkM4Ql7hgwAc5keoE9rzMkz3+UtvGUGzUHXpAZ88wmjL3K5oKU4O5kA
+ ROqQ==
+X-Gm-Message-State: AOJu0Yxut3cLANhZbNRZ+BJE+foPjmQzyDs9chdSvp/lGhu0dS2PDBjU
+ BXuIjIlpBAfD6rT1oAVSN/8=
+X-Google-Smtp-Source: AGHT+IE4cBlFMyevsXFhg/gEMPofdWP6CQjh2d5+cXfcRa03uoYaD3laf9LX2mkQ7bqnT6Ip8lzZQw==
+X-Received: by 2002:a17:90a:4e4e:b0:268:f987:305f with SMTP id
+ t14-20020a17090a4e4e00b00268f987305fmr5222831pjl.46.1695616238397; 
+ Sun, 24 Sep 2023 21:30:38 -0700 (PDT)
 Received: from toolbox.alistair23.me
  (2403-580b-97e8-0-321-6fb2-58f1-a1b1.ip6.aussiebb.net.
  [2403:580b:97e8:0:321:6fb2:58f1:a1b1])
  by smtp.gmail.com with ESMTPSA id
- y14-20020a17090a134e00b00276fef82025sm6002161pjf.35.2023.09.24.21.30.27
+ y14-20020a17090a134e00b00276fef82025sm6002161pjf.35.2023.09.24.21.30.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Sep 2023 21:30:31 -0700 (PDT)
+ Sun, 24 Sep 2023 21:30:37 -0700 (PDT)
 From: Alistair Francis <alistair23@gmail.com>
 X-Google-Original-From: Alistair Francis <alistair.francis@wdc.com>
 To: david@gibson.dropbear.id.au, qemu-riscv@nongnu.org, qemu-devel@nongnu.org
@@ -63,15 +64,16 @@ Cc: bmeng.cn@gmail.com, alistair.francis@wdc.com,
  alistair23@gmail.com, dbarboza@ventanamicro.com,
  Alistair Francis <Alistair.Francis@wdc.com>, liweiwei@iscas.ac.cn,
  Bin Meng <bin.meng@windriver.com>
-Subject: [PATCH 0/4] RISC-V: Work towards enabling -Wshadow=local
-Date: Mon, 25 Sep 2023 14:30:19 +1000
-Message-ID: <20230925043023.71448-1-alistair.francis@wdc.com>
+Subject: [PATCH 1/4] hw/riscv: opentitan: Fixup local variables shadowing
+Date: Mon, 25 Sep 2023 14:30:20 +1000
+Message-ID: <20230925043023.71448-2-alistair.francis@wdc.com>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230925043023.71448-1-alistair.francis@wdc.com>
+References: <20230925043023.71448-1-alistair.francis@wdc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52f;
- envelope-from=alistair23@gmail.com; helo=mail-pg1-x52f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102e;
+ envelope-from=alistair23@gmail.com; helo=mail-pj1-x102e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -106,18 +108,24 @@ This patch removes the local variable shadowing. Tested by adding:
 
 To configure
 
-Alistair Francis (4):
-  hw/riscv: opentitan: Fixup local variables shadowing
-  target/riscv: cpu: Fixup local variables shadowing
-  target/riscv: vector_helper: Fixup local variables shadowing
-  softmmu/device_tree: Fixup local variables shadowing
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ hw/riscv/opentitan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- hw/riscv/opentitan.c         | 2 +-
- softmmu/device_tree.c        | 6 +++---
- target/riscv/cpu.c           | 4 ++--
- target/riscv/vector_helper.c | 7 ++++---
- 4 files changed, 10 insertions(+), 9 deletions(-)
-
+diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
+index 6a2fcc4ade..436503f1ba 100644
+--- a/hw/riscv/opentitan.c
++++ b/hw/riscv/opentitan.c
+@@ -227,7 +227,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
+                                            IRQ_M_TIMER));
+ 
+     /* SPI-Hosts */
+-    for (int i = 0; i < OPENTITAN_NUM_SPI_HOSTS; ++i) {
++    for (i = 0; i < OPENTITAN_NUM_SPI_HOSTS; ++i) {
+         dev = DEVICE(&(s->spi_host[i]));
+         if (!sysbus_realize(SYS_BUS_DEVICE(&s->spi_host[i]), errp)) {
+             return;
 -- 
 2.41.0
 
