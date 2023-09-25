@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2783D7ADA9D
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564147ADAA6
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:53:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmtW-0000yh-5Q; Mon, 25 Sep 2023 10:49:06 -0400
+	id 1qkmtb-00012Q-9a; Mon, 25 Sep 2023 10:49:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtT-0000x9-P4
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:03 -0400
+ id 1qkmtX-0000zw-M8
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:07 -0400
 Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtO-0008EU-TL
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:03 -0400
+ id 1qkmtP-0008Ei-BR
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:07 -0400
 Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4053c6f1087so56289565e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
+ 5b1f17b1804b1-40566f89f6eso35429685e9.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1695653336; x=1696258136; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i/NxOuLXpZoY7AKhUkjRhpOIcVG1WqxnVG0wjWhT+R4=;
- b=lrK3xPKSkWbMQTJIMaEdcHOecIZ98V4bvJ9ZO1dcAeafvlwSeanOoJ8rPoWkyVnCru
- Jl2w/DKpsQjX6P8ZTfDK3un5htEDN3nO/xK0TJxSaczjtcURpuDxNfEP5SHYJzISXYoP
- rdIYPDfU3k/TEBoo9NmYoT6REdMqGx6vEdaGyHKSiV7VvvxT/YM9jwGEaWM8rR6BKeSc
- 9yYqfw8wIvzLpk/lNc3IPLAdSEKo3w45IpFtRTj+Ol7a+dTeuV+63DYHexTum3Jm20uq
- UwlJss2KyroxYOov/g7Fvd1vCq0MEUs3l4K+5GKvRpbIanjkzFPpU1iX4mfxnpalMBlz
- 8nlQ==
+ bh=DX65lOE/uUVkmtjhIZOisxQvTzydcI84YNB1WXt/J5w=;
+ b=DLSJJDlMAheC5yrdgJkt3cUwWZn5TfYvBAC8EPB8sNkKx3xWllzYEUJ53OIpT4yxHv
+ 9Tfp6ocNl3DrNQRyDuxp+JoeZSURn6o3L6XoUwTgF8CMIeAvZVRd9/MbbUNiPgeUQe0J
+ 1l9UxlTsDD/ku9rtZyg8R0b/LQjkPhC4Dpb9OULsbZDVtv9Vo+EMj6SAFR3eBnutvunc
+ JjA5/wqDQazxlsa39AerE3CtolNze4IusVz9HQFpgNtIlifKvHxqIFAf2j+bfAuOhvtT
+ QGkZmmErG12Hhro2fjXkdeV2Ais7+eZJkSHZMK5hv2q2f+6iWHA6DGBolY6rYEoK7Pjz
+ YnDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1695653336; x=1696258136;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i/NxOuLXpZoY7AKhUkjRhpOIcVG1WqxnVG0wjWhT+R4=;
- b=qpttuxGKW9cMmemiIykOFiDXGEyO2hwIhl8oLQxV78q/+bibHkRypA6S21rkmz1zTZ
- ZL9pofpMFsxzVaSOLBpjgXQx/tX8XNGISRA0o0CS3Zfh5qsKc0ijINh0RPGb5grTxwiu
- u5vCNbO4ZHYUnpdZn9Wl+UT17mGRsgbD4YSNbTVcv+mLPBC6w7SaLP0njMkERtv23cIV
- 6E118vPPfBdzdi60t2kGzdmqng/MoNoEoiYcGGUAJD4ENq33OXakvQgPSPfe8GFNwuhW
- 7b2u/tPvdjNMha/96whbHN7PWbXqatJfpYd5kpHnSnaR8BbTEkSOOhl6a0XSGMjA06uE
- l81A==
-X-Gm-Message-State: AOJu0Yx9DEUwTuGmHebtCRpSuKOLNxVMrmZeY/ucTWVoT9HGTb13670Q
- n5DYU/5CnpZWK3zs206ZLqyqMA==
-X-Google-Smtp-Source: AGHT+IHlCGeK/tvgna3gzkxwfVFAY6TBWSp276ajeWZiDVI1lQWGadbKDsxgUtYGPZunOy0YBBalYg==
-X-Received: by 2002:a05:600c:2215:b0:405:1baf:cedd with SMTP id
- z21-20020a05600c221500b004051bafceddmr5505385wml.1.1695653335748; 
- Mon, 25 Sep 2023 07:48:55 -0700 (PDT)
+ bh=DX65lOE/uUVkmtjhIZOisxQvTzydcI84YNB1WXt/J5w=;
+ b=At3yw5by5PytRDA1x/olDgU8I/ov1BixAx4anXlzO7rOVk0Ni+SKtDncbURN2g/1dK
+ /slLVzzMlAtqcsFN5Vt3iqdtlyZrajP/7YmQgTGiKx4aJGbpLOlt57LZfqxfi5nullbk
+ FxzeKk8MZp52IM020Jol9K/UBIQaqkLqT1SQLR4uut63W7AizKcF4Nwgc7J4joM3lC6Q
+ t/dzADskf22B0d71s6bdA9zI27V0A1c4LjF6dexHgm1Sflf5TY+MuZyjJ6W60Tqzy+Fe
+ OrxX0qtyxbOET2H/r+WPXQjTMQ+DwAG0ieQaIkDZIJVIkYgoSY/KKDXhP8oyyrhs6MsC
+ ybQQ==
+X-Gm-Message-State: AOJu0YywdoufSGvmpEds8LfyaibbT5wIwFcVeUyCTkmeiEz3eMD0PUml
+ ngEdPGH8jV/ciesV3ixuQ26aqA==
+X-Google-Smtp-Source: AGHT+IFzvqpyIuikxt70glWxYNdRhVVnfZu3ojWJqodYYDE8eSxdmKDc6xUQxGVHVfRmayVk112wTg==
+X-Received: by 2002:a05:6000:819:b0:323:1689:6607 with SMTP id
+ bt25-20020a056000081900b0032316896607mr8161726wrb.5.1695653336162; 
+ Mon, 25 Sep 2023 07:48:56 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- b12-20020a5d634c000000b0031773a8e5c4sm12032016wrw.37.2023.09.25.07.48.55
+ ay18-20020a5d6f12000000b003143cb109d5sm2929399wrb.14.2023.09.25.07.48.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Sep 2023 07:48:55 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0B0B31FFBC;
+ by zen.linaroharston (Postfix) with ESMTP id 4EBD91FFBD;
  Mon, 25 Sep 2023 15:48:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,10 +91,9 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 01/31] tests/avocado: update firmware to enable
- sbsa-ref/neoverse-v1
-Date: Mon, 25 Sep 2023 15:48:24 +0100
-Message-Id: <20230925144854.1872513-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/31] tests/lcitool: add swtpm to the package list
+Date: Mon, 25 Sep 2023 15:48:25 +0100
+Message-Id: <20230925144854.1872513-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
@@ -125,85 +124,215 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+We need this to test some TPM stuff.
 
-Update prebuilt firmware images to have TF-A with Neoverse V1 support enabled.
-This allowed us to enable test for this cpu in sbsa-ref machine.
-
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Acked-by: Leif Lindholm <quic_llindhol@quicinc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230915113519.269290-1-marcin.juszkiewicz@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- tests/avocado/machine_aarch64_sbsaref.py | 25 ++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ .gitlab-ci.d/cirrus/macos-12.vars                    | 2 +-
+ tests/docker/dockerfiles/alpine.docker               | 1 +
+ tests/docker/dockerfiles/centos8.docker              | 1 +
+ tests/docker/dockerfiles/debian-amd64-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-amd64.docker         | 1 +
+ tests/docker/dockerfiles/debian-arm64-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-armhf-cross.docker   | 1 +
+ tests/docker/dockerfiles/debian-ppc64el-cross.docker | 1 +
+ tests/docker/dockerfiles/debian-s390x-cross.docker   | 1 +
+ tests/docker/dockerfiles/fedora-win32-cross.docker   | 1 +
+ tests/docker/dockerfiles/fedora-win64-cross.docker   | 1 +
+ tests/docker/dockerfiles/fedora.docker               | 1 +
+ tests/docker/dockerfiles/opensuse-leap.docker        | 1 +
+ tests/docker/dockerfiles/ubuntu2204.docker           | 1 +
+ tests/lcitool/libvirt-ci                             | 2 +-
+ tests/lcitool/projects/qemu.yml                      | 1 +
+ 16 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index a794245e7e..b39f5566d7 100644
---- a/tests/avocado/machine_aarch64_sbsaref.py
-+++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -28,33 +28,32 @@ def fetch_firmware(self):
-         """
-         Flash volumes generated using:
- 
--        - Fedora GNU Toolchain version 13.1.1 20230511 (Red Hat 13.1.1-2)
-+        - Fedora GNU Toolchain version 13.2.1 20230728 (Red Hat 13.2.1-1)
- 
-         - Trusted Firmware-A
--          https://github.com/ARM-software/arm-trusted-firmware/tree/c0d8ee38
-+          https://github.com/ARM-software/arm-trusted-firmware/tree/cc933e1d
- 
-         - Tianocore EDK II
--          https://github.com/tianocore/edk2/tree/0f9283429dd4
--          https://github.com/tianocore/edk2-non-osi/tree/f0bb00937ad6
--          https://github.com/tianocore/edk2-platforms/tree/7880b92e2a04
-+          https://github.com/tianocore/edk2/tree/29cce3356aec
-+          https://github.com/tianocore/edk2-platforms/tree/fc22c0e69709
-         """
- 
-         # Secure BootRom (TF-A code)
-         fs0_xz_url = (
--            "https://fileserver.linaro.org/s/HrYMCjP7MEccjRP/"
-+            "https://fileserver.linaro.org/s/g4C3WzJzNBES2p2/"
-             "download/SBSA_FLASH0.fd.xz"
-         )
--        fs0_xz_hash = "447eff64a90b84ce47703c6ec41fbfc25befaaea"
-+        fs0_xz_hash = "374738599f7ba38c22924b2075ec5355c2b24a47"
-         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash)
-         archive.extract(tar_xz_path, self.workdir)
-         fs0_path = os.path.join(self.workdir, "SBSA_FLASH0.fd")
- 
-         # Non-secure rom (UEFI and EFI variables)
-         fs1_xz_url = (
--            "https://fileserver.linaro.org/s/t8foNnMPz74DZZy/"
-+            "https://fileserver.linaro.org/s/scJRninsAFTwEct/"
-             "download/SBSA_FLASH1.fd.xz"
-         )
--        fs1_xz_hash = "13a9a262953787c7fc5a9155dfaa26e703631e02"
-+        fs1_xz_hash = "5d3f156ebd6c6374da2121e15c7c8f4ed0351dcc"
-         tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash)
-         archive.extract(tar_xz_path, self.workdir)
-         fs1_path = os.path.join(self.workdir, "SBSA_FLASH1.fd")
-@@ -144,10 +143,16 @@ def test_sbsaref_alpine_linux_cortex_a57(self):
- 
-     def test_sbsaref_alpine_linux_neoverse_n1(self):
-         """
--        :avocado: tags=cpu:max
-+        :avocado: tags=cpu:neoverse-n1
-         """
-         self.boot_alpine_linux("neoverse-n1")
- 
-+    def test_sbsaref_alpine_linux_neoverse_v1(self):
-+        """
-+        :avocado: tags=cpu:neoverse-v1
-+        """
-+        self.boot_alpine_linux("neoverse-v1,pauth-impdef=on")
-+
-     def test_sbsaref_alpine_linux_max(self):
-         """
-         :avocado: tags=cpu:max
+diff --git a/.gitlab-ci.d/cirrus/macos-12.vars b/.gitlab-ci.d/cirrus/macos-12.vars
+index 80eadaab29..5f3fb346d1 100644
+--- a/.gitlab-ci.d/cirrus/macos-12.vars
++++ b/.gitlab-ci.d/cirrus/macos-12.vars
+@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
+ NINJA='/opt/homebrew/bin/ninja'
+ PACKAGING_COMMAND='brew'
+ PIP3='/opt/homebrew/bin/pip3'
+-PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol tesseract usbredir vde vte3 xorriso zlib zstd'
++PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
+ PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
+ PYTHON='/opt/homebrew/bin/python3'
+diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
+index d25649cb4f..42f6928627 100644
+--- a/tests/docker/dockerfiles/alpine.docker
++++ b/tests/docker/dockerfiles/alpine.docker
+@@ -100,6 +100,7 @@ RUN apk update && \
+         sparse \
+         spice-dev \
+         spice-protocol \
++        swtpm \
+         tar \
+         tesseract-ocr \
+         usbredir-dev \
+diff --git a/tests/docker/dockerfiles/centos8.docker b/tests/docker/dockerfiles/centos8.docker
+index 68bfe606f5..d97c30e96a 100644
+--- a/tests/docker/dockerfiles/centos8.docker
++++ b/tests/docker/dockerfiles/centos8.docker
+@@ -107,6 +107,7 @@ RUN dnf distro-sync -y && \
+         socat \
+         spice-protocol \
+         spice-server-devel \
++        swtpm \
+         systemd-devel \
+         systemtap-sdt-devel \
+         tar \
+diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
+index 0991938595..00bdc06021 100644
+--- a/tests/docker/dockerfiles/debian-amd64-cross.docker
++++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
+@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+diff --git a/tests/docker/dockerfiles/debian-amd64.docker b/tests/docker/dockerfiles/debian-amd64.docker
+index 61dbc3ff24..9b50fb2f63 100644
+--- a/tests/docker/dockerfiles/debian-amd64.docker
++++ b/tests/docker/dockerfiles/debian-amd64.docker
+@@ -124,6 +124,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       systemtap-sdt-dev \
+                       tar \
+                       tesseract-ocr \
+diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
+index 74eabb274e..2dae3777f7 100644
+--- a/tests/docker/dockerfiles/debian-arm64-cross.docker
++++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
+@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
+index 1ebd6ebd00..180ed836e6 100644
+--- a/tests/docker/dockerfiles/debian-armhf-cross.docker
++++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
+@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+index 59091fed02..d6be2f0cc5 100644
+--- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
++++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
+@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
+index 48b2f28310..ec0041d6aa 100644
+--- a/tests/docker/dockerfiles/debian-s390x-cross.docker
++++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
+@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       tar \
+                       tesseract-ocr \
+                       tesseract-ocr-eng \
+diff --git a/tests/docker/dockerfiles/fedora-win32-cross.docker b/tests/docker/dockerfiles/fedora-win32-cross.docker
+index afa988574f..08799219f9 100644
+--- a/tests/docker/dockerfiles/fedora-win32-cross.docker
++++ b/tests/docker/dockerfiles/fedora-win32-cross.docker
+@@ -55,6 +55,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                socat \
+                sparse \
+                spice-protocol \
++               swtpm \
+                tar \
+                tesseract \
+                tesseract-langpack-eng \
+diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
+index cf93a0ca60..f8e4cb70d3 100644
+--- a/tests/docker/dockerfiles/fedora-win64-cross.docker
++++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
+@@ -55,6 +55,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                socat \
+                sparse \
+                spice-protocol \
++               swtpm \
+                tar \
+                tesseract \
+                tesseract-langpack-eng \
+diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
+index f00e9e267c..9e9c71fa94 100644
+--- a/tests/docker/dockerfiles/fedora.docker
++++ b/tests/docker/dockerfiles/fedora.docker
+@@ -118,6 +118,7 @@ exec "$@"\n' > /usr/bin/nosync && \
+                sparse \
+                spice-protocol \
+                spice-server-devel \
++               swtpm \
+                systemd-devel \
+                systemtap-sdt-devel \
+                tar \
+diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
+index ed04b4d6da..dc0e36ce48 100644
+--- a/tests/docker/dockerfiles/opensuse-leap.docker
++++ b/tests/docker/dockerfiles/opensuse-leap.docker
+@@ -100,6 +100,7 @@ RUN zypper update -y && \
+            socat \
+            sparse \
+            spice-protocol-devel \
++           swtpm \
+            systemd-devel \
+            systemtap-sdt-devel \
+            tar \
+diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
+index 94c2c16118..2ca9cff79c 100644
+--- a/tests/docker/dockerfiles/ubuntu2204.docker
++++ b/tests/docker/dockerfiles/ubuntu2204.docker
+@@ -124,6 +124,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
+                       sed \
+                       socat \
+                       sparse \
++                      swtpm \
+                       systemtap-sdt-dev \
+                       tar \
+                       tesseract-ocr \
+diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
+index e3ed1e5da1..36bc517161 160000
+--- a/tests/lcitool/libvirt-ci
++++ b/tests/lcitool/libvirt-ci
+@@ -1 +1 @@
+-Subproject commit e3ed1e5da101943e53d8d89424e17b22120743f5
++Subproject commit 36bc517161c45ead20224d47f2dc4fa428af6724
+diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
+index 6f0885170d..82092c9f17 100644
+--- a/tests/lcitool/projects/qemu.yml
++++ b/tests/lcitool/projects/qemu.yml
+@@ -110,6 +110,7 @@ packages:
+  - spice-protocol
+  - spice-server
+  - ssh-client
++ - swtpm
+  - systemd
+  - tar
+  - tesseract
 -- 
 2.39.2
 
