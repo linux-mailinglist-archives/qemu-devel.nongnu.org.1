@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402A67ADEA0
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F29857ADECB
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:32:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqHt-0001OK-B8; Mon, 25 Sep 2023 14:26:29 -0400
+	id 1qkqHx-0001P6-5P; Mon, 25 Sep 2023 14:26:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHr-0001NJ-5n
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:27 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ id 1qkqHs-0001OD-JH
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:28 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHp-0007Ri-4O
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:26 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-404314388ceso76769605e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:26:23 -0700 (PDT)
+ id 1qkqHq-0007S1-Uc
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:28 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-40537481094so69792035e9.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666382; x=1696271182; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666384; x=1696271184; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=PyM+L5pDaFr2bIbdcn+AZXO2bqBFg5Oap17M0Gq1JLg=;
- b=E2abJttN5wuu7dVIojnwBKQS5frlFPfiGRNu5lTbbcB5qZ20M25IYae73yIbQroxSI
- fM7+HLd7NSZGhJN+48hggcYEBgiqrXP3QrL0Ou3kMyz+kkduq77NZlPZfhrFOZsxjtHg
- lZDFPfK/i5FpQ70JdUeS3S3FbGO1e2XhS5BfItuUS4Y65wZKW8BG+an/Fvu+x1cg2AQf
- gjSzLb8R/tMLN6GW3C0FDLZqcqv/HWEJMkybsiquFaSf9yntvBToCJ4i39sxxi4sF7iz
- qJMKCz0ClJ8TVqkkWyVAp5i15ZEWGuHfmPR4DDv1Oy3Khlun0/Ebo0cVxRMAXq4AJ7yT
- wqYg==
+ bh=Ui1+qIKrTBmzcr3qsqV9UD7vfUvAao2pDCb7RttOZ4I=;
+ b=W6oJHPFOIuphTNRhXbhRLTofCTATYEcIGvW+6i+on63Na3ryUODozVBp4chHtANES6
+ wLfFjpHyIUkQfoLEOHgFDKejUipKCgnx2Nf9yngvcJQM9u90x0mDYCBKiWTp6Z0E0AM1
+ UUozN8h3WzDCvZf6wLzXyg31t5+SBFeaMr/246sf1U5oe3glhOKd5a/+KkU2hh4JprA7
+ 4VjCScWPk4vIG/q0F7Sma7c+6EwVKLZBkndx3MN0bYcnscpa+aNrwu9pYVGN5hgqxSDo
+ pD26OXkuURo3cAqKZj9gDhdr6kJdXCK/hZ8vuNZEgQsPu1tfHBm/caMNDJZMbe0RardY
+ 3FwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666382; x=1696271182;
+ d=1e100.net; s=20230601; t=1695666384; x=1696271184;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=PyM+L5pDaFr2bIbdcn+AZXO2bqBFg5Oap17M0Gq1JLg=;
- b=Q0Ij4ewg1eaUTS2iduxADZMEPgjPZ+SF1jJ0kCDXcf9903npIwXSogYQ3YjQ8y59Ag
- pGffnhWJiGETAA60IgkSSeL3STTGpMEWnHsoKZKp5v1WQhfywiF8UQUvsOTKleJXclg+
- mx9RXMq5Zhu9FeyAnT3q54VC0/rHnQLRiWDZ1vu9Rot5BTOyr067tRobOfHV3SwI1Rvb
- 9SjW48ieCULqrrB6+2iMVcQAeemqnY2CbhHIu9+DlddctMMXbvLFZ6333jpBVKA01s/P
- gAWiLIFLip//CmyNOp3my9krrRX5eO+YCODtsZ+a9t2e4TZW2c6ihntDHfNYgs4gKpPl
- 6FiQ==
-X-Gm-Message-State: AOJu0YyA8Wf46ei2M/IOxHgKBlQaU/vJWKi72iu0Ez5U4c3X4Dx/RleD
- m7DDkZdMic3dwKKTwvvlR8lEk/FyQAM=
-X-Google-Smtp-Source: AGHT+IEkHbYuTgHWv+mkxtanFD6QdU5w9dG2k7sqRIHUi0i4bjFfuKLWTsEA9mYuRVa7ui3Q5Q45nA==
-X-Received: by 2002:a05:600c:895:b0:405:95ae:4aa7 with SMTP id
- l21-20020a05600c089500b0040595ae4aa7mr1858609wmp.10.1695666382481; 
- Mon, 25 Sep 2023 11:26:22 -0700 (PDT)
+ bh=Ui1+qIKrTBmzcr3qsqV9UD7vfUvAao2pDCb7RttOZ4I=;
+ b=humkFKIvRp7Y2wFPwsuIJ3UbU9dlfVHMuQuKkprekZFLQrLULiMemi0ixGcaCPxs0i
+ H7444jCZLnwg173pasjllDWJUC0PHp4ngI4q5ypo1yF8aCciNdbS+GPoXgn5ULzYaZDm
+ p7pwho4rcSrttDEgM0n3MtUF483ioQkM8XMz4V0K5SHPTnN9Mep3Oa0+aL0mRuURaa/O
+ Rf2gSZkU1nT9crznv8vunr7KE7mgK4d5Uorb6H3qpVd49LhnWoeEkpwzzn5iY1N4IUSZ
+ PwOxst8OmVZlAiqhHuc/F11gFRv/Z9wjU4waPsJL0nva9Dvi9X24yf/2SMXaQgogOQ+4
+ 2E8A==
+X-Gm-Message-State: AOJu0YwlJ2w5tmUEpQGyGKuC4s5gMCbW7A3v9ZOibmC/GiHmrv/mQlZJ
+ L715lz8WCKSgjavJPHRxScU4Zq+iWZ4=
+X-Google-Smtp-Source: AGHT+IFC1k4RisdKNAi8Fa2MlLPSFM9sBnMRLYrZo0iO1eb0YGsCjYqjF2yW/2IvQ8LEynV+X/Pwlw==
+X-Received: by 2002:a7b:c847:0:b0:401:b652:b6cf with SMTP id
+ c7-20020a7bc847000000b00401b652b6cfmr6969590wml.13.1695666383698; 
+ Mon, 25 Sep 2023 11:26:23 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.26.21
+ 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.26.22
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:26:22 -0700 (PDT)
+ Mon, 25 Sep 2023 11:26:23 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v5 24/28] bsd-user: Implement setloginclass(2) and
- getloginclass(2) system calls.
-Date: Mon, 25 Sep 2023 21:24:21 +0300
-Message-ID: <20230925182425.3163-25-kariem.taha2.7@gmail.com>
+Subject: [PATCH v5 25/28] bsd-user: Implement pdgetpid(2) and the undocumented
+ setugid.
+Date: Mon, 25 Sep 2023 21:24:22 +0300
+Message-ID: <20230925182425.3163-26-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 References: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -99,67 +99,66 @@ From: Stacey Son <sson@FreeBSD.org>
 
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-proc.h    | 23 +++++++++++++++++++++++
  bsd-user/freebsd/os-syscall.c |  8 ++++++++
- 2 files changed, 40 insertions(+)
+ 2 files changed, 31 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index 04bce755e5..2eaba141dc 100644
+index 2eaba141dc..42bdd61904 100644
 --- a/bsd-user/freebsd/os-proc.h
 +++ b/bsd-user/freebsd/os-proc.h
-@@ -130,4 +130,36 @@ static inline abi_long do_freebsd_wait6(void *cpu_env, abi_long idtype,
+@@ -34,6 +34,8 @@ pid_t safe_wait4(pid_t wpid, int *status, int options, struct rusage *rusage);
+ pid_t safe_wait6(idtype_t idtype, id_t id, int *status, int options,
+     struct __wrusage *wrusage, siginfo_t *infop);
+ 
++extern int __setugid(int flag);
++
+ /* execve(2) */
+ static inline abi_long do_freebsd_execve(abi_ulong path_or_fd, abi_ulong argp,
+         abi_ulong envp)
+@@ -162,4 +164,25 @@ static inline abi_long do_freebsd_getloginclass(abi_ulong arg1, abi_ulong arg2)
      return ret;
  }
  
-+/* setloginclass(2) */
-+static inline abi_long do_freebsd_setloginclass(abi_ulong arg1)
++/* pdgetpid(2) */
++static inline abi_long do_freebsd_pdgetpid(abi_long fd, abi_ulong target_pidp)
 +{
 +    abi_long ret;
-+    void *p;
++    pid_t pid;
 +
-+    p = lock_user_string(arg1);
-+    if (p == NULL) {
-+        return -TARGET_EFAULT;
++    ret = get_errno(pdgetpid(fd, &pid));
++    if (!is_error(ret)) {
++        if (put_user_u32(pid, target_pidp)) {
++            return -TARGET_EFAULT;
++        }
 +    }
-+    ret = get_errno(setloginclass(p));
-+    unlock_user(p, arg1, 0);
-+
 +    return ret;
 +}
 +
-+/* getloginclass(2) */
-+static inline abi_long do_freebsd_getloginclass(abi_ulong arg1, abi_ulong arg2)
++/* undocumented __setugid */
++static inline abi_long do_freebsd___setugid(abi_long arg1)
 +{
-+    abi_long ret;
-+    void *p;
-+
-+    p = lock_user(VERIFY_WRITE, arg1, arg2, 0);
-+    if (p == NULL) {
-+        return -TARGET_EFAULT;
-+    }
-+    ret = get_errno(getloginclass(p, arg2));
-+    unlock_user(p, arg1, arg2);
-+
-+    return ret;
++    return -TARGET_ENOSYS;
 +}
 +
  #endif /* BSD_USER_FREEBSD_OS_PROC_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 55e68e4815..d614409e69 100644
+index d614409e69..99af0f6b15 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -375,6 +375,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_ktrace(arg1, arg2, arg3, arg4);
+@@ -383,6 +383,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_freebsd_getloginclass(arg1, arg2);
          break;
  
-+    case TARGET_FREEBSD_NR_setloginclass: /* setloginclass(2) */
-+        ret = do_freebsd_setloginclass(arg1);
++    case TARGET_FREEBSD_NR_pdgetpid: /* pdgetpid(2) */
++        ret = do_freebsd_pdgetpid(arg1, arg2);
 +        break;
 +
-+    case TARGET_FREEBSD_NR_getloginclass: /* getloginclass(2) */
-+        ret = do_freebsd_getloginclass(arg1, arg2);
++    case TARGET_FREEBSD_NR___setugid: /* undocumented */
++        ret = do_freebsd___setugid(arg1);
 +        break;
 +
      case TARGET_FREEBSD_NR_utrace: /* utrace(2) */
