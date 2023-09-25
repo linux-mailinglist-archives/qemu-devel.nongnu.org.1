@@ -2,79 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C687AD8F7
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 15:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A877AD93C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 15:36:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qklXE-0006Qa-3T; Mon, 25 Sep 2023 09:22:00 -0400
+	id 1qkljf-0000b2-IQ; Mon, 25 Sep 2023 09:34:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qklWx-0006PX-T6; Mon, 25 Sep 2023 09:21:47 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qklWw-0007tG-3M; Mon, 25 Sep 2023 09:21:43 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-9ad8bba8125so845491866b.3; 
- Mon, 25 Sep 2023 06:21:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695648100; x=1696252900; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ysNMILzPVYOhrl9jMt72hsdVVnEZyj7M8ol26jRyUO0=;
- b=Y/iMkYmC4k+hYC9tZrHVFPdEgTzGPcwadi8Hntyk7BiRwMNrg+YRAJAQ2+FdUpgsCm
- hcJsN4l+ci/Mu+xMzbCv8wAEfOAY5wx49zyUMQl5l9wXka5nIJoxtBhxtsklS6V+O7kK
- afzYaDEu2j00URmNa+3yXfZ/dUbwVzlPLSOOq9ww6LxD0ivUq3A4LC5cHYUcgwG1QbtB
- dM2fa58Om3hAjjBxVFT0o0mYz5mCb7+hDOcd5NeCUrr2RHXPNWKzetf/CMgWZMEdE352
- i8he7H0wSz/TW6NwuqmzpakLXdqcFoXLZPCHP6VQ0kxZ6gYzZ77HvR7oMSqMQKQJHRI6
- 5ZXA==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qkljd-0000au-NP
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:34:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qkljb-0001k9-Rd
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:34:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695648886;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=oyHQ0yc2ntAcG5ylNzBeG2HhHHmRnG0Chte0nFlWRjU=;
+ b=XpClFh8c78Bq+w6LKRx393P0dEK93/ZgMpK2hEPwZQhigO7s9oDS3WJnn4ywHbSDiJbEPM
+ 3s5eU/yuafXMcjHBY8PiqTXJ4/hzdbFGnk6K4Ch4TpUy0ZUuaoEd4g+uYtn2vjc7Bq3vsn
+ vrMxnDj6C+56rWRN7k8vXtuB+tHg1kE=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-544-tT_5T9ugMXmBdiydujJ9rQ-1; Mon, 25 Sep 2023 09:34:44 -0400
+X-MC-Unique: tT_5T9ugMXmBdiydujJ9rQ-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-774292de453so102416885a.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 06:34:44 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695648100; x=1696252900;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ysNMILzPVYOhrl9jMt72hsdVVnEZyj7M8ol26jRyUO0=;
- b=qgjXzjBBfe7TUysGh4kYbxxsGibXTYAvzV48PcGiMc8L2MLXTcHFhJHqjY+E0Rg5u7
- 3F51ZqmY+0SzrnW22wefAKfSNCAv2P62q3TiyHWZtq1VNX7HWhDhlGf4msHiyxaZNEus
- YX0sFcc371CEJuzKIokGgZreVFqLzzLbHuNVwrimeQB63P+Gci3nzUsCGhNjPCovqkQ0
- IBFX3SUvFu8hdFmzkQPlvjSQe+4b2YCzOIS+vUJW7dbV0uVL5wm3HK7OuWfqFYTs4V9R
- bifQQpMfxny8ZNjj9zftmx8tFO/Uta0WLxG3WnqQuzONu8hnNIFZKWI9pr9NDsdpmIVT
- xKHw==
-X-Gm-Message-State: AOJu0YxGGG/8tFLMsCY04AB2plx32sypXZmmEMc0jGsNJsQBgjOF6NyZ
- 5RVoLOtQcsHQpR6rSyYHZihhJvLWD/4BkPkCVTo=
-X-Google-Smtp-Source: AGHT+IHUOKMxNs8XoVSEK8+b27YRhCkDbjtPeXNTdmXku9UNr/bzPwzK1Yw3qwIkeNq4yKexQ1fnIUBGk0xdqGadriY=
-X-Received: by 2002:a05:6402:513:b0:522:31d5:ee8e with SMTP id
- m19-20020a056402051300b0052231d5ee8emr6382298edv.8.1695648098829; Mon, 25 Sep
- 2023 06:21:38 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695648884; x=1696253684;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=oyHQ0yc2ntAcG5ylNzBeG2HhHHmRnG0Chte0nFlWRjU=;
+ b=OGQe8Suhc20cYv0OvNs2uITTCXuOIYf9C+oG0PWIk7owUevJKYlDgJ1FRiQ5fRjDRL
+ qz9yFgsmvUxIYzQCQQ1NAjpyf+RtraEAlXN++pzaLX9oAPqeKIOvYnHpMUJPGnMMtLpB
+ TUtgpdxLz0WmUu1dGPv6hW2kijZzCENY4A9Ird2F8hIXZMWgg6S48k3KBrqpcx1Mc43B
+ f+dcn585SJ/fKAfKB06R9t/zFAdTYlZ7jkH0Z4Yg3dxxGQzs8N17S9cYJQS/5SUU6vqz
+ RSjqHVeWb3eM7lmRp1orKnOKz7BqZG9HeKwW3OFcYt3if/wZ+k3o3/QZ08qKa7A/aYrP
+ N+DA==
+X-Gm-Message-State: AOJu0YyjiU95LEGTo7HB+iVvLI/kVBMW8z1rbfcDKtACJM4Z8OlFHkUh
+ reGxqU2t7W690k98lWteKIoFZJySuNgsfTNLRs7QABpwgYXiCJTGbjNobbVmahJrOF6ByXcTWm4
+ xoUrmGk8BsWYVLcSTeQS1ct4ACB++YpJdwXKLq7kBrahmyFXasvZiaKU71N1VOUGxggS9gH0P
+X-Received: by 2002:a05:620a:1aa9:b0:772:5267:3ddf with SMTP id
+ bl41-20020a05620a1aa900b0077252673ddfmr7705620qkb.2.1695648884002; 
+ Mon, 25 Sep 2023 06:34:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHguWvBrV/uE20Bxh2i8kXehQmsbbYusW5v7snnlxgBid0la49eE3KUAHburwzOwv4QDHvvaQ==
+X-Received: by 2002:a05:620a:1aa9:b0:772:5267:3ddf with SMTP id
+ bl41-20020a05620a1aa900b0077252673ddfmr7705595qkb.2.1695648883649; 
+ Mon, 25 Sep 2023 06:34:43 -0700 (PDT)
+Received: from x1n.redhat.com
+ (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
+ by smtp.gmail.com with ESMTPSA id
+ t12-20020a05620a004c00b00767dcf6f4adsm1679043qkt.51.2023.09.25.06.34.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Sep 2023 06:34:43 -0700 (PDT)
+From: Peter Xu <peterx@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: peterx@redhat.com,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Zhijian Li <lizhijian@fujitsu.com>, Fabiano Rosas <farosas@suse.de>
+Subject: [PATCH] MAINTAINERS: Add entry for rdma migration
+Date: Mon, 25 Sep 2023 09:34:41 -0400
+Message-ID: <20230925133441.265455-1-peterx@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <20230918095313.5492-1-faithilikerun@gmail.com>
- <20230918095313.5492-3-faithilikerun@gmail.com> <87a5tatncj.fsf@pond.sub.org>
-In-Reply-To: <87a5tatncj.fsf@pond.sub.org>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Mon, 25 Sep 2023 21:21:06 +0800
-Message-ID: <CAAAx-8JjXu1QhH40MGUh+TMUwuf+_XU_Zv89_JqFDTHQkk0=-w@mail.gmail.com>
-Subject: Re: [PATCH v4 2/4] qcow2: add configurations for zoned format
- extension
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, dmitry.fomichev@wdc.com, 
- Eric Blake <eblake@redhat.com>, dlemoal@kernel.org,
- Hanna Reitz <hreitz@redhat.com>, 
- stefanha@redhat.com, hare@suse.de, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=faithilikerun@gmail.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,91 +99,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> =E4=BA=8E2023=E5=B9=B49=E6=9C=8825=E6=
-=97=A5=E5=91=A8=E4=B8=80 21:05=E5=86=99=E9=81=93=EF=BC=9A
->
-> Sam Li <faithilikerun@gmail.com> writes:
->
-> > To configure the zoned format feature on the qcow2 driver, it
-> > requires settings as: the device size, zone model, zone size,
-> > zone capacity, number of conventional zones, limits on zone
-> > resources (max append sectors, max open zones, and max_active_zones).
-> >
-> > To create a qcow2 file with zoned format, use command like this:
-> > $ qemu-img create -f qcow2 test.qcow2 -o size=3D768M -o
-> > zone_size=3D64M -o zone_capacity=3D64M -o nr_conv_zones=3D0 -o
-> > max_append_sectors=3D512 -o max_open_zones=3D0 -o max_active_zones=3D0
-> > -o zone_model=3D1
-> >
-> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
->
-> [...]
->
-> > diff --git a/qapi/block-core.json b/qapi/block-core.json
-> > index 2b1d493d6e..2aad82c399 100644
-> > --- a/qapi/block-core.json
-> > +++ b/qapi/block-core.json
-> > @@ -5021,6 +5021,27 @@
-> >  # @compression-type: The image cluster compression method
-> >  #     (default: zlib, since 5.1)
-> >  #
-> > +# @zone-model: Zoned device model, 1 for host-managed and 0 for
-> > +#     non-zoned devices (default: 0, since 8.2)
->
-> Shouldn't this be a QAPI enum rather than a number?
->
-> > +#
-> > +# @zone-size: Total number of logical blocks within zones in bytes
-> > +#     (since 8.2)
-> > +#
-> > +# @zone-capacity: The number of usable logical blocks within zones
-> > +#     in bytes.  A zone capacity is always smaller or equal to the
-> > +#     zone size. (since 8.2)
-> > +#
-> > +# @nr-conv-zones: The number of conventional zones of the zoned device
-> > +#     (since 8.2)
->
-> I still think @conventional-zones would be more obvious.
->
-> > +#
-> > +# @max-open-zones: The maximal number of open zones (since 8.2)
-> > +#
-> > +# @max-active-zones: The limit of the zones that have the implicit
-> > +#     open, explicit open or closed state (since 8.2)
->
-> Maybe "The maximum number of zones in the implicit open, explicit open
-> or closed state".
->
-> (I'll repeat suggestions until you reject them, just to make sure they
-> get ignored by accident)
+It's not obvious to many that RDMA migration is in Odd Fixes stage for a
+long time.  Add an explicit sub entry for it (besides migration, which
+already covers the rdma files) to be clear on that, meanwhile add Zhijian
+as Reviewer, so Zhijian can see the patches and review when he still has
+the bandwidth.
 
-Thanks for noticing. I will change them (enum, conv, maz) in v5.
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>
+Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
+Cc: Fabiano Rosas <farosas@suse.de>
+Signed-off-by: Peter Xu <peterx@redhat.com>
+---
+ MAINTAINERS | 5 +++++
+ 1 file changed, 5 insertions(+)
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 355b1960ce..f6b21da753 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3217,6 +3217,11 @@ F: qapi/migration.json
+ F: tests/migration/
+ F: util/userfaultfd.c
+ 
++RDMA Migration
++R: Li Zhijian <lizhijian@fujitsu.com>
++S: Odd Fixes
++F: migration/rdma*
++
+ Migration dirty limit and dirty page rate
+ M: Hyman Huang <yong.huang@smartx.com>
+ S: Maintained
+-- 
+2.41.0
 
->
-> > +#
-> > +# @max-append-sectors: The maximal number of 512-byte sectors of a zon=
-e
-> > +#     append request that can be issued to the device. (since 8.2)
-> > +#
-> >  # Since: 2.12
-> >  ##
-> >  { 'struct': 'BlockdevCreateOptionsQcow2',
-> > @@ -5037,7 +5058,14 @@
-> >              '*preallocation':   'PreallocMode',
-> >              '*lazy-refcounts':  'bool',
-> >              '*refcount-bits':   'int',
-> > -            '*compression-type':'Qcow2CompressionType' } }
-> > +            '*compression-type':'Qcow2CompressionType',
-> > +            '*zone-model':         'uint8',
-> > +            '*zone-size':          'size',
-> > +            '*zone-capacity':      'size',
-> > +            '*nr-conv-zones':      'uint32',
-> > +            '*max-open-zones':     'uint32',
-> > +            '*max-active-zones':   'uint32',
-> > +            '*max-append-sectors': 'uint32' } }
-> >
-> >  ##
-> >  # @BlockdevCreateOptionsQed:
->
 
