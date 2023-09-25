@@ -2,65 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E615F7ADAB0
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 302CE7ADADE
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:03:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmyL-0004Bm-Vz; Mon, 25 Sep 2023 10:54:06 -0400
+	id 1qkn6G-00019g-Io; Mon, 25 Sep 2023 11:02:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qkmyI-0003o1-HY; Mon, 25 Sep 2023 10:54:02 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qkn69-00010X-Uw
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:02:11 -0400
+Received: from relay9-d.mail.gandi.net ([2001:4b98:dc4:8::229])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qkmyE-0000xe-Ek; Mon, 25 Sep 2023 10:54:01 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvQpL398Pz6J73r;
- Mon, 25 Sep 2023 22:52:42 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 25 Sep
- 2023 15:53:52 +0100
-Date: Mon, 25 Sep 2023 15:53:51 +0100
-To: Jason Gunthorpe <jgg@nvidia.com>
-CC: Ankit Agrawal <ankita@nvidia.com>, "alex.williamson@redhat.com"
- <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
- "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
- <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
- (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, "Andy
- Currid" <ACurrid@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Subject: Re: [PATCH v1 3/4] hw/arm/virt-acpi-build: patch guest SRAT for
- NUMA nodes
-Message-ID: <20230925155351.00000638@Huawei.com>
-In-Reply-To: <20230925140328.GF13733@nvidia.com>
-References: <20230915024559.6565-1-ankita@nvidia.com>
- <20230915024559.6565-4-ankita@nvidia.com>
- <20230915153740.00006185@Huawei.com>
- <BY5PR12MB3763BC1EB9402223B020ABF8B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
- <20230925145440.00005072@Huawei.com>
- <20230925140328.GF13733@nvidia.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qkn67-0003Tq-HD
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:02:09 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2FFF3FF806;
+ Mon, 25 Sep 2023 15:02:01 +0000 (UTC)
+Message-ID: <213042b9-5ccd-bbde-2be0-ff1d32b9c52e@ovn.org>
+Date: Mon, 25 Sep 2023 17:02:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: i.maximets@ovn.org, qemu-devel@nongnu.org,
+ Jason Wang <jasowang@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH] virtio: use shadow_avail_idx while checking number of
+ heads
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@gmail.com>
+References: <20230825170448.1953409-1-i.maximets@ovn.org>
+ <CAJSP0QW1Ck2+XG3c9cJM5+K05ypckXjEnxrJkGwx+PVt6m_3Lg@mail.gmail.com>
+From: Ilya Maximets <i.maximets@ovn.org>
+In-Reply-To: <CAJSP0QW1Ck2+XG3c9cJM5+K05ypckXjEnxrJkGwx+PVt6m_3Lg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-GND-Sasl: i.maximets@ovn.org
+Received-SPF: neutral client-ip=2001:4b98:dc4:8::229;
+ envelope-from=i.maximets@ovn.org; helo=relay9-d.mail.gandi.net
+X-Spam_score_int: -32
+X-Spam_score: -3.3
+X-Spam_bar: ---
+X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
+ SPF_NEUTRAL=0.779 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -73,49 +59,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Sep 2023 11:03:28 -0300
-Jason Gunthorpe <jgg@nvidia.com> wrote:
-
-> On Mon, Sep 25, 2023 at 02:54:40PM +0100, Jonathan Cameron wrote:
+On 9/25/23 16:23, Stefan Hajnoczi wrote:
+> On Fri, 25 Aug 2023 at 13:04, Ilya Maximets <i.maximets@ovn.org> wrote:
+>>
+>> We do not need the most up to date number of heads, we only want to
+>> know if there is at least one.
+>>
+>> Use shadow variable as long as it is not equal to the last available
+>> index checked.  This avoids expensive qatomic dereference of the
+>> RCU-protected memory region cache as well as the memory access itself
+>> and the subsequent memory barrier.
+>>
+>> The change improves performance of the af-xdp network backend by 2-3%.
+>>
+>> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+>> ---
+>>  hw/virtio/virtio.c | 10 +++++++++-
+>>  1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+>> index 309038fd46..04bf7cc977 100644
+>> --- a/hw/virtio/virtio.c
+>> +++ b/hw/virtio/virtio.c
+>> @@ -999,7 +999,15 @@ void virtqueue_push(VirtQueue *vq, const VirtQueueElement *elem,
+>>  /* Called within rcu_read_lock().  */
+>>  static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
+>>  {
+>> -    uint16_t num_heads = vring_avail_idx(vq) - idx;
+>> +    uint16_t num_heads;
+>> +
+>> +    if (vq->shadow_avail_idx != idx) {
+>> +        num_heads = vq->shadow_avail_idx - idx;
+>> +
+>> +        return num_heads;
 > 
-> > Possible the ASWG folk would say this is fine and I'm reading too much into
-> > the spec, but I'd definitely suggest asking them via the appropriate path,
-> > or throwing in a code first proposal for a comment on this special case and
-> > see what response you get - my guess is it will be 'fix Linux' :(  
-> 
-> The goal here is for qemu to emulate what the bare metal environment
-> is doing.
-> 
-> There may be a legitimate question if what the bare metal FW has done
-> is legitimate (though let's face it, there are lots of creative ACPI
-> things around), but I don't quite see how this is a qemu question?
-> 
-> Unless you are taking the position that qemu should not emulate this
-> HW?
+> This still needs to check num_heads > vq->vring.num and return -EINVAL
+> as is done below.
 
-Ok. I'd failed to register that the bare metal code was doing this though
-with hindsight I guess that is obvious. Though without more info or
-a bare metal example being given its also possible the BIOS was doing
-enumeration etc (like CXL does for all < 2.0 devices) and hence was
-building SRAT with the necessary memory ranges in place - even if the
-driver then does the hot add dance later.
+Hmm, yeas, you're right.  If the value was incorrect initially, the shadow
+will be incorrect.  However, I think we should just not return here in this
+case and let vring_avail_idx() to grab an actual new value below.  Otherwise
+we may never break out of this error.
 
-That's dubious and likely to break at some point unless the spec
-comprehends this use case, but meh, so are lots of other things and
-the hardware vendor gets to pick up the pieces and deal with grumpy
-customers.
-
-I don't currently see this as a safe solution for the proposed other
-use cases however that are virtualization only.
-
-Jonathan
+Does that make sense?
 
 > 
-> Jason
+>> +    }
+>> +
+>> +    num_heads = vring_avail_idx(vq) - idx;
+>>
+>>      /* Check it isn't doing very strange things with descriptor numbers. */
+>>      if (num_heads > vq->vring.num) {
+>> --
+>> 2.40.1
+>>
+>>
 
 
