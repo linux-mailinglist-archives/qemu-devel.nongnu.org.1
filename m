@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 876CE7ADEBA
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B35987ADF18
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:37:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqHy-0001R3-VN; Mon, 25 Sep 2023 14:26:34 -0400
+	id 1qkqK3-0007ze-5e; Mon, 25 Sep 2023 14:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHu-0001OY-R9
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:31 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ id 1qkqJx-0007rJ-S8
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:37 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHt-0007Sz-C4
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:30 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-405497850dbso51113895e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:26:29 -0700 (PDT)
+ id 1qkqJv-0007ik-I1
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:37 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3200bc30666so5973755f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:28:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666388; x=1696271188; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EEpfVHQYJiHs/o3VXa4xKMUM5FKYuciwQMorXR+KT/8=;
- b=aKhi0QAG4tG261DmFLKRxaQayxq2/6eenTYcaaArYL6C2WErMj4tApV21ctFotjp5z
- jVIaZ9br6wAlUGOpHPlEVXfF9XKlTmVOJGhg9YXu6+jXjqM1jU1pomZo1HcflG7FkUA+
- 6JzpW/h5FVYTbiTqsYZx2QbsvUtVYwgF3A/Zw/V4vabhen43JRolHiHEv+T3HqxVqbFM
- PYRXC5xPtPKJcnnde38QYMalMeshJ3nercoFgXAOGkLt5vU1Vx03ZRNJ8/z0l+5LGUMX
- 9Hl6QGOnz2TaR9feZLYivzgQD/HHXwkpsKVVTSvpSN2zcGbKhwevdoeEpBEVA/tAPcw1
- R/Bw==
+ d=gmail.com; s=20230601; t=1695666512; x=1696271312; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=5aGLz8oBnOZPN5J2PkFZqC2aseft3FksbBB5k0tP8yQ=;
+ b=CKZraKwsvBkCZGF9j/SSdzPaoIS3jdyM6VbCFduTP5sHxU2Z7B3g4uLr0ipStWXSTd
+ Dp9qIVhyWWALER8c4oJqiFWFj+TEqKNqVN2nMrNp+aFaq51FXBIoJTMPdy2h4PkleZkX
+ jqGrd4qkUkPPXJol8H0gL+QXfBZ/mx4dMYmxDVjxQspI6mZhkceKbYUXWr7VBSZOqjMg
+ IkGg5yXe6ddB018ahGKPSUvWstTJVwN2MumxxlKsK7SO3FDCyv6a4XWH2MjanTpNzdLu
+ qB+aCM8vDOxKSRJvjas8lEzjneMFct182Mn2A8I/hEj0V04KW4mQDt8iJ7efvueYpqCR
+ 6VVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666388; x=1696271188;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EEpfVHQYJiHs/o3VXa4xKMUM5FKYuciwQMorXR+KT/8=;
- b=D2Es86lICNOla8w+3AVbiU2pTrIwx3aSE2G46KqzZR5irRHrHjuyluLxmucbtjhb1f
- BfBJl4JPfTCJ2DouQBF6gbSvPq60X6Ue2iW0cQujmGvT9qg9SuitgsIIX8MdPEhjtado
- HqmcdfsqAgsidAZTWV3Kuwz+phgi+l++5LWwYXEwQToxed9OL6kLrXF9B915tLD3gY/f
- neEdGBva+6DWT6xi7TgnutnC8UVXi2zA20gSHcUp3gMV9LpvKSYi+SB7CDvBojyhT83J
- bo2qIeu90Q7B+OaZSBOchUdhfnpQLoN7lp/tF7ukJtxjNpYj1bmf7kaFLBLzEunU+fHq
- vTZA==
-X-Gm-Message-State: AOJu0YwLzNqmbFakqO9QPcXLFCWPNbh4xYrInX37EC3maaBgJD0nf21Y
- gqOHY7cT/6MzUDzq2d6Z4TzSaKqRnus=
-X-Google-Smtp-Source: AGHT+IGLmlvUt9EqS8k4MlaUcLuFmVRb6plx4ex5f/4yxJ8YsiBUpsNK6jiEj24XyEPraiMk/7niCw==
-X-Received: by 2002:a05:600c:3658:b0:405:1bfb:ff14 with SMTP id
- y24-20020a05600c365800b004051bfbff14mr7379331wmq.9.1695666387606; 
- Mon, 25 Sep 2023 11:26:27 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695666512; x=1696271312;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=5aGLz8oBnOZPN5J2PkFZqC2aseft3FksbBB5k0tP8yQ=;
+ b=V666vNeXAza64i95mKGUxxKD/LlCRPg8rs5tszTVirVcP0yakZ71Jsuk4yI6jk4XY0
+ VwXNK3MJBi/lciDYVfCgGqgZeoepTXu6Fz/NioiGx+5ZCroKZKSMwUL42gvMHNALH3++
+ RLfteR+cI+4J6wCFrRMpx5VK5nfsFqfhVlI9nMVLWhwHo4rM8+Xz+sTyrdz4al4W8czF
+ b4fAYkaAHjk8XTWpQqP+F1Xb8fdt8pEHeJvlv4wYQx+bb6Uwx1j4Em7BrP/14VzYWI43
+ I3BqpYHwabeqHiYgZXcRG97aB7LRXa9iXhBDr8IutZO0KdVyUDZRunMkQLwXiTLXZof4
+ P7hw==
+X-Gm-Message-State: AOJu0Yxh8vfzIbjR0id6CAfT/CU2obcUCbEawmKcvf09WBsT5+y4pOPY
+ 9bYSco14E/CNwZa7+UxUhhRbZ5YFm4c=
+X-Google-Smtp-Source: AGHT+IHiQljDaPpvyl81SPeteZx5Vu0XPYXDMYK/ouK62zmqFgG0XaDEORdfjEye43YMv7huVomXyg==
+X-Received: by 2002:adf:fdc8:0:b0:31c:6420:ff4 with SMTP id
+ i8-20020adffdc8000000b0031c64200ff4mr6496986wrs.36.1695666512530; 
+ Mon, 25 Sep 2023 11:28:32 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.26.26
+ u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:26:27 -0700 (PDT)
+ Mon, 25 Sep 2023 11:28:32 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v5 28/28] bsd-user: Implement pdfork(2) system call.
-Date: Mon, 25 Sep 2023 21:24:25 +0300
-Message-ID: <20230925182425.3163-29-kariem.taha2.7@gmail.com>
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v6 00/23] bsd-user: Implement mmap related system calls for
+ FreeBSD.
+Date: Mon, 25 Sep 2023 21:26:46 +0300
+Message-ID: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
-References: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x435.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,73 +93,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+Upstream the implementation of the following mmap system calls, from the
+qemu-bsd-user fork:
+   mmap(2), munmap(2),
+   mprotect(2),
+   msync(2),
+   mlock(2), munlock(2), mlockall(2), munlockall(2), mincore(2),
+   madvise(2),
+   minherit(2),
+   shm_open(2),shm_open2(2), shm_rename2(2), shm_unlink(2), shmget(2), shmctl(2), shmat(2),
+   shmdt(2)
+   brk(2)
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
-Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
----
- bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  4 ++++
- 2 files changed, 36 insertions(+)
+Karim Taha (3):
+  bsd-user: Implement shm_open2(2) system call
+  bsd-user: Add bsd-mem.c to meson.build
+  bsd-user: Implment madvise(2) to match the linux-user implementation.
 
-diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index 0a3cd0ef57..d641878034 100644
---- a/bsd-user/freebsd/os-proc.h
-+++ b/bsd-user/freebsd/os-proc.h
-@@ -258,4 +258,36 @@ static inline abi_long do_freebsd_rfork(void *cpu_env, abi_long flags)
- 
- }
- 
-+/* pdfork(2) */
-+static inline abi_long do_freebsd_pdfork(void *cpu_env, abi_ulong target_fdp,
-+        abi_long flags)
-+{
-+    abi_long ret;
-+    abi_ulong child_flag;
-+    int fd;
-+
-+    fork_start();
-+    ret = pdfork(&fd, flags);
-+    if (ret == 0) {
-+        /* child */
-+        child_flag = 1;
-+        target_cpu_clone_regs(cpu_env, 0);
-+    } else {
-+        /* parent */
-+        child_flag = 0;
-+        if (put_user_s32(fd, target_fdp)) {
-+            return -TARGET_EFAULT;
-+        }
-+    }
-+
-+    /*
-+     * The fork system call sets a child flag in the second return
-+     * value: 0 for parent process, 1 for child process.
-+     */
-+    set_second_rval(cpu_env, child_flag);
-+    fork_end(child_flag);
-+
-+    return ret;
-+}
-+
- #endif /* BSD_USER_FREEBSD_OS_PROC_H */
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 4c4e773d1d..d04712f0a7 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -238,6 +238,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_freebsd_rfork(cpu_env, arg1);
-         break;
- 
-+    case TARGET_FREEBSD_NR_pdfork: /* pdfork(2) */
-+        ret = do_freebsd_pdfork(cpu_env, arg1, arg2);
-+        break;
-+
-     case TARGET_FREEBSD_NR_execve: /* execve(2) */
-         ret = do_freebsd_execve(arg1, arg2, arg3);
-         break;
+Kyle Evans (1):
+  bsd-user: Implement shm_rename(2) system call
+
+Stacey Son (18):
+  bsd-user: Implement struct target_ipc_perm
+  bsd-user: Implement struct target_shmid_ds
+  bsd-user: Declarations for ipc_perm and shmid_ds conversion functions
+  bsd-user: Introduce freebsd/os-misc.h to the source tree
+  bsd-user: Implement target_set_brk function in bsd-mem.c instead of
+    os-syscall.c
+  bsd-user: Implement ipc_perm conversion between host and target.
+  bsd-user: Implement shmid_ds conversion between host and target.
+  bsd-user: Introduce bsd-mem.h to the source tree
+  bsd-user: Implement mmap(2) and munmap(2)
+  bsd-user: Implement mprotect(2)
+  bsd-user: Implement msync(2)
+  bsd-user: Implement mlock(2), munlock(2), mlockall(2), munlockall(2),
+    minherit(2)
+  bsd-user: Implement mincore(2)
+  bsd-user: Implement do_obreak function
+  bsd-user: Implement shm_open(2)
+  bsd-user: Implement shm_unlink(2) and shmget(2)
+  bsd-user: Implement shmctl(2)
+  bsd-user: Implement shmat(2) and shmdt(2)
+
+Warner Losh (1):
+  bsd-user: Add stubs for vadvise(), sbrk() and sstk()
+
+ bsd-user/bsd-mem.c            | 104 ++++++++
+ bsd-user/bsd-mem.h            | 452 ++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-misc.h    |  94 +++++++
+ bsd-user/freebsd/os-syscall.c | 109 +++++++-
+ bsd-user/meson.build          |   1 +
+ bsd-user/mmap.c               |   2 +-
+ bsd-user/qemu-bsd.h           |  45 ++++
+ bsd-user/qemu.h               |   1 +
+ bsd-user/syscall_defs.h       |  39 +++
+ 9 files changed, 842 insertions(+), 5 deletions(-)
+ create mode 100644 bsd-user/bsd-mem.c
+ create mode 100644 bsd-user/bsd-mem.h
+ create mode 100644 bsd-user/freebsd/os-misc.h
+ create mode 100644 bsd-user/qemu-bsd.h
+
 -- 
 2.42.0
 
