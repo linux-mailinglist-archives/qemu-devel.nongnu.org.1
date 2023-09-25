@@ -2,120 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8917C7ADCC3
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:09:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD1D7ADCCD
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:11:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qko93-0000jt-Tu; Mon, 25 Sep 2023 12:09:13 -0400
+	id 1qkoBN-0002nE-Lu; Mon, 25 Sep 2023 12:11:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qko8x-0000jI-4h
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:09:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qkoBL-0002jN-5M
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:11:35 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qko8v-0007nH-K4
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:09:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695658144;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3o09FgjP2mri3S7JGXJqW1njdmzYkmcoW/evXL5zVCg=;
- b=biiIwv9BS15mpmMh23aqdIdmA4wusamYgkrMvbRGFP4M9Pzzx6kV/Ow6NfT8J7ZOGaniUS
- ioL42XFNfc+UQz+pgicpfrEvyowLqZpHyBZ5lBU55zt+7bwY8uL/Ih+n0GY8x8ufoW2YZj
- SxxpiaezWG54x5MnFvWGMB5tZjNt63Y=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-160-z646pBzKP4i8K7G88YOHsw-1; Mon, 25 Sep 2023 12:09:03 -0400
-X-MC-Unique: z646pBzKP4i8K7G88YOHsw-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-32001e60fb3so4060919f8f.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:09:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695658142; x=1696262942;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=3o09FgjP2mri3S7JGXJqW1njdmzYkmcoW/evXL5zVCg=;
- b=RCKuMg6HX4O8AvpSjdDYndCx1nVj279XhWEjq8RUPrM+uHL52uOg+gJeLAOwxb3sGA
- 3/9xpEEro3oTnQOq2+nPWvpJ+ZQ35ShyOUYn/mk4kHieZoKLuazOscKf7MdeK9ULzDpu
- ostgF4b0mx8RFLlt4i72usjQGaMwU9nPK/d4WiCkwJaTnxCoScO5/2StmF/qc0IXrdh8
- Bzzh29j5q2wOJYfQ2R4tZSZ4p9APFfyFHXbURv2Uox2C1pE3gDy5768x7m1GPmMPJtf3
- y5846LbIzeIcUtmI3TW8PgtQI1GD/d4AGL7PVgArEpm6hd7wjTVmee5L/m7d2o0fig0/
- l4kw==
-X-Gm-Message-State: AOJu0Yxlnnm4ovM9T6VpeeDe06mB+qS0wKbvYpmHl6iHng50IQXXkGTD
- F9cr64fIs3zFyGdQQk4QyTaSO6vQDsJ4TpgPGOEZezfmRW33Lplw6lEwZa+9Mg7ufEzK3OLCKWC
- yOZn+hFbGSlB+36U=
-X-Received: by 2002:adf:f583:0:b0:317:6734:c2ae with SMTP id
- f3-20020adff583000000b003176734c2aemr67826wro.11.1695658142083; 
- Mon, 25 Sep 2023 09:09:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUpWxAiwheBf6zPNa+xiHCBgnt/6MLcrkQ/lGgH52gcNq1HepKsz8F773I/BgWVVKNVPZj8Q==
-X-Received: by 2002:adf:f583:0:b0:317:6734:c2ae with SMTP id
- f3-20020adff583000000b003176734c2aemr67780wro.11.1695658141713; 
- Mon, 25 Sep 2023 09:09:01 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- 19-20020a05600c229300b00405953973c3sm1928585wmf.6.2023.09.25.09.08.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Sep 2023 09:09:00 -0700 (PDT)
-Message-ID: <a801cde2-e75e-4e4c-243f-887296f0322d@redhat.com>
-Date: Mon, 25 Sep 2023 18:08:58 +0200
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qkoBD-0008K6-1c
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:11:34 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvSVT6nzcz6DBCC;
+ Tue, 26 Sep 2023 00:09:05 +0800 (CST)
+Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 25 Sep 2023 17:11:22 +0100
+To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Michael Tsirkin
+ <mst@redhat.com>
+CC: <linuxarm@huawei.com>, Fan Ni <fan.ni@samsung.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Davidlohr
+ Bueso <dave@stgolabs.net>, Gregory Price <gregory.price@memverge.com>, Klaus
+ Jensen <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>, Klaus Jensen
+ <k.jensen@samsung.com>
+Subject: [PATCH 00/19] QEMU: CXL mailbox rework and features
+Date: Mon, 25 Sep 2023 17:11:05 +0100
+Message-ID: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 05/31] tests/docker: make docker engine choice entirely
- configure driven
-Content-Language: en-US
-To: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- John Snow <jsnow@redhat.com>, libvir-list@redhat.com,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Nicholas Piggin <npiggin@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Cleber Rosa <crosa@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bin.meng@windriver.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-ppc@nongnu.org,
- David Hildenbrand <david@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-References: <20230925144854.1872513-1-alex.bennee@linaro.org>
- <20230925144854.1872513-6-alex.bennee@linaro.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <20230925144854.1872513-6-alex.bennee@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.122.247.231]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,75 +63,189 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/25/23 16:48, Alex Bennée wrote:
-> Since 0b1a649047 (tests/docker: use direct RUNC call to build
-> containers) we ended up with the potential for the remaining docker.py
-> script calls to deviate from the direct RUNC calls. Fix this by
-> dropping the use of ENGINE in the makefile and rely entirely on what
-> we detect at configure time.
-> 
-> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> ---
->   configure                     | 1 -
->   tests/docker/Makefile.include | 7 ++-----
->   2 files changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/configure b/configure
-> index e08127045d..707132a3ae 100755
-> --- a/configure
-> +++ b/configure
-> @@ -1694,7 +1694,6 @@ if test -n "$gdb_bin"; then
->   fi
->   
->   if test "$container" != no; then
-> -    echo "ENGINE=$container" >> $config_host_mak
->       echo "RUNC=$runc" >> $config_host_mak
->   fi
->   echo "SUBDIRS=$subdirs" >> $config_host_mak
-> diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-> index dfabafab92..035d272be9 100644
-> --- a/tests/docker/Makefile.include
-> +++ b/tests/docker/Makefile.include
-> @@ -17,8 +17,7 @@ endif
->   DOCKER_REGISTRY := $(if $(REGISTRY),$(REGISTRY),$(DOCKER_DEFAULT_REGISTRY))
->   
->   RUNC ?= docker
-> -ENGINE ?= auto
+Based on: [PATCH] hw/cxl: Fix local variable shadowing of cap_hdrs
+Based on: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
+Based on: [PATCH V2] hw/pci-bridge/cxl-upstream: Add serial number extended capability support
+Based on: [PATCH v3 0/4] hw/cxl: Line length reduction and related
+Based on: [PATCH v6 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management interface model
 
-This was used when using docker-* from the source directory.  What about 
-changing it to:
+I'm assuming this last dependency will go via a different tree though there
+is an outstanding request for tests. That equally applies to the CXL setup,
+but there are lot of moving parts. I'll experiment with basic testing
+of the MCTP I2C device whilst this is being reviewed.
 
-RUNC ?= $(if $(shell command -v docker), docker, podman)
+Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230913133615.29876-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230919093434.1194-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230925152258.5444-1-Jonathan.Cameron@huawei.com
+Based on: Message ID: 20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com
 
-No complaint on removing ENGINE= though.
+I've been carrying most of this series on our CXL staging tree
+https://gitlab.com/jic23/qemu for some time and a lot of more recent
+work around Multi Head Devices and Dynamic Capacity that we need for
+Linux kernel enabling are backed up behind it. Hence I reorganized my
+queue to try and land this before other less 'central' features such
+as CXL PMUs and arm/virt support.
 
-Paolo
+This series is focused on enabling the Fabric Management (FM) aspects of
+CXL to enable orchestration and tooling development and also to enable
+testing of related kernel features. That requires some substantial
+reworking of existing mailbox handling (improving a few things along
+the way).
 
-> -DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(ENGINE)
-> +DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(RUNC)
->   
->   CUR_TIME := $(shell date +%Y-%m-%d-%H.%M.%S.$$$$)
->   DOCKER_SRC_COPY := $(BUILD_DIR)/docker-src.$(CUR_TIME)
-> @@ -158,7 +157,7 @@ $(foreach i,$(filter-out $(DOCKER_PARTIAL_IMAGES),$(DOCKER_IMAGES)), \
->   )
->   
->   docker:
-> -	@echo 'Build QEMU and run tests inside Docker or Podman containers'
-> +	@echo 'Build QEMU and run tests inside $(RUNC) containers'
->   	@echo
->   	@echo 'Available targets:'
->   	@echo
-> @@ -198,8 +197,6 @@ docker:
->   	@echo '    EXECUTABLE=<path>    Include executable in image.'
->   	@echo '    EXTRA_FILES="<path> [... <path>]"'
->   	@echo '                         Include extra files in image.'
-> -	@echo '    ENGINE=auto/docker/podman'
-> -	@echo '                         Specify which container engine to run.'
->   	@echo '    REGISTRY=url         Cache builds from registry (default:$(DOCKER_REGISTRY))'
->   
->   docker-help: docker
+Features:
+1. Rework the Component Command Interface (CCI) implementation to extract
+   generic parts from the existing CXL Primary Mailbox (in PCI BAR
+   space).
+2. Add CXL Switch Mailbox CCI function support. This CXL r3.0 feature
+   enables an in band PCI path to control switch configuration.
+   It is basically a CXL primary mailbox in a separate PCI function.
+   On many systems this would be wired to a BMC, but as it is a normal
+   PCI function we can make it an option for an emulated host providing
+   us with a useful interface for testing some Fabric Mnagement
+   features of CXL. In particular this will be useful for tunneling
+   Fabric Management commands to Type 3 memory devices (via
+   MCTP over PCI VDM)
+3. Via MCTP over I2C and the two CXL MCTP bindings (FM-API and
+   Memory Device) provide an alternative control interface.
+   For now this can only be used with an aspeed-i2c controller.
+   (There are hacks to enable this controller on CXL host systems
+    but they are not suitable for upstreaming - so in upstream
+    it's either MCTP access, or inband access depending on
+    machine used). This is primarily implemented to enable work
+   on the very different Linux kernel interface for MCTP (network
+   socket based) to the IOCTL interface for the Switch Mailbox CCI.
+4. A set of example commands to explore how to get access to various
+   information. Additional commands will be added in future series.
+   This one is big enough already!  One or two bits are made up
+   for now.  Fidelity may therefore improve in future patch sets.
+5. Davidlohr's work on background operations (only for the CXL
+   type 3 primary mailbox for now. This wasn't directly related
+   to the above series but was based on the early rework and is a
+   simple feature.  Background support for MCTP interfaces and the
+   Switch Mailbox CCI is left for future series.
+
+Note that we are currently only implement a simple fixed configuration
+single VH switch. If anyone is interested in working on expanding that
+to deal with the high degree of configurability of topology that
+vPPBs bring then let me know.
+
+A few areas that might be of interest to reviewers:
+1) The target=XXX approach to linking the 'interfaces' up with the
+   underlying CXL devices.
+2) The walking of various PCIe structures and similar to fill in
+   the data needed for some commands.  I'm still using some
+   fake data for now, but ultimately all this stuff is probably
+   discoverable.
+3) Tunneling fun in the final patch.  That gives an idea of
+   one of the more complex corners of the Fabric Management part
+   of the CXL spec and perhaps best illustrates the reason we
+   have so many CCI instances inside one device a they all require
+   separate state and can present different available commands.
+
+A typical QEMU command line snippet for testing the Switch Mailbox CCI.
+
+ -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/t3_cxl1.raw,size=256M,align=256M \
+ -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/t3_lsa1.raw,size=1M \
+ -object memory-backend-file,id=cxl-mem2,share=on,mem-path=/tmp/t3_cxl2.raw,size=256M,align=256M \
+ -object memory-backend-file,id=cxl-lsa2,share=on,mem-path=/tmp/t3_lsa2.raw,size=1M \
+ -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
+ -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
+ -device cxl-upstream,port=2,sn=1234,bus=cxl_rp_port0,id=us0,addr=0.0,multifunction=on, \
+ -device cxl-switch-mailbox-cci,bus=cxl_rp_port0,addr=0.1,target=us0 \
+ -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4 \
+ -device cxl-downstream,port=1,bus=us0,id=swport1,chassis=0,slot=5 \
+ -device cxl-type3,bus=swport0,memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3 \
+ -device cxl-type3,bus=swport1,memdev=cxl-mem2,id=cxl-pmem2,lsa=cxl-lsa2,sn=4 \
+ -machine cxl-fmw.0.targets.0=cxl.1,cxl-fmw.0.size=4G,cxl-fmw.0.interleave-granularity=1k \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=4,target=us0 \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=5,target=cxl-pmem1 \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=6,target=cxl-pmem2
+
+A snippet for testing the i2c_mctp_cxl (on a suitable aspeed machine,
+or with the hacks on gitlab.com/jic23/qemu to add an aspeed controller to
+i386/pc).
+
+ -object memory-backend-file,id=cxl-mem1,share=on,mem-path=/tmp/t3_cxl1.raw,size=256M,align=256M \
+ -object memory-backend-file,id=cxl-lsa1,share=on,mem-path=/tmp/t3_lsa1.raw,size=1M \
+ -object memory-backend-file,id=cxl-mem2,share=on,mem-path=/tmp/t3_cxl2.raw,size=256M,align=256M \
+ -object memory-backend-file,id=cxl-lsa2,share=on,mem-path=/tmp/t3_lsa2.raw,size=1M \
+ -device pxb-cxl,bus_nr=12,bus=pcie.0,id=cxl.1,hdm_for_passthrough=true \
+ -device cxl-rp,port=0,bus=cxl.1,id=cxl_rp_port0,chassis=0,slot=2 \
+ -device cxl-upstream,port=2,sn=1234,bus=cxl_rp_port0,id=us0,addr=0.0,multifunction=on, \
+ -device cxl-downstream,port=0,bus=us0,id=swport0,chassis=0,slot=4 \
+ -device cxl-downstream,port=1,bus=us0,id=swport1,chassis=0,slot=5 \
+ -device cxl-type3,bus=swport0,memdev=cxl-mem1,id=cxl-pmem1,lsa=cxl-lsa1,sn=3 \
+ -device cxl-type3,bus=swport1,memdev=cxl-mem2,id=cxl-pmem2,lsa=cxl-lsa2,sn=4 \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=4,target=us0 \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=5,target=cxl-pmem1 \
+ -device i2c_mctp_cxl,bus=aspeed.i2c.bus.0,address=6,target=cxl-pmem2
+
+Rather than ending up with a very long cover letter, I'll post
+where to find test userspace code to talk to the switch-cci and the
+i2c_mctp_cxl device + tunnel to the devices below them separately
+along with pointers to the kernel series needed (for the switch
+mailbox CCI).
+
+I'll shortly push out a fresh tree including dependencies for this set
+and everything we currently have on top of it at
+
+gitlab.com/jic23/qemu cxl-2023-09-26
+
+Davidlohr Bueso (3):
+  hw/cxl/mbox: Add support for background operations
+  hw/cxl/mbox: Wire up interrupts for background completion
+  hw/cxl: Add support for device sanitation
+
+Gregory Price (1):
+  hw/cxl/type3: Cleanup multiple CXL_TYPE3() calls in read/write
+    functions
+
+Jonathan Cameron (15):
+  hw/cxl/mbox: Pull the payload out of struct cxl_cmd and make instances
+    constant
+  hw/cxl/mbox: Split mailbox command payload into separate input and
+    output
+  hw/cxl/mbox: Pull the CCI definition out of the CXLDeviceState
+  hw/cxl/mbox: Generalize the CCI command processing
+  hw/pci-bridge/cxl_upstream: Move defintion of device to header.
+  hw/cxl/i2c_mctp_cxl: Initial device emulation
+  hw/cxl/mbox: Add Information and Status / Identify command
+  docs: cxl: Add example commandline for MCTP CXL CCIs
+  hw/cxl/mbox: Add Physical Switch Identify command.
+  hw/cxl: Add a switch mailbox CCI function
+  hw/pci-bridge/cxl_downstream: Set default link width and link speed
+  hw/cxl: Implement Physical Ports status retrieval
+  hw/cxl/mbox: Add Get Background Operation Status Command
+  hw/cxl: Add dummy security state get
+  hw/cxl: Add tunneled command support to mailbox for switch cci/mctp.
+
+ docs/system/devices/cxl.rst               |   27 +
+ include/hw/cxl/cxl.h                      |    6 +
+ include/hw/cxl/cxl_component.h            |    3 +-
+ include/hw/cxl/cxl_device.h               |  110 ++-
+ include/hw/pci-bridge/cxl_upstream_port.h |   20 +
+ hw/cxl/cxl-device-utils.c                 |  120 ++-
+ hw/cxl/cxl-events.c                       |    2 +-
+ hw/cxl/cxl-mailbox-utils.c                | 1038 ++++++++++++++++++---
+ hw/cxl/i2c_mctp_cxl.c                     |  290 ++++++
+ hw/cxl/switch-mailbox-cci.c               |  111 +++
+ hw/mem/cxl_type3.c                        |   32 +-
+ hw/pci-bridge/cxl_downstream.c            |   18 +-
+ hw/pci-bridge/cxl_upstream.c              |   11 +-
+ hw/cxl/Kconfig                            |    4 +
+ hw/cxl/meson.build                        |    2 +
+ 15 files changed, 1609 insertions(+), 185 deletions(-)
+ create mode 100644 include/hw/pci-bridge/cxl_upstream_port.h
+ create mode 100644 hw/cxl/i2c_mctp_cxl.c
+ create mode 100644 hw/cxl/switch-mailbox-cci.c
+
+-- 
+2.39.2
 
 
