@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AE67ADB0A
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE8A7ADB07
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:11:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qknEd-0008Ux-1C; Mon, 25 Sep 2023 11:10:55 -0400
+	id 1qknEe-0008Vo-VI; Mon, 25 Sep 2023 11:10:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEN-0008EL-6O
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:39 -0400
-Received: from mout.kundenserver.de ([212.227.126.134])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEN-0008EM-78
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:40 -0400
+Received: from mout.kundenserver.de ([212.227.126.135])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEK-0005LI-Nz
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEK-0005LK-PT
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:38 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MJmX3-1r4OXp2F0T-00K9Ym; Mon, 25
- Sep 2023 17:10:32 +0200
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1MrhDg-1rPL6j03Ay-00ngzd; Mon, 25
+ Sep 2023 17:10:33 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 4/5] linux-user/syscall.c: clean up local variable shadowing
- in TARGET_NR_getcpu
-Date: Mon, 25 Sep 2023 17:10:28 +0200
-Message-ID: <20230925151029.461358-5-laurent@vivier.eu>
+Subject: [PATCH 5/5] linux-user/syscall.c: clean up local variable shadowing
+ in xattr syscalls
+Date: Mon, 25 Sep 2023 17:10:29 +0200
+Message-ID: <20230925151029.461358-6-laurent@vivier.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230925151029.461358-1-laurent@vivier.eu>
 References: <20230925151029.461358-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:cp5dII6cz88MTj0fA1R1qPDmWd1psJxUUAR6VVu3GthE25r/YIl
- TEs+hoOHlRnUjcnNPQFhXoz5lhb/Hm0O/T6afo8Sq+ROEcfF4k8wcVyadvRfjLjLApz6PtD
- mIGrXp6Z8A7KiTidIaW1DS5/NgvNR554049Ke/QC56enQZvmcwXpZxYS2LSt0VuT5ycBO3b
- 1BrEKA7LSVhmwmDdHUI8Q==
-UI-OutboundReport: notjunk:1;M01:P0:j471AQwSMtM=;vlXNSr11vhmXo9Cc37ngCW+XZcc
- Yv7dtsmGHUmyMibeo9nJ/a57/tI6EU2XVbt8wd7BHmTitfo6QZF105+dSe/+eJYaU6UoiyecS
- Rcl0ylyAyvPQC+L+v0VdyFvRQLGfFlSCQx8enM+U1K0CkYY5lq37I1Nd3hq0292eM5uHvOmuB
- ZVIwXxHzBOj4xT+EiGNYj6c9VkmMtj2+nu7VcNbctkEcsC1h4NtALpaYBYs0M02y4w5LWo2xd
- ufZqnISd4JpjyE4LR0+JRKeWeiJWbHRl2/c8eZ/AsvTjyeKPM2LyVJz6ZJ1ltoLCqaS9T1qyK
- KKrBZwM7wzdGAjo9npyavZ7QNv5bg+Y8hVPSoUFqxPJ3D59WAyHPNb46YN1AGdXIIa9IrwUEt
- oJwM5wI64i5YrtECoDDm2aQTT6yOK/iRCUvezR61r1XJnPysWJe5QmkhYAURrORamH6BRkbWt
- qyueo7EcAo3e8EBexsbZDJzaSCLIlhHoZxaWCuziq0eGoKBg6O1urU4gHCBxxQ6yW31MQ1bKQ
- ITQm03JWfAMOhWhcXvGY5XfkItxlJLU2iXmRF5hBGPu4kHpQHluMmMvUh9Ja3C/AMgJyR2hYd
- XPghZZTJG7zgDCvXCUvDUqZEfGKDgHE8CpQRrnBtCTxk09YAQ+X3ztRxll8/QHBLL/VVV2Qjp
- GiF6s8EVJb4tHNQuL66gf1SsrtAS+LtYt88y8S93poNNfhjHgrBiYpH10AiTPwaAuN2CiF+0Z
- 6xxP9cC6LSjAZ3rXZg57Mf1g0qDTDrqTx5ECADsBkwFToTILdIYHYnGhLH7pmvJllTnHwYaY8
- idiXQY/XA1WMl0ldEKuqZF7VkyEQYta5lR9F1srmscwH4Z0/fWQE1FSQiHdhd+AG7a88KwyCd
- nn28P1/3fX9fQ5w==
-Received-SPF: none client-ip=212.227.126.134; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:MeBvzcuRUut/buWI4k9XUOj5/7wB04NFKeVVJcc28GoEL/8JGH7
+ f7CbFXXJCa1NN8/SeJu0UCOT6Q/1zEu+BZFk6PHwu30GiLEey2Z1B6EWBbVPHybVjm42AEw
+ T70NylaldAHhEzI6MYSLk7jNixtgzVDu0ixJCi2+1mfOrak0aJsHWfjFznezlJleBt8QzxI
+ axg5Q7Hr4dKoDESARzenQ==
+UI-OutboundReport: notjunk:1;M01:P0:dIIA/VoiAXk=;V6hQuhSHhDMwzhtUtsjyeKStpap
+ +Xje+ocLntqCWBd51UHQVmQ8xvX+WvB2wDp0q4Wu1Ug/fjECwCevScHCP4VsPvQ4hyeJ/YYXX
+ BmcovOSPOdIS6hxC3KsCBEp7/YOVwrFHk6gEczdS9K0kMhMILsFf7Xk7nzEB53uhEmxH1VLeM
+ DJ3Ee4zL/xyeujVAzDz4l+LRQwjEpm2D3kTn4nEMX1khIFenWx0IIfpTeQpaV166AxKUw9eR3
+ 58yiR9JLcg6jPciEali5+3eADSUSkTjyVG1dgR1YR5IWxkpwwoSh7Ped7UYI47164Z5udX+ue
+ 5zdyawl+iosoRRCQ+i8XgIWXT8qE1AERmLo2Qi9dA7XMCLEpk8xbgTUWQLX1cp6NP9XhJcIm7
+ ve6qegNBtWs0p6PO0K/FzlL2webzUub+gJgf3GwW4EHqKP2tLFrnH1h7tp9ZFWseEcDpsSmPW
+ Xb5i4zGRIO4i1Euevk7r0uOzRROBbws0uk41SIorebNVwlnenliWrGr9hZgp++iq1jJFF83Aw
+ t3lS5HFH2Pv0C9d4OCecVWCwBi19XgZnad4Y2xtWTqQABKJYqizz1QQ7UxmxUTO5C+0808r7V
+ VdlcvWtKu/av7zSFA53kGMPJKs1dgw4wcefc73mR2qO0nXSS/EWGj+4kb1YKqqZSHrY9Mixnz
+ I3FtUNm95w+C4zUWvxEss96zwxgLlxkkbcz1RQsB/OzmPIBw2i8ET6uuD4JNqkROS4SOmgZlc
+ ApX7/YrQ7qpLCiCenWX6eJafX4Lm6URqdvDwxbPUf8YEWyu6YE9ha5Oxg1cgNrs1TBhP8QLWT
+ OJ4HXAJ+MTkIL21FPq1xZmAIvDqN2StR0d3dWePPGnKjVcXFQuJcXSD2QhIQTcp6guxgLn6bO
+ 32B89+vO6pBCkTg==
+Received-SPF: none client-ip=212.227.126.135; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -72,43 +72,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+p is a generic variable in syscall() and can be used by any syscall
+case, so this patch removes the useless local variable declaration for
+the following syscalls: TARGET_NR_llistxattr, TARGET_NR_listxattr,
+TARGET_NR_setxattr, TARGET_NR_lsetxattr, TARGET_NR_getxattr,
+TARGET_NR_lgetxattr, TARGET_NR_removexattr, TARGET_NR_lremovexattr.
+
 Fix following warnings:
 
-.../linux-user/syscall.c: In function 'do_syscall1':
-.../linux-user/syscall.c:11180:22: warning: declaration of 'cpu' shadows a previous local [-Wshadow=local]
-11180 |             unsigned cpu, node;
-      |                      ^~~
-.../linux-user/syscall.c:8963:15: note: shadowed declaration is here
- 8963 |     CPUState *cpu = env_cpu(cpu_env);
-      |               ^~~
+.../linux-user/syscall.c:12342:15: warning: declaration of 'p' shadows a previous local [-Wshadow=compatible-local]
+12342 |         void *p, *b = 0;
+      |               ^
+.../linux-user/syscall.c:8975:11: note: shadowed declaration is here
+ 8975 |     void *p;
+      |           ^
+.../linux-user/syscall.c:12379:19: warning: declaration of 'p' shadows a previous local [-Wshadow=compatible-local]
+12379 |             void *p, *n, *v = 0;
+      |                   ^
+.../linux-user/syscall.c:8975:11: note: shadowed declaration is here
+ 8975 |     void *p;
+      |           ^
+.../linux-user/syscall.c:12424:19: warning: declaration of 'p' shadows a previous local [-Wshadow=compatible-local]
+12424 |             void *p, *n, *v = 0;
+      |                   ^
+.../linux-user/syscall.c:8975:11: note: shadowed declaration is here
+ 8975 |     void *p;
+      |           ^
+.../linux-user/syscall.c:12469:19: warning: declaration of 'p' shadows a previous local [-Wshadow=compatible-local]
+12469 |             void *p, *n;
+      |                   ^
+.../linux-user/syscall.c:8975:11: note: shadowed declaration is here
+ 8975 |     void *p;
+      |           ^
 
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/syscall.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ linux-user/syscall.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/linux-user/syscall.c b/linux-user/syscall.c
-index c81e8d344486..6139c00ddceb 100644
+index 6139c00ddceb..fe228f7db3a7 100644
 --- a/linux-user/syscall.c
 +++ b/linux-user/syscall.c
-@@ -11177,14 +11177,14 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
-         }
-     case TARGET_NR_getcpu:
+@@ -12339,7 +12339,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_listxattr:
+     case TARGET_NR_llistxattr:
+     {
+-        void *p, *b = 0;
++        void *b = 0;
+         if (arg2) {
+             b = lock_user(VERIFY_WRITE, arg2, arg3, 0);
+             if (!b) {
+@@ -12376,7 +12376,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_setxattr:
+     case TARGET_NR_lsetxattr:
          {
--            unsigned cpu, node;
--            ret = get_errno(sys_getcpu(arg1 ? &cpu : NULL,
-+            unsigned cpuid, node;
-+            ret = get_errno(sys_getcpu(arg1 ? &cpuid : NULL,
-                                        arg2 ? &node : NULL,
-                                        NULL));
-             if (is_error(ret)) {
-                 return ret;
-             }
--            if (arg1 && put_user_u32(cpu, arg1)) {
-+            if (arg1 && put_user_u32(cpuid, arg1)) {
-                 return -TARGET_EFAULT;
-             }
-             if (arg2 && put_user_u32(node, arg2)) {
+-            void *p, *n, *v = 0;
++            void *n, *v = 0;
+             if (arg3) {
+                 v = lock_user(VERIFY_READ, arg3, arg4, 1);
+                 if (!v) {
+@@ -12421,7 +12421,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_getxattr:
+     case TARGET_NR_lgetxattr:
+         {
+-            void *p, *n, *v = 0;
++            void *n, *v = 0;
+             if (arg3) {
+                 v = lock_user(VERIFY_WRITE, arg3, arg4, 0);
+                 if (!v) {
+@@ -12466,7 +12466,7 @@ static abi_long do_syscall1(CPUArchState *cpu_env, int num, abi_long arg1,
+     case TARGET_NR_removexattr:
+     case TARGET_NR_lremovexattr:
+         {
+-            void *p, *n;
++            void *n;
+             p = lock_user_string(arg1);
+             n = lock_user_string(arg2);
+             if (p && n) {
 -- 
 2.41.0
 
