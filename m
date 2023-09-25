@@ -2,83 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D585A7ADEDC
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD4B7ADF57
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:58:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqL1-0002E4-AZ; Mon, 25 Sep 2023 14:29:43 -0400
+	id 1qkqki-0000vh-JD; Mon, 25 Sep 2023 14:56:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqKP-0000qC-D5
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:29:09 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqKN-0007rs-Mp
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:29:05 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4054f790190so55646755e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:29:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666541; x=1696271341; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=X4SdHGLTzFQ8VoHFc5maZ2DOZP9CSCnNto04LyR/4Aw=;
- b=nYXfGEmKSgBoOLJwgEPWJ4SXkrg2w0MyOYRTog953AUclMXoXA9OEbl7TUPf51BNou
- uKy9v3BHbGI3sjRpWjbjRWgP3r3h8lPI8hI4Fmh7PKa7ypzkDb3Iz+p6ixQ9MT8MwYdY
- 0Sbs8IAh0Ye+cJKqbJVuCy39Mhhvxbv5nVYhHMKUYPk7MITEmDNUy6op9EF94OeOs04M
- YtCbSexI0Y5H03pfMh0fCr1Na+oqlCtJTPjAqceaj2U/HajKcfjxJp0djtbtimDVGFof
- CK63Eh1oDV+a6/PzMZjGNK+4A29pvBZX6Y4fxQVsUGnC5dzTv7j9TwiqLzEnrjtKyi3l
- rYxg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666541; x=1696271341;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=X4SdHGLTzFQ8VoHFc5maZ2DOZP9CSCnNto04LyR/4Aw=;
- b=te5GT4qR0nki7rKxIwiX06+5rDrJbNmzHIwWl1TAtm05UatLNuIKACuYnxUU1uAUwU
- 1PpctjbApdaWyQdh08YR/5NxvCMCrTpVShOuPuCXsFoSVREkC8io8H0V9mzI/XpRJHcF
- Of+C6F+d+GwW8iOc8XmqyVEsYpPFLF550rBVuooKtR3X4MCG15I1Z90x5OrV2lUduTLW
- f5DvAb1B501QQCtaLImNR7Xin+uq3zVWSPglBfJvcDiTjt0NKnC5laMPnKIu39NOmqLl
- VFQZV8bHGamvC5PgmC7tFSPtmeQmwJE+jun+EHSiIkrsmJgPqgolbeMLS7lioOKdGBMc
- LP8A==
-X-Gm-Message-State: AOJu0YxpKWPzSX0zkxmFGw7R/91EL7LpDFccz8qMlL40VZ2181F0AI6o
- KGAuTRQ0yAXJYohsuGunj+oQ4EmCMc4=
-X-Google-Smtp-Source: AGHT+IEpRJiB1xLyDtQCm6IXVRaBtXsUvLOkv4EzFS2R8rXB03INLeJ+HL1pRXICYVOyxc94U/qYUQ==
-X-Received: by 2002:a05:600c:141:b0:3fe:2b8c:9f0b with SMTP id
- w1-20020a05600c014100b003fe2b8c9f0bmr6507047wmm.23.1695666541294; 
- Mon, 25 Sep 2023 11:29:01 -0700 (PDT)
-Received: from karim.my.domain ([197.39.209.18])
- by smtp.gmail.com with ESMTPSA id
- u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.29.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:29:00 -0700 (PDT)
-From: Karim Taha <kariem.taha2.7@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Warner Losh <imp@bsdimp.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v6 23/23] bsd-user: Add stubs for vadvise(), sbrk() and sstk()
-Date: Mon, 25 Sep 2023 21:27:09 +0300
-Message-ID: <20230925182709.4834-24-kariem.taha2.7@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
-References: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qkqkf-0000tq-Am
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:56:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qkqkc-0004S6-Vy
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:56:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695668168;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=R2yjQ8u6dXbkENl+fE58S2dXDz0xOzogXPAzVNv2rYE=;
+ b=FV8fq61g1Eg4LUNt7/6INUY3sAWeoTAhwYUmkrvP/XVRnfkUMxsOJ0KfgK49dboePqhxxz
+ 0xxQAa6oDoRCmYBhbzSUhj3Mg+GiE6qG9+Us07zF68aFn2IaHK0pSn+xHbvT59F09tRrkn
+ L9uXkeQpZG2wE9olAEEEnxl9L1e9Vr4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-623--cNawG1TMVm3Rm08iC2wXw-1; Mon, 25 Sep 2023 14:56:06 -0400
+X-MC-Unique: -cNawG1TMVm3Rm08iC2wXw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 33A4A3C14AA7;
+ Mon, 25 Sep 2023 18:56:06 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.92])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1616428FE;
+ Mon, 25 Sep 2023 18:56:04 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Laurent Vivier <laurent@vivier.eu>,
+	qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH] m68k: Silence -Wshadow=local warnings in the m68k code
+Date: Mon, 25 Sep 2023 20:56:03 +0200
+Message-ID: <20230925185603.106945-1-thuth@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,69 +74,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Warner Losh <imp@bsdimp.com>
+Rename the innermost variables to make the code compile
+without warnings when using -Wshadow=local.
 
-The above system calls are not supported by qemu.
-
-Signed-off-by: Warner Losh <imp@bsdimp.com>
-Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- bsd-user/bsd-mem.h            | 18 ++++++++++++++++++
- bsd-user/freebsd/os-syscall.c | 12 ++++++++++++
- 2 files changed, 30 insertions(+)
+ hw/m68k/bootinfo.h      | 10 ++++------
+ disas/m68k.c            |  8 ++++----
+ target/m68k/translate.c |  8 ++++----
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index c512a4e375..c3e72e3b86 100644
---- a/bsd-user/bsd-mem.h
-+++ b/bsd-user/bsd-mem.h
-@@ -431,4 +431,22 @@ static inline abi_long do_bsd_shmdt(abi_ulong shmaddr)
-     return ret;
- }
+diff --git a/hw/m68k/bootinfo.h b/hw/m68k/bootinfo.h
+index a3d37e3c80..d077d03559 100644
+--- a/hw/m68k/bootinfo.h
++++ b/hw/m68k/bootinfo.h
+@@ -44,15 +44,14 @@
  
-+static inline abi_long do_bsd_vadvise(void)
-+{
-+    /* See sys_ovadvise() in vm_unix.c */
-+    return -TARGET_EINVAL;
-+}
-+
-+static inline abi_long do_bsd_sbrk(void)
-+{
-+    /* see sys_sbrk() in vm_mmap.c */
-+    return -TARGET_EOPNOTSUPP;
-+}
-+
-+static inline abi_long do_bsd_sstk(void)
-+{
-+    /* see sys_sstk() in vm_mmap.c */
-+    return -TARGET_EOPNOTSUPP;
-+}
-+
- #endif /* BSD_USER_BSD_MEM_H */
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 6b32d4df68..ce2a6bc29e 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -675,6 +675,18 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_shmdt(arg1);
-         break;
+ #define BOOTINFOSTR(base, id, string) \
+     do { \
+-        int i; \
+         stw_p(base, id); \
+         base += 2; \
+         stw_p(base, \
+                  (sizeof(struct bi_record) + strlen(string) + \
+                   1 /* null termination */ + 3 /* padding */) & ~3); \
+         base += 2; \
+-        for (i = 0; string[i]; i++) { \
+-            stb_p(base++, string[i]); \
++        for (int _i = 0; string[_i]; _i++) { \
++            stb_p(base++, string[_i]); \
+         } \
+         stb_p(base++, 0); \
+         base = QEMU_ALIGN_PTR_UP(base, 4); \
+@@ -60,7 +59,6 @@
  
-+    case TARGET_FREEBSD_NR_freebsd11_vadvise:
-+        ret = do_bsd_vadvise();
-+        break;
-+
-+    case TARGET_FREEBSD_NR_sbrk:
-+        ret = do_bsd_sbrk();
-+        break;
-+
-+    case TARGET_FREEBSD_NR_sstk:
-+        ret = do_bsd_sstk();
-+        break;
-+
-         /*
-          * Misc
-          */
+ #define BOOTINFODATA(base, id, data, len) \
+     do { \
+-        int i; \
+         stw_p(base, id); \
+         base += 2; \
+         stw_p(base, \
+@@ -69,8 +67,8 @@
+         base += 2; \
+         stw_p(base, len); \
+         base += 2; \
+-        for (i = 0; i < len; ++i) { \
+-            stb_p(base++, data[i]); \
++        for (int _i = 0; _i < len; ++_i) { \
++            stb_p(base++, data[_i]); \
+         } \
+         base = QEMU_ALIGN_PTR_UP(base, 4); \
+     } while (0)
+diff --git a/disas/m68k.c b/disas/m68k.c
+index aefaecfbd6..a384b4cb64 100644
+--- a/disas/m68k.c
++++ b/disas/m68k.c
+@@ -1632,10 +1632,10 @@ print_insn_arg (const char *d,
+     case '2':
+     case '3':
+       {
+-	int val = fetch_arg (buffer, place, 5, info);
++	int val2 = fetch_arg (buffer, place, 5, info);
+         const char *name = 0;
+ 
+-	switch (val)
++	switch (val2)
+ 	  {
+ 	  case 2: name = "%tt0"; break;
+ 	  case 3: name = "%tt1"; break;
+@@ -1655,12 +1655,12 @@ print_insn_arg (const char *d,
+ 	      int break_reg = ((buffer[3] >> 2) & 7);
+ 
+ 	      (*info->fprintf_func)
+-		(info->stream, val == 0x1c ? "%%bad%d" : "%%bac%d",
++		(info->stream, val2 == 0x1c ? "%%bad%d" : "%%bac%d",
+ 		 break_reg);
+ 	    }
+ 	    break;
+ 	  default:
+-	    (*info->fprintf_func) (info->stream, "<mmu register %d>", val);
++	    (*info->fprintf_func) (info->stream, "<mmu register %d>", val2);
+ 	  }
+ 	if (name)
+ 	  (*info->fprintf_func) (info->stream, "%s", name);
+diff --git a/target/m68k/translate.c b/target/m68k/translate.c
+index 9e224fe796..b28d7f7d4b 100644
+--- a/target/m68k/translate.c
++++ b/target/m68k/translate.c
+@@ -824,14 +824,14 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
+         reg = get_areg(s, reg0);
+         result = gen_ldst(s, opsize, reg, val, what, index);
+         if (what == EA_STORE || !addrp) {
+-            TCGv tmp = tcg_temp_new();
++            TCGv tmp2 = tcg_temp_new();
+             if (reg0 == 7 && opsize == OS_BYTE &&
+                 m68k_feature(s->env, M68K_FEATURE_M68K)) {
+-                tcg_gen_addi_i32(tmp, reg, 2);
++                tcg_gen_addi_i32(tmp2, reg, 2);
+             } else {
+-                tcg_gen_addi_i32(tmp, reg, opsize_bytes(opsize));
++                tcg_gen_addi_i32(tmp2, reg, opsize_bytes(opsize));
+             }
+-            delay_set_areg(s, reg0, tmp, true);
++            delay_set_areg(s, reg0, tmp2, true);
+         }
+         return result;
+     case 4: /* Indirect predecrememnt.  */
 -- 
-2.42.0
+2.41.0
 
 
