@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4515D7ADA9B
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D86F67ADAAC
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:54:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmtl-0001PT-Qs; Mon, 25 Sep 2023 10:49:21 -0400
+	id 1qkmvx-0004nc-Us; Mon, 25 Sep 2023 10:51:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtf-0001Br-H6
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:16 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qkmty-0001rC-Ie
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:35 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtR-0008HY-OA
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:15 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40528376459so66392365e9.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:01 -0700 (PDT)
+ id 1qkmtV-0008Ju-NV
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:31 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-4053db20d03so53044215e9.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653340; x=1696258140; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653343; x=1696258143; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DlEhphEtX0KtQL/e4ae/jun4tEwNOtAavPJ6o58muzg=;
- b=o/nUgvjAXOP8v2n0hbHEcBWRjMZI4980/xMJyrB9IzV3Mpu9/kPkYsNFQf4Z2f392l
- CN6cFmmPNhIinKQk3Yr4YOHoht0Ps6NhtxjZzXIXRsmP08/hTWudXOsYZ+VE33/Pd1aO
- rRWPI/GxAbNBTkZ03tV0cKH2Pio6ybNz8y2HIq11I0cpNRAlp4FtPgdfdjq8WqVp/fuj
- bXO5VO/0ZOZ9/eJ/ObccQK4YPHB6S9qWEna7ID+TQMubJ5eu8geo8I/Ub8tzStHuzb6p
- rdO/va++RBpbZxq5MDA4Cpwee1U/mDcgbYYQVF7ulB5NMvVa50aBp4Mwus4M1Bg4UQYg
- mV3Q==
+ bh=afBvhFP6609M8IIBIfYpGDboWuF4PMsRTHYI59b4V3Q=;
+ b=ARsFEKFKB+0+gsHCoDorzenIy0R2PpUMhPOGlZ57PvASeOM+jN/p5bCXD7txWtPZf/
+ hLWEA0JqsEZMN9+elVzpg8Cefe2uax6QT/EAn0xeoy2+KdlMwHuYOlTpmHQ4/nfn4iDM
+ zVy4dZfXaLRxwUPnzMt5jZsxlZZxmSoCRoG+M5s+FbNKJwmIBza4cM9kcIRDFlIHTk0Q
+ BxAcVmMfaOZCOTln6Q5BMGP34LIRhS1iLbuN7XRQoDk62MLV7pzMEYIG6Gz7PVQ56P7y
+ m7DqvMg9Wqg5KEluOlH5ah1ecAk6Z+4D0GlBG58UIKiGavdkCMgG1K0exjTHXpyIR1eN
+ iC6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653340; x=1696258140;
+ d=1e100.net; s=20230601; t=1695653343; x=1696258143;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DlEhphEtX0KtQL/e4ae/jun4tEwNOtAavPJ6o58muzg=;
- b=sXw/FCcam5T7do1LbPSN/mDyRZIzvD1+i+Y49EH9IcOWkKh1F6uw9C63t+yNgazD59
- IeSCKI1Ut2Tk10qZTbaO9slU8DT7Y8F4SPOLvy77m0OgfGy16e648VQ6qTDEaDoqTGr7
- RhN7r5K+FxiyJU6N24+WDOcUM6ZXyFbGZtx+/jWSATmgTSZaKGMPnvgTI6qRMwi3nD2j
- IhH0ij6pyY7YHcU5L2GnGUbShvC0ZIu9vRhfU9Unio3mmz21/iuZOCPKUmELJKpfUOcL
- ztUwzBeGXIe2BskOraMQJg66BQ5+QyBvieaQgjO96uA/C/pZE5QkKE8/dMMWkoQHcozS
- qgKw==
-X-Gm-Message-State: AOJu0Yx52DJ+rkCry0tSPLyywdQlWmsquKAFjcFpfOq4H2UGx01AwBpV
- CeZREWaEkeMuy9YefAioSNCOfg==
-X-Google-Smtp-Source: AGHT+IGhe1u04XO93m5rgLTFr+jl5409HMKnsiFsSpSw9wJkJLs5eAVSrkgDsaznTTLlTJAxliqaUw==
-X-Received: by 2002:a05:600c:22cd:b0:401:b493:f7c1 with SMTP id
- 13-20020a05600c22cd00b00401b493f7c1mr5917888wmg.35.1695653340198; 
- Mon, 25 Sep 2023 07:49:00 -0700 (PDT)
+ bh=afBvhFP6609M8IIBIfYpGDboWuF4PMsRTHYI59b4V3Q=;
+ b=tnPv9DZt2Vj12eWtQt50JBry89t6MXr3MuqROnrgdllciXrk7+aJjCtyMTg/Gilpey
+ z6Y4/m4MvhNvIRulijS89CtCL7logW6gtqko+Bk7agpNGmM75i9MtreaMiV1dZzFg1qK
+ Mi09aq2PTjAu7ntuGTx7Qln9XKS2Rjl9tHYvyns/jhLN+723C/jXgdFuk7qFjDPH7/+o
+ DHxaWGJ8rD7mEJJMCGLxfznA04c1Uc+qqGPHVO7fa9kCtoJHA6UgyR58u8KBUnOE+bBm
+ vilO16wznNmI9LRELcuEBT5MQbSTgqhEHrGzizZ5wHBCpzydvx682w7y/yiiouJscQMx
+ 7LlA==
+X-Gm-Message-State: AOJu0YxOVf5dSYkWlVPmRzH0dOdnakcXCNJlyvsACylV8ETLi3X2bI0P
+ EvYnP6PRUn3EPBlIJgwxDPJQUA==
+X-Google-Smtp-Source: AGHT+IE81+2T4xmz33lUTgO9MMdDyXYA17Iq1qAXs2BdCLV4x8cBgbMmfstz2B6rR+o/BoOtK15D/w==
+X-Received: by 2002:a7b:ca45:0:b0:405:40c6:2b96 with SMTP id
+ m5-20020a7bca45000000b0040540c62b96mr5826835wml.3.1695653343173; 
+ Mon, 25 Sep 2023 07:49:03 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- y23-20020a05600c365700b003fefe70ec9csm15207988wmq.10.2023.09.25.07.48.56
+ f2-20020a7bc8c2000000b003fefaf299b6sm875831wml.38.2023.09.25.07.48.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
+ Mon, 25 Sep 2023 07:49:00 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 347651FFC3;
+ by zen.linaroharston (Postfix) with ESMTP id 4E4351FFBD;
  Mon, 25 Sep 2023 15:48:56 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -92,24 +92,24 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 10/31] gdbstub: Fix target.xml response
-Date: Mon, 25 Sep 2023 15:48:33 +0100
-Message-Id: <20230925144854.1872513-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/31] plugins: Check if vCPU is realized
+Date: Mon, 25 Sep 2023 15:48:34 +0100
+Message-Id: <20230925144854.1872513-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -127,30 +127,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-It was failing to return target.xml after the first request.
+The created member of CPUState tells if the vCPU thread is started, and
+will be always false for the user space emulation that manages threads
+independently. Use the realized member of DeviceState, which is valid
+for both of the system and user space emulation.
 
-Fixes: 56e534bd11 ("gdbstub: refactor get_feature_xml")
+Fixes: 54cb65d858 ("plugin: add core code")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230912224107.29669-3-akihiko.odaki@daynix.com>
+Message-Id: <20230912224107.29669-4-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- gdbstub/gdbstub.c | 2 +-
+ plugins/core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 349d348c7b..384191bcb0 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -396,8 +396,8 @@ static const char *get_feature_xml(const char *p, const char **newp,
-             g_string_append(xml, "</target>");
+diff --git a/plugins/core.c b/plugins/core.c
+index 3c4e26c7ed..fcd33a2bff 100644
+--- a/plugins/core.c
++++ b/plugins/core.c
+@@ -64,7 +64,7 @@ static void plugin_cpu_update__locked(gpointer k, gpointer v, gpointer udata)
+     CPUState *cpu = container_of(k, CPUState, cpu_index);
+     run_on_cpu_data mask = RUN_ON_CPU_HOST_ULONG(*plugin.mask);
  
-             process->target_xml = g_string_free(xml, false);
--            return process->target_xml;
-         }
-+        return process->target_xml;
-     }
-     /* Is it dynamically generated by the target? */
-     if (cc->gdb_get_dynamic_xml) {
+-    if (cpu->created) {
++    if (DEVICE(cpu)->realized) {
+         async_run_on_cpu(cpu, plugin_cpu_update__async, mask);
+     } else {
+         plugin_cpu_update__async(cpu, mask);
 -- 
 2.39.2
 
