@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746A27ADB0B
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8847ADB0C
 	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qknEX-0008M7-JR; Mon, 25 Sep 2023 11:10:49 -0400
+	id 1qknEU-0008H7-DK; Mon, 25 Sep 2023 11:10:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEM-0008EK-Pu
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:39 -0400
-Received: from mout.kundenserver.de ([212.227.126.130])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEJ-0005L7-Se
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEM-0008Dm-0C
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:38 -0400
+Received: from mout.kundenserver.de ([212.227.126.135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEJ-0005L8-T4
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:37 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1M1q8m-1qn09f0wPI-002DAX; Mon, 25
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1MsI8Y-1reHCH2iHC-00tlIJ; Mon, 25
  Sep 2023 17:10:31 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 1/5] linux-user/flatload: clean up local variable shadowing
-Date: Mon, 25 Sep 2023 17:10:25 +0200
-Message-ID: <20230925151029.461358-2-laurent@vivier.eu>
+Subject: [PATCH 2/5] linux-user/mmap.c:  clean up local variable shadowing
+Date: Mon, 25 Sep 2023 17:10:26 +0200
+Message-ID: <20230925151029.461358-3-laurent@vivier.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230925151029.461358-1-laurent@vivier.eu>
 References: <20230925151029.461358-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:YdvWlxSvsFN88bfFbM0ccbntFQ0A59rQm2QYYKbqbhkWX16UNYD
- 43cZWRw9ABvmyBjHDyAhl1TK+0sFSDpRUWGP/oe4kTEXPx7IUbNggosuwz0MKzrZyOqeDyo
- 1x1IOKcuR4Bz89yfBoEqGL7rC9wSegJFMY5t10YUe6A2TwsyOAqvjBZxsBwlMfkXagIk5x0
- 6hTHcH16PJI/HtKbRUMKA==
-UI-OutboundReport: notjunk:1;M01:P0:5VUufdgRljs=;kK2EZH0HXsWVJqMrOKN49sJSfFN
- L/Bj6ceIj3Py/q/+GLTpPJFWxd1jMjdmNbhlGtx7/DzUOanyCGHPd0Zks+M6qFeV/MW6getsZ
- tzbQE//vBdBSlhf7/mfhsIfrnMk1lCvBPDFUR0zFmYLpbKZAvkIzjWwJNc02w3MuiaUwELVKu
- JhVWpCOF/zR9e4qh4RpoNu09nnmpZxXNfj/W8ZZaTKFbvB5tS8KNkkb22ghh9koohBm+ZYzft
- fcM8HPESV/ubgtPfW2Lk9oje9Yo7kHZAEbOqYsC6XjyZMKmb4637TiUAj4ZnCyrCuHcREUHR1
- DULsRS7LSORQFchodLX5jLqlzdFJOfYvlWTMNmXYHqPV5XgDlqzqKHZGIlV+uHr6hfQEs8a1t
- QYNTt2clpT3i2gl9dbJnl5OMiksCUJnVe+obZaSHu2YOm1XxuNseTZP8jEnnQWPsjIwIjW3Y3
- k0kYlF5CXYDW9Kzrq1saWDCFWQNLNH18IN8u7mDAE95vqknosh02elvbmlGWMlXzDZpjw4aDV
- elDD/0AZZJ94FrBBFMLD0OC2aXgSglUE7HWRRHaP3KYkln1ySS+OMtV5sBQOFxYaiwuzozUas
- ap9XCsiWSqiLnSrYLz8vgXPbEuDEyu59K1UeEYCaiUK6OHPqsrKOEEYWSeo3HkKSuEpIk82oi
- msrM/hlF5tQcvg/ag5WwBZFzH0zGT2aFmKI8NC4byXwpztJVSfBQLXAE9L+VnBOeyXYFHWYrd
- +6IonbiWAvrPpVH+lZFj+30kQDr/kc3O6o7maP34j0FoaY2W00P1lxQ9wLH5DtuFN7qTXmO3L
- 9tesst/7pClAn/c5VZNJxuSkRp8DkIVLFZU6JTz5qJN8hsjvkC+WaPMxr4TRv74mDgGos97Vq
- LmIGfn9HxSwIEbw==
-Received-SPF: none client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:erE6zJTlpjDiXfdnlwGTTJmuFc+uYzYlwxb8zhNpZV4gG0dAQFu
+ UVFb5ybU3oZaHZGgz00VRxCg6l2EUlrNt8tI4jBs4bV6EdVa5zYJbGFt0ry1qoAsf0EyJrs
+ oMsUPknOUOnJhvSU3qmpXtu93uDpcQ/vy7myzJ0fQH+eCQc2LDFlD6DqDlCoBsuC3Upe5HB
+ pbb5JIq45n5f2I6WkJPMg==
+UI-OutboundReport: notjunk:1;M01:P0:FwU6Yv6eCvU=;dUVJsjEc52eVjict1HnRZuIzvuR
+ bf3h2jMO5rCwN6FzEvA3Z4C/5+vgXy2HPDFEg91cG1IRflYSBb+c5/t+PXztKtUG2kw1RPiJa
+ MkH26YAx5RYVBSl2pVWm0n99t2AL0Vbm1cymgeQcvyupwbyUuq01f9Fe5AwCRaJE9WA7i6c/K
+ JNElwi0YVYL8O1D1D1PBmQqnlYi/KUmfRZb8Yaw6+TZz/H8XNDA+7tOZIEURSJPbtXEBuLHxR
+ eZJhIT+6chVAgfnOzCYxCySGMz+A68Al9U4SmB6X1nby4SCkjweoab8qkVVFTGP+nUuqV4ZK8
+ cRILX/mcWVOeWzSjHTiukYOuM7ZGVTjyqm9o7D2gXsmP+10GP07TAYN4ZwDkxi3m4xprFJhM2
+ hHcnWUBxE0Nl1xoErAA6B9zMv8bp0W2cREhulkLloTZCSBOEyqOtwFRmf+9rt73BTsZCRDle7
+ HK0OUPAt1WzzrPAiQ/nDnzklPzFl4txzoXUMOj1bXM1H3wrUoNIqQO/iPRBMto08lcBmmbqVN
+ pWC9CtX/dQKYB9nzocWJjDb1Z8TECtqXvwuNpqHfhSYHpsxEkg43ZMMnpq+sEA2WAHraUwHLi
+ KFUmMp0TGRIF+t7L7Rc/fF2TmcrrIpCtknvqxUvGipNgus0F0qdTXrYboqCJTckWX2z6N3FTB
+ L6fBGS9uHWQ5Bzu5K6N5g8CqYV1Qm48kgDq6EKW9/Wx8oi0oSBQAlkUzqCYkA28/UhZuRpoq+
+ m1K/yDIjAkCd1VJGS2w5U3VK0mMWoTK6UxA3rQ25Chxl00q9NEWk1bVqtjR+uIX1ugONruL4D
+ bjEAXA85gBXnFIB1EUEhgk4URTm9MokFLBA+uvMvNsjTSKL3Ot8flZaMl9agvGmAdMAaLaMYU
+ +zCL06PLCsZIw2w==
+Received-SPF: none client-ip=212.227.126.135; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -73,43 +73,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix following warnings:
 
-.../linux-user/flatload.c: In function 'load_flt_binary':
-.../linux-user/flatload.c:758:23: warning: declaration of 'p' shadows a previous local [-Wshadow=compatible-local]
-  758 |             abi_ulong p;
-      |                       ^
-../../../Projects/qemu/linux-user/flatload.c:722:15: note: shadowed declaration is here
-  722 |     abi_ulong p;
-      |               ^
+.../linux-user/mmap.c: In function 'target_mremap':
+.../linux-user/mmap.c:913:13: warning: declaration of 'prot' shadows a previous local [-Wshadow=compatible-local]
+  913 |         int prot = 0;
+      |             ^~~~
+../../../Projects/qemu/linux-user/mmap.c:871:9: note: shadowed declaration is here
+  871 |     int prot;
+      |         ^~~~
 
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- linux-user/flatload.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ linux-user/mmap.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/linux-user/flatload.c b/linux-user/flatload.c
-index 4331a11bf010..fdcc4610fa30 100644
---- a/linux-user/flatload.c
-+++ b/linux-user/flatload.c
-@@ -755,15 +755,15 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
-     /* Update data segment pointers for all libraries */
-     for (i=0; i<MAX_SHARED_LIBS; i++) {
-         if (libinfo[i].loaded) {
--            abi_ulong p;
--            p = libinfo[i].start_data;
-+            abi_ulong seg;
-+            seg = libinfo[i].start_data;
-             for (j=0; j<MAX_SHARED_LIBS; j++) {
--                p -= 4;
-+                seg -= 4;
-                 /* FIXME - handle put_user() failures */
-                 if (put_user_ual(libinfo[j].loaded
-                                  ? libinfo[j].start_data
-                                  : UNLOADED_LIB,
--                                 p))
-+                                 seg))
-                     return -EFAULT;
+diff --git a/linux-user/mmap.c b/linux-user/mmap.c
+index 8eaf57b208b0..8ccaab78590f 100644
+--- a/linux-user/mmap.c
++++ b/linux-user/mmap.c
+@@ -910,16 +910,16 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
              }
          }
+     } else {
+-        int prot = 0;
++        int page_flags = 0;
+         if (reserved_va && old_size < new_size) {
+             abi_ulong addr;
+             for (addr = old_addr + old_size;
+                  addr < old_addr + new_size;
+                  addr++) {
+-                prot |= page_get_flags(addr);
++                page_flags |= page_get_flags(addr);
+             }
+         }
+-        if (prot == 0) {
++        if (page_flags == 0) {
+             host_addr = mremap(g2h_untagged(old_addr),
+                                old_size, new_size, flags);
+ 
 -- 
 2.41.0
 
