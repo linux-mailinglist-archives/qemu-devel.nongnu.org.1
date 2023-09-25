@@ -2,74 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD0B7ADC80
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B26187ADC89
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:59:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qknxz-000538-LJ; Mon, 25 Sep 2023 11:57:48 -0400
+	id 1qknzN-0006TA-JP; Mon, 25 Sep 2023 11:59:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qknxj-0004mF-Oi
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:57:32 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qknxg-0005cE-5q
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:57:30 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so1540368466b.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 08:57:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695657446; x=1696262246;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=rzm796MbOkaZus6R0TkYciD0vGThfaHHpROKVQ88huo=;
- b=Yf4wgA7KiBfpRQIedPvg0QWHQDC4j+zeS2rIV/JuNB+0ZKrMqdFdU7rY/dLlUNzPQR
- vFRsnsvC+rd87oJ0Frdw3NKzfmrGWCqCFbL9QmHV7rCcgB6gmnvSKnQeH409dSmPe4T0
- KkgwsWB0xIWFl6GFFr5ncljkxyt0eScuQwLMWo6JqCqcgMxdFG6kFElEAVlLiiRREPyw
- vtp3ERkgEoJ4r9X2VoMM6EZ8X1K6rme+rmV1f9yathq2bO36hjMjn1ht0EuMOnD3lVO6
- KLj3+vwxJdb39wSeXjfQVeFx6QP/KS4zGbR0KOSrbdMX+UYf/cZqUSEFrqJzRh9Sz3rJ
- fmpg==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qknzE-0006RH-SE
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:59:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qknzB-00062t-Jt
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:59:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695657540;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=XfSFeC0dQHha1Gohv2QqNWFo6jsw5IC/9dUeY2uagEY=;
+ b=FomX6HaddLJ6ipxSYKpb2ZxdF9wMnv76fRTqsn4r/9l7x8bvoxaPIie6SUZRvJx3f9NJGU
+ JsoELl6+IsUQy3cLwmxpbBZrYLRxCUG7p36rPyGpakcALnqAI2q6hZowV8evUIVZFR0B6r
+ wGGaqotYRcrlCKEYOQnRJNUeRwa76N4=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-252-6tWpV9x4NByxqH6hObuCLg-1; Mon, 25 Sep 2023 11:58:58 -0400
+X-MC-Unique: 6tWpV9x4NByxqH6hObuCLg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40540179bcdso46054005e9.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 08:58:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695657446; x=1696262246;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rzm796MbOkaZus6R0TkYciD0vGThfaHHpROKVQ88huo=;
- b=QgNHA5pqNjNi5O5NhG8Yagysk3HQxFkfo7Y6w2c8epebDIw159BPk3t8xvEC+jzkZz
- M+DwQjwWDPDqz3xJ2aaQDL8PoKy5D0Cvh4CrHEdcJKpkAUmy8k2zUjshbDIqpWzEEq1P
- J5Sm3qCVwCnhHPKdMeIr0Qnl2wJ0oWfa7di/DaMkMS6fwwNNgx9nZjb7fNTUlguKN+bG
- epyu74pT1ow4J/CnNNn22w0V7/pldh6VaK2DvTKOkQqeHoSPr032ja33FRoL1mc1arRv
- YdH2C7nFaNOJpROZX+6BmQ4GQHjy/axUoH2F1MD+MYHpvSb2MwY3fcPoKENd6bRZRfH4
- pu1w==
-X-Gm-Message-State: AOJu0YyTUvbM4bgsITrd2vLB9uu8CjlNwUkyJXDAKJK78bdg0J4csYJZ
- QxzSXc+kXnxrFqCb9fVNrDacHpsqytlYVHSzG3rMRg==
-X-Google-Smtp-Source: AGHT+IHANbPelqhCfwMQEhVEPTRxllD5TYoLOo2QXlqIJYCJmqUiuHFLic1fP0xvTb+JV8pw+GmIWro6YcZ2RBLesrQ=
-X-Received: by 2002:a17:906:530b:b0:9a1:b85d:c952 with SMTP id
- h11-20020a170906530b00b009a1b85dc952mr58045ejo.12.1695657445976; Mon, 25 Sep
- 2023 08:57:25 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695657537; x=1696262337;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XfSFeC0dQHha1Gohv2QqNWFo6jsw5IC/9dUeY2uagEY=;
+ b=GhFitNTDHzebBoSUKDjQmj8cooU0Pr4IS+kH7ws4tqtG1iq/ovHjFwrrNqEMC89Fcl
+ uoLADyWwbSMpmB5hucxTc1xtK3JEfy5DhEDMfDd2pPn0Ohkv3ABYnRgMdKo0tulRtICm
+ wxiAV/gV+9X0s8RXoqA7dN7Sg17Vv1SZiD3efrAfbDQS9c8Mu4aMeTCLDSTTUihvYFME
+ yDTGHQLxAXRULo/Ydew+dzTMAFUo/7uMWt/Za63wsgrlnrSg/43q7u5p5ILwr6JJKO9K
+ 0jXLMbSlwDjmNW/hQ8W9oO64NO1W4Wf3R91jB/e5GiX21IO3kc8YJEsSYYR2syLmS7GR
+ Brfw==
+X-Gm-Message-State: AOJu0Yz3SvsDuFXhSe5/qx+5QenX1G3a4VrR+jXBkphL5mQ/zwfFHyvY
+ aGx5t0OqzhJE0zcJpv08hEtlvA3kuSaxJ+8EnbdU6XSjd+m2CmczcOg09xHWZt0IvBp26rMk4PL
+ 9mxbsYyzmDsUzVa8cqd4Ak4o=
+X-Received: by 2002:a05:600c:24d:b0:404:737a:17d with SMTP id
+ 13-20020a05600c024d00b00404737a017dmr7039197wmj.9.1695657536998; 
+ Mon, 25 Sep 2023 08:58:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEaksWt/xlP96sFgFxuFtd5ZJNGUhqsLjU1xdLVCJwWux5cUKvglF1cUoYNnDu8fDKHIhs/3A==
+X-Received: by 2002:a05:600c:24d:b0:404:737a:17d with SMTP id
+ 13-20020a05600c024d00b00404737a017dmr7039185wmj.9.1695657536578; 
+ Mon, 25 Sep 2023 08:58:56 -0700 (PDT)
+Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
+ ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.googlemail.com with ESMTPSA id
+ v21-20020a7bcb55000000b00404719b05b5sm12633897wmj.27.2023.09.25.08.58.55
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 25 Sep 2023 08:58:55 -0700 (PDT)
+Message-ID: <ae977ae6-4822-9a25-a09f-06cecdedbc65@redhat.com>
+Date: Mon, 25 Sep 2023 17:58:55 +0200
 MIME-Version: 1.0
-References: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
- <20230924210136.11966-26-kariem.taha2.7@gmail.com>
-In-Reply-To: <20230924210136.11966-26-kariem.taha2.7@gmail.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Mon, 25 Sep 2023 09:57:15 -0600
-Message-ID: <CANCZdfqxp=yeAg-3S+7SDKcBfWzvTWztJ5rH5k-DAjHJ=+9k0A@mail.gmail.com>
-Subject: Re: [PATCH v4 25/28] bsd-user: Implement pdgetpid(2) and the
- undocumented setugid.
-To: Karim Taha <kariem.taha2.7@gmail.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>, 
- Stacey Son <sson@freebsd.org>
-Content-Type: multipart/alternative; boundary="000000000000ba8e2a060631032f"
-Received-SPF: none client-ip=2a00:1450:4864:20::62f;
- envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ui/vnc: fix enabling of VNC_FEATURE_XVP
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org
+References: <20230925145034.530623-1-pbonzini@redhat.com>
+ <ZRGqvdAa8OGTpH9t@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+In-Reply-To: <ZRGqvdAa8OGTpH9t@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,49 +104,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000ba8e2a060631032f
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 9/25/23 17:43, Daniel P. Berrangé wrote:
+> On Mon, Sep 25, 2023 at 04:50:34PM +0200, Paolo Bonzini wrote:
+>> VNC_FEATURE_XVP was not shifted left before adding it to vs->features,
+>> so it was never enabled.
+>>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> ---
+>>   ui/vnc.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> /facepalm
+> 
+> I definitely tested this code, because I had to use QEMU to
+> validate the GTK-VNC client implementation....
+> 
+> 
+>>
+>> diff --git a/ui/vnc.c b/ui/vnc.c
+>> index 6fd86996a54..3d13757b72b 100644
+>> --- a/ui/vnc.c
+>> +++ b/ui/vnc.c
+>> @@ -2205,7 +2205,7 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
+>>               break;
+>>           case VNC_ENCODING_XVP:
+>>               if (vs->vd->power_control) {
+>> -                vs->features |= VNC_FEATURE_XVP;
+>> +                vs->features |= VNC_FEATURE_XVP_MASK;
+>>                   send_xvp_message(vs, VNC_XVP_CODE_INIT);
+>>               }
+>>               break;
+> 
+> ....I made the same screwup when processing messages:
+> 
+> 
+>      case VNC_MSG_CLIENT_XVP:
+>          if (!(vs->features & VNC_FEATURE_XVP)) {
+>              error_report("vnc: xvp client message while disabled");
+>              vnc_client_error(vs);
+>              break;
+>          }
+> 
+> so the bugs (kinda) cancelled out. So you'll need to fix
+> both places
 
-On Sun, Sep 24, 2023 at 8:37=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.co=
-m> wrote:
+Doh, I "assumed" it was a thinko coming from usage of vnc_has_feature 
+elsewhere.  I will send v2.
 
-> From: Stacey Son <sson@FreeBSD.org>
->
-> Signed-off-by: Stacey Son <sson@FreeBSD.org>
-> Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->  bsd-user/freebsd/os-proc.h    | 23 +++++++++++++++++++++++
->  bsd-user/freebsd/os-syscall.c |  8 ++++++++
->  2 files changed, 31 insertions(+)
->
+Paolo
 
-Reviewed-by: Warner Losh <imp@bsdimp.com>
-
---000000000000ba8e2a060631032f
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Sun, Sep 24, 2023 at 8:37=E2=80=AF=
-PM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.taha2.=
-7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex">From: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-<br>
-Signed-off-by: Stacey Son &lt;sson@FreeBSD.org&gt;<br>
-Signed-off-by: Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com" t=
-arget=3D"_blank">kariem.taha2.7@gmail.com</a>&gt;<br>
-Reviewed-by: Richard Henderson &lt;<a href=3D"mailto:richard.henderson@lina=
-ro.org" target=3D"_blank">richard.henderson@linaro.org</a>&gt;<br>
----<br>
-=C2=A0bsd-user/freebsd/os-proc.h=C2=A0 =C2=A0 | 23 +++++++++++++++++++++++<=
-br>
-=C2=A0bsd-user/freebsd/os-syscall.c |=C2=A0 8 ++++++++<br>
-=C2=A02 files changed, 31 insertions(+)<br></blockquote><div><br></div><div=
->Reviewed-by: Warner Losh &lt;<a href=3D"mailto:imp@bsdimp.com">imp@bsdimp.=
-com</a>&gt;</div><div>=C2=A0</div></div></div>
-
---000000000000ba8e2a060631032f--
 
