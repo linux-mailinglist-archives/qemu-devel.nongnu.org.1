@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A3F7ADA9C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B597ADAAF
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:55:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmtl-0001O7-Nk; Mon, 25 Sep 2023 10:49:21 -0400
+	id 1qkmtm-0001T0-Go; Mon, 25 Sep 2023 10:49:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtc-00014j-TB
+ id 1qkmtc-00014e-Rq
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:13 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtQ-0008Fj-Po
+ id 1qkmtQ-0008Gx-Jv
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:12 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-3226b8de467so5266765f8f.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:58 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40572aeb73cso31127225e9.3
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653338; x=1696258138; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653339; x=1696258139; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iR1iGRTKQhM4i1nnnC3x69E8sH/nb//WSFW8YZTcQR4=;
- b=gTfmiDciHGcnHOh675FpFqs/r5NIxBNOqK82gDzZ5UuhEENXMMqJniNZwLO8fCI3yh
- 8597T5mxVWpeQRWw7uLleJNXCBPh2/gDC14B/BOexxxMnzbbj+7eOTiU072hFpRDw8F+
- RVhPdE5wfZT/zamQZW+FIqukOgny3i5B5MN3Fae3q4YG4rVngkqsdleH0dKzVyli83/W
- YEAwU8latFZa+R/FuMirndy+xK8EDN8qM/20n0qS2DrE+go/ocdVpcQbaquL9CI1MQzn
- a3BTux1Y7afAPq+dw/P3F2Rh/kYHzwFhdHA9pgHcgwDYE0jlz7y9x3XB7r2EOCykf7q+
- suYw==
+ bh=kNHX4JyhoYexAQqB9a7CrjUa8yJRKrNW0ix3Ut30RxE=;
+ b=o7okgtlzKM5CdQPEsjYaWC/JCovzE4x9nZPmryzKjLnYr+KwgIO92EBcllUVMpLwTP
+ yKnPWH0bXZxePEqYhd9oIhyDONqAjFYEgSnEJNIJhHMylwUhDWNuq3wz1a2gA94Iosqf
+ zK0NGvhXonwTmUQK0iqkt/yuQEJTiZIoQ9p9ztLGBJ1OVvJUafe7O3L7URsoNUgdVG+C
+ MMOU4aLBkD+pAeVmDmTBsSyJBgcU4yec65/QoVZocVYpOuE5mqAyrd1u7z0Jv6SZ6p8V
+ +P+0H5hUHuzDfNJsvFofxv7sqxvAnfW6lj5K4zpte5ZzbFr1SY7KpIkZZqIma2JZM23t
+ Ch8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653338; x=1696258138;
+ d=1e100.net; s=20230601; t=1695653339; x=1696258139;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iR1iGRTKQhM4i1nnnC3x69E8sH/nb//WSFW8YZTcQR4=;
- b=Vq3n1xTXlk0qx9wglJI1XODI2zKHX0SvQAuaYXYG5WYC44QYIEAoe0fAqxywWbH/Di
- EgFW+mnso7j9O+4UsPfn/dfJsDShEcL0ZsieduKNGN5On0qx4+2jInTI2L//vI4XppFy
- 1Tt/hkyfYnxwFHMHSX4ShhkQfDpOVzQXYUCSByroquXRMm16oSCpF1oP2Q94oroJZwLl
- cfYEs/3Q4lnhfXBQaT+Rfo4rzkbNrR1wr8RsUWfB6NEJIA+Kilh3YkEI6u7czeJG4jgZ
- Fjfoa6PrFM30Ua5EVWeJtHtma5S1f4HgDHbb/0fdJdRsUDJVxDWb5W5f1/zzEFpjoT1u
- aKrQ==
-X-Gm-Message-State: AOJu0Yx72HLg2SUOMmb2ejClM8XlXYsHTMyZypMVyuw3bYfS7AHx3BwQ
- 9CN9k7spSvZi4lBk16u76Go3cQ==
-X-Google-Smtp-Source: AGHT+IHugUQ5tOq6CRzPkYCzsBd9E4Yy/hi2wf4KRfr4/Tz70/a43yWShtUDMYE1btwRst1FJhQGdw==
-X-Received: by 2002:adf:eb84:0:b0:31f:bab8:a31a with SMTP id
- t4-20020adfeb84000000b0031fbab8a31amr5254791wrn.39.1695653337710; 
- Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
+ bh=kNHX4JyhoYexAQqB9a7CrjUa8yJRKrNW0ix3Ut30RxE=;
+ b=i3Iq+lp9GJ8oE0MSbqlUSRqTDTp08n6A8mc59XesgBa1cLHziCElRYD6lL4toDPRHj
+ kVlbPgamlLLR9nZOrb8mHf3cHcFbptn3zNR7UnVo0F61p2+w4oDX1ks9oLXezkMCVdkR
+ MHTSWlJCM6gYTv+wSWBF1BA0ol1DLuGtJdopuSnLHZ/aoW1E1CA2vXgQLMTfflvDD7RV
+ 6tDh2z7EXn1WI29ZdXDJtAVV7JUM2rWhcdqc4vcZ/4MyuZV9Qu9pEbTfsb5wqnmGGGjP
+ 4ZN7yQIyGw+2WItDJQd1RsrIdToDIIGUxa2GYV60yfQoJR5PFhN75ZbkGTmFAFejlByM
+ AzhA==
+X-Gm-Message-State: AOJu0YzpDjv7y9aq65nYI/JhVLHQ/DkryDT59B7fD4d4ZEs75IfYuHSa
+ q5V/Rm4pBMozd9lOyH8TDr+oSw==
+X-Google-Smtp-Source: AGHT+IGMr7N7urKQ8V3Sq28hXqy9yAVrCdYa0uBVNGkQ33p+6KFVM9aPbd7eskGG9fS//8pY41zZPg==
+X-Received: by 2002:a05:600c:5192:b0:405:75f0:fd31 with SMTP id
+ fa18-20020a05600c519200b0040575f0fd31mr3794870wmb.31.1695653339092; 
+ Mon, 25 Sep 2023 07:48:59 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- bw10-20020a0560001f8a00b0032326908972sm3557423wrb.17.2023.09.25.07.48.56
+ 8-20020a05600c230800b003fe61c33df5sm15386125wmo.3.2023.09.25.07.48.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id F3B991FFC2;
- Mon, 25 Sep 2023 15:48:55 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 1A8A31FFBB;
+ Mon, 25 Sep 2023 15:48:56 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Alistair Francis <alistair.francis@wdc.com>,
@@ -90,18 +90,19 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 08/31] configure: ensure dependency for cross-compile setup
-Date: Mon, 25 Sep 2023 15:48:31 +0100
-Message-Id: <20230925144854.1872513-9-alex.bennee@linaro.org>
+ Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH 09/31] gdbstub: Fix target_xml initialization
+Date: Mon, 25 Sep 2023 15:48:32 +0100
+Message-Id: <20230925144854.1872513-10-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,28 +125,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If we update configure we should make sure we regenerate all the
-compiler details. We should also ensure those details are upto date
-before building the TCG tests.
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
+target_xml is no longer a fixed-length array but a pointer to a
+variable-length memory.
+
+Fixes: 56e534bd11 ("gdbstub: refactor get_feature_xml")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230912224107.29669-2-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configure | 2 ++
- 1 file changed, 2 insertions(+)
+ gdbstub/softmmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/configure b/configure
-index e83872571d..a95e0f5767 100755
---- a/configure
-+++ b/configure
-@@ -1788,6 +1788,8 @@ for target in $target_list; do
-           echo "HOST_GDB_SUPPORTS_ARCH=y" >> "$config_target_mak"
-       fi
+diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
+index 9f0b8b5497..42645d2220 100644
+--- a/gdbstub/softmmu.c
++++ b/gdbstub/softmmu.c
+@@ -292,7 +292,7 @@ static int find_cpu_clusters(Object *child, void *opaque)
+         assert(cluster->cluster_id != UINT32_MAX);
+         process->pid = cluster->cluster_id + 1;
+         process->attached = false;
+-        process->target_xml[0] = '\0';
++        process->target_xml = NULL;
  
-+      echo "$config_target_mak: configure" >> Makefile.prereqs
-+      echo "build-tcg-tests-$target: $config_target_mak" >> Makefile.prereqs
-       echo "run-tcg-tests-$target: $qemu\$(EXESUF)" >> Makefile.prereqs
-       tcg_tests_targets="$tcg_tests_targets $target"
-   fi
+         return 0;
+     }
 -- 
 2.39.2
 
