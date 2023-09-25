@@ -2,85 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9808A7ADD89
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FE57ADD8A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:03:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkoyv-00071f-Kb; Mon, 25 Sep 2023 13:02:49 -0400
+	id 1qkozR-0007CQ-Il; Mon, 25 Sep 2023 13:03:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkoyj-00070y-7r
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:02:37 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkoyh-0000VE-LL
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:02:37 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-4060b623e64so2056155e9.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 10:02:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695661354; x=1696266154; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=r6okw1Z48GygwGrL/A+n/4XaSUBcIguRH2aT58vj3E8=;
- b=JY/IC+hDKb5rmp52+q3UIJhGR5pX2CPWJjADCU3b+j65OTR+Np+I4EE6Ftptgbbe03
- JCm1UFH8NFg/8HIBuf2DhsQVMwJ0SIjY9cLTr4cJGwfZezD94QRagGb7MI13O4bfNzLz
- ne1fvHNmI1bqGHYVZFaaauumPjxUsorMmQPPR7jiGaL+1UiS206AUtGiNOEyQ6Q9IcJZ
- A08llUO1uQHF6KptCrL2wqF92AOAqpi7XmAU3MllY3p3GCfYlR70HngSsgY7fQpyUaS+
- lzIU8QwRRXcpVIkB4hHoOZAzC2Ua6g8GcbtC4pboZsrvoyq7IBuNGDOitZFXSCTay501
- DQFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695661354; x=1696266154;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=r6okw1Z48GygwGrL/A+n/4XaSUBcIguRH2aT58vj3E8=;
- b=o+Jn+WWeD2b9ZaTVSA4vPXiuB+2sChQwX7rdXQ8HX0intdQQS0GD95sLmaoGLxmFz2
- nWad9ZXjmDwVMu5HEtY9aRYEkcst1LWEZos8HjECBD9C4z0dqXMakAi+wXpe7XLo+pkg
- xk2Su7Oluxlh0ua8a9YhqAs5030taCQGEMlto5MiKmXdNKGJBOdel9pcHugL1ObAauLj
- xXVsv9GiFOFhGirE296nV+R29YCswjUwF24fextRSFQO6U2QR4zpQmOop5YFRRNyvbHG
- ycbMZRRZLMu2I8Vs1/1IegX3/4Bf7kyP74bFycNN5x+n/H28C/oCTjaJ5rtOirxazGET
- goyA==
-X-Gm-Message-State: AOJu0Yz+3RGbvm64ZE8dTxrr96pyeuPE3xG8FgB/OyizIfkfWYKQO3ds
- 08tKTPTLEuQ0GTWfwlKk0oMqQQ==
-X-Google-Smtp-Source: AGHT+IGEZuqpaMGaY/4w538UB73rDuEBBXEgKpnvobxY6QVr/I4vp/9idaHK/F2NH7U8CGJBP8pcAA==
-X-Received: by 2002:a7b:cb98:0:b0:405:89a1:7642 with SMTP id
- m24-20020a7bcb98000000b0040589a17642mr215401wmi.1.1695661354003; 
- Mon, 25 Sep 2023 10:02:34 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- s9-20020a05600c45c900b0040550c20cbcsm7903141wmo.24.2023.09.25.10.02.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 10:02:33 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 3D9931FFBB;
- Mon, 25 Sep 2023 18:02:33 +0100 (BST)
-References: <20230925144854.1872513-1-alex.bennee@linaro.org>
- <20230925144854.1872513-5-alex.bennee@linaro.org>
-User-agent: mu4e 1.11.20; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Edgar E. Iglesias <edgar.iglesias@gmail.com>
-Subject: Re: [PATCH 04/31] docs: mark CRIS support as deprecated
-Date: Mon, 25 Sep 2023 18:01:49 +0100
-In-reply-to: <20230925144854.1872513-5-alex.bennee@linaro.org>
-Message-ID: <871qemrxsm.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qkozQ-0007BZ-1A
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:03:20 -0400
+Received: from mout.kundenserver.de ([212.227.126.133])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qkozO-0000es-53
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:03:19 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue011 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1Mgebs-1rIkhD43JM-00h46z; Mon, 25 Sep 2023 19:03:16 +0200
+Message-ID: <8268a9df-7f21-f3c0-4b89-8fb1feb3f256@vivier.eu>
+Date: Mon, 25 Sep 2023 19:03:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 01/20] q800-glue.c: convert to Resettable interface
+Content-Language: fr
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
+ <20230909094827.33871-2-mark.cave-ayland@ilande.co.uk>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <20230909094827.33871-2-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:9edEKdYnCxdEL8LpSImZ7PExheo9minQQvS2rXmeLqRENaJV7DT
+ O2jGvkQzuBgmZBNK4RrnenQtcis42acwd6BQsJ13vzJih1XD5GnrdCkXZwFm1zK/AA6utx5
+ m0H0z795ocIxE08C1ax+u6Ww5TJOyewZ/XpYa1hWvc8GqjGt1oLxWkHs9tWGOKeAM4/fqfC
+ BnxZR4KfJOY4sy0rVkhig==
+UI-OutboundReport: notjunk:1;M01:P0:jwJevqP8x0I=;7ZgSm9I2gNiCKkEg24CVPVOKQbq
+ pvJQ8ZM4AnMENXXMYOhj+eC38tlDZ/bqGNKVB29xxVbsv3wYh6it3i8BLnFCQhBN1M12O8MOw
+ 9+2Hg89u0pOwyVuA1jRZhCXBc3+WHz7riDLZqqz5avN+5qzHR0YCLQpUbBjsZsCNJKGXQF/wp
+ boWcgk8DztJ/Vu0f03Tja3mrRrh56YWSmufkm4uht4Bp+xduOrpR8L6aqehp7h9W5RT8LG40o
+ 1lcp2BErX4WW5SRVWpWyt3EH/9IPdJgPdilLTNNRP5j2sk4vpaPn+FOjZYWy/NLZDgSeanNJ7
+ 13h2ITvkonxMvaFY+iEvVovKcnkEIH6/ghdw730hXO1KSZtWGkm1FQDPaOeBy96fz0lNu5Gqb
+ 3G8c8JxpROrCCmKJ14UU2apusautYP3wMlLMpzpI+rr6d8jcA5PmkI7jytaJrWre+XY2qkWkF
+ coMWNlCZqHrJcccwvtKCgn5fklDBVA/yPek3ixa3Gt2VcfZhChoKDgtrlUiwBIX1R6KBFf+0a
+ 3Ja0PtOZRNWGGoNkLbBL3kutsYSycfDa5JReefVY3bOJHjsC6Lw8ALskvePbkEF2Rya/rrlbj
+ YRvfB5qsbkL4QmDWNvGHurghYwS5767zGQUIe057fsphkoo8j3auDN4agzHCSxvPp7SYI6N44
+ 5CfVStus4qCxJsz5AhcohngxjZ6vHojddmHo/tVrL1++gP5gTi7PGLGflHHw6yL8+ss7K/8Ez
+ eIRLhGs7qHX4nFRESK7Qw8HOF6HMgK8C/KoyUORoTJYoLxs8oPbbqL4xRGE1bqAyMS1ZazAfw
+ a1Cf+S11WTeh1KFhtPX/YDxO6CMG9yxAGPrVxpMeCeI6eqwvs/2WquCx0TQqCp8GwK0lwVmWA
+ wBiVQnWIGVlwJdQ==
+Received-SPF: none client-ip=212.227.126.133; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,53 +74,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Alex Benn=C3=A9e <alex.bennee@linaro.org> writes:
-
-> This might be premature but while streamling the avocado tests I
-> realised the only tests we have are "check-tcg" ones. The aging
-> fedora-criss-cross image works well enough for developers but can't be
-> used in CI as we need supported build platforms to build QEMU.
->
-> Does this mean the writing is on the wall for this architecture?
->
-> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Cc: Rabin Vincent <rabinv@axis.com>
-> Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
-
-doh, I meant:
-
-Edgar E. Iglesias <edgar.iglesias@gmail.com>
-
+Le 09/09/2023 à 11:48, Mark Cave-Ayland a écrit :
+> Convert the GLUE device to 3-phase reset. The legacy method
+> doesn't do anything that's invalid in the hold phase, so the
+> conversion is simple and not a behaviour change.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->  docs/about/deprecated.rst | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index dc4da95329..7cfe313aa6 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -399,6 +399,17 @@ Specifying the iSCSI password in plain text on the c=
-ommand line using the
->  used instead, to refer to a ``--object secret...`` instance that provides
->  a password via a file, or encrypted.
->=20=20
-> +TCG CPUs
-> +--------
-> +
-> +CRIS CPU architecture (since 8.1)
-> +'''''''''''''''''''''''''''''''''
-> +
-> +The CRIS architecture was pulled from Linux in 4.17 and the compiler
-> +is no longer packaged in any distro making it harder to run the
-> +``check-tcg`` tests. Unless we can improve the testing situation there
-> +is a chance the code will bitrot without anyone noticing.
-> +
->  Backwards compatibility
->  -----------------------
+>   hw/m68k/q800-glue.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/hw/m68k/q800-glue.c b/hw/m68k/q800-glue.c
+> index 34c4f0e987..710a5c331e 100644
+> --- a/hw/m68k/q800-glue.c
+> +++ b/hw/m68k/q800-glue.c
+> @@ -166,9 +166,9 @@ static void glue_nmi_release(void *opaque)
+>       GLUE_set_irq(s, GLUE_IRQ_IN_NMI, 0);
+>   }
+>   
+> -static void glue_reset(DeviceState *dev)
+> +static void glue_reset_hold(Object *obj)
+>   {
+> -    GLUEState *s = GLUE(dev);
+> +    GLUEState *s = GLUE(obj);
+>   
+>       s->ipr = 0;
+>       s->auxmode = 0;
+> @@ -223,11 +223,12 @@ static void glue_init(Object *obj)
+>   static void glue_class_init(ObjectClass *klass, void *data)
+>   {
+>       DeviceClass *dc = DEVICE_CLASS(klass);
+> +    ResettableClass *rc = RESETTABLE_CLASS(klass);
+>       NMIClass *nc = NMI_CLASS(klass);
+>   
+>       dc->vmsd = &vmstate_glue;
+> -    dc->reset = glue_reset;
+>       device_class_set_props(dc, glue_properties);
+> +    rc->phases.hold = glue_reset_hold;
+>       nc->nmi_monitor_handler = glue_nmi;
+>   }
+>   
 
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
