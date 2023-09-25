@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23FE7ADADC
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FF27ADAD7
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:01:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkn3T-0000Vv-Ep; Mon, 25 Sep 2023 10:59:23 -0400
+	id 1qkn3K-00006a-1u; Mon, 25 Sep 2023 10:59:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkn3A-0008TD-Sy
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:59:08 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qkn2u-0008GV-Nx
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:58:48 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkn2u-0002Hk-RO
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:59:04 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-405524e6740so43653445e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:58:48 -0700 (PDT)
+ id 1qkn2o-0002Bd-Ux
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:58:48 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40572aeb673so33363565e9.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:58:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653927; x=1696258727; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653921; x=1696258721; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=51IOq6TYaNyuJXGEkqG0oju+dqewQYpgGsGyKSLbnRk=;
- b=lUIDmU+GOfcrYZYDX+buNryfjYWavL2LwSgtGANiwd4IZNkpII6H7YV4vPoezdsgK8
- mgQL/bBYlcW5SHLdUGEj4lHcVKnBHfZC1b7EkftrUkkexzxRaIRPVKn8i8BLcGxYoXG+
- LbpJvqflIDvcwmcOxpT5+s3tB79Lb0A92nfPA5+TiXmYteVeGtc260yT3wAw+gIk/h1w
- WDRO3ZV/bTh5K9DhNoFFfd+8ejdULoGnTeDRNe9Cb+fLb+/TVlfjMrU0KZrP2ziOt5Ux
- +4xOg2YIaiWMeSAb6MvGCOv4P8lyfFwXQRyFsAO48RHSyqtZAbUz7Kv0z3fYk9qL6EdU
- JqMQ==
+ bh=aeCFFwXCm+A4QdL8cQip0cKdXWBZunNX9KWO8pZi6hE=;
+ b=wmBBpzmvlxnyPj3VQiJZH7Mb3RFKwuZJZo3hPp97bpXDGqOBR9F+W41j3SKzmPRiWA
+ VH/OL9LL7/g9SVmHd1srLS0LzrgOfGDT0GbW8Eb4kiL1aRtetTkVEFCwmrtlvTgs5739
+ 33Thjx9IttZSIhd4XXZ1QlsaOCfDFsuyEl3TwTuvK8Dudhv1oubGVA2Jzzui2I87JzWV
+ wM6uVxvJ8QkyDBqYfAUXHqNG/ksXx+7Z6ANFWLZE3XPKLNKJz3EkHjLuZc7a/L5xkDiP
+ wo2Wmkb3W44DeP4WS3IO8lOzWwK8OBGgfgC9xlzBCBzgFSioCsyCPeACgjxu2mQ6Xghc
+ gKGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653927; x=1696258727;
+ d=1e100.net; s=20230601; t=1695653921; x=1696258721;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=51IOq6TYaNyuJXGEkqG0oju+dqewQYpgGsGyKSLbnRk=;
- b=Abm4hxLia8ck5QMuYfZ/DSIcY5TrrIZppGTtuDZ/HZT7px0dZ7zyAg4MzFMJBN+cQp
- n6e+gHvupXgj4HP6Dsh4RVds5Sic3TIm11sGXl/F4mPclr9c4SsuRnsXmsAHEqPTQWCD
- AHU7fK6GHXSpSVm2F0HXgHK7hSO7Y1c4cwJswqz+ibpqirXikBRD7ldXsaUxz5dAOPNL
- xcTjKxtfbmp/6fDuZ7MQVzs/KDIo/3q3mANuYxqiV7DLSeN/buRXB+DVfCaVicYscIr4
- zU69NseiX+tMywbPHQbjSGiZG/J1I1B6MONXUWaOoDs1l8ONhsazp5uwIqQ+wQq3I2QV
- WrCQ==
-X-Gm-Message-State: AOJu0YwEZg10by1io+jZJAcO6BrtfTpFf6A6mDEC38puP7+f5GUZaacW
- BdQspcgkxXFuBT3efxIsV3q+xw==
-X-Google-Smtp-Source: AGHT+IFp2wA6DneLQRdyFfr+1lVFyb49Nq9B9pLZ1yyg3NDwxwyPpU9yunMeIvahn7Nf65Lq1ah57Q==
-X-Received: by 2002:adf:f404:0:b0:31f:eb88:e3c8 with SMTP id
- g4-20020adff404000000b0031feb88e3c8mr6204375wro.32.1695653927087; 
- Mon, 25 Sep 2023 07:58:47 -0700 (PDT)
+ bh=aeCFFwXCm+A4QdL8cQip0cKdXWBZunNX9KWO8pZi6hE=;
+ b=h9WO4WF5Iucbds9gY9aZBaiVkZCJiQGviH//+aUDuu3j4hFxzocnhm5ZjDsKGAEo21
+ wreJzNMaMzJGjqGaHro+QqA7U7s5LWFphfa87zBblT+9+AIFJoaBXe6YR+hoKDR4rc2w
+ rXgIja/0KXHZQofAAUqFxD72zziCy1jcn1so1WO/xXKvPSTb+7Ns2nWnTye6TUW2pyQ9
+ z9HwR4IHqwNbLjI7yyporrS4RDjFdx9pk2t+QDLCSZcKg4usD4Z/J35U6exvbTmbIav7
+ yfAFE1JXp9A0KNrRcK7QmZRWn9I08v0hy0ellQM4djRjws0oIj2XDH2rwdW9cYJFP0zs
+ GIEw==
+X-Gm-Message-State: AOJu0YzyzLdCHIfDb7rJTzATL0r04ZXeMqPqTlcWuvkPnkZ/CY1f/MPC
+ XpRcporS0kxQIEyWKMN4I1iO+Q==
+X-Google-Smtp-Source: AGHT+IHFSwhv1ZDVTaQUicchew2LE/1enh8F7w94hdBqCcq21Z5zTqmrgbzfuabMJjszGdjEODPmGA==
+X-Received: by 2002:adf:e4ce:0:b0:321:6414:5869 with SMTP id
+ v14-20020adfe4ce000000b0032164145869mr7303953wrm.58.1695653920841; 
+ Mon, 25 Sep 2023 07:58:40 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- s13-20020a5d424d000000b0031753073abcsm12017142wrr.36.2023.09.25.07.58.42
+ d29-20020adfa41d000000b003197869bcd7sm6970991wra.13.2023.09.25.07.58.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 07:58:45 -0700 (PDT)
+ Mon, 25 Sep 2023 07:58:40 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 7CEA01FFBE;
+ by zen.linaroharston (Postfix) with ESMTP id 99E231FFCC;
  Mon, 25 Sep 2023 15:48:57 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,19 +90,18 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 20/31] gdbstub: Replace gdb_regs with an array
-Date: Mon, 25 Sep 2023 15:48:43 +0100
-Message-Id: <20230925144854.1872513-21-alex.bennee@linaro.org>
+ Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH 21/31] accel/tcg: Add plugin_enabled to DisasContextBase
+Date: Mon, 25 Sep 2023 15:48:44 +0100
+Message-Id: <20230925144854.1872513-22-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,117 +124,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-An array is a more appropriate data structure than a list for gdb_regs
-since it is initialized only with append operation and read-only after
-initialization.
-
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230912224107.29669-13-akihiko.odaki@daynix.com>
-[AJB: fixed a checkpatch violation]
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230824181233.1568795-2-richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- include/hw/core/cpu.h |  2 +-
- gdbstub/gdbstub.c     | 35 +++++++++++++++++++++--------------
- 2 files changed, 22 insertions(+), 15 deletions(-)
+ include/exec/translator.h | 2 ++
+ accel/tcg/translator.c    | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index 5ae479a961..0338640e3d 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -364,7 +364,7 @@ struct CPUState {
+diff --git a/include/exec/translator.h b/include/exec/translator.h
+index 4e17c4f401..bf5bac260a 100644
+--- a/include/exec/translator.h
++++ b/include/exec/translator.h
+@@ -72,6 +72,7 @@ typedef enum DisasJumpType {
+  * @num_insns: Number of translated instructions (including current).
+  * @max_insns: Maximum number of instructions to be translated in this TB.
+  * @singlestep_enabled: "Hardware" single stepping enabled.
++ * @plugin_enabled: TCG plugin enabled in this TB.
+  *
+  * Architecture-agnostic disassembly context.
+  */
+@@ -83,6 +84,7 @@ typedef struct DisasContextBase {
+     int num_insns;
+     int max_insns;
+     bool singlestep_enabled;
++    bool plugin_enabled;
+     void *host_addr[2];
+ } DisasContextBase;
  
-     CPUJumpCache *tb_jmp_cache;
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index 1a6a5448c8..37f8dadbbd 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -156,6 +156,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
  
--    struct GDBRegisterState *gdb_regs;
-+    GArray *gdb_regs;
-     int gdb_num_regs;
-     int gdb_num_g_regs;
-     QTAILQ_ENTRY(CPUState) node;
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 177dce9ba2..a041b1c0aa 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -51,7 +51,6 @@ typedef struct GDBRegisterState {
-     gdb_get_reg_cb get_reg;
-     gdb_set_reg_cb set_reg;
-     const char *xml;
--    struct GDBRegisterState *next;
- } GDBRegisterState;
+     plugin_enabled = plugin_gen_tb_start(cpu, db, cflags & CF_MEMI_ONLY);
++    db->plugin_enabled = plugin_enabled;
  
- GDBState gdbserver_state;
-@@ -386,7 +385,8 @@ static const char *get_feature_xml(const char *p, const char **newp,
-                 xml,
-                 g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-                                         cc->gdb_core_xml_file));
--            for (r = cpu->gdb_regs; r; r = r->next) {
-+            for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+                r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-                 g_ptr_array_add(
-                     xml,
-                     g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-@@ -430,7 +430,8 @@ static int gdb_read_register(CPUState *cpu, GByteArray *buf, int reg)
-         return cc->gdb_read_register(cpu, buf, reg);
-     }
- 
--    for (r = cpu->gdb_regs; r; r = r->next) {
-+    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+        r = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-         if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-             return r->get_reg(env, buf, reg - r->base_reg);
-         }
-@@ -448,7 +449,8 @@ static int gdb_write_register(CPUState *cpu, uint8_t *mem_buf, int reg)
-         return cc->gdb_write_register(cpu, mem_buf, reg);
-     }
- 
--    for (r = cpu->gdb_regs; r; r = r->next) {
-+    for (guint i = 0; i < cpu->gdb_regs->len; i++) {
-+        r =  &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-         if (r->base_reg <= reg && reg < r->base_reg + r->num_regs) {
-             return r->set_reg(env, mem_buf, reg - r->base_reg);
-         }
-@@ -461,17 +463,23 @@ void gdb_register_coprocessor(CPUState *cpu,
-                               int num_regs, const char *xml, int g_pos)
- {
-     GDBRegisterState *s;
--    GDBRegisterState **p;
--
--    p = &cpu->gdb_regs;
--    while (*p) {
--        /* Check for duplicates.  */
--        if (strcmp((*p)->xml, xml) == 0)
--            return;
--        p = &(*p)->next;
-+    guint i;
-+
-+    if (cpu->gdb_regs) {
-+        for (i = 0; i < cpu->gdb_regs->len; i++) {
-+            /* Check for duplicates.  */
-+            s = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-+            if (strcmp(s->xml, xml) == 0) {
-+                return;
-+            }
-+        }
-+    } else {
-+        cpu->gdb_regs = g_array_new(false, false, sizeof(GDBRegisterState));
-+        i = 0;
-     }
- 
--    s = g_new0(GDBRegisterState, 1);
-+    g_array_set_size(cpu->gdb_regs, i + 1);
-+    s = &g_array_index(cpu->gdb_regs, GDBRegisterState, i);
-     s->base_reg = cpu->gdb_num_regs;
-     s->num_regs = num_regs;
-     s->get_reg = get_reg;
-@@ -480,7 +488,6 @@ void gdb_register_coprocessor(CPUState *cpu,
- 
-     /* Add to end of list.  */
-     cpu->gdb_num_regs += num_regs;
--    *p = s;
-     if (g_pos) {
-         if (g_pos != s->base_reg) {
-             error_report("Error: Bad gdb register numbering for '%s', "
+     while (true) {
+         *max_insns = ++db->num_insns;
 -- 
 2.39.2
 
