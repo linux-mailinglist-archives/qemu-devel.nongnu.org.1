@@ -2,83 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97457ACE5D
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 04:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 073927ACEB8
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 05:32:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkbTE-0003tZ-Kn; Sun, 24 Sep 2023 22:37:12 -0400
+	id 1qkcJ4-0002OA-Vz; Sun, 24 Sep 2023 23:30:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbTA-0003kB-Mq
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:37:08 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qkcIx-0002NA-0T; Sun, 24 Sep 2023 23:30:43 -0400
+Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkbT9-0000Ac-62
- for qemu-devel@nongnu.org; Sun, 24 Sep 2023 22:37:08 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-31ff985e292so5152700f8f.1
- for <qemu-devel@nongnu.org>; Sun, 24 Sep 2023 19:37:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qkcIv-00030w-7B; Sun, 24 Sep 2023 23:30:38 -0400
+Received: by mail-ua1-x92d.google.com with SMTP id
+ a1e0cc1a2514c-79a2216a2d1so2015942241.2; 
+ Sun, 24 Sep 2023 20:30:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695609425; x=1696214225; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ d=gmail.com; s=20230601; t=1695612635; x=1696217435; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=EEpfVHQYJiHs/o3VXa4xKMUM5FKYuciwQMorXR+KT/8=;
- b=iSWxHcAIRYVBIgdbR5aH41IDO59L7utiP/XJ3u8Wy0eq0oevnCEia0rDrjbLWgOHum
- q7cqVO9SX1vfA8+N6H3SqoxWBSUlXAsjmDIbGEWOW6oBfX5WkP7/QvtRGa3deUI4ugfV
- qCdQ8E9zfXtJJmW5FNur3hr4JMc2RfRpVbmDo+T8l8hAESTqEwaXVsLIimBHVNtF1jzR
- Wwk4d/1vCSM1fFi8J0+wj9t9vhsvw03+8FwEtDq5muU5yNeTwrYr70AfVAwA8rcVs6wA
- Eq5ZJfqt8FFJ3qArxS5vcxFHP6SieahBgMuHnzQ4llbsHiJ9Rxq8sSQvltbKNUhah+j+
- oSkA==
+ bh=G9T+UpR7HZxXOs7aXxZ2OXpsfKV6MonZgK7TngX6oB4=;
+ b=gRdfs9wae7FSw5JnFnd8aRXC0ELOmGbMgtzn23JFGYHe0i+pffGYjKzay36IuzmJ74
+ F1Ux1hKcVzNmc9A6PZPjPu0ASPhR4n5CvQu6rTOUSTpBzNli2E0aKQBe1I9TQ6qo/imy
+ Oa7x8yUv5i3zH4fz+y4l90tu07LMuuK6e0Bzund/RGxUnhM0JN0Lce7KdtUfabp6b6PW
+ Nt7EuDRMQmnDeEOOSfHis1QQ5N9c9z89TJsQAzjUCRHCH561vcEA7wTTiKJ3Txs9HL9q
+ Ji0rVj7mZtEbHW3lh33jJ8+bnGPVZDqVWbwHcysMkF3eRene4mAX/crTjkSIoIILek9Y
+ TrRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695609425; x=1696214225;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1695612635; x=1696217435;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=EEpfVHQYJiHs/o3VXa4xKMUM5FKYuciwQMorXR+KT/8=;
- b=sNlGbXsQYy+5A8u1I4zXUG4HDjAyi5SqSAqTJXt0voZ1ZvjAODiF0onc/DyTkktKtj
- k0deHkgX01pakXc4K1i8NOXBIuE1z5PVuyjci2tT1yJUsSK9gRXhRJX7LBvSICunANqt
- 33ZrSiiOvVu4QIrFHWNbIhiSKC+is1HpCaQNEwisMxlVD2pRSBFhSfDgoPIGyZ8M3fmy
- k42lkIozVw4NGcq08JbyFwQOJ9jmF4ex4C8Q6qowvrvmiAmWtp3Cshbe/uDJDn2UFBd9
- oP7sAFJk8eePJ6uITsBKUUTVVLiXC938l2z3HsbvEbC4bsp4KE0xqDBR4Gby2jsyeY48
- zTRQ==
-X-Gm-Message-State: AOJu0YyP63O+eWeyoncinBzI7dCnJgYUeI+muuWh44xoz327DZCneFPn
- 3GLUI4/32xpZ3zRI6c6Df36dSJkU0DM=
-X-Google-Smtp-Source: AGHT+IFsC63pJBepY4CjQ7kqGZsNvkxk8CkBncfJHqnk0ltvZ03W2j8c9clsyXn1fJFYVSNZZ8fGvw==
-X-Received: by 2002:adf:ec41:0:b0:319:67ac:4191 with SMTP id
- w1-20020adfec41000000b0031967ac4191mr4558157wrn.37.1695609425578; 
- Sun, 24 Sep 2023 19:37:05 -0700 (PDT)
-Received: from karim.my.domain ([197.39.209.18])
- by smtp.gmail.com with ESMTPSA id
- s28-20020adfa29c000000b003232f167df5sm1683wra.108.2023.09.24.19.37.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 24 Sep 2023 19:37:05 -0700 (PDT)
-From: Karim Taha <kariem.taha2.7@gmail.com>
-To: qemu-devel@nongnu.org
-Cc: Richard Henderson <richard.henderson@linaro.org>,
- Warner Losh <imp@bsdimp.com>, Stacey Son <sson@FreeBSD.org>,
- Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v4 28/28] bsd-user: Implement pdfork(2) system call.
-Date: Mon, 25 Sep 2023 00:01:36 +0300
-Message-ID: <20230924210136.11966-29-kariem.taha2.7@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
-References: <20230924210136.11966-1-kariem.taha2.7@gmail.com>
+ bh=G9T+UpR7HZxXOs7aXxZ2OXpsfKV6MonZgK7TngX6oB4=;
+ b=rDhDKcvv9IsOWoaRA2dhz/gqKlFgWcYxwN15Q0BTRNZzbzHfMLRK18mcd1mvTM01SE
+ Eu5SMUJu7RtCdwfaJkyI2SGURysjB0GxZbejvPnl10eqyVi2RwZF0pJlgDQYTOnby3ir
+ a/3mQIljiDDT1/SIevGhkMKGwJEPzLxtkhDJ7DfFxlOPRkiN3DXiyJ5AeviJrrZeqXN0
+ r28kOiadx8ffRgcR7O0MyrRlAlpgJPkrYkcqW3061pMVZH86gQPyYiPPk7QPAgquisFt
+ Gz42aYMkB7FepiUw7mKJec0MomC0NHuSum6HgwiR4e1v3mdD1UNpenbjnHZFGelIjhlT
+ gUyQ==
+X-Gm-Message-State: AOJu0YwCCE5sD/CtI1rMraqCYvEq9JyF7mb8RAc1gCyuVGCHwB+OQ2P7
+ 8+L5m+wRkL2b1v3PAYFxapxhA9G6EtkyYuiC2jk=
+X-Google-Smtp-Source: AGHT+IFPJc7/GfZHWZEOJc9wXuvaw77sVkOZiT8MbQ2yd8k8Svl9OiVNe2NLkx+Oy4DCrepsDKTd8FdSt2BhJZwB5Z0=
+X-Received: by 2002:a05:6102:134f:b0:450:f3aa:f405 with SMTP id
+ j15-20020a056102134f00b00450f3aaf405mr2812372vsl.17.1695612635058; Sun, 24
+ Sep 2023 20:30:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42b.google.com
-X-Spam_score_int: -2
-X-Spam_score: -0.3
-X-Spam_bar: /
-X-Spam_report: (-0.3 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+References: <20230920112020.651006-1-dbarboza@ventanamicro.com>
+In-Reply-To: <20230920112020.651006-1-dbarboza@ventanamicro.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Mon, 25 Sep 2023 13:30:08 +1000
+Message-ID: <CAKmqyKNaimFBiiRBdrt137fcD0fh+oepSOi5zgfKL9nrWmSCsw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/19] riscv: split TCG/KVM accelerators from cpu.c
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
+ bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
+ palmer@rivosinc.com, philmd@linaro.org, ajones@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::92d;
+ envelope-from=alistair23@gmail.com; helo=mail-ua1-x92d.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,74 +87,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+On Wed, Sep 20, 2023 at 9:26=E2=80=AFPM Daniel Henrique Barboza
+<dbarboza@ventanamicro.com> wrote:
+>
+> Hi,
+>
+> In this version we changed patch 10 (remove kvm-stub.c) as suggested by
+> Phil to not include non-KVM stubs in kvm_riscv.h. A change in patch 05
+> requested by Zhiwei was also made.
+>
+> Patches based on Alistair's riscv-to-apply.next.
+>
+> Patches missing acks: patch 10
+>
+> Changes from v2:
+> - patch 05:
+>   - remove riscv_cpu_add_user_properties() from riscv_host_cpu_init()
+> - patch 10:
+>   - do not add non-KVM stubs in kvm_riscv.h
+> - v2 link: https://lore.kernel.org/qemu-riscv/20230906091647.1667171-1-db=
+arboza@ventanamicro.com/
+>
+> Daniel Henrique Barboza (19):
+>   target/riscv: introduce TCG AccelCPUClass
+>   target/riscv: move riscv_cpu_realize_tcg() to TCG::cpu_realizefn()
+>   target/riscv: move riscv_cpu_validate_set_extensions() to tcg-cpu.c
+>   target/riscv: move riscv_tcg_ops to tcg-cpu.c
+>   target/riscv/cpu.c: add .instance_post_init()
+>   target/riscv: move 'host' CPU declaration to kvm.c
+>   target/riscv/cpu.c: mark extensions arrays as 'const'
+>   target/riscv: move riscv_cpu_add_kvm_properties() to kvm.c
+>   target/riscv: make riscv_add_satp_mode_properties() public
+>   target/riscv: remove kvm-stub.c
+>   target/riscv: introduce KVM AccelCPUClass
+>   target/riscv: move KVM only files to kvm subdir
+>   target/riscv/kvm: do not use riscv_cpu_add_misa_properties()
+>   target/riscv/cpu.c: export set_misa()
+>   target/riscv/tcg: introduce tcg_cpu_instance_init()
+>   target/riscv/cpu.c: make misa_ext_cfgs[] 'const'
+>   target/riscv/tcg: move riscv_cpu_add_misa_properties() to tcg-cpu.c
+>   target/riscv/cpu.c: export isa_edata_arr[]
+>   target/riscv/cpu: move priv spec functions to tcg-cpu.c
 
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
-Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Warner Losh <imp@bsdimp.com>
----
- bsd-user/freebsd/os-proc.h    | 32 ++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  4 ++++
- 2 files changed, 36 insertions(+)
+Thanks!
 
-diff --git a/bsd-user/freebsd/os-proc.h b/bsd-user/freebsd/os-proc.h
-index 0a3cd0ef57..d641878034 100644
---- a/bsd-user/freebsd/os-proc.h
-+++ b/bsd-user/freebsd/os-proc.h
-@@ -258,4 +258,36 @@ static inline abi_long do_freebsd_rfork(void *cpu_env, abi_long flags)
- 
- }
- 
-+/* pdfork(2) */
-+static inline abi_long do_freebsd_pdfork(void *cpu_env, abi_ulong target_fdp,
-+        abi_long flags)
-+{
-+    abi_long ret;
-+    abi_ulong child_flag;
-+    int fd;
-+
-+    fork_start();
-+    ret = pdfork(&fd, flags);
-+    if (ret == 0) {
-+        /* child */
-+        child_flag = 1;
-+        target_cpu_clone_regs(cpu_env, 0);
-+    } else {
-+        /* parent */
-+        child_flag = 0;
-+        if (put_user_s32(fd, target_fdp)) {
-+            return -TARGET_EFAULT;
-+        }
-+    }
-+
-+    /*
-+     * The fork system call sets a child flag in the second return
-+     * value: 0 for parent process, 1 for child process.
-+     */
-+    set_second_rval(cpu_env, child_flag);
-+    fork_end(child_flag);
-+
-+    return ret;
-+}
-+
- #endif /* BSD_USER_FREEBSD_OS_PROC_H */
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 4c4e773d1d..d04712f0a7 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -238,6 +238,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_freebsd_rfork(cpu_env, arg1);
-         break;
- 
-+    case TARGET_FREEBSD_NR_pdfork: /* pdfork(2) */
-+        ret = do_freebsd_pdfork(cpu_env, arg1, arg2);
-+        break;
-+
-     case TARGET_FREEBSD_NR_execve: /* execve(2) */
-         ret = do_freebsd_execve(arg1, arg2, arg3);
-         break;
--- 
-2.42.0
+Applied to riscv-to-apply.next
 
+Alistair
+
+>
+>  hw/intc/riscv_aplic.c                 |   2 +-
+>  hw/riscv/virt.c                       |   2 +-
+>  target/riscv/cpu.c                    | 988 ++------------------------
+>  target/riscv/cpu.h                    |  30 +-
+>  target/riscv/csr.c                    |   1 +
+>  target/riscv/kvm-stub.c               |  30 -
+>  target/riscv/{kvm.c =3D> kvm/kvm-cpu.c} | 120 +++-
+>  target/riscv/{ =3D> kvm}/kvm_riscv.h    |   4 -
+>  target/riscv/kvm/meson.build          |   1 +
+>  target/riscv/meson.build              |   4 +-
+>  target/riscv/tcg/meson.build          |   2 +
+>  target/riscv/tcg/tcg-cpu.c            | 883 +++++++++++++++++++++++
+>  target/riscv/tcg/tcg-cpu.h            |  27 +
+>  13 files changed, 1113 insertions(+), 981 deletions(-)
+>  delete mode 100644 target/riscv/kvm-stub.c
+>  rename target/riscv/{kvm.c =3D> kvm/kvm-cpu.c} (91%)
+>  rename target/riscv/{ =3D> kvm}/kvm_riscv.h (89%)
+>  create mode 100644 target/riscv/kvm/meson.build
+>  create mode 100644 target/riscv/tcg/meson.build
+>  create mode 100644 target/riscv/tcg/tcg-cpu.c
+>  create mode 100644 target/riscv/tcg/tcg-cpu.h
+>
+> --
+> 2.41.0
+>
+>
 
