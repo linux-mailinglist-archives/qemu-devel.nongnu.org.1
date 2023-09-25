@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6552B7ADAAE
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A05157ADAA0
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:52:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmuD-0002Dv-Rd; Mon, 25 Sep 2023 10:49:49 -0400
+	id 1qkmtp-0001Xs-I9; Mon, 25 Sep 2023 10:49:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtf-0001A7-6O
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:15 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ id 1qkmtg-0001Cw-VY
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:17 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtQ-0008Gj-Hq
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:14 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-32172a50356so6204530f8f.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:00 -0700 (PDT)
+ id 1qkmtQ-0008FV-OM
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:15 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-405417465aaso54028345e9.1
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653339; x=1696258139; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653337; x=1696258137; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=r13on7w2SbSnXhlFRAWqdY9M0P6WFpp9T5fLln0Y27E=;
- b=F4f2h3MQJTmQe8AoqU2a+I/zOiPXPbyL3Cty1t62Bmv5uUkwjjzVVTqUD6AoGIQx3V
- cefY9wbmB8uN/1aAB2AuLgHSdIOtBsv4JVbwN4YlE32eGeZQA0gXDRkOz2a5bvzIm+kG
- hS4tULvDkO09gdDkpjGVwEU7WIzQWLBZrsyyxXBodFULmBvNxLIG9CgIOEFYJtbsaxp6
- VbmXvHNWntaUZmHIoJiLk9N4fxwwvhH3qj+locgYE4Naw8/hkVmWpY4JZcxR/dImC2tG
- qfE6TVzP+bZuis/SIo5WoNehknm7jlI7TcKrMb/l+bfkvy1+H8jsoA9JElwxPSAIB8cW
- 7wRQ==
+ bh=ZDyM/F5z2PX4t5z6swT9o+aFYE3lKyvYgeKJZjudJGU=;
+ b=cCNg6Q0qhqTAXvA+V86/0R0uu7KraCgNMGFtz2jlCgoxV+Vjl/G/ThAChc4Qi2KUOD
+ 9grxTxk5RwsVzNl6abwc+bBWtOTP6aTry4fpQPuYaafUo97fbO1xB6G4+7DYoCznnGcR
+ M7BR2PTSEJlq3tqOS2mDTq48/zvQsVJbAc2dy4uqDRlfe+QQb/D2nucHrX46s+XzQQxT
+ pswFbA44bp7GnY3Ab9BUw9Y+lRE7yOaf2rZSPvNNecRuBsa70lPMITpOL2DwHQKtx17i
+ oa38ETV4HFFdVqnoUlchIFRo5GUCBphSgV/XKNrCx7Lva+Q5NqRPvnHT3/Qiq257ihfj
+ PdQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653339; x=1696258139;
+ d=1e100.net; s=20230601; t=1695653337; x=1696258137;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=r13on7w2SbSnXhlFRAWqdY9M0P6WFpp9T5fLln0Y27E=;
- b=RUdAKmNzKVTtIazGvt7WwNsPC0u2aYQ+b1lem1nujlqdzk5oFDMf5fAwoRrSapm5En
- Nd5AqJJKcC1B3jYU3DSIAaadD3RWxWxFe3GothP2wawAccPMMkkA6Hyr4EPj3XtTnRgO
- oEWg7Co0+wTJ2UolirjLtmIw90VQSxeRfciMzC26e1iIpyhDgwn4bZM4dzKKG6RGCV0T
- G1/ezIuSzSchjrNTtyj32HuqgubtDWAu8sQj3xZV6Reiwj7c4hhd+E2+l4046gxblJNY
- 6Z28WRTUzGzpt/wXLzkvMNjK25C1tvYoHPqg0J9rclNXY05CUXteOo/UaJ106S5loi47
- f/LA==
-X-Gm-Message-State: AOJu0Yzc3/JjB21+t1EQQynwWwnsrj/ySGR/LbmBQHYRYo2vVcM3kTzA
- vioxF2D3zaA/bgDuQ3mOK3lHNw==
-X-Google-Smtp-Source: AGHT+IE3kyYs4YdsaciWtbu3ns+G9H7zM0tAc4x8OuL+AXjRejIOFYblrX6yxmTWrGqVvOb2xZxPUg==
-X-Received: by 2002:a05:6000:185:b0:321:8d08:855e with SMTP id
- p5-20020a056000018500b003218d08855emr5684333wrx.24.1695653338893; 
- Mon, 25 Sep 2023 07:48:58 -0700 (PDT)
+ bh=ZDyM/F5z2PX4t5z6swT9o+aFYE3lKyvYgeKJZjudJGU=;
+ b=h1XF4XN6AKOBxChTxQuAJNpsmt87j3ykQavnwTVMMRd1kTazRGlWZGeNh7kDsIOkSi
+ B20Gz2923QHbigjcwxirraYIbf0cprC/os/272OcVBQzaQFMpUdr3JaAiFmxOA9DxBV5
+ 5MkIOEfhVyCxIXf+WB/Rr3YI9QNkU+WjccOhDtumekgWx3BeHHb5QC4lP3/OVstZ2PtT
+ HbRw+ijq2Yhgh5HLqT1hUdk6pGKngDxPsJ/b0n/z2Sy7Cr1aYYyG7A2r5yqDUQBa3Kol
+ HU65hdgkWMBv2dTwFQq8MO7jbkpLg6cxNUmCuZZ2a5xCMf1sBSOV1edCKMG1sbGhegBO
+ znkQ==
+X-Gm-Message-State: AOJu0YwmtkNrFi3ZY6yndKYeTmV77oXr0yrHQ5C80lRTEF64/0xQNERw
+ txd54vBWqcECOZzpley4rfw+mQ==
+X-Google-Smtp-Source: AGHT+IFoUDF3xaSfQcn6ibrc1NNHdt07R94Aer1qgTYlNbBFBvCxtP/nwf9vmP/Kia7l8NcB4i+a8Q==
+X-Received: by 2002:adf:fcd0:0:b0:31f:f8c1:f43c with SMTP id
+ f16-20020adffcd0000000b0031ff8c1f43cmr6112503wrs.41.1695653337674; 
+ Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- f18-20020a5d58f2000000b00317b0155502sm12047215wrd.8.2023.09.25.07.48.56
+ w12-20020a5d608c000000b003179d5aee67sm12080936wrt.94.2023.09.25.07.48.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A6FCC1FFC0;
+ by zen.linaroharston (Postfix) with ESMTP id C02DE1FFC1;
  Mon, 25 Sep 2023 15:48:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,18 +91,17 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 05/31] tests/docker: make docker engine choice entirely
- configure driven
-Date: Mon, 25 Sep 2023 15:48:28 +0100
-Message-Id: <20230925144854.1872513-6-alex.bennee@linaro.org>
+Subject: [PATCH 06/31] configure: allow user to override docker engine
+Date: Mon, 25 Sep 2023 15:48:29 +0100
+Message-Id: <20230925144854.1872513-7-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,62 +124,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since 0b1a649047 (tests/docker: use direct RUNC call to build
-containers) we ended up with the potential for the remaining docker.py
-script calls to deviate from the direct RUNC calls. Fix this by
-dropping the use of ENGINE in the makefile and rely entirely on what
-we detect at configure time.
+If you have both engines installed but one is broken you are stuck
+with the automagic. Allow the user to override the engine for this
+case.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- configure                     | 1 -
- tests/docker/Makefile.include | 7 ++-----
- 2 files changed, 2 insertions(+), 6 deletions(-)
+ configure | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/configure b/configure
-index e08127045d..707132a3ae 100755
+index 707132a3ae..ebad155d9e 100755
 --- a/configure
 +++ b/configure
-@@ -1694,7 +1694,6 @@ if test -n "$gdb_bin"; then
+@@ -180,6 +180,7 @@ fi
+ # some defaults, based on the host environment
+ 
+ # default parameters
++container_engine="auto"
+ cpu=""
+ cross_compile="no"
+ cross_prefix=""
+@@ -787,6 +788,8 @@ for opt do
+   ;;
+   --disable-containers) use_containers="no"
+   ;;
++  --container-engine=*) container_engine="$optarg"
++  ;;
+   --gdb=*) gdb_bin="$optarg"
+   ;;
+   # everything else has the same name in configure and meson
+@@ -921,6 +924,7 @@ Advanced options (experts only):
+   --enable-plugins
+                            enable plugins via shared library loading
+   --disable-containers     don't use containers for cross-building
++  --container-engine=TYPE  which container engine to use [$container_engine]
+   --gdb=GDB-path           gdb to use for gdbstub tests [$gdb_bin]
+ EOF
+   meson_options_help
+@@ -1195,14 +1199,14 @@ fi
+ container="no"
+ runc=""
+ if test $use_containers = "yes" && (has "docker" || has "podman"); then
+-    case $($python "$source_path"/tests/docker/docker.py probe) in
++    case $($python "$source_path"/tests/docker/docker.py --engine "$container_engine" probe) in
+         *docker) container=docker ;;
+         podman) container=podman ;;
+         no) container=no ;;
+     esac
+     if test "$container" != "no"; then
+         docker_py="$python $source_path/tests/docker/docker.py --engine $container"
+-        runc=$($python "$source_path"/tests/docker/docker.py probe)
++        runc=$container
+     fi
  fi
  
- if test "$container" != no; then
--    echo "ENGINE=$container" >> $config_host_mak
-     echo "RUNC=$runc" >> $config_host_mak
- fi
- echo "SUBDIRS=$subdirs" >> $config_host_mak
-diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
-index dfabafab92..035d272be9 100644
---- a/tests/docker/Makefile.include
-+++ b/tests/docker/Makefile.include
-@@ -17,8 +17,7 @@ endif
- DOCKER_REGISTRY := $(if $(REGISTRY),$(REGISTRY),$(DOCKER_DEFAULT_REGISTRY))
- 
- RUNC ?= docker
--ENGINE ?= auto
--DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(ENGINE)
-+DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(RUNC)
- 
- CUR_TIME := $(shell date +%Y-%m-%d-%H.%M.%S.$$$$)
- DOCKER_SRC_COPY := $(BUILD_DIR)/docker-src.$(CUR_TIME)
-@@ -158,7 +157,7 @@ $(foreach i,$(filter-out $(DOCKER_PARTIAL_IMAGES),$(DOCKER_IMAGES)), \
- )
- 
- docker:
--	@echo 'Build QEMU and run tests inside Docker or Podman containers'
-+	@echo 'Build QEMU and run tests inside $(RUNC) containers'
- 	@echo
- 	@echo 'Available targets:'
- 	@echo
-@@ -198,8 +197,6 @@ docker:
- 	@echo '    EXECUTABLE=<path>    Include executable in image.'
- 	@echo '    EXTRA_FILES="<path> [... <path>]"'
- 	@echo '                         Include extra files in image.'
--	@echo '    ENGINE=auto/docker/podman'
--	@echo '                         Specify which container engine to run.'
- 	@echo '    REGISTRY=url         Cache builds from registry (default:$(DOCKER_REGISTRY))'
- 
- docker-help: docker
 -- 
 2.39.2
 
