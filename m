@@ -2,99 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 608747ADD53
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4427ADD5D
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:45:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkoeI-00075Y-TT; Mon, 25 Sep 2023 12:41:30 -0400
+	id 1qkoht-0008CP-OQ; Mon, 25 Sep 2023 12:45:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkoe9-00074p-H5
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:41:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkoe7-0005P6-U9
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:41:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695660078;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=PIWgrMFpAdp5+hUdjD5HjV9ba6wuYdR0ydWBNHxwUUU=;
- b=CQLF0JGbQ+EDA5aGSqAZZfTlKQHmrsrggZVy0VrK8SXmLYbuoZWM7UIdOlhqw51FV4qsNc
- OM4jggCzRmBhKIME7RMdCBvOnV5wK+Esn2SjEIyNzNZPF28MHNxbrMGJpif5CnzHqeXi+6
- VgRmF4ukTT+hJzthiJAFzVgq9Kp3t8c=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-SbvE86sANb-LEKLBtRvUmg-1; Mon, 25 Sep 2023 12:41:15 -0400
-X-MC-Unique: SbvE86sANb-LEKLBtRvUmg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-31ff9e40977so5486032f8f.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:41:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qkohq-0008BL-1a
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:45:10 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qkohi-0005oG-Ii
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:45:09 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-405524e6768so45960525e9.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:45:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695660300; x=1696265100; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fPIkwzhPt1ncv5Tdd9l0QJC7UJmsuiM/hxU7gX511UU=;
+ b=rLjs5GLKMZGEzpnAnlA8sR72+mUan78UyIxjZ/HYtRFueaBhLib4Oga03RsInKHaf2
+ fjDbTm/4MJfE0+hvZ0L5c00OyH53XonAGYp8vRNHwhfOAIXBbLtSXr0slQI77aJbyvDT
+ a3gB6A3YKX2aZfXmez4HYXAOtJGlFA3VdCGKBKOKJPID+RWn1peRb6AmEKIqQuDtCCrd
+ wC5GNhsYjWG7mIa9ZMzkds35mWkQImSdIj+2wDYCasvJHfGYZPO/HzttDpp9SsN001Qx
+ RgFcAVKeiulQxHIMb+QZ4qfsFhdhboseNg4s0Vxv0RKKzkA7fNJMFdIi7w9rkcexXpQC
+ 1R8g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695660074; x=1696264874;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PIWgrMFpAdp5+hUdjD5HjV9ba6wuYdR0ydWBNHxwUUU=;
- b=Ly1w2QfU4lxD33mgJHSDDZ3CwLhaX4XuT21QuTLMaPSXrrrmr5mUCPIHlSn7ijgVnb
- XqgBoTVI+QxJxMEVaonhfd7Tp8r2QEiE8lvdeEnPTN7xF09hINw/MfTHh72XfAsrkBYs
- 2s3zDBkB2mI5YdtYHCOl1pjspD/5x9s/jckg1p4j9p1XFVcXJUS8oejJHEAiFr8COxJr
- a1Ch5CFhp0gOKBnprK+2LKQEAcfuj7lbEr6GV3ubWAoWsimittT/qBaFGvT2pffoiuOz
- +Yu+NNo2nIdZTXXNeCh1j9W0f6o7NElidS81HtSLlVzNue3OnHUkaPf1VXLKzGo8QQ4h
- dlEA==
-X-Gm-Message-State: AOJu0YxYe0gozU+M8Llyf8YxhRY9QExtwz6GZOQsGMKzZnDOTf1pfM0q
- DtS+S3C6vzkGQWIu56mVWseM7sTX9DF9mh3X/t3KqJ7dzqFGh/TMTk1lGDJNDzqumNINqQF9YzE
- BrKQd8bRY75RlGJ4=
-X-Received: by 2002:a05:6000:1c18:b0:323:20a7:94d with SMTP id
- ba24-20020a0560001c1800b0032320a7094dmr4259424wrb.50.1695660074368; 
- Mon, 25 Sep 2023 09:41:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGm2s3LYHBl6Xj9WcRxxEyQxYDafZMVwRyjbemjRhTqBAWH/ioJxeuWKQlDQnKT9dG18JFSAw==
-X-Received: by 2002:a05:6000:1c18:b0:323:20a7:94d with SMTP id
- ba24-20020a0560001c1800b0032320a7094dmr4259400wrb.50.1695660073987; 
- Mon, 25 Sep 2023 09:41:13 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- n22-20020a1c7216000000b003fee849df23sm12636110wmc.22.2023.09.25.09.41.12
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Sep 2023 09:41:13 -0700 (PDT)
-Message-ID: <0e258375-e3a0-8b5d-189e-cb2cea913ecb@redhat.com>
-Date: Mon, 25 Sep 2023 18:41:12 +0200
+ d=1e100.net; s=20230601; t=1695660300; x=1696265100;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=fPIkwzhPt1ncv5Tdd9l0QJC7UJmsuiM/hxU7gX511UU=;
+ b=wA7jevRZNYnNbGiQRaBOKrlwK0IaeYoCj1hVfkvBlMLXn7wCgv/w8amnwu8R5SeCYe
+ c8QBhSuQgd+PnCXFy43hnuAkZb9pqez4qrEwHC7R43A3U34OSregV7IDBD/FNBAW7nZd
+ XKKsrhSsQeHVJY4DL/gDp2ZfxMQyeF7xFYE/KSoflqPhmKg7RFUymZBOs4bP34GPThs8
+ mN39AXPkLGzqXAorPfOHqarfeV22OCR2kMVYZqh24U9PtKJsL6D97TVD3ERGKmjmaRdA
+ OIVLi0nl8+Nd+mhfE95kcUCfQeUZcfHxVz1Hgmkd8Z9Mt6yGj/7K5RV1DJyK9JqViV+D
+ icPg==
+X-Gm-Message-State: AOJu0YzmA/0mYoHxgH4xqb/bikdDeDUeiobkzLyO1B8kbZMfx2ayQo9w
+ S8VaOyyXRCa+18zC4nPTiAy0FQ==
+X-Google-Smtp-Source: AGHT+IGvqsoujhj6gaKh4dH1+e6xuQ64Ou0OQJB4cHEcxp/P+2N9tmNWJ18n6nuSFZ6094TNB0QrIw==
+X-Received: by 2002:a7b:ca53:0:b0:403:bb3:28c9 with SMTP id
+ m19-20020a7bca53000000b004030bb328c9mr6084672wml.38.1695660299821; 
+ Mon, 25 Sep 2023 09:44:59 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ q25-20020a7bce99000000b00405ee9dc69esm366355wmj.18.2023.09.25.09.44.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Sep 2023 09:44:59 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id CEEA41FFBB;
+ Mon, 25 Sep 2023 17:44:58 +0100 (BST)
+References: <20230925144854.1872513-1-alex.bennee@linaro.org>
+ <20230925144854.1872513-9-alex.bennee@linaro.org>
+ <908ae9aa-11fc-8584-bd60-e269a1026e37@redhat.com>
+User-agent: mu4e 1.11.20; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, Marcin Juszkiewicz
+ <marcin.juszkiewicz@linaro.org>, John Snow <jsnow@redhat.com>,
+ libvir-list@redhat.com, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>,
+ qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>, Daniel Henrique
+ Barboza <danielhb413@gmail.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, Bastian Koppelmann
+ <kbastian@mail.uni-paderborn.de>, Liu Zhiwei
+ <zhiwei_liu@linux.alibaba.com>, Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas
+ Piggin <npiggin@gmail.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Eduardo
+ Habkost <eduardo@habkost.net>,
+ Cleber Rosa <crosa@redhat.com>, Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Thomas Huth
+ <thuth@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, Bin Meng
+ <bin.meng@windriver.com>, Alexandre Iooss <erdnaxe@crans.org>, Xiaojuan
+ Yang <yangxiaojuan@loongson.cn>, qemu-ppc@nongnu.org, David Hildenbrand
+ <david@redhat.com>, Yanan Wang <wangyanan55@huawei.com>, Peter Maydell
+ <peter.maydell@linaro.org>, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Palmer Dabbelt <palmer@dabbelt.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Laurent Vivier <lvivier@redhat.com>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Beraldo Leal <bleal@redhat.com>
+Subject: Re: [PATCH 08/31] configure: ensure dependency for cross-compile setup
+Date: Mon, 25 Sep 2023 17:42:22 +0100
+In-reply-to: <908ae9aa-11fc-8584-bd60-e269a1026e37@redhat.com>
+Message-ID: <87cyy6rylx.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 13/15] hw/qdev: Remove DEFINE_PROP_DMAADDR() and
- 'hw/qdev-dma.h'
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>,
- David Gibson <david@gibson.dropbear.id.au>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230203145536.17585-1-philmd@linaro.org>
- <20230203145536.17585-14-philmd@linaro.org> <87zg1a8r5v.fsf@pond.sub.org>
- <87bkdq8qh1.fsf@pond.sub.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <87bkdq8qh1.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,30 +120,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/25/23 13:03, Markus Armbruster wrote:
-> +David
-> 
-> Markus Armbruster <armbru@redhat.com> writes:
-> 
->> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
->>
->>> DEFINE_PROP_DMAADDR() is only used once. Since it doesn't
->>> add much value, simply remove it, along with the header
->>> defining it.
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->> DEFINE_PROP_DMAADDR() lets you wrap a property around a dma_addr_t
->> member without assuming anything about dma_addr_t.
->>
->> Whether that's worth avoiding I can't say.  Depends on how much the
->> abstraction leaks in other ways.  Thoughts?
 
-I think it's okay to simplify things.  If anybody ever has a reason to 
-make dma_addr_t variable sized (probably a bad idea because many of its 
-users are compiled once only) they have one extra place to fix.  Tough 
-luck. :)
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-Paolo
+> On 9/25/23 16:48, Alex Benn=C3=A9e wrote:
+>> If we update configure we should make sure we regenerate all the
+>> compiler details. We should also ensure those details are upto date
+>> before building the TCG tests.
+>> Signed-off-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+>> ---
+>>   configure | 2 ++
+>>   1 file changed, 2 insertions(+)
+>> diff --git a/configure b/configure
+>> index e83872571d..a95e0f5767 100755
+>> --- a/configure
+>> +++ b/configure
+>> @@ -1788,6 +1788,8 @@ for target in $target_list; do
+>>             echo "HOST_GDB_SUPPORTS_ARCH=3Dy" >> "$config_target_mak"
+>>         fi
+>>   +      echo "$config_target_mak: configure" >> Makefile.prereqs
+>
+> This in practice is not adding anything; if "configure" changes then
+> Makefile's dependency on config-host.mak will trigger a configure
+> rerun anyway.
+>
+> If you want to add it, you should also add it for other config-*.mak
+> files.  However, I'd remove this line and just change
+>
+> -# 1. ensure config-host.mak is up-to-date
+> +# 1. ensure config-host.mak is up-to-date.  All other config-*.mak
+> +# files for subdirectories will be updated as well.
 
+Peter ran into a mismatch between config-host.mak and
+tests/tcg/foo/config-target.mak in his build system so it didn't get
+picked up at one point.
+
+>
+> in the Makefile.
+>
+> Paolo
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
