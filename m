@@ -2,59 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDC17AD466
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 11:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8927AD518
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 11:57:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkhlr-0006Kn-9g; Mon, 25 Sep 2023 05:20:51 -0400
+	id 1qkiJs-0006I5-D9; Mon, 25 Sep 2023 05:56:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=n5Cv=FJ=kaod.org=clg@ozlabs.org>)
- id 1qkhlj-0006Im-0D; Mon, 25 Sep 2023 05:20:45 -0400
-Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
- helo=gandalf.ozlabs.org)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qkiJq-0006HM-BR
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 05:55:58 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <SRS0=n5Cv=FJ=kaod.org=clg@ozlabs.org>)
- id 1qkhld-0005t3-MU; Mon, 25 Sep 2023 05:20:42 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org
- [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RvHR35p2Yz4xPR;
- Mon, 25 Sep 2023 19:20:31 +1000 (AEST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RvHR20Hsrz4xPQ;
- Mon, 25 Sep 2023 19:20:29 +1000 (AEST)
-Message-ID: <c23dd1d8-a037-ed8e-30bf-6824ca3649c4@kaod.org>
-Date: Mon, 25 Sep 2023 11:20:25 +0200
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qkiJo-0004Kq-Lc
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 05:55:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695635753;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=AEnNfmCfJCGnvlwfyZIoRzWyoTtyiyv7zDWN++5oOwsF3mPp8RT5CCc7qe5cz2fhfQdB9V
+ Wp9elMRMmrow44es31kLwFaysz3EdhX7hiS99e/p4TM/OrzKGWNJ8+dRiOgs9mFrus9Zbd
+ LPpnMvRB03aPYr+zDT5o/fS1sgDizGc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-JzRWF536Og6DN4YVuoUNyg-1; Mon, 25 Sep 2023 05:55:51 -0400
+X-MC-Unique: JzRWF536Og6DN4YVuoUNyg-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-313c930ee0eso4411300f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 02:55:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695635750; x=1696240550;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=cyh9GNwkSeiWX8VVWJet6cmrStrv1Y1BhHYKMAKCy08=;
+ b=DY7PEzXY4pMYs0trDBf/ciBvUCM9cE68ymrQCm18ENkr4Jt3QthsfrJKbNNc7laIhB
+ arsrTOb74cE2QHWM4jGNJO3jHxD7umc2HAByeemvN+s0M2cJ7fAD/5kdWxXGB1Ixu+IA
+ pe9/HKuSehMt2RuDFAM21wz2TA9DTcTVgh+5KBCTjdy3msRK6jCx+VOp4EOm8TJ0qKe5
+ zDXlNXSpcDcen2UaWqwa8vg2G7ZmW6bEJ3kFWDcFSCUEtUIMVNNl0rSD93w2fD4aRkwQ
+ rHul7OJL1lPDOGScLhgY3n4pL2akB2dGbs6CAtvtlD0ef0Op92n44kF+kicte4wsRst3
+ xhLw==
+X-Gm-Message-State: AOJu0Yyu7Q6FXf9GPeZLaJK1MLvcNqjhNSZEkC56d29ywuHbqJftWjYN
+ TsnSeY3Hh3Xf569BuxRA7iL4lk2INXSZhRbO+7lFCWLIVc1+BmNbPudsUvbUJYcOwXGQe/rVSFD
+ CdlaRPVS7ApQAOBs=
+X-Received: by 2002:a5d:6a46:0:b0:31f:edb6:3ad4 with SMTP id
+ t6-20020a5d6a46000000b0031fedb63ad4mr5416238wrw.16.1695635750521; 
+ Mon, 25 Sep 2023 02:55:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE80kI7XjqCVWTp1jcBIiaXIAsqD6oL86Map4mCy+uktBbA6wGmjBktHlZryybTayoYcUXbTA==
+X-Received: by 2002:a5d:6a46:0:b0:31f:edb6:3ad4 with SMTP id
+ t6-20020a5d6a46000000b0031fedb63ad4mr5416220wrw.16.1695635750155; 
+ Mon, 25 Sep 2023 02:55:50 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ b1-20020a5d4d81000000b003215c6e30cbsm11271807wru.104.2023.09.25.02.55.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 25 Sep 2023 02:55:49 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>, qemu-stable@nongnu.org
+Subject: Re: [PATCH] hw/scsi/scsi-disk: Disallow block sizes smaller than 512
+ [CVE-2023-42467]
+Date: Mon, 25 Sep 2023 11:55:48 +0200
+Message-ID: <20230925095548.461345-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230925091854.49198-1-thuth@redhat.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [Qemu-devel] [PATCH 08/19] aspeed/timer: Fix behaviour running
- Linux
-Content-Language: en-US
-To: Andrew Jeffery <andrew@aj.id.au>, Peter Maydell <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9_via?= <qemu-arm@nongnu.org>,
- Cameron Esfahani via <qemu-devel@nongnu.org>, Joel Stanley <joel@jms.id.au>
-References: <20190525151241.5017-1-clg@kaod.org>
- <20190525151241.5017-9-clg@kaod.org>
- <a4a62040-0127-4f39-4fc3-a1795e4daad8@kaod.org>
- <d383d716-2c9a-4d37-a35d-6f62bff9bf1e@app.fastmail.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-In-Reply-To: <d383d716-2c9a-4d37-a35d-6f62bff9bf1e@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
- envelope-from=SRS0=n5Cv=FJ=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,127 +99,8 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/25/23 09:54, Andrew Jeffery wrote:
-> 
-> 
-> On Fri, 22 Sep 2023, at 22:51, Cédric Le Goater wrote:
->> Joel, Andrew,
->>
->> On 5/25/19 17:12, Cédric Le Goater wrote:
->>> From: Joel Stanley <joel@jms.id.au>
->>>
->>> The Linux kernel driver was updated in commit 4451d3f59f2a
->>> ("clocksource/drivers/fttmr010: Fix set_next_event handler) to fix an
->>> issue observed on hardware:
->>>
->>>    > RELOAD register is loaded into COUNT register when the aspeed timer
->>>    > is enabled, which means the next event may be delayed because timer
->>>    > interrupt won't be generated until <0xFFFFFFFF - current_count +
->>>    > cycles>.
->>>
->>> When running under Qemu, the system appeared "laggy". The guest is now
->>> scheduling timer events too regularly, starving the host of CPU time.
->>>
->>> This patch modifies the timer model to attempt to schedule the timer
->>> expiry as the guest requests, but if we have missed the deadline we
->>> re interrupt and try again, which allows the guest to catch up.
->>>
->>> Provides expected behaviour with old and new guest code.
->>>
->>> Fixes: c04bd47db6b9 ("hw/timer: Add ASPEED timer device model")
->>> Signed-off-by: Joel Stanley <joel@jms.id.au>
->>> [clg: - merged a fix from Andrew Jeffery <andrew@aj.id.au>
->>>           "Fire interrupt on failure to meet deadline"
->>>           https://lists.ozlabs.org/pipermail/openbmc/2019-January/014641.html
->>>         - adapted commit log
->>>         - checkpatch fixes ]
->>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->>> ---
->>>    hw/timer/aspeed_timer.c | 59 ++++++++++++++++++++++-------------------
->>>    1 file changed, 31 insertions(+), 28 deletions(-)
->>>
->>> diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
->>> index 5c786e512815..9ffd8e09f670 100644
->>> --- a/hw/timer/aspeed_timer.c
->>> +++ b/hw/timer/aspeed_timer.c
->>> @@ -109,37 +109,40 @@ static inline uint64_t calculate_time(struct AspeedTimer *t, uint32_t ticks)
->>>    
->>>    static uint64_t calculate_next(struct AspeedTimer *t)
->>>    {
->>> -    uint64_t next = 0;
->>> -    uint32_t rate = calculate_rate(t);
->>> +    uint64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->>> +    uint64_t next;
->>>    
->>> -    while (!next) {
->>> -        /* We don't know the relationship between the values in the match
->>> -         * registers, so sort using MAX/MIN/zero. We sort in that order as the
->>> -         * timer counts down to zero. */
->>> -        uint64_t seq[] = {
->>> -            calculate_time(t, MAX(t->match[0], t->match[1])),
->>> -            calculate_time(t, MIN(t->match[0], t->match[1])),
->>> -            calculate_time(t, 0),
->>> -        };
->>> -        uint64_t reload_ns;
->>> -        uint64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->>> -
->>> -        if (now < seq[0]) {
->>> -            next = seq[0];
->>> -        } else if (now < seq[1]) {
->>> -            next = seq[1];
->>> -        } else if (now < seq[2]) {
->>> -            next = seq[2];
->>> -        } else if (t->reload) {
->>> -            reload_ns = muldiv64(t->reload, NANOSECONDS_PER_SECOND, rate);
->>> -            t->start = now - ((now - t->start) % reload_ns);
->>> -        } else {
->>> -            /* no reload value, return 0 */
->>> -            break;
->>> -        }
->>> +    /*
->>> +     * We don't know the relationship between the values in the match
->>> +     * registers, so sort using MAX/MIN/zero. We sort in that order as
->>> +     * the timer counts down to zero.
->>> +     */
->>> +
->>> +    next = calculate_time(t, MAX(t->match[0], t->match[1]));
->>> +    if (now < next) {
->>> +        return next;
->>> +    }
->>> +
->>> +    next = calculate_time(t, MIN(t->match[0], t->match[1]));
->>> +    if (now < next) {
->>> +        return next;
->>> +    }
->>> +
->>> +    next = calculate_time(t, 0);
->>> +    if (now < next) {
->>> +        return next;
->>> +    }
->>> +
->>> +    /* We've missed all deadlines, fire interrupt and try again */
->>> +    timer_del(&t->timer);
->>> +
->>> +    if (timer_overflow_interrupt(t)) {
->>> +        t->level = !t->level;
->>> +        qemu_set_irq(t->irq, t->level);
->>>        }
->>>    
->>> -    return next;
->>> +    t->start = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->>> +    return calculate_time(t, MAX(MAX(t->match[0], t->match[1]), 0));
->>
->> This MAX(MAX(x, y), 0) looks strange to me. Would you remember where it comes
->> from ? Thanks,
-> 
-> The inner MAX() deals with the lack of ordering constraints between the match values. I think the outer MAX() is redundant. We should probably remove it. The match member is type uint32_t so it can't be negative. You did steal that from an RFC patch :D
+Queued, thanks.
 
-I did ! Fixed there :
-
-   https://patchwork.ozlabs.org/project/qemu-devel/patch/20230922155924.1172019-5-clg@kaod.org/
-
-Cheers,
-
-C.
+Paolo
 
 
