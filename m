@@ -2,77 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6487ADE40
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7027ADE3E
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkpqO-0000pf-Ot; Mon, 25 Sep 2023 13:58:04 -0400
+	id 1qkpqR-0001BC-Ju; Mon, 25 Sep 2023 13:58:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qkpqM-0000p3-7X
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:02 -0400
-Received: from mail-pj1-x1030.google.com ([2607:f8b0:4864:20::1030])
+ id 1qkpqP-0000zP-GB
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:05 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qkpqK-0002FP-F6
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:01 -0400
-Received: by mail-pj1-x1030.google.com with SMTP id
- 98e67ed59e1d1-2774874c3daso2164414a91.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 10:58:00 -0700 (PDT)
+ id 1qkpqN-0002Fm-56
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 13:58:05 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2776d882214so1170031a91.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 10:58:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695664678; x=1696269478; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1695664681; x=1696269481; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xcAl6E4VVn0xmnPGiZOmfp8Zyclb9/WUAcvfkWYFhf0=;
- b=FWiNpKm2ZiCfpZdgos4jfySHUWcOXU+/l7tI/EzHnAuLcI//aPYS/gY14JFpUaDoY/
- nCMtwsngl6ae9jArAvWytvBIcMPkxxSQba/0KrRvHq0lnTE8dJLmOusDHDIDNROVDGVY
- bXRIo60LTkDEI7WPryiu28/G/LmiZLAPJVheWIhmhWoWHnCk99Ba4o1MQYrTivnoSvWW
- MYVIhusJdk3eTILAUVx+/kkvWb23NFVvpvQvaijTxWAHndH4EwpeMnIaB1MNk90SJViH
- nkBIAkMsT2H6G6SCM0cRVFqDGiNnFangZI3k0kaKyA/e+SlUPUPK254w5WBgrTVwqOUS
- +Byw==
+ bh=AATH1d0EH+CW85hIdXtiW9XhMpw4Ijx1Pp941W8oPRc=;
+ b=B/nQTQNtQf9kA6IoXyxmpAEpFakdtlv7cDsXlr/ZLmHZmmlKt8akH/TlycAFHiGG0I
+ kVfJl+uXQVnYhGu/29h5TBajME+AaMo0/F9+N42wZp+m62XWILJreGR0wkMsOgiDa1y2
+ rCZ2ahnOn2hSzQaTyOo/wIeJxJ8qzByI1sCYb9tlfaWwuJ2GOWALY788CJf2x+8nICvN
+ C/F2sINifUCd31aCANbpthj7MGjzvi1EdULdCvH05Ak0jEKiJjJuqR2Ko4No7u5/Wd83
+ dIvOHd9wgE3f8r9ixOOMVKbgCePBrUK/V7KcMG3ctGzqFm19DBfLUpgWO7TCotpRjToV
+ o9Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695664678; x=1696269478;
+ d=1e100.net; s=20230601; t=1695664681; x=1696269481;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xcAl6E4VVn0xmnPGiZOmfp8Zyclb9/WUAcvfkWYFhf0=;
- b=MLIkK/VlzkE5b9wPLj0nD3064x+CkEj6atdn23EtZSpY4w2S09oz5VefCDxgbG6DyR
- 95J8AsoXlPQAP6IsSj7MEDBx47TJMPx3V6I4EjzVy3YILY5HLuKXmI80Jo9Ig6GQpolI
- yk+flXSHQTAhilfeLq+ZesSIEdIPxohhE4+VT2ceRBde4UdwMwNWsKaDLc6iAITj9uE0
- UpzZAEnyJfvGSl2E0/E5QZR974bASl0/Gz6v/P7CqEOHwmqE8OEym8Fc+/bhXEULnV/U
- fYklruBGEtxgbTUPE7OMNluytZkFy+HD06AZ82rnFMFPSsBn7R0I0tspxcHzpI5XnL3f
- dZOg==
-X-Gm-Message-State: AOJu0Yze6gW4FszpbrO//EHNlcaHg2Wx0Mt53ztXTPNE52o/AnDJBvVH
- zO9yWKQ6f3OJ/lcNxvSER0FeBER+XjUcvnTZtCI=
-X-Google-Smtp-Source: AGHT+IF05uzZCoszzqIKAC4kZoMMGRRz9tOwnz51tSkmAoCM6E3kT4xXISZWhO3xNWFrrI64azOT/A==
-X-Received: by 2002:a17:90a:890a:b0:267:fb26:32bd with SMTP id
- u10-20020a17090a890a00b00267fb2632bdmr6131149pjn.7.1695664678537; 
- Mon, 25 Sep 2023 10:57:58 -0700 (PDT)
+ bh=AATH1d0EH+CW85hIdXtiW9XhMpw4Ijx1Pp941W8oPRc=;
+ b=O5zMg6gZcdlQ4Qur7dh09M4lF5S3uhzsqW/3w0okWyahpBYaD+W1WtS8cL+5WIRt1b
+ 5KNoLuUeMDF2p/mIin87gbUeazpNolk+lFdQlmbwoAzT30iwvLeCCGWzob41JlLsAO5l
+ d/9v2MJf1SdcYShJgqNsD3CVHvjhepHjvCOY0ZtCwVKPIUVd4c0O2tV8h+1+YO8bSzto
+ zLgjuDgma6Ciojc4C/vLasFN7tLmBSiGfUFSCnE8o6Lll3X2KrTSHIDR93hviaDvgMF4
+ K5qwMYOmTnG5o5l98ke4IwiV1WbgWn7UnlB0vUpc+kPa99IZQdcPfnybaXeaWgDQDgQF
+ sX5g==
+X-Gm-Message-State: AOJu0YwRAnRUskIzbNebPwn4/O2qLGxKudcuTSB2/tIf5+lKNBt/58h1
+ Bsy5cLOwgLnNL826am6gmKNTYk9u6yK5cfrASoU=
+X-Google-Smtp-Source: AGHT+IGjL3SyxGywx4IbF7AxOlmyqx+iIbDryKtVVB7dGxxfjBC2AOWxb69WxwVHpLVUf5btxps4UQ==
+X-Received: by 2002:a17:90b:2388:b0:268:4c01:eb56 with SMTP id
+ mr8-20020a17090b238800b002684c01eb56mr5339418pjb.2.1695664681496; 
+ Mon, 25 Sep 2023 10:58:01 -0700 (PDT)
 Received: from grind.. ([177.94.42.59]) by smtp.gmail.com with ESMTPSA id
- i3-20020a17090a65c300b00262ca945cecsm3312722pjs.54.2023.09.25.10.57.55
+ i3-20020a17090a65c300b00262ca945cecsm3312722pjs.54.2023.09.25.10.57.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 10:57:58 -0700 (PDT)
+ Mon, 25 Sep 2023 10:58:01 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Andrew Jones <ajones@ventanamicro.com>
-Subject: [PATCH v4 14/19] target/riscv/cpu.c: export set_misa()
-Date: Mon, 25 Sep 2023 14:57:04 -0300
-Message-ID: <20230925175709.35696-15-dbarboza@ventanamicro.com>
+Subject: [PATCH v4 15/19] target/riscv/tcg: introduce tcg_cpu_instance_init()
+Date: Mon, 25 Sep 2023 14:57:05 -0300
+Message-ID: <20230925175709.35696-16-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230925175709.35696-1-dbarboza@ventanamicro.com>
 References: <20230925175709.35696-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1030;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x1030.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,176 +93,424 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll move riscv_init_max_cpu_extensions() to tcg-cpu.c in the next
-patch and set_misa() needs to be usable from there.
+tcg_cpu_instance_init() will be the 'cpu_instance_init' impl for the TCG
+accelerator. It'll be called from within riscv_cpu_post_init(), via
+accel_cpu_instance_init(), similar to what happens with KVM. In fact, to
+preserve behavior, the implementation will be similar to what
+riscv_cpu_post_init() already does.
 
-Rename it to riscv_cpu_set_misa() and make it public.
+In this patch we'll move riscv_cpu_add_user_properties() and
+riscv_init_max_cpu_extensions() and all their dependencies to tcg-cpu.c.
+All multi-extension properties code was moved. The 'multi_ext_user_opts'
+hash table was also moved to tcg-cpu.c since it's a TCG only structure,
+meaning that we won't have to worry about initializing a TCG hash table
+when running a KVM CPU anymore.
+
+riscv_cpu_add_user_properties() will remain in cpu.c for now due to how
+much code it requires to be moved at the same time. We'll do that in the
+next patch.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- target/riscv/cpu.c | 34 ++++++++++++++++++----------------
- target/riscv/cpu.h |  1 +
- 2 files changed, 19 insertions(+), 16 deletions(-)
+ target/riscv/cpu.c         | 150 -------------------------------------
+ target/riscv/cpu.h         |   1 -
+ target/riscv/tcg/tcg-cpu.c | 149 ++++++++++++++++++++++++++++++++++++
+ 3 files changed, 149 insertions(+), 151 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 665c21af6a..cf191d576e 100644
+index cf191d576e..8616c9e2f5 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -294,7 +294,7 @@ const char *riscv_cpu_get_trap_name(target_ulong cause, bool async)
-     }
+@@ -162,9 +162,6 @@ static const struct isa_ext_data isa_edata_arr[] = {
+     ISA_EXT_DATA_ENTRY(xventanacondops, PRIV_VERSION_1_12_0, ext_XVentanaCondOps),
+ };
+ 
+-/* Hash that stores user set extensions */
+-static GHashTable *multi_ext_user_opts;
+-
+ bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset)
+ {
+     bool *ext_enabled = (void *)&cpu->cfg + ext_offset;
+@@ -194,12 +191,6 @@ int cpu_cfg_ext_get_min_version(uint32_t ext_offset)
+     g_assert_not_reached();
  }
  
--static void set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext)
-+void riscv_cpu_set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext)
+-bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
+-{
+-    return g_hash_table_contains(multi_ext_user_opts,
+-                                 GUINT_TO_POINTER(ext_offset));
+-}
+-
+ const char * const riscv_int_regnames[] = {
+     "x0/zero", "x1/ra",  "x2/sp",  "x3/gp",  "x4/tp",  "x5/t0",   "x6/t1",
+     "x7/t2",   "x8/s0",  "x9/s1",  "x10/a0", "x11/a1", "x12/a2",  "x13/a3",
+@@ -280,9 +271,6 @@ static const char * const riscv_intr_names[] = {
+     "reserved"
+ };
+ 
+-static void riscv_cpu_add_user_properties(Object *obj);
+-static void riscv_init_max_cpu_extensions(Object *obj);
+-
+ const char *riscv_cpu_get_trap_name(target_ulong cause, bool async)
  {
-     env->misa_mxl_max = env->misa_mxl = mxl;
-     env->misa_ext_mask = env->misa_ext = ext;
-@@ -399,9 +399,9 @@ static void riscv_any_cpu_init(Object *obj)
-     RISCVCPU *cpu = RISCV_CPU(obj);
-     CPURISCVState *env = &cpu->env;
- #if defined(TARGET_RISCV32)
--    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVD | RVC | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVD | RVC | RVU);
- #elif defined(TARGET_RISCV64)
--    set_misa(env, MXL_RV64, RVI | RVM | RVA | RVF | RVD | RVC | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV64, RVI | RVM | RVA | RVF | RVD | RVC | RVU);
- #endif
+     if (async) {
+@@ -1206,32 +1194,9 @@ static bool riscv_cpu_is_dynamic(Object *cpu_obj)
+     return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
+ }
  
- #ifndef CONFIG_USER_ONLY
-@@ -428,7 +428,7 @@ static void riscv_max_cpu_init(Object *obj)
- #ifdef TARGET_RISCV32
-     mlx = MXL_RV32;
- #endif
--    set_misa(env, mlx, 0);
-+    riscv_cpu_set_misa(env, mlx, 0);
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(RISCV_CPU(obj), mlx == MXL_RV32 ?
-@@ -441,7 +441,7 @@ static void rv64_base_cpu_init(Object *obj)
+-static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
+-{
+-    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
+-}
+-
+-static bool riscv_cpu_has_user_properties(Object *cpu_obj)
+-{
+-    if (kvm_enabled() &&
+-        object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_HOST) != NULL) {
+-        return true;
+-    }
+-
+-    return riscv_cpu_is_dynamic(cpu_obj);
+-}
+-
+ static void riscv_cpu_post_init(Object *obj)
  {
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     /* We set this in the realise function */
--    set_misa(env, MXL_RV64, 0);
-+    riscv_cpu_set_misa(env, MXL_RV64, 0);
-     /* Set latest version of privileged specification */
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-@@ -453,7 +453,8 @@ static void rv64_sifive_u_cpu_init(Object *obj)
- {
-     RISCVCPU *cpu = RISCV_CPU(obj);
-     CPURISCVState *env = &cpu->env;
--    set_misa(env, MXL_RV64, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV64,
-+                       RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
-     env->priv_ver = PRIV_VERSION_1_10_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV39);
-@@ -471,7 +472,7 @@ static void rv64_sifive_e_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     RISCVCPU *cpu = RISCV_CPU(obj);
+     accel_cpu_instance_init(CPU(obj));
+-
+-    if (tcg_enabled() && riscv_cpu_has_user_properties(obj)) {
+-        riscv_cpu_add_user_properties(obj);
+-    }
+-
+-    if (riscv_cpu_has_max_extensions(obj)) {
+-        riscv_init_max_cpu_extensions(obj);
+-    }
+ }
  
--    set_misa(env, MXL_RV64, RVI | RVM | RVA | RVC | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV64, RVI | RVM | RVA | RVC | RVU);
-     env->priv_ver = PRIV_VERSION_1_10_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -488,7 +489,7 @@ static void rv64_thead_c906_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     RISCVCPU *cpu = RISCV_CPU(obj);
+ static void riscv_cpu_init(Object *obj)
+@@ -1244,8 +1209,6 @@ static void riscv_cpu_init(Object *obj)
+     qdev_init_gpio_in(DEVICE(cpu), riscv_cpu_set_irq,
+                       IRQ_LOCAL_MAX + IRQ_LOCAL_GUEST_MAX);
+ #endif /* CONFIG_USER_ONLY */
+-
+-    multi_ext_user_opts = g_hash_table_new(NULL, g_direct_equal);
+ }
  
--    set_misa(env, MXL_RV64, RVG | RVC | RVS | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV64, RVG | RVC | RVS | RVU);
-     env->priv_ver = PRIV_VERSION_1_11_0;
+ typedef struct RISCVCPUMisaExtConfig {
+@@ -1531,119 +1494,6 @@ Property riscv_cpu_options[] = {
+     DEFINE_PROP_END_OF_LIST(),
+ };
  
-     cpu->cfg.ext_zfa = true;
-@@ -519,7 +520,7 @@ static void rv64_veyron_v1_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     RISCVCPU *cpu = RISCV_CPU(obj);
+-static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+-                                  void *opaque, Error **errp)
+-{
+-    const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
+-    bool value;
+-
+-    if (!visit_type_bool(v, name, &value, errp)) {
+-        return;
+-    }
+-
+-    isa_ext_update_enabled(RISCV_CPU(obj), multi_ext_cfg->offset, value);
+-
+-    g_hash_table_insert(multi_ext_user_opts,
+-                        GUINT_TO_POINTER(multi_ext_cfg->offset),
+-                        (gpointer)value);
+-}
+-
+-static void cpu_get_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+-                                  void *opaque, Error **errp)
+-{
+-    const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
+-    bool value = isa_ext_is_enabled(RISCV_CPU(obj), multi_ext_cfg->offset);
+-
+-    visit_type_bool(v, name, &value, errp);
+-}
+-
+-static void cpu_add_multi_ext_prop(Object *cpu_obj,
+-                                   const RISCVCPUMultiExtConfig *multi_cfg)
+-{
+-    object_property_add(cpu_obj, multi_cfg->name, "bool",
+-                        cpu_get_multi_ext_cfg,
+-                        cpu_set_multi_ext_cfg,
+-                        NULL, (void *)multi_cfg);
+-
+-    /*
+-     * Set def val directly instead of using
+-     * object_property_set_bool() to save the set()
+-     * callback hash for user inputs.
+-     */
+-    isa_ext_update_enabled(RISCV_CPU(cpu_obj), multi_cfg->offset,
+-                           multi_cfg->enabled);
+-}
+-
+-static void riscv_cpu_add_multiext_prop_array(Object *obj,
+-                                        const RISCVCPUMultiExtConfig *array)
+-{
+-    const RISCVCPUMultiExtConfig *prop;
+-
+-    g_assert(array);
+-
+-    for (prop = array; prop && prop->name; prop++) {
+-        cpu_add_multi_ext_prop(obj, prop);
+-    }
+-}
+-
+-/*
+- * Add CPU properties with user-facing flags.
+- *
+- * This will overwrite existing env->misa_ext values with the
+- * defaults set via riscv_cpu_add_misa_properties().
+- */
+-static void riscv_cpu_add_user_properties(Object *obj)
+-{
+-#ifndef CONFIG_USER_ONLY
+-    riscv_add_satp_mode_properties(obj);
+-#endif
+-
+-    riscv_cpu_add_misa_properties(obj);
+-
+-    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_extensions);
+-    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_vendor_exts);
+-    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_experimental_exts);
+-
+-    for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
+-        qdev_property_add_static(DEVICE(obj), prop);
+-    }
+-}
+-
+-/*
+- * The 'max' type CPU will have all possible ratified
+- * non-vendor extensions enabled.
+- */
+-static void riscv_init_max_cpu_extensions(Object *obj)
+-{
+-    RISCVCPU *cpu = RISCV_CPU(obj);
+-    CPURISCVState *env = &cpu->env;
+-    const RISCVCPUMultiExtConfig *prop;
+-
+-    /* Enable RVG, RVJ and RVV that are disabled by default */
+-    riscv_cpu_set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
+-
+-    for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
+-        isa_ext_update_enabled(cpu, prop->offset, true);
+-    }
+-
+-    /* set vector version */
+-    env->vext_ver = VEXT_VERSION_1_00_0;
+-
+-    /* Zfinx is not compatible with F. Disable it */
+-    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zfinx), false);
+-    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zdinx), false);
+-    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zhinx), false);
+-    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zhinxmin), false);
+-
+-    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zce), false);
+-    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmp), false);
+-    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmt), false);
+-
+-    if (env->misa_mxl != MXL_RV32) {
+-        isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
+-    }
+-}
+-
+ static Property riscv_cpu_properties[] = {
+     DEFINE_PROP_BOOL("debug", RISCVCPU, cfg.debug, true),
  
--    set_misa(env, MXL_RV64, RVG | RVC | RVS | RVU | RVH);
-+    riscv_cpu_set_misa(env, MXL_RV64, RVG | RVC | RVS | RVU | RVH);
-     env->priv_ver = PRIV_VERSION_1_12_0;
- 
-     /* Enable ISA extensions */
-@@ -564,7 +565,7 @@ static void rv128_base_cpu_init(Object *obj)
-     }
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     /* We set this in the realise function */
--    set_misa(env, MXL_RV128, 0);
-+    riscv_cpu_set_misa(env, MXL_RV128, 0);
-     /* Set latest version of privileged specification */
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-@@ -576,7 +577,7 @@ static void rv32_base_cpu_init(Object *obj)
- {
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     /* We set this in the realise function */
--    set_misa(env, MXL_RV32, 0);
-+    riscv_cpu_set_misa(env, MXL_RV32, 0);
-     /* Set latest version of privileged specification */
-     env->priv_ver = PRIV_VERSION_LATEST;
- #ifndef CONFIG_USER_ONLY
-@@ -588,7 +589,8 @@ static void rv32_sifive_u_cpu_init(Object *obj)
- {
-     RISCVCPU *cpu = RISCV_CPU(obj);
-     CPURISCVState *env = &cpu->env;
--    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV32,
-+                       RVI | RVM | RVA | RVF | RVD | RVC | RVS | RVU);
-     env->priv_ver = PRIV_VERSION_1_10_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(RISCV_CPU(obj), VM_1_10_SV32);
-@@ -606,7 +608,7 @@ static void rv32_sifive_e_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
--    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVC | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV32, RVI | RVM | RVA | RVC | RVU);
-     env->priv_ver = PRIV_VERSION_1_10_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -623,7 +625,7 @@ static void rv32_ibex_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
--    set_misa(env, MXL_RV32, RVI | RVM | RVC | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV32, RVI | RVM | RVC | RVU);
-     env->priv_ver = PRIV_VERSION_1_11_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -641,7 +643,7 @@ static void rv32_imafcu_nommu_cpu_init(Object *obj)
-     CPURISCVState *env = &RISCV_CPU(obj)->env;
-     RISCVCPU *cpu = RISCV_CPU(obj);
- 
--    set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVC | RVU);
-+    riscv_cpu_set_misa(env, MXL_RV32, RVI | RVM | RVA | RVF | RVC | RVU);
-     env->priv_ver = PRIV_VERSION_1_10_0;
- #ifndef CONFIG_USER_ONLY
-     set_satp_mode_max_supported(cpu, VM_1_10_MBARE);
-@@ -1618,7 +1620,7 @@ static void riscv_init_max_cpu_extensions(Object *obj)
-     const RISCVCPUMultiExtConfig *prop;
- 
-     /* Enable RVG, RVJ and RVV that are disabled by default */
--    set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
-+    riscv_cpu_set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
- 
-     for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
-         isa_ext_update_enabled(cpu, prop->offset, true);
 diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 7235eafc1a..9ec0805596 100644
+index 9ec0805596..01cbcbe119 100644
 --- a/target/riscv/cpu.h
 +++ b/target/riscv/cpu.h
-@@ -713,6 +713,7 @@ void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en);
- bool cpu_cfg_ext_is_user_set(uint32_t ext_offset);
+@@ -710,7 +710,6 @@ enum riscv_pmu_event_idx {
+ 
+ /* used by tcg/tcg-cpu.c*/
+ void isa_ext_update_enabled(RISCVCPU *cpu, uint32_t ext_offset, bool en);
+-bool cpu_cfg_ext_is_user_set(uint32_t ext_offset);
  bool isa_ext_is_enabled(RISCVCPU *cpu, uint32_t ext_offset);
  int cpu_cfg_ext_get_min_version(uint32_t ext_offset);
-+void riscv_cpu_set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext);
- void riscv_cpu_disable_priv_spec_isa_exts(RISCVCPU *cpu);
+ void riscv_cpu_set_misa(CPURISCVState *env, RISCVMXL mxl, uint32_t ext);
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 7d890823bd..ac3cf4c035 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -24,6 +24,7 @@
+ #include "pmu.h"
+ #include "time_helper.h"
+ #include "qapi/error.h"
++#include "qapi/visitor.h"
+ #include "qemu/accel.h"
+ #include "qemu/error-report.h"
+ #include "qemu/log.h"
+@@ -31,6 +32,15 @@
+ #include "hw/core/tcg-cpu-ops.h"
+ #include "tcg/tcg.h"
  
- typedef struct RISCVCPUMultiExtConfig {
++/* Hash that stores user set extensions */
++static GHashTable *multi_ext_user_opts;
++
++static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
++{
++    return g_hash_table_contains(multi_ext_user_opts,
++                                 GUINT_TO_POINTER(ext_offset));
++}
++
+ static void riscv_cpu_synchronize_from_tb(CPUState *cs,
+                                           const TranslationBlock *tb)
+ {
+@@ -570,6 +580,144 @@ static bool tcg_cpu_realizefn(CPUState *cs, Error **errp)
+     return true;
+ }
+ 
++static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
++                                  void *opaque, Error **errp)
++{
++    const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
++    bool value;
++
++    if (!visit_type_bool(v, name, &value, errp)) {
++        return;
++    }
++
++    isa_ext_update_enabled(RISCV_CPU(obj), multi_ext_cfg->offset, value);
++
++    g_hash_table_insert(multi_ext_user_opts,
++                        GUINT_TO_POINTER(multi_ext_cfg->offset),
++                        (gpointer)value);
++}
++
++static void cpu_get_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
++                                  void *opaque, Error **errp)
++{
++    const RISCVCPUMultiExtConfig *multi_ext_cfg = opaque;
++    bool value = isa_ext_is_enabled(RISCV_CPU(obj), multi_ext_cfg->offset);
++
++    visit_type_bool(v, name, &value, errp);
++}
++
++static void cpu_add_multi_ext_prop(Object *cpu_obj,
++                                   const RISCVCPUMultiExtConfig *multi_cfg)
++{
++    object_property_add(cpu_obj, multi_cfg->name, "bool",
++                        cpu_get_multi_ext_cfg,
++                        cpu_set_multi_ext_cfg,
++                        NULL, (void *)multi_cfg);
++
++    /*
++     * Set def val directly instead of using
++     * object_property_set_bool() to save the set()
++     * callback hash for user inputs.
++     */
++    isa_ext_update_enabled(RISCV_CPU(cpu_obj), multi_cfg->offset,
++                           multi_cfg->enabled);
++}
++
++static void riscv_cpu_add_multiext_prop_array(Object *obj,
++                                        const RISCVCPUMultiExtConfig *array)
++{
++    const RISCVCPUMultiExtConfig *prop;
++
++    g_assert(array);
++
++    for (prop = array; prop && prop->name; prop++) {
++        cpu_add_multi_ext_prop(obj, prop);
++    }
++}
++
++/*
++ * Add CPU properties with user-facing flags.
++ *
++ * This will overwrite existing env->misa_ext values with the
++ * defaults set via riscv_cpu_add_misa_properties().
++ */
++static void riscv_cpu_add_user_properties(Object *obj)
++{
++#ifndef CONFIG_USER_ONLY
++    riscv_add_satp_mode_properties(obj);
++#endif
++
++    riscv_cpu_add_misa_properties(obj);
++
++    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_extensions);
++    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_vendor_exts);
++    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_experimental_exts);
++
++    for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
++        qdev_property_add_static(DEVICE(obj), prop);
++    }
++}
++
++/*
++ * The 'max' type CPU will have all possible ratified
++ * non-vendor extensions enabled.
++ */
++static void riscv_init_max_cpu_extensions(Object *obj)
++{
++    RISCVCPU *cpu = RISCV_CPU(obj);
++    CPURISCVState *env = &cpu->env;
++    const RISCVCPUMultiExtConfig *prop;
++
++    /* Enable RVG, RVJ and RVV that are disabled by default */
++    riscv_cpu_set_misa(env, env->misa_mxl, env->misa_ext | RVG | RVJ | RVV);
++
++    for (prop = riscv_cpu_extensions; prop && prop->name; prop++) {
++        isa_ext_update_enabled(cpu, prop->offset, true);
++    }
++
++    /* set vector version */
++    env->vext_ver = VEXT_VERSION_1_00_0;
++
++    /* Zfinx is not compatible with F. Disable it */
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zfinx), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zdinx), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zhinx), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zhinxmin), false);
++
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zce), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmp), false);
++    isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcmt), false);
++
++    if (env->misa_mxl != MXL_RV32) {
++        isa_ext_update_enabled(cpu, CPU_CFG_OFFSET(ext_zcf), false);
++    }
++}
++
++static bool riscv_cpu_has_max_extensions(Object *cpu_obj)
++{
++    return object_dynamic_cast(cpu_obj, TYPE_RISCV_CPU_MAX) != NULL;
++}
++
++static bool riscv_cpu_has_user_properties(Object *cpu_obj)
++{
++    return object_dynamic_cast(cpu_obj, TYPE_RISCV_DYNAMIC_CPU) != NULL;
++}
++
++static void tcg_cpu_instance_init(CPUState *cs)
++{
++    RISCVCPU *cpu = RISCV_CPU(cs);
++    Object *obj = OBJECT(cpu);
++
++    if (riscv_cpu_has_user_properties(obj)) {
++        multi_ext_user_opts = g_hash_table_new(NULL, g_direct_equal);
++        riscv_cpu_add_user_properties(obj);
++    }
++
++    if (riscv_cpu_has_max_extensions(obj)) {
++        riscv_init_max_cpu_extensions(obj);
++    }
++}
++
+ static void tcg_cpu_init_ops(AccelCPUClass *accel_cpu, CPUClass *cc)
+ {
+     /*
+@@ -588,6 +736,7 @@ static void tcg_cpu_accel_class_init(ObjectClass *oc, void *data)
+     AccelCPUClass *acc = ACCEL_CPU_CLASS(oc);
+ 
+     acc->cpu_class_init = tcg_cpu_class_init;
++    acc->cpu_instance_init = tcg_cpu_instance_init;
+     acc->cpu_realizefn = tcg_cpu_realizefn;
+ }
+ 
 -- 
 2.41.0
 
