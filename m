@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564147ADAA6
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A53E7ADA5C
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:49:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmtb-00012Q-9a; Mon, 25 Sep 2023 10:49:11 -0400
+	id 1qkmtg-00019E-U7; Mon, 25 Sep 2023 10:49:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtX-0000zw-M8
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:07 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ id 1qkmtZ-00012k-SZ
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:10 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtP-0008Ei-BR
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:07 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso35429685e9.3
+ id 1qkmtQ-0008F9-B4
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:09 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4053c6f1087so56290295e9.0
  for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653336; x=1696258136; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653337; x=1696258137; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DX65lOE/uUVkmtjhIZOisxQvTzydcI84YNB1WXt/J5w=;
- b=DLSJJDlMAheC5yrdgJkt3cUwWZn5TfYvBAC8EPB8sNkKx3xWllzYEUJ53OIpT4yxHv
- 9Tfp6ocNl3DrNQRyDuxp+JoeZSURn6o3L6XoUwTgF8CMIeAvZVRd9/MbbUNiPgeUQe0J
- 1l9UxlTsDD/ku9rtZyg8R0b/LQjkPhC4Dpb9OULsbZDVtv9Vo+EMj6SAFR3eBnutvunc
- JjA5/wqDQazxlsa39AerE3CtolNze4IusVz9HQFpgNtIlifKvHxqIFAf2j+bfAuOhvtT
- QGkZmmErG12Hhro2fjXkdeV2Ais7+eZJkSHZMK5hv2q2f+6iWHA6DGBolY6rYEoK7Pjz
- YnDg==
+ bh=a52wocQYp8F3YgwPFsZoycBHm5iiCFaISrIdWEZjgl0=;
+ b=eyc5NfulXANc91s9Tt1G7RgSjVsf1tStUjZEcUrdCUVAVu7ftmvg3KSEgKuqF/Ow5i
+ zSvBYd/CKV/+k8olDIjaVS7e4sGkG3R26tMwwfrQIsYuZkOv1uNupC8ILKEyUs6a4oe/
+ 2Hfo5ECZcIeNDMl7r0T48p1eTBn75RjzaK4gw0o5ZsbmmnOS5RmEczJZIR1+WrtMrYNF
+ kawwIP5+uRaraf/Xxxr8zosfQnEHDKzAgDJw5adxIKUe7jBskzd2NEpeY4OWY9ijKGQC
+ vXlB07nsB089shcyzDQ/JU95H1J7ctqJu3MaBv62yI4SHugjJ+0R77w7k37gAEGTqe0s
+ aPdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653336; x=1696258136;
+ d=1e100.net; s=20230601; t=1695653337; x=1696258137;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DX65lOE/uUVkmtjhIZOisxQvTzydcI84YNB1WXt/J5w=;
- b=At3yw5by5PytRDA1x/olDgU8I/ov1BixAx4anXlzO7rOVk0Ni+SKtDncbURN2g/1dK
- /slLVzzMlAtqcsFN5Vt3iqdtlyZrajP/7YmQgTGiKx4aJGbpLOlt57LZfqxfi5nullbk
- FxzeKk8MZp52IM020Jol9K/UBIQaqkLqT1SQLR4uut63W7AizKcF4Nwgc7J4joM3lC6Q
- t/dzADskf22B0d71s6bdA9zI27V0A1c4LjF6dexHgm1Sflf5TY+MuZyjJ6W60Tqzy+Fe
- OrxX0qtyxbOET2H/r+WPXQjTMQ+DwAG0ieQaIkDZIJVIkYgoSY/KKDXhP8oyyrhs6MsC
- ybQQ==
-X-Gm-Message-State: AOJu0YywdoufSGvmpEds8LfyaibbT5wIwFcVeUyCTkmeiEz3eMD0PUml
- ngEdPGH8jV/ciesV3ixuQ26aqA==
-X-Google-Smtp-Source: AGHT+IFzvqpyIuikxt70glWxYNdRhVVnfZu3ojWJqodYYDE8eSxdmKDc6xUQxGVHVfRmayVk112wTg==
-X-Received: by 2002:a05:6000:819:b0:323:1689:6607 with SMTP id
- bt25-20020a056000081900b0032316896607mr8161726wrb.5.1695653336162; 
- Mon, 25 Sep 2023 07:48:56 -0700 (PDT)
+ bh=a52wocQYp8F3YgwPFsZoycBHm5iiCFaISrIdWEZjgl0=;
+ b=fKz7gJgJTFt2thmlkqLpAFuD3/dxZWwhZRbXugth8HxFI1hoKmTMbmVrMmXsNGSdr9
+ jYZXyEd+5Qa+TYyHNeAxwVjw8JLzW7aRysLzAdrdCkIXkk2KPouTU0VRE1mvrvfEF1Bq
+ 9d/uVpciA+gOLNwB+mIny9l3x/ELHSKwZ+Yn76YRv7AJDKyW7IcgWJ5OqJJYR5zmUl0e
+ Ig/2GJBgxHrE8pEtx2WOXR5wcKXo+igIcnsL5/JBEh54wCvR5/kkIxfOzNkrTlKk1APl
+ HX2ErBcyHcmLURAPVd+Y71+6tByL561OfvIRgefaNBJnI3T+/P56ftdb/Ue2zIg9EkwX
+ wNXA==
+X-Gm-Message-State: AOJu0YzvHBsSxlkIRMM59SVk/azWUOqq3RGm13BgqDGcSvi9kqWlOkh3
+ 6GWjJV3ijwIipZV9+wWEcrSg7w==
+X-Google-Smtp-Source: AGHT+IGOF6KtpG+nISEDvad+Phr3PN8xaLPF7HRn2zImY++RVLmcASBXl6qic08aE8hDUsfJ7OR9dw==
+X-Received: by 2002:a5d:4d46:0:b0:321:62b0:7ad8 with SMTP id
+ a6-20020a5d4d46000000b0032162b07ad8mr6031753wru.16.1695653337268; 
+ Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- ay18-20020a5d6f12000000b003143cb109d5sm2929399wrb.14.2023.09.25.07.48.55
+ h12-20020a5d688c000000b0031779a6b451sm11975569wru.83.2023.09.25.07.48.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Sep 2023 07:48:55 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 4EBD91FFBD;
+ by zen.linaroharston (Postfix) with ESMTP id 6E5AF1FFBE;
  Mon, 25 Sep 2023 15:48:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -91,17 +91,17 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
  Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [PATCH 02/31] tests/lcitool: add swtpm to the package list
-Date: Mon, 25 Sep 2023 15:48:25 +0100
-Message-Id: <20230925144854.1872513-3-alex.bennee@linaro.org>
+Subject: [PATCH 03/31] gitlab: shuffle some targets and reduce avocado noise
+Date: Mon, 25 Sep 2023 15:48:26 +0100
+Message-Id: <20230925144854.1872513-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -124,215 +124,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We need this to test some TPM stuff.
+We move a couple of targets out of the avocado runs because there are
+no tests to run. Tricore already has some coverage.  The cris target
+only really has check-tcg tests but its getting harder to find
+anything that packages the compiler.
+
+To reduce the noise of CANCEL messages we also set AVOCADO_TAGS
+appropriately so we filter down the number of tests we attempt.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- .gitlab-ci.d/cirrus/macos-12.vars                    | 2 +-
- tests/docker/dockerfiles/alpine.docker               | 1 +
- tests/docker/dockerfiles/centos8.docker              | 1 +
- tests/docker/dockerfiles/debian-amd64-cross.docker   | 1 +
- tests/docker/dockerfiles/debian-amd64.docker         | 1 +
- tests/docker/dockerfiles/debian-arm64-cross.docker   | 1 +
- tests/docker/dockerfiles/debian-armhf-cross.docker   | 1 +
- tests/docker/dockerfiles/debian-ppc64el-cross.docker | 1 +
- tests/docker/dockerfiles/debian-s390x-cross.docker   | 1 +
- tests/docker/dockerfiles/fedora-win32-cross.docker   | 1 +
- tests/docker/dockerfiles/fedora-win64-cross.docker   | 1 +
- tests/docker/dockerfiles/fedora.docker               | 1 +
- tests/docker/dockerfiles/opensuse-leap.docker        | 1 +
- tests/docker/dockerfiles/ubuntu2204.docker           | 1 +
- tests/lcitool/libvirt-ci                             | 2 +-
- tests/lcitool/projects/qemu.yml                      | 1 +
- 16 files changed, 16 insertions(+), 2 deletions(-)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-diff --git a/.gitlab-ci.d/cirrus/macos-12.vars b/.gitlab-ci.d/cirrus/macos-12.vars
-index 80eadaab29..5f3fb346d1 100644
---- a/.gitlab-ci.d/cirrus/macos-12.vars
-+++ b/.gitlab-ci.d/cirrus/macos-12.vars
-@@ -11,6 +11,6 @@ MAKE='/opt/homebrew/bin/gmake'
- NINJA='/opt/homebrew/bin/ninja'
- PACKAGING_COMMAND='brew'
- PIP3='/opt/homebrew/bin/pip3'
--PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol tesseract usbredir vde vte3 xorriso zlib zstd'
-+PKGS='bash bc bison bzip2 capstone ccache cmocka ctags curl dbus diffutils dtc flex gcovr gettext git glib gnu-sed gnutls gtk+3 jemalloc jpeg-turbo json-c libepoxy libffi libgcrypt libiscsi libnfs libpng libslirp libssh libtasn1 libusb llvm lzo make meson mtools ncurses nettle ninja pixman pkg-config python3 rpm2cpio sdl2 sdl2_image snappy socat sparse spice-protocol swtpm tesseract usbredir vde vte3 xorriso zlib zstd'
- PYPI_PKGS='PyYAML numpy pillow sphinx sphinx-rtd-theme tomli'
- PYTHON='/opt/homebrew/bin/python3'
-diff --git a/tests/docker/dockerfiles/alpine.docker b/tests/docker/dockerfiles/alpine.docker
-index d25649cb4f..42f6928627 100644
---- a/tests/docker/dockerfiles/alpine.docker
-+++ b/tests/docker/dockerfiles/alpine.docker
-@@ -100,6 +100,7 @@ RUN apk update && \
-         sparse \
-         spice-dev \
-         spice-protocol \
-+        swtpm \
-         tar \
-         tesseract-ocr \
-         usbredir-dev \
-diff --git a/tests/docker/dockerfiles/centos8.docker b/tests/docker/dockerfiles/centos8.docker
-index 68bfe606f5..d97c30e96a 100644
---- a/tests/docker/dockerfiles/centos8.docker
-+++ b/tests/docker/dockerfiles/centos8.docker
-@@ -107,6 +107,7 @@ RUN dnf distro-sync -y && \
-         socat \
-         spice-protocol \
-         spice-server-devel \
-+        swtpm \
-         systemd-devel \
-         systemtap-sdt-devel \
-         tar \
-diff --git a/tests/docker/dockerfiles/debian-amd64-cross.docker b/tests/docker/dockerfiles/debian-amd64-cross.docker
-index 0991938595..00bdc06021 100644
---- a/tests/docker/dockerfiles/debian-amd64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-amd64-cross.docker
-@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
-diff --git a/tests/docker/dockerfiles/debian-amd64.docker b/tests/docker/dockerfiles/debian-amd64.docker
-index 61dbc3ff24..9b50fb2f63 100644
---- a/tests/docker/dockerfiles/debian-amd64.docker
-+++ b/tests/docker/dockerfiles/debian-amd64.docker
-@@ -124,6 +124,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       systemtap-sdt-dev \
-                       tar \
-                       tesseract-ocr \
-diff --git a/tests/docker/dockerfiles/debian-arm64-cross.docker b/tests/docker/dockerfiles/debian-arm64-cross.docker
-index 74eabb274e..2dae3777f7 100644
---- a/tests/docker/dockerfiles/debian-arm64-cross.docker
-+++ b/tests/docker/dockerfiles/debian-arm64-cross.docker
-@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
-diff --git a/tests/docker/dockerfiles/debian-armhf-cross.docker b/tests/docker/dockerfiles/debian-armhf-cross.docker
-index 1ebd6ebd00..180ed836e6 100644
---- a/tests/docker/dockerfiles/debian-armhf-cross.docker
-+++ b/tests/docker/dockerfiles/debian-armhf-cross.docker
-@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
-diff --git a/tests/docker/dockerfiles/debian-ppc64el-cross.docker b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-index 59091fed02..d6be2f0cc5 100644
---- a/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-+++ b/tests/docker/dockerfiles/debian-ppc64el-cross.docker
-@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
-diff --git a/tests/docker/dockerfiles/debian-s390x-cross.docker b/tests/docker/dockerfiles/debian-s390x-cross.docker
-index 48b2f28310..ec0041d6aa 100644
---- a/tests/docker/dockerfiles/debian-s390x-cross.docker
-+++ b/tests/docker/dockerfiles/debian-s390x-cross.docker
-@@ -55,6 +55,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       tar \
-                       tesseract-ocr \
-                       tesseract-ocr-eng \
-diff --git a/tests/docker/dockerfiles/fedora-win32-cross.docker b/tests/docker/dockerfiles/fedora-win32-cross.docker
-index afa988574f..08799219f9 100644
---- a/tests/docker/dockerfiles/fedora-win32-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win32-cross.docker
-@@ -55,6 +55,7 @@ exec "$@"\n' > /usr/bin/nosync && \
-                socat \
-                sparse \
-                spice-protocol \
-+               swtpm \
-                tar \
-                tesseract \
-                tesseract-langpack-eng \
-diff --git a/tests/docker/dockerfiles/fedora-win64-cross.docker b/tests/docker/dockerfiles/fedora-win64-cross.docker
-index cf93a0ca60..f8e4cb70d3 100644
---- a/tests/docker/dockerfiles/fedora-win64-cross.docker
-+++ b/tests/docker/dockerfiles/fedora-win64-cross.docker
-@@ -55,6 +55,7 @@ exec "$@"\n' > /usr/bin/nosync && \
-                socat \
-                sparse \
-                spice-protocol \
-+               swtpm \
-                tar \
-                tesseract \
-                tesseract-langpack-eng \
-diff --git a/tests/docker/dockerfiles/fedora.docker b/tests/docker/dockerfiles/fedora.docker
-index f00e9e267c..9e9c71fa94 100644
---- a/tests/docker/dockerfiles/fedora.docker
-+++ b/tests/docker/dockerfiles/fedora.docker
-@@ -118,6 +118,7 @@ exec "$@"\n' > /usr/bin/nosync && \
-                sparse \
-                spice-protocol \
-                spice-server-devel \
-+               swtpm \
-                systemd-devel \
-                systemtap-sdt-devel \
-                tar \
-diff --git a/tests/docker/dockerfiles/opensuse-leap.docker b/tests/docker/dockerfiles/opensuse-leap.docker
-index ed04b4d6da..dc0e36ce48 100644
---- a/tests/docker/dockerfiles/opensuse-leap.docker
-+++ b/tests/docker/dockerfiles/opensuse-leap.docker
-@@ -100,6 +100,7 @@ RUN zypper update -y && \
-            socat \
-            sparse \
-            spice-protocol-devel \
-+           swtpm \
-            systemd-devel \
-            systemtap-sdt-devel \
-            tar \
-diff --git a/tests/docker/dockerfiles/ubuntu2204.docker b/tests/docker/dockerfiles/ubuntu2204.docker
-index 94c2c16118..2ca9cff79c 100644
---- a/tests/docker/dockerfiles/ubuntu2204.docker
-+++ b/tests/docker/dockerfiles/ubuntu2204.docker
-@@ -124,6 +124,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
-                       sed \
-                       socat \
-                       sparse \
-+                      swtpm \
-                       systemtap-sdt-dev \
-                       tar \
-                       tesseract-ocr \
-diff --git a/tests/lcitool/libvirt-ci b/tests/lcitool/libvirt-ci
-index e3ed1e5da1..36bc517161 160000
---- a/tests/lcitool/libvirt-ci
-+++ b/tests/lcitool/libvirt-ci
-@@ -1 +1 @@
--Subproject commit e3ed1e5da101943e53d8d89424e17b22120743f5
-+Subproject commit 36bc517161c45ead20224d47f2dc4fa428af6724
-diff --git a/tests/lcitool/projects/qemu.yml b/tests/lcitool/projects/qemu.yml
-index 6f0885170d..82092c9f17 100644
---- a/tests/lcitool/projects/qemu.yml
-+++ b/tests/lcitool/projects/qemu.yml
-@@ -110,6 +110,7 @@ packages:
-  - spice-protocol
-  - spice-server
-  - ssh-client
-+ - swtpm
-  - systemd
-  - tar
-  - tesseract
+---
+v2
+  - minor commit reword, no longer attempt to keep cris going
+---
+ .gitlab-ci.d/buildtest.yml | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
+
+diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
+index aee9101507..25af1bc41e 100644
+--- a/.gitlab-ci.d/buildtest.yml
++++ b/.gitlab-ci.d/buildtest.yml
+@@ -30,6 +30,7 @@ avocado-system-alpine:
+   variables:
+     IMAGE: alpine
+     MAKE_CHECK_ARGS: check-avocado
++    AVOCADO_TAGS: arch:avr arch:loongarch64 arch:mips64 arch:mipsel
+ 
+ build-system-ubuntu:
+   extends:
+@@ -40,8 +41,7 @@ build-system-ubuntu:
+   variables:
+     IMAGE: ubuntu2204
+     CONFIGURE_ARGS: --enable-docs
+-    TARGETS: alpha-softmmu cris-softmmu hppa-softmmu
+-      microblazeel-softmmu mips64el-softmmu
++    TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
+     MAKE_CHECK_ARGS: check-build
+ 
+ check-system-ubuntu:
+@@ -61,6 +61,7 @@ avocado-system-ubuntu:
+   variables:
+     IMAGE: ubuntu2204
+     MAKE_CHECK_ARGS: check-avocado
++    AVOCADO_TAGS: arch:alpha arch:microblaze arch:mips64el
+ 
+ build-system-debian:
+   extends:
+@@ -72,7 +73,7 @@ build-system-debian:
+     IMAGE: debian-amd64
+     CONFIGURE_ARGS: --with-coroutine=sigaltstack
+     TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4eb-softmmu
+-      sparc-softmmu xtensaeb-softmmu
++      sparc-softmmu xtensa-softmmu
+     MAKE_CHECK_ARGS: check-build
+ 
+ check-system-debian:
+@@ -92,6 +93,7 @@ avocado-system-debian:
+   variables:
+     IMAGE: debian-amd64
+     MAKE_CHECK_ARGS: check-avocado
++    AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
+ 
+ crash-test-debian:
+   extends: .native_test_job_template
+@@ -114,7 +116,7 @@ build-system-fedora:
+   variables:
+     IMAGE: fedora
+     CONFIGURE_ARGS: --disable-gcrypt --enable-nettle --enable-docs
+-    TARGETS: tricore-softmmu microblaze-softmmu mips-softmmu
++    TARGETS: microblaze-softmmu mips-softmmu
+       xtensa-softmmu m68k-softmmu riscv32-softmmu ppc-softmmu sparc64-softmmu
+     MAKE_CHECK_ARGS: check-build
+ 
+@@ -135,6 +137,8 @@ avocado-system-fedora:
+   variables:
+     IMAGE: fedora
+     MAKE_CHECK_ARGS: check-avocado
++    AVOCADO_TAGS: arch:microblaze arch:mips arch:xtensa arch:m68k
++      arch:riscv32 arch:ppc arch:sparc64
+ 
+ crash-test-fedora:
+   extends: .native_test_job_template
+@@ -180,6 +184,8 @@ avocado-system-centos:
+   variables:
+     IMAGE: centos8
+     MAKE_CHECK_ARGS: check-avocado
++    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:390x arch:x86_64 arch:rx
++      arch:sh4 arch:nios2
+ 
+ build-system-opensuse:
+   extends:
+@@ -209,6 +215,7 @@ avocado-system-opensuse:
+   variables:
+     IMAGE: opensuse-leap
+     MAKE_CHECK_ARGS: check-avocado
++    AVOCADO_TAGS: arch:s390x arch:x86_64 arch:aarch64
+ 
+ 
+ # This jobs explicitly disable TCG (--disable-tcg), KVM is detected by
 -- 
 2.39.2
 
