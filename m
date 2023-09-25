@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037027ADEE5
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D585A7ADEDC
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:33:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqKr-0001vg-TE; Mon, 25 Sep 2023 14:29:33 -0400
+	id 1qkqL1-0002E4-AZ; Mon, 25 Sep 2023 14:29:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqKO-0000Yn-4O
+ id 1qkqKP-0000qC-D5
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:29:09 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqKM-0007rc-7R
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:29:03 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4054f790190so55646365e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:29:01 -0700 (PDT)
+ id 1qkqKN-0007rs-Mp
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:29:05 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4054f790190so55646755e9.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:29:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666540; x=1696271340; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666541; x=1696271341; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=X+b+Iq4r0rMiqNqK4/5l0105lvJqo4v/7LZGFaqF0v8=;
- b=mZSTTX0s9jm8RRIyc2KR6b3WwaqTJM9wDXj3V9XGEcKdhEhmwj+gtRha8KdAVh6z/h
- xIM51JNEgoCnsJDb2vOmf3xmi6kmoaRlxQrmiJlqyvQ4fcMqQZMrXS2Q4ab9/O4dDTPl
- ANu0nCKxJ9CIcOadVkZ+xSuryZ8LA7KGVshJezDdXkCWAdl2ScZuHraqm3QyWdZ/c2X4
- 5tl4OS6ycN39d0t9cBmRCuCpV4C3Ev/5/0M8muU3phOJD2ktPO6mN00i7Lf9o8jFAptD
- 9EOCmXBe4to1Wkr0XukNUtD564GuT9faFsRPgW00O+2YYcCTB/9mXec0QkPQtuhJ6/mG
- nTYA==
+ bh=X4SdHGLTzFQ8VoHFc5maZ2DOZP9CSCnNto04LyR/4Aw=;
+ b=nYXfGEmKSgBoOLJwgEPWJ4SXkrg2w0MyOYRTog953AUclMXoXA9OEbl7TUPf51BNou
+ uKy9v3BHbGI3sjRpWjbjRWgP3r3h8lPI8hI4Fmh7PKa7ypzkDb3Iz+p6ixQ9MT8MwYdY
+ 0Sbs8IAh0Ye+cJKqbJVuCy39Mhhvxbv5nVYhHMKUYPk7MITEmDNUy6op9EF94OeOs04M
+ YtCbSexI0Y5H03pfMh0fCr1Na+oqlCtJTPjAqceaj2U/HajKcfjxJp0djtbtimDVGFof
+ CK63Eh1oDV+a6/PzMZjGNK+4A29pvBZX6Y4fxQVsUGnC5dzTv7j9TwiqLzEnrjtKyi3l
+ rYxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666540; x=1696271340;
+ d=1e100.net; s=20230601; t=1695666541; x=1696271341;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X+b+Iq4r0rMiqNqK4/5l0105lvJqo4v/7LZGFaqF0v8=;
- b=b50DW4agXyhAPIPwOpC7XKYm0wXp3zgk7rkfj6hfLApTo+ILa2LpguBLcKVlTv1KQi
- GoxFfyaR96niEG6rKCmhalOJFxoF/ehvpT5E9YmasD2/95jZGbg341rLj5wfN294qRqE
- B7AImNIp3BR8EMiSADFQ28j2uCnnmuNKQ7F74BKbADVNgtMMs3dKeDAwFNW5GDAK7PdY
- NFMyoxl3rnfEn8LCPv+o0gbTpvH7LE7vsi0w7IrQ9+fxpX/goAg9qwopd7wwk1v4Zynr
- +hAsUdAHbiY05BkpenLHgQXfSISjn7Xfz3wd/dKgDgRKhg6NJe7OCRL9knL542mT/Kxv
- G7Sw==
-X-Gm-Message-State: AOJu0YxwYMKnAjOUGIvFVaT2UdA6m2WK8BRtVO9C6cTnFu6SWa6Pf3xx
- 1JVIQpUB4YvVg0glnkSO6LDA3cVpoFw=
-X-Google-Smtp-Source: AGHT+IHALENbPHAYxE01EAOkDihWg+iR71uDQMAh1E108B4jfC4xM7a1lAF3aDm49xO5oRYSypB1CA==
-X-Received: by 2002:a5d:4c85:0:b0:321:5d87:5f7c with SMTP id
- z5-20020a5d4c85000000b003215d875f7cmr7005807wrs.30.1695666540199; 
- Mon, 25 Sep 2023 11:29:00 -0700 (PDT)
+ bh=X4SdHGLTzFQ8VoHFc5maZ2DOZP9CSCnNto04LyR/4Aw=;
+ b=te5GT4qR0nki7rKxIwiX06+5rDrJbNmzHIwWl1TAtm05UatLNuIKACuYnxUU1uAUwU
+ 1PpctjbApdaWyQdh08YR/5NxvCMCrTpVShOuPuCXsFoSVREkC8io8H0V9mzI/XpRJHcF
+ Of+C6F+d+GwW8iOc8XmqyVEsYpPFLF550rBVuooKtR3X4MCG15I1Z90x5OrV2lUduTLW
+ f5DvAb1B501QQCtaLImNR7Xin+uq3zVWSPglBfJvcDiTjt0NKnC5laMPnKIu39NOmqLl
+ VFQZV8bHGamvC5PgmC7tFSPtmeQmwJE+jun+EHSiIkrsmJgPqgolbeMLS7lioOKdGBMc
+ LP8A==
+X-Gm-Message-State: AOJu0YxpKWPzSX0zkxmFGw7R/91EL7LpDFccz8qMlL40VZ2181F0AI6o
+ KGAuTRQ0yAXJYohsuGunj+oQ4EmCMc4=
+X-Google-Smtp-Source: AGHT+IEpRJiB1xLyDtQCm6IXVRaBtXsUvLOkv4EzFS2R8rXB03INLeJ+HL1pRXICYVOyxc94U/qYUQ==
+X-Received: by 2002:a05:600c:141:b0:3fe:2b8c:9f0b with SMTP id
+ w1-20020a05600c014100b003fe2b8c9f0bmr6507047wmm.23.1695666541294; 
+ Mon, 25 Sep 2023 11:29:01 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.59
+ u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.29.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:28:59 -0700 (PDT)
+ Mon, 25 Sep 2023 11:29:00 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v6 22/23] bsd-user: Implement shmat(2) and shmdt(2)
-Date: Mon, 25 Sep 2023 21:27:08 +0300
-Message-ID: <20230925182709.4834-23-kariem.taha2.7@gmail.com>
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v6 23/23] bsd-user: Add stubs for vadvise(), sbrk() and sstk()
+Date: Mon, 25 Sep 2023 21:27:09 +0300
+Message-ID: <20230925182709.4834-24-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 References: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,163 +94,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Stacey Son <sson@FreeBSD.org>
+From: Warner Losh <imp@bsdimp.com>
 
-Use `WITH_MMAP_LOCK_GUARD` instead of mmap_lock() and mmap_unlock(),
-to match linux-user implementation, according to the following commits:
+The above system calls are not supported by qemu.
 
-69fa2708a216df715ba5102a0f98468b540a464e linux-user: Use WITH_MMAP_LOCK_GUARD in target_{shmat,shmdt}
-ceda5688b650646248f269a992c06b11148c5759 linux-user: Fix shmdt
-
-Signed-off-by: Stacey Son <sson@FreeBSD.org>
+Signed-off-by: Warner Losh <imp@bsdimp.com>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- bsd-user/bsd-mem.h            | 87 +++++++++++++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  8 ++++
- bsd-user/mmap.c               |  2 +-
- bsd-user/qemu.h               |  1 +
- 4 files changed, 97 insertions(+), 1 deletion(-)
+ bsd-user/bsd-mem.h            | 18 ++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 12 ++++++++++++
+ 2 files changed, 30 insertions(+)
 
 diff --git a/bsd-user/bsd-mem.h b/bsd-user/bsd-mem.h
-index b82f3eaa25..c512a4e375 100644
+index c512a4e375..c3e72e3b86 100644
 --- a/bsd-user/bsd-mem.h
 +++ b/bsd-user/bsd-mem.h
-@@ -344,4 +344,91 @@ static inline abi_long do_bsd_shmctl(abi_long shmid, abi_long cmd,
+@@ -431,4 +431,22 @@ static inline abi_long do_bsd_shmdt(abi_ulong shmaddr)
      return ret;
  }
  
-+/* shmat(2) */
-+static inline abi_long do_bsd_shmat(int shmid, abi_ulong shmaddr, int shmflg)
++static inline abi_long do_bsd_vadvise(void)
 +{
-+    abi_ulong raddr;
-+    abi_long ret;
-+    struct shmid_ds shm_info;
-+
-+    /* Find out the length of the shared memory segment. */
-+    ret = get_errno(shmctl(shmid, IPC_STAT, &shm_info));
-+    if (is_error(ret)) {
-+        /* Can't get the length */
-+        return ret;
-+    }
-+
-+    if (!guest_range_valid_untagged(shmaddr, shm_info.shm_segsz)) {
-+        return -TARGET_EINVAL;
-+    }
-+
-+    WITH_MMAP_LOCK_GUARD() {
-+        void *host_raddr;
-+
-+        if (shmaddr) {
-+            host_raddr = shmat(shmid, (void *)g2h_untagged(shmaddr), shmflg);
-+        } else {
-+            abi_ulong mmap_start;
-+
-+            mmap_start = mmap_find_vma(0, shm_info.shm_segsz);
-+
-+            if (mmap_start == -1) {
-+                return -TARGET_ENOMEM;
-+            }
-+            host_raddr = shmat(shmid, g2h_untagged(mmap_start),
-+                               shmflg | SHM_REMAP);
-+        }
-+
-+        if (host_raddr == (void *)-1) {
-+            return get_errno(-1);
-+        }
-+        raddr = h2g(host_raddr);
-+
-+        page_set_flags(raddr, raddr + shm_info.shm_segsz - 1,
-+                       PAGE_VALID | PAGE_RESET | PAGE_READ |
-+                       (shmflg & SHM_RDONLY ? 0 : PAGE_WRITE));
-+
-+        for (int i = 0; i < N_BSD_SHM_REGIONS; i++) {
-+            if (bsd_shm_regions[i].start == 0) {
-+                bsd_shm_regions[i].start = raddr;
-+                bsd_shm_regions[i].size = shm_info.shm_segsz;
-+                break;
-+            }
-+        }
-+    }
-+
-+    return raddr;
++    /* See sys_ovadvise() in vm_unix.c */
++    return -TARGET_EINVAL;
 +}
 +
-+/* shmdt(2) */
-+static inline abi_long do_bsd_shmdt(abi_ulong shmaddr)
++static inline abi_long do_bsd_sbrk(void)
 +{
-+    abi_long ret;
++    /* see sys_sbrk() in vm_mmap.c */
++    return -TARGET_EOPNOTSUPP;
++}
 +
-+    WITH_MMAP_LOCK_GUARD() {
-+        int i;
-+
-+        for (i = 0; i < N_BSD_SHM_REGIONS; ++i) {
-+            if (bsd_shm_regions[i].start == shmaddr) {
-+                break;
-+            }
-+        }
-+
-+        if (i == N_BSD_SHM_REGIONS) {
-+            return -TARGET_EINVAL;
-+        }
-+
-+        ret = get_errno(shmdt(g2h_untagged(shmaddr)));
-+        if (ret == 0) {
-+            abi_ulong size = bsd_shm_regions[i].size;
-+
-+            bsd_shm_regions[i].start = 0;
-+            page_set_flags(shmaddr, shmaddr + size - 1, 0);
-+            mmap_reserve(shmaddr, size);
-+        }
-+    }
-+
-+    return ret;
++static inline abi_long do_bsd_sstk(void)
++{
++    /* see sys_sstk() in vm_mmap.c */
++    return -TARGET_EOPNOTSUPP;
 +}
 +
  #endif /* BSD_USER_BSD_MEM_H */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 664b8de104..6b32d4df68 100644
+index 6b32d4df68..ce2a6bc29e 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -667,6 +667,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_shmctl(arg1, arg2, arg3);
+@@ -675,6 +675,18 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_shmdt(arg1);
          break;
  
-+    case TARGET_FREEBSD_NR_shmat: /* shmat(2) */
-+        ret = do_bsd_shmat(arg1, arg2, arg3);
++    case TARGET_FREEBSD_NR_freebsd11_vadvise:
++        ret = do_bsd_vadvise();
 +        break;
 +
-+    case TARGET_FREEBSD_NR_shmdt: /* shmdt(2) */
-+        ret = do_bsd_shmdt(arg1);
++    case TARGET_FREEBSD_NR_sbrk:
++        ret = do_bsd_sbrk();
++        break;
++
++    case TARGET_FREEBSD_NR_sstk:
++        ret = do_bsd_sstk();
 +        break;
 +
          /*
           * Misc
           */
-diff --git a/bsd-user/mmap.c b/bsd-user/mmap.c
-index 8e148a2ea3..3ef11b2807 100644
---- a/bsd-user/mmap.c
-+++ b/bsd-user/mmap.c
-@@ -636,7 +636,7 @@ fail:
-     return -1;
- }
- 
--static void mmap_reserve(abi_ulong start, abi_ulong size)
-+void mmap_reserve(abi_ulong start, abi_ulong size)
- {
-     abi_ulong real_start;
-     abi_ulong real_end;
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index d9507137cc..d67dd76827 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -232,6 +232,7 @@ abi_long target_mremap(abi_ulong old_addr, abi_ulong old_size,
- int target_msync(abi_ulong start, abi_ulong len, int flags);
- extern abi_ulong mmap_next_start;
- abi_ulong mmap_find_vma(abi_ulong start, abi_ulong size);
-+void mmap_reserve(abi_ulong start, abi_ulong size);
- void TSA_NO_TSA mmap_fork_start(void);
- void TSA_NO_TSA mmap_fork_end(int child);
- 
 -- 
 2.42.0
 
