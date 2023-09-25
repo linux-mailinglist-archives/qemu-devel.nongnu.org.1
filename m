@@ -2,48 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665537AD866
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5117AD85D
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 14:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkl8n-0008ID-6l; Mon, 25 Sep 2023 08:56:45 -0400
+	id 1qkl8p-0008K5-97; Mon, 25 Sep 2023 08:56:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qkdjw-0001fH-QA
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 01:02:36 -0400
-Received: from mta01.start.ca ([162.250.196.97])
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1qkfoG-0003sz-0t
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 03:15:12 -0400
+Received: from mx2.zhaoxin.com ([203.110.167.99])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qkdjt-0004ot-V0
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 01:02:36 -0400
-Received: from mta01.start.ca (localhost [127.0.0.1])
- by mta01.start.ca (Postfix) with ESMTP id 27956207A2;
- Mon, 25 Sep 2023 01:02:33 -0400 (EDT)
-Received: from localhost (dhcp-24-53-241-2.cable.user.start.ca [24.53.241.2])
- by mta01.start.ca (Postfix) with ESMTPS id F0D6D20784;
- Mon, 25 Sep 2023 01:02:32 -0400 (EDT)
-From: Nick Bowler <nbowler@draconx.ca>
-To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-Subject: [PATCH 8/8] target/sparc: Fix VIS subtraction instructions.
-Date: Mon, 25 Sep 2023 01:03:57 -0400
-Message-ID: <20230925050545.30912-9-nbowler@draconx.ca>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230925050545.30912-1-nbowler@draconx.ca>
-References: <20230925050545.30912-1-nbowler@draconx.ca>
+ (Exim 4.90_1) (envelope-from <EwanHai-oc@zhaoxin.com>)
+ id 1qkfoB-0008Fn-VG
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 03:15:10 -0400
+X-ASG-Debug-ID: 1695626094-1eb14e75133b550001-jgbH7p
+Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by
+ mx2.zhaoxin.com with ESMTP id MSxhqgC9b91u0ZgS (version=TLSv1.2
+ cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO);
+ Mon, 25 Sep 2023 15:14:54 +0800 (CST)
+X-Barracuda-Envelope-From: EwanHai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
+ (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 25 Sep
+ 2023 15:14:54 +0800
+Received: from ewan-server.zhaoxin.com (10.28.66.44) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 25 Sep
+ 2023 15:14:53 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
+From: EwanHai <ewanhai-oc@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
+To: <pbonzini@redhat.com>, <mtosatti@redhat.com>, <kvm@vger.kernel.org>
+CC: <qemu-devel@nongnu.org>
+Subject: [PATCH] target/i386/kvm: Refine VMX controls setting for backward
+ compatibility
+Date: Mon, 25 Sep 2023 03:14:53 -0400
+X-ASG-Orig-Subj: [PATCH] target/i386/kvm: Refine VMX controls setting for
+ backward compatibility
+Message-ID: <20230925071453.14908-1-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-Received-SPF: none client-ip=162.250.196.97; envelope-from=nbowler@draconx.ca;
- helo=mta01.start.ca
+X-Originating-IP: [10.28.66.44]
+X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
+X-Barracuda-Start-Time: 1695626094
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1962
+X-Barracuda-BRTS-Status: 0
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: -2.02
+X-Barracuda-Spam-Status: No,
+ SCORE=-2.02 using global scores of TAG_LEVEL=1000.0
+ QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.114571
+ Rule breakdown below
+ pts rule name              description
+ ---- ---------------------- --------------------------------------------------
+Received-SPF: pass client-ip=203.110.167.99;
+ envelope-from=EwanHai-oc@zhaoxin.com; helo=mx2.zhaoxin.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
 X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-Mailman-Approved-At: Mon, 25 Sep 2023 08:56:43 -0400
 X-BeenThere: qemu-devel@nongnu.org
@@ -60,70 +90,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-All of the VIS subtraction instructions are documented to subtract the
-second input operand from the first.  This is also consistent with how
-the instructions actually work on a real UltraSparc II.
+Commit 4a910e1 ("target/i386: do not set unsupported VMX secondary
+execution controls") implemented a workaround for hosts that have
+specific CPUID features but do not support the corresponding VMX
+controls, e.g., hosts support RDSEED but do not support RDSEED-Exiting.
 
-But the emulator is implementing the subtraction in the wrong order,
-subtracting the first input from the second, so the results are wrong
-in all nontrivial cases.
+In detail, commit 4a910e1 introduced a flag `has_msr_vmx_procbased_clts2`.
+If KVM has `MSR_IA32_VMX_PROCBASED_CTLS2` in its msr list, QEMU would
+use KVM's settings, avoiding any modifications to this MSR.
 
-Signed-off-by: Nick Bowler <nbowler@draconx.ca>
+However, this commit (4a910e1) didn’t account for cases in older Linux
+kernels(e.g., linux-4.19.90) where `MSR_IA32_VMX_PROCBASED_CTLS2` is
+in `kvm_feature_msrs`—obtained by ioctl(KVM_GET_MSR_FEATURE_INDEX_LIST),
+but not in `kvm_msr_list`—obtained by ioctl(KVM_GET_MSR_INDEX_LIST).
+As a result,it did not set the `has_msr_vmx_procbased_clts2` flag based
+on `kvm_msr_list` alone, even though KVM maintains the value of this MSR.
+
+This patch supplements the above logic, ensuring that
+`has_msr_vmx_procbased_clts2` is correctly set by checking both MSR
+lists, thus maintaining compatibility with older kernels.
+
+Signed-off-by: EwanHai <ewanhai-oc@zhaoxin.com>
 ---
- target/sparc/vis_helper.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ target/i386/kvm/kvm.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/target/sparc/vis_helper.c b/target/sparc/vis_helper.c
-index 3903beaf5d..fa97e09ffa 100644
---- a/target/sparc/vis_helper.c
-+++ b/target/sparc/vis_helper.c
-@@ -282,10 +282,10 @@ uint64_t helper_fexpand(uint32_t src2)
-         s.ll = src1;                                    \
-         d.ll = src2;                                    \
-                                                         \
--        d.VIS_W64(0) = F(d.VIS_W64(0), s.VIS_W64(0));   \
--        d.VIS_W64(1) = F(d.VIS_W64(1), s.VIS_W64(1));   \
--        d.VIS_W64(2) = F(d.VIS_W64(2), s.VIS_W64(2));   \
--        d.VIS_W64(3) = F(d.VIS_W64(3), s.VIS_W64(3));   \
-+        d.VIS_W64(0) = F(s.VIS_W64(0), d.VIS_W64(0));   \
-+        d.VIS_W64(1) = F(s.VIS_W64(1), d.VIS_W64(1));   \
-+        d.VIS_W64(2) = F(s.VIS_W64(2), d.VIS_W64(2));   \
-+        d.VIS_W64(3) = F(s.VIS_W64(3), d.VIS_W64(3));   \
-                                                         \
-         return d.ll;                                    \
-     }                                                   \
-@@ -297,8 +297,8 @@ uint64_t helper_fexpand(uint32_t src2)
-         s.l = src1;                                     \
-         d.l = src2;                                     \
-                                                         \
--        d.VIS_W32(0) = F(d.VIS_W32(0), s.VIS_W32(0));   \
--        d.VIS_W32(1) = F(d.VIS_W32(1), s.VIS_W32(1));   \
-+        d.VIS_W32(0) = F(s.VIS_W32(0), d.VIS_W32(0));   \
-+        d.VIS_W32(1) = F(s.VIS_W32(1), d.VIS_W32(1));   \
-                                                         \
-         return d.l;                                     \
-     }                                                   \
-@@ -310,8 +310,8 @@ uint64_t helper_fexpand(uint32_t src2)
-         s.ll = src1;                                    \
-         d.ll = src2;                                    \
-                                                         \
--        d.VIS_L64(0) = F(d.VIS_L64(0), s.VIS_L64(0));   \
--        d.VIS_L64(1) = F(d.VIS_L64(1), s.VIS_L64(1));   \
-+        d.VIS_L64(0) = F(s.VIS_L64(0), d.VIS_L64(0));   \
-+        d.VIS_L64(1) = F(s.VIS_L64(1), d.VIS_L64(1));   \
-                                                         \
-         return d.ll;                                    \
-     }                                                   \
-@@ -323,7 +323,7 @@ uint64_t helper_fexpand(uint32_t src2)
-         s.l = src1;                                     \
-         d.l = src2;                                     \
-                                                         \
--        d.l = F(d.l, s.l);                              \
-+        d.l = F(s.l, d.l);                              \
-                                                         \
-         return d.l;                                     \
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index af101fcdf6..6299284de4 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2343,6 +2343,7 @@ void kvm_arch_do_init_vcpu(X86CPU *cpu)
+ static int kvm_get_supported_feature_msrs(KVMState *s)
+ {
+     int ret = 0;
++    int i;
+ 
+     if (kvm_feature_msrs != NULL) {
+         return 0;
+@@ -2377,6 +2378,11 @@ static int kvm_get_supported_feature_msrs(KVMState *s)
+         return ret;
      }
+ 
++    for (i = 0; i < kvm_feature_msrs->nmsrs; i++) {
++        if (kvm_feature_msrs->indices[i] == MSR_IA32_VMX_PROCBASED_CTLS2) {
++            has_msr_vmx_procbased_ctls2 = true;
++        }
++    }
+     return 0;
+ }
+ 
 -- 
-2.41.0
+2.34.1
 
 
