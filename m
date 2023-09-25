@@ -2,114 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E92D7ADAC9
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5A57ADA9F
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:52:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkn3M-0000E8-Mv; Mon, 25 Sep 2023 10:59:16 -0400
+	id 1qkmuM-0002VO-UV; Mon, 25 Sep 2023 10:50:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkn35-0008KP-6T
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:59:00 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkn2r-0002Ef-W9
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:58:57 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40572aeb73cso31366045e9.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:58:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653924; x=1696258724; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=eKXyxkZjkgMHzhbh3Oq/XROWT/WyaO+gDU9Mjp58TiI=;
- b=v4+LzZ0qKbYpVrBm6g7rdVJQ8kcfUnpsf7UwmNcPdeG0i8DpQt38mJXhXdN/ITGRnG
- zrFI6EgINpKA3T4dRNzEHwrTS3syn4Ai/GcfIkxAUGtWKYb0VqUTVW1E9Qs/NLokJmk+
- kLyRC2wPJ0EOc/LpE7YntaKyfRbDusE+6R/yqB7B88ALXPnPQYgAqt/3c3GlcdvdPDfG
- wXKMTIzVzy/wURDyvciSnr8JFdjkfWFlWvRFYDt93vPUSzmexosIj0dmYweq706Gfg5w
- g4t5+fJplIs4N5tBzI0qKgZgPojh16fpONsjvzIpaoJR8sK0xSCqfILVepQRL2ou0mJK
- rgBw==
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qkmu0-0001xT-Lu
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qkmtt-0008Tf-5Z
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695653368;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=A/8G1UARPBIuebuj2iJPfjECiURXvIUFTSA9eEeTeKE=;
+ b=DJMPvFusXC5iF2GrpRvEytPPj9UbytTNLRTaNYMPFEM65/LUJA+UY4ouT9zCPttVHFldpT
+ DFDoAyRf+kO///mGNn6PZlT2ZStR52Q0AnGbUPqiYTlPmOhPLKYbys8Cy7cwhyTMy4gxSQ
+ Rlgj6NWN1z0EPM/s7CNRsrD9oRkyQAw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-21yK4wWYPEWYvvl2TX8YOQ-1; Mon, 25 Sep 2023 10:49:26 -0400
+X-MC-Unique: 21yK4wWYPEWYvvl2TX8YOQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3231f43fc5eso2356215f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653924; x=1696258724;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=eKXyxkZjkgMHzhbh3Oq/XROWT/WyaO+gDU9Mjp58TiI=;
- b=Js2QWS7GPCjEwes1cDkjZlw7p/9bK6Q9Ed2OhMBKgmGstjGRo8B5293kPevMEkGjFm
- NB4ikj7ncuFtyIaTkgLO8NZJ4BZN6MAADaAwemjQTT/tHWjfYQdtRNfJJaMRhai5SGKv
- ZttKnyUeseZHENTiALbsXowURpx9VTm9Xnl19WaTpclyinTxzXKUmKlLLs/aEKZ7zuzR
- g2E9ilawCfkyeo1q28Ozb++IeUrOY7dX4F2dgLPJbXTTeUaCipTDdTIHrTDYoNI/4fDL
- qFijpFZIMC+UEEY7M4vQ1Q1Y0BgZn6oE31POv1gvspaMj+F1bhQKuxK9f84PqIIy176Y
- QAzQ==
-X-Gm-Message-State: AOJu0Yzo5N7WLWKpMJ4G1+qV39GJ06AS65PJSBda+VsC9HXKjUMa9hbB
- pzRwrEVryxgrty0qOcch47IcQA==
-X-Google-Smtp-Source: AGHT+IGWbUjxohdjoGUz1NACjFC7lPrzbzSjOIinfeWPBprq1qiMF15BclJ+KgJx8fxJhUxcDhDCPA==
-X-Received: by 2002:a05:600c:230b:b0:3fe:d448:511a with SMTP id
- 11-20020a05600c230b00b003fed448511amr6821322wmo.9.1695653923716; 
- Mon, 25 Sep 2023 07:58:43 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1695653364; x=1696258164;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=A/8G1UARPBIuebuj2iJPfjECiURXvIUFTSA9eEeTeKE=;
+ b=mfdSYz7jDOIhwmXik5vo65yOYBsi1kCiyFpOP8ajabw8goizFfDIwnAyBLV4AqEH6j
+ W40yL4sWywJMF5Mf5TjFHkhP9E+2U9Gnc1AucK6is2kuF7RHfYzyOa1wGPnM8yf17q95
+ OY04gwKZshh+i9+o7QiX24pCVumnXwOt32cVT3CVNhJBL+C/ymKmTzMt/Vq4v7A76vm+
+ /BXRrUPKg/g8NkZoQr9mqJpppgwepEfRCFB2egK8/0mLo4RMEyFbNG0gPAd6BfGdYPRG
+ J31uF+RPEpMEzpN7Gurz4WprqeRM0g2OtiF8stb390xNsGJRlYvKxNu5b60DQsUt4aIo
+ iygQ==
+X-Gm-Message-State: AOJu0YxquSULzoMkyUPvddW2/NF/dNwqcxd7ywjGCGvw04rKlQBQNR/Z
+ uiU0sl4RRJv9eJ37eBraYm4uTuqjGStQ3wAjaTEaMvlQSJWEMXkZPQdYyShsTEJy+581fvJApXo
+ CrXctLH+GM3wITYEKre2wnDwz1UONiaxZAuEAfyTW7Zi8rIpiJ3oiaK4J5AQfTcTupXkcBxnEd3
+ M=
+X-Received: by 2002:adf:f548:0:b0:313:dee2:e052 with SMTP id
+ j8-20020adff548000000b00313dee2e052mr6002218wrp.26.1695653364583; 
+ Mon, 25 Sep 2023 07:49:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEO4innvccU8G7VFf1sX8WWa8eeyKeNGMcpDfEDXSo3kdS9be7fuuDTFeRqmgS/tRW3XmuDaw==
+X-Received: by 2002:adf:f548:0:b0:313:dee2:e052 with SMTP id
+ j8-20020adff548000000b00313dee2e052mr6002198wrp.26.1695653364122; 
+ Mon, 25 Sep 2023 07:49:24 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- k12-20020a7bc40c000000b00403038d7652sm12457849wmi.39.2023.09.25.07.58.41
+ ay18-20020a5d6f12000000b003143cb109d5sm2930498wrb.14.2023.09.25.07.49.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 07:58:42 -0700 (PDT)
-Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D967B1FFD6;
- Mon, 25 Sep 2023 15:48:58 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ Mon, 25 Sep 2023 07:49:23 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- John Snow <jsnow@redhat.com>, libvir-list@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas Piggin <npiggin@gmail.com>,
- Radoslaw Biernacki <rad@semihalf.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, Cleber Rosa <crosa@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Bin Meng <bin.meng@windriver.com>, Alexandre Iooss <erdnaxe@crans.org>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-ppc@nongnu.org,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
- qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
-Subject: [RFC PATCH 31/31] contrib/plugins: add iops plugin example for cost
- modelling
-Date: Mon, 25 Sep 2023 15:48:54 +0100
-Message-Id: <20230925144854.1872513-32-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
-References: <20230925144854.1872513-1-alex.bennee@linaro.org>
+Cc: armbru@redhat.com
+Subject: [PATCH] target/i386/seg_helper: remove shadowed variable
+Date: Mon, 25 Sep 2023 16:49:22 +0200
+Message-ID: <20230925144922.529963-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -125,306 +98,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This plugin uses the new time control interface to make decisions
-about the state of time during the emulation. The algorithm is
-currently very simple. The user specifies an iops rate which applies
-per core. If the core runs ahead of its allocated execution time the
-plugin sleeps for a bit to let real time catch up. Either way time as
-updated for the emulation as a function of total executed instructions
-with some adjustments for cores that idle.
+Return the width of the new task directly from switch_tss_ra.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Message-Id: <20230519170454.2353945-9-alex.bennee@linaro.org>
-
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
-v2
-  - fix various style issues
----
- contrib/plugins/iops.c   | 261 +++++++++++++++++++++++++++++++++++++++
- contrib/plugins/Makefile |   1 +
- 2 files changed, 262 insertions(+)
- create mode 100644 contrib/plugins/iops.c
+ target/i386/tcg/seg_helper.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-diff --git a/contrib/plugins/iops.c b/contrib/plugins/iops.c
-new file mode 100644
-index 0000000000..6f8baca6f7
---- /dev/null
-+++ b/contrib/plugins/iops.c
-@@ -0,0 +1,261 @@
-+/*
-+ * iops rate limiting plugin.
-+ *
-+ * This plugin can be used to restrict the execution of a system to a
-+ * particular number of Instructions Per Second (IOPS). This controls
-+ * time as seen by the guest so while wall-clock time may be longer
-+ * from the guests point of view time will pass at the normal rate.
-+ *
-+ * This uses the new plugin API which allows the plugin to control
-+ * system time.
-+ *
-+ * Copyright (c) 2023 Linaro Ltd
-+ *
-+ * SPDX-License-Identifier: GPL-2.0-or-later
-+ */
-+
-+#include <stdio.h>
-+#include <glib.h>
-+#include <qemu-plugin.h>
-+
-+QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
-+
-+#define SLICES 10 /* the number of slices per second we compute delay */
-+
-+static GMutex global_state_lock;
-+
-+static uint64_t iops = 1000000;  /* iops rate, per core, per second */
-+static uint64_t current_ticks;   /* current global ticks */
-+static uint64_t next_check;      /* the next checkpoint for time */
-+static bool precise_execution;   /* count every instruction */
-+
-+static int64_t systime_at_start;  /* time we started the first vCPU */
-+
-+static const uint64_t nsec_per_sec = 1000000000;
-+static const void *time_handle;
-+
-+/*
-+ * We need to track the number of instructions each vCPU has executed
-+ * as well as what its current state is. We need to account for time
-+ * passing while a vCPU is idle.
-+ */
-+
-+typedef enum {
-+    UNKNOWN = 0,
-+    CREATED,
-+    EXECUTING,
-+    IDLE,
-+    FINISHED
-+} vCPUState;
-+
-+typedef struct {
-+    /* pointer to vcpu counter entry */
-+    uint64_t *counter;
-+    vCPUState state;
-+    /* timestamp when vCPU entered state */
-+    uint64_t state_time;
-+    /* number of ns vCPU was idle */
-+    uint64_t total_idle;
-+} vCPUTime;
-+
-+GArray *vcpus;
-+uint64_t *vcpu_counters;
-+
-+/*
-+ * Get the vcpu structure for this vCPU. We don't do any locking here
-+ * as only one vCPU will ever access its own structure.
-+ */
-+static vCPUTime *get_vcpu(int cpu_index)
-+{
-+    return &g_array_index(vcpus, vCPUTime, cpu_index);
-+}
-+
-+/*
-+ * When emulation is running faster than real time this is the point
-+ * we can throttle the execution of a given vCPU. Either way we can
-+ * now tell the system to move time forward.
-+ */
-+static void update_system_time(int64_t vcpu_ticks)
-+{
-+    int64_t now = g_get_real_time();
-+    int64_t real_runtime_ns = now - systime_at_start;
-+
-+    g_mutex_lock(&global_state_lock);
-+    /* now we have the lock double check we are fastest */
-+    if (vcpu_ticks > next_check) {
-+
-+        int64_t tick_runtime_ns = (vcpu_ticks / iops) * nsec_per_sec;
-+        if (tick_runtime_ns > real_runtime_ns) {
-+            int64_t sleep_us = (tick_runtime_ns - real_runtime_ns) / 1000;
-+            g_usleep(sleep_us);
-+        }
-+
-+        /* Having slept we can now move the clocks forward */
-+        qemu_plugin_update_ns(time_handle, vcpu_ticks);
-+        current_ticks = vcpu_ticks;
-+        next_check = iops / SLICES;
-+    }
-+    g_mutex_unlock(&global_state_lock);
-+}
-+
-+/*
-+ * State tracking
-+ */
-+static void vcpu_init(qemu_plugin_id_t id, unsigned int cpu_index)
-+{
-+    vCPUTime *vcpu = get_vcpu(cpu_index);
-+    vcpu->state = CREATED;
-+    vcpu->state_time = *vcpu->counter;
-+
-+    g_mutex_lock(&global_state_lock);
-+    if (!systime_at_start) {
-+        systime_at_start = g_get_real_time();
-+    }
-+    g_mutex_unlock(&global_state_lock);
-+}
-+
-+static void vcpu_idle(qemu_plugin_id_t id, unsigned int cpu_index)
-+{
-+    vCPUTime *vcpu = get_vcpu(cpu_index);
-+    vcpu->state = IDLE;
-+    vcpu->state_time = *vcpu->counter;
-+
-+    /* handle when we are the last vcpu to sleep here */
-+}
-+
-+static void vcpu_resume(qemu_plugin_id_t id, unsigned int cpu_index)
-+{
-+    vCPUTime *vcpu = get_vcpu(cpu_index);
-+
-+    /*
-+     * Now we need to reset counter to something approximating the
-+     * current time, however we only update current_ticks when a block
-+     * exceeds next_check. If the vCPU has been asleep for awhile this
-+     * will probably do, otherwise lets pick somewhere between
-+     * current_ticks and the next_check value.
-+     */
-+    if (vcpu->state_time < current_ticks) {
-+        *vcpu->counter = current_ticks;
-+    } else {
-+        int64_t window = next_check - vcpu->state_time;
-+        *vcpu->counter = next_check - (window / 2);
-+    }
-+
-+    vcpu->state = EXECUTING;
-+    vcpu->state_time = *vcpu->counter;
-+}
-+
-+static void vcpu_exit(qemu_plugin_id_t id, unsigned int cpu_index)
-+{
-+    vCPUTime *vcpu = get_vcpu(cpu_index);
-+    vcpu->state = FINISHED;
-+    vcpu->state_time = *vcpu->counter;
-+}
-+
-+/*
-+ * tb exec
-+ */
-+static void vcpu_tb_exec(unsigned int cpu_index, void *udata)
-+{
-+    vCPUTime *vcpu = get_vcpu(cpu_index);
-+    uint64_t count = *vcpu->counter;
-+
-+    count += GPOINTER_TO_UINT(udata);
-+
-+    if (count >= next_check) {
-+        update_system_time(count);
-+    }
-+}
-+
-+/*
-+ * We have two choices at translation time. In imprecise mode we just
-+ * install a tb execution callback with the total number of
-+ * instructions in the block. This ignores any partial execution
-+ * effects but it reasonably fast. In precise mode we increment a
-+ * per-vCPU counter for every execution.
-+ */
-+
-+static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
-+{
-+    size_t n_insns = qemu_plugin_tb_n_insns(tb);
-+    qemu_plugin_register_vcpu_tb_exec_cb(tb, vcpu_tb_exec,
-+                                         QEMU_PLUGIN_CB_NO_REGS,
-+                                         GUINT_TO_POINTER(n_insns));
-+}
-+
-+/**
-+ * Install the plugin
-+ */
-+QEMU_PLUGIN_EXPORT int qemu_plugin_install(qemu_plugin_id_t id,
-+                                           const qemu_info_t *info, int argc,
-+                                           char **argv)
-+{
-+    /* This plugin only makes sense for system emulation */
-+    if (!info->system_emulation) {
-+        fprintf(stderr, "iops plugin only works with system emulation\n");
-+        return -1;
-+    }
-+
-+    for (int i = 0; i < argc; i++) {
-+        char *opt = argv[i];
-+        g_auto(GStrv) tokens = g_strsplit(opt, "=", 2);
-+        if (g_strcmp0(tokens[0], "iops") == 0) {
-+            iops = g_ascii_strtoull(tokens[1], NULL, 10);
-+            if (!iops && errno) {
-+                fprintf(stderr, "%s: couldn't parse %s (%s)\n",
-+                        __func__, tokens[1], g_strerror(errno));
-+                return -1;
-+            }
-+
-+        } else if (g_strcmp0(tokens[0], "precise") == 0) {
-+            if (!qemu_plugin_bool_parse(tokens[0], tokens[1],
-+                                        &precise_execution)) {
-+                fprintf(stderr, "boolean argument parsing failed: %s\n", opt);
-+                return -1;
-+            }
-+        } else {
-+            fprintf(stderr, "option parsing failed: %s\n", opt);
-+            return -1;
-+        }
-+    }
-+
-+    /*
-+     * Setup the tracking information we need to run.
-+     */
-+    vcpus = g_array_new(true, true, sizeof(vCPUTime));
-+    g_array_set_size(vcpus, info->system.max_vcpus);
-+    vcpu_counters = g_malloc0_n(info->system.max_vcpus, sizeof(uint64_t));
-+    for (int i = 0; i < info->system.max_vcpus; i++) {
-+        vCPUTime *vcpu = get_vcpu(i);
-+        vcpu->counter = &vcpu_counters[i];
-+    }
-+
-+    /*
-+     * We are going to check the state of time every slice so set the
-+     * first check at t0 + iops/SLICES
-+     */
-+    next_check = iops / SLICES;
-+
-+    /*
-+     * Only one plugin can request time control, if we don't get the
-+     * handle there isn't much we can do.
-+     */
-+    time_handle = qemu_plugin_request_time_control();
-+    if (!time_handle) {
-+        fprintf(stderr, "%s: not given permission to control time\n", __func__);
-+        return -1;
-+    }
-+
-+    /*
-+     * To track time we need to measure how many instructions each
-+     * core is executing as well as when each vcpu enters/leaves the
-+     */
-+    qemu_plugin_register_vcpu_tb_trans_cb(id, vcpu_tb_trans);
-+
-+    qemu_plugin_register_vcpu_init_cb(id, vcpu_init);
-+    qemu_plugin_register_vcpu_idle_cb(id, vcpu_idle);
-+    qemu_plugin_register_vcpu_resume_cb(id, vcpu_resume);
-+    qemu_plugin_register_vcpu_exit_cb(id, vcpu_exit);
-+
-+    return 0;
-+}
-diff --git a/contrib/plugins/Makefile b/contrib/plugins/Makefile
-index 8ba78c7a32..3f45a46a03 100644
---- a/contrib/plugins/Makefile
-+++ b/contrib/plugins/Makefile
-@@ -21,6 +21,7 @@ NAMES += lockstep
- NAMES += hwprofile
- NAMES += cache
- NAMES += drcov
-+NAMES += iops
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index b5198db82bc..2b92aee2073 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -245,10 +245,10 @@ static void tss_set_busy(CPUX86State *env, int tss_selector, bool value,
+ #define SWITCH_TSS_IRET 1
+ #define SWITCH_TSS_CALL 2
  
- SONAMES := $(addsuffix .so,$(addprefix lib,$(NAMES)))
+-/* XXX: restore CPU state in registers (PowerPC case) */
+-static void switch_tss_ra(CPUX86State *env, int tss_selector,
+-                          uint32_t e1, uint32_t e2, int source,
+-                          uint32_t next_eip, uintptr_t retaddr)
++/* return 0 if switching to a 16-bit selector */
++static int switch_tss_ra(CPUX86State *env, int tss_selector,
++                         uint32_t e1, uint32_t e2, int source,
++                         uint32_t next_eip, uintptr_t retaddr)
+ {
+     int tss_limit, tss_limit_max, type, old_tss_limit_max, old_type, v1, v2, i;
+     target_ulong tss_base;
+@@ -502,13 +502,14 @@ static void switch_tss_ra(CPUX86State *env, int tss_selector,
+         cpu_x86_update_dr7(env, env->dr[7] & ~DR7_LOCAL_BP_MASK);
+     }
+ #endif
++    return type >> 3;
+ }
  
+-static void switch_tss(CPUX86State *env, int tss_selector,
+-                       uint32_t e1, uint32_t e2, int source,
+-                        uint32_t next_eip)
++static int switch_tss(CPUX86State *env, int tss_selector,
++                      uint32_t e1, uint32_t e2, int source,
++                      uint32_t next_eip)
+ {
+-    switch_tss_ra(env, tss_selector, e1, e2, source, next_eip, 0);
++    return switch_tss_ra(env, tss_selector, e1, e2, source, next_eip, 0);
+ }
+ 
+ static inline unsigned int get_sp_mask(unsigned int e2)
+@@ -650,14 +651,11 @@ static void do_interrupt_protected(CPUX86State *env, int intno, int is_int,
+         if (!(e2 & DESC_P_MASK)) {
+             raise_exception_err(env, EXCP0B_NOSEG, intno * 8 + 2);
+         }
+-        switch_tss(env, intno * 8, e1, e2, SWITCH_TSS_CALL, old_eip);
++        shift = switch_tss(env, intno * 8, e1, e2, SWITCH_TSS_CALL, old_eip);
+         if (has_error_code) {
+-            int type;
+             uint32_t mask;
+ 
+             /* push the error code */
+-            type = (env->tr.flags >> DESC_TYPE_SHIFT) & 0xf;
+-            shift = type >> 3;
+             if (env->segs[R_SS].flags & DESC_B_MASK) {
+                 mask = 0xffffffff;
+             } else {
 -- 
-2.39.2
+2.41.0
 
 
