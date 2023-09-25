@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBA257ADA9E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6552B7ADAAE
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:55:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmtl-0001Nb-Gy; Mon, 25 Sep 2023 10:49:21 -0400
+	id 1qkmuD-0002Dv-Rd; Mon, 25 Sep 2023 10:49:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmth-0001DG-1D
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:17 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ id 1qkmtf-0001A7-6O
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:15 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qkmtS-0008Ho-Qi
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:16 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4054f790190so49800785e9.2
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:01 -0700 (PDT)
+ id 1qkmtQ-0008Gj-Hq
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:14 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-32172a50356so6204530f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:49:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695653340; x=1696258140; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695653339; x=1696258139; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Cd4HdnbICWyITK5Y/4XhPzcPYvpQm5TBhsynKcdayLw=;
- b=eok3J2nNQVGkHlbMvu8/rmmNvL03GNnzO0/wLfpxZhzhVh/eHjV/0KgjNKWIQ4ysDl
- 2LUHbrPAtl1zOK5YJ/pdl0n1oC2Jp/eye8mL++JVn5vCE2lciqMoeSxym1cR5rHnTpqo
- uzkqyLzEpXljHDavZ21Lrn/oW6Tr38aqzd5+epiOK0TSaYVWpLmoyTnaPbgGq+REc+eg
- zHan06QQYcdj5LZiA9hdtW09BWylX1FbT+gD4scTA1uQtEP7jW09iusDsMzr0jLGGA1g
- PjwEWSflTc4MYEAIPc0RSG5iSTnxilxgvv9VJETqLLJLPqiilmbNpbV7ehryoC0UctMS
- CNFA==
+ bh=r13on7w2SbSnXhlFRAWqdY9M0P6WFpp9T5fLln0Y27E=;
+ b=F4f2h3MQJTmQe8AoqU2a+I/zOiPXPbyL3Cty1t62Bmv5uUkwjjzVVTqUD6AoGIQx3V
+ cefY9wbmB8uN/1aAB2AuLgHSdIOtBsv4JVbwN4YlE32eGeZQA0gXDRkOz2a5bvzIm+kG
+ hS4tULvDkO09gdDkpjGVwEU7WIzQWLBZrsyyxXBodFULmBvNxLIG9CgIOEFYJtbsaxp6
+ VbmXvHNWntaUZmHIoJiLk9N4fxwwvhH3qj+locgYE4Naw8/hkVmWpY4JZcxR/dImC2tG
+ qfE6TVzP+bZuis/SIo5WoNehknm7jlI7TcKrMb/l+bfkvy1+H8jsoA9JElwxPSAIB8cW
+ 7wRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653340; x=1696258140;
+ d=1e100.net; s=20230601; t=1695653339; x=1696258139;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Cd4HdnbICWyITK5Y/4XhPzcPYvpQm5TBhsynKcdayLw=;
- b=IjO4k0rJBFbkigc5G7Uto12AXOXI0IJIG4abQYfolO5EMsh/SxbjoVtaAeCvwlSwlv
- rDxMiBUytauKd0IhCyGRreW5cbWQqHEJtDkr6a2dytKF97nq54qxvFWZ71akew8Hiksl
- 5+J0MLu8904KOkO7MnJ0gKE++Zh+hhpDTRCDj35PkwwvV/ZWyEpLee/L/Ylbb90hb85S
- 96cPfQWhA+/rvPIhsbbmTwdtPReTnFqASZefR6BSsmIgz7fz3iDGWEGyXU+2wC1EVsRz
- yZBmY6IwJ2npjnbehVodt56FX8/uVLKPxdnP7d74nlnvb+RBGBaBjU/z9u+/2CSqI3vd
- 3H2w==
-X-Gm-Message-State: AOJu0YxmHPu2PtbP81eITvrjZcUqZOvIkEeC+JOoMMYrKmhcIEhy2WQ5
- 2GjETyt6Mx+aLDG0zbpy92Iwkw==
-X-Google-Smtp-Source: AGHT+IGIMYocIaDoZ9eRM/8O33TiaHsL2YWIHMFN7tmlUnw5/PDkfYQxbIiSwyzvw88ck/ZVkroehQ==
-X-Received: by 2002:a05:600c:230d:b0:404:6ed9:98d1 with SMTP id
- 13-20020a05600c230d00b004046ed998d1mr6165003wmo.41.1695653340427; 
- Mon, 25 Sep 2023 07:49:00 -0700 (PDT)
+ bh=r13on7w2SbSnXhlFRAWqdY9M0P6WFpp9T5fLln0Y27E=;
+ b=RUdAKmNzKVTtIazGvt7WwNsPC0u2aYQ+b1lem1nujlqdzk5oFDMf5fAwoRrSapm5En
+ Nd5AqJJKcC1B3jYU3DSIAaadD3RWxWxFe3GothP2wawAccPMMkkA6Hyr4EPj3XtTnRgO
+ oEWg7Co0+wTJ2UolirjLtmIw90VQSxeRfciMzC26e1iIpyhDgwn4bZM4dzKKG6RGCV0T
+ G1/ezIuSzSchjrNTtyj32HuqgubtDWAu8sQj3xZV6Reiwj7c4hhd+E2+l4046gxblJNY
+ 6Z28WRTUzGzpt/wXLzkvMNjK25C1tvYoHPqg0J9rclNXY05CUXteOo/UaJ106S5loi47
+ f/LA==
+X-Gm-Message-State: AOJu0Yzc3/JjB21+t1EQQynwWwnsrj/ySGR/LbmBQHYRYo2vVcM3kTzA
+ vioxF2D3zaA/bgDuQ3mOK3lHNw==
+X-Google-Smtp-Source: AGHT+IE3kyYs4YdsaciWtbu3ns+G9H7zM0tAc4x8OuL+AXjRejIOFYblrX6yxmTWrGqVvOb2xZxPUg==
+X-Received: by 2002:a05:6000:185:b0:321:8d08:855e with SMTP id
+ p5-20020a056000018500b003218d08855emr5684333wrx.24.1695653338893; 
+ Mon, 25 Sep 2023 07:48:58 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- v19-20020adf8b53000000b0032318649b21sm6818394wra.31.2023.09.25.07.48.55
+ f18-20020a5d58f2000000b00317b0155502sm12047215wrd.8.2023.09.25.07.48.56
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 8A5F61FFBF;
+ by zen.linaroharston (Postfix) with ESMTP id A6FCC1FFC0;
  Mon, 25 Sep 2023 15:48:55 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,20 +90,19 @@ Cc: Alistair Francis <alistair.francis@wdc.com>,
  qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
  Yoshinori Sato <ysato@users.sourceforge.jp>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>,
- Rabin Vincent <rabinv@axis.com>,
- "Edgar E . Iglesias" <edgar.iglesias@xilinx.com>
-Subject: [PATCH 04/31] docs: mark CRIS support as deprecated
-Date: Mon, 25 Sep 2023 15:48:27 +0100
-Message-Id: <20230925144854.1872513-5-alex.bennee@linaro.org>
+ Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH 05/31] tests/docker: make docker engine choice entirely
+ configure driven
+Date: Mon, 25 Sep 2023 15:48:28 +0100
+Message-Id: <20230925144854.1872513-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230925144854.1872513-1-alex.bennee@linaro.org>
 References: <20230925144854.1872513-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -126,42 +125,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This might be premature but while streamling the avocado tests I
-realised the only tests we have are "check-tcg" ones. The aging
-fedora-criss-cross image works well enough for developers but can't be
-used in CI as we need supported build platforms to build QEMU.
-
-Does this mean the writing is on the wall for this architecture?
+Since 0b1a649047 (tests/docker: use direct RUNC call to build
+containers) we ended up with the potential for the remaining docker.py
+script calls to deviate from the direct RUNC calls. Fix this by
+dropping the use of ENGINE in the makefile and rely entirely on what
+we detect at configure time.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Cc: Rabin Vincent <rabinv@axis.com>
-Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
 ---
- docs/about/deprecated.rst | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ configure                     | 1 -
+ tests/docker/Makefile.include | 7 ++-----
+ 2 files changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index dc4da95329..7cfe313aa6 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -399,6 +399,17 @@ Specifying the iSCSI password in plain text on the command line using the
- used instead, to refer to a ``--object secret...`` instance that provides
- a password via a file, or encrypted.
+diff --git a/configure b/configure
+index e08127045d..707132a3ae 100755
+--- a/configure
++++ b/configure
+@@ -1694,7 +1694,6 @@ if test -n "$gdb_bin"; then
+ fi
  
-+TCG CPUs
-+--------
-+
-+CRIS CPU architecture (since 8.1)
-+'''''''''''''''''''''''''''''''''
-+
-+The CRIS architecture was pulled from Linux in 4.17 and the compiler
-+is no longer packaged in any distro making it harder to run the
-+``check-tcg`` tests. Unless we can improve the testing situation there
-+is a chance the code will bitrot without anyone noticing.
-+
- Backwards compatibility
- -----------------------
+ if test "$container" != no; then
+-    echo "ENGINE=$container" >> $config_host_mak
+     echo "RUNC=$runc" >> $config_host_mak
+ fi
+ echo "SUBDIRS=$subdirs" >> $config_host_mak
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index dfabafab92..035d272be9 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -17,8 +17,7 @@ endif
+ DOCKER_REGISTRY := $(if $(REGISTRY),$(REGISTRY),$(DOCKER_DEFAULT_REGISTRY))
  
+ RUNC ?= docker
+-ENGINE ?= auto
+-DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(ENGINE)
++DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(RUNC)
+ 
+ CUR_TIME := $(shell date +%Y-%m-%d-%H.%M.%S.$$$$)
+ DOCKER_SRC_COPY := $(BUILD_DIR)/docker-src.$(CUR_TIME)
+@@ -158,7 +157,7 @@ $(foreach i,$(filter-out $(DOCKER_PARTIAL_IMAGES),$(DOCKER_IMAGES)), \
+ )
+ 
+ docker:
+-	@echo 'Build QEMU and run tests inside Docker or Podman containers'
++	@echo 'Build QEMU and run tests inside $(RUNC) containers'
+ 	@echo
+ 	@echo 'Available targets:'
+ 	@echo
+@@ -198,8 +197,6 @@ docker:
+ 	@echo '    EXECUTABLE=<path>    Include executable in image.'
+ 	@echo '    EXTRA_FILES="<path> [... <path>]"'
+ 	@echo '                         Include extra files in image.'
+-	@echo '    ENGINE=auto/docker/podman'
+-	@echo '                         Specify which container engine to run.'
+ 	@echo '    REGISTRY=url         Cache builds from registry (default:$(DOCKER_REGISTRY))'
+ 
+ docker-help: docker
 -- 
 2.39.2
 
