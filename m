@@ -2,88 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A877AD93C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 15:36:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7237AD9A0
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 15:56:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkljf-0000b2-IQ; Mon, 25 Sep 2023 09:34:51 -0400
+	id 1qkm3D-0005KD-Md; Mon, 25 Sep 2023 09:55:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qkljd-0000au-NP
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:34:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qkm3A-0005Hr-GH; Mon, 25 Sep 2023 09:55:00 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qkljb-0001k9-Rd
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:34:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695648886;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=oyHQ0yc2ntAcG5ylNzBeG2HhHHmRnG0Chte0nFlWRjU=;
- b=XpClFh8c78Bq+w6LKRx393P0dEK93/ZgMpK2hEPwZQhigO7s9oDS3WJnn4ywHbSDiJbEPM
- 3s5eU/yuafXMcjHBY8PiqTXJ4/hzdbFGnk6K4Ch4TpUy0ZUuaoEd4g+uYtn2vjc7Bq3vsn
- vrMxnDj6C+56rWRN7k8vXtuB+tHg1kE=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-544-tT_5T9ugMXmBdiydujJ9rQ-1; Mon, 25 Sep 2023 09:34:44 -0400
-X-MC-Unique: tT_5T9ugMXmBdiydujJ9rQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-774292de453so102416885a.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 06:34:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695648884; x=1696253684;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=oyHQ0yc2ntAcG5ylNzBeG2HhHHmRnG0Chte0nFlWRjU=;
- b=OGQe8Suhc20cYv0OvNs2uITTCXuOIYf9C+oG0PWIk7owUevJKYlDgJ1FRiQ5fRjDRL
- qz9yFgsmvUxIYzQCQQ1NAjpyf+RtraEAlXN++pzaLX9oAPqeKIOvYnHpMUJPGnMMtLpB
- TUtgpdxLz0WmUu1dGPv6hW2kijZzCENY4A9Ird2F8hIXZMWgg6S48k3KBrqpcx1Mc43B
- f+dcn585SJ/fKAfKB06R9t/zFAdTYlZ7jkH0Z4Yg3dxxGQzs8N17S9cYJQS/5SUU6vqz
- RSjqHVeWb3eM7lmRp1orKnOKz7BqZG9HeKwW3OFcYt3if/wZ+k3o3/QZ08qKa7A/aYrP
- N+DA==
-X-Gm-Message-State: AOJu0YyjiU95LEGTo7HB+iVvLI/kVBMW8z1rbfcDKtACJM4Z8OlFHkUh
- reGxqU2t7W690k98lWteKIoFZJySuNgsfTNLRs7QABpwgYXiCJTGbjNobbVmahJrOF6ByXcTWm4
- xoUrmGk8BsWYVLcSTeQS1ct4ACB++YpJdwXKLq7kBrahmyFXasvZiaKU71N1VOUGxggS9gH0P
-X-Received: by 2002:a05:620a:1aa9:b0:772:5267:3ddf with SMTP id
- bl41-20020a05620a1aa900b0077252673ddfmr7705620qkb.2.1695648884002; 
- Mon, 25 Sep 2023 06:34:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHguWvBrV/uE20Bxh2i8kXehQmsbbYusW5v7snnlxgBid0la49eE3KUAHburwzOwv4QDHvvaQ==
-X-Received: by 2002:a05:620a:1aa9:b0:772:5267:3ddf with SMTP id
- bl41-20020a05620a1aa900b0077252673ddfmr7705595qkb.2.1695648883649; 
- Mon, 25 Sep 2023 06:34:43 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- t12-20020a05620a004c00b00767dcf6f4adsm1679043qkt.51.2023.09.25.06.34.42
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 06:34:43 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com,
- =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Zhijian Li <lizhijian@fujitsu.com>, Fabiano Rosas <farosas@suse.de>
-Subject: [PATCH] MAINTAINERS: Add entry for rdma migration
-Date: Mon, 25 Sep 2023 09:34:41 -0400
-Message-ID: <20230925133441.265455-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qkm37-0006OC-Tt; Mon, 25 Sep 2023 09:55:00 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvPPj5XGvz6K9h1;
+ Mon, 25 Sep 2023 21:49:45 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 25 Sep
+ 2023 14:54:42 +0100
+Date: Mon, 25 Sep 2023 14:54:40 +0100
+To: Ankit Agrawal <ankita@nvidia.com>
+CC: Jason Gunthorpe <jgg@nvidia.com>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
+ <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
+ <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
+ (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, "Andy
+ Currid" <ACurrid@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v1 3/4] hw/arm/virt-acpi-build: patch guest SRAT for
+ NUMA nodes
+Message-ID: <20230925145440.00005072@Huawei.com>
+In-Reply-To: <BY5PR12MB3763BC1EB9402223B020ABF8B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
+References: <20230915024559.6565-1-ankita@nvidia.com>
+ <20230915024559.6565-4-ankita@nvidia.com>
+ <20230915153740.00006185@Huawei.com>
+ <BY5PR12MB3763BC1EB9402223B020ABF8B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,42 +71,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It's not obvious to many that RDMA migration is in Odd Fixes stage for a
-long time.  Add an explicit sub entry for it (besides migration, which
-already covers the rdma files) to be clear on that, meanwhile add Zhijian
-as Reviewer, so Zhijian can see the patches and review when he still has
-the bandwidth.
+On Fri, 22 Sep 2023 05:49:46 +0000
+Ankit Agrawal <ankita@nvidia.com> wrote:
 
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>
-Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
-Cc: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- MAINTAINERS | 5 +++++
- 1 file changed, 5 insertions(+)
+> Hi Jonathan
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 355b1960ce..f6b21da753 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3217,6 +3217,11 @@ F: qapi/migration.json
- F: tests/migration/
- F: util/userfaultfd.c
- 
-+RDMA Migration
-+R: Li Zhijian <lizhijian@fujitsu.com>
-+S: Odd Fixes
-+F: migration/rdma*
-+
- Migration dirty limit and dirty page rate
- M: Hyman Huang <yong.huang@smartx.com>
- S: Maintained
--- 
-2.41.0
+Hi Ankit,
+
+> 
+> > > +        if (pcidev->pdev.has_coherent_memory) {
+> > > +            uint64_t start_node = object_property_get_uint(obj,
+> > > +                                  "dev_mem_pxm_start", &error_abort);
+> > > +            uint64_t node_count = object_property_get_uint(obj,
+> > > +                                  "dev_mem_pxm_count", &error_abort);
+> > > +            uint64_t node_index;
+> > > +
+> > > +            /*
+> > > +             * Add the node_count PXM domains starting from start_node as
+> > > +             * hot pluggable. The VM kernel parse the PXM domains and
+> > > +             * creates NUMA nodes.
+> > > +             */
+> > > +            for (node_index = 0; node_index < node_count; node_index++)
+> > > +                build_srat_memory(table_data, 0, 0, start_node + node_index,
+> > > +                    MEM_AFFINITY_ENABLED |
+> > > + MEM_AFFINITY_HOTPLUGGABLE);  
+> > 
+> > 0 size SRAT entries for memory? That's not valid.  
+> 
+> Can you explain in what sense are these invalid? The Linux kernel accepts
+> such setting and I had tested it.
+
+ACPI specification doesn't define any means of 'updating' the memory range,
+so whilst I guess they are not specifically disallowed without a spec definition
+of what it means this is walking into a mine field. In particular the 
+description of the hot pluggable bit worries me:
+"The system hardware supports hot-add and hot-remove of this memory region."
+So I think your definition is calling out that you can hot plug memory into
+a region of zero size. To me that's nonsensical so a paranoid OS writer
+might just spit out firmware error message and refuse to boot.
+
+There is no guarantee other operating systems won't blow up if they see one
+of these. To be able to do this safely I think you probably need an ACPI
+spec update to say what such a zero length, zero base region means.
+
+Possible the ASWG folk would say this is fine and I'm reading too much into
+the spec, but I'd definitely suggest asking them via the appropriate path,
+or throwing in a code first proposal for a comment on this special case and
+see what response you get - my guess is it will be 'fix Linux' :(
+
+> 
+> > Seems like you've run into the same issue CXL has with dynamic addition of
+> > nodes to the kernel and all you want to do here is make sure it thinks there are
+> > enough nodes so initializes various structures large enough.
+> >  
+> Yes, exactly.
+> 
 
 
