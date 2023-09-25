@@ -2,51 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E30E7ADB4E
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:24:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D47C47ADB62
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:26:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qknQY-0007dd-9h; Mon, 25 Sep 2023 11:23:14 -0400
+	id 1qknSy-0008Rg-5T; Mon, 25 Sep 2023 11:25:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qknQV-0007dV-Dm
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:23:11 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qknSv-0008Pd-9L
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:25:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qknQT-0007Uw-4o
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:23:11 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvRS00C0Jz6J721;
- Mon, 25 Sep 2023 23:21:52 +0800 (CST)
-Received: from SecurePC-101-06.china.huawei.com (10.122.247.231) by
- lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 25 Sep 2023 16:23:02 +0100
-To: qemu-devel <qemu-devel@nongnu.org>
-CC: Markus Armbruster <armbru@redhat.com>, "Michael S . Tsirkin"
- <mst@redhat.com>, Fan Ni <fan.ni@samsung.com>, <linuxarm@huawei.com>
-Subject: [PATCH] hw/cxl: Fix local variable shadowing of cap_hdrs
-Date: Mon, 25 Sep 2023 16:22:58 +0100
-Message-ID: <20230925152258.5444-1-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qknSs-0007vh-Kf
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:25:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695655538;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=J37O+3RdexR2S+GEkypPqePHvQti2/yHLtDs+8yRB8w=;
+ b=ZkLSmPvV5YYkRILsV/S8Zb4j04x/YBTGCfZ1N10V9okA06gvqEcePelH9dvT0osJWfCDDi
+ fSEkKZnevQjJUR+XVTHS2BwNsgbFl1w119fRa4c8EZyVUZZ3Gvc+tem+e2DCw/uaRbb/HU
+ /1d6DdJrkZvQPaZfmFsL6pW50ELK0Js=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-54-6nlRrxR1PbqhFavxA_2EJA-1; Mon, 25 Sep 2023 11:25:33 -0400
+X-MC-Unique: 6nlRrxR1PbqhFavxA_2EJA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C655F18175A1;
+ Mon, 25 Sep 2023 15:25:31 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B17F749BB9A;
+ Mon, 25 Sep 2023 15:25:25 +0000 (UTC)
+Date: Mon, 25 Sep 2023 16:25:23 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ John Snow <jsnow@redhat.com>, libvir-list@redhat.com,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas Piggin <npiggin@gmail.com>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-ppc@nongnu.org,
+ David Hildenbrand <david@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
+Subject: Re: [PATCH 02/31] tests/lcitool: add swtpm to the package list
+Message-ID: <ZRGmY4Uzy00ubc4f@redhat.com>
+References: <20230925144854.1872513-1-alex.bennee@linaro.org>
+ <20230925144854.1872513-3-alex.bennee@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.122.247.231]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230925144854.1872513-3-alex.bennee@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,45 +105,41 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename the version not burried in the macro to cap_h.
+On Mon, Sep 25, 2023 at 03:48:25PM +0100, Alex Bennée wrote:
+> We need this to test some TPM stuff.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>  .gitlab-ci.d/cirrus/macos-12.vars                    | 2 +-
+>  tests/docker/dockerfiles/alpine.docker               | 1 +
+>  tests/docker/dockerfiles/centos8.docker              | 1 +
+>  tests/docker/dockerfiles/debian-amd64-cross.docker   | 1 +
+>  tests/docker/dockerfiles/debian-amd64.docker         | 1 +
+>  tests/docker/dockerfiles/debian-arm64-cross.docker   | 1 +
+>  tests/docker/dockerfiles/debian-armhf-cross.docker   | 1 +
+>  tests/docker/dockerfiles/debian-ppc64el-cross.docker | 1 +
+>  tests/docker/dockerfiles/debian-s390x-cross.docker   | 1 +
+>  tests/docker/dockerfiles/fedora-win32-cross.docker   | 1 +
+>  tests/docker/dockerfiles/fedora-win64-cross.docker   | 1 +
+>  tests/docker/dockerfiles/fedora.docker               | 1 +
+>  tests/docker/dockerfiles/opensuse-leap.docker        | 1 +
+>  tests/docker/dockerfiles/ubuntu2204.docker           | 1 +
+>  tests/lcitool/libvirt-ci                             | 2 +-
+>  tests/lcitool/projects/qemu.yml                      | 1 +
+>  16 files changed, 16 insertions(+), 2 deletions(-)
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 
-I had another instance of this in a series I'll post later today.
-Cleaned that up the same way.
 
- hw/cxl/cxl-device-utils.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-index 517f06d869..bd68328032 100644
---- a/hw/cxl/cxl-device-utils.c
-+++ b/hw/cxl/cxl-device-utils.c
-@@ -283,13 +283,13 @@ static void memdev_reg_init_common(CXLDeviceState *cxl_dstate) { }
- 
- void cxl_device_register_init_common(CXLDeviceState *cxl_dstate)
- {
--    uint64_t *cap_hdrs = cxl_dstate->caps_reg_state64;
-+    uint64_t *cap_h = cxl_dstate->caps_reg_state64;
-     const int cap_count = 3;
- 
-     /* CXL Device Capabilities Array Register */
--    ARRAY_FIELD_DP64(cap_hdrs, CXL_DEV_CAP_ARRAY, CAP_ID, 0);
--    ARRAY_FIELD_DP64(cap_hdrs, CXL_DEV_CAP_ARRAY, CAP_VERSION, 1);
--    ARRAY_FIELD_DP64(cap_hdrs, CXL_DEV_CAP_ARRAY, CAP_COUNT, cap_count);
-+    ARRAY_FIELD_DP64(cap_h, CXL_DEV_CAP_ARRAY, CAP_ID, 0);
-+    ARRAY_FIELD_DP64(cap_h, CXL_DEV_CAP_ARRAY, CAP_VERSION, 1);
-+    ARRAY_FIELD_DP64(cap_h, CXL_DEV_CAP_ARRAY, CAP_COUNT, cap_count);
- 
-     cxl_device_cap_init(cxl_dstate, DEVICE_STATUS, 1, 2);
-     device_reg_init_common(cxl_dstate);
+With regards,
+Daniel
 -- 
-2.39.2
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
