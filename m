@@ -2,73 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBA47AD99F
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 15:56:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68397ADAF8
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:08:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkm3Z-0005OB-Ue; Mon, 25 Sep 2023 09:55:25 -0400
+	id 1qknBs-00069h-CW; Mon, 25 Sep 2023 11:08:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkm3Y-0005Ni-1k
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:55:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <edmund.raile@protonmail.com>)
+ id 1qklFa-0000sF-6x
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:03:46 -0400
+Received: from mail-40138.protonmail.ch ([185.70.40.138])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkm3O-0006cZ-RD
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:55:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695650113;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+GO3FDGo0gpmW/3m5oH5gjD2slFhzSLVeWiAtW2rptc=;
- b=MEuwmIssNB/2Hb7x2Atr/ftlzenBUKbgv6ddraRPakNMETKXMHdWEOQNS5mP4kWShrTSJ0
- G/IjZ9U5reD6v6b5UBotlITE0AXeYDUbnuWib/BGkk9M5iO7by8GlkLFS1h6ljhiCmY6+A
- 3Ku6VXOwaLPukpi67GvFXBmQZGIJ8cY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-336-zSKz7mR4OyW-A4rYBbo3dA-1; Mon, 25 Sep 2023 09:55:10 -0400
-X-MC-Unique: zSKz7mR4OyW-A4rYBbo3dA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0169F811E94;
- Mon, 25 Sep 2023 13:55:10 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D285A40C2009;
- Mon, 25 Sep 2023 13:55:09 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id C259E21E6900; Mon, 25 Sep 2023 15:55:08 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>,  Juan
- Quintela <quintela@redhat.com>,  Zhijian Li <lizhijian@fujitsu.com>,
- Fabiano Rosas <farosas@suse.de>
-Subject: Re: [PATCH] MAINTAINERS: Add entry for rdma migration
-References: <20230925133441.265455-1-peterx@redhat.com>
-Date: Mon, 25 Sep 2023 15:55:08 +0200
-In-Reply-To: <20230925133441.265455-1-peterx@redhat.com> (Peter Xu's message
- of "Mon, 25 Sep 2023 09:34:41 -0400")
-Message-ID: <8734z2s6gz.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <edmund.raile@protonmail.com>)
+ id 1qklFX-0003oX-Aq
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 09:03:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+ s=protonmail3; t=1695647007; x=1695906207;
+ bh=v1NApPAABERi6sgpDg4dmIEZwYuIQc/JUNHnrbpM/Z4=;
+ h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+ Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+ b=YRI9Ywgw8ss7BSu+9cw2LQtKsm1uVkc7j8ajwrC4ym6hAQU1RSe4u2vqnANA6X8Gq
+ 4h+/3ySXSX/VkpbMRDnY2qEIJ44w6xgzwAoaQpP/qdla0OYkxo2oHk060poL43h5Of
+ 1/t4vUX9Ixz8TVPjNWoPxq9Axra6ELU0/ZtzfUnV/aUmDkvSWGxD2RGxrNqs4WQXL9
+ VfFhsZVqTa6SfJHo3ajC29pC+fhW5XdjFQCFHT95K4UvfzoaQTQa9T/BPy8P1kvzT9
+ ctWJ9iaZ6uhVGIMJKiKD+piNUMB6Z91YRsznkOR89LJaFePA1CWHRvd+TU41zkWKv+
+ +sJQGPkdkXOGA==
+Date: Mon, 25 Sep 2023 13:03:24 +0000
+To: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+From: "edmund.raile" <edmund.raile@protonmail.com>
+Cc: "kraxel@redhat.com" <kraxel@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Subject: qemu-gtk clipboard crash fixes
+Message-ID: <aAwe9catDmfueb8CnatNB2DVKHAb02dX2Pyz1Io_CJglORjXYYP6Tnb_F7_kA7etfwRgfRiKZxyWl0Jp-SDLNlvm2qwduL_duHJvh9kDjoA=@protonmail.com>
+Feedback-ID: 43016623:user:proton
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: multipart/alternative;
+ boundary="b1_QtMYyCgkkz0kWaYRRErq7XYnVavcis1Nl4eQTL4yqu8"
+Received-SPF: pass client-ip=185.70.40.138;
+ envelope-from=edmund.raile@protonmail.com; helo=mail-40138.protonmail.ch
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ HTML_MESSAGE=0.001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Mon, 25 Sep 2023 11:08:01 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,84 +65,179 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+This is a multi-part message in MIME format.
 
-> It's not obvious to many that RDMA migration is in Odd Fixes stage for a
-> long time.  Add an explicit sub entry for it (besides migration, which
-> already covers the rdma files) to be clear on that, meanwhile add Zhijian
-> as Reviewer, so Zhijian can see the patches and review when he still has
-> the bandwidth.
->
-> Cc: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Cc: Juan Quintela <quintela@redhat.com>
-> Cc: Markus Armbruster <armbru@redhat.com>
-> Cc: Zhijian Li (Fujitsu) <lizhijian@fujitsu.com>
-> Cc: Fabiano Rosas <farosas@suse.de>
-> Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  MAINTAINERS | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 355b1960ce..f6b21da753 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3217,6 +3217,11 @@ F: qapi/migration.json
->  F: tests/migration/
->  F: util/userfaultfd.c
->=20=20
-> +RDMA Migration
-> +R: Li Zhijian <lizhijian@fujitsu.com>
-> +S: Odd Fixes
-> +F: migration/rdma*
-> +
->  Migration dirty limit and dirty page rate
->  M: Hyman Huang <yong.huang@smartx.com>
->  S: Maintained
+--b1_QtMYyCgkkz0kWaYRRErq7XYnVavcis1Nl4eQTL4yqu8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Hmm...
+SW4gcmVzcG9uc2UgdG8gW2dlbXUtZ3RrLWNsaXBib2FyZCBmcmVlemluZyBhbmQgY3Jhc2hpbmcg
+Z3Vlc3RzXShodHRwczovL2dpdGxhYi5jb20vcWVtdS1wcm9qZWN0L3FlbXUvLS9pc3N1ZXMvMTE1
+MCkuCgpJIHRoaW5rIEkgbWlnaHQgaGF2ZSBhIHNvbHV0aW9uIGZvciB0aGUgZ3RrIGNsaXBib2Fy
+ZCBzb21ldGltZXMgY3Jhc2hpbmcgZ3Vlc3RzLgoKQGtvbEFmbGFzaCBJIGNvdWxkbid0IGhhdmUg
+ZG9uZSBpdCB3aXRob3V0IHlvdSwgZmlndXJpbmcgb3V0IGBndGtfY2xpcGJvYXJkX3dhaXRfaXNf
+dGV4dF9hdmFpbGFibGUoY2xpcGJvYXJkKWAgd2FzIHRoZSBpc3N1ZSBpcyBoYWxmIHRoZSB3b3Jr
+LgoKVGhlIHJlYWwgaXNzdWUgaXMgdGhhdCBpdCdzIGJsb2NraW5nIGFuZCBJJ2Qgd2FnZXIgdGhh
+dCdzIGEgYmlnIG5vLW5vIHNpbmNlIHFlbXUgJiBLVk0gaGF2ZSB0byBydW4gdGhlIFZNICsgT1Ms
+IHByZWZlcmFibHkgYXMgcmVhbC10aW1lIGFzIHBvc3NpYmxlLiBTb21ldGhpbmcgdGltZXMgb3V0
+IGFuZCB5b3UgZ2V0IGEgY29yZSBkdW1wLgoKU28gYXMgYSByZXBsYWNlbWVudCwgYGd0a19jbGlw
+Ym9hcmRfcmVxdWVzdF90ZXh0YCwgd2hpY2ggaXMgYXN5bmMgYW5kIG5vbi1ibG9ja2luZyBpcyBh
+IGJldHRlciBjaG9pY2UsIGhvcGVmdWxseS4KSXQgcmVxdWlyZXMgYW4gYWRkaXRpb25hbCBmdW5j
+dGlvbiB0byBoYW5kbGUgcmVjZWl2aW5nIHRleHQuCgpTaWduZWQtb2ZmLWJ5OiBFZG11bmQgUmFp
+bGUgPGVkbXVuZC5yYWlsZUBwcm90b24ubWU+CkZyb20gNTMwZGI4YjZjN2FkYzk5ZjU0MGQ3ZDhj
+YzYxMjIzMjA4NjgzMjZlNiBNb24gU2VwIDE3IDAwOjAwOjAwIDIwMDEKRnJvbTogRWRtdW5kIFJh
+aWxlIDxlZG11bmQucmFpbGVAcHJvdG9uLm1lPgpEYXRlOiBTdW4sIDI0IFNlcCAyMDIzIDA5OjQ2
+OjI3ICswMjAwClN1YmplY3Q6IFtQQVRDSCAxLzFdIHFlbXUtdWktZ3RrIGNsaXBib2FyZCBwb3Nz
+aWJsZSBmaXggZm9yIGNyYXNoZXMKCi0tLQp1aS9ndGstY2xpcGJvYXJkLmMgfCAyMCArKysrKysr
+KysrKysrKy0tLS0tLQoxIGZpbGUgY2hhbmdlZCwgMTQgaW5zZXJ0aW9ucygrKSwgNiBkZWxldGlv
+bnMoLSkKCmRpZmYgLS1naXQgYS91aS9ndGstY2xpcGJvYXJkLmMgYi91aS9ndGstY2xpcGJvYXJk
+LmMKaW5kZXggOGQ4YTYzNmZkMS4uNjRkNGY3YWM5ZCAxMDA2NDQKLS0tIGEvdWkvZ3RrLWNsaXBi
+b2FyZC5jCisrKyBiL3VpL2d0ay1jbGlwYm9hcmQuYwpAQCAtMTUzLDYgKzE1MywxOCBAQCBzdGF0
+aWMgdm9pZCBnZF9jbGlwYm9hcmRfcmVxdWVzdChRZW11Q2xpcGJvYXJkSW5mbyAqaW5mbywKfQp9
+CgorLyogbm9uLWJsb2NraW5nIGNsaXBib2FyZCByZWNlaXZlciBpbXBsZW1lbnRhdGlvbiAqLwor
+c3RhdGljIHZvaWQgZ2RfY2xpcGJvYXJkX3RleHRfcmVjZWl2ZWRfY2FsbGJhY2soR3RrQ2xpcGJv
+YXJkICpjbGlwYm9hcmQsIGNvbnN0IGdjaGFyICp0ZXh0LCBncG9pbnRlciBkYXRhKQoreworIFFl
+bXVDbGlwYm9hcmRJbmZvICppbmZvID0gKFFlbXVDbGlwYm9hcmRJbmZvICopZGF0YTsKKyBpZiAo
+dGV4dCkgeworIGluZm8tPnR5cGVzW1FFTVVfQ0xJUEJPQVJEX1RZUEVfVEVYVF0uYXZhaWxhYmxl
+ID0gdHJ1ZTsKKyB9CisKKyBxZW11X2NsaXBib2FyZF91cGRhdGUoaW5mbyk7CisgcWVtdV9jbGlw
+Ym9hcmRfaW5mb191bnJlZihpbmZvKTsKK30KKwpzdGF0aWMgdm9pZCBnZF9vd25lcl9jaGFuZ2Uo
+R3RrQ2xpcGJvYXJkICpjbGlwYm9hcmQsCkdka0V2ZW50ICpldmVudCwKZ3BvaW50ZXIgZGF0YSkK
+QEAgLTE3MCwxMiArMTgyLDggQEAgc3RhdGljIHZvaWQgZ2Rfb3duZXJfY2hhbmdlKEd0a0NsaXBi
+b2FyZCAqY2xpcGJvYXJkLApzd2l0Y2ggKGV2ZW50LT5vd25lcl9jaGFuZ2UucmVhc29uKSB7CmNh
+c2UgR0RLX09XTkVSX0NIQU5HRV9ORVdfT1dORVI6CmluZm8gPSBxZW11X2NsaXBib2FyZF9pbmZv
+X25ldygmZ2QtPmNicGVlciwgcyk7Ci0gaWYgKGd0a19jbGlwYm9hcmRfd2FpdF9pc190ZXh0X2F2
+YWlsYWJsZShjbGlwYm9hcmQpKSB7Ci0gaW5mby0+dHlwZXNbUUVNVV9DTElQQk9BUkRfVFlQRV9U
+RVhUXS5hdmFpbGFibGUgPSB0cnVlOwotIH0KLQotIHFlbXVfY2xpcGJvYXJkX3VwZGF0ZShpbmZv
+KTsKLSBxZW11X2NsaXBib2FyZF9pbmZvX3VucmVmKGluZm8pOworIC8qIGd0a19jbGlwYm9hcmRf
+d2FpdF9pc190ZXh0X2F2YWlsYWJsZSAoYmxvY2tpbmcpIHdhcyB1c2VkIGhlcmUgcHJldmlvdXNs
+eSBhbmQgY3Jhc2hlZCBndWVzdHMgKi8KKyBndGtfY2xpcGJvYXJkX3JlcXVlc3RfdGV4dChjbGlw
+Ym9hcmQsIGdkX2NsaXBib2FyZF90ZXh0X3JlY2VpdmVkX2NhbGxiYWNrLCBpbmZvKTsKYnJlYWs7
+CmRlZmF1bHQ6CnFlbXVfY2xpcGJvYXJkX3BlZXJfcmVsZWFzZSgmZ2QtPmNicGVlciwgcyk7Ci0t
+CjIuNDIuMAoKZG9uJ3QgZm9yZ2V0IHRvIGNvbmZpZ3VyZSB3aXRoIC0tZW5hYmxlLWd0ay1jbGlw
+Ym9hcmQgYmVmb3JlIGJ1aWxkaW5nCgpJJ2Qgc2F5IG15IGd2dC1nIHdpbjEwIFZNIGhhcyBiZWNv
+bWUgYSBsb3QgbW9yZSByZXNwb25zaXZlICh3YXMgdXNpbmcgZ3RrLWNsaXBib2FyZCBiZXNpZGVz
+IGJlaW5nIGJyb2tlbikuClBhc3RlIGZyb20gdGhlIFZNIGlzIGEgYml0IGRlbGF5ZWQgc29tZXRp
+bWVzIGJ1dCBJIGNhbiBsaXZlIHdpdGggdGhhdC4KU28gZmFyIG15IFZNIGhhc24ndCBjcmFzaGVk
+IHlldC4KCkknZCBsaWtlIHRvIGFzayB5b3UgZm9yIGhlbHAgaW4gZXZhbHVhdGluZyBteSBwYXRj
+aC4KVGhlIGlzc3VlIGxpbmtlZCB0byBpbiB0aGUgZmlyc3QgbGluZSBoYXMgaW5zdHJ1Y3Rpb25z
+IG9uIHRoZSBjcmFzaCBjYXNlLgoKSXQncyBteSBmaXJzdCB0aW1lIG9uIHRoZSBtYWlsaW5nIGxp
+c3QsIEkgaG9wZSBJJ3ZlIGRvbmUgdGhpcyByaWdodC4KCk1yLiBMdXJlYXUgQ0NlZCBoZXJlIGhh
+ZCB0aGlzIHRvIGFkZDoKQmxvY2tpbmcgdGhlIHNpZ25hbCBoYW5kbGVyIGlzbid0IGdyZWF0IGVp
+dGhlciwgYXMgd2UgbWF5IG1pc3MgY2xpcGJvYXJkIHVwZGF0ZXMuIEkgdGhpbmsgd2UgY291bGQg
+InJldXNlIiB0aGUgc2VyaWFsIGZpZWxkIG9uIGluZm8gYW5kIGNoZWNrIGluIHRoZSBjYWxsYmFj
+ayBpZiB3ZSBkb24ndCBoYXZlIHRoZSBsYXRlc3QsIGp1c3QgaWdub3JlIHRoZSByZXN1bHQgYW5k
+IGZyZWUu
 
-    $ scripts/get_maintainer.pl --status -f migration/rdma.cLi Zhijian <liz=
-hijian@fujitsu.com> (reviewer:RDMA Migration)
-    Juan Quintela <quintela@redhat.com> (maintainer:Migration)
-    Peter Xu <peterx@redhat.com> (reviewer:Migration)
-    Leonardo Bras <leobras@redhat.com> (reviewer:Migration)
-    qemu-devel@nongnu.org (open list:All patches CC here)
-    Odd Fixes
-    Maintained
+--b1_QtMYyCgkkz0kWaYRRErq7XYnVavcis1Nl4eQTL4yqu8
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Contradictory status.  Do we care?
+PGRpdiBzdHlsZT0iZm9udC1mYW1pbHk6IEFyaWFsLCBzYW5zLXNlcmlmOyBmb250LXNpemU6IDE0
+cHg7Ij48c3Bhbj5JbiByZXNwb25zZSB0byBbZ2VtdS1ndGstY2xpcGJvYXJkIGZyZWV6aW5nIGFu
+ZCBjcmFzaGluZyBndWVzdHNdKDxhIGhyZWY9Imh0dHBzOi8vZ2l0bGFiLmNvbS9xZW11LXByb2pl
+Y3QvcWVtdS8tL2lzc3Vlcy8xMTUwIiByZWw9Im5vcmVmZXJyZXIgbm9mb2xsb3cgbm9vcGVuZXIi
+IHRhcmdldD0iX2JsYW5rIj5odHRwczovL2dpdGxhYi5jb20vcWVtdS1wcm9qZWN0L3FlbXUvLS9p
+c3N1ZXMvMTE1MDwvYT4pLjwvc3Bhbj48ZGl2Pjxicj48L2Rpdj48ZGl2PjxzcGFuPkkgdGhpbmsg
+SSBtaWdodCBoYXZlIGEgc29sdXRpb24gZm9yIHRoZSBndGsgY2xpcGJvYXJkIHNvbWV0aW1lcyBj
+cmFzaGluZyBndWVzdHMuPC9zcGFuPjwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+PHNwYW4+QGtv
+bEFmbGFzaA0KIEkgY291bGRuJ3QgaGF2ZSBkb25lIGl0IHdpdGhvdXQgeW91LCBmaWd1cmluZyBv
+dXQgDQpgZ3RrX2NsaXBib2FyZF93YWl0X2lzX3RleHRfYXZhaWxhYmxlKGNsaXBib2FyZClgIHdh
+cyB0aGUgaXNzdWUgaXMgaGFsZiANCnRoZSB3b3JrLjwvc3Bhbj48L2Rpdj48ZGl2Pjxicj48L2Rp
+dj48ZGl2PjxzcGFuPlRoZSByZWFsIGlzc3VlIGlzIHRoYXQgDQppdCdzIGJsb2NraW5nIGFuZCBJ
+J2Qgd2FnZXIgdGhhdCdzIGEgYmlnIG5vLW5vIHNpbmNlIHFlbXUgJmFtcDsgS1ZNIGhhdmUNCiB0
+byBydW4gdGhlIFZNICsgT1MsIHByZWZlcmFibHkgYXMgcmVhbC10aW1lIGFzIHBvc3NpYmxlLiBT
+b21ldGhpbmcgDQp0aW1lcyBvdXQgYW5kIHlvdSBnZXQgYSBjb3JlIGR1bXAuPC9zcGFuPjwvZGl2
+PjxkaXY+PGJyPjwvZGl2PjxkaXY+PHNwYW4+U28gYXMgYSByZXBsYWNlbWVudCwgYGd0a19jbGlw
+Ym9hcmRfcmVxdWVzdF90ZXh0YCwgd2hpY2ggaXMgYXN5bmMgYW5kIG5vbi1ibG9ja2luZyBpcyBh
+IGJldHRlciBjaG9pY2UsIGhvcGVmdWxseS48L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj5JdCByZXF1
+aXJlcyBhbiBhZGRpdGlvbmFsIGZ1bmN0aW9uIHRvIGhhbmRsZSByZWNlaXZpbmcgdGV4dC48L3Nw
+YW4+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj48c3Bhbj5TaWduZWQtb2ZmLWJ5OiBFZG11bmQg
+UmFpbGUgJmx0OzxhIGhyZWY9Im1haWx0bzplZG11bmQucmFpbGVAcHJvdG9uLm1lIiByZWw9Im5v
+cmVmZXJyZXIgbm9mb2xsb3cgbm9vcGVuZXIiIHRhcmdldD0iX2JsYW5rIj5lZG11bmQucmFpbGVA
+cHJvdG9uLm1lPC9hPiZndDs8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj5Gcm9tIDUzMGRiOGI2Yzdh
+ZGM5OWY1NDBkN2Q4Y2M2MTIyMzIwODY4MzI2ZTYgTW9uIFNlcCAxNyAwMDowMDowMCAyMDAxPC9z
+cGFuPjwvZGl2PjxkaXY+PHNwYW4+RnJvbTogRWRtdW5kIFJhaWxlICZsdDs8YSBocmVmPSJtYWls
+dG86ZWRtdW5kLnJhaWxlQHByb3Rvbi5tZSIgcmVsPSJub3JlZmVycmVyIG5vZm9sbG93IG5vb3Bl
+bmVyIiB0YXJnZXQ9Il9ibGFuayI+ZWRtdW5kLnJhaWxlQHByb3Rvbi5tZTwvYT4mZ3Q7PC9zcGFu
+PjwvZGl2PjxkaXY+PHNwYW4+RGF0ZTogU3VuLCAyNCBTZXAgMjAyMyAwOTo0NjoyNyArMDIwMDwv
+c3Bhbj48L2Rpdj48ZGl2PjxzcGFuPlN1YmplY3Q6IFtQQVRDSCAxLzFdIHFlbXUtdWktZ3RrIGNs
+aXBib2FyZCBwb3NzaWJsZSBmaXggZm9yIGNyYXNoZXM8L3NwYW4+PC9kaXY+PGRpdj48YnI+PC9k
+aXY+PGRpdj48c3Bhbj4tLS08L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4mbmJzcDt1aS9ndGstY2xp
+cGJvYXJkLmMgfCAyMCArKysrKysrKysrKysrKy0tLS0tLTwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFu
+PiZuYnNwOzEgZmlsZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKTwv
+c3Bhbj48L2Rpdj48ZGl2Pjxicj48L2Rpdj48ZGl2PjxzcGFuPmRpZmYgLS1naXQgYS91aS9ndGst
+Y2xpcGJvYXJkLmMgYi91aS9ndGstY2xpcGJvYXJkLmM8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj5p
+bmRleCA4ZDhhNjM2ZmQxLi42NGQ0ZjdhYzlkIDEwMDY0NDwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFu
+Pi0tLSBhL3VpL2d0ay1jbGlwYm9hcmQuYzwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPisrKyBiL3Vp
+L2d0ay1jbGlwYm9hcmQuYzwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPkBAIC0xNTMsNiArMTUzLDE4
+IEBAIHN0YXRpYyB2b2lkIGdkX2NsaXBib2FyZF9yZXF1ZXN0KFFlbXVDbGlwYm9hcmRJbmZvICpp
+bmZvLDwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPiZuYnNwOyAmbmJzcDsgJm5ic3A7fTwvc3Bhbj48
+L2Rpdj48ZGl2PjxzcGFuPiZuYnNwO308L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4mbmJzcDs8L3Nw
+YW4+PC9kaXY+PGRpdj48c3Bhbj4rLyogbm9uLWJsb2NraW5nIGNsaXBib2FyZCByZWNlaXZlciBp
+bXBsZW1lbnRhdGlvbiAqLzwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPitzdGF0aWMgdm9pZCBnZF9j
+bGlwYm9hcmRfdGV4dF9yZWNlaXZlZF9jYWxsYmFjayhHdGtDbGlwYm9hcmQgKmNsaXBib2FyZCwg
+Y29uc3QgZ2NoYXIgKnRleHQsIGdwb2ludGVyIGRhdGEpPC9zcGFuPjwvZGl2PjxkaXY+PHNwYW4+
+K3s8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4rICZuYnNwOyAmbmJzcDtRZW11Q2xpcGJvYXJkSW5m
+byAqaW5mbyA9IChRZW11Q2xpcGJvYXJkSW5mbyAqKWRhdGE7PC9zcGFuPjwvZGl2PjxkaXY+PHNw
+YW4+KyAmbmJzcDsgJm5ic3A7aWYgKHRleHQpIHs8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4rICZu
+YnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO2luZm8tJmd0O3R5cGVzW1FFTVVfQ0xJUEJPQVJEX1RZ
+UEVfVEVYVF0uYXZhaWxhYmxlID0gdHJ1ZTs8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4rICZuYnNw
+OyAmbmJzcDt9PC9zcGFuPjwvZGl2PjxkaXY+PHNwYW4+Kzwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFu
+PisgJm5ic3A7ICZuYnNwO3FlbXVfY2xpcGJvYXJkX3VwZGF0ZShpbmZvKTs8L3NwYW4+PC9kaXY+
+PGRpdj48c3Bhbj4rICZuYnNwOyAmbmJzcDtxZW11X2NsaXBib2FyZF9pbmZvX3VucmVmKGluZm8p
+Ozwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPit9PC9zcGFuPjwvZGl2PjxkaXY+PHNwYW4+Kzwvc3Bh
+bj48L2Rpdj48ZGl2PjxzcGFuPiZuYnNwO3N0YXRpYyB2b2lkIGdkX293bmVyX2NoYW5nZShHdGtD
+bGlwYm9hcmQgKmNsaXBib2FyZCw8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4mbmJzcDsgJm5ic3A7
+ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsg
+Jm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO0dka0V2ZW50ICpldmVudCw8L3NwYW4+
+PC9kaXY+PGRpdj48c3Bhbj4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNw
+OyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7
+ICZuYnNwO2dwb2ludGVyIGRhdGEpPC9zcGFuPjwvZGl2PjxkaXY+PHNwYW4+QEAgLTE3MCwxMiAr
+MTgyLDggQEAgc3RhdGljIHZvaWQgZ2Rfb3duZXJfY2hhbmdlKEd0a0NsaXBib2FyZCAqY2xpcGJv
+YXJkLDwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPiZuYnNwOyAmbmJzcDsgJm5ic3A7c3dpdGNoIChl
+dmVudC0mZ3Q7b3duZXJfY2hhbmdlLnJlYXNvbikgezwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPiZu
+YnNwOyAmbmJzcDsgJm5ic3A7Y2FzZSBHREtfT1dORVJfQ0hBTkdFX05FV19PV05FUjo8L3NwYW4+
+PC9kaXY+PGRpdj48c3Bhbj4mbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7aW5mbyA9
+IHFlbXVfY2xpcGJvYXJkX2luZm9fbmV3KCZhbXA7Z2QtJmd0O2NicGVlciwgcyk7PC9zcGFuPjwv
+ZGl2PjxkaXY+PHNwYW4+LSAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtpZiAoZ3RrX2NsaXBi
+b2FyZF93YWl0X2lzX3RleHRfYXZhaWxhYmxlKGNsaXBib2FyZCkpIHs8L3NwYW4+PC9kaXY+PGRp
+dj48c3Bhbj4tICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7aW5mby0m
+Z3Q7dHlwZXNbUUVNVV9DTElQQk9BUkRfVFlQRV9URVhUXS5hdmFpbGFibGUgPSB0cnVlOzwvc3Bh
+bj48L2Rpdj48ZGl2PjxzcGFuPi0gJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7fTwvc3Bhbj48
+L2Rpdj48ZGl2PjxzcGFuPi08L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4tICZuYnNwOyAmbmJzcDsg
+Jm5ic3A7ICZuYnNwO3FlbXVfY2xpcGJvYXJkX3VwZGF0ZShpbmZvKTs8L3NwYW4+PC9kaXY+PGRp
+dj48c3Bhbj4tICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwO3FlbXVfY2xpcGJvYXJkX2luZm9f
+dW5yZWYoaW5mbyk7PC9zcGFuPjwvZGl2PjxkaXY+PHNwYW4+KyAmbmJzcDsgJm5ic3A7ICZuYnNw
+OyAmbmJzcDsvKiBndGtfY2xpcGJvYXJkX3dhaXRfaXNfdGV4dF9hdmFpbGFibGUgKGJsb2NraW5n
+KSB3YXMgdXNlZCBoZXJlIHByZXZpb3VzbHkgYW5kIGNyYXNoZWQgZ3Vlc3RzICovPC9zcGFuPjwv
+ZGl2PjxkaXY+PHNwYW4+KyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDtndGtfY2xpcGJvYXJk
+X3JlcXVlc3RfdGV4dChjbGlwYm9hcmQsIGdkX2NsaXBib2FyZF90ZXh0X3JlY2VpdmVkX2NhbGxi
+YWNrLCBpbmZvKTs8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4mbmJzcDsgJm5ic3A7ICZuYnNwOyAm
+bmJzcDsgJm5ic3A7YnJlYWs7PC9zcGFuPjwvZGl2PjxkaXY+PHNwYW4+Jm5ic3A7ICZuYnNwOyAm
+bmJzcDtkZWZhdWx0Ojwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPiZuYnNwOyAmbmJzcDsgJm5ic3A7
+ICZuYnNwOyAmbmJzcDtxZW11X2NsaXBib2FyZF9wZWVyX3JlbGVhc2UoJmFtcDtnZC0mZ3Q7Y2Jw
+ZWVyLCBzKTs8L3NwYW4+PC9kaXY+PGRpdj48c3Bhbj4tLSA8L3NwYW4+PC9kaXY+PGRpdj48c3Bh
+bj4yLjQyLjA8L3NwYW4+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj48c3Bhbj5kb24ndCBmb3Jn
+ZXQgdG8gY29uZmlndXJlIHdpdGggLS1lbmFibGUtZ3RrLWNsaXBib2FyZCBiZWZvcmUgYnVpbGRp
+bmc8L3NwYW4+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj48c3Bhbj5JJ2Qgc2F5IG15IGd2dC1n
+IHdpbjEwIFZNIGhhcyBiZWNvbWUgYSBsb3QgbW9yZSByZXNwb25zaXZlICh3YXMgdXNpbmcgZ3Rr
+LWNsaXBib2FyZCBiZXNpZGVzIGJlaW5nIGJyb2tlbikuPC9zcGFuPjwvZGl2PjxkaXY+PHNwYW4+
+UGFzdGUgZnJvbSB0aGUgVk0gaXMgYSBiaXQgZGVsYXllZCBzb21ldGltZXMgYnV0IEkgY2FuIGxp
+dmUgd2l0aCB0aGF0Ljwvc3Bhbj48L2Rpdj48ZGl2PjxzcGFuPlNvIGZhciBteSBWTSBoYXNuJ3Qg
+Y3Jhc2hlZCB5ZXQuPC9zcGFuPjwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+PHNwYW4+SSdkIGxp
+a2UgdG8gYXNrIHlvdSBmb3IgaGVscCBpbiBldmFsdWF0aW5nIG15IHBhdGNoLjwvc3Bhbj48L2Rp
+dj48ZGl2PjxzcGFuPlRoZSBpc3N1ZSBsaW5rZWQgdG8gaW4gdGhlIGZpcnN0IGxpbmUgaGFzIGlu
+c3RydWN0aW9ucyBvbiB0aGUgY3Jhc2ggY2FzZS48YnI+PC9zcGFuPjwvZGl2PjxkaXYgc3R5bGU9
+ImJhY2tncm91bmQtY29sb3I6IHJnYigyNTUsIDI1NSwgMjU1KTsiPjxzcGFuPjxicj48c3Bhbj5J
+dCdzIG15IGZpcnN0IHRpbWUgb24gdGhlIG1haWxpbmcgbGlzdCwgSSBob3BlIEkndmUgZG9uZSB0
+aGlzIHJpZ2h0Ljxicj48YnI+TXIuIEx1cmVhdSBDQ2VkIGhlcmUgaGFkIHRoaXMgdG8gYWRkOjxi
+cj4gQmxvY2tpbmcgdGhlIHNpZ25hbCBoYW5kbGVyIGlzbid0IGdyZWF0IGVpdGhlciwgYXMgd2Ug
+bWF5IG1pc3MNCmNsaXBib2FyZCB1cGRhdGVzLg0KDQpJIHRoaW5rIHdlIGNvdWxkICJyZXVzZSIg
+dGhlIHNlcmlhbCBmaWVsZCBvbiBpbmZvIGFuZCBjaGVjayBpbiB0aGUNCmNhbGxiYWNrIGlmIHdl
+IGRvbid0IGhhdmUgdGhlIGxhdGVzdCwganVzdCBpZ25vcmUgdGhlIHJlc3VsdCBhbmQgZnJlZS48
+L3NwYW4+PC9zcGFuPjwvZGl2PjwvZGl2Pg==
 
-To avoid, try something like the appended patch.  With that one:
 
-    $ scripts/get_maintainer.pl --status -f migration/rdma.c
-    Juan Quintela <quintela@redhat.com> (odd fixer:RDMA Migration)
-    Li Zhijian <lizhijian@fujitsu.com> (reviewer:RDMA Migration)
-    Peter Xu <peterx@redhat.com> (reviewer:RDMA Migration)
-    Leonardo Bras <leobras@redhat.com> (reviewer:RDMA Migration)
-    qemu-devel@nongnu.org (open list:All patches CC here)
-    Odd Fixes
-
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 355b1960ce..3e80857eab 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3216,6 +3216,15 @@ F: docs/devel/migration.rst
- F: qapi/migration.json
- F: tests/migration/
- F: util/userfaultfd.c
-+X: migration/rdma*
-+
-+RDMA Migration
-+M: Juan Quintela <quintela@redhat.com>
-+R: Li Zhijian <lizhijian@fujitsu.com>
-+R: Peter Xu <peterx@redhat.com>
-+R: Leonardo Bras <leobras@redhat.com>
-+S: Odd Fixes
-+F: migration/rdma*
-=20
- Migration dirty limit and dirty page rate
- M: Hyman Huang <yong.huang@smartx.com>
+--b1_QtMYyCgkkz0kWaYRRErq7XYnVavcis1Nl4eQTL4yqu8--
 
 
