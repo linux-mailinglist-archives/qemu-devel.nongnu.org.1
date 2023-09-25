@@ -2,83 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A3E7ADCFC
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD3D7ADD13
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:29:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkoNa-0001Ld-Bj; Mon, 25 Sep 2023 12:24:14 -0400
+	id 1qkoS0-0002Mg-Rk; Mon, 25 Sep 2023 12:28:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qkoNW-0001LC-Qn
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:24:10 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qkoNV-0002Vq-At
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:24:10 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-533edb5ac54so3543218a12.0
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 09:24:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695659047; x=1696263847; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=8+a6yLUvWXDzXXV2T87UOh+1Nksw0K2QIE4gvsr3dP0=;
- b=FXnLtWd0T4qpNSWsleXoCaM6AjpbvvkViOWneG19OIgKurhkUE3l+s8D1RKyqkminZ
- Myeiw9Q/nZp6LjuOJYluRNsn1Dl5c8446ar0pYd1/ncy3ISnN5+jzlP4rXSkTrSXfD8d
- wcEJEC++eEaPmYQZvNzuYgiDw1z8L/j0WK000XPyqI3ZOeIYb40uHvKURS+Oyra6LGUH
- FfsPr1QiaJjEI+v9YQTVWOeyOwUhk6kCT/AK/BWeWshBHBo/xY7D3hnJ58+uyuVKLwtR
- rwQdiyIBB9E4iR0abgwCToEVwATqU3JSNC9BAQQ3ENhk4OPqdh3xP+RmpaAbfiM44g8B
- m8xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695659047; x=1696263847;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8+a6yLUvWXDzXXV2T87UOh+1Nksw0K2QIE4gvsr3dP0=;
- b=CRop2yxe2mMKdPs31IEfD1+0odZnFcdlcuJilffrSPUAK5ctfB2ELJ1DdbMRlEdflc
- H88VTL2kwJL2BuZ98ICYe9EGk5dEScRbeJenFh3J97iimWx0JjKd5EMeYoVSXp0c/aDd
- Phs6zM4gHkk8EmzfXuWmk2EmQfJPwtidfBBcK+rrkWznlzd7HdPfwDGwNnt6rhzHthl7
- XtzTbXwXD1NqChuH/mrxbQ4oJPSUUzfx9Voq1VzIYIUnIG85EIXEW/AnoIlZNdixYmoZ
- 3jVqmJP0qbxjC1/HAaGZpyB+mbChyShgHV+8fRxR7lpmvSLrPUNmhrZ43qiurOtxVVy6
- tLRg==
-X-Gm-Message-State: AOJu0Yy4993POFt7c9H0PSdUCPJ6b+j0gDsb2cYphxO7M+pLJJFJeF+u
- o7v00lj9kKAm3tLt114CAXBUpw==
-X-Google-Smtp-Source: AGHT+IFZHt/UEnm2oW+TR7cL/j7Q/hzowjNV52fUP2hEYUiOJihPSaSpwq6vR/bnIb4CnYGleftdPw==
-X-Received: by 2002:a17:906:518f:b0:9ad:c132:b93e with SMTP id
- y15-20020a170906518f00b009adc132b93emr5923291ejk.28.1695659047090; 
- Mon, 25 Sep 2023 09:24:07 -0700 (PDT)
-Received: from [192.168.69.115] (mdq11-h01-176-173-161-91.dsl.sta.abo.bbox.fr.
- [176.173.161.91]) by smtp.gmail.com with ESMTPSA id
- k8-20020a170906a38800b0099bc2d1429csm6548746ejz.72.2023.09.25.09.24.05
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 25 Sep 2023 09:24:06 -0700 (PDT)
-Message-ID: <f5a909cb-609d-0329-672e-3f6f089c75d9@linaro.org>
-Date: Mon, 25 Sep 2023 18:24:04 +0200
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qkoRz-0002MU-I2
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:28:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qkoRj-0003DH-Tp
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:28:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695659310;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Q3XmcHzrOYSbEyZh6kgDiDOPnKUtdQ6p5R5WI4Sq3ss=;
+ b=jHQHMvc+hE9FWznPZx9gQ0YckgYvkk/qezdSQzSKvM6ukUSADJa1IFkk/P3xWIpD6YM/qt
+ RfJQqC3dU3NpTTdlcNEQgrkz5nVVhvN5Ad4QT9moKS6NUXIqSeZpzYMIVmZWpdVljCrKph
+ Zy7jHjB/wkQ7BqB/UD/mTChMkTUmkuY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-587-6mdfCm23M3qQ5dpy8iYUZA-1; Mon, 25 Sep 2023 12:28:26 -0400
+X-MC-Unique: 6mdfCm23M3qQ5dpy8iYUZA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C9B829AB400;
+ Mon, 25 Sep 2023 16:28:25 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AB5CE711291;
+ Mon, 25 Sep 2023 16:28:19 +0000 (UTC)
+Date: Mon, 25 Sep 2023 17:28:17 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ John Snow <jsnow@redhat.com>, libvir-list@redhat.com,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas Piggin <npiggin@gmail.com>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Cleber Rosa <crosa@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-ppc@nongnu.org,
+ David Hildenbrand <david@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Beraldo Leal <bleal@redhat.com>, Rabin Vincent <rabinv@axis.com>,
+ "Edgar E . Iglesias" <edgar.iglesias@xilinx.com>
+Subject: Re: [PATCH 04/31] docs: mark CRIS support as deprecated
+Message-ID: <ZRG1IbuBvUfkqqa8@redhat.com>
+References: <20230925144854.1872513-1-alex.bennee@linaro.org>
+ <20230925144854.1872513-5-alex.bennee@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2] hw/sd/sdhci: Block Size Register bits [14:12] is lost
-Content-Language: en-US
-To: Lu Gao <lu.gao@verisilicon.com>, qemu-devel@nongnu.org
-Cc: Jianxian Wen <jianxian.wen@verisilicon.com>,
- Bin Meng <bin.meng@windriver.com>,
- "open list:SD (Secure Card)" <qemu-block@nongnu.org>
-References: <20230922020312.30828-1-lu.gao@verisilicon.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230922020312.30828-1-lu.gao@verisilicon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <20230925144854.1872513-5-alex.bennee@linaro.org>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,29 +106,66 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 22/9/23 04:03, Lu Gao wrote:
-> Block Size Register bits [14:12] is SDMA Buffer Boundary, it is missed
-> in register write, but it is needed in SDMA transfer. e.g. it will be
-> used in sdhci_sdma_transfer_multi_blocks to calculate boundary_ variables.
+On Mon, Sep 25, 2023 at 03:48:27PM +0100, Alex Bennée wrote:
+> This might be premature but while streamling the avocado tests I
+> realised the only tests we have are "check-tcg" ones. The aging
+> fedora-criss-cross image works well enough for developers but can't be
+> used in CI as we need supported build platforms to build QEMU.
 > 
-> Missing this field will cause wrong operation for different SDMA Buffer
-> Boundary settings.
-> 
-> Fixes: d7dfca0807 ("hw/sdhci: introduce standard SD host controller")
-> Fixes: dfba99f17f ("hw/sdhci: Fix DMA Transfer Block Size field")
-> 
-> Signed-off-by: Lu Gao <lu.gao@verisilicon.com>
-> Signed-off-by: Jianxian Wen <jianxian.wen@verisilicon.com>
-> Reviewed-by: Philippe Mathieu-Daudé? <f4bug@amsat.org>
-> ---
-> v2:
->   - Add fixes information and reviewed-by information
-> 
->   hw/sd/sdhci.c | 15 +++++++++++----
->   1 file changed, 11 insertions(+), 4 deletions(-)
+> Does this mean the writing is on the wall for this architecture?
 
-Thank you, queued (pull request will be next week).
+It was deleted in Linux, and GCC dropped the cris-*linux target,
+but GCC keeps other cris targets.
+
+IOW, at very least, it has become a niche use case target.
+
+We don't need Linux/GCC support as a pre-requisite for having a
+target in QEMU, but it sure makes it increasingly challenging
+to test.
+
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Cc: Rabin Vincent <rabinv@axis.com>
+> Cc: Edgar E. Iglesias <edgar.iglesias@xilinx.com>
+> ---
+>  docs/about/deprecated.rst | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index dc4da95329..7cfe313aa6 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -399,6 +399,17 @@ Specifying the iSCSI password in plain text on the command line using the
+>  used instead, to refer to a ``--object secret...`` instance that provides
+>  a password via a file, or encrypted.
+>  
+> +TCG CPUs
+> +--------
+> +
+> +CRIS CPU architecture (since 8.1)
+> +'''''''''''''''''''''''''''''''''
+> +
+> +The CRIS architecture was pulled from Linux in 4.17 and the compiler
+> +is no longer packaged in any distro making it harder to run the
+> +``check-tcg`` tests. Unless we can improve the testing situation there
+> +is a chance the code will bitrot without anyone noticing.
+> +
+>  Backwards compatibility
+>  -----------------------
+>  
+> -- 
+> 2.39.2
+> 
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+
 
