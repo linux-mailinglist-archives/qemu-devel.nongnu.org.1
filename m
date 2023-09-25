@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 875C97ADF13
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 874CF7ADEB4
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:29:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqK7-0008Dr-Kf; Mon, 25 Sep 2023 14:28:47 -0400
+	id 1qkqK9-0008Hy-5L; Mon, 25 Sep 2023 14:28:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqK4-0008Ag-Bg
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:44 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qkqK5-0008Cr-O0
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:45 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqK2-0007kU-Lx
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:44 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-405361bb93bso68153745e9.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:28:41 -0700 (PDT)
+ id 1qkqK3-0007kh-0x
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:28:45 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-32320381a07so2993216f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:28:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666520; x=1696271320; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666521; x=1696271321; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QZEj0PmQKtrSTSS1pylbPvyIf7jZoRzyI7RzMk4h4sk=;
- b=fDmdRcu6GMugS/LFj8dqJWuJq/TOd6XqoVJmmsqdU73Q2B4QF1tbwBj1wmnMGbI3bx
- pK6maNddnSfx/JEZ3KAIgmEJcz6HZ+tT+TSRPLNJDFWcaWIbZR8A/az37AbUVBWiauV+
- v02RwdiRm+BIGL7+CAYAfQt51cA6rEx/Ysr6Eh2d5id8qtiNlubXcKlMEJAMWoBFyqXa
- PM0OFHydE2uU9CO46q1+A8i1h808zjBq/UHdXpE1sJQblGhAj44ZW2o35cObl5imVq1M
- tHoIXXiiG6otmQCmvLM4nB3Y/13xTXUiz3SoDA9tyzFow2flK5CJKos9EboE5zeKN96K
- T4GA==
+ bh=tWanWC67jhmn9FXRwvcRc23eY0xLvKm6663P3+ePW3g=;
+ b=JgCCS0oR3cOwKwu/Jh+7z0S3jZ6diEkpJuAmgrAPZrgjnIVfI3A5PWTPXEPWr1fKsg
+ of3l6YiHGAvr+ulScpUr499JkVSTL8VUgrdfTn87rYe8d/POOBhVcnAcTX1DGUJ2O9Li
+ 7GNPk54kQPgN/2kPI/xTZa+ZE18PZEoLJtMgEp7hLOekFD/rn5diMbPIXb2zmuHEjb8k
+ WPMGyA3wnxa6EvLcGS5mi2TLhuOSQZeMcL2jMBg+8bpg80JUqmoI81/j2Wc5Ln7Ax0OS
+ KMhJ0kAflP5tQ1wXo5h7I0UxhRdyetYtZjVeI88ixrHdguPzaq6x2ZyZ77hm9h3Lbtft
+ 00jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666520; x=1696271320;
+ d=1e100.net; s=20230601; t=1695666521; x=1696271321;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QZEj0PmQKtrSTSS1pylbPvyIf7jZoRzyI7RzMk4h4sk=;
- b=G8W6dXXt9DSXsPOtv8STlhbkjZTcyaG76+0ylUfmp6S+DbNhb/ykZZ95lbnqibEFPh
- DGrUvGA+vHMBXnjLcIEQDw26AnRJkRtKywKGjQKEECKAnYzkDW49nCZgPXg0Vvtdgzhh
- epy46BIec7NnuU4mkF1XE7yjGkQSypkn2Vutrh2H/kgHwZ9/29Qjje2+CwPM6MFyHpY0
- 250ocvLtZhf/NUBH8aaR6+c9vhA9HQpQsJNtNJmJl5QYMLvl5PksoLTn3Zq+VtOaDC7/
- 60jbeIQQxrA8Y1ea0+1LTPfczWPElH8GPs0B0JexTZwnVBP6rJh//nMHCC6jfr/HiNIV
- B+rg==
-X-Gm-Message-State: AOJu0YzAjlB35u8APxTk2nASjwX2CDZqDCINa2q9k6s/t1ZANFpkc7Y5
- /TTzmld1BgeEkiz4duhwq7RuFf7I4ts=
-X-Google-Smtp-Source: AGHT+IEirFy1icC30NRTO7tr1ci4hnXyq96P+DgNHKYq9eBjVivG+4djzB+Kr3LhqYWC/mU+w2sy7Q==
-X-Received: by 2002:a7b:c3d9:0:b0:401:bf56:8ba6 with SMTP id
- t25-20020a7bc3d9000000b00401bf568ba6mr6323240wmj.28.1695666519993; 
- Mon, 25 Sep 2023 11:28:39 -0700 (PDT)
+ bh=tWanWC67jhmn9FXRwvcRc23eY0xLvKm6663P3+ePW3g=;
+ b=SpfquESzi40LNbyrHrORPTBLV4uabt9NTomp5jkKGu+w4/Sxh6TbnSOD7If1Q70G3M
+ +u4G+e2PlpFnK/wzSkxxqlw1f1kM7dHzYJqYskphaj/80QmcYsIiCtAFqooenJGqY4yR
+ TJELJXCFrc1lP/orWGjZvlDVdDAaeZe6iV5SrOZL0BZqn0G2ni1F/LyG89PhIQ5qziWy
+ Lo7/wjNtOBwge1RDfyjk13qm29h6Ocv8faHRHDANrtwVmQ9BhfE+5RJxt4T7uXP4MMEq
+ +HjcYj0wZD3g5Lf7uCbsXd1TL3uUISSufvK0BAgZR9ynOG4gpzKnaWq3srDnCkKcP31l
+ C77g==
+X-Gm-Message-State: AOJu0Yxxk8Q4o0jw7JCikJSrFpqeHB5O4/Dyuye9yx/GHy6CCG9Zdf7n
+ OuJDhFB0o02DiH3ax70JPLJoCNdXpfY=
+X-Google-Smtp-Source: AGHT+IGcM9cb8jNiwOQ4luwwaG+iC8P/Dcg0MmjKZ10uTQvKgw71c3hDC1NkXuqysqSsn0Vhvjm3bQ==
+X-Received: by 2002:a5d:414d:0:b0:31f:eb8d:481f with SMTP id
+ c13-20020a5d414d000000b0031feb8d481fmr6316407wrq.29.1695666521246; 
+ Mon, 25 Sep 2023 11:28:41 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.38
+ u21-20020adfa195000000b00323293bd023sm3412320wru.6.2023.09.25.11.28.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:28:39 -0700 (PDT)
+ Mon, 25 Sep 2023 11:28:40 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Kyle Evans <kevans@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v6 06/23] bsd-user: Implement shm_rename(2) system call
-Date: Mon, 25 Sep 2023 21:26:52 +0300
-Message-ID: <20230925182709.4834-7-kariem.taha2.7@gmail.com>
+ Karim Taha <kariem.taha2.7@gmail.com>
+Subject: [PATCH v6 07/23] bsd-user: Add bsd-mem.c to meson.build
+Date: Mon, 25 Sep 2023 21:26:53 +0300
+Message-ID: <20230925182709.4834-8-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 References: <20230925182709.4834-1-kariem.taha2.7@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=kariem.taha2.7@gmail.com; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=kariem.taha2.7@gmail.com; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -94,68 +94,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Kyle Evans <kevans@FreeBSD.org>
-
-Signed-off-by: Kyle Evans <kevans@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-misc.h    | 24 ++++++++++++++++++++++++
- bsd-user/freebsd/os-syscall.c |  6 ++++++
- 2 files changed, 30 insertions(+)
+ bsd-user/bsd-mem.c   | 0
+ bsd-user/meson.build | 1 +
+ 2 files changed, 1 insertion(+)
+ create mode 100644 bsd-user/bsd-mem.c
 
-diff --git a/bsd-user/freebsd/os-misc.h b/bsd-user/freebsd/os-misc.h
-index 6b424b7078..67e450fe7c 100644
---- a/bsd-user/freebsd/os-misc.h
-+++ b/bsd-user/freebsd/os-misc.h
-@@ -66,5 +66,29 @@ static inline abi_long do_freebsd_shm_open2(abi_ulong pathptr, abi_ulong flags,
- }
- #endif /* __FreeBSD_version >= 1300048 */
+diff --git a/bsd-user/bsd-mem.c b/bsd-user/bsd-mem.c
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/bsd-user/meson.build b/bsd-user/meson.build
+index 5243122fc5..6ee68fdfe7 100644
+--- a/bsd-user/meson.build
++++ b/bsd-user/meson.build
+@@ -7,6 +7,7 @@ bsd_user_ss = ss.source_set()
+ common_user_inc += include_directories('include')
  
-+#if defined(__FreeBSD_version) && __FreeBSD_version >= 1300049
-+/* shm_rename(2) */
-+static inline abi_long do_freebsd_shm_rename(abi_ulong fromptr, abi_ulong toptr,
-+        abi_ulong flags)
-+{
-+    int ret;
-+    void *ufrom, *uto;
-+
-+    ufrom = lock_user_string(fromptr);
-+    if (ufrom == NULL) {
-+        return -TARGET_EFAULT;
-+    }
-+    uto = lock_user_string(toptr);
-+    if (uto == NULL) {
-+        unlock_user(ufrom, fromptr, 0);
-+        return -TARGET_EFAULT;
-+    }
-+    ret = get_errno(shm_rename(ufrom, uto, flags));
-+    unlock_user(ufrom, fromptr, 0);
-+    unlock_user(uto, toptr, 0);
-+
-+    return ret;
-+}
-+#endif /* __FreeBSD_version >= 1300049 */
- 
- #endif /* OS_MISC_H */
-diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 74146d8c72..ae92a2314c 100644
---- a/bsd-user/freebsd/os-syscall.c
-+++ b/bsd-user/freebsd/os-syscall.c
-@@ -603,6 +603,12 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         break;
- #endif
- 
-+#if defined(__FreeBSD_version) && __FreeBSD_version >= 1300049
-+    case TARGET_FREEBSD_NR_shm_rename: /* shm_rename(2) */
-+        ret = do_freebsd_shm_rename(arg1, arg2, arg3);
-+        break;
-+#endif
-+
-         /*
-          * sys{ctl, arch, call}
-          */
+ bsd_user_ss.add(files(
++  'bsd-mem.c',
+   'bsdload.c',
+   'elfload.c',
+   'main.c',
 -- 
 2.42.0
 
