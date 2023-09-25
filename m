@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D84B7ADEB1
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:28:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 605987ADEE6
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 20:33:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkqHq-0001Mu-Ph; Mon, 25 Sep 2023 14:26:26 -0400
+	id 1qkqHs-0001NS-8Q; Mon, 25 Sep 2023 14:26:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHn-0001M9-UV
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:23 -0400
+ id 1qkqHp-0001Mn-C5
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:25 -0400
 Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <kariem.taha2.7@gmail.com>)
- id 1qkqHj-0007R4-Rz
+ id 1qkqHk-0007RA-LJ
  for qemu-devel@nongnu.org; Mon, 25 Sep 2023 14:26:23 -0400
 Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-40572aeb6d0so35488685e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:26:19 -0700 (PDT)
+ 5b1f17b1804b1-4060b623e64so3203995e9.0
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 11:26:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695666377; x=1696271177; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695666379; x=1696271179; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=uxI2BautFYuM9X/6LgOM/mAy2btm9htJw+uHfz45eMY=;
- b=jfStwEuRSRW6NYVsKYPouIDKH8JNNQQ56+4VZQncSN7+RZcuSAnox6YZVQn1yMN23/
- L8lnxsccHrJAooScVmfkXM3odDhSrfpc1ns4FnSRnDCj/WgaJ+fNNppu3UC9X1guUGMf
- lRVw+Qw7PeKjk0L8zApNYn1eLwD+GvL0F+bvYgZT9dAFXGgI1Fj5hXUn+Rej9Vlv2YSr
- OKgz1tyVWMU6hOS+TaTfkTr1sZzArcV8Gkc4uOUL3gKKqvNqaS/OitpORqXUH8lBZFyc
- K+XdVj4jcijeYMPDwM4H29XwL1Q/YgjO00p/AT+YSS/9Q8fwhjqREYVe5ZfzUa/LhFaX
- 4Riw==
+ bh=qbayE6l6JhvDk5JDDSA3CFMkQpsKKYUY+hJNz9DZm5c=;
+ b=AmqYysI4n5SpS236GPJWReCltmdtJFFxGg/Ehmq2tHfX5TennzRzA80TVTV4olxFM5
+ HgEC3YF6JGEGwthGUb9mp+fNrZnwu8wy3qQnAtZzs0r87ieGX2IDZY0ieo2huFwBL1KO
+ OIfiMGN7cr4Olv7HMKmTIOSHX8ynjse3+r+uLtXzdDKJuRUFyIonzwxWyBd4RKWD3HTb
+ 5pi80ZkgMnO7RuadCIkkExlX+0S/XUBbjGyZIh3QmPLOf9NHt7wVJmLPNduIAgqXc6Vb
+ WIxntwLiz3FSDCty4ODaaoV3+9oejWOaL+0Y0wSAE4lf+7KpQXdqOLtiu4ZY9DSCuMG2
+ LLcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695666377; x=1696271177;
+ d=1e100.net; s=20230601; t=1695666379; x=1696271179;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uxI2BautFYuM9X/6LgOM/mAy2btm9htJw+uHfz45eMY=;
- b=ra1ubG/oWLftl/4kxKQJvlbMbc9Ol/76ZdsBeyRDfcO5CtrHM13xWllNdG4P/W/6PM
- D3ycC16fLAmlsVlNgasT8YlZ6E0c2Vty7df5PXJa4hqGRzwl2Jc8ddX6RO7VekRvG+6B
- xS3QeJPh5/pG5au2WuOhosNMXvOHHdiMJf8KW8bHXZwzA/KGUHU4BudvsZwgEnc91Kl2
- QDPWrSpzt2VIolOTZ3Z1R56jXsAZghrNAPnHGAdlV7XYzn10MfY5+Kq/GAzYGuu+UeL3
- voaqsPFm2U0Cv8BuDUPbWKS7h0llNyqBsSsHFzuA/xhFAe1MmfXeBfurnz4CnQY7U6xD
- sR3w==
-X-Gm-Message-State: AOJu0YwPFzW3p554UaVJnjnZO0lU1ualFywM1wQbQcXD1N4a2NsgqkbU
- 3sa6bLcJygwT5mfJvOQmNzcomC4H2Pk=
-X-Google-Smtp-Source: AGHT+IEGEAV47AR9MxKYtm4f0qWw8Jbr0wdFhMr+l5dUAw3OeVqNZ4Xlr6OR6LYjXStwKwgjogphOA==
-X-Received: by 2002:a05:600c:141:b0:400:ce4f:f184 with SMTP id
- w1-20020a05600c014100b00400ce4ff184mr6632576wmm.41.1695666377488; 
- Mon, 25 Sep 2023 11:26:17 -0700 (PDT)
+ bh=qbayE6l6JhvDk5JDDSA3CFMkQpsKKYUY+hJNz9DZm5c=;
+ b=iBpxZwRq2fN+YLek5dAb8UiPEx32e5Xbf6r7kv2bP8QHBWej5EqtEhE15r+hs7AMSf
+ W0ZIlUs/8VUnhVVJ10Ijjx7dRkiGmq1gy91NnXxlM9RLgLwCEFnHpVgKz00a/naREKju
+ 2fw1y8b6e8l9JgEKsiLvJ1YXQ6ri6P6LMCjYmXf4ivJm6GJjsgiIfPe6X1/yz3GJudyI
+ 7aj4xS0RSTx45vtVo4izP1knYgWPPdG43xeecyggY5Z9gYO3X0oAfK9BmjeFqqLQiIJ3
+ G8PdLdbUB5lOzVJuVNb+cMYC5bouGBim6g4/GIIpXQnnSAiwdc8bkQDfOG/2WcLCdy81
+ drAA==
+X-Gm-Message-State: AOJu0Yzq0wXUbpafBrQ7jPplTiwpxs+I5+WLeWRnonHvNNgWILTQddcJ
+ yk8zO1RbPKIZq6In1vjlL8TnBeTWJH4=
+X-Google-Smtp-Source: AGHT+IHdiWQBnQOX2ynZV4kgCuEGZp7YHUysaKZ6+yy87x+YJg6+Zh/yPZMa2iB9MawFBOUXWK7C5g==
+X-Received: by 2002:a05:600c:2044:b0:405:3941:ce2c with SMTP id
+ p4-20020a05600c204400b004053941ce2cmr370925wmg.6.1695666378731; 
+ Mon, 25 Sep 2023 11:26:18 -0700 (PDT)
 Received: from karim.my.domain ([197.39.209.18])
  by smtp.gmail.com with ESMTPSA id
- 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.26.16
+ 19-20020a05600c229300b00405953973c3sm2232858wmf.6.2023.09.25.11.26.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 11:26:17 -0700 (PDT)
+ Mon, 25 Sep 2023 11:26:18 -0700 (PDT)
 From: Karim Taha <kariem.taha2.7@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Warner Losh <imp@bsdimp.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Stacey Son <sson@FreeBSD.org>, Karim Taha <kariem.taha2.7@gmail.com>
-Subject: [PATCH v5 20/28] bsd-user: Implement freebsd_exec_common,
- used in implementing execve/fexecve.
-Date: Mon, 25 Sep 2023 21:24:17 +0300
-Message-ID: <20230925182425.3163-21-kariem.taha2.7@gmail.com>
+Subject: [PATCH v5 21/28] bsd-user: Implement procctl(2) along with necessary
+ conversion functions.
+Date: Mon, 25 Sep 2023 21:24:18 +0300
+Message-ID: <20230925182425.3163-22-kariem.taha2.7@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
 References: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
@@ -97,225 +97,260 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Stacey Son <sson@FreeBSD.org>
 
+Implement t2h_procctl_cmd, h2t_reaper_status, h2t_reaper_pidinfo and h2t/t2h reaper_kill conversion functions.
+
 Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
 ---
- bsd-user/freebsd/os-proc.c | 177 +++++++++++++++++++++++++++++++++++++
- bsd-user/main.c            |   2 +-
- bsd-user/qemu.h            |   1 +
- 3 files changed, 179 insertions(+), 1 deletion(-)
+ bsd-user/freebsd/os-proc.c    | 222 ++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |   3 +
+ 2 files changed, 225 insertions(+)
 
 diff --git a/bsd-user/freebsd/os-proc.c b/bsd-user/freebsd/os-proc.c
-index cb35f29f10..12d78b7fc9 100644
+index 12d78b7fc9..6c0c7a9d67 100644
 --- a/bsd-user/freebsd/os-proc.c
 +++ b/bsd-user/freebsd/os-proc.c
-@@ -78,3 +78,180 @@ out:
+@@ -255,3 +255,225 @@ execve_end:
      return ret;
  }
  
-+/*
-+ * execve/fexecve
-+ */
-+abi_long freebsd_exec_common(abi_ulong path_or_fd, abi_ulong guest_argp,
-+        abi_ulong guest_envp, int do_fexec)
++#include <sys/procctl.h>
++
++static abi_long
++t2h_procctl_cmd(int target_cmd, int *host_cmd)
 +{
-+    char **argp, **envp, **qargp, **qarg1, **qarg0, **qargend;
-+    int argc, envc;
-+    abi_ulong gp;
-+    abi_ulong addr;
-+    char **q;
-+    int total_size = 0;
-+    void *p;
-+    abi_long ret;
++    switch (target_cmd) {
++    case TARGET_PROC_SPROTECT:
++        *host_cmd = PROC_SPROTECT;
++        break;
 +
-+    argc = 0;
-+    for (gp = guest_argp; gp; gp += sizeof(abi_ulong)) {
-+        if (get_user_ual(addr, gp)) {
-+            return -TARGET_EFAULT;
-+        }
-+        if (!addr) {
-+            break;
-+        }
-+        argc++;
-+    }
-+    envc = 0;
-+    for (gp = guest_envp; gp; gp += sizeof(abi_ulong)) {
-+        if (get_user_ual(addr, gp)) {
-+            return -TARGET_EFAULT;
-+        }
-+        if (!addr) {
-+            break;
-+        }
-+        envc++;
++    case TARGET_PROC_REAP_ACQUIRE:
++        *host_cmd = PROC_REAP_ACQUIRE;
++        break;
++
++    case TARGET_PROC_REAP_RELEASE:
++        *host_cmd = PROC_REAP_RELEASE;
++        break;
++
++    case TARGET_PROC_REAP_STATUS:
++        *host_cmd = PROC_REAP_STATUS;
++        break;
++
++    case TARGET_PROC_REAP_KILL:
++        *host_cmd = PROC_REAP_KILL;
++        break;
++
++    default:
++        return -TARGET_EINVAL;
 +    }
 +
-+    qarg0 = argp = g_new0(char *, argc + 9);
-+    /* save the first agrument for the emulator */
-+    *argp++ = (char *)getprogname();
-+    qargp = argp;
-+    *argp++ = (char *)getprogname();
-+    qarg1 = argp;
-+    envp = g_new0(char *, envc + 1);
-+    for (gp = guest_argp, q = argp; gp; gp += sizeof(abi_ulong), q++) {
-+        if (get_user_ual(addr, gp)) {
-+            ret = -TARGET_EFAULT;
-+            goto execve_end;
-+        }
-+        if (!addr) {
-+            break;
-+        }
-+        *q = lock_user_string(addr);
-+        if (*q == NULL) {
-+            ret = -TARGET_EFAULT;
-+            goto execve_end;
-+        }
-+        total_size += strlen(*q) + 1;
-+    }
-+    *q++ = NULL;
-+    qargend = q;
-+
-+    for (gp = guest_envp, q = envp; gp; gp += sizeof(abi_ulong), q++) {
-+        if (get_user_ual(addr, gp)) {
-+            ret = -TARGET_EFAULT;
-+            goto execve_end;
-+        }
-+        if (!addr) {
-+            break;
-+        }
-+        *q = lock_user_string(addr);
-+        if (*q == NULL) {
-+            ret = -TARGET_EFAULT;
-+            goto execve_end;
-+        }
-+        total_size += strlen(*q) + 1;
-+    }
-+    *q = NULL;
-+
-+    /*
-+     * This case will not be caught by the host's execve() if its
-+     * page size is bigger than the target's.
-+     */
-+    if (total_size > MAX_ARG_PAGES * TARGET_PAGE_SIZE) {
-+        ret = -TARGET_E2BIG;
-+        goto execve_end;
-+    }
-+
-+    if (do_fexec) {
-+        if (((int)path_or_fd > 0 &&
-+            is_target_elf_binary((int)path_or_fd)) == 1) {
-+            char execpath[PATH_MAX];
-+
-+            /*
-+             * The executable is an elf binary for the target
-+             * arch.  execve() it using the emulator if we can
-+             * determine the filename path from the fd.
-+             */
-+            if (get_filename_from_fd(getpid(), (int)path_or_fd, execpath,
-+                        sizeof(execpath)) != NULL) {
-+                memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
-+                qarg1[1] = qarg1[0];
-+                qarg1[0] = (char *)"-0";
-+                qarg1 += 2;
-+                qargend += 2;
-+                *qarg1 = execpath;
-+#ifndef DONT_INHERIT_INTERP_PREFIX
-+                memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
-+                *qarg1++ = (char *)"-L";
-+                *qarg1++ = (char *)interp_prefix;
-+#endif
-+                ret = get_errno(execve(qemu_proc_pathname, qargp, envp));
-+            } else {
-+                /* Getting the filename path failed. */
-+                ret = -TARGET_EBADF;
-+                goto execve_end;
-+            }
-+        } else {
-+            ret = get_errno(fexecve((int)path_or_fd, argp, envp));
-+        }
-+    } else {
-+        int fd;
-+
-+        p = lock_user_string(path_or_fd);
-+        if (p == NULL) {
-+            ret = -TARGET_EFAULT;
-+            goto execve_end;
-+        }
-+
-+        /*
-+         * Check the header and see if it a target elf binary.  If so
-+         * then execute using qemu user mode emulator.
-+         */
-+        fd = open(p, O_RDONLY | O_CLOEXEC);
-+        if (fd > 0 && is_target_elf_binary(fd) == 1) {
-+            close(fd);
-+            /* execve() as a target binary using emulator. */
-+            memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
-+            qarg1[1] = qarg1[0];
-+            qarg1[0] = (char *)"-0";
-+            qarg1 += 2;
-+            qargend += 2;
-+            *qarg1 = (char *)p;
-+#ifndef DONT_INHERIT_INTERP_PREFIX
-+            memmove(qarg1 + 2, qarg1, (qargend - qarg1) * sizeof(*qarg1));
-+            *qarg1++ = (char *)"-L";
-+            *qarg1++ = (char *)interp_prefix;
-+#endif
-+            ret = get_errno(execve(qemu_proc_pathname, qargp, envp));
-+        } else {
-+            close(fd);
-+            /* Execve() as a host native binary. */
-+            ret = get_errno(execve(p, argp, envp));
-+        }
-+        unlock_user(p, path_or_fd, 0);
-+    }
-+
-+execve_end:
-+    for (gp = guest_argp, q = argp; *q; gp += sizeof(abi_ulong), q++) {
-+        if (get_user_ual(addr, gp) || !addr) {
-+            break;
-+        }
-+        unlock_user(*q, addr, 0);
-+    }
-+
-+    for (gp = guest_envp, q = envp; *q; gp += sizeof(abi_ulong), q++) {
-+        if (get_user_ual(addr, gp) || !addr) {
-+            break;
-+        }
-+        unlock_user(*q, addr, 0);
-+    }
-+
-+    g_free(qarg0);
-+    g_free(envp);
-+
-+    return ret;
++    return 0;
 +}
 +
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index f913cb55a7..a12b4be80f 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -88,7 +88,7 @@ unsigned long reserved_va = MAX_RESERVED_VA;
- unsigned long reserved_va;
- #endif
++static abi_long
++h2t_reaper_status(struct procctl_reaper_status *host_rs,
++        abi_ulong target_rs_addr)
++{
++    struct target_procctl_reaper_status *target_rs;
++
++    if (!lock_user_struct(VERIFY_WRITE, target_rs, target_rs_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++    __put_user(host_rs->rs_flags, &target_rs->rs_flags);
++    __put_user(host_rs->rs_children, &target_rs->rs_children);
++    __put_user(host_rs->rs_descendants, &target_rs->rs_descendants);
++    __put_user(host_rs->rs_reaper, &target_rs->rs_reaper);
++    __put_user(host_rs->rs_pid, &target_rs->rs_pid);
++    unlock_user_struct(target_rs, target_rs_addr, 1);
++
++    return 0;
++}
++
++static abi_long
++t2h_reaper_kill(abi_ulong target_rk_addr, struct procctl_reaper_kill *host_rk)
++{
++    struct target_procctl_reaper_kill *target_rk;
++
++    if (!lock_user_struct(VERIFY_READ, target_rk, target_rk_addr, 1)) {
++        return -TARGET_EFAULT;
++    }
++    __get_user(host_rk->rk_sig, &target_rk->rk_sig);
++    __get_user(host_rk->rk_flags, &target_rk->rk_flags);
++    __get_user(host_rk->rk_subtree, &target_rk->rk_subtree);
++    __get_user(host_rk->rk_killed, &target_rk->rk_killed);
++    __get_user(host_rk->rk_fpid, &target_rk->rk_fpid);
++    unlock_user_struct(target_rk, target_rk_addr, 0);
++
++    return 0;
++}
++
++static abi_long
++h2t_reaper_kill(struct procctl_reaper_kill *host_rk, abi_ulong target_rk_addr)
++{
++    struct target_procctl_reaper_kill *target_rk;
++
++    if (!lock_user_struct(VERIFY_WRITE, target_rk, target_rk_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++    __put_user(host_rk->rk_sig, &target_rk->rk_sig);
++    __put_user(host_rk->rk_flags, &target_rk->rk_flags);
++    __put_user(host_rk->rk_subtree, &target_rk->rk_subtree);
++    __put_user(host_rk->rk_killed, &target_rk->rk_killed);
++    __put_user(host_rk->rk_fpid, &target_rk->rk_fpid);
++    unlock_user_struct(target_rk, target_rk_addr, 1);
++
++    return 0;
++}
++
++static abi_long
++h2t_procctl_reaper_pidinfo(struct procctl_reaper_pidinfo *host_pi,
++        abi_ulong target_pi_addr)
++{
++    struct target_procctl_reaper_pidinfo *target_pi;
++
++    if (!lock_user_struct(VERIFY_WRITE, target_pi, target_pi_addr, 0)) {
++        return -TARGET_EFAULT;
++    }
++    __put_user(host_pi->pi_pid, &target_pi->pi_pid);
++    __put_user(host_pi->pi_subtree, &target_pi->pi_subtree);
++    __put_user(host_pi->pi_flags, &target_pi->pi_flags);
++    unlock_user_struct(target_pi, target_pi_addr, 1);
++
++    return 0;
++}
++
++abi_long
++do_freebsd_procctl(void *cpu_env, int idtype, abi_ulong arg2, abi_ulong arg3,
++       abi_ulong arg4, abi_ulong arg5, abi_ulong arg6)
++{
++    abi_long error = 0, target_rp_pids;
++    void *data;
++    int host_cmd, flags;
++    uint32_t u, target_rp_count;
++    g_autofree union {
++        struct procctl_reaper_status rs;
++        struct procctl_reaper_pids rp;
++        struct procctl_reaper_kill rk;
++    } host;
++    struct target_procctl_reaper_pids *target_rp;
++    id_t id; /* 64-bit */
++    int target_cmd;
++    abi_ulong target_arg;
++
++#if TARGET_ABI_BITS == 32
++    /* See if we need to align the register pairs. */
++    if (regpairs_aligned(cpu_env)) {
++        id = (id_t)target_arg64(arg3, arg4);
++        target_cmd = (int)arg5;
++        target_arg = arg6;
++    } else {
++        id = (id_t)target_arg64(arg2, arg3);
++        target_cmd = (int)arg4;
++        target_arg = arg5;
++    }
++#else
++    id = (id_t)arg2;
++    target_cmd = (int)arg3;
++    target_arg = arg4;
++#endif
++
++    error = t2h_procctl_cmd(target_cmd, &host_cmd);
++    if (error) {
++        return error;
++    }
++    switch (host_cmd) {
++    case PROC_SPROTECT:
++        data = &flags;
++        break;
++
++    case PROC_REAP_ACQUIRE:
++    case PROC_REAP_RELEASE:
++        if (target_arg == 0) {
++            data = NULL;
++        } else {
++            error = -TARGET_EINVAL;
++        }
++        break;
++
++    case PROC_REAP_STATUS:
++        data = &host.rs;
++        break;
++
++    case PROC_REAP_GETPIDS:
++        if (!lock_user_struct(VERIFY_READ, target_rp, target_arg, 1)) {
++            return -TARGET_EFAULT;
++        }
++        __get_user(target_rp_count, &target_rp->rp_count);
++        __get_user(target_rp_pids, &target_rp->rp_pids);
++        unlock_user_struct(target_rp, target_arg, 0);
++        host.rp.rp_count = target_rp_count;
++        host.rp.rp_pids = g_try_new(struct procctl_reaper_pidinfo,target_rp_count);
++
++        if (host.rp.rp_pids == NULL) {
++            error = -TARGET_ENOMEM;
++        } else {
++            data = &host.rp;
++        }
++        break;
++
++    case PROC_REAP_KILL:
++        error = t2h_reaper_kill(target_arg, &host.rk);
++        break;
++    }
++
++    if (error) {
++        return error;
++    }
++    error = get_errno(procctl(idtype, id, host_cmd, data));
++
++    if (error) {
++        return error;
++    }
++    switch (host_cmd) {
++    case PROC_SPROTECT:
++        if (put_user_s32(flags, target_arg)) {
++            return -TARGET_EFAULT;
++        }
++        break;
++
++    case PROC_REAP_STATUS:
++        error = h2t_reaper_status(&host.rs, target_arg);
++        break;
++
++    case PROC_REAP_GETPIDS:
++        /* copyout reaper pidinfo */
++        for (u = 0; u < target_rp_count; u++) {
++            error = h2t_procctl_reaper_pidinfo(&host.rp.rp_pids[u],
++                    target_rp_pids +
++                    (u * sizeof(struct target_procctl_reaper_pidinfo)));
++            if (error) {
++                break;
++            }
++        }
++        break;
++
++    case PROC_REAP_KILL:
++        error = h2t_reaper_kill(&host.rk, target_arg);
++        break;
++    }
++
++    return error;
++}
+diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
+index 71a2657dd0..b7bd0b92a6 100644
+--- a/bsd-user/freebsd/os-syscall.c
++++ b/bsd-user/freebsd/os-syscall.c
+@@ -367,6 +367,9 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_setpriority(arg1, arg2, arg3);
+         break;
  
--static const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
-+const char *interp_prefix = CONFIG_QEMU_INTERP_PREFIX;
- const char *qemu_uname_release;
- char qemu_proc_pathname[PATH_MAX];  /* full path to exeutable */
++    case TARGET_FREEBSD_NR_procctl: /* procctl(2) */
++        ret = do_freebsd_procctl(cpu_env, arg1, arg2, arg3, arg4, arg5, arg6);
++        break;
  
-diff --git a/bsd-user/qemu.h b/bsd-user/qemu.h
-index 41c7bd31d3..6047805ae3 100644
---- a/bsd-user/qemu.h
-+++ b/bsd-user/qemu.h
-@@ -111,6 +111,7 @@ typedef struct TaskState {
- } __attribute__((aligned(16))) TaskState;
- 
- void stop_all_tasks(void);
-+extern const char *interp_prefix;
- extern const char *qemu_uname_release;
- 
- /*
+         /*
+          * File system calls.
 -- 
 2.42.0
 
