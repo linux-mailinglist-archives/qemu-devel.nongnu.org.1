@@ -2,52 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 269727ADB08
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:11:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746A27ADB0B
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 17:11:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qknEY-0008N6-K5; Mon, 25 Sep 2023 11:10:50 -0400
+	id 1qknEX-0008M7-JR; Mon, 25 Sep 2023 11:10:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEQ-0008HM-Fj
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:43 -0400
-Received: from mout.kundenserver.de ([212.227.126.134])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEM-0008EK-Pu
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:39 -0400
+Received: from mout.kundenserver.de ([212.227.126.130])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEN-0005Ls-Gd
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:42 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qknEJ-0005L7-Se
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 11:10:38 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1MwfrG-1rZtU43FmM-00yB8d; Mon, 25
- Sep 2023 17:10:30 +0200
+ [212.227.15.167]) with ESMTPSA (Nemesis) id 1M1q8m-1qn09f0wPI-002DAX; Mon, 25
+ Sep 2023 17:10:31 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Laurent Vivier <laurent@vivier.eu>, Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH 0/5] linux-user: clean up local variable shadowing
-Date: Mon, 25 Sep 2023 17:10:24 +0200
-Message-ID: <20230925151029.461358-1-laurent@vivier.eu>
+Subject: [PATCH 1/5] linux-user/flatload: clean up local variable shadowing
+Date: Mon, 25 Sep 2023 17:10:25 +0200
+Message-ID: <20230925151029.461358-2-laurent@vivier.eu>
 X-Mailer: git-send-email 2.41.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <20230925151029.461358-1-laurent@vivier.eu>
+References: <20230925151029.461358-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:YlewPUGyST8yeSu9QUlJ/17Nor3ZS+NlYexFrK7HsGjfy70utqg
- mJu8q0IDIvOwSpF7Ib14wmbGzEe0JBs5eqb6+pxiRFK5iTIh0IeWs5g2U/fiADMJpx7lfbj
- R+TCHpVOIBbUo0nLsKHgpH/Cxxp36gnHTBfZuH+5ZXZm3IcaNNp/nzULi0NCbTy8xkJjop9
- rVFHIowaeSI6yhhuO2eog==
-UI-OutboundReport: notjunk:1;M01:P0:65mx6ie9exQ=;3GibBb0NjKr552LyQ1wvm2BU3d6
- leF5j400o0wBo2riMq5IxwNrWxFatXtsgSZzr8vlKwjGX8V8SpkO3W5qrrMuLbVS1XiqmidDL
- 7Zj9TmTtLvslKePsFTeeh8hCBzimLeJTUjUXFavkq8AQvQKksNlyDHAVIZ3U5BXi+YfqYiQyt
- PGmG8mCLyIpS3UttghzoDSXicys/YYTnGgH7OgGoTJXq4KY59ZTYTiTYzl8FlmO9itxgdvQpN
- bRPJf31XqqjNXFw3kkc1c0FLxu9F1N9V4eCKWv0DOQzQHJTxgEqAnxrvMl7cmOzYANFONUJPb
- 4ImFnbuvHW4JRPScD7i7a0x4VCf7i2s/a8SCIgho8FyykxkNzgr3QRjQTF+HH9u8Mzs2+w/W1
- dw4vy+C32RfQ+e0Q0zKX1LBtjP1m9u/Y8PkSMjLlKUHAXJMrj6s3Y4VNnh/LTdNo5hpDfqmoC
- By66BYTLybE+KIvwPXm9LgSlRknBA8l3lWaoKVzEBHaIm3irxJUmxpqLhvlGTw2fE7TxR3RF6
- u76O1V36Nc6SwPQEXHKA8cFIrZdeVo3LPekZaZfhOeqQ9lDhOnOX0yvD14exG+5+HjipOKENm
- quPdZilOLQgmPC0nJ7aBuCxNHTJ89fKDgFu1lldMsRFJhxA+nmXFv80YmmCu0VVcxqreCGz3P
- 99etj/WUSnyviGTkCA0y9nb8R7eG9vS/wqaCH9zMT4Sih6J2XBHDJU5OFhQafcTz7Eo4nTTGs
- TTd8+TpDe/mD12OSTnddz1x2pZFC1gGJ7ARpdAdKAdm/7ESzkP7ZsiszUxUjRRsqX4Fj1FUEr
- bNy5zK7hBIEuya/EZNZpNgMoqfCG5NowKlrxkm3b1pDBVbVVa5skLFAcm59NdLeSzP2uqJCOz
- HMc2kBznUcyiIzA==
-Received-SPF: none client-ip=212.227.126.134; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:YdvWlxSvsFN88bfFbM0ccbntFQ0A59rQm2QYYKbqbhkWX16UNYD
+ 43cZWRw9ABvmyBjHDyAhl1TK+0sFSDpRUWGP/oe4kTEXPx7IUbNggosuwz0MKzrZyOqeDyo
+ 1x1IOKcuR4Bz89yfBoEqGL7rC9wSegJFMY5t10YUe6A2TwsyOAqvjBZxsBwlMfkXagIk5x0
+ 6hTHcH16PJI/HtKbRUMKA==
+UI-OutboundReport: notjunk:1;M01:P0:5VUufdgRljs=;kK2EZH0HXsWVJqMrOKN49sJSfFN
+ L/Bj6ceIj3Py/q/+GLTpPJFWxd1jMjdmNbhlGtx7/DzUOanyCGHPd0Zks+M6qFeV/MW6getsZ
+ tzbQE//vBdBSlhf7/mfhsIfrnMk1lCvBPDFUR0zFmYLpbKZAvkIzjWwJNc02w3MuiaUwELVKu
+ JhVWpCOF/zR9e4qh4RpoNu09nnmpZxXNfj/W8ZZaTKFbvB5tS8KNkkb22ghh9koohBm+ZYzft
+ fcM8HPESV/ubgtPfW2Lk9oje9Yo7kHZAEbOqYsC6XjyZMKmb4637TiUAj4ZnCyrCuHcREUHR1
+ DULsRS7LSORQFchodLX5jLqlzdFJOfYvlWTMNmXYHqPV5XgDlqzqKHZGIlV+uHr6hfQEs8a1t
+ QYNTt2clpT3i2gl9dbJnl5OMiksCUJnVe+obZaSHu2YOm1XxuNseTZP8jEnnQWPsjIwIjW3Y3
+ k0kYlF5CXYDW9Kzrq1saWDCFWQNLNH18IN8u7mDAE95vqknosh02elvbmlGWMlXzDZpjw4aDV
+ elDD/0AZZJ94FrBBFMLD0OC2aXgSglUE7HWRRHaP3KYkln1ySS+OMtV5sBQOFxYaiwuzozUas
+ ap9XCsiWSqiLnSrYLz8vgXPbEuDEyu59K1UeEYCaiUK6OHPqsrKOEEYWSeo3HkKSuEpIk82oi
+ msrM/hlF5tQcvg/ag5WwBZFzH0zGT2aFmKI8NC4byXwpztJVSfBQLXAE9L+VnBOeyXYFHWYrd
+ +6IonbiWAvrPpVH+lZFj+30kQDr/kc3O6o7maP34j0FoaY2W00P1lxQ9wLH5DtuFN7qTXmO3L
+ 9tesst/7pClAn/c5VZNJxuSkRp8DkIVLFZU6JTz5qJN8hsjvkC+WaPMxr4TRv74mDgGos97Vq
+ LmIGfn9HxSwIEbw==
+Received-SPF: none client-ip=212.227.126.130; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -18
 X-Spam_score: -1.9
@@ -70,23 +71,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Fix following warnings:
 
+.../linux-user/flatload.c: In function 'load_flt_binary':
+.../linux-user/flatload.c:758:23: warning: declaration of 'p' shadows a previous local [-Wshadow=compatible-local]
+  758 |             abi_ulong p;
+      |                       ^
+../../../Projects/qemu/linux-user/flatload.c:722:15: note: shadowed declaration is here
+  722 |     abi_ulong p;
+      |               ^
 
-Laurent Vivier (5):
-  linux-user/flatload: clean up local variable shadowing
-  linux-user/mmap.c:  clean up local variable shadowing
-  linux-user/syscall.c: clean up local variable shadowing in
-    do_ioctl_dm()
-  linux-user/syscall.c: clean up local variable shadowing in
-    TARGET_NR_getcpu
-  linux-user/syscall.c: clean up local variable shadowing in xattr
-    syscalls
+Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+---
+ linux-user/flatload.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
- linux-user/flatload.c |  8 ++++----
- linux-user/mmap.c     |  6 +++---
- linux-user/syscall.c  | 36 ++++++++++++++++++------------------
- 3 files changed, 25 insertions(+), 25 deletions(-)
-
+diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+index 4331a11bf010..fdcc4610fa30 100644
+--- a/linux-user/flatload.c
++++ b/linux-user/flatload.c
+@@ -755,15 +755,15 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
+     /* Update data segment pointers for all libraries */
+     for (i=0; i<MAX_SHARED_LIBS; i++) {
+         if (libinfo[i].loaded) {
+-            abi_ulong p;
+-            p = libinfo[i].start_data;
++            abi_ulong seg;
++            seg = libinfo[i].start_data;
+             for (j=0; j<MAX_SHARED_LIBS; j++) {
+-                p -= 4;
++                seg -= 4;
+                 /* FIXME - handle put_user() failures */
+                 if (put_user_ual(libinfo[j].loaded
+                                  ? libinfo[j].start_data
+                                  : UNLOADED_LIB,
+-                                 p))
++                                 seg))
+                     return -EFAULT;
+             }
+         }
 -- 
 2.41.0
 
