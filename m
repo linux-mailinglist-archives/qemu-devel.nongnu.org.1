@@ -2,56 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE69C7AE039
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 22:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D1E7AE03A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 22:14:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkrx1-0004L9-V8; Mon, 25 Sep 2023 16:13:04 -0400
+	id 1qkrxL-0004X6-Af; Mon, 25 Sep 2023 16:13:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qkrwv-0004KF-PH
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:12:57 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1)
+ (envelope-from <linux+qemu-devel=nongnu.org@armlinux.org.uk>)
+ id 1qkrxI-0004Wh-8u
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:13:20 -0400
+Received: from pandora.armlinux.org.uk ([2001:4d48:ad52:32c8:5054:ff:fe00:142])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qkrwt-0002Ok-Oh
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:12:57 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A7EFF24F86;
- Mon, 25 Sep 2023 23:13:22 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A9CE12A9B9;
- Mon, 25 Sep 2023 23:12:52 +0300 (MSK)
-Message-ID: <26c46089-828a-721e-21f3-7286f270a60b@tls.msk.ru>
-Date: Mon, 25 Sep 2023 23:12:52 +0300
+ (Exim 4.90_1)
+ (envelope-from <linux+qemu-devel=nongnu.org@armlinux.org.uk>)
+ id 1qkrxF-0002PP-GQ
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:13:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+ MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=00Vye0AwWLIPBMODYPNFehasw86ZiZYbsbuGrJxr2N8=; b=P/010aGDqRn81i7BeyzDbwnBFp
+ 1Acvh+eQ1re3F9NX/J7wuI40gFCaLDNr9gTfe0zDzlAcZ2c3x+M3fy1J1LzTUtp77NCsFFBvtuyqy
+ dwv18vHqnYIfl2y6tXgjXCZOh2MhRHL+uImGT+5RqL2ycX1j+4l8Jnep7ADL7qOxHRlbdVULbgwqB
+ tUL7SdwWV5Um5ZHumJrfTmSYIuifmKkXgK+OyXwZup1DEmpIIVb8Xcc55l+L7pUeoP1m/YWNPyZ5N
+ SdyWC69YeSbwb1p4bZFpSgESiEP9ZhrWAuzXC6Uii/sDHxgarj8Uw1pdyMCQ5MxW0EAywS2KqntSy
+ YJbXDDtw==;
+Received: from shell.armlinux.org.uk
+ ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42842)
+ by pandora.armlinux.org.uk with esmtpsa (TLS1.3) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 (Exim 4.96)
+ (envelope-from <linux@armlinux.org.uk>) id 1qkrx1-0001Xs-0q;
+ Mon, 25 Sep 2023 21:13:03 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+ (envelope-from <linux@shell.armlinux.org.uk>)
+ id 1qkrwx-000875-Gn; Mon, 25 Sep 2023 21:12:59 +0100
+Date: Mon, 25 Sep 2023 21:12:59 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Salil Mehta <salil.mehta@huawei.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "maz@kernel.org" <maz@kernel.org>,
+ "james.morse@arm.com" <james.morse@arm.com>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lorenzo.pieralisi@linaro.com" <lorenzo.pieralisi@linaro.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
+ "david@redhat.com" <david@redhat.com>,
+ "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "will@kernel.org" <will@kernel.org>,
+ "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+ "ardb@kernel.org" <ardb@kernel.org>,
+ "justin.he@arm.com" <justin.he@arm.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>,
+ "rafael@kernel.org" <rafael@kernel.org>,
+ "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
+ "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>,
+ "miguel.luis@oracle.com" <miguel.luis@oracle.com>,
+ "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
+ "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>,
+ "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
+ "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>,
+ "maobibo@loongson.cn" <maobibo@loongson.cn>,
+ "lixianglai@loongson.cn" <lixianglai@loongson.cn>
+Subject: Re: [PATCH RFC V2 00/37] Support of Virtual CPU Hotplug for ARMv8 Arch
+Message-ID: <ZRHpyxCe8ybsxKck@shell.armlinux.org.uk>
+References: <20230925194333.18244-1-salil.mehta@huawei.com>
+ <1ba2e69bf0a94c1498ab5863b365559b@huawei.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 11/12] hw/core/loader: read_targphys(): add upper bound
-Content-Language: en-US
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- qemu-devel@nongnu.org
-Cc: pbonzini@redhat.com, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>,
- Joel Stanley <joel@jms.id.au>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
- <alex.bennee@linaro.org>, Ard Biesheuvel <ardb@kernel.org>
-References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-12-vsementsov@yandex-team.ru>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230925194040.68592-12-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -83
-X-Spam_score: -8.4
-X-Spam_bar: --------
-X-Spam_report: (-8.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1ba2e69bf0a94c1498ab5863b365559b@huawei.com>
+Received-SPF: none client-ip=2001:4d48:ad52:32c8:5054:ff:fe00:142;
+ envelope-from=linux+qemu-devel=nongnu.org@armlinux.org.uk;
+ helo=pandora.armlinux.org.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,51 +114,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-25.09.2023 22:40, Vladimir Sementsov-Ogievskiy wrote:
-> Coverity doesn't like using "untrusted" values, coming from buffers and
-> fd-s as length to do IO and allocations. And that's make sense. The
+On Mon, Sep 25, 2023 at 08:03:56PM +0000, Salil Mehta wrote:
+> Looks like some problem with Huawei's mail server server. No patches
+> except the cover letter are reaching the qemu-devel mailing-list.
 
-"And that makes sense".  Just a nitpick in commit comment.
+I haven't seen any of the actual patches - just the cover letters.
+Was that intentional?
 
-> function is used three times with "untrusted" nbytes parameter. Let's
-> introduce at least empirical limit of 1G for it.
-> 
-> While being here make the function static, as it's used only here.
-> 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->   hw/core/loader.c    | 13 ++++++++++---
->   include/hw/loader.h |  2 --
->   2 files changed, 10 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/core/loader.c b/hw/core/loader.c
-> index aa02b27089..48cff6f59e 100644
-> --- a/hw/core/loader.c
-> +++ b/hw/core/loader.c
-> @@ -101,17 +101,24 @@ ssize_t load_image_size(const char *filename, void *addr, size_t size)
->       return actsize < 0 ? -1 : l;
->   }
->   
-> +#define READ_TARGPHYS_MAX_BYTES (1024 * 1024 * 1024)
->   /* read()-like version */
-> -ssize_t read_targphys(const char *name,
-> -                      int fd, hwaddr dst_addr, size_t nbytes)
-> +static ssize_t read_targphys(const char *name,
-> +                             int fd, hwaddr dst_addr, size_t nbytes)
->   {
->       uint8_t *buf;
->       ssize_t did;
->   
-> +    if (nbytes > READ_TARGPHYS_MAX_BYTES) {
-> +        return -1;
-
-Right now this is not important, since the only user of this
-function, load_aout(), ignores errno value and reports general
-failure instead.  Original read_targphys() returned errno which
-corresponds to failed read().
-
-FWIW, at least load_aout() assumes we've read whole struct exec
-from the file in question, which might not be the case.
-
-/mjt
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
