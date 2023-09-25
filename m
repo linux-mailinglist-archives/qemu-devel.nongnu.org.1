@@ -2,86 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442457ADA4C
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:49:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 441F67ADA9A
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 16:51:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkmsp-0000dv-I4; Mon, 25 Sep 2023 10:48:23 -0400
+	id 1qkmtX-0000zb-OV; Mon, 25 Sep 2023 10:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkmsh-0000ce-Do
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:48:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qkmsf-000868-3j
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:48:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695653289;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=yXh2gOGuGydxlcHn0MJWkG6oNwaWADlluHpoQ0K5Bu4=;
- b=RN/IHMMFCQlG08GxlyougszrhUio5BaGL61AMtFqkSSiN3WLxHM66sGnj1xJpjkN+fLhTZ
- 76CbshWQW5k2oV1MXh2P1LfBpXCkLN5un/uGs7cXdJW6dl3eQ5ZH9giGZoqvk8hIyP3NOZ
- SPRr39MCX1CsAfqWU1jl6I195vE5p7A=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-d2r-GsXBPfKq5njlI25t8Q-1; Mon, 25 Sep 2023 10:48:08 -0400
-X-MC-Unique: d2r-GsXBPfKq5njlI25t8Q-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3fe1521678fso60369655e9.1
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qkmtU-0000xJ-2K
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:04 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qkmtN-0008Ee-S2
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 10:49:03 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-32164a6af64so5588365f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 07:48:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695653336; x=1696258136; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1YtSf2Ab2f4lgt/V/Wma19HlFhyxKexuv024AXVfN/4=;
+ b=nHBdJMy9QbFN10TL3Ur3S03nznYDytkSKQettq8QbUFITNVpj9rftt+AfhfJUKJ9RJ
+ VAKmg2TQIkwSgk0+Rf+fuvcW9Y+EcWw1HmuLZ0ka/QnrUViH5wHlLBFDsunyLcoqDXDj
+ O8DBcQRLI4Gf9Ns88q4pqU4wgGgwpJGVirwSlhHbqv2lk4rdmmoIdUzWm2CeGFw1L15Q
+ HnrmP4izRsF7bzBtS8cSzlrNAIHRrE0yNL8XZ71yxhBlDGNLWETeR5dOTSP/SDU0YmK0
+ CE9VQJRZQh7JmwM1n80Xj0tYxGDdkvlEHO/qcaYFQIeQA34HtAhrJstUSEEdgZZU9kmP
+ calg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695653286; x=1696258086;
+ d=1e100.net; s=20230601; t=1695653336; x=1696258136;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=yXh2gOGuGydxlcHn0MJWkG6oNwaWADlluHpoQ0K5Bu4=;
- b=WF+GK09fHC0XsSV4FWi9jm4oz9jSiEf7G9HujGnH6eWSq/2qWCIXDALLwix9RwvNGo
- 9GKORJMIFonCVV50DJT+K7CcaLndOFHAvTfD0HEVQRkr8HYj8nsMlmXvZv9XcPwybG51
- 4+USZPyy8SdfsGwfbtebF276JayH8OAS+YzFUXFjLup1psJJppSC1HIiKNITwrExkPoL
- fzuEGr0g+oG0fgWZe94R7bixqpgpqxpVE4ZygMZSqGv5AjDCGdJHwGQ6RUKX2xZgQ1IE
- mIyCWwLPawazczCkzc4wjZz8hMoHxkDgpT8bkZIiQO4GuHnY10AfopqBk9MrFRrQgzBA
- t7Xg==
-X-Gm-Message-State: AOJu0YwbJX9qCjjV3RmTVY/vA8zsg5kKSgWsCzzUHOwUMKm4xE5WwDG/
- LtPzsbfufVIx4OwwJLiRzHvyZbdJXazKlbstUHbWFGKaMxJnWxHUaa+dqCD8+dG/REidZZWahJG
- tssiU9VNl2MlSjpddy/RZgyzFNoAtEy5cRDoYCaCV19zAQg+yooxkJd9AV9aI1V5ulGEr518Kuq
- Y=
-X-Received: by 2002:a05:600c:1d99:b0:405:7400:1e3d with SMTP id
- p25-20020a05600c1d9900b0040574001e3dmr4065676wms.32.1695653286391; 
- Mon, 25 Sep 2023 07:48:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGMqoWL1ZL+HJ/gSv1GJasXeX0HeIkHTYZsmIoLsowkY4DQiuptyFm+dybWeynQN8v9VRy2PA==
-X-Received: by 2002:a05:600c:1d99:b0:405:7400:1e3d with SMTP id
- p25-20020a05600c1d9900b0040574001e3dmr4065655wms.32.1695653285970; 
- Mon, 25 Sep 2023 07:48:05 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ bh=1YtSf2Ab2f4lgt/V/Wma19HlFhyxKexuv024AXVfN/4=;
+ b=CnfZQmoVi3YFNj+RTJodiUXxG3dyxU9Iio4BEzedTNq9bN3aNniGmObRnIfyAu7sSq
+ GEkeEo1CQe6Mm/hODDtybOwqClzGuzPwre9hxpi3Gmz/kP3C8vGuB2Izd2F3E8GacHKr
+ 4m4/dfuU5vX6Lf5azM9j0md7oLYwPWrsF6BltogaE2jpG0bG8SZhD0E5G833VGmg+Oz3
+ 4PSNJ5x8kiJgNC5ePgZFfjnCf7InE01zndFG4fp2YWn/HeqjqOsAoUrbONIXid5z0hI0
+ UsdH5RuHIk5dfubP1vQpfuB2x1Qof2hiqmlAephZyKgK1ywe84+ehQnBWNUBGPRfgbsq
+ l3Gg==
+X-Gm-Message-State: AOJu0Yw0GU67R8MTcGa72+5jh5WOeiNTgF7W3ep0cCnkFN4VSbn1cWNm
+ 3g5P+qXgKy/TrV1wHSTMl2WCtw==
+X-Google-Smtp-Source: AGHT+IHyqmt/cMcJ6b3wfHWrx0g+TBl8VfxxMFoVDskoCx7kqVU/YCV3BArbLs4sV2zVLg22ZRMeQw==
+X-Received: by 2002:a5d:510f:0:b0:31f:fedd:83ad with SMTP id
+ s15-20020a5d510f000000b0031ffedd83admr6868879wrt.4.1695653335938; 
+ Mon, 25 Sep 2023 07:48:55 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- c23-20020a7bc857000000b003fefca26c72sm12479683wml.23.2023.09.25.07.48.05
+ w12-20020a5d608c000000b0031c6e1ea4c7sm12057674wrt.90.2023.09.25.07.48.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 07:48:05 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
+ Mon, 25 Sep 2023 07:48:55 -0700 (PDT)
+Received: from zen.linaroharston (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id E44CB1FFBB;
+ Mon, 25 Sep 2023 15:48:54 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: armbru@redhat.com
-Subject: [PATCH] target/i386/svm_helper: eliminate duplicate local variable
-Date: Mon, 25 Sep 2023 16:48:04 +0200
-Message-ID: <20230925144804.528508-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
+Cc: Alistair Francis <alistair.francis@wdc.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ John Snow <jsnow@redhat.com>, libvir-list@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-s390x@nongnu.org, Song Gao <gaosong@loongson.cn>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, Nicholas Piggin <npiggin@gmail.com>,
+ Radoslaw Biernacki <rad@semihalf.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Cleber Rosa <crosa@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Bin Meng <bin.meng@windriver.com>, Alexandre Iooss <erdnaxe@crans.org>,
+ Xiaojuan Yang <yangxiaojuan@loongson.cn>, qemu-ppc@nongnu.org,
+ David Hildenbrand <david@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Peter Maydell <peter.maydell@linaro.org>, qemu-riscv@nongnu.org,
+ qemu-arm@nongnu.org, Palmer Dabbelt <palmer@dabbelt.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Laurent Vivier <lvivier@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Leif Lindholm <quic_llindhol@quicinc.com>, Beraldo Leal <bleal@redhat.com>
+Subject: [PATCH 00/31] September maintainer omnibus (tests, gdbstub, plugins)
+Date: Mon, 25 Sep 2023 15:48:23 +0100
+Message-Id: <20230925144854.1872513-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,28 +121,164 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This shadows an outer "cs" variable that is initialized to the
-same expression.
+Hi,
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- target/i386/tcg/sysemu/svm_helper.c | 2 --
- 1 file changed, 2 deletions(-)
+This wraps up my current testing, gdbstub and plugin trees in an
+attempt to do my part to reduce the qemu-devel fire hose.
 
-diff --git a/target/i386/tcg/sysemu/svm_helper.c b/target/i386/tcg/sysemu/svm_helper.c
-index 2d27731b608..32ff0dbb13c 100644
---- a/target/i386/tcg/sysemu/svm_helper.c
-+++ b/target/i386/tcg/sysemu/svm_helper.c
-@@ -387,8 +387,6 @@ void helper_vmrun(CPUX86State *env, int aflag, int next_eip_addend)
-     env->hflags2 |= HF2_GIF_MASK;
- 
-     if (ctl_has_irq(env)) {
--        CPUState *cs = env_cpu(env);
--
-         cs->interrupt_request |= CPU_INTERRUPT_VIRQ;
-     }
- 
+For testing we have a number of cleanups to configure to better handle
+selecting the container engine (removing the ability to dynamically
+switch). I had to do this as one of my build boxes has recently
+acquired a broken podman install. There are also some updates to
+avocado sbsa-ref as well as tweaks to the gitlab setup to minimise the
+amount of wheel spinning we do. The deprecation of CRIS is a little
+provocative but if we do want to keep it we need to stop relying on a
+rapidly dated fedora image to do it. Finally we include the swtpm
+package to widen the testing we do through avocado.
+
+The gdbstub updates are from Akihiko and include a bunch of clean-ups
+that will hopefully pave the way for another series which allows the
+plugins to access register values using the gdb backend to source the
+data.
+
+Finally the plugins has a few fixes which includes a tweak to make SH4
+atomic modelling more plugin friendly. This allows for Matt's fix to
+deal with non-regular instruction encoding spanning pages. I also fix
+a number of coverity warnings.
+
+The final time control patches are still RFC and not ready for merging
+but I include them for completeness.
+
+The following still need review:
+
+  contrib/plugins: add iops plugin example for cost modelling
+  plugins: add time control API
+  sysemu: generalise qtest_warp_clock as qemu_clock_advance_virtual_time
+  qtest: use cpu interface in qtest_clock_warp (1 acks, 1 sobs, 0 tbs)
+  contrib/plugins: fix coverity warning in hotblocks
+  contrib/plugins: fix coverity warning in lockstep
+  contrib/plugins: fix coverity warning in cache
+  configure: ensure dependency for cross-compile setup
+  configure: remove gcc version suffixes
+  configure: allow user to override docker engine
+  tests/docker: make docker engine choice entirely configure driven
+  docs: mark CRIS support as deprecated
+  tests/lcitool: add swtpm to the package list
+
+Akihiko Odaki (12):
+  gdbstub: Fix target_xml initialization
+  gdbstub: Fix target.xml response
+  plugins: Check if vCPU is realized
+  contrib/plugins: Use GRWLock in execlog
+  gdbstub: Introduce GDBFeature structure
+  target/arm: Move the reference to arm-core.xml
+  hw/core/cpu: Return static value with gdb_arch_name()
+  gdbstub: Use g_markup_printf_escaped()
+  target/arm: Remove references to gdb_has_xml
+  target/ppc: Remove references to gdb_has_xml
+  gdbstub: Remove gdb_has_xml variable
+  gdbstub: Replace gdb_regs with an array
+
+Alex Bennée (15):
+  tests/lcitool: add swtpm to the package list
+  gitlab: shuffle some targets and reduce avocado noise
+  docs: mark CRIS support as deprecated
+  tests/docker: make docker engine choice entirely configure driven
+  configure: allow user to override docker engine
+  configure: remove gcc version suffixes
+  configure: ensure dependency for cross-compile setup
+  contrib/plugins: fix coverity warning in cache
+  contrib/plugins: fix coverity warning in lockstep
+  contrib/plugins: fix coverity warning in hotblocks
+  sysemu: add set_virtual_time to accel ops
+  qtest: use cpu interface in qtest_clock_warp
+  sysemu: generalise qtest_warp_clock as qemu_clock_advance_virtual_time
+  plugins: add time control API
+  contrib/plugins: add iops plugin example for cost modelling
+
+Marcin Juszkiewicz (1):
+  tests/avocado: update firmware to enable sbsa-ref/neoverse-v1
+
+Matt Borgerson (1):
+  plugins: Set final instruction count in plugin_gen_tb_end
+
+Richard Henderson (2):
+  accel/tcg: Add plugin_enabled to DisasContextBase
+  target/sh4: Disable decode_gusa when plugins enabled
+
+ MAINTAINERS                                   |   2 +-
+ docs/about/deprecated.rst                     |  11 +
+ configure                                     |  15 +-
+ meson.build                                   |   2 +-
+ gdbstub/internals.h                           |   2 -
+ include/exec/gdbstub.h                        |  17 +-
+ include/exec/plugin-gen.h                     |   4 +-
+ include/exec/translator.h                     |   2 +
+ include/hw/core/cpu.h                         |   4 +-
+ include/qemu/qemu-plugin.h                    |  19 ++
+ include/qemu/timer.h                          |  15 +
+ include/sysemu/accel-ops.h                    |  18 +-
+ include/sysemu/cpu-timers.h                   |  27 +-
+ include/sysemu/qtest.h                        |   1 +
+ target/ppc/internal.h                         |   2 +-
+ accel/qtest/qtest.c                           |   1 +
+ accel/tcg/plugin-gen.c                        |   6 +-
+ accel/tcg/translator.c                        |   3 +-
+ contrib/plugins/cache.c                       |  18 +-
+ contrib/plugins/execlog.c                     |  16 +-
+ contrib/plugins/hotblocks.c                   |   2 +-
+ contrib/plugins/iops.c                        | 261 ++++++++++++++++++
+ contrib/plugins/lockstep.c                    |  13 +-
+ gdbstub/gdbstub.c                             |  95 +++----
+ gdbstub/softmmu.c                             |   2 +-
+ plugins/api.c                                 |  28 ++
+ plugins/core.c                                |   2 +-
+ softmmu/cpus.c                                |  11 +
+ softmmu/qtest.c                               |  26 +-
+ ...t-virtual-clock.c => cpus-virtual-clock.c} |   5 +
+ stubs/gdbstub.c                               |   6 +-
+ target/arm/cpu.c                              |   9 +-
+ target/arm/cpu64.c                            |   4 +-
+ target/arm/gdbstub.c                          |  32 +--
+ target/i386/cpu.c                             |   6 +-
+ target/loongarch/cpu.c                        |   8 +-
+ target/ppc/gdbstub.c                          |  24 +-
+ target/riscv/cpu.c                            |   6 +-
+ target/s390x/cpu.c                            |   4 +-
+ target/sh4/translate.c                        |  41 ++-
+ target/tricore/cpu.c                          |   4 +-
+ util/qemu-timer.c                             |  26 ++
+ .gitlab-ci.d/buildtest.yml                    |  15 +-
+ .gitlab-ci.d/cirrus/macos-12.vars             |   2 +-
+ contrib/plugins/Makefile                      |   1 +
+ plugins/qemu-plugins.symbols                  |   2 +
+ scripts/feature_to_c.py                       |  48 ++++
+ scripts/feature_to_c.sh                       |  69 -----
+ stubs/meson.build                             |   2 +-
+ tests/avocado/machine_aarch64_sbsaref.py      |  25 +-
+ tests/docker/Makefile.include                 |   7 +-
+ tests/docker/dockerfiles/alpine.docker        |   1 +
+ tests/docker/dockerfiles/centos8.docker       |   1 +
+ .../dockerfiles/debian-amd64-cross.docker     |   1 +
+ tests/docker/dockerfiles/debian-amd64.docker  |   1 +
+ .../dockerfiles/debian-arm64-cross.docker     |   1 +
+ .../dockerfiles/debian-armhf-cross.docker     |   1 +
+ .../dockerfiles/debian-ppc64el-cross.docker   |   1 +
+ .../dockerfiles/debian-s390x-cross.docker     |   1 +
+ .../dockerfiles/fedora-win32-cross.docker     |   1 +
+ .../dockerfiles/fedora-win64-cross.docker     |   1 +
+ tests/docker/dockerfiles/fedora.docker        |   1 +
+ tests/docker/dockerfiles/opensuse-leap.docker |   1 +
+ tests/docker/dockerfiles/ubuntu2204.docker    |   1 +
+ tests/lcitool/libvirt-ci                      |   2 +-
+ tests/lcitool/projects/qemu.yml               |   1 +
+ 66 files changed, 689 insertions(+), 298 deletions(-)
+ create mode 100644 contrib/plugins/iops.c
+ rename stubs/{cpus-get-virtual-clock.c => cpus-virtual-clock.c} (68%)
+ create mode 100755 scripts/feature_to_c.py
+ delete mode 100644 scripts/feature_to_c.sh
+
 -- 
-2.41.0
+2.39.2
 
 
