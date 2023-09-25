@@ -2,94 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2BB7AD584
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 12:11:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1497AD5D9
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 12:27:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkiXB-0001LA-M4; Mon, 25 Sep 2023 06:09:45 -0400
+	id 1qkinJ-0004h2-TW; Mon, 25 Sep 2023 06:26:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
- id 1qkiX8-0001Kv-CK
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 06:09:43 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkimF-0004TV-QN
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 06:25:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mvaralar@redhat.com>)
- id 1qkiX5-0006Ig-Ge
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 06:09:41 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qkily-0000qI-Lv
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 06:25:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695636577;
+ s=mimecast20190719; t=1695637501;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uFK/RPhsTa4+73IgpH3Vh6lz39jbiLgEPDMsrp7cJw4=;
- b=NDiZyMJRLFfVp6vLfSPPS7oPjifig9NDsS2lWBR5IXXlqcsvIOx2FAsik0ScBfxPE30KCI
- iWtUGQgJRpG82U1+IAEendUY6jhWhDMJYXetbjCK/JPMwDECv1K5D8qB+KrEmc2wJx0OFl
- ozawlZR/6plY4iF1fnl8ZGd/j7+FFxo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-418-hIRaG4MrNYabNxxjjAc4-Q-1; Mon, 25 Sep 2023 06:09:36 -0400
-X-MC-Unique: hIRaG4MrNYabNxxjjAc4-Q-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4054743df06so38133175e9.3
- for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 03:09:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695636575; x=1696241375;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=uFK/RPhsTa4+73IgpH3Vh6lz39jbiLgEPDMsrp7cJw4=;
- b=H9TYg5OxEEDmXf4uq2nm+LCDTP2ddwVz3rJo+vSdVYlIUg673FzQQAFaWUpA5qLpa0
- 3Ve1nq5YC+wzvZIsnTyCT3WbYZiiO6PvqtIfdAaqq5bNXfez9USAVE1hlqb0tn4T1zpl
- H7jpltojUQlgGf+eoPCjdW0oTppveS7JbWrkV1R7bUc7A2aQ0kiJQXwTYybxP86YKddP
- lrDS6hr3YBywIVeXQ9FAufKyeRRad1+bE6OwQutqM7/GJ/+BKh5uwo9qtqyOeHQQkGt3
- Uq0D/l1kukTXlBhq/lfIU5Rjfe1CE/QWLA6Pag+hPHbKeudtV7ARxgjVeNeuhx6pbB5t
- O/ig==
-X-Gm-Message-State: AOJu0Yy5zqn0f5WOzLXo6A0xMs6kvY9s219RWzSRgXoTwJuaVn9WabKl
- adXeqVAm8BhFEcSvwKEUb2pcoJEi0f8RpSjZI+Mg5AXvVgDFOZiZnxROLFZr/3JwIrdppDXRIpg
- D3hXsbjn943xq0fo=
-X-Received: by 2002:a7b:cb97:0:b0:405:4daa:6e3d with SMTP id
- m23-20020a7bcb97000000b004054daa6e3dmr5085748wmi.39.1695636574940; 
- Mon, 25 Sep 2023 03:09:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJKl3UdBHOZkXsyhdwNbYLPiGZYTR4q0jVwlJBN7xdUeFFv4xSGPLf7LnQArf2TJf/QCgq6Q==
-X-Received: by 2002:a7b:cb97:0:b0:405:4daa:6e3d with SMTP id
- m23-20020a7bcb97000000b004054daa6e3dmr5085735wmi.39.1695636574649; 
- Mon, 25 Sep 2023 03:09:34 -0700 (PDT)
-Received: from fedora ([2a01:e0a:257:8c60:80f1:cdf8:48d0:b0a1])
- by smtp.gmail.com with ESMTPSA id
- x14-20020a05600c21ce00b003fefcbe7fa8sm11810476wmj.28.2023.09.25.03.09.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 25 Sep 2023 03:09:34 -0700 (PDT)
-Date: Mon, 25 Sep 2023 12:09:32 +0200
-From: Matias Ezequiel Vara Larsen <mvaralar@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
- qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
- Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Volker =?iso-8859-1?Q?R=FC?= melin <vr_qemu@t-online.de>,
- =?utf-8?B?S8WRIHbDoSBnw7MgLCBab2x0w6E=?= n <DirtY.iCE.hu@gmail.com>,
- Alex =?iso-8859-1?Q?Benn=E9?= e <alex.bennee@linaro.org>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: Re: [PATCH v9 00/12] Add VIRTIO sound card
-Message-ID: <ZRFcXN+sv6gO1GQx@fedora>
-References: <cover.1694588927.git.manos.pitsidianakis@linaro.org>
- <2gm4wkfnjopd7l5zvzepzknl4hfomkxvtgvw72daazne2n34wy@fgqmh3mi3r5l>
- <0yzxl.gd0zk711fja@linaro.org>
- <udfmt4up4fjf5optfrl3242zakngwfwrti7dok6h4ejenvesaq@korfb3dd4nts>
+ bh=/2xlzOxoYzOUyfvoqPfqBKT/PN7ylKqsVzVgaqkZs48=;
+ b=AQ9X5DbBc/Ke9UQudHB4li5x5sG0zyjkGGYu3n98PJVuZBTLXsD/UF+oNLnM9p98gTEic8
+ O3pGc7O0I7GNEL7Z4unKzDJBCbk3zR59fVjLEaQIGqHb2MSXOwo0aIA5oHoWjor56hLKv/
+ dkvJFmAvWpvj4xYfoHBPZc8ku2aa6+k=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-696-vPtgFpWSM4a6E67ACwto5g-1; Mon, 25 Sep 2023 06:24:56 -0400
+X-MC-Unique: vPtgFpWSM4a6E67ACwto5g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ABE3885A5A8;
+ Mon, 25 Sep 2023 10:24:55 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 84E932156701;
+ Mon, 25 Sep 2023 10:24:55 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id EB7A921E6900; Mon, 25 Sep 2023 12:24:53 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>,  "Michael S. Tsirkin"
+ <mst@redhat.com>,  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: Re: [PATCH v2 01/15] hw/pci/pcie_sriov: Replace
+ fprintf(error_pretty) -> warn_reportf_err()
+References: <20230203145536.17585-1-philmd@linaro.org>
+ <20230203145536.17585-2-philmd@linaro.org>
+Date: Mon, 25 Sep 2023 12:24:53 +0200
+In-Reply-To: <20230203145536.17585-2-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Fri, 3 Feb 2023 15:55:22
+ +0100")
+Message-ID: <87y1gua6tm.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <udfmt4up4fjf5optfrl3242zakngwfwrti7dok6h4ejenvesaq@korfb3dd4nts>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mvaralar@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -97,7 +69,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -113,23 +85,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 14, 2023 at 12:24:13PM +0200, Stefano Garzarella wrote:
-> On Thu, Sep 14, 2023 at 01:02:05PM +0300, Manos Pitsidianakis wrote:
-> > On Thu, 14 Sep 2023 12:54, Stefano Garzarella <sgarzare@redhat.com> wrote:
-> > > We are seeing something strange with the virtio-sound Linux driver.
-> > > It seems that the driver modifies the buffers after exposing them to
-> > > the device via the avail ring.
-> > 
-> > I need more information about this bug. What is the unexpected behavior
-> > that made you find that the buffer was modified in the first place?
-> 
-> CCing Matias for more details, but initially can you just run the test
-> Matias suggested to check if you experience the same behaviour or not?
-> 
-Hello, 
-we are discussing this issue in the virtio-comment mailing list:
-https://lists.oasis-open.org/archives/virtio-comment/202309/msg00175.html
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Thanks, Matias.
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+>  hw/pci/pcie_sriov.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+>
+> diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
+> index f0bd72e069..93b0624599 100644
+> --- a/hw/pci/pcie_sriov.c
+> +++ b/hw/pci/pcie_sriov.c
+> @@ -196,19 +196,17 @@ static void register_vfs(PCIDevice *dev)
+>=20=20
+>  static void unregister_vfs(PCIDevice *dev)
+>  {
+> -    Error *local_err =3D NULL;
+>      uint16_t num_vfs =3D dev->exp.sriov_pf.num_vfs;
+>      uint16_t i;
+>=20=20
+>      trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
+>                                 PCI_FUNC(dev->devfn), num_vfs);
+>      for (i =3D 0; i < num_vfs; i++) {
+> +        Error *errp =3D NULL;
+>          PCIDevice *vf =3D dev->exp.sriov_pf.vf[i];
+> -        object_property_set_bool(OBJECT(vf), "realized", false, &local_e=
+rr);
+> -        if (local_err) {
+> -            fprintf(stderr, "Failed to unplug: %s\n",
+> -                    error_get_pretty(local_err));
+> -            error_free(local_err);
+> +        object_property_set_bool(OBJECT(vf), "realized", false, &errp);
+> +        if (errp) {
+> +            warn_reportf_err(errp, "Failed to unplug: ");
+>          }
+>          object_unparent(OBJECT(vf));
+>      }
+
+We use @errp for Error **, and @err, @local_err and similar for Error *.
+Recommend to stick with @local_err here, i.e. just
+
+  -            fprintf(stderr, "Failed to unplug: %s\n",
+  -                    error_get_pretty(local_err));
+  -            error_free(local_err);
+  +            warn_reportf_err(local_err, "Failed to unplug: ");
 
 
