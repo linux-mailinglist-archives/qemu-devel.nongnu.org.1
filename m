@@ -2,40 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344837ADD73
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 18:51:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 353837ADD86
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 19:01:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkonW-00027M-F9; Mon, 25 Sep 2023 12:51:02 -0400
+	id 1qkowz-0005Rb-HL; Mon, 25 Sep 2023 13:00:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qkonS-00027C-Kq
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:50:58 -0400
+ id 1qkowv-0005RJ-6F; Mon, 25 Sep 2023 13:00:45 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qkonP-0006uT-Fd
- for qemu-devel@nongnu.org; Mon, 25 Sep 2023 12:50:58 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvTN2241sz6DBDW;
- Tue, 26 Sep 2023 00:48:34 +0800 (CST)
+ id 1qkowt-00005p-Cz; Mon, 25 Sep 2023 13:00:44 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvTXG6H3lz6K9G1;
+ Tue, 26 Sep 2023 00:55:42 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 25 Sep
- 2023 17:50:51 +0100
-Date: Mon, 25 Sep 2023 17:50:50 +0100
-To: <qemu-devel@nongnu.org>, <linux-cxl@vger.kernel.org>, Michael Tsirkin
- <mst@redhat.com>, <linuxarm@huawei.com>
-CC: Fan Ni <fan.ni@samsung.com>, Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?=
- <philmd@linaro.org>, Davidlohr Bueso <dave@stgolabs.net>, Gregory Price
- <gregory.price@memverge.com>, Klaus Jensen <its@irrelevant.dk>, "Corey
- Minyard" <cminyard@mvista.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH 00/19] QEMU: CXL mailbox rework and features
-Message-ID: <20230925173615.0000262d@huawei.com>
-In-Reply-To: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
-References: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
+ 2023 18:00:39 +0100
+Date: Mon, 25 Sep 2023 18:00:38 +0100
+To: Jason Gunthorpe <jgg@nvidia.com>
+CC: Ankit Agrawal <ankita@nvidia.com>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
+ <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
+ <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
+ (SW-GPU)" <targupta@nvidia.com>, Vikram Sethi <vsethi@nvidia.com>, "Andy
+ Currid" <ACurrid@nvidia.com>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH v1 3/4] hw/arm/virt-acpi-build: patch guest SRAT for
+ NUMA nodes
+Message-ID: <20230925180038.00003879@Huawei.com>
+In-Reply-To: <20230925160043.GH13733@nvidia.com>
+References: <20230915024559.6565-1-ankita@nvidia.com>
+ <20230915024559.6565-4-ankita@nvidia.com>
+ <20230915153740.00006185@Huawei.com>
+ <BY5PR12MB3763BC1EB9402223B020ABF8B0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
+ <20230925145440.00005072@Huawei.com>
+ <20230925140328.GF13733@nvidia.com>
+ <20230925155351.00000638@Huawei.com>
+ <20230925160043.GH13733@nvidia.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -70,48 +80,78 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Sep 2023 17:11:05 +0100
-Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
+On Mon, 25 Sep 2023 13:00:43 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-> Based on: [PATCH] hw/cxl: Fix local variable shadowing of cap_hdrs
-> Based on: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
-Missed one. 
-Based on: [PATCH v4 0/4] hw/cxl: Support emulating 4 HDM decoders throughout topology
-
-> Based on: [PATCH V2] hw/pci-bridge/cxl-upstream: Add serial number extended capability support
-> Based on: [PATCH v3 0/4] hw/cxl: Line length reduction and related
-> Based on: [PATCH v6 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management interface model
+> On Mon, Sep 25, 2023 at 03:53:51PM +0100, Jonathan Cameron wrote:
+> > On Mon, 25 Sep 2023 11:03:28 -0300
+> > Jason Gunthorpe <jgg@nvidia.com> wrote:
+> >   
+> > > On Mon, Sep 25, 2023 at 02:54:40PM +0100, Jonathan Cameron wrote:
+> > >   
+> > > > Possible the ASWG folk would say this is fine and I'm reading too much into
+> > > > the spec, but I'd definitely suggest asking them via the appropriate path,
+> > > > or throwing in a code first proposal for a comment on this special case and
+> > > > see what response you get - my guess is it will be 'fix Linux' :(    
+> > > 
+> > > The goal here is for qemu to emulate what the bare metal environment
+> > > is doing.
+> > > 
+> > > There may be a legitimate question if what the bare metal FW has done
+> > > is legitimate (though let's face it, there are lots of creative ACPI
+> > > things around), but I don't quite see how this is a qemu question?
+> > > 
+> > > Unless you are taking the position that qemu should not emulate this
+> > > HW?  
+> > 
+> > Ok. I'd failed to register that the bare metal code was doing this though
+> > with hindsight I guess that is obvious. Though without more info or
+> > a bare metal example being given its also possible the BIOS was doing
+> > enumeration etc (like CXL does for all < 2.0 devices) and hence was
+> > building SRAT with the necessary memory ranges in place - even if the
+> > driver then does the hot add dance later.  
 > 
-> I'm assuming this last dependency will go via a different tree though there
-> is an outstanding request for tests. That equally applies to the CXL setup,
-> but there are lot of moving parts. I'll experiment with basic testing
-> of the MCTP I2C device whilst this is being reviewed.
+> Ankit, maybe you can share some relavent ACPI dumps from the physical
+> hardware and explain how this compares?
 > 
-> Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230913132523.29780-1-Jonathan.Cameron@huawei.com
-> Based on: Message ID: 20230913133615.29876-1-Jonathan.Cameron@huawei.com
-> Based on: Message ID: 20230919093434.1194-1-Jonathan.Cameron@huawei.com
-> Based on: Message ID: 20230925152258.5444-1-Jonathan.Cameron@huawei.com
-And to match above, the above should have been first.
+> > That's dubious and likely to break at some point unless the spec
+> > comprehends this use case, but meh, so are lots of other things and
+> > the hardware vendor gets to pick up the pieces and deal with grumpy
+> > customers.  
+> 
+> Yes.
 
-> Based on: Message ID: 20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com
+With my grumpy hat on, good to actually go try and get this
+clarification in the spec anyway.  We moan about people doing evil
+things or spec gaps, but don't always circle back to fix them.
+Obviously I'm not claiming to be good on this front either...
 
-So should be
-Based on: [PATCH] hw/cxl: Fix local variable shadowing of cap_hdrs
-Based on: [PATCH v2 0/3] hw/cxl: Add dummy ACPI QTG DSM
-Based on: [PATCH v4 0/4] hw/cxl: Support emulating 4 HDM decoders throughout topology
-Based on: [PATCH V2] hw/pci-bridge/cxl-upstream: Add serial number extended capability support
-Based on: [PATCH v3 0/4] hw/cxl: Line length reduction and related
-Based on: [PATCH v6 0/3] hw/{i2c,nvme}: mctp endpoint, nvme management interface model
+> 
+> > I don't currently see this as a safe solution for the proposed other
+> > use cases however that are virtualization only.  
+> 
+> So, how should that translate into a command line experiance? Sounds
+> like the broad concept is general but this actual specific HW is not?
 
-Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230904161847.18468-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230913132523.29780-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230913133615.29876-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230919093434.1194-1-Jonathan.Cameron@huawei.com
-Based on: Message ID: 20230914-nmi-i2c-v6-0-11bbb4f74d18@samsung.com
+I'm not following.  I think, to enable this platform, this will need
+to be vfio tied (or some new similar device). The other usecases
+were things like virtio-mem where I'd just suggest leaving restricted
+to only referring to existing nodes until a well defined solution is
+in place to provide the memory only nodes + hotplug mix.
 
-Sorry about that.
+Without a specification clarification, we'd have to fix this in Linux
+and enable dynamic NUMA node creation (or just enable a pool of extra
+ones to grab from which is sort of a hacky way to do the same).
+
+With an ACPI spec clarification agreed then I'm fine with
+using this for all the cases that have come up in this thread.
+Or a good argument that this is valid in under existing ACPI spec.
 
 Jonathan
+
+
+> 
+> Thanks,
+> Jason
+
 
