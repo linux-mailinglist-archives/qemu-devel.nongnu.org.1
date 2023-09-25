@@ -2,86 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD6C7AE040
-	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 22:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 827277AE043
+	for <lists+qemu-devel@lfdr.de>; Mon, 25 Sep 2023 22:24:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qks5a-0008BK-PH; Mon, 25 Sep 2023 16:21:54 -0400
+	id 1qks7f-00012K-Kv; Mon, 25 Sep 2023 16:24:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qks5X-0008AX-Sr; Mon, 25 Sep 2023 16:21:51 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qks7d-00010w-41
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:24:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qks5U-0003ju-KF; Mon, 25 Sep 2023 16:21:51 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvZ4c3xQpz6KBS7;
- Tue, 26 Sep 2023 04:20:32 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 25 Sep 2023 21:21:43 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 25 Sep 2023 21:21:43 +0100
-To: Russell King <linux@armlinux.org.uk>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "james.morse@arm.com" <james.morse@arm.com>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lorenzo.pieralisi@linaro.com" <lorenzo.pieralisi@linaro.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
- "ardb@kernel.org" <ardb@kernel.org>, "justin.he@arm.com" <justin.he@arm.com>, 
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "gshan@redhat.com"
- <gshan@redhat.com>, "rafael@kernel.org" <rafael@kernel.org>,
- "borntraeger@linux.ibm.com" <borntraeger@linux.ibm.com>,
- "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "sudeep.holla@arm.com" <sudeep.holla@arm.com>,
- "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>, zhukeqian
- <zhukeqian1@huawei.com>, "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
- "wangyanan (Y)" <wangyanan55@huawei.com>, "jiakernel2@gmail.com"
- <jiakernel2@gmail.com>, "maobibo@loongson.cn" <maobibo@loongson.cn>,
- "lixianglai@loongson.cn" <lixianglai@loongson.cn>
-Subject: RE: [PATCH RFC V2 00/37] Support of Virtual CPU Hotplug for ARMv8 Arch
-Thread-Topic: [PATCH RFC V2 00/37] Support of Virtual CPU Hotplug for ARMv8
- Arch
-Thread-Index: AQHZ7+i7tN7TN6a6DkKo79sQc15MlrAr9QQQ///zwoCAABEDYA==
-Date: Mon, 25 Sep 2023 20:21:43 +0000
-Message-ID: <a4f5b9370c2c45c7a09fe55f4a7b1a62@huawei.com>
-References: <20230925194333.18244-1-salil.mehta@huawei.com>
- <1ba2e69bf0a94c1498ab5863b365559b@huawei.com>
- <ZRHpyxCe8ybsxKck@shell.armlinux.org.uk>
-In-Reply-To: <ZRHpyxCe8ybsxKck@shell.armlinux.org.uk>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.153.112]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qks7a-00048v-Pd
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 16:24:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695673437;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Qlc+nPHSx2NwgwT/RoZzeDhzPQHRR3dOY/JarxS2lgU=;
+ b=VpOTMyM11Cj3wiYN7WWLZKz2/DSOzs55e+95yNjKEPxtrm0uct2qX3UU4X3eeZ3LI69DNg
+ W/NjunaH8K7xKDbP03DMv3eqyoc2rGt9IrHPbv5dlHolrAEKumhW2uJjcpQu1/Ohe8rdgs
+ vgq0Gjgd1mkIsniI+FPygITJFucUw5E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-456-KoQCW5S8P3iYNvLSkILyMg-1; Mon, 25 Sep 2023 16:23:55 -0400
+X-MC-Unique: KoQCW5S8P3iYNvLSkILyMg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F409685A5BA
+ for <qemu-devel@nongnu.org>; Mon, 25 Sep 2023 20:23:54 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.68])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 75A0D711286;
+ Mon, 25 Sep 2023 20:23:54 +0000 (UTC)
+Date: Mon, 25 Sep 2023 16:23:53 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
+ "Michael S . Tsirkin" <mst@redhat.com>,
+ Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>
+Subject: Re: [PATCH v3 4/5] vhost: Add high-level state save/load functions
+Message-ID: <20230925202353.GE323580@fedora>
+References: <20230915102531.55894-1-hreitz@redhat.com>
+ <20230915102531.55894-5-hreitz@redhat.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="G1vLTDuBl/2qpJYj"
+Content-Disposition: inline
+In-Reply-To: <20230915102531.55894-5-hreitz@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,54 +79,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Russell,
 
-> From: Russell King <linux@armlinux.org.uk>
-> Sent: Monday, September 25, 2023 9:13 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org;
-> james.morse@arm.com; jean-philippe@linaro.org; Jonathan Cameron
-> <jonathan.cameron@huawei.com>; lorenzo.pieralisi@linaro.com;
-> lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> will@kernel.org; catalin.marinas@arm.com; ardb@kernel.org;
-> justin.he@arm.com; oliver.upton@linux.dev; pbonzini@redhat.com;
-> mst@redhat.com; gshan@redhat.com; rafael@kernel.org;
-> borntraeger@linux.ibm.com; alex.bennee@linaro.org;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; sudeep.holla@arm.com; salil.mehta@opnsrc.net;
-> zhukeqian <zhukeqian1@huawei.com>; wangxiongfeng (C)
-> <wangxiongfeng2@huawei.com>; wangyanan (Y) <wangyanan55@huawei.com>;
-> jiakernel2@gmail.com; maobibo@loongson.cn; lixianglai@loongson.cn
-> Subject: Re: [PATCH RFC V2 00/37] Support of Virtual CPU Hotplug for ARMv=
-8
-> Arch
+--G1vLTDuBl/2qpJYj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Sep 15, 2023 at 12:25:29PM +0200, Hanna Czenczek wrote:
+> vhost_save_backend_state() and vhost_load_backend_state() can be used by
+> vhost front-ends to easily save and load the back-end's state to/from
+> the migration stream.
 >=20
-> On Mon, Sep 25, 2023 at 08:03:56PM +0000, Salil Mehta wrote:
-> > Looks like some problem with Huawei's mail server server. No patches
-> > except the cover letter are reaching the qemu-devel mailing-list.
+> Because we do not know the full state size ahead of time,
+> vhost_save_backend_state() simply reads the data in 1 MB chunks, and
+> writes each chunk consecutively into the migration stream, prefixed by
+> its length.  EOF is indicated by a 0-length chunk.
 >=20
-> I haven't seen any of the actual patches - just the cover letters.
-> Was that intentional?
+> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> ---
+>  include/hw/virtio/vhost.h |  35 +++++++
+>  hw/virtio/vhost.c         | 204 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 239 insertions(+)
 
-No. all the patches are either getting held either by the server or
-Some other problem. This has happened for both the instances of the
-patch-set I had pushed to the mailing list within 2 hours.=20
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-I am not sure how to sort it out without the help of IT. China is
-asleep now.
+--G1vLTDuBl/2qpJYj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Any suggestions welcome to debug this. Or Should I wait till tomorrow?
+-----BEGIN PGP SIGNATURE-----
 
-Many thanks
-Salil.
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUR7FkACgkQnKSrs4Gr
+c8g53gf/efNh2hqj0IptWY7I+2HpZ9C+MMwAw60jvMILi4MzWiZAJt625pYSEqB6
+eR0ov0YpFTrcOAtiKyREswaYnZ5bLQMppoocjQh/qApgiOXR+7ugaW87Pj6itGf5
+yMenJBO7gURkeXfmFSUNzhiev5XOrKuSbw1IwWXEFzXIstT/dDujfYZ5Pr/M4Fjs
+aKbo/dAmPxUP3OzVSZe49igboCIHKop+6WH3d3kQlLb5mlNcbldDtg4scRKq9IRY
+slf5P/Cs47CpHbo5+USYEMg2FYA5tbU7+dlo3rd88e1Xkp9TDnVdpx1Akkmtke8j
+3fjYbcZ3uF2xHGxGejCKm1G/3Cg7xg==
+=kLNj
+-----END PGP SIGNATURE-----
+
+--G1vLTDuBl/2qpJYj--
 
 
