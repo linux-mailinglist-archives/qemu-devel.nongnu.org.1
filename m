@@ -2,75 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FC37AED6D
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FF97AEE15
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 15:50:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql7cp-0004t5-19; Tue, 26 Sep 2023 08:57:15 -0400
+	id 1ql8Rf-0004FR-Dl; Tue, 26 Sep 2023 09:49:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql7cZ-0004sd-QP
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:56:59 -0400
-Received: from szxga02-in.huawei.com ([45.249.212.188])
+ (Exim 4.90_1) (envelope-from <vaishnav.a@ti.com>) id 1ql7N5-0006Uc-Lw
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:40:59 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql7cW-0003xs-KS
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:56:58 -0400
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.53])
- by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Rvzhy4Km1zNnpp;
- Tue, 26 Sep 2023 20:34:58 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 20:38:47 +0800
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 26 Sep 2023 13:38:45 +0100
-To: "Michael S. Tsirkin" <mst@redhat.com>, lixianglai <lixianglai@loongson.cn>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, Salil Mehta
- <salil.mehta@opnsrc.net>, Bernhard Beschow <shentey@gmail.com>, Xiaojuan Yang
- <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>, Igor Mammedov
- <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>, =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?=
- <philmd@linaro.org>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, Peter Xu
- <peterx@redhat.com>, David Hildenbrand <david@redhat.com>, Bibo Mao
- <maobibo@loongson.cn>
-Subject: RE: [PATCH v3 1/7] Update ACPI GED framework to support vcpu
- hot-(un)plug
-Thread-Topic: [PATCH v3 1/7] Update ACPI GED framework to support vcpu
- hot-(un)plug
-Thread-Index: AQHZ8F994Y7ua3lglUS84h/PG+ftMbAs4HKAgAAGrgCAAAuuAIAAGDHQ
-Date: Tue, 26 Sep 2023 12:38:44 +0000
-Message-ID: <e8fbec0306d24cdab3398772a8301fc7@huawei.com>
-References: <cover.1695697701.git.lixianglai@loongson.cn>
- <14ee117df13b08403032eb07843b91e1861228d9.1695697701.git.lixianglai@loongson.cn>
- <20230926070229-mutt-send-email-mst@kernel.org>
- <bc29c4fe-7180-6e00-2e91-a6a89c37b85a@loongson.cn>
- <20230926080738-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20230926080738-mutt-send-email-mst@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.174.16]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <vaishnav.a@ti.com>) id 1ql7N2-0008Vh-St
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:40:59 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+ by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 38QCef8S047203;
+ Tue, 26 Sep 2023 07:40:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+ s=ti-com-17Q1; t=1695732041;
+ bh=9v9rGczE3/my015hhEIWMVdENgwZpCtEfNna3/6DrGw=;
+ h=Date:Subject:To:CC:References:From:In-Reply-To;
+ b=fJFgIat4cGFp8y4f4/QvQPzyco6mC07mSv2D8PTpIlNUuo7teQH41KET9ukCIAR5P
+ 3L8m+n77d2QnoeHBhvMQIxZHRULqzAy/iMJYBP50hT6m8howpaY2VCcHm6nDDszCwZ
+ KyPr4DciJrgueN9BjEZ9ubuIIkMX+9WakHqLcuFg=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+ by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 38QCefnf025963
+ (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+ Tue, 26 Sep 2023 07:40:41 -0500
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 26
+ Sep 2023 07:40:41 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 26 Sep 2023 07:40:41 -0500
+Received: from [10.24.69.141] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+ by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id 38QCeaY9059407;
+ Tue, 26 Sep 2023 07:40:37 -0500
+Message-ID: <1269bf62-d67f-9f61-0139-dc20d23a9b5e@ti.com>
+Date: Tue, 26 Sep 2023 18:10:36 +0530
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=45.249.212.188;
- envelope-from=salil.mehta@huawei.com; helo=szxga02-in.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [RFC] Proposal of QEMU PCI Endpoint test environment
+To: Shunsuke Mie <mie@igel.co.jp>, Kishon Vijay Abraham I <kvijayab@amd.com>, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, "Michael S. Tsirkin"
+ <mst@redhat.com>
+CC: Paolo Bonzini <pbonzini@redhat.com>, Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>, <qemu-devel@nongnu.org>, Rob Herring
+ <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>,
+ =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>, Manivannan Sadhasivam
+ <manivannan.sadhasivam@linaro.org>, Kishon Vijay Abraham I
+ <kishon@kernel.org>
+References: <CANXvt5oKt=AKdqv24LT079e+6URnfqJcfTJh0ajGA17paJUEKw@mail.gmail.com>
+ <d096e88e-aec5-9920-8d5a-bd8200560c2c@amd.com>
+ <fe309259-01f0-871f-4620-3a4bdc56a186@igel.co.jp>
+Content-Language: en-US
+From: Vaishnav Achath <vaishnav.a@ti.com>
+In-Reply-To: <fe309259-01f0-871f-4620-3a4bdc56a186@igel.co.jp>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Received-SPF: pass client-ip=198.47.23.249; envelope-from=vaishnav.a@ti.com;
+ helo=lelv0142.ext.ti.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H2=-0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 26 Sep 2023 09:49:44 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,45 +89,125 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+Hi Kishon, all,
 
-> From: Michael S. Tsirkin <mst@redhat.com>
-> Sent: Tuesday, September 26, 2023 1:08 PM
->=20
-> On Tue, Sep 26, 2023 at 07:26:40PM +0800, lixianglai wrote:
-> >
-> > Hi, Michael S. Tsirkin :
-> > > On Tue, Sep 26, 2023 at 05:54:26PM +0800, xianglai li wrote:
-> > > > ACPI GED shall be used to convey to the guest kernel about any cpu
-> hot-(un)plug
-> > > > events. Therefore, existing ACPI GED framework inside QEMU needs to
-> be enhanced
-> > > > to support CPU hot-(un)plug state and events.
-> > > >
-> > > > Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
-> > > > Co-authored-by: "Salil Mehta" <salil.mehta@huawei.com>
-> > > This is not the way to handle multiple emails.
-> >
-> > Oh, sorry, I'll delete the first one.
-> >
-> > Thanks,
-> >
-> > Xianglai.
->=20
-> Can you guys figure out together with Salil Mehta what's the
-> correct order to merge this? I can't figure out with dueling patches.
+On 26/09/23 15:17, Shunsuke Mie wrote:
+> 
+> On 2023/09/21 18:11, Kishon Vijay Abraham I wrote:
+>> +Vaishnav
+>>
+>> Hi Shunsuke,
+>>
+>> On 8/18/2023 7:16 PM, Shunsuke Mie wrote:
+>>> Hi all,
+>>>
+>>> We are proposing to add a new test syste to Linux for PCIe Endpoint. That
+>>> can be run on QEMU without real hardware. At present, partially we have
+>>> confirmed that pci-epf-test is working, but it is not yet complete.
+>>> However, we would appreciate your comments on the architecture design.
+>>>
+>>> # Background
+>>> The background is as follows.
+>>>
+>>> PCI Endpoint function driver is implemented using the PCIe Endpoint
+>>> framework, but it requires physical boards for testing, and it is difficult
+>>> to test sufficiently. In order to find bugs and hardware-dependent
+>>> implementations early, continuous testing is required. Since it is
+>>> difficult to automate tests that require hardware, this RFC proposes a
+>>> virtual environment for testing PCI endpoint function drivers.
+>>
+>> This would be quite useful and thank you for attempting it! I would like to
+>> compare other mechanisms available in-addition to QEMU before going with the
+>> QEMU approach.
+> 
+> I got it. I'll make a table to compare some methods that includes greybus to
+> realize this emulation environment.
+> 
+> 
+> Best,
+> 
+> Shunsuke
+> 
+>> Though I don't understand this fully, Looking at
+>> https://osseu2023.sched.com/event/1OGk8/emulating-devices-in-linux-using-greybus-subsystem-vaishnav-mohandas-achath-texas-instruments, Vaishnav seems to solve the same problem using greybus for multiple type s of devices.
+>>
+>> Vaishnav, we'd wait for your OSS presentation but do you have any initial
+>> thoughts on how greybus could be used to test PCIe endpoint drivers?
+>>
 
-We already have an agreed approach and Loongson folks will
-rebase from the common patch-set. There is no contention.=20
+Apologies for the delay, I don't think greybus can be used for PCIe testing as
+there is no greybus equivalent for PCIe[1], it can only be used for relatively
+simpler devices today, I guess roadtest(UML based)[2] could be an alternative in
+this case.
 
-Thanks
-Salil.
+1 -
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/staging/greybus
+2 - https://lore.kernel.org/lkml/YjN1ksNGujV611Ka@sirena.org.uk/
 
+Thanks and Regards,
+Vaishnav
 
-
+>> Thanks,
+>> Kishon
+>>
+>>>
+>>> # Architecture
+>>> The overview of the architecture is as follows.
+>>>
+>>>    Guest 1                        Guest 2
+>>> +-------------------------+    +----------------------------+
+>>> | Linux kernel            |    | Linux kernel               |
+>>> |                         |    |                            |
+>>> | PCI EP function driver  |    |                            |
+>>> | (e.g. pci-epf-test)     |    |                            |
+>>> |-------------------------|    | PCI Device Driver          |
+>>> | (2) QEMU EPC Driver     |    | (e.g. pci_endpoint_test)   |
+>>> +-------------------------+    +----------------------------+
+>>> +-------------------------+    +----------------------------+
+>>> | QEMU                    |    | QEMU                       |
+>>> |-------------------------|    |----------------------------|
+>>> | (1) QEMU PCI EPC Device *----* (3) QEMU EPF Bridge Device |
+>>> +-------------------------+    +----------------------------+
+>>>
+>>> At present, it is designed to work guests only on the same host, and
+>>> communication is done through Unix domain sockets.
+>>>
+>>> The three parts shown in the figure were introduced this time.
+>>>
+>>> (1) QEMU PCI Endpoint Controller(EPC) Device
+>>> PCI Endpoint Controller implemented as QEMU PCI device.
+>>> (2) QEMU PCI Endpoint Controller(EPC) Driver
+>>> Linux kernel driver that drives the device (1). It registers a epc device
+>>> to linux kernel and handling each operations for the epc device.
+>>> (3) QEMU PCI Endpoint function(EPF) Bridge Device
+>>> QEMU PCI device that cooperates with (1) and performs accesses to pci
+>>> configuration space, BAR and memory space to communicate each guests, and
+>>> generates interruptions to the guest 1.
+>>>
+>>> Each projects are:
+>>> (1), (3) https://github.com/ShunsukeMie/qemu/tree/epf-bridge/v1
+>>> <https://github.com/ShunsukeMie/qemu/tree/epf-bridge/v1>
+>>> files: hw/misc/{qemu-epc.{c,h}, epf-bridge.c}
+>>> (2) https://github.com/ShunsukeMie/linux-virtio-rdma/tree/qemu-epc
+>>> <https://github.com/ShunsukeMie/linux-virtio-rdma/tree/qemu-epc>
+>>> files: drivers/pci/controller/pcie-qemu-ep.c
+>>>
+>>> # Protocol
+>>>
+>>> PCI, PCIe has a layer structure that includes Physical, Data Lane and
+>>> Transaction. The communicates between the bridge(3) and controller (1)
+>>> mimic the Transaction. Specifically, a protocol is implemented for
+>>> exchanging fd for communication protocol version check and communication,
+>>> in addition to the interaction equivalent to PCIe Transaction Layer Packet
+>>> (Read and Write of I/O, Memory, Configuration space and Message). In my
+>>> mind, we need to discuss the communication mor.
+>>>
+>>> We also are planning to post the patch set after the code is organized and
+>>> the protocol discussion is matured.
+>>>
+>>> Best regards,
+>>> Shunsuke
 
