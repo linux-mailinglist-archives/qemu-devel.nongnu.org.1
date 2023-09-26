@@ -2,113 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DAA7AEC88
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5FF7AECD3
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:29:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql76O-00023h-IH; Tue, 26 Sep 2023 08:23:44 -0400
+	id 1ql7AC-0005Tg-3y; Tue, 26 Sep 2023 08:27:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1ql76M-00023V-MD
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:23:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1ql7A9-0005T6-8W; Tue, 26 Sep 2023 08:27:37 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1ql76K-0003mV-N1
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:23:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695731019;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hoG3MMHZi/a80/K9G8nUQ/u0Ezp6YYIdlkGbLd2RDf4=;
- b=CqXdorP1t42yRieXIEmLtRCnIJbPtZ7kJC4+HvlFethiofhEd4uZocGPixUBEY8sZqrSnV
- Cn8qYBzbGbJRydK3u5YSZIluZjU8B1LRGn7do2z3b6HqQmInFdpjS3hMnmmq4A/lyLhnmq
- hs+Rpha00XvqxXrHQP10drc9D1xQDE0=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-441-7jxeLjTVPGCbDOPTFCbhkg-1; Tue, 26 Sep 2023 08:23:37 -0400
-X-MC-Unique: 7jxeLjTVPGCbDOPTFCbhkg-1
-Received: by mail-lf1-f72.google.com with SMTP id
- 2adb3069b0e04-5041bea78a5so12544115e87.3
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 05:23:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695731016; x=1696335816;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=hoG3MMHZi/a80/K9G8nUQ/u0Ezp6YYIdlkGbLd2RDf4=;
- b=jm4DVg+q65UOlwHLXeFiJlT2OJkADaW3VP0EAaDCTz98DO1KmSN5zWLBm+UGROTIZM
- r0P2f82OvDfGx0kB1HSVR1JD+PZUEnJk+ENyzM0CCyeVrC1AjEB8yHnQgQliH8ZIA/Z8
- zUsYcHR22svJhskND2Wx9AhM+sgb2nqk4/12dcOdktOEqVydcyldOY+a8EHEgaz+ubTH
- 42yLsIFRhqODr+W/DVV6yOPfJUC05lUgG4V07AkGveJ+suaLaOAxcygNLStiRlYOxWDo
- 1bJhp1+OONnaSTEwHL30PPKjhUu7QW+b7yxdCqe20KmZx85VCUxazZw5LyZklCTvkaW2
- dGRw==
-X-Gm-Message-State: AOJu0YyhafWqiuMrK2nrFCjuRdWYPNbmJQsGt/dA7MzQo7jvw+hrdKQo
- JTshRPE3iTxhM/GsJU4kKxEQSOfpHDGZNDV2Wv6HgAcYVKV6P3rP5ai69GOXWnd97gZifYquaJa
- cqBByrmxVr4tmJpo=
-X-Received: by 2002:ac2:5593:0:b0:503:186b:e0a8 with SMTP id
- v19-20020ac25593000000b00503186be0a8mr7017330lfg.60.1695731015947; 
- Tue, 26 Sep 2023 05:23:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJ15e2yZG6ukTlCuiOlRii6bBEhe63iKSB/cVPYUkkzE7AhTqLiT41YL0tNPnbet4XxpM88Q==
-X-Received: by 2002:ac2:5593:0:b0:503:186b:e0a8 with SMTP id
- v19-20020ac25593000000b00503186be0a8mr7017308lfg.60.1695731015380; 
- Tue, 26 Sep 2023 05:23:35 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c73f:600:933b:ca69:5a80:230d?
- (p200300cbc73f0600933bca695a80230d.dip0.t-ipconnect.de.
- [2003:cb:c73f:600:933b:ca69:5a80:230d])
- by smtp.gmail.com with ESMTPSA id
- f11-20020a056402160b00b005231e3d89efsm6805040edv.31.2023.09.26.05.23.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Sep 2023 05:23:34 -0700 (PDT)
-Message-ID: <40647bc5-6a2e-0b59-3605-0de8d4639f66@redhat.com>
-Date: Tue, 26 Sep 2023 14:23:33 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 04/10] Introduce the CPU address space destruction
- function
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1ql7A3-000501-4z; Tue, 26 Sep 2023 08:27:36 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvzQX1cznz6J8DW;
+ Tue, 26 Sep 2023 20:22:28 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 26 Sep 2023 13:27:26 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Tue, 26 Sep 2023 13:27:26 +0100
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>, Jonathan Cameron
+ <jonathan.cameron@huawei.com>, "lpieralisi@kernel.org"
+ <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "ardb@kernel.org" <ardb@kernel.org>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "gshan@redhat.com" <gshan@redhat.com>,
+ "rafael@kernel.org" <rafael@kernel.org>, "borntraeger@linux.ibm.com"
+ <borntraeger@linux.ibm.com>, "alex.bennee@linaro.org"
+ <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>
+Subject: RE: [PATCH RFC V2 24/37] hw/acpi: Update ACPI GED framework to
+ support vCPU Hotplug
+Thread-Topic: [PATCH RFC V2 24/37] hw/acpi: Update ACPI GED framework to
+ support vCPU Hotplug
+Thread-Index: AQHZ8GICsJ3ODJRpw0CC9UqWfrlu1rAs4EwAgAAXmTD///iQAIAAEiAg
+Date: Tue, 26 Sep 2023 12:27:26 +0000
+Message-ID: <94b11b88bfe4421ba92c62a44cdaef06@huawei.com>
+References: <20230926100436.28284-1-salil.mehta@huawei.com>
+ <20230926100436.28284-25-salil.mehta@huawei.com>
+ <20230926070112-mutt-send-email-mst@kernel.org>
+ <f68a5ccc153f4971b5fbe681095a7624@huawei.com>
+ <20230926075838-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230926075838-mutt-send-email-mst@kernel.org>
+Accept-Language: en-US
 Content-Language: en-US
-To: Salil Mehta <salil.mehta@huawei.com>, lixianglai
- <lixianglai@loongson.cn>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: Salil Mehta <salil.mehta@opnsrc.net>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- "wangyanan (Y)" <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, Bibo Mao <maobibo@loongson.cn>
-References: <cover.1694433326.git.lixianglai@loongson.cn>
- <3a4fc2a3df4b767c3c296a7da3bc15ca9c251316.1694433326.git.lixianglai@loongson.cn>
- <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
- <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
- <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
- <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
- <e4e88068-4754-f7d4-e080-b7b8d5bcf006@loongson.cn>
- <5f610a1d-da1b-0094-41e7-f69164c4d0e0@redhat.com>
- <7906109a36c5467fa9b529520671fa77@huawei.com>
- <b8f256b3549e41a09119dee5ab5439d9@huawei.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <b8f256b3549e41a09119dee5ab5439d9@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.174.16]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -122,154 +94,225 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.09.23 13:55, Salil Mehta wrote:
->> From: Salil Mehta
->> Sent: Tuesday, September 26, 2023 12:21 PM
->> To: 'David Hildenbrand' <david@redhat.com>; lixianglai
->> <lixianglai@loongson.cn>; qemu-devel@nongnu.org
->> Cc: Salil Mehta <salil.mehta@opnsrc.net>; Xiaojuan Yang
->> <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael S.
->> Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani Sinha
->> <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
->> Henderson <richard.henderson@linaro.org>; Eduardo Habkost
->> <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
->> Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
->> <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>; Peter
->> Xu <peterx@redhat.com>; Bibo Mao <maobibo@loongson.cn>
->> Subject: RE: [PATCH v2 04/10] Introduce the CPU address space destruction
->> function
->>
->> Hi David,
->>
->>> From: David Hildenbrand <david@redhat.com>
->>> Sent: Friday, September 15, 2023 9:07 AM
->>> To: lixianglai <lixianglai@loongson.cn>; qemu-devel@nongnu.org; Salil
->> Mehta
->>> <salil.mehta@huawei.com>
->>> Cc: Salil Mehta <salil.mehta@opnsrc.net>; Xiaojuan Yang
->>> <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael S.
->>> Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani Sinha
->>> <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
->>> Henderson <richard.henderson@linaro.org>; Eduardo Habkost
->>> <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
->>> Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
->>> <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>; Peter
->>> Xu <peterx@redhat.com>; Bibo Mao <maobibo@loongson.cn>
->>> Subject: Re: [PATCH v2 04/10] Introduce the CPU address space destruction
->>> function
->>>
->>> On 15.09.23 04:53, lixianglai wrote:
->>>> Hi David Hildenbrand:
->>>>
->>>>>
->>>>> Hi David Hildenbrand:
->>>>>> On 14.09.23 15:00, lixianglai wrote:
->>>>>>> Hi David:
->>>>>>
->>>>>> Hi!
->>>>>>
->>>>>>>
->>>>>>>> On 12.09.23 04:11, xianglai li wrote:
->>>>>>>>> Introduce new function to destroy CPU address space resources
->>>>>>>>> for cpu hot-(un)plug.
->>>>>>>>>
->>>>>>>> How do other archs handle that? Or how are they able to get away
->>>>>>>> without destroying?
->>>>>>>>
->>>>>>> They do not remove the cpu address space, taking the X86
->>>>>>> architecture as
->>>>>>> an example:
->>>>>>>
->>>>>>> 1.Start the x86 VM:
->>>>>>>
->>>>>>> ./qemu-system-x86_64 \
->>>>>>> -machine q35  \
->>>>>>> -cpu Broadwell-IBRS \
->>>>>>> -smp 1,maxcpus=100,sockets=100,cores=1,threads=1 \
->>>>>>> -m 4G \
->>>>>>> -drive file=~/anolis-8.8.qcow2  \
->>>>>>> -serial stdio   \
->>>>>>> -monitor telnet:localhost:4498,server,nowait   \
->>>>>>> -nographic
->>>>>>>
->>>>>>> 2.Connect the qemu monitor
->>>>>>>
->>>>>>> telnet 127.0.0.1 4498
->>>>>>>
->>>>>>> info mtree
->>>>>>>
->>>>>>> address-space: cpu-memory-0
->>>>>>> address-space: memory
->>>>>>>       0000000000000000-ffffffffffffffff (prio 0, i/o): system
->>>>>>>         0000000000000000-000000007fffffff (prio 0, ram): alias
->>>>>>> ram-below-4g
->>>>>>> @pc.ram 0000000000000000-000000007fffffff
->>>>>>>         0000000000000000-ffffffffffffffff (prio -1, i/o): pci
->>>>>>>           00000000000a0000-00000000000bffff (prio 1, i/o): vga-lowmem
->>>>>>>
->>>>>>> 3.Perform cpu hot swap int qemu monitor
->>>>>>>
->>>>>>> device_add
->>>>>>> Broadwell-IBRS-x86_64-cpu,socket-id=1,core-id=0,thread-id=0,id=cpu1
->>>>>>> device_del cpu1
->>>>>>>
->>>>>>
->>>>>> Hm, doesn't seem to work for me on upstream QEMU for some reason:
->>>>>> "Error: acpi: device unplug request for not supported device type:
->>>>>> Broadwell-IBRS-x86_64-cpu"
->>>>>
->>>> First I use qemu tcg, and then the cpu needs to be removed after the
->>>> operating system is booted.
->>>
->>> Ah, the last thing is the important bit. I can reproduce this with KVM
->>> easily.
->>>
->>> Doing it a couple of times
->>>
->>> address-space: cpu-memory-0
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>> address-space: cpu-memory-1
->>>
->>> Looks like a resource/memory leak.
->>
->> Yes, there was. Thanks for identifying it. I have fixed in the
->> latest RFC V2. Please check here:
->>
->> https://lore.kernel.org/qemu-devel/20230926100436.28284-1-
->> salil.mehta@huawei.com/T/#m5f5ae40b091d69d01012880d7500d96874a9d39c
->>
->> I have tested and AddressSpace comes and goes away cleanly
->> on CPU hot(un)plug action.
-> 
-> Hi David/Xianglai,
-> Are you okay if I put Reported-by and give reference to this
-> conversation?
+> From: Michael S. Tsirkin <mst@redhat.com>
+> Sent: Tuesday, September 26, 2023 1:00 PM
+> To: Salil Mehta <salil.mehta@huawei.com>
+> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
+> philippe@linaro.org; Jonathan Cameron <jonathan.cameron@huawei.com>;
+> lpieralisi@kernel.org; peter.maydell@linaro.org;
+> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
+;
+> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
+> will@kernel.org; ardb@kernel.org; oliver.upton@linux.dev;
+> pbonzini@redhat.com; gshan@redhat.com; rafael@kernel.org;
+> borntraeger@linux.ibm.com; alex.bennee@linaro.org; linux@armlinux.org.uk;
+> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+> maobibo@loongson.cn; lixianglai@loongson.cn
+> Subject: Re: [PATCH RFC V2 24/37] hw/acpi: Update ACPI GED framework to
+> support vCPU Hotplug
+>=20
+> On Tue, Sep 26, 2023 at 11:37:38AM +0000, Salil Mehta wrote:
+> > > From: Michael S. Tsirkin <mst@redhat.com>
+> > > Sent: Tuesday, September 26, 2023 12:02 PM
+> > > To: Salil Mehta <salil.mehta@huawei.com>
+> > > Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
+> > > philippe@linaro.org; Jonathan Cameron <jonathan.cameron@huawei.com>;
+> > > lpieralisi@kernel.org; peter.maydell@linaro.org;
+> > > richard.henderson@linaro.org; imammedo@redhat.com;
+> andrew.jones@linux.dev;
+> > > david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
+> > > will@kernel.org; ardb@kernel.org; oliver.upton@linux.dev;
+> > > pbonzini@redhat.com; gshan@redhat.com; rafael@kernel.org;
+> > > borntraeger@linux.ibm.com; alex.bennee@linaro.org;
+> linux@armlinux.org.uk;
+> > > darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+> > > vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+> > > miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+> > > <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com=
+>;
+> > > wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+> > > maobibo@loongson.cn; lixianglai@loongson.cn
+> > > Subject: Re: [PATCH RFC V2 24/37] hw/acpi: Update ACPI GED framework =
+to
+> > > support vCPU Hotplug
+> > >
+> > > On Tue, Sep 26, 2023 at 11:04:23AM +0100, Salil Mehta wrote:
+> > > > ACPI GED shall be used to convey to the guest kernel about any CPU
+> hot-
+> > > (un)plug
+> > > > events. Therefore, existing ACPI GED framework inside QEMU needs to
+> be
+> > > enhanced
+> > > > to support CPU hotplug state and events.
+> > > >
+> > > > Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
+> > >
+> > > Co-developed with yourself?
+> > >
+> > > didn't you co-develop this with xianglai li?
+> >
+> > No, our effort is quite old ARM patch-set existed since the year 2020
+> > without any change. Please check the original patch-set here:
+> >
+> > https://lore.kernel.org/qemu-devel/20200613213629.21984-11-
+> salil.mehta@huawei.com/
+> >
+> >
+> > To be fair to the authors, it will not be right to add another SOB here=
+.
+> >
+>=20
+> I see. And what's the difference with patches that xianglai li posted?
 
-Yes. And ideally, send the fixes separately from the other arm patches.
+I am not sure if there is. But if there is any change then it can be
+commented on the architecture agnostic patch-set which I shall be
+posting later this week. If that change is a common change to all
+the architectures maybe I can pick-up that change and add in the V2
+version of the arch agnostic patch-set and then it will make sense
+to add the SOBs of the contributing members there.
 
--- 
-Cheers,
+> Are they both rebases of the same old patch then?
 
-David / dhildenb
+RFC V2 is an extension of RFC V1. We been working with ARM, Oracle
+Ampere, Linaro and other companies to get to this stage.
+
+It has already been agreed that Loongson folks shall be rebasing
+their patch-set over ARM RFC V2 patch-set which is very big.=20
+
+
+https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawe=
+i.com/T/#m523b37819c4811c7827333982004e07a1ef03879
+
+I have for now pointed the patches in the exact order which can be
+used to rebase their patch-set .
+
+I will be sending a separate arch agnostic patch-set later this week
+which will be without RFC Tag. This way different companies can work
+independently.
+
+
+Thanks
+Salil.
+
+> > > Just include his S.O.B then, and drop the non-standard Co-developed-b=
+y.
+> >
+> > Co-developed-by Tag has been added to ensure main authors of the patch
+> > get highlighted clearly.
+>=20
+> I think I don't know the patch provenance at this point.
+
+
+It was us from Huawei in the year 2020.
+
+https://lore.kernel.org/qemu-devel/20200613213629.21984-10-salil.mehta@huaw=
+ei.com/
+
+
+
+
+> > > > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> > > > Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> > > > Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+> > > > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> > >
+> > >
+> > >
+> > > > ---
+> > > >  hw/acpi/generic_event_device.c | 10 ++++++++++
+> > > >  1 file changed, 10 insertions(+)
+> > > >
+> > > > diff --git a/hw/acpi/generic_event_device.c
+> > > b/hw/acpi/generic_event_device.c
+> > > > index ad252e6a91..0266733a54 100644
+> > > > --- a/hw/acpi/generic_event_device.c
+> > > > +++ b/hw/acpi/generic_event_device.c
+> > > > @@ -12,6 +12,7 @@
+> > > >  #include "qemu/osdep.h"
+> > > >  #include "qapi/error.h"
+> > > >  #include "hw/acpi/acpi.h"
+> > > > +#include "hw/acpi/cpu.h"
+> > > >  #include "hw/acpi/generic_event_device.h"
+> > > >  #include "hw/irq.h"
+> > > >  #include "hw/mem/pc-dimm.h"
+> > > > @@ -239,6 +240,8 @@ static void
+> acpi_ged_device_plug_cb(HotplugHandler
+> > > *hotplug_dev,
+> > > >          } else {
+> > > >              acpi_memory_plug_cb(hotplug_dev, &s->memhp_state, dev,
+> > > errp);
+> > > >          }
+> > > > +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+> > > > +        acpi_cpu_plug_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
+> > > >      } else {
+> > > >          error_setg(errp, "virt: device plug request for unsupporte=
+d
+> > > device"
+> > > >                     " type: %s", object_get_typename(OBJECT(dev)));
+> > > > @@ -253,6 +256,8 @@ static void
+> acpi_ged_unplug_request_cb(HotplugHandler
+> > > *hotplug_dev,
+> > > >      if ((object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) &&
+> > > >                         !(object_dynamic_cast(OBJECT(dev),
+> > > TYPE_NVDIMM)))) {
+> > > >          acpi_memory_unplug_request_cb(hotplug_dev, &s->memhp_state=
+,
+> dev,
+> > > errp);
+> > > > +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+> > > > +        acpi_cpu_unplug_request_cb(hotplug_dev, &s->cpuhp_state,
+> dev,
+> > > errp);
+> > > >      } else {
+> > > >          error_setg(errp, "acpi: device unplug request for
+> unsupported
+> > > device"
+> > > >                     " type: %s", object_get_typename(OBJECT(dev)));
+> > > > @@ -266,6 +271,8 @@ static void acpi_ged_unplug_cb(HotplugHandler
+> > > *hotplug_dev,
+> > > >
+> > > >      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+> > > >          acpi_memory_unplug_cb(&s->memhp_state, dev, errp);
+> > > > +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
+> > > > +        acpi_cpu_unplug_cb(&s->cpuhp_state, dev, errp);
+> > > >      } else {
+> > > >          error_setg(errp, "acpi: device unplug for unsupported
+> device"
+> > > >                     " type: %s", object_get_typename(OBJECT(dev)));
+> > > > @@ -277,6 +284,7 @@ static void acpi_ged_ospm_status(AcpiDeviceIf
+> *adev,
+> > > ACPIOSTInfoList ***list)
+> > > >      AcpiGedState *s =3D ACPI_GED(adev);
+> > > >
+> > > >      acpi_memory_ospm_status(&s->memhp_state, list);
+> > > > +    acpi_cpu_ospm_status(&s->cpuhp_state, list);
+> > > >  }
+> > > >
+> > > >  static void acpi_ged_send_event(AcpiDeviceIf *adev,
+> AcpiEventStatusBits
+> > > ev)
+> > > > @@ -291,6 +299,8 @@ static void acpi_ged_send_event(AcpiDeviceIf
+> *adev,
+> > > AcpiEventStatusBits ev)
+> > > >          sel =3D ACPI_GED_PWR_DOWN_EVT;
+> > > >      } else if (ev & ACPI_NVDIMM_HOTPLUG_STATUS) {
+> > > >          sel =3D ACPI_GED_NVDIMM_HOTPLUG_EVT;
+> > > > +    } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
+> > > > +        sel =3D ACPI_GED_CPU_HOTPLUG_EVT;
+> > > >      } else {
+> > > >          /* Unknown event. Return without generating interrupt. */
+> > > >          warn_report("GED: Unsupported event %d. No irq injected",
+> ev);
+> > > > --
+> > > > 2.34.1
 
 
