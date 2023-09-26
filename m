@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB3B7AF5AB
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 23:24:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 258217AF5AD
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 23:26:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlFWs-0004Cr-5J; Tue, 26 Sep 2023 17:23:38 -0400
+	id 1qlFYu-0005Ts-F7; Tue, 26 Sep 2023 17:25:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlFWq-0004CT-CU; Tue, 26 Sep 2023 17:23:36 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ id 1qlFYr-0005Sw-Ra; Tue, 26 Sep 2023 17:25:42 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlFWn-0001iy-MZ; Tue, 26 Sep 2023 17:23:35 -0400
+ id 1qlFYf-0002RZ-1u; Tue, 26 Sep 2023 17:25:41 -0400
 Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 15D9260771;
- Wed, 27 Sep 2023 00:23:29 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 708CE602B7;
+ Wed, 27 Sep 2023 00:25:25 +0300 (MSK)
 Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
  [2a02:6b8:b081:b41d::1:39])
  by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id SNXJds0Op4Y0-6bt5tmrf; Wed, 27 Sep 2023 00:23:28 +0300
+ ESMTPSA id OPXbes0OpmI0-3fJQkHFx; Wed, 27 Sep 2023 00:25:24 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695763408;
- bh=+5nojs6wBG7umyWLi5ROS55r8LQQIpkAkxEmHYlv0/4=;
+ s=default; t=1695763524;
+ bh=gSbeuy2MS/OHvYWML9zC3AlVHoPj1y40l+KcMnSIPpM=;
  h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=h1Pg81VTjRRwqK+4RebpewoU8qKjY1aWjT8x3A6ZYj4RzyryeBBwnt0raPzXcLCrQ
- 8/nqHVINb37vPBcGbmlh7z8ZLA3pi6sk1S2g+PIp9fMFKjGTneL72TcYlfI7xYeatF
- 1GMveqdH6jFdEFnp02GOS0fuCFOr2xtoGDdOT0uU=
+ b=bfBzOArmSIJlX6G6KyMKftF+WR7yKBy5nfHSbKJ6L1r2fz2JKz/OpiCTd8Fclr3VV
+ 8J5LW7pg2uCDt+YoUsGJzg5lQtcc4BcJ8oZ6mIM7OM6Yxep/KZWScfNsVcPHSU4Ktn
+ We/jZexSMZuw6bBAKx0pXr7YWWCHOs+Klqpwbs+Q=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <d3bf04cd-ddd2-ebda-de39-5cd8b8d05e7f@yandex-team.ru>
-Date: Wed, 27 Sep 2023 00:23:28 +0300
+Message-ID: <35f3c651-7259-4b95-09a4-b325fedc9ad6@yandex-team.ru>
+Date: Wed, 27 Sep 2023 00:25:24 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 2/3] i386/a-b-bootblock: zero the first byte of each
- page on start
+Subject: Re: [PATCH v2 3/3] s390x/a-b-bios: zero the first byte of each page
+ on start
 Content-Language: en-US
 To: Daniil Tatianin <d-tatianin@yandex-team.ru>,
  Juan Quintela <quintela@redhat.com>
 Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  qemu-devel@nongnu.org, qemu-s390x@nongnu.org
 References: <20230919102346.2117963-1-d-tatianin@yandex-team.ru>
- <20230919102346.2117963-3-d-tatianin@yandex-team.ru>
+ <20230919102346.2117963-4-d-tatianin@yandex-team.ru>
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230919102346.2117963-3-d-tatianin@yandex-team.ru>
+In-Reply-To: <20230919102346.2117963-4-d-tatianin@yandex-team.ru>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -78,39 +78,13 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 19.09.23 13:23, Daniil Tatianin wrote:
-> The migration qtest all the way up to this point used to work by sheer
-> luck relying on the contents of all pages from 1MiB to 100MiB to contain
-> the same one value in the first byte initially.
+> Same as with the x86 verison of this test, we relied on the contents of
+> all pages in RAM to be the same across the entire test range, which is
+> very fragile. Zero the first byte of each page before running the
+> increment loop to fix this.
 > 
-> This easily breaks if we reduce the amount of RAM for the test instances
-> from 150MiB to e.g 110MiB since that makes SeaBIOS dirty some of the
-> pages starting at about 0x5dd2000 (~93 MiB) as it reuses those for the
-> HighMemory allocator since commit dc88f9b72df ("malloc: use large
-> ZoneHigh when there is enough memory").
-> 
-> This would result in the following errors:
->      12/60 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 ERROR           2.74s   killed by signal 6 SIGABRT
->      stderr:
->      Memory content inconsistency at 5dd2000 first_byte = cc last_byte = cb current = 9e hit_edge = 1
->      Memory content inconsistency at 5dd3000 first_byte = cc last_byte = cb current = 89 hit_edge = 1
->      Memory content inconsistency at 5dd4000 first_byte = cc last_byte = cb current = 23 hit_edge = 1
->      Memory content inconsistency at 5dd5000 first_byte = cc last_byte = cb current = 31 hit_edge = 1
->      Memory content inconsistency at 5dd6000 first_byte = cc last_byte = cb current = 70 hit_edge = 1
->      Memory content inconsistency at 5dd7000 first_byte = cc last_byte = cb current = ff hit_edge = 1
->      Memory content inconsistency at 5dd8000 first_byte = cc last_byte = cb current = 54 hit_edge = 1
->      Memory content inconsistency at 5dd9000 first_byte = cc last_byte = cb current = 64 hit_edge = 1
->      Memory content inconsistency at 5dda000 first_byte = cc last_byte = cb current = 1d hit_edge = 1
->      Memory content inconsistency at 5ddb000 first_byte = cc last_byte = cb current = 1a hit_edge = 1
->      and in another 26 pages**
->      ERROR:../tests/qtest/migration-test.c:300:check_guests_ram: assertion failed: (bad == 0)
-> 
-> Fix this by always zeroing the first byte of each page in the range so
-> that we get consistent results no matter the initial contents.
-> 
-> Fixes: ea0c6d62391 ("test: Postcopy")
+> Fixes: 5571dc824b ("tests/migration: Enable the migration test on s390x, too")
 > Signed-off-by: Daniil Tatianin<d-tatianin@yandex-team.ru>
-> Reviewed-by: Peter Xu<peterx@redhat.com>
-
 
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
