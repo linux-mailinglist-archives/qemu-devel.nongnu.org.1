@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4877AEA1E
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C1A7AEA23
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:15:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql54j-0007fF-6x; Tue, 26 Sep 2023 06:13:53 -0400
+	id 1ql55Q-0008SW-U9; Tue, 26 Sep 2023 06:14:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql54h-0007W8-43; Tue, 26 Sep 2023 06:13:51 -0400
+ id 1ql54z-0008Iu-9m; Tue, 26 Sep 2023 06:14:10 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql54e-0005RR-Q8; Tue, 26 Sep 2023 06:13:50 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwWL4wB4z6D98v;
- Tue, 26 Sep 2023 18:11:26 +0800 (CST)
+ id 1ql54w-0005Td-Vd; Tue, 26 Sep 2023 06:14:09 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwSd5v0qz6J6Lm;
+ Tue, 26 Sep 2023 18:09:05 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.174.16) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:13:28 +0100
+ 15.1.2507.31; Tue, 26 Sep 2023 11:13:46 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,10 +38,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 27/37] hw/arm,
- gicv3: Changes to update GIC with vCPU hot-plug notification
-Date: Tue, 26 Sep 2023 11:04:26 +0100
-Message-ID: <20230926100436.28284-28-salil.mehta@huawei.com>
+Subject: [PATCH RFC V2 28/37] hw/intc/arm-gicv3*: Changes required to (re)init
+ the vCPU register info
+Date: Tue, 26 Sep 2023 11:04:27 +0100
+Message-ID: <20230926100436.28284-29-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
@@ -76,264 +76,400 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vCPU hot-(un)plug events MUST be notified to the GIC. Introduce a notfication
-mechanism to update any such events to GIC so that it can update its vCPU to GIC
-CPU interface association.
+vCPU register info needs to be re-initialized each time vCPU is hot-plugged.
+This has to be done both for emulation/TCG and KVM case. This is done in
+context to the GIC update notification for any vCPU hot-(un)plug events. This
+change adds that support and re-factors existing to maximize the code re-use.
 
-This is required to implement a workaround to the limitations posed by the ARM
-architecture. For details about the constraints and workarounds please check
-below slides:
-
-Link: https://kvm-forum.qemu.org/2023/talk/9SMPDQ/
-
+Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/arm/virt.c                      | 27 +++++++++++++--
- hw/intc/arm_gicv3_common.c         | 54 +++++++++++++++++++++++++++++-
- hw/intc/arm_gicv3_cpuif_common.c   |  5 +++
- hw/intc/gicv3_internal.h           |  1 +
- include/hw/arm/virt.h              |  1 +
- include/hw/intc/arm_gicv3_common.h | 22 ++++++++++++
- 6 files changed, 107 insertions(+), 3 deletions(-)
+ hw/intc/arm_gicv3.c                |   1 +
+ hw/intc/arm_gicv3_common.c         |   7 +-
+ hw/intc/arm_gicv3_cpuif.c          | 257 +++++++++++++++--------------
+ hw/intc/arm_gicv3_kvm.c            |   7 +-
+ hw/intc/gicv3_internal.h           |   1 +
+ include/hw/intc/arm_gicv3_common.h |   1 +
+ 6 files changed, 150 insertions(+), 124 deletions(-)
 
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 5b829e47b7..b447e86fb6 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -666,6 +666,16 @@ static inline DeviceState *create_acpi_ged(VirtMachineState *vms)
-     return dev;
+diff --git a/hw/intc/arm_gicv3.c b/hw/intc/arm_gicv3.c
+index 0b8f79a122..e1c7c8c4bc 100644
+--- a/hw/intc/arm_gicv3.c
++++ b/hw/intc/arm_gicv3.c
+@@ -410,6 +410,7 @@ static void arm_gicv3_class_init(ObjectClass *klass, void *data)
+     ARMGICv3Class *agc = ARM_GICV3_CLASS(klass);
+ 
+     agcc->post_load = arm_gicv3_post_load;
++    agcc->init_cpu_reginfo = gicv3_init_cpu_reginfo;
+     device_class_set_parent_realize(dc, arm_gic_realize, &agc->parent_realize);
  }
- 
-+static void virt_add_gic_cpuhp_notifier(VirtMachineState *vms)
-+{
-+    MachineClass *mc = MACHINE_GET_CLASS(vms);
-+
-+    if (mc->has_hotpluggable_cpus) {
-+        Notifier *cpuhp_notifier = gicv3_cpuhp_notifier(vms->gic);
-+        notifier_list_add(&vms->cpuhp_notifiers, cpuhp_notifier);
-+    }
-+}
-+
- static void create_its(VirtMachineState *vms)
- {
-     const char *itsclass = its_class_name();
-@@ -912,6 +922,9 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
-     } else if (vms->gic_version == VIRT_GIC_VERSION_2) {
-         create_v2m(vms);
-     }
-+
-+    /* add GIC CPU hot(un)plug update notifier */
-+    virt_add_gic_cpuhp_notifier(vms);
- }
- 
- static void create_uart(const VirtMachineState *vms, int uart,
-@@ -2384,6 +2397,8 @@ static void machvirt_init(MachineState *machine)
- 
-     create_fdt(vms);
- 
-+    notifier_list_init(&vms->cpuhp_notifiers);
-+    possible_cpus = mc->possible_cpu_arch_ids(machine);
-     assert(possible_cpus->len == max_cpus);
-     for (n = 0; n < possible_cpus->len; n++) {
-         Object *cpuobj;
-@@ -3034,6 +3049,14 @@ static void virt_memory_plug(HotplugHandler *hotplug_dev,
-                          dev, &error_abort);
- }
- 
-+static void virt_update_gic(VirtMachineState *vms, CPUState *cs)
-+{
-+    GICv3CPUHotplugInfo gic_info = { .gic = vms->gic, .cpu = cs };
-+
-+    /* notify gic to stitch GICC to this new cpu */
-+    notifier_list_notify(&vms->cpuhp_notifiers, &gic_info);
-+}
-+
- static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-                               Error **errp)
- {
-@@ -3116,7 +3139,7 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-      * vCPUs have their GIC state initialized during machvit_init().
-      */
-     if (vms->acpi_dev) {
--        /* TODO: update GIC about this hotplug change here */
-+        virt_update_gic(vms, cs);
-         wire_gic_cpu_irqs(vms, cs);
-     }
- 
-@@ -3202,7 +3225,7 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev, DeviceState *dev,
-     /* TODO: update the acpi cpu hotplug state for cpu hot-unplug */
- 
-     unwire_gic_cpu_irqs(vms, cs);
--    /* TODO: update the GIC about this hot unplug change */
-+    virt_update_gic(vms, cs);
- 
-     /* TODO: unregister cpu for reset & update F/W info for the next boot */
  
 diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
-index ebd99af610..fc87fa9369 100644
+index fc87fa9369..d051024a30 100644
 --- a/hw/intc/arm_gicv3_common.c
 +++ b/hw/intc/arm_gicv3_common.c
-@@ -33,7 +33,6 @@
- #include "hw/arm/linux-boot-if.h"
- #include "sysemu/kvm.h"
- 
--
- static void gicv3_gicd_no_migration_shift_bug_post_load(GICv3State *cs)
+@@ -345,10 +345,12 @@ static void arm_gicv3_cpu_update_notifier(Notifier *notifier, void * data)
  {
-     if (cs->gicd_no_migration_shift_bug) {
-@@ -322,6 +321,56 @@ void gicv3_init_irqs_and_mmio(GICv3State *s, qemu_irq_handler handler,
-     }
+     GICv3CPUHotplugInfo *gic_info = (GICv3CPUHotplugInfo *)data;
+     CPUState *cpu = gic_info->cpu;
++    ARMGICv3CommonClass *c;
+     int gic_cpuif_num;
+     GICv3State *s;
+ 
+     s = ARM_GICV3_COMMON(gic_info->gic);
++    c = ARM_GICV3_COMMON_GET_CLASS(s);
+ 
+     /* this shall get us mapped gicv3 cpuif corresponding to mpidr */
+     gic_cpuif_num = arm_gicv3_get_proc_num(s, cpu);
+@@ -368,7 +370,10 @@ static void arm_gicv3_cpu_update_notifier(Notifier *notifier, void * data)
+     gicv3_set_gicv3state(cpu, &s->cpu[gic_cpuif_num]);
+     gicv3_set_cpustate(&s->cpu[gic_cpuif_num], cpu);
+ 
+-    /* TODO: initialize the registers info for this newly added cpu */
++    /* initialize the registers info for this newly added cpu */
++    if (c->init_cpu_reginfo) {
++        c->init_cpu_reginfo(cpu);
++    }
  }
  
-+static int arm_gicv3_get_proc_num(GICv3State *s, CPUState *cpu)
+ static void arm_gicv3_common_realize(DeviceState *dev, Error **errp)
+diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+index 7b7a0fdb9c..70fc2cc858 100644
+--- a/hw/intc/arm_gicv3_cpuif.c
++++ b/hw/intc/arm_gicv3_cpuif.c
+@@ -2782,6 +2782,127 @@ static const ARMCPRegInfo gicv3_cpuif_ich_apxr23_reginfo[] = {
+     },
+ };
+ 
++void gicv3_init_cpu_reginfo(CPUState *cs)
 +{
-+    uint64_t mp_affinity;
-+    uint64_t gicr_typer;
-+    uint64_t cpu_affid;
-+    int i;
++    ARMCPU *cpu = ARM_CPU(cs);
++    GICv3CPUState *gcs = icc_cs_from_env(&cpu->env);
 +
-+    mp_affinity = object_property_get_uint(OBJECT(cpu), "mp-affinity", NULL);
-+    /* match the cpu mp-affinity to get the gic cpuif number */
-+    for (i = 0; i < s->num_cpu; i++) {
-+        gicr_typer = s->cpu[i].gicr_typer;
-+        cpu_affid = (gicr_typer >> 32) & 0xFFFFFF;
-+        if (cpu_affid == mp_affinity) {
-+            return i;
++    /*
++     * If the CPU doesn't define a GICv3 configuration, probably because
++     * in real hardware it doesn't have one, then we use default values
++     * matching the one used by most Arm CPUs. This applies to:
++     *  cpu->gic_num_lrs
++     *  cpu->gic_vpribits
++     *  cpu->gic_vprebits
++     *  cpu->gic_pribits
++     */
++
++    /*
++     * Note that we can't just use the GICv3CPUState as an opaque pointer
++     * in define_arm_cp_regs_with_opaque(), because when we're called back
++     * it might be with code translated by CPU 0 but run by CPU 1, in
++     * which case we'd get the wrong value.
++     * So instead we define the regs with no ri->opaque info, and
++     * get back to the GICv3CPUState from the CPUARMState.
++     */
++    define_arm_cp_regs(cpu, gicv3_cpuif_reginfo);
++
++    /*
++     * The CPU implementation specifies the number of supported
++     * bits of physical priority. For backwards compatibility
++     * of migration, we have a compat property that forces use
++     * of 8 priority bits regardless of what the CPU really has.
++     */
++    if (gcs->gic->force_8bit_prio) {
++        gcs->pribits = 8;
++    } else {
++        gcs->pribits = cpu->gic_pribits ?: 5;
++    }
++
++    /*
++     * The GICv3 has separate ID register fields for virtual priority
++     * and preemption bit values, but only a single ID register field
++     * for the physical priority bits. The preemption bit count is
++     * always the same as the priority bit count, except that 8 bits
++     * of priority means 7 preemption bits. We precalculate the
++     * preemption bits because it simplifies the code and makes the
++     * parallels between the virtual and physical bits of the GIC
++     * a bit clearer.
++     */
++    gcs->prebits = gcs->pribits;
++    if (gcs->prebits == 8) {
++        gcs->prebits--;
++    }
++    /*
++     * Check that CPU code defining pribits didn't violate
++     * architectural constraints our implementation relies on.
++     */
++    g_assert(gcs->pribits >= 4 && gcs->pribits <= 8);
++
++    /*
++     * gicv3_cpuif_reginfo[] defines ICC_AP*R0_EL1; add definitions
++     * for ICC_AP*R{1,2,3}_EL1 if the prebits value requires them.
++     */
++    if (gcs->prebits >= 6) {
++        define_arm_cp_regs(cpu, gicv3_cpuif_icc_apxr1_reginfo);
++    }
++    if (gcs->prebits == 7) {
++        define_arm_cp_regs(cpu, gicv3_cpuif_icc_apxr23_reginfo);
++    }
++
++    if (arm_feature(&cpu->env, ARM_FEATURE_EL2)) {
++        int j;
++
++        gcs->num_list_regs = cpu->gic_num_lrs ?: 4;
++        gcs->vpribits = cpu->gic_vpribits ?: 5;
++        gcs->vprebits = cpu->gic_vprebits ?: 5;
++
++        /*
++         * Check against architectural constraints: getting these
++         * wrong would be a bug in the CPU code defining these,
++         * and the implementation relies on them holding.
++         */
++        g_assert(gcs->vprebits <= gcs->vpribits);
++        g_assert(gcs->vprebits >= 5 && gcs->vprebits <= 7);
++        g_assert(gcs->vpribits >= 5 && gcs->vpribits <= 8);
++
++        define_arm_cp_regs(cpu, gicv3_cpuif_hcr_reginfo);
++
++        for (j = 0; j < gcs->num_list_regs; j++) {
++            /*
++             * Note that the AArch64 LRs are 64-bit; the AArch32 LRs
++             * are split into two cp15 regs, LR (the low part, with the
++             * same encoding as the AArch64 LR) and LRC (the high part).
++             */
++            ARMCPRegInfo lr_regset[] = {
++                { .name = "ICH_LRn_EL2", .state = ARM_CP_STATE_BOTH,
++                  .opc0 = 3, .opc1 = 4, .crn = 12,
++                  .crm = 12 + (j >> 3), .opc2 = j & 7,
++                  .type = ARM_CP_IO | ARM_CP_NO_RAW,
++                  .access = PL2_RW,
++                  .readfn = ich_lr_read,
++                  .writefn = ich_lr_write,
++                },
++                { .name = "ICH_LRCn_EL2", .state = ARM_CP_STATE_AA32,
++                  .cp = 15, .opc1 = 4, .crn = 12,
++                  .crm = 14 + (j >> 3), .opc2 = j & 7,
++                  .type = ARM_CP_IO | ARM_CP_NO_RAW,
++                  .access = PL2_RW,
++                  .readfn = ich_lr_read,
++                  .writefn = ich_lr_write,
++                },
++            };
++            define_arm_cp_regs(cpu, lr_regset);
++        }
++        if (gcs->vprebits >= 6) {
++            define_arm_cp_regs(cpu, gicv3_cpuif_ich_apxr1_reginfo);
++        }
++        if (gcs->vprebits == 7) {
++            define_arm_cp_regs(cpu, gicv3_cpuif_ich_apxr23_reginfo);
 +        }
 +    }
-+
-+    return -1;
 +}
 +
-+static void arm_gicv3_cpu_update_notifier(Notifier *notifier, void * data)
-+{
-+    GICv3CPUHotplugInfo *gic_info = (GICv3CPUHotplugInfo *)data;
-+    CPUState *cpu = gic_info->cpu;
-+    int gic_cpuif_num;
-+    GICv3State *s;
-+
-+    s = ARM_GICV3_COMMON(gic_info->gic);
-+
-+    /* this shall get us mapped gicv3 cpuif corresponding to mpidr */
-+    gic_cpuif_num = arm_gicv3_get_proc_num(s, cpu);
-+    if (gic_cpuif_num < 0) {
-+        error_report("Failed to associate cpu %d with any GIC cpuif",
-+                     cpu->cpu_index);
-+        abort();
-+    }
-+
-+    /* check if update is for vcpu hot-unplug */
-+    if (qemu_enabled_cpu(cpu)) {
-+        s->cpu[gic_cpuif_num].cpu = NULL;
-+        return;
-+    }
-+
-+    /* re-stitch the gic cpuif to this new cpu */
-+    gicv3_set_gicv3state(cpu, &s->cpu[gic_cpuif_num]);
-+    gicv3_set_cpustate(&s->cpu[gic_cpuif_num], cpu);
-+
-+    /* TODO: initialize the registers info for this newly added cpu */
-+}
-+
- static void arm_gicv3_common_realize(DeviceState *dev, Error **errp)
+ static void gicv3_cpuif_el_change_hook(ARMCPU *cpu, void *opaque)
  {
-     GICv3State *s = ARM_GICV3_COMMON(dev);
-@@ -444,6 +493,8 @@ static void arm_gicv3_common_realize(DeviceState *dev, Error **errp)
-         s->cpu[cpuidx - 1].gicr_typer |= GICR_TYPER_LAST;
+     GICv3CPUState *cs = opaque;
+@@ -2804,131 +2925,23 @@ void gicv3_init_cpuif(GICv3State *s)
+ 
+     for (i = 0; i < s->num_cpu; i++) {
+         ARMCPU *cpu = ARM_CPU(qemu_get_cpu(i));
+-        GICv3CPUState *cs = &s->cpu[i];
+-
+-        /*
+-         * If the CPU doesn't define a GICv3 configuration, probably because
+-         * in real hardware it doesn't have one, then we use default values
+-         * matching the one used by most Arm CPUs. This applies to:
+-         *  cpu->gic_num_lrs
+-         *  cpu->gic_vpribits
+-         *  cpu->gic_vprebits
+-         *  cpu->gic_pribits
+-         */
+-
+-        /* Note that we can't just use the GICv3CPUState as an opaque pointer
+-         * in define_arm_cp_regs_with_opaque(), because when we're called back
+-         * it might be with code translated by CPU 0 but run by CPU 1, in
+-         * which case we'd get the wrong value.
+-         * So instead we define the regs with no ri->opaque info, and
+-         * get back to the GICv3CPUState from the CPUARMState.
+-         *
+-         * These CP regs callbacks can be called from either TCG or HVF code.
+-         */
+-        define_arm_cp_regs(cpu, gicv3_cpuif_reginfo);
+-
+-        /*
+-         * The CPU implementation specifies the number of supported
+-         * bits of physical priority. For backwards compatibility
+-         * of migration, we have a compat property that forces use
+-         * of 8 priority bits regardless of what the CPU really has.
+-         */
+-        if (s->force_8bit_prio) {
+-            cs->pribits = 8;
+-        } else {
+-            cs->pribits = cpu->gic_pribits ?: 5;
+-        }
+-
+-        /*
+-         * The GICv3 has separate ID register fields for virtual priority
+-         * and preemption bit values, but only a single ID register field
+-         * for the physical priority bits. The preemption bit count is
+-         * always the same as the priority bit count, except that 8 bits
+-         * of priority means 7 preemption bits. We precalculate the
+-         * preemption bits because it simplifies the code and makes the
+-         * parallels between the virtual and physical bits of the GIC
+-         * a bit clearer.
+-         */
+-        cs->prebits = cs->pribits;
+-        if (cs->prebits == 8) {
+-            cs->prebits--;
+-        }
+-        /*
+-         * Check that CPU code defining pribits didn't violate
+-         * architectural constraints our implementation relies on.
+-         */
+-        g_assert(cs->pribits >= 4 && cs->pribits <= 8);
+ 
+-        /*
+-         * gicv3_cpuif_reginfo[] defines ICC_AP*R0_EL1; add definitions
+-         * for ICC_AP*R{1,2,3}_EL1 if the prebits value requires them.
+-         */
+-        if (cs->prebits >= 6) {
+-            define_arm_cp_regs(cpu, gicv3_cpuif_icc_apxr1_reginfo);
+-        }
+-        if (cs->prebits == 7) {
+-            define_arm_cp_regs(cpu, gicv3_cpuif_icc_apxr23_reginfo);
+-        }
+-
+-        if (arm_feature(&cpu->env, ARM_FEATURE_EL2)) {
+-            int j;
+-
+-            cs->num_list_regs = cpu->gic_num_lrs ?: 4;
+-            cs->vpribits = cpu->gic_vpribits ?: 5;
+-            cs->vprebits = cpu->gic_vprebits ?: 5;
+-
+-            /* Check against architectural constraints: getting these
+-             * wrong would be a bug in the CPU code defining these,
+-             * and the implementation relies on them holding.
+-             */
+-            g_assert(cs->vprebits <= cs->vpribits);
+-            g_assert(cs->vprebits >= 5 && cs->vprebits <= 7);
+-            g_assert(cs->vpribits >= 5 && cs->vpribits <= 8);
+-
+-            define_arm_cp_regs(cpu, gicv3_cpuif_hcr_reginfo);
+-
+-            for (j = 0; j < cs->num_list_regs; j++) {
+-                /* Note that the AArch64 LRs are 64-bit; the AArch32 LRs
+-                 * are split into two cp15 regs, LR (the low part, with the
+-                 * same encoding as the AArch64 LR) and LRC (the high part).
++        if (qemu_enabled_cpu(CPU(cpu))) {
++            GICv3CPUState *cs = icc_cs_from_env(&cpu->env);
++            gicv3_init_cpu_reginfo(CPU(cpu));
++            if (tcg_enabled() || qtest_enabled()) {
++                /*
++                 * We can only trap EL changes with TCG. However the GIC
++                 * interrupt state only changes on EL changes involving EL2 or
++                 * EL3, so for the non-TCG case this is OK, as EL2 and EL3 can't
++                 * exist.
+                  */
+-                ARMCPRegInfo lr_regset[] = {
+-                    { .name = "ICH_LRn_EL2", .state = ARM_CP_STATE_BOTH,
+-                      .opc0 = 3, .opc1 = 4, .crn = 12,
+-                      .crm = 12 + (j >> 3), .opc2 = j & 7,
+-                      .type = ARM_CP_IO | ARM_CP_NO_RAW,
+-                      .access = PL2_RW,
+-                      .readfn = ich_lr_read,
+-                      .writefn = ich_lr_write,
+-                    },
+-                    { .name = "ICH_LRCn_EL2", .state = ARM_CP_STATE_AA32,
+-                      .cp = 15, .opc1 = 4, .crn = 12,
+-                      .crm = 14 + (j >> 3), .opc2 = j & 7,
+-                      .type = ARM_CP_IO | ARM_CP_NO_RAW,
+-                      .access = PL2_RW,
+-                      .readfn = ich_lr_read,
+-                      .writefn = ich_lr_write,
+-                    },
+-                };
+-                define_arm_cp_regs(cpu, lr_regset);
+-            }
+-            if (cs->vprebits >= 6) {
+-                define_arm_cp_regs(cpu, gicv3_cpuif_ich_apxr1_reginfo);
+-            }
+-            if (cs->vprebits == 7) {
+-                define_arm_cp_regs(cpu, gicv3_cpuif_ich_apxr23_reginfo);
++                arm_register_el_change_hook(cpu, gicv3_cpuif_el_change_hook,
++                                            cs);
++            } else {
++                assert(!arm_feature(&cpu->env, ARM_FEATURE_EL2));
++                assert(!arm_feature(&cpu->env, ARM_FEATURE_EL3));
+             }
+         }
+-        if (tcg_enabled() || qtest_enabled()) {
+-            /*
+-             * We can only trap EL changes with TCG. However the GIC interrupt
+-             * state only changes on EL changes involving EL2 or EL3, so for
+-             * the non-TCG case this is OK, as EL2 and EL3 can't exist.
+-             */
+-            arm_register_el_change_hook(cpu, gicv3_cpuif_el_change_hook, cs);
+-        } else {
+-            assert(!arm_feature(&cpu->env, ARM_FEATURE_EL2));
+-            assert(!arm_feature(&cpu->env, ARM_FEATURE_EL3));
+-        }
+     }
+ }
+diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+index b6f50caf84..67985e4a21 100644
+--- a/hw/intc/arm_gicv3_kvm.c
++++ b/hw/intc/arm_gicv3_kvm.c
+@@ -804,6 +804,10 @@ static void vm_change_state_handler(void *opaque, bool running,
+     }
+ }
+ 
++static void kvm_gicv3_init_cpu_reginfo(CPUState *cs)
++{
++    define_arm_cp_regs(ARM_CPU(cs), gicv3_cpuif_reginfo);
++}
+ 
+ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+ {
+@@ -837,7 +841,7 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+     for (i = 0; i < s->num_cpu; i++) {
+         CPUState *cs = qemu_get_cpu(i);
+         if (qemu_enabled_cpu(cs)) {
+-            define_arm_cp_regs(ARM_CPU(cs), gicv3_cpuif_reginfo);
++            kvm_gicv3_init_cpu_reginfo(cs);
+         }
      }
  
-+    s->cpu_update_notifier.notify = arm_gicv3_cpu_update_notifier;
-+
-     s->itslist = g_ptr_array_new();
- }
+@@ -926,6 +930,7 @@ static void kvm_arm_gicv3_class_init(ObjectClass *klass, void *data)
  
-@@ -451,6 +502,7 @@ static void arm_gicv3_finalize(Object *obj)
- {
-     GICv3State *s = ARM_GICV3_COMMON(obj);
- 
-+    notifier_remove(&s->cpu_update_notifier);
-     g_free(s->redist_region_count);
- }
- 
-diff --git a/hw/intc/arm_gicv3_cpuif_common.c b/hw/intc/arm_gicv3_cpuif_common.c
-index ff1239f65d..381cf2754b 100644
---- a/hw/intc/arm_gicv3_cpuif_common.c
-+++ b/hw/intc/arm_gicv3_cpuif_common.c
-@@ -20,3 +20,8 @@ void gicv3_set_gicv3state(CPUState *cpu, GICv3CPUState *s)
- 
-     env->gicv3state = (void *)s;
- };
-+
-+void gicv3_set_cpustate(GICv3CPUState *s, CPUState *cpu)
-+{
-+    s->cpu = cpu;
-+}
+     agcc->pre_save = kvm_arm_gicv3_get;
+     agcc->post_load = kvm_arm_gicv3_put;
++    agcc->init_cpu_reginfo = kvm_gicv3_init_cpu_reginfo;
+     device_class_set_parent_realize(dc, kvm_arm_gicv3_realize,
+                                     &kgc->parent_realize);
+     resettable_class_set_parent_phases(rc, NULL, kvm_arm_gicv3_reset_hold, NULL,
 diff --git a/hw/intc/gicv3_internal.h b/hw/intc/gicv3_internal.h
-index 29d5cdc1b6..9d4c1209bd 100644
+index 9d4c1209bd..0bed0f6e2a 100644
 --- a/hw/intc/gicv3_internal.h
 +++ b/hw/intc/gicv3_internal.h
-@@ -848,5 +848,6 @@ static inline void gicv3_cache_all_target_cpustates(GICv3State *s)
- }
+@@ -709,6 +709,7 @@ void gicv3_redist_vinvall(GICv3CPUState *cs, uint64_t vptaddr);
  
- void gicv3_set_gicv3state(CPUState *cpu, GICv3CPUState *s);
-+void gicv3_set_cpustate(GICv3CPUState *s, CPUState *cpu);
- 
- #endif /* QEMU_ARM_GICV3_INTERNAL_H */
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index 09a0b2d4f0..f9a748a5a9 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -189,6 +189,7 @@ struct VirtMachineState {
-     PCIBus *bus;
-     char *oem_id;
-     char *oem_table_id;
-+    NotifierList cpuhp_notifiers;
- };
- 
- #define VIRT_ECAM_ID(high) (high ? VIRT_HIGH_PCIE_ECAM : VIRT_PCIE_ECAM)
-diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
-index 4e2fb518e7..97a48f44b9 100644
---- a/include/hw/intc/arm_gicv3_common.h
-+++ b/include/hw/intc/arm_gicv3_common.h
-@@ -280,6 +280,7 @@ struct GICv3State {
-     GICv3CPUState *gicd_irouter_target[GICV3_MAXIRQ];
-     uint32_t gicd_nsacr[DIV_ROUND_UP(GICV3_MAXIRQ, 16)];
- 
-+    Notifier cpu_update_notifier;
-     GICv3CPUState *cpu;
-     /* List of all ITSes connected to this GIC */
-     GPtrArray *itslist;
-@@ -328,6 +329,27 @@ struct ARMGICv3CommonClass {
- 
- void gicv3_init_irqs_and_mmio(GICv3State *s, qemu_irq_handler handler,
-                               const MemoryRegionOps *ops);
-+/**
-+ * Structure used by GICv3 CPU hotplug notifier
-+ */
-+typedef struct GICv3CPUHotplugInfo {
-+    DeviceState *gic; /* GICv3State */
-+    CPUState *cpu;
-+} GICv3CPUHotplugInfo;
-+
-+/**
-+ * gicv3_cpuhp_notifier
-+ *
-+ * Returns CPU hotplug notifier which could be used to update GIC about any
-+ * CPU hot(un)plug events.
-+ *
-+ * Returns: Notifier initialized with CPU Hot(un)plug update function
-+ */
-+static inline Notifier *gicv3_cpuhp_notifier(DeviceState *dev)
-+{
-+    GICv3State *s = ARM_GICV3_COMMON(dev);
-+    return &s->cpu_update_notifier;
-+}
+ void gicv3_redist_send_sgi(GICv3CPUState *cs, int grp, int irq, bool ns);
+ void gicv3_init_cpuif(GICv3State *s);
++void gicv3_init_cpu_reginfo(CPUState *cs);
  
  /**
-  * gicv3_class_name
+  * gicv3_cpuif_update:
+diff --git a/include/hw/intc/arm_gicv3_common.h b/include/hw/intc/arm_gicv3_common.h
+index 97a48f44b9..b5f8ba17ff 100644
+--- a/include/hw/intc/arm_gicv3_common.h
++++ b/include/hw/intc/arm_gicv3_common.h
+@@ -325,6 +325,7 @@ struct ARMGICv3CommonClass {
+ 
+     void (*pre_save)(GICv3State *s);
+     void (*post_load)(GICv3State *s);
++    void (*init_cpu_reginfo)(CPUState *cs);
+ };
+ 
+ void gicv3_init_irqs_and_mmio(GICv3State *s, qemu_irq_handler handler,
 -- 
 2.34.1
 
