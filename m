@@ -2,55 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1007AEA74
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D95C7AEA75
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:35:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql5PW-00049p-1K; Tue, 26 Sep 2023 06:35:22 -0400
+	id 1ql5PX-0004Ld-Gl; Tue, 26 Sep 2023 06:35:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5PR-0003up-M1
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5PS-0003wZ-Fp
  for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:35:18 -0400
 Received: from mr85p00im-zteg06021501.me.com ([17.58.23.183])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5PP-0001Nu-MD
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:35:17 -0400
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5PQ-0001OC-Uh
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:35:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1695724504; bh=DnKjALWbipcz/A/jhfp4bzOPKLhDEKwFH9WXhiPht4w=;
- h=From:To:Subject:Date:Message-Id:MIME-Version;
- b=RQl0NuOxkM4cVHPaheILZrMge3td50qnwYB3zJPJajBp+GmL3LWLX9MLuj+2AdlDy
- X+qPAzeM56RLbsfY9brXTozi9CquIYD0n9BNwO2+/exbh26v4jsjojALAisL+1FdBj
- F9LiUOtVyefnRYgqJljf96xIsJSLGgyA43nGijzgi4gvn8Gh4PvcRo8XewTIn3U1wT
- bQ4iRe8x94ahH+icQebLescDg9qAC2SlsAAxORZpyVU4qJ51bn30EHWao/VrpvMtFZ
- IU1VbVxWG/n7eQbPAC2n9mzeakiw4GtbaevnROVqPnwWBVoczIg9vrUsmyRIq07Ewx
- nve0IiqK5jY6A==
+ t=1695724505; bh=EXTVgrsCo7pbRmkSb7Wom7gNlLXkp7KqE9K6uvSiPFE=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+ b=RLE03LCw8v+wIJKFcUEXtHsSlWY4D64kw1eFAhkSCRnFaUw8DNsBQFF8sYeVi3viD
+ M3EpUcj7jZictfNKxxR8Tvb174qJYcL/pxX72gpGkNUfSW5sX6GfS3Lm3L4wUbBQMq
+ kjyZXa5D928C8AIs8pwHO8GKakn8aZkHOuVDsmiT90Gb4DFOOBh/bb+V+MRx3ijhus
+ taGYU4lYu0aZs7rXFJZyEf+ga5QtSPeG/Quu2aRYCOwYdpcGZtkSG9S0OOIBiuZhzB
+ Chey8Km0AlEvQag46xQ/C2ZqWLDWcRlflUsyWN77tEuU4QgfD9m0WLBw/dYV56DORo
+ mrBzxKtzrJVFA==
 Received: from localhost.localdomain (mr38p00im-dlb-asmtp-mailmevip.me.com
  [17.57.152.18])
- by mr85p00im-zteg06021501.me.com (Postfix) with ESMTPSA id 977A62793EE4;
- Tue, 26 Sep 2023 10:35:02 +0000 (UTC)
+ by mr85p00im-zteg06021501.me.com (Postfix) with ESMTPSA id 5CCF32793E9D;
+ Tue, 26 Sep 2023 10:35:04 +0000 (UTC)
 From: Mads Ynddal <mads@ynddal.dk>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, John Snow <jsnow@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>, Cleber Rosa <crosa@redhat.com>,
- Mads Ynddal <m.ynddal@samsung.com>
-Subject: [PATCH v5 12/14] simpletrace: added simplified Analyzer2 class
-Date: Tue, 26 Sep 2023 12:34:34 +0200
-Message-Id: <20230926103436.25700-13-mads@ynddal.dk>
+ Mads Ynddal <m.ynddal@samsung.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v5 13/14] MAINTAINERS: add maintainer of simpletrace.py
+Date: Tue, 26 Sep 2023 12:34:35 +0200
+Message-Id: <20230926103436.25700-14-mads@ynddal.dk>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230926103436.25700-1-mads@ynddal.dk>
 References: <20230926103436.25700-1-mads@ynddal.dk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: 164nT5YhwYAQYEbQSOj9IVxw1emHv8Ei
-X-Proofpoint-GUID: 164nT5YhwYAQYEbQSOj9IVxw1emHv8Ei
+X-Proofpoint-ORIG-GUID: NZvlN8ggkSbcnZQ4aiJlQV95-ZoZl2oW
+X-Proofpoint-GUID: NZvlN8ggkSbcnZQ4aiJlQV95-ZoZl2oW
 X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
  =?UTF-8?Q?2903e8d5c8f:6.0.425,18.0.816,17.11.62.513.0000000_definitions?=
  =?UTF-8?Q?=3D2022-01-18=5F01:2022-01-14=5F01,2022-01-18=5F01,2021-12-02?=
  =?UTF-8?Q?=5F01_signatures=3D0?=
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  spamscore=0 bulkscore=0
- clxscore=1030 adultscore=0 mlxlogscore=999 phishscore=0 mlxscore=0
+ clxscore=1030 adultscore=0 mlxlogscore=887 phishscore=0 mlxscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2308100000 definitions=main-2309260091
 Received-SPF: pass client-ip=17.58.23.183; envelope-from=mads@ynddal.dk;
@@ -79,163 +81,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mads Ynddal <m.ynddal@samsung.com>
 
-By moving the dynamic argument construction to keyword-arguments,
-we can remove all of the specialized handling, and streamline it.
-If a tracing method wants to access these, they can define the
-kwargs, or ignore it be placing `**kwargs` at the end of the
-function's arguments list.
+In my work to refactor simpletrace.py, I noticed that there's no
+maintainer of it, and has the status of "odd fixes". I'm using it from
+time to time, so I'd like to maintain the script.
 
-Added deprecation warning to Analyzer class to make users aware
-of the Analyzer2 class. No removal date is planned.
+I've added myself as reviewer under "Tracing" to be informed of changes
+that might affect simpletrace.py.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
 ---
- scripts/simpletrace.py | 98 ++++++++++++++++++++++++++++++++----------
- 1 file changed, 75 insertions(+), 23 deletions(-)
+ MAINTAINERS | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/scripts/simpletrace.py b/scripts/simpletrace.py
-index 4136d00600..cef81b0707 100755
---- a/scripts/simpletrace.py
-+++ b/scripts/simpletrace.py
-@@ -12,10 +12,11 @@
- import sys
- import struct
- import inspect
-+import warnings
- from tracetool import read_events, Event
- from tracetool.backend.simple import is_string
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 355b1960ce..81625f036b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3170,6 +3170,7 @@ F: stubs/
  
--__all__ = ['Analyzer', 'process', 'run']
-+__all__ = ['Analyzer', 'Analyzer2', 'process', 'run']
+ Tracing
+ M: Stefan Hajnoczi <stefanha@redhat.com>
++R: Mads Ynddal <mads@ynddal.dk>
+ S: Maintained
+ F: trace/
+ F: trace-events
+@@ -3182,6 +3183,11 @@ F: docs/tools/qemu-trace-stap.rst
+ F: docs/devel/tracing.rst
+ T: git https://github.com/stefanha/qemu.git tracing
  
- # This is the binary format that the QEMU "simple" trace backend
- # emits. There is no specification documentation because the format is
-@@ -130,7 +131,9 @@ def read_trace_records(events, fobj, read_header):
-             yield (event_mapping[event_name], event_name, timestamp_ns, pid) + tuple(args)
- 
- class Analyzer:
--    """A trace file analyzer which processes trace records.
-+    """[Deprecated. Refer to Analyzer2 instead.]
++Simpletrace
++M: Mads Ynddal <mads@ynddal.dk>
++S: Maintained
++F: scripts/simpletrace.py
 +
-+    A trace file analyzer which processes trace records.
- 
-     An analyzer can be passed to run() or process().  The begin() method is
-     invoked, then each trace record is processed, and finally the end() method
-@@ -188,6 +191,11 @@ def _build_fn(self, event):
-             return lambda _, rec: fn(*rec[3:3 + event_argcount])
- 
-     def _process_event(self, rec_args, *, event, event_id, timestamp_ns, pid, **kwargs):
-+        warnings.warn(
-+            "Use of deprecated Analyzer class. Refer to Analyzer2 instead.",
-+            DeprecationWarning,
-+        )
-+
-         if not hasattr(self, '_fn_cache'):
-             # NOTE: Cannot depend on downstream subclasses to have
-             # super().__init__() because of legacy.
-@@ -211,6 +219,56 @@ def __exit__(self, exc_type, exc_val, exc_tb):
-             self.end()
-         return False
- 
-+class Analyzer2(Analyzer):
-+    """A trace file analyzer which processes trace records.
-+
-+    An analyzer can be passed to run() or process().  The begin() method is
-+    invoked, then each trace record is processed, and finally the end() method
-+    is invoked. When Analyzer is used as a context-manager (using the `with`
-+    statement), begin() and end() are called automatically.
-+
-+    If a method matching a trace event name exists, it is invoked to process
-+    that trace record.  Otherwise the catchall() method is invoked.
-+
-+    The methods are called with a set of keyword-arguments. These can be ignored
-+    using `**kwargs` or defined like any keyword-argument.
-+
-+    The following keyword-arguments are available, but make sure to have an
-+    **kwargs to allow for unmatched arguments in the future:
-+        event: Event object of current trace
-+        event_id: The id of the event in the current trace file
-+        timestamp_ns: The timestamp in nanoseconds of the trace
-+        pid: The process id recorded for the given trace
-+
-+    Example:
-+    The following method handles the runstate_set(int new_state) trace event::
-+
-+      def runstate_set(self, new_state, **kwargs):
-+          ...
-+
-+    The method can also explicitly take a timestamp keyword-argument with the
-+    trace event arguments::
-+
-+      def runstate_set(self, new_state, *, timestamp_ns, **kwargs):
-+          ...
-+
-+    Timestamps have the uint64_t type and are in nanoseconds.
-+
-+    The pid can be included in addition to the timestamp and is useful when
-+    dealing with traces from multiple processes:
-+
-+      def runstate_set(self, new_state, *, timestamp_ns, pid, **kwargs):
-+          ...
-+    """
-+
-+    def catchall(self, *rec_args, event, timestamp_ns, pid, event_id, **kwargs):
-+        """Called if no specific method for processing a trace event has been found."""
-+        pass
-+
-+    def _process_event(self, rec_args, *, event, **kwargs):
-+        fn = getattr(self, event.name, self.catchall)
-+        fn(*rec_args, event=event, **kwargs)
-+
- def process(events, log, analyzer, read_header=True):
-     """Invoke an analyzer on each event in a log.
-     Args:
-@@ -278,30 +336,24 @@ def run(analyzer):
-         process(events_fobj, log_fobj, analyzer, read_header=not no_header)
- 
- if __name__ == '__main__':
--    class Formatter(Analyzer):
-+    class Formatter2(Analyzer2):
-         def __init__(self):
--            self.last_timestamp = None
--
--        def catchall(self, event, rec):
--            timestamp = rec[1]
--            if self.last_timestamp is None:
--                self.last_timestamp = timestamp
--            delta_ns = timestamp - self.last_timestamp
--            self.last_timestamp = timestamp
--
--            fields = [event.name, '%0.3f' % (delta_ns / 1000.0),
--                      'pid=%d' % rec[2]]
--            i = 3
--            for type, name in event.args:
--                if is_string(type):
--                    fields.append('%s=%s' % (name, rec[i]))
--                else:
--                    fields.append('%s=0x%x' % (name, rec[i]))
--                i += 1
--            print(' '.join(fields))
-+            self.last_timestamp_ns = None
-+
-+        def catchall(self, *rec_args, event, timestamp_ns, pid, event_id):
-+            if self.last_timestamp_ns is None:
-+                self.last_timestamp_ns = timestamp_ns
-+            delta_ns = timestamp_ns - self.last_timestamp_ns
-+            self.last_timestamp_ns = timestamp_ns
-+
-+            fields = [
-+                f'{name}={r}' if is_string(type) else f'{name}=0x{r:x}'
-+                for r, (type, name) in zip(rec_args, event.args)
-+            ]
-+            print(f'{event.name} {delta_ns / 1000:0.3f} {pid=} ' + ' '.join(fields))
- 
-     try:
--        run(Formatter())
-+        run(Formatter2())
-     except SimpleException as e:
-         sys.stderr.write(str(e) + "\n")
-         sys.exit(1)
+ TPM
+ M: Stefan Berger <stefanb@linux.ibm.com>
+ S: Maintained
 -- 
 2.38.1
 
