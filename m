@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91ACD7AEE0E
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 15:45:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B167AEE11
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 15:47:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql8Ng-0001lw-S9; Tue, 26 Sep 2023 09:45:40 -0400
+	id 1ql8P8-0002yd-I1; Tue, 26 Sep 2023 09:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1ql8NX-0001fb-OL
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:45:36 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ql8P5-0002xn-N8
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:47:08 -0400
+Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1ql8NV-0008Km-Pt
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:45:31 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-57bce354d94so1648330eaf.2
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 06:45:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ql8P3-0000BL-Ie
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:47:07 -0400
+Received: by mail-lf1-x12a.google.com with SMTP id
+ 2adb3069b0e04-5033918c09eso14130337e87.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 06:47:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695735924; x=1696340724; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695736023; x=1696340823; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Sl8mxLVJiK7NolGEP1+tCC/GK2Su/8aOOxdot58kbLM=;
- b=N09YANTnaNpvS7kbdYSTWHKLAnpg1uU5vfRnfF0q3OsZDUY6Mz+RQps4fv4qljOvck
- Kac7W1U/ytffXOW27y3Znuhr3/1AnMab5LW9xMqtymchWxljtRDXYnMStvYDSy/ZWb5g
- wZVWdy8FPLbOnvWpz9xCX2PTx2PTaisW03lOyBzIWRo+QVOxwXFSc3a16tygBRKUjUwu
- yAkwoulna8V2AGVeLJ4htVSFcbmnHHGcRxWFyKX4M2inTzBO+x5n1GW4CxQPimv491Xn
- EBzYwdOC0v+OnPPAh1q40L0AVgL5RT8Pp4tPt3zLQ53jBrvheeH00qpa9Cog5GD4FDI1
- NBUw==
+ bh=CBdJnNg8oJ3UlbN0OeTjzzqqVvDscSG80mH0MUCNic8=;
+ b=imHj/MT6Q4etR00ybSTKfq4BDrKV0Ckm5gkf1lfTo2bR0dFfslonO4RmIg9yIBbFN6
+ W8mhdO/5fqTYJh5oyALv0JzvcO0zba3IHsmfN2h/egnVlrmBtTjxtaBF0nGY4pNjCoRF
+ JvgU8JHOIIx2rk4U9Iy38xIT70rQrOH1UHsyVnGMfxwB1YGvoP955KKLBfK9j6YHT5+4
+ R19cydaxV4D+onypEpuFv5zny14IPUyngKTcyPZZrq06asWgo33M6hUiv6Ub5wW8O9A6
+ UXYa3J6bKijUbd8SNiuycfjdvQD4suaDE3rYiIC9wtQ5fegtAcnv0S83SjPPnqzQ+BTx
+ dbsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695735924; x=1696340724;
+ d=1e100.net; s=20230601; t=1695736023; x=1696340823;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Sl8mxLVJiK7NolGEP1+tCC/GK2Su/8aOOxdot58kbLM=;
- b=G3ubWthTtKlGvpXzjgH29RfxZCPnGL5KWEdDMX2WZDfWCKob+jvBLd4K1gTzDEbBdD
- wmfdMN4k0X9CUYonjLMYIKaGSdYZOn1jDA1brBlo8IJDgBbz80tj4+Epup7Nq8u+1xBM
- qW8TI5llZgD9nAI+WqJhzUIpODhwYo7O31rSkABgMYuqR/Wwiuzkn7As/k9Be2m0Jkzj
- pzluHiFOs5LWiCq04UZ8M4MuM1teEoJjRT7Lxoncp1pgu6LeIh4pMfSuhyuDi3Z3OfUs
- Z6YNWdZ9CwtxWze72PwmyG0As+oeEE3F8oBjGyqAIP7mz2vDxOMfjH6aIBTdnDhQAJN5
- 1wKA==
-X-Gm-Message-State: AOJu0YzDg5Z/bPQfCiMq2cdYJOGxIr34w3O62h2CwBrdV1qbKF/qKcgm
- NVKzy9Fc4ky7estnvNWroVZ9ig+dSE20SRTodnk=
-X-Google-Smtp-Source: AGHT+IGbZQS8NcfdwgAk5Na9IoycGvKbbSZo1lWSM6PpA33WvSdrnCMysB55PWYMnqqhxgALhPuRU9qTg109lKGtpIU=
-X-Received: by 2002:a4a:2a0e:0:b0:56c:c061:a9a8 with SMTP id
- k14-20020a4a2a0e000000b0056cc061a9a8mr7598601oof.0.1695735924452; Tue, 26 Sep
- 2023 06:45:24 -0700 (PDT)
+ bh=CBdJnNg8oJ3UlbN0OeTjzzqqVvDscSG80mH0MUCNic8=;
+ b=oKAZfAc5M4OfbXRpYBtgZ5+IvsV6HlKd6sng7LqG1QYEHPERfpYtwqXyBfhv3ebfn6
+ 77beHKHtzaSOHAm4O08auhnG1Qw/yACaJkzgLqKKxFbKGApN3KXLYDyLbvwYdOSbMM5+
+ Y0IHx8iZupsaPHP7IiAsZ3RTVM4WaAPKi4khN91HfLAfp8Sx2NKVomMWuYkjLPXqPh1K
+ Y2sWeN0foGgfs5kANT/6tMR1ZMYHQgTeV0AVwS4dYd6Kl2A+LvMIDaCaWXLGwUC6r4Ls
+ 1PwfcO7EL2bSfbAsGRxs7ZEpYfgBPoVODMpY4XNcdCDMN7YfC86PjOsR2uSOGMtCRdN+
+ c+Nw==
+X-Gm-Message-State: AOJu0Ywmi8/ImOSdcmP5Gkbd79XFhGOjUD5RVCMB5k384s4wSiBmuNsv
+ 6p3O/BHV/kHlGK8dCJxU3y5VI4tWutMovPLAMIWWZw==
+X-Google-Smtp-Source: AGHT+IE8wcKYfeG8hIqyLgjXoXfBUp0dSzzRvPp1ZFeCudsiqGvUP4bff3ttdRNy11S67YA0BNfm0p+aZKmOMKMC47c=
+X-Received: by 2002:a19:4310:0:b0:4ff:70d2:4512 with SMTP id
+ q16-20020a194310000000b004ff70d24512mr7562277lfa.23.1695736022410; Tue, 26
+ Sep 2023 06:47:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230823085429.20519-1-mads@ynddal.dk>
- <20230823085429.20519-14-mads@ynddal.dk>
- <20230920203744.GM1094271@fedora>
- <FD495C81-077B-4428-8871-D4BE5A6BDBA4@ynddal.dk>
-In-Reply-To: <FD495C81-077B-4428-8871-D4BE5A6BDBA4@ynddal.dk>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Tue, 26 Sep 2023 09:45:13 -0400
-Message-ID: <CAJSP0QU+=KXK8J2-uCPniN7Kc8sKF4tpgCdWKPbijYmtRNPHYQ@mail.gmail.com>
-Subject: Re: [PATCH v4 13/14] MAINTAINERS: add maintainer of simpletrace.py
-To: Mads Ynddal <mads@ynddal.dk>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel <qemu-devel@nongnu.org>, 
- John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
-Content-Type: multipart/alternative; boundary="00000000000068f57a06064349ce"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc29.google.com
+References: <20230926102801.512107-1-andrey.drobyshev@virtuozzo.com>
+ <f27kkumticbgf6m2cvzggtnh5ikcfoexeeo2xs4lrim7muulq6@7kuhh475fffy>
+In-Reply-To: <f27kkumticbgf6m2cvzggtnh5ikcfoexeeo2xs4lrim7muulq6@7kuhh475fffy>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 26 Sep 2023 14:46:44 +0100
+Message-ID: <CAFEAcA85LwsFiBxbDiki6-8FAbmZSFFH7Esf+x8stiPDjww_KA@mail.gmail.com>
+Subject: Re: [PATCH] mailmap: Fix Andrey Drobyshev author email
+To: Eric Blake <eblake@redhat.com>
+Cc: andrey.drobyshev@virtuozzo.com, qemu-devel@nongnu.org, kwolf@redhat.com, 
+ philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,79 +86,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000068f57a06064349ce
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Sep 26, 2023, 06:27 Mads Ynddal <mads@ynddal.dk> wrote:
-
+On Tue, 26 Sept 2023 at 14:40, Eric Blake <eblake@redhat.com> wrote:
 >
-> > You're welcome to be the maintainer. I haven't touched it in years.
+> On Tue, Sep 26, 2023 at 01:28:01PM +0300, andrey.drobyshev@virtuozzo.com wrote:
+> > From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 > >
-> > When you have reviewed future simpletrace.py patches you can either pos=
-t
-> > your Reviewed-by and I'll include them in my tracing pull requests, or
-> > you could send pull requests to the qemu.git maintainer yourself
-> > (requires publishing a GPG key and signing pull request tags).
+> > This fixes authorship of commits 2848289168, 52b10c9c0c as the mailing
+> > list rewrote the "From:" field in the corresponding patches.  See commit
+> > 3bd2608db7 ("maint: Add .mailmap entries for patches claiming list
+> > authorship") for explanation.
 > >
-> > Please let me know which option you prefer.
+> > Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> > ---
+> >  .mailmap | 1 +
+> >  1 file changed, 1 insertion(+)
 >
-> For future patches, I would like to send pull requests myself with a GPG
-> key to
-> get the practice. I can have Klaus Jensen <its@irrelevant.dk> sign my key
-> to
-> get started.
->
+> Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Sounds good.
+Hi Eric -- you wrote commit 3bd2608db72997, which included the
+comment for this bit of .mailmap:
 
-Stefan
++# Next, translate a few commits where mailman rewrote the From: line due
++# to strict SPF, although we prefer to avoid adding more entries like that.
 
+What did you mean by "we prefer to avoid adding more entries" ?
+It reads to me like "don't add more entries even if we get more
+accidental attributed-to-the-list commits" (and I was actually
+thinking about replying to this patch to say "the mailmap file
+says we shouldn't add more of these lines"), but presumably since
+you've reviewed this patch that wasn't the actual intention.
+Maybe the comment could use clarification.
 
-
-> =E2=80=94
-> Mads Ynddal
->
->
->
-
---00000000000068f57a06064349ce
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Tue, Sep 26, 2023, 06:27 Mads Ynddal &lt;<a href=3D=
-"mailto:mads@ynddal.dk">mads@ynddal.dk</a>&gt; wrote:<br></div><blockquote =
-class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid=
-;padding-left:1ex"><br>
-&gt; You&#39;re welcome to be the maintainer. I haven&#39;t touched it in y=
-ears.<br>
-&gt; <br>
-&gt; When you have reviewed future simpletrace.py patches you can either po=
-st<br>
-&gt; your Reviewed-by and I&#39;ll include them in my tracing pull requests=
-, or<br>
-&gt; you could send pull requests to the qemu.git maintainer yourself<br>
-&gt; (requires publishing a GPG key and signing pull request tags).<br>
-&gt; <br>
-&gt; Please let me know which option you prefer.<br>
-<br>
-For future patches, I would like to send pull requests myself with a GPG ke=
-y to <br>
-get the practice. I can have Klaus Jensen &lt;<a href=3D"mailto:its@irrelev=
-ant.dk" target=3D"_blank" rel=3D"noreferrer">its@irrelevant.dk</a>&gt; sign=
- my key to<br>
-get started.<br></blockquote></div></div><div dir=3D"auto"><br></div><div d=
-ir=3D"auto">Sounds good.</div><div dir=3D"auto"><br></div><div dir=3D"auto"=
->Stefan</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div d=
-ir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-<br>
-=E2=80=94<br>
-Mads Ynddal<br>
-<br>
-<br>
-</blockquote></div></div></div>
-
---00000000000068f57a06064349ce--
+thanks
+-- PMM
 
