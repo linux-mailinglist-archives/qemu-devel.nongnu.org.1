@@ -2,90 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27D7F7AF162
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1147AF161
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:55:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlBKb-0007AC-3Y; Tue, 26 Sep 2023 12:54:42 -0400
+	id 1qlBL1-0007PH-GF; Tue, 26 Sep 2023 12:55:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jwd@defmacro.it>)
- id 1qlBKH-00079E-ON; Tue, 26 Sep 2023 12:54:22 -0400
-Received: from out1-smtp.messagingengine.com ([66.111.4.25])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlBKx-0007K2-Jj
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:55:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jwd@defmacro.it>)
- id 1qlBJy-00054n-Nm; Tue, 26 Sep 2023 12:54:04 -0400
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
- by mailout.nyi.internal (Postfix) with ESMTP id E2F955C2642;
- Tue, 26 Sep 2023 12:53:59 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
- by compute4.internal (MEProxy); Tue, 26 Sep 2023 12:53:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defmacro.it; h=
- cc:cc:content-type:content-type:date:date:from:from:in-reply-to
- :in-reply-to:message-id:mime-version:references:reply-to:sender
- :subject:subject:to:to; s=fm2; t=1695747239; x=1695833639; bh=yC
- 7ibexyvBI5MwQBs0b5M1FwVot7kTNft09nB/WcWI8=; b=cZ+n3PFVBMbiQlDOxq
- 5qitIQlIPPln2YDqpd5LxOxEQ+mW6E1TPCBvGdZmSdyBjdCHzzGcttQ2YH2qPMNu
- pkqN4XwpkmE3jlpKdcQBHP5SxQnoizxqAFRahX8H545p2rNu60UgxfROm8MJbbvG
- fEygE9xLeV2A3QkkRCWOkzuVZwzQigROAlnUvH46pYXywW9nEIV3ZgsxbeqpZ1aC
- YuWtgPQz51p5Yp/IG0eQYqeAcRJJ2cL31+mMs1hE4Sz3OX6q9NyoNMACaCM5ZvFK
- Xk28upl7N13M1pE3253HSO7LGC4VcURSl1SAAgCzdTlCTjCJFwFLBQ/gg8kVOgYW
- WCjA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; t=1695747239; x=1695833639; bh=yC7ibexyvBI5M
- wQBs0b5M1FwVot7kTNft09nB/WcWI8=; b=aC0ofFr6nFJMMj8RPjqiUJ9ISg6Bf
- wFxS5Nvo3ldHvCW8nlQ0Zs0/S4RIbc7yrgl0WXtqrYUJBRBuxzEuL5O2IE4DVjwp
- f2prPjrkdj+Fb2VyxlLYJkLEZ6T6v9i9qTCP0tePV+/OvAgzZFWyhktc5x1Nlgqn
- 1jBCSQZIlV6afdabie2ipi2LUfZ3jDpR99h1Uif2iDnVwIb21e6UPRqLE+z3qfqz
- W0GxgU0Hz8BkiyEvtdkXuQOte4twJA0ds8XqAN90Uerg1gueVK6OSTSAwx9qRZnY
- Soa1pWx9/QrqbY2Q7o8IboaPGwJMcIMjC7b9BTh2vrrLkIZNJxLqVWZ7A==
-X-ME-Sender: <xms:pwwTZWPlhmCNmps6N7g_pVQsFO2lvYKZDfIjEUJ6LRtKkr4YqXL06w>
- <xme:pwwTZU-5wOQRTpGd5vgMldOeiK2Fp2jY_REoHXU3LPGVfpLV-EhE4iOV3sGxsXd2j
- 2WwdA3X7QSTPdqGnlk>
-X-ME-Received: <xmr:pwwTZdQ4wNoXcyY1enEiehG93CZzwACDIvCXjmRUW9RzNTzKTmTtqgLJzQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddtgdejjecutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpehffgfhvfevufffjgfkgggtsehttdertddtredtnecuhfhrohhmpeflvghsphgv
- rhcuhggvnhguvghlucffvghvrghnthhivghruceojhifugesuggvfhhmrggtrhhordhith
- eqnecuggftrfgrthhtvghrnhepudfgvdfgvdefiedukeegvddtueekudetjeetvdegueeu
- kedvheeigfekgefghefgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
- hilhhfrhhomhepjhifugesuggvfhhmrggtrhhordhith
-X-ME-Proxy: <xmx:pwwTZWsWOleH4mO1RIHOw55XyMDvw29jJ0RR4ATfvl7GRx-qcvibkw>
- <xmx:pwwTZedxxwT3QyEVt0UvQy_R26P_FsgAxwA3P3XFTF7Rfb3nuMcGmg>
- <xmx:pwwTZa2lGw3nOH-ko8ZdyQgd0Q2r8XHHv2M4JbszE_jeQERJf0aMqQ>
- <xmx:pwwTZd6PWbNly1vnraRBYjICacEeixW4ZdxXVSATY0zpDQtfEEocPg>
-Feedback-ID: i0f41475f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 Sep 2023 12:53:58 -0400 (EDT)
-References: <20230925-fix-local-shadowing-v1-1-3a1172132377@samsung.com>
-User-agent: mu4e 1.10.3; emacs 28.2
-From: Jesper Wendel Devantier <jwd@defmacro.it>
-To: Klaus Jensen <its@irrelevant.dk>
-Cc: Keith Busch <kbusch@kernel.org>, qemu-block@nongnu.org, Markus
- Armbruster <armbru@redhat.com>, Klaus Jensen <k.jensen@samsung.com>,
- qemu-devel@nongnu.org
-Subject: Re: [PATCH] hw/nvme: Clean up local variable shadowing in
- nvme_ns_init()
-Date: Tue, 26 Sep 2023 18:51:12 +0200
-In-reply-to: <20230925-fix-local-shadowing-v1-1-3a1172132377@samsung.com>
-Message-ID: <87jzscswnv.fsf@defmacro.it>
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlBKt-0005FO-2m
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:55:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695747298;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=Zj3q5flgaeqb4qWSO0AKftsTTGLjck96xlxTasXf9m8=;
+ b=YFtUU4LBRphnLt91t05fkPse3hIJljx+lidiMyCg8pIppNxajw56FsofHJb2ZK5wMqPIz2
+ HZlRtCMAe2y49d8API0zlW/nyiOwV6eQ9BsiEHp0xx4WZ099G4lgmJMuLJlDF5uQHwFA8I
+ U/o0hVujc44jV4U3+YoZzUma8q1GH0A=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-20V87Wv1M5KXUOP9m7BrOw-1; Tue, 26 Sep 2023 12:54:56 -0400
+X-MC-Unique: 20V87Wv1M5KXUOP9m7BrOw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-32329974dbdso3716748f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:54:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695747295; x=1696352095;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :content-language:references:cc:to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Zj3q5flgaeqb4qWSO0AKftsTTGLjck96xlxTasXf9m8=;
+ b=ZT+1483pXASI/3Dlknxww9ckxjKC7hROR8nvKzuCQZxVoZGEFRpy1tjkb3HRlKYuT9
+ mzXEwEFVPx4KYcUzSPsgtHOurGPN7PUf21aCjS7M7Ubg2xPrwnBmBKq5Uft0zCbTw51M
+ 9HHYYmpTDtw3BB17rdftPK8pdUzIh00OiRCiIps+crNJ2lUzvm4PGghJjPbGJPsd1xNU
+ jHa3Ddl8GHpVVg0SxQZPu1z6aKAYLFj86ZK02Y9mIvOm6p9C3A1tw9xH3gM6Sjd2Im/k
+ GjgqPIMKfRIwS0Z3mEpNnPQAgXaa7L/E0vG1MYwbCS8gBYfyeszIO9WEwNDlOXg/AUBw
+ oUvQ==
+X-Gm-Message-State: AOJu0YxjH4LtMh9DRhzS3Q1fI/5DZib6mqj3KecoDvKMgSGNwMczQgKG
+ NafoYpRBjt9rgmTet3/zRIC4XjWl2017TZcwIna+qfdS3hNqiqpJlQGkGnBl4g/dnxfGSIANKmB
+ 7+4xkBNURtoXIKP4=
+X-Received: by 2002:a5d:6a46:0:b0:320:bbb:5ab1 with SMTP id
+ t6-20020a5d6a46000000b003200bbb5ab1mr9214616wrw.14.1695747295410; 
+ Tue, 26 Sep 2023 09:54:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8Nqr7O8eoPW+aNmpN8N1KMhzCwrc/kDWaGvBXbHMsbaDF03/FTFKkfqLcrj3YHBIKNTzYhg==
+X-Received: by 2002:a5d:6a46:0:b0:320:bbb:5ab1 with SMTP id
+ t6-20020a5d6a46000000b003200bbb5ab1mr9214587wrw.14.1695747294911; 
+ Tue, 26 Sep 2023 09:54:54 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c73f:600:933b:ca69:5a80:230d?
+ (p200300cbc73f0600933bca695a80230d.dip0.t-ipconnect.de.
+ [2003:cb:c73f:600:933b:ca69:5a80:230d])
+ by smtp.gmail.com with ESMTPSA id
+ f1-20020a5d50c1000000b003142e438e8csm15127431wrt.26.2023.09.26.09.54.53
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Sep 2023 09:54:54 -0700 (PDT)
+Message-ID: <769b577a-65b0-dbfe-3e99-db57cea08529@redhat.com>
+Date: Tue, 26 Sep 2023 18:54:53 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=66.111.4.25; envelope-from=jwd@defmacro.it;
- helo=out1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+To: Ankit Agrawal <ankita@nvidia.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>,
+ "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "ani@anisinha.ca" <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>,
+ Neo Jia <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>,
+ "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>,
+ Vikram Sethi <vsethi@nvidia.com>, Andy Currid <ACurrid@nvidia.com>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ Gavin Shan <gshan@redhat.com>
+References: <20230915024559.6565-1-ankita@nvidia.com>
+ <d09b3df6-74f8-c93b-b26e-59de5b2dd114@redhat.com>
+ <20230915084754.4b49d5c0.alex.williamson@redhat.com>
+ <f129b30b-bd0c-4e30-6be9-384b2b79a26b@redhat.com>
+ <BY5PR12MB3763FA9922B9059DC14CA80DB0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
+ <b67c18d1-a648-81bc-1144-33fb839f2aa3@redhat.com>
+ <BY5PR12MB37636F9E84CF92020769D859B0C3A@BY5PR12MB3763.namprd12.prod.outlook.com>
+Content-Language: en-US
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH v1 0/4] vfio: report NUMA nodes for device memory
+In-Reply-To: <BY5PR12MB37636F9E84CF92020769D859B0C3A@BY5PR12MB3763.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,48 +121,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 26.09.23 16:52, Ankit Agrawal wrote:
+>>>>> Good idea.  Fundamentally the device should not be creating NUMA
+>>>>> nodes, the VM should be configured with NUMA nodes and the device
+>>>>> memory associated with those nodes.
+>>>>
+>>>> +1. That would also make it fly with DIMMs and virtio-mem, where you
+>>>> would want NUMA-less nodes ass well (imagine passing CXL memory to a VM
+>>>> using virtio-mem).
+>>>>
+>>>
+>>> We actually do not add the device memory on the host, instead
+>>> map it into the Qemu VMA using remap_pfn_range(). Please checkout the
+>>> mmap function in vfio-pci variant driver code managing the device.
+>>> https://lore.kernel.org/all/20230915025415.6762-1-ankita@nvidia.com/
+>>> And I think host memory backend would need memory that is added on the
+>>> host.
+>>>
+>>> Moreover since we want to passthrough the entire device memory, the
+>>> -object memory-backend-ram would have to be passed a size that is equal
+>>> to the device memory. I wonder if that would be too much of a trouble
+>>> for an admin (or libvirt) triggering the Qemu process.
+>>>
+>>> Both these items are avoided by exposing the device memory as BAR as in the
+>>> current  implementation (referenced above) since it lets Qemu to naturally
+>>> discover the device memory region and do mmap.
+>>>
+>>
+>> Just to clarify: nNUMA nodes for DIMMs/NVDIMMs/virtio-mem are configured
+>> on the device, not on the memory backend.
+>>
+>> e.g., -device pc-dimm,node=3,memdev=mem1,...
+> 
 
-Klaus Jensen <its@irrelevant.dk> writes:
+Alco CCing Gavin, I remember he once experimented with virtio-mem + 
+multiple memory-less nodes and it was quite working (because of 
+MEM_AFFINITY_HOTPLUGGABLE only on the last node, below).
 
-> From: Klaus Jensen <k.jensen@samsung.com>
->
-> Fix local variable shadowing in nvme_ns_init().
->
-> Reported-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
-> ---
->  hw/nvme/ns.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
-> index 44aba8f4d9cf..0eabcf5cf500 100644
-> --- a/hw/nvme/ns.c
-> +++ b/hw/nvme/ns.c
-> @@ -107,7 +107,7 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
->
->      ns->pif = ns->params.pif;
->
-> -    static const NvmeLBAF lbaf[16] = {
-> +    static const NvmeLBAF defaults[16] = {
->          [0] = { .ds =  9           },
->          [1] = { .ds =  9, .ms =  8 },
->          [2] = { .ds =  9, .ms = 16 },
-> @@ -120,7 +120,7 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
->
->      ns->nlbaf = 8;
->
-> -    memcpy(&id_ns->lbaf, &lbaf, sizeof(lbaf));
-> +    memcpy(&id_ns->lbaf, &defaults, sizeof(defaults));
->
->      for (i = 0; i < ns->nlbaf; i++) {
->          NvmeLBAF *lbaf = &id_ns->lbaf[i];
->
-> ---
-> base-commit: b55e4b9c0525560577384adfc6d30eb0daa8d7be
-> change-id: 20230925-fix-local-shadowing-9606793e8ae9
->
-> Best regards,
->
+> Agreed, but still we will have the aforementioned issues viz.
+> 1. The backing memory for the memory device would need to be allocated
+> on the host. However, we do not add the device memory on the host in this
+> case. Instead the Qemu VMA is mapped to the device memory physical
+> address using remap_pfn_range().
 
-Reviewed-by: Jesper Wendel Devantier <j.devantier@samsung.com>
+I don't see why that would be necessary ...
+
+> 2. The memory device need to be passed an allocation size such that all of
+> the device memory is mapped into the Qemu VMA. This may not be readily
+> available to the admin/libvirt.
+
+... or that. But your proposal roughly looks like what I had in mind, so 
+let's focus on that.
+
+> 
+> Based on the suggestions here, can we consider something like the
+> following?
+> 1. Introduce a new -numa subparam 'devnode', which tells Qemu to mark
+> the node with MEM_AFFINITY_HOTPLUGGABLE in the SRAT's memory affinity
+> structure to make it hotpluggable.
+
+Is that "devnode=on" parameter required? Can't we simply expose any node 
+that does *not* have any boot memory assigned as MEM_AFFINITY_HOTPLUGGABLE?
+
+Right now, with "ordinary", fixed-location memory devices 
+(DIMM/NVDIMM/virtio-mem/virtio-pmem), we create an srat entry that 
+covers the device memory region for these devices with 
+MEM_AFFINITY_HOTPLUGGABLE. We use the highest NUMA node in the machine, 
+which does not quite work IIRC. All applicable nodes that don't have 
+boot memory would need MEM_AFFINITY_HOTPLUGGABLE for Linux to create them.
+
+In your example, which memory ranges would we use for these nodes in SRAT?
+
+> 2. Create several NUMA nodes with 'devnode' which are supposed to be
+> associated with the vfio-pci device.
+> 3. Pass the numa node start and count to associate the nodes created.
+> 
+> So, the command would look something like the following.
+> ...
+>          -numa node,nodeid=2,devnode=on \
+>          -numa node,nodeid=3,devnode=on \
+>          -numa node,nodeid=4,devnode=on \
+>          -numa node,nodeid=5,devnode=on \
+>          -numa node,nodeid=6,devnode=on \
+>          -numa node,nodeid=7,devnode=on \
+>          -numa node,nodeid=8,devnode=on \
+>          -numa node,nodeid=9,devnode=on \
+>          -device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,numa-node-start=2,numa-node-count=8 \
+
+Better an array/list like "numa-nodes=2-9"
+
+... but how would the device actually use these nodes? (which for which?)
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
