@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBC87AEA17
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A5C7AEA18
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:12:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql53N-00032J-U3; Tue, 26 Sep 2023 06:12:29 -0400
+	id 1ql53X-0003kQ-9t; Tue, 26 Sep 2023 06:12:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql53D-0002kj-Cv; Tue, 26 Sep 2023 06:12:20 -0400
+ id 1ql53V-0003ed-CP; Tue, 26 Sep 2023 06:12:37 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql53B-00059b-Ik; Tue, 26 Sep 2023 06:12:18 -0400
+ id 1ql53T-0005Aj-Mx; Tue, 26 Sep 2023 06:12:37 -0400
 Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwVs4r5Nz6K717;
- Tue, 26 Sep 2023 18:11:01 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwWC531Fz6K6h7;
+ Tue, 26 Sep 2023 18:11:19 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.174.16) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:11:57 +0100
+ 15.1.2507.31; Tue, 26 Sep 2023 11:12:15 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,9 +38,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 22/37] hw/acpi: Make _MAT method optional
-Date: Tue, 26 Sep 2023 11:04:21 +0100
-Message-ID: <20230926100436.28284-23-salil.mehta@huawei.com>
+Subject: [PATCH RFC V2 23/37] arm/virt: Release objects for *disabled*
+ possible vCPUs after init
+Date: Tue, 26 Sep 2023 11:04:22 +0100
+Message-ID: <20230926100436.28284-24-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
@@ -75,45 +76,85 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+During machvirt_init(), QOM ARMCPU objects are also pre-created along with the
+corresponding KVM vCPUs in the host for all possible vCPUs. This necessary
+because of the architectural constraint, KVM restricts the deferred creation of
+the KVM vCPUs and VGIC initialization/sizing after VM init. Hence, VGIC is
+pre-sized with possible vCPUs.
 
-The GICC interface on arm64 vCPUs is statically defined in the MADT, and
-doesn't require a _MAT entry. Although the GICC is indicated as present
-by the MADT entry, it can only be used from vCPU sysregs, which aren't
-accessible until hot-add.
+After initialization of the machine is complete disabled possible KVM vCPUs are
+then parked at the per-virt-machine list "kvm_parked_vcpus" and we release the
+QOM ARMCPU objects for the disabled vCPUs. These shall be re-created at the time
+when vCPU is hotplugged again. QOM ARMCPU object is then re-attached with
+corresponding parked KVM vCPU.
 
-Co-developed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Co-developed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Alternatively, we could've never released the QOM CPU objects and kept on
+reusing. This approach might require some modifications of qdevice_add()
+interface to get old ARMCPU object instead of creating a new one for the hotplug
+request.
+
+Each of the above approaches come with their own pros and cons. This prototype
+uses the 1st approach.(suggestions are welcome!)
+
+Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/acpi/cpu.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ hw/arm/virt.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index e1299696d3..217db99538 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -715,11 +715,13 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-             aml_append(dev, method);
- 
-             /* build _MAT object */
--            assert(adevc && adevc->madt_cpu);
--            adevc->madt_cpu(i, arch_ids, madt_buf,
--                            true); /* set enabled flag */
--            aml_append(dev, aml_name_decl("_MAT",
--                aml_buffer(madt_buf->len, (uint8_t *)madt_buf->data)));
-+            if (adevc && adevc->madt_cpu) {
-+                assert(adevc && adevc->madt_cpu);
-+                adevc->madt_cpu(i, arch_ids, madt_buf,
-+                                true); /* set enabled flag */
-+                aml_append(dev, aml_name_decl("_MAT",
-+                    aml_buffer(madt_buf->len, (uint8_t *)madt_buf->data)));
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index f1bee569d5..3b068534a8 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -1965,6 +1965,7 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+ {
+     CPUArchIdList *possible_cpus = vms->parent.possible_cpus;
+     int max_cpus = MACHINE(vms)->smp.max_cpus;
++    MachineState *ms = MACHINE(vms);
+     bool aarch64, steal_time;
+     CPUState *cpu;
+     int n;
+@@ -2025,6 +2026,37 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+             }
+         }
+     }
++
++    if (kvm_enabled() || tcg_enabled()) {
++        for (n = 0; n < possible_cpus->len; n++) {
++            cpu = qemu_get_possible_cpu(n);
++
++            /*
++             * Now, GIC has been sized with possible CPUs and we dont require
++             * disabled vCPU objects to be represented in the QOM. Release the
++             * disabled ARMCPU objects earlier used during init for pre-sizing.
++             *
++             * We fake to the guest through ACPI about the presence(_STA.PRES=1)
++             * of these non-existent vCPUs at VMM/qemu and present these as
++             * disabled vCPUs(_STA.ENA=0) so that they cant be used. These vCPUs
++             * can be later added to the guest through hotplug exchanges when
++             * ARMCPU objects are created back again using 'device_add' QMP
++             * command.
++             */
++            /*
++             * RFC: Question: Other approach could've been to keep them forever
++             * and release it only once when qemu exits as part of finalize or
++             * when new vCPU is hotplugged. In the later old could be released
++             * for the newly created object for the same vCPU?
++             */
++            if (!qemu_enabled_cpu(cpu)) {
++                CPUArchId *cpu_slot;
++                cpu_slot = virt_find_cpu_slot(ms, cpu->cpu_index);
++                cpu_slot->cpu = NULL;
++                object_unref(OBJECT(cpu));
 +            }
-             g_array_free(madt_buf, true);
++        }
++    }
+ }
  
-             if (CPU(arch_ids->cpus[i].cpu) != first_cpu) {
+ static void virt_cpu_set_properties(Object *cpuobj, const CPUArchId *cpu_slot,
 -- 
 2.34.1
 
