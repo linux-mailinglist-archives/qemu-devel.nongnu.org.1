@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1506B7AE9FE
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C27C7AE9FB
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:09:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql4zx-0001Dh-39; Tue, 26 Sep 2023 06:08:57 -0400
+	id 1ql50X-0001kl-O4; Tue, 26 Sep 2023 06:09:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql4zg-0000Um-Tm; Tue, 26 Sep 2023 06:08:40 -0400
+ id 1ql4zx-0001K9-OA; Tue, 26 Sep 2023 06:08:58 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql4zf-0004ID-DW; Tue, 26 Sep 2023 06:08:40 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwQf2xDXz6K62N;
- Tue, 26 Sep 2023 18:07:22 +0800 (CST)
+ id 1ql4zw-0004PG-9P; Tue, 26 Sep 2023 06:08:57 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwLg1mkpz6J7s5;
+ Tue, 26 Sep 2023 18:03:55 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.174.16) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:08:17 +0100
+ 15.1.2507.31; Tue, 26 Sep 2023 11:08:36 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,9 +38,9 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 10/37] arm/acpi: Enable ACPI support for vcpu hotplug
-Date: Tue, 26 Sep 2023 11:04:09 +0100
-Message-ID: <20230926100436.28284-11-salil.mehta@huawei.com>
+Subject: [PATCH RFC V2 11/37] hw/acpi: Add ACPI CPU hotplug init stub
+Date: Tue, 26 Sep 2023 11:04:10 +0100
+Message-ID: <20230926100436.28284-12-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
@@ -75,49 +75,32 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ACPI is required to interface QEMU with the guest. Roughly falls into below
-cases,
+ACPI CPU hotplug related initialization should only happend if ACPI_CPU_HOTPLUG
+support has been enabled for particular architecture. Add cpu_hotplug_hw_init()
+stub to avoid compilation break.
 
-1. Convey the possible vcpus config at the machine init time to the guest
-   using various DSDT tables like MADT etc.
-2. Convey vcpu hotplug events to guest(using GED)
-3. Assist in evaluation of various ACPI methods(like _EVT, _STA, _OST, _EJ0,
-   _MAT etc.)
-4. Provides ACPI cpu hotplug state and 12 Byte memory mapped cpu hotplug
-   control register interface to the OSPM/guest corresponding to each possible
-   vcpu. The register interface consists of various R/W fields and their
-   handling operations. These are called when ever register fields or memory
-   regions are accessed(i.e. read or written) by OSPM when ever it evaluates
-   various ACPI methods.
-
-Note: lot of this framework code is inherited from the changes already done for
-      x86 but still some minor changes are required to make it compatible with
-      ARM64.)
-
-This patch enables the ACPI support for virtual cpu hotplug. ACPI changes
-required will follow in subsequent patches.
-
-Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/arm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-index 7e68348440..dae06158cd 100644
---- a/hw/arm/Kconfig
-+++ b/hw/arm/Kconfig
-@@ -29,6 +29,7 @@ config ARM_VIRT
-     select ACPI_HW_REDUCED
-     select ACPI_APEI
-     select ACPI_VIOT
-+    select ACPI_CPU_HOTPLUG
-     select VIRTIO_MEM_SUPPORTED
-     select ACPI_CXL
-     select ACPI_HMAT
+diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
+index 3fc4b14c26..c6c61bb9cd 100644
+--- a/hw/acpi/acpi-cpu-hotplug-stub.c
++++ b/hw/acpi/acpi-cpu-hotplug-stub.c
+@@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
+     return;
+ }
+ 
++void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
++                         CPUHotplugState *state, hwaddr base_addr)
++{
++    return;
++}
++
+ void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
+ {
+     return;
 -- 
 2.34.1
 
