@@ -2,83 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A397AEC69
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 845E07AEC7F
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:21:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql70f-000269-8g; Tue, 26 Sep 2023 08:17:49 -0400
+	id 1ql72i-0005oa-Bu; Tue, 26 Sep 2023 08:19:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1ql709-0001FC-N9
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:17:17 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1ql706-0001hd-2G
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:17:16 -0400
-Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8Cx5_HHyxJl4bEsAA--.19737S3;
- Tue, 26 Sep 2023 20:17:11 +0800 (CST)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dx+y7GyxJlNrwSAA--.1887S2; 
- Tue, 26 Sep 2023 20:17:10 +0800 (CST)
-Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
-To: Salil Mehta <salil.mehta@huawei.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: Bernhard Beschow <shentey@gmail.com>, Salil Mehta
- <salil.mehta@opnsrc.net>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Song Gao <gaosong@loongson.cn>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- "wangyanan (Y)" <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>
-References: <cover.1695697701.git.lixianglai@loongson.cn>
- <c2ab409710f5e0f0346727b47aaabd14537d45b8.1695697701.git.lixianglai@loongson.cn>
- <17a09b8ab65542be8561cb0480dae6bd@huawei.com>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <3922235e-4774-c3dc-64dc-2fb8d580b32d@loongson.cn>
-Date: Tue, 26 Sep 2023 20:17:10 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql728-0005aQ-54
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:19:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql726-00024K-Gx
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:19:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695730756;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=i3EI0b8OYFmniHw/DNbYm16fTbRAlTjGVBqXhAO0Gw4=;
+ b=Nx6819qO+AU3ZeGceHuNhXrPVvvuHtT6EtpotlwBfUnVuGtJHbNjpAvG8gzzCWt/tfjP/r
+ 19gEA621jU7Ydb88KK8riqUqdzdg8HV/5Ojvh7o+9Rlkvl7PH8pStWMCohryQaBb7x+0sf
+ pC4RYncjzpBlnHBXFyzg8uP1zF+gfrw=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-141-0FlIHNBPOZGwsF6dGQ-Pgw-1; Tue, 26 Sep 2023 08:19:14 -0400
+X-MC-Unique: 0FlIHNBPOZGwsF6dGQ-Pgw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 71BFE185A79C;
+ Tue, 26 Sep 2023 12:19:14 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4520E492C37;
+ Tue, 26 Sep 2023 12:19:14 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3465A21E6900; Tue, 26 Sep 2023 14:19:13 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Laurent Vivier <laurent@vivier.eu>,  qemu-devel@nongnu.org,
+ =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: Re: [PATCH] m68k: Silence -Wshadow=local warnings in the m68k code
+References: <20230925185603.106945-1-thuth@redhat.com>
+Date: Tue, 26 Sep 2023 14:19:13 +0200
+In-Reply-To: <20230925185603.106945-1-thuth@redhat.com> (Thomas Huth's message
+ of "Mon, 25 Sep 2023 20:56:03 +0200")
+Message-ID: <87jzsd3z5q.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <17a09b8ab65542be8561cb0480dae6bd@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8Dx+y7GyxJlNrwSAA--.1887S2
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3GF1fArW5Zr1rKF48Xw48KrX_yoWxuFyrpa
- 9xAF4a9rWDXr4UZ3WSqa42yas8Xw4kG34xZ397Kr9aka4jk3s3Cr4Yga1UZFy2yw1IgF4x
- ur1Yg3Wku3W5AFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
- AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
- tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
- 8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
- r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_GFv_Wrylx2IqxVAqx4xG67
- AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
- rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14
- v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
- JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUxhiSDU
- UUU
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,183 +79,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi  Salil Mehta via :
+Thomas Huth <thuth@redhat.com> writes:
 
-> Hi Xianglai,
-> FYI. RFC V2 is out and you can now drop the arch agnostic patches from
-> your patch-set. Please check the details in the cover letter which one
-> you need to pick and rebase from:
+> Rename the innermost variables to make the code compile
+> without warnings when using -Wshadow=local.
 >
-> https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/T/#t
->
-> I am planning to float the architecture agnostic patch-set within this
-> week which will have same patches and in same order as mentioned in
-> the cover letter. This will untie the development across different
-> architectures.
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
+Clashes with patches from Philippe and Laurent:
 
-Very Good!
+    [PATCH v2 05/22] target/m68k: Clean up local variable shadowing
+    [PATCH] disas/m68k: clean up local variable shadowing
 
-Looking forward to the release of your architecture-independent patches.
-
-I will remove the first two patches in the next version.
-
-Thanks,
-
-Xianglai.
-
-
->
-> Many thanks
-> Salil.
->
->> From: xianglai li <lixianglai@loongson.cn>
->> Sent: Tuesday, September 26, 2023 10:54 AM
->> To: qemu-devel@nongnu.org
->> Cc: Bernhard Beschow <shentey@gmail.com>; Salil Mehta
->> <salil.mehta@opnsrc.net>; Salil Mehta <salil.mehta@huawei.com>; Xiaojuan
->> Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael S.
->> Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani Sinha
->> <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
->> Henderson <richard.henderson@linaro.org>; Eduardo Habkost
->> <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
->> Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
->> <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>; Peter
->> Xu <peterx@redhat.com>; David Hildenbrand <david@redhat.com>; Bibo Mao
->> <maobibo@loongson.cn>
->> Subject: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
->>
->> CPUs Control device(\\_SB.PCI0) register interface for the x86 arch
->> is based on PCI and is IO port based and hence existing cpus AML code
->> assumes _CRS objects would evaluate to a system resource which describes
->> IO Port address.
->> But on Loongarch arch CPUs control device(\\_SB.PRES) register interface
->> is memory-mapped hence _CRS object should evaluate to system resource
->> which describes memory-mapped base address.
->>
->> This cpus AML code change updates the existing interface of the build cpus
->> AML
->> function to accept both IO/MEMORY type regions and update the _CRS object
->> correspondingly.
->>
->> Co-authored-by: "Bernhard Beschow" <shentey@gmail.com>
->> Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
->> Co-authored-by: "Salil Mehta" <salil.mehta@huawei.com>
->> Cc: "Bernhard Beschow" <shentey@gmail.com>
->> Cc: "Salil Mehta" <salil.mehta@huawei.com>
->> Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
->> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
->> Cc: Song Gao <gaosong@loongson.cn>
->> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->> Cc: Igor Mammedov <imammedo@redhat.com>
->> Cc: Ani Sinha <anisinha@redhat.com>
->> Cc: Paolo Bonzini <pbonzini@redhat.com>
->> Cc: Richard Henderson <richard.henderson@linaro.org>
->> Cc: Eduardo Habkost <eduardo@habkost.net>
->> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
->> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
->> Cc: Yanan Wang <wangyanan55@huawei.com>
->> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
->> Cc: Peter Xu <peterx@redhat.com>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Bibo Mao <maobibo@loongson.cn>
->> Signed-off-by: xianglai li <lixianglai@loongson.cn>
->> ---
->>   hw/acpi/cpu.c         | 20 +++++++++++++++-----
->>   hw/i386/acpi-build.c  |  3 ++-
->>   include/hw/acpi/cpu.h |  5 +++--
->>   3 files changed, 20 insertions(+), 8 deletions(-)
->>
->> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
->> index 5bad983928..0afa04832e 100644
->> --- a/hw/acpi/cpu.c
->> +++ b/hw/acpi/cpu.c
->> @@ -6,6 +6,7 @@
->>   #include "qapi/qapi-events-acpi.h"
->>   #include "trace.h"
->>   #include "sysemu/numa.h"
->> +#include "hw/acpi/cpu_hotplug.h"
->>
->>   #define OVMF_CPUHP_SMI_CMD 4
->>
->> @@ -332,9 +333,10 @@ const VMStateDescription vmstate_cpu_hotplug = {
->>   #define CPU_FW_EJECT_EVENT "CEJF"
->>
->>   void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures
->> opts,
->> -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
->> +                    build_madt_cpu_fn build_madt_cpu, hwaddr mmap_io_base,
->>                       const char *res_root,
->> -                    const char *event_handler_method)
->> +                    const char *event_handler_method,
->> +                    AmlRegionSpace rs)
->>   {
->>       Aml *ifctx;
->>       Aml *field;
->> @@ -359,14 +361,22 @@ void build_cpus_aml(Aml *table, MachineState
->> *machine, CPUHotplugFeatures opts,
->>           aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
->>
->>           crs = aml_resource_template();
->> -        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
->> +        if (rs == AML_SYSTEM_IO) {
->> +            aml_append(crs, aml_io(AML_DECODE16, mmap_io_base,
->> mmap_io_base, 1,
->>                                  ACPI_CPU_HOTPLUG_REG_LEN));
->> +        } else {
->> +            aml_append(crs, aml_memory32_fixed(mmap_io_base,
->> +                               ACPI_CPU_HOTPLUG_REG_LEN, AML_READ_WRITE));
->> +        }
->> +
->>           aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
->>
->> +        g_assert(rs == AML_SYSTEM_IO || rs == AML_SYSTEM_MEMORY);
->>           /* declare CPU hotplug MMIO region with related access fields */
->>           aml_append(cpu_ctrl_dev,
->> -            aml_operation_region("PRST", AML_SYSTEM_IO, aml_int(io_base),
->> -                                 ACPI_CPU_HOTPLUG_REG_LEN));
->> +            aml_operation_region("PRST", rs,
->> +                                         aml_int(mmap_io_base),
->> +                                         ACPI_CPU_HOTPLUG_REG_LEN));
->>
->>           field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
->>                             AML_WRITE_AS_ZEROS);
->> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
->> index 863a939210..7016205d15 100644
->> --- a/hw/i386/acpi-build.c
->> +++ b/hw/i386/acpi-build.c
->> @@ -1550,7 +1550,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->>               .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
->>           };
->>           build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
->> -                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02");
->> +                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02",
->> +                       AML_SYSTEM_IO);
->>       }
->>
->>       if (pcms->memhp_io_base && nr_mem) {
->> diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
->> index bc901660fb..601f644e57 100644
->> --- a/include/hw/acpi/cpu.h
->> +++ b/include/hw/acpi/cpu.h
->> @@ -60,9 +60,10 @@ typedef void (*build_madt_cpu_fn)(int uid, const
->> CPUArchIdList *apic_ids,
->>                                     GArray *entry, bool force_enabled);
->>
->>   void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures
->> opts,
->> -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
->> +                    build_madt_cpu_fn build_madt_cpu, hwaddr mmap_io_base,
->>                       const char *res_root,
->> -                    const char *event_handler_method);
->> +                    const char *event_handler_method,
->> +                    AmlRegionSpace rs);
->>
->>   void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList
->> ***list);
->>
->> --
->> 2.39.1
->>
+You guys figure out how to combine them, please :)
 
 
