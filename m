@@ -2,72 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9157AF56C
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 22:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653037AF571
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 22:42:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlEs8-0007sM-PL; Tue, 26 Sep 2023 16:41:32 -0400
+	id 1qlEsN-0007u0-F9; Tue, 26 Sep 2023 16:41:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlEs6-0007rs-H5
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:41:30 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qlEsL-0007th-R3
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:41:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlEs3-0002qb-KR
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:41:30 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 03ADA6075A;
- Tue, 26 Sep 2023 23:41:24 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
- [2a02:6b8:b081:b41d::1:39])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id MfWkDs0OkmI0-nmfuOQx7; Tue, 26 Sep 2023 23:41:23 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695760883;
- bh=NANvJLQMjCj6I4VeCgW5kxz0erBdJrjdFIUVeL1Mu/E=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=ZUMO24QT5+zJD5K/kQLRA32N/esczDZXi7LJZuA21bZbFJfkNkP9YU1IgL4w/knNY
- OiA4zjKTztaJQqdm4MgETvd/Sz4fDq1l9p8w9aC4JmbdQ5eXurQQzy8e/589T+dXJT
- 14NrFrRDBlEdzuqAAsRI6HyB8C3an8pRZCyZGmXY=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <f7ecb5e2-46d1-3e54-39f8-48ea2f845991@yandex-team.ru>
-Date: Tue, 26 Sep 2023 23:41:22 +0300
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qlEsJ-00030K-Sz
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:41:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695760903;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=i/biLNNzqaH6G/kJm5JZ0C6gIrsItYoU4jKbt/w5d4o=;
+ b=PXcmX9+KiNo9q8NA/6j+BlqhBfkSVcSYDJnwYtxfPVmzfVm8K2Qjv0DI0gIV3ZOwIlW992
+ l18rp689AkNcrsHVw7PetMyv8kUfca61EClBnnUcQQ2xYCUpd9PL4D2fU9kxVH1kTEth0k
+ bwPeu0OP9n7qxfwaunTzie4FBrL4sac=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-517-O-Fn9wkDMiWyJ85e4If5yg-1; Tue, 26 Sep 2023 16:41:39 -0400
+X-MC-Unique: O-Fn9wkDMiWyJ85e4If5yg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B9BC800045;
+ Tue, 26 Sep 2023 20:41:38 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.46])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 64F0B2156702;
+ Tue, 26 Sep 2023 20:41:37 +0000 (UTC)
+Date: Tue, 26 Sep 2023 16:41:35 -0400
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, peter.maydell@linaro.org,
+ yc-core@yandex-team.ru, davydov-max@yandex-team.ru,
+ alex.chen@huawei.com, euler.robot@huawei.com, Fam Zheng <fam@euphon.net>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "open list:NVMe Block Driver" <qemu-block@nongnu.org>
+Subject: Re: [PATCH v2 6/8] block/nvme: nvme_process_completion() fix bound
+ for cid
+Message-ID: <20230926204135.GA409047@fedora>
+References: <20230926201532.221152-1-vsementsov@yandex-team.ru>
+ <20230926201532.221152-7-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 2/2] i386/a-b-bootblock: zero the first byte of each page
- on start
-Content-Language: en-US
-To: Daniil Tatianin <d-tatianin@yandex-team.ru>,
- Juan Quintela <quintela@redhat.com>
-Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- qemu-devel@nongnu.org, yc-core@yandex-team.ru
-References: <20230907192944.1609099-1-d-tatianin@yandex-team.ru>
- <20230907192944.1609099-3-d-tatianin@yandex-team.ru>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230907192944.1609099-3-d-tatianin@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="QfvlyoqgmMJ8pnDb"
+Content-Disposition: inline
+In-Reply-To: <20230926201532.221152-7-vsementsov@yandex-team.ru>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -79,100 +85,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07.09.23 22:29, Daniil Tatianin wrote:
-> The migration qtest all the way up to this point used to work by sheer
-> luck relying on the contents of all pages from 1MiB to 100MiB to contain
-> the same one value in the first byte initially.
-> 
-> This easily breaks if we reduce the amount of RAM for the test instances
-> from 150MiB to e.g 110MiB since that makes SeaBIOS dirty some of the
-> pages starting at about 0x5dd2000 (~93 MiB) as it reuses those for the
-> HighMemory allocator since commit dc88f9b72df ("malloc: use large
-> ZoneHigh when there is enough memory").
-> 
-> This would result in the following errors:
->      12/60 qemu:qtest+qtest-x86_64 / qtest-x86_64/migration-test                 ERROR           2.74s   killed by signal 6 SIGABRT
->      stderr:
->      Memory content inconsistency at 5dd2000 first_byte = cc last_byte = cb current = 9e hit_edge = 1
->      Memory content inconsistency at 5dd3000 first_byte = cc last_byte = cb current = 89 hit_edge = 1
->      Memory content inconsistency at 5dd4000 first_byte = cc last_byte = cb current = 23 hit_edge = 1
->      Memory content inconsistency at 5dd5000 first_byte = cc last_byte = cb current = 31 hit_edge = 1
->      Memory content inconsistency at 5dd6000 first_byte = cc last_byte = cb current = 70 hit_edge = 1
->      Memory content inconsistency at 5dd7000 first_byte = cc last_byte = cb current = ff hit_edge = 1
->      Memory content inconsistency at 5dd8000 first_byte = cc last_byte = cb current = 54 hit_edge = 1
->      Memory content inconsistency at 5dd9000 first_byte = cc last_byte = cb current = 64 hit_edge = 1
->      Memory content inconsistency at 5dda000 first_byte = cc last_byte = cb current = 1d hit_edge = 1
->      Memory content inconsistency at 5ddb000 first_byte = cc last_byte = cb current = 1a hit_edge = 1
->      and in another 26 pages**
->      ERROR:../tests/qtest/migration-test.c:300:check_guests_ram: assertion failed: (bad == 0)
-> 
-> Fix this by always zeroing the first byte of each page in the range so
-> that we get consistent results no matter the initial contents.
-> 
-> Fixes: ea0c6d62391 ("test: Postcopy")
-> Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+
+--QfvlyoqgmMJ8pnDb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, Sep 26, 2023 at 11:15:30PM +0300, Vladimir Sementsov-Ogievskiy wrot=
+e:
+> NVMeQueuePair::reqs has length NVME_NUM_REQS, which less than
+> NVME_QUEUE_SIZE by 1.
+>=20
+> Fixes: 1086e95da17050 ("block/nvme: switch to a NVMeRequest freelist")
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->   tests/migration/i386/a-b-bootblock.S |  9 +++++++++
->   tests/migration/i386/a-b-bootblock.h | 16 ++++++++--------
->   2 files changed, 17 insertions(+), 8 deletions(-)
-> 
-> diff --git a/tests/migration/i386/a-b-bootblock.S b/tests/migration/i386/a-b-bootblock.S
-> index 036216e4a7..6bb9999d60 100644
-> --- a/tests/migration/i386/a-b-bootblock.S
-> +++ b/tests/migration/i386/a-b-bootblock.S
-> @@ -44,6 +44,15 @@ start:             # at 0x7c00 ?
->   
->           # bl keeps a counter so we limit the output speed
->           mov $0, %bl
-> +
-> +pre_zero:
-> +        mov $TEST_MEM_START,%eax
-> +do_zero:
-> +        movb $0, (%eax)
-> +        add $4096,%eax
-> +        cmp $TEST_MEM_END,%eax
-> +        jl do_zero
-> +
->   mainloop:
->           mov $TEST_MEM_START,%eax
->   innerloop:
-> diff --git a/tests/migration/i386/a-b-bootblock.h b/tests/migration/i386/a-b-bootblock.h
-> index b7b0fce2ee..5b523917ce 100644
-> --- a/tests/migration/i386/a-b-bootblock.h
-> +++ b/tests/migration/i386/a-b-bootblock.h
-> @@ -4,18 +4,18 @@
->    * the header and the assembler differences in your patch submission.
->    */
->   unsigned char x86_bootsect[] = {
-> -  0xfa, 0x0f, 0x01, 0x16, 0x78, 0x7c, 0x66, 0xb8, 0x01, 0x00, 0x00, 0x00,
-> +  0xfa, 0x0f, 0x01, 0x16, 0x8c, 0x7c, 0x66, 0xb8, 0x01, 0x00, 0x00, 0x00,
->     0x0f, 0x22, 0xc0, 0x66, 0xea, 0x20, 0x7c, 0x00, 0x00, 0x08, 0x00, 0x00,
->     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe4, 0x92, 0x0c, 0x02,
->     0xe6, 0x92, 0xb8, 0x10, 0x00, 0x00, 0x00, 0x8e, 0xd8, 0x66, 0xb8, 0x41,
->     0x00, 0x66, 0xba, 0xf8, 0x03, 0xee, 0xb3, 0x00, 0xb8, 0x00, 0x00, 0x10,
-> -  0x00, 0xfe, 0x00, 0x05, 0x00, 0x10, 0x00, 0x00, 0x3d, 0x00, 0x00, 0x40,
-> -  0x06, 0x7c, 0xf2, 0xfe, 0xc3, 0x80, 0xe3, 0x3f, 0x75, 0xe6, 0x66, 0xb8,
-> -  0x42, 0x00, 0x66, 0xba, 0xf8, 0x03, 0xee, 0xeb, 0xdb, 0x8d, 0x76, 0x00,
-> -  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00,
-> -  0x00, 0x9a, 0xcf, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xcf, 0x00,
-> -  0x27, 0x00, 0x60, 0x7c, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> -  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +  0x00, 0xc6, 0x00, 0x00, 0x05, 0x00, 0x10, 0x00, 0x00, 0x3d, 0x00, 0x00,
-> +  0x40, 0x06, 0x7c, 0xf1, 0xb8, 0x00, 0x00, 0x10, 0x00, 0xfe, 0x00, 0x05,
-> +  0x00, 0x10, 0x00, 0x00, 0x3d, 0x00, 0x00, 0x40, 0x06, 0x7c, 0xf2, 0xfe,
-> +  0xc3, 0x80, 0xe3, 0x3f, 0x75, 0xe6, 0x66, 0xb8, 0x42, 0x00, 0x66, 0xba,
-> +  0xf8, 0x03, 0xee, 0xeb, 0xdb, 0x8d, 0x76, 0x00, 0x00, 0x00, 0x00, 0x00,
-> +  0x00, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00, 0x00, 0x9a, 0xcf, 0x00,
-> +  0xff, 0xff, 0x00, 0x00, 0x00, 0x92, 0xcf, 0x00, 0x27, 0x00, 0x74, 0x7c,
->     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
->     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
->     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+>=20
+> Cc: stefanha@redhat.com
+> Cc: alex.chen@huawei.com
+> Cc: euler.robot@huawei.com
+>=20
+> Note, that there was similar patch in the past:
+>  https://patchew.org/QEMU/20201208144452.91172-1-alex.chen@huawei.com/
+> I still think, that using NVME_NUM_REQS is better here.
+>=20
+>  block/nvme.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
 
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-I understand the idea of patch, but don't follow why and how this boot sector is changed. Could you note it in commit message?
+--QfvlyoqgmMJ8pnDb
+Content-Type: application/pgp-signature; name="signature.asc"
 
--- 
-Best regards,
-Vladimir
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUTQf8ACgkQnKSrs4Gr
+c8j2cAf+PYfCemokwzt6n5htZfTyaN1FQxRz5augYhQv/LQ2mV0oERr1h6xe/unh
+rmBj5KrPq1ufYJ3IE+UdXG7dlRaOwZV+kx/Cpg7NHWIsmR914IrsExGThTNC/M6I
+VfWhz0dj92MLbLEU1myYjG2KXmwBubSRQpHsyVXIBn6wV4b9dicV6af807sHiKCS
+g03lk19KLdRby4jdighwuQjn7qH3+cujvwH46EuEOo0qstcXqXL1dW4dIIcO0Hff
+Zv82D17/2gtDvSKVlcctxJSqeRh2x6hiO928yjQliWsMsQx4s5nFuLZXWB6HoDYA
+5ZOXdZYxusbk1zfFjuAJtjDoeKoxcw==
+=9xhI
+-----END PGP SIGNATURE-----
+
+--QfvlyoqgmMJ8pnDb--
 
 
