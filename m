@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BBC7AF388
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 21:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6797AF38C
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 21:00:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlDHm-00016W-Ew; Tue, 26 Sep 2023 14:59:55 -0400
+	id 1qlDI6-0001Jz-Kk; Tue, 26 Sep 2023 15:00:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlDHO-0000cd-PG
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:59:31 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlDHU-00014Y-7P
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:59:38 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlDHN-0003AK-7d
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:59:30 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlDHS-0003BZ-Jf
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:59:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695754768;
+ s=mimecast20190719; t=1695754773;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aTbdvO7UZM5OCNU5gIZTIqcO3Wj+jsd902L61o+vwPE=;
- b=L21/3qa1Ll6cFYvepr2P9oqsHV7yWGtcI7ae+F2u2tkj5MFJDdBxvjJ7GRDdzoh/f0N5QI
- kMtaHP/NzOsgf8vTx/CJhEuv/yj72atW7OL117tkrRTVs+FOB+/9MEnmCx2mJ4TU+n8Fbv
- G88rmY7A8SfzOTe4/bxXqkC3QVRI/3I=
+ bh=lIfRMUCd48IhDe7JraPd1zdi82ZXxhpWgPA7X+aEIzE=;
+ b=f5Vqy41ojbpvr5OOl3FJD4gOi+oqOvP8PWpNcIbpfPRkB1uamgnjbnhDgEg2KhXJAdBogE
+ BvGv1xus66oyOMt/80sqCAVMHZCOyQkPvluNtazRwmdcThSrmWvHkxVgLC2HR7GMzPIArg
+ yB1uzzIJ7qjH6FfgPRcKtgD3Hqjf1v0=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-620-VocOJCasP5W_kOLm8aZTjw-1; Tue, 26 Sep 2023 14:59:23 -0400
-X-MC-Unique: VocOJCasP5W_kOLm8aZTjw-1
+ us-mta-326-akunlqBOMquWrlqJztU1Ug-1; Tue, 26 Sep 2023 14:59:29 -0400
+X-MC-Unique: akunlqBOMquWrlqJztU1Ug-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7CA99185A79B;
- Tue, 26 Sep 2023 18:59:22 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C3557800962;
+ Tue, 26 Sep 2023 18:59:28 +0000 (UTC)
 Received: from t14s.fritz.box (unknown [10.39.192.33])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 99AEC2026D4B;
- Tue, 26 Sep 2023 18:59:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id F33B92026D4B;
+ Tue, 26 Sep 2023 18:59:22 +0000 (UTC)
 From: David Hildenbrand <david@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -57,9 +57,9 @@ Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>,
  "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org,
  "Maciej S . Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: [PATCH v4 10/18] kvm: Add stub for kvm_get_max_memslots()
-Date: Tue, 26 Sep 2023 20:57:30 +0200
-Message-ID: <20230926185738.277351-11-david@redhat.com>
+Subject: [PATCH v4 11/18] vhost: Add vhost_get_max_memslots()
+Date: Tue, 26 Sep 2023 20:57:31 +0200
+Message-ID: <20230926185738.277351-12-david@redhat.com>
 In-Reply-To: <20230926185738.277351-1-david@redhat.com>
 References: <20230926185738.277351-1-david@redhat.com>
 MIME-Version: 1.0
@@ -89,68 +89,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We'll need the stub soon from memory device context.
-
-While at it, use "unsigned int" as return value and place the
-declaration next to kvm_get_free_memslots().
+Let's add vhost_get_max_memslots().
 
 Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 Signed-off-by: David Hildenbrand <david@redhat.com>
 ---
- accel/kvm/kvm-all.c    | 2 +-
- accel/stubs/kvm-stub.c | 5 +++++
- include/sysemu/kvm.h   | 2 +-
- 3 files changed, 7 insertions(+), 2 deletions(-)
+ hw/virtio/vhost-stub.c    |  5 +++++
+ hw/virtio/vhost.c         | 11 +++++++++++
+ include/hw/virtio/vhost.h |  1 +
+ 3 files changed, 17 insertions(+)
 
-diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-index 9d4c5a4c51..628076bdd8 100644
---- a/accel/kvm/kvm-all.c
-+++ b/accel/kvm/kvm-all.c
-@@ -174,7 +174,7 @@ void kvm_resample_fd_notify(int gsi)
-     }
- }
+diff --git a/hw/virtio/vhost-stub.c b/hw/virtio/vhost-stub.c
+index d53dd9d288..52d42adab2 100644
+--- a/hw/virtio/vhost-stub.c
++++ b/hw/virtio/vhost-stub.c
+@@ -2,6 +2,11 @@
+ #include "hw/virtio/vhost.h"
+ #include "hw/virtio/vhost-user.h"
  
--int kvm_get_max_memslots(void)
-+unsigned int kvm_get_max_memslots(void)
- {
-     KVMState *s = KVM_STATE(current_accel());
- 
-diff --git a/accel/stubs/kvm-stub.c b/accel/stubs/kvm-stub.c
-index a5d4442d8f..51f522e52e 100644
---- a/accel/stubs/kvm-stub.c
-+++ b/accel/stubs/kvm-stub.c
-@@ -109,6 +109,11 @@ int kvm_irqchip_remove_irqfd_notifier_gsi(KVMState *s, EventNotifier *n,
-     return -ENOSYS;
- }
- 
-+unsigned int kvm_get_max_memslots(void)
++unsigned int vhost_get_max_memslots(void)
 +{
-+    return 0;
++    return UINT_MAX;
 +}
 +
- unsigned int kvm_get_free_memslots(void)
+ unsigned int vhost_get_free_memslots(void)
  {
-     return 0;
-diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-index c3d831baef..97a8a4f201 100644
---- a/include/sysemu/kvm.h
-+++ b/include/sysemu/kvm.h
-@@ -215,6 +215,7 @@ typedef struct KVMRouteChange {
+     return UINT_MAX;
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index f7e1ac12a8..ee193b07c7 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -55,6 +55,17 @@ static unsigned int used_shared_memslots;
+ static QLIST_HEAD(, vhost_dev) vhost_devices =
+     QLIST_HEAD_INITIALIZER(vhost_devices);
  
- /* external API */
- 
-+unsigned int kvm_get_max_memslots(void);
- unsigned int kvm_get_free_memslots(void);
- bool kvm_has_sync_mmu(void);
- int kvm_has_vcpu_events(void);
-@@ -552,7 +553,6 @@ int kvm_set_one_reg(CPUState *cs, uint64_t id, void *source);
++unsigned int vhost_get_max_memslots(void)
++{
++    unsigned int max = UINT_MAX;
++    struct vhost_dev *hdev;
++
++    QLIST_FOREACH(hdev, &vhost_devices, entry) {
++        max = MIN(max, hdev->vhost_ops->vhost_backend_memslots_limit(hdev));
++    }
++    return max;
++}
++
+ unsigned int vhost_get_free_memslots(void)
+ {
+     unsigned int free = UINT_MAX;
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 603bf834be..c7e5467693 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -315,6 +315,7 @@ uint64_t vhost_get_features(struct vhost_dev *hdev, const int *feature_bits,
   */
- int kvm_get_one_reg(CPUState *cs, uint64_t id, void *target);
- struct ppc_radix_page_info *kvm_get_radix_page_info(void);
--int kvm_get_max_memslots(void);
+ void vhost_ack_features(struct vhost_dev *hdev, const int *feature_bits,
+                         uint64_t features);
++unsigned int vhost_get_max_memslots(void);
+ unsigned int vhost_get_free_memslots(void);
  
- /* Notify resamplefd for EOI of specific interrupts. */
- void kvm_resample_fd_notify(int gsi);
+ int vhost_net_set_backend(struct vhost_dev *hdev,
 -- 
 2.41.0
 
