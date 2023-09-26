@@ -2,63 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8872A7AE712
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 09:45:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B71867AE731
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 09:56:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql2jl-0001v8-Oq; Tue, 26 Sep 2023 03:44:05 -0400
+	id 1ql2u4-0003P7-3f; Tue, 26 Sep 2023 03:54:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql2jk-0001uw-3b
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 03:44:04 -0400
-Received: from mout.kundenserver.de ([212.227.17.13])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql2u2-0003Oh-Bu
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 03:54:42 -0400
+Received: from mout.kundenserver.de ([217.72.192.73])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql2ji-00046c-5c
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 03:44:03 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql2tz-00062K-EK
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 03:54:42 -0400
 Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MVeDq-1rCeIC1gRw-00RZZJ; Tue, 26 Sep 2023 09:43:56 +0200
-Message-ID: <9f80f321-4911-f108-ceae-11e1cd72170c@vivier.eu>
-Date: Tue, 26 Sep 2023 09:43:55 +0200
+ (mreue108 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1Mv2pC-1rbm4y3cTw-00r3IX; Tue, 26 Sep 2023 09:54:37 +0200
+Message-ID: <c611c374-88e6-c360-c521-8503ed790537@vivier.eu>
+Date: Tue, 26 Sep 2023 09:54:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH] m68k: Silence -Wshadow=local warnings in the m68k code
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>
-References: <20230925185603.106945-1-thuth@redhat.com>
+Subject: Re: [PATCH v2 10/20] q800: add easc bool machine class property to
+ switch between ASC and EASC
 Content-Language: fr
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
+ <20230909094827.33871-11-mark.cave-ayland@ilande.co.uk>
 From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230925185603.106945-1-thuth@redhat.com>
+In-Reply-To: <20230909094827.33871-11-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:7SA+q+aDUVvGuztVKtnYr62TlKbNMoz+Kxgf3yEdz9FHDV322tS
- DFo6+mjkE1gb+YaF7b4qZDxENlp/WvRu8MacQVMKBVMjWViXqCiJjCkAvpCrutVaeNo/ZfK
- pkKGm9egPzvemgwq3FNdhf+J9BX3BNgxz7laV0HvLUTYV3/yGFf9nsnarQFB8Hb8uKW61Mk
- 78b4YLzpp1EaqoXXxQckQ==
-UI-OutboundReport: notjunk:1;M01:P0:nYGjZfzx8dQ=;3XfAt2BHdNReJnghpJK/Is+fnp3
- R1ysNxu+vKV4bjgjSHphbVvizmD47cr1i6ZoxvQuf58KzHeMUn94vt5Hwx+xYWHW0AFHgrUbp
- +KYWrQUfV6XABGlE1KNHA8rFyFamRKseOauEV62xlTq2a+FlphOlMf8uPAEGSfzUoJmDE1odO
- ATXXEdP1jLqwsWGGJkk2Al+qzVZSluV9+W8C/wSrrVawSAmvQizA2KMz9DBWdFY5C1wAY2EU6
- Fq/vub9eK4RuoI5U8yxVeYLtDVOEe7ju5bgZYsd9He2czLUnstvXKswmya/rAz2LYDVmY1/mQ
- zlbbjVutnQsHZ9dusq4HeTcWAcrbmV2ul+2QFWoG10rkL4G1P0L4e2W4YYzw95UualTyH23Se
- i9E03FqMZtT+JcTkmDEn18q1iAfn8M1zotCgWbWOhaDus8FZ1yloHLiarijGqvPv07DeDv0uj
- lQDllHlQN/FPuUvT+erTBkyq+zB1A55qoJUk3qUXWJxWE/mGrRFdijWz0TIN5oZ3jKMDZE+zi
- 5ONFM2+r7m5t0Plezv5d4a2evqfpW2YCaRynXKdRfF/XbBpFcDh8lVwKhOpSCGliYKz6BtVJj
- aLl1fjy5uBbJu9f6MAKwZZgUSep36IGrU+L6yaFIOShFiINoexROlaJ0JWl98/zMQOjHBhzQI
- gp3iTXNYrLnKrgS9L6dMVgp3Wu4XoJZG+Y7l/GcFf/16aXLyOkv6GvDPMOoPfJC1drdR63IPL
- M1sLY1rjfrRO5F6ExzuoJDokMRms9mUIaaJETKtrcET5P/ZLmIUm5paVdd8HhvZz27rL39M+5
- xeY2O7I8txioJlzX+evFLeIdN/3BiJJFZLdZjLIO3IqcBvhCbN47ErzbWcOA3Ej1moqgtUMKN
- /RQ93Mw8Bu2pSJg==
-Received-SPF: none client-ip=212.227.17.13; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:U/sjCsL50W8kE9hj7oOTlWIWfs6mf3iQGazRQBfmwV4hbdMJYS1
+ fE6o7+4X3WIyPyRRnz5OzpakWkiPrCBGAin/k8GhThFt5TFOdlxDj8kCv8ZXsX3WvQXELZs
+ dg/tMtqueqdt9xjqRHIH+AUqpmGAOL00bMvs4Wyh2vgAy+QttSJoUOWTLP6cE1wmyM6A5wN
+ UYrQHVqLIYy+gNwaR1D8w==
+UI-OutboundReport: notjunk:1;M01:P0:zJGKdE7HsZE=;pCFyrhw4KfdX1FegoUv8rWAZSWj
+ gWaN7kWS377/+MhhO8fbRcxDpaTPAQvayOrmhX5TsT3wWnex7JQ7qRC6R25KRmfnhsLcroEs2
+ Xm93e8a3+EPpB20y88iAQBxbDG3LzIsJwb23yaUqRehUw4BckaREDdhFgaBWp9VEmsQGY4pHA
+ 2zwYpFlv8DyMuWVpxZ2fkBjt6bP/SS9dgWspipahhNjIgPPFma/W9niUrDbN1PBYndyO1xbi8
+ 8mUvkIPofdoK5ZoMqCOOtLj6IduAz326VrPUZ0Ru79shh3+TwSsO/NxXVai9xO3CNOPHqiktU
+ HbqynIfyjDdi0KiCv1I+PS/ih2a0jYCgJzgYj9tNeWxtNI/+VT91+/nC6iQ1qyJ6dX+7/0oFi
+ zB1oGOotG7/JGKEFjwpbWHoDThFrErqlKKJiVr68uJ9qzQO/mHgfefWvnX+RdUvtB1snUpV17
+ cdR5iSAt1rBIaCVeJmL7VauBp/8oBd7vO5vh24SkHr9AW1ipKGCV977CBKBHXJ8jIMGZuCc+v
+ Tl76TXBDJk6rtMR/IWKqYF1O9WUKG6bbgPVjBE2EagjGVZRsGxQc/WtcG1yYiyISeTkUeAitX
+ tdLbMTTQWS9q6fsk52n9Qr9XJ7UDxMtOof388n5u+Y33S0aMuvmZWIdETi1pQhE8jjzgVv0SJ
+ BZSfGwimltxQQKhLrugVEZ9hIaDRDHwXyruBfVUmBcdSzQFYq6bZ8YEbgJEKlg8y8Wht+dhtj
+ uqDD9pAF1Yqoj2WCHXgd7tYNK/GCldV5I/sZsJb6P5pXvvNaarN+3AHwat1kqSx6O4RGv3iZS
+ xDuQniQ1YTXoSqnxzjAb716xnXnuATu4dqknUP4Q/RSMhv/srDiYNchJ/wpY2rr1bBWCxT6/v
+ 2+LvSikDe3sYwsQ==
+Received-SPF: none client-ip=217.72.192.73; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
 X-Spam_score_int: -33
 X-Spam_score: -3.4
 X-Spam_bar: ---
 X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,125 +75,94 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 25/09/2023 à 20:56, Thomas Huth a écrit :
-> Rename the innermost variables to make the code compile
-> without warnings when using -Wshadow=local.
+Le 09/09/2023 à 11:48, Mark Cave-Ayland a écrit :
+> This determines whether the Apple Sound Chip (ASC) is set to enhanced mode
+> (default) or to original mode. The real Q800 hardware used an EASC chip however
+> a lot of older software only works with the older ASC chip.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Adding this as a machine parameter allows QEMU to be used as an developer aid
+> for testing and migrating code from ASC to EASC.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
->   hw/m68k/bootinfo.h      | 10 ++++------
->   disas/m68k.c            |  8 ++++----
->   target/m68k/translate.c |  8 ++++----
->   3 files changed, 12 insertions(+), 14 deletions(-)
+>   hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
+>   include/hw/m68k/q800.h |  1 +
+>   2 files changed, 30 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/m68k/bootinfo.h b/hw/m68k/bootinfo.h
-> index a3d37e3c80..d077d03559 100644
-> --- a/hw/m68k/bootinfo.h
-> +++ b/hw/m68k/bootinfo.h
-> @@ -44,15 +44,14 @@
+> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+> index ae07aa20ff..5ae7c37760 100644
+> --- a/hw/m68k/q800.c
+> +++ b/hw/m68k/q800.c
+> @@ -484,7 +484,8 @@ static void q800_machine_init(MachineState *machine)
+>       /* Apple Sound Chip */
 >   
->   #define BOOTINFOSTR(base, id, string) \
->       do { \
-> -        int i; \
->           stw_p(base, id); \
->           base += 2; \
->           stw_p(base, \
->                    (sizeof(struct bi_record) + strlen(string) + \
->                     1 /* null termination */ + 3 /* padding */) & ~3); \
->           base += 2; \
-> -        for (i = 0; string[i]; i++) { \
-> -            stb_p(base++, string[i]); \
-> +        for (int _i = 0; string[_i]; _i++) { \
-> +            stb_p(base++, string[_i]); \
->           } \
->           stb_p(base++, 0); \
->           base = QEMU_ALIGN_PTR_UP(base, 4); \
-> @@ -60,7 +59,6 @@
+>       object_initialize_child(OBJECT(machine), "asc", &m->asc, TYPE_ASC);
+> -    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", ASC_TYPE_EASC);
+> +    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", m->easc ? ASC_TYPE_EASC
+> +                                                            : ASC_TYPE_ASC);
+>       sysbus = SYS_BUS_DEVICE(&m->asc);
+>       sysbus_realize_and_unref(sysbus, &error_fatal);
+>       memory_region_add_subregion(&m->macio, ASC_BASE - IO_BASE,
+> @@ -674,6 +675,28 @@ static void q800_machine_init(MachineState *machine)
+>       }
+>   }
 >   
->   #define BOOTINFODATA(base, id, data, len) \
->       do { \
-> -        int i; \
->           stw_p(base, id); \
->           base += 2; \
->           stw_p(base, \
-> @@ -69,8 +67,8 @@
->           base += 2; \
->           stw_p(base, len); \
->           base += 2; \
-> -        for (i = 0; i < len; ++i) { \
-> -            stb_p(base++, data[i]); \
-> +        for (int _i = 0; _i < len; ++_i) { \
-> +            stb_p(base++, data[_i]); \
->           } \
->           base = QEMU_ALIGN_PTR_UP(base, 4); \
->       } while (0)
-> diff --git a/disas/m68k.c b/disas/m68k.c
-> index aefaecfbd6..a384b4cb64 100644
-> --- a/disas/m68k.c
-> +++ b/disas/m68k.c
-> @@ -1632,10 +1632,10 @@ print_insn_arg (const char *d,
->       case '2':
->       case '3':
->         {
-> -	int val = fetch_arg (buffer, place, 5, info);
-> +	int val2 = fetch_arg (buffer, place, 5, info);
->           const char *name = 0;
+> +static bool q800_get_easc(Object *obj, Error **errp)
+> +{
+> +    Q800MachineState *ms = Q800_MACHINE(obj);
+> +
+> +    return ms->easc;
+> +}
+> +
+> +static void q800_set_easc(Object *obj, bool value, Error **errp)
+> +{
+> +    Q800MachineState *ms = Q800_MACHINE(obj);
+> +
+> +    ms->easc = value;
+> +}
+> +
+> +static void q800_init(Object *obj)
+> +{
+> +    Q800MachineState *ms = Q800_MACHINE(obj);
+> +
+> +    /* Default to EASC */
+> +    ms->easc = true;
+> +}
+> +
+>   static GlobalProperty hw_compat_q800[] = {
+>       { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on" },
+>       { "scsi-hd", "vendor", " SEAGATE" },
+> @@ -706,11 +729,16 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
+>       mc->block_default_type = IF_SCSI;
+>       mc->default_ram_id = "m68k_mac.ram";
+>       compat_props_add(mc->compat_props, hw_compat_q800, hw_compat_q800_len);
+> +
+> +    object_class_property_add_bool(oc, "easc", q800_get_easc, q800_set_easc);
+> +    object_class_property_set_description(oc, "easc",
+> +        "Set to off to use ASC rather than EASC");
+>   }
 >   
-> -	switch (val)
-> +	switch (val2)
->   	  {
->   	  case 2: name = "%tt0"; break;
->   	  case 3: name = "%tt1"; break;
-> @@ -1655,12 +1655,12 @@ print_insn_arg (const char *d,
->   	      int break_reg = ((buffer[3] >> 2) & 7);
+>   static const TypeInfo q800_machine_typeinfo = {
+>       .name       = MACHINE_TYPE_NAME("q800"),
+>       .parent     = TYPE_MACHINE,
+> +    .instance_init = q800_init,
+>       .instance_size = sizeof(Q800MachineState),
+>       .class_init = q800_machine_class_init,
+>   };
+> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+> index 790cf433f3..fbaacd88bd 100644
+> --- a/include/hw/m68k/q800.h
+> +++ b/include/hw/m68k/q800.h
+> @@ -47,6 +47,7 @@
+>   struct Q800MachineState {
+>       MachineState parent_obj;
 >   
->   	      (*info->fprintf_func)
-> -		(info->stream, val == 0x1c ? "%%bad%d" : "%%bac%d",
-> +		(info->stream, val2 == 0x1c ? "%%bad%d" : "%%bac%d",
->   		 break_reg);
->   	    }
->   	    break;
->   	  default:
-> -	    (*info->fprintf_func) (info->stream, "<mmu register %d>", val);
-> +	    (*info->fprintf_func) (info->stream, "<mmu register %d>", val2);
->   	  }
->   	if (name)
->   	  (*info->fprintf_func) (info->stream, "%s", name);
-
-"reg" would be a better name than "val2".
-
-> diff --git a/target/m68k/translate.c b/target/m68k/translate.c
-> index 9e224fe796..b28d7f7d4b 100644
-> --- a/target/m68k/translate.c
-> +++ b/target/m68k/translate.c
-> @@ -824,14 +824,14 @@ static TCGv gen_ea_mode(CPUM68KState *env, DisasContext *s, int mode, int reg0,
->           reg = get_areg(s, reg0);
->           result = gen_ldst(s, opsize, reg, val, what, index);
->           if (what == EA_STORE || !addrp) {
-> -            TCGv tmp = tcg_temp_new();
-> +            TCGv tmp2 = tcg_temp_new();
->               if (reg0 == 7 && opsize == OS_BYTE &&
->                   m68k_feature(s->env, M68K_FEATURE_M68K)) {
-> -                tcg_gen_addi_i32(tmp, reg, 2);
-> +                tcg_gen_addi_i32(tmp2, reg, 2);
->               } else {
-> -                tcg_gen_addi_i32(tmp, reg, opsize_bytes(opsize));
-> +                tcg_gen_addi_i32(tmp2, reg, opsize_bytes(opsize));
->               }
-> -            delay_set_areg(s, reg0, tmp, true);
-> +            delay_set_areg(s, reg0, tmp2, true);
->           }
->           return result;
->       case 4: /* Indirect predecrememnt.  */
-
-"inc" would be a better name than "val2".
-
-Otherwise:
+> +    bool easc;
+>       M68kCPU cpu;
+>       MemoryRegion rom;
+>       GLUEState glue;
 
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-
-
-Thanks,
-Laurent
 
 
