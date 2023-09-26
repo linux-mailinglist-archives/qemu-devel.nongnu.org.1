@@ -2,80 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7E87AEE63
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 16:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 141877AEE69
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 16:20:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql8rz-00017u-Et; Tue, 26 Sep 2023 10:16:59 -0400
+	id 1ql8vE-0002A7-Oh; Tue, 26 Sep 2023 10:20:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql8rx-00017f-5G
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:16:58 -0400
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql8ru-00007j-Vg
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:16:56 -0400
-Received: by mail-lf1-x136.google.com with SMTP id
- 2adb3069b0e04-50307acd445so14209246e87.0
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 07:16:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695737813; x=1696342613; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=ETmpNE//lsEvgGiHT+faS5lA65nsY6L9lOKqWow4I10=;
- b=MZVhD6hbpsd9MCepD21onw3/zx77xlUuGiTwupKkx0SL2WkyjtrIdeDSb+6bN/imhW
- MadT0AaAozqSihcuP0I6vFZcMXwwK5sZpi4VRNPJBEwHVi/5q8HGHGqX+6ISr8iPVt1C
- 4jK3pd4eIr1zo22IIYGIUh+idREi9VtE1zOczd3vu648YebfVOkfrLkp/4eUFoR5cqzr
- mUfcEWfjIiDMw9RkIJWceiNYA0Qq3e7YLychgSOR/8M3FE8FCpCD5ippbLe7zMwEE7v9
- Fc2kNQ+REblDHINHLH4AqolkYirM/3AQh3YObo91w0F6KdtEpfgPdYUZWdvtP02a0LWb
- Ldrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695737813; x=1696342613;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ETmpNE//lsEvgGiHT+faS5lA65nsY6L9lOKqWow4I10=;
- b=g7+sog9VXmn3um6/Rfebq5GqaagFp1itb1fod7R5OfHzfK4uWKZeJ57XxnKU29+Afa
- S2A0Rc0FNi5NdODtvMqd6jUXTJ7eeFOX+8GOa/1BWsOpOIryfnUS+Reqmsun7GR56wso
- XoM8gyc7tFwnoZ/UoreJfvmUU8JcbUyUv8Xj8HBaAVjmVzJuF6FD1aM06/Ovlo1xoRkt
- SEb1yuK7iwzm0Cu931FJAG7N8BUf8RI099wsqf3NN5qdqpCNuIp3nqMhyXNGKWJ783Bu
- KMfSwwISl6D4DebwTU/N/QmturCrjp5oNEVJWO0WCXspzh9sNJY1Fdtckv7Ky0prMA7R
- guOQ==
-X-Gm-Message-State: AOJu0YzJkx3FP5BtsOtPlPPX3FrZ81g0zQ0b6GqXXXcuDKBmBKWy6NHO
- h0zsQiv1m1Jd3kSnNqPGk/bbF360oD7CejRiRG6oSg==
-X-Google-Smtp-Source: AGHT+IF87zPba88vU7hp+e9rGoY2uTYoRkpeUNxQFKlOkj+jvYCt+a8XI3NrsQ7RnT/GCcDseUAmAY434Gzwcf0DADw=
-X-Received: by 2002:a05:6512:3a8f:b0:501:bee7:487b with SMTP id
- q15-20020a0565123a8f00b00501bee7487bmr9896308lfu.11.1695737812680; Tue, 26
- Sep 2023 07:16:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql8vB-00029p-Cy
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:20:18 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql8v8-00011C-Jk
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:20:17 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 60A9C6138A;
+ Tue, 26 Sep 2023 17:20:10 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
+ [2a02:6b8:b081:b41d::1:39])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 9KQTAo0OhKo0-5HFlTIRt; Tue, 26 Sep 2023 17:20:09 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695738009;
+ bh=j1Kns/48VGEGd7m9QlprIb1xe4WsnSSWqSBms7UX0Bk=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VjUpwLUgHNWEb8/Jw5F4k+laL8j6aTPgjsqlI9Evm6YTKS7oYs/d/LFdz2E/xoZoL
+ GX/lCGF99ZrIh7dCBABqxY/YYOXhD/lCk8xir9UVYE+AHLdJE46+KrDJO8/+TDH8X6
+ 5eufGGvWJkenahHwyCl3RbhjWyBFleLg0NxOJZnc=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <887188ac-4887-4491-f889-fe1f62a461e8@yandex-team.ru>
+Date: Tue, 26 Sep 2023 17:20:08 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 05/12] device_tree: qmp_dumpdtb(): stronger assertion
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
+ Alistair Francis <alistair.francis@wdc.com>,
+ David Gibson <david@gibson.dropbear.id.au>
 References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-3-vsementsov@yandex-team.ru>
- <CAFEAcA_jgL_CLQxT1R2Zu5xDd3RZZpySpjhd1EyBgFM8Ttps6w@mail.gmail.com>
- <02ed54d5-31ef-7acd-d5a0-68714147c00b@yandex-team.ru>
-In-Reply-To: <02ed54d5-31ef-7acd-d5a0-68714147c00b@yandex-team.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Sep 2023 15:16:34 +0100
-Message-ID: <CAFEAcA-wi4y9u4Ow7cTh0LW8wdKxG_7vKvENv6yS7KjYxWR3Sw@mail.gmail.com>
-Subject: Re: [PATCH 02/12] hw/i386/intel_iommu: vtd_slpte_nonzero_rsvd():
- reduce magic numbers
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::136;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x136.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ <20230925194040.68592-6-vsementsov@yandex-team.ru>
+ <CAFEAcA9TjB7OJ-j+Cnst8pt3CjVADvyvG07ZvykQKRoowgMe3g@mail.gmail.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <CAFEAcA9TjB7OJ-j+Cnst8pt3CjVADvyvG07ZvykQKRoowgMe3g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,64 +79,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Sept 2023 at 15:12, Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> On 26.09.23 13:37, Peter Maydell wrote:
-> > On Mon, 25 Sept 2023 at 20:41, Vladimir Sementsov-Ogievskiy
-> > <vsementsov@yandex-team.ru> wrote:
-> >>
-> >> Add a constant and clear assertion. The assertion also tells Coverity
-> >> that we are not going to overflow the array.
-> >>
-> >> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> >> ---
-> >>   hw/i386/intel_iommu.c | 11 ++++++++---
-> >>   1 file changed, 8 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> >> index c0ce896668..2233dbe13a 100644
-> >> --- a/hw/i386/intel_iommu.c
-> >> +++ b/hw/i386/intel_iommu.c
-> >> @@ -1028,12 +1028,17 @@ static dma_addr_t vtd_get_iova_pgtbl_base(IntelIOMMUState *s,
-> >>    *     vtd_spte_rsvd 4k pages
-> >>    *     vtd_spte_rsvd_large large pages
-> >>    */
-> >> -static uint64_t vtd_spte_rsvd[5];
-> >> -static uint64_t vtd_spte_rsvd_large[5];
-> >> +#define VTD_SPTE_RSVD_LEN 5
-> >> +static uint64_t vtd_spte_rsvd[VTD_SPTE_RSVD_LEN];
-> >> +static uint64_t vtd_spte_rsvd_large[VTD_SPTE_RSVD_LEN];
-> >>
-> >>   static bool vtd_slpte_nonzero_rsvd(uint64_t slpte, uint32_t level)
-> >>   {
-> >> -    uint64_t rsvd_mask = vtd_spte_rsvd[level];
-> >> +    uint64_t rsvd_mask;
-> >> +
-> >> +    assert(level < VTD_SPTE_RSVD_LEN);
-> >> +
-> >> +    rsvd_mask = vtd_spte_rsvd[level];
-> >
-> >
-> > Looking at the code it is not clear to me why this assertion is
-> > valid. It looks like we are picking up fields from guest-set
-> > configuration (probably in-memory data structures). So we can't
-> > assert() here -- we need to do whatever the real hardware does
-> > if these fields are set to an incorrect value, or at least something
-> > sensible that doesn't crash QEMU.
->
-> But touching vtd_spte_rsvd with level>=5 is even worse than
-> assertion, I think. That's overflows the array.
+On 26.09.23 13:51, Peter Maydell wrote:
+> On Mon, 25 Sept 2023 at 20:42, Vladimir Sementsov-Ogievskiy
+> <vsementsov@yandex-team.ru> wrote:
+>>
+>> Coverity mark this size, got from the buffer as untrasted value, it's
+>> not good to use it as length when writing to file. Make the assertion
+>> more strict to also check upper bound.
+>>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> ---
+>>   softmmu/device_tree.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/softmmu/device_tree.c b/softmmu/device_tree.c
+>> index 30aa3aea9f..adc4236e21 100644
+>> --- a/softmmu/device_tree.c
+>> +++ b/softmmu/device_tree.c
+>> @@ -660,7 +660,7 @@ void qmp_dumpdtb(const char *filename, Error **errp)
+>>
+>>       size = fdt_totalsize(current_machine->fdt);
+>>
+>> -    g_assert(size > 0);
+>> +    g_assert(size > 0 && size <= FDT_MAX_SIZE);
+> 
+> FDT_MAX_SIZE is not "this is as big as an FDT can ever be". It's
+> only the internal sizing of device trees that we create ourselves
+> in the machine models (and which we will bump up if for some
+> reason we ever find ourselves needing to create bigger device
+> trees). So it's not really a suitable upper bound.
+> 
+>>       if (!g_file_set_contents(filename, current_machine->fdt, size, &err)) {
+>>           error_setg(errp, "Error saving FDT to file %s: %s",
+> 
+> Nothing bad happens if we pass g_file_set_contents() a very
 
-Correct. We shouldn't do that. But we also should not just
-assert().
+but it will also try to read beyond the allocated fdt. In my thought clear crash on assertion is better than such memory access.
 
-> I don't know what the real hardware should do in this case.
+> large size -- we'll just create a large file. The user already
+> has lots of ways to fill up their disk if they want to, and
+> we don't have any idea how much disk space they might or might
+> not have.
+> 
+> I would just mark this as a false positive.
+> 
+> thanks
+> -- PMM
 
-Then we should find out... Hopefully the specs will say.
-If they don't then we can do whatever is a reasonable
-behaviour (eg treat like some other valid value).
+-- 
+Best regards,
+Vladimir
 
-thanks
--- PMM
 
