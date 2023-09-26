@@ -2,68 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D10A17AECE5
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 296477AEC1F
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:05:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql7Ec-0001RY-Ui; Tue, 26 Sep 2023 08:32:14 -0400
+	id 1ql6nR-0001HL-Qx; Tue, 26 Sep 2023 08:04:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql7EO-0001QE-Tf
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:32:06 -0400
+ id 1ql6nN-0001Dh-2s
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:04:05 -0400
 Received: from szxga01-in.huawei.com ([45.249.212.187])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql7EL-00066N-7T
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:32:00 -0400
-Received: from dggpemm100024.china.huawei.com (unknown [172.30.72.54])
- by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Rvyn26X32zrSJV;
- Tue, 26 Sep 2023 19:53:26 +0800 (CST)
+ id 1ql6nI-0006Ku-G1
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:04:04 -0400
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
+ by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Rvyw058cCztStk;
+ Tue, 26 Sep 2023 19:59:28 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- dggpemm100024.china.huawei.com (7.185.36.234) with Microsoft SMTP Server
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 19:55:40 +0800
+ 15.1.2507.31; Tue, 26 Sep 2023 20:03:48 +0800
 Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
  lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 26 Sep 2023 12:55:38 +0100
-To: David Hildenbrand <david@redhat.com>, lixianglai <lixianglai@loongson.cn>, 
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-CC: Salil Mehta <salil.mehta@opnsrc.net>, Xiaojuan Yang
- <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>, "Michael S.
- Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
+ Tue, 26 Sep 2023 13:03:46 +0100
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: xianglai li <lixianglai@loongson.cn>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, Bernhard Beschow <shentey@gmail.com>, Salil Mehta
+ <salil.mehta@opnsrc.net>, Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao
+ <gaosong@loongson.cn>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
  <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
  <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
  "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
- =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, "wangyanan
- (Y)" <wangyanan55@huawei.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
- <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, Bibo Mao
- <maobibo@loongson.cn>
-Subject: RE: [PATCH v2 04/10] Introduce the CPU address space destruction
- function
-Thread-Topic: [PATCH v2 04/10] Introduce the CPU address space destruction
- function
-Thread-Index: AQHZ5R7Fmo7gjrU/1EmDlFadlO4IebAWsogAgAOJWgCAAAdJgIAA3/CAgAABaoCAAFe/AIARji0QgAALU5A=
-Date: Tue, 26 Sep 2023 11:55:38 +0000
-Message-ID: <b8f256b3549e41a09119dee5ab5439d9@huawei.com>
-References: <cover.1694433326.git.lixianglai@loongson.cn>
- <3a4fc2a3df4b767c3c296a7da3bc15ca9c251316.1694433326.git.lixianglai@loongson.cn>
- <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
- <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
- <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
- <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
- <e4e88068-4754-f7d4-e080-b7b8d5bcf006@loongson.cn>
- <5f610a1d-da1b-0094-41e7-f69164c4d0e0@redhat.com>
- <7906109a36c5467fa9b529520671fa77@huawei.com>
-In-Reply-To: <7906109a36c5467fa9b529520671fa77@huawei.com>
+ =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, "wangyanan
+ (Y)" <wangyanan55@huawei.com>, =?iso-8859-1?Q?Daniel_P=2E_Berrang=E9?=
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, David Hildenbrand
+ <david@redhat.com>, Bibo Mao <maobibo@loongson.cn>
+Subject: RE: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+Thread-Topic: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+Thread-Index: AQHZ8F98Fz18osKCj0u+l4OH//GmcbAs7Gww///2vACAABh10P//8ysAgAARtGA=
+Date: Tue, 26 Sep 2023 12:03:46 +0000
+Message-ID: <54482e7486564d68926ded075ebe8c6f@huawei.com>
+References: <cover.1695697701.git.lixianglai@loongson.cn>
+ <c2ab409710f5e0f0346727b47aaabd14537d45b8.1695697701.git.lixianglai@loongson.cn>
+ <17a09b8ab65542be8561cb0480dae6bd@huawei.com>
+ <20230926071055-mutt-send-email-mst@kernel.org>
+ <4cc68780b63f47879d757fe604f37892@huawei.com>
+ <20230926074945-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20230926074945-mutt-send-email-mst@kernel.org>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.126.174.16]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=45.249.212.187;
@@ -91,97 +86,311 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBTYWxpbCBNZWh0YQ0KPiBTZW50OiBUdWVzZGF5LCBTZXB0ZW1iZXIgMjYsIDIwMjMg
-MTI6MjEgUE0NCj4gVG86ICdEYXZpZCBIaWxkZW5icmFuZCcgPGRhdmlkQHJlZGhhdC5jb20+OyBs
-aXhpYW5nbGFpDQo+IDxsaXhpYW5nbGFpQGxvb25nc29uLmNuPjsgcWVtdS1kZXZlbEBub25nbnUu
-b3JnDQo+IENjOiBTYWxpbCBNZWh0YSA8c2FsaWwubWVodGFAb3Buc3JjLm5ldD47IFhpYW9qdWFu
-IFlhbmcNCj4gPHlhbmd4aWFvanVhbkBsb29uZ3Nvbi5jbj47IFNvbmcgR2FvIDxnYW9zb25nQGxv
-b25nc29uLmNuPjsgTWljaGFlbCBTLg0KPiBUc2lya2luIDxtc3RAcmVkaGF0LmNvbT47IElnb3Ig
-TWFtbWVkb3YgPGltYW1tZWRvQHJlZGhhdC5jb20+OyBBbmkgU2luaGENCj4gPGFuaXNpbmhhQHJl
-ZGhhdC5jb20+OyBQYW9sbyBCb256aW5pIDxwYm9uemluaUByZWRoYXQuY29tPjsgUmljaGFyZA0K
-PiBIZW5kZXJzb24gPHJpY2hhcmQuaGVuZGVyc29uQGxpbmFyby5vcmc+OyBFZHVhcmRvIEhhYmtv
-c3QNCj4gPGVkdWFyZG9AaGFia29zdC5uZXQ+OyBNYXJjZWwgQXBmZWxiYXVtIDxtYXJjZWwuYXBm
-ZWxiYXVtQGdtYWlsLmNvbT47DQo+IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOpIDxwaGlsbWRAbGlu
-YXJvLm9yZz47IHdhbmd5YW5hbiAoWSkNCj4gPHdhbmd5YW5hbjU1QGh1YXdlaS5jb20+OyBEYW5p
-ZWwgUC4gQmVycmFuZ8OpIDxiZXJyYW5nZUByZWRoYXQuY29tPjsgUGV0ZXINCj4gWHUgPHBldGVy
-eEByZWRoYXQuY29tPjsgQmlibyBNYW8gPG1hb2JpYm9AbG9vbmdzb24uY24+DQo+IFN1YmplY3Q6
-IFJFOiBbUEFUQ0ggdjIgMDQvMTBdIEludHJvZHVjZSB0aGUgQ1BVIGFkZHJlc3Mgc3BhY2UgZGVz
-dHJ1Y3Rpb24NCj4gZnVuY3Rpb24NCj4gDQo+IEhpIERhdmlkLA0KPiANCj4gPiBGcm9tOiBEYXZp
-ZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCj4gPiBTZW50OiBGcmlkYXksIFNlcHRl
-bWJlciAxNSwgMjAyMyA5OjA3IEFNDQo+ID4gVG86IGxpeGlhbmdsYWkgPGxpeGlhbmdsYWlAbG9v
-bmdzb24uY24+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IFNhbGlsDQo+IE1laHRhDQo+ID4gPHNh
-bGlsLm1laHRhQGh1YXdlaS5jb20+DQo+ID4gQ2M6IFNhbGlsIE1laHRhIDxzYWxpbC5tZWh0YUBv
-cG5zcmMubmV0PjsgWGlhb2p1YW4gWWFuZw0KPiA+IDx5YW5neGlhb2p1YW5AbG9vbmdzb24uY24+
-OyBTb25nIEdhbyA8Z2Fvc29uZ0Bsb29uZ3Nvbi5jbj47IE1pY2hhZWwgUy4NCj4gPiBUc2lya2lu
-IDxtc3RAcmVkaGF0LmNvbT47IElnb3IgTWFtbWVkb3YgPGltYW1tZWRvQHJlZGhhdC5jb20+OyBB
-bmkgU2luaGENCj4gPiA8YW5pc2luaGFAcmVkaGF0LmNvbT47IFBhb2xvIEJvbnppbmkgPHBib256
-aW5pQHJlZGhhdC5jb20+OyBSaWNoYXJkDQo+ID4gSGVuZGVyc29uIDxyaWNoYXJkLmhlbmRlcnNv
-bkBsaW5hcm8ub3JnPjsgRWR1YXJkbyBIYWJrb3N0DQo+ID4gPGVkdWFyZG9AaGFia29zdC5uZXQ+
-OyBNYXJjZWwgQXBmZWxiYXVtIDxtYXJjZWwuYXBmZWxiYXVtQGdtYWlsLmNvbT47DQo+ID4gUGhp
-bGlwcGUgTWF0aGlldS1EYXVkw6kgPHBoaWxtZEBsaW5hcm8ub3JnPjsgd2FuZ3lhbmFuIChZKQ0K
-PiA+IDx3YW5neWFuYW41NUBodWF3ZWkuY29tPjsgRGFuaWVsIFAuIEJlcnJhbmfDqSA8YmVycmFu
-Z2VAcmVkaGF0LmNvbT47IFBldGVyDQo+ID4gWHUgPHBldGVyeEByZWRoYXQuY29tPjsgQmlibyBN
-YW8gPG1hb2JpYm9AbG9vbmdzb24uY24+DQo+ID4gU3ViamVjdDogUmU6IFtQQVRDSCB2MiAwNC8x
-MF0gSW50cm9kdWNlIHRoZSBDUFUgYWRkcmVzcyBzcGFjZSBkZXN0cnVjdGlvbg0KPiA+IGZ1bmN0
-aW9uDQo+ID4NCj4gPiBPbiAxNS4wOS4yMyAwNDo1MywgbGl4aWFuZ2xhaSB3cm90ZToNCj4gPiA+
-IEhpIERhdmlkIEhpbGRlbmJyYW5kOg0KPiA+ID4NCj4gPiA+Pg0KPiA+ID4+IEhpIERhdmlkIEhp
-bGRlbmJyYW5kOg0KPiA+ID4+PiBPbiAxNC4wOS4yMyAxNTowMCwgbGl4aWFuZ2xhaSB3cm90ZToN
-Cj4gPiA+Pj4+IEhpIERhdmlkOg0KPiA+ID4+Pg0KPiA+ID4+PiBIaSENCj4gPiA+Pj4NCj4gPiA+
-Pj4+DQo+ID4gPj4+Pj4gT24gMTIuMDkuMjMgMDQ6MTEsIHhpYW5nbGFpIGxpIHdyb3RlOg0KPiA+
-ID4+Pj4+PiBJbnRyb2R1Y2UgbmV3IGZ1bmN0aW9uIHRvIGRlc3Ryb3kgQ1BVIGFkZHJlc3Mgc3Bh
-Y2UgcmVzb3VyY2VzDQo+ID4gPj4+Pj4+IGZvciBjcHUgaG90LSh1bilwbHVnLg0KPiA+ID4+Pj4+
-Pg0KPiA+ID4+Pj4+IEhvdyBkbyBvdGhlciBhcmNocyBoYW5kbGUgdGhhdD8gT3IgaG93IGFyZSB0
-aGV5IGFibGUgdG8gZ2V0IGF3YXkNCj4gPiA+Pj4+PiB3aXRob3V0IGRlc3Ryb3lpbmc/DQo+ID4g
-Pj4+Pj4NCj4gPiA+Pj4+IFRoZXkgZG8gbm90IHJlbW92ZSB0aGUgY3B1IGFkZHJlc3Mgc3BhY2Us
-IHRha2luZyB0aGUgWDg2DQo+ID4gPj4+PiBhcmNoaXRlY3R1cmUgYXMNCj4gPiA+Pj4+IGFuIGV4
-YW1wbGU6DQo+ID4gPj4+Pg0KPiA+ID4+Pj4gMS5TdGFydCB0aGUgeDg2IFZNOg0KPiA+ID4+Pj4N
-Cj4gPiA+Pj4+IC4vcWVtdS1zeXN0ZW0teDg2XzY0IFwNCj4gPiA+Pj4+IC1tYWNoaW5lIHEzNcKg
-IFwNCj4gPiA+Pj4+IC1jcHUgQnJvYWR3ZWxsLUlCUlMgXA0KPiA+ID4+Pj4gLXNtcCAxLG1heGNw
-dXM9MTAwLHNvY2tldHM9MTAwLGNvcmVzPTEsdGhyZWFkcz0xIFwNCj4gPiA+Pj4+IC1tIDRHIFwN
-Cj4gPiA+Pj4+IC1kcml2ZSBmaWxlPX4vYW5vbGlzLTguOC5xY293MsKgIFwNCj4gPiA+Pj4+IC1z
-ZXJpYWwgc3RkaW/CoMKgIFwNCj4gPiA+Pj4+IC1tb25pdG9yIHRlbG5ldDpsb2NhbGhvc3Q6NDQ5
-OCxzZXJ2ZXIsbm93YWl0wqDCoCBcDQo+ID4gPj4+PiAtbm9ncmFwaGljDQo+ID4gPj4+Pg0KPiA+
-ID4+Pj4gMi5Db25uZWN0IHRoZSBxZW11IG1vbml0b3INCj4gPiA+Pj4+DQo+ID4gPj4+PiB0ZWxu
-ZXQgMTI3LjAuMC4xIDQ0OTgNCj4gPiA+Pj4+DQo+ID4gPj4+PiBpbmZvIG10cmVlDQo+ID4gPj4+
-Pg0KPiA+ID4+Pj4gYWRkcmVzcy1zcGFjZTogY3B1LW1lbW9yeS0wDQo+ID4gPj4+PiBhZGRyZXNz
-LXNwYWNlOiBtZW1vcnkNCj4gPiA+Pj4+ICDCoCDCoCAwMDAwMDAwMDAwMDAwMDAwLWZmZmZmZmZm
-ZmZmZmZmZmYgKHByaW8gMCwgaS9vKTogc3lzdGVtDQo+ID4gPj4+PiAgwqAgwqDCoMKgIDAwMDAw
-MDAwMDAwMDAwMDAtMDAwMDAwMDA3ZmZmZmZmZiAocHJpbyAwLCByYW0pOiBhbGlhcw0KPiA+ID4+
-Pj4gcmFtLWJlbG93LTRnDQo+ID4gPj4+PiBAcGMucmFtIDAwMDAwMDAwMDAwMDAwMDAtMDAwMDAw
-MDA3ZmZmZmZmZg0KPiA+ID4+Pj4gIMKgIMKgwqDCoCAwMDAwMDAwMDAwMDAwMDAwLWZmZmZmZmZm
-ZmZmZmZmZmYgKHByaW8gLTEsIGkvbyk6IHBjaQ0KPiA+ID4+Pj4gIMKgIMKgwqDCoMKgwqAgMDAw
-MDAwMDAwMDBhMDAwMC0wMDAwMDAwMDAwMGJmZmZmIChwcmlvIDEsIGkvbyk6IHZnYS1sb3dtZW0N
-Cj4gPiA+Pj4+DQo+ID4gPj4+PiAzLlBlcmZvcm0gY3B1IGhvdCBzd2FwIGludCBxZW11IG1vbml0
-b3INCj4gPiA+Pj4+DQo+ID4gPj4+PiBkZXZpY2VfYWRkDQo+ID4gPj4+PiBCcm9hZHdlbGwtSUJS
-Uy14ODZfNjQtY3B1LHNvY2tldC1pZD0xLGNvcmUtaWQ9MCx0aHJlYWQtaWQ9MCxpZD1jcHUxDQo+
-ID4gPj4+PiBkZXZpY2VfZGVsIGNwdTENCj4gPiA+Pj4+DQo+ID4gPj4+DQo+ID4gPj4+IEhtLCBk
-b2Vzbid0IHNlZW0gdG8gd29yayBmb3IgbWUgb24gdXBzdHJlYW0gUUVNVSBmb3Igc29tZSByZWFz
-b246DQo+ID4gPj4+ICJFcnJvcjogYWNwaTogZGV2aWNlIHVucGx1ZyByZXF1ZXN0IGZvciBub3Qg
-c3VwcG9ydGVkIGRldmljZSB0eXBlOg0KPiA+ID4+PiBCcm9hZHdlbGwtSUJSUy14ODZfNjQtY3B1
-Ig0KPiA+ID4+DQo+ID4gPiBGaXJzdCBJIHVzZSBxZW11IHRjZywgYW5kIHRoZW4gdGhlIGNwdSBu
-ZWVkcyB0byBiZSByZW1vdmVkIGFmdGVyIHRoZQ0KPiA+ID4gb3BlcmF0aW5nIHN5c3RlbSBpcyBi
-b290ZWQuDQo+ID4NCj4gPiBBaCwgdGhlIGxhc3QgdGhpbmcgaXMgdGhlIGltcG9ydGFudCBiaXQu
-IEkgY2FuIHJlcHJvZHVjZSB0aGlzIHdpdGggS1ZNDQo+ID4gZWFzaWx5Lg0KPiA+DQo+ID4gRG9p
-bmcgaXQgYSBjb3VwbGUgb2YgdGltZXMNCj4gPg0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1v
-cnktMA0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6
-IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJl
-c3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0K
-PiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1t
-ZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3Bh
-Y2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFk
-ZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnkt
-MQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNw
-dS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mt
-c3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+
-IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiA+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1v
-cnktMQ0KPiA+DQo+ID4gTG9va3MgbGlrZSBhIHJlc291cmNlL21lbW9yeSBsZWFrLg0KPiANCj4g
-WWVzLCB0aGVyZSB3YXMuIFRoYW5rcyBmb3IgaWRlbnRpZnlpbmcgaXQuIEkgaGF2ZSBmaXhlZCBp
-biB0aGUNCj4gbGF0ZXN0IFJGQyBWMi4gUGxlYXNlIGNoZWNrIGhlcmU6DQo+IA0KPiBodHRwczov
-L2xvcmUua2VybmVsLm9yZy9xZW11LWRldmVsLzIwMjMwOTI2MTAwNDM2LjI4Mjg0LTEtDQo+IHNh
-bGlsLm1laHRhQGh1YXdlaS5jb20vVC8jbTVmNWFlNDBiMDkxZDY5ZDAxMDEyODgwZDc1MDBkOTY4
-NzRhOWQzOWMNCj4gDQo+IEkgaGF2ZSB0ZXN0ZWQgYW5kIEFkZHJlc3NTcGFjZSBjb21lcyBhbmQg
-Z29lcyBhd2F5IGNsZWFubHkNCj4gb24gQ1BVIGhvdCh1bilwbHVnIGFjdGlvbi4NCg0KSGkgRGF2
-aWQvWGlhbmdsYWksDQpBcmUgeW91IG9rYXkgaWYgSSBwdXQgUmVwb3J0ZWQtYnkgYW5kIGdpdmUg
-cmVmZXJlbmNlIHRvIHRoaXMNCmNvbnZlcnNhdGlvbj8NCg0KTWFueSB0aGFua3MNClNhbGlsDQoN
-Cg0K
+> From: Michael S. Tsirkin <mst@redhat.com>
+> Sent: Tuesday, September 26, 2023 12:54 PM
+> To: Salil Mehta <salil.mehta@huawei.com>
+> Cc: xianglai li <lixianglai@loongson.cn>; qemu-devel@nongnu.org; Bernhard
+> Beschow <shentey@gmail.com>; Salil Mehta <salil.mehta@opnsrc.net>; Xiaoju=
+an
+> Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Igor
+> Mammedov <imammedo@redhat.com>; Ani Sinha <anisinha@redhat.com>; Paolo
+> Bonzini <pbonzini@redhat.com>; Richard Henderson
+> <richard.henderson@linaro.org>; Eduardo Habkost <eduardo@habkost.net>;
+> Marcel Apfelbaum <marcel.apfelbaum@gmail.com>; Philippe Mathieu-Daud=E9
+> <philmd@linaro.org>; wangyanan (Y) <wangyanan55@huawei.com>; Daniel P.
+> Berrang=E9 <berrange@redhat.com>; Peter Xu <peterx@redhat.com>; David
+> Hildenbrand <david@redhat.com>; Bibo Mao <maobibo@loongson.cn>
+> Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+>=20
+> On Tue, Sep 26, 2023 at 11:45:19AM +0000, Salil Mehta wrote:
+> >
+> > > From: Michael S. Tsirkin <mst@redhat.com>
+> > > Sent: Tuesday, September 26, 2023 12:12 PM
+> > > To: Salil Mehta <salil.mehta@huawei.com>
+> > > Cc: xianglai li <lixianglai@loongson.cn>; qemu-devel@nongnu.org;
+> Bernhard
+> > > Beschow <shentey@gmail.com>; Salil Mehta <salil.mehta@opnsrc.net>;
+> Xiaojuan
+> > > Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Igor
+> > > Mammedov <imammedo@redhat.com>; Ani Sinha <anisinha@redhat.com>; Paol=
+o
+> > > Bonzini <pbonzini@redhat.com>; Richard Henderson
+> > > <richard.henderson@linaro.org>; Eduardo Habkost <eduardo@habkost.net>=
+;
+> > > Marcel Apfelbaum <marcel.apfelbaum@gmail.com>; Philippe Mathieu-Daud=
+=E9
+> > > <philmd@linaro.org>; wangyanan (Y) <wangyanan55@huawei.com>; Daniel P=
+.
+> > > Berrang=E9 <berrange@redhat.com>; Peter Xu <peterx@redhat.com>; David
+> > > Hildenbrand <david@redhat.com>; Bibo Mao <maobibo@loongson.cn>
+> > > Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+> > >
+> > > On Tue, Sep 26, 2023 at 10:49:08AM +0000, Salil Mehta wrote:
+> > > > Hi Xianglai,
+> > > > FYI. RFC V2 is out and you can now drop the arch agnostic patches
+> from
+> > > > your patch-set. Please check the details in the cover letter which
+> one
+> > > > you need to pick and rebase from:
+> > > >
+> > > > https://lore.kernel.org/qemu-devel/20230926100436.28284-1-
+> > > salil.mehta@huawei.com/T/#t
+> > > >
+> > > > I am planning to float the architecture agnostic patch-set within
+> this
+> > > > week which will have same patches and in same order as mentioned in
+> > > > the cover letter. This will untie the development across different
+> > > > architectures.
+> > > >
+> > > > Many thanks
+> > > > Salil.
+> > >
+> > > However, please get authorship info right. This claims patch has been
+> > > codeveloped by Bernhard Beschow, xianglai li and yourself.
+> > > Your patch claims a completely different list of authors
+> >
+> > Yes, because those are the people who have developed the patches.
+> >
+> > > with yourself being the only common author.
+> > > Not nice.
+> >
+> > I have already replied in the other thread. This patch has been
+> > taken from the ARM patch-set sent in the year 2020.
+> >
+> > I am not sure who is the other author and how he has contributed.
+> >
+> > Co-developed-by usually points at main authors.
+> >
+>=20
+>=20
+> If you are not sure then find out please.
+
+
+We really have not collaborated on anything as part of
+this entire development of virtual CPU hotplug since the
+year 2020?
+
+I would leave it to Xianglai to answer about the person.
+
+
+
+> And to help you stop guessing at the rules:
+>=20
+> Documentation/process/submitting-patches.rst
+>=20
+> 	Co-developed-by: states that the patch was co-created by multiple
+> developers;
+> 	it is used to give attribution to co-authors (in addition to the
+> author
+> 	attributed by the From: tag) when several people work on a single
+> patch.  Since
+> 	Co-developed-by: denotes authorship, every Co-developed-by: must be
+> immediately
+> 	followed by a Signed-off-by: of the associated co-author.  Standard
+> sign-off
+> 	procedure applies, i.e. the ordering of Signed-off-by: tags should
+> reflect the
+> 	chronological history of the patch insofar as possible, regardless of
+> whether
+> 	the author is attributed via From: or Co-developed-by:.  Notably, the
+> last
+> 	Signed-off-by: must always be that of the developer submitting the
+> patch.
+
+
+Sure, ARM patch-set follows exactly above rules.
+
+
+
+> > > > > From: xianglai li <lixianglai@loongson.cn>
+> > > > > Sent: Tuesday, September 26, 2023 10:54 AM
+> > > > > To: qemu-devel@nongnu.org
+> > > > > Cc: Bernhard Beschow <shentey@gmail.com>; Salil Mehta
+> > > > > <salil.mehta@opnsrc.net>; Salil Mehta <salil.mehta@huawei.com>;
+> > > Xiaojuan
+> > > > > Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>;
+> > > Michael S.
+> > > > > Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; An=
+i
+> > > Sinha
+> > > > > <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richa=
+rd
+> > > > > Henderson <richard.henderson@linaro.org>; Eduardo Habkost
+> > > > > <eduardo@habkost.net>; Marcel Apfelbaum
+> <marcel.apfelbaum@gmail.com>;
+> > > > > Philippe Mathieu-Daud=E9 <philmd@linaro.org>; wangyanan (Y)
+> > > > > <wangyanan55@huawei.com>; Daniel P. Berrang=E9 <berrange@redhat.c=
+om>;
+> > > Peter
+> > > > > Xu <peterx@redhat.com>; David Hildenbrand <david@redhat.com>; Bib=
+o
+> Mao
+> > > > > <maobibo@loongson.cn>
+> > > > > Subject: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+> > > > >
+> > > > > CPUs Control device(\\_SB.PCI0) register interface for the x86 ar=
+ch
+> > > > > is based on PCI and is IO port based and hence existing cpus AML
+> code
+> > > > > assumes _CRS objects would evaluate to a system resource which
+> > > describes
+> > > > > IO Port address.
+> > > > > But on Loongarch arch CPUs control device(\\_SB.PRES) register
+> > > interface
+> > > > > is memory-mapped hence _CRS object should evaluate to system
+> resource
+> > > > > which describes memory-mapped base address.
+> > > > >
+> > > > > This cpus AML code change updates the existing interface of the
+> build
+> > > cpus
+> > > > > AML
+> > > > > function to accept both IO/MEMORY type regions and update the _CR=
+S
+> > > object
+> > > > > correspondingly.
+> > > > >
+> > > > > Co-authored-by: "Bernhard Beschow" <shentey@gmail.com>
+> > > > > Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
+> > > > > Co-authored-by: "Salil Mehta" <salil.mehta@huawei.com>
+> > > > > Cc: "Bernhard Beschow" <shentey@gmail.com>
+> > > > > Cc: "Salil Mehta" <salil.mehta@huawei.com>
+> > > > > Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
+> > > > > Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+> > > > > Cc: Song Gao <gaosong@loongson.cn>
+> > > > > Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> > > > > Cc: Igor Mammedov <imammedo@redhat.com>
+> > > > > Cc: Ani Sinha <anisinha@redhat.com>
+> > > > > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > > > > Cc: Richard Henderson <richard.henderson@linaro.org>
+> > > > > Cc: Eduardo Habkost <eduardo@habkost.net>
+> > > > > Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> > > > > Cc: "Philippe Mathieu-Daud=E9" <philmd@linaro.org>
+> > > > > Cc: Yanan Wang <wangyanan55@huawei.com>
+> > > > > Cc: "Daniel P. Berrang=E9" <berrange@redhat.com>
+> > > > > Cc: Peter Xu <peterx@redhat.com>
+> > > > > Cc: David Hildenbrand <david@redhat.com>
+> > > > > Cc: Bibo Mao <maobibo@loongson.cn>
+> > > > > Signed-off-by: xianglai li <lixianglai@loongson.cn>
+> > > > > ---
+> > > > >  hw/acpi/cpu.c         | 20 +++++++++++++++-----
+> > > > >  hw/i386/acpi-build.c  |  3 ++-
+> > > > >  include/hw/acpi/cpu.h |  5 +++--
+> > > > >  3 files changed, 20 insertions(+), 8 deletions(-)
+> > > > >
+> > > > > diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+> > > > > index 5bad983928..0afa04832e 100644
+> > > > > --- a/hw/acpi/cpu.c
+> > > > > +++ b/hw/acpi/cpu.c
+> > > > > @@ -6,6 +6,7 @@
+> > > > >  #include "qapi/qapi-events-acpi.h"
+> > > > >  #include "trace.h"
+> > > > >  #include "sysemu/numa.h"
+> > > > > +#include "hw/acpi/cpu_hotplug.h"
+> > > > >
+> > > > >  #define OVMF_CPUHP_SMI_CMD 4
+> > > > >
+> > > > > @@ -332,9 +333,10 @@ const VMStateDescription vmstate_cpu_hotplug=
+ =3D
+> {
+> > > > >  #define CPU_FW_EJECT_EVENT "CEJF"
+> > > > >
+> > > > >  void build_cpus_aml(Aml *table, MachineState *machine,
+> > > CPUHotplugFeatures
+> > > > > opts,
+> > > > > -                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> io_base,
+> > > > > +                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> > > mmap_io_base,
+> > > > >                      const char *res_root,
+> > > > > -                    const char *event_handler_method)
+> > > > > +                    const char *event_handler_method,
+> > > > > +                    AmlRegionSpace rs)
+> > > > >  {
+> > > > >      Aml *ifctx;
+> > > > >      Aml *field;
+> > > > > @@ -359,14 +361,22 @@ void build_cpus_aml(Aml *table, MachineStat=
+e
+> > > > > *machine, CPUHotplugFeatures opts,
+> > > > >          aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
+> > > > >
+> > > > >          crs =3D aml_resource_template();
+> > > > > -        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1=
+,
+> > > > > +        if (rs =3D=3D AML_SYSTEM_IO) {
+> > > > > +            aml_append(crs, aml_io(AML_DECODE16, mmap_io_base,
+> > > > > mmap_io_base, 1,
+> > > > >                                 ACPI_CPU_HOTPLUG_REG_LEN));
+> > > > > +        } else {
+> > > > > +            aml_append(crs, aml_memory32_fixed(mmap_io_base,
+> > > > > +                               ACPI_CPU_HOTPLUG_REG_LEN,
+> > > AML_READ_WRITE));
+> > > > > +        }
+> > > > > +
+> > > > >          aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
+> > > > >
+> > > > > +        g_assert(rs =3D=3D AML_SYSTEM_IO || rs =3D=3D AML_SYSTEM=
+_MEMORY);
+> > > > >          /* declare CPU hotplug MMIO region with related access
+> fields
+> > > */
+> > > > >          aml_append(cpu_ctrl_dev,
+> > > > > -            aml_operation_region("PRST", AML_SYSTEM_IO,
+> > > aml_int(io_base),
+> > > > > -                                 ACPI_CPU_HOTPLUG_REG_LEN));
+> > > > > +            aml_operation_region("PRST", rs,
+> > > > > +                                         aml_int(mmap_io_base),
+> > > > > +
+> ACPI_CPU_HOTPLUG_REG_LEN));
+> > > > >
+> > > > >          field =3D aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
+> > > > >                            AML_WRITE_AS_ZEROS);
+> > > > > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> > > > > index 863a939210..7016205d15 100644
+> > > > > --- a/hw/i386/acpi-build.c
+> > > > > +++ b/hw/i386/acpi-build.c
+> > > > > @@ -1550,7 +1550,8 @@ build_dsdt(GArray *table_data, BIOSLinker
+> > > *linker,
+> > > > >              .fw_unplugs_cpu =3D pm->smi_on_cpu_unplug,
+> > > > >          };
+> > > > >          build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
+> > > > > -                       pm->cpu_hp_io_base, "\\_SB.PCI0",
+> > > "\\_GPE._E02");
+> > > > > +                       pm->cpu_hp_io_base, "\\_SB.PCI0",
+> > > "\\_GPE._E02",
+> > > > > +                       AML_SYSTEM_IO);
+> > > > >      }
+> > > > >
+> > > > >      if (pcms->memhp_io_base && nr_mem) {
+> > > > > diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+> > > > > index bc901660fb..601f644e57 100644
+> > > > > --- a/include/hw/acpi/cpu.h
+> > > > > +++ b/include/hw/acpi/cpu.h
+> > > > > @@ -60,9 +60,10 @@ typedef void (*build_madt_cpu_fn)(int uid, con=
+st
+> > > > > CPUArchIdList *apic_ids,
+> > > > >                                    GArray *entry, bool
+> force_enabled);
+> > > > >
+> > > > >  void build_cpus_aml(Aml *table, MachineState *machine,
+> > > CPUHotplugFeatures
+> > > > > opts,
+> > > > > -                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> io_base,
+> > > > > +                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> > > mmap_io_base,
+> > > > >                      const char *res_root,
+> > > > > -                    const char *event_handler_method);
+> > > > > +                    const char *event_handler_method,
+> > > > > +                    AmlRegionSpace rs);
+> > > > >
+> > > > >  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoLi=
+st
+> > > > > ***list);
+> > > > >
+> > > > > --
+> > > > > 2.39.1
+> > > > >
+> > > >
+
 
