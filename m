@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C047AE9A7
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4343D7AE9A4
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:55:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql4mK-0003bq-TS; Tue, 26 Sep 2023 05:54:53 -0400
+	id 1ql4mb-0003fA-TE; Tue, 26 Sep 2023 05:55:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1ql4mE-0003YA-20
+ id 1ql4mE-0003Yb-NO
  for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:54:46 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1ql4mB-0001bE-3a
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:54:45 -0400
+ (envelope-from <lixianglai@loongson.cn>) id 1ql4mB-0001bJ-KO
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:54:46 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cx7+tfqhJlT6IsAA--.18802S3;
- Tue, 26 Sep 2023 17:54:39 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8Dx_+tgqhJlVqIsAA--.18889S3;
+ Tue, 26 Sep 2023 17:54:40 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxnd5YqhJlTJgSAA--.40131S7; 
+ AQAAf8Dxnd5YqhJlTJgSAA--.40131S8; 
  Tue, 26 Sep 2023 17:54:39 +0800 (CST)
 From: xianglai li <lixianglai@loongson.cn>
 To: qemu-devel@nongnu.org
@@ -40,16 +40,16 @@ Cc: "Bernhard Beschow" <shentey@gmail.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
  Bibo Mao <maobibo@loongson.cn>
-Subject: [PATCH v3 5/7] Add basic CPU hot-(un)plug support for Loongarch
-Date: Tue, 26 Sep 2023 17:54:30 +0800
-Message-Id: <52bbbc0b77cb103908d8d6e7cd0c959bf9afbdaa.1695697701.git.lixianglai@loongson.cn>
+Subject: [PATCH v3 6/7] Add support of *unrealize* for Loongarch cpu
+Date: Tue, 26 Sep 2023 17:54:31 +0800
+Message-Id: <ad2957aaf7b3352bf4554b327a76c75ecdef24ea.1695697701.git.lixianglai@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1695697701.git.lixianglai@loongson.cn>
 References: <cover.1695697701.git.lixianglai@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dxnd5YqhJlTJgSAA--.40131S7
+X-CM-TRANSID: AQAAf8Dxnd5YqhJlTJgSAA--.40131S8
 X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -76,8 +76,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add CPU hot-(un)plug related hook functions and
-turn on the CPU hot-(un)plug custom switch.
+Add the unrealize function to the Loongarch CPU for cpu hot-(un)plug
 
 Cc: "Bernhard Beschow" <shentey@gmail.com>
 Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
@@ -99,297 +98,67 @@ Cc: David Hildenbrand <david@redhat.com>
 Cc: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: xianglai li <lixianglai@loongson.cn>
 ---
- .../devices/loongarch64-softmmu/default.mak   |   1 +
- hw/loongarch/virt.c                           | 210 ++++++++++++++++++
- 2 files changed, 211 insertions(+)
+ target/loongarch/cpu.c | 20 ++++++++++++++++++++
+ target/loongarch/cpu.h |  1 +
+ 2 files changed, 21 insertions(+)
 
-diff --git a/configs/devices/loongarch64-softmmu/default.mak b/configs/devices/loongarch64-softmmu/default.mak
-index 928bc117ef..e596706fab 100644
---- a/configs/devices/loongarch64-softmmu/default.mak
-+++ b/configs/devices/loongarch64-softmmu/default.mak
-@@ -1,3 +1,4 @@
- # Default configuration for loongarch64-softmmu
- 
- CONFIG_LOONGARCH_VIRT=y
-+CONFIG_ACPI_CPU_HOTPLUG=y
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index fb06b4ab4e..c704f3117f 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -999,11 +999,93 @@ static void virt_get_cpu_topo_by_cpu_index(const MachineState *ms,
-     cpu_topo->thread_id = cpu_index % ms->smp.threads;
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index 40b856554f..92fb23704f 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -576,6 +576,22 @@ static void loongarch_cpu_realizefn(DeviceState *dev, Error **errp)
+     lacc->parent_realize(dev, errp);
  }
  
-+/* find cpu slot in machine->possible_cpus by arch_id */
-+static CPUArchId *loongarch_find_cpu_slot(MachineState *ms, int arch_id)
++static void loongarch_cpu_unrealizefn(DeviceState *dev)
 +{
-+    int n;
-+    for (n = 0; n < ms->possible_cpus->len; n++) {
-+        if (ms->possible_cpus->cpus[n].arch_id == arch_id) {
-+            return &ms->possible_cpus->cpus[n];
-+        }
-+    }
++    LoongArchCPUClass *mcc = LOONGARCH_CPU_GET_CLASS(dev);
 +
-+    return NULL;
-+}
-+
-+static void loongarch_cpu_pre_plug(HotplugHandler *hotplug_dev,
-+                            DeviceState *dev, Error **errp)
-+{
-+    MachineState *ms = MACHINE(OBJECT(hotplug_dev));
-+    MachineClass *mc = MACHINE_GET_CLASS(hotplug_dev);
++#ifndef CONFIG_USER_ONLY
 +    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
-+    CPUState *cs = CPU(dev);
-+    CPUArchId *cpu_slot;
-+    Error *local_err = NULL;
-+    LoongArchCPUTopo cpu_topo;
-+    int arch_id;
-+
-+    if (dev->hotplugged && !mc->has_hotpluggable_cpus) {
-+        error_setg(&local_err, "CPU hotplug not supported for this machine");
-+        goto out;
-+    }
-+
-+    /* sanity check the cpu */
-+    if (!object_dynamic_cast(OBJECT(cpu), ms->cpu_type)) {
-+        error_setg(&local_err, "Invalid CPU type, expected cpu type: '%s'",
-+                   ms->cpu_type);
-+        goto out;
-+    }
-+
-+    if ((cpu->thread_id < 0) || (cpu->thread_id >= ms->smp.threads)) {
-+        error_setg(&local_err,
-+                   "Invalid thread-id %u specified, must be in range 1:%u",
-+                   cpu->thread_id, ms->smp.threads - 1);
-+        goto out;
-+    }
-+
-+    if ((cpu->core_id < 0) || (cpu->core_id >= ms->smp.cores)) {
-+        error_setg(&local_err,
-+                   "Invalid core-id %u specified, must be in range 1:%u",
-+                   cpu->core_id, ms->smp.cores);
-+        goto out;
-+    }
-+
-+    if ((cpu->socket_id < 0) || (cpu->socket_id >= ms->smp.sockets)) {
-+        error_setg(&local_err,
-+                   "Invalid socket-id %u specified, must be in range 1:%u",
-+                   cpu->socket_id, ms->smp.sockets - 1);
-+        goto out;
-+    }
-+
-+    cpu_topo.socket_id = cpu->socket_id;
-+    cpu_topo.core_id = cpu->core_id;
-+    cpu_topo.thread_id = cpu->thread_id;
-+    arch_id = virt_get_arch_id_from_cpu_topo(ms, &cpu_topo);
-+
-+    cpu_slot = loongarch_find_cpu_slot(ms, arch_id);
-+    if (CPU(cpu_slot->cpu)) {
-+        error_setg(&local_err,
-+                   "cpu(id%d=%d:%d:%d) with arch-id %" PRIu64 " exists",
-+                   cs->cpu_index, cpu->socket_id, cpu->core_id,
-+                   cpu->thread_id, cpu_slot->arch_id);
-+        goto out;
-+    }
-+    cpu->arch_id = arch_id;
-+
-+    numa_cpu_pre_plug(cpu_slot, dev, &local_err);
-+
-+    return ;
-+out:
-+    error_propagate(errp, local_err);
-+}
-+
- static void virt_machine_device_pre_plug(HotplugHandler *hotplug_dev,
-                                             DeviceState *dev, Error **errp)
- {
-     if (memhp_type_supported(dev)) {
-         virt_mem_pre_plug(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
-+        loongarch_cpu_pre_plug(hotplug_dev, dev, errp);
-     }
- }
- 
-@@ -1017,11 +1099,45 @@ static void virt_mem_unplug_request(HotplugHandler *hotplug_dev,
-                                    errp);
- }
- 
-+static void loongarch_cpu_unplug_request(HotplugHandler *hotplug_dev,
-+                                        DeviceState *dev, Error **errp)
-+{
-+    MachineState *machine = MACHINE(OBJECT(hotplug_dev));
-+    LoongArchMachineState *lsms = LOONGARCH_MACHINE(machine);
-+    Error *local_err = NULL;
-+    HotplugHandlerClass *hhc;
-+    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
-+    CPUState *cs = CPU(dev);
-+
-+    if (!lsms->acpi_ged) {
-+        error_setg(&local_err, "CPU hot unplug not supported without ACPI");
-+        goto out;
-+    }
-+
-+    if (cs->cpu_index == 0) {
-+        error_setg(&local_err,
-+                   "hot-unplug of boot cpu(id%d=%d:%d:%d) not supported",
-+                   cs->cpu_index, cpu->socket_id,
-+                   cpu->core_id, cpu->thread_id);
-+        goto out;
-+    }
-+
-+
-+    hhc = HOTPLUG_HANDLER_GET_CLASS(lsms->acpi_ged);
-+    hhc->unplug_request(HOTPLUG_HANDLER(lsms->acpi_ged), dev, &local_err);
-+
-+    return;
-+ out:
-+    error_propagate(errp, local_err);
-+}
-+
- static void virt_machine_device_unplug_request(HotplugHandler *hotplug_dev,
-                                           DeviceState *dev, Error **errp)
- {
-     if (memhp_type_supported(dev)) {
-         virt_mem_unplug_request(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
-+        loongarch_cpu_unplug_request(hotplug_dev, dev, errp);
-     }
- }
- 
-@@ -1035,11 +1151,74 @@ static void virt_mem_unplug(HotplugHandler *hotplug_dev,
-     qdev_unrealize(dev);
- }
- 
-+static void loongarch_cpu_irq_uninit(MachineState *machine,
-+                                     LoongArchCPU *cpu)
-+{
-+    LoongArchMachineState *lsms = LOONGARCH_MACHINE(machine);
 +    CPULoongArchState *env = &cpu->env;
-+    DeviceState *ipi = env->ipistate;
-+    CPUState *cs = CPU(cpu);
-+    unsigned int cpu_index = cs->cpu_index;
-+    DeviceState *extioi = lsms->extioi;
 +
-+    qemu_unregister_reset(reset_load_elf, DEVICE(cpu));
++    cpu_remove_sync(CPU(dev));
++    address_space_destroy(&env->address_space_iocsr);
++    memory_region_del_subregion(&env->system_iocsr, &env->iocsr_mem);
++#endif
 +
-+    /* del IPI iocsr memory region */
-+    memory_region_del_subregion(&env->system_iocsr,
-+                                sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi),
-+                                0));
-+    memory_region_del_subregion(&env->system_iocsr,
-+                                sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi),
-+                                1));
-+
-+    env->ipistate = NULL;
-+    object_unparent(OBJECT(ipi));
-+
-+    /*
-+     * del extioi iocsr memory region
-+     * only one extioi is added on loongarch virt machine
-+     * external device interrupt can only be routed to cpu 0-3
-+     */
-+    if (cpu_index < EXTIOI_CPUS)
-+        memory_region_del_subregion(&env->system_iocsr,
-+                            sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi),
-+                            cpu_index));
++    mcc->parent_unrealize(dev);
 +}
 +
-+static void loongarch_cpu_unplug(HotplugHandler *hotplug_dev,
-+                                DeviceState *dev, Error **errp)
-+{
-+    CPUArchId *found_cpu;
-+    HotplugHandlerClass *hhc;
-+    Error *local_err = NULL;
-+    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
-+    MachineState *machine = MACHINE(OBJECT(hotplug_dev));
-+    LoongArchMachineState *lsms = LOONGARCH_MACHINE(machine);
+ #ifndef CONFIG_USER_ONLY
+ static void loongarch_qemu_write(void *opaque, hwaddr addr,
+                                  uint64_t val, unsigned size)
+@@ -756,6 +772,9 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+     device_class_set_props(dc, loongarch_cpu_properties);
+     device_class_set_parent_realize(dc, loongarch_cpu_realizefn,
+                                     &lacc->parent_realize);
++    device_class_set_parent_unrealize(dc, loongarch_cpu_unrealizefn,
++                                      &lacc->parent_unrealize);
 +
-+    hhc = HOTPLUG_HANDLER_GET_CLASS(lsms->acpi_ged);
-+    hhc->unplug(HOTPLUG_HANDLER(lsms->acpi_ged), dev, &local_err);
-+
-+    if (local_err) {
-+        goto out;
-+    }
-+
-+    loongarch_cpu_irq_uninit(machine, cpu);
-+
-+    found_cpu = loongarch_find_cpu_slot(MACHINE(lsms), cpu->arch_id);
-+    found_cpu->cpu = NULL;
-+
-+    return;
-+out:
-+    error_propagate(errp, local_err);
-+}
-+
- static void virt_machine_device_unplug(HotplugHandler *hotplug_dev,
-                                           DeviceState *dev, Error **errp)
- {
-     if (memhp_type_supported(dev)) {
-         virt_mem_unplug(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
-+        loongarch_cpu_unplug(hotplug_dev, dev, errp);
-     }
+     resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hold, NULL,
+                                        &lacc->parent_phases);
+ 
+@@ -777,6 +796,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+ #ifdef CONFIG_TCG
+     cc->tcg_ops = &loongarch_tcg_ops;
+ #endif
++    dc->user_creatable = true;
  }
  
-@@ -1104,6 +1283,33 @@ static LoongArchCPU *loongarch_cpu_irq_init(MachineState *machine,
-     return cpu;
- }
+ static gchar *loongarch32_gdb_arch_name(CPUState *cs)
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index 838492f014..ec4a9ff166 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -414,6 +414,7 @@ struct LoongArchCPUClass {
+     /*< public >*/
  
-+static void loongarch_cpu_plug(HotplugHandler *hotplug_dev,
-+                                DeviceState *dev, Error **errp)
-+{
-+    CPUArchId *found_cpu;
-+    HotplugHandlerClass *hhc;
-+    Error *local_err = NULL;
-+    MachineState *machine = MACHINE(OBJECT(hotplug_dev));
-+    LoongArchMachineState *lsms = LOONGARCH_MACHINE(machine);
-+    LoongArchCPU *cpu = LOONGARCH_CPU(dev);
-+
-+    if (lsms->acpi_ged) {
-+        loongarch_cpu_irq_init(machine, cpu, errp);
-+        hhc = HOTPLUG_HANDLER_GET_CLASS(lsms->acpi_ged);
-+        hhc->plug(HOTPLUG_HANDLER(lsms->acpi_ged), dev, &local_err);
-+        if (local_err) {
-+            goto out;
-+        }
-+    }
-+
-+    found_cpu = loongarch_find_cpu_slot(MACHINE(lsms), cpu->arch_id);
-+    found_cpu->cpu = OBJECT(dev);
-+
-+    return;
-+out:
-+    error_propagate(errp, local_err);
-+}
-+
- static void loongarch_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-                                         DeviceState *dev, Error **errp)
- {
-@@ -1117,6 +1323,8 @@ static void loongarch_machine_device_plug_cb(HotplugHandler *hotplug_dev,
-         }
-     } else if (memhp_type_supported(dev)) {
-         virt_mem_plug(hotplug_dev, dev, errp);
-+    } else if (object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU)) {
-+        loongarch_cpu_plug(hotplug_dev, dev, errp);
-     }
- }
+     DeviceRealize parent_realize;
++    DeviceUnrealize parent_unrealize;
+     ResettablePhases parent_phases;
+ };
  
-@@ -1126,6 +1334,7 @@ static HotplugHandler *virt_machine_get_hotplug_handler(MachineState *machine,
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
- 
-     if (device_is_dynamic_sysbus(mc, dev) ||
-+        object_dynamic_cast(OBJECT(dev), TYPE_LOONGARCH_CPU) ||
-         memhp_type_supported(dev)) {
-         return HOTPLUG_HANDLER(machine);
-     }
-@@ -1194,6 +1403,7 @@ static void loongarch_class_init(ObjectClass *oc, void *data)
-     MachineClass *mc = MACHINE_CLASS(oc);
-     HotplugHandlerClass *hc = HOTPLUG_HANDLER_CLASS(oc);
- 
-+    mc->has_hotpluggable_cpus = true;
-     mc->desc = "Loongson-3A5000 LS7A1000 machine";
-     mc->init = loongarch_init;
-     mc->default_ram_size = 1 * GiB;
 -- 
 2.39.1
 
