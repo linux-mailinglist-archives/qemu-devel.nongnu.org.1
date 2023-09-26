@@ -2,74 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B167AEE11
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 15:47:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7C3B7AEE45
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 15:55:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql8P8-0002yd-I1; Tue, 26 Sep 2023 09:47:10 -0400
+	id 1ql8WK-0007GY-6T; Tue, 26 Sep 2023 09:54:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql8P5-0002xn-N8
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:47:08 -0400
-Received: from mail-lf1-x12a.google.com ([2a00:1450:4864:20::12a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql8P3-0000BL-Ie
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:47:07 -0400
-Received: by mail-lf1-x12a.google.com with SMTP id
- 2adb3069b0e04-5033918c09eso14130337e87.2
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 06:47:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695736023; x=1696340823; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=CBdJnNg8oJ3UlbN0OeTjzzqqVvDscSG80mH0MUCNic8=;
- b=imHj/MT6Q4etR00ybSTKfq4BDrKV0Ckm5gkf1lfTo2bR0dFfslonO4RmIg9yIBbFN6
- W8mhdO/5fqTYJh5oyALv0JzvcO0zba3IHsmfN2h/egnVlrmBtTjxtaBF0nGY4pNjCoRF
- JvgU8JHOIIx2rk4U9Iy38xIT70rQrOH1UHsyVnGMfxwB1YGvoP955KKLBfK9j6YHT5+4
- R19cydaxV4D+onypEpuFv5zny14IPUyngKTcyPZZrq06asWgo33M6hUiv6Ub5wW8O9A6
- UXYa3J6bKijUbd8SNiuycfjdvQD4suaDE3rYiIC9wtQ5fegtAcnv0S83SjPPnqzQ+BTx
- dbsw==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1ql8WG-00078l-Oh
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:54:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1ql8W8-000221-25
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:54:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695736461;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=omMxtZlxYmHSaKiNBg8QkkaBBc55aVLo9Dv7tF+WlA8=;
+ b=eIjZwKjhgtPRCU1OPDkn369WnFVbTqMtYpTEO9D7dRmpm6DRI0DZc1Op6Av4osrh8hhLBg
+ qPM39my8sCsFXaShfYU5cxBaMKKAHan7JRueDovc4mTTnEV4tMGjIhw7yXag3ELL9VlRaw
+ yRoM3/CvaL+jD/Bd+lGlOdiiuAs624M=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-400-IFgQLErWPGicATYyAsOFRg-1; Tue, 26 Sep 2023 09:54:20 -0400
+X-MC-Unique: IFgQLErWPGicATYyAsOFRg-1
+Received: by mail-ej1-f70.google.com with SMTP id
+ a640c23a62f3a-9b274cc9636so444616766b.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 06:54:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695736023; x=1696340823;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CBdJnNg8oJ3UlbN0OeTjzzqqVvDscSG80mH0MUCNic8=;
- b=oKAZfAc5M4OfbXRpYBtgZ5+IvsV6HlKd6sng7LqG1QYEHPERfpYtwqXyBfhv3ebfn6
- 77beHKHtzaSOHAm4O08auhnG1Qw/yACaJkzgLqKKxFbKGApN3KXLYDyLbvwYdOSbMM5+
- Y0IHx8iZupsaPHP7IiAsZ3RTVM4WaAPKi4khN91HfLAfp8Sx2NKVomMWuYkjLPXqPh1K
- Y2sWeN0foGgfs5kANT/6tMR1ZMYHQgTeV0AVwS4dYd6Kl2A+LvMIDaCaWXLGwUC6r4Ls
- 1PwfcO7EL2bSfbAsGRxs7ZEpYfgBPoVODMpY4XNcdCDMN7YfC86PjOsR2uSOGMtCRdN+
- c+Nw==
-X-Gm-Message-State: AOJu0Ywmi8/ImOSdcmP5Gkbd79XFhGOjUD5RVCMB5k384s4wSiBmuNsv
- 6p3O/BHV/kHlGK8dCJxU3y5VI4tWutMovPLAMIWWZw==
-X-Google-Smtp-Source: AGHT+IE8wcKYfeG8hIqyLgjXoXfBUp0dSzzRvPp1ZFeCudsiqGvUP4bff3ttdRNy11S67YA0BNfm0p+aZKmOMKMC47c=
-X-Received: by 2002:a19:4310:0:b0:4ff:70d2:4512 with SMTP id
- q16-20020a194310000000b004ff70d24512mr7562277lfa.23.1695736022410; Tue, 26
- Sep 2023 06:47:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695736458; x=1696341258;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=omMxtZlxYmHSaKiNBg8QkkaBBc55aVLo9Dv7tF+WlA8=;
+ b=ILQPdwIN1weYngCPYiQraJGKodGPAQYKT6CvQ+7siSFpoAzQug4ymQfLV2q+M41Ba7
+ onBONZ1FNxGYbVkaPTBu9EbPi0V+OQ1FCkeieGjYQvvK6RHzU67jC0GJkH+XKtYCkUkH
+ sWzr9+oHgI38+OPN5cDV+j9yDpLwai6RPDSUNwXkW0eTfdB12czqMyqHK6LdLQ8K+wMV
+ ZHWnyhUoGjxxV/9b85IfGCV04Ix91zbnLTX83ljto/j+AxJxeLmluc2mR5IJ6Zx7MQ0O
+ 2POn4aRzT6yaIT9pVDM6yOIeibHt+78hHhk2QvmQCilBcPMVmYL6NE+WcG53DaTlpmUk
+ n4CQ==
+X-Gm-Message-State: AOJu0YyfhqKSbOViJZNkMtG60Grus1YAmF4LvSCHyG+8Wfpdw3dR1hSy
+ luEvg6uyhfK//Co/m26IJLt13ehhZM08bSFSbypwRy9Q9cttBIHNOt/RqMw6kJtuf2K5G1aRTTD
+ nXwlKX3DRy+bTFfA=
+X-Received: by 2002:a17:906:1bb1:b0:9ae:3d17:d5d0 with SMTP id
+ r17-20020a1709061bb100b009ae3d17d5d0mr8909239ejg.31.1695736457823; 
+ Tue, 26 Sep 2023 06:54:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG1Kr7WQeMdfGAJEk/awW5vKauqptxa5MYq/sLd3ZzJNI3tbGAZS/GijQnUmC1zKjqoGlMDYA==
+X-Received: by 2002:a17:906:1bb1:b0:9ae:3d17:d5d0 with SMTP id
+ r17-20020a1709061bb100b009ae3d17d5d0mr8909222ejg.31.1695736457396; 
+ Tue, 26 Sep 2023 06:54:17 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
+ (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
+ [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ by smtp.gmail.com with ESMTPSA id
+ k8-20020a170906a38800b0099bc2d1429csm7828772ejz.72.2023.09.26.06.54.16
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Sep 2023 06:54:16 -0700 (PDT)
+Message-ID: <de0387fc-0342-a3bf-7d72-3130e94c50cd@redhat.com>
+Date: Tue, 26 Sep 2023 15:54:16 +0200
 MIME-Version: 1.0
-References: <20230926102801.512107-1-andrey.drobyshev@virtuozzo.com>
- <f27kkumticbgf6m2cvzggtnh5ikcfoexeeo2xs4lrim7muulq6@7kuhh475fffy>
-In-Reply-To: <f27kkumticbgf6m2cvzggtnh5ikcfoexeeo2xs4lrim7muulq6@7kuhh475fffy>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Sep 2023 14:46:44 +0100
-Message-ID: <CAFEAcA85LwsFiBxbDiki6-8FAbmZSFFH7Esf+x8stiPDjww_KA@mail.gmail.com>
-Subject: Re: [PATCH] mailmap: Fix Andrey Drobyshev author email
-To: Eric Blake <eblake@redhat.com>
-Cc: andrey.drobyshev@virtuozzo.com, qemu-devel@nongnu.org, kwolf@redhat.com, 
- philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12a;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 2/5] vhost-user.rst: Clarify enabling/disabling vrings
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
+ "Michael S . Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Eugenio_P=c3=a9rez?=
+ <eperezma@redhat.com>, German Maglione <gmaglione@redhat.com>
+References: <20230915102531.55894-1-hreitz@redhat.com>
+ <20230915102531.55894-3-hreitz@redhat.com> <20230925191508.GC323580@fedora>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20230925191508.GC323580@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,37 +105,98 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Sept 2023 at 14:40, Eric Blake <eblake@redhat.com> wrote:
->
-> On Tue, Sep 26, 2023 at 01:28:01PM +0300, andrey.drobyshev@virtuozzo.com wrote:
-> > From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> >
-> > This fixes authorship of commits 2848289168, 52b10c9c0c as the mailing
-> > list rewrote the "From:" field in the corresponding patches.  See commit
-> > 3bd2608db7 ("maint: Add .mailmap entries for patches claiming list
-> > authorship") for explanation.
-> >
-> > Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-> > ---
-> >  .mailmap | 1 +
-> >  1 file changed, 1 insertion(+)
->
-> Reviewed-by: Eric Blake <eblake@redhat.com>
+On 25.09.23 21:15, Stefan Hajnoczi wrote:
+> On Fri, Sep 15, 2023 at 12:25:27PM +0200, Hanna Czenczek wrote:
+>> Currently, the vhost-user documentation says that rings are to be
+>> initialized in a disabled state when VHOST_USER_F_PROTOCOL_FEATURES is
+>> negotiated.  However, by the time of feature negotiation, all rings have
+>> already been initialized, so it is not entirely clear what this means.
+>>
+>> At least the vhost-user-backend Rust crate's implementation interpreted
+>> it to mean that whenever this feature is negotiated, all rings are to
+>> put into a disabled state, which means that every SET_FEATURES call
+>> would disable all rings, effectively halting the device.  This is
+>> problematic because the VHOST_F_LOG_ALL feature is also set or cleared
+>> this way, which happens during migration.  Doing so should not halt the
+>> device.
+>>
+>> Other implementations have interpreted this to mean that the device is
+>> to be initialized with all rings disabled, and a subsequent SET_FEATURES
+>> call that does not set VHOST_USER_F_PROTOCOL_FEATURES will enable all of
+>> them.  Here, SET_FEATURES will never disable any ring.
+>>
+>> This interpretation does not suffer the problem of unintentionally
+>> halting the device whenever features are set or cleared, so it seems
+>> better and more reasonable.
+>>
+>> We should clarify this in the documentation.
+>>
+>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+>> ---
+>>   docs/interop/vhost-user.rst | 20 ++++++++++++++------
+>>   1 file changed, 14 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+>> index bb4dd0fd60..9b9b802c60 100644
+>> --- a/docs/interop/vhost-user.rst
+>> +++ b/docs/interop/vhost-user.rst
+>> @@ -409,12 +409,20 @@ and stop ring upon receiving ``VHOST_USER_GET_VRING_BASE``.
+>>   
+>>   Rings can be enabled or disabled by ``VHOST_USER_SET_VRING_ENABLE``.
+>>   
+>> -If ``VHOST_USER_F_PROTOCOL_FEATURES`` has not been negotiated, the
+>> -ring starts directly in the enabled state.
+>> -
+>> -If ``VHOST_USER_F_PROTOCOL_FEATURES`` has been negotiated, the ring is
+>> -initialized in a disabled state and is enabled by
+>> -``VHOST_USER_SET_VRING_ENABLE`` with parameter 1.
+>> +If ``VHOST_USER_SET_FEATURES`` does not negotiate
+>> +``VHOST_USER_F_PROTOCOL_FEATURES``, rings are enabled immediately when
+>> +started.
+>> +
+>> +If ``VHOST_USER_SET_FEATURES`` does negotiate
+>> +``VHOST_USER_F_PROTOCOL_FEATURES``, each ring will remain in the disabled
+>> +state until ``VHOST_USER_SET_VRING_ENABLE`` enables it with parameter 1.
+>> +
+>> +Back-end implementations that support ``VHOST_USER_F_PROTOCOL_FEATURES``
+>> +should implement this by initializing each ring in a disabled state, and
+>> +enabling them when ``VHOST_USER_SET_FEATURES`` is used without
+>> +negotiating ``VHOST_USER_F_PROTOCOL_FEATURES``.  Other than that, rings
+>> +should only be enabled and disabled through
+>> +``VHOST_USER_SET_VRING_ENABLE``.
+> The "Ring states" section starts by saying there are three states:
+> "stopped", "started but disabled", and "started and enabled". But this
+> patch talks about a "disabled state". Can you rephrase this patch to use
+> the exact state names defined earlier in the spec?
 
-Hi Eric -- you wrote commit 3bd2608db72997, which included the
-comment for this bit of .mailmap:
+I would not want to do that.  We had the exact problem that the spec 
+wanted to remain high-level, and was not reflecting exactly what 
+existing implementations did, which resulted in confusion (at least for 
+me and the vhost Rust crates authors).
 
-+# Next, translate a few commits where mailman rewrote the From: line due
-+# to strict SPF, although we prefer to avoid adding more entries like that.
+Notably, the existing implementations I’m aware of track 
+enabled/disabled even before the ring is started, exactly as formulated 
+here.
 
-What did you mean by "we prefer to avoid adding more entries" ?
-It reads to me like "don't add more entries even if we get more
-accidental attributed-to-the-list commits" (and I was actually
-thinking about replying to this patch to say "the mailmap file
-says we shouldn't add more of these lines"), but presumably since
-you've reviewed this patch that wasn't the actual intention.
-Maybe the comment could use clarification.
+If we changed this to read something like “If VHOST_USER_SET_FEATURES is 
+ever called without negotiating VHOST_USER_F_PROTOCOL_FEATURES, the ring 
+must be enabled immediately when it is started; otherwise, when the ring 
+is started and VHOST_USER_F_PROTOCOL_FEATURES has always been set in 
+every VHOST_USER_SET_FEATURES call, the ring should be disabled when 
+started.” then this would conflict with the existing implementations:
 
-thanks
--- PMM
+We never disallow VHOST_USER_SET_VRING_ENABLE when the ring is stopped.  
+Existing implementations track enabled/disabled before the rings are 
+started, and they initialize this state to “disabled”, setting it to 
+“enabled” on receiving VHOST_USER_SET_FEATURES without 
+VHOST_USER_F_PROTOCOL_FEATURES, as described above.  Therefore, if you 
+call VHOST_USER_SET_VRING_ENABLE 1 before the ring is started, the ring 
+will start enabled even with VHOST_USER_F_PROTOCOL_FEATURES.  This is 
+not possible if you only have three states.
+
+Maybe we should rather clarify that enabled/disabled is tracked even 
+while the ring is stopped.
+
+Hanna
+
 
