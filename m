@@ -2,99 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD1F7AEB1E
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 13:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2557AEB5C
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 13:22:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql5zn-0007p0-Mf; Tue, 26 Sep 2023 07:12:51 -0400
+	id 1ql68I-0003cS-IA; Tue, 26 Sep 2023 07:21:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ql5zb-0007co-Ub
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:12:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1ql68G-0003a2-04
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:21:36 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ql5zZ-000189-SZ
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:12:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695726756;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=haUavF/gI1iqDHyy0Z/T1BH/vKsD3n/OhBbjzDDEip4=;
- b=Z4ue+1mYxPyZ25WT2p+raPSqaMUIL1OHUF24vbKYcUIVOpzsP8PCheLl8WtZijfHJzYhkr
- jR0CF38EVNTLcnCB36kRTyVuv2FCPMkH6ixrmaaUOBAXw2dvDBrw60NUahm6JJwMIul+Hz
- geFkiWtT8e+fe2oqYByKT4A7wDfj++Q=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-92-khNFHzdRNvaWJMVgL22FoQ-1; Tue, 26 Sep 2023 07:12:35 -0400
-X-MC-Unique: khNFHzdRNvaWJMVgL22FoQ-1
-Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-533c6d0b377so4660360a12.3
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 04:12:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695726754; x=1696331554;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=haUavF/gI1iqDHyy0Z/T1BH/vKsD3n/OhBbjzDDEip4=;
- b=r+6josRLTOKQcBucTF0pNT3/ODGYvJ3d8uTdBNknXTa5fxx6nPVrIPGAWX0rXBbDoO
- PtoaQAePP0mOhoHVYDEENG5y1bSApfXsffkBzFI2ZlOigNtArJCdReobxLgjMY2XnawA
- wFbDxrgYPdmhz6uSPZCefniuc8VCoHajADzfRSeW68W9KmhAYXl01wzMVfxvFaKpDEtL
- OxIlpCG4he4pzvGDeqgqgz3glWRlbdx2jlM5QdEAekjV6VWBFnEhptm5Vmr6sbYz03LH
- UadalYWc5yq0lBLE0DVE2rvk9FSY58JW0avh3jXNQnP54LZAkwX4x0Pj2vcw6E/0dRtp
- 5Gow==
-X-Gm-Message-State: AOJu0YzJLGfl9llP3BTXO7rc381DlTwvfO5nPITdokdsxc+Kt45gcKlq
- wq+bjcEqjQTuE96W7Dmxw0reEdqTQv3fXG11CrWphUa1lx6OP2dMSpdo1WglqzkXaunw+G4VVQ1
- 3hCPHZWaluzfj9Do=
-X-Received: by 2002:aa7:d346:0:b0:530:f880:ca74 with SMTP id
- m6-20020aa7d346000000b00530f880ca74mr8491971edr.28.1695726754035; 
- Tue, 26 Sep 2023 04:12:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHMFHK1AJsHoB2sBoS7Zf+sQvCpx1EZ2svyTui/mDT8H7bt3PQ56hmQ2C00jSLqVhlCLwkf0g==
-X-Received: by 2002:aa7:d346:0:b0:530:f880:ca74 with SMTP id
- m6-20020aa7d346000000b00530f880ca74mr8491953edr.28.1695726753701; 
- Tue, 26 Sep 2023 04:12:33 -0700 (PDT)
-Received: from redhat.com ([2.52.31.177]) by smtp.gmail.com with ESMTPSA id
- dz12-20020a0564021d4c00b0052fdc837d93sm3425080edb.47.2023.09.26.04.12.30
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Sep 2023 04:12:33 -0700 (PDT)
-Date: Tue, 26 Sep 2023 07:12:28 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: xianglai li <lixianglai@loongson.cn>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- Bernhard Beschow <shentey@gmail.com>, Salil Mehta <salil.mehta@opnsrc.net>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Song Gao <gaosong@loongson.cn>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- "wangyanan (Y)" <wangyanan55@huawei.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>
-Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
-Message-ID: <20230926071055-mutt-send-email-mst@kernel.org>
-References: <cover.1695697701.git.lixianglai@loongson.cn>
- <c2ab409710f5e0f0346727b47aaabd14537d45b8.1695697701.git.lixianglai@loongson.cn>
- <17a09b8ab65542be8561cb0480dae6bd@huawei.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1ql68C-0003Xf-Mc
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:21:35 -0400
+Received: from dggpemm100021.china.huawei.com (unknown [172.30.72.56])
+ by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Rvy1V6P7Gz15NL5;
+ Tue, 26 Sep 2023 19:19:10 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ dggpemm100021.china.huawei.com (7.185.36.105) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 26 Sep 2023 19:21:23 +0800
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Tue, 26 Sep 2023 12:21:21 +0100
+To: David Hildenbrand <david@redhat.com>, lixianglai <lixianglai@loongson.cn>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: Salil Mehta <salil.mehta@opnsrc.net>, Xiaojuan Yang
+ <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
+ =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, "wangyanan
+ (Y)" <wangyanan55@huawei.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, Bibo Mao
+ <maobibo@loongson.cn>
+Subject: RE: [PATCH v2 04/10] Introduce the CPU address space destruction
+ function
+Thread-Topic: [PATCH v2 04/10] Introduce the CPU address space destruction
+ function
+Thread-Index: AQHZ5R7Fmo7gjrU/1EmDlFadlO4IebAWsogAgAOJWgCAAAdJgIAA3/CAgAABaoCAAFe/AIARji0Q
+Date: Tue, 26 Sep 2023 11:21:21 +0000
+Message-ID: <7906109a36c5467fa9b529520671fa77@huawei.com>
+References: <cover.1694433326.git.lixianglai@loongson.cn>
+ <3a4fc2a3df4b767c3c296a7da3bc15ca9c251316.1694433326.git.lixianglai@loongson.cn>
+ <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
+ <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
+ <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
+ <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
+ <e4e88068-4754-f7d4-e080-b7b8d5bcf006@loongson.cn>
+ <5f610a1d-da1b-0094-41e7-f69164c4d0e0@redhat.com>
+In-Reply-To: <5f610a1d-da1b-0094-41e7-f69164c4d0e0@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.174.16]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <17a09b8ab65542be8561cb0480dae6bd@huawei.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=45.249.212.255;
+ envelope-from=salil.mehta@huawei.com; helo=szxga08-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,180 +84,99 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 26, 2023 at 10:49:08AM +0000, Salil Mehta wrote:
-> Hi Xianglai,
-> FYI. RFC V2 is out and you can now drop the arch agnostic patches from
-> your patch-set. Please check the details in the cover letter which one
-> you need to pick and rebase from:
-> 
-> https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/T/#t
-> 
-> I am planning to float the architecture agnostic patch-set within this
-> week which will have same patches and in same order as mentioned in
-> the cover letter. This will untie the development across different
-> architectures.
-> 
-> Many thanks
-> Salil.
-
-However, please get authorship info right. This claims patch has been
-codeveloped by Bernhard Beschow, xianglai li and yourself.
-Your patch claims a completely different list of authors
-with yourself being the only common author.
-Not nice.
-
-
-> > From: xianglai li <lixianglai@loongson.cn>
-> > Sent: Tuesday, September 26, 2023 10:54 AM
-> > To: qemu-devel@nongnu.org
-> > Cc: Bernhard Beschow <shentey@gmail.com>; Salil Mehta
-> > <salil.mehta@opnsrc.net>; Salil Mehta <salil.mehta@huawei.com>; Xiaojuan
-> > Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael S.
-> > Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani Sinha
-> > <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
-> > Henderson <richard.henderson@linaro.org>; Eduardo Habkost
-> > <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
-> > Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
-> > <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>; Peter
-> > Xu <peterx@redhat.com>; David Hildenbrand <david@redhat.com>; Bibo Mao
-> > <maobibo@loongson.cn>
-> > Subject: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
-> > 
-> > CPUs Control device(\\_SB.PCI0) register interface for the x86 arch
-> > is based on PCI and is IO port based and hence existing cpus AML code
-> > assumes _CRS objects would evaluate to a system resource which describes
-> > IO Port address.
-> > But on Loongarch arch CPUs control device(\\_SB.PRES) register interface
-> > is memory-mapped hence _CRS object should evaluate to system resource
-> > which describes memory-mapped base address.
-> > 
-> > This cpus AML code change updates the existing interface of the build cpus
-> > AML
-> > function to accept both IO/MEMORY type regions and update the _CRS object
-> > correspondingly.
-> > 
-> > Co-authored-by: "Bernhard Beschow" <shentey@gmail.com>
-> > Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
-> > Co-authored-by: "Salil Mehta" <salil.mehta@huawei.com>
-> > Cc: "Bernhard Beschow" <shentey@gmail.com>
-> > Cc: "Salil Mehta" <salil.mehta@huawei.com>
-> > Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
-> > Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-> > Cc: Song Gao <gaosong@loongson.cn>
-> > Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> > Cc: Igor Mammedov <imammedo@redhat.com>
-> > Cc: Ani Sinha <anisinha@redhat.com>
-> > Cc: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: Richard Henderson <richard.henderson@linaro.org>
-> > Cc: Eduardo Habkost <eduardo@habkost.net>
-> > Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-> > Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-> > Cc: Yanan Wang <wangyanan55@huawei.com>
-> > Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-> > Cc: Peter Xu <peterx@redhat.com>
-> > Cc: David Hildenbrand <david@redhat.com>
-> > Cc: Bibo Mao <maobibo@loongson.cn>
-> > Signed-off-by: xianglai li <lixianglai@loongson.cn>
-> > ---
-> >  hw/acpi/cpu.c         | 20 +++++++++++++++-----
-> >  hw/i386/acpi-build.c  |  3 ++-
-> >  include/hw/acpi/cpu.h |  5 +++--
-> >  3 files changed, 20 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> > index 5bad983928..0afa04832e 100644
-> > --- a/hw/acpi/cpu.c
-> > +++ b/hw/acpi/cpu.c
-> > @@ -6,6 +6,7 @@
-> >  #include "qapi/qapi-events-acpi.h"
-> >  #include "trace.h"
-> >  #include "sysemu/numa.h"
-> > +#include "hw/acpi/cpu_hotplug.h"
-> > 
-> >  #define OVMF_CPUHP_SMI_CMD 4
-> > 
-> > @@ -332,9 +333,10 @@ const VMStateDescription vmstate_cpu_hotplug = {
-> >  #define CPU_FW_EJECT_EVENT "CEJF"
-> > 
-> >  void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures
-> > opts,
-> > -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
-> > +                    build_madt_cpu_fn build_madt_cpu, hwaddr mmap_io_base,
-> >                      const char *res_root,
-> > -                    const char *event_handler_method)
-> > +                    const char *event_handler_method,
-> > +                    AmlRegionSpace rs)
-> >  {
-> >      Aml *ifctx;
-> >      Aml *field;
-> > @@ -359,14 +361,22 @@ void build_cpus_aml(Aml *table, MachineState
-> > *machine, CPUHotplugFeatures opts,
-> >          aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
-> > 
-> >          crs = aml_resource_template();
-> > -        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
-> > +        if (rs == AML_SYSTEM_IO) {
-> > +            aml_append(crs, aml_io(AML_DECODE16, mmap_io_base,
-> > mmap_io_base, 1,
-> >                                 ACPI_CPU_HOTPLUG_REG_LEN));
-> > +        } else {
-> > +            aml_append(crs, aml_memory32_fixed(mmap_io_base,
-> > +                               ACPI_CPU_HOTPLUG_REG_LEN, AML_READ_WRITE));
-> > +        }
-> > +
-> >          aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
-> > 
-> > +        g_assert(rs == AML_SYSTEM_IO || rs == AML_SYSTEM_MEMORY);
-> >          /* declare CPU hotplug MMIO region with related access fields */
-> >          aml_append(cpu_ctrl_dev,
-> > -            aml_operation_region("PRST", AML_SYSTEM_IO, aml_int(io_base),
-> > -                                 ACPI_CPU_HOTPLUG_REG_LEN));
-> > +            aml_operation_region("PRST", rs,
-> > +                                         aml_int(mmap_io_base),
-> > +                                         ACPI_CPU_HOTPLUG_REG_LEN));
-> > 
-> >          field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
-> >                            AML_WRITE_AS_ZEROS);
-> > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> > index 863a939210..7016205d15 100644
-> > --- a/hw/i386/acpi-build.c
-> > +++ b/hw/i386/acpi-build.c
-> > @@ -1550,7 +1550,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-> >              .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
-> >          };
-> >          build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
-> > -                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02");
-> > +                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02",
-> > +                       AML_SYSTEM_IO);
-> >      }
-> > 
-> >      if (pcms->memhp_io_base && nr_mem) {
-> > diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-> > index bc901660fb..601f644e57 100644
-> > --- a/include/hw/acpi/cpu.h
-> > +++ b/include/hw/acpi/cpu.h
-> > @@ -60,9 +60,10 @@ typedef void (*build_madt_cpu_fn)(int uid, const
-> > CPUArchIdList *apic_ids,
-> >                                    GArray *entry, bool force_enabled);
-> > 
-> >  void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures
-> > opts,
-> > -                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
-> > +                    build_madt_cpu_fn build_madt_cpu, hwaddr mmap_io_base,
-> >                      const char *res_root,
-> > -                    const char *event_handler_method);
-> > +                    const char *event_handler_method,
-> > +                    AmlRegionSpace rs);
-> > 
-> >  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList
-> > ***list);
-> > 
-> > --
-> > 2.39.1
-> > 
-> 
-
+SGkgRGF2aWQsDQoNCj4gRnJvbTogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJlZGhhdC5jb20+
+DQo+IFNlbnQ6IEZyaWRheSwgU2VwdGVtYmVyIDE1LCAyMDIzIDk6MDcgQU0NCj4gVG86IGxpeGlh
+bmdsYWkgPGxpeGlhbmdsYWlAbG9vbmdzb24uY24+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IFNh
+bGlsIE1laHRhDQo+IDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPg0KPiBDYzogU2FsaWwgTWVodGEg
+PHNhbGlsLm1laHRhQG9wbnNyYy5uZXQ+OyBYaWFvanVhbiBZYW5nDQo+IDx5YW5neGlhb2p1YW5A
+bG9vbmdzb24uY24+OyBTb25nIEdhbyA8Z2Fvc29uZ0Bsb29uZ3Nvbi5jbj47IE1pY2hhZWwgUy4N
+Cj4gVHNpcmtpbiA8bXN0QHJlZGhhdC5jb20+OyBJZ29yIE1hbW1lZG92IDxpbWFtbWVkb0ByZWRo
+YXQuY29tPjsgQW5pIFNpbmhhDQo+IDxhbmlzaW5oYUByZWRoYXQuY29tPjsgUGFvbG8gQm9uemlu
+aSA8cGJvbnppbmlAcmVkaGF0LmNvbT47IFJpY2hhcmQNCj4gSGVuZGVyc29uIDxyaWNoYXJkLmhl
+bmRlcnNvbkBsaW5hcm8ub3JnPjsgRWR1YXJkbyBIYWJrb3N0DQo+IDxlZHVhcmRvQGhhYmtvc3Qu
+bmV0PjsgTWFyY2VsIEFwZmVsYmF1bSA8bWFyY2VsLmFwZmVsYmF1bUBnbWFpbC5jb20+Ow0KPiBQ
+aGlsaXBwZSBNYXRoaWV1LURhdWTDqSA8cGhpbG1kQGxpbmFyby5vcmc+OyB3YW5neWFuYW4gKFkp
+DQo+IDx3YW5neWFuYW41NUBodWF3ZWkuY29tPjsgRGFuaWVsIFAuIEJlcnJhbmfDqSA8YmVycmFu
+Z2VAcmVkaGF0LmNvbT47IFBldGVyDQo+IFh1IDxwZXRlcnhAcmVkaGF0LmNvbT47IEJpYm8gTWFv
+IDxtYW9iaWJvQGxvb25nc29uLmNuPg0KPiBTdWJqZWN0OiBSZTogW1BBVENIIHYyIDA0LzEwXSBJ
+bnRyb2R1Y2UgdGhlIENQVSBhZGRyZXNzIHNwYWNlIGRlc3RydWN0aW9uDQo+IGZ1bmN0aW9uDQo+
+IA0KPiBPbiAxNS4wOS4yMyAwNDo1MywgbGl4aWFuZ2xhaSB3cm90ZToNCj4gPiBIaSBEYXZpZCBI
+aWxkZW5icmFuZDoNCj4gPg0KPiA+Pg0KPiA+PiBIaSBEYXZpZCBIaWxkZW5icmFuZDoNCj4gPj4+
+IE9uIDE0LjA5LjIzIDE1OjAwLCBsaXhpYW5nbGFpIHdyb3RlOg0KPiA+Pj4+IEhpIERhdmlkOg0K
+PiA+Pj4NCj4gPj4+IEhpIQ0KPiA+Pj4NCj4gPj4+Pg0KPiA+Pj4+PiBPbiAxMi4wOS4yMyAwNDox
+MSwgeGlhbmdsYWkgbGkgd3JvdGU6DQo+ID4+Pj4+PiBJbnRyb2R1Y2UgbmV3IGZ1bmN0aW9uIHRv
+IGRlc3Ryb3kgQ1BVIGFkZHJlc3Mgc3BhY2UgcmVzb3VyY2VzDQo+ID4+Pj4+PiBmb3IgY3B1IGhv
+dC0odW4pcGx1Zy4NCj4gPj4+Pj4+DQo+ID4+Pj4+IEhvdyBkbyBvdGhlciBhcmNocyBoYW5kbGUg
+dGhhdD8gT3IgaG93IGFyZSB0aGV5IGFibGUgdG8gZ2V0IGF3YXkNCj4gPj4+Pj4gd2l0aG91dCBk
+ZXN0cm95aW5nPw0KPiA+Pj4+Pg0KPiA+Pj4+IFRoZXkgZG8gbm90IHJlbW92ZSB0aGUgY3B1IGFk
+ZHJlc3Mgc3BhY2UsIHRha2luZyB0aGUgWDg2DQo+ID4+Pj4gYXJjaGl0ZWN0dXJlIGFzDQo+ID4+
+Pj4gYW4gZXhhbXBsZToNCj4gPj4+Pg0KPiA+Pj4+IDEuU3RhcnQgdGhlIHg4NiBWTToNCj4gPj4+
+Pg0KPiA+Pj4+IC4vcWVtdS1zeXN0ZW0teDg2XzY0IFwNCj4gPj4+PiAtbWFjaGluZSBxMzXCoCBc
+DQo+ID4+Pj4gLWNwdSBCcm9hZHdlbGwtSUJSUyBcDQo+ID4+Pj4gLXNtcCAxLG1heGNwdXM9MTAw
+LHNvY2tldHM9MTAwLGNvcmVzPTEsdGhyZWFkcz0xIFwNCj4gPj4+PiAtbSA0RyBcDQo+ID4+Pj4g
+LWRyaXZlIGZpbGU9fi9hbm9saXMtOC44LnFjb3cywqAgXA0KPiA+Pj4+IC1zZXJpYWwgc3RkaW/C
+oMKgIFwNCj4gPj4+PiAtbW9uaXRvciB0ZWxuZXQ6bG9jYWxob3N0OjQ0OTgsc2VydmVyLG5vd2Fp
+dMKgwqAgXA0KPiA+Pj4+IC1ub2dyYXBoaWMNCj4gPj4+Pg0KPiA+Pj4+IDIuQ29ubmVjdCB0aGUg
+cWVtdSBtb25pdG9yDQo+ID4+Pj4NCj4gPj4+PiB0ZWxuZXQgMTI3LjAuMC4xIDQ0OTgNCj4gPj4+
+Pg0KPiA+Pj4+IGluZm8gbXRyZWUNCj4gPj4+Pg0KPiA+Pj4+IGFkZHJlc3Mtc3BhY2U6IGNwdS1t
+ZW1vcnktMA0KPiA+Pj4+IGFkZHJlc3Mtc3BhY2U6IG1lbW9yeQ0KPiA+Pj4+ICDCoCDCoCAwMDAw
+MDAwMDAwMDAwMDAwLWZmZmZmZmZmZmZmZmZmZmYgKHByaW8gMCwgaS9vKTogc3lzdGVtDQo+ID4+
+Pj4gIMKgIMKgwqDCoCAwMDAwMDAwMDAwMDAwMDAwLTAwMDAwMDAwN2ZmZmZmZmYgKHByaW8gMCwg
+cmFtKTogYWxpYXMNCj4gPj4+PiByYW0tYmVsb3ctNGcNCj4gPj4+PiBAcGMucmFtIDAwMDAwMDAw
+MDAwMDAwMDAtMDAwMDAwMDA3ZmZmZmZmZg0KPiA+Pj4+ICDCoCDCoMKgwqAgMDAwMDAwMDAwMDAw
+MDAwMC1mZmZmZmZmZmZmZmZmZmZmIChwcmlvIC0xLCBpL28pOiBwY2kNCj4gPj4+PiAgwqAgwqDC
+oMKgwqDCoCAwMDAwMDAwMDAwMGEwMDAwLTAwMDAwMDAwMDAwYmZmZmYgKHByaW8gMSwgaS9vKTog
+dmdhLWxvd21lbQ0KPiA+Pj4+DQo+ID4+Pj4gMy5QZXJmb3JtIGNwdSBob3Qgc3dhcCBpbnQgcWVt
+dSBtb25pdG9yDQo+ID4+Pj4NCj4gPj4+PiBkZXZpY2VfYWRkDQo+ID4+Pj4gQnJvYWR3ZWxsLUlC
+UlMteDg2XzY0LWNwdSxzb2NrZXQtaWQ9MSxjb3JlLWlkPTAsdGhyZWFkLWlkPTAsaWQ9Y3B1MQ0K
+PiA+Pj4+IGRldmljZV9kZWwgY3B1MQ0KPiA+Pj4+DQo+ID4+Pg0KPiA+Pj4gSG0sIGRvZXNuJ3Qg
+c2VlbSB0byB3b3JrIGZvciBtZSBvbiB1cHN0cmVhbSBRRU1VIGZvciBzb21lIHJlYXNvbjoNCj4g
+Pj4+ICJFcnJvcjogYWNwaTogZGV2aWNlIHVucGx1ZyByZXF1ZXN0IGZvciBub3Qgc3VwcG9ydGVk
+IGRldmljZSB0eXBlOg0KPiA+Pj4gQnJvYWR3ZWxsLUlCUlMteDg2XzY0LWNwdSINCj4gPj4NCj4g
+PiBGaXJzdCBJIHVzZSBxZW11IHRjZywgYW5kIHRoZW4gdGhlIGNwdSBuZWVkcyB0byBiZSByZW1v
+dmVkIGFmdGVyIHRoZQ0KPiA+IG9wZXJhdGluZyBzeXN0ZW0gaXMgYm9vdGVkLg0KPiANCj4gQWgs
+IHRoZSBsYXN0IHRoaW5nIGlzIHRoZSBpbXBvcnRhbnQgYml0LiBJIGNhbiByZXByb2R1Y2UgdGhp
+cyB3aXRoIEtWTQ0KPiBlYXNpbHkuDQo+IA0KPiBEb2luZyBpdCBhIGNvdXBsZSBvZiB0aW1lcw0K
+PiANCj4gYWRkcmVzcy1zcGFjZTogY3B1LW1lbW9yeS0wDQo+IGFkZHJlc3Mtc3BhY2U6IGNwdS1t
+ZW1vcnktMQ0KPiBhZGRyZXNzLXNwYWNlOiBjcHUtbWVtb3J5LTENCj4gYWRkcmVzcy1zcGFjZTog
+Y3B1LW1lbW9yeS0xDQo+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiBhZGRyZXNzLXNw
+YWNlOiBjcHUtbWVtb3J5LTENCj4gYWRkcmVzcy1zcGFjZTogY3B1LW1lbW9yeS0xDQo+IGFkZHJl
+c3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiBhZGRyZXNzLXNwYWNlOiBjcHUtbWVtb3J5LTENCj4g
+YWRkcmVzcy1zcGFjZTogY3B1LW1lbW9yeS0xDQo+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnkt
+MQ0KPiBhZGRyZXNzLXNwYWNlOiBjcHUtbWVtb3J5LTENCj4gYWRkcmVzcy1zcGFjZTogY3B1LW1l
+bW9yeS0xDQo+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiBhZGRyZXNzLXNwYWNlOiBj
+cHUtbWVtb3J5LTENCj4gYWRkcmVzcy1zcGFjZTogY3B1LW1lbW9yeS0xDQo+IGFkZHJlc3Mtc3Bh
+Y2U6IGNwdS1tZW1vcnktMQ0KPiBhZGRyZXNzLXNwYWNlOiBjcHUtbWVtb3J5LTENCj4gYWRkcmVz
+cy1zcGFjZTogY3B1LW1lbW9yeS0xDQo+IGFkZHJlc3Mtc3BhY2U6IGNwdS1tZW1vcnktMQ0KPiAN
+Cj4gTG9va3MgbGlrZSBhIHJlc291cmNlL21lbW9yeSBsZWFrLg0KDQpZZXMsIHRoZXJlIHdhcy4g
+VGhhbmtzIGZvciBpZGVudGlmeWluZyBpdC4gSSBoYXZlIGZpeGVkIGluIHRoZQ0KbGF0ZXN0IFJG
+QyBWMi4gUGxlYXNlIGNoZWNrIGhlcmU6DQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUt
+ZGV2ZWwvMjAyMzA5MjYxMDA0MzYuMjgyODQtMS1zYWxpbC5tZWh0YUBodWF3ZWkuY29tL1QvI201
+ZjVhZTQwYjA5MWQ2OWQwMTAxMjg4MGQ3NTAwZDk2ODc0YTlkMzljDQoNCkkgaGF2ZSB0ZXN0ZWQg
+YW5kIEFkZHJlc3NTcGFjZSBjb21lcyBhbmQgZ29lcyBhd2F5IGNsZWFubHkNCm9uIENQVSBob3Qo
+dW4pcGx1ZyBhY3Rpb24uDQoNCg0KDQpbLi4uXQ0KDQoNCj4gPj4gSGkgU2FsaWwgTWVodGE6DQo+
+ID4+DQo+ID4+IElzIHRoZSBjcHVfYWRkcmVzc19zcGFjZV9kZXN0cm95IGZ1bmN0aW9uIHN0aWxs
+IHByZXNlbnQgaW4gdGhlIG5ldw0KPiA+PiBwYXRjaCB2ZXJzaW9uIG9mIGFybT8NCj4gPj4NCj4g
+Pj4gQ2FuIHdlIHB1dCB0aGlzIGZ1bmN0aW9uIG9uIHRoZSBwdWJsaWMgcGF0aCBvZiBjcHUgZGVz
+dHJveT8NCj4gDQo+IExvb2tzIGxpa2UgdGhpcyBoYXMgdG8gYmUgZml4ZWQgZm9yIGFsbCBhcmNo
+cyB0aGF0IHN1cHBvcnQgVkNQVSB1bnBsdWcuDQo+IA0KPiBUaGUgQ1BVIGltcGxlbWVudGF0aW9u
+IGVuZCB1cCBjYWxsIHFlbXVfaW5pdF92Y3B1KCkgaW4gdGhlaXIgcmVhbGl6ZQ0KPiBmdW5jdGlv
+bjsgdGhlcmUgc2hvdWxkIGJlIHNvbWV0aGluZyBsaWtlIHFlbXVfZGVzdHJveV92Y3B1KCkgb24g
+dGhlDQo+IHVucmVhbGl6ZSBwYXRoIHRoYXQgdGFrZXMgY2FyZSBvZiB1bmRvaW5nIGFueSBjcHVf
+YWRkcmVzc19zcGFjZV9pbml0KCkuDQo+IA0KPiBXZSBzZWVtIHRvIGhhdmUgY3B1X2NvbW1vbl91
+bnJlYWxpemVmbigpLT5jcHVfZXhlY191bnJlYWxpemVmbigpIGJ1dA0KPiB0aGF0IGRvZXNuJ3Qg
+dGFrZSBjYXJlIG9mIGFkZHJlc3Mgc3BhY2VzLg0KDQpZZXMsIHRoZSBjdXJyZW50IGNvbmNlcHQg
+Y2FuIGJlIGV4dGVuZGVkDQoNCj4gDQo+IEFsc28sIGluIHFlbXVfaW5pdF92Y3B1KCkgd2UgZG8g
+YSBjcHVzX2FjY2VsLT5jcmVhdGVfdmNwdV90aHJlYWQoY3B1KS4NCj4gSSdtLCBjdXJpb3VzIGlm
+IHdlIGRlc3Ryb3kgdGhhdCB0aHJlYWQgc29tZWhvdy4NCg0KDQpZZXMgd2UgZG8uIEluIEFSTSBS
+RkMsIHRoaXMgaGFwcGVucyBhZnRlciBDUFUgaGFzIGJlZW4gdW5wbHVnZ2VkIGFuZA0KQ1BVIGlz
+IGJlaW5nIGRlc3Ryb3llZCBhbmQgdW5wYXJlbnRlZCAoYWxsIG9mIHRoaXMgaGFwcGVucyBpbiBj
+b250ZXh0DQpBQ1BJIF9FSnggbWV0aG9kIGV2YWx1YXRlZCBieSBPU1BNKS4gVGhpcyBldmVudHVh
+bGx5IGxlYWRzIHRvDQphcmNoaXRlY3R1cmUgc3BlY2lmaWMgQ1BVIHVucmVhbGl6ZSBhbmQgY2Fs
+bCB0byBjcHVfcmVtb3ZlX3N5bmMoKS4NCg0KDQpUaGFua3MNClNhbGlsLg0KDQo=
 
