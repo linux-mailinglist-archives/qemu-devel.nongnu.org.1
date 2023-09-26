@@ -2,84 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C827AF5C1
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 23:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C91C7AF66A
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 00:42:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlFjd-0000zE-4d; Tue, 26 Sep 2023 17:36:49 -0400
+	id 1qlGk6-0005x1-Pt; Tue, 26 Sep 2023 18:41:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qlFjb-0000ya-1a; Tue, 26 Sep 2023 17:36:47 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qlFjY-0006wx-2F; Tue, 26 Sep 2023 17:36:46 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-50307759b65so15996033e87.0; 
- Tue, 26 Sep 2023 14:36:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695764201; x=1696369001; darn=nongnu.org;
- h=user-agent:in-reply-to:content-disposition:mime-version:references
- :message-id:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=P/QDVxkJNFHghmO/7aEieq4XkYfmDgnkVv/IcyPfTzM=;
- b=aez1yyoWcoFT4VA3iHo8OrLfbDCsPzFdqa9FMJ55f67kyOj7wtPETv3KlTTzLMZBOP
- dPE0WWqchDvNAhlJJ7agZIs311zfC84ZvGqznvHZQIoYlTa2R3SCO4MnpLIk90YJ4cHt
- 7MwpFrxGB0bGdzAaIuD9fbVyJRACv3UBu57Vj1kB6BVTMdYR/4MH+djBvp0APA92KROU
- nW1RohX8FPi19BZIjY4HxWKKjMIMtIipeVm/j3axj3en2OSWxwnsf7oSbv3BcnUGIQ0X
- kfNCQ/vSzyo/clRJE2OC63oB/+QIbzp5Q6dVU+Tcw8Xyk+dPvEPo1Fo4YkzLcWG+u9OM
- k5pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695764201; x=1696369001;
- h=user-agent:in-reply-to:content-disposition:mime-version:references
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=P/QDVxkJNFHghmO/7aEieq4XkYfmDgnkVv/IcyPfTzM=;
- b=bgq0woneTpyOX9fauwBkX8AoPV7ZM57ZhPfqiwCc4h9JmaF82n4LLRhntRBKZMGIkH
- iK0GpbNyhU7AZU8cII68f6+fhFfdFFq90qwlmHFYBofa4xSX0gzH4f+ycVhEuQX2XBa1
- Y8jyizm8X/3pQsLHdM678EPMBZVI/qnJDHx9X9ZMz/TZr6B+VGjDREvUx2tMyzXUu9zB
- kuFf/lyfo/IFpnkMH+/Y+Q1g+0BJXbyna6X/ISsQaM8JUJMVchWJFLoF+pOTAD3HTUK7
- IUXkZYB68sqSyoBXXspMUdn6XN3lMmtWW6l0AmlSLuqrZZRMPf1k+GFA8cNrEJRzWZy5
- uofw==
-X-Gm-Message-State: AOJu0YyCxLvvB3Nq+CY8yiqWQ8dNsv+aOhm2zzX/bNnLBiR8t82g9CE9
- p1SRnaEAWnckPe2MEXdRyJA=
-X-Google-Smtp-Source: AGHT+IFv44V/Bm8GN4xDfg/zqPrDWvhLqxDZQ187bjBqKzYv+viDuHaisFObB4OzewwNDdIeu4CNEA==
-X-Received: by 2002:a05:6512:3b1e:b0:503:3421:4ebd with SMTP id
- f30-20020a0565123b1e00b0050334214ebdmr5996lfv.63.1695764200965; 
- Tue, 26 Sep 2023 14:36:40 -0700 (PDT)
-Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
- by smtp.gmail.com with ESMTPSA id
- c19-20020a197613000000b005033948f108sm2277623lff.272.2023.09.26.14.36.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Sep 2023 14:36:40 -0700 (PDT)
-Date: Tue, 26 Sep 2023 23:36:39 +0200
-From: Francisco Iglesias <frasse.iglesias@gmail.com>
-To: Tong Ho <tong.ho@amd.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, alistair@alistair23.me,
- edgar.iglesias@gmail.com, peter.maydell@linaro.org,
- richard.henderson@linaro.org
-Subject: Re: [PATCH v2 3/3] tests/qtest: Introduce tests for AMD/Xilinx
- Versal TRNG device
-Message-ID: <20230926213638.GB18959@fralle-msi>
-References: <20230922065010.4071693-1-tong.ho@amd.com>
- <20230922065010.4071693-4-tong.ho@amd.com>
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1qlGk4-0005vw-FA
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 18:41:21 -0400
+Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
+ id 1qlGk2-0005TB-Kp
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 18:41:20 -0400
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+ by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38QLTUus020286; Tue, 26 Sep 2023 22:41:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=corp-2023-03-30;
+ bh=bLr9RoR/GNe5Thg/TPYMj7EcQNrsEq88LzExDfkBby4=;
+ b=4AIbn2rsd9tSGmMFbCZ0JIQC9pkGKZnbCqwu37a6bOSVZCITbTsFuUvjRgUl01cXciLB
+ kjFkT0DsgPdQakz/UldnZAbiLkqdMo8Kbz8DHx1uQECrCQBNJQwc8iSblqCqdjKVvaP3
+ N2g2+KXBqUf1J4lXzszfAXcNxEV/ompPnxVuuWTlmpZ0eiBz2/+O57zI0T6zYj7PB3AN
+ EWCaeX7QZZr0QhE0E5HmtxCPbFqPss6WnM72CKwryHvRXNxyfZLqeEXRCqZBBGE6v/6v
+ BADgLWzv3j/0380TJ2nGMMS+ZeZMnZMbwP+AqUDbfUz2/qbwcxo8TcP8QVDWkLemEkid SQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9qmug28c-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 26 Sep 2023 22:41:13 +0000
+Received: from pps.filterd
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
+ with ESMTP id 38QKvGu8003238; Tue, 26 Sep 2023 22:41:12 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
+ 3t9pf74c7n-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 26 Sep 2023 22:41:12 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
+ (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QMfBNl022981;
+ Tue, 26 Sep 2023 22:41:11 GMT
+Received: from jonah-ol8.us.oracle.com (dhcp-10-65-186-167.vpn.oracle.com
+ [10.65.186.167])
+ by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
+ 3t9pf74c6n-1; Tue, 26 Sep 2023 22:41:11 +0000
+From: Jonah Palmer <jonah.palmer@oracle.com>
+To: qemu-devel@nongnu.org
+Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
+ boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
+ viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
+ berrange@redhat.com, eduardo@habkost.net, jonah.palmer@oracle.com
+Subject: [PATCH RESEND v5 0/3] qmp,
+ vhost-user: Remove virtio_list & update virtio introspection
+Date: Tue, 26 Sep 2023 18:41:04 -0400
+Message-Id: <20230926224107.2951144-1-jonah.palmer@oracle.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230922065010.4071693-4-tong.ho@amd.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x12b.google.com
-X-Spam_score_int: -1020
-X-Spam_score: -102.1
-X-Spam_bar: ---------------------------------------------------
-X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_WELCOMELIST=-0.01,
- USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-26_15,2023-09-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ bulkscore=0 mlxscore=0
+ adultscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2309260194
+X-Proofpoint-GUID: IDszks0sJsUvqsJaXRgsJ59t18mC1hqc
+X-Proofpoint-ORIG-GUID: IDszks0sJsUvqsJaXRgsJ59t18mC1hqc
+Received-SPF: pass client-ip=205.220.177.32;
+ envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,388 +101,84 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Tong,
+These patches update a few things related to virtio introspection via.
+QMP/HMP commands.
 
-On [2023 Sep 21] Thu 23:50:10, Tong Ho wrote:
-> Signed-off-by: Tong Ho <tong.ho@amd.com>
-> ---
->  tests/qtest/meson.build             |   2 +-
->  tests/qtest/xlnx-versal-trng-test.c | 490 ++++++++++++++++++++++++++++
->  2 files changed, 491 insertions(+), 1 deletion(-)
->  create mode 100644 tests/qtest/xlnx-versal-trng-test.c
-> 
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 1fba07f4ed..215d20e8cf 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -216,7 +216,7 @@ qtests_aarch64 = \
->    (config_all.has_key('CONFIG_TCG') and config_all_devices.has_key('CONFIG_TPM_TIS_SYSBUS') ?            \
->      ['tpm-tis-device-test', 'tpm-tis-device-swtpm-test'] : []) +                                         \
->    (config_all_devices.has_key('CONFIG_XLNX_ZYNQMP_ARM') ? ['xlnx-can-test', 'fuzz-xlnx-dp-test'] : []) + \
-> -  (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test'] : []) + \
-> +  (config_all_devices.has_key('CONFIG_XLNX_VERSAL') ? ['xlnx-canfd-test', 'xlnx-versal-trng-test'] : []) + \
->    (config_all_devices.has_key('CONFIG_RASPI') ? ['bcm2835-dma-test'] : []) +  \
->    (config_all.has_key('CONFIG_TCG') and                                            \
->     config_all_devices.has_key('CONFIG_TPM_TIS_I2C') ? ['tpm-tis-i2c-test'] : []) + \
-.
-.
-.
-> +
-> +static const char *trng_info(void)
-> +{
-> +    uint32_t sta = trng_status();
-> +    uint32_t ctl = trng_read(R_TRNG_CTRL);
-> +
-> +    static char info[64];
-> +
-> +    snprintf(info, sizeof(info), "; status=0x%x, ctrl=0x%x", sta, ctl);
-> +    return info;
-> +}
-> +
-> +static void trng_wait(uint32_t wait_mask, bool on, const char *act)
+1. Remove 'virtio_list' and instead query the QOM composition tree to
+find any active & realized virtio devices.
 
-A suggestion is to remove the 'bool on' arg (it is only called with 'true'
-below).
+The 'virtio_list' was duplicating information about virtio devices that
+was already available in the QOM composition tree, so there was no need
+to keep this list.
 
-> +{
-> +    time_t tmo = time(NULL) + 2; /* at most 2 seconds */
-> +    uint32_t event_mask = 0;
-> +    uint32_t clear_mask = 0;
-> +
-> +    /*
-> +     * Only selected bits are events in R_TRNG_STATUS, and
-> +     * clear them needs to go through R_INT_CTRL.
-> +     */
-> +    if (wait_mask & TRNG_STATUS_CERTF_MASK) {
-> +        event_mask |= TRNG_STATUS_CERTF_MASK;
-> +        clear_mask |= TRNG_INT_CTRL_CERTF_RST_MASK;
-> +    }
-> +    if (wait_mask & TRNG_STATUS_DTF_MASK) {
-> +        event_mask |= TRNG_STATUS_DTF_MASK;
-> +        clear_mask |= TRNG_INT_CTRL_DTF_RST_MASK;
-> +    }
-> +    if (wait_mask & TRNG_STATUS_DONE_MASK) {
-> +        event_mask |= TRNG_STATUS_DONE_MASK;
-> +        clear_mask |= TRNG_INT_CTRL_DONE_RST_MASK;
-> +    }
-> +
-> +    for (;;) {
-> +        bool sta = !!(trng_status() & event_mask);
-> +
-> +        if ((on ^ sta) == 0) {
-> +            break;
-> +        }
-> +
-> +        if (time(NULL) >= tmo) {
-> +            FAILED("%s: Timed out waiting for event 0x%x to be %d%s",
-> +                   act, event_mask, (int)on, trng_info());
-> +        }
-> +
-> +        g_usleep(10000);
-> +    }
-> +
-> +    /* Remove event */
-> +    trng_bit_set(R_TRNG_INT_CTRL, clear_mask);
-> +
-> +    if (!!(trng_read(R_TRNG_STATUS) & event_mask)) {
-> +        FAILED("%s: Event 0x%0x stuck at 1 after clear: %s",
-> +               act, event_mask, trng_info());
-> +    }
-> +}
-> +
-> +static void trng_wait_done(const char *act)
-> +{
-> +    trng_wait(TRNG_STATUS_DONE_MASK, true, act);
-> +}
-> +
-> +static void trng_wait_dtf(void)
-> +{
-> +    trng_wait(TRNG_STATUS_DTF_MASK, true, "DTF injection");
-> +}
-> +
-> +static void trng_wait_certf(void)
-> +{
-> +    trng_wait(TRNG_STATUS_CERTF_MASK, true, "CERTF injection");
-> +}
-> +
-> +static void trng_reset(void)
-> +{
-> +    trng_write(R_TRNG_RESET, TRNG_RESET_VAL_MASK);
-> +    trng_write(R_TRNG_RESET, 0);
-> +}
-> +
-> +static void trng_load(unsigned r0, const uint32_t *b384)
-> +{
-> +    static const uint32_t zero[12] = { 0 };
-> +    unsigned k;
-> +
-> +    if (!b384) {
-> +        b384 = zero;
-> +    }
-> +
-> +    for (k = 0; k < 12; k++) {
-> +        trng_write(r0 + 4 * k, b384[k]);
-> +    }
-> +}
-> +
-> +static void trng_reseed(const uint32_t *seed)
-> +{
-> +    const char *act;
-> +    uint32_t ctl;
-> +
-> +    ctl = TRNG_CTRL_PRNGSTART_MASK |
-> +          TRNG_CTRL_PRNGXS_MASK |
-> +          TRNG_CTRL_TRSSEN_MASK;
-> +
-> +    trng_ctrl_clr(ctl | TRNG_CTRL_PRNGMODE_MASK);
-> +
-> +    if (seed) {
-> +        trng_load(R_TRNG_EXT_SEED_0, seed);
-> +        act = "Reseed PRNG";
-> +        ctl &= ~TRNG_CTRL_TRSSEN_MASK;
-> +    } else {
-> +        trng_write(R_TRNG_OSC_EN, TRNG_OSC_EN_VAL_MASK);
-> +        act = "Reseed TRNG";
-> +        ctl &= ~TRNG_CTRL_PRNGXS_MASK;
-> +    }
-> +
-> +    trng_ctrl_set(ctl);
-> +    trng_wait_done(act);
-> +    trng_ctrl_clr(TRNG_CTRL_PRNGSTART_MASK);
-> +}
-> +
-> +static void trng_generate(bool auto_enb)
-> +{
-> +    uint32_t ctl;
-> +
-> +    ctl = TRNG_CTRL_PRNGSTART_MASK | TRNG_CTRL_SINGLEGENMODE_MASK;
-> +    trng_ctrl_clr(ctl);
-> +
-> +    if (auto_enb) {
-> +        ctl &= ~TRNG_CTRL_SINGLEGENMODE_MASK;
-> +    }
-> +
-> +    trng_ctrl_set(ctl | TRNG_CTRL_PRNGMODE_MASK);
-> +
-> +    trng_wait_done("Generate");
-> +    g_assert(trng_qcnt() != 7);
-> +}
-> +
-> +static size_t trng_collect(uint32_t *rnd, size_t cnt)
-> +{
-> +    size_t i;
-> +
-> +    for (i = 0; i < cnt; i++) {
-> +        if (trng_qcnt() == 0) {
-> +            return i;
-> +        }
-> +
-> +        rnd[i] = trng_read(R_TRNG_CORE_OUTPUT);
-> +    }
-> +
-> +    return i;
-> +}
-> +
-> +static void trng_test_autogen(void)
-> +{
-> +    const size_t cnt = 512 / 32;
-> +    uint32_t rng[cnt], prng[cnt];
-> +    size_t n;
-> +
-> +    trng_reset();
-> +
-> +    /* PRNG run #1 */
-> +    trng_reseed(prng_seed);
-> +    trng_generate(true);
-> +
-> +    n = trng_collect(prng, cnt);
-> +    if (n != cnt) {
-> +        FAILED("PRNG_1 Auto-gen test failed: expected = %u, got = %u",
-> +               (unsigned)cnt, (unsigned)n);
-> +    }
-> +
-> +    /* TRNG, should not match PRNG */
-> +    trng_reseed(NULL);
-> +    trng_generate(true);
-> +
-> +    n = trng_collect(rng, cnt);
-> +    if (n != cnt) {
-> +        FAILED("TRNG Auto-gen test failed: expected = %u, got = %u",
-> +               (unsigned)cnt, (unsigned)n);
-> +    }
-> +
-> +    if (!memcmp(rng, prng, sizeof(rng))) {
-> +        FAILED("TRNG test failed: matching PRNG");
-> +    }
-> +
-> +    /* PRNG #2: should matches run #1 */
-> +    trng_reseed(prng_seed);
-> +    trng_generate(true);
-> +
-> +    n = trng_collect(rng, cnt);
-> +    if (n != cnt) {
-> +        FAILED("PRNG_2 Auto-gen test failed: expected = %u, got = %u",
-> +               (unsigned)cnt, (unsigned)n);
-> +    }
-> +
-> +    if (memcmp(rng, prng, sizeof(rng))) {
-> +        FAILED("PRNG_2 Auto-gen test failed: does not match PRNG_1");
-> +    }
-> +}
-> +
-> +static void trng_test_oneshot(void)
-> +{
-> +    const size_t cnt = 512 / 32;
-> +    uint32_t rng[cnt];
-> +    size_t n;
-> +
-> +    trng_reset();
-> +
-> +    /* PRNG run #1 */
-> +    trng_reseed(prng_seed);
-> +    trng_generate(false);
-> +
-> +    n = trng_collect(rng, cnt);
-> +    if (n == cnt) {
-> +        FAILED("PRNG_1 One-shot gen test failed");
-> +    }
-> +
-> +    /* TRNG, should not match PRNG */
-> +    trng_reseed(NULL);
-> +    trng_generate(false);
-> +
-> +    n = trng_collect(rng, cnt);
-> +    if (n == cnt) {
-> +        FAILED("TRNG One-shot test failed");
-> +    }
-> +}
-> +
-> +static void trng_test_per_str(void)
-> +{
-> +    const size_t cnt = 512 / 32;
-> +    uint32_t rng[cnt], prng[cnt];
-> +    size_t n;
-> +
-> +    trng_reset();
-> +
-> +    /* #1: disabled */
-> +    trng_ctrl_set(TRNG_CTRL_PERSODISABLE_MASK);
-> +    trng_reseed(prng_seed);
-> +    trng_ctrl_clr(TRNG_CTRL_PERSODISABLE_MASK);
-> +
-> +    trng_generate(true);
-> +    n = trng_collect(prng, cnt);
-> +    g_assert_cmpuint(n, ==, cnt);
-> +
-> +    /* #2: zero string should match personalization disabled */
-> +    trng_load(R_TRNG_PER_STRNG_0, NULL);
-> +    trng_reseed(prng_seed);
-> +
-> +    trng_generate(true);
-> +    n = trng_collect(rng, cnt);
-> +    g_assert_cmpuint(n, ==, cnt);
-> +
-> +    if (memcmp(rng, prng, sizeof(rng))) {
-> +        FAILED("Failed: PER_DISABLE != PER_STRNG_ALL_ZERO");
-> +    }
-> +
-> +    /* #3: non-zero string should not match personalization disabled */
-> +    trng_load(R_TRNG_PER_STRNG_0, pers_str);
-> +    trng_reseed(prng_seed);
-> +
-> +    trng_generate(true);
-> +    n = trng_collect(rng, cnt);
-> +    g_assert_cmpuint(n, ==, cnt);
-> +
-> +    if (!memcmp(rng, prng, sizeof(rng))) {
-> +        FAILED("Failed: PER_DISABLE == PER_STRNG_NON_ZERO");
-> +    }
-> +}
-> +
-> +static void trng_test_forced_prng(void)
-> +{
-> +    const char *prop = "forced-prng";
-> +    const uint64_t seed = 0xdeadbeefbad1bad0ULL;
-> +
-> +    trng_reset();
+2. Add new transport, protocol, and device features as well as support
+to introspect vhost-user-gpio devices.
 
-We need to move above line below the variable initialization below.
+Vhost-user-gpio previously had no support for introspection. Support for
+introspecting its vhost-user device is now available in these patches.
 
-> +    const size_t cnt = 512 / 32;
-> +    uint32_t rng[cnt], prng[cnt];
-> +    size_t n;
+3. Move VhostUserProtocolFeature definition to its corresponding header
+file (vhost-user.h). Cleanup previous definitions in other files.
 
-Looks good to me otherwise!
+VhostUserProtocolFeature was being defined in 3 separate files. Instead
+of 3 separate definitions, use one instead and add it to the
+vhost-user.h header file.
 
-Best regards,
-Francisco Iglesias
+New vhost-user protocol feature:
+--------------------------------
+ - VHOST_USER_PROTOCOL_F_STATUS
 
-> +
-> +    trng_test_set_uint_prop(prop, seed);
-> +
-> +    /* TRNG run #1 */
-> +    trng_reset();
-> +    trng_reseed(NULL);
-> +    trng_generate(true);
-> +
-> +    n = trng_collect(prng, cnt);
-> +    g_assert_cmpuint(n, ==, cnt);
-> +
-> +    /* TRNG run #2 should match run #1 */
-> +    trng_reset();
-> +    trng_reseed(NULL);
-> +    trng_generate(true);
-> +
-> +    n = trng_collect(rng, cnt);
-> +    g_assert_cmpuint(n, ==, cnt);
-> +
-> +    if (memcmp(rng, prng, sizeof(rng))) {
-> +        FAILED("Forced-prng test failed: results do not match");
-> +    }
-> +}
-> +
-> +static void trng_test_fault_events(void)
-> +{
-> +    const char *prop = "fips-fault-events";
-> +
-> +    trng_reset();
-> +
-> +    /* Fault events only when TRSS is enabled */
-> +    trng_write(R_TRNG_OSC_EN, TRNG_OSC_EN_VAL_MASK);
-> +    trng_ctrl_set(TRNG_CTRL_TRSSEN_MASK);
-> +
-> +    trng_test_set_uint_prop(prop, TRNG_STATUS_CERTF_MASK);
-> +    trng_wait_certf();
-> +
-> +    trng_test_set_uint_prop(prop, TRNG_STATUS_DTF_MASK);
-> +    trng_wait_dtf();
-> +
-> +    trng_reset();
-> +}
-> +
-> +int main(int argc, char **argv)
-> +{
-> +    int rc;
-> +
-> +    g_test_init(&argc, &argv, NULL);
-> +
-> +    #define TRNG_TEST_ADD(n) \
-> +            qtest_add_func("/hw/misc/xlnx-versal-trng/" #n, trng_test_ ## n);
-> +    TRNG_TEST_ADD(autogen);
-> +    TRNG_TEST_ADD(oneshot);
-> +    TRNG_TEST_ADD(per_str);
-> +    TRNG_TEST_ADD(forced_prng);
-> +    TRNG_TEST_ADD(fault_events);
-> +    #undef TRNG_TEST_ADD
-> +
-> +    trng_test_start();
-> +    rc = g_test_run();
-> +    trng_test_stop();
-> +
-> +    return rc;
-> +}
-> -- 
-> 2.25.1
-> 
-> 
+New virtio device features:
+---------------------------
+virtio-blk:
+ - VIRTIO_BLK_F_SECURE_ERASE
+
+virtio-net:
+ - VIRTIO_NET_F_NOTF_COAL
+ - VIRTIO_NET_F_GUEST_USO4
+ - VIRTIO_NET_F_GUEST_USO6
+ - VIRTIO_NET_F_HOST_USO
+
+virtio/vhost-user-gpio:
+ - VIRTIO_GPIO_F_IRQ
+ - VHOST_USER_F_PROTOCOL_FEATURES
+
+v5: call object_get_canonical_path to avoid duplicating & freeing
+    intermediate 'path' variable
+    Add missing Reviewed-by's to patches
+
+v4: use 'g_autofree char *' instead of 'gchar *'
+    remove unneeded object unreferences ('object_unref')
+    remove 'VHOST_F_LOG_ALL' in virtio-gpio feature map
+    remove 'VIRTIO_F_RING_RESET' in transport feature map (already
+    exists)
+
+v3: use recursion and type casting to find realized virtio devices
+    remove virtio scmi & bluetooth feature mappings
+    revert virtio scmi & bluetooth case changes in qmp_decode_features
+    change config define for VIRTIO_GPIO to CONFIG_VHOST_USER_GPIO
+    move VhostUserProtocolFeature definition to header file
+
+v2: verify virtio devices via. 'TYPE_VIRTIO_DEVICES'
+    verify path is a virtio device before checking if it's realized
+    remove 'VIRTIO_BLK_F_ZONED' update (already exists)
+    add cover letter
+
+Jonah Palmer (3):
+  qmp: remove virtio_list, search QOM tree instead
+  qmp: update virtio feature maps, vhost-user-gpio introspection
+  vhost-user: move VhostUserProtocolFeature definition to header file
+
+ hw/scsi/vhost-user-scsi.c      |   4 -
+ hw/virtio/vhost-user-gpio.c    |   7 ++
+ hw/virtio/vhost-user.c         |  21 -----
+ hw/virtio/virtio-qmp.c         | 139 +++++++++++++++------------------
+ hw/virtio/virtio-qmp.h         |   7 --
+ hw/virtio/virtio.c             |   6 --
+ include/hw/virtio/vhost-user.h |  21 +++++
+ 7 files changed, 90 insertions(+), 115 deletions(-)
+
+-- 
+2.39.3
+
 
