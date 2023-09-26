@@ -2,99 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DE37AEC20
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9E27AEC22
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:07:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql6o2-0001UU-Vh; Tue, 26 Sep 2023 08:04:47 -0400
+	id 1ql6qE-0003PS-AB; Tue, 26 Sep 2023 08:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ql6ne-0001Rn-UG
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:04:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1ql6nO-0006Sz-Ti
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:04:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695729846;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Lq/f1ds1EKDK/nyj6A0JXervdAuzwKQFXzu3xKZMfu4=;
- b=TF5K3XcuVHviMCIWu9HSICPxnW3JfiJNSCdx85/9MzULH87lB1gPaIFWwGVQbTD75rHO3U
- sH6vBhF9tbhaV9Ae5cs8mJ6CAnzydGP9uVavkByihF1MUqJBRhTEWoqpCuOA5QZ3SSVHp0
- s8BdOLNAm9q8uhxTH1m7ic+Tq5spes0=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-56-gKz8loRGPGeAMtiUx3_wBQ-1; Tue, 26 Sep 2023 08:04:04 -0400
-X-MC-Unique: gKz8loRGPGeAMtiUx3_wBQ-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-94a348facbbso727551566b.1
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 05:04:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
+ id 1ql6q7-0003Om-Jx; Tue, 26 Sep 2023 08:06:55 -0400
+Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
+ id 1ql6q4-0007Nh-HK; Tue, 26 Sep 2023 08:06:55 -0400
+Received: by mail-lf1-x12b.google.com with SMTP id
+ 2adb3069b0e04-502e7d66c1eso13997522e87.1; 
+ Tue, 26 Sep 2023 05:06:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695729843; x=1696334643;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Lq/f1ds1EKDK/nyj6A0JXervdAuzwKQFXzu3xKZMfu4=;
- b=s0Fypfgxsi078LyPjBO1e9FpYQn68J2OuPV64/vjfhO9GP8wWV8gYva5bAPPcjH7T3
- jSf8fR6Z1AiHQkt6IN1G3MpwL5xidHell5FwvO7HUXdECO3tr5dgpj68Ds9VNXRxgho/
- w7KIFwR+tnfQ7JFqy5cVsoyk0HKc1meNhIcnXiF6rwYdyM8PUAhbfsBDg1vC/woxnrhv
- KsMaf0EfFdpan4q2HIAWmKIEUJ5gJ20G9kz4lXkLAFVG7UkpCY7Yj3aWIxWF4aJUVPRP
- DG5TE2G0CdWh8a4hBbxiFsle8h3u9I9xgRUn3vvLmYOfkkv5UMTA1UEGefT6/5v7zC2v
- 4kTQ==
-X-Gm-Message-State: AOJu0YxAeUZXPBgVOo3APfGO79dgEtj5pgVg3EOUgxCTDDPrM3c2Zgw0
- MKdUMyc2C9RJyUMlIi6O9qh8Rwt+N4tC8FDJ7VjfDfSRmZ+v9QF6/tKhiG8F6WiTJTawGwto1SA
- nfpjAmKcyNOYLZQk=
-X-Received: by 2002:a17:906:31c1:b0:99c:e38d:e484 with SMTP id
- f1-20020a17090631c100b0099ce38de484mr8243319ejf.6.1695729843253; 
- Tue, 26 Sep 2023 05:04:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1FMtAT5NOxk0R10M5f5wyXo3v5oqWpVWgoxbYU+jkj6gkqfI90d5XHiEil22f6FMlc6piww==
-X-Received: by 2002:a17:906:31c1:b0:99c:e38d:e484 with SMTP id
- f1-20020a17090631c100b0099ce38de484mr8243293ejf.6.1695729842902; 
- Tue, 26 Sep 2023 05:04:02 -0700 (PDT)
-Received: from redhat.com ([2.52.31.177]) by smtp.gmail.com with ESMTPSA id
- o9-20020a1709062e8900b009ae587ce133sm7652403eji.188.2023.09.26.05.04.00
+ d=1e100.net; s=20230601; t=1695730009; x=1696334809;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:user-agent:subject:cc:to:from:date:dkim-signature
+ :dkim-signature:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hSp6fof8CjHAx57jXw+tHkBf2Xm52SXeqkwyAjQX7I4=;
+ b=sn3XvADFq9MxSmCeBs5y6+Z9lXaks3RN8a/5jEKoHhThlr5JesEeOzMnUIy9S1MRPR
+ QIZNXz7WVwWQij5HfL+K2O1WCpv5nq5LRrfuDaXVhW35YYiJmTvJsXGBH11CrhvhLxlw
+ yS2dWd7dyVnGWV1e54/z2+8SiLsO1Sj5UETl652vUG6tYBeb13VDO5UTADNmnB+YQkLF
+ jwbf3OzrO++sYsQ2I/i8y6fj1olPa0ZHbB1fDrjDRGvuhuIY4PmbjCbZQjAxFarFdVQx
+ GAWfxbPdAeRkgpBLTel/dy6kuWlCNww9gZNxB3/hDvX2qWqKJT4/PgB5/zxODgd21rBp
+ Afnw==
+X-Gm-Message-State: AOJu0YzGJ5Ly7o8/yg27kC+yYLcHXEq6IEjecD8LC6jMfqCoSxYVSG2i
+ kyd4O6SK0jV1aEHs+0l1ewWrVEbkG/7l14Lu
+X-Google-Smtp-Source: AGHT+IGh0pbJuezV31igohC073t2iux5tGiGIXitQpborLO3kvOb4MTK32G/SyWdxwlreE9eRN89Tw==
+X-Received: by 2002:ac2:5e3a:0:b0:503:446:c7b0 with SMTP id
+ o26-20020ac25e3a000000b005030446c7b0mr7035947lfg.32.1695730008327; 
+ Tue, 26 Sep 2023 05:06:48 -0700 (PDT)
+Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
+ [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
+ i3-20020ac25223000000b004f9c44b3e6dsm2204386lfl.127.2023.09.26.05.06.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Sep 2023 05:04:02 -0700 (PDT)
-Date: Tue, 26 Sep 2023 08:03:57 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: xianglai li <lixianglai@loongson.cn>
-Cc: qemu-devel@nongnu.org, Salil Mehta <salil.mehta@opnsrc.net>,
- Salil Mehta <salil.mehta@huawei.com>, Bernhard Beschow <shentey@gmail.com>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Song Gao <gaosong@loongson.cn>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>
-Subject: Re: [PATCH v3 1/7] Update ACPI GED framework to support vcpu
- hot-(un)plug
-Message-ID: <20230926080028-mutt-send-email-mst@kernel.org>
-References: <cover.1695697701.git.lixianglai@loongson.cn>
- <14ee117df13b08403032eb07843b91e1861228d9.1695697701.git.lixianglai@loongson.cn>
+ Tue, 26 Sep 2023 05:06:48 -0700 (PDT)
+Received: by flawful.org (Postfix, from userid 112)
+ id 4218DB9FF; Tue, 26 Sep 2023 14:06:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+ t=1695730006; bh=nzao7j/V2u8hRUm3spxUobE72ZPg4tZAuyj9Q+uPQ/Y=;
+ h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+ b=LbRwUpAaOLanm5PCwnNaC9xMrraV6Y7Iho1hW5/kuVbTrGKamQMhMc+L6KkU4ViXO
+ tfMYMFO9knXbssjbv4s2kYsnuTrVOOsUpFSGiv8YR8SUzMhu910BWhn/5k1XfjXjHi
+ a7WF5fG2EZ2R3wF452uAIyXYjl6utDffZAOZEy1E=
+Received: from [127.0.0.1] (host-95-193-105-182.mobileonline.telia.com
+ [95.193.105.182])
+ (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+ key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+ (No client certificate requested)
+ by flawful.org (Postfix) with ESMTPSA id 8371AB9B9;
+ Tue, 26 Sep 2023 14:05:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+ t=1695729971; bh=nzao7j/V2u8hRUm3spxUobE72ZPg4tZAuyj9Q+uPQ/Y=;
+ h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+ b=LKr0rdA6G5uWVrAop2zWiWgIomKwC0qnsFW4G+kRP6TJu8xDqpQ8Dko4PJxmKvfGR
+ JdgW6N+chDaoBi0X4FOBO+lDFkvYfZAO8ptfbYbEqY5pZ7wG3pdQlZV1iEvlQmeVFF
+ llgp+acEGEKY7ztFv6IV60As05izfJYkO8F20LHM=
+Date: Tue, 26 Sep 2023 14:05:48 +0200
+From: Niklas Cassel <nks@flawful.org>
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>
+CC: qemu-arm <qemu-arm@nongnu.org>, John Snow <jsnow@redhat.com>,
+ qemu-block@nongnu.org, Damien Le Moal <dlemoal@kernel.org>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Ard Biesheuvel <ardb+tianocore@kernel.org>
+Subject: =?US-ASCII?Q?Re=3A_FreeBSD_13=2E2_installer_does_not_see_AHC?=
+ =?US-ASCII?Q?I_devices_on_aarch64/sbsa-ref_and_x86-64/q35?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <b7e00b36-2ac8-44fa-9847-b2025ebe05f6@linaro.org>
+References: <b7e00b36-2ac8-44fa-9847-b2025ebe05f6@linaro.org>
+Message-ID: <F1D854EB-9C6F-4A54-BAA9-D75C40DBE86F@flawful.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <14ee117df13b08403032eb07843b91e1861228d9.1695697701.git.lixianglai@loongson.cn>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/alternative;
+ boundary=----7FRSP7BBA2XNPP5KJ9UWU76SPNFUMK
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
+ envelope-from=nks.gnu@gmail.com; helo=mail-lf1-x12b.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249, HTML_MESSAGE=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,267 +107,248 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 26, 2023 at 05:54:26PM +0800, xianglai li wrote:
-> ACPI GED shall be used to convey to the guest kernel about any cpu hot-(un)plug
-> events. Therefore, existing ACPI GED framework inside QEMU needs to be enhanced
-> to support CPU hot-(un)plug state and events.
-> 
-> Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
-> Co-authored-by: "Salil Mehta" <salil.mehta@huawei.com>
-> Cc: "Bernhard Beschow" <shentey@gmail.com>
-> Cc: "Salil Mehta" <salil.mehta@huawei.com>
-> Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
-> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
-> Cc: Song Gao <gaosong@loongson.cn>
-> Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> Cc: Igor Mammedov <imammedo@redhat.com>
-> Cc: Ani Sinha <anisinha@redhat.com>
-> Cc: Paolo Bonzini <pbonzini@redhat.com>
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Cc: Eduardo Habkost <eduardo@habkost.net>
-> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
-> Cc: Yanan Wang <wangyanan55@huawei.com>
-> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
-> Cc: Peter Xu <peterx@redhat.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Bibo Mao <maobibo@loongson.cn>
-> Signed-off-by: xianglai li <lixianglai@loongson.cn>
+------7FRSP7BBA2XNPP5KJ9UWU76SPNFUMK
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Same question as I sent on Salil Mehta's patchset.
-Is this based on this patchset:
-https://lore.kernel.org/qemu-devel/20200613213629.21984-11-salil.mehta@huawei.com/
-?
+Hello Marcin,
 
-If yes then it looks like you dropped Keqian Zhu.
-
-And the rules for Co-developed-by are:
-
-Co-developed-by: states that the patch was co-created by multiple developers;
-it is used to give attribution to co-authors (in addition to the author
-attributed by the From: tag) when several people work on a single patch.  Since
-Co-developed-by: denotes authorship, every Co-developed-by: must be immediately
-followed by a Signed-off-by: of the associated co-author.  Standard sign-off
-procedure applies, i.e. the ordering of Signed-off-by: tags should reflect the
-chronological history of the patch insofar as possible, regardless of whether
-the author is attributed via From: or Co-developed-by:.  Notably, the last
-Signed-off-by: must always be that of the developer submitting the patch.
+I will have a look at this=2E
 
 
-but it looks like Keqian Zhu did not sign off on his original patch so
-you need to go and get his sign off.
+Kind regards,
+Niklas
 
 
 
-> ---
->  hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++++
->  hw/acpi/cpu.c                          |  7 ------
->  hw/acpi/generic_event_device.c         | 33 ++++++++++++++++++++++++++
->  include/hw/acpi/cpu_hotplug.h          | 10 ++++++++
->  include/hw/acpi/generic_event_device.h |  5 ++++
->  5 files changed, 54 insertions(+), 7 deletions(-)
-> 
-> diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
-> index 3fc4b14c26..2aec90d968 100644
-> --- a/hw/acpi/acpi-cpu-hotplug-stub.c
-> +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
-> @@ -24,6 +24,12 @@ void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
->      return;
->  }
->  
-> +void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-> +                         CPUHotplugState *state, hwaddr base_addr)
-> +{
-> +    return;
-> +}
-> +
->  void acpi_cpu_plug_cb(HotplugHandler *hotplug_dev,
->                        CPUHotplugState *cpu_st, DeviceState *dev, Error **errp)
->  {
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index 011d2c6c2d..5bad983928 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -7,13 +7,6 @@
->  #include "trace.h"
->  #include "sysemu/numa.h"
->  
-> -#define ACPI_CPU_HOTPLUG_REG_LEN 12
-> -#define ACPI_CPU_SELECTOR_OFFSET_WR 0
-> -#define ACPI_CPU_FLAGS_OFFSET_RW 4
-> -#define ACPI_CPU_CMD_OFFSET_WR 5
-> -#define ACPI_CPU_CMD_DATA_OFFSET_RW 8
-> -#define ACPI_CPU_CMD_DATA2_OFFSET_R 0
-> -
->  #define OVMF_CPUHP_SMI_CMD 4
->  
->  enum {
-> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-> index a3d31631fe..c5a70957b4 100644
-> --- a/hw/acpi/generic_event_device.c
-> +++ b/hw/acpi/generic_event_device.c
-> @@ -12,6 +12,7 @@
->  #include "qemu/osdep.h"
->  #include "qapi/error.h"
->  #include "hw/acpi/acpi.h"
-> +#include "hw/acpi/cpu.h"
->  #include "hw/acpi/generic_event_device.h"
->  #include "hw/irq.h"
->  #include "hw/mem/pc-dimm.h"
-> @@ -25,6 +26,7 @@ static const uint32_t ged_supported_events[] = {
->      ACPI_GED_MEM_HOTPLUG_EVT,
->      ACPI_GED_PWR_DOWN_EVT,
->      ACPI_GED_NVDIMM_HOTPLUG_EVT,
-> +    ACPI_GED_CPU_HOTPLUG_EVT,
->  };
->  
->  /*
-> @@ -117,6 +119,10 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
->                             aml_notify(aml_name("\\_SB.NVDR"),
->                                        aml_int(0x80)));
->                  break;
-> +            case ACPI_GED_CPU_HOTPLUG_EVT:
-> +                aml_append(if_ctx, aml_call0(ACPI_CPU_CONTAINER "."
-> +                                             ACPI_CPU_SCAN_METHOD));
-> +                break;
->              default:
->                  /*
->                   * Please make sure all the events in ged_supported_events[]
-> @@ -234,6 +240,8 @@ static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
->          } else {
->              acpi_memory_plug_cb(hotplug_dev, &s->memhp_state, dev, errp);
->          }
-> +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-> +        acpi_cpu_plug_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
->      } else {
->          error_setg(errp, "virt: device plug request for unsupported device"
->                     " type: %s", object_get_typename(OBJECT(dev)));
-> @@ -248,6 +256,8 @@ static void acpi_ged_unplug_request_cb(HotplugHandler *hotplug_dev,
->      if ((object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) &&
->                         !(object_dynamic_cast(OBJECT(dev), TYPE_NVDIMM)))) {
->          acpi_memory_unplug_request_cb(hotplug_dev, &s->memhp_state, dev, errp);
-> +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-> +        acpi_cpu_unplug_request_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
->      } else {
->          error_setg(errp, "acpi: device unplug request for unsupported device"
->                     " type: %s", object_get_typename(OBJECT(dev)));
-> @@ -261,6 +271,8 @@ static void acpi_ged_unplug_cb(HotplugHandler *hotplug_dev,
->  
->      if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
->          acpi_memory_unplug_cb(&s->memhp_state, dev, errp);
-> +    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
-> +        acpi_cpu_unplug_cb(&s->cpuhp_state, dev, errp);
->      } else {
->          error_setg(errp, "acpi: device unplug for unsupported device"
->                     " type: %s", object_get_typename(OBJECT(dev)));
-> @@ -272,6 +284,7 @@ static void acpi_ged_ospm_status(AcpiDeviceIf *adev, ACPIOSTInfoList ***list)
->      AcpiGedState *s = ACPI_GED(adev);
->  
->      acpi_memory_ospm_status(&s->memhp_state, list);
-> +    acpi_cpu_ospm_status(&s->cpuhp_state, list);
->  }
->  
->  static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
-> @@ -286,6 +299,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
->          sel = ACPI_GED_PWR_DOWN_EVT;
->      } else if (ev & ACPI_NVDIMM_HOTPLUG_STATUS) {
->          sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
-> +    } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
-> +        sel = ACPI_GED_CPU_HOTPLUG_EVT;
->      } else {
->          /* Unknown event. Return without generating interrupt. */
->          warn_report("GED: Unsupported event %d. No irq injected", ev);
-> @@ -318,6 +333,16 @@ static const VMStateDescription vmstate_memhp_state = {
->      }
->  };
->  
-> +static const VMStateDescription vmstate_cpuhp_state = {
-> +    .name = "acpi-ged/cpuhp",
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .fields      = (VMStateField[]) {
-> +        VMSTATE_CPU_HOTPLUG(cpuhp_state, AcpiGedState),
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +
->  static const VMStateDescription vmstate_ged_state = {
->      .name = "acpi-ged-state",
->      .version_id = 1,
-> @@ -366,6 +391,7 @@ static const VMStateDescription vmstate_acpi_ged = {
->      },
->      .subsections = (const VMStateDescription * []) {
->          &vmstate_memhp_state,
-> +        &vmstate_cpuhp_state,
->          &vmstate_ghes_state,
->          NULL
->      }
-> @@ -400,6 +426,13 @@ static void acpi_ged_initfn(Object *obj)
->      memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
->                            TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
->      sysbus_init_mmio(sbd, &ged_st->regs);
-> +
-> +    s->cpuhp.device = OBJECT(s);
-> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp container",
-> +                       ACPI_CPU_HOTPLUG_REG_LEN);
-> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
-> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
-> +                        &s->cpuhp_state, 0);
->  }
->  
->  static void acpi_ged_class_init(ObjectClass *class, void *data)
-> diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
-> index 3b932abbbb..afee1ab996 100644
-> --- a/include/hw/acpi/cpu_hotplug.h
-> +++ b/include/hw/acpi/cpu_hotplug.h
-> @@ -19,6 +19,16 @@
->  #include "hw/hotplug.h"
->  #include "hw/acpi/cpu.h"
->  
-> +#define ACPI_CPU_HOTPLUG_REG_LEN 12
-> +#define ACPI_CPU_SELECTOR_OFFSET_WR 0
-> +#define ACPI_CPU_FLAGS_OFFSET_RW 4
-> +#define ACPI_CPU_CMD_OFFSET_WR 5
-> +#define ACPI_CPU_CMD_DATA_OFFSET_RW 8
-> +#define ACPI_CPU_CMD_DATA2_OFFSET_R 0
-> +
-> +#define ACPI_CPU_SCAN_METHOD "CSCN"
-> +#define ACPI_CPU_CONTAINER "\\_SB.CPUS"
-> +
->  typedef struct AcpiCpuHotplug {
->      Object *device;
->      MemoryRegion io;
-> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
-> index ba84ce0214..a803ea818e 100644
-> --- a/include/hw/acpi/generic_event_device.h
-> +++ b/include/hw/acpi/generic_event_device.h
-> @@ -60,6 +60,7 @@
->  #define HW_ACPI_GENERIC_EVENT_DEVICE_H
->  
->  #include "hw/sysbus.h"
-> +#include "hw/acpi/cpu_hotplug.h"
->  #include "hw/acpi/memory_hotplug.h"
->  #include "hw/acpi/ghes.h"
->  #include "qom/object.h"
-> @@ -95,6 +96,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
->  #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
->  #define ACPI_GED_PWR_DOWN_EVT      0x2
->  #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
-> +#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
->  
->  typedef struct GEDState {
->      MemoryRegion evt;
-> @@ -106,6 +108,9 @@ struct AcpiGedState {
->      SysBusDevice parent_obj;
->      MemHotplugState memhp_state;
->      MemoryRegion container_memhp;
-> +    CPUHotplugState cpuhp_state;
-> +    MemoryRegion container_cpuhp;
-> +    AcpiCpuHotplug cpuhp;
->      GEDState ged_state;
->      uint32_t ged_event_bitmap;
->      qemu_irq irq;
-> -- 
-> 2.39.1
+On 26 September 2023 13:23:46 CEST, Marcin Juszkiewicz <marcin=2Ejuszkiewi=
+cz@linaro=2Eorg> wrote:
+>I work on SBSA Reference Platform (sbsa-ref) at Linaro=2E And yesterday I
+>wanted to check how non-Linux operating systems work on sbsa-ref machine=
+=2E
+>
+>One of them was FreeBSD 13=2E2 - the latest one=2E Fetched bootonly ISO
+>image [1] and booted system=2E
+>
+>1=2E https://download=2Efreebsd=2Eorg/releases/arm64/aarch64/ISO-IMAGES/1=
+3=2E2/FreeBSD-13=2E2-RELEASE-arm64-aarch64-bootonly=2Eiso
+>
+>QEMU command line arguments:
+>
+>-drive if=3Dide,file=3Ddisks/FreeBSD-13=2E2-RELEASE-arm64-aarch64-bootonl=
+y=2Eiso,media=3Dcdrom
+>-machine sbsa-ref
+>-m 4096
+>-smp 2
+>-cpu neoverse-n1
+>-drive file=3Dfat:rw:/home/marcin/devel/linaro/sbsa-qemu/sbsa-ref-status/=
+disks/virtual/,format=3Draw
+>-drive format=3Draw,file=3D/home/marcin/devel/linaro/sbsa-qemu/sbsa-ref-s=
+tatus/disks/full-debian=2Ehddimg
+>-watchdog-action none
+>-no-reboot
+>-monitor telnet::45454,server,nowait
+>-serial stdio
+>-device igb
+>-nographic
+>-drive if=3Dpflash,file=3DSBSA_FLASH0=2Efd,format=3Draw
+>-drive if=3Dpflash,file=3DSBSA_FLASH1=2Efd,format=3Draw
+>
+>
+>Firmware loaded FreeBSD loader, kernel booted but it does not see
+>any AHCI devices:
+>
+>ahci0: <AHCI SATA controller> iomem 0x60100000-0x6010ffff irq 1 on acpi0
+>ahci0: AHCI v1=2E00 with 6 1=2E5Gbps ports, Port Multiplier not supported
+>ahci0: Caps: 64bit NCQ 1=2E5Gbps 32cmd 6ports
+>ahcich0: <AHCI channel> at channel 0 on ahci0
+>ahcich0: Caps:
+>[=2E=2E]
+>ahcich0: AHCI reset=2E=2E=2E
+>ahcich0: SATA connect time=3D0us status=3D00000113
+>ahcich0: AHCI reset: device found
+>ahcich0: AHCI reset: device ready after 0ms
+>ahcich1: AHCI reset=2E=2E=2E
+>ahcich1: SATA connect time=3D0us status=3D00000113
+>ahcich1: AHCI reset: device found
+>ahcich1: AHCI reset: device ready after 0ms
+>ahcich2: AHCI reset=2E=2E=2E
+>ahcich2: SATA connect time=3D0us status=3D00000113
+>ahcich2: AHCI reset: device found
+>ahcich2: AHCI reset: device ready after 0ms
+>[=2E=2E]
+>Trying to mount root from cd9660:/dev/iso9660/13_2_RELEASE_AARCH64_BO [ro=
+]=2E=2E=2E
+>Root mount waiting for: CAM
+>[=2E=2E]
+>Root mount waiting for: CAM
+>ahcich0: Poll timeout on slot 1 port 0
+>ahcich0: is 00000000 cs 00000002 ss 00000000 rs 00000002 tfd 170 serr 000=
+00000 cmd 0000c017
+>
+>And finally it gives up=2E
+>
+>
+>v8=2E1=2E1 was bad, v8=2E0=2E5 was bad so I did git bisecting=2E
+>Which gave me this commit:
+>
+>commit 7bcd32128b227cee1fb39ff242d486ed9fff7648
+>Author: Niklas Cassel <niklas=2Ecassel@wdc=2Ecom>
+>Date:   Fri Jun 9 16:08:40 2023 +0200
+>
+>    hw/ide/ahci: simplify and document PxCI handling
+>
+>    The AHCI spec states that:
+>    For NCQ, PxCI is cleared on command queued successfully=2E
+>
+>
+>
+>I built x86_64-softmmu target and checked both "pc" and "q35"
+>machines=2E
+>
+>=2E/build/x86_64-softmmu/qemu-system-x86_64
+>-cdrom FreeBSD-13=2E2-RELEASE-amd64-bootonly=2Eiso
+>-m 2048 -serial stdio  -monitor telnet::45454,server,nowait
+>
+>PC target ("-M pc") booted fine=2E But Q35 ("-M q35") failed
+>similar way as aarch64/sbsa-ref did:
+>
+>ahci0: <Intel ICH9 AHCI SATA controller> port 0xc060-0xc07f mem 0xfebd500=
+0-0xfebd5fff irq 16 at device 31=2E2 on pci0
+>ahci0: attempting to allocate 1 MSI vectors (1 supported)
+>msi: routing MSI IRQ 26 to local APIC 0 vector 52
+>ahci0: using IRQ 26 for MSI
+>ahci0: AHCI v1=2E00 with 6 1=2E5Gbps ports, Port Multiplier not supported
+>ahci0: Caps: 64bit NCQ 1=2E5Gbps 32cmd 6ports
+>ahcich0: <AHCI channel> at channel 0 on ahci0
+>ahcich0: Caps:
+>ahcich1: <AHCI channel> at channel 1 on ahci0
+>ahcich1: Caps:
+>ahcich2: <AHCI channel> at channel 2 on ahci0
+>ahcich2: Caps:
+>[=2E=2E]
+>ahcich2: AHCI reset=2E=2E=2E
+>ahcich2: SATA connect time=3D0us status=3D00000113
+>ahcich2: AHCI reset: device found
+>ahcich2: AHCI reset: device ready after 0ms
+>[=2E=2E]
+>Trying to mount root from cd9660:/dev/iso9660/13_2_RELEASE_AMD64_BO [ro]=
+=2E=2E=2E
+>ahcich2: Poll timeout on slot 1 port 0
+>ahcich2: is 00000000 cs 00000002 ss 00000000 rs 00000002 tfd 170 serr 000=
+00000 cmd 0000c017
+>(aprobe2:ahcich2:0:0:0): SOFT_RESET=2E ACB: 00 00 00 00 00 00 00 00 00 00=
+ 00 00
+>(aprobe2:ahcich2:0:0:0): CAM status: Command timeout
+>(aprobe2:ahcich2:0:0:0): Error 5, Retries exhausted
+>ahcich2: Poll timeout on slot 2 port 0
+>ahcich2: is 00000000 cs 00000006 ss 00000000 rs 00000004 tfd 170 serr 000=
+00000 cmd 0000c017
+>(aprobe2:ahcich2:0:0:0): SOFT_RESET=2E ACB: 00 00 00 00 00 00 00 00 00 00=
+ 00 00
+>(aprobe2:ahcich2:0:0:0): CAM status: Command timeout
+>(aprobe2:ahcich2:0:0:0): Error 5, Retries exhausted
+>mountroot: waiting for device /dev/iso9660/13_2_RELEASE_AMD64_BO=2E=2E=2E
+>Mounting from cd9660:/dev/iso9660/13_2_RELEASE_AMD64_BO failed with error=
+ 19=2E
+>
+>Same thing happens with current qemu HEAD:
+>
+>commit 494a6a2cf7f775d2c20fd6df9601e30606cc2014
+>Merge: 29578f5757 b821109583
+>Author: Stefan Hajnoczi <stefanha@redhat=2Ecom>
+>Date:   Mon Sep 25 10:10:30 2023 -0400
+>
+>    Merge tag 'pull-request-2023-09-25' of https://gitlab=2Ecom/thuth/qem=
+u into staging
+>
+>
+>Any ideas?
 
+------7FRSP7BBA2XNPP5KJ9UWU76SPNFUMK
+Content-Type: text/html;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head></head><body><div dir=3D"auto">Hello Marcin,<br><br>I will have=
+ a look at this=2E<br><br><br>Kind regards,<br>Niklas<br><br></div><br><br>=
+<div class=3D"gmail_quote"><div dir=3D"auto">On 26 September 2023 13:23:46 =
+CEST, Marcin Juszkiewicz &lt;marcin=2Ejuszkiewicz@linaro=2Eorg&gt; wrote:</=
+div><blockquote class=3D"gmail_quote" style=3D"margin: 0pt 0pt 0pt 0=2E8ex;=
+ border-left: 1px solid rgb(204, 204, 204); padding-left: 1ex;">
+<pre class=3D"k9mail"><div dir=3D"auto">I work on SBSA Reference Platform =
+(sbsa-ref) at Linaro=2E And yesterday I<br>wanted to check how non-Linux op=
+erating systems work on sbsa-ref machine=2E<br><br>One of them was FreeBSD =
+13=2E2 - the latest one=2E Fetched bootonly ISO<br>image [1] and booted sys=
+tem=2E<br><br>1=2E <a href=3D"https://download=2Efreebsd=2Eorg/releases/arm=
+64/aarch64/ISO-IMAGES/13=2E2/FreeBSD-13=2E2-RELEASE-arm64-aarch64-bootonly=
+=2Eiso">https://download=2Efreebsd=2Eorg/releases/arm64/aarch64/ISO-IMAGES/=
+13=2E2/FreeBSD-13=2E2-RELEASE-arm64-aarch64-bootonly=2Eiso</a><br><br>QEMU =
+command line arguments:<br><br>-drive if=3Dide,file=3Ddisks/FreeBSD-13=2E2-=
+RELEASE-arm64-aarch64-bootonly=2Eiso,media=3Dcdrom<br>-machine sbsa-ref<br>=
+-m 4096<br>-smp 2<br>-cpu neoverse-n1<br>-drive file=3Dfat:rw:/home/marcin/=
+devel/linaro/sbsa-qemu/sbsa-ref-status/disks/virtual/,format=3Draw<br>-driv=
+e format=3Draw,file=3D/home/marcin/devel/linaro/sbsa-qemu/sbsa-ref-status/d=
+isks/full-debian=2Ehddimg<br>-watchdog-action none<br>-no-reboot<br>-monito=
+r telnet::45454,server,nowait<br>-serial stdio<br>-device igb<br>-nographic=
+<br>-drive if=3Dpflash,file=3DSBSA_FLASH0=2Efd,format=3Draw<br>-drive if=3D=
+pflash,file=3DSBSA_FLASH1=2Efd,format=3Draw<br><br><br>Firmware loaded Free=
+BSD loader, kernel booted but it does not see<br>any AHCI devices:<br><br>a=
+hci0: &lt;AHCI SATA controller&gt; iomem 0x60100000-0x6010ffff irq 1 on acp=
+i0<br>ahci0: AHCI v1=2E00 with 6 1=2E5Gbps ports, Port Multiplier not suppo=
+rted<br>ahci0: Caps: 64bit NCQ 1=2E5Gbps 32cmd 6ports<br>ahcich0: &lt;AHCI =
+channel&gt; at channel 0 on ahci0<br>ahcich0: Caps:<br>[=2E=2E]<br>ahcich0:=
+ AHCI reset=2E=2E=2E<br>ahcich0: SATA connect time=3D0us status=3D00000113<=
+br>ahcich0: AHCI reset: device found<br>ahcich0: AHCI reset: device ready a=
+fter 0ms<br>ahcich1: AHCI reset=2E=2E=2E<br>ahcich1: SATA connect time=3D0u=
+s status=3D00000113<br>ahcich1: AHCI reset: device found<br>ahcich1: AHCI r=
+eset: device ready after 0ms<br>ahcich2: AHCI reset=2E=2E=2E<br>ahcich2: SA=
+TA connect time=3D0us status=3D00000113<br>ahcich2: AHCI reset: device foun=
+d<br>ahcich2: AHCI reset: device ready after 0ms<br>[=2E=2E]<br>Trying to m=
+ount root from cd9660:/dev/iso9660/13_2_RELEASE_AARCH64_BO [ro]=2E=2E=2E<br=
+>Root mount waiting for: CAM<br>[=2E=2E]<br>Root mount waiting for: CAM<br>=
+ahcich0: Poll timeout on slot 1 port 0<br>ahcich0: is 00000000 cs 00000002 =
+ss 00000000 rs 00000002 tfd 170 serr 00000000 cmd 0000c017<br><br>And final=
+ly it gives up=2E<br><br><br>v8=2E1=2E1 was bad, v8=2E0=2E5 was bad so I di=
+d git bisecting=2E<br>Which gave me this commit:<br><br>commit 7bcd32128b22=
+7cee1fb39ff242d486ed9fff7648<br>Author: Niklas Cassel &lt;niklas=2Ecassel@w=
+dc=2Ecom&gt;<br>Date:   Fri Jun 9 16:08:40 2023 +0200<br><br>    hw/ide/ahc=
+i: simplify and document PxCI handling<br><br>    The AHCI spec states that=
+:<br>    For NCQ, PxCI is cleared on command queued successfully=2E<br><br>=
+<br><br>I built x86_64-softmmu target and checked both "pc" and "q35"<br>ma=
+chines=2E<br><br>=2E/build/x86_64-softmmu/qemu-system-x86_64<br>-cdrom Free=
+BSD-13=2E2-RELEASE-amd64-bootonly=2Eiso<br>-m 2048 -serial stdio  -monitor =
+telnet::45454,server,nowait<br><br>PC target ("-M pc") booted fine=2E But Q=
+35 ("-M q35") failed<br>similar way as aarch64/sbsa-ref did:<br><br>ahci0: =
+&lt;Intel ICH9 AHCI SATA controller&gt; port 0xc060-0xc07f mem 0xfebd5000-0=
+xfebd5fff irq 16 at device 31=2E2 on pci0<br>ahci0: attempting to allocate =
+1 MSI vectors (1 supported)<br>msi: routing MSI IRQ 26 to local APIC 0 vect=
+or 52<br>ahci0: using IRQ 26 for MSI<br>ahci0: AHCI v1=2E00 with 6 1=2E5Gbp=
+s ports, Port Multiplier not supported<br>ahci0: Caps: 64bit NCQ 1=2E5Gbps =
+32cmd 6ports<br>ahcich0: &lt;AHCI channel&gt; at channel 0 on ahci0<br>ahci=
+ch0: Caps:<br>ahcich1: &lt;AHCI channel&gt; at channel 1 on ahci0<br>ahcich=
+1: Caps:<br>ahcich2: &lt;AHCI channel&gt; at channel 2 on ahci0<br>ahcich2:=
+ Caps:<br>[=2E=2E]<br>ahcich2: AHCI reset=2E=2E=2E<br>ahcich2: SATA connect=
+ time=3D0us status=3D00000113<br>ahcich2: AHCI reset: device found<br>ahcic=
+h2: AHCI reset: device ready after 0ms<br>[=2E=2E]<br>Trying to mount root =
+from cd9660:/dev/iso9660/13_2_RELEASE_AMD64_BO [ro]=2E=2E=2E<br>ahcich2: Po=
+ll timeout on slot 1 port 0<br>ahcich2: is 00000000 cs 00000002 ss 00000000=
+ rs 00000002 tfd 170 serr 00000000 cmd 0000c017<br>(aprobe2:ahcich2:0:0:0):=
+ SOFT_RESET=2E ACB: 00 00 00 00 00 00 00 00 00 00 00 00<br>(aprobe2:ahcich2=
+:0:0:0): CAM status: Command timeout<br>(aprobe2:ahcich2:0:0:0): Error 5, R=
+etries exhausted<br>ahcich2: Poll timeout on slot 2 port 0<br>ahcich2: is 0=
+0000000 cs 00000006 ss 00000000 rs 00000004 tfd 170 serr 00000000 cmd 0000c=
+017<br>(aprobe2:ahcich2:0:0:0): SOFT_RESET=2E ACB: 00 00 00 00 00 00 00 00 =
+00 00 00 00<br>(aprobe2:ahcich2:0:0:0): CAM status: Command timeout<br>(apr=
+obe2:ahcich2:0:0:0): Error 5, Retries exhausted<br>mountroot: waiting for d=
+evice /dev/iso9660/13_2_RELEASE_AMD64_BO=2E=2E=2E<br>Mounting from cd9660:/=
+dev/iso9660/13_2_RELEASE_AMD64_BO failed with error 19=2E<br><br>Same thing=
+ happens with current qemu HEAD:<br><br>commit 494a6a2cf7f775d2c20fd6df9601=
+e30606cc2014<br>Merge: 29578f5757 b821109583<br>Author: Stefan Hajnoczi &lt=
+;stefanha@redhat=2Ecom&gt;<br>Date:   Mon Sep 25 10:10:30 2023 -0400<br><br=
+>    Merge tag 'pull-request-2023-09-25' of <a href=3D"https://gitlab=2Ecom=
+/thuth/qemu">https://gitlab=2Ecom/thuth/qemu</a> into staging<br><br><br>An=
+y ideas?<br></div></pre></blockquote></div></body></html>
+------7FRSP7BBA2XNPP5KJ9UWU76SPNFUMK--
 
