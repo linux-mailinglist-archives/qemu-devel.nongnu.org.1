@@ -2,84 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF697AE766
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 10:07:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ACEA7AE763
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 10:07:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql35s-0002HB-UQ; Tue, 26 Sep 2023 04:06:58 -0400
+	id 1ql35w-0002Ic-Qo; Tue, 26 Sep 2023 04:07:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1ql35n-0002EM-Ok
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql35o-0002Eo-V3
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:52 -0400
+Received: from mout.kundenserver.de ([217.72.192.75])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
- id 1ql35W-0008LO-Sd
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695715589;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=A2xHSU2o24iICT9Grnk7x10hg7dKkfIEckDiSwKpDHk=;
- b=EVv31g0Cy22yrGdWvIEYC4KGDvdMM/Gr/V/KcogZEt2ISoXCKLrT6hSuINVo1wAzokj12m
- Wdw2VVgttzBfimSBuH4TmrBBGXMKf82fmzNmaBjCpwO+XYEFv9iUh2ETXBNuvsMejRJvZX
- 1fNcF8ogwjlIbHbCfptjd1DSX/Bt0ls=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-QRoF_iAbPN6wNeWrTrE1vg-1; Tue, 26 Sep 2023 04:06:28 -0400
-X-MC-Unique: QRoF_iAbPN6wNeWrTrE1vg-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-50433ca6d81so10410031e87.3
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 01:06:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695715586; x=1696320386;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=A2xHSU2o24iICT9Grnk7x10hg7dKkfIEckDiSwKpDHk=;
- b=wxibewiSksLEbZb60lT56SzJPZ+oJMQdRbi2Byr0s1nOCv3shB7ph7e9u6mS28UjDN
- noBoyiyDPCsEmujZ6ZF3KFUwsT4OrF22hM1t+2I+YZnhzXWWzfBh+3Avkf2EEzHcY6DK
- Ka99Gik0JgbJDgWIW/NiBfxVeZcKOWVjPFBtyPLGLrl0nr1RX8r9SXDBeWkdHxqkx6Ga
- eZX74XGz73oacKortUYlxtQaJyjctEqtfajTyxc1hvcjo1zTMsDaQkYl8Kxc2cCejrX3
- KTzqSv82dtNj8uaKlvlODUA+M5xQLYUC3ki/aiVxiVytOm3tn0BBnF9clrA/PHjGDob3
- EVww==
-X-Gm-Message-State: AOJu0YwLXmruU0yyFRAchskFEn7wQxT8LAQMuwOiDgt1qE79VXt9qsOz
- Q2kQtteW5d4CPK5AHjjWMf7lEUwic4UlqFrHL/OaDCrbUQnlZna9rkTxktMM5uLeKv1nlnIOFnL
- bYKUL36lGAvHpnd7VViTjIqnjK9bXcTA=
-X-Received: by 2002:a19:2d07:0:b0:502:d6b2:922e with SMTP id
- k7-20020a192d07000000b00502d6b2922emr6310306lfj.46.1695715586484; 
- Tue, 26 Sep 2023 01:06:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF2LMuHYfA1SxFRmxCA/pJmbiWuQr9yf8ygo3H+DLZR/IjczXFIEtFWPlu5l08fkpbJwJby33UAiKyRSAlCWDg=
-X-Received: by 2002:a19:2d07:0:b0:502:d6b2:922e with SMTP id
- k7-20020a192d07000000b00502d6b2922emr6310273lfj.46.1695715586060; Tue, 26 Sep
- 2023 01:06:26 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql35Z-0008Lx-Oh
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:52 -0400
+Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
+ (mreue108 [213.165.67.119]) with ESMTPSA (Nemesis) id
+ 1Mgefy-1rJ0Oe1AEO-00h5pv; Tue, 26 Sep 2023 10:06:36 +0200
+Message-ID: <94d3329e-f1fa-e0b9-2cf6-5dd0d8d89877@vivier.eu>
+Date: Tue, 26 Sep 2023 10:06:35 +0200
 MIME-Version: 1.0
-References: <20230913080423.523953-1-eric.auger@redhat.com>
-In-Reply-To: <20230913080423.523953-1-eric.auger@redhat.com>
-From: YangHang Liu <yanghliu@redhat.com>
-Date: Tue, 26 Sep 2023 16:06:14 +0800
-Message-ID: <CAGYh1E8QN22gpS5GAWRAOZHNgacrwiKty-LgwpByi-QRVqpoag@mail.gmail.com>
-Subject: Re: [PATCH v2 00/12] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
- alex.williamson@redhat.com, clg@redhat.com, jean-philippe@linaro.org, 
- mst@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org, 
- peterx@redhat.com, david@redhat.com, philmd@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=yanghliu@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2 18/20] q800: add ESCC alias at 0xc000
+Content-Language: fr
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
+References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
+ <20230909094827.33871-19-mark.cave-ayland@ilande.co.uk>
+From: Laurent Vivier <laurent@vivier.eu>
+In-Reply-To: <20230909094827.33871-19-mark.cave-ayland@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:E5JlZTQp3zr50+669wurSF2xjtdg2lsBhG1OOem+8CeSlwTvbv4
+ 5G3zSzQc4Yqu+vfB3ib8+nLhiZyjYRK3xjaJHKb00FU/iyBycGX8BrdthiWWHpBsvYgSRMV
+ Qfa5P3axT1bC8u4s3E+91ANGwh4svDI7sbLQUAPHjFrEY6f/5yLnIwwJduToAfGjxdCqFZv
+ CTSe13kNha+LAnZVjzNAA==
+UI-OutboundReport: notjunk:1;M01:P0:/O1FPkiqtf8=;x7mQcmvQeYE55kU/xIaU5XEK+7f
+ F3EdlpLuWouyBSs0u6YTzELHkW7pv04K+DqpM6fLIrw7TUz3RU7gYc4S6oOgIDSzkHUTPCIlu
+ ZHLItgya2s/Yb5sHV84n2idZatz8hoVFk2tY/yt9nleC9b6VQ6IeAYMKLIWP9+j1eZ76c3/VY
+ di8NhMTGPfudpSRiBesHvPO7Fll5Tc6S29BSwiG84w6Vr+k1YxDEbCUEJ4QIXf9mYisye50bS
+ vnHUUGjsEuwL365Q3nvKCEUZJfKBq3JEbfrJSdGvATZ2RY97iTzNXpdnPmXkqMJ4bWEMsE7h+
+ QL4t7HsEv4q06YiPj3GbvhkHAJZZveEUDyvMB9m8mk1LjGAbdPaIDNjLx3exX3QgEMWSRz5o/
+ hdoECM9I2brwcAYbTb54/2xidldjkMSJnykFriZWwunSCL0+k4V5cCjda9/avU5EXHyePuwrH
+ PjILzb7AbaVqR3Cco+5pe7Na3XfYz8p/1fwUIeQ+gCZ+BXAKUP5bl+uME2sCMCVPeqqMzjVF6
+ vSQkt1EL536AhTfjjU8J1/9n4yqs45fzFIBKbpUb4QDj+v7jiDUwro//XY0DNW1/ZvU7zzWNp
+ teJdP/wygNTssy+42kX4KKVqEfcA7zMWfwXkBLUmMH7GdtCsMZ6FI/iWo18U4dMZgx07Sz+Tw
+ 8PJqzR/jweHI5rx+oLjSn/2r2tSWP3YNRQ4L/pKH2gl2m3KurnC6nO0C1YNfrw4RoQ3SbzlWt
+ 90+YBcuXKrZKsFwIHWvJqsSgYgkaKZCo7fFk2URu6ckKZC/a9sHQhbIL4X6KomPt6T3fnPG4q
+ vUuIYIoXNY9j86QT0RMLPbXprdi8zZ+oS2v/Vbs74jqiegxq+GGLyAxuURDCwI1KWmpGhh8er
+ hlKj1rauKtR2cQA==
+Received-SPF: none client-ip=217.72.192.75; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,100 +74,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The original issue I found : After starting a VM which has two ice PFs
-and a virtio-iommu device, qemu-kvm and VM guest dmesg throw lots of
-duplicate VFIO_MAP_DMA errors
+Le 09/09/2023 à 11:48, Mark Cave-Ayland a écrit :
+> Tests on real Q800 hardware show that the ESCC is addressable at multiple locations
+> within the ESCC memory region - at least 0xc000, 0xc020 (as expected by the MacOS
+> toolbox ROM) and 0xc040.
+> 
+> All released NetBSD kernels before 10 use the 0xc000 address which causes a fatal
+> error when running the MacOS booter. Add a single memory region alias at 0xc000
+> to enable NetBSD kernels to start booting under QEMU.
+> 
+> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> ---
+>   hw/m68k/q800.c         | 6 ++++++
+>   include/hw/m68k/q800.h | 1 +
+>   2 files changed, 7 insertions(+)
+> 
+> diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+> index 5ae7c37760..b5b2cabc33 100644
+> --- a/hw/m68k/q800.c
+> +++ b/hw/m68k/q800.c
+> @@ -451,6 +451,12 @@ static void q800_machine_init(MachineState *machine)
+>       memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE,
+>                                   sysbus_mmio_get_region(sysbus, 0));
+>   
+> +    /* Create alias for NetBSD */
+> +    memory_region_init_alias(&m->escc_alias, OBJECT(machine), "escc-alias",
+> +                             sysbus_mmio_get_region(sysbus, 0), 0, 0x8);
+> +    memory_region_add_subregion(&m->macio, SCC_BASE - IO_BASE - 0x20,
+> +                                &m->escc_alias);
+> +
+>       /* SCSI */
+>   
+>       object_initialize_child(OBJECT(machine), "esp", &m->esp,
+> diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+> index fbaacd88bd..348eaf4703 100644
+> --- a/include/hw/m68k/q800.h
+> +++ b/include/hw/m68k/q800.h
+> @@ -67,6 +67,7 @@ struct Q800MachineState {
+>       MemoryRegion macio;
+>       MemoryRegion macio_alias;
+>       MemoryRegion machine_id;
+> +    MemoryRegion escc_alias;
+>   };
+>   
+>   #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
 
-After testing with Eric's build, the  original issue is gone and the
-Tier1 regression test against ice PF and virtio iommu device gets PASS
-as well.
-
-Tested-by: Yanghang Liu <yanghliu@redhat.com>
-
-
-
-On Wed, Sep 13, 2023 at 4:06=E2=80=AFPM Eric Auger <eric.auger@redhat.com> =
-wrote:
->
-> On x86, when assigning VFIO-PCI devices protected with virtio-iommu
-> we encounter the case where the guest tries to map IOVAs beyond 48b
-> whereas the physical VTD IOMMU only supports 48b. This ends up with
-> VFIO_MAP_DMA failures at qemu level because at kernel level,
-> vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
->
-> This is due to the fact the virtio-iommu currently unconditionally
-> exposes an IOVA range of 64b through its config input range fields.
->
-> This series removes this assumption by retrieving the usable IOVA
-> regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
-> a VFIO device is attached. This info is communicated to the
-> virtio-iommu memory region, transformed into the inversed info, ie.
-> the host reserved IOVA regions. Then those latter are combined with the
-> reserved IOVA regions set though the virtio-iommu reserved-regions
-> property. That way, the guest virtio-iommu driver, unchanged, is
-> able to probe the whole set of reserved regions and prevent any IOVA
-> belonging to those ranges from beeing used, achieving the original goal.
->
-> Best Regards
->
-> Eric
->
-> This series can be found at:
-> https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v2
->
-> History:
-> v1 -> v2:
-> - Remove "[PATCH 12/13] virtio-iommu: Resize memory region according
->   to the max iova info" which causes way too much trouble: trigger
->   a coredump in vhost, causes duplication of IOMMU notifiers causing
->   EEXIST vfio_dma_map errors, ... This looks like a bad usage of the
->   memory API so I prefer removing this from this series. So I was
->   also obliged to remove the vfio_find_hostwin() check in the case
->   of an IOMMU MR.
-> - Let range_inverse_array() take low/high args instead of hardcoding
->   0, UINT64_MAX which both complexifies the algo and the tests.
-> - Move range function description in header.
-> - Check that if set_iova_ranges is called several times, new resv
->   regions are included in previous ones
->
-> Eric Auger (12):
->   memory: Let ReservedRegion use Range
->   memory: Introduce memory_region_iommu_set_iova_ranges
->   vfio: Collect container iova range info
->   virtio-iommu: Rename reserved_regions into prop_resv_regions
->   virtio-iommu: Introduce per IOMMUDevice reserved regions
->   range: Introduce range_inverse_array()
->   virtio-iommu: Implement set_iova_ranges() callback
->   range: Make range_compare() public
->   util/reserved-region: Add new ReservedRegion helpers
->   virtio-iommu: Consolidate host reserved regions and property set ones
->   test: Add some tests for range and resv-mem helpers
->   vfio: Remove 64-bit IOVA address space assumption
->
->  include/exec/memory.h            |  30 +++-
->  include/hw/vfio/vfio-common.h    |   2 +
->  include/hw/virtio/virtio-iommu.h |   7 +-
->  include/qemu/range.h             |  14 ++
->  include/qemu/reserved-region.h   |  32 ++++
->  hw/core/qdev-properties-system.c |   9 +-
->  hw/vfio/common.c                 |  70 +++++++--
->  hw/virtio/virtio-iommu-pci.c     |   8 +-
->  hw/virtio/virtio-iommu.c         | 110 ++++++++++++--
->  softmmu/memory.c                 |  15 ++
->  tests/unit/test-resv-mem.c       | 251 +++++++++++++++++++++++++++++++
->  util/range.c                     |  51 ++++++-
->  util/reserved-region.c           |  94 ++++++++++++
->  hw/virtio/trace-events           |   1 +
->  tests/unit/meson.build           |   1 +
->  util/meson.build                 |   1 +
->  16 files changed, 655 insertions(+), 41 deletions(-)
->  create mode 100644 include/qemu/reserved-region.h
->  create mode 100644 tests/unit/test-resv-mem.c
->  create mode 100644 util/reserved-region.c
->
-> --
-> 2.41.0
->
->
+Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 
 
