@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861347AEA84
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:37:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6767AEA73
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:35:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql5P6-0003QT-TM; Tue, 26 Sep 2023 06:34:56 -0400
+	id 1ql5P9-0003Su-FW; Tue, 26 Sep 2023 06:34:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5P5-0003Ov-2F
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:34:55 -0400
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5P7-0003Rk-RY
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:34:57 -0400
 Received: from mr85p00im-zteg06021501.me.com ([17.58.23.183])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5P3-0001BB-CC
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:34:54 -0400
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5P5-0001Bb-QY
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:34:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1695724492; bh=oFD+azi+aAn1RpYJdhK5/J4MYt+AbmHo5ScQ7I1pFog=;
+ t=1695724494; bh=ezwzZ8lsPDmHeJKdePGG761txtOjsM/wC3C259+dRK0=;
  h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
- b=e/L4h/+v0Kd/sRqEsyA76LvbMR6ie7E5HmmuyPvK3W/4FzUbifpr6rCRJiML8/F4s
- wdj+REOHc/64AKz+yR0TITCO8VshEZEnmtYkC1ngSpSLU4tN4+Bm3nWC5zYnMsF7//
- QIht9EMyGbAP8hb1KI7l/oT/nj9FQGUFuze1XkabigsFPTjlMEc1HL7wxQPYCCdFxv
- USTS5XQi4gnwq5rSzgoECfJi4odSFZ/p/qE9eXaciRc7xs4R3hDG0MiurmaWEL1Tyz
- pwI/T7bQe6FviYKLuZqHFFlwjSyYQnm1yBJSVAtRZKTtNE37zzyxqfaweLk5sEqu54
- hk/bngGdFqcWA==
+ b=Xwuek8NEmK6I2LHEOwTWKjVLdupPAkZuqQNmOs2CjCGsnBcS3Q/WDjleoEAuKjar0
+ TgGy3R1k0zwf9qir1TMJ6+qJw2Qtazhx9iDW083dE2tEU243la4xfjbQv/jnMNBoyZ
+ +V6asQ6CJ0NVC0ryoQjzIaiAIz3quuYGBT4B9CY0EpuOYJ62HmS53mmL9e/hS/sJbe
+ EJfP85ooeSgahnFdiB9KW/w9E5ySNUQokPh+kuzWsqy49xwAr3bUxOFIIUOGMQQabG
+ 6iab3OklrFM1PPPNiNc7AcTsmXa2GjG+pKq/KGq+ysmTI3daWWUqMzLffRXLlNBhRU
+ e3X8b22xMI8Ag==
 Received: from localhost.localdomain (mr38p00im-dlb-asmtp-mailmevip.me.com
  [17.57.152.18])
- by mr85p00im-zteg06021501.me.com (Postfix) with ESMTPSA id C8A052793DA9;
- Tue, 26 Sep 2023 10:34:50 +0000 (UTC)
+ by mr85p00im-zteg06021501.me.com (Postfix) with ESMTPSA id C94DA2793ED0;
+ Tue, 26 Sep 2023 10:34:52 +0000 (UTC)
 From: Mads Ynddal <mads@ynddal.dk>
 To: qemu-devel@nongnu.org
 Cc: Stefan Hajnoczi <stefanha@redhat.com>, John Snow <jsnow@redhat.com>,
  Mads Ynddal <mads@ynddal.dk>, Cleber Rosa <crosa@redhat.com>,
  Mads Ynddal <m.ynddal@samsung.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v5 06/14] simpletrace: improved error handling on struct unpack
-Date: Tue, 26 Sep 2023 12:34:28 +0200
-Message-Id: <20230926103436.25700-7-mads@ynddal.dk>
+Subject: [PATCH v5 07/14] simpletrace: define exception and add handling
+Date: Tue, 26 Sep 2023 12:34:29 +0200
+Message-Id: <20230926103436.25700-8-mads@ynddal.dk>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20230926103436.25700-1-mads@ynddal.dk>
 References: <20230926103436.25700-1-mads@ynddal.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: eawjZnqWQCuyxXiPnzFSasjITxPrslac
-X-Proofpoint-GUID: eawjZnqWQCuyxXiPnzFSasjITxPrslac
+X-Proofpoint-ORIG-GUID: g0F3YBgxJGbaed64WT7pkOwmoZjcpvUs
+X-Proofpoint-GUID: g0F3YBgxJGbaed64WT7pkOwmoZjcpvUs
 X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
  =?UTF-8?Q?2903e8d5c8f:6.0.425,18.0.816,17.11.62.513.0000000_definitions?=
  =?UTF-8?Q?=3D2022-01-18=5F01:2022-01-14=5F01,2022-01-18=5F01,2021-12-02?=
  =?UTF-8?Q?=5F01_signatures=3D0?=
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
  spamscore=0 bulkscore=0
- clxscore=1030 adultscore=0 mlxlogscore=430 phishscore=0 mlxscore=0
+ clxscore=1030 adultscore=0 mlxlogscore=781 phishscore=0 mlxscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2308100000 definitions=main-2309260091
 Received-SPF: pass client-ip=17.58.23.183; envelope-from=mads@ynddal.dk;
@@ -81,98 +81,73 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mads Ynddal <m.ynddal@samsung.com>
 
-A failed call to `read_header` wouldn't be handled the same for the two
-different code paths (one path would try to use `None` as a list).
-Changed to raise exception to be handled centrally. This also allows for
-easier unpacking, as errors has been filtered out.
+Define `SimpleException` to differentiate our exceptions from generic
+exceptions (IOError, etc.). Adapted simpletrace to support this and
+output to stderr.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Signed-off-by: Mads Ynddal <m.ynddal@samsung.com>
 ---
- scripts/simpletrace.py | 41 ++++++++++++++++-------------------------
- 1 file changed, 16 insertions(+), 25 deletions(-)
+ scripts/simpletrace.py | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
 diff --git a/scripts/simpletrace.py b/scripts/simpletrace.py
-index 971b2a0f6a..8aea0d169b 100755
+index 8aea0d169b..229b10aa99 100755
 --- a/scripts/simpletrace.py
 +++ b/scripts/simpletrace.py
-@@ -37,26 +37,24 @@ def read_header(fobj, hfmt):
+@@ -32,12 +32,15 @@
+ log_header_fmt = '=QQQ'
+ rec_header_fmt = '=QQII'
+ 
++class SimpleException(Exception):
++    pass
++
+ def read_header(fobj, hfmt):
+     '''Read a trace record header'''
      hlen = struct.calcsize(hfmt)
      hdr = fobj.read(hlen)
      if len(hdr) != hlen:
--        return None
-+        raise ValueError('Error reading header. Wrong filetype provided?')
+-        raise ValueError('Error reading header. Wrong filetype provided?')
++        raise SimpleException('Error reading header. Wrong filetype provided?')
      return struct.unpack(hfmt, hdr)
  
  def get_record(event_mapping, event_id_to_name, rechdr, fobj):
-     """Deserialize a trace record from a file into a tuple
-        (name, timestamp, pid, arg1, ..., arg6)."""
--    if rechdr is None:
--        return None
--    if rechdr[0] != dropped_event_id:
--        event_id = rechdr[0]
-+    event_id, timestamp_ns, length, pid = rechdr
-+    if event_id != dropped_event_id:
-         name = event_id_to_name[event_id]
--        rec = (name, rechdr[1], rechdr[3])
+@@ -49,10 +52,10 @@ def get_record(event_mapping, event_id_to_name, rechdr, fobj):
          try:
              event = event_mapping[name]
          except KeyError as e:
--            sys.stderr.write('%s event is logged but is not declared ' \
-+            sys.stderr.write(f'{e} event is logged but is not declared ' \
-                              'in the trace events file, try using ' \
--                             'trace-events-all instead.\n' % str(e))
-+                             'trace-events-all instead.\n')
-             sys.exit(1)
+-            sys.stderr.write(f'{e} event is logged but is not declared ' \
+-                             'in the trace events file, try using ' \
+-                             'trace-events-all instead.\n')
+-            sys.exit(1)
++            raise SimpleException(
++                f'{e} event is logged but is not declared in the trace events'
++                'file, try using trace-events-all instead.'
++            )
  
-+        rec = (name, timestamp_ns, pid)
+         rec = (name, timestamp_ns, pid)
          for type, name in event.args:
-             if is_string(type):
-                 l = fobj.read(4)
-@@ -67,9 +65,8 @@ def get_record(event_mapping, event_id_to_name, rechdr, fobj):
-                 (value,) = struct.unpack('=Q', fobj.read(8))
-                 rec = rec + (value,)
-     else:
--        rec = ("dropped", rechdr[1], rechdr[3])
--        (value,) = struct.unpack('=Q', fobj.read(8))
--        rec = rec + (value,)
-+        (dropped_count,) = struct.unpack('=Q', fobj.read(8))
-+        rec = ("dropped", timestamp_ns, pid, dropped_count)
-     return rec
+@@ -247,8 +250,7 @@ def run(analyzer):
+         *no_header, trace_event_path, trace_file_path = sys.argv[1:]
+         assert no_header == [] or no_header == ['--no-header'], 'Invalid no-header argument'
+     except (AssertionError, ValueError):
+-        sys.stderr.write(f'usage: {sys.argv[0]} [--no-header] <trace-events> <trace-file>\n')
+-        sys.exit(1)
++        raise SimpleException(f'usage: {sys.argv[0]} [--no-header] <trace-events> <trace-file>\n')
  
- def get_mapping(fobj):
-@@ -86,22 +83,16 @@ def read_record(event_mapping, event_id_to_name, fobj):
+     with open(trace_event_path, 'r') as events_fobj, open(trace_file_path, 'rb') as log_fobj:
+         process(events_fobj, log_fobj, analyzer, read_header=not no_header)
+@@ -276,4 +278,8 @@ def catchall(self, event, rec):
+                 i += 1
+             print(' '.join(fields))
  
- def read_trace_header(fobj):
-     """Read and verify trace file header"""
--    header = read_header(fobj, log_header_fmt)
--    if header is None:
--        raise ValueError('Not a valid trace file!')
--    if header[0] != header_event_id:
--        raise ValueError('Not a valid trace file, header id %d != %d' %
--                         (header[0], header_event_id))
--    if header[1] != header_magic:
--        raise ValueError('Not a valid trace file, header magic %d != %d' %
--                         (header[1], header_magic))
--
--    log_version = header[2]
-+    _header_event_id, _header_magic, log_version = read_header(fobj, log_header_fmt)
-+    if _header_event_id != header_event_id:
-+        raise ValueError(f'Not a valid trace file, header id {_header_event_id} != {header_event_id}')
-+    if _header_magic != header_magic:
-+        raise ValueError(f'Not a valid trace file, header magic {_header_magic} != {header_magic}')
-+
-     if log_version not in [0, 2, 3, 4]:
--        raise ValueError('Unknown version of tracelog format!')
-+        raise ValueError(f'Unknown version {log_version} of tracelog format!')
-     if log_version != 4:
--        raise ValueError('Log format %d not supported with this QEMU release!'
--                         % log_version)
-+        raise ValueError(f'Log format {log_version} not supported with this QEMU release!')
- 
- def read_trace_records(event_mapping, event_id_to_name, fobj):
-     """Deserialize trace records from a file, yielding record tuples (event_num, timestamp, pid, arg1, ..., arg6).
+-    run(Formatter())
++    try:
++        run(Formatter())
++    except SimpleException as e:
++        sys.stderr.write(str(e) + "\n")
++        sys.exit(1)
 -- 
 2.38.1
 
