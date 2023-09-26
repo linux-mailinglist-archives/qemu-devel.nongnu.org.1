@@ -2,67 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356677AE89B
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:06:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37B477AE8A3
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:09:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql40H-0000ew-Ow; Tue, 26 Sep 2023 05:05:13 -0400
+	id 1ql43l-0001ff-Dn; Tue, 26 Sep 2023 05:08:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1ql40E-0000de-7J
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:05:10 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1ql43W-0001fI-SQ
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:08:36 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <davydov-max@yandex-team.ru>)
- id 1ql40B-0001ZO-IA
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:05:09 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c18:d11:0:640:6943:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 65BEE60955;
- Tue, 26 Sep 2023 12:04:59 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:0:419:80fb:e432:acc5:7962] (unknown
- [2a02:6b8:0:419:80fb:e432:acc5:7962])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id w4LCeX0OgiE0-LnUa7hKF; Tue, 26 Sep 2023 12:04:59 +0300
-X-Yandex-Fwd: 1
+ (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
+ id 1ql43R-0002SI-6f
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:08:31 -0400
+Received: from mail-nwsmtp-mxback-corp-main-12.vla.yp-c.yandex.net
+ (mail-nwsmtp-mxback-corp-main-12.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c15:33a2:0:640:ecef:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 96CE5609A2;
+ Tue, 26 Sep 2023 12:08:24 +0300 (MSK)
+Received: from mail.yandex-team.ru (2a02:6b8:c18:461c:0:640:9290:0
+ [2a02:6b8:c18:461c:0:640:9290:0])
+ by mail-nwsmtp-mxback-corp-main-12.vla.yp-c.yandex.net (mxbackcorp/Yandex)
+ with HTTP id L8LXf50Ot4Y0-jSO40ofh; Tue, 26 Sep 2023 12:08:24 +0300
+X-Yandex-Fwd: 2
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695719099;
- bh=qTdDvNPAad2Xb2u5X8fJZWUxbSuLuJK5rgGvkeDCGnQ=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=moE1/ZYZy7hjR9fMJA5JymnVOKidiziIx9wAn5B6FDh4eHRzzC+xC5ufxQZTDMzQk
- 9TBMaQphRgwdtIWBiSRfLKcVyd8dxpdfAVMsi3dOXBw/TiuvOEpvKixQN8UI6STlTL
- hCvUMXfhH/HhifZnTLQrgCf0IoWv1r2jhEyFO6ac=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ s=default; t=1695719304;
+ bh=rHJiFptmZ9Uhlxf4DfZIRSmXL9U+AQhNKZXFWIKpM7Q=;
+ h=References:Date:Message-Id:Cc:Subject:To:From:In-Reply-To;
+ b=vYRNoYXMOKFoHnCBeQaQRyQ0BKBnvgQVilOz5/l7GfYeF1nbExNkR85KdnNCTBxj9
+ xORiDy14K+C6ZgBaIXm3bUJsne7CZP019dA/ojX/cBC+wkW7rKMJ+r6+xgfOo3WYY4
+ UBbFOlVhb3Ce+3eNQdk2RZFXk88vCd3JoYEyUqcM=
+Authentication-Results: mail-nwsmtp-mxback-corp-main-12.vla.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Message-ID: <2b595d60-ff34-674e-009a-970e623bed84@yandex-team.ru>
-Date: Tue, 26 Sep 2023 12:04:58 +0300
+Received: from ij3urkvf4buhbqq7.myt.yp-c.yandex.net
+ (ij3urkvf4buhbqq7.myt.yp-c.yandex.net [2a02:6b8:c12:3e1e:0:640:3d50:0])
+ by mail-nwsmtp-mxback-corp-main-17.myt.yp-c.yandex.net (mxbackcorp/Yandex)
+ with HTTP id A8LbL60OwOs0-RRKRtQ34
+ for <d-tatianin@yandex-team.ru>; Tue, 26 Sep 2023 12:08:14 +0300
+Received: by ij3urkvf4buhbqq7.myt.yp-c.yandex.net with HTTP;
+ Tue, 26 Sep 2023 12:08:14 +0300
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+In-Reply-To: <20230907192944.1609099-1-d-tatianin@yandex-team.ru>
+References: <20230907192944.1609099-1-d-tatianin@yandex-team.ru>
+Subject: Re: [PATCH v2 0/3] migration-qtest: zero the first byte of each page
+ on start
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 12/12] io/channel-socket: qio_channel_socket_flush():
- improve msg validation
-Content-Language: en-US
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: pbonzini@redhat.com, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, qemu-devel@nongnu.org
-References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-13-vsementsov@yandex-team.ru>
-From: Maksim Davydov <davydov-max@yandex-team.ru>
-In-Reply-To: <20230925194040.68592-13-vsementsov@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Tue, 26 Sep 2023 12:08:24 +0300
+Message-Id: <6711695719168@mail.yandex-team.ru>
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=davydov-max@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/html
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -1
+X-Spam_score: -0.2
+X-Spam_bar: /
+X-Spam_report: (-0.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
+ HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1, PYZOR_CHECK=1.392,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,34 +83,5 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Could you add a comment into the commit message why ee_data must be
-bigger than ee_info?
-
-On 9/25/23 22:40, Vladimir Sementsov-Ogievskiy wrote:
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->   io/channel-socket.c | 5 +++++
->   1 file changed, 5 insertions(+)
->
-> diff --git a/io/channel-socket.c b/io/channel-socket.c
-> index 02ffb51e99..3a899b0608 100644
-> --- a/io/channel-socket.c
-> +++ b/io/channel-socket.c
-> @@ -782,6 +782,11 @@ static int qio_channel_socket_flush(QIOChannel *ioc,
->                                "Error not from zero copy");
->               return -1;
->           }
-> +        if (serr->ee_data < serr->ee_info) {
-> +            error_setg_errno(errp, serr->ee_origin,
-> +                             "Wrong notification bounds");
-> +            return -1;
-> +        }
->   
->           /* No errors, count successfully finished sendmsg()*/
->           sioc->zero_copy_sent += serr->ee_data - serr->ee_info + 1;
-
--- 
-Best regards,
-Maksim Davydov
-
+<div>ping :)</div>
 
