@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D4A7AF50A
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 22:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B24667AF50E
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 22:27:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlEdc-0008Du-RD; Tue, 26 Sep 2023 16:26:32 -0400
+	id 1qlEe7-0000l6-BN; Tue, 26 Sep 2023 16:27:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlEdW-0008AP-Ce
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:26:27 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ id 1qlEe5-0000kf-NZ
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:27:01 -0400
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlEdU-0005lS-Sa
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:26:26 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5334d78c5f6so11010624a12.2
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 13:26:24 -0700 (PDT)
+ id 1qlEe3-0006Fd-Mx
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:27:01 -0400
+Received: by mail-lf1-x12e.google.com with SMTP id
+ 2adb3069b0e04-50307759b65so15823394e87.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 13:26:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695759983; x=1696364783; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695760018; x=1696364818; darn=nongnu.org;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=XVK+pCP/Y2f69DiIvXasyz7c++tXlqJ7J7gV9eUHJrA=;
- b=guSYXa6MpLSFx3j/x76atGD+CKQbOHnZDbZsRIoEv1ZxsnQI92lyfKc6sTcQZ/qA6O
- DKr4UpJArt8uUZky1BaeaGzz98rGnUcaHnTCcawhBHG3LTOl184syJ8g26qSfJ0U44hI
- ts/5x/iUbDXfQDJYlkbB8vvRNatMOoNPwHA0sot7E+3zm+Av8Y0pEbj40KHm0fjjwmED
- PZSnQiGxAes9IXs2NhAXF4ulEMhTIRE705TyR2p0unMnai4pc+mHJpY/mRqYleqRQ5JY
- +dZV6MJtIDjVRNGzyd7Nr1A0sAlB0R4+3uaMre/cq8EZCZq8xNVIWlQNKfLQGgP4FaZ2
- Gmpg==
+ bh=C/E5AmMRSLS2jKC/m61fTD4kLqWPKnSKi5Qv4Qsak9s=;
+ b=p2W3vnMBU+i8PDx1op7Obpyfk8py7d1NiVo0WC75vKOKm0/fLwdyeDiVpz1LSm8GJe
+ kOE0PS7IYsEFW/AptVShCc0axPekqZi+hOV+13ZTbwETMPJtgUsxjo7j7Krql99sZSkp
+ jveRyOq/qOUpIZkJ/ZyoGZcfM2rx4tu29u/Y63kplb+eEbfprM2uUXDctxDzjqLWahpA
+ zllD96intVh2NCH7hlmd7D/qi03T3UimYDvdyfIiDjN1qfD8RpmkGfTH6a/A0Er2YZ6g
+ kaW54bzuF9bFoj4Un2mw2WVqmFVvsLtrCl+pgJzo33U7Kw/rhAXICrxoqxXFOhJ0pGC6
+ Cu4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695759983; x=1696364783;
+ d=1e100.net; s=20230601; t=1695760018; x=1696364818;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=XVK+pCP/Y2f69DiIvXasyz7c++tXlqJ7J7gV9eUHJrA=;
- b=eW8sMpUIg6aABr2wppaSkYLOMRciIZ3PxanXg3sSAP7l3XjUyn7pzR01LKWoKQkZqP
- f7o4GBDSsEXyzViQc1IcouURVJ5mm+VVtl0WQ2Cx0KLfxgnSO/U9iCtcO/JMi7IF3Jjm
- grC2tK2E9LX2y9rW4w9oiAWnbwVEQnnyK+D+rE/3c5W9mg+e/Mgk6GI0Z3w4R/sdVjiK
- m/eURgFwqytlCggbH069pMFvuFAyxm9oiNs221vYX8tOED0creXB2EwAKjIuwGQoSMto
- 4R2m+pgDIwc1YE4aE72ukP3Emtsg9Y/uUzGphMJC2Y+hInW43epBikcmpg5FiB9r+dzJ
- sH2Q==
-X-Gm-Message-State: AOJu0YyZg41imAIdH3CwdIxMuuAVVJi0/FBuKKv+xFtJq+9kvkytEDuT
- U3kH1iMWQJry3TFXePddRvB3rlJoKQCN2xek89Ljbw==
-X-Google-Smtp-Source: AGHT+IGE8csGr8Oxz2Q8txHVU5m/PugM/et3axI5QpmbiUWI1FLQYJRN4LhlwOJE5uVdpa/WiSyOinwGcIEyMgS9j3w=
-X-Received: by 2002:aa7:c98b:0:b0:530:74ed:fc85 with SMTP id
- c11-20020aa7c98b000000b0053074edfc85mr128936edt.3.1695759982843; Tue, 26 Sep
- 2023 13:26:22 -0700 (PDT)
+ bh=C/E5AmMRSLS2jKC/m61fTD4kLqWPKnSKi5Qv4Qsak9s=;
+ b=SDI1nbPWtYj9cXbylQcZIHKnMyeDbaH+00v961U+Hk1vmVwOJyt7D6Y5tLEdSo+XkW
+ DIMCQlaW9LiSC069a+UiNyI15lyavLnGbmGjhC5sUPNFFhfaf+5gpcKLR/f62WZqhR1y
+ dYZZYk3OJEzXL+7OBhrFhZojINS6W6/0NmHfVCtAgQkVg0JfbQhOAt1eHIiOcugXatdt
+ Ii+kt6IOjNU+Mw2H8HFw/Co8OnhDR/JoMw0NVeD1bdUos/fnqbzrhz5niL156+e91XSS
+ HMW2wgFqfqVbG6i7JRG7LijW4rXMCvNrlzXQD+pMk2k7yJpuoPUIe6Dx8XQ1py6tDMiI
+ cUHA==
+X-Gm-Message-State: AOJu0Yz9oVKo1HyM39Vwh6PEZ369dGd0Uec8NB0dQxxAq2sGeQLeGN31
+ DOJEgP9O/0XvAFn9Ig4XFTN+147Jc24vLLGJOLCuGg==
+X-Google-Smtp-Source: AGHT+IFcWp1tsqF9GNVvp0s8Btkp+exyUKSdt5VEb6zNz8WlQ887UPrPgucdwwxfCxt48i/rdWpaY+3KbU4fQXxdehw=
+X-Received: by 2002:a19:4f43:0:b0:502:f469:d4d5 with SMTP id
+ a3-20020a194f43000000b00502f469d4d5mr8027520lfk.19.1695760017942; Tue, 26 Sep
+ 2023 13:26:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230926201532.221152-1-vsementsov@yandex-team.ru>
- <20230926201532.221152-5-vsementsov@yandex-team.ru>
-In-Reply-To: <20230926201532.221152-5-vsementsov@yandex-team.ru>
+ <20230926201532.221152-8-vsementsov@yandex-team.ru>
+In-Reply-To: <20230926201532.221152-8-vsementsov@yandex-team.ru>
 From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Sep 2023 21:26:04 +0100
-Message-ID: <CAFEAcA9LVaJSuj0XTNRH3RsDgZR+Gm82mOBzOZ8XtBgy4_BHCg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/8] mc146818rtc: rtc_set_time(): initialize tm to
- zeroes
+Date: Tue, 26 Sep 2023 21:26:40 +0100
+Message-ID: <CAFEAcA8vkRqPgx5EiBsUH28A_9puFW4t1Dyi8g_CdPQ6zrsJFQ@mail.gmail.com>
+Subject: Re: [PATCH v2 7/8] hw/core/loader: gunzip(): initialize z_stream
 To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, yc-core@yandex-team.ru, 
- davydov-max@yandex-team.ru, "Michael S. Tsirkin" <mst@redhat.com>
+ davydov-max@yandex-team.ru,
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>, 
+ Emilio Cota <cota@braap.org>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
+ envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -87,17 +90,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Sept 2023 at 21:15, Vladimir Sementsov-Ogievskiy
+On Tue, 26 Sept 2023 at 21:16, Vladimir Sementsov-Ogievskiy
 <vsementsov@yandex-team.ru> wrote:
 >
-> set_time() function doesn't set all the fields, so it's better to
-> initialize tm structure. And Coverity will be happier about it.
+> Coverity signals that variable as being used uninitialized. And really,
+> when work with external APIs that's better to zero out the structure,
+> where we set some fields by hand.
 >
 > Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->  hw/rtc/mc146818rtc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
 thanks
