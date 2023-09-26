@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8347AE9F4
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:08:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1506B7AE9FE
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:09:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql4zT-0007xj-IM; Tue, 26 Sep 2023 06:08:27 -0400
+	id 1ql4zx-0001Dh-39; Tue, 26 Sep 2023 06:08:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql4zN-0007tX-8y; Tue, 26 Sep 2023 06:08:21 -0400
+ id 1ql4zg-0000Um-Tm; Tue, 26 Sep 2023 06:08:40 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql4zL-0004HI-H4; Tue, 26 Sep 2023 06:08:20 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwQH1hS3z6K6Jt;
- Tue, 26 Sep 2023 18:07:03 +0800 (CST)
+ id 1ql4zf-0004ID-DW; Tue, 26 Sep 2023 06:08:40 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwQf2xDXz6K62N;
+ Tue, 26 Sep 2023 18:07:22 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.174.16) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:07:58 +0100
+ 15.1.2507.31; Tue, 26 Sep 2023 11:08:17 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,10 +38,9 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 09/37] hw/acpi: Move CPU ctrl-dev MMIO region len macro
- to common header file
-Date: Tue, 26 Sep 2023 11:04:08 +0100
-Message-ID: <20230926100436.28284-10-salil.mehta@huawei.com>
+Subject: [PATCH RFC V2 10/37] arm/acpi: Enable ACPI support for vcpu hotplug
+Date: Tue, 26 Sep 2023 11:04:09 +0100
+Message-ID: <20230926100436.28284-11-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
@@ -76,48 +75,49 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPU ctrl-dev MMIO region length could be used in ACPI GED (common ACPI code
-across architectures) and various other architecture specific places. To make
-these code places independent of compilation order, ACPI_CPU_HOTPLUG_REG_LEN
-macro should be moved to a header file.
+ACPI is required to interface QEMU with the guest. Roughly falls into below
+cases,
 
+1. Convey the possible vcpus config at the machine init time to the guest
+   using various DSDT tables like MADT etc.
+2. Convey vcpu hotplug events to guest(using GED)
+3. Assist in evaluation of various ACPI methods(like _EVT, _STA, _OST, _EJ0,
+   _MAT etc.)
+4. Provides ACPI cpu hotplug state and 12 Byte memory mapped cpu hotplug
+   control register interface to the OSPM/guest corresponding to each possible
+   vcpu. The register interface consists of various R/W fields and their
+   handling operations. These are called when ever register fields or memory
+   regions are accessed(i.e. read or written) by OSPM when ever it evaluates
+   various ACPI methods.
+
+Note: lot of this framework code is inherited from the changes already done for
+      x86 but still some minor changes are required to make it compatible with
+      ARM64.)
+
+This patch enables the ACPI support for virtual cpu hotplug. ACPI changes
+required will follow in subsequent patches.
+
+Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/acpi/cpu.c                 | 2 +-
- include/hw/acpi/cpu_hotplug.h | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ hw/arm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 19c154d78f..45defdc0e2 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -1,12 +1,12 @@
- #include "qemu/osdep.h"
- #include "migration/vmstate.h"
- #include "hw/acpi/cpu.h"
-+#include "hw/acpi/cpu_hotplug.h"
- #include "qapi/error.h"
- #include "qapi/qapi-events-acpi.h"
- #include "trace.h"
- #include "sysemu/numa.h"
- 
--#define ACPI_CPU_HOTPLUG_REG_LEN 12
- #define ACPI_CPU_SELECTOR_OFFSET_WR 0
- #define ACPI_CPU_FLAGS_OFFSET_RW 4
- #define ACPI_CPU_CMD_OFFSET_WR 5
-diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
-index 3b932abbbb..48b291e45e 100644
---- a/include/hw/acpi/cpu_hotplug.h
-+++ b/include/hw/acpi/cpu_hotplug.h
-@@ -19,6 +19,8 @@
- #include "hw/hotplug.h"
- #include "hw/acpi/cpu.h"
- 
-+#define ACPI_CPU_HOTPLUG_REG_LEN 12
-+
- typedef struct AcpiCpuHotplug {
-     Object *device;
-     MemoryRegion io;
+diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
+index 7e68348440..dae06158cd 100644
+--- a/hw/arm/Kconfig
++++ b/hw/arm/Kconfig
+@@ -29,6 +29,7 @@ config ARM_VIRT
+     select ACPI_HW_REDUCED
+     select ACPI_APEI
+     select ACPI_VIOT
++    select ACPI_CPU_HOTPLUG
+     select VIRTIO_MEM_SUPPORTED
+     select ACPI_CXL
+     select ACPI_HMAT
 -- 
 2.34.1
 
