@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB2E7AE9A9
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:56:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A5FC7AE9B3
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:56:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql4mb-0003ew-6w; Tue, 26 Sep 2023 05:55:09 -0400
+	id 1ql4mO-0003cF-Jk; Tue, 26 Sep 2023 05:54:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1ql4mD-0003Y0-RK
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:54:45 -0400
+ id 1ql4mF-0003Z2-8A
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:54:47 -0400
 Received: from mail.loongson.cn ([114.242.206.163])
  by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1ql4mA-0001b0-JM
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:54:45 -0400
+ (envelope-from <lixianglai@loongson.cn>) id 1ql4mB-0001b8-FS
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:54:47 -0400
 Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8AxDOteqhJlN6IsAA--.14714S3;
- Tue, 26 Sep 2023 17:54:38 +0800 (CST)
+ by gateway (Coremail) with SMTP id _____8CxtPBfqhJlPqIsAA--.20863S3;
+ Tue, 26 Sep 2023 17:54:39 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.185])
  by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Dxnd5YqhJlTJgSAA--.40131S4; 
- Tue, 26 Sep 2023 17:54:37 +0800 (CST)
+ AQAAf8Dxnd5YqhJlTJgSAA--.40131S5; 
+ Tue, 26 Sep 2023 17:54:38 +0800 (CST)
 From: xianglai li <lixianglai@loongson.cn>
 To: qemu-devel@nongnu.org
 Cc: "Bernhard Beschow" <shentey@gmail.com>,
@@ -40,16 +40,16 @@ Cc: "Bernhard Beschow" <shentey@gmail.com>,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
  Bibo Mao <maobibo@loongson.cn>
-Subject: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
-Date: Tue, 26 Sep 2023 17:54:27 +0800
-Message-Id: <c2ab409710f5e0f0346727b47aaabd14537d45b8.1695697701.git.lixianglai@loongson.cn>
+Subject: [PATCH v3 3/7] Added CPU topology support for Loongarch
+Date: Tue, 26 Sep 2023 17:54:28 +0800
+Message-Id: <332ee85871e83bb972d17be8f905fdd42cd1662b.1695697701.git.lixianglai@loongson.cn>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <cover.1695697701.git.lixianglai@loongson.cn>
 References: <cover.1695697701.git.lixianglai@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Dxnd5YqhJlTJgSAA--.40131S4
+X-CM-TRANSID: AQAAf8Dxnd5YqhJlTJgSAA--.40131S5
 X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
  ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
@@ -76,24 +76,14 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUs Control device(\\_SB.PCI0) register interface for the x86 arch
-is based on PCI and is IO port based and hence existing cpus AML code
-assumes _CRS objects would evaluate to a system resource which describes
-IO Port address.
-But on Loongarch arch CPUs control device(\\_SB.PRES) register interface
-is memory-mapped hence _CRS object should evaluate to system resource
-which describes memory-mapped base address.
+1.Add topological relationships for Loongarch VCPU
+and initialize topology member variables.
+2.Add a description of the calculation method of
+the arch_id and the topological relationship of the CPU.
 
-This cpus AML code change updates the existing interface of the build cpus AML
-function to accept both IO/MEMORY type regions and update the _CRS object
-correspondingly.
-
-Co-authored-by: "Bernhard Beschow" <shentey@gmail.com>
-Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
-Co-authored-by: "Salil Mehta" <salil.mehta@huawei.com>
 Cc: "Bernhard Beschow" <shentey@gmail.com>
-Cc: "Salil Mehta" <salil.mehta@huawei.com>
 Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
+Cc: "Salil Mehta" <salil.mehta@huawei.com>
 Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
 Cc: Song Gao <gaosong@loongson.cn>
 Cc: "Michael S. Tsirkin" <mst@redhat.com>
@@ -111,93 +101,283 @@ Cc: David Hildenbrand <david@redhat.com>
 Cc: Bibo Mao <maobibo@loongson.cn>
 Signed-off-by: xianglai li <lixianglai@loongson.cn>
 ---
- hw/acpi/cpu.c         | 20 +++++++++++++++-----
- hw/i386/acpi-build.c  |  3 ++-
- include/hw/acpi/cpu.h |  5 +++--
- 3 files changed, 20 insertions(+), 8 deletions(-)
+ docs/system/loongarch/virt.rst |  31 ++++++++++
+ hw/loongarch/virt.c            | 101 ++++++++++++++++++++++++++-------
+ target/loongarch/cpu.c         |  13 ++++-
+ target/loongarch/cpu.h         |  12 +++-
+ 4 files changed, 134 insertions(+), 23 deletions(-)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 5bad983928..0afa04832e 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -6,6 +6,7 @@
- #include "qapi/qapi-events-acpi.h"
- #include "trace.h"
- #include "sysemu/numa.h"
-+#include "hw/acpi/cpu_hotplug.h"
+diff --git a/docs/system/loongarch/virt.rst b/docs/system/loongarch/virt.rst
+index c37268b404..eaba9e2fd7 100644
+--- a/docs/system/loongarch/virt.rst
++++ b/docs/system/loongarch/virt.rst
+@@ -28,6 +28,37 @@ The ``qemu-system-loongarch64`` provides emulation for virt
+ machine. You can specify the machine type ``virt`` and
+ cpu type ``la464``.
  
- #define OVMF_CPUHP_SMI_CMD 4
- 
-@@ -332,9 +333,10 @@ const VMStateDescription vmstate_cpu_hotplug = {
- #define CPU_FW_EJECT_EVENT "CEJF"
- 
- void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
--                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
-+                    build_madt_cpu_fn build_madt_cpu, hwaddr mmap_io_base,
-                     const char *res_root,
--                    const char *event_handler_method)
-+                    const char *event_handler_method,
-+                    AmlRegionSpace rs)
- {
-     Aml *ifctx;
-     Aml *field;
-@@ -359,14 +361,22 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-         aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
- 
-         crs = aml_resource_template();
--        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
-+        if (rs == AML_SYSTEM_IO) {
-+            aml_append(crs, aml_io(AML_DECODE16, mmap_io_base, mmap_io_base, 1,
-                                ACPI_CPU_HOTPLUG_REG_LEN));
-+        } else {
-+            aml_append(crs, aml_memory32_fixed(mmap_io_base,
-+                               ACPI_CPU_HOTPLUG_REG_LEN, AML_READ_WRITE));
-+        }
++CPU Topology
++--------------------
 +
-         aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
++The ``LA464`` type CPUs have the concept of Socket Core and Thread.
++
++For example:
++
++``-smp 1,maxcpus=M,sockets=S,cores=C,threads=T``
++
++The above parameters indicate that the machine has a maximum of ``M`` vCPUs and
++``S`` sockets, each socket has ``C`` cores, each core has ``T`` threads,
++and each thread corresponds to a vCPU.
++
++Then ``M`` ``S`` ``C`` ``T`` has the following relationship:
++
++``M = S * C * T``
++
++In the CPU topology relationship, When we know the ``socket_id`` ``core_id``
++and ``thread_id`` of the CPU, we can calculate its ``arch_id``:
++
++``arch_id = (socket_id * S) + (core_id * C) + (thread_id * T)``
++
++Similarly, when we know the ``arch_id`` of the CPU,
++we can also get its ``socket_id`` ``core_id`` and ``thread_id``:
++
++``socket_id = arch_id / (C * T)``
++
++``core_id = (arch_id / T) % C``
++
++``thread_id = arch_id % T``
++
+ Boot options
+ ------------
  
-+        g_assert(rs == AML_SYSTEM_IO || rs == AML_SYSTEM_MEMORY);
-         /* declare CPU hotplug MMIO region with related access fields */
-         aml_append(cpu_ctrl_dev,
--            aml_operation_region("PRST", AML_SYSTEM_IO, aml_int(io_base),
--                                 ACPI_CPU_HOTPLUG_REG_LEN));
-+            aml_operation_region("PRST", rs,
-+                                         aml_int(mmap_io_base),
-+                                         ACPI_CPU_HOTPLUG_REG_LEN));
+diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
+index 2629128aed..b8474e7b94 100644
+--- a/hw/loongarch/virt.c
++++ b/hw/loongarch/virt.c
+@@ -624,11 +624,11 @@ static void loongarch_irq_init(LoongArchMachineState *lams)
+                                     sysbus_mmio_get_region(SYS_BUS_DEVICE(ipi),
+                                     1));
+         /*
+-	 * extioi iocsr memory region
+-	 * only one extioi is added on loongarch virt machine
+-	 * external device interrupt can only be routed to cpu 0-3
+-	 */
+-	if (cpu < EXTIOI_CPUS)
++         * extioi iocsr memory region
++         * only one extioi is added on loongarch virt machine
++         * external device interrupt can only be routed to cpu 0-3
++         */
++        if (cpu < EXTIOI_CPUS)
+             memory_region_add_subregion(&env->system_iocsr, APIC_BASE,
+                                 sysbus_mmio_get_region(SYS_BUS_DEVICE(extioi),
+                                 cpu));
+@@ -789,9 +789,7 @@ static void loongarch_init(MachineState *machine)
+     NodeInfo *numa_info = machine->numa_state->nodes;
+     int i;
+     hwaddr fdt_base;
+-    const CPUArchIdList *possible_cpus;
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+-    CPUState *cpu;
+     char *ramName = NULL;
  
-         field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
-                           AML_WRITE_AS_ZEROS);
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 863a939210..7016205d15 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1550,7 +1550,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-             .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
-         };
-         build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
--                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02");
-+                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02",
-+                       AML_SYSTEM_IO);
+     if (!cpu_model) {
+@@ -803,16 +801,41 @@ static void loongarch_init(MachineState *machine)
+         exit(1);
      }
+     create_fdt(lams);
+-    /* Init CPUs */
  
-     if (pcms->memhp_io_base && nr_mem) {
-diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-index bc901660fb..601f644e57 100644
---- a/include/hw/acpi/cpu.h
-+++ b/include/hw/acpi/cpu.h
-@@ -60,9 +60,10 @@ typedef void (*build_madt_cpu_fn)(int uid, const CPUArchIdList *apic_ids,
-                                   GArray *entry, bool force_enabled);
+-    possible_cpus = mc->possible_cpu_arch_ids(machine);
+-    for (i = 0; i < possible_cpus->len; i++) {
+-        cpu = cpu_create(machine->cpu_type);
+-        cpu->cpu_index = i;
+-        machine->possible_cpus->cpus[i].cpu = OBJECT(cpu);
+-        lacpu = LOONGARCH_CPU(cpu);
+-        lacpu->phy_id = machine->possible_cpus->cpus[i].arch_id;
++    /* Init CPUs */
++    mc->possible_cpu_arch_ids(machine);
++    for (i = 0; i < machine->smp.cpus; i++) {
++        Object *cpuobj;
++        cpuobj = object_new(machine->cpu_type);
++        lacpu = LOONGARCH_CPU(cpuobj);
++
++        lacpu->arch_id = machine->possible_cpus->cpus[i].arch_id;
++        object_property_set_int(cpuobj, "socket-id",
++                                machine->possible_cpus->cpus[i].props.socket_id,
++                                NULL);
++        object_property_set_int(cpuobj, "core-id",
++                                machine->possible_cpus->cpus[i].props.core_id,
++                                NULL);
++        object_property_set_int(cpuobj, "thread-id",
++                                machine->possible_cpus->cpus[i].props.thread_id,
++                                NULL);
++        /*
++         * The CPU in place at the time of machine startup will also enter
++         * the CPU hot-plug process when it is created, but at this time,
++         * the GED device has not been created, resulting in exit in the CPU
++         * hot-plug process, which can avoid the incumbent CPU repeatedly
++         * applying for resources.
++         *
++         * The interrupt resource of the in-place CPU will be requested at
++         * the current function call loongarch_irq_init().
++         *
++         * The interrupt resource of the subsequently inserted CPU will be
++         * requested in the CPU hot-plug process.
++         */
++        qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
++        object_unref(cpuobj);
+     }
++
+     fdt_add_cpu_nodes(lams);
  
- void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
--                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
-+                    build_madt_cpu_fn build_madt_cpu, hwaddr mmap_io_base,
-                     const char *res_root,
--                    const char *event_handler_method);
-+                    const char *event_handler_method,
-+                    AmlRegionSpace rs);
+     /* Node0 memory */
+@@ -983,6 +1006,37 @@ static void virt_mem_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+     pc_dimm_pre_plug(PC_DIMM(dev), MACHINE(hotplug_dev), NULL, errp);
+ }
  
- void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list);
++static int virt_get_arch_id_from_cpu_topo(const MachineState *ms,
++                                          LoongArchCPUTopo *cpu_topo)
++{
++    int arch_id, sock_vcpu_num, core_vcpu_num;
++
++    /*
++     * calculate total logical cpus across socket/core/thread.
++     * For more information on how to calculate the arch_id,
++     * you can refer to the CPU Topology chapter of the
++     * docs/system/loongarch/virt.rst document.
++     */
++    sock_vcpu_num = cpu_topo->socket_id * (ms->smp.threads * ms->smp.cores);
++    core_vcpu_num = cpu_topo->core_id * ms->smp.threads;
++
++    /* get vcpu-id(logical cpu index) for this vcpu from this topology */
++    arch_id = (sock_vcpu_num + core_vcpu_num) + cpu_topo->thread_id;
++
++    assert(arch_id >= 0 && arch_id < ms->possible_cpus->len);
++
++    return arch_id;
++}
++
++static void virt_get_cpu_topo_by_cpu_index(const MachineState *ms,
++                                           LoongArchCPUTopo *cpu_topo,
++                                           int cpu_index)
++{
++    cpu_topo->socket_id  = cpu_index / (ms->smp.cores * ms->smp.threads);
++    cpu_topo->core_id = cpu_index / ms->smp.threads % ms->smp.cores;
++    cpu_topo->thread_id = cpu_index % ms->smp.threads;
++}
++
+ static void virt_machine_device_pre_plug(HotplugHandler *hotplug_dev,
+                                             DeviceState *dev, Error **errp)
+ {
+@@ -1069,6 +1123,8 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
+ {
+     int n;
+     unsigned int max_cpus = ms->smp.max_cpus;
++    unsigned int smp_threads = ms->smp.threads;
++    LoongArchCPUTopo cpu_topo;
  
+     if (ms->possible_cpus) {
+         assert(ms->possible_cpus->len == max_cpus);
+@@ -1079,17 +1135,20 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
+                                   sizeof(CPUArchId) * max_cpus);
+     ms->possible_cpus->len = max_cpus;
+     for (n = 0; n < ms->possible_cpus->len; n++) {
++        ms->possible_cpus->cpus[n].vcpus_count = smp_threads;
+         ms->possible_cpus->cpus[n].type = ms->cpu_type;
+-        ms->possible_cpus->cpus[n].arch_id = n;
++
++        virt_get_cpu_topo_by_cpu_index(ms, &cpu_topo, n);
+ 
+         ms->possible_cpus->cpus[n].props.has_socket_id = true;
+-        ms->possible_cpus->cpus[n].props.socket_id  =
+-                                   n / (ms->smp.cores * ms->smp.threads);
++        ms->possible_cpus->cpus[n].props.socket_id  = cpu_topo.socket_id;
+         ms->possible_cpus->cpus[n].props.has_core_id = true;
+-        ms->possible_cpus->cpus[n].props.core_id =
+-                                   n / ms->smp.threads % ms->smp.cores;
++        ms->possible_cpus->cpus[n].props.core_id = cpu_topo.core_id;
+         ms->possible_cpus->cpus[n].props.has_thread_id = true;
+-        ms->possible_cpus->cpus[n].props.thread_id = n % ms->smp.threads;
++        ms->possible_cpus->cpus[n].props.thread_id = cpu_topo.thread_id;
++
++        ms->possible_cpus->cpus[n].arch_id =
++                                virt_get_arch_id_from_cpu_topo(ms, &cpu_topo);
+     }
+     return ms->possible_cpus;
+ }
+diff --git a/target/loongarch/cpu.c b/target/loongarch/cpu.c
+index fc7f70fbe5..40b856554f 100644
+--- a/target/loongarch/cpu.c
++++ b/target/loongarch/cpu.c
+@@ -20,6 +20,7 @@
+ #include "sysemu/reset.h"
+ #include "tcg/tcg.h"
+ #include "vec.h"
++#include "hw/qdev-properties.h"
+ 
+ const char * const regnames[32] = {
+     "r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
+@@ -732,10 +733,19 @@ static int64_t loongarch_cpu_get_arch_id(CPUState *cs)
+ {
+     LoongArchCPU *cpu = LOONGARCH_CPU(cs);
+ 
+-    return cpu->phy_id;
++    return cpu->arch_id;
+ }
+ #endif
+ 
++static Property loongarch_cpu_properties[] = {
++    DEFINE_PROP_INT32("socket-id", LoongArchCPU, socket_id, 0),
++    DEFINE_PROP_INT32("core-id", LoongArchCPU, core_id, 0),
++    DEFINE_PROP_INT32("thread-id", LoongArchCPU, thread_id, 0),
++    DEFINE_PROP_INT32("node-id", LoongArchCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
++
++    DEFINE_PROP_END_OF_LIST()
++};
++
+ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+ {
+     LoongArchCPUClass *lacc = LOONGARCH_CPU_CLASS(c);
+@@ -743,6 +753,7 @@ static void loongarch_cpu_class_init(ObjectClass *c, void *data)
+     DeviceClass *dc = DEVICE_CLASS(c);
+     ResettableClass *rc = RESETTABLE_CLASS(c);
+ 
++    device_class_set_props(dc, loongarch_cpu_properties);
+     device_class_set_parent_realize(dc, loongarch_cpu_realizefn,
+                                     &lacc->parent_realize);
+     resettable_class_set_parent_phases(rc, NULL, loongarch_cpu_reset_hold, NULL,
+diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+index f125a8e49b..838492f014 100644
+--- a/target/loongarch/cpu.h
++++ b/target/loongarch/cpu.h
+@@ -364,6 +364,12 @@ typedef struct CPUArchState {
+ #endif
+ } CPULoongArchState;
+ 
++typedef struct LoongArchCPUTopo {
++    int32_t socket_id;  /* socket-id of this VCPU */
++    int32_t core_id;    /* core-id of this VCPU */
++    int32_t thread_id;  /* thread-id of this VCPU */
++} LoongArchCPUTopo;
++
+ /**
+  * LoongArchCPU:
+  * @env: #CPULoongArchState
+@@ -375,10 +381,14 @@ struct ArchCPU {
+     CPUState parent_obj;
+     /*< public >*/
+ 
++    int32_t socket_id;  /* socket-id of this VCPU */
++    int32_t core_id;    /* core-id of this VCPU */
++    int32_t thread_id;  /* thread-id of this VCPU */
++    int32_t node_id;    /* NUMA node this CPU belongs to */
+     CPUNegativeOffsetState neg;
+     CPULoongArchState env;
+     QEMUTimer timer;
+-    uint32_t  phy_id;
++    uint32_t  arch_id;
+ 
+     /* 'compatible' string for this CPU for Linux device trees */
+     const char *dtb_compatible;
 -- 
 2.39.1
 
