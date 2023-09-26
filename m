@@ -2,97 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4D87AF6BA
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 01:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A10E7AF701
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 01:58:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlHQj-0001Wj-Sm; Tue, 26 Sep 2023 19:25:25 -0400
+	id 1qlHvv-0007lP-Sf; Tue, 26 Sep 2023 19:57:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1qlHQg-0001WS-Gl
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:25:23 -0400
-Received: from wout5-smtp.messagingengine.com ([64.147.123.21])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlHvu-0007kx-CK
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:57:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
- id 1qlHQd-0001oq-Jm
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:25:21 -0400
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
- by mailout.west.internal (Postfix) with ESMTP id D854F3200908;
- Tue, 26 Sep 2023 19:25:15 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
- by compute5.internal (MEProxy); Tue, 26 Sep 2023 19:25:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- invisiblethingslab.com; h=cc:cc:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
- 1695770715; x=1695857115; bh=z3SHp3HxuUJld5UuE86Yt0/XxvoKxu84Kdl
- wpthvxMI=; b=ZV6KkiNMv2TVRZPFkePl3YXSMKX7apDi+9K6irJa1QLkvg2mb59
- sfmzASOTM55axh28sG3B2tt4tSqXeGYsKzrZKw020qemybD40UWf2+wDFRnNXjex
- VK5LdxupFKzFTbkBQB1wfkv3mEjwGY2+BehqEE6290HlWkKKQiVtNVM+61UWey5X
- cWysV0Ji1WbabVQoJ/y6ACf9VzAI2ijG+3mFceTMZgFqx5f2pzMgFokHLt7lMU33
- /qq24G90eFezLKavi0uARGo50hgnFLgyeOpQHFGi8wz5zwnQpnFwiCxl/o6oLb84
- pMRDZWT1HJo6RrytOXmMhoNroRPYqEtN6Zg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-type:content-type:date:date
- :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
- :message-id:mime-version:references:reply-to:sender:subject
- :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
- :x-sasl-enc; s=fm2; t=1695770715; x=1695857115; bh=z3SHp3HxuUJld
- 5UuE86Yt0/XxvoKxu84KdlwpthvxMI=; b=EBr7mSBr5eBTy/QsXTovDkKgStDvx
- 9oS8+t6mNtSIG4uJEZSuoDlaPrU8kykO4yDC6ZE0BmjoPrwkEBXwq0aAlQ+UjgcO
- UxYtdU6HbMIM7O6WjhSbQ8wArciFpdR0du3ueGbqOKzj9npyn2wm1zzaxE4LFl5I
- d6VnUEyvc38L/9WNdaGoP2JBSOm0ewdgPqP8xuNd0AZhagU0VjtdYaxkAyHUIRv1
- 3VDNepwE28Q6tR51YJ2jRhWV/5n1b89bgW9LDCNMDEOsYmb/K4Eg2lMX3BSzwzhy
- p7aNpb1nUoHGaqBqWPD9KM5Bg2eosSbo6SG03aQ7D8ASqoS7vRd5r72zQ==
-X-ME-Sender: <xms:WmgTZXBEdeAcMoHC3PMbyBrZpqRazj1abpzPIZSp1LjDbY_0G2QdkA>
- <xme:WmgTZdjfoGyqXodjSxugnedt-eoUNGyTVXK-RJRivQnGkVlJeCZien2NCNT2ox3ex
- UZkdMVjYkWQow>
-X-ME-Received: <xmr:WmgTZSm3G2w38DRmfzDDIFA6psm74UoZkW5Mj1zPm7pcuVx2lW_NO5WRNkrCNmsCXGUTlmOpqxu6Uyyk17Lq6H-xMUqWArDDNFY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddugddvvdcutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
- fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpeforghrvghk
- ucforghrtgiihihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesihhnvh
- hishhisghlvghthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpefgudel
- teefvefhfeehieetleeihfejhfeludevteetkeevtedtvdegueetfeejudenucevlhhush
- htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhes
- ihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhm
-X-ME-Proxy: <xmx:W2gTZZw-C5s8aq_0PZ0CcnGvQWCbk__U7CTAZ_oGoCA7pMXCL_GCaw>
- <xmx:W2gTZcSUHVqkLfJ-brlGxPoOuOaP0L80Wy4bLYwJZIVMyt-PD98INg>
- <xmx:W2gTZcYL14_e_M_dJ9whuQ0xpOdzOfq_uwVmwBHeSf4lBaKfzIo1og>
- <xmx:W2gTZXf2VPYZHKkZ2xtd2ppL32k8RfHMnDJfKJefBbW-uDiG4PRU_A>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 Sep 2023 19:25:13 -0400 (EDT)
-Date: Wed, 27 Sep 2023 01:25:11 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>
-To: Anthony PERARD <anthony.perard@citrix.com>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
- Paul Durrant <paul@xen.org>,
- "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH 1/2] hw/xen/xen_pt: Call default handler only if no
- custom one is set
-Message-ID: <ZRNoV+dvbj5gtxVN@mail-itl>
-References: <20221114192011.1539233-1-marmarek@invisiblethingslab.com>
- <Y30DG96s9Ky1AUN0@perard.uk.xensource.com>
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlHvs-0006ci-Dj
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:57:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695772654;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=YojiN4iQj8J/kXQ6FhBhpSyy/ep2bnLMTpRtktnAGj8=;
+ b=aVzQxVhacgd5MndYv8oza6oktCjEi+i7Z82mGtQiYe6JYFtHRUDx+lAOIwdgEYCVtWb/Je
+ EDAIoCTUXXPKNFxJIPANO8r/fNfEozv0xJ46d7hmkTgfNiGIJH19dLoDb4lLmmEQyM+5yC
+ eUqb7jW+rOPbYGU66Y35UZ5MShb4eEk=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-696-AmGXq_kJO8q1un191YIllQ-1; Tue, 26 Sep 2023 19:57:33 -0400
+X-MC-Unique: AmGXq_kJO8q1un191YIllQ-1
+Received: by mail-pg1-f198.google.com with SMTP id
+ 41be03b00d2f7-570096f51acso11079189a12.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 16:57:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695772652; x=1696377452;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=YojiN4iQj8J/kXQ6FhBhpSyy/ep2bnLMTpRtktnAGj8=;
+ b=LCaRtPZy+feGNRLmxcHYemn6wXybqOYBhYh+ut/rXz5DezoLaOIwUi3MJQBgkKS72w
+ QNx8yiY7XEp6Rg3T+YkEpFIMQbGHz9OBPeAiYLYFOxPJSb2jP/c4Wr9ZpgqvwUDHwW/f
+ YkJJTPyjjfMUY3I9T2844LBFHct27oylOovb7V0t1ZYgV/zM4ffnkJOM2MRuyYSXm44J
+ 1M1yIkdIC4we28afTLa1w89+p+VaNojODmy4bJ8sg1SCL2IpAn95N2fPHPEKKXa7xPEg
+ mfKYyZxibFjsGXXZoentEx1jxOtvz9CCOSrvPYKG14JG6YI852QOa1Dliu/X00SW8pmd
+ M0lA==
+X-Gm-Message-State: AOJu0YzN7E2s5wys/h42eWkaAGySxQUP+vtLWA4Xn28HN1YK9361RBBk
+ MOpOkb8B8cKdeIoIhNXMH7ZC2gPYUKbFbs6hmcAPbdYIz99tKg6fzue4E21+yi30NUFiAT1ckMJ
+ LggaGN0iFYJFyjLo=
+X-Received: by 2002:a05:6a20:2443:b0:15d:b407:b0a0 with SMTP id
+ t3-20020a056a20244300b0015db407b0a0mr617103pzc.26.1695772651867; 
+ Tue, 26 Sep 2023 16:57:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFzygL6Q7QUBdl6x1BRNY2f2EFQ6bbegy08gd5QK22aH4LbQnDw/+6bqDomQKb/Her/+Qby1w==
+X-Received: by 2002:a05:6a20:2443:b0:15d:b407:b0a0 with SMTP id
+ t3-20020a056a20244300b0015db407b0a0mr617046pzc.26.1695772651374; 
+ Tue, 26 Sep 2023 16:57:31 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
+ by smtp.gmail.com with ESMTPSA id
+ fm1-20020a056a002f8100b00679a4b56e41sm10580839pfb.43.2023.09.26.16.57.20
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Sep 2023 16:57:30 -0700 (PDT)
+Message-ID: <6cd28639-2cfa-f233-c6d9-d5d2ec5b1c58@redhat.com>
+Date: Wed, 27 Sep 2023 09:57:18 +1000
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="KAOaOS9jBIoMGKW2"
-Content-Disposition: inline
-In-Reply-To: <Y30DG96s9Ky1AUN0@perard.uk.xensource.com>
-Received-SPF: none client-ip=64.147.123.21;
- envelope-from=marmarek@invisiblethingslab.com;
- helo=wout5-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH RFC V2 01/37] arm/virt,target/arm: Add new ARMCPU
+ {socket,cluster,core,thread}-id property
+Content-Language: en-US
+To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
+ lpieralisi@kernel.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
+ david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
+ ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
+ mst@redhat.com, rafael@kernel.org, borntraeger@linux.ibm.com,
+ alex.bennee@linaro.org, linux@armlinux.org.uk,
+ darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
+ vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
+ miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
+ wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
+ maobibo@loongson.cn, lixianglai@loongson.cn
+References: <20230926100436.28284-1-salil.mehta@huawei.com>
+ <20230926100436.28284-2-salil.mehta@huawei.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20230926100436.28284-2-salil.mehta@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,126 +115,221 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Salil,
 
---KAOaOS9jBIoMGKW2
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 Sep 2023 01:25:11 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Anthony PERARD <anthony.perard@citrix.com>
-Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
-	Paul Durrant <paul@xen.org>,
-	"open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
-Subject: Re: [PATCH 1/2] hw/xen/xen_pt: Call default handler only if no
- custom one is set
+On 9/26/23 20:04, Salil Mehta wrote:
+> This shall be used to store user specified topology{socket,cluster,core,thread}
+> and shall be converted to a unique 'vcpu-id' which is used as slot-index during
+> hot(un)plug of vCPU.
+> 
 
-On Tue, Nov 22, 2022 at 05:12:59PM +0000, Anthony PERARD wrote:
-> On Mon, Nov 14, 2022 at 08:20:10PM +0100, Marek Marczykowski-G=C3=B3recki=
- wrote:
-> > diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
-> > index 0ec7e52183..269bd26109 100644
-> > --- a/hw/xen/xen_pt.c
-> > +++ b/hw/xen/xen_pt.c
-> > @@ -255,6 +255,7 @@ static void xen_pt_pci_write_config(PCIDevice *d, u=
-int32_t addr,
-> >      uint32_t find_addr =3D addr;
-> >      XenPTRegInfo *reg =3D NULL;
-> >      bool wp_flag =3D false;
-> > +    uint32_t emul_mask =3D 0, write_val;
-> > =20
-> >      if (xen_pt_pci_config_access_check(d, addr, len)) {
-> >          return;
-> > @@ -310,7 +311,6 @@ static void xen_pt_pci_write_config(PCIDevice *d, u=
-int32_t addr,
-> >      }
-> > =20
-> >      memory_region_transaction_begin();
-> > -    pci_default_write_config(d, addr, val, len);
-> > =20
-> >      /* adjust the read and write value to appropriate CFC-CFF window */
-> >      read_val <<=3D (addr & 3) << 3;
-> > @@ -370,6 +370,8 @@ static void xen_pt_pci_write_config(PCIDevice *d, u=
-int32_t addr,
-> >                  return;
-> >              }
-> > =20
-> > +            emul_mask |=3D ( (1 << (reg->size * 8) ) - 1 ) << ((find_a=
-ddr & 3) * 8);
-> > +
-> >              /* calculate next address to find */
-> >              emul_len -=3D reg->size;
-> >              if (emul_len > 0) {
-> > @@ -396,6 +398,24 @@ static void xen_pt_pci_write_config(PCIDevice *d, =
-uint32_t addr,
-> >      /* need to shift back before passing them to xen_host_pci_set_bloc=
-k. */
-> >      val >>=3D (addr & 3) << 3;
-> > =20
-> > +    /* store emulated registers that didn't have specific hooks */
-> > +    write_val =3D val;
-> > +    for (index =3D 0; emul_mask; index +=3D emul_len) {
->=20
-> `index` isn't used, was it meant to be use for something?
+Note that we don't have 'vcpu-id' property. It's actually the index to the array
+ms->possible_cpus->cpus[] and cpu->cpu_index. Please improve the commit log if
+it makes sense.
 
-Yes, it should be used as addr + index below.
+> Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> ---
+>   hw/arm/virt.c    | 63 ++++++++++++++++++++++++++++++++++++++++++++++++
+>   target/arm/cpu.c |  4 +++
+>   target/arm/cpu.h |  4 +++
+>   3 files changed, 71 insertions(+)
+> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 7d9dbc2663..57fe97c242 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -221,6 +221,11 @@ static const char *valid_cpus[] = {
+>       ARM_CPU_TYPE_NAME("max"),
+>   };
+>   
+> +static int virt_get_socket_id(const MachineState *ms, int cpu_index);
+> +static int virt_get_cluster_id(const MachineState *ms, int cpu_index);
+> +static int virt_get_core_id(const MachineState *ms, int cpu_index);
+> +static int virt_get_thread_id(const MachineState *ms, int cpu_index);
+> +
+>   static bool cpu_type_valid(const char *cpu)
+>   {
+>       int i;
+> @@ -2168,6 +2173,14 @@ static void machvirt_init(MachineState *machine)
+>                             &error_fatal);
+>   
+>           aarch64 &= object_property_get_bool(cpuobj, "aarch64", NULL);
+> +        object_property_set_int(cpuobj, "socket-id",
+> +                                virt_get_socket_id(machine, n), NULL);
+> +        object_property_set_int(cpuobj, "cluster-id",
+> +                                virt_get_cluster_id(machine, n), NULL);
+> +        object_property_set_int(cpuobj, "core-id",
+> +                                virt_get_core_id(machine, n), NULL);
+> +        object_property_set_int(cpuobj, "thread-id",
+> +                                virt_get_thread_id(machine, n), NULL);
+>   
+>           if (!vms->secure) {
+>               object_property_set_bool(cpuobj, "has_el3", false, NULL);
+> @@ -2652,10 +2665,59 @@ static int64_t virt_get_default_cpu_node_id(const MachineState *ms, int idx)
+>       return socket_id % ms->numa_state->num_nodes;
+>   }
+>   
 
-> > +        emul_len =3D 0;
-> > +        while (emul_mask & 0xff) {
-> > +            emul_len++;
->=20
-> This seems to count the number of byte that have a hook
-> (xen_pt_find_reg() found a `reg_entry`).
-> This loop should count instead the number of bytes for which no
-> `reg_entry` have been found, right? Shouldn't the loop count when a byte
-> in emul_mask is unset?
+It seems it's not unnecessary to keep virt_get_{socket, cluster, core, thread}_id()
+because they're called for once. I would suggest to figure out the socket, cluster,
+core and thread ID through @possible_cpus in machvirt_init(), like below.
 
-No, see the patch description - only declared registers should be saved.
-The patch title is misleading, I'll clarify it.
+Besides, we can't always expose property "cluster-id" since cluster in the CPU
+topology isn't always supported, seeing MachineClass::smp_props. Some users may
+want to hide cluster for unknown reasons. 'cluster-id' shouldn't be exposed in
+this case. Otherwise, users may be confused by 'cluster-id' property while it
+has been disabled. For example, a VM is started with the following command lines
+and 'cluster-id' shouldn't be supported in vCPU hot-add.
 
-> > +            emul_mask >>=3D 8;
-> > +        }
-> > +        if (emul_len) {
-> > +            uint32_t mask =3D ((1 << (emul_len * 8)) - 1);
-> > +            pci_default_write_config(d, addr, write_val & mask, emul_l=
-en);
->=20
-> `addr` isn't updated in the loop, aren't we going to write bytes to the
-> wrong place? If for example "emul_mask =3D=3D 0x00ff00ff" ?
+     -cpu host -smp=maxcpus=2,cpus=1,sockets=2,cores=1,threads=1
+     (qemu) device_add host,id=cpu1,socket-id=1,cluster-id=0,core-id=0,thread-id=0
 
-Indeed, it should be addr + index.
+     object_property_set_int(cpuobj, "socket-id",
+                             possible_cpus->cpus[i].props.socket_id, NULL);
+     if (mc->smp_props.cluster_supported && mc->smp_props.has_clusters) {
+         object_property_set_int(cpuobj, "cluster-id",
+                                 possible_cpus->cpus[i].props.cluster_id, NULL);
+     }
+     object_property_set_int(cpuobj, "core-id",
+                             possible_cpus->cpus[i].props.core_id, NULL);
+     object_property_set_int(cpuobj, "thread-id",
+                             possible_cpus->cpus[i].props.thread_id, NULL);
 
-> > +            write_val >>=3D emul_len * 8;
-> > +        } else {
-> > +            emul_mask >>=3D 8;
-> > +            write_val >>=3D 8;
-> > +        }
-> > +    }
->=20
-> Thanks,
->=20
-> --=20
-> Anthony PERARD
+> +static int virt_get_socket_id(const MachineState *ms, int cpu_index)
+> +{
+> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
+> +
+> +    return ms->possible_cpus->cpus[cpu_index].props.socket_id;
+> +}
+> +
+> +static int virt_get_cluster_id(const MachineState *ms, int cpu_index)
+> +{
+> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
+> +
+> +    return ms->possible_cpus->cpus[cpu_index].props.cluster_id;
+> +}
+> +
+> +static int virt_get_core_id(const MachineState *ms, int cpu_index)
+> +{
+> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
+> +
+> +    return ms->possible_cpus->cpus[cpu_index].props.core_id;
+> +}
+> +
+> +static int virt_get_thread_id(const MachineState *ms, int cpu_index)
+> +{
+> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
+> +
+> +    return ms->possible_cpus->cpus[cpu_index].props.thread_id;
+> +}
+> +
+> +static int
+> +virt_get_cpu_id_from_cpu_topo(const MachineState *ms, DeviceState *dev)
+> +{
+> +    int cpu_id, sock_vcpu_num, clus_vcpu_num, core_vcpu_num;
+> +    ARMCPU *cpu = ARM_CPU(dev);
+> +
+> +    /* calculate total logical cpus across socket/cluster/core */
+> +    sock_vcpu_num = cpu->socket_id * (ms->smp.threads * ms->smp.cores *
+> +                    ms->smp.clusters);
+> +    clus_vcpu_num = cpu->cluster_id * (ms->smp.threads * ms->smp.cores);
+> +    core_vcpu_num = cpu->core_id * ms->smp.threads;
+> +
+> +    /* get vcpu-id(logical cpu index) for this vcpu from this topology */
+> +    cpu_id = (sock_vcpu_num + clus_vcpu_num + core_vcpu_num) + cpu->thread_id;
+> +
+> +    assert(cpu_id >= 0 && cpu_id < ms->possible_cpus->len);
+> +
+> +    return cpu_id;
+> +}
+> +
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+This function is called for once in PATCH[04/37]. I think it needs to be moved
+around to PATCH[04/37].
 
---KAOaOS9jBIoMGKW2
-Content-Type: application/pgp-signature; name="signature.asc"
+[PATCH RFC V2 04/37] arm/virt,target/arm: Machine init time change common to vCPU {cold|hot}-plug
 
------BEGIN PGP SIGNATURE-----
+The function name can be shortened because I don't see the suffix "_from_cpu_topo"
+is too much helpful. I think virt_get_cpu_index() would be good enough since it's
+called for once to return the index in array MachineState::possible_cpus::cpus[]
+and the return value is stored to CPUState::cpu_index.
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmUTaFcACgkQ24/THMrX
-1yxIMggAjmFai6SJm9RKNfxscWSdENDYpLum2YHLlNE26rRvV7CDdOW1ceW6QTxN
-VT746C2zA6fL/pXkXQlCXP1a3s2qWx7fL6FX8g07DMwzawcySHuPbgmKB+41bcEM
-mo7xpHAp/+Hd6+GOVY09mCXtJBZXKG68QIGHhyKtfQ4V9AOnFa9XEfYO1fbFywEf
-DcVYWv2fJopi4ZR+mj47kvDl/HdT7VY+xHKU8KXIhyKtcnUO0kUI8AVvSgoZVKoP
-KsqdpPRSOI/g0r29S8umIF3py+WtPG/GQ4NuwTpP0lgT0maUXXUm/759gqCcGT2y
-UzeBUBbpVX4/dOupOf2Lw5fv9Y8x0w==
-=KVPc
------END PGP SIGNATURE-----
+static int virt_get_cpu_index(const MachineState *ms, ARMCPU *cpu)
+{
+     int index, cpus_in_socket, cpus_in_cluster, cpus_in_core;
 
---KAOaOS9jBIoMGKW2--
+     /*
+      * It's fine to take cluster into account even it's not supported. In this
+      * case, ms->smp.clusters is always one.
+      */
+}
+
+>   static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
+>   {
+>       int n;
+>       unsigned int max_cpus = ms->smp.max_cpus;
+> +    unsigned int smp_threads = ms->smp.threads;
+>       VirtMachineState *vms = VIRT_MACHINE(ms);
+>       MachineClass *mc = MACHINE_GET_CLASS(vms);
+>   
+> @@ -2669,6 +2731,7 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
+>       ms->possible_cpus->len = max_cpus;
+>       for (n = 0; n < ms->possible_cpus->len; n++) {
+>           ms->possible_cpus->cpus[n].type = ms->cpu_type;
+> +        ms->possible_cpus->cpus[n].vcpus_count = smp_threads;
+>           ms->possible_cpus->cpus[n].arch_id =
+>               virt_cpu_mp_affinity(vms, n);
+>   
+
+This initialization seems to accomodate HMP command "info hotpluggable-cpus".
+It would be nice if it can be mentioned in the commit log.
+
+> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+> index 93c28d50e5..1376350416 100644
+> --- a/target/arm/cpu.c
+> +++ b/target/arm/cpu.c
+> @@ -2277,6 +2277,10 @@ static Property arm_cpu_properties[] = {
+>       DEFINE_PROP_UINT64("mp-affinity", ARMCPU,
+>                           mp_affinity, ARM64_AFFINITY_INVALID),
+>       DEFINE_PROP_INT32("node-id", ARMCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
+> +    DEFINE_PROP_INT32("socket-id", ARMCPU, socket_id, 0),
+> +    DEFINE_PROP_INT32("cluster-id", ARMCPU, cluster_id, 0),
+> +    DEFINE_PROP_INT32("core-id", ARMCPU, core_id, 0),
+> +    DEFINE_PROP_INT32("thread-id", ARMCPU, thread_id, 0),
+>       DEFINE_PROP_INT32("core-count", ARMCPU, core_count, -1),
+>       DEFINE_PROP_END_OF_LIST()
+>   };
+
+All those 4 properties are used for vCPU hot-add, meaning they're not needed
+when vCPU hotplug isn't supported on the specific board. Even for hw/virt board,
+cluster isn't always supported and 'cluster-id' shouldn't always be exposed,
+as explained above. How about to register the properties dynamically only when
+they're needed by vCPU hotplug?
+
+> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
+> index 88e5accda6..d51d39f621 100644
+> --- a/target/arm/cpu.h
+> +++ b/target/arm/cpu.h
+> @@ -1094,6 +1094,10 @@ struct ArchCPU {
+>       QLIST_HEAD(, ARMELChangeHook) el_change_hooks;
+>   
+>       int32_t node_id; /* NUMA node this CPU belongs to */
+> +    int32_t socket_id;
+> +    int32_t cluster_id;
+> +    int32_t core_id;
+> +    int32_t thread_id;
+
+It would be fine to keep those fields even the corresponding properties are
+dynamically registered, but a little bit memory overhead incurred :)
+
+>   
+>       /* Used to synchronize KVM and QEMU in-kernel device levels */
+>       uint8_t device_irq_level;
+
+Thanks,
+Gavin
+
 
