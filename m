@@ -2,71 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A37117AF30F
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 20:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5937AF320
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 20:42:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlCvS-0005mJ-LD; Tue, 26 Sep 2023 14:36:50 -0400
+	id 1qlCz6-0007Gz-52; Tue, 26 Sep 2023 14:40:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlCvP-0005lu-6O
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:36:47 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlCvM-0005R7-9i
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:36:46 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 2DCCC60D05;
- Tue, 26 Sep 2023 21:36:40 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
- [2a02:6b8:b081:b41d::1:39])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id caU6jq0OmKo0-SPVV8kee; Tue, 26 Sep 2023 21:36:39 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695753399;
- bh=kRnOdF7eUfZawHJ6gtFw1FnglNnNADtGbe4AuQuycvk=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=dgagDKQ5zCqH9zdh32eUQ0EXyYfX4qgjBLfSM0O9JZbFQxruAtbRIFJ6zLRgXxWPs
- xqVihpj9GgMXAPaIbkCsyObTYAJ2lBh3dbkMdnjwra/4y/HihhcbsM9ZF3ggBJt7pi
- ABTQT5QmETFXv9fJN7188nVn1nFZaoxOSQmwYqhc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <a39b4d16-3055-8718-0f84-ebbdd1078758@yandex-team.ru>
-Date: Tue, 26 Sep 2023 21:36:38 +0300
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qlCz1-0007Gb-QX
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:40:32 -0400
+Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qlCyx-0006So-Ud
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:40:31 -0400
+Received: by mail-pl1-x62f.google.com with SMTP id
+ d9443c01a7336-1c3bd829b86so73374915ad.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 11:40:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1695753626; x=1696358426; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Hjy5uEMN2yWslbrhKnIfXD/tPuQarm7f16HNgL4Emj8=;
+ b=GprFnMDXTu5URTa3sXZjw3snyh5kLOyKRncdWaawSgC+K/2VCysPILVgoRUNzj1RkT
+ IshJKxx/hVoNWf+Le0BPn53LQPVeX/aUu1nT25v3znQUeXNhnCTW1fIvdpPsDBeLOvyv
+ sHy1E9kYw/MNKWOaUR4cobY0jGoGAmPlsFpbmGtP8Zte5Y4STF1KIdt7a4rSlfPmNxHR
+ Vgd8qC1gBvb/UrmIkszRPHT71PoJvdHO6HReCXVt6DmMvXpy0mbBxDJvaSDChblUW24Z
+ LyMdEZKg8wPQRQfVHPTm1wcc3uknvGBKV6vgYvL9Gqb5q+oO3uqPQGh2959Eb3Px4yZo
+ WTTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695753626; x=1696358426;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Hjy5uEMN2yWslbrhKnIfXD/tPuQarm7f16HNgL4Emj8=;
+ b=Ec1AWOg4SOk+TOKYeFUJqTD0LGUX+NRQps0f3EUDorm9vTDK+8it64iehsCKsuuO7l
+ VusszRBFsaukTgdhU1aMW3rgiMuUQRdN0PL0srPZNvkr3QYJ5x0noHZZ1FhxHyVaCoI9
+ essaxUWgJAon4ctFrOY7JTGRq8HXkOhvKVeyHN8Nv5EcBG8vWyoIxHSmj/nmbde4G/SG
+ EqRMUxr4JZ2IqXZVCmbAzanzbuD0p556X+WxKV4CKkNKrH0bBO3KrqodXqV+Abr7aCKO
+ JmIsQKo/9Nd1QDQ8USmuM/vawvuVEShmFSeg2jHUVoNQ7wg9ptA5FBdbKI0K3asRlvMJ
+ nx/A==
+X-Gm-Message-State: AOJu0Yx8EEliyX5Id4Jck/sqUPOQrs4fbXzQjAA3bF5hZdTw3Rm4AsOs
+ bMRMjWDK1yBM6JV0kF3+XRlop97t2fpGJMY61qM=
+X-Google-Smtp-Source: AGHT+IE9dfjy44js2v6L2N42TGYt4bGLmRpvkJ98Nvs1Fw1Ecqn3+lKGdsdKMocE6Oi88NYkSBec3g==
+X-Received: by 2002:a17:902:e888:b0:1c5:d063:b72a with SMTP id
+ w8-20020a170902e88800b001c5d063b72amr10643069plg.27.1695753625822; 
+ Tue, 26 Sep 2023 11:40:25 -0700 (PDT)
+Received: from grind.. ([177.94.42.59]) by smtp.gmail.com with ESMTPSA id
+ a11-20020a170902eccb00b001b9cdf11764sm11268306plh.31.2023.09.26.11.40.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Sep 2023 11:40:25 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 0/6] riscv: query-cpu-model-expansion API
+Date: Tue, 26 Sep 2023 15:40:13 -0300
+Message-ID: <20230926184019.166352-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 02/12] hw/i386/intel_iommu: vtd_slpte_nonzero_rsvd():
- reduce magic numbers
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-3-vsementsov@yandex-team.ru>
- <CAFEAcA_jgL_CLQxT1R2Zu5xDd3RZZpySpjhd1EyBgFM8Ttps6w@mail.gmail.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <CAFEAcA_jgL_CLQxT1R2Zu5xDd3RZZpySpjhd1EyBgFM8Ttps6w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -84,64 +89,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.09.23 13:37, Peter Maydell wrote:
-> On Mon, 25 Sept 2023 at 20:41, Vladimir Sementsov-Ogievskiy
-> <vsementsov@yandex-team.ru> wrote:
->>
->> Add a constant and clear assertion. The assertion also tells Coverity
->> that we are not going to overflow the array.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   hw/i386/intel_iommu.c | 11 ++++++++---
->>   1 file changed, 8 insertions(+), 3 deletions(-)
->>
->> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->> index c0ce896668..2233dbe13a 100644
->> --- a/hw/i386/intel_iommu.c
->> +++ b/hw/i386/intel_iommu.c
->> @@ -1028,12 +1028,17 @@ static dma_addr_t vtd_get_iova_pgtbl_base(IntelIOMMUState *s,
->>    *     vtd_spte_rsvd 4k pages
->>    *     vtd_spte_rsvd_large large pages
->>    */
->> -static uint64_t vtd_spte_rsvd[5];
->> -static uint64_t vtd_spte_rsvd_large[5];
->> +#define VTD_SPTE_RSVD_LEN 5
->> +static uint64_t vtd_spte_rsvd[VTD_SPTE_RSVD_LEN];
->> +static uint64_t vtd_spte_rsvd_large[VTD_SPTE_RSVD_LEN];
->>
->>   static bool vtd_slpte_nonzero_rsvd(uint64_t slpte, uint32_t level)
->>   {
->> -    uint64_t rsvd_mask = vtd_spte_rsvd[level];
->> +    uint64_t rsvd_mask;
->> +
->> +    assert(level < VTD_SPTE_RSVD_LEN);
->> +
->> +    rsvd_mask = vtd_spte_rsvd[level];
-> 
-> 
-> Looking at the code it is not clear to me why this assertion is
-> valid. It looks like we are picking up fields from guest-set
-> configuration (probably in-memory data structures). So we can't
-> assert() here -- we need to do whatever the real hardware does
-> if these fields are set to an incorrect value, or at least something
-> sensible that doesn't crash QEMU.
-> 
+Hi,
 
-Finally, seems that assertion is valid. We do check the guest-set configuration:
+In this second version we stripped patches 1 and 2 from v1. They're now
+being treated in separate in=20
 
-1. in vtd_decide_config(), we check that s->aw_bits is exactly one of VTD_HOST_AW_39BIT or VTD_HOST_AW_48BIT.
+"[PATCH 0/2] riscv: add extension properties for all cpus"
 
-2. in vtd_init(), in s->cap we set VTD_CAP_SAGAW_39bit (bit 1) and may be VTD_CAP_SAGAW_48bit (bit 2),  but never bit 3 (which would allow 5-level page-table) or any other bit (i.e. bits 0 and 4 which are reserved).
+Note that we'll need these applied beforehand to see vendor CPU
+properties with this new API.
 
-3. then, as I could follow, both context entry and pasid entry should go through vtd_is_level_supported(), which checks that level is allowed in s->cap.
+This series implements query-cpu-model-expansion for RISC-V. The
+implementation was based on the ARM version of the same API in
+target/arm/arm-qmp-cmds.c.
 
-So in the code we should work only with levels 3 and 4.
+This series can be tested directly using this branch:
+
+https://gitlab.com/danielhb/qemu/-/tree/qmp-cpu-expansion_v2
 
 
+Here's an usage example. Launch QEMU with "-S" to be able to issue QMP
+query commands before the machine starts:
 
--- 
-Best regards,
-Vladimir
+$ ./build/qemu-system-riscv64 -S -M virt -display none -qmp  tcp:localhost:=
+1234,server,wait=3Doff
+
+Then use QMP to access the API:
+
+$ ./scripts/qmp/qmp-shell localhost:1234
+Welcome to the QMP low-level shell!
+Connected to QEMU 8.1.50
+
+(QEMU)  query-cpu-model-expansion type=3Dfull model=3D{"name":"rv64"}
+{"return": {"model": {"name": "rv64", "props": {"zicond": false, "x-zvfh": =
+false, "mmu": true, "x-zvfbfwma": false, "x-zvfbfmin": false, "xtheadbs": f=
+alse, "xtheadbb": false, "xtheadba": false, "xtheadmemidx": false, "smstate=
+en": false, "zfinx": false, "Zve64f": false, "Zve32f": false, "x-zvfhmin": =
+false, "xventanacondops": false, "xtheadcondmov": false, "svpbmt": false, "=
+zbs": true, "zbc": true, "zbb": true, "zba": true, "zicboz": true, "xtheadm=
+ac": false, "Zfh": false, "Zfa": true, "zbkx": false, "zbkc": false, "zbkb"=
+: false, "Zve64d": false, "x-zfbfmin": false, "zk": false, "x-epmp": false,=
+ "xtheadmempair": false, "zkt": false, "zks": false, "zkr": false, "zkn": f=
+alse, "Zfhmin": false, "zksh": false, "zknh": false, "zkne": false, "zknd":=
+ false, "zhinx": false, "Zicsr": true, "sscofpmf": false, "Zihintntl": true=
+, "sstc": true, "xtheadcmo": false, "x-zvbb": false, "zksed": false, "x-zvk=
+ned": false, "xtheadsync": false, "x-zvkg": false, "zhinxmin": false, "svad=
+u": true, "xtheadfmv": false, "x-zvksed": false, "svnapot": false, "pmp": t=
+rue, "x-zvknhb": false, "x-zvknha": false, "xtheadfmemidx": false, "x-zvksh=
+": false, "zdinx": false, "zicbom": true, "Zihintpause": true, "svinval": f=
+alse, "zcf": false, "zce": false, "zcd": false, "zcb": false, "zca": false,=
+ "x-ssaia": false, "x-smaia": false, "zmmul": false, "x-zvbc": false, "Zife=
+ncei": true, "zcmt": false, "zcmp": false, "Zawrs": true}}}}
+
+Changes from v1:
+- patches 1 and 2 from v1 were removed and sent in separate
+- v1 link: https://lore.kernel.org/qemu-riscv/20230920213743.716265-1-dbarb=
+oza@ventanamicro.com/
+
+
+Daniel Henrique Barboza (6):
+  target/riscv/kvm/kvm-cpu.c: add missing property getters()
+  qapi,risc-v: add query-cpu-model-expansion
+  target/riscv/tcg: add tcg_cpu_finalize_features()
+  target/riscv: handle custom props in qmp_query_cpu_model_expansion
+  target/riscv: add riscv_cpu_accelerator_compatible()
+  target/riscv/riscv-qmp-cmds.c: check CPU accel in
+    query-cpu-model-expansion
+
+ qapi/machine-target.json      |   6 +-
+ target/riscv/cpu.c            |  27 +++++-
+ target/riscv/cpu.h            |   2 +
+ target/riscv/kvm/kvm-cpu.c    |  40 ++++++++-
+ target/riscv/riscv-qmp-cmds.c | 160 ++++++++++++++++++++++++++++++++++
+ target/riscv/tcg/tcg-cpu.c    |  68 +++++++++------
+ target/riscv/tcg/tcg-cpu.h    |   2 +
+ 7 files changed, 269 insertions(+), 36 deletions(-)
+
+--=20
+2.41.0
 
 
