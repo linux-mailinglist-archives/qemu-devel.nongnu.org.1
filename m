@@ -2,68 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FFA7AEA9A
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 121937AEAB0
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:46:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql5Ue-0000pG-Sx; Tue, 26 Sep 2023 06:40:40 -0400
+	id 1ql5ZB-0003bZ-UY; Tue, 26 Sep 2023 06:45:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5Uc-0000ok-5M
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:40:38 -0400
-Received: from qs51p00im-qukt01080302.me.com ([17.57.155.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5Ua-0002OF-BJ
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:40:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
- t=1695724835; bh=6wY7ri5FSF2GcSV6TFemrRUXJ8YthJLsK1oVbhV4jcM=;
- h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To;
- b=Ww60ZGN7YyS66lx9MysVcDwgnr5bYFTPmv+rUrHUtXYt0Pfkdv2Z8H4E0e5SRmkwb
- MDk7fu172U00JWZauFIKqGYpzD8cHIAHxWpt5a69FpNtiOyJHehEGuB206igkot/BT
- GhBc8XdjgOTnjB6uTyVYP/aDTJ0FCLDOgVF7AbADafquafU+zNRmUlQYtxz22bCRjs
- qE6Szam4Mat4bngyWKV/h4/mINK2poE742nfrdwqpczUF+L+WR7gPyQn7U+JMtRbwF
- Nf4A5vPY1MHfM8zIecpZ3lmmJVlagdWcrZrTw3EPIdoznCaGpmgRMVsJJlqmOWfBUO
- jB/OWPTa3Yj2g==
-Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com
- [17.57.155.28])
- by qs51p00im-qukt01080302.me.com (Postfix) with ESMTPSA id 189E0114028C;
- Tue, 26 Sep 2023 10:40:33 +0000 (UTC)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3731.700.6\))
-Subject: Re: [PATCH v4 12/14] simpletrace: added simplified Analyzer2 class
-From: Mads Ynddal <mads@ynddal.dk>
-In-Reply-To: <20230920202855.GL1094271@fedora>
-Date: Tue, 26 Sep 2023 12:40:22 +0200
-Cc: qemu-devel@nongnu.org, John Snow <jsnow@redhat.com>,
- Cleber Rosa <crosa@redhat.com>, Mads Ynddal <m.ynddal@samsung.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D7F98897-13AA-4933-A6AD-B3B3DAF62DD5@ynddal.dk>
-References: <20230823085429.20519-1-mads@ynddal.dk>
- <20230823085429.20519-13-mads@ynddal.dk> <20230920202855.GL1094271@fedora>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-X-Mailer: Apple Mail (2.3731.700.6)
-X-Proofpoint-GUID: 7ax_F5ZO4OmBzuEn1WWTvpTZ05R0jh8_
-X-Proofpoint-ORIG-GUID: 7ax_F5ZO4OmBzuEn1WWTvpTZ05R0jh8_
-X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
- =?UTF-8?Q?2903e8d5c8f:6.0.138,18.0.572,17.0.605.474.0000000_definitions?=
- =?UTF-8?Q?=3D2020-02-14=5F11:2020-02-14=5F02,2020-02-14=5F11,2020-01-23?=
- =?UTF-8?Q?=5F02_signatures=3D0?=
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- mlxscore=0 bulkscore=0
- malwarescore=0 clxscore=1030 spamscore=0 phishscore=0 adultscore=0
- mlxlogscore=686 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2309260091
-Received-SPF: pass client-ip=17.57.155.21; envelope-from=mads@ynddal.dk;
- helo=qs51p00im-qukt01080302.me.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ql5ZA-0003bR-OA
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:45:20 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1ql5Yv-00035v-JC
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:45:20 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5334d78c5f6so9484850a12.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 03:45:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695725103; x=1696329903; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=9l4Z1A21bQw+9zo02BY3GbKkf5x2KImex/9xFCigwgI=;
+ b=uLZVWytyBVdFvLT9Av6JuVY2RYMqKYAn2W+bX8+hKGB1bjkgd/HPoaxiIg7CZBfdgt
+ ljE/tP9HwKU4I3KEgrlgm8iJBbmSEI7xnLdA+nHAUfagF2PfwNgGf44K8a8OmMd06Jtr
+ K0FqsJfmjH6jtz+dxY/MPofW4odyzP0+v+aMilyhnJCuK8udOOQVNlrgVKbP0OkZmyVx
+ 5cYNuBa1IsQfuhJHyQnnLQaOSrrRZSkHCIv0lSfOV7AfeU6bxMuF4KQnKfZ4u1lFBl+n
+ EztN/AZ4vKeeFgqqI1/0yAq8bvTAALkfboXk38Ew2lS6EZzxjCoAmoHOV7bvDiQc629p
+ 7jqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695725103; x=1696329903;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9l4Z1A21bQw+9zo02BY3GbKkf5x2KImex/9xFCigwgI=;
+ b=hzrN2PZ0Tqj9Rw41HX/eGPACKQp3z/nqAQcFgJwOu+Nf98kPnoMgXwIuzdciadsP0T
+ wJWysMrHxcK0tTkK1De+x7Fe/aiAFY0G0R9P9/Ym5PaTalVVN9ejyB5CRAb+ApL8Diqr
+ XGgc6E17trciHXp0bvURa7Jh4IN6VL0WHcHNz6DOLRY6LLTV2k/O3cnEARwf8fWrBDWZ
+ oXxPy9bWTJbj44+5mYICulCLwU/SmEE9ECtve47BW7fH/P/1agYzE32XbqUeiotHmywv
+ 7MOF26gz9bSu2MBwLgq36Ffm9mLQPbbDZNekFXhZuLJzHVr+w2GZxVJZV422Ebjkjrhz
+ 7xqQ==
+X-Gm-Message-State: AOJu0Yzg4wRf36Z0HverQJJi37XFNoI6XeZbHqpWiUGrUTtNzE/Uxeoq
+ UwOSYg5Qn9+af7GvpBsCuBj/zseVK8l54vW2A5cZGQ==
+X-Google-Smtp-Source: AGHT+IEBVV/8PwRjWTKsspW268ugANfi14bXGER4ZiKgdAWsQhykEJiVwMXgd142ozUc8bdWtu5zv9+XKOH4CBinKKU=
+X-Received: by 2002:a05:6402:198:b0:51e:5251:8f45 with SMTP id
+ r24-20020a056402019800b0051e52518f45mr8166735edv.4.1695725103268; Tue, 26 Sep
+ 2023 03:45:03 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
+ <20230925194040.68592-4-vsementsov@yandex-team.ru>
+In-Reply-To: <20230925194040.68592-4-vsementsov@yandex-team.ru>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Tue, 26 Sep 2023 11:44:45 +0100
+Message-ID: <CAFEAcA-mov=mQ0QDWdPvG7xeL8_duziXhqKVRx05nYCariDMaQ@mail.gmail.com>
+Subject: Re: [PATCH 03/12] util/filemonitor-inotify: qemu_file_monitor_watch():
+ avoid overflow
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
+ =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x532.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,36 +86,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Mon, 25 Sept 2023 at 20:43, Vladimir Sementsov-Ogievskiy
+<vsementsov@yandex-team.ru> wrote:
+>
+> Prefer clear assertions instead of possible array overflow.
+>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> ---
+>  util/filemonitor-inotify.c | 21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
+>
+> diff --git a/util/filemonitor-inotify.c b/util/filemonitor-inotify.c
+> index 2c45f7f176..09ef240174 100644
+> --- a/util/filemonitor-inotify.c
+> +++ b/util/filemonitor-inotify.c
+> @@ -81,16 +81,21 @@ static void qemu_file_monitor_watch(void *arg)
+>
+>      /* Loop over all events in the buffer */
+>      while (used < len) {
+> -        struct inotify_event *ev =
+> -            (struct inotify_event *)(buf + used);
+> -        const char *name = ev->len ? ev->name : "";
+> -        QFileMonitorDir *dir = g_hash_table_lookup(mon->idmap,
+> -                                                   GINT_TO_POINTER(ev->wd));
+> -        uint32_t iev = ev->mask &
+> -            (IN_CREATE | IN_MODIFY | IN_DELETE | IN_IGNORED |
+> -             IN_MOVED_TO | IN_MOVED_FROM | IN_ATTRIB);
+> +        const char *name;
+> +        QFileMonitorDir *dir;
+> +        uint32_t iev;
+>          int qev;
+>          gsize i;
+> +        struct inotify_event *ev = (struct inotify_event *)(buf + used);
+> +
+> +        assert(len - used >= sizeof(struct inotify_event));
+> +        assert(len - used - sizeof(struct inotify_event) >= ev->len);
 
->> +    class Formatter2(Analyzer2):
->=20
-> Was this class part of the benchmark? It appears to be unused.
->=20
->> +        def __init__(self):
->> +            self.last_timestamp_ns =3D None
->> +
->> +        def catchall(self, *rec_args, event, timestamp_ns, pid, =
-event_id):
->> +            if self.last_timestamp_ns is None:
->> +                self.last_timestamp_ns =3D timestamp_ns
->> +            delta_ns =3D timestamp_ns - self.last_timestamp_ns
->> +            self.last_timestamp_ns =3D timestamp_ns
->> +
->> +            fields =3D [
->> +                f'{name}=3D{r}' if is_string(type) else =
-f'{name}=3D0x{r:x}'
->> +                for r, (type, name) in zip(rec_args, event.args)
->> +            ]
->> +            print(f'{event.name} {delta_ns / 1000:0.3f} {pid=3D} ' + =
-' '.join(fields))
->> +
->>     try:
->>         run(Formatter())
->>     except SimpleException as e:
+So this is something we can assert because we trust the kernel
+(which is what's on the other end of the inotify fd) to only
+give us a valid buffer with complete event records in it, not
+partial pieces, right? If so, then we should say so in a comment.
 
-It was indeed, but was left in as a usage example. I have decided to =
-keep
-Formatter2 in favor of Formatter, as Formatter is based on the Analyzer =
-class
-that this patchset is deprecating.=
+(FWIW in the online Coverity Scan we just marked this one as a
+false-positive.)
+
+thanks
+-- PMM
 
