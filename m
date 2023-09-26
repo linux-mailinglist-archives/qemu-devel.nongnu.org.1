@@ -2,69 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CBE7AED26
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F747AED29
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:47:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql7SP-00007r-H6; Tue, 26 Sep 2023 08:46:29 -0400
+	id 1ql7Sw-0000fO-5B; Tue, 26 Sep 2023 08:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql7Rm-0008TO-KC
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:45:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql7Rk-0001Iw-Qf
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:45:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695732348;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=102Adaa5ytwMpqUCVndWbDEJYME+NThJ8Ir1KnNyN2M=;
- b=goYFX4DdjXeru6JXCi/fvq8Fl1VcWc3LylcDS7/xQ33M4K5fjMOGYbeCaeKJtNbDpHjJmP
- nN1bfnPVa15aP1cgecH0FfsnWJCounTBAwmVMTLSCdB/FYcLQLlYAqJOhTS8Uj7pRJE68N
- s0OX/YBmDXHOYBL5KXIBy1rlAlK+mbY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-592-pxM8KgsiNoqFkPVKPG4S-w-1; Tue, 26 Sep 2023 08:45:46 -0400
-X-MC-Unique: pxM8KgsiNoqFkPVKPG4S-w-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CEF711C0782D
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 12:45:45 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AD6B12026D4B
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 12:45:45 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A0C4A21E6900; Tue, 26 Sep 2023 14:45:44 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  qemu-devel@nongnu.org
-Subject: Re: [PATCH] m48t59-test: remove shadowed variables and cleanup
-References: <20230925144744.527958-3-pbonzini@redhat.com>
- <18979284-cb15-4122-bcde-6aecb9a2134a@redhat.com>
-Date: Tue, 26 Sep 2023 14:45:44 +0200
-In-Reply-To: <18979284-cb15-4122-bcde-6aecb9a2134a@redhat.com> (Thomas Huth's
- message of "Mon, 25 Sep 2023 17:09:13 +0200")
-Message-ID: <87il7xrtl3.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1ql7Sc-0000UB-83
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:46:45 -0400
+Received: from mail-ot1-x32a.google.com ([2607:f8b0:4864:20::32a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <tcminyard@gmail.com>)
+ id 1ql7Sa-0001RR-3e
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:46:41 -0400
+Received: by mail-ot1-x32a.google.com with SMTP id
+ 46e09a7af769-6bf2427b947so4272073a34.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 05:46:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695732398; x=1696337198; darn=nongnu.org;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nucyqG//c/4g3UAbtFrJhwSkBb6dvu+7faetdU+AY00=;
+ b=DkjtGdjnUNBMDv2c51ygnDNWrp8oP92Bm39iOGbyfmd+dzNp5GHk36pTCcVY9MBx5X
+ Rbf/12oPMEWEwA1X86Gh4qVINbJqKLNsi3w06zMzj2jXe2OxyXf0enmKO2lmbbxgV5Ul
+ PWap54uaM8ELaMhJAsCn0cshtA40r3JHbNM2l+xvwfBY+Qz9V48k0teMGeC/XppZZoqv
+ 10uWecIHGDJfpgJeE7fO7Fp9FMs1gf1ebuM+CP56LtCngquVAHErDFJ5WAV91+czGXxU
+ b4TE20JZ4KYXNHbdHxDd+w2h7jfKlNlwxauSOFODtT991buXkit3iqaG2z1KPnqh/+3w
+ Ecow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695732398; x=1696337198;
+ h=in-reply-to:content-disposition:mime-version:references:reply-to
+ :message-id:subject:cc:to:from:date:sender:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to;
+ bh=nucyqG//c/4g3UAbtFrJhwSkBb6dvu+7faetdU+AY00=;
+ b=aRChaZn1D27ZZVGEcGgkc+ecT9z5I609hkrrb+gog3g08Cpn8G+EMBO7hlnZBW3r3O
+ 11sixurhddLN2fQiVntUufamH2ahljyukpcmrJgQVtQqkmn6Hk1M5Nj6xZ4qLd2rxIg5
+ iYhCiFe1xKJ/+iwEk0GONinfKub0FTGsPFTQuflK3I5zR7uE2XBlw3lJUUWwxz2cHWb9
+ c5TSgT3VbElkXAxejpLBOYKPq4PH7Makd/pjFiTJPH4wp/YCNK/HsOhnKnpiEChRvXPB
+ p7qdQCKNuBLmUx/C1fUbHbbFBYg7PKe5kjbnk7vUSaR8/citxfIxcAbB4zTNh/ngI4pb
+ gg2Q==
+X-Gm-Message-State: AOJu0YyUlaISSrBTSAGW4GFvfKZ5jrPclKxDXcyS8Yn65H5hi+rkqkMI
+ wYnsJCs/zo4kmpMil6h36QZkfQUh4g==
+X-Google-Smtp-Source: AGHT+IGOBmIn/amB8IrPI+Cde1g0LIqyOl9NdLJL/2oAVzGl5tewyEwb59XP8wddRNKg82G10iLuBw==
+X-Received: by 2002:a9d:6b95:0:b0:6be:fd51:cb6d with SMTP id
+ b21-20020a9d6b95000000b006befd51cb6dmr8924240otq.31.1695732398455; 
+ Tue, 26 Sep 2023 05:46:38 -0700 (PDT)
+Received: from serve.minyard.net (serve.minyard.net. [2001:470:b8f6:1b::1])
+ by smtp.gmail.com with ESMTPSA id
+ i11-20020a4aab0b000000b00578a0824ff6sm2218930oon.20.2023.09.26.05.46.37
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 26 Sep 2023 05:46:38 -0700 (PDT)
+Received: from mail.minyard.net (unknown
+ [IPv6:2607:fb90:d993:57c1:fc20:85b8:467e:f3f4])
+ by serve.minyard.net (Postfix) with ESMTPSA id E1C9E1800BF;
+ Tue, 26 Sep 2023 12:46:36 +0000 (UTC)
+Date: Tue, 26 Sep 2023 07:46:34 -0500
+From: Corey Minyard <minyard@acm.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com
+Subject: Re: [PATCH] pm_smbus: rename variable to avoid shadowing
+Message-ID: <ZRLSqhgqlGVAk2/C@mail.minyard.net>
+References: <20230925144744.527958-2-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 22
-X-Spam_score: 2.2
-X-Spam_bar: ++
-X-Spam_report: (2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230925144744.527958-2-pbonzini@redhat.com>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32a;
+ envelope-from=tcminyard@gmail.com; helo=mail-ot1-x32a.google.com
+X-Spam_score_int: -14
+X-Spam_score: -1.5
+X-Spam_bar: -
+X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,28 +93,45 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: minyard@acm.org
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+On Mon, Sep 25, 2023 at 04:47:39PM +0200, Paolo Bonzini wrote:
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  hw/i2c/pm_smbus.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-> On 25/09/2023 16.47, Paolo Bonzini wrote:
->> Rename the variable "s" and, while at it, avoid the chance of an overflow in the
->> computation of ABS(t - s).
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->> ---
->>   tests/qtest/m48t59-test.c | 17 ++++++++++-------
->>   1 file changed, 10 insertions(+), 7 deletions(-)
->
-> I've got a patch for this in my pull request from today already:
->
->  https://lore.kernel.org/qemu-devel/20230925090100.45632-4-thuth@redhat.com
+This looks ok to me.
 
-Commit 926bef1d82bb9eb7a752aa128d9e70b808906243.
+Acked-by: Corey Minyard <cminyard@mvista.com>
 
-Paolo's patch still applies, and "avoid the chance of an overflow in the
-computation of ABS(t - s)" makes me think we still want it.  The commit
-message needs a tweak, though, since the patch no longer removes
-shadowed variables.
-
+> 
+> diff --git a/hw/i2c/pm_smbus.c b/hw/i2c/pm_smbus.c
+> index 9ad6a47739b..4e1b8a5182d 100644
+> --- a/hw/i2c/pm_smbus.c
+> +++ b/hw/i2c/pm_smbus.c
+> @@ -279,7 +279,7 @@ static void smb_ioport_writeb(void *opaque, hwaddr addr, uint64_t val,
+>              if (!read && s->smb_index == s->smb_data0) {
+>                  uint8_t prot = (s->smb_ctl >> 2) & 0x07;
+>                  uint8_t cmd = s->smb_cmd;
+> -                uint8_t addr = s->smb_addr >> 1;
+> +                uint8_t smb_addr = s->smb_addr >> 1;
+>                  int ret;
+>  
+>                  if (prot == PROT_I2C_BLOCK_READ) {
+> @@ -287,7 +287,7 @@ static void smb_ioport_writeb(void *opaque, hwaddr addr, uint64_t val,
+>                      goto out;
+>                  }
+>  
+> -                ret = smbus_write_block(s->smbus, addr, cmd, s->smb_data,
+> +                ret = smbus_write_block(s->smbus, smb_addr, cmd, s->smb_data,
+>                                          s->smb_data0, !s->i2c_enable);
+>                  if (ret < 0) {
+>                      s->smb_stat |= STS_DEV_ERR;
+> -- 
+> 2.41.0
+> 
+> 
 
