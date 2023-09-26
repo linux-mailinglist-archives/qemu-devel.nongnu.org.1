@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588CA7AF178
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 19:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DED297AF16D
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 19:00:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlBPi-0002AA-Hs; Tue, 26 Sep 2023 12:59:58 -0400
+	id 1qlBPf-000250-Ul; Tue, 26 Sep 2023 12:59:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlBPM-00021s-Ps
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qlBPR-000241-9W
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlBPL-0006dH-Bi
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:36 -0400
+ id 1qlBPO-0006dv-TF
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695747574;
+ s=mimecast20190719; t=1695747577;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ck+8DKD6182hoZ4xHPrQvIXBRhdaPWWFfYLrX95g5Cw=;
- b=P+y/j2n1Zr9+7T7/bqgIYCjuoV4jK4WzqGCGotghPPEaqYFv0yCG/XdqLVKBzDoc0uAxtU
- ZppSnoJ6ljHvwzjP3BugBM8yOp+QBiPAXRrKIkramWbI+hLnrosOm4Lbxrs4Mi6BSTfgLL
- xj5nXFN7bfM7Fhv/doA9oIfuioUFzsQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+ynynMgJ00sGhsDMCQzVUy7jtIudZ5+n2/lNWTNS1uM=;
+ b=GSTx97yl0He5Bdok/Hjhf21TmPiX3TrcHKrZJqYLmyYEa4zH9A5hAlj2HWXV/50s2r+sHc
+ adVS6fouIbgDOWGN1A7E3hEIuJ8Fs+nKZmsPojUhoaOHmnoYuViTzNEnTKDj+TNsUzZwGF
+ Wb8obcJupwGhOQHCkM3WdaoC24CFIPI=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-94-8AypuJzxPxqeW_owsIZUAQ-1; Tue, 26 Sep 2023 12:59:33 -0400
-X-MC-Unique: 8AypuJzxPxqeW_owsIZUAQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-31fed999e27so7595077f8f.2
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:59:32 -0700 (PDT)
+ us-mta-617-xPOFnlTfO76DxHDCZy3Jog-1; Tue, 26 Sep 2023 12:59:35 -0400
+X-MC-Unique: xPOFnlTfO76DxHDCZy3Jog-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-40526a782f7so85256015e9.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:59:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695747571; x=1696352371;
+ d=1e100.net; s=20230601; t=1695747573; x=1696352373;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Ck+8DKD6182hoZ4xHPrQvIXBRhdaPWWFfYLrX95g5Cw=;
- b=QnHJUSlRulme+bw18D7jQ8EmCI3KyotAG/j0UFtGWA/bjVqAe70OA4SKptqxO4w6Te
- gbQA4f80KWjO2m46xi6Tq9kvsEzAf/Fgw8sqbKSOu5J/WoF7ny3tRpbWxV3fqfQHbIEA
- o24SaIKALN7i6Ydh8j53Sk4I0jspuBEngzv1wGPPjto86/HdWq+zK+0md73QGIoLej1W
- 4ywlhBdikgex1xMTAgk48iergKeSNT8NeAg1Aan9rPGQ8phkmOEU4GwXfbp5MMTNzZxd
- u+/RzwhKHXr7HAn0Zuhhiev9+ErAjAqRg8MCPat7nBwRfL3Zs4oAEFa/9kN7iUesV4B5
- 96XA==
-X-Gm-Message-State: AOJu0YyUpZ4jiJVgl2DPu+w4KHCQO+6jtMaNxOLlms+lJpNzYBrgFTrH
- x7PDFPC/HUfthjvMMD3vopJtw17FxEGcv7i/AdEEoBtbS+vxKJGU3z0CaYmbj/BNiuOmr1SU9hq
- o5ujpOA9VA0oai1WoMQnOdgpjmmfNSuKtZXHAmE7JDl8MWS97zt6YY+eUUPtvZFnV1z/PhGPhTB
- I=
-X-Received: by 2002:a5d:4bc1:0:b0:315:9e1b:4ea6 with SMTP id
- l1-20020a5d4bc1000000b003159e1b4ea6mr10056934wrt.58.1695747571503; 
- Tue, 26 Sep 2023 09:59:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFupLcLHsw2MH2jglqTmry1+ycsjRdlrIZhuVnYAtzwtoDzE3MNeiyTa0R0x0JqfgCi1uC3bQ==
-X-Received: by 2002:a5d:4bc1:0:b0:315:9e1b:4ea6 with SMTP id
- l1-20020a5d4bc1000000b003159e1b4ea6mr10056914wrt.58.1695747571125; 
- Tue, 26 Sep 2023 09:59:31 -0700 (PDT)
+ bh=+ynynMgJ00sGhsDMCQzVUy7jtIudZ5+n2/lNWTNS1uM=;
+ b=YoEEFKFDQqeulyab823Qhlq9958pCI6f71pLE7/yfa8kN//kWZ0v4L9cr3XX9RUbRF
+ wT2IB6LgECUSECq9Mb5dGrRD+RDmxANVb2VEFjA/wGVxF1c5csinrFSSlfWQsT/EBauA
+ OwQk/Srfqkg/xWogYvHesnZf0iAAehI5GWzU7W8AxrYgaJxKMcl4Ilmbdt7enNucGRXH
+ d+hQ+Xi397ACbkM5unUEswoZCXq1gF1mj9+kKMZLExsNlawzEv7q5pDzLN2mrSmxOElj
+ +C4tkhYJTDUHD7ojDbi3BO+jsc01BxPMW47Qvfneu6C1inkaWgICfpHqk52qTK7VMbHM
+ ylWw==
+X-Gm-Message-State: AOJu0YzxEtxcMIT62ON9VSuq8Bdx7O8GvF3GHxdP4H3n5Uvk84CTtfn0
+ YVjjocLfDUvsM2PMG1LbFqwsPU3VVePbK+jTjZhyhJgQGE0jXyCLqUAmDbt4iYdH9f1RSmg2xMJ
+ JUIUbxG0/LqQiDPgDPrrT32bv3fSp/aPpTEUFMVt4UvOxQkdQJs+nVmVwCxZuQE6Yhu0sIwYrW6
+ Q=
+X-Received: by 2002:a05:600c:2309:b0:405:3fcc:5af5 with SMTP id
+ 9-20020a05600c230900b004053fcc5af5mr9887632wmo.17.1695747573484; 
+ Tue, 26 Sep 2023 09:59:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHKKuaTbW5Ik1V69dzXijP2Yn15+pYdS9EqRdOdHXTC/F4+DrrMMv48uF0aSq7KIYsyfhmPOA==
+X-Received: by 2002:a05:600c:2309:b0:405:3fcc:5af5 with SMTP id
+ 9-20020a05600c230900b004053fcc5af5mr9887616wmo.17.1695747573157; 
+ Tue, 26 Sep 2023 09:59:33 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- m12-20020a056000174c00b003233b554e6esm749067wrf.85.2023.09.26.09.59.29
+ p19-20020a05600c1d9300b0040531f5c51asm15841878wms.5.2023.09.26.09.59.31
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Sep 2023 09:59:29 -0700 (PDT)
+ Tue, 26 Sep 2023 09:59:32 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 07/19] ui/vnc: fix handling of VNC_FEATURE_XVP
-Date: Tue, 26 Sep 2023 18:59:03 +0200
-Message-ID: <20230926165915.738719-8-pbonzini@redhat.com>
+Subject: [PULL 08/19] mptsas: avoid shadowed local variables
+Date: Tue, 26 Sep 2023 18:59:04 +0200
+Message-ID: <20230926165915.738719-9-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230926165915.738719-1-pbonzini@redhat.com>
 References: <20230926165915.738719-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,37 +100,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-VNC_FEATURE_XVP was not shifted left before adding it to vs->features,
-so it was never enabled; but it was also checked the wrong way with
-a logical AND instead of vnc_has_feature.  Fix both places.
+Rename the argument so that "addr" is only used inside the for loop.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- ui/vnc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/scsi/mptsas.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index 1684ab90968..c302bb07a5b 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -2205,7 +2205,7 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
-             break;
-         case VNC_ENCODING_XVP:
-             if (vs->vd->power_control) {
--                vs->features |= VNC_FEATURE_XVP;
-+                vs->features |= VNC_FEATURE_XVP_MASK;
-                 send_xvp_message(vs, VNC_XVP_CODE_INIT);
-             }
-             break;
-@@ -2454,7 +2454,7 @@ static int protocol_client_msg(VncState *vs, uint8_t *data, size_t len)
-         vnc_client_cut_text(vs, read_u32(data, 4), data + 8);
-         break;
-     case VNC_MSG_CLIENT_XVP:
--        if (!(vs->features & VNC_FEATURE_XVP)) {
-+        if (!vnc_has_feature(vs, VNC_FEATURE_XVP)) {
-             error_report("vnc: xvp client message while disabled");
-             vnc_client_error(vs);
-             break;
+diff --git a/hw/scsi/mptsas.c b/hw/scsi/mptsas.c
+index 3de288b454c..75d3ab8bd18 100644
+--- a/hw/scsi/mptsas.c
++++ b/hw/scsi/mptsas.c
+@@ -192,7 +192,7 @@ static dma_addr_t mptsas_ld_sg_base(MPTSASState *s, uint32_t flags_and_length,
+     return addr;
+ }
+ 
+-static int mptsas_build_sgl(MPTSASState *s, MPTSASRequest *req, hwaddr addr)
++static int mptsas_build_sgl(MPTSASState *s, MPTSASRequest *req, hwaddr req_addr)
+ {
+     PCIDevice *pci = (PCIDevice *) s;
+     hwaddr next_chain_addr;
+@@ -201,8 +201,8 @@ static int mptsas_build_sgl(MPTSASState *s, MPTSASRequest *req, hwaddr addr)
+     uint32_t chain_offset;
+ 
+     chain_offset = req->scsi_io.ChainOffset;
+-    next_chain_addr = addr + chain_offset * sizeof(uint32_t);
+-    sgaddr = addr + sizeof(MPIMsgSCSIIORequest);
++    next_chain_addr = req_addr + chain_offset * sizeof(uint32_t);
++    sgaddr = req_addr + sizeof(MPIMsgSCSIIORequest);
+     pci_dma_sglist_init(&req->qsg, pci, 4);
+     left = req->scsi_io.DataLength;
+ 
 -- 
 2.41.0
 
