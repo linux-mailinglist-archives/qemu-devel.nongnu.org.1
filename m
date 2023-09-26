@@ -2,83 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24667AF50E
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 22:27:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB80A7AF540
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 22:33:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlEe7-0000l6-BN; Tue, 26 Sep 2023 16:27:03 -0400
+	id 1qlEid-0003Mn-MP; Tue, 26 Sep 2023 16:31:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlEe5-0000kf-NZ
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:27:01 -0400
-Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlEe3-0006Fd-Mx
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:27:01 -0400
-Received: by mail-lf1-x12e.google.com with SMTP id
- 2adb3069b0e04-50307759b65so15823394e87.0
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 13:26:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695760018; x=1696364818; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=C/E5AmMRSLS2jKC/m61fTD4kLqWPKnSKi5Qv4Qsak9s=;
- b=p2W3vnMBU+i8PDx1op7Obpyfk8py7d1NiVo0WC75vKOKm0/fLwdyeDiVpz1LSm8GJe
- kOE0PS7IYsEFW/AptVShCc0axPekqZi+hOV+13ZTbwETMPJtgUsxjo7j7Krql99sZSkp
- jveRyOq/qOUpIZkJ/ZyoGZcfM2rx4tu29u/Y63kplb+eEbfprM2uUXDctxDzjqLWahpA
- zllD96intVh2NCH7hlmd7D/qi03T3UimYDvdyfIiDjN1qfD8RpmkGfTH6a/A0Er2YZ6g
- kaW54bzuF9bFoj4Un2mw2WVqmFVvsLtrCl+pgJzo33U7Kw/rhAXICrxoqxXFOhJ0pGC6
- Cu4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695760018; x=1696364818;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=C/E5AmMRSLS2jKC/m61fTD4kLqWPKnSKi5Qv4Qsak9s=;
- b=SDI1nbPWtYj9cXbylQcZIHKnMyeDbaH+00v961U+Hk1vmVwOJyt7D6Y5tLEdSo+XkW
- DIMCQlaW9LiSC069a+UiNyI15lyavLnGbmGjhC5sUPNFFhfaf+5gpcKLR/f62WZqhR1y
- dYZZYk3OJEzXL+7OBhrFhZojINS6W6/0NmHfVCtAgQkVg0JfbQhOAt1eHIiOcugXatdt
- Ii+kt6IOjNU+Mw2H8HFw/Co8OnhDR/JoMw0NVeD1bdUos/fnqbzrhz5niL156+e91XSS
- HMW2wgFqfqVbG6i7JRG7LijW4rXMCvNrlzXQD+pMk2k7yJpuoPUIe6Dx8XQ1py6tDMiI
- cUHA==
-X-Gm-Message-State: AOJu0Yz9oVKo1HyM39Vwh6PEZ369dGd0Uec8NB0dQxxAq2sGeQLeGN31
- DOJEgP9O/0XvAFn9Ig4XFTN+147Jc24vLLGJOLCuGg==
-X-Google-Smtp-Source: AGHT+IFcWp1tsqF9GNVvp0s8Btkp+exyUKSdt5VEb6zNz8WlQ887UPrPgucdwwxfCxt48i/rdWpaY+3KbU4fQXxdehw=
-X-Received: by 2002:a19:4f43:0:b0:502:f469:d4d5 with SMTP id
- a3-20020a194f43000000b00502f469d4d5mr8027520lfk.19.1695760017942; Tue, 26 Sep
- 2023 13:26:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qlEiZ-0003GI-De
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:31:39 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qlEiW-0007QF-LQ
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 16:31:39 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 5B77860BB4;
+ Tue, 26 Sep 2023 23:31:32 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
+ [2a02:6b8:b081:b41d::1:39])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id VVW88s0OreA0-8gphB8x3; Tue, 26 Sep 2023 23:31:31 +0300
+Precedence: bulk
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695760291;
+ bh=/7cExA5nyrsD7NZbeEvU88rSKIhFYUbb+7YLUYVUpxU=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=iFtn41P0oOHet5LzEzr7LuzBW+EZiR6fbA6U0NXU6XqCXAXf7Ms3ccpN50rPhNtI5
+ surXmrbLVvTNy+g6fEjjB1rPvsotm4sLa2ki+ZVEmKfW0PI/83Orax8qdImMihUsgx
+ fSdssUqssApfBLW5nC921YMn5NLHl5b5kIlCHxpk=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <2e896594-486e-feb8-f52a-70a229eeaa97@yandex-team.ru>
+Date: Tue, 26 Sep 2023 23:31:31 +0300
 MIME-Version: 1.0
-References: <20230926201532.221152-1-vsementsov@yandex-team.ru>
- <20230926201532.221152-8-vsementsov@yandex-team.ru>
-In-Reply-To: <20230926201532.221152-8-vsementsov@yandex-team.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Sep 2023 21:26:40 +0100
-Message-ID: <CAFEAcA8vkRqPgx5EiBsUH28A_9puFW4t1Dyi8g_CdPQ6zrsJFQ@mail.gmail.com>
-Subject: Re: [PATCH v2 7/8] hw/core/loader: gunzip(): initialize z_stream
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, yc-core@yandex-team.ru, 
- davydov-max@yandex-team.ru,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Emilio Cota <cota@braap.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::12e;
- envelope-from=peter.maydell@linaro.org; helo=mail-lf1-x12e.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 1/2] i386/a-b-bootblock: factor test memory addresses out
+ into constants
+Content-Language: en-US
+To: Daniil Tatianin <d-tatianin@yandex-team.ru>,
+ Juan Quintela <quintela@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ qemu-devel@nongnu.org, yc-core@yandex-team.ru
+References: <20230907192944.1609099-1-d-tatianin@yandex-team.ru>
+ <20230907192944.1609099-2-d-tatianin@yandex-team.ru>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230907192944.1609099-2-d-tatianin@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
-Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -90,17 +79,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 26 Sept 2023 at 21:16, Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> Coverity signals that variable as being used uninitialized. And really,
-> when work with external APIs that's better to zero out the structure,
-> where we set some fields by hand.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+On 07.09.23 22:29, Daniil Tatianin wrote:
+> So that we have less magic numbers to deal with. This also allows us to
+> reuse these in the following commits.
+> 
+> Signed-off-by: Daniil Tatianin<d-tatianin@yandex-team.ru>
 
-thanks
--- PMM
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+-- 
+Best regards,
+Vladimir
+
 
