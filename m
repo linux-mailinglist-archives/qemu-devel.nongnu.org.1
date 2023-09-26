@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5E37AF180
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 19:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4703A7AF16F
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 19:00:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlBPj-0002Bd-EQ; Tue, 26 Sep 2023 12:59:59 -0400
+	id 1qlBQ2-0002DV-BO; Tue, 26 Sep 2023 13:00:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlBPU-00024z-6E
+ id 1qlBPV-000254-HI
  for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlBPQ-0006eq-W7
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:42 -0400
+ id 1qlBPT-0006fM-Ue
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695747580;
+ s=mimecast20190719; t=1695747582;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=o5TVdBN70p9N2jvFk5DaLfD5DUA1933o2O19WHIVc8s=;
- b=BipwVjAcF24YLIYhD4PFxkadnP/ANMh/sNeHz5b81URhPT468T9SEs8LeR/boUGdI9TTCP
- SGImlQaJ0Q0bOsXWO6NQWo//pUHX+/CURwY+RSnSwSC1i7AMGl3tcS+Nsr3P9hUMPll6hn
- rj45CpWTJrzsZrvdpen9y1yJBmFoRoA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=BgHX7itePFqubTHf/KRDK1qdTvRw7J8MP/E7F1S7x/Q=;
+ b=awciLQq/zFhhvHBkIJ28drax4ss25gF9YOiSv6EDMDXlWnNISSMl8sFb5M4/r6BuXSgrmk
+ cNXrz1WgK87Hdg5v6XC+dRwD5/FaqWLrbYvvXDUb+T3aabzqgGXC8hb1fWpJVbSeuDZ8a+
+ tkyHkiEyoBG9wcYGCWV7i3aCEo34J5s=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-43-abXwVzgIOxKgbKiQC9PJ0w-1; Tue, 26 Sep 2023 12:59:38 -0400
-X-MC-Unique: abXwVzgIOxKgbKiQC9PJ0w-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-314256aedcbso7454316f8f.0
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:59:38 -0700 (PDT)
+ us-mta-288-0hrHCXrzOSO-5BfRE4Uebg-1; Tue, 26 Sep 2023 12:59:40 -0400
+X-MC-Unique: 0hrHCXrzOSO-5BfRE4Uebg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4063dd6729bso12211585e9.2
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:59:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695747577; x=1696352377;
+ d=1e100.net; s=20230601; t=1695747578; x=1696352378;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=o5TVdBN70p9N2jvFk5DaLfD5DUA1933o2O19WHIVc8s=;
- b=Y8RSOPeesEUpH0STcTMt3PwXI8qHlV7zORSqc73iL0jyCM50hWfkJ844tMtWCijBOu
- pxD1MFWWvaXIdQzIdMi4oTIq3xw/q+2l4saMjrShWVoYP+HM4ip37RlfvQK9b7WUvqJX
- 2F5yvao++K7fBKszDtfS2R8AvhRlORNi5S28jveUZOxNmpWvmajuDpPX24lFJQ1soKN/
- w7ZSurjK6TZupqcI4dc6d0GjP42QX/TOioQkPS8nG+MaCcyPL8ok8tfvBhxy8n2yFKay
- P/kV4hpaqXzp9l9MiNaRh0wHNSlinsmCKfJ64SiiAUh1gWrCchaFMeeEBIheWVS0L651
- WI8Q==
-X-Gm-Message-State: AOJu0YwTVHT2BZYPtGHkFPBkQcJgusEwEBe82bdcV+3nnkNvpqnOvgwT
- tqVwnGQ6KSgKj7+cJmNAcVVRUZV2VfzEMvmQ3gXIfT5ThEgbdSHLR8/8jTNZZa4yYt2Ezgu1rYN
- Ue06sGxS8c+WuMh007LUgqpHZaapLOOaNENjX+9Hv5C15rrrfJLkeIIDxZq6XGabP8BXQuyDya8
- g=
-X-Received: by 2002:a5d:5248:0:b0:31a:d9bc:47a2 with SMTP id
- k8-20020a5d5248000000b0031ad9bc47a2mr8834987wrc.53.1695747577028; 
- Tue, 26 Sep 2023 09:59:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFC2h0TCrnOLqkse1IiU2B5v1scLg7M2KrzLptcJ4TXJouyEAb+cyPHvzZmzvBh9ucaIzCjCg==
-X-Received: by 2002:a5d:5248:0:b0:31a:d9bc:47a2 with SMTP id
- k8-20020a5d5248000000b0031ad9bc47a2mr8834975wrc.53.1695747576695; 
- Tue, 26 Sep 2023 09:59:36 -0700 (PDT)
+ bh=BgHX7itePFqubTHf/KRDK1qdTvRw7J8MP/E7F1S7x/Q=;
+ b=IfyvecuP/IHDfzJJuYfL6LXhupNqmPFNDO1+vIVsMHkKOg01F9rM4IVHiCNczLvFGN
+ knhxfzRa4w3QTTzoubsU5tIyksqnGpF3QSrPXCyrW8A23OPootw7FqyGqd3M76frgZtk
+ YpffWPlFnzfxwYhHZQFYddX+ZkFt+C8TfkKB4VcJqqtvLbob3spBO0csZMHzlff0pwZd
+ Twpd72msu1RyZpJqLpdsjPK6QlnE89cXdbb67ReUpEZtJl+uQPrXMSF5ztFVg0s0gnhv
+ 6S5jblDvGh3ZMg4cbnxyjDOw3vvQDEfqQh5QAX7RuePxOUQmzzA80g4nQE9QQhN1ZqzT
+ 8JcQ==
+X-Gm-Message-State: AOJu0YxWbkbAUPH0XGEKSbmNapD+nW+tTbnc45TWbdCEsw6xkgUvPeWF
+ K6U+/wIpY3qFGP3q4p82ncfZI4T1v7H/gvPdr1rB8qaqAvUi6pTlGKMvEf0XikOPSvj8l5W1LqR
+ OoECXMarCr7q1ZW6ntwJOGC3PWzR2YAU9pqMuKrAuIRbTWSwFQkKHdS7k891RLJO0iZSW400Auu
+ k=
+X-Received: by 2002:a05:600c:6025:b0:406:3f62:e596 with SMTP id
+ az37-20020a05600c602500b004063f62e596mr1029972wmb.32.1695747578677; 
+ Tue, 26 Sep 2023 09:59:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKp5HqsXapSmnI+5LTVuoVwoOwJJEYFw7p9cc9rFl2Du6kw0Ysb9+jniHK/665FWFtO/dKyA==
+X-Received: by 2002:a05:600c:6025:b0:406:3f62:e596 with SMTP id
+ az37-20020a05600c602500b004063f62e596mr1029959wmb.32.1695747578303; 
+ Tue, 26 Sep 2023 09:59:38 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- e9-20020adfe7c9000000b003197efd1e7bsm1203641wrn.114.2023.09.26.09.59.35
+ 9-20020a05600c234900b00405959bbf4fsm4766774wmq.19.2023.09.26.09.59.37
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Sep 2023 09:59:36 -0700 (PDT)
+ Tue, 26 Sep 2023 09:59:37 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 10/19] m48t59-test: avoid possible overflow on ABS
-Date: Tue, 26 Sep 2023 18:59:06 +0200
-Message-ID: <20230926165915.738719-11-pbonzini@redhat.com>
+Subject: [PULL 11/19] target/i386/kvm: eliminate shadowed local variables
+Date: Tue, 26 Sep 2023 18:59:07 +0200
+Message-ID: <20230926165915.738719-12-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230926165915.738719-1-pbonzini@redhat.com>
 References: <20230926165915.738719-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,49 +100,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Originally meant to avoid a shadowed variable "s", which was fixed by
-renaming the outer declaration to "qts".  Avoid the chance of an overflow
-in the computation of ABS(t - s).
+These are harmless are they die immediately after their use.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- tests/qtest/m48t59-test.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ target/i386/kvm/kvm.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/tests/qtest/m48t59-test.c b/tests/qtest/m48t59-test.c
-index 9487faff1a4..b9cd209165a 100644
---- a/tests/qtest/m48t59-test.c
-+++ b/tests/qtest/m48t59-test.c
-@@ -192,19 +192,22 @@ static void bcd_check_time(void)
+diff --git a/target/i386/kvm/kvm.c b/target/i386/kvm/kvm.c
+index af101fcdf6f..f6c7f7e2686 100644
+--- a/target/i386/kvm/kvm.c
++++ b/target/i386/kvm/kvm.c
+@@ -2699,8 +2699,6 @@ int kvm_arch_init(MachineState *ms, KVMState *s)
+ 
+     if (enable_cpu_pm) {
+         int disable_exits = kvm_check_extension(s, KVM_CAP_X86_DISABLE_EXITS);
+-        int ret;
+-
+ /* Work around for kernel header with a typo. TODO: fix header and drop. */
+ #if defined(KVM_X86_DISABLE_EXITS_HTL) && !defined(KVM_X86_DISABLE_EXITS_HLT)
+ #define KVM_X86_DISABLE_EXITS_HLT KVM_X86_DISABLE_EXITS_HTL
+@@ -3610,7 +3608,7 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
+         if (kvm_enabled() && cpu->enable_pmu &&
+             (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
+             uint64_t depth;
+-            int i, ret;
++            int ret;
+ 
+             /*
+              * Only migrate Arch LBR states when the host Arch LBR depth
+@@ -3643,8 +3641,6 @@ static int kvm_put_msrs(X86CPU *cpu, int level)
      }
  
-     if (!(tm_cmp(&start, datep) <= 0 && tm_cmp(datep, &end) <= 0)) {
--        long t, s;
-+        long date_s, start_s;
-+        unsigned long diff;
+     if (env->mcg_cap) {
+-        int i;
+-
+         kvm_msr_entry_add(cpu, MSR_MCG_STATUS, env->mcg_status);
+         kvm_msr_entry_add(cpu, MSR_MCG_CTL, env->mcg_ctl);
+         if (has_msr_mcg_ext_ctl) {
+@@ -4041,7 +4037,6 @@ static int kvm_get_msrs(X86CPU *cpu)
+     if (kvm_enabled() && cpu->enable_pmu &&
+         (env->features[FEAT_7_0_EDX] & CPUID_7_0_EDX_ARCH_LBR)) {
+         uint64_t depth;
+-        int i, ret;
  
-         start.tm_isdst = datep->tm_isdst;
- 
--        t = (long)mktime(datep);
--        s = (long)mktime(&start);
--        if (t < s) {
--            g_test_message("RTC is %ld second(s) behind wall-clock", (s - t));
-+        date_s = (long)mktime(datep);
-+        start_s = (long)mktime(&start);
-+        if (date_s < start_s) {
-+            diff = start_s - date_s;
-+            g_test_message("RTC is %ld second(s) behind wall-clock", diff);
-         } else {
--            g_test_message("RTC is %ld second(s) ahead of wall-clock", (t - s));
-+            diff = date_s - start_s;
-+            g_test_message("RTC is %ld second(s) ahead of wall-clock", diff);
-         }
- 
--        g_assert_cmpint(ABS(t - s), <=, wiggle);
-+        g_assert_cmpint(diff, <=, wiggle);
-     }
- 
-     qtest_quit(qts);
+         ret = kvm_get_one_msr(cpu, MSR_ARCH_LBR_DEPTH, &depth);
+         if (ret == 1 && depth == ARCH_LBR_NR_ENTRIES) {
 -- 
 2.41.0
 
