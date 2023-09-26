@@ -2,64 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C177E7AE762
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 10:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDF697AE766
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 10:07:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql35G-0001dJ-PQ; Tue, 26 Sep 2023 04:06:18 -0400
+	id 1ql35s-0002HB-UQ; Tue, 26 Sep 2023 04:06:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql358-0001c0-Is
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:16 -0400
-Received: from mout.kundenserver.de ([217.72.192.73])
+ (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
+ id 1ql35n-0002EM-Ok
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1ql357-0008DI-0L
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:10 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue109 [213.165.67.119]) with ESMTPSA (Nemesis) id
- 1MtOSu-1reXZp0Md4-00utxp; Tue, 26 Sep 2023 10:06:07 +0200
-Message-ID: <43380b39-28f1-c8c8-01fd-7c08e6470488@vivier.eu>
-Date: Tue, 26 Sep 2023 10:06:06 +0200
+ (Exim 4.90_1) (envelope-from <yanghliu@redhat.com>)
+ id 1ql35W-0008LO-Sd
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:06:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695715589;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=A2xHSU2o24iICT9Grnk7x10hg7dKkfIEckDiSwKpDHk=;
+ b=EVv31g0Cy22yrGdWvIEYC4KGDvdMM/Gr/V/KcogZEt2ISoXCKLrT6hSuINVo1wAzokj12m
+ Wdw2VVgttzBfimSBuH4TmrBBGXMKf82fmzNmaBjCpwO+XYEFv9iUh2ETXBNuvsMejRJvZX
+ 1fNcF8ogwjlIbHbCfptjd1DSX/Bt0ls=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-689-QRoF_iAbPN6wNeWrTrE1vg-1; Tue, 26 Sep 2023 04:06:28 -0400
+X-MC-Unique: QRoF_iAbPN6wNeWrTrE1vg-1
+Received: by mail-lf1-f70.google.com with SMTP id
+ 2adb3069b0e04-50433ca6d81so10410031e87.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 01:06:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695715586; x=1696320386;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=A2xHSU2o24iICT9Grnk7x10hg7dKkfIEckDiSwKpDHk=;
+ b=wxibewiSksLEbZb60lT56SzJPZ+oJMQdRbi2Byr0s1nOCv3shB7ph7e9u6mS28UjDN
+ noBoyiyDPCsEmujZ6ZF3KFUwsT4OrF22hM1t+2I+YZnhzXWWzfBh+3Avkf2EEzHcY6DK
+ Ka99Gik0JgbJDgWIW/NiBfxVeZcKOWVjPFBtyPLGLrl0nr1RX8r9SXDBeWkdHxqkx6Ga
+ eZX74XGz73oacKortUYlxtQaJyjctEqtfajTyxc1hvcjo1zTMsDaQkYl8Kxc2cCejrX3
+ KTzqSv82dtNj8uaKlvlODUA+M5xQLYUC3ki/aiVxiVytOm3tn0BBnF9clrA/PHjGDob3
+ EVww==
+X-Gm-Message-State: AOJu0YwLXmruU0yyFRAchskFEn7wQxT8LAQMuwOiDgt1qE79VXt9qsOz
+ Q2kQtteW5d4CPK5AHjjWMf7lEUwic4UlqFrHL/OaDCrbUQnlZna9rkTxktMM5uLeKv1nlnIOFnL
+ bYKUL36lGAvHpnd7VViTjIqnjK9bXcTA=
+X-Received: by 2002:a19:2d07:0:b0:502:d6b2:922e with SMTP id
+ k7-20020a192d07000000b00502d6b2922emr6310306lfj.46.1695715586484; 
+ Tue, 26 Sep 2023 01:06:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2LMuHYfA1SxFRmxCA/pJmbiWuQr9yf8ygo3H+DLZR/IjczXFIEtFWPlu5l08fkpbJwJby33UAiKyRSAlCWDg=
+X-Received: by 2002:a19:2d07:0:b0:502:d6b2:922e with SMTP id
+ k7-20020a192d07000000b00502d6b2922emr6310273lfj.46.1695715586060; Tue, 26 Sep
+ 2023 01:06:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 17/20] mac_via: always clear ADB interrupt when
- switching to A/UX mode
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20230909094827.33871-1-mark.cave-ayland@ilande.co.uk>
- <20230909094827.33871-18-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20230909094827.33871-18-mark.cave-ayland@ilande.co.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:lyBZOlUVCwRQghk6hpnv6sTsU9IwzftOKJp4nTd/4VziQOJOwXT
- jd5V13QrX79FSW10ZazkSEB+BC90pyhG6KE6Id4phCLaJNN0PFOsp956nzA1/abZjDMYIpj
- VUbWgvtnixZThvEDZsIZLV544bRMGfZ17BH4PRTo9q3ZcHakVElbBOsR/5/nwCa0oXak1qI
- 1l0kMv4OlT1jlkB57s1Iw==
-UI-OutboundReport: notjunk:1;M01:P0:9oXDt9Bh4Z8=;RsElmPrQbNEU2dAlU6crl7H8wGH
- ynFCyjGA+vNXMKnqcaEyu6Zm10MCxvHwXshmrYrHrZUvi3vR39HMGr+6YME2vfF2ANjv8GleU
- XYFsXRd30F59OqBwR9GHDELPPn8LhP2EtqrYXntLhaDjbdT0psxkfXEud96nDGFlrEjGZRLuH
- cELwCiKXzM62WN2tYgExXnsrcAhwsE3COQgdLHGC0IrTO0PvIKZRwyBC8nKl66rxB/r2jv0GX
- dFPxGiteuUlOjfEE1ukZoZflxDt1sMhgD6sN18qV4YXmUNN+ehmprd7tNp6957CBcwe1JW48D
- OObzDyzNcjr+uzOA/LeA/ePpnC0cUJS/eSbrtT6LDnSSEJdivF+SGywTv/0IpCKvVtEIEgb8Z
- qKAgjJytBhMoGUTVVhdIs/NUJ7UqsewEc0yEgblzdEy1vet3cHtifrSUWtY2owcEJpaEh8Yea
- u4rJMBsvabffmN1dQBYExvAHucs41c0davvlURHNN+HebY+EIswe/tkbbgANPjYjq9GC0HQ/6
- a3UU5Mh7lM80OdyBzABUmJ9anMnR/SHtO6B+/yaJ8lWnPw9hyusIR7t8bl/kq/wOAi6dXqeFh
- 4icaFc4Ju21/hVlxlK/tb+2mFlMu1vFhTKH9+pnXPcP96D2WAE2hGIyJ7gs6xhWfcfAB3zZEA
- PPMyj2/b2hNd5w5mOfR9VG0WyU20bGIouYR7kZbrphaI/FCH55zhOU8dwb8R3T6SKgY/guV4K
- +fyFzP9Uf7vMxQ9wTLxNy6/6BMLJ8bZ6Rl9RSc+KyrWh1KU/mZEnWuqKQks+/i9ItUP5D/dnP
- az7/0gMcfwN8FGLBfMhcH5U/wc0zJ6mqmf4K2qTR90eqsXcBe6Z3SRUKTZufcOdYxsE5KsL9W
- RQEXslWjvfLyN8g==
-Received-SPF: none client-ip=217.72.192.73; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20230913080423.523953-1-eric.auger@redhat.com>
+In-Reply-To: <20230913080423.523953-1-eric.auger@redhat.com>
+From: YangHang Liu <yanghliu@redhat.com>
+Date: Tue, 26 Sep 2023 16:06:14 +0800
+Message-ID: <CAGYh1E8QN22gpS5GAWRAOZHNgacrwiKty-LgwpByi-QRVqpoag@mail.gmail.com>
+Subject: Re: [PATCH v2 00/12] VIRTIO-IOMMU/VFIO: Don't assume 64b IOVA space
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, qemu-arm@nongnu.org, 
+ alex.williamson@redhat.com, clg@redhat.com, jean-philippe@linaro.org, 
+ mst@redhat.com, pbonzini@redhat.com, peter.maydell@linaro.org, 
+ peterx@redhat.com, david@redhat.com, philmd@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=yanghliu@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,42 +95,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 09/09/2023 à 11:48, Mark Cave-Ayland a écrit :
-> When the NetBSD kernel initialises it can leave the ADB interrupt asserted
-> depending upon where in the ADB poll cycle the MacOS ADB interrupt handler
-> is when the NetBSD kernel disables interrupts.
-> 
-> The NetBSD ADB driver uses the ADB interrupt state to determine if the ADB
-> is busy and refuses to send ADB commands unless it is clear. To ensure that
-> this doesn't happen, always clear the ADB interrupt when switching to A/UX
-> mode to ensure that the bus enumeration always occurs.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> ---
->   hw/misc/mac_via.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
-> 
-> diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-> index 398e8d1967..5d1adf5863 100644
-> --- a/hw/misc/mac_via.c
-> +++ b/hw/misc/mac_via.c
-> @@ -875,6 +875,15 @@ static void via1_auxmode_update(MOS6522Q800VIA1State *v1s)
->       if (irq != oldirq) {
->           trace_via1_auxmode(irq);
->           qemu_set_irq(v1s->auxmode_irq, irq);
-> +
-> +        /*
-> +         * Clear the ADB interrupt. MacOS can leave VIA1B_vADBInt asserted
-> +         * (low) if a poll sequence doesn't complete before NetBSD disables
-> +         * interrupts upon boot. Fortunately NetBSD switches to the so-called
-> +         * "A/UX" interrupt mode after it initialises, so we can use this as
-> +         * a convenient place to clear the ADB interrupt for now.
-> +         */
-> +        s->b |= VIA1B_vADBInt;
->       }
->   }
->   
+The original issue I found : After starting a VM which has two ice PFs
+and a virtio-iommu device, qemu-kvm and VM guest dmesg throw lots of
+duplicate VFIO_MAP_DMA errors
 
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+After testing with Eric's build, the  original issue is gone and the
+Tier1 regression test against ice PF and virtio iommu device gets PASS
+as well.
+
+Tested-by: Yanghang Liu <yanghliu@redhat.com>
+
+
+
+On Wed, Sep 13, 2023 at 4:06=E2=80=AFPM Eric Auger <eric.auger@redhat.com> =
+wrote:
+>
+> On x86, when assigning VFIO-PCI devices protected with virtio-iommu
+> we encounter the case where the guest tries to map IOVAs beyond 48b
+> whereas the physical VTD IOMMU only supports 48b. This ends up with
+> VFIO_MAP_DMA failures at qemu level because at kernel level,
+> vfio_iommu_iova_dma_valid() check returns false on vfio_map_do_map().
+>
+> This is due to the fact the virtio-iommu currently unconditionally
+> exposes an IOVA range of 64b through its config input range fields.
+>
+> This series removes this assumption by retrieving the usable IOVA
+> regions through the VFIO_IOMMU_TYPE1_INFO_CAP_IOVA_RANGE UAPI when
+> a VFIO device is attached. This info is communicated to the
+> virtio-iommu memory region, transformed into the inversed info, ie.
+> the host reserved IOVA regions. Then those latter are combined with the
+> reserved IOVA regions set though the virtio-iommu reserved-regions
+> property. That way, the guest virtio-iommu driver, unchanged, is
+> able to probe the whole set of reserved regions and prevent any IOVA
+> belonging to those ranges from beeing used, achieving the original goal.
+>
+> Best Regards
+>
+> Eric
+>
+> This series can be found at:
+> https://github.com/eauger/qemu/tree/virtio-iommu_geometry_v2
+>
+> History:
+> v1 -> v2:
+> - Remove "[PATCH 12/13] virtio-iommu: Resize memory region according
+>   to the max iova info" which causes way too much trouble: trigger
+>   a coredump in vhost, causes duplication of IOMMU notifiers causing
+>   EEXIST vfio_dma_map errors, ... This looks like a bad usage of the
+>   memory API so I prefer removing this from this series. So I was
+>   also obliged to remove the vfio_find_hostwin() check in the case
+>   of an IOMMU MR.
+> - Let range_inverse_array() take low/high args instead of hardcoding
+>   0, UINT64_MAX which both complexifies the algo and the tests.
+> - Move range function description in header.
+> - Check that if set_iova_ranges is called several times, new resv
+>   regions are included in previous ones
+>
+> Eric Auger (12):
+>   memory: Let ReservedRegion use Range
+>   memory: Introduce memory_region_iommu_set_iova_ranges
+>   vfio: Collect container iova range info
+>   virtio-iommu: Rename reserved_regions into prop_resv_regions
+>   virtio-iommu: Introduce per IOMMUDevice reserved regions
+>   range: Introduce range_inverse_array()
+>   virtio-iommu: Implement set_iova_ranges() callback
+>   range: Make range_compare() public
+>   util/reserved-region: Add new ReservedRegion helpers
+>   virtio-iommu: Consolidate host reserved regions and property set ones
+>   test: Add some tests for range and resv-mem helpers
+>   vfio: Remove 64-bit IOVA address space assumption
+>
+>  include/exec/memory.h            |  30 +++-
+>  include/hw/vfio/vfio-common.h    |   2 +
+>  include/hw/virtio/virtio-iommu.h |   7 +-
+>  include/qemu/range.h             |  14 ++
+>  include/qemu/reserved-region.h   |  32 ++++
+>  hw/core/qdev-properties-system.c |   9 +-
+>  hw/vfio/common.c                 |  70 +++++++--
+>  hw/virtio/virtio-iommu-pci.c     |   8 +-
+>  hw/virtio/virtio-iommu.c         | 110 ++++++++++++--
+>  softmmu/memory.c                 |  15 ++
+>  tests/unit/test-resv-mem.c       | 251 +++++++++++++++++++++++++++++++
+>  util/range.c                     |  51 ++++++-
+>  util/reserved-region.c           |  94 ++++++++++++
+>  hw/virtio/trace-events           |   1 +
+>  tests/unit/meson.build           |   1 +
+>  util/meson.build                 |   1 +
+>  16 files changed, 655 insertions(+), 41 deletions(-)
+>  create mode 100644 include/qemu/reserved-region.h
+>  create mode 100644 tests/unit/test-resv-mem.c
+>  create mode 100644 util/reserved-region.c
+>
+> --
+> 2.41.0
+>
+>
 
 
