@@ -2,56 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FD207AEBC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 13:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E817AEBC2
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 13:49:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql6Xz-0002xr-8r; Tue, 26 Sep 2023 07:48:11 -0400
+	id 1ql6Y0-00032H-Pq; Tue, 26 Sep 2023 07:48:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1ql6Xu-0002x8-D3; Tue, 26 Sep 2023 07:48:06 -0400
+ id 1ql6Xy-0002zf-6K; Tue, 26 Sep 2023 07:48:10 -0400
 Received: from mgamail.intel.com ([192.55.52.93])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
- id 1ql6Xs-0002RC-Ii; Tue, 26 Sep 2023 07:48:06 -0400
+ id 1ql6Xv-0002RC-N6; Tue, 26 Sep 2023 07:48:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695728884; x=1727264884;
+ t=1695728887; x=1727264887;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sMYo/7cpo6pQSEDRVcxQXWkRt9bc8yQALxYISmMeMZY=;
- b=mWVJWVBTuqOmQAvEea3w8fsBO/GR742tO8wdaiH/omZ3D4gxzpoxGlsg
- j4xlB/Kd1IF6Ufvl5w3wdUenIuXEDQDVJNRTP+K0BSPfFXwuE4GD4qqI7
- +BDKhBdCEjT/tB7TPGEKC3xSsnB4xDORHKYEgsC4Fhb3aalUKgtnTPVSD
- Id7wgetYi9JiTlN6Tek21jnLTUZ3pIdCkXBcz4CpLPMxIPddtYglHiDei
- pZacUZ5NB3Hu+zK5yCeGDdy7pxNbG1z/Y4C74Adkn8AzAlTK6DjpVGbjd
- 0VZrthLLXrVByEBzDGfKWYK7ICz693w8WBJCFhs4/iJuLhg/1eVH4oQA5 g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="378825453"
-X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; d="scan'208";a="378825453"
+ bh=BPeSCKBcYSn7Dso+6hdGbPlqMsLlfacGi6Zn0HNxVpk=;
+ b=BfRJLQ39B/jwNrGqQSLsST2msXiuiMV7Fipf4NqBR1X2VT7/qPQAgMFu
+ 6CwmXR409CQ92bPlRMtwb0Ow4iIP0fO28M+5xnA+0ejNFEcTF8nNBE0fD
+ rQ3gn+31wCEA8tQmu4eM3utZ3iPKR0GqDwIaPwvF8cgwzBaJR7ZuDu/at
+ UMoHrCxI3u3rzJ1g9K1ZMtrRLchmwnkz/QQh/MmF7gIxNlLS/qmGHERXf
+ lpLWiA451GB+R1L6WpFoXgu2eDFpCuDDIqpM1FXJA7PdlEU2Lal8OH8iz
+ 0GGECpGjkxakr2fkaoQDoY2G68raRb0w2ENnMIbMGhYfZAz8+832jVYKX Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="378825471"
+X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; d="scan'208";a="378825471"
 Received: from orsmga002.jf.intel.com ([10.7.209.21])
  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2023 04:48:02 -0700
+ 26 Sep 2023 04:48:05 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="748789710"
-X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; d="scan'208";a="748789710"
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="748789748"
+X-IronPort-AV: E=Sophos;i="6.03,177,1694761200"; d="scan'208";a="748789748"
 Received: from duan-server-s2600bt.bj.intel.com ([10.240.192.147])
  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2023 04:47:54 -0700
+ 26 Sep 2023 04:48:00 -0700
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 To: qemu-devel@nongnu.org
 Cc: alex.williamson@redhat.com, clg@redhat.com, jgg@nvidia.com,
  nicolinc@nvidia.com, joao.m.martins@oracle.com, eric.auger@redhat.com,
  peterx@redhat.com, jasowang@redhat.com, kevin.tian@intel.com,
  yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- Zhenzhong Duan <zhenzhong.duan@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- qemu-s390x@nongnu.org (open list:vfio-ap)
-Subject: [PATCH v2 08/12] vfio/ap: Use vfio_[attach/detach]_device
-Date: Tue, 26 Sep 2023 19:32:51 +0800
-Message-Id: <20230926113255.1177834-9-zhenzhong.duan@intel.com>
+ Zhenzhong Duan <zhenzhong.duan@intel.com>, Thomas Huth <thuth@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Matthew Rosato <mjrosato@linux.ibm.com>,
+ qemu-s390x@nongnu.org (open list:S390 general arch...)
+Subject: [PATCH v2 09/12] vfio/ccw: Use vfio_[attach/detach]_device
+Date: Tue, 26 Sep 2023 19:32:52 +0800
+Message-Id: <20230926113255.1177834-10-zhenzhong.duan@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230926113255.1177834-1-zhenzhong.duan@intel.com>
 References: <20230926113255.1177834-1-zhenzhong.duan@intel.com>
@@ -83,130 +83,248 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-Let the vfio-ap device use vfio_attach_device() and
+Let the vfio-ccw device use vfio_attach_device() and
 vfio_detach_device(), hence hiding the details of the used
 IOMMU backend.
+
+Also now all the devices have been migrated to use the new
+vfio_attach_device/vfio_detach_device API, let's turn the
+legacy functions into static functions, local to container.c.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 ---
- hw/vfio/ap.c | 68 +++++++++-------------------------------------------
- 1 file changed, 11 insertions(+), 57 deletions(-)
+ include/hw/vfio/vfio-common.h |   5 --
+ hw/vfio/ccw.c                 | 115 ++++++++--------------------------
+ hw/vfio/common.c              |  10 +--
+ 3 files changed, 30 insertions(+), 100 deletions(-)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 6e21d1da5a..16ea7fb3c2 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -53,40 +53,6 @@ struct VFIODeviceOps vfio_ap_ops = {
-     .vfio_compute_needs_reset = vfio_ap_compute_needs_reset,
- };
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 12fbfbc37d..c486bdef2a 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -202,7 +202,6 @@ typedef struct {
+     hwaddr pages;
+ } VFIOBitmap;
  
--static void vfio_ap_put_device(VFIOAPDevice *vapdev)
+-void vfio_put_base_device(VFIODevice *vbasedev);
+ void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
+@@ -220,11 +219,7 @@ void vfio_region_unmap(VFIORegion *region);
+ void vfio_region_exit(VFIORegion *region);
+ void vfio_region_finalize(VFIORegion *region);
+ void vfio_reset_handler(void *opaque);
+-VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
+-void vfio_put_group(VFIOGroup *group);
+ struct vfio_device_info *vfio_get_device_info(int fd);
+-int vfio_get_device(VFIOGroup *group, const char *name,
+-                    VFIODevice *vbasedev, Error **errp);
+ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+                        AddressSpace *as, Error **errp);
+ void vfio_detach_device(VFIODevice *vbasedev);
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index 1e2fce83b0..6893a30ab1 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -572,88 +572,14 @@ static void vfio_ccw_put_region(VFIOCCWDevice *vcdev)
+     g_free(vcdev->io_region);
+ }
+ 
+-static void vfio_ccw_put_device(VFIOCCWDevice *vcdev)
 -{
--    g_free(vapdev->vdev.name);
--    vfio_put_base_device(&vapdev->vdev);
+-    g_free(vcdev->vdev.name);
+-    vfio_put_base_device(&vcdev->vdev);
 -}
 -
--static VFIOGroup *vfio_ap_get_group(VFIOAPDevice *vapdev, Error **errp)
+-static void vfio_ccw_get_device(VFIOGroup *group, VFIOCCWDevice *vcdev,
+-                                Error **errp)
 -{
--    GError *gerror = NULL;
--    char *symlink, *group_path;
+-    S390CCWDevice *cdev = S390_CCW_DEVICE(vcdev);
+-    char *name = g_strdup_printf("%x.%x.%04x", cdev->hostid.cssid,
+-                                 cdev->hostid.ssid,
+-                                 cdev->hostid.devid);
+-    VFIODevice *vbasedev;
+-
+-    QLIST_FOREACH(vbasedev, &group->device_list, next) {
+-        if (strcmp(vbasedev->name, name) == 0) {
+-            error_setg(errp, "vfio: subchannel %s has already been attached",
+-                       name);
+-            goto out_err;
+-        }
+-    }
+-
+-    /*
+-     * All vfio-ccw devices are believed to operate in a way compatible with
+-     * discarding of memory in RAM blocks, ie. pages pinned in the host are
+-     * in the current working set of the guest driver and therefore never
+-     * overlap e.g., with pages available to the guest balloon driver.  This
+-     * needs to be set before vfio_get_device() for vfio common to handle
+-     * ram_block_discard_disable().
+-     */
+-    vcdev->vdev.ram_block_discard_allowed = true;
+-
+-    if (vfio_get_device(group, cdev->mdevid, &vcdev->vdev, errp)) {
+-        goto out_err;
+-    }
+-
+-    vcdev->vdev.ops = &vfio_ccw_ops;
+-    vcdev->vdev.type = VFIO_DEVICE_TYPE_CCW;
+-    vcdev->vdev.name = name;
+-    vcdev->vdev.dev = DEVICE(vcdev);
+-
+-    return;
+-
+-out_err:
+-    g_free(name);
+-}
+-
+-static VFIOGroup *vfio_ccw_get_group(S390CCWDevice *cdev, Error **errp)
+-{
+-    char *tmp, group_path[PATH_MAX];
+-    ssize_t len;
 -    int groupid;
 -
--    symlink = g_strdup_printf("%s/iommu_group", vapdev->vdev.sysfsdev);
--    group_path = g_file_read_link(symlink, &gerror);
--    g_free(symlink);
+-    tmp = g_strdup_printf("/sys/bus/css/devices/%x.%x.%04x/%s/iommu_group",
+-                          cdev->hostid.cssid, cdev->hostid.ssid,
+-                          cdev->hostid.devid, cdev->mdevid);
+-    len = readlink(tmp, group_path, sizeof(group_path));
+-    g_free(tmp);
 -
--    if (!group_path) {
--        error_setg(errp, "%s: no iommu_group found for %s: %s",
--                   TYPE_VFIO_AP_DEVICE, vapdev->vdev.sysfsdev, gerror->message);
--        g_error_free(gerror);
+-    if (len <= 0 || len >= sizeof(group_path)) {
+-        error_setg(errp, "vfio: no iommu_group found");
 -        return NULL;
 -    }
+-
+-    group_path[len] = 0;
 -
 -    if (sscanf(basename(group_path), "%d", &groupid) != 1) {
 -        error_setg(errp, "vfio: failed to read %s", group_path);
--        g_free(group_path);
 -        return NULL;
 -    }
--
--    g_free(group_path);
 -
 -    return vfio_get_group(groupid, &address_space_memory, errp);
 -}
 -
- static void vfio_ap_req_notifier_handler(void *opaque)
+ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
  {
-     VFIOAPDevice *vapdev = opaque;
-@@ -189,22 +155,15 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
- static void vfio_ap_realize(DeviceState *dev, Error **errp)
- {
-     int ret;
--    char *mdevid;
+-    VFIOGroup *group;
+     S390CCWDevice *cdev = S390_CCW_DEVICE(dev);
+     VFIOCCWDevice *vcdev = VFIO_CCW(cdev);
+     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_GET_CLASS(cdev);
++    VFIODevice *vbasedev = &vcdev->vdev;
      Error *err = NULL;
--    VFIOGroup *vfio_group;
-     APDevice *apdev = AP_DEVICE(dev);
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
-+    VFIODevice *vbasedev = &vapdev->vdev;
++    int ret;
  
--    vfio_group = vfio_ap_get_group(vapdev, errp);
--    if (!vfio_group) {
--        return;
+     /* Call the class init function for subchannel. */
+     if (cdc->realize) {
+@@ -663,14 +589,25 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+         }
+     }
+ 
+-    group = vfio_ccw_get_group(cdev, &err);
+-    if (!group) {
+-        goto out_group_err;
 -    }
--
--    vapdev->vdev.ops = &vfio_ap_ops;
--    vapdev->vdev.type = VFIO_DEVICE_TYPE_AP;
--    mdevid = basename(vapdev->vdev.sysfsdev);
--    vapdev->vdev.name = g_strdup_printf("%s", mdevid);
--    vapdev->vdev.dev = dev;
-+    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
-+    vbasedev->ops = &vfio_ap_ops;
-+    vbasedev->type = VFIO_DEVICE_TYPE_AP;
-+    vbasedev->dev = dev;
++    vbasedev->ops = &vfio_ccw_ops;
++    vbasedev->type = VFIO_DEVICE_TYPE_CCW;
++    vbasedev->name = g_strdup(cdev->mdevid);
++    vbasedev->dev = &vcdev->cdev.parent_obj.parent_obj;
  
-     /*
-      * vfio-ap devices operate in a way compatible with discarding of
-@@ -214,9 +173,11 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
-      */
-     vapdev->vdev.ram_block_discard_allowed = true;
- 
--    ret = vfio_get_device(vfio_group, mdevid, &vapdev->vdev, errp);
+-    vfio_ccw_get_device(group, vcdev, &err);
+-    if (err) {
+-        goto out_device_err;
++    /*
++     * All vfio-ccw devices are believed to operate in a way compatible with
++     * discarding of memory in RAM blocks, ie. pages pinned in the host are
++     * in the current working set of the guest driver and therefore never
++     * overlap e.g., with pages available to the guest balloon driver.  This
++     * needs to be set before vfio_get_device() for vfio common to handle
++     * ram_block_discard_disable().
++     */
++    vbasedev->ram_block_discard_allowed = true;
++
 +    ret = vfio_attach_device(vbasedev->name, vbasedev,
 +                             &address_space_memory, errp);
-     if (ret) {
--        goto out_get_dev_err;
-+        g_free(vbasedev->name);
-+        return;
++    if (ret) {
++        goto out_attach_dev_err;
      }
  
-     vfio_ap_register_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX, &err);
-@@ -227,23 +188,16 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
-          */
-         error_report_err(err);
-     }
--
--    return;
--
--out_get_dev_err:
--    vfio_ap_put_device(vapdev);
--    vfio_put_group(vfio_group);
- }
- 
- static void vfio_ap_unrealize(DeviceState *dev)
- {
-     APDevice *apdev = AP_DEVICE(dev);
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
--    VFIOGroup *group = vapdev->vdev.group;
- 
-     vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX);
--    vfio_ap_put_device(vapdev);
+     vfio_ccw_get_region(vcdev, &err);
+@@ -708,10 +645,9 @@ out_irq_notifier_err:
+ out_io_notifier_err:
+     vfio_ccw_put_region(vcdev);
+ out_region_err:
+-    vfio_ccw_put_device(vcdev);
+-out_device_err:
 -    vfio_put_group(group);
-+    vfio_detach_device(&vapdev->vdev);
-+    g_free(vapdev->vdev.name);
+-out_group_err:
++    vfio_detach_device(vbasedev);
++out_attach_dev_err:
++    g_free(vbasedev->name);
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
+     }
+@@ -724,14 +660,13 @@ static void vfio_ccw_unrealize(DeviceState *dev)
+     S390CCWDevice *cdev = S390_CCW_DEVICE(dev);
+     VFIOCCWDevice *vcdev = VFIO_CCW(cdev);
+     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_GET_CLASS(cdev);
+-    VFIOGroup *group = vcdev->vdev.group;
+ 
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_REQ_IRQ_INDEX);
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_CRW_IRQ_INDEX);
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX);
+     vfio_ccw_put_region(vcdev);
+-    vfio_ccw_put_device(vcdev);
+-    vfio_put_group(group);
++    vfio_detach_device(&vcdev->vdev);
++    g_free(vcdev->vdev.name);
+ 
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index 7f3798b152..65516b319e 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -2335,7 +2335,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
+     }
  }
  
- static Property vfio_ap_properties[] = {
+-VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
++static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
+ {
+     VFIOGroup *group;
+     char path[32];
+@@ -2402,7 +2402,7 @@ free_group_exit:
+     return NULL;
+ }
+ 
+-void vfio_put_group(VFIOGroup *group)
++static void vfio_put_group(VFIOGroup *group)
+ {
+     if (!group || !QLIST_EMPTY(&group->device_list)) {
+         return;
+@@ -2447,8 +2447,8 @@ retry:
+     return info;
+ }
+ 
+-int vfio_get_device(VFIOGroup *group, const char *name,
+-                    VFIODevice *vbasedev, Error **errp)
++static int vfio_get_device(VFIOGroup *group, const char *name,
++                           VFIODevice *vbasedev, Error **errp)
+ {
+     g_autofree struct vfio_device_info *info = NULL;
+     int fd;
+@@ -2506,7 +2506,7 @@ int vfio_get_device(VFIOGroup *group, const char *name,
+     return 0;
+ }
+ 
+-void vfio_put_base_device(VFIODevice *vbasedev)
++static void vfio_put_base_device(VFIODevice *vbasedev)
+ {
+     if (!vbasedev->group) {
+         return;
 -- 
 2.34.1
 
