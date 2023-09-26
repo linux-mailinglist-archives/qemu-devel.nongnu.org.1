@@ -2,77 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E907AEA6F
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C46917AEA71
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:35:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql5OB-0002mw-H5; Tue, 26 Sep 2023 06:33:59 -0400
+	id 1ql5Ov-0003Fm-QP; Tue, 26 Sep 2023 06:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql5O9-0002md-P2
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:33:57 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql5O8-000152-4N
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:33:57 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-533c92e65c9so6332619a12.3
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 03:33:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695724434; x=1696329234; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=TZCA/vcyZCNs1bt3092DVYQhUUzrnHflqSxCPDaS+94=;
- b=DsU1VAlV8/sDAzhrwkb0l5jxchw7jtk9xvpgDqyl/O89PRYlZ3Kg8BwKcbIgyeM+I9
- jn5RdSsCKKHEVYwqchYeH+8W4AjTKnbqrhdxeXqG7Zcym5LlW0pTClGuKHIroZPkPh/h
- p72bwZbcMzclGXkcImZ0HpdF2R9tEDflIURV1CoNqFbx8qCSqpdzlLPeMqJDNTYVsShq
- zARsGFhfx1CEScZnwnHuxwCy8mUwUZX5yvb49y9J+6D7B24MqX0BQDfcQD90LlMoHzdG
- b5pfM2FReZLPpNaG5Vubn0TOTdO25hd1+6t5/bvShS3MTJbgX8FVh4Q46BHhofKxDs1F
- 5aDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695724434; x=1696329234;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=TZCA/vcyZCNs1bt3092DVYQhUUzrnHflqSxCPDaS+94=;
- b=wkawhM4Zxfu66IWRsZBDRmxqfbJMiBsGVIiOFYzVDBffogbGCQqF3yWeZad1ViuO30
- VfCCDcp9EBEzKD0rnSsfkNHMtX72Knr2uh6eSsY8kVdEsee6JM8Vs30IR8exXdeKIqAA
- N1pVEUmhtt8TTSyQ5F2hprM3+0stq7aZxiTGk95eEj0AhNoU7OrYJuZrwidCy0cBoQQF
- o6bzjVyQbWflhomRsJ4G38LXO8W/FKNOk0LuhZKhDcVIZHxqvifH/ohAt6eEONTVlTza
- IFBIrH0u273ttabKBSCbQO+cSSt6SatWbWqk8V80okxan0MD5qrLokHmrsVJrJ3r9C0q
- aqRA==
-X-Gm-Message-State: AOJu0YwpddtzADU1NB/zVyaGQ2b+mXZwl6KMxRBC0129w9tiUo6JqM3H
- dEwXjeAIwHLYc3tLq2/colxw0Rn8y9o+TxPKnDvPrg==
-X-Google-Smtp-Source: AGHT+IHhg9pUBhIS7hYAzO7v/GFMR3Qss9jJfLKYe0K9ECJRKsHe0jio9XmusdkYyFEz541lDtb65XpLCqbSTz11Ppk=
-X-Received: by 2002:aa7:d44e:0:b0:52b:d169:b374 with SMTP id
- q14-20020aa7d44e000000b0052bd169b374mr8142078edr.3.1695724434087; Tue, 26 Sep
- 2023 03:33:54 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5Ou-0003AS-5s
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:34:44 -0400
+Received: from mr85p00im-zteg06021501.me.com ([17.58.23.183])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mads@ynddal.dk>) id 1ql5Os-00018L-GJ
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:34:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ynddal.dk; s=sig1;
+ t=1695724480; bh=QK9mRa2C2+4VlN/UlOr2BVnn3RFH4/IH9BP32cUX6fg=;
+ h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+ b=YxnCmNDgRZCrR/ajYaeBjR/Dq+MbBQl3/PSOGmjE8YyuShZVcxC8SGFL8Ias1Ipfv
+ X61mRwoDRkupofHZg7El19FUoDRsNv5Cl2kNDisTPllYrq/GPIWfSxKDTeU7q/R5rJ
+ LyAbqXHiLFHFyKrOialdiPIOoMoehpstwH7p/2sD5uP5Cy9GnpCMTOle0Q0JBqRpeL
+ /RRAnoPZ3pETrPVZbr6zZqQshCvM9oQLSnkmmrDrxjQYQ4syEKxv9050yJpNa5FkRk
+ WebhGxyap5j/H4xphdkUeAj3eqt8ArrrhS/gPZiDviMQ/cuGtXtQgBKo7F6b+evHi6
+ auVRoBtiW3EIQ==
+Received: from localhost.localdomain (mr38p00im-dlb-asmtp-mailmevip.me.com
+ [17.57.152.18])
+ by mr85p00im-zteg06021501.me.com (Postfix) with ESMTPSA id E421A2793E6B;
+ Tue, 26 Sep 2023 10:34:38 +0000 (UTC)
+From: Mads Ynddal <mads@ynddal.dk>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, John Snow <jsnow@redhat.com>,
+ Mads Ynddal <mads@ynddal.dk>, Cleber Rosa <crosa@redhat.com>,
+ Mads Ynddal <m.ynddal@samsung.com>
+Subject: [PATCH v5 00/14] simpletrace: refactor and general improvements
+Date: Tue, 26 Sep 2023 12:34:22 +0200
+Message-Id: <20230926103436.25700-1-mads@ynddal.dk>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
-References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-2-vsementsov@yandex-team.ru>
-In-Reply-To: <20230925194040.68592-2-vsementsov@yandex-team.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Sep 2023 11:33:35 +0100
-Message-ID: <CAFEAcA8MeLs5fz+PjLsL351OHv3vr8+4_tnD97guZHXs76iTog@mail.gmail.com>
-Subject: Re: [PATCH 01/12] hw/core/loader: load_at(): check size
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x530.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: d36-olybk7JTmRTcLZckrBJSQh-KJxvA
+X-Proofpoint-GUID: d36-olybk7JTmRTcLZckrBJSQh-KJxvA
+X-Proofpoint-Virus-Version: =?UTF-8?Q?vendor=3Dfsecure_engine=3D1.1.170-22c6f66c430a71ce266a39bfe25bc?=
+ =?UTF-8?Q?2903e8d5c8f:6.0.425,18.0.816,17.11.62.513.0000000_definitions?=
+ =?UTF-8?Q?=3D2022-01-18=5F01:2022-01-14=5F01,2022-01-18=5F01,2021-12-02?=
+ =?UTF-8?Q?=5F01_signatures=3D0?=
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
+ spamscore=0 bulkscore=0
+ clxscore=1030 adultscore=0 mlxlogscore=295 phishscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309260091
+Received-SPF: pass client-ip=17.58.23.183; envelope-from=mads@ynddal.dk;
+ helo=mr85p00im-zteg06021501.me.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,65 +76,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Sept 2023 at 20:41, Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> This @size parameter often comes from fd. We'd better check it before
-> doing read and allocation.
->
-> Chose 1G as high enough empiric bound.
+From: Mads Ynddal <m.ynddal@samsung.com>
 
-Empirical for who?
+I wanted to use simpletrace.py for an internal project, so I tried to update
+and polish the code. Some of the commits resolve specific issues, while some
+are more subjective.
 
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  hw/core/loader.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
->
-> diff --git a/hw/core/loader.c b/hw/core/loader.c
-> index 4dd5a71fb7..4b67543046 100644
-> --- a/hw/core/loader.c
-> +++ b/hw/core/loader.c
-> @@ -281,11 +281,26 @@ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
->
->  /* ELF loader */
->
-> +#define ELF_LOAD_MAX (1024 * 1024 * 1024)
-> +
->  static void *load_at(int fd, off_t offset, size_t size)
->  {
->      void *ptr;
-> -    if (lseek(fd, offset, SEEK_SET) < 0)
-> +
-> +    /*
-> +     * We often come here with @size, which was previously read from file
-> +     * descriptor too. That's not good to read and allocate for unchecked
-> +     * number of bytes. Coverity also doesn't like it and generate problems.
-> +     * So, let's limit all load_at() calls to ELF_LOAD_MAX at least.
-> +     */
-> +    if (size > ELF_LOAD_MAX) {
->          return NULL;
-> +    }
-> +
-> +    if (lseek(fd, offset, SEEK_SET) < 0) {
-> +        return NULL;
-> +    }
-> +
->      ptr = g_malloc(size);
->      if (read(fd, ptr, size) != size) {
->          g_free(ptr);
+I've tried to divide it into commits so we can discuss the
+individual changes, and I'm ready to pull things out, if it isn't needed.
 
-This doesn't really help anything:
- (1) if the value is really big, it doesn't cause any terrible
-consequences -- QEMU will just exit because the allocation
-fails, which is fine because this will be at QEMU startup
-and only happens if the user running QEMU gives us a silly file
- (2) we do a lot of other "allocate and abort on failure"
-elsewhere in the ELF loader, for instance the allocations of
-the symbol table and relocs in the load_symbols and
-elf_reloc functions, and then on a bigger scale when we
-work with the actual data in the ELF file
+v5:
+ * Picked Formatter2 over Formatter, as to not use the deprecated class
+ * simpletrace-benchmark.zip deleted
+ * Rebased with master
+v4:
+ * Added missing Analyzer2 to __all__
+ * Rebased with master
+v3:
+ * Added __all__ with public interface
+ * Added comment about magic numbers and structs from Stefan Hajnoczi
+ * Reintroduced old interface for process, run and Analyzer
+ * Added comment about Python 3.6 in ref. to getfullargspec
+ * process now accepts events as file-like objects
+ * Updated context-manager code for Analyzer
+ * Moved logic of event processing to Analyzer class
+ * Moved logic of process into _process function
+ * Added new Analyzer2 class with kwarg event-processing
+ * Reverted changes to process-call in scripts/analyse-locks-simpletrace.py
+v2:
+ * Added myself as maintainer of simpletrace.py
+ * Improve docstring on `process`
+ * Changed call to `process` in scripts/analyse-locks-simpletrace.py to reflect new argument types
+ * Replaced `iteritems()` with `items()` in scripts/analyse-locks-simpletrace.py to support Python 3
 
-thanks
--- PMM
+Mads Ynddal (14):
+  simpletrace: add __all__ to define public interface
+  simpletrace: annotate magic constants from QEMU code
+  simpletrace: improve parsing of sys.argv; fix files never closed.
+  simpletrace: changed naming of edict and idtoname to improve
+    readability
+  simpletrace: update code for Python 3.11
+  simpletrace: improved error handling on struct unpack
+  simpletrace: define exception and add handling
+  simpletrace: made Analyzer into context-manager
+  simpletrace: refactor to separate responsibilities
+  simpletrace: move logic of process into internal function
+  simpletrace: move event processing to Analyzer class
+  simpletrace: added simplified Analyzer2 class
+  MAINTAINERS: add maintainer of simpletrace.py
+  scripts/analyse-locks-simpletrace.py: changed iteritems() to items()
+
+ MAINTAINERS                          |   6 +
+ scripts/analyse-locks-simpletrace.py |   2 +-
+ scripts/simpletrace.py               | 382 +++++++++++++++++----------
+ 3 files changed, 246 insertions(+), 144 deletions(-)
+
+-- 
+2.38.1
+
 
