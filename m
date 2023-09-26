@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97977AF173
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 19:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7C47AF17D
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 19:01:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlBQ7-0002Dh-Fv; Tue, 26 Sep 2023 13:00:23 -0400
+	id 1qlBPj-0002Bc-EA; Tue, 26 Sep 2023 12:59:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlBPY-00025L-Sc
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:49 -0400
+ id 1qlBPZ-00025T-4e
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:51 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlBPW-0006gI-Ju
+ id 1qlBPX-0006gZ-P6
  for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:59:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695747585;
+ s=mimecast20190719; t=1695747587;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cK2AY4GFy/+B42PpuPIpzASu5VezWEnZGsFZ9M1vuME=;
- b=YWHmKVyF/VAi5050vIhvt1MaF6LNJsdJbDbGqk6E168D5EM34wWei+AqII50oAmWFxCZhZ
- gMYLjjSEndl6h2bbxF8z5FU0B7pRQMoT3dlS6o9ZX8VKennvHmlrXEmtYvNBGpIq9D6/x+
- EfnwnU1Lfana2WV5F4N25sWPTZtRqBM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=B3MRqjJKPkyF3tHIV008r3NmHojHwaW5VLmbwgYG1UQ=;
+ b=Gmyvvy2EglhCY5XbYJj4dC5M2FCn0JMmjRXd6BJ/LScc+vqSziC8tVAvY9bLt58ZUu0FaN
+ 2BBjac1lg8LZjgAwqICBt0lOKZ0rDG7BjGz79ANw8II9Soou9j6FnQsI6Q3em28HVnJwa6
+ CZk7VO87xlyFRQED5st6YRBRs87j2Dg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-Y9eUkac-NbCzEdU-ByTxgg-1; Tue, 26 Sep 2023 12:59:43 -0400
-X-MC-Unique: Y9eUkac-NbCzEdU-ByTxgg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-406227680a9so24369095e9.3
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:59:43 -0700 (PDT)
+ us-mta-76-ySlsIK62PE2qKLwBkT-BbQ-1; Tue, 26 Sep 2023 12:59:45 -0400
+X-MC-Unique: ySlsIK62PE2qKLwBkT-BbQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32001e60fb3so5324797f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:59:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695747582; x=1696352382;
+ d=1e100.net; s=20230601; t=1695747583; x=1696352383;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=cK2AY4GFy/+B42PpuPIpzASu5VezWEnZGsFZ9M1vuME=;
- b=TzchyO0qQGXZQtIwRIGwtNau051aS8zffDZF3tJ87cVx0G4lh017IK7e1fVu2YX/kF
- Z1hiO814/5vB5kXtB/esBWxL7HTCy7M2hf4oe/7el9FdriUWcH7mCsxjvLafU8wJpf+N
- w3AAUZTwqbIH9cq+KtEZs2jbMCHgeXrn+ac26ISIRHK1vvRvcnKv2vJu92tyipJrZXiP
- 7EvR4SuqhwJyu9VygD348Y+wFBrdShMEtYR1PBiiB+IJuWuH348gkFduB6z9mKhxm+E/
- m66jD4iCvQ6AUW9zzXjTCTKWSDIfZMCAgQXGYpp4rjz81hhGREelSCxikSYraHsg0iwx
- s6kw==
-X-Gm-Message-State: AOJu0Yz0a/eexLBeDPXkDsi0rXGtxTZIPriZ7N2ImXI+Cl85yPG+zo+W
- 8Ekx06ZEQegcr+4TuvBbnW9lZbWhL37XVuZ/ENUVbrorUE95EpfqTVuXfxa6gqPvSldexrDOBVK
- pupHJYZ/VY1eftMUp+Sst+Woen5l5XLEaaCPsT7fFiV5R9HbBVQGtva+4v1bg3H3FEDMKP3f5CO
- w=
-X-Received: by 2002:a7b:ce90:0:b0:3fe:d1e9:e6b8 with SMTP id
- q16-20020a7bce90000000b003fed1e9e6b8mr8908049wmj.12.1695747581934; 
- Tue, 26 Sep 2023 09:59:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEP67ZvDd/Y2KLZkl9/CIX7A9WtrdFwcDVsOzvx8HL/4xKrofjhnqjVaM2zZeWb0mfQVdd9gw==
-X-Received: by 2002:a7b:ce90:0:b0:3fe:d1e9:e6b8 with SMTP id
- q16-20020a7bce90000000b003fed1e9e6b8mr8908034wmj.12.1695747581582; 
- Tue, 26 Sep 2023 09:59:41 -0700 (PDT)
+ bh=B3MRqjJKPkyF3tHIV008r3NmHojHwaW5VLmbwgYG1UQ=;
+ b=lx7Rh91IiqvflIIDmXa0RZ215xI+ZxdBtcH1uLpb07Yk2vQ1fB0C0LOLJfjNjzIe+g
+ x8lMZEeR0FpcJNw5nk4PUQoGbUnjR3gmcRdayd9UJPmdhdLyOU4bvak4BxpDEr6yuF6R
+ AGxFdzg81v/c33Q/HbJE0GiPIpjX6wvLAq2MkFrLrYx8iuTOguLnelP3zj3BJ2iQvt+P
+ Q8gUrcMMaDyMbdnqcFLUhjs7vvuKxT+MDOtrrqkKV1pmz/igPdwXythV/Vk7rE6imk4U
+ ONYEeX1uOq0h4LNB2lN4xksCAE/Lkbs07wF/h9YC+6khu0nDLYt8kZoLSXFB5Xv1m5ap
+ xe6Q==
+X-Gm-Message-State: AOJu0YxR9Yd+iLTSIA08qc8MvpRZdWoVN5qnyh0qsC4yHzFLbTosPpiy
+ 19UtbMJXzXp593gbzCZOVcalP+VtMTFP10ris3qi20XqO5oEDIicRveBwLLwR8ed8IN4lV3UswY
+ MHU9wfJAX2pLYf6gRXK2GSzOPyTsWDbPF7fdUoLR6kpIBzSv0RJg/8RXq1vAg/cw7moX5ZWcieC
+ 0=
+X-Received: by 2002:a5d:6b8b:0:b0:323:2c2b:baf0 with SMTP id
+ n11-20020a5d6b8b000000b003232c2bbaf0mr2421546wrx.15.1695747583605; 
+ Tue, 26 Sep 2023 09:59:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExTzcIxrtAoyTPXkYXVLLJKw4maoVppUO7b4sgRi2lRoL4D24wmuyN9i8iYARdV3fGhBEdEg==
+X-Received: by 2002:a5d:6b8b:0:b0:323:2c2b:baf0 with SMTP id
+ n11-20020a5d6b8b000000b003232c2bbaf0mr2421533wrx.15.1695747583252; 
+ Tue, 26 Sep 2023 09:59:43 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
  by smtp.gmail.com with ESMTPSA id
- q25-20020a7bce99000000b00405ee9dc69esm3223612wmj.18.2023.09.26.09.59.40
+ r8-20020a5d4e48000000b00315af025098sm14999066wrt.46.2023.09.26.09.59.42
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Sep 2023 09:59:40 -0700 (PDT)
+ Tue, 26 Sep 2023 09:59:42 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 13/19] target/i386/translate: avoid shadowed local variables
-Date: Tue, 26 Sep 2023 18:59:09 +0200
-Message-ID: <20230926165915.738719-14-pbonzini@redhat.com>
+Subject: [PULL 14/19] target/i386/seg_helper: introduce tss_set_busy
+Date: Tue, 26 Sep 2023 18:59:10 +0200
+Message-ID: <20230926165915.738719-15-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230926165915.738719-1-pbonzini@redhat.com>
 References: <20230926165915.738719-1-pbonzini@redhat.com>
@@ -100,36 +100,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Just remove the declaration.  There is nothing in the function after the
-switch statement, so it is safe to do.
+Eliminate a shadowed local variable in the process.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- target/i386/tcg/translate.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ target/i386/tcg/seg_helper.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
-index c98e42f17a0..72635b87d3c 100644
---- a/target/i386/tcg/translate.c
-+++ b/target/i386/tcg/translate.c
-@@ -3242,7 +3242,7 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0x30 ... 0x35:
-     case 0x38 ... 0x3d:
-         {
--            int op, f, val;
-+            int f;
-             op = (b >> 3) & 7;
-             f = (b >> 1) & 3;
+diff --git a/target/i386/tcg/seg_helper.c b/target/i386/tcg/seg_helper.c
+index e8d19c65fdc..b5198db82bc 100644
+--- a/target/i386/tcg/seg_helper.c
++++ b/target/i386/tcg/seg_helper.c
+@@ -226,6 +226,21 @@ static void tss_load_seg(CPUX86State *env, X86Seg seg_reg, int selector,
+     }
+ }
  
-@@ -3302,8 +3302,6 @@ static bool disas_insn(DisasContext *s, CPUState *cpu)
-     case 0x81:
-     case 0x83:
-         {
--            int val;
++static void tss_set_busy(CPUX86State *env, int tss_selector, bool value,
++                         uintptr_t retaddr)
++{
++    target_ulong ptr = env->gdt.base + (env->tr.selector & ~7);
++    uint32_t e2 = cpu_ldl_kernel_ra(env, ptr + 4, retaddr);
++
++    if (value) {
++        e2 |= DESC_TSS_BUSY_MASK;
++    } else {
++        e2 &= ~DESC_TSS_BUSY_MASK;
++    }
++
++    cpu_stl_kernel_ra(env, ptr + 4, e2, retaddr);
++}
++
+ #define SWITCH_TSS_JMP  0
+ #define SWITCH_TSS_IRET 1
+ #define SWITCH_TSS_CALL 2
+@@ -341,13 +356,7 @@ static void switch_tss_ra(CPUX86State *env, int tss_selector,
+ 
+     /* clear busy bit (it is restartable) */
+     if (source == SWITCH_TSS_JMP || source == SWITCH_TSS_IRET) {
+-        target_ulong ptr;
+-        uint32_t e2;
 -
-             ot = mo_b_d(b, dflag);
+-        ptr = env->gdt.base + (env->tr.selector & ~7);
+-        e2 = cpu_ldl_kernel_ra(env, ptr + 4, retaddr);
+-        e2 &= ~DESC_TSS_BUSY_MASK;
+-        cpu_stl_kernel_ra(env, ptr + 4, e2, retaddr);
++        tss_set_busy(env, env->tr.selector, 0, retaddr);
+     }
+     old_eflags = cpu_compute_eflags(env);
+     if (source == SWITCH_TSS_IRET) {
+@@ -399,13 +408,7 @@ static void switch_tss_ra(CPUX86State *env, int tss_selector,
  
-             modrm = x86_ldub_code(env, s);
+     /* set busy bit */
+     if (source == SWITCH_TSS_JMP || source == SWITCH_TSS_CALL) {
+-        target_ulong ptr;
+-        uint32_t e2;
+-
+-        ptr = env->gdt.base + (tss_selector & ~7);
+-        e2 = cpu_ldl_kernel_ra(env, ptr + 4, retaddr);
+-        e2 |= DESC_TSS_BUSY_MASK;
+-        cpu_stl_kernel_ra(env, ptr + 4, e2, retaddr);
++        tss_set_busy(env, tss_selector, 1, retaddr);
+     }
+ 
+     /* set the new CPU state */
 -- 
 2.41.0
 
