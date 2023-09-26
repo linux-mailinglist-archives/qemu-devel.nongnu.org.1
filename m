@@ -2,74 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7797AE922
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF8F7AE990
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 11:49:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql4LB-0005Ui-AE; Tue, 26 Sep 2023 05:26:49 -0400
+	id 1ql4fj-0002N6-S2; Tue, 26 Sep 2023 05:48:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql4L5-0005UM-RL
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:26:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql4L3-0005Ip-S9
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:26:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695720400;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xSwmFEyzHSMgfd1VpCukG6NM+vaSMD2qnmKGT7YswwQ=;
- b=fsQpl/De/Dgy8GDpIIr41SYl8h6h2LmR8bQzsVWsf9XaoDBbPl51cX4lf10xx0sKeusc5Q
- +vqycpHkx1+SssmANi3r09qFdo+CkmTU60xrOfHT+bEy6JI9X0YzJtbWELP5+CwpiuG+PZ
- Tu3zGUE+HfsJ3uGBgxiVTy6qLhJVH8o=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-569-ciRIIEtoNiGbR-iiILp8fg-1; Tue, 26 Sep 2023 05:26:39 -0400
-X-MC-Unique: ciRIIEtoNiGbR-iiILp8fg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EC7E3185A797;
- Tue, 26 Sep 2023 09:26:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CA41C10EE6C9;
- Tue, 26 Sep 2023 09:26:38 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D834C21E6900; Tue, 26 Sep 2023 11:26:37 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
-Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,  "quintela@redhat.com"
- <quintela@redhat.com>,  "peterx@redhat.com" <peterx@redhat.com>,
- "leobras@redhat.com" <leobras@redhat.com>
-Subject: Re: [PATCH 39/52] migration/rdma: Convert qemu_rdma_write_one() to
- Error
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-40-armbru@redhat.com>
- <9e117d0c-cf2b-dd01-7fef-55d1c41d254c@fujitsu.com>
- <b8f8ed5d-f20e-4309-f29c-960321ecad83@fujitsu.com>
-Date: Tue, 26 Sep 2023 11:26:37 +0200
-In-Reply-To: <b8f8ed5d-f20e-4309-f29c-960321ecad83@fujitsu.com> (Zhijian Li's
- message of "Tue, 26 Sep 2023 05:55:10 +0000")
-Message-ID: <87ttrhgu9e.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <mie@igel.co.jp>) id 1ql4fg-0002Mg-H3
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:48:00 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mie@igel.co.jp>) id 1ql4fe-0000VJ-43
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 05:48:00 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-690bccb0d8aso6276248b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 02:47:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1695721675; x=1696326475;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XKP3MzLWO9YF43zV3hOBWrQ0vFnkikx+qy/eqoZksLU=;
+ b=2oBGhyWVd0yaop1dc5r2X+7EqpFmOqcp7mzYPVIQuKhkUA68CJvrk6QJvFOWfM9+2t
+ AH1B/leHzKRT0t2qUHlx63Dk4bfHdGRcYoZmmj9pramKYlu/VJk28clE0wQC26Lo3dOH
+ xDsa7IkwOyeTlA8JWc/YrYMF05Fd8J2+EbAC9+qehO2R8Jgb5u+xE0D8kqOJAoG18lz/
+ JIH9x44ZUhQtD7GRaWj43PPRG8bVbxBsX6WxgUwc/4ozpaeMuTA26hrYUDbmt8S7zKLn
+ ljk/ZB5r6HXmrKG9cHvX0OAOdBiZWWQy6IeSK2Y4XAbhctBdyJ/qFKfCpTtA3ATFmNKF
+ sB0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695721675; x=1696326475;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=XKP3MzLWO9YF43zV3hOBWrQ0vFnkikx+qy/eqoZksLU=;
+ b=X3hf8iLKS2w+dsTFStPqd+dFsVtusNJ6dlGQA7VC7AMtzpPgoWgN/j7SlNJFnJ1f8x
+ H5X0wlM7o+3oCJXAkRKiHt/sVQ9uaapZrciA9JNdNpUSQ/3288k5HOEGMNfAzExy7Euq
+ HKCmxpcgpzaNUnpl7352v8obdgV3hLKC17e6+IoPk4TXowxav6RhQU83fhWMqT+SS27V
+ NC9MJokWrjenJGlBeEZSAT5Uww785mBUGY3aEsMLaNaI77vLkUOsHQxPOoTrf10waiz+
+ 6tPdnZtUioNux0ZNMftL8FnP13GgF9kV50Jt3TCJ8h1qmqTrCmoWAqBtTGKFkbHUF9sC
+ +VCA==
+X-Gm-Message-State: AOJu0Yxd8/0sc2gwW2wj5vrgZguZ/IXFitt7lSDz+rbRnwhnq/+Kifhj
+ WR1Cnr4Rr2475mhlSdKIj5lZAQ==
+X-Google-Smtp-Source: AGHT+IHkkACOh7dgZFFa/QbHIqytll0Y6aTqu1t2IA0bc5L6Z2iD4zYiqDdeRy5IKT8/Mkf7zM31ag==
+X-Received: by 2002:a05:6a00:80b:b0:690:d48a:2acc with SMTP id
+ m11-20020a056a00080b00b00690d48a2accmr9641454pfk.29.1695721675490; 
+ Tue, 26 Sep 2023 02:47:55 -0700 (PDT)
+Received: from [10.16.161.199] (napt.igel.co.jp. [219.106.231.132])
+ by smtp.gmail.com with ESMTPSA id
+ l22-20020a62be16000000b0068fe9c7b199sm5641837pff.105.2023.09.26.02.47.52
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Sep 2023 02:47:55 -0700 (PDT)
+Message-ID: <fe309259-01f0-871f-4620-3a4bdc56a186@igel.co.jp>
+Date: Tue, 26 Sep 2023 18:47:50 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [RFC] Proposal of QEMU PCI Endpoint test environment
+To: Kishon Vijay Abraham I <kvijayab@amd.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, vaishnav.a@ti.com
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org,
+ Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-pci@vger.kernel.org, =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?=
+ <kw@linux.com>, Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>
+References: <CANXvt5oKt=AKdqv24LT079e+6URnfqJcfTJh0ajGA17paJUEKw@mail.gmail.com>
+ <d096e88e-aec5-9920-8d5a-bd8200560c2c@amd.com>
+Content-Language: en-US
+From: Shunsuke Mie <mie@igel.co.jp>
+In-Reply-To: <d096e88e-aec5-9920-8d5a-bd8200560c2c@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=mie@igel.co.jp; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -33
+X-Spam_score: -3.4
+X-Spam_bar: ---
+X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,87 +101,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> writes:
 
-> On 26/09/2023 13:50, Li Zhijian wrote:
->>=20
->>=20
->> On 18/09/2023 22:41, Markus Armbruster wrote:
->>> Functions that use an Error **errp parameter to return errors should
->>> not also report them to the user, because reporting is the caller's
->>> job.=C2=A0 When the caller does, the error is reported twice.=C2=A0 Whe=
-n it
->>> doesn't (because it recovered from the error), there is no error to
->>> report, i.e. the report is bogus.
->>>
->>> qemu_rdma_write_flush() violates this principle: it calls
->>> error_report() via qemu_rdma_write_one().=C2=A0 I elected not to
->>> investigate how callers handle the error, i.e. precise impact is not
->>> known.
->>>
->>> Clean this up by converting qemu_rdma_write_one() to Error.
->>>
->>> Signed-off-by: Markus Armbruster<armbru@redhat.com>
->>> ---
->>> =C2=A0 migration/rdma.c | 25 +++++++++++--------------
->>> =C2=A0 1 file changed, 11 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/migration/rdma.c b/migration/rdma.c
->>> index c3c33fe242..9b8cbadfcd 100644
->>> --- a/migration/rdma.c
->>> +++ b/migration/rdma.c
->>> @@ -2019,9 +2019,8 @@ static int qemu_rdma_exchange_recv(RDMAContext *r=
-dma, RDMAControlHeader *head,
->>> =C2=A0=C2=A0 */
->>> =C2=A0 static int qemu_rdma_write_one(QEMUFile *f, RDMAContext *rdma,
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int current_index, uint64_=
-t current_addr,
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t length)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uint64_t length, Error **errp)
->>> =C2=A0 {
->>> -=C2=A0=C2=A0=C2=A0 Error *err =3D NULL;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ibv_sge sge;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ibv_send_wr send_wr =3D { 0 };
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct ibv_send_wr *bad_wr;
->>=20
->> [...]
->>=20
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>> @@ -2219,7 +2216,7 @@ retry:
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto retry;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 } else if (ret > 0) {
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 perror("rdma migration: pos=
-t rdma write failed");
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "rdma migr=
-ation: post rdma write failed");
->>=20
->> It reminds that do you miss to use error_setg_errno() instead.
->>=20
+On 2023/09/21 18:11, Kishon Vijay Abraham I wrote:
+> +Vaishnav
 >
-> Answer it myself:
-> ibv_post_send(3) says:
+> Hi Shunsuke,
 >
-> RETURN VALUE
->         ibv_post_send() returns 0 on success, or the value of errno on fa=
-ilure (which indicates the failure reason).
+> On 8/18/2023 7:16 PM, Shunsuke Mie wrote:
+>> Hi all,
+>>
+>> We are proposing to add a new test syste to Linux for PCIe Endpoint. 
+>> That
+>> can be run on QEMU without real hardware. At present, partially we have
+>> confirmed that pci-epf-test is working, but it is not yet complete.
+>> However, we would appreciate your comments on the architecture design.
+>>
+>> # Background
+>> The background is as follows.
+>>
+>> PCI Endpoint function driver is implemented using the PCIe Endpoint
+>> framework, but it requires physical boards for testing, and it is 
+>> difficult
+>> to test sufficiently. In order to find bugs and hardware-dependent
+>> implementations early, continuous testing is required. Since it is
+>> difficult to automate tests that require hardware, this RFC proposes a
+>> virtual environment for testing PCI endpoint function drivers.
+>
+> This would be quite useful and thank you for attempting it! I would 
+> like to compare other mechanisms available in-addition to QEMU before 
+> going with the QEMU approach.
 
-I read this as "assign error code to errno and return it."  But...
+I got it. I'll make a table to compare some methods that includes 
+greybus to realize this emulation environment.
 
-> the global error is not defined here.
 
-... your assertion made me check the source code, and it looks like it
-does *not* assign to errno, at least not reliably.  Which means perror()
-prints garbage.
+Best,
 
-I'll delete the perror() in a separate patch.
+Shunsuke
 
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return -1;
->>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-
+> Though I don't understand this fully, Looking at 
+> https://osseu2023.sched.com/event/1OGk8/emulating-devices-in-linux-using-greybus-subsystem-vaishnav-mohandas-achath-texas-instruments, 
+> Vaishnav seems to solve the same problem using greybus for multiple 
+> type s of devices.
+>
+> Vaishnav, we'd wait for your OSS presentation but do you have any 
+> initial thoughts on how greybus could be used to test PCIe endpoint 
+> drivers?
+>
+> Thanks,
+> Kishon
+>
+>>
+>> # Architecture
+>> The overview of the architecture is as follows.
+>>
+>>    Guest 1                        Guest 2
+>> +-------------------------+    +----------------------------+
+>> | Linux kernel            |    | Linux kernel               |
+>> |                         |    |                            |
+>> | PCI EP function driver  |    |                            |
+>> | (e.g. pci-epf-test)     |    |                            |
+>> |-------------------------|    | PCI Device Driver          |
+>> | (2) QEMU EPC Driver     |    | (e.g. pci_endpoint_test)   |
+>> +-------------------------+    +----------------------------+
+>> +-------------------------+    +----------------------------+
+>> | QEMU                    |    | QEMU                       |
+>> |-------------------------|    |----------------------------|
+>> | (1) QEMU PCI EPC Device *----* (3) QEMU EPF Bridge Device |
+>> +-------------------------+    +----------------------------+
+>>
+>> At present, it is designed to work guests only on the same host, and
+>> communication is done through Unix domain sockets.
+>>
+>> The three parts shown in the figure were introduced this time.
+>>
+>> (1) QEMU PCI Endpoint Controller(EPC) Device
+>> PCI Endpoint Controller implemented as QEMU PCI device.
+>> (2) QEMU PCI Endpoint Controller(EPC) Driver
+>> Linux kernel driver that drives the device (1). It registers a epc 
+>> device
+>> to linux kernel and handling each operations for the epc device.
+>> (3) QEMU PCI Endpoint function(EPF) Bridge Device
+>> QEMU PCI device that cooperates with (1) and performs accesses to pci
+>> configuration space, BAR and memory space to communicate each guests, 
+>> and
+>> generates interruptions to the guest 1.
+>>
+>> Each projects are:
+>> (1), (3) https://github.com/ShunsukeMie/qemu/tree/epf-bridge/v1 
+>> <https://github.com/ShunsukeMie/qemu/tree/epf-bridge/v1>
+>> files: hw/misc/{qemu-epc.{c,h}, epf-bridge.c}
+>> (2) https://github.com/ShunsukeMie/linux-virtio-rdma/tree/qemu-epc 
+>> <https://github.com/ShunsukeMie/linux-virtio-rdma/tree/qemu-epc>
+>> files: drivers/pci/controller/pcie-qemu-ep.c
+>>
+>> # Protocol
+>>
+>> PCI, PCIe has a layer structure that includes Physical, Data Lane and
+>> Transaction. The communicates between the bridge(3) and controller (1)
+>> mimic the Transaction. Specifically, a protocol is implemented for
+>> exchanging fd for communication protocol version check and 
+>> communication,
+>> in addition to the interaction equivalent to PCIe Transaction Layer 
+>> Packet
+>> (Read and Write of I/O, Memory, Configuration space and Message). In my
+>> mind, we need to discuss the communication mor.
+>>
+>> We also are planning to post the patch set after the code is 
+>> organized and
+>> the protocol discussion is matured.
+>>
+>> Best regards,
+>> Shunsuke
 
