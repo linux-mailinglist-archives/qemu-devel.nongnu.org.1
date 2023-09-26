@@ -2,51 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD667AE73A
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 09:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C5E37AE73E
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 10:01:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql2xs-0005E3-2o; Tue, 26 Sep 2023 03:58:40 -0400
+	id 1ql2zo-0006js-R7; Tue, 26 Sep 2023 04:00:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1ql2xn-0005D9-EQ
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 03:58:35 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1ql2xh-0006Wt-Hv
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 03:58:33 -0400
-Received: from loongson.cn (unknown [10.2.5.185])
- by gateway (Coremail) with SMTP id _____8Cxh+gfjxJl25MsAA--.49662S3;
- Tue, 26 Sep 2023 15:58:23 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.185])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8CxvdwdjxJl4HYSAA--.37865S2; 
- Tue, 26 Sep 2023 15:58:21 +0800 (CST)
-From: Song Gao <gaosong@loongson.cn>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, c@jia.je, philmd@redhat.com, git@xen0n.name,
- yangxiaojuan@loongson.cn, maobibo@loongson.cn,
- gaosong <gaosong@loongson.cn>
-Subject: [PATCH 1/1] tcg/loongarch64: Fix buid error
-Date: Tue, 26 Sep 2023 15:58:19 +0800
-Message-Id: <20230926075819.3602537-1-gaosong@loongson.cn>
-X-Mailer: git-send-email 2.39.1
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1ql2zg-0006jY-Pv
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:00:34 -0400
+Received: from mail-qt1-x82f.google.com ([2607:f8b0:4864:20::82f])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1ql2ze-00079A-Io
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 04:00:31 -0400
+Received: by mail-qt1-x82f.google.com with SMTP id
+ d75a77b69052e-4181e268447so15748341cf.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 01:00:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695715229; x=1696320029; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yzef6+OLYU9+x5ulSAXFhc7EI4OUgUY6x8D0726PIUA=;
+ b=VEtLB7W+7cjex3kp5GaHXmgW9cZaEl4uBUSCnselrxf7BT1WGP96/zMk5HkJyiLLbB
+ 3iB53DDLbV9RRQDZLQ644UIVTLvW5nWLKbz4LzCj4YoDxQOFgvs2ziSUkiNDvqcvS9wI
+ UNf+UjvNj6tdAuxtg1zyctQTBf5iynbxLc0hoGq+O1l4oR8NM3URIs3+uWL+++ElqBTm
+ DgbK4aw1jyS8HWRJqNK2AKPlC1p/ok0P5MYAG8zHAbff0Y53L16RFui9LzlKCj9a6sRf
+ DHeB76h/uDw+d9+pIBRzDHThc8e1fGOuj8a8NzxaT+YqWWj+xRu3QyHBFyVKFwJyo+vz
+ /KVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695715229; x=1696320029;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yzef6+OLYU9+x5ulSAXFhc7EI4OUgUY6x8D0726PIUA=;
+ b=ualoWB0Gmhso6kxVpmzSiHqaTmbnNhlQuz9tckV2Jw63gdS/3s2EwUT+yofQXFNEWm
+ cN1kuXur7j6wOHSPDcEgI4yn88+3YseIv5yojB5aoXHVUxZCdhE2JivSW/HKJf1Id6x4
+ Lp5xQKqy+6156DQUZ3+WY5Cy5S0EeqdLtRQ3VUWKwLngDDdTDtosp2rmdc2YDn7zZLwY
+ XvRq/NxGVZCI3tFrnTyHlNi4WE/rWSzWeAWiwPSIMLjMJXsaDQ0f+MTQJ1/Z7Cr/j3O4
+ 1Yz6GgQIlLclbOomwO92c6Utn8u9PDTOa8s5If0HUwTfRVcljZyfv07Kcz8oo+3zJeHo
+ bQxQ==
+X-Gm-Message-State: AOJu0YwrQexNcsugvIL6OfgUYMyDQkYHEREd13SL83eV3Dof3Q5y4BXQ
+ 8zGGEKzWuyRSqAHjBg2usGK/jNgE1pEgQPpETMA=
+X-Google-Smtp-Source: AGHT+IFwJpIeJZro0/Etti5bDAAYlRRfYh8EQx/WtUGk+hpBSYZN8WGLZw1CsT6d6NhQrfJ9lvwGmPmOEia+x+54lOA=
+X-Received: by 2002:ac8:5dcd:0:b0:417:cca3:d0ed with SMTP id
+ e13-20020ac85dcd000000b00417cca3d0edmr11205627qtx.48.1695715229333; Tue, 26
+ Sep 2023 01:00:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8CxvdwdjxJl4HYSAA--.37865S2
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
- ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
- nUUI43ZEXa7xR_UUUUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+References: <20230913144959.41891-1-lersek@redhat.com>
+ <CAJ+F1CJfROA9ezKi6Tzs1hLun8jpnWhrQCjreQdWhGro97CAyA@mail.gmail.com>
+ <4c36a1eb-9a76-2231-4ead-d8daab657d84@redhat.com>
+In-Reply-To: <4c36a1eb-9a76-2231-4ead-d8daab657d84@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 26 Sep 2023 12:00:17 +0400
+Message-ID: <CAJ+F1CKPaU5z8mnnFJWvw4CmFyEenFQ679A5Nf3CAqzJMqdqVA@mail.gmail.com>
+Subject: Re: [PATCH 0/4] ui/console: multihead: fix crash, simplify logic
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82f;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82f.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,105 +89,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: gaosong <gaosong@loongson.cn>
+Hi Laszlo
 
-Fix:
+On Mon, Sep 25, 2023 at 7:36=E2=80=AFPM Laszlo Ersek <lersek@redhat.com> wr=
+ote:
+> Has this been queued by someone? Both Gerd and Marc-Andr=C3=A9 are "odd
+> fixers", so I'm not sure who should be sending a PR with these patches
+> (and I don't see a pending PULL at
+> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/threads.html>
+> with these patch subjects included).
 
-  In file included from ../tcg/tcg.c:735:
-  /home1/gaosong/bugfix/qemu/tcg/loongarch64/tcg-target.c.inc: In function ‘tcg_out_vec_op’:
-  /home1/gaosong/bugfix/qemu/tcg/loongarch64/tcg-target.c.inc:1855:9: error: a label can only be part of a statement and a declaration is not a statement
-           TCGCond cond = args[3];
-           ^~~~~~~
+I have the series in my "ui" branch. I was waiting for a few more
+patches to be accumulated. But if someone else takes this first, I'll
+drop them.
 
-Signed-off-by: gaosong <gaosong@loongson.cn>
----
- tcg/loongarch64/tcg-target.c.inc | 68 ++++++++++++++++----------------
- 1 file changed, 35 insertions(+), 33 deletions(-)
 
-diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-index b701df50db..8f7091002b 100644
---- a/tcg/loongarch64/tcg-target.c.inc
-+++ b/tcg/loongarch64/tcg-target.c.inc
-@@ -1852,43 +1852,45 @@ static void tcg_out_vec_op(TCGContext *s, TCGOpcode opc,
-         tcg_out_opc_vnor_v(s, a0, a1, a1);
-         break;
-     case INDEX_op_cmp_vec:
--        TCGCond cond = args[3];
--        if (const_args[2]) {
--            /*
--             * cmp_vec dest, src, value
--             * Try vseqi/vslei/vslti
--             */
--            int64_t value = sextract64(a2, 0, 8 << vece);
--            if ((cond == TCG_COND_EQ || cond == TCG_COND_LE || \
--                 cond == TCG_COND_LT) && (-0x10 <= value && value <= 0x0f)) {
--                tcg_out32(s, encode_vdvjsk5_insn(cmp_vec_imm_insn[cond][vece], \
--                                                 a0, a1, value));
--                break;
--            } else if ((cond == TCG_COND_LEU || cond == TCG_COND_LTU) &&
--                (0x00 <= value && value <= 0x1f)) {
--                tcg_out32(s, encode_vdvjuk5_insn(cmp_vec_imm_insn[cond][vece], \
--                                                 a0, a1, value));
--                break;
--            }
-+        {
-+            TCGCond cond = args[3];
-+            if (const_args[2]) {
-+                /*
-+                 * cmp_vec dest, src, value
-+                 * Try vseqi/vslei/vslti
-+                 */
-+                int64_t value = sextract64(a2, 0, 8 << vece);
-+                if ((cond == TCG_COND_EQ || cond == TCG_COND_LE || \
-+                     cond == TCG_COND_LT) && (-0x10 <= value && value <= 0x0f)) {
-+                    tcg_out32(s, encode_vdvjsk5_insn(cmp_vec_imm_insn[cond][vece], \
-+                                                     a0, a1, value));
-+                    break;
-+                } else if ((cond == TCG_COND_LEU || cond == TCG_COND_LTU) &&
-+                    (0x00 <= value && value <= 0x1f)) {
-+                    tcg_out32(s, encode_vdvjuk5_insn(cmp_vec_imm_insn[cond][vece], \
-+                                                     a0, a1, value));
-+                    break;
-+                }
- 
--            /*
--             * Fallback to:
--             * dupi_vec temp, a2
--             * cmp_vec a0, a1, temp, cond
--             */
--            tcg_out_dupi_vec(s, type, vece, temp_vec, a2);
--            a2 = temp_vec;
--        }
-+                /*
-+                 * Fallback to:
-+                 * dupi_vec temp, a2
-+                 * cmp_vec a0, a1, temp, cond
-+                 */
-+                tcg_out_dupi_vec(s, type, vece, temp_vec, a2);
-+                a2 = temp_vec;
-+            }
- 
--        insn = cmp_vec_insn[cond][vece];
--        if (insn == 0) {
--            TCGArg t;
--            t = a1, a1 = a2, a2 = t;
--            cond = tcg_swap_cond(cond);
-             insn = cmp_vec_insn[cond][vece];
--            tcg_debug_assert(insn != 0);
-+            if (insn == 0) {
-+                TCGArg t;
-+                t = a1, a1 = a2, a2 = t;
-+                cond = tcg_swap_cond(cond);
-+                insn = cmp_vec_insn[cond][vece];
-+                tcg_debug_assert(insn != 0);
-+            }
-+            tcg_out32(s, encode_vdvjvk_insn(insn, a0, a1, a2));
-         }
--        tcg_out32(s, encode_vdvjvk_insn(insn, a0, a1, a2));
-         break;
-     case INDEX_op_add_vec:
-         tcg_out_addsub_vec(s, vece, a0, a1, a2, const_args[2], true);
--- 
-2.39.3
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
