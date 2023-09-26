@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664487AF081
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:19:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A237AF082
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:20:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlAmK-0002fk-GL; Tue, 26 Sep 2023 12:19:16 -0400
+	id 1qlAmN-0002gM-7a; Tue, 26 Sep 2023 12:19:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qlAmG-0002eW-2J
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:14 -0400
+ id 1qlAmK-0002fj-1f
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:16 -0400
 Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qlAmE-0004uQ-Cs
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:11 -0400
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+ id 1qlAmI-0004v5-Gb
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:15 -0400
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38QFOr1S004915; Tue, 26 Sep 2023 16:19:09 GMT
+ 38QFOkfu007544; Tue, 26 Sep 2023 16:19:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=gn4dQOb4UWnQxT6KvxYcwBPjvAyQPEHZNwf3F6AsY24=;
- b=dHmBzOEwDavYVszmxS52aXMbJOeAfSqM9syX49vEhGPY3+VjPd5H5phfeZeNKjuD5kqb
- oxziXjW+nwNQN89ScSL44X91TKyYduCMeIYJ+p/gfpfaSuh/2VSC1hSytXw8L75ILr2X
- 6+QxZJRb28qm+2sBnm4Gj2E9g8GzKFOlm3nKu3YslNdomHbbvjtevL3UF2gkUdPqab6w
- 5JpCNhJBQlNwLZCQtrI5l2C9iUfxCvBRCK7m2yHo8PFXFJnLNBEjN8JTOSQoMg9cOZEw
- SN5VDZxzl5PReXVWRhLJf0nfq+P/RmVKzBXcnMrcun4YuWiOGQVL83dl3g1uE9uSUUmz DA== 
+ bh=EoifFSgy6KyJSPmQ5XrH+l71SCAXSUA4VrQyatL5zWM=;
+ b=zRq9T7SwxXvUbbDxbS3qan2EfLtLB2G7gefaLBNMVTE0NI8zcJ3X73lgSQVm7dH5rILg
+ zAxn8jOMhC2VeaEAwd6fDyOTUDsOy0Rv9EoUsisg3VACKCEas1olV1JhVWUdYhU4HljA
+ wxBYGhFXT/L/1WU8VpeYer6l+iRTRPbEYnF7ftmtLJjPxgLvQcRZgW00NyuVN0ot92N+
+ afQkMqRuwGKwkp8S2TqmrZHJkOM3o/r7mCXCxnxj2uoJK0fpu0B9dEjbCk/hHOvn7Mug
+ pquj1y4L1lIk+fclwkO7DWK1KBmw3Xk8hJ65skcP4VeOtufxf7r63F/OYoECzFupQ1Vc MA== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9rjuf0n1-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9pm2745t-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Sep 2023 16:19:08 +0000
+ Tue, 26 Sep 2023 16:19:11 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 38QG2Ot7039388; Tue, 26 Sep 2023 16:19:07 GMT
+ with ESMTP id 38QFAD1O039362; Tue, 26 Sep 2023 16:19:10 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3t9pfcear2-1
+ 3t9pfceatb-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Sep 2023 16:19:07 +0000
+ Tue, 26 Sep 2023 16:19:10 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QGIt9x007977;
- Tue, 26 Sep 2023 16:19:07 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QGItA1007977;
+ Tue, 26 Sep 2023 16:19:09 GMT
 Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-210-190.vpn.oracle.com
  [10.175.210.190])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3t9pfcea8h-5; Tue, 26 Sep 2023 16:19:07 +0000
+ 3t9pfcea8h-6; Tue, 26 Sep 2023 16:19:09 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
  "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH 4/5] migration: Provide QMP access to downtime stats
-Date: Tue, 26 Sep 2023 17:18:40 +0100
-Message-Id: <20230926161841.98464-5-joao.m.martins@oracle.com>
+Subject: [PATCH 5/5] migration: Print expected-downtime on completion
+Date: Tue, 26 Sep 2023 17:18:41 +0100
+Message-Id: <20230926161841.98464-6-joao.m.martins@oracle.com>
 In-Reply-To: <20230926161841.98464-1-joao.m.martins@oracle.com>
 References: <20230926161841.98464-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -71,13 +71,13 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-09-26_13,2023-09-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=693
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  bulkscore=0
  suspectscore=0 adultscore=0 phishscore=0 mlxscore=0 spamscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2309260143
-X-Proofpoint-ORIG-GUID: fCW5Nzasz9U4PD6Rq3ejiA1x2WSBShwa
-X-Proofpoint-GUID: fCW5Nzasz9U4PD6Rq3ejiA1x2WSBShwa
+X-Proofpoint-ORIG-GUID: 8sMUgqTUet7VPmvTOrDWDF0QXRs_8_Xl
+X-Proofpoint-GUID: 8sMUgqTUet7VPmvTOrDWDF0QXRs_8_Xl
 Received-SPF: pass client-ip=205.220.165.32;
  envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
@@ -102,88 +102,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Deliver the downtime breakdown also via `query-migrate`
-to allow users to understand what their downtime value
-represents.
+Right now, migration statistics either print downtime or expected
+downtime depending on migration completing of in progress. Also in the
+beginning of migration by printing the downtime limit as expected
+downtime, when estimation is not available.
+
+The pending_size is private in migration iteration and not necessarily
+accessible outside. Given the non-determinism of the switchover cost, it
+can be useful to understand if the downtime was far off from the one
+detected by the migration algoritm, thus print the resultant downtime
+alongside its estimation.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- qapi/migration.json   | 22 ++++++++++++++++++++++
- migration/migration.c | 14 ++++++++++++++
- 2 files changed, 36 insertions(+)
+ migration/migration.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/qapi/migration.json b/qapi/migration.json
-index 2d91fbcb22ff..088e1b2bf440 100644
---- a/qapi/migration.json
-+++ b/qapi/migration.json
-@@ -217,6 +217,27 @@
-   'data': [ 'start', 'stop', 'precopy-iterable', 'precopy-noniterable',
-             'resume-return-path' ] }
- 
-+##
-+# @DowntimeStats:
-+#
-+# Detailed migration downtime statistics.
-+#
-+# @stop: Time taken to stop the VM during switchover.
-+#
-+# @precopy: Time taken to save all precopy state during switchover.
-+#
-+# @precopy-iterable: Time taken to save all precopy iterable state.
-+#
-+# @precopy-noniterable: Time taken to save all precopy non iterable state.
-+#
-+# @resume-return-path: Time taken to resume if return path is enabled,
-+#                      otherwise zero.
-+#
-+# Since: 8.2
-+##
-+{ 'struct': 'DowntimeStats',
-+  'data': {'stop': 'int64', 'precopy': 'int64', 'precopy-iterable': 'int64',
-+           'precopy-noniterable': 'int64', 'resume-return-path': 'int64' } }
- 
- ##
- # @MigrationInfo:
-@@ -308,6 +329,7 @@
-            '*total-time': 'int',
-            '*expected-downtime': 'int',
-            '*downtime': 'int',
-+           '*downtime-stats': 'DowntimeStats',
-            '*setup-time': 'int',
-            '*cpu-throttle-percentage': 'int',
-            '*error-desc': 'str',
 diff --git a/migration/migration.c b/migration/migration.c
-index 4b5bed3eb09b..dec6c88fbff9 100644
+index dec6c88fbff9..f08f65b4b1c3 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -921,6 +921,19 @@ static int64_t migrate_get_downtime_resume_rp(MigrationState *s)
-     return 0;
- }
- 
-+static void populate_downtime_info(MigrationInfo *info, MigrationState *s)
-+{
-+    DowntimeStats *stats;
-+
-+    info->downtime_stats = g_malloc0(sizeof(*info->downtime_stats));
-+    stats = info->downtime_stats;
-+    stats->stop = migrate_get_downtime_stop(s);
-+    stats->precopy_iterable = migrate_get_downtime_precopy_iterable(s);
-+    stats->precopy_noniterable = migrate_get_downtime_precopy_noniterable(s);
-+    stats->precopy = stats->precopy_iterable + stats->precopy_noniterable;
-+    stats->resume_return_path = migrate_get_downtime_resume_rp(s);
-+}
-+
- static void populate_time_info(MigrationInfo *info, MigrationState *s)
- {
-     info->has_status = true;
-@@ -939,6 +952,7 @@ static void populate_time_info(MigrationInfo *info, MigrationState *s)
-     if (migrate_show_downtime(s)) {
-         info->has_downtime = true;
-         info->downtime = s->downtime;
-+        populate_downtime_info(info, s);
+@@ -943,6 +943,10 @@ static void populate_time_info(MigrationInfo *info, MigrationState *s)
+     if (s->state == MIGRATION_STATUS_COMPLETED) {
+         info->has_total_time = true;
+         info->total_time = s->total_time;
++        if (s->expected_downtime) {
++            info->has_expected_downtime = true;
++            info->expected_downtime = s->expected_downtime;
++        }
      } else {
-         info->has_expected_downtime = true;
-         info->expected_downtime = s->expected_downtime;
+         info->has_total_time = true;
+         info->total_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) -
+@@ -2844,6 +2848,10 @@ static MigIterateState migration_iteration_run(MigrationState *s)
+ 
+     if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
+         trace_migration_thread_low_pending(pending_size);
++        if (s->threshold_size) {
++            s->expected_downtime = (pending_size * s->parameters.downtime_limit) /
++                                   s->threshold_size;
++        }
+         migration_completion(s);
+         return MIG_ITERATE_BREAK;
+     }
 -- 
 2.39.3
 
