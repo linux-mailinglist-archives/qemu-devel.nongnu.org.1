@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D739A7AE9EC
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5528B7AE9EF
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:07:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql4xW-0004RM-Cs; Tue, 26 Sep 2023 06:06:26 -0400
+	id 1ql4y1-0005Iq-KC; Tue, 26 Sep 2023 06:06:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql4xH-0004Lh-A1; Tue, 26 Sep 2023 06:06:11 -0400
+ id 1ql4xY-0004lu-Uv; Tue, 26 Sep 2023 06:06:29 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql4xD-00042c-PG; Tue, 26 Sep 2023 06:06:10 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwMl5nWwz6K8fg;
- Tue, 26 Sep 2023 18:04:51 +0800 (CST)
+ id 1ql4xW-00043D-PM; Tue, 26 Sep 2023 06:06:28 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwLq5ZP4z6D9CK;
+ Tue, 26 Sep 2023 18:04:03 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.174.16) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:05:47 +0100
+ 15.1.2507.31; Tue, 26 Sep 2023 11:06:05 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,10 +38,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 02/37] cpus-common: Add common CPU utility for possible
- vCPUs
-Date: Tue, 26 Sep 2023 11:04:01 +0100
-Message-ID: <20230926100436.28284-3-salil.mehta@huawei.com>
+Subject: [PATCH RFC V2 03/37] hw/arm/virt: Move setting of common CPU
+ properties in a function
+Date: Tue, 26 Sep 2023 11:04:02 +0100
+Message-ID: <20230926100436.28284-4-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
@@ -76,142 +76,308 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Adds various utility functions which might be required to fetch or check the
-state of the possible vCPUs. This also introduces concept of *disabled* vCPUs,
-which are part of the *possible* vCPUs but are not part of the *present* vCPU.
-This state shall be used during machine init time to check the presence of
-vcpus.
+Factor out CPU properties code common for {hot,cold}-plugged CPUs. This allows
+code reuse.
 
-Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- cpus-common.c         | 31 +++++++++++++++++++++++++
- include/hw/core/cpu.h | 53 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 84 insertions(+)
+ hw/arm/virt.c         | 220 ++++++++++++++++++++++++++----------------
+ include/hw/arm/virt.h |   4 +
+ 2 files changed, 140 insertions(+), 84 deletions(-)
 
-diff --git a/cpus-common.c b/cpus-common.c
-index 45c745ecf6..24c04199a1 100644
---- a/cpus-common.c
-+++ b/cpus-common.c
-@@ -24,6 +24,7 @@
- #include "sysemu/cpus.h"
- #include "qemu/lockable.h"
- #include "trace/trace-root.h"
-+#include "hw/boards.h"
- 
- QemuMutex qemu_cpu_list_lock;
- static QemuCond exclusive_cond;
-@@ -107,6 +108,36 @@ void cpu_list_remove(CPUState *cpu)
-     cpu_list_generation_id++;
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index 57fe97c242..0eb6bf5a18 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -2018,16 +2018,130 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+     }
  }
  
-+CPUState *qemu_get_possible_cpu(int index)
++static void virt_cpu_set_properties(Object *cpuobj, const CPUArchId *cpu_slot,
++                                    Error **errp)
 +{
 +    MachineState *ms = MACHINE(qdev_get_machine());
-+    const CPUArchIdList *possible_cpus = ms->possible_cpus;
++    VirtMachineState *vms = VIRT_MACHINE(ms);
++    Error *local_err = NULL;
++    VirtMachineClass *vmc;
 +
-+    assert((index >= 0) && (index < possible_cpus->len));
++    vmc = VIRT_MACHINE_GET_CLASS(ms);
 +
-+    return CPU(possible_cpus->cpus[index].cpu);
-+}
++    /* now, set the cpu object property values */
++    numa_cpu_pre_plug(cpu_slot, DEVICE(cpuobj), &local_err);
++    if (local_err) {
++        goto out;
++    }
 +
-+bool qemu_present_cpu(CPUState *cpu)
-+{
-+    return cpu;
-+}
++    object_property_set_int(cpuobj, "mp-affinity", cpu_slot->arch_id, NULL);
 +
-+bool qemu_enabled_cpu(CPUState *cpu)
-+{
-+    return cpu && !cpu->disabled;
-+}
++    if (!vms->secure) {
++        object_property_set_bool(cpuobj, "has_el3", false, NULL);
++    }
 +
-+uint64_t qemu_get_cpu_archid(int cpu_index)
-+{
-+    MachineState *ms = MACHINE(qdev_get_machine());
-+    const CPUArchIdList *possible_cpus = ms->possible_cpus;
++    if (!vms->virt && object_property_find(cpuobj, "has_el2")) {
++        object_property_set_bool(cpuobj, "has_el2", false, NULL);
++    }
 +
-+    assert((cpu_index >= 0) && (cpu_index < possible_cpus->len));
++    if (vmc->kvm_no_adjvtime &&
++        object_property_find(cpuobj, "kvm-no-adjvtime")) {
++        object_property_set_bool(cpuobj, "kvm-no-adjvtime", true, NULL);
++    }
 +
-+    return possible_cpus->cpus[cpu_index].arch_id;
-+}
++    if (vmc->no_kvm_steal_time &&
++        object_property_find(cpuobj, "kvm-steal-time")) {
++        object_property_set_bool(cpuobj, "kvm-steal-time", false, NULL);
++    }
 +
- CPUState *qemu_get_cpu(int index)
- {
-     CPUState *cpu;
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index fdcbe87352..e5af79950c 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -413,6 +413,17 @@ struct CPUState {
-     SavedIOTLB saved_iotlb;
- #endif
- 
++    if (vmc->no_pmu && object_property_find(cpuobj, "pmu")) {
++        object_property_set_bool(cpuobj, "pmu", false, NULL);
++    }
++
++    if (vmc->no_tcg_lpa2 && object_property_find(cpuobj, "lpa2")) {
++        object_property_set_bool(cpuobj, "lpa2", false, NULL);
++    }
++
++    if (object_property_find(cpuobj, "reset-cbar")) {
++        object_property_set_int(cpuobj, "reset-cbar",
++                                vms->memmap[VIRT_CPUPERIPHS].base,
++                                &local_err);
++        if (local_err) {
++            goto out;
++        }
++    }
++
++    /* link already initialized {secure,tag}-memory regions to this cpu */
++    object_property_set_link(cpuobj, "memory", OBJECT(vms->sysmem), &local_err);
++    if (local_err) {
++        goto out;
++    }
++
++    if (vms->secure) {
++        object_property_set_link(cpuobj, "secure-memory",
++                                 OBJECT(vms->secure_sysmem), &local_err);
++        if (local_err) {
++            goto out;
++        }
++    }
++
++    if (vms->mte) {
++        if (!object_property_find(cpuobj, "tag-memory")) {
++            error_setg(&local_err, "MTE requested, but not supported "
++                       "by the guest CPU");
++            if (local_err) {
++                goto out;
++            }
++        }
++
++        object_property_set_link(cpuobj, "tag-memory", OBJECT(vms->tag_sysmem),
++                                 &local_err);
++        if (local_err) {
++            goto out;
++        }
++
++        if (vms->secure) {
++            object_property_set_link(cpuobj, "secure-tag-memory",
++                                     OBJECT(vms->secure_tag_sysmem),
++                                     &local_err);
++            if (local_err) {
++                goto out;
++            }
++        }
++    }
++
 +    /*
-+     * Some architectures do not allow *presence* of vCPUs to be changed
-+     * after guest has booted using information specified by VMM/firmware
-+     * via ACPI MADT at the boot time. Thus to enable vCPU hotplug on these
-+     * architectures possible vCPU can have CPUState object in 'disabled'
-+     * state or can also not have CPUState object at all. This is possible
-+     * when vCPU Hotplug is supported and vCPUs are 'yet-to-be-plugged' in
-+     * the QOM or have been hot-unplugged.
-+     * By default every CPUState is enabled as of now across all archs.
++     * RFC: Question: this must only be called for the hotplugged cpus. For the
++     * cold booted secondary cpus this is being taken care in arm_load_kernel()
++     * in boot.c. Perhaps we should remove that code now?
 +     */
-+    bool disabled;
-     /* TODO Move common fields from CPUArchState here. */
-     int cpu_index;
-     int cluster_index;
-@@ -770,6 +781,48 @@ static inline bool cpu_in_exclusive_context(const CPUState *cpu)
-  */
- CPUState *qemu_get_cpu(int index);
++    if (vms->psci_conduit != QEMU_PSCI_CONDUIT_DISABLED) {
++        object_property_set_int(cpuobj, "psci-conduit", vms->psci_conduit,
++                                NULL);
++
++        /* Secondary CPUs start in PSCI powered-down state */
++        if (CPU(cpuobj)->cpu_index > 0) {
++            object_property_set_bool(cpuobj, "start-powered-off", true, NULL);
++        }
++    }
++
++out:
++    if (local_err) {
++        error_propagate(errp, local_err);
++    }
++    return;
++}
++
+ static void machvirt_init(MachineState *machine)
+ {
+     VirtMachineState *vms = VIRT_MACHINE(machine);
+     VirtMachineClass *vmc = VIRT_MACHINE_GET_CLASS(machine);
+     MachineClass *mc = MACHINE_GET_CLASS(machine);
+     const CPUArchIdList *possible_cpus;
+-    MemoryRegion *sysmem = get_system_memory();
++    MemoryRegion *secure_tag_sysmem = NULL;
+     MemoryRegion *secure_sysmem = NULL;
+     MemoryRegion *tag_sysmem = NULL;
+-    MemoryRegion *secure_tag_sysmem = NULL;
++    MemoryRegion *sysmem;
+     int n, virt_max_cpus;
+     bool firmware_loaded;
+     bool aarch64 = true;
+@@ -2071,6 +2185,8 @@ static void machvirt_init(MachineState *machine)
+      */
+     finalize_gic_version(vms);
  
-+/**
-+ * qemu_get_possible_cpu:
-+ * @index: The CPUState@cpu_index value of the CPU to obtain.
-+ *         Input index MUST be in range [0, Max Possible CPUs)
-+ *
-+ * If CPUState object exists,then it gets a CPU matching
-+ * @index in the possible CPU array.
-+ *
-+ * Returns: The possible CPU or %NULL if CPU does not exist.
-+ */
-+CPUState *qemu_get_possible_cpu(int index);
++    sysmem = vms->sysmem = get_system_memory();
 +
-+/**
-+ * qemu_present_cpu:
-+ * @cpu: The vCPU to check
-+ *
-+ * Checks if the vCPU is amongst the present possible vcpus.
-+ *
-+ * Returns: True if it is present possible vCPU else false
-+ */
-+bool qemu_present_cpu(CPUState *cpu);
+     if (vms->secure) {
+         /*
+          * The Secure view of the world is the same as the NonSecure,
+@@ -2078,7 +2194,7 @@ static void machvirt_init(MachineState *machine)
+          * containing the system memory at low priority; any secure-only
+          * devices go in at higher priority and take precedence.
+          */
+-        secure_sysmem = g_new(MemoryRegion, 1);
++        secure_sysmem = vms->secure_sysmem = g_new(MemoryRegion, 1);
+         memory_region_init(secure_sysmem, OBJECT(machine), "secure-memory",
+                            UINT64_MAX);
+         memory_region_add_subregion_overlap(secure_sysmem, 0, sysmem, -1);
+@@ -2151,6 +2267,23 @@ static void machvirt_init(MachineState *machine)
+         exit(1);
+     }
+ 
++    if (vms->mte) {
++        /* Create the memory region only once, but link to all cpus later */
++        tag_sysmem = vms->tag_sysmem = g_new(MemoryRegion, 1);
++        memory_region_init(tag_sysmem, OBJECT(machine),
++                           "tag-memory", UINT64_MAX / 32);
 +
-+/**
-+ * qemu_enabled_cpu:
-+ * @cpu: The vCPU to check
-+ *
-+ * Checks if the vCPU is enabled.
-+ *
-+ * Returns: True if it is 'enabled' else false
-+ */
-+bool qemu_enabled_cpu(CPUState *cpu);
++        if (vms->secure) {
++            secure_tag_sysmem = vms->secure_tag_sysmem = g_new(MemoryRegion, 1);
++            memory_region_init(secure_tag_sysmem, OBJECT(machine),
++                               "secure-tag-memory", UINT64_MAX / 32);
 +
-+/**
-+ * qemu_get_cpu_archid:
-+ * @cpu_index: possible vCPU for which arch-id needs to be retreived
-+ *
-+ * Fetches the vCPU arch-id from the present possible vCPUs.
-+ *
-+ * Returns: arch-id of the possible vCPU
-+ */
-+uint64_t qemu_get_cpu_archid(int cpu_index);
++            /* As with ram, secure-tag takes precedence over tag.  */
++            memory_region_add_subregion_overlap(secure_tag_sysmem, 0,
++                                                tag_sysmem, -1);
++        }
++    }
 +
- /**
-  * cpu_exists:
-  * @id: Guest-exposed CPU ID to lookup.
+     create_fdt(vms);
+ 
+     assert(possible_cpus->len == max_cpus);
+@@ -2163,15 +2296,10 @@ static void machvirt_init(MachineState *machine)
+         }
+ 
+         cpuobj = object_new(possible_cpus->cpus[n].type);
+-        object_property_set_int(cpuobj, "mp-affinity",
+-                                possible_cpus->cpus[n].arch_id, NULL);
+ 
+         cs = CPU(cpuobj);
+         cs->cpu_index = n;
+ 
+-        numa_cpu_pre_plug(&possible_cpus->cpus[cs->cpu_index], DEVICE(cpuobj),
+-                          &error_fatal);
+-
+         aarch64 &= object_property_get_bool(cpuobj, "aarch64", NULL);
+         object_property_set_int(cpuobj, "socket-id",
+                                 virt_get_socket_id(machine, n), NULL);
+@@ -2182,82 +2310,6 @@ static void machvirt_init(MachineState *machine)
+         object_property_set_int(cpuobj, "thread-id",
+                                 virt_get_thread_id(machine, n), NULL);
+ 
+-        if (!vms->secure) {
+-            object_property_set_bool(cpuobj, "has_el3", false, NULL);
+-        }
+-
+-        if (!vms->virt && object_property_find(cpuobj, "has_el2")) {
+-            object_property_set_bool(cpuobj, "has_el2", false, NULL);
+-        }
+-
+-        if (vmc->kvm_no_adjvtime &&
+-            object_property_find(cpuobj, "kvm-no-adjvtime")) {
+-            object_property_set_bool(cpuobj, "kvm-no-adjvtime", true, NULL);
+-        }
+-
+-        if (vmc->no_kvm_steal_time &&
+-            object_property_find(cpuobj, "kvm-steal-time")) {
+-            object_property_set_bool(cpuobj, "kvm-steal-time", false, NULL);
+-        }
+-
+-        if (vmc->no_pmu && object_property_find(cpuobj, "pmu")) {
+-            object_property_set_bool(cpuobj, "pmu", false, NULL);
+-        }
+-
+-        if (vmc->no_tcg_lpa2 && object_property_find(cpuobj, "lpa2")) {
+-            object_property_set_bool(cpuobj, "lpa2", false, NULL);
+-        }
+-
+-        if (object_property_find(cpuobj, "reset-cbar")) {
+-            object_property_set_int(cpuobj, "reset-cbar",
+-                                    vms->memmap[VIRT_CPUPERIPHS].base,
+-                                    &error_abort);
+-        }
+-
+-        object_property_set_link(cpuobj, "memory", OBJECT(sysmem),
+-                                 &error_abort);
+-        if (vms->secure) {
+-            object_property_set_link(cpuobj, "secure-memory",
+-                                     OBJECT(secure_sysmem), &error_abort);
+-        }
+-
+-        if (vms->mte) {
+-            /* Create the memory region only once, but link to all cpus. */
+-            if (!tag_sysmem) {
+-                /*
+-                 * The property exists only if MemTag is supported.
+-                 * If it is, we must allocate the ram to back that up.
+-                 */
+-                if (!object_property_find(cpuobj, "tag-memory")) {
+-                    error_report("MTE requested, but not supported "
+-                                 "by the guest CPU");
+-                    exit(1);
+-                }
+-
+-                tag_sysmem = g_new(MemoryRegion, 1);
+-                memory_region_init(tag_sysmem, OBJECT(machine),
+-                                   "tag-memory", UINT64_MAX / 32);
+-
+-                if (vms->secure) {
+-                    secure_tag_sysmem = g_new(MemoryRegion, 1);
+-                    memory_region_init(secure_tag_sysmem, OBJECT(machine),
+-                                       "secure-tag-memory", UINT64_MAX / 32);
+-
+-                    /* As with ram, secure-tag takes precedence over tag.  */
+-                    memory_region_add_subregion_overlap(secure_tag_sysmem, 0,
+-                                                        tag_sysmem, -1);
+-                }
+-            }
+-
+-            object_property_set_link(cpuobj, "tag-memory", OBJECT(tag_sysmem),
+-                                     &error_abort);
+-            if (vms->secure) {
+-                object_property_set_link(cpuobj, "secure-tag-memory",
+-                                         OBJECT(secure_tag_sysmem),
+-                                         &error_abort);
+-            }
+-        }
+-
+         qdev_realize(DEVICE(cpuobj), NULL, &error_fatal);
+         object_unref(cpuobj);
+     }
+diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+index e1ddbea96b..13163adb07 100644
+--- a/include/hw/arm/virt.h
++++ b/include/hw/arm/virt.h
+@@ -148,6 +148,10 @@ struct VirtMachineState {
+     DeviceState *platform_bus_dev;
+     FWCfgState *fw_cfg;
+     PFlashCFI01 *flash[2];
++    MemoryRegion *sysmem;
++    MemoryRegion *secure_sysmem;
++    MemoryRegion *tag_sysmem;
++    MemoryRegion *secure_tag_sysmem;
+     bool secure;
+     bool highmem;
+     bool highmem_compact;
 -- 
 2.34.1
 
