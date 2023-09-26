@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665527AEDDB
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB817AEDDC
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 15:17:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql7uq-0005Yq-Ei; Tue, 26 Sep 2023 09:15:52 -0400
+	id 1ql7vW-0005cE-0v; Tue, 26 Sep 2023 09:16:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql7un-0005YQ-VS
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:15:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql7vT-0005bv-Az
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:16:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql7um-0008U3-5C
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:15:49 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql7vR-0000G1-SN
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:16:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695734146;
+ s=mimecast20190719; t=1695734188;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=OhbQdD8u6hqNreuypAlgWRXLqS1rVJEsDccvcyZoBPo=;
- b=L3xa/EIqmruR9Q1Vru6wEL6sSNTR8f53QGJXA+Npz807oFrR+544TO9d9iVlO+2lxgj6Ay
- DCmlKyhSRJahPA89q1FjBG37bQUNZxpJ/fQ7Iazw6KhUrWQYfTLrackfaS0kXo8sqCAAUq
- cwGo9SmU17jveorpjSAvkxi4nuj8ruA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-616-Ps7sby1NMcqZwpTijWYrlA-1; Tue, 26 Sep 2023 09:15:43 -0400
-X-MC-Unique: Ps7sby1NMcqZwpTijWYrlA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=XuBce4WhpmhrJYsSBxKXfdccpeeBEzcqvQtMtt89tqw=;
+ b=D26e7gDfjjjj8mx5rfvj7qvbfbNPaOg8WLQnmq4QOh9RLqkGiY1tlHUZZ+2XClklQhZOsp
+ n1AoQVkXQKrB0fJFD9tL7SgSUC90pFVNlMFtrvJq9Cso820mYqeqA62CFWrMfj6SvJl8AR
+ dJXYryt7X9uBTyFj4Au7DnlKtcT4YTo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-683-HdKpW-BhMcO67sW5LvC60A-1; Tue, 26 Sep 2023 09:16:26 -0400
+X-MC-Unique: HdKpW-BhMcO67sW5LvC60A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A32B7811E7E;
- Tue, 26 Sep 2023 13:15:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B4121C0CCA7
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 13:16:26 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 80E0428FD;
- Tue, 26 Sep 2023 13:15:42 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 58C121004058
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 13:16:26 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 718C421E6900; Tue, 26 Sep 2023 15:15:41 +0200 (CEST)
+ id 5C80221E6900; Tue, 26 Sep 2023 15:16:25 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Laurent Vivier <laurent@vivier.eu>,  qemu-devel@nongnu.org,  Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH] m68k: Silence -Wshadow=local warnings in the m68k code
-References: <20230925185603.106945-1-thuth@redhat.com>
- <87jzsd3z5q.fsf@pond.sub.org>
- <a20d141c-8fe4-08bc-5276-a5a6c3d08d0e@redhat.com>
-Date: Tue, 26 Sep 2023 15:15:41 +0200
-In-Reply-To: <a20d141c-8fe4-08bc-5276-a5a6c3d08d0e@redhat.com> (Thomas Huth's
- message of "Tue, 26 Sep 2023 14:59:18 +0200")
-Message-ID: <877codqdmq.fsf@pond.sub.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] target/i386/seg_helper: remove shadowed variable
+References: <20230925144922.529963-1-pbonzini@redhat.com>
+Date: Tue, 26 Sep 2023 15:16:25 +0200
+In-Reply-To: <20230925144922.529963-1-pbonzini@redhat.com> (Paolo Bonzini's
+ message of "Mon, 25 Sep 2023 16:49:22 +0200")
+Message-ID: <8734z1qdli.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 22
+X-Spam_score: 2.2
+X-Spam_bar: ++
+X-Spam_report: (2.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,29 +81,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+I still get these:
 
-> On 26/09/2023 14.19, Markus Armbruster wrote:
->> Thomas Huth <thuth@redhat.com> writes:
->> 
->>> Rename the innermost variables to make the code compile
->>> without warnings when using -Wshadow=local.
->>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>
->> Clashes with patches from Philippe and Laurent:
->>
->>      [PATCH v2 05/22] target/m68k: Clean up local variable shadowing
->>      [PATCH] disas/m68k: clean up local variable shadowing
->>
->> You guys figure out how to combine them, please :)
->
-> Ok, then never mind about my patch.
-> Anyway, it's getting confusing what has already been fixed and what not ... could you please pick up all patches that are available so far and send a pull request for them?
-
-I'm collecting at https://repo.or.cz/qemu/armbru.git in branch
-shadow-next.  I'll send a new summary shortly.  I intend to send a PR,
-but first I need to collect R-bys and drop patches that aren't ready, if
-any.
+../target/i386/tcg/seg_helper.c: In function =E2=80=98switch_tss_ra=E2=80=
+=99:
+../target/i386/tcg/seg_helper.c:344:22: warning: declaration of =E2=80=98pt=
+r=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
+  344 |         target_ulong ptr;
+      |                      ^~~
+../target/i386/tcg/seg_helper.c:245:18: note: shadowed declaration is here
+  245 |     target_ulong ptr;
+      |                  ^~~
+../target/i386/tcg/seg_helper.c:345:18: warning: declaration of =E2=80=98e2=
+=E2=80=99 shadows a parameter [-Wshadow=3Dcompatible-local]
+  345 |         uint32_t e2;
+      |                  ^~
+../target/i386/tcg/seg_helper.c:235:48: note: shadowed declaration is here
+  235 |                          uint32_t e1, uint32_t e2, int source,
+      |                                       ~~~~~~~~~^~
+../target/i386/tcg/seg_helper.c:402:22: warning: declaration of =E2=80=98pt=
+r=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
+  402 |         target_ulong ptr;
+      |                      ^~~
+../target/i386/tcg/seg_helper.c:245:18: note: shadowed declaration is here
+  245 |     target_ulong ptr;
+      |                  ^~~
+../target/i386/tcg/seg_helper.c:403:18: warning: declaration of =E2=80=98e2=
+=E2=80=99 shadows a parameter [-Wshadow=3Dcompatible-local]
+  403 |         uint32_t e2;
+      |                  ^~
+../target/i386/tcg/seg_helper.c:235:48: note: shadowed declaration is here
+  235 |                          uint32_t e1, uint32_t e2, int source,
+      |                                       ~~~~~~~~~^~
 
 
