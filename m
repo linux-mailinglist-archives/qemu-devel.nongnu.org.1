@@ -2,96 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E627AEFDE
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 17:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B527AEFFA
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 17:49:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlADW-0006h6-T2; Tue, 26 Sep 2023 11:43:18 -0400
+	id 1qlAIc-00008y-Ka; Tue, 26 Sep 2023 11:48:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlADT-0006et-Iz
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:43:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qlADO-0003yg-SO
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:43:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695742989;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=0iE+IIv4XjhAyDSFuVdj9n26KdkGoA148A/fVZUTxe8=;
- b=GWntJ+S0aK25B1v6JGn2gjOUQHyzwuh4EeA0ncllSnZvYf5asOooVqUCwNsnfnKcJ8JVYl
- RMY8TEvelexIwT86wwjJ5OkHKlv8GUamSTssZaBAvhwVSME4gvQviIFvx9LNYbH8BVjXUR
- 6xjkIX+v53rA2u5JrT1kd24oUfmV9AI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-563-h-9qpDzFNYOhNoug2XF7RQ-1; Tue, 26 Sep 2023 11:43:07 -0400
-X-MC-Unique: h-9qpDzFNYOhNoug2XF7RQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-31f3eaa5c5eso6710213f8f.3
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 08:43:07 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qlAID-0008T7-J1
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:48:09 -0400
+Received: from mail-qt1-x833.google.com ([2607:f8b0:4864:20::833])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qlAI5-000563-Fj
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:48:09 -0400
+Received: by mail-qt1-x833.google.com with SMTP id
+ d75a77b69052e-418025bf4d6so35576531cf.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 08:47:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695743278; x=1696348078; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ai7lXObMnxhy9bvcI1TdDQKhjFvW7gMIHhLHtjwCfUk=;
+ b=UtzzHXsR7pohhGY7jEqlrQyIh/RSiLJD2D1zotvRnK8MSwj090atUQsVhzBKk+NFxC
+ 5hm73GnSmme6McSScTFyTokSukVICVY13MVnEl6LM0IksTACwp8l9bWD3DxRxlcwIyx/
+ +hem1UulzaflWqAF96TPGqN/ejdx/cgoFZd3c+bQRluvlNbjTWgTtOyHYDvLHMJLIx90
+ fPgBb4jKFw0cdJom0BMLX/dJexKiMn3j5AlizqgERzTr2u5e+/kYurVJnE5MlomZ0/jO
+ /tXcQcKIxwUMobhmTLEuxIfQQmVZ4Efh8Esr6xPt8PIsNCkk1Ej/XCgI4jgiQ2hpbaOB
+ ZYVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695742986; x=1696347786;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0iE+IIv4XjhAyDSFuVdj9n26KdkGoA148A/fVZUTxe8=;
- b=q8S3tTMGLbgyibBxWDoMd/9cdm5WdvVh3k1WotXBNiCG98+YvQp7FbMJrUvyVbWEes
- tX5EynYmV2Yc3dMaNp4mVQIajpq/Yyi7u7CRnmujvKxxq0jMS2RpHEgkA/DKa6+dOvve
- ESsoAbTIPzZpwKjGZ5CcIfaj5OXdUS9sOndT4DH5+Qt5dXWjrjtJfclF2VeAM/OZWjN5
- q+ODVvZRcAOrcCEOYDqMwigvHoVjwwzcs4pVeL06h3cUkjhBrIf+bOie0gLYNVYia9xn
- x4pJ/30XYUPRh/trxQKAxvH5Ci+fDtpqQ5xpjmTHS1Roo7QGo4O5SKWJQcl65WeFyJX3
- 1xLg==
-X-Gm-Message-State: AOJu0YyRGqqjau2R+lxhtozgm9a3vL5u+XFIf23NXpL17UndC/8k3enN
- VWaR0m11tbRFsfFbou0PE81fEQwOuvwXFbJ7asUhHbF6cV6DbEJImbatpd0Pz/P9qPnvM7iFF66
- 2dvnZMmHEmepOe/0=
-X-Received: by 2002:adf:f485:0:b0:31d:c3d2:4300 with SMTP id
- l5-20020adff485000000b0031dc3d24300mr9109161wro.71.1695742986241; 
- Tue, 26 Sep 2023 08:43:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHkqO/b1on/ra1vSm3DcsL6+cjCyZ5kF9ZIbPnTGxyHfE0bEgROENnNRtFw5W/CkUojr1pe1A==
-X-Received: by 2002:adf:f485:0:b0:31d:c3d2:4300 with SMTP id
- l5-20020adff485000000b0031dc3d24300mr9109147wro.71.1695742985918; 
- Tue, 26 Sep 2023 08:43:05 -0700 (PDT)
-Received: from ?IPV6:2001:b07:6468:f312:9af8:e5f5:7516:fa89?
- ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.googlemail.com with ESMTPSA id
- z5-20020a7bc7c5000000b004060f0a0fd5sm2881166wmk.13.2023.09.26.08.43.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Sep 2023 08:43:05 -0700 (PDT)
-Message-ID: <3ad9da3b-e91a-9c94-78a6-8c1550c943e9@redhat.com>
-Date: Tue, 26 Sep 2023 17:43:04 +0200
+ d=1e100.net; s=20230601; t=1695743278; x=1696348078;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=ai7lXObMnxhy9bvcI1TdDQKhjFvW7gMIHhLHtjwCfUk=;
+ b=NE1QutqQ7Pa6mcvhVbkWt9rXiV1WDtyZcGaH24vW6NTaR5GwC0O74vASAqqFre5NXx
+ PdfXQgXIMGkvlKOmuenjWyhFBws3OflauvvuaFK/3q91rkU7rujbyPNebsSduDNsvvs9
+ oRNYkmbHAF2nYHy2Vi0qXckcecuyfuDagc9Y1lluxYCa3Y6yV/23yXNKlvRHt2l1f8sS
+ 27teP/rg88lMpeJwfmWolvGRAEhwhkSWnyFwb9RqVPGRPUsgX7ZMMoLhhQAbbn5NhLKh
+ CZ3mug8FUlSsIYt5nOOEPoZkRWZKLtWseSER4mIGgGo2JRWea5/5OmLjIQKBI9oQgVQo
+ OFFw==
+X-Gm-Message-State: AOJu0YwSsatZrPxhe31ikyMmn093fB59T3g46Uhl0ySN+wrqyPPMV9ki
+ W8nq8kwa9dlTWtPYlpcMB/TWQWd7ZirP55kwhjg=
+X-Google-Smtp-Source: AGHT+IF6VXNydP5P20fLyuAbLEAuC2BZO/lleuAqIeE8P+DYgH3J1iQO6A93c54oDPD9Sr3oHdxXA3fUdJnDvXEu/Bk=
+X-Received: by 2002:a05:622a:1007:b0:406:9466:6962 with SMTP id
+ d7-20020a05622a100700b0040694666962mr10211672qte.61.1695743278361; Tue, 26
+ Sep 2023 08:47:58 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [v2] Help wanted for enabling -Wshadow=local
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, Brian Cain <bcain@quicinc.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-References: <87y1gtnggy.fsf@pond.sub.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-In-Reply-To: <87y1gtnggy.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+References: <20230926144149.715750-1-pbonzini@redhat.com>
+In-Reply-To: <20230926144149.715750-1-pbonzini@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 26 Sep 2023 19:47:47 +0400
+Message-ID: <CAJ+F1CK95hk-5BUiU2JyE4Y7J9z8KS305r_B391prjVLp9m=UQ@mail.gmail.com>
+Subject: Re: [PATCH] make-release: do not ship dtc sources
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::833;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x833.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,14 +86,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/26/23 16:42, Markus Armbruster wrote:
-> Overall Audio backends
-> M: Gerd Hoffmann<kraxel@redhat.com>
-> M: Marc-André Lureau<marcandre.lureau@redhat.com>
->      audio/audio.c
+On Tue, Sep 26, 2023 at 6:43=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
+ wrote:
+>
+> A new enough libfdt is included in all of Debian 11, Ubuntu 20.04
+> and MSYS2.  It has also been included for several minor releases
+> in Fedora and openSUSE Leap, as well as in CentOS.  Therefore
+> there is no need anymore to ship the sources together with the QEMU
+> tarballs.
+>
+> Keep the wrap file so that it can be used with --enable-download,
+> but do not ship the sources anymore with either archive-source.sh
+> or make-release.
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-I can handle this too, but I first need to send out my next pull request.
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-Paolo
+> ---
+>  meson.build               | 3 +++
+>  scripts/archive-source.sh | 2 +-
+>  scripts/make-release      | 2 +-
+>  3 files changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/meson.build b/meson.build
+> index 5139db2ff7c..81430ce2348 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -3070,6 +3070,9 @@ if fdt_required.length() > 0 or fdt_opt =3D=3D 'ena=
+bled'
+>    endif
+>
+>    if fdt_opt in ['enabled', 'auto', 'system']
+> +    if get_option('wrap_mode') =3D=3D 'nodownload'
+> +      fdt_opt =3D 'system'
+> +    endif
+>      fdt =3D cc.find_library('fdt', required: fdt_opt =3D=3D 'system')
+>      if fdt.found() and cc.links('''
+>         #include <libfdt.h>
+> diff --git a/scripts/archive-source.sh b/scripts/archive-source.sh
+> index 48996304910..65af8063e4b 100755
+> --- a/scripts/archive-source.sh
+> +++ b/scripts/archive-source.sh
+> @@ -26,7 +26,7 @@ sub_file=3D"${sub_tdir}/submodule.tar"
+>  # independent of what the developer currently has initialized
+>  # in their checkout, because the build environment is completely
+>  # different to the host OS.
+> -subprojects=3D"dtc keycodemapdb libvfio-user berkeley-softfloat-3 berkel=
+ey-testfloat-3"
+> +subprojects=3D"keycodemapdb libvfio-user berkeley-softfloat-3 berkeley-t=
+estfloat-3"
+>  sub_deinit=3D""
+>
+>  function cleanup() {
+> diff --git a/scripts/make-release b/scripts/make-release
+> index c5db87b3f91..9c570b87f4a 100755
+> --- a/scripts/make-release
+> +++ b/scripts/make-release
+> @@ -17,7 +17,7 @@ if [ $# -ne 2 ]; then
+>  fi
+>
+>  # Only include wraps that are invoked with subproject()
+> -SUBPROJECTS=3D"dtc libvfio-user keycodemapdb berkeley-softfloat-3 berkel=
+ey-testfloat-3"
+> +SUBPROJECTS=3D"libvfio-user keycodemapdb berkeley-softfloat-3 berkeley-t=
+estfloat-3"
+>
+>  src=3D"$1"
+>  version=3D"$2"
+> --
+> 2.41.0
+>
+>
 
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
