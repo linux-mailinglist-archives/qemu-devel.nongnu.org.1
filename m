@@ -2,91 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 779167AF66D
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 00:42:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4D87AF6BA
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 01:26:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlGkA-0005xz-UN; Tue, 26 Sep 2023 18:41:26 -0400
+	id 1qlHQj-0001Wj-Sm; Tue, 26 Sep 2023 19:25:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qlGk8-0005xJ-LY
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 18:41:24 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1qlHQg-0001WS-Gl
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:25:23 -0400
+Received: from wout5-smtp.messagingengine.com ([64.147.123.21])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonah.palmer@oracle.com>)
- id 1qlGk7-0005UA-3b
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 18:41:24 -0400
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
- by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38QLTKM2025086; Tue, 26 Sep 2023 22:41:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-03-30;
- bh=puPbkCPkmwjn8Qang7iM1mQ6NTsVvzo3LiVOXVLjxKg=;
- b=d3sFU47GVmBLglQcwZDftXoUzMxJX4Tic223fhLy8co1Okx1sOkAlgk+wS/U7Us27JRo
- j575LQXg7k8O75grNQpa0w2oD7S7i3jT7hZAzmYcEHQdm8bwkTWk4puGH5iGXBxjQd4D
- gONskN5zBvecp1LM2bUsWSHtuY7oy63dBfwf+caO7fD+Yy74dklYFJ96E9yNPJgPRuzv
- A8QmnZGeOhVuqgGPW+GdlxSBM5gmx+kM0T15oCEAneRfRU2UGS4gBvsYArfTIqKrFEr3
- MQPZ9ABCiPhuy7J/V/q3QLPRx4yDJ4Pv0mO0Zdy1u6tme6IXOnpekDRAGXgQWsGgAh8V gA== 
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9r2dg5fc-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Sep 2023 22:41:20 +0000
-Received: from pps.filterd
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 38QMPShm021222; Tue, 26 Sep 2023 22:41:19 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id
- 3t9pf74ca3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Sep 2023 22:41:19 +0000
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com
- (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QMfBNr022981;
- Tue, 26 Sep 2023 22:41:18 GMT
-Received: from jonah-ol8.us.oracle.com (dhcp-10-65-186-167.vpn.oracle.com
- [10.65.186.167])
- by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id
- 3t9pf74c6n-4; Tue, 26 Sep 2023 22:41:18 +0000
-From: Jonah Palmer <jonah.palmer@oracle.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, laurent@vivier.eu, mst@redhat.com,
- boris.ostrovsky@oracle.com, alex.bennee@linaro.org,
- viresh.kumar@linaro.org, armbru@redhat.com, pbonzini@redhat.com,
- berrange@redhat.com, eduardo@habkost.net, jonah.palmer@oracle.com
-Subject: [PATCH RESEND v5 3/3] vhost-user: move VhostUserProtocolFeature
- definition to header file
-Date: Tue, 26 Sep 2023 18:41:07 -0400
-Message-Id: <20230926224107.2951144-4-jonah.palmer@oracle.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230926224107.2951144-1-jonah.palmer@oracle.com>
-References: <20230926224107.2951144-1-jonah.palmer@oracle.com>
+ (Exim 4.90_1) (envelope-from <marmarek@invisiblethingslab.com>)
+ id 1qlHQd-0001oq-Jm
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:25:21 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+ by mailout.west.internal (Postfix) with ESMTP id D854F3200908;
+ Tue, 26 Sep 2023 19:25:15 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute5.internal (MEProxy); Tue, 26 Sep 2023 19:25:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+ :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+ :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+ 1695770715; x=1695857115; bh=z3SHp3HxuUJld5UuE86Yt0/XxvoKxu84Kdl
+ wpthvxMI=; b=ZV6KkiNMv2TVRZPFkePl3YXSMKX7apDi+9K6irJa1QLkvg2mb59
+ sfmzASOTM55axh28sG3B2tt4tSqXeGYsKzrZKw020qemybD40UWf2+wDFRnNXjex
+ VK5LdxupFKzFTbkBQB1wfkv3mEjwGY2+BehqEE6290HlWkKKQiVtNVM+61UWey5X
+ cWysV0Ji1WbabVQoJ/y6ACf9VzAI2ijG+3mFceTMZgFqx5f2pzMgFokHLt7lMU33
+ /qq24G90eFezLKavi0uARGo50hgnFLgyeOpQHFGi8wz5zwnQpnFwiCxl/o6oLb84
+ pMRDZWT1HJo6RrytOXmMhoNroRPYqEtN6Zg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; t=1695770715; x=1695857115; bh=z3SHp3HxuUJld
+ 5UuE86Yt0/XxvoKxu84KdlwpthvxMI=; b=EBr7mSBr5eBTy/QsXTovDkKgStDvx
+ 9oS8+t6mNtSIG4uJEZSuoDlaPrU8kykO4yDC6ZE0BmjoPrwkEBXwq0aAlQ+UjgcO
+ UxYtdU6HbMIM7O6WjhSbQ8wArciFpdR0du3ueGbqOKzj9npyn2wm1zzaxE4LFl5I
+ d6VnUEyvc38L/9WNdaGoP2JBSOm0ewdgPqP8xuNd0AZhagU0VjtdYaxkAyHUIRv1
+ 3VDNepwE28Q6tR51YJ2jRhWV/5n1b89bgW9LDCNMDEOsYmb/K4Eg2lMX3BSzwzhy
+ p7aNpb1nUoHGaqBqWPD9KM5Bg2eosSbo6SG03aQ7D8ASqoS7vRd5r72zQ==
+X-ME-Sender: <xms:WmgTZXBEdeAcMoHC3PMbyBrZpqRazj1abpzPIZSp1LjDbY_0G2QdkA>
+ <xme:WmgTZdjfoGyqXodjSxugnedt-eoUNGyTVXK-RJRivQnGkVlJeCZien2NCNT2ox3ex
+ UZkdMVjYkWQow>
+X-ME-Received: <xmr:WmgTZSm3G2w38DRmfzDDIFA6psm74UoZkW5Mj1zPm7pcuVx2lW_NO5WRNkrCNmsCXGUTlmOpqxu6Uyyk17Lq6H-xMUqWArDDNFY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtddugddvvdcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpeforghrvghk
+ ucforghrtgiihihkohifshhkihdqifpkrhgvtghkihcuoehmrghrmhgrrhgvkhesihhnvh
+ hishhisghlvghthhhinhhgshhlrggsrdgtohhmqeenucggtffrrghtthgvrhhnpefgudel
+ teefvefhfeehieetleeihfejhfeludevteetkeevtedtvdegueetfeejudenucevlhhush
+ htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmrghrmhgrrhgvkhes
+ ihhnvhhishhisghlvghthhhinhhgshhlrggsrdgtohhm
+X-ME-Proxy: <xmx:W2gTZZw-C5s8aq_0PZ0CcnGvQWCbk__U7CTAZ_oGoCA7pMXCL_GCaw>
+ <xmx:W2gTZcSUHVqkLfJ-brlGxPoOuOaP0L80Wy4bLYwJZIVMyt-PD98INg>
+ <xmx:W2gTZcYL14_e_M_dJ9whuQ0xpOdzOfq_uwVmwBHeSf4lBaKfzIo1og>
+ <xmx:W2gTZXf2VPYZHKkZ2xtd2ppL32k8RfHMnDJfKJefBbW-uDiG4PRU_A>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 26 Sep 2023 19:25:13 -0400 (EDT)
+Date: Wed, 27 Sep 2023 01:25:11 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>
+To: Anthony PERARD <anthony.perard@citrix.com>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+ Paul Durrant <paul@xen.org>,
+ "open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH 1/2] hw/xen/xen_pt: Call default handler only if no
+ custom one is set
+Message-ID: <ZRNoV+dvbj5gtxVN@mail-itl>
+References: <20221114192011.1539233-1-marmarek@invisiblethingslab.com>
+ <Y30DG96s9Ky1AUN0@perard.uk.xensource.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-09-26_15,2023-09-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- bulkscore=0 mlxscore=0
- adultscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2309260194
-X-Proofpoint-GUID: jHsim_5NbG7Z-9l9Q0zhkEYZaKTrBzbG
-X-Proofpoint-ORIG-GUID: jHsim_5NbG7Z-9l9Q0zhkEYZaKTrBzbG
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=jonah.palmer@oracle.com; helo=mx0b-00069f02.pphosted.com
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="KAOaOS9jBIoMGKW2"
+Content-Disposition: inline
+In-Reply-To: <Y30DG96s9Ky1AUN0@perard.uk.xensource.com>
+Received-SPF: none client-ip=64.147.123.21;
+ envelope-from=marmarek@invisiblethingslab.com;
+ helo=wout5-smtp.messagingengine.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,144 +108,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move the definition of VhostUserProtocolFeature to
-include/hw/virtio/vhost-user.h.
 
-Remove previous definitions in hw/scsi/vhost-user-scsi.c,
-hw/virtio/vhost-user.c, and hw/virtio/virtio-qmp.c.
+--KAOaOS9jBIoMGKW2
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 Sep 2023 01:25:11 +0200
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Anthony PERARD <anthony.perard@citrix.com>
+Cc: qemu-devel@nongnu.org, Stefano Stabellini <sstabellini@kernel.org>,
+	Paul Durrant <paul@xen.org>,
+	"open list:X86 Xen CPUs" <xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH 1/2] hw/xen/xen_pt: Call default handler only if no
+ custom one is set
 
-Previously there were 3 separate definitions of this over 3 different
-files. Now only 1 definition of this will be present for these 3 files.
+On Tue, Nov 22, 2022 at 05:12:59PM +0000, Anthony PERARD wrote:
+> On Mon, Nov 14, 2022 at 08:20:10PM +0100, Marek Marczykowski-G=C3=B3recki=
+ wrote:
+> > diff --git a/hw/xen/xen_pt.c b/hw/xen/xen_pt.c
+> > index 0ec7e52183..269bd26109 100644
+> > --- a/hw/xen/xen_pt.c
+> > +++ b/hw/xen/xen_pt.c
+> > @@ -255,6 +255,7 @@ static void xen_pt_pci_write_config(PCIDevice *d, u=
+int32_t addr,
+> >      uint32_t find_addr =3D addr;
+> >      XenPTRegInfo *reg =3D NULL;
+> >      bool wp_flag =3D false;
+> > +    uint32_t emul_mask =3D 0, write_val;
+> > =20
+> >      if (xen_pt_pci_config_access_check(d, addr, len)) {
+> >          return;
+> > @@ -310,7 +311,6 @@ static void xen_pt_pci_write_config(PCIDevice *d, u=
+int32_t addr,
+> >      }
+> > =20
+> >      memory_region_transaction_begin();
+> > -    pci_default_write_config(d, addr, val, len);
+> > =20
+> >      /* adjust the read and write value to appropriate CFC-CFF window */
+> >      read_val <<=3D (addr & 3) << 3;
+> > @@ -370,6 +370,8 @@ static void xen_pt_pci_write_config(PCIDevice *d, u=
+int32_t addr,
+> >                  return;
+> >              }
+> > =20
+> > +            emul_mask |=3D ( (1 << (reg->size * 8) ) - 1 ) << ((find_a=
+ddr & 3) * 8);
+> > +
+> >              /* calculate next address to find */
+> >              emul_len -=3D reg->size;
+> >              if (emul_len > 0) {
+> > @@ -396,6 +398,24 @@ static void xen_pt_pci_write_config(PCIDevice *d, =
+uint32_t addr,
+> >      /* need to shift back before passing them to xen_host_pci_set_bloc=
+k. */
+> >      val >>=3D (addr & 3) << 3;
+> > =20
+> > +    /* store emulated registers that didn't have specific hooks */
+> > +    write_val =3D val;
+> > +    for (index =3D 0; emul_mask; index +=3D emul_len) {
+>=20
+> `index` isn't used, was it meant to be use for something?
 
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
----
- hw/scsi/vhost-user-scsi.c      |  4 ----
- hw/virtio/vhost-user.c         | 21 ---------------------
- hw/virtio/virtio-qmp.c         | 22 +---------------------
- include/hw/virtio/vhost-user.h | 21 +++++++++++++++++++++
- 4 files changed, 22 insertions(+), 46 deletions(-)
+Yes, it should be used as addr + index below.
 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index ee99b19e7a..df6b66cc1a 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -39,10 +39,6 @@ static const int user_feature_bits[] = {
-     VHOST_INVALID_FEATURE_BIT
- };
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--};
--
- static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..a096335921 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -56,27 +56,6 @@
-  */
- #define VHOST_USER_MAX_CONFIG_SIZE 256
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- #define VHOST_USER_PROTOCOL_FEATURE_MASK ((1 << VHOST_USER_PROTOCOL_F_MAX) - 1)
- 
- typedef enum VhostUserRequest {
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 3431711db5..1dd96ed20f 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -17,6 +17,7 @@
- #include "qapi/qapi-commands-qom.h"
- #include "qapi/qmp/qobject.h"
- #include "qapi/qmp/qjson.h"
-+#include "hw/virtio/vhost-user.h"
- 
- #include "standard-headers/linux/virtio_ids.h"
- #include "standard-headers/linux/vhost_types.h"
-@@ -37,27 +38,6 @@
- #define FEATURE_ENTRY(name, desc) (qmp_virtio_feature_map_t) \
-     { .virtio_bit = name, .feature_desc = desc }
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- /* Virtio transport features mapping */
- static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-     /* Virtio device transport features */
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 191216a74f..80e2b4a463 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -11,6 +11,27 @@
- #include "chardev/char-fe.h"
- #include "hw/virtio/virtio.h"
- 
-+enum VhostUserProtocolFeature {
-+    VHOST_USER_PROTOCOL_F_MQ = 0,
-+    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
-+    VHOST_USER_PROTOCOL_F_RARP = 2,
-+    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
-+    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
-+    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
-+    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
-+    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
-+    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
-+    VHOST_USER_PROTOCOL_F_CONFIG = 9,
-+    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
-+    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
-+    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
-+    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
-+    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-+    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
-+    VHOST_USER_PROTOCOL_F_STATUS = 16,
-+    VHOST_USER_PROTOCOL_F_MAX
-+};
-+
- /**
-  * VhostUserHostNotifier - notifier information for one queue
-  * @rcu: rcu_head for cleanup
--- 
-2.39.3
+> > +        emul_len =3D 0;
+> > +        while (emul_mask & 0xff) {
+> > +            emul_len++;
+>=20
+> This seems to count the number of byte that have a hook
+> (xen_pt_find_reg() found a `reg_entry`).
+> This loop should count instead the number of bytes for which no
+> `reg_entry` have been found, right? Shouldn't the loop count when a byte
+> in emul_mask is unset?
 
+No, see the patch description - only declared registers should be saved.
+The patch title is misleading, I'll clarify it.
+
+> > +            emul_mask >>=3D 8;
+> > +        }
+> > +        if (emul_len) {
+> > +            uint32_t mask =3D ((1 << (emul_len * 8)) - 1);
+> > +            pci_default_write_config(d, addr, write_val & mask, emul_l=
+en);
+>=20
+> `addr` isn't updated in the loop, aren't we going to write bytes to the
+> wrong place? If for example "emul_mask =3D=3D 0x00ff00ff" ?
+
+Indeed, it should be addr + index.
+
+> > +            write_val >>=3D emul_len * 8;
+> > +        } else {
+> > +            emul_mask >>=3D 8;
+> > +            write_val >>=3D 8;
+> > +        }
+> > +    }
+>=20
+> Thanks,
+>=20
+> --=20
+> Anthony PERARD
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--KAOaOS9jBIoMGKW2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmUTaFcACgkQ24/THMrX
+1yxIMggAjmFai6SJm9RKNfxscWSdENDYpLum2YHLlNE26rRvV7CDdOW1ceW6QTxN
+VT746C2zA6fL/pXkXQlCXP1a3s2qWx7fL6FX8g07DMwzawcySHuPbgmKB+41bcEM
+mo7xpHAp/+Hd6+GOVY09mCXtJBZXKG68QIGHhyKtfQ4V9AOnFa9XEfYO1fbFywEf
+DcVYWv2fJopi4ZR+mj47kvDl/HdT7VY+xHKU8KXIhyKtcnUO0kUI8AVvSgoZVKoP
+KsqdpPRSOI/g0r29S8umIF3py+WtPG/GQ4NuwTpP0lgT0maUXXUm/759gqCcGT2y
+UzeBUBbpVX4/dOupOf2Lw5fv9Y8x0w==
+=KVPc
+-----END PGP SIGNATURE-----
+
+--KAOaOS9jBIoMGKW2--
 
