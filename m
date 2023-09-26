@@ -2,63 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9937AEA25
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E08927AE9FD
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:09:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql55z-0001Wu-B4; Tue, 26 Sep 2023 06:15:11 -0400
+	id 1ql50d-0001vw-UV; Tue, 26 Sep 2023 06:09:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql55t-0001L2-5N; Tue, 26 Sep 2023 06:15:05 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql508-0001dI-9S
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:09:09 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql55r-0005cO-2F; Tue, 26 Sep 2023 06:15:04 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwZ14tbBz6K6wQ;
- Tue, 26 Sep 2023 18:13:45 +0800 (CST)
-Received: from A190218597.china.huawei.com (10.126.174.16) by
- lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:14:41 +0100
-To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
- <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
- <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
- <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
- <philmd@linaro.org>, <eric.auger@redhat.com>, <will@kernel.org>,
- <ardb@kernel.org>, <oliver.upton@linux.dev>, <pbonzini@redhat.com>,
- <mst@redhat.com>, <gshan@redhat.com>, <rafael@kernel.org>,
- <borntraeger@linux.ibm.com>, <alex.bennee@linaro.org>,
- <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
- <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
- <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
- <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
- <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
- <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 31/37] physmem,
- gdbstub: Common helping funcs/changes to *unrealize* vCPU
-Date: Tue, 26 Sep 2023 11:04:30 +0100
-Message-ID: <20230926100436.28284-32-salil.mehta@huawei.com>
-X-Mailer: git-send-email 2.8.3
-In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
-References: <20230926100436.28284-1-salil.mehta@huawei.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql505-0004Qb-D0
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:09:07 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:5429:0:640:6285:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 6A4B261151;
+ Tue, 26 Sep 2023 13:09:00 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
+ [2a02:6b8:b081:b41d::1:39])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id w8Mn6g0Oma60-MTISgXtM; Tue, 26 Sep 2023 13:08:59 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695722939;
+ bh=TgtlvIw7o3qmAf8D/vVz0ykzcV07mhj01xMEr3bZSq8=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=1mn+yS0owBsfMKe1tLEJx+hmeq17kr3W2emhsxtMyh31Y0WJ/0ireMjf79wWoEQGD
+ 02bd8RjRCatEqfF/aMjXEYLKIkD0oDO43iJtxn94dblsFlR0Ue8poheowHyCFqh67I
+ OiKRfdDMYtS/9kRkSN+4bf5IkFJBYS+95fQ53p6U=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <c8da03cb-ab5f-9104-0ddd-0f04080f55db@yandex-team.ru>
+Date: Tue, 26 Sep 2023 13:08:58 +0300
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.126.174.16]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- lhrpeml500001.china.huawei.com (7.191.163.213)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 05/12] device_tree: qmp_dumpdtb(): stronger assertion
+Content-Language: en-US
+To: Alistair Francis <alistair23@gmail.com>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
+ Alistair Francis <alistair.francis@wdc.com>,
+ David Gibson <david@gibson.dropbear.id.au>
+References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
+ <20230925194040.68592-6-vsementsov@yandex-team.ru>
+ <CAKmqyKM6_2uxa7q9XmRZA8e6dc7D3rmZGW2yPt8c9andOR4hCQ@mail.gmail.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <CAKmqyKM6_2uxa7q9XmRZA8e6dc7D3rmZGW2yPt8c9andOR4hCQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -71,137 +76,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Supporting vCPU Hotplug for ARM arch also means introducing new functionality of
-unrealizing the ARMCPU. This requires some new common functions.
+On 26.09.23 04:26, Alistair Francis wrote:
+> On Tue, Sep 26, 2023 at 6:42 AM Vladimir Sementsov-Ogievskiy
+> <vsementsov@yandex-team.ru> wrote:
+>>
+>> Coverity mark this size, got from the buffer as untrasted value, it's
+> 
+> s/untrasted/untrusted/g
 
-Defining them as part of architecture independent change so that this code could
-be reused by other interested parties.
+will fix.
 
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
----
- gdbstub/gdbstub.c         | 13 +++++++++++++
- include/exec/cpu-common.h |  8 ++++++++
- include/exec/gdbstub.h    |  1 +
- include/hw/core/cpu.h     |  1 +
- softmmu/physmem.c         | 25 +++++++++++++++++++++++++
- 5 files changed, 48 insertions(+)
+> 
+>> not good to use it as length when writing to file. Make the assertion
+>> more strict to also check upper bound.
+>>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+> 
+> Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> 
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 5f28d5cf57..ddbcb4f115 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -491,6 +491,19 @@ void gdb_register_coprocessor(CPUState *cpu,
-     }
- }
- 
-+void gdb_unregister_coprocessor_all(CPUState *cpu)
-+{
-+    GDBRegisterState *s, *p;
-+
-+    p = cpu->gdb_regs;
-+    while (p) {
-+        s = p;
-+        p = p->next;
-+        g_free(s);
-+    }
-+    cpu->gdb_regs = NULL;
-+}
-+
- static void gdb_process_breakpoint_remove_all(GDBProcess *p)
- {
-     CPUState *cpu = gdb_get_first_cpu_in_process(p);
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 87dc9a752c..27cd4d32b1 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -120,6 +120,14 @@ size_t qemu_ram_pagesize_largest(void);
-  */
- void cpu_address_space_init(CPUState *cpu, int asidx,
-                             const char *prefix, MemoryRegion *mr);
-+/**
-+ * cpu_address_space_destroy:
-+ * @cpu: CPU for which address space needs to be destroyed
-+ * @asidx: integer index of this address space
-+ *
-+ * Note that with KVM only one address space is supported.
-+ */
-+void cpu_address_space_destroy(CPUState *cpu, int asidx);
- 
- void cpu_physical_memory_rw(hwaddr addr, void *buf,
-                             hwaddr len, bool is_write);
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 7d743fe1e9..a22f0875e2 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -17,6 +17,7 @@ typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos);
-+void gdb_unregister_coprocessor_all(CPUState *cpu);
- 
- /**
-  * gdbserver_start: start the gdb server
-diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-index dab572c9bd..ffd815a0d8 100644
---- a/include/hw/core/cpu.h
-+++ b/include/hw/core/cpu.h
-@@ -366,6 +366,7 @@ struct CPUState {
-     QSIMPLEQ_HEAD(, qemu_work_item) work_list;
- 
-     CPUAddressSpace *cpu_ases;
-+    int cpu_ases_ref_count;
-     int num_ases;
-     AddressSpace *as;
-     MemoryRegion *memory;
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 3df73542e1..a93ae783af 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -762,6 +762,7 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
- 
-     if (!cpu->cpu_ases) {
-         cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
-+        cpu->cpu_ases_ref_count = cpu->num_ases;
-     }
- 
-     newas = &cpu->cpu_ases[asidx];
-@@ -775,6 +776,30 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
-     }
- }
- 
-+void cpu_address_space_destroy(CPUState *cpu, int asidx)
-+{
-+    CPUAddressSpace *cpuas;
-+
-+    assert(asidx < cpu->num_ases);
-+    assert(asidx == 0 || !kvm_enabled());
-+    assert(cpu->cpu_ases);
-+
-+    cpuas = &cpu->cpu_ases[asidx];
-+    if (tcg_enabled()) {
-+        memory_listener_unregister(&cpuas->tcg_as_listener);
-+    }
-+
-+    address_space_destroy(cpuas->as);
-+    g_free_rcu(cpuas->as, rcu);
-+
-+    if (cpu->cpu_ases_ref_count == 1) {
-+        g_free(cpu->cpu_ases);
-+        cpu->cpu_ases = NULL;
-+    }
-+
-+    cpu->cpu_ases_ref_count--;
-+}
-+
- AddressSpace *cpu_get_address_space(CPUState *cpu, int asidx)
- {
-     /* Return the AddressSpace corresponding to the specified index */
+Thanks!
+
+> 
+>> ---
+>>   softmmu/device_tree.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/softmmu/device_tree.c b/softmmu/device_tree.c
+>> index 30aa3aea9f..adc4236e21 100644
+>> --- a/softmmu/device_tree.c
+>> +++ b/softmmu/device_tree.c
+>> @@ -660,7 +660,7 @@ void qmp_dumpdtb(const char *filename, Error **errp)
+>>
+>>       size = fdt_totalsize(current_machine->fdt);
+>>
+>> -    g_assert(size > 0);
+>> +    g_assert(size > 0 && size <= FDT_MAX_SIZE);
+>>
+>>       if (!g_file_set_contents(filename, current_machine->fdt, size, &err)) {
+>>           error_setg(errp, "Error saving FDT to file %s: %s",
+>> --
+>> 2.34.1
+>>
+>>
+
 -- 
-2.34.1
+Best regards,
+Vladimir
 
 
