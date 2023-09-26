@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1FF37AF07E
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BC37AF080
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:19:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlAmB-0002co-Kb; Tue, 26 Sep 2023 12:19:07 -0400
+	id 1qlAmI-0002eD-U7; Tue, 26 Sep 2023 12:19:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qlAm9-0002cS-Mh
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:05 -0400
-Received: from mx0b-00069f02.pphosted.com ([205.220.177.32])
+ id 1qlAmB-0002dH-QS
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:07 -0400
+Received: from mx0a-00069f02.pphosted.com ([205.220.165.32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <joao.m.martins@oracle.com>)
- id 1qlAm6-0004qk-9J
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:05 -0400
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+ id 1qlAm9-0004sc-QA
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:19:07 -0400
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
  by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 38QFOGGh012299; Tue, 26 Sep 2023 16:18:59 GMT
+ 38QFOqDc016260; Tue, 26 Sep 2023 16:19:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com;
  h=from : to : cc :
  subject : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=corp-2023-03-30;
- bh=Xr36l8WWm2fA0qQlHeA3gszn8JlFpazIANHUFIyRB2s=;
- b=v10LzEDwLjOmph5k2bzdj75dUOCCO87mM/yyK18R68dhFTeQ/qbmWZb4ESfVCTCWPdVQ
- 0mrdQniLRxd422feDnkD3lHb5yTv+Z/6+l0AUnHjlD30cOTASRL6IwW1HWZ0PdnYFcqp
- hLUtxGXWiKshsLkFiaaIX8GAlFghbLj5TjzHiL1nSIUyjDWdE1b/00gsVvt8rr8x8AuK
- Nosuh+TyRHUN4/nnmtWrk3VSZ/bbXannZ33oOP9qz/gYa2RKN+eG65xoli4rR1qJyCTz
- POdxSqwl8zrTB0k66F0jQvMhaXlBuELZFBk2eerSKdkV9DTuBaZ9k8VJsjC3qHZNYtJ/ ng== 
+ bh=ASmsvenoKJLPjaK3+00293q6yYqQ6YqFbMy57xo70lM=;
+ b=n3KYTulSBcsR4AZCKf9Q2ijQwuanXEUy306PEuhmcVZ0BrDLhvHuUZV9SNwIRxIqLi8n
+ gZBwGU7dIqKaur0A8u3G1+tPueY4zhTS0s1wQ43FKLi481xxqKFTbsyqLpoSnV+gye1d
+ aJqUfFtZQAhytQB6S2m8rgN8nCDHUeO6J89+RbUfo853zzbSoYgoDyv2A8VTLh7OVmkf
+ k5tofqI2lEBguUVJAxpEaP7A9kgUkCXj6jEgmUo6wspia+zZtfCjc1+aHXOj7zwqDQzt
+ lATAtUumx1J89FeyxM7sb7sMJQQ1bGAxyn3CO/c7M84U2kXDb3vKUHAlXx4LI0yH470G nw== 
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
- by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9pee6yve-1
+ by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3t9qwbeysm-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Sep 2023 16:18:59 +0000
+ Tue, 26 Sep 2023 16:19:03 +0000
 Received: from pps.filterd
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19)
- with ESMTP id 38QFTek5039482; Tue, 26 Sep 2023 16:18:59 GMT
+ with ESMTP id 38QFSbA5039378; Tue, 26 Sep 2023 16:19:02 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id
- 3t9pfceaek-1
+ 3t9pfceahf-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 26 Sep 2023 16:18:59 +0000
+ Tue, 26 Sep 2023 16:19:01 +0000
 Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com
  (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QGIt9r007977;
- Tue, 26 Sep 2023 16:18:58 GMT
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38QGIt9t007977;
+ Tue, 26 Sep 2023 16:19:01 GMT
 Received: from joaomart-mac.uk.oracle.com (dhcp-10-175-210-190.vpn.oracle.com
  [10.175.210.190])
  by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id
- 3t9pfcea8h-2; Tue, 26 Sep 2023 16:18:58 +0000
+ 3t9pfcea8h-3; Tue, 26 Sep 2023 16:19:01 +0000
 From: Joao Martins <joao.m.martins@oracle.com>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -61,9 +61,9 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  Avihai Horon <avihaih@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
  "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
  Joao Martins <joao.m.martins@oracle.com>
-Subject: [PATCH 1/5] migration: Store downtime timestamps in an array
-Date: Tue, 26 Sep 2023 17:18:37 +0100
-Message-Id: <20230926161841.98464-2-joao.m.martins@oracle.com>
+Subject: [PATCH 2/5] migration: Collect more timestamps during switchover
+Date: Tue, 26 Sep 2023 17:18:38 +0100
+Message-Id: <20230926161841.98464-3-joao.m.martins@oracle.com>
 In-Reply-To: <20230926161841.98464-1-joao.m.martins@oracle.com>
 References: <20230926161841.98464-1-joao.m.martins@oracle.com>
 MIME-Version: 1.0
@@ -71,15 +71,15 @@ Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-09-26_13,2023-09-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=821
  bulkscore=0
  suspectscore=0 adultscore=0 phishscore=0 mlxscore=0 spamscore=0
  malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2309260143
-X-Proofpoint-ORIG-GUID: 9H6ZoGZX7TF40KUkOOkTCzVvqI1ofx6E
-X-Proofpoint-GUID: 9H6ZoGZX7TF40KUkOOkTCzVvqI1ofx6E
-Received-SPF: pass client-ip=205.220.177.32;
- envelope-from=joao.m.martins@oracle.com; helo=mx0b-00069f02.pphosted.com
+X-Proofpoint-GUID: W1HvVASqUqA9uDeFo9XhKvlIUan4VRqx
+X-Proofpoint-ORIG-GUID: W1HvVASqUqA9uDeFo9XhKvlIUan4VRqx
+Received-SPF: pass client-ip=205.220.165.32;
+ envelope-from=joao.m.martins@oracle.com; helo=mx0a-00069f02.pphosted.com
 X-Spam_score_int: -27
 X-Spam_score: -2.8
 X-Spam_bar: --
@@ -102,131 +102,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Right now downtime_start is stored in MigrationState.
+In addition to the start of switchover (previously @downtime_start),
+add other timestamps during saving of state and return path.
 
-In preparation to having more downtime timestamps during
-switchover, move downtime_start to an array namely, @timestamp.
-
-Add a setter/getter surrounding which timestamps to record,
-to make it easier to spread to various migration functions.
+For precopy migration, it should be able to capture the principal
+steps of switchover. Resume-side downtime is sadly only possible when
+return path is enabled.
 
 Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 ---
- qapi/migration.json   | 14 ++++++++++++++
- migration/migration.h |  7 +++++--
- migration/migration.c | 24 ++++++++++++++++++++----
- 3 files changed, 39 insertions(+), 6 deletions(-)
+ qapi/migration.json   | 16 +++++++++++++++-
+ migration/migration.c |  5 +++++
+ migration/savevm.c    |  2 ++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/qapi/migration.json b/qapi/migration.json
-index 8843e74b59c7..b836cc881d33 100644
+index b836cc881d33..2d91fbcb22ff 100644
 --- a/qapi/migration.json
 +++ b/qapi/migration.json
-@@ -190,6 +190,20 @@
- { 'struct': 'VfioStats',
-   'data': {'transferred': 'int' } }
- 
-+##
-+# @MigrationDowntime:
+@@ -199,10 +199,24 @@
+ # @start:Timestamp taken at the start of the switchover right before
+ #        we stop the VM.
+ #
++# @stop: Timestamp taken after stopping the VM.
 +#
-+# An enumeration of downtime timestamps for all
-+# steps of the switchover.
++# @precopy-iterable: Timestamp taken after copying all iterable state
++#                    in stop copy phase.
 +#
-+# @start:Timestamp taken at the start of the switchover right before
-+#        we stop the VM.
++# @precopy-noniterable: Timestamp taken after copying all non iterable
++#                       state in stop copy phase.
 +#
-+# Since: 8.2
-+##
-+{ 'enum': 'MigrationDowntime',
-+  'data': [ 'start' ] }
++# @resume-return-path: Timestamp taken after return path has finished
++#                      migration on destination. It is zero if
++#                      'return-path' is not enabled.
++#
+ # Since: 8.2
+ ##
+ { 'enum': 'MigrationDowntime',
+-  'data': [ 'start' ] }
++  'data': [ 'start', 'stop', 'precopy-iterable', 'precopy-noniterable',
++            'resume-return-path' ] }
 +
+ 
  ##
  # @MigrationInfo:
- #
-diff --git a/migration/migration.h b/migration/migration.h
-index c390500604b6..180dc31c5306 100644
---- a/migration/migration.h
-+++ b/migration/migration.h
-@@ -319,8 +319,8 @@ struct MigrationState {
-     int64_t start_time;
-     /* Total time used by latest migration (ms) */
-     int64_t total_time;
--    /* Timestamp when VM is down (ms) to migrate the last stuff */
--    int64_t downtime_start;
-+    /* Timestamps e.g. when VM is down (ms) to migrate the last stuff */
-+    int64_t timestamp[MIGRATION_DOWNTIME__MAX];
-     int64_t downtime;
-     int64_t expected_downtime;
-     bool capabilities[MIGRATION_CAPABILITY__MAX];
-@@ -516,4 +516,7 @@ void migration_populate_vfio_info(MigrationInfo *info);
- void migration_reset_vfio_bytes_transferred(void);
- void postcopy_temp_page_reset(PostcopyTmpPage *tmp_page);
- 
-+void migration_set_timestamp(MigrationDowntime tm);
-+int64_t migration_get_timestamp(MigrationDowntime tm);
-+
- #endif
 diff --git a/migration/migration.c b/migration/migration.c
-index d61e5727429a..dd955c61acc7 100644
+index dd955c61acc7..d06840024a1e 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2312,6 +2312,21 @@ static int migration_maybe_pause(MigrationState *s,
-     return s->state == new_state ? 0 : -EINVAL;
- }
+@@ -2348,6 +2348,8 @@ static void migration_completion(MigrationState *s)
  
-+void migration_set_timestamp(MigrationDowntime type)
-+{
-+    MigrationState *s = migrate_get_current();
+         ret = vm_stop_force_state(RUN_STATE_FINISH_MIGRATE);
+         trace_migration_completion_vm_stop(ret);
++        migration_set_timestamp(MIGRATION_DOWNTIME_STOP);
 +
-+    s->timestamp[type] = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-+}
+         if (ret >= 0) {
+             ret = migration_maybe_pause(s, &current_active_state,
+                                         MIGRATION_STATUS_DEVICE);
+@@ -2401,6 +2403,7 @@ static void migration_completion(MigrationState *s)
+         trace_migration_return_path_end_before();
+         rp_error = await_return_path_close_on_source(s);
+         trace_migration_return_path_end_after(rp_error);
++        migration_set_timestamp(MIGRATION_DOWNTIME_RESUME_RETURN_PATH);
+         if (rp_error) {
+             goto fail;
+         }
+@@ -3166,6 +3169,8 @@ static void *bg_migration_thread(void *opaque)
+     if (vm_stop_force_state(RUN_STATE_PAUSED)) {
+         goto fail;
+     }
++    migration_set_timestamp(MIGRATION_DOWNTIME_STOP);
 +
-+int64_t migration_get_timestamp(MigrationDowntime type)
-+{
-+    MigrationState *s = migrate_get_current();
-+
-+    return s->timestamp[type];
-+}
-+
-+
- /**
-  * migration_completion: Used by migration_thread when there's not much left.
-  *   The caller 'breaks' the loop when this returns.
-@@ -2325,7 +2340,7 @@ static void migration_completion(MigrationState *s)
- 
-     if (s->state == MIGRATION_STATUS_ACTIVE) {
-         qemu_mutex_lock_iothread();
--        s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-+        migration_set_timestamp(MIGRATION_DOWNTIME_START);
-         qemu_system_wakeup_request(QEMU_WAKEUP_REASON_OTHER, NULL);
- 
-         s->vm_old_state = runstate_get();
-@@ -2670,7 +2685,7 @@ static void migration_calculate_complete(MigrationState *s)
-          * It's still not set, so we are precopy migration.  For
-          * postcopy, downtime is calculated during postcopy_start().
-          */
--        s->downtime = end_time - s->downtime_start;
-+        s->downtime = end_time - migration_get_timestamp(MIGRATION_DOWNTIME_START);
+     /*
+      * Put vCPUs in sync with shadow context structures, then
+      * save their state to channel-buffer along with devices.
+diff --git a/migration/savevm.c b/migration/savevm.c
+index bb3e99194c60..e93701ff2393 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -1468,6 +1468,7 @@ int qemu_savevm_state_complete_precopy_iterable(QEMUFile *f, bool in_postcopy)
+         }
      }
  
-     transfer_time = s->total_time - s->setup_time;
-@@ -3069,7 +3084,8 @@ static void bg_migration_vm_start_bh(void *opaque)
-     s->vm_start_bh = NULL;
- 
-     vm_start();
--    s->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) - s->downtime_start;
-+    s->downtime = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) -
-+             migration_get_timestamp(MIGRATION_DOWNTIME_START);
++    migration_set_timestamp(MIGRATION_DOWNTIME_PRECOPY_ITERABLE);
+     return 0;
  }
  
- /**
-@@ -3134,7 +3150,7 @@ static void *bg_migration_thread(void *opaque)
-     s->setup_time = qemu_clock_get_ms(QEMU_CLOCK_HOST) - setup_start;
+@@ -1524,6 +1525,7 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+     json_writer_free(vmdesc);
+     ms->vmdesc = NULL;
  
-     trace_migration_thread_setup_complete();
--    s->downtime_start = qemu_clock_get_ms(QEMU_CLOCK_REALTIME);
-+    migration_set_timestamp(MIGRATION_DOWNTIME_START);
- 
-     qemu_mutex_lock_iothread();
++    migration_set_timestamp(MIGRATION_DOWNTIME_PRECOPY_NONITERABLE);
+     return 0;
+ }
  
 -- 
 2.39.3
