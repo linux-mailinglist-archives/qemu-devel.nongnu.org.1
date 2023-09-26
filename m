@@ -2,70 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF217AEE80
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 16:43:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE687AEE83
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 16:45:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql9H1-0000Kw-1o; Tue, 26 Sep 2023 10:42:52 -0400
+	id 1ql9JZ-00025v-L8; Tue, 26 Sep 2023 10:45:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql9Gt-0000KW-Vh
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:42:45 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ql9JV-00025Y-1o
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:45:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1ql9Gr-0005sN-Mn
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:42:43 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1ql9JT-0006X8-09
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:45:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695739361;
+ s=mimecast20190719; t=1695739522;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=mtjjTnUerucCiyNIMPJeYAwJdtWoG3/3/FvlOkMVhzo=;
- b=XmTyzCvyaajR4SsD36CGwzNebLyDPE8IcRJbTIW/chXryUZhxNLA0yUStQ4yGnVWhfyRSB
- ajdT1yW5brl6xVsQ9T0gz7PQzqlQ55xcjt+wNHGsbxNuedSaOL0dhJGEjeOGW/ZcrUIemS
- RZ4gyelKFkXaXSibD/J2/Ts2oYBrTik=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-602-_AZAL7JgPJq_gGrgRPSc5w-1; Tue, 26 Sep 2023 10:42:39 -0400
-X-MC-Unique: _AZAL7JgPJq_gGrgRPSc5w-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C49E83816CA5;
- Tue, 26 Sep 2023 14:42:38 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 802B01004058;
- Tue, 26 Sep 2023 14:42:38 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5EB0221E6900; Tue, 26 Sep 2023 16:42:37 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Brian Cain <bcain@quicinc.com>, Gerd Hoffmann <kraxel@redhat.com>, Jason
- Wang <jasowang@redhat.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>, Michael S. Tsirkin <mst@redhat.com>, Paolo
- Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [v2] Help wanted for enabling -Wshadow=local
-Date: Tue, 26 Sep 2023 16:42:37 +0200
-Message-ID: <87y1gtnggy.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ in-reply-to:in-reply-to:references:references;
+ bh=Jo1jF6Tz2JEmfw/m+d4sLfTT/oMF3LY7OkcfOdl40lQ=;
+ b=W/h/5NAMLmdaiS8EYU2dgprFnpt79X3nlKjcS3QVfEr19BJARjG9SRRedImjgf9tQ0nvhC
+ /FBMx1AD1A3ZJxi0S5qfmVoiRQ8t8YT6XLjYYf/+xjfyCLCOUGnPlvCm6Zr0UdatCd0Nqt
+ wDNgMzRqsQ1KMN5stFGQn2s74RkFTP4=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-274-1_jTRiygMdiyaWgc6TszEA-1; Tue, 26 Sep 2023 10:45:19 -0400
+X-MC-Unique: 1_jTRiygMdiyaWgc6TszEA-1
+Received: by mail-pj1-f71.google.com with SMTP id
+ 98e67ed59e1d1-2746ce771f7so8527547a91.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 07:45:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695739518; x=1696344318;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Jo1jF6Tz2JEmfw/m+d4sLfTT/oMF3LY7OkcfOdl40lQ=;
+ b=RQaFF4vRg/wcX3vwl8htyBiRIGnqrHcVdNRtBit4hDMR4lSTpFoKHrXFTJJI1XkVkc
+ TrY1ldxAQP1u47KxBeXb+M/h90nMt1QLm/B2PZRvgMvI8rwVEpJtPt6GcbKIUJ/jK3e7
+ +1qxfMHXfLnDRCvJ3LwjYYBiDnFLFuVcxLsGdM0zxOgLyy6ppx5m5fGBFYwsbE0SVcJ8
+ 7+FCOiIzQ3oW1wGrXMfkFhDRQSllKM9EDoBS6lBC+SkRw3tsqb7V6VfEl//Hn1TnatG6
+ PZRe8XFwTfM2aiOV02YZKf/EakiPS9HNxHDJZI21ZF2AmihPNFB3lNhsEpH13zPFvVBv
+ hzCA==
+X-Gm-Message-State: AOJu0YxqTd+Bd4Q9hAh8dNniZ2t5yZBeND8MwbcQOWjAynS10Mk+/ChL
+ H0fgldW7jW6rK72hHJ2dhuDFq67+f+cgM47zugXgQqBt+DJhs5hERzS8kyE8QVQLW13Grmf1eeX
+ KboGv8gZ2640f25LLrcQ7yWTnjvWkOPc=
+X-Received: by 2002:a17:90b:3885:b0:267:f9c4:c0a8 with SMTP id
+ mu5-20020a17090b388500b00267f9c4c0a8mr7723785pjb.4.1695739518564; 
+ Tue, 26 Sep 2023 07:45:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7ZGomZ9aFYezzvVNrzAkvCYULbcEqm5NESuQ4NPi69slIxqUEOiUXn00NJo4+Xz1ydspO6J5bgZ/sofckRrY=
+X-Received: by 2002:a17:90b:3885:b0:267:f9c4:c0a8 with SMTP id
+ mu5-20020a17090b388500b00267f9c4c0a8mr7723762pjb.4.1695739518176; Tue, 26 Sep
+ 2023 07:45:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+References: <20230921160712.99521-1-simon.rowe@nutanix.com>
+ <20230921160712.99521-2-simon.rowe@nutanix.com>
+ <CAFn=p-YL_hmnrFY9hhuMgMkV4hL3dojMMWUdG9=DBGYuxi_TUw@mail.gmail.com>
+ <7658d927-1d05-8f2d-9739-d1db692bee72@proxmox.com>
+In-Reply-To: <7658d927-1d05-8f2d-9739-d1db692bee72@proxmox.com>
+From: John Snow <jsnow@redhat.com>
+Date: Tue, 26 Sep 2023 10:45:07 -0400
+Message-ID: <CAFn=p-YkEJajV_YuOsK4KPL6T1erEhdkameN-XEEXrwY+XZZ6g@mail.gmail.com>
+Subject: Re: [PATCH 1/1] hw/ide/core: terminate in-flight DMA on IDE bus reset
+To: Fiona Ebner <f.ebner@proxmox.com>
+Cc: Niklas Cassel <niklas.cassel@wdc.com>, qemu-devel <qemu-devel@nongnu.org>, 
+ Qemu-block <qemu-block@nongnu.org>, Simon Rowe <simon.rowe@nutanix.com>, 
+ Felipe Franciosi <felipe@nutanix.com>
+Content-Type: multipart/alternative; boundary="0000000000009ce5020606441f27"
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,196 +95,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Brian, Gerd, Jason, Marc-Andr=C3=A9, Michael, we need your help to enable
--Wshadow=3Dlocal.
+--0000000000009ce5020606441f27
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Paolo, you already took care of several subsystems (thanks!), except you
-left a few warnings in target/i386/tcg/seg_helper.c.
+On Tue, Sep 26, 2023, 3:11 AM Fiona Ebner <f.ebner@proxmox.com> wrote:
 
+> Am 25.09.23 um 21:53 schrieb John Snow:
+> > On Thu, Sep 21, 2023 at 12:07=E2=80=AFPM Simon Rowe <simon.rowe@nutanix=
+.com>
+> wrote:
+> >>
+> >> When an IDE controller is reset, its internal state is being cleared
+> >> before any outstanding I/O is cancelled. If a response to DMA is
+> >> received in this window, the aio callback will incorrectly continue
+> >> with the next part of the transfer (now using sector 0 from
+> >> the cleared controller state).
+> >
+> > Eugh, yikes. It feels like we should fix the cancellation ...
+> Please note that there already is a patch for that on the list:
+> https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg01011.html
+>
+> Best Regards,
+> Fiona
+>
 
-Local variables shadowing other local variables or parameters make the
-code needlessly hard to understand.  Bugs love to hide in such code.
-Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
-on polling error".
+Gotcha, thanks for the pointer. I wonder if that's sufficient to fix the
+CVE here? I don't have the reproducer in my hands (that I know of ... it's
+genuinely possible I missed it, apologies)
 
-Enabling -Wshadow would prevent bugs like this one.  But we have to
-clean up all the offenders first.
+>
 
-People responded quickly to my first call for help.  Thank you so much!
+--0000000000009ce5020606441f27
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I'm collecting patches in my git repo at
-https://repo.or.cz/qemu/armbru.git in branch shadow-next, output of
-git-shortlog appended.  I'm happy to do pull requests.  I don't mind
-maintainers merging patches for their subsystems; interference should be
-minimal.
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Tue, Sep 26, 2023, 3:11 AM Fiona Ebner &lt;<a href=
+=3D"mailto:f.ebner@proxmox.com">f.ebner@proxmox.com</a>&gt; wrote:<br></div=
+><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1=
+px #ccc solid;padding-left:1ex">Am 25.09.23 um 21:53 schrieb John Snow:<br>
+&gt; On Thu, Sep 21, 2023 at 12:07=E2=80=AFPM Simon Rowe &lt;<a href=3D"mai=
+lto:simon.rowe@nutanix.com" target=3D"_blank" rel=3D"noreferrer">simon.rowe=
+@nutanix.com</a>&gt; wrote:<br>
+&gt;&gt;<br>
+&gt;&gt; When an IDE controller is reset, its internal state is being clear=
+ed<br>
+&gt;&gt; before any outstanding I/O is cancelled. If a response to DMA is<b=
+r>
+&gt;&gt; received in this window, the aio callback will incorrectly continu=
+e<br>
+&gt;&gt; with the next part of the transfer (now using sector 0 from<br>
+&gt;&gt; the cleared controller state).<br>
+&gt; <br>
+&gt; Eugh, yikes. It feels like we should fix the cancellation ... <br>
+Please note that there already is a patch for that on the list:<br>
+<a href=3D"https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg0101=
+1.html" rel=3D"noreferrer noreferrer" target=3D"_blank">https://lists.nongn=
+u.org/archive/html/qemu-devel/2023-09/msg01011.html</a><br>
+<br>
+Best Regards,<br>
+Fiona<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"a=
+uto">Gotcha, thanks for the pointer. I wonder if that&#39;s sufficient to f=
+ix the CVE here? I don&#39;t have the reproducer in my hands (that I know o=
+f ... it&#39;s genuinely possible I missed it, apologies)</div><div dir=3D"=
+auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D=
+"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+</blockquote></div></div></div>
 
-My test build is down to 19 files with warnings.  Sorted by subsystems,
-files covered by multiple subsystems marked "(*NUMBER*)":
-
-Guest CPU cores (TCG)
----------------------
-Hexagon TCG CPUs
-M: Brian Cain <bcain@quicinc.com>
-    target/hexagon/gen_helper_funcs.py
-    target/hexagon/mmvec/macros.h
-    target/hexagon/op_helper.c
-    target/hexagon/translate.c
-
-X86 TCG CPUs
-M: Paolo Bonzini <pbonzini@redhat.com>
-M: Richard Henderson <richard.henderson@linaro.org>
-M: Eduardo Habkost <eduardo@habkost.net>
-    target/i386/tcg/seg_helper.c
-
-Devices
--------
-Network devices
-M: Jason Wang <jasowang@redhat.com>
-    hw/net/vhost_net.c(*2*)
-
-USB
-M: Gerd Hoffmann <kraxel@redhat.com>
-    hw/usb/desc.c
-    hw/usb/dev-hub.c
-    hw/usb/dev-storage.c
-    hw/usb/hcd-xhci.c
-    hw/usb/host-libusb.c
-
-vhost
-M: Michael S. Tsirkin <mst@redhat.com>
-    contrib/vhost-user-gpu/vhost-user-gpu.c(*2*)
-    contrib/vhost-user-gpu/vugpu.h(*2*)
-    hw/net/vhost_net.c(*2*)
-    hw/virtio/vhost.c
-
-virtio
-M: Michael S. Tsirkin <mst@redhat.com>
-    hw/virtio/virtio-pci.c
-    include/hw/virtio/virtio-gpu.h(*2*)
-
-virtio-gpu
-M: Gerd Hoffmann <kraxel@redhat.com>
-    include/hw/virtio/virtio-gpu.h(*2*)
-
-vhost-user-gpu
-M: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-R: Gerd Hoffmann <kraxel@redhat.com>
-    contrib/vhost-user-gpu/vhost-user-gpu.c(*2*)
-    contrib/vhost-user-gpu/vugpu.h(*2*)
-
-Subsystems
-----------
-Overall Audio backends
-M: Gerd Hoffmann <kraxel@redhat.com>
-M: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-    audio/audio.c
-
-Open Sound System (OSS) Audio backend
-M: Gerd Hoffmann <kraxel@redhat.com>
-    audio/ossaudio.c
-
-Dump
-M: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-    dump/dump.c
-
-
-Patches collected so far:
-
-Alberto Garcia (1):
-      test-throttle: don't shadow 'index' variable in do_test_accounting()
-
-Alistair Francis (4):
-      hw/riscv: opentitan: Fixup local variables shadowing
-      target/riscv: cpu: Fixup local variables shadowing
-      target/riscv: vector_helper: Fixup local variables shadowing
-      softmmu/device_tree: Fixup local variables shadowing
-
-Ani Sinha (1):
-      hw/acpi: changes towards enabling -Wshadow=3Dlocal
-
-C=C3=A9dric Le Goater (13):
-      hw/ppc: Clean up local variable shadowing in _FDT helper routine
-      pnv/psi: Clean up local variable shadowing
-      spapr: Clean up local variable shadowing in spapr_dt_cpus()
-      spapr: Clean up local variable shadowing in spapr_init_cpus()
-      spapr: Clean up local variable shadowing in spapr_get_fw_dev_path()
-      spapr/drc: Clean up local variable shadowing in rtas_ibm_configure_co=
-nnector()
-      spapr/pci: Clean up local variable shadowing in spapr_phb_realize()
-      spapr/drc: Clean up local variable shadowing in prop_get_fdt()
-      aspeed/i2c: Clean up local variable shadowing
-      aspeed: Clean up local variable shadowing
-      aspeed/i3c: Rename variable shadowing a local
-      aspeed/timer: Clean up local variable shadowing
-      target/ppc: Rename variables to avoid local variable shadowing in VUP=
-KPX
-
-Daniel P. Berrang=C3=A9 (2):
-      crypto: remove shadowed 'ret' variable
-      seccomp: avoid shadowing of 'action' variable
-
-Eric Blake (1):
-      qemu-nbd: changes towards enabling -Wshadow=3Dlocal
-
-Klaus Jensen (1):
-      hw/nvme: Clean up local variable shadowing in nvme_ns_init()
-
-Laurent Vivier (1):
-      disas/m68k: clean up local variable shadowing
-
-Markus Armbruster (8):
-      meson: Enable -Wshadow as a warning
-      migration/rdma: Fix save_page method to fail on polling error
-      migration: Clean up local variable shadowing
-      ui: Clean up local variable shadowing
-      block/dirty-bitmap: Clean up local variable shadowing
-      block/vdi: Clean up local variable shadowing
-      block: Clean up local variable shadowing
-      qobject atomics osdep: Make a few macros more hygienic
-
-Paolo Bonzini (8):
-      mptsas: avoid shadowed local variables
-      pm_smbus: rename variable to avoid shadowing
-      vl: remove shadowed local variables
-      target/i386/kvm: eliminate shadowed local variables
-      target/i386/cpu: avoid shadowed local variables
-      target/i386/translate: avoid shadowed local variables
-      target/i386/svm_helper: eliminate duplicate local variable
-      target/i386/seg_helper: remove shadowed variable
-
-Peter Maydell (4):
-      hw/intc/arm_gicv3_its: Avoid shadowing variable in do_process_its_cmd=
-()
-      hw/misc/arm_sysctl.c: Avoid shadowing local variable
-      hw/arm/smmuv3.c: Avoid shadowing variable
-      hw/arm/smmuv3-internal.h: Don't use locals in statement macros
-
-Peter Xu (1):
-      intel_iommu: Fix shadow local variables on "size"
-
-Philippe Mathieu-Daud=C3=A9 (23):
-      tcg: Clean up local variable shadowing
-      target/arm/tcg: Clean up local variable shadowing
-      target/arm/hvf: Clean up local variable shadowing
-      target/mips: Clean up local variable shadowing
-      target/m68k: Clean up local variable shadowing
-      target/tricore: Clean up local variable shadowing
-      hw/arm/armv7m: Clean up local variable shadowing
-      hw/arm/virt: Clean up local variable shadowing
-      hw/arm/allwinner: Clean up local variable shadowing
-      hw/ide/ahci: Clean up local variable shadowing
-      hw/m68k: Clean up local variable shadowing
-      hw/microblaze: Clean up local variable shadowing
-      hw/nios2: Clean up local variable shadowing
-      net/eth: Clean up local variable shadowing
-      crypto/cipher-gnutls.c: Clean up local variable shadowing
-      util/vhost-user-server: Clean up local variable shadowing
-      semihosting/arm-compat: Clean up local variable shadowing
-      linux-user/strace: Clean up local variable shadowing
-      sysemu/device_tree: Clean up local variable shadowing
-      softmmu/memory: Clean up local variable shadowing
-      softmmu/physmem: Clean up local variable shadowing
-      hw/core/machine: Clean up local variable shadowing
-      hw/intc/openpic: Clean up local variable shadowing
+--0000000000009ce5020606441f27--
 
 
