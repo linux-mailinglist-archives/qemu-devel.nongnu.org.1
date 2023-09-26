@@ -2,75 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AC17AF01F
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 17:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8F77AF021
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:00:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlARq-0007PH-Em; Tue, 26 Sep 2023 11:58:07 -0400
+	id 1qlATL-0000Ii-Rf; Tue, 26 Sep 2023 11:59:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qlARl-0007NA-7q
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:58:01 -0400
-Received: from mail-qk1-x72a.google.com ([2607:f8b0:4864:20::72a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qlARj-0007Wm-1t
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:58:00 -0400
-Received: by mail-qk1-x72a.google.com with SMTP id
- af79cd13be357-77386822cfbso598083685a.0
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 08:57:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695743876; x=1696348676; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=9kYKFzWoEnKYI/Yhv73xKwyv9VK4ZSvsLf62P/vflGU=;
- b=BI2oC/qMRQS10gjLIfRdV9QS3y04lnfcBl2tv5rxM8dNtLY/0/wS4zLg6Tl2qBxBri
- oAkZxlsFwa0hgM6h26/MdUT0bb96rNISopgyOfVupaRY+HALWz8I1IgLFY0Afrzjfgbi
- 1NuCfg2H+lWdFXyYROW6Jixabau1KMNkkZOIiMfoQgzzcQdX3slvFLyxO4M5DAGIYaYD
- m7JvdFUFxU++0/fPLpp9WcSOTegnBTLDD0/mUl32bCXXqTJUldomhrPn6SWiz8Obrqc5
- RYDMizOza3uYqH8AQhQWsJW9H9X2Omh9oP51/ZzzdKLDYg+FqXTbaj7ZWhvqv/8L+Ghf
- GHhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695743876; x=1696348676;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=9kYKFzWoEnKYI/Yhv73xKwyv9VK4ZSvsLf62P/vflGU=;
- b=Fumac7/+Rk3bdww++yfg9yWjA7CUcFLFIAzFIYBKXqg4lk269Ptxo/s4N/zhtDCONY
- 43Z7pp/XdUJ+L5IlfYoTED1S/bdFvgro07I/KyAv0yAkPZVrNljlOIv0rQ5DlkJeUX0F
- QlqbkrQ68N60zbf36KXosSllrDv7nWTZ8ui5bvLMxnrLU2E/leDACJTus4nroNuGSHsX
- F4hBbhCxif3S6KLaVaOtfKMB19PGzSty7NI6ewEbkuumk2hqTqn3iOkOG/ILWIIYwBv9
- TeMe99ldEDHWlfvWonLdHBzwaeEkS0elERmh2/S6l6Bm+uMmeYCEZGqWUP1NChjEw8gS
- rqHQ==
-X-Gm-Message-State: AOJu0Yx4l+uYuv/MZb7AnnQ3tOc8EDpWkAfmoPgqWEAswhWvPPBmiXmY
- kdd9pfnhEbnhqRPm16K/4xZA53FhcT5nCC4WSkE=
-X-Google-Smtp-Source: AGHT+IFPMaWfsvKPpptA3Q1vJzuANCvIdvKdYTl5aYHLHTxF58D1hdtz/xszoTNqtOfbEYfPrT/xXc/MhIlpJz6UcmQ=
-X-Received: by 2002:ac8:7c44:0:b0:412:1926:3365 with SMTP id
- o4-20020ac87c44000000b0041219263365mr11835070qtv.47.1695743876094; Tue, 26
- Sep 2023 08:57:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qlATH-0000I0-Ui
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:59:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qlATF-0007wg-Ug
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 11:59:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695743971;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=dotcYHPZVWZKXubN3IIwBkoVib1GBjOyExg8Im6ylNk=;
+ b=Lskcow/AGBxVhSaJBGUj3uhn8q3ekXf+MbTyB6u0TdWHwmpSBykvCRciKR02ZnYA8RPGNZ
+ 4Ck2mg5Gqr8VbCGrdoLuOrnHSTmasxEsA6CYZy2EHjsosAGbFgPiP6nmPwZljVO9faleLb
+ AlWsOdOoGjKhzHEuR38gNDMiWeRXNgA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-206-Vsc4q3PEMbegNCb5L_XEDA-1; Tue, 26 Sep 2023 11:59:30 -0400
+X-MC-Unique: Vsc4q3PEMbegNCb5L_XEDA-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 278DB811E88;
+ Tue, 26 Sep 2023 15:59:29 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.10])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D747E2026D4B;
+ Tue, 26 Sep 2023 15:59:27 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: Samuel Thibault <samuel.thibault@ens-lyon.org>, qemu-block@nongnu.org,
+ Jason Wang <jasowang@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ John Snow <jsnow@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH 0/5] RFC: migration: check required entries and sections are
+ loaded
+Date: Tue, 26 Sep 2023 19:59:20 +0400
+Message-ID: <20230926155925.1396309-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-References: <20230926154926.728185-1-pbonzini@redhat.com>
-In-Reply-To: <20230926154926.728185-1-pbonzini@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 26 Sep 2023 19:57:45 +0400
-Message-ID: <CAJ+F1CLCn0FaKkFOOOMjeuLVt6mahMsg3+hDLGFAcd3-iO-M-g@mail.gmail.com>
-Subject: Re: [PATCH] audio: remove shadowed locals
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::72a;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qk1-x72a.google.com
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,74 +82,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 26, 2023 at 7:50=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Hi,
 
-> ---
->  audio/audio.c | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/audio/audio.c b/audio/audio.c
-> index 90c7c49d116..2f479657117 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -1706,7 +1706,7 @@ static AudioState *audio_init(Audiodev *dev, const =
-char *name)
->      size_t i;
->      int done =3D 0;
->      const char *drvname =3D NULL;
-> -    VMChangeStateEntry *e;
-> +    VMChangeStateEntry *vmse;
->      AudioState *s;
->      struct audio_driver *driver;
->      /* silence gcc warning about uninitialized variable */
-> @@ -1824,8 +1824,8 @@ static AudioState *audio_init(Audiodev *dev, const =
-char *name)
->          s->period_ticks =3D dev->timer_period * (int64_t)SCALE_US;
->      }
->
-> -    e =3D qemu_add_vm_change_state_handler (audio_vm_change_state_handle=
-r, s);
-> -    if (!e) {
-> +    vmse =3D qemu_add_vm_change_state_handler (audio_vm_change_state_han=
-dler, s);
-> +    if (!vmse) {
->          dolog ("warning: Could not register change state handler\n"
->                 "(Audio can continue looping even after stopping the VM)\=
-n");
->      }
-> @@ -1900,10 +1900,8 @@ CaptureVoiceOut *AUD_add_capture(
->      cap =3D audio_pcm_capture_find_specific(s, as);
->      if (cap) {
->          QLIST_INSERT_HEAD (&cap->cb_head, cb, entries);
-> -        return cap;
->      } else {
->          HWVoiceOut *hw;
-> -        CaptureVoiceOut *cap;
->
->          cap =3D g_malloc0(sizeof(*cap));
->
-> @@ -1937,8 +1935,9 @@ CaptureVoiceOut *AUD_add_capture(
->          QLIST_FOREACH(hw, &s->hw_head_out, entries) {
->              audio_attach_capture (hw);
->          }
-> -        return cap;
->      }
-> +
-> +    return cap;
->  }
->
->  void AUD_del_capture (CaptureVoiceOut *cap, void *cb_opaque)
-> --
-> 2.41.0
->
->
+To my surprise, QEMU didn't seem to check that required migration entries and
+subsections are loaded. I took a naive approach to add such check, by adding
+some "visited" marks along the loading path, and checking by the end that all
+required entries have been loaded.
 
+Note, I haven't thoroughly tested it yet (it passed make check on x86 targets
+with the preliminary "fixes" applied).
 
---=20
-Marc-Andr=C3=A9 Lureau
+Comments welcome!
+
+Marc-André Lureau (5):
+  block/fdc: 'phase' is not needed on load
+  virtio: make endian_needed() work during loading
+  net/slirp: use different IDs for each instance
+  RFC: migration: check required subsections are loaded, once
+  RFC: migration: check required entries are loaded, once
+
+ hw/block/fdc.c      |  5 +++++
+ hw/virtio/virtio.c  |  6 +++++-
+ migration/savevm.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
+ migration/vmstate.c | 40 ++++++++++++++++++++++++++++++++++++++--
+ net/slirp.c         |  3 ++-
+ 5 files changed, 93 insertions(+), 4 deletions(-)
+
+-- 
+2.41.0
+
 
