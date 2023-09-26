@@ -2,97 +2,155 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E217AE362
+	by mail.lfdr.de (Postfix) with ESMTPS id C396B7AE361
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 03:38:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qkx0x-0003DV-Oq; Mon, 25 Sep 2023 21:37:27 -0400
+	id 1qkx0m-0003Ab-G2; Mon, 25 Sep 2023 21:37:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@aj.id.au>)
- id 1qkx0v-0003Cv-6V; Mon, 25 Sep 2023 21:37:25 -0400
-Received: from out1-smtp.messagingengine.com ([66.111.4.25])
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qkx0k-0003AG-1m
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 21:37:14 -0400
+Received: from esa9.fujitsucc.c3s2.iphmx.com ([68.232.159.90])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrew@aj.id.au>)
- id 1qkx0s-0002Hj-OQ; Mon, 25 Sep 2023 21:37:24 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
- by mailout.nyi.internal (Postfix) with ESMTP id 393FC5C02F1;
- Mon, 25 Sep 2023 21:37:21 -0400 (EDT)
-Received: from imap50 ([10.202.2.100])
- by compute6.internal (MEProxy); Mon, 25 Sep 2023 21:37:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=cc
- :cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
- 1695692241; x=1695778641; bh=eUvlcQOeL9mF99Lo5KFrW+4n7j6hw7J0tfz
- p62MyVOQ=; b=lEGV0Z91zUMUYM7zywmM7LLyCJU0nJUm5F81/r4bFVbOXvcdLpf
- oKwjWgesMrP1+2CfefMKI48pcArX514/NdmwEZGRMHCbhFVHvH7xuWDKafJKHts5
- cK+F6RTN+lF6rbh0Gmf/Z7rxxiRvvYE1+X/kmYbtVR3md520jDfu8G3VgSHaQhTz
- eiqks8OoH23TvQPo0Qp+w6NIAcV3qirq7jgEIPwj3dX4sYhCZWnI/gbeCLGV3CK7
- TJ+V8Nu/Y4hfGjf1uqhn1ViYlR5ddwORXHGKPvQTZktsq+PGx8FRCF1tG2zdw1Ry
- f1aFYow/sw9lzld6gqiXcJ3veujpn0LvtQw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
- 1695692241; x=1695778641; bh=eUvlcQOeL9mF99Lo5KFrW+4n7j6hw7J0tfz
- p62MyVOQ=; b=fZ/CEbi7WTAKUBzQt8b/reoAngcsyb242jZovE87MTx6Unim1Bo
- z2O3y+C8JcwTK3JBhOBdYBTTGqbVGDtRqUt6Us9Qj2d8qziU3Cio3zuia+KwpwRM
- RLl3lCU+xDpnTqgZqkZyFeYSVQ0U5iPNYVn1eRoBS99ZhD4QBavaquV6s48K1/M3
- alTb/taH09yCEowt/ZMCN2S7EVIXl5pc40MWPM4FDDGNbYRRraOqsyib4nY6Wmkb
- Ymn/D7nIBroLnw3GiTy4T/OxNibQFo07dV0cZgPdl/brrHBOpdQ5n5o75TiIQ1HE
- aF4LsCtxjq/DWAQW+I2LrnWutcWx6FF6Klg==
-X-ME-Sender: <xms:0TUSZWWOP1DqlC-IkymcTEuNVCd00B3KSE-TkyPDsgbQC-eqRFlQLw>
- <xme:0TUSZSl7EGg1vSY4Dz1VL7XLmBBYzGAguwzOhVcFk11PzhwcCgSINwN2r5X2PRM_W
- eNFvqHOj1tn2sC-bA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudelhedggeekucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
- uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
- cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
- nhgurhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecugg
- ftrfgrthhtvghrnhepvdfhtdeiiedthfdtvddvteehteeludelleektdeiieektefhuddv
- vdelheetkeeunecuffhomhgrihhnpehoiihlrggsshdrohhrghenucevlhhushhtvghruf
- hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdr
- rghu
-X-ME-Proxy: <xmx:0TUSZaae1yyhBZ8_QXkzLc6-f-PPiHNoSF0oe_mziPwH-doOb5-wOA>
- <xmx:0TUSZdUcQ0r9Id4Sf_QXZwLxTZ_I5On3sEOgLki6YndByw3jVbtCzw>
- <xmx:0TUSZQlpGnHu6VmdcNuv9CXX5-XxX1aYMqPbWw3vs5PDOrpmrChKCA>
- <xmx:0TUSZVwuvH31LRD0Pfm3MRDMIhw9pHPnr9-AM3Hy98FPDaWAY_8edg>
-Feedback-ID: idfb84289:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id DE9741700089; Mon, 25 Sep 2023 21:37:20 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-957-ga1ccdb4cff-fm-20230919.001-ga1ccdb4c
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qkx0h-0002GD-JY
+ for qemu-devel@nongnu.org; Mon, 25 Sep 2023 21:37:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+ t=1695692232; x=1727228232;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=WZrPaSSvsnTSnyPBcU/PvXSWZRZYbOWqnaRhAXVG6jM=;
+ b=uPu946MfEVtt5lpnGHBIBMIklAlVijkrcg+Nx3hqcR5SJ/9nbsxUDnSN
+ 4TpitWaciqu8Cyavgs00g6+lZjuIMW6a8bjQx5XqT7K78krpR6YDGTv1w
+ 6pcSZ4ggZZr5u8kD53IkB7QLdLx2sd+17SHuX56UAKksssBKwZbY27w1o
+ c3QUnKeU8/8yVfu4LJ2XdX9vdXxh9jGQ29QSypkD2wohJbJIB9Q6iCBiy
+ gWFLN8zssD6mtCmAJikHIUZ6NmvNWbqBuIUq24Oot2BSXIwKwrRbDHqRI
+ 7CEONhcscKzq/Drmd5a2YZApxzXNui/3z8EflpBPejBP5bA2hg62GUa+A g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10843"; a="96849510"
+X-IronPort-AV: E=Sophos;i="6.03,176,1694703600"; d="scan'208";a="96849510"
+Received: from mail-tycjpn01lp2174.outbound.protection.outlook.com (HELO
+ JPN01-TYC-obe.outbound.protection.outlook.com) ([104.47.23.174])
+ by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Sep 2023 10:37:07 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FycP76Eu3Y3gLQ+JZdXXyfnPtLemgaPQvLzfiO5+1yhNaCZO+GATas2uafLIh7GWdwD1fJC2Q6bAjL3mzqYFzG7HEMT3UmqnLs063LO5gdaQAkuUhbS6J8Q+yDD6eXb6j8G/CPfwXA+trJywD4Hz7xphI3FETXP1laOXMxLyT5Mpub16EkCFrPBfV37JZaMRWw2ElSXwJMWAnm1cy9dvxDxJWj53GAothA3qnMM58/9+U7oC0SnOj8a5MKrwFLfqrCpqFVPN2d+isMlkRszDntMSLNz+LIgcj6YGmYaOQ573ci2xd6jcy8Zm3c49LDFMXch4QXDUsqvNKsrQlL81JA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WZrPaSSvsnTSnyPBcU/PvXSWZRZYbOWqnaRhAXVG6jM=;
+ b=N5Ou9yOfHgh6QM3v+KFcT8l8RpAGIaOjVrpu35Sf5QRCXkYQ3l/JzHMVIMNXsTCeLWkMiyD5WwqySEBUaAEPQi1NPhbtFJyOcpDjt1DZjDhz0lbvAj+WSOxlzXzrvPEjlRv6TsJ9swlXaJMayQ4DjM1ZIEyNMBl6qogB4H6QbsqEqaYJZMOnmakvLtJuJji/VwqgrH3igNaO4FiVCsAVbI6PUvA/nO7nOeJVMfRtYIv3lqir2AZp0bNkF3AuFvrhKjCRYMqqklOAWjGvGae9O4KafcCiYlJCP9ven9VGJhKFhOFMzLQNCY0d1uSIszOR4+mHWdrlWiKvQSi4Xo6yAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com (2603:1096:604:247::6)
+ by TYWPR01MB9359.jpnprd01.prod.outlook.com (2603:1096:400:1a2::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Tue, 26 Sep
+ 2023 01:37:04 +0000
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::87a4:7103:63be:64fe]) by OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::87a4:7103:63be:64fe%4]) with mapi id 15.20.6813.027; Tue, 26 Sep 2023
+ 01:37:04 +0000
+From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+To: Markus Armbruster <armbru@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>
+CC: "quintela@redhat.com" <quintela@redhat.com>, "peterx@redhat.com"
+ <peterx@redhat.com>, "leobras@redhat.com" <leobras@redhat.com>
+Subject: Re: [PATCH 34/52] migration/rdma: Convert qemu_rdma_exchange_recv()
+ to Error
+Thread-Topic: [PATCH 34/52] migration/rdma: Convert qemu_rdma_exchange_recv()
+ to Error
+Thread-Index: AQHZ6j7IGhLf9wIyeE6Al345Vf1oPrAsX2aA
+Date: Tue, 26 Sep 2023 01:37:04 +0000
+Message-ID: <6c4534a4-ce54-05db-0f71-6229f0b3e161@fujitsu.com>
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-35-armbru@redhat.com>
+In-Reply-To: <20230918144206.560120-35-armbru@redhat.com>
+Accept-Language: en-US, zh-CN
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS7PR01MB11664:EE_|TYWPR01MB9359:EE_
+x-ms-office365-filtering-correlation-id: 48a7250c-ccdd-4687-202b-08dbbe311689
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: LK9GpoHMHJs4O/9lB0GbjYyvnMKIfLaETNyBg78WJwQVB6oCRy4m8cFdRj80aiZR8y1r5o0I1QqAAUS1FfmZPFYipAaKBhKcaiNiRrBuUz6AuWfBTqCJgCaw9oHPSJECcz8VXnaSDUw0/hk+1F/DA1av3Axfd/nC5shM/WSZq8Rq+nADoQ/bX7A2rk6P1d2kbjm8yEmhwZ5kY+r4zAkFIVATdJc6cFtNUhI9OkjZ4hKcnFO1SX/OqTa/8R4wmAufcsbSh3V2cRBIJyjJMwxOSk5fZ3BTz9C4KO73V3uI4H5y+QcKhmWkbg8P5BDLoT9ncEjmUFesdhk1gLGq1L1xtclk77NLOm/CyAqGcvDOeRpEP8BDWoA84e+iD2OoOf/SNkCj3HdeObXxxBCBga0hTxa8SQ7WWQBACW9jVKxYIHPQy+w9Xj7j4uVu30CBHtNjf/fSd4vSBEVOAUkn+QOzw+pkFW5nw8nz5MGLrmYWepD7WdDnNf+W+5h7K8x28OvvAhuwdz9k3xPgYTInwjIUyL8FbuApHzGDYu+br72qE8c1GfO8wirIBcNROjKOa7qBCuIBNbV+2ZXgh8nE0irDiDU/rkwItT6zvaOR19vZS5O5EpWUJPpVTEwX2Vc7yzYQFqKaSu+Al8XPARaSM4+Il1xeH8YJCQqcQO+GAHr+4jhQA+YHnvrIf69cJb2hre7vqSpcebW1+BxoGNffH/dNYg==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:OS7PR01MB11664.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(376002)(346002)(39860400002)(366004)(396003)(136003)(230922051799003)(1800799009)(1590799021)(186009)(451199024)(1580799018)(6506007)(6512007)(26005)(71200400001)(82960400001)(66946007)(66556008)(66476007)(76116006)(64756008)(66446008)(53546011)(6486002)(31696002)(110136005)(91956017)(478600001)(38070700005)(122000001)(38100700002)(86362001)(83380400001)(54906003)(2906002)(5660300002)(8936002)(8676002)(36756003)(2616005)(4326008)(85182001)(316002)(41300700001)(31686004)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UDY1U2RrbVd2ZnNLZWtJRU52bDZKa1RNMlFndUVFTzdEcndKUGtzZHRVZ00y?=
+ =?utf-8?B?MmhMdS9UYkQrakdWU05xQkxlZEFacHdjSG1tUHM3blZzYkl6MzUxWFRSUEIr?=
+ =?utf-8?B?d0lPMi96WWI0dGM0RlBrQXowbGp6U0NaSWE1WDV4OU5pcmk2RytkY2hMRk5Z?=
+ =?utf-8?B?bVRob3Q4VG4vanJaS2I2Y3VlVUR0bkR2RjdkcmhGcHIveDZaV1c5VWZnL3Vn?=
+ =?utf-8?B?VmIzUzVyR0RPZFJGTHM4dXBSekI2cHBJVmtDWDdua2pBUVVxbjBvT0I0RjZF?=
+ =?utf-8?B?STdPR0NscU9na1g5VXJ3Y0JLa3hvbUFNRlNHRjNqdDVpR3QxUnhuYVZISmg2?=
+ =?utf-8?B?QUpRTGZwdDZETUhFaVJGV1V3NW1laTdidlZjeExvRGZFVHVIaUF2b0JtaHpC?=
+ =?utf-8?B?c3RyU1IzbG45YlQrWUVGRkxJY2U1QzJhUnNMMWVNNHg2VVNtelNRMFZzUEVo?=
+ =?utf-8?B?VDFNbG5UTG5Bd0VFRDV4SzdoUk5RajBVc1hHYVQ0USt4aWsyVWNPdExiRXJX?=
+ =?utf-8?B?NG9nREdEOHE4WW9yZnU0ZG1jQlcxOFFsRGRRZWRHZGVXNTVMNEJUYlNMb3pF?=
+ =?utf-8?B?OUJCTFNHYVFkOGxGZU13UnlzTDBkK0p2USs0U3plWmdNTGhBMks4STFDamJC?=
+ =?utf-8?B?TjA2NCtVQkZySSt2b3VlTUIwWjEwYUFLajZZeXVldEFKVFdMV1pDa0dJaUNi?=
+ =?utf-8?B?d3p3cE1tSzZMeFFmQWhvakF1MTcyNHZ0S05SZk5xdTZlWUdxTzJMU0lxMlcw?=
+ =?utf-8?B?QzV2VitiNFc0TDNvY3hTZ2grMHV6Rjh2N3NrK3NLekVPbk9URGs3am42ZUNH?=
+ =?utf-8?B?cXVTbWxmZ1VFNUhHYWl2NjFnTXlhOUhhZXBpRUVPNkRZcUQrdXlMZHhRVGdD?=
+ =?utf-8?B?ZlJoTWE3US9NNlR5UmxuRXhQam1zbk1aTGxWSi9DZEZQZ3pJNnBnWXpSdWsr?=
+ =?utf-8?B?U01NS2d2eUluV1UzNVoxcW5JNEd6ejBKcGxlblpYby8vSUNUbC95SUxzTE5Y?=
+ =?utf-8?B?UTlSQi9VZHpMK29WcCtScnFqOFpXZTR6NkxpOWh5bGFSQW96bUFoKzk0eU5m?=
+ =?utf-8?B?SUhXOWxDUE9NV3RrU2hpUzIxSlo1ZzZHMTV3Vk00OXNpc3liR0hhalowODJ5?=
+ =?utf-8?B?VHdwNnB4QmU4RWRUVHNsdUl6Sm5ZcXlKd0JZTDZyWmgwelFxbmNuRmo1V05o?=
+ =?utf-8?B?Vm1JcHdCSzRwR0hxdU9UNjd3Ui9jQk5qeUp6VUFtaEwrOEt5Szd3bXVpczM5?=
+ =?utf-8?B?SkF2NjVyVFJydW5XRHNUUzhUekJxSHdVUzRkbStlWmdXRW5NdTBOZTA1MGtJ?=
+ =?utf-8?B?Uk4rMy9Fdmt2aGd5T1YyUTdiWmNqcUtKMm1xbHlsa2grSEpmL3p4K1Z4cCta?=
+ =?utf-8?B?K0VRUno3THVMMUQyTEVoalRBcFFnRmM0WEV5UEprMHdmVmh1TlNzT2JiRHJL?=
+ =?utf-8?B?ajFEVEI1N0Jvbm9HTlN0bjVnTHBneERraFdQaXo1OWZhU2NsN1g1cExMNi9M?=
+ =?utf-8?B?ZnVJcXg4OXN5bkpyZGZCWUxiYTdGOVZ4ZHJrNVNvN3F3b3hJdnptaFk3eEwr?=
+ =?utf-8?B?ZDZMTEMzQytRMHNFd2FNdDJkTXk5cUJPSnN2N1VOOUtYSmlxNURxOS9UOTVh?=
+ =?utf-8?B?Kzl6MWNuNDFtZFh0SDRBd2pKR1ZXSXptWmordktmMFhmSFRiandveXlpQzBw?=
+ =?utf-8?B?c2cwNUs0Vi9TOHhDYmdBTzNTMzdhU0ZoU0JBYU8wb2pvWXpuMEdZV2lBZlh5?=
+ =?utf-8?B?TDA2Ky9pUU5qMGo0aG41a1BYWFluamVINW1vUE1pME9Jem9lNUJzZmR4VjNu?=
+ =?utf-8?B?VC9aRnZ1aUxrUmE1WXR3SXhWYkpvTEVlazNDLzBpWWZlYVRaVG9iUC9hbzRw?=
+ =?utf-8?B?Zi91TWVNbmhPQjRLdGlJbGFhQlNNYWMvM09tdmwzTmlBRS9wQTVTOGc0Z2N2?=
+ =?utf-8?B?aXRuYXp5WHAvYkFHbkdTamFlakI0cVFkZkhSQ0xCSWZ2WnlnQkJXdGxWejJG?=
+ =?utf-8?B?eTVwTFNNOFE4NVN1TnFCVm5tZCtzWFp0R0dob25UcmtKdmtpaGFtMmJqRjlS?=
+ =?utf-8?B?NUQ0cFl1M1g3NlNrdk96U1JBbFBYbUtnMEs1Z002UEl2aFRYblVrSW9yMDVR?=
+ =?utf-8?B?eHlsTjFYdXF4WlBoNnNOSWkvdWdod3VaVkQrRkIrbDNrRG0rYTltdTJFSGMy?=
+ =?utf-8?B?UWc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <F65F273A563E2F48B4698251219557AD@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Message-Id: <6cae3846-3dea-49c4-a8ba-23c88647b0b0@app.fastmail.com>
-In-Reply-To: <c23dd1d8-a037-ed8e-30bf-6824ca3649c4@kaod.org>
-References: <20190525151241.5017-1-clg@kaod.org>
- <20190525151241.5017-9-clg@kaod.org>
- <a4a62040-0127-4f39-4fc3-a1795e4daad8@kaod.org>
- <d383d716-2c9a-4d37-a35d-6f62bff9bf1e@app.fastmail.com>
- <c23dd1d8-a037-ed8e-30bf-6824ca3649c4@kaod.org>
-Date: Tue, 26 Sep 2023 11:07:00 +0930
-From: "Andrew Jeffery" <andrew@aj.id.au>
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>,
- "Peter Maydell" <peter.maydell@linaro.org>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9_via?= <qemu-arm@nongnu.org>,
- "Cameron Esfahani via" <qemu-devel@nongnu.org>,
- "Joel Stanley" <joel@jms.id.au>
-Subject: Re: [Qemu-devel] [PATCH 08/19] aspeed/timer: Fix behaviour running
- Linux
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=66.111.4.25; envelope-from=andrew@aj.id.au;
- helo=out1-smtp.messagingengine.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
-X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: P5WZ178/MgIFNe8k3VPrxaPNjT21/mAVpDzRLlmfixneBuYsjZJJPm6bb0E9J3uP6qfe9W6mJB1XvH3qCfmlYVFPCGcZuOcdz085oosaOXw9CQPUr6ZhB2EI7HemME8iEjO4b1I4jwMuzhiZSfZZKul/AiPPHhwbsR0tsPe+yLIZ/7l//PK9Tn6K9aFow6dHiYRkZslrwa8PaRiRK+oFBCMb2x57N2f5xvFJj+4YBrZvcvDAo2i+IofPhz7ip0AxQwGkaA4PVSLhRZRrxmw+6EC7w7qd31uhLk/S3suuEO1+558NBh2omyVhP+R8jR6F0WCwn9jqMWbEvJXl6LLxckFUMM4CGKQ+iVN+46u7DYjiddRKo5E9pAGit7QcHqnQ8ZB3npXV3YbY5cG9finSyLFuYnR3PRU9X2BQ2lNC+apJfu0JFlzb31ra4rh3twN0Ijx6giHe+HWDmBO+GjfB3TVZIDTCqcHPda6+lHyIWu+GVfkuNealQjcdH+5p2Gv83J1sdvXqIFX15AwG64L/RPY7jBBVoPl5Uz54Fk2vUV6MIMJwsy+bYAUeNP1t+pTwMnlMW0B2VhZIF8MmfIVoWJSJRjaHzgo2kZQYEZrDyNU80Yb2bLLTfSXpEk9xDIggCCtlhP51StSac7wBSVmRd7pD1WwClx7Oc8igXULRCCorW05zsg3LUo2aGlA/LAJvbtSo6LMmZkIsItN6bUCd5VKSiQiQoU4D6eck+N/IINqdcw7HoOnUqivHhOgQGs9aKr7EMFt6UYTfQ9BbPkD/83dpTtdyXPnH7L/P+DMPm0A=
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB11664.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 48a7250c-ccdd-4687-202b-08dbbe311689
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2023 01:37:04.3448 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Y+tG+Ayc7xTM5AUhlELsnd5Tnmzi8au+P70DHHvwEOnjpZik2kphkdQa7xQypgi7pORynGZ439hAQYDV9xuXDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB9359
+Received-SPF: pass client-ip=68.232.159.90; envelope-from=lizhijian@fujitsu.com;
+ helo=esa9.fujitsucc.c3s2.iphmx.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -109,151 +167,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On Mon, 25 Sep 2023, at 18:50, C=C3=A9dric Le Goater wrote:
-> On 9/25/23 09:54, Andrew Jeffery wrote:
->>=20
->>=20
->> On Fri, 22 Sep 2023, at 22:51, C=C3=A9dric Le Goater wrote:
->>> Joel, Andrew,
->>>
->>> On 5/25/19 17:12, C=C3=A9dric Le Goater wrote:
->>>> From: Joel Stanley <joel@jms.id.au>
->>>>
->>>> The Linux kernel driver was updated in commit 4451d3f59f2a
->>>> ("clocksource/drivers/fttmr010: Fix set_next_event handler) to fix =
-an
->>>> issue observed on hardware:
->>>>
->>>>    > RELOAD register is loaded into COUNT register when the aspeed =
-timer
->>>>    > is enabled, which means the next event may be delayed because =
-timer
->>>>    > interrupt won't be generated until <0xFFFFFFFF - current_count=
- +
->>>>    > cycles>.
->>>>
->>>> When running under Qemu, the system appeared "laggy". The guest is =
-now
->>>> scheduling timer events too regularly, starving the host of CPU tim=
-e.
->>>>
->>>> This patch modifies the timer model to attempt to schedule the timer
->>>> expiry as the guest requests, but if we have missed the deadline we
->>>> re interrupt and try again, which allows the guest to catch up.
->>>>
->>>> Provides expected behaviour with old and new guest code.
->>>>
->>>> Fixes: c04bd47db6b9 ("hw/timer: Add ASPEED timer device model")
->>>> Signed-off-by: Joel Stanley <joel@jms.id.au>
->>>> [clg: - merged a fix from Andrew Jeffery <andrew@aj.id.au>
->>>>           "Fire interrupt on failure to meet deadline"
->>>>           https://lists.ozlabs.org/pipermail/openbmc/2019-January/0=
-14641.html
->>>>         - adapted commit log
->>>>         - checkpatch fixes ]
->>>> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
->>>> ---
->>>>    hw/timer/aspeed_timer.c | 59 ++++++++++++++++++++++-------------=
-------
->>>>    1 file changed, 31 insertions(+), 28 deletions(-)
->>>>
->>>> diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
->>>> index 5c786e512815..9ffd8e09f670 100644
->>>> --- a/hw/timer/aspeed_timer.c
->>>> +++ b/hw/timer/aspeed_timer.c
->>>> @@ -109,37 +109,40 @@ static inline uint64_t calculate_time(struct =
-AspeedTimer *t, uint32_t ticks)
->>>>   =20
->>>>    static uint64_t calculate_next(struct AspeedTimer *t)
->>>>    {
->>>> -    uint64_t next =3D 0;
->>>> -    uint32_t rate =3D calculate_rate(t);
->>>> +    uint64_t now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->>>> +    uint64_t next;
->>>>   =20
->>>> -    while (!next) {
->>>> -        /* We don't know the relationship between the values in th=
-e match
->>>> -         * registers, so sort using MAX/MIN/zero. We sort in that =
-order as the
->>>> -         * timer counts down to zero. */
->>>> -        uint64_t seq[] =3D {
->>>> -            calculate_time(t, MAX(t->match[0], t->match[1])),
->>>> -            calculate_time(t, MIN(t->match[0], t->match[1])),
->>>> -            calculate_time(t, 0),
->>>> -        };
->>>> -        uint64_t reload_ns;
->>>> -        uint64_t now =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->>>> -
->>>> -        if (now < seq[0]) {
->>>> -            next =3D seq[0];
->>>> -        } else if (now < seq[1]) {
->>>> -            next =3D seq[1];
->>>> -        } else if (now < seq[2]) {
->>>> -            next =3D seq[2];
->>>> -        } else if (t->reload) {
->>>> -            reload_ns =3D muldiv64(t->reload, NANOSECONDS_PER_SECO=
-ND, rate);
->>>> -            t->start =3D now - ((now - t->start) % reload_ns);
->>>> -        } else {
->>>> -            /* no reload value, return 0 */
->>>> -            break;
->>>> -        }
->>>> +    /*
->>>> +     * We don't know the relationship between the values in the ma=
-tch
->>>> +     * registers, so sort using MAX/MIN/zero. We sort in that orde=
-r as
->>>> +     * the timer counts down to zero.
->>>> +     */
->>>> +
->>>> +    next =3D calculate_time(t, MAX(t->match[0], t->match[1]));
->>>> +    if (now < next) {
->>>> +        return next;
->>>> +    }
->>>> +
->>>> +    next =3D calculate_time(t, MIN(t->match[0], t->match[1]));
->>>> +    if (now < next) {
->>>> +        return next;
->>>> +    }
->>>> +
->>>> +    next =3D calculate_time(t, 0);
->>>> +    if (now < next) {
->>>> +        return next;
->>>> +    }
->>>> +
->>>> +    /* We've missed all deadlines, fire interrupt and try again */
->>>> +    timer_del(&t->timer);
->>>> +
->>>> +    if (timer_overflow_interrupt(t)) {
->>>> +        t->level =3D !t->level;
->>>> +        qemu_set_irq(t->irq, t->level);
->>>>        }
->>>>   =20
->>>> -    return next;
->>>> +    t->start =3D qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
->>>> +    return calculate_time(t, MAX(MAX(t->match[0], t->match[1]), 0)=
-);
->>>
->>> This MAX(MAX(x, y), 0) looks strange to me. Would you remember where=
- it comes
->>> from ? Thanks,
->>=20
->> The inner MAX() deals with the lack of ordering constraints between t=
-he match values. I think the outer MAX() is redundant. We should probabl=
-y remove it. The match member is type uint32_t so it can't be negative. =
-You did steal that from an RFC patch :D
->
-> I did ! Fixed there :
->
->   =20
-> https://patchwork.ozlabs.org/project/qemu-devel/patch/20230922155924.1=
-172019-5-clg@kaod.org/
->
-
-Thanks. That one might be further down in my review queue =F0=9F=98=85
-
-Andrew
+DQoNCk9uIDE4LzA5LzIwMjMgMjI6NDEsIE1hcmt1cyBBcm1icnVzdGVyIHdyb3RlOg0KPiBGdW5j
+dGlvbnMgdGhhdCB1c2UgYW4gRXJyb3IgKiplcnJwIHBhcmFtZXRlciB0byByZXR1cm4gZXJyb3Jz
+IHNob3VsZA0KPiBub3QgYWxzbyByZXBvcnQgdGhlbSB0byB0aGUgdXNlciwgYmVjYXVzZSByZXBv
+cnRpbmcgaXMgdGhlIGNhbGxlcidzDQo+IGpvYi4gIFdoZW4gdGhlIGNhbGxlciBkb2VzLCB0aGUg
+ZXJyb3IgaXMgcmVwb3J0ZWQgdHdpY2UuICBXaGVuIGl0DQo+IGRvZXNuJ3QgKGJlY2F1c2UgaXQg
+cmVjb3ZlcmVkIGZyb20gdGhlIGVycm9yKSwgdGhlcmUgaXMgbm8gZXJyb3IgdG8NCj4gcmVwb3J0
+LCBpLmUuIHRoZSByZXBvcnQgaXMgYm9ndXMuDQo+IA0KPiBxaW9fY2hhbm5lbF9yZG1hX3JlYWR2
+KCkgdmlvbGF0ZXMgdGhpcyBwcmluY2lwbGU6IGl0IGNhbGxzDQo+IGVycm9yX3JlcG9ydCgpIHZp
+YSBxZW11X3JkbWFfZXhjaGFuZ2VfcmVjdigpLiAgSSBlbGVjdGVkIG5vdCB0bw0KPiBpbnZlc3Rp
+Z2F0ZSBob3cgY2FsbGVycyBoYW5kbGUgdGhlIGVycm9yLCBpLmUuIHByZWNpc2UgaW1wYWN0IGlz
+IG5vdA0KPiBrbm93bi4NCj4gDQo+IENsZWFuIHRoaXMgdXAgYnkgY29udmVydGluZyBxZW11X3Jk
+bWFfZXhjaGFuZ2VfcmVjdigpIHRvIEVycm9yLg0KPiANCj4gTmVjZXNzaXRhdGVzIHNldHRpbmcg
+YW4gZXJyb3Igd2hlbiBxZW11X3JkbWFfZXhjaGFuZ2VfZ2V0X3Jlc3BvbnNlKCkNCj4gZmFpbGVk
+LiAgU2luY2UgdGhpcyBlcnJvciB3aWxsIGdvIGF3YXkgbGF0ZXIgaW4gdGhpcyBzZXJpZXMsIHNp
+bXBseQ0KPiB1c2UgIkZJWE1FIHRlbXBvcmFyeSBlcnJvciBtZXNzYWdlIiB0aGVyZS4NCj4gDQo+
+IFNpZ25lZC1vZmYtYnk6IE1hcmt1cyBBcm1icnVzdGVyIDxhcm1icnVAcmVkaGF0LmNvbT4NCg0K
+DQpSZXZpZXdlZC1ieTogTGkgWmhpamlhbiA8bGl6aGlqaWFuQGZ1aml0c3UuY29tPg0KDQoNCj4g
+LS0tDQo+ICAgbWlncmF0aW9uL3JkbWEuYyB8IDE1ICsrKysrKysrKy0tLS0tLQ0KPiAgIDEgZmls
+ZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0t
+Z2l0IGEvbWlncmF0aW9uL3JkbWEuYyBiL21pZ3JhdGlvbi9yZG1hLmMNCj4gaW5kZXggYzg4Y2Qx
+ZjQ2OC4uNTA1NDZiM2EyNyAxMDA2NDQNCj4gLS0tIGEvbWlncmF0aW9uL3JkbWEuYw0KPiArKysg
+Yi9taWdyYXRpb24vcmRtYS5jDQo+IEBAIC0xOTU3LDcgKzE5NTcsNyBAQCBzdGF0aWMgaW50IHFl
+bXVfcmRtYV9leGNoYW5nZV9zZW5kKFJETUFDb250ZXh0ICpyZG1hLCBSRE1BQ29udHJvbEhlYWRl
+ciAqaGVhZCwNCj4gICAgKiBjb250cm9sLWNoYW5uZWwgbWVzc2FnZS4NCj4gICAgKi8NCj4gICBz
+dGF0aWMgaW50IHFlbXVfcmRtYV9leGNoYW5nZV9yZWN2KFJETUFDb250ZXh0ICpyZG1hLCBSRE1B
+Q29udHJvbEhlYWRlciAqaGVhZCwNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgdWludDMyX3QgZXhwZWN0aW5nKQ0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICB1aW50MzJfdCBleHBlY3RpbmcsIEVycm9yICoqZXJycCkNCj4gICB7DQo+ICAgICAgIFJE
+TUFDb250cm9sSGVhZGVyIHJlYWR5ID0gew0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgLmxlbiA9IDAsDQo+IEBAIC0xOTcyLDcgKzE5NzIsNyBAQCBzdGF0aWMgaW50IHFlbXVf
+cmRtYV9leGNoYW5nZV9yZWN2KFJETUFDb250ZXh0ICpyZG1hLCBSRE1BQ29udHJvbEhlYWRlciAq
+aGVhZCwNCj4gICAgICAgcmV0ID0gcWVtdV9yZG1hX3Bvc3Rfc2VuZF9jb250cm9sKHJkbWEsIE5V
+TEwsICZyZWFkeSk7DQo+ICAgDQo+ICAgICAgIGlmIChyZXQgPCAwKSB7DQo+IC0gICAgICAgIGVy
+cm9yX3JlcG9ydCgiRmFpbGVkIHRvIHNlbmQgY29udHJvbCBidWZmZXIhIik7DQo+ICsgICAgICAg
+IGVycm9yX3NldGcoZXJycCwgIkZhaWxlZCB0byBzZW5kIGNvbnRyb2wgYnVmZmVyISIpOw0KPiAg
+ICAgICAgICAgcmV0dXJuIC0xOw0KPiAgICAgICB9DQo+ICAgDQo+IEBAIC0xOTgzLDYgKzE5ODMs
+NyBAQCBzdGF0aWMgaW50IHFlbXVfcmRtYV9leGNoYW5nZV9yZWN2KFJETUFDb250ZXh0ICpyZG1h
+LCBSRE1BQ29udHJvbEhlYWRlciAqaGVhZCwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICBleHBlY3RpbmcsIFJETUFfV1JJRF9SRUFEWSk7DQo+ICAgDQo+ICAg
+ICAgIGlmIChyZXQgPCAwKSB7DQo+ICsgICAgICAgIGVycm9yX3NldGcoZXJycCwgIkZJWE1FIHRl
+bXBvcmFyeSBlcnJvciBtZXNzYWdlIik7DQo+ICAgICAgICAgICByZXR1cm4gLTE7DQo+ICAgICAg
+IH0NCj4gICANCj4gQEAgLTE5OTMsNyArMTk5NCw3IEBAIHN0YXRpYyBpbnQgcWVtdV9yZG1hX2V4
+Y2hhbmdlX3JlY3YoUkRNQUNvbnRleHQgKnJkbWEsIFJETUFDb250cm9sSGVhZGVyICpoZWFkLA0K
+PiAgICAgICAgKi8NCj4gICAgICAgcmV0ID0gcWVtdV9yZG1hX3Bvc3RfcmVjdl9jb250cm9sKHJk
+bWEsIFJETUFfV1JJRF9SRUFEWSk7DQo+ICAgICAgIGlmIChyZXQgPCAwKSB7DQo+IC0gICAgICAg
+IGVycm9yX3JlcG9ydCgicmRtYSBtaWdyYXRpb246IGVycm9yIHBvc3Rpbmcgc2Vjb25kIGNvbnRy
+b2wgcmVjdiEiKTsNCj4gKyAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAicmRtYSBtaWdyYXRpb246
+IGVycm9yIHBvc3Rpbmcgc2Vjb25kIGNvbnRyb2wgcmVjdiEiKTsNCj4gICAgICAgICAgIHJldHVy
+biAtMTsNCj4gICAgICAgfQ0KPiAgIA0KPiBAQCAtMjkwOCwxMSArMjkwOSwxMSBAQCBzdGF0aWMg
+c3NpemVfdCBxaW9fY2hhbm5lbF9yZG1hX3JlYWR2KFFJT0NoYW5uZWwgKmlvYywNCj4gICAgICAg
+ICAgIC8qIFdlJ3ZlIGdvdCBub3RoaW5nIGF0IGFsbCwgc28gbGV0cyB3YWl0IGZvcg0KPiAgICAg
+ICAgICAgICogbW9yZSB0byBhcnJpdmUNCj4gICAgICAgICAgICAqLw0KPiAtICAgICAgICByZXQg
+PSBxZW11X3JkbWFfZXhjaGFuZ2VfcmVjdihyZG1hLCAmaGVhZCwgUkRNQV9DT05UUk9MX1FFTVVf
+RklMRSk7DQo+ICsgICAgICAgIHJldCA9IHFlbXVfcmRtYV9leGNoYW5nZV9yZWN2KHJkbWEsICZo
+ZWFkLCBSRE1BX0NPTlRST0xfUUVNVV9GSUxFLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBlcnJwKTsNCj4gICANCj4gICAgICAgICAgIGlmIChyZXQgPCAwKSB7DQo+
+ICAgICAgICAgICAgICAgcmRtYS0+ZXJyb3JlZCA9IHRydWU7DQo+IC0gICAgICAgICAgICBlcnJv
+cl9zZXRnKGVycnAsICJxZW11X3JkbWFfZXhjaGFuZ2VfcmVjdiBmYWlsZWQiKTsNCj4gICAgICAg
+ICAgICAgICByZXR1cm4gLTE7DQo+ICAgICAgICAgICB9DQo+ICAgDQo+IEBAIC0zNTM2LDYgKzM1
+MzcsNyBAQCBzdGF0aWMgaW50IHFlbXVfcmRtYV9yZWdpc3RyYXRpb25faGFuZGxlKFFFTVVGaWxl
+ICpmKQ0KPiAgICAgICBSRE1BQ29udHJvbEhlYWRlciBibG9ja3MgPSB7IC50eXBlID0gUkRNQV9D
+T05UUk9MX1JBTV9CTE9DS1NfUkVTVUxULA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIC5yZXBlYXQgPSAxIH07DQo+ICAgICAgIFFJT0NoYW5uZWxSRE1BICpyaW9jID0gUUlP
+X0NIQU5ORUxfUkRNQShxZW11X2ZpbGVfZ2V0X2lvYyhmKSk7DQo+ICsgICAgRXJyb3IgKmVyciA9
+IE5VTEw7DQo+ICAgICAgIFJETUFDb250ZXh0ICpyZG1hOw0KPiAgICAgICBSRE1BTG9jYWxCbG9j
+a3MgKmxvY2FsOw0KPiAgICAgICBSRE1BQ29udHJvbEhlYWRlciBoZWFkOw0KPiBAQCAtMzU2NSw5
+ICszNTY3LDEwIEBAIHN0YXRpYyBpbnQgcWVtdV9yZG1hX3JlZ2lzdHJhdGlvbl9oYW5kbGUoUUVN
+VUZpbGUgKmYpDQo+ICAgICAgIGRvIHsNCj4gICAgICAgICAgIHRyYWNlX3FlbXVfcmRtYV9yZWdp
+c3RyYXRpb25faGFuZGxlX3dhaXQoKTsNCj4gICANCj4gLSAgICAgICAgcmV0ID0gcWVtdV9yZG1h
+X2V4Y2hhbmdlX3JlY3YocmRtYSwgJmhlYWQsIFJETUFfQ09OVFJPTF9OT05FKTsNCj4gKyAgICAg
+ICAgcmV0ID0gcWVtdV9yZG1hX2V4Y2hhbmdlX3JlY3YocmRtYSwgJmhlYWQsIFJETUFfQ09OVFJP
+TF9OT05FLCAmZXJyKTsNCj4gICANCj4gICAgICAgICAgIGlmIChyZXQgPCAwKSB7DQo+ICsgICAg
+ICAgICAgICBlcnJvcl9yZXBvcnRfZXJyKGVycik7DQo+ICAgICAgICAgICAgICAgYnJlYWs7DQo+
+ICAgICAgICAgICB9DQo+ICAg
 
