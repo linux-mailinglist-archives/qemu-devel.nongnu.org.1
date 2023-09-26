@@ -2,75 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3C37AEB0A
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 13:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A8E7AEB0D
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 13:08:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql5tE-0001jt-8L; Tue, 26 Sep 2023 07:06:04 -0400
+	id 1ql5uI-0002vv-CL; Tue, 26 Sep 2023 07:07:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql5t9-0001j7-HC
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:05:59 -0400
-Received: from mail-ed1-x52c.google.com ([2a00:1450:4864:20::52c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql5t7-0007mh-Nw
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:05:59 -0400
-Received: by mail-ed1-x52c.google.com with SMTP id
- 4fb4d7f45d1cf-533c8f8f91dso6767829a12.0
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 04:05:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695726356; x=1696331156; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=Q+IqYctc6vXyAnk7lJI6tiNVIFCNG6WNOLwv/uH2q+Q=;
- b=yQ8fySAwXVeNrPOqADwrMQrRkiNknAiOtP+lPQK3JpPOKZJ82yrBTtTLwh7aljQaMS
- E5YmhZEsZ6M9GeBwaybdM756Nc1N8pndfNPPeNxXaFMHYaBkt9mL4V8DPmTNxMYKTAuo
- c8RXQGBQtB6aNLJBmu0Eis4Cw93GtnEZQm/3WNH77K59qqwj35uPqbqQy9tVq9wQ4GJT
- qH0grHL+/Dq4lIxmjOl0mDH3nOMeLjfr+vM0CHYRkvGZeOQcWsEEtIrJtW8EAgGL6EUw
- /9Wq1QdPgDYSQ6mkzVTckwMEgov182k5Q46IFJ4YxTISc3Gk1L6DbhGnZ8cAvYQmcVrp
- tF0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695726356; x=1696331156;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Q+IqYctc6vXyAnk7lJI6tiNVIFCNG6WNOLwv/uH2q+Q=;
- b=dWH0cPX3yMspkx6vRm1imsgUTJpl/m4Zx1Zlm4SfayI4d2OIw9vhKCRRYTwfQza+Cw
- ABup3b2l3vtxxVmcOy02j3fTTFC/+HPa4dSIrX6ftxaqR34slDgLDAfFyRleQv2pT2EZ
- SOLIqPTjdfRSBZ656RfvEVJtarwUHQMInNMRTy0COCjoKg3nqo1fxWrSzl0FG5mheH2m
- uy5RM7L3p8Ac9viC3P/1FQaSa+M8o1BrVCQhFU8NIxiwMhhtEJPznCvdMPNtD3EUshJ/
- eKJ4oP1ROXb2H1mvog4D1GoQuV7sKonwEUQFt3wo0zcVJgXw/S+D6IKgwv21Egl5kNtY
- /XGw==
-X-Gm-Message-State: AOJu0Yy969nKbhviNwe9AMD1l1g3sFIb65iJyzKYbQCYNc2we+adM1sD
- 14ziDlbVGMCFC+eb7cd6HDrnmIYFKTLze9y57wavoA==
-X-Google-Smtp-Source: AGHT+IFrcUGzXoEW7lAWqLF3YlU1u850HoxQCg1+KuWwTybo8rnfEk+TUuRgFiCKeROTpLuc4V4LmKqdEbZsb83dZkY=
-X-Received: by 2002:aa7:c30e:0:b0:530:d53c:b4d with SMTP id
- l14-20020aa7c30e000000b00530d53c0b4dmr7915849edq.35.1695726355741; Tue, 26
- Sep 2023 04:05:55 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1ql5uC-0002ud-CK
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:07:05 -0400
+Received: from szxga08-in.huawei.com ([45.249.212.255])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1ql5u9-00089N-60
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 07:07:03 -0400
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
+ by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4RvxhS3Pt7z15NL5;
+ Tue, 26 Sep 2023 19:04:24 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 26 Sep 2023 19:06:37 +0800
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Tue, 26 Sep 2023 12:06:35 +0100
+To: lixianglai <lixianglai@loongson.cn>, David Hildenbrand <david@redhat.com>, 
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
+CC: Salil Mehta <salil.mehta@opnsrc.net>, Xiaojuan Yang
+ <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>, "Michael S.
+ Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>, Ani Sinha
+ <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Richard Henderson
+ <richard.henderson@linaro.org>, Eduardo Habkost <eduardo@habkost.net>,
+ "Marcel Apfelbaum" <marcel.apfelbaum@gmail.com>,
+ =?utf-8?B?UGhpbGlwcGUgTWF0aGlldS1EYXVkw6k=?= <philmd@linaro.org>, "wangyanan
+ (Y)" <wangyanan55@huawei.com>, =?utf-8?B?RGFuaWVsIFAuIEJlcnJhbmfDqQ==?=
+ <berrange@redhat.com>, Peter Xu <peterx@redhat.com>, Bibo Mao
+ <maobibo@loongson.cn>
+Subject: RE: [PATCH v2 04/10] Introduce the CPU address space destruction
+ function
+Thread-Topic: [PATCH v2 04/10] Introduce the CPU address space destruction
+ function
+Thread-Index: AQHZ5R7Fmo7gjrU/1EmDlFadlO4IebAWsogAgAOJWgCAEsxHUA==
+Date: Tue, 26 Sep 2023 11:06:35 +0000
+Message-ID: <95d2f7e2d846417da5ebadc5ab8c7086@huawei.com>
+References: <cover.1694433326.git.lixianglai@loongson.cn>
+ <3a4fc2a3df4b767c3c296a7da3bc15ca9c251316.1694433326.git.lixianglai@loongson.cn>
+ <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
+ <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
+In-Reply-To: <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.174.16]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-10-vsementsov@yandex-team.ru>
-In-Reply-To: <20230925194040.68592-10-vsementsov@yandex-team.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Sep 2023 12:05:37 +0100
-Message-ID: <CAFEAcA8CXa1fyyGtZRwbyPch9wwmgMrg8wbWEPZ3pL3GW6n1dg@mail.gmail.com>
-Subject: Re: [PATCH 09/12] kvm-all: introduce limits for name_size and num_desc
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- "open list:Overall KVM CPUs" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::52c;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x52c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=45.249.212.255;
+ envelope-from=salil.mehta@huawei.com; helo=szxga08-in.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,38 +80,64 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Sept 2023 at 20:43, Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> Coverity doesn't like when the value with unchecked bounds that comes
-> from fd is used as length for IO or allocation. And really, that's not
-> a good practice. Let's introduce at least an empirical limits for these
-> values.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  accel/kvm/kvm-all.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> index ff1578bb32..6d0ba7d900 100644
-> --- a/accel/kvm/kvm-all.c
-> +++ b/accel/kvm/kvm-all.c
-> @@ -3988,6 +3988,9 @@ typedef struct StatsDescriptors {
->  static QTAILQ_HEAD(, StatsDescriptors) stats_descriptors =
->      QTAILQ_HEAD_INITIALIZER(stats_descriptors);
->
-> +
-> +#define KVM_STATS_QEMU_MAX_NAME_SIZE (1024 * 1024)
-> +#define KVM_STATS_QEMU_MAX_NUM_DESC (1024)
-
-These seem arbitrary. Why these values in particular?
-Does the kernel have any limitation on the values it passes us?
-Do we have any particular limit on what we can handle?
-
-thanks
--- PMM
+DQoNCj4gRnJvbTogcWVtdS1kZXZlbC1ib3VuY2VzK3NhbGlsLm1laHRhPWh1YXdlaS5jb21Abm9u
+Z251Lm9yZyA8cWVtdS1kZXZlbC0NCj4gYm91bmNlcytzYWxpbC5tZWh0YT1odWF3ZWkuY29tQG5v
+bmdudS5vcmc+IE9uIEJlaGFsZiBPZiBsaXhpYW5nbGFpDQo+IFNlbnQ6IFRodXJzZGF5LCBTZXB0
+ZW1iZXIgMTQsIDIwMjMgMjowMSBQTQ0KPiBUbzogRGF2aWQgSGlsZGVuYnJhbmQgPGRhdmlkQHJl
+ZGhhdC5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmcNCj4gQ2M6IFNhbGlsIE1laHRhIDxzYWxp
+bC5tZWh0YUBvcG5zcmMubmV0PjsgWGlhb2p1YW4gWWFuZw0KPiA8eWFuZ3hpYW9qdWFuQGxvb25n
+c29uLmNuPjsgU29uZyBHYW8gPGdhb3NvbmdAbG9vbmdzb24uY24+OyBNaWNoYWVsIFMuDQo+IFRz
+aXJraW4gPG1zdEByZWRoYXQuY29tPjsgSWdvciBNYW1tZWRvdiA8aW1hbW1lZG9AcmVkaGF0LmNv
+bT47IEFuaSBTaW5oYQ0KPiA8YW5pc2luaGFAcmVkaGF0LmNvbT47IFBhb2xvIEJvbnppbmkgPHBi
+b256aW5pQHJlZGhhdC5jb20+OyBSaWNoYXJkDQo+IEhlbmRlcnNvbiA8cmljaGFyZC5oZW5kZXJz
+b25AbGluYXJvLm9yZz47IEVkdWFyZG8gSGFia29zdA0KPiA8ZWR1YXJkb0BoYWJrb3N0Lm5ldD47
+IE1hcmNlbCBBcGZlbGJhdW0gPG1hcmNlbC5hcGZlbGJhdW1AZ21haWwuY29tPjsNCj4gUGhpbGlw
+cGUgTWF0aGlldS1EYXVkw6kgPHBoaWxtZEBsaW5hcm8ub3JnPjsgd2FuZ3lhbmFuIChZKQ0KPiA8
+d2FuZ3lhbmFuNTVAaHVhd2VpLmNvbT47IERhbmllbCBQLiBCZXJyYW5nw6kgPGJlcnJhbmdlQHJl
+ZGhhdC5jb20+OyBQZXRlcg0KPiBYdSA8cGV0ZXJ4QHJlZGhhdC5jb20+OyBCaWJvIE1hbyA8bWFv
+Ymlib0Bsb29uZ3Nvbi5jbj4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2MiAwNC8xMF0gSW50cm9k
+dWNlIHRoZSBDUFUgYWRkcmVzcyBzcGFjZSBkZXN0cnVjdGlvbg0KPiBmdW5jdGlvbg0KPiANCj4g
+SGkgRGF2aWQ6DQo+IA0KPiA+IE9uIDEyLjA5LjIzIDA0OjExLCB4aWFuZ2xhaSBsaSB3cm90ZToN
+Cj4gPj4gSW50cm9kdWNlIG5ldyBmdW5jdGlvbiB0byBkZXN0cm95IENQVSBhZGRyZXNzIHNwYWNl
+IHJlc291cmNlcw0KPiA+PiBmb3IgY3B1IGhvdC0odW4pcGx1Zy4NCj4gPj4NCj4gPiBIb3cgZG8g
+b3RoZXIgYXJjaHMgaGFuZGxlIHRoYXQ/IE9yIGhvdyBhcmUgdGhleSBhYmxlIHRvIGdldCBhd2F5
+DQo+ID4gd2l0aG91dCBkZXN0cm95aW5nPw0KPiA+DQo+IFRoZXkgZG8gbm90IHJlbW92ZSB0aGUg
+Y3B1IGFkZHJlc3Mgc3BhY2UsIHRha2luZyB0aGUgWDg2IGFyY2hpdGVjdHVyZSBhcw0KPiBhbiBl
+eGFtcGxlOg0KPiANCj4gMS5TdGFydCB0aGUgeDg2IFZNOg0KPiANCj4gLi9xZW11LXN5c3RlbS14
+ODZfNjQgXA0KPiAtbWFjaGluZSBxMzXCoCBcDQo+IC1jcHUgQnJvYWR3ZWxsLUlCUlMgXA0KPiAt
+c21wIDEsbWF4Y3B1cz0xMDAsc29ja2V0cz0xMDAsY29yZXM9MSx0aHJlYWRzPTEgXA0KPiAtbSA0
+RyBcDQo+IC1kcml2ZSBmaWxlPX4vYW5vbGlzLTguOC5xY293MsKgIFwNCj4gLXNlcmlhbCBzdGRp
+b8KgwqAgXA0KPiAtbW9uaXRvciB0ZWxuZXQ6bG9jYWxob3N0OjQ0OTgsc2VydmVyLG5vd2FpdMKg
+wqAgXA0KPiAtbm9ncmFwaGljDQo+IA0KPiAyLkNvbm5lY3QgdGhlIHFlbXUgbW9uaXRvcg0KPiAN
+Cj4gdGVsbmV0IDEyNy4wLjAuMSA0NDk4DQo+IA0KPiBpbmZvIG10cmVlDQo+IA0KPiBhZGRyZXNz
+LXNwYWNlOiBjcHUtbWVtb3J5LTANCj4gYWRkcmVzcy1zcGFjZTogbWVtb3J5DQo+ICDCoCAwMDAw
+MDAwMDAwMDAwMDAwLWZmZmZmZmZmZmZmZmZmZmYgKHByaW8gMCwgaS9vKTogc3lzdGVtDQo+ICDC
+oMKgwqAgMDAwMDAwMDAwMDAwMDAwMC0wMDAwMDAwMDdmZmZmZmZmIChwcmlvIDAsIHJhbSk6IGFs
+aWFzIHJhbS1iZWxvdy00Zw0KPiBAcGMucmFtIDAwMDAwMDAwMDAwMDAwMDAtMDAwMDAwMDA3ZmZm
+ZmZmZg0KPiAgwqDCoMKgIDAwMDAwMDAwMDAwMDAwMDAtZmZmZmZmZmZmZmZmZmZmZiAocHJpbyAt
+MSwgaS9vKTogcGNpDQo+ICDCoMKgwqDCoMKgIDAwMDAwMDAwMDAwYTAwMDAtMDAwMDAwMDAwMDBi
+ZmZmZiAocHJpbyAxLCBpL28pOiB2Z2EtbG93bWVtDQo+IA0KPiAzLlBlcmZvcm0gY3B1IGhvdCBz
+d2FwIGludCBxZW11IG1vbml0b3INCj4gDQo+IGRldmljZV9hZGQNCj4gQnJvYWR3ZWxsLUlCUlMt
+eDg2XzY0LWNwdSxzb2NrZXQtaWQ9MSxjb3JlLWlkPTAsdGhyZWFkLWlkPTAsaWQ9Y3B1MQ0KPiBk
+ZXZpY2VfZGVsIGNwdTENCj4gDQo+IGluZm8gbXRyZWUNCj4gDQo+IGFkZHJlc3Mtc3BhY2U6IGNw
+dS1tZW1vcnktMA0KPiBhZGRyZXNzLXNwYWNlOiBjcHUtbWVtb3J5LTENCj4gYWRkcmVzcy1zcGFj
+ZTogbWVtb3J5DQo+ICDCoCAwMDAwMDAwMDAwMDAwMDAwLWZmZmZmZmZmZmZmZmZmZmYgKHByaW8g
+MCwgaS9vKTogc3lzdGVtDQo+ICDCoMKgwqAgMDAwMDAwMDAwMDAwMDAwMC0wMDAwMDAwMDdmZmZm
+ZmZmIChwcmlvIDAsIHJhbSk6IGFsaWFzIHJhbS1iZWxvdy00Zw0KPiBAcGMucmFtIDAwMDAwMDAw
+MDAwMDAwMDAtMDAwMDAwMDA3ZmZmZmZmZg0KPiAgwqDCoMKgIDAwMDAwMDAwMDAwMDAwMDAtZmZm
+ZmZmZmZmZmZmZmZmZiAocHJpbyAtMSwgaS9vKTogcGNpDQo+ICDCoMKgwqDCoMKgIDAwMDAwMDAw
+MDAwYTAwMDAtMDAwMDAwMDAwMDBiZmZmZiAocHJpbyAxLCBpL28pOiB2Z2EtbG93bWVtDQo+IA0K
+PiANCj4gIEZyb20gdGhlIGFib3ZlIHRlc3QsIHlvdSBjYW4gc2VlIHdoZXRoZXIgdGhlIGFkZHJl
+c3Mgc3BhY2Ugb2YgY3B1MSBpcw0KPiByZXNpZHVhbCBhZnRlciBhIGNwdSBob3Qgc3dhcCwgYW5k
+IHdoZXRoZXIgaXQgaXMgcmVhc29uYWJsZT8NCj4gDQo+IFRoZSBhZGRyZXNzIHNwYWNlIGRlc3Ry
+dWN0aW9uIGZ1bmN0aW9uIG9mIHRoZSBDUFUgY2FuIGJlIHVzZWQgdG8gZGVsZXRlDQo+IHRoZSBy
+ZXNpZHVhbCBhZGRyZXNzIHNwYWNlIG9mIHRoZSBDUFUxLg0KDQpZZXMsIGl0IGNhbiBiZSBidXQg
+SSB3b3VsZCBpbnRlcmVzdGVkIHRvIGtub3cgaWYgdGhlcmUgaXMgYW55IHByb2JsZW0NCndoaWNo
+IG1pZ2h0IGhhdmUgZ29uZSB1bm5vdGljZWQgd2hpbGUgZG9pbmcgaXQuDQoNCk1hbnkgdGhhbmtz
+DQpTYWxpbC4NCg0K
 
