@@ -2,93 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C3B7AEE45
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 15:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87DDD7AEE5A
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 16:13:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql8WK-0007GY-6T; Tue, 26 Sep 2023 09:54:36 -0400
+	id 1ql8na-00070x-Ky; Tue, 26 Sep 2023 10:12:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1ql8WG-00078l-Oh
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:54:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql8nV-00070A-32
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:12:22 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1ql8W8-000221-25
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 09:54:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695736461;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=omMxtZlxYmHSaKiNBg8QkkaBBc55aVLo9Dv7tF+WlA8=;
- b=eIjZwKjhgtPRCU1OPDkn369WnFVbTqMtYpTEO9D7dRmpm6DRI0DZc1Op6Av4osrh8hhLBg
- qPM39my8sCsFXaShfYU5cxBaMKKAHan7JRueDovc4mTTnEV4tMGjIhw7yXag3ELL9VlRaw
- yRoM3/CvaL+jD/Bd+lGlOdiiuAs624M=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-400-IFgQLErWPGicATYyAsOFRg-1; Tue, 26 Sep 2023 09:54:20 -0400
-X-MC-Unique: IFgQLErWPGicATYyAsOFRg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9b274cc9636so444616766b.0
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 06:54:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695736458; x=1696341258;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=omMxtZlxYmHSaKiNBg8QkkaBBc55aVLo9Dv7tF+WlA8=;
- b=ILQPdwIN1weYngCPYiQraJGKodGPAQYKT6CvQ+7siSFpoAzQug4ymQfLV2q+M41Ba7
- onBONZ1FNxGYbVkaPTBu9EbPi0V+OQ1FCkeieGjYQvvK6RHzU67jC0GJkH+XKtYCkUkH
- sWzr9+oHgI38+OPN5cDV+j9yDpLwai6RPDSUNwXkW0eTfdB12czqMyqHK6LdLQ8K+wMV
- ZHWnyhUoGjxxV/9b85IfGCV04Ix91zbnLTX83ljto/j+AxJxeLmluc2mR5IJ6Zx7MQ0O
- 2POn4aRzT6yaIT9pVDM6yOIeibHt+78hHhk2QvmQCilBcPMVmYL6NE+WcG53DaTlpmUk
- n4CQ==
-X-Gm-Message-State: AOJu0YyfhqKSbOViJZNkMtG60Grus1YAmF4LvSCHyG+8Wfpdw3dR1hSy
- luEvg6uyhfK//Co/m26IJLt13ehhZM08bSFSbypwRy9Q9cttBIHNOt/RqMw6kJtuf2K5G1aRTTD
- nXwlKX3DRy+bTFfA=
-X-Received: by 2002:a17:906:1bb1:b0:9ae:3d17:d5d0 with SMTP id
- r17-20020a1709061bb100b009ae3d17d5d0mr8909239ejg.31.1695736457823; 
- Tue, 26 Sep 2023 06:54:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1Kr7WQeMdfGAJEk/awW5vKauqptxa5MYq/sLd3ZzJNI3tbGAZS/GijQnUmC1zKjqoGlMDYA==
-X-Received: by 2002:a17:906:1bb1:b0:9ae:3d17:d5d0 with SMTP id
- r17-20020a1709061bb100b009ae3d17d5d0mr8909222ejg.31.1695736457396; 
- Tue, 26 Sep 2023 06:54:17 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
- by smtp.gmail.com with ESMTPSA id
- k8-20020a170906a38800b0099bc2d1429csm7828772ejz.72.2023.09.26.06.54.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Sep 2023 06:54:16 -0700 (PDT)
-Message-ID: <de0387fc-0342-a3bf-7d72-3130e94c50cd@redhat.com>
-Date: Tue, 26 Sep 2023 15:54:16 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql8nR-0006xH-83
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:12:20 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 0122960995;
+ Tue, 26 Sep 2023 17:12:11 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
+ [2a02:6b8:b081:b41d::1:39])
+ by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 9CQc5o0OjKo0-pJ9IwFck; Tue, 26 Sep 2023 17:12:10 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695737530;
+ bh=nXcWGUZm+hWuVSOYgij4pT7rKLKPnqVbey7IC5mQZ24=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=kj/ali0pQKfvUtSF9mlhaNIL8CpkiIHNcNKFhjVTsUBVjy37dypXy7yMneOtlYHX6
+ xs+fvX70LNHBBu5iamDuJwDqRKdMk6wUrdzks8bHcBi9ruYRIJd0IbxixVAwPGiKHX
+ FvmNXs/QzAqGjJYNYAcaCCScOH6T6+qw7TJEYIv8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <02ed54d5-31ef-7acd-d5a0-68714147c00b@yandex-team.ru>
+Date: Tue, 26 Sep 2023 17:12:09 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v3 2/5] vhost-user.rst: Clarify enabling/disabling vrings
+Subject: Re: [PATCH 02/12] hw/i386/intel_iommu: vtd_slpte_nonzero_rsvd():
+ reduce magic numbers
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
- "Michael S . Tsirkin" <mst@redhat.com>, =?UTF-8?Q?Eugenio_P=c3=a9rez?=
- <eperezma@redhat.com>, German Maglione <gmaglione@redhat.com>
-References: <20230915102531.55894-1-hreitz@redhat.com>
- <20230915102531.55894-3-hreitz@redhat.com> <20230925191508.GC323580@fedora>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20230925191508.GC323580@fedora>
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
+ <20230925194040.68592-3-vsementsov@yandex-team.ru>
+ <CAFEAcA_jgL_CLQxT1R2Zu5xDd3RZZpySpjhd1EyBgFM8Ttps6w@mail.gmail.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <CAFEAcA_jgL_CLQxT1R2Zu5xDd3RZZpySpjhd1EyBgFM8Ttps6w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,98 +83,56 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25.09.23 21:15, Stefan Hajnoczi wrote:
-> On Fri, Sep 15, 2023 at 12:25:27PM +0200, Hanna Czenczek wrote:
->> Currently, the vhost-user documentation says that rings are to be
->> initialized in a disabled state when VHOST_USER_F_PROTOCOL_FEATURES is
->> negotiated.  However, by the time of feature negotiation, all rings have
->> already been initialized, so it is not entirely clear what this means.
+On 26.09.23 13:37, Peter Maydell wrote:
+> On Mon, 25 Sept 2023 at 20:41, Vladimir Sementsov-Ogievskiy
+> <vsementsov@yandex-team.ru> wrote:
 >>
->> At least the vhost-user-backend Rust crate's implementation interpreted
->> it to mean that whenever this feature is negotiated, all rings are to
->> put into a disabled state, which means that every SET_FEATURES call
->> would disable all rings, effectively halting the device.  This is
->> problematic because the VHOST_F_LOG_ALL feature is also set or cleared
->> this way, which happens during migration.  Doing so should not halt the
->> device.
+>> Add a constant and clear assertion. The assertion also tells Coverity
+>> that we are not going to overflow the array.
 >>
->> Other implementations have interpreted this to mean that the device is
->> to be initialized with all rings disabled, and a subsequent SET_FEATURES
->> call that does not set VHOST_USER_F_PROTOCOL_FEATURES will enable all of
->> them.  Here, SET_FEATURES will never disable any ring.
->>
->> This interpretation does not suffer the problem of unintentionally
->> halting the device whenever features are set or cleared, so it seems
->> better and more reasonable.
->>
->> We should clarify this in the documentation.
->>
->> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 >> ---
->>   docs/interop/vhost-user.rst | 20 ++++++++++++++------
->>   1 file changed, 14 insertions(+), 6 deletions(-)
+>>   hw/i386/intel_iommu.c | 11 ++++++++---
+>>   1 file changed, 8 insertions(+), 3 deletions(-)
 >>
->> diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
->> index bb4dd0fd60..9b9b802c60 100644
->> --- a/docs/interop/vhost-user.rst
->> +++ b/docs/interop/vhost-user.rst
->> @@ -409,12 +409,20 @@ and stop ring upon receiving ``VHOST_USER_GET_VRING_BASE``.
->>   
->>   Rings can be enabled or disabled by ``VHOST_USER_SET_VRING_ENABLE``.
->>   
->> -If ``VHOST_USER_F_PROTOCOL_FEATURES`` has not been negotiated, the
->> -ring starts directly in the enabled state.
->> -
->> -If ``VHOST_USER_F_PROTOCOL_FEATURES`` has been negotiated, the ring is
->> -initialized in a disabled state and is enabled by
->> -``VHOST_USER_SET_VRING_ENABLE`` with parameter 1.
->> +If ``VHOST_USER_SET_FEATURES`` does not negotiate
->> +``VHOST_USER_F_PROTOCOL_FEATURES``, rings are enabled immediately when
->> +started.
+>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+>> index c0ce896668..2233dbe13a 100644
+>> --- a/hw/i386/intel_iommu.c
+>> +++ b/hw/i386/intel_iommu.c
+>> @@ -1028,12 +1028,17 @@ static dma_addr_t vtd_get_iova_pgtbl_base(IntelIOMMUState *s,
+>>    *     vtd_spte_rsvd 4k pages
+>>    *     vtd_spte_rsvd_large large pages
+>>    */
+>> -static uint64_t vtd_spte_rsvd[5];
+>> -static uint64_t vtd_spte_rsvd_large[5];
+>> +#define VTD_SPTE_RSVD_LEN 5
+>> +static uint64_t vtd_spte_rsvd[VTD_SPTE_RSVD_LEN];
+>> +static uint64_t vtd_spte_rsvd_large[VTD_SPTE_RSVD_LEN];
+>>
+>>   static bool vtd_slpte_nonzero_rsvd(uint64_t slpte, uint32_t level)
+>>   {
+>> -    uint64_t rsvd_mask = vtd_spte_rsvd[level];
+>> +    uint64_t rsvd_mask;
 >> +
->> +If ``VHOST_USER_SET_FEATURES`` does negotiate
->> +``VHOST_USER_F_PROTOCOL_FEATURES``, each ring will remain in the disabled
->> +state until ``VHOST_USER_SET_VRING_ENABLE`` enables it with parameter 1.
+>> +    assert(level < VTD_SPTE_RSVD_LEN);
 >> +
->> +Back-end implementations that support ``VHOST_USER_F_PROTOCOL_FEATURES``
->> +should implement this by initializing each ring in a disabled state, and
->> +enabling them when ``VHOST_USER_SET_FEATURES`` is used without
->> +negotiating ``VHOST_USER_F_PROTOCOL_FEATURES``.  Other than that, rings
->> +should only be enabled and disabled through
->> +``VHOST_USER_SET_VRING_ENABLE``.
-> The "Ring states" section starts by saying there are three states:
-> "stopped", "started but disabled", and "started and enabled". But this
-> patch talks about a "disabled state". Can you rephrase this patch to use
-> the exact state names defined earlier in the spec?
+>> +    rsvd_mask = vtd_spte_rsvd[level];
+> 
+> 
+> Looking at the code it is not clear to me why this assertion is
+> valid. It looks like we are picking up fields from guest-set
+> configuration (probably in-memory data structures). So we can't
+> assert() here -- we need to do whatever the real hardware does
+> if these fields are set to an incorrect value, or at least something
+> sensible that doesn't crash QEMU.
 
-I would not want to do that.  We had the exact problem that the spec 
-wanted to remain high-level, and was not reflecting exactly what 
-existing implementations did, which resulted in confusion (at least for 
-me and the vhost Rust crates authors).
+But touching vtd_spte_rsvd with level>=5 is even worse than assertion, I think. That's overflows the array.
 
-Notably, the existing implementations I’m aware of track 
-enabled/disabled even before the ring is started, exactly as formulated 
-here.
+I don't know what the real hardware should do in this case. So, this assertion just stresses that the code is incomplete and makes it easier to find a bug if it comes.
 
-If we changed this to read something like “If VHOST_USER_SET_FEATURES is 
-ever called without negotiating VHOST_USER_F_PROTOCOL_FEATURES, the ring 
-must be enabled immediately when it is started; otherwise, when the ring 
-is started and VHOST_USER_F_PROTOCOL_FEATURES has always been set in 
-every VHOST_USER_SET_FEATURES call, the ring should be disabled when 
-started.” then this would conflict with the existing implementations:
 
-We never disallow VHOST_USER_SET_VRING_ENABLE when the ring is stopped.  
-Existing implementations track enabled/disabled before the rings are 
-started, and they initialize this state to “disabled”, setting it to 
-“enabled” on receiving VHOST_USER_SET_FEATURES without 
-VHOST_USER_F_PROTOCOL_FEATURES, as described above.  Therefore, if you 
-call VHOST_USER_SET_VRING_ENABLE 1 before the ring is started, the ring 
-will start enabled even with VHOST_USER_F_PROTOCOL_FEATURES.  This is 
-not possible if you only have three states.
-
-Maybe we should rather clarify that enabled/disabled is tracked even 
-while the ring is stopped.
-
-Hanna
+-- 
+Best regards,
+Vladimir
 
 
