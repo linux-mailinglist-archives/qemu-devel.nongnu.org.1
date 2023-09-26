@@ -2,75 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07F07AF59D
+	by mail.lfdr.de (Postfix) with ESMTPS id F3AD07AF59E
 	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 23:12:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlFKY-0008Va-Rg; Tue, 26 Sep 2023 17:10:54 -0400
+	id 1qlFLS-0000Qj-Pk; Tue, 26 Sep 2023 17:11:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1qlFKX-0008VP-3P
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 17:10:53 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ id 1qlFLQ-0000QS-8a
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 17:11:48 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <d-tatianin@yandex-team.ru>)
- id 1qlFKU-0005Mf-3X
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 17:10:52 -0400
+ id 1qlFLO-0005UB-71
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 17:11:48 -0400
 Received: from mail-nwsmtp-mxback-corp-main-97.sas.yp-c.yandex.net
  (mail-nwsmtp-mxback-corp-main-97.sas.yp-c.yandex.net
  [IPv6:2a02:6b8:c08:1106:0:640:c3cf:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 61B9560704;
- Wed, 27 Sep 2023 00:10:45 +0300 (MSK)
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 363D360C59;
+ Wed, 27 Sep 2023 00:11:42 +0300 (MSK)
 Received: from mail.yandex-team.ru (2a02:6b8:c08:1080:0:640:5c52:0
  [2a02:6b8:c08:1080:0:640:5c52:0])
  by mail-nwsmtp-mxback-corp-main-97.sas.yp-c.yandex.net (mxbackcorp/Yandex)
- with HTTP id jAX0O90MrGk0-cVGDfr94; Wed, 27 Sep 2023 00:10:45 +0300
+ with HTTP id jAX1O90MrGk0-35CvQFDT; Wed, 27 Sep 2023 00:11:42 +0300
 X-Yandex-Fwd: 2
 Precedence: bulk
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695762645;
- bh=jSUesqFFyloLf6gB5A0xHegnX+4UOwtw6VHgQXFq/bA=;
+ s=default; t=1695762702;
+ bh=tLFFQx59ZhJ5dKMga+e8RXo6gfX+4Jil+87SWD86lWs=;
  h=References:Date:Message-Id:Cc:Subject:To:From:In-Reply-To;
- b=L+tR7mfTEbYS87Vc/vW58EvBa4tLv5hHFaxEu648CaYTO6+47Q/1qzbMU0gYR60M+
- 6Uf2DhgDPeO3d2DaHE2FDnNVDZnN5JVc+XyG97Lp/RYPQDbY4eQyY4szF4qmwg+FSq
- Y4RNxR2mCjVWKI9NydLVe716H9HffNUK4RzM1yzU=
+ b=cp9bpLvmh1AHsAoC9cSvoZUd2fjMfQcOHqZzGKSfMjGr7kw+JFR6S24w9WCWALG0h
+ NWiSrxmk9kmbVNAIDnJX6/X8EL4xtFG5kofkuEYw/nP++XoBek1+SynREyQL9jwywR
+ a5fwFH23SH6R0T24VgZAOdprGaLBendDBfkqlRkc=
 Authentication-Results: mail-nwsmtp-mxback-corp-main-97.sas.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-Received: from 37xqqk2lbnvsssvy.sas.yp-c.yandex.net
- (37xqqk2lbnvsssvy.sas.yp-c.yandex.net [2a02:6b8:c08:a383:0:640:a965:0])
- by mail-nwsmtp-mxback-corp-canary-59.sas.yp-c.yandex.net (mxbackcorp/Yandex)
- with HTTP id YAXEZ90OuCg0-N1bcfk5x
- for <d-tatianin@yandex-team.ru>; Wed, 27 Sep 2023 00:10:34 +0300
-Received: by 37xqqk2lbnvsssvy.sas.yp-c.yandex.net with HTTP;
- Wed, 27 Sep 2023 00:10:34 +0300
+Received: from mejgq6zk2vrbiq2h.sas.yp-c.yandex.net
+ (mejgq6zk2vrbiq2h.sas.yp-c.yandex.net [2a02:6b8:c08:1080:0:640:5c52:0])
+ by mail-nwsmtp-mxback-corp-main-62.sas.yp-c.yandex.net (mxbackcorp/Yandex)
+ with HTTP id VBX9e90OwOs0-XuMQEZtF
+ for <d-tatianin@yandex-team.ru>; Wed, 27 Sep 2023 00:11:32 +0300
+Received: by mejgq6zk2vrbiq2h.sas.yp-c.yandex.net with HTTP;
+ Wed, 27 Sep 2023 00:11:31 +0300
 From: Daniil Tatianin <d-tatianin@yandex-team.ru>
-To: Peter Xu <peterx@redhat.com>
-Cc: Juan Quintela <quintela@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Juan Quintela <quintela@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
  "yc-core@yandex-team.ru" <yc-core@yandex-team.ru>
-In-Reply-To: <ZRNGspuTX84gStfe@x1n>
+In-Reply-To: <f7ecb5e2-46d1-3e54-39f8-48ea2f845991@yandex-team.ru>
 References: <20230907192944.1609099-1-d-tatianin@yandex-team.ru>
- <ZRNGspuTX84gStfe@x1n>
-Subject: Re: [PATCH 0/2] i386/a-b-bootblock: zero the first byte of each page
+ <20230907192944.1609099-3-d-tatianin@yandex-team.ru>
+ <f7ecb5e2-46d1-3e54-39f8-48ea2f845991@yandex-team.ru>
+Subject: Re: [PATCH 2/2] i386/a-b-bootblock: zero the first byte of each page
  on start
 MIME-Version: 1.0
 X-Mailer: Yamail [ http://yandex.ru ] 5.0
-Date: Wed, 27 Sep 2023 00:10:44 +0300
-Message-Id: <381651695762568@mail.yandex-team.ru>
-Content-Transfer-Encoding: 8bit
+Date: Wed, 27 Sep 2023 00:11:41 +0300
+Message-Id: <248831695762650@mail.yandex-team.ru>
+Content-Transfer-Encoding: base64
 Content-Type: text/html; charset=utf-8
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=d-tatianin@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -15
 X-Spam_score: -1.6
 X-Spam_bar: -
 X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, HTML_MESSAGE=0.001,
- HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ HTML_MIME_NO_HTML_TAG=0.377, MIME_HTML_ONLY=0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,5 +87,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-<div>27.09.2023, 00:02, "Peter Xu" &lt;peterx@redhat.com&gt;:</div><blockquote><p>On Thu, Sep 07, 2023 at 10:29:42PM +0300, Daniil Tatianin wrote:</p><blockquote> This series fixes an issue where the outcome of the migration qtest<br /> relies on the initial memory contents all being the same across the<br /> first 100MiB of RAM, which is a very fragile invariant.<br /> <br /> We fix this by making sure we zero the first byte of every testable page<br /> in range beforehand.</blockquote><p><br />What's the difference between this one and:<br /><br /><a href="https://lore.kernel.org/r/20230907193051.1609310-1-d-tatianin@yandex-team.ru" rel="noopener noreferrer">https://lore.kernel.org/r/20230907193051.1609310-1-d-tatianin@yandex-team.ru</a><br /><br />?</p></blockquote><div>I think i initially forgot something and had to resend, but not sure. Anyway, disregard that one.<br /> </div><blockquote>--<br />Peter Xu<br /> </blockquote>
+PGRpdj4yNi4wOS4yMDIzLCAyMzo0MSwgIlZsYWRpbWlyIFNlbWVudHNvdi1PZ2lldnNraXkiICZs
+dDt2c2VtZW50c292QHlhbmRleC10ZWFtLnJ1Jmd0Ozo8L2Rpdj48YmxvY2txdW90ZT48cD5PbiAw
+Ny4wOS4yMyAyMjoyOSwgRGFuaWlsIFRhdGlhbmluIHdyb3RlOjwvcD48YmxvY2txdW90ZT7CoFRo
+ZSBtaWdyYXRpb24gcXRlc3QgYWxsIHRoZSB3YXkgdXAgdG8gdGhpcyBwb2ludCB1c2VkIHRvIHdv
+cmsgYnkgc2hlZXI8YnIgLz7CoGx1Y2sgcmVseWluZyBvbiB0aGUgY29udGVudHMgb2YgYWxsIHBh
+Z2VzIGZyb20gMU1pQiB0byAxMDBNaUIgdG8gY29udGFpbjxiciAvPsKgdGhlIHNhbWUgb25lIHZh
+bHVlIGluIHRoZSBmaXJzdCBieXRlIGluaXRpYWxseS48YnIgLz7CoDxiciAvPsKgVGhpcyBlYXNp
+bHkgYnJlYWtzIGlmIHdlIHJlZHVjZSB0aGUgYW1vdW50IG9mIFJBTSBmb3IgdGhlIHRlc3QgaW5z
+dGFuY2VzPGJyIC8+wqBmcm9tIDE1ME1pQiB0byBlLmcgMTEwTWlCIHNpbmNlIHRoYXQgbWFrZXMg
+U2VhQklPUyBkaXJ0eSBzb21lIG9mIHRoZTxiciAvPsKgcGFnZXMgc3RhcnRpbmcgYXQgYWJvdXQg
+MHg1ZGQyMDAwICh+OTMgTWlCKSBhcyBpdCByZXVzZXMgdGhvc2UgZm9yIHRoZTxiciAvPsKgSGln
+aE1lbW9yeSBhbGxvY2F0b3Igc2luY2UgY29tbWl0IGRjODhmOWI3MmRmICgibWFsbG9jOiB1c2Ug
+bGFyZ2U8YnIgLz7CoFpvbmVIaWdoIHdoZW4gdGhlcmUgaXMgZW5vdWdoIG1lbW9yeSIpLjxiciAv
+PsKgPGJyIC8+wqBUaGlzIHdvdWxkIHJlc3VsdCBpbiB0aGUgZm9sbG93aW5nIGVycm9yczo8YnIg
+Lz7CoMKgwqDCoMKgwqAxMi82MCBxZW11OnF0ZXN0K3F0ZXN0LXg4Nl82NCAvIHF0ZXN0LXg4Nl82
+NC9taWdyYXRpb24tdGVzdCBFUlJPUiAyLjc0cyBraWxsZWQgYnkgc2lnbmFsIDYgU0lHQUJSVDxi
+ciAvPsKgwqDCoMKgwqDCoHN0ZGVycjo8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDIwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSA5ZSBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDMwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSA4OSBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDQwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSAyMyBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDUwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSAzMSBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDYwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSA3MCBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDcwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSBmZiBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDgwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSA1NCBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZDkwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSA2NCBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZGEwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSAxZCBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBNZW1vcnkgY29udGVudCBp
+bmNvbnNpc3RlbmN5IGF0IDVkZGIwMDAgZmlyc3RfYnl0ZSA9IGNjIGxhc3RfYnl0ZSA9IGNiIGN1
+cnJlbnQgPSAxYSBoaXRfZWRnZSA9IDE8YnIgLz7CoMKgwqDCoMKgwqBhbmQgaW4gYW5vdGhlciAy
+NiBwYWdlcyoqPGJyIC8+wqDCoMKgwqDCoMKgRVJST1I6Li4vdGVzdHMvcXRlc3QvbWlncmF0aW9u
+LXRlc3QuYzozMDA6Y2hlY2tfZ3Vlc3RzX3JhbTogYXNzZXJ0aW9uIGZhaWxlZDogKGJhZCA9PSAw
+KTxiciAvPsKgPGJyIC8+wqBGaXggdGhpcyBieSBhbHdheXMgemVyb2luZyB0aGUgZmlyc3QgYnl0
+ZSBvZiBlYWNoIHBhZ2UgaW4gdGhlIHJhbmdlIHNvPGJyIC8+wqB0aGF0IHdlIGdldCBjb25zaXN0
+ZW50IHJlc3VsdHMgbm8gbWF0dGVyIHRoZSBpbml0aWFsIGNvbnRlbnRzLjxiciAvPsKgPGJyIC8+
+wqBGaXhlczogZWEwYzZkNjIzOTEgKCJ0ZXN0OiBQb3N0Y29weSIpPGJyIC8+wqBTaWduZWQtb2Zm
+LWJ5OiBEYW5paWwgVGF0aWFuaW4gJmx0OzxhIGhyZWY9Im1haWx0bzpkLXRhdGlhbmluQHlhbmRl
+eC10ZWFtLnJ1IiByZWw9Im5vb3BlbmVyIG5vcmVmZXJyZXIiPmQtdGF0aWFuaW5AeWFuZGV4LXRl
+YW0ucnU8L2E+Jmd0OzxiciAvPsKgLS0tPGJyIC8+wqDCoMKgdGVzdHMvbWlncmF0aW9uL2kzODYv
+YS1iLWJvb3RibG9jay5TIHwgOSArKysrKysrKys8YnIgLz7CoMKgwqB0ZXN0cy9taWdyYXRpb24v
+aTM4Ni9hLWItYm9vdGJsb2NrLmggfCAxNiArKysrKysrKy0tLS0tLS0tPGJyIC8+wqDCoMKgMiBm
+aWxlcyBjaGFuZ2VkLCAxNyBpbnNlcnRpb25zKCspLCA4IGRlbGV0aW9ucygtKTxiciAvPsKgPGJy
+IC8+wqBkaWZmIC0tZ2l0IGEvdGVzdHMvbWlncmF0aW9uL2kzODYvYS1iLWJvb3RibG9jay5TIGIv
+dGVzdHMvbWlncmF0aW9uL2kzODYvYS1iLWJvb3RibG9jay5TPGJyIC8+wqBpbmRleCAwMzYyMTZl
+NGE3Li42YmI5OTk5ZDYwIDEwMDY0NDxiciAvPsKgLS0tIGEvdGVzdHMvbWlncmF0aW9uL2kzODYv
+YS1iLWJvb3RibG9jay5TPGJyIC8+wqArKysgYi90ZXN0cy9taWdyYXRpb24vaTM4Ni9hLWItYm9v
+dGJsb2NrLlM8YnIgLz7CoEBAIC00NCw2ICs0NCwxNSBAQCBzdGFydDogIyBhdCAweDdjMDAgPzxi
+ciAvPsKgwqDCoDxiciAvPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqAjIGJsIGtlZXBzIGEgY291bnRl
+ciBzbyB3ZSBsaW1pdCB0aGUgb3V0cHV0IHNwZWVkPGJyIC8+wqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oG1vdiAkMCwgJWJsPGJyIC8+wqArPGJyIC8+wqArcHJlX3plcm86PGJyIC8+wqArIG1vdiAkVEVT
+VF9NRU1fU1RBUlQsJWVheDxiciAvPsKgK2RvX3plcm86PGJyIC8+wqArIG1vdmIgJDAsICglZWF4
+KTxiciAvPsKgKyBhZGQgJDQwOTYsJWVheDxiciAvPsKgKyBjbXAgJFRFU1RfTUVNX0VORCwlZWF4
+PGJyIC8+wqArIGpsIGRvX3plcm88YnIgLz7CoCs8YnIgLz7CoMKgwqBtYWlubG9vcDo8YnIgLz7C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgbW92ICRURVNUX01FTV9TVEFSVCwlZWF4PGJyIC8+wqDCoMKg
+aW5uZXJsb29wOjxiciAvPsKgZGlmZiAtLWdpdCBhL3Rlc3RzL21pZ3JhdGlvbi9pMzg2L2EtYi1i
+b290YmxvY2suaCBiL3Rlc3RzL21pZ3JhdGlvbi9pMzg2L2EtYi1ib290YmxvY2suaDxiciAvPsKg
+aW5kZXggYjdiMGZjZTJlZS4uNWI1MjM5MTdjZSAxMDA2NDQ8YnIgLz7CoC0tLSBhL3Rlc3RzL21p
+Z3JhdGlvbi9pMzg2L2EtYi1ib290YmxvY2suaDxiciAvPsKgKysrIGIvdGVzdHMvbWlncmF0aW9u
+L2kzODYvYS1iLWJvb3RibG9jay5oPGJyIC8+wqBAQCAtNCwxOCArNCwxOCBAQDxiciAvPsKgwqDC
+oMKgKiB0aGUgaGVhZGVyIGFuZCB0aGUgYXNzZW1ibGVyIGRpZmZlcmVuY2VzIGluIHlvdXIgcGF0
+Y2ggc3VibWlzc2lvbi48YnIgLz7CoMKgwqDCoCovPGJyIC8+wqDCoMKgdW5zaWduZWQgY2hhciB4
+ODZfYm9vdHNlY3RbXSA9IHs8IS0tIC0tPjxiciAvPsKgLSAweGZhLCAweDBmLCAweDAxLCAweDE2
+LCAweDc4LCAweDdjLCAweDY2LCAweGI4LCAweDAxLCAweDAwLCAweDAwLCAweDAwLDxiciAvPsKg
+KyAweGZhLCAweDBmLCAweDAxLCAweDE2LCAweDhjLCAweDdjLCAweDY2LCAweGI4LCAweDAxLCAw
+eDAwLCAweDAwLCAweDAwLDxiciAvPsKgwqDCoMKgwqAweDBmLCAweDIyLCAweGMwLCAweDY2LCAw
+eGVhLCAweDIwLCAweDdjLCAweDAwLCAweDAwLCAweDA4LCAweDAwLCAweDAwLDxiciAvPsKgwqDC
+oMKgwqAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweGU0
+LCAweDkyLCAweDBjLCAweDAyLDxiciAvPsKgwqDCoMKgwqAweGU2LCAweDkyLCAweGI4LCAweDEw
+LCAweDAwLCAweDAwLCAweDAwLCAweDhlLCAweGQ4LCAweDY2LCAweGI4LCAweDQxLDxiciAvPsKg
+wqDCoMKgwqAweDAwLCAweDY2LCAweGJhLCAweGY4LCAweDAzLCAweGVlLCAweGIzLCAweDAwLCAw
+eGI4LCAweDAwLCAweDAwLCAweDEwLDxiciAvPsKgLSAweDAwLCAweGZlLCAweDAwLCAweDA1LCAw
+eDAwLCAweDEwLCAweDAwLCAweDAwLCAweDNkLCAweDAwLCAweDAwLCAweDQwLDxiciAvPsKgLSAw
+eDA2LCAweDdjLCAweGYyLCAweGZlLCAweGMzLCAweDgwLCAweGUzLCAweDNmLCAweDc1LCAweGU2
+LCAweDY2LCAweGI4LDxiciAvPsKgLSAweDQyLCAweDAwLCAweDY2LCAweGJhLCAweGY4LCAweDAz
+LCAweGVlLCAweGViLCAweGRiLCAweDhkLCAweDc2LCAweDAwLDxiciAvPsKgLSAweDAwLCAweDAw
+LCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweGZmLCAweGZmLCAweDAwLCAw
+eDAwLDxiciAvPsKgLSAweDAwLCAweDlhLCAweGNmLCAweDAwLCAweGZmLCAweGZmLCAweDAwLCAw
+eDAwLCAweDAwLCAweDkyLCAweGNmLCAweDAwLDxiciAvPsKgLSAweDI3LCAweDAwLCAweDYwLCAw
+eDdjLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLDxiciAv
+PsKgLSAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAw
+LCAweDAwLCAweDAwLCAweDAwLDxiciAvPsKgKyAweDAwLCAweGM2LCAweDAwLCAweDAwLCAweDA1
+LCAweDAwLCAweDEwLCAweDAwLCAweDAwLCAweDNkLCAweDAwLCAweDAwLDxiciAvPsKgKyAweDQw
+LCAweDA2LCAweDdjLCAweGYxLCAweGI4LCAweDAwLCAweDAwLCAweDEwLCAweDAwLCAweGZlLCAw
+eDAwLCAweDA1LDxiciAvPsKgKyAweDAwLCAweDEwLCAweDAwLCAweDAwLCAweDNkLCAweDAwLCAw
+eDAwLCAweDQwLCAweDA2LCAweDdjLCAweGYyLCAweGZlLDxiciAvPsKgKyAweGMzLCAweDgwLCAw
+eGUzLCAweDNmLCAweDc1LCAweGU2LCAweDY2LCAweGI4LCAweDQyLCAweDAwLCAweDY2LCAweGJh
+LDxiciAvPsKgKyAweGY4LCAweDAzLCAweGVlLCAweGViLCAweGRiLCAweDhkLCAweDc2LCAweDAw
+LCAweDAwLCAweDAwLCAweDAwLCAweDAwLDxiciAvPsKgKyAweDAwLCAweDAwLCAweDAwLCAweDAw
+LCAweGZmLCAweGZmLCAweDAwLCAweDAwLCAweDAwLCAweDlhLCAweGNmLCAweDAwLDxiciAvPsKg
+KyAweGZmLCAweGZmLCAweDAwLCAweDAwLCAweDAwLCAweDkyLCAweGNmLCAweDAwLCAweDI3LCAw
+eDAwLCAweDc0LCAweDdjLDxiciAvPsKgwqDCoMKgwqAweDAwLCAweDAwLCAweDAwLCAweDAwLCAw
+eDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLDxiciAvPsKgwqDC
+oMKgwqAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAw
+LCAweDAwLCAweDAwLCAweDAwLDxiciAvPsKgwqDCoMKgwqAweDAwLCAweDAwLCAweDAwLCAweDAw
+LCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLCAweDAwLDwvYmxvY2tx
+dW90ZT48cD48YnIgLz48YnIgLz5JIHVuZGVyc3RhbmQgdGhlIGlkZWEgb2YgcGF0Y2gsIGJ1dCBk
+b24ndCBmb2xsb3cgd2h5IGFuZCBob3cgdGhpcyBib290IHNlY3RvciBpcyBjaGFuZ2VkLiBDb3Vs
+ZCB5b3Ugbm90ZSBpdCBpbiBjb21taXQgbWVzc2FnZT88L3A+PC9ibG9ja3F1b3RlPjxkaXY+VGhl
+cmUncyBhIE1ha2VmaWxlIGZvciByZWNvbXBpbGluZyB0aGUgYm9vdHNlY3Rvciwgd2hpY2ggcHJv
+ZHVjZXMgdGhpcyBiaW5hcnkgaGVhZGVyLiBJdCdzIHRoZSBzdGFuZGFyZCB3YXkgdG8gZG8gaXQg
+SSB0aGluay48L2Rpdj48YmxvY2txdW90ZT4tLTxiciAvPkJlc3QgcmVnYXJkcyw8YnIgLz5WbGFk
+aW1pcjxiciAvPsKgPC9ibG9ja3F1b3RlPg==
 
