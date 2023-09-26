@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147887AEA24
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:15:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9937AEA25
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:15:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql55c-0000UD-DB; Tue, 26 Sep 2023 06:14:48 -0400
+	id 1ql55z-0001Wu-B4; Tue, 26 Sep 2023 06:15:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql55a-0000Sm-Pf; Tue, 26 Sep 2023 06:14:46 -0400
+ id 1ql55t-0001L2-5N; Tue, 26 Sep 2023 06:15:05 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql55X-0005a0-4h; Tue, 26 Sep 2023 06:14:46 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwXP1fxhz6D8hV;
- Tue, 26 Sep 2023 18:12:21 +0800 (CST)
+ id 1ql55r-0005cO-2F; Tue, 26 Sep 2023 06:15:04 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwZ14tbBz6K6wQ;
+ Tue, 26 Sep 2023 18:13:45 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.174.16) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:14:23 +0100
+ 15.1.2507.31; Tue, 26 Sep 2023 11:14:41 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,10 +38,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 30/37] hw/arm: Changes required for reset and to
- support next boot
-Date: Tue, 26 Sep 2023 11:04:29 +0100
-Message-ID: <20230926100436.28284-31-salil.mehta@huawei.com>
+Subject: [PATCH RFC V2 31/37] physmem,
+ gdbstub: Common helping funcs/changes to *unrealize* vCPU
+Date: Tue, 26 Sep 2023 11:04:30 +0100
+Message-ID: <20230926100436.28284-32-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
@@ -76,109 +76,131 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Updates the firmware config with the next boot cpus information and also
-registers the reset callback to be called when guest reboots to reset the cpu.
+Supporting vCPU Hotplug for ARM arch also means introducing new functionality of
+unrealizing the ARMCPU. This requires some new common functions.
 
-Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
-Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+Defining them as part of architecture independent change so that this code could
+be reused by other interested parties.
+
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/arm/boot.c         |  2 +-
- hw/arm/virt.c         | 18 +++++++++++++++---
- include/hw/arm/boot.h |  2 ++
- include/hw/arm/virt.h |  1 +
- 4 files changed, 19 insertions(+), 4 deletions(-)
+ gdbstub/gdbstub.c         | 13 +++++++++++++
+ include/exec/cpu-common.h |  8 ++++++++
+ include/exec/gdbstub.h    |  1 +
+ include/hw/core/cpu.h     |  1 +
+ softmmu/physmem.c         | 25 +++++++++++++++++++++++++
+ 5 files changed, 48 insertions(+)
 
-diff --git a/hw/arm/boot.c b/hw/arm/boot.c
-index 720f22531a..2a2d27c20a 100644
---- a/hw/arm/boot.c
-+++ b/hw/arm/boot.c
-@@ -682,7 +682,7 @@ fail:
-     return -1;
+diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
+index 5f28d5cf57..ddbcb4f115 100644
+--- a/gdbstub/gdbstub.c
++++ b/gdbstub/gdbstub.c
+@@ -491,6 +491,19 @@ void gdb_register_coprocessor(CPUState *cpu,
+     }
  }
  
--static void do_cpu_reset(void *opaque)
-+void do_cpu_reset(void *opaque)
- {
-     ARMCPU *cpu = opaque;
-     CPUState *cs = CPU(cpu);
-diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-index 6f5ee4a1c6..e46f529801 100644
---- a/hw/arm/virt.c
-+++ b/hw/arm/virt.c
-@@ -45,6 +45,8 @@
- #include "sysemu/device_tree.h"
- #include "sysemu/numa.h"
- #include "sysemu/runstate.h"
-+#include "sysemu/reset.h"
-+#include "sysemu/sysemu.h"
- #include "sysemu/tpm.h"
- #include "sysemu/tcg.h"
- #include "sysemu/kvm.h"
-@@ -1357,7 +1359,7 @@ static FWCfgState *create_fw_cfg(const VirtMachineState *vms, AddressSpace *as)
-     char *nodename;
- 
-     fw_cfg = fw_cfg_init_mem_wide(base + 8, base, 8, base + 16, as);
--    fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, (uint16_t)ms->smp.cpus);
-+    fw_cfg_add_i16(fw_cfg, FW_CFG_NB_CPUS, vms->boot_cpus);
- 
-     nodename = g_strdup_printf("/fw-cfg@%" PRIx64, base);
-     qemu_fdt_add_subnode(ms->fdt, nodename);
-@@ -3177,7 +3179,13 @@ static void virt_cpu_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
-         if (local_err) {
-             goto fail;
-         }
--        /* TODO: register cpu for reset & update F/W info for the next boot */
-+        /* register this cpu for reset & update F/W info for the next boot */
-+        qemu_register_reset(do_cpu_reset, ARM_CPU(cs));
-+    }
++void gdb_unregister_coprocessor_all(CPUState *cpu)
++{
++    GDBRegisterState *s, *p;
 +
-+    vms->boot_cpus++;
-+    if (vms->fw_cfg) {
-+        fw_cfg_modify_i16(vms->fw_cfg, FW_CFG_NB_CPUS, vms->boot_cpus);
++    p = cpu->gdb_regs;
++    while (p) {
++        s = p;
++        p = p->next;
++        g_free(s);
++    }
++    cpu->gdb_regs = NULL;
++}
++
+ static void gdb_process_breakpoint_remove_all(GDBProcess *p)
+ {
+     CPUState *cpu = gdb_get_first_cpu_in_process(p);
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 87dc9a752c..27cd4d32b1 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -120,6 +120,14 @@ size_t qemu_ram_pagesize_largest(void);
+  */
+ void cpu_address_space_init(CPUState *cpu, int asidx,
+                             const char *prefix, MemoryRegion *mr);
++/**
++ * cpu_address_space_destroy:
++ * @cpu: CPU for which address space needs to be destroyed
++ * @asidx: integer index of this address space
++ *
++ * Note that with KVM only one address space is supported.
++ */
++void cpu_address_space_destroy(CPUState *cpu, int asidx);
+ 
+ void cpu_physical_memory_rw(hwaddr addr, void *buf,
+                             hwaddr len, bool is_write);
+diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
+index 7d743fe1e9..a22f0875e2 100644
+--- a/include/exec/gdbstub.h
++++ b/include/exec/gdbstub.h
+@@ -17,6 +17,7 @@ typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
+ void gdb_register_coprocessor(CPUState *cpu,
+                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
+                               int num_regs, const char *xml, int g_pos);
++void gdb_unregister_coprocessor_all(CPUState *cpu);
+ 
+ /**
+  * gdbserver_start: start the gdb server
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index dab572c9bd..ffd815a0d8 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -366,6 +366,7 @@ struct CPUState {
+     QSIMPLEQ_HEAD(, qemu_work_item) work_list;
+ 
+     CPUAddressSpace *cpu_ases;
++    int cpu_ases_ref_count;
+     int num_ases;
+     AddressSpace *as;
+     MemoryRegion *memory;
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 3df73542e1..a93ae783af 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -762,6 +762,7 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+ 
+     if (!cpu->cpu_ases) {
+         cpu->cpu_ases = g_new0(CPUAddressSpace, cpu->num_ases);
++        cpu->cpu_ases_ref_count = cpu->num_ases;
      }
  
-     cs->disabled = false;
-@@ -3252,7 +3260,11 @@ static void virt_cpu_unplug(HotplugHandler *hotplug_dev, DeviceState *dev,
-     unwire_gic_cpu_irqs(vms, cs);
-     virt_update_gic(vms, cs);
+     newas = &cpu->cpu_ases[asidx];
+@@ -775,6 +776,30 @@ void cpu_address_space_init(CPUState *cpu, int asidx,
+     }
+ }
  
--    /* TODO: unregister cpu for reset & update F/W info for the next boot */
-+    qemu_unregister_reset(do_cpu_reset, ARM_CPU(cs));
-+    vms->boot_cpus--;
-+    if (vms->fw_cfg) {
-+        fw_cfg_modify_i16(vms->fw_cfg, FW_CFG_NB_CPUS, vms->boot_cpus);
-+    }
- 
-     qobject_unref(dev->opts);
-     dev->opts = NULL;
-diff --git a/include/hw/arm/boot.h b/include/hw/arm/boot.h
-index 80c492d742..f81326a1dc 100644
---- a/include/hw/arm/boot.h
-+++ b/include/hw/arm/boot.h
-@@ -178,6 +178,8 @@ AddressSpace *arm_boot_address_space(ARMCPU *cpu,
- int arm_load_dtb(hwaddr addr, const struct arm_boot_info *binfo,
-                  hwaddr addr_limit, AddressSpace *as, MachineState *ms);
- 
-+void do_cpu_reset(void *opaque);
++void cpu_address_space_destroy(CPUState *cpu, int asidx)
++{
++    CPUAddressSpace *cpuas;
 +
- /* Write a secure board setup routine with a dummy handler for SMCs */
- void arm_write_secure_board_setup_dummy_smc(ARMCPU *cpu,
-                                             const struct arm_boot_info *info,
-diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
-index f9a748a5a9..a130fdad52 100644
---- a/include/hw/arm/virt.h
-+++ b/include/hw/arm/virt.h
-@@ -176,6 +176,7 @@ struct VirtMachineState {
-     MemMapEntry *memmap;
-     char *pciehb_nodename;
-     const int *irqmap;
-+    uint16_t boot_cpus;
-     int fdt_size;
-     uint32_t clock_phandle;
-     uint32_t gic_phandle;
++    assert(asidx < cpu->num_ases);
++    assert(asidx == 0 || !kvm_enabled());
++    assert(cpu->cpu_ases);
++
++    cpuas = &cpu->cpu_ases[asidx];
++    if (tcg_enabled()) {
++        memory_listener_unregister(&cpuas->tcg_as_listener);
++    }
++
++    address_space_destroy(cpuas->as);
++    g_free_rcu(cpuas->as, rcu);
++
++    if (cpu->cpu_ases_ref_count == 1) {
++        g_free(cpu->cpu_ases);
++        cpu->cpu_ases = NULL;
++    }
++
++    cpu->cpu_ases_ref_count--;
++}
++
+ AddressSpace *cpu_get_address_space(CPUState *cpu, int asidx)
+ {
+     /* Return the AddressSpace corresponding to the specified index */
 -- 
 2.34.1
 
