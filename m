@@ -2,68 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141877AEE69
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 16:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 263487AEE78
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 16:35:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql8vE-0002A7-Oh; Tue, 26 Sep 2023 10:20:20 -0400
+	id 1ql98k-0005oD-Dj; Tue, 26 Sep 2023 10:34:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1ql8vB-00029p-Cy
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:20:18 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ql98i-0005o1-PH
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:34:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1ql8v8-00011C-Jk
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:20:17 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 60A9C6138A;
- Tue, 26 Sep 2023 17:20:10 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
- [2a02:6b8:b081:b41d::1:39])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id 9KQTAo0OhKo0-5HFlTIRt; Tue, 26 Sep 2023 17:20:09 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695738009;
- bh=j1Kns/48VGEGd7m9QlprIb1xe4WsnSSWqSBms7UX0Bk=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=VjUpwLUgHNWEb8/Jw5F4k+laL8j6aTPgjsqlI9Evm6YTKS7oYs/d/LFdz2E/xoZoL
- GX/lCGF99ZrIh7dCBABqxY/YYOXhD/lCk8xir9UVYE+AHLdJE46+KrDJO8/+TDH8X6
- 5eufGGvWJkenahHwyCl3RbhjWyBFleLg0NxOJZnc=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <887188ac-4887-4491-f889-fe1f62a461e8@yandex-team.ru>
-Date: Tue, 26 Sep 2023 17:20:08 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1ql98h-00043O-1d
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 10:34:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695738852;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=NAH3Up23Pi/E35jm/8kjqEt549DeTjX6kaIyJ5kpa4M=;
+ b=csZ4Kjmy2QivLAM3XeJvazQpyYPIBv0jfW95UCE4HGAGYbZhryluSvd7OZ3hEROC+D6Y1z
+ mTOhs7Jbw/KJbNTOkiZ2J3OKj9gY6jabHGLxGhQGNYHB5YNwjcbV/gY8aY32MDLkM3f0sA
+ LdwitqPsDeW9FX7Bn8AC/R+4CSkbSwk=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-147-Bog_BLNKMHGXUgyp_FYGgg-1; Tue, 26 Sep 2023 10:34:08 -0400
+X-MC-Unique: Bog_BLNKMHGXUgyp_FYGgg-1
+Received: by mail-vs1-f72.google.com with SMTP id
+ ada2fe7eead31-4526d86db34so4878378137.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 07:34:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695738847; x=1696343647;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NAH3Up23Pi/E35jm/8kjqEt549DeTjX6kaIyJ5kpa4M=;
+ b=Cf4AVAf+dDf2Rp2wMlGe3sQhWrpUSumnNrb2aIOGcL/L14UeVQK/Dnhg6MKCasc/N0
+ TNSDIHWdrcTtdXTdg8P8J90R+8/wKMYhLarh7MLGlkT27GNrtHU6DbkH9piJoWQpLrDo
+ Ak2NkpZNvegOAUgfn3AAmPI3MCNSBqU94cDhFakG5YTrfyLwflq23VAsoWKqbMrBGHIt
+ 1Hor04eBH1HlD9OS0v7w5lGypgE6bKjYBgspHB9lvfJZxvJS6VB58YseYh63LR+8wFt2
+ /tmpDUtjskl6+38sbzJPrsPBWNvll1+Q7fi439osS8+As1VOb8o1Vx6CheHePG/4B6zV
+ JlXQ==
+X-Gm-Message-State: AOJu0YwNr11RZ3izT1oDiWuOmJXoHXgT4IWoXWgRFf9psAxClzaHy4pO
+ FRjSwV7tMFOnCz+9PfP9PUll9A63RZ7+wre0EJhPtuNJT6Wsoyyzdqa69sfsVChpMbfqgT1nGLR
+ yTPcGWtjhNVAlt+/gBEZ1RXneL6siBKc=
+X-Received: by 2002:a05:6102:3c3:b0:44e:a216:59a6 with SMTP id
+ n3-20020a05610203c300b0044ea21659a6mr6371691vsq.4.1695738847635; 
+ Tue, 26 Sep 2023 07:34:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7lzDDgugmAs5jPVa7vSyijiZAnkJZhPHW1PmHwlaxVocc38LrtQvSzLIa/8B4Y74Ym8uOf1QI0a3Oy+In6jU=
+X-Received: by 2002:a05:6102:3c3:b0:44e:a216:59a6 with SMTP id
+ n3-20020a05610203c300b0044ea21659a6mr6371675vsq.4.1695738847365; Tue, 26 Sep
+ 2023 07:34:07 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 05/12] device_tree: qmp_dumpdtb(): stronger assertion
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
- Alistair Francis <alistair.francis@wdc.com>,
- David Gibson <david@gibson.dropbear.id.au>
-References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-6-vsementsov@yandex-team.ru>
- <CAFEAcA9TjB7OJ-j+Cnst8pt3CjVADvyvG07ZvykQKRoowgMe3g@mail.gmail.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <CAFEAcA9TjB7OJ-j+Cnst8pt3CjVADvyvG07ZvykQKRoowgMe3g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230925144922.529963-1-pbonzini@redhat.com>
+ <8734z1qdli.fsf@pond.sub.org>
+In-Reply-To: <8734z1qdli.fsf@pond.sub.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Tue, 26 Sep 2023 16:33:55 +0200
+Message-ID: <CABgObfbt5ZsbQy2D9wb9Ns+rc_r3+6-Y_oG3O8Pe0+T3XtxBzg@mail.gmail.com>
+Subject: Re: [PATCH] target/i386/seg_helper: remove shadowed variable
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>
+Content-Type: multipart/alternative; boundary="000000000000a12846060643f7b4"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
+X-Spam_bar: -
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ TVD_SUBJ_WIPE_DEBT=1.004 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,55 +93,125 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.09.23 13:51, Peter Maydell wrote:
-> On Mon, 25 Sept 2023 at 20:42, Vladimir Sementsov-Ogievskiy
-> <vsementsov@yandex-team.ru> wrote:
->>
->> Coverity mark this size, got from the buffer as untrasted value, it's
->> not good to use it as length when writing to file. Make the assertion
->> more strict to also check upper bound.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->> ---
->>   softmmu/device_tree.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/softmmu/device_tree.c b/softmmu/device_tree.c
->> index 30aa3aea9f..adc4236e21 100644
->> --- a/softmmu/device_tree.c
->> +++ b/softmmu/device_tree.c
->> @@ -660,7 +660,7 @@ void qmp_dumpdtb(const char *filename, Error **errp)
->>
->>       size = fdt_totalsize(current_machine->fdt);
->>
->> -    g_assert(size > 0);
->> +    g_assert(size > 0 && size <= FDT_MAX_SIZE);
-> 
-> FDT_MAX_SIZE is not "this is as big as an FDT can ever be". It's
-> only the internal sizing of device trees that we create ourselves
-> in the machine models (and which we will bump up if for some
-> reason we ever find ourselves needing to create bigger device
-> trees). So it's not really a suitable upper bound.
-> 
->>       if (!g_file_set_contents(filename, current_machine->fdt, size, &err)) {
->>           error_setg(errp, "Error saving FDT to file %s: %s",
-> 
-> Nothing bad happens if we pass g_file_set_contents() a very
+--000000000000a12846060643f7b4
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-but it will also try to read beyond the allocated fdt. In my thought clear crash on assertion is better than such memory access.
+Il mar 26 set 2023, 15:16 Markus Armbruster <armbru@redhat.com> ha scritto:
 
-> large size -- we'll just create a large file. The user already
-> has lots of ways to fill up their disk if they want to, and
-> we don't have any idea how much disk space they might or might
-> not have.
-> 
-> I would just mark this as a false positive.
-> 
-> thanks
-> -- PMM
+> I still get these:
+>
+> ../target/i386/tcg/seg_helper.c: In function =E2=80=98switch_tss_ra=E2=80=
+=99:
+> ../target/i386/tcg/seg_helper.c:344:22: warning: declaration of =E2=80=98=
+ptr=E2=80=99
+> shadows a previous local [-Wshadow=3Dcompatible-local]
+>   344 |         target_ulong ptr;
+>       |                      ^~~
+> ../target/i386/tcg/seg_helper.c:245:18: note: shadowed declaration is her=
+e
+>   245 |     target_ulong ptr;
+>       |                  ^~~
+> ../target/i386/tcg/seg_helper.c:345:18: warning: declaration of =E2=80=98=
+e2=E2=80=99
+> shadows a parameter [-Wshadow=3Dcompatible-local]
+>   345 |         uint32_t e2;
+>       |                  ^~
+> ../target/i386/tcg/seg_helper.c:235:48: note: shadowed declaration is her=
+e
+>   235 |                          uint32_t e1, uint32_t e2, int source,
+>       |                                       ~~~~~~~~~^~
+> ../target/i386/tcg/seg_helper.c:402:22: warning: declaration of =E2=80=98=
+ptr=E2=80=99
+> shadows a previous local [-Wshadow=3Dcompatible-local]
+>   402 |         target_ulong ptr;
+>       |                      ^~~
+> ../target/i386/tcg/seg_helper.c:245:18: note: shadowed declaration is her=
+e
+>   245 |     target_ulong ptr;
+>       |                  ^~~
+> ../target/i386/tcg/seg_helper.c:403:18: warning: declaration of =E2=80=98=
+e2=E2=80=99
+> shadows a parameter [-Wshadow=3Dcompatible-local]
+>   403 |         uint32_t e2;
+>       |                  ^~
+> ../target/i386/tcg/seg_helper.c:235:48: note: shadowed declaration is her=
+e
+>   235 |                          uint32_t e1, uint32_t e2, int source,
+>       |                                       ~~~~~~~~~^~
+>
 
--- 
-Best regards,
-Vladimir
+There's another seg_helper patch. 8)
+
+Paolo
+
+
+>
+
+--000000000000a12846060643f7b4
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il mar 26 set 2023, 15:16 Markus Armbruster &lt;<a hre=
+f=3D"mailto:armbru@redhat.com">armbru@redhat.com</a>&gt; ha scritto:<br></d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left=
+:1px #ccc solid;padding-left:1ex">I still get these:<br>
+<br>
+../target/i386/tcg/seg_helper.c: In function =E2=80=98switch_tss_ra=E2=80=
+=99:<br>
+../target/i386/tcg/seg_helper.c:344:22: warning: declaration of =E2=80=98pt=
+r=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]<br>
+=C2=A0 344 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0target_ulong ptr;<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 ^~~<br>
+../target/i386/tcg/seg_helper.c:245:18: note: shadowed declaration is here<=
+br>
+=C2=A0 245 |=C2=A0 =C2=A0 =C2=A0target_ulong ptr;<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 ^~~<br>
+../target/i386/tcg/seg_helper.c:345:18: warning: declaration of =E2=80=98e2=
+=E2=80=99 shadows a parameter [-Wshadow=3Dcompatible-local]<br>
+=C2=A0 345 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uint32_t e2;<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 ^~<br>
+../target/i386/tcg/seg_helper.c:235:48: note: shadowed declaration is here<=
+br>
+=C2=A0 235 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint32_t e1, uint32_t e2, int source,<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0~~~~~~~~~^~<br>
+../target/i386/tcg/seg_helper.c:402:22: warning: declaration of =E2=80=98pt=
+r=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]<br>
+=C2=A0 402 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0target_ulong ptr;<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 ^~~<br>
+../target/i386/tcg/seg_helper.c:245:18: note: shadowed declaration is here<=
+br>
+=C2=A0 245 |=C2=A0 =C2=A0 =C2=A0target_ulong ptr;<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 ^~~<br>
+../target/i386/tcg/seg_helper.c:403:18: warning: declaration of =E2=80=98e2=
+=E2=80=99 shadows a parameter [-Wshadow=3Dcompatible-local]<br>
+=C2=A0 403 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0uint32_t e2;<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 ^~<br>
+../target/i386/tcg/seg_helper.c:235:48: note: shadowed declaration is here<=
+br>
+=C2=A0 235 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint32_t e1, uint32_t e2, int source,<br>
+=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0~~~~~~~~~^~<br></blockquote></div></div><div dir=3D"auto"><br>=
+</div><div dir=3D"auto">There&#39;s another seg_helper patch. 8)</div><div =
+dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"auto"><br><=
+/div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmai=
+l_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left=
+:1ex">
+<br>
+</blockquote></div></div></div>
+
+--000000000000a12846060643f7b4--
 
 
