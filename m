@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AD67AF33F
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 20:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0017AF372
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 20:59:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlD5R-0004f8-Lv; Tue, 26 Sep 2023 14:47:09 -0400
+	id 1qlDG8-0006fY-6j; Tue, 26 Sep 2023 14:58:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlD5P-0004ej-7V
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:47:07 -0400
-Received: from forwardcorp1c.mail.yandex.net
- ([2a02:6b8:c03:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlDG1-0006eq-8W
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:58:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qlD5L-0008VZ-Qs
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:47:06 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:550b:0:640:d49b:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 12D7960B4D;
- Tue, 26 Sep 2023 21:47:00 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
- [2a02:6b8:b081:b41d::1:39])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id xkUFwq0Oj8c0-2Y1V8lsA; Tue, 26 Sep 2023 21:46:59 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1695754019;
- bh=AlOoxvJpF0ZKULRYjHmq7mrMq41vyi/rHEHYCadLcmY=;
- h=In-Reply-To:Cc:Date:References:To:From:Subject:Message-ID;
- b=JpLS3m1dlBFCcpWbktEAK4sVV8Ia6CTok8mxOJ8+ESGunwAWZRrCVs3eP08sQcyMU
- iV0fjTbvGHrfr+MxujH8mAARNqo93+POyng+wEGq0oRKwDeT8Z2bthU0l4sci1peGv
- pWzpvbzT8S9Ocv7BC1HWDpHf9UJh/5usponwcrAE=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <3e5db346-2407-0379-0969-a099c3c4bc42@yandex-team.ru>
-Date: Tue, 26 Sep 2023 21:46:59 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 02/12] hw/i386/intel_iommu: vtd_slpte_nonzero_rsvd():
- reduce magic numbers
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: Peter Maydell <peter.maydell@linaro.org>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlDFy-0002rO-Vc
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 14:58:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695754680;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=TxpnUmsp7CDpOyOE4uRuAfPS1CYsQJrUqeNJWaRyC9g=;
+ b=Ek8+ECY65NKJ/mnC0DsYiNVmXttTCKXOdUlGB08amMxNauNKgtl4cZMTCh5heP6Z4sx4Ye
+ tiSp25rWlfYG7NPzY68e6NLuBA5HayInHcNDD8NISO0GuxEJbB/F2RAUqHG7zXpIDb2Wr5
+ yVzFCzf+LxN6jn2DBOqz31j0gxnWkeA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-471-g2fGDUOgNzKF-jPxEwneLg-1; Tue, 26 Sep 2023 14:57:55 -0400
+X-MC-Unique: g2fGDUOgNzKF-jPxEwneLg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BFCA638116F9;
+ Tue, 26 Sep 2023 18:57:54 +0000 (UTC)
+Received: from t14s.fritz.box (unknown [10.39.192.33])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 92F022026D4B;
+ Tue, 26 Sep 2023 18:57:40 +0000 (UTC)
+From: David Hildenbrand <david@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>,
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-3-vsementsov@yandex-team.ru>
- <CAFEAcA_jgL_CLQxT1R2Zu5xDd3RZZpySpjhd1EyBgFM8Ttps6w@mail.gmail.com>
- <a39b4d16-3055-8718-0f84-ebbdd1078758@yandex-team.ru>
-In-Reply-To: <a39b4d16-3055-8718-0f84-ebbdd1078758@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
+Subject: [PATCH v4 00/18] virtio-mem: Expose device memory through multiple
+ memslots
+Date: Tue, 26 Sep 2023 20:57:20 +0200
+Message-ID: <20230926185738.277351-1-david@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,67 +88,212 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.09.23 21:36, Vladimir Sementsov-Ogievskiy wrote:
-> On 26.09.23 13:37, Peter Maydell wrote:
->> On Mon, 25 Sept 2023 at 20:41, Vladimir Sementsov-Ogievskiy
->> <vsementsov@yandex-team.ru> wrote:
->>>
->>> Add a constant and clear assertion. The assertion also tells Coverity
->>> that we are not going to overflow the array.
->>>
->>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
->>> ---
->>>   hw/i386/intel_iommu.c | 11 ++++++++---
->>>   1 file changed, 8 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
->>> index c0ce896668..2233dbe13a 100644
->>> --- a/hw/i386/intel_iommu.c
->>> +++ b/hw/i386/intel_iommu.c
->>> @@ -1028,12 +1028,17 @@ static dma_addr_t vtd_get_iova_pgtbl_base(IntelIOMMUState *s,
->>>    *     vtd_spte_rsvd 4k pages
->>>    *     vtd_spte_rsvd_large large pages
->>>    */
->>> -static uint64_t vtd_spte_rsvd[5];
->>> -static uint64_t vtd_spte_rsvd_large[5];
->>> +#define VTD_SPTE_RSVD_LEN 5
->>> +static uint64_t vtd_spte_rsvd[VTD_SPTE_RSVD_LEN];
->>> +static uint64_t vtd_spte_rsvd_large[VTD_SPTE_RSVD_LEN];
->>>
->>>   static bool vtd_slpte_nonzero_rsvd(uint64_t slpte, uint32_t level)
->>>   {
->>> -    uint64_t rsvd_mask = vtd_spte_rsvd[level];
->>> +    uint64_t rsvd_mask;
->>> +
->>> +    assert(level < VTD_SPTE_RSVD_LEN);
->>> +
->>> +    rsvd_mask = vtd_spte_rsvd[level];
->>
->>
->> Looking at the code it is not clear to me why this assertion is
->> valid. It looks like we are picking up fields from guest-set
->> configuration (probably in-memory data structures). So we can't
->> assert() here -- we need to do whatever the real hardware does
->> if these fields are set to an incorrect value, or at least something
->> sensible that doesn't crash QEMU.
->>
-> 
-> Finally, seems that assertion is valid. We do check the guest-set configuration:
-> 
-> 1. in vtd_decide_config(), we check that s->aw_bits is exactly one of VTD_HOST_AW_39BIT or VTD_HOST_AW_48BIT.
-> 
-> 2. in vtd_init(), in s->cap we set VTD_CAP_SAGAW_39bit (bit 1) and may be VTD_CAP_SAGAW_48bit (bit 2),  but never bit 3 (which would allow 5-level page-table) or any other bit (i.e. bits 0 and 4 which are reserved).
-> 
-> 3. then, as I could follow, both context entry and pasid entry should go through vtd_is_level_supported(), which checks that level is allowed in s->cap.
-> 
-> So in the code we should work only with levels 3 and 4.
-> 
+Quoting from patch #16:
 
-(i.e. maximum levels, of course we have page-tables of levels 1..3 and 1..4 correspondingly)
+    Having large virtio-mem devices that only expose little memory to a VM
+    is currently a problem: we map the whole sparse memory region into the
+    guest using a single memslot, resulting in one gigantic memslot in KVM.
+    KVM allocates metadata for the whole memslot, which can result in quite
+    some memory waste.
 
+    Assuming we have a 1 TiB virtio-mem device and only expose little (e.g.,
+    1 GiB) memory, we would create a single 1 TiB memslot and KVM has to
+    allocate metadata for that 1 TiB memslot: on x86, this implies allocating
+    a significant amount of memory for metadata:
+
+    (1) RMAP: 8 bytes per 4 KiB, 8 bytes per 2 MiB, 8 bytes per 1 GiB
+        -> For 1 TiB: 2147483648 + 4194304 + 8192 = ~ 2 GiB (0.2 %)
+
+        With the TDP MMU (cat /sys/module/kvm/parameters/tdp_mmu) this gets
+        allocated lazily when required for nested VMs
+    (2) gfn_track: 2 bytes per 4 KiB
+        -> For 1 TiB: 536870912 = ~512 MiB (0.05 %)
+    (3) lpage_info: 4 bytes per 2 MiB, 4 bytes per 1 GiB
+        -> For 1 TiB: 2097152 + 4096 = ~2 MiB (0.0002 %)
+    (4) 2x dirty bitmaps for tracking: 2x 1 bit per 4 KiB page
+        -> For 1 TiB: 536870912 = 64 MiB (0.006 %)
+
+    So we primarily care about (1) and (2). The bad thing is, that the
+    memory consumption doubles once SMM is enabled, because we create the
+    memslot once for !SMM and once for SMM.
+
+    Having a 1 TiB memslot without the TDP MMU consumes around:
+    * With SMM: 5 GiB
+    * Without SMM: 2.5 GiB
+    Having a 1 TiB memslot with the TDP MMU consumes around:
+    * With SMM: 1 GiB
+    * Without SMM: 512 MiB
+
+    ... and that's really something we want to optimize, to be able to just
+    start a VM with small boot memory (e.g., 4 GiB) and a virtio-mem device
+    that can grow very large (e.g., 1 TiB).
+
+    Consequently, using multiple memslots and only mapping the memslots we
+    really need can significantly reduce memory waste and speed up
+    memslot-related operations. Let's expose the sparse RAM memory region using
+    multiple memslots, mapping only the memslots we currently need into our
+    device memory region container.
+
+The hyper-v balloon driver has similar demands [1].
+
+For virtio-mem, this has to be turned manually on ("dynamic-memslots=on"),
+due to the interaction with vhost (below).
+
+If we have less than 509 memslots available, we always default to a single
+memslot. Otherwise, we automatically decide how many memslots to use
+based on a simple heuristic (see patch #12), and try not to use more than
+256 memslots across all memory devices: our historical DIMM limit.
+
+As soon as any memory devices automatically decided on using more than
+one memslot, vhost devices that support less than 509 memslots (e.g.,
+currently most vhost-user devices like with virtiofsd) can no longer be
+plugged as a precaution.
+
+Quoting from patch #12:
+
+    Plugging vhost devices with less than 509 memslots available while we
+    have memory devices plugged that consume multiple memslots due to
+    automatic decisions can be problematic. Most configurations might just fail
+    due to "limit < used + reserved", however, it can also happen that these
+    memory devices would suddenly consume memslots that would actually be
+    required by other memslot consumers (boot, PCI BARs) later. Note that this
+    has always been sketchy with vhost devices that support only a small number
+    of memslots; but we don't want to make it any worse.So let's keep it simple
+    and simply reject plugging such vhost devices in such a configuration.
+
+    Eventually, all vhost devices that want to be fully compatible with such
+    memory devices should support a decent number of memslots (>= 509).
+
+
+The recommendation is to plug such vhost devices before the virtio-mem
+decides, or to not set "dynamic-memslots=on". As soon as these devices
+support a reasonable number of memslots (>= 509), this will start working
+automatically.
+
+I run some tests on x86_64, now also including vfio and migration tests.
+Seems to work as expected, even when multiple memslots are used.
+
+
+Patch #1 -- #3 are from [2] that were not picked up yet.
+
+Patch #4 -- #12 add handling of multiple memslots to memory devices
+
+Patch #13 -- #16 add "dynamic-memslots=on" support to virtio-mem
+
+Patch #15 -- #16 make sure that virtio-mem memslots can be enabled/disable
+             atomically
+
+v3 -> v4:
+* "virtio-mem: Pass non-const VirtIOMEM via virtio_mem_range_cb"
+ -> Cleanup patch added
+* "virtio-mem: Update state to match bitmap as soon as it's been migrated"
+ -> Cleanup patch added
+* "virtio-mem: Expose device memory dynamically via multiple memslots if
+   enabled"
+ -> Parameter now called "dynamic-memslots"
+ -> With "dynamic-memslots=off", don't use a memory region container and
+    just use the old handling: always map the RAM memory region [thus the
+    new parameter name]
+ -> Require "unplugged-inaccessible=on" (default) with
+    "dynamic-memslots=on" for simplicity
+ -> Take care of proper migration handling
+ -> Remove accidential additional busy check in virtio_mem_unplug_all()
+ -> Minor comment cleanups
+ -> Dropped RB because of changes
+
+v2 -> v3:
+* "kvm: Return number of free memslots"
+ -> Return 0 in stub
+* "kvm: Add stub for kvm_get_max_memslots()"
+ -> Return 0 in stub
+* Adjust other patches to check for kvm_enabled() before calling
+  kvm_get_free_memslots()/kvm_get_max_memslots()
+* Add RBs
+
+v1 -> v2:
+* Include patches from [1]
+* A lot of code simplification and reorganization, too many to spell out
+* don't add a general soft-limit on memslots, to avoid warning in sane
+  setups
+* Simplify handling of vhost devices with a small number of memslots:
+  simply fail plugging them
+* "virtio-mem: Expose device memory via multiple memslots if enabled"
+ -> Fix one "is this the last memslot" check
+* Much more testing
+
+
+[1] https://lkml.kernel.org/r/cover.1689786474.git.maciej.szmigiero@oracle.com
+[2] https://lkml.kernel.org/r/20230523185915.540373-1-david@redhat.com
+
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Igor Mammedov <imammedo@redhat.com>
+Cc: Xiao Guangrong <xiaoguangrong.eric@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+Cc: Eduardo Habkost <eduardo@habkost.net>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Cc: Yanan Wang <wangyanan55@huawei.com>
+Cc: Michal Privoznik <mprivozn@redhat.com>
+Cc: Daniel P. Berrangé <berrange@redhat.com>
+Cc: Gavin Shan <gshan@redhat.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Cc: kvm@vger.kernel.org
+
+David Hildenbrand (18):
+  vhost: Rework memslot filtering and fix "used_memslot" tracking
+  vhost: Remove vhost_backend_can_merge() callback
+  softmmu/physmem: Fixup qemu_ram_block_from_host() documentation
+  kvm: Return number of free memslots
+  vhost: Return number of free memslots
+  memory-device: Support memory devices with multiple memslots
+  stubs: Rename qmp_memory_device.c to memory_device.c
+  memory-device: Track required and actually used memslots in
+    DeviceMemoryState
+  memory-device,vhost: Support memory devices that dynamically consume
+    memslots
+  kvm: Add stub for kvm_get_max_memslots()
+  vhost: Add vhost_get_max_memslots()
+  memory-device,vhost: Support automatic decision on the number of
+    memslots
+  memory: Clarify mapping requirements for RamDiscardManager
+  virtio-mem: Pass non-const VirtIOMEM via virtio_mem_range_cb
+  virtio-mem: Update state to match bitmap as soon as it's been migrated
+  virtio-mem: Expose device memory dynamically via multiple memslots if
+    enabled
+  memory,vhost: Allow for marking memory device memory regions
+    unmergeable
+  virtio-mem: Mark memslot alias memory regions unmergeable
+
+ MAINTAINERS                                   |   1 +
+ accel/kvm/kvm-all.c                           |  35 +-
+ accel/stubs/kvm-stub.c                        |   9 +-
+ hw/mem/memory-device.c                        | 196 ++++++++++-
+ hw/virtio/vhost-stub.c                        |   9 +-
+ hw/virtio/vhost-user.c                        |  21 +-
+ hw/virtio/vhost-vdpa.c                        |   1 -
+ hw/virtio/vhost.c                             | 103 +++++-
+ hw/virtio/virtio-mem-pci.c                    |  21 ++
+ hw/virtio/virtio-mem.c                        | 330 +++++++++++++++++-
+ include/exec/cpu-common.h                     |  15 +
+ include/exec/memory.h                         |  27 +-
+ include/hw/boards.h                           |  14 +-
+ include/hw/mem/memory-device.h                |  57 +++
+ include/hw/virtio/vhost-backend.h             |   9 +-
+ include/hw/virtio/vhost.h                     |   3 +-
+ include/hw/virtio/virtio-mem.h                |  32 +-
+ include/sysemu/kvm.h                          |   4 +-
+ include/sysemu/kvm_int.h                      |   1 +
+ softmmu/memory.c                              |  35 +-
+ softmmu/physmem.c                             |  17 -
+ .../{qmp_memory_device.c => memory_device.c}  |  10 +
+ stubs/meson.build                             |   2 +-
+ 23 files changed, 839 insertions(+), 113 deletions(-)
+ rename stubs/{qmp_memory_device.c => memory_device.c} (56%)
 
 -- 
-Best regards,
-Vladimir
+2.41.0
 
 
