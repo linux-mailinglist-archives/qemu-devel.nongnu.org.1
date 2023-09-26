@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95367AEA0B
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423097AEA0C
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:11:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql528-0007Nc-0r; Tue, 26 Sep 2023 06:11:12 -0400
+	id 1ql529-0007c4-5x; Tue, 26 Sep 2023 06:11:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql51k-0006ru-U6; Tue, 26 Sep 2023 06:10:53 -0400
+ id 1ql525-0007DA-1y; Tue, 26 Sep 2023 06:11:09 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1ql51j-0004rm-8B; Tue, 26 Sep 2023 06:10:48 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwRq5WLVz6D8y2;
- Tue, 26 Sep 2023 18:08:23 +0800 (CST)
+ id 1ql520-0004v6-Lk; Tue, 26 Sep 2023 06:11:08 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RvwSB4340z6D8bS;
+ Tue, 26 Sep 2023 18:08:42 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.174.16) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 26 Sep 2023 11:10:25 +0100
+ 15.1.2507.31; Tue, 26 Sep 2023 11:10:43 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,10 +38,10 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>
-Subject: [PATCH RFC V2 17/37] arm/virt/acpi: Build CPUs AML with CPU Hotplug
- support
-Date: Tue, 26 Sep 2023 11:04:16 +0100
-Message-ID: <20230926100436.28284-18-salil.mehta@huawei.com>
+Subject: [PATCH RFC V2 18/37] arm/virt: Make ARM vCPU *present* status ACPI
+ *persistent*
+Date: Tue, 26 Sep 2023 11:04:17 +0100
+Message-ID: <20230926100436.28284-19-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230926100436.28284-1-salil.mehta@huawei.com>
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
@@ -76,40 +76,95 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Support of vCPU Hotplug requires sequence of ACPI handshakes between Qemu and
-Guest kernel when a vCPU is plugged or unplugged. Most of the AML code to
-support these handshakes already exists. This AML need to be build during VM
-init for ARM architecture as well if the GED support exists.
+ARM arch does not allow CPUs presence to be changed [1] after kernel has booted.
+Hence, firmware/ACPI/Qemu must ensure persistent view of the vCPUs to the Guest
+kernel even when they are not present in the QoM i.e. are unplugged or are
+yet-to-be-plugged
+
+References:
+[1] Check comment 5 in the bugzilla entry
+   Link: https://bugzilla.tianocore.org/show_bug.cgi?id=4481#c5
 
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/arm/virt-acpi-build.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ cpus-common.c         |  6 ++++++
+ hw/arm/virt.c         |  7 +++++++
+ include/hw/core/cpu.h | 20 ++++++++++++++++++++
+ 3 files changed, 33 insertions(+)
 
-diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
-index 6b674231c2..d27df5030e 100644
---- a/hw/arm/virt-acpi-build.c
-+++ b/hw/arm/virt-acpi-build.c
-@@ -858,7 +858,18 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
-      * the RTC ACPI device at all when using UEFI.
-      */
-     scope = aml_scope("\\_SB");
--    acpi_dsdt_add_cpus(scope, vms);
-+    /* if GED is enabled then cpus AML shall be added as part build_cpus_aml */
-+    if (vms->acpi_dev) {
-+        CPUHotplugFeatures opts = {
-+             .acpi_1_compatible = false,
-+             .has_legacy_cphp = false
-+        };
+diff --git a/cpus-common.c b/cpus-common.c
+index 24c04199a1..d64aa63b19 100644
+--- a/cpus-common.c
++++ b/cpus-common.c
+@@ -128,6 +128,12 @@ bool qemu_enabled_cpu(CPUState *cpu)
+     return cpu && !cpu->disabled;
+ }
+ 
++bool qemu_persistent_cpu(CPUState *cpu)
++{
++    /* cpu state can be faked to the guest via acpi */
++    return cpu->acpi_persistent;
++}
 +
-+        build_cpus_aml(scope, ms, opts, memmap[VIRT_CPUHP_ACPI].base,
-+                       "\\_SB", NULL, AML_SYSTEM_MEMORY);
-+    } else {
-+        acpi_dsdt_add_cpus(scope, vms);
-+    }
-     acpi_dsdt_add_uart(scope, &memmap[VIRT_UART],
-                        (irqmap[VIRT_UART] + ARM_SPI_BASE));
-     if (vmc->acpi_expose_flash) {
+ uint64_t qemu_get_cpu_archid(int cpu_index)
+ {
+     MachineState *ms = MACHINE(qdev_get_machine());
+diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+index cbb6199ec6..f1bee569d5 100644
+--- a/hw/arm/virt.c
++++ b/hw/arm/virt.c
+@@ -3006,6 +3006,13 @@ static void virt_cpu_pre_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+         return;
+     }
+     virt_cpu_set_properties(OBJECT(cs), cpu_slot, errp);
++
++    /*
++     * To give persistent presence view of vCPUs to the guest, ACPI might need
++     * to fake the presence of the vCPUs to the guest but keep them disabled.
++     * This shall be used during the init of ACPI Hotplug state and hot-unplug
++     */
++     cs->acpi_persistent = true;
+ }
+ 
+ static void virt_cpu_plug(HotplugHandler *hotplug_dev, DeviceState *dev,
+diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+index b2201a98ee..dab572c9bd 100644
+--- a/include/hw/core/cpu.h
++++ b/include/hw/core/cpu.h
+@@ -425,6 +425,13 @@ struct CPUState {
+      * By default every CPUState is enabled as of now across all archs.
+      */
+     bool disabled;
++    /*
++     * On certain architectures, to give persistent view of the 'presence' of
++     * vCPUs to the guest, ACPI might need to fake the 'presence' of the vCPUs
++     * but keep them ACPI disabled to the guest. This is done by returning
++     * _STA.PRES=True and _STA.Ena=False for the unplugged vCPUs in QEMU QoM.
++     */
++    bool acpi_persistent;
+     /* TODO Move common fields from CPUArchState here. */
+     int cpu_index;
+     int cluster_index;
+@@ -814,6 +821,19 @@ bool qemu_present_cpu(CPUState *cpu);
+  */
+ bool qemu_enabled_cpu(CPUState *cpu);
+ 
++/**
++ * qemu_persistent_cpu:
++ * @cpu: The vCPU to check
++ *
++ * Checks if the vCPU state should always be reflected as *present* via ACPI
++ * to the Guest. By default, this is False on all architectures and has to be
++ * explicity set during initialization.
++ *
++ * Returns: True if it is ACPI 'persistent' CPU
++ *
++ */
++bool qemu_persistent_cpu(CPUState *cpu);
++
+ /**
+  * qemu_get_cpu_archid:
+  * @cpu_index: possible vCPU for which arch-id needs to be retreived
 -- 
 2.34.1
 
