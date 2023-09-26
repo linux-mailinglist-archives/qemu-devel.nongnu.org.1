@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA6587AF048
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7C67AF04B
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 18:08:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlAbW-0001om-I1; Tue, 26 Sep 2023 12:08:06 -0400
+	id 1qlAbd-0001pa-Pb; Tue, 26 Sep 2023 12:08:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qlAbS-0001oT-GX
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:08:02 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qlAbZ-0001pD-Hj
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:08:09 -0400
+Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
- id 1qlAbO-0001b2-JS
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:08:02 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-690d25b1dbdso8086949b3a.2
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:07:57 -0700 (PDT)
+ id 1qlAbW-0001c6-2i
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 12:08:08 -0400
+Received: by mail-pj1-x102f.google.com with SMTP id
+ 98e67ed59e1d1-27751ac0653so3487521a91.3
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 09:08:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695744476; x=1696349276; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1695744484; x=1696349284; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QBH0tVPhZbmbOybV8egcgofMCCNouLOijsIjx2LZIEQ=;
- b=GTY0gVxKagy3Y05QrP3kYgSrm5bJ69kW+X6ySlY3woDU6O9rXTqdHR2lq1LhL1aAz8
- 9uJ24WsDxt+mL/OufLkxpvGrVAiQgcoxcLp6lnE3f+rBvKYTYNoCZJ4J+0QYCvDB9tcL
- gCBtY3OcAQUG2p/baCHmVy0CWC3LzXzVVA7VFPotu8y1K4VMH6ybblIWsPf61VZw5Mj9
- odqlPLutkVzkgIRa4yJtpDwjqsgPlNls84sKTuqz8Bh+quCTGOf8VpAl64I0Qr/8oLRY
- t6y5zv3RgiXBftKSUJiNoyY6uwhgc2JEOdPC/zygQIG0F/AscAxLsMJFx9lMKY6xJcvu
- 3g4A==
+ bh=DXSotH/yPn6chmc8DwLH6pZt2e1l6MxGOIVQvjMuBgM=;
+ b=H4NAocFvr0oIUon+I+1M/GsNheaVix/1fhJU7ahCYh7RDBiqq6tJKz6M5X3kesQPmN
+ UFmM1EM+naoe0n7n9+HMDvgMa3yQvYBaftPSSCZ5y4FxJIwd8zxqnzFGnRgL0MNcD+p1
+ z+do5Eva6kqQgzWhtkhYBLHep9/bW2P2kYDLQufhjP5ihdhYq0P/IaSf2d85wXdtA/dx
+ DVH69zVrdW3Ck5WgncKgWYWKiA7R0Oo7mkwabT3qIOEecuuE1DtKX91HtqJvwj+/8DTe
+ H3CPDjdpfc7QCMKBQYDx8dEqohlBiLzq1zkef7N60x+yVXekznozt9jXKdRRjfLTY53v
+ hqDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695744476; x=1696349276;
+ d=1e100.net; s=20230601; t=1695744484; x=1696349284;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QBH0tVPhZbmbOybV8egcgofMCCNouLOijsIjx2LZIEQ=;
- b=VuQFwM/J8toeR8BQexddI+ImGBxTv8D3qEq9TLdtJ83MAN/jl41h/kOG8e00nstFhp
- q1ixGl+l80K7ua5C+gJKjF7FoWLR8QLVPCcdZS0zj73VWWAuZTYjGBqVGWXJIfCBrY6n
- 9XuOHquX1th6GJaKwlPsOXLFly7MEyDcOx8auseV4U7R2CvoJqM+5oZ5tdB/3aMio9wd
- JxH6s+PQsoBA/lUd8WmAxoI/PksZuTNVAEsH0b8vBdyC+pCOtg2q1TG8osjSTOgVyRt7
- gXP4EQifndnnaRsR/BDszu6rqy9pgtsF5jrQnJNDbUUhPxpwpTQnglpQPJu8YUfeaKtb
- /FnQ==
-X-Gm-Message-State: AOJu0YzwYpJgVM9+aswp24LA/nTM5yMzrDToFz9OHNJunRAPwIklSKD0
- QqMHofALhdaAU+N3cVNigGYlOPbfXWhPDg==
-X-Google-Smtp-Source: AGHT+IHApYcLAViPWsiejGLal8Za0hDpX4zQkffzMjpIqJfcxhmD8kGC3dh8ANwxG/gUNuUSGbySvQ==
-X-Received: by 2002:a17:90a:890a:b0:267:fb26:32bd with SMTP id
- u10-20020a17090a890a00b00267fb2632bdmr8550255pjn.7.1695744475759; 
- Tue, 26 Sep 2023 09:07:55 -0700 (PDT)
+ bh=DXSotH/yPn6chmc8DwLH6pZt2e1l6MxGOIVQvjMuBgM=;
+ b=TzbvRYidET7Jv45SezjPwMd5JAmaSgh2caUHVxSCb/xd2wPkxobNK0MnPWU9EX5EM5
+ yUlDfHX2hGmZU2aE6vwDJ2EP7jgxbHAhdGVes1F2wxxKlXK+V6XY7fjPyj0VAZKHuca3
+ Yzdbx8O5e0968brMwuTRojvT8FyuGLJp6WIZff9KAORgvSeMAMtBULxFXbxZV1h0m2bl
+ ENNpmZ6NV0GhpAUuoT3cWyNePS2X70MgvqJYMtm3I+cMFZ4iRQzdQOS1NC5yl3ZF6h7I
+ jP8tm9T9UYM6GAc9N+oWkB4agEOmXN95ChxeBUeRjK44WjTjRQc/9nUqgj1O+i4SomdF
+ erkw==
+X-Gm-Message-State: AOJu0YzS9BSnrJDKGXO3AxUuDPDivuzMSJ9tfq/MFlgyVMZhD3uxhA65
+ nCVfPoBC1VuiVmN8uYUyqesYWgMctHAf0Q==
+X-Google-Smtp-Source: AGHT+IEphpOE+pbrDU6vpEcaZtCXBZZEF+yUbnUAuAB/0L+RwH3m1ww8UtzdWbxxF0ESvV4vrRqLmg==
+X-Received: by 2002:a17:90b:438d:b0:274:6f67:e7a8 with SMTP id
+ in13-20020a17090b438d00b002746f67e7a8mr3605122pjb.45.1695744484226; 
+ Tue, 26 Sep 2023 09:08:04 -0700 (PDT)
 Received: from localhost.localdomain ([2001:ee0:50f4:9050:2173:954b:298f:df36])
  by smtp.googlemail.com with ESMTPSA id
- 9-20020a17090a190900b0026fa1931f66sm11158410pjg.9.2023.09.26.09.07.51
+ 9-20020a17090a190900b0026fa1931f66sm11158410pjg.9.2023.09.26.09.08.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 26 Sep 2023 09:07:55 -0700 (PDT)
+ Tue, 26 Sep 2023 09:08:03 -0700 (PDT)
 From: Bui Quang Minh <minhquangbui99@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -69,16 +69,16 @@ Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>,
  Jason Wang <jasowang@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Bui Quang Minh <minhquangbui99@gmail.com>
-Subject: [PATCH v8 1/5] i386/tcg: implement x2APIC registers MSR access
-Date: Tue, 26 Sep 2023 23:06:33 +0700
-Message-Id: <20230926160637.27995-2-minhquangbui99@gmail.com>
+Subject: [PATCH v8 2/5] apic: add support for x2APIC mode
+Date: Tue, 26 Sep 2023 23:06:34 +0700
+Message-Id: <20230926160637.27995-3-minhquangbui99@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20230926160637.27995-1-minhquangbui99@gmail.com>
 References: <20230926160637.27995-1-minhquangbui99@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=minhquangbui99@gmail.com; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-pj1-x102f.google.com
 X-Spam_score_int: -17
 X-Spam_score: -1.8
 X-Spam_bar: -
@@ -102,252 +102,588 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This commit refactors apic_mem_read/write to support both MMIO access in
-xAPIC and MSR access in x2APIC.
+This commit extends the APIC ID to 32-bit long and remove the 255 max APIC
+ID limit in userspace APIC. The array that manages local APICs is now
+dynamically allocated based on the max APIC ID of created x86 machine.
+Also, new x2APIC IPI destination determination scheme, self IPI and x2APIC
+mode register access are supported.
 
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
 ---
- hw/intc/apic.c                       | 79 ++++++++++++++++++----------
- hw/intc/trace-events                 |  4 +-
- include/hw/i386/apic.h               |  3 ++
- target/i386/cpu.h                    |  3 ++
- target/i386/tcg/sysemu/misc_helper.c | 27 ++++++++++
- 5 files changed, 86 insertions(+), 30 deletions(-)
+ hw/i386/x86.c                   |   6 +-
+ hw/intc/apic.c                  | 266 ++++++++++++++++++++++++--------
+ hw/intc/apic_common.c           |   9 ++
+ include/hw/i386/apic.h          |   3 +-
+ include/hw/i386/apic_internal.h |   7 +-
+ target/i386/cpu-sysemu.c        |   8 +-
+ 6 files changed, 230 insertions(+), 69 deletions(-)
 
-diff --git a/hw/intc/apic.c b/hw/intc/apic.c
-index ac3d47d231..cb8c20de93 100644
---- a/hw/intc/apic.c
-+++ b/hw/intc/apic.c
-@@ -288,6 +288,13 @@ void apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode,
-     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
- }
- 
-+bool is_x2apic_mode(DeviceState *dev)
-+{
-+    APICCommonState *s = APIC(dev);
-+
-+    return s->apicbase & MSR_IA32_APICBASE_EXTD;
-+}
-+
- static void apic_set_base(APICCommonState *s, uint64_t val)
- {
-     s->apicbase = (val & 0xfffff000) |
-@@ -636,16 +643,11 @@ static void apic_timer(void *opaque)
-     apic_timer_update(s, s->next_time);
- }
- 
--static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
-+uint64_t apic_register_read(int index)
- {
-     DeviceState *dev;
-     APICCommonState *s;
--    uint32_t val;
--    int index;
--
--    if (size < 4) {
--        return 0;
--    }
-+    uint64_t val;
- 
-     dev = cpu_get_current_apic();
-     if (!dev) {
-@@ -653,7 +655,6 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index f034df8bf6..88534203c9 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -133,7 +133,7 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
+      * both in-kernel lapic and X2APIC userspace API.
+      */
+     if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
+-        (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
++        kvm_irqchip_in_kernel() && !kvm_enable_x2apic()) {
+         error_report("current -smp configuration requires kernel "
+                      "irqchip and X2APIC API support.");
+         exit(EXIT_FAILURE);
+@@ -143,6 +143,10 @@ void x86_cpus_init(X86MachineState *x86ms, int default_cpu_version)
+         kvm_set_max_apic_id(x86ms->apic_id_limit);
      }
-     s = APIC(dev);
  
--    index = (addr >> 4) & 0xff;
-     switch(index) {
-     case 0x02: /* id */
-         val = s->id << 24;
-@@ -720,7 +721,23 @@ static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
-         val = 0;
-         break;
-     }
--    trace_apic_mem_readl(addr, val);
-+
-+    trace_apic_register_read(index, val);
-+    return val;
-+}
-+
-+static uint64_t apic_mem_read(void *opaque, hwaddr addr, unsigned size)
-+{
-+    uint32_t val;
-+    int index;
-+
-+    if (size < 4) {
-+        return 0;
++    if (!kvm_irqchip_in_kernel()) {
++        apic_set_max_apic_id(x86ms->apic_id_limit);
 +    }
 +
-+    index = (addr >> 4) & 0xff;
-+    val = (uint32_t)apic_register_read(index);
+     possible_cpus = mc->possible_cpu_arch_ids(ms);
+     for (i = 0; i < ms->smp.cpus; i++) {
+         x86_cpu_new(x86ms, possible_cpus->cpus[i].arch_id, &error_fatal);
+diff --git a/hw/intc/apic.c b/hw/intc/apic.c
+index cb8c20de93..9f741794a7 100644
+--- a/hw/intc/apic.c
++++ b/hw/intc/apic.c
+@@ -31,15 +31,15 @@
+ #include "hw/i386/apic-msidef.h"
+ #include "qapi/error.h"
+ #include "qom/object.h"
+-
+-#define MAX_APICS 255
+-#define MAX_APIC_WORDS 8
++#include "tcg/helper-tcg.h"
+ 
+ #define SYNC_FROM_VAPIC                 0x1
+ #define SYNC_TO_VAPIC                   0x2
+ #define SYNC_ISR_IRR_TO_VAPIC           0x4
+ 
+-static APICCommonState *local_apics[MAX_APICS + 1];
++static APICCommonState **local_apics;
++static uint32_t max_apics;
++static uint32_t max_apic_words;
+ 
+ #define TYPE_APIC "apic"
+ /*This is reusing the APICCommonState typedef from APIC_COMMON */
+@@ -49,7 +49,19 @@ DECLARE_INSTANCE_CHECKER(APICCommonState, APIC,
+ static void apic_set_irq(APICCommonState *s, int vector_num, int trigger_mode);
+ static void apic_update_irq(APICCommonState *s);
+ static void apic_get_delivery_bitmask(uint32_t *deliver_bitmask,
+-                                      uint8_t dest, uint8_t dest_mode);
++                                      uint32_t dest, uint8_t dest_mode);
 +
-     return val;
++void apic_set_max_apic_id(uint32_t max_apic_id)
++{
++    int word_size = 32;
++
++    /* round up the max apic id to next multiple of words */
++    max_apics = (max_apic_id + word_size - 1) & ~(word_size - 1);
++
++    local_apics = g_malloc0(sizeof(*local_apics) * max_apics);
++    max_apic_words = max_apics >> 5;
++}
++
+ 
+ /* Find first bit starting from msb */
+ static int apic_fls_bit(uint32_t value)
+@@ -199,7 +211,7 @@ static void apic_external_nmi(APICCommonState *s)
+ #define foreach_apic(apic, deliver_bitmask, code) \
+ {\
+     int __i, __j;\
+-    for(__i = 0; __i < MAX_APIC_WORDS; __i++) {\
++    for(__i = 0; __i < max_apic_words; __i++) {\
+         uint32_t __mask = deliver_bitmask[__i];\
+         if (__mask) {\
+             for(__j = 0; __j < 32; __j++) {\
+@@ -226,7 +238,7 @@ static void apic_bus_deliver(const uint32_t *deliver_bitmask,
+             {
+                 int i, d;
+                 d = -1;
+-                for(i = 0; i < MAX_APIC_WORDS; i++) {
++                for(i = 0; i < max_apic_words; i++) {
+                     if (deliver_bitmask[i]) {
+                         d = i * 32 + apic_ffs_bit(deliver_bitmask[i]);
+                         break;
+@@ -276,16 +288,18 @@ static void apic_bus_deliver(const uint32_t *deliver_bitmask,
+                  apic_set_irq(apic_iter, vector_num, trigger_mode) );
  }
  
-@@ -737,27 +754,10 @@ static void apic_send_msi(MSIMessage *msi)
-     apic_deliver_irq(dest, dest_mode, delivery, vector, trigger_mode);
- }
- 
--static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
--                           unsigned size)
-+void apic_register_write(int index, uint64_t val)
+-void apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode,
+-                      uint8_t vector_num, uint8_t trigger_mode)
++static void apic_deliver_irq(uint32_t dest, uint8_t dest_mode,
++                             uint8_t delivery_mode, uint8_t vector_num,
++                             uint8_t trigger_mode)
  {
-     DeviceState *dev;
-     APICCommonState *s;
--    int index = (addr >> 4) & 0xff;
--
--    if (size < 4) {
--        return;
--    }
--
--    if (addr > 0xfff || !index) {
--        /* MSI and MMIO APIC are at the same memory location,
--         * but actually not on the global bus: MSI is on PCI bus
--         * APIC is connected directly to the CPU.
--         * Mapping them on the global bus happens to work because
--         * MSI registers are reserved in APIC MMIO and vice versa. */
--        MSIMessage msi = { .address = addr, .data = val };
--        apic_send_msi(&msi);
--        return;
--    }
+-    uint32_t deliver_bitmask[MAX_APIC_WORDS];
++    uint32_t *deliver_bitmask = g_malloc(max_apic_words * sizeof(uint32_t));
  
-     dev = cpu_get_current_apic();
-     if (!dev) {
-@@ -765,7 +765,7 @@ static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
+     trace_apic_deliver_irq(dest, dest_mode, delivery_mode, vector_num,
+                            trigger_mode);
+ 
+     apic_get_delivery_bitmask(deliver_bitmask, dest, dest_mode);
+     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
++    g_free(deliver_bitmask);
+ }
+ 
+ bool is_x2apic_mode(DeviceState *dev)
+@@ -442,57 +456,121 @@ static void apic_eoi(APICCommonState *s)
+     apic_update_irq(s);
+ }
+ 
+-static int apic_find_dest(uint8_t dest)
++static bool apic_match_dest(APICCommonState *apic, uint32_t dest)
+ {
+-    APICCommonState *apic = local_apics[dest];
++    if (is_x2apic_mode(&apic->parent_obj)) {
++        return apic->initial_apic_id == dest;
++    } else {
++        return apic->id == (uint8_t)dest;
++    }
++}
++
++static void apic_find_dest(uint32_t *deliver_bitmask, uint32_t dest)
++{
++    APICCommonState *apic = NULL;
+     int i;
+ 
+-    if (apic && apic->id == dest)
+-        return dest;  /* shortcut in case apic->id == local_apics[dest]->id */
+-
+-    for (i = 0; i < MAX_APICS; i++) {
++    for (i = 0; i < max_apics; i++) {
+         apic = local_apics[i];
+-        if (apic && apic->id == dest)
+-            return i;
+-        if (!apic)
+-            break;
++        if (apic && apic_match_dest(apic, dest)) {
++            apic_set_bit(deliver_bitmask, i);
++        }
      }
-     s = APIC(dev);
++}
  
--    trace_apic_mem_writel(addr, val);
-+    trace_apic_register_write(index, val);
+-    return -1;
++/*
++ * Deliver interrupt to x2APIC CPUs if it is x2APIC broadcast.
++ * Otherwise, deliver interrupt to xAPIC CPUs if it is xAPIC
++ * broadcast.
++ */
++static void apic_get_broadcast_bitmask(uint32_t *deliver_bitmask,
++                                       bool is_x2apic_broadcast)
++{
++    int i;
++    APICCommonState *apic_iter;
++
++    for (i = 0; i < max_apics; i++) {
++        apic_iter = local_apics[i];
++        if (apic_iter) {
++            bool apic_in_x2apic = is_x2apic_mode(&apic_iter->parent_obj);
++
++            if (is_x2apic_broadcast && apic_in_x2apic) {
++                apic_set_bit(deliver_bitmask, i);
++            } else if (!is_x2apic_broadcast && !apic_in_x2apic) {
++                apic_set_bit(deliver_bitmask, i);
++            }
++        }
++    }
+ }
+ 
+ static void apic_get_delivery_bitmask(uint32_t *deliver_bitmask,
+-                                      uint8_t dest, uint8_t dest_mode)
++                                      uint32_t dest, uint8_t dest_mode)
+ {
+     APICCommonState *apic_iter;
+     int i;
+ 
+-    if (dest_mode == 0) {
++    memset(deliver_bitmask, 0x00, max_apic_words * sizeof(uint32_t));
++
++    /*
++     * x2APIC broadcast is delivered to all x2APIC CPUs regardless of
++     * destination mode. In case the destination mode is physical, it is
++     * broadcasted to all xAPIC CPUs too. Otherwise, if the destination
++     * mode is logical, we need to continue checking if xAPIC CPUs accepts
++     * the interrupt.
++     */
++    if (dest == 0xffffffff) {
++        if (dest_mode == APIC_DESTMODE_PHYSICAL) {
++            memset(deliver_bitmask, 0xff, max_apic_words * sizeof(uint32_t));
++            return;
++        } else {
++            apic_get_broadcast_bitmask(deliver_bitmask, true);
++        }
++    }
++
++    if (dest_mode == APIC_DESTMODE_PHYSICAL) {
++        apic_find_dest(deliver_bitmask, dest);
++        /* Any APIC in xAPIC mode will interpret 0xFF as broadcast */
+         if (dest == 0xff) {
+-            memset(deliver_bitmask, 0xff, MAX_APIC_WORDS * sizeof(uint32_t));
+-        } else {
+-            int idx = apic_find_dest(dest);
+-            memset(deliver_bitmask, 0x00, MAX_APIC_WORDS * sizeof(uint32_t));
+-            if (idx >= 0)
+-                apic_set_bit(deliver_bitmask, idx);
++            apic_get_broadcast_bitmask(deliver_bitmask, false);
+         }
+     } else {
+-        /* XXX: cluster mode */
+-        memset(deliver_bitmask, 0x00, MAX_APIC_WORDS * sizeof(uint32_t));
+-        for(i = 0; i < MAX_APICS; i++) {
++        /* XXX: logical mode */
++        for(i = 0; i < max_apics; i++) {
+             apic_iter = local_apics[i];
+             if (apic_iter) {
+-                if (apic_iter->dest_mode == 0xf) {
+-                    if (dest & apic_iter->log_dest)
+-                        apic_set_bit(deliver_bitmask, i);
+-                } else if (apic_iter->dest_mode == 0x0) {
+-                    if ((dest & 0xf0) == (apic_iter->log_dest & 0xf0) &&
+-                        (dest & apic_iter->log_dest & 0x0f)) {
++                /* x2APIC logical mode */
++                if (apic_iter->apicbase & MSR_IA32_APICBASE_EXTD) {
++                    if ((dest & 0xffff0000) == (apic_iter->extended_log_dest & 0xffff0000) &&
++                        (dest & apic_iter->extended_log_dest & 0xffff)) {
+                         apic_set_bit(deliver_bitmask, i);
+                     }
++                } else {
++                    dest = (uint8_t)dest;
++                    if (apic_iter->dest_mode == APIC_DESTMODE_LOGICAL_FLAT) {
++                        if (dest & apic_iter->log_dest) {
++                            apic_set_bit(deliver_bitmask, i);
++                        }
++                    } else if (apic_iter->dest_mode == APIC_DESTMODE_LOGICAL_CLUSTER) {
++                        /*
++                         * In cluster model of xAPIC logical mode IPI, 4 higher
++                         * bits are used as cluster address, 4 lower bits are
++                         * the bitmask for local APICs in the cluster. The IPI
++                         * is delivered to an APIC if the cluster address
++                         * matches and the APIC's address bit in the cluster is
++                         * set in bitmask of destination ID in IPI.
++                         *
++                         * The cluster address ranges from 0 - 14, the cluster
++                         * address 15 (0xf) is the broadcast address to all
++                         * clusters.
++                         */
++                        if ((dest & 0xf0) == 0xf0 ||
++                            (dest & 0xf0) == (apic_iter->log_dest & 0xf0)) {
++                            if (dest & apic_iter->log_dest & 0x0f) {
++                                apic_set_bit(deliver_bitmask, i);
++                            }
++                        }
++                    }
+                 }
+-            } else {
+-                break;
+             }
+         }
+     }
+@@ -516,29 +594,36 @@ void apic_sipi(DeviceState *dev)
+     s->wait_for_sipi = 0;
+ }
+ 
+-static void apic_deliver(DeviceState *dev, uint8_t dest, uint8_t dest_mode,
++static void apic_deliver(DeviceState *dev, uint32_t dest, uint8_t dest_mode,
+                          uint8_t delivery_mode, uint8_t vector_num,
+-                         uint8_t trigger_mode)
++                         uint8_t trigger_mode, uint8_t dest_shorthand)
+ {
+     APICCommonState *s = APIC(dev);
+-    uint32_t deliver_bitmask[MAX_APIC_WORDS];
+-    int dest_shorthand = (s->icr[0] >> 18) & 3;
+     APICCommonState *apic_iter;
++    uint32_t deliver_bitmask_size = max_apic_words * sizeof(uint32_t);
++    uint32_t *deliver_bitmask = g_malloc(deliver_bitmask_size);
++    uint32_t current_apic_id;
++
++    if (is_x2apic_mode(dev)) {
++        current_apic_id = s->initial_apic_id;
++    } else {
++        current_apic_id = s->id;
++    }
+ 
+     switch (dest_shorthand) {
+     case 0:
+         apic_get_delivery_bitmask(deliver_bitmask, dest, dest_mode);
+         break;
+     case 1:
+-        memset(deliver_bitmask, 0x00, sizeof(deliver_bitmask));
+-        apic_set_bit(deliver_bitmask, s->id);
++        memset(deliver_bitmask, 0x00, deliver_bitmask_size);
++        apic_set_bit(deliver_bitmask, current_apic_id);
+         break;
+     case 2:
+-        memset(deliver_bitmask, 0xff, sizeof(deliver_bitmask));
++        memset(deliver_bitmask, 0xff, deliver_bitmask_size);
+         break;
+     case 3:
+-        memset(deliver_bitmask, 0xff, sizeof(deliver_bitmask));
+-        apic_reset_bit(deliver_bitmask, s->id);
++        memset(deliver_bitmask, 0xff, deliver_bitmask_size);
++        apic_reset_bit(deliver_bitmask, current_apic_id);
+         break;
+     }
+ 
+@@ -562,6 +647,7 @@ static void apic_deliver(DeviceState *dev, uint8_t dest, uint8_t dest_mode,
+     }
+ 
+     apic_bus_deliver(deliver_bitmask, delivery_mode, vector_num, trigger_mode);
++    g_free(deliver_bitmask);
+ }
+ 
+ static bool apic_check_pic(APICCommonState *s)
+@@ -657,7 +743,11 @@ uint64_t apic_register_read(int index)
+ 
+     switch(index) {
+     case 0x02: /* id */
+-        val = s->id << 24;
++        if (is_x2apic_mode(dev)) {
++            val = s->initial_apic_id;
++        } else {
++            val = s->id << 24;
++        }
+         break;
+     case 0x03: /* version */
+         val = s->version | ((APIC_LVT_NB - 1) << 16);
+@@ -680,9 +770,17 @@ uint64_t apic_register_read(int index)
+         val = 0;
+         break;
+     case 0x0d:
+-        val = s->log_dest << 24;
++        if (is_x2apic_mode(dev)) {
++            val = s->extended_log_dest;
++        } else {
++            val = s->log_dest << 24;
++        }
+         break;
+     case 0x0e:
++        if (is_x2apic_mode(dev)) {
++            raise_exception_ra(&s->cpu->env, EXCP0D_GPF, GETPC());
++        }
++
+         val = (s->dest_mode << 28) | 0xfffffff;
+         break;
+     case 0x0f:
+@@ -745,7 +843,12 @@ static void apic_send_msi(MSIMessage *msi)
+ {
+     uint64_t addr = msi->address;
+     uint32_t data = msi->data;
+-    uint8_t dest = (addr & MSI_ADDR_DEST_ID_MASK) >> MSI_ADDR_DEST_ID_SHIFT;
++    uint32_t dest = (addr & MSI_ADDR_DEST_ID_MASK) >> MSI_ADDR_DEST_ID_SHIFT;
++    /*
++     * The higher 3 bytes of destination id is stored in higher word of
++     * msi address. See x86_iommu_irq_to_msi_message()
++     */
++    dest = dest | (addr >> 32);
+     uint8_t vector = (data & MSI_DATA_VECTOR_MASK) >> MSI_DATA_VECTOR_SHIFT;
+     uint8_t dest_mode = (addr >> MSI_ADDR_DEST_MODE_SHIFT) & 0x1;
+     uint8_t trigger_mode = (data >> MSI_DATA_TRIGGER_SHIFT) & 0x1;
+@@ -769,6 +872,10 @@ void apic_register_write(int index, uint64_t val)
  
      switch(index) {
      case 0x02:
-@@ -843,6 +843,29 @@ static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
-     }
++        if (is_x2apic_mode(dev)) {
++            raise_exception_ra(&s->cpu->env, EXCP0D_GPF, GETPC());
++        }
++
+         s->id = (val >> 24);
+         break;
+     case 0x03:
+@@ -788,9 +895,17 @@ void apic_register_write(int index, uint64_t val)
+         apic_eoi(s);
+         break;
+     case 0x0d:
++        if (is_x2apic_mode(dev)) {
++            raise_exception_ra(&s->cpu->env, EXCP0D_GPF, GETPC());
++        }
++
+         s->log_dest = val >> 24;
+         break;
+     case 0x0e:
++        if (is_x2apic_mode(dev)) {
++            raise_exception_ra(&s->cpu->env, EXCP0D_GPF, GETPC());
++        }
++
+         s->dest_mode = val >> 28;
+         break;
+     case 0x0f:
+@@ -802,13 +917,27 @@ void apic_register_write(int index, uint64_t val)
+     case 0x20 ... 0x27:
+     case 0x28:
+         break;
+-    case 0x30:
++    case 0x30: {
++        uint32_t dest;
++
+         s->icr[0] = val;
+-        apic_deliver(dev, (s->icr[1] >> 24) & 0xff, (s->icr[0] >> 11) & 1,
++        if (is_x2apic_mode(dev)) {
++            s->icr[1] = val >> 32;
++            dest = s->icr[1];
++        } else {
++            dest = (s->icr[1] >> 24) & 0xff;
++        }
++
++        apic_deliver(dev, dest, (s->icr[0] >> 11) & 1,
+                      (s->icr[0] >> 8) & 7, (s->icr[0] & 0xff),
+-                     (s->icr[0] >> 15) & 1);
++                     (s->icr[0] >> 15) & 1, (s->icr[0] >> 18) & 3);
+         break;
++    }
+     case 0x31:
++        if (is_x2apic_mode(dev)) {
++            raise_exception_ra(&s->cpu->env, EXCP0D_GPF, GETPC());
++        }
++
+         s->icr[1] = val;
+         break;
+     case 0x32 ... 0x37:
+@@ -837,6 +966,23 @@ void apic_register_write(int index, uint64_t val)
+             s->count_shift = (v + 1) & 7;
+         }
+         break;
++    case 0x3f: {
++        int vector = val & 0xff;
++
++        if (!is_x2apic_mode(dev)) {
++            raise_exception_ra(&s->cpu->env, EXCP0D_GPF, GETPC());
++        }
++
++        /*
++         * Self IPI is identical to IPI with
++         * - Destination shorthand: 1 (Self)
++         * - Trigger mode: 0 (Edge)
++         * - Delivery mode: 0 (Fixed)
++         */
++        apic_deliver(dev, 0, 0, APIC_DM_FIXED, vector, 0, 1);
++
++        break;
++    }
+     default:
+         s->esr |= APIC_ESR_ILLEGAL_ADDRESS;
+         break;
+@@ -894,12 +1040,6 @@ static void apic_realize(DeviceState *dev, Error **errp)
+ {
+     APICCommonState *s = APIC(dev);
+ 
+-    if (s->id >= MAX_APICS) {
+-        error_setg(errp, "%s initialization failed. APIC ID %d is invalid",
+-                   object_get_typename(OBJECT(dev)), s->id);
+-        return;
+-    }
+-
+     if (kvm_enabled()) {
+         warn_report("Userspace local APIC is deprecated for KVM.");
+         warn_report("Do not use kernel-irqchip except for the -M isapc machine type.");
+@@ -916,7 +1056,7 @@ static void apic_realize(DeviceState *dev, Error **errp)
+     s->io_memory.disable_reentrancy_guard = true;
+ 
+     s->timer = timer_new_ns(QEMU_CLOCK_VIRTUAL, apic_timer, s);
+-    local_apics[s->id] = s;
++    local_apics[s->initial_apic_id] = s;
+ 
+     msi_nonbroken = true;
+ }
+@@ -926,7 +1066,7 @@ static void apic_unrealize(DeviceState *dev)
+     APICCommonState *s = APIC(dev);
+ 
+     timer_free(s->timer);
+-    local_apics[s->id] = NULL;
++    local_apics[s->initial_apic_id] = NULL;
  }
  
-+static void apic_mem_write(void *opaque, hwaddr addr, uint64_t val,
-+                           unsigned size)
-+{
-+    int index = (addr >> 4) & 0xff;
+ static void apic_class_init(ObjectClass *klass, void *data)
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index 68ad30e2f5..ac8ec00eef 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -283,6 +283,10 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
+     }
+     vmstate_register_with_alias_id(NULL, instance_id, &vmstate_apic_common,
+                                    s, -1, 0, NULL);
 +
-+    if (size < 4) {
-+        return;
-+    }
-+
-+    if (addr > 0xfff || !index) {
-+        /* MSI and MMIO APIC are at the same memory location,
-+         * but actually not on the global bus: MSI is on PCI bus
-+         * APIC is connected directly to the CPU.
-+         * Mapping them on the global bus happens to work because
-+         * MSI registers are reserved in APIC MMIO and vice versa. */
-+        MSIMessage msi = { .address = addr, .data = val };
-+        apic_send_msi(&msi);
-+        return;
-+    }
-+
-+    apic_register_write(index, val);
-+}
-+
- static void apic_pre_save(APICCommonState *s)
- {
-     apic_sync_vapic(s, SYNC_FROM_VAPIC);
-diff --git a/hw/intc/trace-events b/hw/intc/trace-events
-index 36ff71f947..1ef29d0256 100644
---- a/hw/intc/trace-events
-+++ b/hw/intc/trace-events
-@@ -14,8 +14,8 @@ cpu_get_apic_base(uint64_t val) "0x%016"PRIx64
- # apic.c
- apic_local_deliver(int vector, uint32_t lvt) "vector %d delivery mode %d"
- apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode, uint8_t vector_num, uint8_t trigger_mode) "dest %d dest_mode %d delivery_mode %d vector %d trigger_mode %d"
--apic_mem_readl(uint64_t addr, uint32_t val)  "0x%"PRIx64" = 0x%08x"
--apic_mem_writel(uint64_t addr, uint32_t val) "0x%"PRIx64" = 0x%08x"
-+apic_register_read(uint8_t reg, uint64_t val) "register 0x%02x = 0x%"PRIx64
-+apic_register_write(uint8_t reg, uint64_t val) "register 0x%02x = 0x%"PRIx64
++    /* APIC LDR in x2APIC mode */
++    s->extended_log_dest = ((s->initial_apic_id & 0xffff0) << 16) |
++                            (1 << (s->initial_apic_id & 0xf));
+ }
  
- # ioapic.c
- ioapic_set_remote_irr(int n) "set remote irr for pin %d"
+ static void apic_common_unrealize(DeviceState *dev)
+@@ -423,6 +427,11 @@ static void apic_common_set_id(Object *obj, Visitor *v, const char *name,
+         return;
+     }
+ 
++    if (value >= 255 && !cpu_has_x2apic_feature(&s->cpu->env)) {
++        error_setg(errp, "APIC ID %d requires x2APIC feature in CPU", value);
++        return;
++    }
++
+     s->initial_apic_id = value;
+     s->id = (uint8_t)value;
+ }
 diff --git a/include/hw/i386/apic.h b/include/hw/i386/apic.h
-index bdc15a7a73..2cebeb4faf 100644
+index 2cebeb4faf..12aad09f4c 100644
 --- a/include/hw/i386/apic.h
 +++ b/include/hw/i386/apic.h
-@@ -18,6 +18,9 @@ void apic_sipi(DeviceState *s);
- void apic_poll_irq(DeviceState *d);
- void apic_designate_bsp(DeviceState *d, bool bsp);
- int apic_get_highest_priority_irr(DeviceState *dev);
-+uint64_t apic_register_read(int index);
-+void apic_register_write(int index, uint64_t val);
-+bool is_x2apic_mode(DeviceState *d);
+@@ -3,8 +3,7 @@
  
- /* pc.c */
- DeviceState *cpu_get_current_apic(void);
-diff --git a/target/i386/cpu.h b/target/i386/cpu.h
-index d3f377d48a..78489378ad 100644
---- a/target/i386/cpu.h
-+++ b/target/i386/cpu.h
-@@ -545,6 +545,9 @@ typedef enum X86Seg {
- #define MSR_IA32_VMX_TRUE_ENTRY_CTLS     0x00000490
- #define MSR_IA32_VMX_VMFUNC             0x00000491
  
-+#define MSR_APIC_START                  0x00000800
-+#define MSR_APIC_END                    0x000008ff
-+
- #define XSTATE_FP_BIT                   0
- #define XSTATE_SSE_BIT                  1
- #define XSTATE_YMM_BIT                  2
-diff --git a/target/i386/tcg/sysemu/misc_helper.c b/target/i386/tcg/sysemu/misc_helper.c
-index e1528b7f80..1fce2076a3 100644
---- a/target/i386/tcg/sysemu/misc_helper.c
-+++ b/target/i386/tcg/sysemu/misc_helper.c
-@@ -25,6 +25,7 @@
- #include "exec/address-spaces.h"
- #include "exec/exec-all.h"
- #include "tcg/helper-tcg.h"
-+#include "hw/i386/apic.h"
+ /* apic.c */
+-void apic_deliver_irq(uint8_t dest, uint8_t dest_mode, uint8_t delivery_mode,
+-                      uint8_t vector_num, uint8_t trigger_mode);
++void apic_set_max_apic_id(uint32_t max_apic_id);
+ int apic_accept_pic_intr(DeviceState *s);
+ void apic_deliver_pic_intr(DeviceState *s, int level);
+ void apic_deliver_nmi(DeviceState *d);
+diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
+index 5f2ba24bfc..e796e6cae3 100644
+--- a/include/hw/i386/apic_internal.h
++++ b/include/hw/i386/apic_internal.h
+@@ -46,8 +46,10 @@
+ #define APIC_DM_EXTINT                  7
  
- void helper_outb(CPUX86State *env, uint32_t port, uint32_t data)
- {
-@@ -289,6 +290,19 @@ void helper_wrmsr(CPUX86State *env)
-         env->msr_bndcfgs = val;
-         cpu_sync_bndcs_hflags(env);
-         break;
-+    case MSR_APIC_START ... MSR_APIC_END: {
-+        int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
+ /* APIC destination mode */
+-#define APIC_DESTMODE_FLAT              0xf
+-#define APIC_DESTMODE_CLUSTER           1
++#define APIC_DESTMODE_PHYSICAL          0
++#define APIC_DESTMODE_LOGICAL           1
++#define APIC_DESTMODE_LOGICAL_FLAT      0xf
++#define APIC_DESTMODE_LOGICAL_CLUSTER   0
+ 
+ #define APIC_TRIGGER_EDGE               0
+ #define APIC_TRIGGER_LEVEL              1
+@@ -187,6 +189,7 @@ struct APICCommonState {
+     DeviceState *vapic;
+     hwaddr vapic_paddr; /* note: persistence via kvmvapic */
+     bool legacy_instance_id;
++    uint32_t extended_log_dest;
+ };
+ 
+ typedef struct VAPICState {
+diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
+index 2375e48178..0e0f8cf8ad 100644
+--- a/target/i386/cpu-sysemu.c
++++ b/target/i386/cpu-sysemu.c
+@@ -281,11 +281,17 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+                               OBJECT(cpu->apic_state));
+     object_unref(OBJECT(cpu->apic_state));
+ 
+-    qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
+     /* TODO: convert to link<> */
+     apic = APIC_COMMON(cpu->apic_state);
+     apic->cpu = cpu;
+     apic->apicbase = APIC_DEFAULT_ADDRESS | MSR_IA32_APICBASE_ENABLE;
 +
-+        if (!is_x2apic_mode(env_archcpu(env)->apic_state)) {
-+            goto error;
-+        }
-+
-+        qemu_mutex_lock_iothread();
-+        apic_register_write(index, val);
-+        qemu_mutex_unlock_iothread();
-+
-+        break;
-+    }
-     default:
-         if ((uint32_t)env->regs[R_ECX] >= MSR_MC0_CTL
-             && (uint32_t)env->regs[R_ECX] < MSR_MC0_CTL +
-@@ -455,6 +469,19 @@ void helper_rdmsr(CPUX86State *env)
-         val = (cs->nr_threads * cs->nr_cores) | (cs->nr_cores << 16);
-         break;
-     }
-+    case MSR_APIC_START ... MSR_APIC_END: {
-+        int index = (uint32_t)env->regs[R_ECX] - MSR_APIC_START;
-+
-+        if (!is_x2apic_mode(env_archcpu(env)->apic_state)) {
-+            raise_exception_ra(env, EXCP0D_GPF, GETPC());
-+        }
-+
-+        qemu_mutex_lock_iothread();
-+        val = apic_register_read(index);
-+        qemu_mutex_unlock_iothread();
-+
-+        break;
-+    }
-     default:
-         if ((uint32_t)env->regs[R_ECX] >= MSR_MC0_CTL
-             && (uint32_t)env->regs[R_ECX] < MSR_MC0_CTL +
++    /*
++     * apic_common_set_id needs to check if the CPU has x2APIC
++     * feature in case APIC ID >= 255, so we need to set apic->cpu
++     * before setting APIC ID
++     */
++    qdev_prop_set_uint32(cpu->apic_state, "id", cpu->apic_id);
+ }
+ 
+ void x86_cpu_apic_realize(X86CPU *cpu, Error **errp)
 -- 
 2.25.1
 
