@@ -2,76 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8F47AEAC4
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3C27AEACA
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 12:52:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql5fE-0006Y8-BS; Tue, 26 Sep 2023 06:51:36 -0400
+	id 1ql5fP-0006nC-NP; Tue, 26 Sep 2023 06:51:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql5fB-0006Xm-Bh
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:51:33 -0400
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1ql5f9-0004Qp-MJ
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:51:33 -0400
-Received: by mail-ed1-x536.google.com with SMTP id
- 4fb4d7f45d1cf-5230a22cfd1so9877706a12.1
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 03:51:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695725489; x=1696330289; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FCXAda4V9IINj/yMYsuJgNFPCZhviyhow+JfF7H4PFs=;
- b=f0Nq8RrifBllJjZySHyoNmFxQg8+myqiHx5KjEl4oQ4R/4R8oXgLKgafk2bJ37l/0i
- TyCi3w554OE0JUNnuYUqV86YWAe/ZnKNH1+y9dbXjp8m7RFuDJ5vwYUB8vvojkOCQrAa
- YEYOs70jVubnb/k5z/PH5iTjWCK46Ee12c2rvwcNgxd934t8Y4IvAh/JSGurQUx7lxeN
- CS34I7uJ6YKTqZiJqCLq0l4ybYNEPdXzZVNQu9E4wEvBP+gRCoZ98LfizaT7BsySozlA
- qCmr6h04ozmFRG7zLMnJiNiynocKQ5+c5rovweUPLg6HE1MeRVbcmkRh67sJZP5VfoDq
- 4v4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695725489; x=1696330289;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=FCXAda4V9IINj/yMYsuJgNFPCZhviyhow+JfF7H4PFs=;
- b=JjSa5PVgxwhgf/kMS+FvgPAzNdKVyDlrE7DP9JZzdpXFXEHhdHowOqp8mgo1Dm7jmb
- ZQ/XZ12oeSUzNC3FxZ7nzhgCWSVAu2qvkh2ZvxPGiV1Q4owH6NeScsLqDimlqwwtxC0X
- wvsXzOnP/DB5Op3g9pMzs5khLSNTK0FuRJVcyTCsV3lkXjte7C1D9/HhPepZAetcEKk9
- JUKqPSlKPgMgm2/hJws3/qFNaQac+y5oa35Je0h/8Hol3aIB91Afj2XgWZJR658yt+xf
- /bneP/lOG9HGUTh28cLMLS6tAQcPHCeizR6sTvPFgqgoPO0mphfl43y7ji7U7doB+sx4
- W0IA==
-X-Gm-Message-State: AOJu0Yx0YHxpRT4VVR8OZ0sRbrlvJ+/GE8ZdCVCmijknRcciBfroGHyM
- EiYMdMgEnqnQI+v5p9tSl0v/tSWmBKM4MY0A6R20aQ==
-X-Google-Smtp-Source: AGHT+IEwzstsgKUa6tj3B3gXXnUKsWs4WZMYFi+16tg21/DMHptUsM0uHOvDsSqIu+s2J79Oi9LP817lLMoZr7y+Odc=
-X-Received: by 2002:aa7:cfc5:0:b0:530:c880:9171 with SMTP id
- r5-20020aa7cfc5000000b00530c8809171mr7929423edy.27.1695725489473; Tue, 26 Sep
- 2023 03:51:29 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql5fJ-0006eO-Vt
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:51:42 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1ql5fH-0004RW-2V
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 06:51:41 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:5429:0:640:6285:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 8C48E62168;
+ Tue, 26 Sep 2023 13:51:35 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b41d::1:39] (unknown
+ [2a02:6b8:b081:b41d::1:39])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id YpMcFi0OoKo0-w4JTRoGS; Tue, 26 Sep 2023 13:51:35 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695725495;
+ bh=+FhkrtX1v081cvZsjTag7lT0uRX/JXFdFYB2x++o+TE=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=PE9WjbId551HWkc5aCfEJRvX26c8eztvqLHtmqwKNhVHMm6v3PcLef0wwjtdyclMW
+ NeQnOwftEPAqOaQmi6/uGDcPrvbmVrRJLPWwhYNNl0qENP0tmfvoMwAGCEQha3kzxI
+ 8Sh3UStYesC4qSIZcF9htWnsLKZg/D2yO6z58kWg=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <43de490c-3e66-0703-4cb7-2fba306fc970@yandex-team.ru>
+Date: Tue, 26 Sep 2023 13:51:34 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 01/12] hw/core/loader: load_at(): check size
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>
+Cc: qemu-devel@nongnu.org, pbonzini@redhat.com,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
 References: <20230925194040.68592-1-vsementsov@yandex-team.ru>
- <20230925194040.68592-6-vsementsov@yandex-team.ru>
-In-Reply-To: <20230925194040.68592-6-vsementsov@yandex-team.ru>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Tue, 26 Sep 2023 11:51:11 +0100
-Message-ID: <CAFEAcA9TjB7OJ-j+Cnst8pt3CjVADvyvG07ZvykQKRoowgMe3g@mail.gmail.com>
-Subject: Re: [PATCH 05/12] device_tree: qmp_dumpdtb(): stronger assertion
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: qemu-devel@nongnu.org, pbonzini@redhat.com, 
- Alistair Francis <alistair.francis@wdc.com>,
- David Gibson <david@gibson.dropbear.id.au>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::536;
- envelope-from=peter.maydell@linaro.org; helo=mail-ed1-x536.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ <20230925194040.68592-2-vsementsov@yandex-team.ru>
+ <CAFEAcA8MeLs5fz+PjLsL351OHv3vr8+4_tnD97guZHXs76iTog@mail.gmail.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <CAFEAcA8MeLs5fz+PjLsL351OHv3vr8+4_tnD97guZHXs76iTog@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,46 +80,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 25 Sept 2023 at 20:42, Vladimir Sementsov-Ogievskiy
-<vsementsov@yandex-team.ru> wrote:
->
-> Coverity mark this size, got from the buffer as untrasted value, it's
-> not good to use it as length when writing to file. Make the assertion
-> more strict to also check upper bound.
->
-> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> ---
->  softmmu/device_tree.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/softmmu/device_tree.c b/softmmu/device_tree.c
-> index 30aa3aea9f..adc4236e21 100644
-> --- a/softmmu/device_tree.c
-> +++ b/softmmu/device_tree.c
-> @@ -660,7 +660,7 @@ void qmp_dumpdtb(const char *filename, Error **errp)
->
->      size = fdt_totalsize(current_machine->fdt);
->
-> -    g_assert(size > 0);
-> +    g_assert(size > 0 && size <= FDT_MAX_SIZE);
+On 26.09.23 13:33, Peter Maydell wrote:
+> On Mon, 25 Sept 2023 at 20:41, Vladimir Sementsov-Ogievskiy
+> <vsementsov@yandex-team.ru> wrote:
+>>
+>> This @size parameter often comes from fd. We'd better check it before
+>> doing read and allocation.
+>>
+>> Chose 1G as high enough empiric bound.
+> 
+> Empirical for who?
+> 
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+>> ---
+>>   hw/core/loader.c | 17 ++++++++++++++++-
+>>   1 file changed, 16 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/core/loader.c b/hw/core/loader.c
+>> index 4dd5a71fb7..4b67543046 100644
+>> --- a/hw/core/loader.c
+>> +++ b/hw/core/loader.c
+>> @@ -281,11 +281,26 @@ ssize_t load_aout(const char *filename, hwaddr addr, int max_sz,
+>>
+>>   /* ELF loader */
+>>
+>> +#define ELF_LOAD_MAX (1024 * 1024 * 1024)
+>> +
+>>   static void *load_at(int fd, off_t offset, size_t size)
+>>   {
+>>       void *ptr;
+>> -    if (lseek(fd, offset, SEEK_SET) < 0)
+>> +
+>> +    /*
+>> +     * We often come here with @size, which was previously read from file
+>> +     * descriptor too. That's not good to read and allocate for unchecked
+>> +     * number of bytes. Coverity also doesn't like it and generate problems.
+>> +     * So, let's limit all load_at() calls to ELF_LOAD_MAX at least.
+>> +     */
+>> +    if (size > ELF_LOAD_MAX) {
+>>           return NULL;
+>> +    }
+>> +
+>> +    if (lseek(fd, offset, SEEK_SET) < 0) {
+>> +        return NULL;
+>> +    }
+>> +
+>>       ptr = g_malloc(size);
+>>       if (read(fd, ptr, size) != size) {
+>>           g_free(ptr);
+> 
+> This doesn't really help anything:
+>   (1) if the value is really big, it doesn't cause any terrible
+> consequences -- QEMU will just exit because the allocation
+> fails, which is fine because this will be at QEMU startup
+> and only happens if the user running QEMU gives us a silly file
+>   (2) we do a lot of other "allocate and abort on failure"
+> elsewhere in the ELF loader, for instance the allocations of
+> the symbol table and relocs in the load_symbols and
+> elf_reloc functions, and then on a bigger scale when we
+> work with the actual data in the ELF file
 
-FDT_MAX_SIZE is not "this is as big as an FDT can ever be". It's
-only the internal sizing of device trees that we create ourselves
-in the machine models (and which we will bump up if for some
-reason we ever find ourselves needing to create bigger device
-trees). So it's not really a suitable upper bound.
+Reasonable..
 
->      if (!g_file_set_contents(filename, current_machine->fdt, size, &err)) {
->          error_setg(errp, "Error saving FDT to file %s: %s",
+Don't you have an idea, how to somehow mark the value "trusted" for Coverity?
 
-Nothing bad happens if we pass g_file_set_contents() a very
-large size -- we'll just create a large file. The user already
-has lots of ways to fill up their disk if they want to, and
-we don't have any idea how much disk space they might or might
-not have.
+-- 
+Best regards,
+Vladimir
 
-I would just mark this as a false positive.
-
-thanks
--- PMM
 
