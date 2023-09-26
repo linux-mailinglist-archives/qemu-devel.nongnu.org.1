@@ -2,109 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE457AED3D
-	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:53:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E757AED80
+	for <lists+qemu-devel@lfdr.de>; Tue, 26 Sep 2023 14:59:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1ql7YM-0003n6-GL; Tue, 26 Sep 2023 08:52:38 -0400
+	id 1ql7f1-0006mc-IC; Tue, 26 Sep 2023 08:59:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1ql7YI-0003mt-7l
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:52:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ql7ew-0006mD-9i
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:59:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1ql7YG-0002ky-8D
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:52:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1ql7eu-0004O6-Pd
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 08:59:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695732751;
+ s=mimecast20190719; t=1695733163;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qRUeX0YMC2ylThv5+EJ6vgH5CV1BgqBQUiM2b3rT2dA=;
- b=gL8w+fH2C03ZfpbCbu+s//LX3wm0Mjk+b3ecvPuScHbonYOqRMXoPImSkXGKT8k4BdC+xo
- X0GAvDf4/YUDyWjH5hIQfNt0/DdukTWbSwvskbo5ipcooIVX21wkSLfFpBBGzeD9s1UtMC
- 9BYt6p6DNtMtvm3FPDfY3El5/0oSwKM=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=akB9kuMJm+7SEKJzwdGzYOrLEA/taW/RaLBgoERu5kc=;
+ b=F5xUQAGKdF0tXs+t2pp1Ki/xLy67PeHBPw5s1xdm6MhrNIYi5whqlzLph9G5vVSw4jWcvr
+ TlnUkwzP3wbk26ahEzPY6HpKeMYJnTSwp2Ab0oGQ2CK+eder9IlsWm1QGfPT5tNbakfZFE
+ UtYatjbAxjEREyAy76FX3hfmikp+YL0=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-96-7Tn2mhpTN0mBFt91oJ9X_Q-1; Tue, 26 Sep 2023 08:52:29 -0400
-X-MC-Unique: 7Tn2mhpTN0mBFt91oJ9X_Q-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30932d15a30so6793415f8f.1
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 05:52:29 -0700 (PDT)
+ us-mta-380-4e-8CfDkMsSMenUjXvRggA-1; Tue, 26 Sep 2023 08:59:21 -0400
+X-MC-Unique: 4e-8CfDkMsSMenUjXvRggA-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-65b034d7082so87304866d6.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 05:59:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695732748; x=1696337548;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qRUeX0YMC2ylThv5+EJ6vgH5CV1BgqBQUiM2b3rT2dA=;
- b=HBOdNkBdTA6VmOfbdVj9rtBaEf32e3C+wvmeiRRGj2+3pm0US7mAJNqHyIdhFXVYGR
- kfI3y5RFpzKzYFVIJHhsNCrOJSbyM6MQAxKs+F761EfWfIHYbv+yLiwnY/CrQnK0mMUC
- d3qmvs8o9lywhk3babES6fpJoxq5vlNMN5shbvphanpW3SApbtB/mp61NM38yB5/7Wf7
- nuiwiEqHam1nb6yjPMaCJYpf6mbnJcREFNuHeo/C3YDVJVp2IipATDTW+7pgsooy13E+
- v9zGgYz9QorJ6IrAqbicu1PrWoTb9bYmL+HYXzXfIWMWnREB1s4lDxyW6Tn99lLwTRwU
- CMqA==
-X-Gm-Message-State: AOJu0YwXHRGUdl7zh9SSl5r/m1ar8C63GXNgcbB25uOubdLgbAt7pLcO
- wIFJKdBhr6fTmTWQ6DaWx15u8weIfj/RbFBiFiAuDHajZkWe1mY1xySuWo3z365GWlrZbaESpvO
- TiPt7+IBfvvr6UV8=
-X-Received: by 2002:adf:f044:0:b0:321:6388:bccb with SMTP id
- t4-20020adff044000000b003216388bccbmr8832107wro.21.1695732748264; 
- Tue, 26 Sep 2023 05:52:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSrthQ1MqUP7Td7RFcLXi6yAfZudYjqtiyT8KVkZxIlsO4zVSmyW5Rv0B3fiJTpIKH6NCp/w==
-X-Received: by 2002:adf:f044:0:b0:321:6388:bccb with SMTP id
- t4-20020adff044000000b003216388bccbmr8832085wro.21.1695732747843; 
- Tue, 26 Sep 2023 05:52:27 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c73f:600:933b:ca69:5a80:230d?
- (p200300cbc73f0600933bca695a80230d.dip0.t-ipconnect.de.
- [2003:cb:c73f:600:933b:ca69:5a80:230d])
- by smtp.gmail.com with ESMTPSA id
- c2-20020adfe702000000b003217c096c1esm14568906wrm.73.2023.09.26.05.52.26
+ d=1e100.net; s=20230601; t=1695733161; x=1696337961;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=akB9kuMJm+7SEKJzwdGzYOrLEA/taW/RaLBgoERu5kc=;
+ b=l2aWf9Cdqmgu2enGuh0zUc5K470t04Pvq4NI2KtljTXBJEgeicIolvaSS/FHoQ+Q+J
+ FWSkTxF3frq4gZGF+so7CzV5ZKo7QQk9Gk7CGQr6ozOyp2afpkfSmHFuLTfZFU5GSAtP
+ EuI+55M+kP2ggjAUxHoa0c7opIz64d8ImyOlu7Wf3BJoU+JT8/FZTVHzmd3ounkJXzZ4
+ tr96ozb2AgGZp/q824pIZb+f/fEpuumpHeMVISCjHgRrltxIH8jSrpYWaYbvBBKyiAqw
+ 7OUD3Zjmp3xURtkPcV1kveuFJhdM0v4sgDmuOecUHcLxzUTpTFVcFw5gp/W+P7W3I4dE
+ P0YQ==
+X-Gm-Message-State: AOJu0Yw8ojYV4FC6DZQQSbDsJ9kgCqayngBpwhobhi8sJvcusmpV9Kik
+ zryJTuiWX51OO2uEzZOtZqpvH/37aA5RFKQ5wV8pKeM8yroZkcVSlVGP5Rgu8aXjA9TiuPTojQj
+ +PxLjrornzrth6wo=
+X-Received: by 2002:a05:6214:4304:b0:658:9cf2:15df with SMTP id
+ oe4-20020a056214430400b006589cf215dfmr9301544qvb.8.1695733161423; 
+ Tue, 26 Sep 2023 05:59:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlp+2Bf/aULNoVAKS2F874eVVLb9qZ4GfrKIJrCpZpDKPMZAYfOVXkVAEMuq8Qa8zxIsAzxA==
+X-Received: by 2002:a05:6214:4304:b0:658:9cf2:15df with SMTP id
+ oe4-20020a056214430400b006589cf215dfmr9301528qvb.8.1695733161075; 
+ Tue, 26 Sep 2023 05:59:21 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-42-114-189.web.vodafone.de.
+ [109.42.114.189]) by smtp.gmail.com with ESMTPSA id
+ oj2-20020a056214440200b0065af4977ea3sm3228155qvb.24.2023.09.26.05.59.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Sep 2023 05:52:27 -0700 (PDT)
-Message-ID: <ed236087-2642-17a6-7353-e4c6cb7c80a5@redhat.com>
-Date: Tue, 26 Sep 2023 14:52:26 +0200
+ Tue, 26 Sep 2023 05:59:20 -0700 (PDT)
+Message-ID: <a20d141c-8fe4-08bc-5276-a5a6c3d08d0e@redhat.com>
+Date: Tue, 26 Sep 2023 14:59:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 04/10] Introduce the CPU address space destruction
- function
+Subject: Re: [PATCH] m68k: Silence -Wshadow=local warnings in the m68k code
 Content-Language: en-US
-To: Salil Mehta <salil.mehta@huawei.com>, lixianglai
- <lixianglai@loongson.cn>, "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: Salil Mehta <salil.mehta@opnsrc.net>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>,
- "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Ani Sinha <anisinha@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- "wangyanan (Y)" <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, Bibo Mao <maobibo@loongson.cn>
-References: <cover.1694433326.git.lixianglai@loongson.cn>
- <3a4fc2a3df4b767c3c296a7da3bc15ca9c251316.1694433326.git.lixianglai@loongson.cn>
- <43f04ba4-3e16-ea5c-a212-66dda73a76c4@redhat.com>
- <20eb8316-22a2-c812-7172-6bd9016877cc@loongson.cn>
- <dd2b9190-c748-0ae2-b9de-8842e6e758e2@redhat.com>
- <7e0e1639-d821-fecb-b647-4a18afa600cc@loongson.cn>
- <e4e88068-4754-f7d4-e080-b7b8d5bcf006@loongson.cn>
- <5f610a1d-da1b-0094-41e7-f69164c4d0e0@redhat.com>
- <7906109a36c5467fa9b529520671fa77@huawei.com>
- <b8f256b3549e41a09119dee5ab5439d9@huawei.com>
- <40647bc5-6a2e-0b59-3605-0de8d4639f66@redhat.com>
- <e4b1bd2abbbe4763953c611e0308a530@huawei.com>
- <6c271cbe-22bb-417f-9873-31ad6f75f28c@redhat.com>
- <f44b49d55fe5491c9dd0733ba11aca6a@huawei.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <f44b49d55fe5491c9dd0733ba11aca6a@huawei.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230925185603.106945-1-thuth@redhat.com>
+ <87jzsd3z5q.fsf@pond.sub.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <87jzsd3z5q.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
@@ -129,195 +102,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.09.23 14:44, Salil Mehta wrote:
->> From: David Hildenbrand <david@redhat.com>
->> Sent: Tuesday, September 26, 2023 1:37 PM
->> To: Salil Mehta <salil.mehta@huawei.com>; lixianglai
->> <lixianglai@loongson.cn>; qemu-devel@nongnu.org
->> Cc: Salil Mehta <salil.mehta@opnsrc.net>; Xiaojuan Yang
->> <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael S.
->> Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani Sinha
->> <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
->> Henderson <richard.henderson@linaro.org>; Eduardo Habkost
->> <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
->> Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
->> <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>; Peter
->> Xu <peterx@redhat.com>; Bibo Mao <maobibo@loongson.cn>
->> Subject: Re: [PATCH v2 04/10] Introduce the CPU address space destruction
->> function
->>
->> On 26.09.23 14:32, Salil Mehta wrote:
->>>> From: David Hildenbrand <david@redhat.com>
->>>> Sent: Tuesday, September 26, 2023 1:24 PM
->>>>
->>>> On 26.09.23 13:55, Salil Mehta wrote:
->>>>>> From: Salil Mehta
->>>>>> Sent: Tuesday, September 26, 2023 12:21 PM
->>>>>> To: 'David Hildenbrand' <david@redhat.com>; lixianglai
->>>>>> <lixianglai@loongson.cn>; qemu-devel@nongnu.org
->>>>>> Cc: Salil Mehta <salil.mehta@opnsrc.net>; Xiaojuan Yang
->>>>>> <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael S.
->>>>>> Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani
->> Sinha
->>>>>> <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
->>>>>> Henderson <richard.henderson@linaro.org>; Eduardo Habkost
->>>>>> <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
->>>>>> Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
->>>>>> <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>;
->>>> Peter
->>>>>> Xu <peterx@redhat.com>; Bibo Mao <maobibo@loongson.cn>
->>>>>> Subject: RE: [PATCH v2 04/10] Introduce the CPU address space
->>>> destruction
->>>>>> function
->>>>>>
->>>>>> Hi David,
->>>>>>
->>>>>>> From: David Hildenbrand <david@redhat.com>
->>>>>>> Sent: Friday, September 15, 2023 9:07 AM
->>>>>>> To: lixianglai <lixianglai@loongson.cn>; qemu-devel@nongnu.org; Salil
->>>>>> Mehta
->>>>>>> <salil.mehta@huawei.com>
->>>>>>> Cc: Salil Mehta <salil.mehta@opnsrc.net>; Xiaojuan Yang
->>>>>>> <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael
->> S.
->>>>>>> Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani
->>>> Sinha
->>>>>>> <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
->>>>>>> Henderson <richard.henderson@linaro.org>; Eduardo Habkost
->>>>>>> <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
->>>>>>> Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
->>>>>>> <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>;
->>>> Peter
->>>>>>> Xu <peterx@redhat.com>; Bibo Mao <maobibo@loongson.cn>
->>>>>>> Subject: Re: [PATCH v2 04/10] Introduce the CPU address space
->>>> destruction
->>>>>>> function
->>>>>>>
->>>>>>> On 15.09.23 04:53, lixianglai wrote:
->>>>>>>> Hi David Hildenbrand:
->>>>>>>>
->>>>>>>>>
->>>>>>>>> Hi David Hildenbrand:
->>>>>>>>>> On 14.09.23 15:00, lixianglai wrote:
->>>>>>>>>>> Hi David:
->>>>>>>>>>
->>>>>>>>>> Hi!
->>>>>>>>>>
->>>>>>>>>>>
->>>>>>>>>>>> On 12.09.23 04:11, xianglai li wrote:
->>>>>>>>>>>>> Introduce new function to destroy CPU address space resources
->>>>>>>>>>>>> for cpu hot-(un)plug.
->>>>>>>>>>>>>
->>>>>>>>>>>> How do other archs handle that? Or how are they able to get away
->>>>>>>>>>>> without destroying?
->>>>>>>>>>>>
->>>>>>>>>>> They do not remove the cpu address space, taking the X86
->>>>>>>>>>> architecture as
->>>>>>>>>>> an example:
->>>>>>>>>>>
->>>>>>>>>>> 1.Start the x86 VM:
->>>>>>>>>>>
->>>>>>>>>>> ./qemu-system-x86_64 \
->>>>>>>>>>> -machine q35  \
->>>>>>>>>>> -cpu Broadwell-IBRS \
->>>>>>>>>>> -smp 1,maxcpus=100,sockets=100,cores=1,threads=1 \
->>>>>>>>>>> -m 4G \
->>>>>>>>>>> -drive file=~/anolis-8.8.qcow2  \
->>>>>>>>>>> -serial stdio   \
->>>>>>>>>>> -monitor telnet:localhost:4498,server,nowait   \
->>>>>>>>>>> -nographic
->>>>>>>>>>>
->>>>>>>>>>> 2.Connect the qemu monitor
->>>>>>>>>>>
->>>>>>>>>>> telnet 127.0.0.1 4498
->>>>>>>>>>>
->>>>>>>>>>> info mtree
->>>>>>>>>>>
->>>>>>>>>>> address-space: cpu-memory-0
->>>>>>>>>>> address-space: memory
->>>>>>>>>>>         0000000000000000-ffffffffffffffff (prio 0, i/o): system
->>>>>>>>>>>           0000000000000000-000000007fffffff (prio 0, ram): alias
->>>>>>>>>>> ram-below-4g
->>>>>>>>>>> @pc.ram 0000000000000000-000000007fffffff
->>>>>>>>>>>           0000000000000000-ffffffffffffffff (prio -1, i/o): pci
->>>>>>>>>>>             00000000000a0000-00000000000bffff (prio 1, i/o): vga-
->>>> lowmem
->>>>>>>>>>>
->>>>>>>>>>> 3.Perform cpu hot swap int qemu monitor
->>>>>>>>>>>
->>>>>>>>>>> device_add
->>>>>>>>>>> Broadwell-IBRS-x86_64-cpu,socket-id=1,core-id=0,thread-
->> id=0,id=cpu1
->>>>>>>>>>> device_del cpu1
->>>>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> Hm, doesn't seem to work for me on upstream QEMU for some reason:
->>>>>>>>>> "Error: acpi: device unplug request for not supported device type:
->>>>>>>>>> Broadwell-IBRS-x86_64-cpu"
->>>>>>>>>
->>>>>>>> First I use qemu tcg, and then the cpu needs to be removed after the
->>>>>>>> operating system is booted.
->>>>>>>
->>>>>>> Ah, the last thing is the important bit. I can reproduce this with
->> KVM
->>>>>>> easily.
->>>>>>>
->>>>>>> Doing it a couple of times
->>>>>>>
->>>>>>> address-space: cpu-memory-0
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>> address-space: cpu-memory-1
->>>>>>>
->>>>>>> Looks like a resource/memory leak.
->>>>>>
->>>>>> Yes, there was. Thanks for identifying it. I have fixed in the
->>>>>> latest RFC V2. Please check here:
->>>>>>
->>>>>> https://lore.kernel.org/qemu-devel/20230926100436.28284-1-
->>>>>> salil.mehta@huawei.com/T/#m5f5ae40b091d69d01012880d7500d96874a9d39c
->>>>>>
->>>>>> I have tested and AddressSpace comes and goes away cleanly
->>>>>> on CPU hot(un)plug action.
->>>>>
->>>>> Hi David/Xianglai,
->>>>> Are you okay if I put Reported-by and give reference to this
->>>>> conversation?
->>>>
->>>> Yes. And ideally, send the fixes separately from the other arm patches.
->>>
->>> ARM Virtual CPU Hotplug support patches are still under review.
->>
->> The other architectures (as shown, x86 is affected) can be fixed
->> independent of that support.
+On 26/09/2023 14.19, Markus Armbruster wrote:
+> Thomas Huth <thuth@redhat.com> writes:
 > 
-> Yes, they can be and the TCG as well. Unrealize part of TCG is
-> broken even on ARM. Need some way to cleanly unassign Translation
-> blocks from the Region trees. That’s a pending work at our end.
-> But you are more than welcome to help and contribute in that
-> as well.
+>> Rename the innermost variables to make the code compile
+>> without warnings when using -Wshadow=local.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> 
+> Clashes with patches from Philippe and Laurent:
+> 
+>      [PATCH v2 05/22] target/m68k: Clean up local variable shadowing
+>      [PATCH] disas/m68k: clean up local variable shadowing
+> 
+> You guys figure out how to combine them, please :)
 
-I have absolutely no time for that, happy to review patches.
+Ok, then never mind about my patch.
+Anyway, it's getting confusing what has already been fixed and what not ... 
+could you please pick up all patches that are available so far and send a 
+pull request for them?
 
--- 
-Cheers,
-
-David / dhildenb
+  Thanks,
+   Thomas
 
 
