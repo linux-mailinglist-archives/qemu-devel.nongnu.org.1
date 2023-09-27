@@ -2,67 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2947B0921
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A777B0932
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:47:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlWjI-0002GS-F3; Wed, 27 Sep 2023 11:45:36 -0400
+	id 1qlWkc-00039U-BD; Wed, 27 Sep 2023 11:46:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qlWjG-0002Fs-L4
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:45:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qlWka-00039K-Aw
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:46:56 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qlWjE-0000nj-No
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:45:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695829531;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=3nyM4p8RNzufSiREtAw/INU35cvTL7ko2sSQLMOYbqI=;
- b=IAO8ADlvvR8bKb9LMfTQ89BD+FdGpbnsPleNq/USnqXrdmw2CKaEpHzWInZ++nqYwSnJxu
- 8Qj8TEFPwUA6ITNLrRwZcOYJMCcMsDm+KREQhpKT77jV2DTIP7UCPSImYyUfOaCsAheP3n
- uDSgAPzCq/mJyyNPef2XT/GCfBJqUo4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-124-B-gJwbsaNnGYeErB5qUf_A-1; Wed, 27 Sep 2023 11:45:27 -0400
-X-MC-Unique: B-gJwbsaNnGYeErB5qUf_A-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9DBAA185A78E;
- Wed, 27 Sep 2023 15:45:27 +0000 (UTC)
-Received: from [10.39.192.216] (unknown [10.39.192.216])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E1C7340C2064;
- Wed, 27 Sep 2023 15:45:26 +0000 (UTC)
-Message-ID: <7ee37181-526e-2b6a-6b42-09340a9e70a9@redhat.com>
-Date: Wed, 27 Sep 2023 17:45:25 +0200
+ (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
+ id 1qlWkV-0000ut-25
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:46:56 -0400
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 44F73E000B;
+ Wed, 27 Sep 2023 15:46:46 +0000 (UTC)
+Message-ID: <142a9657-550b-6c04-5a23-d45011c160e8@ovn.org>
+Date: Wed, 27 Sep 2023 17:47:38 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH] hw/display/ramfb: plug slight guest-triggerable leak on
- mode setting
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: i.maximets@ovn.org, Stefan Hajnoczi <stefanha@gmail.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] virtio: remove unnecessary thread fence while reading
+ next descriptor
 Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-stable@nongnu.org
-References: <20230919131955.27223-1-lersek@redhat.com>
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <20230919131955.27223-1-lersek@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+References: <20230825170136.1953236-1-i.maximets@ovn.org>
+ <CAJSP0QW2LZQgHFSp=ajokFpAzaLWhDXBL0tP8Lj-vXTaMKJcqQ@mail.gmail.com>
+ <fd5f15c1-87b7-bd00-be5f-987a02f35482@ovn.org>
+ <28993913-624a-a437-1382-54a95933474c@ovn.org>
+ <20230927114117-mutt-send-email-mst@kernel.org>
+From: Ilya Maximets <i.maximets@ovn.org>
+In-Reply-To: <20230927114117-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-GND-Sasl: i.maximets@ovn.org
+Received-SPF: pass client-ip=217.70.183.196; envelope-from=i.maximets@ovn.org;
+ helo=relay4-d.mail.gandi.net
+X-Spam_score_int: -40
+X-Spam_score: -4.1
+X-Spam_bar: ----
+X-Spam_report: (-4.1 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,136 +64,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/19/23 15:19, Laszlo Ersek wrote:
-> The fw_cfg DMA write callback in ramfb prepares a new display surface in
-> QEMU; this new surface is put to use ("swapped in") upon the next display
-> update. At that time, the old surface (if any) is released.
-> 
-> If the guest triggers the fw_cfg DMA write callback at least twice between
-> two adjacent display updates, then the second callback (and further such
-> callbacks) will leak the previously prepared (but not yet swapped in)
-> display surface.
-> 
-> The issue can be shown by:
-> 
-> (1) starting QEMU with "-trace displaysurface_free", and
-> 
-> (2) running the following program in the guest UEFI shell:
-> 
->> #include <Library/ShellCEntryLib.h>           // ShellAppMain()
->> #include <Library/UefiBootServicesTableLib.h> // gBS
->> #include <Protocol/GraphicsOutput.h>          // EFI_GRAPHICS_OUTPUT_PROTOCOL
+On 9/27/23 17:41, Michael S. Tsirkin wrote:
+> On Wed, Sep 27, 2023 at 04:06:41PM +0200, Ilya Maximets wrote:
+>> On 9/25/23 20:04, Ilya Maximets wrote:
+>>> On 9/25/23 16:32, Stefan Hajnoczi wrote:
+>>>> On Fri, 25 Aug 2023 at 13:02, Ilya Maximets <i.maximets@ovn.org> wrote:
+>>>>>
+>>>>> It was supposed to be a compiler barrier and it was a compiler barrier
+>>>>> initially called 'wmb' (??) when virtio core support was introduced.
+>>>>> Later all the instances of 'wmb' were switched to smp_wmb to fix memory
+>>>>> ordering issues on non-x86 platforms.  However, this one doesn't need
+>>>>> to be an actual barrier.  It's enough for it to stay a compiler barrier
+>>>>> as its only purpose is to ensure that the value is not read twice.
+>>>>>
+>>>>> There is no counterpart read barrier in the drivers, AFAICT.  And even
+>>>>> if we needed an actual barrier, it shouldn't have been a write barrier.
+>>>>>
+>>>>> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+>>>>> ---
+>>>>>  hw/virtio/virtio.c | 2 +-
+>>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+>>>>> index 309038fd46..6eb8586858 100644
+>>>>> --- a/hw/virtio/virtio.c
+>>>>> +++ b/hw/virtio/virtio.c
+>>>>> @@ -1051,7 +1051,7 @@ static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
+>>>>>      /* Check they're not leading us off end of descriptors. */
+>>>>>      *next = desc->next;
+>>>>
+>>>> I don't see a caller that uses *next. Can the argument be eliminated?
+>>>
+>>> Yes, it can.  The 'next' was converted from a local variable to
+>>> an output parameter in commit:
+>>>   412e0e81b174 ("virtio: handle virtqueue_read_next_desc() errors")
+>>>
+>>> And that didn't actually make sense even then, because all the
+>>> actual uses of the 'i/next' as an output were removed a few months
+>>> prior in commit:
+>>>   aa570d6fb6bd ("virtio: combine the read of a descriptor")
+>>>
+>>> I can post a separate patch for this.
+>>>
+>>>>
+>>>>>      /* Make sure compiler knows to grab that: we don't want it changing! */
+>>>>> -    smp_wmb();
+>>>>> +    barrier();
+>>>>
+>>>> What is the purpose of this barrier? desc is not guest memory and
+>>>> nothing modifies desc's fields while this function is executing. I
+>>>> think the barrier can be removed.
+>>>
+>>> True.  In fact, that was the first thing I did, but then the comment
+>>> derailed me into thinking that it somehow can be updated concurrently,
+>>> so I went with a safer option.  :/
+>>> It is indeed a local variable and the barrier is not needed today.
+>>> It had a little more sense before the previously mentioned commit:
+>>>   aa570d6fb6bd ("virtio: combine the read of a descriptor")
+>>> because we were reading guest memory before the barrier and used the
+>>> result after.
+>>>
+>>> I'll remove it.
 >>
->> INTN
->> EFIAPI
->> ShellAppMain (
->>   IN UINTN   Argc,
->>   IN CHAR16  **Argv
->>   )
->> {
->>   EFI_STATUS                    Status;
->>   VOID                          *Interface;
->>   EFI_GRAPHICS_OUTPUT_PROTOCOL  *Gop;
->>   UINT32                        Mode;
+>> Converted this into a cleanup patch set.  Posted here:
+>>   https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg06780.html
 >>
->>   Status = gBS->LocateProtocol (
->>                   &gEfiGraphicsOutputProtocolGuid,
->>                   NULL,
->>                   &Interface
->>                   );
->>   if (EFI_ERROR (Status)) {
->>     return 1;
->>   }
->>
->>   Gop = Interface;
->>
->>   Mode = 1;
->>   for ( ; ;) {
->>     Status = Gop->SetMode (Gop, Mode);
->>     if (EFI_ERROR (Status)) {
->>       break;
->>     }
->>
->>     Mode = 1 - Mode;
->>   }
->>
->>   return 1;
->> }
+>> Best regards, Ilya Maximets.
 > 
-> The symptom is then that:
+> Ugh, these archives are useless. use lore please. 
 > 
-> - only one trace message appears periodically,
-> 
-> - the time between adjacent messages keeps increasing -- implying that
->   some list structure (containing the leaked resources) keeps growing,
-> 
-> - the "surface" pointer is ever different.
-> 
->> 18566@1695127471.449586:displaysurface_free surface=0x7f2fcc09a7c0
->> 18566@1695127471.529559:displaysurface_free surface=0x7f2fcc9dac10
->> 18566@1695127471.659812:displaysurface_free surface=0x7f2fcc441dd0
->> 18566@1695127471.839669:displaysurface_free surface=0x7f2fcc0363d0
->> 18566@1695127472.069674:displaysurface_free surface=0x7f2fcc413a80
->> 18566@1695127472.349580:displaysurface_free surface=0x7f2fcc09cd00
->> 18566@1695127472.679783:displaysurface_free surface=0x7f2fcc1395f0
->> 18566@1695127473.059848:displaysurface_free surface=0x7f2fcc1cae50
->> 18566@1695127473.489724:displaysurface_free surface=0x7f2fcc42fc50
->> 18566@1695127473.969791:displaysurface_free surface=0x7f2fcc45dcc0
->> 18566@1695127474.499708:displaysurface_free surface=0x7f2fcc70b9d0
->> 18566@1695127475.079769:displaysurface_free surface=0x7f2fcc82acc0
->> 18566@1695127475.709941:displaysurface_free surface=0x7f2fcc369c00
->> 18566@1695127476.389619:displaysurface_free surface=0x7f2fcc32b910
->> 18566@1695127477.119772:displaysurface_free surface=0x7f2fcc0d5a20
->> 18566@1695127477.899517:displaysurface_free surface=0x7f2fcc086c40
->> 18566@1695127478.729962:displaysurface_free surface=0x7f2fccc72020
->> 18566@1695127479.609839:displaysurface_free surface=0x7f2fcc185160
->> 18566@1695127480.539688:displaysurface_free surface=0x7f2fcc23a7e0
->> 18566@1695127481.519759:displaysurface_free surface=0x7f2fcc3ec870
->> 18566@1695127482.549930:displaysurface_free surface=0x7f2fcc634960
->> 18566@1695127483.629661:displaysurface_free surface=0x7f2fcc26b140
->> 18566@1695127484.759987:displaysurface_free surface=0x7f2fcc321700
->> 18566@1695127485.940289:displaysurface_free surface=0x7f2fccaad100
-> 
-> We figured this wasn't a CVE-worthy problem, as only small amounts of
-> memory were leaked (the framebuffer itself is mapped from guest RAM, QEMU
-> only allocates administrative structures), plus libvirt restricts QEMU
-> memory footprint anyway, thus the guest can only DoS itself.
-> 
-> Plug the leak, by releasing the last prepared (not yet swapped in) display
-> surface, if any, in the fw_cfg DMA write callback.
-> 
-> Regarding the "reproducer", with the fix in place, the log is flooded with
-> trace messages (one per fw_cfg write), *and* the trace message alternates
-> between just two "surface" pointer values (i.e., nothing is leaked, the
-> allocator flip-flops between two objects in effect).
-> 
-> This issue appears to date back to the introducion of ramfb (995b30179bdc,
-> "hw/display: add ramfb, a simple boot framebuffer living in guest ram",
-> 2018-06-18).
-> 
-> Cc: Gerd Hoffmann <kraxel@redhat.com> (maintainer:ramfb)
-> Cc: qemu-stable@nongnu.org
-> Fixes: 995b30179bdc
-> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-> ---
->  hw/display/ramfb.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
-> index 79b9754a5820..c2b002d53480 100644
-> --- a/hw/display/ramfb.c
-> +++ b/hw/display/ramfb.c
-> @@ -97,6 +97,7 @@ static void ramfb_fw_cfg_write(void *dev, off_t offset, size_t len)
->  
->      s->width = width;
->      s->height = height;
-> +    qemu_free_displaysurface(s->ds);
->      s->ds = surface;
->  }
->  
 
-Ping.
+OK.  The lore link is the following:
+  https://lore.kernel.org/qemu-devel/20230927140016.2317404-1-i.maximets@ovn.org/
 
-Laszlo
-
+Best regards, Ilya Maximets.
 
