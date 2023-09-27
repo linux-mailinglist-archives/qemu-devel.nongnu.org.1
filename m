@@ -2,93 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 667BD7B0199
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 12:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2AD7B01AC
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 12:20:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlRbK-0001Rk-HU; Wed, 27 Sep 2023 06:17:02 -0400
+	id 1qlRdG-0002uX-RJ; Wed, 27 Sep 2023 06:19:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qlRbE-0001QI-IG
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:16:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qlRbB-0007kX-3K
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:16:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695809812;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Nissc7H9Ul6RGPI67w2ioD38IeBIfk7Ci0a5JDeIR6U=;
- b=E8CW8jPYywKwztdvdqXZnX7BuIU887askOtj7hd8iFbMBP4nJLst6cchY9Uf9wOC+3OwyQ
- FGbEkfBFdH5ZL/tKSdvBTgap2p/UFqwr3IwOSC6zXYK6y70TusZZjo8uaMP/YV8tPC8RoG
- 7C0Z4PfhZ8aolIkORxTZ/4XnZbNM5QU=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-367-74bhydyXMWSWe00lUMUsnA-1; Wed, 27 Sep 2023 06:16:51 -0400
-X-MC-Unique: 74bhydyXMWSWe00lUMUsnA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-65b0d478deaso116474296d6.2
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 03:16:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qlRdE-0002tm-4p
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:19:00 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
+ id 1qlRdC-0008UY-3W
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:18:59 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3214d4ecd39so9099964f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 03:18:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695809936; x=1696414736; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZZKsHEITqMChQMSdz1HXB6c9tibacP85Unu+w9XAuhQ=;
+ b=apKaU6pt4ADqRatK/XQ0rX5dA/+jHavlhU3ceKnUoEdopUVrE9KqG1+RcXpIyRD0rA
+ gEE4kOSoUra0OYOMGBAh1eIcNXQ0pFGy4XlZN5ZOkSxAsMp2Pf1Vz0YFG0fj1I9hoVUK
+ E7BhacLqqKP76o7rnPT/p4yA6518GUa+ydcGYibDDEtAU+P3ex2e+wUF7CpolhUDD46q
+ G3ZSHoVIDoe0o4qxhksClmA2ugADDm0MvVp71IfCvwNTFnSFDqyR36A9tFid4xBvRZYt
+ mgDbbL8hLaIJ275yHK9BmdsvJHdixXTNW9qu+KiuEwgqPFQjpIDbFnywhnYn2QXiXKNc
+ F4rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695809810; x=1696414610;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Nissc7H9Ul6RGPI67w2ioD38IeBIfk7Ci0a5JDeIR6U=;
- b=uy2eaFk/cIQQiiJND5Q9XbUt1ISnhDS2rzQ8oq73SqJ8bJs4MoBQ7lHdwNq4GxcOQN
- S5na2iUZpjk2Hcqhn/w3OfaYm3U9MQfH9mtbLqO2GIVRD9FXSk9CIB2Qp5f/QoTopxdy
- DjbIlHMXjY80xiq0lY+MMhXMPoB8t1xypxDaZzdhSNuMkwIu3xYLWsckrj3aQo5ZaWGb
- D0bIx3Qe0zIhL8uZg+ugX7E/I1wY/gq+N+zuSLOt6LzX2tJJj6ctIg64dwbxkf44wKJF
- C3RwriQSckV1uxnBpzzfvp3jn4hsHPo/iHc5q1W3Qfotp18ZDU7DieqboxaGz5PtHE8H
- C2Rg==
-X-Gm-Message-State: AOJu0Yz+BwgAYRTSim6tASboIdYZTnoJ/CNSVIIWwVulpXBUtqtYalLu
- 5LWem/dE9WLFwo/Zw9lFgXoyCUc72lF/tBcD+pgUThHEU4Z3T8n/Z8QUelYcb6WxEixOysIIrHC
- h02uyuAGbw1rJGPc=
-X-Received: by 2002:a0c:db89:0:b0:659:cab7:601 with SMTP id
- m9-20020a0cdb89000000b00659cab70601mr1467883qvk.46.1695809810570; 
- Wed, 27 Sep 2023 03:16:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFd1RgC7tcSKt6qcgkEkQl7ItCAT6c/GyiGJ9gmT9lkg71dmJ2y6EgQpo2mMOMsKUosnqBuxQ==
-X-Received: by 2002:a0c:db89:0:b0:659:cab7:601 with SMTP id
- m9-20020a0cdb89000000b00659cab70601mr1467873qvk.46.1695809810274; 
- Wed, 27 Sep 2023 03:16:50 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ d=1e100.net; s=20230601; t=1695809936; x=1696414736;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ZZKsHEITqMChQMSdz1HXB6c9tibacP85Unu+w9XAuhQ=;
+ b=Y0hTV7r1ZIeDi4/QYnShymBm2jbgU8ZzDrywAU6o38pReuGjgrNnP7z1FH4lH8IaNZ
+ U963HV6WDVp9hUVWAMC6VoQbs0XV314w7EXlrgEmHDyL5m7n1p7UVE9NQBBF3pj0IHly
+ hvtOTCHsg0xL7eZ7B2IZIllXm/fIyCtKBdKo8y0+iIMVNWjG9PfJJICXnuKFV7S6JGBZ
+ r4U20Z/qjFQ7Bp5oaLR5/XylHRQMPF1P+HbKt3xeeowSF8aBYpx+wUAbXj3mUu8bUThz
+ RGHN3j32FNtlUPbx7q93EQEh6u7zWY6Y3MHLHXa9tht8Be3DqExxyivZg9np0YIcdGLF
+ 8MIQ==
+X-Gm-Message-State: AOJu0YwOt+mFKFpolUb0N3lXoXkhuAp92EqIORf/TAPVf/Fv5A1tpyMH
+ XWbmMMIbMRhsy67ZXZ7UGoBV2/9mleoSOl5JIqM=
+X-Google-Smtp-Source: AGHT+IHi2lGcjxvU91Pbk9RSVVjunOKv/fjWVyyq/cJP1h/W6gCeqqHJoCjk4S74kDAerISaehBm8w==
+X-Received: by 2002:a05:6000:12c5:b0:314:1f1e:3a85 with SMTP id
+ l5-20020a05600012c500b003141f1e3a85mr1159604wrx.61.1695809935573; 
+ Wed, 27 Sep 2023 03:18:55 -0700 (PDT)
+Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- d2-20020a0cf0c2000000b0063d162a8b8bsm3114926qvl.19.2023.09.27.03.16.48
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Sep 2023 03:16:49 -0700 (PDT)
-Message-ID: <0de7cf0d-5f38-f20e-7f80-c419bc6e8bd3@redhat.com>
-Date: Wed, 27 Sep 2023 12:16:47 +0200
+ n3-20020a05600c3b8300b004053a6b8c41sm15789974wms.12.2023.09.27.03.18.55
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 27 Sep 2023 03:18:55 -0700 (PDT)
+From: Peter Maydell <peter.maydell@linaro.org>
+To: qemu-arm@nongnu.org,
+	qemu-devel@nongnu.org
+Subject: [PATCH] target/arm: Permit T32 LDM with single register
+Date: Wed, 27 Sep 2023 11:18:53 +0100
+Message-Id: <20230927101853.39288-1-peter.maydell@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 06/12] vfio/pci: Introduce vfio_[attach/detach]_device
-Content-Language: en-US
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, eric.auger@redhat.com, peterx@redhat.com,
- jasowang@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20230926113255.1177834-1-zhenzhong.duan@intel.com>
- <20230926113255.1177834-7-zhenzhong.duan@intel.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20230926113255.1177834-7-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,254 +87,132 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/26/23 13:32, Zhenzhong Duan wrote:
-> From: Eric Auger <eric.auger@redhat.com>
-> 
-> We want the VFIO devices to be able to use two different
-> IOMMU backends, the legacy VFIO one and the new iommufd one.
-> 
-> Introduce vfio_[attach/detach]_device which aim at hiding the
-> underlying IOMMU backend (IOCTLs, datatypes, ...).
-> 
-> Once vfio_attach_device completes, the device is attached
-> to a security context and its fd can be used. Conversely
-> When vfio_detach_device completes, the device has been
-> detached from the security context.
-> 
-> At the moment only the implementation based on the legacy
-> container/group exists. Let's use it from the vfio-pci device.
-> Subsequent patches will handle other devices.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> ---
->   include/hw/vfio/vfio-common.h |  3 ++
->   hw/vfio/common.c              | 68 +++++++++++++++++++++++++++++++++++
->   hw/vfio/pci.c                 | 50 +++-----------------------
->   hw/vfio/trace-events          |  2 +-
->   4 files changed, 77 insertions(+), 46 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index c4e7c3b4a7..12fbfbc37d 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -225,6 +225,9 @@ void vfio_put_group(VFIOGroup *group);
->   struct vfio_device_info *vfio_get_device_info(int fd);
->   int vfio_get_device(VFIOGroup *group, const char *name,
->                       VFIODevice *vbasedev, Error **errp);
-> +int vfio_attach_device(char *name, VFIODevice *vbasedev,
-> +                       AddressSpace *as, Error **errp);
-> +void vfio_detach_device(VFIODevice *vbasedev);
->   
->   int vfio_kvm_device_add_fd(int fd, Error **errp);
->   int vfio_kvm_device_del_fd(int fd, Error **errp);
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 959b1362bb..7f3798b152 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -2611,3 +2611,71 @@ int vfio_eeh_as_op(AddressSpace *as, uint32_t op)
->       }
->       return vfio_eeh_container_op(container, op);
->   }
-> +
-> +static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
-> +{
-> +    char *tmp, group_path[PATH_MAX], *group_name;
-> +    int ret, groupid;
-> +    ssize_t len;
-> +
-> +    tmp = g_strdup_printf("%s/iommu_group", vbasedev->sysfsdev);
-> +    len = readlink(tmp, group_path, sizeof(group_path));
-> +    g_free(tmp);
-> +
-> +    if (len <= 0 || len >= sizeof(group_path)) {
-> +        ret = len < 0 ? -errno : -ENAMETOOLONG;
-> +        error_setg_errno(errp, -ret, "no iommu_group found");
-> +        return ret;
-> +    }
-> +
-> +    group_path[len] = 0;
-> +
-> +    group_name = basename(group_path);
-> +    if (sscanf(group_name, "%d", &groupid) != 1) {
-> +        error_setg_errno(errp, errno, "failed to read %s", group_path);
-> +        return -errno;
-> +    }
-> +    return groupid;
-> +}
-> +
-> +int vfio_attach_device(char *name, VFIODevice *vbasedev,
-> +                       AddressSpace *as, Error **errp)
-> +{
-> +    int groupid = vfio_device_groupid(vbasedev, errp);
-> +    VFIODevice *vbasedev_iter;
-> +    VFIOGroup *group;
-> +    int ret;
-> +
-> +    if (groupid < 0) {
-> +        return groupid;
-> +    }
-> +
-> +    trace_vfio_attach_device(vbasedev->name, groupid);
-> +
-> +    group = vfio_get_group(groupid, as, errp);
-> +    if (!group) {
-> +        return -ENOENT;
-> +    }
-> +
-> +    QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-> +        if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
-> +            error_setg(errp, "device is already attached");
-> +            vfio_put_group(group);
-> +            return -EBUSY;
-> +        }
-> +    }
-> +    ret = vfio_get_device(group, name, vbasedev, errp);
-> +    if (ret) {
-> +        vfio_put_group(group);
-> +    }
-> +
-> +    return ret;
-> +}
-> +
-> +void vfio_detach_device(VFIODevice *vbasedev)
-> +{
-> +    VFIOGroup *group = vbasedev->group;
-> +
-> +    vfio_put_base_device(vbasedev);
-> +    vfio_put_group(group);
-> +}
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 3b2ca3c24c..fe56789893 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2828,10 +2828,10 @@ static void vfio_populate_device(VFIOPCIDevice *vdev, Error **errp)
->   
->   static void vfio_put_device(VFIOPCIDevice *vdev)
->   {
-> +    vfio_detach_device(&vdev->vbasedev);
-> +
->       g_free(vdev->vbasedev.name);
->       g_free(vdev->msix);
-> -
-> -    vfio_put_base_device(&vdev->vbasedev);
->   }
->   
->   static void vfio_err_notifier_handler(void *opaque)
-> @@ -2978,13 +2978,9 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->   {
->       VFIOPCIDevice *vdev = VFIO_PCI(pdev);
->       VFIODevice *vbasedev = &vdev->vbasedev;
-> -    VFIODevice *vbasedev_iter;
-> -    VFIOGroup *group;
-> -    char *tmp, *subsys, group_path[PATH_MAX], *group_name;
-> +    char *tmp, *subsys;
->       Error *err = NULL;
-> -    ssize_t len;
->       struct stat st;
-> -    int groupid;
->       int i, ret;
->       bool is_mdev;
->       char uuid[UUID_FMT_LEN];
-> @@ -3015,39 +3011,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       vbasedev->type = VFIO_DEVICE_TYPE_PCI;
->       vbasedev->dev = DEVICE(vdev);
->   
-> -    tmp = g_strdup_printf("%s/iommu_group", vbasedev->sysfsdev);
-> -    len = readlink(tmp, group_path, sizeof(group_path));
-> -    g_free(tmp);
-> -
-> -    if (len <= 0 || len >= sizeof(group_path)) {
-> -        error_setg_errno(errp, len < 0 ? errno : ENAMETOOLONG,
-> -                         "no iommu_group found");
-> -        goto error;
-> -    }
-> -
-> -    group_path[len] = 0;
-> -
-> -    group_name = basename(group_path);
-> -    if (sscanf(group_name, "%d", &groupid) != 1) {
-> -        error_setg_errno(errp, errno, "failed to read %s", group_path);
-> -        goto error;
-> -    }
-> -
-> -    trace_vfio_realize(vbasedev->name, groupid);
-> -
-> -    group = vfio_get_group(groupid, pci_device_iommu_address_space(pdev), errp);
-> -    if (!group) {
-> -        goto error;
-> -    }
-> -
-> -    QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
-> -        if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
-> -            error_setg(errp, "device is already attached");
-> -            vfio_put_group(group);
-> -            goto error;
-> -        }
-> -    }
-> -
->       /*
->        * Mediated devices *might* operate compatibly with discarding of RAM, but
->        * we cannot know for certain, it depends on whether the mdev vendor driver
-> @@ -3065,7 +3028,6 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->       if (vbasedev->ram_block_discard_allowed && !is_mdev) {
->           error_setg(errp, "x-balloon-allowed only potentially compatible "
->                      "with mdev devices");
-> -        vfio_put_group(group);
->           goto error;
->       }
->   
-> @@ -3076,10 +3038,10 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->           name = g_strdup(vbasedev->name);
->       }
->   
-> -    ret = vfio_get_device(group, name, vbasedev, errp);
-> +    ret = vfio_attach_device(name, vbasedev,
-> +                             pci_device_iommu_address_space(pdev), errp);
->       g_free(name);
->       if (ret) {
-> -        vfio_put_group(group);
->           goto error;
->       }
->   
-> @@ -3304,7 +3266,6 @@ error:
->   static void vfio_instance_finalize(Object *obj)
->   {
->       VFIOPCIDevice *vdev = VFIO_PCI(obj);
-> -    VFIOGroup *group = vdev->vbasedev.group;
->   
->       vfio_display_finalize(vdev);
->       vfio_bars_finalize(vdev);
-> @@ -3318,7 +3279,6 @@ static void vfio_instance_finalize(Object *obj)
->        * g_free(vdev->igd_opregion);
->        */
->       vfio_put_device(vdev);
+For the Thumb T32 encoding of LDM, if only a single register is
+specified in the register list this instruction is UNPREDICTABLE,
+with the following choices:
+ * instruction UNDEFs
+ * instruction is a NOP
+ * instruction loads a single register
+ * instruction loads an unspecified set of registers
 
-Please rebase v2 on vfio-next. I merged your patch since :)
+Currently we choose to UNDEF (a behaviour chosen in commit
+4b222545dbf30 in 2019; previously we treated it as "load the
+specified single register").
 
-Thanks,
+Unfortunately there is real world code out there (which shipped in at
+least Android 11, 12 and 13) which incorrectly uses this
+UNPREDICTABLE insn on the assumption that it does a single register
+load, which is (presumably) what it happens to do on real hardware,
+and is also what it does on the equivalent A32 encoding.
 
-C.
+Revert to the pre-4b222545dbf30 behaviour of not UNDEFing
+for this T32 encoding.
 
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1799
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+---
+ target/arm/tcg/translate.c | 37 +++++++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
-
-> -    vfio_put_group(group);
->   }
->   
->   static void vfio_exitfn(PCIDevice *pdev)
-> diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-> index e64ca4a019..e710026a73 100644
-> --- a/hw/vfio/trace-events
-> +++ b/hw/vfio/trace-events
-> @@ -37,7 +37,7 @@ vfio_pci_hot_reset_dep_devices(int domain, int bus, int slot, int function, int
->   vfio_pci_hot_reset_result(const char *name, const char *result) "%s hot reset: %s"
->   vfio_populate_device_config(const char *name, unsigned long size, unsigned long offset, unsigned long flags) "Device %s config:\n  size: 0x%lx, offset: 0x%lx, flags: 0x%lx"
->   vfio_populate_device_get_irq_info_failure(const char *errstr) "VFIO_DEVICE_GET_IRQ_INFO failure: %s"
-> -vfio_realize(const char *name, int group_id) " (%s) group %d"
-> +vfio_attach_device(const char *name, int group_id) " (%s) group %d"
->   vfio_mdev(const char *name, bool is_mdev) " (%s) is_mdev %d"
->   vfio_add_ext_cap_dropped(const char *name, uint16_t cap, uint16_t offset) "%s 0x%x@0x%x"
->   vfio_pci_reset(const char *name) " (%s)"
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index d83a0e772cd..32a0fa1d1fb 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -7882,7 +7882,7 @@ static void op_addr_block_post(DisasContext *s, arg_ldst_block *a,
+     }
+ }
+ 
+-static bool op_stm(DisasContext *s, arg_ldst_block *a, int min_n)
++static bool op_stm(DisasContext *s, arg_ldst_block *a)
+ {
+     int i, j, n, list, mem_idx;
+     bool user = a->u;
+@@ -7899,7 +7899,14 @@ static bool op_stm(DisasContext *s, arg_ldst_block *a, int min_n)
+ 
+     list = a->list;
+     n = ctpop16(list);
+-    if (n < min_n || a->rn == 15) {
++    /*
++     * This is UNPREDICTABLE for n < 1 in all encodings, and we choose
++     * to UNDEF. In the T32 STM encoding n == 1 is also UNPREDICTABLE,
++     * but hardware treats it like the A32 version and implements the
++     * single-register-store, and some in-the-wild (buggy) software
++     * assumes that, so we don't UNDEF on that case.
++     */
++    if (n < 1 || a->rn == 15) {
+         unallocated_encoding(s);
+         return true;
+     }
+@@ -7935,8 +7942,7 @@ static bool op_stm(DisasContext *s, arg_ldst_block *a, int min_n)
+ 
+ static bool trans_STM(DisasContext *s, arg_ldst_block *a)
+ {
+-    /* BitCount(list) < 1 is UNPREDICTABLE */
+-    return op_stm(s, a, 1);
++    return op_stm(s, a);
+ }
+ 
+ static bool trans_STM_t32(DisasContext *s, arg_ldst_block *a)
+@@ -7946,11 +7952,10 @@ static bool trans_STM_t32(DisasContext *s, arg_ldst_block *a)
+         unallocated_encoding(s);
+         return true;
+     }
+-    /* BitCount(list) < 2 is UNPREDICTABLE */
+-    return op_stm(s, a, 2);
++    return op_stm(s, a);
+ }
+ 
+-static bool do_ldm(DisasContext *s, arg_ldst_block *a, int min_n)
++static bool do_ldm(DisasContext *s, arg_ldst_block *a)
+ {
+     int i, j, n, list, mem_idx;
+     bool loaded_base;
+@@ -7979,7 +7984,14 @@ static bool do_ldm(DisasContext *s, arg_ldst_block *a, int min_n)
+ 
+     list = a->list;
+     n = ctpop16(list);
+-    if (n < min_n || a->rn == 15) {
++    /*
++     * This is UNPREDICTABLE for n < 1 in all encodings, and we choose
++     * to UNDEF. In the T32 LDM encoding n == 1 is also UNPREDICTABLE,
++     * but hardware treats it like the A32 version and implements the
++     * single-register-load, and some in-the-wild (buggy) software
++     * assumes that, so we don't UNDEF on that case.
++     */
++    if (n < 1 || a->rn == 15) {
+         unallocated_encoding(s);
+         return true;
+     }
+@@ -8045,8 +8057,7 @@ static bool trans_LDM_a32(DisasContext *s, arg_ldst_block *a)
+         unallocated_encoding(s);
+         return true;
+     }
+-    /* BitCount(list) < 1 is UNPREDICTABLE */
+-    return do_ldm(s, a, 1);
++    return do_ldm(s, a);
+ }
+ 
+ static bool trans_LDM_t32(DisasContext *s, arg_ldst_block *a)
+@@ -8056,16 +8067,14 @@ static bool trans_LDM_t32(DisasContext *s, arg_ldst_block *a)
+         unallocated_encoding(s);
+         return true;
+     }
+-    /* BitCount(list) < 2 is UNPREDICTABLE */
+-    return do_ldm(s, a, 2);
++    return do_ldm(s, a);
+ }
+ 
+ static bool trans_LDM_t16(DisasContext *s, arg_ldst_block *a)
+ {
+     /* Writeback is conditional on the base register not being loaded.  */
+     a->w = !(a->list & (1 << a->rn));
+-    /* BitCount(list) < 1 is UNPREDICTABLE */
+-    return do_ldm(s, a, 1);
++    return do_ldm(s, a);
+ }
+ 
+ static bool trans_CLRM(DisasContext *s, arg_CLRM *a)
+-- 
+2.34.1
 
 
