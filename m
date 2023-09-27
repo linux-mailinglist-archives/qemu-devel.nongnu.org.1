@@ -2,101 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A7B7B03BA
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E5A7B03BB
 	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 14:17:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlTSJ-0003qt-FB; Wed, 27 Sep 2023 08:15:51 -0400
+	id 1qlTTL-0004vd-DY; Wed, 27 Sep 2023 08:16:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qlTSF-0003q9-19
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:15:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlTTI-0004os-N6
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:16:52 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qlTSA-0005rs-P9
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:15:45 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlTTH-0006ZW-7J
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:16:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695816941;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1695817010;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=KP6Om67hUnmDI+kkOs2uo6oBuJUp+0H/+TEuwfOhXZU=;
- b=QFxijnJFPG3AtH2PysGJ3S4h3mn9h1iNK2mmrrL7aI+7ByIjY+2Hnz1HSrvXkWznP8XQLV
- bAlbfyYRT0kzC76u7eEtombQVO586hS3pNZXzgCgDv9f5kT1RnBCEr5m2E4aaG7+Vv/d1b
- 66Gt65hfsqizMCx+5pHyPITApWFbXlo=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-501-CKT3U1XiMgOL5TSi3fIHcQ-1; Wed, 27 Sep 2023 08:15:37 -0400
-X-MC-Unique: CKT3U1XiMgOL5TSi3fIHcQ-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-65646efd378so176491036d6.3
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 05:15:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695816937; x=1696421737;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KP6Om67hUnmDI+kkOs2uo6oBuJUp+0H/+TEuwfOhXZU=;
- b=V7b6L4gN2Q5Hop33TG9i9PDdRax/nZJpLTTV0D3nwyJlJadHr0iyr6kVSfRYOZOPCV
- LeKyj+afKGDeZvHQGTzomMrpAraY7myKHHYL3ZjEywU5z6JxUXW4LQlM6ZFPoestyhtp
- QpCmmKbcrCc164js0NazD7WAeDtXkC4INjBBt9C/DIolCUxNAVwxH5N4u1H9CLPQnwlv
- OZRK7b+gVQzICag4ugXmZ0NUw7dRTzJ3u+TfMXLTGkVkFdwGZcQZ+r/xeslCDbxpdLfn
- +FJ0nUeLP6ac01iD+uW1V9xqz+UU3D1N/p/6SvGp2pyeld12VUP5y75vpIbyb2uumfME
- PLkw==
-X-Gm-Message-State: AOJu0YwYGbYp0gxi405VuQI5Sc1Sreub2VFLxI9tR8BH5DVClG/NDv0Z
- ZFdQXz+YPgaotJ9uvEnbufl16MUAbR+U49O5fGYkxOWG3fTUa81a57cYxgtiulnwIeQe5PeiPO3
- Ac41xNflbdnfJ1lw=
-X-Received: by 2002:a0c:8d8b:0:b0:656:27a9:8063 with SMTP id
- t11-20020a0c8d8b000000b0065627a98063mr1616103qvb.33.1695816937409; 
- Wed, 27 Sep 2023 05:15:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHleuSi+ouh+Ob5DEJzt6/d18p7mP79QdgucsbCjPElkTCYsK48kTXt+cLpcjxrRA+nT112Hg==
-X-Received: by 2002:a0c:8d8b:0:b0:656:27a9:8063 with SMTP id
- t11-20020a0c8d8b000000b0065627a98063mr1616080qvb.33.1695816937121; 
- Wed, 27 Sep 2023 05:15:37 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- m1-20020a0cdb81000000b0064713c8fab7sm3991783qvk.59.2023.09.27.05.15.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Sep 2023 05:15:35 -0700 (PDT)
-Message-ID: <bd2aaa06-70cd-56fd-586a-8306a3640338@redhat.com>
-Date: Wed, 27 Sep 2023 14:15:32 +0200
+ bh=V94JQ/3MJktq/PVii/1McWpiPVt9hJ0Wk+a3n+YgI1Y=;
+ b=Tl4m/7ifQEfbBp6jKYc6ClI76OT7nifkB/IbjYjC64ERo0YhGyq9ac5xLTiCF2o9XW+Pzx
+ RLNHT4ak0+WRhS2DcxWvE+U2ntCTUkzCX3+4Fuo6etYfpGx/Ctr0Ega+9Pa/1pwVxAOgPU
+ 6nu9f8/cqUwtR6rdy+qCGEOkePrNYCA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-562-u2Fhq-MKOVC71aPk4UarCg-1; Wed, 27 Sep 2023 08:16:49 -0400
+X-MC-Unique: u2Fhq-MKOVC71aPk4UarCg-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B90E6280FECB;
+ Wed, 27 Sep 2023 12:16:48 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 96F6D2026D4B;
+ Wed, 27 Sep 2023 12:16:48 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 85A3C21E6900; Wed, 27 Sep 2023 14:16:47 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+Cc: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,  "quintela@redhat.com"
+ <quintela@redhat.com>,  "peterx@redhat.com" <peterx@redhat.com>,
+ "leobras@redhat.com" <leobras@redhat.com>
+Subject: Re: [PATCH 51/52] migration/rdma: Use error_report() & friends
+ instead of stderr
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-52-armbru@redhat.com>
+ <8ddefe9a-bb2a-7ec5-972a-d2ab567adc54@fujitsu.com>
+Date: Wed, 27 Sep 2023 14:16:47 +0200
+In-Reply-To: <8ddefe9a-bb2a-7ec5-972a-d2ab567adc54@fujitsu.com> (Zhijian Li's
+ message of "Tue, 26 Sep 2023 06:35:27 +0000")
+Message-ID: <87ttrfdd5c.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 04/12] vfio/common: Introduce
- vfio_container_add|del_section_window()
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, jasowang@redhat.com,
- kevin.tian@intel.com, yi.l.liu@intel.com, yi.y.sun@intel.com,
- chao.p.peng@intel.com
-References: <20230926113255.1177834-1-zhenzhong.duan@intel.com>
- <20230926113255.1177834-5-zhenzhong.duan@intel.com>
- <168d8a5a-c419-706b-43a8-c0d8f43262c6@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <168d8a5a-c419-706b-43a8-c0d8f43262c6@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,251 +81,48 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+"Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> writes:
 
-On 9/27/23 12:12, Cédric Le Goater wrote:
-> On 9/26/23 13:32, Zhenzhong Duan wrote:
->> From: Eric Auger <eric.auger@redhat.com>
->>
->> Introduce helper functions that isolate the code used for
->> VFIO_SPAPR_TCE_v2_IOMMU.
->>
->> Those helpers hide implementation details beneath the container object
->> and make the vfio_listener_region_add/del() implementations more
->> readable. No code change intended.
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>   hw/vfio/common.c | 156 +++++++++++++++++++++++++++--------------------
->>   1 file changed, 89 insertions(+), 67 deletions(-)
->>
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 4e122fc4e4..de6b4a86e2 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -807,6 +807,92 @@ static bool
->> vfio_get_section_iova_range(VFIOContainer *container,
->>       return true;
->>   }
->>   +static int vfio_container_add_section_window(VFIOContainer
->> *container,
->> +                                             MemoryRegionSection
->> *section,
->> +                                             Error **errp)
->> +{
->> +    VFIOHostDMAWindow *hostwin;
->> +    hwaddr pgsize = 0;
->> +    int ret;
->> +
->> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
->> +        return 0;
->> +    }
->> +
->> +    /* For now intersections are not allowed, we may relax this
->> later */
->> +    QLIST_FOREACH(hostwin, &container->hostwin_list, hostwin_next) {
->> +        if (ranges_overlap(hostwin->min_iova,
->> +                           hostwin->max_iova - hostwin->min_iova + 1,
->> +                           section->offset_within_address_space,
->> +                           int128_get64(section->size))) {
->> +            error_setg(errp,
->> +                "region [0x%"PRIx64",0x%"PRIx64"] overlaps with
->> existing"
->> +                "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
->> +                section->offset_within_address_space,
->> +                section->offset_within_address_space +
->> +                    int128_get64(section->size) - 1,
->> +                hostwin->min_iova, hostwin->max_iova);
->> +            return -EINVAL;
->> +        }
->> +    }
->> +
->> +    ret = vfio_spapr_create_window(container, section, &pgsize);
->> +    if (ret) {
->> +        error_setg_errno(errp, -ret, "Failed to create SPAPR window");
->> +        return ret;
->> +    }
->> +
->> +    vfio_host_win_add(container, section->offset_within_address_space,
->> +                      section->offset_within_address_space +
->> +                      int128_get64(section->size) - 1, pgsize);
->> +#ifdef CONFIG_KVM
->> +    if (kvm_enabled()) {
->> +        VFIOGroup *group;
->> +        IOMMUMemoryRegion *iommu_mr = IOMMU_MEMORY_REGION(section->mr);
->> +        struct kvm_vfio_spapr_tce param;
->> +        struct kvm_device_attr attr = {
->> +            .group = KVM_DEV_VFIO_GROUP,
->> +            .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
->> +            .addr = (uint64_t)(unsigned long)&param,
->> +        };
->> +
->> +        if (!memory_region_iommu_get_attr(iommu_mr,
->> IOMMU_ATTR_SPAPR_TCE_FD,
->> +                                          &param.tablefd)) {
->> +            QLIST_FOREACH(group, &container->group_list,
->> container_next) {
->> +                param.groupfd = group->fd;
->> +                if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR,
->> &attr)) {
->> +                    error_report("vfio: failed to setup fd %d "
->> +                                 "for a group with fd %d: %s",
->> +                                 param.tablefd, param.groupfd,
->> +                                 strerror(errno));
->> +                    return 0;
+> On 18/09/2023 22:42, Markus Armbruster wrote:
+>>           if (local->nb_blocks != nb_dest_blocks) {
+>> -            fprintf(stderr, "ram blocks mismatch (Number of blocks %d vs %d) "
+>> -                    "Your QEMU command line parameters are probably "
+>> -                    "not identical on both the source and destination.",
+>> -                    local->nb_blocks, nb_dest_blocks);
+>> +            error_report("ram blocks mismatch (Number of blocks %d vs %d)",
+>> +                         local->nb_blocks, nb_dest_blocks);
+>> +            error_printf("Your QEMU command line parameters are probably "
+>> +                         "not identical on both the source and destination.");
 >
-> please return errno;
-I agree this would be logical to return -errno. However in the original
-code this path ends up to a return and not to
-goto fail;
+>
+> Why is this one handled specifically? It seems like it would be fine with error_report().
 
-So if we return an error we do a functional change here. And if we keep
-the existing behavior I agree we should add a comment.
+Error message before the patch:
 
-Thanks
+    ram blocks mismatch (Number of blocks %d vs %d) Your QEMU command line parameters are probably not identical on both the source and destination.
 
-Eric
->
-> Otherwise,
->
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
->
-> Thanks,
->
-> C.
->
->> +                }
->> +                trace_vfio_spapr_group_attach(param.groupfd,
->> param.tablefd);
->> +            }
->> +        }
->> +    }
->> +#endif
->> +    return 0;
->> +}
->> +
->> +static void vfio_container_del_section_window(VFIOContainer *container,
->> +                                              MemoryRegionSection
->> *section)
->> +{
->> +    if (container->iommu_type != VFIO_SPAPR_TCE_v2_IOMMU) {
->> +        return;
->> +    }
->> +
->> +    vfio_spapr_remove_window(container,
->> +                             section->offset_within_address_space);
->> +    if (vfio_host_win_del(container,
->> +                          section->offset_within_address_space,
->> +                          section->offset_within_address_space +
->> +                          int128_get64(section->size) - 1) < 0) {
->> +        hw_error("%s: Cannot delete missing window at %"HWADDR_PRIx,
->> +                 __func__, section->offset_within_address_space);
->> +    }
->> +}
->> +
->>   static void vfio_listener_region_add(MemoryListener *listener,
->>                                        MemoryRegionSection *section)
->>   {
->> @@ -833,62 +919,8 @@ static void
->> vfio_listener_region_add(MemoryListener *listener,
->>           return;
->>       }
->>   -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
->> -        hwaddr pgsize = 0;
->> -
->> -        /* For now intersections are not allowed, we may relax this
->> later */
->> -        QLIST_FOREACH(hostwin, &container->hostwin_list,
->> hostwin_next) {
->> -            if (ranges_overlap(hostwin->min_iova,
->> -                               hostwin->max_iova - hostwin->min_iova
->> + 1,
->> -                               section->offset_within_address_space,
->> -                               int128_get64(section->size))) {
->> -                error_setg(&err,
->> -                    "region [0x%"PRIx64",0x%"PRIx64"] overlaps with
->> existing"
->> -                    "host DMA window [0x%"PRIx64",0x%"PRIx64"]",
->> -                    section->offset_within_address_space,
->> -                    section->offset_within_address_space +
->> -                        int128_get64(section->size) - 1,
->> -                    hostwin->min_iova, hostwin->max_iova);
->> -                goto fail;
->> -            }
->> -        }
->> -
->> -        ret = vfio_spapr_create_window(container, section, &pgsize);
->> -        if (ret) {
->> -            error_setg_errno(&err, -ret, "Failed to create SPAPR
->> window");
->> -            goto fail;
->> -        }
->> -
->> -        vfio_host_win_add(container,
->> section->offset_within_address_space,
->> -                          section->offset_within_address_space +
->> -                          int128_get64(section->size) - 1, pgsize);
->> -#ifdef CONFIG_KVM
->> -        if (kvm_enabled()) {
->> -            VFIOGroup *group;
->> -            IOMMUMemoryRegion *iommu_mr =
->> IOMMU_MEMORY_REGION(section->mr);
->> -            struct kvm_vfio_spapr_tce param;
->> -            struct kvm_device_attr attr = {
->> -                .group = KVM_DEV_VFIO_GROUP,
->> -                .attr = KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE,
->> -                .addr = (uint64_t)(unsigned long)&param,
->> -            };
->> -
->> -            if (!memory_region_iommu_get_attr(iommu_mr,
->> IOMMU_ATTR_SPAPR_TCE_FD,
->> -                                              &param.tablefd)) {
->> -                QLIST_FOREACH(group, &container->group_list,
->> container_next) {
->> -                    param.groupfd = group->fd;
->> -                    if (ioctl(vfio_kvm_device_fd,
->> KVM_SET_DEVICE_ATTR, &attr)) {
->> -                        error_report("vfio: failed to setup fd %d "
->> -                                     "for a group with fd %d: %s",
->> -                                     param.tablefd, param.groupfd,
->> -                                     strerror(errno));
->> -                        return;
->> -                    }
->> -                    trace_vfio_spapr_group_attach(param.groupfd,
->> param.tablefd);
->> -                }
->> -            }
->> -        }
->> -#endif
->> +    if (vfio_container_add_section_window(container, section, &err)) {
->> +        goto fail;
->>       }
->>         hostwin = vfio_find_hostwin(container, iova, end);
->> @@ -1105,17 +1137,7 @@ static void
->> vfio_listener_region_del(MemoryListener *listener,
->>         memory_region_unref(section->mr);
->>   -    if (container->iommu_type == VFIO_SPAPR_TCE_v2_IOMMU) {
->> -        vfio_spapr_remove_window(container,
->> -                                 section->offset_within_address_space);
->> -        if (vfio_host_win_del(container,
->> -                              section->offset_within_address_space,
->> -                              section->offset_within_address_space +
->> -                              int128_get64(section->size) - 1) < 0) {
->> -            hw_error("%s: Cannot delete missing window at
->> %"HWADDR_PRIx,
->> -                     __func__, section->offset_within_address_space);
->> -        }
->> -    }
->> +    vfio_container_del_section_window(container, section);
->>   }
->>     static int vfio_set_dirty_page_tracking(VFIOContainer *container,
->> bool start)
->
+Afterwards:
+
+    <ERROR-MSG-PREFIX>ram blocks mismatch (Number of blocks %d vs %d)
+    Your QEMU command line parameters are probably not identical on both the source and destination.
+
+where <ERROR-MSG-PREFIX> shows current time (if enabled), guest name (if
+enabled), program name (unless in monitor context), and "location" (if
+we have one).
+
+The first line is the error message.  It's consists of our common error
+message prefix and a single phrase without trailing punctuation.
+
+The second line is a hint.  Repeating the error message prefix there
+is unnecessary.  Not repeating it there makes it more obvious that it's
+not an error of its own, merely additional information.
+
+Splitting the old message into error message and hint makes the error
+message conform to the "single phrase" convention.
+
+Makes sense?
 
 
