@@ -2,76 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E1C7B0D3B
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 22:20:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB557B0D7B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 22:35:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlb0O-0000bD-DU; Wed, 27 Sep 2023 16:19:32 -0400
+	id 1qlbEi-00074n-Jp; Wed, 27 Sep 2023 16:34:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qlb0M-0000b0-Ag
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 16:19:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qlbEf-00074P-Pu
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 16:34:17 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qlb0K-0004DD-NQ
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 16:19:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695845967;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ittPGFfzqVAfLK393MXuxPafk4LXW/EPUgTiil1JfpE=;
- b=jGuXk4D7SgjaOUmTt+9GXorXidg94SCXV4Odb+abhr+5NG2Oo0D1YXWqIt8plyr7CKB6dE
- XMau0FZUBuTDHSMNy4+NvsVZHN0+tuNe65UsISynvrxq2nbvwtOsPXEMxVSIA9N2S1wqJI
- k0pw9r4cunHLJDtSr0MwvGcHNDpgti4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-649-g09oW9MTMlyI7qyjePj_mw-1; Wed, 27 Sep 2023 16:19:25 -0400
-X-MC-Unique: g09oW9MTMlyI7qyjePj_mw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D641A280D584;
- Wed, 27 Sep 2023 20:19:24 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.15])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 41012176C3;
- Wed, 27 Sep 2023 20:19:24 +0000 (UTC)
-Date: Wed, 27 Sep 2023 16:19:22 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>,
- "open list:virtiofs" <virtio-fs@redhat.com>,
- Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
- qemu-devel <qemu-devel@nongnu.org>, "Michael S . Tsirkin" <mst@redhat.com>
-Subject: Re: [Virtio-fs] [PATCH v3 0/5] vhost-user: Back-end state migration
-Message-ID: <20230927201922.GB529043@fedora>
-References: <20230915102531.55894-1-hreitz@redhat.com>
- <20230925204852.GG323580@fedora>
- <fc005d50-03ba-0b8f-d9af-64a5297395a3@redhat.com>
- <CAJSP0QWwo6rqwY7F-OZgXBnRCLbF4C=66zLf35Jy43jKHebjDw@mail.gmail.com>
- <CAJSP0QWC1VsAr6k745cumQ7zehEYWRqY_0+gdj9ZtNuwZDNtAQ@mail.gmail.com>
- <07282c72-7a83-70c5-395d-454281663eb1@redhat.com>
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qlbEd-0001No-Fb
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 16:34:17 -0400
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38RJodk2019176; Wed, 27 Sep 2023 20:33:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=py/zBKPR46GPd1vseACG9HFcy+/81tVqMNVXJHl2gEM=;
+ b=EKzWEEU+UGEFBS7KvMOgY2qOfr3UhLItSPONjayT/08TE/whP8m4FdOeFnpoTiBP9wpH
+ g96EkbcLha6DAfJI9nky339nZhJg17jUQUnnY2i5cfvHJb/ovvf0OUmu0/u09DV8+p4c
+ 4VssBKs6jUlKdoT2IoAo/OH1sGG2eZ1MRwrxCGtSL714zRnKy4Hhz3NPzaR8WICiy3Yt
+ OrwX6OoTJMb4Lw+iXgp6OErD2jmbTSicwfHo+WR3LBH9geRIO4UH2Snep/xmxj3GsIWx
+ CVLqGk+enggUrJh3CoujUy5s/C5sQON+BXOXpMtOTFcj4iWRwEogTFY5haEMWyJjLXHJ Hw== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tcnreux0r-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Sep 2023 20:33:40 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38RJcblR030746; Wed, 27 Sep 2023 20:32:54 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tacjk60mw-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Sep 2023 20:32:54 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38RKWswF21037674
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Sep 2023 20:32:54 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id E8D8B58052;
+ Wed, 27 Sep 2023 20:32:53 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id D7B2A5805A;
+ Wed, 27 Sep 2023 20:32:53 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed, 27 Sep 2023 20:32:53 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
+ by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id 32F2C16A0816;
+ Wed, 27 Sep 2023 15:32:53 -0500 (CDT)
+Received: (from mglenn@localhost)
+ by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38RKWqHN3287675;
+ Wed, 27 Sep 2023 15:32:52 -0500
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-devel@nongnu.org
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ andrew@codeconstruct.com.au, Joel Stanley <joel@jms.id.au>
+Subject: [PATCH] misc/pca9552: Fix inverted input status
+Date: Wed, 27 Sep 2023 15:32:21 -0500
+Message-Id: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="kjMssMK4IWHFEABh"
-Content-Disposition: inline
-In-Reply-To: <07282c72-7a83-70c5-395d-454281663eb1@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: mjXrXOV9o0WrQX9kORj6bKQPIi7sXuXV
+X-Proofpoint-ORIG-GUID: mjXrXOV9o0WrQX9kORj6bKQPIi7sXuXV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-27_13,2023-09-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 clxscore=1011 adultscore=0
+ phishscore=0 impostorscore=0 mlxlogscore=999 mlxscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309270175
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,84 +111,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The pca9552 INPUT0 and INPUT1 registers are supposed to
+hold the logical values of the LED pins.  A logical 0
+should be seen in the INPUT0/1 registers for a pin when
+its corresponding LSn bits are set to 0, which is also
+the state needed for turning on an LED in a typical
+usage scenario.  Existing code was doing the opposite
+and setting INPUT0/1 bit to a 1 when the LSn bit was
+set to 0, so this commit fixes that.
 
---kjMssMK4IWHFEABh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+---
+ hw/misc/pca9552.c          | 13 +++++++++----
+ tests/qtest/pca9552-test.c |  6 +++---
+ 2 files changed, 12 insertions(+), 7 deletions(-)
 
-On Wed, Sep 27, 2023 at 10:32:14AM +0200, Hanna Czenczek wrote:
-> On 26.09.23 22:10, Stefan Hajnoczi wrote:
-> > Hi Hanna,
-> > I was thinking about how this could work without SUSPEND/RESUME. What
-> > do you think of the following?
-> >=20
-> > 1. The front-end sends VHOST_USER_RESET_DEVICE (or
-> > VHOST_USER_RESET_OWNER, when necessary) when the guest driver resets
-> > the device but not on vhost_dev_start()/vhost_dev_stop().
->=20
-> This is half the work of SUSPEND/RESUME.=C2=A0 It isn=E2=80=99t easy to d=
-o.
-
-I sent a patch series to bring VHOST_USER_RESET_DEVICE to all vhost-user
-devices:
-https://lore.kernel.org/qemu-devel/20230927192737.528280-1-stefanha@redhat.=
-com/T/#t
-
->=20
-> > 2. Suspend the device when all virtqueues are stopped via
-> > VHOST_USER_GET_VRING_BASE. Resume the device after at least one
-> > virtqueue is started and enabled.
-> > 3. Ignore VHOST_USER_SET_STATUS.
-> >=20
-> > Reset would work. The device would suspend and resume without losing
-> > state. Existing vhost-user backends already behave like this in
-> > practice (they often don't implement RESET_DEVICE).
->=20
-> I don=E2=80=99t understand the point, though.=C2=A0 Today, reset in pract=
-ice is a no-op
-> anyway, precisely because we only send SET_STATUS 0, don=E2=80=99t fall b=
-ack to
-> RESET_OWNER/RESET_DEVICE, and no back-end implements SET_STATUS 0 as a
-> reset.=C2=A0 By sending RESET_* in case of a guest-initiated reset and no=
-thing in
-> case of stop/cont, we effectively don=E2=80=99t change anything about the=
- latter
-> (which is what SUSPEND/RESUME would be for), but only fix the former case=
-=2E=C2=A0
-> While I agree that it=E2=80=99s wrong that we don=E2=80=99t really reset =
-the back-end in
-> case of a guest-initiated reset, this is the first time in this whole
-> discussion that that part has been presented as a problem that needs fixi=
-ng
-> now.
->=20
-> So the proposal effectively changes nothing for the vhost_dev_stop()/star=
-t()
-> case where we=E2=80=99d want to make use of SUSPEND/RESUME, but only for =
-the case
-> where we would not use it.
-
-We discussed this on a call today. 2 & 3 are additions to the spec that
-Hanna has agreed to work on.
-
-Stefan
-
---kjMssMK4IWHFEABh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUUjkoACgkQnKSrs4Gr
-c8j1Rwf+P5HoMSLa9EGAF8upIl91VlYs2rf3f1VzRUdwl7cHM4kNim4Xs9uBnwad
-DBPJhnzkf6597F91IAaZLPP8JmwKUxt38NtxwSjWM3CCLZd0Ace6NGfTO1qjTU1L
-6i5Oib4k1F/4Jjzb868ureKyInfeIFeASRC1gUnlLMT5pKHbDcpO4oVm7HE7x2+i
-xROTR/wXZ1pc6GZHUF2WlzdcqJ2HrbtMqpsjvi5JIK09+lwNjzopgscbw2Il4Fia
-/W9wMyq8GyPtIf9elWgMzK3HkPyUyrWcSMC8ptnR318pgQnDnYLqSNbiryQplGo6
-Gs6XdgB+CM21imIQTtqNJRovF3HeTA==
-=VtOc
------END PGP SIGNATURE-----
-
---kjMssMK4IWHFEABh--
+diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+index fff19e369a..ad811fb249 100644
+--- a/hw/misc/pca9552.c
++++ b/hw/misc/pca9552.c
+@@ -112,13 +112,18 @@ static void pca955x_update_pin_input(PCA955xState *s)
+ 
+         switch (config) {
+         case PCA9552_LED_ON:
+-            qemu_set_irq(s->gpio[i], 1);
+-            s->regs[input_reg] |= 1 << input_shift;
+-            break;
+-        case PCA9552_LED_OFF:
++            /* Pin is set to 0V to turn on LED */
+             qemu_set_irq(s->gpio[i], 0);
+             s->regs[input_reg] &= ~(1 << input_shift);
+             break;
++        case PCA9552_LED_OFF:
++            /*
++             * Pin is set to Hi-Z to turn off LED and
++             * pullup sets it to a logical 1.
++             */
++            qemu_set_irq(s->gpio[i], 1);
++            s->regs[input_reg] |= 1 << input_shift;
++            break;
+         case PCA9552_LED_PWM0:
+         case PCA9552_LED_PWM1:
+             /* TODO */
+diff --git a/tests/qtest/pca9552-test.c b/tests/qtest/pca9552-test.c
+index d80ed93cd3..ccca2b3d91 100644
+--- a/tests/qtest/pca9552-test.c
++++ b/tests/qtest/pca9552-test.c
+@@ -60,7 +60,7 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     g_assert_cmphex(value, ==, 0x55);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT0);
+-    g_assert_cmphex(value, ==, 0x0);
++    g_assert_cmphex(value, ==, 0xFF);
+ 
+     pca9552_init(i2cdev);
+ 
+@@ -68,13 +68,13 @@ static void send_and_receive(void *obj, void *data, QGuestAllocator *alloc)
+     g_assert_cmphex(value, ==, 0x54);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT0);
+-    g_assert_cmphex(value, ==, 0x01);
++    g_assert_cmphex(value, ==, 0xFE);
+ 
+     value = i2c_get8(i2cdev, PCA9552_LS3);
+     g_assert_cmphex(value, ==, 0x54);
+ 
+     value = i2c_get8(i2cdev, PCA9552_INPUT1);
+-    g_assert_cmphex(value, ==, 0x10);
++    g_assert_cmphex(value, ==, 0xEF);
+ }
+ 
+ static void pca9552_register_nodes(void)
+-- 
+2.31.1
 
 
