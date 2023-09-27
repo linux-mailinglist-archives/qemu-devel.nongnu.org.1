@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE8F7B00A2
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6557F7B00A8
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:38:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlQyH-0000u1-BU; Wed, 27 Sep 2023 05:36:41 -0400
+	id 1qlQyK-0000wc-5W; Wed, 27 Sep 2023 05:36:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQy7-0000r3-Hr
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:31 -0400
-Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
+ id 1qlQy9-0000sN-TF
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:35 -0400
+Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQy3-0000j0-31
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:28 -0400
+ id 1qlQy8-0000jd-AZ
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=BW2JthvgwEqvznp0bOAz776apq7KePSWI1Irh0UoOYU=; b=HhXOxNDKZaL38WMCfexmRBIjcX
- h0C9E6LTd22N44amm/jHzYM+AH5qZebyYoe2+4P4ZKtVcuWtBfATkxHho7ocR8/6zobhh7jefdvVh
- RaeE3vhZRjsenJKtaoLX0CLJ7VACSeOjbeULCQOwElN2Sx509LpvCAcOhrYUMW/jINsg=;
+ bh=WUubD0ZJKTGpZfFwTqcmK2tbordUXESg+SoTC0LvCn0=; b=BavW3qzMZN1Y7Z0/Jy3S63YISM
+ 8Zy9oLJit/bDTNtzOEAzXVEiITbWPH/1V5qNHUnH6e2MlHe7ncU2XD5MTLlj0LPU9rFXrVdvBE8Lr
+ LcXOH0bECJQr8R5vBIVQ8P4t28jFe0tW0DMGM+DgoHkHQku42JZIjrxaCuEk4ZibM2to=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 10/21] target/tricore: Replace cpu_*_code with translator_*
-Date: Wed, 27 Sep 2023 11:35:41 +0200
-Message-ID: <20230927093552.493279-11-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 11/21] target/tricore: Fix FTOUZ being ISA v1.3.1 up
+Date: Wed, 27 Sep 2023 11:35:42 +0200
+Message-ID: <20230927093552.493279-12-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
 References: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
@@ -44,19 +44,19 @@ X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.27.92417, AntiVirus-Engine: 6.0.2,
  AntiVirus-Data: 2023.9.27.602000
-X-Sophos-SenderHistory: ip=79.202.213.239, fs=20, da=183416449, mc=8, sc=0,
- hc=8, sp=0, fso=20, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=22, da=183416451, mc=10, sc=0,
+ hc=10, sp=0, fso=22, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::19;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:638:502:c003::14;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=collins.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,42 +74,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230828112651.522058-11-kbastian@mail.uni-paderborn.de>
+Message-ID: <20230828112651.522058-12-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ target/tricore/translate.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 7aba7b067c..2107d1fdd4 100644
+index 2107d1fdd4..7b53307eff 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -8398,7 +8398,7 @@ static bool insn_crosses_page(CPUTriCoreState *env, DisasContext *ctx)
-      * 4 bytes from the page boundary, so we cross the page if the first
-      * 16 bits indicate that this is a 32 bit insn.
-      */
--    uint16_t insn = cpu_lduw_code(env, ctx->base.pc_next);
-+    uint16_t insn = translator_lduw(env, &ctx->base, ctx->base.pc_next);
- 
-     return !tricore_insn_is_16bit(insn);
- }
-@@ -8411,14 +8411,15 @@ static void tricore_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     uint16_t insn_lo;
-     bool is_16bit;
- 
--    insn_lo = cpu_lduw_code(env, ctx->base.pc_next);
-+    insn_lo = translator_lduw(env, &ctx->base, ctx->base.pc_next);
-     is_16bit = tricore_insn_is_16bit(insn_lo);
-     if (is_16bit) {
-         ctx->opcode = insn_lo;
-         ctx->pc_succ_insn = ctx->base.pc_next + 2;
-         decode_16Bit_opc(ctx);
-     } else {
--        uint32_t insn_hi = cpu_lduw_code(env, ctx->base.pc_next + 2);
-+        uint32_t insn_hi = translator_lduw(env, &ctx->base,
-+                                           ctx->base.pc_next + 2);
-         ctx->opcode = insn_hi << 16 | insn_lo;
-         ctx->pc_succ_insn = ctx->base.pc_next + 4;
-         decode_32Bit_opc(ctx);
+@@ -6290,7 +6290,11 @@ static void decode_rr_divide(DisasContext *ctx)
+         gen_helper_ftou(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
+         break;
+     case OPC2_32_RR_FTOUZ:
+-        gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++        if (has_feature(ctx, TRICORE_FEATURE_131)) {
++            gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++        } else {
++            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++        }
+         break;
+     case OPC2_32_RR_UPDFL:
+         gen_helper_updfl(cpu_env, cpu_gpr_d[r1]);
 -- 
 2.42.0
 
