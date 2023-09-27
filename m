@@ -2,86 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220C87AFEDC
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 10:45:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDCF47AFF21
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 10:57:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlQ9E-0005PA-Rf; Wed, 27 Sep 2023 04:43:57 -0400
+	id 1qlQKo-0007LJ-7z; Wed, 27 Sep 2023 04:55:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qlQ9A-0005On-Ou
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 04:43:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qlQKl-0007Ka-JJ; Wed, 27 Sep 2023 04:55:51 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
- id 1qlQ98-0003Y7-NJ
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 04:43:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695804228;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=YdQjkHxV47evYgQAbNnCrofpfAhEm8fu5/U7TxZXwNg=;
- b=ejT/pXLNVW0FESy8iTK961C1LFx5b+q/vQ3pxEsZpl/bg9m6+yX1ZsEp7GRWLcpIbU5u/Y
- 3yotNETYdQMqsJ7CoB+G82ciiqPBFArqpDDaeG8uF4MGSkM9z93uHJel4zM8NmwKNiUJp8
- Se/Dqiq2Owl410lFKbisCZdn7yxNKiU=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-39-nPsbRJ6pN_2LMgvlpKu1pQ-1; Wed, 27 Sep 2023 04:43:46 -0400
-X-MC-Unique: nPsbRJ6pN_2LMgvlpKu1pQ-1
-Received: by mail-lf1-f71.google.com with SMTP id
- 2adb3069b0e04-50318e9067eso16303875e87.0
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 01:43:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695804220; x=1696409020;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=YdQjkHxV47evYgQAbNnCrofpfAhEm8fu5/U7TxZXwNg=;
- b=A5DudjEUxvGy1S/UO/IBiiCpaqCjOcjys2tFUHNtdD8XcefnqjYpaRE3vk46tV48GC
- LsbT0GGSjJF3aHjcZFvjoFZRfbB9tP/+e6a9NspaPr6nsfSgWAWJp9v8+mUPAMu0reZG
- ns1SG1yE1fujjkFWFR4/qvaZlq/7zTqzCmw5igviL3dM7LmAaKFsXTu8YfueV2EQLciM
- 0msGHna09Y2YV/UnLsOdKl17jKFc7ijUicLRfdF5vURrvYzsx8E0VnjqAi1Z79EoXbaW
- Gfupl3Lytf6k+7GmRaH/5MZaOH27aMk8TwRfAhrXN8egbD8ew2nJsYXkJSnXEZa5ubPV
- UWbg==
-X-Gm-Message-State: AOJu0YzWFHAwq9kNVN5RnK554jFhWqmTWv+m0e4wleTRA4z5xPehEdqy
- qn1FmYz6ev8tTRC6urgXn5kBOhCqXxE8pvYVBEXQhVv64xGH7bS8B62sh21w3DpksNVcCGgeNfI
- v0LEcvVTo5JRKW9GSux/sO86g3FLlxYQ=
-X-Received: by 2002:a05:6512:400c:b0:500:b828:7a04 with SMTP id
- br12-20020a056512400c00b00500b8287a04mr1320702lfb.18.1695804220297; 
- Wed, 27 Sep 2023 01:43:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFwRIqu2fL0lR+UlBZMXZBaoOcJoitHwTr2xPnqefOMhhKnZLhzAc10RVDz6HZsT1tRRu0lPm5WggBbb32dfcY=
-X-Received: by 2002:a05:6512:400c:b0:500:b828:7a04 with SMTP id
- br12-20020a056512400c00b00500b8287a04mr1320685lfb.18.1695804219823; Wed, 27
- Sep 2023 01:43:39 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qlQKi-0007x5-CC; Wed, 27 Sep 2023 04:55:51 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:5429:0:640:6285:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 6663B60581;
+ Wed, 27 Sep 2023 11:55:42 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b411::1:2f] (unknown
+ [2a02:6b8:b081:b411::1:2f])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id ftLE1G1OdeA0-EgQzUsq2; Wed, 27 Sep 2023 11:55:41 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695804941;
+ bh=PzfKYsdp/+9R/Ek3+/MDh5ML8FHaVYS+FpvnMoyOOlk=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=Rdt4f+8D9wxIBumHDLReDxXLQO66TN3aMcYMiVOEXC9yms2niI1OKW8sAmklVSmgc
+ s8LPErvrJpERN6EE3rNutyX3XwWJXDAUvm47MHpSIDUW+yX/i9X0JUv/B4R4VONtzs
+ FwQVM85bvap2gAMrJp7vKLIR4YuD2CCh1DmHo89I=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <523f5553-b62d-3e24-6fc7-8a350f2b6606@yandex-team.ru>
+Date: Wed, 27 Sep 2023 11:55:41 +0300
 MIME-Version: 1.0
-References: <cover.1695034158.git.dxu@dxuuu.xyz>
- <604ef5fd5bda8acdb837b5d28ec405e9fb0332a3.1695034158.git.dxu@dxuuu.xyz>
- <ZQhpZ+2doxD7vaR8@redhat.com>
- <qelgz7ljf5ooc6mkdzeikodf35cc77anowtm34b6rhgr4qpdcz@zdvjnj67jyfo>
-In-Reply-To: <qelgz7ljf5ooc6mkdzeikodf35cc77anowtm34b6rhgr4qpdcz@zdvjnj67jyfo>
-From: Konstantin Kostiuk <kkostiuk@redhat.com>
-Date: Wed, 27 Sep 2023 11:43:28 +0300
-Message-ID: <CAPMcbCojC=R0mr5dMqdoJUzw5-RoeydsK0io3vpzO_qo-A27Yw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] qga: Add optional stream-output argument to guest-exec
-To: Daniel Xu <dxu@dxuuu.xyz>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- michael.roth@amd.com, qemu-devel@nongnu.org, hmodi@aviatrix.com, 
- Yan Vugenfirer <yvugenfi@redhat.com>
-Content-Type: multipart/alternative; boundary="00000000000021b01106065330bb"
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v7 01/12] nbd/server: Support a request payload
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com, qemu-block@nongnu.org
+References: <20230925192229.3186470-14-eblake@redhat.com>
+ <20230925192229.3186470-15-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230925192229.3186470-15-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,224 +74,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000021b01106065330bb
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 25.09.23 22:22, Eric Blake wrote:
+> Upcoming additions to support NBD 64-bit effect lengths allow for the
+> possibility to distinguish between payload length (capped at 32M) and
+> effect length (64 bits, although we generally assume 63 bits because
+> of off_t limitations).  Without that extension, only the NBD_CMD_WRITE
+> request has a payload; but with the extension, it makes sense to allow
+> at least NBD_CMD_BLOCK_STATUS to have both a payload and effect length
+> in a future patch (where the payload is a limited-size struct that in
+> turn gives the real effect length as well as a subset of known ids for
+> which status is requested).  Other future NBD commands may also have a
+> request payload, so the 64-bit extension introduces a new
+> NBD_CMD_FLAG_PAYLOAD_LEN that distinguishes between whether the header
+> length is a payload length or an effect length, rather than
+> hard-coding the decision based on the command.
+> 
+> According to the spec, a client should never send a command with a
+> payload without the negotiation phase proving such extension is
+> available.  So in the unlikely event the bit is set or cleared
+> incorrectly, the client is already at fault; if the client then
+> provides the payload, we can gracefully consume it off the wire and
+> fail the command with NBD_EINVAL (subsequent checks for magic numbers
+> ensure we are still in sync), while if the client fails to send
+> payload we block waiting for it (basically deadlocking our connection
+> to the bad client, but not negatively impacting our ability to service
+> other clients, so not a security risk).  Note that we do not support
+> the payload version of BLOCK_STATUS yet.
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+> 
+> v7: another try at better logic [Vladimir]
+> 
+> v5: retitled from v4 13/24, rewrite on top of previous patch's switch
+> statement [Vladimir]
+> 
+> v4: less indentation on several 'if's [Vladimir]
+> ---
+>   nbd/server.c     | 37 +++++++++++++++++++++++++++++++++----
+>   nbd/trace-events |  1 +
+>   2 files changed, 34 insertions(+), 4 deletions(-)
+> 
+> diff --git a/nbd/server.c b/nbd/server.c
+> index 7a6f95071f8..1eabcfc908d 100644
+> --- a/nbd/server.c
+> +++ b/nbd/server.c
+> @@ -2322,9 +2322,11 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+>                                                  Error **errp)
+>   {
+>       NBDClient *client = req->client;
+> +    bool extended_with_payload;
+>       bool check_length = false;
+>       bool check_rofs = false;
+>       bool allocate_buffer = false;
+> +    bool payload_okay = false;
+>       unsigned payload_len = 0;
+>       int valid_flags = NBD_CMD_FLAG_FUA;
+>       int ret;
+> @@ -2338,6 +2340,13 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+> 
+>       trace_nbd_co_receive_request_decode_type(request->cookie, request->type,
+>                                                nbd_cmd_lookup(request->type));
+> +    extended_with_payload = client->mode >= NBD_MODE_EXTENDED &&
+> +        request->flags & NBD_CMD_FLAG_PAYLOAD_LEN;
+> +    if (extended_with_payload) {
+> +        payload_len = request->len;
+> +        check_length = true;
+> +    }
+> +
+>       switch (request->type) {
+>       case NBD_CMD_DISC:
+>           /* Special case: we're going to disconnect without a reply,
+> @@ -2354,6 +2363,15 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+>           break;
+> 
+>       case NBD_CMD_WRITE:
+> +        if (client->mode >= NBD_MODE_EXTENDED) {
+> +            if (!extended_with_payload) {
+> +                /* The client is noncompliant. Trace it, but proceed. */
+> +                trace_nbd_co_receive_ext_payload_compliance(request->from,
+> +                                                            request->len);
+> +            }
+> +            valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
+> +        }
+> +        payload_okay = true;
+>           payload_len = request->len;
+>           check_length = true;
+>           allocate_buffer = true;
+> @@ -2395,6 +2413,14 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+>                      request->len, NBD_MAX_BUFFER_SIZE);
+>           return -EINVAL;
+>       }
+> +    if (payload_len && !payload_okay) {
+> +        /*
+> +         * For now, we don't support payloads on other commands; but
+> +         * we can keep the connection alive by ignoring the payload.
+> +         */
+> +        assert(request->type != NBD_CMD_WRITE);
+> +        request->len = 0;
 
-Hi Daniel,
+So, actually we handle a syntactic request with len=0 and return success... I'm afraid, that in the most scenarios that would not be what client want, but client will be confused by success return.
 
-As for me, the idea of using QGA as an interactive shell is not good.
-I suggest using virtio-serial as a transport for stdin/stdout of your
-process.
-Examples:
+So, for example, if client pass READ with positive length and accidentlly set NBD_CMD_FLAG_PAYLOAD_LEN bit, it will get successful result with wrong length=0.
+Or, for WRITE_ZEROES (with accidental NBD_CMD_FLAG_PAYLOAD_LEN) it will just get successful result, when actually nothing is done.
 
-https://stackoverflow.com/questions/68277557/qemu-virtio-virtconsole-device=
-s-explained
-    https://fedoraproject.org/wiki/Features/VirtioSerial
+> +    }
+>       if (allocate_buffer) {
+>           /* READ, WRITE */
+>           req->data = blk_try_blockalign(client->exp->common.blk,
+> @@ -2405,10 +2431,13 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+>           }
+>       }
+>       if (payload_len) {
+> -        /* WRITE */
+> -        assert(req->data);
+> -        ret = nbd_read(client->ioc, req->data, payload_len,
+> -                       "CMD_WRITE data", errp);
+> +        if (payload_okay) {
+> +            assert(req->data);
+> +            ret = nbd_read(client->ioc, req->data, payload_len,
+> +                           "CMD_WRITE data", errp);
+> +        } else {
+> +            ret = nbd_drop(client->ioc, payload_len, errp);
+> +        }
+>           if (ret < 0) {
+>               return -EIO;
+>           }
+> diff --git a/nbd/trace-events b/nbd/trace-events
+> index f9dccfcfb44..c1a3227613f 100644
+> --- a/nbd/trace-events
+> +++ b/nbd/trace-events
+> @@ -71,6 +71,7 @@ nbd_co_send_extents(uint64_t cookie, unsigned int extents, uint32_t id, uint64_t
+>   nbd_co_send_chunk_error(uint64_t cookie, int err, const char *errname, const char *msg) "Send structured error reply: cookie = %" PRIu64 ", error = %d (%s), msg = '%s'"
+>   nbd_co_receive_request_decode_type(uint64_t cookie, uint16_t type, const char *name) "Decoding type: cookie = %" PRIu64 ", type = %" PRIu16 " (%s)"
+>   nbd_co_receive_request_payload_received(uint64_t cookie, uint64_t len) "Payload received: cookie = %" PRIu64 ", len = %" PRIu64
+> +nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
+>   nbd_co_receive_align_compliance(const char *op, uint64_t from, uint64_t len, uint32_t align) "client sent non-compliant unaligned %s request: from=0x%" PRIx64 ", len=0x%" PRIx64 ", align=0x%" PRIx32
+>   nbd_trip(void) "Reading request"
+> 
 
-Is this solution good for your project?
-
-Best Regards,
-Konstantin Kostiuk.
-
-
-On Mon, Sep 18, 2023 at 8:17=E2=80=AFPM Daniel Xu <dxu@dxuuu.xyz> wrote:
-
-> Hi Daniel,
->
-> On Mon, Sep 18, 2023 at 04:14:47PM +0100, Daniel P. Berrang=C3=A9 wrote:
-> > On Mon, Sep 18, 2023 at 04:54:22AM -0600, Daniel Xu wrote:
-> > > Currently, commands run through guest-exec are "silent" until they
-> > > finish running. This is fine for short lived commands. But for comman=
-ds
-> > > that take a while, this is a bad user experience.
-> > >
-> > > Usually long running programs know that they will run for a while. To
-> > > improve user experience, they will typically print some kind of statu=
-s
-> > > to output at a regular interval. So that the user knows that their
-> > > command isn't just hanging.
-> > >
-> > > This commit adds support for an optional stream-output parameter to
-> > > guest-exec. This causes subsequent calls to guest-exec-status to retu=
-rn
-> > > all buffered output. This allows downstream applications to be able t=
-o
-> > > relay "status" to the end user.
-> > >
-> > > If stream-output is requested, it is up to the guest-exec-status call=
-er
-> > > to keep track of the last seen output position and slice the returned
-> > > output appropriately. This is fairly trivial for a client to do. And =
-it
-> > > is a more reliable design than having QGA internally keep track of
-> > > position -- for the cases that the caller "loses" a response.
-> >
-> > I can understand why you want this incremental output facility,
-> > but at the same time I wonder where we draw the line for QGA
-> > with users needing a real shell session instead.
->
-> You mean interactive shell, right? If so, I would agree an interactive
-> shell is not a good fit for QGA.
->
-> But as it stands, a non-interactive shell works quite well (having
-> guest-exec run a bash script). I was the one who added the merged output
-> stream support a few months back. With merged output streams and this
-> streaming support, you can do some really neat things with QGA (see
-> below).
->
-> The primary reason I'm adding this support is for vmtest [0]. You can
-> find code for it here [1]. Basically what leveraging QGA does is allow
-> the vmtest implementation to reuse the same code for both kernel-only
-> (ie bzImage) and and image targets (eg qcow2).
->
-> [0]: https://dxuuu.xyz/vmtest.html
-> [1]: https://github.com/danobi/vmtest
->
-> >
-> > When there is a long lived command, then IMHO it is also likely
-> > that there will be a need to kill the background running command
-> > too.
-> >
-> > We quickly end up re-inventing a shell in QGA if we go down this
-> > route.
->
-> I can understand if you don't want to bloat the QGA feature set, but
-> IMHO this change cleanly composes with the current implementation and
-> is easily unit testable (and comes with a test).
->
-> Per the discussion in the other thread, it could be argued that this
-> streaming feature is actually a bug fix -- the documentation seems to
-> imply otherwise, which both Markus and I have independently arrived
-> at. But I don't think we need to go into semantics like that :) .
->
-> But it does kinda imply from first principles that it is a reasonable
-> thing for guest-exec-status to provide. Perhaps it's too late to change
-> the existing behavior, so a flag is needed.
->
-> I hope my reasoning makes sense. And thanks for giving this a look.
->
-> Thanks,
-> Daniel
->
-> [...]
->
->
-
---00000000000021b01106065330bb
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Daniel,<br><br>As for me, the idea of using QGA as an i=
-nteractive shell is not good.<br>I suggest using virtio-serial as a transpo=
-rt for stdin/stdout of your process. <br>Examples:<br>=C2=A0 =C2=A0 <a href=
-=3D"https://stackoverflow.com/questions/68277557/qemu-virtio-virtconsole-de=
-vices-explained">https://stackoverflow.com/questions/68277557/qemu-virtio-v=
-irtconsole-devices-explained</a><br>=C2=A0 =C2=A0 <a href=3D"https://fedora=
-project.org/wiki/Features/VirtioSerial">https://fedoraproject.org/wiki/Feat=
-ures/VirtioSerial</a><br><br><div>Is this solution good for your project? <=
-br></div><div><br></div><div><div dir=3D"ltr" class=3D"gmail_signature" dat=
-a-smartmail=3D"gmail_signature"><div dir=3D"ltr"><div>Best Regards,</div><d=
-iv>Konstantin Kostiuk.</div></div></div></div><br></div><br><div class=3D"g=
-mail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 18, 2023 at 8=
-:17=E2=80=AFPM Daniel Xu &lt;<a href=3D"mailto:dxu@dxuuu.xyz">dxu@dxuuu.xyz=
-</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
-0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
-Hi Daniel,<br>
-<br>
-On Mon, Sep 18, 2023 at 04:14:47PM +0100, Daniel P. Berrang=C3=A9 wrote:<br=
->
-&gt; On Mon, Sep 18, 2023 at 04:54:22AM -0600, Daniel Xu wrote:<br>
-&gt; &gt; Currently, commands run through guest-exec are &quot;silent&quot;=
- until they<br>
-&gt; &gt; finish running. This is fine for short lived commands. But for co=
-mmands<br>
-&gt; &gt; that take a while, this is a bad user experience.<br>
-&gt; &gt; <br>
-&gt; &gt; Usually long running programs know that they will run for a while=
-. To<br>
-&gt; &gt; improve user experience, they will typically print some kind of s=
-tatus<br>
-&gt; &gt; to output at a regular interval. So that the user knows that thei=
-r<br>
-&gt; &gt; command isn&#39;t just hanging.<br>
-&gt; &gt; <br>
-&gt; &gt; This commit adds support for an optional stream-output parameter =
-to<br>
-&gt; &gt; guest-exec. This causes subsequent calls to guest-exec-status to =
-return<br>
-&gt; &gt; all buffered output. This allows downstream applications to be ab=
-le to<br>
-&gt; &gt; relay &quot;status&quot; to the end user.<br>
-&gt; &gt; <br>
-&gt; &gt; If stream-output is requested, it is up to the guest-exec-status =
-caller<br>
-&gt; &gt; to keep track of the last seen output position and slice the retu=
-rned<br>
-&gt; &gt; output appropriately. This is fairly trivial for a client to do. =
-And it<br>
-&gt; &gt; is a more reliable design than having QGA internally keep track o=
-f<br>
-&gt; &gt; position -- for the cases that the caller &quot;loses&quot; a res=
-ponse.<br>
-&gt; <br>
-&gt; I can understand why you want this incremental output facility,<br>
-&gt; but at the same time I wonder where we draw the line for QGA<br>
-&gt; with users needing a real shell session instead.<br>
-<br>
-You mean interactive shell, right? If so, I would agree an interactive<br>
-shell is not a good fit for QGA.<br>
-<br>
-But as it stands, a non-interactive shell works quite well (having<br>
-guest-exec run a bash script). I was the one who added the merged output<br=
->
-stream support a few months back. With merged output streams and this<br>
-streaming support, you can do some really neat things with QGA (see<br>
-below).<br>
-<br>
-The primary reason I&#39;m adding this support is for vmtest [0]. You can<b=
-r>
-find code for it here [1]. Basically what leveraging QGA does is allow<br>
-the vmtest implementation to reuse the same code for both kernel-only<br>
-(ie bzImage) and and image targets (eg qcow2). <br>
-<br>
-[0]: <a href=3D"https://dxuuu.xyz/vmtest.html" rel=3D"noreferrer" target=3D=
-"_blank">https://dxuuu.xyz/vmtest.html</a><br>
-[1]: <a href=3D"https://github.com/danobi/vmtest" rel=3D"noreferrer" target=
-=3D"_blank">https://github.com/danobi/vmtest</a><br>
-<br>
-&gt; <br>
-&gt; When there is a long lived command, then IMHO it is also likely<br>
-&gt; that there will be a need to kill the background running command<br>
-&gt; too.<br>
-&gt; <br>
-&gt; We quickly end up re-inventing a shell in QGA if we go down this<br>
-&gt; route.<br>
-<br>
-I can understand if you don&#39;t want to bloat the QGA feature set, but<br=
->
-IMHO this change cleanly composes with the current implementation and<br>
-is easily unit testable (and comes with a test).<br>
-<br>
-Per the discussion in the other thread, it could be argued that this<br>
-streaming feature is actually a bug fix -- the documentation seems to<br>
-imply otherwise, which both Markus and I have independently arrived<br>
-at. But I don&#39;t think we need to go into semantics like that :) .<br>
-<br>
-But it does kinda imply from first principles that it is a reasonable<br>
-thing for guest-exec-status to provide. Perhaps it&#39;s too late to change=
-<br>
-the existing behavior, so a flag is needed.<br>
-<br>
-I hope my reasoning makes sense. And thanks for giving this a look.<br>
-<br>
-Thanks,<br>
-Daniel<br>
-<br>
-[...]<br>
-<br>
-</blockquote></div>
-
---00000000000021b01106065330bb--
+-- 
+Best regards,
+Vladimir
 
 
