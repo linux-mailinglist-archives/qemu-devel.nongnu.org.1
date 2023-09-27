@@ -2,81 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893EF7B0200
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 12:39:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF7977B0233
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 12:51:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlRwV-0007aU-O4; Wed, 27 Sep 2023 06:38:55 -0400
+	id 1qlS7G-0002w7-U1; Wed, 27 Sep 2023 06:50:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qlRwS-0007a1-Uu
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:38:52 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <npiggin@gmail.com>) id 1qlRwP-0008Ev-HF
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:38:52 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-692eed30152so4708885b3a.1
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 03:38:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695811127; x=1696415927; darn=nongnu.org;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=blF+IW3pnJulgcvbESgGPMb+9rmsf7LlFzPO6dsc1nU=;
- b=Q+oyA2Jfn0TAaO066PBEankFYMHjFaNf74kDYscPHsWZjsL3qtRBzGfQrE9/3cEsUD
- BQ4i+wwMFT6zl4VBRuGEam7w+HBblUuvCXf6LR27d6owgJ1pTSOVYcX9g+g2Z0zJ0jE5
- LDlg9zJ3PxIcR14Vs4vCA6+I++LvCDcSb8D9A9CzAEdmHccmpNofHIrp5cc9cDub+Or/
- BvsXMKJ7mSBb8Lpm3CDVAQm+XbrHdGwaAPhGqisowjuA7taG4rabndl+nlpIn7WQEr8w
- FemqDGZz8HDJXGBWVLtXhFrb66wjMQ3ZHBWkt1IS8rHf6juDAIeAApM2CQOljTlQtfE2
- KhSw==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlS7F-0002vp-8I
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:50:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qlS7D-0005d2-GR
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 06:50:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695811797;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=xJrWw9k00eazkwptYjGnVs6d6BLTD5IwaHyXPdskJZU=;
+ b=EokeBNl8qBfOuIFyBIx87OiBXGYhE8ks2m5HXM9ff2zWFnwD6/w0R4VSFiZE+JIUBj+/Cw
+ JQMlcjrWKvgdrKXrVfUeHUx3I9n677LUEH15/dC5sVI0SS4JSch6ZjFOoAayyT/n3uevtm
+ R3tub37Fx5hGg9ihPPhY4iPhqw0/F+g=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-421-fcJE5TrIPjCe3A87NvUGIg-1; Wed, 27 Sep 2023 06:49:55 -0400
+X-MC-Unique: fcJE5TrIPjCe3A87NvUGIg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40592bb4d11so57744695e9.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 03:49:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695811127; x=1696415927;
- h=in-reply-to:references:subject:cc:to:from:message-id:date
- :content-transfer-encoding:mime-version:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=blF+IW3pnJulgcvbESgGPMb+9rmsf7LlFzPO6dsc1nU=;
- b=qZ6IdqlB6bXCXfavXSHSmibvAEOMD1U9oH3mxSLbvu7knQ8sNs220cTow1/ZvKfofV
- 4N5h+3BfabqQVxv9+d5SPgVPsZlFHucoAo1SQ5afeAGOjhX8XeK0W8f4XIxK4c06YQjr
- XvihiFVbrg4zTbWE6ntwI/eCmkvqdWFGGn9R0XX0HdqWjlIM4CyN/b1gpWv7y7ykgpmV
- 1c9EQv+EHjYVgtCsRfGo91dt4kilhi+oyR4CkKyFfMVN7gNAWGXv1oZyQefdo2so318E
- hSAI3Jk11J71sQsrX6KU3B7U1sghRnFf8jMxYXSsZJmQGJ/NR1EhqcEd/ZVcxt4j5vEu
- DwWw==
-X-Gm-Message-State: AOJu0YzBZfnMIqPNG7FZusZ3uctBsyhYn0Wn3RG2cnOD8Yby1E4ogo9w
- K6bm0EjC7bZTnFD7/A3BuYU=
-X-Google-Smtp-Source: AGHT+IHZEBuXB6+CeNG1HDIeZAa3/9KxKXpS1h8XZIwyeUVgDBL7En+vBxEF1LlObfErKHt1uZ0cmQ==
-X-Received: by 2002:a05:6a20:1385:b0:14c:c393:402d with SMTP id
- hn5-20020a056a20138500b0014cc393402dmr1388310pzc.34.1695811127571; 
- Wed, 27 Sep 2023 03:38:47 -0700 (PDT)
-Received: from localhost ([203.63.110.121]) by smtp.gmail.com with ESMTPSA id
- a5-20020a1709027d8500b001bfd92ec592sm12707529plm.292.2023.09.27.03.38.44
+ d=1e100.net; s=20230601; t=1695811795; x=1696416595;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=xJrWw9k00eazkwptYjGnVs6d6BLTD5IwaHyXPdskJZU=;
+ b=xGRLpVqE3UAPjVq8fW5DIqqmO5qW7manegoTLlVAZ+5ErSgeqFaNr0+JBUJFeQzvVL
+ imicwqLSGfupHOLAVysBo2Hu9oxule7W46cHmmF8MqTLE8CX7v99UrqFN+EyNsbE1MPZ
+ DkioupEJl8Ln7jtyD3627CWK6jw+HvqZhKggaWnSpcM9Lci7p4NbiHZkdVZnZGXVq1QZ
+ Hcc/MSZLFUFEdffkenQ0w1+XPqirno03SWLvgq9AT9Ri0leAK46kGN7kGrD0eyi3CuDZ
+ UT4C/O2e4jBu5C6yrEvHJ86EuPtelLrO6rBjsSkFojAUUvoKhu76z8Su0GM9BN8BVG1Y
+ UHcg==
+X-Gm-Message-State: AOJu0YyEJcsjs7upUzeg3rEKut3h27r+KFAlOX757CTLs4X8vo5Bq14r
+ 4U0k40lBCyYcp7V+dJXNLVJ4WzG6nrJLIObmt6dGqcciJXaFl7oL0LOkCl+tSOBLjpfAZ0nM4QC
+ 8s77jltA/2kbfZ7Y=
+X-Received: by 2002:a5d:4d46:0:b0:314:3a4b:6cc6 with SMTP id
+ a6-20020a5d4d46000000b003143a4b6cc6mr1426683wru.53.1695811794840; 
+ Wed, 27 Sep 2023 03:49:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETUlPSVOPn2RU3gbiScNLvGgp4KF1jFwfiVbJcLGJjPqMYWRbpCH2wqXuSQ/8WVtniQkNAiA==
+X-Received: by 2002:a5d:4d46:0:b0:314:3a4b:6cc6 with SMTP id
+ a6-20020a5d4d46000000b003143a4b6cc6mr1426655wru.53.1695811794404; 
+ Wed, 27 Sep 2023 03:49:54 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c749:6900:3a06:bd5:2f7b:e6eb?
+ (p200300cbc74969003a060bd52f7be6eb.dip0.t-ipconnect.de.
+ [2003:cb:c749:6900:3a06:bd5:2f7b:e6eb])
+ by smtp.gmail.com with ESMTPSA id
+ a13-20020adff7cd000000b0031ad5fb5a0fsm1883761wrq.58.2023.09.27.03.49.53
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Sep 2023 03:38:47 -0700 (PDT)
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 Sep 2023 20:38:42 +1000
-Message-Id: <CVTMVEVPSNT0.1TRMEN1UKYZXT@wheely>
-From: "Nicholas Piggin" <npiggin@gmail.com>
-To: "Michael Tokarev" <mjt@tls.msk.ru>, "Richard Henderson"
- <richard.henderson@linaro.org>
-Cc: "Paolo Bonzini" <pbonzini@redhat.com>, <qemu-devel@nongnu.org>,
- =?utf-8?q?Alex_Benn=C3=A9e?= <alex.bennee@linaro.org>, "Ivan Warren"
- <ivan@vmfacility.fr>
-Subject: Re: [PATCH] accel/tcg: mttcg remove false-negative halted assertion
-X-Mailer: aerc 0.15.2
-References: <20230829010658.8252-1-npiggin@gmail.com>
- <fcadf562-1946-0dc0-9f68-95785aacb2c0@tls.msk.ru>
-In-Reply-To: <fcadf562-1946-0dc0-9f68-95785aacb2c0@tls.msk.ru>
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=npiggin@gmail.com; helo=mail-pf1-x434.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ Wed, 27 Sep 2023 03:49:54 -0700 (PDT)
+Message-ID: <fa0b04e5-33ff-6ba8-db17-4e46640ecc08@redhat.com>
+Date: Wed, 27 Sep 2023 12:49:53 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v7 7/7] hw/i386/pc: Support hv-balloon
+Content-Language: en-US
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: "Michael S . Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ qemu-devel@nongnu.org
+References: <cover.1693240836.git.maciej.szmigiero@oracle.com>
+ <9f11c6afb4271a31b6fe276931ecdf6923bf2877.1693240836.git.maciej.szmigiero@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <9f11c6afb4271a31b6fe276931ecdf6923bf2877.1693240836.git.maciej.szmigiero@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,58 +116,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri Sep 22, 2023 at 4:25 AM AEST, Michael Tokarev wrote:
-> 29.08.2023 04:06, Nicholas Piggin wrote:
-> > mttcg asserts that an execution ending with EXCP_HALTED must have
-> > cpu->halted. However between the event or instruction that sets
-> > cpu->halted and requests exit and the assertion here, an
-> > asynchronous event could clear cpu->halted.
-> >=20
-> > This leads to crashes running AIX on ppc/pseries because it uses
-> > H_CEDE/H_PROD hcalls, where H_CEDE sets self->halted =3D 1 and
-> > H_PROD sets other cpu->halted =3D 0 and kicks it.
-> >=20
-> > H_PROD could be turned into an interrupt to wake, but several other
-> > places in ppc, sparc, and semihosting follow what looks like a similar
-> > pattern setting halted =3D 0 directly. So remove this assertion.
-> >=20
-> > Reported-by: Ivan Warren <ivan@vmfacility.fr>
-> > Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
->
-> This one also smells like a stable material, is it not?
+On 28.08.23 18:48, Maciej S. Szmigiero wrote:
+> From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+> 
+> Add the necessary plumbing for the hv-balloon driver to the PC machine.
+> 
+> Co-developed-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+> ---
+>   hw/i386/Kconfig |  1 +
+>   hw/i386/pc.c    | 22 ++++++++++++++++++++++
+>   2 files changed, 23 insertions(+)
+> 
+> diff --git a/hw/i386/Kconfig b/hw/i386/Kconfig
+> index 9051083c1e78..349cf0d32fad 100644
+> --- a/hw/i386/Kconfig
+> +++ b/hw/i386/Kconfig
+> @@ -45,6 +45,7 @@ config PC
+>       select ACPI_VMGENID
+>       select VIRTIO_PMEM_SUPPORTED
+>       select VIRTIO_MEM_SUPPORTED
+> +    select HV_BALLOON_SUPPORTED
+>   
+>   config PC_PCI
+>       bool
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 54838c0c411d..d979479cab5e 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -28,6 +28,7 @@
+>   #include "hw/i386/pc.h"
+>   #include "hw/char/serial.h"
+>   #include "hw/char/parallel.h"
+> +#include "hw/hyperv/hv-balloon.h"
+>   #include "hw/i386/topology.h"
+>   #include "hw/i386/fw_cfg.h"
+>   #include "hw/i386/vmport.h"
+> @@ -93,6 +94,7 @@
+>   #include "hw/i386/kvm/xen_evtchn.h"
+>   #include "hw/i386/kvm/xen_gnttab.h"
+>   #include "hw/i386/kvm/xen_xenstore.h"
+> +#include "hw/mem/memory-device.h"
+>   #include "sysemu/replay.h"
+>   #include "target/i386/cpu.h"
+>   #include "e820_memory_layout.h"
+> @@ -1494,6 +1496,21 @@ static void pc_memory_unplug(HotplugHandler *hotplug_dev,
+>       error_propagate(errp, local_err);
+>   }
+>   
+> +static void pc_hv_balloon_pre_plug(HotplugHandler *hotplug_dev,
+> +                                   DeviceState *dev, Error **errp)
+> +{
+> +    /* The vmbus handler has no hotplug handler; we should never end up here. */
+> +    g_assert(!dev->hotplugged);
+> +    memory_device_pre_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev), NULL,
+> +                           errp);
+> +}
+> +
+> +static void pc_hv_balloon_plug(HotplugHandler *hotplug_dev,
+> +                               DeviceState *dev, Error **errp)
+> +{
+> +    memory_device_plug(MEMORY_DEVICE(dev), MACHINE(hotplug_dev));
+> +}
+> +
 
-Yeah I would say it is.
 
-Thanks,
-Nick
+Maybe we want to have hv_balloon_pre_plug() and hv_balloon_plug(), but 
+this here should be good enough for now.
 
->
-> Thanks,
->
-> /mjt
->
-> > diff --git a/accel/tcg/tcg-accel-ops-mttcg.c b/accel/tcg/tcg-accel-ops-=
-mttcg.c
-> > index b276262007..d0b6f288d9 100644
-> > --- a/accel/tcg/tcg-accel-ops-mttcg.c
-> > +++ b/accel/tcg/tcg-accel-ops-mttcg.c
-> > @@ -98,17 +98,6 @@ static void *mttcg_cpu_thread_fn(void *arg)
-> >               case EXCP_DEBUG:
-> >                   cpu_handle_guest_debug(cpu);
-> >                   break;
-> > -            case EXCP_HALTED:
-> > -                /*
-> > -                 * during start-up the vCPU is reset and the thread is
-> > -                 * kicked several times. If we don't ensure we go back
-> > -                 * to sleep in the halted state we won't cleanly
-> > -                 * start-up when the vCPU is enabled.
-> > -                 *
-> > -                 * cpu->halted should ensure we sleep in wait_io_event
-> > -                 */
-> > -                g_assert(cpu->halted);
-> > -                break;
-> >               case EXCP_ATOMIC:
-> >                   qemu_mutex_unlock_iothread();
-> >                   cpu_exec_step_atomic(cpu);
+Reviewed-by: David Hildenbrand <david@redhat.com>
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
