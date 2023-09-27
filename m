@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1627B02DC
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 13:27:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE377B02E8
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 13:28:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlSgF-0002RM-ET; Wed, 27 Sep 2023 07:26:11 -0400
+	id 1qlSgG-0002Rg-O6; Wed, 27 Sep 2023 07:26:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qlSg3-0002PN-B0
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 07:25:59 -0400
+ id 1qlSg4-0002QD-TN
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 07:26:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qlSg1-0001f8-1x
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 07:25:58 -0400
+ id 1qlSg3-0001fS-4L
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 07:26:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695813955;
+ s=mimecast20190719; t=1695813957;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wEdD3oUQ1Me33qV1xhUdRwIKVbJ+g3b+cRlu+QgXspI=;
- b=ZDN4QiFqqNXr4vtSY1sHTVXUBMsPu1w7DyQjZeSYvHhzcLqJ9xJujIzCkxW72CJ5kN/t5/
- n1//6XA1M2N1gQBBPDJmzhWLpE321djxk2uLMQWymGpaSS57CIgn1K28411Rd2hViiJPVc
- tuTM2hBiYz0J2EqXJG42/UwneaJ92mc=
+ bh=Ghb3L7rr25oPc3vl9o1Af/irNvvAXlxz5WJK2LcKuoY=;
+ b=LSCeHtDr/V1o0wX0N6P8ejQNQWYDYoaZUJ7EDM5fddLAgQxGhGdvJFJp+frZrtr6K+qqtl
+ S3A+jWbrE7peSeoYMG2xCLo6mMTJB+btEYRY3eZirE0F/373oqlYfqaOBbEMUkgIvEDp1D
+ fc8o9cqtdGyLjA1X/9sVJAl5PcSnoAA=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-605-UANJskxDNe6zhw59FoYTRw-1; Wed, 27 Sep 2023 07:25:54 -0400
-X-MC-Unique: UANJskxDNe6zhw59FoYTRw-1
+ us-mta-639-TdczFD_wO4Ce2dQN4Xi5hQ-1; Wed, 27 Sep 2023 07:25:55 -0400
+X-MC-Unique: TdczFD_wO4Ce2dQN4Xi5hQ-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EF3648039C1
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 11:25:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6003A800B35
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 11:25:55 +0000 (UTC)
 Received: from tapioca.lan (unknown [10.45.224.4])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DABBB10F1BE9;
- Wed, 27 Sep 2023 11:25:52 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4FB8F10D14C7;
+ Wed, 27 Sep 2023 11:25:54 +0000 (UTC)
 From: Victor Toso <victortoso@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v1 5/9] qapi: golang: Generate qapi's union types in Go
-Date: Wed, 27 Sep 2023 13:25:40 +0200
-Message-ID: <20230927112544.85011-6-victortoso@redhat.com>
+Subject: [PATCH v1 6/9] qapi: golang: Generate qapi's event types in Go
+Date: Wed, 27 Sep 2023 13:25:41 +0200
+Message-ID: <20230927112544.85011-7-victortoso@redhat.com>
 In-Reply-To: <20230927112544.85011-1-victortoso@redhat.com>
 References: <20230927112544.85011-1-victortoso@redhat.com>
 MIME-Version: 1.0
@@ -78,266 +78,223 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This patch handles QAPI union types and generates the equivalent data
-structures and methods in Go to handle it.
+This patch handles QAPI event types and generates data structures in
+Go that handles it.
 
-The QAPI union type has two types of fields: The @base and the
-@Variants members. The @base fields can be considered common members
-for the union while only one field maximum is set for the @Variants.
+We also define a Event interface and two helper functions MarshalEvent
+and UnmarshalEvent.
 
-In the QAPI specification, it defines a @discriminator field, which is
-an Enum type. The purpose of the  @discriminator is to identify which
-@variant type is being used.
-
-Not that @discriminator's enum might have more values than the union's
-data struct. This is fine. The union does not need to handle all cases
-of the enum, but it should accept them without error. For this
-specific case, we keep the @discriminator field in every union type.
-
-The union types implement the Marshaler and Unmarshaler interfaces to
-seamless decode from JSON objects to Golang structs and vice versa.
-
+Example:
 qapi:
- | { 'union': 'SetPasswordOptions',
- |   'base': { 'protocol': 'DisplayProtocol',
- |             'password': 'str',
- |             '*connected': 'SetPasswordAction' },
- |   'discriminator': 'protocol',
- |   'data': { 'vnc': 'SetPasswordOptionsVnc' } }
+ | { 'event': 'MEMORY_DEVICE_SIZE_CHANGE',
+ |   'data': { '*id': 'str', 'size': 'size', 'qom-path' : 'str'} }
 
 go:
- | type SetPasswordOptions struct {
- |     Protocol  DisplayProtocol    `json:"protocol"`
- |     Password  string             `json:"password"`
- |     Connected *SetPasswordAction `json:"connected,omitempty"`
- |
- |     // Variants fields
- |     Vnc *SetPasswordOptionsVnc `json:"-"`
+ | type MemoryDeviceSizeChangeEvent struct {
+ |         MessageTimestamp Timestamp `json:"-"`
+ |         Id               *string   `json:"id,omitempty"`
+ |         Size             uint64    `json:"size"`
+ |         QomPath          string    `json:"qom-path"`
+ | }
+
+usage:
+ | input := `{"event":"MEMORY_DEVICE_SIZE_CHANGE",` +
+ | `"timestamp":{"seconds":1588168529,"microseconds":201316},` +
+ | `"data":{"id":"vm0","size":1073741824,"qom-path":"/machine/unattached/device[2]"}}`
+ | e, err := UnmarshalEvent([]byte(input)
+ | if err != nil {
+ |     panic(err)
+ | }
+ | if e.GetName() == `MEMORY_DEVICE_SIZE_CHANGE` {
+ |     m := e.(*MemoryDeviceSizeChangeEvent)
+ |     // m.QomPath == "/machine/unattached/device[2]"
  | }
 
 Signed-off-by: Victor Toso <victortoso@redhat.com>
 ---
- scripts/qapi/golang.py | 170 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 167 insertions(+), 3 deletions(-)
+ scripts/qapi/golang.py | 105 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 100 insertions(+), 5 deletions(-)
 
 diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
-index 8320af99b6..343c9c9b95 100644
+index 343c9c9b95..ff3b1dd020 100644
 --- a/scripts/qapi/golang.py
 +++ b/scripts/qapi/golang.py
-@@ -52,6 +52,17 @@
-     }
-     return nil
- }
-+
-+// This helper is used to move struct's fields into a map.
-+// This function is useful to merge JSON objects.
-+func unwrapToMap(m map[string]any, data any) error {
-+	if bytes, err := json.Marshal(&data); err != nil {
-+		return fmt.Errorf("unwrapToMap: %s", err)
-+	} else if err := json.Unmarshal(bytes, &m); err != nil {
-+		return fmt.Errorf("unwrapToMap: %s, data=%s", err, string(bytes))
-+	}
-+	return nil
-+}
- '''
- 
- TEMPLATE_ALTERNATE = '''
-@@ -131,6 +142,62 @@
+@@ -197,6 +197,55 @@
  }}
  '''
  
-+TEMPLATE_UNION_CHECK_FIELD = '''
-+if s.{field} != nil && err == nil {{
-+    if len(bytes) != 0 {{
-+        err = errors.New(`multiple variant fields set`)
-+    }} else if err = unwrapToMap(m, s.{field}); err == nil {{
-+        s.{discriminator} = {go_enum_value}
-+        m["{member_name}"] = {go_enum_value}
-+        bytes, err = json.Marshal(m)
-+    }}
++TEMPLATE_EVENT = '''
++type Timestamp struct {{
++    Seconds      int64 `json:"seconds"`
++    Microseconds int64 `json:"microseconds"`
 +}}
-+'''
 +
-+TEMPLATE_UNION_DRIVER_CASE = '''
-+case {go_enum_value}:
-+    s.{field} = new({member_type})
-+    if err := json.Unmarshal(data, s.{field}); err != nil {{
-+        s.{field} = nil
-+        return err
-+    }}'''
++type Event interface {{
++    GetName()      string
++    GetTimestamp() Timestamp
++}}
 +
-+TEMPLATE_UNION_METHODS = '''
-+func (s {type_name}) MarshalJSON() ([]byte, error) {{
-+    var bytes []byte
-+    var err error
-+    type Alias {type_name}
-+    v := Alias(s)
++func MarshalEvent(e Event) ([]byte, error) {{
 +    m := make(map[string]any)
-+    unwrapToMap(m, &v)
-+    {check_fields}
-+    {check_non_fields_marshal}
-+    if err != nil {{
-+        return nil, fmt.Errorf("error: marshal: {type_name}: reason='%s', struct='%+v'", err, s)
-+    }} else if len(bytes) == 0 {{
-+        return nil, fmt.Errorf("error: marshal: {type_name} unsupported, struct='%+v'", s)
-+     }}
-+     return bytes, nil
++    m["event"] = e.GetName()
++    m["timestamp"] = e.GetTimestamp()
++    if bytes, err := json.Marshal(e); err != nil {{
++        return []byte{{}}, err
++    }} else if len(bytes) > 2 {{
++        m["data"] = e
++    }}
++    return json.Marshal(m)
 +}}
 +
-+func (s *{type_name}) UnmarshalJSON(data []byte) error {{{base_type_def}
-+    tmp := struct {{
-+        {base_type_name}
++func UnmarshalEvent(data []byte) (Event, error) {{
++    base := struct {{
++        Name             string    `json:"event"`
++        MessageTimestamp Timestamp `json:"timestamp"`
 +    }}{{}}
++    if err := json.Unmarshal(data, &base); err != nil {{
++        return nil, fmt.Errorf("Failed to decode event: %s", string(data))
++    }}
 +
-+    if err := json.Unmarshal(data, &tmp); err != nil {{
-+        return err
++    switch base.Name {{
++    {cases}
 +    }}
-+    {base_type_assign_unmarshal}
-+    switch tmp.{discriminator} {{
-+    {driver_cases}
-+    {check_non_fields_unmarshal}
-+    }}
-+    return nil
++    return nil, errors.New("Failed to recognize event")
 +}}
 +'''
 +
++TEMPLATE_EVENT_METHODS = '''
++func (s *{type_name}) GetName() string {{
++    return "{name}"
++}}
 +
++func (s *{type_name}) GetTimestamp() Timestamp {{
++    return s.MessageTimestamp
++}}
++'''
++
+ 
  def gen_golang(schema: QAPISchema,
                 output_dir: str,
-                prefix: str) -> None:
-@@ -428,6 +495,98 @@ def qapi_to_golang_struct(self: QAPISchemaGenGolangVisitor,
-                                                          variants)
+@@ -217,7 +266,8 @@ def qapi_to_field_name(name: str) -> str:
+ def qapi_to_field_name_enum(name: str) -> str:
+     return name.title().replace("-", "")
+ 
+-def qapi_to_go_type_name(name: str) -> str:
++def qapi_to_go_type_name(name: str,
++                         meta: Optional[str] = None) -> str:
+     if qapi_name_is_object(name):
+         name = name[6:]
+ 
+@@ -232,6 +282,11 @@ def qapi_to_go_type_name(name: str) -> str:
+ 
+     name += ''.join(word.title() for word in words[1:])
+ 
++    types = ["event"]
++    if meta in types:
++        name = name[:-3] if name.endswith("Arg") else name
++        name += meta.title().replace(" ", "")
++
+     return name
+ 
+ def qapi_schema_type_to_go_type(qapitype: str) -> str:
+@@ -455,7 +510,7 @@ def recursive_base(self: QAPISchemaGenGolangVisitor,
+ # Helper function that is used for most of QAPI types
+ def qapi_to_golang_struct(self: QAPISchemaGenGolangVisitor,
+                           name: str,
+-                          _: Optional[QAPISourceInfo],
++                          info: Optional[QAPISourceInfo],
+                           __: QAPISchemaIfCond,
+                           ___: List[QAPISchemaFeature],
+                           base: Optional[QAPISchemaObjectType],
+@@ -464,6 +519,8 @@ def qapi_to_golang_struct(self: QAPISchemaGenGolangVisitor,
+ 
+ 
+     fields, with_nullable = recursive_base(self, base)
++    if info.defn_meta == "event":
++        fields += f'''\tMessageTimestamp Timestamp `json:"-"`\n{fields}'''
+ 
+     if members:
+         for member in members:
+@@ -485,7 +542,7 @@ def qapi_to_golang_struct(self: QAPISchemaGenGolangVisitor,
+             fields += field
+             with_nullable = True if nullable else with_nullable
+ 
+-    type_name = qapi_to_go_type_name(name)
++    type_name = qapi_to_go_type_name(name, info.defn_meta)
+     content = generate_struct_type(type_name, fields)
+     if with_nullable:
+         content += struct_with_nullable_generate_marshal(self,
+@@ -644,15 +701,34 @@ def generate_template_alternate(self: QAPISchemaGenGolangVisitor,
+                                                  unmarshal_check_fields=unmarshal_check_fields[1:])
      return content
  
-+def qapi_to_golang_methods_union(self: QAPISchemaGenGolangVisitor,
-+                                 name: str,
-+                                 base: Optional[QAPISchemaObjectType],
-+                                 variants: Optional[QAPISchemaVariants]
-+                                 ) -> str:
++def generate_template_event(events: dict[str, str]) -> str:
++    cases = ""
++    for name in sorted(events):
++        case_type = events[name]
++        cases += f'''
++case "{name}":
++    event := struct {{
++        Data {case_type} `json:"data"`
++    }}{{}}
 +
-+    type_name = qapi_to_go_type_name(name)
-+
-+    assert base
-+    base_type_assign_unmarshal = ""
-+    base_type_name = qapi_to_go_type_name(base.name)
-+    base_type_def = qapi_to_golang_struct(self,
-+                                          base.name,
-+                                          base.info,
-+                                          base.ifcond,
-+                                          base.features,
-+                                          base.base,
-+                                          base.members,
-+                                          base.variants)
-+    for member in base.local_members:
-+        field = qapi_to_field_name(member.name)
-+        base_type_assign_unmarshal += f'''s.{field} = tmp.{field}
-+'''
-+
-+    driver_cases = ""
-+    check_fields = ""
-+    exists = {}
-+    enum_name = variants.tag_member.type.name
-+    discriminator = qapi_to_field_name(variants.tag_member.name)
-+    if variants:
-+        for var in variants.variants:
-+            if var.type.is_implicit():
-+                continue
-+
-+            field = qapi_to_field_name(var.name)
-+            enum_value = qapi_to_field_name_enum(var.name)
-+            member_type = qapi_schema_type_to_go_type(var.type.name)
-+            go_enum_value = f'''{enum_name}{enum_value}'''
-+            exists[go_enum_value] = True
-+
-+            check_fields += TEMPLATE_UNION_CHECK_FIELD.format(field=field,
-+                                                             discriminator=discriminator,
-+                                                             member_name=variants.tag_member.name,
-+                                                             go_enum_value=go_enum_value)
-+            driver_cases += TEMPLATE_UNION_DRIVER_CASE.format(go_enum_value=go_enum_value,
-+                                                             field=field,
-+                                                             member_type=member_type)
-+
-+    check_non_fields_marshal = ""
-+    check_non_fields_unmarshal = ""
-+    enum_obj = self.schema.lookup_entity(enum_name)
-+    if len(exists) != len(enum_obj.members):
-+        driver_cases += '''\ndefault:'''
-+        check_non_fields_marshal = '''
-+    // Check for valid values without field members
-+    if len(bytes) == 0 && err == nil &&
-+        ('''
-+        check_non_fields_unmarshal = '''
-+    // Check for valid values without field members
-+    if '''
-+
-+        for member in enum_obj.members:
-+            value = qapi_to_field_name_enum(member.name)
-+            go_enum_value = f'''{enum_name}{value}'''
-+
-+            if go_enum_value in exists:
-+                continue
-+
-+            check_non_fields_marshal += f'''s.{discriminator} == {go_enum_value} ||\n'''
-+            check_non_fields_unmarshal += f'''tmp.{discriminator} != {go_enum_value} &&\n'''
-+
-+        check_non_fields_marshal = f'''{check_non_fields_marshal[:-3]}) {{
-+        type Alias {type_name}
-+        bytes, err = json.Marshal(Alias(s))
++    if err := json.Unmarshal(data, &event); err != nil {{
++        return nil, fmt.Errorf("Failed to unmarshal: %s", string(data))
 +    }}
++    event.Data.MessageTimestamp = base.MessageTimestamp
++    return &event.Data, nil
 +'''
-+        check_non_fields_unmarshal = f'''{check_non_fields_unmarshal[1:-3]} {{
-+        return fmt.Errorf("error: unmarshal: {type_name}: received unrecognized value: '%s'",
-+            tmp.{discriminator})
-+    }}
-+'''
++    return TEMPLATE_EVENT.format(cases=cases)
 +
-+    return TEMPLATE_UNION_METHODS.format(type_name=type_name,
-+                                         check_fields=check_fields,
-+                                         check_non_fields_marshal=check_non_fields_marshal,
-+                                         base_type_def=base_type_def,
-+                                         base_type_name=base_type_name,
-+                                         base_type_assign_unmarshal=base_type_assign_unmarshal,
-+                                         discriminator=discriminator,
-+                                         driver_cases=driver_cases[1:],
-+                                         check_non_fields_unmarshal=check_non_fields_unmarshal)
-+
- def generate_template_alternate(self: QAPISchemaGenGolangVisitor,
-                                 name: str,
-                                 variants: Optional[QAPISchemaVariants]) -> str:
-@@ -490,7 +649,7 @@ class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
+ 
+ class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
  
      def __init__(self, _: str):
          super().__init__()
--        types = ["alternate", "enum", "helper", "struct"]
-+        types = ["alternate", "enum", "helper", "struct", "union"]
+-        types = ["alternate", "enum", "helper", "struct", "union"]
++        types = ["alternate", "enum", "event", "helper", "struct", "union"]
          self.target = {name: "" for name in types}
          self.objects_seen = {}
          self.schema = None
-@@ -530,10 +689,10 @@ def visit_object_type(self: QAPISchemaGenGolangVisitor,
-                           members: List[QAPISchemaObjectTypeMember],
-                           variants: Optional[QAPISchemaVariants]
-                           ) -> None:
--        # Do not handle anything besides struct.
-+        # Do not handle anything besides struct and unions.
-         if (name == self.schema.the_empty_object_type.name or
-                 not isinstance(name, str) or
--                info.defn_meta not in ["struct"]):
-+                info.defn_meta not in ["struct", "union"]):
-             return
++        self.events = {}
+         self.golang_package_name = "qapi"
+         self.accept_null_types = []
  
-         # Base structs are embed
-@@ -566,6 +725,11 @@ def visit_object_type(self: QAPISchemaGenGolangVisitor,
-                                                              base,
-                                                              members,
-                                                              variants)
-+        if info.defn_meta == "union":
-+            self.target[info.defn_meta] += qapi_to_golang_methods_union(self,
-+                                                                        name,
-+                                                                        base,
-+                                                                        variants)
+@@ -679,6 +755,7 @@ def visit_begin(self, schema):
  
-     def visit_alternate_type(self: QAPISchemaGenGolangVisitor,
-                              name: str,
+     def visit_end(self):
+         self.schema = None
++        self.target["event"] += generate_template_event(self.events)
+ 
+     def visit_object_type(self: QAPISchemaGenGolangVisitor,
+                           name: str,
+@@ -779,7 +856,25 @@ def visit_command(self,
+         pass
+ 
+     def visit_event(self, name, info, ifcond, features, arg_type, boxed):
+-        pass
++        assert name == info.defn_name
++        type_name = qapi_to_go_type_name(name, info.defn_meta)
++        self.events[name] = type_name
++
++        if isinstance(arg_type, QAPISchemaObjectType):
++            content = qapi_to_golang_struct(self,
++                                            name,
++                                            arg_type.info,
++                                            arg_type.ifcond,
++                                            arg_type.features,
++                                            arg_type.base,
++                                            arg_type.members,
++                                            arg_type.variants)
++        else:
++            args = '''MessageTimestamp Timestamp `json:"-"`'''
++            content = generate_struct_type(type_name, args)
++
++        content += TEMPLATE_EVENT_METHODS.format(name=name, type_name=type_name)
++        self.target["event"] += content
+ 
+     def write(self, output_dir: str) -> None:
+         for module_name, content in self.target.items():
 -- 
 2.41.0
 
