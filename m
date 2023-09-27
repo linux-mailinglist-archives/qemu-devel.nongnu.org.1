@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476307AFE26
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 10:21:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 465B87AFE59
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 10:28:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlPmW-0005iC-8Q; Wed, 27 Sep 2023 04:20:28 -0400
+	id 1qlPsi-0007N8-5f; Wed, 27 Sep 2023 04:26:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlPmL-0005ha-Ty
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 04:20:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlPsf-0007Me-TH
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 04:26:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlPmC-0002Li-K8
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 04:20:16 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlPse-0006N5-2y
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 04:26:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695802806;
+ s=mimecast20190719; t=1695803207;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qJ4xnx4WnuinmNUwGW56pjc78PnAMqAi0DtpPDxVE5s=;
- b=ReOx6yU1ZYuObvWzIviQd5UXxeoMmYivNrqd8z7wxZ1Tt3mkq8tVjK51N9aWLzL0o4kmHK
- 5qpLRqBlnNb5uH+3OGi8vX7wnrthkOOv20MFbat2fmj4QV3k7MaesKn30Amv332cFTPhST
- 7UqekKC4CXKZ4nQ+p9jr/LfknjpGpYQ=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ygUANsCCpAlUIPcL/gDf040dCRhoERvWC6av9X/3CuU=;
+ b=FrHKcEXis9a2mJcnFdtPbT16aqN3DgZ+HEgN8k/UjiLplYaSrugX/x6ZwXS/2OzfJ3DLWT
+ YT06pwMbFC3Fnw0NikF9Cz3llL8up5vIa06TX4lgG2Qb1J/mFJ87WxS+elOW36nlKSa+Lg
+ bfFfmxJfy2Ml0Lu9UHz4MoTLX4P8WuM=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-511-kFtpcib5NvSFmbQyW-DSpg-1; Wed, 27 Sep 2023 04:20:04 -0400
-X-MC-Unique: kFtpcib5NvSFmbQyW-DSpg-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-65af758fa1eso149287256d6.2
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 01:20:04 -0700 (PDT)
+ us-mta-682-p4sjtv-3OSWvJxxTzacVcw-1; Wed, 27 Sep 2023 04:26:45 -0400
+X-MC-Unique: p4sjtv-3OSWvJxxTzacVcw-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-417f9e1def0so162152301cf.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 01:26:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695802804; x=1696407604;
+ d=1e100.net; s=20230601; t=1695803205; x=1696408005;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qJ4xnx4WnuinmNUwGW56pjc78PnAMqAi0DtpPDxVE5s=;
- b=nEOIAsQhcKPLwVTLrgCtA0iOOytoHQW0/ZBHhpx6HKQAYqswLMIcOmhmou8VsKsmWT
- 0FGf9SWSMhsnVfCsy4QRMNCEIw/slM5BxJ25vDScVE9EqdJNTEkiEq6Cx21QXCTLejQD
- dJ1G8Vl/TWFn5zafR0638h9nCsfOJ1SOMJM6/53hE710TCCP4A5chSJjJStcDuip2Pky
- FM/G9+AB3NOj3aWThp7sE2XGqjFPPHhdyOLmBRfIBk+yWrxwPfuAY8GxiK6DM1OgL7SI
- OW9cdILwHcPcNFzxnwSvxbSmgzH6GVhSyXPp0eZ1qv3Uc9BhgjckjFsFYBkxU8CaffkB
- z2iQ==
-X-Gm-Message-State: AOJu0Yyfs8xWpaba9N97AA7KqPox+eKFkSw8YfVYaZNnTp8BxHV91fgz
- uzlcSfArWR89JNYyicQ+zmqBdpc2GTjmYzBcqTey0uTNtoMS+r1mYtZKZJ1Z8+3iF14/5PVh0yP
- DuRco8c/Xzcr+3eI=
-X-Received: by 2002:a0c:a998:0:b0:649:384f:ed4 with SMTP id
- a24-20020a0ca998000000b00649384f0ed4mr1602426qvb.19.1695802804476; 
- Wed, 27 Sep 2023 01:20:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHd2zZhQiPncz51nRGpKqUiuNpEsOjuxpIyDUbm3JZR5QCYtnsGsxI3lzI3bbN6kG93QhNABg==
-X-Received: by 2002:a0c:a998:0:b0:649:384f:ed4 with SMTP id
- a24-20020a0ca998000000b00649384f0ed4mr1602416qvb.19.1695802804199; 
- Wed, 27 Sep 2023 01:20:04 -0700 (PDT)
+ bh=ygUANsCCpAlUIPcL/gDf040dCRhoERvWC6av9X/3CuU=;
+ b=Q+GiCfYpeGk/Lgd9nwvgM04EYHZMxs3WK99TIWKgPK4HiLFn5qH0ZQHdumx5TU2G66
+ aLeURyEdaQkJByJx09P4OUelEryxi9yonS80LJpRh5ALfqcdqFvEY8P/SOT6CsF5Rgxm
+ 7KGkvnShGOEwyVe5oXJIDTCDx6toshFKWohvsLuxz1+TeRAsveXzNui7qL9WRR0Ghum9
+ X1NVb+gF0be0GsGGbJbXzs4hgm2sqhpD3p++lHUYCMwFGQlraqpJtJ0Im0B4GOf6blN1
+ 73PzHr9xlItHZv5DtFumRCXv3d1mtX4OONLdmgm2vhjODGaXE160leYXYyIYRkn0ptB2
+ 10Zw==
+X-Gm-Message-State: AOJu0YxS7ioKGmDHQA0BHaZ5u6C9kbZfbXnb3y1KQy9vPHXmsn6CSctx
+ lNKzBOkHAa1W8ejaRx/QECHcaVofVeqQB4dmYbEbTTtPCoMO/SAs4oOcQL+YcbVKxDrNu4JcCCe
+ 0YL9in4p+OK0JcKs=
+X-Received: by 2002:a05:622a:4d4:b0:419:57b9:e92 with SMTP id
+ q20-20020a05622a04d400b0041957b90e92mr1361912qtx.8.1695803205427; 
+ Wed, 27 Sep 2023 01:26:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEz2qVsb5pO3rMPr1Xv4XHP9vcieR6KfoO8HCZmFNWJDjkJJ3tfMUYNBzmBBUHMa5G8dwv99w==
+X-Received: by 2002:a05:622a:4d4:b0:419:57b9:e92 with SMTP id
+ q20-20020a05622a04d400b0041957b90e92mr1361902qtx.8.1695803205132; 
+ Wed, 27 Sep 2023 01:26:45 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-178-22.web.vodafone.de.
  [109.43.178.22]) by smtp.gmail.com with ESMTPSA id
- 4-20020ad45ba4000000b00655ec7bbfd0sm4527032qvq.7.2023.09.27.01.20.02
+ c17-20020a0cca11000000b0065b21f1b687sm1515099qvk.80.2023.09.27.01.26.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Sep 2023 01:20:03 -0700 (PDT)
-Message-ID: <1632e156-f4a3-b782-d52a-c0862357b7c4@redhat.com>
-Date: Wed, 27 Sep 2023 10:20:00 +0200
+ Wed, 27 Sep 2023 01:26:44 -0700 (PDT)
+Message-ID: <353ea6dc-bec2-92e9-5452-8ea675e75a63@redhat.com>
+Date: Wed, 27 Sep 2023 10:26:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH 2/3] esp: restrict non-DMA transfer length to that of
- available data
+Subject: Re: [PATCH 3/3] scsi-disk: ensure that FORMAT UNIT commands are
+ terminated
 Content-Language: en-US
 To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, pbonzini@redhat.com,
  fam@euphon.net, qemu-devel@nongnu.org
 References: <20230913204410.65650-1-mark.cave-ayland@ilande.co.uk>
- <20230913204410.65650-3-mark.cave-ayland@ilande.co.uk>
+ <20230913204410.65650-4-mark.cave-ayland@ilande.co.uk>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230913204410.65650-3-mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230913204410.65650-4-mark.cave-ayland@ilande.co.uk>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -103,40 +103,37 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 13/09/2023 22.44, Mark Cave-Ayland wrote:
-> In the case where a SCSI layer transfer is incorrectly terminated, it is
-> possible for a TI command to cause a SCSI buffer overflow due to the
-> expected transfer data length being less than the available data in the
-> FIFO. When this occurs the unsigned async_len variable underflows and
-> becomes a large offset which writes past the end of the allocated SCSI
-> buffer.
-> 
-> Restrict the non-DMA transfer length to be the smallest of the expected
-> transfer length and the available FIFO data to ensure that it is no longer
-> possible for the SCSI buffer overflow to occur.
+> Otherwise when a FORMAT UNIT command is issued, the SCSI layer can become
+> confused because it can find itself in the situation where it thinks there
+> is still data to be transferred which can cause the next emulated SCSI
+> command to fail.
 > 
 > Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1810
+> Fixes: 6ab71761 ("scsi-disk: add FORMAT UNIT command")
 > ---
->   hw/scsi/esp.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>   hw/scsi/scsi-disk.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 > 
-> diff --git a/hw/scsi/esp.c b/hw/scsi/esp.c
-> index 4218a6a960..9b11d8c573 100644
-> --- a/hw/scsi/esp.c
-> +++ b/hw/scsi/esp.c
-> @@ -759,7 +759,8 @@ static void esp_do_nodma(ESPState *s)
->       }
+> diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
+> index e0d79c7966..4484ee8271 100644
+> --- a/hw/scsi/scsi-disk.c
+> +++ b/hw/scsi/scsi-disk.c
+> @@ -1958,6 +1958,10 @@ static void scsi_disk_emulate_write_data(SCSIRequest *req)
+>           scsi_disk_emulate_write_same(r, r->iov.iov_base);
+>           break;
 >   
->       if (to_device) {
-> -        len = MIN(fifo8_num_used(&s->fifo), ESP_FIFO_SZ);
-> +        len = MIN(s->async_len, ESP_FIFO_SZ);
-> +        len = MIN(len, fifo8_num_used(&s->fifo));
->           esp_fifo_pop_buf(&s->fifo, s->async_buf, len);
->           s->async_buf += len;
->           s->async_len -= len;
+> +    case FORMAT_UNIT:
+> +        scsi_req_complete(&r->req, GOOD);
+> +        break;
+> +
+>       default:
+>           abort();
+>       }
 
-Thanks for taking care of this!
+Thanks! I just double-checked that this fixes the crash that can be 
+triggered with the reproducer from 
+https://gitlab.com/qemu-project/qemu/-/issues/1810 :
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Tested-by: Thomas Huth <thuth@redhat.com>
 
 
