@@ -2,104 +2,156 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A10E7AF701
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 01:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD547AF7BB
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 03:43:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlHvv-0007lP-Sf; Tue, 26 Sep 2023 19:57:39 -0400
+	id 1qlJYt-0001rC-JH; Tue, 26 Sep 2023 21:41:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlHvu-0007kx-CK
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:57:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qlJYr-0001qx-E1
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 21:41:57 -0400
+Received: from esa12.fujitsucc.c3s2.iphmx.com ([216.71.156.125])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlHvs-0006ci-Dj
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 19:57:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695772654;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YojiN4iQj8J/kXQ6FhBhpSyy/ep2bnLMTpRtktnAGj8=;
- b=aVzQxVhacgd5MndYv8oza6oktCjEi+i7Z82mGtQiYe6JYFtHRUDx+lAOIwdgEYCVtWb/Je
- EDAIoCTUXXPKNFxJIPANO8r/fNfEozv0xJ46d7hmkTgfNiGIJH19dLoDb4lLmmEQyM+5yC
- eUqb7jW+rOPbYGU66Y35UZ5MShb4eEk=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-AmGXq_kJO8q1un191YIllQ-1; Tue, 26 Sep 2023 19:57:33 -0400
-X-MC-Unique: AmGXq_kJO8q1un191YIllQ-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-570096f51acso11079189a12.0
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 16:57:32 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695772652; x=1696377452;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YojiN4iQj8J/kXQ6FhBhpSyy/ep2bnLMTpRtktnAGj8=;
- b=LCaRtPZy+feGNRLmxcHYemn6wXybqOYBhYh+ut/rXz5DezoLaOIwUi3MJQBgkKS72w
- QNx8yiY7XEp6Rg3T+YkEpFIMQbGHz9OBPeAiYLYFOxPJSb2jP/c4Wr9ZpgqvwUDHwW/f
- YkJJTPyjjfMUY3I9T2844LBFHct27oylOovb7V0t1ZYgV/zM4ffnkJOM2MRuyYSXm44J
- 1M1yIkdIC4we28afTLa1w89+p+VaNojODmy4bJ8sg1SCL2IpAn95N2fPHPEKKXa7xPEg
- mfKYyZxibFjsGXXZoentEx1jxOtvz9CCOSrvPYKG14JG6YI852QOa1Dliu/X00SW8pmd
- M0lA==
-X-Gm-Message-State: AOJu0YzN7E2s5wys/h42eWkaAGySxQUP+vtLWA4Xn28HN1YK9361RBBk
- MOpOkb8B8cKdeIoIhNXMH7ZC2gPYUKbFbs6hmcAPbdYIz99tKg6fzue4E21+yi30NUFiAT1ckMJ
- LggaGN0iFYJFyjLo=
-X-Received: by 2002:a05:6a20:2443:b0:15d:b407:b0a0 with SMTP id
- t3-20020a056a20244300b0015db407b0a0mr617103pzc.26.1695772651867; 
- Tue, 26 Sep 2023 16:57:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzygL6Q7QUBdl6x1BRNY2f2EFQ6bbegy08gd5QK22aH4LbQnDw/+6bqDomQKb/Her/+Qby1w==
-X-Received: by 2002:a05:6a20:2443:b0:15d:b407:b0a0 with SMTP id
- t3-20020a056a20244300b0015db407b0a0mr617046pzc.26.1695772651374; 
- Tue, 26 Sep 2023 16:57:31 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- fm1-20020a056a002f8100b00679a4b56e41sm10580839pfb.43.2023.09.26.16.57.20
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Sep 2023 16:57:30 -0700 (PDT)
-Message-ID: <6cd28639-2cfa-f233-c6d9-d5d2ec5b1c58@redhat.com>
-Date: Wed, 27 Sep 2023 09:57:18 +1000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH RFC V2 01/37] arm/virt,target/arm: Add new ARMCPU
- {socket,cluster,core,thread}-id property
+ (Exim 4.90_1) (envelope-from <lizhijian@fujitsu.com>)
+ id 1qlJYo-0006EM-M8
+ for qemu-devel@nongnu.org; Tue, 26 Sep 2023 21:41:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+ d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj1;
+ t=1695778915; x=1727314915;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-id:content-transfer-encoding: mime-version;
+ bh=ZS7wxpzix5ZD5+EoMWh9sC7tbZmYorJge47kZW8Nsls=;
+ b=HcR28c5KqPacpdyPoOCvs1iJ4+6DijRGfAu0H/HZ0ip/zhZ3rPDasxQr
+ tgJughMn7mAz/BnMChcUUNoaKbs8vwYcjckDNQrPcM03ZiQieq4wOXJ4N
+ TQKX+wmLELbCZpcAmmPXCiQ6x+5aVoOBneFX3wRNCTOseGMRVW9wiQLQK
+ 0JilEvv/KYTpH/xQ870WE7liqVjFqtQ/tmaQvK8PNNuk4SICccea2tG+h
+ 1Cz6jyss/S20SPU+suLWoN4YGdMbXzVrmR1uMRBxvpGQ7/zRBwQ2jjZo3
+ V15y9dTJsAd4LdSysutz2cOfnnw3TJREPABfAm/JRPkFJ1QmfHl2U81ae w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10845"; a="96962039"
+X-IronPort-AV: E=Sophos;i="6.03,179,1694703600"; d="scan'208";a="96962039"
+Received: from mail-os0jpn01lp2104.outbound.protection.outlook.com (HELO
+ JPN01-OS0-obe.outbound.protection.outlook.com) ([104.47.23.104])
+ by ob1.fujitsucc.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2023 10:41:48 +0900
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=L2leXBfqd9xYRkPQCIAq3OXPP6RcPXNb7VBopGfFvtLuaUySHevTxqpNW0v7B/8cBQRLcIkI/BWUhezxfcMcZmjpN0TI1xDqFsb88hNMT0N1Hnl13SsMOz6PH0iah/2JKS6rTKsIxM4TM+AKKzp4/ecxhBEXug9gPhllWMRjcn3/lSqaCoSQLPFd4m5cbiEsdgektt7msWzDtzA7EnsBoBScErYCHX7anEb6gRLF3VM8l7SXY1IUx4HzHylcufl5gEuDTMGmlO/bfcTATwvTRGGJJN67mw4puT5sv5nHW1DeXrFHf/CKWlbE3QB6S3pyuRZ6IOFm1QojyR6CbtAu+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ZS7wxpzix5ZD5+EoMWh9sC7tbZmYorJge47kZW8Nsls=;
+ b=TCGQIbGu5ygygUMdgsB8FurGKcJ/6c8rKosBjTDZTbANjujIS72LDOxnCQXwq6ocUYlI1TtMS2bV3iEz/xGldeFUCDdBdBDciHW3WktZPxXbOBw9CkaproJ04aHdDqQEBkTwzBv+ho+QsatDMu2dDrGqkLFsyRKH5v2qVt5o104er+WPaWouVzOcKl1b/D5ecl+fQeXyUfz7QlVclKi6KoJbWMKJ6hLkexyEI00RTS/kxYdVF8wIn6AlqT8UN03TdR4a3zrtAQrWFz7FEoaoonW9rE6L/wAH37gDYHtwO/uME6FDqRcgE4Uef8puwXycBVKX46f50EzyeaPDBNplFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fujitsu.com; dmarc=pass action=none header.from=fujitsu.com;
+ dkim=pass header.d=fujitsu.com; arc=none
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com (2603:1096:604:247::6)
+ by OSZPR01MB8387.jpnprd01.prod.outlook.com (2603:1096:604:16d::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.21; Wed, 27 Sep
+ 2023 01:41:45 +0000
+Received: from OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::87a4:7103:63be:64fe]) by OS7PR01MB11664.jpnprd01.prod.outlook.com
+ ([fe80::87a4:7103:63be:64fe%4]) with mapi id 15.20.6838.016; Wed, 27 Sep 2023
+ 01:41:45 +0000
+From: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>
+To: Markus Armbruster <armbru@redhat.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "quintela@redhat.com"
+ <quintela@redhat.com>, "peterx@redhat.com" <peterx@redhat.com>,
+ "leobras@redhat.com" <leobras@redhat.com>
+Subject: Re: [PATCH 50/52] migration/rdma: Silence qemu_rdma_cleanup()
+Thread-Topic: [PATCH 50/52] migration/rdma: Silence qemu_rdma_cleanup()
+Thread-Index: AQHZ6j6sSuBrAso4tEKEPj5/VVeqYbAs74OAgAAb8bCAAOeXgA==
+Date: Wed, 27 Sep 2023 01:41:45 +0000
+Message-ID: <31bc784d-48d5-9baa-75fb-371e73563383@fujitsu.com>
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-51-armbru@redhat.com>
+ <2f697774-aea3-6f09-e781-cc1634021933@fujitsu.com>
+ <87y1gt40dy.fsf@pond.sub.org>
+In-Reply-To: <87y1gt40dy.fsf@pond.sub.org>
+Accept-Language: en-US, zh-CN
 Content-Language: en-US
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
- ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
- mst@redhat.com, rafael@kernel.org, borntraeger@linux.ibm.com,
- alex.bennee@linaro.org, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
- wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
- maobibo@loongson.cn, lixianglai@loongson.cn
-References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-2-salil.mehta@huawei.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230926100436.28284-2-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=fujitsu.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: OS7PR01MB11664:EE_|OSZPR01MB8387:EE_
+x-ms-office365-filtering-correlation-id: 30fc102c-247b-42e0-f783-08dbbefae86a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: H1PLUI5ZokYU3ogfErpks0SnvMoae58FXzjnjrRmBOiWQripLgiOFqQLiXiRJJOvvbq9w7tWaZgmlo4+IHm714BvA7hdf8BTqmjmOGkjBvj7P9RZy4MDxOllrK0wOB/PbKUnAPVbLKuM765N6V1XZmVSRrbn+K5hxJpq//5PLDWyb246y3fbc6WUO+5GgsAYh63bYWdcoWJxOXGneWjLTAX2UbM2hWFLuFZEcx0jB4s7zhAKQqyQ5yOhEZfmGJeETsIuqPmditPMzUa/M8D6Y12o259AQ7mdSwuSQYOQ0Zs3b9KnryU2WVzwaprj2UVkUHwZ4mOrlLnTu0bxH374PdhZL2egy+QYnghe61MOqwz7Onux3iKZAEaOUbRr4+1sbQzYhMm/rDqz7ODktbdRYeROdO5JPk88HVGw59bRceFmHBS7+BgAWExJtfc4NIdM1y74QDb3EmzhIKaQnrMf0ZR9Ecxcdf6M2XNgJG70+zMvc0Qw6/LeKSv/rvazX9cZpeaQ0b+1vZ4YeW/UL/5R/i90xDXVe/pkzImO+jn7icki9jgA+z8plqSCzqVaJ9YcJxDSU4XSTIKFOUe8gyXuDjv87InV8NWVcS1b04Pj7mf6If8NbY3C38uHNQXU5Tt17nBimM396apskfZKUfZxJuqq97DCYUSSVWeU/Z1lLgXEP9ELtMeVqACZ+suX2/F6M+2zIbxT9s2oN9HODi0A7Q==
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:OS7PR01MB11664.jpnprd01.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(346002)(396003)(366004)(39860400002)(376002)(230922051799003)(186009)(1800799009)(1590799021)(451199024)(2616005)(26005)(1580799018)(53546011)(6506007)(6512007)(38070700005)(31696002)(86362001)(122000001)(36756003)(82960400001)(85182001)(38100700002)(83380400001)(76116006)(91956017)(31686004)(2906002)(54906003)(64756008)(6916009)(316002)(66946007)(66476007)(66446008)(8936002)(41300700001)(4326008)(8676002)(66556008)(5660300002)(71200400001)(6486002)(478600001)(43740500002)(45980500001);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RUMvZVZFYkphTnJLNjhLb21zMzk5TlFKaDJndTdmSE5HU1pPODIxMWF3QjVO?=
+ =?utf-8?B?NThFRitWT0hVelFMbVR5bHl3a1NsZUhUVjJxRG5ISGpGQkxQUmUvbCtVYnpH?=
+ =?utf-8?B?TEU0L09CdEdXNnJkdE96NEZiRFdVZC9kS3VqV3VXT3UyVE5ITEtTVHZhMDlt?=
+ =?utf-8?B?THpmVFNzS0t6K0tqejQ1SzlUVHdIcjRNSjhoVlhLVU54VEpFb0JFbktwQXBM?=
+ =?utf-8?B?anhWaVRzMlBwRG8yTnVPR0l4eDlsSENDU1B6Z25uRlJSRzN3ODIyRUp4MElX?=
+ =?utf-8?B?N096VHcxK1E5REhhVkMvWk1Rb1RjTWtzUE1FZkRnUUREWW52OGJpUVRWVmZh?=
+ =?utf-8?B?ZFRRa0RGelJGbWhNRU56OUFhRytOWXBwWWJQWDh2MHd0ODIzb25CNmhIc1RL?=
+ =?utf-8?B?MWNMTnQ3MWpwWGJSUDJ2cm5tL3UxZTFTN0xJVjRsVEkrSys1NUMwMGRZQ3Zi?=
+ =?utf-8?B?ZGdUSHFaczJNSksvdUdMNkNIZVRXRllvZ0tMeGlZT3g4VCswc3FBSzZUQmw3?=
+ =?utf-8?B?QXhQWlk1WC8zYXlZZWRtYnkreGRSZDFqanNsUmNmbWhyck9NZDlZcS9od3ND?=
+ =?utf-8?B?U3JvWjhCUjc3UW83NHIySUZpeTc0Yy9XQ1hCZjJXYVkwNzh2ZnRhUjlLM0Zy?=
+ =?utf-8?B?ZHcweG1jSnMvSTdIamt5bUUzWDVaSVd3SEpNUXU1cFdETFhGdnpGckw3T3U3?=
+ =?utf-8?B?TTJEVEFjNDdJbTVzZ2hnTGhBUXpSZW42a2VIWXpxTmxlY0VRNWp6SkR0a2Nw?=
+ =?utf-8?B?UVpOY1h0OVBFRUxFQ3NYaGtPcHd1OUZmMHRqWGV2K0dCZ1pKd0VxY0RxVWxj?=
+ =?utf-8?B?U1IwcmxXRUFySXZjUE9OMDJpN1NreXFKUmVUOWQ4cGFVbUpmMkZFbW5DSHlO?=
+ =?utf-8?B?TkduOFFXTVEzbFNOQmRvVFRrZm1teVZib29wRlBiUlhuMEoxbEdOU3JzT3gr?=
+ =?utf-8?B?eW5tS3B0eDNFODlOcFlJNmNsOXBQRG5hN0dPekpRQ3FwWGZxQ1IvNURVeU1I?=
+ =?utf-8?B?QXF4WU1HMWdoZHkyL1Rxa2RZVGthRmFkcTcrU2xmUUlIN2w4ZFV6MmtjK0Ux?=
+ =?utf-8?B?RHYzcmhRTTF2MTN3d0RoLzhId3RyVTdoUGNIZXdEd3VhQkFFeXdQb2FLcGVB?=
+ =?utf-8?B?TVdQTEgyNzBDVDdibVZrQlFDMHV1elpRR2xEcjU3V05HYmQ3YXB1emZzZ2tn?=
+ =?utf-8?B?VDNzY2NKdlRaZTlJNkJlWTNRczhkaHN0R3lMbjBkQjF5SU03ZG82K1lMSWc5?=
+ =?utf-8?B?QTJnTnRKVHdCeEs3bXhQK3grK2lLbHZNY09GdFRYUmxmVks2cVJzbFFwODg5?=
+ =?utf-8?B?bmlSRDlLR2tyS1ZHY2wrSURzYzR4NWN1cG9pZlU2WTJrTlBMd1dUM1pGSTJn?=
+ =?utf-8?B?R2F5M1hCbU9yK3RJd3lya2hCNU5EYWtFamhwSEF5UlJsZnMvSjQrWHlSN0JT?=
+ =?utf-8?B?a01DcXZzWHZpK0dXSGxTclpLWFEwekVESDhibC9UWnFRU0xKMFd0MHRSSFBk?=
+ =?utf-8?B?VUdGR0dBazcxU3JHY2Y3NEZ3Q0VOYlVOWGtnZjFPZWtudjY3R3EraW80dXZr?=
+ =?utf-8?B?Tzc1NmNpT2xWT2NPQUI4N3NEcFcxcVN5ZzF2TThYS1NhZkV0RkJ2dUhieVhv?=
+ =?utf-8?B?UktxY0JBTUk4d2g3aWRhY05tR05XdGFvT3dEQTdLZkhqcm9NeHY5SEhVc2Zs?=
+ =?utf-8?B?QUxsSW5ENUlKWUd5S0M1bno3RTNHYU9OcDRXMzE1M3h2dmxMOU4vZFJJbmh0?=
+ =?utf-8?B?UnkzS2tJMU93UzFnZmVSUTdRZDZWMGxNeXNTbU1LSHlDQi9zdm1mdkdGZWNB?=
+ =?utf-8?B?RU9vcFVjUC9vVVAycXBybUkvOUJsM282clAwcjloWkJGdExuNTZRMjNJbSsr?=
+ =?utf-8?B?dG1ZRHY1VUREbDViUi9oMGNEa3BJSHVhU0lITmF6Zjd2M0JrNUdIWm84WFpN?=
+ =?utf-8?B?QjJhMWQ0ZFpMWVpYRXR1emtRZlZZcU9La1M5TjE2eG5tMW44VjFGMEYvOGVl?=
+ =?utf-8?B?L2FGUzdQSmxHeWJ1S1JZV3lSR2llMHFLdXorVWNianpzV1V0b2xwbUswRm9C?=
+ =?utf-8?B?Kzg5SHZFd0JHRDVQQW56K2lDTERyQjJ1WG5vRG44UFhhVUpvU2QrU2tnYVor?=
+ =?utf-8?B?WUtPZU5scWFBNGJnTkpZaVFsVDE5QVNtbS96bDhlRVFzOWdVOFBPNDU2RjlJ?=
+ =?utf-8?B?YUE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5C539863CEFEF447916C4D1901B9B557@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: ZtK2dWQnuDLXKnyPpXT2CiTc7YViU3o0xQafR3+EqKLcdKVfaSQUqsScd60xLPLQvscATOhOBOfSfRX8cLHSKvtzO9MvCxJzhfDTtNHDPNdKBRbLxqrGGvsj2SYGv+p3KWVBM/DF0d2U6bkioCcL63Scvle0/Gmuzpnrv3bk8IOjZlxbyMPmgx8twUkEYzHwSzzX+3bBBv596JnS3UVQJzsiHto67q9xYZoL9lBdezjiOI+6/BPJwXQWVF5Nso5k1mhF8sdeEfYkSTfDvCrpnCJKHPengeimYznRp2HKmbiKvYUWuzjURpcbvUgb5ZNi5vK7sPSZoo60dzCmH4wGa+W9tnUjG/GoN1fXAjiV1gum8vw66jM2dsuzutthjFYqVYhka/+fZSCQUe17Bh7JmLAAs3C+VCiybgceDWgfQqKAz8lJec3bZVDFaGNXjNIoNV49pVWGe13sbwNm1pRvgpOypQtaojplG21PHqgGKT+7ZgpoH9e/0NyE0Q/z5QvQBKc5SbG2AaP+qsL+97ifJNLAnOmdQJKdTk4bnUBwPEnGKOaqMpktW6Ci+95FqRt3lHLnu92j+GGjlCv5YUJCP1/4viI4eo7/3L+I4ZS2a4mvtPbLzNNb4rRv+waZY4frBz6pY2U0/rjt/gJp4eOBo70SZMOhJuhrEwchgl3WhkMcWeLaa27mPLkr5F0Jfr60NYJrz0YWvIayPVGneRnYdZ7zbpN7l/535l29qZHsJnuchQwLjJqzf9uuqXYs2Q/CaoOLKFX0LZ7IiC6HffdtOWwmAHJLY6fKsyw9ZkthCfk=
+X-OriginatorOrg: fujitsu.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB11664.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30fc102c-247b-42e0-f783-08dbbefae86a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Sep 2023 01:41:45.3073 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a19f121d-81e1-4858-a9d8-736e267fd4c7
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: unzpxyAVTCydMWmeamD9pS+poswxG5FpceyuHZbeRtpcFNDgY/yU7IPGd4/6FcArk5m0XXlvsLajvUHY1i9soA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZPR01MB8387
+Received-SPF: pass client-ip=216.71.156.125;
+ envelope-from=lizhijian@fujitsu.com; helo=esa12.fujitsucc.c3s2.iphmx.com
+X-Spam_score_int: -58
+X-Spam_score: -5.9
+X-Spam_bar: -----
+X-Spam_report: (-5.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,221 +167,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil,
-
-On 9/26/23 20:04, Salil Mehta wrote:
-> This shall be used to store user specified topology{socket,cluster,core,thread}
-> and shall be converted to a unique 'vcpu-id' which is used as slot-index during
-> hot(un)plug of vCPU.
-> 
-
-Note that we don't have 'vcpu-id' property. It's actually the index to the array
-ms->possible_cpus->cpus[] and cpu->cpu_index. Please improve the commit log if
-it makes sense.
-
-> Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> ---
->   hw/arm/virt.c    | 63 ++++++++++++++++++++++++++++++++++++++++++++++++
->   target/arm/cpu.c |  4 +++
->   target/arm/cpu.h |  4 +++
->   3 files changed, 71 insertions(+)
-> > diff --git a/hw/arm/virt.c b/hw/arm/virt.c
-> index 7d9dbc2663..57fe97c242 100644
-> --- a/hw/arm/virt.c
-> +++ b/hw/arm/virt.c
-> @@ -221,6 +221,11 @@ static const char *valid_cpus[] = {
->       ARM_CPU_TYPE_NAME("max"),
->   };
->   
-> +static int virt_get_socket_id(const MachineState *ms, int cpu_index);
-> +static int virt_get_cluster_id(const MachineState *ms, int cpu_index);
-> +static int virt_get_core_id(const MachineState *ms, int cpu_index);
-> +static int virt_get_thread_id(const MachineState *ms, int cpu_index);
-> +
->   static bool cpu_type_valid(const char *cpu)
->   {
->       int i;
-> @@ -2168,6 +2173,14 @@ static void machvirt_init(MachineState *machine)
->                             &error_fatal);
->   
->           aarch64 &= object_property_get_bool(cpuobj, "aarch64", NULL);
-> +        object_property_set_int(cpuobj, "socket-id",
-> +                                virt_get_socket_id(machine, n), NULL);
-> +        object_property_set_int(cpuobj, "cluster-id",
-> +                                virt_get_cluster_id(machine, n), NULL);
-> +        object_property_set_int(cpuobj, "core-id",
-> +                                virt_get_core_id(machine, n), NULL);
-> +        object_property_set_int(cpuobj, "thread-id",
-> +                                virt_get_thread_id(machine, n), NULL);
->   
->           if (!vms->secure) {
->               object_property_set_bool(cpuobj, "has_el3", false, NULL);
-> @@ -2652,10 +2665,59 @@ static int64_t virt_get_default_cpu_node_id(const MachineState *ms, int idx)
->       return socket_id % ms->numa_state->num_nodes;
->   }
->   
-
-It seems it's not unnecessary to keep virt_get_{socket, cluster, core, thread}_id()
-because they're called for once. I would suggest to figure out the socket, cluster,
-core and thread ID through @possible_cpus in machvirt_init(), like below.
-
-Besides, we can't always expose property "cluster-id" since cluster in the CPU
-topology isn't always supported, seeing MachineClass::smp_props. Some users may
-want to hide cluster for unknown reasons. 'cluster-id' shouldn't be exposed in
-this case. Otherwise, users may be confused by 'cluster-id' property while it
-has been disabled. For example, a VM is started with the following command lines
-and 'cluster-id' shouldn't be supported in vCPU hot-add.
-
-     -cpu host -smp=maxcpus=2,cpus=1,sockets=2,cores=1,threads=1
-     (qemu) device_add host,id=cpu1,socket-id=1,cluster-id=0,core-id=0,thread-id=0
-
-     object_property_set_int(cpuobj, "socket-id",
-                             possible_cpus->cpus[i].props.socket_id, NULL);
-     if (mc->smp_props.cluster_supported && mc->smp_props.has_clusters) {
-         object_property_set_int(cpuobj, "cluster-id",
-                                 possible_cpus->cpus[i].props.cluster_id, NULL);
-     }
-     object_property_set_int(cpuobj, "core-id",
-                             possible_cpus->cpus[i].props.core_id, NULL);
-     object_property_set_int(cpuobj, "thread-id",
-                             possible_cpus->cpus[i].props.thread_id, NULL);
-
-> +static int virt_get_socket_id(const MachineState *ms, int cpu_index)
-> +{
-> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-> +
-> +    return ms->possible_cpus->cpus[cpu_index].props.socket_id;
-> +}
-> +
-> +static int virt_get_cluster_id(const MachineState *ms, int cpu_index)
-> +{
-> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-> +
-> +    return ms->possible_cpus->cpus[cpu_index].props.cluster_id;
-> +}
-> +
-> +static int virt_get_core_id(const MachineState *ms, int cpu_index)
-> +{
-> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-> +
-> +    return ms->possible_cpus->cpus[cpu_index].props.core_id;
-> +}
-> +
-> +static int virt_get_thread_id(const MachineState *ms, int cpu_index)
-> +{
-> +    assert(cpu_index >= 0 && cpu_index < ms->possible_cpus->len);
-> +
-> +    return ms->possible_cpus->cpus[cpu_index].props.thread_id;
-> +}
-> +
-> +static int
-> +virt_get_cpu_id_from_cpu_topo(const MachineState *ms, DeviceState *dev)
-> +{
-> +    int cpu_id, sock_vcpu_num, clus_vcpu_num, core_vcpu_num;
-> +    ARMCPU *cpu = ARM_CPU(dev);
-> +
-> +    /* calculate total logical cpus across socket/cluster/core */
-> +    sock_vcpu_num = cpu->socket_id * (ms->smp.threads * ms->smp.cores *
-> +                    ms->smp.clusters);
-> +    clus_vcpu_num = cpu->cluster_id * (ms->smp.threads * ms->smp.cores);
-> +    core_vcpu_num = cpu->core_id * ms->smp.threads;
-> +
-> +    /* get vcpu-id(logical cpu index) for this vcpu from this topology */
-> +    cpu_id = (sock_vcpu_num + clus_vcpu_num + core_vcpu_num) + cpu->thread_id;
-> +
-> +    assert(cpu_id >= 0 && cpu_id < ms->possible_cpus->len);
-> +
-> +    return cpu_id;
-> +}
-> +
-
-This function is called for once in PATCH[04/37]. I think it needs to be moved
-around to PATCH[04/37].
-
-[PATCH RFC V2 04/37] arm/virt,target/arm: Machine init time change common to vCPU {cold|hot}-plug
-
-The function name can be shortened because I don't see the suffix "_from_cpu_topo"
-is too much helpful. I think virt_get_cpu_index() would be good enough since it's
-called for once to return the index in array MachineState::possible_cpus::cpus[]
-and the return value is stored to CPUState::cpu_index.
-
-static int virt_get_cpu_index(const MachineState *ms, ARMCPU *cpu)
-{
-     int index, cpus_in_socket, cpus_in_cluster, cpus_in_core;
-
-     /*
-      * It's fine to take cluster into account even it's not supported. In this
-      * case, ms->smp.clusters is always one.
-      */
-}
-
->   static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
->   {
->       int n;
->       unsigned int max_cpus = ms->smp.max_cpus;
-> +    unsigned int smp_threads = ms->smp.threads;
->       VirtMachineState *vms = VIRT_MACHINE(ms);
->       MachineClass *mc = MACHINE_GET_CLASS(vms);
->   
-> @@ -2669,6 +2731,7 @@ static const CPUArchIdList *virt_possible_cpu_arch_ids(MachineState *ms)
->       ms->possible_cpus->len = max_cpus;
->       for (n = 0; n < ms->possible_cpus->len; n++) {
->           ms->possible_cpus->cpus[n].type = ms->cpu_type;
-> +        ms->possible_cpus->cpus[n].vcpus_count = smp_threads;
->           ms->possible_cpus->cpus[n].arch_id =
->               virt_cpu_mp_affinity(vms, n);
->   
-
-This initialization seems to accomodate HMP command "info hotpluggable-cpus".
-It would be nice if it can be mentioned in the commit log.
-
-> diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-> index 93c28d50e5..1376350416 100644
-> --- a/target/arm/cpu.c
-> +++ b/target/arm/cpu.c
-> @@ -2277,6 +2277,10 @@ static Property arm_cpu_properties[] = {
->       DEFINE_PROP_UINT64("mp-affinity", ARMCPU,
->                           mp_affinity, ARM64_AFFINITY_INVALID),
->       DEFINE_PROP_INT32("node-id", ARMCPU, node_id, CPU_UNSET_NUMA_NODE_ID),
-> +    DEFINE_PROP_INT32("socket-id", ARMCPU, socket_id, 0),
-> +    DEFINE_PROP_INT32("cluster-id", ARMCPU, cluster_id, 0),
-> +    DEFINE_PROP_INT32("core-id", ARMCPU, core_id, 0),
-> +    DEFINE_PROP_INT32("thread-id", ARMCPU, thread_id, 0),
->       DEFINE_PROP_INT32("core-count", ARMCPU, core_count, -1),
->       DEFINE_PROP_END_OF_LIST()
->   };
-
-All those 4 properties are used for vCPU hot-add, meaning they're not needed
-when vCPU hotplug isn't supported on the specific board. Even for hw/virt board,
-cluster isn't always supported and 'cluster-id' shouldn't always be exposed,
-as explained above. How about to register the properties dynamically only when
-they're needed by vCPU hotplug?
-
-> diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-> index 88e5accda6..d51d39f621 100644
-> --- a/target/arm/cpu.h
-> +++ b/target/arm/cpu.h
-> @@ -1094,6 +1094,10 @@ struct ArchCPU {
->       QLIST_HEAD(, ARMELChangeHook) el_change_hooks;
->   
->       int32_t node_id; /* NUMA node this CPU belongs to */
-> +    int32_t socket_id;
-> +    int32_t cluster_id;
-> +    int32_t core_id;
-> +    int32_t thread_id;
-
-It would be fine to keep those fields even the corresponding properties are
-dynamically registered, but a little bit memory overhead incurred :)
-
->   
->       /* Used to synchronize KVM and QEMU in-kernel device levels */
->       uint8_t device_irq_level;
-
-Thanks,
-Gavin
-
+DQoNCk9uIDI2LzA5LzIwMjMgMTk6NTIsIE1hcmt1cyBBcm1icnVzdGVyIHdyb3RlOg0KPiAiWmhp
+amlhbiBMaSAoRnVqaXRzdSkiIDxsaXpoaWppYW5AZnVqaXRzdS5jb20+IHdyaXRlczoNCj4gDQo+
+PiBPbiAxOC8wOS8yMDIzIDIyOjQyLCBNYXJrdXMgQXJtYnJ1c3RlciB3cm90ZToNCj4+PiBGdW5j
+dGlvbnMgdGhhdCB1c2UgYW4gRXJyb3IgKiplcnJwIHBhcmFtZXRlciB0byByZXR1cm4gZXJyb3Jz
+IHNob3VsZA0KPj4+IG5vdCBhbHNvIHJlcG9ydCB0aGVtIHRvIHRoZSB1c2VyLCBiZWNhdXNlIHJl
+cG9ydGluZyBpcyB0aGUgY2FsbGVyJ3MNCj4+PiBqb2IuICBXaGVuIHRoZSBjYWxsZXIgZG9lcywg
+dGhlIGVycm9yIGlzIHJlcG9ydGVkIHR3aWNlLiAgV2hlbiBpdA0KPj4+IGRvZXNuJ3QgKGJlY2F1
+c2UgaXQgcmVjb3ZlcmVkIGZyb20gdGhlIGVycm9yKSwgdGhlcmUgaXMgbm8gZXJyb3IgdG8NCj4+
+PiByZXBvcnQsIGkuZS4gdGhlIHJlcG9ydCBpcyBib2d1cy4NCj4+Pg0KPj4+IHFlbXVfcmRtYV9z
+b3VyY2VfaW5pdCgpLCBxZW11X3JkbWFfY29ubmVjdCgpLA0KPj4+IHJkbWFfc3RhcnRfaW5jb21p
+bmdfbWlncmF0aW9uKCksIGFuZCByZG1hX3N0YXJ0X291dGdvaW5nX21pZ3JhdGlvbigpDQo+Pj4g
+dmlvbGF0ZSB0aGlzIHByaW5jaXBsZTogdGhleSBjYWxsIGVycm9yX3JlcG9ydCgpIHZpYQ0KPj4+
+IHFlbXVfcmRtYV9jbGVhbnVwKCkuDQo+Pj4NCj4+PiBNb3Jlb3ZlciwgcWVtdV9yZG1hX2NsZWFu
+dXAoKSBjYW4ndCBmYWlsLiAgSXQgaXMgY2FsbGVkIG9uIGVycm9yDQo+Pj4gcGF0aHMsIGFuZCBR
+SU9DaGFubmVsIGNsb3NlIGFuZCBmaW5hbGl6YXRpb24uICBBcmUgdGhlIGNvbmRpdGlvbnMgaXQN
+Cj4+PiByZXBvcnRzIHJlYWxseSBlcnJvcnM/ICBJIGRvdWJ0IGl0Lg0KPj4NCj4+IEknbSBub3Qg
+dmVyeSBzdXJlLCBpdCdzIGZpbmUgaWYgaXQncyBjYWxsIGZyb20gdGhlIGVycm9yIHBhdGguIGJ1
+dCB3aGVuDQo+PiB0aGUgY2FsbGVyIGlzIG1pZ3JhdGlvbl9jYW5jbGUgZnJvbSBITVAvUU1QLCBz
+aGFsbCB3ZSByZXBvcnQgc29tZXRoaW5nIG1vcmUNCj4+IHRob3VnaCB3ZSBrbm93IFFFTVUgY2Fu
+IHJlY292ZXIuDQo+Pg0KPj4gbWF5YmUgY2hhbmdlIHRvIHdhcm5pbmcgZXRjLi4uDQo+IA0KPiBU
+aGUgcGFydCBJJ20gc3VyZSBhYm91dCBpcyB0aGF0IHJlcG9ydGluZyBhbiBlcnJvciB0byB0aGUg
+dXNlciBpcyB3cm9uZw0KPiB3aGVuIHdlIGFjdHVhbGx5IHJlY292ZXIgZnJvbSB0aGUgZXJyb3Iu
+ICBXaGljaCBxZW11X3JkbWFfY2xlYW51cCgpDQo+IGRvZXMuDQoNClllcywgaSBoYXZlIG5vIGRv
+dWJ0IGFib3V0IHRoaXMuDQoNCg0KPiANCj4gSSdtIG5vdCBzdXJlIHdoZXRoZXIgdGhlIChjb21w
+bGljYXRlZCEpIGNvbmRpdGlvbiB0aGF0IHRyaWdnZXJzDQo+IHFlbXVfcmRtYV9jbGVhbnVwKCkn
+cyBpbGwtYWR2aXNlZCBlcnJvciByZXBvcnQgbmVlZHMgdG8gYmUgcmVwb3J0ZWQgaW4NCj4gc29t
+ZSBvdGhlciBmb3JtLiAgVGhlIHJlbWFpbmRlciBvZiB0aGUgZnVuY3Rpb24gaWdub3JlcyBmYWls
+dXJlLi4uDQo+IA0KPiBJZiB5b3UgdGhpbmsgd2Ugc2hvdWxkIHRvIGRvd25ncmFkZSB0aGUgZXJy
+b3IgdG8gYSB3YXJuaW5nLCBhbmQgbm8NCj4gbWFpbnRhaW5lciBkaXNhZ3JlZXMsIHRoZW4gSSds
+bCBkb3duZ3JhZGUuICBEbyB5b3U/DQoNClllcywgSSdkIGxpa2UgZG93bmdyYWRlIGVycm9yIHRv
+IGEgd2FybmluZy4NCg0KDQpUaGFua3MNClpoaWppYW4NCg0KPiANCj4+PiBDbGVhbiB0aGlzIHVw
+OiBzaWxlbmNlIHFlbXVfcmRtYV9jbGVhbnVwKCkuICBJIGJlbGlldmUgdGhhdCdzIGZpbmUgZm9y
+DQo+Pj4gYWxsIHRoZXNlIGNhbGxlcnMuICBJZiBpdCBpc24ndCwgd2UgbmVlZCB0byBjb252ZXJ0
+IHRvIEVycm9yIGluc3RlYWQuDQo+Pj4NCj4+PiBTaWduZWQtb2ZmLWJ5OiBNYXJrdXMgQXJtYnJ1
+c3RlciA8YXJtYnJ1QHJlZGhhdC5jb20+DQo+Pj4gLS0tDQo+Pj4gICAgbWlncmF0aW9uL3JkbWEu
+YyB8IDYgKy0tLS0tDQo+Pj4gICAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCA1IGRl
+bGV0aW9ucygtKQ0KPj4+DQo+Pj4gZGlmZiAtLWdpdCBhL21pZ3JhdGlvbi9yZG1hLmMgYi9taWdy
+YXRpb24vcmRtYS5jDQo+Pj4gaW5kZXggZDlmODBlZjM5MC4uYmUyZGI3OTQ2ZCAxMDA2NDQNCj4+
+PiAtLS0gYS9taWdyYXRpb24vcmRtYS5jDQo+Pj4gKysrIGIvbWlncmF0aW9uL3JkbWEuYw0KPj4+
+IEBAIC0yMzMwLDcgKzIzMzAsNiBAQCBzdGF0aWMgaW50IHFlbXVfcmRtYV93cml0ZShRRU1VRmls
+ZSAqZiwgUkRNQUNvbnRleHQgKnJkbWEsDQo+Pj4gICAgDQo+Pj4gICAgc3RhdGljIHZvaWQgcWVt
+dV9yZG1hX2NsZWFudXAoUkRNQUNvbnRleHQgKnJkbWEpDQo+Pj4gICAgew0KPj4+IC0gICAgRXJy
+b3IgKmVyciA9IE5VTEw7DQo+Pj4gICAgICAgIGludCBpZHg7DQo+Pj4gICAgDQo+Pj4gICAgICAg
+IGlmIChyZG1hLT5jbV9pZCAmJiByZG1hLT5jb25uZWN0ZWQpIHsNCj4+PiBAQCAtMjM0MSwxMCAr
+MjM0MCw3IEBAIHN0YXRpYyB2b2lkIHFlbXVfcmRtYV9jbGVhbnVwKFJETUFDb250ZXh0ICpyZG1h
+KQ0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIC50eXBlID0g
+UkRNQV9DT05UUk9MX0VSUk9SLA0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgIC5yZXBlYXQgPSAxLA0KPj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICB9Ow0KPj4+IC0gICAgICAgICAgICBlcnJvcl9yZXBvcnQoIkVhcmx5IGVycm9y
+LiBTZW5kaW5nIGVycm9yLiIpOw0KPj4+IC0gICAgICAgICAgICBpZiAocWVtdV9yZG1hX3Bvc3Rf
+c2VuZF9jb250cm9sKHJkbWEsIE5VTEwsICZoZWFkLCAmZXJyKSA8IDApIHsNCj4+PiAtICAgICAg
+ICAgICAgICAgIGVycm9yX3JlcG9ydF9lcnIoZXJyKTsNCj4+PiAtICAgICAgICAgICAgfQ0KPj4+
+ICsgICAgICAgICAgICBxZW11X3JkbWFfcG9zdF9zZW5kX2NvbnRyb2wocmRtYSwgTlVMTCwgJmhl
+YWQsIE5VTEwpOw0KPj4+ICAgICAgICAgICAgfQ0KPj4+ICAgIA0KPj4+ICAgICAgICAgICAgcmRt
+YV9kaXNjb25uZWN0KHJkbWEtPmNtX2lkKTsNCj4g
 
