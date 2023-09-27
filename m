@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6557F7B00A8
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 137D27B0098
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:38:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlQyK-0000wc-5W; Wed, 27 Sep 2023 05:36:44 -0400
+	id 1qlQyI-0000un-30; Wed, 27 Sep 2023 05:36:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQy9-0000sN-TF
+ id 1qlQy9-0000sO-TH
  for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:35 -0400
-Received: from collins.uni-paderborn.de ([2001:638:502:c003::14])
+Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQy8-0000jd-AZ
+ id 1qlQy8-0000jk-Ac
  for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
@@ -24,17 +24,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=WUubD0ZJKTGpZfFwTqcmK2tbordUXESg+SoTC0LvCn0=; b=BavW3qzMZN1Y7Z0/Jy3S63YISM
- 8Zy9oLJit/bDTNtzOEAzXVEiITbWPH/1V5qNHUnH6e2MlHe7ncU2XD5MTLlj0LPU9rFXrVdvBE8Lr
- LcXOH0bECJQr8R5vBIVQ8P4t28jFe0tW0DMGM+DgoHkHQku42JZIjrxaCuEk4ZibM2to=;
+ bh=Lx0pKQw/TW/kaIGCunsNAhOgP3Cy5yyfbtAHJigKPNQ=; b=svPwvdVHxUgcRukVFhVgdmyVXr
+ HuRELGr9S/YvCaqSoLDYBAXGzZKEnYQzVeKNHvV/fdr/nagI2yUmTVzmwYruV6nOsfvZ8DnZfSFLW
+ EKybIwFgacP4gzL1gV9A4X3iQqEkp+sLFfpMbHYNzvBtUtZLwfQyGBrB8cOlzS1kPgEc=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de,
- Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 11/21] target/tricore: Fix FTOUZ being ISA v1.3.1 up
-Date: Wed, 27 Sep 2023 11:35:42 +0200
-Message-ID: <20230927093552.493279-12-kbastian@mail.uni-paderborn.de>
+Cc: kbastian@mail.uni-paderborn.de
+Subject: [PULL 12/21] tests/tcg/tricore: Extended and non-extened regs now
+ match
+Date: Wed, 27 Sep 2023 11:35:43 +0200
+Message-ID: <20230927093552.493279-13-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
 References: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
@@ -43,14 +43,12 @@ Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.27.92417, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.9.27.602000
-X-Sophos-SenderHistory: ip=79.202.213.239, fs=22, da=183416451, mc=10, sc=0,
- hc=10, sp=0, fso=22, re=0, sd=0, hd=0
+ AntiVirus-Data: 2023.9.26.602000
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::14;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=collins.uni-paderborn.de
+Received-SPF: pass client-ip=2001:638:502:c003::16;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -72,30 +70,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230828112651.522058-12-kbastian@mail.uni-paderborn.de>
----
- target/tricore/translate.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+RSx for d regs and e regs now use the same numbering. This makes sure
+that mixing d and e registers in an insn test will not overwrite data
+between registers.
 
-diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 2107d1fdd4..7b53307eff 100644
---- a/target/tricore/translate.c
-+++ b/target/tricore/translate.c
-@@ -6290,7 +6290,11 @@ static void decode_rr_divide(DisasContext *ctx)
-         gen_helper_ftou(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
-         break;
-     case OPC2_32_RR_FTOUZ:
--        gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
-+        if (has_feature(ctx, TRICORE_FEATURE_131)) {
-+            gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
-+        } else {
-+            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
-+        }
-         break;
-     case OPC2_32_RR_UPDFL:
-         gen_helper_updfl(cpu_env, cpu_gpr_d[r1]);
+Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Message-ID: <20230913105326.40832-2-kbastian@mail.uni-paderborn.de>
+---
+ tests/tcg/tricore/asm/macros.h | 38 +++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/tests/tcg/tricore/asm/macros.h b/tests/tcg/tricore/asm/macros.h
+index 17e696bef5..0f349dbf1e 100644
+--- a/tests/tcg/tricore/asm/macros.h
++++ b/tests/tcg/tricore/asm/macros.h
+@@ -12,31 +12,31 @@
+ #define TESTDEV_ADDR 0xf0000000
+ /* Register definitions */
+ #define DREG_RS1 %d0
+-#define DREG_RS2 %d1
+-#define DREG_RS3 %d2
+-#define DREG_CALC_RESULT %d3
+-#define DREG_CALC_PSW %d4
+-#define DREG_CORRECT_PSW %d5
+-#define DREG_TEMP_LI %d10
+-#define DREG_TEMP %d11
+-#define DREG_TEST_NUM %d14
+-#define DREG_CORRECT_RESULT %d15
+-#define DREG_CORRECT_RESULT_2 %d13
++#define DREG_RS2 %d2
++#define DREG_RS3 %d4
++#define DREG_CALC_RESULT %d5
++#define DREG_CALC_PSW %d6
++#define DREG_CORRECT_PSW %d7
++#define DREG_TEMP_LI %d13
++#define DREG_TEMP %d14
++#define DREG_TEST_NUM %d8
++#define DREG_CORRECT_RESULT %d9
++#define DREG_CORRECT_RESULT_2 %d10
+ 
+ #define AREG_ADDR %a0
+ #define AREG_CORRECT_RESULT %a3
+ 
+ #define DREG_DEV_ADDR %a15
+ 
+-#define EREG_RS1 %e6
+-#define EREG_RS1_LO %d6
+-#define EREG_RS1_HI %d7
+-#define EREG_RS2 %e8
+-#define EREG_RS2_LO %d8
+-#define EREG_RS2_HI %d9
+-#define EREG_CALC_RESULT %e8
+-#define EREG_CALC_RESULT_HI %d9
+-#define EREG_CALC_RESULT_LO %d8
++#define EREG_RS1 %e0
++#define EREG_RS1_LO %d0
++#define EREG_RS1_HI %d1
++#define EREG_RS2 %e2
++#define EREG_RS2_LO %d2
++#define EREG_RS2_HI %d3
++#define EREG_CALC_RESULT %e6
++#define EREG_CALC_RESULT_LO %d6
++#define EREG_CALC_RESULT_HI %d7
+ #define EREG_CORRECT_RESULT_LO %d0
+ #define EREG_CORRECT_RESULT_HI %d1
+ 
 -- 
 2.42.0
 
