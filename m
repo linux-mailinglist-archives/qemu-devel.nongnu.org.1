@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15FAF7B07F3
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:17:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB6387B07F9
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:18:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlWHF-0002oq-T7; Wed, 27 Sep 2023 11:16:37 -0400
+	id 1qlWIj-0004F3-MR; Wed, 27 Sep 2023 11:18:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qlWHE-0002mR-5N
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:16:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qlWIZ-0004EB-Ot
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:17:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qlWHA-0007Yt-RD
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:16:35 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qlWIX-0007kZ-Cd
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:17:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695827791;
+ s=mimecast20190719; t=1695827875;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=M0YQHcbZhq4efjWXZZzqIM/AdrkLqowtnSIvAj2D8dg=;
- b=WlRtEtNBDXFUJ9A2FIKmZ1/gl74nNvYGnppz+2ZkmbZO2QWvloDIosZU2DF0eacbrC5bi1
- pziUdW+lkqXuLZkKdrS5qEAOJnvx7cFSK+ma3X0xpR6SvjFnN9Z5mSrZaaVNZXQVjcxVK3
- z2KSindXfPXqliAvSqsvKoOKtL0elwY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TWzmkkCGCUKVLekHJqVFLLk2pKbCMFy4FAQuyWnpmDA=;
+ b=GfTHcL7DCVvE1sLOkXBF+h+rfJw9qB9sp7Pw7UGoqeTUGkH2wTOJLqM9zJkXWVpPC9IbZf
+ R8+QupHZnwWf6caops6tVIOKbqkhx/1Dj/tGged1NSzppN02PVkpN9edpx6kRZ+75dQB16
+ yVZ2EVEQekg0ruHvulVSMEnmG3vh8D4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-689-kT6uIwxONBm8l6pod6jogQ-1; Wed, 27 Sep 2023 11:16:28 -0400
-X-MC-Unique: kT6uIwxONBm8l6pod6jogQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-31f3cfe7269so8773707f8f.2
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 08:16:28 -0700 (PDT)
+ us-mta-436-EE9SMFjCNC-X7yl-2E29_Q-1; Wed, 27 Sep 2023 11:17:54 -0400
+X-MC-Unique: EE9SMFjCNC-X7yl-2E29_Q-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4053d832d51so92537715e9.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 08:17:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695827787; x=1696432587;
+ d=1e100.net; s=20230601; t=1695827873; x=1696432673;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=M0YQHcbZhq4efjWXZZzqIM/AdrkLqowtnSIvAj2D8dg=;
- b=pWMGtkpCV/s8xD/mBVMT1jZ6UmZp965ReMVJvFkpLHqzXxbeO4PxWuwaZSJ8vQAISS
- x+yP+8QjWv8JmK6T/1l19tfdzzTBV3nDRJAcmeggVCP4i5heLA/XhJSVATWMdn8sPLc9
- n/HNDjbmV96TyxRN9hdxd557DQw/U9PxJeOnQ0br0vPu1p5GVIz1bTGWLfzfUBH5uzj2
- KBGPnJk3Q/iMU0GKtS9/trEnglC0QvciiRGXpJpTka5Qzc6viEYPMoreYfGATCRiYzZK
- 7rNdyf5FBzBkCdk0QJRpQVAbmX+kTQN/c0cyU7hWM4fM41PEpeNi2DsH+up5RfBMw2aT
- TFqg==
-X-Gm-Message-State: AOJu0YyICMvM1/3SF2hD9pM2CDYMrG0U41/bPmZA2oCyJyUlYeFvboab
- zCqeQFtvL2t0JoYQr4e0md9T3VpHeHsMgdyFBe5zsWaK0/+pcJfeNOy8U7xpEjXwBzTX1hpQY8V
- 5lCQLGVgdmliPR5k=
-X-Received: by 2002:adf:e791:0:b0:31f:fdcf:b2b6 with SMTP id
- n17-20020adfe791000000b0031ffdcfb2b6mr2107144wrm.55.1695827787550; 
- Wed, 27 Sep 2023 08:16:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH/uVhjaf3t49uRXk6kJx2FaVi8BMOI499scPncgYqjWyIthOHFcp1DhPyo5COcVCj9bmXSyA==
-X-Received: by 2002:adf:e791:0:b0:31f:fdcf:b2b6 with SMTP id
- n17-20020adfe791000000b0031ffdcfb2b6mr2107118wrm.55.1695827787192; 
- Wed, 27 Sep 2023 08:16:27 -0700 (PDT)
+ bh=TWzmkkCGCUKVLekHJqVFLLk2pKbCMFy4FAQuyWnpmDA=;
+ b=ujvlOdQ5tGb2Xt/wzkqaf4BowXU8XAlh9rtitpMmySHUD+UBPVJnKrBTIV5B9DMtT7
+ yosWD69YJ2xZg3MyTw1xZlhaKY5DrDAFt8hkbZN20pZC3ixZMLKWtng8zZXZSiLK/c7w
+ xTBMUBv+sZA3l9SAVW9rzGF7BcOt5lxL7FDXGhcrTU5qB0L2QGZfvC15HjTxes6LGuWT
+ qJ0BIDnONXqzNdYXum3geRXp/aoR7RdthtNTY1TmqrLTYyRx3NRkpOesRsVGzEqVnpAG
+ V3mhJ2cbq9yo2H7/WFW8NuzSBLYLyq4DBG0470ckLGU49ojPrhZuDXK1vihzEF+TrZs/
+ Jh4Q==
+X-Gm-Message-State: AOJu0YyyXejXHrwjp/EngnyxVpUExxjXxIYTOdlaJJ4E1MKe4kiS6GUt
+ Dh96sh8ZhIeVUxC98QBAtJ3JhPwsjlIWjR74SlDSRk48KtmDHV8HIj5Qa9vCdnR+XYVatnLKEg7
+ Hz0jY6cvIa55Paws=
+X-Received: by 2002:a7b:c415:0:b0:405:377f:5417 with SMTP id
+ k21-20020a7bc415000000b00405377f5417mr2187406wmi.39.1695827872795; 
+ Wed, 27 Sep 2023 08:17:52 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJgmezse+J1wNjE8MK59OwGZ81jMSTuFB1ykJfbs2HNLGnSoXh4Upp8w1cEnL8F5IoS3VD3w==
+X-Received: by 2002:a7b:c415:0:b0:405:377f:5417 with SMTP id
+ k21-20020a7bc415000000b00405377f5417mr2187383wmi.39.1695827872386; 
+ Wed, 27 Sep 2023 08:17:52 -0700 (PDT)
 Received: from redhat.com ([2a02:14f:16e:b9f6:556e:c001:fe18:7e0a])
  by smtp.gmail.com with ESMTPSA id
- x6-20020a5d60c6000000b0031f300a4c26sm17267390wrt.93.2023.09.27.08.16.23
+ k3-20020a05600c0b4300b003fe1fe56202sm18068228wmr.33.2023.09.27.08.17.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 27 Sep 2023 08:16:26 -0700 (PDT)
-Date: Wed, 27 Sep 2023 11:16:20 -0400
+ Wed, 27 Sep 2023 08:17:51 -0700 (PDT)
+Date: Wed, 27 Sep 2023 11:17:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: Salil Mehta <salil.mehta@huawei.com>, xianglai li <lixianglai@loongson.cn>,
+To: lixianglai <lixianglai@loongson.cn>
+Cc: Salil Mehta <salil.mehta@huawei.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
  Bernhard Beschow <shentey@gmail.com>, Salil Mehta <salil.mehta@opnsrc.net>,
  Xiaojuan Yang <yangxiaojuan@loongson.cn>,
@@ -75,30 +75,32 @@ Cc: Salil Mehta <salil.mehta@huawei.com>, xianglai li <lixianglai@loongson.cn>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
  "wangyanan (Y)" <wangyanan55@huawei.com>,
+ Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
  Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
  Bibo Mao <maobibo@loongson.cn>
 Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
-Message-ID: <20230927111523-mutt-send-email-mst@kernel.org>
+Message-ID: <20230927111651-mutt-send-email-mst@kernel.org>
 References: <cover.1695697701.git.lixianglai@loongson.cn>
  <c2ab409710f5e0f0346727b47aaabd14537d45b8.1695697701.git.lixianglai@loongson.cn>
  <17a09b8ab65542be8561cb0480dae6bd@huawei.com>
  <20230926071055-mutt-send-email-mst@kernel.org>
  <4cc68780b63f47879d757fe604f37892@huawei.com>
  <20230926074945-mutt-send-email-mst@kernel.org>
- <ZRLO5m0K3ilV9VUt@redhat.com>
+ <54482e7486564d68926ded075ebe8c6f@huawei.com>
+ <55beb69e-0adf-1bea-89ef-ebc4dabed673@loongson.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZRLO5m0K3ilV9VUt@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+In-Reply-To: <55beb69e-0adf-1bea-89ef-ebc4dabed673@loongson.cn>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,103 +117,317 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 26, 2023 at 01:30:30PM +0100, Daniel P. Berrangé wrote:
-> On Tue, Sep 26, 2023 at 07:54:04AM -0400, Michael S. Tsirkin wrote:
-> > On Tue, Sep 26, 2023 at 11:45:19AM +0000, Salil Mehta wrote:
+On Tue, Sep 26, 2023 at 08:49:27PM +0800, lixianglai wrote:
+> 
+> Hi Salil Mehta via  And Michael S. Tsirkin:
+> > > From: Michael S. Tsirkin <mst@redhat.com>
+> > > Sent: Tuesday, September 26, 2023 12:54 PM
+> > > To: Salil Mehta <salil.mehta@huawei.com>
+> > > Cc: xianglai li <lixianglai@loongson.cn>; qemu-devel@nongnu.org; Bernhard
+> > > Beschow <shentey@gmail.com>; Salil Mehta <salil.mehta@opnsrc.net>; Xiaojuan
+> > > Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Igor
+> > > Mammedov <imammedo@redhat.com>; Ani Sinha <anisinha@redhat.com>; Paolo
+> > > Bonzini <pbonzini@redhat.com>; Richard Henderson
+> > > <richard.henderson@linaro.org>; Eduardo Habkost <eduardo@habkost.net>;
+> > > Marcel Apfelbaum <marcel.apfelbaum@gmail.com>; Philippe Mathieu-Daudé
+> > > <philmd@linaro.org>; wangyanan (Y) <wangyanan55@huawei.com>; Daniel P.
+> > > Berrangé <berrange@redhat.com>; Peter Xu <peterx@redhat.com>; David
+> > > Hildenbrand <david@redhat.com>; Bibo Mao <maobibo@loongson.cn>
+> > > Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
 > > > 
-> > > > From: Michael S. Tsirkin <mst@redhat.com>
-> > > > Sent: Tuesday, September 26, 2023 12:12 PM
-> > > > To: Salil Mehta <salil.mehta@huawei.com>
-> > > > Cc: xianglai li <lixianglai@loongson.cn>; qemu-devel@nongnu.org; Bernhard
-> > > > Beschow <shentey@gmail.com>; Salil Mehta <salil.mehta@opnsrc.net>; Xiaojuan
-> > > > Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Igor
-> > > > Mammedov <imammedo@redhat.com>; Ani Sinha <anisinha@redhat.com>; Paolo
-> > > > Bonzini <pbonzini@redhat.com>; Richard Henderson
-> > > > <richard.henderson@linaro.org>; Eduardo Habkost <eduardo@habkost.net>;
-> > > > Marcel Apfelbaum <marcel.apfelbaum@gmail.com>; Philippe Mathieu-Daudé
-> > > > <philmd@linaro.org>; wangyanan (Y) <wangyanan55@huawei.com>; Daniel P.
-> > > > Berrangé <berrange@redhat.com>; Peter Xu <peterx@redhat.com>; David
-> > > > Hildenbrand <david@redhat.com>; Bibo Mao <maobibo@loongson.cn>
-> > > > Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+> > > On Tue, Sep 26, 2023 at 11:45:19AM +0000, Salil Mehta wrote:
+> > > > > From: Michael S. Tsirkin <mst@redhat.com>
+> > > > > Sent: Tuesday, September 26, 2023 12:12 PM
+> > > > > To: Salil Mehta <salil.mehta@huawei.com>
+> > > > > Cc: xianglai li <lixianglai@loongson.cn>; qemu-devel@nongnu.org;
+> > > Bernhard
+> > > > > Beschow <shentey@gmail.com>; Salil Mehta <salil.mehta@opnsrc.net>;
+> > > Xiaojuan
+> > > > > Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Igor
+> > > > > Mammedov <imammedo@redhat.com>; Ani Sinha <anisinha@redhat.com>; Paolo
+> > > > > Bonzini <pbonzini@redhat.com>; Richard Henderson
+> > > > > <richard.henderson@linaro.org>; Eduardo Habkost <eduardo@habkost.net>;
+> > > > > Marcel Apfelbaum <marcel.apfelbaum@gmail.com>; Philippe Mathieu-Daudé
+> > > > > <philmd@linaro.org>; wangyanan (Y) <wangyanan55@huawei.com>; Daniel P.
+> > > > > Berrangé <berrange@redhat.com>; Peter Xu <peterx@redhat.com>; David
+> > > > > Hildenbrand <david@redhat.com>; Bibo Mao <maobibo@loongson.cn>
+> > > > > Subject: Re: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+> > > > > 
+> > > > > On Tue, Sep 26, 2023 at 10:49:08AM +0000, Salil Mehta wrote:
+> > > > > > Hi Xianglai,
+> > > > > > FYI. RFC V2 is out and you can now drop the arch agnostic patches
+> > > from
+> > > > > > your patch-set. Please check the details in the cover letter which
+> > > one
+> > > > > > you need to pick and rebase from:
+> > > > > > 
+> > > > > > https://lore.kernel.org/qemu-devel/20230926100436.28284-1-
+> > > > > salil.mehta@huawei.com/T/#t
+> > > > > > I am planning to float the architecture agnostic patch-set within
+> > > this
+> > > > > > week which will have same patches and in same order as mentioned in
+> > > > > > the cover letter. This will untie the development across different
+> > > > > > architectures.
+> > > > > > 
+> > > > > > Many thanks
+> > > > > > Salil.
+> > > > > However, please get authorship info right. This claims patch has been
+> > > > > codeveloped by Bernhard Beschow, xianglai li and yourself.
+> > > > > Your patch claims a completely different list of authors
+> > > > Yes, because those are the people who have developed the patches.
 > > > > 
-> > > > On Tue, Sep 26, 2023 at 10:49:08AM +0000, Salil Mehta wrote:
-> > > > > Hi Xianglai,
-> > > > > FYI. RFC V2 is out and you can now drop the arch agnostic patches from
-> > > > > your patch-set. Please check the details in the cover letter which one
-> > > > > you need to pick and rebase from:
-> > > > >
-> > > > > https://lore.kernel.org/qemu-devel/20230926100436.28284-1-
-> > > > salil.mehta@huawei.com/T/#t
-> > > > >
-> > > > > I am planning to float the architecture agnostic patch-set within this
-> > > > > week which will have same patches and in same order as mentioned in
-> > > > > the cover letter. This will untie the development across different
-> > > > > architectures.
-> > > > >
-> > > > > Many thanks
-> > > > > Salil.
+> > > > > with yourself being the only common author.
+> > > > > Not nice.
+> > > > I have already replied in the other thread. This patch has been
+> > > > taken from the ARM patch-set sent in the year 2020.
 > > > > 
-> > > > However, please get authorship info right. This claims patch has been
-> > > > codeveloped by Bernhard Beschow, xianglai li and yourself.
-> > > > Your patch claims a completely different list of authors
+> > > > I am not sure who is the other author and how he has contributed.
+> > > > 
+> > > > Co-developed-by usually points at main authors.
+> > > > 
 > > > 
-> > > Yes, because those are the people who have developed the patches.
-> > > 
-> > > > with yourself being the only common author.
-> > > > Not nice.
-> > > 
-> > > I have already replied in the other thread. This patch has been
-> > > taken from the ARM patch-set sent in the year 2020.
-> > > 
-> > > I am not sure who is the other author and how he has contributed.
-> > > 
-> > > Co-developed-by usually points at main authors.
-> > > 
+> > > If you are not sure then find out please.
 > > 
+> > We really have not collaborated on anything as part of
+> > this entire development of virtual CPU hotplug since the
+> > year 2020?
 > > 
-> > If you are not sure then find out please.
-> > And to help you stop guessing at the rules:
+> > I would leave it to Xianglai to answer about the person.
 > > 
-> > Documentation/process/submitting-patches.rst
-> > 
-> > 	Co-developed-by: states that the patch was co-created by multiple developers;
-> > 	it is used to give attribution to co-authors (in addition to the author
-> > 	attributed by the From: tag) when several people work on a single patch.  Since
-> > 	Co-developed-by: denotes authorship, every Co-developed-by: must be immediately
-> > 	followed by a Signed-off-by: of the associated co-author.  Standard sign-off
-> > 	procedure applies, i.e. the ordering of Signed-off-by: tags should reflect the
-> > 	chronological history of the patch insofar as possible, regardless of whether
-> > 	the author is attributed via From: or Co-developed-by:.  Notably, the last
-> > 	Signed-off-by: must always be that of the developer submitting the patch.
 > 
-> Note, that's a linux.git docs requirement you're pointing to,
-> not a QEMU one.
+> I did not participate in the hot swap of arm virtualized cpu.
 > 
-> I don't think QEMU has historically gone about this level
-> of precise detail/strictness.
+> I just referred to the patch sent by Salil Mehta to the community.
 > 
-> Nothing in the DCO requires every co-developer to add a S-o-B.
-> The person adding a S-o-B is attesting that they are confident
-> they have the rights to submit this. One way they can attain
-> this confidence is if the people they worked with add their own
-> S-o-B but that's not a hard requirement. *If* some co-developers
-> were working inside the same company and copyright is owned by
-> the company, it is reasonable to only have one S-o-B for the
-> person who finally submits it. That's a judgement call the person
-> submitting can make.
+> Since his patch has not been integrated into qemu's code repository,
 > 
-> With regards,
-> Daniel
+> I referred to Salil Mehta's patch to ensure that my code could run.
+> 
+> I added Co-developed-by in order to show respect for the achievements of his
+> labor,
+> 
+> which is all my fault. I wrongly used Co-developed-by, and I apologize for
+> that.
+> 
+> I will delete the first two patches until the unrelated patches in Salil
+> Mehta's architecture are combined,
+> 
+> and then submit my own patch.
+> 
+> 
+> Thanks,
+> 
+> Xianglai.
 
-We really should write the rules up btw.
-And, I think it would be a really bad idea to use exactly
-the same tag as linux with a slightly different set of rules.
+I see. The correct way is to simply keep the original author.
+I don't know what you used to apply the patch but e.g. git am
+will do exactly that for you.
+Add your own S.O.B at the bottom and you are all set.
 
 
-
-> -- 
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+> 
+> > 
+> > > And to help you stop guessing at the rules:
+> > > 
+> > > Documentation/process/submitting-patches.rst
+> > > 
+> > > 	Co-developed-by: states that the patch was co-created by multiple
+> > > developers;
+> > > 	it is used to give attribution to co-authors (in addition to the
+> > > author
+> > > 	attributed by the From: tag) when several people work on a single
+> > > patch.  Since
+> > > 	Co-developed-by: denotes authorship, every Co-developed-by: must be
+> > > immediately
+> > > 	followed by a Signed-off-by: of the associated co-author.  Standard
+> > > sign-off
+> > > 	procedure applies, i.e. the ordering of Signed-off-by: tags should
+> > > reflect the
+> > > 	chronological history of the patch insofar as possible, regardless of
+> > > whether
+> > > 	the author is attributed via From: or Co-developed-by:.  Notably, the
+> > > last
+> > > 	Signed-off-by: must always be that of the developer submitting the
+> > > patch.
+> > 
+> > Sure, ARM patch-set follows exactly above rules.
+> > 
+> > 
+> > 
+> > > > > > > From: xianglai li <lixianglai@loongson.cn>
+> > > > > > > Sent: Tuesday, September 26, 2023 10:54 AM
+> > > > > > > To: qemu-devel@nongnu.org
+> > > > > > > Cc: Bernhard Beschow <shentey@gmail.com>; Salil Mehta
+> > > > > > > <salil.mehta@opnsrc.net>; Salil Mehta <salil.mehta@huawei.com>;
+> > > > > Xiaojuan
+> > > > > > > Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>;
+> > > > > Michael S.
+> > > > > > > Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani
+> > > > > Sinha
+> > > > > > > <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
+> > > > > > > Henderson <richard.henderson@linaro.org>; Eduardo Habkost
+> > > > > > > <eduardo@habkost.net>; Marcel Apfelbaum
+> > > <marcel.apfelbaum@gmail.com>;
+> > > > > > > Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
+> > > > > > > <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>;
+> > > > > Peter
+> > > > > > > Xu <peterx@redhat.com>; David Hildenbrand <david@redhat.com>; Bibo
+> > > Mao
+> > > > > > > <maobibo@loongson.cn>
+> > > > > > > Subject: [PATCH v3 2/7] Update CPUs AML with cpu-(ctrl)dev change
+> > > > > > > 
+> > > > > > > CPUs Control device(\\_SB.PCI0) register interface for the x86 arch
+> > > > > > > is based on PCI and is IO port based and hence existing cpus AML
+> > > code
+> > > > > > > assumes _CRS objects would evaluate to a system resource which
+> > > > > describes
+> > > > > > > IO Port address.
+> > > > > > > But on Loongarch arch CPUs control device(\\_SB.PRES) register
+> > > > > interface
+> > > > > > > is memory-mapped hence _CRS object should evaluate to system
+> > > resource
+> > > > > > > which describes memory-mapped base address.
+> > > > > > > 
+> > > > > > > This cpus AML code change updates the existing interface of the
+> > > build
+> > > > > cpus
+> > > > > > > AML
+> > > > > > > function to accept both IO/MEMORY type regions and update the _CRS
+> > > > > object
+> > > > > > > correspondingly.
+> > > > > > > 
+> > > > > > > Co-authored-by: "Bernhard Beschow" <shentey@gmail.com>
+> > > > > > > Co-authored-by: "Salil Mehta" <salil.mehta@opnsrc.net>
+> > > > > > > Co-authored-by: "Salil Mehta" <salil.mehta@huawei.com>
+> > > > > > > Cc: "Bernhard Beschow" <shentey@gmail.com>
+> > > > > > > Cc: "Salil Mehta" <salil.mehta@huawei.com>
+> > > > > > > Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
+> > > > > > > Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+> > > > > > > Cc: Song Gao <gaosong@loongson.cn>
+> > > > > > > Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> > > > > > > Cc: Igor Mammedov <imammedo@redhat.com>
+> > > > > > > Cc: Ani Sinha <anisinha@redhat.com>
+> > > > > > > Cc: Paolo Bonzini <pbonzini@redhat.com>
+> > > > > > > Cc: Richard Henderson <richard.henderson@linaro.org>
+> > > > > > > Cc: Eduardo Habkost <eduardo@habkost.net>
+> > > > > > > Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+> > > > > > > Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+> > > > > > > Cc: Yanan Wang <wangyanan55@huawei.com>
+> > > > > > > Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+> > > > > > > Cc: Peter Xu <peterx@redhat.com>
+> > > > > > > Cc: David Hildenbrand <david@redhat.com>
+> > > > > > > Cc: Bibo Mao <maobibo@loongson.cn>
+> > > > > > > Signed-off-by: xianglai li <lixianglai@loongson.cn>
+> > > > > > > ---
+> > > > > > >   hw/acpi/cpu.c         | 20 +++++++++++++++-----
+> > > > > > >   hw/i386/acpi-build.c  |  3 ++-
+> > > > > > >   include/hw/acpi/cpu.h |  5 +++--
+> > > > > > >   3 files changed, 20 insertions(+), 8 deletions(-)
+> > > > > > > 
+> > > > > > > diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+> > > > > > > index 5bad983928..0afa04832e 100644
+> > > > > > > --- a/hw/acpi/cpu.c
+> > > > > > > +++ b/hw/acpi/cpu.c
+> > > > > > > @@ -6,6 +6,7 @@
+> > > > > > >   #include "qapi/qapi-events-acpi.h"
+> > > > > > >   #include "trace.h"
+> > > > > > >   #include "sysemu/numa.h"
+> > > > > > > +#include "hw/acpi/cpu_hotplug.h"
+> > > > > > > 
+> > > > > > >   #define OVMF_CPUHP_SMI_CMD 4
+> > > > > > > 
+> > > > > > > @@ -332,9 +333,10 @@ const VMStateDescription vmstate_cpu_hotplug =
+> > > {
+> > > > > > >   #define CPU_FW_EJECT_EVENT "CEJF"
+> > > > > > > 
+> > > > > > >   void build_cpus_aml(Aml *table, MachineState *machine,
+> > > > > CPUHotplugFeatures
+> > > > > > > opts,
+> > > > > > > -                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> > > io_base,
+> > > > > > > +                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> > > > > mmap_io_base,
+> > > > > > >                       const char *res_root,
+> > > > > > > -                    const char *event_handler_method)
+> > > > > > > +                    const char *event_handler_method,
+> > > > > > > +                    AmlRegionSpace rs)
+> > > > > > >   {
+> > > > > > >       Aml *ifctx;
+> > > > > > >       Aml *field;
+> > > > > > > @@ -359,14 +361,22 @@ void build_cpus_aml(Aml *table, MachineState
+> > > > > > > *machine, CPUHotplugFeatures opts,
+> > > > > > >           aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
+> > > > > > > 
+> > > > > > >           crs = aml_resource_template();
+> > > > > > > -        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
+> > > > > > > +        if (rs == AML_SYSTEM_IO) {
+> > > > > > > +            aml_append(crs, aml_io(AML_DECODE16, mmap_io_base,
+> > > > > > > mmap_io_base, 1,
+> > > > > > >                                  ACPI_CPU_HOTPLUG_REG_LEN));
+> > > > > > > +        } else {
+> > > > > > > +            aml_append(crs, aml_memory32_fixed(mmap_io_base,
+> > > > > > > +                               ACPI_CPU_HOTPLUG_REG_LEN,
+> > > > > AML_READ_WRITE));
+> > > > > > > +        }
+> > > > > > > +
+> > > > > > >           aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
+> > > > > > > 
+> > > > > > > +        g_assert(rs == AML_SYSTEM_IO || rs == AML_SYSTEM_MEMORY);
+> > > > > > >           /* declare CPU hotplug MMIO region with related access
+> > > fields
+> > > > > */
+> > > > > > >           aml_append(cpu_ctrl_dev,
+> > > > > > > -            aml_operation_region("PRST", AML_SYSTEM_IO,
+> > > > > aml_int(io_base),
+> > > > > > > -                                 ACPI_CPU_HOTPLUG_REG_LEN));
+> > > > > > > +            aml_operation_region("PRST", rs,
+> > > > > > > +                                         aml_int(mmap_io_base),
+> > > > > > > +
+> > > ACPI_CPU_HOTPLUG_REG_LEN));
+> > > > > > >           field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
+> > > > > > >                             AML_WRITE_AS_ZEROS);
+> > > > > > > diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> > > > > > > index 863a939210..7016205d15 100644
+> > > > > > > --- a/hw/i386/acpi-build.c
+> > > > > > > +++ b/hw/i386/acpi-build.c
+> > > > > > > @@ -1550,7 +1550,8 @@ build_dsdt(GArray *table_data, BIOSLinker
+> > > > > *linker,
+> > > > > > >               .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
+> > > > > > >           };
+> > > > > > >           build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
+> > > > > > > -                       pm->cpu_hp_io_base, "\\_SB.PCI0",
+> > > > > "\\_GPE._E02");
+> > > > > > > +                       pm->cpu_hp_io_base, "\\_SB.PCI0",
+> > > > > "\\_GPE._E02",
+> > > > > > > +                       AML_SYSTEM_IO);
+> > > > > > >       }
+> > > > > > > 
+> > > > > > >       if (pcms->memhp_io_base && nr_mem) {
+> > > > > > > diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
+> > > > > > > index bc901660fb..601f644e57 100644
+> > > > > > > --- a/include/hw/acpi/cpu.h
+> > > > > > > +++ b/include/hw/acpi/cpu.h
+> > > > > > > @@ -60,9 +60,10 @@ typedef void (*build_madt_cpu_fn)(int uid, const
+> > > > > > > CPUArchIdList *apic_ids,
+> > > > > > >                                     GArray *entry, bool
+> > > force_enabled);
+> > > > > > >   void build_cpus_aml(Aml *table, MachineState *machine,
+> > > > > CPUHotplugFeatures
+> > > > > > > opts,
+> > > > > > > -                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> > > io_base,
+> > > > > > > +                    build_madt_cpu_fn build_madt_cpu, hwaddr
+> > > > > mmap_io_base,
+> > > > > > >                       const char *res_root,
+> > > > > > > -                    const char *event_handler_method);
+> > > > > > > +                    const char *event_handler_method,
+> > > > > > > +                    AmlRegionSpace rs);
+> > > > > > > 
+> > > > > > >   void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList
+> > > > > > > ***list);
+> > > > > > > 
+> > > > > > > --
+> > > > > > > 2.39.1
+> > > > > > > 
 
 
