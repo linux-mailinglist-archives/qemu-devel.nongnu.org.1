@@ -2,54 +2,54 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D727B07DE
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194C67B07E3
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:13:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlWD3-0003Ao-7g; Wed, 27 Sep 2023 11:12:17 -0400
+	id 1qlWD6-0003BJ-OK; Wed, 27 Sep 2023 11:12:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlWD1-00036n-2u
+ id 1qlWD1-00037a-9N
  for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:12:15 -0400
 Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlWCw-0005kY-Ab
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:12:14 -0400
+ id 1qlWCw-0005kb-CW
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:12:15 -0400
 Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-405e48d8cfdso52351675e9.2
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 08:12:09 -0700 (PDT)
+ 5b1f17b1804b1-40537481094so115331425e9.0
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 08:12:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1695827529; x=1696432329; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=s5DPTjMu0+4Bk3yruDyc6XSzg1YD1XJ0PlVkpHAUkmA=;
- b=QDa7o6GZxswE6biF+UDJj4YUJQ27CBxzOu4ABNiq9+fMmzouOyObQ4lFiNHXrL02i+
- rRh1UdR6Ct80pQhj+UejLPXtyH3XxY2oxQVfR6ASWPBbd1eNHO7cKnmbES5WK6YuGHys
- MJ7k3llJ0CWFX6t/3cbzN7DruvGlgQF9iSGEQZdZsakJK0rAInYIUVBLAnz7ht3x9QbV
- N2GqYXyy+IaxLDtYpmxkZxk7Twf+JRcYOdKwSrsBo5EBwfEsQWiwQIrDbzQx8ZUb7PTW
- RKdakQTHIoq3Nx797MAQlIQCMTGxOve7D0lRqK2K4m08qy1aYhjCy8DZf5TXCOJ1SI6E
- T28A==
+ :reply-to; bh=cqxGgxmXG6J8W9osNYYxJtFRwXKNwKGrhboUE2fncFA=;
+ b=ziOQwvxbpEg5DeAdlHNzLwqmn4HGCSamnezW1dIZ6ckkLtOyZmr0VN3sAigNUL/ex/
+ 9WY6igF18q1/DEdQTB8g94TBHutdJBUHbr6GXuEVSr+kfg4UmE6+CpYHajhF9gki27Hb
+ mBsfr0FS3h1V/J7JpigSP/A4h3rUS5C4Wirq49HZQsWotuyE1S+/1CGdCmwDu70XU9x9
+ ySbUGmpuESromauH2i1F58G3wJOMhK2nn0uRR/aCIt/TVBqQqHyxu3AFSfsCusye4RWC
+ c5ieJKBoNfanRMa2Zq2aCSgFVeidr2uPsgv7TfUviEBfRh8HZTDDYZOsqyba2Om4IO0P
+ Ks+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1695827529; x=1696432329;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=s5DPTjMu0+4Bk3yruDyc6XSzg1YD1XJ0PlVkpHAUkmA=;
- b=AYCnoHyuj2sIJhIsyaahunxrRBZlpA7USHRov3PUIqvkSUFj2JnIE4++xsG7HKdmGd
- ZhpUsjC5p/aHKy5tTX0x7CZ+RHPw3v+mNq3fP++BX9SsCrUBW147ORUZMEtx5eJoNpHy
- hjh++JFIW2/cQDZwyscY8u3tgrN8pIhtWiG4U4gLy6OMeYCeMs8tJrimNC6xoogMC1rV
- 3AHZXyglc+istdh4QrVDMc50isdHSL9MJQNhPGHmZ49PZvjm/225bU3DSRraLXwyMW6f
- x6SYddGR+k6NsK7QCY6HJ6tD/AUyPqhhgBU60U1DmwBhVqDr5K4IMP/mvthRWrp/rYnI
- GvsA==
-X-Gm-Message-State: AOJu0Yz1pww4s4rLF5iy0VUl+P9pDHNGyCRog7juH3YwssLpXTsMElzH
- wF/hfOsqFg0bko8T6BdRxy2riMrxoSV6ysaifWI=
-X-Google-Smtp-Source: AGHT+IFuAZYFcmSBK7vuiqMKZyCdk4oSWVklftyzbTErEpg/TjjXywJrvfelshOnwkBFjh5KIuaviw==
-X-Received: by 2002:a7b:c4d9:0:b0:3fb:a102:6d7a with SMTP id
- g25-20020a7bc4d9000000b003fba1026d7amr2096154wmk.28.1695827528681; 
- Wed, 27 Sep 2023 08:12:08 -0700 (PDT)
+ bh=cqxGgxmXG6J8W9osNYYxJtFRwXKNwKGrhboUE2fncFA=;
+ b=CYOlAYe2isjcqTTcnblUstUhvtnUEwd/mJJoIrYi8DMxCyVKpGX9CZH/bnOMISOrt5
+ z5kdUJsOThLgMmBpsEGMaOXS45CE+BstJ9x3R5+CGXI2g44UAHdzzKfttfGwFqaVB6tU
+ JHojoRcU4FUe37nPVER5NRQBD8btGrykayuKiwDdRd1iysTM8pSrwETsV5E3SyD6wtnZ
+ KWoRfOQYcopyVYjKR241IY2nWGLzfzgt8NpwzS6UY7PmmgSQz1xW8iiEAkTkf968M5Wh
+ MfqKJ99L7VT3YspFkGL67V7/FcVdzMiuBRbX/LBDnnTy6rThLf7EDFyQPO544K6aZpVm
+ YCHQ==
+X-Gm-Message-State: AOJu0YzPA7OzN43Vadfjr8L1/P+BOiF72abtx7MuNLsoiYwFGfKKGwh9
+ WA/cp2BWzTEpPYnZutOlQjpHAUB2B9MlJS0obDc=
+X-Google-Smtp-Source: AGHT+IEvw45iY1+PWpYcoSQTyIYKE6hk2RgSzspB7KukefiPmESPq1nyCtpNneA2q5b0LDR7N4tciw==
+X-Received: by 2002:a05:600c:291:b0:405:959e:dc6f with SMTP id
+ 17-20020a05600c029100b00405959edc6fmr2290569wmk.37.1695827529085; 
+ Wed, 27 Sep 2023 08:12:09 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
  n9-20020a1c7209000000b00401bbfb9b2bsm467474wmc.0.2023.09.27.08.12.08
@@ -58,9 +58,9 @@ Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  Wed, 27 Sep 2023 08:12:08 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 3/8] docs/specs/ivshmem-spec: Convert to rST
-Date: Wed, 27 Sep 2023 16:12:00 +0100
-Message-Id: <20230927151205.70930-4-peter.maydell@linaro.org>
+Subject: [PATCH 4/8] docs/specs/pvpanic: Convert to rST
+Date: Wed, 27 Sep 2023 16:12:01 +0100
+Message-Id: <20230927151205.70930-5-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230927151205.70930-1-peter.maydell@linaro.org>
 References: <20230927151205.70930-1-peter.maydell@linaro.org>
@@ -90,193 +90,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert docs/specs/ivshmem-spec.txt to rST format.
-
-In converting, I have dropped the sections on the device's command
-line interface and usage, as they are already covered by the
-user-facing docs in system/devices/ivshmem.rst.
-
-I have also removed the reference to Memnic, because the URL is dead
-and a web search suggests that whatever this was it's pretty much
-sunk without trace.
+Convert docs/specs/pvpanic.txt to rST format.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- docs/specs/index.rst                          |  1 +
- .../{ivshmem-spec.txt => ivshmem-spec.rst}    | 63 +++++++------------
- docs/specs/pci-ids.rst                        |  2 +-
- docs/system/devices/ivshmem.rst               |  2 +-
- 4 files changed, 26 insertions(+), 42 deletions(-)
- rename docs/specs/{ivshmem-spec.txt => ivshmem-spec.rst} (88%)
+ docs/specs/index.rst                    |  1 +
+ docs/specs/{pvpanic.txt => pvpanic.rst} | 41 ++++++++++++++++---------
+ 2 files changed, 28 insertions(+), 14 deletions(-)
+ rename docs/specs/{pvpanic.txt => pvpanic.rst} (64%)
 
 diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index 30a0cf3d47e..e60c8377541 100644
+index e60c8377541..52bfab2f68b 100644
 --- a/docs/specs/index.rst
 +++ b/docs/specs/index.rst
-@@ -26,3 +26,4 @@ guest hardware that is specific to QEMU.
-    fw_cfg
+@@ -27,3 +27,4 @@ guest hardware that is specific to QEMU.
     vmw_pvscsi-spec
     edu
-+   ivshmem-spec
-diff --git a/docs/specs/ivshmem-spec.txt b/docs/specs/ivshmem-spec.rst
-similarity index 88%
-rename from docs/specs/ivshmem-spec.txt
-rename to docs/specs/ivshmem-spec.rst
-index 1beb3a01ec3..2d8e80055b0 100644
---- a/docs/specs/ivshmem-spec.txt
-+++ b/docs/specs/ivshmem-spec.rst
-@@ -1,4 +1,6 @@
--= Device Specification for Inter-VM shared memory device =
-+======================================================
-+Device Specification for Inter-VM shared memory device
-+======================================================
+    ivshmem-spec
++   pvpanic
+diff --git a/docs/specs/pvpanic.txt b/docs/specs/pvpanic.rst
+similarity index 64%
+rename from docs/specs/pvpanic.txt
+rename to docs/specs/pvpanic.rst
+index 8afcde11cc8..f894bc19555 100644
+--- a/docs/specs/pvpanic.txt
++++ b/docs/specs/pvpanic.rst
+@@ -21,18 +21,21 @@ recognize. On write, the bits not recognized by the device are ignored.
+ Software should set only bits both itself and the device recognize.
  
- The Inter-VM shared memory device (ivshmem) is designed to share a
- memory region between multiple QEMU processes running different guests
-@@ -12,42 +14,17 @@ can obtain one from an ivshmem server.
- In the latter case, the device can additionally interrupt its peers, and
- get interrupted by its peers.
- 
-+For information on configuring the ivshmem device on the QEMU
-+command line, see :doc:`../system/devices/ivshmem`.
- 
--== Configuring the ivshmem PCI device ==
--
--There are two basic configurations:
--
--- Just shared memory:
--
--      -device ivshmem-plain,memdev=HMB,...
--
--  This uses host memory backend HMB.  It should have option "share"
--  set.
--
--- Shared memory plus interrupts:
--
--      -device ivshmem-doorbell,chardev=CHR,vectors=N,...
--
--  An ivshmem server must already be running on the host.  The device
--  connects to the server's UNIX domain socket via character device
--  CHR.
--
--  Each peer gets assigned a unique ID by the server.  IDs must be
--  between 0 and 65535.
--
--  Interrupts are message-signaled (MSI-X).  vectors=N configures the
--  number of vectors to use.
--
--For more details on ivshmem device properties, see the QEMU Emulator
--user documentation.
--
--
--== The ivshmem PCI device's guest interface ==
-+The ivshmem PCI device's guest interface
-+========================================
- 
- The device has vendor ID 1af4, device ID 1110, revision 1.  Before
- QEMU 2.6.0, it had revision 0.
- 
--=== PCI BARs ===
-+PCI BARs
-+--------
- 
- The ivshmem PCI device has two or three BARs:
- 
-@@ -59,8 +36,7 @@ There are two ways to use this device:
- 
- - If you only need the shared memory part, BAR2 suffices.  This way,
-   you have access to the shared memory in the guest and can use it as
--  you see fit.  Memnic, for example, uses ivshmem this way from guest
--  user space (see http://dpdk.org/browse/memnic).
-+  you see fit.
- 
- - If you additionally need the capability for peers to interrupt each
-   other, you need BAR0 and BAR1.  You will most likely want to write a
-@@ -77,10 +53,13 @@ accessing BAR2.
- Revision 0 of the device is not capable to tell guest software whether
- it is configured for interrupts.
- 
--=== PCI device registers ===
-+PCI device registers
-+--------------------
- 
- BAR 0 contains the following registers:
- 
-+::
+ Bit Definition
+---------------
+-bit 0: a guest panic has happened and should be processed by the host
+-bit 1: a guest panic has happened and will be handled by the guest;
+-       the host should record it or report it, but should not affect
+-       the execution of the guest.
++~~~~~~~~~~~~~~
 +
-     Offset  Size  Access      On reset  Function
-         0     4   read/write        0   Interrupt Mask
-                                         bit 0: peer interrupt (rev 0)
-@@ -145,18 +124,20 @@ With multiple MSI-X vectors, different vectors can be used to indicate
- different events have occurred.  The semantics of interrupt vectors
- are left to the application.
++bit 0
++  a guest panic has happened and should be processed by the host
++bit 1
++  a guest panic has happened and will be handled by the guest;
++  the host should record it or report it, but should not affect
++  the execution of the guest.
  
--
--== Interrupt infrastructure ==
-+Interrupt infrastructure
-+========================
+ PCI Interface
+ -------------
  
- When configured for interrupts, the peers share eventfd objects in
- addition to shared memory.  The shared resources are managed by an
- ivshmem server.
+ The PCI interface is similar to the ISA interface except that it uses an MMIO
+ address space provided by its BAR0, 1 byte long. Any machine with a PCI bus
+-can enable a pvpanic device by adding '-device pvpanic-pci' to the command
++can enable a pvpanic device by adding ``-device pvpanic-pci`` to the command
+ line.
  
--=== The ivshmem server ===
-+The ivshmem server
-+------------------
+ ACPI Interface
+@@ -40,15 +43,25 @@ ACPI Interface
  
- The server listens on a UNIX domain socket.
+ pvpanic device is defined with ACPI ID "QEMU0001". Custom methods:
  
- For each new client that connects to the server, the server
+-RDPT:       To determine whether guest panic notification is supported.
+-Arguments:  None
+-Return:     Returns a byte, with the same semantics as the I/O port
+-            interface.
++RDPT
++~~~~
+ 
+-WRPT:       To send a guest panic event
+-Arguments:  Arg0 is a byte to be written, with the same semantics as
+-            the I/O interface.
+-Return:     None
++To determine whether guest panic notification is supported.
 +
- - picks an ID,
- - creates eventfd file descriptors for the interrupt vectors,
- - sends the ID and the file descriptor for the shared memory to the
-@@ -189,7 +170,8 @@ vectors.
- A standalone client is in contrib/ivshmem-client/.  It can be useful
- for debugging.
++Arguments
++  None
++Return
++  Returns a byte, with the same semantics as the I/O port interface.
++
++WRPT
++~~~~
++
++To send a guest panic event.
++
++Arguments
++  Arg0 is a byte to be written, with the same semantics as the I/O interface.
++Return
++  None
  
--=== The ivshmem Client-Server Protocol ===
-+The ivshmem Client-Server Protocol
-+----------------------------------
- 
- An ivshmem device configured for interrupts connects to an ivshmem
- server.  This section details the protocol between the two.
-@@ -245,7 +227,8 @@ Known bugs:
- 
- * The protocol is poorly designed.
- 
--=== The ivshmem Client-Client Protocol ===
-+The ivshmem Client-Client Protocol
-+----------------------------------
- 
- An ivshmem device configured for interrupts receives eventfd file
- descriptors for interrupting peers and getting interrupted by peers
-diff --git a/docs/specs/pci-ids.rst b/docs/specs/pci-ids.rst
-index d6707fa069a..c0a3dec2e7a 100644
---- a/docs/specs/pci-ids.rst
-+++ b/docs/specs/pci-ids.rst
-@@ -50,7 +50,7 @@ maintained as part of the virtio specification.
-   by QEMU.
- 
- 1af4:1110
--  ivshmem device (shared memory, ``docs/specs/ivshmem-spec.txt``)
-+  ivshmem device (:doc:`ivshmem-spec`)
- 
- All other device IDs are reserved.
- 
-diff --git a/docs/system/devices/ivshmem.rst b/docs/system/devices/ivshmem.rst
-index e7aaf34c200..ce71e256630 100644
---- a/docs/system/devices/ivshmem.rst
-+++ b/docs/system/devices/ivshmem.rst
-@@ -33,7 +33,7 @@ syntax when using the shared memory server is:
- When using the server, the guest will be assigned a VM ID (>=0) that
- allows guests using the same server to communicate via interrupts.
- Guests can read their VM ID from a device register (see
--ivshmem-spec.txt).
-+:doc:`../../specs/ivshmem-spec`).
- 
- Migration with ivshmem
- ~~~~~~~~~~~~~~~~~~~~~~
+ The ACPI device will automatically refer to the right port in case it
+ is modified.
 -- 
 2.34.1
 
