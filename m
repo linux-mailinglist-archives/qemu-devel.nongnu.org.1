@@ -2,77 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 374957B0EC6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 00:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DC47B0F2B
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 00:58:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlcfg-0003LB-Hr; Wed, 27 Sep 2023 18:06:16 -0400
+	id 1qldT1-00066I-C2; Wed, 27 Sep 2023 18:57:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qlcff-0003L2-4F
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 18:06:15 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qlcfd-0003Aq-DF
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 18:06:14 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 9E8191F894;
- Wed, 27 Sep 2023 22:06:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1695852371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CvUMazw78ySbTi86UQlAAZ1U2vCFW520Owx4U/2j0gk=;
- b=V1INGF6f/mm/T3ADoBK2rYciwGyQFva16YT+QRHOlJQzfMcuyV7taaXISDCAACKxeKEtyT
- 8f7i7J2+JE0Q5e2IM0qTJ6uwVG6VLF1/hCVDam/72sxTV+PCk5xgSYOJ75hTnxQR3ACINW
- 972OwzYH7iCtWmQ0j1NSph3Rd5DPPaU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1695852371;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CvUMazw78ySbTi86UQlAAZ1U2vCFW520Owx4U/2j0gk=;
- b=eshzfzVDXzr/DK1RMxu4W++AlaJooS9Ey7gAyPUi1X6yheGoof1X9Nle5NkHGi4A1jaHmK
- IsyAnrBxkb9i98CQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 30EED13479;
- Wed, 27 Sep 2023 22:06:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id YzFrO1KnFGWTKwAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 27 Sep 2023 22:06:10 +0000
-From: Fabiano Rosas <farosas@suse.de>
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qldSz-000664-LR; Wed, 27 Sep 2023 18:57:13 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qldSx-0000UE-Cv; Wed, 27 Sep 2023 18:57:13 -0400
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38RMclHj027105; Wed, 27 Sep 2023 22:56:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=c8Fm3zH1YumvTrWZa0590rElzy675nYfMpcOfRUdZFo=;
+ b=QKEhxGhP9ria183ZPaIQg+NuDN5cfr/YoM8QQShPlj3nmQuMeCGGXQLUJfD066ZI67fP
+ P7ZGW44+4jTXvbHAHMoi/2xNhm2+fwdQ7cfBdDBWO8CBmVK17eyyafMp140L4G29K8GX
+ F7G7ZXiJ06Z9css6gtxiFHnILxwU+6QmXq0vsilBv7PdAuxL9COsV268PulXmXBZv4cZ
+ S4v0rHnU4R9LgvPLvITtF82TheIXw0LTkYhvcpKwJeuVOET8y4tM89vsIe+utRA69/+v
+ 07D4PiE9v6um3JsRqPIP9kZRnZTtZ6IVK/otqnqFpGCicYXCnoApN8X0jFkv5yOL8AqS sw== 
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tcuvbk00a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Sep 2023 22:56:44 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 38RLV9lB030706; Wed, 27 Sep 2023 22:56:44 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tacjk701a-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 27 Sep 2023 22:56:43 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 38RMuhAY66715970
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 27 Sep 2023 22:56:43 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 469F658053;
+ Wed, 27 Sep 2023 22:56:43 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 2EBEF58043;
+ Wed, 27 Sep 2023 22:56:43 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed, 27 Sep 2023 22:56:43 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
+ by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id 5A7CA16A05FF;
+ Wed, 27 Sep 2023 17:56:42 -0500 (CDT)
+Received: (from mglenn@localhost)
+ by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 38RMufuP3510061;
+ Wed, 27 Sep 2023 17:56:41 -0500
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
 To: qemu-devel@nongnu.org
-Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>, Thomas Huth <thuth@redhat.com>, Laurent
- Vivier <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] qtest/migration: Add a test for the analyze-migration
- script
-In-Reply-To: <20230927214756.14117-1-farosas@suse.de>
-References: <20230927214756.14117-1-farosas@suse.de>
-Date: Wed, 27 Sep 2023 19:06:08 -0300
-Message-ID: <87msx7qnjj.fsf@suse.de>
+Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-arm@nongnu.org,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ andrew@codeconstruct.com.au, Joel Stanley <joel@jms.id.au>
+Subject: [PATCH] misc/pca9552: Let external devices set pca9552 inputs
+Date: Wed, 27 Sep 2023 17:56:23 -0500
+Message-Id: <20230927225623.3510012-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9c0T1Lp-21aY1HaNnoRbH26eWQ_lBYWM
+X-Proofpoint-ORIG-GUID: 9c0T1Lp-21aY1HaNnoRbH26eWQ_lBYWM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-09-27_15,2023-09-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0
+ adultscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 phishscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 spamscore=0 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2309270194
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,143 +109,122 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+Allow external devices to drive pca9552 input pins by adding
+input GPIO's to the model.  This allows a device to connect
+its output GPIO's to the pca9552 input GPIO's.
 
-> Add a smoke test that migrates to a file and gives it to the
-> script. It should catch the most annoying errors such as changes in
-> the ram flags.
->
-> After code has been merged it becomes way harder to figure out what is
-> causing the script to fail, the person making the change is the most
-> likely to know right away what the problem is.
->
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> ---
-> I know this adds a python dependency to qtests and I'm not sure how
-> much we care about this script, but on the other hand it would be nice
-> to catch these errors early on.
->
-> This would also help with future work that touches the migration
-> stream (moving multifd out of ram.c and fixed-ram).
->
-> Let me know what you think.
-> ---
->  tests/qtest/meson.build      |  6 +++++
->  tests/qtest/migration-test.c | 51 ++++++++++++++++++++++++++++++++++++
->  2 files changed, 57 insertions(+)
->
-> diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
-> index 1fba07f4ed..d2511b3227 100644
-> --- a/tests/qtest/meson.build
-> +++ b/tests/qtest/meson.build
-> @@ -301,6 +301,10 @@ if gnutls.found()
->    endif
->  endif
->=20=20
-> +configure_file(input: meson.project_source_root() / 'scripts/analyze-mig=
-ration.py',
-> +               output: 'analyze-migration.py',
-> +               configuration: configuration_data())
-> +
->  qtests =3D {
->    'bios-tables-test': [io, 'boot-sector.c', 'acpi-utils.c', 'tpm-emu.c'],
->    'cdrom-test': files('boot-sector.c'),
-> @@ -356,6 +360,8 @@ foreach dir : target_dirs
->      test_deps +=3D [qsd]
->    endif
->=20=20
-> +  qtest_env.set('PYTHON', python.full_path())
-> +
->    foreach test : target_qtests
->      # Executables are shared across targets, declare them only the first=
- time we
->      # encounter them
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 1b43df5ca7..122089522f 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -66,6 +66,8 @@ static bool got_dst_resume;
->   */
->  #define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
->=20=20
-> +#define ANALYZE_SCRIPT "tests/qtest/analyze-migration.py"
-> +
->  #if defined(__linux__)
->  #include <sys/syscall.h>
->  #include <sys/vfs.h>
-> @@ -1486,6 +1488,52 @@ static void test_baddest(void)
->      test_migrate_end(from, to, false);
->  }
->=20=20
-> +#ifndef _WIN32
-> +static void test_analyze_script(void)
-> +{
-> +    MigrateStart args =3D {};
-> +    QTestState *from, *to;
-> +    g_autofree char *uri =3D NULL;
-> +    g_autofree char *file =3D NULL;
-> +    int pid, wstatus;
-> +    const char *python =3D g_getenv("PYTHON");
-> +
-> +    if (!python) {
-> +        g_test_skip("PYTHON variable not set");
-> +        return;
-> +    }
-> +
-> +    /* dummy url */
-> +    if (test_migrate_start(&from, &to, "tcp:127.0.0.1:0", &args)) {
-> +        return;
-> +    }
-> +
-> +    file =3D g_strdup_printf("%s/migfile", tmpfs);
-> +    uri =3D g_strdup_printf("exec:cat > %s", file);
-> +
-> +    migrate_ensure_converge(from);
-> +    migrate_qmp(from, uri, "{}");
-> +    wait_for_migration_complete(from);
-> +
-> +    pid =3D fork();
-> +    if (!pid) {
-> +        close(1);
-> +        open("/dev/null", O_WRONLY);
-> +        execl(python, python, ANALYZE_SCRIPT,
-> +              "-f", file, NULL);
-> +        g_assert_not_reached();
-> +    }
-> +
-> +    assert(waitpid(pid, &wstatus, 0) =3D=3D pid);
-> +    if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) !=3D 0) {
-> +        g_test_message("Failed to analyze the migration stream");
-> +        g_test_fail();
+In order for an external device to set the state of a pca9552
+pin, the pin must first be configured for high impedance (LED
+is off).  If the pca9552 pin is configured to drive the pin low
+(LED is on), then external input will be ignored.
 
-I just noticed that this is really nice because it fails the test
-without aborting, so we get a nice line in the output like this:
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+---
+Based-on: <20230927203221.3286895-1-milesg@linux.vnet.ibm.com>
+([PATCH] misc/pca9552: Fix inverted input status)
+ hw/misc/pca9552.c         | 39 ++++++++++++++++++++++++++++++++++-----
+ include/hw/misc/pca9552.h |  3 ++-
+ 2 files changed, 36 insertions(+), 6 deletions(-)
 
-=E2=96=B6  44/355 /x86_64/migration/analyze-script  FAIL
+diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
+index ad811fb249..901b5900d2 100644
+--- a/hw/misc/pca9552.c
++++ b/hw/misc/pca9552.c
+@@ -113,16 +113,22 @@ static void pca955x_update_pin_input(PCA955xState *s)
+         switch (config) {
+         case PCA9552_LED_ON:
+             /* Pin is set to 0V to turn on LED */
+-            qemu_set_irq(s->gpio[i], 0);
++            qemu_set_irq(s->gpio_out[i], 0);
+             s->regs[input_reg] &= ~(1 << input_shift);
+             break;
+         case PCA9552_LED_OFF:
+             /*
+              * Pin is set to Hi-Z to turn off LED and
+-             * pullup sets it to a logical 1.
++             * pullup sets it to a logical 1 unless
++             * external device drives it low.
+              */
+-            qemu_set_irq(s->gpio[i], 1);
+-            s->regs[input_reg] |= 1 << input_shift;
++            if (s->ext_state[i] == 0) {
++                qemu_set_irq(s->gpio_out[i], 0);
++                s->regs[input_reg] &= ~(1 << input_shift);
++            } else {
++                qemu_set_irq(s->gpio_out[i], 1);
++                s->regs[input_reg] |= 1 << input_shift;
++            }
+             break;
+         case PCA9552_LED_PWM0:
+         case PCA9552_LED_PWM1:
+@@ -337,6 +343,7 @@ static const VMStateDescription pca9552_vmstate = {
+         VMSTATE_UINT8(len, PCA955xState),
+         VMSTATE_UINT8(pointer, PCA955xState),
+         VMSTATE_UINT8_ARRAY(regs, PCA955xState, PCA955X_NR_REGS),
++        VMSTATE_UINT8_ARRAY(ext_state, PCA955xState, PCA955X_PIN_COUNT_MAX),
+         VMSTATE_I2C_SLAVE(i2c, PCA955xState),
+         VMSTATE_END_OF_LIST()
+     }
+@@ -355,6 +362,7 @@ static void pca9552_reset(DeviceState *dev)
+     s->regs[PCA9552_LS2] = 0x55;
+     s->regs[PCA9552_LS3] = 0x55;
+ 
++    memset(s->ext_state, 1, PCA955X_PIN_COUNT_MAX);
+     pca955x_update_pin_input(s);
+ 
+     s->pointer = 0xFF;
+@@ -377,6 +385,26 @@ static void pca955x_initfn(Object *obj)
+     }
+ }
+ 
++static void pca955x_set_ext_state(PCA955xState *s, int pin, int level)
++{
++    s->ext_state[pin] = level;
++}
++
++static void pca955x_gpio_in_handler(void *opaque, int pin, int level)
++{
++    uint16_t pins_status;
++
++    PCA955xState *s = PCA955X(opaque);
++    PCA955xClass *k = PCA955X_GET_CLASS(s);
++
++    assert((pin >= 0) && (pin < k->pin_count));
++
++    pins_status = pca955x_pins_get_status(s);
++    pca955x_set_ext_state(s, pin, level);
++    pca955x_update_pin_input(s);
++    pca955x_display_pins_status(s, pins_status);
++}
++
+ static void pca955x_realize(DeviceState *dev, Error **errp)
+ {
+     PCA955xClass *k = PCA955X_GET_CLASS(dev);
+@@ -386,7 +414,8 @@ static void pca955x_realize(DeviceState *dev, Error **errp)
+         s->description = g_strdup("pca-unspecified");
+     }
+ 
+-    qdev_init_gpio_out(dev, s->gpio, k->pin_count);
++    qdev_init_gpio_out(dev, s->gpio_out, k->pin_count);
++    qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
+ }
+ 
+ static Property pca955x_properties[] = {
+diff --git a/include/hw/misc/pca9552.h b/include/hw/misc/pca9552.h
+index b6f4e264fe..c36525f0c3 100644
+--- a/include/hw/misc/pca9552.h
++++ b/include/hw/misc/pca9552.h
+@@ -30,7 +30,8 @@ struct PCA955xState {
+     uint8_t pointer;
+ 
+     uint8_t regs[PCA955X_NR_REGS];
+-    qemu_irq gpio[PCA955X_PIN_COUNT_MAX];
++    qemu_irq gpio_out[PCA955X_PIN_COUNT_MAX];
++    uint8_t ext_state[PCA955X_PIN_COUNT_MAX];
+     char *description; /* For debugging purpose only */
+ };
+ 
+-- 
+2.31.1
 
-which means that if we could replace some asserts with g_test_fail in
-the migration code we would actually see what failed without having to
-look at the "ok" line in the log and guess what the next test was.
-
-> +    }
-> +    test_migrate_end(from, to, false);
-> +    cleanup("migfile");
-> +}
-> +#endif
-> +
->  static void test_precopy_common(MigrateCommon *args)
->  {
->      QTestState *from, *to;
-> @@ -2828,6 +2876,9 @@ int main(int argc, char **argv)
->      }
->=20=20
->      qtest_add_func("/migration/bad_dest", test_baddest);
-> +#ifndef _WIN32
-> +    qtest_add_func("/migration/analyze-script", test_analyze_script);
-> +#endif
->      qtest_add_func("/migration/precopy/unix/plain", test_precopy_unix_pl=
-ain);
->      qtest_add_func("/migration/precopy/unix/xbzrle", test_precopy_unix_x=
-bzrle);
->      /*
 
