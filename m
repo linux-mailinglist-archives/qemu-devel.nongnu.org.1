@@ -2,72 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2907B07E4
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D727B07DE
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 17:13:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlWD6-0003Bd-CJ; Wed, 27 Sep 2023 11:12:20 -0400
+	id 1qlWD3-0003Ao-7g; Wed, 27 Sep 2023 11:12:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlWD0-00035b-Ra
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:12:14 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ id 1qlWD1-00036n-2u
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:12:15 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <peter.maydell@linaro.org>)
- id 1qlWCw-0005kW-0E
+ id 1qlWCw-0005kY-Ab
  for qemu-devel@nongnu.org; Wed, 27 Sep 2023 11:12:14 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso84396875e9.3
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-405e48d8cfdso52351675e9.2
  for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 08:12:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695827528; x=1696432328; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695827529; x=1696432329; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=9LcmYDCPs9a7neLG0AeIOd4rekXRKUZPlGGvZGGI0cQ=;
- b=r6PMhWnzBKnR3L1PaDOvJTIqJHKSG2NwXkvAH32jK1Dqgkou4wd6TmWvcLF6Fix/st
- MofWp1MCxNffKO9E43QHwm0ooZsf1e0TPAqfAAkAxhHVu0E470zdcDka+YZ2RS0InNTB
- 9OaxVi3U7aLFAMTmIB4aP2d0mNzqo1ild2JjonqBGEn2BPEe+wJA+hyZXAs5sfh5tKl+
- vv7mLjkK3ECBe9giOe3VXOIziFJUO4IdGi1DLsl8PTcB34VvbNM+AsLNGUkMcqztvi82
- MBXPG7wa9FXAGeFNBz+HB+ntIbO8QGmJXgrYS0CVJjClVTMBy+jcVGH1vc2AHptKVcRG
- 8BCA==
+ :reply-to; bh=s5DPTjMu0+4Bk3yruDyc6XSzg1YD1XJ0PlVkpHAUkmA=;
+ b=QDa7o6GZxswE6biF+UDJj4YUJQ27CBxzOu4ABNiq9+fMmzouOyObQ4lFiNHXrL02i+
+ rRh1UdR6Ct80pQhj+UejLPXtyH3XxY2oxQVfR6ASWPBbd1eNHO7cKnmbES5WK6YuGHys
+ MJ7k3llJ0CWFX6t/3cbzN7DruvGlgQF9iSGEQZdZsakJK0rAInYIUVBLAnz7ht3x9QbV
+ N2GqYXyy+IaxLDtYpmxkZxk7Twf+JRcYOdKwSrsBo5EBwfEsQWiwQIrDbzQx8ZUb7PTW
+ RKdakQTHIoq3Nx797MAQlIQCMTGxOve7D0lRqK2K4m08qy1aYhjCy8DZf5TXCOJ1SI6E
+ T28A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695827528; x=1696432328;
+ d=1e100.net; s=20230601; t=1695827529; x=1696432329;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=9LcmYDCPs9a7neLG0AeIOd4rekXRKUZPlGGvZGGI0cQ=;
- b=usWz9vbTTVx87Y+Th8iYXmh94jJowc7YCUTkt1XLoeGWWTwTfoc1tDI8/xcXMw4PQp
- 27/MZSCmWZIwXtWmi0Rccdde7aq4paF9gtZFD9y0o41YhcPZByfJClA9Yt2jrGe4iwTm
- s9SMFG2hJp5j+p+8dhuDZHcfK0URlLa6F5FyiD0X0Al8MGc8vnyFUySV0OP2f3V+Yh6K
- N+ZlSS/clgCBeTJHXeJoSbYY8rLYrveHBC4yARbi5cDN+sGGMcBZ4TtQWzgcKfrSX0as
- JkKmqmOZKg860px5SoH7VZnlRSCZBVA5Gxl3Gu20qvlDvD0M41tGwL1MTFn7CAaRQl9Q
- GxCg==
-X-Gm-Message-State: AOJu0YzI5r6wD7x8JeCX6HXcujmuaAe8a4VpqdJJXAqs4wPBAV846gMX
- f74rF7bAqu6V8mVfBFRQh9knXXBARwmCd8d0oLQ=
-X-Google-Smtp-Source: AGHT+IH3oi3tsbcX1D3XwBKYFHOwDFtoi8Uaj/3mSM8WFiQ+OCp2yz8xXCLwF/G6yhvcbyjxl5j1/w==
-X-Received: by 2002:a7b:c3d5:0:b0:400:419c:bbde with SMTP id
- t21-20020a7bc3d5000000b00400419cbbdemr2206108wmj.18.1695827528217; 
+ bh=s5DPTjMu0+4Bk3yruDyc6XSzg1YD1XJ0PlVkpHAUkmA=;
+ b=AYCnoHyuj2sIJhIsyaahunxrRBZlpA7USHRov3PUIqvkSUFj2JnIE4++xsG7HKdmGd
+ ZhpUsjC5p/aHKy5tTX0x7CZ+RHPw3v+mNq3fP++BX9SsCrUBW147ORUZMEtx5eJoNpHy
+ hjh++JFIW2/cQDZwyscY8u3tgrN8pIhtWiG4U4gLy6OMeYCeMs8tJrimNC6xoogMC1rV
+ 3AHZXyglc+istdh4QrVDMc50isdHSL9MJQNhPGHmZ49PZvjm/225bU3DSRraLXwyMW6f
+ x6SYddGR+k6NsK7QCY6HJ6tD/AUyPqhhgBU60U1DmwBhVqDr5K4IMP/mvthRWrp/rYnI
+ GvsA==
+X-Gm-Message-State: AOJu0Yz1pww4s4rLF5iy0VUl+P9pDHNGyCRog7juH3YwssLpXTsMElzH
+ wF/hfOsqFg0bko8T6BdRxy2riMrxoSV6ysaifWI=
+X-Google-Smtp-Source: AGHT+IFuAZYFcmSBK7vuiqMKZyCdk4oSWVklftyzbTErEpg/TjjXywJrvfelshOnwkBFjh5KIuaviw==
+X-Received: by 2002:a7b:c4d9:0:b0:3fb:a102:6d7a with SMTP id
+ g25-20020a7bc4d9000000b003fba1026d7amr2096154wmk.28.1695827528681; 
  Wed, 27 Sep 2023 08:12:08 -0700 (PDT)
 Received: from orth.archaic.org.uk (orth.archaic.org.uk. [2001:8b0:1d0::2])
  by smtp.gmail.com with ESMTPSA id
- n9-20020a1c7209000000b00401bbfb9b2bsm467474wmc.0.2023.09.27.08.12.07
+ n9-20020a1c7209000000b00401bbfb9b2bsm467474wmc.0.2023.09.27.08.12.08
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Wed, 27 Sep 2023 08:12:08 -0700 (PDT)
 From: Peter Maydell <peter.maydell@linaro.org>
 To: qemu-devel@nongnu.org
-Subject: [PATCH 2/8] docs/specs/edu: Convert to rST
-Date: Wed, 27 Sep 2023 16:11:59 +0100
-Message-Id: <20230927151205.70930-3-peter.maydell@linaro.org>
+Subject: [PATCH 3/8] docs/specs/ivshmem-spec: Convert to rST
+Date: Wed, 27 Sep 2023 16:12:00 +0100
+Message-Id: <20230927151205.70930-4-peter.maydell@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230927151205.70930-1-peter.maydell@linaro.org>
 References: <20230927151205.70930-1-peter.maydell@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=peter.maydell@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,187 +90,193 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Convert docs/specs/edu.txt to rST format.
+Convert docs/specs/ivshmem-spec.txt to rST format.
+
+In converting, I have dropped the sections on the device's command
+line interface and usage, as they are already covered by the
+user-facing docs in system/devices/ivshmem.rst.
+
+I have also removed the reference to Memnic, because the URL is dead
+and a web search suggests that whatever this was it's pretty much
+sunk without trace.
 
 Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
 ---
- MAINTAINERS                     |  1 +
- docs/specs/{edu.txt => edu.rst} | 84 ++++++++++++++++++++-------------
- docs/specs/index.rst            |  1 +
- 3 files changed, 54 insertions(+), 32 deletions(-)
- rename docs/specs/{edu.txt => edu.rst} (64%)
+ docs/specs/index.rst                          |  1 +
+ .../{ivshmem-spec.txt => ivshmem-spec.rst}    | 63 +++++++------------
+ docs/specs/pci-ids.rst                        |  2 +-
+ docs/system/devices/ivshmem.rst               |  2 +-
+ 4 files changed, 26 insertions(+), 42 deletions(-)
+ rename docs/specs/{ivshmem-spec.txt => ivshmem-spec.rst} (88%)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e0e23907871..9e27cad11c3 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1825,6 +1825,7 @@ EDU
- M: Jiri Slaby <jslaby@suse.cz>
- S: Maintained
- F: hw/misc/edu.c
-+F: docs/specs/edu.rst
- 
- IDE
- M: John Snow <jsnow@redhat.com>
-diff --git a/docs/specs/edu.txt b/docs/specs/edu.rst
-similarity index 64%
-rename from docs/specs/edu.txt
-rename to docs/specs/edu.rst
-index 08763108099..ae72737dbb4 100644
---- a/docs/specs/edu.txt
-+++ b/docs/specs/edu.rst
-@@ -2,9 +2,10 @@
- EDU device
- ==========
- 
--Copyright (c) 2014-2015 Jiri Slaby
-+..
-+   Copyright (c) 2014-2015 Jiri Slaby
- 
--This document is licensed under the GPLv2 (or later).
-+   This document is licensed under the GPLv2 (or later).
- 
- This is an educational device for writing (kernel) drivers. Its original
- intention was to support the Linux kernel lectures taught at the Masaryk
-@@ -15,10 +16,11 @@ The devices behaves very similar to the PCI bridge present in the COMBO6 cards
- developed under the Liberouter wings. Both PCI device ID and PCI space is
- inherited from that device.
- 
--Command line switches:
--    -device edu[,dma_mask=mask]
-+Command line switches
-+---------------------
- 
--    dma_mask makes the virtual device work with DMA addresses with the given
-+``-device edu[,dma_mask=mask]``
-+    ``dma_mask`` makes the virtual device work with DMA addresses with the given
-     mask. For educational purposes, the device supports only 28 bits (256 MiB)
-     by default. Students shall set dma_mask for the device in the OS driver
-     properly.
-@@ -26,7 +28,8 @@ Command line switches:
- PCI specs
- ---------
- 
--PCI ID: 1234:11e8
-+PCI ID:
-+   ``1234:11e8``
- 
- PCI Region 0:
-    I/O memory, 1 MB in size. Users are supposed to communicate with the card
-@@ -35,24 +38,29 @@ PCI Region 0:
- MMIO area spec
- --------------
- 
--Only size == 4 accesses are allowed for addresses < 0x80. size == 4 or
--size == 8 for the rest.
-+Only ``size == 4`` accesses are allowed for addresses ``< 0x80``.
-+``size == 4`` or ``size == 8`` for the rest.
- 
--0x00 (RO) : identification (0xRRrr00edu)
--	    RR -- major version
--	    rr -- minor version
-+0x00 (RO) : identification
-+            Value is in the form ``0xRRrr00edu`` where:
-+	    - ``RR`` -- major version
-+	    - ``rr`` -- minor version
- 
- 0x04 (RW) : card liveness check
--	    It is a simple value inversion (~ C operator).
-+	    It is a simple value inversion (``~`` C operator).
- 
- 0x08 (RW) : factorial computation
- 	    The stored value is taken and factorial of it is put back here.
- 	    This happens only after factorial bit in the status register (0x20
- 	    below) is cleared.
- 
--0x20 (RW) : status register, bitwise OR
--	    0x01 -- computing factorial (RO)
--	    0x80 -- raise interrupt after finishing factorial computation
-+0x20 (RW) : status register
-+            Bitwise OR of:
-+
-+            0x01
-+              computing factorial (RO)
-+	    0x80
-+              raise interrupt after finishing factorial computation
- 
- 0x24 (RO) : interrupt status register
- 	    It contains values which raised the interrupt (see interrupt raise
-@@ -76,13 +84,19 @@ size == 8 for the rest.
- 0x90 (RW) : DMA transfer count
- 	    The size of the area to perform the DMA on.
- 
--0x98 (RW) : DMA command register, bitwise OR
--	    0x01 -- start transfer
--	    0x02 -- direction (0: from RAM to EDU, 1: from EDU to RAM)
--	    0x04 -- raise interrupt 0x100 after finishing the DMA
-+0x98 (RW) : DMA command register
-+            Bitwise OR of:
-+
-+            0x01
-+              start transfer
-+	    0x02
-+              direction (0: from RAM to EDU, 1: from EDU to RAM)
-+	    0x04
-+              raise interrupt 0x100 after finishing the DMA
- 
- IRQ controller
- --------------
-+
- An IRQ is generated when written to the interrupt raise register. The value
- appears in interrupt status register when the interrupt is raised and has to
- be written to the interrupt acknowledge register to lower it.
-@@ -94,22 +108,28 @@ routine.
- 
- DMA controller
- --------------
-+
- One has to specify, source, destination, size, and start the transfer. One
- 4096 bytes long buffer at offset 0x40000 is available in the EDU device. I.e.
- one can perform DMA to/from this space when programmed properly.
- 
- Example of transferring a 100 byte block to and from the buffer using a given
--PCI address 'addr':
--addr     -> DMA source address
--0x40000  -> DMA destination address
--100      -> DMA transfer count
--1        -> DMA command register
--while (DMA command register & 1)
--	;
-+PCI address ``addr``:
- 
--0x40000  -> DMA source address
--addr+100 -> DMA destination address
--100      -> DMA transfer count
--3        -> DMA command register
--while (DMA command register & 1)
--	;
-+::
-+
-+  addr     -> DMA source address
-+  0x40000  -> DMA destination address
-+  100      -> DMA transfer count
-+  1        -> DMA command register
-+  while (DMA command register & 1)
-+      ;
-+
-+::
-+
-+  0x40000  -> DMA source address
-+  addr+100 -> DMA destination address
-+  100      -> DMA transfer count
-+  3        -> DMA command register
-+  while (DMA command register & 1)
-+      ;
 diff --git a/docs/specs/index.rst b/docs/specs/index.rst
-index d23efbe2480..30a0cf3d47e 100644
+index 30a0cf3d47e..e60c8377541 100644
 --- a/docs/specs/index.rst
 +++ b/docs/specs/index.rst
-@@ -25,3 +25,4 @@ guest hardware that is specific to QEMU.
-    sev-guest-firmware
+@@ -26,3 +26,4 @@ guest hardware that is specific to QEMU.
     fw_cfg
     vmw_pvscsi-spec
-+   edu
+    edu
++   ivshmem-spec
+diff --git a/docs/specs/ivshmem-spec.txt b/docs/specs/ivshmem-spec.rst
+similarity index 88%
+rename from docs/specs/ivshmem-spec.txt
+rename to docs/specs/ivshmem-spec.rst
+index 1beb3a01ec3..2d8e80055b0 100644
+--- a/docs/specs/ivshmem-spec.txt
++++ b/docs/specs/ivshmem-spec.rst
+@@ -1,4 +1,6 @@
+-= Device Specification for Inter-VM shared memory device =
++======================================================
++Device Specification for Inter-VM shared memory device
++======================================================
+ 
+ The Inter-VM shared memory device (ivshmem) is designed to share a
+ memory region between multiple QEMU processes running different guests
+@@ -12,42 +14,17 @@ can obtain one from an ivshmem server.
+ In the latter case, the device can additionally interrupt its peers, and
+ get interrupted by its peers.
+ 
++For information on configuring the ivshmem device on the QEMU
++command line, see :doc:`../system/devices/ivshmem`.
+ 
+-== Configuring the ivshmem PCI device ==
+-
+-There are two basic configurations:
+-
+-- Just shared memory:
+-
+-      -device ivshmem-plain,memdev=HMB,...
+-
+-  This uses host memory backend HMB.  It should have option "share"
+-  set.
+-
+-- Shared memory plus interrupts:
+-
+-      -device ivshmem-doorbell,chardev=CHR,vectors=N,...
+-
+-  An ivshmem server must already be running on the host.  The device
+-  connects to the server's UNIX domain socket via character device
+-  CHR.
+-
+-  Each peer gets assigned a unique ID by the server.  IDs must be
+-  between 0 and 65535.
+-
+-  Interrupts are message-signaled (MSI-X).  vectors=N configures the
+-  number of vectors to use.
+-
+-For more details on ivshmem device properties, see the QEMU Emulator
+-user documentation.
+-
+-
+-== The ivshmem PCI device's guest interface ==
++The ivshmem PCI device's guest interface
++========================================
+ 
+ The device has vendor ID 1af4, device ID 1110, revision 1.  Before
+ QEMU 2.6.0, it had revision 0.
+ 
+-=== PCI BARs ===
++PCI BARs
++--------
+ 
+ The ivshmem PCI device has two or three BARs:
+ 
+@@ -59,8 +36,7 @@ There are two ways to use this device:
+ 
+ - If you only need the shared memory part, BAR2 suffices.  This way,
+   you have access to the shared memory in the guest and can use it as
+-  you see fit.  Memnic, for example, uses ivshmem this way from guest
+-  user space (see http://dpdk.org/browse/memnic).
++  you see fit.
+ 
+ - If you additionally need the capability for peers to interrupt each
+   other, you need BAR0 and BAR1.  You will most likely want to write a
+@@ -77,10 +53,13 @@ accessing BAR2.
+ Revision 0 of the device is not capable to tell guest software whether
+ it is configured for interrupts.
+ 
+-=== PCI device registers ===
++PCI device registers
++--------------------
+ 
+ BAR 0 contains the following registers:
+ 
++::
++
+     Offset  Size  Access      On reset  Function
+         0     4   read/write        0   Interrupt Mask
+                                         bit 0: peer interrupt (rev 0)
+@@ -145,18 +124,20 @@ With multiple MSI-X vectors, different vectors can be used to indicate
+ different events have occurred.  The semantics of interrupt vectors
+ are left to the application.
+ 
+-
+-== Interrupt infrastructure ==
++Interrupt infrastructure
++========================
+ 
+ When configured for interrupts, the peers share eventfd objects in
+ addition to shared memory.  The shared resources are managed by an
+ ivshmem server.
+ 
+-=== The ivshmem server ===
++The ivshmem server
++------------------
+ 
+ The server listens on a UNIX domain socket.
+ 
+ For each new client that connects to the server, the server
++
+ - picks an ID,
+ - creates eventfd file descriptors for the interrupt vectors,
+ - sends the ID and the file descriptor for the shared memory to the
+@@ -189,7 +170,8 @@ vectors.
+ A standalone client is in contrib/ivshmem-client/.  It can be useful
+ for debugging.
+ 
+-=== The ivshmem Client-Server Protocol ===
++The ivshmem Client-Server Protocol
++----------------------------------
+ 
+ An ivshmem device configured for interrupts connects to an ivshmem
+ server.  This section details the protocol between the two.
+@@ -245,7 +227,8 @@ Known bugs:
+ 
+ * The protocol is poorly designed.
+ 
+-=== The ivshmem Client-Client Protocol ===
++The ivshmem Client-Client Protocol
++----------------------------------
+ 
+ An ivshmem device configured for interrupts receives eventfd file
+ descriptors for interrupting peers and getting interrupted by peers
+diff --git a/docs/specs/pci-ids.rst b/docs/specs/pci-ids.rst
+index d6707fa069a..c0a3dec2e7a 100644
+--- a/docs/specs/pci-ids.rst
++++ b/docs/specs/pci-ids.rst
+@@ -50,7 +50,7 @@ maintained as part of the virtio specification.
+   by QEMU.
+ 
+ 1af4:1110
+-  ivshmem device (shared memory, ``docs/specs/ivshmem-spec.txt``)
++  ivshmem device (:doc:`ivshmem-spec`)
+ 
+ All other device IDs are reserved.
+ 
+diff --git a/docs/system/devices/ivshmem.rst b/docs/system/devices/ivshmem.rst
+index e7aaf34c200..ce71e256630 100644
+--- a/docs/system/devices/ivshmem.rst
++++ b/docs/system/devices/ivshmem.rst
+@@ -33,7 +33,7 @@ syntax when using the shared memory server is:
+ When using the server, the guest will be assigned a VM ID (>=0) that
+ allows guests using the same server to communicate via interrupts.
+ Guests can read their VM ID from a device register (see
+-ivshmem-spec.txt).
++:doc:`../../specs/ivshmem-spec`).
+ 
+ Migration with ivshmem
+ ~~~~~~~~~~~~~~~~~~~~~~
 -- 
 2.34.1
 
