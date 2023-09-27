@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B473F7B0454
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 14:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6127B0459
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 14:39:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlTnP-0006iz-5b; Wed, 27 Sep 2023 08:37:39 -0400
+	id 1qlToR-0008BM-Nt; Wed, 27 Sep 2023 08:38:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qlTnN-0006ir-PE
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:37:37 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qlToO-0008Ar-TQ
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:38:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qlTnM-0000rj-1C
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:37:37 -0400
+ id 1qlToM-0001J5-0v
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 08:38:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695818254;
+ s=mimecast20190719; t=1695818316;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Oa965bmpAu9z4x2RUfxuVhEZ9XvT87AYSlLnwsTOLLA=;
- b=KNP7Wdk2rW0tsnq5OnMXxbV67UgpV+MBCsTDj9T1A2zTbHA/d7NftL1c4+FrnbbMIWNbE+
- r8snuWESHGpgTFpqxz9Yl3poYLWUSWSbYGhT0ystUoq/ZN3YmuUxmSrKCr0LwWcc7pLJIx
- 2anf02a1okGmxaKArT4IOCUHA85Mfaw=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rCIr7gOMAMWxccDId//9FhwjcQ5yTCiNGTpmT8V+CYM=;
+ b=F0j1RQcFmKf1eKomXwCNAHHoLz9rNEttVNZw6ftqwq4yi5rs6rHo3pUK007wBoJBp1TjNI
+ e7Bv3Wskmr8Nk8G0ig0OCYZGbWulc2yLrNZfoDMHGjHjMPMi2VH4RUjpa4+lru5TIRMLzz
+ qHNo1Rj5V1hTZkJ5bHXznSZRQTdz1PM=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-639-98AbUYWTOKmyNFKqHY7rpw-1; Wed, 27 Sep 2023 08:37:33 -0400
-X-MC-Unique: 98AbUYWTOKmyNFKqHY7rpw-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-417fda62defso170834981cf.1
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 05:37:33 -0700 (PDT)
+ us-mta-12-LGY7bXLOORyan91S7z1VWg-1; Wed, 27 Sep 2023 08:38:33 -0400
+X-MC-Unique: LGY7bXLOORyan91S7z1VWg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-77435bbb71dso1076715285a.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 05:38:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695818253; x=1696423053;
+ d=1e100.net; s=20230601; t=1695818313; x=1696423113;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Oa965bmpAu9z4x2RUfxuVhEZ9XvT87AYSlLnwsTOLLA=;
- b=Q2ZM/2A1YBUlTzCCPuQ7oUUdvdV0ou+LOZDs+4PvZPhY1wmtQuIl9C+Uz2TILWzVm4
- OjrXeJnr5duW1OfJWtYZ56Wmf1rQaCjZeoHcC8EzFEN+J5eNJbIGSRXiU08JkKG2yj+Z
- f20YKwscB4GMQFoCcOh84Jfjv/gVcTKOOXD1707Ay8fo4vEEQzuFrenWDMGEonc6xqea
- VO9wT5ReF3nnnma1P/k0MGE6xO/Ebjb2+VtYbQDYRVRz5oIvjCv+LRBiWCqyCUZevxKQ
- gq+VDpxt3y6uCiRvA7lsuWYbiI3DYzVQjmlIk5jg4nUt6CBlMy4SbmZATsqmYf5+oAsu
- 2+bg==
-X-Gm-Message-State: AOJu0YyWXYExfiWwZZqES/aBa4ForwARoprlKli7n6EsKM6aJ/N8M/Q2
- 3c0K2kljlqZN+5bTU45TcR2EA9DVCESPZNJV4LE0VrhY8kGPLhAlQ1QSweS620YyjFa/pLNYhuV
- SkJJlz9mO0IW+6GE=
-X-Received: by 2002:ac8:7fcb:0:b0:419:52a9:9ffc with SMTP id
- b11-20020ac87fcb000000b0041952a99ffcmr2027060qtk.35.1695818253320; 
- Wed, 27 Sep 2023 05:37:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGITZd385gpKFJ7zD2IFdsWiCi67EeiolExSenhjeolGyGsIQag1jwiWOMWMB4TBGpkiCLflg==
-X-Received: by 2002:ac8:7fcb:0:b0:419:52a9:9ffc with SMTP id
- b11-20020ac87fcb000000b0041952a99ffcmr2027049qtk.35.1695818253061; 
- Wed, 27 Sep 2023 05:37:33 -0700 (PDT)
+ bh=rCIr7gOMAMWxccDId//9FhwjcQ5yTCiNGTpmT8V+CYM=;
+ b=dwlS65AG9qcXE3diHzVCOI7bo0VVXauMxydPvZ3jBLCHpsJAzvUzzPWgQiA+FeuX3d
+ vDijDPAaZlGBAMMvrZFb+HxS4b2fdZhcYsPsjqGTXmZ0+ZHQ/V0i8s7e0CmugYKUQMp1
+ AmIhGYP3UVbcm/fTBxowsyqxN98kQ0DTyCS9Cg8mmjF4CPesgbth4Jdy8LS/G2kK/E0J
+ 0+MGLCJKZGKSttsB4210UTnZkwhpHi0GkZv6jo3Bi5SpCWWlDBkgW2hRlhk5L4Acu4vI
+ 7HOh8ynwnpCZYIbTxSpTFZzvDLN+5nv+aT2V8n+aO88RyZJhQLNDG/CvClit1E6KS5Ux
+ I8Bg==
+X-Gm-Message-State: AOJu0YyJYcIC/uS0jlhixBQ4k519OBEB8Bu3bGMia/QrHirVA3zzwCgG
+ FpLEld01BAorf6pq5yUd97yvvpkUnzXR3HC7eWMNzct4o2emO7TnV57NIgB2MdhJ/zPPwizG3lp
+ MkOLjqMfHWnVL7s8=
+X-Received: by 2002:a05:620a:c50:b0:775:73f6:1b39 with SMTP id
+ u16-20020a05620a0c5000b0077573f61b39mr1588090qki.25.1695818313204; 
+ Wed, 27 Sep 2023 05:38:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/pBs7NEqqyrh/A7BF767wstIeZXe1XHVzBiAlRlQDY1VEw08jSGzSGycnc3fJL/YxuMpIeQ==
+X-Received: by 2002:a05:620a:c50:b0:775:73f6:1b39 with SMTP id
+ u16-20020a05620a0c5000b0077573f61b39mr1588065qki.25.1695818312905; 
+ Wed, 27 Sep 2023 05:38:32 -0700 (PDT)
 Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
  ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- q14-20020a05622a04ce00b00410a9dd3d88sm5308025qtx.68.2023.09.27.05.37.29
+ j28-20020a05620a147c00b007743671a41fsm2024685qkl.72.2023.09.27.05.38.28
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Sep 2023 05:37:31 -0700 (PDT)
-Message-ID: <781dd793-71f2-6260-4373-ba17f8dbe21b@redhat.com>
-Date: Wed, 27 Sep 2023 14:37:27 +0200
+ Wed, 27 Sep 2023 05:38:31 -0700 (PDT)
+Message-ID: <933baed7-5a07-246f-7068-fd722d4d2963@redhat.com>
+Date: Wed, 27 Sep 2023 14:38:27 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
-Subject: Re: [PATCH v2 08/12] vfio/ap: Use vfio_[attach/detach]_device
+Subject: Re: [PATCH v2 06/12] vfio/pci: Introduce vfio_[attach/detach]_device
 Content-Language: en-US
 To: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
@@ -82,28 +82,25 @@ Cc: "alex.williamson@redhat.com" <alex.williamson@redhat.com>,
  "peterx@redhat.com" <peterx@redhat.com>,
  "jasowang@redhat.com" <jasowang@redhat.com>,
  "Tian, Kevin" <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>,
- "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
- Tony Krowiak <akrowiak@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>,
- Jason Herne <jjherne@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- "open list:vfio-ap" <qemu-s390x@nongnu.org>
+ "Sun, Yi Y" <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>
 References: <20230926113255.1177834-1-zhenzhong.duan@intel.com>
- <20230926113255.1177834-9-zhenzhong.duan@intel.com>
- <78bc5496-a017-4f5a-a825-df992ef86016@redhat.com>
- <PH7PR11MB6722A8CD7B8CF95DA2FA92A492C2A@PH7PR11MB6722.namprd11.prod.outlook.com>
- <dad18bf6-1e1d-15c4-fb87-7359a7a97e68@redhat.com>
- <PH7PR11MB6722BC75E6B32425036CBA9792C2A@PH7PR11MB6722.namprd11.prod.outlook.com>
+ <20230926113255.1177834-7-zhenzhong.duan@intel.com>
+ <b1012c96-e76e-10eb-2080-af7d8ff606ee@redhat.com>
+ <PH7PR11MB6722E62822B43C65DE5187C492C2A@PH7PR11MB6722.namprd11.prod.outlook.com>
+ <b4118ef6-e44f-785c-c99d-c4d8224b88ed@redhat.com>
+ <PH7PR11MB6722BC6A9DD797DB8BA9631E92C2A@PH7PR11MB6722.namprd11.prod.outlook.com>
 From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <PH7PR11MB6722BC75E6B32425036CBA9792C2A@PH7PR11MB6722.namprd11.prod.outlook.com>
+In-Reply-To: <PH7PR11MB6722BC6A9DD797DB8BA9631E92C2A@PH7PR11MB6722.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -124,126 +121,264 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-On 9/27/23 14:30, Duan, Zhenzhong wrote:
+On 9/27/23 14:32, Duan, Zhenzhong wrote:
 >
 >> -----Original Message-----
 >> From: Eric Auger <eric.auger@redhat.com>
->> Subject: Re: [PATCH v2 08/12] vfio/ap: Use vfio_[attach/detach]_device
+>> Sent: Wednesday, September 27, 2023 8:23 PM
+>> Subject: Re: [PATCH v2 06/12] vfio/pci: Introduce vfio_[attach/detach]_device
 >>
 >>
 >>
->> On 9/27/23 13:52, Duan, Zhenzhong wrote:
+>> On 9/27/23 12:07, Duan, Zhenzhong wrote:
+>>> Hi Eric,
+>>>
 >>>> -----Original Message-----
 >>>> From: Eric Auger <eric.auger@redhat.com>
->>>> Sent: Wednesday, September 27, 2023 5:16 PM
->>>> Subject: Re: [PATCH v2 08/12] vfio/ap: Use vfio_[attach/detach]_device
+>>>> Sent: Wednesday, September 27, 2023 5:02 PM
+>>>> Subject: Re: [PATCH v2 06/12] vfio/pci: Introduce vfio_[attach/detach]_device
 >>>>
 >>>> Hi Zhenzhong,
 >>>>
 >>>> On 9/26/23 13:32, Zhenzhong Duan wrote:
 >>>>> From: Eric Auger <eric.auger@redhat.com>
 >>>>>
->>>>> Let the vfio-ap device use vfio_attach_device() and
->>>>> vfio_detach_device(), hence hiding the details of the used
->>>>> IOMMU backend.
+>>>>> We want the VFIO devices to be able to use two different
+>>>>> IOMMU backends, the legacy VFIO one and the new iommufd one.
+>>>>>
+>>>>> Introduce vfio_[attach/detach]_device which aim at hiding the
+>>>>> underlying IOMMU backend (IOCTLs, datatypes, ...).
+>>>>>
+>>>>> Once vfio_attach_device completes, the device is attached
+>>>>> to a security context and its fd can be used. Conversely
+>>>>> When vfio_detach_device completes, the device has been
+>>>>> detached from the security context.
+>>>>>
+>>>>> At the moment only the implementation based on the legacy
+>>>>> container/group exists. Let's use it from the vfio-pci device.
+>>>>> Subsequent patches will handle other devices.
 >>>>>
 >>>>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
 >>>>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 >>>>> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 >>>>> ---
->>>>>  hw/vfio/ap.c | 68 +++++++++-------------------------------------------
->>>>>  1 file changed, 11 insertions(+), 57 deletions(-)
+>>>>>  include/hw/vfio/vfio-common.h |  3 ++
+>>>>>  hw/vfio/common.c              | 68 +++++++++++++++++++++++++++++++++++
+>>>>>  hw/vfio/pci.c                 | 50 +++-----------------------
+>>>>>  hw/vfio/trace-events          |  2 +-
+>>>>>  4 files changed, 77 insertions(+), 46 deletions(-)
 >>>>>
->>>>> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
->>>>> index 6e21d1da5a..16ea7fb3c2 100644
->>>>> --- a/hw/vfio/ap.c
->>>>> +++ b/hw/vfio/ap.c
->>>>> @@ -53,40 +53,6 @@ struct VFIODeviceOps vfio_ap_ops = {
->>>>>      .vfio_compute_needs_reset = vfio_ap_compute_needs_reset,
->>>>>  };
+>>>>> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-
+>> common.h
+>>>>> index c4e7c3b4a7..12fbfbc37d 100644
+>>>>> --- a/include/hw/vfio/vfio-common.h
+>>>>> +++ b/include/hw/vfio/vfio-common.h
+>>>>> @@ -225,6 +225,9 @@ void vfio_put_group(VFIOGroup *group);
+>>>>>  struct vfio_device_info *vfio_get_device_info(int fd);
+>>>>>  int vfio_get_device(VFIOGroup *group, const char *name,
+>>>>>                      VFIODevice *vbasedev, Error **errp);
+>>>>> +int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>>>>> +                       AddressSpace *as, Error **errp);
+>>>>> +void vfio_detach_device(VFIODevice *vbasedev);
 >>>>>
->>>>> -static void vfio_ap_put_device(VFIOAPDevice *vapdev)
->>>>> -{
->>>>> -    g_free(vapdev->vdev.name);
->>>>> -    vfio_put_base_device(&vapdev->vdev);
->>>>> -}
->>>>> -
->>>>> -static VFIOGroup *vfio_ap_get_group(VFIOAPDevice *vapdev, Error **errp)
->>>>> -{
->>>>> -    GError *gerror = NULL;
->>>>> -    char *symlink, *group_path;
->>>>> -    int groupid;
->>>>> -
->>>>> -    symlink = g_strdup_printf("%s/iommu_group", vapdev->vdev.sysfsdev);
->>>>> -    group_path = g_file_read_link(symlink, &gerror);
->>>>> -    g_free(symlink);
->>>>> -
->>>>> -    if (!group_path) {
->>>>> -        error_setg(errp, "%s: no iommu_group found for %s: %s",
->>>>> -                   TYPE_VFIO_AP_DEVICE, vapdev->vdev.sysfsdev, gerror-
->>> message);
->>>>> -        g_error_free(gerror);
->>>>> -        return NULL;
->>>>> -    }
->>>>> -
->>>>> -    if (sscanf(basename(group_path), "%d", &groupid) != 1) {
->>>>> -        error_setg(errp, "vfio: failed to read %s", group_path);
->>>>> -        g_free(group_path);
->>>>> -        return NULL;
->>>>> -    }
->>>>> -
->>>>> -    g_free(group_path);
->>>>> -
->>>>> -    return vfio_get_group(groupid, &address_space_memory, errp);
->>>>> -}
->>>>> -
->>>>>  static void vfio_ap_req_notifier_handler(void *opaque)
+>>>>>  int vfio_kvm_device_add_fd(int fd, Error **errp);
+>>>>>  int vfio_kvm_device_del_fd(int fd, Error **errp);
+>>>>> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+>>>>> index 959b1362bb..7f3798b152 100644
+>>>>> --- a/hw/vfio/common.c
+>>>>> +++ b/hw/vfio/common.c
+>>>>> @@ -2611,3 +2611,71 @@ int vfio_eeh_as_op(AddressSpace *as, uint32_t
+>> op)
+>>>>>      }
+>>>>>      return vfio_eeh_container_op(container, op);
+>>>>>  }
+>>>>> +
+>>>>> +static int vfio_device_groupid(VFIODevice *vbasedev, Error **errp)
+>>>>> +{
+>>>>> +    char *tmp, group_path[PATH_MAX], *group_name;
+>>>>> +    int ret, groupid;
+>>>>> +    ssize_t len;
+>>>>> +
+>>>>> +    tmp = g_strdup_printf("%s/iommu_group", vbasedev->sysfsdev);
+>>>>> +    len = readlink(tmp, group_path, sizeof(group_path));
+>>>>> +    g_free(tmp);
+>>>>> +
+>>>>> +    if (len <= 0 || len >= sizeof(group_path)) {
+>>>>> +        ret = len < 0 ? -errno : -ENAMETOOLONG;
+>>>>> +        error_setg_errno(errp, -ret, "no iommu_group found");
+>>>>> +        return ret;
+>>>>> +    }
+>>>>> +
+>>>>> +    group_path[len] = 0;
+>>>>> +
+>>>>> +    group_name = basename(group_path);
+>>>>> +    if (sscanf(group_name, "%d", &groupid) != 1) {
+>>>>> +        error_setg_errno(errp, errno, "failed to read %s", group_path);
+>>>>> +        return -errno;
+>>>>> +    }
+>>>>> +    return groupid;
+>>>>> +}
+>>>>> +
+>>>>> +int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>>>>> +                       AddressSpace *as, Error **errp)
+>>>>> +{
+>>>>> +    int groupid = vfio_device_groupid(vbasedev, errp);
+>>>>> +    VFIODevice *vbasedev_iter;
+>>>>> +    VFIOGroup *group;
+>>>>> +    int ret;
+>>>>> +
+>>>>> +    if (groupid < 0) {
+>>>>> +        return groupid;
+>>>>> +    }
+>>>>> +
+>>>>> +    trace_vfio_attach_device(vbasedev->name, groupid);
+>>>>> +
+>>>>> +    group = vfio_get_group(groupid, as, errp);
+>>>>> +    if (!group) {
+>>>>> +        return -ENOENT;
+>>>>> +    }
+>>>>> +
+>>>>> +    QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+>>>>> +        if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
+>>>>> +            error_setg(errp, "device is already attached");
+>>>>> +            vfio_put_group(group);
+>>>>> +            return -EBUSY;
+>>>>> +        }
+>>>>> +    }
+>>>>> +    ret = vfio_get_device(group, name, vbasedev, errp);
+>>>>> +    if (ret) {
+>>>>> +        vfio_put_group(group);
+>>>>> +    }
+>>>>> +
+>>>>> +    return ret;
+>>>>> +}
+>>>>> +
+>>>>> +void vfio_detach_device(VFIODevice *vbasedev)
+>>>>> +{
+>>>>> +    VFIOGroup *group = vbasedev->group;
+>>>>> +
+>>>>> +    vfio_put_base_device(vbasedev);
+>>>>> +    vfio_put_group(group);
+>>>>> +}
+>>>>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+>>>>> index 3b2ca3c24c..fe56789893 100644
+>>>>> --- a/hw/vfio/pci.c
+>>>>> +++ b/hw/vfio/pci.c
+>>>>> @@ -2828,10 +2828,10 @@ static void vfio_populate_device(VFIOPCIDevice
+>>>> *vdev, Error **errp)
+>>>>>  static void vfio_put_device(VFIOPCIDevice *vdev)
 >>>>>  {
->>>>>      VFIOAPDevice *vapdev = opaque;
->>>>> @@ -189,22 +155,15 @@ static void
->>>> vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
->>>>>  static void vfio_ap_realize(DeviceState *dev, Error **errp)
+>>>>> +    vfio_detach_device(&vdev->vbasedev);
+>>>>> +
+>>>>>      g_free(vdev->vbasedev.name);
+>>>>>      g_free(vdev->msix);
+>>>>> -
+>>>>> -    vfio_put_base_device(&vdev->vbasedev);
+>>>>>  }
+>>>>>
+>>>>>  static void vfio_err_notifier_handler(void *opaque)
+>>>>> @@ -2978,13 +2978,9 @@ static void vfio_realize(PCIDevice *pdev, Error
+>>>> **errp)
 >>>>>  {
->>>>>      int ret;
->>>>> -    char *mdevid;
+>>>>>      VFIOPCIDevice *vdev = VFIO_PCI(pdev);
+>>>>>      VFIODevice *vbasedev = &vdev->vbasedev;
+>>>>> -    VFIODevice *vbasedev_iter;
+>>>>> -    VFIOGroup *group;
+>>>>> -    char *tmp, *subsys, group_path[PATH_MAX], *group_name;
+>>>>> +    char *tmp, *subsys;
 >>>>>      Error *err = NULL;
->>>>> -    VFIOGroup *vfio_group;
->>>>>      APDevice *apdev = AP_DEVICE(dev);
->>>>>      VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
->>>>> +    VFIODevice *vbasedev = &vapdev->vdev;
+>>>>> -    ssize_t len;
+>>>>>      struct stat st;
+>>>>> -    int groupid;
+>>>>>      int i, ret;
+>>>>>      bool is_mdev;
+>>>>>      char uuid[UUID_FMT_LEN];
+>>>>> @@ -3015,39 +3011,6 @@ static void vfio_realize(PCIDevice *pdev, Error
+>>>> **errp)
+>>>>>      vbasedev->type = VFIO_DEVICE_TYPE_PCI;
+>>>>>      vbasedev->dev = DEVICE(vdev);
 >>>>>
->>>>> -    vfio_group = vfio_ap_get_group(vapdev, errp);
->>>>> -    if (!vfio_group) {
->>>>> -        return;
+>>>>> -    tmp = g_strdup_printf("%s/iommu_group", vbasedev->sysfsdev);
+>>>>> -    len = readlink(tmp, group_path, sizeof(group_path));
+>>>>> -    g_free(tmp);
+>>>>> -
+>>>>> -    if (len <= 0 || len >= sizeof(group_path)) {
+>>>>> -        error_setg_errno(errp, len < 0 ? errno : ENAMETOOLONG,
+>>>>> -                         "no iommu_group found");
+>>>>> -        goto error;
 >>>>> -    }
 >>>>> -
->>>>> -    vapdev->vdev.ops = &vfio_ap_ops;
->>>>> -    vapdev->vdev.type = VFIO_DEVICE_TYPE_AP;
->>>>> -    mdevid = basename(vapdev->vdev.sysfsdev);
->>>>> -    vapdev->vdev.name = g_strdup_printf("%s", mdevid);
->>>>> -    vapdev->vdev.dev = dev;
->>>>> +    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
->>>> I think we shall document in the commit msg the fact we use
->>> Yes, will do.
+>>>>> -    group_path[len] = 0;
+>>>>> -
+>>>>> -    group_name = basename(group_path);
+>>>>> -    if (sscanf(group_name, "%d", &groupid) != 1) {
+>>>>> -        error_setg_errno(errp, errno, "failed to read %s", group_path);
+>>>>> -        goto error;
+>>>>> -    }
+>>>>> -
+>>>>> -    trace_vfio_realize(vbasedev->name, groupid);
+>>>>> -
+>>>>> -    group = vfio_get_group(groupid, pci_device_iommu_address_space(pdev),
+>>>> errp);
+>>>>> -    if (!group) {
+>>>>> -        goto error;
+>>>>> -    }
+>>>>> -
+>>>>> -    QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
+>>>>> -        if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
+>>>>> -            error_setg(errp, "device is already attached");
+>>>>> -            vfio_put_group(group);
+>>>>> -            goto error;
+>>>>> -        }
+>>>>> -    }
+>>>>> -
+>>>>>      /*
+>>>>>       * Mediated devices *might* operate compatibly with discarding of RAM,
+>> but
+>>>>>       * we cannot know for certain, it depends on whether the mdev vendor
+>>>> driver
+>>>>> @@ -3065,7 +3028,6 @@ static void vfio_realize(PCIDevice *pdev, Error
+>> **errp)
+>>>>>      if (vbasedev->ram_block_discard_allowed && !is_mdev) {
+>>>>>          error_setg(errp, "x-balloon-allowed only potentially compatible "
+>>>>>                     "with mdev devices");
+>>>>> -        vfio_put_group(group);
+>>>>>          goto error;
+>>>>>      }
+>>>>>
+>>>>> @@ -3076,10 +3038,10 @@ static void vfio_realize(PCIDevice *pdev, Error
+>>>> **errp)
+>>>>>          name = g_strdup(vbasedev->name);
+>>>>>      }
+>>>>>
+>>>>> -    ret = vfio_get_device(group, name, vbasedev, errp);
+>>>>> +    ret = vfio_attach_device(name, vbasedev,
+>>>>> +                             pci_device_iommu_address_space(pdev), errp);
+>>>>>      g_free(name);
+>>>>>      if (ret) {
+>>>>> -        vfio_put_group(group);
+>>>> independently on this patch, I think in case of error we leak
+>>>> vbasedev->name. Please have a look and if confirmed you can send a
+>>>> separate patch.
+>>> In case of error, vbasedev->name is freed in vfio_put_device().
+>> called in vfio_instance_finalize only. See comment below
+>>>> Also I think if any subsequent action fail we shoudl properly detach the
+>>>> detach the device so introduce an extra error goto label, my bad sorry.
+>>> vfio_detach_device is called in vfio_instance_finalize(), this is just to follow
+>>> the old code, group and container resource allocated in vfio_realize() are
+>>> freed in vfio_instance_finalize().
 >>>
->>>> g_path_get_basename instead of basename here to match other device init
->>>> see 3e015d815b  use g_path_get_basename instead of basename
->>>>
->>>> also leak of vbasedev->name
->>> I free it in vfio_ap_unrealize().
->> is it called if realize fails?
-> My understanding is:
-> if realize fails, err path in realize() take this responsibility, if succeed, unrealize() should do that. So as you can see, I have done it in err path.
->
->     if (ret) {
->         g_free(vbasedev->name);
-oh you're right, this is done here sorry. And to me that's what is
-missing in some other devices like pci)
+>>> I agree this is strange, but I guess there may be some reason I'm unclear.
+>> Yeah but if vfio_realize does fail, I am not sure the
+>> vfio_instance_finalize gets called
+> If vfio_realize fails, fio_exitfn() will not be called but vfio_instance_finalize will.
+> Note vfio_instance_finalize() is called by object_unref().
+ah OK that's what I forgot then :-(
 
 Eric
->         return;
->     }
 >
+> Thanks
 > Zhenzhong
+>
 
 
