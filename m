@@ -2,67 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12ED7B0726
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 16:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 463407B073F
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 16:46:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlVid-0005QJ-Q7; Wed, 27 Sep 2023 10:40:51 -0400
+	id 1qlVn4-00010N-8E; Wed, 27 Sep 2023 10:45:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qlVic-0005Q2-7V
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:40:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qlVia-0000hE-Sh
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:40:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695825646;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=XzhH1gkGCCNKtn3/xwPer7PAelkiKk5SB1tlE9OGoGA=;
- b=EpPKiWjFahuP2WK+cXXTqsfSFtdk3QhUrpWAgzBmYRRbev5YOcYms3P8ql7G/w0ECnGwiY
- KC7iLrHacH9GxPaqGS4OUQoNA+Kdee5NxDsbkfPqzz2EnFXIpTNwpB2KDrLrBlJ87oJi8n
- Ez+DUHMZDuZ9jTnIu/pQTJ43wvWxwyY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-564-rYiDLuJbMa2Krj4MdTqgig-1; Wed, 27 Sep 2023 10:40:42 -0400
-X-MC-Unique: rYiDLuJbMa2Krj4MdTqgig-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4D5ED3C23FE5;
- Wed, 27 Sep 2023 14:40:42 +0000 (UTC)
-Received: from green.redhat.com (unknown [10.2.16.59])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D1B96492C37;
- Wed, 27 Sep 2023 14:40:41 +0000 (UTC)
-From: "Eric Blake" <eblake@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: balaton@eik.bme.hu, andrey.drobyshev@virtuozzo.com,
- peter.maydell@linaro.org, Eric Blake <eblake@redhat.com>
-Subject: [PATCH v2 3/3] mailmap: Fix BALATON Zoltan author email
-Date: Wed, 27 Sep 2023 09:38:19 -0500
-Message-ID: <20230927143815.3397386-8-eblake@redhat.com>
-In-Reply-To: <20230927143815.3397386-5-eblake@redhat.com>
-References: <20230927143815.3397386-5-eblake@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qlVmx-0000yv-A4
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:45:19 -0400
+Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qlVmv-0003cn-Bs
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:45:19 -0400
+Received: by mail-oo1-xc30.google.com with SMTP id
+ 006d021491bc7-57bab8676f9so3852591eaf.3
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 07:45:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695825915; x=1696430715; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=KV48e9msA/uN1k4h+khIaUvN7lXA8JVc4QN5PFuXKoA=;
+ b=eTxtid3qWtbetw+EcPoZPqewxKcVgg5IFjO+m7wiIpK95VAgR4BIvu0HFCMpW0W0Pr
+ FENLZjFJyzhZt8hXyt7yJ/+4LsF7PZlXpk2Sv4sII+QjSf/QoGm6Vnu08jEBcfSOxJtp
+ fysoVq11Bu1rj1dqLsDbClRzn97bvmzchq7LVOqlH3Y6a6/oE6dCHrGfrS60RfQhVyCD
+ a1znCDTD0M62uRJkhsjjOn6LiKNEyftuMVnBWMqTCTVTVXhHKUcUOeE46QhMBPoIOxlU
+ mImsGEgZyQJbZWInjeCLsE52NOCAcjV+DhDSDbprbN6mjf781KkWrQQcY7HlaOGH/+WK
+ WyuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695825915; x=1696430715;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KV48e9msA/uN1k4h+khIaUvN7lXA8JVc4QN5PFuXKoA=;
+ b=lR8CO8595QN4531MnXhFc93FR1nRZOp5hMVHTJHPLwDH9thTVZgWYGmvy4qNlmZ3wb
+ 1U3iWevns28n1v7lO/FAcfmF6W/1KL3LBfffOa5UbAiieM9ZzIDsStIDXwaS12sTeIAB
+ Uj8LA1/WCd2JWuev9Ic+VzYDHZm7LQjjYYco2IjubFeFdOxMHjL6u/94nSOtyQPGeZpH
+ bRBLPfn1qJVmX6nweSodNX8p3Z2vyRBrmGBOtioelr1h0Ug3yt8A97IAEWBrH3knKK3a
+ xpMJn72lPHdVKbR3AuP4aIGfDW4h0N/s1JCzt3C960RwTvEjiep7OKJAEJHlVgnqZnIU
+ 69Yg==
+X-Gm-Message-State: AOJu0YxRUKNaV1tkollZwwunnnSDROAvz2lGnKZLv3MWPGo33JrT5SLt
+ mrJOXa4bZ4chj3HOgJVYNLmcXniLsDMCB1a8Hgm0t841
+X-Google-Smtp-Source: AGHT+IHuG/X6lgfk/+aPMzi2zqX9nym/dYNK7xmybVbUGZ0WHwgWd6L7i9yupEByN5KNwFTuozpDB2zqJ0cmyppiq+I=
+X-Received: by 2002:a4a:2759:0:b0:57b:6c85:96f with SMTP id
+ w25-20020a4a2759000000b0057b6c85096fmr2151970oow.0.1695825915584; Wed, 27 Sep
+ 2023 07:45:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20230927135157.2316982-1-i.maximets@ovn.org>
+In-Reply-To: <20230927135157.2316982-1-i.maximets@ovn.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Wed, 27 Sep 2023 10:45:03 -0400
+Message-ID: <CAJSP0QV9Uijfjmis9xOoYWJwWE-LMReSwHKUGyKTQOcQCfWUMg@mail.gmail.com>
+Subject: Re: [PATCH v2] virtio: use shadow_avail_idx while checking number of
+ heads
+To: Ilya Maximets <i.maximets@ovn.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc30.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,31 +86,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eric Blake <eblake@redhat.com>
+On Wed, 27 Sept 2023 at 09:52, Ilya Maximets <i.maximets@ovn.org> wrote:
+>
+> We do not need the most up to date number of heads, we only want to
+> know if there is at least one.
+>
+> Use shadow variable as long as it is not equal to the last available
+> index checked.  This avoids expensive qatomic dereference of the
+> RCU-protected memory region cache as well as the memory access itself.
+>
+> The change improves performance of the af-xdp network backend by 2-3%.
+>
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
+>
+> Version 2:
+>   - Changed to not skip error checks and a barrier.
+>   - Added comments about the need for a barrier.
 
-This fixes authorship of commits 5cbd51a5 and friends, where the
-qemu-ppc mailing list rewrote the "From:" field in the corresponding
-patches.  See commit 3bd2608db7 ("maint: Add .mailmap entries for
-patches claiming list authorship") for explanation.
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 
-Signed-off-by: Eric Blake <eblake@redhat.com>
----
- .mailmap | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/.mailmap b/.mailmap
-index fadf6e74506..d2149592887 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -59,6 +59,7 @@ Julia Suvorova <jusual@mail.ru> Julia Suvorova via Qemu-devel <qemu-devel@nongnu
- Justin Terry (VM) <juterry@microsoft.com> Justin Terry (VM) via Qemu-devel <qemu-devel@nongnu.org>
- Stefan Weil <sw@weilnetz.de> Stefan Weil via <qemu-devel@nongnu.org>
- Andrey Drobyshev <andrey.drobyshev@virtuozzo.com> Andrey Drobyshev via <qemu-block@nongnu.org>
-+BALATON Zoltan <balaton@eik.bme.hu> BALATON Zoltan via <qemu-ppc@nongnu.org>
-
- # Next, replace old addresses by a more recent one.
- Aleksandar Markovic <aleksandar.qemu.devel@gmail.com> <aleksandar.markovic@mips.com>
--- 
-2.41.0
-
+>
+>  hw/virtio/virtio.c | 18 +++++++++++++++---
+>  1 file changed, 15 insertions(+), 3 deletions(-)
+>
+> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+> index 4577f3f5b3..8a4c3e95d2 100644
+> --- a/hw/virtio/virtio.c
+> +++ b/hw/virtio/virtio.c
+> @@ -999,7 +999,12 @@ void virtqueue_push(VirtQueue *vq, const VirtQueueElement *elem,
+>  /* Called within rcu_read_lock().  */
+>  static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
+>  {
+> -    uint16_t num_heads = vring_avail_idx(vq) - idx;
+> +    uint16_t avail_idx, num_heads;
+> +
+> +    /* Use shadow index whenever possible. */
+> +    avail_idx = (vq->shadow_avail_idx != idx) ? vq->shadow_avail_idx
+> +                                              : vring_avail_idx(vq);
+> +    num_heads = avail_idx - idx;
+>
+>      /* Check it isn't doing very strange things with descriptor numbers. */
+>      if (num_heads > vq->vring.num) {
+> @@ -1007,8 +1012,15 @@ static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
+>                       idx, vq->shadow_avail_idx);
+>          return -EINVAL;
+>      }
+> -    /* On success, callers read a descriptor at vq->last_avail_idx.
+> -     * Make sure descriptor read does not bypass avail index read. */
+> +    /*
+> +     * On success, callers read a descriptor at vq->last_avail_idx.
+> +     * Make sure descriptor read does not bypass avail index read.
+> +     *
+> +     * This is necessary even if we are using a shadow index, since
+> +     * the shadow index could have been initialized by calling
+> +     * vring_avail_idx() outside of this function, i.e., by a guest
+> +     * memory read not accompanied by a barrier.
+> +     */
+>      if (num_heads) {
+>          smp_rmb();
+>      }
+> --
+> 2.41.0
+>
+>
 
