@@ -2,84 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4867AF815
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 04:27:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B7A97AF839
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 04:40:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlKFy-0001Ye-Rc; Tue, 26 Sep 2023 22:26:30 -0400
+	id 1qlKRg-0004wL-24; Tue, 26 Sep 2023 22:38:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
- id 1qlKFt-0001YU-Nk
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 22:26:26 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lixianglai@loongson.cn>) id 1qlKFq-0002j0-PE
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 22:26:25 -0400
-Received: from loongson.cn (unknown [10.20.42.32])
- by gateway (Coremail) with SMTP id _____8AxEvDJkhNlSBItAA--.19995S3;
- Wed, 27 Sep 2023 10:26:17 +0800 (CST)
-Received: from [10.20.42.32] (unknown [10.20.42.32])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8DxPC_GkhNlxosTAA--.1951S2; 
- Wed, 27 Sep 2023 10:26:16 +0800 (CST)
-Subject: Re: [PATCH v3 7/7] Update the ACPI table for the Loongarch CPU
-To: Salil Mehta <salil.mehta@huawei.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>
-Cc: Bernhard Beschow <shentey@gmail.com>, Salil Mehta
- <salil.mehta@opnsrc.net>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Song Gao <gaosong@loongson.cn>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- "wangyanan (Y)" <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Bibo Mao <maobibo@loongson.cn>
-References: <cover.1695697701.git.lixianglai@loongson.cn>
- <eb15eaa49c27beb7918a0dbaf4ba53ad6f3cd805.1695697701.git.lixianglai@loongson.cn>
- <fb85e363198c40e89583296f8ab0d9a5@huawei.com>
-From: lixianglai <lixianglai@loongson.cn>
-Message-ID: <32565111-9749-318d-d5dd-58b2076e3207@loongson.cn>
-Date: Wed, 27 Sep 2023 10:26:14 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qlKRd-0004w3-IY; Tue, 26 Sep 2023 22:38:33 -0400
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <joel.stan@gmail.com>)
+ id 1qlKRX-00020m-PL; Tue, 26 Sep 2023 22:38:33 -0400
+Received: by mail-lj1-x231.google.com with SMTP id
+ 38308e7fff4ca-2b9338e4695so168429511fa.2; 
+ Tue, 26 Sep 2023 19:38:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=jms.id.au; s=google; t=1695782305; x=1696387105; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7WR6vHIEEVdIjBC3pWufmBrSu+xygCKsI+r8KdJjQaA=;
+ b=GZkc2+6gb2I3aa97m42ii5wtL1rjory7z+gcQ2h2s3uqnmCERHIB40wEb+FeX42VdS
+ FdDT7GcjS/xfJZZ4z4I/Ba2C5Py1GtxL+QRkAZ/UTa2f5zflJ66F+vfZJCiJdTXxPUlC
+ h2A0fZu3BbOVwhDK7vl96I0gSTaKeQcWC/SOg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695782305; x=1696387105;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7WR6vHIEEVdIjBC3pWufmBrSu+xygCKsI+r8KdJjQaA=;
+ b=nxGWqtKANXuGRlP36N6Vp+Z+QeZL9mS4XazAn1eR1tG5IXsgqx949hpi/31sasrmQ5
+ IbFZa6QAfeRlcZVGVpPWApQB+JzMaEK/Bl1kYZpV5GlTr+mGgEQaJn0tK7O5w/7gAG1Q
+ vuMMSTIAsoT7VizxsNyuJFoZFQ+1iFQJelXWMPc0MxbHfir3cz+GbKAe55Q8G7Ude5lb
+ 4RPF7mpLDp9XCGNDEVqoD/aG6WCwE2n9+vZRAmRpmXMy1IpzPzfOIbl1d6KWZVPpmNRA
+ mFgeugsZxdZHbDMDsSEpt5fzsXdxPL4a2p3denQLclm/DlLNBBIFFte1ExE/q2akmTkm
+ /D1w==
+X-Gm-Message-State: AOJu0Yx13IchNfVAqx734sqhJINS8a+LHPF4ysHcjhDOtey4WrTV75M0
+ EoQIppBy4qZ+jxOD6bUZ0UvlQIRpYFoZmyM7E/s=
+X-Google-Smtp-Source: AGHT+IFCpu7tPZ/XjI9JzG9I2g0qySHlEntCIod5ri0+8cpwjPgw/55dVVX4/pnHW8GHEHLR199rlaxiXwtAoKyV7Sc=
+X-Received: by 2002:a2e:b606:0:b0:2bc:c3ad:f418 with SMTP id
+ r6-20020a2eb606000000b002bcc3adf418mr720730ljn.20.1695782305252; Tue, 26 Sep
+ 2023 19:38:25 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <fb85e363198c40e89583296f8ab0d9a5@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-CM-TRANSID: AQAAf8DxPC_GkhNlxosTAA--.1951S2
-X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoWxXFW7Zr4xWFy5KF4kKw1xZwc_yoW5ur4UpF
- 9rC3WY9ryqyrW7Ca1aqFy2yas3Xr4kG3yxXws7tr9YkasFyw13Ar18Xw4DXF9Fvw1fWF48
- Zr40g3Z2g3W5ZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUr529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
- AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
- tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
- 8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
- r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67
- AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIY
- rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Gr0_Xr1lIxAIcVC0I7IYx2IY6xkF7I0E14
- v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWx
- JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUxhiSDU
- UUU
-Received-SPF: pass client-ip=114.242.206.163;
- envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
-X-Spam_score_int: -33
-X-Spam_score: -3.4
-X-Spam_bar: ---
-X-Spam_report: (-3.4 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <20230922155924.1172019-1-clg@kaod.org>
+ <20230922155924.1172019-2-clg@kaod.org>
+In-Reply-To: <20230922155924.1172019-2-clg@kaod.org>
+From: Joel Stanley <joel@jms.id.au>
+Date: Wed, 27 Sep 2023 02:38:14 +0000
+Message-ID: <CACPK8XdzL9EJ+v6KKsfRvX6x5bVnevVtTmdjM_w22p6gH8oXKQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] aspeed/i2c: Clean up local variable shadowing
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>
+Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, 
+ Andrew Jeffery <andrew@aj.id.au>, Markus Armbruster <armbru@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::231;
+ envelope-from=joel.stan@gmail.com; helo=mail-lj1-x231.google.com
+X-Spam_score_int: -11
+X-Spam_score: -1.2
+X-Spam_bar: -
+X-Spam_report: (-1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FORGED_FROMDOMAIN=0.25, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,93 +83,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Hi Salil Mehta:
-> Hi Xianglai,
+On Fri, 22 Sept 2023 at 15:59, C=C3=A9dric Le Goater <clg@kaod.org> wrote:
 >
->> From: xianglai li <lixianglai@loongson.cn>
->> Sent: Tuesday, September 26, 2023 10:55 AM
->> To: qemu-devel@nongnu.org
->> Cc: Bernhard Beschow <shentey@gmail.com>; Salil Mehta
->> <salil.mehta@opnsrc.net>; Salil Mehta <salil.mehta@huawei.com>; Xiaojuan
->> Yang <yangxiaojuan@loongson.cn>; Song Gao <gaosong@loongson.cn>; Michael S.
->> Tsirkin <mst@redhat.com>; Igor Mammedov <imammedo@redhat.com>; Ani Sinha
->> <anisinha@redhat.com>; Paolo Bonzini <pbonzini@redhat.com>; Richard
->> Henderson <richard.henderson@linaro.org>; Eduardo Habkost
->> <eduardo@habkost.net>; Marcel Apfelbaum <marcel.apfelbaum@gmail.com>;
->> Philippe Mathieu-Daudé <philmd@linaro.org>; wangyanan (Y)
->> <wangyanan55@huawei.com>; Daniel P. Berrangé <berrange@redhat.com>; Peter
->> Xu <peterx@redhat.com>; David Hildenbrand <david@redhat.com>; Bibo Mao
->> <maobibo@loongson.cn>
->> Subject: [PATCH v3 7/7] Update the ACPI table for the Loongarch CPU
->>
->> Add new types of GED devices for Loongarch machines,
->> add CPU hot-(un)plug event response and address spaces,
->> and update the ACPI table.
->>
->> Cc: "Bernhard Beschow" <shentey@gmail.com>
->> Cc: "Salil Mehta" <salil.mehta@opnsrc.net>
->> Cc: "Salil Mehta" <salil.mehta@huawei.com>
->> Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
->> Cc: Song Gao <gaosong@loongson.cn>
->> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->> Cc: Igor Mammedov <imammedo@redhat.com>
->> Cc: Ani Sinha <anisinha@redhat.com>
->> Cc: Paolo Bonzini <pbonzini@redhat.com>
->> Cc: Richard Henderson <richard.henderson@linaro.org>
->> Cc: Eduardo Habkost <eduardo@habkost.net>
->> Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
->> Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
->> Cc: Yanan Wang <wangyanan55@huawei.com>
->> Cc: "Daniel P. Berrangé" <berrange@redhat.com>
->> Cc: Peter Xu <peterx@redhat.com>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Bibo Mao <maobibo@loongson.cn>
->> Signed-off-by: xianglai li <lixianglai@loongson.cn>
->> ---
->>   hw/acpi/acpi-cpu-hotplug-stub.c |  9 +++++++++
->>   hw/loongarch/acpi-build.c       | 34 ++++++++++++++++++++++++++++++++-
->>   hw/loongarch/virt.c             |  3 ++-
->>   include/hw/loongarch/virt.h     |  1 +
->>   4 files changed, 45 insertions(+), 2 deletions(-)
->>
->> diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-
->> stub.c
->> index 2aec90d968..b3ac7a1e31 100644
->> --- a/hw/acpi/acpi-cpu-hotplug-stub.c
->> +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
->> @@ -19,6 +19,15 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent,
->> Object *owner,
->>       return;
->>   }
->>
->> +void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures
->> opts,
->> +                    build_madt_cpu_fn build_madt_cpu, hwaddr mmap_io_base,
->> +                    const char *res_root,
->> +                    const char *event_handler_method,
->> +                    AmlRegionSpace rs)
->> +{
->> +    return;
->> +}
->> +
->>   void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList
->> ***list)
->>   {
->>       return;
-
-
-Ok, I'll take care of that.
-
-Thanks,
-
-Xianglai.
-
+> Remove superfluous local 'data' variable and use the one define at the
+> top of the routine. This fixes :
 >
-> Above change is already part of the architecture agnostic patch-set.
-> Not required here!
+>   ../hw/i2c/aspeed_i2c.c: In function =E2=80=98aspeed_i2c_bus_recv=E2=80=
+=99:
+>   ../hw/i2c/aspeed_i2c.c:315:17: warning: declaration of =E2=80=98data=E2=
+=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
+>     315 |         uint8_t data;
+>         |                 ^~~~
+>   ../hw/i2c/aspeed_i2c.c:288:13: note: shadowed declaration is here
+>     288 |     uint8_t data;
+>         |             ^~~~
 >
-> Thanks
-> Salil.
+> Signed-off-by: C=C3=A9dric Le Goater <clg@kaod.org>
 
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+
+messy.
+
+> ---
+>  hw/i2c/aspeed_i2c.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/hw/i2c/aspeed_i2c.c b/hw/i2c/aspeed_i2c.c
+> index 7275d40749a9..1037c22b2f79 100644
+> --- a/hw/i2c/aspeed_i2c.c
+> +++ b/hw/i2c/aspeed_i2c.c
+> @@ -312,7 +312,6 @@ static void aspeed_i2c_bus_recv(AspeedI2CBus *bus)
+>          SHARED_ARRAY_FIELD_DP32(bus->regs, reg_pool_ctrl, RX_COUNT, i & =
+0xff);
+>          SHARED_ARRAY_FIELD_DP32(bus->regs, reg_cmd, RX_BUFF_EN, 0);
+>      } else if (SHARED_ARRAY_FIELD_EX32(bus->regs, reg_cmd, RX_DMA_EN)) {
+> -        uint8_t data;
+>          /* In new mode, clear how many bytes we RXed */
+>          if (aspeed_i2c_is_new_mode(bus->controller)) {
+>              ARRAY_FIELD_DP32(bus->regs, I2CM_DMA_LEN_STS, RX_LEN, 0);
+> --
+> 2.41.0
+>
 
