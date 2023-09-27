@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D35D7B0094
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E7D7B00AF
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:39:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlQyJ-0000vY-Hs; Wed, 27 Sep 2023 05:36:43 -0400
+	id 1qlQyH-0000uE-Em; Wed, 27 Sep 2023 05:36:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQy1-0000mL-Im
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:25 -0400
-Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
+ id 1qlQy2-0000mR-8l
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:27 -0400
+Received: from nylar.uni-paderborn.de ([2001:638:502:c003::18])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQxw-0000hO-Tj
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:25 -0400
+ id 1qlQxz-0000hf-RY
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=lk+bO9MVpIZNBBvU6IHOGrEJ52+lL/4qTPNX6trxxgg=; b=jl51Xi44azBspstTqejZ3PUQGE
- gxkRZLBO5kSdyyHynZE7XqzCnlsaAPVzmNnZRiN1RxJ2J+pxHtrpgLxB7PpqJmkijbEbzpps/QyXP
- nhNPTO3NEHL6UFwpiGWtxltpBk1JerWQnySKR6++wcoxlAgiPQ/a4f/Wo7bN/RKWMwAs=;
+ bh=7ddeiyD+Rt2vokEnGfPawfSGkhNaO2A0xv/Yktxt3n4=; b=Y0Qf8lJIXmow2BLFy/HP9DlqQ7
+ 63d/nEZI2Zn5sZJxJcM6mn+02KtROMZC9WqvqxBNagqch0zTYSQIsnuT/YrH0IdirvPgIcMIjI2MW
+ +fTnFNw6xlswyw8xLhzNcC2vog+DxsqtXM7kmXxuZLDbrEIAo9O5aPKRUKdJddlEjhR0=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 06/21] target/tricore: Implement ftohp insn
-Date: Wed, 27 Sep 2023 11:35:37 +0200
-Message-ID: <20230927093552.493279-7-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 07/21] target/tricore: Implement hptof insn
+Date: Wed, 27 Sep 2023 11:35:38 +0200
+Message-ID: <20230927093552.493279-8-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
 References: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
@@ -42,13 +42,15 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: add header
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.9.27.92417, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.9.26.602000
+ Antispam-Data: 2023.9.27.93017, AntiVirus-Engine: 6.0.2,
+ AntiVirus-Data: 2023.9.27.602000
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=14, da=183416443, mc=6, sc=0,
+ hc=6, sp=0, fso=14, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::16;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
+Received-SPF: pass client-ip=2001:638:502:c003::18;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=nylar.uni-paderborn.de
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -70,33 +72,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-reported in https://gitlab.com/qemu-project/qemu/-/issues/1667
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1667
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230828112651.522058-7-kbastian@mail.uni-paderborn.de>
+Message-ID: <20230828112651.522058-8-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/fpu_helper.c               | 38 +++++++++++++++++++++++
- target/tricore/helper.c                   |  1 +
+ target/tricore/fpu_helper.c               | 36 +++++++++++++++++++++++
  target/tricore/helper.h                   |  1 +
  target/tricore/translate.c                |  7 +++++
  target/tricore/tricore-opcodes.h          |  1 +
  tests/tcg/tricore/Makefile.softmmu-target |  1 +
- tests/tcg/tricore/asm/test_ftohp.S        | 14 +++++++++
- 7 files changed, 63 insertions(+)
- create mode 100644 tests/tcg/tricore/asm/test_ftohp.S
+ tests/tcg/tricore/asm/test_hptof.S        | 12 ++++++++
+ 6 files changed, 58 insertions(+)
+ create mode 100644 tests/tcg/tricore/asm/test_hptof.S
 
 diff --git a/target/tricore/fpu_helper.c b/target/tricore/fpu_helper.c
-index d0c474c5f3..848c4a40a0 100644
+index 848c4a40a0..5d38aea143 100644
 --- a/target/tricore/fpu_helper.c
 +++ b/target/tricore/fpu_helper.c
-@@ -373,6 +373,44 @@ uint32_t helper_ftoi(CPUTriCoreState *env, uint32_t arg)
+@@ -373,6 +373,42 @@ uint32_t helper_ftoi(CPUTriCoreState *env, uint32_t arg)
      return (uint32_t)result;
  }
  
-+uint32_t helper_ftohp(CPUTriCoreState *env, uint32_t arg)
++uint32_t helper_hptof(CPUTriCoreState *env, uint32_t arg)
 +{
-+    float32 f_arg = make_float32(arg);
++    float16 f_arg = make_float16(arg);
 +    uint32_t result = 0;
 +    int32_t flags = 0;
 +
@@ -105,21 +105,19 @@ index d0c474c5f3..848c4a40a0 100644
 +     * bits to the top 2 and lower 8 output mantissa bits respectively.
 +     * Softfloat on the other hand uses the top 10 mantissa bits.
 +     */
-+    if (float32_is_any_nan(f_arg)) {
-+        if (float32_is_signaling_nan(f_arg, &env->fp_status)) {
++    if (float16_is_any_nan(f_arg)) {
++        if (float16_is_signaling_nan(f_arg, &env->fp_status)) {
 +            flags |= float_flag_invalid;
 +        }
-+        result = float16_set_sign(result, arg >> 31);
-+        result = deposit32(result, 10, 5, 0x1f);
-+        result = deposit32(result, 8, 2, extract32(arg, 21, 2));
-+        result = deposit32(result, 0, 8, extract32(arg, 0, 8));
-+        if (extract32(result, 0, 10) == 0) {
-+            result |= (1 << 8);
-+        }
++        result = 0;
++        result = float32_set_sign(result, f_arg >> 15);
++        result = deposit32(result, 23, 8, 0xff);
++        result = deposit32(result, 21, 2, extract32(f_arg, 8, 2));
++        result = deposit32(result, 0, 8, extract32(f_arg, 0, 8));
 +    } else {
-+        set_flush_to_zero(0, &env->fp_status);
-+        result = float32_to_float16(f_arg, true, &env->fp_status);
-+        set_flush_to_zero(1, &env->fp_status);
++        set_flush_inputs_to_zero(0, &env->fp_status);
++        result = float16_to_float32(f_arg, true, &env->fp_status);
++        set_flush_inputs_to_zero(1, &env->fp_status);
 +        flags = f_get_excp_flags(env);
 +    }
 +
@@ -132,44 +130,32 @@ index d0c474c5f3..848c4a40a0 100644
 +    return result;
 +}
 +
- uint32_t helper_itof(CPUTriCoreState *env, uint32_t arg)
+ uint32_t helper_ftohp(CPUTriCoreState *env, uint32_t arg)
  {
-     float32 f_result;
-diff --git a/target/tricore/helper.c b/target/tricore/helper.c
-index e615c3d6d4..7e5da3cb23 100644
---- a/target/tricore/helper.c
-+++ b/target/tricore/helper.c
-@@ -137,6 +137,7 @@ void fpu_set_state(CPUTriCoreState *env)
- 
-     set_flush_inputs_to_zero(1, &env->fp_status);
-     set_flush_to_zero(1, &env->fp_status);
-+    set_float_detect_tininess(float_tininess_before_rounding, &env->fp_status);
-     set_default_nan_mode(1, &env->fp_status);
- }
- 
+     float32 f_arg = make_float32(arg);
 diff --git a/target/tricore/helper.h b/target/tricore/helper.h
-index 827fbaa692..dcc5a492b3 100644
+index dcc5a492b3..1d97d078b0 100644
 --- a/target/tricore/helper.h
 +++ b/target/tricore/helper.h
-@@ -111,6 +111,7 @@ DEF_HELPER_4(fmsub, i32, env, i32, i32, i32)
- DEF_HELPER_3(fcmp, i32, env, i32, i32)
+@@ -112,6 +112,7 @@ DEF_HELPER_3(fcmp, i32, env, i32, i32)
  DEF_HELPER_2(qseed, i32, env, i32)
  DEF_HELPER_2(ftoi, i32, env, i32)
-+DEF_HELPER_2(ftohp, i32, env, i32)
+ DEF_HELPER_2(ftohp, i32, env, i32)
++DEF_HELPER_2(hptof, i32, env, i32)
  DEF_HELPER_2(itof, i32, env, i32)
  DEF_HELPER_2(utof, i32, env, i32)
  DEF_HELPER_2(ftoiz, i32, env, i32)
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 382ecf4775..d76b6475f1 100644
+index d76b6475f1..c9823ee32a 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -6260,6 +6260,13 @@ static void decode_rr_divide(DisasContext *ctx)
-     case OPC2_32_RR_DIV_F:
-         gen_helper_fdiv(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1], cpu_gpr_d[r2]);
+@@ -6267,6 +6267,13 @@ static void decode_rr_divide(DisasContext *ctx)
+             generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
+         }
          break;
-+    case OPC2_32_RR_FTOHP:
++   case OPC2_32_RR_HPTOF:
 +        if (has_feature(ctx, TRICORE_FEATURE_162)) {
-+            gen_helper_ftohp(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++            gen_helper_hptof(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
 +        } else {
 +            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
 +        }
@@ -178,46 +164,44 @@ index 382ecf4775..d76b6475f1 100644
          gen_helper_fcmp(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1], cpu_gpr_d[r2]);
          break;
 diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
-index f070571665..29e655a667 100644
+index 29e655a667..60d2402b6e 100644
 --- a/target/tricore/tricore-opcodes.h
 +++ b/target/tricore/tricore-opcodes.h
-@@ -1152,6 +1152,7 @@ enum {
-     OPC2_32_RR_ITOF                              = 0x14,
+@@ -1153,6 +1153,7 @@ enum {
      OPC2_32_RR_CMP_F                             = 0x00,
      OPC2_32_RR_FTOIZ                             = 0x13,
-+    OPC2_32_RR_FTOHP                             = 0x25, /* 1.6.2 only */
+     OPC2_32_RR_FTOHP                             = 0x25, /* 1.6.2 only */
++    OPC2_32_RR_HPTOF                             = 0x24, /* 1.6.2 only */
      OPC2_32_RR_FTOQ31                            = 0x11,
      OPC2_32_RR_FTOQ31Z                           = 0x18,
      OPC2_32_RR_FTOU                              = 0x12,
 diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index 91ae129a83..fc545d45ae 100644
+index fc545d45ae..258aeb40ae 100644
 --- a/tests/tcg/tricore/Makefile.softmmu-target
 +++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -14,6 +14,7 @@ TESTS += test_dextr.asm.tst
- TESTS += test_dvstep.asm.tst
- TESTS += test_fadd.asm.tst
- TESTS += test_fmul.asm.tst
-+TESTS += test_ftohp.asm.tst
+@@ -17,6 +17,7 @@ TESTS += test_fmul.asm.tst
+ TESTS += test_ftohp.asm.tst
  TESTS += test_ftoi.asm.tst
  TESTS += test_ftou.asm.tst
++TESTS += test_hptof.asm.tst
  TESTS += test_imask.asm.tst
-diff --git a/tests/tcg/tricore/asm/test_ftohp.S b/tests/tcg/tricore/asm/test_ftohp.S
+ TESTS += test_insert.asm.tst
+ TESTS += test_ld_bu.asm.tst
+diff --git a/tests/tcg/tricore/asm/test_hptof.S b/tests/tcg/tricore/asm/test_hptof.S
 new file mode 100644
-index 0000000000..9e23141c1e
+index 0000000000..8adc5e5273
 --- /dev/null
-+++ b/tests/tcg/tricore/asm/test_ftohp.S
-@@ -0,0 +1,14 @@
++++ b/tests/tcg/tricore/asm/test_hptof.S
+@@ -0,0 +1,12 @@
 +#include "macros.h"
 +.text
 +.global _start
 +_start:
-+    TEST_D_D(ftohp, 1, 0xffff, 0xffffffff)
-+    TEST_D_D(ftohp, 2, 0xfc00, 0xff800000)
-+    TEST_D_D(ftohp, 3, 0x7c00, 0x7f800000)
-+    TEST_D_D(ftohp, 4, 0x0, 0x0)
-+    TEST_D_D(ftohp, 5, 0x5, 0x34a43580)
-+
-+    #TEST_D_D_PSW(ftohp, 6, 0x400, 0x8c000b80, 0x387fee74)
++    TEST_D_D(hptof, 1, 0xba190000, 0xcc0e90c8)
++    TEST_D_D(hptof, 2, 0x3eaea000, 0x8be23575)
++    TEST_D_D(hptof, 3, 0xc33b8000, 0xcc48d9dc)
++    TEST_D_D(hptof, 4, 0x43e2a000, 0xaef95f15)
++    TEST_D_D(hptof, 5, 0x3d55e000, 0x04932aaf)
 +
 +    TEST_PASSFAIL
 +
