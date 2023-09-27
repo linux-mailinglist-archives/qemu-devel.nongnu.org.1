@@ -2,69 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096BC7B0C84
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 21:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C35227B0D11
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 22:00:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlaCZ-0006TA-0A; Wed, 27 Sep 2023 15:28:03 -0400
+	id 1qlage-0002HM-Hr; Wed, 27 Sep 2023 15:59:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qlaCN-0006SD-7S
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 15:27:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qlaCL-0004tp-Kp
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 15:27:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695842869;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qlagc-0002H6-Vc
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 15:59:06 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qlagb-0006jC-HX
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 15:59:06 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C3E0521845;
+ Wed, 27 Sep 2023 19:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1695844741; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oT8Rnn9szS1GlHoYPHbsFeyrWZLFIGh6DO+niBvXF2s=;
- b=DbCvBHs1h3EDO0McQK9lOVhOR/cm3M+5M7+gjJ30hZljKw8aROVaA8d4oq9088vdQwZuGc
- 9kzZVBZKFCNAHlPJLU9m551fV6CLu2Hl9bpBDpboef+ggcOIa9Zi9/SgPVNQfLVIQVd6M1
- 9RM/f7P5zje0jilDwKRNhos4BJ8T3f8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-656-8ynO9Y-cMHGPWocwoVrb7A-1; Wed, 27 Sep 2023 15:27:45 -0400
-X-MC-Unique: 8ynO9Y-cMHGPWocwoVrb7A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ bh=q7W4vfTy0uAoAAh1WKUHGV6Dm0z5j1KY9e9zbKWBbKg=;
+ b=fYUGYz9ll5/BOb7P8sOmtf8cBu4oVTQi3qYCyQPWLWhfWfEl0pAEQIUR7mVvB1CxBQHyLG
+ HA4yjhfgNvDtW4RkoEbyRT+c71aIVp1vDl2jTnfRwFbFPCUHlru0fEG8UtQoEmZdU0TFNq
+ CQHI9Rq/+YuR/CIBQWFgSuv4jZaQmm4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1695844741;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=q7W4vfTy0uAoAAh1WKUHGV6Dm0z5j1KY9e9zbKWBbKg=;
+ b=KPzMVT+bI2c3Ou57fsX6u2YHVSBOe2G36RVRYzNw5qdvTg36He9nKNsnbx1fkhMUa59x7Y
+ Zg7JP6zSTFbtMdBw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5766A802D38;
- Wed, 27 Sep 2023 19:27:45 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.15])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CC28D2026D4B;
- Wed, 27 Sep 2023 19:27:44 +0000 (UTC)
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: hreitz@redhat.com, Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Fam Zheng <fam@euphon.net>, "Michael S. Tsirkin" <mst@redhat.com>,
- eperezma@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH 3/3] virtio: call ->vhost_reset_device() during reset
-Date: Wed, 27 Sep 2023 15:27:37 -0400
-Message-ID: <20230927192737.528280-4-stefanha@redhat.com>
-In-Reply-To: <20230927192737.528280-1-stefanha@redhat.com>
-References: <20230927192737.528280-1-stefanha@redhat.com>
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 581D213479;
+ Wed, 27 Sep 2023 19:59:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id xJQLCYWJFGXPcAAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 27 Sep 2023 19:59:01 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>, John Snow
+ <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>
+Subject: Re: [PATCH] analyze-migration: ignore RAM_SAVE_FLAG_MULTIFD_FLUSH
+In-Reply-To: <20230926081819.433631-1-marcandre.lureau@redhat.com>
+References: <20230926081819.433631-1-marcandre.lureau@redhat.com>
+Date: Wed, 27 Sep 2023 16:58:58 -0300
+Message-ID: <87ttrfqtfh.fsf@suse.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,109 +85,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-vhost-user-scsi has a VirtioDeviceClass->reset() function that calls
-->vhost_reset_device(). The other vhost devices don't notify the vhost
-device upon reset.
+marcandre.lureau@redhat.com writes:
 
-Stateful vhost devices may need to handle device reset in order to free
-resources or prevent stale device state from interfering after reset.
+> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+>
+> Traceback (most recent call last):
+>   File "scripts/analyze-migration.py", line 605, in <module>
+>     dump.read(dump_memory =3D args.memory)
+>   File "scripts/analyze-migration.py", line 542, in read
+>     section.read()
+>   File "scripts/analyze-migration.py", line 214, in read
+>     raise Exception("Unknown RAM flags: %x" % flags)
+> Exception: Unknown RAM flags: 200
+>
+> See commit 77c259a4cb ("multifd: Create property multifd-flush-after-each=
+-section")
+>
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-Call ->vhost_device_reset() from virtio_reset() so that that vhost
-devices are notified of device reset.
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
-This patch affects behavior as follows:
-- vhost-kernel: No change in behavior since ->vhost_reset_device() is
-  not implemented.
-- vhost-user: back-ends that negotiate
-  VHOST_USER_PROTOCOL_F_RESET_DEVICE now receive a
-  VHOST_USER_DEVICE_RESET message upon device reset. Otherwise there is
-  no change in behavior. DPDK, SPDK, libvhost-user, and the
-  vhost-user-backend crate do not negotiate
-  VHOST_USER_PROTOCOL_F_RESET_DEVICE automatically.
-- vhost-vdpa: an extra SET_STATUS 0 call is made during device reset.
-
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
----
- include/hw/virtio/vhost.h |  3 +++
- hw/scsi/vhost-user-scsi.c | 11 -----------
- hw/virtio/vhost.c         |  9 +++++++++
- hw/virtio/virtio.c        |  4 ++++
- 4 files changed, 16 insertions(+), 11 deletions(-)
-
-diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
-index 6a173cb9fa..381fb51966 100644
---- a/include/hw/virtio/vhost.h
-+++ b/include/hw/virtio/vhost.h
-@@ -338,4 +338,7 @@ int vhost_dev_set_inflight(struct vhost_dev *dev,
- int vhost_dev_get_inflight(struct vhost_dev *dev, uint16_t queue_size,
-                            struct vhost_inflight *inflight);
- bool vhost_dev_has_iommu(struct vhost_dev *dev);
-+
-+int vhost_reset_device(struct vhost_dev *hdev);
-+
- #endif
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index 8582b2e8ab..6917a748bb 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -66,16 +66,6 @@ static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
-     }
- }
- 
--static void vhost_user_scsi_reset(VirtIODevice *vdev)
--{
--    VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
--    struct vhost_dev *dev = &vsc->dev;
--
--    if (dev->vhost_ops->vhost_reset_device) {
--        dev->vhost_ops->vhost_reset_device(dev);
--    }
--}
--
- static void vhost_dummy_handle_output(VirtIODevice *vdev, VirtQueue *vq)
- {
- }
-@@ -195,7 +185,6 @@ static void vhost_user_scsi_class_init(ObjectClass *klass, void *data)
-     vdc->get_features = vhost_scsi_common_get_features;
-     vdc->set_config = vhost_scsi_common_set_config;
-     vdc->set_status = vhost_user_scsi_set_status;
--    vdc->reset = vhost_user_scsi_reset;
-     fwc->get_dev_path = vhost_scsi_common_get_fw_dev_path;
- }
- 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index e2f6ffb446..6003e50e83 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -2087,3 +2087,12 @@ int vhost_net_set_backend(struct vhost_dev *hdev,
- 
-     return -ENOSYS;
- }
-+
-+int vhost_reset_device(struct vhost_dev *hdev)
-+{
-+    if (hdev->vhost_ops->vhost_reset_device) {
-+        return hdev->vhost_ops->vhost_reset_device(hdev);
-+    }
-+
-+    return -ENOSYS;
-+}
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 4577f3f5b3..d863ffd5d6 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -2121,6 +2121,10 @@ void virtio_reset(void *opaque)
-         vdev->device_endian = virtio_default_endian();
-     }
- 
-+    if (vdev->vhost_started) {
-+        vhost_reset_device(k->get_vhost(vdev));
-+    }
-+
-     if (k->reset) {
-         k->reset(vdev);
-     }
--- 
-2.41.0
-
+This is the second time this FLUSH flag has caused issues. If I figure
+out how to make meson copy the script to the build dir I could add a
+test for this to migration-test.c.
 
