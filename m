@@ -2,73 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05437B0D99
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 22:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC2E7B0E55
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 23:49:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlbU8-0003gl-Ak; Wed, 27 Sep 2023 16:50:16 -0400
+	id 1qlcOA-0007g4-Nd; Wed, 27 Sep 2023 17:48:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qlbU0-0003ft-UV
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 16:50:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qlbTy-0006lm-JU
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 16:50:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695847804;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=AB5xPLtIiZBNsk3NA2U3Rw/gwoLE2QVHx938v/DzJ88=;
- b=gge2bsxMkRxOTJj7wEQp30nTBno+xOoUBvKHDn+zm1NG3rgGzAHvjmZC6Y5vWly9EN7W24
- SSAZkEs3YegjBQNuaNuJe8T3MNCTlXIt1Ain03SoSqFkdz9ax0cfNVS+S0b8g3pEgE+SiD
- I7m0oPTX/sadDBwyXHI2A3lDRBvDm3E=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-380-rutZHJ8PMm-9JnrH152Kdw-1; Wed, 27 Sep 2023 16:49:36 -0400
-X-MC-Unique: rutZHJ8PMm-9JnrH152Kdw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qlcO6-0007fr-F5
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 17:48:06 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qlcO3-0002Z9-Sz
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 17:48:05 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 813F83800C56;
- Wed, 27 Sep 2023 20:48:52 +0000 (UTC)
-Received: from localhost (unknown [10.39.193.15])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DE5C740C2064;
- Wed, 27 Sep 2023 20:48:51 +0000 (UTC)
-Date: Wed, 27 Sep 2023 16:48:50 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Sam Li <faithilikerun@gmail.com>
-Cc: qemu-devel@nongnu.org, dmitry.fomichev@wdc.com,
- Markus Armbruster <armbru@redhat.com>,
- Eric Blake <eblake@redhat.com>, dlemoal@kernel.org,
- Hanna Reitz <hreitz@redhat.com>, hare@suse.de,
- Kevin Wolf <kwolf@redhat.com>, qemu-block@nongnu.org
-Subject: Re: [PATCH v4 1/4] docs/qcow2: add the zoned format feature
-Message-ID: <20230927204850.GC529043@fedora>
-References: <20230918095313.5492-1-faithilikerun@gmail.com>
- <20230918095313.5492-2-faithilikerun@gmail.com>
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 8924A21899;
+ Wed, 27 Sep 2023 21:48:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1695851281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=hcCA2ZXhnOjiBf4khZY7cyYizfByk/TJD41nglWUeU8=;
+ b=S0y1MZN7dICY8CYdK94GXr6cuF/X51LmIz7iGos9SNsS9lMp7mYPw1NqsgIzf9pxwCVPi9
+ aq6kaGopQk02mi9cErG3GSkhK3JABa60ecEpI6HWfqDB++kstsYbO4S1w7tUh3ARQmlp1p
+ GiodVYGSQm+aYxoSa+vzMPbvlEK305g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1695851281;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
+ bh=hcCA2ZXhnOjiBf4khZY7cyYizfByk/TJD41nglWUeU8=;
+ b=EQsOBHPrInT2ht6GeB0sIBpn3TVWR5TslSIBlfk9zG5AOPao08qs9svXQ5/OfGKwYllwaj
+ T8GKxc3a66A/qACA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5B9FD13479;
+ Wed, 27 Sep 2023 21:47:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id hColCQ+jFGVSIwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 27 Sep 2023 21:47:59 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH] qtest/migration: Add a test for the analyze-migration script
+Date: Wed, 27 Sep 2023 18:47:56 -0300
+Message-Id: <20230927214756.14117-1-farosas@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="lI0uk4XABGnvMEjM"
-Content-Disposition: inline
-In-Reply-To: <20230918095313.5492-2-faithilikerun@gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,40 +82,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Add a smoke test that migrates to a file and gives it to the
+script. It should catch the most annoying errors such as changes in
+the ram flags.
 
---lI0uk4XABGnvMEjM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+After code has been merged it becomes way harder to figure out what is
+causing the script to fail, the person making the change is the most
+likely to know right away what the problem is.
 
-On Mon, Sep 18, 2023 at 05:53:10PM +0800, Sam Li wrote:
-> Add the specs for the zoned format feature of the qcow2 driver.
-> The qcow2 file can be taken as zoned device and passed through by
-> virtio-blk device or NVMe ZNS device to the guest given zoned
-> information.
->=20
-> Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> ---
->  docs/system/qemu-block-drivers.rst.inc | 33 ++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+I know this adds a python dependency to qtests and I'm not sure how
+much we care about this script, but on the other hand it would be nice
+to catch these errors early on.
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+This would also help with future work that touches the migration
+stream (moving multifd out of ram.c and fixed-ram).
 
---lI0uk4XABGnvMEjM
-Content-Type: application/pgp-signature; name="signature.asc"
+Let me know what you think.
+---
+ tests/qtest/meson.build      |  6 +++++
+ tests/qtest/migration-test.c | 51 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 57 insertions(+)
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUUlTIACgkQnKSrs4Gr
-c8hLuggAyUEi5hp0Ev+hxgtBPGgjwti3tAjnqw64zGPwdkOtXSUsZ+NSC9dZNV3o
-ur8Bl0ANHy/edNiKlgRvls4knK+StAUQq1TmMrrS2T47s5LCIXxMaWUgR79Fpa6g
-qUqZ+mbQiSr8ttxTNSe4sv7lYlTk0m95OuYz1jeL7KQS9FRNDskVg5FLO1oMFXdI
-2749LHHQnSPvhHV448WSyVWAsNpVq8FqrH83PH8ssRnETo8J7HAVXroU1SwGumpO
-ER23Fh3PrZrsL5xWVOhhbiq/RSnkHuLZp2oOmAlGGfWHwoQ3Xyp37d0dEm2cmOs0
-BJTCUVKcypPKWRioNwco5YKSHrM0VA==
-=pBol
------END PGP SIGNATURE-----
-
---lI0uk4XABGnvMEjM--
+diff --git a/tests/qtest/meson.build b/tests/qtest/meson.build
+index 1fba07f4ed..d2511b3227 100644
+--- a/tests/qtest/meson.build
++++ b/tests/qtest/meson.build
+@@ -301,6 +301,10 @@ if gnutls.found()
+   endif
+ endif
+ 
++configure_file(input: meson.project_source_root() / 'scripts/analyze-migration.py',
++               output: 'analyze-migration.py',
++               configuration: configuration_data())
++
+ qtests = {
+   'bios-tables-test': [io, 'boot-sector.c', 'acpi-utils.c', 'tpm-emu.c'],
+   'cdrom-test': files('boot-sector.c'),
+@@ -356,6 +360,8 @@ foreach dir : target_dirs
+     test_deps += [qsd]
+   endif
+ 
++  qtest_env.set('PYTHON', python.full_path())
++
+   foreach test : target_qtests
+     # Executables are shared across targets, declare them only the first time we
+     # encounter them
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 1b43df5ca7..122089522f 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -66,6 +66,8 @@ static bool got_dst_resume;
+  */
+ #define DIRTYLIMIT_TOLERANCE_RANGE  25  /* MB/s */
+ 
++#define ANALYZE_SCRIPT "tests/qtest/analyze-migration.py"
++
+ #if defined(__linux__)
+ #include <sys/syscall.h>
+ #include <sys/vfs.h>
+@@ -1486,6 +1488,52 @@ static void test_baddest(void)
+     test_migrate_end(from, to, false);
+ }
+ 
++#ifndef _WIN32
++static void test_analyze_script(void)
++{
++    MigrateStart args = {};
++    QTestState *from, *to;
++    g_autofree char *uri = NULL;
++    g_autofree char *file = NULL;
++    int pid, wstatus;
++    const char *python = g_getenv("PYTHON");
++
++    if (!python) {
++        g_test_skip("PYTHON variable not set");
++        return;
++    }
++
++    /* dummy url */
++    if (test_migrate_start(&from, &to, "tcp:127.0.0.1:0", &args)) {
++        return;
++    }
++
++    file = g_strdup_printf("%s/migfile", tmpfs);
++    uri = g_strdup_printf("exec:cat > %s", file);
++
++    migrate_ensure_converge(from);
++    migrate_qmp(from, uri, "{}");
++    wait_for_migration_complete(from);
++
++    pid = fork();
++    if (!pid) {
++        close(1);
++        open("/dev/null", O_WRONLY);
++        execl(python, python, ANALYZE_SCRIPT,
++              "-f", file, NULL);
++        g_assert_not_reached();
++    }
++
++    assert(waitpid(pid, &wstatus, 0) == pid);
++    if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) != 0) {
++        g_test_message("Failed to analyze the migration stream");
++        g_test_fail();
++    }
++    test_migrate_end(from, to, false);
++    cleanup("migfile");
++}
++#endif
++
+ static void test_precopy_common(MigrateCommon *args)
+ {
+     QTestState *from, *to;
+@@ -2828,6 +2876,9 @@ int main(int argc, char **argv)
+     }
+ 
+     qtest_add_func("/migration/bad_dest", test_baddest);
++#ifndef _WIN32
++    qtest_add_func("/migration/analyze-script", test_analyze_script);
++#endif
+     qtest_add_func("/migration/precopy/unix/plain", test_precopy_unix_plain);
+     qtest_add_func("/migration/precopy/unix/xbzrle", test_precopy_unix_xbzrle);
+     /*
+-- 
+2.35.3
 
 
