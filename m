@@ -2,104 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A617AF8DA
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 05:55:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFF47AF957
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 06:27:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlLd3-000889-4x; Tue, 26 Sep 2023 23:54:25 -0400
+	id 1qlM74-0004mn-Mq; Wed, 27 Sep 2023 00:25:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlLd1-00087w-Vh
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 23:54:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlLcz-0002pn-2u
- for qemu-devel@nongnu.org; Tue, 26 Sep 2023 23:54:23 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695786859;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wq3sWa4cq7NOR9CzU3Z3ngaKlHFGpMjzimxp4rlP+BA=;
- b=GuK4RYffREiRxE8xfzRnzLlp+jLwALCa6+oGIlBQnLa75Zx8QOjxOeWeLxP8w2flr+Ii8p
- 9Sam9bgc+WsGGNOGvyeYCbmmJk1bFA84qyFKbCvATJTHePvWdS6/kpgYsqzgULkWbUdUQr
- cPJrccaF/TBZlLr3jC0c6ibylde0dtI=
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com
- [209.85.215.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-154-bhqBBuukMbuegvsH4PYNpg-1; Tue, 26 Sep 2023 23:54:17 -0400
-X-MC-Unique: bhqBBuukMbuegvsH4PYNpg-1
-Received: by mail-pg1-f199.google.com with SMTP id
- 41be03b00d2f7-577f80e2385so13110191a12.1
- for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 20:54:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qlM6v-0004mc-JQ
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 00:25:18 -0400
+Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qlM6t-0006Bn-2w
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 00:25:17 -0400
+Received: by mail-ed1-x530.google.com with SMTP id
+ 4fb4d7f45d1cf-533c8f8f91dso8877074a12.0
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 21:25:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1695788712; x=1696393512;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=9ft0yljxfviLHAaT9q8afTcFLeMcgJ1AGTsYb4y2TLE=;
+ b=QF209uuN43ZalvOrIruGOEKwOw+j613Spf+S7Y7Gg21Qssx4CgXp3Q93/7I1x0EEjV
+ 4/4+cH0+LTMuqGi5jxD5DcoTUhRK4AmcEjK895U7dZRGTpxCz2jTPFi648OmVeHPuypL
+ Vl1T05ltYOc6JzswScQ3SWllzt3kiH5ZxDw7YAMzg0MRbWSxwMbN4s8ntEwinBja/zqj
+ b2LAlP8jYI5CXcHIXw6zsDyfVPuRTUSF3d09Lkrb8B8fjab0/LAFAkEbrGCVrLWZWMVu
+ IyXW1xWA0QNkJO+tFo8j7lNbao2owkfEU9Cmo6Zj1aENuVAQmrBtvM+MP1sZGdjjLT2E
+ wD+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695786856; x=1696391656;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wq3sWa4cq7NOR9CzU3Z3ngaKlHFGpMjzimxp4rlP+BA=;
- b=tbu1FZ1hDGXlysLN04BHwMUyFS1XJvc6J/m7PPQHg74ijQZoVbqqynyvsHIoXpyOht
- iQ4PPgmW+vYuF0f78CwKwJiRbPKVtzQ8VYMi2H52a81aIGpX2QnDZxTHkNXL25m2YWQL
- ES/VyAQf4/3z8PYvCRov0N8N3U4H2ZdHB59mc417vmR07KoV9j+ovHQ/9GAm+Zm2p31y
- Jst01u7H/a5Xb1UL7NYvHmSaBbCi3D8fM6hV5aHyFOSl7Ezcr1EfucVwDE6t3Hkh23Kl
- mSu9S42QF1oQ7nNEhlnajYiR2nJ/GpD0+NCiYW4LqaOtPrsd7Y1PHLVZuYxrqpjMHWl6
- byfQ==
-X-Gm-Message-State: AOJu0YyCtem1RH+NMpqeRccsLO/Bh5x+N02QEq/4C39ofIMcX2uJCveE
- 2di1dz9ILjZEjq2dqG9pocb15JMCMH08Lzu9OsklfeNk+ab4fRgRkk4UBRJ/rYDwPVLObtc1H21
- yG7qGt8B0Gp5HxTo=
-X-Received: by 2002:a05:6a20:258e:b0:153:56b1:8417 with SMTP id
- k14-20020a056a20258e00b0015356b18417mr1073880pzd.21.1695786855943; 
- Tue, 26 Sep 2023 20:54:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFq9umvd7DnW1ODQdnHLhGV+hyAwLuH5MOUzj1LQ/52PHOvZFkXgJ98gx0PSGMqvVN1tP80oQ==
-X-Received: by 2002:a05:6a20:258e:b0:153:56b1:8417 with SMTP id
- k14-20020a056a20258e00b0015356b18417mr1073854pzd.21.1695786855573; 
- Tue, 26 Sep 2023 20:54:15 -0700 (PDT)
-Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
- ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
- by smtp.gmail.com with ESMTPSA id
- s10-20020a170902ea0a00b001b895336435sm350672plg.21.2023.09.26.20.54.03
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 26 Sep 2023 20:54:14 -0700 (PDT)
-Message-ID: <44e4f955-ab51-92ca-8d65-e3a38d8d6657@redhat.com>
-Date: Wed, 27 Sep 2023 13:54:00 +1000
+ d=1e100.net; s=20230601; t=1695788712; x=1696393512;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9ft0yljxfviLHAaT9q8afTcFLeMcgJ1AGTsYb4y2TLE=;
+ b=Y3tJliXfQZ8wgn3of3DXQIQR1CmsmnEIYwMlZqiiK2HjZZPMqhljCVRQW4ayybX7nH
+ 0+I6wQCMXoi8O8AXdvhMW5DQEHnlZSwmHnfA/8nWTS1QibeevDH49LrJL+H1XaXWc/q5
+ RNspgVJAqTQBm9FJlIQxH+ebaq66N+JLSIBiAgu4YBA/mZ+RjbL1jArdOe5VbPjxgwDd
+ KixW/mHtTTs6OJ8FY9mhPIP/nSO1SWnOcAzvbB4rDxkJWBPWb7ctfK3RHOc+bNG7xS4N
+ GB6Ag9cqsD4QZ+NWnWMg7s3jxGL2i5Tu9Xe7CTiluWtanR7wugqKFulmO1DjiT9GOPJk
+ k9ng==
+X-Gm-Message-State: AOJu0YwKzNHUOoxDoxthavT0N8OSIHoSSm8Diw63yNI2TcgOTphH25Tq
+ D5f4zmG2PMoG7jjYTdCQAfgnGR4jC0Xe4jZuG4oKIg==
+X-Google-Smtp-Source: AGHT+IHiE83QCjH6PUq4i/2QMNdSpcqffthPrEHXa7uenb8/+uJo31OVLa1hu6JaPhPP9Vw5vjmzrxMjCF07iD+h5ao=
+X-Received: by 2002:aa7:cd51:0:b0:533:efc3:91b6 with SMTP id
+ v17-20020aa7cd51000000b00533efc391b6mr1070536edw.11.1695788712366; Tue, 26
+ Sep 2023 21:25:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH RFC V2 02/37] cpus-common: Add common CPU utility for
- possible vCPUs
-Content-Language: en-US
-To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
- qemu-arm@nongnu.org
-Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
- ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
- mst@redhat.com, rafael@kernel.org, borntraeger@linux.ibm.com,
- alex.bennee@linaro.org, linux@armlinux.org.uk,
- darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
- vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
- miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
- wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
- maobibo@loongson.cn, lixianglai@loongson.cn
-References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-3-salil.mehta@huawei.com>
-From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230926100436.28284-3-salil.mehta@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
+In-Reply-To: <20230925182425.3163-1-kariem.taha2.7@gmail.com>
+From: Warner Losh <imp@bsdimp.com>
+Date: Tue, 26 Sep 2023 22:25:02 -0600
+Message-ID: <CANCZdfo-BbsJwpZKwp6uZkwdE+HpUs0gs3bYAU0yiCvmWcTP5w@mail.gmail.com>
+Subject: Re: [PATCH v5 00/28] bsd-user: Implement freebsd process related
+ system calls.
+To: Karim Taha <kariem.taha2.7@gmail.com>
+Cc: qemu-devel@nongnu.org, Richard Henderson <richard.henderson@linaro.org>
+Content-Type: multipart/alternative; boundary="000000000000d0a92906064f9367"
+Received-SPF: none client-ip=2a00:1450:4864:20::530;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x530.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,219 +83,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Salil,
+--000000000000d0a92906064f9367
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/26/23 20:04, Salil Mehta wrote:
-> Adds various utility functions which might be required to fetch or check the
-> state of the possible vCPUs. This also introduces concept of *disabled* vCPUs,
-> which are part of the *possible* vCPUs but are not part of the *present* vCPU.
-> This state shall be used during machine init time to check the presence of
-> vcpus.
-   ^^^^^
+On Mon, Sep 25, 2023 at 12:25=E2=80=AFPM Karim Taha <kariem.taha2.7@gmail.c=
+om>
+wrote:
 
-   vCPUs
+>
+>
+> Karim Taha (3):
+>   bsd-user: define TARGET_RFSPAWN for rfork to use vfork(2) semantics,
+>     and fix RLIM_INFINITY
+>   bsd-user: Implement get_filename_from_fd.
+>   bsd-user: Implement execve(2) and fexecve(2) system calls.
+>
+> Kyle Evans (1):
+>   bsd-user: Get number of cpus.
+>
+> Stacey Son (24):
+>   bsd-user: Define procctl(2) related structs
+>   bsd-user: Implement host_to_target_siginfo.
+>   bsd-user: Add freebsd_exec_common and do_freebsd_procctl to qemu.h.
+>   bsd-user: add extern declarations for bsd-proc.c conversion functions
+>   bsd-user: Implement target_to_host_resource conversion function
+>   bsd-user: Implement target_to_host_rlim and host_to_target_rlim
+>     conversion.
+>   bsd-user: Implement host_to_target_rusage and host_to_target_wrusage.
+>   bsd-user: Implement host_to_target_waitstatus conversion.
+>   bsd-user: Implement getgroups(2) and setgroups(2) system calls.
+>   bsd-user: Implement umask(2), setlogin(2) and getlogin(2)
+>   bsd-user: Implement getrusage(2).
+>   bsd-user: Implement getrlimit(2) and setrlimit(2)
+>   bsd-user: Implement several get/set system calls:
+>   bsd-user: Implement get/set[resuid/resgid/sid] and issetugid.
+>   bsd-user: Add stubs for profil(2), ktrace(2), utrace(2) and ptrace(2).
+>   bsd-user: Implement getpriority(2) and setpriority(2).
+>   bsd-user: Implement freebsd_exec_common, used in implementing
+>     execve/fexecve.
+>   bsd-user: Implement procctl(2) along with necessary conversion
+>     functions.
+>   bsd-user: Implement wait4(2) and wait6(2) system calls.
+>   bsd-user: Implement setloginclass(2) and getloginclass(2) system
+>     calls.
+>   bsd-user: Implement pdgetpid(2) and the undocumented setugid.
+>   bsd-user: Implement fork(2) and vfork(2) system calls.
+>   bsd-user: Implement rfork(2) system call.
+>   bsd-user: Implement pdfork(2) system call.
+>
+>  bsd-user/bsd-proc.c           | 145 ++++++++++
+>  bsd-user/bsd-proc.h           | 379 +++++++++++++++++++++++++++
+>  bsd-user/freebsd/meson.build  |   1 +
+>  bsd-user/freebsd/os-proc.c    | 479 ++++++++++++++++++++++++++++++++++
+>  bsd-user/freebsd/os-proc.h    | 293 +++++++++++++++++++++
+>  bsd-user/freebsd/os-syscall.c | 206 ++++++++++++++-
+>  bsd-user/main.c               |   2 +-
+>  bsd-user/meson.build          |   6 +
+>  bsd-user/qemu-bsd.h           |  38 +++
+>  bsd-user/qemu.h               |   7 +
+>  bsd-user/signal-common.h      |   1 +
+>  bsd-user/signal.c             |   6 +
+>  bsd-user/syscall_defs.h       |  50 +++-
+>  13 files changed, 1607 insertions(+), 6 deletions(-)
+>  create mode 100644 bsd-user/bsd-proc.c
+>  create mode 100644 bsd-user/freebsd/os-proc.c
+>  create mode 100644 bsd-user/freebsd/os-proc.h
+>  create mode 100644 bsd-user/qemu-bsd.h
+>
 
-> 
-> Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> ---
->   cpus-common.c         | 31 +++++++++++++++++++++++++
->   include/hw/core/cpu.h | 53 +++++++++++++++++++++++++++++++++++++++++++
->   2 files changed, 84 insertions(+)
-> 
-> diff --git a/cpus-common.c b/cpus-common.c
-> index 45c745ecf6..24c04199a1 100644
-> --- a/cpus-common.c
-> +++ b/cpus-common.c
-> @@ -24,6 +24,7 @@
->   #include "sysemu/cpus.h"
->   #include "qemu/lockable.h"
->   #include "trace/trace-root.h"
-> +#include "hw/boards.h"
->   
->   QemuMutex qemu_cpu_list_lock;
->   static QemuCond exclusive_cond;
-> @@ -107,6 +108,36 @@ void cpu_list_remove(CPUState *cpu)
->       cpu_list_generation_id++;
->   }
->   
-> +CPUState *qemu_get_possible_cpu(int index)
-> +{
-> +    MachineState *ms = MACHINE(qdev_get_machine());
-> +    const CPUArchIdList *possible_cpus = ms->possible_cpus;
-> +
-> +    assert((index >= 0) && (index < possible_cpus->len));
-> +
-> +    return CPU(possible_cpus->cpus[index].cpu);
-> +}
-> +
-> +bool qemu_present_cpu(CPUState *cpu)
-> +{
-> +    return cpu;
-> +}
-> +
-> +bool qemu_enabled_cpu(CPUState *cpu)
-> +{
-> +    return cpu && !cpu->disabled;
-> +}
-> +
+queued to bsd-user-trial
 
-I do think it's a good idea to have wrappers to check for CPU's states since
-these CPU states play important role in this series to support vCPU hotplug.
-However, it would be nice to move them around into header file (include/hw/boards.h)
-because all the checks are originated from ms->possible_cpus->cpus[]. It sounds
-functions to a machine (board) instead of global scope. Besides, it would be
-nice to have same input (index) for all functions. How about something like
-below in include/hw/boards.h?
+--000000000000d0a92906064f9367
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-static inline  bool machine_has_possible_cpu(int index)
-{
-     MachineState *ms = MACHINE(qdev_get_machine());
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 25, 2023 at 12:25=E2=80=
+=AFPM Karim Taha &lt;<a href=3D"mailto:kariem.taha2.7@gmail.com">kariem.tah=
+a2.7@gmail.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex"><br>
+<br>
+Karim Taha (3):<br>
+=C2=A0 bsd-user: define TARGET_RFSPAWN for rfork to use vfork(2) semantics,=
+<br>
+=C2=A0 =C2=A0 and fix RLIM_INFINITY<br>
+=C2=A0 bsd-user: Implement get_filename_from_fd.<br>
+=C2=A0 bsd-user: Implement execve(2) and fexecve(2) system calls.<br>
+<br>
+Kyle Evans (1):<br>
+=C2=A0 bsd-user: Get number of cpus.<br>
+<br>
+Stacey Son (24):<br>
+=C2=A0 bsd-user: Define procctl(2) related structs<br>
+=C2=A0 bsd-user: Implement host_to_target_siginfo.<br>
+=C2=A0 bsd-user: Add freebsd_exec_common and do_freebsd_procctl to qemu.h.<=
+br>
+=C2=A0 bsd-user: add extern declarations for bsd-proc.c conversion function=
+s<br>
+=C2=A0 bsd-user: Implement target_to_host_resource conversion function<br>
+=C2=A0 bsd-user: Implement target_to_host_rlim and host_to_target_rlim<br>
+=C2=A0 =C2=A0 conversion.<br>
+=C2=A0 bsd-user: Implement host_to_target_rusage and host_to_target_wrusage=
+.<br>
+=C2=A0 bsd-user: Implement host_to_target_waitstatus conversion.<br>
+=C2=A0 bsd-user: Implement getgroups(2) and setgroups(2) system calls.<br>
+=C2=A0 bsd-user: Implement umask(2), setlogin(2) and getlogin(2)<br>
+=C2=A0 bsd-user: Implement getrusage(2).<br>
+=C2=A0 bsd-user: Implement getrlimit(2) and setrlimit(2)<br>
+=C2=A0 bsd-user: Implement several get/set system calls:<br>
+=C2=A0 bsd-user: Implement get/set[resuid/resgid/sid] and issetugid.<br>
+=C2=A0 bsd-user: Add stubs for profil(2), ktrace(2), utrace(2) and ptrace(2=
+).<br>
+=C2=A0 bsd-user: Implement getpriority(2) and setpriority(2).<br>
+=C2=A0 bsd-user: Implement freebsd_exec_common, used in implementing<br>
+=C2=A0 =C2=A0 execve/fexecve.<br>
+=C2=A0 bsd-user: Implement procctl(2) along with necessary conversion<br>
+=C2=A0 =C2=A0 functions.<br>
+=C2=A0 bsd-user: Implement wait4(2) and wait6(2) system calls.<br>
+=C2=A0 bsd-user: Implement setloginclass(2) and getloginclass(2) system<br>
+=C2=A0 =C2=A0 calls.<br>
+=C2=A0 bsd-user: Implement pdgetpid(2) and the undocumented setugid.<br>
+=C2=A0 bsd-user: Implement fork(2) and vfork(2) system calls.<br>
+=C2=A0 bsd-user: Implement rfork(2) system call.<br>
+=C2=A0 bsd-user: Implement pdfork(2) system call.<br>
+<br>
+=C2=A0bsd-user/bsd-proc.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 145 +++=
++++++++<br>
+=C2=A0bsd-user/bsd-proc.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 379 +++=
+++++++++++++++++++++++++<br>
+=C2=A0bsd-user/freebsd/meson.build=C2=A0 |=C2=A0 =C2=A01 +<br>
+=C2=A0bsd-user/freebsd/os-proc.c=C2=A0 =C2=A0 | 479 +++++++++++++++++++++++=
++++++++++++<br>
+=C2=A0bsd-user/freebsd/os-proc.h=C2=A0 =C2=A0 | 293 +++++++++++++++++++++<b=
+r>
+=C2=A0bsd-user/freebsd/os-syscall.c | 206 ++++++++++++++-<br>
+=C2=A0bsd-user/main.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0|=C2=A0 =C2=A02 +-<br>
+=C2=A0bsd-user/meson.build=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0=
+6 +<br>
+=C2=A0bsd-user/qemu-bsd.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 3=
+8 +++<br>
+=C2=A0bsd-user/qemu.h=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0|=C2=A0 =C2=A07 +<br>
+=C2=A0bsd-user/signal-common.h=C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A01 +<br>
+=C2=A0bsd-user/signal.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 =C2=A06 +<br>
+=C2=A0bsd-user/syscall_defs.h=C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 50 +++-<br>
+=C2=A013 files changed, 1607 insertions(+), 6 deletions(-)<br>
+=C2=A0create mode 100644 bsd-user/bsd-proc.c<br>
+=C2=A0create mode 100644 bsd-user/freebsd/os-proc.c<br>
+=C2=A0create mode 100644 bsd-user/freebsd/os-proc.h<br>
+=C2=A0create mode 100644 bsd-user/qemu-bsd.h<br></blockquote><div><br></div=
+><div>queued to bsd-user-trial <br></div></div></div>
 
-     if (!ms || !ms->possible_cpus || index < 0 || index >= ms->possible_cus->len) {
-         return false;
-     }
-
-     return true;
-}
-
-static inline bool machine_has_present_cpu(int index)
-{
-     MachineState *ms = MACHINE(qdev_get_machine());
-
-     if (!machine_is_possible_cpu(index) ||
-         !ms->possible_cpus->cpus[index].cpu) {
-         return false;
-     }
-
-     return true;
-}
-
-static inline bool machine_has_enabled_cpu(int index)
-{
-     MachineState *ms = MACHINE(qdev_get_machine());
-     CPUState *cs;
-
-     if (!machine_is_present_cpu(index)) {
-         return false;
-     }
-
-     cs = CPU(ms->possible_cpus->cpus[index].cpu);
-     return !cs->disabled
-}
-
-> +uint64_t qemu_get_cpu_archid(int cpu_index)
-> +{
-> +    MachineState *ms = MACHINE(qdev_get_machine());
-> +    const CPUArchIdList *possible_cpus = ms->possible_cpus;
-> +
-> +    assert((cpu_index >= 0) && (cpu_index < possible_cpus->len));
-> +
-> +    return possible_cpus->cpus[cpu_index].arch_id;
-> +}
-> +
-
-I think it's unnecessary to keep it since it's called for once by
-hw/arm/virt-acpi-build.c::build_madt. The architectural ID can be
-directly fetched from possible_cpus->cpus[i].arch_id. It's fine
-to drop this function and fold the logic to the following patch.
-
-[PATCH RFC V2 21/37] hw/arm: MADT Tbl change to size the guest with possible vCPUs
-
-
->   CPUState *qemu_get_cpu(int index)
->   {
->       CPUState *cpu;
-> diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> index fdcbe87352..e5af79950c 100644
-> --- a/include/hw/core/cpu.h
-> +++ b/include/hw/core/cpu.h
-> @@ -413,6 +413,17 @@ struct CPUState {
->       SavedIOTLB saved_iotlb;
->   #endif
->   
-> +    /*
-> +     * Some architectures do not allow *presence* of vCPUs to be changed
-> +     * after guest has booted using information specified by VMM/firmware
-> +     * via ACPI MADT at the boot time. Thus to enable vCPU hotplug on these
-> +     * architectures possible vCPU can have CPUState object in 'disabled'
-> +     * state or can also not have CPUState object at all. This is possible
-> +     * when vCPU Hotplug is supported and vCPUs are 'yet-to-be-plugged' in
-> +     * the QOM or have been hot-unplugged.
-> +     * By default every CPUState is enabled as of now across all archs.
-> +     */
-> +    bool disabled;
->       /* TODO Move common fields from CPUArchState here. */
->       int cpu_index;
->       int cluster_index;
-
-I guess the comments can be simplified a bit. How about something like below?
-
-     /*
-      * In order to support vCPU hotplug on architectures like aarch64,
-      * the vCPU states fall into possible, present or enabled. This field
-      * is added to distinguish present and enabled vCPUs. By default, all
-      * vCPUs are present and enabled.
-      */
-
-> @@ -770,6 +781,48 @@ static inline bool cpu_in_exclusive_context(const CPUState *cpu)
->    */
->   CPUState *qemu_get_cpu(int index);
->   
-> +/**
-> + * qemu_get_possible_cpu:
-> + * @index: The CPUState@cpu_index value of the CPU to obtain.
-> + *         Input index MUST be in range [0, Max Possible CPUs)
-> + *
-> + * If CPUState object exists,then it gets a CPU matching
-> + * @index in the possible CPU array.
-> + *
-> + * Returns: The possible CPU or %NULL if CPU does not exist.
-> + */
-> +CPUState *qemu_get_possible_cpu(int index);
-> +
-> +/**
-> + * qemu_present_cpu:
-> + * @cpu: The vCPU to check
-> + *
-> + * Checks if the vCPU is amongst the present possible vcpus.
-> + *
-> + * Returns: True if it is present possible vCPU else false
-> + */
-> +bool qemu_present_cpu(CPUState *cpu);
-> +
-> +/**
-> + * qemu_enabled_cpu:
-> + * @cpu: The vCPU to check
-> + *
-> + * Checks if the vCPU is enabled.
-> + *
-> + * Returns: True if it is 'enabled' else false
-> + */
-> +bool qemu_enabled_cpu(CPUState *cpu);
-> +
-> +/**
-> + * qemu_get_cpu_archid:
-> + * @cpu_index: possible vCPU for which arch-id needs to be retreived
-> + *
-> + * Fetches the vCPU arch-id from the present possible vCPUs.
-> + *
-> + * Returns: arch-id of the possible vCPU
-> + */
-> +uint64_t qemu_get_cpu_archid(int cpu_index);
-> +
-
-All these descriptive stuff isn't needed after the functions are moved to
-include/hw/boards.h, and qemu_get_cpu_archid() is dropped.
-
->   /**
->    * cpu_exists:
->    * @id: Guest-exposed CPU ID to lookup.
-
-Thanks,
-Gavin
-
+--000000000000d0a92906064f9367--
 
