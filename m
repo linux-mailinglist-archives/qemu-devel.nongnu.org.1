@@ -2,69 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98E17B0B39
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 19:40:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253DF7B0B3B
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 19:41:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlYUx-0004NW-MN; Wed, 27 Sep 2023 13:38:55 -0400
+	id 1qlYWO-00057D-EY; Wed, 27 Sep 2023 13:40:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qlYUv-0004NI-43
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 13:38:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qlYWL-00056s-2Y
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 13:40:21 -0400
+Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qlYUt-0003BU-M9
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 13:38:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695836329;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Crv8xTHjScw+QIk6yQQNFX9bgqyXN5d/Lstn72/8Ung=;
- b=M+2KNik5f+MQltk4fsLQuF0A+6O5nRZSE3/Zk0ITaM6/cXrCT96vEmnZDpFerqwGUi8gKA
- RF6i2IV+mPw+cJu5RRLoQYEQwJHfJgb6vXU/PScE0cgvspwvKE4FH2xFm6YPhSsxYupy3C
- dXdH269aacswGYqKs4wBJ/P4KnbMcVQ=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-345-blLWubZhP7S8phf-JXzuFA-1; Wed, 27 Sep 2023 13:38:48 -0400
-X-MC-Unique: blLWubZhP7S8phf-JXzuFA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E8D3C1C01E85
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 17:38:47 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.59])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C22BE40C6E76;
- Wed, 27 Sep 2023 17:38:41 +0000 (UTC)
-Date: Wed, 27 Sep 2023 12:38:39 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org, quintela@redhat.com, peterx@redhat.com, 
- leobras@redhat.com
-Subject: Re: [PATCH 26/52] migration/rdma: Replace int error_state by bool
- errored
-Message-ID: <lxid3tkawqyvy3upspi66zdnok3aqwhwi4ul4bzzo57wesqmst@fu3bofqg3r62>
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-27-armbru@redhat.com>
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qlYWG-0004g9-4u
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 13:40:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=In-Reply-To:Content-Type:MIME-Version:
+ References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+ Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+ Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+ List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=gTbmPtrRDuPefKAZt1TuCVngQrJ3ImAy8yEGUH+rXO0=; b=RIQwdsKklmjBg4pUTo1WtknS7r
+ pBPWWQNjR2qG41lDLbz6CSr3wLziwd68POEjpVPzrZT5TQRPk9ZzBZyHIWTIpIiqRTwuV8bPkh7s3
+ KWik1p5XxxgeNZG0UhuLTC2j/phr+OpJ8NlE2rkty2P5tel37dQPlRDSOEJ4WpcnVD5M=;
+Date: Wed, 27 Sep 2023 19:40:04 +0200
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com
+Subject: Re: [PULL 00/21] tricore queue
+Message-ID: <kr4ybjo6jydhx2dlfonqp5qdropwjrgjcrynaiwggpazptyfhd@xfmfnktywj46>
+References: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230918144206.560120-27-armbru@redhat.com>
-User-Agent: NeoMutt/20230517-449-a10573
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+In-Reply-To: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
+X-IMT-Source: Extern
+X-IMT-rspamd-score: 44
+X-IMT-Spam-Score: 0.0 ()
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.9.27.172717, AntiVirus-Engine: 6.0.2,
+ AntiVirus-Data: 2023.9.27.602001
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=29046, da=183445475, mc=20, sc=0,
+ hc=20, sp=0, fso=29046, re=0, sd=0, hd=0
+X-IMT-Authenticated-Sender: kbastian@UNI-PADERBORN.DE
+Received-SPF: pass client-ip=2001:638:502:c003::17;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -80,31 +70,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 04:41:40PM +0200, Markus Armbruster wrote:
-> All we do with the value of RDMAContext member @error_state is test
-> whether it's zero.  Change to bool and rename to @errored.
+On Wed, Sep 27, 2023 at 11:35:31AM +0200, Bastian Koppelmann wrote:
+> The following changes since commit 11a629d246e4e7785a6f0efb99bd15a32c04feda:
 > 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->  migration/rdma.c | 66 ++++++++++++++++++++++++------------------------
->  1 file changed, 33 insertions(+), 33 deletions(-)
+>   Merge tag 'pull-nbd-2023-09-25' of https://repo.or.cz/qemu/ericb into staging (2023-09-26 09:04:23 -0400)
 > 
-> diff --git a/migration/rdma.c b/migration/rdma.c
-> index ad314cc10a..85f6b274bf 100644
-> --- a/migration/rdma.c
-> +++ b/migration/rdma.c
-> @@ -352,7 +352,7 @@ typedef struct RDMAContext {
->       * memory registration, then do not attempt any future work
->       * and remember the error state.
->       */
-> -    int error_state;
-> +    int errored;
+> are available in the Git repository at:
+> 
+>   https://github.com/bkoppelmann/qemu.git tags/pull-tricore-20230927
+> 
+> for you to fetch changes up to 32dd1f0b4bf5f38f37434b0c8fe6c8d86e093b2b:
+> 
+>   target/tricore: Change effective address (ea) to target_ulong (2023-09-27 11:22:42 +0200)
+> 
+> ----------------------------------------------------------------
+> - Add FTOU, CRCN, FTOHP, and HPTOF insns
+> - Add test for arithmetic TriCore insns
+> 
+> ----------------------------------------------------------------
+> Bastian Koppelmann (21):
+>       tests/tcg/tricore: Bump cpu to tc37x
+>       target/tricore: Implement CRCN insn
+>       target/tricore: Correctly handle FPU RM from PSW
+>       target/tricore: Implement FTOU insn
+>       target/tricore: Clarify special case for FTOUZ insn
+>       target/tricore: Implement ftohp insn
+>       target/tricore: Implement hptof insn
+>       target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
+>       target/tricore: Swap src and dst reg for RCRR_INSERT
+>       target/tricore: Replace cpu_*_code with translator_*
+>       target/tricore: Fix FTOUZ being ISA v1.3.1 up
+>       tests/tcg/tricore: Extended and non-extened regs now match
+>       hw/tricore: Log failing test in testdevice
+>       tests/tcg: Reset result register after each test
+>       tests/tcg/tricore: Add test for all arith insns up to addx
+>       tests/tcg/tricore: Add test from 'and' to 'csub'
+>       tests/tcg/tricore: Add test from 'dextr' to 'lt'
+>       tests/tcg/tricore: Add test from 'max' to 'shas'
+>       tests/tcg/tricore: Add test from 'shuffle' to 'xor.t'
+>       target/tricore: Remove CSFRs from cpu.h
+>       target/tricore: Change effective address (ea) to target_ulong
+> 
+>  hw/tricore/tricore_testdevice.c           |   4 +
+>  target/tricore/cpu.h                      | 143 +--------------
+>  target/tricore/fpu_helper.c               | 111 ++++++++++++
+>  target/tricore/helper.c                   |  19 +-
+>  target/tricore/helper.h                   |   4 +
+>  target/tricore/op_helper.c                |  79 ++++++++-
+>  target/tricore/translate.c                |  56 ++++--
+>  target/tricore/tricore-opcodes.h          |   3 +
+>  tests/tcg/tricore/Makefile.softmmu-target |   7 +-
+>  tests/tcg/tricore/asm/macros.h            | 190 +++++++++++++++++---
+>  tests/tcg/tricore/asm/sas.py              |  21 +++
 
-Commit message says 'change to bool', but this is still int.
+Don't merge this one. Somehow a file slipped in, that should not have been in
+the merge. Sorry for the inconvenience. I'll respin.
 
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
-
+Cheers,
+Bastian
 
