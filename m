@@ -2,76 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FF47AF9C3
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 07:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EE17AF9C8
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 07:04:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlMdI-00035v-BP; Wed, 27 Sep 2023 00:58:44 -0400
+	id 1qlMiF-0005ZQ-2L; Wed, 27 Sep 2023 01:03:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qlMdG-00035O-Or; Wed, 27 Sep 2023 00:58:42 -0400
-Received: from mail-vs1-xe36.google.com ([2607:f8b0:4864:20::e36])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qlMdF-0000r9-61; Wed, 27 Sep 2023 00:58:42 -0400
-Received: by mail-vs1-xe36.google.com with SMTP id
- ada2fe7eead31-45269fe9d6bso4743845137.2; 
- Tue, 26 Sep 2023 21:58:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695790716; x=1696395516; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bHCBLUlfWdk144iXgWGACMvFufw35RZLwjTVgx+u+a0=;
- b=F+vc3azAyCJoCI0DQtbxvC83UwIQgbNDRCSqAt4TX0L3BVbdb1JCj9um42dZZVbdvL
- CaEp4ImjM6rT6NmJ+Rqrlzqadm1KGQl7Qsx72M5lV8zmPpji4bAGAJDwB7J+qjeje5lK
- cL6PHUCVkyZ/qFM1aqbpSGc85dNGIx9dJSWVszxL7l2wj96BGEU8tuSBcagBwclHPzz/
- 6wHkHzD6V0j2FKV6K+YKmP6nxThy2Y/ksweUsk6fR3BgAn3YbjE334CKTuay+D4o5kHE
- KEvQNQGt7cLxAQ3owLAHbJcWhk/hvMrrK2Lwrsbz7wxhtC37HPGd1IZpowco8NCXpCuu
- FdIQ==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlMiC-0005ZH-7P
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 01:03:48 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlMi9-0002BA-C5
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 01:03:47 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695791023;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=aWf/XtDJ6lWldjTJi7BhDN6gyWzLnfK6MWustL4P2TY=;
+ b=KyXMN7mZlS3DO+aBgpneTKMCOw04cCOns443UFi31lPBNG6irhrwkhY0UDcVWbfgI1gAKU
+ oWZc+ihs5lQFz1fPlAk5NFxr5DhX0aAerYLAzXkSqd04pJFdJC12rcFFhyW+oLtQeDt5m0
+ FG4LnOm8Ny/mi0TCyVsLWysXDxlP4q8=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-355-wKtHEQ6SO6CYBP6RA3pmKQ-1; Wed, 27 Sep 2023 01:03:41 -0400
+X-MC-Unique: wKtHEQ6SO6CYBP6RA3pmKQ-1
+Received: by mail-qt1-f198.google.com with SMTP id
+ d75a77b69052e-412ede7897aso138557341cf.1
+ for <qemu-devel@nongnu.org>; Tue, 26 Sep 2023 22:03:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695790716; x=1696395516;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bHCBLUlfWdk144iXgWGACMvFufw35RZLwjTVgx+u+a0=;
- b=Ll3md287MMSMSLse8b8RJzB13o7KG708ONjz/rUJZb8TaI6hHwlL725w3o2g26DhbN
- x1P3xMHRBYrNxqatx54Twd+9+NQADBia+XrzfyYdrMpYRlySPbj0A5/cHUMvyExtodut
- hfOOBPStg58AckFdtZqB2Wtlodt+67apRdDrPyYxpLVfnoAMv7ExcoyawXuATMLmwWvd
- 9v1bpyRoBVSBGR1uGP/7tj/QqPBGDDsP2Ndlf4VqQtcoSBs15uLiQ43JmeyBhSWVqRkA
- yTRuteZEZhHeHouwArfzci7NifQMAbEnMUPx2p5LXY2bwvYpwIxOyiMJG22Lx1wpGKK9
- 1d9Q==
-X-Gm-Message-State: AOJu0Yz8LU4exCeProXTOBwU90KMvCmemXeimx9XvfR4i6dlTDRuzh+g
- g6tb+iQRRgWSu/+Wfk/p9RjS5ao2WDpmH7MiqSg=
-X-Google-Smtp-Source: AGHT+IHg9WwPCAOcVHiKzhzQ/NMxRMJO7nhEs4FjXOLXgi/ACe8ekYyeD54R4ceahM4Fwhxtil6o26JqyHaKr/gtp1E=
-X-Received: by 2002:a67:e95a:0:b0:44e:b570:3fae with SMTP id
- p26-20020a67e95a000000b0044eb5703faemr1130056vso.11.1695790715977; Tue, 26
- Sep 2023 21:58:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695791021; x=1696395821;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=aWf/XtDJ6lWldjTJi7BhDN6gyWzLnfK6MWustL4P2TY=;
+ b=bQiO22KD6zRkgYG8OwiMxdBm+nyLKSKr5kaFk+zUkTjKqe1kR46uAUMxM9ZpocmvkD
+ 1d99SgyY52CAf6kDc6JLxcpSBW/01Si7raKmMYmbU5qv/nPNaEfcqVCubTuk5Int5v1h
+ NxaYgMWOvSlRm0WIaorKE+dWN2VD6Jm09GtwiL8DKwT22HriXasUG2kR8yr2XvBrdKrn
+ APw72Ega3kD9bs4EgTRX05bUOoG4yUpp0ibenDgeieTCMYZUmAKr+g6wIwXYd+Dwdgu8
+ 60yVVdcl0raaOX+aU/BklNsqFUnyzv2y6iOBkwUHukzWslKMnZf7uYbRV0PetcW5K/MZ
+ o6bA==
+X-Gm-Message-State: AOJu0YzVkIEGw8gBlskGwSpcEFRHWAitwhP+gs7u2jqzVCeE3OCBhvMM
+ irCE1kGFt0LE93esU5c7ZQMhBygKNIs19r3gIRXJE5Ozs7Izo2e4gcwjzYhsIY7h6VtfB6xeOlQ
+ X+fi2ch6+Q8ag2A4=
+X-Received: by 2002:a05:622a:1111:b0:417:b00f:9c8a with SMTP id
+ e17-20020a05622a111100b00417b00f9c8amr1155560qty.27.1695791021256; 
+ Tue, 26 Sep 2023 22:03:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXLf9YVII023nAdvw9WEJEUKiR96PIsbnXFeV/DNxpsCXlPogrBar1QAA01VX8QqO/nXtecw==
+X-Received: by 2002:a05:622a:1111:b0:417:b00f:9c8a with SMTP id
+ e17-20020a05622a111100b00417b00f9c8amr1155544qty.27.1695791020934; 
+ Tue, 26 Sep 2023 22:03:40 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-178-22.web.vodafone.de.
+ [109.43.178.22]) by smtp.gmail.com with ESMTPSA id
+ l11-20020ac84ccb000000b004181441cb2dsm2542013qtv.34.2023.09.26.22.03.38
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 26 Sep 2023 22:03:40 -0700 (PDT)
+Message-ID: <66963265-fdeb-9bb0-bc3e-a6cd57d53e57@redhat.com>
+Date: Wed, 27 Sep 2023 07:03:36 +0200
 MIME-Version: 1.0
-References: <20230926183109.165878-1-dbarboza@ventanamicro.com>
- <20230926183109.165878-2-dbarboza@ventanamicro.com>
-In-Reply-To: <20230926183109.165878-2-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 27 Sep 2023 14:58:09 +1000
-Message-ID: <CAKmqyKNJHT+bWN-Es5mZLtH1Q2NnE=GDChhZhvnBPvON=V0DuA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] target/riscv: add riscv_cpu_get_name()
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e36;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe36.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] optionrom: Remove build-id section
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Dario Faggioli <dfaggioli@suse.com>,
+ Vasiliy Ulyanov <vulyanov@suse.de>
+References: <20230926192502.15986-1-farosas@suse.de>
+Content-Language: en-US
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230926192502.15986-1-farosas@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,82 +102,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 27, 2023 at 5:35=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> We'll introduce generic errors that will output a CPU type name via its
-> RISCVCPU pointer. Create a helper for that.
->
-> Use the helper in tcg_cpu_realizefn() instead of hardcoding the 'host'
-> CPU name.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
-
-Alistair
-
+On 26/09/2023 21.25, Fabiano Rosas wrote:
+> Our linker script for optionroms specifies only the placement of the
+> .text section, leaving the linker free to place the remaining sections
+> at arbitrary places in the file.
+> 
+> Since at least binutils 2.39, the .note.gnu.build-id section is now
+> being placed at the start of the file, which causes label addresses to
+> be shifted. For linuxboot_dma.bin that means that the PnP header
+> (among others) will not be found when determining the type of ROM at
+> optionrom_setup():
+> 
+> (0x1c is the label _pnph, where the magic "PnP" is)
+> 
+> $ xxd /usr/share/qemu/linuxboot_dma.bin | grep "PnP"
+> 00000010: 0000 0000 0000 0000 0000 1c00 2450 6e50  ............$PnP
+> 
+> $ xxd pc-bios/optionrom/linuxboot_dma.bin | grep "PnP"
+> 00000010: 0000 0000 0000 0000 0000 4c00 2450 6e50  ............$PnP
+>                                     ^bad
+> 
+> Using a freshly built linuxboot_dma.bin ROM results in a broken boot:
+> 
+>    SeaBIOS (version rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org)
+>    Booting from Hard Disk...
+>    Boot failed: could not read the boot disk
+> 
+>    Booting from Floppy...
+>    Boot failed: could not read the boot disk
+> 
+>    No bootable device.
+> 
+> We're not using the build-id section, so pass the --build-id=none
+> option to the linker to remove it entirely.
+> 
+> Note: In theory, this same issue could happen with any other
+> section. The ideal solution would be to have all unused sections
+> discarded in the linker script. However that would be a larger change,
+> specially for the pvh rom which uses the .bss and COMMON sections so
+> I'm addressing only the immediate issue here.
+> 
+> Reported-by: Vasiliy Ulyanov <vulyanov@suse.de>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 > ---
->  target/riscv/cpu.c         | 11 +++++++++++
->  target/riscv/cpu.h         |  1 +
->  target/riscv/tcg/tcg-cpu.c |  4 +++-
->  3 files changed, 15 insertions(+), 1 deletion(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index eeeb08a35a..521bb88538 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -643,6 +643,17 @@ static ObjectClass *riscv_cpu_class_by_name(const ch=
-ar *cpu_model)
->      return oc;
->  }
->
-> +char *riscv_cpu_get_name(RISCVCPU *cpu)
-> +{
-> +    RISCVCPUClass *rcc =3D RISCV_CPU_GET_CLASS(cpu);
-> +    const char *typename =3D object_class_get_name(OBJECT_CLASS(rcc));
-> +
-> +    g_assert(g_str_has_suffix(typename, RISCV_CPU_TYPE_SUFFIX));
-> +
-> +    return g_strndup(typename,
-> +                     strlen(typename) - strlen(RISCV_CPU_TYPE_SUFFIX));
-> +}
-> +
->  static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
->  {
->      RISCVCPU *cpu =3D RISCV_CPU(cs);
-> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-> index 219fe2e9b5..3f11e69223 100644
-> --- a/target/riscv/cpu.h
-> +++ b/target/riscv/cpu.h
-> @@ -730,6 +730,7 @@ typedef struct isa_ext_data {
->      int ext_enable_offset;
->  } RISCVIsaExtData;
->  extern const RISCVIsaExtData isa_edata_arr[];
-> +char *riscv_cpu_get_name(RISCVCPU *cpu);
->
->  void riscv_add_satp_mode_properties(Object *obj);
->
-> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-> index 8c052d6fcd..f31aa9bcc4 100644
-> --- a/target/riscv/tcg/tcg-cpu.c
-> +++ b/target/riscv/tcg/tcg-cpu.c
-> @@ -563,7 +563,9 @@ static bool tcg_cpu_realizefn(CPUState *cs, Error **e=
-rrp)
->      Error *local_err =3D NULL;
->
->      if (object_dynamic_cast(OBJECT(cpu), TYPE_RISCV_CPU_HOST)) {
-> -        error_setg(errp, "'host' CPU is not compatible with TCG accelera=
-tion");
-> +        g_autofree char *name =3D riscv_cpu_get_name(cpu);
-> +        error_setg(errp, "'%s' CPU is not compatible with TCG accelerati=
-on",
-> +                   name);
->          return false;
->      }
->
-> --
-> 2.41.0
->
->
+>   pc-bios/optionrom/Makefile | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/pc-bios/optionrom/Makefile b/pc-bios/optionrom/Makefile
+> index b1fff0ba6c..30d07026c7 100644
+> --- a/pc-bios/optionrom/Makefile
+> +++ b/pc-bios/optionrom/Makefile
+> @@ -36,7 +36,7 @@ config-cc.mak: Makefile
+>   	    $(call cc-option,-Wno-array-bounds)) 3> config-cc.mak
+>   -include config-cc.mak
+>   
+> -override LDFLAGS = -nostdlib -Wl,-T,$(SRC_DIR)/flat.lds
+> +override LDFLAGS = -nostdlib -Wl,--build-id=none,-T,$(SRC_DIR)/flat.lds
+>   
+>   pvh.img: pvh.o pvh_main.o
+
+I remember that we had to do the same in other projects that use their own 
+linker script (kvm-unit-tests?) ... so this looks fine to me.
+
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
