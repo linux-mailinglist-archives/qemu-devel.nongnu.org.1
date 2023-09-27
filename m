@@ -2,21 +2,21 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC567B0093
-	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5104F7B00B0
+	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 11:39:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlQyF-0000tk-8X; Wed, 27 Sep 2023 05:36:39 -0400
+	id 1qlQyH-0000uH-IC; Wed, 27 Sep 2023 05:36:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQxx-0000lY-5r
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:23 -0400
-Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
+ id 1qlQxx-0000lV-5U
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:24 -0400
+Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlQxn-0000fu-DZ
+ id 1qlQxp-0000gB-7i
  for qemu-devel@nongnu.org; Wed, 27 Sep 2023 05:36:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
@@ -24,17 +24,17 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=b5I1dbiEujj3bnPrvclDUc5hYSsrMePBI6m5GKX/TCs=; b=HjxgyQ7xEx38DE2WY83/WTrjtC
- d4JD8qPFWzB8vjh/oMHtIV6Yt2vOeIaF7ajXyQKXy9cn/C4A4btuAsvEMyIZhOFR2MIUvsOhT0zpM
- CcibFtgW2cgzrFmPMtlHAyP+zkbgJTxbDgEgYCDjAlx7Cci7vsXH7myEJYEQJ3EZiOag=;
+ bh=5I3hxpXIo/Aj9WtZLitXsFXjv/wDHOVI3zcJt8ymVSQ=; b=Au5mWVQ5nsF0+u6gpLrXKxx9fc
+ peC430uUGJrTEa79lF+6Wz2l5Xf4pk2DNfrqoGpQhzftdjmPMSIQ/c+fa96SFzysbmKzfBwxJIlG+
+ ld42hN0xDuG7knvvtEWo4o5jM8wzumD5QR9PmbLNSj7rfSMz+rwT46WI4EQ2WXcPodVw=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 01/21] tests/tcg/tricore: Bump cpu to tc37x
-Date: Wed, 27 Sep 2023 11:35:32 +0200
-Message-ID: <20230927093552.493279-2-kbastian@mail.uni-paderborn.de>
+Subject: [PULL 02/21] target/tricore: Implement CRCN insn
+Date: Wed, 27 Sep 2023 11:35:33 +0200
+Message-ID: <20230927093552.493279-3-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
 References: <20230927093552.493279-1-kbastian@mail.uni-paderborn.de>
@@ -43,18 +43,18 @@ Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.27.92417, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.9.27.602000
+ AntiVirus-Data: 2023.9.26.602000
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::19;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=hoth.uni-paderborn.de
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2001:638:502:c003::16;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,28 +70,165 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we don't want to exclude ISA v1.6.2 insns from our tests.
+reported in https://gitlab.com/qemu-project/qemu/-/issues/1667
 
-Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-Id: <20230828112651.522058-2-kbastian@mail.uni-paderborn.de>
+Message-ID: <20230828112651.522058-3-kbastian@mail.uni-paderborn.de>
 ---
- tests/tcg/tricore/Makefile.softmmu-target | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/tricore/helper.h                   |  1 +
+ target/tricore/op_helper.c                | 63 +++++++++++++++++++++++
+ target/tricore/translate.c                |  8 +++
+ target/tricore/tricore-opcodes.h          |  1 +
+ tests/tcg/tricore/Makefile.softmmu-target |  1 +
+ tests/tcg/tricore/asm/test_crcn.S         |  9 ++++
+ 6 files changed, 83 insertions(+)
+ create mode 100644 tests/tcg/tricore/asm/test_crcn.S
 
+diff --git a/target/tricore/helper.h b/target/tricore/helper.h
+index 31d71eac7a..190645413a 100644
+--- a/target/tricore/helper.h
++++ b/target/tricore/helper.h
+@@ -134,6 +134,7 @@ DEF_HELPER_FLAGS_5(mulr_h, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32, i32, i32)
+ DEF_HELPER_FLAGS_2(crc32b, TCG_CALL_NO_RWG_SE, i32, i32, i32)
+ DEF_HELPER_FLAGS_2(crc32_be, TCG_CALL_NO_RWG_SE, i32, i32, i32)
+ DEF_HELPER_FLAGS_2(crc32_le, TCG_CALL_NO_RWG_SE, i32, i32, i32)
++DEF_HELPER_FLAGS_3(crcn, TCG_CALL_NO_RWG_SE, i32, i32, i32, i32)
+ DEF_HELPER_FLAGS_2(shuffle, TCG_CALL_NO_RWG_SE, i32, i32, i32)
+ /* CSA */
+ DEF_HELPER_2(call, void, env, i32)
+diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
+index 89be1ed648..0cf8eb50bd 100644
+--- a/target/tricore/op_helper.c
++++ b/target/tricore/op_helper.c
+@@ -2308,6 +2308,69 @@ uint32_t helper_crc32_le(uint32_t arg0, uint32_t arg1)
+     return crc32(arg1, buf, 4);
+ }
+ 
++static uint32_t crc_div(uint32_t crc_in, uint32_t data, uint32_t gen,
++                        uint32_t n, uint32_t m)
++{
++    uint32_t i;
++
++    data = data << n;
++    for (i = 0; i < m; i++) {
++        if (crc_in & (1u << (n - 1))) {
++            crc_in <<= 1;
++            if (data & (1u << (m - 1))) {
++                crc_in++;
++            }
++            crc_in ^= gen;
++        } else {
++            crc_in <<= 1;
++            if (data & (1u << (m - 1))) {
++                crc_in++;
++            }
++        }
++        data <<= 1;
++    }
++
++    return crc_in;
++}
++
++uint32_t helper_crcn(uint32_t arg0, uint32_t arg1, uint32_t arg2)
++{
++    uint32_t crc_out, crc_in;
++    uint32_t n = extract32(arg0, 12, 4) + 1;
++    uint32_t gen = extract32(arg0, 16, n);
++    uint32_t inv = extract32(arg0, 9, 1);
++    uint32_t le = extract32(arg0, 8, 1);
++    uint32_t m = extract32(arg0, 0, 3) + 1;
++    uint32_t data = extract32(arg1, 0, m);
++    uint32_t seed = extract32(arg2, 0, n);
++
++    if (le == 1) {
++        if (m == 0) {
++            data = 0;
++        } else {
++            data = revbit32(data) >> (32 - m);
++        }
++    }
++
++    if (inv == 1) {
++        seed = ~seed;
++    }
++
++    if (m > n) {
++        crc_in = (data >> (m - n)) ^ seed;
++    } else {
++        crc_in = (data << (n - m)) ^ seed;
++    }
++
++    crc_out = crc_div(crc_in, data, gen, n, m);
++
++    if (inv) {
++        crc_out = ~crc_out;
++    }
++
++    return extract32(crc_out, 0, n);
++}
++
+ uint32_t helper_shuffle(uint32_t arg0, uint32_t arg1)
+ {
+     uint32_t resb;
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 6ae5ccbf72..4e7e18f985 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -6669,6 +6669,14 @@ static void decode_rrr_divide(DisasContext *ctx)
+         gen_helper_pack(cpu_gpr_d[r4], cpu_PSW_C, cpu_gpr_d[r3],
+                         cpu_gpr_d[r3+1], cpu_gpr_d[r1]);
+         break;
++    case OPC2_32_RRR_CRCN:
++        if (has_feature(ctx, TRICORE_FEATURE_162)) {
++            gen_helper_crcn(cpu_gpr_d[r4], cpu_gpr_d[r1], cpu_gpr_d[r2],
++                            cpu_gpr_d[r3]);
++        } else {
++            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++        }
++        break;
+     case OPC2_32_RRR_ADD_F:
+         gen_helper_fadd(cpu_gpr_d[r4], cpu_env, cpu_gpr_d[r1], cpu_gpr_d[r3]);
+         break;
+diff --git a/target/tricore/tricore-opcodes.h b/target/tricore/tricore-opcodes.h
+index bc62b73173..f070571665 100644
+--- a/target/tricore/tricore-opcodes.h
++++ b/target/tricore/tricore-opcodes.h
+@@ -1247,6 +1247,7 @@ enum {
+     OPC2_32_RRR_SUB_F                            = 0x03,
+     OPC2_32_RRR_MADD_F                           = 0x06,
+     OPC2_32_RRR_MSUB_F                           = 0x07,
++    OPC2_32_RRR_CRCN                             = 0x01, /* 1.6.2 up */
+ };
+ /*
+  * RRR1 Format
 diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
-index 2ec0bd3622..d556201b07 100644
+index d556201b07..b8d9b33933 100644
 --- a/tests/tcg/tricore/Makefile.softmmu-target
 +++ b/tests/tcg/tricore/Makefile.softmmu-target
-@@ -25,7 +25,7 @@ TESTS += test_muls.asm.tst
- TESTS += test_boot_to_main.c.tst
- TESTS += test_context_save_areas.c.tst
- 
--QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
-+QEMU_OPTS += -M tricore_testboard -cpu tc37x -nographic -kernel
- 
- %.pS: $(ASM_TESTS_PATH)/%.S
- 	$(CC) -E -o $@ $<
+@@ -9,6 +9,7 @@ CFLAGS = -mtc162 -c -I$(TESTS_PATH)
+ TESTS += test_abs.asm.tst
+ TESTS += test_bmerge.asm.tst
+ TESTS += test_clz.asm.tst
++TESTS += test_crcn.asm.tst
+ TESTS += test_dextr.asm.tst
+ TESTS += test_dvstep.asm.tst
+ TESTS += test_fadd.asm.tst
+diff --git a/tests/tcg/tricore/asm/test_crcn.S b/tests/tcg/tricore/asm/test_crcn.S
+new file mode 100644
+index 0000000000..51a22722a3
+--- /dev/null
++++ b/tests/tcg/tricore/asm/test_crcn.S
+@@ -0,0 +1,9 @@
++#include "macros.h"
++.text
++.global _start
++_start:
++#                insn num    result   rs1    rs2     rs3
++#                 |     |      |      |       |       |
++    TEST_D_DDD(crcn, 1, 0x00002bed, 0x0, 0xa10ddeed, 0x0)
++
++    TEST_PASSFAIL
 -- 
 2.42.0
 
