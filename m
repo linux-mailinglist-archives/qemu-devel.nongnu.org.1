@@ -2,51 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572607B0636
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E71D7B0635
 	for <lists+qemu-devel@lfdr.de>; Wed, 27 Sep 2023 16:07:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlVB5-0004Wg-3b; Wed, 27 Sep 2023 10:06:11 -0400
+	id 1qlVBr-0004pM-E8; Wed, 27 Sep 2023 10:06:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qlVB3-0004WL-AJ
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:06:09 -0400
-Received: from relay8-d.mail.gandi.net ([2001:4b98:dc4:8::228])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qlVBp-0004ou-Ck
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:06:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qlVAn-0002E2-VT
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:06:09 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7D95D1BF20E;
- Wed, 27 Sep 2023 14:05:49 +0000 (UTC)
-Message-ID: <28993913-624a-a437-1382-54a95933474c@ovn.org>
-Date: Wed, 27 Sep 2023 16:06:41 +0200
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qlVBn-0002kh-2u
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 10:06:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695823613;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=HPGNQvknATW/BdBcZ/iMBceyfdKznF1WEfYvwP1SxM4=;
+ b=fGpzMqKQZCAI8CwEfVBZV/gIG02QWmUr5sHa9QwyX2fUfUVvHKP/jQLBEPt8nRZ4H7Vttr
+ HgLAnx5EE8KptUnSDIuVWVHhBriuASVKT/unzVnqxDRBE0guFVvudZiTyioMqC01p01Q9S
+ KQ7scEHMin1gwUfYyEEv/Zhs5mS3ofw=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-252-5iIs8nqLOnGr7GpZS6dd0Q-1; Wed, 27 Sep 2023 10:06:48 -0400
+X-MC-Unique: 5iIs8nqLOnGr7GpZS6dd0Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 16E493C1F141;
+ Wed, 27 Sep 2023 14:06:48 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.59])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id DADEC1678B;
+ Wed, 27 Sep 2023 14:06:46 +0000 (UTC)
+Date: Wed, 27 Sep 2023 09:06:45 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PATCH] maint: Tweak comment in mailmap to sound friendlier
+Message-ID: <tewmhssbdcsu27k2qgpsk7ffu5uxpbnxl7vml5ox4fpxrz5nnp@5alfgqinlq7t>
+References: <20230926203946.3303600-2-eblake@redhat.com>
+ <a8d61378-3dcb-45e5-95dd-95fb9e1e0da8@virtuozzo.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: i.maximets@ovn.org, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>
-Subject: Re: [PATCH] virtio: remove unnecessary thread fence while reading
- next descriptor
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>
-References: <20230825170136.1953236-1-i.maximets@ovn.org>
- <CAJSP0QW2LZQgHFSp=ajokFpAzaLWhDXBL0tP8Lj-vXTaMKJcqQ@mail.gmail.com>
- <fd5f15c1-87b7-bd00-be5f-987a02f35482@ovn.org>
-From: Ilya Maximets <i.maximets@ovn.org>
-In-Reply-To: <fd5f15c1-87b7-bd00-be5f-987a02f35482@ovn.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: i.maximets@ovn.org
-Received-SPF: neutral client-ip=2001:4b98:dc4:8::228;
- envelope-from=i.maximets@ovn.org; helo=relay8-d.mail.gandi.net
-X-Spam_score_int: -32
-X-Spam_score: -3.3
-X-Spam_bar: ---
-X-Spam_report: (-3.3 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-1.473,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_PASS=-0.001,
- SPF_NEUTRAL=0.779 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a8d61378-3dcb-45e5-95dd-95fb9e1e0da8@virtuozzo.com>
+User-Agent: NeoMutt/20230517-449-a10573
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,69 +78,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/25/23 20:04, Ilya Maximets wrote:
-> On 9/25/23 16:32, Stefan Hajnoczi wrote:
->> On Fri, 25 Aug 2023 at 13:02, Ilya Maximets <i.maximets@ovn.org> wrote:
->>>
->>> It was supposed to be a compiler barrier and it was a compiler barrier
->>> initially called 'wmb' (??) when virtio core support was introduced.
->>> Later all the instances of 'wmb' were switched to smp_wmb to fix memory
->>> ordering issues on non-x86 platforms.  However, this one doesn't need
->>> to be an actual barrier.  It's enough for it to stay a compiler barrier
->>> as its only purpose is to ensure that the value is not read twice.
->>>
->>> There is no counterpart read barrier in the drivers, AFAICT.  And even
->>> if we needed an actual barrier, it shouldn't have been a write barrier.
->>>
->>> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
->>> ---
->>>  hw/virtio/virtio.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
->>> index 309038fd46..6eb8586858 100644
->>> --- a/hw/virtio/virtio.c
->>> +++ b/hw/virtio/virtio.c
->>> @@ -1051,7 +1051,7 @@ static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
->>>      /* Check they're not leading us off end of descriptors. */
->>>      *next = desc->next;
->>
->> I don't see a caller that uses *next. Can the argument be eliminated?
+On Wed, Sep 27, 2023 at 01:34:40PM +0300, Andrey Drobyshev wrote:
+> On 9/26/23 23:39, eblake@redhat.com wrote:
+> > From: Eric Blake <eblake@redhat.com>
+> > 
+> > Documenting that we should not add new lines to work around SPF
+> > rewrites sounds foreboding; the intent is instead that new lines here
+> > are okay, but indicate a second problem elsewhere in our build process
+> > that we should also consider fixing at the same time, to keep the
+> > section from growing without bounds.
+> > 
+> > Mentioning DMARC alongside SPF may also help people grep for this
+> > scenario, as well as documenting the 'git config' workaround that can
+> > be used by submitters to avoid the munging issue in the first place.
+> > 
+> > Fixes: 3bd2608d ("maint: Add .mailmap entries for patches claiming list authorship")
+> > CC: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
+> > Cc: Peter Maydell <peter.maydell@linaro.org>
+> > Signed-off-by: Eric Blake <eblake@redhat.com>
+> > ---
+> > 
+> > I'm sending this email with a temporary 'git config sendemail.from
+> > eblake@redhat.com', to see if the added advice actually adds the extra
+> > line. It did not show up in my editor window, though, so this patch
+> > may need further tweaking to get the instructions right.  Since I
+> > don't normally suffer from SPF/DMARC munging, I may not be the best
+> > person to test the right workaround.  Or maybe 'git config' does not
+> > yet have the right workaround already available as a turnkey solution
+> > we can suggest.
+> > 
 > 
-> Yes, it can.  The 'next' was converted from a local variable to
-> an output parameter in commit:
->   412e0e81b174 ("virtio: handle virtqueue_read_next_desc() errors")
+> The only drawback of this approach is that mail clients, as well as
+> tools like patchew.org now only show your "<email>" in From/Author
+> field.  You can see it here:
 > 
-> And that didn't actually make sense even then, because all the
-> actual uses of the 'i/next' as an output were removed a few months
-> prior in commit:
->   aa570d6fb6bd ("virtio: combine the read of a descriptor")
-> 
-> I can post a separate patch for this.
-> 
->>
->>>      /* Make sure compiler knows to grab that: we don't want it changing! */
->>> -    smp_wmb();
->>> +    barrier();
->>
->> What is the purpose of this barrier? desc is not guest memory and
->> nothing modifies desc's fields while this function is executing. I
->> think the barrier can be removed.
-> 
-> True.  In fact, that was the first thing I did, but then the comment
-> derailed me into thinking that it somehow can be updated concurrently,
-> so I went with a safer option.  :/
-> It is indeed a local variable and the barrier is not needed today.
-> It had a little more sense before the previously mentioned commit:
->   aa570d6fb6bd ("virtio: combine the read of a descriptor")
-> because we were reading guest memory before the barrier and used the
-> result after.
-> 
-> I'll remove it.
+> https://patchew.org/search?q=project%3AQEMU+from%3ABlake
 
-Converted this into a cleanup patch set.  Posted here:
-  https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg06780.html
+Indeed.  But I think I know more now, so I'll try something slightly
+different in v2.
 
-Best regards, Ilya Maximets.
+> 
+> In your email there're 2 "From:" fields now:
+> 
+> > Headers...
+> > From: eblake@redhat.com
+> > More headers...
+> > From: Eric Blake <eblake@redhat.com>
+> > Actual patch
+
+Not quite - if you read the raw email, notice the blank line, which
+separate true headers from the body.  That is, the headers are:
+
+| From: eblake@redhat.com
+| More headers...
+| Subject:
+
+while the body starts:
+
+| From: Eric Blake <eblake@redhat.com>
+| 
+| rest of actual patch
+
+'git am' is already smart enough to prioritize the body's From: line
+over mail headers when re-creating authorship for a patch being
+imported into a maintainer's tree.  But patchew currently favors the
+email headers in its attributions.
+
+> 
+> Apparently, mail clients prefer to pay attention on the very first
+> "From:" entry, while tools like "git am" -- on the last.  If we managed
+> to make those entries both be in the format "name <email>" -- that'd be
+> ideal.  However, as I pointed out in another thread, if we set
+> sendemail.from to "name <email>", the 2nd entry doesn't get added since
+> they're now identical.  So you figure out the way to get 2 identical
+> "From:" entries -- please let us know.
+
+My current working theory (to be tested in my upcoming v2 posting) is
+that git compares two values: the author attribution (composed from
+'git config user.name' and 'git config user.email'), and the sendemail
+attribution (directly from 'git config sendemail.from').  If the two
+differ, then git format-email produces the one-liner 'From: real
+author <real@email>' based on commit authorship info as the first line
+in the body of the message; if they are the same (including when
+sendemail.from is missing, so git assumes you are sending your own
+patch and that your MUA will supply the same name), the body line is
+omitted.  Meanwhile, when git feeds a file into sendemail, it omits a
+From: header by default (relying on your MUA to supply one - and your
+MUA probably picks the same spelling as your authorship), but includes
+a From: header (which generally overrides your MUA's default) verbatim
+from sendemail.from if that was set, regardless of commit authorship
+info.
+
+That would explain whey when you set sendemail.from to list your full
+name and email, you didn't get a body From: line.  And when you omit
+the real name in sendemail.from, the two definitely differ, so git
+includes the body From: (I just demonstrated that when I posted this
+v1).  But it may still be possible to force author attribution to be
+slightly different to sendemail.from, but still having a name in the
+From: line, so that patchew doesn't see a bare email without a name,
+all by intentionally spelling things differently.  So my attempt for
+my v2 patch, my settings will be:
+
+[user]
+        name = Eric Blake
+        email = eblake@redhat.com
+[sendemail]
+        from = "Eric Blake" <eblake@redhat.com>
+
+with the hope that the addition of quotes (a semantic no-op from
+email's point of view, but a different spelling from git's point of
+view) would be enough to cause git send-email to include a body From:
+line.  Fingers crossed while I test it...
+
+> 
+> Having all that said, it would still be nice to have additional checks
+> for "qemu-block@nongnu.org" authorship, as Peter mentioned in the
+> previous thread.
+
+Yes, Peter found the spot, and mentioned his fix in the other thread.
+
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
