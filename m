@@ -2,68 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5780C7B1E67
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DC77B1E13
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:23:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlr6A-0000JE-PL; Thu, 28 Sep 2023 09:30:34 -0400
+	id 1qlqwv-0003k7-Kx; Thu, 28 Sep 2023 09:21:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr60-0008VG-Nu
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:26 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwd-0003bg-I3
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr5y-0002Ac-HQ
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:24 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwP-0008Gl-FU
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695907821;
+ s=mimecast20190719; t=1695907228;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=puNVjsA5MWcd8I5pM9KDRUcm2ONy0UJkA9zAUt+v/PM=;
- b=RSGOHXhDvrvWyRovEFpHVsO51tH5I+ug4jqb3vAbDPahBeDZJ0DuGCnXkPYB56YWax3Iey
- 0w8V3mfU8HX1gBlezztiw65ot/Dbhi8s47Te1nb3KHa/oezrXY2PQ7Ucpf3wNn6wO8xX30
- A+hLPIx8nDkkDY2kGF9+K8rIqnoVH8M=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-183-ac36gt0UNaKxXvMF-gjOxw-1; Thu, 28 Sep 2023 09:30:18 -0400
-X-MC-Unique: ac36gt0UNaKxXvMF-gjOxw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=ghHgLUIvURwmGikhRFTWt9ONxwDm/FS8NpoQo04FRlM=;
+ b=Djpqfr62mqEhX21tE5P+8rMif4KDUc1tZJBNPrTH9F9f370x7KcfvfpjFBAdzraw+YaA3m
+ 5xgJm2q2ylT9lq+Yx15vilFuczkyXY4Xwio2zgz29hfUjU9EaodZAQ+zBqEgIpHyCVoT9K
+ ECiNu21pWQup1Httf9pTIKC4vp6rJik=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-375-H-5xaNKgNxCPyT85VSE3Rg-1; Thu, 28 Sep 2023 09:20:24 -0400
+X-MC-Unique: H-5xaNKgNxCPyT85VSE3Rg-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 425E18039CF;
- Thu, 28 Sep 2023 13:30:18 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 771B33C147E3;
+ Thu, 28 Sep 2023 13:20:24 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1DE91178B5;
- Thu, 28 Sep 2023 13:30:18 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 554AC40C2070;
+ Thu, 28 Sep 2023 13:20:24 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5B2E321E68A5; Thu, 28 Sep 2023 15:20:20 +0200 (CEST)
+ id 5E11521E68A6; Thu, 28 Sep 2023 15:20:20 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
  farosas@suse.de, lizhijian@fujitsu.com, eblake@redhat.com
-Subject: [PATCH v2 49/53] migration/rdma: Silence qemu_rdma_block_for_wrid()
-Date: Thu, 28 Sep 2023 15:20:15 +0200
-Message-ID: <20230928132019.2544702-50-armbru@redhat.com>
+Subject: [PATCH v2 50/53] migration/rdma: Silence
+ qemu_rdma_register_and_get_keys()
+Date: Thu, 28 Sep 2023 15:20:16 +0200
+Message-ID: <20230928132019.2544702-51-armbru@redhat.com>
 In-Reply-To: <20230928132019.2544702-1-armbru@redhat.com>
 References: <20230928132019.2544702-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,86 +87,41 @@ job.  When the caller does, the error is reported twice.  When it
 doesn't (because it recovered from the error), there is no error to
 report, i.e. the report is bogus.
 
-qemu_rdma_post_send_control(), qemu_rdma_exchange_get_response(), and
-qemu_rdma_write_one() violate this principle: they call
-error_report(), fprintf(stderr, ...), and perror() via
-qemu_rdma_block_for_wrid(), qemu_rdma_poll(), and
-qemu_rdma_wait_comp_channel().  I elected not to investigate how
-callers handle the error, i.e. precise impact is not known.
+qemu_rdma_write_one() violates this principle: it reports errors to
+stderr via qemu_rdma_register_and_get_keys().  I elected not to
+investigate how callers handle the error, i.e. precise impact is not
+known.
 
-Clean this up by dropping the error reporting from qemu_rdma_poll(),
-qemu_rdma_wait_comp_channel(), and qemu_rdma_block_for_wrid().  I
-believe the callers' error reports suffice.  If they don't, we need to
-convert to Error instead.
-
-Bonus: resolves a FIXME about problematic use of errno.
+Clean this up: silence qemu_rdma_register_and_get_keys().  I believe
+the caller's error reports suffice.  If they don't, we need to convert
+to Error instead.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- migration/rdma.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+ migration/rdma.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index f4bb329671..6c63f9c269 100644
+index 6c63f9c269..4e4d818460 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -1483,17 +1483,12 @@ static int qemu_rdma_poll(RDMAContext *rdma, struct ibv_cq *cq,
-     }
- 
-     if (ret < 0) {
--        error_report("ibv_poll_cq failed");
-         return -1;
-     }
- 
-     wr_id = wc.wr_id & RDMA_WRID_TYPE_MASK;
- 
-     if (wc.status != IBV_WC_SUCCESS) {
--        fprintf(stderr, "ibv_poll_cq wc.status=%d %s!\n",
--                        wc.status, ibv_wc_status_str(wc.status));
--        fprintf(stderr, "ibv_poll_cq wrid=%" PRIu64 "!\n", wr_id);
--
-         return -1;
-     }
- 
-@@ -1577,16 +1572,12 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
-                 if (pfds[1].revents) {
-                     ret = rdma_get_cm_event(rdma->channel, &cm_event);
-                     if (ret < 0) {
--                        error_report("failed to get cm event while wait "
--                                     "completion channel");
-                         return -1;
-                     }
- 
-                     if (cm_event->event == RDMA_CM_EVENT_DISCONNECTED ||
-                         cm_event->event == RDMA_CM_EVENT_DEVICE_REMOVAL) {
-                         rdma_ack_cm_event(cm_event);
--                        error_report("receive cm event while wait comp channel,"
--                                     "cm event is %d", cm_event->event);
-                         return -1;
-                     }
-                     rdma_ack_cm_event(cm_event);
-@@ -1599,7 +1590,6 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
-             default: /* Error of some type -
-                       * I don't trust errno from qemu_poll_ns
-                      */
--                error_report("%s: poll failed", __func__);
-                 return -1;
-             }
- 
-@@ -1683,12 +1673,6 @@ static int qemu_rdma_block_for_wrid(RDMAContext *rdma,
- 
-         ret = ibv_get_cq_event(ch, &cq, &cq_ctx);
-         if (ret < 0) {
--            /*
--             * FIXME perror() is problematic, because ibv_reg_mr() is
--             * not documented to set errno.  Will go away later in
--             * this series.
--             */
--            perror("ibv_get_cq_event");
-             goto err_block_for_wrid;
+@@ -1325,15 +1325,6 @@ static int qemu_rdma_register_and_get_keys(RDMAContext *rdma,
          }
- 
+     }
+     if (!block->pmr[chunk]) {
+-        perror("Failed to register chunk!");
+-        fprintf(stderr, "Chunk details: block: %d chunk index %d"
+-                        " start %" PRIuPTR " end %" PRIuPTR
+-                        " host %" PRIuPTR
+-                        " local %" PRIuPTR " registrations: %d\n",
+-                        block->index, chunk, (uintptr_t)chunk_start,
+-                        (uintptr_t)chunk_end, host_addr,
+-                        (uintptr_t)block->local_host_addr,
+-                        rdma->total_registrations);
+         return -1;
+     }
+     rdma->total_registrations++;
 -- 
 2.41.0
 
