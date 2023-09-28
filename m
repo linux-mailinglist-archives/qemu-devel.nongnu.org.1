@@ -2,73 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170617B1F61
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 16:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344DF7B1F64
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 16:22:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlrt6-0004yd-C9; Thu, 28 Sep 2023 10:21:08 -0400
+	id 1qlruB-00076z-2B; Thu, 28 Sep 2023 10:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlrt4-0004wf-6a
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:21:06 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qlru9-000766-HI
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:22:13 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlrsz-0007CS-Ai
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:21:05 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qlru7-0007VO-Rs
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:22:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695910858;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=fccPulAjegZ7OiO0TeYH90B6XxHmlKusVjDFJejk3qY=;
- b=YZtNZm8H35Pkvn5yGt936G8OHjV4uSo/+8JL+P7PdmQZdaNEzJdcgZB21lTEODD0tznvjN
- h0J/WCrXrnoNVC8agdRO/GPsVBWE6TGTShSlaT7szB3S3TfQLPWW+5ynBwUJuKK68pa/ZX
- iePd1EeRyxal/OCu7hMEDPW0wnAiBWE=
+ s=mimecast20190719; t=1695910931;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=1Q3sLW6wnVEf2VSwGpMREHNaKhjVIw0niZsSnVi8vZc=;
+ b=I1Wj+KNATl+9XzNlm2DPBTsE5HsFCd4eIObKWf79ZHlALDEsFdUXvO5LgdoNVcRNHxI9hI
+ Q7+S14CgD9XRNdKSEwf7ciA8s0wUuCjxJ27IG6t7QOr5LUmm0F7W5rp3UnWiQMsGMsO5K3
+ x3K+Tpe8SkYuSdsT1cwynbSxB4Lj1A8=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-150-FvD8A8w6PMemrfJKqQEIeA-1; Thu, 28 Sep 2023 10:20:56 -0400
-X-MC-Unique: FvD8A8w6PMemrfJKqQEIeA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-150-7OA9cnNmN66z1H4QNnW5MA-1; Thu, 28 Sep 2023 10:22:09 -0400
+X-MC-Unique: 7OA9cnNmN66z1H4QNnW5MA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84EA93816C98
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:20:56 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 45B1810F1BE9
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:20:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5130B21E6904; Thu, 28 Sep 2023 16:20:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Victor Toso <victortoso@redhat.com>,  qemu-devel@nongnu.org,  John Snow
- <jsnow@redhat.com>
-Subject: Re: [PATCH v1 1/9] qapi: golang: Generate qapi's enum types in Go
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A1983816CAC
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:22:05 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.58])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C8FB3492B16;
+ Thu, 28 Sep 2023 14:22:03 +0000 (UTC)
+Date: Thu, 28 Sep 2023 15:21:59 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v1 5/9] qapi: golang: Generate qapi's union types in Go
+Message-ID: <ZRWMB5qq4E7Xh9ME@redhat.com>
 References: <20230927112544.85011-1-victortoso@redhat.com>
- <20230927112544.85011-2-victortoso@redhat.com>
- <ZRWFCPhUfXMCrml1@redhat.com>
-Date: Thu, 28 Sep 2023 16:20:55 +0200
-In-Reply-To: <ZRWFCPhUfXMCrml1@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Thu, 28 Sep 2023 14:52:08 +0100")
-Message-ID: <87cyy2tm48.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ <20230927112544.85011-6-victortoso@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Disposition: inline
+In-Reply-To: <20230927112544.85011-6-victortoso@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
- DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,226 +78,79 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+On Wed, Sep 27, 2023 at 01:25:40PM +0200, Victor Toso wrote:
+> This patch handles QAPI union types and generates the equivalent data
+> structures and methods in Go to handle it.
+> 
+> The QAPI union type has two types of fields: The @base and the
+> @Variants members. The @base fields can be considered common members
+> for the union while only one field maximum is set for the @Variants.
+> 
+> In the QAPI specification, it defines a @discriminator field, which is
+> an Enum type. The purpose of the  @discriminator is to identify which
+> @variant type is being used.
+> 
+> Not that @discriminator's enum might have more values than the union's
+> data struct. This is fine. The union does not need to handle all cases
+> of the enum, but it should accept them without error. For this
+> specific case, we keep the @discriminator field in every union type.
 
-> On Wed, Sep 27, 2023 at 01:25:36PM +0200, Victor Toso wrote:
->> This patch handles QAPI enum types and generates its equivalent in Go.
->>=20
->> Basically, Enums are being handled as strings in Golang.
->>=20
->> 1. For each QAPI enum, we will define a string type in Go to be the
->>    assigned type of this specific enum.
->>=20
->> 2. Naming: CamelCase will be used in any identifier that we want to
->>    export [0], which is everything.
->>=20
->> [0] https://go.dev/ref/spec#Exported_identifiers
->>=20
->> Example:
->>=20
->> qapi:
->>   | { 'enum': 'DisplayProtocol',
->>   |   'data': [ 'vnc', 'spice' ] }
->>=20
->> go:
->>   | type DisplayProtocol string
->>   |
->>   | const (
->>   |     DisplayProtocolVnc   DisplayProtocol =3D "vnc"
->>   |     DisplayProtocolSpice DisplayProtocol =3D "spice"
->>   | )
->>=20
->> Signed-off-by: Victor Toso <victortoso@redhat.com>
->> ---
->>  scripts/qapi/golang.py | 140 +++++++++++++++++++++++++++++++++++++++++
->>  scripts/qapi/main.py   |   2 +
->>  2 files changed, 142 insertions(+)
->>  create mode 100644 scripts/qapi/golang.py
->>=20
->> diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
->> new file mode 100644
->> index 0000000000..87081cdd05
->> --- /dev/null
->> +++ b/scripts/qapi/golang.py
->> @@ -0,0 +1,140 @@
->> +"""
->> +Golang QAPI generator
->> +"""
->> +# Copyright (c) 2023 Red Hat Inc.
->> +#
->> +# Authors:
->> +#  Victor Toso <victortoso@redhat.com>
->> +#
->> +# This work is licensed under the terms of the GNU GPL, version 2.
->> +# See the COPYING file in the top-level directory.
->> +
->> +# due QAPISchemaVisitor interface
->> +# pylint: disable=3Dtoo-many-arguments
->> +
->> +# Just for type hint on self
->> +from __future__ import annotations
->> +
->> +import os
->> +from typing import List, Optional
->> +
->> +from .schema import (
->> +    QAPISchema,
->> +    QAPISchemaType,
->> +    QAPISchemaVisitor,
->> +    QAPISchemaEnumMember,
->> +    QAPISchemaFeature,
->> +    QAPISchemaIfCond,
->> +    QAPISchemaObjectType,
->> +    QAPISchemaObjectTypeMember,
->> +    QAPISchemaVariants,
->> +)
->> +from .source import QAPISourceInfo
->> +
->> +TEMPLATE_ENUM =3D '''
->> +type {name} string
->> +const (
->> +{fields}
->> +)
->> +'''
->> +
->> +
->> +def gen_golang(schema: QAPISchema,
->> +               output_dir: str,
->> +               prefix: str) -> None:
->> +    vis =3D QAPISchemaGenGolangVisitor(prefix)
->> +    schema.visit(vis)
->> +    vis.write(output_dir)
->> +
->> +
->> +def qapi_to_field_name_enum(name: str) -> str:
->> +    return name.title().replace("-", "")
->> +
->> +
->> +class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
->> +
->> +    def __init__(self, _: str):
->> +        super().__init__()
->> +        types =3D ["enum"]
->> +        self.target =3D {name: "" for name in types}
->> +        self.schema =3D None
->> +        self.golang_package_name =3D "qapi"
->> +
->> +    def visit_begin(self, schema):
->> +        self.schema =3D schema
->> +
->> +        # Every Go file needs to reference its package name
->> +        for target in self.target:
->> +            self.target[target] =3D f"package {self.golang_package_name=
-}\n"
->> +
->> +    def visit_end(self):
->> +        self.schema =3D None
->> +
->> +    def visit_object_type(self: QAPISchemaGenGolangVisitor,
->> +                          name: str,
->> +                          info: Optional[QAPISourceInfo],
->> +                          ifcond: QAPISchemaIfCond,
->> +                          features: List[QAPISchemaFeature],
->> +                          base: Optional[QAPISchemaObjectType],
->> +                          members: List[QAPISchemaObjectTypeMember],
->> +                          variants: Optional[QAPISchemaVariants]
->> +                          ) -> None:
->> +        pass
->> +
->> +    def visit_alternate_type(self: QAPISchemaGenGolangVisitor,
->> +                             name: str,
->> +                             info: Optional[QAPISourceInfo],
->> +                             ifcond: QAPISchemaIfCond,
->> +                             features: List[QAPISchemaFeature],
->> +                             variants: QAPISchemaVariants
->> +                             ) -> None:
->> +        pass
->> +
->> +    def visit_enum_type(self: QAPISchemaGenGolangVisitor,
->> +                        name: str,
->> +                        info: Optional[QAPISourceInfo],
->> +                        ifcond: QAPISchemaIfCond,
->> +                        features: List[QAPISchemaFeature],
->> +                        members: List[QAPISchemaEnumMember],
->> +                        prefix: Optional[str]
->> +                        ) -> None:
->> +
->> +        value =3D qapi_to_field_name_enum(members[0].name)
->> +        fields =3D ""
->> +        for member in members:
->> +            value =3D qapi_to_field_name_enum(member.name)
->> +            fields +=3D f'''\t{name}{value} {name} =3D "{member.name}"\=
-n'''
->> +
->> +        self.target["enum"] +=3D TEMPLATE_ENUM.format(name=3Dname, fiel=
-ds=3Dfields[:-1])
->
-> Here you are formatting the enums as you visit them, appending to
-> the output buffer. The resulting enums appear in whatever order we
-> visited them with, which is pretty arbitrary.
+I still tend think the @discriminator field should not be
+present in the union structs. It feels like we're just trying
+to directly copy the C code in Go and so smells wrong from a
+Go POV.
 
-We visit in source order, not in arbitrary order.
+For most of the unions the @discriminator field will be entirely
+redundant, becasue the commonm case is that a @variant field
+exists for every possible @discriminator value.
 
-> Browsing the generated Go code to understand it, I find myself
-> wishing that it was emitted in alphabetical order.
+To take one example
 
-If that's easier to read in generated Go, then I suspect it would also
-be easier to read in the QAPI schema and in generated C.
+  type SocketAddress struct {
+        Type SocketAddressType `json:"type"`
 
-> This could be done if we worked in two phase. In the visit phase,
-> we collect the bits of data we need, and then add a format phase
-> then generates the formatted output, having first sorted by enum
-> name.
->
-> Same thought for the other types/commands.
->
->> +
->> +    def visit_array_type(self, name, info, ifcond, element_type):
->> +        pass
->> +
->> +    def visit_command(self,
->> +                      name: str,
->> +                      info: Optional[QAPISourceInfo],
->> +                      ifcond: QAPISchemaIfCond,
->> +                      features: List[QAPISchemaFeature],
->> +                      arg_type: Optional[QAPISchemaObjectType],
->> +                      ret_type: Optional[QAPISchemaType],
->> +                      gen: bool,
->> +                      success_response: bool,
->> +                      boxed: bool,
->> +                      allow_oob: bool,
->> +                      allow_preconfig: bool,
->> +                      coroutine: bool) -> None:
->> +        pass
->> +
->> +    def visit_event(self, name, info, ifcond, features, arg_type, boxed=
-):
->> +        pass
->> +
->> +    def write(self, output_dir: str) -> None:
->> +        for module_name, content in self.target.items():
->> +            go_module =3D module_name + "s.go"
->> +            go_dir =3D "go"
->> +            pathname =3D os.path.join(output_dir, go_dir, go_module)
->> +            odir =3D os.path.dirname(pathname)
->> +            os.makedirs(odir, exist_ok=3DTrue)
->> +
->> +            with open(pathname, "w", encoding=3D"ascii") as outfile:
->
-> IIUC, we defacto consider the .qapi json files to be UTF-8, and thus
-> in theory we could have non-ascii characters in there somewhere. I'd
-> suggest we using utf8 encoding when outputting to avoid surprises.
+        // Variants fields
+        Inet  *InetSocketAddress  `json:"-"`
+        Unix  *UnixSocketAddress  `json:"-"`
+        Vsock *VsockSocketAddress `json:"-"`
+        Fd    *String             `json:"-"`
+  }
 
-Seconded.  QAPIGen.write() already uses encoding=3D'utf-8' for writing
-generated files.
+If one was just writing Go code without the pre-existing knowledge
+of the QAPI C code, 'Type' is not something a Go programmer would
+be inclined add IMHO.
 
->> +                outfile.write(content)
->
->
-> With regards,
-> Daniel
+And yet you are right that we need a way to represent a @discriminator
+value that has no corresponding @variant, since QAPI allows for that
+scenario. To deal with that I would suggest we just use an empty
+interface type. eg
+
+
+  type SocketAddress struct {
+        Type SocketAddressType `json:"type"`
+
+        // Variants fields
+        Inet  *InetSocketAddress  `json:"-"`
+        Unix  *UnixSocketAddress  `json:"-"`
+        Vsock *VsockSocketAddress `json:"-"`
+        Fd    *String             `json:"-"`
+	Fish  *interface{}        `json:"-"`
+	Food  *interface()        `json:"-"`
+  }
+
+the pointer value for 'Fish' and 'Food' fields here merely needs to
+be non-NULL, it doesn't matter what the actual thing assigned is.
+
+
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
