@@ -2,69 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06FF7B2032
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 16:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0337B203A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 16:55:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlsMz-00008Z-JA; Thu, 28 Sep 2023 10:52:01 -0400
+	id 1qlsPE-0001jv-Kn; Thu, 28 Sep 2023 10:54:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlsMy-00008P-DI
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:52:00 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlsPA-0001jG-Qm
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:54:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlsMw-0006Df-Ai
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:52:00 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlsP9-0006ga-EH
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:54:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695912716;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=hcUNXT/qN4xNM45zJdcwPrcco40O2wscmSCxcFGwuro=;
- b=Cri7aib++VAjPONyv8r+jpm0oln9x8yGY3tbQfy0Lwa68nM35vDBrIwiHc074mTpWUK2MT
- ODF9a7TvrQxgo5galkrWRCfCrZ2e+7Wg5nDtn/ZNqm4ZXn0nQxtBe6pB8dZNOymrIhPS51
- 4b1S+ARuYxxtPNLASF2lr3KXJNKKJro=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-107-RY5VHruKMQGPwzXtkgMyBQ-1; Thu, 28 Sep 2023 10:51:54 -0400
-X-MC-Unique: RY5VHruKMQGPwzXtkgMyBQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C43BB101A53B
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:51:53 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.58])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0845F400E89;
- Thu, 28 Sep 2023 14:51:52 +0000 (UTC)
-Date: Thu, 28 Sep 2023 15:51:50 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v1 2/9] qapi: golang: Generate qapi's alternate types in Go
-Message-ID: <ZRWTBpWn4m3rrGMZ@redhat.com>
-References: <20230927112544.85011-1-victortoso@redhat.com>
- <20230927112544.85011-3-victortoso@redhat.com>
+ s=mimecast20190719; t=1695912854;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=VM2Fom2baqAD8TmgV33lCOgpv6TuzMSkpSI4HRB1Xdc=;
+ b=ZT3mMZPE9GIFDrShpVwsEQVTlycdiYcL1WNIErszFNsegUMJiQ4QDvUFJ6EbbaQZaVoDbt
+ Q7FqJUnFPGPyUpqzJCVawcU/pKNBlPOhv1ymQJY2BXYvv79ZdvsazaXfPS3f3212kGsF+T
+ EanVIXhaSXTn53/IsKkdt2SN5Tt7Ap8=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-111-LVH46qpoOzKppdxGopwS6A-1; Thu, 28 Sep 2023 10:54:13 -0400
+X-MC-Unique: LVH46qpoOzKppdxGopwS6A-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-774292d71e3so1852827085a.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 07:54:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695912852; x=1696517652;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=VM2Fom2baqAD8TmgV33lCOgpv6TuzMSkpSI4HRB1Xdc=;
+ b=wY3iH2h0T0EJrYOqySHRUlVjnrP9PS5pPmfc+Iqs40tbrBrGuITmd8gZc1QsBb3Qo4
+ kUBxLTBAABxWbUYu+w+aZSqXrwyJMWM6/RVqGas85vMT9BJYDtzQVtzInE8hWeHn+1FT
+ C7weH948dR1+t0OFrhLMyvJKBguChCpuShLGJOYR8W3+GmN6vcXMSoGuJn0YE9P46vBH
+ OvDw+eq1T8bxETVigfdEjHhkxcdpXjE/4dBJhNmB25FYUbwH7KBHHC9ujV4oQ9/fKEa8
+ d8eIR4CNKz8kZeaJF9xbvss8hOQsoI+FXhsqUG+yL3GByqDq4HLrxy0Nbc1W5jNglaql
+ l0sw==
+X-Gm-Message-State: AOJu0YxensgmVQPeppUNmYfVbzcvgavGtLL/fVPXiSR7GZVnJNncfSIs
+ ymtuZ2Wy/OI5PoYWcIww65LG39w0PmpB3WcLZDpuZFYEX7O0rVbzT9WeMBHvuOnOjpamdUwYO6H
+ pReq7krXdil5hzNU=
+X-Received: by 2002:a05:620a:1794:b0:775:77a5:f20b with SMTP id
+ ay20-20020a05620a179400b0077577a5f20bmr1533254qkb.59.1695912852646; 
+ Thu, 28 Sep 2023 07:54:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHUkLEgY2/uIKHFPqjMIg3sHej9WiwdDk7D5Hm43QFiB8HRdGLxGUckc/vTQGBsBblC1j/NJA==
+X-Received: by 2002:a05:620a:1794:b0:775:77a5:f20b with SMTP id
+ ay20-20020a05620a179400b0077577a5f20bmr1533218qkb.59.1695912852374; 
+ Thu, 28 Sep 2023 07:54:12 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-177-123.web.vodafone.de.
+ [109.43.177.123]) by smtp.gmail.com with ESMTPSA id
+ p10-20020a05620a112a00b0077569c302d1sm1908312qkk.28.2023.09.28.07.54.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Sep 2023 07:54:11 -0700 (PDT)
+Message-ID: <c431d056-df34-153b-5215-4f8ea29cbca1@redhat.com>
+Date: Thu, 28 Sep 2023 16:54:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230927112544.85011-3-victortoso@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v24 15/21] tests/avocado: s390x cpu topology core
+Content-Language: en-US
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
+References: <20230926121534.406035-1-nsg@linux.ibm.com>
+ <20230926121534.406035-16-nsg@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230926121534.406035-16-nsg@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,65 +111,28 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 27, 2023 at 01:25:37PM +0200, Victor Toso wrote:
-> This patch handles QAPI alternate types and generates data structures
-> in Go that handles it.
+On 26/09/2023 14.15, Nina Schoetterl-Glausch wrote:
+> From: Pierre Morel <pmorel@linux.ibm.com>
+> 
+> Introduction of the s390x cpu topology core functions and
+> basic tests.
+> 
+> We test the correlation between the command line and
+> the QMP results in query-cpus-fast for various CPU topology.
+> 
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> ---
+>   MAINTAINERS                    |   1 +
+>   tests/avocado/s390_topology.py | 200 +++++++++++++++++++++++++++++++++
+>   2 files changed, 201 insertions(+)
+>   create mode 100644 tests/avocado/s390_topology.py
 
-This file (and most others) needs some imports added.
-I found the following to be required in order to
-actually compile this:
-
-alternates.go:import (
-alternates.go-	"encoding/json"
-alternates.go-	"errors"
-alternates.go-	"fmt"
-alternates.go-)
-
-
-commands.go:import (
-commands.go-	"encoding/json"
-commands.go-	"errors"
-commands.go-	"fmt"
-commands.go-)
-
-
-events.go:import (
-events.go-	"encoding/json"
-events.go-	"errors"
-events.go-	"fmt"
-events.go-)
-
-
-helpers.go:import (
-helpers.go-	"encoding/json"
-helpers.go-	"fmt"
-helpers.go-	"strings"
-helpers.go-)
-
-
-structs.go:import (
-structs.go-	"encoding/json"
-structs.go-)
-
-
-unions.go:import (
-unions.go-	"encoding/json"
-unions.go-	"errors"
-unions.go-	"fmt"
-unions.go-)
-
-
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Tested-by: Thomas Huth <thuth@redhat.com>
 
 
