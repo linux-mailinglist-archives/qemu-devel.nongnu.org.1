@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56A57B1CEF
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9627B1CEE
 	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 14:50:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlqS3-0005FW-Vh; Thu, 28 Sep 2023 08:49:07 -0400
+	id 1qlqS4-0005GN-2N; Thu, 28 Sep 2023 08:49:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qlqRy-0005F5-Q3
+ id 1qlqRy-0005F4-Mx
  for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:49:02 -0400
 Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qlqRw-0006cU-3u
+ id 1qlqRw-0006dO-3s
  for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:49:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1695905340; x=1727441340;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cgoTQ9qlEjme2b68ISN/Mt/RzkJK1LeP/PJ0Esvj9PQ=;
- b=JFDiOofBpG0zq50JnRLF01oNl1W2SIizrxQ7U9xTYh0D5fIuxpJM2uc0
- UlfL5VqG0asv+thUWWc35u0fvBkSi5NxGKXhkXafciQmcCviSo2z7A4bK
- Sn/Oed/Fga4JfwoPIDyCPeKq3efFSxKdCoA573om3tnrYP/zEiYMSGi11
- 4Zh/otYMyx0Qo5glNHbqeYBeV+sgRFterY31Stpu52SoSspt/FDfmn+Mc
- i+vX+LBVmaDzRZ3RQPTtcebzsSCFYlNTiuQHCIJL4H4l1r6Yx4v8xHKiC
- ZhL02RWCEyRMVJeDYhhxb7VVYAbCc7j7+5W7xm1qNwfbNX1YLVl8FRjeW A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="361419951"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="361419951"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=9YaCM8gOmtfEwWkCdW5l6unlB/ycfb0acwHdQlPof3Y=;
+ b=FJyKqRD5WFnvQ15P0w81OjbgKQD3hzUgrtFiuliBX5VUxIDq/QabS1xv
+ 6eI5OP07Ku1gr5FZtS0qfK77ZVBAEZtk375Y2Bi4MRPT8C9WCmyn4jyEh
+ TsYOyzVWuHvXav2Ync8Li9L1jR6bK/0aDqUEFhvkyXL0tcNT6DHGvQWgR
+ hGMqNgrbf9lzhWVikbBNQH35pGJc2x03Zsh6+P3NRUFhtNUmw+v9rdcJE
+ JgunqrvKJ2ZRtDgdIF9KlgXCOgRE7qTbFANo/1fYEKUNDhnYM9PQ90zcs
+ EJSrZ3Ofr6nUtPJLqmZmAAYsdAv6rb/zQZoJdA91ET2n/2dUavsoQESaa A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="361419985"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="361419985"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2023 05:48:53 -0700
+ 28 Sep 2023 05:48:56 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="893001519"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="893001519"
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="893001528"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="893001528"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga001.fm.intel.com with ESMTP; 28 Sep 2023 05:47:40 -0700
+ by fmsmga001.fm.intel.com with ESMTP; 28 Sep 2023 05:47:43 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: "Michael S . Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -49,10 +49,13 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 00/16] tests: Add CPU topology related smbios test cases
-Date: Thu, 28 Sep 2023 20:59:27 +0800
-Message-Id: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 01/16] tests: test-smp-parse: Add the test for
+ cores/threads per socket helpers
+Date: Thu, 28 Sep 2023 20:59:28 +0800
+Message-Id: <20230928125943.1816922-2-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
+References: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: none client-ip=192.55.52.136;
@@ -80,93 +83,124 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Hi all,
+Use the different ways to calculate cores/threads per socket, so that
+the new CPU topology levels won't be missed in these 2 helpes:
 
-This patchset is the v2 which adds more description about the topology
-selection under Igor's comments.
+* machine_topo_get_cores_per_socket()
+* machine_topo_get_threads_per_socket()
 
-In this patchset, add these test cases:
+Test the commit a1d027be95bc3 ("machine: Add helpers to get cores/
+threads per socket").
 
-1. Add the case to test 2 newly added topology helpers (patch 1):
-   * machine_topo_get_cores_per_socket()
-   * machine_topo_get_threads_per_socket()
-
-2. Add the cases in bios-tables-test.c to:
-   * test smbios type4 table count (patch 2-4).
-   * test smbios type4 core count field (patch 5-7).
-   * update the test of smbios type4 core count2 field (patch 8-10).
-   * test smbios type4 thread count (patch 11-13).
-   * test smbios type4 thread count2 (patch 14-16).
-
-With the above new cases, cover all commits of [1] in test.
-
-v1: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg04420.html
-
-[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html
-
-Regards,
-Zhao
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
 ---
-Zhao Liu (16):
-  tests: test-smp-parse: Add the test for cores/threads per socket
-    helpers
-  tests: bios-tables-test: Prepare the ACPI table change for smbios
-    type4 count test
-  tests: bios-tables-test: Add test for smbios type4 count
-  tests: bios-tables-test: Add ACPI table binaries for smbios type4
-    count test
-  tests: bios-tables-test: Prepare the ACPI table change for smbios
-    type4 core count test
-  tests: bios-tables-test: Add test for smbios type4 core count
-  tests: bios-tables-test: Add ACPI table binaries for smbios type4 core
-    count test
-  tests: bios-tables-test: Prepare the ACPI table change for smbios
-    type4 core count2 test
-  tests: bios-tables-test: Extend smbios core count2 test to cover
-    general topology
-  tests: bios-tables-test: Update ACPI table binaries for smbios core
-    count2 test
-  tests: bios-tables-test: Prepare the ACPI table change for smbios
-    type4 thread count test
-  tests: bios-tables-test: Add test for smbios type4 thread count
-  tests: bios-tables-test: Add ACPI table binaries for smbios type4
-    thread count test
-  tests: bios-tables-test: Prepare the ACPI table change for smbios
-    type4 thread count2 test
-  tests: bios-tables-test: Add test for smbios type4 thread count2
-  tests: bios-tables-test: Add ACPI table binaries for smbios type4
-    thread count2 test
+ tests/unit/test-smp-parse.c | 67 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 54 insertions(+), 13 deletions(-)
 
- tests/data/acpi/q35/APIC.core-count    | Bin 0 -> 544 bytes
- tests/data/acpi/q35/APIC.core-count2   | Bin 2478 -> 3238 bytes
- tests/data/acpi/q35/APIC.thread-count  | Bin 0 -> 544 bytes
- tests/data/acpi/q35/APIC.thread-count2 | Bin 0 -> 7398 bytes
- tests/data/acpi/q35/APIC.type4-count   | Bin 0 -> 1072 bytes
- tests/data/acpi/q35/DSDT.core-count    | Bin 0 -> 12913 bytes
- tests/data/acpi/q35/DSDT.core-count2   | Bin 32495 -> 33770 bytes
- tests/data/acpi/q35/DSDT.thread-count  | Bin 0 -> 12913 bytes
- tests/data/acpi/q35/DSDT.thread-count2 | Bin 0 -> 63671 bytes
- tests/data/acpi/q35/DSDT.type4-count   | Bin 0 -> 18589 bytes
- tests/data/acpi/q35/FACP.core-count    | Bin 0 -> 244 bytes
- tests/data/acpi/q35/FACP.thread-count  | Bin 0 -> 244 bytes
- tests/data/acpi/q35/FACP.thread-count2 | Bin 0 -> 244 bytes
- tests/data/acpi/q35/FACP.type4-count   | Bin 0 -> 244 bytes
- tests/qtest/bios-tables-test.c         | 116 ++++++++++++++++++++++++-
- tests/unit/test-smp-parse.c            |  67 +++++++++++---
- 16 files changed, 167 insertions(+), 16 deletions(-)
- create mode 100644 tests/data/acpi/q35/APIC.core-count
- create mode 100644 tests/data/acpi/q35/APIC.thread-count
- create mode 100644 tests/data/acpi/q35/APIC.thread-count2
- create mode 100644 tests/data/acpi/q35/APIC.type4-count
- create mode 100644 tests/data/acpi/q35/DSDT.core-count
- create mode 100644 tests/data/acpi/q35/DSDT.thread-count
- create mode 100644 tests/data/acpi/q35/DSDT.thread-count2
- create mode 100644 tests/data/acpi/q35/DSDT.type4-count
- create mode 100644 tests/data/acpi/q35/FACP.core-count
- create mode 100644 tests/data/acpi/q35/FACP.thread-count
- create mode 100644 tests/data/acpi/q35/FACP.thread-count2
- create mode 100644 tests/data/acpi/q35/FACP.type4-count
-
+diff --git a/tests/unit/test-smp-parse.c b/tests/unit/test-smp-parse.c
+index fdc39a846ca6..24972666a74d 100644
+--- a/tests/unit/test-smp-parse.c
++++ b/tests/unit/test-smp-parse.c
+@@ -394,20 +394,47 @@ static char *smp_config_to_string(const SMPConfiguration *config)
+         config->has_maxcpus ? "true" : "false", config->maxcpus);
+ }
+ 
+-static char *cpu_topology_to_string(const CpuTopology *topo)
++/* Use the different calculation than machine_topo_get_threads_per_socket(). */
++static unsigned int cpu_topology_get_threads_per_socket(const CpuTopology *topo)
++{
++    /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
++    if (!topo->sockets) {
++        return 0;
++    } else {
++        return topo->max_cpus / topo->sockets;
++    }
++}
++
++/* Use the different calculation than machine_topo_get_cores_per_socket(). */
++static unsigned int cpu_topology_get_cores_per_socket(const CpuTopology *topo)
++{
++    /* Check the divisor to avoid invalid topology examples causing SIGFPE. */
++    if (!topo->threads) {
++        return 0;
++    } else {
++        return cpu_topology_get_threads_per_socket(topo) / topo->threads;
++    }
++}
++
++static char *cpu_topology_to_string(const CpuTopology *topo,
++                                    unsigned int threads_per_socket,
++                                    unsigned int cores_per_socket)
+ {
+     return g_strdup_printf(
+         "(CpuTopology) {\n"
+-        "    .cpus     = %u,\n"
+-        "    .sockets  = %u,\n"
+-        "    .dies     = %u,\n"
+-        "    .clusters = %u,\n"
+-        "    .cores    = %u,\n"
+-        "    .threads  = %u,\n"
+-        "    .max_cpus = %u,\n"
++        "    .cpus               = %u,\n"
++        "    .sockets            = %u,\n"
++        "    .dies               = %u,\n"
++        "    .clusters           = %u,\n"
++        "    .cores              = %u,\n"
++        "    .threads            = %u,\n"
++        "    .max_cpus           = %u,\n"
++        "    .threads_per_socket = %u,\n"
++        "    .cores_per_socket   = %u,\n"
+         "}",
+         topo->cpus, topo->sockets, topo->dies, topo->clusters,
+-        topo->cores, topo->threads, topo->max_cpus);
++        topo->cores, topo->threads, topo->max_cpus,
++        threads_per_socket, cores_per_socket);
+ }
+ 
+ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+@@ -415,14 +442,26 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+                         bool is_valid)
+ {
+     g_autofree char *config_str = smp_config_to_string(config);
+-    g_autofree char *expect_topo_str = cpu_topology_to_string(expect_topo);
+-    g_autofree char *output_topo_str = NULL;
++    g_autofree char *expect_topo_str = NULL, *output_topo_str = NULL;
++    unsigned int expect_threads_per_socket, expect_cores_per_socket;
++    unsigned int ms_threads_per_socket, ms_cores_per_socket;
+     Error *err = NULL;
+ 
++    expect_threads_per_socket =
++                        cpu_topology_get_threads_per_socket(expect_topo);
++    expect_cores_per_socket =
++                        cpu_topology_get_cores_per_socket(expect_topo);
++    expect_topo_str = cpu_topology_to_string(expect_topo,
++                                             expect_threads_per_socket,
++                                             expect_cores_per_socket);
++
+     /* call the generic parser */
+     machine_parse_smp_config(ms, config, &err);
+ 
+-    output_topo_str = cpu_topology_to_string(&ms->smp);
++    ms_threads_per_socket = machine_topo_get_threads_per_socket(ms);
++    ms_cores_per_socket = machine_topo_get_cores_per_socket(ms);
++    output_topo_str = cpu_topology_to_string(&ms->smp, ms_threads_per_socket,
++                                             ms_cores_per_socket);
+ 
+     /* when the configuration is supposed to be valid */
+     if (is_valid) {
+@@ -433,7 +472,9 @@ static void check_parse(MachineState *ms, const SMPConfiguration *config,
+             (ms->smp.clusters == expect_topo->clusters) &&
+             (ms->smp.cores == expect_topo->cores) &&
+             (ms->smp.threads == expect_topo->threads) &&
+-            (ms->smp.max_cpus == expect_topo->max_cpus)) {
++            (ms->smp.max_cpus == expect_topo->max_cpus) &&
++            (ms_threads_per_socket == expect_threads_per_socket) &&
++            (ms_cores_per_socket == expect_cores_per_socket)) {
+             return;
+         }
+ 
 -- 
 2.34.1
 
