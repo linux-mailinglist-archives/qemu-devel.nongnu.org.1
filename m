@@ -2,70 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77177B15DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 346AF7B16B6
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:57:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlmCa-0008Le-QI; Thu, 28 Sep 2023 04:16:52 -0400
+	id 1qlmm2-0006XB-2h; Thu, 28 Sep 2023 04:53:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlmCU-0008LF-Up
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:16:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qlmlx-0006Vx-NF
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:27 -0400
+Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlmCT-0000oc-93
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:16:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695889004;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ES3eh617MTEXql4r7kSGjZNcPcnprWgAlJ5k3pc7u+I=;
- b=akdlhyvxSXgXk7X//nMfUPgEGhN/s6VaRyKcDel+w4tJWcF8Y9gtQl57inSCJystxLvFOk
- zjCVx8G93UYz7KHYamAmuYOTJhpTjCulryre8CLggXnfWLie6RPYP8zno3XseazkX8u6cC
- xkNdviYToVXczlq1KyFY5Sdwdsc/PCM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-548-yr_3DnSCMsObzchzJyWMNw-1; Thu, 28 Sep 2023 04:16:42 -0400
-X-MC-Unique: yr_3DnSCMsObzchzJyWMNw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1EBDB85A5A8;
- Thu, 28 Sep 2023 08:16:42 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8F23C2156702;
- Thu, 28 Sep 2023 08:16:41 +0000 (UTC)
-Date: Thu, 28 Sep 2023 09:16:39 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, balaton@eik.bme.hu
-Subject: Re: [PATCH 03/13] audio: allow returning an error from the driver init
-Message-ID: <ZRU2Z1Es1zr9wyBK@redhat.com>
-References: <20230928073705.871327-1-pbonzini@redhat.com>
- <20230928073705.871327-4-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
+ id 1qlmlr-0004uw-Cz
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:Content-Type
+ :MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=7QFF7YcXTHTaclWeA2gymHIZBwWYiN5Ql11MfxhyH3U=; b=e1wsWQ7aFfvb9+NGvyL4bqtg9A
+ kg3WBHLIV1Lf818D1R+/PgTgy3He6+iY0RhBcXWQ06qSHQEk5ZfLg7YydUSsqavklmBvGKdELLii+
+ IfqS05ars3DL+eM+heNW2ZeQ3XRNgvypQy5AvX2F7k81BuWU41rI3q+Qml9UaY15NLwk=;
+X-Envelope-From: <kbastian@mail.uni-paderborn.de>
+From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+To: qemu-devel@nongnu.org
+Cc: kbastian@mail.uni-paderborn.de
+Subject: [PULL v2 00/21] tricore queue
+Date: Thu, 28 Sep 2023 10:52:42 +0200
+Message-ID: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230928073705.871327-4-pbonzini@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+X-IMT-spamd-action: no action
+X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
+ Antispam-Data: 2023.9.28.84518, AntiVirus-Engine: 6.0.2,
+ AntiVirus-Data: 2023.9.26.602000
+X-IMT-Source: Intern
+X-IMT-Spam-Score: 0.0 ()
+X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
+Received-SPF: pass client-ip=2001:638:502:c003::17;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -79,41 +65,73 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 28, 2023 at 09:36:47AM +0200, Paolo Bonzini wrote:
-> An error is already printed by audio_driver_init, but we can make
-> it more precise if the driver can return an Error *.
-> 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  audio/alsaaudio.c   |  2 +-
->  audio/audio.c       | 11 +++++++++--
->  audio/audio_int.h   |  2 +-
->  audio/coreaudio.m   |  2 +-
->  audio/dbusaudio.c   |  2 +-
->  audio/dsoundaudio.c |  2 +-
->  audio/jackaudio.c   |  2 +-
->  audio/noaudio.c     |  2 +-
->  audio/ossaudio.c    | 11 ++++++++---
->  audio/paaudio.c     |  7 +++++--
->  audio/pwaudio.c     | 16 +++++++++-------
->  audio/sdlaudio.c    |  5 +++--
->  audio/sndioaudio.c  |  2 +-
->  audio/spiceaudio.c  |  5 ++++-
->  audio/wavaudio.c    |  2 +-
->  15 files changed, 47 insertions(+), 26 deletions(-)
+The following changes since commit 36e9aab3c569d4c9ad780473596e18479838d1aa:
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+  migration: Move return path cleanup to main migration thread (2023-09-27 13:58:02 -0400)
 
+are available in the Git repository at:
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+  https://github.com/bkoppelmann/qemu.git tags/pull-tricore-20230928
 
+for you to fetch changes up to 080ca1baa84316a58790b6507de89fabf4c40ec0:
+
+  target/tricore: Change effective address (ea) to target_ulong (2023-09-28 10:45:22 +0200)
+
+----------------------------------------------------------------
+- Add FTOU, CRCN, FTOHP, and HPTOF insns
+- Add test for arithmetic TriCore insns
+
+----------------------------------------------------------------
+Changes from v1:
+- Removed sas.py file that slipped in patch 15
+----------------------------------------------------------------
+
+Bastian Koppelmann (21):
+      tests/tcg/tricore: Bump cpu to tc37x
+      target/tricore: Implement CRCN insn
+      target/tricore: Correctly handle FPU RM from PSW
+      target/tricore: Implement FTOU insn
+      target/tricore: Clarify special case for FTOUZ insn
+      target/tricore: Implement ftohp insn
+      target/tricore: Implement hptof insn
+      target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
+      target/tricore: Swap src and dst reg for RCRR_INSERT
+      target/tricore: Replace cpu_*_code with translator_*
+      target/tricore: Fix FTOUZ being ISA v1.3.1 up
+      tests/tcg/tricore: Extended and non-extened regs now match
+      hw/tricore: Log failing test in testdevice
+      tests/tcg: Reset result register after each test
+      tests/tcg/tricore: Add test for all arith insns up to addx
+      tests/tcg/tricore: Add test from 'and' to 'csub'
+      tests/tcg/tricore: Add test from 'dextr' to 'lt'
+      tests/tcg/tricore: Add test from 'max' to 'shas'
+      tests/tcg/tricore: Add test from 'shuffle' to 'xor.t'
+      target/tricore: Remove CSFRs from cpu.h
+      target/tricore: Change effective address (ea) to target_ulong
+
+ hw/tricore/tricore_testdevice.c           |   4 +
+ target/tricore/cpu.h                      | 143 +--------------
+ target/tricore/fpu_helper.c               | 111 ++++++++++++
+ target/tricore/helper.c                   |  19 +-
+ target/tricore/helper.h                   |   4 +
+ target/tricore/op_helper.c                |  79 ++++++++-
+ target/tricore/translate.c                |  56 ++++--
+ target/tricore/tricore-opcodes.h          |   3 +
+ tests/tcg/tricore/Makefile.softmmu-target |   7 +-
+ tests/tcg/tricore/asm/macros.h            | 190 +++++++++++++++++---
+ tests/tcg/tricore/asm/test_arith.S        | 280 ++++++++++++++++++++++++++++++
+ tests/tcg/tricore/asm/test_crcn.S         |   9 +
+ tests/tcg/tricore/asm/test_ftohp.S        |  14 ++
+ tests/tcg/tricore/asm/test_ftou.S         |  12 ++
+ tests/tcg/tricore/asm/test_hptof.S        |  12 ++
+ tests/tcg/tricore/asm/test_insert.S       |  14 ++
+ 16 files changed, 780 insertions(+), 177 deletions(-)
+ create mode 100644 tests/tcg/tricore/asm/test_arith.S
+ create mode 100644 tests/tcg/tricore/asm/test_crcn.S
+ create mode 100644 tests/tcg/tricore/asm/test_ftohp.S
+ create mode 100644 tests/tcg/tricore/asm/test_ftou.S
+ create mode 100644 tests/tcg/tricore/asm/test_hptof.S
 
