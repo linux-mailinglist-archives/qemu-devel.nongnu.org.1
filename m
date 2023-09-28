@@ -2,74 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3F97B2262
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 18:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8A567B22AE
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 18:44:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlttV-0003ur-Di; Thu, 28 Sep 2023 12:29:41 -0400
+	id 1qlu5v-00026B-Bd; Thu, 28 Sep 2023 12:42:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qlttT-0003u4-EP; Thu, 28 Sep 2023 12:29:39 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mpatocka@redhat.com>)
+ id 1qlu5j-00025v-Qh
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 12:42:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qlttP-0006VV-OY; Thu, 28 Sep 2023 12:29:39 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RxJpZ4K53z6K9Hv;
- Fri, 29 Sep 2023 00:29:26 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Thu, 28 Sep
- 2023 17:29:28 +0100
-Date: Thu, 28 Sep 2023 17:29:27 +0100
-To: Alex Williamson <alex.williamson@redhat.com>
-CC: Vikram Sethi <vsethi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Ankit
- Agrawal <ankita@nvidia.com>, David Hildenbrand <david@redhat.com>,
- =?ISO-8859-1?Q?C=E9dric?= Le Goater <clg@redhat.com>,
- "shannon.zhaosl@gmail.com" <shannon.zhaosl@gmail.com>,
- "peter.maydell@linaro.org" <peter.maydell@linaro.org>, "ani@anisinha.ca"
- <ani@anisinha.ca>, Aniket Agashe <aniketa@nvidia.com>, Neo Jia
- <cjia@nvidia.com>, Kirti Wankhede <kwankhede@nvidia.com>, "Tarun Gupta
- (SW-GPU)" <targupta@nvidia.com>, Andy Currid <ACurrid@nvidia.com>,
- "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, Gavin Shan <gshan@redhat.com>, "ira.weiny@intel.com"
- <ira.weiny@intel.com>, "navneet.singh@intel.com" <navneet.singh@intel.com>
-Subject: Re: [PATCH v1 0/4] vfio: report NUMA nodes for device memory
-Message-ID: <20230928172927.00005f5d@Huawei.com>
-In-Reply-To: <20230927103737.35068bae.alex.williamson@redhat.com>
-References: <d09b3df6-74f8-c93b-b26e-59de5b2dd114@redhat.com>
- <20230915084754.4b49d5c0.alex.williamson@redhat.com>
- <f129b30b-bd0c-4e30-6be9-384b2b79a26b@redhat.com>
- <BY5PR12MB3763FA9922B9059DC14CA80DB0FFA@BY5PR12MB3763.namprd12.prod.outlook.com>
- <b67c18d1-a648-81bc-1144-33fb839f2aa3@redhat.com>
- <BY5PR12MB37636F9E84CF92020769D859B0C3A@BY5PR12MB3763.namprd12.prod.outlook.com>
- <769b577a-65b0-dbfe-3e99-db57cea08529@redhat.com>
- <20230926131427.1e441670.alex.williamson@redhat.com>
- <BY5PR12MB37630E29E6E83BCD63FB3F2BB0C2A@BY5PR12MB3763.namprd12.prod.outlook.com>
- <20230927123318.00005aad@Huawei.com>
- <20230927135336.GA339126@nvidia.com>
- <20230927082434.3583361c.alex.williamson@redhat.com>
- <BYAPR12MB33369DCC79212D6040F00560BDC2A@BYAPR12MB3336.namprd12.prod.outlook.com>
- <20230927103737.35068bae.alex.williamson@redhat.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <mpatocka@redhat.com>)
+ id 1qlu5h-0001SS-Ai
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 12:42:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695919335;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+ bh=ETQ4Pkv90xdeE68+qtj2nVNmslQVpcD3SDdJPZ8eTJ0=;
+ b=WBmMc9qqp4Yqy2zUM5gAmZiMfvccqiK+tbFdtLnvMBTf/2r8fVd72FTpXojOrinNBXmK98
+ HJQf7i54XCLDVUtifUfTbU7nLT2/DNRVQDjussZChLEDoXDG6M/yoCcmhHAgZ66Y7OMO91
+ B/yvtG/tIzGFiRx7ooZ7DCMekJ8Vrms=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-654-bZpFvB9KOk2wGiTbO3LESw-1; Thu, 28 Sep 2023 12:42:09 -0400
+X-MC-Unique: bZpFvB9KOk2wGiTbO3LESw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5100A85A5BD;
+ Thu, 28 Sep 2023 16:42:09 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown
+ [10.11.5.21])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id AC2E3140E969;
+ Thu, 28 Sep 2023 16:42:08 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix,
+ from userid 12668)
+ id 9982530C1C0A; Thu, 28 Sep 2023 16:42:08 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+ by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id
+ 95CFE3FD54; Thu, 28 Sep 2023 18:42:08 +0200 (CEST)
+Date: Thu, 28 Sep 2023 18:42:08 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Richard Henderson <rth@twiddle.net>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Magnus Damm <magnus.damm@gmail.com>
+cc: qemu-devel@nongnu.org
+Subject: [PATCH] target/sh4: fix crashes on signal delivery
+Message-ID: <b16389f7-6c62-70b7-59b3-87533c0bcc@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500002.china.huawei.com (7.191.160.78) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mpatocka@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,126 +79,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, 27 Sep 2023 10:37:37 -0600
-Alex Williamson <alex.williamson@redhat.com> wrote:
+sh4 uses gUSA (general UserSpace Atomicity) to provide atomicity on CPUs
+that don't have atomic instructions. A gUSA region that adds 1 to an
+atomic variable stored in @R2 looks like this:
 
-> On Wed, 27 Sep 2023 15:03:09 +0000
-> Vikram Sethi <vsethi@nvidia.com> wrote:
->=20
-> > > From: Alex Williamson <alex.williamson@redhat.com>
-> > > Sent: Wednesday, September 27, 2023 9:25 AM
-> > > To: Jason Gunthorpe <jgg@nvidia.com>
-> > > Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>; Ankit Agrawal
-> > > <ankita@nvidia.com>; David Hildenbrand <david@redhat.com>; C=E9dric Le
-> > > Goater <clg@redhat.com>; shannon.zhaosl@gmail.com;
-> > > peter.maydell@linaro.org; ani@anisinha.ca; Aniket Agashe
-> > > <aniketa@nvidia.com>; Neo Jia <cjia@nvidia.com>; Kirti Wankhede
-> > > <kwankhede@nvidia.com>; Tarun Gupta (SW-GPU) <targupta@nvidia.com>;
-> > > Vikram Sethi <vsethi@nvidia.com>; Andy Currid <ACurrid@nvidia.com>;
-> > > qemu-arm@nongnu.org; qemu-devel@nongnu.org; Gavin Shan
-> > > <gshan@redhat.com>; ira.weiny@intel.com; navneet.singh@intel.com
-> > > Subject: Re: [PATCH v1 0/4] vfio: report NUMA nodes for device memory
-> > >=20
-> > >=20
-> > > On Wed, 27 Sep 2023 10:53:36 -0300
-> > > Jason Gunthorpe <jgg@nvidia.com> wrote:
-> > >    =20
-> > > > On Wed, Sep 27, 2023 at 12:33:18PM +0100, Jonathan Cameron wrote:
-> > > >   =20
-> > > > > CXL accelerators / GPUs etc are a different question but who has =
-one
-> > > > > of those anyway? :)   =20
-> > > >
-> > > > That's exactly what I mean when I say CXL will need it too. I keep
-> > > > describing this current Grace & Hopper as pre-CXL HW. You can easia=
-lly
-> > > > imagine draping CXL around it. CXL doesn't solve the problem that
-> > > > motivates all this hackying - Linux can't dynamically create NUMA
-> > > > nodes.   =20
-> > >=20
-> > > Why is that and why aren't we pushing towards a solution of removing =
-that
-> > > barrier so that we don't require the machine topology to be configure=
-d to
-> > > support this use case and guest OS limitations?  Thanks,
-> > >   =20
-> >=20
-> > Even if Linux could create NUMA nodes dynamically for coherent CXL or C=
-XL type devices,=20
-> > there is additional information FW knows that the kernel doesn't. For e=
-xample,
-> > what the distance/latency between CPU and the device NUMA node is. Whil=
-e CXL devices
-> > present a CDAT table which gives latency type attributes within the dev=
-ice, there would still be some
-> > guesswork needed in the kernel as to what the end to end latency/distan=
-ce is.=20
-> > It's probably not the best outcome to just consider this generically fa=
-r memory" because=20
-> > is it further than Intersocket memory access or not matters.=20
-> > Pre CXL devices such as for this patchset don't even have CDAT so the k=
-ernel by itself has
-> > no idea if this latency/distance is less than or more than inter socket=
- memory access latency
-> > even.
-> > So specially for devices present at boot, FW knows this information and=
- should provide it.=20
-> > Similarly, QEMU should pass along this information to VMs for the best =
-outcomes.   =20
->=20
-> Yeah, AFAICT we're not doing any of that in this series.  We're only
-> creating some number of nodes for the guest driver to make use of and
-> describing in the generated _DSD the set of nodes associated for use by
-> the device.  How many nodes are required, how the guest driver
-> partitions coherent memory among the nodes, and how the guest assigns a
-> distance to the nodes is unspecified.
->=20
-> A glance at the CDAT spec seems brilliant in this regard, is there such
-> a table for this device or could/should the vfio-pci variant driver
-> provide one?  I imagine this is how the VM admin or orchestration tool
-> would learn to configure nodes and the VMM would further virtualize
-> this table for the guest OS and drivers.  Thanks,
+  4004b6:       03 c7           mova    4004c4 <gusa+0x10>,r0
+  4004b8:       f3 61           mov     r15,r1
+  4004ba:       09 00           nop
+  4004bc:       fa ef           mov     #-6,r15
+  4004be:       22 63           mov.l   @r2,r3
+  4004c0:       01 73           add     #1,r3
+  4004c2:       32 22           mov.l   r3,@r2
+  4004c4:       13 6f           mov     r1,r15
 
-I like this proposal. Host bit seems doable.  However I'm not sure
-virtualizing it would help for device drivers that have no awareness unless
-we slap some generic layer in the driver core in Linux that can use this if
-available?  It would certainly be easy enough to add emulation into the gue=
-st
-to the PCI function config space (as long as we aren't out of room!)
+R0 contains a pointer to the end of the gUSA region
+R1 contains the saved stack pointer
+R15 contains negative length of the gUSA region
 
-For CXL I think we will have to do this anyway. For a complex topology we
-could either:
-1) Present a matching topology in the guest with all the components involved
-   including switches with right numbers of ports etc so the CDAT tables
-   can be read directly from underlying hardware, or...
-2) Present a somewhat matching topology in the guest having just messed with
-   switches so that we can present their existence but not all the ports et=
-c.
-   So emulate a cut down CDAT for the switch.
-3) Allow flattening everything and present a single CDAT with aggregate num=
-bers
-   at the EP. That will get a bit messy as we may need the kernel to ignore=
- some
-   parts it would normally account for (link widths on CXL buses etc.)
+When this region is interrupted by a signal, the kernel detects if
+R15 >= -128U. If yes, the kernel rolls back PC to the beginning of the
+region and restores SP by copying R1 to R15.
 
-So I'm thinking 1 is to restrictive, hence need to emulate the table anyway
-(not mention it might not be on the function being assigned anyway as they
-are normally only on Function 0 IIRC).
+The problem happens if we are interrupted by a signal at address 4004c4.
+R15 still holds the value -6, but the atomic value was already written by
+an instruction at address 4004c2. In this situation we can't undo the
+gUSA. The function unwind_gusa does nothing, the signal handler attempts
+to push a signal frame to the address -6 and crashes.
 
-Gah. Too much of CXL emulation still to do in QEMU already....
+This patch fixes it, so that if we are interrupted at the last instruction 
+in a gUSA region, we copy R1 to R15 to restore the correct stack pointer 
+and avoid crashing.
 
-Jonathan
+There's another bug: if we are interrupted in a delay slot, we save the
+address of the instruction in the delay slot. We must save the address of
+the previous instruction.
 
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: qemu-stable@nongnu.org
 
+---
+ linux-user/sh4/signal.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-
->=20
-> Alex
->=20
+Index: qemu/linux-user/sh4/signal.c
+===================================================================
+--- qemu.orig/linux-user/sh4/signal.c	2023-09-27 19:02:41.000000000 +0200
++++ qemu/linux-user/sh4/signal.c	2023-09-27 19:55:13.000000000 +0200
+@@ -104,6 +104,14 @@ static void unwind_gusa(CPUSH4State *reg
+ 
+         /* Reset the SP to the saved version in R1.  */
+         regs->gregs[15] = regs->gregs[1];
++    } else if (regs->gregs[15] >= -128u && regs->pc == regs->gregs[0]) {
++        /* If we are on the last instruction of a gUSA region, we must reset
++           the SP, otherwise we would be pushing the signal context to
++           invalid memory.  */
++        regs->gregs[15] = regs->gregs[1];
++    } else if (regs->flags & TB_FLAG_DELAY_SLOT) {
++        /* If we are in a delay slot, push the previous instruction.  */
++        regs->pc -= 2;
+     }
+ }
+ 
 
 
