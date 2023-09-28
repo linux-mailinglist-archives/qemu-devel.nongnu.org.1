@@ -2,128 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856627B2518
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 20:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70BA7B252A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 20:23:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlvZv-0001Z0-W3; Thu, 28 Sep 2023 14:17:36 -0400
+	id 1qlveU-00039b-3z; Thu, 28 Sep 2023 14:22:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qlvZu-0001Yq-4i
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:17:34 -0400
-Received: from mail-bn8nam11on2040.outbound.protection.outlook.com
- ([40.107.236.40] helo=NAM11-BN8-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qlveN-00039L-QU
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:22:14 -0400
+Received: from mout.gmx.net ([212.227.17.20])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gregory.price@memverge.com>)
- id 1qlvZn-0000E4-Vc
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:17:29 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TdeILbEXxSEQpPAL6vQk4cuRQv2y+1842Yjm4GIRwwkLkOIEKaBUTdcjPMPURNmIQQ30yfufQZY7P/jVVYfKqX8BSXvQfYRaxIH4+z2nhydT0iWXot2/A1WeLH4vKlum4N58/PXCkaqT+HUcQMtlOhPbN7Vs0mPhc8WKW1DKzZEOWtkZoNkOTXSBgtcVe8lAhjHT63BQeK3yUgUWcmOhdSA9458UoZ1/yWWzQctihIagqsgjVddQ8qTLnt7rJ3ola6HEF+1Wy0S29RQSA08ZtCpI72zm1VI0HOlLTR05wCJ46hFR6wKsTy6w2HWGC1tbSuSg80XCpNkFoNbBEOkSHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5HuVN19hIgq+VhbXsgSmxBOlyfmUpipRtMS+zRwTi0k=;
- b=FNv8fGoolQEctz4UAXn+ZlADJ8wDwJlbKMgHtktzNLhgoOVA6IJsCm+/O3bObwsYeEvnDeWt6jfWsulHqEuKu0JnQn1OA9+8dWFcSanxcRawBPYWLHWQtPN5aJEIxoexe3LjawnL1nnMzVXU/H96Uj+v/naFaWI4B3xgyVBCpHyRQFusf7C8AbRN7sqJlCGroNzlKM9zwoT2y1pwNTYqLG+PIV4bjkZraogFiTIGbVvL9M2vBMJ6Blp6iGVO1stWmhY0EiAedAxkSsD/xP+kTlg/zT149fJ9epzx7JytiEyItcpc1hE7vCiAayQt7afy0J2BKeG2VCaecnRTUiSyqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=memverge.com; dmarc=pass action=none header.from=memverge.com;
- dkim=pass header.d=memverge.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=memverge.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5HuVN19hIgq+VhbXsgSmxBOlyfmUpipRtMS+zRwTi0k=;
- b=Yp8ZiiwqxXaEVBpOX2gEVWnwhpwLKnLPi/Cqoj2fhw+ibdfjjU9ovkSwADXK2JSoCOEDk32kq2rFxNiBiyoVgZ6Ue2m6tANpNIAjNmWHMNv6wXki+0/lyfOB+JB7ncYtjDpu2NBq8o/50s6p+7WkFQKrXc7vnLJY6a9RnBU/uWY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=memverge.com;
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com (2603:10b6:a03:394::19)
- by IA1PR17MB6951.namprd17.prod.outlook.com (2603:10b6:208:44c::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.25; Thu, 28 Sep
- 2023 18:12:21 +0000
-Received: from SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::5565:d559:61b0:e2df]) by SJ0PR17MB5512.namprd17.prod.outlook.com
- ([fe80::5565:d559:61b0:e2df%6]) with mapi id 15.20.6813.027; Thu, 28 Sep 2023
- 18:12:21 +0000
-Date: Thu, 28 Sep 2023 14:12:14 -0400
-From: Gregory Price <gregory.price@memverge.com>
+ (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qlveK-0001qQ-4E
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:22:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.us; s=s31663417;
+ t=1695925300; x=1696530100; i=fan.ni@gmx.us;
+ bh=UfOI6vyIRiGBHe7ZCWPGemrwVXXsHLD0DBk4/NEoACY=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=HKJdM3tsqeLJGXxT6kOQteNUMXjM559B1zyR94+ukuoe9U3U1XNa3w9kUgRWWGOoQp31n68QBoe
+ jbmmYFq/Ny92xPtB12xG/aKkw9/0Op1rE+F3bfJwMAZzzIyjlcQG321gPDGdoQXKi6aJjNuQ/knQw
+ hzoD3pWLj612pNhzQeDZPkBXhT1117z2LosmKyf1B8eiffNfOe1VbcGLxKwzWXLS46LnhVJCie6Aa
+ IE563mDkPc/EUnXpNPFAlOPL4vT580MxY4oyN3TYLwGNOzb5cJ3A6exbebjnc3LcqJ1slepYoELLA
+ QY/ErvXv2O2SYxZUdvmI4sMR7/nry3qLDNRQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from debian ([99.13.228.231]) by mail.gmx.net (mrgmx105
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1MQeA2-1qyWZh0Dbi-00Nlm1; Thu, 28
+ Sep 2023 20:21:39 +0200
+Date: Thu, 28 Sep 2023 11:21:31 -0700
+From: Fan Ni <fan.ni@gmx.us>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
  Michael Tsirkin <mst@redhat.com>, linuxarm@huawei.com,
- Fan Ni <fan.ni@samsung.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Davidlohr Bueso <dave@stgolabs.net>, Klaus Jensen <its@irrelevant.dk>,
- Corey Minyard <cminyard@mvista.com>, Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH 00/19] QEMU: CXL mailbox rework and features
-Message-ID: <ZRXB/lCASRX5/w0j@memverge.com>
+ Fan Ni <fan.ni@samsung.com>, Philippe Mathieu-Daud? <philmd@linaro.org>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Gregory Price <gregory.price@memverge.com>,
+ Klaus Jensen <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>,
+ Klaus Jensen <k.jensen@samsung.com>
+Subject: Re: [PATCH 04/19] hw/cxl/mbox: Generalize the CCI command processing
+Message-ID: <ZRXEKxUTwrP_8U0v@debian>
 References: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
+ <20230925161124.18940-5-Jonathan.Cameron@huawei.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
-X-ClientProxiedBy: BYAPR21CA0018.namprd21.prod.outlook.com
- (2603:10b6:a03:114::28) To SJ0PR17MB5512.namprd17.prod.outlook.com
- (2603:10b6:a03:394::19)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR17MB5512:EE_|IA1PR17MB6951:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2d12f5d6-994c-40b2-9ad9-08dbc04e7574
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EXfKsCn2izlX7FFJWUQ++4dGPq5UOCwkKg/IUonGxLg0rvjYPmA1K5jegK6Kiz6O2aAMKRCrBaLPPUDnL6w17E+s3LR1CBlvFeNE2iAM+PEx/qJmtXL1Qii8Qb1Hqz0w4cdIKzOG8Pw3ckLfAJmJHL8MWJjNohOiOHybdGqpHPRyC6gV8UVuDOoavfJ3i94t905KogufvOvFZpwq/sP7WKXPqMhWKYTz25Uho1ysrbTEgb+/xIDQyQPKfSe4hdlPQizDaT5jlrxsYgkn3YUDnPLSu2MO2sxsxPBjR4kWrGxWU5eLbA63BzLknKwiZmLiL567ybCtvP3uEXuorlCEMcjoZAZPbQmcCCeqNAPoDQ2uTXnW8mDW/BH5kZB6IdU9Qa8GEWpX/iz+OxFauI5QN3VwyzLMC1drvQLg+Fnw4Z4LQgIIb5JCRLynxEGqFgqLQ3p+qskIzmXXb4ZQM3yD4FQWXlrzvzBqCNWv8YDo2A7nP/C8k2Dr8ohems6NTMLRI1eNgeC+o01q9eXCB3KoLCar7wHTp9K22Qcr55kTFKc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ0PR17MB5512.namprd17.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39840400004)(376002)(136003)(346002)(366004)(396003)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(26005)(86362001)(6512007)(4326008)(6486002)(2616005)(6506007)(36756003)(38100700002)(8676002)(83380400001)(41300700001)(6916009)(316002)(8936002)(66476007)(66946007)(66556008)(5660300002)(478600001)(2906002)(7416002)(15650500001)(44832011)(6666004)(54906003)(966005);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?oyrn8BdcLCtrQNMe8Re+i5s56XANFq8ThDfrCboYivLiKDsf0QTPdxY3ijzp?=
- =?us-ascii?Q?JK1RutgK0RiNqXZBNz6qUFHSEQ8zIO08EEDbESVMylKhoOLj1qGXAg5734P8?=
- =?us-ascii?Q?z2XqEf3qHDDc/TJL/+2yCLooERU6n78XP/kIbry0XaNAKBR/95WgCXR5Rvh4?=
- =?us-ascii?Q?qNZnNg+5b7nWFkZP3dS5AzSsfDMhqfEe/wVunPAdptxBuFa83lQGU/gNhPv1?=
- =?us-ascii?Q?fq0UeAYLua4JUT1UubsiNE4Oibvp0+pBMkoDc6QQV8huvK16ioM2RRdXeBJc?=
- =?us-ascii?Q?loybwiRpBIK8X4BW+H0n8GBcnLKduYhh35D8oZvrgT7cuIA8YAqPJlW9aneq?=
- =?us-ascii?Q?fSy7fUz3eaPUz2tURNLgl9E9o+vuxiZyLCyfK04SMSF8LH1+xv0rwk8pTlCm?=
- =?us-ascii?Q?MVvvceYMzGMEqcBAhEklzxTDYtu+R9EBZrBJ3AhsdA0zqGz/Ly4FmplCZVXl?=
- =?us-ascii?Q?JT6bIEg2CYdUpR8RdPJgGtRTHstDKMIcoPcLoGM7XG8tUSkb4EcYAW+sA3yt?=
- =?us-ascii?Q?PDKE2+cZsSwe0aHd9Av9mhAXB0Z1kkjbhGZs9/8elHFcVwbd4PACXDmwtfWw?=
- =?us-ascii?Q?GyFv3WfRu8W6S53bpEtwhyq5iMQ95X0WZUmYP9R77oEzRtpgis0zenEzUiqg?=
- =?us-ascii?Q?1o2fuyEhZ8gBrYJww0vNa/vfcjW2c1PFgjnxVPYiYuFaACCsoQc4LDghneml?=
- =?us-ascii?Q?6TIzuwDBh7FFP1k6ZWseC3zHafosSTwnbzZO6BLUUKcjXy+hcmPbDttEOpqu?=
- =?us-ascii?Q?z7s1nnPZlipObUdsU/DRYmTc9RhB7XQo+Ty8gS4rMp/iaOwZ+nY0tIHnW83k?=
- =?us-ascii?Q?mbLysWzbSIBCgfO2cXSebHAeH6WXVFch2YARXF3oKoPr/XO9efPPxQnC/Tzw?=
- =?us-ascii?Q?ASkCdH88yQA1Rz7kLzrdCBisV5vh5f6Ko4DD4pGYcu1bzvp1RZ6XMEMRxOFk?=
- =?us-ascii?Q?u1mjsqKQ0N2C9roejwHoCkaVC1gaRSs4lXHf0Q9wZwbhwcIMUzT0khn0AE1g?=
- =?us-ascii?Q?X5vkTEQOv2a7aZvrhg4plxnLMvA+tbhL0aQuIJdFs3kfakYXcNEAhm23CoPQ?=
- =?us-ascii?Q?IkXwnUytQXtI9CUTMox38fJaxfH2sN2KH+o6q7kMuGY581ORIAGt5IRWqHHU?=
- =?us-ascii?Q?kd0SAzlbiuPVuEr1QzC3vTIM/81EotgKVSU1loNrGOe7LgC4VxOBRrsijZd4?=
- =?us-ascii?Q?jqT6hoTvGihYHv/ezs9e8Nu7DETy38kCdJxNhwDv0FIwabSvzNwF6+UHFqNB?=
- =?us-ascii?Q?gSSdYQDXx8vBVUHKJGISF0CH7KR0+Vl+hTM7kexGX+WEJe4neuNRcxrZOIsD?=
- =?us-ascii?Q?Y1UsY/e2BB+r+g/rHON73xlGIHBb8cDtIPmYeLHUNtXTTtqdpG4DqH+rrfn4?=
- =?us-ascii?Q?/AGolGL2mMGuLVk1V663gA4U240QVjknvbKvsDPywrjAqf7OHq9mFIRxaKDd?=
- =?us-ascii?Q?OublkSUx4kdTEV2s4yks5f5TtQkNRplFsbH/H+iQBPIxCJ6CpZ0Pc6/w08gB?=
- =?us-ascii?Q?XAbpFNlkpbBjhgadr6IEHpmjxrkvfQgPDjh5A0uhE6pNFVlBT6YeACAbsiWq?=
- =?us-ascii?Q?jdOq6bwjJlG0EXHpsfoqnaIWT+p+1onsXMDTnwi+d5o26uiFTIKna/ucbnhy?=
- =?us-ascii?Q?YQ=3D=3D?=
-X-OriginatorOrg: memverge.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d12f5d6-994c-40b2-9ad9-08dbc04e7574
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR17MB5512.namprd17.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2023 18:12:21.5542 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5c90cb59-37e7-4c81-9c07-00473d5fb682
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Iw2TIb6l6tD4451W+GeBHFAHX9l7fHegBfbyjpBpYpAYjcXgi7LqSHoj4ic59Y2WvI7EYNe75yCrt8FrxWbZwGuHuMY2W3sOc01gQ1GIgV8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR17MB6951
-Received-SPF: pass client-ip=40.107.236.40;
- envelope-from=gregory.price@memverge.com;
- helo=NAM11-BN8-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+In-Reply-To: <20230925161124.18940-5-Jonathan.Cameron@huawei.com>
+X-Provags-ID: V03:K1:Z697vS6oUizMDH2lC6ZsefviT1+WwjEhiUg5aj9tgUvpW4xhXu2
+ f6dNdgSA+DegwvvD12wdmFqBiFpquzmfKJxqhbYKRlODfv/rtBq3cViXt7kh6Majo6MC5rr
+ KDmJEUjl/ZG9uC4hUdU2+NdpWG0mzZ1RkIEhXDAUtwZpBs+4UJSMyrOIExcuHE0eozjDYRe
+ JMJItK3sf+yGg+CGazX4A==
+UI-OutboundReport: notjunk:1;M01:P0:LU/SxjILlNU=;pjNCpyyanKvO1tp3QYnlC+6ueoc
+ VLEF6v9HX0ov8waxCwV5iuw2i/T46VM0FaJh3IYwW/C12MeeVlKG0zDHAdG/cwrjuuRemKm7m
+ ZOxcQSkYkLDEQvNrp5EwfMYWoQphhF0eUoRtx6Gedn17hYDigZwzAcymnXs8w12fYcqwrKf15
+ hnR/Zv2PqHT6b5ucZRMpUI9V/xLoM6NXZTMcnLR/YAEocn+DuKi9pyKwxzNhuGrutoWCrA+tG
+ NCSwfHxDTItudQ16eU+SCKLgs1m6hluTt7GjsJ+jVmjNMfg05Nv8aZ2AeZIwvKKWeFrJm7ENt
+ dINgj5v5WJ/1vaFRh2wVXvpWX478hF8pH6Qscumeo8yjGm/ISqgUAfYQva+iVEiIe7Cnw8tRo
+ 5BMD94vVCHnBhZHMmhTKQ6dEetNc1JlqQVlbYNMgEYeVUllN6xSF7Ebdif0bB63bn1LNy60zL
+ wnm0uWSaWy30oPBCe/F7ph37nyO/wLI2eRU9FhqRdqhQNpqLMDCtkfWQaFQusOs+Dh6HOLxWZ
+ ThG+2Tyx/o3YyrdPhcHO8GkefbHUa0y3ss3UHT1Cs7cjjES4Dw3fseXpToizKNmpdYX50u2w7
+ s2fXNLuv2ldGiv4/OdKgiXqF3tjeKb2vz1gGw/nCSTMBXUMRdsVOmtmwmZVs2I1cNejI1wdhM
+ LOc9Cse2elyIojfAOPL5Hq74bnesKgsV6jKAAKDpN64yZ9la3nNMv22TuukjrYeoGQ08R5rV3
+ NPqpNX8FrPGThJYY0CACJHDPCpEitPrGBPBWKgiSHapDssO6kt12Gb5cH4cZEBP8Kij/4dDDm
+ vX5CUiR3EqyscQMGzfuyAnFYI+Gy4GeYJVecdmYtRWP/myBg3dQPwDWhx/fLui4s4h/bSg4gq
+ x43jQ1ab4PsJtk2kagUc0HNNFTVVAloSGgwqgQQsJlYfKWfTBwTGF/ECsFc7ZfUGZCyW21aJb
+ PPVlUzwQ+vy6G/AvVoinHqv1kFg=
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=212.227.17.20; envelope-from=fan.ni@gmx.us;
+ helo=mout.gmx.net
+X-Spam_score_int: -27
+X-Spam_score: -2.8
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.001, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -139,30 +91,207 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 25, 2023 at 05:11:05PM +0100, Jonathan Cameron wrote:
-> I've been carrying most of this series on our CXL staging tree
-> https://gitlab.com/jic23/qemu for some time and a lot of more recent
-> work around Multi Head Devices and Dynamic Capacity that we need for
-> Linux kernel enabling are backed up behind it. Hence I reorganized my
-> queue to try and land this before other less 'central' features such
-> as CXL PMUs and arm/virt support.
-... 
-> 
-> Jonathan Cameron (15):
->   hw/cxl/mbox: Pull the payload out of struct cxl_cmd and make instances
->     constant
->   hw/cxl/mbox: Split mailbox command payload into separate input and
->     output
->   hw/cxl/mbox: Pull the CCI definition out of the CXLDeviceState
->   hw/cxl/mbox: Generalize the CCI command processing
->   hw/pci-bridge/cxl_upstream: Move defintion of device to header.
+On Mon, Sep 25, 2023 at 05:11:09PM +0100, Jonathan Cameron wrote:
+> By moving the parts of the mailbox command handling that are CCI type
+> specific out to the caller, make the main handling code generic. Rename =
+it
+> to cxl_process_cci_message() to reflect this new generality.
+>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> ---
 
-To save some list spam, I can't say i've reviewed and tested the entire
-set, but this patch series to help model the Niagara work so please add
-my tags as appropriate to the above.
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
-Reviewed-by: Gregory Price <gregory.price@memverge.com>
-Tested-by: Gregory Price <gregory.price@memverge.com>
-
-~Gregory
+>  include/hw/cxl/cxl_device.h |  5 +++-
+>  hw/cxl/cxl-device-utils.c   | 51 ++++++++++++++++++++++++++++++++++++-
+>  hw/cxl/cxl-mailbox-utils.c  | 43 ++++++++-----------------------
+>  3 files changed, 64 insertions(+), 35 deletions(-)
+>
+> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
+> index c883d9dd8f..0e3f6c3c0b 100644
+> --- a/include/hw/cxl/cxl_device.h
+> +++ b/include/hw/cxl/cxl_device.h
+> @@ -270,7 +270,10 @@ CXL_DEVICE_CAPABILITY_HEADER_REGISTER(MEMORY_DEVICE=
+,
+>
+>  void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payl=
+oad_max);
+>  void cxl_init_cci(CXLCCI *cci, size_t payload_max);
+> -void cxl_process_mailbox(CXLCCI *cci);
+> +int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+> +                            size_t len_in, uint8_t *pl_in,
+> +                            size_t *len_out, uint8_t *pl_out,
+> +                            bool *bg_started);
+>
+>  #define cxl_device_cap_init(dstate, reg, cap_id, ver)                  =
+    \
+>      do {                                                               =
+    \
+> diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
+> index 327949a805..f3a6e17154 100644
+> --- a/hw/cxl/cxl-device-utils.c
+> +++ b/hw/cxl/cxl-device-utils.c
+> @@ -79,6 +79,25 @@ static uint64_t mailbox_reg_read(void *opaque, hwaddr=
+ offset, unsigned size)
+>      case 4:
+>          return cxl_dstate->mbox_reg_state32[offset / size];
+>      case 8:
+> +        if (offset =3D=3D A_CXL_DEV_BG_CMD_STS) {
+> +            uint64_t bg_status_reg;
+> +            bg_status_reg =3D FIELD_DP64(0, CXL_DEV_BG_CMD_STS, OP,
+> +                                       cci->bg.opcode);
+> +            bg_status_reg =3D FIELD_DP64(bg_status_reg, CXL_DEV_BG_CMD_=
+STS,
+> +                                       PERCENTAGE_COMP, cci->bg.complet=
+e_pct);
+> +            bg_status_reg =3D FIELD_DP64(bg_status_reg, CXL_DEV_BG_CMD_=
+STS,
+> +                                       RET_CODE, cci->bg.ret_code);
+> +            /* endian? */
+> +            cxl_dstate->mbox_reg_state64[offset / size] =3D bg_status_r=
+eg;
+> +        }
+> +        if (offset =3D=3D A_CXL_DEV_MAILBOX_STS) {
+> +            uint64_t status_reg =3D cxl_dstate->mbox_reg_state64[offset=
+ / size];
+> +            if (cci->bg.complete_pct) {
+> +                status_reg =3D FIELD_DP64(status_reg, CXL_DEV_MAILBOX_S=
+TS, BG_OP,
+> +                                        0);
+> +                cxl_dstate->mbox_reg_state64[offset / size] =3D status_=
+reg;
+> +            }
+> +        }
+>          return cxl_dstate->mbox_reg_state64[offset / size];
+>      default:
+>          g_assert_not_reached();
+> @@ -157,7 +176,37 @@ static void mailbox_reg_write(void *opaque, hwaddr =
+offset, uint64_t value,
+>
+>      if (ARRAY_FIELD_EX32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_=
+CTRL,
+>                           DOORBELL)) {
+> -        cxl_process_mailbox(cci);
+> +        uint64_t command_reg =3D
+> +            cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_CMD];
+> +        uint8_t cmd_set =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD=
+,
+> +                                     COMMAND_SET);
+> +        uint8_t cmd =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, CO=
+MMAND);
+> +        size_t len_in =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, =
+LENGTH);
+> +        uint8_t *pl =3D cxl_dstate->mbox_reg_state + A_CXL_DEV_CMD_PAYL=
+OAD;
+> +        size_t len_out;
+> +        uint64_t status_reg;
+> +        bool bg_started;
+> +        int rc;
+> +
+> +        rc =3D cxl_process_cci_message(cci, cmd_set, cmd, len_in, pl,
+> +                                     &len_out, pl, &bg_started);
+> +
+> +        /* Set bg and the return code */
+> +        status_reg =3D FIELD_DP64(0, CXL_DEV_MAILBOX_STS, BG_OP,
+> +                                bg_started ? 1 : 0);
+> +        status_reg =3D FIELD_DP64(status_reg, CXL_DEV_MAILBOX_STS, ERRN=
+O, rc);
+> +        /* Set the return length */
+> +        command_reg =3D FIELD_DP64(0, CXL_DEV_MAILBOX_CMD, COMMAND_SET,=
+ cmd_set);
+> +        command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD,
+> +                                 COMMAND, cmd);
+> +        command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD,
+> +                                 LENGTH, len_out);
+> +
+> +        cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_CMD] =3D command=
+_reg;
+> +        cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_STS] =3D status_=
+reg;
+> +        /* Tell the host we're done */
+> +        ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_=
+CTRL,
+> +                         DOORBELL, 0);
+>      }
+>  }
+>
+> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
+> index 376367c118..239acc659d 100644
+> --- a/hw/cxl/cxl-mailbox-utils.c
+> +++ b/hw/cxl/cxl-mailbox-utils.c
+> @@ -754,50 +754,27 @@ static const struct cxl_cmd cxl_cmd_set[256][256] =
+=3D {
+>          cmd_media_clear_poison, 72, 0 },
+>  };
+>
+> -void cxl_process_mailbox(CXLCCI *cci)
+> +int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
+> +                            size_t len_in, uint8_t *pl_in, size_t *len_=
+out,
+> +                            uint8_t *pl_out, bool *bg_started)
+>  {
+> -    uint16_t ret =3D CXL_MBOX_SUCCESS;
+>      const struct cxl_cmd *cxl_cmd;
+> -    uint64_t status_reg =3D 0;
+>      opcode_handler h;
+> -    CXLDeviceState *cxl_dstate =3D &CXL_TYPE3(cci->d)->cxl_dstate;
+> -    uint64_t command_reg =3D cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAI=
+LBOX_CMD];
+> -
+> -    uint8_t set =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
+D_SET);
+> -    uint8_t cmd =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
+D);
+> -    uint16_t len_in =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, LE=
+NGTH);
+> -    uint8_t *pl =3D cxl_dstate->mbox_reg_state + A_CXL_DEV_CMD_PAYLOAD;
+> -    size_t len_out =3D 0;
+>
+> +    *len_out =3D 0;
+>      cxl_cmd =3D &cci->cxl_cmd_set[set][cmd];
+>      h =3D cxl_cmd->handler;
+> -    if (h) {
+> -        if (len_in =3D=3D cxl_cmd->in || cxl_cmd->in =3D=3D ~0) {
+> -            ret =3D (*h)(cxl_cmd, pl, len_in, pl, &len_out, cci);
+> -            assert(len_out <=3D cci->payload_max);
+> -        } else {
+> -            ret =3D CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> -        }
+> -    } else {
+> +    if (!h) {
+>          qemu_log_mask(LOG_UNIMP, "Command %04xh not implemented\n",
+>                        set << 8 | cmd);
+> -        ret =3D CXL_MBOX_UNSUPPORTED;
+> +        return CXL_MBOX_UNSUPPORTED;
+>      }
+>
+> -    /* Set the return code */
+> -    status_reg =3D FIELD_DP64(0, CXL_DEV_MAILBOX_STS, ERRNO, ret);
+> -
+> -    /* Set the return length */
+> -    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
+D_SET, 0);
+> -    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
+D, 0);
+> -    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, LENGTH=
+, len_out);
+> -
+> -    cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_CMD] =3D command_reg=
+;
+> -    cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_STS] =3D status_reg;
+> +    if (len_in !=3D cxl_cmd->in && cxl_cmd->in !=3D ~0) {
+> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
+> +    }
+>
+> -    /* Tell the host we're done */
+> -    ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CTRL=
+,
+> -                     DOORBELL, 0);
+> +    return (*h)(cxl_cmd, pl_in, len_in, pl_out, len_out, cci);
+>  }
+>
+>  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+> --
+> 2.39.2
+>
 
