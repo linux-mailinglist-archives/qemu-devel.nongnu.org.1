@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8809E7B16B7
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 081927B16BE
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:57:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlmm2-0006XD-35; Thu, 28 Sep 2023 04:53:30 -0400
+	id 1qlmm3-0006Y3-LE; Thu, 28 Sep 2023 04:53:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmlx-0006Vv-MF
+ id 1qlmly-0006W2-Gn
  for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:27 -0400
-Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
+Received: from doohan.uni-paderborn.de ([2001:638:502:c003::16])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmlu-0004vF-Gu
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:25 -0400
+ id 1qlmlw-0004ve-Le
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=0ZVKuipTJZZwnR/JF/GcM77eIVDauUJCXY9qIu7SUNg=; b=KbD59UfhxvzhqrtMBH5+6DUlEP
- fns+Jc2uXCP2NVYTOxYfRN5CsZxAPMxn/9f8yNeavnnvBrCeUwL6X7C/N8Gb5NbVqmhPmqxhgYv1G
- 5gEinOYko4/hob1EgQqatW2GWwZnnbff8Fgi+0zOHc6nVlC1xcSj9APdehJlkjn86CUQ=;
+ bh=ztyiR4O7yUKNMu62qAC5I6VE6EL6Xn2CyTtUB4FAoRc=; b=gc+P9yVkv3OyzpL1bcKJBXgq1s
+ hHtOeaXM6meYmga67jSGu4XPLiWS9YTnCGADLaNEYdA85gk/Xd3smHPrSYSSqIz8RNCOe+lqoEcXy
+ FtufgzfuRqygxpQuPjZXCsnqsftRq4ASrNeDbTCpjbwUDdy3RvNIsAJpB3eobG8oEIq4=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL v2 03/21] target/tricore: Correctly handle FPU RM from PSW
-Date: Thu, 28 Sep 2023 10:52:45 +0200
-Message-ID: <20230928085303.511518-4-kbastian@mail.uni-paderborn.de>
+Subject: [PULL v2 04/21] target/tricore: Implement FTOU insn
+Date: Thu, 28 Sep 2023 10:52:46 +0200
+Message-ID: <20230928085303.511518-5-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
 References: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
@@ -43,12 +43,14 @@ Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.28.84518, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.9.26.602000
+ AntiVirus-Data: 2023.9.28.602000
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=83838, da=183500267, mc=23, sc=0,
+ hc=23, sp=0, fso=83838, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::17;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
+Received-SPF: pass client-ip=2001:638:502:c003::16;
+ envelope-from=kbastian@mail.uni-paderborn.de; helo=doohan.uni-paderborn.de
 X-Spam_score_int: -42
 X-Spam_score: -4.3
 X-Spam_bar: ----
@@ -70,57 +72,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-when we reconstructed PSW using psw_read(), we were trying to clear the
-cached USB bits out of env->PSW. The mask was wrong and we would clear
-PSW.RM as well.
-
-when we write the PSW using psw_write() we update the rounding modes in
-env->fp_status for softfloat. The order of bits used by TriCore is not
-the one used by softfloat.
-
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230828112651.522058-4-kbastian@mail.uni-paderborn.de>
+Message-ID: <20230828112651.522058-5-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/helper.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ target/tricore/fpu_helper.c               | 32 +++++++++++++++++++++++
+ target/tricore/helper.h                   |  1 +
+ target/tricore/translate.c                |  3 +++
+ tests/tcg/tricore/Makefile.softmmu-target |  1 +
+ tests/tcg/tricore/asm/test_ftou.S         | 12 +++++++++
+ 5 files changed, 49 insertions(+)
+ create mode 100644 tests/tcg/tricore/asm/test_ftou.S
 
-diff --git a/target/tricore/helper.c b/target/tricore/helper.c
-index 6d076ac36f..e615c3d6d4 100644
---- a/target/tricore/helper.c
-+++ b/target/tricore/helper.c
-@@ -120,7 +120,21 @@ void tricore_cpu_list(void)
+diff --git a/target/tricore/fpu_helper.c b/target/tricore/fpu_helper.c
+index cb7ee7dd35..3aefeb776e 100644
+--- a/target/tricore/fpu_helper.c
++++ b/target/tricore/fpu_helper.c
+@@ -429,6 +429,38 @@ uint32_t helper_ftoiz(CPUTriCoreState *env, uint32_t arg)
+     return result;
+ }
  
- void fpu_set_state(CPUTriCoreState *env)
- {
--    set_float_rounding_mode(env->PSW & MASK_PSW_FPU_RM, &env->fp_status);
-+    switch (extract32(env->PSW, 24, 2)) {
-+    case 0:
-+        set_float_rounding_mode(float_round_nearest_even, &env->fp_status);
-+        break;
-+    case 1:
-+        set_float_rounding_mode(float_round_up, &env->fp_status);
-+        break;
-+    case 2:
-+        set_float_rounding_mode(float_round_down, &env->fp_status);
-+        break;
-+    case 3:
-+        set_float_rounding_mode(float_round_to_zero, &env->fp_status);
-+        break;
++uint32_t helper_ftou(CPUTriCoreState *env, uint32_t arg)
++{
++    float32 f_arg = make_float32(arg);
++    uint32_t result;
++    int32_t flags = 0;
++
++    result = float32_to_uint32(f_arg, &env->fp_status);
++
++    flags = f_get_excp_flags(env);
++    if (flags & float_flag_invalid) {
++        flags &= ~float_flag_inexact;
++        if (float32_is_any_nan(f_arg)) {
++            result = 0;
++        }
++    /*
++     * we need to check arg < 0.0 before rounding as TriCore needs to raise
++     * float_flag_invalid as well. For instance, when we have a negative
++     * exponent and sign, softfloat would only raise float_flat_inexact.
++     */
++    } else if (float32_lt_quiet(f_arg, 0, &env->fp_status)) {
++        flags = float_flag_invalid;
++        result = 0;
 +    }
 +
-     set_flush_inputs_to_zero(1, &env->fp_status);
-     set_flush_to_zero(1, &env->fp_status);
-     set_default_nan_mode(1, &env->fp_status);
-@@ -129,7 +143,7 @@ void fpu_set_state(CPUTriCoreState *env)
- uint32_t psw_read(CPUTriCoreState *env)
++    if (flags) {
++        f_update_psw_flags(env, flags);
++    } else {
++        env->FPU_FS = 0;
++    }
++    return result;
++}
++
+ uint32_t helper_ftouz(CPUTriCoreState *env, uint32_t arg)
  {
-     /* clear all USB bits */
--    env->PSW &= 0x6ffffff;
-+    env->PSW &= 0x7ffffff;
-     /* now set them from the cache */
-     env->PSW |= ((env->PSW_USB_C != 0) << 31);
-     env->PSW |= ((env->PSW_USB_V   & (1 << 31))  >> 1);
+     float32 f_arg = make_float32(arg);
+diff --git a/target/tricore/helper.h b/target/tricore/helper.h
+index 190645413a..827fbaa692 100644
+--- a/target/tricore/helper.h
++++ b/target/tricore/helper.h
+@@ -114,6 +114,7 @@ DEF_HELPER_2(ftoi, i32, env, i32)
+ DEF_HELPER_2(itof, i32, env, i32)
+ DEF_HELPER_2(utof, i32, env, i32)
+ DEF_HELPER_2(ftoiz, i32, env, i32)
++DEF_HELPER_2(ftou, i32, env, i32)
+ DEF_HELPER_2(ftouz, i32, env, i32)
+ DEF_HELPER_2(updfl, void, env, i32)
+ /* dvinit */
+diff --git a/target/tricore/translate.c b/target/tricore/translate.c
+index 4e7e18f985..382ecf4775 100644
+--- a/target/tricore/translate.c
++++ b/target/tricore/translate.c
+@@ -6269,6 +6269,9 @@ static void decode_rr_divide(DisasContext *ctx)
+     case OPC2_32_RR_ITOF:
+         gen_helper_itof(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
+         break;
++    case OPC2_32_RR_FTOU:
++        gen_helper_ftou(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++        break;
+     case OPC2_32_RR_FTOUZ:
+         gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
+         break;
+diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
+index b8d9b33933..91ae129a83 100644
+--- a/tests/tcg/tricore/Makefile.softmmu-target
++++ b/tests/tcg/tricore/Makefile.softmmu-target
+@@ -15,6 +15,7 @@ TESTS += test_dvstep.asm.tst
+ TESTS += test_fadd.asm.tst
+ TESTS += test_fmul.asm.tst
+ TESTS += test_ftoi.asm.tst
++TESTS += test_ftou.asm.tst
+ TESTS += test_imask.asm.tst
+ TESTS += test_insert.asm.tst
+ TESTS += test_ld_bu.asm.tst
+diff --git a/tests/tcg/tricore/asm/test_ftou.S b/tests/tcg/tricore/asm/test_ftou.S
+new file mode 100644
+index 0000000000..10f106ad62
+--- /dev/null
++++ b/tests/tcg/tricore/asm/test_ftou.S
+@@ -0,0 +1,12 @@
++#include "macros.h"
++.text
++.global _start
++_start:
++    TEST_D_D(ftou, 1, 0x00000000, 0x1733f6c2)
++    TEST_D_D(ftou, 2, 0x00000000, 0x2c9d9cdc)
++    TEST_D_D(ftou, 3, 0xffffffff, 0x56eb7395)
++    TEST_D_D(ftou, 4, 0x79900800, 0x4ef32010)
++    TEST_D_D(ftou, 5, 0x0353f510, 0x4c54fd44)
++
++    TEST_PASSFAIL
++
 -- 
 2.42.0
 
