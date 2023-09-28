@@ -2,102 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270B97B1B09
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 13:33:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 653C37B1B6A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 13:49:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlpF9-0000lw-Tw; Thu, 28 Sep 2023 07:31:43 -0400
+	id 1qlpUZ-0005bA-Bt; Thu, 28 Sep 2023 07:47:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlpEu-0000kF-Fp
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:31:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qlpUV-0005aA-VW
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:47:35 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlpEr-0000Df-EW
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:31:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695900684;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=R9LIy0+HRCmr5kwrOckdKmzLsTAa0m2iPhczOeI/Yqg=;
- b=WwFh4+KRP+yL3To3lw/GPkXiVntlCiXMAPZxHU99so+a+vrNRe7ofboHDRPV3S0BhIKXY3
- 4cLp6QKdwvn4vELpNDGk+f32rlE4JT5crRIQkZx9wwlBmHPnMnJEVhEP0Im59GKXR6QmSi
- 01yXsSqGyJJxBVjTG4lRrwgJnLvyULA=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-3-hKyu2Ni0P5Gwi-RT9fK-iw-1; Thu, 28 Sep 2023 07:31:22 -0400
-X-MC-Unique: hKyu2Ni0P5Gwi-RT9fK-iw-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-774105e8c7fso2456525385a.0
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 04:31:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695900682; x=1696505482;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=R9LIy0+HRCmr5kwrOckdKmzLsTAa0m2iPhczOeI/Yqg=;
- b=jkU3OxHeoV2+s7+ZMrqep/8G7NSLANWyVB6JHYId7zFzqqJiIzKerRasgfH1sbPM+R
- COmDg//YHSye+PPpyhdueHTptOx4w4KVmao5OfMtd98vmGscUDk4N6uyAeFM6LEiXQW7
- zLRGzbpr1F9GeXD78WTgzUfY5aU0A+4yW+2w4DKW/Fd5X6/FmZQeH5lAx4J4CWf6EbBO
- j9oFrpPY/KLvAnxHbxmpfiGb0w3xWLi1ACGKLIAlpObNm7yOppKUOE8pO0H+YJpieS9I
- fhf5V5QPKHHXkb3VB3eVXxc8YgYX6llVSbjQVWPV1nQf2gctNOEm8yxCknOicVsJqQBk
- ZibQ==
-X-Gm-Message-State: AOJu0YzAB7sh0PJ1nH8c9GzTLtITYqNfO/IkH4/kRF4TJ2TJ9VfT6BGX
- 1l4k2eq4JdzjU1hxgJ8T/GxYhtVXuOAgGApP9gqveftLUZyovgleFhez3XLA2JKCFnNkKBi64Je
- 3GgNIODe8oezIH9c=
-X-Received: by 2002:a05:622a:118e:b0:418:1e88:83ca with SMTP id
- m14-20020a05622a118e00b004181e8883camr1117140qtk.40.1695900682268; 
- Thu, 28 Sep 2023 04:31:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH604//+zy4uzwYds0jH/ZC/nZVuQ3UmRHxoN51X4Mo+V8Iv9arUin9DNfrQrVSLqylm/bdog==
-X-Received: by 2002:a05:622a:118e:b0:418:1e88:83ca with SMTP id
- m14-20020a05622a118e00b004181e8883camr1117119qtk.40.1695900682017; 
- Thu, 28 Sep 2023 04:31:22 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-177-123.web.vodafone.de.
- [109.43.177.123]) by smtp.gmail.com with ESMTPSA id
- u35-20020a05622a19a300b00403bf34266csm6068431qtc.30.2023.09.28.04.31.16
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 04:31:21 -0700 (PDT)
-Message-ID: <a0268a53-54f9-56b0-1027-5b8758cd71f8@redhat.com>
-Date: Thu, 28 Sep 2023 13:31:14 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qlpUT-0005cO-Ia
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:47:35 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id DD0C2757244;
+ Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id A6D1875721D; Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id A5A7C757234;
+ Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
+Date: Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Paolo Bonzini <pbonzini@redhat.com>
+cc: qemu-devel@nongnu.org, berrange@redhat.com, 
+ Martin Kletzander <mkletzan@redhat.com>
+Subject: Re: [PATCH 08/13] Introduce machine property "audiodev"
+In-Reply-To: <20230928073705.871327-9-pbonzini@redhat.com>
+Message-ID: <c7988f81-2dba-6094-66f3-f010a5a52255@eik.bme.hu>
+References: <20230928073705.871327-1-pbonzini@redhat.com>
+ <20230928073705.871327-9-pbonzini@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v24 02/21] CPU topology: extend with s390 specifics
-Content-Language: en-US
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-References: <20230926121534.406035-1-nsg@linux.ibm.com>
- <20230926121534.406035-3-nsg@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230926121534.406035-3-nsg@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; format=flowed; charset=US-ASCII
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,43 +61,119 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/09/2023 14.15, Nina Schoetterl-Glausch wrote:
-> From: Pierre Morel <pmorel@linux.ibm.com>
-> 
-> S390 adds two new SMP levels, drawers and books to the CPU
-> topology.
-> S390 CPUs have specific topology features like dedication and
-> entitlement. These indicate to the guest information on host
-> vCPU scheduling and help the guest make better scheduling decisions.
-> 
-> Let us provide the SMP properties with books and drawers levels
-> and S390 CPU with dedication and entitlement,
-> 
-> Add machine-common.json so we can later include it in
-> machine-target.json also.
-> 
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+On Thu, 28 Sep 2023, Paolo Bonzini wrote:
+> From: Martin Kletzander <mkletzan@redhat.com>
+>
+> Many machine types have default audio devices with no way to set the underlying
+> audiodev.  Instead of adding an option for each and every one of them, this new
+> property can be used as a default during machine initialisation when creating
+> such devices.
+>
+> Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
+> [Make the property optional, instead of including it in all machines. - Paolo]
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->   qapi/machine-common.json            | 21 +++++++++++++
->   qapi/machine.json                   | 17 +++++++++-
->   qapi/qapi-schema.json               |  1 +
->   include/hw/boards.h                 | 10 +++++-
->   include/hw/qdev-properties-system.h |  4 +++
->   target/s390x/cpu.h                  |  6 ++++
->   hw/core/machine-smp.c               | 48 ++++++++++++++++++++++++-----
->   hw/core/machine.c                   |  4 +++
->   hw/core/qdev-properties-system.c    | 13 ++++++++
->   hw/s390x/s390-virtio-ccw.c          |  4 +++
->   softmmu/vl.c                        |  6 ++++
->   target/s390x/cpu.c                  |  7 +++++
->   qapi/meson.build                    |  1 +
->   qemu-options.hx                     |  7 +++--
->   14 files changed, 138 insertions(+), 11 deletions(-)
->   create mode 100644 qapi/machine-common.json
+> hw/core/machine.c   | 33 +++++++++++++++++++++++++++++++++
+> include/hw/boards.h |  7 +++++++
+> 2 files changed, 40 insertions(+)
+>
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index cb38b8cf4cb..6aa49c8d4f1 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -39,6 +39,7 @@
+> #include "hw/virtio/virtio.h"
+> #include "hw/virtio/virtio-pci.h"
+> #include "hw/virtio/virtio-net.h"
+> +#include "audio/audio.h"
+>
+> GlobalProperty hw_compat_8_1[] = {};
+> const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
+> @@ -686,6 +687,26 @@ bool device_type_is_dynamic_sysbus(MachineClass *mc, const char *type)
+>     return allowed;
+> }
+>
+> +static char *machine_get_audiodev(Object *obj, Error **errp)
+> +{
+> +    MachineState *ms = MACHINE(obj);
+> +
+> +    return g_strdup(ms->audiodev);
+> +}
+> +
+> +static void machine_set_audiodev(Object *obj, const char *value,
+> +                                 Error **errp)
+> +{
+> +    MachineState *ms = MACHINE(obj);
+> +
+> +    if (!audio_state_by_name(value, errp)) {
+> +        return;
+> +    }
+> +
+> +    g_free(ms->audiodev);
+> +    ms->audiodev = g_strdup(value);
+> +}
+> +
+> HotpluggableCPUList *machine_query_hotpluggable_cpus(MachineState *machine)
+> {
+>     int i;
+> @@ -931,6 +952,17 @@ out_free:
+>     qapi_free_BootConfiguration(config);
+> }
+>
+> +void machine_add_audiodev_property(MachineClass *mc)
+> +{
+> +    ObjectClass *oc = OBJECT_CLASS(mc);
+> +
+> +    object_class_property_add_str(oc, "audiodev",
+> +                                  machine_get_audiodev,
+> +                                  machine_set_audiodev);
+> +    object_class_property_set_description(oc, "audiodev",
+> +                                          "Audiodev to use for default machine devices");
+> +}
+> +
+> static void machine_class_init(ObjectClass *oc, void *data)
+> {
+>     MachineClass *mc = MACHINE_CLASS(oc);
+> @@ -1136,6 +1168,7 @@ static void machine_finalize(Object *obj)
+>     g_free(ms->device_memory);
+>     g_free(ms->nvdimms_state);
+>     g_free(ms->numa_state);
+> +    g_free(ms->audiodev);
+> }
+>
+> bool machine_usb(MachineState *machine)
+> diff --git a/include/hw/boards.h b/include/hw/boards.h
+> index 6c67af196a3..b5153f5f85b 100644
+> --- a/include/hw/boards.h
+> +++ b/include/hw/boards.h
+> @@ -24,6 +24,7 @@ OBJECT_DECLARE_TYPE(MachineState, MachineClass, MACHINE)
+>
+> extern MachineState *current_machine;
+>
+> +void machine_add_audiodev_property(MachineClass *mc);
+> void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp);
+> bool machine_usb(MachineState *machine);
+> int machine_phandle_start(MachineState *machine);
+> @@ -358,6 +359,12 @@ struct MachineState {
+>     MemoryRegion *ram;
+>     DeviceMemoryState *device_memory;
+>
+> +    /*
+> +     * Included in MachineState for simplicity, but not supported
+> +     * unless machine_add_audiodev_property is called.
+> +     */
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+Maybe this comment could be improved saying something like: Only used by 
+machines that have default audio parts in which case machine init should 
+call machine_add_audiodev_property().
 
+Regards,
+BALATON Zoltan
+
+> +    char *audiodev;
+> +
+>     ram_addr_t ram_size;
+>     ram_addr_t maxram_size;
+>     uint64_t   ram_slots;
+>
 
