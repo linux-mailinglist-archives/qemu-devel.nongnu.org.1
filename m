@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCB7F7B1E6A
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5780C7B1E67
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:30:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlr67-00006n-3b; Thu, 28 Sep 2023 09:30:31 -0400
+	id 1qlr6A-0000JE-PL; Thu, 28 Sep 2023 09:30:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr5y-0008Tk-Ez
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr60-0008VG-Nu
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr5w-0002A0-U4
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:22 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr5y-0002Ac-HQ
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695907820;
+ s=mimecast20190719; t=1695907821;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=HK1WIiqP3jQtURQF8jHLpWYhzbiIiYgQ5jVB9kZkAI4=;
- b=N14G4B3S05Dx0objF62S2ZGRHbK1BnYr+sQ86jotNcSBxPx8QqC6PUZzQqgO5e38r+wB3U
- vVKJNzdOXDkYQlRvfNAAZp3Fs3rbg+HZqEYcYn1bunuNexptas3lz5+qN4RuDj7gUIGvir
- u/zZTg2QFXIGzXnDbWOx3xRB7Zjpykc=
+ bh=puNVjsA5MWcd8I5pM9KDRUcm2ONy0UJkA9zAUt+v/PM=;
+ b=RSGOHXhDvrvWyRovEFpHVsO51tH5I+ug4jqb3vAbDPahBeDZJ0DuGCnXkPYB56YWax3Iey
+ 0w8V3mfU8HX1gBlezztiw65ot/Dbhi8s47Te1nb3KHa/oezrXY2PQ7Ucpf3wNn6wO8xX30
+ A+hLPIx8nDkkDY2kGF9+K8rIqnoVH8M=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-155-IxmKcJPcM5-JrvZi09krQg-1; Thu, 28 Sep 2023 09:30:18 -0400
-X-MC-Unique: IxmKcJPcM5-JrvZi09krQg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-183-ac36gt0UNaKxXvMF-gjOxw-1; Thu, 28 Sep 2023 09:30:18 -0400
+X-MC-Unique: ac36gt0UNaKxXvMF-gjOxw-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 423A7101AA6D;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 425E18039CF;
  Thu, 28 Sep 2023 13:30:18 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 1DDC114171CA;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1DE91178B5;
  Thu, 28 Sep 2023 13:30:18 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 5854F21E68A4; Thu, 28 Sep 2023 15:20:20 +0200 (CEST)
+ id 5B2E321E68A5; Thu, 28 Sep 2023 15:20:20 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
  farosas@suse.de, lizhijian@fujitsu.com, eblake@redhat.com
-Subject: [PATCH v2 48/53] migration/rdma: Don't report received completion
- events as error
-Date: Thu, 28 Sep 2023 15:20:14 +0200
-Message-ID: <20230928132019.2544702-49-armbru@redhat.com>
+Subject: [PATCH v2 49/53] migration/rdma: Silence qemu_rdma_block_for_wrid()
+Date: Thu, 28 Sep 2023 15:20:15 +0200
+Message-ID: <20230928132019.2544702-50-armbru@redhat.com>
 In-Reply-To: <20230928132019.2544702-1-armbru@redhat.com>
 References: <20230928132019.2544702-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,41 +79,92 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When qemu_rdma_wait_comp_channel() receives an event from the
-completion channel, it reports an error "receive cm event while wait
-comp channel,cm event is T", where T is the numeric event type.
-However, the function fails only when T is a disconnect or device
-removal.  Events other than these two are not actually an error, and
-reporting them as an error is wrong.  If we need to report them to the
-user, we should use something else, and what to use depends on why we
-need to report them to the user.
+Functions that use an Error **errp parameter to return errors should
+not also report them to the user, because reporting is the caller's
+job.  When the caller does, the error is reported twice.  When it
+doesn't (because it recovered from the error), there is no error to
+report, i.e. the report is bogus.
 
-For now, report this error only when the function actually fails.
+qemu_rdma_post_send_control(), qemu_rdma_exchange_get_response(), and
+qemu_rdma_write_one() violate this principle: they call
+error_report(), fprintf(stderr, ...), and perror() via
+qemu_rdma_block_for_wrid(), qemu_rdma_poll(), and
+qemu_rdma_wait_comp_channel().  I elected not to investigate how
+callers handle the error, i.e. precise impact is not known.
+
+Clean this up by dropping the error reporting from qemu_rdma_poll(),
+qemu_rdma_wait_comp_channel(), and qemu_rdma_block_for_wrid().  I
+believe the callers' error reports suffice.  If they don't, we need to
+convert to Error instead.
+
+Bonus: resolves a FIXME about problematic use of errno.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- migration/rdma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ migration/rdma.c | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index 1ef1e9f3a5..f4bb329671 100644
+index f4bb329671..6c63f9c269 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -1582,11 +1582,11 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
+@@ -1483,17 +1483,12 @@ static int qemu_rdma_poll(RDMAContext *rdma, struct ibv_cq *cq,
+     }
+ 
+     if (ret < 0) {
+-        error_report("ibv_poll_cq failed");
+         return -1;
+     }
+ 
+     wr_id = wc.wr_id & RDMA_WRID_TYPE_MASK;
+ 
+     if (wc.status != IBV_WC_SUCCESS) {
+-        fprintf(stderr, "ibv_poll_cq wc.status=%d %s!\n",
+-                        wc.status, ibv_wc_status_str(wc.status));
+-        fprintf(stderr, "ibv_poll_cq wrid=%" PRIu64 "!\n", wr_id);
+-
+         return -1;
+     }
+ 
+@@ -1577,16 +1572,12 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
+                 if (pfds[1].revents) {
+                     ret = rdma_get_cm_event(rdma->channel, &cm_event);
+                     if (ret < 0) {
+-                        error_report("failed to get cm event while wait "
+-                                     "completion channel");
                          return -1;
                      }
  
--                    error_report("receive cm event while wait comp channel,"
--                                 "cm event is %d", cm_event->event);
                      if (cm_event->event == RDMA_CM_EVENT_DISCONNECTED ||
                          cm_event->event == RDMA_CM_EVENT_DEVICE_REMOVAL) {
                          rdma_ack_cm_event(cm_event);
-+                        error_report("receive cm event while wait comp channel,"
-+                                     "cm event is %d", cm_event->event);
+-                        error_report("receive cm event while wait comp channel,"
+-                                     "cm event is %d", cm_event->event);
                          return -1;
                      }
                      rdma_ack_cm_event(cm_event);
+@@ -1599,7 +1590,6 @@ static int qemu_rdma_wait_comp_channel(RDMAContext *rdma,
+             default: /* Error of some type -
+                       * I don't trust errno from qemu_poll_ns
+                      */
+-                error_report("%s: poll failed", __func__);
+                 return -1;
+             }
+ 
+@@ -1683,12 +1673,6 @@ static int qemu_rdma_block_for_wrid(RDMAContext *rdma,
+ 
+         ret = ibv_get_cq_event(ch, &cq, &cq_ctx);
+         if (ret < 0) {
+-            /*
+-             * FIXME perror() is problematic, because ibv_reg_mr() is
+-             * not documented to set errno.  Will go away later in
+-             * this series.
+-             */
+-            perror("ibv_get_cq_event");
+             goto err_block_for_wrid;
+         }
+ 
 -- 
 2.41.0
 
