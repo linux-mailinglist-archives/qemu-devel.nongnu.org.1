@@ -2,71 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A567B22AE
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 18:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE937B231F
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 19:03:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlu5v-00026B-Bd; Thu, 28 Sep 2023 12:42:31 -0400
+	id 1qluPG-0005er-AN; Thu, 28 Sep 2023 13:02:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mpatocka@redhat.com>)
- id 1qlu5j-00025v-Qh
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 12:42:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mpatocka@redhat.com>)
- id 1qlu5h-0001SS-Ai
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 12:42:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695919335;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type;
- bh=ETQ4Pkv90xdeE68+qtj2nVNmslQVpcD3SDdJPZ8eTJ0=;
- b=WBmMc9qqp4Yqy2zUM5gAmZiMfvccqiK+tbFdtLnvMBTf/2r8fVd72FTpXojOrinNBXmK98
- HJQf7i54XCLDVUtifUfTbU7nLT2/DNRVQDjussZChLEDoXDG6M/yoCcmhHAgZ66Y7OMO91
- B/yvtG/tIzGFiRx7ooZ7DCMekJ8Vrms=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-654-bZpFvB9KOk2wGiTbO3LESw-1; Thu, 28 Sep 2023 12:42:09 -0400
-X-MC-Unique: bZpFvB9KOk2wGiTbO3LESw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5100A85A5BD;
- Thu, 28 Sep 2023 16:42:09 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown
- [10.11.5.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id AC2E3140E969;
- Thu, 28 Sep 2023 16:42:08 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix,
- from userid 12668)
- id 9982530C1C0A; Thu, 28 Sep 2023 16:42:08 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id
- 95CFE3FD54; Thu, 28 Sep 2023 18:42:08 +0200 (CEST)
-Date: Thu, 28 Sep 2023 18:42:08 +0200 (CEST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: Richard Henderson <rth@twiddle.net>, 
- Yoshinori Sato <ysato@users.sourceforge.jp>, 
- Magnus Damm <magnus.damm@gmail.com>
-cc: qemu-devel@nongnu.org
-Subject: [PATCH] target/sh4: fix crashes on signal delivery
-Message-ID: <b16389f7-6c62-70b7-59b3-87533c0bcc@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qluOf-0005VR-9k
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 13:02:06 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qluOd-0005VQ-Lp
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 13:01:53 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3248e90f032so631070f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 10:01:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695920507; x=1696525307; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2EmDnQcnrIVv0Ammxw3nCtgNeglRs9YGrxYq/qRsdSQ=;
+ b=glidwrVeq2zGu6sOfJHKXuwehDLomxHmfpd2rWMvvBDJ0jDoo3PaiFHlClCQEAT36d
+ 1SI6uoBc1xyhAgdczM7wGq2ikjuZPjrfH71PnuqqDNMfvU5+LPVFpmIAbx1z7UhNEchw
+ P4GlH2/ka3EGMOCzxFX9el7VlU7tWkvbQpcsXbQhdwH1E1MglgVG6UnKUiPWNcQrpmOG
+ zRzl6M64GgJv39vmkmAapDao6gWz1T2/bmgYLgzFBtjKvILntPIXCyU8WNuxrWfdm8IE
+ 4Ima3StvIS4qDtsMDrjsHJ+wo7p2r9okHYWwDSR0eLT5AqTCTNa90uhCCa4speDY77MS
+ siIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695920507; x=1696525307;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=2EmDnQcnrIVv0Ammxw3nCtgNeglRs9YGrxYq/qRsdSQ=;
+ b=r7Lc2sN2gi6xCjIbLb6idUaDeTyTobtngEIdz+yvqV9aad4SP8ElR58IenJAiRHkr1
+ 8lw75dZe+tcMX3EKOFpSj+YHzuxqxuTk9DnOTokoMKLM+W1BJncZZ+eRFvC0Hz3sHfgl
+ aOkEGxZoM1hyWsw1IIvuFpeOZebIaWdwV+0I2OgJxuiAyoO9h8xf0ZbOJLiS0V8ldI3D
+ babKcIgkhs+UBkFcSRgt8ynmn/rejstLiHrp3YPHwC/AeCjoGG5HMQcivRSDPgI/g9m1
+ j1GF3h8QJaDG4NdNbBeJiaOVbkanQDQwHe6lO8juMQDljqh1JbQHaqhryI8d1MMcz8LK
+ VLNg==
+X-Gm-Message-State: AOJu0YzZ1qWDLh+aqEGSUP4BZJCFjD/gjCQnpqLGIWa2p/zTBzy/NRUt
+ dVJ0E5AHtecdLfJikHc3tWh2Kw==
+X-Google-Smtp-Source: AGHT+IGrv7xoXXp8xARFz0hOiY93AzSn0VzcTncwaJ6LalyMQc8og0O2xltlZ42GU90zRh7o4FiNHA==
+X-Received: by 2002:a5d:408f:0:b0:31a:d4d0:6e98 with SMTP id
+ o15-20020a5d408f000000b0031ad4d06e98mr1902181wrp.8.1695920507038; 
+ Thu, 28 Sep 2023 10:01:47 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ o5-20020adfeac5000000b0031984b370f2sm19722383wrn.47.2023.09.28.10.01.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Sep 2023 10:01:46 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 43D9B1FFBB;
+ Thu, 28 Sep 2023 18:01:46 +0100 (BST)
+References: <20230928132519.26266-1-abelova@astralinux.ru>
+User-agent: mu4e 1.11.20; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Anastasia Belova <abelova@astralinux.ru>
+Cc: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>, Peter Maydell
+ <peter.maydell@linaro.org>, sdl.qemu@linuxtesting.org,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH] hyperv: add check for NULL for msg
+Date: Thu, 28 Sep 2023 17:56:05 +0100
+In-reply-to: <20230928132519.26266-1-abelova@astralinux.ru>
+Message-ID: <87r0mip6yt.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mpatocka@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,66 +97,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-sh4 uses gUSA (general UserSpace Atomicity) to provide atomicity on CPUs
-that don't have atomic instructions. A gUSA region that adds 1 to an
-atomic variable stored in @R2 looks like this:
 
-  4004b6:       03 c7           mova    4004c4 <gusa+0x10>,r0
-  4004b8:       f3 61           mov     r15,r1
-  4004ba:       09 00           nop
-  4004bc:       fa ef           mov     #-6,r15
-  4004be:       22 63           mov.l   @r2,r3
-  4004c0:       01 73           add     #1,r3
-  4004c2:       32 22           mov.l   r3,@r2
-  4004c4:       13 6f           mov     r1,r15
+Anastasia Belova <abelova@astralinux.ru> writes:
 
-R0 contains a pointer to the end of the gUSA region
-R1 contains the saved stack pointer
-R15 contains negative length of the gUSA region
+> cpu_physical_memory_map may return NULL in hyperv_hcall_post_message.
+> Add check for NULL to avoid NULL-dereference.
+>
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>
+> Fixes: 76036a5fc7 ("hyperv: process POST_MESSAGE hypercall")
+> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+> ---
+>  hw/hyperv/hyperv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/hw/hyperv/hyperv.c b/hw/hyperv/hyperv.c
+> index 57b402b956..61c65d7329 100644
+> --- a/hw/hyperv/hyperv.c
+> +++ b/hw/hyperv/hyperv.c
+> @@ -588,7 +588,7 @@ uint16_t hyperv_hcall_post_message(uint64_t param, bo=
+ol fast)
+>=20=20
+>      len =3D sizeof(*msg);
+>      msg =3D cpu_physical_memory_map(param, &len, 0);
+> -    if (len < sizeof(*msg)) {
+> +    if (!msg || len < sizeof(*msg)) {
+>          ret =3D HV_STATUS_INSUFFICIENT_MEMORY;
+>          goto unmap;
 
-When this region is interrupted by a signal, the kernel detects if
-R15 >= -128U. If yes, the kernel rolls back PC to the beginning of the
-region and restores SP by copying R1 to R15.
+What is the failure path that returns NULL but leaves len untouched? I
+see in address_space_map():
 
-The problem happens if we are interrupted by a signal at address 4004c4.
-R15 still holds the value -6, but the atomic value was already written by
-an instruction at address 4004c2. In this situation we can't undo the
-gUSA. The function unwind_gusa does nothing, the signal handler attempts
-to push a signal frame to the address -6 and crashes.
+    if (!memory_access_is_direct(mr, is_write)) {
+        if (qatomic_xchg(&bounce.in_use, true)) {
+            *plen =3D 0;
+            return NULL;
+        }
 
-This patch fixes it, so that if we are interrupted at the last instruction 
-in a gUSA region, we copy R1 to R15 to restore the correct stack pointer 
-and avoid crashing.
+and in qemu_ram_ptr_length:
 
-There's another bug: if we are interrupted in a delay slot, we save the
-address of the instruction in the delay slot. We must save the address of
-the previous instruction.
+    if (*size =3D=3D 0) {
+        return NULL;
+    }
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: qemu-stable@nongnu.org
+but the other paths can't fail AFAICT.
 
----
- linux-user/sh4/signal.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+That's not to say its a bad thing to verify the ptr before attempting a
+de-reference but I would like to understand the failure mode.
 
-Index: qemu/linux-user/sh4/signal.c
-===================================================================
---- qemu.orig/linux-user/sh4/signal.c	2023-09-27 19:02:41.000000000 +0200
-+++ qemu/linux-user/sh4/signal.c	2023-09-27 19:55:13.000000000 +0200
-@@ -104,6 +104,14 @@ static void unwind_gusa(CPUSH4State *reg
- 
-         /* Reset the SP to the saved version in R1.  */
-         regs->gregs[15] = regs->gregs[1];
-+    } else if (regs->gregs[15] >= -128u && regs->pc == regs->gregs[0]) {
-+        /* If we are on the last instruction of a gUSA region, we must reset
-+           the SP, otherwise we would be pushing the signal context to
-+           invalid memory.  */
-+        regs->gregs[15] = regs->gregs[1];
-+    } else if (regs->flags & TB_FLAG_DELAY_SLOT) {
-+        /* If we are in a delay slot, push the previous instruction.  */
-+        regs->pc -= 2;
-     }
- }
- 
+As an aside it would also be nice to add (as a fresh commit) a kdoc
+comment for cpu_physical_memory_map() that documents the API.
 
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
