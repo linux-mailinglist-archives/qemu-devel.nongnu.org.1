@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F397B1CF7
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 14:51:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 027387B1CF9
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 14:51:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlqSd-0005U8-Er; Thu, 28 Sep 2023 08:49:43 -0400
+	id 1qlqTZ-0005wt-JX; Thu, 28 Sep 2023 08:50:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qlqSZ-0005TJ-Uz
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:49:40 -0400
+ id 1qlqTA-0005n3-90
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:50:17 -0400
 Received: from mgamail.intel.com ([192.55.52.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qlqSY-0006m0-0c
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:49:39 -0400
+ id 1qlqT5-00070i-7g
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:50:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1695905378; x=1727441378;
+ t=1695905411; x=1727441411;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gXulNKluCfETCMAWPY8yjTikcf4q84KxT5RojHpBPFQ=;
- b=R/2v931iFyh/C9WlNV31MFUwHA+kfDsqg0qWBKCOoxfCvGNq8arO3kPh
- KwBaGF4j2hCbxw3dfNmKm1IXLIREDJir21huPscZOexz6uEY98dEkn0uJ
- pdR/YYJWcuYu405VBdzs/1LR4tP1Kj9TsiAquHsvsI3jt39wOVhZY+Wxc
- sxDMEvNJoUHUe9M9RWtCDz+75FLt1/qu4vvL9brfoJE5+qSbAkFqzFxhF
- 4w+7zVBjW72M5vxsM1J1DUXbdAwgGlXWG386bEzOQk/RAkJEFqi5viN2W
- LK9X12yy6QG9ItqN3Ow0NrQpjfcxLY4h5QfwuvzkBNLVoEhII/fBkJuDl w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="361420341"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="361420341"
+ bh=UP5vmwLPH8tX1AGCPzF4MszB+xMkp6F2+gzWKFJAIF0=;
+ b=hdnnn8Yj2GYQXCyjIk1Bex+tZ6rqx1Id7EaIozj3JWtTRdHDjOeh0D7I
+ 8xeuWASxNO0c5by+pL+TF2m63kSYr1lBN6Rm4/JHP3Dae7fkUfQ8PP3yi
+ iPoebD7lGJ8EtdCVKqgl5QwqynSdpoId2oohEZcAXMiHmcRgRCWSNrbDs
+ tRrqzMg94TDiajJ5VrraV+TK4b4O/Nw0ja9udgNb7CX8o3m93fB8dHpLI
+ vibdzEt3J5D69oVLXOysVVmSbfclHQebBNyJUqgrpFXn6FpzNuRjufoyl
+ f8kIigoCZ4lfVOQ48XaSYFEUSWJyfdsnB0Xm3xDi2HAkersM+CsKD7AmB w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="361420373"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="361420373"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Sep 2023 05:49:32 -0700
+ 28 Sep 2023 05:49:34 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="893001877"
-X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="893001877"
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="893001931"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="893001931"
 Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
- by fmsmga001.fm.intel.com with ESMTP; 28 Sep 2023 05:48:17 -0700
+ by fmsmga001.fm.intel.com with ESMTP; 28 Sep 2023 05:48:21 -0700
 From: Zhao Liu <zhao1.liu@linux.intel.com>
 To: "Michael S . Tsirkin" <mst@redhat.com>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
@@ -49,10 +49,10 @@ Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
  Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
  Zhao Liu <zhao1.liu@intel.com>
-Subject: [PATCH v2 11/16] tests: bios-tables-test: Prepare the ACPI table
- change for smbios type4 thread count test
-Date: Thu, 28 Sep 2023 20:59:38 +0800
-Message-Id: <20230928125943.1816922-12-zhao1.liu@linux.intel.com>
+Subject: [PATCH v2 12/16] tests: bios-tables-test: Add test for smbios type4
+ thread count
+Date: Thu, 28 Sep 2023 20:59:39 +0800
+Message-Id: <20230928125943.1816922-13-zhao1.liu@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
 References: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
@@ -83,41 +83,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhao Liu <zhao1.liu@intel.com>
 
-Following the guidelines in tests/qtest/bios-tables-test.c, this
-is step 1 - 3.
+This tests the commit 7298fd7de5551 ("hw/smbios: Fix thread count in
+type4").
 
-List the ACPI tables that will be added to test the thread count field
-of smbios type4 table.
+In smbios_build_type_4_table() (hw/smbios/smbios.c), if the number of
+threads in the socket is not more than 255, then smbios type4 table
+encodes threads per socket into the thread count field.
 
+So for the topology in this case, there're the following considerations:
+1. threads per socket should be not more than 255 to ensure we could
+   cover the thread count field.
+2. The original bug was that threads per socket was miscalculated, so
+   now we should configure as many topology levels as possible (mutiple
+   sockets & dies, no module since x86 hasn't supported it) to cover
+   more general topology scenarios, to ensure that the threads per
+   socket encoded in the thread count field is correct.
+3. For the more general topology, we should also add "cpus" (presented
+   threads for machine) and "maxcpus" (total threads for machine) to
+   make sure that configuring unpluged CPUs in smp (cpus < maxcpus)
+   does not affect the correctness of threads per socket for thread
+   count field.
+
+Based on these considerations, select the topology as the follow:
+
+-smp cpus=15,maxcpus=54,sockets=2,dies=3,cores=3,threads=3
+
+The expected thread count = threads per socket = threads (3) * cores (3)
+* dies (3) = 27.
+
+Suggested-by: Igor Mammedov <imammedo@redhat.com>
 Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+Acked-by: Igor Mammedov <imammedo@redhat.com>
 ---
- tests/data/acpi/q35/APIC.thread-count       | 0
- tests/data/acpi/q35/DSDT.thread-count       | 0
- tests/data/acpi/q35/FACP.thread-count       | 0
- tests/qtest/bios-tables-test-allowed-diff.h | 3 +++
- 4 files changed, 3 insertions(+)
- create mode 100644 tests/data/acpi/q35/APIC.thread-count
- create mode 100644 tests/data/acpi/q35/DSDT.thread-count
- create mode 100644 tests/data/acpi/q35/FACP.thread-count
+Changes since v1:
+ * Added description of the consideration for topology selection of this
+   case in commit message. (Igor)
+---
+ tests/qtest/bios-tables-test.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/tests/data/acpi/q35/APIC.thread-count b/tests/data/acpi/q35/APIC.thread-count
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tests/data/acpi/q35/DSDT.thread-count b/tests/data/acpi/q35/DSDT.thread-count
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tests/data/acpi/q35/FACP.thread-count b/tests/data/acpi/q35/FACP.thread-count
-new file mode 100644
-index 000000000000..e69de29bb2d1
-diff --git a/tests/qtest/bios-tables-test-allowed-diff.h b/tests/qtest/bios-tables-test-allowed-diff.h
-index dfb8523c8bf4..4d139d7f6b7e 100644
---- a/tests/qtest/bios-tables-test-allowed-diff.h
-+++ b/tests/qtest/bios-tables-test-allowed-diff.h
-@@ -1 +1,4 @@
- /* List of comma-separated changed AML files to ignore */
-+"tests/data/acpi/q35/APIC.thread-count",
-+"tests/data/acpi/q35/DSDT.thread-count",
-+"tests/data/acpi/q35/FACP.thread-count",
+diff --git a/tests/qtest/bios-tables-test.c b/tests/qtest/bios-tables-test.c
+index d9ae716d918f..f8e3e349e09f 100644
+--- a/tests/qtest/bios-tables-test.c
++++ b/tests/qtest/bios-tables-test.c
+@@ -95,6 +95,7 @@ typedef struct {
+     uint16_t smbios_cpu_curr_speed;
+     uint8_t smbios_core_count;
+     uint16_t smbios_core_count2;
++    uint8_t smbios_thread_count;
+     uint8_t *required_struct_types;
+     int required_struct_types_len;
+     int type4_count;
+@@ -640,6 +641,7 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+                             SmbiosEntryPointType ep_type)
+ {
+     uint8_t core_count, expected_core_count = data->smbios_core_count;
++    uint8_t thread_count, expected_thread_count = data->smbios_thread_count;
+     uint16_t speed, expected_speed[2];
+     uint16_t core_count2, expected_core_count2 = data->smbios_core_count2;
+     int offset[2];
+@@ -663,6 +665,13 @@ static void smbios_cpu_test(test_data *data, uint32_t addr,
+         g_assert_cmpuint(core_count, ==, expected_core_count);
+     }
+ 
++    thread_count = qtest_readb(data->qts,
++                       addr + offsetof(struct smbios_type_4, thread_count));
++
++    if (expected_thread_count) {
++        g_assert_cmpuint(thread_count, ==, expected_thread_count);
++    }
++
+     if (ep_type == SMBIOS_ENTRY_POINT_TYPE_64) {
+         core_count2 = qtest_readw(data->qts,
+                           addr + offsetof(struct smbios_type_4, core_count2));
+@@ -1033,6 +1042,22 @@ static void test_acpi_q35_tcg_core_count2(void)
+     free_test_data(&data);
+ }
+ 
++static void test_acpi_q35_tcg_thread_count(void)
++{
++    test_data data = {
++        .machine = MACHINE_Q35,
++        .variant = ".thread-count",
++        .required_struct_types = base_required_struct_types,
++        .required_struct_types_len = ARRAY_SIZE(base_required_struct_types),
++        .smbios_thread_count = 27,
++    };
++
++    test_acpi_one("-machine smbios-entry-point-type=64 "
++                  "-smp cpus=15,maxcpus=54,sockets=2,dies=3,cores=3,threads=3",
++                  &data);
++    free_test_data(&data);
++}
++
+ static void test_acpi_q35_tcg_bridge(void)
+ {
+     test_data data = {};
+@@ -2189,6 +2214,8 @@ int main(int argc, char *argv[])
+                                test_acpi_q35_tcg_core_count);
+                 qtest_add_func("acpi/q35/core-count2",
+                                test_acpi_q35_tcg_core_count2);
++                qtest_add_func("acpi/q35/thread-count",
++                               test_acpi_q35_tcg_thread_count);
+             }
+             if (qtest_has_device("virtio-iommu-pci")) {
+                 qtest_add_func("acpi/q35/viot", test_acpi_q35_viot);
 -- 
 2.34.1
 
