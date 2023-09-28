@@ -2,89 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921717B1526
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 09:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F227B1519
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 09:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qllaQ-0004kW-OT; Thu, 28 Sep 2023 03:37:26 -0400
+	id 1qllaR-0004l0-9q; Thu, 28 Sep 2023 03:37:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qllaN-0004fi-Ef
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qllaP-0004j5-IG
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qllaL-00065g-RM
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:23 -0400
+ id 1qllaN-00065v-Sx
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695886641;
+ s=mimecast20190719; t=1695886643;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=n1OSaJs85133jklsiphyQG3sce5Sy+DRxmQ7c6brP6U=;
- b=PLTbQoDrM/BrqQKyYzbi2fLHFBG1bi8dxXmDZPAbM5ieR9zx7eptU7zvJUdVGaiSH/IBfs
- tk/3Uva/jCxknXsrYasjpOcFJvQN+p1z0EVaVCZEgS0RBcZ7YmpcbJZxeCeUeL+Act/ZO2
- wx7SYemkVTKSn79QnGL8vvERbQafdwA=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TYbZMVfd11QXyaqPAT/XUzIzPD4Nh+3HidIhcOWyIAE=;
+ b=J9QD7WVBTqxm+Vn+l01rXhd7sGuPkRHg4OSf1htj/ODJe6GFHUENAgCl4FeeNxH67v8jvU
+ bENlUtpVJaKfSrnkycSvQNk1KoM1HYWA+tDeg+HmcD7UQQB/B8imWVWpggnmQ6D6Fz1CSh
+ 2EVDk/RlnFYUHIsZCBAUaS+eUy8cXiE=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-314-rNCZCR6MOKqW72xm5sVCTQ-1; Thu, 28 Sep 2023 03:37:19 -0400
-X-MC-Unique: rNCZCR6MOKqW72xm5sVCTQ-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-94a34a0b75eso1034145766b.1
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 00:37:18 -0700 (PDT)
+ us-mta-97-42YRagoxOWqAalZcEGgUMQ-1; Thu, 28 Sep 2023 03:37:21 -0400
+X-MC-Unique: 42YRagoxOWqAalZcEGgUMQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-536294c9526so269190a12.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 00:37:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695886637; x=1696491437;
+ d=1e100.net; s=20230601; t=1695886640; x=1696491440;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=n1OSaJs85133jklsiphyQG3sce5Sy+DRxmQ7c6brP6U=;
- b=wg6bReZYdSygXvuxR6cR/s/Kl4YDWdMUMdzvvr9qrtHcMPx3Currvck5lDiaFp8Dls
- BdoR6R53ry3ynIPL5mxhmomCjQC4DSMCwv9fzwykUBI7vJarKtm97muzxksY2rAsldcj
- sqfk6K3CDpC0q/w9+IvTVuKqw0Nlsom4F2zuTsEc0doayATeLE01bjH88YZ17VH7n5SJ
- SULKYFLZpMF53Zrn/JVWgVNVvuElNl0URHbyahzSP+JenriQfleFIjJxY4Wr2j4diYij
- x72A3H48l6+I9G4aFfOqD0bw1o2hZZz4+YtF7hZ2QSrfJS8YnJQpixcW/cD6/DL29N0k
- kMQQ==
-X-Gm-Message-State: AOJu0Ywp5DhkAntoq7iIF2vwFuB5WQftoXcgxFC1fHTQJEB1g6PHsn6i
- ZtBkLd10oA/Ozan++17JJ0nREjCkmUyByXH+Ph/8L9AZhjY/c9pmav5YbfaJexpjoP+iW/xmwGK
- gi5LiKxyTx60Tp+4eNUIAdHW23dO84rP3J4bP7/7WMPsbfZ/gn5oSR31gua/e9hsmGs9dmhRzHh
- I=
-X-Received: by 2002:a17:906:9c1:b0:9ae:6ff4:9f15 with SMTP id
- r1-20020a17090609c100b009ae6ff49f15mr462379eje.11.1695886637670; 
- Thu, 28 Sep 2023 00:37:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoAkRgWQMeK13TrfuAdCU+E3P9KJTIxjSQRqN/dcsuXk8fRMM377D5zGfMtuj+bup8hcCW8g==
-X-Received: by 2002:a17:906:9c1:b0:9ae:6ff4:9f15 with SMTP id
- r1-20020a17090609c100b009ae6ff49f15mr462367eje.11.1695886637446; 
- Thu, 28 Sep 2023 00:37:17 -0700 (PDT)
+ bh=TYbZMVfd11QXyaqPAT/XUzIzPD4Nh+3HidIhcOWyIAE=;
+ b=vbK8wQfQaCZD2Mjnoa9Tjq7dXXgA3ZWqsKZQZXcgySDWAxs3Do2YapCy6UsJ9+b1EW
+ KwADQZZ8kJc00czvTlxthv217LpKt2kJAiZuoAjTWQGpXy6ju3riTDxcS2HDFSUvQtqj
+ RfHp8eQQp060ZNSyUxAjp27Uz/icnmtzedocMqHQxeL/8CXFqt+15egrCjgneuB3r4sO
+ Zo3TsfIouiAl2JWyd0LJyLvjCXHA5IqiFNpM32vFKqUdtQozX5MCKF0FbG51eln4yimX
+ eeMg4/kInyqOGRk2sL9AS+CZZksXPywHw2ZqPv3KiisSuD0oRkvtGA2OP3AvPv8lpHqZ
+ 4Xug==
+X-Gm-Message-State: AOJu0YyxX2fG6AmeAAOYC4NLt1+AYeP3OCBOYfdND6/1nmLmfeAulYcq
+ FZrf8bi+TnEma4blvHCeA0QAW5gDx1XsZICCFhn1Nqqil9dISSXsKPIHV21f4TAc7/nTxyLG8fK
+ 7ckDIxFf0TW1bI891hxIS+7soQifQXefyvcmqbN6Q2dVjPAgiS408DGzII/x9CiK8rby4hFGA3f
+ s=
+X-Received: by 2002:aa7:d807:0:b0:530:52d2:f656 with SMTP id
+ v7-20020aa7d807000000b0053052d2f656mr465919edq.21.1695886639807; 
+ Thu, 28 Sep 2023 00:37:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/9B0JGxaBgoODPMJs3lgBzYNRnyUDsy/efpE6BBMfzwlBhXNN+oiSVHYAw89xJBXufK6PUQ==
+X-Received: by 2002:aa7:d807:0:b0:530:52d2:f656 with SMTP id
+ v7-20020aa7d807000000b0053052d2f656mr465895edq.21.1695886639326; 
+ Thu, 28 Sep 2023 00:37:19 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- n17-20020a170906089100b0099ccee57ac2sm10358670eje.194.2023.09.28.00.37.15
+ w25-20020aa7d299000000b005329f1aa071sm9202198edq.10.2023.09.28.00.37.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Sep 2023 00:37:16 -0700 (PDT)
+ Thu, 28 Sep 2023 00:37:18 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	balaton@eik.bme.hu
-Subject: [PATCH 05/13] audio: commonize voice initialization
-Date: Thu, 28 Sep 2023 09:36:49 +0200
-Message-ID: <20230928073705.871327-6-pbonzini@redhat.com>
+Subject: [PATCH 06/13] audio: simplify flow in audio_init
+Date: Thu, 28 Sep 2023 09:36:50 +0200
+Message-ID: <20230928073705.871327-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230928073705.871327-1-pbonzini@redhat.com>
 References: <20230928073705.871327-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -101,82 +101,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Move some mostly irrelevant code out of audio_init.
+Merge two ifs into one.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- audio/audio.c          | 19 ++-----------------
- audio/audio_template.h |  9 ++++++++-
- 2 files changed, 10 insertions(+), 18 deletions(-)
+ audio/audio.c | 76 +++++++++++++++++++++++++--------------------------
+ 1 file changed, 38 insertions(+), 38 deletions(-)
 
 diff --git a/audio/audio.c b/audio/audio.c
-index 0a1dba21340..e1456ad55d2 100644
+index e1456ad55d2..2e2e7fa72f7 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -1570,8 +1570,8 @@ static int audio_driver_init(AudioState *s, struct audio_driver *drv,
-             drv->pcm_ops->put_buffer_out = audio_generic_put_buffer_out;
-         }
- 
--        audio_init_nb_voices_out(s, drv);
--        audio_init_nb_voices_in(s, drv);
-+        audio_init_nb_voices_out(s, drv, 1);
-+        audio_init_nb_voices_in(s, drv, 0);
-         s->drv = drv;
-         return 0;
-     } else {
-@@ -1774,21 +1774,6 @@ static AudioState *audio_init(Audiodev *dev, const char *name)
- 
-     s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
- 
--    s->nb_hw_voices_out = audio_get_pdo_out(dev)->voices;
--    s->nb_hw_voices_in = audio_get_pdo_in(dev)->voices;
--
--    if (s->nb_hw_voices_out < 1) {
--        dolog ("Bogus number of playback voices %d, setting to 1\n",
--               s->nb_hw_voices_out);
--        s->nb_hw_voices_out = 1;
--    }
--
--    if (s->nb_hw_voices_in < 0) {
--        dolog ("Bogus number of capture voices %d, setting to 0\n",
--               s->nb_hw_voices_in);
--        s->nb_hw_voices_in = 0;
--    }
--
-     if (drvname) {
-         driver = audio_driver_lookup(drvname);
-         if (driver) {
-diff --git a/audio/audio_template.h b/audio/audio_template.h
-index dc0c74aa746..7ccfec01168 100644
---- a/audio/audio_template.h
-+++ b/audio/audio_template.h
-@@ -37,11 +37,12 @@
- #endif
- 
- static void glue(audio_init_nb_voices_, TYPE)(AudioState *s,
--                                              struct audio_driver *drv)
-+                                              struct audio_driver *drv, int min_voices)
+@@ -1707,12 +1707,12 @@ static AudiodevListEntry *audiodev_find(
+  * if dev == NULL => legacy implicit initialization, return the already created
+  *   state or create a new one
+  */
+-static AudioState *audio_init(Audiodev *dev, const char *name)
++static AudioState *audio_init(Audiodev *dev)
  {
-     int max_voices = glue (drv->max_voices_, TYPE);
-     size_t voice_size = glue(drv->voice_size_, TYPE);
- 
-+    glue (s->nb_hw_voices_, TYPE) = glue(audio_get_pdo_, TYPE)(s->dev)->voices;
-     if (glue (s->nb_hw_voices_, TYPE) > max_voices) {
-         if (!max_voices) {
- #ifdef DAC
-@@ -56,6 +57,12 @@ static void glue(audio_init_nb_voices_, TYPE)(AudioState *s,
-         glue (s->nb_hw_voices_, TYPE) = max_voices;
+     static bool atexit_registered;
+     size_t i;
+     int done = 0;
+-    const char *drvname = NULL;
++    const char *drvname;
+     VMChangeStateEntry *vmse;
+     AudioState *s;
+     struct audio_driver *driver;
+@@ -1736,17 +1736,32 @@ static AudioState *audio_init(Audiodev *dev, const char *name)
+         }
      }
  
-+    if (glue (s->nb_hw_voices_, TYPE) < min_voices) {
-+        dolog ("Bogus number of " NAME " voices %d, setting to %d\n",
-+               glue (s->nb_hw_voices_, TYPE),
-+               min_voices);
++    s = g_new0(AudioState, 1);
++
++    QLIST_INIT (&s->hw_head_out);
++    QLIST_INIT (&s->hw_head_in);
++    QLIST_INIT (&s->cap_head);
++    if (!atexit_registered) {
++        atexit(audio_cleanup);
++        atexit_registered = true;
 +    }
 +
-     if (audio_bug(__func__, !voice_size && max_voices)) {
-         dolog ("drv=`%s' voice_size=0 max_voices=%d\n",
-                drv->name, max_voices);
++    s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
++
+     if (dev) {
+         /* -audiodev option */
+-        legacy_config = false;
++        s->dev = dev;
+         drvname = AudiodevDriver_str(dev->driver);
+-    } else if (!QTAILQ_EMPTY(&audio_states)) {
+-        if (!legacy_config) {
+-            dolog("Device %s: audiodev default parameter is deprecated, please "
+-                  "specify audiodev=%s\n", name,
+-                  QTAILQ_FIRST(&audio_states)->dev->id);
++        driver = audio_driver_lookup(drvname);
++        if (driver) {
++            done = !audio_driver_init(s, driver, true, dev);
++        } else {
++            dolog ("Unknown audio driver `%s'\n", drvname);
++        }
++        if (!done) {
++            free_audio_state(s);
++            return NULL;
+         }
+-        return QTAILQ_FIRST(&audio_states);
+     } else {
+         /* legacy implicit initialization */
+         head = audio_handle_legacy_opts();
+@@ -1759,33 +1774,7 @@ static AudioState *audio_init(Audiodev *dev, const char *name)
+          */
+         dev = QSIMPLEQ_FIRST(&head)->dev;
+         audio_validate_opts(dev, &error_abort);
+-    }
+ 
+-    s = g_new0(AudioState, 1);
+-    s->dev = dev;
+-
+-    QLIST_INIT (&s->hw_head_out);
+-    QLIST_INIT (&s->hw_head_in);
+-    QLIST_INIT (&s->cap_head);
+-    if (!atexit_registered) {
+-        atexit(audio_cleanup);
+-        atexit_registered = true;
+-    }
+-
+-    s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
+-
+-    if (drvname) {
+-        driver = audio_driver_lookup(drvname);
+-        if (driver) {
+-            done = !audio_driver_init(s, driver, true, dev);
+-        } else {
+-            dolog ("Unknown audio driver `%s'\n", drvname);
+-        }
+-        if (!done) {
+-            free_audio_state(s);
+-            return NULL;
+-        }
+-    } else {
+         for (i = 0; audio_prio_list[i]; i++) {
+             AudiodevListEntry *e = audiodev_find(&head, audio_prio_list[i]);
+             driver = audio_driver_lookup(audio_prio_list[i]);
+@@ -1800,8 +1789,9 @@ static AudioState *audio_init(Audiodev *dev, const char *name)
+                 }
+             }
+         }
++
++        audio_free_audiodev_list(&head);
+     }
+-    audio_free_audiodev_list(&head);
+ 
+     if (!done) {
+         driver = audio_driver_lookup("none");
+@@ -1841,7 +1831,16 @@ void audio_free_audiodev_list(AudiodevListHead *head)
+ void AUD_register_card (const char *name, QEMUSoundCard *card)
+ {
+     if (!card->state) {
+-        card->state = audio_init(NULL, name);
++        if (!QTAILQ_EMPTY(&audio_states)) {
++            if (!legacy_config) {
++                dolog("Device %s: audiodev default parameter is deprecated, please "
++                      "specify audiodev=%s\n", name,
++                      QTAILQ_FIRST(&audio_states)->dev->id);
++            }
++            card->state = QTAILQ_FIRST(&audio_states);
++        } else {
++            card->state = audio_init(NULL);
++        }
+     }
+ 
+     card->name = g_strdup (name);
+@@ -2172,6 +2171,7 @@ void audio_define(Audiodev *dev)
+     e = g_new0(AudiodevListEntry, 1);
+     e->dev = dev;
+     QSIMPLEQ_INSERT_TAIL(&audiodevs, e, next);
++    legacy_config = false;
+ }
+ 
+ bool audio_init_audiodevs(void)
+@@ -2179,7 +2179,7 @@ bool audio_init_audiodevs(void)
+     AudiodevListEntry *e;
+ 
+     QSIMPLEQ_FOREACH(e, &audiodevs, next) {
+-        if (!audio_init(e->dev, NULL)) {
++        if (!audio_init(e->dev)) {
+             return false;
+         }
+     }
 -- 
 2.41.0
 
