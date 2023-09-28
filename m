@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6D737B2793
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 23:34:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 453917B2796
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 23:35:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlyeO-00070w-7H; Thu, 28 Sep 2023 17:34:25 -0400
+	id 1qlyfD-0008Ag-QZ; Thu, 28 Sep 2023 17:35:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlyeG-000706-2g
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:34:16 -0400
-Received: from mail-pg1-x531.google.com ([2607:f8b0:4864:20::531])
+ id 1qlyfC-0008AN-Bg
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:35:14 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlyeE-0005Bc-Fj
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:34:15 -0400
-Received: by mail-pg1-x531.google.com with SMTP id
- 41be03b00d2f7-584a761b301so5116667a12.3
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:34:13 -0700 (PDT)
+ id 1qlyf9-0005eu-Az
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:35:13 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-690d2e13074so10816221b3a.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:35:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695936852; x=1696541652; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695936910; x=1696541710; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=svOpPq3uO1beUhLYTmN3FevoP/Yh4F1OE/oyUV5WRnc=;
- b=Tx1SvhBR5rHvACqlcIwsI0aAulFKnnMart002MTksjpaq5Vy4qVTTHX201Qovh3nbt
- L6JxflOs9hDXQJHerXe6ZGx0PghcyNznmSv2y87JAREGQJodLiED55oT2z1EyGzmCutn
- /HvJsaV/911fDF9ho9tErLuL5zVCIY8TIr4R0ufpICNa2nyHxbmLMgJzxA9TFpRmIwlt
- kP5gXJ4d+UMF795uwfzpdyWl/Y6w822hmg4QQIHkVQSjijhxZAM3iLVt687QpzGVLKWI
- 5V5AyidgL18NqlXBy5WSrufNseFGQ+3Y4thlHBgU6njvASTtXoI97CVuW2Gi9RFjFIyX
- hygw==
+ bh=+bbqwvvGn2FzogpTYxtn6ijeiphRSPGl5RPjPA+15lM=;
+ b=P8r/p6AkGV++0LJHpXjGlev934sKMXhBRyh4lRHeaBjfVkWiERe1xT452DtYKtf3UI
+ vpa9ZH/4bjjWP6KXBE6BlQiacLb1fidDqvzuPY3qSFIKCKu0m9a5hU2Z6oeDntzW+ZAi
+ mjVmnTwl5AfxsCwSyRZiI5Ccm79lM6INIKQyeYRJpMo0PzC3qHE5dwK8qXhZZCQifNOO
+ nzTlA1ay46jatxxGBjz8DPqs+r9IH0MSl0ZR0EJ9Q4NUKkrZMvELmiFoDakBfVvJXNL2
+ uDdOkKRbcBX06vzr5llGe9eF8Q73etCgmVaJE3efpKeb+yhGyQlVULtpLTrjTAtQrN58
+ MXuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695936852; x=1696541652;
+ d=1e100.net; s=20230601; t=1695936910; x=1696541710;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=svOpPq3uO1beUhLYTmN3FevoP/Yh4F1OE/oyUV5WRnc=;
- b=s3Hhzv3aI/2wVrg4CUQ2KQtqOgu5l8yDS6IjjJ0c0zMeggO8767EaSmk/uWr0vLUjm
- JBcXXr8jI6jv44FE567H2LARkKuBwFL1XKxKm8btk6aSv6chUHfeqksqnzIvGC92Gu1R
- Rvnqu9DfSNc8aEfom7cW2nHa/f9iSmbwvALOMzfk2kiwvt//NRUHFxSu1tD5K7SZZQkC
- euytTEMjWk2h4NLN8lQRcoP3b/YbHexqjZGLqjnBWAAOvek5sf6ixxE+VTXyoMrH2FiM
- ncZz1MuZnS9+fIs+Y3lqYy577g1JFbGW9RC113y6gj4FUj+e6sK34GsirbTHOPHB9aBh
- 7d/Q==
-X-Gm-Message-State: AOJu0Ywp02NoRRhlEzJmPDCxABVQRCecszg6TcdkZyNmZK4rvS3Or4an
- /2Y/UKZi8sCnYlCvLrFEtfuj/w==
-X-Google-Smtp-Source: AGHT+IEPFCDARO3/zclCqKiRROifrJuI/V35pcdvB8h8CJ4LURwSb7HxHtkTgZgD2H0T4VsjwujNmg==
-X-Received: by 2002:a05:6a21:47ca:b0:15d:ad11:748 with SMTP id
- as10-20020a056a2147ca00b0015dad110748mr2050863pzc.30.1695936852641; 
- Thu, 28 Sep 2023 14:34:12 -0700 (PDT)
+ bh=+bbqwvvGn2FzogpTYxtn6ijeiphRSPGl5RPjPA+15lM=;
+ b=WB0umo28LRQrMi7fwb3XRmAFajSp3RhsczOYoqtCpN9D4X79thHqjIm4NImZUbdYPY
+ FokWmyZi15M+48nAJMq67P5nrzyT9nLr0/Etd+3sXAVL59nAqXl/GhrT6kFd211IKbZ3
+ Xx9KdVPT3VqOF5vtONeHzCbhZoWXXyvwa9xmUBh8ciiyA2VJ+CUAKjb2jHS8Efbzr7kw
+ NV2gYs82bz/JOt/BmPK0K7fRUFfwYHabIx6fCuaSHWmWVw+L5aAMcfEy0pTSAlEI2CbK
+ QKaofxY2cDmFNmtLjIYAGqsqQXCrve8ThmETgDAn2NieLud48q4+kIStgP1lzL54go1x
+ kKBw==
+X-Gm-Message-State: AOJu0YyYfT1TxP6xHY38I8I+1g3TIO5Gwa5v+Q+AD0zp9tRx+M7wpMcG
+ ujxe5Jglj2qjSioUBvm/AOe9cA==
+X-Google-Smtp-Source: AGHT+IGvOZzU9cgRZE2So+LZppZ1kMWdzHb+bl2Yu+/nX6iQGIX6ytrm9xb2+NXhA+IkCFaZLnlEGw==
+X-Received: by 2002:a05:6a21:66c5:b0:154:e7e6:85c8 with SMTP id
+ ze5-20020a056a2166c500b00154e7e685c8mr2526921pzb.31.1695936909604; 
+ Thu, 28 Sep 2023 14:35:09 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-146-124.tukw.qwest.net. [174.21.146.124])
  by smtp.gmail.com with ESMTPSA id
- 14-20020a17090a19ce00b00277371fd346sm14214pjj.30.2023.09.28.14.34.11
+ 6-20020a17090a1a0600b00263dfe9b972sm29765pjk.0.2023.09.28.14.35.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 14:34:12 -0700 (PDT)
-Message-ID: <70be6521-1f1b-2693-2d6c-bc8f898d770b@linaro.org>
-Date: Thu, 28 Sep 2023 14:34:10 -0700
+ Thu, 28 Sep 2023 14:35:09 -0700 (PDT)
+Message-ID: <de8992b1-9f7c-b6ae-aaf3-af267674f71b@linaro.org>
+Date: Thu, 28 Sep 2023 14:35:07 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 5/8] target/sparc: Fix VIS fmuld8ulx16 instruction.
+Subject: Re: [PATCH 6/8] target/sparc: Fix VIS fpmerge input registers.
 Content-Language: en-US
 To: Nick Bowler <nbowler@draconx.ca>, qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>
 References: <20230925050545.30912-1-nbowler@draconx.ca>
- <20230925050545.30912-6-nbowler@draconx.ca>
+ <20230925050545.30912-7-nbowler@draconx.ca>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230925050545.30912-6-nbowler@draconx.ca>
+In-Reply-To: <20230925050545.30912-7-nbowler@draconx.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::531;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x531.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,22 +97,18 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/24/23 01:03, Nick Bowler wrote:
-> On a real UltraSparc II, the fmuld8ulx16 instruction takes two single-
-> precision input operands and returns a double-precision result.
-> 
-> However, the emulation is taking two double-precision input operands,
-> which are unlikely to contain the correct values, so the results are
-> garbage in most cases.  Even if the inputs happen to be correct, the
-> emulator is rounding the output, which the real processor does not do.
-> 
-> Signed-off-by: Nick Bowler<nbowler@draconx.ca>
-> ---
->   target/sparc/helper.h     |  2 +-
->   target/sparc/translate.c  |  2 +-
->   target/sparc/vis_helper.c | 17 +++++++----------
->   3 files changed, 9 insertions(+), 12 deletions(-)
+>                   case 0x04b: /* VIS I fpmerge */
+>                       CHECK_FPU_FEATURE(dc, VIS1);
+> -                    gen_ne_fop_DDD(dc, rd, rs1, rs2, gen_helper_fpmerge);
+> +                    cpu_src1_32 = gen_load_fpr_F(dc, rs1);
+> +                    cpu_src2_32 = gen_load_fpr_F(dc, rs2);
+> +                    cpu_dst_64 = gen_dest_fpr_D(dc, rd);
+> +                    gen_helper_fpmerge(cpu_dst_64, cpu_src1_32, cpu_src2_32);
+> +                    gen_store_fpr_D(dc, rd, cpu_dst_64);
+>                       break;
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Use gen_ne_fop_DFF.
+
 
 r~
 
