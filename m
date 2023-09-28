@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E44487B1E68
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB257B1E10
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:23:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlr68-0000An-Os; Thu, 28 Sep 2023 09:30:32 -0400
+	id 1qlqyM-0007mh-05; Thu, 28 Sep 2023 09:22:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr60-0008VF-Ni
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qlqyA-0007Me-Hv
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:22:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlr5y-0002Aq-Td
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:30:24 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qlqy4-0000Bj-Ag
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:22:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695907822;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=qrXoSPX5ssSQmvEUQlU0T8b2aLThEpACW1OPVTv1Kcs=;
- b=eYOL/znZ+XI0bSpKtxc3oRNdv1YgX2jAfm0Exq6py0FllMz8U1Cg6BR/KJJtHsc8eqWB8g
- IpkG6MHTHDwV2uiuN6FYcs+tGHi5zi89K9S/5HmMWCgYgvzCuSMiQHolLsaxxqeoJHuxGN
- iOJ1I/O88j5OMHs/W032ItPzeyH8I04=
+ s=mimecast20190719; t=1695907331;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=FYHqdcnqBQ+IFWkH+JCIxLtCyxo4v8wbkuU/tu/IzaY=;
+ b=BpXzTmvu/ThXVBCzlbnE/fJ3AzNOoZgbwgaImx6rzjfkYXbldNjPZ5HDIV4XwcqnP/9+cx
+ LecIeqX9IsKAW9NKrF1OdzVmmPOWhBtxlMfoZ9vCD3NSxhqcIAGhg7UGkTHfs3+TPe+Ikj
+ /kYdAqVQnsoNfs9LJx4kUoB705qicJ4=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-647-_7zJxEVuM42x_p7wEAjTSw-1; Thu, 28 Sep 2023 09:30:18 -0400
-X-MC-Unique: _7zJxEVuM42x_p7wEAjTSw-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-64-u-dEMK-kNYu0Fr5EHYttsA-1; Thu, 28 Sep 2023 09:22:09 -0400
+X-MC-Unique: u-dEMK-kNYu0Fr5EHYttsA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 601D1185A79B;
- Thu, 28 Sep 2023 13:30:18 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 2158549BB9A;
- Thu, 28 Sep 2023 13:30:18 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 666D721E68A9; Thu, 28 Sep 2023 15:20:20 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- farosas@suse.de, lizhijian@fujitsu.com, eblake@redhat.com
-Subject: [PATCH v2 53/53] migration/rdma: Replace flawed device detail dump by
- tracing
-Date: Thu, 28 Sep 2023 15:20:19 +0200
-Message-ID: <20230928132019.2544702-54-armbru@redhat.com>
-In-Reply-To: <20230928132019.2544702-1-armbru@redhat.com>
-References: <20230928132019.2544702-1-armbru@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9563F8030A9
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 13:22:09 +0000 (UTC)
+Received: from redhat.com (unknown [10.39.194.58])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id C39C240147D;
+ Thu, 28 Sep 2023 13:22:08 +0000 (UTC)
+Date: Thu, 28 Sep 2023 14:22:06 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v1 9/9] docs: add notes on Golang code generator
+Message-ID: <ZRV9/i2Z1dSF7GgQ@redhat.com>
+References: <20230927112544.85011-1-victortoso@redhat.com>
+ <20230927112544.85011-10-victortoso@redhat.com>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230927112544.85011-10-victortoso@redhat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,106 +77,420 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_rdma_dump_id() dumps RDMA device details to stdout.
+On Wed, Sep 27, 2023 at 01:25:44PM +0200, Victor Toso wrote:
+> The goal of this patch is converge discussions into a documentation,
+> to make it easy and explicit design decisions, known issues and what
+> else might help a person interested in how the Go module is generated.
+> 
+> Signed-off-by: Victor Toso <victortoso@redhat.com>
+> ---
+>  docs/devel/qapi-golang-code-gen.rst | 341 ++++++++++++++++++++++++++++
 
-rdma_start_outgoing_migration() calls it via qemu_rdma_source_init()
-and qemu_rdma_resolve_host() to show source device details.
-rdma_start_incoming_migration() arranges its call via
-rdma_accept_incoming_migration() and qemu_rdma_accept() to show
-destination device details.
+docs/devel/index.rst needs editting to reference this new doc to
+prevent
 
-Two issues:
+  Warning, treated as error:
+  /var/home/berrange/src/virt/qemu/docs/devel/qapi-golang-code-gen.rst:document isn't included in any toctree
+  ninja: build stopped: subcommand failed.
 
-1. rdma_start_outgoing_migration() can run in HMP context.  The
-   information should arguably go the monitor, not stdout.
 
-2. ibv_query_port() failure is reported as error.  Its callers remain
-   unaware of this failure (qemu_rdma_dump_id() can't fail), so
-   reporting this to the user as an error is problematic.
+>  1 file changed, 341 insertions(+)
+>  create mode 100644 docs/devel/qapi-golang-code-gen.rst
+> 
+> diff --git a/docs/devel/qapi-golang-code-gen.rst b/docs/devel/qapi-golang-code-gen.rst
+> new file mode 100644
+> index 0000000000..2a91f8fc60
+> --- /dev/null
+> +++ b/docs/devel/qapi-golang-code-gen.rst
+> @@ -0,0 +1,341 @@
+> +==========================
+> +QAPI Golang code generator
+> +==========================
+> +
+> +..
+> +   Copyright (C) 2023 Red Hat, Inc.
+> +
+> +   This work is licensed under the terms of the GNU GPL, version 2 or
+> +   later.  See the COPYING file in the top-level directory.
+> +
+> +
+> +Introduction
+> +============
+> +
+> +This document provides information of how the generated Go code maps
+> +with the QAPI specification, clarifying design decisions when needed.
+> +
+> +
+> +Scope of the generated Go code
+> +==============================
+> +
+> +The scope is limited to data structures that can interpret and be used
+> +to generate valid QMP messages. These data structures are generated
+> +from a QAPI schema and should be able to handle QMP messages from the
+> +same schema.
+> +
+> +The generated Go code is a Go module with data structs that uses Go
+> +standard library `encoding/json`, implementing its field tags and
+> +Marshal interface whenever needed.
 
-Fixable, but the device detail dump is noise, except when
-troubleshooting.  Tracing is a better fit.  Similar function
-qemu_rdma_dump_id() was converted to tracing in commit
-733252deb8b (Tracify migration/rdma.c).
 
-Convert qemu_rdma_dump_id(), too.
+Needs to use `` instead of `
 
-While there, touch up qemu_rdma_dump_gid()'s outdated comment.
+  Warning, treated as error:
+  /var/home/berrange/src/virt/qemu/docs/devel/qapi-golang-code-gen.rst:27:'any' reference target not found: encoding/json
+  ninja: build stopped: subcommand failed.
 
-Signed-off-by: Markus Armbruster <armbru@redhat.com>
----
- migration/rdma.c       | 23 ++++++++---------------
- migration/trace-events |  2 ++
- 2 files changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/migration/rdma.c b/migration/rdma.c
-index dba0802fca..07aef9a071 100644
---- a/migration/rdma.c
-+++ b/migration/rdma.c
-@@ -734,38 +734,31 @@ static void rdma_delete_block(RDMAContext *rdma, RDMALocalBlock *block)
- }
- 
- /*
-- * Put in the log file which RDMA device was opened and the details
-- * associated with that device.
-+ * Trace RDMA device open, with device details.
-  */
- static void qemu_rdma_dump_id(const char *who, struct ibv_context *verbs)
- {
-     struct ibv_port_attr port;
- 
-     if (ibv_query_port(verbs, 1, &port)) {
--        error_report("Failed to query port information");
-+        trace_qemu_rdma_dump_id_failed(who);
-         return;
-     }
- 
--    printf("%s RDMA Device opened: kernel name %s "
--           "uverbs device name %s, "
--           "infiniband_verbs class device path %s, "
--           "infiniband class device path %s, "
--           "transport: (%d) %s\n",
--                who,
-+    trace_qemu_rdma_dump_id(who,
-                 verbs->device->name,
-                 verbs->device->dev_name,
-                 verbs->device->dev_path,
-                 verbs->device->ibdev_path,
-                 port.link_layer,
--                (port.link_layer == IBV_LINK_LAYER_INFINIBAND) ? "Infiniband" :
--                 ((port.link_layer == IBV_LINK_LAYER_ETHERNET)
--                    ? "Ethernet" : "Unknown"));
-+                port.link_layer == IBV_LINK_LAYER_INFINIBAND ? "Infiniband"
-+                : port.link_layer == IBV_LINK_LAYER_ETHERNET ? "Ethernet"
-+                : "Unknown");
- }
- 
- /*
-- * Put in the log file the RDMA gid addressing information,
-- * useful for folks who have trouble understanding the
-- * RDMA device hierarchy in the kernel.
-+ * Trace RDMA gid addressing information.
-+ * Useful for understanding the RDMA device hierarchy in the kernel.
-  */
- static void qemu_rdma_dump_gid(const char *who, struct rdma_cm_id *id)
- {
-diff --git a/migration/trace-events b/migration/trace-events
-index d733107ec6..4ce16ae866 100644
---- a/migration/trace-events
-+++ b/migration/trace-events
-@@ -213,6 +213,8 @@ qemu_rdma_close(void) ""
- qemu_rdma_connect_pin_all_requested(void) ""
- qemu_rdma_connect_pin_all_outcome(bool pin) "%d"
- qemu_rdma_dest_init_trying(const char *host, const char *ip) "%s => %s"
-+qemu_rdma_dump_id_failed(const char *who) "%s RDMA Device opened, but can't query port information"
-+qemu_rdma_dump_id(const char *who, const char *name, const char *dev_name, const char *dev_path, const char *ibdev_path, int transport, const char *transport_name) "%s RDMA Device opened: kernel name %s uverbs device name %s, infiniband_verbs class device path %s, infiniband class device path %s, transport: (%d) %s"
- qemu_rdma_dump_gid(const char *who, const char *src, const char *dst) "%s Source GID: %s, Dest GID: %s"
- qemu_rdma_exchange_get_response_start(const char *desc) "CONTROL: %s receiving..."
- qemu_rdma_exchange_get_response_none(const char *desc, int type) "Surprise: got %s (%d)"
+Repeated several other placs.
+
+> +
+> +
+> +QAPI types to Go structs
+> +========================
+> +
+> +Enum
+> +----
+> +
+> +Enums are mapped as strings in Go, using a specified string type per
+> +Enum to help with type safety in the Go application.
+> +
+> +.. code-block:: JSON
+> +    { 'enum': 'HostMemPolicy',
+> +      'data': [ 'default', 'preferred', 'bind', 'interleave' ] }
+
+Needs a blank line after every 'code-block:: JSON' or build fails
+with:
+
+Warning, treated as error:
+/var/home/berrange/src/virt/qemu/docs/devel/qapi-golang-code-gen.rst:41:Error in "code-block" directive:
+maximum 1 argument(s) allowed, 12 supplied.
+
+.. code-block:: JSON
+    { 'enum': 'HostMemPolicy',
+      'data': [ 'default', 'preferred', 'bind', 'interleave' ] }
+ninja: build stopped: subcommand failed.
+
+
+If fixing that then it still isn't happy for reasons I can't
+immediately figure out.
+
+Warning, treated as error:
+/var/home/berrange/src/virt/qemu/docs/devel/qapi-golang-code-gen.rst:41:Could not lex literal_block as "JSON". Highlighting skipped.
+ninja: build stopped: subcommand failed.
+
+
+
+> +
+> +.. code-block:: go
+> +    type HostMemPolicy string
+> +
+> +    const (
+> +        HostMemPolicyDefault    HostMemPolicy = "default"
+> +        HostMemPolicyPreferred  HostMemPolicy = "preferred"
+> +        HostMemPolicyBind       HostMemPolicy = "bind"
+> +        HostMemPolicyInterleave HostMemPolicy = "interleave"
+> +    )
+> +
+> +
+> +Struct
+> +------
+> +
+> +The mapping between a QAPI struct in Go struct is very straightforward.
+> + - Each member of the QAPI struct has its own field in a Go struct.
+> + - Optional members are pointers type with 'omitempty' field tag set
+> +
+> +One important design decision was to _not_ embed base struct, copying
+> +the base members to the original struct. This reduces the complexity
+> +for the Go application.
+> +
+> +.. code-block:: JSON
+> +    { 'struct': 'BlockExportOptionsNbdBase',
+> +      'data': { '*name': 'str', '*description': 'str' } }
+> +
+> +    { 'struct': 'BlockExportOptionsNbd',
+> +      'base': 'BlockExportOptionsNbdBase',
+> +      'data': { '*bitmaps': ['BlockDirtyBitmapOrStr'],
+> +                '*allocation-depth': 'bool' } }
+> +
+> +.. code-block:: go
+> +    type BlockExportOptionsNbd struct {
+> +        Name        *string `json:"name,omitempty"`
+> +        Description *string `json:"description,omitempty"`
+> +
+> +        Bitmaps         []BlockDirtyBitmapOrStr `json:"bitmaps,omitempty"`
+> +        AllocationDepth *bool                   `json:"allocation-depth,omitempty"`
+> +    }
+> +
+> +
+> +Union
+> +-----
+> +
+> +Unions in QAPI are binded to a Enum type which provides all possible
+> +branches of the union. The most important caveat here is that the Union
+> +does not need to implement all possible branches for the Enum.
+> +Receiving a enum value of a unimplemented branch is valid. For this
+> +reason, we keep a discriminator field in each Union Go struct and also
+> +implement the Marshal interface.
+> +
+> +As each Union Go struct type has both the discriminator field and
+> +optional fields, it is important to note that when converting Go struct
+> +to JSON, we only consider the discriminator field if no optional field
+> +member was set. In practice, the user should use the optional fields if
+> +the QAPI Union type has defined them, otherwise the user can set the
+> +discriminator field for the unbranched enum value.
+> +
+> +.. code-block:: JSON
+> +    { 'union': 'ImageInfoSpecificQCow2Encryption',
+> +      'base': 'ImageInfoSpecificQCow2EncryptionBase',
+> +      'discriminator': 'format',
+> +      'data': { 'luks': 'QCryptoBlockInfoLUKS' } }
+> +
+> +.. code-block:: go
+> +    type ImageInfoSpecificQCow2Encryption struct {
+> +        Format BlockdevQcow2EncryptionFormat `json:"format"`
+> +
+> +        // Variants fields
+> +        Luks *QCryptoBlockInfoLUKS `json:"-"`
+> +    }
+> +
+> +    func (s ImageInfoSpecificQCow2Encryption) MarshalJSON() ([]byte, error) {
+> +        // Normal logic goes here
+> +        // ...
+> +
+> +        // Check for valid values without field members
+> +        if len(bytes) == 0 && err == nil &&
+> +            (s.Format == BlockdevQcow2EncryptionFormatAes) {
+> +            type Alias ImageInfoSpecificQCow2Encryption
+> +            bytes, err = json.Marshal(Alias(s))
+> +        }
+> +        // ...
+> +    }
+> +
+> +
+> +    func (s *ImageInfoSpecificQCow2Encryption) UnmarshalJSON(data []byte) error {
+> +        // Normal logic goes here
+> +        // ...
+> +
+> +        switch tmp.Format {
+> +        case BlockdevQcow2EncryptionFormatLuks:
+> +            // ...
+> +        default:
+> +            // Check for valid values without field members
+> +            if tmp.Format != BlockdevQcow2EncryptionFormatAes {
+> +                return fmt.Errorf(...)
+> +            }
+> +        }
+> +        return nil
+> +    }
+> +
+> +
+> +Alternate
+> +---------
+> +
+> +Like Unions, alternates can have a few branches. Unlike Unions, they
+> +don't have a discriminator field and each branch should be a different
+> +class of Type entirely (e.g: You can't have two branches of type int in
+> +one Alternate).
+> +
+> +While the marshalling is similar to Unions, the unmarshalling uses a
+> +try-and-error approach, trying to fit the data payload in one of the
+> +Alternate fields.
+> +
+> +The biggest caveat is handling Alternates that can take JSON Null as
+> +value. The issue lies on `encoding/json` library limitation where
+> +unmarshalling JSON Null data to a Go struct which has the 'omitempty'
+> +field that, it bypass the Marshal interface. The same happens when
+> +marshalling, if the field tag 'omitempty' is used, a nil pointer would
+> +never be translated to null JSON value.
+> +
+> +The problem being, we use pointer to type plus `omitempty` field to
+> +express a QAPI optional member.
+> +
+> +In order to handle JSON Null, the generator needs to do the following:
+> +  - Read the QAPI schema prior to generate any code and cache
+> +    all alternate types that can take JSON Null
+> +  - For all Go structs that should be considered optional and they type
+> +    are one of those alternates, do not set `omitempty` and implement
+> +    Marshal interface for this Go struct, to properly handle JSON Null
+> +  - In the Alternate, uses a boolean 'IsNull' to express a JSON Null
+> +    and implement the AbsentAlternate interface, to help sturcts know
+> +    if a given Alternate type should be considered Absent (not set) or
+> +    any other possible Value, including JSON Null.
+> +
+> +.. code-block:: JSON
+> +    { 'alternate': 'BlockdevRefOrNull',
+> +      'data': { 'definition': 'BlockdevOptions',
+> +                'reference': 'str',
+> +                'null': 'null' } }
+> +
+> +.. code-block:: go
+> +    type BlockdevRefOrNull struct {
+> +        Definition *BlockdevOptions
+> +        Reference  *string
+> +        IsNull     bool
+> +    }
+> +
+> +    func (s *BlockdevRefOrNull) ToAnyOrAbsent() (any, bool) {
+> +        if s != nil {
+> +            if s.IsNull {
+> +                return nil, false
+> +            } else if s.Definition != nil {
+> +                return *s.Definition, false
+> +            } else if s.Reference != nil {
+> +                return *s.Reference, false
+> +            }
+> +        }
+> +
+> +        return nil, true
+> +    }
+> +
+> +    func (s BlockdevRefOrNull) MarshalJSON() ([]byte, error) {
+> +        if s.IsNull {
+> +            return []byte("null"), nil
+> +        } else if s.Definition != nil {
+> +            return json.Marshal(s.Definition)
+> +        } else if s.Reference != nil {
+> +            return json.Marshal(s.Reference)
+> +        }
+> +        return []byte("{}"), nil
+> +    }
+> +
+> +    func (s *BlockdevRefOrNull) UnmarshalJSON(data []byte) error {
+> +        // Check for json-null first
+> +        if string(data) == "null" {
+> +            s.IsNull = true
+> +            return nil
+> +        }
+> +        // Check for BlockdevOptions
+> +        {
+> +            s.Definition = new(BlockdevOptions)
+> +            if err := StrictDecode(s.Definition, data); err == nil {
+> +                return nil
+> +            }
+> +            s.Definition = nil
+> +        }
+> +        // Check for string
+> +        {
+> +            s.Reference = new(string)
+> +            if err := StrictDecode(s.Reference, data); err == nil {
+> +                return nil
+> +            }
+> +            s.Reference = nil
+> +        }
+> +
+> +        return fmt.Errorf("Can't convert to BlockdevRefOrNull: %s", string(data))
+> +    }
+> +
+> +
+> +Event
+> +-----
+> +
+> +All events are mapped to its own struct with the additional
+> +MessageTimestamp field, for the over-the-wire 'timestamp' value.
+> +
+> +Marshaling and Unmarshaling happens over the Event interface, so users
+> +should use the MarshalEvent() and UnmarshalEvent() methods.
+> +
+> +.. code-block:: JSON
+> +    { 'event': 'SHUTDOWN',
+> +      'data': { 'guest': 'bool',
+> +                'reason': 'ShutdownCause' } }
+> +
+> +.. code-block:: go
+> +    type Event interface {
+> +        GetName() string
+> +        GetTimestamp() Timestamp
+> +    }
+> +
+> +    type ShutdownEvent struct {
+> +        MessageTimestamp Timestamp     `json:"-"`
+> +        Guest            bool          `json:"guest"`
+> +        Reason           ShutdownCause `json:"reason"`
+> +    }
+> +
+> +    func (s *ShutdownEvent) GetName() string {
+> +        return "SHUTDOWN"
+> +    }
+> +
+> +    func (s *ShutdownEvent) GetTimestamp() Timestamp {
+> +        return s.MessageTimestamp
+> +    }
+> +
+> +
+> +Command
+> +-------
+> +
+> +All commands are mapped to its own struct with the additional MessageId
+> +field for the optional 'id'. If the command has a boxed data struct,
+> +the option struct will be embed in the command struct.
+> +
+> +As commands do require a return value, every command has its own return
+> +type. The Command interface has a GetReturnType() method that returns a
+> +CommandReturn interface, to help Go application handling the data.
+> +
+> +Marshaling and Unmarshaling happens over the Command interface, so
+> +users should use the MarshalCommand() and UnmarshalCommand() methods.
+> +
+> +.. code-block:: JSON
+> +   { 'command': 'set_password',
+> +     'boxed': true,
+> +     'data': 'SetPasswordOptions' }
+> +
+> +.. code-block:: go
+> +    type Command interface {
+> +        GetId() string
+> +        GetName() string
+> +        GetReturnType() CommandReturn
+> +    }
+> +
+> +    // SetPasswordOptions is embed
+> +    type SetPasswordCommand struct {
+> +        SetPasswordOptions
+> +        MessageId string `json:"-"`
+> +    }
+> +
+> +    // This is an union
+> +    type SetPasswordOptions struct {
+> +        Protocol  DisplayProtocol    `json:"protocol"`
+> +        Password  string             `json:"password"`
+> +        Connected *SetPasswordAction `json:"connected,omitempty"`
+> +
+> +        // Variants fields
+> +        Vnc *SetPasswordOptionsVnc `json:"-"`
+> +    }
+> +
+> +Now an example of a command without boxed type.
+> +
+> +.. code-block:: JSON
+> +    { 'command': 'set_link',
+> +      'data': {'name': 'str', 'up': 'bool'} }
+> +
+> +.. code-block:: go
+> +    type SetLinkCommand struct {
+> +        MessageId string `json:"-"`
+> +        Name      string `json:"name"`
+> +        Up        bool   `json:"up"`
+> +    }
+> +
+> +Known issues
+> +============
+> +
+> +- Type names might not follow proper Go convention. Andrea suggested an
+> +  annotation to the QAPI schema that could solve it.
+> +  https://lists.gnu.org/archive/html/qemu-devel/2022-05/msg00127.html
+> -- 
+> 2.41.0
+> 
+
+With regards,
+Daniel
 -- 
-2.41.0
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
