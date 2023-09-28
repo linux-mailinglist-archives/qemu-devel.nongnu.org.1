@@ -2,61 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A577B169D
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:56:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1CC7B16DF
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 11:11:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlmmk-0006kR-TQ; Thu, 28 Sep 2023 04:54:14 -0400
+	id 1qln27-0007Vl-R0; Thu, 28 Sep 2023 05:10:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmmj-0006ha-Bd
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:54:13 -0400
-Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qln23-0007VH-MZ; Thu, 28 Sep 2023 05:10:04 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmmf-00051M-Af
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:54:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
- :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=edtXR816u45JZWfizGurdb1dDkx8u9mYVgXLFCS83yg=; b=HXijQLFrXjPzi0QbMP+yf6ohSZ
- W+TWbZHGhSz+5xE+90J29JMlq6rcK9ATPom2cmDrM4yzhDMhdWbRMHEn1m1WeJkSAsPvatFpn8aeQ
- dHT6FQ3Pqbtm1o4FpbH45U/x8ocAqa5VMSZtK7900VhjKU+QTxzxBTI0p8oKdrvQIYhI=;
-X-Envelope-From: <kbastian@mail.uni-paderborn.de>
-From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de
-Subject: [PULL v2 21/21] target/tricore: Change effective address (ea) to
- target_ulong
-Date: Thu, 28 Sep 2023 10:53:03 +0200
-Message-ID: <20230928085303.511518-22-kbastian@mail.uni-paderborn.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
-References: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qln21-0000GW-2G; Thu, 28 Sep 2023 05:10:03 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id E404C63909;
+ Thu, 28 Sep 2023 12:09:52 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b411::1:2f] (unknown
+ [2a02:6b8:b081:b411::1:2f])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id p9NWRR0OneA0-ze4UQD4Y; Thu, 28 Sep 2023 12:09:52 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695892192;
+ bh=47NvfwL1pN2jkGRL3f+9uh5aXFYXzZbQuwmPFB4K26A=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=q4GtiECxPkYkwUsiR877Ovsofq9IAwdZd5QpnkNFBWLRO3MIGMf9ew57FpLeYlzMr
+ K2tVsNAPyh5o4oFsD2OYf3QGERIDrdt5f6cybamEqKPaulcahH1YOox/3fCJ49Y68V
+ 5nJnUmO0f4zzlW4RYVhsDUE0gIUJR87cnXSQLKjE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <b21eccea-0e95-3ac3-96d2-4d9c9e085a15@yandex-team.ru>
+Date: Thu, 28 Sep 2023 12:09:51 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-IMT-spamd-action: no action
-X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
- Antispam-Data: 2023.9.28.84518, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.9.28.602000
-X-Sophos-SenderHistory: ip=79.202.213.239, fs=83872, da=183500301, mc=41, sc=0,
- hc=41, sp=0, fso=83872, re=0, sd=0, hd=0
-X-IMT-Source: Intern
-X-IMT-Spam-Score: 0.0 ()
-X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
-Received-SPF: pass client-ip=2001:638:502:c003::17;
- envelope-from=kbastian@mail.uni-paderborn.de; helo=zuban.uni-paderborn.de
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v7 01/12] nbd/server: Support a request payload
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, libguestfs@redhat.com, qemu-block@nongnu.org
+References: <20230925192229.3186470-14-eblake@redhat.com>
+ <20230925192229.3186470-15-eblake@redhat.com>
+ <523f5553-b62d-3e24-6fc7-8a350f2b6606@yandex-team.ru>
+ <yi725wlzhqhumdyv7wswuubpprae5py5nuhl2fepdgx5ojo5np@d366mhjatqxc>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <yi725wlzhqhumdyv7wswuubpprae5py5nuhl2fepdgx5ojo5np@d366mhjatqxc>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,87 +77,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-as this is an effective address and those cannot be signed,
-it should not be a signed integer.
+On 27.09.23 18:59, Eric Blake wrote:
+> We could also try to be a bit more complicated by peeking at the next
+> few bytes: if they look like a magic number of the next request,
+> assume the client set the bit accidentally but didn't send a payload
+> after all; for anything else, assume the client did pass a payload.
+> But adding in machinery to peek at a prefix is more complex than
+> either assuming a payload is always present (as done in this patch) or
+> assuming the bit was in error (and dropping the connection
+> unconditionally).  Preferences?
 
-Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230913105326.40832-11-kbastian@mail.uni-paderborn.de>
----
- target/tricore/op_helper.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/target/tricore/op_helper.c b/target/tricore/op_helper.c
-index 0cf8eb50bd..ba9c4444b3 100644
---- a/target/tricore/op_helper.c
-+++ b/target/tricore/op_helper.c
-@@ -2458,7 +2458,7 @@ static bool cdc_zero(target_ulong *psw)
-     return count == 0;
- }
- 
--static void save_context_upper(CPUTriCoreState *env, int ea)
-+static void save_context_upper(CPUTriCoreState *env, target_ulong ea)
- {
-     cpu_stl_data(env, ea, env->PCXI);
-     cpu_stl_data(env, ea+4, psw_read(env));
-@@ -2478,7 +2478,7 @@ static void save_context_upper(CPUTriCoreState *env, int ea)
-     cpu_stl_data(env, ea+60, env->gpr_d[15]);
- }
- 
--static void save_context_lower(CPUTriCoreState *env, int ea)
-+static void save_context_lower(CPUTriCoreState *env, target_ulong ea)
- {
-     cpu_stl_data(env, ea, env->PCXI);
-     cpu_stl_data(env, ea+4, env->gpr_a[11]);
-@@ -2498,7 +2498,7 @@ static void save_context_lower(CPUTriCoreState *env, int ea)
-     cpu_stl_data(env, ea+60, env->gpr_d[7]);
- }
- 
--static void restore_context_upper(CPUTriCoreState *env, int ea,
-+static void restore_context_upper(CPUTriCoreState *env, target_ulong ea,
-                                   target_ulong *new_PCXI, target_ulong *new_PSW)
- {
-     *new_PCXI = cpu_ldl_data(env, ea);
-@@ -2519,7 +2519,7 @@ static void restore_context_upper(CPUTriCoreState *env, int ea,
-     env->gpr_d[15] = cpu_ldl_data(env, ea+60);
- }
- 
--static void restore_context_lower(CPUTriCoreState *env, int ea,
-+static void restore_context_lower(CPUTriCoreState *env, target_ulong ea,
-                                   target_ulong *ra, target_ulong *pcxi)
- {
-     *pcxi = cpu_ldl_data(env, ea);
-@@ -2763,26 +2763,26 @@ void helper_rfm(CPUTriCoreState *env)
-     }
- }
- 
--void helper_ldlcx(CPUTriCoreState *env, uint32_t ea)
-+void helper_ldlcx(CPUTriCoreState *env, target_ulong ea)
- {
-     uint32_t dummy;
-     /* insn doesn't load PCXI and RA */
-     restore_context_lower(env, ea, &dummy, &dummy);
- }
- 
--void helper_lducx(CPUTriCoreState *env, uint32_t ea)
-+void helper_lducx(CPUTriCoreState *env, target_ulong ea)
- {
-     uint32_t dummy;
-     /* insn doesn't load PCXI and PSW */
-     restore_context_upper(env, ea, &dummy, &dummy);
- }
- 
--void helper_stlcx(CPUTriCoreState *env, uint32_t ea)
-+void helper_stlcx(CPUTriCoreState *env, target_ulong ea)
- {
-     save_context_lower(env, ea);
- }
- 
--void helper_stucx(CPUTriCoreState *env, uint32_t ea)
-+void helper_stucx(CPUTriCoreState *env, target_ulong ea)
- {
-     save_context_upper(env, ea);
- }
+Ohh, you are right, thanks for comprehensive explanation. I really missed some things you are saying about. Yes, now I agree that "payload always exist when flag is set" is the best effort. Finally, that was our aim of the protocol design: make it more context independent. Probably, we may fix that in specification as preferable or at least possible server behavior about non-compliant client.
+
+r-b coming soon, I just need to take another look with corrected picture in mind.
+
 -- 
-2.42.0
+Best regards,
+Vladimir
 
 
