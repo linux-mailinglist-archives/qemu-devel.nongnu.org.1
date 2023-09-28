@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B267B1059
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 03:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D8B7B1068
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 03:38:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlfnT-0000kr-0b; Wed, 27 Sep 2023 21:26:31 -0400
+	id 1qlfxA-00050v-Vd; Wed, 27 Sep 2023 21:36:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlfnQ-0000kF-SI
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 21:26:28 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlfx8-00050g-FK
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 21:36:30 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlfnP-0000Io-0J
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 21:26:28 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlfx7-0003Gl-2t
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 21:36:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695864386;
+ s=mimecast20190719; t=1695864987;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ofbQlFG7DfY6BCrLZ0NPamX51zA/0IQOtNdVPXeHaqE=;
- b=c6+61P9vBOFFo/elpalnuesDFJBHOs6EQrnvdr8F9+Ybb93Ve88jDPhhmcINCWfWm4F36V
- wJCjn84z87VDUQunMlCrxocXpW2xsksQOcrJ7sQ/wHfLoPXgKE0gSNRFmg5x//TJdUfOGQ
- oGwjHj3B+Jx8VmHJQ+ZocmqTJh/MJL8=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Yd6hFstXCvS7L9LdWl4WKlufmHJf10wiKwAN4rDTzdw=;
+ b=LVa5+o+62khIx4niqVVzIlnhhu87BKB488rFenDf70WVi129Sp1DZi/P1h8VwC57mbyCzX
+ 3vCSgWOh1YX7vhw5/hagtrBLrH1SXYnxtFeet9LlqriaaKHKsK0Nmy6qq4OkUSoz6kbRuV
+ M16KJlt9tWh1UGT+YrglHOEHQr4nQN0=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-6wMgAC_6N2m9rbMB-xIj1w-1; Wed, 27 Sep 2023 21:26:24 -0400
-X-MC-Unique: 6wMgAC_6N2m9rbMB-xIj1w-1
-Received: by mail-pg1-f198.google.com with SMTP id
- 41be03b00d2f7-57dce07c62aso14038590a12.1
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 18:26:24 -0700 (PDT)
+ us-mta-473-57c332rcNbCEl7z6uolvGQ-1; Wed, 27 Sep 2023 21:36:26 -0400
+X-MC-Unique: 57c332rcNbCEl7z6uolvGQ-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-65b107812f0so128362146d6.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 18:36:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695864383; x=1696469183;
+ d=1e100.net; s=20230601; t=1695864985; x=1696469785;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ofbQlFG7DfY6BCrLZ0NPamX51zA/0IQOtNdVPXeHaqE=;
- b=McKRQHLjc9zGJ4B4qEW1zne03YR2zF/guKyrEnPjMo+eG+M9fDg/cQ7lPjwe+n6Y4d
- GHh9fjbTMeymu6EPq+yl769yLFMyyyYOSIzvHd/tHhgrAcfxSy5WszcBTb+jg0OnTOKc
- B7UYUnQTL+ftgdBqlKQ4uDHtxeHnoHna6xdOyKHpalB4gjeup7c2FyAa0HHJsa+sUr8d
- /ysSmYdgSaXqbrP9/CJDHj+EHaIEfLUXzMhANn0XBoe+UBI1ccfbnFUXO9b/sV8KukVn
- wZk/nJ2x/xXiHXDiQkQoKn0HaS0TE1E3RaAaQ8C2dG8HolyDMGc+cPiiPMQaHyw5THuj
- Gcug==
-X-Gm-Message-State: AOJu0YwJND589wRhdF9jWLtlfOr95OjLq7onA5E2yPYKbEvC4axKkbZd
- QoQWxlsO8euRtA3TBQ2o/J9GyC3KfUo0OTlr3+iliDI+LXCyBY59VzvNmiWHgi8f0wkBbcCXxFq
- uporNg1QNcxvj6co=
-X-Received: by 2002:a05:6a21:4982:b0:15d:7767:6553 with SMTP id
- ax2-20020a056a21498200b0015d77676553mr3411419pzc.35.1695864383283; 
- Wed, 27 Sep 2023 18:26:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQ4L0y7g3Yta5s/0ARIaC+adC12OwVZZgHJAmsogm4QCeRwptE6s0a5gQknNwF7Bla9NGoXw==
-X-Received: by 2002:a05:6a21:4982:b0:15d:7767:6553 with SMTP id
- ax2-20020a056a21498200b0015d77676553mr3411385pzc.35.1695864382901; 
- Wed, 27 Sep 2023 18:26:22 -0700 (PDT)
+ bh=Yd6hFstXCvS7L9LdWl4WKlufmHJf10wiKwAN4rDTzdw=;
+ b=lUGuWkRlnWpJC3lUtcEZf3h5edUIgs/n52a8T9IAVfRXojMOE6bFV+KE9W2R5u3eT1
+ hsbea9hvqgG6ivfOzOIvk+UC/VmuYbchLtxyIocNpuIuWJvYezQi6sMWgm/YeO++hiMy
+ 5FuABMoTG5Vi+Zq6y01/p9P+XWP8HTs3bZupYyspWxPs4YYq/Va4DNxmdeMx/LzwdgAO
+ 5Jv3RgMls85+Pb/ZMucHGrlxMXFl1JqKlUAmQo1D2cU0zhdSXtjGT8owIaEV7HdHW0FA
+ EWzVO1oMu4peV8oTk4A5SbiPWxmYXqoMEjODPWKC9u+pQ+8Jg1BZ9+FsWIzHk/ybLwY4
+ CxVQ==
+X-Gm-Message-State: AOJu0YyUKMDf2svXQ0ld+86XPzu4qHC2QuOEUgQoKcFCskyahPqrFAMe
+ BnF16EM4SzKSdlgDYXVTFotoRJWpLcvSPPYJN/Wo2wDD31G9CpnU2zbPyC4vN7ntbBp28pJ0y5Z
+ YJSbik47ubeZMOqM=
+X-Received: by 2002:a0c:9c8f:0:b0:656:5535:ef27 with SMTP id
+ i15-20020a0c9c8f000000b006565535ef27mr3616490qvf.48.1695864985508; 
+ Wed, 27 Sep 2023 18:36:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbbkVhonZAKlnsttYX1r+HqXHtuGnq0NSVq0mseeeHvGTNW4uDVgDOpMrNTUPtA+gmQ5U+sg==
+X-Received: by 2002:a0c:9c8f:0:b0:656:5535:ef27 with SMTP id
+ i15-20020a0c9c8f000000b006565535ef27mr3616470qvf.48.1695864985241; 
+ Wed, 27 Sep 2023 18:36:25 -0700 (PDT)
 Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
  ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
  by smtp.gmail.com with ESMTPSA id
- g11-20020a170902868b00b001c22292ad7esm2378560plo.232.2023.09.27.18.26.11
+ fk14-20020a056a003a8e00b00686b649cdd0sm1743984pfb.86.2023.09.27.18.36.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Sep 2023 18:26:22 -0700 (PDT)
-Message-ID: <26f2a18a-4315-443f-560a-c4f007434206@redhat.com>
-Date: Thu, 28 Sep 2023 11:26:09 +1000
+ Wed, 27 Sep 2023 18:36:24 -0700 (PDT)
+Message-ID: <832342cb-74bc-58dd-c5d7-6f995baeb0f2@redhat.com>
+Date: Thu, 28 Sep 2023 11:36:11 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH RFC V2 16/37] hw/acpi: Update CPUs AML with cpu-(ctrl)dev
- change
+Subject: Re: [PATCH RFC V2 17/37] arm/virt/acpi: Build CPUs AML with CPU
+ Hotplug support
 Content-Language: en-US
 To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org
@@ -85,9 +85,9 @@ Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
  wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
  maobibo@loongson.cn, lixianglai@loongson.cn
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-17-salil.mehta@huawei.com>
+ <20230926100436.28284-18-salil.mehta@huawei.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230926100436.28284-17-salil.mehta@huawei.com>
+In-Reply-To: <20230926100436.28284-18-salil.mehta@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
@@ -115,135 +115,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Salil,
+
 On 9/26/23 20:04, Salil Mehta wrote:
-> CPUs Control device(\\_SB.PCI0) register interface for the x86 arch is based on
-> PCI and is IO port based and hence existing cpus AML code assumes _CRS objects
-                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                           . The existing AML code assumes _CRS object
-> would evaluate to a system resource which describes IO Port address. But on ARM
-   ^^^^^^^^^^^^^^^^^^^
-   is evaluated to a
-   
-> arch CPUs control device(\\_SB.PRES) register interface is memory-mapped hence
-> _CRS object should evaluate to system resource which describes memory-mapped
-               ^^^^^^
-               should be evaluated
-> base address.
+> Support of vCPU Hotplug requires sequence of ACPI handshakes between Qemu and
+> Guest kernel when a vCPU is plugged or unplugged. Most of the AML code to
+> support these handshakes already exists. This AML need to be build during VM
+> init for ARM architecture as well if the GED support exists.
 > 
-> This cpus AML code change updates the existing inerface of the build cpus AML
-> function to accept both IO/MEMORY type regions and update the _CRS object
-> correspondingly.
-> 
-> NOTE: Beside above CPU scan shall be triggered when OSPM evaluates _EVT method
->        part of the GED framework which is covered in subsequent patch.
-> 
-> Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 > ---
->   hw/acpi/cpu.c         | 23 ++++++++++++++++-------
->   hw/i386/acpi-build.c  |  2 +-
->   include/hw/acpi/cpu.h |  5 +++--
->   3 files changed, 20 insertions(+), 10 deletions(-)
+>   hw/arm/virt-acpi-build.c | 13 ++++++++++++-
+>   1 file changed, 12 insertions(+), 1 deletion(-)
 > 
-
-I guess the commit log can be simplified to:
-
-The CPU hotplug register block is declared as a IO region on x86, or a memory
-region on arm64 in build_cpus_aml(), as part of the generic container device
-(\\_SB.PCI0 or \\_SB.PRES).
-
-Adapt build_cpus_aml() so that IO region and memory region can be handled
-in the mean while.
-
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index d5ba37b209..232720992d 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -341,9 +341,10 @@ const VMStateDescription vmstate_cpu_hotplug = {
->   #define CPU_FW_EJECT_EVENT "CEJF"
->   
->   void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-> -                    hwaddr io_base,
-> +                    hwaddr base_addr,
->                       const char *res_root,
-> -                    const char *event_handler_method)
-> +                    const char *event_handler_method,
-> +                    AmlRegionSpace rs)
->   {
->       Aml *ifctx;
->       Aml *field;
-> @@ -370,13 +371,19 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
->           aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
->   
->           crs = aml_resource_template();
-> -        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
-> +        if (rs == AML_SYSTEM_IO) {
-> +            aml_append(crs, aml_io(AML_DECODE16, base_addr, base_addr, 1,
->                                  ACPI_CPU_HOTPLUG_REG_LEN));
-> +        } else {
-> +            aml_append(crs, aml_memory32_fixed(base_addr,
-> +                               ACPI_CPU_HOTPLUG_REG_LEN, AML_READ_WRITE));
-> +        }
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index 6b674231c2..d27df5030e 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -858,7 +858,18 @@ build_dsdt(GArray *table_data, BIOSLinker *linker, VirtMachineState *vms)
+>        * the RTC ACPI device at all when using UEFI.
+>        */
+>       scope = aml_scope("\\_SB");
+> -    acpi_dsdt_add_cpus(scope, vms);
+> +    /* if GED is enabled then cpus AML shall be added as part build_cpus_aml */
+> +    if (vms->acpi_dev) {
+> +        CPUHotplugFeatures opts = {
+> +             .acpi_1_compatible = false,
+> +             .has_legacy_cphp = false
+> +        };
 > +
->           aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
->   
->           /* declare CPU hotplug MMIO region with related access fields */
->           aml_append(cpu_ctrl_dev,
-> -            aml_operation_region("PRST", AML_SYSTEM_IO, aml_int(io_base),
-> +            aml_operation_region("PRST", rs, aml_int(base_addr),
->                                    ACPI_CPU_HOTPLUG_REG_LEN));
->   
->           field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
-> @@ -702,9 +709,11 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
->       aml_append(sb_scope, cpus_dev);
->       aml_append(table, sb_scope);
->   
-> -    method = aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
-> -    aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
-> -    aml_append(table, method);
-> +    if (event_handler_method) {
-> +        method = aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
-> +        aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
-> +        aml_append(table, method);
+> +        build_cpus_aml(scope, ms, opts, memmap[VIRT_CPUHP_ACPI].base,
+> +                       "\\_SB", NULL, AML_SYSTEM_MEMORY);
+> +    } else {
+> +        acpi_dsdt_add_cpus(scope, vms);
 > +    }
->   
->       g_free(cphp_res_path);
->   }
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index bb12b0ad43..560f108d38 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -1550,7 +1550,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->               .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
->           };
->           build_cpus_aml(dsdt, machine, opts, pm->cpu_hp_io_base,
-> -                       "\\_SB.PCI0", "\\_GPE._E02");
-> +                       "\\_SB.PCI0", "\\_GPE._E02", AML_SYSTEM_IO);
->       }
->   
->       if (pcms->memhp_io_base && nr_mem) {
-> diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-> index 999caaf510..b87ebfdf4b 100644
-> --- a/include/hw/acpi/cpu.h
-> +++ b/include/hw/acpi/cpu.h
-> @@ -56,9 +56,10 @@ typedef struct CPUHotplugFeatures {
->   } CPUHotplugFeatures;
->   
->   void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-> -                    hwaddr io_base,
-> +                    hwaddr base_addr,
->                       const char *res_root,
-> -                    const char *event_handler_method);
-> +                    const char *event_handler_method,
-> +                    AmlRegionSpace rs);
->   
->   void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list);
->   
+>       acpi_dsdt_add_uart(scope, &memmap[VIRT_UART],
+>                          (irqmap[VIRT_UART] + ARM_SPI_BASE));
+>       if (vmc->acpi_expose_flash) {
+
+I don't think it's enough to check vms->acpi_dev. vCPU hotplug needn't to be
+supported even vms->acpi_dev exists. For example when vGICv2 instead of
+vGICv3 is enabled, and so on.
 
 Thanks,
 Gavin
