@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D952D7B2906
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 01:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 891B77B2927
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 01:59:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm0lz-0005Cv-DV; Thu, 28 Sep 2023 19:50:23 -0400
+	id 1qm0th-0006iI-8B; Thu, 28 Sep 2023 19:58:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qm0lx-0005CO-CC
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 19:50:21 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qm0tf-0006i2-6b
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 19:58:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qm0lv-0007XB-LP
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 19:50:20 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qm0td-00022l-Gv
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 19:58:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695945018;
+ s=mimecast20190719; t=1695945496;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=p0XZt9kRyelPfoqH8bCJT3LAf3sfTTCBFuXgcpHVVwQ=;
- b=Jz6rtIz+aql4870XOdil18MguHbN4wqADlmtlN6KcfM5HFvuOSvh25ymEHQ06LFTIns+Vo
- gBzVZke7H49Eyqvcts7BCqZzf3mYiDyyJpgv3aoW+Jx0294CSRlMVsaWP1zG24Q3/cqn6N
- rIQcbCuiN2aHFJtgsl2oqoFXdJ9/v74=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=VX1d3q6Mugy9iSjU/rsXPw/uPvDUi4/RHWQI229dwM8=;
+ b=OFj6aPl5eEDTZLk162Zzmll3Zr5BHIl1mkLyCzIZRFDzfu6+NEfTLNS3jBwytno0cVPXpT
+ fbCoJhY33+bXBFzDwRh7A3+EONXs9u0h2szBBbm3be/k3AJqq07NT54avvpiSapYE5ONbi
+ evGZU5OSTHDarpn5OwClVI36H3U3jqs=
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
+ [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-49-BcqLLHiGPcGUDjPD_ChUVg-1; Thu, 28 Sep 2023 19:50:17 -0400
-X-MC-Unique: BcqLLHiGPcGUDjPD_ChUVg-1
-Received: by mail-oi1-f197.google.com with SMTP id
- 5614622812f47-3ae2a37595dso28533710b6e.1
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 16:50:16 -0700 (PDT)
+ us-mta-537-OHhbKB27MqmdGQBByw2UNQ-1; Thu, 28 Sep 2023 19:58:14 -0400
+X-MC-Unique: OHhbKB27MqmdGQBByw2UNQ-1
+Received: by mail-pg1-f200.google.com with SMTP id
+ 41be03b00d2f7-57cf261194aso15266374a12.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 16:58:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695945016; x=1696549816;
+ d=1e100.net; s=20230601; t=1695945494; x=1696550294;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=p0XZt9kRyelPfoqH8bCJT3LAf3sfTTCBFuXgcpHVVwQ=;
- b=sTPiDVeISCIeGQobW9yCiGNpvTGixuuiIE7g7ifdxAlxU1q9aqiSmw72HeZ8Zh8pEa
- +bEtkVXeHdzFMgL3RGzdtsuLlubKc78qOao2sR5/eaWYRMMF91e2DwfKBiWXjnqIuJxD
- VYiSiiqLtHmQl+BAnsOgHPeoHIl9qdwI4Qp9UzBT48L8eCiwHp0TaZb5RPNYQcCR+YUT
- 17PPqeVAdfbIgt4fSp3uEBkB4uVNzmIoitKgbLEXvrifxm1XVXlDNK7FhG6oYk4j5Aah
- n8mtF2z6VoioKtbZNJWd0v16Z+Wn2C+4EdH7p6SxQiJTDgnBzJ0cL6Y8Fq/3EXMTs90t
- G6rA==
-X-Gm-Message-State: AOJu0YwtL5G5lj7GskPtyWs1wgoPJ9LAc/7UmfLlgpw2aISNt7B0d0Th
- 0VteJJ5j9Q4oZM0AviIXYzCtbRwFSqhJxUCWR9XUsfyZoheuQUDiRbiB0nABqXm+L7xexs2eiEj
- wPXqwIq5CEx0nmAY=
-X-Received: by 2002:a05:6808:f04:b0:3af:6cf3:d62f with SMTP id
- m4-20020a0568080f0400b003af6cf3d62fmr1563709oiw.29.1695945016374; 
- Thu, 28 Sep 2023 16:50:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHG49JH3BMY6IZoWbfrUszHt3uYOrx4q5Mmwlfh3G76UtcNOkVU7LpINQrZ6TbwLSquK/A6Pw==
-X-Received: by 2002:a05:6808:f04:b0:3af:6cf3:d62f with SMTP id
- m4-20020a0568080f0400b003af6cf3d62fmr1563687oiw.29.1695945016063; 
- Thu, 28 Sep 2023 16:50:16 -0700 (PDT)
+ bh=VX1d3q6Mugy9iSjU/rsXPw/uPvDUi4/RHWQI229dwM8=;
+ b=XDKp3cJ7l/calUTtie44ByNYjHhv2zEvRSP6TELYOGFZb++pPvAVkH2E0fLWbX8lSR
+ XWYosyqBW/DY2Gxq7mkwg7Za4JAo0i/zGA9v+9I47hP9Jle+ONheqVdw3J3lYRLaUU4Q
+ wc+I2tUqjxo4vNoOwPb53wI8vKq4Yd4qnH+ifVnUzphhjAf8hynorElvLdf7wRgRtlDO
+ uiQhUPFtLz6lKbyx+S1TDD/MEeHRcLrVteG1+GCmvUKU/f4kgTvwb8nWGFbxZ+uYCVIu
+ WY94aBSO6cPL3kiwgub8fSi9bhFYqJsG5UD4UR9PdqMfVgDOYpF/sfyPt+QQM8qY7IKW
+ zGlw==
+X-Gm-Message-State: AOJu0Yys9FvrWjvQTejENZkb5c2Ps4aLMTPei+PkmVxNxoRoAgeWKgUY
+ PDk6KwfWiOraWBjdN/X0S3usB31lWR8NITRrHDdivQzZJykrKXg04L7Frlflc3X68/dpLYW9oip
+ RtiBiRj6hl9+AY8g=
+X-Received: by 2002:a05:6a20:8f1d:b0:161:7a0c:3c37 with SMTP id
+ b29-20020a056a208f1d00b001617a0c3c37mr2946133pzk.5.1695945493739; 
+ Thu, 28 Sep 2023 16:58:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3SSVjGY1dpT+T6jCMPvpHTYsC08M5JC7OVXuaccCgsiAXg/efErQVb+E2zWb3T6FUqL6M8Q==
+X-Received: by 2002:a05:6a20:8f1d:b0:161:7a0c:3c37 with SMTP id
+ b29-20020a056a208f1d00b001617a0c3c37mr2946120pzk.5.1695945493342; 
+ Thu, 28 Sep 2023 16:58:13 -0700 (PDT)
 Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
  ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
  by smtp.gmail.com with ESMTPSA id
- a10-20020a62bd0a000000b00682a908949bsm6718016pff.92.2023.09.28.16.50.04
+ d24-20020aa78158000000b0068fc2fe4612sm13939445pfn.194.2023.09.28.16.58.01
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 16:50:15 -0700 (PDT)
-Message-ID: <ae6cdf01-2ede-69d8-cc6d-60ea1c80cefd@redhat.com>
-Date: Fri, 29 Sep 2023 09:50:02 +1000
+ Thu, 28 Sep 2023 16:58:12 -0700 (PDT)
+Message-ID: <c45acbe4-f454-f6a0-923b-75ca1e790c03@redhat.com>
+Date: Fri, 29 Sep 2023 09:57:58 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH RFC V2 22/37] hw/acpi: Make _MAT method optional
+Subject: Re: [PATCH RFC V2 23/37] arm/virt: Release objects for *disabled*
+ possible vCPUs after init
 Content-Language: en-US
 To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org
@@ -84,9 +85,9 @@ Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
  wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
  maobibo@loongson.cn, lixianglai@loongson.cn
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-23-salil.mehta@huawei.com>
+ <20230926100436.28284-24-salil.mehta@huawei.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230926100436.28284-23-salil.mehta@huawei.com>
+In-Reply-To: <20230926100436.28284-24-salil.mehta@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
@@ -114,55 +115,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Salil,
+
 On 9/26/23 20:04, Salil Mehta wrote:
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> During machvirt_init(), QOM ARMCPU objects are also pre-created along with the
+> corresponding KVM vCPUs in the host for all possible vCPUs. This necessary
+> because of the architectural constraint, KVM restricts the deferred creation of
+> the KVM vCPUs and VGIC initialization/sizing after VM init. Hence, VGIC is
+> pre-sized with possible vCPUs.
 > 
-> The GICC interface on arm64 vCPUs is statically defined in the MADT, and
-> doesn't require a _MAT entry. Although the GICC is indicated as present
-> by the MADT entry, it can only be used from vCPU sysregs, which aren't
-> accessible until hot-add.
+> After initialization of the machine is complete disabled possible KVM vCPUs are
+> then parked at the per-virt-machine list "kvm_parked_vcpus" and we release the
+> QOM ARMCPU objects for the disabled vCPUs. These shall be re-created at the time
+> when vCPU is hotplugged again. QOM ARMCPU object is then re-attached with
+> corresponding parked KVM vCPU.
 > 
-> Co-developed-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Co-developed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Signed-off-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Alternatively, we could've never released the QOM CPU objects and kept on
+> reusing. This approach might require some modifications of qdevice_add()
+> interface to get old ARMCPU object instead of creating a new one for the hotplug
+> request.
+> 
+> Each of the above approaches come with their own pros and cons. This prototype
+> uses the 1st approach.(suggestions are welcome!)
+> 
+> Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 > ---
->   hw/acpi/cpu.c | 12 +++++++-----
->   1 file changed, 7 insertions(+), 5 deletions(-)
+>   hw/arm/virt.c | 32 ++++++++++++++++++++++++++++++++
+>   1 file changed, 32 insertions(+)
 > 
-
-With following nits addressed:
-
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index e1299696d3..217db99538 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -715,11 +715,13 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
->               aml_append(dev, method);
->   
->               /* build _MAT object */
-> -            assert(adevc && adevc->madt_cpu);
-> -            adevc->madt_cpu(i, arch_ids, madt_buf,
-> -                            true); /* set enabled flag */
-> -            aml_append(dev, aml_name_decl("_MAT",
-> -                aml_buffer(madt_buf->len, (uint8_t *)madt_buf->data)));
-> +            if (adevc && adevc->madt_cpu) {
-> +                assert(adevc && adevc->madt_cpu);
-> +                adevc->madt_cpu(i, arch_ids, madt_buf,
-> +                                true); /* set enabled flag */
-> +                aml_append(dev, aml_name_decl("_MAT",
-> +                    aml_buffer(madt_buf->len, (uint8_t *)madt_buf->data)));
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index f1bee569d5..3b068534a8 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -1965,6 +1965,7 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+>   {
+>       CPUArchIdList *possible_cpus = vms->parent.possible_cpus;
+>       int max_cpus = MACHINE(vms)->smp.max_cpus;
+> +    MachineState *ms = MACHINE(vms);
+>       bool aarch64, steal_time;
+>       CPUState *cpu;
+>       int n;
+> @@ -2025,6 +2026,37 @@ static void virt_cpu_post_init(VirtMachineState *vms, MemoryRegion *sysmem)
+>               }
+>           }
+>       }
+> +
+> +    if (kvm_enabled() || tcg_enabled()) {
+> +        for (n = 0; n < possible_cpus->len; n++) {
+> +            cpu = qemu_get_possible_cpu(n);
+> +
+> +            /*
+> +             * Now, GIC has been sized with possible CPUs and we dont require
+> +             * disabled vCPU objects to be represented in the QOM. Release the
+> +             * disabled ARMCPU objects earlier used during init for pre-sizing.
+> +             *
+> +             * We fake to the guest through ACPI about the presence(_STA.PRES=1)
+> +             * of these non-existent vCPUs at VMM/qemu and present these as
+> +             * disabled vCPUs(_STA.ENA=0) so that they cant be used. These vCPUs
+> +             * can be later added to the guest through hotplug exchanges when
+> +             * ARMCPU objects are created back again using 'device_add' QMP
+> +             * command.
+> +             */
+> +            /*
+> +             * RFC: Question: Other approach could've been to keep them forever
+> +             * and release it only once when qemu exits as part of finalize or
+> +             * when new vCPU is hotplugged. In the later old could be released
+> +             * for the newly created object for the same vCPU?
+> +             */
+> +            if (!qemu_enabled_cpu(cpu)) {
+> +                CPUArchId *cpu_slot;
+> +                cpu_slot = virt_find_cpu_slot(ms, cpu->cpu_index);
+> +                cpu_slot->cpu = NULL;
+> +                object_unref(OBJECT(cpu));
 > +            }
->               g_array_free(madt_buf, true);
+> +        }
+> +    }
+>   }
 >   
->               if (CPU(arch_ids->cpus[i].cpu) != first_cpu) {
 
-May be worthy to have comment to mention _MAT isn't needed on aarch64.
+Needn't we release those CPU instances for hve and qtest? Besides, I think it's
+hard for reuse those objects because they're managed by QOM, which is almost
+transparent to us, correct?
 
-                /* Build _MAT object, which isn't needed by aarch64 */
+>   static void virt_cpu_set_properties(Object *cpuobj, const CPUArchId *cpu_slot,
 
 Thanks,
 Gavin
