@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E678A7B25E5
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 21:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7C67B25FE
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 21:39:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlwab-0002eJ-R3; Thu, 28 Sep 2023 15:22:21 -0400
+	id 1qlwph-0006nK-5K; Thu, 28 Sep 2023 15:37:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlwaX-0002dQ-Ll
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:22:17 -0400
-Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
+ id 1qlwpf-0006nC-Dt
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:37:55 -0400
+Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlwaQ-000255-Dd
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:22:12 -0400
-Received: by mail-pf1-x42c.google.com with SMTP id
- d2e1a72fcca58-690ba63891dso10453867b3a.2
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 12:22:04 -0700 (PDT)
+ id 1qlwpd-0006j2-KJ
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:37:54 -0400
+Received: by mail-oi1-x22e.google.com with SMTP id
+ 5614622812f47-3ae2f8bf865so6481369b6e.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 12:37:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695928923; x=1696533723; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1695929872; x=1696534672; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=sKSlZdVOGX+ZMVR36wyq/I2cB7S0oxMqPMwajXWY1zs=;
- b=faVchqrsAkF2zSXHfaumcer40r4lRjvOMEPX5hZMwhflOD/60MzM7OH7a6FCh4dYQi
- tX+oJjsuDhsXvTH6P+5BRptv95JOEzQ19PMyfaS9IYgxEBvUWWZ/ai+hkDSCoIKLVMlx
- sifTrlqCnB0KzrfEyYoSiGKR1i1Yx+uYNV5feGpeC4b2cxFt0xTNHH8yNDhIvcnnhUjY
- NFcFZRrY4IaHy0N92bOsL2Vw6L0pH40HQ2T74XqWuiVsI/P/fqJtzT+xiLwqIOdZCht9
- i/NdN3UCiJtmvRD0RGFHEoQOinK51Ijrr+dHHtpGASwqg3X47O/OJI5JR0+NIdxGrkCr
- AdFg==
+ bh=Sd3JgHHbzfXrzJFWic3Cq/C6a3eXNco/BTfaLz6PrDY=;
+ b=e2kJzhB/Dfl9S3dPxMCZGFuoqgdtSkG1CwV1dXBy2ohKUoytuw9ozlZrIk1m/ZHW2L
+ 5R9PVOE4O7V2bH3N7qH4AnjUdfXlo24gLwHOnmka6urkx5beDx+argTqYLvljdOmX1Ib
+ QeFySCl9rjtWFjSaA7qv+eJ51hSt1zSfIA8No3y7Sk1aX0qY/J7c+hoe/txhdw97X9RU
+ syD6p6MuuhOehLLq3QTv9qadZetMOJeBPgWKUUOPrFHlvWp1kVmb2Mb7DS0Xwun0zJ1e
+ WkUk4dm2tacQayJUB2iO4tADa+BzdLX+yAketLCCXEbPsNRm3mac/uszA3TGFIHO4bPw
+ H7nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695928923; x=1696533723;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1695929872; x=1696534672;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sKSlZdVOGX+ZMVR36wyq/I2cB7S0oxMqPMwajXWY1zs=;
- b=mubGG96UpB3/zOTC8s3Gjz00To16E3mTQjTiq6WRa7pM1phXolkVB421TSCV34Z8p6
- ERtY9k+Vv4uA4VMMmx9QeGmPrlHKlbTTcvrm+FD62H0RlV93bjB6s066bs0ykVXK3ufq
- /NhuULPugPciQ5el6itZwvzuutI+hXCv8KtyFq3dEJPdqKh4qSTNhfCuwoTWUHQ4e3SQ
- Jvw1cYrMPutQ/EhUXuoxvLVaBsb/5XMW7veNlvnRwNmYE8x/pKrCmeVkmHyW/sg6NqLk
- cPv1IKXHIcgdhxNZd1mB1F6NFBqY0oQ9DNnpoGXCZ7gLSE0E+wU0FqXd3M+DLwMdEHkH
- wHzQ==
-X-Gm-Message-State: AOJu0Yx6lGQwlDhKk6H4DHs/EV3wzasLdUAj3QU1HYafM1p18VMQHrCa
- 1qCFFh53YH6QKSPjCpbsMJahag==
-X-Google-Smtp-Source: AGHT+IGRQ2H62FELxQ61hgKUf/ihpXLrUaspbp+8yKkBHS49+Wlu6efdFLGRiztM/6vAgLcmIgGueg==
-X-Received: by 2002:a05:6a20:6a09:b0:14c:910d:972d with SMTP id
- p9-20020a056a206a0900b0014c910d972dmr2404908pzk.12.1695928923430; 
- Thu, 28 Sep 2023 12:22:03 -0700 (PDT)
+ bh=Sd3JgHHbzfXrzJFWic3Cq/C6a3eXNco/BTfaLz6PrDY=;
+ b=CiCy2FLv3icu/MJxPuH8sPUwnOLep/ulVodQzHYbjvAtEtE7sMdql6AVGNOoQX8MUP
+ y7LTxxqIlRuHbblDBgwvbV7Vn3tvClR7h1kesIdzP+Ba0bJ6r09ZITTeydv0B75AzENy
+ sRmqMdNKVhwgyMJVMaMs4+Cr1nzZuu8hDdJ2j78/BxVN9OD5EBUvvTBczTI5xLoh+48g
+ RswIH1jJW31/91RH+8H8NVJyZG1hfLhorC5v3LuXmaB0dYIWQNDfKapvtYlZU1l3iUvp
+ /35RZMM9bqm2jR1UgIRbcAVspoFxZt6eclfBjHA7/Q9bOxSq1HX2ZDp61aVqoLrx5scB
+ lqtQ==
+X-Gm-Message-State: AOJu0YyMUPGYnLPIzQWnINWXYPZlg2gaX+K284XhKp14+boHPH3n5exE
+ zbzDh5rJCEM1Jimps6pNoaIVuA==
+X-Google-Smtp-Source: AGHT+IHAYNzMMQ2KToJAzmTJncbWSi3HaoQRrazFxUDG0lpguNZAc2udTm875vEyvEBzC+Yb/lKblw==
+X-Received: by 2002:a05:6808:2209:b0:3ae:5397:eaa0 with SMTP id
+ bd9-20020a056808220900b003ae5397eaa0mr2522209oib.41.1695929871813; 
+ Thu, 28 Sep 2023 12:37:51 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.131.115])
  by smtp.gmail.com with ESMTPSA id
- k9-20020aa792c9000000b0069353ac3d38sm1196408pfa.69.2023.09.28.12.22.02
+ du14-20020a056a002b4e00b00690fe1c928esm9906928pfb.91.2023.09.28.12.37.50
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 12:22:02 -0700 (PDT)
-Message-ID: <a14e853a-fb10-dd49-44da-2d50ea590088@linaro.org>
-Date: Thu, 28 Sep 2023 12:22:01 -0700
+ Thu, 28 Sep 2023 12:37:51 -0700 (PDT)
+Message-ID: <6148083e-ba07-798c-4cc3-6cf29236c53c@linaro.org>
+Date: Thu, 28 Sep 2023 12:37:49 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH] target/arm: Implement FEAT_HPMN0
+Subject: Re: [PATCH] mips: fix abort on integer overflow
 Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230921185445.3339214-1-peter.maydell@linaro.org>
+To: Mikulas Patocka <mpatocka@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno
+ <aurelien@aurel32.net>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Huacai Chen <chenhuacai@kernel.org>
+Cc: qemu-devel@nongnu.org
+References: <cfa02bbb-cdaf-4310-ac40-a2837d33c710@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230921185445.3339214-1-peter.maydell@linaro.org>
+In-Reply-To: <cfa02bbb-cdaf-4310-ac40-a2837d33c710@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -94,28 +98,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/21/23 14:54, Peter Maydell wrote:
-> FEAT_HPMN0 is a small feature which defines that it is valid for
-> MDCR_EL2.HPMN to be set to 0, meaning "no PMU event counters provided
-> to an EL1 guest" (previously this setting was reserved). QEMU's
-> implementation almost gets HPMN == 0 right, but we need to fix
-> one check in pmevcntr_is_64_bit(). That is enough for us to
-> advertise the feature in the 'max' CPU.
+On 9/24/23 07:16, Mikulas Patocka wrote:
+> Qemu mips userspace emulation crashes with "qemu: unhandled CPU exception
+> 0x15 - aborting" when one of the integer arithmetic instructions detects
+> an overflow.
 > 
-> (We don't need to make the behaviour conditional on feature
-> presence, because the FEAT_HPMN0 behaviour is within the range
-> of permitted UNPREDICTABLE behaviour for a non-FEAT_HPMN0
-> implementation.)
+> This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
 > 
-> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+> Cc: qemu-stable@nongnu.org
+> 
 > ---
->   docs/system/arm/emulation.rst | 1 +
->   target/arm/helper.c           | 2 +-
->   target/arm/tcg/cpu32.c        | 4 ++++
->   target/arm/tcg/cpu64.c        | 1 +
->   4 files changed, 7 insertions(+), 1 deletion(-)
+>   linux-user/mips/cpu_loop.c |    4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> Index: qemu/linux-user/mips/cpu_loop.c
+> ===================================================================
+> --- qemu.orig/linux-user/mips/cpu_loop.c
+> +++ qemu/linux-user/mips/cpu_loop.c
+> @@ -180,7 +180,9 @@ done_syscall:
+>               }
+>               force_sig_fault(TARGET_SIGFPE, si_code, env->active_tc.PC);
+>               break;
+> -
+> +	case EXCP_OVERFLOW:
+> +            do_tr_or_bp(env, BRK_OVERFLOW, false);
+> +            break;
 
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+
+Just call force_sig_fault directly.
+
 
 r~
 
