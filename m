@@ -2,38 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C96B7B1685
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4787B1690
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:55:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlmmK-0006cP-Oa; Thu, 28 Sep 2023 04:53:48 -0400
+	id 1qlmmN-0006d2-Ql; Thu, 28 Sep 2023 04:53:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmmJ-0006cH-0t
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:47 -0400
+ id 1qlmmL-0006cg-EA
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:49 -0400
 Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmmH-000501-IK
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:46 -0400
+ id 1qlmmJ-00050B-I3
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=MRQZEvEYi+zUG4NJbvdJBGvfkg63AwExWzhbABBdHFw=; b=leBYNj0QtPlK9pEBegAaJNFcRZ
- apu/HnlSszZVQLE9zSmJmnyvkEKUf2b1lnncbzvBnLOV8mvFTw6Vl4gmR1b29FoX2oTHVXV9Huihx
- /hLAY+0BBCfBhDr7gdDJ72QncZL0/VzmNVcR+cd7zlZmuXbO7KG16ktYv1LqpiOnD1T0=;
+ bh=+Wcna9OgRYTd2pdQBq3MY6gKWU4fZp/5KojGlYX42dk=; b=JthlqFMCQf07Esow1lWI00Gw6B
+ 4CxDM3cBO8+Y2PAiTBeJ+a4GBaYgU16xE48YaEg/AqTemKpWurkr1sX6tafgJ5GPfDjAwCQiyBNV0
+ AGFemmDSZ4/WVS69TkZ9xA5hlaQHiQlItb4D49iIu0jH/jrCd9kGJ1Owc3h4uenoa4TM=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de
-Subject: [PULL v2 14/21] tests/tcg: Reset result register after each test
-Date: Thu, 28 Sep 2023 10:52:56 +0200
-Message-ID: <20230928085303.511518-15-kbastian@mail.uni-paderborn.de>
+Subject: [PULL v2 15/21] tests/tcg/tricore: Add test for all arith insns up to
+ addx
+Date: Thu, 28 Sep 2023 10:52:57 +0200
+Message-ID: <20230928085303.511518-16-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
 References: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
@@ -42,7 +43,9 @@ Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.28.84518, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.9.26.602000
+ AntiVirus-Data: 2023.9.28.602000
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=83860, da=183500289, mc=35, sc=0,
+ hc=35, sp=0, fso=83860, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -69,29 +72,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-some insns use the result register implicitly as an input. Thus, we
-could end up with data from the previous insn spilling over.
-
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230913105326.40832-4-kbastian@mail.uni-paderborn.de>
+Message-ID: <20230913105326.40832-5-kbastian@mail.uni-paderborn.de>
 ---
- tests/tcg/tricore/asm/macros.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/tcg/tricore/Makefile.softmmu-target |  3 +-
+ tests/tcg/tricore/asm/macros.h            | 50 +++++++++++++++++++++++
+ tests/tcg/tricore/asm/test_arith.S        | 41 +++++++++++++++++++
+ 3 files changed, 93 insertions(+), 1 deletion(-)
+ create mode 100644 tests/tcg/tricore/asm/test_arith.S
 
+diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
+index 258aeb40ae..82ed9fa7e2 100644
+--- a/tests/tcg/tricore/Makefile.softmmu-target
++++ b/tests/tcg/tricore/Makefile.softmmu-target
+@@ -6,6 +6,7 @@ LDFLAGS = -T$(TESTS_PATH)/link.ld --mcpu=tc162
+ ASFLAGS = -mtc162
+ CFLAGS = -mtc162 -c -I$(TESTS_PATH)
+ 
++TESTS += test_arith.asm.tst
+ TESTS += test_abs.asm.tst
+ TESTS += test_bmerge.asm.tst
+ TESTS += test_clz.asm.tst
+@@ -29,7 +30,7 @@ TESTS += test_muls.asm.tst
+ TESTS += test_boot_to_main.c.tst
+ TESTS += test_context_save_areas.c.tst
+ 
+-QEMU_OPTS += -M tricore_testboard -cpu tc37x -nographic -kernel
++QEMU_OPTS += -M tricore_testboard -cpu tc37x -nographic -d guest_errors -kernel
+ 
+ %.pS: $(ASM_TESTS_PATH)/%.S
+ 	$(CC) -E -o $@ $<
 diff --git a/tests/tcg/tricore/asm/macros.h b/tests/tcg/tricore/asm/macros.h
-index 0f349dbf1e..e831f73721 100644
+index e831f73721..8ed2249b0d 100644
 --- a/tests/tcg/tricore/asm/macros.h
 +++ b/tests/tcg/tricore/asm/macros.h
-@@ -46,7 +46,8 @@ test_ ## num:                                     \
-     code;                                         \
-     LI(DREG_CORRECT_RESULT, correct)              \
-     mov DREG_TEST_NUM, num;                       \
--    jne testreg, DREG_CORRECT_RESULT, fail        \
-+    jne testreg, DREG_CORRECT_RESULT, fail;       \
-+    mov testreg, 0
+@@ -112,6 +112,11 @@ test_ ## num:                                                    \
+     insn DREG_CORRECT_RESULT, DREG_RS1;               \
+     )
  
- #define TEST_CASE_E(num, correct_lo, correct_hi, code...)  \
- test_ ## num:                                              \
++#define TEST_D_I(insn, num, result, imm)      \
++    TEST_CASE(num, DREG_CALC_RESULT, result,  \
++    insn DREG_CALC_RESULT, imm;               \
++    )
++
+ #define TEST_D_DDD(insn, num, result, rs1, rs2, rs3)        \
+     TEST_CASE(num, DREG_CALC_RESULT, result,                \
+     LI(DREG_RS1, rs1);                                      \
+@@ -129,6 +134,51 @@ test_ ## num:                                                    \
+     insn DREG_CALC_RESULT, DREG_RS1, DREG_RS2;          \
+     )
+ 
++#define TEST_D_DI(insn, num, result, rs1, imm1) \
++    TEST_CASE(num, DREG_CALC_RESULT, result,     \
++    LI(DREG_RS1, rs1);                          \
++    rstv;                                       \
++    insn DREG_CALC_RESULT, DREG_RS1, imm1;      \
++    )
++
++#define TEST_D_D15I(insn, num, result, rs1, imm1) \
++    TEST_CASE(num, DREG_CALC_RESULT, result,       \
++    LI(%d15, rs1);                                \
++    rstv;                                         \
++    insn DREG_CALC_RESULT, %d15, imm1;            \
++    )
++
++#define TEST_D15_DD(insn, num, result, rs1, rs2) \
++    TEST_CASE(num, %d15, result,                 \
++    LI(DREG_RS1, rs1);                           \
++    LI(DREG_RS2, rs2);                           \
++    rstv;                                        \
++    insn %d15, DREG_RS1, DREG_RS2;               \
++    )
++
++#define TEST_D15_DI(insn, num, result, rs1, imm) \
++    TEST_CASE(num, %d15, result,                 \
++    LI(DREG_RS1, rs1);                           \
++    rstv;                                        \
++    insn %d15, DREG_RS1, imm;                    \
++    )
++
++#define TEST_D_DD(insn, num, result, rs1, rs2) \
++    TEST_CASE(num, DREG_CALC_RESULT, result,   \
++    LI(DREG_RS1, rs1);                         \
++    LI(DREG_RS2, rs2);                         \
++    rstv;                                      \
++    insn DREG_CALC_RESULT, DREG_RS1, DREG_RS2; \
++    )
++
++#define TEST_D_D15D(insn, num, result, rs1, rs2) \
++    TEST_CASE(num, DREG_CALC_RESULT, result,   \
++    LI(%d15, rs1);                             \
++    LI(DREG_RS2, rs2);                         \
++    rstv;                                      \
++    insn DREG_CALC_RESULT, %d15, DREG_RS2;     \
++    )
++
+ #define TEST_D_DDD_PSW(insn, num, result, psw, rs1, rs2, rs3) \
+     TEST_CASE_PSW(num, DREG_CALC_RESULT, result, psw,         \
+     LI(DREG_RS1, rs1);                                        \
+diff --git a/tests/tcg/tricore/asm/test_arith.S b/tests/tcg/tricore/asm/test_arith.S
+new file mode 100644
+index 0000000000..07c4b876e9
+--- /dev/null
++++ b/tests/tcg/tricore/asm/test_arith.S
+@@ -0,0 +1,41 @@
++#include "macros.h"
++.text
++.global _start
++_start:
++    TEST_D_D(abs, 1, 0x778636a7, 0x778636a7 )
++    TEST_D_D(abs.b, 2, 0x497a4902, 0xb786b702 )
++    TEST_D_D(abs.h, 3, 0x48331698, 0xb7cde968 )
++    TEST_D_DI(absdif, 4, 0x22a52402, 0xdd5adc1a ,0x1c )
++    TEST_D_DD(absdif, 5, 0x1e106273, 0x56f0cea3 ,0x75013116 )
++    TEST_D_DD(absdif.b, 6, 0xa650a3b, 0xa7ee8b2a ,0x9d899565 )
++    TEST_D_DD(absdif.h, 7, 0x7dd06888, 0x88292922 ,0x5f9c09a )
++    TEST_D_DI(absdifs, 8, 0x79adddf7, 0x865222d1 ,0xc8 )
++    TEST_D_DD(absdifs, 9, 0x7fffffff, 0x2ac1008b ,0x80032055 )
++    TEST_D_DD(absdifs.h, 10, 0x65ae7fff, 0xf70a7a05 ,0x915cc1b3 )
++    TEST_D_D(abss, 11, 0x2a671868, 0xd598e798 )
++    TEST_D_D(abss.h, 12, 0x60fc7ce5, 0x9f04831b )
++    TEST_D_DI(add, 13, 0x951ce738, 0x951ce6b4 ,0x84 )
++    TEST_D_DD(add, 14, 0x53975df5, 0xc003e25a ,0x93937b9b )
++    TEST_D_I(add, 15, 0x5, 0x5 )
++    TEST_D_D15I(add, 16, 0x3c330214, 0x3c33020f ,0x5 )
++    TEST_D15_DI(add, 17, 0x55eb1b8, 0x55eb1b8 ,0x0 )
++    TEST_D_D(add, 18, 0xe66ead54, 0xe66ead54 )
++    TEST_D_D15D(add, 19, 0xe450f787, 0xc7100fee ,0x1d40e799 )
++    TEST_D15_DD(add, 20, 0x73f6d886, 0x27ca8a80 ,0x4c2c4e06 )
++    TEST_D_DD(add.b, 21, 0x631bd462, 0xf9702965 ,0x6aababfd )
++    TEST_D_DD(add.h, 22, 0x76ce127a, 0xf5402796 ,0x818eeae4 )
++    TEST_D_DI(addc, 23, 0xcf8399c3, 0xcf839920 ,0xa3 )
++    TEST_D_DD(addc, 24, 0xa455054c, 0x85d0b9ed ,0x1e844b5f )
++    TEST_D_DI(addi, 25, 0xbf202fe6, 0xbf1fd903 ,0x56e3 )
++    TEST_D_DI(addih, 26, 0xf28a99cc, 0xc10499cc ,12678 )
++    TEST_D_DI(adds, 27, 0x233892ad, 0x233892ad ,0x0 )
++    TEST_D_DD(adds, 28, 0xc1b1184d, 0x100a2339 ,0xb1a6f514 )
++    TEST_D_D(adds, 29, 0x19143e9a, 0x19143e9a )
++    TEST_D_DD(adds.h, 30, 0x7fff9de3, 0x668ebcc8 ,0x7462e11b )
++    TEST_D_DD(adds.hu, 31, 0xffffffff, 0xbe0776eb ,0x5d69b388 )
++    TEST_D_DI(adds.u, 32, 0x84c176ba, 0x84c176a9 ,0x11 )
++    TEST_D_DD(adds.u, 33, 0xffffffff, 0xd4a91e39 ,0x55b1baed )
++    TEST_D_DI(addx, 34, 0x38f63b5, 0x38f632b ,0x8a )
++    TEST_D_DD(addx, 35, 0x8b9da5a4, 0x16e32e7 ,0x8a2f72bd )
++
++    TEST_PASSFAIL
 -- 
 2.42.0
 
