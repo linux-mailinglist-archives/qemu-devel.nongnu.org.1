@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C62187B1020
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 02:42:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0517B102F
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 02:58:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlf5R-0006et-Fp; Wed, 27 Sep 2023 20:41:01 -0400
+	id 1qlfL7-0000vy-OB; Wed, 27 Sep 2023 20:57:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlf5P-0006eT-PO
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 20:40:59 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlfL5-0000vn-Oy
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 20:57:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlf5N-0001o9-R4
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 20:40:59 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlfL3-000700-HR
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 20:57:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695861657;
+ s=mimecast20190719; t=1695862628;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Fx7kCxpZ9MjvNdOhB1WJA/J0BdYu+k99RFDCkPjREH0=;
- b=Woq5lYoXUvpFkWohpuk6MnCK0iS1wAFke2UtEhF0UeK7sQ2NGrBXimqAacJHlCLalEpg8G
- onVukMK8xhVSeC1MC42W989hv8WRMutYTQ1s+YOhFgCI1P2e4+EETvSRbSr8mzynxc0uNk
- APrHca6fJ8YuQnYfjnteRu2oNH5kEjo=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Gbrsl00JxY9Mm0XVtA3ZtJCnbtkROL6hKRpyD9Lw29c=;
+ b=TflqxsJ5vv/Hqc2v8/gZhImLnRHbnQdSj4L0KYap4GMI8SxSCKRb9YnL1zfmqpIr8L7w5T
+ ep9Qq839j5L0cqyUNf3I6qQ/VZ7IAgfP4m04ULWUk9HdKoLi79HoyGTRJKKMbjC7wNyd5T
+ E6ivBm4mVmdLf02gRti2tqVdUMb6xG8=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-656-H1O1uFNzOlWVcHEq71a6Kw-1; Wed, 27 Sep 2023 20:40:55 -0400
-X-MC-Unique: H1O1uFNzOlWVcHEq71a6Kw-1
-Received: by mail-pg1-f200.google.com with SMTP id
- 41be03b00d2f7-57cf261194aso14219804a12.3
- for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 17:40:54 -0700 (PDT)
+ us-mta-664-S6ySQ3tBMfm0oh8Cco36Jg-1; Wed, 27 Sep 2023 20:57:06 -0400
+X-MC-Unique: S6ySQ3tBMfm0oh8Cco36Jg-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-57b6cd1a530so21575257eaf.2
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 17:57:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695861654; x=1696466454;
+ d=1e100.net; s=20230601; t=1695862626; x=1696467426;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Fx7kCxpZ9MjvNdOhB1WJA/J0BdYu+k99RFDCkPjREH0=;
- b=JiRYX/gUQKeNrytcM/4nTNoUHVDDAtoJR+fNWx3d6PXAjRG7/eG+3xWlhpetRaL7e0
- 4eZEsYgqr8yqWmHgpgT53PWdbUXcpEgesVeJnk9LCwLmQI2fBkxfasnujHTnc1nLHQnE
- 71B9JPq/G1Q1ay30OiMkLfPzvLq3NRYL7sCa8wyI0MjlnkFj9TrGelIaejd2Jmn6WJcZ
- RhSroW0TmOlv3cwjhcFktn4nCeYbO5uK3hm/3puhb4rJzNG8v8vmUadaAxK8zhzb0qPX
- CqpWdvwOmeJm5/f5wGwjn4Wp3GJGDnIs8nbUpLChVN8dJEJWA62PC73RzKwUTrZfRhke
- 1Q4g==
-X-Gm-Message-State: AOJu0Yy9y/RZOYL1uAHxtts45BUMNe35uoHDelzF8aCSjjYIHU+PAOZo
- 8FpwEmF06B8U2QwPp5QqTHx8ffFzaAXcM2rrBXcfSSTk34zg1r2wvZbuvzTwHOfyTZbPbSxIFpq
- KpRdvxE6GdIiVHC8=
-X-Received: by 2002:a05:6300:808a:b0:10f:be0:4dce with SMTP id
- ap10-20020a056300808a00b0010f0be04dcemr3466635pzc.8.1695861653863; 
- Wed, 27 Sep 2023 17:40:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKHu4YOTM7pMhJKxWf+81l8lU+ec9IC7z7wp06zmBKmAAKvfp4Jxy8591sYzmgO0mHoPB3rg==
-X-Received: by 2002:a05:6300:808a:b0:10f:be0:4dce with SMTP id
- ap10-20020a056300808a00b0010f0be04dcemr3466609pzc.8.1695861653618; 
- Wed, 27 Sep 2023 17:40:53 -0700 (PDT)
+ bh=Gbrsl00JxY9Mm0XVtA3ZtJCnbtkROL6hKRpyD9Lw29c=;
+ b=MxGRMz++2+aK/dnyGK6cT1+i5DO6hpaaOM3i0PxQ1YA7PqrdNgA5HOvxgLrnBLJ1OB
+ ypBsDOCWkBoMSFHuuPnfBC1+RRVDqgGMyJVoZNbE2xLIGx3pjfgUr12kJ2BAbW2M6QA6
+ Xe7sbeE1eo0a4/ux8VYjMtkGdyH6t190AEl9nF98fQwZ+fRUD5B5OEyFarhuBPW3I9NT
+ PFAjMWc75REsq/QkfQFLYWRaPKkURTL6ErFJNiQvwH75KVTi+Egpwh6+Ym66tnp4C2mH
+ vba5NY7mhc1IN0aJuE2viv747uwCE+GoRQDSyA+6dccjL3uwFBdQY8yGxBrXpnJC3VGF
+ rtag==
+X-Gm-Message-State: AOJu0YxpumwxAZfdz1sdtXYC42/0cTBkaps9oqQkpiTrsthydsNk6JYC
+ 3ReeiFVUzE4fY+Zj2kMld29CHxcM9GoGAkvCIWoZ1eSXf1FbPstyZaGaA7IHjC3hNdm3gdCvMMK
+ wTRLQLeNRmIqxxD0=
+X-Received: by 2002:a05:6358:2484:b0:143:3179:1a67 with SMTP id
+ m4-20020a056358248400b0014331791a67mr3786564rwc.29.1695862625886; 
+ Wed, 27 Sep 2023 17:57:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOgD+m/JQin421qMlawtfb5KwAkugCCvJOtn8bDZXYqu7vk8EZxGiweQyOmesGGxJnsUKotg==
+X-Received: by 2002:a05:6358:2484:b0:143:3179:1a67 with SMTP id
+ m4-20020a056358248400b0014331791a67mr3786537rwc.29.1695862625493; 
+ Wed, 27 Sep 2023 17:57:05 -0700 (PDT)
 Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
  ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
  by smtp.gmail.com with ESMTPSA id
- gk6-20020a17090b118600b00263cca08d95sm4484265pjb.55.2023.09.27.17.40.42
+ b25-20020aa78719000000b00690cd981652sm12328863pfo.61.2023.09.27.17.56.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 27 Sep 2023 17:40:53 -0700 (PDT)
-Message-ID: <4fb2eef9-6742-1eeb-721a-b3db04b1be97@redhat.com>
-Date: Thu, 28 Sep 2023 10:40:40 +1000
+ Wed, 27 Sep 2023 17:57:04 -0700 (PDT)
+Message-ID: <f3db9fe9-2fbb-003e-3da4-26c401d09c1f@redhat.com>
+Date: Thu, 28 Sep 2023 10:56:52 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.12.0
-Subject: Re: [PATCH RFC V2 12/37] hw/acpi: Use qemu_present_cpu() API in ACPI
- CPU hotplug init
+Subject: Re: [PATCH RFC V2 13/37] hw/acpi: Init GED framework with cpu hotplug
+ events
 Content-Language: en-US
 To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org
@@ -85,9 +85,9 @@ Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
  wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
  maobibo@loongson.cn, lixianglai@loongson.cn
 References: <20230926100436.28284-1-salil.mehta@huawei.com>
- <20230926100436.28284-13-salil.mehta@huawei.com>
+ <20230926100436.28284-14-salil.mehta@huawei.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230926100436.28284-13-salil.mehta@huawei.com>
+In-Reply-To: <20230926100436.28284-14-salil.mehta@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
@@ -118,40 +118,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Hi Salil,
 
 On 9/26/23 20:04, Salil Mehta wrote:
-> ACPI CPU Hotplug code assumes a virtual CPU is unplugged if the CPUState object
-> is absent in the list of ths possible CPUs(CPUArchIdList *possible_cpus)
-> maintained on per-machine basis. Use the earlier introduced qemu_present_cpu()
-> API to check this state.
+> ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI events
+> when OSPM/guest receives an interrupt listed in the _CRS object of GED. OSPM
+> then maps or demultiplexes the event by evaluating _EVT method.
 > 
-> This change should have no bearing on the functionality of any architecture and
-> is mere a representational change.
+> This change adds the support of cpu hotplug event initialization in the
+> existing GED framework.
 > 
+> Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 > ---
->   hw/acpi/cpu.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+>   hw/acpi/generic_event_device.c         | 8 ++++++++
+>   include/hw/acpi/generic_event_device.h | 5 +++++
+>   2 files changed, 13 insertions(+)
 > 
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index 45defdc0e2..d5ba37b209 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -225,7 +225,10 @@ void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
->       state->dev_count = id_list->len;
->       state->devs = g_new0(typeof(*state->devs), state->dev_count);
->       for (i = 0; i < id_list->len; i++) {
-> -        state->devs[i].cpu =  CPU(id_list->cpus[i].cpu);
-> +        struct CPUState *cpu = CPU(id_list->cpus[i].cpu);
-> +        if (qemu_present_cpu(cpu)) {
-> +            state->devs[i].cpu = cpu;
-> +        }
->           state->devs[i].arch_id = id_list->cpus[i].arch_id;
->       }
->       memory_region_init_io(&state->ctrl_reg, owner, &cpu_hotplug_ops, state,
 
-I don't think qemu_present_cpu() is needed because all possible vCPUs are present
-for x86 and arm64 at this point? Besides, we have the assumption all hotpluggable
-vCPUs are present, looking at James' kernel series where ACPI_HOTPLUG_PRESENT_CPU
-exists in linux/drivers/acpi/Kconfig :)
+It looks a bit strange you're co-developing the patch with yourself.
+It seems all patches follow this particular pattern. I could be changed
+to:
+
+Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+
+The code changes look good to me with the following nits addressed:
+
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+
+> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+> index a3d31631fe..d2fa1d0e4a 100644
+> --- a/hw/acpi/generic_event_device.c
+> +++ b/hw/acpi/generic_event_device.c
+> @@ -25,6 +25,7 @@ static const uint32_t ged_supported_events[] = {
+>       ACPI_GED_MEM_HOTPLUG_EVT,
+>       ACPI_GED_PWR_DOWN_EVT,
+>       ACPI_GED_NVDIMM_HOTPLUG_EVT,
+> +    ACPI_GED_CPU_HOTPLUG_EVT,
+>   };
+>   
+
+Can we move ACPI_GED_CPU_HOTPLUG_EVT ahead of ACPI_GED_MEM_HOTPLUG_EVT?
+
+>   /*
+> @@ -400,6 +401,13 @@ static void acpi_ged_initfn(Object *obj)
+>       memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
+>                             TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
+>       sysbus_init_mmio(sbd, &ged_st->regs);
+> +
+> +    s->cpuhp.device = OBJECT(s);
+> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp container",
+> +                       ACPI_CPU_HOTPLUG_REG_LEN);
+> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
+> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
+> +                        &s->cpuhp_state, 0);
+>   }
+>   
+>   static void acpi_ged_class_init(ObjectClass *class, void *data)
+> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+> index d831bbd889..d0a5a43abf 100644
+> --- a/include/hw/acpi/generic_event_device.h
+> +++ b/include/hw/acpi/generic_event_device.h
+> @@ -60,6 +60,7 @@
+>   #define HW_ACPI_GENERIC_EVENT_DEVICE_H
+>   
+>   #include "hw/sysbus.h"
+> +#include "hw/acpi/cpu_hotplug.h"
+>   #include "hw/acpi/memory_hotplug.h"
+>   #include "hw/acpi/ghes.h"
+>   #include "qom/object.h"
+> @@ -97,6 +98,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>   #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
+>   #define ACPI_GED_PWR_DOWN_EVT      0x2
+>   #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+> +#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
+>   
+
+#define ACPI_GED_CPU_HOTPLUG_EVT  0x1
+#define ACPI_GED_MEM_HOTPLUG_EVT  0x2
+   :
+
+If the adjustment is friendly to live migration.
+
+>   typedef struct GEDState {
+>       MemoryRegion evt;
+> @@ -108,6 +110,9 @@ struct AcpiGedState {
+>       SysBusDevice parent_obj;
+>       MemHotplugState memhp_state;
+>       MemoryRegion container_memhp;
+> +    CPUHotplugState cpuhp_state;
+> +    MemoryRegion container_cpuhp;
+> +    AcpiCpuHotplug cpuhp;
+>       GEDState ged_state;
+>       uint32_t ged_event_bitmap;
+>       qemu_irq irq;
 
 Thanks,
 Gavin
