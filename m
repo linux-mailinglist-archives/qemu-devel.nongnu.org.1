@@ -2,70 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493D57B1E2F
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFD8F7B1E35
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:26:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlqwu-0003k4-52; Thu, 28 Sep 2023 09:21:00 -0400
+	id 1qlqwl-0003ez-9A; Thu, 28 Sep 2023 09:20:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwW-0003W4-7R
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwb-0003bE-9v
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwM-0008Bf-Rn
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwP-0008GI-BV
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695907226;
+ s=mimecast20190719; t=1695907228;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=FEnX5LSTQ17/Hg9gfdq1/pjzHw7sZILu+IYLdvjzMO8=;
- b=f29JgvwpYsncjmze3UUCsTZGSg3pok5o0sCxw1Vvfw7AVHCPNAMkdIjfBMfarqGWpGWrOv
- CjdCeeNoY2HeWmy5EsKs5sJ4u1KWA05M798J7L6AZiYOSebA2n3EykefRSo9njFZmNwKxp
- u6OnQjCV/ZVddcEDQ175dXcU1eLMlHw=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-483-pFVWDaoYMzKMdD7Nsc8Z7g-1; Thu, 28 Sep 2023 09:20:22 -0400
-X-MC-Unique: pFVWDaoYMzKMdD7Nsc8Z7g-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=IC8hVAkFR7IaWFx2moP0xm/wKH/XLuUBX96s0XuZV2w=;
+ b=PNhxE11hzvFfgzKj3g8KHtrMWsqQnO5Zf5I1ieCOZekI0GkMWLhjp7PTOOlgVJHWD9bV6I
+ QrpVvKpV0HFLlsy2JEGq5ayefzo0XWHzl08q4UcQj85nQSL/ODD9/KFl9wz2rm3GY+z6Mz
+ 8aWSUT6rTwT+DDfwcnfZLkiWArxx+ww=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-386-DZSz9mR6PqWngfZcumbgaw-1; Thu, 28 Sep 2023 09:20:23 -0400
+X-MC-Unique: DZSz9mR6PqWngfZcumbgaw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 43254280A9C4;
- Thu, 28 Sep 2023 13:20:22 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1602C85A5BD;
+ Thu, 28 Sep 2023 13:20:23 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 20AD2C154CA;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E816B492C37;
  Thu, 28 Sep 2023 13:20:22 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E9AE621E6916; Thu, 28 Sep 2023 15:20:19 +0200 (CEST)
+ id EC94821E691A; Thu, 28 Sep 2023 15:20:19 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
  farosas@suse.de, lizhijian@fujitsu.com, eblake@redhat.com
-Subject: [PATCH v2 14/53] migration/rdma: Make qemu_rdma_buffer_mergeable()
- return bool
-Date: Thu, 28 Sep 2023 15:19:40 +0200
-Message-ID: <20230928132019.2544702-15-armbru@redhat.com>
+Subject: [PATCH v2 15/53] migration/rdma: Use bool for two RDMAContext flags
+Date: Thu, 28 Sep 2023 15:19:41 +0200
+Message-ID: <20230928132019.2544702-16-armbru@redhat.com>
 In-Reply-To: <20230928132019.2544702-1-armbru@redhat.com>
 References: <20230928132019.2544702-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,89 +79,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qemu_rdma_buffer_mergeable() is semantically a predicate.  It returns
-int 0 or 1.  Return bool instead, and fix the function name's
-spelling.
+@error_reported and @received_error are flags.  The latter is even
+assigned bool true.  Change them from int to bool.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- migration/rdma.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ migration/rdma.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index 7bea4d3947..73dd34d8f3 100644
+index 73dd34d8f3..28097ce604 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -2244,7 +2244,7 @@ static int qemu_rdma_write_flush(QEMUFile *f, RDMAContext *rdma)
-     return 0;
- }
- 
--static inline int qemu_rdma_buffer_mergable(RDMAContext *rdma,
-+static inline bool qemu_rdma_buffer_mergeable(RDMAContext *rdma,
-                     uint64_t offset, uint64_t len)
- {
-     RDMALocalBlock *block;
-@@ -2252,11 +2252,11 @@ static inline int qemu_rdma_buffer_mergable(RDMAContext *rdma,
-     uint8_t *chunk_end;
- 
-     if (rdma->current_index < 0) {
--        return 0;
-+        return false;
-     }
- 
-     if (rdma->current_chunk < 0) {
--        return 0;
-+        return false;
-     }
- 
-     block = &(rdma->local_ram_blocks.block[rdma->current_index]);
-@@ -2264,29 +2264,29 @@ static inline int qemu_rdma_buffer_mergable(RDMAContext *rdma,
-     chunk_end = ram_chunk_end(block, rdma->current_chunk);
- 
-     if (rdma->current_length == 0) {
--        return 0;
-+        return false;
-     }
+@@ -91,7 +91,7 @@ static uint32_t known_capabilities = RDMA_CAPABILITY_PIN_ALL;
+             if (!rdma->error_reported) { \
+                 error_report("RDMA is in an error state waiting migration" \
+                                 " to abort!"); \
+-                rdma->error_reported = 1; \
++                rdma->error_reported = true; \
+             } \
+             return rdma->error_state; \
+         } \
+@@ -365,8 +365,8 @@ typedef struct RDMAContext {
+      * and remember the error state.
+      */
+     int error_state;
+-    int error_reported;
+-    int received_error;
++    bool error_reported;
++    bool received_error;
  
      /*
-      * Only merge into chunk sequentially.
-      */
-     if (offset != (rdma->current_addr + rdma->current_length)) {
--        return 0;
-+        return false;
-     }
- 
-     if (offset < block->offset) {
--        return 0;
-+        return false;
-     }
- 
-     if ((offset + len) > (block->offset + block->length)) {
--        return 0;
-+        return false;
-     }
- 
-     if ((host_addr + len) > chunk_end) {
--        return 0;
-+        return false;
-     }
- 
--    return 1;
-+    return true;
- }
- 
- /*
-@@ -2309,7 +2309,7 @@ static int qemu_rdma_write(QEMUFile *f, RDMAContext *rdma,
-     int ret;
- 
-     /* If we cannot merge it, we flush the current buffer first. */
--    if (!qemu_rdma_buffer_mergable(rdma, current_addr, len)) {
-+    if (!qemu_rdma_buffer_mergeable(rdma, current_addr, len)) {
-         ret = qemu_rdma_write_flush(f, rdma);
-         if (ret) {
-             return ret;
+      * Description of ram blocks used throughout the code.
 -- 
 2.41.0
 
