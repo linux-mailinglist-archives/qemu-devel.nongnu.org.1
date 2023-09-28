@@ -2,68 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B417B2642
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 22:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1EE7B2695
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 22:28:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlxGC-0005x2-G8; Thu, 28 Sep 2023 16:05:20 -0400
+	id 1qlxam-0000o6-0Q; Thu, 28 Sep 2023 16:26:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qlxG9-0005wf-Ti
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 16:05:17 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qlxG8-00061X-5J
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 16:05:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=DkVlUBHR1aPNbTQaZRt798QCRa3KDj0KgZr49pOxJfs=; b=0Cy4lGQrhKRGBQrjEBypq2Fyos
- NjYgElX9fRwY5uX5w88VRxGPI1IH0batYu3dwumQ/QLNAV9d59feOgxdQB7TKYsnfy0Ti4dbonm4T
- J2JrpiB7yBvel4WnN10wes+qcCbrMnIodnL3eBfSW6hr2w/5xWGDwiUCgPu1/XHxCvcW32REWwluB
- Ywu0KP8Qv+7LQfuv5JPMGZBBcDrqpazBPogSodMjdhx61oJFak/Cj4/aqFx3Z13o7QKJdfX5lqux2
- 5cRMKbU2C2o2d8+djOpu+kIwnbzsBH0dv3y+QbtLuM2B/mobnG03dTnutwkUbr+geoQcSfqb/P2QH
- IUnY2HhUViVtyJRzGjL9xc7b1fw+ihfVIM4SNeA7M8UmFBNiv1yplks4TQ1mpXnMExg4VDT9KU30D
- hRwe1/SLPiyCY8T7DnYkxifgU4O0ItCwO8MN8ixsFS3TA+HrQycVodtmuV4GaujBrwM0UJpcgvPJD
- vd/zTSuTZAuSB6yvpCTexb3vuT7dEG2Lcr2/Zd12+nYbYglOl4t3y7HZsltECik3gpyFAlTztSfvb
- 7v94ekvtwTBXewVNkwVTDmhho3BJ4hhAnZMsDLgOz4lJEY/2YJ1Hrk7x7/vgm0FXEENyqiiW05fs6
- qpOukZpXhT8tTUp1nII7me4HAnbjVtoKDnav3qP5I=;
-Received: from [2a00:23c4:8baf:5f00:89cc:78d2:7179:5c3b]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qlxFr-0006vy-SV; Thu, 28 Sep 2023 21:05:04 +0100
-Message-ID: <59cb2064-3a12-8c7e-71a2-a6ec570d2645@ilande.co.uk>
-Date: Thu, 28 Sep 2023 21:05:04 +0100
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qlxaj-0000nS-2w
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 16:26:33 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qlxah-0003L6-DM
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 16:26:32 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1c1ff5b741cso120779825ad.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 13:26:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695932790; x=1696537590; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EWOO8jCQcutgbslrnR2UNLBsL4KqnEPWgcrfNQiOLdA=;
+ b=CwYv5e3jd4kUlq49Wkp37Sfpwbkxbf27HOzY9FGdFTr5auUt8Z5g/SU5RJ+yxY5sbV
+ JD7Ywgwf6loQnIDDjZhTU4FkgLf93of804qagMez4kCHRzuiMPhRycMD3GWhy1pLr8c0
+ v77+WN3jO4+JfWtUIFbwkW31pWk41gD2rgvZj0pjpbxqTOyyhoCcxKcqsWu7XBs53foz
+ ZZgNKyI39QdYwAOB0fy8FXvW6tvDxAR92Qd4aC3RD27ONhVxlzLlYSekS+sSaTIOJ6C8
+ sbg/FFvsxLOxsTUsDKEnojS5C2b9m4mJg+0gCzF3Vabx2R/ZFzje5eO1KajhYQ8ZnGZx
+ 76Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695932790; x=1696537590;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EWOO8jCQcutgbslrnR2UNLBsL4KqnEPWgcrfNQiOLdA=;
+ b=gZuvO6Q9GLEwb9GJd8jQujXcHIkZ+ETLIeP6juXry7jXaK5cwm20QVHEYj3VTnyWxr
+ aL/4wDy8nTAJh/CqR5M8LhdiXMrf79GWAM7QUEQg4j3lJtCtO40D16KG3z2Gk64Zq1cZ
+ vjm4RXWHKxvoUgW2hu82CQns3PFKNKee1vm0wfks4zqG6+K8jo5yuMU0S2YqmrfnLUWy
+ ujiX6mpBaX0zdt4Y53JsHXTADEhm6CcuxnSGKnCOrYfc7/xrChJmlKFBER77G5ns2LK3
+ 5NI+iQNx0PcFZ73s0O1TCgwhQoGaYfTg/sRFEgcdtZ2lFNsmIZ3caDLZmHnQcxdP8ktF
+ Ie8g==
+X-Gm-Message-State: AOJu0YwGa3TBKgmc2CZX2wAQgXxLsIDeVDY/etWHgz9cPW2zNMwgqIlo
+ 3E5vHScUiIaeXnvdJ+fJTaDGeA==
+X-Google-Smtp-Source: AGHT+IFEHqhM0puuss2gNZLLjZV46nf1KK//QCf56WN07Xzui5IfT80dWrgmHNBWb8a6OF3Ff/LdXg==
+X-Received: by 2002:a17:903:11d2:b0:1c7:2697:ec0a with SMTP id
+ q18-20020a17090311d200b001c72697ec0amr2417399plh.30.1695932789764; 
+ Thu, 28 Sep 2023 13:26:29 -0700 (PDT)
+Received: from [192.168.0.4] (174-21-146-124.tukw.qwest.net. [174.21.146.124])
+ by smtp.gmail.com with ESMTPSA id
+ i11-20020a170902eb4b00b001c61921d4d2sm8966449pli.302.2023.09.28.13.26.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Sep 2023 13:26:28 -0700 (PDT)
+Message-ID: <4648e9df-5cff-c470-6c7f-e34f505d294f@linaro.org>
+Date: Thu, 28 Sep 2023 13:26:22 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-To: Nick Bowler <nbowler@draconx.ca>, qemu-devel@nongnu.org
-Cc: Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20230925050545.30912-1-nbowler@draconx.ca>
+Subject: Re: [PATCH] target/arm/arm-powerctl: Correctly init CPUs when powered
+ on to lower EL
 Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <20230925050545.30912-1-nbowler@draconx.ca>
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230926155619.4028618-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230926155619.4028618-1-peter.maydell@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:89cc:78d2:7179:5c3b
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 0/8] SPARC VIS fixes
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,54 +95,17 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/09/2023 06:03, Nick Bowler wrote:
+On 9/26/23 11:56, Peter Maydell wrote:
+> Resolves:https://gitlab.com/qemu-project/qemu/-/issues/1899
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/cpu.h          | 22 +++++++++
+>   hw/arm/boot.c             | 95 ++++++++++-----------------------------
+>   target/arm/arm-powerctl.c | 53 +---------------------
+>   target/arm/cpu.c          | 95 +++++++++++++++++++++++++++++++++++++++
+>   4 files changed, 141 insertions(+), 124 deletions(-)
 
-> I noticed that the fmul8x16 instruction did not appear to be emulated
-> correctly[1].  It would seem that emulation was not using a single-
-> precision input register like the real hardware does, but rather a
-> double-precision register, causing it to operate on the wrong data.
-> 
-> Every other VIS instruction which contains one or more single-precision
-> inputs and a double-precision output has the exact same problem.
-> 
-> A few computational problems are found and fixed by this series too.
-> 
-> All patches can be applied independently, except patch 2 adds some
-> helpers which are subsequently needed by patches 3, 4 and 5.
-> 
-> Emulation results are tested by manually comparing the output of a small
-> Linux test program on an UltraSparc II against the output of running the
-> same binary under qemu-sparc32plus on a ppc64le host system.
-> 
-> [1] https://gitlab.com/qemu-project/qemu/-/issues/1901
-> 
-> Nick Bowler (8):
->    target/sparc: Fix VIS fmul8x16 input register.
->    target/sparc: Fix VIS fmul8x16au instruction.
->    target/sparc: Fix VIS fmul8x16al instruction.
->    target/sparc: Fix VIS fmuld8sux16 instruction.
->    target/sparc: Fix VIS fmuld8ulx16 instruction.
->    target/sparc: Fix VIS fpmerge input registers.
->    target/sparc: Fix VIS fexpand input register.
->    target/sparc: Fix VIS subtraction instructions.
-> 
->   target/sparc/helper.h     |  14 ++---
->   target/sparc/translate.c  |  42 +++++++++++---
->   target/sparc/vis_helper.c | 119 +++++++++++++++++++-------------------
->   3 files changed, 101 insertions(+), 74 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-Thanks for the patches, Nick. I've had a look at the series, and whilst I'm not 
-overly familiar with the VIS instructions, your changes and detailed explanations 
-look good against a cursory read of the SPARCv9 specification.
-
-Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-
-I'll wait a few days to see if either Artyom or Richard has any further comments, but 
-if not then I'll queue them to my qemu-sparc branch.
-
-
-ATB,
-
-Mark.
-
+r~
 
