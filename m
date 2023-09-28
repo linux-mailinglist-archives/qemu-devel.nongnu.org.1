@@ -2,85 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7C67B25FE
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 21:39:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 698367B260A
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 21:43:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlwph-0006nK-5K; Thu, 28 Sep 2023 15:37:57 -0400
+	id 1qlwth-0007vC-BL; Thu, 28 Sep 2023 15:42:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlwpf-0006nC-Dt
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:37:55 -0400
-Received: from mail-oi1-x22e.google.com ([2607:f8b0:4864:20::22e])
+ id 1qlwte-0007tz-VC
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:42:02 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlwpd-0006j2-KJ
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:37:54 -0400
-Received: by mail-oi1-x22e.google.com with SMTP id
- 5614622812f47-3ae2f8bf865so6481369b6e.2
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 12:37:52 -0700 (PDT)
+ id 1qlwtc-0007wE-Fa
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:42:02 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-690d8c05784so10697564b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 12:41:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695929872; x=1696534672; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Sd3JgHHbzfXrzJFWic3Cq/C6a3eXNco/BTfaLz6PrDY=;
- b=e2kJzhB/Dfl9S3dPxMCZGFuoqgdtSkG1CwV1dXBy2ohKUoytuw9ozlZrIk1m/ZHW2L
- 5R9PVOE4O7V2bH3N7qH4AnjUdfXlo24gLwHOnmka6urkx5beDx+argTqYLvljdOmX1Ib
- QeFySCl9rjtWFjSaA7qv+eJ51hSt1zSfIA8No3y7Sk1aX0qY/J7c+hoe/txhdw97X9RU
- syD6p6MuuhOehLLq3QTv9qadZetMOJeBPgWKUUOPrFHlvWp1kVmb2Mb7DS0Xwun0zJ1e
- WkUk4dm2tacQayJUB2iO4tADa+BzdLX+yAketLCCXEbPsNRm3mac/uszA3TGFIHO4bPw
- H7nw==
+ d=linaro.org; s=google; t=1695930118; x=1696534918; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=H3nrARKQhc7VC8DlZQXwJCKngWtw8wQPS0KJ7TUH4ig=;
+ b=HHxfpdY2Hjo12pNqYlp/ehZ2KgN0IqCzXBUfq5SqCjpCXUSRefNpEoofS0wNrP0gfj
+ F/zLEJf7CLSEwS5lnmUWXTP63uC+ZKWkZ6WhyLf9Ya6gj4uN4TmZCJ4o8GJ83CFOGk+V
+ LlnGtq4Y8MsBjoFDxu/GNk64X5rWXBbINn23Kyoz5lWnTkmZCc349qIBvZRdbKLXdVze
+ FyfZaKaKBf5L/MKLlf3rBZH9+Bu4xV8XiCGRT85bV9TpbnXu9Rg8HJk7RosMRE8LTKFs
+ p+hJ/KTEBa6ABMg3mAZW28mRWSFivEKqYvbGaqoehDnBWDSdQ0teNI6/AI9e9++wUS2s
+ uGxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695929872; x=1696534672;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Sd3JgHHbzfXrzJFWic3Cq/C6a3eXNco/BTfaLz6PrDY=;
- b=CiCy2FLv3icu/MJxPuH8sPUwnOLep/ulVodQzHYbjvAtEtE7sMdql6AVGNOoQX8MUP
- y7LTxxqIlRuHbblDBgwvbV7Vn3tvClR7h1kesIdzP+Ba0bJ6r09ZITTeydv0B75AzENy
- sRmqMdNKVhwgyMJVMaMs4+Cr1nzZuu8hDdJ2j78/BxVN9OD5EBUvvTBczTI5xLoh+48g
- RswIH1jJW31/91RH+8H8NVJyZG1hfLhorC5v3LuXmaB0dYIWQNDfKapvtYlZU1l3iUvp
- /35RZMM9bqm2jR1UgIRbcAVspoFxZt6eclfBjHA7/Q9bOxSq1HX2ZDp61aVqoLrx5scB
- lqtQ==
-X-Gm-Message-State: AOJu0YyMUPGYnLPIzQWnINWXYPZlg2gaX+K284XhKp14+boHPH3n5exE
- zbzDh5rJCEM1Jimps6pNoaIVuA==
-X-Google-Smtp-Source: AGHT+IHAYNzMMQ2KToJAzmTJncbWSi3HaoQRrazFxUDG0lpguNZAc2udTm875vEyvEBzC+Yb/lKblw==
-X-Received: by 2002:a05:6808:2209:b0:3ae:5397:eaa0 with SMTP id
- bd9-20020a056808220900b003ae5397eaa0mr2522209oib.41.1695929871813; 
- Thu, 28 Sep 2023 12:37:51 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.131.115])
- by smtp.gmail.com with ESMTPSA id
- du14-20020a056a002b4e00b00690fe1c928esm9906928pfb.91.2023.09.28.12.37.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 12:37:51 -0700 (PDT)
-Message-ID: <6148083e-ba07-798c-4cc3-6cf29236c53c@linaro.org>
-Date: Thu, 28 Sep 2023 12:37:49 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] mips: fix abort on integer overflow
-Content-Language: en-US
-To: Mikulas Patocka <mpatocka@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno
- <aurelien@aurel32.net>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Huacai Chen <chenhuacai@kernel.org>
-Cc: qemu-devel@nongnu.org
-References: <cfa02bbb-cdaf-4310-ac40-a2837d33c710@redhat.com>
+ d=1e100.net; s=20230601; t=1695930118; x=1696534918;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=H3nrARKQhc7VC8DlZQXwJCKngWtw8wQPS0KJ7TUH4ig=;
+ b=OlD5FnouRr3pK1mRWdYVpBPuc1nq0NouZzm5YXafFZ6T3awAwO3HzDYkYC2eagbH0P
+ leZAo9mdO57gcBPdzKa/+tzzMfg+X+XEgRy9TKRCW6t+WNMDUIIYrycwAZcYfPK9uQc5
+ V5G4+SeJkJ24yzZIkgsHNuVNZBXe9rJv8DIREJF7c0Arj1W+xNq6HKKTtrYtb3vPAIUx
+ BNyUBfze0j1v5VurKIiZ7H+xcSVLzjWPh22lnATX1LPabpSnCe20yd2CNIdvHH55CWW/
+ mSh6BnWRkCqN37l9Dp8hA2qMSYlybp5XSk3LhJtWTmX5SKe35DiFNRDjDzBIFcG8rqbV
+ 41eQ==
+X-Gm-Message-State: AOJu0Yy0O3W3TJevT797o5+MbJRy+p6cpSlCXF7dx7lrY94ncnd5vItC
+ MVvJtqJVHF6muaYgxQbNXO+SGNR93fS/RZFefQo=
+X-Google-Smtp-Source: AGHT+IFSudI/+7l85TDqjhuEgGh5w809+y50tzDhFdFb1DIXNlcDtVj30bbbWabmeDrvpQtzd0/tiQ==
+X-Received: by 2002:a05:6a20:5490:b0:161:5ea5:fc0b with SMTP id
+ i16-20020a056a20549000b001615ea5fc0bmr2489838pzk.16.1695930118247; 
+ Thu, 28 Sep 2023 12:41:58 -0700 (PDT)
+Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
+ x23-20020a170902821700b001b80d399730sm15273450pln.242.2023.09.28.12.41.57
+ for <qemu-devel@nongnu.org>
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Sep 2023 12:41:57 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <cfa02bbb-cdaf-4310-ac40-a2837d33c710@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::22e;
- envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x22e.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+To: qemu-devel@nongnu.org
+Subject: [PULL 0/6] tcg patch queue
+Date: Thu, 28 Sep 2023 12:41:50 -0700
+Message-Id: <20230928194156.237351-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -98,36 +87,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/24/23 07:16, Mikulas Patocka wrote:
-> Qemu mips userspace emulation crashes with "qemu: unhandled CPU exception
-> 0x15 - aborting" when one of the integer arithmetic instructions detects
-> an overflow.
-> 
-> This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
-> 
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> Cc: qemu-stable@nongnu.org
-> 
-> ---
->   linux-user/mips/cpu_loop.c |    4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> Index: qemu/linux-user/mips/cpu_loop.c
-> ===================================================================
-> --- qemu.orig/linux-user/mips/cpu_loop.c
-> +++ qemu/linux-user/mips/cpu_loop.c
-> @@ -180,7 +180,9 @@ done_syscall:
->               }
->               force_sig_fault(TARGET_SIGFPE, si_code, env->active_tc.PC);
->               break;
-> -
-> +	case EXCP_OVERFLOW:
-> +            do_tr_or_bp(env, BRK_OVERFLOW, false);
-> +            break;
-
-
-Just call force_sig_fault directly.
+Mini PR, aimed at fixing the mips and ovmf regressions.
 
 
 r~
+
+The following changes since commit 36e9aab3c569d4c9ad780473596e18479838d1aa:
+
+  migration: Move return path cleanup to main migration thread (2023-09-27 13:58:02 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/rth7680/qemu.git tags/pull-tcg-20230928
+
+for you to fetch changes up to 18a536f1f8d6222e562f59179e837fdfd8b92718:
+
+  accel/tcg: Always require can_do_io (2023-09-28 10:08:13 -0700)
+
+----------------------------------------------------------------
+accel/tcg: Always require can_do_io, for #1866
+
+----------------------------------------------------------------
+Richard Henderson (6):
+      accel/tcg: Avoid load of icount_decr if unused
+      accel/tcg: Hoist CF_MEMI_ONLY check outside translation loop
+      accel/tcg: Track current value of can_do_io in the TB
+      accel/tcg: Improve setting of can_do_io at start of TB
+      accel/tcg: Always set CF_LAST_IO with CF_NOIRQ
+      accel/tcg: Always require can_do_io
+
+ include/exec/translator.h   |  2 ++
+ accel/tcg/cpu-exec.c        |  2 +-
+ accel/tcg/tb-maint.c        |  6 ++--
+ accel/tcg/translator.c      | 72 +++++++++++++++++++++------------------------
+ target/mips/tcg/translate.c |  1 -
+ 5 files changed, 41 insertions(+), 42 deletions(-)
 
