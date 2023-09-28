@@ -2,70 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71D1E7B15CA
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9DFE7B15CB
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:15:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlm9r-0006LR-Sd; Thu, 28 Sep 2023 04:14:03 -0400
+	id 1qlmB2-0007YG-7v; Thu, 28 Sep 2023 04:15:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlm9n-0006FB-QN
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:14:00 -0400
+ id 1qlmB0-0007Y3-9X
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:15:14 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlm9k-0008R8-Sh
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:13:58 -0400
+ id 1qlmAy-0000Iq-Mt
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:15:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695888835;
+ s=mimecast20190719; t=1695888911;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jQXRzLQ4dFV2RGJxPEd/xNsxHLsTz30jbQIXjiQ2PC4=;
- b=GOFsPTdexIgAi1RGzLviS9ARnWvQquWdD65bpwJAppvBhnTH9waBGMWzmBGgcNYc6vfNji
- IokSng0cexd2DkIFTfUuxAS2m0Iug7JITkI0fJrcPxRz48VBnb7/g/mXIAd7JVYei0dCSV
- oAsiVypG5u4zgpectEudOplMZ7aNM54=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-221--bZLm_Q-MUC1CP_zEVlWow-1; Thu, 28 Sep 2023 04:13:53 -0400
-X-MC-Unique: -bZLm_Q-MUC1CP_zEVlWow-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
+ bh=eMOmnKE4bPxy44Tho26nufscLXcWTpsa13U5NatqWUw=;
+ b=Li4BCgpmkk/si16ZmFtMVs2ex7P1oAFNmkqJFthfUterFMQ9XxxePEdHW/WTloD9CoM0tU
+ hMQUJNlqBzIb0mNu6Mxv3EXHY5nMpojfSjJrJ5uhxYop3258QHzdaZiqEqe2yzhAxoEb78
+ Ic1Uie00nkX5fSeziYluXgjbiX4uWcY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-653-qvVVrjnvNSWVKBIXY9EFhg-1; Thu, 28 Sep 2023 04:15:10 -0400
+X-MC-Unique: qvVVrjnvNSWVKBIXY9EFhg-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A144B185A790
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 08:13:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C971F3811F2A;
+ Thu, 28 Sep 2023 08:15:08 +0000 (UTC)
 Received: from redhat.com (unknown [10.42.28.90])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C38EC176E0;
- Thu, 28 Sep 2023 08:13:52 +0000 (UTC)
-Date: Thu, 28 Sep 2023 09:13:48 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2E41E40C6E77;
+ Thu, 28 Sep 2023 08:15:08 +0000 (UTC)
+Date: Thu, 28 Sep 2023 09:15:06 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] crypto: only include tls-cipher-suites in emulators
-Message-ID: <ZRU1vFrW8dQXHIUX@redhat.com>
-References: <20230928074918.874468-1-pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, balaton@eik.bme.hu
+Subject: Re: [PATCH 01/13] ui/vnc: Require audiodev= to enable audio
+Message-ID: <ZRU2Cp9GiAAezGOE@redhat.com>
+References: <20230928073705.871327-1-pbonzini@redhat.com>
+ <20230928073705.871327-2-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230928074918.874468-1-pbonzini@redhat.com>
+In-Reply-To: <20230928073705.871327-2-pbonzini@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,19 +84,21 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 28, 2023 at 09:49:18AM +0200, Paolo Bonzini wrote:
-> tls-cipher-suites is an object that is used to inject TLS configuration
-> into the guest (via fw_cfg).  It is never used for host-side TLS
-> operation, and therefore it need not be available in the tools.
+On Thu, Sep 28, 2023 at 09:36:45AM +0200, Paolo Bonzini wrote:
+> If there is no audiodev do not send the audio ack in response to
+> VNC_ENCODING_AUDIO, so that clients aren't told audio exists, and
+> immediately drop the client if they try to send any audio control messages
+> when audio is not advertised.
 > 
 > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 > ---
->  crypto/meson.build   | 3 ++-
->  hw/nvram/meson.build | 6 +-----
->  2 files changed, 3 insertions(+), 6 deletions(-)
+>  docs/about/deprecated.rst       |  8 +++-----
+>  docs/about/removed-features.rst |  6 ++++++
+>  ui/vnc.c                        | 11 ++++++++++-
+>  ui/vnc.h                        |  2 ++
+>  4 files changed, 21 insertions(+), 6 deletions(-)
 
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-
 
 With regards,
 Daniel
