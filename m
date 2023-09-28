@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70BA7B252A
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 20:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8B47B253E
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 20:28:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlveU-00039b-3z; Thu, 28 Sep 2023 14:22:18 -0400
+	id 1qlvjf-0004RW-BE; Thu, 28 Sep 2023 14:27:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qlveN-00039L-QU
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:22:14 -0400
-Received: from mout.gmx.net ([212.227.17.20])
+ (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qlvjd-0004R2-EI
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:27:37 -0400
+Received: from mout.gmx.net ([212.227.15.15])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qlveK-0001qQ-4E
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:22:10 -0400
+ (Exim 4.90_1) (envelope-from <fan.ni@gmx.us>) id 1qlvjb-0003KR-J7
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 14:27:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.us; s=s31663417;
- t=1695925300; x=1696530100; i=fan.ni@gmx.us;
- bh=UfOI6vyIRiGBHe7ZCWPGemrwVXXsHLD0DBk4/NEoACY=;
+ t=1695925631; x=1696530431; i=fan.ni@gmx.us;
+ bh=BY5/Yi6hpYhJcOvd/lg8K4i4ioKWF2ZBhExNg1EG9ac=;
  h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
- b=HKJdM3tsqeLJGXxT6kOQteNUMXjM559B1zyR94+ukuoe9U3U1XNa3w9kUgRWWGOoQp31n68QBoe
- jbmmYFq/Ny92xPtB12xG/aKkw9/0Op1rE+F3bfJwMAZzzIyjlcQG321gPDGdoQXKi6aJjNuQ/knQw
- hzoD3pWLj612pNhzQeDZPkBXhT1117z2LosmKyf1B8eiffNfOe1VbcGLxKwzWXLS46LnhVJCie6Aa
- IE563mDkPc/EUnXpNPFAlOPL4vT580MxY4oyN3TYLwGNOzb5cJ3A6exbebjnc3LcqJ1slepYoELLA
- QY/ErvXv2O2SYxZUdvmI4sMR7/nry3qLDNRQ==
+ b=XRRoEVHynCzU2fomvFD9C/2I90LVZEQ9HY2lxWiJTXosnr6Vk5QofY55Ame6R/8hJwxF8w+w9cT
+ ntfi4d2PofvOV8ZnbQIg+PQvK+z85TfKQ48WUgQOemjGjMMT9kQRv33TtcefYZWEu3Qwp1CU6L26H
+ AwxLirzDUNNXPDQ2/VJzpRaW3odHG6zWAazQjNhPD/YqF39wBkxZWNarzgesowtU0s7UbIPtyhsbp
+ HAk6xsK6DUuUJoHVOmLpheCBtNWHVGPMAnhO0cYL1Y9Cxqt5rnf5yRCZnOuDZwfVt1t++vXUuKN+r
+ bI/iARqQqB5Zt5PS33Q/b0aWZsEeYMu9IFWg==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from debian ([99.13.228.231]) by mail.gmx.net (mrgmx105
- [212.227.17.174]) with ESMTPSA (Nemesis) id 1MQeA2-1qyWZh0Dbi-00Nlm1; Thu, 28
- Sep 2023 20:21:39 +0200
-Date: Thu, 28 Sep 2023 11:21:31 -0700
+Received: from debian ([99.13.228.231]) by mail.gmx.net (mrgmx005
+ [212.227.17.184]) with ESMTPSA (Nemesis) id 1MHXBj-1qq6Zz1P7Z-00DU7L; Thu, 28
+ Sep 2023 20:27:11 +0200
+Date: Thu, 28 Sep 2023 11:26:57 -0700
 From: Fan Ni <fan.ni@gmx.us>
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
@@ -39,35 +39,36 @@ Cc: qemu-devel@nongnu.org, linux-cxl@vger.kernel.org,
  Gregory Price <gregory.price@memverge.com>,
  Klaus Jensen <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>,
  Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH 04/19] hw/cxl/mbox: Generalize the CCI command processing
-Message-ID: <ZRXEKxUTwrP_8U0v@debian>
+Subject: Re: [PATCH 05/19] hw/pci-bridge/cxl_upstream: Move defintion of
+ device to header.
+Message-ID: <ZRXFcX0-3UnqycYe@debian>
 References: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
- <20230925161124.18940-5-Jonathan.Cameron@huawei.com>
+ <20230925161124.18940-6-Jonathan.Cameron@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230925161124.18940-5-Jonathan.Cameron@huawei.com>
-X-Provags-ID: V03:K1:Z697vS6oUizMDH2lC6ZsefviT1+WwjEhiUg5aj9tgUvpW4xhXu2
- f6dNdgSA+DegwvvD12wdmFqBiFpquzmfKJxqhbYKRlODfv/rtBq3cViXt7kh6Majo6MC5rr
- KDmJEUjl/ZG9uC4hUdU2+NdpWG0mzZ1RkIEhXDAUtwZpBs+4UJSMyrOIExcuHE0eozjDYRe
- JMJItK3sf+yGg+CGazX4A==
-UI-OutboundReport: notjunk:1;M01:P0:LU/SxjILlNU=;pjNCpyyanKvO1tp3QYnlC+6ueoc
- VLEF6v9HX0ov8waxCwV5iuw2i/T46VM0FaJh3IYwW/C12MeeVlKG0zDHAdG/cwrjuuRemKm7m
- ZOxcQSkYkLDEQvNrp5EwfMYWoQphhF0eUoRtx6Gedn17hYDigZwzAcymnXs8w12fYcqwrKf15
- hnR/Zv2PqHT6b5ucZRMpUI9V/xLoM6NXZTMcnLR/YAEocn+DuKi9pyKwxzNhuGrutoWCrA+tG
- NCSwfHxDTItudQ16eU+SCKLgs1m6hluTt7GjsJ+jVmjNMfg05Nv8aZ2AeZIwvKKWeFrJm7ENt
- dINgj5v5WJ/1vaFRh2wVXvpWX478hF8pH6Qscumeo8yjGm/ISqgUAfYQva+iVEiIe7Cnw8tRo
- 5BMD94vVCHnBhZHMmhTKQ6dEetNc1JlqQVlbYNMgEYeVUllN6xSF7Ebdif0bB63bn1LNy60zL
- wnm0uWSaWy30oPBCe/F7ph37nyO/wLI2eRU9FhqRdqhQNpqLMDCtkfWQaFQusOs+Dh6HOLxWZ
- ThG+2Tyx/o3YyrdPhcHO8GkefbHUa0y3ss3UHT1Cs7cjjES4Dw3fseXpToizKNmpdYX50u2w7
- s2fXNLuv2ldGiv4/OdKgiXqF3tjeKb2vz1gGw/nCSTMBXUMRdsVOmtmwmZVs2I1cNejI1wdhM
- LOc9Cse2elyIojfAOPL5Hq74bnesKgsV6jKAAKDpN64yZ9la3nNMv22TuukjrYeoGQ08R5rV3
- NPqpNX8FrPGThJYY0CACJHDPCpEitPrGBPBWKgiSHapDssO6kt12Gb5cH4cZEBP8Kij/4dDDm
- vX5CUiR3EqyscQMGzfuyAnFYI+Gy4GeYJVecdmYtRWP/myBg3dQPwDWhx/fLui4s4h/bSg4gq
- x43jQ1ab4PsJtk2kagUc0HNNFTVVAloSGgwqgQQsJlYfKWfTBwTGF/ECsFc7ZfUGZCyW21aJb
- PPVlUzwQ+vy6G/AvVoinHqv1kFg=
+In-Reply-To: <20230925161124.18940-6-Jonathan.Cameron@huawei.com>
+X-Provags-ID: V03:K1:DBvQ3XVtw87a1DwgOnKvweizGDOHaBqEWkQBkYt5Cr0wejGYIal
+ HzqZsVdZzkSmmxI8QuU3chBgP6eMUQ3bhs0klLH5JgTVECdvaGoFsfOEjZfWNn8OSH4E7ml
+ HbQqQt4IYoXqiCLofIAoZzEkLlHXJxVtLKgcGA67shiYw2oM7DoMUClq16BkBJkhO71dwtJ
+ VzluIOaPmP5BiEByGfi1w==
+UI-OutboundReport: notjunk:1;M01:P0:d7iw3oy8PFk=;fbg16xwDAkVrk+jDxf+dLu+8XLw
+ PQ7jUJwzwg+Hvun9JB9DwItwRwMS3J9DdeEnfvEtVr1Z2HhpZKRz+krNqLhOH/9IDCqatFbl2
+ CsdL3lYS1nm5eotrRL7U///OfZVVsijy3Ilt+2iFi9/9M48gAnneSQiJoSUjEoejky5fKqSu4
+ 7Qggha7KEygwKsEDX1evuBZh/FT2XxB5m6e2IwnEpFWEboxDX7GrSyoqIZI9K/AbBSm+Lu4Uc
+ O+DmdQlUB0ki9n9Si+7NWfwJT4MtvBU3vxR2nAC/NABgQTWmevO0O6t6DdzEZ0UqfYETqgpdc
+ Dnan9wGFZFo61KxZPv/0O0HOM8Wo6PYK6IqKXRyRlb2OrAbnkP7KgOda4JOQ4/Mq6YD7i9pJD
+ fPrGfZ1V13TmiqKa818JYQpWhfYeArXYBn4Q4bCL313UX4H5airFZT3TtuepTz+llsBAFNgJC
+ bXXYP8nFaVN6Aw9NsjIWm5EKsURuo/8ZMwG9SzO/3wFAdpOt6YdWiLajFpRTr++51QN6hTkP4
+ N4weGJwDu11DPW8O6+ZEl99UFAYVNCpslcsDvKvRPzuJfB6Sajpfd55jTDKA7tExViu6at96n
+ 67WwFUMUjAPBZlEgnOJGl2HCoRJjY517F7bBAM9UKJw1g/9Tf5eCqEcYx9v4XTGlkDXjbsqEW
+ 1Y5HeYtXj9sfX2PnYed5p78hVdYv4whuxBEYM0DxhMKE3YH/pwJYaUKuifV0cQyie2Q4ph/ex
+ XddiCnpSBbMXKT5O42Wvyoi7/8V9E+R8dmGmd4cOzgYMbQ+GHNa6FJyXFRil8sRYwJ5LnaiJF
+ ybtGgVXOkK6KNuPxk9TGQHszdTZ1q0mZtqVjzHgKbZcBLZSjYCVB/YyhhNElfAeWvlqiW51hd
+ C1ldlPJu98nchnEeX0ne3kj/+jOG2QverPA9lc5O0D5/EP6hyS6r+7yS0X/S3TFZVE91dCEsA
+ WUKP3kdzfNGv2b3RPsYFDgqa4Hs=
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=212.227.17.20; envelope-from=fan.ni@gmx.us;
+Received-SPF: pass client-ip=212.227.15.15; envelope-from=fan.ni@gmx.us;
  helo=mout.gmx.net
 X-Spam_score_int: -27
 X-Spam_score: -2.8
@@ -91,206 +92,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 25, 2023 at 05:11:09PM +0100, Jonathan Cameron wrote:
-> By moving the parts of the mailbox command handling that are CCI type
-> specific out to the caller, make the main handling code generic. Rename =
-it
-> to cxl_process_cci_message() to reflect this new generality.
+On Mon, Sep 25, 2023 at 05:11:10PM +0100, Jonathan Cameron wrote:
+> To avoid repetition of switch upstream port specific data in the
+> CXLDeviceState structure it will be necessary to access the switch USP
+> specific data from mailbox callbacks. Hence move it to cxl_device.h so i=
+t
+> is no longer an opaque structure.
 >
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
 
 Reviewed-by: Fan Ni <fan.ni@samsung.com>
 
->  include/hw/cxl/cxl_device.h |  5 +++-
->  hw/cxl/cxl-device-utils.c   | 51 ++++++++++++++++++++++++++++++++++++-
->  hw/cxl/cxl-mailbox-utils.c  | 43 ++++++++-----------------------
->  3 files changed, 64 insertions(+), 35 deletions(-)
+>  include/hw/pci-bridge/cxl_upstream_port.h | 18 ++++++++++++++++++
+>  hw/pci-bridge/cxl_upstream.c              | 11 +----------
+>  2 files changed, 19 insertions(+), 10 deletions(-)
 >
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index c883d9dd8f..0e3f6c3c0b 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -270,7 +270,10 @@ CXL_DEVICE_CAPABILITY_HEADER_REGISTER(MEMORY_DEVICE=
-,
->
->  void cxl_initialize_mailbox_t3(CXLCCI *cci, DeviceState *d, size_t payl=
-oad_max);
->  void cxl_init_cci(CXLCCI *cci, size_t payload_max);
-> -void cxl_process_mailbox(CXLCCI *cci);
-> +int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-> +                            size_t len_in, uint8_t *pl_in,
-> +                            size_t *len_out, uint8_t *pl_out,
-> +                            bool *bg_started);
->
->  #define cxl_device_cap_init(dstate, reg, cap_id, ver)                  =
-    \
->      do {                                                               =
-    \
-> diff --git a/hw/cxl/cxl-device-utils.c b/hw/cxl/cxl-device-utils.c
-> index 327949a805..f3a6e17154 100644
-> --- a/hw/cxl/cxl-device-utils.c
-> +++ b/hw/cxl/cxl-device-utils.c
-> @@ -79,6 +79,25 @@ static uint64_t mailbox_reg_read(void *opaque, hwaddr=
- offset, unsigned size)
->      case 4:
->          return cxl_dstate->mbox_reg_state32[offset / size];
->      case 8:
-> +        if (offset =3D=3D A_CXL_DEV_BG_CMD_STS) {
-> +            uint64_t bg_status_reg;
-> +            bg_status_reg =3D FIELD_DP64(0, CXL_DEV_BG_CMD_STS, OP,
-> +                                       cci->bg.opcode);
-> +            bg_status_reg =3D FIELD_DP64(bg_status_reg, CXL_DEV_BG_CMD_=
-STS,
-> +                                       PERCENTAGE_COMP, cci->bg.complet=
-e_pct);
-> +            bg_status_reg =3D FIELD_DP64(bg_status_reg, CXL_DEV_BG_CMD_=
-STS,
-> +                                       RET_CODE, cci->bg.ret_code);
-> +            /* endian? */
-> +            cxl_dstate->mbox_reg_state64[offset / size] =3D bg_status_r=
-eg;
-> +        }
-> +        if (offset =3D=3D A_CXL_DEV_MAILBOX_STS) {
-> +            uint64_t status_reg =3D cxl_dstate->mbox_reg_state64[offset=
- / size];
-> +            if (cci->bg.complete_pct) {
-> +                status_reg =3D FIELD_DP64(status_reg, CXL_DEV_MAILBOX_S=
-TS, BG_OP,
-> +                                        0);
-> +                cxl_dstate->mbox_reg_state64[offset / size] =3D status_=
-reg;
-> +            }
-> +        }
->          return cxl_dstate->mbox_reg_state64[offset / size];
->      default:
->          g_assert_not_reached();
-> @@ -157,7 +176,37 @@ static void mailbox_reg_write(void *opaque, hwaddr =
-offset, uint64_t value,
->
->      if (ARRAY_FIELD_EX32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_=
-CTRL,
->                           DOORBELL)) {
-> -        cxl_process_mailbox(cci);
-> +        uint64_t command_reg =3D
-> +            cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_CMD];
-> +        uint8_t cmd_set =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD=
-,
-> +                                     COMMAND_SET);
-> +        uint8_t cmd =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, CO=
-MMAND);
-> +        size_t len_in =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, =
-LENGTH);
-> +        uint8_t *pl =3D cxl_dstate->mbox_reg_state + A_CXL_DEV_CMD_PAYL=
-OAD;
-> +        size_t len_out;
-> +        uint64_t status_reg;
-> +        bool bg_started;
-> +        int rc;
+> diff --git a/include/hw/pci-bridge/cxl_upstream_port.h b/include/hw/pci-=
+bridge/cxl_upstream_port.h
+> new file mode 100644
+> index 0000000000..b02aa8f659
+> --- /dev/null
+> +++ b/include/hw/pci-bridge/cxl_upstream_port.h
+> @@ -0,0 +1,18 @@
 > +
-> +        rc =3D cxl_process_cci_message(cci, cmd_set, cmd, len_in, pl,
-> +                                     &len_out, pl, &bg_started);
+> +#ifndef CXL_USP_H
+> +#define CXL_USP_H
+> +#include "hw/pci/pcie.h"
+> +#include "hw/pci/pcie_port.h"
+> +#include "hw/cxl/cxl.h"
 > +
-> +        /* Set bg and the return code */
-> +        status_reg =3D FIELD_DP64(0, CXL_DEV_MAILBOX_STS, BG_OP,
-> +                                bg_started ? 1 : 0);
-> +        status_reg =3D FIELD_DP64(status_reg, CXL_DEV_MAILBOX_STS, ERRN=
-O, rc);
-> +        /* Set the return length */
-> +        command_reg =3D FIELD_DP64(0, CXL_DEV_MAILBOX_CMD, COMMAND_SET,=
- cmd_set);
-> +        command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD,
-> +                                 COMMAND, cmd);
-> +        command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD,
-> +                                 LENGTH, len_out);
+> +typedef struct CXLUpstreamPort {
+> +    /*< private >*/
+> +    PCIEPort parent_obj;
 > +
-> +        cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_CMD] =3D command=
-_reg;
-> +        cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_STS] =3D status_=
-reg;
-> +        /* Tell the host we're done */
-> +        ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_=
-CTRL,
-> +                         DOORBELL, 0);
->      }
->  }
+> +    /*< public >*/
+> +    CXLComponentState cxl_cstate;
+> +    DOECap doe_cdat;
+> +    uint64_t sn;
+> +} CXLUpstreamPort;
+> +
+> +#endif /* CXL_SUP_H */
+> diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
+> index b81bb5fec9..36737189c6 100644
+> --- a/hw/pci-bridge/cxl_upstream.c
+> +++ b/hw/pci-bridge/cxl_upstream.c
+> @@ -14,6 +14,7 @@
+>  #include "hw/pci/msi.h"
+>  #include "hw/pci/pcie.h"
+>  #include "hw/pci/pcie_port.h"
+> +#include "hw/pci-bridge/cxl_upstream_port.h"
+>  /*
+>   * Null value of all Fs suggested by IEEE RA guidelines for use of
+>   * EU, OUI and CID
+> @@ -30,16 +31,6 @@
+>  #define CXL_UPSTREAM_PORT_DVSEC_OFFSET \
+>      (CXL_UPSTREAM_PORT_SN_OFFSET + PCI_EXT_CAP_DSN_SIZEOF)
 >
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index 376367c118..239acc659d 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -754,50 +754,27 @@ static const struct cxl_cmd cxl_cmd_set[256][256] =
-=3D {
->          cmd_media_clear_poison, 72, 0 },
->  };
->
-> -void cxl_process_mailbox(CXLCCI *cci)
-> +int cxl_process_cci_message(CXLCCI *cci, uint8_t set, uint8_t cmd,
-> +                            size_t len_in, uint8_t *pl_in, size_t *len_=
-out,
-> +                            uint8_t *pl_out, bool *bg_started)
+> -typedef struct CXLUpstreamPort {
+> -    /*< private >*/
+> -    PCIEPort parent_obj;
+> -
+> -    /*< public >*/
+> -    CXLComponentState cxl_cstate;
+> -    DOECap doe_cdat;
+> -    uint64_t sn;
+> -} CXLUpstreamPort;
+> -
+>  CXLComponentState *cxl_usp_to_cstate(CXLUpstreamPort *usp)
 >  {
-> -    uint16_t ret =3D CXL_MBOX_SUCCESS;
->      const struct cxl_cmd *cxl_cmd;
-> -    uint64_t status_reg =3D 0;
->      opcode_handler h;
-> -    CXLDeviceState *cxl_dstate =3D &CXL_TYPE3(cci->d)->cxl_dstate;
-> -    uint64_t command_reg =3D cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAI=
-LBOX_CMD];
-> -
-> -    uint8_t set =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
-D_SET);
-> -    uint8_t cmd =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
-D);
-> -    uint16_t len_in =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, LE=
-NGTH);
-> -    uint8_t *pl =3D cxl_dstate->mbox_reg_state + A_CXL_DEV_CMD_PAYLOAD;
-> -    size_t len_out =3D 0;
->
-> +    *len_out =3D 0;
->      cxl_cmd =3D &cci->cxl_cmd_set[set][cmd];
->      h =3D cxl_cmd->handler;
-> -    if (h) {
-> -        if (len_in =3D=3D cxl_cmd->in || cxl_cmd->in =3D=3D ~0) {
-> -            ret =3D (*h)(cxl_cmd, pl, len_in, pl, &len_out, cci);
-> -            assert(len_out <=3D cci->payload_max);
-> -        } else {
-> -            ret =3D CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> -        }
-> -    } else {
-> +    if (!h) {
->          qemu_log_mask(LOG_UNIMP, "Command %04xh not implemented\n",
->                        set << 8 | cmd);
-> -        ret =3D CXL_MBOX_UNSUPPORTED;
-> +        return CXL_MBOX_UNSUPPORTED;
->      }
->
-> -    /* Set the return code */
-> -    status_reg =3D FIELD_DP64(0, CXL_DEV_MAILBOX_STS, ERRNO, ret);
-> -
-> -    /* Set the return length */
-> -    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
-D_SET, 0);
-> -    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAN=
-D, 0);
-> -    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, LENGTH=
-, len_out);
-> -
-> -    cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_CMD] =3D command_reg=
-;
-> -    cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_STS] =3D status_reg;
-> +    if (len_in !=3D cxl_cmd->in && cxl_cmd->in !=3D ~0) {
-> +        return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
-> +    }
->
-> -    /* Tell the host we're done */
-> -    ARRAY_FIELD_DP32(cxl_dstate->mbox_reg_state32, CXL_DEV_MAILBOX_CTRL=
-,
-> -                     DOORBELL, 0);
-> +    return (*h)(cxl_cmd, pl_in, len_in, pl_out, len_out, cci);
->  }
->
->  void cxl_init_cci(CXLCCI *cci, size_t payload_max)
+>      return &usp->cxl_cstate;
 > --
 > 2.39.2
 >
