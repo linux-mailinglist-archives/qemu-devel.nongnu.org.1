@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D3547B279F
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 23:40:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D387B288C
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 00:47:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlyk6-0003B0-5n; Thu, 28 Sep 2023 17:40:18 -0400
+	id 1qlzlI-0001rf-QB; Thu, 28 Sep 2023 18:45:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlyk5-0003An-0X
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:40:17 -0400
-Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
+ id 1qlzlG-0001rW-Bp
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 18:45:34 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlyk3-0006ux-Cr
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:40:16 -0400
-Received: by mail-pj1-x102a.google.com with SMTP id
- 98e67ed59e1d1-2777a5e22b5so5534604a91.1
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:40:14 -0700 (PDT)
+ id 1qlzlE-0001N2-3A
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 18:45:33 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2773af0c5dbso7326691a91.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 15:45:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695937214; x=1696542014; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=linaro.org; s=google; t=1695941129; x=1696545929; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=rPoF1h8neW9FVdlqtneGAGk+0DxxTqlRTNk6aWj2UWs=;
- b=VtpIsMsBsKiZNonXfKxlvUjqpXlxlWe34eGZZ6sOmSFntkwJHN58StW/jt6HFuKLLN
- vT6vbLhtXuZkEBELxKkVUVeeKgnkLtGECv6ESB1ANcSbjFOgpf9Yq3YaNMNZ0vv0VQdI
- KZAwdYVoEfZceS6nYsBfy9OzwMNL9E4I78YvlrU3WoX2P49rU+drlJe8G4clJJ1OyNh9
- nLcjGnFRMGeImfCevqLrfq1/GlsnX+orfCPyl+kWMxNpLWUaJIH5zoXyj5k4sqnbNxid
- eOZyLjffuzMcyoHu84afj+qmByj21qASfiJh9XnH+5UBukyyJWMsQztuqrY7BDjNXwm/
- fCgw==
+ bh=IcC/MsCxVDxwzvhC4rC31SsimmPJ3S29hyuG24mq47w=;
+ b=zeZB8wMMv94D0h5wa3gOQl92JBYkyJLuDy4j+eo4ZUfKWsjvTIGvfEmA63o023D35/
+ y4yKIu3Q/mV5EfNLuMyNjfSam6Gi4XGKWMDxXZkkGH0hilJKh/U2TRlE1Q4kzSHOJQav
+ AP9hDrc+gpCgBQamS0gYRT/VFaqFiZShyK4stf/LXJScx8NBlxMNTQcXk49s1HSMwqsr
+ Hjpdc15o3hTXTj61tBkROuawVFeGfF29wg4Z0WMdU0DOvG5LdgBVCV2c67RF8exsWKTQ
+ XgDIDlX++soxtlftsgujzu05VmTo+O6A5YJgVZqbP3H5VICtpJF2N/iJWgwbP+i2cVsl
+ vIFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695937214; x=1696542014;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ d=1e100.net; s=20230601; t=1695941129; x=1696545929;
+ h=content-transfer-encoding:in-reply-to:references:to:from
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rPoF1h8neW9FVdlqtneGAGk+0DxxTqlRTNk6aWj2UWs=;
- b=ATSKVRhaxMeXR8eBj77NyshV3bcKSWey7RRg9YW/qcPNKH5LAFn9nQXcfzgUE9N4sm
- Dkut1mJtHq9gEYXn4u6UJsffhGSv4ZD2U0HyntOMSpWswbeLqv6WvBvU29cVM80MIFBQ
- LE8ePLNd4qqwX2j/6IQRjS3gncY/J08rYdGMnrX2RbRkcySyIug9n7tOMdHJcc0uv30H
- yH0zVGt5357vdgTYdzFzOII+EWt1vliG2n2x2M5/wKSuTLIVOv5gswMe6gqV95tSlAx7
- klfWzA82bMbQ8HSQxBjAFKSaRe4+TA+oO44IQ8GeFFJCBR72+ku2d1KhxxEmJoInwxlc
- qOCA==
-X-Gm-Message-State: AOJu0Yx2rBj95VH/2Sch4LIbmubhacXFOq0qe5dxiy2XvJro0vFpCAOG
- V49BE21HfsPu3w2ISkuY9mLw3w==
-X-Google-Smtp-Source: AGHT+IFUMC+kyianhyv1+lITZFIExDrADR6h8fxCUII3MtkRBkXnPWZLXXh17KDe+KEIaNWgMaML0g==
-X-Received: by 2002:a17:90a:bc92:b0:273:4944:2eba with SMTP id
- x18-20020a17090abc9200b0027349442ebamr2360564pjr.40.1695937213816; 
- Thu, 28 Sep 2023 14:40:13 -0700 (PDT)
+ bh=IcC/MsCxVDxwzvhC4rC31SsimmPJ3S29hyuG24mq47w=;
+ b=oCGgdoBMtWWVCmJG52mzMiTk91rLcMyX2ts1L+Lgi14fOqIpUD8DI9nzcl86QfOTqR
+ est2f6Rih3imvUUkvYcJqPGviXAQQqf98GuBH38bt2owugWfvysZ6lfX9w9RVi/Lp0vp
+ X9oSAORtb1I/dnxAod3IjnEKuhm20xp5CTBT6SDIvImCjm0GAt1pETKkonZoaX2o6wlV
+ 9Aw2snWRs1ev+G3QEDFEyh+RC2f9EI+BfL5cx5ByB7TZZeGbUoS+RL7V460FESw7EVb2
+ hbPhfiBK6ve/F4zKJf4Wq+F5iQkZtqxIFgQBkzRQa6sE91/IRLr4j/mqSWbW/ErbeJBF
+ HnUA==
+X-Gm-Message-State: AOJu0YzpjD5asuoG4/aU6EAndmDz1s7VA8jUrNXbeeeKUZ/MBomBy2oX
+ 3QBtOeX9REmtOAeW8k3sb/mPRySVnpR8FE9dzvo=
+X-Google-Smtp-Source: AGHT+IG1qY6jLCwNfij5TY0EswHiyOmMG18iJ9JP6znQ0dvHP+w6f67j8TIch9Tn+HA1weYTj8i+cg==
+X-Received: by 2002:a17:90a:b101:b0:273:e8c0:f9b with SMTP id
+ z1-20020a17090ab10100b00273e8c00f9bmr2374119pjq.15.1695941129168; 
+ Thu, 28 Sep 2023 15:45:29 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-146-124.tukw.qwest.net. [174.21.146.124])
  by smtp.gmail.com with ESMTPSA id
- 23-20020a17090a031700b0025dc5749b4csm20416pje.21.2023.09.28.14.40.12
+ gv9-20020a17090b11c900b002749fee7984sm66041pjb.22.2023.09.28.15.45.27
+ for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 14:40:13 -0700 (PDT)
-Message-ID: <a617709e-4567-a10e-26e0-e4ffb2308573@linaro.org>
-Date: Thu, 28 Sep 2023 14:40:10 -0700
+ Thu, 28 Sep 2023 15:45:28 -0700 (PDT)
+Message-ID: <ed9a5058-a26a-6e7f-c6c5-0cc68b016632@linaro.org>
+Date: Thu, 28 Sep 2023 15:45:26 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 8/8] target/sparc: Fix VIS subtraction instructions.
+Subject: Re: [PATCH 0/4] tcg: Optimize loads and stores to env
 Content-Language: en-US
-To: Nick Bowler <nbowler@draconx.ca>, qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20230925050545.30912-1-nbowler@draconx.ca>
- <20230925050545.30912-9-nbowler@draconx.ca>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230925050545.30912-9-nbowler@draconx.ca>
+To: qemu-devel@nongnu.org
+References: <20230831025729.1194388-1-richard.henderson@linaro.org>
+In-Reply-To: <20230831025729.1194388-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -96,32 +94,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/24/23 01:03, Nick Bowler wrote:
-> All of the VIS subtraction instructions are documented to subtract the
-> second input operand from the first.  This is also consistent with how
-> the instructions actually work on a real UltraSparc II.
-> 
-> But the emulator is implementing the subtraction in the wrong order,
-> subtracting the first input from the second, so the results are wrong
-> in all nontrivial cases.
-> 
-> Signed-off-by: Nick Bowler <nbowler@draconx.ca>
-> ---
->   target/sparc/vis_helper.c | 18 +++++++++---------
->   1 file changed, 9 insertions(+), 9 deletions(-)
-
-While this patch works, better to use
-
-void tcg_gen_vec_add16_i32(TCGv_i32 d, TCGv_i32 a, TCGv_i32 b);
-void tcg_gen_vec_add16_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
-void tcg_gen_vec_add32_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
-
-void tcg_gen_vec_sub16_i32(TCGv_i32 d, TCGv_i32 a, TCGv_i32 b);
-void tcg_gen_vec_sub16_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
-void tcg_gen_vec_sub32_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
-
-from "tcg/tcg-op-gvec.h" and remove the sparc helpers.
-
+Ping.
 
 r~
+
+On 8/30/23 22:57, Richard Henderson wrote:
+> This is aimed at improving gvec generated code, which involves large
+> numbers of loads and stores to the env slots of the guest cpu vector
+> registers.  The final patch helps eliminate redundant zero-extensions
+> that can appear with e.g. avx2 and sve.
+> 
+>  From the small amount of timing that I have done, there is no change.
+> But of course as we all know, x86 is very good with redundant memory.
+> And frankly, I haven't found a good test case for measuring.
+> What I need is an algorithm with lots of integer vector code that can
+> be expanded with gvec.  Most of what I've found is either fp (out of
+> line) or too simple (small translation blocks with little scope for
+> optimization).
+> 
+> That said, it appears to be simple enough, and does eliminate some
+> redundant operations, even in places that I didn't expect.
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (4):
+>    tcg: Don't free vector results
+>    tcg/optimize: Pipe OptContext into reset_ts
+>    tcg: Optimize env memory operations
+>    tcg: Eliminate duplicate env store operations
+> 
+>   tcg/optimize.c    | 226 ++++++++++++++++++++++++++++++++++++++++++++--
+>   tcg/tcg-op-gvec.c |  39 ++------
+>   2 files changed, 225 insertions(+), 40 deletions(-)
+> 
+
 
