@@ -2,117 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBAA7B14DA
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 09:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C547B1527
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 09:39:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qllPq-0001DT-Ei; Thu, 28 Sep 2023 03:26:30 -0400
+	id 1qllaQ-0004jN-1q; Thu, 28 Sep 2023 03:37:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michal.Orzel@amd.com>)
- id 1qllPm-0001D5-KO; Thu, 28 Sep 2023 03:26:27 -0400
-Received: from mail-dm6nam04on20618.outbound.protection.outlook.com
- ([2a01:111:f400:7e8b::618]
- helo=NAM04-DM6-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qllaO-0004hd-2B
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <Michal.Orzel@amd.com>)
- id 1qllPi-0003kd-Oj; Thu, 28 Sep 2023 03:26:25 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=K9PXRo6eBCV8e8BrXeOI93ArqVM5geGleeBOAHT92KFRhHHfvgVkR9neuOO0u2LVSqjsQCiA01Kz4TBcMagfM8aRPfZXCfzXP/keAXW4Du1FHQXaTqiSKhBFHD6HbwDINi8OkBSRQBR3UFRf3H2tvLnY8AH11o9u0qjiJ9ZXvJBf4BT7yQVbJWrMJVBZWeYuZlSe+dYTR49a/zQxKB6khmT5GStVihOj+X0VZOc6SoQ1ejyT88LhJDy1XUlemCGzXkheYwHYRmSjMsmMRFgDdu0k12KYny2Y3NZOGFfXorH5ZTgiR3+h2aI8BOPhncKP3xs5qEGfNRQzxQukuQMUcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Lh/Fba5YMLgwTxiAO/0LSIeUyNytNHfPNn2TESqnlA=;
- b=JJJFsnmiDX3xLWOslpoZDO3QvPdF8hH5UzArFCFZvvqCbEGK4mtPiYDx/fsVBiXUk4dV278s0ee5pW1z+VmPtl4lyf3Y8spG8xmEaugagiOd1VIdei6sfY2wTyPjYL8VsAU5xu9Co/uNYinoeDKPQQ8PKKSzN+8m7lNNzOJkQyg9npB9bQ8XHKEY3PqGaJsx7pexzg4FeJv4SE66BMrPPLCvSDZTC79Zdcb66Q56fjCfe7tHyyNZmEk9d4sUEueu2ArZdfGUTfwbZ5Y13JmqnUxU+gUhv4UrBVOeqSYhl98eG6ILU56+3gq+upd4ejnE2nBEpAg8JiW/rGdV5ksTsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3Lh/Fba5YMLgwTxiAO/0LSIeUyNytNHfPNn2TESqnlA=;
- b=Zjv7hsMpbzGIRN93KjPk4MkE0tujir832AAmAtm3mYmgn3GfosZjrBWkmKEGVaQeWD4SuHOPSXhqmAJD9jAgNCzGb3xzvCtskFZ3Ql1PdSlXE5powWfKekGBVEza35I9VvI/+bh7rK5lsNW4k6j4MSPQAGAFI1ml1//FvriWg+8=
-Received: from CYZPR19CA0006.namprd19.prod.outlook.com (2603:10b6:930:8e::14)
- by SA0PR12MB4381.namprd12.prod.outlook.com (2603:10b6:806:70::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.32; Thu, 28 Sep
- 2023 07:26:17 +0000
-Received: from CY4PEPF0000E9CE.namprd03.prod.outlook.com
- (2603:10b6:930:8e:cafe::45) by CYZPR19CA0006.outlook.office365.com
- (2603:10b6:930:8e::14) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.25 via Frontend
- Transport; Thu, 28 Sep 2023 07:26:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9CE.mail.protection.outlook.com (10.167.241.141) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.14 via Frontend Transport; Thu, 28 Sep 2023 07:26:16 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 28 Sep
- 2023 02:26:16 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 28 Sep
- 2023 02:26:15 -0500
-Received: from [10.71.193.39] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
- Transport; Thu, 28 Sep 2023 02:26:14 -0500
-Message-ID: <ec0addbb-7456-92ab-998c-b41cfbe0b29a@amd.com>
-Date: Thu, 28 Sep 2023 09:26:09 +0200
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qllaF-00064a-FC
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695886633;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=V+zXvMgKOXou0u5sPIkvOiaTaEXdC4/qR9hqP8mzpz0=;
+ b=F3uW9PR4KBprTjA4JPGrkhxZfRXDZHLBLnWq/sJ/Eqxt5fWGDbdiEeocDvOiol2f5nzWUT
+ 9g3RZSbELsp9jN1B1qxi4qbP5quz3BaWkNtkXupyR8fs7aQQ1AxbMFb7H7uEUMLkuCblUK
+ d9XR90G8p+n3PhvpQEKrPTXjW0FE1yk=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-W-n0JPfkNDS_-EoIYZh4EQ-1; Thu, 28 Sep 2023 03:37:09 -0400
+X-MC-Unique: W-n0JPfkNDS_-EoIYZh4EQ-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-51d981149b5so9688307a12.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 00:37:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695886627; x=1696491427;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=V+zXvMgKOXou0u5sPIkvOiaTaEXdC4/qR9hqP8mzpz0=;
+ b=Ec4OKN/C3BvRd+CLsGLzQ9Krc3z3FrohqqPhXeVXeH7Yj6c0YmudxU0XrdOdtSGoQq
+ qFERYUa99TBi35mvQCiq2aPbyOkXfS2HiocUz3nnY01oBcwKTZ0d0oFKy7cYMlmA9zuS
+ f2FZ7YIVMIkrHCjWz7GculoiV2uSeqo22yxo19AkOehpLiN9mNRnLD32BfapVvXGHZNZ
+ eDyVCrse5se52KX2QtIxsCsNYSKI1C1GhTHv8dLbq0xihcq2dWwbcutyWiLA+n5diCnH
+ o64pr1fO3qxceQaFenfp3h0eIpr1xJkRu0ezT6t6OoYP++bHwm+VxEvZo+XVvmRPFyZN
+ Rsng==
+X-Gm-Message-State: AOJu0YxxvG81r2eA0jAqFnhd878s1Qc9vWl1G87o7zoHLaKgjqyLSHbJ
+ GuWz24/COOY7JvMU/VfXL3hSQ045BpMZ0Hqc3iB+kS+9xCH+TuILi5UEyUpIKUEWtRj+2sK2Zr5
+ xeOJdCPwT6EhGT4TTPmrnNwea2oQNU3vEfibv1HGagRzWjftSTOANBW+365JNHKqGAYum9Kzc5W
+ E=
+X-Received: by 2002:aa7:d489:0:b0:533:97c:8413 with SMTP id
+ b9-20020aa7d489000000b00533097c8413mr460974edr.25.1695886627599; 
+ Thu, 28 Sep 2023 00:37:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHaWEYAIOe677qH0E++ze25FsYVnzEndFMfma/r6RhBaoCdCOnmES/lx7p1z+nfXm24oYY4AQ==
+X-Received: by 2002:aa7:d489:0:b0:533:97c:8413 with SMTP id
+ b9-20020aa7d489000000b00533097c8413mr460951edr.25.1695886627173; 
+ Thu, 28 Sep 2023 00:37:07 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ d15-20020aa7d68f000000b005333922efb0sm9255540edr.78.2023.09.28.00.37.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 28 Sep 2023 00:37:06 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: berrange@redhat.com,
+	balaton@eik.bme.hu
+Subject: [PATCH v2 00/13] Cleanup deprecated audio features, take 2
+Date: Thu, 28 Sep 2023 09:36:44 +0200
+Message-ID: <20230928073705.871327-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] target/arm: Fix CNTPCT_EL0 trapping from EL0 when
- HCR_EL2.E2H is 0
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>
-CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>,
- <stefano.stabellini@amd.com>, <Oleksandr_Tyshchenko@epam.com>
-References: <20230922132111.9149-1-michal.orzel@amd.com>
- <CAFEAcA-Vbzt2q17-s_A4cw+sn2bx8uQS2QGFXt5b2nj9d0UJig@mail.gmail.com>
-From: Michal Orzel <michal.orzel@amd.com>
-In-Reply-To: <CAFEAcA-Vbzt2q17-s_A4cw+sn2bx8uQS2QGFXt5b2nj9d0UJig@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9CE:EE_|SA0PR12MB4381:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02753afb-955a-4d52-a111-08dbbff43401
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uzsk1/wuEpiEAby7n2/GmWNpb2xOGDFGjsFy9QhBqtJwYAf1IcbWMNRgvi6wxCaLKk4CeD6imC2TwQl6SAcUD+chN2QA6STFFGj/O4uULVnanZxpyXdlLzaKoTmaGw7OLeS3briocV393V+JXxPffHDJffgQzgdgAc4yEmje+49O4BekfWLL19pEuGK1cFIEd9cknrWBIa3tY0FKMJjJK2mlKnHuzAq7QIwy5CsfaEJPRKftqvvDSqKyWkWAdL4fjvlhrItttblFS9eNDlXMM7HnbMbwSaDtcQnTISA05rVuatTRz4MrYXh2dgm5OJiJArwezwy8tx1Pg9gJuYHm8ippTBYZ9uJHHhg4rhDAgqK4Gw6kKYlzRIraKiTuNtIrYLKh49aPdDaijJprwNzCtl2tw4YDTIWQDM/KPen7LcRTvI06K98DDaG02Gbz99RgkWigvyHAtHARL9o9C8pAjdTYA/EJF5dghm1muCrJ/I33QfYD65udac1zAAXH8zRTovGsOUvvzlhjKnGs1VKEgyuOjDsFr9s6fhnC7n/88XM8uhwnY13HOf8PyqT2UxnesRW82KYagsuCWHOf7mUVM5YnkOUGRTjtNAgted5bjnW9SL+IYJLuQ4uGxv675Eau83KHoDvUwIes2FthRHpSFeYgAPWazG5GGQj5VAV6PYhuCkrO6cc7c/5pxHVQzafvSd9XxvqP2tPSW5bfiOxLZSUtV7ZoQb96IwAfSN+fBujfo5auhCkEn3/AUm9IOIXe4EjPWrW/bUlTOsGbM9av2ymWxlNLJSddZ0JjwyLFJkyqjCFWIEnWhKn1acJy4LYP
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(136003)(396003)(376002)(39860400002)(346002)(230922051799003)(1800799009)(64100799003)(186009)(82310400011)(451199024)(40470700004)(46966006)(36840700001)(2906002)(40460700003)(54906003)(82740400003)(31696002)(53546011)(86362001)(6666004)(70206006)(2616005)(336012)(47076005)(83380400001)(356005)(426003)(26005)(36860700001)(478600001)(81166007)(6916009)(316002)(40480700001)(5660300002)(44832011)(16576012)(8936002)(70586007)(41300700001)(36756003)(8676002)(4326008)(31686004)(36900700001)(43740500002);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Sep 2023 07:26:16.6942 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02753afb-955a-4d52-a111-08dbbff43401
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9CE.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4381
-Received-SPF: softfail client-ip=2a01:111:f400:7e8b::618;
- envelope-from=Michal.Orzel@amd.com;
- helo=NAM04-DM6-obe.outbound.protection.outlook.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -128,61 +98,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+In this version the QEMU_AUDIO_* options go away, but it is still
+possible to pick a default audio backend from the list provided to
+--audio-drv-list.  The code is still simplified a lot compared to
+having all the legacy parsing code and the -audio-help function.
+I had to keep QEMU_AUDIO_DRV=none because it is used by libqtest;
+a possibility for the future could be to add a "-audio none" option
+without a model.  For now I kept this setting as it is a subset of the
+previous accepted values, and it can be deprecated separately.
 
-On 27/09/2023 17:49, Peter Maydell wrote:
-> 
-> 
-> On Fri, 22 Sept 2023 at 14:21, Michal Orzel <michal.orzel@amd.com> wrote:
->>
->> On an attempt to access CNTPCT_EL0 from EL0 using a guest running on top
->> of Xen, a trap from EL2 was observed which is something not reproducible
->> on HW (also, Xen does not trap accesses to physical counter).
->>
->> This is because gt_counter_access() checks for an incorrect bit (1
->> instead of 0) of CNTHCTL_EL2 if HCR_EL2.E2H is 0 and access is made to
->> physical counter. Refer ARM ARM DDI 0487J.a, D19.12.2:
->> When HCR_EL2.E2H is 0:
->>  - EL1PCTEN, bit [0]: refers to physical counter
->>  - EL1PCEN, bit [1]: refers to physical timer registers
->>
->> Fix it by checking for the right bit (i.e. 0) and update the comment
->> referring to incorrect bit name.
->>
->> Fixes: 5bc8437136fb ("target/arm: Update timer access for VHE")
->> Signed-off-by: Michal Orzel <michal.orzel@amd.com>
->> ---
->> This is now in conformance to ARM ARM CNTPCT_EL0 pseudocode:
->> if PSTATE.EL == EL0 then
->> ...
->>     elif EL2Enabled() && HCR_EL2.E2H == '0' && CNTHCTL_EL2.EL1PCTEN == '0' then
->>         AArch64.SystemAccessTrap(EL2, 0x18);
->> ---
->>  target/arm/helper.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/target/arm/helper.c b/target/arm/helper.c
->> index 3b22596eabf3..3a2d77b3f81e 100644
->> --- a/target/arm/helper.c
->> +++ b/target/arm/helper.c
->> @@ -2483,9 +2483,9 @@ static CPAccessResult gt_counter_access(CPUARMState *env, int timeridx,
->>                  return CP_ACCESS_TRAP_EL2;
->>              }
->>          } else {
->> -            /* If HCR_EL2.<E2H> == 0: check CNTHCTL_EL2.EL1PCEN. */
->> +            /* If HCR_EL2.<E2H> == 0: check CNTHCTL_EL2.EL1PCTEN. */
->>              if (has_el2 && timeridx == GTIMER_PHYS &&
->> -                !extract32(env->cp15.cnthctl_el2, 1, 1)) {
->> +                !extract32(env->cp15.cnthctl_el2, 0, 1)) {
->>                  return CP_ACCESS_TRAP_EL2;
->>              }
->>          }
-> 
-> I agree that the current logic is not correct, but this change
-> makes this code identical to the "case 1" handling, so we
-> can delete the whole "if (hcr & HCR_E2H) { ... } else { ...  }"
-> block and instead fall through, as we already do in gt_timer_access().
-Ok, will do.
+At the end of this series, all devices can be configured with
+-audiodev.  Therefore, I decided to forbid mixing the default
+audio backend with audiodevs or with -nodefaults.
 
-~Michal
+Patches 1-2 are Martin's patches that didn't end up in the previous
+pull request.
+
+Patches 3-4 change audio.c to use Error ** a bit more.
+
+Patches 5-7 introduce the minimal code to create a default audio
+backend.
+
+Patches 8-11 introduce a machine property "audiodev" and plumb
+it into all machines with an embedded sound card.
+
+Patches 12-13 forbid some not-so-sensible usage of default
+audio backends.
+
+Paolo
+
+v1->v2:
+- do not expose audio encoding feature if VNC audio is not enabled [Daniel]
+- add hint to error messages when -audiodev and default backend are mixed
+- context changes due to shadowed variable fixes
+
+
+Martin Kletzander (4):
+  audio: Require AudioState in AUD_add_capture
+  Introduce machine property "audiodev"
+  hw/arm: Support machine-default audiodev with fallback
+  hw/ppc: Support machine-default audiodev with fallback
+
+Paolo Bonzini (9):
+  ui/vnc: Require audiodev= to enable audio
+  audio: allow returning an error from the driver init
+  audio: return Error ** from audio_state_by_name
+  audio: commonize voice initialization
+  audio: simplify flow in audio_init
+  audio: remove QEMU_AUDIO_* and -audio-help support
+  vt82c686: Support machine-default audiodev with fallback
+  audio: forbid mixing default audiodev backend and -audiodev
+  audio: forbid default audiodev backend with -nodefaults
+
+ audio/alsaaudio.c                |   3 +-
+ audio/audio-hmp-cmds.c           |   6 +-
+ audio/audio.c                    | 213 +++++------
+ audio/audio.h                    |   5 +-
+ audio/audio_int.h                |   7 +-
+ audio/audio_legacy.c             | 591 -------------------------------
+ audio/audio_template.h           |   9 +-
+ audio/coreaudio.m                |   3 +-
+ audio/dbusaudio.c                |   3 +-
+ audio/dsoundaudio.c              |   3 +-
+ audio/jackaudio.c                |   3 +-
+ audio/meson.build                |   1 -
+ audio/noaudio.c                  |   3 +-
+ audio/ossaudio.c                 |  12 +-
+ audio/paaudio.c                  |   8 +-
+ audio/pwaudio.c                  |  17 +-
+ audio/sdlaudio.c                 |   6 +-
+ audio/sndioaudio.c               |   3 +-
+ audio/spiceaudio.c               |   5 +-
+ audio/wavaudio.c                 |   3 +-
+ docs/about/deprecated.rst        |  16 +-
+ docs/about/removed-features.rst  |  12 +
+ hw/arm/integratorcp.c            |  11 +-
+ hw/arm/musicpal.c                |  11 +-
+ hw/arm/nseries.c                 |   4 +
+ hw/arm/omap2.c                   |   7 +-
+ hw/arm/palm.c                    |   2 +
+ hw/arm/realview.c                |  12 +
+ hw/arm/spitz.c                   |  17 +-
+ hw/arm/versatilepb.c             |   8 +
+ hw/arm/vexpress.c                |   5 +
+ hw/arm/xlnx-zcu102.c             |   6 +
+ hw/arm/z2.c                      |  15 +-
+ hw/audio/ac97.c                  |   6 +-
+ hw/audio/adlib.c                 |   6 +-
+ hw/audio/cs4231a.c               |   6 +-
+ hw/audio/es1370.c                |   5 +-
+ hw/audio/gus.c                   |   6 +-
+ hw/audio/hda-codec.c             |   5 +-
+ hw/audio/lm4549.c                |   8 +-
+ hw/audio/pcspk.c                 |   4 +-
+ hw/audio/sb16.c                  |   6 +-
+ hw/audio/via-ac97.c              |   6 +-
+ hw/audio/wm8750.c                |   5 +-
+ hw/core/machine.c                |  33 ++
+ hw/core/qdev-properties-system.c |  16 +-
+ hw/display/xlnx_dp.c             |   6 +-
+ hw/input/tsc210x.c               |   7 +-
+ hw/isa/vt82c686.c                |   2 +
+ hw/mips/fuloong2e.c              |  13 +-
+ hw/ppc/pegasos2.c                |  10 +-
+ hw/ppc/prep.c                    |   7 +
+ hw/usb/dev-audio.c               |   5 +-
+ include/hw/boards.h              |   7 +
+ qemu-options.hx                  |  10 -
+ softmmu/vl.c                     |   4 -
+ ui/dbus.c                        |   3 +-
+ ui/vnc.c                         |  14 +-
+ ui/vnc.h                         |   2 +
+ 59 files changed, 391 insertions(+), 841 deletions(-)
+ delete mode 100644 audio/audio_legacy.c
+
+-- 
+2.41.0
+
 
