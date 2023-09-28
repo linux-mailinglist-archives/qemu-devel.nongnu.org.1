@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527737B1DE9
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 719FE7B1E55
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:27:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlqwd-0003ZV-Ci; Thu, 28 Sep 2023 09:20:43 -0400
+	id 1qlqwr-0003gx-JZ; Thu, 28 Sep 2023 09:20:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwO-0003Py-QO
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwO-0003Pz-UW
  for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwL-00087s-9D
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqwL-00087o-9Q
  for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:20:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1695907224;
@@ -22,39 +22,40 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bYHAUV1MXfGP0keAZkCToo4a7D7vXMfuOxjiDbfzpYg=;
- b=XkanS1A+NW33BOtPPgc+CdJIYErGyfXvtnjBTmGpxmF5Wgp/TDZjFhzcrb5MlPgxI10NbG
- oT1vtS7yyJ4FH9pRLuIkZs9uMi2GY6GmaSvigLlfPf+Fru8YBpKq0ACjuvNVB6KUHBTKmm
- N8Z+6aRMPHIlxjlWOJtjn9V6jZ7TOAM=
+ bh=yWxxOr88GmOzOaZGiZyjQenriNwOxYe0jtgr8xtVOEE=;
+ b=gt3lBivAmHcDtcioAjzm7XoBcoYGKOU1jBYEZXNfTmjamPBrYh7f7MHCQef71gIvoZZyRU
+ whbEAquJUPa5Pq9IY+JTgk0+qkMLFVUPfDMe+96vGwLO8pttDtgMf+ayMN1iuFebItI3Hp
+ 6zvg4RXjzbAslqPCcVIayEX8rLt1CQg=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-116-sllAm3XaMqWjWX1I4sqi4g-1; Thu, 28 Sep 2023 09:20:22 -0400
-X-MC-Unique: sllAm3XaMqWjWX1I4sqi4g-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ us-mta-120-wLXKOnWIN7SioNk0kq6K7A-1; Thu, 28 Sep 2023 09:20:22 -0400
+X-MC-Unique: wLXKOnWIN7SioNk0kq6K7A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DDA5280A9D3;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3CC91280A9C3;
  Thu, 28 Sep 2023 13:20:22 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0B7D840C200A;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1A58510F1BE9;
  Thu, 28 Sep 2023 13:20:22 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E3C0521E6914; Thu, 28 Sep 2023 15:20:19 +0200 (CEST)
+ id E698E21E6915; Thu, 28 Sep 2023 15:20:19 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
  farosas@suse.de, lizhijian@fujitsu.com, eblake@redhat.com
-Subject: [PATCH v2 12/53] migration/rdma: Drop rdma_add_block() error handling
-Date: Thu, 28 Sep 2023 15:19:38 +0200
-Message-ID: <20230928132019.2544702-13-armbru@redhat.com>
+Subject: [PATCH v2 13/53] migration/rdma: Drop qemu_rdma_search_ram_block()
+ error handling
+Date: Thu, 28 Sep 2023 15:19:39 +0200
+Message-ID: <20230928132019.2544702-14-armbru@redhat.com>
 In-Reply-To: <20230928132019.2544702-1-armbru@redhat.com>
 References: <20230928132019.2544702-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
@@ -80,103 +81,65 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-rdma_add_block() can't fail.  Return void, and drop the unreachable
-error handling.
+qemu_rdma_search_ram_block() can't fail.  Return void, and drop the
+unreachable error handling.
 
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 ---
- migration/rdma.c | 30 +++++++++---------------------
- 1 file changed, 9 insertions(+), 21 deletions(-)
+ migration/rdma.c | 24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
 diff --git a/migration/rdma.c b/migration/rdma.c
-index 380d550229..f2f811ace2 100644
+index f2f811ace2..7bea4d3947 100644
 --- a/migration/rdma.c
 +++ b/migration/rdma.c
-@@ -559,9 +559,9 @@ static inline uint8_t *ram_chunk_end(const RDMALocalBlock *rdma_ram_block,
-     return result;
- }
- 
--static int rdma_add_block(RDMAContext *rdma, const char *block_name,
--                         void *host_addr,
--                         ram_addr_t block_offset, uint64_t length)
-+static void rdma_add_block(RDMAContext *rdma, const char *block_name,
-+                           void *host_addr,
-+                           ram_addr_t block_offset, uint64_t length)
+@@ -1231,15 +1231,13 @@ static int qemu_rdma_reg_whole_ram_blocks(RDMAContext *rdma)
+  *
+  * Once the block is found, also identify which 'chunk' within that
+  * block that the page belongs to.
+- *
+- * This search cannot fail or the migration will fail.
+  */
+-static int qemu_rdma_search_ram_block(RDMAContext *rdma,
+-                                      uintptr_t block_offset,
+-                                      uint64_t offset,
+-                                      uint64_t length,
+-                                      uint64_t *block_index,
+-                                      uint64_t *chunk_index)
++static void qemu_rdma_search_ram_block(RDMAContext *rdma,
++                                       uintptr_t block_offset,
++                                       uint64_t offset,
++                                       uint64_t length,
++                                       uint64_t *block_index,
++                                       uint64_t *chunk_index)
  {
-     RDMALocalBlocks *local = &rdma->local_ram_blocks;
-     RDMALocalBlock *block;
-@@ -615,8 +615,6 @@ static int rdma_add_block(RDMAContext *rdma, const char *block_name,
-                          block->nb_chunks);
- 
-     local->nb_blocks++;
+     uint64_t current_addr = block_offset + offset;
+     RDMALocalBlock *block = g_hash_table_lookup(rdma->blockmap,
+@@ -1251,8 +1249,6 @@ static int qemu_rdma_search_ram_block(RDMAContext *rdma,
+     *block_index = block->index;
+     *chunk_index = ram_chunk_index(block->local_host_addr,
+                 block->local_host_addr + (current_addr - block->offset));
 -
 -    return 0;
  }
  
  /*
-@@ -630,7 +628,8 @@ static int qemu_rdma_init_one_block(RAMBlock *rb, void *opaque)
-     void *host_addr = qemu_ram_get_host_addr(rb);
-     ram_addr_t block_offset = qemu_ram_get_offset(rb);
-     ram_addr_t length = qemu_ram_get_used_length(rb);
--    return rdma_add_block(opaque, block_name, host_addr, block_offset, length);
-+    rdma_add_block(opaque, block_name, host_addr, block_offset, length);
-+    return 0;
- }
+@@ -2321,12 +2317,8 @@ static int qemu_rdma_write(QEMUFile *f, RDMAContext *rdma,
+         rdma->current_length = 0;
+         rdma->current_addr = current_addr;
  
- /*
-@@ -638,7 +637,7 @@ static int qemu_rdma_init_one_block(RAMBlock *rb, void *opaque)
-  * identify chunk boundaries inside each RAMBlock and also be referenced
-  * during dynamic page registration.
-  */
--static int qemu_rdma_init_ram_blocks(RDMAContext *rdma)
-+static void qemu_rdma_init_ram_blocks(RDMAContext *rdma)
- {
-     RDMALocalBlocks *local = &rdma->local_ram_blocks;
-     int ret;
-@@ -646,14 +645,11 @@ static int qemu_rdma_init_ram_blocks(RDMAContext *rdma)
-     assert(rdma->blockmap == NULL);
-     memset(local, 0, sizeof *local);
-     ret = foreach_not_ignored_block(qemu_rdma_init_one_block, rdma);
--    if (ret) {
--        return ret;
--    }
-+    assert(!ret);
-     trace_qemu_rdma_init_ram_blocks(local->nb_blocks);
-     rdma->dest_blocks = g_new0(RDMADestBlock,
-                                rdma->local_ram_blocks.nb_blocks);
-     local->init = true;
--    return 0;
- }
- 
- /*
-@@ -2471,11 +2467,7 @@ static int qemu_rdma_source_init(RDMAContext *rdma, bool pin_all, Error **errp)
-         goto err_rdma_source_init;
+-        ret = qemu_rdma_search_ram_block(rdma, block_offset,
+-                                         offset, len, &index, &chunk);
+-        if (ret) {
+-            error_report("ram block search failed");
+-            return ret;
+-        }
++        qemu_rdma_search_ram_block(rdma, block_offset,
++                                   offset, len, &index, &chunk);
+         rdma->current_index = index;
+         rdma->current_chunk = chunk;
      }
- 
--    ret = qemu_rdma_init_ram_blocks(rdma);
--    if (ret) {
--        ERROR(errp, "rdma migration: error initializing ram blocks!");
--        goto err_rdma_source_init;
--    }
-+    qemu_rdma_init_ram_blocks(rdma);
- 
-     /* Build the hash that maps from offset to RAMBlock */
-     rdma->blockmap = g_hash_table_new(g_direct_hash, g_direct_equal);
-@@ -3430,11 +3422,7 @@ static int qemu_rdma_accept(RDMAContext *rdma)
-         goto err_rdma_dest_wait;
-     }
- 
--    ret = qemu_rdma_init_ram_blocks(rdma);
--    if (ret) {
--        error_report("rdma migration: error initializing ram blocks!");
--        goto err_rdma_dest_wait;
--    }
-+    qemu_rdma_init_ram_blocks(rdma);
- 
-     for (idx = 0; idx < RDMA_WRID_MAX; idx++) {
-         ret = qemu_rdma_reg_control(rdma, idx);
 -- 
 2.41.0
 
