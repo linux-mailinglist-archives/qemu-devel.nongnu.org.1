@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653C37B1B6A
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 13:49:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E13B47B1B96
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 14:01:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlpUZ-0005bA-Bt; Thu, 28 Sep 2023 07:47:39 -0400
+	id 1qlpgK-0008Rp-IX; Thu, 28 Sep 2023 07:59:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qlpUV-0005aA-VW
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:47:35 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ id 1qlpgI-0008Ds-4M
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:59:46 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qlpUT-0005cO-Ia
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:47:35 -0400
+ id 1qlpgD-0000S6-RO
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 07:59:44 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id DD0C2757244;
- Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
+ by localhost (Postfix) with SMTP id BA69174632B;
+ Thu, 28 Sep 2023 13:59:07 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id A6D1875721D; Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
+ id 8607A7456AA; Thu, 28 Sep 2023 13:59:07 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id A5A7C757234;
- Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
-Date: Thu, 28 Sep 2023 13:46:58 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8433E745681;
+ Thu, 28 Sep 2023 13:59:07 +0200 (CEST)
+Date: Thu, 28 Sep 2023 13:59:07 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Paolo Bonzini <pbonzini@redhat.com>
-cc: qemu-devel@nongnu.org, berrange@redhat.com, 
- Martin Kletzander <mkletzan@redhat.com>
-Subject: Re: [PATCH 08/13] Introduce machine property "audiodev"
-In-Reply-To: <20230928073705.871327-9-pbonzini@redhat.com>
-Message-ID: <c7988f81-2dba-6094-66f3-f010a5a52255@eik.bme.hu>
-References: <20230928073705.871327-1-pbonzini@redhat.com>
- <20230928073705.871327-9-pbonzini@redhat.com>
+cc: qemu-devel@nongnu.org, mkletzan@redhat.com, vr_qemu@t-online.de, 
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH 02/13] audio: Require AudioState in AUD_add_capture
+In-Reply-To: <af692de9-1bde-6af1-2d10-c6398d489673@eik.bme.hu>
+Message-ID: <ce7961c2-40b0-d13f-0674-fc2c4106a267@eik.bme.hu>
+References: <20230923085507.399260-1-pbonzini@redhat.com>
+ <20230923085507.399260-3-pbonzini@redhat.com>
+ <af692de9-1bde-6af1-2d10-c6398d489673@eik.bme.hu>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset=US-ASCII
+Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -61,119 +62,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 28 Sep 2023, Paolo Bonzini wrote:
-> From: Martin Kletzander <mkletzan@redhat.com>
+On Sat, 23 Sep 2023, BALATON Zoltan wrote:
+> On Sat, 23 Sep 2023, Paolo Bonzini wrote:
+>> From: Martin Kletzander <mkletzan@redhat.com>
+>> 
+>> Since all callers require a valid audiodev this function can now safely
+>> abort in case of missing AudioState.
+>> 
+>> Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
+>> Message-ID: 
+>> <c6e87e678e914df0f59da2145c2753cdb4a16f63.1650874791.git.mkletzan@redhat.com>
+>> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>> ---
+>> audio/audio.c | 7 +++----
+>> 1 file changed, 3 insertions(+), 4 deletions(-)
+>> 
+>> diff --git a/audio/audio.c b/audio/audio.c
+>> index 90c7c49d116..42bfa330146 100644
+>> --- a/audio/audio.c
+>> +++ b/audio/audio.c
+>> @@ -1876,10 +1876,9 @@ CaptureVoiceOut *AUD_add_capture(
+>>     struct capture_callback *cb;
+>>
+>>     if (!s) {
+>> -        if (!legacy_config) {
+>> -            dolog("Capturing without setting an audiodev is 
+>> deprecated\n");
+>> -        }
+>> -        s = audio_init(NULL, NULL);
+>> +        error_setg(&error_abort,
+>> +                   "Capturing without setting an audiodev is not 
+>> supported");
+>> +        abort();
 >
-> Many machine types have default audio devices with no way to set the underlying
-> audiodev.  Instead of adding an option for each and every one of them, this new
-> property can be used as a default during machine initialisation when creating
-> such devices.
->
-> Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
-> [Make the property optional, instead of including it in all machines. - Paolo]
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
-> hw/core/machine.c   | 33 +++++++++++++++++++++++++++++++++
-> include/hw/boards.h |  7 +++++++
-> 2 files changed, 40 insertions(+)
->
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index cb38b8cf4cb..6aa49c8d4f1 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -39,6 +39,7 @@
-> #include "hw/virtio/virtio.h"
-> #include "hw/virtio/virtio-pci.h"
-> #include "hw/virtio/virtio-net.h"
-> +#include "audio/audio.h"
->
-> GlobalProperty hw_compat_8_1[] = {};
-> const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
-> @@ -686,6 +687,26 @@ bool device_type_is_dynamic_sysbus(MachineClass *mc, const char *type)
->     return allowed;
-> }
->
-> +static char *machine_get_audiodev(Object *obj, Error **errp)
-> +{
-> +    MachineState *ms = MACHINE(obj);
-> +
-> +    return g_strdup(ms->audiodev);
-> +}
-> +
-> +static void machine_set_audiodev(Object *obj, const char *value,
-> +                                 Error **errp)
-> +{
-> +    MachineState *ms = MACHINE(obj);
-> +
-> +    if (!audio_state_by_name(value, errp)) {
-> +        return;
-> +    }
-> +
-> +    g_free(ms->audiodev);
-> +    ms->audiodev = g_strdup(value);
-> +}
-> +
-> HotpluggableCPUList *machine_query_hotpluggable_cpus(MachineState *machine)
-> {
->     int i;
-> @@ -931,6 +952,17 @@ out_free:
->     qapi_free_BootConfiguration(config);
-> }
->
-> +void machine_add_audiodev_property(MachineClass *mc)
-> +{
-> +    ObjectClass *oc = OBJECT_CLASS(mc);
-> +
-> +    object_class_property_add_str(oc, "audiodev",
-> +                                  machine_get_audiodev,
-> +                                  machine_set_audiodev);
-> +    object_class_property_set_description(oc, "audiodev",
-> +                                          "Audiodev to use for default machine devices");
-> +}
-> +
-> static void machine_class_init(ObjectClass *oc, void *data)
-> {
->     MachineClass *mc = MACHINE_CLASS(oc);
-> @@ -1136,6 +1168,7 @@ static void machine_finalize(Object *obj)
->     g_free(ms->device_memory);
->     g_free(ms->nvdimms_state);
->     g_free(ms->numa_state);
-> +    g_free(ms->audiodev);
-> }
->
-> bool machine_usb(MachineState *machine)
-> diff --git a/include/hw/boards.h b/include/hw/boards.h
-> index 6c67af196a3..b5153f5f85b 100644
-> --- a/include/hw/boards.h
-> +++ b/include/hw/boards.h
-> @@ -24,6 +24,7 @@ OBJECT_DECLARE_TYPE(MachineState, MachineClass, MACHINE)
->
-> extern MachineState *current_machine;
->
-> +void machine_add_audiodev_property(MachineClass *mc);
-> void machine_run_board_init(MachineState *machine, const char *mem_path, Error **errp);
-> bool machine_usb(MachineState *machine);
-> int machine_phandle_start(MachineState *machine);
-> @@ -358,6 +359,12 @@ struct MachineState {
->     MemoryRegion *ram;
->     DeviceMemoryState *device_memory;
->
-> +    /*
-> +     * Included in MachineState for simplicity, but not supported
-> +     * unless machine_add_audiodev_property is called.
-> +     */
+> This looks suspicious to me but I don't know if you can do this. Probably 
+> Markus can advise. I would use error_report and abort() or error_setg if you 
+> have an errp then return but this func doesn't seem to have errp.
 
-Maybe this comment could be improved saying something like: Only used by 
-machines that have default audio parts in which case machine init should 
-call machine_add_audiodev_property().
+This is still in v2 you've sent. Is this then OK this way, I haven't seen 
+a reply from Markus but maybe you've discussed it somewhere else.
 
 Regards,
 BALATON Zoltan
 
-> +    char *audiodev;
-> +
->     ram_addr_t ram_size;
->     ram_addr_t maxram_size;
->     uint64_t   ram_slots;
+>>     }
+>>
+>>     if (!audio_get_pdo_out(s->dev)->mixing_engine) {
+>> 
 >
 
