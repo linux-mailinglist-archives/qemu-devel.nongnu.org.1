@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344DF7B1F64
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 16:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9579C7B1F6D
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 16:28:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlruB-00076z-2B; Thu, 28 Sep 2023 10:22:15 -0400
+	id 1qlryO-0003OE-PA; Thu, 28 Sep 2023 10:26:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlru9-000766-HI
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:22:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlru7-0007VO-Rs
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:22:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695910931;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=1Q3sLW6wnVEf2VSwGpMREHNaKhjVIw0niZsSnVi8vZc=;
- b=I1Wj+KNATl+9XzNlm2DPBTsE5HsFCd4eIObKWf79ZHlALDEsFdUXvO5LgdoNVcRNHxI9hI
- Q7+S14CgD9XRNdKSEwf7ciA8s0wUuCjxJ27IG6t7QOr5LUmm0F7W5rp3UnWiQMsGMsO5K3
- x3K+Tpe8SkYuSdsT1cwynbSxB4Lj1A8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-150-7OA9cnNmN66z1H4QNnW5MA-1; Thu, 28 Sep 2023 10:22:09 -0400
-X-MC-Unique: 7OA9cnNmN66z1H4QNnW5MA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0A1983816CAC
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:22:05 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.58])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C8FB3492B16;
- Thu, 28 Sep 2023 14:22:03 +0000 (UTC)
-Date: Thu, 28 Sep 2023 15:21:59 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v1 5/9] qapi: golang: Generate qapi's union types in Go
-Message-ID: <ZRWMB5qq4E7Xh9ME@redhat.com>
-References: <20230927112544.85011-1-victortoso@redhat.com>
- <20230927112544.85011-6-victortoso@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qlryN-0003O4-1y
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:26:35 -0400
+Received: from mail-oo1-xc34.google.com ([2607:f8b0:4864:20::c34])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qlryL-0008Go-63
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:26:34 -0400
+Received: by mail-oo1-xc34.google.com with SMTP id
+ 006d021491bc7-57b811a6ce8so5569065eaf.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 07:26:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695911191; x=1696515991; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=DONvhEep/UUwrjshE5PKelJbqD+tIfV90VHIdgIGOFQ=;
+ b=AAXhvNSUHaiXUEJ0FWYWSOdcTAcsqgXt0qT/Q8/W7NJUUq6wSnpgrFkoNafBcVIph5
+ Xue1JzpZZRruXsPNgU3YH53QxS5afpZffbi24EGFubSkUEYUZ22B5DUoj7hrkROyEdAs
+ QbQ/W3BpyRS9lAgzw2A9cgCjCgtfTzYGM6UWLhc0nH8vOjSgYgOY/iEJ4R/XlQwjhG0q
+ I4ZRq03b+X0LORijPWR4CrlyM0ahsdRtLTuHSKsOsSJry+xfJSJggs6e1XOCBr7eswul
+ d3PvDdiagz7aCxRhVKcSsk2pe/xp53zETXgQIESHs/bJIKPkP8wikZ/nkciNZRsqWXRF
+ AGIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695911191; x=1696515991;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=DONvhEep/UUwrjshE5PKelJbqD+tIfV90VHIdgIGOFQ=;
+ b=L44t0rayUW5ggN+vms3/VIERA8H1b82WsjDqsJg3MUgXajsTFQ6gH77W+kmmpUN8SN
+ 3M6OCfeiXMbMcOMd90EVTQQUQnZ+LiorWuR6L0FUwNsxbZqQJoAmm7XMsFHf+6YJuHqV
+ BPGqybrhSi3QPaIyHtflQayzL+k3mG333HPPysFw/fNIDFpsR2JWYtoS6SFcVT8qcNWR
+ NuFSDwWjx1OreqexKmaz724ukBPuAGGhML20m40359EFecYYnJ9YTorb2S2gS3HlXjYC
+ iVdgHGUPYxVWd5jbHl/V5XE04VHAMZiWYhXSxmq3ghmCIt/s3oCkNwIHt4GGpf/CJolQ
+ jgww==
+X-Gm-Message-State: AOJu0Yx/EGvnvmDvKnEMe2HGrc4CQFrh+HY6BXKE9KK/3ELGeR3JGlWc
+ ifIQjfoux6pbCzDP0SowOyQb0QnQRzHQKNk7pnAIkRqC8kI=
+X-Google-Smtp-Source: AGHT+IHaTKlKt2kHyd6C5oBWwODiZ6dByyxxn2qEuhyv5tQ+tS2UfrS4t+PFR3U5ce7JSNaz8a5JHj4uHd5kzFISnV4=
+X-Received: by 2002:a4a:6f49:0:b0:57b:5e98:f733 with SMTP id
+ i9-20020a4a6f49000000b0057b5e98f733mr1231175oof.3.1695911191026; Thu, 28 Sep
+ 2023 07:26:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230927112544.85011-6-victortoso@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
+In-Reply-To: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Thu, 28 Sep 2023 10:26:18 -0400
+Message-ID: <CAJSP0QVgH+9-ethHt5vWDraS+dpQssrbzkuxu95FONhWCNKOog@mail.gmail.com>
+Subject: Re: [PULL v2 00/21] tricore queue
+To: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c34;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc34.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,79 +81,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 27, 2023 at 01:25:40PM +0200, Victor Toso wrote:
-> This patch handles QAPI union types and generates the equivalent data
-> structures and methods in Go to handle it.
-> 
-> The QAPI union type has two types of fields: The @base and the
-> @Variants members. The @base fields can be considered common members
-> for the union while only one field maximum is set for the @Variants.
-> 
-> In the QAPI specification, it defines a @discriminator field, which is
-> an Enum type. The purpose of the  @discriminator is to identify which
-> @variant type is being used.
-> 
-> Not that @discriminator's enum might have more values than the union's
-> data struct. This is fine. The union does not need to handle all cases
-> of the enum, but it should accept them without error. For this
-> specific case, we keep the @discriminator field in every union type.
+Please take a look at these CI test failures:
+https://gitlab.com/qemu-project/qemu/-/jobs/5185201978
+https://gitlab.com/qemu-project/qemu/-/jobs/5185202098
 
-I still tend think the @discriminator field should not be
-present in the union structs. It feels like we're just trying
-to directly copy the C code in Go and so smells wrong from a
-Go POV.
+Thanks,
+Stefan
 
-For most of the unions the @discriminator field will be entirely
-redundant, becasue the commonm case is that a @variant field
-exists for every possible @discriminator value.
-
-To take one example
-
-  type SocketAddress struct {
-        Type SocketAddressType `json:"type"`
-
-        // Variants fields
-        Inet  *InetSocketAddress  `json:"-"`
-        Unix  *UnixSocketAddress  `json:"-"`
-        Vsock *VsockSocketAddress `json:"-"`
-        Fd    *String             `json:"-"`
-  }
-
-If one was just writing Go code without the pre-existing knowledge
-of the QAPI C code, 'Type' is not something a Go programmer would
-be inclined add IMHO.
-
-And yet you are right that we need a way to represent a @discriminator
-value that has no corresponding @variant, since QAPI allows for that
-scenario. To deal with that I would suggest we just use an empty
-interface type. eg
-
-
-  type SocketAddress struct {
-        Type SocketAddressType `json:"type"`
-
-        // Variants fields
-        Inet  *InetSocketAddress  `json:"-"`
-        Unix  *UnixSocketAddress  `json:"-"`
-        Vsock *VsockSocketAddress `json:"-"`
-        Fd    *String             `json:"-"`
-	Fish  *interface{}        `json:"-"`
-	Food  *interface()        `json:"-"`
-  }
-
-the pointer value for 'Fish' and 'Food' fields here merely needs to
-be non-NULL, it doesn't matter what the actual thing assigned is.
-
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+On Thu, 28 Sept 2023 at 04:57, Bastian Koppelmann
+<kbastian@mail.uni-paderborn.de> wrote:
+>
+> The following changes since commit 36e9aab3c569d4c9ad780473596e18479838d1aa:
+>
+>   migration: Move return path cleanup to main migration thread (2023-09-27 13:58:02 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://github.com/bkoppelmann/qemu.git tags/pull-tricore-20230928
+>
+> for you to fetch changes up to 080ca1baa84316a58790b6507de89fabf4c40ec0:
+>
+>   target/tricore: Change effective address (ea) to target_ulong (2023-09-28 10:45:22 +0200)
+>
+> ----------------------------------------------------------------
+> - Add FTOU, CRCN, FTOHP, and HPTOF insns
+> - Add test for arithmetic TriCore insns
+>
+> ----------------------------------------------------------------
+> Changes from v1:
+> - Removed sas.py file that slipped in patch 15
+> ----------------------------------------------------------------
+>
+> Bastian Koppelmann (21):
+>       tests/tcg/tricore: Bump cpu to tc37x
+>       target/tricore: Implement CRCN insn
+>       target/tricore: Correctly handle FPU RM from PSW
+>       target/tricore: Implement FTOU insn
+>       target/tricore: Clarify special case for FTOUZ insn
+>       target/tricore: Implement ftohp insn
+>       target/tricore: Implement hptof insn
+>       target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
+>       target/tricore: Swap src and dst reg for RCRR_INSERT
+>       target/tricore: Replace cpu_*_code with translator_*
+>       target/tricore: Fix FTOUZ being ISA v1.3.1 up
+>       tests/tcg/tricore: Extended and non-extened regs now match
+>       hw/tricore: Log failing test in testdevice
+>       tests/tcg: Reset result register after each test
+>       tests/tcg/tricore: Add test for all arith insns up to addx
+>       tests/tcg/tricore: Add test from 'and' to 'csub'
+>       tests/tcg/tricore: Add test from 'dextr' to 'lt'
+>       tests/tcg/tricore: Add test from 'max' to 'shas'
+>       tests/tcg/tricore: Add test from 'shuffle' to 'xor.t'
+>       target/tricore: Remove CSFRs from cpu.h
+>       target/tricore: Change effective address (ea) to target_ulong
+>
+>  hw/tricore/tricore_testdevice.c           |   4 +
+>  target/tricore/cpu.h                      | 143 +--------------
+>  target/tricore/fpu_helper.c               | 111 ++++++++++++
+>  target/tricore/helper.c                   |  19 +-
+>  target/tricore/helper.h                   |   4 +
+>  target/tricore/op_helper.c                |  79 ++++++++-
+>  target/tricore/translate.c                |  56 ++++--
+>  target/tricore/tricore-opcodes.h          |   3 +
+>  tests/tcg/tricore/Makefile.softmmu-target |   7 +-
+>  tests/tcg/tricore/asm/macros.h            | 190 +++++++++++++++++---
+>  tests/tcg/tricore/asm/test_arith.S        | 280 ++++++++++++++++++++++++++++++
+>  tests/tcg/tricore/asm/test_crcn.S         |   9 +
+>  tests/tcg/tricore/asm/test_ftohp.S        |  14 ++
+>  tests/tcg/tricore/asm/test_ftou.S         |  12 ++
+>  tests/tcg/tricore/asm/test_hptof.S        |  12 ++
+>  tests/tcg/tricore/asm/test_insert.S       |  14 ++
+>  16 files changed, 780 insertions(+), 177 deletions(-)
+>  create mode 100644 tests/tcg/tricore/asm/test_arith.S
+>  create mode 100644 tests/tcg/tricore/asm/test_crcn.S
+>  create mode 100644 tests/tcg/tricore/asm/test_ftohp.S
+>  create mode 100644 tests/tcg/tricore/asm/test_ftou.S
+>  create mode 100644 tests/tcg/tricore/asm/test_hptof.S
+>
 
