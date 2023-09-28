@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346AF7B16B6
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 704657B1694
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 10:55:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlmm2-0006XB-2h; Thu, 28 Sep 2023 04:53:30 -0400
+	id 1qlmm0-0006Vw-Hz; Thu, 28 Sep 2023 04:53:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmlx-0006Vx-NF
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:27 -0400
+ id 1qlmlw-0006Vi-7p
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:24 -0400
 Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qlmlr-0004uw-Cz
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:25 -0400
+ id 1qlmlr-0004v3-Cz
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 04:53:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:Content-Type
- :MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=7QFF7YcXTHTaclWeA2gymHIZBwWYiN5Ql11MfxhyH3U=; b=e1wsWQ7aFfvb9+NGvyL4bqtg9A
- kg3WBHLIV1Lf818D1R+/PgTgy3He6+iY0RhBcXWQ06qSHQEk5ZfLg7YydUSsqavklmBvGKdELLii+
- IfqS05ars3DL+eM+heNW2ZeQ3XRNgvypQy5AvX2F7k81BuWU41rI3q+Qml9UaY15NLwk=;
+ d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
+ :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=b5I1dbiEujj3bnPrvclDUc5hYSsrMePBI6m5GKX/TCs=; b=NYwF6/XYtJlAu7JdkDgt/H5kuE
+ MgOtyI35ov5RHDDY1FjWciCA+vHgdlt1IKN3yQGjGMw2VfClCd+E3SvWjRm365wzkw3gp9U4Lob3y
+ KiqY8/g88oMD67/WqUkJbAYgrWJ2yW/sMszngPC0oF6WeiAwIa1Pxkue7x3XxM7imUY4=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
-Cc: kbastian@mail.uni-paderborn.de
-Subject: [PULL v2 00/21] tricore queue
-Date: Thu, 28 Sep 2023 10:52:42 +0200
-Message-ID: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
+Cc: kbastian@mail.uni-paderborn.de,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL v2 01/21] tests/tcg/tricore: Bump cpu to tc37x
+Date: Thu, 28 Sep 2023 10:52:43 +0200
+Message-ID: <20230928085303.511518-2-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
+References: <20230928085303.511518-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
@@ -68,70 +70,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following changes since commit 36e9aab3c569d4c9ad780473596e18479838d1aa:
+we don't want to exclude ISA v1.6.2 insns from our tests.
 
-  migration: Move return path cleanup to main migration thread (2023-09-27 13:58:02 -0400)
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
+Message-Id: <20230828112651.522058-2-kbastian@mail.uni-paderborn.de>
+---
+ tests/tcg/tricore/Makefile.softmmu-target | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-are available in the Git repository at:
+diff --git a/tests/tcg/tricore/Makefile.softmmu-target b/tests/tcg/tricore/Makefile.softmmu-target
+index 2ec0bd3622..d556201b07 100644
+--- a/tests/tcg/tricore/Makefile.softmmu-target
++++ b/tests/tcg/tricore/Makefile.softmmu-target
+@@ -25,7 +25,7 @@ TESTS += test_muls.asm.tst
+ TESTS += test_boot_to_main.c.tst
+ TESTS += test_context_save_areas.c.tst
+ 
+-QEMU_OPTS += -M tricore_testboard -cpu tc27x -nographic -kernel
++QEMU_OPTS += -M tricore_testboard -cpu tc37x -nographic -kernel
+ 
+ %.pS: $(ASM_TESTS_PATH)/%.S
+ 	$(CC) -E -o $@ $<
+-- 
+2.42.0
 
-  https://github.com/bkoppelmann/qemu.git tags/pull-tricore-20230928
-
-for you to fetch changes up to 080ca1baa84316a58790b6507de89fabf4c40ec0:
-
-  target/tricore: Change effective address (ea) to target_ulong (2023-09-28 10:45:22 +0200)
-
-----------------------------------------------------------------
-- Add FTOU, CRCN, FTOHP, and HPTOF insns
-- Add test for arithmetic TriCore insns
-
-----------------------------------------------------------------
-Changes from v1:
-- Removed sas.py file that slipped in patch 15
-----------------------------------------------------------------
-
-Bastian Koppelmann (21):
-      tests/tcg/tricore: Bump cpu to tc37x
-      target/tricore: Implement CRCN insn
-      target/tricore: Correctly handle FPU RM from PSW
-      target/tricore: Implement FTOU insn
-      target/tricore: Clarify special case for FTOUZ insn
-      target/tricore: Implement ftohp insn
-      target/tricore: Implement hptof insn
-      target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
-      target/tricore: Swap src and dst reg for RCRR_INSERT
-      target/tricore: Replace cpu_*_code with translator_*
-      target/tricore: Fix FTOUZ being ISA v1.3.1 up
-      tests/tcg/tricore: Extended and non-extened regs now match
-      hw/tricore: Log failing test in testdevice
-      tests/tcg: Reset result register after each test
-      tests/tcg/tricore: Add test for all arith insns up to addx
-      tests/tcg/tricore: Add test from 'and' to 'csub'
-      tests/tcg/tricore: Add test from 'dextr' to 'lt'
-      tests/tcg/tricore: Add test from 'max' to 'shas'
-      tests/tcg/tricore: Add test from 'shuffle' to 'xor.t'
-      target/tricore: Remove CSFRs from cpu.h
-      target/tricore: Change effective address (ea) to target_ulong
-
- hw/tricore/tricore_testdevice.c           |   4 +
- target/tricore/cpu.h                      | 143 +--------------
- target/tricore/fpu_helper.c               | 111 ++++++++++++
- target/tricore/helper.c                   |  19 +-
- target/tricore/helper.h                   |   4 +
- target/tricore/op_helper.c                |  79 ++++++++-
- target/tricore/translate.c                |  56 ++++--
- target/tricore/tricore-opcodes.h          |   3 +
- tests/tcg/tricore/Makefile.softmmu-target |   7 +-
- tests/tcg/tricore/asm/macros.h            | 190 +++++++++++++++++---
- tests/tcg/tricore/asm/test_arith.S        | 280 ++++++++++++++++++++++++++++++
- tests/tcg/tricore/asm/test_crcn.S         |   9 +
- tests/tcg/tricore/asm/test_ftohp.S        |  14 ++
- tests/tcg/tricore/asm/test_ftou.S         |  12 ++
- tests/tcg/tricore/asm/test_hptof.S        |  12 ++
- tests/tcg/tricore/asm/test_insert.S       |  14 ++
- 16 files changed, 780 insertions(+), 177 deletions(-)
- create mode 100644 tests/tcg/tricore/asm/test_arith.S
- create mode 100644 tests/tcg/tricore/asm/test_crcn.S
- create mode 100644 tests/tcg/tricore/asm/test_ftohp.S
- create mode 100644 tests/tcg/tricore/asm/test_ftou.S
- create mode 100644 tests/tcg/tricore/asm/test_hptof.S
 
