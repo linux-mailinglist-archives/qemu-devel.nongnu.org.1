@@ -2,70 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612AB7B1F04
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1095B7B1F33
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 16:08:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlrTI-0006dJ-5H; Thu, 28 Sep 2023 09:54:28 -0400
+	id 1qlrfB-0003eQ-AC; Thu, 28 Sep 2023 10:06:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlrTA-0006b5-Q1
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:54:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qlrf5-0003cc-P7
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:06:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qlrT6-0007VE-Ss
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:54:20 -0400
+ id 1qlrez-0002cE-7H
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 10:06:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695909255;
+ s=mimecast20190719; t=1695909992;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=+hodxo4G+sbSmK3PuoFbhuANGeSZwALBxflkU1RYvKc=;
- b=LLP9QYtnz69zC38WxQCkyIUsLBsohV7Qv1vBSr0Aw6YxGvUsob9g0g+RkVvKEQOSWJ2PEw
- nae/JOYF8GzrHRIbdgPPKZK7MfiBsgQ6XqkDcZ5U+lAufa9o1OQh9tv0GuQKoFtDk7fYFR
- BKqThJMNh1OUBE1H2bXu/gpuZgVzKw4=
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=9C/+oS5CuncPrWl41i7hc4i1uFeOeN+qLl55hB00wck=;
+ b=MHd2CEGh4TBQpDGh2uTYXNvIf6ufkgz7PPgKR3Uo09GYb2e208/ZyFgF4MNNEeAAigT2LT
+ kCWYmGLvFTqg3jFCzelMzOvgpTlzFeA7G4o3Ol3a8EAG6g4IuAsqagSQSaueSM6TXmsVmA
+ wVMcoXYS9QE/z6CYpJuhgX8lsA8xImQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-376-3BqrhjSEOhydPDzUMtfetw-1; Thu, 28 Sep 2023 09:54:13 -0400
-X-MC-Unique: 3BqrhjSEOhydPDzUMtfetw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ us-mta-141-g2dM5xNNNT-bgHWaAow4-w-1; Thu, 28 Sep 2023 10:06:30 -0400
+X-MC-Unique: g2dM5xNNNT-bgHWaAow4-w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 602F08039C1
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 13:54:13 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B477185A78E
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:06:30 +0000 (UTC)
 Received: from redhat.com (unknown [10.39.194.58])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 84F9340C6E77;
- Thu, 28 Sep 2023 13:54:12 +0000 (UTC)
-Date: Thu, 28 Sep 2023 14:54:10 +0100
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id B749614171B6;
+ Thu, 28 Sep 2023 14:06:28 +0000 (UTC)
+Date: Thu, 28 Sep 2023 15:06:23 +0100
 From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Victor Toso <victortoso@redhat.com>, qemu-devel@nongnu.org,
- Markus Armbruster <armbru@redhat.com>, John Snow <jsnow@redhat.com>
-Subject: Re: [PATCH v1 0/9] qapi-go: add generator for Golang interface
-Message-ID: <ZRWFgo/fik+mXQXw@redhat.com>
+To: Victor Toso <victortoso@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v1 3/9] qapi: golang: Generate qapi's struct types in Go
+Message-ID: <ZRWIX36p8oaV0yF0@redhat.com>
 References: <20230927112544.85011-1-victortoso@redhat.com>
- <ZRWCSzrqDojlPOO4@redhat.com>
+ <20230927112544.85011-4-victortoso@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZRWCSzrqDojlPOO4@redhat.com>
+In-Reply-To: <20230927112544.85011-4-victortoso@redhat.com>
 User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -83,128 +80,63 @@ Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Sep 28, 2023 at 02:40:27PM +0100, Daniel P. Berrangé wrote:
-> On Wed, Sep 27, 2023 at 01:25:35PM +0200, Victor Toso wrote:
-> > Hi, long time no see!
-> > 
-> > This patch series intent is to introduce a generator that produces a Go
-> > module for Go applications to interact over QMP with QEMU.
+On Wed, Sep 27, 2023 at 01:25:38PM +0200, Victor Toso wrote:
+> This patch handles QAPI struct types and generates the equivalent
+> types in Go. The following patch adds extra logic when a member of the
+> struct has a Type that can take JSON Null value (e.g: StrOrNull in
+> QEMU)
 > 
-> snip
->  
-> > Victor Toso (9):
-> >   qapi: golang: Generate qapi's enum types in Go
-> >   qapi: golang: Generate qapi's alternate types in Go
-> >   qapi: golang: Generate qapi's struct types in Go
-> >   qapi: golang: structs: Address 'null' members
-> >   qapi: golang: Generate qapi's union types in Go
-> >   qapi: golang: Generate qapi's event types in Go
-> >   qapi: golang: Generate qapi's command types in Go
-> >   qapi: golang: Add CommandResult type to Go
-> >   docs: add notes on Golang code generator
-> > 
-> >  docs/devel/qapi-golang-code-gen.rst |  341 +++++++++
-> >  scripts/qapi/golang.py              | 1047 +++++++++++++++++++++++++++
-> >  scripts/qapi/main.py                |    2 +
-> >  3 files changed, 1390 insertions(+)
-> >  create mode 100644 docs/devel/qapi-golang-code-gen.rst
-> >  create mode 100644 scripts/qapi/golang.py
+> The highlights of this implementation are:
 > 
-> So the formatting of the code is kinda all over the place eg
+> 1. Generating an Go struct that requires a @base type, the @base type
+>    fields are copied over to the Go struct. The advantage of this
+>    approach is to not have embed structs in any of the QAPI types.
+>    Note that embedding a @base type is recursive, that is, if the
+>    @base type has a @base, all of those fields will be copied over.
 > 
-> func (s *StrOrNull) ToAnyOrAbsent() (any, bool) {
->     if s != nil {
->         if s.IsNull {
->             return nil, false
->     } else if s.S != nil {
->         return *s.S, false
->         }
->     }
+> 2. About the Go struct's fields:
 > 
->     return nil, true
-> }
+>    i) They can be either by Value or Reference.
 > 
+>   ii) Every field that is marked as optional in the QAPI specification
+>       are translated to Reference fields in its Go structure. This
+>       design decision is the most straightforward way to check if a
+>       given field was set or not. Exception only for types that can
+>       take JSON Null value.
 > 
-> ought to be
+>  iii) Mandatory fields are always by Value with the exception of QAPI
+>       arrays, which are handled by Reference (to a block of memory) by
+>       Go.
 > 
-> func (s *StrOrNull) ToAnyOrAbsent() (any, bool) {
->         if s != nil {
->                 if s.IsNull {
->                         return nil, false
->                 } else if s.S != nil {
->                         return *s.S, false
->                 }
->         }
+>   iv) All the fields are named with Uppercase due Golang's export
+>       convention.
 > 
->         return nil, true
-> }
+>    v) In order to avoid any kind of issues when encoding or decoding,
+>       to or from JSON, we mark all fields with its @name and, when it is
+>       optional, member, with @omitempty
 > 
-> I'd say we should add a 'make check-go' target, wired into 'make check'
-> that runs 'go fmt' on the generated code to validate that we generated
-> correct code. Then fix the generator to actually emit the reqired
-> format.
+> Example:
 > 
+> qapi:
+>  | { 'struct': 'BlockdevCreateOptionsFile',
+>  |   'data': { 'filename': 'str',
+>  |             'size': 'size',
+>  |             '*preallocation': 'PreallocMode',
+>  |             '*nocow': 'bool',
+>  |             '*extent-size-hint': 'size'} }
 > 
-> Having said that, this brings up the question of how we expect apps to
-> consume the Go code. Generally an app would expect to just add the
-> module to their go.mod file, and have the toolchain download it on
-> the fly during build.
-> 
-> If we assume a go namespace under qemu.org, we'll want one or more
-> modules. Either we have one module, containing APIs for all of QEMU,
-> QGA, and QSD, or we have separate go modules for each. I'd probably
-> tend towards the latter, since it means we can version them separately
-> which might be useful if we're willing to break API in one of them,
-> but not the others.
-> 
-> IOW, integrating this directly into qemu.git as a build time output
-> is not desirable in this conext though, as 'go build' can't consume
-> that.
-> 
-> IOW, it would push towards
-> 
->    go-qemu.git
->    go-qga.git
->    go-qsd.git
-> 
-> and at time of each QEMU release, we would need to invoke the code
-> generator, and store its output in the respective git modules.
-> 
-> This would also need the generator application to be a standalone
-> tool, separate from the C QAPI generator.
+> go:
+> | type BlockdevCreateOptionsFile struct {
+> |     Filename       string        `json:"filename"`
+> |     Size           uint64        `json:"size"`
+> |     Preallocation  *PreallocMode `json:"preallocation,omitempty"`
+> |     Nocow          *bool         `json:"nocow,omitempty"`
+> |     ExtentSizeHint *uint64       `json:"extent-size-hint,omitempty"`
+> | }
 
-Oh, and we need to assume that all CONFIG conditionals in the QAPI
-files are true, as we want the Go API to be feature complete such
-that it can be used with any QEMU build, regardless of which CONFIG
-conditions are turned on/off. We also don't want applications to
-suddenly fail to compile because some API was stopped being generated
-by a disabled CONFIG condition - it needs to be a runtime error
-that apps can catch and handle as they desire.
+Note, 'omitempty' shouldn't be used on pointer fields, only scalar
+fields. The pointer fields are always omitted when nil.
 
-> 
-> Finally Go apps would want to do
-> 
->    import (
->        qemu.org/go/qemu
->        qemu.org/go/qga
->        qemu.org/go/gsd
->    )
-> 
-> and would need us to create the "https://qemu.org/go/qemu" page
-> containing dummy HTML content with 
-> 
->     <meta name="go-import" content="qemu.org/go/qemu git https://gitlab.com/qemu-project/go-qemu.git@/>
-> 
-> and likewise for the other modules.
-> 
-> Regards,
-> Daniel
-> -- 
-> |: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-> |: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-> |: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-> 
-> 
 
 With regards,
 Daniel
