@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453917B2796
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 23:35:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 869097B2798
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 23:36:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlyfD-0008Ag-QZ; Thu, 28 Sep 2023 17:35:15 -0400
+	id 1qlygB-0000iA-L7; Thu, 28 Sep 2023 17:36:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlyfC-0008AN-Bg
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:35:14 -0400
-Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
+ id 1qlyg2-0000gg-Lk
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:36:06 -0400
+Received: from mail-pj1-x1033.google.com ([2607:f8b0:4864:20::1033])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlyf9-0005eu-Az
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:35:13 -0400
-Received: by mail-pf1-x42d.google.com with SMTP id
- d2e1a72fcca58-690d2e13074so10816221b3a.1
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:35:10 -0700 (PDT)
+ id 1qlyg1-0005tE-55
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 17:36:06 -0400
+Received: by mail-pj1-x1033.google.com with SMTP id
+ 98e67ed59e1d1-2774f6943b1so7224080a91.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 14:36:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695936910; x=1696541710; darn=nongnu.org;
+ d=linaro.org; s=google; t=1695936963; x=1696541763; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=+bbqwvvGn2FzogpTYxtn6ijeiphRSPGl5RPjPA+15lM=;
- b=P8r/p6AkGV++0LJHpXjGlev934sKMXhBRyh4lRHeaBjfVkWiERe1xT452DtYKtf3UI
- vpa9ZH/4bjjWP6KXBE6BlQiacLb1fidDqvzuPY3qSFIKCKu0m9a5hU2Z6oeDntzW+ZAi
- mjVmnTwl5AfxsCwSyRZiI5Ccm79lM6INIKQyeYRJpMo0PzC3qHE5dwK8qXhZZCQifNOO
- nzTlA1ay46jatxxGBjz8DPqs+r9IH0MSl0ZR0EJ9Q4NUKkrZMvELmiFoDakBfVvJXNL2
- uDdOkKRbcBX06vzr5llGe9eF8Q73etCgmVaJE3efpKeb+yhGyQlVULtpLTrjTAtQrN58
- MXuw==
+ bh=EebwEyf28F4dRjrNAg18DAlEhBDtV9LFksVtSWpk/kI=;
+ b=cY0ee/0oNU51s9ES6j6/yXu0DDtIzfXxR/t8QBTEQG3uFuxJdpDFR715MStlVIOLgD
+ fmEtA3EFR92XOh2hvXtyBvjWBSx+s79YGsmYoTVrdXe8A2irAOJzij96JPtSSUD0ZBn6
+ LEJZGAqe263HJQmSGE5fo46mVsLYAxOcaxMi8pt+GIBBGG5uLg5oSQF2UTZMpluJPbP0
+ ex9n7IZmut9PuOQfpI+t/KPs+iaS2flckRO2k/pdrHyfS/hBH0dy5O/KntggfOAfveaV
+ 4VQsLb1eqPNhtr2NmwQMlBSxBtoh9XoSMv9Q7Y8vH0C40JufdVaU9ngnN9EZvtm4nA3S
+ JOCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695936910; x=1696541710;
+ d=1e100.net; s=20230601; t=1695936963; x=1696541763;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+bbqwvvGn2FzogpTYxtn6ijeiphRSPGl5RPjPA+15lM=;
- b=WB0umo28LRQrMi7fwb3XRmAFajSp3RhsczOYoqtCpN9D4X79thHqjIm4NImZUbdYPY
- FokWmyZi15M+48nAJMq67P5nrzyT9nLr0/Etd+3sXAVL59nAqXl/GhrT6kFd211IKbZ3
- Xx9KdVPT3VqOF5vtONeHzCbhZoWXXyvwa9xmUBh8ciiyA2VJ+CUAKjb2jHS8Efbzr7kw
- NV2gYs82bz/JOt/BmPK0K7fRUFfwYHabIx6fCuaSHWmWVw+L5aAMcfEy0pTSAlEI2CbK
- QKaofxY2cDmFNmtLjIYAGqsqQXCrve8ThmETgDAn2NieLud48q4+kIStgP1lzL54go1x
- kKBw==
-X-Gm-Message-State: AOJu0YyYfT1TxP6xHY38I8I+1g3TIO5Gwa5v+Q+AD0zp9tRx+M7wpMcG
- ujxe5Jglj2qjSioUBvm/AOe9cA==
-X-Google-Smtp-Source: AGHT+IGvOZzU9cgRZE2So+LZppZ1kMWdzHb+bl2Yu+/nX6iQGIX6ytrm9xb2+NXhA+IkCFaZLnlEGw==
-X-Received: by 2002:a05:6a21:66c5:b0:154:e7e6:85c8 with SMTP id
- ze5-20020a056a2166c500b00154e7e685c8mr2526921pzb.31.1695936909604; 
- Thu, 28 Sep 2023 14:35:09 -0700 (PDT)
+ bh=EebwEyf28F4dRjrNAg18DAlEhBDtV9LFksVtSWpk/kI=;
+ b=rHAJF/QHIsnORm3ZxBd4CCbRq84gejYtpFYoQ5//k3fVRmyvmsG2YiBx5nOuyHLQYf
+ 4wraoulfOcV6QVm1+teWa6+UF4DIEx4fWgdAB1ihx3JdLjQjW+jc9i+2IjNLUFiADtiH
+ fFZ1mQ8Ix9Tz+XIfCZCo2v9s+KG1jYNa+1tHuX+R1mPXHM87xljcMZLoyOVFEMEOTRrA
+ DjLL7Dq8FfDV08tq8mZ84oSyeR1+AvEAy2DqVQTtTNZjMG9PDV2wW/NswVnnlpp4YysC
+ O8PbywicJ6olf6GWbHeXYgbRkn1BdoA6Jw756d9n972ZlvG0r7gA6dB82icuZZMYduzQ
+ 18qg==
+X-Gm-Message-State: AOJu0Yzlu6JOjiVyCAiLOOKwHxJapizFq/CG+bHofEeHQx5menuMkc9o
+ 874mW602Wluo9301ve2ZV1URNQ==
+X-Google-Smtp-Source: AGHT+IE9dxk44SngE703TYhUIB2uFEx5WajS7hpj6SOdkfO14mHGAAVY321AuwOrue53V+3h9CrxsQ==
+X-Received: by 2002:a17:90a:df82:b0:277:6a7b:b904 with SMTP id
+ p2-20020a17090adf8200b002776a7bb904mr2287703pjv.15.1695936963629; 
+ Thu, 28 Sep 2023 14:36:03 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-146-124.tukw.qwest.net. [174.21.146.124])
  by smtp.gmail.com with ESMTPSA id
- 6-20020a17090a1a0600b00263dfe9b972sm29765pjk.0.2023.09.28.14.35.08
+ x5-20020a17090abc8500b00276e8e4f1fbsm12997pjr.1.2023.09.28.14.36.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 14:35:09 -0700 (PDT)
-Message-ID: <de8992b1-9f7c-b6ae-aaf3-af267674f71b@linaro.org>
-Date: Thu, 28 Sep 2023 14:35:07 -0700
+ Thu, 28 Sep 2023 14:36:03 -0700 (PDT)
+Message-ID: <7eeb96f5-b9a5-dbb1-2df3-d900eec8f27a@linaro.org>
+Date: Thu, 28 Sep 2023 14:36:01 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 6/8] target/sparc: Fix VIS fpmerge input registers.
+Subject: Re: [PATCH 7/8] target/sparc: Fix VIS fexpand input register.
 Content-Language: en-US
 To: Nick Bowler <nbowler@draconx.ca>, qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Artyom Tarasenko <atar4qemu@gmail.com>
 References: <20230925050545.30912-1-nbowler@draconx.ca>
- <20230925050545.30912-7-nbowler@draconx.ca>
+ <20230925050545.30912-8-nbowler@draconx.ca>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230925050545.30912-7-nbowler@draconx.ca>
+In-Reply-To: <20230925050545.30912-8-nbowler@draconx.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1033;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1033.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -97,18 +97,23 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/24/23 01:03, Nick Bowler wrote:
->                   case 0x04b: /* VIS I fpmerge */
->                       CHECK_FPU_FEATURE(dc, VIS1);
-> -                    gen_ne_fop_DDD(dc, rd, rs1, rs2, gen_helper_fpmerge);
-> +                    cpu_src1_32 = gen_load_fpr_F(dc, rs1);
-> +                    cpu_src2_32 = gen_load_fpr_F(dc, rs2);
-> +                    cpu_dst_64 = gen_dest_fpr_D(dc, rd);
-> +                    gen_helper_fpmerge(cpu_dst_64, cpu_src1_32, cpu_src2_32);
-> +                    gen_store_fpr_D(dc, rd, cpu_dst_64);
->                       break;
+> This instruction is documented to get its input from the second
+> single-precision input operand; the first operand is ignored.
+> This is exactly what a real UltraSparc II does.  Meanwhile, the
+> the emulator uses only the irrelevant first operand, treating
+> it as a double-precision register, and ignores the second.
+> 
+> This will not normally contain the correct data so the emulated
+> instruction usually just produces garbage.
+> 
+> Signed-off-by: Nick Bowler<nbowler@draconx.ca>
+> ---
+>   target/sparc/helper.h     | 2 +-
+>   target/sparc/translate.c  | 5 ++++-
+>   target/sparc/vis_helper.c | 5 ++---
+>   3 files changed, 7 insertions(+), 5 deletions(-)
 
-Use gen_ne_fop_DFF.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
