@@ -2,76 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EFD47B262E
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 21:56:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B417B2642
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 22:06:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlx6h-0007ep-OJ; Thu, 28 Sep 2023 15:55:31 -0400
+	id 1qlxGC-0005x2-G8; Thu, 28 Sep 2023 16:05:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mpatocka@redhat.com>)
- id 1qlx6e-0007bm-US
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:55:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qlxG9-0005wf-Ti
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 16:05:17 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mpatocka@redhat.com>)
- id 1qlx6b-0003LS-Kr
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:55:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695930923;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=CX3URt4n2TNHyKzUzTP0BMFqn6HeiZvGsicv8LZFWRo=;
- b=dfBxjsH5U6ajayRInM34KYT0E3nxgzFy0xjOQhImVHMi7Wiss1WmLMhRmhBd+unQBuo4Zz
- KJC27n419rj0SWhIqm1PcTN/uVGjpLuISXeFDv9TgBxtJ+gdyTnyW6o+WQ/GF0xFVGN7FA
- 8J4YwYC1xEYnux8vc+70bTmM9d3SXfs=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-12-1ARc1tHOMuqs_2jn_UekBw-1; Thu, 28 Sep 2023 15:55:21 -0400
-X-MC-Unique: 1ARc1tHOMuqs_2jn_UekBw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 07E18185A790;
- Thu, 28 Sep 2023 19:55:21 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown
- [10.11.5.21])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id EB28A2026D68;
- Thu, 28 Sep 2023 19:55:20 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix,
- from userid 12668)
- id BE91930C1C0A; Thu, 28 Sep 2023 19:55:20 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
- by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id
- BAC3C3FD54; Thu, 28 Sep 2023 21:55:20 +0200 (CEST)
-Date: Thu, 28 Sep 2023 21:55:20 +0200 (CEST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: Richard Henderson <richard.henderson@linaro.org>
-cc: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Aurelien Jarno <aurelien@aurel32.net>, 
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>, 
- Huacai Chen <chenhuacai@kernel.org>, qemu-devel@nongnu.org
-Subject: [PATCH v2] mips: fix abort on integer overflow
-In-Reply-To: <6148083e-ba07-798c-4cc3-6cf29236c53c@linaro.org>
-Message-ID: <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
-References: <cfa02bbb-cdaf-4310-ac40-a2837d33c710@redhat.com>
- <6148083e-ba07-798c-4cc3-6cf29236c53c@linaro.org>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qlxG8-00061X-5J
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 16:05:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
+ Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+ :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=DkVlUBHR1aPNbTQaZRt798QCRa3KDj0KgZr49pOxJfs=; b=0Cy4lGQrhKRGBQrjEBypq2Fyos
+ NjYgElX9fRwY5uX5w88VRxGPI1IH0batYu3dwumQ/QLNAV9d59feOgxdQB7TKYsnfy0Ti4dbonm4T
+ J2JrpiB7yBvel4WnN10wes+qcCbrMnIodnL3eBfSW6hr2w/5xWGDwiUCgPu1/XHxCvcW32REWwluB
+ Ywu0KP8Qv+7LQfuv5JPMGZBBcDrqpazBPogSodMjdhx61oJFak/Cj4/aqFx3Z13o7QKJdfX5lqux2
+ 5cRMKbU2C2o2d8+djOpu+kIwnbzsBH0dv3y+QbtLuM2B/mobnG03dTnutwkUbr+geoQcSfqb/P2QH
+ IUnY2HhUViVtyJRzGjL9xc7b1fw+ihfVIM4SNeA7M8UmFBNiv1yplks4TQ1mpXnMExg4VDT9KU30D
+ hRwe1/SLPiyCY8T7DnYkxifgU4O0ItCwO8MN8ixsFS3TA+HrQycVodtmuV4GaujBrwM0UJpcgvPJD
+ vd/zTSuTZAuSB6yvpCTexb3vuT7dEG2Lcr2/Zd12+nYbYglOl4t3y7HZsltECik3gpyFAlTztSfvb
+ 7v94ekvtwTBXewVNkwVTDmhho3BJ4hhAnZMsDLgOz4lJEY/2YJ1Hrk7x7/vgm0FXEENyqiiW05fs6
+ qpOukZpXhT8tTUp1nII7me4HAnbjVtoKDnav3qP5I=;
+Received: from [2a00:23c4:8baf:5f00:89cc:78d2:7179:5c3b]
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qlxFr-0006vy-SV; Thu, 28 Sep 2023 21:05:04 +0100
+Message-ID: <59cb2064-3a12-8c7e-71a2-a6ec570d2645@ilande.co.uk>
+Date: Thu, 28 Sep 2023 21:05:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mpatocka@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+To: Nick Bowler <nbowler@draconx.ca>, qemu-devel@nongnu.org
+Cc: Artyom Tarasenko <atar4qemu@gmail.com>
+References: <20230925050545.30912-1-nbowler@draconx.ca>
+Content-Language: en-US
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+In-Reply-To: <20230925050545.30912-1-nbowler@draconx.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:89cc:78d2:7179:5c3b
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: Re: [PATCH 0/8] SPARC VIS fixes
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,50 +79,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 25/09/2023 06:03, Nick Bowler wrote:
 
-
-On Thu, 28 Sep 2023, Richard Henderson wrote:
-
-> Just call force_sig_fault directly.
+> I noticed that the fmul8x16 instruction did not appear to be emulated
+> correctly[1].  It would seem that emulation was not using a single-
+> precision input register like the real hardware does, but rather a
+> double-precision register, causing it to operate on the wrong data.
 > 
+> Every other VIS instruction which contains one or more single-precision
+> inputs and a double-precision output has the exact same problem.
 > 
-> r~
+> A few computational problems are found and fixed by this series too.
+> 
+> All patches can be applied independently, except patch 2 adds some
+> helpers which are subsequently needed by patches 3, 4 and 5.
+> 
+> Emulation results are tested by manually comparing the output of a small
+> Linux test program on an UltraSparc II against the output of running the
+> same binary under qemu-sparc32plus on a ppc64le host system.
+> 
+> [1] https://gitlab.com/qemu-project/qemu/-/issues/1901
+> 
+> Nick Bowler (8):
+>    target/sparc: Fix VIS fmul8x16 input register.
+>    target/sparc: Fix VIS fmul8x16au instruction.
+>    target/sparc: Fix VIS fmul8x16al instruction.
+>    target/sparc: Fix VIS fmuld8sux16 instruction.
+>    target/sparc: Fix VIS fmuld8ulx16 instruction.
+>    target/sparc: Fix VIS fpmerge input registers.
+>    target/sparc: Fix VIS fexpand input register.
+>    target/sparc: Fix VIS subtraction instructions.
+> 
+>   target/sparc/helper.h     |  14 ++---
+>   target/sparc/translate.c  |  42 +++++++++++---
+>   target/sparc/vis_helper.c | 119 +++++++++++++++++++-------------------
+>   3 files changed, 101 insertions(+), 74 deletions(-)
 
-OK. Here I'm resending it.
+Thanks for the patches, Nick. I've had a look at the series, and whilst I'm not 
+overly familiar with the VIS instructions, your changes and detailed explanations 
+look good against a cursory read of the SPARCv9 specification.
 
-Mikulas
+Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+I'll wait a few days to see if either Artyom or Richard has any further comments, but 
+if not then I'll queue them to my qemu-sparc branch.
 
 
+ATB,
 
-From: Mikulas Patocka <mpatocka@redhat.com>
-
-Qemu mips userspace emulation crashes with "qemu: unhandled CPU exception 
-0x15 - aborting" when one of the integer arithmetic instructions detects 
-an overflow.
-
-This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: qemu-stable@nongnu.org
-
----
- linux-user/mips/cpu_loop.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-Index: qemu/linux-user/mips/cpu_loop.c
-===================================================================
---- qemu.orig/linux-user/mips/cpu_loop.c
-+++ qemu/linux-user/mips/cpu_loop.c
-@@ -180,7 +180,9 @@ done_syscall:
-             }
-             force_sig_fault(TARGET_SIGFPE, si_code, env->active_tc.PC);
-             break;
--
-+	case EXCP_OVERFLOW:
-+            force_sig_fault(TARGET_SIGFPE, TARGET_FPE_INTOVF, env->active_tc.PC);
-+            break;
-         /* The code below was inspired by the MIPS Linux kernel trap
-          * handling code in arch/mips/kernel/traps.c.
-          */
+Mark.
 
 
