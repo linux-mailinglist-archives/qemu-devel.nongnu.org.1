@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2D17B2607
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 21:42:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8C17B261B
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 21:48:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlwtm-0007zZ-6X; Thu, 28 Sep 2023 15:42:10 -0400
+	id 1qlwzY-0004R2-Li; Thu, 28 Sep 2023 15:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlwtj-0007yM-P3
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:42:07 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qlwzU-0004PI-NI
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:48:04 -0400
+Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qlwti-0007yy-2t
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:42:07 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c1e3a4a06fso100721845ad.3
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 12:42:05 -0700 (PDT)
+ id 1qlwzS-00013Y-QF
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 15:48:04 -0400
+Received: by mail-pf1-x435.google.com with SMTP id
+ d2e1a72fcca58-690bfd4f3ebso10550343b3a.3
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 12:48:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695930124; x=1696534924; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=MTgXBkn5TnELvpBo0aJHFhInTurB6cKNpUDk0rnkIf0=;
- b=oi/9nNC4hS4yX+wjbCkCeN/s10vg5Y5Gwa6wtLN1KWwJ2tf9Eucf7S+dUnn9Vk4hI6
- PoFnV+jGCvwGeK6DLIf7KewT9WItnNMJcyGiDRHaxGG9q7qrnc0D/CqRBKAdadh8Srrg
- WVpLKjz9h5jZoq05SG1PjkuFVEwKXWW0VtXf6P8KnDa9Y0ljzaJfw/ynduHIg4/aYGQT
- A0e2SgSqiKdX069ocMCfyMUr8hl92RFnKonrEw2MDhP6mJr9FDMUc1c35BpDSQJ8i+1U
- XBUHR5Z//H3Eovf298yIEQmePchVTQ1AE+0sR/XjIP/eA2ehYR2irHtjLEXCaKVcnorY
- jD5Q==
+ d=linaro.org; s=google; t=1695930480; x=1696535280; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=I3w6cuFLTNl6joPKz+cVZkzDDXpL5yF4RLSKyX3k2fY=;
+ b=syX7btWsYei/y4egUygEwTPEe+EDYQVc/AyXcaLlG9fGAkHbN9gaqArzsDiXdVXW2w
+ NaBMrl/6LqRb/276iPTrg/NDPu3adT9N3U51/XQH2/X+i2cPxvs8wjAJLGe45NEyDeWr
+ kn7ureVCkk08A68ogJAke2o4y8vShKmE2683AS4o6wsI1PizIQnMsTnEmvyWs7bEq8rn
+ DScSTr2cklnS8hWfoYnx2ZHCFlgIR7oz1I22MZYM7v3B9R9BZPPc1auMRY5StJQWPL/W
+ FlkLEdOM62KdIjdOCT42Jw98SPKKxw2X/kCnGgMNiHMIshZA698g5U2o28h0QUHwVkbA
+ rnTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695930124; x=1696534924;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=MTgXBkn5TnELvpBo0aJHFhInTurB6cKNpUDk0rnkIf0=;
- b=TnaolkGU/vIkav8Ns3bXGg/XEWiFb6yb4QMObeYNQ+XvAu5We/0Qg73BZenwpqJH2R
- 3ALKJ/OTHK01KkUa7nbF3VXS/rNfKi0SwR4tSHQE/mPCxXXx552GVvudHBmyjAF6m+R1
- zaJzV87Dm7OXa9PU7qnZbYzAFVvBwId4mmS+/OwehkxZe59KiKkonYQGKHXHNxDEiJsD
- s+g6BdM6UYuViAcBiSazDy48KRHWZuk47XmMlAuyk73B4rJl4oVxYB9nsiWYVUNEqWoY
- JM8nfvJIbFKApB8iz49Icwr7MumVoXUs3mYRdwjssdsYFmQEF5RF3C0J/Sr1GDukU8my
- +2Mg==
-X-Gm-Message-State: AOJu0Yzfvxk98W8qzwMhOTYei+T0Z09EYzvX5p969O71rXTY+OcC0ieA
- ypxwUcDaeewcwQsYwkgHqH8ZQzW2GQlp44O54hI=
-X-Google-Smtp-Source: AGHT+IFjWcdR089jauWFuykjgLXd783I7ptZSSxaIXPeARYv94MEM5diWzECCkPG2Mqyq4Su9vCc0A==
-X-Received: by 2002:a17:902:b783:b0:1c6:1ac5:144c with SMTP id
- e3-20020a170902b78300b001c61ac5144cmr1767692pls.40.1695930123696; 
- Thu, 28 Sep 2023 12:42:03 -0700 (PDT)
-Received: from stoup.. ([71.212.131.115]) by smtp.gmail.com with ESMTPSA id
- x23-20020a170902821700b001b80d399730sm15273450pln.242.2023.09.28.12.42.02
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Sep 2023 12:42:03 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 6/6] accel/tcg: Always require can_do_io
-Date: Thu, 28 Sep 2023 12:41:56 -0700
-Message-Id: <20230928194156.237351-7-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230928194156.237351-1-richard.henderson@linaro.org>
-References: <20230928194156.237351-1-richard.henderson@linaro.org>
+ d=1e100.net; s=20230601; t=1695930480; x=1696535280;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=I3w6cuFLTNl6joPKz+cVZkzDDXpL5yF4RLSKyX3k2fY=;
+ b=pNppZoTwTqmhmVVE6jlo2APCMAEMkvwtp9K8mW9QRt77e82v0Wqe9K32w3Mnor4aMH
+ Z8gezoiUPIJxm4Wj20xraYekGrjT/y6kKF9vZkhGuGiGS/wlqYiQhe4I6jx5nx1lEDow
+ tfosxZjEoQC+EQbQssFoMtvA+oNL+q4rEvBIEAmfidLhFOkYFtC7NprIVmgsb97Td8MN
+ X2yc1sKIMnMEDTh2O0J8TUWqS1iJ2u4nGzEiiSz/ZX15aRZ7qWALwTLGnIaikPBwwS7q
+ nzGz3hAqe1PMyw7GHVf8fDO1ilCD8SAeDPmZqdCkzW5hVQGCn63GKo/g7Z6pzmsSyQOp
+ q1Tw==
+X-Gm-Message-State: AOJu0YwJso79iEy20mJYn2piZHgtEgI+IA2M8Tk/+1Jiy/LiuS0rF5fp
+ sndx7AXslPJAQ5TtuBN6v+mq5g==
+X-Google-Smtp-Source: AGHT+IF2nAsMxbiMqobGrKD9Jj5Jp6slQl4jUsfjn17Q0iLiBkyVdr2pn2YNSiF6GP4d8jXMEkeK4w==
+X-Received: by 2002:a05:6a00:1748:b0:68e:3eb6:d45 with SMTP id
+ j8-20020a056a00174800b0068e3eb60d45mr2180815pfc.30.1695930480490; 
+ Thu, 28 Sep 2023 12:48:00 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.131.115])
+ by smtp.gmail.com with ESMTPSA id
+ o28-20020a637e5c000000b0057cb5a780ebsm11518178pgn.76.2023.09.28.12.47.59
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Sep 2023 12:48:00 -0700 (PDT)
+Message-ID: <8557943c-05e6-aa34-f479-e4a1ab12f69d@linaro.org>
+Date: Thu, 28 Sep 2023 12:47:58 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] target/arm/common-semi-target.h: Remove unnecessary
+ boot.h include
+Content-Language: en-US
+To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20230925112219.3919261-1-peter.maydell@linaro.org>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230925112219.3919261-1-peter.maydell@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,71 +95,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Require i/o as the last insn of a TranslationBlock always,
-not only with icount.  This is required for i/o that alters
-the address space, such as a pci config space write.
+On 9/25/23 07:22, Peter Maydell wrote:
+> The hw/arm/boot.h include in common-semi-target.h is not actually
+> needed, and it's a bit odd because it pulls a hw/arm header into a
+> target/arm file.
+> 
+> This include was originally needed because the semihosting code used
+> the arm_boot_info struct to get the base address of the RAM in system
+> emulation, to use in a (bad) heuristic for the return values for the
+> SYS_HEAPINFO semihosting call.  We've since overhauled how we
+> calculate the HEAPINFO values in system emulation, and the code no
+> longer uses the arm_boot_info struct.
+> 
+> Remove the now-redundant include line, and instead directly include
+> the cpu-qom.h header that we were previously getting via boot.h.
+> 
+> Signed-off-by: Peter Maydell<peter.maydell@linaro.org>
+> ---
+>   target/arm/common-semi-target.h | 4 +---
+>   1 file changed, 1 insertion(+), 3 deletions(-)
 
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1866
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- accel/tcg/translator.c      | 20 +++++++-------------
- target/mips/tcg/translate.c |  1 -
- 2 files changed, 7 insertions(+), 14 deletions(-)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index dd507cd471..358214d526 100644
---- a/accel/tcg/translator.c
-+++ b/accel/tcg/translator.c
-@@ -28,12 +28,6 @@ static void set_can_do_io(DisasContextBase *db, bool val)
- 
- bool translator_io_start(DisasContextBase *db)
- {
--    uint32_t cflags = tb_cflags(db->tb);
--
--    if (!(cflags & CF_USE_ICOUNT)) {
--        return false;
--    }
--
-     set_can_do_io(db, true);
- 
-     /*
-@@ -86,15 +80,15 @@ static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
-         tcg_gen_st16_i32(count, cpu_env,
-                          offsetof(ArchCPU, neg.icount_decr.u16.low) -
-                          offsetof(ArchCPU, env));
--        /*
--         * cpu->can_do_io is set automatically here at the beginning of
--         * each translation block.  The cost is minimal and only paid for
--         * -icount, plus it would be very easy to forget doing it in the
--         * translator.
--         */
--        set_can_do_io(db, db->max_insns == 1 && (cflags & CF_LAST_IO));
-     }
- 
-+    /*
-+     * cpu->can_do_io is set automatically here at the beginning of
-+     * each translation block.  The cost is minimal, plus it would be
-+     * very easy to forget doing it in the translator.
-+     */
-+    set_can_do_io(db, db->max_insns == 1 && (cflags & CF_LAST_IO));
-+
-     return icount_start_insn;
- }
- 
-diff --git a/target/mips/tcg/translate.c b/target/mips/tcg/translate.c
-index 9bb40f1849..593fc80458 100644
---- a/target/mips/tcg/translate.c
-+++ b/target/mips/tcg/translate.c
-@@ -11212,7 +11212,6 @@ static void gen_branch(DisasContext *ctx, int insn_bytes)
-         /* Branches completion */
-         clear_branch_hflags(ctx);
-         ctx->base.is_jmp = DISAS_NORETURN;
--        /* FIXME: Need to clear can_do_io.  */
-         switch (proc_hflags & MIPS_HFLAG_BMASK_BASE) {
-         case MIPS_HFLAG_FBNSLOT:
-             gen_goto_tb(ctx, 0, ctx->base.pc_next + insn_bytes);
--- 
-2.34.1
-
+r~
 
