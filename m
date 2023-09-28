@@ -2,77 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31E37B1D26
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 14:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E56A57B1CEF
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 14:50:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlqa8-00017c-V7; Thu, 28 Sep 2023 08:57:30 -0400
+	id 1qlqS3-0005FW-Vh; Thu, 28 Sep 2023 08:49:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from
- <3IHgVZQgKCpUEAz0zIJI5DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--plabatut.bounces.google.com>)
- id 1qlqZp-00015E-HC
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:57:11 -0400
-Received: from mail-yw1-x1149.google.com ([2607:f8b0:4864:20::1149])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from
- <3IHgVZQgKCpUEAz0zIJI5DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--plabatut.bounces.google.com>)
- id 1qlqZo-00011s-4x
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:57:09 -0400
-Received: by mail-yw1-x1149.google.com with SMTP id
- 00721157ae682-59f7d109926so159029647b3.2
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 05:57:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20230601; t=1695905824; x=1696510624; darn=nongnu.org;
- h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
- :date:message-id:reply-to;
- bh=Puu8I37xVpYahsOAAGkvd/Km2XPYF5T2bftP83WPWhM=;
- b=H4foMKFJnJY4Upu60V8IOYNxT3RLcw8WukRK8eooQpp0G/JrETjon1aexekU7JwZQp
- fYE4xlyKn784Io4inWjZ+ZPdg+uVEstivwa4KG9gNebMOPNdhCYiXyhKv2O/+y3lISMe
- w6Pjccl87nDomtqjwOY0hrvLvO4aPuwFG7nVeVl1CySzQeFN/9X3Adwh3zOmrvPDCS2X
- 1fILzdZ6D8NQ89VWjtTIkPJxKBe5zbVSn/BruBGwNItmrgpUwuf9mxeKyzH6CSh5dqJY
- t/DDyRh8YmctgYjRxS8GjKEwU430FwOZ2i1K7nKLRHCIPWxXT90uwfjsf+oobwRYlI+O
- caqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695905824; x=1696510624;
- h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Puu8I37xVpYahsOAAGkvd/Km2XPYF5T2bftP83WPWhM=;
- b=cENrJHhb2crje3CsBx3yqgnVWTTiWkoO2tY+cFBe/xyeEMDg1knH7ZuCIXNksmEId7
- BTlv35mApt3uaHUUhJSsENuRUXvKrBIotS1CT0krLDL1cf5lIRT1o8TWPBBRPY24Py0m
- P/0XPdQU1S3WUd1J6iMeM/8Lg8GV+Mvxn8M7P3q9eYa3sS/PZ4LSQbirWXejw5GGIMUo
- +fZ6/YTkn9Og2og+rpjsBvCshOzRG5tw/S78T27G1Klo8WwzDqDOdcKRAJFYdS15V/8z
- Nt34Wh+WOQ+W/D8ORJxzJ0GFtXsJ/hMrv2R1XJqk2Pg7zI0nhPaXoetED//S6gWSkTsk
- sA/A==
-X-Gm-Message-State: AOJu0YwZqFVXEqquDhQymkx7sUfYw81RpLzwqFbuzscdK8dUe7Ar11Fk
- zvEhsDPQyA9ihcknudygqlIkV+tP4t/TgA==
-X-Google-Smtp-Source: AGHT+IG3qDWrWedhBeS1RRB0tQuAoGDsRZo1bc61MSsxdTmJsbgcNSxgKIFn6K9+qS2LjNnjopJsRCdTa+bwaw==
-X-Received: from plabatut.c.googlers.com
- ([fda3:e722:ac3:cc00:28:9cb1:c0a8:7f2a])
- (user=plabatut job=sendgmr) by 2002:a25:abaf:0:b0:d7b:9830:c172 with SMTP id
- v44-20020a25abaf000000b00d7b9830c172mr18048ybi.0.1695905824694; Thu, 28 Sep
- 2023 05:57:04 -0700 (PDT)
-Date: Thu, 28 Sep 2023 12:56:59 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.515.g380fc7ccd1-goog
-Message-ID: <20230928125700.1504442-1-plabatut@google.com>
-Subject: [PATCH] Fix compilation when UFFDIO_REGISTER is not set.
-From: Pierre Labatut <plabatut@google.com>
-To: qemu-trivial@nongnu.org
-Cc: Pierre Labatut <plabatut@google.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1149;
- envelope-from=3IHgVZQgKCpUEAz0zIJI5DD5A3.1DBF3BJ-23K3ACDC5CJ.DG5@flex--plabatut.bounces.google.com;
- helo=mail-yw1-x1149.google.com
-X-Spam_score_int: -95
-X-Spam_score: -9.6
-X-Spam_bar: ---------
-X-Spam_report: (-9.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_MED=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_DEF_DKIM_WL=-7.5 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qlqRy-0005F5-Q3
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:49:02 -0400
+Received: from mgamail.intel.com ([192.55.52.136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qlqRw-0006cU-3u
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 08:49:02 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1695905340; x=1727441340;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=cgoTQ9qlEjme2b68ISN/Mt/RzkJK1LeP/PJ0Esvj9PQ=;
+ b=JFDiOofBpG0zq50JnRLF01oNl1W2SIizrxQ7U9xTYh0D5fIuxpJM2uc0
+ UlfL5VqG0asv+thUWWc35u0fvBkSi5NxGKXhkXafciQmcCviSo2z7A4bK
+ Sn/Oed/Fga4JfwoPIDyCPeKq3efFSxKdCoA573om3tnrYP/zEiYMSGi11
+ 4Zh/otYMyx0Qo5glNHbqeYBeV+sgRFterY31Stpu52SoSspt/FDfmn+Mc
+ i+vX+LBVmaDzRZ3RQPTtcebzsSCFYlNTiuQHCIJL4H4l1r6Yx4v8xHKiC
+ ZhL02RWCEyRMVJeDYhhxb7VVYAbCc7j7+5W7xm1qNwfbNX1YLVl8FRjeW A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="361419951"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="361419951"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+ by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Sep 2023 05:48:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10846"; a="893001519"
+X-IronPort-AV: E=Sophos;i="6.03,184,1694761200"; d="scan'208";a="893001519"
+Received: from liuzhao-optiplex-7080.sh.intel.com ([10.239.160.36])
+ by fmsmga001.fm.intel.com with ESMTP; 28 Sep 2023 05:47:40 -0700
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Zhao Liu <zhao1.liu@intel.com>
+Subject: [PATCH v2 00/16] tests: Add CPU topology related smbios test cases
+Date: Thu, 28 Sep 2023 20:59:27 +0800
+Message-Id: <20230928125943.1816922-1-zhao1.liu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=192.55.52.136;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,27 +78,96 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Pierre Labatut <plabatut@google.com>
----
- subprojects/libvhost-user/libvhost-user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+From: Zhao Liu <zhao1.liu@intel.com>
 
-diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index 0469a50101..d4a2eab883 100644
---- a/subprojects/libvhost-user/libvhost-user.c
-+++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -629,9 +629,9 @@ static bool
- generate_faults(VuDev *dev) {
-     unsigned int i;
-     for (i = 0; i < dev->nregions; i++) {
-+#ifdef UFFDIO_REGISTER
-         VuDevRegion *dev_region = &dev->regions[i];
-         int ret;
--#ifdef UFFDIO_REGISTER
-         struct uffdio_register reg_struct;
- 
-         /*
+Hi all,
+
+This patchset is the v2 which adds more description about the topology
+selection under Igor's comments.
+
+In this patchset, add these test cases:
+
+1. Add the case to test 2 newly added topology helpers (patch 1):
+   * machine_topo_get_cores_per_socket()
+   * machine_topo_get_threads_per_socket()
+
+2. Add the cases in bios-tables-test.c to:
+   * test smbios type4 table count (patch 2-4).
+   * test smbios type4 core count field (patch 5-7).
+   * update the test of smbios type4 core count2 field (patch 8-10).
+   * test smbios type4 thread count (patch 11-13).
+   * test smbios type4 thread count2 (patch 14-16).
+
+With the above new cases, cover all commits of [1] in test.
+
+v1: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg04420.html
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg06225.html
+
+Regards,
+Zhao
+---
+Zhao Liu (16):
+  tests: test-smp-parse: Add the test for cores/threads per socket
+    helpers
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 count test
+  tests: bios-tables-test: Add test for smbios type4 count
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4
+    count test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 core count test
+  tests: bios-tables-test: Add test for smbios type4 core count
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4 core
+    count test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 core count2 test
+  tests: bios-tables-test: Extend smbios core count2 test to cover
+    general topology
+  tests: bios-tables-test: Update ACPI table binaries for smbios core
+    count2 test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 thread count test
+  tests: bios-tables-test: Add test for smbios type4 thread count
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4
+    thread count test
+  tests: bios-tables-test: Prepare the ACPI table change for smbios
+    type4 thread count2 test
+  tests: bios-tables-test: Add test for smbios type4 thread count2
+  tests: bios-tables-test: Add ACPI table binaries for smbios type4
+    thread count2 test
+
+ tests/data/acpi/q35/APIC.core-count    | Bin 0 -> 544 bytes
+ tests/data/acpi/q35/APIC.core-count2   | Bin 2478 -> 3238 bytes
+ tests/data/acpi/q35/APIC.thread-count  | Bin 0 -> 544 bytes
+ tests/data/acpi/q35/APIC.thread-count2 | Bin 0 -> 7398 bytes
+ tests/data/acpi/q35/APIC.type4-count   | Bin 0 -> 1072 bytes
+ tests/data/acpi/q35/DSDT.core-count    | Bin 0 -> 12913 bytes
+ tests/data/acpi/q35/DSDT.core-count2   | Bin 32495 -> 33770 bytes
+ tests/data/acpi/q35/DSDT.thread-count  | Bin 0 -> 12913 bytes
+ tests/data/acpi/q35/DSDT.thread-count2 | Bin 0 -> 63671 bytes
+ tests/data/acpi/q35/DSDT.type4-count   | Bin 0 -> 18589 bytes
+ tests/data/acpi/q35/FACP.core-count    | Bin 0 -> 244 bytes
+ tests/data/acpi/q35/FACP.thread-count  | Bin 0 -> 244 bytes
+ tests/data/acpi/q35/FACP.thread-count2 | Bin 0 -> 244 bytes
+ tests/data/acpi/q35/FACP.type4-count   | Bin 0 -> 244 bytes
+ tests/qtest/bios-tables-test.c         | 116 ++++++++++++++++++++++++-
+ tests/unit/test-smp-parse.c            |  67 +++++++++++---
+ 16 files changed, 167 insertions(+), 16 deletions(-)
+ create mode 100644 tests/data/acpi/q35/APIC.core-count
+ create mode 100644 tests/data/acpi/q35/APIC.thread-count
+ create mode 100644 tests/data/acpi/q35/APIC.thread-count2
+ create mode 100644 tests/data/acpi/q35/APIC.type4-count
+ create mode 100644 tests/data/acpi/q35/DSDT.core-count
+ create mode 100644 tests/data/acpi/q35/DSDT.thread-count
+ create mode 100644 tests/data/acpi/q35/DSDT.thread-count2
+ create mode 100644 tests/data/acpi/q35/DSDT.type4-count
+ create mode 100644 tests/data/acpi/q35/FACP.core-count
+ create mode 100644 tests/data/acpi/q35/FACP.thread-count
+ create mode 100644 tests/data/acpi/q35/FACP.thread-count2
+ create mode 100644 tests/data/acpi/q35/FACP.type4-count
+
 -- 
-2.42.0.515.g380fc7ccd1-goog
+2.34.1
 
 
