@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C547B1527
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 09:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE887B1517
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 09:38:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qllaQ-0004jN-1q; Thu, 28 Sep 2023 03:37:26 -0400
+	id 1qllaO-0004ft-7G; Thu, 28 Sep 2023 03:37:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qllaO-0004hd-2B
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:24 -0400
+ id 1qllaI-0004Zj-6k
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qllaF-00064a-FC
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:23 -0400
+ id 1qllaF-00064p-CQ
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 03:37:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695886633;
+ s=mimecast20190719; t=1695886634;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=V+zXvMgKOXou0u5sPIkvOiaTaEXdC4/qR9hqP8mzpz0=;
- b=F3uW9PR4KBprTjA4JPGrkhxZfRXDZHLBLnWq/sJ/Eqxt5fWGDbdiEeocDvOiol2f5nzWUT
- 9g3RZSbELsp9jN1B1qxi4qbP5quz3BaWkNtkXupyR8fs7aQQ1AxbMFb7H7uEUMLkuCblUK
- d9XR90G8p+n3PhvpQEKrPTXjW0FE1yk=
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=l1brQ0L6jX9JGOmP9MWofOwAVVOt7EQgwkiTZ5/Pclw=;
+ b=Ib9nfmS0uaC14I8GtTkh10qHNRVkNrTXUQQmf1/peaKzxeje31CMBDFuUXyzXgtsosfcJ/
+ kAxntYSkoO7n66v3WI6bkHeRuA101SSXBjpUN4SucLHnV4VeMk8FEGL7pfGZs7uUKUWryX
+ o4sdNnECtYj+Xjx+s4xOnXdRq5+tGpg=
 Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
  [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-W-n0JPfkNDS_-EoIYZh4EQ-1; Thu, 28 Sep 2023 03:37:09 -0400
-X-MC-Unique: W-n0JPfkNDS_-EoIYZh4EQ-1
+ us-mta-662-WjPjprHhMWS_QZFqOUfCmg-1; Thu, 28 Sep 2023 03:37:11 -0400
+X-MC-Unique: WjPjprHhMWS_QZFqOUfCmg-1
 Received: by mail-ed1-f69.google.com with SMTP id
- 4fb4d7f45d1cf-51d981149b5so9688307a12.3
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 00:37:09 -0700 (PDT)
+ 4fb4d7f45d1cf-5334392eb67so24894250a12.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 00:37:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695886627; x=1696491427;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=V+zXvMgKOXou0u5sPIkvOiaTaEXdC4/qR9hqP8mzpz0=;
- b=Ec4OKN/C3BvRd+CLsGLzQ9Krc3z3FrohqqPhXeVXeH7Yj6c0YmudxU0XrdOdtSGoQq
- qFERYUa99TBi35mvQCiq2aPbyOkXfS2HiocUz3nnY01oBcwKTZ0d0oFKy7cYMlmA9zuS
- f2FZ7YIVMIkrHCjWz7GculoiV2uSeqo22yxo19AkOehpLiN9mNRnLD32BfapVvXGHZNZ
- eDyVCrse5se52KX2QtIxsCsNYSKI1C1GhTHv8dLbq0xihcq2dWwbcutyWiLA+n5diCnH
- o64pr1fO3qxceQaFenfp3h0eIpr1xJkRu0ezT6t6OoYP++bHwm+VxEvZo+XVvmRPFyZN
- Rsng==
-X-Gm-Message-State: AOJu0YxxvG81r2eA0jAqFnhd878s1Qc9vWl1G87o7zoHLaKgjqyLSHbJ
- GuWz24/COOY7JvMU/VfXL3hSQ045BpMZ0Hqc3iB+kS+9xCH+TuILi5UEyUpIKUEWtRj+2sK2Zr5
- xeOJdCPwT6EhGT4TTPmrnNwea2oQNU3vEfibv1HGagRzWjftSTOANBW+365JNHKqGAYum9Kzc5W
- E=
-X-Received: by 2002:aa7:d489:0:b0:533:97c:8413 with SMTP id
- b9-20020aa7d489000000b00533097c8413mr460974edr.25.1695886627599; 
- Thu, 28 Sep 2023 00:37:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHaWEYAIOe677qH0E++ze25FsYVnzEndFMfma/r6RhBaoCdCOnmES/lx7p1z+nfXm24oYY4AQ==
-X-Received: by 2002:aa7:d489:0:b0:533:97c:8413 with SMTP id
- b9-20020aa7d489000000b00533097c8413mr460951edr.25.1695886627173; 
- Thu, 28 Sep 2023 00:37:07 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1695886629; x=1696491429;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=l1brQ0L6jX9JGOmP9MWofOwAVVOt7EQgwkiTZ5/Pclw=;
+ b=c/ffjQiR4UB1L5CqrOVL4QRojayiuClXt07jgsIoB1hvKY6lipzRWq7FR8rGSroijV
+ BRdO91gcSVTR3WFGT9hQ4yoQtxAmq8jsgbVgouyqUPxURpYB6+0ZTph/aT141fGzt4f1
+ CkJwy+2kBw7tNdxI2/KhNwsmyHGAytc6bo9XX0mWV9SoA8bFJFXcRUZatZ7yrdpX2gOF
+ vDxZv01DpW0PSzaU6dVeZO5GjxKY4fIR1gQKopjIqE67Bi97zUqBtuZTqxKbgrDRKVne
+ 8gzAcIRoIIv6FDlbHbBCFHMey5J7+KfFSE4Ory0XZLTJML/MNJg5NHnZ79hjZ+VANn5B
+ hY1A==
+X-Gm-Message-State: AOJu0YyvEnJ+8Vq6YjnIF5c2v7WmAUc9oIVQG8l61mbQY8NoWT93Lfkz
+ AUq6rUBqVPED4SyFVKDUxERGzX8utEj5sHYw0JBBLF+atX/m9tL4nd1nd49lXT3YCRrM9dH2N7v
+ TK4QWgqsy00eAauHiprs8EIzn2SBQ2MKccoD54HCYI5R2F4V4PqRB8LpHtXrvS9yhz2VTVR4/NB
+ U=
+X-Received: by 2002:a05:6402:5106:b0:533:26cd:37c4 with SMTP id
+ m6-20020a056402510600b0053326cd37c4mr517733edd.11.1695886629572; 
+ Thu, 28 Sep 2023 00:37:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEOcndHorICbqRyJtuxw4oJ4JfEB+aNAOOLSU+jwQLH18LkKdmrynh0URjMehEBCDli0PpYwA==
+X-Received: by 2002:a05:6402:5106:b0:533:26cd:37c4 with SMTP id
+ m6-20020a056402510600b0053326cd37c4mr517711edd.11.1695886629265; 
+ Thu, 28 Sep 2023 00:37:09 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- d15-20020aa7d68f000000b005333922efb0sm9255540edr.78.2023.09.28.00.37.06
+ c19-20020a056402121300b0052e9b50dafdsm9169370edw.33.2023.09.28.00.37.07
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 28 Sep 2023 00:37:06 -0700 (PDT)
+ Thu, 28 Sep 2023 00:37:08 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: berrange@redhat.com,
 	balaton@eik.bme.hu
-Subject: [PATCH v2 00/13] Cleanup deprecated audio features, take 2
-Date: Thu, 28 Sep 2023 09:36:44 +0200
-Message-ID: <20230928073705.871327-1-pbonzini@redhat.com>
+Subject: [PATCH 01/13] ui/vnc: Require audiodev= to enable audio
+Date: Thu, 28 Sep 2023 09:36:45 +0200
+Message-ID: <20230928073705.871327-2-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230928073705.871327-1-pbonzini@redhat.com>
+References: <20230928073705.871327-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -98,120 +101,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In this version the QEMU_AUDIO_* options go away, but it is still
-possible to pick a default audio backend from the list provided to
---audio-drv-list.  The code is still simplified a lot compared to
-having all the legacy parsing code and the -audio-help function.
-I had to keep QEMU_AUDIO_DRV=none because it is used by libqtest;
-a possibility for the future could be to add a "-audio none" option
-without a model.  For now I kept this setting as it is a subset of the
-previous accepted values, and it can be deprecated separately.
+If there is no audiodev do not send the audio ack in response to
+VNC_ENCODING_AUDIO, so that clients aren't told audio exists, and
+immediately drop the client if they try to send any audio control messages
+when audio is not advertised.
 
-At the end of this series, all devices can be configured with
--audiodev.  Therefore, I decided to forbid mixing the default
-audio backend with audiodevs or with -nodefaults.
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ docs/about/deprecated.rst       |  8 +++-----
+ docs/about/removed-features.rst |  6 ++++++
+ ui/vnc.c                        | 11 ++++++++++-
+ ui/vnc.h                        |  2 ++
+ 4 files changed, 21 insertions(+), 6 deletions(-)
 
-Patches 1-2 are Martin's patches that didn't end up in the previous
-pull request.
-
-Patches 3-4 change audio.c to use Error ** a bit more.
-
-Patches 5-7 introduce the minimal code to create a default audio
-backend.
-
-Patches 8-11 introduce a machine property "audiodev" and plumb
-it into all machines with an embedded sound card.
-
-Patches 12-13 forbid some not-so-sensible usage of default
-audio backends.
-
-Paolo
-
-v1->v2:
-- do not expose audio encoding feature if VNC audio is not enabled [Daniel]
-- add hint to error messages when -audiodev and default backend are mixed
-- context changes due to shadowed variable fixes
-
-
-Martin Kletzander (4):
-  audio: Require AudioState in AUD_add_capture
-  Introduce machine property "audiodev"
-  hw/arm: Support machine-default audiodev with fallback
-  hw/ppc: Support machine-default audiodev with fallback
-
-Paolo Bonzini (9):
-  ui/vnc: Require audiodev= to enable audio
-  audio: allow returning an error from the driver init
-  audio: return Error ** from audio_state_by_name
-  audio: commonize voice initialization
-  audio: simplify flow in audio_init
-  audio: remove QEMU_AUDIO_* and -audio-help support
-  vt82c686: Support machine-default audiodev with fallback
-  audio: forbid mixing default audiodev backend and -audiodev
-  audio: forbid default audiodev backend with -nodefaults
-
- audio/alsaaudio.c                |   3 +-
- audio/audio-hmp-cmds.c           |   6 +-
- audio/audio.c                    | 213 +++++------
- audio/audio.h                    |   5 +-
- audio/audio_int.h                |   7 +-
- audio/audio_legacy.c             | 591 -------------------------------
- audio/audio_template.h           |   9 +-
- audio/coreaudio.m                |   3 +-
- audio/dbusaudio.c                |   3 +-
- audio/dsoundaudio.c              |   3 +-
- audio/jackaudio.c                |   3 +-
- audio/meson.build                |   1 -
- audio/noaudio.c                  |   3 +-
- audio/ossaudio.c                 |  12 +-
- audio/paaudio.c                  |   8 +-
- audio/pwaudio.c                  |  17 +-
- audio/sdlaudio.c                 |   6 +-
- audio/sndioaudio.c               |   3 +-
- audio/spiceaudio.c               |   5 +-
- audio/wavaudio.c                 |   3 +-
- docs/about/deprecated.rst        |  16 +-
- docs/about/removed-features.rst  |  12 +
- hw/arm/integratorcp.c            |  11 +-
- hw/arm/musicpal.c                |  11 +-
- hw/arm/nseries.c                 |   4 +
- hw/arm/omap2.c                   |   7 +-
- hw/arm/palm.c                    |   2 +
- hw/arm/realview.c                |  12 +
- hw/arm/spitz.c                   |  17 +-
- hw/arm/versatilepb.c             |   8 +
- hw/arm/vexpress.c                |   5 +
- hw/arm/xlnx-zcu102.c             |   6 +
- hw/arm/z2.c                      |  15 +-
- hw/audio/ac97.c                  |   6 +-
- hw/audio/adlib.c                 |   6 +-
- hw/audio/cs4231a.c               |   6 +-
- hw/audio/es1370.c                |   5 +-
- hw/audio/gus.c                   |   6 +-
- hw/audio/hda-codec.c             |   5 +-
- hw/audio/lm4549.c                |   8 +-
- hw/audio/pcspk.c                 |   4 +-
- hw/audio/sb16.c                  |   6 +-
- hw/audio/via-ac97.c              |   6 +-
- hw/audio/wm8750.c                |   5 +-
- hw/core/machine.c                |  33 ++
- hw/core/qdev-properties-system.c |  16 +-
- hw/display/xlnx_dp.c             |   6 +-
- hw/input/tsc210x.c               |   7 +-
- hw/isa/vt82c686.c                |   2 +
- hw/mips/fuloong2e.c              |  13 +-
- hw/ppc/pegasos2.c                |  10 +-
- hw/ppc/prep.c                    |   7 +
- hw/usb/dev-audio.c               |   5 +-
- include/hw/boards.h              |   7 +
- qemu-options.hx                  |  10 -
- softmmu/vl.c                     |   4 -
- ui/dbus.c                        |   3 +-
- ui/vnc.c                         |  14 +-
- ui/vnc.h                         |   2 +
- 59 files changed, 391 insertions(+), 841 deletions(-)
- delete mode 100644 audio/audio_legacy.c
-
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 8f3fef97bd4..c07bf58dde1 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -45,13 +45,11 @@ backend settings instead of environment variables.  To ease migration to
+ the new format, the ``-audiodev-help`` option can be used to convert
+ the current values of the environment variables to ``-audiodev`` options.
+ 
+-Creating sound card devices and vnc without ``audiodev=`` property (since 4.2)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++Creating sound card devices without ``audiodev=`` property (since 4.2)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
+ When not using the deprecated legacy audio config, each sound card
+-should specify an ``audiodev=`` property.  Additionally, when using
+-vnc, you should specify an ``audiodev=`` property if you plan to
+-transmit audio through the VNC protocol.
++should specify an ``audiodev=`` property.
+ 
+ Short-form boolean options (since 6.0)
+ ''''''''''''''''''''''''''''''''''''''
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 97ec47f1d25..276060b320c 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -436,6 +436,12 @@ the process listing. This was replaced by the new ``password-secret``
+ option which lets the password be securely provided on the command
+ line using a ``secret`` object instance.
+ 
++Creating vnc without ``audiodev=`` property (removed in 8.2)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
++When using vnc, you should specify an ``audiodev=`` property if
++you plan to transmit audio through the VNC protocol.
++
+ QEMU Machine Protocol (QMP) commands
+ ------------------------------------
+ 
+diff --git a/ui/vnc.c b/ui/vnc.c
+index c302bb07a5b..acb56461b2d 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -2195,7 +2195,10 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
+             send_ext_key_event_ack(vs);
+             break;
+         case VNC_ENCODING_AUDIO:
+-            send_ext_audio_ack(vs);
++            if (vs->vd->audio_state) {
++                vs->features |= VNC_FEATURE_AUDIO_MASK;
++                send_ext_audio_ack(vs);
++            }
+             break;
+         case VNC_ENCODING_WMVi:
+             vs->features |= VNC_FEATURE_WMVI_MASK;
+@@ -2502,6 +2505,12 @@ static int protocol_client_msg(VncState *vs, uint8_t *data, size_t len)
+                           read_u32(data, 4), read_u32(data, 8));
+             break;
+         case VNC_MSG_CLIENT_QEMU_AUDIO:
++            if (!vnc_has_feature(vs, VNC_FEATURE_AUDIO)) {
++                error_report("Audio message %d with audio disabled", read_u8(data, 2));
++                vnc_client_error(vs);
++                break;
++            }
++
+             if (len == 2)
+                 return 4;
+ 
+diff --git a/ui/vnc.h b/ui/vnc.h
+index 757fa83044e..96d19dce199 100644
+--- a/ui/vnc.h
++++ b/ui/vnc.h
+@@ -464,6 +464,7 @@ enum VncFeatures {
+     VNC_FEATURE_LED_STATE,
+     VNC_FEATURE_XVP,
+     VNC_FEATURE_CLIPBOARD_EXT,
++    VNC_FEATURE_AUDIO,
+ };
+ 
+ #define VNC_FEATURE_RESIZE_MASK              (1 << VNC_FEATURE_RESIZE)
+@@ -481,6 +482,7 @@ enum VncFeatures {
+ #define VNC_FEATURE_LED_STATE_MASK           (1 << VNC_FEATURE_LED_STATE)
+ #define VNC_FEATURE_XVP_MASK                 (1 << VNC_FEATURE_XVP)
+ #define VNC_FEATURE_CLIPBOARD_EXT_MASK       (1 <<  VNC_FEATURE_CLIPBOARD_EXT)
++#define VNC_FEATURE_AUDIO_MASK               (1 <<  VNC_FEATURE_AUDIO)
+ 
+ 
+ /* Client -> Server message IDs */
 -- 
 2.41.0
 
