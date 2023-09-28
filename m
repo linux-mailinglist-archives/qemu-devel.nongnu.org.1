@@ -2,132 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72577B0F42
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 00:59:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 595437B0FCE
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 02:16:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qldUL-0006rW-FT; Wed, 27 Sep 2023 18:58:37 -0400
+	id 1qlefs-0006Qq-MF; Wed, 27 Sep 2023 20:14:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qldUI-0006r7-6G
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 18:58:34 -0400
-Received: from mailout1.w2.samsung.com ([211.189.100.11])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlefl-0006QM-Ih
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 20:14:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fan.ni@samsung.com>)
- id 1qldUA-0000by-UR
- for qemu-devel@nongnu.org; Wed, 27 Sep 2023 18:58:32 -0400
-Received: from uscas1p1.samsung.com (unknown [182.198.245.206])
- by mailout1.w2.samsung.com (KnoxPortal) with ESMTP id
- 20230927225821usoutp019c0c3296cfd0b8c9de18b189f747a0e1~I45faL0o-2757927579usoutp01B;
- Wed, 27 Sep 2023 22:58:21 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w2.samsung.com
- 20230927225821usoutp019c0c3296cfd0b8c9de18b189f747a0e1~I45faL0o-2757927579usoutp01B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
- s=mail20170921; t=1695855501;
- bh=bsnJ8XuAOqJ7Wh7Fp8ClOoUI+Kz/oFj0ua/4aIWXt9E=;
- h=From:To:CC:Subject:Date:In-Reply-To:References:From;
- b=ltjZww/ihpuU6sTtAqaT8fUVvqirZGiaEUwdnzjZQnAlkUlXKlmrylBTN7qxwvdHn
- l+ayz21Z4tcrxaXfeiKpFPvvFSVNWRgC2z57x9vhw+RAfXAubtbBMM1hkXWoywzvvv
- KBFS+2E/7Txs2qY5lTmKJu/n3agKATLSzjaXzmV0=
-Received: from ussmges3new.samsung.com (u112.gpu85.samsung.co.kr
- [203.254.195.112]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230927225820uscas1p18b610779b47751666c6d0742d94825ac~I45fCwAlq2836128361uscas1p14;
- Wed, 27 Sep 2023 22:58:20 +0000 (GMT)
-Received: from uscas1p1.samsung.com ( [182.198.245.206]) by
- ussmges3new.samsung.com (USCPEMTA) with SMTP id 3E.E2.62237.C83B4156; Wed,
- 27 Sep 2023 18:58:20 -0400 (EDT)
-Received: from ussmgxs2new.samsung.com (u91.gpu85.samsung.co.kr
- [203.254.195.91]) by uscas1p1.samsung.com (KnoxPortal) with ESMTP id
- 20230927225820uscas1p1208320932a39780c0af89ea2254e0a03~I45eqFSmi2835628356uscas1p18;
- Wed, 27 Sep 2023 22:58:20 +0000 (GMT)
-X-AuditID: cbfec370-b17ff7000001f31d-04-6514b38c79b0
-Received: from SSI-EX2.ssi.samsung.com ( [105.128.2.146]) by
- ussmgxs2new.samsung.com (USCPEXMTA) with SMTP id 3A.22.31200.B83B4156; Wed,
- 27 Sep 2023 18:58:20 -0400 (EDT)
-Received: from SSI-EX2.ssi.samsung.com (105.128.2.227) by
- SSI-EX2.ssi.samsung.com (105.128.2.227) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.2375.24; Wed, 27 Sep 2023 15:58:19 -0700
-Received: from SSI-EX2.ssi.samsung.com ([105.128.2.227]) by
- SSI-EX2.ssi.samsung.com ([105.128.2.227]) with mapi id 15.01.2375.024; Wed,
- 27 Sep 2023 15:58:19 -0700
-From: Fan Ni <fan.ni@samsung.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>, Michael Tsirkin
- <mst@redhat.com>, "linuxarm@huawei.com" <linuxarm@huawei.com>,
- =?iso-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, "Davidlohr
- Bueso" <dave@stgolabs.net>, Gregory Price <gregory.price@memverge.com>,
- "Klaus Jensen" <its@irrelevant.dk>, Corey Minyard <cminyard@mvista.com>,
- Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH 02/19] hw/cxl/mbox: Split mailbox command payload into
- separate input and output
-Thread-Topic: [PATCH 02/19] hw/cxl/mbox: Split mailbox command payload into
- separate input and output
-Thread-Index: AQHZ78sXRL9hgipMekiq9FbvR0MKnrAvwfMA
-Date: Wed, 27 Sep 2023 22:58:19 +0000
-Message-ID: <20230927225813.GA4174457@sjcvldevvm72>
-In-Reply-To: <20230925161124.18940-3-Jonathan.Cameron@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [105.128.2.176]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-ID: <CFC1EBF2D9A54F4E941B0ACACF08F5F2@ssi.samsung.com>
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qlefh-0007g2-9W
+ for qemu-devel@nongnu.org; Wed, 27 Sep 2023 20:14:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695860061;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=OLA6wfX4ToBiJtRM5KsuitjMSdE190PAO51IX3NHbEc=;
+ b=GNTyuDsVJ+/7sx4sFI8EP+oYPK5dC/PpopNLGs8/Zb9dT9AtWeV4paQnoaKtifxbvSfiFZ
+ OE43HdLSbbPzRTemfmoLc2/i/lV3ITRKgOcw5P3VUPz4YG6aXmZQVxbm+GLcolLumjWD7i
+ fsU0BpQp8tR8iO6OPuJo3K8++yfYdPo=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-517-mQpKVRiRNG-P5Gs1jtWCUg-1; Wed, 27 Sep 2023 20:14:19 -0400
+X-MC-Unique: mQpKVRiRNG-P5Gs1jtWCUg-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-692a9b68f1aso13979536b3a.1
+ for <qemu-devel@nongnu.org>; Wed, 27 Sep 2023 17:14:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695860059; x=1696464859;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=OLA6wfX4ToBiJtRM5KsuitjMSdE190PAO51IX3NHbEc=;
+ b=NwAT4IJBS9rJtYZrwcdGhnOV7KcfsHQPgjKAYHipTGxwni5S1kEYZEtgy3TbUg1KWJ
+ Z60xWIk1Jtnn5aNMXy+7Y86R3xCToJXoxgub0Jz3FfDBbCHhmeY3kPq4F/GuJnq9l/Z1
+ i+KcpOSSBd9VBlvXy99OGg/cE/W4HFoSyI7DslqrlAlx0nK7yb1Xw7/Kz5RyxrFXTSrb
+ mSv1TfZ/XY30KBqSrY++3u+wauZMMVEZIFbNMu6lD66Fe/DsQggPwjysBNL848S2asPE
+ Ay9uWtOYehBrnSaBNEPPy/YyHldRa2a92gZC+35tVmwinbw1frzzcu7MBWG5yTT9WUb9
+ 0vVg==
+X-Gm-Message-State: AOJu0YzC88ZkBoRlOGLNkso5Qs6L93bg1l6dHAgfaEaVjj+2K5Zxy2f2
+ Wj0noHEQCk8TsP6dXMyDHpARnGDHwj0JQQxSApIIB5TdwvwzUKDh/StF/K7VV9WHxCnWgmeV3Sa
+ lLzNROg0ry9pK6Jc=
+X-Received: by 2002:a05:6a00:391c:b0:68e:3616:604a with SMTP id
+ fh28-20020a056a00391c00b0068e3616604amr4985552pfb.8.1695860058641; 
+ Wed, 27 Sep 2023 17:14:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXvK2A34mb9M3oftrUNj7cD+iv5MBIOEvVZvL6YNHjOPXhouS4ocfLf0whKLpAc64jARL6mA==
+X-Received: by 2002:a05:6a00:391c:b0:68e:3616:604a with SMTP id
+ fh28-20020a056a00391c00b0068e3616604amr4985489pfb.8.1695860058028; 
+ Wed, 27 Sep 2023 17:14:18 -0700 (PDT)
+Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
+ ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
+ by smtp.gmail.com with ESMTPSA id
+ fa19-20020a056a002d1300b006926a2c9eb7sm11973532pfb.119.2023.09.27.17.14.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 27 Sep 2023 17:14:17 -0700 (PDT)
+Message-ID: <ae71fa00-fcc5-ef34-ef94-b3fd37622582@redhat.com>
+Date: Thu, 28 Sep 2023 10:14:04 +1000
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDKsWRmVeSWpSXmKPExsWy7djXc7o9m0VSDe49kLV4PGUim8Xqm2sY
- LRqaHrFY7D/4jdVi1cJrbBbnZ51isTi88QyTxf9fr1gt1qwQtjjeu4PFgcuj5chbVo9zO86z
- e9y5tofNY+PH/+we53fPYPV4cm0zk8f7fVfZPKbOrvf4vEkugDOKyyYlNSezLLVI3y6BK2Pp
- oj7GgjVnGSumr3/A1MDYWtvFyMkhIWAise3wA2YQW0hgJaPEjWvuXYxcQHYrk0Rj/1NmmKLv
- jz4wQSTWMkq8u9XBAuF8YpT4//s+O4SzjFHiy/21LCAtbAKKEvu6trOB2CICRhLvbkxiBCli
- FjjOLPGycwI7SEJYIE1i/fEVQDYHUFG6xKKvFjD1s1dMYAQJswioSnxbEAUS5hUwlnj84ibY
- eE4BR4nXm2eBTWEUEJP4fmoNE4jNLCAucevJfCaIqwUlFs3eA/WBmMS/XQ/ZIGxFifvfX7JD
- 1OtJ3Jg6hQ3CtpP48e00K4StLbFs4WtmiL2CEidnPmGB6JWUOLjiBtjzEgL9nBIHuk+xQiRc
- JDZvf8IOYUtL/L27jAnkfgmBZIlVH7kgwjkS85dsgZpjLbHwz3qmCYwqs5CcPQvJSbOQnDQL
- yUmzkJy0gJF1FaN4aXFxbnpqsXFearlecWJucWleul5yfu4mRmCCO/3vcMEOxlu3PuodYmTi
- YDzEKMHBrCTC+/C2UKoQb0piZVVqUX58UWlOavEhRmkOFiVxXkPbk8lCAumJJanZqakFqUUw
- WSYOTqkGppz20G18RjV3/Y5/XzZVOv3IwVf9TQtOdrQqpnIpmYus3mZ0Indf70oZka2aXy6z
- KC2aV1QSM9VDYsFH/fNc1VNlir7P3RnmZPrkY57Drutvz83NEtz7xm6q/celukWVzkuL931N
- OHTu0Imzk03u/D8psvvnNF2dyIt8ZwsEvkVc2nTn9okDXI2a53NNl85MvfNRf33PvqOZXXF3
- vq741r5YrkDz/lcbg6nzLD/8qRKIPeH4y6dckMUq6GnOHYeTdzJt3615ECAts85+VtDa9uSJ
- m3dfUE0McTu8LEQ+9tjqCyseOO++Fjr/8fLyBzcv9WpNylm+bMrxzReZ5yutn5lcsGNKsfDn
- 27f6VO5e++NgrMRSnJFoqMVcVJwIANKjIZbfAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrLIsWRmVeSWpSXmKPExsWS2cA0Sbdns0iqwbr97BaPp0xks1h9cw2j
- RUPTIxaL/Qe/sVqsWniNzeL8rFMsFoc3nmGy+P/rFavFmhXCFsd7d7A4cHm0HHnL6nFux3l2
- jzvX9rB5bPz4n93j/O4ZrB5Prm1m8ni/7yqbx9TZ9R6fN8kFcEZx2aSk5mSWpRbp2yVwZSxd
- 1MdYsOYsY8X09Q+YGhhba7sYOTkkBEwkvj/6wNTFyMUhJLCaUWLFr13MEM4nRomNbxayQzjL
- GCUuXzzPDNLCJqAosa9rOxuILSJgJPHuxiRGkCJmgePMEi87J7CDJIQF0iTWH1/BDlGULnH8
- ygy4htkrJgA1cHCwCKhKfFsQBRLmFTCWePziJgvEstOMEt2neplAEpwCjhKvN88Cm8MoICbx
- /dQasDizgLjErSfzmSB+EJBYsgfiOAkBUYmXj/+xQtiKEve/v2SHqNeTuDF1ChuEbSfx49tp
- VghbW2LZwtfMEEcISpyc+YQFoldS4uCKGywTGCVmIVk3C8moWUhGzUIyahaSUQsYWVcxipcW
- F+emVxQb5aWW6xUn5haX5qXrJefnbmIEpojT/w5H72C8feuj3iFGJg7GQ4wSHMxKIrwPbwul
- CvGmJFZWpRblxxeV5qQWH2KU5mBREufdMeViipBAemJJanZqakFqEUyWiYNTqoEpbcqSfj6z
- 5BTrT1c2h6ssKi1RVr5c8zSPTTFHyGXW9dRipx1tYV1q3/oWTbvPXXfo5cWv2Wzbt0r/W/f+
- TytnqFFFceyLH6VsyaXp2Q+P5u/bsmY2+wbhT53Wq373Hj13f3H2F5/QPXKip+56ThA4ZXTw
- NXei3sWIVYLCB9Y9j/07QfNP+0mTOSv43qVFzv4y49Djfv24N59P1hwXqytqjF9Rna2yqdj5
- evh50Zt9zTu4edIFQhas/KWVcXv5kiPfDv5uaQh2VOPkTMxZV/2k8GHgm7DSVON5LCa3A6/d
- lEh7Kvqj9u488ducl1xOHnGYm9Wn45k7UcD7s+GPHTVGn5vOLWVO814W/+Kk53QzJZbijERD
- Leai4kQActXcuIADAAA=
-X-CMS-MailID: 20230927225820uscas1p1208320932a39780c0af89ea2254e0a03
-CMS-TYPE: 301P
-X-CMS-RootMailID: 20230925161231uscas1p1a9f693fc848ccb8333d16209f09b16a3
-References: <20230925161124.18940-1-Jonathan.Cameron@huawei.com>
- <CGME20230925161231uscas1p1a9f693fc848ccb8333d16209f09b16a3@uscas1p1.samsung.com>
- <20230925161124.18940-3-Jonathan.Cameron@huawei.com>
-Received-SPF: pass client-ip=211.189.100.11; envelope-from=fan.ni@samsung.com;
- helo=mailout1.w2.samsung.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [PATCH RFC V2 07/37] arm/virt, gicv3: Changes to pre-size GIC with
+ possible vcpus @machine init
+Content-Language: en-US
+To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
+ qemu-arm@nongnu.org
+Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
+ lpieralisi@kernel.org, peter.maydell@linaro.org,
+ richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
+ david@redhat.com, philmd@linaro.org, eric.auger@redhat.com, will@kernel.org,
+ ardb@kernel.org, oliver.upton@linux.dev, pbonzini@redhat.com,
+ mst@redhat.com, rafael@kernel.org, borntraeger@linux.ibm.com,
+ alex.bennee@linaro.org, linux@armlinux.org.uk,
+ darren@os.amperecomputing.com, ilkka@os.amperecomputing.com,
+ vishnu@os.amperecomputing.com, karl.heubaum@oracle.com,
+ miguel.luis@oracle.com, salil.mehta@opnsrc.net, zhukeqian1@huawei.com,
+ wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
+ maobibo@loongson.cn, lixianglai@loongson.cn
+References: <20230926100436.28284-1-salil.mehta@huawei.com>
+ <20230926100436.28284-8-salil.mehta@huawei.com>
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20230926100436.28284-8-salil.mehta@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -143,649 +115,282 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 25, 2023 at 05:11:07PM +0100, Jonathan Cameron wrote:
+Hi Salil,
 
-> New CCI types that will be supported shortly do not have a single buffer
-> used in both directions. As such, split it up. For CXL mailboxes the two
-> pointers will be aliases of the same memory so all callbacks must allow
-> for that.
->=20
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On 9/26/23 20:04, Salil Mehta wrote:
+> GIC needs to be pre-sized with possible vcpus at the initialization time. This
+> is necessary because Memory regions and resources associated with GICC/GICR
+> etc cannot be changed (add/del/modified) after VM has inited. Also, GIC_TYPER
+> needs to be initialized with mp_affinity and cpu interface number association.
+> This cannot be changed after GIC has initialized.
+> 
+> Once all the cpu interfaces of the GIC has been inited it needs to be ensured
+                                                   ^^^^^^
+                                                   initialized,
+> that any updates to the GICC during reset only takes place for the present
+                                                                  ^^^^^^^^^^^
+                                                                  the enabled
+> vcpus and not the disabled ones. Therefore, proper checks are required at
+> various places.
+> 
+> Co-developed-by: Salil Mehta <salil.mehta@huawei.com>
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> [changed the comment in arm_gicv3_icc_reset]
+> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 > ---
+>   hw/arm/virt.c              | 15 ++++++++-------
+>   hw/intc/arm_gicv3_common.c |  7 +++++--
+>   hw/intc/arm_gicv3_cpuif.c  |  8 ++++++++
+>   hw/intc/arm_gicv3_kvm.c    | 34 +++++++++++++++++++++++++++++++---
+>   include/hw/arm/virt.h      |  2 +-
+>   5 files changed, 53 insertions(+), 13 deletions(-)
+> 
 
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
+I guess the subject can be improved to something like below because it's the preparatory
+work to support vCPU hotplug (notifier) in the subsequent patches. In this patch, most
+of the code changes is related to vCPU state, ms->smp_pros.max_cpus and the CPU interface
+instances associated to GICv3 controller.
 
->  include/hw/cxl/cxl_device.h |   7 +-
->  hw/cxl/cxl-events.c         |   2 +-
->  hw/cxl/cxl-mailbox-utils.c  | 222 +++++++++++++++++++++---------------
->  3 files changed, 132 insertions(+), 99 deletions(-)
->=20
-> diff --git a/include/hw/cxl/cxl_device.h b/include/hw/cxl/cxl_device.h
-> index 556953469c..d7a2c4009e 100644
-> --- a/include/hw/cxl/cxl_device.h
-> +++ b/include/hw/cxl/cxl_device.h
-> @@ -114,8 +114,9 @@ typedef enum {
->  typedef struct cxl_device_state CXLDeviceState;
->  struct cxl_cmd;
->  typedef CXLRetCode (*opcode_handler)(const struct cxl_cmd *cmd,
-> -                                     uint8_t *payload,
-> -                                     CXLDeviceState *cxl_dstate, uint16_=
-t *len);
-> +                                     uint8_t *payload_in, size_t len_in,
-> +                                     uint8_t *payload_out, size_t *len_o=
-ut,
-> +                                     CXLDeviceState *cxl_dstate);
->  struct cxl_cmd {
->      const char *name;
->      opcode_handler handler;
-> @@ -390,7 +391,7 @@ bool cxl_event_insert(CXLDeviceState *cxlds, CXLEvent=
-LogType log_type,
->                        CXLEventRecordRaw *event);
->  CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPaylo=
-ad *pl,
->                                   uint8_t log_type, int max_recs,
-> -                                 uint16_t *len);
-> +                                 size_t *len);
->  CXLRetCode cxl_event_clear_records(CXLDeviceState *cxlds,
->                                     CXLClearEventPayload *pl);
-> =20
-> diff --git a/hw/cxl/cxl-events.c b/hw/cxl/cxl-events.c
-> index e2172b94b9..bee6dfaf14 100644
-> --- a/hw/cxl/cxl-events.c
-> +++ b/hw/cxl/cxl-events.c
-> @@ -143,7 +143,7 @@ bool cxl_event_insert(CXLDeviceState *cxlds, CXLEvent=
-LogType log_type,
-> =20
->  CXLRetCode cxl_event_get_records(CXLDeviceState *cxlds, CXLGetEventPaylo=
-ad *pl,
->                                   uint8_t log_type, int max_recs,
-> -                                 uint16_t *len)
-> +                                 size_t *len)
->  {
->      CXLEventLog *log;
->      CXLEvent *entry;
-> diff --git a/hw/cxl/cxl-mailbox-utils.c b/hw/cxl/cxl-mailbox-utils.c
-> index c02de06943..4bdbc2ee83 100644
-> --- a/hw/cxl/cxl-mailbox-utils.c
-> +++ b/hw/cxl/cxl-mailbox-utils.c
-> @@ -71,9 +71,9 @@ enum {
-> =20
-> =20
->  static CXLRetCode cmd_events_get_records(const struct cxl_cmd *cmd,
-> -                                         uint8_t *payload,
-> -                                         CXLDeviceState *cxlds,
-> -                                         uint16_t *len)
-> +                                         uint8_t *payload_in, size_t len=
-_in,
-> +                                         uint8_t *payload_out, size_t *l=
-en_out,
-> +                                         CXLDeviceState *cxlds)
->  {
->      CXLGetEventPayload *pl;
->      uint8_t log_type;
-> @@ -83,9 +83,9 @@ static CXLRetCode cmd_events_get_records(const struct c=
-xl_cmd *cmd,
->          return CXL_MBOX_INVALID_INPUT;
->      }
-> =20
-> -    log_type =3D payload[0];
-> +    log_type =3D payload_in[0];
-> =20
-> -    pl =3D (CXLGetEventPayload *)payload;
-> +    pl =3D (CXLGetEventPayload *)payload_out;
->      memset(pl, 0, sizeof(*pl));
-> =20
->      max_recs =3D (cxlds->payload_size - CXL_EVENT_PAYLOAD_HDR_SIZE) /
-> @@ -94,30 +94,34 @@ static CXLRetCode cmd_events_get_records(const struct=
- cxl_cmd *cmd,
->          max_recs =3D 0xFFFF;
->      }
-> =20
-> -    return cxl_event_get_records(cxlds, pl, log_type, max_recs, len);
-> +    return cxl_event_get_records(cxlds, pl, log_type, max_recs, len_out)=
-;
->  }
-> =20
->  static CXLRetCode cmd_events_clear_records(const struct cxl_cmd *cmd,
-> -                                           uint8_t *payload,
-> -                                           CXLDeviceState *cxlds,
-> -                                           uint16_t *len)
-> +                                           uint8_t *payload_in,
-> +                                           size_t len_in,
-> +                                           uint8_t *payload_out,
-> +                                           size_t *len_out,
-> +                                           CXLDeviceState *cxlds)
->  {
->      CXLClearEventPayload *pl;
-> =20
-> -    pl =3D (CXLClearEventPayload *)payload;
-> -    *len =3D 0;
-> +    pl =3D (CXLClearEventPayload *)payload_in;
-> +    *len_out =3D 0;
->      return cxl_event_clear_records(cxlds, pl);
->  }
-> =20
->  static CXLRetCode cmd_events_get_interrupt_policy(const struct cxl_cmd *=
-cmd,
-> -                                                  uint8_t *payload,
-> -                                                  CXLDeviceState *cxlds,
-> -                                                  uint16_t *len)
-> +                                                  uint8_t *payload_in,
-> +                                                  size_t len_in,
-> +                                                  uint8_t *payload_out,
-> +                                                  size_t *len_out,
-> +                                                  CXLDeviceState *cxlds)
->  {
->      CXLEventInterruptPolicy *policy;
->      CXLEventLog *log;
-> =20
-> -    policy =3D (CXLEventInterruptPolicy *)payload;
-> +    policy =3D (CXLEventInterruptPolicy *)payload_out;
->      memset(policy, 0, sizeof(*policy));
-> =20
->      log =3D &cxlds->event_logs[CXL_EVENT_TYPE_INFO];
-> @@ -146,23 +150,25 @@ static CXLRetCode cmd_events_get_interrupt_policy(c=
-onst struct cxl_cmd *cmd,
->          policy->dyn_cap_settings =3D CXL_INT_MSI_MSIX;
->      }
-> =20
-> -    *len =3D sizeof(*policy);
-> +    *len_out =3D sizeof(*policy);
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  static CXLRetCode cmd_events_set_interrupt_policy(const struct cxl_cmd *=
-cmd,
-> -                                                  uint8_t *payload,
-> -                                                  CXLDeviceState *cxlds,
-> -                                                  uint16_t *len)
-> +                                                  uint8_t *payload_in,
-> +                                                  size_t len_in,
-> +                                                  uint8_t *payload_out,
-> +                                                  size_t *len_out,
-> +                                                  CXLDeviceState *cxlds)
->  {
->      CXLEventInterruptPolicy *policy;
->      CXLEventLog *log;
-> =20
-> -    if (*len < CXL_EVENT_INT_SETTING_MIN_LEN) {
-> +    if (len_in < CXL_EVENT_INT_SETTING_MIN_LEN) {
->          return CXL_MBOX_INVALID_PAYLOAD_LENGTH;
->      }
-> =20
-> -    policy =3D (CXLEventInterruptPolicy *)payload;
-> +    policy =3D (CXLEventInterruptPolicy *)payload_in;
-> =20
->      log =3D &cxlds->event_logs[CXL_EVENT_TYPE_INFO];
->      log->irq_enabled =3D (policy->info_settings & CXL_EVENT_INT_MODE_MAS=
-K) =3D=3D
-> @@ -181,7 +187,7 @@ static CXLRetCode cmd_events_set_interrupt_policy(con=
-st struct cxl_cmd *cmd,
->                          CXL_INT_MSI_MSIX;
-> =20
->      /* DCD is optional */
-> -    if (*len < sizeof(*policy)) {
-> +    if (len_in < sizeof(*policy)) {
->          return CXL_MBOX_SUCCESS;
->      }
-> =20
-> @@ -189,15 +195,17 @@ static CXLRetCode cmd_events_set_interrupt_policy(c=
-onst struct cxl_cmd *cmd,
->      log->irq_enabled =3D (policy->dyn_cap_settings & CXL_EVENT_INT_MODE_=
-MASK) =3D=3D
->                          CXL_INT_MSI_MSIX;
-> =20
-> -    *len =3D sizeof(*policy);
-> +    *len_out =3D 0;
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  /* 8.2.9.2.1 */
->  static CXLRetCode cmd_firmware_update_get_info(const struct cxl_cmd *cmd=
-,
-> -                                               uint8_t *payload,
-> -                                               CXLDeviceState *cxl_dstat=
-e,
-> -                                               uint16_t *len)
-> +                                               uint8_t *payload_in,
-> +                                               size_t len,
-> +                                               uint8_t *payload_out,
-> +                                               size_t *len_out,
-> +                                               CXLDeviceState *cxl_dstat=
-e)
->  {
->      struct {
->          uint8_t slots_supported;
-> @@ -216,7 +224,7 @@ static CXLRetCode cmd_firmware_update_get_info(const =
-struct cxl_cmd *cmd,
->          return CXL_MBOX_INTERNAL_ERROR;
->      }
-> =20
-> -    fw_info =3D (void *)payload;
-> +    fw_info =3D (void *)payload_out;
->      memset(fw_info, 0, sizeof(*fw_info));
-> =20
->      fw_info->slots_supported =3D 2;
-> @@ -224,36 +232,40 @@ static CXLRetCode cmd_firmware_update_get_info(cons=
-t struct cxl_cmd *cmd,
->      fw_info->caps =3D 0;
->      pstrcpy(fw_info->fw_rev1, sizeof(fw_info->fw_rev1), "BWFW VERSION 0"=
-);
-> =20
-> -    *len =3D sizeof(*fw_info);
-> +    *len_out =3D sizeof(*fw_info);
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  /* 8.2.9.3.1 */
->  static CXLRetCode cmd_timestamp_get(const struct cxl_cmd *cmd,
-> -                                    uint8_t *payload,
-> -                                    CXLDeviceState *cxl_dstate,
-> -                                    uint16_t *len)
-> +                                    uint8_t *payload_in,
-> +                                    size_t len_in,
-> +                                    uint8_t *payload_out,
-> +                                    size_t *len_out,
-> +                                    CXLDeviceState *cxl_dstate)
->  {
->      uint64_t final_time =3D cxl_device_get_timestamp(cxl_dstate);
-> =20
-> -    stq_le_p(payload, final_time);
-> -    *len =3D 8;
-> +    stq_le_p(payload_out, final_time);
-> +    *len_out =3D 8;
-> =20
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  /* 8.2.9.3.2 */
->  static CXLRetCode cmd_timestamp_set(const struct cxl_cmd *cmd,
-> -                                    uint8_t *payload,
-> -                                    CXLDeviceState *cxl_dstate,
-> -                                    uint16_t *len)
-> +                                    uint8_t *payload_in,
-> +                                    size_t len_in,
-> +                                    uint8_t *payload_out,
-> +                                    size_t *len_out,
-> +                                    CXLDeviceState *cxl_dstate)
->  {
->      cxl_dstate->timestamp.set =3D true;
->      cxl_dstate->timestamp.last_set =3D qemu_clock_get_ns(QEMU_CLOCK_VIRT=
-UAL);
-> =20
-> -    cxl_dstate->timestamp.host_set =3D le64_to_cpu(*(uint64_t *)payload)=
-;
-> +    cxl_dstate->timestamp.host_set =3D le64_to_cpu(*(uint64_t *)payload_=
-in);
-> =20
-> -    *len =3D 0;
-> +    *len_out =3D 0;
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
-> @@ -265,9 +277,11 @@ static const QemuUUID cel_uuid =3D {
-> =20
->  /* 8.2.9.4.1 */
->  static CXLRetCode cmd_logs_get_supported(const struct cxl_cmd *cmd,
-> -                                         uint8_t *payload,
-> -                                         CXLDeviceState *cxl_dstate,
-> -                                         uint16_t *len)
-> +                                         uint8_t *payload_in,
-> +                                         size_t len_in,
-> +                                         uint8_t *payload_out,
-> +                                         size_t *len_out,
-> +                                         CXLDeviceState *cxl_dstate)
->  {
->      struct {
->          uint16_t entries;
-> @@ -276,22 +290,24 @@ static CXLRetCode cmd_logs_get_supported(const stru=
-ct cxl_cmd *cmd,
->              QemuUUID uuid;
->              uint32_t size;
->          } log_entries[1];
-> -    } QEMU_PACKED *supported_logs =3D (void *)payload;
-> +    } QEMU_PACKED *supported_logs =3D (void *)payload_out;
->      QEMU_BUILD_BUG_ON(sizeof(*supported_logs) !=3D 0x1c);
-> =20
->      supported_logs->entries =3D 1;
->      supported_logs->log_entries[0].uuid =3D cel_uuid;
->      supported_logs->log_entries[0].size =3D 4 * cxl_dstate->cel_size;
-> =20
-> -    *len =3D sizeof(*supported_logs);
-> +    *len_out =3D sizeof(*supported_logs);
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  /* 8.2.9.4.2 */
->  static CXLRetCode cmd_logs_get_log(const struct cxl_cmd *cmd,
-> -                                   uint8_t *payload,
-> -                                   CXLDeviceState *cxl_dstate,
-> -                                   uint16_t *len)
-> +                                   uint8_t *payload_in,
-> +                                   size_t len_in,
-> +                                   uint8_t *payload_out,
-> +                                   size_t *len_out,
-> +                                   CXLDeviceState *cxl_dstate)
->  {
->      struct {
->          QemuUUID uuid;
-> @@ -299,7 +315,7 @@ static CXLRetCode cmd_logs_get_log(const struct cxl_c=
-md *cmd,
->          uint32_t length;
->      } QEMU_PACKED QEMU_ALIGNED(16) *get_log;
-> =20
-> -    get_log =3D (void *)payload;
-> +    get_log =3D (void *)payload_in;
-> =20
->      /*
->       * 8.2.9.4.2
-> @@ -323,19 +339,21 @@ static CXLRetCode cmd_logs_get_log(const struct cxl=
-_cmd *cmd,
->      }
-> =20
->      /* Store off everything to local variables so we can wipe out the pa=
-yload */
-> -    *len =3D get_log->length;
-> +    *len_out =3D get_log->length;
-> =20
-> -    memmove(payload, cxl_dstate->cel_log + get_log->offset,
-> -           get_log->length);
-> +    memmove(payload_out, cxl_dstate->cel_log + get_log->offset,
-> +            get_log->length);
-> =20
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  /* 8.2.9.5.1.1 */
->  static CXLRetCode cmd_identify_memory_device(const struct cxl_cmd *cmd,
-> -                                             uint8_t *payload,
-> -                                             CXLDeviceState *cxl_dstate,
-> -                                             uint16_t *len)
-> +                                             uint8_t *payload_in,
-> +                                             size_t len_in,
-> +                                             uint8_t *payload_out,
-> +                                             size_t *len_out,
-> +                                             CXLDeviceState *cxl_dstate)
->  {
->      struct {
->          char fw_revision[0x10];
-> @@ -363,7 +381,7 @@ static CXLRetCode cmd_identify_memory_device(const st=
-ruct cxl_cmd *cmd,
->          return CXL_MBOX_INTERNAL_ERROR;
->      }
-> =20
-> -    id =3D (void *)payload;
-> +    id =3D (void *)payload_out;
->      memset(id, 0, sizeof(*id));
-> =20
->      snprintf(id->fw_revision, 0x10, "BWFW VERSION %02d", 0);
-> @@ -380,21 +398,23 @@ static CXLRetCode cmd_identify_memory_device(const =
-struct cxl_cmd *cmd,
->      /* No limit - so limited by main poison record limit */
->      stw_le_p(&id->inject_poison_limit, 0);
-> =20
-> -    *len =3D sizeof(*id);
-> +    *len_out =3D sizeof(*id);
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  static CXLRetCode cmd_ccls_get_partition_info(const struct cxl_cmd *cmd,
-> -                                              uint8_t *payload,
-> -                                              CXLDeviceState *cxl_dstate=
-,
-> -                                              uint16_t *len)
-> +                                              uint8_t *payload_in,
-> +                                              size_t len_in,
-> +                                              uint8_t *payload_out,
-> +                                              size_t *len_out,
-> +                                              CXLDeviceState *cxl_dstate=
-)
->  {
->      struct {
->          uint64_t active_vmem;
->          uint64_t active_pmem;
->          uint64_t next_vmem;
->          uint64_t next_pmem;
-> -    } QEMU_PACKED *part_info =3D (void *)payload;
-> +    } QEMU_PACKED *part_info =3D (void *)payload_out;
->      QEMU_BUILD_BUG_ON(sizeof(*part_info) !=3D 0x20);
-> =20
->      if ((!QEMU_IS_ALIGNED(cxl_dstate->vmem_size, CXL_CAPACITY_MULTIPLIER=
-)) ||
-> @@ -413,14 +433,16 @@ static CXLRetCode cmd_ccls_get_partition_info(const=
- struct cxl_cmd *cmd,
->               cxl_dstate->pmem_size / CXL_CAPACITY_MULTIPLIER);
->      stq_le_p(&part_info->next_pmem, 0);
-> =20
-> -    *len =3D sizeof(*part_info);
-> +    *len_out =3D sizeof(*part_info);
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  static CXLRetCode cmd_ccls_get_lsa(const struct cxl_cmd *cmd,
-> -                                   uint8_t *payload,
-> -                                   CXLDeviceState *cxl_dstate,
-> -                                   uint16_t *len)
-> +                                   uint8_t *payload_in,
-> +                                   size_t len_in,
-> +                                   uint8_t *payload_out,
-> +                                   size_t *len_out,
-> +                                   CXLDeviceState *cxl_dstate)
->  {
->      struct {
->          uint32_t offset;
-> @@ -430,46 +452,47 @@ static CXLRetCode cmd_ccls_get_lsa(const struct cxl=
-_cmd *cmd,
->      CXLType3Class *cvc =3D CXL_TYPE3_GET_CLASS(ct3d);
->      uint32_t offset, length;
-> =20
-> -    get_lsa =3D (void *)payload;
-> +    get_lsa =3D (void *)payload_in;
->      offset =3D get_lsa->offset;
->      length =3D get_lsa->length;
-> =20
->      if (offset + length > cvc->get_lsa_size(ct3d)) {
-> -        *len =3D 0;
-> +        *len_out =3D 0;
->          return CXL_MBOX_INVALID_INPUT;
->      }
-> =20
-> -    *len =3D cvc->get_lsa(ct3d, get_lsa, length, offset);
-> +    *len_out =3D cvc->get_lsa(ct3d, payload_out, length, offset);
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  static CXLRetCode cmd_ccls_set_lsa(const struct cxl_cmd *cmd,
-> -                                   uint8_t *payload,
-> -                                   CXLDeviceState *cxl_dstate,
-> -                                   uint16_t *len)
-> +                                   uint8_t *payload_in,
-> +                                   size_t len_in,
-> +                                   uint8_t *payload_out,
-> +                                   size_t *len_out,
-> +                                   CXLDeviceState *cxl_dstate)
->  {
->      struct set_lsa_pl {
->          uint32_t offset;
->          uint32_t rsvd;
->          uint8_t data[];
->      } QEMU_PACKED;
-> -    struct set_lsa_pl *set_lsa_payload =3D (void *)payload;
-> +    struct set_lsa_pl *set_lsa_payload =3D (void *)payload_in;
->      CXLType3Dev *ct3d =3D container_of(cxl_dstate, CXLType3Dev, cxl_dsta=
-te);
->      CXLType3Class *cvc =3D CXL_TYPE3_GET_CLASS(ct3d);
->      const size_t hdr_len =3D offsetof(struct set_lsa_pl, data);
-> -    uint16_t plen =3D *len;
-> =20
-> -    *len =3D 0;
-> -    if (!plen) {
-> +    *len_out =3D 0;
-> +    if (!len_in) {
->          return CXL_MBOX_SUCCESS;
->      }
-> =20
-> -    if (set_lsa_payload->offset + plen > cvc->get_lsa_size(ct3d) + hdr_l=
-en) {
-> +    if (set_lsa_payload->offset + len_in > cvc->get_lsa_size(ct3d) + hdr=
-_len) {
->          return CXL_MBOX_INVALID_INPUT;
->      }
-> -    plen -=3D hdr_len;
-> +    len_in -=3D hdr_len;
-> =20
-> -    cvc->set_lsa(ct3d, set_lsa_payload->data, plen, set_lsa_payload->off=
-set);
-> +    cvc->set_lsa(ct3d, set_lsa_payload->data, len_in, set_lsa_payload->o=
-ffset);
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
-> @@ -480,9 +503,11 @@ static CXLRetCode cmd_ccls_set_lsa(const struct cxl_=
-cmd *cmd,
->   * testing that kernel functionality.
->   */
->  static CXLRetCode cmd_media_get_poison_list(const struct cxl_cmd *cmd,
-> -                                            uint8_t *payload,
-> -                                            CXLDeviceState *cxl_dstate,
-> -                                            uint16_t *len)
-> +                                            uint8_t *payload_in,
-> +                                            size_t len_in,
-> +                                            uint8_t *payload_out,
-> +                                            size_t *len_out,
-> +                                            CXLDeviceState *cxl_dstate)
->  {
->      struct get_poison_list_pl {
->          uint64_t pa;
-> @@ -502,8 +527,8 @@ static CXLRetCode cmd_media_get_poison_list(const str=
-uct cxl_cmd *cmd,
->          } QEMU_PACKED records[];
->      } QEMU_PACKED;
-> =20
-> -    struct get_poison_list_pl *in =3D (void *)payload;
-> -    struct get_poison_list_out_pl *out =3D (void *)payload;
-> +    struct get_poison_list_pl *in =3D (void *)payload_in;
-> +    struct get_poison_list_out_pl *out =3D (void *)payload_out;
->      CXLType3Dev *ct3d =3D container_of(cxl_dstate, CXLType3Dev, cxl_dsta=
-te);
->      uint16_t record_count =3D 0, i =3D 0;
->      uint64_t query_start, query_length;
-> @@ -552,14 +577,16 @@ static CXLRetCode cmd_media_get_poison_list(const s=
-truct cxl_cmd *cmd,
->          stq_le_p(&out->overflow_timestamp, ct3d->poison_list_overflow_ts=
-);
->      }
->      stw_le_p(&out->count, record_count);
-> -    *len =3D out_pl_len;
-> +    *len_out =3D out_pl_len;
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  static CXLRetCode cmd_media_inject_poison(const struct cxl_cmd *cmd,
-> -                                          uint8_t *payload,
-> -                                          CXLDeviceState *cxl_dstate,
-> -                                          uint16_t *len_unused)
-> +                                          uint8_t *payload_in,
-> +                                          size_t len_in,
-> +                                          uint8_t *payload_out,
-> +                                          size_t *len_out,
-> +                                          CXLDeviceState *cxl_dstate)
->  {
->      CXLType3Dev *ct3d =3D container_of(cxl_dstate, CXLType3Dev, cxl_dsta=
-te);
->      CXLPoisonList *poison_list =3D &ct3d->poison_list;
-> @@ -567,7 +594,7 @@ static CXLRetCode cmd_media_inject_poison(const struc=
-t cxl_cmd *cmd,
->      struct inject_poison_pl {
->          uint64_t dpa;
->      };
-> -    struct inject_poison_pl *in =3D (void *)payload;
-> +    struct inject_poison_pl *in =3D (void *)payload_in;
->      uint64_t dpa =3D ldq_le_p(&in->dpa);
->      CXLPoison *p;
-> =20
-> @@ -592,14 +619,17 @@ static CXLRetCode cmd_media_inject_poison(const str=
-uct cxl_cmd *cmd,
->       */
->      QLIST_INSERT_HEAD(poison_list, p, node);
->      ct3d->poison_list_cnt++;
-> +    *len_out =3D 0;
-> =20
->      return CXL_MBOX_SUCCESS;
->  }
-> =20
->  static CXLRetCode cmd_media_clear_poison(const struct cxl_cmd *cmd,
-> -                                         uint8_t *payload,
-> -                                         CXLDeviceState *cxl_dstate,
-> -                                         uint16_t *len_unused)
-> +                                         uint8_t *payload_in,
-> +                                         size_t len_in,
-> +                                         uint8_t *payload_out,
-> +                                         size_t *len_out,
-> +                                         CXLDeviceState *cxl_dstate)
->  {
->      CXLType3Dev *ct3d =3D container_of(cxl_dstate, CXLType3Dev, cxl_dsta=
-te);
->      CXLPoisonList *poison_list =3D &ct3d->poison_list;
-> @@ -611,7 +641,7 @@ static CXLRetCode cmd_media_clear_poison(const struct=
- cxl_cmd *cmd,
->      CXLPoison *ent;
->      uint64_t dpa;
-> =20
-> -    struct clear_poison_pl *in =3D (void *)payload;
-> +    struct clear_poison_pl *in =3D (void *)payload_in;
-> =20
->      dpa =3D ldq_le_p(&in->dpa);
->      if (dpa + CXL_CACHE_LINE_SIZE > cxl_dstate->mem_size) {
-> @@ -672,6 +702,7 @@ static CXLRetCode cmd_media_clear_poison(const struct=
- cxl_cmd *cmd,
->      }
->      /* Any fragments have been added, free original entry */
->      g_free(ent);
-> +    *len_out =3D 0;
-> =20
->      return CXL_MBOX_SUCCESS;
->  }
-> @@ -724,15 +755,16 @@ void cxl_process_mailbox(CXLDeviceState *cxl_dstate=
-)
-> =20
->      uint8_t set =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAND=
-_SET);
->      uint8_t cmd =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAND=
-);
-> -    uint16_t len =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, LENGTH=
-);
-> +    uint16_t len_in =3D FIELD_EX64(command_reg, CXL_DEV_MAILBOX_CMD, LEN=
-GTH);
->      uint8_t *pl =3D cxl_dstate->mbox_reg_state + A_CXL_DEV_CMD_PAYLOAD;
-> +    size_t len_out =3D 0;
-> =20
->      cxl_cmd =3D &cxl_dstate->cxl_cmd_set[set][cmd];
->      h =3D cxl_cmd->handler;
->      if (h) {
-> -        if (len =3D=3D cxl_cmd->in || cxl_cmd->in =3D=3D ~0) {
-> -            ret =3D (*h)(cxl_cmd, pl, cxl_dstate, &len);
-> -            assert(len <=3D cxl_dstate->payload_size);
-> +        if (len_in =3D=3D cxl_cmd->in || cxl_cmd->in =3D=3D ~0) {
-> +            ret =3D (*h)(cxl_cmd, pl, len_in, pl, &len_out, cxl_dstate);
-> +            assert(len_out <=3D cxl_dstate->payload_size);
->          } else {
->              ret =3D CXL_MBOX_INVALID_PAYLOAD_LENGTH;
->          }
-> @@ -748,7 +780,7 @@ void cxl_process_mailbox(CXLDeviceState *cxl_dstate)
->      /* Set the return length */
->      command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAND=
-_SET, 0);
->      command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, COMMAND=
-, 0);
-> -    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, LENGTH,=
- len);
-> +    command_reg =3D FIELD_DP64(command_reg, CXL_DEV_MAILBOX_CMD, LENGTH,=
- len_out);
-> =20
->      cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_CMD] =3D command_reg;
->      cxl_dstate->mbox_reg_state64[R_CXL_DEV_MAILBOX_STS] =3D status_reg;
-> --=20
-> 2.39.2
-> =
+arm/virt,gicv3: Prepare for vCPU hotplug by checking GICv3CPUState states
+
+We already had wrappers to check vCPU's states. I'm wandering if we need another set
+of wrappers for GICv3 for several facts: (a) In this patch, we're actually concerned
+by GICv3CPUState's states, disabled or enabled. vCPU states have been classified to
+possible, present, and enabled. Their states aren't matching strictly. (b) With GICv3
+own wrappers, the code can be detached from vCPU in high level. Please evaluate it's
+worthy to have GICv3 own wrappers and we can have the folowing wrappers if want.
+
+/*
+  * The association between GICv3CPUState and ARMCPU happens in
+  * arm_gicv3_common_realize(). After that, gicv3_cpuif_is_ready()
+  * can be used.
+  */
+static inline bool gicv3_cpuif_is_ready(GICv3State *s, int index)
+{
+     if (!s->cpu || index >= s->num_cpu || !s->cpu[index].cpu) {
+         return false;
+     }
+
+     return true;
+}
+
+
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index 6ba131b799..a208b4e517 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -718,6 +718,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>       const char *gictype;
+>       int i;
+>       unsigned int smp_cpus = ms->smp.cpus;
+> +    unsigned int max_cpus = ms->smp.max_cpus;
+>       uint32_t nb_redist_regions = 0;
+>       int revision;
+>   
+> @@ -742,7 +743,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>       }
+>       vms->gic = qdev_new(gictype);
+>       qdev_prop_set_uint32(vms->gic, "revision", revision);
+> -    qdev_prop_set_uint32(vms->gic, "num-cpu", smp_cpus);
+> +    qdev_prop_set_uint32(vms->gic, "num-cpu", max_cpus);
+>       /* Note that the num-irq property counts both internal and external
+>        * interrupts; there are always 32 of the former (mandated by GIC spec).
+>        */
+> @@ -753,7 +754,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>   
+>       if (vms->gic_version != VIRT_GIC_VERSION_2) {
+>           uint32_t redist0_capacity = virt_redist_capacity(vms, VIRT_GIC_REDIST);
+> -        uint32_t redist0_count = MIN(smp_cpus, redist0_capacity);
+> +        uint32_t redist0_count = MIN(max_cpus, redist0_capacity);
+>   
+>           nb_redist_regions = virt_gicv3_redist_region_count(vms);
+>   
+> @@ -774,7 +775,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>                   virt_redist_capacity(vms, VIRT_HIGH_GIC_REDIST2);
+>   
+>               qdev_prop_set_uint32(vms->gic, "redist-region-count[1]",
+> -                MIN(smp_cpus - redist0_count, redist1_capacity));
+> +                MIN(max_cpus - redist0_count, redist1_capacity));
+>           }
+>       } else {
+>           if (!kvm_irqchip_in_kernel()) {
+> @@ -831,7 +832,7 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>           } else if (vms->virt) {
+>               qemu_irq irq = qdev_get_gpio_in(vms->gic,
+>                                               ppibase + ARCH_GIC_MAINT_IRQ);
+> -            sysbus_connect_irq(gicbusdev, i + 4 * smp_cpus, irq);
+> +            sysbus_connect_irq(gicbusdev, i + 4 * max_cpus, irq);
+>           }
+>   
+>           qdev_connect_gpio_out_named(cpudev, "pmu-interrupt", 0,
+> @@ -839,11 +840,11 @@ static void create_gic(VirtMachineState *vms, MemoryRegion *mem)
+>                                                        + VIRTUAL_PMU_IRQ));
+>   
+>           sysbus_connect_irq(gicbusdev, i, qdev_get_gpio_in(cpudev, ARM_CPU_IRQ));
+> -        sysbus_connect_irq(gicbusdev, i + smp_cpus,
+> +        sysbus_connect_irq(gicbusdev, i + max_cpus,
+>                              qdev_get_gpio_in(cpudev, ARM_CPU_FIQ));
+> -        sysbus_connect_irq(gicbusdev, i + 2 * smp_cpus,
+> +        sysbus_connect_irq(gicbusdev, i + 2 * max_cpus,
+>                              qdev_get_gpio_in(cpudev, ARM_CPU_VIRQ));
+> -        sysbus_connect_irq(gicbusdev, i + 3 * smp_cpus,
+> +        sysbus_connect_irq(gicbusdev, i + 3 * max_cpus,
+>                              qdev_get_gpio_in(cpudev, ARM_CPU_VFIQ));
+>       }
+>   
+> diff --git a/hw/intc/arm_gicv3_common.c b/hw/intc/arm_gicv3_common.c
+> index 2ebf880ead..ebd99af610 100644
+> --- a/hw/intc/arm_gicv3_common.c
+> +++ b/hw/intc/arm_gicv3_common.c
+> @@ -392,10 +392,13 @@ static void arm_gicv3_common_realize(DeviceState *dev, Error **errp)
+>       s->cpu = g_new0(GICv3CPUState, s->num_cpu);
+>   
+>       for (i = 0; i < s->num_cpu; i++) {
+> -        CPUState *cpu = qemu_get_cpu(i);
+> +        CPUState *cpu = qemu_get_possible_cpu(i);
+>           uint64_t cpu_affid;
+>   
+> -        s->cpu[i].cpu = cpu;
+> +        if (qemu_enabled_cpu(cpu)) {
+> +            s->cpu[i].cpu = cpu;
+> +        }
+> +
+>           s->cpu[i].gic = s;
+>           /* Store GICv3CPUState in CPUARMState gicv3state pointer */
+>           gicv3_set_gicv3state(cpu, &s->cpu[i]);
+
+I don't think gicv3_set_gicv3state() isn't needed for !qemu_enabled_cpu(cpu)
+since those disabled vCPUs will be released in hw/arm/virt.c pretty soon.
+
+> diff --git a/hw/intc/arm_gicv3_cpuif.c b/hw/intc/arm_gicv3_cpuif.c
+> index d07b13eb27..7b7a0fdb9c 100644
+> --- a/hw/intc/arm_gicv3_cpuif.c
+> +++ b/hw/intc/arm_gicv3_cpuif.c
+> @@ -934,6 +934,10 @@ void gicv3_cpuif_update(GICv3CPUState *cs)
+>       ARMCPU *cpu = ARM_CPU(cs->cpu);
+>       CPUARMState *env = &cpu->env;
+>   
+> +    if (!qemu_enabled_cpu(cs->cpu)) {
+> +        return;
+> +    }
+> +
+
+The question is how it's possible. It seems a bug to update GICv3CPUState
+who isn't ready or disabled.
+
+>       g_assert(qemu_mutex_iothread_locked());
+>   
+>       trace_gicv3_cpuif_update(gicv3_redist_affid(cs), cs->hppi.irq,
+> @@ -1826,6 +1830,10 @@ static void icc_generate_sgi(CPUARMState *env, GICv3CPUState *cs,
+>       for (i = 0; i < s->num_cpu; i++) {
+>           GICv3CPUState *ocs = &s->cpu[i];
+>   
+> +        if (!qemu_enabled_cpu(ocs->cpu)) {
+> +            continue;
+> +        }
+> +
+>           if (irm) {
+>               /* IRM == 1 : route to all CPUs except self */
+>               if (cs == ocs) {
+> diff --git a/hw/intc/arm_gicv3_kvm.c b/hw/intc/arm_gicv3_kvm.c
+> index 72ad916d3d..b6f50caf84 100644
+> --- a/hw/intc/arm_gicv3_kvm.c
+> +++ b/hw/intc/arm_gicv3_kvm.c
+> @@ -24,6 +24,7 @@
+>   #include "hw/intc/arm_gicv3_common.h"
+>   #include "qemu/error-report.h"
+>   #include "qemu/module.h"
+> +#include "sysemu/cpus.h"
+>   #include "sysemu/kvm.h"
+>   #include "sysemu/runstate.h"
+>   #include "kvm_arm.h"
+> @@ -458,6 +459,18 @@ static void kvm_arm_gicv3_put(GICv3State *s)
+>           GICv3CPUState *c = &s->cpu[ncpu];
+>           int num_pri_bits;
+>   
+> +        /*
+> +         * To support hotplug of vcpus we need to make sure all gic cpuif/GICC
+> +         * are initialized at machvirt init time. Once the init is done we
+> +         * release the ARMCPU object for disabled vcpus but this leg could hit
+> +         * during reset of GICC later as well i.e. after init has happened and
+> +         * all of the cases we want to make sure we dont acess the GICC for
+> +         * the disabled VCPUs.
+> +         */
+> +        if (!qemu_enabled_cpu(c->cpu)) {
+> +            continue;
+> +        }
+> +
+>           kvm_gicc_access(s, ICC_SRE_EL1, ncpu, &c->icc_sre_el1, true);
+>           kvm_gicc_access(s, ICC_CTLR_EL1, ncpu,
+>                           &c->icc_ctlr_el1[GICV3_NS], true);
+> @@ -616,6 +629,11 @@ static void kvm_arm_gicv3_get(GICv3State *s)
+>           GICv3CPUState *c = &s->cpu[ncpu];
+>           int num_pri_bits;
+>   
+> +        /* don't access GICC for the disabled vCPUs. */
+> +        if (!qemu_enabled_cpu(c->cpu)) {
+> +            continue;
+> +        }
+> +
+>           kvm_gicc_access(s, ICC_SRE_EL1, ncpu, &c->icc_sre_el1, false);
+>           kvm_gicc_access(s, ICC_CTLR_EL1, ncpu,
+>                           &c->icc_ctlr_el1[GICV3_NS], false);
+> @@ -695,10 +713,19 @@ static void arm_gicv3_icc_reset(CPUARMState *env, const ARMCPRegInfo *ri)
+>           return;
+>       }
+>   
+> +    /*
+> +     * This shall be called even when vcpu is being hotplugged or onlined and
+> +     * other vcpus might be running. Host kernel KVM code to handle device
+> +     * access of IOCTLs KVM_{GET|SET}_DEVICE_ATTR might fail due to inability to
+> +     * grab vcpu locks for all the vcpus. Hence, we need to pause all vcpus to
+> +     * facilitate locking within host.
+> +     */
+> +    pause_all_vcpus();
+>       /* Initialize to actual HW supported configuration */
+>       kvm_device_access(s->dev_fd, KVM_DEV_ARM_VGIC_GRP_CPU_SYSREGS,
+>                         KVM_VGIC_ATTR(ICC_CTLR_EL1, c->gicr_typer),
+>                         &c->icc_ctlr_el1[GICV3_NS], false, &error_abort);
+> +    resume_all_vcpus();
+
+Please swap the positions for paused_all_vcpu() and the next comment, and
+then combine the comments.
+
+>   
+>       c->icc_ctlr_el1[GICV3_S] = c->icc_ctlr_el1[GICV3_NS];
+>   }
+> @@ -808,9 +835,10 @@ static void kvm_arm_gicv3_realize(DeviceState *dev, Error **errp)
+>       gicv3_init_irqs_and_mmio(s, kvm_arm_gicv3_set_irq, NULL);
+>   
+>       for (i = 0; i < s->num_cpu; i++) {
+> -        ARMCPU *cpu = ARM_CPU(qemu_get_cpu(i));
+> -
+> -        define_arm_cp_regs(cpu, gicv3_cpuif_reginfo);
+> +        CPUState *cs = qemu_get_cpu(i);
+> +        if (qemu_enabled_cpu(cs)) {
+> +            define_arm_cp_regs(ARM_CPU(cs), gicv3_cpuif_reginfo);
+> +        }
+>       }
+>   
+>       /* Try to create the device via the device control API */
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index 13163adb07..098c7917a4 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -217,7 +217,7 @@ static inline int virt_gicv3_redist_region_count(VirtMachineState *vms)
+>   
+>       assert(vms->gic_version != VIRT_GIC_VERSION_2);
+>   
+> -    return (MACHINE(vms)->smp.cpus > redist0_capacity &&
+> +    return (MACHINE(vms)->smp.max_cpus > redist0_capacity &&
+>               vms->highmem_redists) ? 2 : 1;
+>   }
+>   
+
+Thanks,
+Gavin
+
 
