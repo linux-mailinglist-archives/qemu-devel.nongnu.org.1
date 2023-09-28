@@ -2,70 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA087B1D38
-	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BB87B1D56
+	for <lists+qemu-devel@lfdr.de>; Thu, 28 Sep 2023 15:06:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qlqeq-0005Az-8Q; Thu, 28 Sep 2023 09:02:20 -0400
+	id 1qlqib-0006eO-HB; Thu, 28 Sep 2023 09:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqeb-0004o8-CK
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:02:09 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlqiK-0006cL-V6
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:05:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qlqeY-00029S-Af
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:02:04 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qlqiF-0003ht-LT
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 09:05:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695906120;
+ s=mimecast20190719; t=1695906350;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=JFBJeQropeRJ1+MFEcUErkDO7v9yLkLjSDp67kIIMIk=;
- b=J7LeNCW7GhzN9wg4pBWs8XZM0//8NE60FwmaGIOEgY1C2QGYt7zs2tsdFR0NvWSeywsJyH
- gM1r2U7oqDLJ/bdBHBj2ti38Zuz3TGjFoMGMuFfy7RLGINW45fGOTN8OOpoGBq92CQwiQh
- MO9mLA37o2UNzqMzZOpRYhppPRd+v/s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-4xBJ8JNIMpa0GnKa8eltGQ-1; Thu, 28 Sep 2023 09:01:57 -0400
-X-MC-Unique: 4xBJ8JNIMpa0GnKa8eltGQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0E56B101A53B;
- Thu, 28 Sep 2023 13:01:57 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id DF8A02026D4B;
- Thu, 28 Sep 2023 13:01:56 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id CF11321E6900; Thu, 28 Sep 2023 15:01:55 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,  qemu-devel@nongnu.org,
- mkletzan@redhat.com,  vr_qemu@t-online.de
-Subject: Re: [PATCH 02/13] audio: Require AudioState in AUD_add_capture
-References: <20230923085507.399260-1-pbonzini@redhat.com>
- <20230923085507.399260-3-pbonzini@redhat.com>
- <af692de9-1bde-6af1-2d10-c6398d489673@eik.bme.hu>
-Date: Thu, 28 Sep 2023 15:01:55 +0200
-In-Reply-To: <af692de9-1bde-6af1-2d10-c6398d489673@eik.bme.hu> (BALATON
- Zoltan's message of "Sat, 23 Sep 2023 13:48:54 +0200 (CEST)")
-Message-ID: <87pm221mf0.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ bh=PAX/JLEgv5AwL0Q5kJtBo6wHyrIfapphtNxxJyVvdsU=;
+ b=hDFEzgXwMGjOhE4M35C+2UfowQ93ApRkvy0fovaVviaRNx4v/JBBwufMY4b03hJQ5S7Ztx
+ fcqBGBoSap/YcVDkzRZ7mLLmZI7UpOaYoxx7405vMuHtdWuymGTLqiscJOWk754i4AyYU2
+ Dlli41nbkoMNS3dkpPyKjD/qoJhPCDk=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-FlkkwBRWMlqW2WRJw7EHNA-1; Thu, 28 Sep 2023 09:05:49 -0400
+X-MC-Unique: FlkkwBRWMlqW2WRJw7EHNA-1
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-418099ca1c2so174418811cf.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 06:05:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695906348; x=1696511148;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PAX/JLEgv5AwL0Q5kJtBo6wHyrIfapphtNxxJyVvdsU=;
+ b=J3NGCTaO0KlSNCgOKQdhIbnABs+LdSfF/MiB7IT03p04+kDKELnKEUesOudbglAH3g
+ YkdEv1Qs5RrqH30HbovNgRGPAFl6z+96u7EmaCxga2FgXZ36tNKagxt2pnWq+AnXjWpa
+ 6+UK/3l2I1YjA1TBPFICj7PSUd9sok7C3Sr+kI3wVZFe/JJem+mvpjms/acWmrnSKLrp
+ Hb1kY7SSSW+4hpwEm32aVS4ept11+jGQzrxoEAvrYB7aYsh34sat51/k9Zyn7x+rp2/4
+ 7kEQzkPuB43b3AprFIBglkI625O9IEFUOJJKATwRyagLi6gjL1X6fiNRG8YCy+1j2N5f
+ VD0g==
+X-Gm-Message-State: AOJu0Yyqw+VjO7kdrboP0wJhd2jNoqmuhNgbZNNnbzMWfiKUYU6dNGbv
+ xgN9s1kVBQ1XXGsOL7b3MG3NV62E2TSpfyhPAeLCEel1s1RQpXUhM2AxeQimpmU6OrPmwXJ9c88
+ F8Pi3BewG8GdfQ0k=
+X-Received: by 2002:ac8:574a:0:b0:403:fcd9:963 with SMTP id
+ 10-20020ac8574a000000b00403fcd90963mr1363434qtx.67.1695906348452; 
+ Thu, 28 Sep 2023 06:05:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGK7MIraEawjQpnptar7d9gbY6pLckEfXy9I2JNI+4WWpOGhbMkZCgmaJZZIGm4VeLWsKV0yA==
+X-Received: by 2002:ac8:574a:0:b0:403:fcd9:963 with SMTP id
+ 10-20020ac8574a000000b00403fcd90963mr1363410qtx.67.1695906348128; 
+ Thu, 28 Sep 2023 06:05:48 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-177-123.web.vodafone.de.
+ [109.43.177.123]) by smtp.gmail.com with ESMTPSA id
+ l11-20020ac84ccb000000b004181441cb2dsm3471794qtv.34.2023.09.28.06.05.43
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 28 Sep 2023 06:05:47 -0700 (PDT)
+Message-ID: <f137153e-e6df-9fd9-cf9e-5528a57e3a90@redhat.com>
+Date: Thu, 28 Sep 2023 15:05:42 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org,
+ qemu-s390x@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Eric Farman <farman@linux.ibm.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Cleber Rosa <crosa@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
+References: <20230926121534.406035-1-nsg@linux.ibm.com>
+ <20230926121534.406035-5-nsg@linux.ibm.com>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: [PATCH v24 04/21] target/s390x/cpu topology: handle STSI(15) and
+ build the SYSIB
+In-Reply-To: <20230926121534.406035-5-nsg@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.473, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,45 +115,192 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-BALATON Zoltan <balaton@eik.bme.hu> writes:
+On 26/09/2023 14.15, Nina Schoetterl-Glausch wrote:
+> From: Pierre Morel <pmorel@linux.ibm.com>
+> 
+> On interception of STSI(15.1.x) the System Information Block
+> (SYSIB) is built from the list of pre-ordered topology entries.
+> 
+> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
+> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
+> ---
+...
+> diff --git a/include/hw/s390x/cpu-topology.h b/include/hw/s390x/cpu-topology.h
+> index 97b0af2795..350c7ea8aa 100644
+> --- a/include/hw/s390x/cpu-topology.h
+> +++ b/include/hw/s390x/cpu-topology.h
+> @@ -15,10 +15,33 @@
+>   #include "hw/boards.h"
+>   #include "qapi/qapi-types-machine-target.h"
+>   
+> +#define S390_TOPOLOGY_CPU_IFL   0x03
+> +
+> +typedef struct s390_topology_id {
+> +    uint8_t sentinel;
+> +    uint8_t drawer;
+> +    uint8_t book;
+> +    uint8_t socket;
+> +    uint8_t type;
+> +    uint8_t vertical:1;
+> +    uint8_t entitlement:2;
+> +    uint8_t dedicated;
+> +    uint8_t origin;
+> +} s390_topology_id;
 
-> On Sat, 23 Sep 2023, Paolo Bonzini wrote:
->> From: Martin Kletzander <mkletzan@redhat.com>
->>
->> Since all callers require a valid audiodev this function can now safely
->> abort in case of missing AudioState.
->>
->> Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
->> Message-ID: <c6e87e678e914df0f59da2145c2753cdb4a16f63.1650874791.git.mkletzan@redhat.com>
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->> ---
->> audio/audio.c | 7 +++----
->> 1 file changed, 3 insertions(+), 4 deletions(-)
->>
->> diff --git a/audio/audio.c b/audio/audio.c
->> index 90c7c49d116..42bfa330146 100644
->> --- a/audio/audio.c
->> +++ b/audio/audio.c
->> @@ -1876,10 +1876,9 @@ CaptureVoiceOut *AUD_add_capture(
->>     struct capture_callback *cb;
->>
->>     if (!s) {
->> -        if (!legacy_config) {
->> -            dolog("Capturing without setting an audiodev is deprecated\n");
->> -        }
->> -        s = audio_init(NULL, NULL);
->> +        error_setg(&error_abort,
->> +                   "Capturing without setting an audiodev is not supported");
->> +        abort();
->
-> This looks suspicious to me but I don't know if you can do this. Probably Markus can advise. I would use error_report and abort() or error_setg if you have an errp then return but this func doesn't seem to have errp.
+Sorry for not noticing this earlier, but: Please adapt the name of the 
+struct to the QEMU coding conventions, i.e. S390TopologyId instead of 
+s390_topology_id.
 
-Missed this until now; my apologies.
+...
+> diff --git a/target/s390x/cpu.h b/target/s390x/cpu.h
+> index dfcc1aa1fc..c1ba5c46d6 100644
+> --- a/target/s390x/cpu.h
+> +++ b/target/s390x/cpu.h
+> @@ -571,6 +571,29 @@ typedef struct SysIB_322 {
+...
+> +/*
+> + * CPU Topology List provided by STSI with fc=15 provides a list
+> + * of two different Topology List Entries (TLE) types to specify
+> + * the topology hierarchy.
+> + *
+> + * - Container Topology List Entry
+> + *   Defines a container to contain other Topology List Entries
+> + *   of any type, nested containers or CPU.
+> + * - CPU Topology List Entry
+> + *   Specifies the CPUs position, type, entitlement and polarization
+> + *   of the CPUs contained in the last Container TLE.
 
-qapi/error.h:
+Please write Container with a small "c" at the beginning.
 
- * Please don't error_setg(&error_fatal, ...), use error_report() and
- * exit(), because that's more obvious.
- * Likewise, don't error_setg(&error_abort, ...), use assert().
+...
+> diff --git a/target/s390x/kvm/stsi-topology.c b/target/s390x/kvm/stsi-topology.c
+> new file mode 100644
+> index 0000000000..67ecc67184
+> --- /dev/null
+> +++ b/target/s390x/kvm/stsi-topology.c
+> @@ -0,0 +1,339 @@
+...
+> +/**
+> + * s390_topology_fill_list_sorted:
+> + * @topology_list: list to fill
+> + *
+> + * Loop over all CPU and insert it at the right place
+
+I'd like to suggest to change that to:
+
+"Loop over all CPUs and insert each of the at the right place"
+
+> + * inside the TLE entry list.
+> + * Fill the S390Topology list with entries according to the order
+> + * specified by the PoP.
+> + */
+> +static void s390_topology_fill_list_sorted(S390TopologyList *topology_list)
+> +{
+> +    CPUState *cs;
+> +    S390TopologyEntry sentinel = { .id.sentinel = 1 };
+> +
+> +    QTAILQ_INIT(topology_list);
+> +
+> +    QTAILQ_INSERT_HEAD(topology_list, &sentinel, next);
+> +
+> +    CPU_FOREACH(cs) {
+> +        s390_topology_id id = s390_topology_from_cpu(S390_CPU(cs));
+> +        S390TopologyEntry *entry = NULL, *tmp;
+> +
+> +        QTAILQ_FOREACH(tmp, topology_list, next) {
+> +            if (s390_topology_id_eq(&id, &tmp->id)) {
+> +                entry = tmp;
+> +                break;
+> +            } else if (s390_topology_id_lt(&id, &tmp->id)) {
+> +                entry = g_malloc0(sizeof(*entry));
+> +                entry->id = id;
+> +                QTAILQ_INSERT_BEFORE(tmp, entry, next);
+> +                break;
+> +            }
+> +        }
+> +        assert(entry);
+> +        s390_topology_add_cpu_to_entry(entry, S390_CPU(cs));
+> +    }
+> +
+> +    QTAILQ_REMOVE(topology_list, &sentinel, next);
+> +}
+> +
+> +/**
+> + * s390_topology_empty_list:
+> + *
+> + * Clear all entries in the S390Topology list.
+> + */
+> +static void s390_topology_empty_list(S390TopologyList *topology_list)
+> +{
+> +    S390TopologyEntry *entry = NULL;
+> +    S390TopologyEntry *tmp = NULL;
+> +
+> +    QTAILQ_FOREACH_SAFE(entry, topology_list, next, tmp) {
+> +        QTAILQ_REMOVE(topology_list, entry, next);
+> +        g_free(entry);
+> +    }
+> +}
+> +
+> +/**
+> + * insert_stsi_15_1_x:
+> + * @cpu: the CPU doing the call for which we set CC
+> + * @sel2: the selector 2, containing the nested level
+> + * @addr: Guest logical address of the guest SysIB
+> + * @ar: the access register number
+> + * @ra: the return address
+> + *
+> + * Emulate STSI 15.1.x, that is, perform all necessary checks and
+> + * fill the SYSIB.
+> + * In case the topology description is too long to fit into the SYSIB,
+> + * set CC=3 and abort without writing the SYSIB.
+> + */
+> +void insert_stsi_15_1_x(S390CPU *cpu, int sel2, uint64_t addr, uint8_t ar, uintptr_t ra)
+> +{
+> +    S390TopologyList topology_list;
+> +    SysIB sysib = {0};
+> +    int length;
+> +
+> +    if (!s390_has_topology() || sel2 < 2 || sel2 > SCLP_READ_SCP_INFO_MNEST) {
+> +        setcc(cpu, 3);
+> +        return;
+> +    }
+> +
+> +    s390_topology_fill_list_sorted(&topology_list);
+> +
+> +    length = setup_stsi(&topology_list, &sysib.sysib_151x, sel2);
+> +
+> +    if (!length) {
+> +        s390_topology_empty_list(&topology_list);
+> +        setcc(cpu, 3);
+> +        return;
+> +    }
+> +
+> +    sysib.sysib_151x.length = cpu_to_be16(length);
+> +    if (!s390_cpu_virt_mem_write(cpu, addr, ar, &sysib, length)) {
+> +        setcc(cpu, 0);
+> +    } else {
+> +        s390_cpu_virt_mem_handle_exc(cpu, ra);
+> +    }
+> +
+> +    s390_topology_empty_list(&topology_list);
+
+In case this will ever be used with TCG: s390_cpu_virt_mem_handle_exc() 
+might not return, so the clean-up has to be done before calling that function:
+
+     ret = s390_cpu_virt_mem_write(cpu, addr, ar, &sysib, length);
+     s390_topology_empty_list(&topology_list);
+     if (!ret) {
+          setcc(cpu, 0);
+     } else {
+         s390_cpu_virt_mem_handle_exc(cpu, ra);
+     }
+}
+
+Or maybe even do it before the "if (!length)" statement, so you don't need 
+it in the body of that statement?
+
+  Thomas
 
 
