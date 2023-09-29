@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634577B3BE0
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 23:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C497B3BE1
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 23:20:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmKtD-0008M7-Ev; Fri, 29 Sep 2023 17:19:11 -0400
+	id 1qmKuE-0000ke-Sb; Fri, 29 Sep 2023 17:20:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmKtA-0008Lk-OF
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:19:08 -0400
-Received: from mail-pf1-x436.google.com ([2607:f8b0:4864:20::436])
+ id 1qmKuA-0000kH-9Z
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:20:10 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmKt8-0004Ha-6G
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:19:08 -0400
-Received: by mail-pf1-x436.google.com with SMTP id
- d2e1a72fcca58-692ada71d79so10623350b3a.1
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 14:19:05 -0700 (PDT)
+ id 1qmKu8-0004os-O9
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:20:10 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-690d2441b95so857851b3a.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 14:20:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696022344; x=1696627144; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696022407; x=1696627207; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Pp8QehhXbiqXgFo/MMhbHSZshIVWUG4RyifQnxaNxyI=;
- b=WCV9CAZkYQiwqimCKYrClSYMDg+pVo69vAzrlr2aldGJOGgMCYeC+EXdvKJ8QndJRb
- UlTLicZW3pQKdS7HynNLgCb0Fclq/9ZMIazd8n1o3sxDxXbdo9LCqBKoGZngil68Xd5d
- fI7SvOeOpS1KaNRXyvfF1GjcIOYCRGNVF5H0rHZB2cgsJhlW7/vmuayHWv9kOAW4W1K/
- FZyhscLB3V9I5xjttSlXEKb2xjoA3zvkaiqsB7EXatAfePIXYDx+99do2BLvXp8pLGJX
- CallyeGch/N6pCDJdRRLQvyv4mE7Hdu497JpxVTqv8nXEB2jlZoqd7YgyVHpdt4PGSM1
- m25A==
+ bh=JijOgd6tLspOHnLh3H0o8UXBLW4i/1u0o1p2csruq2M=;
+ b=WCNUbDjKbmgpBz2R4SfF6HKrUPwCBboig3gmV7GnNHQga9LSoDjTcEgDN0ZWwy4J/5
+ R5k/pqnQ93ul5phrHqolWl9yE4OUlpuQF7NF3JqWtlrQkURGuTFqk3ahC7TDQbImuhf7
+ bl0kJeXJP/NXgSHL7aTu0McrA85cpTjh7n6dctw9sAsMs5MARaz4pKnUvg4u/lPBqgu2
+ gp5jVJJrp1muJMUbRZT0K6FDPvxBTT+3AILrNMc2D5Zv6nnK6unDCt2cPtyVy523X3M4
+ T337SbzAnFwtA2O00Uh92Z0lLULlvABDANOB+uOAitKGT/Zx76uhfqWCLC/Gh/0jMCEP
+ CBXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696022344; x=1696627144;
+ d=1e100.net; s=20230601; t=1696022407; x=1696627207;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Pp8QehhXbiqXgFo/MMhbHSZshIVWUG4RyifQnxaNxyI=;
- b=ObO7gOJTYKRyZxCr8y6IpKyd5PndXzxF0rDVtj5cmJ8NFc5KZdcSZuf7AAujGbZCLL
- Eve2S/r4SF8H8sikN38/rThJL3jI43ZvEikr3P7kh1uVfmEgqBhyEMllqyGuKxixF38y
- /5CEcTXF5oBF0wM8xX52oiVPh9EY6DYpGJmtU/gsHVPbkd2W9u9X6Axu5xYQquBchGGx
- bpIlTKzYIHs/S8j1Cg6gplrBUZPeuza9Wv8dlBKmmMkY51TlruBvrDkwjYStaBOq1rUn
- 8JOfpUFcPKrG2r54BhVvmWafARIYU2BKKJM2KVhj5bfPDq7pPOQFGrMNiMT+6ulib7hA
- TZsA==
-X-Gm-Message-State: AOJu0YzJIhjEAWKqnLuZLPi23Xgkha5RmQClTRFidEtbo+N784mRRMuA
- YCtr6JFZWpZ2dwJZkNu5X2jEUK9c0ISriL5N/74=
-X-Google-Smtp-Source: AGHT+IHcwi7iKX9pKwEMMhOGSdFGNvZ5eoG7+kuFVaK0zEIAPjNyPYDKHeFEGcl4PCZ4Lh/62bdtiQ==
-X-Received: by 2002:a05:6a20:6a10:b0:159:b7dc:2295 with SMTP id
- p16-20020a056a206a1000b00159b7dc2295mr6153524pzk.9.1696022344584; 
- Fri, 29 Sep 2023 14:19:04 -0700 (PDT)
+ bh=JijOgd6tLspOHnLh3H0o8UXBLW4i/1u0o1p2csruq2M=;
+ b=ucI0TiHcAGAC7RstZ88jglAzmycrfK86lssqvs5u6M4NFFPHtAuZp+PpVOxzFHrLzN
+ PPLnoFidbk4CgLu4Io4u4kX8G/wJ42h5ddSgqaZuOpyHFDhBHe/4Mlh12OwHupCdEDYt
+ /6pLv/kc+auNm7Gviaf/CNf1dpaeE4lkoLcWO3xPGcHbKL5jkAbek5VBDI001lWno/ca
+ ptihMSBs+OF1ssFIhyEdH47ITRmjUJnnozdEhiQFV28FRhsvbBeoHMA2VChU3lbA4WtN
+ 8LShafBpuAEYYlaUzsnm1wX9rIAkyvApmrlhXHoNeFKmJ7Q/vWUy2lDBKuKYZ2xlOp4y
+ kv/Q==
+X-Gm-Message-State: AOJu0YwKVQsqBcNO+X4dvuzQ0JLBG7bh/NPaJzNAKT4cY/w8LN6+5Vnc
+ ih/VArZLBoawqogt5EzI8RReSBN6Hs3YwQxBQ5k=
+X-Google-Smtp-Source: AGHT+IFYnqp3u109QhrmkNT4BTNxwhEyk88OfY+ycxqiw1uwRdhBgGf7npiBZlFYkEJIStJqXcRJ1g==
+X-Received: by 2002:a05:6a00:21cf:b0:68f:ce6a:8685 with SMTP id
+ t15-20020a056a0021cf00b0068fce6a8685mr7675897pfj.14.1696022406415; 
+ Fri, 29 Sep 2023 14:20:06 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- h6-20020a63b006000000b0056b6d1ac949sm14752062pgf.13.2023.09.29.14.19.03
+ x3-20020aa79183000000b00693411c6c3csm4258138pfa.39.2023.09.29.14.20.05
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Sep 2023 14:19:04 -0700 (PDT)
-Message-ID: <6fc3d330-4824-0fec-f4b0-9fa453448263@linaro.org>
-Date: Fri, 29 Sep 2023 14:19:02 -0700
+ Fri, 29 Sep 2023 14:20:05 -0700 (PDT)
+Message-ID: <a30c23e3-0cd5-3e27-df9c-1b6f254d9019@linaro.org>
+Date: Fri, 29 Sep 2023 14:20:04 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 10/22] target/hppa: Create timer *after* accelerator vCPU
+Subject: Re: [PATCH 11/22] target/nios2: Create IRQs *after* accelerator vCPU
  is realized
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20230918160257.30127-1-philmd@linaro.org>
- <20230918160257.30127-11-philmd@linaro.org>
+ <20230918160257.30127-12-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230918160257.30127-11-philmd@linaro.org>
+In-Reply-To: <20230918160257.30127-12-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::436;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x436.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
@@ -99,39 +99,15 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 9/18/23 09:02, Philippe Mathieu-Daudé wrote:
 > Architecture specific hardware doesn't have a particular dependency
 > on the accelerator vCPU (created with cpu_exec_realizefn), and can
-> be initialized *after* the vCPU is realized. Doing so allows further
+> be initialized*after*  the vCPU is realized. Doing so allows further
 > generic API simplification (in few commits).
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
 > ---
->   target/hppa/cpu.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/hppa/cpu.c b/target/hppa/cpu.c
-> index 49082bd2ba..b0d106b6c7 100644
-> --- a/target/hppa/cpu.c
-> +++ b/target/hppa/cpu.c
-> @@ -131,8 +131,6 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
->           return;
->       }
->   
-> -    acc->parent_realize(dev, errp);
-> -
->   #ifndef CONFIG_USER_ONLY
->       {
->           HPPACPU *cpu = HPPA_CPU(cs);
-> @@ -140,6 +138,8 @@ static void hppa_cpu_realizefn(DeviceState *dev, Error **errp)
->                                           hppa_cpu_alarm_timer, cpu);
->       }
->   #endif
-> +
-> +    acc->parent_realize(dev, errp);
->   }
->   
->   static void hppa_cpu_initfn(Object *obj)
+>   target/nios2/cpu.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
 
-This appears to delay final realization of the vcpu, not advance it...
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
