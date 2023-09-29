@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED577B32F1
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 14:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B9A7B3353
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 15:18:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmD3j-0002tT-4h; Fri, 29 Sep 2023 08:57:32 -0400
+	id 1qmDMQ-0002Qy-EH; Fri, 29 Sep 2023 09:16:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qmD3W-0002t0-4s
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 08:57:20 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qmD3S-0001Eq-Kh
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 08:57:16 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-4054496bde3so123300755e9.1
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 05:57:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695992231; x=1696597031; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ldrJbBN8+v+vNgQQCx/m+z4EiDwVAsJyCr9L6JE7RzM=;
- b=YWWdbbYeJepfZgwmguTaRXx7Scrw7ljORQEOIm+4pMyYCs7Ilfm07n9J0leRRiA1Dq
- Pspj7m7wD8Ny4jaFyEfYYhVxZHJEiTsy6wJ+CeffrrDwGvO4EcQBB0tTnSv7+57CatLi
- 2db5LOtJbGqiuM5XZF0vLc+wgD7hYvr3NCV21rgAz+otTibrXmNyPCSjYNZ4HfifEe3R
- 8xiHHjW7P0HgZYf+ppvEGT2de/1x3dQj/lty68mw4rWC8u5NnB0xTJmwm38InAdCxdT6
- 2fkr0hKYg5BP39zLDrdvmVfocrUbfAwdrlO0cSQTAj5Uxf/ilVlQo6pRb20yp2HXsFjn
- es6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695992231; x=1696597031;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=ldrJbBN8+v+vNgQQCx/m+z4EiDwVAsJyCr9L6JE7RzM=;
- b=hqjZuHT2skHdGMoWuU4QC6wU/yfExFxDr0DgSHQq9iRJ1Xe8IOA0mc7rvWEcIOfmHm
- 4cAoGxrKAXoJN6KO1nKEce8vEaYXg1nwQBWqP86NqiVAwJ7IHvq3S52NicD+xw+ptMnd
- uViJns0y/FvILVqgoKmCou+RsMM7WQYM9IotWe1rGXnFizbxsTiZf5WxNQ+cyIP4/ohV
- L3tihBVT0gdZQq2XyxW4r87CDORcEO/nigTgPswJ3F3TcWLCkmWVaFsJSJ+brMcONHWw
- BExSDIiBF/0PJi92okpUxQQkbnB1mX5X1FZvnmKhSC3Q5nt1r1uErRLiNZSH6bAV/bjS
- PO2Q==
-X-Gm-Message-State: AOJu0YwJcJbEVwd/pdpt8JB63FEuaUv8AHDRbUmfeBOvYTM3ljWctpex
- TGxmxwfYfxTEcYEw0l93BvsRtJaHiidgInH6PXI=
-X-Google-Smtp-Source: AGHT+IGLnejgHD8F4SQlxpLgP61TS/VcUfudd7aWin7URpjOkvbBHJ2os4Z5Db+jgjpx4fPbQ9tTHA==
-X-Received: by 2002:a7b:c419:0:b0:401:dc7e:b688 with SMTP id
- k25-20020a7bc419000000b00401dc7eb688mr3917024wmi.6.1695992231459; 
- Fri, 29 Sep 2023 05:57:11 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- x11-20020a1c7c0b000000b003fe1c332810sm1374781wmc.33.2023.09.29.05.57.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Sep 2023 05:57:11 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 96E031FFBB;
- Fri, 29 Sep 2023 13:57:10 +0100 (BST)
-References: <20230928075613.875575-1-pbonzini@redhat.com>
-User-agent: mu4e 1.11.20; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] Makefile: build plugins before running TCG tests
-Date: Fri, 29 Sep 2023 13:57:04 +0100
-In-reply-to: <20230928075613.875575-1-pbonzini@redhat.com>
-Message-ID: <87msx5p26x.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qmDMN-0002QL-88
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 09:16:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qmDMK-0005iO-Fd
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 09:16:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695993403;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Bs4FdaeweoTjNwQM9gIwka8ho67MOsMJKlfGipKlQhE=;
+ b=QXiNSm7Ktx6b9tqEiCHW5iBr2/lNx3F3rtSjsbzdHAhWXWqGne9y2X4gtGd6dPx8rQPs2O
+ CXGZyBXVwATRGoQxb5wMi3HRo2Cz401AFqIu5FPExgd533VWbf+aBRnydTlJF1WDQiS857
+ 5BfQluG7Jfz1siyrHuKr6AD5OvMv/go=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-53-ghQtMXRsOzyNWfwtv8tUjA-1; Fri, 29 Sep 2023 09:16:39 -0400
+X-MC-Unique: ghQtMXRsOzyNWfwtv8tUjA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9F5C63827DF6;
+ Fri, 29 Sep 2023 13:16:38 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.192.194])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 92CD21004145;
+ Fri, 29 Sep 2023 13:16:37 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-trivial@nongnu.org,
+	Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH] MAINTAINERS: Add the CI-related doc files to the CI section
+Date: Fri, 29 Sep 2023 15:16:36 +0200
+Message-ID: <20230929131636.394715-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,21 +76,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The docs/devel/ci* were not covered yet, add them to MAINTAINERS
+so that the right people are put on CC: for related patches.
 
-Paolo Bonzini <pbonzini@redhat.com> writes:
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Add back test-plugins and, since it is always defined, do so unconditiona=
-lly.
->
-> Reported-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-> Fixes: 2c13c574418 ("configure, meson: move --enable-plugins to meson", 2=
-023-09-07)
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7ecf3fbc2d..3914bbd85b 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3888,6 +3888,7 @@ F: .github/workflows/lockdown.yml
+ F: .gitlab-ci.yml
+ F: .gitlab-ci.d/
+ F: .travis.yml
++F: docs/devel/ci*
+ F: scripts/ci/
+ F: tests/docker/
+ F: tests/vm/
+-- 
+2.41.0
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
