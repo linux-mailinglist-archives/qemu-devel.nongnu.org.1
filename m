@@ -2,69 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A33A7B30D9
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 12:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E6D7B3126
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 13:19:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmB1B-0004At-FV; Fri, 29 Sep 2023 06:46:45 -0400
+	id 1qmBUx-0007Sn-32; Fri, 29 Sep 2023 07:17:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qmB19-0004AW-9W
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 06:46:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qmB17-0007HK-5M
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 06:46:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695984399;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=NDXDyU0wVHX7Zo+IO6ndoLidUjfEibxMerlcU+TWVs4=;
- b=fzZlKPRfRFt1FauQ8HrbL91jGgTk6k+98xCOepIpT6KZkSAKl1KRwfKh2v2aqFyflgcVwa
- aSHm+Fvs4RTQtyAWFbf7VUEJJOIiy9fdPJcbG97aFYns2ClxVfmDQsf/ugZEcfaUzv2qyU
- 1lBA/3Vg2ewgKOHFoPZ+Vm0tAX1KLgc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-533-wGYc2Rd3OsGy08kdphQy7Q-1; Fri, 29 Sep 2023 06:46:35 -0400
-X-MC-Unique: wGYc2Rd3OsGy08kdphQy7Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D5E94101A529;
- Fri, 29 Sep 2023 10:46:34 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.43])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9A7DD1004145;
- Fri, 29 Sep 2023 10:46:33 +0000 (UTC)
-Date: Fri, 29 Sep 2023 11:46:30 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn,
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com
-Subject: Re: [PATCH 0/6] riscv: RVA22U64 profile support
-Message-ID: <ZRarBuEeBi7WkS6K@redhat.com>
-References: <20230926194951.183767-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qmBUt-0007SL-A4; Fri, 29 Sep 2023 07:17:27 -0400
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qmBUp-00073J-K0; Fri, 29 Sep 2023 07:17:26 -0400
+Received: by mail-qt1-x829.google.com with SMTP id
+ d75a77b69052e-4180d962b68so71378871cf.1; 
+ Fri, 29 Sep 2023 04:17:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1695986240; x=1696591040; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=xb6jUNkqwweHyA/sE8pSXkT8Y2pnKhjC9oY9Jf2LBS4=;
+ b=HUN6rm475iLOdq2wEQAPK8WJVgRKvH/f5kE62Q9sxXuZNcaFhNEVD/KrfOAFr3we8o
+ lOZwNsBrN5etsWz7/d8FUohDZxAzYxw6Vy0tfUzWnRvSbD3+m78ZXWhrVf0gT7p8Rp1p
+ G5mbi1LT5XHL+5LSGZQraw9z68VhxAEd6tK92r0vxVfp8gSBwJ4J5HvuOTPsZwPI1yax
+ iyEnQYy4YYz2+13SCbAEC5zIJOMEimAJM0okXj4wpz+kPIEci6ZXMb3K8zktU0+kX6jF
+ ibB4YcYuJBrZM9GTSS5bVvs/cdTxUTIHyKnc2YYWA/6ZpQybz6SVWLTdk9BeeJreoSTc
+ q7eQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695986240; x=1696591040;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=xb6jUNkqwweHyA/sE8pSXkT8Y2pnKhjC9oY9Jf2LBS4=;
+ b=H7fzInUNTN+lPJuT4DnYkrl4EgJoi0UbR72u0m651lhZ7sJBR9RcNBLTVbw0PM3+gu
+ 91uNyyBiXGDZdrDZ2fw+azOIcfAZwWuj3eAvkOu3CEc1gydIcN31U+YM5y4MNxMiVPbV
+ DuQ0nndXl6hIZEkdrTxpK7MUzMznagRy6O4b7gWrbWkYY2zHYFA3WZnfiAwGNngq+eQL
+ 7X8Z/7uMyiAihHrGwcautLreNFCnckX/RompyMI7iSoB3GSva4nhHclRHFDiWDXYRUon
+ 1B81M9tnvwrh5xCvXiSiLou15rmQMCWNJ1jCI38Lxu7UKNqFD52EB/XU2NdFaNrgSVHy
+ EdzQ==
+X-Gm-Message-State: AOJu0Yw78p8ceewMlkhubTA8E9HGhMavln4ixSBr0jzzKHjz/ZmKfIeM
+ xLPt6CNahrUD9tG2hSQ00ufx+qbcYrasojes8j8=
+X-Google-Smtp-Source: AGHT+IHKOkKmCGlyaJx2q+/ZawkNE0M94eZEOx3u6kyeDacDtfOy/tRGE8ggItT+qg2DDv/JQNWDc1QZetGFePVSokw=
+X-Received: by 2002:ac8:5a8c:0:b0:40a:fc6a:e87b with SMTP id
+ c12-20020ac85a8c000000b0040afc6ae87bmr4694152qtc.22.1695986240534; Fri, 29
+ Sep 2023 04:17:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230926194951.183767-1-dbarboza@ventanamicro.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230919131955.27223-1-lersek@redhat.com>
+ <7ee37181-526e-2b6a-6b42-09340a9e70a9@redhat.com>
+In-Reply-To: <7ee37181-526e-2b6a-6b42-09340a9e70a9@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Fri, 29 Sep 2023 15:17:09 +0400
+Message-ID: <CAJ+F1CK0FaMfm-ZUz7KB0erFRLBWTa7yHMxhiX0+J0ZxNp34bw@mail.gmail.com>
+Subject: Re: [PATCH] hw/display/ramfb: plug slight guest-triggerable leak on
+ mode setting
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-stable@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::829;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x829.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,122 +84,163 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 26, 2023 at 04:49:44PM -0300, Daniel Henrique Barboza wrote:
-> Based-on: 20230926183109.165878-1-dbarboza@ventanamicro.com
-> ("[PATCH 0/2] riscv: add extension properties for all cpus")
-> 
-> Hi,
-> 
-> These patches implements the base profile support for qemu-riscv and the
-> first profile, RVA22U64. 
-> 
-> As discussed in this thread [1] we're aiming for a flag that enables all
-> mandatory extensions of a profile. Optional extensions were left behind
-> and must be enabled by hand if desired. Since this is the first profile
-> we're adding, we'll need to add the base framework as well. 
-> 
-> The RVA22U64 profile was chosen because qemu-riscv implements all its
-> extensions, both mandatory and optional. That includes 'zicntr' and
-> 'zihpm', which we support for awhile but aren't adverting to userspace.
-> 
-> Other design decisions made:
-> 
-> - disabling a profile flag does nothing, i.e. we won't mass disable
->   mandatory extensions of the rva22U64 profile if the user sets
->   rva22u64=false;
+Hi
 
-Why shouldn't this be allowed ?
+On Wed, Sep 27, 2023 at 7:46=E2=80=AFPM Laszlo Ersek <lersek@redhat.com> wr=
+ote:
+>
+> On 9/19/23 15:19, Laszlo Ersek wrote:
+> > The fw_cfg DMA write callback in ramfb prepares a new display surface i=
+n
+> > QEMU; this new surface is put to use ("swapped in") upon the next displ=
+ay
+> > update. At that time, the old surface (if any) is released.
+> >
+> > If the guest triggers the fw_cfg DMA write callback at least twice betw=
+een
+> > two adjacent display updates, then the second callback (and further suc=
+h
+> > callbacks) will leak the previously prepared (but not yet swapped in)
+> > display surface.
+> >
+> > The issue can be shown by:
+> >
+> > (1) starting QEMU with "-trace displaysurface_free", and
+> >
+> > (2) running the following program in the guest UEFI shell:
+> >
+> >> #include <Library/ShellCEntryLib.h>           // ShellAppMain()
+> >> #include <Library/UefiBootServicesTableLib.h> // gBS
+> >> #include <Protocol/GraphicsOutput.h>          // EFI_GRAPHICS_OUTPUT_P=
+ROTOCOL
+> >>
+> >> INTN
+> >> EFIAPI
+> >> ShellAppMain (
+> >>   IN UINTN   Argc,
+> >>   IN CHAR16  **Argv
+> >>   )
+> >> {
+> >>   EFI_STATUS                    Status;
+> >>   VOID                          *Interface;
+> >>   EFI_GRAPHICS_OUTPUT_PROTOCOL  *Gop;
+> >>   UINT32                        Mode;
+> >>
+> >>   Status =3D gBS->LocateProtocol (
+> >>                   &gEfiGraphicsOutputProtocolGuid,
+> >>                   NULL,
+> >>                   &Interface
+> >>                   );
+> >>   if (EFI_ERROR (Status)) {
+> >>     return 1;
+> >>   }
+> >>
+> >>   Gop =3D Interface;
+> >>
+> >>   Mode =3D 1;
+> >>   for ( ; ;) {
+> >>     Status =3D Gop->SetMode (Gop, Mode);
+> >>     if (EFI_ERROR (Status)) {
+> >>       break;
+> >>     }
+> >>
+> >>     Mode =3D 1 - Mode;
+> >>   }
+> >>
+> >>   return 1;
+> >> }
+> >
+> > The symptom is then that:
+> >
+> > - only one trace message appears periodically,
+> >
+> > - the time between adjacent messages keeps increasing -- implying that
+> >   some list structure (containing the leaked resources) keeps growing,
+> >
+> > - the "surface" pointer is ever different.
+> >
+> >> 18566@1695127471.449586:displaysurface_free surface=3D0x7f2fcc09a7c0
+> >> 18566@1695127471.529559:displaysurface_free surface=3D0x7f2fcc9dac10
+> >> 18566@1695127471.659812:displaysurface_free surface=3D0x7f2fcc441dd0
+> >> 18566@1695127471.839669:displaysurface_free surface=3D0x7f2fcc0363d0
+> >> 18566@1695127472.069674:displaysurface_free surface=3D0x7f2fcc413a80
+> >> 18566@1695127472.349580:displaysurface_free surface=3D0x7f2fcc09cd00
+> >> 18566@1695127472.679783:displaysurface_free surface=3D0x7f2fcc1395f0
+> >> 18566@1695127473.059848:displaysurface_free surface=3D0x7f2fcc1cae50
+> >> 18566@1695127473.489724:displaysurface_free surface=3D0x7f2fcc42fc50
+> >> 18566@1695127473.969791:displaysurface_free surface=3D0x7f2fcc45dcc0
+> >> 18566@1695127474.499708:displaysurface_free surface=3D0x7f2fcc70b9d0
+> >> 18566@1695127475.079769:displaysurface_free surface=3D0x7f2fcc82acc0
+> >> 18566@1695127475.709941:displaysurface_free surface=3D0x7f2fcc369c00
+> >> 18566@1695127476.389619:displaysurface_free surface=3D0x7f2fcc32b910
+> >> 18566@1695127477.119772:displaysurface_free surface=3D0x7f2fcc0d5a20
+> >> 18566@1695127477.899517:displaysurface_free surface=3D0x7f2fcc086c40
+> >> 18566@1695127478.729962:displaysurface_free surface=3D0x7f2fccc72020
+> >> 18566@1695127479.609839:displaysurface_free surface=3D0x7f2fcc185160
+> >> 18566@1695127480.539688:displaysurface_free surface=3D0x7f2fcc23a7e0
+> >> 18566@1695127481.519759:displaysurface_free surface=3D0x7f2fcc3ec870
+> >> 18566@1695127482.549930:displaysurface_free surface=3D0x7f2fcc634960
+> >> 18566@1695127483.629661:displaysurface_free surface=3D0x7f2fcc26b140
+> >> 18566@1695127484.759987:displaysurface_free surface=3D0x7f2fcc321700
+> >> 18566@1695127485.940289:displaysurface_free surface=3D0x7f2fccaad100
+> >
+> > We figured this wasn't a CVE-worthy problem, as only small amounts of
+> > memory were leaked (the framebuffer itself is mapped from guest RAM, QE=
+MU
+> > only allocates administrative structures), plus libvirt restricts QEMU
+> > memory footprint anyway, thus the guest can only DoS itself.
+> >
+> > Plug the leak, by releasing the last prepared (not yet swapped in) disp=
+lay
+> > surface, if any, in the fw_cfg DMA write callback.
+> >
+> > Regarding the "reproducer", with the fix in place, the log is flooded w=
+ith
+> > trace messages (one per fw_cfg write), *and* the trace message alternat=
+es
+> > between just two "surface" pointer values (i.e., nothing is leaked, the
+> > allocator flip-flops between two objects in effect).
+> >
+> > This issue appears to date back to the introducion of ramfb (995b30179b=
+dc,
+> > "hw/display: add ramfb, a simple boot framebuffer living in guest ram",
+> > 2018-06-18).
+> >
+> > Cc: Gerd Hoffmann <kraxel@redhat.com> (maintainer:ramfb)
+> > Cc: qemu-stable@nongnu.org
+> > Fixes: 995b30179bdc
+> > Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+> > ---
+> >  hw/display/ramfb.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
+> > index 79b9754a5820..c2b002d53480 100644
+> > --- a/hw/display/ramfb.c
+> > +++ b/hw/display/ramfb.c
+> > @@ -97,6 +97,7 @@ static void ramfb_fw_cfg_write(void *dev, off_t offse=
+t, size_t len)
+> >
+> >      s->width =3D width;
+> >      s->height =3D height;
+> > +    qemu_free_displaysurface(s->ds);
+> >      s->ds =3D surface;
+> >  }
 
-IIUC, a profile is syntactic sugar for a group of features. If
-we can disable individual features explicitly, why should we
-not allow use of the profile as sugar to disable them en-mass ?
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+
+Incidentally I found the same issue:
+https://patchew.org/QEMU/20230920082634.3349487-1-marcandre.lureau@redhat.c=
+om/
 
 
-BTW, I would caution that the semantics of mixing groups of
-features, with individual features in -cpu is likely to be
-ill defined, as you cannot rely on left-to-right processing
-of the -cpu arguments.
+fwiw, my migration support patch is still unreviewed:
+https://patchew.org/QEMU/20230920082651.3349712-1-marcandre.lureau@redhat.c=
+om/
 
-IOW, if you say  -cpu $foo,$group=on,$feature=off
-
-you might expect this to result in '$feature' being disabled
-if it were implied by $group. This is not guaranteed as the
-QDict processing of options could result in us effectively
-processing   -cpu $foo,$feature=off,$group=on
-
-This brokeness with CPU feature groups and their interaction
-with CPU feature flags already impacts s390x:
-
-  https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg00981.html
-
-There is a possible way to fix it by declaring an ordering
-such that all groups will be processed fully, before any
-individual features are processed, and declaring that group
-or feature names must not be repeated. This avoids a reliance
-on left-to-right ordering:
-
-  https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg01005.html
-
-that is still likely broken, however, if multiple different
-groups are listed, and there is overlap in their feature
-sets.
-
-TL;DR: feature groups are pretty error prone if more than
-one is listed by the user, or they're combined with individual
-features.
-
-> 
-> - profile support for vendor CPUs consists into checking if the CPU
->   happens to have the mandatory extensions required for it. In case it
->   doesn't we'll error out. This is done to follow the same prerogative
->   we always had of not allowing extensions being enabled for vendor
->   CPUs;
-
-Why shouldn't this be allowed ?
-
-> - the KVM driver doesn't support profiles. In theory we could apply the
->   same logic as for the vendor CPUs, but KVM has a long way to go before
->   that becomes a factor. We'll revisit this decision when KVM is able to
->   support at least one profile.
-> 
-> Patch 5 ("enable profile support for vendor CPUs") needs the following
-> series to be applied beforehand:
-> 
-> "[PATCH 0/2] riscv: add extension properties for all cpus"
-> 
-> Otherwise we won't be able to add the profile flag to vendor CPUs.
-> 
-> [1] https://lore.kernel.org/qemu-riscv/35a847a1-2720-14ab-61b0-c72d77d5f43b@ventanamicro.com/
-> 
-> Daniel Henrique Barboza (6):
->   target/riscv/cpu.c: add zicntr extension flag
->   target/riscv/cpu.c: add zihpm extension flag
->   target/riscv: add rva22u64 profile definition
->   target/riscv/tcg: implement rva22u64 profile
->   target/riscv/tcg-cpu.c: enable profile support for vendor CPUs
->   target/riscv/kvm: add 'rva22u64' flag as unavailable
-> 
->  target/riscv/cpu.c         | 25 ++++++++++
->  target/riscv/cpu.h         | 10 ++++
->  target/riscv/cpu_cfg.h     |  2 +
->  target/riscv/kvm/kvm-cpu.c |  5 +-
->  target/riscv/tcg/tcg-cpu.c | 98 ++++++++++++++++++++++++++++++++++++++
->  5 files changed, 139 insertions(+), 1 deletion(-)
-> 
-> -- 
-> 2.41.0
-> 
-> 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
