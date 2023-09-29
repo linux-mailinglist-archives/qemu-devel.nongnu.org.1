@@ -2,98 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29C47B3427
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5797B3426
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:04:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmE5c-0002xz-VV; Fri, 29 Sep 2023 10:03:32 -0400
+	id 1qmE5t-0003Pd-JV; Fri, 29 Sep 2023 10:03:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qmE5a-0002rX-Kf
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:03:31 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qmE5Y-0001If-2V
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:03:30 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40651a726acso19478375e9.1
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 07:03:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695996206; x=1696601006; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TW9vRe0DvsAYN8+Oj197jR8nNJeNE1+wzheFVDXP5nM=;
- b=eWK++r18gL/Q+QOyJoHtvemOm+H8gSIV24aNB1UaGlZdln1kEDJU70w94WHvGgXVlb
- ie30mlUALLwrznmRyqksmWbjFljyRny4TmQSrfmxJzbyJoa0RfDQug2olbyLrN95G5S4
- tR5tvlyd0UHzaY8aDwibe5WkIS/F3RrAo9adCO2kmyxcHw6kI8HtG9rjoCpkvOWz0gQ0
- ZsxtK0FbLuIHYTdhiC6qgig/IzkYXg2UkN0X3ZXLrxF2zUSuV33OjtiwZ4D9UW8hgzlg
- vD2gbt2mZTzQDKxQbvb6p8JqQfYYJ+NO/pwV+6PLPiPF6pZ47+b1Vc6DXb+VD/n2Fdf8
- 7IKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695996206; x=1696601006;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=TW9vRe0DvsAYN8+Oj197jR8nNJeNE1+wzheFVDXP5nM=;
- b=GhWls/q/Chnu0xAnCcFSkwhsHjcC68RaP8Oc1MV0yly04xVoGE76kZkJZ8jFr3EATH
- 0VC47xaXggk7wPQ94t7ENzsbFEz66KQDNx7ZPueZiGd+GDKRstlsdMpEYkJogUHB+Kdc
- 3hAB14+imlHWrfSU/lOgxuP1+NMgXWDhmkfOznayfwolLUIEn6yDTZT47NNlwM3U02Fd
- Hr/g/bQimc9Mc9k5ObYZJqPqC58CHgEUTcj0TeFuIYOzqNEAq1UeRedzvySKpabUJqfh
- 79z2ktbLiTHOYhKcQ8aEtv93sJutineDAnEdgQNXfik0UaG8OivD8b8awo1g/6YdBef1
- v+vQ==
-X-Gm-Message-State: AOJu0Yy68mDDdexR4TXVNB+YFxQIMMDSz8xFwH026GiS+dFkbiocZT5m
- w7TzW/P+cUO+SM3Eq+yCSW6koQ==
-X-Google-Smtp-Source: AGHT+IFvzbJYOPyT25yop03YhuZJ2IedAcBLrtKupYdoZN1gJEN677Bqd4Oev3Of9PdKGzpiWgLgGA==
-X-Received: by 2002:a1c:4c09:0:b0:401:38dc:891c with SMTP id
- z9-20020a1c4c09000000b0040138dc891cmr3672373wmf.5.1695996205217; 
- Fri, 29 Sep 2023 07:03:25 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- bo12-20020a056000068c00b00323287186b2sm12683094wrb.29.2023.09.29.07.03.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Sep 2023 07:03:24 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 6C3811FFBB;
- Fri, 29 Sep 2023 15:03:24 +0100 (BST)
-References: <20230929124304.13672-1-salil.mehta@huawei.com>
- <20230929124304.13672-3-salil.mehta@huawei.com>
-User-agent: mu4e 1.11.20; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, maz@kernel.org,
- jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
- oliver.upton@linux.dev, pbonzini@redhat.com, mst@redhat.com,
- will@kernel.org, gshan@redhat.com, rafael@kernel.org,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- karl.heubaum@oracle.com, miguel.luis@oracle.com, salil.mehta@opnsrc.net,
- zhukeqian1@huawei.com, wangxiongfeng2@huawei.com, wangyanan55@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- linuxarm@huawei.com
-Subject: Re: [PATCH 2/9] hw/acpi: Move CPU ctrl-dev MMIO region len macro to
- common header file
-Date: Fri, 29 Sep 2023 15:03:20 +0100
-In-reply-to: <20230929124304.13672-3-salil.mehta@huawei.com>
-Message-ID: <8734yxoz4j.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <luc@lmichel.fr>) id 1qmE5h-0003HL-JG
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:03:38 -0400
+Received: from pharaoh.lmichel.fr ([149.202.28.74])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <luc@lmichel.fr>) id 1qmE5f-0001JZ-Ef
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:03:37 -0400
+Received: from michell-laptop.home.lmichel.fr (sekoia-laptop.home.lmichel.fr
+ [192.168.61.102])
+ by pharaoh.lmichel.fr (Postfix) with ESMTPS id 022BBC600FF;
+ Fri, 29 Sep 2023 16:03:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lmichel.fr; s=pharaoh; 
+ t=1695996209;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=LhRz6359UdVBGyW3ObX+vNGGzthOFtuV8PfpI4o9k7c=;
+ b=hKyc82f4/a9mBAR/CAnq7xnigCL4WW0VewNitHTsdP1JKciYm5Z3yRyol0Zo/MzSelKDnP
+ pkGKrimjQTUqAH2tgc9dds468AUYDDxbRF5Q6Vca0YFehQZPSoE7sG0m6rDxPm3E96vM9y
+ 4wc72WToUyjceEy0huXFgfZbfWs0gGJJEhb2l5Wks3Bew3E3KDdW7MxWx9d6zncQugD/05
+ ZeWJJREbjoAou+/dNbDqBUpSCi/W/KGl6YRP6jLurxfPV3bXn3M5AGNBaHBob6X5rY/1E3
+ XjG2a6RrnLZLx+AcVmJ63OUbsEvoQV4fiXkopxKXti+MK6Ic9iR1cfamdqbopQ==
+From: Luc Michel <luc@lmichel.fr>
+To: qemu-devel@nongnu.org
+Cc: Luc Michel <luc@lmichel.fr>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2] mailmap: update email addresses for Luc Michel
+Date: Fri, 29 Sep 2023 16:03:27 +0200
+Message-ID: <20230929140326.2056658-2-luc@lmichel.fr>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=149.202.28.74; envelope-from=luc@lmichel.fr;
+ helo=pharaoh.lmichel.fr
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,19 +64,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Map my old and now invalid work email addresses to my personal one.
 
-Salil Mehta <salil.mehta@huawei.com> writes:
+Signed-off-by: Luc Michel <luc@lmichel.fr>
+---
+Please ignore v1 sent with wrong e-mail address.
+---
+ .mailmap | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> CPU ctrl-dev MMIO region length could be used in ACPI GED and various oth=
-er
-> architecture specific places. Move ACPI_CPU_HOTPLUG_REG_LEN macro to more
-> appropriate common header file.
->
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+diff --git a/.mailmap b/.mailmap
+index 64ef9f4de6..49f581bafd 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -65,10 +65,13 @@ Greg Kurz <groug@kaod.org> <gkurz@linux.vnet.ibm.com>
+ Huacai Chen <chenhuacai@kernel.org> <chenhc@lemote.com>
+ Huacai Chen <chenhuacai@kernel.org> <chenhuacai@loongson.cn>
+ James Hogan <jhogan@kernel.org> <james.hogan@imgtec.com>
+ Leif Lindholm <quic_llindhol@quicinc.com> <leif.lindholm@linaro.org>
+ Leif Lindholm <quic_llindhol@quicinc.com> <leif@nuviainc.com>
++Luc Michel <luc@lmichel.fr> <luc.michel@git.antfield.fr>
++Luc Michel <luc@lmichel.fr> <luc.michel@greensocs.com>
++Luc Michel <luc@lmichel.fr> <lmichel@kalray.eu>
+ Radoslaw Biernacki <rad@semihalf.com> <radoslaw.biernacki@linaro.org>
+ Paul Brook <paul@nowt.org> <paul@codesourcery.com>
+ Paul Burton <paulburton@kernel.org> <paul.burton@mips.com>
+ Paul Burton <paulburton@kernel.org> <paul.burton@imgtec.com>
+ Paul Burton <paulburton@kernel.org> <paul@archlinuxmips.org>
+-- 
+2.42.0
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
 
