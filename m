@@ -2,60 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1D77B2B08
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 07:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C82947B2B0E
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 07:08:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm5ae-0006Dm-9K; Fri, 29 Sep 2023 00:59:00 -0400
+	id 1qm5iZ-000803-4m; Fri, 29 Sep 2023 01:07:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm5ac-0006DB-7B
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 00:58:58 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm5iX-0007zb-5l
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 01:07:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm5aa-0002M3-Uf
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 00:58:57 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm5iV-0004PX-8q
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 01:07:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695963536;
+ s=mimecast20190719; t=1695964026;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=dItL0TvXfbuTtKqxkuHNARbrBHBLRVsgwGWFCicycY8=;
- b=iqAqwDw5ptyXi65oHSAjlh+J4iUaKAgGCDdXYewVkZWZJsNfDewzsSiZwwn9+705vlQ8p2
- muvW3k3CVCsYwnmsCqVIrZOvVxj37Vnv9Rf/9wiSDLVCZJmbb0S0w/uEYcK3N8OqOSfRFv
- 8quH+NPbnvHkLkEpNy0+1Eup7tmmGtY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-670--jMXBCxKNAu6iXwX-Pedjg-1; Fri, 29 Sep 2023 00:58:52 -0400
-X-MC-Unique: -jMXBCxKNAu6iXwX-Pedjg-1
+ bh=TIVrIuBqJ5quxLmtqC1YuwmBKJZnM9NMa0HAMZlUUDI=;
+ b=VTWthlC85PnhGhEGih7fMjIOsRBiThylRhgWJz/rgpeZETPhkdxGAatdBH+KVoKfTWlSu0
+ y+uYFv1isI32fZTMwhSANP4Q7vQUSG9GLdt8qYnwD8p/HbFqi4S7ACmUmrrfS58kG/l+1D
+ SmhV/sh/oarFTss+q55xHBo+UeRZfRQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-288-IswbEQptM82DMKBQgH3tVQ-1; Fri, 29 Sep 2023 01:07:02 -0400
+X-MC-Unique: IswbEQptM82DMKBQgH3tVQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6431F3C01BB8;
- Fri, 29 Sep 2023 04:58:52 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3ECF5185A790;
+ Fri, 29 Sep 2023 05:07:02 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 368AA2026D4B;
- Fri, 29 Sep 2023 04:58:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1B0BF2026D4B;
+ Fri, 29 Sep 2023 05:07:02 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id AF7F521E6904; Fri, 29 Sep 2023 06:58:50 +0200 (CEST)
+ id 0C29521E6904; Fri, 29 Sep 2023 07:07:01 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  qemu-arm@nongnu.org,
- Alistair Francis <alistair.francis@wdc.com>,  David Gibson
- <david@gibson.dropbear.id.au>
-Subject: Re: [PATCH v2 20/22] sysemu/device_tree: Clean up local variable
- shadowing
+ John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v2 11/22] hw/ide/ahci: Clean up local variable shadowing
 References: <20230904161235.84651-1-philmd@linaro.org>
- <20230904161235.84651-21-philmd@linaro.org>
-Date: Fri, 29 Sep 2023 06:58:50 +0200
-In-Reply-To: <20230904161235.84651-21-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 4 Sep 2023 18:12:32
+ <20230904161235.84651-12-philmd@linaro.org>
+Date: Fri, 29 Sep 2023 07:07:01 +0200
+In-Reply-To: <20230904161235.84651-12-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 4 Sep 2023 18:12:23
  +0200")
-Message-ID: <87o7hllgmt.fsf@pond.sub.org>
+Message-ID: <87jzs9lg96.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -63,14 +61,13 @@ Content-Transfer-Encoding: quoted-printable
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 12
-X-Spam_score: 1.2
-X-Spam_bar: +
-X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,60 +85,47 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> Fix:
->
->   hw/mips/boston.c:472:5: error: declaration shadows a local variable [-W=
-error,-Wshadow]
->     qemu_fdt_setprop_cells(fdt, name, "reg", reg_base, reg_size);
->     ^
->   include/sysemu/device_tree.h:129:13: note: expanded from macro 'qemu_fd=
-t_setprop_cells'
->         int i;
->             ^
->   hw/mips/boston.c:461:9: note: previous declaration is here
->     int i;
->         ^
+>   hw/ide/ahci.c:1577:23: error: declaration shadows a local variable [-We=
+rror,-Wshadow]
+>             IDEState *s =3D &ad->port.ifs[j];
+>                       ^
+>   hw/ide/ahci.c:1569:29: note: previous declaration is here
+>     void ahci_uninit(AHCIState *s)
+>                                 ^
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 > ---
->  include/sysemu/device_tree.h | 6 ++----
+>  hw/ide/ahci.c | 6 ++----
 >  1 file changed, 2 insertions(+), 4 deletions(-)
 >
-> diff --git a/include/sysemu/device_tree.h b/include/sysemu/device_tree.h
-> index ca5339beae..8eab395934 100644
-> --- a/include/sysemu/device_tree.h
-> +++ b/include/sysemu/device_tree.h
-> @@ -126,10 +126,8 @@ int qemu_fdt_add_path(void *fdt, const char *path);
->  #define qemu_fdt_setprop_cells(fdt, node_path, property, ...)           =
-      \
->      do {                                                                =
-      \
->          uint32_t qdt_tmp[] =3D { __VA_ARGS__ };                         =
-        \
-> -        int i;                                                          =
-      \
-> -                                                                        =
-      \
-> -        for (i =3D 0; i < ARRAY_SIZE(qdt_tmp); i++) {                   =
-        \
-> -            qdt_tmp[i] =3D cpu_to_be32(qdt_tmp[i]);                     =
-        \
-> +        for (unsigned i_ =3D 0; i_ < ARRAY_SIZE(qdt_tmp); i_++) {       =
-        \
-> +            qdt_tmp[i_] =3D cpu_to_be32(qdt_tmp[i_]);                   =
-        \
->          }                                                               =
-      \
->          qemu_fdt_setprop(fdt, node_path, property, qdt_tmp,             =
-      \
->                           sizeof(qdt_tmp));                              =
-      \
+> diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
+> index 48d550f633..8c9a7c2117 100644
+> --- a/hw/ide/ahci.c
+> +++ b/hw/ide/ahci.c
+> @@ -1573,10 +1573,8 @@ void ahci_uninit(AHCIState *s)
+>      for (i =3D 0; i < s->ports; i++) {
+>          AHCIDevice *ad =3D &s->dev[i];
+>=20=20
+> -        for (j =3D 0; j < 2; j++) {
+> -            IDEState *s =3D &ad->port.ifs[j];
+> -
+> -            ide_exit(s);
+> +        for (j =3D 0; j < ARRAY_SIZE(ad->port.ifs); j++) {
 
-You don't just rename the variable, but also adjust its type.  When
-we're dealing with at a huge changeset like the tree-wide -Wshadow=3Dlocal
-cleanup, I prefer to keep changes minimal to ease review as much as
-possible.  But it's sunk cost now, so
+This line's change is unrelated.
 
-Reviewed-by: Markus Armbruster <armbru@redhat.com>
+When we're dealing with at a huge changeset like the tree-wide
+-Wshadow=3Dlocal cleanup, I prefer to keep changes minimal to ease review
+as much as possible.  But it's sunk cost now.
+
+ad->port.ifs is IDEBus member IDEState ifs[2].  .ifs[0] corresponds to
+.master, and .ifs[1] corresponds to .slave.  Size 2 is fundamental, and
+will not ever change.  Whether we count to 2 or to ARRAY_SIZE(.ifs) is a
+matter of taste.  Taste is up to the maintainer, not me.  John?
+
+> +            ide_exit(&ad->port.ifs[j]);
+>          }
+>          object_unparent(OBJECT(&ad->port));
+>      }
 
 
