@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A267B2997
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 02:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E067B29DE
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 02:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm1Qq-0005vV-S0; Thu, 28 Sep 2023 20:32:36 -0400
+	id 1qm1ZG-0000NX-QV; Thu, 28 Sep 2023 20:41:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qm1Qo-0005tF-Ss
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:32:34 -0400
-Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
+ id 1qm1ZE-0000NF-Sk
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:41:16 -0400
+Received: from mail-ua1-x930.google.com ([2607:f8b0:4864:20::930])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qm1Qn-00047A-B5
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:32:34 -0400
-Received: by mail-ua1-x92d.google.com with SMTP id
- a1e0cc1a2514c-7ab5150a7b5so95672241.0
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 17:32:32 -0700 (PDT)
+ id 1qm1ZD-0006Je-Et
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:41:16 -0400
+Received: by mail-ua1-x930.google.com with SMTP id
+ a1e0cc1a2514c-7a803afa8c5so5138695241.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 17:41:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1695947552; x=1696552352;
+ d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1695948074; x=1696552874;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:references:in-reply-to
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=6fSTqFysmqN+uanF2/uSPtL6xLjjfAQpmCRViTqM9X8=;
- b=ukXDM96afwHoD+9HQvO8nulXX2JTYjQ5TCvaV5q9ZGeVv9ceyhlVp7MqnCHKZz1ihv
- vYKbv0HljcNc4WBkGuYWvRuJ+5lr+gGW3AMkChOX5GU9pk8dYttTdPS8hzJXX15fMxYS
- McwXBgOJjtXYPyJyinzFXU4xY8PITYr0GMvZ4rqB0berUmbDkgBHSNIH6O9MEHzmFiYX
- 8DkqS1n6+keG3mHCqmAcxMLeH9JcOvyUK8XfhHjRAIlMNTqClos6KmHq57wkgbW60kNg
- uvqXlhL9aUe4DbQy3aygD+IOQCtdvN52RsDc7LOTV8SyMWDzPwzWqL8pnsO04XK79CZp
- 6JXQ==
+ bh=QfLlRviRWWWW8hdXiWwDl097ymzJbzlyf8hvafoJzcM=;
+ b=Aqnl4PgCgnO/lQAMHwSvjhOxAyeXNTPQG6p+LlFEZ4IwyyGZ7dvT0kPxCteW8jxXR7
+ 4r/lbx2MC2oSRDRudXCeAVEOyqQwAFlSRJDdzhXwF50LykVIes9oDcN4eavTe5uhPBx0
+ IuRTHvxngEAy6yZ3/kAbrkPWQpIi6ul7QHJnCyfrsVY9wY8KZVbMKCsdW1rBZKpCYJea
+ Fif/G9r2RMXlKPq6v7xSmsDzQowpxd1NfhBJve8SUFug5flUiBYgXeQDBvuZue203LNR
+ 3oe/i5Myj9ZGCBeSAGiyVn1cmdhItPD+79vumxLEaLb5DzgISdDtpqn/EsewX771mCqh
+ xbCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695947552; x=1696552352;
+ d=1e100.net; s=20230601; t=1695948074; x=1696552874;
  h=cc:to:subject:message-id:date:from:references:in-reply-to
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=6fSTqFysmqN+uanF2/uSPtL6xLjjfAQpmCRViTqM9X8=;
- b=GBEEAQaADg9mTyI3nXZFpYrdQMuPtCEYq2M04O7JTQalav4KrMFXGU57PlclJqcTbV
- 9h5WTi5ni1IVqIj57xidxTQWZ/RIvf/Az/mEwUWBYHVLLiiUc1Su6gZJBeLLZHsYnyG9
- l+gv3WU5X5JAU5ihZuxX34Ruzu9Rrf2pJIdKqsINUgZsa3GHO1E2MAQVNuGnwVQAU/gI
- CTOoYkEdP5L6RuPu21WtGhnIRaCDqlbG5Bv2DwRL8ZPrH0XL4Mjjc7fxiQEA7hYZZupa
- z8y3JUVryyMmpiFPBNH482ONCXk8sEFNm9D1kyqsWdjOzXsExcw8HlKV6hfc84oob61U
- 99Wg==
-X-Gm-Message-State: AOJu0YwqudgDfHz1FW8gtBxnNyJDLJLmGIn/oh8q6MTmNvBSdmh7O+W0
- +Knn3LE9o+gXjXTutKgBt+ooQPLh61S3JGHK6kS0+9HI9FJCc8ug
-X-Google-Smtp-Source: AGHT+IFSwbZL6rru5TTdEk/gTQLZ4WYhbcsi9q/GP1f5tH6aj7WsMbzxFr1kberit6b7HvoT3fZfBsHDJfnE49dYtlI=
-X-Received: by 2002:a05:6102:ed5:b0:450:985f:ef28 with SMTP id
- m21-20020a0561020ed500b00450985fef28mr1639894vst.5.1695947551865; Thu, 28 Sep
- 2023 17:32:31 -0700 (PDT)
+ bh=QfLlRviRWWWW8hdXiWwDl097ymzJbzlyf8hvafoJzcM=;
+ b=k7Hi5xREcYo8dBlEJbaq6GB3q7QoXp+Oj3DG/Td1MPyg/apmGf0qO0ORK2d/V65BVP
+ YH/ry+f15r5zUfW1OvC/zxEgJ/anMbfZEXVHEX6OnYUaldMV4OjrYes18Sjp0Wfc2atg
+ ObP3OKG6htQvf3ATtSJwZW6/1SUtpnBVETV+O2Pi75eG1uWDC+D0Mp7KmShmbtTQHYob
+ f2A4BcB58U/azwgJA+yFRl8PQmzRdXIJU9VSikvsscuyilpEmiro86eGnfHHTb8ziL8s
+ 8NNmWVoUDvCdvdyb7kVLSB+UIthKCEvEmP9I24El2FKKn6x7X8dYxlxf7SL0BTllHtww
+ N9Dg==
+X-Gm-Message-State: AOJu0YyZSTxbUPbnhov8L2z2+jAqbmQNxASGKZUPzBA2W6zjb5P++xip
+ cE335KNJMtC6OtAFH5QDIRjuJhXTOQuRGEnnS/l0pucsNUaCF0IP
+X-Google-Smtp-Source: AGHT+IEs1ylubmQN8A0X53Q+axopbseiZL2lHt8lsf8pQLAKJmnZkrve93Gu5xyzzYqhcdcBL4DHxsi57jTXztybS/4=
+X-Received: by 2002:a67:cd02:0:b0:454:6fb8:9d4e with SMTP id
+ u2-20020a67cd02000000b004546fb89d4emr2643470vsl.25.1695948074155; Thu, 28 Sep
+ 2023 17:41:14 -0700 (PDT)
 MIME-Version: 1.0
 Received: by 2002:ab0:2a92:0:b0:7aa:d493:bd29 with HTTP; Thu, 28 Sep 2023
- 17:32:31 -0700 (PDT)
+ 17:41:13 -0700 (PDT)
 X-Originating-IP: [24.53.241.2]
-In-Reply-To: <de8992b1-9f7c-b6ae-aaf3-af267674f71b@linaro.org>
+In-Reply-To: <1cd9adb3-004c-7512-e587-085959296f03@linaro.org>
 References: <20230925050545.30912-1-nbowler@draconx.ca>
- <20230925050545.30912-7-nbowler@draconx.ca>
- <de8992b1-9f7c-b6ae-aaf3-af267674f71b@linaro.org>
+ <20230925050545.30912-3-nbowler@draconx.ca>
+ <1cd9adb3-004c-7512-e587-085959296f03@linaro.org>
 From: Nick Bowler <nbowler@draconx.ca>
-Date: Thu, 28 Sep 2023 20:32:31 -0400
-Message-ID: <CADyTPEw_ByU9X4vP6UBr+O-_77k1h7VMvSP7+mrgqBtMtV0AMA@mail.gmail.com>
-Subject: Re: [PATCH 6/8] target/sparc: Fix VIS fpmerge input registers.
+Date: Thu, 28 Sep 2023 20:41:13 -0400
+Message-ID: <CADyTPEzpcKU3QXOQ7pSC_hkrD-BrhQ51K4WMCaYYgKuyfW09bw@mail.gmail.com>
+Subject: Re: [PATCH 2/8] target/sparc: Fix VIS fmul8x16au instruction.
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
  Artyom Tarasenko <atar4qemu@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: none client-ip=2607:f8b0:4864:20::92d;
- envelope-from=nbowler@draconx.ca; helo=mail-ua1-x92d.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::930;
+ envelope-from=nbowler@draconx.ca; helo=mail-ua1-x930.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -91,23 +91,20 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2023-09-28, Richard Henderson <richard.henderson@linaro.org> wrote:
-> On 9/24/23 01:03, Nick Bowler wrote:
->>                   case 0x04b: /* VIS I fpmerge */
->>                       CHECK_FPU_FEATURE(dc, VIS1);
->> -                    gen_ne_fop_DDD(dc, rd, rs1, rs2,
->> gen_helper_fpmerge);
->> +                    cpu_src1_32 = gen_load_fpr_F(dc, rs1);
->> +                    cpu_src2_32 = gen_load_fpr_F(dc, rs2);
->> +                    cpu_dst_64 = gen_dest_fpr_D(dc, rd);
->> +                    gen_helper_fpmerge(cpu_dst_64, cpu_src1_32,
->> cpu_src2_32);
->> +                    gen_store_fpr_D(dc, rd, cpu_dst_64);
->>                       break;
+> Belated follow-up suggestion:
 >
-> Use gen_ne_fop_DFF.
+> -   if ((tmp & 0xff) > 0x7f) {
+> -       tmp += 0x100;
+> -   }
+> +   tmp += 0x80;
+>
+> 7 occurrences throughout vis_helper.c.
 
-Good catch, I clearly missed that this can use the new helper, I will
-respin this one.
+I agree with making this particular change but I think since it doesn't
+fix a bug, it should go in a separate patch.
+
+So I will include a patch to do that in series v2 and keep this one
+as-is with your Reviewed-by.
 
 Thanks,
   Nick
