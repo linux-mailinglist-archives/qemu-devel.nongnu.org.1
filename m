@@ -2,54 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF067B2E7E
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 10:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9F87B2F24
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 11:26:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm9ET-0006VB-Qo; Fri, 29 Sep 2023 04:52:21 -0400
+	id 1qm9kQ-0000z9-9q; Fri, 29 Sep 2023 05:25:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qm9EI-0006Fv-8e
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:52:10 -0400
-Received: from mail.ispras.ru ([83.149.199.84])
- by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qm9EB-0005oC-8L
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:52:09 -0400
-Received: from pasha-ThinkPad-X280.intra.ispras.ru (unknown [85.142.117.226])
- by mail.ispras.ru (Postfix) with ESMTPSA id 8DCA74076749;
- Fri, 29 Sep 2023 08:51:45 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8DCA74076749
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
- s=default; t=1695977505;
- bh=baCpMjxJgDmEAn3Ne00ctKK+RUYSBlKNzGAMXkeLkGo=;
- h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=qBxehL3/uYlvH03CS4EWyb/nivbsPKOhxao1pm7JaWSl7uFczoxAC2ZzRPjOoQHPO
- 5HD2QOIt5h8BYtIpdjiKunhqGxkHu+/1W+4aa2KUMeVx7kndVJ5tJRgbXLd/J71rxu
- Qxqitwrpg484g0gzNvNMpHZ2qP/oxB8wEwJsuDPI=
-From: pavel.dovgalyuk@ispras.ru
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, crosa@redhat.com, wainersm@redhat.com, bleal@redhat.com,
- alex.bennee@linaro.org, mst@redhat.com, rafael.pizarrosolar@epfl.ch,
- jasowang@redhat.com, Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>,
- Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH 3/3] replay: fix for loading non-replay snapshots
-Date: Fri, 29 Sep 2023 11:51:21 +0300
-Message-Id: <20230929085121.848482-4-pavel.dovgalyuk@ispras.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230929085121.848482-1-pavel.dovgalyuk@ispras.ru>
-References: <20230929085121.848482-1-pavel.dovgalyuk@ispras.ru>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qm9kK-0000yp-FA; Fri, 29 Sep 2023 05:25:17 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qm9kE-0005Y0-5p; Fri, 29 Sep 2023 05:25:14 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:d11:0:640:6943:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 9ACA261079;
+ Fri, 29 Sep 2023 12:25:00 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:0:419:8579:d8ea:63ba:e50] (unknown
+ [2a02:6b8:0:419:8579:d8ea:63ba:e50])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id xOOG360Mpa60-rjSQpxNI; Fri, 29 Sep 2023 12:25:00 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1695979500;
+ bh=kmvwIZRO7q8j3W/xs1lcTQC0p+myvPS0vV2EFAmfrwA=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=rgWr8sfL6HyRn4l/9UAd6HWzFlnG8Kko9a4w4y9Gu0HK/sm+WDvEd4VoFYPgUgWbc
+ NBlwlg9B9Dpm9jF1Kd5Y//uGutBxR5tKWX3UZrMWJxPo197CiNY5YhpeaHQcfkJv7t
+ /MAlWv0Uqyzfrsu+CILnh14DBT9Ty3sXh4JQgcOQ=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <3d88cf50-3414-87e2-c17e-6c6aa5cc74f6@yandex-team.ru>
+Date: Fri, 29 Sep 2023 12:24:59 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=83.149.199.84;
- envelope-from=pavel.dovgalyuk@ispras.ru; helo=mail.ispras.ru
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v7 07/12] nbd/client: Initial support for extended headers
+Content-Language: en-US
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+References: <20230925192229.3186470-14-eblake@redhat.com>
+ <20230925192229.3186470-21-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230925192229.3186470-21-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -66,32 +75,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
+On 25.09.23 22:22, Eric Blake wrote:
+>   nbd_receive_simple_reply(int32_t error, const char *errname, uint64_t cookie) "Got simple reply: { .error = %" PRId32 " (%s), cookie = %" PRIu64" }"
+> -nbd_receive_structured_reply_chunk(uint16_t flags, uint16_t type, const char *name, uint64_t cookie, uint32_t length) "Got structured reply chunk: { flags = 0x%" PRIx16 ", type = %d (%s), cookie = %" PRIu64 ", length = %" PRIu32 " }"
+> +nbd_receive_reply_chunk_header(uint16_t flags, uint16_t type, const char *name, uint64_t cookie, uint32_t length) "Got reply chunk header: { flags = 0x%" PRIx16 ", type = %d (%s), cookie = %" PRIu64 ", length = %" PRIu32 " }"
 
-Snapshots created in regular icount execution mode can't be loaded
-in recording mode, because icount value advances only by 32-bit value.
-This patch initializes replay icount initial value after loading
-the snapshot.
+preexisting, but better would be s/%d/%" PRIu16 "/
 
-Cc: Pizarro Solar Rafael Ulises Luzius <rafael.pizarrosolar@epfl.ch>
-Signed-off-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
----
- replay/replay-snapshot.c | 1 +
- 1 file changed, 1 insertion(+)
+> +nbd_receive_wrong_header(uint32_t magic, const char *mode) "Server sent unexpected magic 0x%" PRIx32 " for negotiated mode %s"
 
-diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
-index 10a7cf7992..1e32ada1f6 100644
---- a/replay/replay-snapshot.c
-+++ b/replay/replay-snapshot.c
-@@ -75,6 +75,7 @@ void replay_vmstate_init(void)
- 
-     if (replay_snapshot) {
-         if (replay_mode == REPLAY_MODE_RECORD) {
-+            replay_state.current_icount = replay_get_current_icount();
-             if (!save_snapshot(replay_snapshot,
-                                true, NULL, false, NULL, &err)) {
-                 error_report_err(err);
+
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
 -- 
-2.34.1
+Best regards,
+Vladimir
 
 
