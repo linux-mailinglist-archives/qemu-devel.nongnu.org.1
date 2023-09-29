@@ -2,91 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24497B338D
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 15:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA2D7B3399
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 15:30:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmDVg-0007F0-DT; Fri, 29 Sep 2023 09:26:24 -0400
+	id 1qmDZ0-0000A1-MI; Fri, 29 Sep 2023 09:29:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qmDVZ-0007EC-Kw
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 09:26:18 -0400
-Received: from mail-pl1-x62b.google.com ([2607:f8b0:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qmDVW-0000I6-DS
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 09:26:17 -0400
-Received: by mail-pl1-x62b.google.com with SMTP id
- d9443c01a7336-1bf6ea270b2so109362035ad.0
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 06:26:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1695993972; x=1696598772; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=2xTgKcyUe7GD8wTMncPLGUmiX4p3ErMSPHISdg03bDo=;
- b=M89GOU/LYDWqhWzUyKUQc1wDKcYgtA2Oeb+wML4+XYGr6mgI9yqoS6uj8ByxBd8afF
- VJ/vfQWogM2HgqzALSih+at0Qtkhv47MZz0mDqOVcyHi9ZmXnulNnq9t3+4veLD+sglh
- HEppQK7A2Ky0rDd3tZhWcJ8Dc9R0JJ4+PAoe28UzBG9ZpM4PnUAvdfVQf4ELQs6IRnnO
- msq84lpBie344dgx1ztrl4twIm16uHNp3K6uwu1VkjYR5ModzRivEZqNJYJoq5Bh9t+8
- 61kccDFsbh+oU7CjP9uqU6Wi5cd9RrNZoKuYwtNhu7n1zH7IcJYkUXI+VuxFIdsNUaCq
- vy+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695993972; x=1696598772;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2xTgKcyUe7GD8wTMncPLGUmiX4p3ErMSPHISdg03bDo=;
- b=Xim4sdZkd+W6Ja4zLIyhwmIuDWB2e6KpS7QQBegKTyf3kwDb3HE/NgRMvv8nsYc7Lu
- R2xOXwiQc8iwmT35rZ+OqRywgaT82PdOMfkQOizlMhleszfsXc1CSwJLqsUGGRYrMY6j
- b0vy6PNFxzLiBQInn5K/TMRH3eOpmUBpWm1Q+xKoD2gxqHAzr7R6YiWNSvyQChmyfSxJ
- /X72RE12fxRlntrmvW9TGSoQovHzmcX8wiIjd50LyjXuum+DZ/+UMsDn9m69xXNalIvZ
- Vcq+S6rvwr3RBM0EqGOea032WIFC7wm9aX6HKBtsCIbkx4UpGJr3hadl01v4W7Te6q6F
- +GEg==
-X-Gm-Message-State: AOJu0YzobChy8golptmRZTKqjFxVjuz3XTS+vAj9KmiDXBUqTu2nVqj+
- 1zbXrt/8q9WicZMg40FrXFyn0Q==
-X-Google-Smtp-Source: AGHT+IEt9BHwc9RsUfQr3GeA25FurW3ISY1Nx31uJFT9Uq7+Ir7f4MFKM1se3aS+RS3g/B8PWJh1Bg==
-X-Received: by 2002:a17:903:25c2:b0:1c5:bb45:dd22 with SMTP id
- jc2-20020a17090325c200b001c5bb45dd22mr3672163plb.22.1695993972614; 
- Fri, 29 Sep 2023 06:26:12 -0700 (PDT)
-Received: from ?IPV6:2804:7f0:bdcd:fb00:6501:2693:db52:c621?
- ([2804:7f0:bdcd:fb00:6501:2693:db52:c621])
- by smtp.gmail.com with ESMTPSA id
- jj19-20020a170903049300b001b9d7c8f44dsm7673576plb.182.2023.09.29.06.26.09
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Sep 2023 06:26:12 -0700 (PDT)
-Message-ID: <2acdbc24-33e6-3cd2-b4c7-713844f8211d@ventanamicro.com>
-Date: Fri, 29 Sep 2023 10:26:08 -0300
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qmDYu-00005b-52
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 09:29:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qmDYs-0000mF-8I
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 09:29:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695994181;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dST3XQep7TPunrRTyLFoEtwavgF01DXXGYbenEJn31Q=;
+ b=dzKggvWytsEalXvqKpw7kdE/Wytesqmm3g7Rz/x4HoifF924/AqXCT9lHIc2MN+RRDkwj9
+ udFedxibaNS0leTaVqV/u2jiebd2/FPQKk7YshUCJBH11PerDCLbBRHKoqcBz/EwaLCeJa
+ F2fvGuoFcLH0bCga+9JE85flKa7WJnE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-275-STuNL6VZNqCZ4v_tYLaO-w-1; Fri, 29 Sep 2023 09:29:36 -0400
+X-MC-Unique: STuNL6VZNqCZ4v_tYLaO-w-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58D9F85A5BE
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 13:29:36 +0000 (UTC)
+Received: from localhost (unknown [10.45.225.43])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id E762340C6EBF;
+ Fri, 29 Sep 2023 13:29:35 +0000 (UTC)
+Date: Fri, 29 Sep 2023 15:29:34 +0200
+From: Victor Toso <victortoso@redhat.com>
+To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
+ John Snow <jsnow@redhat.com>
+Subject: Re: [PATCH v1 3/9] qapi: golang: Generate qapi's struct types in Go
+Message-ID: <vyefh5qpavk2kdgg6kyglvfryxbq6w2d422zr6bc5cklfaagyy@3hgytl2yl234>
+References: <20230927112544.85011-1-victortoso@redhat.com>
+ <20230927112544.85011-4-victortoso@redhat.com>
+ <ZRWIX36p8oaV0yF0@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 0/6] riscv: RVA22U64 profile support
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com,
- palmer@rivosinc.com, Andrew Jones <ajones@ventanamicro.com>
-References: <20230926194951.183767-1-dbarboza@ventanamicro.com>
- <ZRarBuEeBi7WkS6K@redhat.com>
- <e5342929-506a-ce75-34fa-204ad0970ee2@ventanamicro.com>
- <ZRa7O67ZTukOq5GL@redhat.com>
- <b6256c0e-5000-2af1-5ffa-caae55d9f694@ventanamicro.com>
- <ZRbIqHuefKCBNudv@redhat.com>
-Content-Language: en-US
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <ZRbIqHuefKCBNudv@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62b;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62b.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.295,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="d4m7y7cit7wjxc2k"
+Content-Disposition: inline
+In-Reply-To: <ZRWIX36p8oaV0yF0@redhat.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,146 +82,144 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--d4m7y7cit7wjxc2k
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 9/29/23 09:52, Daniel P. Berrangé wrote:
-> On Fri, Sep 29, 2023 at 09:49:47AM -0300, Daniel Henrique Barboza wrote:
->>
->>
->> On 9/29/23 08:55, Daniel P. Berrangé wrote:
->>> On Fri, Sep 29, 2023 at 08:29:08AM -0300, Daniel Henrique Barboza wrote:
->>>>
->>>>
->>>> On 9/29/23 07:46, Daniel P. Berrangé wrote:
->>>>> On Tue, Sep 26, 2023 at 04:49:44PM -0300, Daniel Henrique Barboza wrote:
->>>>>> Based-on: 20230926183109.165878-1-dbarboza@ventanamicro.com
->>>>>> ("[PATCH 0/2] riscv: add extension properties for all cpus")
->>>>>>
->>>>>> Hi,
->>>>>>
->>>>>> These patches implements the base profile support for qemu-riscv and the
->>>>>> first profile, RVA22U64.
->>>>>>
->>>>>> As discussed in this thread [1] we're aiming for a flag that enables all
->>>>>> mandatory extensions of a profile. Optional extensions were left behind
->>>>>> and must be enabled by hand if desired. Since this is the first profile
->>>>>> we're adding, we'll need to add the base framework as well.
->>>>>>
->>>>>> The RVA22U64 profile was chosen because qemu-riscv implements all its
->>>>>> extensions, both mandatory and optional. That includes 'zicntr' and
->>>>>> 'zihpm', which we support for awhile but aren't adverting to userspace.
->>>>>>
->>>>>> Other design decisions made:
->>>>>>
->>>>>> - disabling a profile flag does nothing, i.e. we won't mass disable
->>>>>>      mandatory extensions of the rva22U64 profile if the user sets
->>>>>>      rva22u64=false;
->>>>>
->>>>> Why shouldn't this be allowed ?
->>>>>
->>>>> IIUC, a profile is syntactic sugar for a group of features. If
->>>>> we can disable individual features explicitly, why should we
->>>>> not allow use of the profile as sugar to disable them en-mass ?
->>>>
->>>> In theory there's no harm in allowing mass disabling of extensions but, given
->>>> it's a whole profile, we would end up disabling most/all CPU extensions and
->>>> the guest would do nothing.
->>>
->>> True, that is just user error though.  They could disable a profile
->>> and then manually re-enable individual features, and thus get a
->>> working system.
->>>
->>>> There is a thread in the ML:
->>>>
->>>> https://lore.kernel.org/qemu-riscv/CABJz62NyVNu4Z1qmCG7MyJkGG_9yWxjUFHHWjmoQEP6unRrHNA@mail.gmail.com/
->>>>
->>>> Where we discussed the possibility of having a minimal CPU extension set. We didn't
->>>> reach a consensus because the definition of "minimal CPU extension set" vary between
->>>> OSes (Linux requires IMAFD, FreeBSD might require something differ).
->>>>
->>>> Assuming we reach a consensus on what a minimal set is, we could allow disabling mass
->>>> extensions via probile but keeping this minimal set, for example. At very least we
->>>> shouldn't allow users to disable 'I' because that would kill the CPU, so RV64I is
->>>> the minimum set that I would assume for now.
->>>
->>> I'd probably just call that user error too.
->>>
->>>>>
->>>>> TL;DR: feature groups are pretty error prone if more than
->>>>> one is listed by the user, or they're combined with individual
->>>>> features.
->>>>>
->>>>>>
->>>>>> - profile support for vendor CPUs consists into checking if the CPU
->>>>>>      happens to have the mandatory extensions required for it. In case it
->>>>>>      doesn't we'll error out. This is done to follow the same prerogative
->>>>>>      we always had of not allowing extensions being enabled for vendor
->>>>>>      CPUs;
->>>>>
->>>>> Why shouldn't this be allowed ?
->>>>
->>>> There's no technical reason to not allow it. The reason it's forbid is to be
->>>> closer to what the real hardware would do. E.g. the real hardware doesn't allow
->>>> users to enable Vector if the hardware doesn't support it. Vendor CPUs also has
->>>> a privileged spec restriction as well, so if a CPU is running in an older spec
->>>> it can't enable extensions that were added later.
->>>
->>> Real hardware is constrained in not being able to invent arbitrary
->>> new features on chip. Virtual machines  are not constrained, so
->>> I don't think the inability of hardware todo this, is an especially
->>> strong reason to limit software emulation.
->>>
->>> What I don't like about this, is that (IIUC) the '$profile=on' option
->>> now has different semantics depending on what CPU it is used with.
->>>
->>> ie  using it with a vendor CPU,   $profile=on  becomes an assertion
->>> that the vendor CPU contains all the features needed to satisfy
->>> $profile. It won't enable/disable anything, just check it is present.
->>>
->>> With a non-vendor CPU, using $profile=on becomes a mechanism to force
->>> enable all the features needed to satisfy $profile, there is no
->>> mechanism to just check for presence.
->>>
->>> Having two different semantics for the same syntax is generally considered
->>> bad design practice.
->>>
->>> This points towards supporting a tri-state, not boolean. $profile=check
->>> for validation only, and $profile=on for force enablement.
->>
->> This would leave us with:
->>
->> - $profile=off => disable all extensions. Let users hit themselves in the foot if they
->> don't enable any other extensions. Note that disabling a profile and enabling extensions
->> on top of it is very sensitive to left-to-right ordering, so it would be good to have
->> a way to enforce this ordering somehow (feature groups always first);
-> 
-> It is also order sensitive if 2 profiles have overlap in the
-> extensions they represent. So might also require an ordering
-> of profiles themselves to be defined if you permit multiple
-> profiles.
-> 
-> If we dont want to think about this immediately that, then
-> we should make $profile=off into a fatal error rather than
-> silently ignoring it
+Hi,
 
-I don't mind handling it right now, I just don't know how hehe
+On Thu, Sep 28, 2023 at 03:06:23PM +0100, Daniel P. Berrang=E9 wrote:
+> On Wed, Sep 27, 2023 at 01:25:38PM +0200, Victor Toso wrote:
+> > This patch handles QAPI struct types and generates the equivalent
+> > types in Go. The following patch adds extra logic when a member of the
+> > struct has a Type that can take JSON Null value (e.g: StrOrNull in
+> > QEMU)
+> >=20
+> > The highlights of this implementation are:
+> >=20
+> > 1. Generating an Go struct that requires a @base type, the @base type
+> >    fields are copied over to the Go struct. The advantage of this
+> >    approach is to not have embed structs in any of the QAPI types.
+> >    Note that embedding a @base type is recursive, that is, if the
+> >    @base type has a @base, all of those fields will be copied over.
+> >=20
+> > 2. About the Go struct's fields:
+> >=20
+> >    i) They can be either by Value or Reference.
+> >=20
+> >   ii) Every field that is marked as optional in the QAPI specification
+> >       are translated to Reference fields in its Go structure. This
+> >       design decision is the most straightforward way to check if a
+> >       given field was set or not. Exception only for types that can
+> >       take JSON Null value.
+> >=20
+> >  iii) Mandatory fields are always by Value with the exception of QAPI
+> >       arrays, which are handled by Reference (to a block of memory) by
+> >       Go.
+> >=20
+> >   iv) All the fields are named with Uppercase due Golang's export
+> >       convention.
+> >=20
+> >    v) In order to avoid any kind of issues when encoding or decoding,
+> >       to or from JSON, we mark all fields with its @name and, when it is
+> >       optional, member, with @omitempty
+> >=20
+> > Example:
+> >=20
+> > qapi:
+> >  | { 'struct': 'BlockdevCreateOptionsFile',
+> >  |   'data': { 'filename': 'str',
+> >  |             'size': 'size',
+> >  |             '*preallocation': 'PreallocMode',
+> >  |             '*nocow': 'bool',
+> >  |             '*extent-size-hint': 'size'} }
+> >=20
+> > go:
+> > | type BlockdevCreateOptionsFile struct {
+> > |     Filename       string        `json:"filename"`
+> > |     Size           uint64        `json:"size"`
+> > |     Preallocation  *PreallocMode `json:"preallocation,omitempty"`
+> > |     Nocow          *bool         `json:"nocow,omitempty"`
+> > |     ExtentSizeHint *uint64       `json:"extent-size-hint,omitempty"`
+> > | }
+>=20
+> Note, 'omitempty' shouldn't be used on pointer fields, only
+> scalar fields. The pointer fields are always omitted when nil.
 
-I'll re-read the thread you sent earlier and see if there's something I missed. I got the
-impression that we need your qom patch first.
+'omitempty' should be used with pointer fields unless you want to
+Marshal JSON Null, which is not the expected output.
 
+'omitempty' is used when QAPI member is said to be optional. This
+is true for all optional members with the exception of two
+Alternates: StrOrNull and BlockdevRefOrNull, as we _do_ want to
+express JSON Null with them.
 
-Thanks,
+```Go
+    package main
 
-Daniel
+    import (
+        "encoding/json"
+        "fmt"
+    )
 
-> 
->> - $profile=on => only valid for generic CPUs;
->>
->> - $profile=check -> valid for all CPUs, would only check if the CPU implements the profile.
->>
->>
->> I think this is fine. Drew, care to weight in?
-> 
-> 
-> With regards,
-> Daniel
+    type Test1 struct {
+        Foo *bool `json:"foo"`
+        Bar *bool `json:"bar,omitempty"`
+        Esc bool  `json:"esc"`
+        Lar bool  `json:"lar,omitempty"`
+    }
+
+    type Test2 struct {
+        Foo *uint64 `json:"foo"`
+        Bar *uint64 `json:"bar,omitempty"`
+        Esc uint64  `json:"esc"`
+        Lar uint64  `json:"lar,omitempty"`
+    }
+
+    func printIt(s any) {
+        if b, err :=3D json.Marshal(s); err !=3D nil {
+            panic(err)
+        } else {
+            fmt.Println(string(b))
+        }
+    }
+
+    func main() {
+        printIt(Test1{})
+        printIt(Test2{})
+    }
+```
+
+```console
+    toso@tapioca /tmp> go run main.go
+    {"foo":null,"esc":false}
+    {"foo":null,"esc":0}
+```
+
+Cheers,
+Victor
+
+--d4m7y7cit7wjxc2k
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmUW0T4ACgkQl9kSPeN6
+SE/rnhAAiMzbm4hIhHrU3pQZXOT9Z1SG8b6PcpL4utiKYNPtpabDtZTRKCZMWqP1
+v7VRkEyCQ9vY3Gv/Hpx8XO8m1LJywq8LKI723DpmzpTMky0reS8l2rZWk5f2CD7g
+oyRLsT/oyWzA82daf/ZB51KzV+bulkjie7ucBs4/GWwIkqoGfH2Vyz/B5KS1qO8/
+K2hjszco/dP+Dj3TxUbOGlDQcP9kIcC4gH1saPvZWf7QSHZCmwclxxinXTbbh4/8
+5WLRTy2KsnjmhvWJxBRFjCUdzqfrhqmPp14AY9XXgL4z1QUwWUILkT/o5n34mGMF
+Zs7dIf7rhqCZoXu53JiIrdSHC8ZOxvQ5khX1opif7NOIWPf7mqkyWFPTSNLk6REG
+cQP0hcvnoVi9eleujitP3C62cVMws5HDTvIlcDXFHJZD9rWW3er87YQZBDJ3Dh7f
+8SrR5+ia8Vz7EwwR+b0msa2MV9SDlhr4mUwpjZiPQrj/DOTvo/rkb0CCBTpLQb59
+3h+1Beu9cWOTyepJueGu6wpmccFxzuI5LOua6dMmJf2apyDR0pF5VpaFsBT4daDe
+SiEu+OgqParUJpNkKbx8o3G9BDlwCbD1AIZPDCjIQQIC+r/PJhqFtO6UY1g+80EJ
+nfS6rdFAvZvEW26R8lGw1PmTXQ9EYzmPtwLRFcB4j80lLKo3OyE=
+=YfN+
+-----END PGP SIGNATURE-----
+
+--d4m7y7cit7wjxc2k--
+
 
