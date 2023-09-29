@@ -2,66 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179807B3617
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 988157B362A
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:57:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmErv-0006Qc-T9; Fri, 29 Sep 2023 10:53:29 -0400
+	id 1qmEvI-00086i-S8; Fri, 29 Sep 2023 10:56:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qmErY-000632-TQ
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:53:04 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qmEr9-0004r8-88
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:53:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695999158;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=YbaIPZsRT9+LO8rvQZqjHRZxeRzQt3qOxrJ12fm4id8=;
- b=dG9o5hK1fsCBHO9+XGheVw4XBbLbV4rPEposPHIlGIyE71Sm/5XPEs0HFOx/Px1irH5sxZ
- Z/NdjBz4Q+oQmB7VxXVt446uH+5HMy6P3Wr+3iR+XCPyn37k7+bCx9aOTwL+OrcEJbFw6N
- ZQmy5kdRXNJCGaaYA8bAN/fSA+wxCuo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-670-F08mdBcDOXumZE4ve285cw-1; Fri, 29 Sep 2023 10:52:35 -0400
-X-MC-Unique: F08mdBcDOXumZE4ve285cw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1B00E811E7D;
- Fri, 29 Sep 2023 14:52:35 +0000 (UTC)
-Received: from merkur.fritz.box (unknown [10.39.193.159])
- by smtp.corp.redhat.com (Postfix) with ESMTP id DEE952026D4B;
- Fri, 29 Sep 2023 14:52:33 +0000 (UTC)
-From: Kevin Wolf <kwolf@redhat.com>
-To: qemu-block@nongnu.org
-Cc: kwolf@redhat.com, stefanha@redhat.com, eesposit@redhat.com,
- eblake@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
- qemu-devel@nongnu.org
-Subject: [PATCH 22/22] block: Add assertion for bdrv_graph_wrlock()
-Date: Fri, 29 Sep 2023 16:51:57 +0200
-Message-ID: <20230929145157.45443-23-kwolf@redhat.com>
-In-Reply-To: <20230929145157.45443-1-kwolf@redhat.com>
-References: <20230929145157.45443-1-kwolf@redhat.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qmEvB-0007rr-8v
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:56:49 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qmEv2-00061J-88
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:56:48 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-31f7638be6eso13451725f8f.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 07:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695999397; x=1696604197; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vrml2Sn8uzGPxQd6lhoN85R1Upx7mYBA7z54epasSVA=;
+ b=E81LMBfLhONs5m7QunPrs6azXxJrSjw5Oq9yRa1cdhhCAHd9IIOZJrdO2RCPs0PJ7S
+ 5kyZ5iOzr0IS6LaAjrLTqvpq/wg9qmPtvPW3AFbi+e1HYENsFc1F6prfaqKpddu7xsfv
+ 7QY+VWLcn7KEsm8MoFaEL6BAANghrE8pdBGj9c3od82U1/r4UhSfRFWEVkW/7w80Pye5
+ FL/WodxoZ1SDZSToaqFVyjBX9ORt8rchsCrc5DqY+O1FaXSpxah2YGU8ZB5Xvs1o8Q1l
+ d/a9CuWDbzjWnZiPZehVqbBYEE3jUziQV273X3ikzmRKbj0CYnuY2udJgX/Pt6juVP7P
+ sXFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695999397; x=1696604197;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=vrml2Sn8uzGPxQd6lhoN85R1Upx7mYBA7z54epasSVA=;
+ b=wOBSPhlFJ0CPxmHwzFTnN8p233dLPWVBFmxn0HDjZn3TvfED8bJ577KgI0hfiboWGz
+ mvGRPNbaGb4edw3qeyRF+RhInw0dzUQ+Slg8vFsBaNJtkvY9urghPHj9TYYXuXvqsZY2
+ qsoBd2rCryfEErLT2iBlvPfCzUq6L5PETTrrRZFmI9Xxpj7DTgDa9n6Fcz7P9uH5PJD4
+ gbTSyFQ1TadTQ0FWzzTiTY35tSLGitNHVJpoOKxuTvrYvf2wdaWLYcjwSnwFV9lIVvnr
+ +DajMiosielwc6PiigeV7PEbVc9unAV6zI/e3mbrQiC2bgQwmmgWJVU67H/54/hhyG1n
+ YOFg==
+X-Gm-Message-State: AOJu0YxhgweRCftXJ9Witb+JIkQwi984ZwHXJd7cPSUFJZaOyYlmHHL5
+ BE24cV+0+akVo837Ewu1pwNC/w==
+X-Google-Smtp-Source: AGHT+IEd9ocee7rask/G1g8jMyMdr6z/tVJYuCmA575sv5D2bLRVYltfUWSaITw/XGCMU2mfqVqh2w==
+X-Received: by 2002:adf:dd91:0:b0:321:52fb:5703 with SMTP id
+ x17-20020adfdd91000000b0032152fb5703mr4299528wrl.13.1695999396659; 
+ Fri, 29 Sep 2023 07:56:36 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ c5-20020adfed85000000b0032196c508e3sm21692994wro.53.2023.09.29.07.56.36
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Sep 2023 07:56:36 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id D5E641FFBB;
+ Fri, 29 Sep 2023 15:56:35 +0100 (BST)
+References: <20230929131636.394715-1-thuth@redhat.com>
+User-agent: mu4e 1.11.20; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu-devel@nongnu.org, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>,
+ qemu-trivial@nongnu.org, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH] MAINTAINERS: Add the CI-related doc files to the CI
+ section
+Date: Fri, 29 Sep 2023 15:56:05 +0100
+In-reply-to: <20230929131636.394715-1-thuth@redhat.com>
+Message-ID: <87lecpni3g.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,50 +98,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-bdrv_graph_wrlock() can't run in a coroutine (because it polls) and
-requires holding the BQL. We already have GLOBAL_STATE_CODE() to assert
-the latter. Assert the former as well and add a no_coroutine_fn marker.
 
-Signed-off-by: Kevin Wolf <kwolf@redhat.com>
----
- include/block/graph-lock.h | 3 ++-
- block/graph-lock.c         | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Thomas Huth <thuth@redhat.com> writes:
 
-diff --git a/include/block/graph-lock.h b/include/block/graph-lock.h
-index 7e04f98ff0..6f1cd12745 100644
---- a/include/block/graph-lock.h
-+++ b/include/block/graph-lock.h
-@@ -116,7 +116,8 @@ void unregister_aiocontext(AioContext *ctx);
-  * This function polls. Callers must not hold the lock of any AioContext other
-  * than the current one and the one of @bs.
-  */
--void bdrv_graph_wrlock(BlockDriverState *bs) TSA_ACQUIRE(graph_lock) TSA_NO_TSA;
-+void no_coroutine_fn TSA_ACQUIRE(graph_lock) TSA_NO_TSA
-+bdrv_graph_wrlock(BlockDriverState *bs);
- 
- /*
-  * bdrv_graph_wrunlock:
-diff --git a/block/graph-lock.c b/block/graph-lock.c
-index 58a799065f..e5525ee2db 100644
---- a/block/graph-lock.c
-+++ b/block/graph-lock.c
-@@ -106,12 +106,13 @@ static uint32_t reader_count(void)
-     return rd;
- }
- 
--void bdrv_graph_wrlock(BlockDriverState *bs)
-+void no_coroutine_fn bdrv_graph_wrlock(BlockDriverState *bs)
- {
-     AioContext *ctx = NULL;
- 
-     GLOBAL_STATE_CODE();
-     assert(!qatomic_read(&has_writer));
-+    assert(!qemu_in_coroutine());
- 
-     /*
-      * Release only non-mainloop AioContext. The mainloop often relies on the
--- 
-2.41.0
+> The docs/devel/ci* were not covered yet, add them to MAINTAINERS
+> so that the right people are put on CC: for related patches.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 7ecf3fbc2d..3914bbd85b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3888,6 +3888,7 @@ F: .github/workflows/lockdown.yml
+>  F: .gitlab-ci.yml
+>  F: .gitlab-ci.d/
+>  F: .travis.yml
+> +F: docs/devel/ci*
+>  F: scripts/ci/
+>  F: tests/docker/
+>  F: tests/vm/
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
