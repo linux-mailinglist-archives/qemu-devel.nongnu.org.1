@@ -2,59 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE4747B2CAE
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 08:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1B17B2CAF
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 08:58:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm7Rg-0007re-Dz; Fri, 29 Sep 2023 02:57:52 -0400
+	id 1qm7SH-00008Z-3h; Fri, 29 Sep 2023 02:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm7Rd-0007rL-Vy
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:57:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm7SE-00008E-DR
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:58:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm7Rb-000435-6Z
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:57:49 -0400
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-320-URjqlTG5N4-1nHjW7vQDHQ-1; Fri, 29 Sep 2023 02:57:42 -0400
-X-MC-Unique: URjqlTG5N4-1nHjW7vQDHQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm7S7-00046s-8q
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:58:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695970696;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nwVjtBHHFduDxvcE9wAcvj4m0BAVbR3MmDqFBMnBAj4=;
+ b=PH2QM4RgqKaFL5aHjZCbURRk7NKfuKDjENcTmrFeSZ0Bv5dm4bdpeKu3U72AaqvErdYwcL
+ dtT8VH26hZGUMEL8IBpq4g2uG+LLTGybz2HZBgZTEZIdKhSq2JPwzkfWbNmW31bxNpthNW
+ PjA2A+N1KqAbaBUI79/U0/cUjLZ5GrU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-295-YSGwPmdVNG-tW62fYgjh6Q-1; Fri, 29 Sep 2023 02:58:14 -0400
+X-MC-Unique: YSGwPmdVNG-tW62fYgjh6Q-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 21B3A1C06EC8;
- Fri, 29 Sep 2023 06:57:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7C5C8811E86;
+ Fri, 29 Sep 2023 06:58:14 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B9AE42026D4B;
- Fri, 29 Sep 2023 06:57:41 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 45C7F176E4;
+ Fri, 29 Sep 2023 06:58:14 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6FFA121E6904; Fri, 29 Sep 2023 08:57:40 +0200 (CEST)
+ id 5C4D521E6904; Fri, 29 Sep 2023 08:58:13 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Klaus Jensen <its@irrelevant.dk>
-Cc: Keith Busch <kbusch@kernel.org>,  qemu-block@nongnu.org,
- qemu-devel@nongnu.org,  Klaus Jensen <k.jensen@samsung.com>
-Subject: Re: [PATCH] hw/nvme: Clean up local variable shadowing in
- nvme_ns_init()
-References: <20230925-fix-local-shadowing-v1-1-3a1172132377@samsung.com>
-Date: Fri, 29 Sep 2023 08:57:40 +0200
-In-Reply-To: <20230925-fix-local-shadowing-v1-1-3a1172132377@samsung.com>
- (Klaus Jensen's message of "Mon, 25 Sep 2023 08:05:05 +0200")
-Message-ID: <87lecph3ff.fsf@pond.sub.org>
+To: Laurent Vivier <laurent@vivier.eu>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] disas/m68k: clean up local variable shadowing
+References: <20230925084455.395150-1-laurent@vivier.eu>
+Date: Fri, 29 Sep 2023 08:58:13 +0200
+In-Reply-To: <20230925084455.395150-1-laurent@vivier.eu> (Laurent Vivier's
+ message of "Mon, 25 Sep 2023 10:44:55 +0200")
+Message-ID: <87h6ndh3ei.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: 14
-X-Spam_score: 1.4
-X-Spam_bar: +
-X-Spam_report: (1.4 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,14 +80,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Klaus Jensen <its@irrelevant.dk> writes:
+Laurent Vivier <laurent@vivier.eu> writes:
 
-> From: Klaus Jensen <k.jensen@samsung.com>
+> Fix following warnings
 >
-> Fix local variable shadowing in nvme_ns_init().
+> .../disas/m68k.c: In function =E2=80=98print_insn_arg=E2=80=99:
+> .../disas/m68k.c:1635:13: warning: declaration of =E2=80=98val=E2=80=99 s=
+hadows a previous local [-Wshadow=3Dcompatible-local]
+>  1635 |         int val =3D fetch_arg (buffer, place, 5, info);
+>       |             ^~~
+> .../disas/m68k.c:1093:7: note: shadowed declaration is here
+>  1093 |   int val =3D 0;
+>       |       ^~~
 >
-> Reported-by: Markus Armbruster <armbru@redhat.com>
-> Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+> Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 
 Queued, thanks!
 
