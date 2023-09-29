@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E6C7B3BED
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 23:26:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2E77B3BF8
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 23:29:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmKze-0004GW-Fy; Fri, 29 Sep 2023 17:25:50 -0400
+	id 1qmL2d-000503-H7; Fri, 29 Sep 2023 17:28:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmKzW-0004G7-51
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:25:42 -0400
+ id 1qmL2a-0004zn-TM
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:28:52 -0400
 Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmKzT-0006W8-Gs
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:25:41 -0400
+ id 1qmL2V-0007IB-Ff
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 17:28:52 -0400
 Received: by mail-pl1-x630.google.com with SMTP id
- d9443c01a7336-1c451541f23so119517125ad.2
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 14:25:37 -0700 (PDT)
+ d9443c01a7336-1bd9b4f8e0eso113261485ad.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 14:28:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696022736; x=1696627536; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696022925; x=1696627725; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=smR7Q+lRHJcVFB55SXcm+wKIt69RYGw6IJ7temvA/98=;
- b=BfZdYOj+bEhRsoLKDe9xVDb6IMFVNE5TziZqiFEkUtEIBXXmDz7pmgFmRj8zqnq8Ik
- nfgDgFBFbLYlNyGpLHbedB8DYAO6yvW5zskJUsGkQIjAkUZzCQb9LL9L4rr249oTFgyr
- khA5nt02JfyYX+VP51ctaDtUNR6xwWECtAdZbO2DVN18Xwg8Gm9ewLNLFViIsOymLvDA
- Aw1zxyfKJt0s4NYOWISEukrilXMZFPd0cS6JC4bfrZwC9EwomdjrcRKX6fuK7GhSPcqj
- B+TiNXysc46VBW3nmcmHPWRH0IIB1gEJvGYeUBiY6Bx0HsOpnqzBvVH7bwstGj6nF5Ub
- 9SVA==
+ bh=+baPzrIKLFTfVQpY3QY5gdIt65jXL+vrRCbVSNITLnw=;
+ b=Jl/aLcfZAn36zS2++MaMkwDl823u5s87Rjf+92Kw+yybwLH1J5VyBbpEJkvwbB0rzR
+ FFxXUKcQNzVWX6pZqPwcTEOJWkt/qY29cujooAQbmARaPmyhEWbn0PorOD4pxbQuxIg2
+ PWbIOFqt0oMOFgpy2bXymwzQh5AYbJJE/QwQy5F03TITDfnB1qFx1PPOByhC4kItFEjv
+ YBsL3VWBeM+crcSSLnowlN8KjW7XVW9QbrF0DXRNw4H2tj4G7e7QBWSw8SQ6GnFSTnnK
+ b4BKfsq5/I4pM1RB5P+tAf3DVKddCH2ISjO7TAhir+nIRt2Hj3p1K9meI8CLRnMl+wWi
+ B7Gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696022736; x=1696627536;
+ d=1e100.net; s=20230601; t=1696022925; x=1696627725;
  h=content-transfer-encoding:in-reply-to:from:references:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=smR7Q+lRHJcVFB55SXcm+wKIt69RYGw6IJ7temvA/98=;
- b=QfNwyjvY5EXTfG15LxCkmV88AxIr1dmP8nsWULxTqKWKsCWmH8LAvdNM9iGgtIVotQ
- cDjBmtAOERZ6Pz61J+4KuKqAdK74PaGvtWgYIyXZcJUZBrC/r8Ur2IdUDILXsk/nJk6O
- OEr9lkogRvTBv17u2oQr9FiUaPRq6wYjczCmmiCvi85JKwm/aulyB8i0UrqBbgt9I7Z3
- 4DoyQISdAKLMrj9dhglfUqcP7Iat3HwmxRx0HqJRQtTqLNNm8VB2zS/mbyKSPb392KPL
- cLBDyhWGzLGW4m9mb6eCBVN1dLbUQbY0857tCd0be1FUyWRc/zOaq4E3Oq8AoabOGYKb
- zvhg==
-X-Gm-Message-State: AOJu0Yw8Ypo/4mykCaOq1cpX+PWn41SceLfwZ68yFz10ZjRiRumH80MP
- 2Tjbv31gIFpN2dFoQQSF2ICw9WJ7c//MRnv+8Uc=
-X-Google-Smtp-Source: AGHT+IED0qOU16f//96EdX4RtnqYgH3CltQDlh90k+cZlMScCsPawFL1aCbV2oFh7ukqF808x2upPg==
-X-Received: by 2002:a17:902:7201:b0:1bd:d15f:bdfa with SMTP id
- ba1-20020a170902720100b001bdd15fbdfamr4722456plb.68.1696022736685; 
- Fri, 29 Sep 2023 14:25:36 -0700 (PDT)
+ bh=+baPzrIKLFTfVQpY3QY5gdIt65jXL+vrRCbVSNITLnw=;
+ b=OCzc4a4Md+yK/vi8mRaGumASGmczmywn42rGSN2fIEZqPHTNtyItAZKfmLUxNKxryI
+ v0edrNNwM7SkzMZP7+CFIAzuKqGqVhyrvXIp323Tx7HQ8zWMuP0sgkSKTzFUyMgheKk9
+ b5z2tOh0ARHwCLymbPj0tVVnWrMR1QQ/1xzYFVS6L6SCrtUHCTFqgHR/evk6Rq89La7k
+ MsKa49ixJgtwlAxuBIUyBOs4Jd+x95gk5UHxV1pDnjExuugO99+7wvEP5rpucchOosKH
+ dJnNaGnHFAXL4RvHnSpgGVyC4dIvWImWynO30J0cnK9Jk8s0PqoqZvBs5xseRcatdUPh
+ 3F0Q==
+X-Gm-Message-State: AOJu0Yw4xv6aT0P2JZ9NE7170FXcejsaqToShADbUiNbbCRQCoRZl9v6
+ UiIgdjiT6Eo/znzrT0sslbLyn5M0yLgd5X3gywU=
+X-Google-Smtp-Source: AGHT+IFovFyo89qg7HQ6GYVJBog6TZ22Vqu80WWg6pjXbWMMvSdTI4gTqoIeCGcVA9bYj/ypSLS9Pw==
+X-Received: by 2002:a17:902:ec8d:b0:1c6:1fc3:6857 with SMTP id
+ x13-20020a170902ec8d00b001c61fc36857mr6508169plg.27.1696022925062; 
+ Fri, 29 Sep 2023 14:28:45 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- j21-20020a170902c3d500b001c62e3e1286sm3795747plj.166.2023.09.29.14.25.35
+ y24-20020a1709027c9800b001c3267ae31bsm17300706pll.301.2023.09.29.14.28.44
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 29 Sep 2023 14:25:36 -0700 (PDT)
-Message-ID: <115e0c9a-ffb7-1b63-9d90-6c59a5b0ced0@linaro.org>
-Date: Fri, 29 Sep 2023 14:25:34 -0700
+ Fri, 29 Sep 2023 14:28:44 -0700 (PDT)
+Message-ID: <4fcdb57e-7300-f60b-fa58-fc3cd056a953@linaro.org>
+Date: Fri, 29 Sep 2023 14:28:42 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 16/22] target/arm: Extract verify_accel_features() from
- cpu_realize()
+Subject: Re: [PATCH 21/22] exec/cpu: Have cpu_exec_realize() return a boolean
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
 References: <20230918160257.30127-1-philmd@linaro.org>
- <20230918160257.30127-17-philmd@linaro.org>
+ <20230918160257.30127-22-philmd@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230918160257.30127-17-philmd@linaro.org>
+In-Reply-To: <20230918160257.30127-22-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
@@ -97,18 +96,17 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/18/23 09:02, Philippe Mathieu-Daudé wrote:
-> When looking at the arm_cpu_realizefn() method, most of the
-> code run before the cpu_exec_realizefn() call checks whether
-> the requested CPU features are compatible with the requested
-> accelerator. Extract this code to a dedicated handler matching
-> our recently added CPUClass::verify_accel_features() handler.
+> Following the example documented since commit e3fe3988d7 ("error:
+> Document Error API usage rules"), have cpu_exec_realizefn()
+> return a boolean indicating whether an error is set or not.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé<philmd@linaro.org>
+> ---
+>   include/hw/core/cpu.h | 2 +-
+>   cpu.c                 | 6 ++++--
+>   2 files changed, 5 insertions(+), 3 deletions(-)
 
-How much verification is this intended to do?
-Can realize now be required to succeed?
-
-For instance, the error for unset gt_cntfrq_hz just before timer_new could be moved to 
-within this new function.
-
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
 r~
 
