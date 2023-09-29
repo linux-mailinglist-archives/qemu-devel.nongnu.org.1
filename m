@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F7A7B2E9C
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 10:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF067B2E7E
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 10:54:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm9EM-0006M7-EJ; Fri, 29 Sep 2023 04:52:14 -0400
+	id 1qm9ET-0006VB-Qo; Fri, 29 Sep 2023 04:52:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qm9EF-0006A8-QO
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:52:07 -0400
+ id 1qm9EI-0006Fv-8e
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:52:10 -0400
 Received: from mail.ispras.ru ([83.149.199.84])
  by eggs.gnu.org with esmtps (TLS1.2:DHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pavel.dovgalyuk@ispras.ru>)
- id 1qm9EB-0005o6-7q
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:52:06 -0400
+ id 1qm9EB-0005oC-8L
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:52:09 -0400
 Received: from pasha-ThinkPad-X280.intra.ispras.ru (unknown [85.142.117.226])
- by mail.ispras.ru (Postfix) with ESMTPSA id BED7C4076742;
- Fri, 29 Sep 2023 08:51:44 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru BED7C4076742
+ by mail.ispras.ru (Postfix) with ESMTPSA id 8DCA74076749;
+ Fri, 29 Sep 2023 08:51:45 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8DCA74076749
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
  s=default; t=1695977505;
- bh=bSykyvCv+UImIyNEEnq+8pfBQ8xwbQKTxoM4yyTd63M=;
+ bh=baCpMjxJgDmEAn3Ne00ctKK+RUYSBlKNzGAMXkeLkGo=;
  h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
- b=RwszhbkKS1p288zdamBUfh0UGakwUye0WTfde3pP8J8nq8roUxpdJveWKpmoaQ+Ym
- WebT7koKj85Kled/r90INscd+8aK9ElxOYLiFv+Ca3tSk3llcxVR2SPOcVc86Gsa+U
- lF1PRjkRbZ1E47pFHB6BzXXdNL3rf9pO12qW4TMc=
+ b=qBxehL3/uYlvH03CS4EWyb/nivbsPKOhxao1pm7JaWSl7uFczoxAC2ZzRPjOoQHPO
+ 5HD2QOIt5h8BYtIpdjiKunhqGxkHu+/1W+4aa2KUMeVx7kndVJ5tJRgbXLd/J71rxu
+ Qxqitwrpg484g0gzNvNMpHZ2qP/oxB8wEwJsuDPI=
 From: pavel.dovgalyuk@ispras.ru
 To: qemu-devel@nongnu.org
 Cc: philmd@linaro.org, crosa@redhat.com, wainersm@redhat.com, bleal@redhat.com,
  alex.bennee@linaro.org, mst@redhat.com, rafael.pizarrosolar@epfl.ch,
  jasowang@redhat.com, Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>,
  Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
-Subject: [PATCH 2/3] virtio-net: added replay blocker for guest_announce
-Date: Fri, 29 Sep 2023 11:51:20 +0300
-Message-Id: <20230929085121.848482-3-pavel.dovgalyuk@ispras.ru>
+Subject: [PATCH 3/3] replay: fix for loading non-replay snapshots
+Date: Fri, 29 Sep 2023 11:51:21 +0300
+Message-Id: <20230929085121.848482-4-pavel.dovgalyuk@ispras.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230929085121.848482-1-pavel.dovgalyuk@ispras.ru>
 References: <20230929085121.848482-1-pavel.dovgalyuk@ispras.ru>
@@ -68,30 +68,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pavel Dovgalyuk <pavel.dovgalyuk@ispras.ru>
 
-This patch blocks record/replay when guest_announce is enabled,
-because this flag breaks loading the snapshots in deterministic
-execution mode.
+Snapshots created in regular icount execution mode can't be loaded
+in recording mode, because icount value advances only by 32-bit value.
+This patch initializes replay icount initial value after loading
+the snapshot.
 
+Cc: Pizarro Solar Rafael Ulises Luzius <rafael.pizarrosolar@epfl.ch>
 Signed-off-by: Pavel Dovgalyuk <Pavel.Dovgalyuk@ispras.ru>
 ---
- hw/net/virtio-net.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ replay/replay-snapshot.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 50156e8002..eb50b7e030 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -3603,6 +3603,10 @@ static void virtio_net_device_realize(DeviceState *dev, Error **errp)
-         n->host_features |= (1ULL << VIRTIO_NET_F_MTU);
-     }
+diff --git a/replay/replay-snapshot.c b/replay/replay-snapshot.c
+index 10a7cf7992..1e32ada1f6 100644
+--- a/replay/replay-snapshot.c
++++ b/replay/replay-snapshot.c
+@@ -75,6 +75,7 @@ void replay_vmstate_init(void)
  
-+    if (n->host_features & (1ULL << VIRTIO_NET_F_GUEST_ANNOUNCE)) {
-+        replay_add_blocker("-device virtio-net-device,guest_announce=true");
-+    }
-+
-     if (n->net_conf.duplex_str) {
-         if (strncmp(n->net_conf.duplex_str, "half", 5) == 0) {
-             n->net_conf.duplex = DUPLEX_HALF;
+     if (replay_snapshot) {
+         if (replay_mode == REPLAY_MODE_RECORD) {
++            replay_state.current_icount = replay_get_current_icount();
+             if (!save_snapshot(replay_snapshot,
+                                true, NULL, false, NULL, &err)) {
+                 error_report_err(err);
 -- 
 2.34.1
 
