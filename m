@@ -2,78 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4127B2B11
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 07:12:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FE377B2B12
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 07:14:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm5mK-0001H2-9O; Fri, 29 Sep 2023 01:11:04 -0400
+	id 1qm5ok-0002Fm-2Q; Fri, 29 Sep 2023 01:13:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qm5mI-0001Go-E6; Fri, 29 Sep 2023 01:11:02 -0400
-Received: from mail-vs1-xe2a.google.com ([2607:f8b0:4864:20::e2a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qm5mG-00056G-RP; Fri, 29 Sep 2023 01:11:02 -0400
-Received: by mail-vs1-xe2a.google.com with SMTP id
- ada2fe7eead31-45281e0b1cbso6510886137.0; 
- Thu, 28 Sep 2023 22:10:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1695964257; x=1696569057; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=xHYCyfjtO8X7it+L5fSErtQgMzl+G4tCTstnWbzTfKo=;
- b=mTkOo01u6EIJ26OD4Ew20DlKtRf2JPhsZS/M3asBVqymP8qZH7Mtf0m0jdxvsXJQn6
- 99LSPMvRoZZ2ew1S86ZbMwQZMTjA/5uE2vx69Y7pda5AbZuLGiuaQEtpGrMsXTiGHqcb
- uhTwPeCA/FjCjK56UMWOXBeLTO0sHWnAxSUnrxo4iITnsDs5xHRL/4aSlMI7D2gqQ6z6
- 4D2Nvt3h7i5rp4e10yzYp1NZ80S8Yxk+LKmESXwgBVAH+Eaa8U3XxzM+kNJHlW546azE
- 1pZNtjZi/vkNTYVxfP5J0LmZ3gHAOMUsKjJf2uJ86rk0mH6/LwRC+3H5dUyGq0VHs2nc
- CfgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695964257; x=1696569057;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=xHYCyfjtO8X7it+L5fSErtQgMzl+G4tCTstnWbzTfKo=;
- b=SSWHfZtedq+9MZbeIaMfJLmU/gjqH02ug6E6jtQcPuAWl9YTgqbPH59haDfRLfOlwZ
- vcVY8pLh9CfyH9g+T6adlB/stUheCbiEJWYLIvh0Nn+8WsqQHsCIfNyAvjK2LYN6d7m0
- gI6CtPPnpk5Vha5metjA6rRaReizM2N82wL4DC+7xK8NFm4DoiQ5wmnwz55tXIDlrWVw
- s/tzm7VZYXscXTooZNik2/FsImkL2d46N74RVQb3bwAs6AQQq6d1L0f7bAiu+kS7DU+8
- xPYsAfuzh8Ca4Yso9hOsqRGl3bf0BOqrEjap8ThUmT3nYxQCsEZJnF9FXpeERFyQkFBk
- V/7A==
-X-Gm-Message-State: AOJu0YwpA0tJ/43TBgqv3BdvbcpNcYZX/xSVF/4Dha7ZOL+S2ISJzHsV
- UuQ1SqFVxYc6w2anFcOo3pijJu7HdgrKHMffjz4=
-X-Google-Smtp-Source: AGHT+IFN22DHcmfUv7qa5wRtJoIJ3MQDrepvCb1ZnY6L41n39YtQMesdtHobAgNoDemlJ/ErRNhYin0ZBh62aO5Rc5c=
-X-Received: by 2002:a05:6102:134c:b0:451:60:2022 with SMTP id
- j12-20020a056102134c00b0045100602022mr2541172vsl.28.1695964257628; Thu, 28
- Sep 2023 22:10:57 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm5oh-0002Et-O0
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 01:13:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm5og-0005Wk-6U
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 01:13:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695964409;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=9mIXLUZ+R66RXPRG5wG2Cl+YJkylWQei/osMt/w8VY8=;
+ b=P4a1yYl48dTkbLr6t412mv5jXVx3wzhZ2JefcpN1qPQrSXtqJEk397d9O9ZyQRO/9sb4va
+ SuBfEFstQJu6URoUndmh8MdXAFdwFXtjMXc3OgyE1WXTj7USjIsQUJpTzK10khpkKKTcgK
+ yti9N4o/yNPwATSuik24CgmSToqzSzA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-554-mqaMXaE7MrugOeOJSVNA_Q-1; Fri, 29 Sep 2023 01:13:25 -0400
+X-MC-Unique: mqaMXaE7MrugOeOJSVNA_Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7D4C7101A550;
+ Fri, 29 Sep 2023 05:13:25 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 58F5940C6E76;
+ Fri, 29 Sep 2023 05:13:25 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6D8BD21E6904; Fri, 29 Sep 2023 07:13:24 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  qemu-block@nongnu.org,  qemu-arm@nongnu.org
+Subject: Re: [PATCH v2 00/22] (few more) Steps towards enabling -Wshadow
+References: <20230904161235.84651-1-philmd@linaro.org>
+Date: Fri, 29 Sep 2023 07:13:24 +0200
+In-Reply-To: <20230904161235.84651-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 4 Sep 2023 18:12:12
+ +0200")
+Message-ID: <87fs2xlfyj.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-References: <20230926184019.166352-1-dbarboza@ventanamicro.com>
- <20230926184019.166352-2-dbarboza@ventanamicro.com>
-In-Reply-To: <20230926184019.166352-2-dbarboza@ventanamicro.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Fri, 29 Sep 2023 15:10:30 +1000
-Message-ID: <CAKmqyKOtFTS-GEzeSfmOF5M814Re5mj5SvqxvJJmfiU+9xy94w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/6] target/riscv/kvm/kvm-cpu.c: add missing property
- getters()
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com, 
- bmeng@tinylab.org, liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, 
- palmer@rivosinc.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2a;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2a.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,120 +81,26 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 27, 2023 at 6:10=E2=80=AFAM Daniel Henrique Barboza
-<dbarboza@ventanamicro.com> wrote:
->
-> We got along without property getters in the KVM driver because we never
-> needed them. But the incoming query-cpu-model-expansion API will use
-> property getters and setters to retrieve the CPU characteristics.
->
-> Add the missing getters for the KVM driver for both MISA and
-> multi-letter extension properties. We're also adding an special getter
-> for absent multi-letter properties that KVM doesn't implement that
-> always return false.
->
-> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+> Since v1:
+> - Addressed review comments
+> - Added R-b tags
+> - More patches
+>
+> For rational see Markus cover on
+> https://lore.kernel.org/qemu-devel/20230831132546.3525721-1-armbru@redhat=
+.com/
+>
+> This series contains few more, my take.
+>
+> Based-on: <20230831132546.3525721-1-armbru@redhat.com>
 
-Alistair
+Queued except for:
 
-> ---
->  target/riscv/kvm/kvm-cpu.c | 40 +++++++++++++++++++++++++++++++++++---
->  1 file changed, 37 insertions(+), 3 deletions(-)
->
-> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-> index c6615cb807..b4c231f231 100644
-> --- a/target/riscv/kvm/kvm-cpu.c
-> +++ b/target/riscv/kvm/kvm-cpu.c
-> @@ -140,6 +140,19 @@ static KVMCPUConfig kvm_misa_ext_cfgs[] =3D {
->      KVM_MISA_CFG(RVM, KVM_RISCV_ISA_EXT_M),
->  };
->
-> +static void kvm_cpu_get_misa_ext_cfg(Object *obj, Visitor *v,
-> +                                     const char *name,
-> +                                     void *opaque, Error **errp)
-> +{
-> +    KVMCPUConfig *misa_ext_cfg =3D opaque;
-> +    target_ulong misa_bit =3D misa_ext_cfg->offset;
-> +    RISCVCPU *cpu =3D RISCV_CPU(obj);
-> +    CPURISCVState *env =3D &cpu->env;
-> +    bool value =3D env->misa_ext_mask & misa_bit;
-> +
-> +    visit_type_bool(v, name, &value, errp);
-> +}
-> +
->  static void kvm_cpu_set_misa_ext_cfg(Object *obj, Visitor *v,
->                                       const char *name,
->                                       void *opaque, Error **errp)
-> @@ -244,6 +257,17 @@ static uint32_t kvm_cpu_cfg_get(RISCVCPU *cpu,
->      return *ext_enabled;
->  }
->
-> +static void kvm_cpu_get_multi_ext_cfg(Object *obj, Visitor *v,
-> +                                      const char *name,
-> +                                      void *opaque, Error **errp)
-> +{
-> +    KVMCPUConfig *multi_ext_cfg =3D opaque;
-> +    RISCVCPU *cpu =3D RISCV_CPU(obj);
-> +    bool value =3D kvm_cpu_cfg_get(cpu, multi_ext_cfg);
-> +
-> +    visit_type_bool(v, name, &value, errp);
-> +}
-> +
->  static void kvm_cpu_set_multi_ext_cfg(Object *obj, Visitor *v,
->                                        const char *name,
->                                        void *opaque, Error **errp)
-> @@ -346,6 +370,15 @@ static void kvm_riscv_update_cpu_cfg_isa_ext(RISCVCP=
-U *cpu, CPUState *cs)
->      }
->  }
->
-> +static void cpu_get_cfg_unavailable(Object *obj, Visitor *v,
-> +                                    const char *name,
-> +                                    void *opaque, Error **errp)
-> +{
-> +    bool value =3D false;
-> +
-> +    visit_type_bool(v, name, &value, errp);
-> +}
-> +
->  static void cpu_set_cfg_unavailable(Object *obj, Visitor *v,
->                                      const char *name,
->                                      void *opaque, Error **errp)
-> @@ -376,7 +409,8 @@ static void riscv_cpu_add_kvm_unavail_prop(Object *ob=
-j, const char *prop_name)
->       * to enable any of them.
->       */
->      object_property_add(obj, prop_name, "bool",
-> -                        NULL, cpu_set_cfg_unavailable,
-> +                        cpu_get_cfg_unavailable,
-> +                        cpu_set_cfg_unavailable,
->                          NULL, (void *)prop_name);
->  }
->
-> @@ -406,7 +440,7 @@ static void kvm_riscv_add_cpu_user_properties(Object =
-*cpu_obj)
->          misa_cfg->description =3D riscv_get_misa_ext_description(bit);
->
->          object_property_add(cpu_obj, misa_cfg->name, "bool",
-> -                            NULL,
-> +                            kvm_cpu_get_misa_ext_cfg,
->                              kvm_cpu_set_misa_ext_cfg,
->                              NULL, misa_cfg);
->          object_property_set_description(cpu_obj, misa_cfg->name,
-> @@ -422,7 +456,7 @@ static void kvm_riscv_add_cpu_user_properties(Object =
-*cpu_obj)
->          KVMCPUConfig *multi_cfg =3D &kvm_multi_ext_cfgs[i];
->
->          object_property_add(cpu_obj, multi_cfg->name, "bool",
-> -                            NULL,
-> +                            kvm_cpu_get_multi_ext_cfg,
->                              kvm_cpu_set_multi_ext_cfg,
->                              NULL, multi_cfg);
->      }
-> --
-> 2.41.0
->
->
+PATCH 11: I asked for John Snow's opinion on a matter of taste.
+PATCH 18: Review comment from Peter Maydell is pending.
+
+Thanks!
+
 
