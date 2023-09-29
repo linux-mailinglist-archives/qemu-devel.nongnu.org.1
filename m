@@ -2,80 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9627B2A12
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 03:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FEF7B2A14
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 03:06:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm1wF-0006sv-Jo; Thu, 28 Sep 2023 21:05:03 -0400
+	id 1qm1wy-0007AW-59; Thu, 28 Sep 2023 21:05:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qm1wD-0006sb-Bc
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 21:05:01 -0400
-Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
+ id 1qm1wv-0007AO-4d
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 21:05:45 -0400
+Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qm1wB-0003na-Mn
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 21:05:01 -0400
-Received: by mail-pf1-x429.google.com with SMTP id
- d2e1a72fcca58-690d9cda925so10902107b3a.3
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 18:04:55 -0700 (PDT)
+ id 1qm1ws-0004L5-TX
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 21:05:44 -0400
+Received: by mail-pl1-x62a.google.com with SMTP id
+ d9443c01a7336-1c735473d1aso13424635ad.1
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 18:05:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695949494; x=1696554294; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1695949541; x=1696554341; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vSGMpOs0qaJ3qREHPLJ1FPZ05TeUVgqGZqkVLnZWgjo=;
- b=UWGyUF5aogwUTKW5MLXoAxENoT96kFHain1/hG1R6tcCo5CC7dKwH9gta5F6Vw8w56
- gaLQD3ls2lqsKBekXVLcWmQocMaYUd/nLAlS0wIRTfzMxx8auXvtB0glLWi+UTeEk722
- uN6+2HKhLqmzT+OzQVXfT6eBhDSf7NW8yqP7IsNw4hzgdHz5HTw88WaSrEMjzVXLGTxa
- IfrTtoGhCqWFhq1OiNzIv3sEI8fwb82OLqKjen3NUsUScXsolR4ovswD8IrOP/ywBwC8
- 0gc9fTKsCuSW0DrLbJ0Yb7GexX7Xqez1hbdrMsaPAvYyVWW33RR42FPK2lsKrt3ctPxD
- J7LA==
+ bh=VpXHZfEJFm7x8zdwxflKF6jhjhYGOS9jgj9H6igLeao=;
+ b=YBQjWymaf3KlzSKYWmaZItNQROIbYM0eKW74uH68ihAhbTF/FcH2ssATP/CuaJFDp3
+ l6GkJfQ7WRIIMCt1edy24OVi1CJ+6XgovW3PAi4QWgLpsyBCBTKI9puu36Hj7SLsD2nM
+ IoW0D6qBzxg3IehRNzdYr8zzp8b8/XN0sgz1XEv8k1zWmLn1EBEBLxXTs9o7yZkUdjc9
+ S9hVjCyBHxkjqVYd3YPgQpF3RN3hA0L5rhAhPgqtQiT/aPGhWaCBFDYbdUHnhJWw0Zma
+ 1oVV/vO+ivNUp2kigl81XFjhtzkAMDeVHEHZvEGAWnruvor2aCvezlY/YkowZH+UL/dZ
+ h8VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695949495; x=1696554295;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1695949541; x=1696554341;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vSGMpOs0qaJ3qREHPLJ1FPZ05TeUVgqGZqkVLnZWgjo=;
- b=NdP99dakbOGhihhzf+20uiUfxuy6AbyzvGVxEq3xBoLEtuWkBB+Ibm3jGhl19z+1Y0
- nn5KC2hS3BKxsD+XTxlp3WsJC1sy2puuJCCLE0a5Rrf8FxQaPIHICKdsXr+fY/rbR2gu
- c+oRFKEh0TwkcpUMeOTx2Xw6Zg3jfgYqY0cn75zhB+yPtJF16fJpyMX5YuIs0M5jLaKj
- iucbmvCfS1cnPMxCHa2A2vuiS4+IeBL50g2+azOhnQBmr6sFPpum+DdByB3vZJSdYAg2
- T7MZra9YiaKCaigJagGAAr7MFaJKf6+9MmJZk+qYgw2w0jAjYBVaB0R9Ohv3T2H9NYds
- Nojg==
-X-Gm-Message-State: AOJu0Yw/rMKSJbcX6VHE3m9me99AjqbBcDreeMFEWjHj55iuvjnZ9Rdo
- JqqMD9Q7EbBweiHkwvC1kgSMYw==
-X-Google-Smtp-Source: AGHT+IHPL47cqCDAT9XGyG/F10WxJa1PHjiAyF5cpQX1fdIA5xNpcybEBXvJoMYueQKG+9oWKzlIAA==
-X-Received: by 2002:a05:6a21:6da4:b0:14c:e4d9:de46 with SMTP id
- wl36-20020a056a216da400b0014ce4d9de46mr2250621pzb.39.1695949494604; 
- Thu, 28 Sep 2023 18:04:54 -0700 (PDT)
+ bh=VpXHZfEJFm7x8zdwxflKF6jhjhYGOS9jgj9H6igLeao=;
+ b=DTeN18vNhc2bJ54MasRklIlLy8nueYlgyLgqTr08GxCrv3EFnLFouxQ+ymojD+EScs
+ WK457FTqC0z+3idxMLO6YF29+NNEqGT/ac/UdME+6SvnfyFMo6rgXzHuuVU70krhbLTa
+ Br4hsfP7tldzcNUsovrvY90GPr1ZF4HyGm5TbaQJyGpV8UhxbeDqcnTvr4qbbFWUpo8i
+ 6Li7OrTbLsa7jpCITIKZFgsL/Frt46UEB0/rT0rrr2b9udPBuZp1Wc2/4LHfHve6Xoh0
+ A28Mb9KzQ9FRRx23IboFU242WvuNSKc1zAJTvm8ZLM8BJY25C/EoPo6aPm02SqP2ZpUZ
+ QdhQ==
+X-Gm-Message-State: AOJu0YzeChgLXG4VN6WeU6GZ3hCKGJdkHu6MwJtlWKgu6lIUaUBlh9c5
+ QjHt46Gq/6EHKNzr0jIgjP8zrn1t5/PmtnAnkZw=
+X-Google-Smtp-Source: AGHT+IGHx/vdyAqRYfUVA0j+BRcb73rRJ4v9MNsCYpWzIC+bo2jWSQ5uSjTnDrS/08S7Wu70SGpwQA==
+X-Received: by 2002:a17:903:24f:b0:1bd:bba1:be78 with SMTP id
+ j15-20020a170903024f00b001bdbba1be78mr3299230plh.23.1695949540902; 
+ Thu, 28 Sep 2023 18:05:40 -0700 (PDT)
 Received: from [192.168.0.4] (174-21-146-124.tukw.qwest.net. [174.21.146.124])
  by smtp.gmail.com with ESMTPSA id
- 6-20020a17090a1a0600b00263dfe9b972sm226845pjk.0.2023.09.28.18.04.53
+ u8-20020a17090341c800b001b7ffca7dbcsm15588326ple.148.2023.09.28.18.05.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 28 Sep 2023 18:04:54 -0700 (PDT)
-Message-ID: <4520374c-3b49-c0a5-d508-b18a1e33f697@linaro.org>
-Date: Thu, 28 Sep 2023 18:04:52 -0700
+ Thu, 28 Sep 2023 18:05:40 -0700 (PDT)
+Message-ID: <b7c87304-a5af-ce35-7bb7-327b9ec619e4@linaro.org>
+Date: Thu, 28 Sep 2023 18:05:38 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 2/8] target/sparc: Fix VIS fmul8x16au instruction.
-To: Nick Bowler <nbowler@draconx.ca>
-Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>
-References: <20230925050545.30912-1-nbowler@draconx.ca>
- <20230925050545.30912-3-nbowler@draconx.ca>
- <1cd9adb3-004c-7512-e587-085959296f03@linaro.org>
- <CADyTPEzpcKU3QXOQ7pSC_hkrD-BrhQ51K4WMCaYYgKuyfW09bw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/33] linux-user: Improve host and guest page size
+ handling
 Content-Language: en-US
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <CADyTPEzpcKU3QXOQ7pSC_hkrD-BrhQ51K4WMCaYYgKuyfW09bw@mail.gmail.com>
+To: qemu-devel@nongnu.org
+Cc: laurent@vivier.eu, alex.bennee@linaro.org
+References: <20230901022331.115247-1-richard.henderson@linaro.org>
+In-Reply-To: <20230901022331.115247-1-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -98,22 +95,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/28/23 17:41, Nick Bowler wrote:
-> On 2023-09-28, Richard Henderson <richard.henderson@linaro.org> wrote:
->> Belated follow-up suggestion:
->>
->> -   if ((tmp & 0xff) > 0x7f) {
->> -       tmp += 0x100;
->> -   }
->> +   tmp += 0x80;
->>
->> 7 occurrences throughout vis_helper.c.
-> 
-> I agree with making this particular change but I think since it doesn't
-> fix a bug, it should go in a separate patch.
-
-Of course.  That's what I meant by followup.
-
+Ping.
 
 r~
+
+On 8/31/23 19:22, Richard Henderson wrote:
+> Based-on: 20230829220228.928506-1-richard.henderson@linaro.org
+> ("[PATCH v5 00/20] linux-user: Implement VDSOs")
+> 
+> Changes for v2:
+>    * Minor adjustments to bsd-user.
+>    * Update docs for deprecation.
+>    * Philippe's r-b.
+> 
+> Blurb from v1:
+> 
+> While working on mmap issues for 8.1, I noticed a lot of corner
+> cases of host != guest page size that we implement poorly.
+> This seems to be particularly visible on Apple M1 with 16k pages,
+> more so than Power with 64k pages for some reason.
+> 
+> Objective 1 is to deprecate and (essentially) disable the -p option.
+> 
+> The effect of -p is apparently confusing, so much so that our own
+> testsuite misuses it.  One cannot really change the host page size,
+> and pretending otherwise means that we don't treat the host memory
+> system correctly, and stuff breaks.
+> 
+> I have not yet done the same work for bsd-user.
+> 
+> Objective 2 is to allow the guest page size to change to match the host.
+> 
+> There are corner cases of host != guest page size will fail in odd ways.
+> For case of host > guest page size, the issues could be solved with
+> softmmu, allowing a non-linear mapping between host and guest addresses
+> and also disconnecting host and guest page permissions.
+> 
+> However, host < guest page has issues with SIGBUS which I believe to be
+> totally unfixable.  At minimum one would need to monitor changes to all
+> files mapped in the address space, but I'm sure there is much more.
+> 
+> But as always the best behaviour is obtained when the host and guest
+> page sizes match -- there are no corner cases to contend with.
+> 
+> There are a set of guests which can be configured to use multiple page
+> sizes, and therefore software developed for those guests (usually) does
+> not hard-code a particular page size.  For those, we can allow the
+> page size to vary and let the guest match the host.
+> 
+> I have only changed aarch64, alpha and ppc guests so far, as those
+> are both easy to test and, especially for the case of alpha's default
+> 8k page size, prone to failure.
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (33):
+>    accel/tcg: Remove qemu_host_page_size from page_protect/page_unprotect
+>    linux-user: Adjust SVr4 NULL page mapping
+>    linux-user: Remove qemu_host_page_{size,mask} in probe_guest_base
+>    linux-user: Remove qemu_host_page_size from create_elf_tables
+>    linux-user/hppa: Simplify init_guest_commpage
+>    linux-user/nios2: Remove qemu_host_page_size from init_guest_commpage
+>    linux-user/arm: Remove qemu_host_page_size from init_guest_commpage
+>    linux-user: Remove qemu_host_page_{size,mask} from mmap.c
+>    linux-user: Remove REAL_HOST_PAGE_ALIGN from mmap.c
+>    linux-user: Remove HOST_PAGE_ALIGN from mmap.c
+>    migration: Remove qemu_host_page_size
+>    hw/tpm: Remove HOST_PAGE_ALIGN from tpm_ppi_init
+>    softmmu/physmem: Remove qemu_host_page_size
+>    softmmu/physmem: Remove HOST_PAGE_ALIGN
+>    linux-user: Remove qemu_host_page_size from main
+>    linux-user: Split out target_mmap__locked
+>    linux-user: Move some mmap checks outside the lock
+>    linux-user: Fix sub-host-page mmap
+>    linux-user: Split out mmap_end
+>    linux-user: Do early mmap placement only for reserved_va
+>    linux-user: Split out mmap_h_eq_g
+>    linux-user: Split out mmap_h_lt_g
+>    linux-user: Split out mmap_h_gt_g
+>    tests/tcg: Remove run-test-mmap-*
+>    tests/tcg: Extend file in linux-madvise.c
+>    *-user: Deprecate and disable -p pagesize
+>    cpu: Remove page_size_init
+>    accel/tcg: Disconnect TargetPageDataNode from page size
+>    linux-user: Allow TARGET_PAGE_BITS_VARY
+>    target/arm: Enable TARGET_PAGE_BITS_VARY for AArch64 user-only
+>    linux-user: Bound mmap_min_addr by host page size
+>    target/ppc: Enable TARGET_PAGE_BITS_VARY for user-only
+>    target/alpha: Enable TARGET_PAGE_BITS_VARY for user-only
+> 
+>   docs/about/deprecated.rst                 |   7 +
+>   docs/user/main.rst                        |   3 -
+>   bsd-user/qemu.h                           |   7 +
+>   include/exec/cpu-common.h                 |   7 -
+>   include/hw/core/cpu.h                     |   2 -
+>   target/alpha/cpu-param.h                  |  16 +-
+>   target/arm/cpu-param.h                    |   6 +-
+>   target/ppc/cpu-param.h                    |   9 +-
+>   accel/tcg/translate-all.c                 |   1 -
+>   accel/tcg/user-exec.c                     |  31 +-
+>   bsd-user/main.c                           |  21 +-
+>   cpu.c                                     |  13 -
+>   hw/tpm/tpm_ppi.c                          |   3 +-
+>   linux-user/elfload.c                      |  67 +-
+>   linux-user/main.c                         |  33 +-
+>   linux-user/mmap.c                         | 714 +++++++++++++---------
+>   migration/ram.c                           |  22 +-
+>   softmmu/physmem.c                         |  17 +-
+>   softmmu/vl.c                              |   1 -
+>   target/arm/cpu.c                          |  51 +-
+>   tests/tcg/multiarch/linux/linux-madvise.c |   2 +
+>   tests/tcg/alpha/Makefile.target           |   3 -
+>   tests/tcg/arm/Makefile.target             |   3 -
+>   tests/tcg/hppa/Makefile.target            |   3 -
+>   tests/tcg/i386/Makefile.target            |   3 -
+>   tests/tcg/m68k/Makefile.target            |   3 -
+>   tests/tcg/multiarch/Makefile.target       |   9 -
+>   tests/tcg/ppc/Makefile.target             |  12 -
+>   tests/tcg/sh4/Makefile.target             |   3 -
+>   tests/tcg/sparc64/Makefile.target         |   6 -
+>   30 files changed, 626 insertions(+), 452 deletions(-)
+>   delete mode 100644 tests/tcg/ppc/Makefile.target
+>   delete mode 100644 tests/tcg/sparc64/Makefile.target
+> 
+
 
