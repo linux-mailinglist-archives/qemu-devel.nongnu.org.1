@@ -2,97 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 899F47B35E5
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8A17B35EC
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:42:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmEey-0006QM-Vf; Fri, 29 Sep 2023 10:40:04 -0400
+	id 1qmEh3-0008Bn-ND; Fri, 29 Sep 2023 10:42:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qmEeo-0006PP-0k
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:39:54 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qmEgp-00081G-Vv
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:42:03 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qmEeh-000233-KM
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:39:53 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-32003aae100so488864f8f.0
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 07:39:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1695998385; x=1696603185; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=KfSsAFLq+ozbbV3vOThRqr0DE94QBJrbP6HSXRedHd0=;
- b=HR3AF0s1F5CBeKhwxVaFyUhRCVsTUJsW10y+dYMPGNc8HMYm9gCJKlt0BPxLXq0ICU
- vsGqopidYhoV1OMVgwkaCkgg0Pf7D1ux8knJ8VAXeVDUP6v6F2+Ga+Fi1eF/iOoxzCUD
- R3IVbPSI4jSyX6QJeXCBAHHQWLdaqdRECg/THgzc8+6tSQLeC3MH87FMx0u1IOGaUcbq
- qAVaLS3I9Yg8lfNVCr8NL7JLuJb7SqQWT/lDOYRuGqqvsbatJBeuBASvHUQp2JXIITC6
- eOyn86HaaiesmQ/FyrqJ0py14LwenZjcX/wwYoS85Z4wWj7PFVGM7n8w8nYYhlUhHHJs
- hGJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695998385; x=1696603185;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=KfSsAFLq+ozbbV3vOThRqr0DE94QBJrbP6HSXRedHd0=;
- b=SlwC9gi3Xdi6NnD0YWqxNef/JqPPQwo353mcRo6mgIM6iyvMY2hujGIDm9QYxwOdC/
- rUojw8rZdD1uvMjLTAXIer1FjwPVM0yrcprinCIkOKDAF90QeKBI0uLkdqN0PuLbvukF
- WMIiDwkQlE2PL8et2+vuZqKpyPN9Vxk8OOfF88qTlik/ozS+tK3NnZHX9t4e6YTjTu44
- VqPZtJbYxzfpTcPk3ZSeRamxCuHGLKo1cVhSKcczNZDvJaAL2myQ2gx/2cltWBoyD7yq
- pSwc4QboaKtkgjN6DsrQipuz/RFfA+FpYELVQBPfTCCg8GM0Zuj1JfdaQp7P0/PXYUI9
- rAcg==
-X-Gm-Message-State: AOJu0YxP8HFhfLU4tEtat1bowYrs88CsH7qejRBENfBNdI13IDEoSBCT
- PhtT1XBRs0j84T6bpbPc61O5Fg==
-X-Google-Smtp-Source: AGHT+IEhKp0dF5H6LQAJGb+asLo6YYQ/YuZ98NWhYm3ZQZzr2mHdbiSnhQXLdwus4+fmRuROJ+wKPw==
-X-Received: by 2002:a05:6000:3c9:b0:324:e284:fab4 with SMTP id
- b9-20020a05600003c900b00324e284fab4mr3480973wrg.0.1695998385261; 
- Fri, 29 Sep 2023 07:39:45 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- m16-20020a056000009000b0031c71693449sm21729739wrx.1.2023.09.29.07.39.44
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Sep 2023 07:39:44 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 3FBCA1FFBB;
- Fri, 29 Sep 2023 15:39:44 +0100 (BST)
-References: <20230929124304.13672-1-salil.mehta@huawei.com>
- <20230929124304.13672-10-salil.mehta@huawei.com>
-User-agent: mu4e 1.11.20; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Salil Mehta <salil.mehta@huawei.com>
-Cc: qemu-devel@nongnu.org, qemu-arm@nongnu.org, maz@kernel.org,
- jean-philippe@linaro.org, jonathan.cameron@huawei.com,
- lpieralisi@kernel.org, peter.maydell@linaro.org,
- richard.henderson@linaro.org, imammedo@redhat.com, andrew.jones@linux.dev,
- david@redhat.com, philmd@linaro.org, eric.auger@redhat.com,
- oliver.upton@linux.dev, pbonzini@redhat.com, mst@redhat.com,
- will@kernel.org, gshan@redhat.com, rafael@kernel.org,
- linux@armlinux.org.uk, darren@os.amperecomputing.com,
- ilkka@os.amperecomputing.com, vishnu@os.amperecomputing.com,
- karl.heubaum@oracle.com, miguel.luis@oracle.com, salil.mehta@opnsrc.net,
- zhukeqian1@huawei.com, wangxiongfeng2@huawei.com, wangyanan55@huawei.com,
- jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
- linuxarm@huawei.com
-Subject: Re: [PATCH 9/9] target/arm/kvm: Write CPU state back to KVM on reset
-Date: Fri, 29 Sep 2023 15:39:32 +0100
-In-reply-to: <20230929124304.13672-10-salil.mehta@huawei.com>
-Message-ID: <87pm21nivj.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qmEge-0002bY-Ft
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:41:59 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 912562188D;
+ Fri, 29 Sep 2023 14:41:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1695998505; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FdapKdgAB/z7PZAZNv3YF6w3zYY5CJjhQdUjj/6rUFw=;
+ b=e8YBNn5ln9do7aEb3WrGPm7LvOoeNoryMHzP/JqNu/35LT/pPGADs27B+MIOOUAU4H+Y4r
+ wTiDYg5CJam5AFhI1af7tpkq68eskPsjdM6OaQCmNKbDLJeEt/X0ag/ca216KOxsmMRATr
+ VPgmE98PryoGGoESdp5SsXzY9KwHGb8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1695998505;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FdapKdgAB/z7PZAZNv3YF6w3zYY5CJjhQdUjj/6rUFw=;
+ b=/z85bzQ9p/PlvAxiYdRtT9C2F81OUxYQBXrefeZLrwMc19NCeJyPiFmG6aF2gsHb/ghPpL
+ PNaU2SzwYXgxyICw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 237771390A;
+ Fri, 29 Sep 2023 14:41:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 6oELOCjiFmXwIgAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 29 Sep 2023 14:41:44 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Elena Ufimtseva <elena.ufimtseva@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [RFC PATCH 1/3] migration/multifd: Move channels_ready semaphore
+In-Reply-To: <o66r3yvserkbkfxczdweqpr3vzo2fj5jix2dv4hs22g32alqqh@lwk6qjp3fi74>
+References: <20230922145319.27380-1-farosas@suse.de>
+ <20230922145319.27380-2-farosas@suse.de>
+ <o66r3yvserkbkfxczdweqpr3vzo2fj5jix2dv4hs22g32alqqh@lwk6qjp3fi74>
+Date: Fri, 29 Sep 2023 11:41:42 -0300
+Message-ID: <8734yx11p5.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,24 +84,106 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Elena Ufimtseva <elena.ufimtseva@oracle.com> writes:
 
-Salil Mehta <salil.mehta@huawei.com> writes:
-
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> On Fri, Sep 22, 2023 at 11:53:17AM -0300, Fabiano Rosas wrote:
+>> Commit d2026ee117 ("multifd: Fix the number of channels ready") moved
+>> the "post" of channels_ready to the start of the multifd_send_thread()
+>> loop and added a missing "wait" at multifd_send_sync_main(). While it
+>> does work, the placement of the wait goes against what the rest of the
+>> code does.
+>> 
+>> The sequence at multifd_send_thread() is:
+>> 
+>>     qemu_sem_post(&multifd_send_state->channels_ready);
+>>     qemu_sem_wait(&p->sem);
+>>     <work>
+>>     if (flags & MULTIFD_FLAG_SYNC) {
+>>         qemu_sem_post(&p->sem_sync);
+>>     }
+>> 
+>> Which means that the sending thread makes itself available
+>> (channels_ready) and waits for more work (sem). So the sequence in the
+>> migration thread should be to check if any channel is available
+>> (channels_ready), give it some work and set it off (sem):
+>> 
+>>     qemu_sem_wait(&multifd_send_state->channels_ready);
+>>     <enqueue work>
+>>     qemu_sem_post(&p->sem);
+>>     if (flags & MULTIFD_FLAG_SYNC) {
+>>         qemu_sem_wait(&p->sem_sync);
+>>     }
+>> 
+>> The reason there's no deadlock today is that the migration thread
+>> enqueues the SYNC packet right before the wait on channels_ready and
+>> we end up taking advantage of the out-of-order post to sem:
+>> 
+>>         ...
+>>         qemu_sem_post(&p->sem);
+>>     }
+>>     for (i = 0; i < migrate_multifd_channels(); i++) {
+>>         MultiFDSendParams *p = &multifd_send_state->params[i];
+>> 
+>>         qemu_sem_wait(&multifd_send_state->channels_ready);
+>>         trace_multifd_send_sync_main_wait(p->id);
+>>         qemu_sem_wait(&p->sem_sync);
+>> 	...
+>> 
+>> Move the channels_ready wait before the sem post to keep the sequence
+>> consistent. Also fix the error path to post to channels_ready and
+>> sem_sync in the correct order.
+>>
 >
-> When a KVM vCPU is reset following a PSCI CPU_ON call, its power state
-> is not synchronized with KVM at the moment. Because the vCPU is not
-> marked dirty, we miss the call to kvm_arch_put_registers() that writes
-> to KVM's MP_STATE. Force mp_state synchronization.
+> Thank you Fabiano,
 >
-> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+> Your solution is more complete. I also had in mind getting rid of
+> sem_sync.
+>
+> With your second patch, this one could be merged with it?
+>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> ---
+>>  migration/multifd.c | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/migration/multifd.c b/migration/multifd.c
+>> index a7c7a947e3..d626740f2f 100644
+>> --- a/migration/multifd.c
+>> +++ b/migration/multifd.c
+>> @@ -618,6 +618,7 @@ int multifd_send_sync_main(QEMUFile *f)
+>>  
+>>          trace_multifd_send_sync_main_signal(p->id);
+>>  
+>> +        qemu_sem_wait(&multifd_send_state->channels_ready);
+>>          qemu_mutex_lock(&p->mutex);
+>>  
+>>          if (p->quit) {
+>> @@ -635,7 +636,6 @@ int multifd_send_sync_main(QEMUFile *f)
+>>      for (i = 0; i < migrate_multifd_channels(); i++) {
+>>          MultiFDSendParams *p = &multifd_send_state->params[i];
+>>  
+>> -        qemu_sem_wait(&multifd_send_state->channels_ready);
+>>          trace_multifd_send_sync_main_wait(p->id);
+>>          qemu_sem_wait(&p->sem_sync);
+>>  
+>> @@ -763,8 +763,8 @@ out:
+>>       * who pay attention to me.
+>>       */
+>>      if (ret != 0) {
+>> -        qemu_sem_post(&p->sem_sync);
+>>          qemu_sem_post(&multifd_send_state->channels_ready);
+>> +        qemu_sem_post(&p->sem_sync);
+>
+> Can this thread in this error case be woken up again between
+> these two qemu_sem_posts?
+> I see in other places p->quit is set to true before it.
+> Or maybe it should one more patch to make these consistent 
+> as well.
 
-Seems reasonable:
+That's a good point. There's clearly something going on here if we need
+a 'running', a 'quit' and a 'exiting' flag. The tls code uses quit as a
+signal in one direction while the regular multifd path uses it in
+another.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+I'll give it some more thought. Thanks
 
