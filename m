@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734AE7B2EC3
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 11:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C26657B2EC4
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 11:01:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm9Mo-0001wJ-Jn; Fri, 29 Sep 2023 05:00:58 -0400
+	id 1qm9Mf-0001n7-3E; Fri, 29 Sep 2023 05:00:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MV-0001lf-1Q
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MP-0008CF-Rl
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MT-0001l8-QQ
  for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MP-0008CA-Jq
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1695978033;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LHh7saVQdWDK6D2YuWCRZebWE9RyLsEb07FXutwk9n8=;
- b=FVnfQBZwoVQ5BHZKlOTjVgliKEkmUsZGZNQILC5wzSPGU2wNAkuCfT/CVPCM4sLediz0dM
- PBYfjJJMVBXg8BHtmDbq2yT6sjCfQuOgjoSGhnltW3NSF356Dp17yhDFXlx7HonRv8Fr8B
- OJLSUCS8aOLfzBj65bQ8Od0eSOt0XZg=
+ bh=fuyo5yYtGJxUI4HalBHeJ6YEV/j2IPp/nq6KI3/C+Ac=;
+ b=WA1hbI8wC0sKYaJnXzu1Mhn79jhozZMzq8TMam/Bi/6zGniMVwhcItKpM9SvcKrH6cY4Lu
+ 0LQMzr4or51pZ0qaADFJDlqrRlTM9SVCDCCorDywd2R8gxgMRHpT7FJF2ROcKvTSxOc4le
+ tEHpjtd/+DQ3w2uAhGVq19/IfozgVjU=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-693-Nvr_bfRJPY-Zj4gcxJ7jxg-1; Fri, 29 Sep 2023 05:00:28 -0400
-X-MC-Unique: Nvr_bfRJPY-Zj4gcxJ7jxg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-232-mZU6g1TtPz6t2Vuuczh-Bw-1; Fri, 29 Sep 2023 05:00:28 -0400
+X-MC-Unique: mZU6g1TtPz6t2Vuuczh-Bw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D2F31DD35D1;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9A8801DD35D3;
  Fri, 29 Sep 2023 09:00:28 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6B5F349BB9A;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 757E2492B16;
  Fri, 29 Sep 2023 09:00:28 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id F0DFE21E68AB; Fri, 29 Sep 2023 10:50:53 +0200 (CEST)
+ id F3BB921E68AC; Fri, 29 Sep 2023 10:50:53 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Alistair Francis <alistair23@gmail.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 54/56] softmmu/device_tree: Fixup local variables shadowing
-Date: Fri, 29 Sep 2023 10:50:51 +0200
-Message-ID: <20230929085053.2789105-55-armbru@redhat.com>
+Cc: stefanha@redhat.com, Klaus Jensen <k.jensen@samsung.com>,
+ Jesper Wendel Devantier <j.devantier@samsung.com>
+Subject: [PULL 55/56] hw/nvme: Clean up local variable shadowing in
+ nvme_ns_init()
+Date: Fri, 29 Sep 2023 10:50:52 +0200
+Message-ID: <20230929085053.2789105-56-armbru@redhat.com>
 In-Reply-To: <20230929085053.2789105-1-armbru@redhat.com>
 References: <20230929085053.2789105-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: 12
 X-Spam_score: 1.2
 X-Spam_bar: +
 X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
@@ -81,44 +81,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Alistair Francis <alistair23@gmail.com>
+From: Klaus Jensen <k.jensen@samsung.com>
 
-Local variables shadowing other local variables or parameters make the
-code needlessly hard to understand.  Bugs love to hide in such code.
-Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
-on polling error".
+Fix local variable shadowing in nvme_ns_init().
 
-This patch removes the local variable shadowing. Tested by adding:
-
-    --extra-cflags='-Wshadow=local -Wno-error=shadow=local -Wno-error=shadow=compatible-local'
-
-To configure
-
-Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20230925043023.71448-5-alistair.francis@wdc.com>
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Reported-by: Markus Armbruster <armbru@redhat.com>
+Signed-off-by: Klaus Jensen <k.jensen@samsung.com>
+Message-ID: <20230925-fix-local-shadowing-v1-1-3a1172132377@samsung.com>
+Reviewed-by: Jesper Wendel Devantier <j.devantier@samsung.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- softmmu/device_tree.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/nvme/ns.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/softmmu/device_tree.c b/softmmu/device_tree.c
-index 30aa3aea9f..eb5166ca36 100644
---- a/softmmu/device_tree.c
-+++ b/softmmu/device_tree.c
-@@ -418,9 +418,9 @@ int qemu_fdt_setprop_string_array(void *fdt, const char *node_path,
-     }
-     p = str = g_malloc0(total_len);
-     for (i = 0; i < len; i++) {
--        int len = strlen(array[i]) + 1;
--        pstrcpy(p, len, array[i]);
--        p += len;
-+        int offset = strlen(array[i]) + 1;
-+        pstrcpy(p, offset, array[i]);
-+        p += offset;
-     }
+diff --git a/hw/nvme/ns.c b/hw/nvme/ns.c
+index 44aba8f4d9..0eabcf5cf5 100644
+--- a/hw/nvme/ns.c
++++ b/hw/nvme/ns.c
+@@ -107,7 +107,7 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
  
-     ret = qemu_fdt_setprop(fdt, node_path, prop, str, total_len);
+     ns->pif = ns->params.pif;
+ 
+-    static const NvmeLBAF lbaf[16] = {
++    static const NvmeLBAF defaults[16] = {
+         [0] = { .ds =  9           },
+         [1] = { .ds =  9, .ms =  8 },
+         [2] = { .ds =  9, .ms = 16 },
+@@ -120,7 +120,7 @@ static int nvme_ns_init(NvmeNamespace *ns, Error **errp)
+ 
+     ns->nlbaf = 8;
+ 
+-    memcpy(&id_ns->lbaf, &lbaf, sizeof(lbaf));
++    memcpy(&id_ns->lbaf, &defaults, sizeof(defaults));
+ 
+     for (i = 0; i < ns->nlbaf; i++) {
+         NvmeLBAF *lbaf = &id_ns->lbaf[i];
 -- 
 2.41.0
 
