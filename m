@@ -2,69 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 571547B2E73
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 10:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE4F7B2ED0
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 11:02:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm9DY-00055n-4A; Fri, 29 Sep 2023 04:51:24 -0400
+	id 1qm9Ma-0001lb-Kc; Fri, 29 Sep 2023 05:00:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9DV-000522-Sz
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:51:21 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.145.221.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MS-0001i7-Nn
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9DC-0005cm-N2
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:51:21 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MM-0008BV-J6
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695977461;
+ s=mimecast20190719; t=1695978029;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=H1WyZPQihKKRvCMSxzXzu6GeHQY2ALdqX2ziwjriSxg=;
- b=CEBgQTu59Pci53ThsNoHhswUVOdfVnfMzbQKFm003ooP9eeBiB31h6fFLx1V10J2Z4L73L
- YblV2wP31OIlkZKauSn6PXNnQsoOuAUD4HQ9Nz2lWxozfd5YmadIq+++Qp1iQ29LB+WXAj
- jHBTiPDPjYHVzR6hnCcuN1bvG1U9ChQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-2-WOKEJ8IlOcOA7L4cn_dgfw-1; Fri, 29 Sep 2023 04:50:58 -0400
-X-MC-Unique: WOKEJ8IlOcOA7L4cn_dgfw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=2+QjRvp3xEKiyrdGhfSbaHvdWg1xeZJy16DjtM+7W3I=;
+ b=ixba2SUKG31U/xdq3fVI6NInNIIwC9vi3SafOHMyUl7LSIIhDki7ETqgZ+Bwbsjj4QawxL
+ lQ+QSzVXuFq2owKWqOq2AYjzj70IpoktCxjZ1EMXeamHco4stF/C5M+srn7ogEUogAz9M7
+ TLB0hNacZD0sXGRKZlsRnhKk+BhlAs4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-52-xdb59CrMO4K0qrLgeHKuiw-1; Fri, 29 Sep 2023 05:00:27 -0400
+X-MC-Unique: xdb59CrMO4K0qrLgeHKuiw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0E9E1101A550;
- Fri, 29 Sep 2023 08:50:58 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7163C3806737;
+ Fri, 29 Sep 2023 09:00:27 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id E01F914171CB;
- Fri, 29 Sep 2023 08:50:57 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4D4AAC15BB8;
+ Fri, 29 Sep 2023 09:00:27 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id D85BB21E68A2; Fri, 29 Sep 2023 10:50:53 +0200 (CEST)
+ id DA23121E68A3; Fri, 29 Sep 2023 10:50:53 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Andrew Jeffery <andrew@aj.id.au>
-Subject: [PULL 45/56] aspeed/i3c: Rename variable shadowing a local
-Date: Fri, 29 Sep 2023 10:50:42 +0200
-Message-ID: <20230929085053.2789105-46-armbru@redhat.com>
+ Joel Stanley <joel@jms.id.au>, Andrew Jeffery <andrew@aj.id.au>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PULL 46/56] aspeed/timer: Clean up local variable shadowing
+Date: Fri, 29 Sep 2023 10:50:43 +0200
+Message-ID: <20230929085053.2789105-47-armbru@redhat.com>
 In-Reply-To: <20230929085053.2789105-1-armbru@redhat.com>
 References: <20230929085053.2789105-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=216.145.221.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
+ DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SBL_CSS=3.335,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,46 +82,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Cédric Le Goater <clg@kaod.org>
 
-to fix warning :
+commit 8137355e850f ("aspeed/timer: Fix behaviour running Linux")
+introduced a MAX() expression to calculate the next timer deadline :
 
-  ../hw/i3c/aspeed_i3c.c: In function ‘aspeed_i3c_realize’:
-  ../hw/i3c/aspeed_i3c.c:1959:17: warning: declaration of ‘dev’ shadows a parameter [-Wshadow=local]
-   1959 |         Object *dev = OBJECT(&s->devices[i]);
-        |                 ^~~
-  ../hw/i3c/aspeed_i3c.c:1942:45: note: shadowed declaration is here
-   1942 | static void aspeed_i3c_realize(DeviceState *dev, Error **errp)
-        |                                ~~~~~~~~~~~~~^~~
+    return calculate_time(t, MAX(MAX(t->match[0], t->match[1]), 0));
 
+The second MAX() is not necessary since the compared values are an
+unsigned and 0. Simply remove it and fix warning :
+
+  ../hw/timer/aspeed_timer.c: In function ‘calculate_next’:
+  ../include/qemu/osdep.h:396:31: warning: declaration of ‘_a’ shadows a previous local [-Wshadow=compatible-local]
+    396 |         typeof(1 ? (a) : (b)) _a = (a), _b = (b);       \
+        |                               ^~
+  ../hw/timer/aspeed_timer.c:170:12: note: in expansion of macro ‘MAX’
+    170 |     next = MAX(MAX(calculate_match(t, 0), calculate_match(t, 1)), 0);
+        |            ^~~
+  ../hw/timer/aspeed_timer.c:170:16: note: in expansion of macro ‘MAX’
+    170 |     next = MAX(MAX(calculate_match(t, 0), calculate_match(t, 1)), 0);
+        |                ^~~
+  /home/legoater/work/qemu/qemu-aspeed.git/include/qemu/osdep.h:396:31: note: shadowed declaration is here
+    396 |         typeof(1 ? (a) : (b)) _a = (a), _b = (b);       \
+        |                               ^~
+  ../hw/timer/aspeed_timer.c:170:12: note: in expansion of macro ‘MAX’
+    170 |     next = MAX(MAX(calculate_match(t, 0), calculate_match(t, 1)), 0);
+        |            ^~~
+
+Cc: Joel Stanley <joel@jms.id.au>
+Cc: Andrew Jeffery <andrew@aj.id.au>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
-Message-ID: <20230922155924.1172019-4-clg@kaod.org>
+Message-ID: <20230922155924.1172019-5-clg@kaod.org>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Andrew Jeffery <andrew@aj.id.au>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/misc/aspeed_i3c.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/timer/aspeed_timer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/misc/aspeed_i3c.c b/hw/misc/aspeed_i3c.c
-index f54f5da522..d1ff617671 100644
---- a/hw/misc/aspeed_i3c.c
-+++ b/hw/misc/aspeed_i3c.c
-@@ -296,13 +296,13 @@ static void aspeed_i3c_realize(DeviceState *dev, Error **errp)
-     memory_region_add_subregion(&s->iomem_container, 0x0, &s->iomem);
+diff --git a/hw/timer/aspeed_timer.c b/hw/timer/aspeed_timer.c
+index 9c20b3d6ad..72161f07bb 100644
+--- a/hw/timer/aspeed_timer.c
++++ b/hw/timer/aspeed_timer.c
+@@ -167,7 +167,7 @@ static uint64_t calculate_next(struct AspeedTimer *t)
+         qemu_set_irq(t->irq, t->level);
+     }
  
-     for (i = 0; i < ASPEED_I3C_NR_DEVICES; ++i) {
--        Object *dev = OBJECT(&s->devices[i]);
-+        Object *i3c_dev = OBJECT(&s->devices[i]);
+-    next = MAX(MAX(calculate_match(t, 0), calculate_match(t, 1)), 0);
++    next = MAX(calculate_match(t, 0), calculate_match(t, 1));
+     t->start = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
  
--        if (!object_property_set_uint(dev, "device-id", i, errp)) {
-+        if (!object_property_set_uint(i3c_dev, "device-id", i, errp)) {
-             return;
-         }
- 
--        if (!sysbus_realize(SYS_BUS_DEVICE(dev), errp)) {
-+        if (!sysbus_realize(SYS_BUS_DEVICE(i3c_dev), errp)) {
-             return;
-         }
- 
+     return calculate_time(t, next);
 -- 
 2.41.0
 
