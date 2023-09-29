@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5EF17B32CB
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 14:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E58D7B32CC
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 14:47:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmCtN-00085R-Io; Fri, 29 Sep 2023 08:46:49 -0400
+	id 1qmCtg-00010p-My; Fri, 29 Sep 2023 08:47:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qmCt7-0007ZO-U6; Fri, 29 Sep 2023 08:46:38 -0400
+ id 1qmCtR-0000Si-Gr; Fri, 29 Sep 2023 08:46:54 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qmCt4-0007Ed-JC; Fri, 29 Sep 2023 08:46:33 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RxqnD1Sgcz689xQ;
- Fri, 29 Sep 2023 20:45:04 +0800 (CST)
+ id 1qmCtN-0007FX-AV; Fri, 29 Sep 2023 08:46:52 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rxqq70rlXz67gyM;
+ Fri, 29 Sep 2023 20:46:43 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.48.156.153) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Fri, 29 Sep 2023 13:46:09 +0100
+ 15.1.2507.31; Fri, 29 Sep 2023 13:46:28 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,9 +38,9 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: [PATCH 6/9] hw/acpi: Update GED _EVT method AML with cpu scan
-Date: Fri, 29 Sep 2023 13:43:01 +0100
-Message-ID: <20230929124304.13672-7-salil.mehta@huawei.com>
+Subject: [PATCH 7/9] hw/acpi: Update ACPI GED framework to support vCPU Hotplug
+Date: Fri, 29 Sep 2023 13:43:02 +0100
+Message-ID: <20230929124304.13672-8-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230929124304.13672-1-salil.mehta@huawei.com>
 References: <20230929124304.13672-1-salil.mehta@huawei.com>
@@ -75,49 +75,73 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-OSPM evaluates _EVT method to map the event. The cpu hotplug event eventually
-results in start of the cpu scan. Scan figures out the cpu and the kind of
-event(plug/unplug) and notifies it back to the guest.
-
-The change in this patch updates the GED AML _EVT method with the call to
-\\_SB.CPUS.CSCN which will do above.
+ACPI GED shall be used to convey to the guest kernel about any CPU hot-(un)plug
+events. Therefore, existing ACPI GED framework inside QEMU needs to be enhanced
+to support CPU hotplug state and events.
 
 Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/acpi/generic_event_device.c | 4 ++++
- include/hw/acpi/cpu_hotplug.h  | 2 ++
- 2 files changed, 6 insertions(+)
+ hw/acpi/generic_event_device.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
-index d2fa1d0e4a..62d504d231 100644
+index 62d504d231..0d5f0140e5 100644
 --- a/hw/acpi/generic_event_device.c
 +++ b/hw/acpi/generic_event_device.c
-@@ -108,6 +108,10 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
-                 aml_append(if_ctx, aml_call0(MEMORY_DEVICES_CONTAINER "."
-                                              MEMORY_SLOT_SCAN_METHOD));
-                 break;
-+            case ACPI_GED_CPU_HOTPLUG_EVT:
-+                aml_append(if_ctx, aml_call0(ACPI_CPU_CONTAINER "."
-+                                             ACPI_CPU_SCAN_METHOD));
-+                break;
-             case ACPI_GED_PWR_DOWN_EVT:
-                 aml_append(if_ctx,
-                            aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
-diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
-index 48b291e45e..ef631750b4 100644
---- a/include/hw/acpi/cpu_hotplug.h
-+++ b/include/hw/acpi/cpu_hotplug.h
-@@ -20,6 +20,8 @@
- #include "hw/acpi/cpu.h"
+@@ -12,6 +12,7 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "hw/acpi/acpi.h"
++#include "hw/acpi/cpu.h"
+ #include "hw/acpi/generic_event_device.h"
+ #include "hw/irq.h"
+ #include "hw/mem/pc-dimm.h"
+@@ -239,6 +240,8 @@ static void acpi_ged_device_plug_cb(HotplugHandler *hotplug_dev,
+         } else {
+             acpi_memory_plug_cb(hotplug_dev, &s->memhp_state, dev, errp);
+         }
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
++        acpi_cpu_plug_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
+     } else {
+         error_setg(errp, "virt: device plug request for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -253,6 +256,8 @@ static void acpi_ged_unplug_request_cb(HotplugHandler *hotplug_dev,
+     if ((object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM) &&
+                        !(object_dynamic_cast(OBJECT(dev), TYPE_NVDIMM)))) {
+         acpi_memory_unplug_request_cb(hotplug_dev, &s->memhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
++        acpi_cpu_unplug_request_cb(hotplug_dev, &s->cpuhp_state, dev, errp);
+     } else {
+         error_setg(errp, "acpi: device unplug request for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -266,6 +271,8 @@ static void acpi_ged_unplug_cb(HotplugHandler *hotplug_dev,
  
- #define ACPI_CPU_HOTPLUG_REG_LEN 12
-+#define ACPI_CPU_SCAN_METHOD "CSCN"
-+#define ACPI_CPU_CONTAINER "\\_SB.CPUS"
+     if (object_dynamic_cast(OBJECT(dev), TYPE_PC_DIMM)) {
+         acpi_memory_unplug_cb(&s->memhp_state, dev, errp);
++    } else if (object_dynamic_cast(OBJECT(dev), TYPE_CPU)) {
++        acpi_cpu_unplug_cb(&s->cpuhp_state, dev, errp);
+     } else {
+         error_setg(errp, "acpi: device unplug for unsupported device"
+                    " type: %s", object_get_typename(OBJECT(dev)));
+@@ -277,6 +284,7 @@ static void acpi_ged_ospm_status(AcpiDeviceIf *adev, ACPIOSTInfoList ***list)
+     AcpiGedState *s = ACPI_GED(adev);
  
- typedef struct AcpiCpuHotplug {
-     Object *device;
+     acpi_memory_ospm_status(&s->memhp_state, list);
++    acpi_cpu_ospm_status(&s->cpuhp_state, list);
+ }
+ 
+ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+@@ -291,6 +299,8 @@ static void acpi_ged_send_event(AcpiDeviceIf *adev, AcpiEventStatusBits ev)
+         sel = ACPI_GED_PWR_DOWN_EVT;
+     } else if (ev & ACPI_NVDIMM_HOTPLUG_STATUS) {
+         sel = ACPI_GED_NVDIMM_HOTPLUG_EVT;
++    } else if (ev & ACPI_CPU_HOTPLUG_STATUS) {
++        sel = ACPI_GED_CPU_HOTPLUG_EVT;
+     } else {
+         /* Unknown event. Return without generating interrupt. */
+         warn_report("GED: Unsupported event %d. No irq injected", ev);
 -- 
 2.34.1
 
