@@ -2,73 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F737B2D58
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 09:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8AD47B2D69
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 10:01:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm8Nw-0003Fk-Dr; Fri, 29 Sep 2023 03:58:04 -0400
+	id 1qm8QX-0004g4-Uq; Fri, 29 Sep 2023 04:00:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qm8Nv-0003FX-2g
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 03:58:03 -0400
-Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm8QS-0004fE-F5
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:00:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qm8Ns-0001El-Sl
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 03:58:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
- Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
- :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=QB2pg+mjhPrDb+npuFy7lf4XYzMLtZBzpbGvauE/Kb4=; b=K96pq7mCtXTDPkqN70XLyTsD39
- NSGNS5vlYWUsFtkFPXfKBHX1qY8nPurZloI7f+nxrA5/AT7QOetl/FtUMyeVp2H020EWVqAlia+Gt
- JcdVqdSeKSrUP/chGkGqm9vPzMGWhFkD6foUT/2XhDIvCU3B7E/8sm+1v9xY6d+Mj1usxra20jCbx
- iEBXdJbnaDbLR6Xq5F/3chrBoKZWLxUuodnVA61Ckljv7b2CzXuczJ2NzOLhFNxSSPnZSmqclUuCJ
- 1PAgZLHN5huo1KltsVIg7Q1sbyr1CjXLpDB2o0luhL+d6gXax9pVz4mVxV/JnuUcohxD0yeC1ZHOx
- ADoE21nOq9W1x1bFeRt61rSOQhobR2GgxPpHY/CD6U/hIlLNEIyTX8ilhFgD9pWkS8jpdZXU+qV1T
- a0Dz+YayfGfCm2lseo6m8qjLLABJy1Qp/62hc5x8gqySRDBGetnwlvt+O+m9H8wq/42B1JyYpm4fQ
- rJacjgj70hEL1JnoS/CVNJzERbPYu0abcBRXQSJGS+gQgJko2sBPm8gdDanEn0jlB0k+PKH8xSXmT
- QPuHUW3VVmttKta7ch+RV+hP8LwYO8DNSjEL14HwbFiflqnOSQiD0821216K6Ncn94HFNrPDWb+B7
- fmCEhIJkKGlSAfKlwG9BfmnOsxBjy0rcW3Vr75Fas=;
-Received: from [2a00:23c4:8baf:5f00:89cc:78d2:7179:5c3b]
- by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qm8Nd-000BJ7-3U; Fri, 29 Sep 2023 08:57:49 +0100
-Message-ID: <d462d277-4f32-2b98-19c4-7af43167af8d@ilande.co.uk>
-Date: Fri, 29 Sep 2023 08:57:49 +0100
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm8QP-000209-DP
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:00:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1695974436;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=K1ZmMq13e1tTfqJlhBanbwC7V9DQbOVpT7/4fHoXAm8=;
+ b=JiKKsK8BnBVV7WuVuH8lg3DOOI+isrRDgJq6MIGJP5sNY016npoD7griyoa8WDtW7rsboq
+ 5DHBDIsWKaliV12TniHW5lupMhYtypu8nSXdlYgOL2reY8dY7ihoFiU4nzzX9EX668qUss
+ ycdc2T65yAohL/7Ro0gkB4He2ELu1eE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-640-3ITqmRZWPx6Pana7AFe3YA-1; Fri, 29 Sep 2023 04:00:16 -0400
+X-MC-Unique: 3ITqmRZWPx6Pana7AFe3YA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 70F1F858F19;
+ Fri, 29 Sep 2023 08:00:16 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4D1C9100651E;
+ Fri, 29 Sep 2023 08:00:16 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 5FC2021E6904; Fri, 29 Sep 2023 10:00:15 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Cc: Michael Tokarev <mjt@tls.msk.ru>,  qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org,  Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH] target/ppc: Rename variables to avoid local variable
+ shadowing in VUPKPX
+References: <20230923071203.1209663-1-clg@kaod.org>
+ <26ec2024-d022-eb3d-8d50-37f9219fc597@tls.msk.ru>
+ <f74e6a0a-b78f-8924-6abf-42cbad6c69eb@kaod.org>
+Date: Fri, 29 Sep 2023 10:00:15 +0200
+In-Reply-To: <f74e6a0a-b78f-8924-6abf-42cbad6c69eb@kaod.org>
+ (=?utf-8?Q?=22C=C3=A9dric?= Le
+ Goater"'s message of "Sat, 23 Sep 2023 17:59:35 +0200")
+Message-ID: <878r8pflyo.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
- Laszlo Ersek <lersek@redhat.com>
-Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230913144959.41891-1-lersek@redhat.com>
- <CAJ+F1CJfROA9ezKi6Tzs1hLun8jpnWhrQCjreQdWhGro97CAyA@mail.gmail.com>
- <4c36a1eb-9a76-2231-4ead-d8daab657d84@redhat.com>
- <CAJ+F1CKPaU5z8mnnFJWvw4CmFyEenFQ679A5Nf3CAqzJMqdqVA@mail.gmail.com>
-Content-Language: en-US
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-In-Reply-To: <CAJ+F1CKPaU5z8mnnFJWvw4CmFyEenFQ679A5Nf3CAqzJMqdqVA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:89cc:78d2:7179:5c3b
-X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 0/4] ui/console: multihead: fix crash, simplify logic
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
-Received-SPF: pass client-ip=2001:41c9:1:41f::167;
- envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.473,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,29 +86,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26/09/2023 09:00, Marc-André Lureau wrote:
-
-> Hi Laszlo
-> 
-> On Mon, Sep 25, 2023 at 7:36 PM Laszlo Ersek <lersek@redhat.com> wrote:
->> Has this been queued by someone? Both Gerd and Marc-André are "odd
->> fixers", so I'm not sure who should be sending a PR with these patches
->> (and I don't see a pending PULL at
->> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/threads.html>
->> with these patch subjects included).
-> 
-> I have the series in my "ui" branch. I was waiting for a few more
-> patches to be accumulated. But if someone else takes this first, I'll
-> drop them.
-
-Does this series fix the "../ui/console.c:818: dpy_get_ui_info: Assertion 
-`dpy_ui_info_supported(con)' failed." assert() on startup when using gtk? It would be 
-good to get this fixed in git master soon, as it has been broken for a couple of 
-weeks now, and -display sdl has issues tracking the mouse correctly on my laptop here :(
-
-
-ATB,
-
-Mark.
+Q8OpZHJpYyBMZSBHb2F0ZXIgPGNsZ0BrYW9kLm9yZz4gd3JpdGVzOg0KDQo+IE9uIDkvMjMvMjMg
+MTA6MjUsIE1pY2hhZWwgVG9rYXJldiB3cm90ZToNCj4+IDIzLjA5LjIwMjMgMTA6MTIsIEPDqWRy
+aWMgTGUgR29hdGVyOg0KPj4gDQo+Pj4gLS0tIGEvdGFyZ2V0L3BwYy9pbnRfaGVscGVyLmMNCj4+
+PiArKysgYi90YXJnZXQvcHBjL2ludF9oZWxwZXIuYw0KPj4+IEBAIC0yMDIyLDExICsyMDIyLDEx
+IEBAIHZvaWQgaGVscGVyX3ZzdW00dWJzKENQVVBQQ1N0YXRlICplbnYsIHBwY19hdnJfdCAqciwg
+cHBjX2F2cl90ICphLCBwcGNfYXZyX3QgKmIpDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgIGZvciAo
+aSA9IDA7IGkgPCBBUlJBWV9TSVpFKHItPnUzMik7IGkrKykge8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+dWludDE2X3QgZSA9IGItPnUxNltoaSA/IGkgOiBpICsgNF07wqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+Pj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgdWludDhfdCBhID0gKGUgPj4gMTUpID8gMHhmZiA6IDA7wqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBcDQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgdWludDhfdCByID0gKGUgPj4gMTApICYgMHgxZjvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIHVpbnQ4X3QgX3IgPSAoZSA+PiAxMCkgJiAweDFmO8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXA0KPj4+IMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIHVpbnQ4X3QgZyA9IChlID4+IDUpICYgMHgxZjvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBc
+DQo+Pj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdWludDhfdCBiID0gZSAmIDB4MWY7wqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCBcDQo+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdWludDhfdCBfYiA9
+IGUgJiAweDFmO8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFwNCj4+IEknZCBzdWdnZXN0IHRvIHJlbmFtZSBh
+bGwgb2YgdGhlbSBoZXJlIHRvIGhhdmUgdGhlIHNhbWUgcGF0dGVybi7CoCBNYXliZS4uIDopDQo+
+DQo+IG9yIG1heWJlIHVzZSB0aGUgZmllbGQgbmFtZXMgZnJvbSB0aGUgSVNBIDogVlJULFZSQSxW
+UkIgPw0KDQpTaG91bGQgSSBleHBlY3QgYSByZXNwaW4/DQoNCklmIG5vdCwgYW55b25lIHJlYWR5
+IHRvIGdpdmUgYW4gUi1ieSBhcyBpcz8NCg==
 
 
