@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F487B361B
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 707E57B362F
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 16:57:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmErL-0005qN-CB; Fri, 29 Sep 2023 10:52:51 -0400
+	id 1qmErX-00060e-Hz; Fri, 29 Sep 2023 10:53:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qmErJ-0005p2-T1
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:52:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qmErV-0005zk-QK
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:53:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qmEqu-0004j5-7v
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:52:49 -0400
+ (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qmEr4-0004nS-6V
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 10:53:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695999143;
+ s=mimecast20190719; t=1695999153;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=eUNalayhXBzWEfQUn8tWQWae18q2Qi6RfF7YqEtmMms=;
- b=KCQBuOT4tOyz8LjNu0oKbVlUc9oQI3zNO9VDLLyv6fArdLMndQPadPbQspthj6SMQt3mXE
- U1oShKOnlSzOifShppqIMr90WT1ntwbMYbwUfkjaEHT1OBkD3q8QdQ+swd+kkmr58coRBf
- TRbBFOH2riB3BoE4q949Mnbnc8tlIt4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-12-I2TMl8B5OJajiQoFJUJJgQ-1; Fri, 29 Sep 2023 10:52:18 -0400
-X-MC-Unique: I2TMl8B5OJajiQoFJUJJgQ-1
+ bh=bh7JMiR0wYJHqcxvzKIO19JQMbsgLc8dXRrla6pC/18=;
+ b=Y4XLNeC/s2gByuDi5O3CPh4ki6xMnzkTsXYb6SfGHM3Hf9FDl4UXd+Q/WeBnIMUk1UfVTm
+ FQxpDswh0n3H5ZQbTGusg/C3NlMInmoEIhdhEQgi6/VenMQUOpFP3rw7xwHlI/IwopXnQi
+ hMrXTVAKsGoKwlrshTxSp/g/nIGVy+g=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-391-QEEGq3RUMZa2FP5pu_vgQQ-1; Fri, 29 Sep 2023 10:52:19 -0400
+X-MC-Unique: QEEGq3RUMZa2FP5pu_vgQQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
  [10.11.54.4])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E66548039CB;
- Fri, 29 Sep 2023 14:52:17 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5A470280A9CD;
+ Fri, 29 Sep 2023 14:52:19 +0000 (UTC)
 Received: from merkur.fritz.box (unknown [10.39.193.159])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9BA622026D4B;
- Fri, 29 Sep 2023 14:52:16 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 282F62026D4B;
+ Fri, 29 Sep 2023 14:52:18 +0000 (UTC)
 From: Kevin Wolf <kwolf@redhat.com>
 To: qemu-block@nongnu.org
 Cc: kwolf@redhat.com, stefanha@redhat.com, eesposit@redhat.com,
  eblake@redhat.com, pbonzini@redhat.com, vsementsov@yandex-team.ru,
  qemu-devel@nongnu.org
-Subject: [PATCH 10/22] block: Mark bdrv_refresh_filename() and callers
+Subject: [PATCH 11/22] block: Mark bdrv_primary_child() and callers
  GRAPH_RDLOCK
-Date: Fri, 29 Sep 2023 16:51:45 +0200
-Message-ID: <20230929145157.45443-11-kwolf@redhat.com>
+Date: Fri, 29 Sep 2023 16:51:46 +0200
+Message-ID: <20230929145157.45443-12-kwolf@redhat.com>
 In-Reply-To: <20230929145157.45443-1-kwolf@redhat.com>
 References: <20230929145157.45443-1-kwolf@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kwolf@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,565 +80,104 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 This adds GRAPH_RDLOCK annotations to declare that callers of
-bdrv_refresh_filename() need to hold a reader lock for the graph
+bdrv_primary_child() need to hold a reader lock for the graph
 because it accesses the children list of a node.
 
 Signed-off-by: Kevin Wolf <kwolf@redhat.com>
 ---
- block/vhdx.h                       |  5 +--
- include/block/block-global-state.h |  9 ++++--
- include/block/block_int-common.h   |  8 ++---
- include/block/qapi.h               | 16 ++++------
- block.c                            | 23 +++++++++++---
- block/nfs.c                        |  2 +-
- block/qapi.c                       | 11 ++++---
- block/raw-format.c                 |  2 ++
- block/vhdx.c                       |  4 +++
- block/vmdk.c                       | 51 +++++++++++++++++++-----------
- blockdev.c                         | 13 ++++++++
- qemu-img.c                         |  4 +++
- 12 files changed, 101 insertions(+), 47 deletions(-)
+ include/block/block_int-io.h |  5 +++--
+ block.c                      | 11 ++++++++++-
+ block/snapshot.c             |  3 +++
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/block/vhdx.h b/block/vhdx.h
-index 455a627a46..85594a5380 100644
---- a/block/vhdx.h
-+++ b/block/vhdx.h
-@@ -410,8 +410,9 @@ uint32_t vhdx_checksum_calc(uint32_t crc, uint8_t *buf, size_t size,
+diff --git a/include/block/block_int-io.h b/include/block/block_int-io.h
+index eb0da7232e..2b6004ab93 100644
+--- a/include/block/block_int-io.h
++++ b/include/block/block_int-io.h
+@@ -133,7 +133,7 @@ bdrv_refresh_total_sectors(BlockDriverState *bs, int64_t hint);
+ BdrvChild *bdrv_cow_child(BlockDriverState *bs);
+ BdrvChild *bdrv_filter_child(BlockDriverState *bs);
+ BdrvChild *bdrv_filter_or_cow_child(BlockDriverState *bs);
+-BdrvChild *bdrv_primary_child(BlockDriverState *bs);
++BdrvChild * GRAPH_RDLOCK bdrv_primary_child(BlockDriverState *bs);
+ BlockDriverState *bdrv_skip_filters(BlockDriverState *bs);
+ BlockDriverState *bdrv_backing_chain_next(BlockDriverState *bs);
  
- bool vhdx_checksum_is_valid(uint8_t *buf, size_t size, int crc_offset);
+@@ -155,7 +155,8 @@ static inline BlockDriverState *bdrv_filter_or_cow_bs(BlockDriverState *bs)
+     return child_bs(bdrv_filter_or_cow_child(bs));
+ }
  
--int vhdx_parse_log(BlockDriverState *bs, BDRVVHDXState *s, bool *flushed,
--                   Error **errp);
-+int GRAPH_RDLOCK
-+vhdx_parse_log(BlockDriverState *bs, BDRVVHDXState *s, bool *flushed,
-+               Error **errp);
- 
- int coroutine_fn GRAPH_RDLOCK
- vhdx_log_write_and_flush(BlockDriverState *bs, BDRVVHDXState *s,
-diff --git a/include/block/block-global-state.h b/include/block/block-global-state.h
-index 4d80b3d554..ec623ef3c9 100644
---- a/include/block/block-global-state.h
-+++ b/include/block/block-global-state.h
-@@ -132,7 +132,7 @@ int bdrv_reopen_set_read_only(BlockDriverState *bs, bool read_only,
-                               Error **errp);
- BlockDriverState *bdrv_find_backing_image(BlockDriverState *bs,
-                                           const char *backing_file);
--void bdrv_refresh_filename(BlockDriverState *bs);
-+void GRAPH_RDLOCK bdrv_refresh_filename(BlockDriverState *bs);
- 
- void GRAPH_RDLOCK
- bdrv_refresh_limits(BlockDriverState *bs, Transaction *tran, Error **errp);
-@@ -216,8 +216,11 @@ void bdrv_next_cleanup(BdrvNextIterator *it);
- BlockDriverState *bdrv_next_monitor_owned(BlockDriverState *bs);
- void bdrv_iterate_format(void (*it)(void *opaque, const char *name),
-                          void *opaque, bool read_only);
--char *bdrv_get_full_backing_filename(BlockDriverState *bs, Error **errp);
--char *bdrv_dirname(BlockDriverState *bs, Error **errp);
-+
-+char * GRAPH_RDLOCK
-+bdrv_get_full_backing_filename(BlockDriverState *bs, Error **errp);
-+
-+char * GRAPH_RDLOCK bdrv_dirname(BlockDriverState *bs, Error **errp);
- 
- void bdrv_img_create(const char *filename, const char *fmt,
-                      const char *base_filename, const char *base_fmt,
-diff --git a/include/block/block_int-common.h b/include/block/block_int-common.h
-index 0373cbed49..be80887898 100644
---- a/include/block/block_int-common.h
-+++ b/include/block/block_int-common.h
-@@ -272,7 +272,7 @@ struct BlockDriver {
-      * Refreshes the bs->exact_filename field. If that is impossible,
-      * bs->exact_filename has to be left empty.
-      */
--    void (*bdrv_refresh_filename)(BlockDriverState *bs);
-+    void GRAPH_RDLOCK_PTR (*bdrv_refresh_filename)(BlockDriverState *bs);
- 
-     /*
-      * Gathers the open options for all children into @target.
-@@ -295,15 +295,15 @@ struct BlockDriver {
-      * block driver which implements it is probably doing something
-      * shady regarding its runtime option structure.
-      */
--    void (*bdrv_gather_child_options)(BlockDriverState *bs, QDict *target,
--                                      bool backing_overridden);
-+    void GRAPH_RDLOCK_PTR (*bdrv_gather_child_options)(
-+        BlockDriverState *bs, QDict *target, bool backing_overridden);
- 
-     /*
-      * Returns an allocated string which is the directory name of this BDS: It
-      * will be used to make relative filenames absolute by prepending this
-      * function's return value to them.
-      */
--    char *(*bdrv_dirname)(BlockDriverState *bs, Error **errp);
-+    char * GRAPH_RDLOCK_PTR (*bdrv_dirname)(BlockDriverState *bs, Error **errp);
- 
-     /*
-      * This informs the driver that we are no longer interested in the result
-diff --git a/include/block/qapi.h b/include/block/qapi.h
-index 8663971c58..887235653a 100644
---- a/include/block/qapi.h
-+++ b/include/block/qapi.h
-@@ -29,18 +29,16 @@
- #include "block/snapshot.h"
- #include "qapi/qapi-types-block-core.h"
- 
--BlockDeviceInfo *bdrv_block_device_info(BlockBackend *blk,
--                                        BlockDriverState *bs,
--                                        bool flat,
--                                        Error **errp);
-+BlockDeviceInfo * GRAPH_RDLOCK
-+bdrv_block_device_info(BlockBackend *blk, BlockDriverState *bs,
-+                       bool flat, Error **errp);
-+
- int bdrv_query_snapshot_info_list(BlockDriverState *bs,
-                                   SnapshotInfoList **p_list,
-                                   Error **errp);
--void bdrv_query_image_info(BlockDriverState *bs,
--                           ImageInfo **p_info,
--                           bool flat,
--                           bool skip_implicit_filters,
--                           Error **errp);
-+void GRAPH_RDLOCK
-+bdrv_query_image_info(BlockDriverState *bs, ImageInfo **p_info, bool flat,
-+                      bool skip_implicit_filters, Error **errp);
- void GRAPH_RDLOCK
- bdrv_query_block_graph_info(BlockDriverState *bs, BlockGraphInfo **p_info,
-                             Error **errp);
+-static inline BlockDriverState *bdrv_primary_bs(BlockDriverState *bs)
++static inline BlockDriverState * GRAPH_RDLOCK
++bdrv_primary_bs(BlockDriverState *bs)
+ {
+     IO_CODE();
+     return child_bs(bdrv_primary_child(bs));
 diff --git a/block.c b/block.c
-index 4c4fab3579..7e6ba91885 100644
+index 7e6ba91885..133efa47e2 100644
 --- a/block.c
 +++ b/block.c
-@@ -371,8 +371,9 @@ char *bdrv_get_full_backing_filename_from_filename(const char *backed,
-  * setting @errp.  In all other cases, NULL will only be returned with
-  * @errp set.
-  */
--static char *bdrv_make_absolute_filename(BlockDriverState *relative_to,
--                                         const char *filename, Error **errp)
-+static char * GRAPH_RDLOCK
-+bdrv_make_absolute_filename(BlockDriverState *relative_to,
-+                            const char *filename, Error **errp)
- {
-     char *dir, *full_name;
- 
-@@ -1250,7 +1251,7 @@ static void bdrv_temp_snapshot_options(int *child_flags, QDict *child_options,
-     *child_flags &= ~BDRV_O_NATIVE_AIO;
+@@ -6691,7 +6691,8 @@ void coroutine_fn bdrv_co_debug_event(BlockDriverState *bs, BlkdebugEvent event)
+     bs->drv->bdrv_co_debug_event(bs, event);
  }
  
--static void bdrv_backing_attach(BdrvChild *c)
-+static void GRAPH_WRLOCK bdrv_backing_attach(BdrvChild *c)
+-static BlockDriverState *bdrv_find_debug_node(BlockDriverState *bs)
++static BlockDriverState * GRAPH_RDLOCK
++bdrv_find_debug_node(BlockDriverState *bs)
  {
-     BlockDriverState *parent = c->opaque;
-     BlockDriverState *backing_hd = c->bs;
-@@ -1874,7 +1875,10 @@ static int bdrv_open_common(BlockDriverState *bs, BlockBackend *file,
-     }
- 
-     if (file != NULL) {
-+        bdrv_graph_rdlock_main_loop();
-         bdrv_refresh_filename(blk_bs(file));
-+        bdrv_graph_rdunlock_main_loop();
-+
-         filename = blk_bs(file)->filename;
-     } else {
-         /*
-@@ -3643,7 +3647,10 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
-             implicit_backing = !strcmp(bs->auto_backing_file, bs->backing_file);
-         }
- 
-+        bdrv_graph_rdlock_main_loop();
-         backing_filename = bdrv_get_full_backing_filename(bs, &local_err);
-+        bdrv_graph_rdunlock_main_loop();
-+
-         if (local_err) {
-             ret = -EINVAL;
-             error_propagate(errp, local_err);
-@@ -3674,7 +3681,9 @@ int bdrv_open_backing_file(BlockDriverState *bs, QDict *parent_options,
-     }
- 
-     if (implicit_backing) {
-+        bdrv_graph_rdlock_main_loop();
-         bdrv_refresh_filename(backing_hd);
-+        bdrv_graph_rdunlock_main_loop();
-         pstrcpy(bs->auto_backing_file, sizeof(bs->auto_backing_file),
-                 backing_hd->filename);
-     }
-@@ -4963,7 +4972,9 @@ bdrv_reopen_prepare(BDRVReopenState *reopen_state, BlockReopenQueue *queue,
-             if (local_err != NULL) {
-                 error_propagate(errp, local_err);
-             } else {
-+                bdrv_graph_rdlock_main_loop();
-                 bdrv_refresh_filename(reopen_state->bs);
-+                bdrv_graph_rdunlock_main_loop();
-                 error_setg(errp, "failed while preparing to reopen image '%s'",
-                            reopen_state->bs->filename);
-             }
-@@ -5930,6 +5941,7 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
- 
-     bdrv_ref(top);
-     bdrv_drained_begin(base);
-+    bdrv_graph_rdlock_main_loop();
- 
-     if (!top->drv || !base->drv) {
-         goto exit;
-@@ -5954,11 +5966,9 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
-         backing_file_str = base->filename;
-     }
- 
--    bdrv_graph_rdlock_main_loop();
-     QLIST_FOREACH(c, &top->parents, next_parent) {
-         updated_children = g_slist_prepend(updated_children, c);
-     }
--    bdrv_graph_rdunlock_main_loop();
- 
-     /*
-      * It seems correct to pass detach_subchain=true here, but it triggers
-@@ -6004,6 +6014,7 @@ int bdrv_drop_intermediate(BlockDriverState *top, BlockDriverState *base,
- 
-     ret = 0;
- exit:
-+    bdrv_graph_rdunlock_main_loop();
-     bdrv_drained_end(base);
-     bdrv_unref(top);
-     return ret;
-@@ -6294,6 +6305,7 @@ BlockDeviceInfoList *bdrv_named_nodes_list(bool flat,
-     BlockDriverState *bs;
- 
+     GLOBAL_STATE_CODE();
+     while (bs && bs->drv && !bs->drv->bdrv_debug_breakpoint) {
+@@ -6710,6 +6711,8 @@ int bdrv_debug_breakpoint(BlockDriverState *bs, const char *event,
+                           const char *tag)
+ {
      GLOBAL_STATE_CODE();
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     list = NULL;
-     QTAILQ_FOREACH(bs, &graph_bdrv_states, node_list) {
-@@ -6762,6 +6774,7 @@ BlockDriverState *bdrv_find_backing_image(BlockDriverState *bs,
-     BlockDriverState *bs_below;
- 
++
+     bs = bdrv_find_debug_node(bs);
+     if (bs) {
+         return bs->drv->bdrv_debug_breakpoint(bs, event, tag);
+@@ -6721,6 +6724,8 @@ int bdrv_debug_breakpoint(BlockDriverState *bs, const char *event,
+ int bdrv_debug_remove_breakpoint(BlockDriverState *bs, const char *tag)
+ {
      GLOBAL_STATE_CODE();
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
- 
-     if (!bs || !bs->drv || !backing_file) {
-         return NULL;
-diff --git a/block/nfs.c b/block/nfs.c
-index c24df49747..f737e19cd3 100644
---- a/block/nfs.c
-+++ b/block/nfs.c
-@@ -843,7 +843,7 @@ static void nfs_refresh_filename(BlockDriverState *bs)
-     }
- }
- 
--static char *nfs_dirname(BlockDriverState *bs, Error **errp)
-+static char * GRAPH_RDLOCK nfs_dirname(BlockDriverState *bs, Error **errp)
++
+     bs = bdrv_find_debug_node(bs);
+     if (bs) {
+         return bs->drv->bdrv_debug_remove_breakpoint(bs, tag);
+@@ -6732,6 +6737,8 @@ int bdrv_debug_remove_breakpoint(BlockDriverState *bs, const char *tag)
+ int bdrv_debug_resume(BlockDriverState *bs, const char *tag)
  {
-     NFSClient *client = bs->opaque;
- 
-diff --git a/block/qapi.c b/block/qapi.c
-index 1cbb0935ff..82a30b38fe 100644
---- a/block/qapi.c
-+++ b/block/qapi.c
-@@ -225,9 +225,8 @@ int bdrv_query_snapshot_info_list(BlockDriverState *bs,
-  * Helper function for other query info functions.  Store information about @bs
-  * in @info, setting @errp on error.
-  */
--static void bdrv_do_query_node_info(BlockDriverState *bs,
--                                    BlockNodeInfo *info,
--                                    Error **errp)
-+static void GRAPH_RDLOCK
-+bdrv_do_query_node_info(BlockDriverState *bs, BlockNodeInfo *info, Error **errp)
- {
-     int64_t size;
-     const char *backing_filename;
-@@ -423,8 +422,8 @@ fail:
- }
- 
- /* @p_info will be set only on success. */
--static void bdrv_query_info(BlockBackend *blk, BlockInfo **p_info,
--                            Error **errp)
-+static void GRAPH_RDLOCK
-+bdrv_query_info(BlockBackend *blk, BlockInfo **p_info, Error **errp)
- {
-     BlockInfo *info = g_malloc0(sizeof(*info));
-     BlockDriverState *bs = blk_bs(blk);
-@@ -672,6 +671,8 @@ BlockInfoList *qmp_query_block(Error **errp)
-     BlockBackend *blk;
-     Error *local_err = NULL;
- 
+     GLOBAL_STATE_CODE();
 +    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +
-     for (blk = blk_all_next(NULL); blk; blk = blk_all_next(blk)) {
-         BlockInfoList *info;
- 
-diff --git a/block/raw-format.c b/block/raw-format.c
-index a8bdee5279..8ff03adfa4 100644
---- a/block/raw-format.c
-+++ b/block/raw-format.c
-@@ -505,7 +505,9 @@ static int raw_open(BlockDriverState *bs, QDict *options, int flags,
-                                    BDRV_REQ_ZERO_WRITE;
- 
-     if (bs->probed && !bdrv_is_read_only(bs)) {
-+        bdrv_graph_rdlock_main_loop();
-         bdrv_refresh_filename(bs->file->bs);
-+        bdrv_graph_rdunlock_main_loop();
-         fprintf(stderr,
-                 "WARNING: Image format was not specified for '%s' and probing "
-                 "guessed raw.\n"
-diff --git a/block/vhdx.c b/block/vhdx.c
-index a67edcc03e..73cb214fb4 100644
---- a/block/vhdx.c
-+++ b/block/vhdx.c
-@@ -1001,11 +1001,15 @@ static int vhdx_open(BlockDriverState *bs, QDict *options, int flags,
-     uint64_t signature;
-     Error *local_err = NULL;
- 
-+    GLOBAL_STATE_CODE();
+     while (bs && (!bs->drv || !bs->drv->bdrv_debug_resume)) {
+         bs = bdrv_primary_bs(bs);
+     }
+@@ -6746,6 +6753,8 @@ int bdrv_debug_resume(BlockDriverState *bs, const char *tag)
+ bool bdrv_debug_is_suspended(BlockDriverState *bs, const char *tag)
+ {
+     GLOBAL_STATE_CODE();
++    GRAPH_RDLOCK_GUARD_MAINLOOP();
 +
-     ret = bdrv_open_file_child(NULL, options, "file", bs, errp);
-     if (ret < 0) {
+     while (bs && bs->drv && !bs->drv->bdrv_debug_is_suspended) {
+         bs = bdrv_primary_bs(bs);
+     }
+diff --git a/block/snapshot.c b/block/snapshot.c
+index 554065578b..ad2bf6e068 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -311,7 +311,10 @@ int bdrv_snapshot_goto(BlockDriverState *bs,
+          * respective option (with the qdict_put_str() call above).
+          * Assert that .bdrv_open() has attached the right BDS as primary child.
+          */
++        bdrv_graph_rdlock_main_loop();
+         assert(bdrv_primary_bs(bs) == fallback_bs);
++        bdrv_graph_rdunlock_main_loop();
++
+         bdrv_unref(fallback_bs);
          return ret;
      }
- 
-+    GRAPH_RDLOCK_GUARD_MAINLOOP();
-+
-     s->bat = NULL;
-     s->first_visible_write = true;
- 
-diff --git a/block/vmdk.c b/block/vmdk.c
-index e90649c8bf..e50965bc37 100644
---- a/block/vmdk.c
-+++ b/block/vmdk.c
-@@ -578,8 +578,8 @@ static int vmdk_add_extent(BlockDriverState *bs,
-     return 0;
- }
- 
--static int vmdk_init_tables(BlockDriverState *bs, VmdkExtent *extent,
--                            Error **errp)
-+static int GRAPH_RDLOCK
-+vmdk_init_tables(BlockDriverState *bs, VmdkExtent *extent, Error **errp)
- {
-     int ret;
-     size_t l1_size;
-@@ -641,9 +641,9 @@ static int vmdk_init_tables(BlockDriverState *bs, VmdkExtent *extent,
-     return ret;
- }
- 
--static int vmdk_open_vmfs_sparse(BlockDriverState *bs,
--                                 BdrvChild *file,
--                                 int flags, Error **errp)
-+static int GRAPH_RDLOCK
-+vmdk_open_vmfs_sparse(BlockDriverState *bs, BdrvChild *file, int flags,
-+                      Error **errp)
- {
-     int ret;
-     uint32_t magic;
-@@ -797,9 +797,9 @@ static int check_se_sparse_volatile_header(VMDKSESparseVolatileHeader *header,
-     return 0;
- }
- 
--static int vmdk_open_se_sparse(BlockDriverState *bs,
--                               BdrvChild *file,
--                               int flags, Error **errp)
-+static int GRAPH_RDLOCK
-+vmdk_open_se_sparse(BlockDriverState *bs, BdrvChild *file, int flags,
-+                    Error **errp)
- {
-     int ret;
-     VMDKSESparseConstHeader const_header;
-@@ -913,9 +913,9 @@ static char *vmdk_read_desc(BdrvChild *file, uint64_t desc_offset, Error **errp)
-     return buf;
- }
- 
--static int vmdk_open_vmdk4(BlockDriverState *bs,
--                           BdrvChild *file,
--                           int flags, QDict *options, Error **errp)
-+static int GRAPH_RDLOCK
-+vmdk_open_vmdk4(BlockDriverState *bs, BdrvChild *file, int flags,
-+                QDict *options, Error **errp)
- {
-     int ret;
-     uint32_t magic;
-@@ -1095,8 +1095,9 @@ static int vmdk_parse_description(const char *desc, const char *opt_name,
- }
- 
- /* Open an extent file and append to bs array */
--static int vmdk_open_sparse(BlockDriverState *bs, BdrvChild *file, int flags,
--                            char *buf, QDict *options, Error **errp)
-+static int GRAPH_RDLOCK
-+vmdk_open_sparse(BlockDriverState *bs, BdrvChild *file, int flags,
-+                 char *buf, QDict *options, Error **errp)
- {
-     uint32_t magic;
- 
-@@ -1123,8 +1124,9 @@ static const char *next_line(const char *s)
-     return s;
- }
- 
--static int vmdk_parse_extents(const char *desc, BlockDriverState *bs,
--                              QDict *options, Error **errp)
-+static int GRAPH_RDLOCK
-+vmdk_parse_extents(const char *desc, BlockDriverState *bs, QDict *options,
-+                   Error **errp)
- {
-     int ret;
-     int matches;
-@@ -1143,6 +1145,8 @@ static int vmdk_parse_extents(const char *desc, BlockDriverState *bs,
-     char extent_opt_prefix[32];
-     Error *local_err = NULL;
- 
-+    GLOBAL_STATE_CODE();
-+
-     for (p = desc; *p; p = next_line(p)) {
-         /* parse extent line in one of below formats:
-          *
-@@ -1223,9 +1227,11 @@ static int vmdk_parse_extents(const char *desc, BlockDriverState *bs,
-             ret = vmdk_add_extent(bs, extent_file, true, sectors,
-                             0, 0, 0, 0, 0, &extent, errp);
-             if (ret < 0) {
-+                bdrv_graph_rdunlock_main_loop();
-                 bdrv_graph_wrlock(NULL);
-                 bdrv_unref_child(bs, extent_file);
-                 bdrv_graph_wrunlock();
-+                bdrv_graph_rdlock_main_loop();
-                 goto out;
-             }
-             extent->flat_start_offset = flat_offset << 9;
-@@ -1240,26 +1246,32 @@ static int vmdk_parse_extents(const char *desc, BlockDriverState *bs,
-             }
-             g_free(buf);
-             if (ret) {
-+                bdrv_graph_rdunlock_main_loop();
-                 bdrv_graph_wrlock(NULL);
-                 bdrv_unref_child(bs, extent_file);
-                 bdrv_graph_wrunlock();
-+                bdrv_graph_rdlock_main_loop();
-                 goto out;
-             }
-             extent = &s->extents[s->num_extents - 1];
-         } else if (!strcmp(type, "SESPARSE")) {
-             ret = vmdk_open_se_sparse(bs, extent_file, bs->open_flags, errp);
-             if (ret) {
-+                bdrv_graph_rdunlock_main_loop();
-                 bdrv_graph_wrlock(NULL);
-                 bdrv_unref_child(bs, extent_file);
-                 bdrv_graph_wrunlock();
-+                bdrv_graph_rdlock_main_loop();
-                 goto out;
-             }
-             extent = &s->extents[s->num_extents - 1];
-         } else {
-             error_setg(errp, "Unsupported extent type '%s'", type);
-+            bdrv_graph_rdunlock_main_loop();
-             bdrv_graph_wrlock(NULL);
-             bdrv_unref_child(bs, extent_file);
-             bdrv_graph_wrunlock();
-+            bdrv_graph_rdlock_main_loop();
-             ret = -ENOTSUP;
-             goto out;
-         }
-@@ -1283,8 +1295,9 @@ out:
-     return ret;
- }
- 
--static int vmdk_open_desc_file(BlockDriverState *bs, int flags, char *buf,
--                               QDict *options, Error **errp)
-+static int GRAPH_RDLOCK
-+vmdk_open_desc_file(BlockDriverState *bs, int flags, char *buf, QDict *options,
-+                    Error **errp)
- {
-     int ret;
-     char ct[128];
-@@ -2900,7 +2913,7 @@ static int vmdk_has_zero_init(BlockDriverState *bs)
-     return 1;
- }
- 
--static VmdkExtentInfo *vmdk_get_extent_info(VmdkExtent *extent)
-+static VmdkExtentInfo * GRAPH_RDLOCK vmdk_get_extent_info(VmdkExtent *extent)
- {
-     VmdkExtentInfo *info = g_new0(VmdkExtentInfo, 1);
- 
-@@ -2985,6 +2998,8 @@ static ImageInfoSpecific *vmdk_get_specific_info(BlockDriverState *bs,
-     ImageInfoSpecific *spec_info = g_new0(ImageInfoSpecific, 1);
-     VmdkExtentInfoList **tail;
- 
-+    assume_graph_lock(); /* FIXME */
-+
-     *spec_info = (ImageInfoSpecific){
-         .type = IMAGE_INFO_SPECIFIC_KIND_VMDK,
-         .u = {
-diff --git a/blockdev.c b/blockdev.c
-index ff5ee9ff7b..51c58dd432 100644
---- a/blockdev.c
-+++ b/blockdev.c
-@@ -1665,6 +1665,8 @@ static void drive_backup_action(DriveBackup *backup,
-     bool set_backing_hd = false;
-     int ret;
- 
-+    GLOBAL_STATE_CODE();
-+
-     tran_add(tran, &drive_backup_drv, state);
- 
-     if (!backup->has_mode) {
-@@ -1735,7 +1737,10 @@ static void drive_backup_action(DriveBackup *backup,
-             BlockDriverState *explicit_backing =
-                 bdrv_skip_implicit_filters(source);
- 
-+            bdrv_graph_rdlock_main_loop();
-             bdrv_refresh_filename(explicit_backing);
-+            bdrv_graph_rdunlock_main_loop();
-+
-             bdrv_img_create(backup->target, format,
-                             explicit_backing->filename,
-                             explicit_backing->drv->format_name, NULL,
-@@ -2398,6 +2403,8 @@ void qmp_block_stream(const char *job_id, const char *device,
-     Error *local_err = NULL;
-     int job_flags = JOB_DEFAULT;
- 
-+    GLOBAL_STATE_CODE();
-+
-     if (base && base_node) {
-         error_setg(errp, "'base' and 'base-node' cannot be specified "
-                    "at the same time");
-@@ -2448,7 +2455,10 @@ void qmp_block_stream(const char *job_id, const char *device,
-             goto out;
-         }
-         assert(bdrv_get_aio_context(base_bs) == aio_context);
-+
-+        bdrv_graph_rdlock_main_loop();
-         bdrv_refresh_filename(base_bs);
-+        bdrv_graph_rdunlock_main_loop();
-     }
- 
-     if (bottom) {
-@@ -3076,7 +3086,10 @@ void qmp_drive_mirror(DriveMirror *arg, Error **errp)
-             break;
-         case NEW_IMAGE_MODE_ABSOLUTE_PATHS:
-             /* create new image with backing file */
-+            bdrv_graph_rdlock_main_loop();
-             bdrv_refresh_filename(explicit_backing);
-+            bdrv_graph_rdunlock_main_loop();
-+
-             bdrv_img_create(arg->target, format,
-                             explicit_backing->filename,
-                             explicit_backing->drv->format_name,
-diff --git a/qemu-img.c b/qemu-img.c
-index 9e293bdf78..f7fa49fe65 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -3165,7 +3165,9 @@ static int get_block_status(BlockDriverState *bs, int64_t offset,
-     has_offset = !!(ret & BDRV_BLOCK_OFFSET_VALID);
- 
-     if (file && has_offset) {
-+        bdrv_graph_rdlock_main_loop();
-         bdrv_refresh_filename(file);
-+        bdrv_graph_rdunlock_main_loop();
-         filename = file->filename;
-     }
- 
-@@ -3688,7 +3690,9 @@ static int img_rebase(int argc, char **argv)
-                 qdict_put_bool(options, BDRV_OPT_FORCE_SHARE, true);
-             }
- 
-+            bdrv_graph_rdlock_main_loop();
-             bdrv_refresh_filename(bs);
-+            bdrv_graph_rdunlock_main_loop();
-             overlay_filename = bs->exact_filename[0] ? bs->exact_filename
-                                                      : bs->filename;
-             out_real_path =
 -- 
 2.41.0
 
