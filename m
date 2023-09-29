@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AC927B2996
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 02:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A267B2997
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 02:32:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm1QD-0004Bl-Jt; Thu, 28 Sep 2023 20:31:57 -0400
+	id 1qm1Qq-0005vV-S0; Thu, 28 Sep 2023 20:32:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qm1Q9-00049g-Qd
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:31:54 -0400
-Received: from mail-ua1-x92e.google.com ([2607:f8b0:4864:20::92e])
+ id 1qm1Qo-0005tF-Ss
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:32:34 -0400
+Received: from mail-ua1-x92d.google.com ([2607:f8b0:4864:20::92d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <nbowler@draconx.ca>)
- id 1qm1Q5-0003xz-MM
- for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:31:52 -0400
-Received: by mail-ua1-x92e.google.com with SMTP id
- a1e0cc1a2514c-7a52a27fe03so5793825241.0
- for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 17:31:48 -0700 (PDT)
+ id 1qm1Qn-00047A-B5
+ for qemu-devel@nongnu.org; Thu, 28 Sep 2023 20:32:34 -0400
+Received: by mail-ua1-x92d.google.com with SMTP id
+ a1e0cc1a2514c-7ab5150a7b5so95672241.0
+ for <qemu-devel@nongnu.org>; Thu, 28 Sep 2023 17:32:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1695947508; x=1696552308;
+ d=draconx-ca.20230601.gappssmtp.com; s=20230601; t=1695947552; x=1696552352;
  darn=nongnu.org; 
  h=cc:to:subject:message-id:date:from:references:in-reply-to
  :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=FuPR5kZkLWLdfpl5zpkmUO1pvjoqAOl77j/x5C+XIT4=;
- b=Y7fVC2T3PvepbzbufLauz0wcDzTrQvEn332FfYxKaQ7gj8421TKU+71I1luki91BJm
- nQ36eLvyAZ8LetLglwBRyJc539SPRSDXLpUybWPmqKVpbbV99Cb3YS8Ea9AdWjD0NtkU
- X0q9/PXA9mUbdwTIGLebsA1FB0lK0Wt2miAZ6cdXw8UZ4dwSAhoB6WYsr7asMdu2wXGF
- 2uYIl8hGbnhYfC2CeC+LFzE27bPDHuvywJyQBg+Xhg++rSDNWos+DHvhFBha5hvcmWbO
- iBxdkrOjJneQeXQUVH5QGism4AiObhtjN9ErSzdMFYL1n1htSfGSN+9BEUd89coFwi3F
- CnvA==
+ bh=6fSTqFysmqN+uanF2/uSPtL6xLjjfAQpmCRViTqM9X8=;
+ b=ukXDM96afwHoD+9HQvO8nulXX2JTYjQ5TCvaV5q9ZGeVv9ceyhlVp7MqnCHKZz1ihv
+ vYKbv0HljcNc4WBkGuYWvRuJ+5lr+gGW3AMkChOX5GU9pk8dYttTdPS8hzJXX15fMxYS
+ McwXBgOJjtXYPyJyinzFXU4xY8PITYr0GMvZ4rqB0berUmbDkgBHSNIH6O9MEHzmFiYX
+ 8DkqS1n6+keG3mHCqmAcxMLeH9JcOvyUK8XfhHjRAIlMNTqClos6KmHq57wkgbW60kNg
+ uvqXlhL9aUe4DbQy3aygD+IOQCtdvN52RsDc7LOTV8SyMWDzPwzWqL8pnsO04XK79CZp
+ 6JXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695947508; x=1696552308;
+ d=1e100.net; s=20230601; t=1695947552; x=1696552352;
  h=cc:to:subject:message-id:date:from:references:in-reply-to
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=FuPR5kZkLWLdfpl5zpkmUO1pvjoqAOl77j/x5C+XIT4=;
- b=pLtJxEZbGnXix77QoIxXNtQS4gthzZKtm7sMKHeUFdlcvAegv6GAL4/7VX7HY283/y
- nZcTmFJ83E565LrLjv5foFbbwKqOf1nyFl/uLPAjClDyUaRw9uxNsoEGfpmv7lBhPlio
- cEUlPO/rLooGxNYz2/HwWFxdsYbL9T2cxZ7Q8Gd6RNgiyEqCYgo0LuMDVsBisGrEiUGr
- OSwNZYIH9tp8mVekt2qgFiVy7q67y9Qsj7dJ6p6QkTIPHAV8GfpURepg4YS3Vu5NtO8A
- 7GqZvPMeYznK/jpeVPYbsNN/fuInmmps2t0pX+vvc3TOXAh2q6XCSWvxCoC7AWIAFFss
- 0Bng==
-X-Gm-Message-State: AOJu0YxjtUy0o1KRTlAa9NlKx/hYF1LGCGmUHK3UD31I6fFbutWg2cb3
- PJUZQTuO4x2e9VbtO5QgvndgFkkhTY/3/o+iyPXFrQ==
-X-Google-Smtp-Source: AGHT+IEvoEPjlUcH5pSxNQlPhy4zIs6pxUv6umnhaEmXatfWQ/Q82ZW6jpOJr7Pldhp6rk6HgEtN2kxdek32cZsC/xQ=
-X-Received: by 2002:a67:e3d1:0:b0:451:40b:2210 with SMTP id
- k17-20020a67e3d1000000b00451040b2210mr2650798vsm.3.1695947508076; Thu, 28 Sep
- 2023 17:31:48 -0700 (PDT)
+ bh=6fSTqFysmqN+uanF2/uSPtL6xLjjfAQpmCRViTqM9X8=;
+ b=GBEEAQaADg9mTyI3nXZFpYrdQMuPtCEYq2M04O7JTQalav4KrMFXGU57PlclJqcTbV
+ 9h5WTi5ni1IVqIj57xidxTQWZ/RIvf/Az/mEwUWBYHVLLiiUc1Su6gZJBeLLZHsYnyG9
+ l+gv3WU5X5JAU5ihZuxX34Ruzu9Rrf2pJIdKqsINUgZsa3GHO1E2MAQVNuGnwVQAU/gI
+ CTOoYkEdP5L6RuPu21WtGhnIRaCDqlbG5Bv2DwRL8ZPrH0XL4Mjjc7fxiQEA7hYZZupa
+ z8y3JUVryyMmpiFPBNH482ONCXk8sEFNm9D1kyqsWdjOzXsExcw8HlKV6hfc84oob61U
+ 99Wg==
+X-Gm-Message-State: AOJu0YwqudgDfHz1FW8gtBxnNyJDLJLmGIn/oh8q6MTmNvBSdmh7O+W0
+ +Knn3LE9o+gXjXTutKgBt+ooQPLh61S3JGHK6kS0+9HI9FJCc8ug
+X-Google-Smtp-Source: AGHT+IFSwbZL6rru5TTdEk/gTQLZ4WYhbcsi9q/GP1f5tH6aj7WsMbzxFr1kberit6b7HvoT3fZfBsHDJfnE49dYtlI=
+X-Received: by 2002:a05:6102:ed5:b0:450:985f:ef28 with SMTP id
+ m21-20020a0561020ed500b00450985fef28mr1639894vst.5.1695947551865; Thu, 28 Sep
+ 2023 17:32:31 -0700 (PDT)
 MIME-Version: 1.0
 Received: by 2002:ab0:2a92:0:b0:7aa:d493:bd29 with HTTP; Thu, 28 Sep 2023
- 17:31:47 -0700 (PDT)
+ 17:32:31 -0700 (PDT)
 X-Originating-IP: [24.53.241.2]
-In-Reply-To: <a617709e-4567-a10e-26e0-e4ffb2308573@linaro.org>
+In-Reply-To: <de8992b1-9f7c-b6ae-aaf3-af267674f71b@linaro.org>
 References: <20230925050545.30912-1-nbowler@draconx.ca>
- <20230925050545.30912-9-nbowler@draconx.ca>
- <a617709e-4567-a10e-26e0-e4ffb2308573@linaro.org>
+ <20230925050545.30912-7-nbowler@draconx.ca>
+ <de8992b1-9f7c-b6ae-aaf3-af267674f71b@linaro.org>
 From: Nick Bowler <nbowler@draconx.ca>
-Date: Thu, 28 Sep 2023 20:31:47 -0400
-Message-ID: <CADyTPEwNzYmLa3H0kdxjBE0Vig0j+oVUXtAhvJP=KO0Jgzmkww@mail.gmail.com>
-Subject: Re: [PATCH 8/8] target/sparc: Fix VIS subtraction instructions.
+Date: Thu, 28 Sep 2023 20:32:31 -0400
+Message-ID: <CADyTPEw_ByU9X4vP6UBr+O-_77k1h7VMvSP7+mrgqBtMtV0AMA@mail.gmail.com>
+Subject: Re: [PATCH 6/8] target/sparc: Fix VIS fpmerge input registers.
 To: Richard Henderson <richard.henderson@linaro.org>
 Cc: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, 
  Artyom Tarasenko <atar4qemu@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: none client-ip=2607:f8b0:4864:20::92e;
- envelope-from=nbowler@draconx.ca; helo=mail-ua1-x92e.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::92d;
+ envelope-from=nbowler@draconx.ca; helo=mail-ua1-x92d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -92,32 +92,22 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 2023-09-28, Richard Henderson <richard.henderson@linaro.org> wrote:
 > On 9/24/23 01:03, Nick Bowler wrote:
->> All of the VIS subtraction instructions are documented to subtract the
->> second input operand from the first.  This is also consistent with how
->> the instructions actually work on a real UltraSparc II.
->>
->> But the emulator is implementing the subtraction in the wrong order,
->> subtracting the first input from the second, so the results are wrong
->> in all nontrivial cases.
->>
->> Signed-off-by: Nick Bowler <nbowler@draconx.ca>
->> ---
->>   target/sparc/vis_helper.c | 18 +++++++++---------
->>   1 file changed, 9 insertions(+), 9 deletions(-)
+>>                   case 0x04b: /* VIS I fpmerge */
+>>                       CHECK_FPU_FEATURE(dc, VIS1);
+>> -                    gen_ne_fop_DDD(dc, rd, rs1, rs2,
+>> gen_helper_fpmerge);
+>> +                    cpu_src1_32 = gen_load_fpr_F(dc, rs1);
+>> +                    cpu_src2_32 = gen_load_fpr_F(dc, rs2);
+>> +                    cpu_dst_64 = gen_dest_fpr_D(dc, rd);
+>> +                    gen_helper_fpmerge(cpu_dst_64, cpu_src1_32,
+>> cpu_src2_32);
+>> +                    gen_store_fpr_D(dc, rd, cpu_dst_64);
+>>                       break;
 >
-> While this patch works, better to use
->
-> void tcg_gen_vec_add16_i32(TCGv_i32 d, TCGv_i32 a, TCGv_i32 b);
-> void tcg_gen_vec_add16_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
-> void tcg_gen_vec_add32_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
->
-> void tcg_gen_vec_sub16_i32(TCGv_i32 d, TCGv_i32 a, TCGv_i32 b);
-> void tcg_gen_vec_sub16_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
-> void tcg_gen_vec_sub32_i64(TCGv_i64 d, TCGv_i64 a, TCGv_i64 b);
->
-> from "tcg/tcg-op-gvec.h" and remove the sparc helpers.
+> Use gen_ne_fop_DFF.
 
-OK, I will try to respin this one using these.
+Good catch, I clearly missed that this can use the new helper, I will
+respin this one.
 
 Thanks,
   Nick
