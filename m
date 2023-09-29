@@ -2,75 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D9D7B2C1C
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 07:57:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 799B17B2C31
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 08:09:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm6Ua-00031d-Dv; Fri, 29 Sep 2023 01:56:48 -0400
+	id 1qm6fR-0006va-Pn; Fri, 29 Sep 2023 02:08:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm6UV-0002ze-Dv
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 01:56:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=Yu9m=FN=kaod.org=clg@ozlabs.org>)
+ id 1qm6fQ-0006vN-Lq; Fri, 29 Sep 2023 02:08:00 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm6UT-0007JN-DV
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 01:56:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695967000;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wiIE8vdpxXShE267kbclgaAGOh644MOJx97HDq593yw=;
- b=EPYhEdjVj9Ym6PtA7FMFBfGNZ/iAncYRO2pTxukPVIBOMzkP+7iObWOXKGNTzY+7gUTRrA
- StLojBcT5QWRn0Q9I2KsO5LSaqLDJQR8+bMjqMXybOxZ7OMePz4TT9DRgPq1v/gzxs8rA1
- KUDeKxz+N0yNeH3yAFzaMNGH7XyzPsY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-144-7vGo5wEPPlKEgP2nmR_zHg-1; Fri, 29 Sep 2023 01:56:36 -0400
-X-MC-Unique: 7vGo5wEPPlKEgP2nmR_zHg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (Exim 4.90_1) (envelope-from <SRS0=Yu9m=FN=kaod.org=clg@ozlabs.org>)
+ id 1qm6fO-0000v8-0e; Fri, 29 Sep 2023 02:08:00 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rxfyp0qgqz4x80;
+ Fri, 29 Sep 2023 16:07:46 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B4E898015AB;
- Fri, 29 Sep 2023 05:56:35 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 14A15492B16;
- Fri, 29 Sep 2023 05:56:35 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0A0DB21E6904; Fri, 29 Sep 2023 07:56:34 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: kwolf@redhat.com,  hreitz@redhat.com,  eblake@redhat.com,
- vsementsov@yandex-team.ru,  jsnow@redhat.com,  idryomov@gmail.com,
- sw@weilnetz.de,  sstabellini@kernel.org,  anthony.perard@citrix.com,
- paul@xen.org,  pbonzini@redhat.com,  marcandre.lureau@redhat.com,
- berrange@redhat.com,  thuth@redhat.com,  philmd@linaro.org,
- stefanha@redhat.com,  fam@euphon.net,  quintela@redhat.com,
- peterx@redhat.com,  leobras@redhat.com,  kraxel@redhat.com,
- qemu-block@nongnu.org,  xen-devel@lists.xenproject.org,
- alex.bennee@linaro.org,  peter.maydell@linaro.org
-Subject: Re: [PATCH v3 0/7] Steps towards enabling -Wshadow=local
-References: <20230921121312.1301864-1-armbru@redhat.com>
-Date: Fri, 29 Sep 2023 07:56:34 +0200
-In-Reply-To: <20230921121312.1301864-1-armbru@redhat.com> (Markus Armbruster's
- message of "Thu, 21 Sep 2023 14:13:05 +0200")
-Message-ID: <87il7tjze5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rxfyl2W1Qz4x5J;
+ Fri, 29 Sep 2023 16:07:43 +1000 (AEST)
+Message-ID: <b78b73c8-b45d-f4b3-b1e8-47171e9d4446@kaod.org>
+Date: Fri, 29 Sep 2023 08:07:39 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 8/8] spapr/drc: Clean up local variable shadowing in
+ prop_get_fdt()
+To: Markus Armbruster <armbru@redhat.com>,
+ Harsh Prateek Bora <harsh.prateek.bora@gmail.com>
+Cc: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20230918145850.241074-1-clg@kaod.org>
+ <20230918145850.241074-9-clg@kaod.org>
+ <660b5c89-d219-1e20-9fa5-1b7c390a2f1b@linux.ibm.com>
+ <e5480b29-a1d0-8d6f-54b7-a8957f568ed9@kaod.org>
+ <CAEuJdmqTUOS13mfxVKnMyoeE6vtLAkReohHn31+cz85ZV0s5pA@mail.gmail.com>
+ <87v8btk07f.fsf@pond.sub.org>
+Content-Language: en-US
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <87v8btk07f.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=Yu9m=FN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,24 +72,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+On 9/29/23 07:39, Markus Armbruster wrote:
+> Harsh Prateek Bora <harsh.prateek.bora@gmail.com> writes:
+> 
+>> On Tue, 19 Sept, 2023, 5:39 pm Cédric Le Goater, <clg@kaod.org> wrote:
+>>
+>>> On 9/19/23 10:48, Harsh Prateek Bora wrote:
+>>>>
+>>>>
+>>>> On 9/18/23 20:28, Cédric Le Goater wrote:
+>>>>> Rename 'name' variable to avoid this warning :
+>>>>>
+>>>>>     ../hw/ppc/spapr_drc.c: In function ‘prop_get_fdt’:
+>>>>>     ../hw/ppc/spapr_drc.c:344:21: warning: declaration of ‘name’ shadows
+>>> a parameter [-Wshadow=compatible-local]
+>>>>>       344 |         const char *name = NULL;
+>>>>>           |                     ^~~~
+>>>>>     ../hw/ppc/spapr_drc.c:325:63: note: shadowed declaration is here
+>>>>>       325 | static void prop_get_fdt(Object *obj, Visitor *v, const char
+>>> *name,
+>>>>>           |
+>>> ~~~~~~~~~~~~^~~~
+>>>>>
+>>>>> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+>>>>> ---
+>>>>>    hw/ppc/spapr_drc.c | 10 +++++-----
+>>>>>    1 file changed, 5 insertions(+), 5 deletions(-)
+>>>>>
+>>>>> diff --git a/hw/ppc/spapr_drc.c b/hw/ppc/spapr_drc.c
+>>>>> index 843e318312d3..2b99d3b4b1a6 100644
+>>>>> --- a/hw/ppc/spapr_drc.c
+>>>>> +++ b/hw/ppc/spapr_drc.c
+>>>>> @@ -341,7 +341,7 @@ static void prop_get_fdt(Object *obj, Visitor *v,
+>>> const char *name,
+>>>>>        fdt_depth = 0;
+>>>>>        do {
+>>>>> -        const char *name = NULL;
+>>>>> +        const char *dt_name = NULL;
+>>>>
+>>>> I guess you wanted to use the input arg "name" here without
+>>> re-declaration.
+>>>
+>>> I don't understand. I don't want to use the input arg "name" here.
+>>> It seems useless in this case.
+>>>
+>>
+>> Yeh, I realize now. This patch can actually remove the unused arg "name" as
+>> well?
+> 
+> Cédric?
+> 
+> Lose ends like this one make me reluctant to queue a series, even when
+> they look minor to me.
 
-> Local variables shadowing other local variables or parameters make the
-> code needlessly hard to understand.  Bugs love to hide in such code.
-> Evidence: PATCH 1.
->
-> Enabling -Wshadow would prevent bugs like this one.  But we'd have to
-> clean up all the offenders first.  We got a lot of them.
->
-> Enabling -Wshadow=local should be less work for almost as much gain.
-> I took a stab at it.  There's a small, exciting part, and a large,
-> boring part.
->
-> The exciting part is dark preprocessor sorcery to let us nest macro
-> calls without shadowing: PATCH 7.
+Unfortunately, we can not remove the unused arg "name" from the prototype.
+The routine is a ObjectPropertyAccessor argument of object_property_add().
 
-[...]
+Thanks,
 
-Queued.
+C.
+
+
+> 
+>>> C.
+>>>
+>>>> I do not see "name" being used elsewhere in this routine.
+>>>>
+>>>> regards,
+>>>> Harsh
+>>>>>            const struct fdt_property *prop = NULL;
+>>>>>            int prop_len = 0, name_len = 0;
+>>>>>            uint32_t tag;
+>>>>> @@ -351,8 +351,8 @@ static void prop_get_fdt(Object *obj, Visitor *v,
+>>> const char *name,
+>>>>>            switch (tag) {
+>>>>>            case FDT_BEGIN_NODE:
+>>>>>                fdt_depth++;
+>>>>> -            name = fdt_get_name(fdt, fdt_offset, &name_len);
+>>>>> -            if (!visit_start_struct(v, name, NULL, 0, errp)) {
+>>>>> +            dt_name = fdt_get_name(fdt, fdt_offset, &name_len);
+>>>>> +            if (!visit_start_struct(v, dt_name, NULL, 0, errp)) {
+>>>>>                    return;
+>>>>>                }
+>>>>>                break;
+>>>>> @@ -369,8 +369,8 @@ static void prop_get_fdt(Object *obj, Visitor *v,
+>>> const char *name,
+>>>>>            case FDT_PROP: {
+>>>>>                int i;
+>>>>>                prop = fdt_get_property_by_offset(fdt, fdt_offset,
+>>> &prop_len);
+>>>>> -            name = fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
+>>>>> -            if (!visit_start_list(v, name, NULL, 0, errp)) {
+>>>>> +            dt_name = fdt_string(fdt, fdt32_to_cpu(prop->nameoff));
+>>>>> +            if (!visit_start_list(v, dt_name, NULL, 0, errp)) {
+>>>>>                    return;
+>>>>>                }
+>>>>>                for (i = 0; i < prop_len; i++) {
+> 
 
 
