@@ -2,53 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CF07B2C7D
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 08:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C1237B2C86
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 08:43:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm7Ba-0005qK-Ag; Fri, 29 Sep 2023 02:41:16 -0400
+	id 1qm7Bl-0006Qv-MJ; Fri, 29 Sep 2023 02:41:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qm7BL-0005pO-Ps
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:41:01 -0400
+ id 1qm7BP-0005qA-JN
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:41:05 -0400
 Received: from hoth.uni-paderborn.de ([2001:638:502:c003::19])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qm7B3-0007PK-UP
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:40:57 -0400
+ id 1qm7B1-0007PZ-Th
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:40:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:Content-Type
- :MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
- Sender:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+ d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
+ :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=M/io09zCH6e/JzGqO5oPLFD/0ZUgWFn1sY2e50095F0=; b=VQAh4TCisX7tRy6KG87Ep+uEdo
- JHE4Rd8xWMkKvrA4JJkE2B5caRGWKBBunGlJe6jBEmoL40fpEycNu1jccbNT+sKY9R7unHFU/i0tC
- QyRGgfZec/HqYqy1lNXVVEWvPBC2qCuwrj/ACr07+rRtKC67OWADl111wRpttJyHMYBQ=;
+ bh=imYeFgSVkPI88fieUmbPYNUtifTYEW4YKFSEwBH5gJI=; b=g1sRLYlCRR01zoBiRsM3xqYq0v
+ gvKIwtVdtIe+Zhp7nMJJeGL6x7PpDWfxYR3rSpoRyeVraqspU2iG0+Co4WPQdfNQJM/dFLR+RgcZ6
+ NF0PTaBMCDjJxuYoi20CRON2JV2Xgef3tFYBfaMGxtoHD/ZbFK/BP3sx9+DZ/5YMp9SA=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL v3 08/16] target/tricore: Fix RCPW/RRPW_INSERT insns for width
- = 0
-Date: Fri, 29 Sep 2023 08:39:52 +0200
-Message-ID: <20230929064000.536923-9-kbastian@mail.uni-paderborn.de>
+Subject: [PULL v3 09/16] target/tricore: Swap src and dst reg for RCRR_INSERT
+Date: Fri, 29 Sep 2023 08:39:53 +0200
+Message-ID: <20230929064000.536923-10-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230929064000.536923-1-kbastian@mail.uni-paderborn.de>
 References: <20230929064000.536923-1-kbastian@mail.uni-paderborn.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.29.63017, AntiVirus-Engine: 6.0.2,
  AntiVirus-Data: 2023.9.28.602002
-X-Sophos-SenderHistory: ip=79.202.213.239, fs=162267, da=183578696, mc=56, sc=0,
- hc=56, sp=0, fso=162267, re=0, sd=0, hd=0
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=162269, da=183578698, mc=58, sc=0,
+ hc=58, sp=0, fso=162269, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -75,91 +72,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-we would crash if width was 0 for these insns, as tcg_gen_deposit() is
-undefined for that case. For TriCore, width = 0 is a mov from the src reg
-to the dst reg, so we special case this here.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Acked-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230828112651.522058-9-kbastian@mail.uni-paderborn.de>
+Message-ID: <20230828112651.522058-10-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c          | 10 ++++++++--
- tests/tcg/tricore/asm/macros.h      | 15 +++++++++++++++
- tests/tcg/tricore/asm/test_insert.S |  9 +++++++++
- 3 files changed, 32 insertions(+), 2 deletions(-)
+ target/tricore/translate.c          | 8 ++++----
+ tests/tcg/tricore/asm/macros.h      | 9 +++++++++
+ tests/tcg/tricore/asm/test_insert.S | 5 +++++
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index c9823ee32a..3f950ae33b 100644
+index 3f950ae33b..7aba7b067c 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -5310,8 +5310,11 @@ static void decode_rcpw_insert(DisasContext *ctx)
-         }
-         break;
-     case OPC2_32_RCPW_INSERT:
-+        /* tcg_gen_deposit_tl() does not handle the case of width = 0 */
-+        if (width == 0) {
-+            tcg_gen_mov_tl(cpu_gpr_d[r2], cpu_gpr_d[r1]);
-         /* if pos + width > 32 undefined result */
--        if (pos + width <= 32) {
-+        } else if (pos + width <= 32) {
-             temp = tcg_constant_i32(const4);
-             tcg_gen_deposit_tl(cpu_gpr_d[r2], cpu_gpr_d[r1], temp, pos, width);
-         }
-@@ -6571,7 +6574,10 @@ static void decode_rrpw_extract_insert(DisasContext *ctx)
+@@ -8223,12 +8223,12 @@ static void decode_32Bit_opc(DisasContext *ctx)
+         temp2 = tcg_temp_new(); /* width*/
+         temp3 = tcg_temp_new(); /* pos */
  
+-        CHECK_REG_PAIR(r3);
++        CHECK_REG_PAIR(r2);
+ 
+-        tcg_gen_andi_tl(temp2, cpu_gpr_d[r3+1], 0x1f);
+-        tcg_gen_andi_tl(temp3, cpu_gpr_d[r3], 0x1f);
++        tcg_gen_andi_tl(temp2, cpu_gpr_d[r2 + 1], 0x1f);
++        tcg_gen_andi_tl(temp3, cpu_gpr_d[r2], 0x1f);
+ 
+-        gen_insert(cpu_gpr_d[r2], cpu_gpr_d[r1], temp, temp2, temp3);
++        gen_insert(cpu_gpr_d[r3], cpu_gpr_d[r1], temp, temp2, temp3);
          break;
-     case OPC2_32_RRPW_INSERT:
--        if (pos + width <= 32) {
-+        /* tcg_gen_deposit_tl() does not handle the case of width = 0 */
-+        if (width == 0) {
-+            tcg_gen_mov_tl(cpu_gpr_d[r3], cpu_gpr_d[r1]);
-+        } else if (pos + width <= 32) {
-             tcg_gen_deposit_tl(cpu_gpr_d[r3], cpu_gpr_d[r1], cpu_gpr_d[r2],
-                                pos, width);
-         }
+ /* RCRW Format */
+     case OPCM_32_RCRW_MASK_INSERT:
 diff --git a/tests/tcg/tricore/asm/macros.h b/tests/tcg/tricore/asm/macros.h
-index b5087b5c97..51f6191ef2 100644
+index 51f6191ef2..17e696bef5 100644
 --- a/tests/tcg/tricore/asm/macros.h
 +++ b/tests/tcg/tricore/asm/macros.h
-@@ -161,6 +161,21 @@ test_ ## num:                                                    \
-     insn DREG_CALC_RESULT, DREG_RS1, imm1, DREG_RS2, imm2;   \
+@@ -169,6 +169,15 @@ test_ ## num:                                                    \
+     insn DREG_CALC_RESULT, DREG_RS1, DREG_RS2, imm1, imm2;   \
      )
  
-+#define TEST_D_DDII(insn, num, result, rs1, rs2, imm1, imm2) \
-+    TEST_CASE(num, DREG_CALC_RESULT, result,                 \
-+    LI(DREG_RS1, rs1);                                       \
-+    LI(DREG_RS2, rs2);                                       \
-+    rstv;                                                    \
-+    insn DREG_CALC_RESULT, DREG_RS1, DREG_RS2, imm1, imm2;   \
++#define TEST_D_DIE(insn, num, result, rs1, imm1, rs2_lo, rs2_hi)\
++    TEST_CASE(num, DREG_CALC_RESULT, result,                    \
++    LI(DREG_RS1, rs1);                                          \
++    LI(EREG_RS2_LO, rs2_lo);                                    \
++    LI(EREG_RS2_HI, rs2_hi);                                    \
++    rstv;                                                       \
++    insn DREG_CALC_RESULT, DREG_RS1, imm1, EREG_RS2;            \
 +    )
 +
-+#define TEST_D_DIII(insn, num, result, rs1, imm1, imm2, imm3)\
-+    TEST_CASE(num, DREG_CALC_RESULT, result,                 \
-+    LI(DREG_RS1, rs1);                                       \
-+    rstv;                                                    \
-+    insn DREG_CALC_RESULT, DREG_RS1, imm1, imm2, imm3;       \
-+    )
-+
- #define TEST_E_ED(insn, num, res_hi, res_lo, rs1_hi, rs1_lo, rs2) \
-     TEST_CASE_E(num, res_lo, res_hi,                              \
-     LI(EREG_RS1_LO, rs1_lo);                                      \
+ #define TEST_D_DIII(insn, num, result, rs1, imm1, imm2, imm3)\
+     TEST_CASE(num, DREG_CALC_RESULT, result,                 \
+     LI(DREG_RS1, rs1);                                       \
 diff --git a/tests/tcg/tricore/asm/test_insert.S b/tests/tcg/tricore/asm/test_insert.S
-index d5fd2237e1..3978810121 100644
+index 3978810121..223d7ce796 100644
 --- a/tests/tcg/tricore/asm/test_insert.S
 +++ b/tests/tcg/tricore/asm/test_insert.S
-@@ -6,4 +6,13 @@ _start:
- #                 |     |      |            |       |     |    |
-     TEST_D_DIDI(insert, 1, 0x7fffffff, 0xffffffff, 0xa, 0x10, 0x8)
+@@ -15,4 +15,9 @@ _start:
+ #                 |     |      |           |           |        |    |
+     TEST_D_DDII(insert, 4, 0x03c1e53c, 0x03c1e53c, 0x45821385, 0x7 ,0x0)
  
-+#                insn num    result        rs1    imm1   imm2 imm3
-+#                 |     |      |            |       |     |    |
-+    TEST_D_DIII(insert, 2, 0xd38fe370, 0xd38fe370, 0x4, 0x4 , 0x0)
-+    TEST_D_DIII(insert, 3, 0xd38fe374, 0xd38fe370, 0x4, 0x0 , 0x4)
-+
-+#                insn  num   result       rs1         rs2      pos  width
-+#                 |     |      |           |           |        |    |
-+    TEST_D_DDII(insert, 4, 0x03c1e53c, 0x03c1e53c, 0x45821385, 0x7 ,0x0)
++#                insn num   result       rs1     imm1      rs2_h       rs2_l
++#                 |    |      |           |        |         |           |
++    TEST_D_DIE(insert, 5, 0xe30c308d, 0xe30c308d ,0x3 , 0x00000000 ,0x00000000)
++    TEST_D_DIE(insert, 6, 0x669b0120, 0x669b2820 ,0x2 , 0x5530a1c7 ,0x3a2b0f67)
 +
      TEST_PASSFAIL
 -- 
