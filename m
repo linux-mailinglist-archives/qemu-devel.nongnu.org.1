@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341617B32D5
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 14:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED577B32F1
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 14:58:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmCzX-00087x-1E; Fri, 29 Sep 2023 08:53:11 -0400
+	id 1qmD3j-0002tT-4h; Fri, 29 Sep 2023 08:57:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qmCzU-00083t-S7
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 08:53:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qmCzS-00008v-Dw
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 08:53:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695991985;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=MT9cqgfzf3xhZcdmenckS6KRLPsTP1yKIWmBcLnMies=;
- b=B2PYmwYDuB60LdBovLJyrpZY0dzvD9eWgHYkHK3nLIfDoQ3dAsyMdAkIpbf3rge+TZSncE
- 2BHYClzJV1JoE99tHBeqJRfZH5KizzGtbHiffRai8NKm7LBwf1CqMK2Q1eZPJmEGFVTKYK
- 5zUnBrTfYpnFOUnuXHdTNY/jUqxYKBk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-35-WAOjiUCVNK2NAMyYu4jxBg-1; Fri, 29 Sep 2023 08:53:01 -0400
-X-MC-Unique: WAOjiUCVNK2NAMyYu4jxBg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D18D285A5BE;
- Fri, 29 Sep 2023 12:53:00 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.43])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 0D919C15BB8;
- Fri, 29 Sep 2023 12:52:58 +0000 (UTC)
-Date: Fri, 29 Sep 2023 13:52:56 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, alistair.francis@wdc.com,
- bmeng@tinylab.org, liweiwei@iscas.ac.cn,
- zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Andrew Jones <ajones@ventanamicro.com>
-Subject: Re: [PATCH 0/6] riscv: RVA22U64 profile support
-Message-ID: <ZRbIqHuefKCBNudv@redhat.com>
-References: <20230926194951.183767-1-dbarboza@ventanamicro.com>
- <ZRarBuEeBi7WkS6K@redhat.com>
- <e5342929-506a-ce75-34fa-204ad0970ee2@ventanamicro.com>
- <ZRa7O67ZTukOq5GL@redhat.com>
- <b6256c0e-5000-2af1-5ffa-caae55d9f694@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qmD3W-0002t0-4s
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 08:57:20 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qmD3S-0001Eq-Kh
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 08:57:16 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4054496bde3so123300755e9.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 05:57:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1695992231; x=1696597031; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=ldrJbBN8+v+vNgQQCx/m+z4EiDwVAsJyCr9L6JE7RzM=;
+ b=YWWdbbYeJepfZgwmguTaRXx7Scrw7ljORQEOIm+4pMyYCs7Ilfm07n9J0leRRiA1Dq
+ Pspj7m7wD8Ny4jaFyEfYYhVxZHJEiTsy6wJ+CeffrrDwGvO4EcQBB0tTnSv7+57CatLi
+ 2db5LOtJbGqiuM5XZF0vLc+wgD7hYvr3NCV21rgAz+otTibrXmNyPCSjYNZ4HfifEe3R
+ 8xiHHjW7P0HgZYf+ppvEGT2de/1x3dQj/lty68mw4rWC8u5NnB0xTJmwm38InAdCxdT6
+ 2fkr0hKYg5BP39zLDrdvmVfocrUbfAwdrlO0cSQTAj5Uxf/ilVlQo6pRb20yp2HXsFjn
+ es6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1695992231; x=1696597031;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=ldrJbBN8+v+vNgQQCx/m+z4EiDwVAsJyCr9L6JE7RzM=;
+ b=hqjZuHT2skHdGMoWuU4QC6wU/yfExFxDr0DgSHQq9iRJ1Xe8IOA0mc7rvWEcIOfmHm
+ 4cAoGxrKAXoJN6KO1nKEce8vEaYXg1nwQBWqP86NqiVAwJ7IHvq3S52NicD+xw+ptMnd
+ uViJns0y/FvILVqgoKmCou+RsMM7WQYM9IotWe1rGXnFizbxsTiZf5WxNQ+cyIP4/ohV
+ L3tihBVT0gdZQq2XyxW4r87CDORcEO/nigTgPswJ3F3TcWLCkmWVaFsJSJ+brMcONHWw
+ BExSDIiBF/0PJi92okpUxQQkbnB1mX5X1FZvnmKhSC3Q5nt1r1uErRLiNZSH6bAV/bjS
+ PO2Q==
+X-Gm-Message-State: AOJu0YwJcJbEVwd/pdpt8JB63FEuaUv8AHDRbUmfeBOvYTM3ljWctpex
+ TGxmxwfYfxTEcYEw0l93BvsRtJaHiidgInH6PXI=
+X-Google-Smtp-Source: AGHT+IGLnejgHD8F4SQlxpLgP61TS/VcUfudd7aWin7URpjOkvbBHJ2os4Z5Db+jgjpx4fPbQ9tTHA==
+X-Received: by 2002:a7b:c419:0:b0:401:dc7e:b688 with SMTP id
+ k25-20020a7bc419000000b00401dc7eb688mr3917024wmi.6.1695992231459; 
+ Fri, 29 Sep 2023 05:57:11 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ x11-20020a1c7c0b000000b003fe1c332810sm1374781wmc.33.2023.09.29.05.57.11
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 29 Sep 2023 05:57:11 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 96E031FFBB;
+ Fri, 29 Sep 2023 13:57:10 +0100 (BST)
+References: <20230928075613.875575-1-pbonzini@redhat.com>
+User-agent: mu4e 1.11.20; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] Makefile: build plugins before running TCG tests
+Date: Fri, 29 Sep 2023 13:57:04 +0100
+In-reply-to: <20230928075613.875575-1-pbonzini@redhat.com>
+Message-ID: <87msx5p26x.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b6256c0e-5000-2af1-5ffa-caae55d9f694@ventanamicro.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,142 +92,24 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Sep 29, 2023 at 09:49:47AM -0300, Daniel Henrique Barboza wrote:
-> 
-> 
-> On 9/29/23 08:55, Daniel P. Berrangé wrote:
-> > On Fri, Sep 29, 2023 at 08:29:08AM -0300, Daniel Henrique Barboza wrote:
-> > > 
-> > > 
-> > > On 9/29/23 07:46, Daniel P. Berrangé wrote:
-> > > > On Tue, Sep 26, 2023 at 04:49:44PM -0300, Daniel Henrique Barboza wrote:
-> > > > > Based-on: 20230926183109.165878-1-dbarboza@ventanamicro.com
-> > > > > ("[PATCH 0/2] riscv: add extension properties for all cpus")
-> > > > > 
-> > > > > Hi,
-> > > > > 
-> > > > > These patches implements the base profile support for qemu-riscv and the
-> > > > > first profile, RVA22U64.
-> > > > > 
-> > > > > As discussed in this thread [1] we're aiming for a flag that enables all
-> > > > > mandatory extensions of a profile. Optional extensions were left behind
-> > > > > and must be enabled by hand if desired. Since this is the first profile
-> > > > > we're adding, we'll need to add the base framework as well.
-> > > > > 
-> > > > > The RVA22U64 profile was chosen because qemu-riscv implements all its
-> > > > > extensions, both mandatory and optional. That includes 'zicntr' and
-> > > > > 'zihpm', which we support for awhile but aren't adverting to userspace.
-> > > > > 
-> > > > > Other design decisions made:
-> > > > > 
-> > > > > - disabling a profile flag does nothing, i.e. we won't mass disable
-> > > > >     mandatory extensions of the rva22U64 profile if the user sets
-> > > > >     rva22u64=false;
-> > > > 
-> > > > Why shouldn't this be allowed ?
-> > > > 
-> > > > IIUC, a profile is syntactic sugar for a group of features. If
-> > > > we can disable individual features explicitly, why should we
-> > > > not allow use of the profile as sugar to disable them en-mass ?
-> > > 
-> > > In theory there's no harm in allowing mass disabling of extensions but, given
-> > > it's a whole profile, we would end up disabling most/all CPU extensions and
-> > > the guest would do nothing.
-> > 
-> > True, that is just user error though.  They could disable a profile
-> > and then manually re-enable individual features, and thus get a
-> > working system.
-> > 
-> > > There is a thread in the ML:
-> > > 
-> > > https://lore.kernel.org/qemu-riscv/CABJz62NyVNu4Z1qmCG7MyJkGG_9yWxjUFHHWjmoQEP6unRrHNA@mail.gmail.com/
-> > > 
-> > > Where we discussed the possibility of having a minimal CPU extension set. We didn't
-> > > reach a consensus because the definition of "minimal CPU extension set" vary between
-> > > OSes (Linux requires IMAFD, FreeBSD might require something differ).
-> > > 
-> > > Assuming we reach a consensus on what a minimal set is, we could allow disabling mass
-> > > extensions via probile but keeping this minimal set, for example. At very least we
-> > > shouldn't allow users to disable 'I' because that would kill the CPU, so RV64I is
-> > > the minimum set that I would assume for now.
-> > 
-> > I'd probably just call that user error too.
-> > 
-> > > > 
-> > > > TL;DR: feature groups are pretty error prone if more than
-> > > > one is listed by the user, or they're combined with individual
-> > > > features.
-> > > > 
-> > > > > 
-> > > > > - profile support for vendor CPUs consists into checking if the CPU
-> > > > >     happens to have the mandatory extensions required for it. In case it
-> > > > >     doesn't we'll error out. This is done to follow the same prerogative
-> > > > >     we always had of not allowing extensions being enabled for vendor
-> > > > >     CPUs;
-> > > > 
-> > > > Why shouldn't this be allowed ?
-> > > 
-> > > There's no technical reason to not allow it. The reason it's forbid is to be
-> > > closer to what the real hardware would do. E.g. the real hardware doesn't allow
-> > > users to enable Vector if the hardware doesn't support it. Vendor CPUs also has
-> > > a privileged spec restriction as well, so if a CPU is running in an older spec
-> > > it can't enable extensions that were added later.
-> > 
-> > Real hardware is constrained in not being able to invent arbitrary
-> > new features on chip. Virtual machines  are not constrained, so
-> > I don't think the inability of hardware todo this, is an especially
-> > strong reason to limit software emulation.
-> > 
-> > What I don't like about this, is that (IIUC) the '$profile=on' option
-> > now has different semantics depending on what CPU it is used with.
-> > 
-> > ie  using it with a vendor CPU,   $profile=on  becomes an assertion
-> > that the vendor CPU contains all the features needed to satisfy
-> > $profile. It won't enable/disable anything, just check it is present.
-> > 
-> > With a non-vendor CPU, using $profile=on becomes a mechanism to force
-> > enable all the features needed to satisfy $profile, there is no
-> > mechanism to just check for presence.
-> > 
-> > Having two different semantics for the same syntax is generally considered
-> > bad design practice.
-> > 
-> > This points towards supporting a tri-state, not boolean. $profile=check
-> > for validation only, and $profile=on for force enablement.
-> 
-> This would leave us with:
-> 
-> - $profile=off => disable all extensions. Let users hit themselves in the foot if they
-> don't enable any other extensions. Note that disabling a profile and enabling extensions
-> on top of it is very sensitive to left-to-right ordering, so it would be good to have
-> a way to enforce this ordering somehow (feature groups always first);
 
-It is also order sensitive if 2 profiles have overlap in the
-extensions they represent. So might also require an ordering
-of profiles themselves to be defined if you permit multiple
-profiles.
+Paolo Bonzini <pbonzini@redhat.com> writes:
 
-If we dont want to think about this immediately that, then
-we should make $profile=off into a fatal error rather than
-silently ignoring it
+> Add back test-plugins and, since it is always defined, do so unconditiona=
+lly.
+>
+> Reported-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+> Fixes: 2c13c574418 ("configure, meson: move --enable-plugins to meson", 2=
+023-09-07)
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-> - $profile=on => only valid for generic CPUs;
-> 
-> - $profile=check -> valid for all CPUs, would only check if the CPU implements the profile.
-> 
-> 
-> I think this is fine. Drew, care to weight in?
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Tested-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
 
-
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
