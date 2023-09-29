@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D8987B2C85
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 08:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C79617B2C81
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 08:42:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm7Bm-0006OC-33; Fri, 29 Sep 2023 02:41:26 -0400
+	id 1qm7Bp-0006bL-PL; Fri, 29 Sep 2023 02:41:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qm7BL-0005pM-PK
+ id 1qm7BL-0005pL-Oy
  for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:41:01 -0400
 Received: from zuban.uni-paderborn.de ([2001:638:502:c003::17])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <kbastian@mail.uni-paderborn.de>)
- id 1qm7B1-0007Po-Th
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:40:57 -0400
+ id 1qm7B2-0007QS-Hb
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 02:40:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=mail.uni-paderborn.de; s=20170601; h=Content-Transfer-Encoding:MIME-Version
  :References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=BW2JthvgwEqvznp0bOAz776apq7KePSWI1Irh0UoOYU=; b=PjZnfA1a/5YWQlqYXcWdJBlUmn
- IqWHEXLYj56+WWs1JW65sxi+hZE0nZyPRhSO+zJomwHxeabeNXsLiEUL1Sn855s1PWCXG9EvorGrX
- Z13hXmKIq2DHAqCTSZ6HWAyg1Ym9Ew4AWn4ggDvVvbqCXdCnMUYl1N2Rb5Dz6bxc4yIk=;
+ bh=WUubD0ZJKTGpZfFwTqcmK2tbordUXESg+SoTC0LvCn0=; b=HoEMDG7jwZVUqsT5zVqPZ4XF07
+ lDRk7VnsU1hg50xGZMZ6NHz1mZiCNl9gQZOLfyJketTlHS4oYviGUH62yM6uqVXcO6n/BElzqSN0/
+ bOZwTjObqeNA8FIomSEmXMBysyVXMNJBYtYKeP6jdMsOE4d+04A2jGL3ie6h9prziAd0=;
 X-Envelope-From: <kbastian@mail.uni-paderborn.de>
 From: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
 To: qemu-devel@nongnu.org
 Cc: kbastian@mail.uni-paderborn.de,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL v3 10/16] target/tricore: Replace cpu_*_code with translator_*
-Date: Fri, 29 Sep 2023 08:39:54 +0200
-Message-ID: <20230929064000.536923-11-kbastian@mail.uni-paderborn.de>
+Subject: [PULL v3 11/16] target/tricore: Fix FTOUZ being ISA v1.3.1 up
+Date: Fri, 29 Sep 2023 08:39:55 +0200
+Message-ID: <20230929064000.536923-12-kbastian@mail.uni-paderborn.de>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230929064000.536923-1-kbastian@mail.uni-paderborn.de>
 References: <20230929064000.536923-1-kbastian@mail.uni-paderborn.de>
@@ -43,7 +43,9 @@ Content-Transfer-Encoding: 8bit
 X-IMT-spamd-action: no action
 X-PMX-Version: 6.4.9.2830568, Antispam-Engine: 2.7.2.2107409,
  Antispam-Data: 2023.9.29.63017, AntiVirus-Engine: 6.0.2,
- AntiVirus-Data: 2023.9.26.602000
+ AntiVirus-Data: 2023.9.29.602000
+X-Sophos-SenderHistory: ip=79.202.213.239, fs=162273, da=183578702, mc=60, sc=0,
+ hc=60, sp=0, fso=162273, re=0, sd=0, hd=0
 X-IMT-Source: Intern
 X-IMT-Spam-Score: 0.0 ()
 X-IMT-Authenticated-Sender: uid=kbastian,ou=People,o=upb,c=de
@@ -72,42 +74,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Bastian Koppelmann <kbastian@mail.uni-paderborn.de>
-Message-ID: <20230828112651.522058-11-kbastian@mail.uni-paderborn.de>
+Message-ID: <20230828112651.522058-12-kbastian@mail.uni-paderborn.de>
 ---
- target/tricore/translate.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ target/tricore/translate.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/target/tricore/translate.c b/target/tricore/translate.c
-index 7aba7b067c..2107d1fdd4 100644
+index 2107d1fdd4..7b53307eff 100644
 --- a/target/tricore/translate.c
 +++ b/target/tricore/translate.c
-@@ -8398,7 +8398,7 @@ static bool insn_crosses_page(CPUTriCoreState *env, DisasContext *ctx)
-      * 4 bytes from the page boundary, so we cross the page if the first
-      * 16 bits indicate that this is a 32 bit insn.
-      */
--    uint16_t insn = cpu_lduw_code(env, ctx->base.pc_next);
-+    uint16_t insn = translator_lduw(env, &ctx->base, ctx->base.pc_next);
- 
-     return !tricore_insn_is_16bit(insn);
- }
-@@ -8411,14 +8411,15 @@ static void tricore_tr_translate_insn(DisasContextBase *dcbase, CPUState *cpu)
-     uint16_t insn_lo;
-     bool is_16bit;
- 
--    insn_lo = cpu_lduw_code(env, ctx->base.pc_next);
-+    insn_lo = translator_lduw(env, &ctx->base, ctx->base.pc_next);
-     is_16bit = tricore_insn_is_16bit(insn_lo);
-     if (is_16bit) {
-         ctx->opcode = insn_lo;
-         ctx->pc_succ_insn = ctx->base.pc_next + 2;
-         decode_16Bit_opc(ctx);
-     } else {
--        uint32_t insn_hi = cpu_lduw_code(env, ctx->base.pc_next + 2);
-+        uint32_t insn_hi = translator_lduw(env, &ctx->base,
-+                                           ctx->base.pc_next + 2);
-         ctx->opcode = insn_hi << 16 | insn_lo;
-         ctx->pc_succ_insn = ctx->base.pc_next + 4;
-         decode_32Bit_opc(ctx);
+@@ -6290,7 +6290,11 @@ static void decode_rr_divide(DisasContext *ctx)
+         gen_helper_ftou(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
+         break;
+     case OPC2_32_RR_FTOUZ:
+-        gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++        if (has_feature(ctx, TRICORE_FEATURE_131)) {
++            gen_helper_ftouz(cpu_gpr_d[r3], cpu_env, cpu_gpr_d[r1]);
++        } else {
++            generate_trap(ctx, TRAPC_INSN_ERR, TIN2_IOPC);
++        }
+         break;
+     case OPC2_32_RR_UPDFL:
+         gen_helper_updfl(cpu_env, cpu_gpr_d[r1]);
 -- 
 2.42.0
 
