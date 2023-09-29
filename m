@@ -2,60 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437217B2EC7
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 11:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3359E7B2ECB
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 11:02:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm9Mf-0001mX-1y; Fri, 29 Sep 2023 05:00:50 -0400
+	id 1qm9Mp-0001xv-Tq; Fri, 29 Sep 2023 05:01:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MW-0001lu-Dj
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:41 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9Me-0001pX-Fv
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MS-0008CP-F5
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:40 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qm9MP-0008C4-C1
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 05:00:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695978034;
+ s=mimecast20190719; t=1695978032;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vC9UdFtw5oUsGVhmJOxImvqvigFqmtXJZT8II3cT5zU=;
- b=Y9C7a3uErcKDDgDsZlv1vUZrjO8oXdl/RgeHyXtTMlQ06SQd5Q3nNDYjxH///nk/7TBoDo
- IpaanQwn3IBI3wZ69ZpRfHb7auzCotBkzkUP6TRIqv7rhog5wbeAm7xv0ytaJkNn/nzoPk
- XYGOwMD1djph2PGtg+gdoYKRKuVk6Nc=
+ bh=azgp07v5+QOdek2AunJJzRtlE9aw2NAlB9y0wTULCmo=;
+ b=Kkf3eG0gBLdxs4zwNxQqN2NohSWV9OzRwiTBEeZpKnyGlmR7/UrsQJoEC2eXZzFuvxHajA
+ ddKvBaLcD9TSRWpvve3VvXE3Z4XbvIK0cwYg41nNEY2OvZtJVcpbzP+L3ykTO6BG0ENCV9
+ xAbOBeYB5eTfqVGtKEl3QM3mV+cFlpI=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-583-AHSJQFTbM0a11empV89rgA-1; Fri, 29 Sep 2023 05:00:28 -0400
-X-MC-Unique: AHSJQFTbM0a11empV89rgA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ us-mta-693-ajcrBFjKOUKr4T_r8HXm-w-1; Fri, 29 Sep 2023 05:00:28 -0400
+X-MC-Unique: ajcrBFjKOUKr4T_r8HXm-w-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 86E4D1019C92;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 86DA385A5BF;
  Fri, 29 Sep 2023 09:00:28 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 6465B400F3C;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 5C54E14171B6;
  Fri, 29 Sep 2023 09:00:28 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id E86EC21E68A8; Fri, 29 Sep 2023 10:50:53 +0200 (CEST)
+ id EB30421E68A9; Fri, 29 Sep 2023 10:50:53 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Alistair Francis <alistair23@gmail.com>,
  Alistair Francis <alistair.francis@wdc.com>,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PULL 51/56] hw/riscv: opentitan: Fixup local variables shadowing
-Date: Fri, 29 Sep 2023 10:50:48 +0200
-Message-ID: <20230929085053.2789105-52-armbru@redhat.com>
+Subject: [PULL 52/56] target/riscv: cpu: Fixup local variables shadowing
+Date: Fri, 29 Sep 2023 10:50:49 +0200
+Message-ID: <20230929085053.2789105-53-armbru@redhat.com>
 In-Reply-To: <20230929085053.2789105-1-armbru@redhat.com>
 References: <20230929085053.2789105-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -94,26 +94,35 @@ This patch removes the local variable shadowing. Tested by adding:
 To configure
 
 Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-Message-ID: <20230925043023.71448-2-alistair.francis@wdc.com>
+Message-ID: <20230925043023.71448-3-alistair.francis@wdc.com>
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/riscv/opentitan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/riscv/cpu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/hw/riscv/opentitan.c b/hw/riscv/opentitan.c
-index 6a2fcc4ade..436503f1ba 100644
---- a/hw/riscv/opentitan.c
-+++ b/hw/riscv/opentitan.c
-@@ -227,7 +227,7 @@ static void lowrisc_ibex_soc_realize(DeviceState *dev_soc, Error **errp)
-                                            IRQ_M_TIMER));
+diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+index f227c7664e..4140899c52 100644
+--- a/target/riscv/cpu.c
++++ b/target/riscv/cpu.c
+@@ -704,7 +704,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+             CSR_MPMMASK,
+         };
  
-     /* SPI-Hosts */
--    for (int i = 0; i < OPENTITAN_NUM_SPI_HOSTS; ++i) {
-+    for (i = 0; i < OPENTITAN_NUM_SPI_HOSTS; ++i) {
-         dev = DEVICE(&(s->spi_host[i]));
-         if (!sysbus_realize(SYS_BUS_DEVICE(&s->spi_host[i]), errp)) {
-             return;
+-        for (int i = 0; i < ARRAY_SIZE(dump_csrs); ++i) {
++        for (i = 0; i < ARRAY_SIZE(dump_csrs); ++i) {
+             int csrno = dump_csrs[i];
+             target_ulong val = 0;
+             RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
+@@ -747,7 +747,7 @@ static void riscv_cpu_dump_state(CPUState *cs, FILE *f, int flags)
+                     CSR_VTYPE,
+                     CSR_VLENB,
+                 };
+-        for (int i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
++        for (i = 0; i < ARRAY_SIZE(dump_rvv_csrs); ++i) {
+             int csrno = dump_rvv_csrs[i];
+             target_ulong val = 0;
+             RISCVException res = riscv_csrrw_debug(env, csrno, &val, 0, 0);
 -- 
 2.41.0
 
