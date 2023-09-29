@@ -2,73 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5DF7B3857
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 19:06:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3CE7B3948
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 20:01:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmGvU-0002Gk-VX; Fri, 29 Sep 2023 13:05:16 -0400
+	id 1qmHmE-0002kJ-2b; Fri, 29 Sep 2023 13:59:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qmGvN-0002DT-QQ
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 13:05:11 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qmGvL-0000uJ-Qi
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 13:05:09 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 2C49921836;
- Fri, 29 Sep 2023 17:05:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696007104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=viX8BCU/3q+JMOu3+5MZV3rX/71i3D367R80GDqqHAQ=;
- b=C+9L0P9lou6v7RrBzKdc1aGE3/eICBsGKeppSEizw02d85MAUZGJrPO1uaFyuAT1mm+CPD
- IhYQN7kAbhpf7aQHEOpiiu5ktSlp/8o0QjzYxAkmrAeEqx4xNgwOb5wFxGTPtz8rwYHKbG
- OzsDoyiibKpowohAbnAOS7dVWoSHRAg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696007104;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=viX8BCU/3q+JMOu3+5MZV3rX/71i3D367R80GDqqHAQ=;
- b=D4uczI7l2tqeo4ls4hqduSJC2d0fhyWIKYoFCu+JgxIY88OjbbzVLPAaoaxkM1LQ2GX1Vy
- auaotWXEN2jdyjAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id B51221390A;
- Fri, 29 Sep 2023 17:05:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id sVgKIL8DF2VUZAAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 29 Sep 2023 17:05:03 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- lizhijian@fujitsu.com, eblake@redhat.com
-Subject: Re: [PATCH v2 53/53] migration/rdma: Replace flawed device detail
- dump by tracing
-In-Reply-To: <20230928132019.2544702-54-armbru@redhat.com>
-References: <20230928132019.2544702-1-armbru@redhat.com>
- <20230928132019.2544702-54-armbru@redhat.com>
-Date: Fri, 29 Sep 2023 14:05:01 -0300
-Message-ID: <87jzs8zz9e.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qmHmB-0002k0-5M
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 13:59:43 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qmHm3-0005LK-4o
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 13:59:42 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=9WEmyFht6FXDlx/+NUDTAjvtGL19Taqjiq3SSaSnXY4=; b=R41yJ09eVVerxCU+avJ2ByT0S5
+ c2htpd9epipXm5MayRjZ3GbxAsBJzwpG80l2biDK7JPKDLpWivxAvRx2Rmdd5N5/C+tYkxvLjA1tm
+ cHbCGNd1ZsOAdtZ3TZKG/J357In5mXoXXujGexz5ZBzvDVyxyxOFa4PYNcwTUfU95oZ64lOKrqd10
+ 6aEE8afsQPjTat+gfZfgr37mZacaSETfvcSQiTnyKkicTYudM9lLghaEfNQiHqp3CSC47Y45FBWVt
+ 6pHFhJETSBB9TASALfa718xxEXBLBcqgbqKso8ScgsBblHW0lrqlvOg6wO6JZ/Xh4m9Oqm1/KDLIJ
+ a4oPQKTZLYTnizBqtPKoDAN4extwtjlVshE1ZfCJLlv1V45imL/AdL0A2dhINRVUmqAI4eS2Vb91+
+ s7rcaHBDQ06x8nfmZabKfQvmAK/xNcSz8nTb/qXgphby9fi/xEjYO8nBoi3ef1nxFj/JVS/wAVimP
+ ttU6SH7x+PSpmfrzODROq0tyKaSuCYhhJHwtVxVLcdYvU33O7zei2ziMAzwwv1eXeSdgWU36UUQTS
+ bK7wtX+WNH6Ko/khEirGxmE1CswsepVvAe6COnrwm+B+vHCu/TbS2h8Z0X6OY4DTf853u/jQzAtzb
+ FAubxT1RMuRd155rC4Nx9hVdimD7MBbz9XDTjRELI=;
+Received: from [2a00:23c4:8baf:5f00:c237:5189:8121:f752]
+ (helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qmHlo-00033Y-1i; Fri, 29 Sep 2023 18:59:24 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: laurent@vivier.eu,
+	qemu-devel@nongnu.org
+Date: Fri, 29 Sep 2023 18:58:57 +0100
+Message-Id: <20230929175917.511133-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:c237:5189:8121:f752
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v3 00/20] q800: add support for booting MacOS Classic - part 2
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,35 +76,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+This series contains the remaining patches needed to allow QEMU's q800
+machine to boot MacOS Classic when used in conjunction with a real
+Quadra 800 ROM image. In fact with this series applied it is possible
+to boot all of the following OSs:
 
-> qemu_rdma_dump_id() dumps RDMA device details to stdout.
->
-> rdma_start_outgoing_migration() calls it via qemu_rdma_source_init()
-> and qemu_rdma_resolve_host() to show source device details.
-> rdma_start_incoming_migration() arranges its call via
-> rdma_accept_incoming_migration() and qemu_rdma_accept() to show
-> destination device details.
->
-> Two issues:
->
-> 1. rdma_start_outgoing_migration() can run in HMP context.  The
->    information should arguably go the monitor, not stdout.
->
-> 2. ibv_query_port() failure is reported as error.  Its callers remain
->    unaware of this failure (qemu_rdma_dump_id() can't fail), so
->    reporting this to the user as an error is problematic.
->
-> Fixable, but the device detail dump is noise, except when
-> troubleshooting.  Tracing is a better fit.  Similar function
-> qemu_rdma_dump_id() was converted to tracing in commit
-> 733252deb8b (Tracify migration/rdma.c).
->
-> Convert qemu_rdma_dump_id(), too.
->
-> While there, touch up qemu_rdma_dump_gid()'s outdated comment.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+  - MacOS 7.1 - 8.1, with or without virtual memory enabled
+  - A/UX 3.0.1
+  - NetBSD 9.3
+  - Linux (via EMILE)
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+If you are ready to experience some 90s nostalgia then all you need is
+to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
+suitable install ISO as follows:
+
+  # Prepare a PRAM image
+  $ qemu-img create -f raw pram.img 256b
+
+  # Launch QEMU with blank disk and install CDROM
+  $ ./qemu-system-m68k \
+      -M q800 \
+      -m 128 \
+      -bios Quadra800.rom \
+      -drive file=pram.img,format=raw,if=mtd \
+      -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+      -device scsi-hd,scsi-id=0,drive=hd \
+      -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+      -device scsi-cd,scsi-id=3,drive=cd
+
+And off you go! For more in-depth information about the installation process
+I highly recommend the installation guide over at emaculation.com [1].
+Compatibility is generally very good, and I'm pleased to report it is possible
+to run one of the most popular productivity apps from the 90s [2].
+
+I'd like to add a big thank you to all the people who have helped me work on
+this series, including testing on real hardware, answering questions about
+MacOS Classic internals and helping to diagnose and fix bugs in the 68k
+emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
+Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
+Elliot Nunn, and SolraBizna.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[1] https://www.emaculation.com/doku.php/qemu
+[2] https://www.youtube.com/watch?v=yI21gURQ1Ew
+
+
+v3:
+- Rebase onto master
+- Add R-B tags from Laurent
+- Squash fixes from Volker into patch 7 ("audio: add Apple Sound Chip (ASC) emulation")
+- Change iwmregs from uint16_t to uint8_t in patch 12 ("swim: split into separate IWM
+  and ISM register blocks")
+
+v2:
+- Rebase onto master
+- Add R-B tags from Phil and Laurent
+- Improve ASC logic for generating interrupts when FIFO underflow occurs
+- Rework ASC silence generation logic similar to Volker's original proposal
+- Update A/UX timer calibration hack to reflect the change of accesses now that
+  #360 is resolved
+
+Mark Cave-Ayland (20):
+  q800-glue.c: convert to Resettable interface
+  q800: add djMEMC memory controller
+  q800: add machine id register
+  q800: implement additional machine id bits on VIA1 port A
+  q800: add IOSB subsystem
+  q800: allow accesses to RAM area even if less memory is available
+  audio: add Apple Sound Chip (ASC) emulation
+  asc: generate silence if FIFO empty but engine still running
+  q800: add Apple Sound Chip (ASC) audio to machine
+  q800: add easc bool machine class property to switch between ASC and
+    EASC
+  swim: add trace events for IWM and ISM registers
+  swim: split into separate IWM and ISM register blocks
+  swim: update IWM/ISM register block decoding
+  mac_via: work around underflow in TimeDBRA timing loop in SETUPTIMEK
+  mac_via: workaround NetBSD ADB bus enumeration issue
+  mac_via: implement ADB_STATE_IDLE state if shift register in input
+    mode
+  mac_via: always clear ADB interrupt when switching to A/UX mode
+  q800: add ESCC alias at 0xc000
+  q800: add alias for MacOS toolbox ROM at 0x40000000
+  mac_via: extend timer calibration hack to work with A/UX
+
+ MAINTAINERS                 |   6 +
+ hw/audio/Kconfig            |   3 +
+ hw/audio/asc.c              | 725 ++++++++++++++++++++++++++++++++++++
+ hw/audio/meson.build        |   1 +
+ hw/audio/trace-events       |  10 +
+ hw/block/swim.c             | 261 ++++++++-----
+ hw/block/trace-events       |   8 +
+ hw/m68k/Kconfig             |   3 +
+ hw/m68k/q800-glue.c         |  18 +-
+ hw/m68k/q800.c              | 134 ++++++-
+ hw/misc/Kconfig             |   6 +
+ hw/misc/djmemc.c            | 135 +++++++
+ hw/misc/iosb.c              | 133 +++++++
+ hw/misc/mac_via.c           | 234 +++++++++++-
+ hw/misc/meson.build         |   2 +
+ hw/misc/trace-events        |  10 +
+ include/hw/audio/asc.h      |  86 +++++
+ include/hw/block/swim.h     |  21 +-
+ include/hw/m68k/q800-glue.h |   4 +-
+ include/hw/m68k/q800.h      |  11 +
+ include/hw/misc/djmemc.h    |  30 ++
+ include/hw/misc/iosb.h      |  25 ++
+ include/hw/misc/mac_via.h   |   3 +
+ 23 files changed, 1763 insertions(+), 106 deletions(-)
+ create mode 100644 hw/audio/asc.c
+ create mode 100644 hw/misc/djmemc.c
+ create mode 100644 hw/misc/iosb.c
+ create mode 100644 include/hw/audio/asc.h
+ create mode 100644 include/hw/misc/djmemc.h
+ create mode 100644 include/hw/misc/iosb.h
+
+-- 
+2.39.2
+
 
