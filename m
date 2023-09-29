@@ -2,57 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1150E7B3994
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 20:03:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3454C7B3998
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 20:04:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmHo4-0005v4-1b; Fri, 29 Sep 2023 14:01:40 -0400
+	id 1qmHmM-0002nC-FC; Fri, 29 Sep 2023 13:59:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qmHne-0005Xb-2Y
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 14:01:16 -0400
+ id 1qmHmF-0002mD-GP
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 13:59:47 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qmHnP-0005pG-7m
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 14:01:12 -0400
+ id 1qmHmD-0005NL-OP
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 13:59:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
- References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
- Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
- Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
- List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=ceP4YhNUPMLYSAHn4R7ae6JZr9zikMQNDBraYKRwoQY=; b=fn/VVwnD8Nl8qkYocEc/z9X0st
- I42biNzQKS3/zJKgnGO0sR4K02EnCdd3ZAGPy+FjiknSMNrH4uwLOUezS+qj6asOlJpk07A5cYKuK
- WM3HnwPWOipdMPHoTx5qp3RrDWhDU64BqCj2KSm/tajVZGlKsgg3A11hSNJGAYyRwbkNqbzkXyaC4
- xBJHLhDhyD6yzVsS3B3sLQK96wKAvWiw2yJHnxORT0VAhdeAVuUY+nDwImo1oEi4GmSbkUfmbSL05
- O0vz5eS12C+wPhc4U1xV1qA/m4mLKC++3n/BccxtDanNjTNtdw8+juIiw8wcS2Jh/qMA0M2RA/2IK
- lYTVp/2RYBb8lRnQAnDJDEFmrlokwz0svIfoamDGySv5EOdgFafA8Ebg2p+1BJTObhiZwmf34SOLK
- fJvEUt+diY5FxeoNYyOPhkkYWX/osMKsenEds8rxLxPlxWj8w4k2vTcoIBb8iQfGrN1dFcrsd6CH4
- vEVxBHuCVkkSfcIyExTpWj/O0qGvCW+CTGcaK/mlRdF8LKF5yCFrZhVa1BmU+QusJp2OClp7JnapC
- N3b/8oKZNibg0kjMdcz30rg3zzuehwqRm7d3Zor0mRBKg0jt8lYexQPy3Ka30F8IeSiBHtrOLzd0x
- 1wEUs7uXLJy76PADztF1PpsFOmx/sKFjauZR8jjdc=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
+ Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+ Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=IDLFcl0e5ItObYwnhkzeKKRrhamJk4a+C90DzoJf2qs=; b=i1zstQAFWzjLBLQQiggKSlKBME
+ Hw4Ul7Bsup5qQ/FcHMTp/2MHlQj8qqVRxhbRWhdJHMr5BBOdJE08hsor4SbSRy3yKFwfRY8ufo4p5
+ AmSDEwF6kmTYU6WVKRAPwAETplrBz/OPN30mxlBre9Vhcvur5yjjQULKJONu2GWTiHmxV7DtYjc7k
+ t17xxWvokSj5gi69OMfo74kE3D0Sd3t4qJfCQ+wN3kxHoYHE9OTCQgPXiIQJlFlK/wbf5DmrDS5Be
+ TpmB0qgJz29j/xYoJW5dm/0FhFHnVrV9mrWYkd4Jt+I0cPjjfBkFTxhDo8D1/MTV/2vG6UKbjtKjb
+ QBDqNbJLK7xdakcCxWKJwjCOOCoJDnYaRLnOWbXIJUo27HuG8DDhEsMgI6hCAj32U5GtkVgdGLvhU
+ s/mdyRTeCtVmI1dt3iBb1178Dvp9Zz830mm5DyyQduI9K+Nvv1YYKQ1J8bLw5nhhdEsl+mznZ7R8a
+ U4tnxwRCz2ZIeNArDqgDtn78LLK6T5T8f2SLdELpB/V+onooG2qc2Fcgr/5V+VRTmd5VKhBsf1FGs
+ rSrOR/Es67lkf9XUapLQr5CSiNDgG45j0Fep6aohsZ8F8n+QkWtUc6aEji9oa9pQ3cePpiCsPuon8
+ rnfC/VRbTy2RDVSgTEecCWFJee5HxqIgy4sTzbvn8=;
 Received: from [2a00:23c4:8baf:5f00:c237:5189:8121:f752]
  (helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qmHn1-00033Y-Jk; Fri, 29 Sep 2023 19:00:39 +0100
+ id 1qmHm0-00033Y-An; Fri, 29 Sep 2023 18:59:36 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Fri, 29 Sep 2023 18:59:17 +0100
-Message-Id: <20230929175917.511133-21-mark.cave-ayland@ilande.co.uk>
+Date: Fri, 29 Sep 2023 18:59:00 +0100
+Message-Id: <20230929175917.511133-4-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230929175917.511133-1-mark.cave-ayland@ilande.co.uk>
 References: <20230929175917.511133-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:5f00:c237:5189:8121:f752
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v3 20/20] mac_via: extend timer calibration hack to work with
- A/UX
+Subject: [PATCH v3 03/20] q800: add machine id register
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -78,100 +78,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The A/UX timer calibration loop runs continuously until 2 consecutive iterations
-differ by at least 0x492 timer ticks. Modern hosts execute the timer calibration
-loop so fast that this situation never occurs causing a hang on boot.
+MacOS reads this address to identify the hardware.
 
-Use a similar method to Shoebill which is to randomly add 0x500 to the T2
-counter value during calibration to enable it to eventually succeed.
+This is a basic implementation returning the ID of Quadra 800.
 
+Details:
+
+  http://mess.redump.net/mess/driver_info/mac_technical_notes
+
+"There are 3 ID schemes [...]
+ The third and most scalable is a machine ID register at 0x5ffffffc.
+ The top word must be 0xa55a to be valid. Then bits 15-11 are 0 for
+ consumer Macs, 1 for portables, 2 for high-end 68k, and 3 for high-end
+ PowerPC. Bit 10 is 1 if additional ID bits appear elsewhere (e.g. in VIA1).
+ The rest of the bits are a per-model identifier.
+
+ Model                          Lower 16 bits of ID
+...
+ Quadra/Centris 610/650/800     0x2BAD"
+
+Co-developed-by: Laurent Vivier <laurent@vivier.eu>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/misc/mac_via.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ hw/m68k/q800.c         | 29 +++++++++++++++++++++++++++++
+ include/hw/m68k/q800.h |  1 +
+ 2 files changed, 30 insertions(+)
 
-diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 500ece5872..b6206ef73c 100644
---- a/hw/misc/mac_via.c
-+++ b/hw/misc/mac_via.c
-@@ -983,6 +983,44 @@ static void via1_timer_calibration_hack(MOS6522Q800VIA1State *v1s, int addr,
-             /* Looks like there has been a reset? */
-             v1s->timer_hack_state = 1;
-         }
-+
-+        if (addr == VIA_REG_T2CL && val == 0xf0) {
-+            /* VIA_REG_T2CL: low byte of counter (A/UX) */
-+            v1s->timer_hack_state = 5;
-+        }
-+        break;
-+    case 5:
-+        if (addr == VIA_REG_T2CH && val == 0x3c) {
-+            /*
-+             * VIA_REG_T2CH: high byte of counter (A/UX). We are now extremely
-+             * likely to be in the A/UX timer calibration routine, so move to
-+             * the next state where we enable the calibration hack.
-+             */
-+            v1s->timer_hack_state = 6;
-+        } else if ((addr == VIA_REG_IER && val == 0x20) ||
-+                   addr == VIA_REG_T2CH) {
-+            /* We're doing something else with the timer, not calibration */
-+            v1s->timer_hack_state = 0;
-+        }
-+        break;
-+    case 6:
-+        if ((addr == VIA_REG_IER && val == 0x20) || addr == VIA_REG_T2CH) {
-+            /* End of A/UX timer calibration routine, or another write */
-+            v1s->timer_hack_state = 7;
-+        } else {
-+            v1s->timer_hack_state = 0;
-+        }
-+        break;
-+    case 7:
-+        /*
-+         * This is the normal post-calibration timer state once both the
-+         * MacOS toolbox and A/UX have been calibrated, until we see a write
-+         * to VIA_REG_PCR to suggest a reset
-+         */
-+        if (addr == VIA_REG_PCR && val == 0x22) {
-+            /* Looks like there has been a reset? */
-+            v1s->timer_hack_state = 1;
-+        }
-         break;
-     default:
-         g_assert_not_reached();
-@@ -998,6 +1036,7 @@ static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
-     MOS6522Q800VIA1State *s = MOS6522_Q800_VIA1(opaque);
-     MOS6522State *ms = MOS6522(s);
-     uint64_t ret;
-+    int64_t now;
+diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
+index f9ecc1fbb0..ac8509ba6f 100644
+--- a/hw/m68k/q800.c
++++ b/hw/m68k/q800.c
+@@ -91,6 +91,9 @@
+ #define Q800_NUBUS_SLOTS_AVAILABLE    (BIT(0x9) | BIT(0xc) | BIT(0xd) | \
+                                        BIT(0xe))
  
-     addr = (addr >> 9) & 0xf;
-     ret = mos6522_read(ms, addr, size);
-@@ -1007,6 +1046,23 @@ static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
-         /* Quadra 800 Id */
-         ret = (ret & ~VIA1A_CPUID_MASK) | VIA1A_CPUID_Q800;
-         break;
-+    case VIA_REG_T2CH:
-+        if (s->timer_hack_state == 6) {
-+            /*
-+             * The A/UX timer calibration loop runs continuously until 2
-+             * consecutive iterations differ by at least 0x492 timer ticks.
-+             * Modern hosts execute the timer calibration loop so fast that
-+             * this situation never occurs causing a hang on boot. Use a
-+             * similar method to Shoebill which is to randomly add 0x500 to
-+             * the T2 counter value during calibration to enable it to
-+             * eventually succeed.
-+             */
-+            now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+            if (now & 1) {
-+                ret += 0x5;
-+            }
-+        }
-+        break;
-     }
-     return ret;
- }
++/* Quadra 800 machine ID */
++#define Q800_MACHINE_ID    0xa55a2bad
++
+ 
+ static void main_cpu_reset(void *opaque)
+ {
+@@ -192,6 +195,27 @@ static const MemoryRegionOps macio_alias_ops = {
+     },
+ };
+ 
++static uint64_t machine_id_read(void *opaque, hwaddr addr, unsigned size)
++{
++    return Q800_MACHINE_ID;
++}
++
++static void machine_id_write(void *opaque, hwaddr addr, uint64_t val,
++                             unsigned size)
++{
++    return;
++}
++
++static const MemoryRegionOps machine_id_ops = {
++    .read = machine_id_read,
++    .write = machine_id_write,
++    .endianness = DEVICE_BIG_ENDIAN,
++    .valid = {
++        .min_access_size = 4,
++        .max_access_size = 4,
++    },
++};
++
+ static void q800_machine_init(MachineState *machine)
+ {
+     Q800MachineState *m = Q800_MACHINE(machine);
+@@ -253,6 +277,11 @@ static void q800_machine_init(MachineState *machine)
+     memory_region_add_subregion(get_system_memory(), IO_BASE + IO_SLICE,
+                                 &m->macio_alias);
+ 
++    memory_region_init_io(&m->machine_id, NULL, &machine_id_ops, NULL,
++                          "Machine ID", 4);
++    memory_region_add_subregion(get_system_memory(), 0x5ffffffc,
++                                &m->machine_id);
++
+     /* IRQ Glue */
+     object_initialize_child(OBJECT(machine), "glue", &m->glue, TYPE_GLUE);
+     object_property_set_link(OBJECT(&m->glue), "cpu", OBJECT(&m->cpu),
+diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
+index f6ae4c1c4f..dd7d7a6f2c 100644
+--- a/include/hw/m68k/q800.h
++++ b/include/hw/m68k/q800.h
+@@ -60,6 +60,7 @@ struct Q800MachineState {
+     DJMEMCState djmemc;
+     MemoryRegion macio;
+     MemoryRegion macio_alias;
++    MemoryRegion machine_id;
+ };
+ 
+ #define TYPE_Q800_MACHINE MACHINE_TYPE_NAME("q800")
 -- 
 2.39.2
 
