@@ -2,99 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFDF7B2D8A
-	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 10:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 983C77B2DD3
+	for <lists+qemu-devel@lfdr.de>; Fri, 29 Sep 2023 10:30:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qm8YZ-0002Bp-Ob; Fri, 29 Sep 2023 04:09:03 -0400
+	id 1qm8rI-0004wn-6r; Fri, 29 Sep 2023 04:28:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qm8YW-0002Bd-ST
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:09:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <SRS0=Yu9m=FN=kaod.org=clg@ozlabs.org>)
+ id 1qm8rG-0004wN-Jw; Fri, 29 Sep 2023 04:28:22 -0400
+Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qm8YU-00048A-UP
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 04:09:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1695974938;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lAU5QDrtrNBCzD7+NRZZpY8bTW8xdT7JotMMU0XIATo=;
- b=dknsxgdx1hDlIbqjUrFbz2xmshNmnJnCB4dGMWIZI02LnqROc9W6fZHn0nQVwZomF3lB11
- bRl3zBQdPBzO49pYc54+9UYkQqUJGp92isLY4yDO7scc8o8iwH9daRUo/kSH2JhTwUHqrB
- umKbfEBLNsaxCZy1CSGCZgXTfrMWEAI=
-Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
- [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-592-zs119IRzMFCogzj5EgGhIQ-1; Fri, 29 Sep 2023 04:08:56 -0400
-X-MC-Unique: zs119IRzMFCogzj5EgGhIQ-1
-Received: by mail-pl1-f199.google.com with SMTP id
- d9443c01a7336-1c747f637d4so3421035ad.1
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 01:08:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1695974935; x=1696579735;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=lAU5QDrtrNBCzD7+NRZZpY8bTW8xdT7JotMMU0XIATo=;
- b=PxCOyqPkvu8S4UJ16fJILPi+n3gFGbMmPrPY/VkBW65j5jERltznfWK4GtT4kZ01IH
- 7k6zHczVr3DtSZ7/ra6xoamrdC6LbLCqLAwu4Kb4ymZJD8hOOY6NZgSiiI0/nGptjwhz
- lRnKtzr2ZnUBwaXqO3GmhWfpQTQgTWQYv732C4vJoGq87Eums02o745OZaGz2qc0dnMK
- 9DAwjOe9J+9CYD6c7AodPQbusPT1Cfr18ZZFYyTnMQvlxQOrpH2rJFWG3A7WjsiFIuD6
- rdtyUQSoDmtQf/9TCuATBWh/d1ZTtw6MUp6xqftNoy4PkKNpRpbcqa2mnCPR6lJii/lg
- 7rPA==
-X-Gm-Message-State: AOJu0YxYt3q4+FJtjmitAD77LpImutPJnSouH5jz9i7MA8N1ijQ9eXk8
- vM/2FnRN2gPpMIIg2MkXnJmaAFjZJQFY+uXPR8tbp1xW9fAA7nMDTiHHV94SXDvgbYWK6BCj+7/
- AXX+3+0YSjhHdPsU=
-X-Received: by 2002:a17:902:6806:b0:1c3:64f9:45ad with SMTP id
- h6-20020a170902680600b001c364f945admr3268118plk.48.1695974934951; 
- Fri, 29 Sep 2023 01:08:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG20ao9H8MVWNvUPTVBsJmCqUQ5ZM4dPo4rfiiJ5RXabfYYd7VfjhIIBsTq+LGWWbc4Ocwj2w==
-X-Received: by 2002:a17:902:6806:b0:1c3:64f9:45ad with SMTP id
- h6-20020a170902680600b001c364f945admr3268108plk.48.1695974934570; 
- Fri, 29 Sep 2023 01:08:54 -0700 (PDT)
-Received: from smtpclient.apple ([203.163.239.108])
- by smtp.gmail.com with ESMTPSA id
- w8-20020a1709029a8800b001b9f032bb3dsm16223361plp.3.2023.09.29.01.08.48
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Fri, 29 Sep 2023 01:08:51 -0700 (PDT)
-Content-Type: text/plain;
-	charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH] hw/acpi: changes towards enabling -Wshadow=local
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <874jjdflvg.fsf@pond.sub.org>
-Date: Fri, 29 Sep 2023 13:38:47 +0530
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Philippe Mathieu-Daude <philmd@linaro.org>, qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <DA7D0A58-0B6B-4AFB-908A-F60EE2B7CC41@redhat.com>
-References: <20230922124203.127110-1-anisinha@redhat.com>
- <87msx5jztb.fsf@pond.sub.org>
- <5A625074-8DE2-4B58-8B7D-C7FA578F6688@redhat.com>
- <87r0mhik1n.fsf@pond.sub.org>
- <B1B5F17E-5EDB-4F4F-ABAE-2A45216FBE68@redhat.com>
- <874jjdflvg.fsf@pond.sub.org>
+ (Exim 4.90_1) (envelope-from <SRS0=Yu9m=FN=kaod.org=clg@ozlabs.org>)
+ id 1qm8rD-0008Pt-Jh; Fri, 29 Sep 2023 04:28:22 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rxk4s6yzdz4x5J;
+ Fri, 29 Sep 2023 18:28:13 +1000 (AEST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rxk4n31fnz4x4T;
+ Fri, 29 Sep 2023 18:28:09 +1000 (AEST)
+Message-ID: <34263726-8816-b21f-9f81-60a73594a25b@kaod.org>
+Date: Fri, 29 Sep 2023 10:28:04 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] target/ppc: Rename variables to avoid local variable
+ shadowing in VUPKPX
+Content-Language: en-US
 To: Markus Armbruster <armbru@redhat.com>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Cc: Michael Tokarev <mjt@tls.msk.ru>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org, Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+References: <20230923071203.1209663-1-clg@kaod.org>
+ <26ec2024-d022-eb3d-8d50-37f9219fc597@tls.msk.ru>
+ <f74e6a0a-b78f-8924-6abf-42cbad6c69eb@kaod.org> <878r8pflyo.fsf@pond.sub.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
+In-Reply-To: <878r8pflyo.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=150.107.74.76;
+ envelope-from=SRS0=Yu9m=FN=kaod.org=clg@ozlabs.org; helo=gandalf.ozlabs.org
+X-Spam_score_int: -30
+X-Spam_score: -3.1
+X-Spam_bar: ---
+X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, NICE_REPLY_A=-1.473, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,59 +67,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 9/29/23 10:00, Markus Armbruster wrote:
+> Cédric Le Goater <clg@kaod.org> writes:
+> 
+>> On 9/23/23 10:25, Michael Tokarev wrote:
+>>> 23.09.2023 10:12, Cédric Le Goater:
+>>>
+>>>> --- a/target/ppc/int_helper.c
+>>>> +++ b/target/ppc/int_helper.c
+>>>> @@ -2022,11 +2022,11 @@ void helper_vsum4ubs(CPUPPCState *env, ppc_avr_t *r, ppc_avr_t *a, ppc_avr_t *b)
+>>>>            for (i = 0; i < ARRAY_SIZE(r->u32); i++) {                      \
+>>>>                uint16_t e = b->u16[hi ? i : i + 4];                        \
+>>>>                uint8_t a = (e >> 15) ? 0xff : 0;                           \
+>>>> -            uint8_t r = (e >> 10) & 0x1f;                               \
+>>>> +            uint8_t _r = (e >> 10) & 0x1f;                              \
+>>>>                uint8_t g = (e >> 5) & 0x1f;                                \
+>>>> -            uint8_t b = e & 0x1f;                                       \
+>>>> +            uint8_t _b = e & 0x1f;                                      \
+>>> I'd suggest to rename all of them here to have the same pattern.  Maybe.. :)
+>>
+>> or maybe use the field names from the ISA : VRT,VRA,VRB ?
+> 
+> Should I expect a respin?
+> 
+> If not, anyone ready to give an R-by as is?
 
+This one I can respin. I agree with Michael that some consistency is
+preferable. Preparing a v2 full of '_'.
 
-> On 29-Sep-2023, at 1:32 PM, Markus Armbruster <armbru@redhat.com> =
-wrote:
->=20
-> Ani Sinha <anisinha@redhat.com> writes:
->=20
->>> On 29-Sep-2023, at 11:43 AM, Markus Armbruster <armbru@redhat.com> =
-wrote:
->>>=20
->>> Ani Sinha <anisinha@redhat.com> writes:
->>>=20
->>>>> On 29-Sep-2023, at 11:17 AM, Markus Armbruster <armbru@redhat.com> =
-wrote:
->>>>>=20
->>>>> Ani Sinha <anisinha@redhat.com> writes:
->>>>>=20
->>>>>> Code changes in acpi that addresses all compiler complaints =
-coming from enabling
->>>>>> -Wshadow flags. Enabling -Wshadow catches cases of local =
-variables shadowing
->>>>>> other local variables or parameters. These makes the code =
-confusing and/or adds
->>>>>> bugs that are difficult to catch.
->>>>>>=20
->>>>>> The code is tested to build with and without the flag turned on.
->>>>>>=20
->>>>>> CC: Markus Armbruster <armbru@redhat.com>
->>>>>> CC: Philippe Mathieu-Daude <philmd@linaro.org>
->>>>>> CC: mst@redhat.com
->>>>>> CC: imammedo@redhat.com
->>>>>> Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
->>>>>=20
->>>>> This is my "Help wanted for enabling -Wshadow=3Dlocal" post.
->>>>=20
->>>> Yes indeed. I wanted to refer to that thread for context in the =
-commit log.
->>>=20
->>> I appreciate your diligence.  We just don't have an established tag
->>> convention for "see also" references to e-mail.  I could append
->>>=20
->>>   See also
->>>=20
->>>       Subject: Help wanted for enabling -Wshadow=3Dlocal
->>>       Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
->>>       https://lore.kernel.org/qemu-devel/87r0mqlf9x.fsf@pond.sub.org
->>>=20
->>> to your first paragraph.  Want me to?
->>=20
->> Sure, if that is ok.
->=20
-> Done!
+Thanks,
 
-Your shadow-next has no changes. Have you not pushed to that branch?=
+C.
+
 
 
