@@ -2,73 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F75D7B3D8E
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 04:17:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1167B3DBC
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 05:12:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmPWS-0000Ju-SR; Fri, 29 Sep 2023 22:16:00 -0400
+	id 1qmQO1-0001Re-R3; Fri, 29 Sep 2023 23:11:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPWO-0000HE-He
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:57 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qmQNz-0001Qr-Jw
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 23:11:19 -0400
+Received: from mail-ot1-x32c.google.com ([2607:f8b0:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPWI-00023e-45
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:56 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1c737d61a00so22244735ad.3
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 19:15:49 -0700 (PDT)
+ id 1qmQNy-0000CI-2W
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 23:11:19 -0400
+Received: by mail-ot1-x32c.google.com with SMTP id
+ 46e09a7af769-6c64a3c4912so467734a34.3
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 20:11:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696040148; x=1696644948; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UahwwM0xSudS8dqnIciSUED/htcAdaM6cKw6bB59fHU=;
- b=iA8VgOSdJj8jrFevw+ZS7oA140GrbyxBVO1AlJkW0KYbDJFJ1aLfj2TjedWjyMXa3y
- a7VBQ6NaH4AvkXWa1XUmgnXEx7vrG9dl5sKgV2Xryz6zBkjldduKTiM5Rmd1rcsXcHJe
- qk05T8E9FSO/kI4R5GLiRRAw7p0dGtE2s6c5gSfACZuTvZp1+QhKz7qBaRrzIt+BlliF
- vn2PgeDwP3aLiNuoykJJqb9qWOpWzgAaOcS/1xJe0NnzwRigeSqDpXbRUMQ2lRirssw3
- xHhk4fFRSSUC+8Q9gT1Y1NBOw8q/9mU5OCS+nesjoDvcPf00bvdUQtK5IJOB49gR0nIU
- dD0g==
+ d=linaro.org; s=google; t=1696043476; x=1696648276; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=yDhQouHtI0bFcQQSACQjQbPDcgLaFXjYo7GpM00vPgg=;
+ b=plj3Usldzd6WntgrczxEQPi006uOiLNY1i/XXddiB9D0NBDNNIE5UvL9OWlQ/2m4TW
+ MO82jvGnSqFIJdRCjU19woNzDLeSL/faNwMFXvP/+N6J531eDrajro72HHCPlRqfW7p0
+ jEwRpTH2A0Hu5xicLBr5InWMd1JtnBZ4sbuEzEeIbwKIrS+lLaeJKE1aFD5F2lNulv3D
+ DJ8l5YzVQDtDj18CxTsVmF5jg5m1tYdsbw7F88dusza+RnS6Q2aJhI3c23S5Ef7rH8rU
+ Hb6kRvR3kvNc1lILtCBW5PLH9HcpAbijpFiN2Hm18dxyoaF5OVVi+7JRWt+f8uKenJru
+ Wwhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696040148; x=1696644948;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=UahwwM0xSudS8dqnIciSUED/htcAdaM6cKw6bB59fHU=;
- b=QpuQcBHOeqQoC/SkulkQkSFBh+SbVQ08OWaMxlzyMMq87T91o+DBSraLYhdt3pWgnm
- /mTOgE/caYOty97MYee2kiqKToZtDrPqSIUYl5HGuKtFEgPgyOiKoaGbtTZM0HeDzS28
- 0iSWk8IpyjkmmQTszwyXKKc/BmiFtXPoYCN6a0dO76hZ03YXJkBByb3tcUMlFApS31Ic
- 0nrpnrpcfcDh+EJLlHJ5a/ixbWtzu8/NvMV/KIvO5WNSteWeqyrkMPGffE+Iet1hK1BX
- h7HREf++uogGY8S4bSEFjbcmDAOgjdNqRxNaQrLl6GU6MgqNkp+GjDwcQTLjPDra3lRt
- uKKQ==
-X-Gm-Message-State: AOJu0YwOf6DreWlMN9/5YZK3Tbpu5moBimlXTl7Z0WXtHN2c1FupBltU
- lwPKrVCEg9iJB4jZqBhpkFGqGI5WbfhCDl6+Y3w=
-X-Google-Smtp-Source: AGHT+IGpuCZWTFNhRsaXjOBrir8bKCRRNJS3vtkoKkTPq3fGYFRo4WuC7SsL9A6hpFZPbJx1uVmxkg==
-X-Received: by 2002:a17:90a:fb51:b0:274:a021:9383 with SMTP id
- iq17-20020a17090afb5100b00274a0219383mr5889963pjb.17.1696040148477; 
- Fri, 29 Sep 2023 19:15:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696043476; x=1696648276;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=yDhQouHtI0bFcQQSACQjQbPDcgLaFXjYo7GpM00vPgg=;
+ b=R3LWBLxEDl6qMa0uB39zT6szIGcOc8B7YneI02/vS1jDdCjmSxYBeRK8zz0MQtaDHz
+ rBWLUiGsnNa1hIfYWCwFYPfl4tFHCTEoWIHzzEU8Lqtm7JEpmcBfnP9CNPZLm6EJZqJP
+ 8KcwMSjWx+gQGIZ/hwLNVAEfivJFcIFxAA8MEzZ8nwN4R4uJwziohtcbil3Xmn7Z9/sG
+ Sxlkf8JnHXKSrfs+mZI1AI6ZLN6JAGbtcWfl5Awvea7S7VPn3OXp34SaRdC1LFdyfNBh
+ 9Ci514f0jiHBqXanRYlFlPlsAHewtcNaBZ2nK6be26UprcJDFyvliljQepoEGU5JXrbF
+ OvOA==
+X-Gm-Message-State: AOJu0Yz8RN8TSo+F+H6LZX1T7qSVYKhirCbCwIug+XZSb6I5Ck/eDqOk
+ KwBYAniSmIyYgyWsqrLWj5tJasxzedMmxYH4ol4=
+X-Google-Smtp-Source: AGHT+IEKDjM3l+LWSS0F4vbM3qHsXxsG6OjhkMqyxRJYVv/uzZg2+Eh40dNEEF0wqct3lFGJF+S2hA==
+X-Received: by 2002:a9d:6249:0:b0:6b9:ed64:1423 with SMTP id
+ i9-20020a9d6249000000b006b9ed641423mr6281045otk.2.1696043476416; 
+ Fri, 29 Sep 2023 20:11:16 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- fv21-20020a17090b0e9500b002775281b9easm2130692pjb.50.2023.09.29.19.15.47
+ gp15-20020a17090adf0f00b002790ded9c6dsm2146821pjb.31.2023.09.29.20.11.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Sep 2023 19:15:48 -0700 (PDT)
+ Fri, 29 Sep 2023 20:11:15 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org,
-	laurent@vivier.eu
-Subject: [PATCH v6 19/19] build: Add update-linux-vdso makefile rule
-Date: Fri, 29 Sep 2023 19:15:29 -0700
-Message-Id: <20230930021529.987950-20-richard.henderson@linaro.org>
+Cc: peter.maydell@linaro.org
+Subject: [PATCH v2 0/2] Split out tcg init functions to tcg/startup.h
+Date: Fri, 29 Sep 2023 20:11:12 -0700
+Message-Id: <20230930031114.1042913-1-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230930021529.987950-1-richard.henderson@linaro.org>
-References: <20230930021529.987950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32c;
+ envelope-from=richard.henderson@linaro.org; helo=mail-ot1-x32c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,43 +87,39 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is not ideal, since it requires all cross-compilers
-to be present rather than a simple subset.  But since it
-is only run manually, should be good enough for now.
+Supercedes: <20230923130843.3708899-1-peter.maydell@linaro.org>
+("[PATCH] tcg.h: Split out runtime-only functions into tcg/runtime.h")
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- Makefile | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+I thought "startup.h" was perhaps a better name than "runtime.h",
+at least for the functions moved, since it's about starting up
+either tcg or tcg within a new thread.
 
-diff --git a/Makefile b/Makefile
-index bfc4b2c8e9..676a4a54f4 100644
---- a/Makefile
-+++ b/Makefile
-@@ -283,6 +283,13 @@ include $(SRC_PATH)/tests/vm/Makefile.include
- print-help-run = printf "  %-30s - %s\\n" "$1" "$2"
- print-help = @$(call print-help-run,$1,$2)
- 
-+.PHONY: update-linux-vdso
-+update-linux-vdso:
-+	@for m in $(SRC_PATH)/linux-user/*/Makefile.vdso; do \
-+	  $(MAKE) $(SUBDIR_MAKEFLAGS) -C $$(dirname $$m) -f Makefile.vdso \
-+		SRC_PATH=$(SRC_PATH) BUILD_DIR=$(BUILD_DIR); \
-+	done
-+
- .PHONY: help
- help:
- 	@echo  'Generic targets:'
-@@ -303,6 +310,9 @@ endif
- 	$(call print-help,distclean,Remove all generated files)
- 	$(call print-help,dist,Build a distributable tarball)
- 	@echo  ''
-+	@echo  'Linux-user targets:'
-+	$(call print-help,update-linux-vdso,Build linux-user vdso images)
-+	@echo  ''
- 	@echo  'Test targets:'
- 	$(call print-help,check,Run all tests (check-help for details))
- 	$(call print-help,bench,Run all benchmarks)
+By removing the argument to tcg_prologue_init(), we can simplify
+the users even further, since they no longer require TCGContext.
+
+Adding tcg_init() seems to match the other two as a startup-y
+function and allows tcg-all.c to avoid "tcg.h" as well.
+
+
+r~
+
+
+Richard Henderson (2):
+  tcg: Remove argument to tcg_prologue_init
+  tcg: Split out tcg init functions to tcg/startup.h
+
+ include/tcg/startup.h           | 58 +++++++++++++++++++++++++++++++++
+ include/tcg/tcg.h               |  3 --
+ accel/tcg/tcg-accel-ops-mttcg.c |  2 +-
+ accel/tcg/tcg-accel-ops-rr.c    |  2 +-
+ accel/tcg/tcg-all.c             |  4 +--
+ bsd-user/main.c                 |  4 +--
+ linux-user/main.c               |  4 +--
+ linux-user/syscall.c            |  2 +-
+ tcg/tcg.c                       |  4 ++-
+ 9 files changed, 70 insertions(+), 13 deletions(-)
+ create mode 100644 include/tcg/startup.h
+
 -- 
 2.34.1
 
