@@ -2,76 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF16F7B3D96
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 04:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF82B7B3D85
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 04:16:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmPWN-0000Fa-5z; Fri, 29 Sep 2023 22:15:55 -0400
+	id 1qmPWC-0000C1-V9; Fri, 29 Sep 2023 22:15:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPWG-0000E0-7Z
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:48 -0400
-Received: from mail-pj1-x102f.google.com ([2607:f8b0:4864:20::102f])
+ id 1qmPW9-0000Bo-OS
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:41 -0400
+Received: from mail-oo1-xc32.google.com ([2607:f8b0:4864:20::c32])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPW1-0001yS-I8
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:47 -0400
-Received: by mail-pj1-x102f.google.com with SMTP id
- 98e67ed59e1d1-27758c8f579so7860560a91.0
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 19:15:32 -0700 (PDT)
+ id 1qmPW1-0001yX-SN
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:41 -0400
+Received: by mail-oo1-xc32.google.com with SMTP id
+ 006d021491bc7-57ba5f05395so6223512eaf.1
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 19:15:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696040131; x=1696644931; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=KoBkFaix/7dll0Vuje13LKyPYe0pk/ugwgB43PM6YAU=;
- b=HhVCbEM1t/iiK5SWEJvQ3xuzsjYpei0sxIshuXbs/2FZ8lUis93m2fHmDLd+Wo7xRz
- Pvz1TJEI4yrTBxUcDp7U14F9BwI/Ri8fBaEC/Pd/xSNjiAKPbA3VSsICcljs4b0UUred
- veWp3ATvAHaqXCW+lMST4ZiuA0Ewzk8bnYPJ3QLZPYiaK8vU/7bY4UKB8DFGFRS9VFX0
- x5whYScRUrTys0bVzticp5z8ORas9Lj0NqnuS5pzIUOPVayXwnrkz/Exppc9nSiAejxx
- 8cVA2VVGAwKhKSUBs4bBCERAA8Fw/eTpdfgFvgc4eiQ5PoMUlnmH4llKTVeI40GR3m6n
- OE0Q==
+ d=linaro.org; s=google; t=1696040132; x=1696644932; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=yzz2vrun9ZHolGGbK5hlMNaXrSfdtOTmji9iHcf/zms=;
+ b=ILkOYx9W4q8+vgYvxfdkSw/4s3T53uoWMiFQZQfnc/P/9BQ/K37R6aMAgPT6y1HKDt
+ OSJMp/vsXYUNdadiaOnuwT20br3vCOtQ+8vEO5kXqjx8sm3yH7c6P6/oZ+woofWmpef0
+ z8coif0Boqew4xIbsPl+CtK8nm+/OU+cCFXo/K0pP3LkRR8ywVgAdW3bpoOyl0BnHKrB
+ x65emOclKa177bX5JWqV67RBguLmD1q3z6gMQQB/qtDYhj4DTVXTOlK1mQvVDu5DM6i4
+ 6AvDWLN+C0Mo4+4gOkW8sYidT8GHVYA/Ee3r96t3yvL5J5YTE5FCwEVBJb9cgHypjatB
+ zftQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696040131; x=1696644931;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=KoBkFaix/7dll0Vuje13LKyPYe0pk/ugwgB43PM6YAU=;
- b=QVm2qqJ03N0QE+2N08DflYHZd6p6HhArEyx86vTTl2MIfEmFe48K/IzBui8nVQdofR
- A9mFI2SE1ILMm2shniY9M+azuwc7ls8irjjMywprgF2uw6PjvW5Omf7EQ2DP/OZMDh7x
- mJupq7chAUosYRYLahI/emawvbhu6ghNP3pZuTckkTn4qlzuwPMjBdhnCGUPE9dWLSq/
- tZCBshjL6Kc0ORM/W9OZAE3G7u4PN1LBV3MKhi81feOexkKr2c1ifu+AtBCX3x7vQZdX
- ThP9o958OsnuBNnGH586CWaioChsKr/3eL65+5sGLMSk++Tcb9rKdicEjwGtIEe2WYuq
- /59Q==
-X-Gm-Message-State: AOJu0Yxs7cU/3aVt58JegVb6h5Y60f4PLhbFZBrGgyYbdpD4h9sHP3/b
- x7jIeiMghHfqaBoxdgVIwKOcJX7ZGE1J9fQw0qA=
-X-Google-Smtp-Source: AGHT+IHA1XLiqEpMSY0CAcAaQCVod/xj/WoojXOMjeeo+YSYzMLFtGNtaP9DH+MyuaKIgVEhCfkIvg==
-X-Received: by 2002:a17:90a:64c1:b0:276:5786:e1a0 with SMTP id
- i1-20020a17090a64c100b002765786e1a0mr5478370pjm.13.1696040131163; 
- Fri, 29 Sep 2023 19:15:31 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696040132; x=1696644932;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=yzz2vrun9ZHolGGbK5hlMNaXrSfdtOTmji9iHcf/zms=;
+ b=NJURDa/Hl1wcOUy5MJ1aTzCzH+mPq853cBFIaR0mqvHTZq4mX2nVTUCgpxz+c5URdA
+ cLuaUjDWMFlNgadnmWWAu9AgX9xBE0rUhSCLPpXf8EnWZGlUAqN/O9am7WhUldtiZYIR
+ v3Okule5FAO2fs5gd7wrlKCCtswJTvSXXSpF4MYxogHtWQgIuwAIXvtkn9WLeXaEwaYg
+ A0hGL8a78AhDi9Vt6YlQZw6N1Ko/eJVCRq1jLdYQQzSJzIYBXU6JkI1pbg4fL1uH074G
+ BhGeG2YtemZ8OQ25tEQTjlniSXyFuFJqNnXqoLKH0D/GVYYE5NZwhlqoe6OQuz+OFrai
+ 5S/w==
+X-Gm-Message-State: AOJu0Yy7E3NPq1XCh2R2RUQrsSQgCsX0vLJBPhG+/aHSI+k0Ji8d0kBR
+ N7qfgocaNbF9kOXinn6vxLes+UFZhOgLMSBLUCs=
+X-Google-Smtp-Source: AGHT+IF1+Sk/mycVguP+vHwE3VV3MqaxoeL9lZhMXRehKFRJmV07aK7nzo/evApsDZNSgPXC8mSnDQ==
+X-Received: by 2002:a05:6358:9192:b0:145:794e:ac30 with SMTP id
+ j18-20020a056358919200b00145794eac30mr6795743rwa.17.1696040132183; 
+ Fri, 29 Sep 2023 19:15:32 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- fv21-20020a17090b0e9500b002775281b9easm2130692pjb.50.2023.09.29.19.15.30
+ fv21-20020a17090b0e9500b002775281b9easm2130692pjb.50.2023.09.29.19.15.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Sep 2023 19:15:30 -0700 (PDT)
+ Fri, 29 Sep 2023 19:15:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org,
-	laurent@vivier.eu
-Subject: [PATCH v6 00/19] linux-user: Implement VDSOs
-Date: Fri, 29 Sep 2023 19:15:10 -0700
-Message-Id: <20230930021529.987950-1-richard.henderson@linaro.org>
+Cc: alex.bennee@linaro.org, laurent@vivier.eu,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v6 01/19] linux-user: Introduce imgsrc_read, imgsrc_read_alloc
+Date: Fri, 29 Sep 2023 19:15:11 -0700
+Message-Id: <20230930021529.987950-2-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230930021529.987950-1-richard.henderson@linaro.org>
+References: <20230930021529.987950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::102f;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x102f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c32;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc32.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,174 +92,216 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Becase b4 eats a binaries:
-  https://gitlab.com/rth7680/qemu/-/tree/lu-vdso
+Introduced and initialized, but not yet really used.
+These will tidy the current tests vs BPRM_BUF_SIZE.
 
-Changes for v6:
-  * Revert build-vdso.sh and meson rules.
-  * Add update-linux-vdso makefile rule.  Since this is run manually,
-    we no longer have a problem with docker images failing to update
-    and causing the normal build to fail.
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ linux-user/loader.h    | 61 +++++++++++++++++++++++-----
+ linux-user/linuxload.c | 90 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 142 insertions(+), 9 deletions(-)
 
-Changes for v5:
-  * Integrated cross-compile, via new build-vdso.sh and meson rules.
-    However, keep the binaries in the tree for hosts which do not
-    have all of the cross-compile machinery.
-  * Update our loongarch64 docker image to avoid a binutils bug.
-
-r~
-
-
-Richard Henderson (19):
-  linux-user: Introduce imgsrc_read, imgsrc_read_alloc
-  linux-user: Tidy loader_exec
-  linux-user: Do not clobber bprm_buf swapping ehdr
-  linux-user: Use ImageSource in load_elf_image
-  linux-user: Use ImageSource in load_symbols
-  linux-user: Replace bprm->fd with bprm->src.fd
-  linux-user: Load vdso image if available
-  linux-user: Add gen-vdso tool
-  linux-user/i386: Add vdso
-  linux-user/x86_64: Add vdso
-  linux-user/aarch64: Add vdso
-  linux-user/arm: Add vdso
-  linux-user/hppa: Add vdso
-  linux-user/riscv: Add vdso
-  linux-user/loongarch64: Add vdso
-  linux-user/ppc: Add vdso
-  linux-user/s390x: Rename __SIGNAL_FRAMESIZE to STACK_FRAME_OVERHEAD
-  linux-user/s390x: Add vdso
-  build: Add update-linux-vdso makefile rule
-
- Makefile                                |  10 +
- linux-user/arm/vdso-asmoffset.h         |   3 +
- linux-user/hppa/vdso-asmoffset.h        |  12 +
- linux-user/i386/vdso-asmoffset.h        |   6 +
- linux-user/loader.h                     |  60 +++-
- linux-user/loongarch64/vdso-asmoffset.h |   8 +
- linux-user/ppc/vdso-asmoffset.h         |  20 ++
- linux-user/riscv/vdso-asmoffset.h       |   9 +
- linux-user/s390x/vdso-asmoffset.h       |   2 +
- linux-user/arm/signal.c                 |  55 ++--
- linux-user/elfload.c                    | 358 +++++++++++++++---------
- linux-user/flatload.c                   |   8 +-
- linux-user/gen-vdso.c                   | 223 +++++++++++++++
- linux-user/hppa/signal.c                |  24 +-
- linux-user/i386/signal.c                |  11 +
- linux-user/linuxload.c                  | 137 +++++++--
- linux-user/loongarch64/signal.c         |  17 +-
- linux-user/ppc/signal.c                 |  31 +-
- linux-user/riscv/signal.c               |   8 +
- linux-user/s390x/signal.c               |   7 +-
- linux-user/gen-vdso-elfn.c.inc          | 314 +++++++++++++++++++++
- linux-user/aarch64/Makefile.vdso        |  15 +
- linux-user/aarch64/meson.build          |  11 +
- linux-user/aarch64/vdso-be.so           | Bin 0 -> 3216 bytes
- linux-user/aarch64/vdso-le.so           | Bin 0 -> 3216 bytes
- linux-user/aarch64/vdso.S               |  71 +++++
- linux-user/aarch64/vdso.ld              |  72 +++++
- linux-user/arm/Makefile.vdso            |  17 ++
- linux-user/arm/meson.build              |  12 +
- linux-user/arm/vdso-be.so               | Bin 0 -> 2648 bytes
- linux-user/arm/vdso-le.so               | Bin 0 -> 2648 bytes
- linux-user/arm/vdso.S                   | 174 ++++++++++++
- linux-user/arm/vdso.ld                  |  67 +++++
- linux-user/hppa/Makefile.vdso           |  11 +
- linux-user/hppa/meson.build             |   5 +
- linux-user/hppa/vdso.S                  | 165 +++++++++++
- linux-user/hppa/vdso.ld                 |  77 +++++
- linux-user/hppa/vdso.so                 | Bin 0 -> 2104 bytes
- linux-user/i386/Makefile.vdso           |  11 +
- linux-user/i386/meson.build             |   7 +
- linux-user/i386/vdso.S                  | 143 ++++++++++
- linux-user/i386/vdso.ld                 |  76 +++++
- linux-user/i386/vdso.so                 | Bin 0 -> 2672 bytes
- linux-user/loongarch64/Makefile.vdso    |  11 +
- linux-user/loongarch64/meson.build      |   4 +
- linux-user/loongarch64/vdso.S           | 130 +++++++++
- linux-user/loongarch64/vdso.ld          |  73 +++++
- linux-user/loongarch64/vdso.so          | Bin 0 -> 3560 bytes
- linux-user/meson.build                  |   9 +-
- linux-user/ppc/Makefile.vdso            |  20 ++
- linux-user/ppc/meson.build              |  12 +
- linux-user/ppc/vdso-32.ld               |  70 +++++
- linux-user/ppc/vdso-32.so               | Bin 0 -> 3020 bytes
- linux-user/ppc/vdso-64.ld               |  68 +++++
- linux-user/ppc/vdso-64.so               | Bin 0 -> 3896 bytes
- linux-user/ppc/vdso-64le.so             | Bin 0 -> 3896 bytes
- linux-user/ppc/vdso.S                   | 239 ++++++++++++++++
- linux-user/riscv/Makefile.vdso          |  15 +
- linux-user/riscv/meson.build            |   7 +
- linux-user/riscv/vdso-32.so             | Bin 0 -> 2888 bytes
- linux-user/riscv/vdso-64.so             | Bin 0 -> 3840 bytes
- linux-user/riscv/vdso.S                 | 186 ++++++++++++
- linux-user/riscv/vdso.ld                |  74 +++++
- linux-user/s390x/Makefile.vdso          |  11 +
- linux-user/s390x/meson.build            |   6 +
- linux-user/s390x/vdso.S                 |  61 ++++
- linux-user/s390x/vdso.ld                |  69 +++++
- linux-user/s390x/vdso.so                | Bin 0 -> 3464 bytes
- linux-user/x86_64/Makefile.vdso         |  11 +
- linux-user/x86_64/meson.build           |   4 +
- linux-user/x86_64/vdso.S                |  78 ++++++
- linux-user/x86_64/vdso.ld               |  73 +++++
- linux-user/x86_64/vdso.so               | Bin 0 -> 2968 bytes
- 73 files changed, 3274 insertions(+), 214 deletions(-)
- create mode 100644 linux-user/arm/vdso-asmoffset.h
- create mode 100644 linux-user/hppa/vdso-asmoffset.h
- create mode 100644 linux-user/i386/vdso-asmoffset.h
- create mode 100644 linux-user/loongarch64/vdso-asmoffset.h
- create mode 100644 linux-user/ppc/vdso-asmoffset.h
- create mode 100644 linux-user/riscv/vdso-asmoffset.h
- create mode 100644 linux-user/s390x/vdso-asmoffset.h
- create mode 100644 linux-user/gen-vdso.c
- create mode 100644 linux-user/gen-vdso-elfn.c.inc
- create mode 100644 linux-user/aarch64/Makefile.vdso
- create mode 100644 linux-user/aarch64/meson.build
- create mode 100755 linux-user/aarch64/vdso-be.so
- create mode 100755 linux-user/aarch64/vdso-le.so
- create mode 100644 linux-user/aarch64/vdso.S
- create mode 100644 linux-user/aarch64/vdso.ld
- create mode 100644 linux-user/arm/Makefile.vdso
- create mode 100755 linux-user/arm/vdso-be.so
- create mode 100755 linux-user/arm/vdso-le.so
- create mode 100644 linux-user/arm/vdso.S
- create mode 100644 linux-user/arm/vdso.ld
- create mode 100644 linux-user/hppa/Makefile.vdso
- create mode 100644 linux-user/hppa/vdso.S
- create mode 100644 linux-user/hppa/vdso.ld
- create mode 100755 linux-user/hppa/vdso.so
- create mode 100644 linux-user/i386/Makefile.vdso
- create mode 100644 linux-user/i386/vdso.S
- create mode 100644 linux-user/i386/vdso.ld
- create mode 100755 linux-user/i386/vdso.so
- create mode 100644 linux-user/loongarch64/Makefile.vdso
- create mode 100644 linux-user/loongarch64/meson.build
- create mode 100644 linux-user/loongarch64/vdso.S
- create mode 100644 linux-user/loongarch64/vdso.ld
- create mode 100755 linux-user/loongarch64/vdso.so
- create mode 100644 linux-user/ppc/Makefile.vdso
- create mode 100644 linux-user/ppc/vdso-32.ld
- create mode 100755 linux-user/ppc/vdso-32.so
- create mode 100644 linux-user/ppc/vdso-64.ld
- create mode 100755 linux-user/ppc/vdso-64.so
- create mode 100755 linux-user/ppc/vdso-64le.so
- create mode 100644 linux-user/ppc/vdso.S
- create mode 100644 linux-user/riscv/Makefile.vdso
- create mode 100644 linux-user/riscv/meson.build
- create mode 100755 linux-user/riscv/vdso-32.so
- create mode 100755 linux-user/riscv/vdso-64.so
- create mode 100644 linux-user/riscv/vdso.S
- create mode 100644 linux-user/riscv/vdso.ld
- create mode 100644 linux-user/s390x/Makefile.vdso
- create mode 100644 linux-user/s390x/vdso.S
- create mode 100644 linux-user/s390x/vdso.ld
- create mode 100755 linux-user/s390x/vdso.so
- create mode 100644 linux-user/x86_64/Makefile.vdso
- create mode 100644 linux-user/x86_64/vdso.S
- create mode 100644 linux-user/x86_64/vdso.ld
- create mode 100755 linux-user/x86_64/vdso.so
-
+diff --git a/linux-user/loader.h b/linux-user/loader.h
+index 324e5c872a..da6591fff0 100644
+--- a/linux-user/loader.h
++++ b/linux-user/loader.h
+@@ -18,6 +18,48 @@
+ #ifndef LINUX_USER_LOADER_H
+ #define LINUX_USER_LOADER_H
+ 
++typedef struct {
++    const void *cache;
++    unsigned int cache_size;
++    int fd;
++} ImageSource;
++
++/**
++ * imgsrc_read: Read from ImageSource
++ * @dst: destination for read
++ * @offset: offset within file for read
++ * @len: size of the read
++ * @img: ImageSource to read from
++ * @errp: Error details.
++ *
++ * Read into @dst, using the cache when possible.
++ */
++bool imgsrc_read(void *dst, off_t offset, size_t len,
++                 const ImageSource *img, Error **errp);
++
++/**
++ * imgsrc_read_alloc: Read from ImageSource
++ * @offset: offset within file for read
++ * @size: size of the read
++ * @img: ImageSource to read from
++ * @errp: Error details.
++ *
++ * Read into newly allocated memory, using the cache when possible.
++ */
++void *imgsrc_read_alloc(off_t offset, size_t len,
++                        const ImageSource *img, Error **errp);
++
++/**
++ * imgsrc_mmap: Map from ImageSource
++ *
++ * If @src has a file descriptor, pass on to target_mmap.  Otherwise,
++ * this is "mapping" from a host buffer, which resolves to memcpy.
++ * Therefore, flags must be MAP_PRIVATE | MAP_FIXED; the argument is
++ * retained for clarity.
++ */
++abi_long imgsrc_mmap(abi_ulong start, abi_ulong len, int prot,
++                     int flags, const ImageSource *src, abi_ulong offset);
++
+ /*
+  * Read a good amount of data initially, to hopefully get all the
+  * program headers loaded.
+@@ -29,15 +71,16 @@
+  * used when loading binaries.
+  */
+ struct linux_binprm {
+-        char buf[BPRM_BUF_SIZE] __attribute__((aligned));
+-        abi_ulong p;
+-        int fd;
+-        int e_uid, e_gid;
+-        int argc, envc;
+-        char **argv;
+-        char **envp;
+-        char *filename;        /* Name of binary */
+-        int (*core_dump)(int, const CPUArchState *); /* coredump routine */
++    char buf[BPRM_BUF_SIZE] __attribute__((aligned));
++    ImageSource src;
++    abi_ulong p;
++    int fd;
++    int e_uid, e_gid;
++    int argc, envc;
++    char **argv;
++    char **envp;
++    char *filename;        /* Name of binary */
++    int (*core_dump)(int, const CPUArchState *); /* coredump routine */
+ };
+ 
+ void do_init_thread(struct target_pt_regs *regs, struct image_info *infop);
+diff --git a/linux-user/linuxload.c b/linux-user/linuxload.c
+index 745cce70ab..3536dd8104 100644
+--- a/linux-user/linuxload.c
++++ b/linux-user/linuxload.c
+@@ -3,7 +3,9 @@
+ #include "qemu/osdep.h"
+ #include "qemu.h"
+ #include "user-internals.h"
++#include "user-mmap.h"
+ #include "loader.h"
++#include "qapi/error.h"
+ 
+ #define NGROUPS 32
+ 
+@@ -76,6 +78,10 @@ static int prepare_binprm(struct linux_binprm *bprm)
+         /* Make sure the rest of the loader won't read garbage.  */
+         memset(bprm->buf + retval, 0, BPRM_BUF_SIZE - retval);
+     }
++
++    bprm->src.cache = bprm->buf;
++    bprm->src.cache_size = retval;
++
+     return retval;
+ }
+ 
+@@ -139,6 +145,7 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
+     int retval;
+ 
+     bprm->fd = fdexec;
++    bprm->src.fd = fdexec;
+     bprm->filename = (char *)filename;
+     bprm->argc = count(argv);
+     bprm->argv = argv;
+@@ -173,3 +180,86 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
+ 
+     return retval;
+ }
++
++bool imgsrc_read(void *dst, off_t offset, size_t len,
++                 const ImageSource *img, Error **errp)
++{
++    ssize_t ret;
++
++    if (offset + len <= img->cache_size) {
++        memcpy(dst, img->cache + offset, len);
++        return true;
++    }
++
++    if (img->fd < 0) {
++        error_setg(errp, "read past end of buffer");
++        return false;
++    }
++
++    ret = pread(img->fd, dst, len, offset);
++    if (ret == len) {
++        return true;
++    }
++    if (ret < 0) {
++        error_setg_errno(errp, errno, "Error reading file header");
++    } else {
++        error_setg(errp, "Incomplete read of file header");
++    }
++    return false;
++}
++
++void *imgsrc_read_alloc(off_t offset, size_t len,
++                        const ImageSource *img, Error **errp)
++{
++    void *alloc = g_malloc(len);
++    bool ok = imgsrc_read(alloc, offset, len, img, errp);
++
++    if (!ok) {
++        g_free(alloc);
++        alloc = NULL;
++    }
++    return alloc;
++}
++
++abi_long imgsrc_mmap(abi_ulong start, abi_ulong len, int prot,
++                     int flags, const ImageSource *src, abi_ulong offset)
++{
++    const int prot_write = PROT_READ | PROT_WRITE;
++    abi_long ret;
++    void *haddr;
++
++    assert(flags == (MAP_PRIVATE | MAP_FIXED));
++
++    if (src->fd >= 0) {
++        return target_mmap(start, len, prot, flags, src->fd, offset);
++    }
++
++    /*
++     * This case is for the vdso; we don't expect bad images.
++     * The mmap may extend beyond the end of the image, especially
++     * to the end of the page.  Zero fill.
++     */
++    assert(offset < src->cache_size);
++
++    ret = target_mmap(start, len, prot_write, flags | MAP_ANON, -1, 0);
++    if (ret == -1) {
++        return ret;
++    }
++
++    haddr = lock_user(VERIFY_WRITE, start, len, 0);
++    assert(haddr != NULL);
++    if (offset + len <= src->cache_size) {
++        memcpy(haddr, src->cache + offset, len);
++    } else {
++        size_t rest = src->cache_size - offset;
++        memcpy(haddr, src->cache + offset, rest);
++        memset(haddr + rest, 0, len - rest);
++    }
++    unlock_user(haddr, start, len);
++
++    if (prot != prot_write) {
++        target_mprotect(start, len, prot);
++    }
++
++    return ret;
++}
 -- 
 2.34.1
 
