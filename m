@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6FA47B3D98
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 04:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D267B3D95
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 04:17:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmPWN-0000G5-Ln; Fri, 29 Sep 2023 22:15:55 -0400
+	id 1qmPWI-0000Dy-JJ; Fri, 29 Sep 2023 22:15:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPWB-0000C0-3l
+ id 1qmPWB-0000C2-70
  for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:43 -0400
-Received: from mail-oo1-xc30.google.com ([2607:f8b0:4864:20::c30])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPW3-0001yh-Eq
+ id 1qmPW4-0001ym-MM
  for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:42 -0400
-Received: by mail-oo1-xc30.google.com with SMTP id
- 006d021491bc7-57d086365f7so3244352eaf.0
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-692a885f129so10682191b3a.0
  for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 19:15:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696040133; x=1696644933; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696040134; x=1696644934; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RLZnYG6gB4JjRwsSZMPasIhTWijR/jDuID0FZ6WSuAE=;
- b=lTSXnstiUUa+YvcwiwLyH46SpdnYn0WvLHWje1DuMdehoHYom+kmGWkyoh6uNtySPn
- fP1/gwZddyqQkR6lwntvXyL4IGpQvUxECTifiA8yLViA5iAsmhqSOBh8kEqcKEtwkzix
- Baj0PV469geaN6p49h9drlc4kpLQ63yLD4oyBnjO+GpEm7ckgbbm8ySXYNvUS9d9sRrw
- NECr0yKqM/N9lgyHlz8ZL2O7iz22WpXvFVeVIpfBBRY/O0rJRqdJ9wQgBmA563dSGO9e
- 93Q26vlExSNehRz+bi/uhp20YTOuQ79dX5Zq6SkWHtCBWbJDl48H+t/VsafCHfUmLV8E
- OWWQ==
+ bh=N6Gi1W2NSeoXsGrs8c4mvQh099VY+s2zRGNYCJyf/Qs=;
+ b=zUi+DDIeqHCzcKhsnhdy1aAvNO/QWvGU865QF0nTz7gBSaFeGtLc7PNG/LXY1zcpUX
+ FlHQnhXJBeAekfDZ/JGSLYCgJQDt6cEuZppluDkqIyyM5NzjR1ebEE1R3Pi8SrEaBMLI
+ dm1m1iu2E+85+JHI7Ho5Nn4w8fAPYu72UqX5oE8qQH5BjglyorFcV42FDwwf0yTwwF6K
+ B2n2pM7K9Bk2Yesu48ES3ps9APQU/afa6JljySiyzn3oH70HrhkazfgmyzHgqSIV2WvK
+ a8K8vPnaRP5q1JnL4L/FPKb+sws/ou9JU9MWe7Zx4OhFEmu11QawCyGFpICT8Ngbq8t4
+ nQIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696040133; x=1696644933;
+ d=1e100.net; s=20230601; t=1696040134; x=1696644934;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RLZnYG6gB4JjRwsSZMPasIhTWijR/jDuID0FZ6WSuAE=;
- b=NzcujD7FTO36+F/IC5DFrWq43ZTrzOsnQ67oWQDqyYXn3domD9YNpvzLf/yfajMMoE
- YS7yiQRof5Du7klYtTs1UkHPYTAS2PCE/2yfPKqrdZJ+us3JqAXJ3HB0X1WQBYjpoFz9
- mjP05LgujFblbJuSXuev2+M0yPJQS/q9mIrMR9kchNDWb+adfuAN5Z/k5CSk+DubmScy
- PunuTmJ0jqzCxkYIRUmeYCoBjEL18t7xcZR1xdaPDUUKWEq/H7P+eemXMtR63K3YZckg
- at1AcC4jI8cM/WUtLoM/lOWN3qAZRnU+wgq1Lf2cHAlTmEP3ipDPR3izifrS6N+A5aQl
- 5+sA==
-X-Gm-Message-State: AOJu0YwtaJeqsBbAzzOvxkiR+jL06JMgR2rbzmFgmKBpBVvncs47Ez3P
- FI6o239bJViaDudOpitv56d8AKGDB9x2n9fu8+o=
-X-Google-Smtp-Source: AGHT+IHpnivAN1sZtQWvydxBfqBw13rbL3KhqE5D9hyt9FmRFisq0XW7BTUta9zXZ3xabyMYTXAfWg==
-X-Received: by 2002:a05:6358:7e49:b0:142:dfc2:a441 with SMTP id
- p9-20020a0563587e4900b00142dfc2a441mr6732370rwm.8.1696040133172; 
- Fri, 29 Sep 2023 19:15:33 -0700 (PDT)
+ bh=N6Gi1W2NSeoXsGrs8c4mvQh099VY+s2zRGNYCJyf/Qs=;
+ b=jSFYXdJKmQy2g/ZTfFs9B+/k3Zn5FE9KjEpwZJ7VLvgfG1EcaWcsTr762OgsSlqQCd
+ cPr10OFHaXrqbxtDjmdav1wmzne1mQWTz4Q+JmFp4iLuT6XxY4kngbWZ/SgUC2TOCcYO
+ SJZu3doTuqqVdsv9dyEIf2lJzqMvwjcSTMnifLYPN3aLrf1fP8lyRksmurjmGGq1ZjyP
+ 0fKCVsX45foSGCINVZqz7tMVamhCNsMRBtnalTCATZErgH+xJlRzsTfu115JztdtrFtr
+ nedv076TdZXJV8avjNERZKckQPwk/kHDAiOlg98G+euAJWJ7qfyt2Yf3wpeqf+a8ZElT
+ jN4Q==
+X-Gm-Message-State: AOJu0YyZyqQDk9J5R6TmmNPz7VA0qQV4UOtEdN4NEb6BygMSXkrrYdmQ
+ J0Xkaxxk+q7PFvzdQsdg+MN4FMVSbDDtPxGrKdE=
+X-Google-Smtp-Source: AGHT+IFbcm3E0IJLvxCfXs7rkZDdZtowgTKpbaVMEzH6ZIABRQAv/eDgtzf5OnVnDad6gFaWAYfOhQ==
+X-Received: by 2002:a05:6a20:7f8a:b0:131:b3fa:eaaa with SMTP id
+ d10-20020a056a207f8a00b00131b3faeaaamr7316302pzj.61.1696040134158; 
+ Fri, 29 Sep 2023 19:15:34 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- fv21-20020a17090b0e9500b002775281b9easm2130692pjb.50.2023.09.29.19.15.32
+ fv21-20020a17090b0e9500b002775281b9easm2130692pjb.50.2023.09.29.19.15.33
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 29 Sep 2023 19:15:32 -0700 (PDT)
+ Fri, 29 Sep 2023 19:15:33 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, laurent@vivier.eu,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>
-Subject: [PATCH v6 02/19] linux-user: Tidy loader_exec
-Date: Fri, 29 Sep 2023 19:15:12 -0700
-Message-Id: <20230930021529.987950-3-richard.henderson@linaro.org>
+Subject: [PATCH v6 03/19] linux-user: Do not clobber bprm_buf swapping ehdr
+Date: Fri, 29 Sep 2023 19:15:13 -0700
+Message-Id: <20230930021529.987950-4-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230930021529.987950-1-richard.henderson@linaro.org>
 References: <20230930021529.987950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c30;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc30.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,73 +92,97 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Reorg the if cases to reduce indentation.
-Test for 4 bytes in the file before checking the signatures.
+Rearrange the allocation of storage for ehdr between load_elf_image
+and load_elf_binary.  The same set of copies are done, but we don't
+modify bprm_buf, which will be important later.
 
 Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/linuxload.c | 42 +++++++++++++++++++++---------------------
- 1 file changed, 21 insertions(+), 21 deletions(-)
+ linux-user/elfload.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/linux-user/linuxload.c b/linux-user/linuxload.c
-index 3536dd8104..5b7e9ab983 100644
---- a/linux-user/linuxload.c
-+++ b/linux-user/linuxload.c
-@@ -154,31 +154,31 @@ int loader_exec(int fdexec, const char *filename, char **argv, char **envp,
+diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+index db75cd4b33..e5c014611c 100644
+--- a/linux-user/elfload.c
++++ b/linux-user/elfload.c
+@@ -3164,16 +3164,17 @@ static bool parse_elf_properties(int image_fd,
+    On return: INFO values will be filled in, as necessary or available.  */
  
-     retval = prepare_binprm(bprm);
+ static void load_elf_image(const char *image_name, int image_fd,
+-                           struct image_info *info, char **pinterp_name,
++                           struct image_info *info, struct elfhdr *ehdr,
++                           char **pinterp_name,
+                            char bprm_buf[BPRM_BUF_SIZE])
+ {
+-    struct elfhdr *ehdr = (struct elfhdr *)bprm_buf;
+     struct elf_phdr *phdr;
+     abi_ulong load_addr, load_bias, loaddr, hiaddr, error;
+     int i, retval, prot_exec;
+     Error *err = NULL;
  
--    if (retval >= 0) {
--        if (bprm->buf[0] == 0x7f
--                && bprm->buf[1] == 'E'
--                && bprm->buf[2] == 'L'
--                && bprm->buf[3] == 'F') {
--            retval = load_elf_binary(bprm, infop);
--#if defined(TARGET_HAS_BFLT)
--        } else if (bprm->buf[0] == 'b'
--                && bprm->buf[1] == 'F'
--                && bprm->buf[2] == 'L'
--                && bprm->buf[3] == 'T') {
--            retval = load_flt_binary(bprm, infop);
--#endif
--        } else {
--            return -ENOEXEC;
--        }
-+    if (retval < 4) {
-+        return -ENOEXEC;
-     }
--
--    if (retval >= 0) {
--        /* success.  Initialize important registers */
--        do_init_thread(regs, infop);
-+    if (bprm->buf[0] == 0x7f
-+        && bprm->buf[1] == 'E'
-+        && bprm->buf[2] == 'L'
-+        && bprm->buf[3] == 'F') {
-+        retval = load_elf_binary(bprm, infop);
-+#if defined(TARGET_HAS_BFLT)
-+    } else if (bprm->buf[0] == 'b'
-+               && bprm->buf[1] == 'F'
-+               && bprm->buf[2] == 'L'
-+               && bprm->buf[3] == 'T') {
-+        retval = load_flt_binary(bprm, infop);
-+#endif
-+    } else {
-+        return -ENOEXEC;
-+    }
-+    if (retval < 0) {
-         return retval;
+     /* First of all, some simple consistency checks */
++    memcpy(ehdr, bprm_buf, sizeof(*ehdr));
+     if (!elf_check_ident(ehdr)) {
+         error_setg(&err, "Invalid ELF image for this architecture");
+         goto exit_errmsg;
+@@ -3488,6 +3489,7 @@ static void load_elf_image(const char *image_name, int image_fd,
+ static void load_elf_interp(const char *filename, struct image_info *info,
+                             char bprm_buf[BPRM_BUF_SIZE])
+ {
++    struct elfhdr ehdr;
+     int fd, retval;
+     Error *err = NULL;
+ 
+@@ -3509,7 +3511,7 @@ static void load_elf_interp(const char *filename, struct image_info *info,
+         memset(bprm_buf + retval, 0, BPRM_BUF_SIZE - retval);
      }
  
--    return retval;
-+    /* Success.  Initialize important registers. */
-+    do_init_thread(regs, infop);
-+    return 0;
+-    load_elf_image(filename, fd, info, NULL, bprm_buf);
++    load_elf_image(filename, fd, info, &ehdr, NULL, bprm_buf);
  }
  
- bool imgsrc_read(void *dst, off_t offset, size_t len,
+ static int symfind(const void *s0, const void *s1)
+@@ -3702,8 +3704,14 @@ uint32_t get_elf_eflags(int fd)
+ 
+ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+ {
++    /*
++     * We need a copy of the elf header for passing to create_elf_tables.
++     * We will have overwritten the original when we re-use bprm->buf
++     * while loading the interpreter.  Allocate the storage for this now
++     * and let elf_load_image do any swapping that may be required.
++     */
++    struct elfhdr ehdr;
+     struct image_info interp_info;
+-    struct elfhdr elf_ex;
+     char *elf_interpreter = NULL;
+     char *scratch;
+ 
+@@ -3713,12 +3721,7 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+ #endif
+ 
+     load_elf_image(bprm->filename, bprm->fd, info,
+-                   &elf_interpreter, bprm->buf);
+-
+-    /* ??? We need a copy of the elf header for passing to create_elf_tables.
+-       If we do nothing, we'll have overwritten this when we re-use bprm->buf
+-       when we load the interpreter.  */
+-    elf_ex = *(struct elfhdr *)bprm->buf;
++                   &ehdr, &elf_interpreter, bprm->buf);
+ 
+     /* Do this so that we can load the interpreter, if need be.  We will
+        change some of these later */
+@@ -3805,7 +3808,7 @@ int load_elf_binary(struct linux_binprm *bprm, struct image_info *info)
+         target_mprotect(tramp_page, TARGET_PAGE_SIZE, PROT_READ | PROT_EXEC);
+     }
+ 
+-    bprm->p = create_elf_tables(bprm->p, bprm->argc, bprm->envc, &elf_ex,
++    bprm->p = create_elf_tables(bprm->p, bprm->argc, bprm->envc, &ehdr,
+                                 info, (elf_interpreter ? &interp_info : NULL));
+     info->start_stack = bprm->p;
+ 
 -- 
 2.34.1
 
