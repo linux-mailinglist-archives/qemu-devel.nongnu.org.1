@@ -2,59 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E7E7B3D13
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 01:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 337DD7B3D41
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 02:22:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmNFZ-00045u-O6; Fri, 29 Sep 2023 19:50:25 -0400
+	id 1qmNit-0005pY-MC; Fri, 29 Sep 2023 20:20:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qmNFV-00045N-5J; Fri, 29 Sep 2023 19:50:21 -0400
-Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qmNij-0005nM-Nh; Fri, 29 Sep 2023 20:20:34 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
- id 1qmNFO-000393-7o; Fri, 29 Sep 2023 19:50:18 -0400
-X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R301e4; CH=green; DM=||false|;
- DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018045176;
- MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=13; SR=0;
- TI=SMTPD_---0Vt4vcbs_1696031397; 
-Received: from 192.168.3.95(mailfrom:zhiwei_liu@linux.alibaba.com
- fp:SMTPD_---0Vt4vcbs_1696031397) by smtp.aliyun-inc.com;
- Sat, 30 Sep 2023 07:49:58 +0800
-Message-ID: <73a4c943-23ea-c268-c13b-be26870a2df0@linux.alibaba.com>
-Date: Sat, 30 Sep 2023 07:49:06 +0800
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qmNie-00014D-7I; Fri, 29 Sep 2023 20:20:33 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ry79Y6Wjyz6K5mP;
+ Sat, 30 Sep 2023 08:18:41 +0800 (CST)
+Received: from A190218597.china.huawei.com (10.195.35.96) by
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Sat, 30 Sep 2023 01:19:46 +0100
+To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
+ <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
+ <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
+ <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
+ <philmd@linaro.org>, <eric.auger@redhat.com>, <oliver.upton@linux.dev>,
+ <pbonzini@redhat.com>, <mst@redhat.com>, <will@kernel.org>,
+ <gshan@redhat.com>, <rafael@kernel.org>, <alex.bennee@linaro.org>,
+ <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
+ <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
+ <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
+ <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
+ <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
+ <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
+ <linuxarm@huawei.com>
+Subject: [PATCH V2 00/10] Add architecture agnostic code to support vCPU
+ Hotplug
+Date: Sat, 30 Sep 2023 01:19:23 +0100
+Message-ID: <20230930001933.2660-1-salil.mehta@huawei.com>
+X-Mailer: git-send-email 2.8.3
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add unowned RISC-V related files to the
- right sections
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>
-Cc: qemu-trivial@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Christoph Muellner <christoph.muellner@vrull.eu>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>,
- Vijai Kumar K <vijai@behindbytes.com>
-References: <20230929123727.391346-1-thuth@redhat.com>
-From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
-In-Reply-To: <20230929123727.391346-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=115.124.30.100;
- envelope-from=zhiwei_liu@linux.alibaba.com;
- helo=out30-100.freemail.mail.aliyun.com
-X-Spam_score_int: -131
-X-Spam_score: -13.2
-X-Spam_bar: -------------
-X-Spam_report: (-13.2 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
- NICE_REPLY_A=-3.295, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001, UNPARSEABLE_RELAY=0.001,
- USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Originating-IP: [10.195.35.96]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ lhrpeml500001.china.huawei.com (7.191.163.213)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -67,88 +69,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Virtual CPU hotplug support is being added across various architectures [1][3].
+This series adds various code bits common across all architectures:
 
-On 2023/9/29 20:37, Thomas Huth wrote:
-> There are a bunch of RISC-V files that are currently not covered
-> by the "get_maintainers.pl" script. Add them to the right sections
-> in MAINTAINERS to fix this problem.
->
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+1. vCPU creation and Parking code refactor [Patch 1]
+2. Update ACPI GED framework to support vCPU Hotplug [Patch 4,6,7]
+3. ACPI CPUs AML code change [Patch 5]
+3. Helper functions to support unrealization of CPU objects [Patch 8,9]
+4. Misc [Patch 2,3,10]
 
-Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
-Zhiwei
+References:
+[1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/
+[2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
+[3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@loongson.cn/
 
-> ---
->   MAINTAINERS | 10 +++++++++-
->   1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 355b1960ce..1313257180 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -317,8 +317,11 @@ R: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
->   R: Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
->   L: qemu-riscv@nongnu.org
->   S: Supported
-> +F: configs/targets/riscv*
-> +F: docs/system/target-riscv.rst
->   F: target/riscv/
->   F: hw/riscv/
-> +F: hw/intc/riscv*
->   F: include/hw/riscv/
->   F: linux-user/host/riscv32/
->   F: linux-user/host/riscv64/
-> @@ -330,6 +333,7 @@ L: qemu-riscv@nongnu.org
->   S: Supported
->   F: target/riscv/insn_trans/trans_xthead.c.inc
->   F: target/riscv/xthead*.decode
-> +F: disas/riscv-xthead*
->   
->   RISC-V XVentanaCondOps extension
->   M: Philipp Tomsich <philipp.tomsich@vrull.eu>
-> @@ -337,6 +341,7 @@ L: qemu-riscv@nongnu.org
->   S: Maintained
->   F: target/riscv/XVentanaCondOps.decode
->   F: target/riscv/insn_trans/trans_xventanacondops.c.inc
-> +F: disas/riscv-xventana*
->   
->   RENESAS RX CPUs
->   R: Yoshinori Sato <ysato@users.sourceforge.jp>
-> @@ -1518,6 +1523,7 @@ Microchip PolarFire SoC Icicle Kit
->   M: Bin Meng <bin.meng@windriver.com>
->   L: qemu-riscv@nongnu.org
->   S: Supported
-> +F: docs/system/riscv/microchip-icicle-kit.rst
->   F: hw/riscv/microchip_pfsoc.c
->   F: hw/char/mchp_pfsoc_mmuart.c
->   F: hw/misc/mchp_pfsoc_dmc.c
-> @@ -1533,6 +1539,7 @@ Shakti C class SoC
->   M: Vijai Kumar K <vijai@behindbytes.com>
->   L: qemu-riscv@nongnu.org
->   S: Supported
-> +F: docs/system/riscv/shakti-c.rst
->   F: hw/riscv/shakti_c.c
->   F: hw/char/shakti_uart.c
->   F: include/hw/riscv/shakti_c.h
-> @@ -1544,6 +1551,7 @@ M: Bin Meng <bin.meng@windriver.com>
->   M: Palmer Dabbelt <palmer@dabbelt.com>
->   L: qemu-riscv@nongnu.org
->   S: Supported
-> +F: docs/system/riscv/sifive_u.rst
->   F: hw/*/*sifive*.c
->   F: include/hw/*/*sifive*.h
->   
-> @@ -3543,7 +3551,7 @@ M: Alistair Francis <Alistair.Francis@wdc.com>
->   L: qemu-riscv@nongnu.org
->   S: Maintained
->   F: tcg/riscv/
-> -F: disas/riscv.c
-> +F: disas/riscv.[ch]
->   
->   S390 TCG target
->   M: Richard Henderson <richard.henderson@linaro.org>
+Jean-Philippe Brucker (1):
+  target/arm/kvm: Write CPU state back to KVM on reset
+
+Salil Mehta (9):
+  accel/kvm: Extract common KVM vCPU {creation,parking} code
+  hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
+  hw/acpi: Add ACPI CPU hotplug init stub
+  hw/acpi: Init GED framework with cpu hotplug events
+  hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+  hw/acpi: Update GED _EVT method AML with cpu scan
+  hw/acpi: Update ACPI GED framework to support vCPU Hotplug
+  physmem: Add helper function to destroy CPU AddressSpace
+  gdbstub: Add helper function to unregister GDB register space
+
+ accel/kvm/kvm-all.c                    | 63 +++++++++++++++++++-------
+ gdbstub/gdbstub.c                      | 14 ++++++
+ hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++
+ hw/acpi/cpu.c                          | 25 ++++++----
+ hw/acpi/generic_event_device.c         | 22 +++++++++
+ hw/i386/acpi-build.c                   |  2 +-
+ include/exec/cpu-common.h              |  8 ++++
+ include/exec/gdbstub.h                 |  5 ++
+ include/hw/acpi/cpu.h                  |  5 +-
+ include/hw/acpi/cpu_hotplug.h          |  4 ++
+ include/hw/acpi/generic_event_device.h |  5 ++
+ include/hw/core/cpu.h                  |  1 +
+ include/sysemu/kvm.h                   | 14 ++++++
+ softmmu/physmem.c                      | 25 ++++++++++
+ target/arm/kvm.c                       |  8 +++-
+ 15 files changed, 179 insertions(+), 28 deletions(-)
+
+-- 
+2.34.1
+
 
