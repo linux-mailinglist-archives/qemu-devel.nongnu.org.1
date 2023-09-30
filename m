@@ -2,76 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3954C7B4391
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 22:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D08077B43EF
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 23:29:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmgdD-00078w-LI; Sat, 30 Sep 2023 16:32:07 -0400
+	id 1qmhV8-000617-EM; Sat, 30 Sep 2023 17:27:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qmgdB-00073E-6n; Sat, 30 Sep 2023 16:32:05 -0400
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qmhV6-00060g-AP
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 17:27:48 -0400
+Received: from mail-pg1-x532.google.com ([2607:f8b0:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qmgd8-00036h-IU; Sat, 30 Sep 2023 16:32:04 -0400
-Received: by mail-lf1-x12b.google.com with SMTP id
- 2adb3069b0e04-5031ccf004cso23687504e87.2; 
- Sat, 30 Sep 2023 13:32:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qmhV4-0007K9-Nb
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 17:27:47 -0400
+Received: by mail-pg1-x532.google.com with SMTP id
+ 41be03b00d2f7-5859a7d6556so1718276a12.0
+ for <qemu-devel@nongnu.org>; Sat, 30 Sep 2023 14:27:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696105920; x=1696710720; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696109264; x=1696714064; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=5t/J/0u+/OvyV52+QAvVcBhTX97cKPXthEGVm4YgMTk=;
- b=Tqm5tj6X3/ScP6u265+VNwsliAQCUCU2IgKxyMddPT1qLGgbAxe+oX2PybTfUTh/Tl
- z8lRjqUWvLjWmYoJR+pXy+wVRivJv0EajNqHKEVLZrP/V4c6Zgvsdmq2eCy1OmLd+10U
- +0yOpMPQ2OFHWRK0wCTa6vc2c0MfaqLOUH9QvqsOuYWJLzXwaeqMieJqqE/M+3SqeMg5
- VQletsPFlPwIMMVVt67yupXO1tgKaJGSX9M+w7MdrUbIzLNw+MgYJeH+8uayyV5QQU6f
- F4z4/sOlBADu8BaK+yiuBUT96F+06uE8uIuaqBhJoez3+8WElap/5ypHU08LT/6G/DAG
- 7mMw==
+ bh=xC37eoqg+2YbZz3c8BLdow0ua6W9XsMYlANpVl/9Uws=;
+ b=K7xrpMw83Rq67jvUtkAyNrDh+Ie5o7i/ssTOEQVvQNtmdqY6lIyP49DtEcY31xFxdu
+ ZRaH1ELRzwfFa+I6ddFhz6TUSWjOAEaCIwGIeIqypSOj8kV4ur3uegt1OCdb50EfBQia
+ 7VkenbfQrwFDI2/u+Sxmyg3fkYgcT9Mg1scMHDjaln2fQ1y+f7AxuyEuKwmzUTydI2kY
+ WoTdZv7pg4irlF6I7Ft05JRqhziM8v6VJVzLoHo8CWonV4cMxdyYlyOygbAITWuMuI1B
+ eS47nwum/pHnE3UknjiZ0rADks9GrP7V6HS+6G1r9xleAtF4fkpjzzCRCrantKVaLHCg
+ zXKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696105920; x=1696710720;
+ d=1e100.net; s=20230601; t=1696109264; x=1696714064;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=5t/J/0u+/OvyV52+QAvVcBhTX97cKPXthEGVm4YgMTk=;
- b=nI40Q357U+kaLU6popqNR/DBJnaadO5iK4nwYF68D9QUmdDNuBMsmkYf6ZCRdw+zhx
- lPx3nno/Mef8VysHW1YFAJ4FD7gnNTkuq/cWar2XXzQrWXFn0xx8gVt1BDKOM3U7adY4
- MBPHGzvEfSLS1O3mZQXV1W181nOAt3uGMFCq9tWTJv7xhZqsSMeJeoQAa/XUpH6KjNnn
- VQ+hcXDMM+N/5sAqPD5dzrpA+DHJqmHQ0u9KNWBOYb17lTU92sNX7KyKgMGGLK9N+u+Z
- ThXtZGW0SsBgqkh2YBXUy77dG/Uzu+KQiOj9qN1KVVtCrke/PJA+wMQrUFH9PhJT0ZTY
- Lq8Q==
-X-Gm-Message-State: AOJu0YyRxdwQ/PGXLnW4LOSQ+32IoEPoKe6jfraRVXEhHWQchz6sXgmw
- bYMi4vp2uCq+y92251QNDz4v3NZ5YRw6P2yurM4=
-X-Google-Smtp-Source: AGHT+IGFq66JqiTzO//ReStg3b4S29MOA+c5G9Ne3fYHq7K1SUpkOr42f8dr+kAPmmpoOelFDzWTlg==
-X-Received: by 2002:ac2:5f6f:0:b0:4fe:49d:6ae2 with SMTP id
- c15-20020ac25f6f000000b004fe049d6ae2mr5664622lfc.0.1696105919812; 
- Sat, 30 Sep 2023 13:31:59 -0700 (PDT)
-Received: from localhost.localdomain ([185.9.78.108])
- by smtp.gmail.com with ESMTPSA id
- x3-20020a19f603000000b00501c12fe522sm3981185lfe.73.2023.09.30.13.31.58
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Sat, 30 Sep 2023 13:31:59 -0700 (PDT)
-From: Mike Maslenkin <mike.maslenkin@gmail.com>
-To: 
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, kwolf@redhat.com,
- hreitz@redhat.com, den@openvz.org,
- Mike Maslenkin <mike.maslenkin@gmail.com>
-Subject: [PATCH v2 1/1] qemu-img: do not erase destination file in qemu-img dd
- command
-Date: Sat, 30 Sep 2023 23:31:57 +0300
-Message-Id: <20230930203157.85766-1-mike.maslenkin@gmail.com>
-X-Mailer: git-send-email 2.32.0 (Apple Git-132)
+ bh=xC37eoqg+2YbZz3c8BLdow0ua6W9XsMYlANpVl/9Uws=;
+ b=ZdsPIeNIyHE3WPR+m4bWqpbguE8Vxo58sEZ3C0MO1VbYcL7AUMM8BrtFEvz/O1ZRS0
+ 0Ulb6KCxDPZIVIiPXiYUxipOjZzHtdgXmaYnH1w90lTaiWh8thBnzMwzG+r9tin+CN+z
+ /FkIgxmOu+Q0TULMzCK/smtOCySekfRuxFkWWF8lPGfoSL7aXlBonCjG3sICqMTngblI
+ QrFGJN8ooLfR4qaniWT645EKFSvEeKrelAp67bdAFc8TVNlF/rhi9JbWuOqLw5sRMfPq
+ yUvR1skFmI//AYBkaDJiaae7z+Swoyu1G4YM+GndzWrcfj5WhALjgWOEYaAv+fXCiWxV
+ 43sQ==
+X-Gm-Message-State: AOJu0YzZa5zysgsm2YbG4hk8AqXkBWiXz4n2QIJvT7mjVksBsvd0ylYH
+ BSqYK+iTLLUm1FUio5MV9XQjamlan3fRSCUaO80=
+X-Google-Smtp-Source: AGHT+IE4mmuuaktIlM4NSwxBHHPniAHzuOZNNL/zFTI7A7POMf5y2BHdoGQ7goKlUNDH3hoVfbxGNg==
+X-Received: by 2002:a05:6a21:3388:b0:14c:3218:c1bd with SMTP id
+ yy8-20020a056a21338800b0014c3218c1bdmr10586882pzb.11.1696109263868; 
+ Sat, 30 Sep 2023 14:27:43 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ mv11-20020a17090b198b00b00274a43c3414sm3561532pjb.47.2023.09.30.14.27.43
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 30 Sep 2023 14:27:43 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: deller@gmx.de
+Subject: [PATCH] linux-user/hppa: Fix struct target_sigcontext layout
+Date: Sat, 30 Sep 2023 14:27:42 -0700
+Message-Id: <20230930212742.586468-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12b;
- envelope-from=mike.maslenkin@gmail.com; helo=mail-lf1-x12b.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::532;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,73 +87,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a check that destination file exists and do not call bdrv_create for
-this case.
+Use abi_ullong not uint64_t so that the alignment of the field
+and therefore the layout of the struct is correct.
 
-Currently `qemu-img dd` command destroys content of destination file.
-Effectively this means that parameters (geometry) of destination image
-file are changing. This can be undesirable behavior for user especially
-if format of destination image does not support resizing.
-
-Steps to reproduce:
-  1. Create empty disk image with some non default size.
-       `qemu-img  create -f qcow2 $DEST_IMG 3T`
-     Remember that `qemu-img info $DEST_IMG` returns:
-       virtual size: 3 TiB (3298534883328 bytes)
-       disk size: 240 KiB
-       cluster_size: 65536
-  2. Run `qemu-img dd -O qcow2 of=$DEST_IMG if=$SRC_IMG bs=1M count=100`
-  3. Check `qemu-img info $DEST_IMG` output:
-       virtual size: 100 MiB (104857600 bytes)
-       disk size: 112 MiB
-       cluster_size: 65536
-
-Parameters of $DEST_IMG were changed. Actually `qemu-img dd` has created
-a new disk based on current default geometry for particular format.
-For example for "parallels" format default BAT for 256GB disk is written
-to empty file prior writing disk image data.
-
-With this patch virtual disk metadata and geometry of a destination image
-are preserved. As another visible change of `qemu-img dd` behavior is that
-if destination image is less than source it can finish with error (similar
-to "dd" utility):
-  qemu-img: error while writing to output image file: Input/output error
-
-Signed-off-by: Mike Maslenkin <mike.maslenkin@gmail.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
-  diff from v1: removed additional fprintf call leaved in patch by accident
----
- qemu-img.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ linux-user/hppa/signal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/qemu-img.c b/qemu-img.c
-index a48edb71015c..1a83c14212fb 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -5150,13 +5150,15 @@ static int img_dd(int argc, char **argv)
-                             size - in.bsz * in.offset, &error_abort);
-     }
- 
--    ret = bdrv_create(drv, out.filename, opts, &local_err);
--    if (ret < 0) {
--        error_reportf_err(local_err,
--                          "%s: error while creating output image: ",
--                          out.filename);
--        ret = -1;
--        goto out;
-+    if (!g_file_test(out.filename, G_FILE_TEST_EXISTS)) {
-+        ret = bdrv_create(drv, out.filename, opts, &local_err);
-+        if (ret < 0) {
-+            error_reportf_err(local_err,
-+                               "%s: error while creating output image: ",
-+                               out.filename);
-+            ret = -1;
-+            goto out;
-+        }
-     }
- 
-     /* TODO, we can't honour --image-opts for the target,
+diff --git a/linux-user/hppa/signal.c b/linux-user/hppa/signal.c
+index bda6e54655..ec5f5412d1 100644
+--- a/linux-user/hppa/signal.c
++++ b/linux-user/hppa/signal.c
+@@ -25,7 +25,7 @@
+ struct target_sigcontext {
+     abi_ulong sc_flags;
+     abi_ulong sc_gr[32];
+-    uint64_t sc_fr[32];
++    abi_ullong sc_fr[32];
+     abi_ulong sc_iasq[2];
+     abi_ulong sc_iaoq[2];
+     abi_ulong sc_sar;
 -- 
-2.32.0 (Apple Git-132)
+2.34.1
 
 
