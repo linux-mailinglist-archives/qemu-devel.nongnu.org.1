@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C2A7B3D94
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 04:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD7F7B3D90
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 04:17:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmPWQ-0000HY-G5; Fri, 29 Sep 2023 22:15:58 -0400
+	id 1qmPWY-0000P0-Vf; Fri, 29 Sep 2023 22:16:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPWF-0000Dk-Js
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:47 -0400
-Received: from mail-oo1-xc29.google.com ([2607:f8b0:4864:20::c29])
+ id 1qmPWT-0000Jx-0p
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:16:01 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmPW9-0001zc-Js
- for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:15:47 -0400
-Received: by mail-oo1-xc29.google.com with SMTP id
- 006d021491bc7-57b6c7d0cabso7325906eaf.1
- for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 19:15:41 -0700 (PDT)
+ id 1qmPWD-00020A-Uj
+ for qemu-devel@nongnu.org; Fri, 29 Sep 2023 22:16:00 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-690fa0eea3cso13336925b3a.0
+ for <qemu-devel@nongnu.org>; Fri, 29 Sep 2023 19:15:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696040140; x=1696644940; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696040141; x=1696644941; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OwjKzOGDAStulrjp6riCCAf0zhRQZEL2FYxhEzDlVII=;
- b=qkD3/cyP+y9U8bmxqTqQ+6EvKkVTA3G7HKj5C9Dk2Ms3jrRjcstxivUnEnnSi0NkDf
- j8OeRdA3fLWOb/foO2aeb9ODUcYptsYlXXFpLw6foRrvmhZD7r/c54go4dWzGbN9pwGo
- Wo4QRPhUSKVDLC9zin9bd0or5d9DmLwTeDbK9kD+er1SkdHC//GomDpseog7RJfdSmob
- vbeuIJJpLIp09t9GF5Ly+tmpLyXhTzZ7LBsTytoQfRTyWaEf9lBZ4iSUqtJM/51CAwx3
- krYgZ4Ht7zMtE1+D2Hl/5+Xy1p9KndRJhE7ZNR+Zs7HmsB+XDS+pVe+0RXQA86UEhG4Q
- 4/Ew==
+ bh=FprjvhcaZDLQvmrvhCxQlltAxaJPZ+WhuMFTfP0lrMA=;
+ b=OqwpRc7+RBSARcAnOxKoFONpB5D5ZfIJG7XZTuL9N3w6GV40UZ1c7MCSFIbS9tVlYA
+ m04fvtmR9x0nhaRAUBX3j9R8iafBgBu1GKGBy8q4AakW7MQ5zqcop3MJdQrFRrGKS/n+
+ WjgRHysyn5975YS3+ORIzTjGmX9kN/2h5Yr+HJo3/W+YZpQOjj8C8dGnSkY5rhJia1zX
+ 78IpJLWP1uGO77NQ8YagspzBvGWAEhQVOGmYyGvKHKlZyWq9pzIguTVR9bJkn+AgNOQ2
+ AmtI6kWh1QWJWb2Y9PlN3ysHgHC7bNCHDzAnY/x61OhvN26dstGrKrTOc93D2HifrC0a
+ KZmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696040140; x=1696644940;
+ d=1e100.net; s=20230601; t=1696040141; x=1696644941;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OwjKzOGDAStulrjp6riCCAf0zhRQZEL2FYxhEzDlVII=;
- b=u7iyQnanVd9ueunCmzQU9g9NOLbidQo+e72M7yUa/xFQl1VgFjYD/wRZHasdh60JID
- sdFaEAEywLXz1CxhK/8Trf5VZpbf4DNuvEivJwEdq1cK9UXK1SQ6qPYcEf2i1nt7nQoF
- /zTQR+JZA9t400KJtZswxtHvRhMIUK/KQJ8Vhd+mI52Kj52wf/kzPB3ehBiGxaPDVImT
- BieCBfGxbvEJUZDnORQf5rA6Zo3LvL7+Gf98+E1BLBqBRJwO+0ORaYxZXiux91guwzR8
- 3sBuocVE5CifVxwAxHuQdUORxNo2p6afCqqUnk7eYLcQdxEg+05buQwJHvO+CjdyasKu
- czcg==
-X-Gm-Message-State: AOJu0Yx4skDRqdD1pjBvK7pplKvlIBSnfySQQzioxTRgBK5hykR8TGvp
- 26mzx5uXpy6cIJKMsZImK65N7OUklsGZ3t861Lk=
-X-Google-Smtp-Source: AGHT+IHeS7pYWwh2AfNvo5xgV3zS40WM7Xen5Mg+MMnNtlJAa7L4H3pSN6Ptl8G1yMQoQLsTtRDNFA==
-X-Received: by 2002:a05:6358:1ca:b0:134:e301:2c21 with SMTP id
- e10-20020a05635801ca00b00134e3012c21mr5947400rwa.15.1696040140421; 
- Fri, 29 Sep 2023 19:15:40 -0700 (PDT)
+ bh=FprjvhcaZDLQvmrvhCxQlltAxaJPZ+WhuMFTfP0lrMA=;
+ b=OhJsQzDw9SynRQBs7xjUb1yAS1t3Y0+4EPFCZRjE0Z7FYPrQvnXMl0CQarRn9wiUfv
+ 8RvXmcARzp5rE5YBG+hXYlhedBxEQRhFJ3g6o5ne5RWjGc2oobAQXGmDyFA0RkP1gdB8
+ O3i34YfqHf0xGLHyBCSJDCN8ovjJHEDAWG1cxVYQmXHooM0v6eWxpF2EI5Ksw2E79tYd
+ e53EuPV9vOVLVewR4HddNqAKTH921+qs5Vv04nVxdLcF6atw4cY9GaDBI6ruVuSiVyCx
+ 1rRjn19ufmVEYTUecGJ1X/TGgkRh6JAX1KCjmzK7+5Bx2YHMj673QvYy6k8baCvsZh6k
+ oCPA==
+X-Gm-Message-State: AOJu0Yye1kdQbfvMxw3bU3mSwlbuTUDGAA5XX4Ty4nNcS14JDm2Zwwba
+ qW3aCyewOZcaHI2sti3B/3Blsk4pRbcdKk/trog=
+X-Google-Smtp-Source: AGHT+IEnNpYrAtc4GV33dHO/irR3Jo7ITmklHeb2r6HPvmdOfIxZD1M0oXmO2LSlYSNboslZYIsYBw==
+X-Received: by 2002:a05:6a21:328b:b0:162:ee29:d3c0 with SMTP id
+ yt11-20020a056a21328b00b00162ee29d3c0mr4992980pzb.42.1696040141383; 
+ Fri, 29 Sep 2023 19:15:41 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- fv21-20020a17090b0e9500b002775281b9easm2130692pjb.50.2023.09.29.19.15.39
+ fv21-20020a17090b0e9500b002775281b9easm2130692pjb.50.2023.09.29.19.15.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Fri, 29 Sep 2023 19:15:40 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org,
 	laurent@vivier.eu
-Subject: [PATCH v6 10/19] linux-user/x86_64: Add vdso
-Date: Fri, 29 Sep 2023 19:15:20 -0700
-Message-Id: <20230930021529.987950-11-richard.henderson@linaro.org>
+Subject: [PATCH v6 11/19] linux-user/aarch64: Add vdso
+Date: Fri, 29 Sep 2023 19:15:21 -0700
+Message-Id: <20230930021529.987950-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230930021529.987950-1-richard.henderson@linaro.org>
 References: <20230930021529.987950-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c29;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc29.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,72 +92,148 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/elfload.c            |   4 +-
- linux-user/x86_64/Makefile.vdso |  11 +++++
- linux-user/x86_64/meson.build   |   4 ++
- linux-user/x86_64/vdso.S        |  78 ++++++++++++++++++++++++++++++++
- linux-user/x86_64/vdso.ld       |  73 ++++++++++++++++++++++++++++++
- linux-user/x86_64/vdso.so       | Bin 0 -> 2968 bytes
- 6 files changed, 168 insertions(+), 2 deletions(-)
- create mode 100644 linux-user/x86_64/Makefile.vdso
- create mode 100644 linux-user/x86_64/vdso.S
- create mode 100644 linux-user/x86_64/vdso.ld
- create mode 100755 linux-user/x86_64/vdso.so
+ linux-user/elfload.c             |   6 +++
+ linux-user/aarch64/Makefile.vdso |  15 +++++++
+ linux-user/aarch64/meson.build   |  11 +++++
+ linux-user/aarch64/vdso-be.so    | Bin 0 -> 3216 bytes
+ linux-user/aarch64/vdso-le.so    | Bin 0 -> 3216 bytes
+ linux-user/aarch64/vdso.S        |  71 ++++++++++++++++++++++++++++++
+ linux-user/aarch64/vdso.ld       |  72 +++++++++++++++++++++++++++++++
+ linux-user/meson.build           |   1 +
+ 8 files changed, 176 insertions(+)
+ create mode 100644 linux-user/aarch64/Makefile.vdso
+ create mode 100644 linux-user/aarch64/meson.build
+ create mode 100755 linux-user/aarch64/vdso-be.so
+ create mode 100755 linux-user/aarch64/vdso-le.so
+ create mode 100644 linux-user/aarch64/vdso.S
+ create mode 100644 linux-user/aarch64/vdso.ld
 
 diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index 314ae7cacf..1e1fdce656 100644
+index 1e1fdce656..693ebc94bd 100644
 --- a/linux-user/elfload.c
 +++ b/linux-user/elfload.c
-@@ -318,10 +318,10 @@ static void elf_core_copy_regs(target_elf_gregset_t *regs, const CPUX86State *en
-         }                                               \
-     } while (0)
+@@ -944,6 +944,12 @@ const char *elf_hwcap2_str(uint32_t bit)
  
--#define VDSO_HEADER "vdso.c.inc"
--
- #endif /* TARGET_X86_64 */
+ #undef GET_FEATURE_ID
  
-+#define VDSO_HEADER "vdso.c.inc"
++#if TARGET_BIG_ENDIAN
++# define VDSO_HEADER  "vdso-be.c.inc"
++#else
++# define VDSO_HEADER  "vdso-le.c.inc"
++#endif
 +
- #define USE_ELF_CORE_DUMP
- #define ELF_EXEC_PAGESIZE       4096
+ #endif /* not TARGET_AARCH64 */
+ #endif /* TARGET_ARM */
  
-diff --git a/linux-user/x86_64/Makefile.vdso b/linux-user/x86_64/Makefile.vdso
+diff --git a/linux-user/aarch64/Makefile.vdso b/linux-user/aarch64/Makefile.vdso
 new file mode 100644
-index 0000000000..26552b66db
+index 0000000000..599958116b
 --- /dev/null
-+++ b/linux-user/x86_64/Makefile.vdso
-@@ -0,0 +1,11 @@
-+include $(BUILD_DIR)/tests/tcg/x86_64-linux-user/config-target.mak
++++ b/linux-user/aarch64/Makefile.vdso
+@@ -0,0 +1,15 @@
++include $(BUILD_DIR)/tests/tcg/aarch64-linux-user/config-target.mak
 +
-+SUBDIR = $(SRC_PATH)/linux-user/x86_64
++SUBDIR = $(SRC_PATH)/linux-user/aarch64
 +VPATH += $(SUBDIR)
 +
-+all: $(SUBDIR)/vdso.so
++all: $(SUBDIR)/vdso-be.so $(SUBDIR)/vdso-le.so
 +
-+$(SUBDIR)/vdso.so: vdso.S vdso.ld
-+	$(CC) -o $@ -nostdlib -shared -Wl,-h,linux-vdso.so.1 \
-+	  -Wl,--build-id=sha1 -Wl,--hash-style=both \
-+	  -Wl,-T,$(SUBDIR)/vdso.ld $<
-diff --git a/linux-user/x86_64/meson.build b/linux-user/x86_64/meson.build
-index 203af9a60c..8c60da7a60 100644
---- a/linux-user/x86_64/meson.build
-+++ b/linux-user/x86_64/meson.build
-@@ -3,3 +3,7 @@ syscall_nr_generators += {
-                       arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
-                       output: '@BASENAME@_nr.h')
- }
++LDFLAGS = -nostdlib -shared -Wl,-h,linux-vdso.so.1 -Wl,--build-id=sha1 \
++	  -Wl,--hash-style=both -Wl,-T,$(SUBDIR)/vdso.ld
 +
-+vdso_inc = gen_vdso.process('vdso.so')
++$(SUBDIR)/vdso-be.so: vdso.S vdso.ld
++	$(CC) -o $@ $(LDFLAGS) -mbig-endian $<
 +
-+linux_user_ss.add(when: 'TARGET_X86_64', if_true: vdso_inc)
-diff --git a/linux-user/x86_64/vdso.S b/linux-user/x86_64/vdso.S
++$(SUBDIR)/vdso-le.so: vdso.S vdso.ld
++	$(CC) -o $@ $(LDFLAGS) -mlittle-endian $<
+diff --git a/linux-user/aarch64/meson.build b/linux-user/aarch64/meson.build
 new file mode 100644
-index 0000000000..47d16c00ab
+index 0000000000..248c578d15
 --- /dev/null
-+++ b/linux-user/x86_64/vdso.S
-@@ -0,0 +1,78 @@
++++ b/linux-user/aarch64/meson.build
+@@ -0,0 +1,11 @@
++# TARGET_BIG_ENDIAN is defined to 'n' for little-endian; which means it
++# is always true as far as source_set.apply() is concerned.  Always build
++# both header files and include the right one via #if.
++
++vdso_be_inc = gen_vdso.process('vdso-be.so',
++                               extra_args: ['-r', '__kernel_rt_sigreturn'])
++
++vdso_le_inc = gen_vdso.process('vdso-le.so',
++                               extra_args: ['-r', '__kernel_rt_sigreturn'])
++
++linux_user_ss.add(when: 'TARGET_AARCH64', if_true: [vdso_be_inc, vdso_le_inc])
+diff --git a/linux-user/aarch64/vdso-be.so b/linux-user/aarch64/vdso-be.so
+new file mode 100755
+index 0000000000000000000000000000000000000000..6084f3d1a701316004894fcdd739c4e1e0463b68
+GIT binary patch
+literal 3216
+zcmc&$O>A355T57v+64N8Q&ABq6>X&mRj7RmMS`Gmu!EhX$W24qs-c&yv0q~6$41XD
+z#X$mc;KBh>)D!9f7jbE&o<UsN14xy6s{mC(f)i3Dq>3KO1&W#3omsDqjgUAn$-Zyr
+zo0*+`yF2UmUcNA$N_k+#hcB@25ZaP4_Th`HO~N+FKpLJveLJ?m*pV~RgWjm21z{L<
+z$}wd4LC@e<V_`J2N+HMjyq2;54GrCSjp1_g^L!^RXc~uJgeN&rkn%{wuD59Hy$Csu
+z6QuW}xHPtHGjnI)CU#JW^L5YkDUVO~&u;(z;i>e4`!_DFeDmp#mw&i^<zSxu2zGP-
+z93zc`;?p}pz5VAyLe#f3U`~Vnm#otsp`=<G03K(2i*W~|-luxI{fE(m3?b@|j1IK+
+zq|3fcF#mr*xCdaTNgUke3DA1y9R42jv>z)Y(0;(W3!dXI>qX-{<?y#SfcSq9uZ2e1
+zUtVwB=e^KjQdiCy);`2j+up*`@G|ff>*VL(Jr;fPar2{J(&x^9ec+i^?x(BSN1)Vd
+z6xX6PwHzf$bv>#tm5ZAlwzO6+t%|J=9Y>808z-t!U5=w<Bd)<(wYJeba-rO)hxq>-
+z6pqiGSyV^E7sBUX!r9;<vVWv`=5N>i8&^=H^Slq6Ij8hSDe#8W?GM<704wzH#{6Rl
+z<WF81Y=^Ot=r#7<UVxzav^TbMzi@OmX}>3kP~-l0hxTsW!QgLi`s#bF@9x%T9lbJQ
+zY!o|4aN}q$C{o`>LtdYI<XeWZJeo*sU1<$TsZTvuP2vN2smpoc2$ARWV(V9%ksmUC
+zwvL6T^NbSoj{g|*8H47D<8ZypeP?;D``}`aztok~1DU;`fBleezjdSEhJND^CwV`|
+zzLf#v@9}KjuJs?oz<%!)cKrQWJ2>781M2@Zr_SAbWZB{G@i?^Z?>M}yPa6444u6aN
+z(@-i+W?!6HJsZ|xybR+_P`TIVvL}weg5`%7zsk?5>4ofxyqe7|fSM_soXQr|$?54+
+z`P1rjcB+t9-4$r--d6bFQntST=8k}{vALcU-#|=agB9u3>PZA)d9zkrua<NNeG!XE
+z5yIu#Mp!8}Duz#D!(52sMzvn+QdAkjsG^qQ;(DYiW%Lvc!X#=YylDRs=v;8!*t%Ub
+zW7@jT_2i&^6*-6<_x?sz&YeZ_l^oQUcsd8qVw2xfzBf`W<WK~G>W$*LZfyK0az`B=
+zOP9o-=tekTbo-S2gfC;0-yF_wz7ueqd5$=Y$YX0p;sews@%Q~V_LKN6qx+07iF&_y
+za+`8&63=yF?=kuAAb%2B2kO6y`P<Y%;dr^{1oge*=4U_cf428~1@Fm>9?hbjKdryS
+z$@`Pr5;mES<ZqGz$6>VJiH5fKy;kWM_r}wHqu6`)kkRea&Hpa463^!_;Pn&K^S8m+
+zp?wpfSa~nu80C99^(GSZO}Up1l7AF+`VDc{mR$&j&a-ljQ9$NP`UtiG@xy#y!}}7*
+HXyg9^8}}&g
+
+literal 0
+HcmV?d00001
+
+diff --git a/linux-user/aarch64/vdso-le.so b/linux-user/aarch64/vdso-le.so
+new file mode 100755
+index 0000000000000000000000000000000000000000..947d534ec1899740edbd6921da6bc6e70e2ecd09
+GIT binary patch
+literal 3216
+zcmcguL2MgU5FKYzk|v=|N~=Z+qD6{Og<utmRJD|Y9c(v2Zd%etExr7@_Qp0%>~_6L
+z9VDO!E}RJB#LXZsa7BWO3q5c^;)VcKz2t<11S;tPP82h<JI`MKYy}b$WB;B1-^~2^
+z`~S@Be=AqW52R8Aa_9@{jfm1J*c^t2V8>|}KgVe=J;LxHx3r3FKB<#|V;X^n)Fz2-
+z%cM-;q^lZWOhj#+*XG^Ds~rB${uGqOuBG$Zd_T*Cz*Q~uCH;#!pUtzO6%jc6iOo2-
+zUEEGBEQ!`_!5rx^Nnd=)Smd95v^A8^_@B?;{q2QA>mys0rC%Ro5$%x&)1`=ocG5ko
+z6aD^Iry=8;Iu?IIw{$G$Bh;3SV;YGV-B3QNd{X(JooK$aERgAej@6vDbv&c;NbCQ9
+zy6kcvjnN%lhwQabmYd)|D~|JcjqwS(-w~ZS$+3$5Eo+{GihpC_aoczwaVXo4J(oVt
+zLv%HS2r(>}=m;)N?7pOQiiV@`7Cn)F;GMkl%e$@jzP@~EJllTi@Po`JTV%{t&#!wc
+zrs4%bZPjZmmx~)cw6xMFU4<+G_Pu5g^#jwaReUd4^Xs%ytFN`5T`xBqF8`mS!u-P0
+zMRU|W=01Od7sIQ^Pev*IefZVAM<t#g=Z097cN$>%JKvfi<dvL*P-@CKDVXS_xjn;8
+z2<Mo3eUS!RPo$>C4uzP+=NPvcQDQRF&JRZp-29I1zrXF6AH(sU{_$LFT%Cwyk#+LZ
+z;ng6&;~EaXMOzkXk;A9cMq<Qd4rl3%9GpcCM+5RUE^_$fk-z=;P&beJ@nK5JKZkY`
+z^0r@pq+9p;@lo2;`0mGh`2bvAe=s3`<V@rg?S0!D;ydSw^hfFA1iwl1?+a(Y-?8_9
+zDx81kdr4hL@jB<M{m(L<l>e_Vo>WIFiraPM4aMzx@xJ0a>P4w^{aUtsrS3Lpx=hn8
+zGTB!bGN<QX;`HOfZ*p@cznD3lGjrKRGN%e>W-|qICZ9i-J8#ZsW(zsfpMl-H?`HVJ
+zQ@N}AZ)ya&&5hNdc!hc3N4$z&y%BiimN)9f)mka+urBjrP$aifUvsO)W;MbCKSI_$
+zzgcV4`v#^=u2(h7esR?^)iP^hL~h`<0^Y;_N)i`xuRvNNF2N-Z;)L%5uqU}Abr|7;
+zxC7_l3JG@?*rRSe%~JWM!awQ*_-14tu2H6fJ-)w38511-QAfZJvn)=q2Y-=;^38#N
+z)EjWrS<DYRq~me6{e!>put!}27rBsaAE89EDuX@lA>g=oKwq~LLwcEeotS^rIq;}{
+z^!&pQ_yx9?I}66Bhu~O0Vg&Dx1uSz%)&%>9-4mgYeZyE{IBt*n3VsBN%5DE|sy*%y
+zs59VLKc=z$$9+Rb__iuu(-)I_<pFN+KPgH~ySd?PLqH#wHQ+yugWR{zZ-TKT`w?~Y
+I_CMJF4X7R_od5s;
+
+literal 0
+HcmV?d00001
+
+diff --git a/linux-user/aarch64/vdso.S b/linux-user/aarch64/vdso.S
+new file mode 100644
+index 0000000000..34d3a9ebd2
+--- /dev/null
++++ b/linux-user/aarch64/vdso.S
+@@ -0,0 +1,71 @@
 +/*
-+ * x86-64 linux replacement vdso.
++ * aarch64 linux replacement vdso.
 + *
 + * Copyright 2023 Linaro, Ltd.
 + *
@@ -167,101 +242,88 @@ index 0000000000..47d16c00ab
 +
 +#include <asm/unistd.h>
 +
++/* ??? These are in include/elf.h, which is not ready for inclusion in asm. */
++#define NT_GNU_PROPERTY_TYPE_0  5
++#define GNU_PROPERTY_AARCH64_FEATURE_1_AND      0xc0000000
++#define GNU_PROPERTY_AARCH64_FEATURE_1_BTI      (1U << 0)
++#define GNU_PROPERTY_AARCH64_FEATURE_1_PAC      (1U << 1)
++
++#define GNU_PROPERTY_AARCH64_FEATURE_1_DEFAULT \
++    (GNU_PROPERTY_AARCH64_FEATURE_1_BTI | GNU_PROPERTY_AARCH64_FEATURE_1_PAC)
++
++	.section .note.gnu.property
++	.align	3
++	.long	2f - 1f
++	.long	6f - 3f
++	.long	NT_GNU_PROPERTY_TYPE_0
++1:	.string	"GNU"
++2:	.align	3
++3:	.long	GNU_PROPERTY_AARCH64_FEATURE_1_AND
++	.long	5f - 4f
++4:	.long	GNU_PROPERTY_AARCH64_FEATURE_1_DEFAULT
++5:	.align	3
++6:
++
++	.text
++
 +.macro endf name
 +	.globl	\name
 +	.type	\name, @function
 +	.size	\name, . - \name
 +.endm
 +
-+.macro weakalias name
-+\name	= __vdso_\name
-+	.weak	\name
-+.endm
-+
 +.macro vdso_syscall name, nr
-+__vdso_\name:
-+	mov	$\nr, %eax
-+	syscall
++\name:
++	bti	c
++	mov	x8, #\nr
++	svc	#0
 +	ret
-+endf	__vdso_\name
-+weakalias \name
++endf	\name
 +.endm
 +
 +	.cfi_startproc
 +
-+vdso_syscall clock_gettime, __NR_clock_gettime
-+vdso_syscall clock_getres, __NR_clock_getres
-+vdso_syscall gettimeofday, __NR_gettimeofday
-+vdso_syscall time, __NR_time
-+
-+__vdso_getcpu:
-+	/*
-+         * There is no syscall number for this allocated on x64.
-+	 * We can handle this several ways:
-+         *
-+	 * (1) Invent a syscall number for use within qemu.
-+         *     It should be easy enough to pick a number that
-+         *     is well out of the way of the kernel numbers.
-+         *
-+         * (2) Force the emulated cpu to support the rdtscp insn,
-+	 *     and initialize the TSC_AUX value the appropriate value.
-+         *
-+	 * (3) Pretend that we're always running on cpu 0.
-+         *
-+	 * This last is the one that's implemented here, with the
-+	 * tiny bit of extra code to support rdtscp in place.
-+         */
-+	xor	%ecx, %ecx		/* rdtscp w/ tsc_aux = 0 */
-+
-+	/* if (cpu != NULL) *cpu = (ecx & 0xfff); */
-+	test	%rdi, %rdi
-+	jz	1f
-+	mov	%ecx, %eax
-+	and	$0xfff, %eax
-+	mov	%eax, (%rdi)
-+
-+	/* if (node != NULL) *node = (ecx >> 12); */
-+1:	test	%rsi, %rsi
-+	jz	2f
-+	shr	$12, %ecx
-+	mov	%ecx, (%rsi)
-+
-+2:	xor	%eax, %eax
-+	ret
-+endf	__vdso_getcpu
-+
-+weakalias getcpu
++vdso_syscall __kernel_gettimeofday, __NR_gettimeofday
++vdso_syscall __kernel_clock_gettime, __NR_clock_gettime
++vdso_syscall __kernel_clock_getres, __NR_clock_getres
 +
 +	.cfi_endproc
 +
-+/* TODO: Add elf note for LINUX_VERSION_CODE */
-diff --git a/linux-user/x86_64/vdso.ld b/linux-user/x86_64/vdso.ld
-new file mode 100644
-index 0000000000..ca6001cc3c
---- /dev/null
-+++ b/linux-user/x86_64/vdso.ld
-@@ -0,0 +1,73 @@
++
 +/*
-+ * Linker script for linux x86-64 replacement vdso.
++ * TODO: The kernel makes a big deal of turning off the .cfi directives,
++ * because they cause libgcc to crash, but that's because they're wrong.
 + *
-+ * Copyright 2023 Linaro, Ltd.
++ * For now, elide the unwind info for __kernel_rt_sigreturn and rely on
++ * the libgcc fallback routine as we have always done.  This requires
++ * that the code sequence used be exact.
++ */
++__kernel_rt_sigreturn:
++	/* No BTI C insn here -- we arrive via RET. */
++	mov	x8, #__NR_rt_sigreturn
++	svc	#0
++endf	__kernel_rt_sigreturn
+diff --git a/linux-user/aarch64/vdso.ld b/linux-user/aarch64/vdso.ld
+new file mode 100644
+index 0000000000..4c12f33352
+--- /dev/null
++++ b/linux-user/aarch64/vdso.ld
+@@ -0,0 +1,72 @@
++/*
++ * Linker script for linux aarch64 replacement vdso.
++ *
++ * Copyright 2021 Linaro, Ltd.
 + *
 + * SPDX-License-Identifier: GPL-2.0-or-later
 + */
 +
 +VERSION {
-+        LINUX_2.6 {
++        LINUX_2.6.39 {
 +        global:
-+                clock_gettime;
-+                __vdso_clock_gettime;
-+                gettimeofday;
-+                __vdso_gettimeofday;
-+                getcpu;
-+                __vdso_getcpu;
-+                time;
-+                __vdso_time;
-+                clock_getres;
-+                __vdso_clock_getres;
++                __kernel_rt_sigreturn;
++                __kernel_gettimeofday;
++                __kernel_clock_gettime;
++                __kernel_clock_getres;
 +
 +        local: *;
 +        };
@@ -270,13 +332,18 @@ index 0000000000..ca6001cc3c
 +
 +PHDRS {
 +        phdr            PT_PHDR         FLAGS(4) PHDRS;
-+        load            PT_LOAD         FLAGS(7) FILEHDR PHDRS; /* FLAGS=RWX */
++        load            PT_LOAD         FLAGS(7) FILEHDR PHDRS;
 +        dynamic         PT_DYNAMIC      FLAGS(4);
 +        eh_frame_hdr    PT_GNU_EH_FRAME;
 +        note            PT_NOTE         FLAGS(4);
 +}
 +
 +SECTIONS {
++        /*
++         * We can't prelink to any address without knowing something about
++         * the virtual memory space of the host, since that leaks over into
++         * the available memory space of the guest.
++         */
 +        . = SIZEOF_HEADERS;
 +
 +        /*
@@ -287,12 +354,12 @@ index 0000000000..ca6001cc3c
 +        .note           : { *(.note*) }         :load :note
 +        .dynamic        : { *(.dynamic) }       :load :dynamic
 +        .dynsym         : { *(.dynsym) }        :load
++        /*
++         * There ought not be any real read-write data.
++         * But since we manipulated the segment layout,
++         * we have to put these sections somewhere.
++         */
 +        .data           : {
-+                /*
-+                 * There ought not be any real read-write data.
-+                 * But since we manipulated the segment layout,
-+                 * we have to put these sections somewhere.
-+                 */
 +                *(.data*)
 +                *(.sdata*)
 +                *(.got.plt) *(.got)
@@ -312,37 +379,20 @@ index 0000000000..ca6001cc3c
 +        .eh_frame_hdr   : { *(.eh_frame_hdr) }  :load :eh_frame_hdr
 +        .eh_frame       : { *(.eh_frame) }      :load
 +
-+        .text           : { *(.text*) }         :load   =0x90909090
++        .text           : { *(.text*) }         :load   =0xd503201f
 +}
-diff --git a/linux-user/x86_64/vdso.so b/linux-user/x86_64/vdso.so
-new file mode 100755
-index 0000000000000000000000000000000000000000..c873d6ea580b393825506d2ffbddcf9827d89e14
-GIT binary patch
-literal 2968
-zcmcgtO=w(I6uvKUOl$t7l}J=nY6?Lgol-PVEvcEL6HP)om@-1c>vZO|6VjQnGcRQ#
-zQlk(xE{v3}x(Eh$E+iYFJ0pdXxDr=E=&lLvMs(4vwBz~aoiCl-j=CuHBzL}hzkANP
-z=iPhmJs%H_3^h28p){If=E2CAex2B8q6WA=6OrF`(`KF&`Uz?MI&EW@IwS5;J<v5S
-zm3;u8M8ZDNbcEvu0jxKter?<dUgx>q_-2rSodh0=h5M8yR&|8~q9xUzjR(|@2weye
-zz8a;S7@IIXlUIKD#o1b1+rN5odUE>L=z;rh$dv40C`m=ye*;62d-p2^;2j+^>^@b*
-z{zK-lF(OZeV2X;(id~9-RYHGjYX7&6)!h7{<L?-V+C6T-xxH+fO-w(S=h!R!)55=J
-z@z1ONh{Zpn`Zga`ecR75)jw_d8B~3nM_M2rJI<`|o#xMqz%F@5M$pfwf5Z(rDGlFi
-z^EmbvX*g$?a37>=_DaLK@yv17h==zIwme4kF^2|U3rG4QL%vz2K73uCxOLI|+`aN!
-z$F-%z;-Tzk@6K<ve)YnqSIbKuJ^SrI{>$E*Jv}RD{ao_%it)TlnNq<^Unr!fz4Lw$
-zOy&HC$f92&rz(YWnba(~S{s>9e=uV%Oyy_Fufeq||4}nCJT{T^4!f^Qd<}K~WJ1Kz
-zzvUl)Z^gZPP8#nNzOg~(w`aa@<o(9^K%DNzqu`(ulXgfNgnG`03FDMIobHyUJzt9w
-zo+0?gnY<+pa{adav`21S-&8!KxE^A3Jw9Iv_AacwQfZf+Z;H=v2a%udwk)(oS8s^Q
-ze+lApB>FjYY9u^!IW^5APGzK1@7^HK>gD4>;p^R}arI;0o1?04=jpKWw!W)=?0Yt=
-zynUbER^IkMss3a7y}So_=McZ`$9S>#$BvH<4@j=b`|AzHy`jYM(LpaBOVlKlW^ujb
-z)P%J2ye6gV=6*G&ja!<{1*x-wK{3QEd-+1(8#gnXPvxf4)sE;I_k4cF&8AA(kO_(*
-zbIC83rV9C8121D-KkJ<<rgFZQ&4?yP#tr;(AUpEt(k(9Vj<7ELTixSId}la*Nji9E
-z@a{mEzeGvus<3|XJhjXlyz_X^xc;1Wh%eUIqf2|%IlLE07230&5^>idjF0yGj>9sy
-zEwzyLtiMFu4~T6avc|lrbF^o@CbB+LUq6S#>RVK)S)cWo$nWI(T!)Byg4)h8>pihg
-zSHk{7hu^QXIU^m!MEjk0M(-crN9uFmIL=%4U1~>sm5Pe?`en6ee(>HC`S#L{y??u6
-vr;^|o8ppUAv<ink<oeuK)I;vAba!M!1G>D!gdKbRPND1BpVH#|fA;?X5$6$T
-
-literal 0
-HcmV?d00001
-
+diff --git a/linux-user/meson.build b/linux-user/meson.build
+index e4cb70ed2d..dd24389052 100644
+--- a/linux-user/meson.build
++++ b/linux-user/meson.build
+@@ -35,6 +35,7 @@ gen_vdso_exe = executable('gen-vdso', 'gen-vdso.c',
+ gen_vdso = generator(gen_vdso_exe, output: '@BASENAME@.c.inc',
+                      arguments: ['-o', '@OUTPUT@', '@EXTRA_ARGS@', '@INPUT@'])
+ 
++subdir('aarch64')
+ subdir('alpha')
+ subdir('arm')
+ subdir('hppa')
 -- 
 2.34.1
 
