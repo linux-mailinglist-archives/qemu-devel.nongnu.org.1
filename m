@@ -2,98 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1EA7B42C6
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 19:33:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E15487B42FA
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 20:20:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmdp2-00081z-Uv; Sat, 30 Sep 2023 13:32:08 -0400
+	id 1qmeYC-0007Y5-0m; Sat, 30 Sep 2023 14:18:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qmdox-000809-Od
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 13:32:03 -0400
-Received: from vps-vb.mhejs.net ([37.28.154.113])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
- id 1qmdov-0000T2-Kk
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 13:32:03 -0400
-Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
- (envelope-from <mail@maciej.szmigiero.name>)
- id 1qmdog-0008Pz-Nr; Sat, 30 Sep 2023 19:31:46 +0200
-Message-ID: <11c6efbd-b794-4a05-9c51-4928fb545db4@maciej.szmigiero.name>
-Date: Sat, 30 Sep 2023 19:31:40 +0200
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qmeYA-0007Xw-A0
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 14:18:46 -0400
+Received: from mail-oi1-x231.google.com ([2607:f8b0:4864:20::231])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qmeY8-0001rr-Ba
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 14:18:46 -0400
+Received: by mail-oi1-x231.google.com with SMTP id
+ 5614622812f47-3af86819ba9so174062b6e.3
+ for <qemu-devel@nongnu.org>; Sat, 30 Sep 2023 11:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696097923; x=1696702723; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=VAlFURYqoSaKMruKBoV0/ytiIKDMInglRFGzQIfOSJg=;
+ b=C1e7URD6++iH6Rz29YTegGkFcEir/b8NBeYQLlywc7ReSyN3wZ/l+/GcU0cvLA7EFm
+ QJAlAKbY28QrOX6W4kcQ3wgyzlw9hrinn5eFz8nh3n9NZtGfLShX7jq5DgHUW60RGeNw
+ tEAaVjqUmM0AkRMTNspQl5smx9CEqr3TnX6vPPfUkqPcLqJJ37QoLkcSZbkxISEIBelo
+ 9VmbHI6DZE2V66DoJmwcFj81aA0vaJNNO4O2MCUF/qPOGbYfBXEHCrRczQ1mhdz1sVbe
+ G5r/S0Akn7pdvQ4ZFr1LD7bXTt2OQVvQnlaWfFXamnVAeoS+rjqaRQkc14re3KGd0zQZ
+ W6uA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696097923; x=1696702723;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=VAlFURYqoSaKMruKBoV0/ytiIKDMInglRFGzQIfOSJg=;
+ b=XMlPmrfuMrQSpK9ANR5iGTpne0MkYSfhXWQ+/MrQKGcdOdQTukNNwjRKBNfQOup9lj
+ OWzRB5pG4uHj3+/Ge/5EaBdYHbjoqLAsOIqPcn6W8Oxc+g8iNfrwu+zjjJkyi/oPheOC
+ s6xh4zRuWnpJnrB2Vrb5xFptOBk3JYNYn8GOPXxfAd52F7lJ9sVjAZKVcZUAa2Yk4qkm
+ r/9+sIMjfLO0fwePMUCw5gAiv+HPYL8aUd/JZMaeoiPCyDcgYz76/qWlz7G6zfK1nrxO
+ HRaqpD07o5qGzmSHD+TCCxR5ycQh5e0PbkQceHX3dvKbsgPfsQg9KILFijMR5lhGK2By
+ MeIg==
+X-Gm-Message-State: AOJu0Yz9mdvji0TtUTsP4a+E8pEauCOlr+BiIUnaTUCMFNzIvOX4HDRB
+ Z9HIsQVPs8K1ypIMvuAP1B+/FMQVXtoJVsCS+ks=
+X-Google-Smtp-Source: AGHT+IH8ZIfUgI2prMaQRHBvwrcR/4V3Yx7JhveDDAYl5gXktHkIXtpXU2+WNPtL7KvfI//04QCKlg==
+X-Received: by 2002:a05:6808:2392:b0:3ae:16b6:6338 with SMTP id
+ bp18-20020a056808239200b003ae16b66338mr9490473oib.3.1696097922843; 
+ Sat, 30 Sep 2023 11:18:42 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ u25-20020a63a919000000b0057ab7d42a4dsm16138224pge.86.2023.09.30.11.18.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 30 Sep 2023 11:18:42 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: pbonzini@redhat.com,
+	alex.bennee@linaro.org
+Subject: [PATCH] build: Remove --enable-gprof
+Date: Sat, 30 Sep 2023 11:18:41 -0700
+Message-Id: <20230930181841.245024-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 16/18] virtio-mem: Expose device memory dynamically via
- multiple memslots if enabled
-Content-Language: en-US, pl-PL
-To: David Hildenbrand <david@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
- qemu-devel@nongnu.org
-References: <20230926185738.277351-1-david@redhat.com>
- <20230926185738.277351-17-david@redhat.com>
-From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <20230926185738.277351-17-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=37.28.154.113;
- envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::231;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x231.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -110,79 +88,201 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.09.2023 20:57, David Hildenbrand wrote:
-> Having large virtio-mem devices that only expose little memory to a VM
-> is currently a problem: we map the whole sparse memory region into the
-> guest using a single memslot, resulting in one gigantic memslot in KVM.
-> KVM allocates metadata for the whole memslot, which can result in quite
-> some memory waste.
-> 
-> Assuming we have a 1 TiB virtio-mem device and only expose little (e.g.,
-> 1 GiB) memory, we would create a single 1 TiB memslot and KVM has to
-> allocate metadata for that 1 TiB memslot: on x86, this implies allocating
-> a significant amount of memory for metadata:
-> 
-> (1) RMAP: 8 bytes per 4 KiB, 8 bytes per 2 MiB, 8 bytes per 1 GiB
->      -> For 1 TiB: 2147483648 + 4194304 + 8192 = ~ 2 GiB (0.2 %)
-> 
->      With the TDP MMU (cat /sys/module/kvm/parameters/tdp_mmu) this gets
->      allocated lazily when required for nested VMs
-> (2) gfn_track: 2 bytes per 4 KiB
->      -> For 1 TiB: 536870912 = ~512 MiB (0.05 %)
-> (3) lpage_info: 4 bytes per 2 MiB, 4 bytes per 1 GiB
->      -> For 1 TiB: 2097152 + 4096 = ~2 MiB (0.0002 %)
-> (4) 2x dirty bitmaps for tracking: 2x 1 bit per 4 KiB page
->      -> For 1 TiB: 536870912 = 64 MiB (0.006 %)
-> 
-> So we primarily care about (1) and (2). The bad thing is, that the
-> memory consumption *doubles* once SMM is enabled, because we create the
-> memslot once for !SMM and once for SMM.
-> 
-> Having a 1 TiB memslot without the TDP MMU consumes around:
-> * With SMM: 5 GiB
-> * Without SMM: 2.5 GiB
-> Having a 1 TiB memslot with the TDP MMU consumes around:
-> * With SMM: 1 GiB
-> * Without SMM: 512 MiB
-> 
-> ... and that's really something we want to optimize, to be able to just
-> start a VM with small boot memory (e.g., 4 GiB) and a virtio-mem device
-> that can grow very large (e.g., 1 TiB).
-> 
-> Consequently, using multiple memslots and only mapping the memslots we
-> really need can significantly reduce memory waste and speed up
-> memslot-related operations. Let's expose the sparse RAM memory region using
-> multiple memslots, mapping only the memslots we currently need into our
-> device memory region container.
-> 
-> The feature can be enabled using "dynamic-memslots=on" and requires
-> "unplugged-inaccessible=on", which is nowadays the default.
-> 
-> Once enabled, we'll auto-detect the number of memslots to use based on the
-> memslot limit provided by the core. We'll use at most 1 memslot per
-> gigabyte. Note that our global limit of memslots accross all memory devices
-> is currently set to 256: even with multiple large virtio-mem devices,
-> we'd still have a sane limit on the number of memslots used.
-> 
-> The default is to not dynamically map memslot for now
-> ("dynamic-memslots=off"). The optimization must be enabled manually,
-> because some vhost setups (e.g., hotplug of vhost-user devices) might be
-> problematic until we support more memslots especially in vhost-user backends.
-> 
-> Note that "dynamic-memslots=on" is just a hint that multiple memslots
-> *may* be used for internal optimizations, not that multiple memslots
-> *must* be used. The actual number of memslots that are used is an
-> internal detail: for example, once memslot metadata is no longer an
-> issue, we could simply stop optimizing for that. Migration source and
-> destination can differ on the setting of "dynamic-memslots".
-> 
-> Signed-off-by: David Hildenbrand <david@redhat.com>
-> ---
+This build option has been deprecated since 8.0.
+Remove all CONFIG_GPROF code that depends on that,
+including one errant check using TARGET_GPROF.
 
-The changes seem reasonable, so:
-Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+---
+ docs/about/deprecated.rst      | 14 --------------
+ meson.build                    | 12 ------------
+ bsd-user/bsd-proc.h            |  3 ---
+ bsd-user/signal.c              |  5 -----
+ linux-user/exit.c              |  6 ------
+ linux-user/signal.c            |  5 -----
+ meson_options.txt              |  3 ---
+ scripts/meson-buildoptions.sh  |  3 ---
+ tests/qemu-iotests/meson.build |  2 +-
+ 9 files changed, 1 insertion(+), 52 deletions(-)
 
-Thanks,
-Maciej
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 8f3fef97bd..54be9e21a4 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -20,20 +20,6 @@ they were first deprecated in the 2.10.0 release.
+ What follows is a list of all features currently marked as
+ deprecated.
+ 
+-Build options
+--------------
+-
+-``gprof`` builds (since 8.0)
+-''''''''''''''''''''''''''''
+-
+-The ``--enable-gprof`` configure setting relies on compiler
+-instrumentation to gather its data which can distort the generated
+-profile. As other non-instrumenting tools are available that give a
+-more holistic view of the system with non-instrumented binaries we are
+-deprecating the build option and no longer defend it in CI. The
+-``--enable-gcov`` build option remains for analysis test case
+-coverage.
+-
+ System emulator command line arguments
+ --------------------------------------
+ 
+diff --git a/meson.build b/meson.build
+index 5139db2ff7..726d690e27 100644
+--- a/meson.build
++++ b/meson.build
+@@ -254,11 +254,6 @@ if host_arch == 'i386' and not cc.links('''
+   qemu_common_flags = ['-march=i486'] + qemu_common_flags
+ endif
+ 
+-if get_option('gprof')
+-  qemu_common_flags += ['-p']
+-  qemu_ldflags += ['-p']
+-endif
+-
+ if get_option('prefer_static')
+   qemu_ldflags += get_option('b_pie') ? '-static-pie' : '-static'
+ endif
+@@ -2214,7 +2209,6 @@ config_host_data.set('CONFIG_DEBUG_GRAPH_LOCK', get_option('debug_graph_lock'))
+ config_host_data.set('CONFIG_DEBUG_MUTEX', get_option('debug_mutex'))
+ config_host_data.set('CONFIG_DEBUG_STACK_USAGE', get_option('debug_stack_usage'))
+ config_host_data.set('CONFIG_DEBUG_TCG', get_option('debug_tcg'))
+-config_host_data.set('CONFIG_GPROF', get_option('gprof'))
+ config_host_data.set('CONFIG_LIVE_BLOCK_MIGRATION', get_option('live_block_migration').allowed())
+ config_host_data.set('CONFIG_QOM_CAST_DEBUG', get_option('qom_cast_debug'))
+ config_host_data.set('CONFIG_REPLICATION', get_option('replication').allowed())
+@@ -4122,12 +4116,6 @@ summary_info += {'memory allocator':  get_option('malloc')}
+ summary_info += {'avx2 optimization': config_host_data.get('CONFIG_AVX2_OPT')}
+ summary_info += {'avx512bw optimization': config_host_data.get('CONFIG_AVX512BW_OPT')}
+ summary_info += {'avx512f optimization': config_host_data.get('CONFIG_AVX512F_OPT')}
+-if get_option('gprof')
+-  gprof_info = 'YES (deprecated)'
+-else
+-  gprof_info = get_option('gprof')
+-endif
+-summary_info += {'gprof':             gprof_info}
+ summary_info += {'gcov':              get_option('b_coverage')}
+ summary_info += {'thread sanitizer':  get_option('tsan')}
+ summary_info += {'CFI support':       get_option('cfi')}
+diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
+index a1061bffb8..0e1d461c4c 100644
+--- a/bsd-user/bsd-proc.h
++++ b/bsd-user/bsd-proc.h
+@@ -25,9 +25,6 @@
+ /* exit(2) */
+ static inline abi_long do_bsd_exit(void *cpu_env, abi_long arg1)
+ {
+-#ifdef TARGET_GPROF
+-    _mcleanup();
+-#endif
+     gdb_exit(arg1);
+     qemu_plugin_user_exit();
+     _exit(arg1);
+diff --git a/bsd-user/signal.c b/bsd-user/signal.c
+index b6beab659e..0b13455f4a 100644
+--- a/bsd-user/signal.c
++++ b/bsd-user/signal.c
+@@ -848,11 +848,6 @@ void signal_init(void)
+     act.sa_flags = SA_SIGINFO;
+ 
+     for (i = 1; i <= TARGET_NSIG; i++) {
+-#ifdef CONFIG_GPROF
+-        if (i == TARGET_SIGPROF) {
+-            continue;
+-        }
+-#endif
+         host_sig = target_to_host_signal(i);
+         sigaction(host_sig, NULL, &oact);
+         if (oact.sa_sigaction == (void *)SIG_IGN) {
+diff --git a/linux-user/exit.c b/linux-user/exit.c
+index 3017d28a3c..50266314e0 100644
+--- a/linux-user/exit.c
++++ b/linux-user/exit.c
+@@ -22,9 +22,6 @@
+ #include "qemu.h"
+ #include "user-internals.h"
+ #include "qemu/plugin.h"
+-#ifdef CONFIG_GPROF
+-#include <sys/gmon.h>
+-#endif
+ 
+ #ifdef CONFIG_GCOV
+ extern void __gcov_dump(void);
+@@ -32,9 +29,6 @@ extern void __gcov_dump(void);
+ 
+ void preexit_cleanup(CPUArchState *env, int code)
+ {
+-#ifdef CONFIG_GPROF
+-        _mcleanup();
+-#endif
+ #ifdef CONFIG_GCOV
+         __gcov_dump();
+ #endif
+diff --git a/linux-user/signal.c b/linux-user/signal.c
+index 748a98f3e5..920db8978f 100644
+--- a/linux-user/signal.c
++++ b/linux-user/signal.c
+@@ -588,11 +588,6 @@ void signal_init(void)
+     act.sa_flags = SA_SIGINFO;
+     act.sa_sigaction = host_signal_handler;
+     for(i = 1; i <= TARGET_NSIG; i++) {
+-#ifdef CONFIG_GPROF
+-        if (i == TARGET_SIGPROF) {
+-            continue;
+-        }
+-#endif
+         host_sig = target_to_host_signal(i);
+         sigaction(host_sig, NULL, &oact);
+         if (oact.sa_sigaction == (void *)SIG_IGN) {
+diff --git a/meson_options.txt b/meson_options.txt
+index 57e265c871..6a17b90968 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -348,9 +348,6 @@ option('debug_stack_usage', type: 'boolean', value: false,
+        description: 'measure coroutine stack usage')
+ option('qom_cast_debug', type: 'boolean', value: true,
+        description: 'cast debugging support')
+-option('gprof', type: 'boolean', value: false,
+-       description: 'QEMU profiling with gprof',
+-       deprecated: true)
+ option('slirp_smbd', type : 'feature', value : 'auto',
+        description: 'use smbd (at path --smbd=*) in slirp networking')
+ 
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index e4b46d5715..2a74b0275b 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -34,7 +34,6 @@ meson_options_help() {
+   printf "%s\n" '                           (choices: auto/disabled/enabled/internal/system)'
+   printf "%s\n" '  --enable-fuzzing         build fuzzing targets'
+   printf "%s\n" '  --enable-gcov            Enable coverage tracking.'
+-  printf "%s\n" '  --enable-gprof           QEMU profiling with gprof'
+   printf "%s\n" '  --enable-lto             Use link time optimization'
+   printf "%s\n" '  --enable-malloc=CHOICE   choose memory allocator to use [system] (choices:'
+   printf "%s\n" '                           jemalloc/system/tcmalloc)'
+@@ -309,8 +308,6 @@ _meson_option_parse() {
+     --disable-glusterfs) printf "%s" -Dglusterfs=disabled ;;
+     --enable-gnutls) printf "%s" -Dgnutls=enabled ;;
+     --disable-gnutls) printf "%s" -Dgnutls=disabled ;;
+-    --enable-gprof) printf "%s" -Dgprof=true ;;
+-    --disable-gprof) printf "%s" -Dgprof=false ;;
+     --enable-gtk) printf "%s" -Dgtk=enabled ;;
+     --disable-gtk) printf "%s" -Dgtk=disabled ;;
+     --enable-gtk-clipboard) printf "%s" -Dgtk_clipboard=enabled ;;
+diff --git a/tests/qemu-iotests/meson.build b/tests/qemu-iotests/meson.build
+index 44761e1e4d..53847cb98f 100644
+--- a/tests/qemu-iotests/meson.build
++++ b/tests/qemu-iotests/meson.build
+@@ -1,4 +1,4 @@
+-if not have_tools or targetos == 'windows' or get_option('gprof')
++if not have_tools or targetos == 'windows'
+   subdir_done()
+ endif
+ 
+-- 
+2.34.1
 
 
