@@ -2,68 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5AE7B4076
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 15:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D837B4073
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 15:25:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmZxc-0007g1-NW; Sat, 30 Sep 2023 09:24:44 -0400
+	id 1qmZxC-0007bS-Qh; Sat, 30 Sep 2023 09:24:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qmZxZ-0007eq-SS
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 09:24:41 -0400
-Received: from mail-ej1-f50.google.com ([209.85.218.50])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qmZxU-0007fV-7u
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 09:24:41 -0400
-Received: by mail-ej1-f50.google.com with SMTP id
- a640c23a62f3a-9ad8a822508so2075075366b.0
- for <qemu-devel@nongnu.org>; Sat, 30 Sep 2023 06:24:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696080274; x=1696685074;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=FV40by2+k33RQuk8cLxc2eTRv0prRg7xMGQKqblYwNk=;
- b=V8L8vkVDCWiPwoDvBvEoMlYJhwGE3xI5nQRi9MI+RSiWDAcnMeslzQYbcJRnodehU/
- Tl9vKuEKIxifJ2N6dVrBuV05OPeNAyIRlKl9QU+0Z6nd4jnbcGeSE7OvE9Vxv6sx/3OM
- LhOaLfum6aK7MI8r3PRjaXdHUPbdjGprxY1wpqgvlx7wS7M7NGFVkIXHbaw3vNs1lv+5
- 60U6tQS8IyiSuFo/o5hdI68xHcaefUAUG9FV7WrWJHIJ/v/f2GNN1FpVncEBBuM0d6Bm
- OcHenY1ouUb8oSXazHE8Vo9hgZbPKoCEfd52SytYpYBf9Zwv2ftW2O/av20Lzdem3vGL
- WsPA==
-X-Gm-Message-State: AOJu0Yzbr1yKF+5TdJpw7H4VeWU+tK4ubJZ+sAR63vx88OrXMwQRZ6tR
- dRGCFvuGVWpmo638yLVTCLT1NEsHo8/5/g==
-X-Google-Smtp-Source: AGHT+IGqmRwwyF88zXgFg6XRiyVVZs+AMKTCuoQwrIe4AiccMCabCjDynDaPDvp//GEMmkfnlsk1Ag==
-X-Received: by 2002:a17:906:104e:b0:9af:9c4f:b579 with SMTP id
- j14-20020a170906104e00b009af9c4fb579mr6599309ejj.18.1696080273964; 
- Sat, 30 Sep 2023 06:24:33 -0700 (PDT)
-Received: from fedora.. (ip-109-43-177-123.web.vodafone.de. [109.43.177.123])
- by smtp.gmail.com with ESMTPSA id
- z15-20020a170906944f00b00993928e4d1bsm13919471ejx.24.2023.09.30.06.24.33
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Sep 2023 06:24:33 -0700 (PDT)
-From: Thomas Huth <huth@tuxfamily.org>
-To: qemu-devel@nongnu.org,
-	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Cc: Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH 5/5] m68k: Add NeXTcube network controller
-Date: Sat, 30 Sep 2023 15:23:51 +0200
-Message-ID: <20230930132351.30282-6-huth@tuxfamily.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230930132351.30282-1-huth@tuxfamily.org>
-References: <20230930132351.30282-1-huth@tuxfamily.org>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qmZxA-0007aW-4P; Sat, 30 Sep 2023 09:24:16 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qmZx7-0007b1-3z; Sat, 30 Sep 2023 09:24:15 -0400
+Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:7d8a:0:640:8fc3:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 763A7635D5;
+ Sat, 30 Sep 2023 16:24:04 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b5a0::1:9] (unknown
+ [2a02:6b8:b081:b5a0::1:9])
+ by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 2OTuxF1Oq4Y0-PUKe5ueZ; Sat, 30 Sep 2023 16:24:03 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696080243;
+ bh=h5cjJQBImGgEOMGtyDZNTpxntdCtsMNRighQmjrE/l8=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VvhBYTW4ttNI1ri0+XjLFmpCBZ2gW1FUysksQd3t/N5jrdj7UtBvOwXI5AxDKsd2W
+ b72rtYY0uU0SfnDGfPnJT/QPx7gI/+KMFFnKvLKHtAliof4xicnZJeKKhPWaVKD4wB
+ 0g/9hAVidmq5fexAycPD0Kbw5cpMEL9x1o8fHEZM=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <6b380866-b707-89d5-7478-476582cdd255@yandex-team.ru>
+Date: Sat, 30 Sep 2023 16:24:02 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.218.50; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f50.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9,
- FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v7 12/12] nbd/server: Add FLAG_PAYLOAD support to
+ CMD_BLOCK_STATUS
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+References: <20230925192229.3186470-14-eblake@redhat.com>
+ <20230925192229.3186470-26-eblake@redhat.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230925192229.3186470-26-eblake@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.587,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -79,666 +76,142 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The device is based on Bryce's code from GSoC 2011 that can be found here:
+On 25.09.23 22:22, Eric Blake wrote:
+> Allow a client to request a subset of negotiated meta contexts.  For
+> example, a client may ask to use a single connection to learn about
+> both block status and dirty bitmaps, but where the dirty bitmap
+> queries only need to be performed on a subset of the disk; forcing the
+> server to compute that information on block status queries in the rest
+> of the disk is wasted effort (both at the server, and on the amount of
+> traffic sent over the wire to be parsed and ignored by the client).
+> 
+> Qemu as an NBD client never requests to use more than one meta
+> context, so it has no need to use block status payloads.  Testing this
+> instead requires support from libnbd, which CAN access multiple meta
+> contexts in parallel from a single NBD connection; an interop test
+> submitted to the libnbd project at the same time as this patch
+> demonstrates the feature working, as well as testing some corner cases
+> (for example, when the payload length is longer than the export
+> length), although other corner cases (like passing the same id
+> duplicated) requires a protocol fuzzer because libnbd is not wired up
+> to break the protocol that badly.
+> 
+> This also includes tweaks to 'qemu-nbd --list' to show when a server
+> is advertising the capability, and to the testsuite to reflect the
+> addition to that output.
+> 
+> Of note: qemu will always advertise the new feature bit during
+> NBD_OPT_INFO if extended headers have alreay been negotiated
+> (regardless of whether any NBD_OPT_SET_META_CONTEXT negotiation has
+> occurred); but for NBD_OPT_GO, qemu only advertises the feature if
+> block status is also enabled (that is, if the client does not
+> negotiate any contexts, then NBD_CMD_BLOCK_STATUS cannot be used, so
+> the feature is not advertised).
+> 
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
+> 
 
- https://github.com/blanham/qemu-NeXT/blob/next-cube/hw/next-net.c
+[..]
 
-The network boot unfortunately does not work yet (the firmware
-successfully can send out packets, but still have problems receiving
-the answer of the BOOTP server), but the code is also required to
-avoid that the firmware hangs or crashes during its selftest, so it
-makes sense to include this in the current shape already.
+> 
+> +/*
+> + * nbd_co_block_status_payload_read
+> + * Called when a client wants a subset of negotiated contexts via a
+> + * BLOCK_STATUS payload.  Check the payload for valid length and
+> + * contents.  On success, return 0 with request updated to effective
+> + * length.  If request was invalid but all payload consumed, return 0
+> + * with request->len and request->contexts->count set to 0 (which will
+> + * trigger an appropriate NBD_EINVAL response later on).  Return
+> + * negative errno if the payload was not fully consumed.
+> + */
+> +static int
+> +nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
+> +                                 Error **errp)
 
-Signed-off-by: Thomas Huth <huth@tuxfamily.org>
----
- hw/m68k/next-cube.c         |  32 ++-
- hw/net/meson.build          |   1 +
- hw/net/next-net.c           | 538 ++++++++++++++++++++++++++++++++++++
- include/hw/m68k/next-cube.h |  10 +
- 4 files changed, 579 insertions(+), 2 deletions(-)
- create mode 100644 hw/net/next-net.c
+[..]
 
-diff --git a/hw/m68k/next-cube.c b/hw/m68k/next-cube.c
-index d9a0dca07f..bd12007a9f 100644
---- a/hw/m68k/next-cube.c
-+++ b/hw/m68k/next-cube.c
-@@ -28,6 +28,7 @@
- #include "ui/console.h"
- #include "target/m68k/cpu.h"
- #include "migration/vmstate.h"
-+#include "net/net.h"
- 
- /* #define DEBUG_NEXT */
- #ifdef DEBUG_NEXT
-@@ -908,6 +909,32 @@ static void next_escc_init(DeviceState *pcdev)
-     sysbus_mmio_map(s, 0, 0x2118000);
- }
- 
-+static void nextnet_init(DeviceState *pcdev)
-+{
-+    DeviceState *dev;
-+    SysBusDevice *sbd;
-+    NICInfo *ni = &nd_table[0];
-+    int i;
-+
-+    dev = qdev_new(TYPE_NEXT_NET);
-+    if (ni->used) {
-+        qemu_check_nic_model(ni, TYPE_NEXT_NET);
-+        qdev_set_nic_properties(dev, ni);
-+    }
-+    sysbus_realize_and_unref(SYS_BUS_DEVICE(dev), &error_fatal);
-+
-+    sbd = SYS_BUS_DEVICE(dev);
-+    sysbus_mmio_map(sbd, 0, 0x02000110);
-+    sysbus_mmio_map(sbd, 1, 0x02004100);
-+    sysbus_mmio_map(sbd, 2, 0x02004310);
-+    sysbus_mmio_map(sbd, 3, 0x02106000);
-+
-+    /* Set up TX/RX and DMA irqs */
-+    for (i = 0; i < NEXTNET_NUM_IRQS; i++) {
-+        sysbus_connect_irq(sbd, i, qdev_get_gpio_in(pcdev, NEXTNET_TX_I_DMA +i));
-+    }
-+}
-+
- static void next_pc_reset(DeviceState *dev)
- {
-     NeXTPC *s = NEXT_PC(dev);
-@@ -1081,14 +1108,15 @@ static void next_cube_init(MachineState *machine)
-     /* Serial */
-     next_escc_init(pcdev);
- 
--    /* TODO: */
--    /* Network */
-     /* SCSI */
-     next_scsi_init(pcdev, cpu);
- 
-     /* DMA */
-     memory_region_init_io(dmamem, NULL, &dma_ops, machine, "next.dma", 0x5000);
-     memory_region_add_subregion(sysmem, 0x02000000, dmamem);
-+
-+    /* Network */
-+    nextnet_init(pcdev);
- }
- 
- static void next_machine_class_init(ObjectClass *oc, void *data)
-diff --git a/hw/net/meson.build b/hw/net/meson.build
-index 2632634df3..8812d62f34 100644
---- a/hw/net/meson.build
-+++ b/hw/net/meson.build
-@@ -42,6 +42,7 @@ system_ss.add(when: 'CONFIG_NPCM7XX', if_true: files('npcm7xx_emc.c'))
- 
- system_ss.add(when: 'CONFIG_ETRAXFS', if_true: files('etraxfs_eth.c'))
- system_ss.add(when: 'CONFIG_COLDFIRE', if_true: files('mcf_fec.c'))
-+system_ss.add(when: 'CONFIG_NEXTCUBE', if_true: files('next-net.c'))
- specific_ss.add(when: 'CONFIG_PSERIES', if_true: files('spapr_llan.c'))
- system_ss.add(when: 'CONFIG_XILINX_ETHLITE', if_true: files('xilinx_ethlite.c'))
- 
-diff --git a/hw/net/next-net.c b/hw/net/next-net.c
-new file mode 100644
-index 0000000000..67a7bf580b
---- /dev/null
-+++ b/hw/net/next-net.c
-@@ -0,0 +1,538 @@
-+/*
-+ * QEMU NeXT Network (MB8795) emulation
-+ *
-+ * Copyright (c) 2011 Bryce Lanham
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a copy
-+ * of this software and associated documentation files (the "Software"), to deal
-+ * in the Software without restriction, including without limitation the rights
-+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-+ * copies of the Software, and to permit persons to whom the Software is
-+ * furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-+ * THE SOFTWARE.
-+ */
-+#include "qemu/osdep.h"
-+#include "exec/address-spaces.h"
-+#include "sysemu/sysemu.h"
-+#include "hw/irq.h"
-+#include "hw/m68k/next-cube.h"
-+#include "hw/sysbus.h"
-+#include "hw/qdev-properties.h"
-+#include "net/net.h"
-+
-+/* debug NeXT ethernet */
-+// #define DEBUG_NET
-+
-+#ifdef DEBUG_NET
-+#define DPRINTF(fmt, ...) \
-+    do { printf("NET: " fmt , ## __VA_ARGS__); } while (0)
-+#else
-+#define DPRINTF(fmt, ...) do { } while (0)
-+#endif
-+
-+/* names could be better */
-+typedef struct NextDMA {
-+    uint32_t csr;
-+    uint32_t savedbase;
-+    uint32_t savedlimit;
-+
-+    uint32_t baser;
-+    uint32_t base;
-+    uint32_t limit;
-+    uint32_t chainbase;
-+    uint32_t chainlimit;
-+    uint32_t basew;
-+} NextDMA;
-+
-+typedef struct NextNetState {
-+    SysBusDevice parent_obj;
-+
-+    MemoryRegion mr[4];
-+    qemu_irq irq[NEXTNET_NUM_IRQS];
-+    uint8_t mac[6];
-+
-+    NICState *nic;
-+    NICConf conf;
-+
-+    NextDMA tx_dma;
-+    uint8_t tx_stat;
-+    uint8_t tx_mask;
-+    uint8_t tx_mode;
-+
-+    NextDMA rx_dma;
-+    uint8_t rx_stat;
-+    uint8_t rx_mask;
-+    uint8_t rx_mode;
-+
-+    uint8_t rst_mode;
-+} NextNetState;
-+
-+#define NEXT_NET(obj) OBJECT_CHECK(NextNetState, (obj), TYPE_NEXT_NET)
-+
-+static ssize_t nextnet_rx(NetClientState *nc, const uint8_t *buf, size_t size);
-+
-+
-+static uint64_t nextnet_mmio_rd_dma(void *opaque, hwaddr addr, unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+
-+    g_assert(size == 4);
-+
-+    addr += 0x110;
-+    switch (addr) {
-+    case 0x110:
-+        DPRINTF("TXCSR Read\n");
-+        return s->tx_dma.csr;
-+    case 0x150:
-+        DPRINTF("RXCSR Read %x\n", s->rx_dma.csr);
-+        return s->rx_dma.csr;
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static void nextnet_mmio_wr_dma(void *opaque, hwaddr addr, uint64_t value,
-+                                unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+
-+    g_assert(size == 4);
-+
-+    addr += 0x110;
-+    switch (addr) {
-+    case 0x110:
-+        if (value & DMA_SETENABLE) {
-+            size_t len = (0xFFFFFFF & s->tx_dma.limit) - s->tx_dma.base;
-+            uint8_t buf[len]; /* needs to be in dma struct? */
-+
-+            DPRINTF("TXDMA ENABLE: %x len: %zu\n", s->tx_dma.base, len);
-+            cpu_physical_memory_read(s->tx_dma.base, buf, len);
-+
-+            qemu_send_packet(qemu_get_queue(s->nic), buf, len);
-+            s->tx_dma.csr |= DMA_COMPLETE | DMA_SUPDATE;
-+            s->tx_stat = 0x80;
-+
-+            qemu_set_irq(s->irq[NEXTNET_TX_I_DMA], true);
-+        }
-+        if (value & DMA_SETSUPDATE) {
-+            s->tx_dma.csr |= DMA_SUPDATE;
-+        }
-+        if (value & DMA_CLRCOMPLETE) {
-+            s->tx_dma.csr &= ~DMA_COMPLETE;
-+            qemu_set_irq(s->irq[NEXTNET_TX_I_DMA], false); /* TODO: OK here? */
-+        }
-+        if (value & DMA_RESET) {
-+            s->tx_dma.csr &= ~(DMA_COMPLETE | DMA_SUPDATE | DMA_ENABLE);
-+        }
-+        break;
-+
-+    case 0x150:
-+        if (value & DMA_DEV2M) {
-+            DPRINTF("RX Dev to Memory\n");
-+        }
-+
-+        if (value & DMA_SETENABLE) {
-+            s->rx_dma.csr |= DMA_ENABLE;
-+        }
-+        if (value & DMA_SETSUPDATE) {
-+            s->rx_dma.csr |= DMA_SUPDATE;
-+        }
-+
-+        if (value & DMA_CLRCOMPLETE) {
-+            s->rx_dma.csr &= ~DMA_COMPLETE;
-+            qemu_set_irq(s->irq[NEXTNET_RX_I_DMA], false); /* TODO: OK here? */
-+        }
-+        if (value & DMA_RESET) {
-+            s->rx_dma.csr &= ~(DMA_COMPLETE | DMA_SUPDATE | DMA_ENABLE);
-+        }
-+
-+        DPRINTF("RXCSR \tWrite: %"HWADDR_PRIx"\n", value);
-+        break;
-+
-+    default:
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static const MemoryRegionOps nextnet_mmio_ops_dma = {
-+    .read = nextnet_mmio_rd_dma,
-+    .write = nextnet_mmio_wr_dma,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 4,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static uint64_t nextnet_mmio_rd_chan1(void *opaque, hwaddr addr, unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+
-+    g_assert(size == 4);
-+
-+    addr += 0x4100;
-+    switch (addr) {
-+    case 0x4100:
-+        DPRINTF("SAVEDBASE Read\n");
-+        return s->tx_dma.savedbase;
-+    case 0x4104:
-+        DPRINTF("SAVELIMIT Read\n");
-+        return s->tx_dma.savedlimit;
-+    case 0x4114:
-+        DPRINTF("TXLIMIT Read\n");
-+        return s->tx_dma.limit;
-+    case 0x4140:
-+        return s->rx_dma.savedbase;
-+    case 0x4144:
-+        // DPRINTF("SAVELIMIT %x @ %x\n",s->rx_dma.savedlimit, s->pc);
-+        return s->rx_dma.savedlimit;
-+    default:
-+        DPRINTF("NET Read l @ %x\n", (unsigned int)addr);
-+        return 0;
-+    }
-+}
-+
-+static void nextnet_mmio_wr_chan1(void *opaque, hwaddr addr, uint64_t val,
-+                                  unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+    uint32_t value = val;
-+
-+    g_assert(size == 4);
-+
-+    addr += 0x4100;
-+    switch (addr) {
-+    case 0x4100:
-+        DPRINTF("Write l @ %x with %x\n", (unsigned int)addr, value);
-+        s->tx_dma.savedbase = value;
-+        break;
-+    case 0x4104:
-+        DPRINTF("Write l @ %x with %x\n", (unsigned int)addr, value);
-+        s->tx_dma.savedlimit = value;
-+        break;
-+    case 0x4110:
-+        DPRINTF("Write l @ %x with %x\n", (unsigned int)addr, value);
-+        s->tx_dma.base = value;
-+        break;
-+    case 0x4114:
-+        DPRINTF("Write l @ %x with %x\n", (unsigned int)addr, value);
-+        s->tx_dma.limit = value;
-+        break;
-+    case 0x4150:
-+        // DPRINTF("Write l @ %x with %x\n",addr,value);
-+        s->rx_dma.base = value;
-+        // s->rx_dma.savedbase = value;
-+        break;
-+    case 0x4154:
-+        s->rx_dma.limit = value;
-+        // DPRINTF("Write l @ %x with %x\n",addr,value);
-+        break;
-+    case 0x4158:
-+        s->rx_dma.chainbase = value;
-+        // DPRINTF("Write l @ %x with %x\n",addr,value);
-+        break;
-+    case 0x415c:
-+        s->rx_dma.chainlimit = value;
-+        // DPRINTF("Write l @ %x with %x\n",addr,value);
-+        //DPRINTF("Pointer write %x w %x\n",addr,value);
-+        break;
-+    default:
-+        DPRINTF("Write l @ %x with %x\n", (unsigned int)addr, value);
-+    }
-+}
-+
-+static const MemoryRegionOps nextnet_mmio_ops_chan1 = {
-+    .read = nextnet_mmio_rd_chan1,
-+    .write = nextnet_mmio_wr_chan1,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 4,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static uint64_t nextnet_mmio_rd_chan2(void *opaque, hwaddr addr, unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+
-+    g_assert(size == 4);
-+
-+    addr += 0x4310;
-+    switch (addr) {
-+    case 0x4310:
-+        DPRINTF("TXBASE Read\n");
-+        /* FUTURE :return nextdma_read(device, addr); */
-+        return s->tx_dma.basew;
-+    default:
-+        DPRINTF("NET Read l @ %x\n", (unsigned int)addr);
-+        return 0;
-+    }
-+}
-+
-+static void nextnet_mmio_wr_chan2(void *opaque, hwaddr addr, uint64_t val,
-+                                  unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+
-+    g_assert(size == 4);
-+
-+    addr += 0x4310;
-+    switch (addr) {
-+    case 0x4310:
-+        DPRINTF("Write l @ %x with %"HWADDR_PRIx"\n", (unsigned int)addr, val);
-+        s->tx_dma.base = val;
-+        /* FUTURE :nextdma_write(device, addr, value); */
-+        break;
-+    default:
-+        DPRINTF("Write l @ %x with %"HWADDR_PRIx"\n", (unsigned int)addr, val);
-+    }
-+}
-+
-+static const MemoryRegionOps nextnet_mmio_ops_chan2 = {
-+    .read = nextnet_mmio_rd_chan2,
-+    .write = nextnet_mmio_wr_chan2,
-+    .valid.min_access_size = 4,
-+    .valid.max_access_size = 4,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+/* It's likely that all register reads are bytes, while all CSR r/w are longs */
-+static uint64_t nextnet_mmio_rd_cnf(void *opaque, hwaddr addr, unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+
-+    g_assert(size == 1);
-+
-+    addr += 0x6000;
-+
-+    switch (addr) {
-+    case 0x6000: /* TXSTAT */
-+        DPRINTF("TXSTAT \tRead\n");
-+        return s->tx_stat;
-+    case 0x6001:
-+        DPRINTF("TXMASK \tRead\n");
-+        return s->tx_mask;
-+    case 0x6002:
-+        DPRINTF("RXSTAT \tRead %x\n", s->rx_stat);
-+        return s->rx_stat;
-+    case 0x6003:
-+        // DPRINTF("RXMASK \tRead\n");
-+        return s->rx_mask;
-+    case 0x6004:
-+        DPRINTF("TXMODE \tRead\n");
-+        return s->tx_mode;
-+    case 0x6005:
-+        // DPRINTF("RXMODE \tRead\n");
-+        return s->rx_mode;
-+    case 0x6006:
-+        DPRINTF("RSTMODE \tRead\n");
-+        return s->rst_mode;
-+    default:
-+        DPRINTF("NET Read B @ %x\n", (unsigned int)addr);
-+        return 0;
-+    }
-+}
-+
-+#define NET_TXSTAT_CLEAR 0xFF
-+#define NET_RXSTAT_CLEAR 0xFF
-+static void nextnet_mmio_wr_cnf(void *opaque, hwaddr addr, uint64_t val,
-+                                unsigned size)
-+{
-+    NextNetState *s = (NextNetState *)opaque;
-+    uint32_t value = val;
-+
-+    g_assert(size == 1);
-+
-+    addr += 0x6000;
-+
-+    switch (addr) {
-+    case 0x6000:
-+        DPRINTF("TXSTAT \tWrite: %x\n", value);
-+        if (value == NET_TXSTAT_CLEAR) {
-+            s->tx_stat = 0x80;
-+        } else {
-+            s->tx_stat = value;
-+        }
-+        break;
-+    case 0x6001:
-+        DPRINTF("TXMASK \tWrite: %x\n", value);
-+        s->tx_mask = value;
-+        break;
-+    case 0x6002:
-+        // DPRINTF("RXSTAT \tWrite: %x\n", value);
-+        if (value == NET_RXSTAT_CLEAR) {
-+            s->rx_stat = 0x80;
-+        } else {
-+            s->rx_stat = value;
-+        }
-+        break;
-+    case 0x6003:
-+        // DPRINTF("RXMASK \tWrite: %x\n", value);
-+        s->rx_mask = value;
-+        break;
-+    case 0x6004:
-+        DPRINTF("TXMODE \tWrite: %x\n", value);
-+        s->tx_mode = value;
-+        break;
-+    case 0x6005:
-+        // DPRINTF("RXMODE \tWrite: %x\n", value);
-+        s->rx_mode = value;
-+        break;
-+    case 0x6006:
-+        DPRINTF("RSTMODE \tWrite: %x\n", value);
-+        s->rst_mode = value;
-+        break;
-+    case 0x600d:
-+        s->mac[(addr & 0xF) - 8] = value;
-+        DPRINTF("Set MAC ADDR %.2x:%.2x:%.2x:%.2x:%.2x:%.2x\n", s->mac[0],
-+                s->mac[1], s->mac[2], s->mac[3], s->mac[4], s->mac[5]);
-+        qemu_macaddr_default_if_unset((MACAddr *)&s->mac);
-+        break;
-+    case 0x6008:
-+    case 0x6009:
-+    case 0x600a:
-+    case 0x600b:
-+    case 0x600c:
-+        s->mac[(addr & 0xF) - 8] = value;
-+        break;
-+    case 0x6010:
-+    case 0x6011:
-+    case 0x6012:
-+    case 0x6013:
-+    case 0x6014:
-+        break;
-+    default:
-+        DPRINTF(" Write B @ %x with %x\n", (unsigned int)addr, value);
-+        g_assert_not_reached();
-+    }
-+}
-+
-+static const MemoryRegionOps nextnet_mmio_ops_cnf = {
-+    .read = nextnet_mmio_rd_cnf,
-+    .write = nextnet_mmio_wr_cnf,
-+    .valid.min_access_size = 1,
-+    .valid.max_access_size = 4,
-+    .endianness = DEVICE_NATIVE_ENDIAN,
-+};
-+
-+static bool nextnet_can_rx(NetClientState *nc)
-+{
-+    NextNetState *s = qemu_get_nic_opaque(nc);
-+
-+    return (s->rx_mode & 0x3) != 0;
-+}
-+
-+static ssize_t nextnet_rx(NetClientState *nc, const uint8_t *buf, size_t size)
-+{
-+    NextNetState *s = qemu_get_nic_opaque(nc);
-+
-+    DPRINTF("received packet %zu\n", size);
-+
-+    /* Ethernet DMA is supposedly 32 byte aligned */
-+    if ((size % 32) != 0) {
-+        size -= size % 32;
-+        size += 32;
-+    }
-+
-+    /* Write the packet into memory */
-+    cpu_physical_memory_write(s->rx_dma.base, buf, size);
-+
-+    /*
-+     * Saved limit is checked to calculate packet size by both the rom
-+     * and netbsd
-+     */
-+    s->rx_dma.savedlimit = (s->rx_dma.base + size);
-+    s->rx_dma.savedbase = (s->rx_dma.base);
-+
-+    /*
-+     * 32 bytes under savedbase seems to be some kind of register
-+     * of which the purpose is unknown as of yet
-+     */
-+    //stl_phys(s->rx_dma.base-32, 0xFFFFFFFF);
-+
-+    if ((s->rx_dma.csr & DMA_SUPDATE)) {
-+        s->rx_dma.base = s->rx_dma.chainbase;
-+        s->rx_dma.limit = s->rx_dma.chainlimit;
-+    }
-+    /* we received a packet */
-+    s->rx_stat = 0x80;
-+
-+    /* Set dma registers and raise an irq */
-+    s->rx_dma.csr |= DMA_COMPLETE; /* DON'T CHANGE THIS! */
-+    qemu_set_irq(s->irq[NEXTNET_RX_I_DMA], true);
-+
-+    return size;
-+}
-+
-+static NetClientInfo nextnet_info = {
-+    .type = NET_CLIENT_DRIVER_NIC,
-+    .size = sizeof(NICState),
-+    .receive = nextnet_rx,
-+    .can_receive = nextnet_can_rx,
-+    .receive = nextnet_rx,
-+};
-+
-+static void nextnet_realize(DeviceState *dev, Error **errp)
-+{
-+    NextNetState *s = NEXT_NET(dev);
-+    SysBusDevice *sbd = SYS_BUS_DEVICE(dev);
-+    uint8_t mac[6] = { 0x00, 0x00, 0x0f, 0x00, 0xf3, 0x02 };
-+    int i;
-+
-+    memcpy(&s->mac, mac, 6);  
-+    s->nic = qemu_new_nic(&nextnet_info, &s->conf, "NeXT MB8795", dev->id, s);
-+    qemu_format_nic_info_str(qemu_get_queue(s->nic), s->mac);
-+
-+    /* Init device register spaces */
-+    memory_region_init_io(&s->mr[0], NULL, &nextnet_mmio_ops_dma, s,
-+                          "next.net.dma", 0x60);
-+    sysbus_init_mmio(sbd, &s->mr[0]);
-+    memory_region_init_io(&s->mr[1], NULL, &nextnet_mmio_ops_chan1, s,
-+                          "next.net.chan1", 0x80);
-+    sysbus_init_mmio(sbd, &s->mr[1]);
-+    memory_region_init_io(&s->mr[2], NULL, &nextnet_mmio_ops_chan2, s,
-+                          "next.net.chan2", 0x60);
-+    sysbus_init_mmio(sbd, &s->mr[2]);
-+    memory_region_init_io(&s->mr[3], NULL, &nextnet_mmio_ops_cnf, s,
-+                          "next.net.cnf", 0x20);
-+    sysbus_init_mmio(sbd, &s->mr[3]);
-+
-+    for (i = 0; i < NEXTNET_NUM_IRQS; i++) {
-+        sysbus_init_irq(sbd, &s->irq[i]);
-+    }
-+}
-+
-+static Property nextnet_properties[] = {
-+    DEFINE_NIC_PROPERTIES(NextNetState, conf),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
-+static void nextnet_class_init(ObjectClass *oc, void *data)
-+{
-+    DeviceClass *dc = DEVICE_CLASS(oc);
-+
-+    set_bit(DEVICE_CATEGORY_NETWORK, dc->categories);
-+    dc->realize = nextnet_realize;
-+    dc->desc = "NeXT Ethernet Controller";
-+    device_class_set_props(dc, nextnet_properties);
-+}
-+
-+static const TypeInfo nextnet_typeinfo = {
-+    .name          = TYPE_NEXT_NET,
-+    .parent        = TYPE_SYS_BUS_DEVICE,
-+    .instance_size = sizeof(NextNetState),
-+    .class_init    = nextnet_class_init,
-+};
-+
-+static void nextnet_register_types(void)
-+{
-+    type_register_static(&nextnet_typeinfo);
-+}
-+
-+type_init(nextnet_register_types)
-diff --git a/include/hw/m68k/next-cube.h b/include/hw/m68k/next-cube.h
-index 43577282d1..710b90e4b2 100644
---- a/include/hw/m68k/next-cube.h
-+++ b/include/hw/m68k/next-cube.h
-@@ -16,6 +16,16 @@
- 
- #define TYPE_NEXTKBD "next-kbd"
- 
-+#define TYPE_NEXT_NET "next-net"
-+
-+enum nextnet_irqs {
-+    NEXTNET_TX_I_DMA,
-+    NEXTNET_RX_I_DMA,
-+    NEXTNET_TX_I,
-+    NEXTNET_RX_I,
-+    NEXTNET_NUM_IRQS
-+};
-+
- enum next_dma_chan {
-     NEXTDMA_FD,
-     NEXTDMA_ENRX,
+> +        payload_len > (sizeof(NBDBlockStatusPayload) +
+> +                       sizeof(id) * client->contexts.count)) {
+> +        goto skip;
+> +    }
+> +
+> +    buf = g_malloc(payload_len);
+> +    if (nbd_read(client->ioc, buf, payload_len,
+> +                 "CMD_BLOCK_STATUS data", errp) < 0) {
+> +        return -EIO;
+> +    }
+> +    trace_nbd_co_receive_request_payload_received(request->cookie,
+> +                                                  payload_len);
+> +    request->contexts->bitmaps = g_new0(bool, nr_bitmaps);
+> +    count = (payload_len - sizeof(NBDBlockStatusPayload)) / sizeof(id);
+> +    payload_len = 0;
+> +
+> +    for (i = 0; i < count; i++) {
+> +        id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
+> +        if (id == NBD_META_ID_BASE_ALLOCATION) {
+> +            if (request->contexts->base_allocation) {
+> +                goto skip;
+> +            }
+
+should we also check that base_allocation is negotiated?
+
+> +            request->contexts->base_allocation = true;
+> +        } else if (id == NBD_META_ID_ALLOCATION_DEPTH) {
+> +            if (request->contexts->allocation_depth) {
+> +                goto skip;
+> +            }
+
+same here
+
+> +            request->contexts->allocation_depth = true;
+> +        } else {
+> +            int idx = id - NBD_META_ID_DIRTY_BITMAP;
+> +
+
+I think, we also should check that idx >=0 after this operation.
+
+> +            if (idx > nr_bitmaps || request->contexts->bitmaps[idx]) {
+> +                goto skip;
+> +            }
+> +            request->contexts->bitmaps[idx] = true;
+> +        }
+> +    }
+> +
+> +    request->len = ldq_be_p(buf);
+> +    request->contexts->count = count;
+> +    return 0;
+> +
+> + skip:
+> +    trace_nbd_co_receive_block_status_payload_compliance(request->from,
+> +                                                         request->len);
+> +    request->len = request->contexts->count = 0;
+> +    return nbd_drop(client->ioc, payload_len, errp);
+> +}
+> +
+
+[..]
+
+> diff --git a/nbd/trace-events b/nbd/trace-events
+> index 8f4e20ee9f2..ac186c19ec0 100644
+> --- a/nbd/trace-events
+> +++ b/nbd/trace-events
+> @@ -70,6 +70,7 @@ nbd_co_send_chunk_read(uint64_t cookie, uint64_t offset, void *data, uint64_t si
+>   nbd_co_send_chunk_read_hole(uint64_t cookie, uint64_t offset, uint64_t size) "Send structured read hole reply: cookie = %" PRIu64 ", offset = %" PRIu64 ", len = %" PRIu64
+>   nbd_co_send_extents(uint64_t cookie, unsigned int extents, uint32_t id, uint64_t length, int last) "Send block status reply: cookie = %" PRIu64 ", extents = %u, context = %d (extents cover %" PRIu64 " bytes, last chunk = %d)"
+>   nbd_co_send_chunk_error(uint64_t cookie, int err, const char *errname, const char *msg) "Send structured error reply: cookie = %" PRIu64 ", error = %d (%s), msg = '%s'"
+> +nbd_co_receive_block_status_payload_compliance(uint64_t from, int len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%x"
+
+both passed parameters request->from and request->len are uint64_t actually
+
+>   nbd_co_receive_request_decode_type(uint64_t cookie, uint16_t type, const char *name) "Decoding type: cookie = %" PRIu64 ", type = %" PRIu16 " (%s)"
+>   nbd_co_receive_request_payload_received(uint64_t cookie, uint64_t len) "Payload received: cookie = %" PRIu64 ", len = %" PRIu64
+>   nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
+
+[..]
+
 -- 
-2.41.0
+Best regards,
+Vladimir
 
 
