@@ -2,42 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F8E7B4020
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 13:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE7F7B4024
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 13:41:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmY9l-0004AY-Tt; Sat, 30 Sep 2023 07:29:09 -0400
+	id 1qmYK4-0004MY-IV; Sat, 30 Sep 2023 07:39:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmY9j-0004AL-Vz
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:29:08 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYJu-0004MI-JK
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:39:38 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmY9h-0005GQ-AL
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:29:07 -0400
-Received: from cslab-raptor.. (unknown [166.111.226.99])
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYJr-0007Lc-Mm
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:39:37 -0400
+Received: from [192.168.1.2] (unknown [223.72.88.249])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 223BB4381E;
- Sat, 30 Sep 2023 11:28:50 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id 0F84543A7F;
+ Sat, 30 Sep 2023 11:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1696073334; bh=Du2OlKFl4QWKtys1PdreXB5tJwd6hyZnEaYVpxdmlWE=;
- h=From:To:Cc:Subject:Date;
- b=cILCtlrBFuGRQc0QWwS3+EsbQnMRZCR1FODfenA5hzIfYdiGskx3TF0I/qjnODbzZ
- qSZ/OLbPjzSvFAan2ybAVZZV7qfnEsfTuXm+dd19aHEyM8p4pTscJJjeLaRAOeSdoS
- 9NSI5qoE0KbIXcU2bj0H6jC/6V6GUos2BztoNH7w=
-From: Jiajie Chen <c@jia.je>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
- Jiajie Chen <c@jia.je>, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-Subject: [PATCH] target/loongarch: fix ASXE flag conflict
-Date: Sat, 30 Sep 2023 19:28:23 +0800
-Message-ID: <20230930112837.1871691-1-c@jia.je>
-X-Mailer: git-send-email 2.41.0
+ t=1696073973; bh=XDRXWNlQY/Gaah7lXj7wTm3X0WGrcNMMwXke6hFk0Fk=;
+ h=Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=ULK6WYJn/rMILhhorELN/3eEoo9h0L+25WpvJvLQtFFgANxXcuhcKNVoBNlhtjGar
+ fRncSNlBQ4fzssHJVceVJ7HIV6Otakq1iXH/DTPRdadEkVy6GdPa0/HygA7FfSuYl7
+ nQF++iPjpGUsBjLHQ8t5Endu0YNJ+EWfOLIl4xdo=
+Message-ID: <24419e2e-5d84-474c-8974-f4a3bfd0aaf3@jia.je>
+Date: Sat, 30 Sep 2023 19:39:25 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] tcg: Add C_N2_I1
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: git@xen0n.name, gaosong@loongson.cn, yangxiaojuan@loongson.cn
+References: <20230916220151.526140-1-richard.henderson@linaro.org>
+ <20230916220151.526140-2-richard.henderson@linaro.org>
+From: Jiajie Chen <c@jia.je>
+In-Reply-To: <20230916220151.526140-2-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
  helo=hognose1.porkbun.com
 X-Spam_score_int: -20
@@ -61,29 +65,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-HW_FLAGS_EUEN_ASXE acccidentally conflicts with HW_FLAGS_CRMD_PG,
-enabling LASX instructions even when CSR_EUEN.ASXE=0.
+On 2023/9/17 06:01, Richard Henderson wrote:
+> Constraint with two outputs, both in new registers.
+>
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   tcg/tcg.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+>
+> diff --git a/tcg/tcg.c b/tcg/tcg.c
+> index 604fa9bf3e..fdbf79689a 100644
+> --- a/tcg/tcg.c
+> +++ b/tcg/tcg.c
+> @@ -644,6 +644,7 @@ static void tcg_out_movext3(TCGContext *s, const TCGMovExtend *i1,
+>   #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4),
+>   
+>   #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2),
+> +#define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1),
+>   
+>   #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1),
+>   #define C_O2_I2(O1, O2, I1, I2)         C_PFX4(c_o2_i2_, O1, O2, I1, I2),
+> @@ -666,6 +667,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+>   #undef C_O1_I3
+>   #undef C_O1_I4
+>   #undef C_N1_I2
+> +#undef C_N2_I1
+>   #undef C_O2_I1
+>   #undef C_O2_I2
+>   #undef C_O2_I3
+> @@ -685,6 +687,7 @@ static TCGConstraintSetIndex tcg_target_op_def(TCGOpcode);
+>   #define C_O1_I4(O1, I1, I2, I3, I4)     { .args_ct_str = { #O1, #I1, #I2, #I3, #I4 } },
+>   
+>   #define C_N1_I2(O1, I1, I2)             { .args_ct_str = { "&" #O1, #I1, #I2 } },
+> +#define C_N2_I1(O1, O2, I1)             { .args_ct_str = { "&" #O1, "&" #O2, #I1 } },
+>   
+>   #define C_O2_I1(O1, O2, I1)             { .args_ct_str = { #O1, #O2, #I1 } },
+>   #define C_O2_I2(O1, O2, I1, I2)         { .args_ct_str = { #O1, #O2, #I1, #I2 } },
+> @@ -706,6 +709,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+>   #undef C_O1_I3
+>   #undef C_O1_I4
+>   #undef C_N1_I2
+> +#undef C_N2_I1
+>   #undef C_O2_I1
+>   #undef C_O2_I2
+>   #undef C_O2_I3
+> @@ -725,6 +729,7 @@ static const TCGTargetOpDef constraint_sets[] = {
+>   #define C_O1_I4(O1, I1, I2, I3, I4)     C_PFX5(c_o1_i4_, O1, I1, I2, I3, I4)
+>   
+>   #define C_N1_I2(O1, I1, I2)             C_PFX3(c_n1_i2_, O1, I1, I2)
+> +#define C_N2_I1(O1, O2, I1)             C_PFX3(c_n2_i1_, O1, O2, I1)
+>   
+>   #define C_O2_I1(O1, O2, I1)             C_PFX3(c_o2_i1_, O1, O2, I1)
+>   #define C_O2_I2(O1, O2, I1, I2)         C_PFX4(c_o2_i2_, O1, O2, I1, I2)
 
-Closes: https://gitlab.com/qemu-project/qemu/-/issues/1907
-Signed-off-by: Jiajie Chen <c@jia.je>
----
- target/loongarch/cpu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-index f125a8e49b..79ad79a289 100644
---- a/target/loongarch/cpu.h
-+++ b/target/loongarch/cpu.h
-@@ -462,7 +462,7 @@ static inline void set_pc(CPULoongArchState *env, uint64_t value)
- #define HW_FLAGS_CRMD_PG    R_CSR_CRMD_PG_MASK   /* 0x10 */
- #define HW_FLAGS_EUEN_FPE   0x04
- #define HW_FLAGS_EUEN_SXE   0x08
--#define HW_FLAGS_EUEN_ASXE  0x10
-+#define HW_FLAGS_EUEN_ASXE  0x40
- #define HW_FLAGS_VA32       0x20
- 
- static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
--- 
-2.41.0
+Reviewed-by: Jiajie Chen <c@jia.je>
 
 
