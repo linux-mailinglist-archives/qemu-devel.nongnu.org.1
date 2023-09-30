@@ -2,72 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D179E7B43F0
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 23:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C41B47B4464
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Oct 2023 00:16:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmhW8-0006Ew-2G; Sat, 30 Sep 2023 17:28:52 -0400
+	id 1qmiEp-0002GZ-R1; Sat, 30 Sep 2023 18:15:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qmhW6-0006Eo-7G
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 17:28:50 -0400
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qmiEn-0002GD-V8
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 18:15:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qmhW4-0007sY-FF
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 17:28:49 -0400
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qmiEl-0002xb-GJ
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 18:15:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696109326;
+ s=mimecast20190719; t=1696112098;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=J4THjHDs9fuBRSjNdnxeerGNnCrE6BU5VkDv4vc5kjk=;
- b=OYnrt3bw3d/4ImPE/EKhoRQfXydlngV/rneZJBNZ9me/U3ICPhW2ykc3UbcciXVd54z19t
- IGfDu8b+/SUSlo1thf9GgbA9CyyrLaI0EiHez+nDahEEoFIdY23uGkfQ3HowXSJ9EBmLcP
- xVA1etWA8MBPchZj1rhx1VRB+Py3AfA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-113-JGkl8A9GM7aqgRkFk5frvg-1; Sat, 30 Sep 2023 17:28:42 -0400
-X-MC-Unique: JGkl8A9GM7aqgRkFk5frvg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=x6s1pNwUQPxF6rlo/ibPJYC1dCcZ/Q/08GGcELpYKvI=;
+ b=f6PecN/hJX8wiP3ISIrJ7H2eSy2cEBFv08+VY1ikJsuv67OJ3Cqo+KmW2d7Okahiei+oJe
+ 6I+fxK2edLItk/4E3JOi5YuJaH0Bu86RkqSP4gHI2kK/Q2z0R5ajTUihZEXglBE+J+CR7k
+ NKZ4FsF33XrYnd7pJ/pgt2+yPpBKlt4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-281-c6bP2XjNPzKgVl4N4a3SCA-1; Sat, 30 Sep 2023 18:14:55 -0400
+X-MC-Unique: c6bP2XjNPzKgVl4N4a3SCA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5B6EB8007A4;
- Sat, 30 Sep 2023 21:28:42 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BC62A3C02187;
+ Sat, 30 Sep 2023 22:14:54 +0000 (UTC)
 Received: from [10.39.192.54] (unknown [10.39.192.54])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 57EB1492B16;
- Sat, 30 Sep 2023 21:28:40 +0000 (UTC)
-Message-ID: <7dc6ed8b-adfd-2d00-b26e-3d7acb4fe9ee@redhat.com>
-Date: Sat, 30 Sep 2023 23:28:39 +0200
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BD6F5400F53;
+ Sat, 30 Sep 2023 22:14:53 +0000 (UTC)
+Message-ID: <4da39e48-c916-ed62-70ae-f0306845f01b@redhat.com>
+Date: Sun, 1 Oct 2023 00:14:52 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH 0/4] ui/console: multihead: fix crash, simplify logic
+Subject: Re: [PATCH] hw/display/ramfb: plug slight guest-triggerable leak on
+ mode setting
 Content-Language: en-US
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>
+To: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>
 Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>
-References: <20230913144959.41891-1-lersek@redhat.com>
- <CAJ+F1CJfROA9ezKi6Tzs1hLun8jpnWhrQCjreQdWhGro97CAyA@mail.gmail.com>
- <4c36a1eb-9a76-2231-4ead-d8daab657d84@redhat.com>
- <CAJ+F1CKPaU5z8mnnFJWvw4CmFyEenFQ679A5Nf3CAqzJMqdqVA@mail.gmail.com>
- <d462d277-4f32-2b98-19c4-7af43167af8d@ilande.co.uk>
+ qemu-stable@nongnu.org
+References: <20230919131955.27223-1-lersek@redhat.com>
+ <7ee37181-526e-2b6a-6b42-09340a9e70a9@redhat.com>
+ <CAJ+F1CK0FaMfm-ZUz7KB0erFRLBWTa7yHMxhiX0+J0ZxNp34bw@mail.gmail.com>
 From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <d462d277-4f32-2b98-19c4-7af43167af8d@ilande.co.uk>
+In-Reply-To: <CAJ+F1CK0FaMfm-ZUz7KB0erFRLBWTa7yHMxhiX0+J0ZxNp34bw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,39 +82,172 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/29/23 09:57, Mark Cave-Ayland wrote:
-> On 26/09/2023 09:00, Marc-André Lureau wrote:
+On 9/29/23 13:17, Marc-André Lureau wrote:
+> Hi
 > 
->> Hi Laszlo
+> On Wed, Sep 27, 2023 at 7:46 PM Laszlo Ersek <lersek@redhat.com> wrote:
 >>
->> On Mon, Sep 25, 2023 at 7:36 PM Laszlo Ersek <lersek@redhat.com> wrote:
->>> Has this been queued by someone? Both Gerd and Marc-André are "odd
->>> fixers", so I'm not sure who should be sending a PR with these patches
->>> (and I don't see a pending PULL at
->>> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/threads.html>
->>> with these patch subjects included).
->>
->> I have the series in my "ui" branch. I was waiting for a few more
->> patches to be accumulated. But if someone else takes this first, I'll
->> drop them.
+>> On 9/19/23 15:19, Laszlo Ersek wrote:
+>>> The fw_cfg DMA write callback in ramfb prepares a new display surface in
+>>> QEMU; this new surface is put to use ("swapped in") upon the next display
+>>> update. At that time, the old surface (if any) is released.
+>>>
+>>> If the guest triggers the fw_cfg DMA write callback at least twice between
+>>> two adjacent display updates, then the second callback (and further such
+>>> callbacks) will leak the previously prepared (but not yet swapped in)
+>>> display surface.
+>>>
+>>> The issue can be shown by:
+>>>
+>>> (1) starting QEMU with "-trace displaysurface_free", and
+>>>
+>>> (2) running the following program in the guest UEFI shell:
+>>>
+>>>> #include <Library/ShellCEntryLib.h>           // ShellAppMain()
+>>>> #include <Library/UefiBootServicesTableLib.h> // gBS
+>>>> #include <Protocol/GraphicsOutput.h>          // EFI_GRAPHICS_OUTPUT_PROTOCOL
+>>>>
+>>>> INTN
+>>>> EFIAPI
+>>>> ShellAppMain (
+>>>>   IN UINTN   Argc,
+>>>>   IN CHAR16  **Argv
+>>>>   )
+>>>> {
+>>>>   EFI_STATUS                    Status;
+>>>>   VOID                          *Interface;
+>>>>   EFI_GRAPHICS_OUTPUT_PROTOCOL  *Gop;
+>>>>   UINT32                        Mode;
+>>>>
+>>>>   Status = gBS->LocateProtocol (
+>>>>                   &gEfiGraphicsOutputProtocolGuid,
+>>>>                   NULL,
+>>>>                   &Interface
+>>>>                   );
+>>>>   if (EFI_ERROR (Status)) {
+>>>>     return 1;
+>>>>   }
+>>>>
+>>>>   Gop = Interface;
+>>>>
+>>>>   Mode = 1;
+>>>>   for ( ; ;) {
+>>>>     Status = Gop->SetMode (Gop, Mode);
+>>>>     if (EFI_ERROR (Status)) {
+>>>>       break;
+>>>>     }
+>>>>
+>>>>     Mode = 1 - Mode;
+>>>>   }
+>>>>
+>>>>   return 1;
+>>>> }
+>>>
+>>> The symptom is then that:
+>>>
+>>> - only one trace message appears periodically,
+>>>
+>>> - the time between adjacent messages keeps increasing -- implying that
+>>>   some list structure (containing the leaked resources) keeps growing,
+>>>
+>>> - the "surface" pointer is ever different.
+>>>
+>>>> 18566@1695127471.449586:displaysurface_free surface=0x7f2fcc09a7c0
+>>>> 18566@1695127471.529559:displaysurface_free surface=0x7f2fcc9dac10
+>>>> 18566@1695127471.659812:displaysurface_free surface=0x7f2fcc441dd0
+>>>> 18566@1695127471.839669:displaysurface_free surface=0x7f2fcc0363d0
+>>>> 18566@1695127472.069674:displaysurface_free surface=0x7f2fcc413a80
+>>>> 18566@1695127472.349580:displaysurface_free surface=0x7f2fcc09cd00
+>>>> 18566@1695127472.679783:displaysurface_free surface=0x7f2fcc1395f0
+>>>> 18566@1695127473.059848:displaysurface_free surface=0x7f2fcc1cae50
+>>>> 18566@1695127473.489724:displaysurface_free surface=0x7f2fcc42fc50
+>>>> 18566@1695127473.969791:displaysurface_free surface=0x7f2fcc45dcc0
+>>>> 18566@1695127474.499708:displaysurface_free surface=0x7f2fcc70b9d0
+>>>> 18566@1695127475.079769:displaysurface_free surface=0x7f2fcc82acc0
+>>>> 18566@1695127475.709941:displaysurface_free surface=0x7f2fcc369c00
+>>>> 18566@1695127476.389619:displaysurface_free surface=0x7f2fcc32b910
+>>>> 18566@1695127477.119772:displaysurface_free surface=0x7f2fcc0d5a20
+>>>> 18566@1695127477.899517:displaysurface_free surface=0x7f2fcc086c40
+>>>> 18566@1695127478.729962:displaysurface_free surface=0x7f2fccc72020
+>>>> 18566@1695127479.609839:displaysurface_free surface=0x7f2fcc185160
+>>>> 18566@1695127480.539688:displaysurface_free surface=0x7f2fcc23a7e0
+>>>> 18566@1695127481.519759:displaysurface_free surface=0x7f2fcc3ec870
+>>>> 18566@1695127482.549930:displaysurface_free surface=0x7f2fcc634960
+>>>> 18566@1695127483.629661:displaysurface_free surface=0x7f2fcc26b140
+>>>> 18566@1695127484.759987:displaysurface_free surface=0x7f2fcc321700
+>>>> 18566@1695127485.940289:displaysurface_free surface=0x7f2fccaad100
+>>>
+>>> We figured this wasn't a CVE-worthy problem, as only small amounts of
+>>> memory were leaked (the framebuffer itself is mapped from guest RAM, QEMU
+>>> only allocates administrative structures), plus libvirt restricts QEMU
+>>> memory footprint anyway, thus the guest can only DoS itself.
+>>>
+>>> Plug the leak, by releasing the last prepared (not yet swapped in) display
+>>> surface, if any, in the fw_cfg DMA write callback.
+>>>
+>>> Regarding the "reproducer", with the fix in place, the log is flooded with
+>>> trace messages (one per fw_cfg write), *and* the trace message alternates
+>>> between just two "surface" pointer values (i.e., nothing is leaked, the
+>>> allocator flip-flops between two objects in effect).
+>>>
+>>> This issue appears to date back to the introducion of ramfb (995b30179bdc,
+>>> "hw/display: add ramfb, a simple boot framebuffer living in guest ram",
+>>> 2018-06-18).
+>>>
+>>> Cc: Gerd Hoffmann <kraxel@redhat.com> (maintainer:ramfb)
+>>> Cc: qemu-stable@nongnu.org
+>>> Fixes: 995b30179bdc
+>>> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+>>> ---
+>>>  hw/display/ramfb.c | 1 +
+>>>  1 file changed, 1 insertion(+)
+>>>
+>>> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
+>>> index 79b9754a5820..c2b002d53480 100644
+>>> --- a/hw/display/ramfb.c
+>>> +++ b/hw/display/ramfb.c
+>>> @@ -97,6 +97,7 @@ static void ramfb_fw_cfg_write(void *dev, off_t offset, size_t len)
+>>>
+>>>      s->width = width;
+>>>      s->height = height;
+>>> +    qemu_free_displaysurface(s->ds);
+>>>      s->ds = surface;
+>>>  }
 > 
-> Does this series fix the "../ui/console.c:818: dpy_get_ui_info:
-> Assertion `dpy_ui_info_supported(con)' failed." assert() on startup when
-> using gtk? It would be good to get this fixed in git master soon, as it
-> has been broken for a couple of weeks now, and -display sdl has issues
-> tracking the mouse correctly on my laptop here :(
+> Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Incidentally I found the same issue:
+> https://patchew.org/QEMU/20230920082634.3349487-1-marcandre.lureau@redhat.com/
 
-... probably not; I've never seen that issue. Can you provide a reproducer?
+Which patch is better?
 
-Also, it should be bisectable (over Marc-André's 52-part series I guess).
+I certainly didn't think of g_clear_pointer(); is that more idiomatic?
 
+> 
+> 
+> fwiw, my migration support patch is still unreviewed:
+> https://patchew.org/QEMU/20230920082651.3349712-1-marcandre.lureau@redhat.com/
+> 
+
+I don't have a copy of that patch (not subscribed, sorry...), but how
+simply you did it surprises me. I did expect to simulate an fw_cfg write
+in post_load, but I thought we'd approach the device (for the sake of
+including it in the migration stream) from the higher level device's
+vmstate descriptors (dc->vmsd) that set up / depend on ramfb in the
+first place. I didn't know that raw vmstate_register() was still accepted.
+
+If it is, then, for that patch (with Gerd's comment addressed):
+
+Acked-by: Laszlo Ersek <lersek@redhat.com>
+
+BTW: can you please assign
+<https://bugzilla.redhat.com/show_bug.cgi?id=1859424> to yourself and
+link your patch into it? The reason we ended up duplicating work here is
+that noone took RHBZ 1859424 before.
+
+... Well, the ticket is RHEL-7478 in JIRA now, in fact. :/
+
+Thanks!
 Laszlo
-
-> 
-> 
-> ATB,
-> 
-> Mark.
-> 
 
 
