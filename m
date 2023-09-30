@@ -2,53 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105857B4027
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 13:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F5C7B4072
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 15:25:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmYLW-0006Iy-1a; Sat, 30 Sep 2023 07:41:18 -0400
+	id 1qmZxb-0007ev-SD; Sat, 30 Sep 2023 09:24:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYLT-000699-EY
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:41:15 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYLR-00082D-JW
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:41:15 -0400
-Received: from [192.168.1.2] (unknown [223.72.88.249])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id CF6B844345;
- Sat, 30 Sep 2023 11:41:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1696074072; bh=MoMfbniPfhKWi0AeVNcTKvl0CEqoBZRsXPlFWQPJmFA=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=cyhotaJwq6dR/aBj+W7jxFmJoh01slrNnxu1fN0PRi1K+UNRJTTKgbcwDWJzUqEOf
- aRM7qReI0uG9TI6SSGjwsJwjgEo1mXWv0KjC33sGZiMvCKi3W8Q9vP/OcVRG8HWNuK
- PkuiMAkBNOXLkXpa2dOJX+PmoEe9gKdRsLuxRIW0=
-Message-ID: <896294f0-e705-41fb-ab9d-4c7162ad2e78@jia.je>
-Date: Sat, 30 Sep 2023 19:41:10 +0800
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qmZxY-0007eP-MV
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 09:24:40 -0400
+Received: from mail-ej1-f47.google.com ([209.85.218.47])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qmZxT-0007eq-OV
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 09:24:40 -0400
+Received: by mail-ej1-f47.google.com with SMTP id
+ a640c23a62f3a-9a645e54806so1996655066b.0
+ for <qemu-devel@nongnu.org>; Sat, 30 Sep 2023 06:24:31 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696080270; x=1696685070;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=MO04h6rq43VqIPPeoEeCZDzqS9bn+jX8IzZLeinSlns=;
+ b=oRo3tpfyYUfpIM2TN7hDmjYjx5xAcLqLgcSq5Ipm2/YNu0Q6IWw31XnsE/R6deW0lm
+ XyR8eoCByV6rExDEcqDeCRsBKZKpH4/3+Anb3s+ki7NZkm57C/NSZ6NtN4mzm0jcFZze
+ EphsZZ5UpkXhinpGMPLUdYmYNgwDe+fYBSp/qyonjoqHXsJlkUQLfdODbZf+8sfoGvg5
+ j//pXGww1lE3EWFqsKZE7BD/mNKdNgQJOxJUn9HtVhzgrU0e+tvx8h4NCgoGQRdMQP6J
+ LFIo/2g+DhHVm8i60VceGv2RWSuNj7b9ah5YOLSAoD2W193R8OCpfrUiifew/1qtvHhH
+ M+vg==
+X-Gm-Message-State: AOJu0YyXh8vQkXObJgB/kBMGeZx5gbc0sFOZV7Hr6qblYTPjlClyw3QY
+ mBDJYJDwIBFYm+0BoH+J3OA4bEr3ysw=
+X-Google-Smtp-Source: AGHT+IEP76lswC/PSa3RRLwhhK5+BAySUTCbuUUi8ONwyIA520yu43xB78p8J2cNduilnRuoMcu1jQ==
+X-Received: by 2002:a17:906:783:b0:9ae:5fe1:ef00 with SMTP id
+ l3-20020a170906078300b009ae5fe1ef00mr5543145ejc.45.1696080269698; 
+ Sat, 30 Sep 2023 06:24:29 -0700 (PDT)
+Received: from fedora.. (ip-109-43-177-123.web.vodafone.de. [109.43.177.123])
+ by smtp.gmail.com with ESMTPSA id
+ z15-20020a170906944f00b00993928e4d1bsm13919471ejx.24.2023.09.30.06.24.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 30 Sep 2023 06:24:29 -0700 (PDT)
+From: Thomas Huth <huth@tuxfamily.org>
+To: qemu-devel@nongnu.org,
+	Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Cc: Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH 0/5] m68k: Instantiate ESP and next-net in the next-cube
+ machine
+Date: Sat, 30 Sep 2023 15:23:46 +0200
+Message-ID: <20230930132351.30282-1-huth@tuxfamily.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/7] tcg/loongarch64: Use cpuinfo.h
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: git@xen0n.name, gaosong@loongson.cn, yangxiaojuan@loongson.cn
-References: <20230916220151.526140-1-richard.henderson@linaro.org>
- <20230916220151.526140-5-richard.henderson@linaro.org>
-From: Jiajie Chen <c@jia.je>
-In-Reply-To: <20230916220151.526140-5-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=209.85.218.47; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f47.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9,
+ FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.708, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -65,85 +78,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Mark Cave-Ayland recently asked me about the ESP patches for the
+next-cube machine that I once posted a long time ago, but never
+got it merged (since Mark is currently working on improving the
+ESP device). With his help, I dusted off the ESP patch, but we
+had to discover that the firmware also wants to see the NIC
+device in the MMIO region, otherwise it often crashes or hangs.
+So here's now the current set of patches for the next-cube machine.
+Both, the ESP SCSI controller and the NIC do not properly work
+yet, but at least the next-cube firmware gets much further now
+during it selftest, so I think this is a good base for future
+work and experiments.
 
-On 2023/9/17 06:01, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   tcg/loongarch64/tcg-target.h     | 8 ++++----
->   tcg/loongarch64/tcg-target.c.inc | 8 +-------
->   2 files changed, 5 insertions(+), 11 deletions(-)
->
-> diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
-> index 03017672f6..1bea15b02e 100644
-> --- a/tcg/loongarch64/tcg-target.h
-> +++ b/tcg/loongarch64/tcg-target.h
-> @@ -29,6 +29,8 @@
->   #ifndef LOONGARCH_TCG_TARGET_H
->   #define LOONGARCH_TCG_TARGET_H
->   
-> +#include "host/cpuinfo.h"
-> +
->   #define TCG_TARGET_INSN_UNIT_SIZE 4
->   #define TCG_TARGET_NB_REGS 64
->   
-> @@ -85,8 +87,6 @@ typedef enum {
->       TCG_VEC_TMP0 = TCG_REG_V23,
->   } TCGReg;
->   
-> -extern bool use_lsx_instructions;
-> -
->   /* used for function call generation */
->   #define TCG_REG_CALL_STACK              TCG_REG_SP
->   #define TCG_TARGET_STACK_ALIGN          16
-> @@ -171,10 +171,10 @@ extern bool use_lsx_instructions;
->   #define TCG_TARGET_HAS_muluh_i64        1
->   #define TCG_TARGET_HAS_mulsh_i64        1
->   
-> -#define TCG_TARGET_HAS_qemu_ldst_i128   use_lsx_instructions
-> +#define TCG_TARGET_HAS_qemu_ldst_i128   (cpuinfo & CPUINFO_LSX)
->   
->   #define TCG_TARGET_HAS_v64              0
-> -#define TCG_TARGET_HAS_v128             use_lsx_instructions
-> +#define TCG_TARGET_HAS_v128             (cpuinfo & CPUINFO_LSX)
->   #define TCG_TARGET_HAS_v256             0
->   
->   #define TCG_TARGET_HAS_not_vec          1
-> diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
-> index 40074c46b8..52f2c26ce1 100644
-> --- a/tcg/loongarch64/tcg-target.c.inc
-> +++ b/tcg/loongarch64/tcg-target.c.inc
-> @@ -32,8 +32,6 @@
->   #include "../tcg-ldst.c.inc"
->   #include <asm/hwcap.h>
->   
-> -bool use_lsx_instructions;
-> -
->   #ifdef CONFIG_DEBUG_TCG
->   static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
->       "zero",
-> @@ -2316,10 +2314,6 @@ static void tcg_target_init(TCGContext *s)
->           exit(EXIT_FAILURE);
->       }
->   
-> -    if (hwcap & HWCAP_LOONGARCH_LSX) {
-> -        use_lsx_instructions = 1;
-> -    }
-> -
->       tcg_target_available_regs[TCG_TYPE_I32] = ALL_GENERAL_REGS;
->       tcg_target_available_regs[TCG_TYPE_I64] = ALL_GENERAL_REGS;
->   
-> @@ -2335,7 +2329,7 @@ static void tcg_target_init(TCGContext *s)
->       tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S8);
->       tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S9);
->   
-> -    if (use_lsx_instructions) {
-> +    if (cpuinfo & CPUINFO_LSX) {
->           tcg_target_available_regs[TCG_TYPE_V128] = ALL_VECTOR_REGS;
->           tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V24);
->           tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V25);
+Thomas Huth (5):
+  hw/m68k/next-cube: Mirror BIOS to address 0
+  hw/scsi/esp: Work around problem with PIO data read for the NeXT-Cube
+    machine
+  m68k: Instantiate the ESP SCSI controller for the NeXTcube machine
+  hw/m68k/next-cube: Remove unused NEXTDMA_EN code
+  m68k: Add NeXTcube network controller
 
+ hw/m68k/next-cube.c         | 194 +++++++++----
+ hw/net/meson.build          |   1 +
+ hw/net/next-net.c           | 538 ++++++++++++++++++++++++++++++++++++
+ hw/scsi/esp.c               |   2 +-
+ include/hw/m68k/next-cube.h |  10 +
+ 5 files changed, 692 insertions(+), 53 deletions(-)
+ create mode 100644 hw/net/next-net.c
 
-Reviewed-by: Jiajie Chen <c@jia.je>
-
+-- 
+2.41.0
 
 
