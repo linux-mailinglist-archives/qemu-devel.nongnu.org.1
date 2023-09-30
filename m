@@ -2,83 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 587647B41D8
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 17:48:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F2A7B41DC
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 17:52:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmcBB-00081c-Ju; Sat, 30 Sep 2023 11:46:53 -0400
+	id 1qmcFL-0000d5-PA; Sat, 30 Sep 2023 11:51:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmcB7-00081B-CS
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 11:46:49 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qmcB4-0004TD-TU
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 11:46:48 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c3d6d88231so114372345ad.0
- for <qemu-devel@nongnu.org>; Sat, 30 Sep 2023 08:46:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696088805; x=1696693605; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=4i/dVky4GQ65lLYWZ6jft2bDIFtC58OGTh7f/UnV+lI=;
- b=b2Jrz3QdvSxxv8YyPQC96pxoH3cTe5tMmty6Wc52KWpwNW7sx9GWZp8NuL5NOHwbcW
- YZ4g5IrupdQz76MUD64a1oBuxC+HZJq1+g3ZV2Ej9ec2ALiD1/VDs21ZteEGCi+jXmx+
- FRCyBX3QfF3E5CTqysNmoEqPbXg/fE8VcDe8CISM1sRA0b7zLwGrxSKlslsJNmzR3m2x
- y44P0ngalgxERl5K/qoU6elwfCTu8yCj7GQ5Xu+QDWzm+Yt34Ebm3e0rSE/1XBNgghyw
- AQODrmxGIQ1fN8wOBSZ3Oy8kzvqqOab2t6TFeM7FqJK4m3XV2X2z9GbDnCRnKYnG9Rru
- 8qLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696088805; x=1696693605;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4i/dVky4GQ65lLYWZ6jft2bDIFtC58OGTh7f/UnV+lI=;
- b=c9v7IQKFDW7V09EQfIyG5dhriKtS4v1AuuOt0TD7VK2bp1S11ezFpXVPQoTnKuxhCv
- svTH2jBTQqgNXsjyBcrtsdI2PW+VH+i7zUlH0fnVemODgNUjkACJvEdTvHGXejzTY29B
- 5YQHpqGYIsTiT3OTPW0K65YzTmBPeOKlvFv1L6sHl7kXiYYIndcg4QTWlWvGCRW5Pv1b
- xReaU6b477/HSYJz5Fy86J6kPDHwjpMc+9E8dtRQQB/1henOpAAUg+ImoQW975Dh9D5X
- GUrFszkYy0+B85K8tY4knPxP+a7OaH6IR8RHf6CFw/iCjhaHY50K59yO7GZDjzhySfh8
- JsVQ==
-X-Gm-Message-State: AOJu0YzVCM6K3dMTJJuXbrUKzB/vZwaPSwTWI157GeXs0Z7qSvJQGily
- Le/NltSmw0CioWzG9CxTzzJE+A==
-X-Google-Smtp-Source: AGHT+IHWt+K+x017X5EQkY6upYF7ibdqq+vbUGhBasq3V72uWZkXGf4biCFC5Ob/HRXcpU/ChjyMzA==
-X-Received: by 2002:a17:902:ea0a:b0:1c5:634e:e12c with SMTP id
- s10-20020a170902ea0a00b001c5634ee12cmr7912864plg.37.1696088804886; 
- Sat, 30 Sep 2023 08:46:44 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- a6-20020a170902ee8600b001c55db80b14sm3026445pld.221.2023.09.30.08.46.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 30 Sep 2023 08:46:44 -0700 (PDT)
-Message-ID: <8c7e0e7f-9196-cc91-be1e-ce0b02fb4db9@linaro.org>
-Date: Sat, 30 Sep 2023 08:46:41 -0700
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qmcFJ-0000cj-Ew
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 11:51:09 -0400
+Received: from vps-vb.mhejs.net ([37.28.154.113])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qmcFE-0005KN-KG
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 11:51:09 -0400
+Received: from MUA by vps-vb.mhejs.net with esmtps (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 (Exim 4.94.2)
+ (envelope-from <mail@maciej.szmigiero.name>)
+ id 1qmcEr-00086K-WD; Sat, 30 Sep 2023 17:50:42 +0200
+Message-ID: <239fecd6-c184-4187-85bb-2826ae2ce0d0@maciej.szmigiero.name>
+Date: Sat, 30 Sep 2023 17:50:36 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] target/loongarch: fix ASXE flag conflict
-To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
-Cc: gaosong@loongson.cn, git@xen0n.name,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230930112837.1871691-1-c@jia.je>
-Content-Language: en-US
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230930112837.1871691-1-c@jia.je>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 15/18] virtio-mem: Update state to match bitmap as soon
+ as it's been migrated
+Content-Language: en-US, pl-PL
+To: David Hildenbrand <david@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+References: <20230926185738.277351-1-david@redhat.com>
+ <20230926185738.277351-16-david@redhat.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+In-Reply-To: <20230926185738.277351-16-david@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x634.google.com
-X-Spam_score_int: -46
-X-Spam_score: -4.7
-X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.587,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=37.28.154.113;
+ envelope-from=mail@maciej.szmigiero.name; helo=vps-vb.mhejs.net
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,36 +110,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/30/23 04:28, Jiajie Chen wrote:
-> HW_FLAGS_EUEN_ASXE acccidentally conflicts with HW_FLAGS_CRMD_PG,
-> enabling LASX instructions even when CSR_EUEN.ASXE=0.
+On 26.09.2023 20:57, David Hildenbrand wrote:
+> It's cleaner and future-proof to just have other state that depends on the
+> bitmap state to be updated as soon as possible when restoring the bitmap.
 > 
-> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1907
-> Signed-off-by: Jiajie Chen <c@jia.je>
+> So factor out informing RamDiscardListener into a functon and call it in
+> case of early migration right after we restored the bitmap.
+> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
->   target/loongarch/cpu.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   hw/virtio/virtio-mem.c | 26 +++++++++++++++++++++-----
+>   1 file changed, 21 insertions(+), 5 deletions(-)
 > 
-> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
-> index f125a8e49b..79ad79a289 100644
-> --- a/target/loongarch/cpu.h
-> +++ b/target/loongarch/cpu.h
-> @@ -462,7 +462,7 @@ static inline void set_pc(CPULoongArchState *env, uint64_t value)
->   #define HW_FLAGS_CRMD_PG    R_CSR_CRMD_PG_MASK   /* 0x10 */
->   #define HW_FLAGS_EUEN_FPE   0x04
->   #define HW_FLAGS_EUEN_SXE   0x08
-> -#define HW_FLAGS_EUEN_ASXE  0x10
-> +#define HW_FLAGS_EUEN_ASXE  0x40
->   #define HW_FLAGS_VA32       0x20
+> diff --git a/hw/virtio/virtio-mem.c b/hw/virtio/virtio-mem.c
+> index 0b0e6c5090..0cf47df9cf 100644
+> --- a/hw/virtio/virtio-mem.c
+> +++ b/hw/virtio/virtio-mem.c
+> @@ -984,9 +984,8 @@ static int virtio_mem_restore_unplugged(VirtIOMEM *vmem)
+>                                                  virtio_mem_discard_range_cb);
+>   }
 >   
->   static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, vaddr *pc,
+> -static int virtio_mem_post_load(void *opaque, int version_id)
+> +static int virtio_mem_post_load_bitmap(VirtIOMEM *vmem)
+>   {
+> -    VirtIOMEM *vmem = VIRTIO_MEM(opaque);
+>       RamDiscardListener *rdl;
+>       int ret;
+>   
+> @@ -1001,6 +1000,20 @@ static int virtio_mem_post_load(void *opaque, int version_id)
+>               return ret;
+>           }
+>       }
+> +    return 0;
+> +}
+> +
+> +static int virtio_mem_post_load(void *opaque, int version_id)
+> +{
+> +    VirtIOMEM *vmem = VIRTIO_MEM(opaque);
+> +    int ret;
+> +
+> +    if (!vmem->early_migration) {
+> +        ret = virtio_mem_post_load_bitmap(vmem);
+> +        if (ret) {
+> +            return ret;
+> +        }
+> +    }
+>   
+>       /*
+>        * If shared RAM is migrated using the file content and not using QEMU,
+> @@ -1043,7 +1056,7 @@ static int virtio_mem_post_load_early(void *opaque, int version_id)
+>       int ret;
+>   
+>       if (!vmem->prealloc) {
+> -        return 0;
+> +        goto post_load_bitmap;
+>       }
+>   
+>       /*
+> @@ -1051,7 +1064,7 @@ static int virtio_mem_post_load_early(void *opaque, int version_id)
+>        * don't mess with preallocation and postcopy.
+>        */
+>       if (migrate_ram_is_ignored(rb)) {
+> -        return 0;
+> +        goto post_load_bitmap;
+>       }
+>   
+>       /*
+> @@ -1084,7 +1097,10 @@ static int virtio_mem_post_load_early(void *opaque, int version_id)
+>               return -EBUSY;
+>           }
+>       }
+> -    return 0;
+> +
+> +post_load_bitmap:
+> +    /* Finally, update any other state to be consistent with the new bitmap. */
+> +    return virtio_mem_post_load_bitmap(vmem);
+>   }
+>   
+>   typedef struct VirtIOMEMMigSanityChecks {
 
-Better to put all defines in bit order, otherwise it will be easy to make the same mistake 
-again.
 
-With that,
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
+Thanks,
+Maciej
 
-r~
 
