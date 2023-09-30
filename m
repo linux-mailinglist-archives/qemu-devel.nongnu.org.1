@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643AB7B3D40
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 02:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A997B3D46
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 02:22:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmNk7-00074D-09; Fri, 29 Sep 2023 20:21:59 -0400
+	id 1qmNkX-0008HL-U6; Fri, 29 Sep 2023 20:22:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qmNk4-00072b-ST; Fri, 29 Sep 2023 20:21:56 -0400
+ id 1qmNkJ-0007w1-O0; Fri, 29 Sep 2023 20:22:12 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qmNjy-0001Nx-1A; Fri, 29 Sep 2023 20:21:55 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ry7BD54Djz6HJTn;
- Sat, 30 Sep 2023 08:19:16 +0800 (CST)
+ id 1qmNkG-0001Rj-R3; Fri, 29 Sep 2023 20:22:10 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Ry7FP3ZZhz6K6hC;
+ Sat, 30 Sep 2023 08:22:01 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.195.35.96) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Sat, 30 Sep 2023 01:21:27 +0100
+ 15.1.2507.31; Sat, 30 Sep 2023 01:21:46 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,9 +38,9 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: [PATCH V2 05/10] hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
-Date: Sat, 30 Sep 2023 01:19:28 +0100
-Message-ID: <20230930001933.2660-6-salil.mehta@huawei.com>
+Subject: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cpu scan
+Date: Sat, 30 Sep 2023 01:19:29 +0100
+Message-ID: <20230930001933.2660-7-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20230930001933.2660-1-salil.mehta@huawei.com>
 References: <20230930001933.2660-1-salil.mehta@huawei.com>
@@ -57,7 +57,7 @@ X-Spam_score: -4.2
 X-Spam_bar: ----
 X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
  RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,110 +75,49 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPUs Control device(\\_SB.PCI0) register interface for the x86 arch is based on
-PCI and is IO port based and hence existing cpus AML code assumes _CRS objects
-would evaluate to a system resource which describes IO Port address. But on ARM
-arch CPUs control device(\\_SB.PRES) register interface is memory-mapped hence
-_CRS object should evaluate to system resource which describes memory-mapped
-base address.
+OSPM evaluates _EVT method to map the event. The cpu hotplug event eventually
+results in start of the cpu scan. Scan figures out the cpu and the kind of
+event(plug/unplug) and notifies it back to the guest.
 
-This cpus AML code change updates the existing inerface of the build cpus AML
-function to accept both IO/MEMORY type regions and update the _CRS object
-correspondingly.
+The change in this patch updates the GED AML _EVT method with the call to
+\\_SB.CPUS.CSCN which will do above.
 
 Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 ---
- hw/acpi/cpu.c         | 23 ++++++++++++++++-------
- hw/i386/acpi-build.c  |  2 +-
- include/hw/acpi/cpu.h |  5 +++--
- 3 files changed, 20 insertions(+), 10 deletions(-)
+ hw/acpi/generic_event_device.c | 4 ++++
+ include/hw/acpi/cpu_hotplug.h  | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 45defdc0e2..66a71660ec 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -338,9 +338,10 @@ const VMStateDescription vmstate_cpu_hotplug = {
- #define CPU_FW_EJECT_EVENT "CEJF"
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index d2fa1d0e4a..62d504d231 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -108,6 +108,10 @@ void build_ged_aml(Aml *table, const char *name, HotplugHandler *hotplug_dev,
+                 aml_append(if_ctx, aml_call0(MEMORY_DEVICES_CONTAINER "."
+                                              MEMORY_SLOT_SCAN_METHOD));
+                 break;
++            case ACPI_GED_CPU_HOTPLUG_EVT:
++                aml_append(if_ctx, aml_call0(ACPI_CPU_CONTAINER "."
++                                             ACPI_CPU_SCAN_METHOD));
++                break;
+             case ACPI_GED_PWR_DOWN_EVT:
+                 aml_append(if_ctx,
+                            aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
+diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
+index 48b291e45e..ef631750b4 100644
+--- a/include/hw/acpi/cpu_hotplug.h
++++ b/include/hw/acpi/cpu_hotplug.h
+@@ -20,6 +20,8 @@
+ #include "hw/acpi/cpu.h"
  
- void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
--                    hwaddr io_base,
-+                    hwaddr base_addr,
-                     const char *res_root,
--                    const char *event_handler_method)
-+                    const char *event_handler_method,
-+                    AmlRegionSpace rs)
- {
-     Aml *ifctx;
-     Aml *field;
-@@ -367,13 +368,19 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-         aml_append(cpu_ctrl_dev, aml_mutex(CPU_LOCK, 0));
+ #define ACPI_CPU_HOTPLUG_REG_LEN 12
++#define ACPI_CPU_SCAN_METHOD "CSCN"
++#define ACPI_CPU_CONTAINER "\\_SB.CPUS"
  
-         crs = aml_resource_template();
--        aml_append(crs, aml_io(AML_DECODE16, io_base, io_base, 1,
-+        if (rs == AML_SYSTEM_IO) {
-+            aml_append(crs, aml_io(AML_DECODE16, base_addr, base_addr, 1,
-                                ACPI_CPU_HOTPLUG_REG_LEN));
-+        } else {
-+            aml_append(crs, aml_memory32_fixed(base_addr,
-+                               ACPI_CPU_HOTPLUG_REG_LEN, AML_READ_WRITE));
-+        }
-+
-         aml_append(cpu_ctrl_dev, aml_name_decl("_CRS", crs));
- 
-         /* declare CPU hotplug MMIO region with related access fields */
-         aml_append(cpu_ctrl_dev,
--            aml_operation_region("PRST", AML_SYSTEM_IO, aml_int(io_base),
-+            aml_operation_region("PRST", rs, aml_int(base_addr),
-                                  ACPI_CPU_HOTPLUG_REG_LEN));
- 
-         field = aml_field("PRST", AML_BYTE_ACC, AML_NOLOCK,
-@@ -699,9 +706,11 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-     aml_append(sb_scope, cpus_dev);
-     aml_append(table, sb_scope);
- 
--    method = aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
--    aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
--    aml_append(table, method);
-+    if (event_handler_method) {
-+        method = aml_method(event_handler_method, 0, AML_NOTSERIALIZED);
-+        aml_append(method, aml_call0("\\_SB.CPUS." CPU_SCAN_METHOD));
-+        aml_append(table, method);
-+    }
- 
-     g_free(cphp_res_path);
- }
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 4d2d40bab5..611d3d044d 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1550,7 +1550,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-             .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
-         };
-         build_cpus_aml(dsdt, machine, opts, pm->cpu_hp_io_base,
--                       "\\_SB.PCI0", "\\_GPE._E02");
-+                       "\\_SB.PCI0", "\\_GPE._E02", AML_SYSTEM_IO);
-     }
- 
-     if (pcms->memhp_io_base && nr_mem) {
-diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-index 999caaf510..b87ebfdf4b 100644
---- a/include/hw/acpi/cpu.h
-+++ b/include/hw/acpi/cpu.h
-@@ -56,9 +56,10 @@ typedef struct CPUHotplugFeatures {
- } CPUHotplugFeatures;
- 
- void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
--                    hwaddr io_base,
-+                    hwaddr base_addr,
-                     const char *res_root,
--                    const char *event_handler_method);
-+                    const char *event_handler_method,
-+                    AmlRegionSpace rs);
- 
- void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list);
- 
+ typedef struct AcpiCpuHotplug {
+     Object *device;
 -- 
 2.34.1
 
