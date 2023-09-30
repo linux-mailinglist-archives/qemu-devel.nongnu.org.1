@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F7E7B4025
-	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 13:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 105857B4027
+	for <lists+qemu-devel@lfdr.de>; Sat, 30 Sep 2023 13:41:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmYKs-0004iS-WF; Sat, 30 Sep 2023 07:40:39 -0400
+	id 1qmYLW-0006Iy-1a; Sat, 30 Sep 2023 07:41:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYKq-0004ZL-Nd
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:40:36 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYLT-000699-EY
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:41:15 -0400
 Received: from hognose1.porkbun.com ([35.82.102.206])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYKo-0007x7-KX
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:40:36 -0400
+ (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmYLR-00082D-JW
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 07:41:15 -0400
 Received: from [192.168.1.2] (unknown [223.72.88.249])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (Client did not present a certificate)
  (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 7F53144345;
- Sat, 30 Sep 2023 11:40:31 +0000 (UTC)
+ by hognose1.porkbun.com (Postfix) with ESMTPSA id CF6B844345;
+ Sat, 30 Sep 2023 11:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1696074033; bh=tzPbO8A6Z2+bEvBhmefwyLemAs+i685mx+X8l4EBSXs=;
+ t=1696074072; bh=MoMfbniPfhKWi0AeVNcTKvl0CEqoBZRsXPlFWQPJmFA=;
  h=Date:Subject:To:Cc:References:From:In-Reply-To;
- b=nvmKJjBijMa/wF3AQzPWM/GpwYDKaKWrPy0SZBx7j1ILWLu2qjJiMMSRMtNWNr8/D
- 9TAiOlpLilqEI4WTzX+XbcedQCRyIkJtFqpmyjX1PXXMp85kas+R5XJ2X/4kmSzGcg
- 1cDryA/0w8H9qj4HsEG2dyg6dUR3pJtGEf6YRRHg=
-Message-ID: <c030c757-9fa6-4137-b303-abf2dcd202fc@jia.je>
-Date: Sat, 30 Sep 2023 19:40:30 +0800
+ b=cyhotaJwq6dR/aBj+W7jxFmJoh01slrNnxu1fN0PRi1K+UNRJTTKgbcwDWJzUqEOf
+ aRM7qReI0uG9TI6SSGjwsJwjgEo1mXWv0KjC33sGZiMvCKi3W8Q9vP/OcVRG8HWNuK
+ PkuiMAkBNOXLkXpa2dOJX+PmoEe9gKdRsLuxRIW0=
+Message-ID: <896294f0-e705-41fb-ab9d-4c7162ad2e78@jia.je>
+Date: Sat, 30 Sep 2023 19:41:10 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/7] util: Add cpuinfo for loongarch64
+Subject: Re: [PATCH 4/7] tcg/loongarch64: Use cpuinfo.h
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: git@xen0n.name, gaosong@loongson.cn, yangxiaojuan@loongson.cn
 References: <20230916220151.526140-1-richard.henderson@linaro.org>
- <20230916220151.526140-4-richard.henderson@linaro.org>
+ <20230916220151.526140-5-richard.henderson@linaro.org>
 From: Jiajie Chen <c@jia.je>
-In-Reply-To: <20230916220151.526140-4-richard.henderson@linaro.org>
+In-Reply-To: <20230916220151.526140-5-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
@@ -69,94 +69,78 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 2023/9/17 06:01, Richard Henderson wrote:
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   host/include/loongarch64/host/cpuinfo.h | 21 +++++++++++++++
->   util/cpuinfo-loongarch.c                | 35 +++++++++++++++++++++++++
->   util/meson.build                        |  2 ++
->   3 files changed, 58 insertions(+)
->   create mode 100644 host/include/loongarch64/host/cpuinfo.h
->   create mode 100644 util/cpuinfo-loongarch.c
+>   tcg/loongarch64/tcg-target.h     | 8 ++++----
+>   tcg/loongarch64/tcg-target.c.inc | 8 +-------
+>   2 files changed, 5 insertions(+), 11 deletions(-)
 >
-> diff --git a/host/include/loongarch64/host/cpuinfo.h b/host/include/loongarch64/host/cpuinfo.h
-> new file mode 100644
-> index 0000000000..fab664a10b
-> --- /dev/null
-> +++ b/host/include/loongarch64/host/cpuinfo.h
-> @@ -0,0 +1,21 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Host specific cpu identification for LoongArch
-> + */
-> +
-> +#ifndef HOST_CPUINFO_H
-> +#define HOST_CPUINFO_H
-> +
-> +#define CPUINFO_ALWAYS          (1u << 0)  /* so cpuinfo is nonzero */
-> +#define CPUINFO_LSX             (1u << 1)
-> +
-> +/* Initialized with a constructor. */
-> +extern unsigned cpuinfo;
-> +
-> +/*
-> + * We cannot rely on constructor ordering, so other constructors must
-> + * use the function interface rather than the variable above.
-> + */
-> +unsigned cpuinfo_init(void);
-> +
-> +#endif /* HOST_CPUINFO_H */
-> diff --git a/util/cpuinfo-loongarch.c b/util/cpuinfo-loongarch.c
-> new file mode 100644
-> index 0000000000..08b6d7460c
-> --- /dev/null
-> +++ b/util/cpuinfo-loongarch.c
-> @@ -0,0 +1,35 @@
-> +/*
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + * Host specific cpu identification for LoongArch.
-> + */
-> +
-> +#include "qemu/osdep.h"
+> diff --git a/tcg/loongarch64/tcg-target.h b/tcg/loongarch64/tcg-target.h
+> index 03017672f6..1bea15b02e 100644
+> --- a/tcg/loongarch64/tcg-target.h
+> +++ b/tcg/loongarch64/tcg-target.h
+> @@ -29,6 +29,8 @@
+>   #ifndef LOONGARCH_TCG_TARGET_H
+>   #define LOONGARCH_TCG_TARGET_H
+>   
 > +#include "host/cpuinfo.h"
 > +
-> +#ifdef CONFIG_GETAUXVAL
-> +# include <sys/auxv.h>
-> +#else
-> +# include "elf.h"
-> +#endif
-> +#include <asm/hwcap.h>
-> +
-> +unsigned cpuinfo;
-> +
-> +/* Called both as constructor and (possibly) via other constructors. */
-> +unsigned __attribute__((constructor)) cpuinfo_init(void)
-> +{
-> +    unsigned info = cpuinfo;
-> +    unsigned long hwcap;
-> +
-> +    if (info) {
-> +        return info;
-> +    }
-> +
-> +    hwcap = qemu_getauxval(AT_HWCAP);
-> +
-> +    info = CPUINFO_ALWAYS;
-> +    info |= (hwcap & HWCAP_LOONGARCH_LSX ? CPUINFO_LSX : 0);
-> +
-> +    cpuinfo = info;
-> +    return info;
-> +}
-> diff --git a/util/meson.build b/util/meson.build
-> index c4827fd70a..b136f02aa0 100644
-> --- a/util/meson.build
-> +++ b/util/meson.build
-> @@ -112,6 +112,8 @@ if cpu == 'aarch64'
->     util_ss.add(files('cpuinfo-aarch64.c'))
->   elif cpu in ['x86', 'x86_64']
->     util_ss.add(files('cpuinfo-i386.c'))
-> +elif cpu == 'loongarch64'
-> +  util_ss.add(files('cpuinfo-loongarch.c'))
->   elif cpu in ['ppc', 'ppc64']
->     util_ss.add(files('cpuinfo-ppc.c'))
->   endif
+>   #define TCG_TARGET_INSN_UNIT_SIZE 4
+>   #define TCG_TARGET_NB_REGS 64
+>   
+> @@ -85,8 +87,6 @@ typedef enum {
+>       TCG_VEC_TMP0 = TCG_REG_V23,
+>   } TCGReg;
+>   
+> -extern bool use_lsx_instructions;
+> -
+>   /* used for function call generation */
+>   #define TCG_REG_CALL_STACK              TCG_REG_SP
+>   #define TCG_TARGET_STACK_ALIGN          16
+> @@ -171,10 +171,10 @@ extern bool use_lsx_instructions;
+>   #define TCG_TARGET_HAS_muluh_i64        1
+>   #define TCG_TARGET_HAS_mulsh_i64        1
+>   
+> -#define TCG_TARGET_HAS_qemu_ldst_i128   use_lsx_instructions
+> +#define TCG_TARGET_HAS_qemu_ldst_i128   (cpuinfo & CPUINFO_LSX)
+>   
+>   #define TCG_TARGET_HAS_v64              0
+> -#define TCG_TARGET_HAS_v128             use_lsx_instructions
+> +#define TCG_TARGET_HAS_v128             (cpuinfo & CPUINFO_LSX)
+>   #define TCG_TARGET_HAS_v256             0
+>   
+>   #define TCG_TARGET_HAS_not_vec          1
+> diff --git a/tcg/loongarch64/tcg-target.c.inc b/tcg/loongarch64/tcg-target.c.inc
+> index 40074c46b8..52f2c26ce1 100644
+> --- a/tcg/loongarch64/tcg-target.c.inc
+> +++ b/tcg/loongarch64/tcg-target.c.inc
+> @@ -32,8 +32,6 @@
+>   #include "../tcg-ldst.c.inc"
+>   #include <asm/hwcap.h>
+>   
+> -bool use_lsx_instructions;
+> -
+>   #ifdef CONFIG_DEBUG_TCG
+>   static const char * const tcg_target_reg_names[TCG_TARGET_NB_REGS] = {
+>       "zero",
+> @@ -2316,10 +2314,6 @@ static void tcg_target_init(TCGContext *s)
+>           exit(EXIT_FAILURE);
+>       }
+>   
+> -    if (hwcap & HWCAP_LOONGARCH_LSX) {
+> -        use_lsx_instructions = 1;
+> -    }
+> -
+>       tcg_target_available_regs[TCG_TYPE_I32] = ALL_GENERAL_REGS;
+>       tcg_target_available_regs[TCG_TYPE_I64] = ALL_GENERAL_REGS;
+>   
+> @@ -2335,7 +2329,7 @@ static void tcg_target_init(TCGContext *s)
+>       tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S8);
+>       tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_S9);
+>   
+> -    if (use_lsx_instructions) {
+> +    if (cpuinfo & CPUINFO_LSX) {
+>           tcg_target_available_regs[TCG_TYPE_V128] = ALL_VECTOR_REGS;
+>           tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V24);
+>           tcg_regset_reset_reg(tcg_target_call_clobber_regs, TCG_REG_V25);
 
 
 Reviewed-by: Jiajie Chen <c@jia.je>
