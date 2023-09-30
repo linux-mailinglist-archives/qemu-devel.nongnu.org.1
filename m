@@ -2,70 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E127B44BA
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCED7B44B9
 	for <lists+qemu-devel@lfdr.de>; Sun,  1 Oct 2023 01:54:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmjm8-0004M2-F8; Sat, 30 Sep 2023 19:53:32 -0400
+	id 1qmjm8-0004MS-WD; Sat, 30 Sep 2023 19:53:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qmjm6-0004Lu-BF
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 19:53:30 -0400
-Received: from mail-lj1-x22d.google.com ([2a00:1450:4864:20::22d])
+ (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qmjm7-0004MH-HD
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 19:53:31 -0400
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qmjm4-0007vc-O8
- for qemu-devel@nongnu.org; Sat, 30 Sep 2023 19:53:30 -0400
-Received: by mail-lj1-x22d.google.com with SMTP id
- 38308e7fff4ca-2c186ea81c7so73587751fa.1
- for <qemu-devel@nongnu.org>; Sat, 30 Sep 2023 16:53:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <viktor@daynix.com>) id 1qmjm5-0007vk-W3
+ for qemu-devel@nongnu.org; Sat, 30 Sep 2023 19:53:31 -0400
+Received: by mail-lf1-x133.google.com with SMTP id
+ 2adb3069b0e04-50435a9f800so22976525e87.2
+ for <qemu-devel@nongnu.org>; Sat, 30 Sep 2023 16:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696118007; x=1696722807;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696118008; x=1696722808;
  darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=Qyyf4f7KekpLgnFV4mRW/n+rtuPM++OlNWbEs/wnPZY=;
- b=TDACL6oyqzY/XZGojwh7T+19G8duhQULgQclSOpCoALZP+MSMIEI1Ko4pYEJ/HluZM
- 7tsXtLw25wzFPjaE1zI9ATLjAAox/NPoR3wusaF0pYSWW33QL2ZdTePQONS6Elyz3EqL
- 09vMlG8FAOEEbFZQfMH/Ax9s/c8IWshTMDT2tUdidRjoKfk6mtFjOBLAwKNCV7Jd5UsX
- AyFC2qHDtZng4SzonErj4zexEbvTS8VT7ondA9PddAepS5J+qEKkYDXlCrIBi1aPVLRv
- cxqxQQR+V1yW0sBytKTmDnuytNLjGhHvx7J+ajIs8I0iNPDq6PDnZn2e+y+Hl3zwvEWT
- oncA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nvK8BS9ps6tlLgHZB3wvEEtS/WBjeRsiB6ed+WJeDcc=;
+ b=g9aHRkxlVa5nA+jhsQT/Zm4B58s8wllcTZLNuRsWjqDF0tfTvKMjDW2nkQaCgS7rf1
+ YkP2FTGkJbfhJlqku/1j+u3QF7xhgGSWsnAiWM1OE+FGlSg06SBaTxWe75m34tybrEuj
+ kebgsS0HEJCn7vKSNtTWp1JfUr5Mh7bc8qvv8jY7KAGBNopGWu9GPtOyoLFZvNs/+hnS
+ 5CnTZa26J2Q/GYdrhQMtFobL/sp5RF7vJh7vMBjn6ZYPq83IxyECbYedxYBdnAu/tl3t
+ XhZhuwOtiAsKhKn1Dv0Cb622k8m0/chBulI+Jt8Qd855nMAI9LGd6BoCorjPMoJwlFpO
+ 5MwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696118007; x=1696722807;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Qyyf4f7KekpLgnFV4mRW/n+rtuPM++OlNWbEs/wnPZY=;
- b=JcnV9bas+atvwUSP8fx9BDVsXCu1Im73LDr0jwfQTtOKanm5WsZmDbQ9gHo2KSNuSH
- Hg1ztvuKo+b3UG6DPtB8MbOkXpCLCtmOfX2XhgwtNuYmE/rWshzV3bnM9zicRl0duhvI
- LPHxgTj1ixPqxITNFk6vaJf/4FCAh/JmVLqv2blQzdIri2jSvvMyT6RXDdO/+C8YVsMh
- wE97A0H9UJzbH/JAyYdw8Z4MtaIyIHllndfVL0AHX6Ze/TUHL5dHObA28tiqV/UWCSyP
- iT+TOeBgTFkByi+Dt8YOwcDFmFAB95lg+N7zIty1dgcziMLBFYn5q00ZJAZoKG4GRAF1
- gtiQ==
-X-Gm-Message-State: AOJu0YxZIvI9kIQAeEzTuKcs8nNR9o4e5By6W4niMLBzLgjXXECiokB1
- ByqVntFu4zHTAwWfun5Vmvp00A==
-X-Google-Smtp-Source: AGHT+IEStiu+gYUmtvCG3Qoflh4x3SW7m41+dhV1gvmsR2qfJ6b2wbfSJTYkBktGGf4S0aGZpQlXtA==
-X-Received: by 2002:ac2:5487:0:b0:4fb:91c5:fd38 with SMTP id
- t7-20020ac25487000000b004fb91c5fd38mr5485212lfk.0.1696118007186; 
+ d=1e100.net; s=20230601; t=1696118008; x=1696722808;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nvK8BS9ps6tlLgHZB3wvEEtS/WBjeRsiB6ed+WJeDcc=;
+ b=BmiaDya5QCYoWEaPxgbjWeIRbaW+s+GhI8znBEnqFSsGUAOIAVkADuxjOdC7FiRTO2
+ iM02h2kTjKKMz1xNw5jbJWyExw0ryrPDtwn12/VcY5/lR+p82SSyXUFkGThSxhclasmL
+ tGCASw3hQQe9PhVxGoj9p6lPXyVDyZJ3J/yYQ0XntY1gXk6eeXPEat1TGpPWUqibHCSs
+ YybimwR8FOIoqbq0K182VbQTUGWVpaoJZbvYjfiWIA+AIit7aaWYi3zVQzp2hW5PdQGy
+ PPYzQFxuqkalvY3soGVkGVbFh5MB9bCN85Fb/7Bg/g4GnbP6XDuh1Q0il/+EVt3NZhcc
+ VblA==
+X-Gm-Message-State: AOJu0YxoR12NxCVl4FadN5/UwikAK84bboJMoTBc7GvOmKzbv8YtvQKl
+ Rp97bmNUm2wx9L41KgVeJVgYBw==
+X-Google-Smtp-Source: AGHT+IERyou497UPA6O+bsd/0hugid+ejczsGp74kKQjCABjz8KMWwcjatH0lNBw8TEcuJpRXIWOpQ==
+X-Received: by 2002:a19:f00e:0:b0:4f9:586b:dba1 with SMTP id
+ p14-20020a19f00e000000b004f9586bdba1mr6379793lfc.4.1696118007916; 
  Sat, 30 Sep 2023 16:53:27 -0700 (PDT)
 Received: from localhost.localdomain (109-252-90-8.nat.spd-mgts.ru.
  [109.252.90.8]) by smtp.gmail.com with ESMTPSA id
- h18-20020a197012000000b0050309ea3a62sm4012391lfc.277.2023.09.30.16.53.26
+ h18-20020a197012000000b0050309ea3a62sm4012391lfc.277.2023.09.30.16.53.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 30 Sep 2023 16:53:26 -0700 (PDT)
+ Sat, 30 Sep 2023 16:53:27 -0700 (PDT)
 From: Viktor Prutyanov <viktor@daynix.com>
 To: peter.maydell@linaro.org
 Cc: qemu-devel@nongnu.org, akihiko.odaki@daynix.com, yan@daynix.com,
  viktor@daynix.com, viktor.prutyanov@phystech.edu
-Subject: [PATCH v2 0/2] elf2dmp: fixes of code analysis warnings
-Date: Sun,  1 Oct 2023 02:53:15 +0300
-Message-Id: <20230930235317.11469-1-viktor@daynix.com>
+Subject: [PATCH v2 1/2] elf2dmp: limit print length for sign_rsds
+Date: Sun,  1 Oct 2023 02:53:16 +0300
+Message-Id: <20230930235317.11469-2-viktor@daynix.com>
 X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20230930235317.11469-1-viktor@daynix.com>
+References: <20230930235317.11469-1-viktor@daynix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2a00:1450:4864:20::22d;
- envelope-from=viktor@daynix.com; helo=mail-lj1-x22d.google.com
+Received-SPF: none client-ip=2a00:1450:4864:20::133;
+ envelope-from=viktor@daynix.com; helo=mail-lf1-x133.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -87,18 +90,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series tries to fix Coverity warnings.
+String sign_rsds isn't terminated, so the print length must be limited.
 
-v2: fix commit authorship, add CIDs
+Fixes: Coverity CID 1521598
+Signed-off-by: Viktor Prutyanov <viktor@daynix.com>
+---
+ contrib/elf2dmp/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Viktor Prutyanov (2):
-  elf2dmp: limit print length for sign_rsds
-  elf2dmp: check array bounds in pdb_get_file_size
-
- contrib/elf2dmp/main.c |  2 +-
- contrib/elf2dmp/pdb.c  | 13 +++++++++----
- 2 files changed, 10 insertions(+), 5 deletions(-)
-
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index 5db163bdbe..6de5c9808e 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -478,7 +478,7 @@ static bool pe_check_pdb_name(uint64_t base, void *start_addr,
+     }
+ 
+     if (memcmp(&rsds->Signature, sign_rsds, sizeof(sign_rsds))) {
+-        eprintf("CodeView signature is \'%.4s\', \'%s\' expected\n",
++        eprintf("CodeView signature is \'%.4s\', \'%.4s\' expected\n",
+                 rsds->Signature, sign_rsds);
+         return false;
+     }
 -- 
 2.21.0
 
