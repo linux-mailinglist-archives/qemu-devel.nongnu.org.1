@@ -2,50 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC8F7B4668
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Oct 2023 10:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C6DE7B4696
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Oct 2023 11:33:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qmsCx-0000pi-JK; Sun, 01 Oct 2023 04:53:47 -0400
+	id 1qmsns-0007CF-DK; Sun, 01 Oct 2023 05:31:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmsCk-0000ov-GL
- for qemu-devel@nongnu.org; Sun, 01 Oct 2023 04:53:37 -0400
-Received: from hognose1.porkbun.com ([35.82.102.206])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qmsno-0007C0-U5
+ for qemu-devel@nongnu.org; Sun, 01 Oct 2023 05:31:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <c@jia.je>) id 1qmsCi-0000VI-Ne
- for qemu-devel@nongnu.org; Sun, 01 Oct 2023 04:53:34 -0400
-Received: from cslab-raptor.. (unknown [166.111.226.99])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qmsnn-00022N-5d
+ for qemu-devel@nongnu.org; Sun, 01 Oct 2023 05:31:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696152710;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=giaPsng+7wf4odCEXO560SX9lQHxYS5Yy3UfEUtFpqA=;
+ b=Ha26daKaueN/3kewiqE9axLzXaGL84HQpCPZ3TC96qeSwz+Vp3XoWDoxse0n7EnpfkGE6u
+ 6WS0ZYG/XGOFERrho6ZLc+AFB4gtmml98JI2HSok6Bpn1Gg68MC/tTAGTdPLLUAd7c7e5Y
+ zv2pfmYybz38tyOIMKi9kIW5DLz34gc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-144-iGWd0XmDMN24LW77w904jg-1; Sun, 01 Oct 2023 05:31:49 -0400
+X-MC-Unique: iGWd0XmDMN24LW77w904jg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (Client did not present a certificate)
- (Authenticated sender: c@jia.je)
- by hognose1.porkbun.com (Postfix) with ESMTPSA id 3374943FF1;
- Sun,  1 Oct 2023 08:53:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jia.je; s=default;
- t=1696150408; bh=cIpJmsdI+UMBxDqiMLVVhtfrvKKSePArEbN+XX0226w=;
- h=From:To:Cc:Subject:Date;
- b=hNKQgGO6vVzIAHJ3l4i5V49K3QlwV+IG7C4JC6nmdnYAT7fjjwlhu0UsNAajK5Kdr
- CJMN0FzyyXgcHuBNzeoAUnW4l5DflLxgSWJ0ypa75a04bjRBlmMB9H1dWdzNpeIUFU
- zbKydXxknleEdgBk0LtUo80c+6PZkIrVGoc6zSJY=
-From: Jiajie Chen <c@jia.je>
-To: qemu-devel@nongnu.org
-Cc: richard.henderson@linaro.org, gaosong@loongson.cn, git@xen0n.name,
- Jiajie Chen <c@jia.je>, Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH] linux-user/elfload: Enable LSX/LASX in HWCAP for LoongArch
-Date: Sun,  1 Oct 2023 16:53:05 +0800
-Message-ID: <20231001085315.1692667-1-c@jia.je>
-X-Mailer: git-send-email 2.41.0
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BD73685A5A8;
+ Sun,  1 Oct 2023 09:31:48 +0000 (UTC)
+Received: from [10.39.192.60] (unknown [10.39.192.60])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9BFBC492B16;
+ Sun,  1 Oct 2023 09:31:47 +0000 (UTC)
+Message-ID: <9284b911-0f77-35b6-93f9-4551414dae3c@redhat.com>
+Date: Sun, 1 Oct 2023 11:31:46 +0200
 MIME-Version: 1.0
+Subject: Re: [PATCH 0/4] ui/console: multihead: fix crash, simplify logic
+Content-Language: en-US
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>
+References: <20230913144959.41891-1-lersek@redhat.com>
+ <CAJ+F1CJfROA9ezKi6Tzs1hLun8jpnWhrQCjreQdWhGro97CAyA@mail.gmail.com>
+ <4c36a1eb-9a76-2231-4ead-d8daab657d84@redhat.com>
+ <CAJ+F1CKPaU5z8mnnFJWvw4CmFyEenFQ679A5Nf3CAqzJMqdqVA@mail.gmail.com>
+ <d462d277-4f32-2b98-19c4-7af43167af8d@ilande.co.uk>
+ <7dc6ed8b-adfd-2d00-b26e-3d7acb4fe9ee@redhat.com>
+ <badc8326-09d5-2454-0723-7fb79cad9a08@ilande.co.uk>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <badc8326-09d5-2454-0723-7fb79cad9a08@ilande.co.uk>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=35.82.102.206; envelope-from=c@jia.je;
- helo=hognose1.porkbun.com
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -61,34 +85,115 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since support for LSX and LASX is landed in QEMU recently, we can update
-HWCAPS accordingly.
+On 10/1/23 08:15, Mark Cave-Ayland wrote:
+> On 30/09/2023 22:28, Laszlo Ersek wrote:
+> 
+>> On 9/29/23 09:57, Mark Cave-Ayland wrote:
+>>> On 26/09/2023 09:00, Marc-André Lureau wrote:
+>>>
+>>>> Hi Laszlo
+>>>>
+>>>> On Mon, Sep 25, 2023 at 7:36 PM Laszlo Ersek <lersek@redhat.com> wrote:
+>>>>> Has this been queued by someone? Both Gerd and Marc-André are "odd
+>>>>> fixers", so I'm not sure who should be sending a PR with these patches
+>>>>> (and I don't see a pending PULL at
+>>>>> <https://lists.gnu.org/archive/html/qemu-devel/2023-09/threads.html>
+>>>>> with these patch subjects included).
+>>>>
+>>>> I have the series in my "ui" branch. I was waiting for a few more
+>>>> patches to be accumulated. But if someone else takes this first, I'll
+>>>> drop them.
+>>>
+>>> Does this series fix the "../ui/console.c:818: dpy_get_ui_info:
+>>> Assertion `dpy_ui_info_supported(con)' failed." assert() on startup when
+>>> using gtk? It would be good to get this fixed in git master soon, as it
+>>> has been broken for a couple of weeks now, and -display sdl has issues
+>>> tracking the mouse correctly on my laptop here :(
+>>
+>> ... probably not; I've never seen that issue. Can you provide a
+>> reproducer?
+> 
+> The environment is a standard Debian bookworm install building QEMU git
+> master with QEMU gtk support. The only difference I can think of is that
+> I do all my QEMU builds as a separate user, and then export the display
+> to my current user desktop i.e.
+> 
+> As my current user:
+>   $ xhost +
+> 
+> As my QEMU build user:
+>   $ export DISPLAY=:1
+>   $ ./build/qemu-system-sparc
+>   qemu-system-sparc: ../ui/console.c:818: dpy_get_ui_info: Assertion
+>  `dpy_ui_info_supported(con)' failed.
+>   Aborted (core dumped)
+> 
+>> Also, it should be bisectable (over Marc-André's 52-part series I guess).
+> 
+> Indeed. I've just run git bisect and it returns the following:
+> 
+> a92e7bb4cad57cc5c8817fb18fb25650507b69f8 is the first bad commit
+> commit a92e7bb4cad57cc5c8817fb18fb25650507b69f8
+> Author: Marc-André Lureau <marcandre.lureau@redhat.com>
+> Date:   Tue Sep 12 10:13:01 2023 +0400
+> 
+>     ui: add precondition for dpy_get_ui_info()
+> 
+>     Ensure that it only get called when dpy_ui_info_supported(). The
+>     function should always return a result. There should be a non-null
+>     console or active_console.
+> 
+>     Modify the argument to be const as well.
+> 
+>     Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+>     Reviewed-by: Albert Esteve <aesteve@redhat.com>
+> 
+>  include/ui/console.h | 2 +-
+>  ui/console.c         | 4 +++-
+>  2 files changed, 4 insertions(+), 2 deletions(-)
 
-Signed-off-by: Jiajie Chen <c@jia.je>
----
- linux-user/elfload.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+This commit looks plain wrong to me; or rather I don't understand the
+argument.
 
-diff --git a/linux-user/elfload.c b/linux-user/elfload.c
-index db75cd4b33..f11f25309e 100644
---- a/linux-user/elfload.c
-+++ b/linux-user/elfload.c
-@@ -1237,6 +1237,14 @@ static uint32_t get_elf_hwcap(void)
-         hwcaps |= HWCAP_LOONGARCH_LAM;
-     }
- 
-+    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LSX)) {
-+        hwcaps |= HWCAP_LOONGARCH_LSX;
-+    }
-+
-+    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LASX)) {
-+        hwcaps |= HWCAP_LOONGARCH_LASX;
-+    }
-+
-     return hwcaps;
- }
- 
--- 
-2.41.0
+In the particular crash, we fail in gtk_display_init -> gtk_widget_show
+-> ... -> gd_configure -> gd_set_ui_size -> dpy_get_ui_info, and when
+the latter calls dpy_ui_info_supported(), we find that
+"con->hw_ops->ui_info" is NULL. In this particular case, "con->hw_ops"
+is "vga_ops", and indeed "vga_ops" does not provide an "ui_info" funcptr.
+
+SDL is unaffected because with SDL, we never call dpy_get_ui_info().
+
+There's something fishy in the GTK display code BTW, in my opinion. I
+can't quite put my finger on it, but commit aeffd071ed81 ("ui: Deliver
+refresh rate via QemuUIInfo", 2022-06-14) definitely plays a role.
+
+Before commit aeffd071ed81, "ui/gtk.c" wouldn't call dpy_get_ui_info()
+either! Instead, from gd_configure(), we'd call gd_set_ui_info(),
+directly setting the size from the incoming GdkEventConfigure object.
+
+In commit aeffd071ed81, solely for the sake of carrying over the refresh
+rate, gd_set_ui_info() was renamed to gd_set_ui_size(). The width and
+height coming from the GdkEventConfigure object would be propagated the
+same way to dpy_set_ui_info(), but the *rest* of the QemuUIInfo object
+would be initialized differently. Before, the other fields would be
+zero, now they'd come from dpy_get_ui_info() -- most likely for the sake
+of carrying over the new refresh_rate field.
+
+This in itself wouldn't crash, but it set up the call chain that is now
+affected by the (IMO too strict) assertion.
+
+Why is a hw_ops-based ui_info needed for dpy_get_ui_info()?
+dpy_get_ui_info() never tries to *call* that function, it just returns
+&con->ui_info. So dpy_get_ui_info() *already* guarantees that it returns
+non-NULL.
+
+Laszlo
+
+> 
+> 
+> ATB,
+> 
+> Mark.
+> 
 
 
