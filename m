@@ -2,96 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9677B4942
-	for <lists+qemu-devel@lfdr.de>; Sun,  1 Oct 2023 20:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 038287B496C
+	for <lists+qemu-devel@lfdr.de>; Sun,  1 Oct 2023 21:20:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qn1Mk-0004Zx-BM; Sun, 01 Oct 2023 14:40:30 -0400
+	id 1qn1yN-0005PM-Ab; Sun, 01 Oct 2023 15:19:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qn1Mf-0004NV-Q8
- for qemu-devel@nongnu.org; Sun, 01 Oct 2023 14:40:26 -0400
-Received: from wout4-smtp.messagingengine.com ([64.147.123.20])
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qn1yE-0005Hf-U7
+ for qemu-devel@nongnu.org; Sun, 01 Oct 2023 15:19:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dxu@dxuuu.xyz>) id 1qn1MS-0006qx-Fj
- for qemu-devel@nongnu.org; Sun, 01 Oct 2023 14:40:24 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
- by mailout.west.internal (Postfix) with ESMTP id E38C03200EC7;
- Sun,  1 Oct 2023 14:40:03 -0400 (EDT)
-Received: from imap42 ([10.202.2.92])
- by compute1.internal (MEProxy); Sun, 01 Oct 2023 14:40:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dxuuu.xyz; h=cc
- :cc:content-transfer-encoding:content-type:content-type:date
- :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
- 1696185603; x=1696272003; bh=ykRWlExIGWCWCb9LHuRKNDqYKA/JL+N+Q4q
- c1q+rgVA=; b=XZ0a6kqz5wxaClaSGuPbHpocGdtwAJerPX552GkU+xxCW2/4eZs
- A/V97o1p6aFr7M83g1GckqrNWrc1+vLby7KZDRqlW2mhzmRW8wJgW10psveEa7AU
- 1ZLOHM3tR6YHit6gslvkHkoSevE5+Vp+9kH8TsmmWshnvB1H3glexWBEIap35w4t
- 1uMHkIP0INLkUTUMIT1oS3WFX6fW9RPYHPsimo+CLmiBmPFp7NNl4VpwGseuxVpE
- w3CM2F6/fQsTMHT/gza4yhficIf9ufDGfhpsc+KB+iJHd/vVjX3VSAei8V4GXXwn
- wPcSfjtQjtzuUfYyep7UsW1uXmNUMU1VU7A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:content-type:date:date:feedback-id:feedback-id
- :from:from:in-reply-to:in-reply-to:message-id:mime-version
- :references:reply-to:sender:subject:subject:to:to:x-me-proxy
- :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
- 1696185603; x=1696272003; bh=ykRWlExIGWCWCb9LHuRKNDqYKA/JL+N+Q4q
- c1q+rgVA=; b=N+QHEAWpdQrzP7Thp6i8Z/d73Fw8yZc3FoK/ldLcnVqWq85SANy
- P9q4Vedccbe49JeasC6CmCArBG210iG+O9v+oRTPktCyQWsXtuSYbfqNuT5amHV2
- fQ4WirVVlxzBjv0In33KSX2Fn3LmBc3SHQgAiLIgYVIhNzZZXPw5tavZJSz7STb1
- 0bsOVaFH8fYV460IrfvzFEcyckrJf2+qp6m3c4ANW8ehk5UfYsu1Bm5o6mknfGG+
- FTUgC1oW6fdApzPP8CAChP6exhnulw2UgNNVR1qTbz5K7ASwr8F4sb4Raicw4Pfn
- wR8XXO7Y6ZRkcf+vt/QLz7cN/YkC0sj1Osw==
-X-ME-Sender: <xms:A70ZZdyhENqCnN7aEveycxTWG_kOn5U4oVZ9pVTP385K9GlU7s9fsA>
- <xme:A70ZZdSuRhFvdiSdISEANNQXFNVB3jFXBLpKmRZvFubSK3EYR300lsGW7HiTBFqNj
- osguvmiPzKCGxx9Pg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdefgddtudcutefuodetggdotefrodftvf
- curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
- uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
- hrlhcuvffnffculddvfedmnecujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredt
- reerjeenucfhrhhomhepfdffrghnihgvlhcuighufdcuoegugihusegugihuuhhurdighi
- iiqeenucggtffrrghtthgvrhhnpefffefgiedutdeffeelgefhkeelheetteelgeeffeeg
- leduueeitdejhfffueejheenucffohhmrghinhepshhtrggtkhhovhgvrhhflhhofidrtg
- homhdpfhgvughorhgrphhrohhjvggtthdrohhrghdpugiguhhuuhdrgiihiidpghhithhh
- uhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
- homhepugiguhesugiguhhuuhdrgiihii
-X-ME-Proxy: <xmx:A70ZZXVA-9aov7-v6WYz0SMhzLRudGacFJKxV-DojqG2XWYq1g72Og>
- <xmx:A70ZZfj7omus3f2lmSvOTzfdwViy-CcWSWfkmuGTUdhO26Rh1EGzHQ>
- <xmx:A70ZZfDcqdefxIBxP4Gujd2cL6JAkmv9VFi__x3bJ8mpJ0FXkN-5Xw>
- <xmx:A70ZZWNCWFGoQebUqTpZIbXmS23WcbZpPgYjjZ7Fejg5hOfh8GtZIQ>
-Feedback-ID: i6a694271:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
- id 2BB1EBC007C; Sun,  1 Oct 2023 14:40:03 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-958-g1b1b911df8-fm-20230927.002-g1b1b911d
+ (Exim 4.90_1) (envelope-from <kkostiuk@redhat.com>)
+ id 1qn1y9-0007gD-AW
+ for qemu-devel@nongnu.org; Sun, 01 Oct 2023 15:19:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696187947;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=LqM01s9qwhz4FTHDK2DMibsL6AllKhQEYlXp5iZOORg=;
+ b=L6x4rJUqhi19s8c9BW+J7eTaREPQkBTj17ZR1BqGE0DhZ0IiCYR4mbWq4zJgveiCAOyITc
+ pGyIZNM0s6RwQcLSioENdwRBYHI3T4v5oIcvyV8lJmvCq9cTHsiEgggURsZfOv5Bn8WJSb
+ cbR3WIJtLw2RiLUvxqKtRkE1JFxVARk=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-339-KcP5YoDZM2KlGsDwe4ag3g-1; Sun, 01 Oct 2023 15:18:49 -0400
+X-MC-Unique: KcP5YoDZM2KlGsDwe4ag3g-1
+Received: by mail-lf1-f71.google.com with SMTP id
+ 2adb3069b0e04-50428596a79so2016160e87.0
+ for <qemu-devel@nongnu.org>; Sun, 01 Oct 2023 12:18:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696187928; x=1696792728;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=LqM01s9qwhz4FTHDK2DMibsL6AllKhQEYlXp5iZOORg=;
+ b=CPyojU08e7FsQPDpltCaxlEHRmwl0r5rfMNIlyW1Ai1zMEDoA8oTxip433EfdBveNO
+ lDDrJlCSHzBxdhbr3Qn/jomxXaaV+arQzz4lacyx1zTcJWgckapPRBr8zlAGvdrEPWwt
+ u07+s5ZEE0AKX4BI1+/I3qtwGNB2YjzwNHmOezAbg5DQhjli8YDX/hB2I5xreJjhXkun
+ Spy1pZ8lF6UszoL0xacTX3fr5Irt1GBlw/QoAUW1OBs3+yAc7jErEdL7Xnj5A2QxToyo
+ 7Vejnq5Yj2QdYk7Dr56ZeyFwKTNZOZ+Td0icD9stvYgf1LbR23HGSPLWCK8C+1d3ZzTt
+ CgBQ==
+X-Gm-Message-State: AOJu0Yyae94Mgr6m/7+5ekZxXpohAjosu/m1pCtmcr9FzLG3zVXW7Nfv
+ CA4PrklF7HQ1+D9wt25Vdsh4z0zkbeu2hbDsu1DThvUAsWVfwOEDnz+CJ0qFT3BqPjR/XonoSAp
+ +j4zWusQ9Czo/OBHjjOJRd1yKTfMxhPw=
+X-Received: by 2002:a05:6512:39cb:b0:500:943f:11c9 with SMTP id
+ k11-20020a05651239cb00b00500943f11c9mr6818336lfu.3.1696187928374; 
+ Sun, 01 Oct 2023 12:18:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGTPCoW2BcI6ld39mOQAkDASqbPsvg7nkTdbR0Z7Cg9ValqpqOMokjGk1+1pfY4MCpNsoXhz88Gh3KFttBOqXY=
+X-Received: by 2002:a05:6512:39cb:b0:500:943f:11c9 with SMTP id
+ k11-20020a05651239cb00b00500943f11c9mr6818332lfu.3.1696187928157; Sun, 01 Oct
+ 2023 12:18:48 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <9e3054e9-74c1-42f2-abf1-fd2f4c91557b@app.fastmail.com>
-In-Reply-To: <CAPMcbCojC=R0mr5dMqdoJUzw5-RoeydsK0io3vpzO_qo-A27Yw@mail.gmail.com>
-References: <cover.1695034158.git.dxu@dxuuu.xyz>
- <604ef5fd5bda8acdb837b5d28ec405e9fb0332a3.1695034158.git.dxu@dxuuu.xyz>
- <ZQhpZ+2doxD7vaR8@redhat.com>
- <qelgz7ljf5ooc6mkdzeikodf35cc77anowtm34b6rhgr4qpdcz@zdvjnj67jyfo>
- <CAPMcbCojC=R0mr5dMqdoJUzw5-RoeydsK0io3vpzO_qo-A27Yw@mail.gmail.com>
-Date: Sun, 01 Oct 2023 12:39:42 -0600
-From: "Daniel Xu" <dxu@dxuuu.xyz>
-To: "Konstantin Kostiuk" <kkostiuk@redhat.com>
-Cc: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>,
- michael.roth@amd.com, qemu-devel@nongnu.org, hmodi@aviatrix.com,
- "Yan Vugenfirer" <yvugenfi@redhat.com>
-Subject: Re: [PATCH 2/3] qga: Add optional stream-output argument to guest-exec
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=64.147.123.20; envelope-from=dxu@dxuuu.xyz;
- helo=wout4-smtp.messagingengine.com
+References: <cover.1696185261.git.dxu@dxuuu.xyz>
+ <935735389830bbe8407d95ebf89632792bf11a30.1696185261.git.dxu@dxuuu.xyz>
+In-Reply-To: <935735389830bbe8407d95ebf89632792bf11a30.1696185261.git.dxu@dxuuu.xyz>
+From: Konstantin Kostiuk <kkostiuk@redhat.com>
+Date: Sun, 1 Oct 2023 22:18:37 +0300
+Message-ID: <CAPMcbCry_WyXACfeapns47Mr1FtO7uG1+omwPxw72X+Rir=+nw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] qapi: qga: Clarify when out-data and err-data are
+ populated
+To: Daniel Xu <dxu@dxuuu.xyz>
+Cc: michael.roth@amd.com, armbru@redhat.com, berrange@redhat.com, 
+ qemu-devel@nongnu.org
+Content-Type: multipart/alternative; boundary="000000000000ee37bf0606ac8680"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=kkostiuk@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,116 +95,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Konstantin,
+--000000000000ee37bf0606ac8680
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 27, 2023, at 2:43 AM, Konstantin Kostiuk wrote:
-> Hi Daniel,
->
-> As for me, the idea of using QGA as an interactive shell is not good.
-> I suggest using virtio-serial as a transport for stdin/stdout of your=20
-> process.=20
-> Examples:
->    =20
-> https://stackoverflow.com/questions/68277557/qemu-virtio-virtconsole-d=
-evices-explained
->     https://fedoraproject.org/wiki/Features/VirtioSerial
->
-> Is this solution good for your project?=20
->
-> Best Regards,
-> Konstantin Kostiuk.
+Reviewed-by: Konstantin Kostiuk <kkostiuk@redhat.com>
 
-Thanks for the tip. It looks like that'll work -- I'll look into it.
+On Sun, Oct 1, 2023 at 9:39=E2=80=AFPM Daniel Xu <dxu@dxuuu.xyz> wrote:
 
-Daniel
-
+> If output is being captured for a guest-exec invocation, the out-data
+> and err-data fields of guest-exec-status are only populated after the
+> process is reaped. This is somewhat counter intuitive and too late to
+> change. Thus, it would be good to document the behavior.
+>
+> Signed-off-by: Daniel Xu <dxu@dxuuu.xyz>
+> ---
+>  qga/qapi-schema.json | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+> index b720dd4379..876e2a8ea8 100644
+> --- a/qga/qapi-schema.json
+> +++ b/qga/qapi-schema.json
+> @@ -1220,11 +1220,13 @@
+>  # @signal: signal number (linux) or unhandled exception code (windows)
+>  #     if the process was abnormally terminated.
+>  #
+> -# @out-data: base64-encoded stdout of the process
+> +# @out-data: base64-encoded stdout of the process. This field will only
+> +#     be populated after the process exits.
+>  #
+> -# @err-data: base64-encoded stderr of the process Note: @out-data and
+> +# @err-data: base64-encoded stderr of the process. Note: @out-data and
+>  #     @err-data are present only if 'capture-output' was specified for
+> -#     'guest-exec'
+> +#     'guest-exec'. This field will only be populated after the process
+> +#     exits.
+>  #
+>  # @out-truncated: true if stdout was not fully captured due to size
+>  #     limitation.
+> --
+> 2.42.0
 >
 >
-> On Mon, Sep 18, 2023 at 8:17=E2=80=AFPM Daniel Xu <dxu@dxuuu.xyz> wrot=
-e:
->> Hi Daniel,
->>=20
->> On Mon, Sep 18, 2023 at 04:14:47PM +0100, Daniel P. Berrang=C3=A9 wro=
-te:
->> > On Mon, Sep 18, 2023 at 04:54:22AM -0600, Daniel Xu wrote:
->> > > Currently, commands run through guest-exec are "silent" until they
->> > > finish running. This is fine for short lived commands. But for co=
-mmands
->> > > that take a while, this is a bad user experience.
->> > >=20
->> > > Usually long running programs know that they will run for a while=
-. To
->> > > improve user experience, they will typically print some kind of s=
-tatus
->> > > to output at a regular interval. So that the user knows that their
->> > > command isn't just hanging.
->> > >=20
->> > > This commit adds support for an optional stream-output parameter =
-to
->> > > guest-exec. This causes subsequent calls to guest-exec-status to =
-return
->> > > all buffered output. This allows downstream applications to be ab=
-le to
->> > > relay "status" to the end user.
->> > >=20
->> > > If stream-output is requested, it is up to the guest-exec-status =
-caller
->> > > to keep track of the last seen output position and slice the retu=
-rned
->> > > output appropriately. This is fairly trivial for a client to do. =
-And it
->> > > is a more reliable design than having QGA internally keep track of
->> > > position -- for the cases that the caller "loses" a response.
->> >=20
->> > I can understand why you want this incremental output facility,
->> > but at the same time I wonder where we draw the line for QGA
->> > with users needing a real shell session instead.
->>=20
->> You mean interactive shell, right? If so, I would agree an interactive
->> shell is not a good fit for QGA.
->>=20
->> But as it stands, a non-interactive shell works quite well (having
->> guest-exec run a bash script). I was the one who added the merged out=
-put
->> stream support a few months back. With merged output streams and this
->> streaming support, you can do some really neat things with QGA (see
->> below).
->>=20
->> The primary reason I'm adding this support is for vmtest [0]. You can
->> find code for it here [1]. Basically what leveraging QGA does is allow
->> the vmtest implementation to reuse the same code for both kernel-only
->> (ie bzImage) and and image targets (eg qcow2).=20
->>=20
->> [0]: https://dxuuu.xyz/vmtest.html
->> [1]: https://github.com/danobi/vmtest
->>=20
->> >=20
->> > When there is a long lived command, then IMHO it is also likely
->> > that there will be a need to kill the background running command
->> > too.
->> >=20
->> > We quickly end up re-inventing a shell in QGA if we go down this
->> > route.
->>=20
->> I can understand if you don't want to bloat the QGA feature set, but
->> IMHO this change cleanly composes with the current implementation and
->> is easily unit testable (and comes with a test).
->>=20
->> Per the discussion in the other thread, it could be argued that this
->> streaming feature is actually a bug fix -- the documentation seems to
->> imply otherwise, which both Markus and I have independently arrived
->> at. But I don't think we need to go into semantics like that :) .
->>=20
->> But it does kinda imply from first principles that it is a reasonable
->> thing for guest-exec-status to provide. Perhaps it's too late to chan=
-ge
->> the existing behavior, so a flag is needed.
->>=20
->> I hope my reasoning makes sense. And thanks for giving this a look.
->>=20
->> Thanks,
->> Daniel
->>=20
->> [...]
->>
+
+--000000000000ee37bf0606ac8680
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Reviewed-by: Konstantin Kostiuk &lt;<a href=3D"mailto:kkos=
+tiuk@redhat.com" target=3D"_blank">kkostiuk@redhat.com</a>&gt;</div><br><di=
+v class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sun, Oct 1=
+, 2023 at 9:39=E2=80=AFPM Daniel Xu &lt;<a href=3D"mailto:dxu@dxuuu.xyz">dx=
+u@dxuuu.xyz</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">If output is being captured for a guest-exec invocation, the out=
+-data<br>
+and err-data fields of guest-exec-status are only populated after the<br>
+process is reaped. This is somewhat counter intuitive and too late to<br>
+change. Thus, it would be good to document the behavior.<br>
+<br>
+Signed-off-by: Daniel Xu &lt;<a href=3D"mailto:dxu@dxuuu.xyz" target=3D"_bl=
+ank">dxu@dxuuu.xyz</a>&gt;<br>
+---<br>
+=C2=A0qga/qapi-schema.json | 8 +++++---<br>
+=C2=A01 file changed, 5 insertions(+), 3 deletions(-)<br>
+<br>
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json<br>
+index b720dd4379..876e2a8ea8 100644<br>
+--- a/qga/qapi-schema.json<br>
++++ b/qga/qapi-schema.json<br>
+@@ -1220,11 +1220,13 @@<br>
+=C2=A0# @signal: signal number (linux) or unhandled exception code (windows=
+)<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0if the process was abnormally terminated.<br>
+=C2=A0#<br>
+-# @out-data: base64-encoded stdout of the process<br>
++# @out-data: base64-encoded stdout of the process. This field will only<br=
+>
++#=C2=A0 =C2=A0 =C2=A0be populated after the process exits.<br>
+=C2=A0#<br>
+-# @err-data: base64-encoded stderr of the process Note: @out-data and<br>
++# @err-data: base64-encoded stderr of the process. Note: @out-data and<br>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0@err-data are present only if &#39;capture-outpu=
+t&#39; was specified for<br>
+-#=C2=A0 =C2=A0 =C2=A0&#39;guest-exec&#39;<br>
++#=C2=A0 =C2=A0 =C2=A0&#39;guest-exec&#39;. This field will only be populat=
+ed after the process<br>
++#=C2=A0 =C2=A0 =C2=A0exits.<br>
+=C2=A0#<br>
+=C2=A0# @out-truncated: true if stdout was not fully captured due to size<b=
+r>
+=C2=A0#=C2=A0 =C2=A0 =C2=A0limitation.<br>
+-- <br>
+2.42.0<br>
+<br>
+</blockquote></div>
+
+--000000000000ee37bf0606ac8680--
+
 
