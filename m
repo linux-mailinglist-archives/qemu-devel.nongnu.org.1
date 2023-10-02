@@ -2,89 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7805C7B558A
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 16:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8834F7B5608
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:09:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnKN2-0008Fx-8V; Mon, 02 Oct 2023 10:58:04 -0400
+	id 1qnKWv-0000ik-Br; Mon, 02 Oct 2023 11:08:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qnKMz-0008FL-VZ
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:58:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qnKMy-0003gg-3i
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:58:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696258679;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=TUsBw7Kt7G+GqYe51WoV2cEtrfFekkw/Aub/QiRVm0s=;
- b=KmgOnYtwqYvTV1uNaTkNPuKIEy83ZP1RpReGKCYKvYdU7aOUjwh+MOZQ8BgpMMlHrjjaZK
- D/DNFrJKVGH8A7oM86OIW8tzj3do544kOT7DQhPeubwRQ0bx985SZJxSfY9mlnm4akyaqA
- aETyeb+BtE4J6IpuRebBN3LjNkRdZiQ=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-PhzT7B29O_ytDecBmm9x_g-1; Mon, 02 Oct 2023 10:57:58 -0400
-X-MC-Unique: PhzT7B29O_ytDecBmm9x_g-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-533ca50404bso11107990a12.2
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 07:57:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qnKWr-0000iR-16
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 11:08:13 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qnKWn-0005fc-Qx
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 11:08:11 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-40652e570d9so44664995e9.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 08:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696259286; x=1696864086; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8KFEIWnp1XTcydWZ25CmpCLdsStZmGIHvtB91rtLXvw=;
+ b=Zy3mSyvW7dHqH7FdKkSenFPFXhJW/9i7ZXEPJ/V/S38JDIRJCznS1vHFjIggpLJ5iu
+ tfBrVkVU/JxToxKUHmiUhX+te+62J6kMl8rXn5X2ZIGtUg/SpRL3MqhypjlzTTlRoyTi
+ Ki3zxb0+0utyxisZDJsgfkVl6mVQzARY2Qz9R6hNgE/xJxcKBrr7r39FiFf1QgECFQUQ
+ kw2PsxqfHXtE97nsxV/aH4cA3b55sTmFDvvPBx+twylBt7Phb79DPzdrc7zSeFHBzRNF
+ vzbHtOMH7wr5rvVPOzpRFGthJ71IbC2Uz87Xg0L9dZWN+n28ezSCke5dPoZL8V+keWvh
+ hVqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696258675; x=1696863475;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=TUsBw7Kt7G+GqYe51WoV2cEtrfFekkw/Aub/QiRVm0s=;
- b=LTd4B9myg1Tt1C4isVtph6XDDT4p6vSrlR+FjxXBDvNoSdM4q2jeXvarqavQqNCknP
- ChHhExsQ7LefN9bFaMq/FKNZRrOC11HX2h4b+n8F7PsTCdR0nTdU7dMyJaVEaHvbJW4b
- mGggUxP/6hKG18rx3xfWpch+Q80YqkdSK9pI3TPw4Gs1mGuod25Cb+VM/c/DmL+fInFi
- TGFAT+08PU6ZzXnKafVniPch+/hXq3GFexi1L56GZMTtUh2DNk/gdfx8t0g+cyShTuA8
- Y7wLbKkw9l5Vp2hMULVrHzJHqfm/62uodgdSx8F5xhu7gBDu2tGldCRwWrqgQDedLiga
- SMEg==
-X-Gm-Message-State: AOJu0YzswW+r7q8zcqagutEx0WB6+qPwSUs9K79NobNOODlLe/jigXYk
- YMw40LaPcPYm9BofIrFRCFiEJxDyAMkAPaenFS0l2q/HFu6flLLGoplr+4KWmxrrNqX6jiGnBGB
- 88fcI/MPQbKSXtXJ6gjoG4MKIy3JvEdRLKFkOjhlNX6Zy27hOPRaSycwCCe4t8SrTBPr35kESfE
- Q=
-X-Received: by 2002:a17:906:311b:b0:9a2:28dc:4168 with SMTP id
- 27-20020a170906311b00b009a228dc4168mr9513928ejx.61.1696258675087; 
- Mon, 02 Oct 2023 07:57:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhncKMHMryDyLiVNMzqCLQkKNnbEcXHGr8IyitvQd5WBLYqSGRvVvNNskzhjorWMscxLQ2zQ==
-X-Received: by 2002:a17:906:311b:b0:9a2:28dc:4168 with SMTP id
- 27-20020a170906311b00b009a228dc4168mr9513915ejx.61.1696258674772; 
- Mon, 02 Oct 2023 07:57:54 -0700 (PDT)
-Received: from [192.168.10.117] ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
+ d=1e100.net; s=20230601; t=1696259286; x=1696864086;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=8KFEIWnp1XTcydWZ25CmpCLdsStZmGIHvtB91rtLXvw=;
+ b=FzMqyZJdToMJzAWUdLCVoImELMB0nlsIWf0lMm+4cuoGqOjpTKg0eetRmCCQ6pGy+t
+ fxLertlA8+4RQ+x22ny7/+9RwuBjRt9JbNH5BcO3iSMfxEdh9PXzn+ZnV362zl1uhOpJ
+ sVA3RVpIaPi6anC9XyjG+jaaoi9o2G/LK4tDXGpYOkpxoaCsfqmUzKh40LtvMYzqgkKQ
+ a4RIeuTzEwNJZ4TIZ/+Q9kkn9vUWrNZo6ee3vkMjb/kLVGcMuCNmraOkryaITywJEgMJ
+ MK6FRpxm5c0kT5fOfH1H4eP00HRs7bpS+UjVv4I/X77sp1+v5OpuBSfmSzbV0W0n4RXn
+ n3aw==
+X-Gm-Message-State: AOJu0YzPipfC/ZKHV53HQ1nHPrxT5vxE7tYuf9kLhaXfo6jY7KVboPbq
+ Em0tg/wqMhqRMfVoIiKzmOLFtw==
+X-Google-Smtp-Source: AGHT+IGSSriOf5EBj8Hor47kFVwKCkTSIvsRhGT4xZwU8HtkRl7qxmdmIRlFkISkaBw+WD1TM4PwyQ==
+X-Received: by 2002:a7b:ce16:0:b0:406:4501:9095 with SMTP id
+ m22-20020a7bce16000000b0040645019095mr11135356wmc.40.1696259285627; 
+ Mon, 02 Oct 2023 08:08:05 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- i22-20020a17090671d600b009929ab17be0sm17033320ejk.162.2023.10.02.07.57.53
+ 8-20020a05600c248800b004063c9f68f2sm7386820wms.26.2023.10.02.08.08.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Oct 2023 07:57:54 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: balaton@eik.bme.hu
-Subject: [PATCH 13/13] audio: forbid default audiodev backend with -nodefaults
-Date: Mon,  2 Oct 2023 16:57:27 +0200
-Message-ID: <20231002145728.87958-14-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231002145728.87958-1-pbonzini@redhat.com>
-References: <20231002145728.87958-1-pbonzini@redhat.com>
+ Mon, 02 Oct 2023 08:08:04 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 4834B1FFBB;
+ Mon,  2 Oct 2023 16:08:04 +0100 (BST)
+References: <20231002145104.52193-1-philmd@linaro.org>
+ <20231002145104.52193-2-philmd@linaro.org>
+User-agent: mu4e 1.11.21; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Beraldo Leal <bleal@redhat.com>, Thomas Huth
+ <thuth@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Subject: Re: [PATCH 1/2] tests/vm/ubuntu.aarch64: Correct comment about TCG
+ specific delay
+Date: Mon, 02 Oct 2023 16:07:57 +0100
+In-reply-to: <20231002145104.52193-2-philmd@linaro.org>
+Message-ID: <87fs2tysdn.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,56 +99,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that all callers support setting an audiodev, forbid using the default
-audiodev if -nodefaults is provided on the command line.
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- audio/audio.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-diff --git a/audio/audio.c b/audio/audio.c
-index 4289b7bf028..730bf2498dc 100644
---- a/audio/audio.c
-+++ b/audio/audio.c
-@@ -1692,6 +1692,10 @@ static void audio_create_default_audiodevs(void)
- {
-     const char *drvname = getenv("QEMU_AUDIO_DRV");
- 
-+    if (!defaults_enabled()) {
-+        return;
-+    }
-+
-     /* QEMU_AUDIO_DRV=none is used by libqtest.  */
-     if (drvname && !g_str_equal(drvname, "none")) {
-         error_report("Please use -audiodev instead of QEMU_AUDIO_*");
-@@ -1808,6 +1812,14 @@ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
- {
-     if (!card->state) {
-         if (!QTAILQ_EMPTY(&audio_states)) {
-+            /*
-+             * FIXME: once it is possible to create an arbitrary
-+             * default device via -audio DRIVER,OPT=VALUE (no "model"),
-+             * replace this special case with the default AudioState*,
-+             * storing it in a separate global.  For now, keep the
-+             * warning to encourage moving off magic use of the first
-+             * -audiodev.
-+             */
-             if (QSIMPLEQ_EMPTY(&default_audiodevs)) {
-                 dolog("Device %s: audiodev default parameter is deprecated, please "
-                       "specify audiodev=%s\n", name,
-@@ -1820,6 +1832,10 @@ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
-             }
-             card->state = audio_init(NULL, errp);
-             if (!card->state) {
-+                if (!QSIMPLEQ_EMPTY(&audiodevs)) {
-+                    error_append_hint(errp, "Perhaps you wanted to set audiodev=%s?",
-+                                      QSIMPLEQ_FIRST(&audiodevs)->dev->id);
-+                }
-                 return false;
-             }
-         }
--- 
-2.41.0
+> Wether we use a software MMU or not to set the SSH timeout
+> isn't really relevant. What we want to know is if we use
+> a hardware or software accelerator (TCG).
+> Replace the 'softmmu' mention by 'TCG'.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
+Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
