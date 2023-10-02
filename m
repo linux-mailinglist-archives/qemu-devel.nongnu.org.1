@@ -2,38 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD2C7B56ED
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:53:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A642C7B56EA
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:53:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnLDN-0003jE-Tw; Mon, 02 Oct 2023 11:52:09 -0400
+	id 1qnLDP-0003lB-PR; Mon, 02 Oct 2023 11:52:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=PA+N=FQ=kaod.org=clg@ozlabs.org>)
- id 1qnLDJ-0003iA-GR; Mon, 02 Oct 2023 11:52:05 -0400
+ id 1qnLDM-0003jD-8c; Mon, 02 Oct 2023 11:52:08 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=PA+N=FQ=kaod.org=clg@ozlabs.org>)
- id 1qnLDH-0005mK-Qp; Mon, 02 Oct 2023 11:52:05 -0400
+ id 1qnLDK-0005oR-4g; Mon, 02 Oct 2023 11:52:07 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4RzlnY3hNpz4xQ1;
- Tue,  3 Oct 2023 02:52:01 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rzlnb5vG1z4xQ2;
+ Tue,  3 Oct 2023 02:52:03 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4RzlnW4vwkz4xPR;
- Tue,  3 Oct 2023 02:51:59 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4RzlnZ02NCz4xPR;
+ Tue,  3 Oct 2023 02:52:01 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
-Subject: [PATCH v2 3/8] MAINTAINERS: Adjust file list for PPC 4xx CPUs
-Date: Mon,  2 Oct 2023 17:51:38 +0200
-Message-ID: <20231002155143.400668-4-clg@kaod.org>
+Subject: [PATCH v2 4/8] MAINTAINERS: Adjust file list for PPC e500 machines
+Date: Mon,  2 Oct 2023 17:51:39 +0200
+Message-ID: <20231002155143.400668-5-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231002155143.400668-1-clg@kaod.org>
 References: <20231002155143.400668-1-clg@kaod.org>
@@ -66,24 +66,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- MAINTAINERS | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ MAINTAINERS | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 9f2eb00b7744..cdac16c8eae7 100644
+index cdac16c8eae7..016cfb355123 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1961,7 +1961,9 @@ F: docs/specs/acpi_hest_ghes.rst
- ppc4xx
+@@ -1358,6 +1358,7 @@ e500
  L: qemu-ppc@nongnu.org
  S: Orphan
--F: hw/ppc/ppc4*.c
-+F: hw/ppc/ppc4xx*.c
-+F: hw/ppc/ppc440_uc.c
-+F: hw/ppc/ppc440.h
- F: hw/i2c/ppc4xx_i2c.c
- F: include/hw/ppc/ppc4xx.h
- F: include/hw/i2c/ppc4xx_i2c.h
+ F: hw/ppc/e500*
++F: hw/ppc/ppce500_spin.c
+ F: hw/gpio/mpc8xxx.c
+ F: hw/i2c/mpc_i2c.c
+ F: hw/net/fsl_etsec/
+@@ -1367,6 +1368,7 @@ F: include/hw/pci-host/ppce500.h
+ F: pc-bios/u-boot.e500
+ F: hw/intc/openpic_kvm.h
+ F: include/hw/ppc/openpic_kvm.h
++F: docs/system/ppc/ppce500.rst
+ 
+ mpc8544ds
+ L: qemu-ppc@nongnu.org
 -- 
 2.41.0
 
