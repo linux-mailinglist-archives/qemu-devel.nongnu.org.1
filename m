@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788177B56CC
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CC17B56CF
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:41:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnL1O-0003pn-U6; Mon, 02 Oct 2023 11:39:46 -0400
+	id 1qnL2H-0004lg-MF; Mon, 02 Oct 2023 11:40:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qnL1M-0003nK-Fb; Mon, 02 Oct 2023 11:39:44 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ id 1qnL1p-0004P4-Cv; Mon, 02 Oct 2023 11:40:24 -0400
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qnL1K-0003EE-PV; Mon, 02 Oct 2023 11:39:43 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c60a514f3aso116843725ad.3; 
- Mon, 02 Oct 2023 08:39:41 -0700 (PDT)
+ id 1qnL1Y-0003Hd-2f; Mon, 02 Oct 2023 11:40:07 -0400
+Received: by mail-pg1-x530.google.com with SMTP id
+ 41be03b00d2f7-5859a7d6556so2675186a12.0; 
+ Mon, 02 Oct 2023 08:39:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696261181; x=1696865981; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696261194; x=1696865994; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=xdG0wQ9/Qmn8JLemKxJFsNQSVmuHpRqBejR/wjMiqq8=;
- b=fIATLBT79fEqLKJuXeQHS7S2PDItJLhUttdGkFREr/xxhqzDdGy8aaRU0+YOWMg/ZC
- MoFS4g74GHlDTqdlZtcNXSeKfhkR3MsmakqjE2bBB9XkJ2Pthk5+WK6224Ekfi7a1iEk
- W3uNn30a0xLW1X26t50T5FAyWWBgXw9vDUUmh/X/371EQU2N5gjM+nleOZvtRTPyKS6o
- 5ogJooXZqYPNI8TEMRMmfOTPQmqliYrbr1XhFvsxbBW2vmqYGN1Dkgf3j464pNTBootq
- lCutBsq3kLvTStS2flf3SAhozStll2Dcw3Ga0rdNQzBGtBKZNja6tk6AUj14PKhMeWlJ
- d7tQ==
+ bh=E0l2fVSW5mSeFFbhW0BC48QKNaLOYkj3zLBCiAU+Okg=;
+ b=m7aCbaSRwWAUTDVgDVBk7me/7jNaXj5zOAuRc4hBR5R7Ee2TcML2jJdNYdU2NxNBqW
+ Rx0Cc/YYxVUA3/zLEpJQd2l+g7pqRdqKVtgCTeAx4ceOPGzQ14R+ngEevdPD4ihLAl67
+ Lu/gTSJ7NO+sCcJZD/0mZuWUmp40g+DNzoZX8+JnRu5Pl7n6uOFrcFzFUZx+QECE8urN
+ UhKFoDYsL/lYiR/QnCDivZ0wWbORB/xcKhr4axKJ2ZBio5uC+dYbC95E9MoTUKX1E26q
+ 9Zeem+W3FeSZHyJC4CtnP1o+ubo6Lk4i3t4VdUTlokpRzHClt3XooP3kJsQrYRY6P3GP
+ f+rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696261181; x=1696865981;
+ d=1e100.net; s=20230601; t=1696261194; x=1696865994;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xdG0wQ9/Qmn8JLemKxJFsNQSVmuHpRqBejR/wjMiqq8=;
- b=CHEf8NP8x6b20CnJE99i1L8Cv1CQqtY0sZ+7VOVC9zA1s+xGOuT/lDGu/pVB8okczO
- pq7V+QbTkqCLJjg0Kkm6Qu1WHppkQLqzQ0qEYFPxYqI9XX3zI3gMAa5De17Y32ZZ1QQB
- UchDcph9EgVqcpeSEpLfqFzZP9Tc4pCibu56iJhRshRJm+2uX9vAcJAYjBlOkEHoSqM0
- reqyo8llmvIgMs8QjYes/idPwBHeDPWwUXSCEEXcUCToBum0nVKI48mF4vV0bBecnMbL
- 7rovCa2HVJQCzuOgK36zV/LJbxDBVQSLO4s4EMCh3i6SaQnTuPQHBkJABwIDkX9mmbb4
- YExA==
-X-Gm-Message-State: AOJu0Yw8yeQpk4n5/xoQjsdsGAExHxhjDvGDGBPVmQOAfPPXjdt0w4Iy
- PB5P/y8NJUFoJnFc56X6gs0=
-X-Google-Smtp-Source: AGHT+IG+QxGYQCvqyoU0O7+dJkqwiaMTPCQnshcLVpIHI6Y3YzEgO7xfD1fCeQ5HCLQ7oHh87y8TBQ==
-X-Received: by 2002:a17:902:d2ce:b0:1c3:ed30:ce0a with SMTP id
- n14-20020a170902d2ce00b001c3ed30ce0amr15934783plc.19.1696261180823; 
- Mon, 02 Oct 2023 08:39:40 -0700 (PDT)
+ bh=E0l2fVSW5mSeFFbhW0BC48QKNaLOYkj3zLBCiAU+Okg=;
+ b=LLSk0ECo076FEoPTMQZyWIqTTWwUUUDJ9T+ZvOHNBo1sgl+yElndfeeipO2FkXfkjo
+ cCOVcBrRm+jr8yLzkkhXmUqkFSaivRzi7EB4H+3wO4So4HuL9cVNMrx154XzDNDVQC0x
+ DbCrHqKKF2RXLPWv/jZplJb7SB194jTg0OWv6YaRDoM3VuUxNBsJmXePBr/ibZIx/tDY
+ A/08MdYiiolbEZYW0sAv5AlhyBowYIyHSc+ve1+kVlPm79MKXRB40YlnRjIyfxlGaVi8
+ VQe/gokRb+5FY4zQ0IjWeFJJjqSmbbMdk/QWDck+kWECjcOCFa46Pe0KnoCw0Ac3UY8i
+ Ag8A==
+X-Gm-Message-State: AOJu0YxhVccktlZM+MuoCQKZB9yh0JmygEUzQcH0Dojr9eE+hRi7pQSI
+ wO+6vzOzR5FRwu9/sSs5afDIk2n6bz4=
+X-Google-Smtp-Source: AGHT+IFaUJI6BTVfd/g3LlihGfwVnz7FLsbtrcEm5MDhxIPLcGHK/u5OWVKndJbGHgrx94rYShTJSg==
+X-Received: by 2002:a05:6a20:1045:b0:13c:ca8b:7e29 with SMTP id
+ gt5-20020a056a20104500b0013cca8b7e29mr11695550pzc.12.1696261194250; 
+ Mon, 02 Oct 2023 08:39:54 -0700 (PDT)
 Received: from [192.168.68.107] ([177.94.15.124])
  by smtp.gmail.com with ESMTPSA id
- x10-20020a170902820a00b001c1f161949fsm22027037pln.96.2023.10.02.08.39.39
+ x28-20020a63b21c000000b00564b313d526sm19596134pge.54.2023.10.02.08.39.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 08:39:40 -0700 (PDT)
-Message-ID: <3abfd6bc-e925-7f47-74a2-f4d368d61a3a@gmail.com>
-Date: Mon, 2 Oct 2023 12:39:38 -0300
+ Mon, 02 Oct 2023 08:39:53 -0700 (PDT)
+Message-ID: <edf14a6a-ccd1-e081-53dc-1aad8ec792be@gmail.com>
+Date: Mon, 2 Oct 2023 12:39:51 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 4/8] MAINTAINERS: Adjust file list for PPC e500 machines
+Subject: Re: [PATCH 5/8] MAINTAINERS: Adjust file list for PPC pseries machine
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>
 References: <20231002122326.365368-1-clg@kaod.org>
- <20231002122326.365368-5-clg@kaod.org>
+ <20231002122326.365368-6-clg@kaod.org>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20231002122326.365368-5-clg@kaod.org>
+In-Reply-To: <20231002122326.365368-6-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=danielhb413@gmail.com; helo=mail-pl1-x633.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
+ envelope-from=danielhb413@gmail.com; helo=mail-pg1-x530.google.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -98,32 +98,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/2/23 09:23, Cédric Le Goater wrote:
+> The fdt.{c.h} files provide a helper routine used by the pseries and
+> pnv machines. Attached it to the list of the larger one: pseries.
+> 
+> Protected Execution Facility (PEF) is the confidential guest support
+> for PPC pseries machines.
+> 
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
 
 Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 
->   MAINTAINERS | 2 ++
->   1 file changed, 2 insertions(+)
+>   MAINTAINERS | 4 ++++
+>   1 file changed, 4 insertions(+)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2bf7af9bd150..23ce59995d59 100644
+> index 23ce59995d59..b3ba402f7943 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -1357,6 +1357,7 @@ e500
->   L: qemu-ppc@nongnu.org
->   S: Orphan
->   F: hw/ppc/e500*
-> +F: hw/ppc/ppce500_spin.c
->   F: hw/gpio/mpc8xxx.c
->   F: hw/i2c/mpc_i2c.c
->   F: hw/net/fsl_etsec/
-> @@ -1366,6 +1367,7 @@ F: include/hw/pci-host/ppce500.h
->   F: pc-bios/u-boot.e500
->   F: hw/intc/openpic_kvm.h
->   F: include/hw/ppc/openpic_kvm.h
-> +F: docs/system/ppc/ppce500.rst
->   
->   mpc8544ds
->   L: qemu-ppc@nongnu.org
+> @@ -1440,6 +1440,10 @@ F: hw/*/spapr*
+>   F: include/hw/*/spapr*
+>   F: hw/*/xics*
+>   F: include/hw/*/xics*
+> +F: include/hw/ppc/fdt.h
+> +F: hw/ppc/fdt.c
+> +F: include/hw/ppc/pef.h
+> +F: hw/ppc/pef.c
+>   F: pc-bios/slof.bin
+>   F: docs/system/ppc/pseries.rst
+>   F: docs/specs/ppc-spapr-*
 
