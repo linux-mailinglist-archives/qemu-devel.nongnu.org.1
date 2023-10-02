@@ -2,48 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABE57B5006
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 12:18:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FC37B5007
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 12:19:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnFzK-0005Ch-Oy; Mon, 02 Oct 2023 06:17:19 -0400
+	id 1qnG0i-0005tD-LG; Mon, 02 Oct 2023 06:18:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qnFzH-0005CZ-LM
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 06:17:15 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qnG0g-0005q6-11
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 06:18:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qnFzF-0008SY-Sb
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 06:17:15 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2FA0E26B12;
- Mon,  2 Oct 2023 13:17:44 +0300 (MSK)
-Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 738E32C1FB;
- Mon,  2 Oct 2023 13:17:01 +0300 (MSK)
-Message-ID: <1fb2f4b7-aa0c-1b1c-23e9-2c9c18e33010@tls.msk.ru>
-Date: Mon, 2 Oct 2023 13:17:01 +0300
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qnG0c-0000IT-5Y
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 06:18:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696241914;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=siFIgG9BFA+OGY9CtxQULbZethKfOz7Va9Att911pzk=;
+ b=dUovGoRMqcqZy2b8TM6NtFaVFdUtepGDFNH/FwkvddHlUXa87lJDqvIKGmt7Eih/R53QAr
+ 90Fe7jCq6gUOGbNLVauy+K2Q2vrP/J00yqvjiQ4lw+dnLZL74JOExT60dsi4fTrejXgsOy
+ Se63OgLdxRWd67vcsrEfNABtFINVdy4=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-489-XqYHJMEZOjmMqOuAl6wd1g-1; Mon, 02 Oct 2023 06:18:18 -0400
+X-MC-Unique: XqYHJMEZOjmMqOuAl6wd1g-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ a1e0cc1a2514c-7b0c16b2623so1522303241.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 03:18:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696241897; x=1696846697;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=siFIgG9BFA+OGY9CtxQULbZethKfOz7Va9Att911pzk=;
+ b=Wwqh83cQMWezB5SBbU6ZRmKo5NbRFLQZJm54R959UP8B92grnx7DlNoQz1tHN5rlo4
+ 2HFTml/Z+jps556O7opw7he0HPnUZb9cq6f7v5YfUE7Lqc6TQS8Ji/OYINLeacr/ooc0
+ XRQ7eWBmclbVx6l0Izr7flP/Jwqno92uApY+GDrTJj58q0d3+tIDnZmw6FrvP/Jorqo2
+ OuKPpiw0o1V3DX81FbA5cNODhv4rOl8MinAc2DmPGiHwzpjbxc2BqxQMz2PiWQaI6coT
+ 1FHfh6dcIyLx88U3ZkVUAd19oeKSEUWMqAIwPtRPiw9xUKL6jSPiuamwOx7Ia2u1YAdS
+ +ftA==
+X-Gm-Message-State: AOJu0Yw+76P5U7XXvxWzm0sLlikIyy292O5og+SJHptZUz4BG683ze5d
+ gT0ICEMfpAHzgGpXc7xNJmPwhp/RSPYWaRX3wJJ6+JhyUQ2FU8Fpf8dDzYodq9nFSOsrTAJkIGq
+ BYAZidAlH+ic41cDQZiISqDM7IfZaqXY=
+X-Received: by 2002:a05:6102:3f0e:b0:455:dd1c:9653 with SMTP id
+ k14-20020a0561023f0e00b00455dd1c9653mr1286210vsv.1.1696241897688; 
+ Mon, 02 Oct 2023 03:18:17 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+hsO5pF3chk6ueCZ8D2KxTmEE6SsMrN8GYSfgkwm4bnjeeFT8JOMKKeQ6eUXu0ykYhgrXJiGXRnnUv6N8AAI=
+X-Received: by 2002:a05:6102:3f0e:b0:455:dd1c:9653 with SMTP id
+ k14-20020a0561023f0e00b00455dd1c9653mr1286204vsv.1.1696241897465; Mon, 02 Oct
+ 2023 03:18:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2] ui: fix dpy_ui_info_supported(con) assertion
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-Cc: marcandre.lureau@redhat.com
 References: <20231002095445.65311-1-pbonzini@redhat.com>
-From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20231002095445.65311-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -99
-X-Spam_score: -10.0
-X-Spam_bar: ----------
-X-Spam_report: (-10.0 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-3.058,
- RCVD_IN_DNSWL_HI=-5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ <CAMxuvazkydMV9YP9HJrdwNnTOAyy8W8DqJykRM2civmPmk2m2Q@mail.gmail.com>
+In-Reply-To: <CAMxuvazkydMV9YP9HJrdwNnTOAyy8W8DqJykRM2civmPmk2m2Q@mail.gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 2 Oct 2023 12:18:04 +0200
+Message-ID: <CABgObfZnG=amuS-ptruUDmLMg4=AX=63ibv_LEu6X75Qd9LOaQ@mail.gmail.com>
+Subject: Re: [PATCH v2] ui: fix dpy_ui_info_supported(con) assertion
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -59,86 +94,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-02.10.2023 12:54, Paolo Bonzini wrote:
-> VGA does not support getting the physical video size or refresh rate.
-> This is causing an assertion failure when the GTK+ user interface
-> calls dpy_get_ui_info().  Return NULL from dpy_get_ui_info() if the
-> information is not supported, and just ignore the request to set
-> refresh rate or size in that case.
-> 
-> While the assertion failure was introduced by commit a92e7bb4cad
-> ("ui: add precondition for dpy_get_ui_info()", 2023-09-12), QEMU had
-> been using con->ui_info incorrectly since before.
-> 
-> Fixes: a92e7bb4cad ("ui: add precondition for dpy_get_ui_info()", 2023-09-12)
-> Fixes: aeffd071ed8 ("ui: Deliver refresh rate via QemuUIInfo", 2022-06-14)
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->   ui/console.c |  4 +++-
->   ui/gtk.c     | 18 ++++++++++++++++--
->   2 files changed, 19 insertions(+), 3 deletions(-)
+On Mon, Oct 2, 2023 at 11:58=E2=80=AFAM Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@redhat.com> wrote:
+>
+> Hi
+>
+> On Mon, Oct 2, 2023 at 1:54=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com=
+> wrote:
+> >
+> > VGA does not support getting the physical video size or refresh rate.
+> > This is causing an assertion failure when the GTK+ user interface
+> > calls dpy_get_ui_info().  Return NULL from dpy_get_ui_info() if the
+> > information is not supported, and just ignore the request to set
+> > refresh rate or size in that case.
+> >
+> > While the assertion failure was introduced by commit a92e7bb4cad
+> > ("ui: add precondition for dpy_get_ui_info()", 2023-09-12), QEMU had
+> > been using con->ui_info incorrectly since before.
+> >
+> > Fixes: a92e7bb4cad ("ui: add precondition for dpy_get_ui_info()", 2023-=
+09-12)
+> > Fixes: aeffd071ed8 ("ui: Deliver refresh rate via QemuUIInfo", 2022-06-=
+14)
+> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>
+> Did you see my patch ?
+> https://lore.kernel.org/qemu-devel/20230915113637.2127644-1-marcandre.lur=
+eau@redhat.com/
+>
+> I think I prefer mine :)
 
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+I hadn't seen it, either is okay with me.
 
-I think it is a step to the right direction.
-It might need more work still, but at least it is asking properties of the
-right pointer ;)
-
-/mjt
-
-> diff --git a/ui/console.c b/ui/console.c
-> index 4a4f19ed33e..24438b187c8 100644
-> --- a/ui/console.c
-> +++ b/ui/console.c
-> @@ -815,7 +815,9 @@ bool dpy_ui_info_supported(const QemuConsole *con)
->   
->   const QemuUIInfo *dpy_get_ui_info(const QemuConsole *con)
->   {
-> -    assert(dpy_ui_info_supported(con));
-> +    if (!dpy_ui_info_supported(con)) {
-> +        return NULL;
-> +    }
->   
->       if (con == NULL) {
->           con = active_console;
-> diff --git a/ui/gtk.c b/ui/gtk.c
-> index e09f97a86b7..0b5e314cf0d 100644
-> --- a/ui/gtk.c
-> +++ b/ui/gtk.c
-> @@ -724,18 +724,32 @@ static gboolean gd_window_close(GtkWidget *widget, GdkEvent *event,
->   
->   static void gd_set_ui_refresh_rate(VirtualConsole *vc, int refresh_rate)
->   {
-> +    const QemuUIInfo *p_info;
->       QemuUIInfo info;
->   
-> -    info = *dpy_get_ui_info(vc->gfx.dcl.con);
-> +    p_info = dpy_get_ui_info(vc->gfx.dcl.con);
-> +    if (!p_info) {
-> +        /* not supported by guest */
-> +        return;
-> +    }
-> +
-> +    info = *p_info;
->       info.refresh_rate = refresh_rate;
->       dpy_set_ui_info(vc->gfx.dcl.con, &info, true);
->   }
->   
->   static void gd_set_ui_size(VirtualConsole *vc, gint width, gint height)
->   {
-> +    const QemuUIInfo *p_info;
->       QemuUIInfo info;
->   
-> -    info = *dpy_get_ui_info(vc->gfx.dcl.con);
-> +    p_info = dpy_get_ui_info(vc->gfx.dcl.con);
-> +    if (!p_info) {
-> +        /* not supported by guest */
-> +        return;
-> +    }
-> +
-> +    info = *p_info;
->       info.width = width;
->       info.height = height;
->       dpy_set_ui_info(vc->gfx.dcl.con, &info, true);
+Paolo
 
 
