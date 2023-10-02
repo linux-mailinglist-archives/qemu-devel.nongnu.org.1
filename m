@@ -2,63 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9E87B5396
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 15:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1397B536F
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:52:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnIXL-0001vB-O4; Mon, 02 Oct 2023 09:00:35 -0400
+	id 1qnIOT-0006kv-4Z; Mon, 02 Oct 2023 08:51:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <foo00@h08.hostsharing.net>)
- id 1qnIXI-0001r0-B2; Mon, 02 Oct 2023 09:00:32 -0400
-Received: from bmailout2.hostsharing.net ([83.223.78.240])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <foo00@h08.hostsharing.net>)
- id 1qnIX2-0007Xn-Sv; Mon, 02 Oct 2023 09:00:31 -0400
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
- client-signature RSA-PSS (4096 bits) client-digest SHA256)
- (Client CN "*.hostsharing.net",
- Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
- by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9B6202800B3D2;
- Mon,  2 Oct 2023 14:50:35 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
- id 8530323B871; Mon,  2 Oct 2023 14:50:35 +0200 (CEST)
-Date: Mon, 2 Oct 2023 14:50:35 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: "Yao, Jiewen" <jiewen.yao@intel.com>
-Cc: Alistair Francis <alistair23@gmail.com>,
- "wilfred.mallawa@wdc.com" <wilfred.mallawa@wdc.com>,
- "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "kbusch@kernel.org" <kbusch@kernel.org>,
- "its@irrelevant.dk" <its@irrelevant.dk>, "mst@redhat.com" <mst@redhat.com>,
- "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
- "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
- "Browy, Chris" <cbrowy@avery-design.com>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: Re: [PATCH 3/3] hw/nvme: Add SPDM over DOE support
-Message-ID: <20231002125035.GA21884@wunner.de>
-References: <20230915112723.2033330-1-alistair.francis@wdc.com>
- <20230915112723.2033330-3-alistair.francis@wdc.com>
- <20231002084753.GA23546@wunner.de>
- <MW4PR11MB58723743D7A01A9E6876A4F78CC5A@MW4PR11MB5872.namprd11.prod.outlook.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIOR-0006kj-Sb
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:51:23 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIOQ-0005LP-Ay
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:51:23 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-323ef9a8b59so6854928f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 05:51:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696251080; x=1696855880; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JJDajxbIl3qklNV3jQiFSzdiGI50r5dNRaCEPlU+2mw=;
+ b=Igo6lr/vHYzwc3wKFwvk8cbJXPE50N4efp7hfhP2n8uAzNXCMewBbbQvLlaozM2qqs
+ RmbiF0ryasENEPjFyhQ4+fwFMjASAHiEb0ZLkmwCi0jm4hgw5BsktC74THLickp/3Usx
+ 7x1DbIKTFcobbT9I27GUhLcUZw3ThFVPxSkrT/hl6gwsqtGWIcmxkzuVTYcVhTUwtevX
+ AEDjgLwb7BBbyYs883oc2fu447qVH5sXbUXSikrFm3Gqgx16v5uXHIxicFqJMvI94Hr9
+ GeQMmqrtV0hYdFDS+xklJghurl4/y2g/zd2ddpBPPRxOZx0Yj+NYI/OKxUNhMlCaK82J
+ GMvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696251080; x=1696855880;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JJDajxbIl3qklNV3jQiFSzdiGI50r5dNRaCEPlU+2mw=;
+ b=Nel1OfJwT6yoOEgGFieizF6/2Kh38cr7ujGLwYmBdVsPNVaIh6bKxFk+YhoikkAJeH
+ BuKcd7MHZzpyx4nhzlXFzH68/Wa6X61cGJSPkyI91U8vpJD/2qrSNMONwAGU451AkeRy
+ NvdHQL2gSxD9meoVPOuejx2CrTJ8t/4IpjYeAG3ne38no9q4w7Uzgh9m3kE9Oexunl9j
+ 6ZnRMljtWyZHqJoDl2dlIeQIKYQeNMwzsXLEqomMfNJoaG1P0B7A7OE9RK1crmZZ37xI
+ i6iyFFtkypIbJMP2iiNkF96t4Af8yny8BaExKEwXo4wzIxKSJXIkSAix1xCBDPFpPm0x
+ nJHw==
+X-Gm-Message-State: AOJu0YwBhu1g82nLkMLZsttqj6zAKqGHfUr+u2neRmYv9zbIE0kfPlYJ
+ 1Xp0r4+nRwnb6m4g59E5XamdkecO1AxVGFw+1OlNwg==
+X-Google-Smtp-Source: AGHT+IHe8WjuhsLaPKOlcAy9oGAHUlFUqPwIItz1YUpIDwx4orUwR31SWet+t5DZW1jKLMrVRFUAFg==
+X-Received: by 2002:adf:ec05:0:b0:323:1df0:c039 with SMTP id
+ x5-20020adfec05000000b003231df0c039mr9910128wrn.56.1696251080385; 
+ Mon, 02 Oct 2023 05:51:20 -0700 (PDT)
+Received: from [192.168.69.115] (sto93-h06-176-172-7-203.dsl.sta.abo.bbox.fr.
+ [176.172.7.203]) by smtp.gmail.com with ESMTPSA id
+ e9-20020adfe7c9000000b003197efd1e7bsm14048422wrn.114.2023.10.02.05.51.19
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Oct 2023 05:51:19 -0700 (PDT)
+Message-ID: <b9d95267-c213-0ea1-ddc7-7af54046b566@linaro.org>
+Date: Mon, 2 Oct 2023 14:51:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <MW4PR11MB58723743D7A01A9E6876A4F78CC5A@MW4PR11MB5872.namprd11.prod.outlook.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: none client-ip=83.223.78.240;
- envelope-from=foo00@h08.hostsharing.net; helo=bmailout2.hostsharing.net
-X-Spam_score_int: -15
-X-Spam_score: -1.6
-X-Spam_bar: -
-X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 0/2] Split out tcg init functions to tcg/startup.h
+Content-Language: en-US
+To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
+Cc: peter.maydell@linaro.org
+References: <20230930031114.1042913-1-richard.henderson@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230930031114.1042913-1-richard.henderson@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.321,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,42 +92,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 02, 2023 at 11:36:25AM +0000, Yao, Jiewen wrote:
-> Comment on subjectAltName.
+On 30/9/23 05:11, Richard Henderson wrote:
+> Supercedes: <20230923130843.3708899-1-peter.maydell@linaro.org>
+> ("[PATCH] tcg.h: Split out runtime-only functions into tcg/runtime.h")
 > 
-> PCI-SIG realized that it may cause problem for certain device
-> and decided to remove such requirement in future ECN.
-> I don't think that is absolutely needed.
+> I thought "startup.h" was perhaps a better name than "runtime.h",
+> at least for the functions moved, since it's about starting up
+> either tcg or tcg within a new thread.
+> 
+> By removing the argument to tcg_prologue_init(), we can simplify
+> the users even further, since they no longer require TCGContext.
+> 
+> Adding tcg_init() seems to match the other two as a startup-y
+> function and allows tcg-all.c to avoid "tcg.h" as well.
+> 
+> 
+> r~
+> 
+> 
+> Richard Henderson (2):
+>    tcg: Remove argument to tcg_prologue_init
+>    tcg: Split out tcg init functions to tcg/startup.h
 
-We have to follow what's in the spec.  We can't just leave out
-certain elements because they might possibly maybe be removed
-in the future.
+Series:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-PCIe r6.1 does require the Subject Alternative Name and that's
-the latest version, so we follow that.
-
-The ECN that you're referring to only exists as a draft in the
-PCISIG's Review Zone Archive.
-
-My understanding is that the Subject Alternative Name's purpose
-is to eliminate certain threats in the CMA threat model:
-The Subject Alternative Name is basically a signed version of the
-device's identity in config space.  Without it, a different device
-might misappropriate a device's certificate + private key.
-
-If the Subject Alternative Name requirement is dropped, I would
-like to know how that threat is prevented instead?
-
-I don't quite understand what you mean by "may cause problem for
-certain device".  I've asked the editor of the PCIe Base Spec why
-they're considering removing the requirement and the gist of the
-answer was -- I'm paraphrasing here -- that vendors thought the
-requirement is generally quite narrow and perceived as a straight-jacket
-and that at this point, more flexibility is desired as to the
-identification scheme.  There was no mention at all of "problems
-for certain devices".
-
-Thanks,
-
-Lukas
 
