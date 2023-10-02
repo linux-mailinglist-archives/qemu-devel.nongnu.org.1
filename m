@@ -2,132 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869147B4B87
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 211AD7B4B98
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:45:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnCVo-0006TQ-Cl; Mon, 02 Oct 2023 02:34:36 -0400
+	id 1qnCfL-0002Qe-Gj; Mon, 02 Oct 2023 02:44:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qnCVm-0006Sv-E7; Mon, 02 Oct 2023 02:34:34 -0400
-Received: from mail-ve1eur01on0730.outbound.protection.outlook.com
- ([2a01:111:f400:fe1f::730]
- helo=EUR01-VE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qnCfJ-0002QV-VV
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:44:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <andrey.drobyshev@virtuozzo.com>)
- id 1qnCVj-0000JL-3T; Mon, 02 Oct 2023 02:34:34 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cxjzHz2iS6Vk3tTXpnLg2A3pl/h17bN+KJppiITTCAOLO+G2vXbfsUo7dVXS231MvMMxt8vkKtF4AfyX73pnaKffyUSJZ0bQqEJZF70bg/Cxf1gSHjm/bhdGdLE5Yy4yKaJyg5TSGVWjVUy9x7u42wcOIyb8JiWC3dkdg3J0qUKi/shpJt2f1yQqwIgKUZF7Ugi1NDrMQKEmaVOyDxtToFiVs+emteyRHmt/hifPSSSEHUTppgW1LFHYJwvpndhLnsqhNg6hqIw1wUyiMRJAAEBgel57s37yyVi2DCq/6RVf9wsbbGFLT7uVZbiDkm0RAkVVOuP1a+PjiF3d4u6kKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PSAQHkC0Gopf7Glq/YKGEPx9SF9U1SO2jhr3g4TWEkA=;
- b=DOQmEP8UY5xQAcmM9w30i1dX6XrJLEpHkU144klm+l73Hlokj6gDLWflxX6nIQ5ANhF9k5zSim24X0AXHmNWNMJqsMRG3cyvhqg4sYGgmzf/oQ0MmXh2RlT//lba6+RFwzVzikh+dUbX1wWWCapzVowvpY/WuZgXFxRDWhYmuVwmX0XWeaanQB/Nk2SqzcA/O4itBs5m5Xl5bbktw67qTLgR0RujCsJfaazLFUPWq9P5qfrePaN+qDOfPyiFiDpOyFO7VB1l6rEVEIcQQ0pUSB3SAyfIaR6IxPPV5Hukb1pJaF9jl3rHx97xPh9IISeUxMAL/mg9ZMoywsAb+Wa6tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PSAQHkC0Gopf7Glq/YKGEPx9SF9U1SO2jhr3g4TWEkA=;
- b=OvV0OlIFEHY9/SK8r3JuhH2/QRKjQMkiXi7yGP1DNFrLLCwYYZgMKZUW1JemF+Z3eCLsUdi8CbZvuovTFQKCkzVTYUtC4f/iBRJnFgTviYdXnzdkjlycOkQRLhrSkxjSaoL9pSQGDtMWMlrp1smdGshrmmFBITYYbSLccick45BEQcwUo7fzCjX0BBQoC9C26+XOtualKZebTFfOVJBOpX+Zr5RFqQvJqH9Y5MKtmbBw73xzbeHwvvzNOSFAQBuQI+qVQaIk7DYaZNr6J8MGvb6vjekoK85O7camEKSoF40u+CS/FXALC/GsUDEI8lBNUo2jKSumBCFsERynifcC7w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from HE1PR0802MB2331.eurprd08.prod.outlook.com (2603:10a6:3:c1::13)
- by AS8PR08MB7992.eurprd08.prod.outlook.com (2603:10a6:20b:571::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.29; Mon, 2 Oct
- 2023 06:34:25 +0000
-Received: from HE1PR0802MB2331.eurprd08.prod.outlook.com
- ([fe80::4190:cf8e:abd7:68c8]) by HE1PR0802MB2331.eurprd08.prod.outlook.com
- ([fe80::4190:cf8e:abd7:68c8%11]) with mapi id 15.20.6838.016; Mon, 2 Oct 2023
- 06:34:25 +0000
-Message-ID: <fd716469-6aed-49de-a736-452e713eb1cd@virtuozzo.com>
-Date: Mon, 2 Oct 2023 10:35:31 +0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/8] qemu-img: rebase: add compression support
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
- eblake@redhat.com, den@virtuozzo.com
-References: <20230919165804.439110-1-andrey.drobyshev@virtuozzo.com>
-Content-Language: en-US
-From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
-In-Reply-To: <20230919165804.439110-1-andrey.drobyshev@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0133.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b9::14) To HE1PR0802MB2331.eurprd08.prod.outlook.com
- (2603:10a6:3:c1::13)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qnCfH-0002HO-Nx
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:44:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696229057;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=32prikGAvIeiRGxuPxo//a91K1q+NdKCwO4MuPJPtCg=;
+ b=ee5yvjutuf8MjcP4DPOpdCncztx02e6fvHaYLd5xAPzTL6c1tAKQAKjTlhQxzbkTxjG4HX
+ CQMoMQ9YQCnts4rGg/Mf7r4X8ZPgpfK7BXk9eTUPW6FGKYaAzCqyrHfjw7o58boTY5Cm7i
+ gCasDNiKbzC8VJeC8fFhAkTx9P1kJDg=
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com
+ [209.85.161.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-569-Z8_1mRPAMh2nfO984HxSOA-1; Mon, 02 Oct 2023 02:44:08 -0400
+X-MC-Unique: Z8_1mRPAMh2nfO984HxSOA-1
+Received: by mail-oo1-f72.google.com with SMTP id
+ 006d021491bc7-57b6cd1a530so26337209eaf.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Oct 2023 23:44:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696229048; x=1696833848;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=32prikGAvIeiRGxuPxo//a91K1q+NdKCwO4MuPJPtCg=;
+ b=PypGBfvQx2rHD2LXex13Z13xWX5cPsVu88bNy1T0pHATTeA5e5lfe6nTV9Xg2gjBJA
+ nstFdH07hTGdy9+R5emglEJGnmvDdJj3GWOZFHPfovColcLPMceT1XQAmsXovPlxgEcp
+ wvPpMIH0dMRHvPt1bOn7LpOL92btzOogEb+JfyVutNrVeXj66RbDMkpsgeGMuAhVgKOh
+ D9yrX9/qifF0ReLDBtzLEQPoe0W9N2sHm+WYDU3vohPoaaICJOuTU16LqqhjNn0UH4lT
+ Jd5BJDjJxPZNRnEKr9/KekCLl9Llg4UtBCER7IyrZn0E9KKtNC9lggNkulNStCgDQyUl
+ UQwQ==
+X-Gm-Message-State: AOJu0Yy6bsKYJUDKKk1CcnMRxkwAZbV5I0oTQwZNwLTwA2rzxyju+t0x
+ vu4slwifdPLBIcQ8c7gYJ2HAv4vn8FfJ2x/PGjc75A+XmH4e7HhvMlJ4rJRJkwY268Esi99blYP
+ +rXu1EhTEHpYXrkw9Pmb9PUtV67dQna4=
+X-Received: by 2002:a05:6359:2c8e:b0:151:ac8d:bfe7 with SMTP id
+ qw14-20020a0563592c8e00b00151ac8dbfe7mr4736578rwb.22.1696229048146; 
+ Sun, 01 Oct 2023 23:44:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnGBQLn+pUFIyg9oTp8MS+F93FwXIIPOfJ2tM90fGWubnJemTbkbLDEg9c1ZSFLn5LKo6U8lvSXlwTShtDWoU=
+X-Received: by 2002:a05:6359:2c8e:b0:151:ac8d:bfe7 with SMTP id
+ qw14-20020a0563592c8e00b00151ac8dbfe7mr4736567rwb.22.1696229047873; Sun, 01
+ Oct 2023 23:44:07 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0802MB2331:EE_|AS8PR08MB7992:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb94e28e-03d3-45a0-37e3-08dbc3119eb8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5QA3Cw1GSXx7GlfIcG2mwuT2y95i6nzvKlHMBezFUqfaSFYEZ8mXXTvsaTRYZxuQ2fudG3PO7llRWiNTd9KauTQhvVqkyCdkkErgmkH+qsv5CsHS26kYF634ldpwjhfYQdPwmXC+njFz2vuBudUb6ejtt9DMZIRpP8w+vwxElvWIUkjh36WfEPW/M7522Iq9W5QAWPTrRhC7yOdO0MC+MX1XYvzO1cy2DMUtjwD6plJ7RyY09+MV7WzblWPNh65jLb504PFIYceMTdoJsyLNFlpsFvzM/jxvpuJoHhTnpUPoIZcLShf0lY0GJmZxkvj4zAB+kGkHamutk1gXbZ7whHZUi11QOyH/WK+wqjUFBK5+mO4AcRdK871QGhf4MFQq6BD4q0uyLrJBT+PHr9Bylo690gur+55OTFSyX8K3WCHUC7PiAFzfKfssxpfnmb7vheAN727MoylsK2FnBBZ2IV0FeVyCouSwh2uD2FJHcWDjCEBNo1pbO0un4ndBHt4+N7DQjpowQGj4GCWGl0D3bqXKA9P4m9prxLPUZi5ZeHwierQEVuGkIwoWVOxxVnFdWTKJc9FruE9SYXUR/+XrRzsjZmDn02K94/iDjqkIuaP4FMQV3InhQQpe0wWLfwf8aOISwODR9VHhrLUhdPFx5w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:HE1PR0802MB2331.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(346002)(396003)(39840400004)(366004)(230922051799003)(1800799009)(451199024)(64100799003)(186009)(26005)(38100700002)(4326008)(8676002)(8936002)(31696002)(53546011)(2906002)(6506007)(6666004)(6512007)(36756003)(44832011)(86362001)(107886003)(2616005)(6486002)(966005)(5660300002)(478600001)(66476007)(66946007)(66556008)(316002)(6916009)(31686004)(41300700001)(83380400001)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RGcwM2xGaVZWeHhCOExFVmdSYnFQWXdIeVdqOFhXeDNqZWdmS3NuVHByU3JX?=
- =?utf-8?B?bmRiL29Sek5PeExlektCMHFRYWl3RTB0UXVNcTNZSmVOdnZkVlhiUHNVU3kw?=
- =?utf-8?B?MU8xcFZVLzBKNGZEaXRmL1RERnFBRXdLelpVVWRZRnVSTVYwT1NVaHZ2OTFJ?=
- =?utf-8?B?Q0wrMCtJN3F0VERyYUltSGNMYXhGU2ZkSzJxYzYydmdoejQ1Y0g2WklnbW9B?=
- =?utf-8?B?ZDFFQTZDTVRlVmZpcEUvUHZxVXRTR0tuV2NOK3U2YUEyb0ttL1hwcTBZSndK?=
- =?utf-8?B?bEYvUGFsZS9NWTArdU5mMUdQZEkwYjIwOXVtaWpjditobnozV3RTbFNoaUdU?=
- =?utf-8?B?czRLbE9FemNidTZSZWFta3ZKRWdpb1hOY1hyc3pxK0NjZGh2eGo4NmdBL2Za?=
- =?utf-8?B?YlZyYm0zQkpjNEtnSTRaTXRJRytHTG5MTmtvbmRIbS9UZjM0enpuYldFeE1s?=
- =?utf-8?B?T1o4TUJNUFo0SC8vQXhMUEZLcHlqWEZadkJEVDBCVGRLcWhaVk9mNG4ycFRW?=
- =?utf-8?B?dUpUUExjYlREMEI4bVR0REd6ekFldVl5MWdCZE9aYkUrOGRVOVpId3lYemdU?=
- =?utf-8?B?cHhsNlplMmI4azV2ek5naWRORWFDUUI4cW1QbmQyK1d0eVpnWDZRUFhaREY1?=
- =?utf-8?B?aXdiMzZZVS9JUDA1bktZRVdlcjJ6TjdtZkE4bURya3NRQTZla1REbHVPT1Ur?=
- =?utf-8?B?V3c0MStUNk9ZN1Q4WUdhdmczbThnczZnVUYrQU5iSmd0elNTQnRoNFVVODdQ?=
- =?utf-8?B?bko2ejVRYWc0QXpxYnFmZFpoQmNYN0djYngvYUFHYU1IajNyVXcvSGNrVFR3?=
- =?utf-8?B?M0pkR0dNQ2Q0ZXVjZjBWMThTR3htV1pwNU91dmYrWnk1ZFc2TDNlOXdld2lm?=
- =?utf-8?B?TlFNUENBT2hyNzZxTFZZdVgzRzJNMnF4aTFGWG56bU9xeFlVQVg1QU9jZHh0?=
- =?utf-8?B?YkRDMWNtUThnTzRqcnc5MHM0RjFLaHZUbFNiTEtTK3FGZjkxZVFRMk5BUitw?=
- =?utf-8?B?K2VuZ3JQcFZMb2NqSTVkZWdsSFN5WXZNa1MrekV0aWhZVWxBMTlvamhZaWd1?=
- =?utf-8?B?NWpMSXJXUjZuTU91cGM3ekI3cVJHMGVOUWltUlBqSm02U2ZDOGxDYmdmelJ1?=
- =?utf-8?B?TUpRMVdaOHNvS3dTVXlmemNoZzNQcVRaS0VneVJCMTR6ZkRJSVhzNUVlY09i?=
- =?utf-8?B?ZGk2bThDMHFya3RJUGhQVlhlUXhXc0ErciszaVpDZE9Wb3luSkJsMms2ODRJ?=
- =?utf-8?B?Y3VCMExDeERWQXMyM3gvRWlVUy9Za0phN2VjYVgrWW9yRjRWYW4rQ0pWamJn?=
- =?utf-8?B?VGVIclNqSGhVWno5b3NVOVVuS1pVbkIwTWtsejZqT0t4TW5tWEY1YmFLRTBv?=
- =?utf-8?B?Ukt4SWVReFpiOFhPT09ZalZJeHJ2SGMwa1h3cXkvNlFFQ21HZTI3UnRXeCtw?=
- =?utf-8?B?cHBIS3FXZDd2VGM0ZnZNK1NXZlM3MG5lZlZGd0RwQlJnbXZOdGtuaE9rUCs3?=
- =?utf-8?B?Q3hnUWRpN2tkcTRmTkc4NWxrTEFSbWtxTnUwSjRtWm5mUSs4Y09QY0t3aTB3?=
- =?utf-8?B?elAzd0x2STc1YUg5dzNMR2g5ZWN0Q1FGU1IzV0R3cGJha2RaWXA1R1FmSlVY?=
- =?utf-8?B?M2VTMTZoQ3EvQ0dINzhyZzJKTkhVODlVMUtuSU9GVk5MbnRTTkJobnRCVjE1?=
- =?utf-8?B?NE1TTWhCOVNRRG9uanBJM3BackpFdnlUQlVRcWZLZXlscGhlV013VTdzMEE0?=
- =?utf-8?B?dzZYZ3poNWlYdTQrblR2U1hHQWR4bzZ0dE1QSytpNUJwcTdSNndYLzJnRGpQ?=
- =?utf-8?B?andoWGpGb0liNlVOeStCQ1hsTTJTRU5obHhPQVFwOHVwZjhBL3dpUUptZHNu?=
- =?utf-8?B?Y3dhdlB1UDVpRjErSnU4SHRVbXc0TCtpUGdFWWtKbngzdjM3WURGTWp0R2NR?=
- =?utf-8?B?dnR0Rm43QlVpdGk3Wlc4SU1HTEozTDNHMjZCb1ZvUldQUkM4S0JCV3h3SERR?=
- =?utf-8?B?aEdrQnpnSFh3MFVXeXlmZGZ6MjhaMEdzcVk3V2VYc2lXbXZPbzh5SzZLb1B6?=
- =?utf-8?B?ZURUOE54cFdsRDZWbmViMzI3by83R3V6TFcyeHI1clhpeUVNekFuRGo2djlw?=
- =?utf-8?B?S3hOU3lFeVYxRm1meC9jUWwvRXFZbGJjMEd1ZTg3YkV6eHhZamU5NlhVME8z?=
- =?utf-8?B?d2c9PQ==?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb94e28e-03d3-45a0-37e3-08dbc3119eb8
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0802MB2331.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 06:34:25.1645 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GqLk2VDFUD4jUQY7cmkXRKHuBs5qgekNeRti6XMoJ+r12xZ9E79F3NHVv64hmRoNGY7zpPjlRy9POBq58tFFkuzNk+9mf39dYyv9qj+i3sM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB7992
-Received-SPF: pass client-ip=2a01:111:f400:fe1f::730;
- envelope-from=andrey.drobyshev@virtuozzo.com;
- helo=EUR01-VE1-obe.outbound.protection.outlook.com
+References: <20230908154743.809569-1-aesteve@redhat.com>
+ <20230908154743.809569-2-aesteve@redhat.com>
+ <20231001161500-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231001161500-mutt-send-email-mst@kernel.org>
+From: Albert Esteve <aesteve@redhat.com>
+Date: Mon, 2 Oct 2023 08:43:56 +0200
+Message-ID: <CADSE00J3WaoXS1H7+gekRM18mjOX=ZKqYY5i3WLPvzGhB7e8hQ@mail.gmail.com>
+Subject: Re: [PATCH v8 1/4] util/uuid: add a hash function
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Fam Zheng <fam@euphon.net>,
+ marcandre.lureau@gmail.com, 
+ philmd@linaro.org, cohuck@redhat.com, kraxel@redhat.com
+Content-Type: multipart/alternative; boundary="000000000000db4c5e0606b619e0"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -144,40 +96,268 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/19/23 20:57, Andrey Drobyshev wrote:
-> v2 --> v3:
->  * Patch 3/8: fixed logic in the if statement, so that we align on blk
->    when blk_old_backing == NULL;
->  * Patch 4/8: comment fix;
->  * Patch 5/8: comment fix; dropped redundant "if (blk_new_backing)"
->    statements.
-> 
-> v2: https://lists.nongnu.org/archive/html/qemu-block/2023-09/msg00448.html
-> 
-> Andrey Drobyshev (8):
->   qemu-img: rebase: stop when reaching EOF of old backing file
->   qemu-iotests: 024: add rebasing test case for overlay_size >
->     backing_size
->   qemu-img: rebase: use backing files' BlockBackend for buffer alignment
->   qemu-img: add chunk size parameter to compare_buffers()
->   qemu-img: rebase: avoid unnecessary COW operations
->   iotests/{024, 271}: add testcases for qemu-img rebase
->   qemu-img: add compression option to rebase subcommand
->   iotests: add tests for "qemu-img rebase" with compression
-> 
->  docs/tools/qemu-img.rst    |   6 +-
->  qemu-img-cmds.hx           |   4 +-
->  qemu-img.c                 | 136 ++++++++++++++++++++++--------
->  tests/qemu-iotests/024     | 117 ++++++++++++++++++++++++++
->  tests/qemu-iotests/024.out |  73 ++++++++++++++++
->  tests/qemu-iotests/271     | 131 +++++++++++++++++++++++++++++
->  tests/qemu-iotests/271.out |  82 ++++++++++++++++++
->  tests/qemu-iotests/314     | 165 +++++++++++++++++++++++++++++++++++++
->  tests/qemu-iotests/314.out |  75 +++++++++++++++++
->  9 files changed, 752 insertions(+), 37 deletions(-)
->  create mode 100755 tests/qemu-iotests/314
->  create mode 100644 tests/qemu-iotests/314.out
-> 
+--000000000000db4c5e0606b619e0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ping
+On Sun, Oct 1, 2023 at 10:15=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+
+> On Fri, Sep 08, 2023 at 05:47:40PM +0200, Albert Esteve wrote:
+> > Add hash function to uuid module using the
+> > djb2 hash algorithm.
+> >
+> > Add a couple simple unit tests for the hash
+> > function, checking collisions for similar UUIDs.
+> >
+> > Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> > Signed-off-by: Albert Esteve <aesteve@redhat.com>
+> > ---
+> >  include/qemu/uuid.h    |  2 ++
+> >  tests/unit/test-uuid.c | 27 +++++++++++++++++++++++++++
+> >  util/uuid.c            | 15 +++++++++++++++
+> >  3 files changed, 44 insertions(+)
+> >
+> > diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
+> > index dc40ee1fc9..e24a1099e4 100644
+> > --- a/include/qemu/uuid.h
+> > +++ b/include/qemu/uuid.h
+> > @@ -96,4 +96,6 @@ int qemu_uuid_parse(const char *str, QemuUUID *uuid);
+> >
+> >  QemuUUID qemu_uuid_bswap(QemuUUID uuid);
+> >
+> > +uint32_t qemu_uuid_hash(const void *uuid);
+> > +
+> >  #endif
+> > diff --git a/tests/unit/test-uuid.c b/tests/unit/test-uuid.c
+> > index c111de5fc1..aedc125ae9 100644
+> > --- a/tests/unit/test-uuid.c
+> > +++ b/tests/unit/test-uuid.c
+> > @@ -171,6 +171,32 @@ static void test_uuid_unparse_strdup(void)
+> >      }
+> >  }
+> >
+> > +static void test_uuid_hash(void)
+> > +{
+> > +    QemuUUID uuid;
+> > +    int i;
+> > +
+> > +    for (i =3D 0; i < 100; i++) {
+> > +        qemu_uuid_generate(&uuid);
+> > +        /* Obtain the UUID hash */
+> > +        uint32_t hash_a =3D qemu_uuid_hash(&uuid);
+> > +        int data_idx =3D g_random_int_range(0, 15);
+> > +        /* Change a single random byte of the UUID */
+> > +        if (uuid.data[data_idx] < 0xFF) {
+> > +            uuid.data[data_idx]++;
+> > +        } else {
+> > +            uuid.data[data_idx]--;
+> > +        }
+> > +        /* Obtain the UUID hash again */
+> > +        uint32_t hash_b =3D qemu_uuid_hash(&uuid);
+> > +        /*
+> > +         * Both hashes shall be different (avoid collision)
+> > +         * for any change in the UUID fields
+> > +         */
+> > +        g_assert_cmpint(hash_a, !=3D, hash_b);
+> > +    }
+> > +}
+> > +
+> >  int main(int argc, char **argv)
+> >  {
+> >      g_test_init(&argc, &argv, NULL);
+> > @@ -179,6 +205,7 @@ int main(int argc, char **argv)
+> >      g_test_add_func("/uuid/parse", test_uuid_parse);
+> >      g_test_add_func("/uuid/unparse", test_uuid_unparse);
+> >      g_test_add_func("/uuid/unparse_strdup", test_uuid_unparse_strdup);
+> > +    g_test_add_func("/uuid/hash", test_uuid_hash);
+> >
+> >      return g_test_run();
+> >  }
+> > diff --git a/util/uuid.c b/util/uuid.c
+> > index b1108dde78..b366961bc6 100644
+> > --- a/util/uuid.c
+> > +++ b/util/uuid.c
+> > @@ -116,3 +116,18 @@ QemuUUID qemu_uuid_bswap(QemuUUID uuid)
+> >      bswap16s(&uuid.fields.time_high_and_version);
+> >      return uuid;
+> >  }
+> > +
+> > +/* djb2 hash algorithm */
+> > +uint32_t qemu_uuid_hash(const void *uuid)
+> > +{
+> > +    QemuUUID *qid =3D (QemuUUID *) uuid;
+> > +    uint32_t h =3D 5381;
+> > +    int i;
+> > +
+> > +    for (i =3D 0; i < ARRAY_SIZE(qid->data); i++) {
+> > +        h =3D (h << 5) + h + qid->data[i];
+> > +    }
+> > +
+> > +    return h;
+> > +}
+> > +
+>
+> whitespace error:
+>
+> .git/rebase-apply/patch:85: new blank line at EOF.
+> +
+> warning: 1 line adds whitespace errors.
+>
+
+Ok, I will send a new revision.
+
+
+>
+>
+>
+>
+> > --
+> > 2.41.0
+>
+>
+
+--000000000000db4c5e0606b619e0
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><div><div dir=3D"ltr" class=3D"gmail_sign=
+ature"><div dir=3D"ltr"><br></div></div></div><br></div><br><div class=3D"g=
+mail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sun, Oct 1, 2023 at 10=
+:15=E2=80=AFPM Michael S. Tsirkin &lt;<a href=3D"mailto:mst@redhat.com">mst=
+@redhat.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">On Fri, Sep 08, 2023 at 05:47:40PM +0200, Albert Esteve wrote:<b=
+r>
+&gt; Add hash function to uuid module using the<br>
+&gt; djb2 hash algorithm.<br>
+&gt; <br>
+&gt; Add a couple simple unit tests for the hash<br>
+&gt; function, checking collisions for similar UUIDs.<br>
+&gt; <br>
+&gt; Reviewed-by: Philippe Mathieu-Daud=C3=A9 &lt;<a href=3D"mailto:philmd@=
+linaro.org" target=3D"_blank">philmd@linaro.org</a>&gt;<br>
+&gt; Signed-off-by: Albert Esteve &lt;<a href=3D"mailto:aesteve@redhat.com"=
+ target=3D"_blank">aesteve@redhat.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 include/qemu/uuid.h=C2=A0 =C2=A0 |=C2=A0 2 ++<br>
+&gt;=C2=A0 tests/unit/test-uuid.c | 27 +++++++++++++++++++++++++++<br>
+&gt;=C2=A0 util/uuid.c=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 | 15 ++++++=
++++++++++<br>
+&gt;=C2=A0 3 files changed, 44 insertions(+)<br>
+&gt; <br>
+&gt; diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h<br>
+&gt; index dc40ee1fc9..e24a1099e4 100644<br>
+&gt; --- a/include/qemu/uuid.h<br>
+&gt; +++ b/include/qemu/uuid.h<br>
+&gt; @@ -96,4 +96,6 @@ int qemu_uuid_parse(const char *str, QemuUUID *uuid)=
+;<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 QemuUUID qemu_uuid_bswap(QemuUUID uuid);<br>
+&gt;=C2=A0 <br>
+&gt; +uint32_t qemu_uuid_hash(const void *uuid);<br>
+&gt; +<br>
+&gt;=C2=A0 #endif<br>
+&gt; diff --git a/tests/unit/test-uuid.c b/tests/unit/test-uuid.c<br>
+&gt; index c111de5fc1..aedc125ae9 100644<br>
+&gt; --- a/tests/unit/test-uuid.c<br>
+&gt; +++ b/tests/unit/test-uuid.c<br>
+&gt; @@ -171,6 +171,32 @@ static void test_uuid_unparse_strdup(void)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 }<br>
+&gt;=C2=A0 }<br>
+&gt;=C2=A0 <br>
+&gt; +static void test_uuid_hash(void)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 QemuUUID uuid;<br>
+&gt; +=C2=A0 =C2=A0 int i;<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 for (i =3D 0; i &lt; 100; i++) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 qemu_uuid_generate(&amp;uuid);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Obtain the UUID hash */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint32_t hash_a =3D qemu_uuid_hash(&amp;u=
+uid);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 int data_idx =3D g_random_int_range(0, 15=
+);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Change a single random byte of the UUI=
+D */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 if (uuid.data[data_idx] &lt; 0xFF) {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uuid.data[data_idx]++;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 } else {<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 uuid.data[data_idx]--;<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 }<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /* Obtain the UUID hash again */<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 uint32_t hash_b =3D qemu_uuid_hash(&amp;u=
+uid);<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 /*<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* Both hashes shall be different (a=
+void collision)<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0* for any change in the UUID fields=
+<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0*/<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 g_assert_cmpint(hash_a, !=3D, hash_b);<br=
+>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +}<br>
+&gt; +<br>
+&gt;=C2=A0 int main(int argc, char **argv)<br>
+&gt;=C2=A0 {<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g_test_init(&amp;argc, &amp;argv, NULL);<br>
+&gt; @@ -179,6 +205,7 @@ int main(int argc, char **argv)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g_test_add_func(&quot;/uuid/parse&quot;, test_uuid=
+_parse);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g_test_add_func(&quot;/uuid/unparse&quot;, test_uu=
+id_unparse);<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 g_test_add_func(&quot;/uuid/unparse_strdup&quot;, =
+test_uuid_unparse_strdup);<br>
+&gt; +=C2=A0 =C2=A0 g_test_add_func(&quot;/uuid/hash&quot;, test_uuid_hash)=
+;<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 return g_test_run();<br>
+&gt;=C2=A0 }<br>
+&gt; diff --git a/util/uuid.c b/util/uuid.c<br>
+&gt; index b1108dde78..b366961bc6 100644<br>
+&gt; --- a/util/uuid.c<br>
+&gt; +++ b/util/uuid.c<br>
+&gt; @@ -116,3 +116,18 @@ QemuUUID qemu_uuid_bswap(QemuUUID uuid)<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 bswap16s(&amp;uuid.fields.time_high_and_version);<=
+br>
+&gt;=C2=A0 =C2=A0 =C2=A0 return uuid;<br>
+&gt;=C2=A0 }<br>
+&gt; +<br>
+&gt; +/* djb2 hash algorithm */<br>
+&gt; +uint32_t qemu_uuid_hash(const void *uuid)<br>
+&gt; +{<br>
+&gt; +=C2=A0 =C2=A0 QemuUUID *qid =3D (QemuUUID *) uuid;<br>
+&gt; +=C2=A0 =C2=A0 uint32_t h =3D 5381;<br>
+&gt; +=C2=A0 =C2=A0 int i;<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 for (i =3D 0; i &lt; ARRAY_SIZE(qid-&gt;data); i++) {<b=
+r>
+&gt; +=C2=A0 =C2=A0 =C2=A0 =C2=A0 h =3D (h &lt;&lt; 5) + h + qid-&gt;data[i=
+];<br>
+&gt; +=C2=A0 =C2=A0 }<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0 return h;<br>
+&gt; +}<br>
+&gt; +<br>
+<br>
+whitespace error:<br>
+<br>
+.git/rebase-apply/patch:85: new blank line at EOF.<br>
++<br>
+warning: 1 line adds whitespace errors.<br></blockquote><div><br></div><div=
+>Ok, I will send a new revision.</div><div>=C2=A0</div><blockquote class=3D=
+"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
+04,204,204);padding-left:1ex">
+<br>
+<br>
+<br>
+<br>
+&gt; -- <br>
+&gt; 2.41.0<br>
+<br>
+</blockquote></div></div>
+
+--000000000000db4c5e0606b619e0--
+
 
