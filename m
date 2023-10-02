@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD9A7B5CAE
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 23:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717C77B5CAF
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 23:59:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnQux-0000uI-Ft; Mon, 02 Oct 2023 17:57:31 -0400
+	id 1qnQwl-0003hV-RQ; Mon, 02 Oct 2023 17:59:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qnQuv-0000lL-CK
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 17:57:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qnQus-0000w7-ED
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 17:57:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696283845;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=xDycW7eiSuBGdrxgOgXAhS9xRl/AZerAWj20tigifvM=;
- b=hdNNxv0mkxLuQ2Rti0IR4LVVTOqeWmlVE/zOcRscCOh0ArIZbrQKHV8+00jzpk9r970joY
- d38V76gQoDsf/gVn//XKTK1+3JkxvD34M3um7VsoVytWhqeuRPtr0Nb73Ib98FBJlCuPxa
- IKzLQ5u2EpWqlokUQmaKlUGEu+EZPtc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-611-4kWRg6s4N3qDuv2mAL2Qfw-1; Mon, 02 Oct 2023 17:57:23 -0400
-X-MC-Unique: 4kWRg6s4N3qDuv2mAL2Qfw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
- [10.11.54.5])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 80166101A53B;
- Mon,  2 Oct 2023 21:57:23 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.67])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E6B9D51E3;
- Mon,  2 Oct 2023 21:57:22 +0000 (UTC)
-Date: Mon, 2 Oct 2023 17:57:21 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Laurent Vivier <lvivier@redhat.com>, qemu-block@nongnu.org,
- Thomas Huth <thuth@redhat.com>, Juan Quintela <quintela@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Fam Zheng <fam@euphon.net>,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [PULL 00/13] Migration 20231002 patches
-Message-ID: <20231002215721.GA1077685@fedora>
-References: <20231002122021.231959-1-quintela@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qnQwi-0003ft-Av
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 17:59:20 -0400
+Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qnQwb-0001as-6J
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 17:59:16 -0400
+Received: by mail-oi1-x229.google.com with SMTP id
+ 5614622812f47-3af609c4dfeso164025b6e.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 14:59:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696283952; x=1696888752; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=nk8v5UkDh3iCDvlYmWyWD2XLuJhhXhzz+yM4rOlVXpQ=;
+ b=apzk+wJTi3DECSUWwfIpJAfnkxIAt6fcDfD3qFIHAWh+MHxpjwftqVidKI5zV6eWib
+ 6XgX/B6+NyRThVN+j+chluMi2asBZLPIklpYRSer4VXAG8kbYCX76EX1d6SvKLmSv9PI
+ cHCo+UaxeIL5i2BFTATJaRlDE805/CZPwC+HZwQs8ZsshMFM3WPu4f2MlS2FNRMHcObp
+ ORwX9wnIHTG+J8eX0QZnxB/i/oE14VSjbSzHJKJKLhgnlQ7WYIPk791AHS1VErYXGhzB
+ EHvI6oWGRtX5vm7yttyD4hEfs0VrWhmU8QdNFIzAc2EkgLx3Evd8zgsftZR2qIt8ZM30
+ 6FTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696283952; x=1696888752;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=nk8v5UkDh3iCDvlYmWyWD2XLuJhhXhzz+yM4rOlVXpQ=;
+ b=icf+E6dWrGzVbrL8Wks9DCDPknyU+yLZhBm/unYDdEymJ7cUrVxfAG8qFL0uNA9Q+3
+ e+jeVB3sdyUf+Mnua5PUDkJ/GH109F8F4VTZ/jWds2vx8Y3mFYuwP9mdp5DzogQFho6h
+ 75UEHkjm3gk9JhXo5y7fFB1uFuGfadqzAhCVrUJpvC3JOMgELkD/2nyOFpWB0jEDTGHp
+ 7oAxw5iVWCwDaBDxzMO5J/oHgkz1eDp56FE0hHQ4wWuvaAsHgS44TsxNxtdKvoBK8VFA
+ 0RKSe++Yy6otS4NB/NIvFTt2+IuVogzsKsEzdrTsbO+lyDBB0xofvz0pOMnZ6BsImm8r
+ pihA==
+X-Gm-Message-State: AOJu0YzZu+tm0hzfcnKe9tZsf12bQwHPc/E5TGwUFHewED/ZxKCLH7sD
+ p9A7dkJXbQ+6mXSae8mQjxCh46kAkhQb9R8SaUI=
+X-Google-Smtp-Source: AGHT+IGBaF3sXYCxVdLGmfLu+qFKNcAn1OpuweJw6F/m/5CF/t7MokZvuPTF4N7zteuaK/DMCYX44G8eR5XpcWXfuxQ=
+X-Received: by 2002:a05:6808:17a8:b0:3ab:38b0:8b84 with SMTP id
+ bg40-20020a05680817a800b003ab38b08b84mr16790876oib.17.1696283951653; Mon, 02
+ Oct 2023 14:59:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="Pq8zcwJ1rSX7Bb1o"
-Content-Disposition: inline
-In-Reply-To: <20231002122021.231959-1-quintela@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+References: <20230929112936.2852930-1-kraxel@redhat.com>
+In-Reply-To: <20230929112936.2852930-1-kraxel@redhat.com>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Mon, 2 Oct 2023 17:58:59 -0400
+Message-ID: <CAJSP0QUR0g9gFRbRqmVeHBDqA2Tu9t_64sNYQk=hedSq9MSEeg@mail.gmail.com>
+Subject: Re: [PULL 0/2] Firmware/seabios 20230929 patches
+To: Gerd Hoffmann <kraxel@redhat.com>
+Cc: qemu-devel@nongnu.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
+ envelope-from=stefanha@gmail.com; helo=mail-oi1-x229.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,30 +86,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Fri, 29 Sept 2023 at 07:30, Gerd Hoffmann <kraxel@redhat.com> wrote:
+>
+> The following changes since commit 36e9aab3c569d4c9ad780473596e18479838d1=
+aa:
+>
+>   migration: Move return path cleanup to main migration thread (2023-09-2=
+7 13:58:02 -0400)
+>
+> are available in the Git repository at:
+>
+>   https://gitlab.com/kraxel/qemu.git tags/firmware/seabios-20230929-pull-=
+request
+>
+> for you to fetch changes up to 1f75b1beeb8d958cc56113ba229348d6a0be9d9d:
+>
+>   seabios: update binaries to git snapshot (2023-09-29 13:15:44 +0200)
+>
+> ----------------------------------------------------------------
+> seabios: update to git snapshot
+>
+> Give seabios a bit real world testing before tagging a release.
+> Update to release will follow later in the devel cycle.
 
---Pq8zcwJ1rSX7Bb1o
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+The following CI failure has occurred:
 
-Applied, thanks.
+ 3/61 qemu:qtest+qtest-x86_64 / qtest-x86_64/bios-tables-test
+ERROR          19.15s   killed by signal 6 SIGABRT
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
+=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
+=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
+=95
+stderr:
+acpi-test: Warning! DSDT binary file mismatch. Actual
+[aml:/var/folders/76/zy5ktkns50v6gt5g8r0sf6sc0000gn/T/aml-K2USB2],
+Expected [aml:tests/data/acpi/q35/DSDT.mmio64].
+See source file tests/qtest/bios-tables-test.c for instructions on how
+to update expected files.
+to see ASL diff between mismatched files install IASL, rebuild QEMU
+from scratch and re-run tests with V=3D1 environment variable set**
+ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion
+failed: (all_tables_match)
+(test program exited with status code -6)
 
-Please update the changelog at https://wiki.qemu.org/ChangeLog/8.2 for any user-visible changes.
+https://gitlab.com/qemu-project/qemu/-/jobs/5204949160
 
---Pq8zcwJ1rSX7Bb1o
-Content-Type: application/pgp-signature; name="signature.asc"
+Please take a look. Thanks!
 
------BEGIN PGP SIGNATURE-----
+Stefan
 
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUbPMEACgkQnKSrs4Gr
-c8i6HQf+LuM/6cERYUP4VOWlV2OPQnoRHWL9pLGPFJEHYI6mJMgruBCrZLJLTlc+
-ZaZaFoUCglYiZge8WRJ9DeqOTh4y3TOuJMEtdFfoQBLjs6KG3dAQHHYzUsbCEVFZ
-32E94KTwlVwo896AJ1yDZq0BrSvbC2vEGM0sC3+BMwgJPAV/INDYGA2uYAC40sx4
-DY3UEWXkyh0vm7zk38BmGq1K6vKJ7WaeE4MbXpHCgB1v5XCl1EvSYw4De+kmMzyb
-APL+ytrJJIoyw+xkvhPgl9vr0ZU91qnspjCuGXY8OqRLRnFlaeaemcqabAabCRxO
-ogef0SVRLasIQAPioKhtckFwZt5RMw==
-=DPPJ
------END PGP SIGNATURE-----
-
---Pq8zcwJ1rSX7Bb1o--
-
+>
+> ----------------------------------------------------------------
+>
+> Gerd Hoffmann (2):
+>   seabios: update submodule to git snapshot
+>   seabios: update binaries to git snapshot
+>
+>  pc-bios/bios-256k.bin             | Bin 262144 -> 262144 bytes
+>  pc-bios/bios-microvm.bin          | Bin 131072 -> 131072 bytes
+>  pc-bios/bios.bin                  | Bin 131072 -> 131072 bytes
+>  pc-bios/vgabios-ati.bin           | Bin 39936 -> 39424 bytes
+>  pc-bios/vgabios-bochs-display.bin | Bin 28672 -> 28672 bytes
+>  pc-bios/vgabios-cirrus.bin        | Bin 39424 -> 38912 bytes
+>  pc-bios/vgabios-qxl.bin           | Bin 39936 -> 39424 bytes
+>  pc-bios/vgabios-ramfb.bin         | Bin 29184 -> 28672 bytes
+>  pc-bios/vgabios-stdvga.bin        | Bin 39936 -> 39424 bytes
+>  pc-bios/vgabios-virtio.bin        | Bin 39936 -> 39424 bytes
+>  pc-bios/vgabios-vmware.bin        | Bin 39936 -> 39424 bytes
+>  pc-bios/vgabios.bin               | Bin 39424 -> 38912 bytes
+>  roms/seabios                      |   2 +-
+>  13 files changed, 1 insertion(+), 1 deletion(-)
+>
+> --
+> 2.41.0
+>
+>
 
