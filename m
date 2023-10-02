@@ -2,79 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79397B4BE6
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:58:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 107AD7B4C74
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 09:17:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnCsb-0007cS-Ej; Mon, 02 Oct 2023 02:58:09 -0400
+	id 1qnDAC-0008GR-0h; Mon, 02 Oct 2023 03:16:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCsX-0007UE-8N
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:58:07 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCsI-0004kq-59
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:58:03 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4054496bde3so144045205e9.1
- for <qemu-devel@nongnu.org>; Sun, 01 Oct 2023 23:57:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696229868; x=1696834668; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=tCiZhsSqhrxvh4m/HpiDTM/ARkiikMMBw0REd06q9tc=;
- b=lVlMtA9J41n2Lpx+P3Od34MoQL2d29gDfLU9oF/OVAsIunfLQXWIEC3vZXvDbXTxgL
- yaC5QPzVlmY9wSum9vK0pAZLWkMeguH5xfh8YbcsiwGf8vDMGtVa+SANtIdJB/PuRGkH
- J/snOdWexeeJ2VZA3kfz9I6BnjlQ5xcLwkSGn9hY0WxJw6lpay5qDjXSkbAYGJBRye6x
- 1e5zYH8vocZ1UNVrhggaM7wCHuNEjTzs811Ei99KdYCUeFvnfdlYehmdydWXcNJ855bF
- Jf8xB9gYobw6hfztOhlKQgi8AXqkCxacyIjpZy/T7DH/xlhvhqQBTVRhTUuwFMGcXGHl
- f1DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696229868; x=1696834668;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=tCiZhsSqhrxvh4m/HpiDTM/ARkiikMMBw0REd06q9tc=;
- b=Ke47Ki/FsEhnQOOG9TB3R0pknrD4qSGR3fegBDofT9cRgp/KFfDbUvpJ32bb4u4nex
- aZn+Qgvdh77eGBdLokiGMcmI5EbwKxMFC1NQEpHguMIMHKj6QXRunR1PG3ovC/e6a4aB
- UBsJ0hB+YUADJZPdpmOh2qwJkGcfJ5ghqKSnfA96E0+CH0BEahPEDJrAb6y+se1/u3Pd
- /gF9XJ4U1Bir/po8eDKPvDs8cUvhlmRNliBY5JrtiFcAXE3w10k6pQr57jP26zHJJQY6
- hj5oo1/dgp+wDGVIGyhPkZxKtr89+STkDRKAkBdNZPn7n6JNEvIhY2P5vg8RxUXk0sQO
- 4lYQ==
-X-Gm-Message-State: AOJu0YxpwmbIXvcKwU/iQ4bbnHJbsmjikaSk9bm+Fk2YS8612je/kANs
- b5f2hUhEsQJv1gnIjNWzIND67Hrp+tmitn9GSgM=
-X-Google-Smtp-Source: AGHT+IH+5ZIERlnvsOoKtrR4A9dJ0ne33CkvSaKDPOszLiBC37FZCn7q0Kt/D0nFNg8LW2HmwCSihA==
-X-Received: by 2002:a05:600c:2948:b0:405:3f06:c07e with SMTP id
- n8-20020a05600c294800b004053f06c07emr8612531wmd.15.1696229868371; 
- Sun, 01 Oct 2023 23:57:48 -0700 (PDT)
-Received: from [192.168.69.115] (sto93-h06-176-172-7-203.dsl.sta.abo.bbox.fr.
- [176.172.7.203]) by smtp.gmail.com with ESMTPSA id
- 25-20020a05600c025900b00405623e0186sm6580029wmj.26.2023.10.01.23.57.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 01 Oct 2023 23:57:47 -0700 (PDT)
-Message-ID: <1bf7797a-6b55-9dd3-9cc8-e149a4169bfc@linaro.org>
-Date: Mon, 2 Oct 2023 08:57:46 +0200
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qnDA8-0008Ff-5m; Mon, 02 Oct 2023 03:16:16 -0400
+Received: from out2-smtp.messagingengine.com ([66.111.4.26])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <its@irrelevant.dk>)
+ id 1qnDA1-00005N-R5; Mon, 02 Oct 2023 03:16:15 -0400
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+ by mailout.nyi.internal (Postfix) with ESMTP id 5F54E5C02E6;
+ Mon,  2 Oct 2023 03:16:05 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+ by compute3.internal (MEProxy); Mon, 02 Oct 2023 03:16:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irrelevant.dk;
+ h=cc:cc:content-type:content-type:date:date:from:from
+ :in-reply-to:in-reply-to:message-id:mime-version:references
+ :reply-to:sender:subject:subject:to:to; s=fm1; t=1696230965; x=
+ 1696317365; bh=jvA8EupdegwAj2vYpIMaX3DuNcPdba6D0GQ458j8ypw=; b=N
+ S+rggrWq4zOqxoAJl0Yo4fzreN0SVBa8+c4EAO6dvzl6KiVZi+btLQ61/JipPC5G
+ QlD01tYRDg5RF35vVGHcWkf/lnn0glyTq109jMRENeCbUrRO/nnz2xgUfe+wdSp7
+ owlr7s/WCbrHAsVSJfBMssFryA4tvclHw+x6jhYzYnNWwR+RohNnCGfyeCGt9z0B
+ T9XqMXTv7y8HUMbF8pdmjZ3rSYKEiGbRwK7RN//e20ZxZvSnf032vumNTt4i3Hmh
+ RaOgyLX1RxDEoH1/B+cuqT5Hlikj95V22MEs+j1EfQ6RgV9C+cTOl7+Dy7xpLIbA
+ JqlZeNiX6JfitZCZxx49g==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-type:content-type:date:date
+ :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+ :message-id:mime-version:references:reply-to:sender:subject
+ :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+ :x-sasl-enc; s=fm2; t=1696230965; x=1696317365; bh=jvA8EupdegwAj
+ 2vYpIMaX3DuNcPdba6D0GQ458j8ypw=; b=RYmZgzCsZ6igJ4tID7q9Wivax91bO
+ jRTh6aCNENnBE8I4uzcTIrQMHkQ+VsXiQ7wWZ3o2T0rVKDeyATjSqXHvw26jKqFz
+ IssmRlsQf+Rm+YCndQi+gQhJgNM4sfznulNiya8PaaZGjoEoP0Di8kd5dcT4Ukyp
+ LpdQFbeWy2/P7hmXQjbi/nsgSGR5XVGAZWTwA8zjXAwpPLTNpGfXe+MHHz6osZUb
+ Q98JpMytNI72FpeU7QsnRv/9nc1WPFHsq7g8RjF1qEpGtYtk+k27S61lxbDwdzdm
+ 2f7wo2LPCUVfLcqR3safwysFdXu7WK4fZcJieHC+oadoUsqy7bTp9MTMQ==
+X-ME-Sender: <xms:M24aZabip0It_cnwSjVTsWCgR4ERohLUOM9J2v1DvX39swdl7fCqXA>
+ <xme:M24aZdbAGmQJ5WDmqJvimXAcVaAYZGul1gYyS3zBQtM7xM5XdiUh8w0Rl7cFjNveh
+ 6l2KEnZJ5YBNh1oB7g>
+X-ME-Received: <xmr:M24aZU-3TPmV-2zbFTZqM-z6Yltgz15LOQdOsY6M1eDqpbKGfqaFpcti7IYi>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdekgdduvdcutefuodetggdotefrodftvf
+ curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+ uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+ fjughrpeffhffvvefukfhfgggtuggjsehgtderredttdejnecuhfhrohhmpefmlhgruhhs
+ ucflvghnshgvnhcuoehithhssehirhhrvghlvghvrghnthdrughkqeenucggtffrrghtth
+ gvrhhnpeejgfejfeffvdeuhfeifefhgffgueelhedukeevjeevtdduudegieegteffffej
+ veenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehith
+ hssehirhhrvghlvghvrghnthdrughk
+X-ME-Proxy: <xmx:M24aZcpyEtYmh5w8OXIh0VIhMfO5-g9UaWC5fNqL-PzYPKXcLvt-cQ>
+ <xmx:M24aZVogePNh7q4jzB-q3Io6NCUffueLpjsAFGtuchiy6LNIk6H6Vw>
+ <xmx:M24aZaQ-Ffe-vhfWX3tk0m1WmXo9sk2yHEOYsQOvO2A2ZvqatApanw>
+ <xmx:NW4aZTig5BCSDKFnXj69XhD4o9ZtEFwpb9b0vJK6fTNB5R55MfMw8g>
+Feedback-ID: idc91472f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Oct 2023 03:16:03 -0400 (EDT)
+Date: Mon, 2 Oct 2023 09:15:58 +0200
+From: Klaus Jensen <its@irrelevant.dk>
+To: Alistair Francis <alistair23@gmail.com>
+Cc: lukas@wunner.de, wilfred.mallawa@wdc.com, Jonathan.Cameron@huawei.com,
+ jiewen.yao@intel.com, qemu-devel@nongnu.org, kbusch@kernel.org,
+ mst@redhat.com, marcel.apfelbaum@gmail.com,
+ hchkuo@avery-design.com.tw, cbrowy@avery-design.com,
+ qemu-block@nongnu.org, Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH 3/3] hw/nvme: Add SPDM over DOE support
+Message-ID: <ZRpuLrJjTYlHV1OZ@cormorant.local>
+References: <20230915112723.2033330-1-alistair.francis@wdc.com>
+ <20230915112723.2033330-3-alistair.francis@wdc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2] mailmap: update email addresses for Luc Michel
-Content-Language: en-US
-To: Luc Michel <luc@lmichel.fr>, qemu-devel@nongnu.org
-References: <20230929140326.2056658-2-luc@lmichel.fr>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230929140326.2056658-2-luc@lmichel.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.058,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature"; boundary="G4eJU7CVLF5QrKal"
+Content-Disposition: inline
+In-Reply-To: <20230915112723.2033330-3-alistair.francis@wdc.com>
+Received-SPF: pass client-ip=66.111.4.26; envelope-from=its@irrelevant.dk;
+ helo=out2-smtp.messagingengine.com
+X-Spam_score_int: -27
+X-Spam_score: -2.8
+X-Spam_bar: --
+X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_LOW=-0.7, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,17 +104,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/9/23 16:03, Luc Michel wrote:
-> Map my old and now invalid work email addresses to my personal one.
-> 
-> Signed-off-by: Luc Michel <luc@lmichel.fr>
+
+--G4eJU7CVLF5QrKal
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Sep 15 21:27, Alistair Francis wrote:
+> From: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+>=20
+> Setup Data Object Exchance (DOE) as an extended capability for the NVME
+> controller and connect SPDM to it (CMA) to it.
+>=20
+> Signed-off-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+> Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
 > ---
-> Please ignore v1 sent with wrong e-mail address.
-> ---
->   .mailmap | 3 +++
->   1 file changed, 3 insertions(+)
+>  docs/specs/index.rst        |  1 +
+>  docs/specs/spdm.rst         | 56 +++++++++++++++++++++++++++++++++++++
+>  include/hw/pci/pci_device.h |  5 ++++
+>  include/hw/pci/pcie_doe.h   |  3 ++
+>  hw/nvme/ctrl.c              | 52 ++++++++++++++++++++++++++++++++++
+>  hw/nvme/trace-events        |  1 +
+>  6 files changed, 118 insertions(+)
+>  create mode 100644 docs/specs/spdm.rst
+>=20
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This looks reasonable enough, but could this not be implemented at the
+PCI layer? I do not see anything that is tied specifically to the nvme
+device, why can the spdm parameter not be a PCIDevice parameter such
+that all PCIDevice-derived devices gains this functionality?
 
+--G4eJU7CVLF5QrKal
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEUigzqnXi3OaiR2bATeGvMW1PDekFAmUabi0ACgkQTeGvMW1P
+DekwzggApQGpCiLaYZ3STj30EyoAvnLRhdtN9sJl3GTQ6DlaMBSl4KkWoyx4/E15
+2zUe6BghP+w6JYzyi009QtuhZWsoMy6KLOOfiIadL6Uko+6OjqV4vZfRDgpG7C+c
+vM5/j42OiSSoWEzlFvreZ/CwskQxa2gAwJ3KoRq7QfIhS0cbocu5ajG+dTeahyWd
+dMlMqxYK7b+zdmkFqtxxdqkCkbmW44jtGM4cu8HcrIVZ+8SSaMCGRlUDpqebUHFU
+Y8/+MSS15J/sPISYiVNtUGh4KNevo0pvkkqiDHyp/yo9kb1qDezytNviNY9lxfPk
+OR0FHYwIA9mcf2e9OYctN+wM9Xl/9Q==
+=/B9I
+-----END PGP SIGNATURE-----
+
+--G4eJU7CVLF5QrKal--
 
