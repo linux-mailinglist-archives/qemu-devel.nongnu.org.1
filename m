@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4048C7B5713
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B20C7B5712
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 18:07:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnLRJ-0001cY-De; Mon, 02 Oct 2023 12:06:33 -0400
+	id 1qnLRw-0001pB-Vb; Mon, 02 Oct 2023 12:07:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qnLRF-0001b6-FH; Mon, 02 Oct 2023 12:06:29 -0400
+ id 1qnLRt-0001oP-VO; Mon, 02 Oct 2023 12:07:09 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qnLRD-0008ST-8j; Mon, 02 Oct 2023 12:06:29 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rzm5w0Jg7z6K7G0;
- Tue,  3 Oct 2023 00:06:12 +0800 (CST)
+ id 1qnLRr-0000AQ-4N; Mon, 02 Oct 2023 12:07:08 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.207])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rzm5561G8z6K69n;
+ Tue,  3 Oct 2023 00:05:29 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 2 Oct
- 2023 17:06:18 +0100
-Date: Mon, 2 Oct 2023 17:06:17 +0100
+ 2023 17:07:01 +0100
+Date: Mon, 2 Oct 2023 17:07:01 +0100
 To: Salil Mehta <salil.mehta@huawei.com>
 CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
  <jean-philippe@linaro.org>, <lpieralisi@kernel.org>,
@@ -39,11 +39,12 @@ CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: Re: [PATCH 4/9] hw/acpi: Init GED framework with cpu hotplug events
-Message-ID: <20231002170617.000044f2@Huawei.com>
-In-Reply-To: <20230929124304.13672-5-salil.mehta@huawei.com>
-References: <20230929124304.13672-1-salil.mehta@huawei.com>
- <20230929124304.13672-5-salil.mehta@huawei.com>
+Subject: Re: [PATCH V2 04/10] hw/acpi: Init GED framework with cpu hotplug
+ events
+Message-ID: <20231002170701.00002967@Huawei.com>
+In-Reply-To: <20230930001933.2660-5-salil.mehta@huawei.com>
+References: <20230930001933.2660-1-salil.mehta@huawei.com>
+ <20230930001933.2660-5-salil.mehta@huawei.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -78,7 +79,7 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 29 Sep 2023 13:42:59 +0100
+On Sat, 30 Sep 2023 01:19:27 +0100
 Salil Mehta <salil.mehta@huawei.com> wrote:
 
 > ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI events
@@ -91,10 +92,9 @@ Salil Mehta <salil.mehta@huawei.com> wrote:
 > Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-FWIW this looks good to me.
+Oops. I replied to v1 I think.
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
 > ---
 >  hw/acpi/generic_event_device.c         | 8 ++++++++
 >  include/hw/acpi/generic_event_device.h | 5 +++++
