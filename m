@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA8D7B52F5
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99F2F7B52F4
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:24:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnHy5-000889-4t; Mon, 02 Oct 2023 08:24:09 -0400
+	id 1qnHy5-0008R6-QZ; Mon, 02 Oct 2023 08:24:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=PA+N=FQ=kaod.org=clg@ozlabs.org>)
- id 1qnHxo-0007iv-8r; Mon, 02 Oct 2023 08:23:52 -0400
+ id 1qnHxp-0007o1-GS; Mon, 02 Oct 2023 08:23:53 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=PA+N=FQ=kaod.org=clg@ozlabs.org>)
- id 1qnHxm-0008FZ-B8; Mon, 02 Oct 2023 08:23:51 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rzg9H6lJFz4xGM;
- Mon,  2 Oct 2023 23:23:47 +1100 (AEDT)
+ id 1qnHxn-0008FH-A4; Mon, 02 Oct 2023 08:23:53 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org
+ [IPv6:2404:9400:2221:ea00::3])
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rzg9L245Vz4xKl;
+ Mon,  2 Oct 2023 23:23:50 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rzg9F670wz4xKR;
- Mon,  2 Oct 2023 23:23:45 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rzg9J3Bljz4xKR;
+ Mon,  2 Oct 2023 23:23:48 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Subject: [PATCH 6/8] MAINTAINERS: Add fw_cfg.c to PPC mac99 machine
-Date: Mon,  2 Oct 2023 14:23:24 +0200
-Message-ID: <20231002122326.365368-7-clg@kaod.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH 7/8] MAINTAINERS: Add PPC common files to PowerPC TCG CPUs
+Date: Mon,  2 Oct 2023 14:23:25 +0200
+Message-ID: <20231002122326.365368-8-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231002122326.365368-1-clg@kaod.org>
 References: <20231002122326.365368-1-clg@kaod.org>
@@ -64,28 +64,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The hw/ppc/fw_cfg.c file contains the implementation of
-fw_cfg_arch_key_name(), used by the common nvram model. List it under
-mac99 machine next to the mac_nvram model.
-
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ MAINTAINERS | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index b3ba402f7943..1f72931ac2a4 100644
+index 1f72931ac2a4..2d00d14ef226 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -1387,6 +1387,7 @@ F: hw/pci-bridge/dec.[hc]
- F: hw/misc/macio/
- F: hw/misc/mos6522.c
- F: hw/nvram/mac_nvram.c
-+F: hw/ppc/fw_cfg.c
- F: hw/input/adb*
- F: include/hw/misc/macio/
- F: include/hw/misc/mos6522.h
+@@ -307,6 +307,11 @@ F: target/ppc/
+ F: hw/ppc/ppc.c
+ F: hw/ppc/ppc_booke.c
+ F: include/hw/ppc/ppc.h
++F: hw/ppc/meson.build
++F: hw/ppc/trace*
++F: configs/devices/ppc*
++F: docs/system/ppc/embedded.rst
++F: docs/system/target-ppc.rst
+ 
+ RISC-V TCG CPUs
+ M: Palmer Dabbelt <palmer@dabbelt.com>
 -- 
 2.41.0
 
