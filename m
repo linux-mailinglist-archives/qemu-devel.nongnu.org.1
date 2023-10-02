@@ -2,103 +2,149 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40F807B4E6E
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 11:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C3F7B4EB3
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 11:10:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnEll-0003gg-06; Mon, 02 Oct 2023 04:59:13 -0400
+	id 1qnEvA-00014J-SK; Mon, 02 Oct 2023 05:08:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qnEle-0003Kt-H9
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 04:59:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <simon.rowe@nutanix.com>)
+ id 1qnEv7-000137-Uu; Mon, 02 Oct 2023 05:08:53 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qnElc-0003aH-DA
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 04:59:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696237143;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Wxgm+8Bfp8FIpwJp0F8Lsnx34gN58d0JfUtgLpCGQBE=;
- b=HPy4oX8dnURPEtxVHTVhGP1PExgRktKF5wyjC5axGUo97rifXQ/8Loq7tYOpCX7zPO5iLu
- hvNkReEY3BtaQX3g47KEZ3+RVmE/yw4/kEacrmRC9FcoSH9za3i6Vd1BKC/lgkLXQr6owO
- MhUpddyg+3jILeZZfFW8Rn+cqRNevQs=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-PJH0fziYMfmpQivHwagJew-1; Mon, 02 Oct 2023 04:58:56 -0400
-X-MC-Unique: PJH0fziYMfmpQivHwagJew-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fe1521678fso142057075e9.1
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 01:58:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696237136; x=1696841936;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Wxgm+8Bfp8FIpwJp0F8Lsnx34gN58d0JfUtgLpCGQBE=;
- b=KCiBFvOpEP/LGRU5sI93YejJSHF1aYzEJGvRnjMPnKDNm8irDtWavU7DPVNMXYyvMj
- Yf6JVxTZbG2hGXkRb8R80XW21H3aiKAb9Ln0nMRx5+u7FcHmFFFdUrNM4DFFO5Xwp6vF
- abbLEdxa5ZvmMdmn7FssPrQNHEFiJVHze0LzXddD4h0sdK6tYXTi2wd+cqGXVFcghC52
- Ab+2gFqK4FfUTJj4DaNmFvKINC+sQUqCGbb8HgsDMnX5FYR4PxlcAQ2iMz4Xhmx2DHqS
- ZZKfNOi05GrJXWr8i5G8XnAKUTJCbJeIDQaOMbtJkTo+UGLnSYC96sM/44adnu2aH+7+
- ewtA==
-X-Gm-Message-State: AOJu0Yx24pVMmOKqWC0B+RqYaX9Fz3qYwraoyqzR7pwmV4nM+mRGEG70
- vqB4LQyyh1CAB93uqeakxvGA6eWLcyMYkC9JQQ3q7y5mVwCLVH8kiTX3VWjqnjE9lNL6WIgvGHB
- t3PXuVsvFWgX3SRCTE/bNww9QQzNZFDx2b0dSGfE878V64cKCyZVYMU+bNFjos+iLOocBRe8=
-X-Received: by 2002:adf:fc81:0:b0:323:37a3:8d1e with SMTP id
- g1-20020adffc81000000b0032337a38d1emr8808150wrr.0.1696237135768; 
- Mon, 02 Oct 2023 01:58:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEfCMXfIIwkIEgnzxGA3HJaP/BwimwF8mHAu3w+YCG8lwk09csa41Lgg8LzF3B0mOFWm6kLjg==
-X-Received: by 2002:adf:fc81:0:b0:323:37a3:8d1e with SMTP id
- g1-20020adffc81000000b0032337a38d1emr8808120wrr.0.1696237135274; 
- Mon, 02 Oct 2023 01:58:55 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c735:f200:cb49:cb8f:88fc:9446?
- (p200300cbc735f200cb49cb8f88fc9446.dip0.t-ipconnect.de.
- [2003:cb:c735:f200:cb49:cb8f:88fc:9446])
- by smtp.gmail.com with ESMTPSA id
- f1-20020a5d50c1000000b003142e438e8csm27549025wrt.26.2023.10.02.01.58.54
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 01:58:54 -0700 (PDT)
-Message-ID: <de10b63e-0142-d9c5-8c7a-acf2c58e78cb@redhat.com>
-Date: Mon, 2 Oct 2023 10:58:53 +0200
+ (Exim 4.90_1) (envelope-from <simon.rowe@nutanix.com>)
+ id 1qnEv5-0005hW-LK; Mon, 02 Oct 2023 05:08:53 -0400
+Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
+ 391NHXZV002374; Mon, 2 Oct 2023 02:08:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ from:to:cc:subject:date:message-id:references:in-reply-to
+ :content-type:mime-version; s=proofpoint20171006; bh=Dkgg2E9H/yf
+ LXljWrXH/4yCXKuek9ZfoUHoAXghpjhc=; b=fV45zz/OMfaqPlStoGgHdtMNMFT
+ wx4oMNzpTvi9DHkKApAOHu6S4wVI23DKIG+XmxboetQ+iqUmQLfFD9o1JZwGxz+q
+ ebGRDxCAOTstpvymb1mJrDxB/qgz+ASycbfGSA2BjP4PEOZgGD4GSEtJdPbE0GwH
+ PfRPJbzE8Jz+0caY/0fGjX/b+jq9U7Dnw1Obs6yiRGz2nEg5kq8Q/iTQlAmXJZRr
+ tWY9efRzoiqSvVmh0USQ89nX95od9sxAq/S/uXITn5qcoraxQNmoVzwAUxViqO0x
+ JQONYW/tw4W8I5+NR05X+7So+X/TbP3qS4zx1lE6z3sbkDjy1t6WoBTopcQ==
+Received: from nam12-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12lp2044.outbound.protection.outlook.com [104.47.66.44])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3tehsfb0ny-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 02 Oct 2023 02:08:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ObWoLAFQZeZcSicYBsLGcqWHJc6ppIVhXPheS0cbXNAAj99JrQBaa6xVK0aTe1gZDqBosEozhdB2iLloX4eTANV2sdu28DG7gO9TdnqaFduLNWw4Q1WvpRRRbjJgD34NDvFIsB2TGWexk9twrYpKaRB0Zr2dVrREQ87MxG+SF8MFI6OHpyAhUiZZmTEBXvBxUW0mfyj/uYwVQlPBOEzoMlSUTmk9EK/2zjJSmMsLqLlZCReo83U3tV6t22DhEnZSD6UXz0BLE6PZIlabFRabJLl9oX8/TabE7P+k+oYIzWjVNDOYbpCSYjyLAbghbcm36jmtC2JTMAZPVoeiC7nawg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dkgg2E9H/yfLXljWrXH/4yCXKuek9ZfoUHoAXghpjhc=;
+ b=Y1b3jEpPtg8NXCaxjauZV2YHemh0d8/XST7p4BNhEOOHDp+Ur1Seh5t4OTWiM6GYBJhqLIFSdhWK9zCiA1LZqkVl5at5KHr/kgbrXKIHpTLWNEhIZRjOQ6KcsHAXLhqQ3+oIO6MI0trWkrcloWcYIrCATIDr2d6yctY+1aNlcgd9Lg1s5Eis78DPPdpQCvC1xBsFvaBQ2PunTrHU61tf9Ft0tef9ee9LulfOkdrGLLB+vtCUqM+ttz/gal1fZ4Rrv2NwC0TxCuNC5OALKorTQR/wKJPbVgESlOti1LWRJrDFo7pu0zX8OWX9eDfHjNGBbCuc3aqkpmfPGZNjrKVmbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dkgg2E9H/yfLXljWrXH/4yCXKuek9ZfoUHoAXghpjhc=;
+ b=mGZIxi7KPRVcZBH0zCMyjwMJTlntgDYPHSYgMPwhwkhA2MjVIJxim7tA+2+U2br/cQL3POgCRYolA4PJYHpMVZhyB5F0hDhYRt1X/U3qkBHWi74DGIcENPHA37+hPy0hrDXWD4zxvCHzuRy5DfYoIOkVvmTOi5uPdXAz7KbqU20IPkE2fw3g8UUNTwLaU6I/2zgAIHbyJW91sRoNW+o+sbO3+rIXOZVuXjDDj40dWbogidYBkMtJQYo0cmE42f8f3ou46BxWBuwmVFbyzyO9TklxkqH6ZxDzN1B7QgF2RrF+AZiNhWYCJq3fiak31RKUDrjQbEDIY1sjPKznCMk4OA==
+Received: from DM8PR02MB8121.namprd02.prod.outlook.com (2603:10b6:8:1a::12) by
+ DM6PR02MB6988.namprd02.prod.outlook.com (2603:10b6:5:22c::17) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6838.30; Mon, 2 Oct 2023 09:08:45 +0000
+Received: from DM8PR02MB8121.namprd02.prod.outlook.com
+ ([fe80::b986:4843:ab24:54cd]) by DM8PR02MB8121.namprd02.prod.outlook.com
+ ([fe80::b986:4843:ab24:54cd%7]) with mapi id 15.20.6838.030; Mon, 2 Oct 2023
+ 09:08:45 +0000
+From: Simon Rowe <simon.rowe@nutanix.com>
+To: Fiona Ebner <f.ebner@proxmox.com>, John Snow <jsnow@redhat.com>
+CC: Niklas Cassel <niklas.cassel@wdc.com>, qemu-devel <qemu-devel@nongnu.org>, 
+ Qemu-block <qemu-block@nongnu.org>, Felipe Franciosi <felipe@nutanix.com>
+Subject: Re: [PATCH 1/1] hw/ide/core: terminate in-flight DMA on IDE bus reset
+Thread-Topic: [PATCH 1/1] hw/ide/core: terminate in-flight DMA on IDE bus reset
+Thread-Index: AQHZ7KWy58usN3As2U6v1H3wKmYsk7Ar+paAgAC9g4CAAH6xgIAC7D6AgAYgulQ=
+Date: Mon, 2 Oct 2023 09:08:44 +0000
+Message-ID: <DM8PR02MB81217871CAB18CCBB04938F893C5A@DM8PR02MB8121.namprd02.prod.outlook.com>
+References: <20230921160712.99521-1-simon.rowe@nutanix.com>
+ <20230921160712.99521-2-simon.rowe@nutanix.com>
+ <CAFn=p-YL_hmnrFY9hhuMgMkV4hL3dojMMWUdG9=DBGYuxi_TUw@mail.gmail.com>
+ <7658d927-1d05-8f2d-9739-d1db692bee72@proxmox.com>
+ <CAFn=p-YkEJajV_YuOsK4KPL6T1erEhdkameN-XEEXrwY+XZZ6g@mail.gmail.com>
+ <4a1a5f8a-6797-104b-4a91-b5fa24607fb4@proxmox.com>
+In-Reply-To: <4a1a5f8a-6797-104b-4a91-b5fa24607fb4@proxmox.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM8PR02MB8121:EE_|DM6PR02MB6988:EE_
+x-ms-office365-filtering-correlation-id: 72b32320-5ea6-4206-a298-08dbc3272e3e
+x-proofpoint-crosstenant: true
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 23UoDNha9rIxIy5+LzAk3/cBnAXznHQI3l5wcCq70yyc5eP7eS8Dqw4WkD4L7GS/FKgfZcdFCuHzjEHWR+XqUx/hvYbjIk1Q3eYUMisvZW6yoUiq7tAcQtDXZ2bQl1KCxJN3Hi3laNRQb3Ksd5Kcq6gDwHUYj/Pl7edLjtwxFb0q/MDIGl7LgDdl2ucH+LlVuc0LQfxVE10YUodpFgfevonAFyCaXu1r3UGDE7VUZ3/5jNObd1OYDv/JdsqnG8Ww5drvP9Ev2CntIjM7tiGeeAW7sEzzDK2RS4VL1w/LsZeAcqkpYSGbsb1jMsaLOQpvwWmyN0yHLxFaiMUAHqvTQbhtTb1c4BuuIN57xMt1MVTqzrQul7byveTx0FByr4K2SsMtm8FPJjE7o1QIaofnVT2pHWUYzb5YPlFA7kl29sJEK944kmT/VYZDAabp7HpUTm7RMcRTBZvPGpPQXDi+VuBA+sfsnzVWTF1OsihfS1KzHNE3/e2HrprVnxjiLRlijTs0z1vMX0Q/KlwnmvGS7Xn3FDba1+JzoigkRLlV2NuFirif27vRCegjemtt257/ftLIohrwAlPQj6TJ2iAf1uGgBm4l+JNuG1c6YnwUCXsSN7KmPoKrzfGQlhCj1r7T
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR02MB8121.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(39860400002)(396003)(346002)(376002)(136003)(366004)(230922051799003)(186009)(1800799009)(451199024)(64100799003)(7696005)(6506007)(9686003)(2906002)(83380400001)(33656002)(122000001)(86362001)(38070700005)(38100700002)(55016003)(26005)(107886003)(54906003)(52536014)(4326008)(8676002)(8936002)(44832011)(478600001)(5660300002)(316002)(66556008)(66476007)(76116006)(41300700001)(66946007)(110136005)(66446008)(64756008)(71200400001);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?vMR9pbQ6BehS+4sE91xbPaoJUrBfvlO8+sj9Hl6AmmyyAecfDZ6BcEDxvkWW?=
+ =?us-ascii?Q?2vjshqrxG7RzPfVnywkwsuCPHqZcKXaenD0R+U/VHqJAAmPpLyLCuZSAjBSS?=
+ =?us-ascii?Q?Z+320DAbS8MrMKYhpxgEE3n+K9FzockXYECeLQacFE0fUUV2MWqlyw5BYEnG?=
+ =?us-ascii?Q?M9HCVCS++/EOrtEg1AG8zUvOyHzzF7xCePa2uWeRIdkqD9LUmYQfKxROgP+m?=
+ =?us-ascii?Q?Pm+CbhIStAqeJEmj+GZWB9bWbmJazLh1FwHReikgmcTJ5tlI9e4Uxm5pCHck?=
+ =?us-ascii?Q?96Up29wWdn+Oyi0h6ercT+JXuPG60G9oqVWLwx6jpj1RxzTx8H6710gevdib?=
+ =?us-ascii?Q?cpvlbn70llkgWpAUrS7VfU5s4hmfVQVA7Ffl7y/yIgYfTTRrJcx5brYBfPnQ?=
+ =?us-ascii?Q?xNQEDYxfPtl2FZCj25jSAMUN+O5Wvd6sHmlCVZ18aRfCX9n1mN4pkEkSBb84?=
+ =?us-ascii?Q?n+E0ktGX2rDdOkaKz5K+IDy4Zb4TIXHqYfbRewm/fl+h8OsfRTZ06KQgTEaS?=
+ =?us-ascii?Q?kTHjxU9MmYpNNqmC2yKTXUTWfXmzvqHsExNQkpBaqYGwoPrB2kPUOwA1qXXv?=
+ =?us-ascii?Q?LZO5dxUQz4rsojNSoFhUuW1J2b6JGbSpufUlgIwQm0YCqrrTQ5kx2ygD1JmE?=
+ =?us-ascii?Q?+OkZCHsltAK47e411cJnj0vE5YmdQkXYNNWwpw8brQCmTfhK5CQ4+nl5Nrq+?=
+ =?us-ascii?Q?yVSoPHFnoPaHe9N497BphYfbGrWUj8aj9oYyCaYpKr3BGlQS+x1m9eEE5SiT?=
+ =?us-ascii?Q?RfgWssTyUfMjaUnKgXwZ33T/iCk4SC0sR8HK6+ovpJNhELDDQJ/FaxhIjAH+?=
+ =?us-ascii?Q?LWncYO1YhEkV7d5JILlrQ+foR1DKp2w7KUHK15o8arFyCpmGY02r4pz8Ryez?=
+ =?us-ascii?Q?1J1yaWEtabe0WUUVSw/MZaFVfnzIaU4ySnMEXiatfczdFCUXmHH0SJEv0P8T?=
+ =?us-ascii?Q?PrLe1y13WHG9AmBeQR9w5DwPPzljYlnl1wE2+bZpW77lVmXueJEknHYQNVyM?=
+ =?us-ascii?Q?bshjT6v/wYZ8D0SMiRiHmiGT15EsxSkdp5LPkpWoaJjIUkT61+OZE0Ivdc18?=
+ =?us-ascii?Q?cEAQfEdPpS3lzsGCYbcPTBn1K+t2gLErMYxvbMm0ztwKetJ8WXnj5IYGJKFN?=
+ =?us-ascii?Q?fF+B7cuG3QABRqV7YdLQxQgLfPbLavamDpU9+UlgjEbFyZ7Y8YBxALaWWeML?=
+ =?us-ascii?Q?TL6c016RVQUQMUc/RchBqtX8+MH4c7TelZz2DzmbGHKhCNS+lmh7Z60CcaU2?=
+ =?us-ascii?Q?hJpMmuJVLW7Il7f0MIW/1F08Bw59NGUUVSIKh5k7cuXnes7OIRR5uTohST70?=
+ =?us-ascii?Q?tMKCMAHD3R295g575BLqOC56rDGIvry0T+dueXa2BG3g+8LpEemzFmHqisQp?=
+ =?us-ascii?Q?DjPKpUNGCTXxI5w+2TlmWq65Hhri6ZS+pHLx1MYjjtFSawliJ/ORFVj3xEwq?=
+ =?us-ascii?Q?uLn+B3JaaMICPiOSMGul9n+P63V1QxqKhdf18mxJwRlJVLQqOgumi/waj7oM?=
+ =?us-ascii?Q?bvkWE4alPipggVUP6Bbj/Ol+sd4W6Xcdc+6P3HPScE3w4hsB5weocmDD4Z6B?=
+ =?us-ascii?Q?g4f/NqCyXEOkwXa8hXei8KX5BpfY1GE3NFvuZjHJNLd5TafUScCWKctxrlrb?=
+ =?us-ascii?Q?SA=3D=3D?=
+Content-Type: multipart/alternative;
+ boundary="_000_DM8PR02MB81217871CAB18CCBB04938F893C5ADM8PR02MB8121namp_"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 00/18] virtio-mem: Expose device memory through
- multiple memslots
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
- Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>, kvm@vger.kernel.org
-References: <20230926185738.277351-1-david@redhat.com>
-From: David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230926185738.277351-1-david@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR02MB8121.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72b32320-5ea6-4206-a298-08dbc3272e3e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2023 09:08:44.9544 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: WlFSrziEnALnU1HsGm58fLpAMkLw80ywBlcALs2G6RKdg5Bom3Am7KCSiw4KvRbxI4Y9sqKTs9/0qAEpQd+7vw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6988
+X-Proofpoint-GUID: dJfpE__zsA7D4sVaXb8GZy5mwfFs7ZGe
+X-Proofpoint-ORIG-GUID: dJfpE__zsA7D4sVaXb8GZy5mwfFs7ZGe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-02_03,2023-09-28_03,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12;
+ envelope-from=simon.rowe@nutanix.com; helo=mx0b-002c1b01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.058, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -115,109 +161,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 26.09.23 20:57, David Hildenbrand wrote:
-> Quoting from patch #16:
-> 
->      Having large virtio-mem devices that only expose little memory to a VM
->      is currently a problem: we map the whole sparse memory region into the
->      guest using a single memslot, resulting in one gigantic memslot in KVM.
->      KVM allocates metadata for the whole memslot, which can result in quite
->      some memory waste.
-> 
->      Assuming we have a 1 TiB virtio-mem device and only expose little (e.g.,
->      1 GiB) memory, we would create a single 1 TiB memslot and KVM has to
->      allocate metadata for that 1 TiB memslot: on x86, this implies allocating
->      a significant amount of memory for metadata:
-> 
->      (1) RMAP: 8 bytes per 4 KiB, 8 bytes per 2 MiB, 8 bytes per 1 GiB
->          -> For 1 TiB: 2147483648 + 4194304 + 8192 = ~ 2 GiB (0.2 %)
-> 
->          With the TDP MMU (cat /sys/module/kvm/parameters/tdp_mmu) this gets
->          allocated lazily when required for nested VMs
->      (2) gfn_track: 2 bytes per 4 KiB
->          -> For 1 TiB: 536870912 = ~512 MiB (0.05 %)
->      (3) lpage_info: 4 bytes per 2 MiB, 4 bytes per 1 GiB
->          -> For 1 TiB: 2097152 + 4096 = ~2 MiB (0.0002 %)
->      (4) 2x dirty bitmaps for tracking: 2x 1 bit per 4 KiB page
->          -> For 1 TiB: 536870912 = 64 MiB (0.006 %)
-> 
->      So we primarily care about (1) and (2). The bad thing is, that the
->      memory consumption doubles once SMM is enabled, because we create the
->      memslot once for !SMM and once for SMM.
-> 
->      Having a 1 TiB memslot without the TDP MMU consumes around:
->      * With SMM: 5 GiB
->      * Without SMM: 2.5 GiB
->      Having a 1 TiB memslot with the TDP MMU consumes around:
->      * With SMM: 1 GiB
->      * Without SMM: 512 MiB
-> 
->      ... and that's really something we want to optimize, to be able to just
->      start a VM with small boot memory (e.g., 4 GiB) and a virtio-mem device
->      that can grow very large (e.g., 1 TiB).
-> 
->      Consequently, using multiple memslots and only mapping the memslots we
->      really need can significantly reduce memory waste and speed up
->      memslot-related operations. Let's expose the sparse RAM memory region using
->      multiple memslots, mapping only the memslots we currently need into our
->      device memory region container.
-> 
-> The hyper-v balloon driver has similar demands [1].
-> 
-> For virtio-mem, this has to be turned manually on ("dynamic-memslots=on"),
-> due to the interaction with vhost (below).
-> 
-> If we have less than 509 memslots available, we always default to a single
-> memslot. Otherwise, we automatically decide how many memslots to use
-> based on a simple heuristic (see patch #12), and try not to use more than
-> 256 memslots across all memory devices: our historical DIMM limit.
-> 
-> As soon as any memory devices automatically decided on using more than
-> one memslot, vhost devices that support less than 509 memslots (e.g.,
-> currently most vhost-user devices like with virtiofsd) can no longer be
-> plugged as a precaution.
-> 
-> Quoting from patch #12:
-> 
->      Plugging vhost devices with less than 509 memslots available while we
->      have memory devices plugged that consume multiple memslots due to
->      automatic decisions can be problematic. Most configurations might just fail
->      due to "limit < used + reserved", however, it can also happen that these
->      memory devices would suddenly consume memslots that would actually be
->      required by other memslot consumers (boot, PCI BARs) later. Note that this
->      has always been sketchy with vhost devices that support only a small number
->      of memslots; but we don't want to make it any worse.So let's keep it simple
->      and simply reject plugging such vhost devices in such a configuration.
-> 
->      Eventually, all vhost devices that want to be fully compatible with such
->      memory devices should support a decent number of memslots (>= 509).
-> 
-> 
-> The recommendation is to plug such vhost devices before the virtio-mem
-> decides, or to not set "dynamic-memslots=on". As soon as these devices
-> support a reasonable number of memslots (>= 509), this will start working
-> automatically.
-> 
-> I run some tests on x86_64, now also including vfio and migration tests.
-> Seems to work as expected, even when multiple memslots are used.
-> 
-> 
-> Patch #1 -- #3 are from [2] that were not picked up yet.
-> 
-> Patch #4 -- #12 add handling of multiple memslots to memory devices
-> 
-> Patch #13 -- #16 add "dynamic-memslots=on" support to virtio-mem
-> 
-> Patch #15 -- #16 make sure that virtio-mem memslots can be enabled/disable
->               atomically
+--_000_DM8PR02MB81217871CAB18CCBB04938F893C5ADM8PR02MB8121namp_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
+On Thursday, 28 September 2023 Fiona Ebner <f.ebner@proxmox.com> wrote:
 
-If there is no further feedback until the end of the week, I'll queue 
-this to mem-next.
+> AFAICT, yes, because the DMA callback is invoked before resetting the
+> state now. But not 100% sure if it can't be triggered in some other way,
+> maybe Simon knows more? I don't have a reproducer for the CVE either,
+> but the second patch after the one linked above adds a qtest for the
+> reset scenario.
 
--- 
-Cheers,
+I initially tested an identical change and, yes, it did seem to address the=
+ issue. I preferred my final solution because it felt wrong for the DMA to =
+continue after the point the VM is expecting the controller to be reset. I =
+felt it was best to leave the ordering as is (because there are multiple ot=
+her controllers that use ide_bus_reset()) and terminate the DMA transaction=
+ using state that indicates a reset is being performed.
 
-David / dhildenb
+I have a test setup that I use to reproduce this (that was mentioned in the=
+ original CVE disclosure). My patch ran for 24+ hours successfully. I can t=
+est any other proposed fix.
 
+Regards
+Simon
+
+--_000_DM8PR02MB81217871CAB18CCBB04938F893C5ADM8PR02MB8121namp_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
+hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
+fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	font-size:10.0pt;
+	font-family:"Calibri",sans-serif;}
+span.EmailStyle19
+	{mso-style-type:personal-reply;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:612.0pt 792.0pt;
+	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
+div.WordSection1
+	{page:WordSection1;}
+--></style>
+</head>
+<body lang=3D"EN-GB" link=3D"blue" vlink=3D"purple" style=3D"word-wrap:brea=
+k-word">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US">On
+</span><span style=3D"font-size:12.0pt;color:black">Thursday, 28 September =
+2023 Fiona Ebner &lt;f.ebner@proxmox.com&gt;</span><span style=3D"font-size=
+:12.0pt"> wrote:</span><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&gt; AFAICT, yes, b=
+ecause the DMA callback is invoked before resetting the<br>
+&gt; state now. But not 100% sure if it can't be triggered in some other wa=
+y,<br>
+&gt; maybe Simon knows more? I don't have a reproducer for the CVE either,<=
+br>
+&gt; but the second patch after the one linked above adds a qtest for the<b=
+r>
+&gt; reset scenario.</span><span style=3D"font-size:11.0pt;mso-fareast-lang=
+uage:EN-US"><o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US">I initially tested an identical change and, yes, it did seem to add=
+ress the issue. I preferred my final solution because it felt wrong for the=
+ DMA to continue after the point the
+ VM is expecting the controller to be reset. I felt it was best to leave th=
+e ordering as is (because there are multiple other controllers that use ide=
+_bus_reset()) and terminate the DMA transaction using state that indicates =
+a reset is being performed.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US">I have a test setup that I use to reproduce this (that was mentione=
+d in the original CVE disclosure). My patch ran for 24+ hours successfully.=
+ I can test any other proposed fix.<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US"><o:p>&nbsp;</o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US">Regards<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
+:EN-US">Simon<o:p></o:p></span></p>
+</div>
+</body>
+</html>
+
+--_000_DM8PR02MB81217871CAB18CCBB04938F893C5ADM8PR02MB8121namp_--
 
