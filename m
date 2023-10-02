@@ -2,88 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA537B5582
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 16:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1037B5593
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:00:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnKMl-000858-Hf; Mon, 02 Oct 2023 10:57:47 -0400
+	id 1qnKOV-0003u7-QN; Mon, 02 Oct 2023 10:59:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qnKMj-00084s-TK
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:57:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qnKO9-0003SI-DD
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:59:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qnKMi-0003fA-99
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:57:45 -0400
+ id 1qnKO6-0003nY-T5
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:59:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696258663;
+ s=mimecast20190719; t=1696258750;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w6ECQLPbNpe6+9u+YwbeHCePsExVXlSR1Ai6vZUxTVc=;
- b=XjimJ4ct1C01rDMVy6e/gJeVORxPeRmHEJBzjWY+HPyAK4fqH4aiRLfU12ASyM3+X4mx2f
- NqZ5UTKEXyKs3I7H/XVt6x2zxHTAMmire3zwHPiZcXg7YYU6M3pXT4RRDoQNi0HxdgcypA
- n7lNw2I0fdA8ZloL23ARp9LDefYZLJA=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=rj1HXspE/zOGUd94i7jDR1pjjXabvJvCmfMOVXSmfDY=;
+ b=MTONHZ/Zk4H7AHjuRUf33EGUUCSD9htFD476NIi074vVtp30Epw3at6Lqi2X3mmRfb48VO
+ 4sxbi8ky8IGV+dnsvHqcLFPYd1uxzl8xPKMpKtr0r4Q/oWDJM7jEGggvvK6mD+AsAc1Yd3
+ agXTDWOSpK9N8u7uwcqHZ94vd5zDYtg=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-554-3YWcF4MANGuZAyy8Ehw3ow-1; Mon, 02 Oct 2023 10:57:41 -0400
-X-MC-Unique: 3YWcF4MANGuZAyy8Ehw3ow-1
-Received: by mail-ej1-f69.google.com with SMTP id
- a640c23a62f3a-9aa20a75780so1429568466b.2
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 07:57:40 -0700 (PDT)
+ us-mta-62-n4WifaPJOuK23i3iJXkX_A-1; Mon, 02 Oct 2023 10:57:56 -0400
+X-MC-Unique: n4WifaPJOuK23i3iJXkX_A-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-94f7a2b21fdso133477466b.2
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 07:57:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696258659; x=1696863459;
+ d=1e100.net; s=20230601; t=1696258661; x=1696863461;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=w6ECQLPbNpe6+9u+YwbeHCePsExVXlSR1Ai6vZUxTVc=;
- b=rGNWXpfo1eoJVhiGLPqCED03eFvNBu2rK+w7Ybl0yycTzx/UmZtYJrgDkjMgGMvUQM
- qcLS3puPjILqDZqBP2jjpGjwAfLfDCtJK2vo9Xwq3FgcxVr9m28GPoWIRkC6EEWH2twu
- 2HB/DqOYdgkCAJbe5GAiMf6MaWxEehoI2zQRiF+LHgk3ngks2L2PELEjCO0wdMzPpba7
- Z4xqNx+VvDKZBHSPrafnQt5iHP7c5E8ODf+JpCFnFknhrq5iuexumzV/Nxpn5ax4jGuh
- 4yTx1FhU9Ip0xcWQAgRwnHPL8tNv2BySudGwLoZX0ywnXi/fqI9IAGO4rhk7xo0udgQr
- qGqw==
-X-Gm-Message-State: AOJu0YyBZspkUYjVQBF4ZOtVB8zWFjtmHhEYKq1LeSkRIIVHVEO6SAB1
- LRGbov9WM+hUZV7Jk6WcUAPpmwAouaWnc7tQ5d7p/fY9E2OyRsK2PDUrWaaK9ayW9iHTQmTlwL6
- IVJCPUVhFqSor0rjpwoJ0CoBSFlU6c/KNFE7wui8IjPCtJKiHxZnb3bfF9WlGgPPdSskuQJcBC/
- E=
-X-Received: by 2002:a17:906:1097:b0:9ae:37c2:11b2 with SMTP id
- u23-20020a170906109700b009ae37c211b2mr10189010eju.15.1696258658801; 
- Mon, 02 Oct 2023 07:57:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGF5Y5fcG22vwO/kYjl0R8nDKYg6h5MLo55ccbuT+BYgIhWXciSFYj4MHMIqiRwBsPr7j7YGg==
-X-Received: by 2002:a17:906:1097:b0:9ae:37c2:11b2 with SMTP id
- u23-20020a170906109700b009ae37c211b2mr10189000eju.15.1696258658490; 
- Mon, 02 Oct 2023 07:57:38 -0700 (PDT)
+ bh=rj1HXspE/zOGUd94i7jDR1pjjXabvJvCmfMOVXSmfDY=;
+ b=A2mXGuIjTKr8vDulA+doNtAFk9kSyyRRN10O9EfGaC6pnlMvSJvLknGxPYEHBpc+0H
+ ORE5mO7/Sk99oEVnmYoC65xQlY5/tJSPiaRN7p23IQNw+WzYCzOEQq4E794Iqyl0BR/Z
+ KwLVLAriK+gp8e+iQ8xTP/noS+QS4WJZYpkOxuuIXd6QtaHvqynH+LBEZSIk/3ZPAhUp
+ d6drBlqk9rLD20WfkUyxKuAz7FBPPE9sdhKZIhAO6Ke2hZRXnycmcNWDVfxg5Mn1jLdZ
+ F2J8ns77iLed3sFdfmI5AKDO6R7LaSncLZygOUsh3inmenvXsGbUItjPPQ6js0FaGyNT
+ 0NqQ==
+X-Gm-Message-State: AOJu0YyrmQnfd78jlLNGCUZIuS/FbVFOSiT2uSzM9FEqlXqS5HZ9mtX8
+ CISEIN5fKBvxHw4MIeH4mGSTEznJ1zTdfreb4WW7Bsjixzv6vLjRbv8OnWOl9hVRNMrR8NAVfOV
+ S4lCRME3CCuIwmR3J02mTolpWMILWc6fY08ZoeC0fuMwm0HMmdOR2eKgD4Fko/tHaf10RwZ0u1g
+ U=
+X-Received: by 2002:a17:906:8442:b0:9ae:5370:81df with SMTP id
+ e2-20020a170906844200b009ae537081dfmr10144199ejy.19.1696258660895; 
+ Mon, 02 Oct 2023 07:57:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH5c62of9dD7x/nXunv9qyQEn+1b64sa+aOiXuyh7MO56TbjL0SJzMMC5jqrgaiRRv5XNg6CQ==
+X-Received: by 2002:a17:906:8442:b0:9ae:5370:81df with SMTP id
+ e2-20020a170906844200b009ae537081dfmr10144178ejy.19.1696258660407; 
+ Mon, 02 Oct 2023 07:57:40 -0700 (PDT)
 Received: from [192.168.10.117] ([2001:b07:6468:f312:48f9:bea:a04c:3dfe])
  by smtp.gmail.com with ESMTPSA id
- a7-20020a170906670700b0099293cdbc98sm17383229ejp.145.2023.10.02.07.57.36
+ e8-20020a170906374800b009920e9a3a73sm17157743ejc.115.2023.10.02.07.57.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Oct 2023 07:57:36 -0700 (PDT)
+ Mon, 02 Oct 2023 07:57:39 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: balaton@eik.bme.hu
-Subject: [PATCH 04/13] audio: return Error ** from audio_state_by_name
-Date: Mon,  2 Oct 2023 16:57:18 +0200
-Message-ID: <20231002145728.87958-5-pbonzini@redhat.com>
+Subject: [PATCH 05/13] audio: commonize voice initialization
+Date: Mon,  2 Oct 2023 16:57:19 +0200
+Message-ID: <20231002145728.87958-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231002145728.87958-1-pbonzini@redhat.com>
 References: <20231002145728.87958-1-pbonzini@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,141 +100,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Remove duplicate error formatting code.
+Move some mostly irrelevant code out of audio_init.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- audio/audio-hmp-cmds.c           |  6 ++++--
- audio/audio.c                    |  3 ++-
- audio/audio.h                    |  2 +-
- hw/core/qdev-properties-system.c | 16 ++++------------
- ui/dbus.c                        |  3 +--
- ui/vnc.c                         |  3 +--
- 6 files changed, 13 insertions(+), 20 deletions(-)
+ audio/audio.c          | 19 ++-----------------
+ audio/audio_template.h |  9 ++++++++-
+ 2 files changed, 10 insertions(+), 18 deletions(-)
 
-diff --git a/audio/audio-hmp-cmds.c b/audio/audio-hmp-cmds.c
-index 1237ce9e750..c9608b715b8 100644
---- a/audio/audio-hmp-cmds.c
-+++ b/audio/audio-hmp-cmds.c
-@@ -26,6 +26,7 @@
- #include "audio/audio.h"
- #include "monitor/hmp.h"
- #include "monitor/monitor.h"
-+#include "qapi/error.h"
- #include "qapi/qmp/qdict.h"
- 
- static QLIST_HEAD (capture_list_head, CaptureState) capture_head;
-@@ -65,10 +66,11 @@ void hmp_wavcapture(Monitor *mon, const QDict *qdict)
-     int nchannels = qdict_get_try_int(qdict, "nchannels", 2);
-     const char *audiodev = qdict_get_str(qdict, "audiodev");
-     CaptureState *s;
--    AudioState *as = audio_state_by_name(audiodev);
-+    Error *local_err = NULL;
-+    AudioState *as = audio_state_by_name(audiodev, &local_err);
- 
-     if (!as) {
--        monitor_printf(mon, "Audiodev '%s' not found\n", audiodev);
-+        error_report_err(local_err);
-         return;
-     }
- 
 diff --git a/audio/audio.c b/audio/audio.c
-index fdc34a77520..874a4c3c412 100644
+index 874a4c3c412..bb1734a95d3 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -2260,7 +2260,7 @@ int audio_buffer_bytes(AudiodevPerDirectionOptions *pdo,
-         audioformat_bytes_per_sample(as->fmt);
- }
+@@ -1570,8 +1570,8 @@ static int audio_driver_init(AudioState *s, struct audio_driver *drv,
+             drv->pcm_ops->put_buffer_out = audio_generic_put_buffer_out;
+         }
  
--AudioState *audio_state_by_name(const char *name)
-+AudioState *audio_state_by_name(const char *name, Error **errp)
+-        audio_init_nb_voices_out(s, drv);
+-        audio_init_nb_voices_in(s, drv);
++        audio_init_nb_voices_out(s, drv, 1);
++        audio_init_nb_voices_in(s, drv, 0);
+         s->drv = drv;
+         return 0;
+     } else {
+@@ -1774,21 +1774,6 @@ static AudioState *audio_init(Audiodev *dev, const char *name)
+ 
+     s->ts = timer_new_ns(QEMU_CLOCK_VIRTUAL, audio_timer, s);
+ 
+-    s->nb_hw_voices_out = audio_get_pdo_out(dev)->voices;
+-    s->nb_hw_voices_in = audio_get_pdo_in(dev)->voices;
+-
+-    if (s->nb_hw_voices_out < 1) {
+-        dolog ("Bogus number of playback voices %d, setting to 1\n",
+-               s->nb_hw_voices_out);
+-        s->nb_hw_voices_out = 1;
+-    }
+-
+-    if (s->nb_hw_voices_in < 0) {
+-        dolog ("Bogus number of capture voices %d, setting to 0\n",
+-               s->nb_hw_voices_in);
+-        s->nb_hw_voices_in = 0;
+-    }
+-
+     if (drvname) {
+         driver = audio_driver_lookup(drvname);
+         if (driver) {
+diff --git a/audio/audio_template.h b/audio/audio_template.h
+index dc0c74aa746..7ccfec01168 100644
+--- a/audio/audio_template.h
++++ b/audio/audio_template.h
+@@ -37,11 +37,12 @@
+ #endif
+ 
+ static void glue(audio_init_nb_voices_, TYPE)(AudioState *s,
+-                                              struct audio_driver *drv)
++                                              struct audio_driver *drv, int min_voices)
  {
-     AudioState *s;
-     QTAILQ_FOREACH(s, &audio_states, list) {
-@@ -2269,6 +2269,7 @@ AudioState *audio_state_by_name(const char *name)
-             return s;
-         }
-     }
-+    error_setg(errp, "audiodev '%s' not found", name);
-     return NULL;
- }
+     int max_voices = glue (drv->max_voices_, TYPE);
+     size_t voice_size = glue(drv->voice_size_, TYPE);
  
-diff --git a/audio/audio.h b/audio/audio.h
-index 01bdc567fb1..e0c13b5dcdf 100644
---- a/audio/audio.h
-+++ b/audio/audio.h
-@@ -174,7 +174,7 @@ bool audio_init_audiodevs(void);
- void audio_help(void);
- void audio_legacy_help(void);
- 
--AudioState *audio_state_by_name(const char *name);
-+AudioState *audio_state_by_name(const char *name, Error **errp);
- const char *audio_get_id(QEMUSoundCard *card);
- 
- #define DEFINE_AUDIO_PROPERTIES(_s, _f)         \
-diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
-index 41b7e682c78..688340610ec 100644
---- a/hw/core/qdev-properties-system.c
-+++ b/hw/core/qdev-properties-system.c
-@@ -480,24 +480,16 @@ static void set_audiodev(Object *obj, Visitor *v, const char* name,
-     Property *prop = opaque;
-     QEMUSoundCard *card = object_field_prop_ptr(obj, prop);
-     AudioState *state;
--    int err = 0;
--    char *str;
-+    g_autofree char *str = NULL;
- 
-     if (!visit_type_str(v, name, &str, errp)) {
-         return;
++    glue (s->nb_hw_voices_, TYPE) = glue(audio_get_pdo_, TYPE)(s->dev)->voices;
+     if (glue (s->nb_hw_voices_, TYPE) > max_voices) {
+         if (!max_voices) {
+ #ifdef DAC
+@@ -56,6 +57,12 @@ static void glue(audio_init_nb_voices_, TYPE)(AudioState *s,
+         glue (s->nb_hw_voices_, TYPE) = max_voices;
      }
  
--    state = audio_state_by_name(str);
--
--    if (!state) {
--        err = -ENOENT;
--        goto out;
-+    state = audio_state_by_name(str, errp);
-+    if (state) {
-+        card->state = state;
-     }
--    card->state = state;
--
--out:
--    error_set_from_qdev_prop_error(errp, err, obj, name, str);
--    g_free(str);
- }
- 
- const PropertyInfo qdev_prop_audiodev = {
-diff --git a/ui/dbus.c b/ui/dbus.c
-index 32f1bbe81ae..866467ad2e3 100644
---- a/ui/dbus.c
-+++ b/ui/dbus.c
-@@ -220,9 +220,8 @@ dbus_display_complete(UserCreatable *uc, Error **errp)
-     }
- 
-     if (dd->audiodev && *dd->audiodev) {
--        AudioState *audio_state = audio_state_by_name(dd->audiodev);
-+        AudioState *audio_state = audio_state_by_name(dd->audiodev, errp);
-         if (!audio_state) {
--            error_setg(errp, "Audiodev '%s' not found", dd->audiodev);
-             return;
-         }
-         if (!g_str_equal(audio_state->drv->name, "dbus")) {
-diff --git a/ui/vnc.c b/ui/vnc.c
-index acb56461b2d..82929469130 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -4181,9 +4181,8 @@ void vnc_display_open(const char *id, Error **errp)
- 
-     audiodev = qemu_opt_get(opts, "audiodev");
-     if (audiodev) {
--        vd->audio_state = audio_state_by_name(audiodev);
-+        vd->audio_state = audio_state_by_name(audiodev, errp);
-         if (!vd->audio_state) {
--            error_setg(errp, "Audiodev '%s' not found", audiodev);
-             goto fail;
-         }
-     }
++    if (glue (s->nb_hw_voices_, TYPE) < min_voices) {
++        dolog ("Bogus number of " NAME " voices %d, setting to %d\n",
++               glue (s->nb_hw_voices_, TYPE),
++               min_voices);
++    }
++
+     if (audio_bug(__func__, !voice_size && max_voices)) {
+         dolog ("drv=`%s' voice_size=0 max_voices=%d\n",
+                drv->name, max_voices);
 -- 
 2.41.0
 
