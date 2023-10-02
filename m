@@ -2,87 +2,99 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8834F7B5608
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E902B7B5621
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:14:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnKWv-0000ik-Br; Mon, 02 Oct 2023 11:08:17 -0400
+	id 1qnKbd-0002kf-F9; Mon, 02 Oct 2023 11:13:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qnKWr-0000iR-16
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 11:08:13 -0400
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qnKWn-0005fc-Qx
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 11:08:11 -0400
-Received: by mail-wm1-x334.google.com with SMTP id
- 5b1f17b1804b1-40652e570d9so44664995e9.1
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 08:08:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696259286; x=1696864086; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=8KFEIWnp1XTcydWZ25CmpCLdsStZmGIHvtB91rtLXvw=;
- b=Zy3mSyvW7dHqH7FdKkSenFPFXhJW/9i7ZXEPJ/V/S38JDIRJCznS1vHFjIggpLJ5iu
- tfBrVkVU/JxToxKUHmiUhX+te+62J6kMl8rXn5X2ZIGtUg/SpRL3MqhypjlzTTlRoyTi
- Ki3zxb0+0utyxisZDJsgfkVl6mVQzARY2Qz9R6hNgE/xJxcKBrr7r39FiFf1QgECFQUQ
- kw2PsxqfHXtE97nsxV/aH4cA3b55sTmFDvvPBx+twylBt7Phb79DPzdrc7zSeFHBzRNF
- vzbHtOMH7wr5rvVPOzpRFGthJ71IbC2Uz87Xg0L9dZWN+n28ezSCke5dPoZL8V+keWvh
- hVqw==
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnKbb-0002ji-A0
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 11:13:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnKbX-0006hd-Hx
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 11:13:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696259581;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5tJu9NNbQML3qPbv6mOg2pjwEqYhMmEhIhfFnG0eBk8=;
+ b=IqANek9S0OyalCXEo5G55wk73wgoquNWwLdZi/OKXex0YA+bF3RW7a3CpldCT2EOACYKMC
+ ccA5rv2zGbKQWtViH4d6P3m58gUNqEirNLLZBkKrQ6QRsfLbNM96cDBdReFFqlgxGZtvCV
+ o4FI3zxZE4+fIngcnDEVkUi4XoMRKBQ=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-649-sASXHNygOf-PVySxHfa5kg-1; Mon, 02 Oct 2023 11:12:45 -0400
+X-MC-Unique: sASXHNygOf-PVySxHfa5kg-1
+Received: by mail-qk1-f200.google.com with SMTP id
+ af79cd13be357-7742eeceeacso2449219085a.3
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 08:12:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696259286; x=1696864086;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=8KFEIWnp1XTcydWZ25CmpCLdsStZmGIHvtB91rtLXvw=;
- b=FzMqyZJdToMJzAWUdLCVoImELMB0nlsIWf0lMm+4cuoGqOjpTKg0eetRmCCQ6pGy+t
- fxLertlA8+4RQ+x22ny7/+9RwuBjRt9JbNH5BcO3iSMfxEdh9PXzn+ZnV362zl1uhOpJ
- sVA3RVpIaPi6anC9XyjG+jaaoi9o2G/LK4tDXGpYOkpxoaCsfqmUzKh40LtvMYzqgkKQ
- a4RIeuTzEwNJZ4TIZ/+Q9kkn9vUWrNZo6ee3vkMjb/kLVGcMuCNmraOkryaITywJEgMJ
- MK6FRpxm5c0kT5fOfH1H4eP00HRs7bpS+UjVv4I/X77sp1+v5OpuBSfmSzbV0W0n4RXn
- n3aw==
-X-Gm-Message-State: AOJu0YzPipfC/ZKHV53HQ1nHPrxT5vxE7tYuf9kLhaXfo6jY7KVboPbq
- Em0tg/wqMhqRMfVoIiKzmOLFtw==
-X-Google-Smtp-Source: AGHT+IGSSriOf5EBj8Hor47kFVwKCkTSIvsRhGT4xZwU8HtkRl7qxmdmIRlFkISkaBw+WD1TM4PwyQ==
-X-Received: by 2002:a7b:ce16:0:b0:406:4501:9095 with SMTP id
- m22-20020a7bce16000000b0040645019095mr11135356wmc.40.1696259285627; 
- Mon, 02 Oct 2023 08:08:05 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1696259565; x=1696864365;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5tJu9NNbQML3qPbv6mOg2pjwEqYhMmEhIhfFnG0eBk8=;
+ b=Uu9DSCmqhbdAG9rz1Zs5BLCju5Fx4ZUm83koT9V71tVX5G44K8Bp03nUTd/M/MOzb/
+ DBVI61pgYzmN66olk4olnjQ0cJirotBT0JxxoOciIo/mfcer149jMlLu/1ZfYFHyITkg
+ 7QoP/KJ2nQ5TgrHbNn8IV3DHIUVFrOfWS7d/qp5KAwrHjTdtxTSRrwsDSOuEbTJJaxI4
+ lJoauM3YAXguFmIexhpRf6T/9+oGkvHUL2BChbtsRMbwpgFKXbIVTtfWb/GY9yJZJq/J
+ ZEi9fDImKrkWy59mS6lc9vajmQZ4rZ0JK5ELM4RdphEZPrwOuND4xLMLSeNafaU7Kq7n
+ Hbbg==
+X-Gm-Message-State: AOJu0YwWXFod5GoUMuCKLjvnuP8DQNJVWytnfFDKFL1JytDyJuAhB9MU
+ RqI7eW1GKu+aXne/+INMfpFf4hxmkYtrcxVhgjp/4W35M/hIiQ3T127kBB2Od5777aRS3VP9I1f
+ 33W0BQF3BDWIDpS8=
+X-Received: by 2002:a05:620a:46a6:b0:775:6695:b10f with SMTP id
+ bq38-20020a05620a46a600b007756695b10fmr13246031qkb.56.1696259565268; 
+ Mon, 02 Oct 2023 08:12:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2JfIq4D+5oIwO8fNRJcetdK8hAzhsOJgGemlvHRB9FJ069tuiLGmF27A77FSiVm65924STA==
+X-Received: by 2002:a05:620a:46a6:b0:775:6695:b10f with SMTP id
+ bq38-20020a05620a46a600b007756695b10fmr13246013qkb.56.1696259564977; 
+ Mon, 02 Oct 2023 08:12:44 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- 8-20020a05600c248800b004063c9f68f2sm7386820wms.26.2023.10.02.08.08.04
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 02 Oct 2023 08:08:04 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 4834B1FFBB;
- Mon,  2 Oct 2023 16:08:04 +0100 (BST)
-References: <20231002145104.52193-1-philmd@linaro.org>
- <20231002145104.52193-2-philmd@linaro.org>
-User-agent: mu4e 1.11.21; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, Beraldo Leal <bleal@redhat.com>, Thomas Huth
- <thuth@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PATCH 1/2] tests/vm/ubuntu.aarch64: Correct comment about TCG
- specific delay
-Date: Mon, 02 Oct 2023 16:07:57 +0100
-In-reply-to: <20231002145104.52193-2-philmd@linaro.org>
-Message-ID: <87fs2tysdn.fsf@linaro.org>
+ pi32-20020a05620a37a000b0076dacd14484sm9070859qkn.83.2023.10.02.08.12.42
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Oct 2023 08:12:44 -0700 (PDT)
+Message-ID: <18343982-d554-61b4-fb17-b6955245e9b0@redhat.com>
+Date: Mon, 2 Oct 2023 17:12:41 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::334;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 01/15] hw/pci: Add a pci_setup_iommu_ops() helper
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+References: <20230622214845.3980-1-joao.m.martins@oracle.com>
+ <20230622214845.3980-2-joao.m.martins@oracle.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20230622214845.3980-2-joao.m.martins@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-2.321, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,19 +111,121 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hello Joao,
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+On 6/22/23 23:48, Joao Martins wrote:
+> From: Yi Liu <yi.l.liu@intel.com>
+> 
+> Add a pci_setup_iommu_ops() that uses a newly added structure
+> (PCIIOMMUOps) instead of using PCIIOMMUFunc. The old pci_setup_iommu()
+> that uses PCIIOMMUFunc is still kept for other IOMMUs to get an
+> an address space for a PCI device in vendor specific way.
+> 
+> In preparation to expand to supplying vIOMMU attributes, add a
+> alternate helper pci_setup_iommu_ops() to setup the PCI device IOMMU.
+> For now the PCIIOMMUOps just defines the address_space, but it will
+> be extended to have another callback.
+> 
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> [joao: Massage commit message and subject, and make it a complementary
+> rather than changing every single consumer of pci_setup_iommu()]
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> ---
+> v1: https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
+> ---
+>   include/hw/pci/pci.h     |  7 +++++++
+>   include/hw/pci/pci_bus.h |  1 +
+>   hw/pci/pci.c             | 26 +++++++++++++++++++++++---
+>   3 files changed, 31 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index e6d0574a2999..f59aef5a329a 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -368,6 +368,13 @@ typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *, int);
+>   AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
+>   void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
+>   
+> +typedef struct PCIIOMMUOps PCIIOMMUOps;
+> +struct PCIIOMMUOps {
+> +    AddressSpace * (*get_address_space)(PCIBus *bus,
+> +                                void *opaque, int32_t devfn);
+> +};
+> +void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *iommu_ops, void *opaque);
+> +
 
-> Wether we use a software MMU or not to set the SSH timeout
-> isn't really relevant. What we want to know is if we use
-> a hardware or software accelerator (TCG).
-> Replace the 'softmmu' mention by 'TCG'.
->
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+I think you should first convert all PHBs to PCIIOMMUOps to avoid all the
+tests as below and adapt pci_setup_iommu_ops() with the new parameter.
 
-Reviewed-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+Thanks,
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+C.
+
+>   pcibus_t pci_bar_address(PCIDevice *d,
+>                            int reg, uint8_t type, pcibus_t size);
+>   
+> diff --git a/include/hw/pci/pci_bus.h b/include/hw/pci/pci_bus.h
+> index 56531759578f..fb770b236d69 100644
+> --- a/include/hw/pci/pci_bus.h
+> +++ b/include/hw/pci/pci_bus.h
+> @@ -35,6 +35,7 @@ struct PCIBus {
+>       enum PCIBusFlags flags;
+>       PCIIOMMUFunc iommu_fn;
+>       void *iommu_opaque;
+> +    const PCIIOMMUOps *iommu_ops;
+>       uint8_t devfn_min;
+>       uint32_t slot_reserved_mask;
+>       pci_set_irq_fn set_irq;
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index bf38905b7dc0..4e32c09e81d6 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -2639,7 +2639,15 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>       PCIBus *iommu_bus = bus;
+>       uint8_t devfn = dev->devfn;
+>   
+> -    while (iommu_bus && !iommu_bus->iommu_fn && iommu_bus->parent_dev) {
+> +    /*
+> +     * get_address_space() callback is mandatory when iommu uses
+> +     * pci_setup_iommu_ops(), so needs to ensure its presence in
+> +     * the iommu_bus search.
+> +     */
+> +    while (iommu_bus &&
+> +           !(iommu_bus->iommu_fn ||
+> +            (iommu_bus->iommu_ops && iommu_bus->iommu_ops->get_address_space)) &&
+> +           iommu_bus->parent_dev) {
+>           PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
+>   
+>           /*
+> @@ -2678,8 +2686,14 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>   
+>           iommu_bus = parent_bus;
+>       }
+> -    if (!pci_bus_bypass_iommu(bus) && iommu_bus && iommu_bus->iommu_fn) {
+> -        return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
+> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus) {
+> +        if (iommu_bus->iommu_fn) {
+> +           return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
+> +        } else if (iommu_bus->iommu_ops &&
+> +                   iommu_bus->iommu_ops->get_address_space) {
+> +           return iommu_bus->iommu_ops->get_address_space(bus,
+> +                                           iommu_bus->iommu_opaque, devfn);
+> +        }
+>       }
+>       return &address_space_memory;
+>   }
+> @@ -2690,6 +2704,12 @@ void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
+>       bus->iommu_opaque = opaque;
+>   }
+>   
+> +void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
+> +{
+> +    bus->iommu_ops = ops;
+> +    bus->iommu_opaque = opaque;
+> +}
+> +
+>   static void pci_dev_get_w64(PCIBus *b, PCIDevice *dev, void *opaque)
+>   {
+>       Range *range = opaque;
+
 
