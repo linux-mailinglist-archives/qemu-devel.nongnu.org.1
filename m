@@ -2,47 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7F37B520D
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5357F7B520E
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:02:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnHcU-0006rq-P8; Mon, 02 Oct 2023 08:01:50 -0400
+	id 1qnHdJ-00004s-3X; Mon, 02 Oct 2023 08:02:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnHcJ-0006mS-CK; Mon, 02 Oct 2023 08:01:41 -0400
+ id 1qnHdE-0008U4-30; Mon, 02 Oct 2023 08:02:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnHcH-0003VE-4b; Mon, 02 Oct 2023 08:01:38 -0400
+ id 1qnHdC-0003hJ-Mm; Mon, 02 Oct 2023 08:02:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 5FB6426BD7;
- Mon,  2 Oct 2023 15:02:17 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id C5AF726BDA;
+ Mon,  2 Oct 2023 15:03:15 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 786E92C282;
- Mon,  2 Oct 2023 15:01:34 +0300 (MSK)
-Message-ID: <fced21d6-8d2e-f50d-b901-044be7c6e23e@tls.msk.ru>
-Date: Mon, 2 Oct 2023 15:01:34 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id EDC0E2C283;
+ Mon,  2 Oct 2023 15:02:32 +0300 (MSK)
+Message-ID: <a396c7e6-949b-116b-15d5-c7fa9804c423@tls.msk.ru>
+Date: Mon, 2 Oct 2023 15:02:32 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add unowned RISC-V related files to the
- right sections
+Subject: Re: [PATCH] MAINTAINERS: Add include folder to the hw/char/ section
 Content-Language: en-US
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
 Cc: qemu-trivial@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Christoph Muellner <christoph.muellner@vrull.eu>,
- Philipp Tomsich <philipp.tomsich@vrull.eu>,
- Vijai Kumar K <vijai@behindbytes.com>
-References: <20230929123727.391346-1-thuth@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20230929124446.392909-1-thuth@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230929123727.391346-1-thuth@redhat.com>
+In-Reply-To: <20230929124446.392909-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -68,10 +61,11 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.09.2023 15:37, Thomas Huth wrote:
-> There are a bunch of RISC-V files that are currently not covered
-> by the "get_maintainers.pl" script. Add them to the right sections
-> in MAINTAINERS to fix this problem.
+29.09.2023 15:44, Thomas Huth wrote:
+> The "Character devices" section only covers hw/char/ but
+> misses the corresponding include/hw/char/ folder. Add it now.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
 Applied to my trivial-patches tree, thanks!
 
