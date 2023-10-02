@@ -2,84 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF89A7B5366
+	by mail.lfdr.de (Postfix) with ESMTPS id C70297B5367
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:48:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnIKL-0004Qu-4E; Mon, 02 Oct 2023 08:47:09 -0400
+	id 1qnIL9-0004pY-1c; Mon, 02 Oct 2023 08:47:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIK7-0004Ku-Ix
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:46:56 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIL6-0004p1-NK
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:47:56 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIK4-0004HT-9i
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:46:54 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-405361bb94eso169480775e9.0
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 05:46:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIL4-0004TH-3O
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:47:56 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-4065f29e933so29944335e9.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 05:47:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696250809; x=1696855609; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696250870; x=1696855670; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=WykTm3KnL9X9QAdR9+EkFqurxM2QGEIQCal+gTeL7kA=;
- b=OKwoCHsOk4WkRSRmbo4vVSZT5TzJnY44cyFRJS+hoYn6krNRIJaI4cKNnOQg61AcZM
- FvafuGIyRL7b0G6pCDowgQapl6F0Kf0zo6xrSnpz378RcN2Krd+APTU22SwYwTHgLf44
- XqkgQXRlc9Fs/N3xXQcWjpI8I6El2gsjoP+CC/Ua46LR8epIRmC2KH7hhNYoEXMQTnXi
- hJK63xfemq5PfsPBs0bv0K1pymK+ASPs/SSSG/BOYHDqiSxyw/MNX5byeAjXABi4bsN/
- sPfU0faO+g8EO1LBl7P7TTbWbPVCcNbi688D2nczTec3B2F0eLGRmbEEUZjMfztcupw5
- xsjw==
+ bh=6URmOwNyAeSp6hL1YltpNKdAqLmn8ZBThKIYRhMNJeE=;
+ b=QvUH6TixftADaiZwjr4pCXfFRyPoRX6cRuYMhWKaFSDWZQmLkGAqWOnW6Ro7emoF43
+ 99WURoF8Gy8aka1N10wNlFEPDvQYGv/DjTNBY7tsEksFSu+t3aNsO8JFj8LJczuMbwYD
+ IE52oveg66C2Vl89umYa6Oxdt8lbbFps6z/nbpCRt4goYwbW01xfXiVt4Pm4I1wlbNEj
+ LsvllG8LyIux/HyYV4Nz6Inzab5D67lm+pGVxSKyxlv4HNlXsXhvCmR8DALsFezF6OLs
+ v6UCN53F8tlBnibpZ0GA/qKQoUSO7U3M5lIvWo6/7r2Pw3XEKt53zSqpYmN7cGPVu6f3
+ V1NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696250809; x=1696855609;
+ d=1e100.net; s=20230601; t=1696250870; x=1696855670;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=WykTm3KnL9X9QAdR9+EkFqurxM2QGEIQCal+gTeL7kA=;
- b=E1oatU8TUxQhgPRgurBTjIl525hszIHgvA0Vk2DYfLQ3o+5X9TeVOw37CpVmQE2U/r
- w6HJPYPQOx3Xih/ivhXcRzaAIxpNx/WKNsrR0Nn29Et3iscCStTZxYYVvflQ5IEFHP5q
- Vjbp/d3FCvvpxUx6On5NFLRQkQxE5Bx/gTEAOiE3pJrCQll88kjLeLc68gGtQh+w5b9J
- V9DKyvrtd7gXNxhbAfceLEVPo7ZRLPyqtHX7H8qbsm6preu3GUgyDqz/0VwYZjF57xqA
- t18tknv73fxY3r172EzdqYyOoy5yiTCnOwsRYXlUzOLbdv/w6PXeq+Ro4b6hzz7+fPNQ
- M4Hw==
-X-Gm-Message-State: AOJu0Yw4y53U5s2ucnphd4Yn8B1fJJn6dv4gIQaoQUxJgIrN/5mJA6Vv
- PQU/PR5nnjsEXiupm8RXyQXIuQ==
-X-Google-Smtp-Source: AGHT+IHOAkZwJDS2VfxSMi1TjauJ7EMjJhuBCysJFs0tmmK4WnmosUsCzVZbL5ze9/3ZaOH9W+x+2Q==
-X-Received: by 2002:a5d:6950:0:b0:319:7656:3863 with SMTP id
- r16-20020a5d6950000000b0031976563863mr8906546wrw.47.1696250809492; 
- Mon, 02 Oct 2023 05:46:49 -0700 (PDT)
+ bh=6URmOwNyAeSp6hL1YltpNKdAqLmn8ZBThKIYRhMNJeE=;
+ b=h0VkRMdrlYoBpRIRubeW6T61I/4DZhH8IjDeE3wukMmnA30DICTl9EtJlrFlupY1iH
+ tuIVOewFU8hmWKKq6SvNP/4WROJIqp75pNdfUBb7T91ION+LfjxSgd8XSBvXr3U0Lygy
+ gO1/TetFt770mh1rj7wfiRg0u5xYOFLRUL36RKdQOdP9gtmXLa85v78e2c7sOICxe0zj
+ zVV7Dr5N+/PBXM/C9HB/dSz3DRbF8uXzv6YXFBdEyU8t1TUCcziLSsqPl7RfprGMn9O0
+ HGW1YC+fmNwqqUaYn8Fu3AXIO9Z0uDUH5Xhuw/w4ji1QUf3e2sCvcmwe++rIT1Ti9sIb
+ IwKg==
+X-Gm-Message-State: AOJu0YyuqnmSG9gRUY2jNm/k7QVnZxXKaxIUzhYMKNk0W54Z7DlpqWNp
+ SZOzxPG6eiTvYV3OOiuu9v9cAw==
+X-Google-Smtp-Source: AGHT+IElD14MerT7hOyB2AAexGUD+ZkxyE+hJ/BNt/R1uVk2FKwRdscHA/6FrVIMjJq+Hqj3WkO1YQ==
+X-Received: by 2002:a5d:40c8:0:b0:323:264d:9cef with SMTP id
+ b8-20020a5d40c8000000b00323264d9cefmr9018069wrq.12.1696250870315; 
+ Mon, 02 Oct 2023 05:47:50 -0700 (PDT)
 Received: from [192.168.69.115] (sto93-h06-176-172-7-203.dsl.sta.abo.bbox.fr.
  [176.172.7.203]) by smtp.gmail.com with ESMTPSA id
- o22-20020a5d58d6000000b003176c6e87b1sm4715443wrf.81.2023.10.02.05.46.48
+ n16-20020a5d51d0000000b0031f300a4c26sm6584195wrv.93.2023.10.02.05.47.49
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 05:46:49 -0700 (PDT)
-Message-ID: <1be9a97a-2f5d-889f-7c2c-3681dda02d00@linaro.org>
-Date: Mon, 2 Oct 2023 14:46:47 +0200
+ Mon, 02 Oct 2023 05:47:49 -0700 (PDT)
+Message-ID: <5148f40c-acec-b414-011f-e6cee970c1df@linaro.org>
+Date: Mon, 2 Oct 2023 14:47:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 2/8] MAINTAINERS: Adjust file list for PPC ref405ep machine
+Subject: Re: [PATCH 8/8] MAINTAINERS: Update PPC TCG target with tests
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>
+ Nicholas Piggin <npiggin@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>
 References: <20231002122326.365368-1-clg@kaod.org>
- <20231002122326.365368-3-clg@kaod.org>
+ <20231002122326.365368-9-clg@kaod.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231002122326.365368-3-clg@kaod.org>
+In-Reply-To: <20231002122326.365368-9-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.321,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,26 +96,12 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
-
 On 2/10/23 14:23, Cédric Le Goater wrote:
+> Cc: Richard Henderson <richard.henderson@linaro.org>
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
->   MAINTAINERS | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 355b1960ce46..3f90264203cc 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1345,7 +1345,7 @@ PowerPC Machines
->   405 (ref405ep)
->   L: qemu-ppc@nongnu.org
->   S: Orphan
-> -F: hw/ppc/ppc405_boards.c
-> +F: hw/ppc/ppc405*
-
-Do you mind adding tests/avocado/ppc_405.py?
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
