@@ -2,75 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717C77B5CAF
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 23:59:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BDC7B5D21
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 00:30:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnQwl-0003hV-RQ; Mon, 02 Oct 2023 17:59:23 -0400
+	id 1qnRPd-0001RB-Fu; Mon, 02 Oct 2023 18:29:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qnQwi-0003ft-Av
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 17:59:20 -0400
-Received: from mail-oi1-x229.google.com ([2607:f8b0:4864:20::229])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qnQwb-0001as-6J
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 17:59:16 -0400
-Received: by mail-oi1-x229.google.com with SMTP id
- 5614622812f47-3af609c4dfeso164025b6e.1
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 14:59:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696283952; x=1696888752; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nk8v5UkDh3iCDvlYmWyWD2XLuJhhXhzz+yM4rOlVXpQ=;
- b=apzk+wJTi3DECSUWwfIpJAfnkxIAt6fcDfD3qFIHAWh+MHxpjwftqVidKI5zV6eWib
- 6XgX/B6+NyRThVN+j+chluMi2asBZLPIklpYRSer4VXAG8kbYCX76EX1d6SvKLmSv9PI
- cHCo+UaxeIL5i2BFTATJaRlDE805/CZPwC+HZwQs8ZsshMFM3WPu4f2MlS2FNRMHcObp
- ORwX9wnIHTG+J8eX0QZnxB/i/oE14VSjbSzHJKJKLhgnlQ7WYIPk791AHS1VErYXGhzB
- EHvI6oWGRtX5vm7yttyD4hEfs0VrWhmU8QdNFIzAc2EkgLx3Evd8zgsftZR2qIt8ZM30
- 6FTg==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnRPa-0001Qo-TM
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 18:29:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnRPZ-0006uz-EA
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 18:29:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696285747;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nduiLS9lqQy7ZqSQ5gX6+41FSV6dYiJO9S7PK0aSmdE=;
+ b=PZUcIfWpT1bTX8J3DyBUeq/tG3fJjR8W/BLqXBxppvviylFdbB2e2/Ub+dAbytvBK/VrWi
+ PyF4IDx6StoL68TqRj3jTQ3ErMBEYjFjhqSVaGV0YZzmo9WycDVz8gXTnkTqLP44Ush55R
+ 3Qcbtv7xdpvzZBQJCMQIDfDUR8ZYGfE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-235-Ve6yN5ZkND2OTpnG-uDjHA-1; Mon, 02 Oct 2023 18:28:56 -0400
+X-MC-Unique: Ve6yN5ZkND2OTpnG-uDjHA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40647c6f71dso2035675e9.2
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 15:28:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696283952; x=1696888752;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nk8v5UkDh3iCDvlYmWyWD2XLuJhhXhzz+yM4rOlVXpQ=;
- b=icf+E6dWrGzVbrL8Wks9DCDPknyU+yLZhBm/unYDdEymJ7cUrVxfAG8qFL0uNA9Q+3
- e+jeVB3sdyUf+Mnua5PUDkJ/GH109F8F4VTZ/jWds2vx8Y3mFYuwP9mdp5DzogQFho6h
- 75UEHkjm3gk9JhXo5y7fFB1uFuGfadqzAhCVrUJpvC3JOMgELkD/2nyOFpWB0jEDTGHp
- 7oAxw5iVWCwDaBDxzMO5J/oHgkz1eDp56FE0hHQ4wWuvaAsHgS44TsxNxtdKvoBK8VFA
- 0RKSe++Yy6otS4NB/NIvFTt2+IuVogzsKsEzdrTsbO+lyDBB0xofvz0pOMnZ6BsImm8r
- pihA==
-X-Gm-Message-State: AOJu0YzZu+tm0hzfcnKe9tZsf12bQwHPc/E5TGwUFHewED/ZxKCLH7sD
- p9A7dkJXbQ+6mXSae8mQjxCh46kAkhQb9R8SaUI=
-X-Google-Smtp-Source: AGHT+IGBaF3sXYCxVdLGmfLu+qFKNcAn1OpuweJw6F/m/5CF/t7MokZvuPTF4N7zteuaK/DMCYX44G8eR5XpcWXfuxQ=
-X-Received: by 2002:a05:6808:17a8:b0:3ab:38b0:8b84 with SMTP id
- bg40-20020a05680817a800b003ab38b08b84mr16790876oib.17.1696283951653; Mon, 02
- Oct 2023 14:59:11 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696285735; x=1696890535;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nduiLS9lqQy7ZqSQ5gX6+41FSV6dYiJO9S7PK0aSmdE=;
+ b=gvg2RMBqNCNVMQtiYb4460ENgYEIgxDxubMBP2UWMIZ9POLTE6Q2XNDP9wlzqN6Sdc
+ ISBiwa8YfElQqPOEkqAtnUy+2nDEBc0g6x/Qrer7YNELjiEF6V9Rrw6AQ4Qat/1Af3gm
+ 0DYvzjxYuR++yMYK6vXZbS8l+KvTBsAh5z29r3HvI6xQXusuIEn7j4Zn1TDa9KWXkB1n
+ 2VlVkGn5UZ7Z4G081HIudoPHmLOOSVWPx0i8LhB03ULez+nHPGtcIaM0DXzkZHwITg+o
+ 1khKshkEZpww/lbjelUU7R1e8xkkq8xiFUMFxvdnbteHOG6FFNR4FBEwtvLP7RB/nP36
+ rnTg==
+X-Gm-Message-State: AOJu0Yz5kfOsIpu/cq/b9xkzq65uZv8k2ynSQJrvhsMnwLYRP35uhtAk
+ 9gYNOtXkmIHMq21Crrd/dWSyitF4YQpDrMVZlZui0EfFFTAm6IUFtUBcyzibAOwVMcTSqw5IXaG
+ OBT2sWASj9NqwOeo=
+X-Received: by 2002:a1c:f717:0:b0:402:e68f:888e with SMTP id
+ v23-20020a1cf717000000b00402e68f888emr11743981wmh.4.1696285735181; 
+ Mon, 02 Oct 2023 15:28:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnJuYCzLLdmL1sRcmRCaopVf/NZ5alZ2A2Bqnd1sglwicGxlQ6Pnj6ptv7zjo7E9v4WIgoaA==
+X-Received: by 2002:a1c:f717:0:b0:402:e68f:888e with SMTP id
+ v23-20020a1cf717000000b00402e68f888emr11743971wmh.4.1696285734821; 
+ Mon, 02 Oct 2023 15:28:54 -0700 (PDT)
+Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
+ n16-20020a7bcbd0000000b0040531f5c51asm8151247wmi.5.2023.10.02.15.28.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Oct 2023 15:28:53 -0700 (PDT)
+Date: Mon, 2 Oct 2023 18:28:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>
+Subject: Re: [PATCH] pci: SLT must be RO
+Message-ID: <20231002182836-mutt-send-email-mst@kernel.org>
+References: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
+ <9cebce70-59fc-e7bb-5973-3091680b72ea@linaro.org>
+ <42e00aaf-2399-4ba9-bef6-8627b8e0718e@linaro.org>
+ <9f372453-4088-47d2-a501-c32eeaa5d9f5@linaro.org>
 MIME-Version: 1.0
-References: <20230929112936.2852930-1-kraxel@redhat.com>
-In-Reply-To: <20230929112936.2852930-1-kraxel@redhat.com>
-From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Mon, 2 Oct 2023 17:58:59 -0400
-Message-ID: <CAJSP0QUR0g9gFRbRqmVeHBDqA2Tu9t_64sNYQk=hedSq9MSEeg@mail.gmail.com>
-Subject: Re: [PULL 0/2] Firmware/seabios 20230929 patches
-To: Gerd Hoffmann <kraxel@redhat.com>
-Cc: qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::229;
- envelope-from=stefanha@gmail.com; helo=mail-oi1-x229.google.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9f372453-4088-47d2-a501-c32eeaa5d9f5@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,85 +102,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, 29 Sept 2023 at 07:30, Gerd Hoffmann <kraxel@redhat.com> wrote:
->
-> The following changes since commit 36e9aab3c569d4c9ad780473596e18479838d1=
-aa:
->
->   migration: Move return path cleanup to main migration thread (2023-09-2=
-7 13:58:02 -0400)
->
-> are available in the Git repository at:
->
->   https://gitlab.com/kraxel/qemu.git tags/firmware/seabios-20230929-pull-=
-request
->
-> for you to fetch changes up to 1f75b1beeb8d958cc56113ba229348d6a0be9d9d:
->
->   seabios: update binaries to git snapshot (2023-09-29 13:15:44 +0200)
->
-> ----------------------------------------------------------------
-> seabios: update to git snapshot
->
-> Give seabios a bit real world testing before tagging a release.
-> Update to release will follow later in the devel cycle.
+On Mon, Oct 02, 2023 at 01:39:16PM +0200, Marcin Juszkiewicz wrote:
+> W dniu 8.09.2023 o 15:29, Marcin Juszkiewicz pisze:
+> > W dniu 31.08.2023 o 12:05, Marcin Juszkiewicz pisze:
+> > > W dniu 30.08.2023 o 23:48, Michael S. Tsirkin pisze:
+> > > > current code sets PCI_SEC_LATENCY_TIMER to WO, but for
+> > > > pcie to pcie bridges it must be RO 0 according to
+> > > > pci express spec which says:
+> > > >      This register does not apply to PCI Express. It must be read-only
+> > > >      and hardwired to 00h. For PCI Express to PCI/PCI-X Bridges,
+> > > > refer to the
+> > > >      [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
+> > > > 
+> > > > also, fix typo in comment where it's make writeable - this typo
+> > > > is likely what prevented us noticing we violate this requirement
+> > > > in the 1st place.
+> > > > 
+> > > > Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> > > > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > > ---
+> > > 
+> > > > Marcin, could you pls test this patch with virt-8.1 and latest?
+> > > > Thanks a lot!
+> > > 
+> > > Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+> > > 
+> > > sbsa-ref: PASS
+> > > virt:     PASS
+> > > virt-8.1: FAIL (as expected)
+> > > virt-8.0: FAIL (as expected)
+> > 
+> > Can we get this patch refreshed and merged?
+> 
+> ping?
+> 
 
-The following CI failure has occurred:
 
- 3/61 qemu:qtest+qtest-x86_64 / qtest-x86_64/bios-tables-test
-ERROR          19.15s   killed by signal 6 SIGABRT
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80  =E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95
-stderr:
-acpi-test: Warning! DSDT binary file mismatch. Actual
-[aml:/var/folders/76/zy5ktkns50v6gt5g8r0sf6sc0000gn/T/aml-K2USB2],
-Expected [aml:tests/data/acpi/q35/DSDT.mmio64].
-See source file tests/qtest/bios-tables-test.c for instructions on how
-to update expected files.
-to see ASL diff between mismatched files install IASL, rebuild QEMU
-from scratch and re-run tests with V=3D1 environment variable set**
-ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion
-failed: (all_tables_match)
-(test program exited with status code -6)
+yes, working on a pull request including this.
 
-https://gitlab.com/qemu-project/qemu/-/jobs/5204949160
-
-Please take a look. Thanks!
-
-Stefan
-
->
-> ----------------------------------------------------------------
->
-> Gerd Hoffmann (2):
->   seabios: update submodule to git snapshot
->   seabios: update binaries to git snapshot
->
->  pc-bios/bios-256k.bin             | Bin 262144 -> 262144 bytes
->  pc-bios/bios-microvm.bin          | Bin 131072 -> 131072 bytes
->  pc-bios/bios.bin                  | Bin 131072 -> 131072 bytes
->  pc-bios/vgabios-ati.bin           | Bin 39936 -> 39424 bytes
->  pc-bios/vgabios-bochs-display.bin | Bin 28672 -> 28672 bytes
->  pc-bios/vgabios-cirrus.bin        | Bin 39424 -> 38912 bytes
->  pc-bios/vgabios-qxl.bin           | Bin 39936 -> 39424 bytes
->  pc-bios/vgabios-ramfb.bin         | Bin 29184 -> 28672 bytes
->  pc-bios/vgabios-stdvga.bin        | Bin 39936 -> 39424 bytes
->  pc-bios/vgabios-virtio.bin        | Bin 39936 -> 39424 bytes
->  pc-bios/vgabios-vmware.bin        | Bin 39936 -> 39424 bytes
->  pc-bios/vgabios.bin               | Bin 39424 -> 38912 bytes
->  roms/seabios                      |   2 +-
->  13 files changed, 1 insertion(+), 1 deletion(-)
->
-> --
-> 2.41.0
->
->
 
