@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1757B5D4C
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 00:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF4A7B5D6C
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 00:56:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnRgM-00079I-6x; Mon, 02 Oct 2023 18:46:30 -0400
+	id 1qnRpM-0003Tc-9U; Mon, 02 Oct 2023 18:55:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qnRgJ-00078w-JY
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 18:46:27 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qnRpI-0003Sz-EX
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 18:55:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qnRgH-0001e4-Rf
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 18:46:27 -0400
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>) id 1qnRpB-0003S2-NL
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 18:55:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BAC6C26E1C;
- Tue,  3 Oct 2023 01:47:03 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 2D89526E1F;
+ Tue,  3 Oct 2023 01:56:19 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id ECC1F2C457;
- Tue,  3 Oct 2023 01:46:19 +0300 (MSK)
-Message-ID: <327359d1-f6c2-68fa-aaa4-c079caada15a@tls.msk.ru>
-Date: Tue, 3 Oct 2023 01:46:19 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 610AE2C45A;
+ Tue,  3 Oct 2023 01:55:35 +0300 (MSK)
+Message-ID: <1531b1d7-2c8c-4a69-109a-170bd686d894@tls.msk.ru>
+Date: Tue, 3 Oct 2023 01:55:35 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PULL 0/6] tcg patch queue
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20230928194156.237351-1-richard.henderson@linaro.org>
+Subject: Re: [PATCH 0/8] migration fixes
 Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>
+References: <20230918172822.19052-1-farosas@suse.de>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230928194156.237351-1-richard.henderson@linaro.org>
+In-Reply-To: <20230918172822.19052-1-farosas@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -58,26 +60,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-28.09.2023 22:41, Richard Henderson wrote
-> Mini PR, aimed at fixing the mips and ovmf regressions.
-> r~
-> ----------------------------------------------------------------
-> accel/tcg: Always require can_do_io, for #1866
+18.09.2023 20:28, Fabiano Rosas wrote:
+> This series contains fixes for the two currently know failures that
+> show up in migration tests plus a set of fixes for some theoretical
+> race conditions around QEMUFile handling.
 > 
-> ----------------------------------------------------------------
-> Richard Henderson (6):
->        accel/tcg: Avoid load of icount_decr if unused
->        accel/tcg: Hoist CF_MEMI_ONLY check outside translation loop
->        accel/tcg: Track current value of can_do_io in the TB
->        accel/tcg: Improve setting of can_do_io at start of TB
->        accel/tcg: Always set CF_LAST_IO with CF_NOIRQ
->        accel/tcg: Always require can_do_io
+> Patch 1 addresses the issue found in the postcopy/preempt/plain test:
+> https://gitlab.com/qemu-project/qemu/-/issues/1886
+> 
+> Patch 7 fixes a rare crash during the postocpy/preempt/recovery/plain test:
+> 
+>    Thread 7 "return path" received signal SIGSEGV, Segmentation fault.
+>        0x00005555560e4893 in qemu_file_get_error_obj (f=0x0, errp=0x0) at ../migration/qemu-file.c:154
+>        154         return f->last_error;
+> 
+> CI run: https://gitlab.com/farosas/qemu/-/pipelines/1008652837
+> 
+> Fabiano Rosas (7):
+>    migration: Fix possible race when setting rp_state.error
+>    migration: Fix possible races when shutting down the return path
+>    migration: Fix possible race when shutting down to_dst_file
+>    migration: Remove redundant cleanup of postcopy_qemufile_src
+>    migration: Consolidate return path closing code
+>    migration: Replace the return path retry logic
+>    migration: Move return path cleanup to main migration thread
+> 
+> Peter Xu (1):
+>    migration: Fix race that dest preempt thread close too early
+> 
+>   migration/migration.c    | 145 +++++++++++++++------------------------
+>   migration/migration.h    |  14 +++-
+>   migration/postcopy-ram.c |  38 +++++++++-
+>   3 files changed, 106 insertions(+), 91 deletions(-)
 
-What's the set required for the regression fix for -stable ?
-Is it the whole thing?
-(yes, I tested the complete set in debian).
+What can be done for -stable?
 
-Thank you!
+At least the whole thing applies cleanly to 8.1.
+
+Thanks,
 
 /mjt
 
