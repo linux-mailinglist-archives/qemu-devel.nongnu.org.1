@@ -2,122 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDF67B4E5B
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 10:59:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C76D7B4E4F
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 10:58:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnEl9-00021m-8R; Mon, 02 Oct 2023 04:58:35 -0400
+	id 1qnEkg-0001Pp-Tj; Mon, 02 Oct 2023 04:58:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qnEl2-0001lt-Hr; Mon, 02 Oct 2023 04:58:28 -0400
-Received: from mail-vi1eur02on20713.outbound.protection.outlook.com
- ([2a01:111:f400:fe16::713]
- helo=EUR02-VI1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qnEkO-0001Ok-Vz
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 04:57:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qnEl0-0003Qj-7e; Mon, 02 Oct 2023 04:58:28 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DQOJMnfOX4pQJycOSTguCaEiR6FfG4zqKVLCMRKGUByK5VLrbF0bApIJxe/4nCQL7JxmqfDsI7U1wUq1GO/oc4z886Oz7ZjTctJtXrf4gFtkFQLXg8E0Xs1928Z7FWoK6if03QgdfbWDnaoo26rToOSLjqJTdLbQwI4++Wu3F21WgOFpeQN8LSwtmumeLFP4Dkfc2QW+XizWquHzfG94iqfgKHdfgfq7i52YKnbhXas+yCgrTNKCf7y3kFsaCUmAyhchuTDXo6d7VkF9JHAkjO3OD2pOlwFlHgj13jC0ofe0dejUSBH3GyO+w62AfF6P7T+uxmzqVCzoOAN4lHZrUw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KC/FPAuEawG9LlBXDeoWQTZvaiZbwgBf2K04C4SjZCk=;
- b=WKJU4zmHhy6kqMBGOwxRosTfINYs9dIEwbN/cKhv5hO+jAqRny/SmV34eSbuvCZGNa08nGw5Vk5M7P2bgLfuE90s2kSYoONfS9gzhEgDFpWWbkRVl4/80UM1Q+US/wDuBhrc9L6U6eJf+nms1K+Ln6CIunIEzJWSsNc3Q03ENuOw/HCa6DlX/6ADi4g2Njeir1xkdfEvEjazo37Epl7GOXNI3kHu30NprVCIjIJf4rZlWF6WN85fH5+y6Afgl+ZLFMV6M2kOSw7tL0j/gGtby4a2WaPcDA47vP0g2fMcUuJFqvzUR9zLbQPs4IluXqNBEEjEkPnjcXIcQVoy9IGZLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KC/FPAuEawG9LlBXDeoWQTZvaiZbwgBf2K04C4SjZCk=;
- b=zX77d9xx24DmPM31oulxbzJU3VyRgJx8i958Zs9aO2mtJXIrJucARaJ85TgKgnuzs53xcPQV/bXXlA4Q0OKTHdaeI/HM9LeMR/ZXjlL5wO8umZCKGsSeWrcwt+1SqgnnaWTxVKkQVSHTpMSLCvXv+oU5ILu6tiFEAqnoDM31WNxJXYZL0vZI4R7pW5sBsKNSMYKhNBJClxlEhBXZQTU90oJYo8t/Nvaed5s7vwDWFI5Ay44oJAodAnh8zQ5ZQ3A/b6aP7gpCC9tLwNyrDWXTug6ZkZj+xzgcrDuFNqIfPW+p4LCoqdZhnHUmz0gZHXcHui/GWfbe8tsx1Pm9BaP9gw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com (2603:10a6:3:4b::17)
- by AS8PR08MB8273.eurprd08.prod.outlook.com (2603:10a6:20b:537::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Mon, 2 Oct
- 2023 08:58:02 +0000
-Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com
- ([fe80::4d4a:2d8c:6f96:4c77]) by HE1PR0801MB1931.eurprd08.prod.outlook.com
- ([fe80::4d4a:2d8c:6f96:4c77%5]) with mapi id 15.20.6838.028; Mon, 2 Oct 2023
- 08:58:02 +0000
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
- vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-Subject: [PATCH 19/19] tests: Add parallels format support to image-fleecing
-Date: Mon,  2 Oct 2023 10:57:38 +0200
-Message-Id: <20231002085738.369684-20-alexander.ivanov@virtuozzo.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
-References: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: VI1PR0102CA0068.eurprd01.prod.exchangelabs.com
- (2603:10a6:803::45) To HE1PR0801MB1931.eurprd08.prod.outlook.com
- (2603:10a6:3:4b::17)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qnEkN-0003PP-0E
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 04:57:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696237065;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=fVukFMHb4sPlTBNho7wcg3FCMW675wzniIBiQO49dIQ=;
+ b=R3+nrteagWKVrZW+oo0oFGizGg8mtojpGFIhsBuiaNX1SNYyzJYzuHtu/J1DRcv76TQ4Eb
+ MRy0MJ/x3wfflQ0RHHxDN2bld7xSQ0ruilM9dHhZH1nx8Hx6EyrIBWTIjUaPy8tOsk7jDr
+ A5ONtxxGKjDTqvMHOqN++LMiviSL25Y=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-52-KQbGbYXXMMmqoDsGukY_kQ-1; Mon, 02 Oct 2023 04:57:43 -0400
+X-MC-Unique: KQbGbYXXMMmqoDsGukY_kQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fd0fa4d08cso134062645e9.1
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 01:57:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696237062; x=1696841862;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fVukFMHb4sPlTBNho7wcg3FCMW675wzniIBiQO49dIQ=;
+ b=bw9skY6tNc86H0lepDjIuPdJuJsE73hqE07lCL58Wm8JBZdocPmvAkXwkuZJTuNCvf
+ zFv4dDOgIL+bJXw2ffzGDJKb23T3boFEjJpQNSj0WVR28n3Lq1UbL2c3Gc6ncYpIkwdu
+ kic9NLrUKhvm33huh23+nn3GcgGOHK8NaLsHE6yA01Mom8HYSKLvLCNb4+jf4ZmO/Hhu
+ utx9ll7Myll7T7O3s2n2oQsVehFCAIqvbforhV6pi2fPxGpkFQ47DQiR4vukkz+rf9aH
+ vOu2ALP1vqC0IXbGAXRyZkjC7XCX7GH0RFfh1FWzwIyqF9J3CgmVH26QJaGSawIvRSdh
+ 2I1A==
+X-Gm-Message-State: AOJu0YywKfv83iR6RiKvc1dA2SKF+z1gvAzvzamMXfzAL4N+PfDyE0mg
+ 28c53rCXzblR5bq4MXaDrJWNHDXwj3faPaeRLWlE0/KaPzOc+vBJH0sjE6iGebK49iBPAri3dbG
+ Fd+qrkQU7WAqcMzU=
+X-Received: by 2002:a5d:56ca:0:b0:31f:d8b3:e9f5 with SMTP id
+ m10-20020a5d56ca000000b0031fd8b3e9f5mr9146172wrw.34.1696237062448; 
+ Mon, 02 Oct 2023 01:57:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrzNVxIOfJOk15r++VqOXoeT1XnIyZuejaeShvDOTKPjy99A5uUDFfqMClE2pthwX0F/cLPg==
+X-Received: by 2002:a5d:56ca:0:b0:31f:d8b3:e9f5 with SMTP id
+ m10-20020a5d56ca000000b0031fd8b3e9f5mr9146156wrw.34.1696237062088; 
+ Mon, 02 Oct 2023 01:57:42 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c735:f200:cb49:cb8f:88fc:9446?
+ (p200300cbc735f200cb49cb8f88fc9446.dip0.t-ipconnect.de.
+ [2003:cb:c735:f200:cb49:cb8f:88fc:9446])
+ by smtp.gmail.com with ESMTPSA id
+ n3-20020adff083000000b003143867d2ebsm27577613wro.63.2023.10.02.01.57.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Oct 2023 01:57:41 -0700 (PDT)
+Message-ID: <56cec8a9-f4bb-5e9e-a1c4-223359f8b491@redhat.com>
+Date: Mon, 2 Oct 2023 10:57:40 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0801MB1931:EE_|AS8PR08MB8273:EE_
-X-MS-Office365-Filtering-Correlation-Id: 613c4d8d-e5e9-4ee7-0dbb-08dbc325af56
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: +ZNkbE65U0nns9IfIVDuc9+f5QVDjRGuXInlusNQs3Gw2Y/JcGPEFOrP7IIs7zOEsu+h2qhdaAW2T2hbU3LXUKpV4Di2sv/DPKL0LU/65MFkc155qAYWJ1+TYRR7zyiOyNTGbGp01Pv+PCDGX+Mb0ZJlLhjagSLYE63PVz+kLTP5Go7gy+QhlWzxyWbrx6iVhsT3UxxbfQ9uOLcTflFUV9FLTTmaXU2mxs6lseJnad5+EGp+lB+eX2SqsJVDu9uz0YAccIDlrm+452ScCjvU6erT3W0Wg43Q7GMISegcd5m8+0wIk9at3unNg0XvpnHPLo8LlvcJFeVfFN5j2FiXTuf7QNan8reUue7CNpH49FHYhwAf6SFUyHT72fvZNkD0mxmXFIhmXLmgiQxiG6AsDxwaqfFmC1GQcWnHVp1eY/qZPoVhvbHlkGUTolm4Qa8OuLx8Z8v+vTEyifVYStU5YQHflXzA1ssaOof8JpSDgCaYeu3Re18lGSfd7cLM0uWZZ8EsiPj8Hpgi++lLqvwB4m1dw9JjcduqNMadt+NidJiwPio5tLKBfAtBoPUC3DAX6JETyYOorbvfcOVSfVacoohO+5ci0dA/zQ2Nu9S4HLz9bjv92U5+8p+aMJKG8gNn
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:HE1PR0801MB1931.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(346002)(366004)(39840400004)(396003)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(478600001)(1076003)(38100700002)(2616005)(26005)(6506007)(52116002)(6486002)(6512007)(38350700002)(86362001)(83380400001)(36756003)(6666004)(316002)(8936002)(4326008)(8676002)(6916009)(41300700001)(66476007)(66556008)(66946007)(44832011)(2906002)(5660300002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xG4YFEtM+cJuXna4Aww/0IkTxl3AYhvP5TiCy6bKpUs7t0Nfbgjct+JOPynv?=
- =?us-ascii?Q?MQ+2qAOr5tPFS3ZDTqsSo1P0t7cQKhGub+LxMnmmt9tpvcX7PW5AI5b3GOC4?=
- =?us-ascii?Q?Pnx0/9uNLb3VeeJlsVBIzkTobPy/FOyUGHvDqu44lRRMlJPJL9pWn51KUm4I?=
- =?us-ascii?Q?vtG8YX4d0Jsj4x9NHOGXIbpOrawvgtQbdFC9g4x6RJ5oNiTHiHkX5qjlCwig?=
- =?us-ascii?Q?fPoTp+XsakIssSxJ7IL2TQzz+FcL3Qk5t+IGTeGmh9ZBqJosR56siroLBrAH?=
- =?us-ascii?Q?lPf+jOBi6dDTUzN0ir/bjxWXUdFnQdfgYKwgpQDyqiB+Y8blaqQrABIDBDPU?=
- =?us-ascii?Q?+ZzmF3ocbCreExZ4Rin5bikC8dUvKSEgz/Bi7uSNnHb5nKn3ksN3ZjmAITgU?=
- =?us-ascii?Q?NQNtLp7Nk8APV2EWxkm2YLx+1xA4huZmtjdQ577DxAzbi16j2hx2jGWQFQLO?=
- =?us-ascii?Q?+mPmKJn/7jO+725Ktxi2ABNNL7LrUwQgdHqloU1nTqzKz9zDyd1twOw5xVdz?=
- =?us-ascii?Q?yMz1xAoR2PBMPbjlmy3SjWky8k5B4eIli15NJ2+iA5gYnoSoIWE6Ljw7JA6w?=
- =?us-ascii?Q?s1cE9Og3aXxWIT3EPJ7lLD9dtnuT+d5OrzHh2Fw8B3cfnn7h+AhedTOHR+oz?=
- =?us-ascii?Q?RExv7NVHu17pjmtPWYOSeEUlzEvOABOMykiq1q0AijNvYFLWO1pJzV7HDUbq?=
- =?us-ascii?Q?RuOzJjk7e6MUgHiPjvvqrMytnc9PSXPpynYZCNzI/zofVPXitMljFLP1sBJP?=
- =?us-ascii?Q?ULBPLrDLvmtB4COe82eHEOzeFtanVacRitK8V0zRBrk22gVtE+xFNojT/Ur4?=
- =?us-ascii?Q?oLwbecT5OZVGO2C0QNNH7YKBU0afZ1DcAivEqY5acX3QU+OwCyZ4l4E3kuQg?=
- =?us-ascii?Q?8Baf1+ogG6hXMyFtNMt+z7jK1h0l8KWn9a0zs8+lPvcmoKt+YfCUc6DLWz10?=
- =?us-ascii?Q?eW7ttzFdPDFpIAgTgPwTKW+S1NBHOP+PWjUoxQOcf9sadfuJDUzMrYpMQaIC?=
- =?us-ascii?Q?DLej2/PzA5tN6TANlN+y8h1euR0NQYNJVvlRAAQUACrKg4pBDbuQKxwU5ZFe?=
- =?us-ascii?Q?ukNTrdaycE9OeQeKiEGsIvBHDsktEvF3VX9DK1wSuyhfoUASzhq+rqzeJFyi?=
- =?us-ascii?Q?sZ0nmDTlk2f7ThHNwZ3PW6RXSRCWcHHonfj8Yx8Vz9YipCGVjCNgWBeVw8AA?=
- =?us-ascii?Q?NNZm//CSrG3aBLmeP6sjQoLxN0MHwN1hN2++ysL1Vw7CxA9hp0XE/Igh3aaQ?=
- =?us-ascii?Q?lJOpysWtvfuIGvj9bgSj6b3HXa/wDQzPV9eBv4+kr4zRPkosR+gs9Zu3G55W?=
- =?us-ascii?Q?NqQXMnvbrd5scd+Oc/ju1/pcCaHclfFucTiHT0YAi996CeVhB/GdHM47zuoY?=
- =?us-ascii?Q?QxKB7TzOkfrJifRclpuB7r32Gr0sdTbvlD3PJiaV7lb0IjGbz6/CjEsO3f+V?=
- =?us-ascii?Q?JpiWI+ZAeOWdbrZoWrdN6z1MdJoFzB9cnK0+HyI6fbUOLtV/hgF222OsS7xL?=
- =?us-ascii?Q?UtIgN8+aaheG54mNogBy0uI7Rh7CghJmjpsYIDTbeXxaIQaV5FpRWwCarzA+?=
- =?us-ascii?Q?Lpyk9ZISZVGwqQ5zRx7DjpQkXyOuqFr8IB+J+jM8s1acA9hJHQ+ykxb1XgNR?=
- =?us-ascii?Q?m4sK1kaBoESM2dZn6k/7QrQ=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 613c4d8d-e5e9-4ee7-0dbb-08dbc325af56
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0801MB1931.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 08:58:02.7734 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Fu5lxHzH791cA7SikQJ9mkeLZCuv7NVeyd28EjxhKoeTpgxQ6qxW/rpvtLMy5e7CaZZvNyQCmtbiyBgeLd9BNAjmJMROm1/2DAAQYs66xR4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8273
-Received-SPF: pass client-ip=2a01:111:f400:fe16::713;
- envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR02-VI1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 16/18] virtio-mem: Expose device memory dynamically via
+ multiple memslots if enabled
+Content-Language: en-US
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>, 
+ Xiao Guangrong <xiaoguangrong.eric@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>, Michal Privoznik <mprivozn@redhat.com>,
+ =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Gavin Shan <gshan@redhat.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
+ qemu-devel@nongnu.org
+References: <20230926185738.277351-1-david@redhat.com>
+ <20230926185738.277351-17-david@redhat.com>
+ <11c6efbd-b794-4a05-9c51-4928fb545db4@maciej.szmigiero.name>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <11c6efbd-b794-4a05-9c51-4928fb545db4@maciej.szmigiero.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -51
+X-Spam_score: -5.2
+X-Spam_bar: -----
+X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.058, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -134,69 +117,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use a different bitmap name for parallels images because their has own ID
-format, and can't contain an arbitrary string.
+On 30.09.23 19:31, Maciej S. Szmigiero wrote:
+> On 26.09.2023 20:57, David Hildenbrand wrote:
+>> Having large virtio-mem devices that only expose little memory to a VM
+>> is currently a problem: we map the whole sparse memory region into the
+>> guest using a single memslot, resulting in one gigantic memslot in KVM.
+>> KVM allocates metadata for the whole memslot, which can result in quite
+>> some memory waste.
+>>
+>> Assuming we have a 1 TiB virtio-mem device and only expose little (e.g.,
+>> 1 GiB) memory, we would create a single 1 TiB memslot and KVM has to
+>> allocate metadata for that 1 TiB memslot: on x86, this implies allocating
+>> a significant amount of memory for metadata:
+>>
+>> (1) RMAP: 8 bytes per 4 KiB, 8 bytes per 2 MiB, 8 bytes per 1 GiB
+>>       -> For 1 TiB: 2147483648 + 4194304 + 8192 = ~ 2 GiB (0.2 %)
+>>
+>>       With the TDP MMU (cat /sys/module/kvm/parameters/tdp_mmu) this gets
+>>       allocated lazily when required for nested VMs
+>> (2) gfn_track: 2 bytes per 4 KiB
+>>       -> For 1 TiB: 536870912 = ~512 MiB (0.05 %)
+>> (3) lpage_info: 4 bytes per 2 MiB, 4 bytes per 1 GiB
+>>       -> For 1 TiB: 2097152 + 4096 = ~2 MiB (0.0002 %)
+>> (4) 2x dirty bitmaps for tracking: 2x 1 bit per 4 KiB page
+>>       -> For 1 TiB: 536870912 = 64 MiB (0.006 %)
+>>
+>> So we primarily care about (1) and (2). The bad thing is, that the
+>> memory consumption *doubles* once SMM is enabled, because we create the
+>> memslot once for !SMM and once for SMM.
+>>
+>> Having a 1 TiB memslot without the TDP MMU consumes around:
+>> * With SMM: 5 GiB
+>> * Without SMM: 2.5 GiB
+>> Having a 1 TiB memslot with the TDP MMU consumes around:
+>> * With SMM: 1 GiB
+>> * Without SMM: 512 MiB
+>>
+>> ... and that's really something we want to optimize, to be able to just
+>> start a VM with small boot memory (e.g., 4 GiB) and a virtio-mem device
+>> that can grow very large (e.g., 1 TiB).
+>>
+>> Consequently, using multiple memslots and only mapping the memslots we
+>> really need can significantly reduce memory waste and speed up
+>> memslot-related operations. Let's expose the sparse RAM memory region using
+>> multiple memslots, mapping only the memslots we currently need into our
+>> device memory region container.
+>>
+>> The feature can be enabled using "dynamic-memslots=on" and requires
+>> "unplugged-inaccessible=on", which is nowadays the default.
+>>
+>> Once enabled, we'll auto-detect the number of memslots to use based on the
+>> memslot limit provided by the core. We'll use at most 1 memslot per
+>> gigabyte. Note that our global limit of memslots accross all memory devices
+>> is currently set to 256: even with multiple large virtio-mem devices,
+>> we'd still have a sane limit on the number of memslots used.
+>>
+>> The default is to not dynamically map memslot for now
+>> ("dynamic-memslots=off"). The optimization must be enabled manually,
+>> because some vhost setups (e.g., hotplug of vhost-user devices) might be
+>> problematic until we support more memslots especially in vhost-user backends.
+>>
+>> Note that "dynamic-memslots=on" is just a hint that multiple memslots
+>> *may* be used for internal optimizations, not that multiple memslots
+>> *must* be used. The actual number of memslots that are used is an
+>> internal detail: for example, once memslot metadata is no longer an
+>> issue, we could simply stop optimizing for that. Migration source and
+>> destination can differ on the setting of "dynamic-memslots".
+>>
+>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>> ---
+> 
+> The changes seem reasonable, so:
+> Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-Replace hardcoded 'qcow2' format to iotests.imgfmt.
 
-Add 'parallels' to supported formats.
+Thanks Maciej!
 
-Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
----
- tests/qemu-iotests/tests/image-fleecing | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/tests/qemu-iotests/tests/image-fleecing b/tests/qemu-iotests/tests/image-fleecing
-index f6e449d071..00d7f37af4 100755
---- a/tests/qemu-iotests/tests/image-fleecing
-+++ b/tests/qemu-iotests/tests/image-fleecing
-@@ -28,7 +28,7 @@ import iotests
- from iotests import log, qemu_img, qemu_io
- 
- iotests.script_initialize(
--    supported_fmts=['qcow2'],
-+    supported_fmts=['qcow2', 'parallels'],
-     supported_platforms=['linux'],
-     required_fmts=['copy-before-write'],
-     unsupported_imgopts=['compat']
-@@ -61,12 +61,17 @@ def do_test(vm, use_cbw, use_snapshot_access_filter, base_img_path,
-     if push_backup:
-         assert use_cbw
- 
-+    if iotests.imgfmt == 'parallels':
-+        bitmap_name = '00000000-0000-0000-0000-000000000000'
-+    else:
-+        bitmap_name = 'bitmap0'
-+
-     log('--- Setting up images ---')
-     log('')
- 
-     qemu_img('create', '-f', iotests.imgfmt, base_img_path, '64M')
-     if bitmap:
--        qemu_img('bitmap', '--add', base_img_path, 'bitmap0')
-+        qemu_img('bitmap', '--add', base_img_path, bitmap_name)
- 
-     if use_snapshot_access_filter:
-         assert use_cbw
-@@ -75,7 +80,7 @@ def do_test(vm, use_cbw, use_snapshot_access_filter, base_img_path,
-         qemu_img('create', '-f', 'qcow2', fleece_img_path, '64M')
- 
-     if push_backup:
--        qemu_img('create', '-f', 'qcow2', target_img_path, '64M')
-+        qemu_img('create', '-f', iotests.imgfmt, target_img_path, '64M')
- 
-     for p in patterns:
-         qemu_io('-f', iotests.imgfmt,
-@@ -130,7 +135,7 @@ def do_test(vm, use_cbw, use_snapshot_access_filter, base_img_path,
-         }
- 
-         if bitmap:
--            fl_cbw['bitmap'] = {'node': src_node, 'name': 'bitmap0'}
-+            fl_cbw['bitmap'] = {'node': src_node, 'name': bitmap_name}
- 
-         log(vm.qmp('blockdev-add', fl_cbw))
- 
 -- 
-2.34.1
+Cheers,
+
+David / dhildenb
 
 
