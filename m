@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD02A7B4B97
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB86E7B4BA6
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:48:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnCfM-0002Qf-1j; Mon, 02 Oct 2023 02:44:28 -0400
+	id 1qnCiv-0004M8-5h; Mon, 02 Oct 2023 02:48:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCfJ-0002QN-Ck
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:44:25 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCis-0004Ls-Va
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:48:07 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCfH-0002HP-Gp
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:44:25 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40535597f01so162764045e9.3
- for <qemu-devel@nongnu.org>; Sun, 01 Oct 2023 23:44:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCir-0002se-Co
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:48:06 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-405361bba99so159587545e9.2
+ for <qemu-devel@nongnu.org>; Sun, 01 Oct 2023 23:48:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696229058; x=1696833858; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=linaro.org; s=google; t=1696229284; x=1696834084; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ccpleAyicjSReTd2DQFQjo7T/MhV1w3hiWWfwNeFQvQ=;
- b=OK08UXEaUY5P6ie2TJlx/hT+6Lu/eGlLBkyUxiTIp5dKx+WQXa6wF8sczTLaNhD1zU
- 0PU7OZObOh+uJuxMLdPWiLER9i4JXLpXRh3xgTllras0FBquAZNMVZ40a7PmQBdcQ9EC
- 2OVZBfixk2peChb6VRcYJ/cO3LT+I8+nxeYHaEOimE+bN245RwnV7Y3TkmeDI7IhzSt7
- wEBhsvLrDlSt4TdK9hRIHCxcMfSxnzcuRsQugxukW2ySdwoKlMgnlb/6xAiRsfGbW6w4
- //4D0fJUFQKvUDhFK9c/qcFOjVoDI3UWIAw10mDMZoJYRHDZdZzZXxDlbGSzopAOPqxK
- S/GQ==
+ bh=lDJ3scug1GaAjDYMk8E5K7n4piDZ9aKayediD3OjqJk=;
+ b=PuC2POOTjmOtlsINNhdrPc+Vo0l9BK+SMF/KWbmoAK313Hstple74/QLYzEPO4QprS
+ fle6/V4YuxiaGIfFfs7VlnXbNwXJ1Pp7w3MIWfs3+uXw0+TmODJLtHlNDWYY0qnKJ7Bw
+ nbQFeQG58LElGoyoioPLVaUCRS0mZ3XXVBsULitL2uckg9Fri8JCkhFfDbzS0kvVYY2K
+ k4cP7wx9Ncfw/NLNPkO4F8d3jkVBN0nFu7E9SJkS4Q4LRtDByDfOaqLHBFBG8KrIdmTZ
+ R7ddYvjjoQEohwr03d98i18ZaU1F/SLNhikM49VZ1MwZfxF38ME19XhfvOTrxV0z15UV
+ SLrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696229058; x=1696833858;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1696229284; x=1696834084;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ccpleAyicjSReTd2DQFQjo7T/MhV1w3hiWWfwNeFQvQ=;
- b=EtMYRf6PfFZAx8vrPCIUOk6U0ue3z7Wx1gJ8RQEsrFEp1pYisnyivKrY8bWxetaDXD
- JZvrQ5IRuiQkJZ7nazl/1lt4ZiXbmPJW/CSBz74/o7WK7OQM+zoVHrhKx20CL/+GAKIt
- RjglHf80Q4fEs/f3oD4Mp7l26WkV40ZnTMeWyz2J2bLmyvsgdVRMfMg22bxed8qLHFJy
- u1YaTtu4hgKui6epCW5tVmeb/BuoAjKUOl8epTojaKAvGbROazWxlPhkBmit8yN7WbDh
- ZsGjolJxPwUEXwpTzwbuuaIdGVjhmFfKiLHWScTp/UFcM9jrPN4a6vvnMdyEn4iV8idE
- wuPw==
-X-Gm-Message-State: AOJu0YwV5Xoh3KDW7l1Fu17NcD+WxZIho8STms+WOoM/v3F+w9VDLtWB
- n9Qh042NcbKlHcPrAZiszvmXCrExb90mOYjTC0Y=
-X-Google-Smtp-Source: AGHT+IF3JRzabvcHMReum63HbsTMAeIyuoRQ+J0cBn8rcpjkzM9RYPutW/rRd8kMSnJTnFn7NZi2Fw==
-X-Received: by 2002:a05:600c:2981:b0:401:daf2:2735 with SMTP id
- r1-20020a05600c298100b00401daf22735mr9070382wmd.31.1696229058172; 
- Sun, 01 Oct 2023 23:44:18 -0700 (PDT)
+ bh=lDJ3scug1GaAjDYMk8E5K7n4piDZ9aKayediD3OjqJk=;
+ b=qA5ci/YNDGGm8MBRBNkFb7k0ZPb3dnsPI5zPOpW05ZQdogUz/RFQxw84puGeF39D7F
+ 1UESTfUUY+BDVtq+f7bBICRBT1L7KaxjVzwkaNth4LWggi3T7jLI6zHP7uEMmmPzpWYX
+ YLCjyjz3fluPQdvbZso0yVIkKjkgszUf6HpOWHZv3I04ei5dWDr53WI2G3Zi3Bq91wA+
+ u09/l34FT6ZVeYQVQV60oY423cUqxybeDyTKPFxQ8AJNvUl8K2ODR7Us6Iu52K6h3gG1
+ G8VI3qgBei/cSO8S9KkpO8mbawAZ7yuIno9fi1V09XKbLaLdcNj177e6z4BU2eaHgrvU
+ JiZw==
+X-Gm-Message-State: AOJu0YxNSkyFEUfiuTGMCWNQCysyZT5L3l21DVpNXYnCqJSDECNSHr2N
+ RmIrgFJ7Y5wMcIWO6k7t1GKs7AWImkAecwy6nfw=
+X-Google-Smtp-Source: AGHT+IGWXXYUEVThAJiTMQ7h5DU0NsQZzG3Kc9uHyCjPMDsPv59qDgNCyQIajjj/pf8PrHVHqYav9g==
+X-Received: by 2002:a7b:ce09:0:b0:3fe:d630:f568 with SMTP id
+ m9-20020a7bce09000000b003fed630f568mr9030934wmc.39.1696229283897; 
+ Sun, 01 Oct 2023 23:48:03 -0700 (PDT)
 Received: from [192.168.69.115] (sto93-h06-176-172-7-203.dsl.sta.abo.bbox.fr.
  [176.172.7.203]) by smtp.gmail.com with ESMTPSA id
- n9-20020a7bcbc9000000b004060f0a0fdbsm6540197wmi.41.2023.10.01.23.44.17
+ r1-20020a05600c298100b0040586360a36sm6554080wmd.17.2023.10.01.23.48.03
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 01 Oct 2023 23:44:17 -0700 (PDT)
-Message-ID: <fd1e7ed5-bfa1-180d-cf3f-611d3d784230@linaro.org>
-Date: Mon, 2 Oct 2023 08:44:16 +0200
+ Sun, 01 Oct 2023 23:48:03 -0700 (PDT)
+Message-ID: <41af7952-1020-39a8-b055-d0262e637627@linaro.org>
+Date: Mon, 2 Oct 2023 08:48:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] crypto: only include tls-cipher-suites in emulators
+Subject: Re: [PATCH] mailmap: Fix Andrey Drobyshev author email
 Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20230928074918.874468-1-pbonzini@redhat.com>
+To: andrey.drobyshev@virtuozzo.com, qemu-devel@nongnu.org
+Cc: kwolf@redhat.com, eblake@redhat.com
+References: <20230926102801.512107-1-andrey.drobyshev@virtuozzo.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230928074918.874468-1-pbonzini@redhat.com>
+In-Reply-To: <20230926102801.512107-1-andrey.drobyshev@virtuozzo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
 X-Spam_score_int: -51
 X-Spam_score: -5.2
 X-Spam_bar: -----
@@ -91,56 +92,20 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 28/9/23 09:49, Paolo Bonzini wrote:
-> tls-cipher-suites is an object that is used to inject TLS configuration
-> into the guest (via fw_cfg).  It is never used for host-side TLS
-> operation, and therefore it need not be available in the tools.
+On 26/9/23 12:28, andrey.drobyshev@virtuozzo.com wrote:
+> From: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 > 
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> This fixes authorship of commits 2848289168, 52b10c9c0c as the mailing
+> list rewrote the "From:" field in the corresponding patches.  See commit
+> 3bd2608db7 ("maint: Add .mailmap entries for patches claiming list
+> authorship") for explanation.
+> 
+> Signed-off-by: Andrey Drobyshev <andrey.drobyshev@virtuozzo.com>
 > ---
->   crypto/meson.build   | 3 ++-
->   hw/nvram/meson.build | 6 +-----
->   2 files changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/crypto/meson.build b/crypto/meson.build
-> index 9ac1a898027..c46f9c22a7f 100644
-> --- a/crypto/meson.build
-> +++ b/crypto/meson.build
-> @@ -46,7 +46,8 @@ endif
->   if have_afalg
->     crypto_ss.add(if_true: files('afalg.c', 'cipher-afalg.c', 'hash-afalg.c'))
->   endif
-> -crypto_ss.add(when: gnutls, if_true: files('tls-cipher-suites.c'))
-> +
-> +system_ss.add(when: gnutls, if_true: files('tls-cipher-suites.c'))
->   
->   util_ss.add(files(
->     'aes.c',
-> diff --git a/hw/nvram/meson.build b/hw/nvram/meson.build
-> index 988dff6f8e5..75e415b1a01 100644
-> --- a/hw/nvram/meson.build
-> +++ b/hw/nvram/meson.build
-> @@ -1,8 +1,4 @@
-> -if have_system or have_tools
-> -  # QOM interfaces must be available anytime QOM is used.
-> -  qom_ss.add(files('fw_cfg-interface.c'))
-> -endif
-> -
-> +system_ss.add(files('fw_cfg-interface.c'))
-
-Thanks, Richard mentioned it and I had it tagged as TODO,
-but forgot about it...
-https://lore.kernel.org/qemu-devel/8c26026f-26b4-08c0-0e77-ca9970dca279@linaro.org/
-
-FTR the original issue was:
-https://lore.kernel.org/qemu-devel/20200929154651.GC4398@linux.fritz.box/
-
-$ qemu-storage-daemon --object help
-List of user creatable objects:
-qemu-storage-daemon: missing interface 'fw_cfg-data-generator' for 
-object 'tls-creds'
-Aborted (core dumped)
+>   .mailmap | 1 +
+>   1 file changed, 1 insertion(+)
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
 
