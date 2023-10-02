@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1397B536F
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4DCE7B53D0
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 15:24:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnIOT-0006kv-4Z; Mon, 02 Oct 2023 08:51:25 -0400
+	id 1qnIsd-0004eU-7H; Mon, 02 Oct 2023 09:22:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIOR-0006kj-Sb
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:51:23 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIsb-0004eI-0G
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 09:22:33 -0400
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIOQ-0005LP-Ay
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:51:23 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-323ef9a8b59so6854928f8f.3
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 05:51:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIsY-0003NU-T5
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 09:22:32 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-4060b623e64so18806825e9.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 06:22:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696251080; x=1696855880; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696252947; x=1696857747; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=JJDajxbIl3qklNV3jQiFSzdiGI50r5dNRaCEPlU+2mw=;
- b=Igo6lr/vHYzwc3wKFwvk8cbJXPE50N4efp7hfhP2n8uAzNXCMewBbbQvLlaozM2qqs
- RmbiF0ryasENEPjFyhQ4+fwFMjASAHiEb0ZLkmwCi0jm4hgw5BsktC74THLickp/3Usx
- 7x1DbIKTFcobbT9I27GUhLcUZw3ThFVPxSkrT/hl6gwsqtGWIcmxkzuVTYcVhTUwtevX
- AEDjgLwb7BBbyYs883oc2fu447qVH5sXbUXSikrFm3Gqgx16v5uXHIxicFqJMvI94Hr9
- GeQMmqrtV0hYdFDS+xklJghurl4/y2g/zd2ddpBPPRxOZx0Yj+NYI/OKxUNhMlCaK82J
- GMvg==
+ bh=8fH7JKzZgtYTRblnXZK7SNppE/oNJnCP3m7ZuHLCc4g=;
+ b=bISTJOZfe47ZKPGe8/XnLxkDJQ+A3lPvq2yxQ9re2Gr2je30BgWqzEfW+4VKMtkFmi
+ guZOfFTrNzj3XmgzNSPwnkHfTKihWZpdElYAQgtCc23U+/GcqubvL5rtkQ0NipM7oWGB
+ 37tq8phEuH1ob5zBr9P0R0I6fY4ExrcWNXyYq4um5/r24hG5ZxRwkzOtGy6bnS2nwM8i
+ 5fjwAn5iyDjdfsvdb5NrZbnWVBvWUV0BcmQkOOgetDY4CRxxvquanGNOeMRec2Ur9N8Q
+ SW2MuT16yhQ7GtkgHTq7Ud6A+ScB6gd0rc9uJs0G5SAII36CnnNeXmEqaLCLXM886mdf
+ ypWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696251080; x=1696855880;
+ d=1e100.net; s=20230601; t=1696252947; x=1696857747;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JJDajxbIl3qklNV3jQiFSzdiGI50r5dNRaCEPlU+2mw=;
- b=Nel1OfJwT6yoOEgGFieizF6/2Kh38cr7ujGLwYmBdVsPNVaIh6bKxFk+YhoikkAJeH
- BuKcd7MHZzpyx4nhzlXFzH68/Wa6X61cGJSPkyI91U8vpJD/2qrSNMONwAGU451AkeRy
- NvdHQL2gSxD9meoVPOuejx2CrTJ8t/4IpjYeAG3ne38no9q4w7Uzgh9m3kE9Oexunl9j
- 6ZnRMljtWyZHqJoDl2dlIeQIKYQeNMwzsXLEqomMfNJoaG1P0B7A7OE9RK1crmZZ37xI
- i6iyFFtkypIbJMP2iiNkF96t4Af8yny8BaExKEwXo4wzIxKSJXIkSAix1xCBDPFpPm0x
- nJHw==
-X-Gm-Message-State: AOJu0YwBhu1g82nLkMLZsttqj6zAKqGHfUr+u2neRmYv9zbIE0kfPlYJ
- 1Xp0r4+nRwnb6m4g59E5XamdkecO1AxVGFw+1OlNwg==
-X-Google-Smtp-Source: AGHT+IHe8WjuhsLaPKOlcAy9oGAHUlFUqPwIItz1YUpIDwx4orUwR31SWet+t5DZW1jKLMrVRFUAFg==
-X-Received: by 2002:adf:ec05:0:b0:323:1df0:c039 with SMTP id
- x5-20020adfec05000000b003231df0c039mr9910128wrn.56.1696251080385; 
- Mon, 02 Oct 2023 05:51:20 -0700 (PDT)
+ bh=8fH7JKzZgtYTRblnXZK7SNppE/oNJnCP3m7ZuHLCc4g=;
+ b=ictO6426xIjxaMlWyc7TUy0liSPGCG/ZNbRn1SIvJvzKkCNDbsqEoCPo43ucver/Zt
+ h64A9kUSqFIMP6ONqdZvwWhsM2eYPfksE9PjNUtCg4M0nnefjsXSYd73ZVGSjHJ0NRZg
+ ps6/a4Zr/MlTzqAxQsnTO7MMn2UxDn8rzAJp9fxsqe9PKKBluwDR4Yw2DIubenJjO86M
+ D9VamPQC19YVue2mL4JPnVnUMjwxdztwTmPRTz4s0Xv4ahmavIeW/aNLyeMtR1cc05Pm
+ 9yTWa0278Gt5/7cwqckrRBrnh+OIDwqkou7II3Ky+25dcRDQzDc8aK6IWyvdv1HDSZg+
+ dQsQ==
+X-Gm-Message-State: AOJu0Yx+lHIf8FaZd6WGb2/wGXbSIS79BGoeJKrM7L4Y+kiykkwJx4GI
+ AeApRpv92Ly2YsVTzS+XqgYSEUgifR23kt6p4HyOIw==
+X-Google-Smtp-Source: AGHT+IFf0DfQ18edQOG2BvV99L2vNbxDdNw44LIgk9vLU5DqUV9jOlSc4eNvWyPHyCbybcfHHTv9oA==
+X-Received: by 2002:a05:600c:b90:b0:405:3941:ce2c with SMTP id
+ fl16-20020a05600c0b9000b004053941ce2cmr10373187wmb.6.1696252946843; 
+ Mon, 02 Oct 2023 06:22:26 -0700 (PDT)
 Received: from [192.168.69.115] (sto93-h06-176-172-7-203.dsl.sta.abo.bbox.fr.
  [176.172.7.203]) by smtp.gmail.com with ESMTPSA id
- e9-20020adfe7c9000000b003197efd1e7bsm14048422wrn.114.2023.10.02.05.51.19
+ 17-20020a05600c029100b004064cd71aa8sm7280317wmk.34.2023.10.02.06.22.25
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 05:51:19 -0700 (PDT)
-Message-ID: <b9d95267-c213-0ea1-ddc7-7af54046b566@linaro.org>
-Date: Mon, 2 Oct 2023 14:51:18 +0200
+ Mon, 02 Oct 2023 06:22:26 -0700 (PDT)
+Message-ID: <376e58fa-7d52-4674-db63-503c4186f6a6@linaro.org>
+Date: Mon, 2 Oct 2023 15:22:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 0/2] Split out tcg init functions to tcg/startup.h
+Subject: Re: [PATCH v6 04/19] linux-user: Use ImageSource in load_elf_image
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: peter.maydell@linaro.org
-References: <20230930031114.1042913-1-richard.henderson@linaro.org>
+Cc: alex.bennee@linaro.org, laurent@vivier.eu
+References: <20230930021529.987950-1-richard.henderson@linaro.org>
+ <20230930021529.987950-5-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230930031114.1042913-1-richard.henderson@linaro.org>
+In-Reply-To: <20230930021529.987950-5-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x435.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -92,29 +93,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 30/9/23 05:11, Richard Henderson wrote:
-> Supercedes: <20230923130843.3708899-1-peter.maydell@linaro.org>
-> ("[PATCH] tcg.h: Split out runtime-only functions into tcg/runtime.h")
+On 30/9/23 04:15, Richard Henderson wrote:
+> Change parse_elf_properties as well, as the bprm_buf argument
+> ties the two functions closely.
 > 
-> I thought "startup.h" was perhaps a better name than "runtime.h",
-> at least for the functions moved, since it's about starting up
-> either tcg or tcg within a new thread.
-> 
-> By removing the argument to tcg_prologue_init(), we can simplify
-> the users even further, since they no longer require TCGContext.
-> 
-> Adding tcg_init() seems to match the other two as a startup-y
-> function and allows tcg-all.c to avoid "tcg.h" as well.
-> 
-> 
-> r~
-> 
-> 
-> Richard Henderson (2):
->    tcg: Remove argument to tcg_prologue_init
->    tcg: Split out tcg init functions to tcg/startup.h
+> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+> ---
+>   linux-user/elfload.c | 128 +++++++++++++++++--------------------------
+>   1 file changed, 49 insertions(+), 79 deletions(-)
 
-Series:
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
