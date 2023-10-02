@@ -2,56 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024117B4E7B
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 11:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9367B4E76
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 11:01:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnElA-00025j-9O; Mon, 02 Oct 2023 04:58:36 -0400
+	id 1qnEkv-0001bw-IC; Mon, 02 Oct 2023 04:58:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qnEl5-0001nI-1H; Mon, 02 Oct 2023 04:58:31 -0400
-Received: from mail-vi1eur02on2070d.outbound.protection.outlook.com
- ([2a01:111:f400:fe16::70d]
- helo=EUR02-VI1-obe.outbound.protection.outlook.com)
+ id 1qnEkk-0001Ut-HK; Mon, 02 Oct 2023 04:58:12 -0400
+Received: from mail-ve1eur01on0711.outbound.protection.outlook.com
+ ([2a01:111:f400:fe1f::711]
+ helo=EUR01-VE1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qnEkz-0003Q6-DH; Mon, 02 Oct 2023 04:58:29 -0400
+ id 1qnEki-0003Rj-DC; Mon, 02 Oct 2023 04:58:10 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EmRnBQj+9yMaIIUJxQuMWPDkWxY6pAKdDeK9T5y8+BoDQ8QqVaGDuae1fzcguq+BMrrQ68D6zXpTLwt7ptMQXb0bJA142KOAHkMU+qvMpJVttt7F1BjSQuTnrdwign0Rpqor07p5ws1nM9/SFl/0gg48v0WM4SLGSHx8tm4hMMYUrLSN+8wg9FHBSnfc97z5/qzYhFhfz1+Hhk8YNy/bczRVp0eR76BuebzbsSEyv/nDnJVId398sTF02iN2SuLImKLS/05dLxchHPUhNcf3qihPogiLNv4cZJZtz34ctIMeECM8XEHz6uJGhSAfSF2NB5Ygbbvq2VrdL1z7GOZrEw==
+ b=bU8/WF18e75/78N+kwkR4R9lJtXRyk/bQzlxU398mqxW8DLisP0DtkXGgRNhx/X+saGIFwRuicbvkXvnh8/Gqv4A9sOEN8HAhEGO4YUZk3Ni6jy2Nj3Hy6gJoxOHbYIRwK7ZsSCZ48dyyKPb3oCq5AZBkmvklqsEikRSxTt2l9eYenZ27Mi6jDzPI1is961cmygFGhQ5QQfzGXB0reBmLKX5MKO+sUnyT8cM6Tk73O+yyPiIETIidCS3OwDXm7Rn+3bWg6QdhZN9VHnHeuNE7N59suDKW21xw343Lbadj+wlClEkNBpA5ckxzbupzBfuZc1QbTvIrbTZzgte0mf36w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=F13z9GiHPMf4tAoe613lR3A620NkyrVO1Op57HmuxwQ=;
- b=DNi1Jz3LsL6wcmgf3KCgGl/pFlJIE6/3cdIGY5KTr0xCJu/gne69aTzl3uWTc52mFQ3ueYQFSP0Vs1hWbgqT4h+PgtgGnXPChxBn5ayOotRyh8U1nT6Vrw4I/iHW5vBwkbLhQzAhpHSNaqBkGWjmXIBXzwBNC8fKv1ll6w7AEVd50o4uq3f5uMRAPtmJMP1FO/SGLXm5e1E90Ntvad9eVcqkQ8PFEJ7yRQs3yi4onbMM+Z6gP8uoHaRe4o9nHIENDpdC4C/Sz2PkJgvYs1FVUugIda3aF0N2w/hhkMxxzgtU0hjKycbLKPSgFJ1ikQmSYgsSwYgKqQzJEXYzuJ4hpA==
+ bh=4zloRtBnEJvFUj7YTAKRwLq9g1gSpQBj/d0tbWJDAC4=;
+ b=dMXvWTNmZ+Y21GZq7RoAu5wtHB8QfK0/uGbEu1q/DCrq3C13/8uftn9AkAsYp38+yZtKH4gG1fNZb/eanEOXfozpuZgPyvzVHrNxDCq6RF/T/ciqR23T0m4X/o9+o+wc1AQrJxi4G4O8oRBYeNAdLi9oZjtxMQUd8GF4MUSMjQjJ03XIMScgcfqCqMawWCcqs7QppEuDVL6d6txU3sQQMT5Tqn7yFF9+i2zuTykVtc3chcxJ9xzuv3qF63RHYSnb0s2SYwII8+gaG7zKqMk98pvUwvxkPIqMBUR+0mofoh9wx0VnmxQwjof4bX+PyYtZUzBStD2HEncXREa47drb7Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=F13z9GiHPMf4tAoe613lR3A620NkyrVO1Op57HmuxwQ=;
- b=jzDJ3Q8mnEW66DV3rPHlkgAARdp3123hIhidkOtpEQpu63fc4Ul7SId6rWWZ4nHGFjqzf/qeA5gbVEIPtMgzj3HdG9QCu6B+M1JdgaPF7+NuleaBkoMuELP6fQzkkwtpQamHFgp+bMaONPCg006lMg/3aaD9cMp2obcqF/sTEvfHcVlWLyolmSHVwJJNEDIbb34uRB2Td3zOpKuaxwT+j3ku+OyKqLc5ETPl+3w+5bm1Csy44RlRyOWo+MWJvrX57B1D6kFHXANiOPddnsIGYXpR/WfVDVaBv/+9VyWUBXoXMYO2tY87KYmMij+3qeLDfmYVqTeHGpG+3D35Y0jiOg==
+ bh=4zloRtBnEJvFUj7YTAKRwLq9g1gSpQBj/d0tbWJDAC4=;
+ b=0BhtUgL3FTQGKQ41Gw5kDjxAifoo/dBqdd6t7DFL7kAMwn5+TnLwZNFliLvXCnzxpumgMt+2MMqmuYOMpsP3nIuwy2d2k/UMQ/q3QoWV4Aya7JlYOPFyTXJpGJdrQ2IYr/AAF3rl2o5Jf0viz/da3PQIxgS4vw7iInxDNXqn/efoXL4WOgF8ieD9F9aV0DHzo4M2MjBFwpJirXUjT0NpzOtQuB2e9CT6IIvF7H5vtG4GUt/nocuIe7rVAHoSVRO2u9oYk2sgZMyK8ewhbVWvsrkneWvN2cxyXzllEuL1HEF0FJYRP2RP6NHAdhT6gSI4mZEzVKjFlK23RhknK3Op8w==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
 Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com (2603:10a6:3:4b::17)
- by AS8PR08MB8273.eurprd08.prod.outlook.com (2603:10a6:20b:537::14)
+ by AS8PR08MB8657.eurprd08.prod.outlook.com (2603:10a6:20b:565::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.20; Mon, 2 Oct
- 2023 08:58:00 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.28; Mon, 2 Oct
+ 2023 08:58:01 +0000
 Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com
  ([fe80::4d4a:2d8c:6f96:4c77]) by HE1PR0801MB1931.eurprd08.prod.outlook.com
  ([fe80::4d4a:2d8c:6f96:4c77%5]) with mapi id 15.20.6838.028; Mon, 2 Oct 2023
- 08:58:00 +0000
+ 08:58:01 +0000
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-Subject: [PATCH 16/19] parallels: Check unused clusters in
- parallels_check_leak()
-Date: Mon,  2 Oct 2023 10:57:35 +0200
-Message-Id: <20231002085738.369684-17-alexander.ivanov@virtuozzo.com>
+Subject: [PATCH 17/19] tests: Add parallels images support to test 165
+Date: Mon,  2 Oct 2023 10:57:36 +0200
+Message-Id: <20231002085738.369684-18-alexander.ivanov@virtuozzo.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
 References: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
@@ -62,64 +61,64 @@ X-ClientProxiedBy: VI1PR0102CA0068.eurprd01.prod.exchangelabs.com
  (2603:10a6:3:4b::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0801MB1931:EE_|AS8PR08MB8273:EE_
-X-MS-Office365-Filtering-Correlation-Id: dbe92b1b-6552-41c5-3817-08dbc325adf5
+X-MS-TrafficTypeDiagnostic: HE1PR0801MB1931:EE_|AS8PR08MB8657:EE_
+X-MS-Office365-Filtering-Correlation-Id: 49aa7eda-d4bc-4d6b-a6df-08dbc325ae67
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: QRZYl5azY0GYN3aghcPPDY/c3Oz5/eqkeIpNcgIElNKCFw+Yvh/JZFVuBf3FkaDe5OD0emqdoCxNmEanhIJ+0lR/KcmSqlxDMz4JVxiOvBEAW+pRT8ignqXLN+RSe8mdW5WLjCcWwSnTckYGK4pTW9b0ce2pog6/H+6JKxMdran4/7BTV78nFwEJCvEH/ESdFqK5xwEB8RxToZNezMv/FdhmTDeF73WO5eNuodaDWWw75CQzKZfUm3SPWMpTVPAv7eSh6Pws/hv9g0hLIYD/pL8IcHFs0iAr4wuSuEnsborZwc1+t8iV3BgeGsLWdtiESJrxHoNrDbqMgZlQC8W5YDw0prgRU0I2n33/CP15+a2jPU5LYVowaceCYMGFB2q7i5pdwGB3olOpntgplB+RpmDrwkkSFb8QH/Au4Gpc18WjL3D5/lTKq6Y6j+w1PsFtOJej6WJOc0gEJSjmgkzrMqUHXqC1qemMClQz5iROYEN1wxfCe9Oe8xXAuXmKkT7Z3J4vgDWBRU3uynwc+CeCKhGcQBk9a1msrC0Rtya4+mxCckJjcrUQ7m9vWAAGgRnJPAYkFcnSZig2dkKLzYwihI+d7H+xCvOJoII0wtSZsRRgIqWhihzQuLfK8v1/bCiu
+X-Microsoft-Antispam-Message-Info: Z30tYsZB2IDGshHLOF8lMveOr8EWBp1PlX/YwrqkhWZA8XOg1FZJWL4G85V80BiW9dCt7ETkG/69D9O3mqN3mJQuZY+rHwqRAZnRxDlwokj4W5+krXLzZ4+N5gss1WWV1g73Gk0TLTaDdA/svB6SviTCzMpVfYtQBrWHnPsF84OKOv51l4D4Wk782OxyJHcpheSCNTzO4XVG0ALYDVu5wrYPti6oFxNQmBVGiYkZDxHfNfu0OO/mqMv6BSGDICiT4KaXzcMM5wTZqpO2g0wDY8sZZZJ1lTc8rUvsBYP1z7stwvq74BoZlZswIWKI13CBQiqzW6Ex9+5cOybEmKzbJ23SPF0jflRK8zDNtd+4lsUlsK/e+zvXuFp6eJwGGw+9GyQ8xnzhRZXWPeroEFv7rnA8luTtIYra2v75cgSWWVhc80EiWOBi9UzyuRdFPOmWxwbIIi9y8c/lARddYFJC1IahN/MSuuck9rCjFlT2qdw3fvm54syh1gHED09pWwD7Rr/kpxxsGKPGqxBCLblODWkPE0z14AJ0IejWE9nO4PsLXmpiXU2ei3wtzOremPuUhwdug/RxHEbGDoLqIdaUB8TpOtqrFXqMcWfmOvCcT75iQG3cZgtm99b4/sR6CUiV
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:HE1PR0801MB1931.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(346002)(366004)(39840400004)(396003)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(478600001)(1076003)(38100700002)(2616005)(26005)(6506007)(52116002)(6486002)(6512007)(38350700002)(86362001)(83380400001)(36756003)(6666004)(316002)(8936002)(4326008)(8676002)(6916009)(41300700001)(66476007)(66556008)(66946007)(44832011)(2906002)(5660300002);
+ SFS:(13230031)(376002)(366004)(346002)(396003)(136003)(39840400004)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(66946007)(2906002)(8936002)(8676002)(44832011)(4326008)(6916009)(5660300002)(316002)(66476007)(66556008)(41300700001)(6486002)(478600001)(6512007)(6506007)(6666004)(52116002)(26005)(1076003)(2616005)(83380400001)(38100700002)(38350700002)(86362001)(36756003);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SB21NBxqtbK22Z00KPuXVhfw4VWHsXhiGKEoZIPPpgvlRizdZ2RlQUPmI2Wq?=
- =?us-ascii?Q?J2mjtV+Rqt6wgt5OnhotgMrrx21ApcxYPBGgvn57N2YiorQWRkjqb8SO7sCk?=
- =?us-ascii?Q?X9KiOKLO3GSVxPO46hLhTXPguQMGyNgZaJemQ1alfhBM29BZc4wroA5IwdKm?=
- =?us-ascii?Q?68dqYCOf0a5CnDT3NQyos89fXXiaD39uXkz12p4oz3RGt2hF2s6yMMzGc28Y?=
- =?us-ascii?Q?rYxefnL7oAAfBu5YvBeN2fwqx85l2kxLwObm0KaOjk/4T8gHzTp5DuKWP1MZ?=
- =?us-ascii?Q?pe9/Yy3fr11g3+igAMNXNYoneOqtwkKeF5L0W9se48A9AwE73EFYXNgBu+B6?=
- =?us-ascii?Q?JtqVl/We2+RBCG8vhuyjRrbIMDduEwY7D2orvptBbYCVjDzJqmhITlakMXvJ?=
- =?us-ascii?Q?IsTX0PRz1Bd6rhbjeIRWZ7UjRHZedPRPPa3Xtz5sn6Lv9+pl+CQ8S2aW34P0?=
- =?us-ascii?Q?5SVXd0U/f+va56elH9eDzsk/Nq78GKZ7igMsBxOxuUs6jvqiIWHvVI+ipupf?=
- =?us-ascii?Q?mFtbzbuZiH4dR6O9bOIfDb0MFgupFtVq6eDVD9aCjNou6e/XvB8qhKdtAJBA?=
- =?us-ascii?Q?f+RrQar8YywSbUVl2dkEHsywCUs2Fzmqbl1zmfhQPa3n3ovITxDRe/YQAWx1?=
- =?us-ascii?Q?lWd10aSRFbm2mdcOtjsQyKs2oRzAtWrg4sQrIqZhwj+YKUDqOndDFysjvbaQ?=
- =?us-ascii?Q?wSAIDaz+QVW7mNDkzlDc6ctiasx0URXXMyCH7eOUOwsSFZyFGmNx2olskjdt?=
- =?us-ascii?Q?vRQfEjO+yP4D/GeI7u52fnKeBBRUvM5XRycs1mnaoObWPRGhsFUBFqJ9Xodd?=
- =?us-ascii?Q?YkUuvbEeUQamPxcK0+WeoAcXUnjYoMbvP5o7UiLiRk7Rj5DqFDHVhqKTakSM?=
- =?us-ascii?Q?LbuNsNNb/mm4TmdYzTE5x3vDaiJNTpyMw6APxWyLNtJI/vLwOZMB+oZy7ceg?=
- =?us-ascii?Q?RBjcCrTXItRGaqjrE2cG1hWRnxawPP8c0SZorgq5OzdwgIOKevaedI9Ft2gb?=
- =?us-ascii?Q?n5m/peipFBTzzjydI3Ls5gO0HBNa2JOSsfQ11OISBPEbSaWOtV1j8NDMHDbs?=
- =?us-ascii?Q?1MOseLNq+hFW0tCPK4lgCWEvjxX2Kur7hrmg49FFljplhRB6FQ57ysp90Xo/?=
- =?us-ascii?Q?mdz/DK9tFNVzrHsWK6JHabPjNyWNrBy0SMmG+sh6ILwoq5lJTyHIbTAChOTK?=
- =?us-ascii?Q?aKgdEcJASlmOGSxikPkT5o4Pl0cS8Z5bib8W1N+6EQWF3s/VTXd+21dGWSsW?=
- =?us-ascii?Q?U8NgL0207ivBj03g4ij1ljucnz4l+Jvxe6QvkUA01nX8l6zaWRdYzifCfvAb?=
- =?us-ascii?Q?ENQiF2meFCU1Ha154GZoXzAg5Qbb/M/E/62y4bRxmfEP+hieFqAnV0TrHADp?=
- =?us-ascii?Q?T9EesAfqEsFwFK4UmaqZQdoL+OCx/7KMgdpzZCDAjcL049gC1fJVIwvQs+rR?=
- =?us-ascii?Q?TPicBHKCoagwDsJsbImJY8cY9EGf7U7N0i22Awi8OPYNQWchoXnkh/a5XnhH?=
- =?us-ascii?Q?35YegIgc5O4rUfrxKlIWOdRI7H6sAQ2gW+LyBPLIPMna+ri8cGGMTDIHfqkN?=
- =?us-ascii?Q?lhzyP1aJu57crQEvR6PhNspKhpf1xAfNgUpOqIG5RAac3z3+l3GUXtURG9UJ?=
- =?us-ascii?Q?QiMb4y3daLw+4h2eQ2u+8xM=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CPYpIx0pjlSCbWEEK90ebc+sq7NNPS7QIcNzm4QZEYcAsMhbZWFVoze2Xhj+?=
+ =?us-ascii?Q?72ou/7AnM7md2eYjXU/2ra3Pe4rIKbR4K1WeaBYAWigVpCmtdwsTXtqvcq2d?=
+ =?us-ascii?Q?tCD5VeUewHZmEoljwxm5jC7fFL69H6nx88ABroCXItaIGtk+Y6MLKH1wfhHF?=
+ =?us-ascii?Q?bRB4d3kQChHUYo9yqgDei68qLfHvyiaKGIA61omrZK0vls6xSY1mN67vW6ra?=
+ =?us-ascii?Q?qiosS3ft7a4GvcEbUnAWmqK4fFQlTOdqyIxNExpN+Gq9DfApZmlSWeNPQknu?=
+ =?us-ascii?Q?cHjNxLKv+mWZbfIkj1fHNxL8IpUHMoU1EgpAB4/j39uJqgN+dw6d5G4n9+Yr?=
+ =?us-ascii?Q?4Fnnkbjh87CxjXp/RIku91ef6n5+TFVo9Pll0spBDTn8pJ1p5u5OtbHDfYNw?=
+ =?us-ascii?Q?AQxDNWAjFxAcPP4kp5ghGyNaXd/9qKOU8RrFaPS/uykbHPG5jCMZvPFlrcdt?=
+ =?us-ascii?Q?O6whqNJ1hRHpwlzvmRpb5aB+xaOnlYnYOmZ7fcWj4gGLbnm0MhYWg/BCkJ+w?=
+ =?us-ascii?Q?V2zs13qPy4P72FiLYC4zbSD3IBfeoBlOhQyMpsNmQkxLGwfDJdGFjEMS5Bo2?=
+ =?us-ascii?Q?hbltB2CZQI2auON0C+Mq8r077LMQMLlNPkHzmqajW1h4YYyqTKEJPWrIYaD0?=
+ =?us-ascii?Q?BsO5WkawMikjRdn+BvLtfLXcrTTg32HFNOdd2TopQc4TQg1fI3sjYJyFhLHI?=
+ =?us-ascii?Q?0gzM9goEd25Dae6bRGFh06E+2voYcqkYRAy5PEl+Skj9ouSpYC/5Ytnwx48n?=
+ =?us-ascii?Q?8o8zSbYRB4xuKzgILvf+6+MAAApzXy+s8mOfa0QnFmWMW34A9UBesYCi6D9K?=
+ =?us-ascii?Q?fPJsNUZQIDIFWoDQFqWwTle/DVwOLTJaJd7puHZQS8rj9F9AtYdGFXzYLIN/?=
+ =?us-ascii?Q?TkP1csXdNlcUVlgQj6r8C+k1kBWSu3NATRMkMRWWX0Jqi6sGmxdDfhLmDW0t?=
+ =?us-ascii?Q?owUxokW/0SPR2e5txoHtIgMX607WwFKshcU1KiN/VBhIRNKQBgtr8R+N6GCE?=
+ =?us-ascii?Q?PpPjv1V88flvdfY0Q4hL6amKnOeGkfmnQDmsFIh66rnyLNYBoWy4PvEE5InI?=
+ =?us-ascii?Q?yAStrxAixosM6s2OevDQlscZcebSI22n1mjPHfzLXXbBaGITA0wFTD8anpOn?=
+ =?us-ascii?Q?8jU8oC/dfDvP19wgqMF5Mcb7iqEZA7jRRF1b02Q1UUJY+p6QgG/U6Qc7EpUC?=
+ =?us-ascii?Q?GcA7t6scOyapDF24szvwCxBHus0pA+sOjUOKkxn96hczxHGMS2TA3f1Ofe79?=
+ =?us-ascii?Q?F6CoVtLKGdaxaTJned9ybaJNxxlv2icvWvAGjt0wVamqpsbHXmuhhedCaDeP?=
+ =?us-ascii?Q?19oVHlDv/qEXQywnZHjlUwYSfJvTu8TcE/lqoDdaOWRVL+Wg12gpF+X34/Hz?=
+ =?us-ascii?Q?QJaz2JuQ5PlmwpCUi00oga7Sltw5B+NLJLfbWi6CUF4UJ65YsLStjm8U+4iY?=
+ =?us-ascii?Q?lTWeNKRxxBsA0gQ5gT7IoQdOlUqWBGgAhYxm2iAkDNAuhK3PHuNcr1qGibq1?=
+ =?us-ascii?Q?l8UGVMKJB8i2XVDTn6lY6dP2J01YIBNCqgAbyEImDbF6QqzZBuZ/sKMvFPVc?=
+ =?us-ascii?Q?GXnJiiSbecffplDrF2aTTpfkPK78AMww7sL/DKKh9jp773af5Hoxh3+tQIgz?=
+ =?us-ascii?Q?eM7cev0H+wIj6SGdspZCrSY=3D?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: dbe92b1b-6552-41c5-3817-08dbc325adf5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49aa7eda-d4bc-4d6b-a6df-08dbc325ae67
 X-MS-Exchange-CrossTenant-AuthSource: HE1PR0801MB1931.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 08:58:00.4297 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 08:58:01.1607 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oGOs5t+f0LiOUmZcZS8VSE40Zsd9uZUYipZnDAUW5dwtHFf5OBJ5FHu7oi9xzruG8WymyGWqmtPDwIuSYqKjEjARlfznJDkotqgoe2wLysQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8273
-Received-SPF: pass client-ip=2a01:111:f400:fe16::70d;
+X-MS-Exchange-CrossTenant-UserPrincipalName: YxYhmidQepsl0eiC2xXZZwUs2YHJzIKuECSAESg3ArC05+cXqAchA4sak+Ss/acssE7tkaUaRMsVF2kbs7ctnWWZfzubmlSxE36FSvRHqvE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8657
+Received-SPF: pass client-ip=2a01:111:f400:fe1f::711;
  envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR02-VI1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -12
-X-Spam_score: -1.3
-X-Spam_bar: -
-X-Spam_report: (-1.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FORGED_SPF_HELO=0.799,
- SPF_HELO_PASS=-0.001, T_SPF_TEMPERROR=0.01 autolearn=no autolearn_force=no
+ helo=EUR01-VE1-obe.outbound.protection.outlook.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -135,166 +134,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since we have used bitmap, leak check is useless. Transform
-parallels_truncate_unused_clusters() to parallels_check_unused_clusters()
-helper and use it in leak check.
+Use a different bitmap name for parallels images because their has own ID
+format, and can't contain an arbitrary string.
+
+Replace image reopen by shutdown/launch VM because parallels images doesn't
+support reopen.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- block/parallels.c | 112 ++++++++++++++++++++++++++--------------------
- 1 file changed, 63 insertions(+), 49 deletions(-)
+ tests/qemu-iotests/165 | 42 ++++++++++++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 16 deletions(-)
 
-diff --git a/block/parallels.c b/block/parallels.c
-index 80a7171b84..053ec0f8a1 100644
---- a/block/parallels.c
-+++ b/block/parallels.c
-@@ -764,56 +764,82 @@ parallels_check_outside_image(BlockDriverState *bs, BdrvCheckResult *res,
-     return 0;
- }
+diff --git a/tests/qemu-iotests/165 b/tests/qemu-iotests/165
+index e3ef28e2ee..3181cccb89 100755
+--- a/tests/qemu-iotests/165
++++ b/tests/qemu-iotests/165
+@@ -38,6 +38,10 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
  
-+static int64_t parallels_check_unused_clusters(BlockDriverState *bs,
-+                                               bool truncate)
-+{
-+    BDRVParallelsState *s = bs->opaque;
-+    int64_t leak, file_size, end_off = 0;
-+    int ret;
-+
-+    file_size = bdrv_getlength(bs->file->bs);
-+    if (file_size < 0) {
-+        return file_size;
-+    }
-+
-+    if (s->used_bmap_size > 0) {
-+        end_off = find_last_bit(s->used_bmap, s->used_bmap_size);
-+        if (end_off == s->used_bmap_size) {
-+            return 0;
-+        }
-+        end_off = (end_off + 1) * s->cluster_size;
-+    }
-+
-+    end_off += s->data_start * BDRV_SECTOR_SIZE;
-+    leak = file_size - end_off;
-+    if (leak < 0) {
-+        return -EINVAL;
-+    }
-+    if (!truncate || leak == 0) {
-+        return leak;
-+    }
-+
-+    ret = bdrv_truncate(bs->file, end_off, true, PREALLOC_MODE_OFF, 0, NULL);
-+    if (ret) {
-+        return ret;
-+    }
-+
-+    parallels_free_used_bitmap(bs);
-+    ret = parallels_fill_used_bitmap(bs);
-+    if (ret < 0) {
-+        return ret;
-+    }
-+
-+    return leak;
-+}
-+
- static int coroutine_fn GRAPH_RDLOCK
- parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
-                      BdrvCheckMode fix, bool explicit)
- {
-     BDRVParallelsState *s = bs->opaque;
--    int64_t size, count;
--    int ret;
-+    int64_t leak, count, size;
-+
-+    leak = parallels_check_unused_clusters(bs, fix & BDRV_FIX_LEAKS);
-+    if (leak < 0) {
-+        res->check_errors++;
-+        return leak;
-+    }
-+    if (leak == 0) {
-+        return 0;
-+    }
+     def setUp(self):
+         qemu_img('create', '-f', iotests.imgfmt, disk, str(disk_size))
++        if iotests.imgfmt == 'parallels':
++            self.bitmap_name = '00000000-0000-0000-0000-000000000000'
++        else:
++            self.bitmap_name = 'bitmap0'
  
-     size = bdrv_co_getlength(bs->file->bs);
-     if (size < 0) {
--        res->check_errors++;
-         return size;
-     }
--    if (size <= res->image_end_offset) {
-+    res->image_end_offset = size;
-+
-+    if (!explicit) {
-         return 0;
-     }
+     def tearDown(self):
+         os.remove(disk)
+@@ -50,12 +54,12 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
  
--    count = DIV_ROUND_UP(size - res->image_end_offset, s->cluster_size);
--    if (explicit) {
--        fprintf(stderr,
--                "%s space leaked at the end of the image %" PRId64 "\n",
--                fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR",
--                size - res->image_end_offset);
--        res->leaks += count;
--    }
-+    count = DIV_ROUND_UP(leak, s->cluster_size);
-+    fprintf(stderr,
-+            "%s space leaked at the end of the image %" PRId64 "\n",
-+            fix & BDRV_FIX_LEAKS ? "Repairing" : "ERROR", leak);
-+    res->leaks += count;
-     if (fix & BDRV_FIX_LEAKS) {
--        Error *local_err = NULL;
--
--        /*
--         * In order to really repair the image, we must shrink it.
--         * That means we have to pass exact=true.
--         */
--        ret = bdrv_co_truncate(bs->file, res->image_end_offset, true,
--                               PREALLOC_MODE_OFF, 0, &local_err);
--        if (ret < 0) {
--            error_report_err(local_err);
--            res->check_errors++;
--            return ret;
--        }
--
--        parallels_free_used_bitmap(bs);
--        ret = parallels_fill_used_bitmap(bs);
--        if (ret == -ENOMEM) {
--            res->check_errors++;
--            return ret;
--        }
--
--        if (explicit) {
--            res->leaks_fixed += count;
--        }
-+        res->leaks_fixed += count;
-     }
+     def getSha256(self):
+         result = self.vm.qmp('x-debug-block-dirty-bitmap-sha256',
+-                             node='drive0', name='bitmap0')
++                             node='drive0', name=self.bitmap_name)
+         return result['return']['sha256']
  
-     return 0;
-@@ -1446,18 +1472,6 @@ fail:
-     return ret;
- }
+     def checkBitmap(self, sha256):
+         result = self.vm.qmp('x-debug-block-dirty-bitmap-sha256',
+-                             node='drive0', name='bitmap0')
++                             node='drive0', name=self.bitmap_name)
+         self.assert_qmp(result, 'return/sha256', sha256);
  
--static int parallels_truncate_unused_clusters(BlockDriverState *bs)
--{
--    BDRVParallelsState *s = bs->opaque;
--    uint64_t end_off = 0;
--    if (s->used_bmap_size > 0) {
--        end_off = find_last_bit(s->used_bmap, s->used_bmap_size);
--        end_off = (end_off + 1) * s->cluster_size;
--    }
--    end_off += s->data_start * BDRV_SECTOR_SIZE;
--    return bdrv_truncate(bs->file, end_off, true, PREALLOC_MODE_OFF, 0, NULL);
--}
--
- static int parallels_inactivate(BlockDriverState *bs)
- {
-     BDRVParallelsState *s = bs->opaque;
-@@ -1475,7 +1489,7 @@ static int parallels_inactivate(BlockDriverState *bs)
-     parallels_update_header(bs);
+     def writeRegions(self, regions):
+@@ -65,7 +69,7 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
  
-     /* errors are ignored, so we might as well pass exact=true */
--    ret = parallels_truncate_unused_clusters(bs);
-+    ret = parallels_check_unused_clusters(bs, true);
-     if (ret < 0) {
-         error_report("Failed to truncate image: %s", strerror(-ret));
-     }
+     def qmpAddBitmap(self):
+         self.vm.qmp('block-dirty-bitmap-add', node='drive0',
+-                    name='bitmap0', persistent=True)
++                    name=self.bitmap_name, persistent=True)
+ 
+     def test_persistent(self):
+         self.vm = self.mkVm()
+@@ -117,7 +121,7 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
+         assert sha256_1 != sha256_2 # Otherwise, it's not very interesting.
+ 
+         result = self.vm.qmp('block-dirty-bitmap-clear', node='drive0',
+-                             name='bitmap0')
++                             name=self.bitmap_name)
+         self.assert_qmp(result, 'return', {})
+ 
+         # Start with regions1
+@@ -136,17 +140,23 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
+         self.writeRegions(regions2)
+         assert sha256_1 == self.getSha256()
+ 
+-        # Reopen to RW
+-        result = self.vm.qmp('blockdev-reopen', options=[{
+-            'node-name': 'node0',
+-            'driver': iotests.imgfmt,
+-            'file': {
+-                'driver': 'file',
+-                'filename': disk
+-            },
+-            'read-only': False
+-        }])
+-        self.assert_qmp(result, 'return', {})
++        if iotests.imgfmt == 'parallels':
++            # parallels doesn't support reopen
++            self.vm.shutdown()
++            self.vm = self.mkVm()
++            self.vm.launch()
++        else:
++            # Reopen to RW
++            result = self.vm.qmp('blockdev-reopen', options=[{
++                'node-name': 'node0',
++                'driver': iotests.imgfmt,
++                'file': {
++                    'driver': 'file',
++                    'filename': disk
++                },
++                'read-only': False
++            }])
++            self.assert_qmp(result, 'return', {})
+ 
+         # Check that bitmap is reopened to RW and we can write to it.
+         self.writeRegions(regions2)
+@@ -156,6 +166,6 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
+ 
+ 
+ if __name__ == '__main__':
+-    iotests.main(supported_fmts=['qcow2'],
++    iotests.main(supported_fmts=['qcow2', 'parallels'],
+                  supported_protocols=['file'],
+                  unsupported_imgopts=['compat'])
 -- 
 2.34.1
 
