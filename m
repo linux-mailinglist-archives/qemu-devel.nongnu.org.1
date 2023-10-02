@@ -2,41 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334CC7B51DB
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 13:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B21F27B51FE
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:00:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnHXC-00030b-Fz; Mon, 02 Oct 2023 07:56:22 -0400
+	id 1qnHai-0005BQ-OE; Mon, 02 Oct 2023 08:00:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnHX4-0002zs-Ma; Mon, 02 Oct 2023 07:56:16 -0400
+ id 1qnHag-00054F-6M; Mon, 02 Oct 2023 07:59:58 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnHX2-0002Y6-U7; Mon, 02 Oct 2023 07:56:14 -0400
+ id 1qnHad-0002uW-OD; Mon, 02 Oct 2023 07:59:57 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 780F926BC9;
- Mon,  2 Oct 2023 14:56:50 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id A1E9F26BD0;
+ Mon,  2 Oct 2023 15:00:34 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id A0DD72C279;
- Mon,  2 Oct 2023 14:56:07 +0300 (MSK)
-Message-ID: <9e380190-4147-fc73-3205-112cb854f25a@tls.msk.ru>
-Date: Mon, 2 Oct 2023 14:56:07 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id C718D2C27F;
+ Mon,  2 Oct 2023 14:59:51 +0300 (MSK)
+Message-ID: <18a3d10f-615f-71ba-b827-a0d4cf644b60@tls.msk.ru>
+Date: Mon, 2 Oct 2023 14:59:51 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH] Fix compilation when UFFDIO_REGISTER is not set.
+Subject: Re: [PATCH] MAINTAINERS: Add g364fb and ds1225y to the Jazz section
 Content-Language: en-US
-To: Pierre Labatut <plabatut@google.com>, qemu-trivial@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
- "open list:All patches CC here" <qemu-devel@nongnu.org>
-References: <20230928125700.1504442-1-plabatut@google.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Herv=c3=a9_Poussineau?= <hpoussin@reactos.org>,
+ Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+Cc: qemu-trivial@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20230929140938.396565-1-thuth@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230928125700.1504442-1-plabatut@google.com>
+In-Reply-To: <20230929140938.396565-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -91
@@ -60,34 +62,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-28.09.2023 15:56, Pierre Labatut wrote:
-> Signed-off-by: Pierre Labatut <plabatut@google.com>
-> ---
->   subprojects/libvhost-user/libvhost-user.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+29.09.2023 17:09, Thomas Huth:
+> These devices are only used by the Jazz machine, so they
+> should be listed in the corresponding section in MAINTAINERS.
 
-I'm not sure how subprojects are handled here.  Should we commit things
-to a subproject directly? This one does not seem to be wrapped at least,
-and has been in contrib/ before moving to subprojects/, so seems to be
-ok.
+The devices look like git commit IDs :) (at least the first one)
 
-> diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-> index 0469a50101..d4a2eab883 100644
-> --- a/subprojects/libvhost-user/libvhost-user.c
-> +++ b/subprojects/libvhost-user/libvhost-user.c
-> @@ -629,9 +629,9 @@ static bool
->   generate_faults(VuDev *dev) {
->       unsigned int i;
->       for (i = 0; i < dev->nregions; i++) {
-> +#ifdef UFFDIO_REGISTER
->           VuDevRegion *dev_region = &dev->regions[i];
->           int ret;
-> -#ifdef UFFDIO_REGISTER
->           struct uffdio_register reg_struct;
->   
->           /*
-
-Applied to my trivial-patches tree, thank you!
+Applied to my trivial-patches tree, thanks!
 
 /mjt
+
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   MAINTAINERS | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 5b4ab7d142..874234cb7b 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1295,8 +1295,10 @@ M: Hervé Poussineau <hpoussin@reactos.org>
+>   R: Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>
+>   S: Maintained
+>   F: hw/mips/jazz.c
+> +F: hw/display/g364fb.c
+>   F: hw/display/jazz_led.c
+>   F: hw/dma/rc4030.c
+> +F: hw/nvram/ds1225y.c
+>   
+>   Malta
+>   M: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
