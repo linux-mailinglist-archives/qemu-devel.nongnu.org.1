@@ -2,28 +2,28 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AF07B570D
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 18:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4048C7B5713
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 18:07:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnLMK-0005uT-8h; Mon, 02 Oct 2023 12:01:24 -0400
+	id 1qnLRJ-0001cY-De; Mon, 02 Oct 2023 12:06:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qnLLv-0005ot-Th; Mon, 02 Oct 2023 12:01:01 -0400
+ id 1qnLRF-0001b6-FH; Mon, 02 Oct 2023 12:06:29 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qnLLs-0007dv-33; Mon, 02 Oct 2023 12:00:58 -0400
+ id 1qnLRD-0008ST-8j; Mon, 02 Oct 2023 12:06:29 -0400
 Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rzlxy5Bc4z6K66L;
- Mon,  2 Oct 2023 23:59:18 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Rzm5w0Jg7z6K7G0;
+ Tue,  3 Oct 2023 00:06:12 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 2 Oct
- 2023 17:00:51 +0100
-Date: Mon, 2 Oct 2023 17:00:50 +0100
+ 2023 17:06:18 +0100
+Date: Mon, 2 Oct 2023 17:06:17 +0100
 To: Salil Mehta <salil.mehta@huawei.com>
 CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
  <jean-philippe@linaro.org>, <lpieralisi@kernel.org>,
@@ -39,11 +39,11 @@ CC: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>, <maz@kernel.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: Re: [PATCH V2 03/10] hw/acpi: Add ACPI CPU hotplug init stub
-Message-ID: <20231002170050.00004fd8@Huawei.com>
-In-Reply-To: <20230930001933.2660-4-salil.mehta@huawei.com>
-References: <20230930001933.2660-1-salil.mehta@huawei.com>
- <20230930001933.2660-4-salil.mehta@huawei.com>
+Subject: Re: [PATCH 4/9] hw/acpi: Init GED framework with cpu hotplug events
+Message-ID: <20231002170617.000044f2@Huawei.com>
+In-Reply-To: <20230929124304.13672-5-salil.mehta@huawei.com>
+References: <20230929124304.13672-1-salil.mehta@huawei.com>
+ <20230929124304.13672-5-salil.mehta@huawei.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
@@ -78,43 +78,83 @@ From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 30 Sep 2023 01:19:26 +0100
+On Fri, 29 Sep 2023 13:42:59 +0100
 Salil Mehta <salil.mehta@huawei.com> wrote:
 
-> ACPI CPU hotplug related initialization should only happen if ACPI_CPU_HOTPLUG
-> support has been enabled for particular architecture. Add cpu_hotplug_hw_init()
-> stub to avoid compilation break.
+> ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI events
+> when OSPM/guest receives an interrupt listed in the _CRS object of GED. OSPM
+> then maps or demultiplexes the event by evaluating _EVT method.
 > 
+> This change adds the support of cpu hotplug event initialization in the
+> existing GED framework.
+> 
+> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Seems reasonable.  For the other similar cases a stub isn't needed
-because GED is built when CONFIG_ACPI_HW_REDUCED=y and
-that select ACPI_MEMORY_HOTPLUG and ACPI_NVDIMM
-
-You could do the same for the CPU hotplug case and instantiate
-a potentially useless memory region etc.  This seems more sensible to me
+FWIW this looks good to me.
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
 > ---
->  hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  hw/acpi/generic_event_device.c         | 8 ++++++++
+>  include/hw/acpi/generic_event_device.h | 5 +++++
+>  2 files changed, 13 insertions(+)
 > 
-> diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
-> index 3fc4b14c26..c6c61bb9cd 100644
-> --- a/hw/acpi/acpi-cpu-hotplug-stub.c
-> +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
-> @@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
->      return;
+> diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+> index a3d31631fe..d2fa1d0e4a 100644
+> --- a/hw/acpi/generic_event_device.c
+> +++ b/hw/acpi/generic_event_device.c
+> @@ -25,6 +25,7 @@ static const uint32_t ged_supported_events[] = {
+>      ACPI_GED_MEM_HOTPLUG_EVT,
+>      ACPI_GED_PWR_DOWN_EVT,
+>      ACPI_GED_NVDIMM_HOTPLUG_EVT,
+> +    ACPI_GED_CPU_HOTPLUG_EVT,
+>  };
+>  
+>  /*
+> @@ -400,6 +401,13 @@ static void acpi_ged_initfn(Object *obj)
+>      memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
+>                            TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
+>      sysbus_init_mmio(sbd, &ged_st->regs);
+> +
+> +    s->cpuhp.device = OBJECT(s);
+> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp container",
+> +                       ACPI_CPU_HOTPLUG_REG_LEN);
+> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
+> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
+> +                        &s->cpuhp_state, 0);
 >  }
 >  
-> +void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-> +                         CPUHotplugState *state, hwaddr base_addr)
-> +{
-> +    return;
-> +}
-> +
->  void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
->  {
->      return;
+>  static void acpi_ged_class_init(ObjectClass *class, void *data)
+> diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+> index d831bbd889..d0a5a43abf 100644
+> --- a/include/hw/acpi/generic_event_device.h
+> +++ b/include/hw/acpi/generic_event_device.h
+> @@ -60,6 +60,7 @@
+>  #define HW_ACPI_GENERIC_EVENT_DEVICE_H
+>  
+>  #include "hw/sysbus.h"
+> +#include "hw/acpi/cpu_hotplug.h"
+>  #include "hw/acpi/memory_hotplug.h"
+>  #include "hw/acpi/ghes.h"
+>  #include "qom/object.h"
+> @@ -97,6 +98,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>  #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
+>  #define ACPI_GED_PWR_DOWN_EVT      0x2
+>  #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+> +#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
+>  
+>  typedef struct GEDState {
+>      MemoryRegion evt;
+> @@ -108,6 +110,9 @@ struct AcpiGedState {
+>      SysBusDevice parent_obj;
+>      MemHotplugState memhp_state;
+>      MemoryRegion container_memhp;
+> +    CPUHotplugState cpuhp_state;
+> +    MemoryRegion container_cpuhp;
+> +    AcpiCpuHotplug cpuhp;
+>      GEDState ged_state;
+>      uint32_t ged_event_bitmap;
+>      qemu_irq irq;
 
 
