@@ -2,85 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70297B5367
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9E87B5396
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 15:01:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnIL9-0004pY-1c; Mon, 02 Oct 2023 08:47:59 -0400
+	id 1qnIXL-0001vB-O4; Mon, 02 Oct 2023 09:00:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIL6-0004p1-NK
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:47:56 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnIL4-0004TH-3O
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 08:47:56 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4065f29e933so29944335e9.1
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 05:47:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696250870; x=1696855670; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=6URmOwNyAeSp6hL1YltpNKdAqLmn8ZBThKIYRhMNJeE=;
- b=QvUH6TixftADaiZwjr4pCXfFRyPoRX6cRuYMhWKaFSDWZQmLkGAqWOnW6Ro7emoF43
- 99WURoF8Gy8aka1N10wNlFEPDvQYGv/DjTNBY7tsEksFSu+t3aNsO8JFj8LJczuMbwYD
- IE52oveg66C2Vl89umYa6Oxdt8lbbFps6z/nbpCRt4goYwbW01xfXiVt4Pm4I1wlbNEj
- LsvllG8LyIux/HyYV4Nz6Inzab5D67lm+pGVxSKyxlv4HNlXsXhvCmR8DALsFezF6OLs
- v6UCN53F8tlBnibpZ0GA/qKQoUSO7U3M5lIvWo6/7r2Pw3XEKt53zSqpYmN7cGPVu6f3
- V1NQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696250870; x=1696855670;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6URmOwNyAeSp6hL1YltpNKdAqLmn8ZBThKIYRhMNJeE=;
- b=h0VkRMdrlYoBpRIRubeW6T61I/4DZhH8IjDeE3wukMmnA30DICTl9EtJlrFlupY1iH
- tuIVOewFU8hmWKKq6SvNP/4WROJIqp75pNdfUBb7T91ION+LfjxSgd8XSBvXr3U0Lygy
- gO1/TetFt770mh1rj7wfiRg0u5xYOFLRUL36RKdQOdP9gtmXLa85v78e2c7sOICxe0zj
- zVV7Dr5N+/PBXM/C9HB/dSz3DRbF8uXzv6YXFBdEyU8t1TUCcziLSsqPl7RfprGMn9O0
- HGW1YC+fmNwqqUaYn8Fu3AXIO9Z0uDUH5Xhuw/w4ji1QUf3e2sCvcmwe++rIT1Ti9sIb
- IwKg==
-X-Gm-Message-State: AOJu0YyuqnmSG9gRUY2jNm/k7QVnZxXKaxIUzhYMKNk0W54Z7DlpqWNp
- SZOzxPG6eiTvYV3OOiuu9v9cAw==
-X-Google-Smtp-Source: AGHT+IElD14MerT7hOyB2AAexGUD+ZkxyE+hJ/BNt/R1uVk2FKwRdscHA/6FrVIMjJq+Hqj3WkO1YQ==
-X-Received: by 2002:a5d:40c8:0:b0:323:264d:9cef with SMTP id
- b8-20020a5d40c8000000b00323264d9cefmr9018069wrq.12.1696250870315; 
- Mon, 02 Oct 2023 05:47:50 -0700 (PDT)
-Received: from [192.168.69.115] (sto93-h06-176-172-7-203.dsl.sta.abo.bbox.fr.
- [176.172.7.203]) by smtp.gmail.com with ESMTPSA id
- n16-20020a5d51d0000000b0031f300a4c26sm6584195wrv.93.2023.10.02.05.47.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 05:47:49 -0700 (PDT)
-Message-ID: <5148f40c-acec-b414-011f-e6cee970c1df@linaro.org>
-Date: Mon, 2 Oct 2023 14:47:48 +0200
+ (Exim 4.90_1) (envelope-from <foo00@h08.hostsharing.net>)
+ id 1qnIXI-0001r0-B2; Mon, 02 Oct 2023 09:00:32 -0400
+Received: from bmailout2.hostsharing.net ([83.223.78.240])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <foo00@h08.hostsharing.net>)
+ id 1qnIX2-0007Xn-Sv; Mon, 02 Oct 2023 09:00:31 -0400
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+ client-signature RSA-PSS (4096 bits) client-digest SHA256)
+ (Client CN "*.hostsharing.net",
+ Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+ by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9B6202800B3D2;
+ Mon,  2 Oct 2023 14:50:35 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+ id 8530323B871; Mon,  2 Oct 2023 14:50:35 +0200 (CEST)
+Date: Mon, 2 Oct 2023 14:50:35 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: "Yao, Jiewen" <jiewen.yao@intel.com>
+Cc: Alistair Francis <alistair23@gmail.com>,
+ "wilfred.mallawa@wdc.com" <wilfred.mallawa@wdc.com>,
+ "Jonathan.Cameron@Huawei.com" <Jonathan.Cameron@Huawei.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "kbusch@kernel.org" <kbusch@kernel.org>,
+ "its@irrelevant.dk" <its@irrelevant.dk>, "mst@redhat.com" <mst@redhat.com>,
+ "marcel.apfelbaum@gmail.com" <marcel.apfelbaum@gmail.com>,
+ "hchkuo@avery-design.com.tw" <hchkuo@avery-design.com.tw>,
+ "Browy, Chris" <cbrowy@avery-design.com>,
+ "qemu-block@nongnu.org" <qemu-block@nongnu.org>,
+ Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH 3/3] hw/nvme: Add SPDM over DOE support
+Message-ID: <20231002125035.GA21884@wunner.de>
+References: <20230915112723.2033330-1-alistair.francis@wdc.com>
+ <20230915112723.2033330-3-alistair.francis@wdc.com>
+ <20231002084753.GA23546@wunner.de>
+ <MW4PR11MB58723743D7A01A9E6876A4F78CC5A@MW4PR11MB5872.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 8/8] MAINTAINERS: Update PPC TCG target with tests
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
- qemu-devel@nongnu.org
-Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>
-References: <20231002122326.365368-1-clg@kaod.org>
- <20231002122326.365368-9-clg@kaod.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231002122326.365368-9-clg@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.321,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MW4PR11MB58723743D7A01A9E6876A4F78CC5A@MW4PR11MB5872.namprd11.prod.outlook.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+Received-SPF: none client-ip=83.223.78.240;
+ envelope-from=foo00@h08.hostsharing.net; helo=bmailout2.hostsharing.net
+X-Spam_score_int: -15
+X-Spam_score: -1.6
+X-Spam_bar: -
+X-Spam_report: (-1.6 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,13 +74,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 2/10/23 14:23, Cédric Le Goater wrote:
-> Cc: Richard Henderson <richard.henderson@linaro.org>
-> Signed-off-by: Cédric Le Goater <clg@kaod.org>
-> ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+On Mon, Oct 02, 2023 at 11:36:25AM +0000, Yao, Jiewen wrote:
+> Comment on subjectAltName.
+> 
+> PCI-SIG realized that it may cause problem for certain device
+> and decided to remove such requirement in future ECN.
+> I don't think that is absolutely needed.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+We have to follow what's in the spec.  We can't just leave out
+certain elements because they might possibly maybe be removed
+in the future.
 
+PCIe r6.1 does require the Subject Alternative Name and that's
+the latest version, so we follow that.
+
+The ECN that you're referring to only exists as a draft in the
+PCISIG's Review Zone Archive.
+
+My understanding is that the Subject Alternative Name's purpose
+is to eliminate certain threats in the CMA threat model:
+The Subject Alternative Name is basically a signed version of the
+device's identity in config space.  Without it, a different device
+might misappropriate a device's certificate + private key.
+
+If the Subject Alternative Name requirement is dropped, I would
+like to know how that threat is prevented instead?
+
+I don't quite understand what you mean by "may cause problem for
+certain device".  I've asked the editor of the PCIe Base Spec why
+they're considering removing the requirement and the gist of the
+answer was -- I'm paraphrasing here -- that vendors thought the
+requirement is generally quite narrow and perceived as a straight-jacket
+and that at this point, more flexibility is desired as to the
+identification scheme.  There was no mention at all of "problems
+for certain devices".
+
+Thanks,
+
+Lukas
 
