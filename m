@@ -2,41 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368C17B5215
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:04:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F1967B521D
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:06:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnHeY-0000zN-EH; Mon, 02 Oct 2023 08:03:58 -0400
+	id 1qnHgT-00028V-7n; Mon, 02 Oct 2023 08:05:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnHeV-0000z4-3c; Mon, 02 Oct 2023 08:03:55 -0400
+ id 1qnHgO-00027u-N6; Mon, 02 Oct 2023 08:05:52 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnHeS-0003wY-WA; Mon, 02 Oct 2023 08:03:54 -0400
+ id 1qnHgN-0004eH-9v; Mon, 02 Oct 2023 08:05:52 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 17DA426BE2;
- Mon,  2 Oct 2023 15:04:32 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id AFB4426BE6;
+ Mon,  2 Oct 2023 15:06:31 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 435322C288;
- Mon,  2 Oct 2023 15:03:49 +0300 (MSK)
-Message-ID: <fdd73593-e6c6-9712-3223-73dfebd6a469@tls.msk.ru>
-Date: Mon, 2 Oct 2023 15:03:49 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id D151E2C289;
+ Mon,  2 Oct 2023 15:05:48 +0300 (MSK)
+Message-ID: <756eb847-a510-8b64-d8b4-e5a2f0952fb3@tls.msk.ru>
+Date: Mon, 2 Oct 2023 15:05:48 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add the CI-related doc files to the CI
- section
+Subject: Re: [PATCH] MAINTAINERS: add standard-headers to Hosts/LINUX
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: qemu-trivial@nongnu.org, Markus Armbruster <armbru@redhat.com>
-References: <20230929131636.394715-1-thuth@redhat.com>
+To: Cornelia Huck <cohuck@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, QEMU Trivial <qemu-trivial@nongnu.org>
+References: <20230929143012.77128-1-cohuck@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20230929131636.394715-1-thuth@redhat.com>
+In-Reply-To: <20230929143012.77128-1-cohuck@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
@@ -62,13 +60,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-29.09.2023 16:16, Thomas Huth:
-> The docs/devel/ci* were not covered yet, add them to MAINTAINERS
-> so that the right people are put on CC: for related patches.
+29.09.2023 17:30, Cornelia Huck:
+> The files in there are updated via update-linux-headers.sh.
 > 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> Signed-off-by: Cornelia Huck <cohuck@redhat.com>
 
 Applied to my trivial-patches tree, thanks!
 
 /mjt
+
 
