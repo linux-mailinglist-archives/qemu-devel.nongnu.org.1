@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CC17B56CF
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF427B56CE
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:41:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnL2H-0004lg-MF; Mon, 02 Oct 2023 11:40:41 -0400
+	id 1qnL2F-0004a1-5j; Mon, 02 Oct 2023 11:40:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qnL1p-0004P4-Cv; Mon, 02 Oct 2023 11:40:24 -0400
-Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
+ id 1qnL1u-0004PL-Mk; Mon, 02 Oct 2023 11:40:29 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qnL1Y-0003Hd-2f; Mon, 02 Oct 2023 11:40:07 -0400
-Received: by mail-pg1-x530.google.com with SMTP id
- 41be03b00d2f7-5859a7d6556so2675186a12.0; 
- Mon, 02 Oct 2023 08:39:55 -0700 (PDT)
+ id 1qnL1p-0003Wh-Gk; Mon, 02 Oct 2023 11:40:15 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c61bde0b4bso106595465ad.3; 
+ Mon, 02 Oct 2023 08:40:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696261194; x=1696865994; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696261211; x=1696866011; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=E0l2fVSW5mSeFFbhW0BC48QKNaLOYkj3zLBCiAU+Okg=;
- b=m7aCbaSRwWAUTDVgDVBk7me/7jNaXj5zOAuRc4hBR5R7Ee2TcML2jJdNYdU2NxNBqW
- Rx0Cc/YYxVUA3/zLEpJQd2l+g7pqRdqKVtgCTeAx4ceOPGzQ14R+ngEevdPD4ihLAl67
- Lu/gTSJ7NO+sCcJZD/0mZuWUmp40g+DNzoZX8+JnRu5Pl7n6uOFrcFzFUZx+QECE8urN
- UhKFoDYsL/lYiR/QnCDivZ0wWbORB/xcKhr4axKJ2ZBio5uC+dYbC95E9MoTUKX1E26q
- 9Zeem+W3FeSZHyJC4CtnP1o+ubo6Lk4i3t4VdUTlokpRzHClt3XooP3kJsQrYRY6P3GP
- f+rQ==
+ bh=rjvmDqFv4orrfC95p0yacDFvrrxG21haWHxoPMQSPZY=;
+ b=ewt7S72uXBsHr42S0xUbMYkjdoOP1nzfO+WR52pvLKWZF0yLDlTv9akkBXTdHU/392
+ 6L0DD1ViTKSw+9vB2Ixz8Zu3gaqSy5rmpsM4XbvDLja8sS1V/IFWwe61BAxLCa/NRjlI
+ 4QUo2TM1OYihC4S7MMEuuxxg7fdXAemXfw7jxY2G+5CwV0PNM4/eUZl2se7CJ+Nw3UNK
+ UT/llfkvssK+jXcoc14kJ6r+CUQcu726k5Iyu6LiKGtSzQFw102OGxq+fZBXLnIbEKbz
+ xI3adtJ68TlwutuaLQmbvLxpuzfGP0nW+J4h02D75Bh1YqyH/d4exWzyRDJzJDXvHdvH
+ 1oYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696261194; x=1696865994;
+ d=1e100.net; s=20230601; t=1696261211; x=1696866011;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=E0l2fVSW5mSeFFbhW0BC48QKNaLOYkj3zLBCiAU+Okg=;
- b=LLSk0ECo076FEoPTMQZyWIqTTWwUUUDJ9T+ZvOHNBo1sgl+yElndfeeipO2FkXfkjo
- cCOVcBrRm+jr8yLzkkhXmUqkFSaivRzi7EB4H+3wO4So4HuL9cVNMrx154XzDNDVQC0x
- DbCrHqKKF2RXLPWv/jZplJb7SB194jTg0OWv6YaRDoM3VuUxNBsJmXePBr/ibZIx/tDY
- A/08MdYiiolbEZYW0sAv5AlhyBowYIyHSc+ve1+kVlPm79MKXRB40YlnRjIyfxlGaVi8
- VQe/gokRb+5FY4zQ0IjWeFJJjqSmbbMdk/QWDck+kWECjcOCFa46Pe0KnoCw0Ac3UY8i
- Ag8A==
-X-Gm-Message-State: AOJu0YxhVccktlZM+MuoCQKZB9yh0JmygEUzQcH0Dojr9eE+hRi7pQSI
- wO+6vzOzR5FRwu9/sSs5afDIk2n6bz4=
-X-Google-Smtp-Source: AGHT+IFaUJI6BTVfd/g3LlihGfwVnz7FLsbtrcEm5MDhxIPLcGHK/u5OWVKndJbGHgrx94rYShTJSg==
-X-Received: by 2002:a05:6a20:1045:b0:13c:ca8b:7e29 with SMTP id
- gt5-20020a056a20104500b0013cca8b7e29mr11695550pzc.12.1696261194250; 
- Mon, 02 Oct 2023 08:39:54 -0700 (PDT)
+ bh=rjvmDqFv4orrfC95p0yacDFvrrxG21haWHxoPMQSPZY=;
+ b=xTo7n4Q/iWDeP7bAmyS8IimG5Gjtg11GvYOs6JpYZsuwpyfX3lq3BWR9zAdE7YJucN
+ PUpwDT8wxf8UDs9ozkkBXF9DbB9zohQPRhd+3IOmmt4YT/BpnBk3vDLg7frubY/9UiPi
+ cvnZVOuYIAtmTqgnO4onX+XBnALPZH5pqqEkRZHUhG0Zwmi/iaTX/45wvHhh7KMETy/T
+ qW65J62w+p2zQy2l6PJPtUdqXzfXBJTjH2f59IxyQVD3maIFaMPn3UxN3dJM1CA2O5PZ
+ lbIjQLAftj5vGgfGKLxNseoUnIo4X6v12u6TelojEOQcIXH9gpksWRFGKnmfR0jzf0D9
+ nFVQ==
+X-Gm-Message-State: AOJu0YyoaD54VlncjqGODGjfb2O4tsqHIM6vEDWm0BCdes2SjThCcRvq
+ KW1Cr1L/s8PKKUVAjIFsUj6gea5VtyA=
+X-Google-Smtp-Source: AGHT+IGMP6S04rhEQVl4H8OhAsZAx/HHomTmh1vXA7REIDm99/02s7yZnkvAOkKTwT/3OLXiSoJiIQ==
+X-Received: by 2002:a17:902:7d92:b0:1c3:2532:ac71 with SMTP id
+ a18-20020a1709027d9200b001c32532ac71mr11987531plm.31.1696261210968; 
+ Mon, 02 Oct 2023 08:40:10 -0700 (PDT)
 Received: from [192.168.68.107] ([177.94.15.124])
  by smtp.gmail.com with ESMTPSA id
- x28-20020a63b21c000000b00564b313d526sm19596134pge.54.2023.10.02.08.39.52
+ y3-20020a170902ed4300b001bdd68b3f4bsm14009201plb.295.2023.10.02.08.40.08
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 08:39:53 -0700 (PDT)
-Message-ID: <edf14a6a-ccd1-e081-53dc-1aad8ec792be@gmail.com>
-Date: Mon, 2 Oct 2023 12:39:51 -0300
+ Mon, 02 Oct 2023 08:40:10 -0700 (PDT)
+Message-ID: <a46b7525-1110-bc25-0bf8-85a222fa7892@gmail.com>
+Date: Mon, 2 Oct 2023 12:40:07 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 5/8] MAINTAINERS: Adjust file list for PPC pseries machine
+Subject: Re: [PATCH 6/8] MAINTAINERS: Add fw_cfg.c to PPC mac99 machine
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 References: <20231002122326.365368-1-clg@kaod.org>
- <20231002122326.365368-6-clg@kaod.org>
+ <20231002122326.365368-7-clg@kaod.org>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20231002122326.365368-6-clg@kaod.org>
+In-Reply-To: <20231002122326.365368-7-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::530;
- envelope-from=danielhb413@gmail.com; helo=mail-pg1-x530.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=danielhb413@gmail.com; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -98,33 +99,29 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/2/23 09:23, Cédric Le Goater wrote:
-> The fdt.{c.h} files provide a helper routine used by the pseries and
-> pnv machines. Attached it to the list of the larger one: pseries.
+> The hw/ppc/fw_cfg.c file contains the implementation of
+> fw_cfg_arch_key_name(), used by the common nvram model. List it under
+> mac99 machine next to the mac_nvram model.
 > 
-> Protected Execution Facility (PEF) is the confidential guest support
-> for PPC pseries machines.
-> 
+> Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
 
 Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 
->   MAINTAINERS | 4 ++++
->   1 file changed, 4 insertions(+)
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
 > 
 > diff --git a/MAINTAINERS b/MAINTAINERS
-> index 23ce59995d59..b3ba402f7943 100644
+> index b3ba402f7943..1f72931ac2a4 100644
 > --- a/MAINTAINERS
 > +++ b/MAINTAINERS
-> @@ -1440,6 +1440,10 @@ F: hw/*/spapr*
->   F: include/hw/*/spapr*
->   F: hw/*/xics*
->   F: include/hw/*/xics*
-> +F: include/hw/ppc/fdt.h
-> +F: hw/ppc/fdt.c
-> +F: include/hw/ppc/pef.h
-> +F: hw/ppc/pef.c
->   F: pc-bios/slof.bin
->   F: docs/system/ppc/pseries.rst
->   F: docs/specs/ppc-spapr-*
+> @@ -1387,6 +1387,7 @@ F: hw/pci-bridge/dec.[hc]
+>   F: hw/misc/macio/
+>   F: hw/misc/mos6522.c
+>   F: hw/nvram/mac_nvram.c
+> +F: hw/ppc/fw_cfg.c
+>   F: hw/input/adb*
+>   F: include/hw/misc/macio/
+>   F: include/hw/misc/mos6522.h
 
