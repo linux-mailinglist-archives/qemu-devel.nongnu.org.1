@@ -2,81 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAB97B4BBC
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E207B4BE8
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:58:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnCoY-0005wc-33; Mon, 02 Oct 2023 02:53:58 -0400
+	id 1qnCsA-00076K-Sb; Mon, 02 Oct 2023 02:57:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCoT-0005wK-OA
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:53:53 -0400
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnCoN-0003x1-HH
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:53:53 -0400
-Received: by mail-lf1-x12f.google.com with SMTP id
- 2adb3069b0e04-504b84d59cbso6815838e87.3
- for <qemu-devel@nongnu.org>; Sun, 01 Oct 2023 23:53:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696229625; x=1696834425; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=xcBZsjDw1G+5EYCt0VIhVW0jWHgAELzxXzT9/I6GAQc=;
- b=yVqzNU/26kqBTT0Tvei1kUpZDGsOPwBHX/j4V+Ja9kQB4G/KVCXGd8hyuHWQ4EIeV6
- JYzMZBMmd0+/xZCvDVgGi8l2N3Kt/4UXOUQfmdiWXgPwA3rfnfD4MGOTmL4j81SzvqHh
- tgvdTxf9MC63MXk/vO+yKEiS2O/Hiha+KlBKGMPW82M2uayeLCGDoRWMeLUxpOSZwU0M
- CEL0U4d6rPQ4ODOsOGdcLIRKb/h3gTe2iCAwWI6r9YKHJYbZ0zE5+kpM1ekL8KWivVpd
- 0FfHUbA2RfHawFKprs2hkq818gyjXc/edCZfK5Ypa+HCC/KMs3wzLw1dqgSQ1QlqBQbS
- 25DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696229625; x=1696834425;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xcBZsjDw1G+5EYCt0VIhVW0jWHgAELzxXzT9/I6GAQc=;
- b=ZwHrt924um0o49diGrAFDs7A3GHoIyQEB9v67jAaMELQx7PEFVXW8TXVTmLndoHrZg
- +3AwpxlcmfGekIrflkgT+dwyt2qtQC0muaU/Hufd54F4MTZ0fY5DGBs9eeIQGvrYBm9f
- Zr1xZdNcIDb65CNgid2BU5xIVBZyv3EeH+NBtwqAc5vMfj5ZYN8zTS6kny+PD2FFPDYY
- 0762qhz1CGjky//EiB+cT9zpJ40js0phs0PKhhIRjRfgd7zMo6nm6O15hnYFNhnVFPxd
- s5elMSA0g6fTnK8vrHdQLmNIDmK8izKYlw2PSgl7kHrBhob2JIcsLWox+kwbnNAufpYB
- Sn5Q==
-X-Gm-Message-State: AOJu0Yy/8AMcY0/pFuS6oH0CX7V6gvIokDWP45a/j71c8tc9E8QACagY
- V0CjZ8JkTzrsXO0wUE6AWVfdmZoZy5lCNw0IGpw=
-X-Google-Smtp-Source: AGHT+IGcQJbTxYVmVhicm7cs0qvq2N/IbkOkLol9qGljgaKd0xYIJsr1LepbFyUK/2/41xbUrAtDRg==
-X-Received: by 2002:a05:6512:39cd:b0:503:95b:db02 with SMTP id
- k13-20020a05651239cd00b00503095bdb02mr10645615lfu.18.1696229625406; 
- Sun, 01 Oct 2023 23:53:45 -0700 (PDT)
-Received: from [192.168.69.115] (sto93-h06-176-172-7-203.dsl.sta.abo.bbox.fr.
- [176.172.7.203]) by smtp.gmail.com with ESMTPSA id
- v9-20020a5d4b09000000b0032008f99216sm27721320wrq.96.2023.10.01.23.53.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 01 Oct 2023 23:53:45 -0700 (PDT)
-Message-ID: <59858fd9-3c1e-32f8-1be9-e1e7d81ce46a@linaro.org>
-Date: Mon, 2 Oct 2023 08:53:43 +0200
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qnCs1-00075d-Sw
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:57:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qnCs0-0004jW-47
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:57:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696229850;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=znsz3Qj5/ihMqNEV2kVvde0XpgEnU+uhplJYhKSJRJ8=;
+ b=LeHjcHffH8oWCc89t+wAC5aGQAzl0+npNuOi+yUbXQJDO+bIf7iqEVHhGDpcyJjLCkbUgQ
+ 3UHjtjUxOKYHOILwRkR/zTExhgYc/LRCsM5zJeGiFrwxBz3G+SH6cQDPeHAknw4SHQzx53
+ G3J2X0t1aY6YNV3bl5F4hJQIXdc27ig=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-173-0DsVU36dOVeIGv7iFCqgQw-1; Mon, 02 Oct 2023 02:57:17 -0400
+X-MC-Unique: 0DsVU36dOVeIGv7iFCqgQw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0D00E3822541;
+ Mon,  2 Oct 2023 06:57:17 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.45.225.78])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 1658B14171B6;
+ Mon,  2 Oct 2023 06:57:14 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ philmd@linaro.org, marcandre.lureau@gmail.com, cohuck@redhat.com,
+ Albert Esteve <aesteve@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PATCH v9 0/4] Virtio shared dma-buf
+Date: Mon,  2 Oct 2023 08:57:02 +0200
+Message-ID: <20231002065706.94707-1-aesteve@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] target/arm/kvm64.c: Remove unused include
-Content-Language: en-US
-To: Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org
-References: <20230925110429.3917202-1-peter.maydell@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230925110429.3917202-1-peter.maydell@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::12f;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x12f.google.com
-X-Spam_score_int: -51
-X-Spam_score: -5.2
-X-Spam_bar: -----
-X-Spam_report: (-5.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.058,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,20 +78,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/9/23 13:04, Peter Maydell wrote:
-> The include of hw/arm/virt.h in kvm64.c is unnecessary and also a
-> layering violation since the generic KVM code shouldn't need to know
-> anything about board-specifics.  The include line is an accidental
-> leftover from commit 15613357ba53a4763, where we cleaned up the code
-> to not depend on virt board internals but forgot to also remove the
-> now-redundant include line.
-> 
-> Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-> ---
->   target/arm/kvm64.c | 1 -
->   1 file changed, 1 deletion(-)
+v1 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg00598.html
+v2 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04530.html
+v3 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg06126.html
+v4 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg05174.html
+v5 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg00255.html
+v6 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg00987.html
+v7 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg01190.html
+v8 link -> https://lists.gnu.org/archive/html/qemu-devel/2023-09/msg02284.html
+v8 -> v9:
+- Remove EOF whitespace in util/uuid.c
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+This patch covers the required steps to add support for virtio cross-device resource sharing[1],
+which support is already available in the kernel.
 
+The main usecase will be sharing dma buffers from virtio-gpu devices (as the exporter
+-see VIRTIO_GPU_CMD_RESOURCE_ASSIGN_UUID in [2]), to virtio-video (under discussion)
+devices (as the buffer-user or importer). Therefore, even though virtio specs talk about
+resources or objects[3], this patch adds the infrastructure with dma-bufs in mind.
+Note that virtio specs let the devices themselves define what a vitio object is.
+
+These are the main parts that are covered in the patch:
+
+- Add hash function to uuid module
+- Shared resources table, to hold all resources that can be shared in the host and their assigned UUID,
+  or pointers to the backend holding the resource
+- Internal shared table API for virtio devices to add, lookup and remove resources
+- Unit test to verify the API
+- New messages to the vhost-user protocol to allow backend to interact with the shared
+  table API through the control socket
+- New vhost-user feature bit to enable shared objects feature
+
+Applies cleanly to 36e9aab3c569d4c9ad780473596e18479838d1aa
+
+[1] - https://lwn.net/Articles/828988/
+[2] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-3730006
+[3] - https://docs.oasis-open.org/virtio/virtio/v1.2/csd01/virtio-v1.2-csd01.html#x1-10500011
+
+Albert Esteve (4):
+  util/uuid: add a hash function
+  hw/display: introduce virtio-dmabuf
+  vhost-user: add shared_object msg
+  libvhost-user: handle shared_object msg
+
+ MAINTAINERS                               |   7 +
+ docs/interop/vhost-user.rst               |  57 ++++++++
+ hw/display/meson.build                    |   1 +
+ hw/display/virtio-dmabuf.c                | 138 ++++++++++++++++++
+ hw/virtio/vhost-user.c                    | 168 ++++++++++++++++++++--
+ include/hw/virtio/vhost-backend.h         |   3 +
+ include/hw/virtio/virtio-dmabuf.h         | 100 +++++++++++++
+ include/qemu/uuid.h                       |   2 +
+ subprojects/libvhost-user/libvhost-user.c | 120 ++++++++++++++++
+ subprojects/libvhost-user/libvhost-user.h |  55 ++++++-
+ tests/unit/meson.build                    |   1 +
+ tests/unit/test-uuid.c                    |  27 ++++
+ tests/unit/test-virtio-dmabuf.c           | 137 ++++++++++++++++++
+ util/uuid.c                               |  14 ++
+ 14 files changed, 817 insertions(+), 13 deletions(-)
+ create mode 100644 hw/display/virtio-dmabuf.c
+ create mode 100644 include/hw/virtio/virtio-dmabuf.h
+ create mode 100644 tests/unit/test-virtio-dmabuf.c
+
+-- 
+2.41.0
 
 
