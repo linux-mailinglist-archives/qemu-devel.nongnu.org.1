@@ -2,55 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9367B4E76
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 11:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89D057B4E62
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 10:59:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnEkv-0001bw-IC; Mon, 02 Oct 2023 04:58:22 -0400
+	id 1qnEl3-0001lP-3x; Mon, 02 Oct 2023 04:58:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qnEkk-0001Ut-HK; Mon, 02 Oct 2023 04:58:12 -0400
+ id 1qnEkh-0001RP-56; Mon, 02 Oct 2023 04:58:07 -0400
 Received: from mail-ve1eur01on0711.outbound.protection.outlook.com
  ([2a01:111:f400:fe1f::711]
  helo=EUR01-VE1-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qnEki-0003Rj-DC; Mon, 02 Oct 2023 04:58:10 -0400
+ id 1qnEkf-0003Rj-72; Mon, 02 Oct 2023 04:58:06 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=bU8/WF18e75/78N+kwkR4R9lJtXRyk/bQzlxU398mqxW8DLisP0DtkXGgRNhx/X+saGIFwRuicbvkXvnh8/Gqv4A9sOEN8HAhEGO4YUZk3Ni6jy2Nj3Hy6gJoxOHbYIRwK7ZsSCZ48dyyKPb3oCq5AZBkmvklqsEikRSxTt2l9eYenZ27Mi6jDzPI1is961cmygFGhQ5QQfzGXB0reBmLKX5MKO+sUnyT8cM6Tk73O+yyPiIETIidCS3OwDXm7Rn+3bWg6QdhZN9VHnHeuNE7N59suDKW21xw343Lbadj+wlClEkNBpA5ckxzbupzBfuZc1QbTvIrbTZzgte0mf36w==
+ b=OEDjFGXBk4jPBdsOdb16U6Dt3DwNnYr0wXF/MuTJxTZfs7Uq6ABc84BSRydrONUZNWaENmZKxrE4LWjXx/pdyvOQF60sJXar5Ia0TOMhKz1CWSMMiyTJKg0Rw0v7aiYPosrlaw+vGhkWiWswyWySD7tbImEDWCArYpHFZ1by0PDVnbETjj0fskqkKyyalqFdDdI9jN6IcUBAV2QidyvVrnHz9u3R61BsyHm4mhd4GQduFvqmpGWv4rsTtNn3L1WJEGkITF6NtdofiFppghJV3NgISQbYvGEucI/fIpJKei3TjV19JiwyMpp1Iwix2Cw6HBGTYbxu8WzKq94oxyBIYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4zloRtBnEJvFUj7YTAKRwLq9g1gSpQBj/d0tbWJDAC4=;
- b=dMXvWTNmZ+Y21GZq7RoAu5wtHB8QfK0/uGbEu1q/DCrq3C13/8uftn9AkAsYp38+yZtKH4gG1fNZb/eanEOXfozpuZgPyvzVHrNxDCq6RF/T/ciqR23T0m4X/o9+o+wc1AQrJxi4G4O8oRBYeNAdLi9oZjtxMQUd8GF4MUSMjQjJ03XIMScgcfqCqMawWCcqs7QppEuDVL6d6txU3sQQMT5Tqn7yFF9+i2zuTykVtc3chcxJ9xzuv3qF63RHYSnb0s2SYwII8+gaG7zKqMk98pvUwvxkPIqMBUR+0mofoh9wx0VnmxQwjof4bX+PyYtZUzBStD2HEncXREa47drb7Q==
+ bh=hX95/OsRXapbuLFMQW0E3mhRS4vcJN++F3Atcc0YZ5A=;
+ b=bBvzObPxILK0m3PeBXIjA0kbpIvq15vg/wz5MphxnN61wJBko4QUpND5U69xoYdjXngbmig7DXBTap7oTFNL1fYjUdKKM5wDFihn2VU030BNe0c5xQvEbySxRBWC7aJbSGwIWZtatB/uwkVHmOuB+e2Ugrv9mV6SFgi0EsrSxmloWoChJ2Lp2Sit++QXeUfWR0glEKa9nwS480Ws/7mvklwmsWKe42QkV0BYBfcfRG5F9kHIGaJig1j5CCbILeW7s8ZKh3TYpLunpTd/ewzL/q3/s3tBNdR2s9Tddl4XQtxVt7iDxB8GJIHShok40CSGvosa1P2iQtzwhwl3FwMfVw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
  header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4zloRtBnEJvFUj7YTAKRwLq9g1gSpQBj/d0tbWJDAC4=;
- b=0BhtUgL3FTQGKQ41Gw5kDjxAifoo/dBqdd6t7DFL7kAMwn5+TnLwZNFliLvXCnzxpumgMt+2MMqmuYOMpsP3nIuwy2d2k/UMQ/q3QoWV4Aya7JlYOPFyTXJpGJdrQ2IYr/AAF3rl2o5Jf0viz/da3PQIxgS4vw7iInxDNXqn/efoXL4WOgF8ieD9F9aV0DHzo4M2MjBFwpJirXUjT0NpzOtQuB2e9CT6IIvF7H5vtG4GUt/nocuIe7rVAHoSVRO2u9oYk2sgZMyK8ewhbVWvsrkneWvN2cxyXzllEuL1HEF0FJYRP2RP6NHAdhT6gSI4mZEzVKjFlK23RhknK3Op8w==
+ bh=hX95/OsRXapbuLFMQW0E3mhRS4vcJN++F3Atcc0YZ5A=;
+ b=IhjmLfTQdE/giYsbe9AsheYTk/HhLSiYkYGD3H5r4RPYn3NH0zFzZFCRtz4W7CQCPnglxw1BgOzKPkUmOkYTcxfdcXsN3JmnQfVxZvp3LTEpodMDAmGvOZXcAaZjoHO5geaTQ0OmZx9Skw6EQ6NIjhxRRxKUqHTh/IBwosd/MbDhNgSAHiX5Y6wbywymz6yjeVYtqWaUB6YBpWfG3muivmtjqUn/fvuOtlVdHbedRgdEMClDOnDWJdmrJBO3SvzeXav8on0vsy8rtnVPJ55Ug4z76RpJ98ZmMRjw4nCgaOVCmNF5uKDU84N+dg3kX5sW4J+jj3klYeVLh2CPey0IHw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=virtuozzo.com;
 Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com (2603:10a6:3:4b::17)
  by AS8PR08MB8657.eurprd08.prod.outlook.com (2603:10a6:20b:565::21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.28; Mon, 2 Oct
- 2023 08:58:01 +0000
+ 2023 08:58:02 +0000
 Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com
  ([fe80::4d4a:2d8c:6f96:4c77]) by HE1PR0801MB1931.eurprd08.prod.outlook.com
  ([fe80::4d4a:2d8c:6f96:4c77%5]) with mapi id 15.20.6838.028; Mon, 2 Oct 2023
- 08:58:01 +0000
+ 08:58:02 +0000
 From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, den@virtuozzo.com, stefanha@redhat.com,
  vsementsov@yandex-team.ru, kwolf@redhat.com, hreitz@redhat.com
-Subject: [PATCH 17/19] tests: Add parallels images support to test 165
-Date: Mon,  2 Oct 2023 10:57:36 +0200
-Message-Id: <20231002085738.369684-18-alexander.ivanov@virtuozzo.com>
+Subject: [PATCH 18/19] tests: Turned on 256, 299,
+ 304 and block-status-cache for parallels format
+Date: Mon,  2 Oct 2023 10:57:37 +0200
+Message-Id: <20231002085738.369684-19-alexander.ivanov@virtuozzo.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
 References: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
@@ -62,53 +63,53 @@ X-ClientProxiedBy: VI1PR0102CA0068.eurprd01.prod.exchangelabs.com
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: HE1PR0801MB1931:EE_|AS8PR08MB8657:EE_
-X-MS-Office365-Filtering-Correlation-Id: 49aa7eda-d4bc-4d6b-a6df-08dbc325ae67
+X-MS-Office365-Filtering-Correlation-Id: 8f2b6ec7-b67e-489c-77fd-08dbc325aedc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Z30tYsZB2IDGshHLOF8lMveOr8EWBp1PlX/YwrqkhWZA8XOg1FZJWL4G85V80BiW9dCt7ETkG/69D9O3mqN3mJQuZY+rHwqRAZnRxDlwokj4W5+krXLzZ4+N5gss1WWV1g73Gk0TLTaDdA/svB6SviTCzMpVfYtQBrWHnPsF84OKOv51l4D4Wk782OxyJHcpheSCNTzO4XVG0ALYDVu5wrYPti6oFxNQmBVGiYkZDxHfNfu0OO/mqMv6BSGDICiT4KaXzcMM5wTZqpO2g0wDY8sZZZJ1lTc8rUvsBYP1z7stwvq74BoZlZswIWKI13CBQiqzW6Ex9+5cOybEmKzbJ23SPF0jflRK8zDNtd+4lsUlsK/e+zvXuFp6eJwGGw+9GyQ8xnzhRZXWPeroEFv7rnA8luTtIYra2v75cgSWWVhc80EiWOBi9UzyuRdFPOmWxwbIIi9y8c/lARddYFJC1IahN/MSuuck9rCjFlT2qdw3fvm54syh1gHED09pWwD7Rr/kpxxsGKPGqxBCLblODWkPE0z14AJ0IejWE9nO4PsLXmpiXU2ei3wtzOremPuUhwdug/RxHEbGDoLqIdaUB8TpOtqrFXqMcWfmOvCcT75iQG3cZgtm99b4/sR6CUiV
+X-Microsoft-Antispam-Message-Info: 23Nx12nENEU9A4bPhZ1GNrfKwU3NT0g5yyghX97mPKZnxjS72jZQ9uTVX+9j54xkgTayGP6HcmjaknCSLkc88P7Fty+79A16+RReJj4EDOMfwFZmf2XCtyARdylTkm9gt0qxO+dPny4dJh3a4RHttFhKOPt/R4Ui8gNY9yh0bB7FBkctSELcd/IKoXcsWXUfb58d9ycFtzlSXEeajPriP73sE75UbapgR4gmpMjBwdI/57aIRRl1n/tbjYmobaXz4LJTa+YoQr59Pbrb4sDQbx+1nEXb6v9me6PqLpMVU4A9I7Id0tLHqnKPceKc7wiO8Fb4p5JHRbem4hid5ZkepvAldgGubRADzr1/SASq3n/o7PoTf10L54b+PWkKg0yOoPhQ+FiyYHQs+6haLhHZTJpASHs6fAGozT8EFJ7V+xFMg/Efr4dyFSnlWOinT1dQAsuTuwx800UwQA5XqsSMdVVDFYmxWImu25a6+QA2FupwtFxgiiMnBp9YOxdQEAaza70V4Y+FhKdmF5qr+NhHCogHE02QzWlPuotRHo0yPeoJ4GASo+Ve63+9E4V73sMR24Fwe+OyLtde0rEiOPe3mvbwX6UXPi5PsZ9SAoL072Gc4pk6IBjj0cFpH3CyRgge
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:HE1PR0801MB1931.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(376002)(366004)(346002)(396003)(136003)(39840400004)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(66946007)(2906002)(8936002)(8676002)(44832011)(4326008)(6916009)(5660300002)(316002)(66476007)(66556008)(41300700001)(6486002)(478600001)(6512007)(6506007)(6666004)(52116002)(26005)(1076003)(2616005)(83380400001)(38100700002)(38350700002)(86362001)(36756003);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CPYpIx0pjlSCbWEEK90ebc+sq7NNPS7QIcNzm4QZEYcAsMhbZWFVoze2Xhj+?=
- =?us-ascii?Q?72ou/7AnM7md2eYjXU/2ra3Pe4rIKbR4K1WeaBYAWigVpCmtdwsTXtqvcq2d?=
- =?us-ascii?Q?tCD5VeUewHZmEoljwxm5jC7fFL69H6nx88ABroCXItaIGtk+Y6MLKH1wfhHF?=
- =?us-ascii?Q?bRB4d3kQChHUYo9yqgDei68qLfHvyiaKGIA61omrZK0vls6xSY1mN67vW6ra?=
- =?us-ascii?Q?qiosS3ft7a4GvcEbUnAWmqK4fFQlTOdqyIxNExpN+Gq9DfApZmlSWeNPQknu?=
- =?us-ascii?Q?cHjNxLKv+mWZbfIkj1fHNxL8IpUHMoU1EgpAB4/j39uJqgN+dw6d5G4n9+Yr?=
- =?us-ascii?Q?4Fnnkbjh87CxjXp/RIku91ef6n5+TFVo9Pll0spBDTn8pJ1p5u5OtbHDfYNw?=
- =?us-ascii?Q?AQxDNWAjFxAcPP4kp5ghGyNaXd/9qKOU8RrFaPS/uykbHPG5jCMZvPFlrcdt?=
- =?us-ascii?Q?O6whqNJ1hRHpwlzvmRpb5aB+xaOnlYnYOmZ7fcWj4gGLbnm0MhYWg/BCkJ+w?=
- =?us-ascii?Q?V2zs13qPy4P72FiLYC4zbSD3IBfeoBlOhQyMpsNmQkxLGwfDJdGFjEMS5Bo2?=
- =?us-ascii?Q?hbltB2CZQI2auON0C+Mq8r077LMQMLlNPkHzmqajW1h4YYyqTKEJPWrIYaD0?=
- =?us-ascii?Q?BsO5WkawMikjRdn+BvLtfLXcrTTg32HFNOdd2TopQc4TQg1fI3sjYJyFhLHI?=
- =?us-ascii?Q?0gzM9goEd25Dae6bRGFh06E+2voYcqkYRAy5PEl+Skj9ouSpYC/5Ytnwx48n?=
- =?us-ascii?Q?8o8zSbYRB4xuKzgILvf+6+MAAApzXy+s8mOfa0QnFmWMW34A9UBesYCi6D9K?=
- =?us-ascii?Q?fPJsNUZQIDIFWoDQFqWwTle/DVwOLTJaJd7puHZQS8rj9F9AtYdGFXzYLIN/?=
- =?us-ascii?Q?TkP1csXdNlcUVlgQj6r8C+k1kBWSu3NATRMkMRWWX0Jqi6sGmxdDfhLmDW0t?=
- =?us-ascii?Q?owUxokW/0SPR2e5txoHtIgMX607WwFKshcU1KiN/VBhIRNKQBgtr8R+N6GCE?=
- =?us-ascii?Q?PpPjv1V88flvdfY0Q4hL6amKnOeGkfmnQDmsFIh66rnyLNYBoWy4PvEE5InI?=
- =?us-ascii?Q?yAStrxAixosM6s2OevDQlscZcebSI22n1mjPHfzLXXbBaGITA0wFTD8anpOn?=
- =?us-ascii?Q?8jU8oC/dfDvP19wgqMF5Mcb7iqEZA7jRRF1b02Q1UUJY+p6QgG/U6Qc7EpUC?=
- =?us-ascii?Q?GcA7t6scOyapDF24szvwCxBHus0pA+sOjUOKkxn96hczxHGMS2TA3f1Ofe79?=
- =?us-ascii?Q?F6CoVtLKGdaxaTJned9ybaJNxxlv2icvWvAGjt0wVamqpsbHXmuhhedCaDeP?=
- =?us-ascii?Q?19oVHlDv/qEXQywnZHjlUwYSfJvTu8TcE/lqoDdaOWRVL+Wg12gpF+X34/Hz?=
- =?us-ascii?Q?QJaz2JuQ5PlmwpCUi00oga7Sltw5B+NLJLfbWi6CUF4UJ65YsLStjm8U+4iY?=
- =?us-ascii?Q?lTWeNKRxxBsA0gQ5gT7IoQdOlUqWBGgAhYxm2iAkDNAuhK3PHuNcr1qGibq1?=
- =?us-ascii?Q?l8UGVMKJB8i2XVDTn6lY6dP2J01YIBNCqgAbyEImDbF6QqzZBuZ/sKMvFPVc?=
- =?us-ascii?Q?GXnJiiSbecffplDrF2aTTpfkPK78AMww7sL/DKKh9jp773af5Hoxh3+tQIgz?=
- =?us-ascii?Q?eM7cev0H+wIj6SGdspZCrSY=3D?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?q1X6vyItI553iUfQOvhfDOoO39LZ17/lszeSfCiZxMLEIs0bdGDDolRgSqLu?=
+ =?us-ascii?Q?xg7MCAusnqvg/W0CHsMKXEioF5o00j13+1HQBDShOPOqcoLletKcQvajKkwA?=
+ =?us-ascii?Q?igoIaaVy9IKHeEhXrPbyymHRX+evPffUyJJPcgAZH4UshtXarW7LIjktksSA?=
+ =?us-ascii?Q?QB0CFkBax55BcIb8VFzWu7hGDiOgNKXIsPYTPY6exxr9iyfH6f5oXQ7ZQk+I?=
+ =?us-ascii?Q?KI0+CIQzhZ98MfnbZNhH1TkL3yNMUxdWX6GN9VV1sv2gYvKNhAJ4RwEVla0B?=
+ =?us-ascii?Q?D/oBMHhF8bO/mO8jRem+Kc1lpITZ/VFIs2B+3YoE+PM3MGAE2nEbt1J+0QqS?=
+ =?us-ascii?Q?FTIuSLkdBfB0MFSxlKSbe28VA7q1w0oIA4AUBuMjBobmHyreYg7h72ITkgQj?=
+ =?us-ascii?Q?5eLenMtiXkxys4cOtt7PhciFT8mbI0/dzLC9koHh8kXBXMlcL6J3Ila9YK0C?=
+ =?us-ascii?Q?hdubnXFpX1SlZcdmWDr3gQZUK2n3YbCBJS7Tb3ZSeD6leDmZ/cVsqBpWlXsl?=
+ =?us-ascii?Q?jBWxk/UKDJ+sbiLzThxyRUZM2KLabSCUq3Dy0CDDCkV9LZ1980QOMP8ZdeMP?=
+ =?us-ascii?Q?6OkNHKJu9Ye+MTC2lQCQCxuHnkR5OQc5Ba0EDxcKmtZWL0MSOGjPUrRemhX3?=
+ =?us-ascii?Q?btIy94POw35jnpRMhz1QUZjJ8UDYHcqNwsMxeRsmqUiMS9g+3ZP1fc7eK4AI?=
+ =?us-ascii?Q?IIfyyiVPomLXD8L2ASnJ5hSv+eYQxZfQgsMs+9qn948MMj/EFIpTH1NOKjvD?=
+ =?us-ascii?Q?jG5wqVmDWhy3QN7ojaP7qHrmElGGWYsGPjEcyLVB64wtwPsna3fbu8VFXlW7?=
+ =?us-ascii?Q?fVHGHb27UnB3Jtv+6JvMNvnjyolrTeIiWwhW4BFN8aOJmmc9S9aF/mrwF+Q8?=
+ =?us-ascii?Q?JqrMJ+GTQWgYcdVcyc8G+5GGZ6MlCMipuF9yi4I1vdZHum59KeqVIQCEvD7L?=
+ =?us-ascii?Q?6Cw87bBqJhHW3iEf6JAUNtoJHkV3j+6hvV/AP5TO9BSN3FkZG2BaSWKTQOv0?=
+ =?us-ascii?Q?wXcgowRgIWc0RQOB2GUvV8fUC8sD2e52o0zOkXm9DU6TqSgnKsq6G0Se54Xo?=
+ =?us-ascii?Q?AHn+wJJxllrOpX082he3dT4SFYA54fnAjnF5VxS+nZ5T19ZnnEypFxS213WK?=
+ =?us-ascii?Q?hwXxd9YZkZ3xLv3rhpPIv7lZxEhR/8MTzHz8L0r/tunYTpAYtgkCzDLs0o4k?=
+ =?us-ascii?Q?6orT/oEIVB8lb8OmpH4STHm40w6w9XMVbjhkXrAQyQFKQ7JZ2ZeBrn4/KEq4?=
+ =?us-ascii?Q?qqnTyl+pd+g/uWTSHrpwSK6jJ3Ciko9ry2zpgrBTYw4BzSsTVrTTk3POpbtm?=
+ =?us-ascii?Q?rz7XLOAH3Now9MoTLBmEY7x0jK4XAbUOWRtsTZ8vROk0Kp1uQO6Iod/VeclV?=
+ =?us-ascii?Q?Tu87dt7pVGRmAz4uM1fXK/oLop9JncYq/9YlHZNL+yMNmLKjl1VC/MscS8Z7?=
+ =?us-ascii?Q?8lY1q8C9Z5YVyls+oDRmCa6cEWjtvSHBQX2i4Qtu4f/vlPxGj7ITdyNZJ2a4?=
+ =?us-ascii?Q?EQQVsxc4jXcMf8N2vRhKGLlHwrochkWZ4A+NM+D6gKJ7Go7DjSzTDvVD4dT7?=
+ =?us-ascii?Q?XkAS+pdsAfVKebXNV9EVez+WwRG3Ez4rSkZFvYCdIc9Q6NeWpwV0NwuBb/Ut?=
+ =?us-ascii?Q?tvyBty8d+s1EevuEhR+7W1w=3D?=
 X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 49aa7eda-d4bc-4d6b-a6df-08dbc325ae67
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f2b6ec7-b67e-489c-77fd-08dbc325aedc
 X-MS-Exchange-CrossTenant-AuthSource: HE1PR0801MB1931.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 08:58:01.1607 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2023 08:58:01.9802 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YxYhmidQepsl0eiC2xXZZwUs2YHJzIKuECSAESg3ArC05+cXqAchA4sak+Ss/acssE7tkaUaRMsVF2kbs7ctnWWZfzubmlSxE36FSvRHqvE=
+X-MS-Exchange-CrossTenant-UserPrincipalName: YQiFSI7z3w4d9AearKUNvM/v7oc/AbP4dik2s6HE9tsf7Gd2fHNl5yXnGsCqU0fIXblflKz8g1wQ/1MSx/NBfsNAsQc+QYyszP+ZVJw4INE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB8657
 Received-SPF: pass client-ip=2a01:111:f400:fe1f::711;
  envelope-from=alexander.ivanov@virtuozzo.com;
@@ -134,108 +135,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Use a different bitmap name for parallels images because their has own ID
-format, and can't contain an arbitrary string.
-
-Replace image reopen by shutdown/launch VM because parallels images doesn't
-support reopen.
+These tests pass with parallels format. Add parallels to supporting
+formats for these tests.
 
 Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
 ---
- tests/qemu-iotests/165 | 42 ++++++++++++++++++++++++++----------------
- 1 file changed, 26 insertions(+), 16 deletions(-)
+ tests/qemu-iotests/256                      | 2 +-
+ tests/qemu-iotests/299                      | 2 +-
+ tests/qemu-iotests/304                      | 2 +-
+ tests/qemu-iotests/tests/block-status-cache | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tests/qemu-iotests/165 b/tests/qemu-iotests/165
-index e3ef28e2ee..3181cccb89 100755
---- a/tests/qemu-iotests/165
-+++ b/tests/qemu-iotests/165
-@@ -38,6 +38,10 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
+diff --git a/tests/qemu-iotests/256 b/tests/qemu-iotests/256
+index d7e67f4a05..1930bb017e 100755
+--- a/tests/qemu-iotests/256
++++ b/tests/qemu-iotests/256
+@@ -26,7 +26,7 @@ from iotests import log
  
-     def setUp(self):
-         qemu_img('create', '-f', iotests.imgfmt, disk, str(disk_size))
-+        if iotests.imgfmt == 'parallels':
-+            self.bitmap_name = '00000000-0000-0000-0000-000000000000'
-+        else:
-+            self.bitmap_name = 'bitmap0'
+ iotests.verify_virtio_scsi_pci_or_ccw()
  
-     def tearDown(self):
-         os.remove(disk)
-@@ -50,12 +54,12 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
+-iotests.script_initialize(supported_fmts=['qcow2'])
++iotests.script_initialize(supported_fmts=['qcow2', 'parallels'])
+ size = 64 * 1024 * 1024
  
-     def getSha256(self):
-         result = self.vm.qmp('x-debug-block-dirty-bitmap-sha256',
--                             node='drive0', name='bitmap0')
-+                             node='drive0', name=self.bitmap_name)
-         return result['return']['sha256']
+ with iotests.FilePath('img0') as img0_path, \
+diff --git a/tests/qemu-iotests/299 b/tests/qemu-iotests/299
+index a7122941fd..d8c4399446 100755
+--- a/tests/qemu-iotests/299
++++ b/tests/qemu-iotests/299
+@@ -23,7 +23,7 @@ import iotests
  
-     def checkBitmap(self, sha256):
-         result = self.vm.qmp('x-debug-block-dirty-bitmap-sha256',
--                             node='drive0', name='bitmap0')
-+                             node='drive0', name=self.bitmap_name)
-         self.assert_qmp(result, 'return/sha256', sha256);
+ # The test is unrelated to formats, restrict it to qcow2 to avoid extra runs
+ iotests.script_initialize(
+-    supported_fmts=['qcow2'],
++    supported_fmts=['qcow2', 'parallels'],
+ )
  
-     def writeRegions(self, regions):
-@@ -65,7 +69,7 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
+ nbd_sock = iotests.file_path('nbd.sock', base_dir=iotests.sock_dir)
+diff --git a/tests/qemu-iotests/304 b/tests/qemu-iotests/304
+index 198f282087..1ebf999930 100755
+--- a/tests/qemu-iotests/304
++++ b/tests/qemu-iotests/304
+@@ -23,7 +23,7 @@
+ import iotests
+ from iotests import qemu_img_create, qemu_img_log, file_path
  
-     def qmpAddBitmap(self):
-         self.vm.qmp('block-dirty-bitmap-add', node='drive0',
--                    name='bitmap0', persistent=True)
-+                    name=self.bitmap_name, persistent=True)
+-iotests.script_initialize(supported_fmts=['qcow2'],
++iotests.script_initialize(supported_fmts=['qcow2', 'parallels'],
+                           supported_protocols=['file'])
  
-     def test_persistent(self):
-         self.vm = self.mkVm()
-@@ -117,7 +121,7 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
-         assert sha256_1 != sha256_2 # Otherwise, it's not very interesting.
- 
-         result = self.vm.qmp('block-dirty-bitmap-clear', node='drive0',
--                             name='bitmap0')
-+                             name=self.bitmap_name)
-         self.assert_qmp(result, 'return', {})
- 
-         # Start with regions1
-@@ -136,17 +140,23 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
-         self.writeRegions(regions2)
-         assert sha256_1 == self.getSha256()
- 
--        # Reopen to RW
--        result = self.vm.qmp('blockdev-reopen', options=[{
--            'node-name': 'node0',
--            'driver': iotests.imgfmt,
--            'file': {
--                'driver': 'file',
--                'filename': disk
--            },
--            'read-only': False
--        }])
--        self.assert_qmp(result, 'return', {})
-+        if iotests.imgfmt == 'parallels':
-+            # parallels doesn't support reopen
-+            self.vm.shutdown()
-+            self.vm = self.mkVm()
-+            self.vm.launch()
-+        else:
-+            # Reopen to RW
-+            result = self.vm.qmp('blockdev-reopen', options=[{
-+                'node-name': 'node0',
-+                'driver': iotests.imgfmt,
-+                'file': {
-+                    'driver': 'file',
-+                    'filename': disk
-+                },
-+                'read-only': False
-+            }])
-+            self.assert_qmp(result, 'return', {})
- 
-         # Check that bitmap is reopened to RW and we can write to it.
-         self.writeRegions(regions2)
-@@ -156,6 +166,6 @@ class TestPersistentDirtyBitmap(iotests.QMPTestCase):
- 
- 
+ test_img = file_path('test.qcow2')
+diff --git a/tests/qemu-iotests/tests/block-status-cache b/tests/qemu-iotests/tests/block-status-cache
+index 5a7bc2c149..ade3d5b169 100755
+--- a/tests/qemu-iotests/tests/block-status-cache
++++ b/tests/qemu-iotests/tests/block-status-cache
+@@ -131,5 +131,5 @@ class TestBscWithNbd(iotests.QMPTestCase):
  if __name__ == '__main__':
--    iotests.main(supported_fmts=['qcow2'],
-+    iotests.main(supported_fmts=['qcow2', 'parallels'],
-                  supported_protocols=['file'],
-                  unsupported_imgopts=['compat'])
+     # The block-status cache only works on the protocol layer, so to test it,
+     # we can only use the raw format
+-    iotests.main(supported_fmts=['raw'],
++    iotests.main(supported_fmts=['raw', 'parallels'],
+                  supported_protocols=['file'])
 -- 
 2.34.1
 
