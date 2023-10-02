@@ -2,40 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2FA7B52F1
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1D77B52F0
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 14:24:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnHxj-00070r-KP; Mon, 02 Oct 2023 08:23:47 -0400
+	id 1qnHxk-0007KH-Ru; Mon, 02 Oct 2023 08:23:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=PA+N=FQ=kaod.org=clg@ozlabs.org>)
- id 1qnHxe-0006kM-JA; Mon, 02 Oct 2023 08:23:43 -0400
+ id 1qnHxe-0006kN-Oe; Mon, 02 Oct 2023 08:23:44 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <SRS0=PA+N=FQ=kaod.org=clg@ozlabs.org>)
- id 1qnHxd-00088t-0v; Mon, 02 Oct 2023 08:23:42 -0400
+ id 1qnHxd-00089a-2X; Mon, 02 Oct 2023 08:23:42 -0400
 Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rzg940gk7z4xGM;
- Mon,  2 Oct 2023 23:23:36 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4Rzg9630cWz4xM2;
+ Mon,  2 Oct 2023 23:23:38 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rzg920VtFz4xKR;
- Mon,  2 Oct 2023 23:23:33 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4Rzg944Jjyz4xKR;
+ Mon,  2 Oct 2023 23:23:36 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
 To: qemu-ppc@nongnu.org,
 	qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
  Nicholas Piggin <npiggin@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
-Subject: [PATCH 1/8] ppc/{bamboo,
- virtex_ml507}: Remove useless dependency on ppc405.h header
-Date: Mon,  2 Oct 2023 14:23:19 +0200
-Message-ID: <20231002122326.365368-2-clg@kaod.org>
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>
+Subject: [PATCH 2/8] MAINTAINERS: Adjust file list for PPC ref405ep machine
+Date: Mon,  2 Oct 2023 14:23:20 +0200
+Message-ID: <20231002122326.365368-3-clg@kaod.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231002122326.365368-1-clg@kaod.org>
 References: <20231002122326.365368-1-clg@kaod.org>
@@ -65,37 +63,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com> (odd fixer:virtex_ml507)
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
 ---
- hw/ppc/ppc440_bamboo.c | 1 -
- hw/ppc/virtex_ml507.c  | 1 -
- 2 files changed, 2 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
-index 45f409c83862..a189942de4cf 100644
---- a/hw/ppc/ppc440_bamboo.c
-+++ b/hw/ppc/ppc440_bamboo.c
-@@ -24,7 +24,6 @@
- #include "elf.h"
- #include "hw/char/serial.h"
- #include "hw/ppc/ppc.h"
--#include "ppc405.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/reset.h"
- #include "hw/sysbus.h"
-diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
-index f2f81bd4259c..d02f330650fc 100644
---- a/hw/ppc/virtex_ml507.c
-+++ b/hw/ppc/virtex_ml507.c
-@@ -43,7 +43,6 @@
- #include "hw/ppc/ppc.h"
- #include "hw/ppc/ppc4xx.h"
- #include "hw/qdev-properties.h"
--#include "ppc405.h"
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 355b1960ce46..3f90264203cc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1345,7 +1345,7 @@ PowerPC Machines
+ 405 (ref405ep)
+ L: qemu-ppc@nongnu.org
+ S: Orphan
+-F: hw/ppc/ppc405_boards.c
++F: hw/ppc/ppc405*
  
- #include <libfdt.h>
- 
+ Bamboo
+ L: qemu-ppc@nongnu.org
 -- 
 2.41.0
 
