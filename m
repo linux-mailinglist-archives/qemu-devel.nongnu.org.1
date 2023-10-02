@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0012E7B5562
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC687B5561
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 16:42:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnK7j-00008H-2k; Mon, 02 Oct 2023 10:42:15 -0400
+	id 1qnK7p-0000LH-1z; Mon, 02 Oct 2023 10:42:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnK7e-0008W5-7s
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:42:10 -0400
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnK7i-0000EE-Vo
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:42:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnK7P-0001PA-3H
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:42:10 -0400
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnK7h-0001QT-El
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 10:42:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696257713;
+ s=mimecast20190719; t=1696257732;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xcwJ0WHxs3HcvGlWRXFcZ/HNFTvgsbEjrmN6cuOHk9E=;
- b=Wj3rfiGeAXB6CAmZsLJjj0UrlnvyX7717lvvA5ecNQD1oMnKcwzbBZJTR9wELfrxvSxLD4
- Chw9m28qk3I9Eo0uEwO0GIe7kj1B6/NI9tbLrB5qtOtGuQZr7dmvq95mreE2sYyPsvMend
- 1Qovx+8ieXPCXO0WHgpeRU3NmmiGWEI=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-528-wEYW5_mOPhSXirvxU5BlpA-1; Mon, 02 Oct 2023 10:41:52 -0400
-X-MC-Unique: wEYW5_mOPhSXirvxU5BlpA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ bh=iKJe4WqI8hMt+eeG9phcHj6k3VOiHxdMlAKKzXGheXo=;
+ b=NbEoaFNSjX1TBGtjZhB36+6tm18170yuBvygfRi3NMqzkXZgZnj303MUhendfUB9JBOvVC
+ 1w3KOnu8J2iFhJEdozxNP5j/Cs1aj63kTusgpXHPwRghvhHHLEdSC+EjFgCavuaDShPpDD
+ WkmDC2yO9eQ2epRLHv23RfAB0sXwaPo=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-658-2OP_YCAPPme9aVPpwMcwzw-1; Mon, 02 Oct 2023 10:41:59 -0400
+X-MC-Unique: 2OP_YCAPPme9aVPpwMcwzw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E7E2B1818E4E;
- Mon,  2 Oct 2023 14:41:51 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FEE13C23642;
+ Mon,  2 Oct 2023 14:41:59 +0000 (UTC)
 Received: from [10.39.194.43] (unknown [10.39.194.43])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id C7036140E950;
- Mon,  2 Oct 2023 14:41:50 +0000 (UTC)
-Message-ID: <13a03916-b4a3-253e-011d-12b9bfab9fe3@redhat.com>
-Date: Mon, 2 Oct 2023 16:41:49 +0200
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id E6C7F4026FB;
+ Mon,  2 Oct 2023 14:41:57 +0000 (UTC)
+Message-ID: <517c17c6-b498-1641-ab3b-a7822ccec927@redhat.com>
+Date: Mon, 2 Oct 2023 16:41:56 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 1/5] hw: remove needless includes
+Subject: Re: [PATCH v2 2/5] pc: remove needless includes
 Content-Language: en-US
 To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: kraxel@redhat.com, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
+Cc: kraxel@redhat.com, Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
 References: <20231002111154.1002655-1-marcandre.lureau@redhat.com>
- <20231002111154.1002655-2-marcandre.lureau@redhat.com>
+ <20231002111154.1002655-3-marcandre.lureau@redhat.com>
 From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <20231002111154.1002655-2-marcandre.lureau@redhat.com>
+In-Reply-To: <20231002111154.1002655-3-marcandre.lureau@redhat.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_score_int: 12
+X-Spam_score: 1.2
+X-Spam_bar: +
+X-Spam_report: (1.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SBL_CSS=3.335, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,51 +85,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 On 10/2/23 13:11, marcandre.lureau@redhat.com wrote:
 > From: Marc-André Lureau <marcandre.lureau@redhat.com>
 > 
-> The include list is large, make it smaller.
+> The include list is gigantic, make it smaller.
 > 
 > Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 > ---
->  hw/core/machine.c | 10 ----------
->  1 file changed, 10 deletions(-)
+>  hw/i386/pc.c | 41 -----------------------------------------
+>  1 file changed, 41 deletions(-)
 > 
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index cb38b8cf4c..68cb556197 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -11,32 +11,22 @@
->   */
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 5d399b6247..c376c5032d 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -24,79 +24,38 @@
 >  
 >  #include "qemu/osdep.h"
-> -#include "qemu/option.h"
->  #include "qemu/accel.h"
->  #include "sysemu/replay.h"
-> -#include "qemu/units.h"
->  #include "hw/boards.h"
->  #include "hw/loader.h"
->  #include "qapi/error.h"
-> -#include "qapi/qapi-visit-common.h"
->  #include "qapi/qapi-visit-machine.h"
-> -#include "qapi/visitor.h"
->  #include "qom/object_interfaces.h"
-> -#include "hw/sysbus.h"
+>  #include "qemu/units.h"
+> -#include "hw/i386/x86.h"
+>  #include "hw/i386/pc.h"
+>  #include "hw/char/serial.h"
+>  #include "hw/char/parallel.h"
+> -#include "hw/i386/topology.h"
+>  #include "hw/i386/fw_cfg.h"
+>  #include "hw/i386/vmport.h"
 >  #include "sysemu/cpus.h"
->  #include "sysemu/sysemu.h"
->  #include "sysemu/reset.h"
->  #include "sysemu/runstate.h"
-> -#include "sysemu/numa.h"
->  #include "sysemu/xen.h"
-> -#include "qemu/error-report.h"
->  #include "sysemu/qtest.h"
+> -#include "hw/block/fdc.h"
+>  #include "hw/ide/internal.h"
+> -#include "hw/ide/isa.h"
 > -#include "hw/pci/pci.h"
->  #include "hw/mem/nvdimm.h"
->  #include "migration/global_state.h"
+> -#include "hw/pci/pci_bus.h"
+> -#include "hw/pci-bridge/pci_expander_bridge.h"
+> -#include "hw/nvram/fw_cfg.h"
+>  #include "hw/timer/hpet.h"
+> -#include "hw/firmware/smbios.h"
+>  #include "hw/loader.h"
+> -#include "elf.h"
 > -#include "migration/vmstate.h"
->  #include "exec/confidential-guest-support.h"
-> -#include "hw/virtio/virtio.h"
->  #include "hw/virtio/virtio-pci.h"
->  #include "hw/virtio/virtio-net.h"
+> -#include "multiboot.h"
+>  #include "hw/rtc/mc146818rtc.h"
+>  #include "hw/intc/i8259.h"
+> -#include "hw/intc/ioapic.h"
+>  #include "hw/timer/i8254.h"
+>  #include "hw/input/i8042.h"
+> -#include "hw/irq.h"
+>  #include "hw/audio/pcspk.h"
+> -#include "hw/pci/msi.h"
+> -#include "hw/sysbus.h"
+>  #include "sysemu/sysemu.h"
+> -#include "sysemu/tcg.h"
+> -#include "sysemu/numa.h"
+> -#include "sysemu/kvm.h"
+>  #include "sysemu/xen.h"
+>  #include "sysemu/reset.h"
+> -#include "sysemu/runstate.h"
+>  #include "kvm/kvm_i386.h"
+> -#include "hw/xen/xen.h"
+> -#include "hw/xen/start_info.h"
+> -#include "ui/qemu-spice.h"
+> -#include "exec/memory.h"
+> -#include "qemu/bitmap.h"
+> -#include "qemu/config-file.h"
+> -#include "qemu/error-report.h"
+> -#include "qemu/option.h"
+> -#include "qemu/cutils.h"
+> -#include "hw/acpi/acpi.h"
+>  #include "hw/acpi/cpu_hotplug.h"
+>  #include "acpi-build.h"
+> -#include "hw/mem/pc-dimm.h"
+>  #include "hw/mem/nvdimm.h"
+> -#include "hw/cxl/cxl.h"
+>  #include "hw/cxl/cxl_host.h"
+> -#include "qapi/error.h"
+> -#include "qapi/qapi-visit-common.h"
+> -#include "qapi/qapi-visit-machine.h"
+> -#include "qapi/visitor.h"
+> -#include "hw/core/cpu.h"
+>  #include "hw/usb.h"
+>  #include "hw/i386/intel_iommu.h"
+>  #include "hw/net/ne2000-isa.h"
+> -#include "standard-headers/asm-x86/bootparam.h"
+>  #include "hw/virtio/virtio-iommu.h"
+>  #include "hw/virtio/virtio-md-pci.h"
+>  #include "hw/i386/kvm/xen_overlay.h"
+>  #include "hw/i386/kvm/xen_evtchn.h"
+>  #include "hw/i386/kvm/xen_gnttab.h"
+>  #include "hw/i386/kvm/xen_xenstore.h"
+> -#include "sysemu/replay.h"
+> -#include "target/i386/cpu.h"
+>  #include "e820_memory_layout.h"
+> -#include "fw_cfg.h"
+>  #include "trace.h"
+>  #include CONFIG_DEVICES
 >  
-
 Acked-by: Laszlo Ersek <lersek@redhat.com>
 
 
