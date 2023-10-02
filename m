@@ -2,74 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE667B5AE3
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 21:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A17977B5B3F
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 21:28:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnOHJ-00070v-QI; Mon, 02 Oct 2023 15:08:25 -0400
+	id 1qnOZ2-0003vw-10; Mon, 02 Oct 2023 15:26:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qnOHH-00070d-TE
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 15:08:23 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qnOYz-0003sX-9t
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 15:26:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qnOHF-0000wQ-0Z
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 15:08:23 -0400
+ (Exim 4.90_1) (envelope-from <alex.williamson@redhat.com>)
+ id 1qnOYw-0005qF-Db
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 15:26:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696273698;
+ s=mimecast20190719; t=1696274797;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=YsLrhUJLC211mD4jbIHaysJ73o45YXD2aMpd5LafsBU=;
- b=DHKEi6yuy/PGLTrrG18AzMkJkfNBQKoeDCLYiRBtGDW3MBMtLjwNXK48Q4rCU3++HBE4Wy
- LvO8WtCUUQQi1t+KVfW3ERZd01jHnzJ9zUf17xqRE47YVFustE/ZW4kxUK4ueEE8Kbo2rl
- B23PTmMzZ91O7TixKh9BgalVJSQBJbA=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=l0MFDNOJZOBrW3r2W/8BySw7XPiJNV+UuBkneN+DKnk=;
+ b=ElKo86q+K07AsIh7Ajc/9mg6q/UmmchusZXCHAk2p2kY85H3ICoWu9mbxHLFMmo4QyB0ae
+ TZphAWURtiAIlHET7eYSZqRN2GNMWbuX3gvxZacjDWGFXNYNNItAZMTLivjmNuHzlb0ULV
+ ZfzxOBKw/+hD8DZMhkOhQNO4+5r+ej4=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-213-XzcRKnEOPzyWTk248Skczw-1; Mon, 02 Oct 2023 15:08:02 -0400
-X-MC-Unique: XzcRKnEOPzyWTk248Skczw-1
-Received: by mail-pj1-f70.google.com with SMTP id
- 98e67ed59e1d1-277527040ddso2809787a91.0
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 12:08:01 -0700 (PDT)
+ us-mta-567-jDNwwaV2Pl6K9LvR_UBBCg-1; Mon, 02 Oct 2023 15:26:35 -0400
+X-MC-Unique: jDNwwaV2Pl6K9LvR_UBBCg-1
+Received: by mail-io1-f69.google.com with SMTP id
+ ca18e2360f4ac-7834a155749so11605239f.0
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 12:26:35 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696273681; x=1696878481;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=YsLrhUJLC211mD4jbIHaysJ73o45YXD2aMpd5LafsBU=;
- b=TiyQ+tuuVPD4g2AJlwvF8GHUY9Kf+GuksmCTRF8bs4uLQb8RJ3TvBYlAKFXWnUXqNt
- 9RNiqHrDexDkQbIBUFnQUozRoiIcc3X4uzQZA9djGJjaM3G9x7Z0YKxXHHqIZjhqpkQT
- Ul8OnzBRBDs0k2VImp3hU1AzhEou6YfPTaztxNVWQV4RHQPdNkgqPI4ksIXeNBHyPhoJ
- 3i6RKX5CB+kVa4Hh3Vm1xZRpkAHw+c/3Y9g5QE3ap07XCbDVZoQh8p1UV9f/MKRSfSlM
- i7j4IQebZpL/JVTvbFFFdAu0YhSwCnOoBcoEwVYxhvD21ZkBspeEXDwLS882XOG+RzV3
- Hnxg==
-X-Gm-Message-State: AOJu0YyBhN/d9haGGlC35TtFkpMdS2zJeIds1qkq3eFfqkU0binVntUy
- SIxODl+Qt0EJafYU9ADQE4gPjgo6psQEdTMrDqR3twpVmtTE6+tcKvEtLkHePSgujAyTk1SSYpD
- bwjhqmBtecSu6Fx6AAeFYuBn0fBkdl3E=
-X-Received: by 2002:a17:90a:6048:b0:273:f10c:b6d2 with SMTP id
- h8-20020a17090a604800b00273f10cb6d2mr675613pjm.18.1696273680933; 
- Mon, 02 Oct 2023 12:08:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFULVXbck4nj2IgBBDrYH3BGh6vM62ECCeB5SKcYkXPnu9yRbaPwpv68S4XRr8Wjc2ERE4vlaSk2fcuwuwENXA=
-X-Received: by 2002:a17:90a:6048:b0:273:f10c:b6d2 with SMTP id
- h8-20020a17090a604800b00273f10cb6d2mr675579pjm.18.1696273680521; Mon, 02 Oct
- 2023 12:08:00 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696274795; x=1696879595;
+ h=content-transfer-encoding:mime-version:organization:references
+ :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=l0MFDNOJZOBrW3r2W/8BySw7XPiJNV+UuBkneN+DKnk=;
+ b=MaMeI6KJ+aKhQd0pG3s2DsvZrBcnvnq0CygrtKUjUK3YXo/ujkZPoIWtrEdVb/tIOL
+ FUvTLYa1adLgQVidHa7S2O2+y+Vp4A283xZaTaRMJeuhQNxApN+DUFqDogi0L0OCoLik
+ OSRN+aBC9ZdY1x2A7jxM9HvsJLQO3XzwVqDsybxtM2lLFNUyMlhZULzyVkqs4WvSRlug
+ W+tZhy6bXpobdkHYYPAxwy/seMBeuzFpen5sJrn/cqYcJ9hHPZSBOIZNugqPS9G430ke
+ wc9QlgCQUPK2V/ngVx97b4ueNLkBJkxEBb0P8RfCLZZ3fJHk0KHoVCvIkhsif/MZ1z4N
+ NcUA==
+X-Gm-Message-State: AOJu0YzPpT9lDORO6MvV38McW8mnHGnTV78BFu3Xd7PRuU8sW2qYzL6z
+ afiwzokJB+Py5150bVDpi3DYK30h9nzc8mMD+ADf8LMW+WuUO4bkb8PKHcLjyR2TSHL8HQGj4K6
+ wG3tpDekXjW4xBUM=
+X-Received: by 2002:a6b:e211:0:b0:790:fab3:2052 with SMTP id
+ z17-20020a6be211000000b00790fab32052mr13172261ioc.5.1696274794717; 
+ Mon, 02 Oct 2023 12:26:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGR9ZEU21G6s69aPMf6iW7YVfNimsY4m41gVazXL9eduDg9uKcXiejoBq1G/xnks4E8h35ACw==
+X-Received: by 2002:a6b:e211:0:b0:790:fab3:2052 with SMTP id
+ z17-20020a6be211000000b00790fab32052mr13172251ioc.5.1696274794410; 
+ Mon, 02 Oct 2023 12:26:34 -0700 (PDT)
+Received: from redhat.com ([38.15.60.12]) by smtp.gmail.com with ESMTPSA id
+ 16-20020a5ea510000000b0079f99769571sm16070iog.8.2023.10.02.12.26.33
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 02 Oct 2023 12:26:33 -0700 (PDT)
+Date: Mon, 2 Oct 2023 13:26:31 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: =?UTF-8?B?Q8OpZHJpYw==?= Le Goater <clg@redhat.com>,
+ marcandre.lureau@redhat.com, qemu-devel@nongnu.org, kraxel@redhat.com,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 4/5] ramfb: make migration conditional
+Message-ID: <20231002132631.669de736.alex.williamson@redhat.com>
+In-Reply-To: <05c80aca-8134-49b8-286b-853a02359ed6@redhat.com>
+References: <20231002111154.1002655-1-marcandre.lureau@redhat.com>
+ <20231002111154.1002655-5-marcandre.lureau@redhat.com>
+ <f0e4b89b-b88b-edfa-7855-fa41d5c72b69@redhat.com>
+ <20231002084134.22fee251.alex.williamson@redhat.com>
+ <05c80aca-8134-49b8-286b-853a02359ed6@redhat.com>
+Organization: Red Hat
 MIME-Version: 1.0
-References: <20230927112544.85011-1-victortoso@redhat.com>
- <20230927112544.85011-2-victortoso@redhat.com>
-In-Reply-To: <20230927112544.85011-2-victortoso@redhat.com>
-From: John Snow <jsnow@redhat.com>
-Date: Mon, 2 Oct 2023 15:07:49 -0400
-Message-ID: <CAFn=p-ZdgaCuTZF-yYa6E_CMFobR--Yt6ycSBNDz7S+sFxX14Q@mail.gmail.com>
-Subject: Re: [PATCH v1 1/9] qapi: golang: Generate qapi's enum types in Go
-To: Victor Toso <victortoso@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=alex.williamson@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -93,272 +105,211 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 27, 2023 at 7:25=E2=80=AFAM Victor Toso <victortoso@redhat.com>=
- wrote:
->
-> This patch handles QAPI enum types and generates its equivalent in Go.
->
-> Basically, Enums are being handled as strings in Golang.
->
-> 1. For each QAPI enum, we will define a string type in Go to be the
->    assigned type of this specific enum.
->
-> 2. Naming: CamelCase will be used in any identifier that we want to
->    export [0], which is everything.
->
-> [0] https://go.dev/ref/spec#Exported_identifiers
->
-> Example:
->
-> qapi:
->   | { 'enum': 'DisplayProtocol',
->   |   'data': [ 'vnc', 'spice' ] }
->
-> go:
->   | type DisplayProtocol string
->   |
->   | const (
->   |     DisplayProtocolVnc   DisplayProtocol =3D "vnc"
->   |     DisplayProtocolSpice DisplayProtocol =3D "spice"
->   | )
->
-> Signed-off-by: Victor Toso <victortoso@redhat.com>
-> ---
->  scripts/qapi/golang.py | 140 +++++++++++++++++++++++++++++++++++++++++
->  scripts/qapi/main.py   |   2 +
->  2 files changed, 142 insertions(+)
->  create mode 100644 scripts/qapi/golang.py
->
-> diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
-> new file mode 100644
-> index 0000000000..87081cdd05
-> --- /dev/null
-> +++ b/scripts/qapi/golang.py
-> @@ -0,0 +1,140 @@
-> +"""
-> +Golang QAPI generator
-> +"""
-> +# Copyright (c) 2023 Red Hat Inc.
-> +#
-> +# Authors:
-> +#  Victor Toso <victortoso@redhat.com>
-> +#
-> +# This work is licensed under the terms of the GNU GPL, version 2.
-> +# See the COPYING file in the top-level directory.
-> +
-> +# due QAPISchemaVisitor interface
-> +# pylint: disable=3Dtoo-many-arguments
-> +
-> +# Just for type hint on self
-> +from __future__ import annotations
-> +
-> +import os
-> +from typing import List, Optional
-> +
-> +from .schema import (
-> +    QAPISchema,
-> +    QAPISchemaType,
-> +    QAPISchemaVisitor,
-> +    QAPISchemaEnumMember,
-> +    QAPISchemaFeature,
-> +    QAPISchemaIfCond,
-> +    QAPISchemaObjectType,
-> +    QAPISchemaObjectTypeMember,
-> +    QAPISchemaVariants,
-> +)
-> +from .source import QAPISourceInfo
-> +
-> +TEMPLATE_ENUM =3D '''
-> +type {name} string
-> +const (
-> +{fields}
-> +)
-> +'''
-> +
-> +
-> +def gen_golang(schema: QAPISchema,
-> +               output_dir: str,
-> +               prefix: str) -> None:
-> +    vis =3D QAPISchemaGenGolangVisitor(prefix)
-> +    schema.visit(vis)
-> +    vis.write(output_dir)
-> +
-> +
-> +def qapi_to_field_name_enum(name: str) -> str:
-> +    return name.title().replace("-", "")
-> +
-> +
-> +class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
-> +
-> +    def __init__(self, _: str):
-> +        super().__init__()
-> +        types =3D ["enum"]
-> +        self.target =3D {name: "" for name in types}
-> +        self.schema =3D None
-> +        self.golang_package_name =3D "qapi"
-> +
-> +    def visit_begin(self, schema):
-> +        self.schema =3D schema
-> +
-> +        # Every Go file needs to reference its package name
-> +        for target in self.target:
-> +            self.target[target] =3D f"package {self.golang_package_name}=
-\n"
-> +
-> +    def visit_end(self):
-> +        self.schema =3D None
-> +
-> +    def visit_object_type(self: QAPISchemaGenGolangVisitor,
-> +                          name: str,
-> +                          info: Optional[QAPISourceInfo],
-> +                          ifcond: QAPISchemaIfCond,
-> +                          features: List[QAPISchemaFeature],
-> +                          base: Optional[QAPISchemaObjectType],
-> +                          members: List[QAPISchemaObjectTypeMember],
-> +                          variants: Optional[QAPISchemaVariants]
-> +                          ) -> None:
-> +        pass
-> +
-> +    def visit_alternate_type(self: QAPISchemaGenGolangVisitor,
-> +                             name: str,
-> +                             info: Optional[QAPISourceInfo],
-> +                             ifcond: QAPISchemaIfCond,
-> +                             features: List[QAPISchemaFeature],
-> +                             variants: QAPISchemaVariants
-> +                             ) -> None:
-> +        pass
-> +
-> +    def visit_enum_type(self: QAPISchemaGenGolangVisitor,
-> +                        name: str,
-> +                        info: Optional[QAPISourceInfo],
-> +                        ifcond: QAPISchemaIfCond,
-> +                        features: List[QAPISchemaFeature],
-> +                        members: List[QAPISchemaEnumMember],
-> +                        prefix: Optional[str]
-> +                        ) -> None:
-> +
-> +        value =3D qapi_to_field_name_enum(members[0].name)
+On Mon, 2 Oct 2023 20:24:11 +0200
+Laszlo Ersek <lersek@redhat.com> wrote:
 
-Unsure if this was addressed on the mailing list yet, but in our call
-we discussed how this call was vestigial and was causing the QAPI
-tests to fail. Actually, I can't quite run "make check-qapi-schema"
-and see the failure, I'm seeing it when I run "make check" and I'm not
-sure how to find the failure more efficiently/quickly:
+> On 10/2/23 16:41, Alex Williamson wrote:
+> > On Mon, 2 Oct 2023 15:38:10 +0200
+> > C=C3=A9dric Le Goater <clg@redhat.com> wrote:
+> >  =20
+> >> On 10/2/23 13:11, marcandre.lureau@redhat.com wrote: =20
+> >>> From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >>>
+> >>> RAMFB migration was unsupported until now, let's make it conditional.
+> >>> The following patch will prevent machines <=3D 8.1 to migrate it.
+> >>>
+> >>> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>  =
+ =20
+> >> Maybe localize the new 'ramfb_migrate' attribute close to 'enable_ramf=
+b'
+> >> in VFIOPCIDevice. Anyhow, =20
+> >=20
+> > Shouldn't this actually be tied to whether the device is migratable
+> > (which for GVT-g - the only ramfb user afaik - it's not)?  What does it
+> > mean to have a ramfb-migrate=3Dtrue property on a device that doesn't
+> > support migration, or false on a device that does support migration.  I
+> > don't understand why this is a user controllable property.  Thanks, =20
+>=20
+> The comments in <https://bugzilla.redhat.com/show_bug.cgi?id=3D1859424>
+> (which are unfortunately not public :/ ) suggest that ramfb migration
+> was simply forgotten when vGPU migration was implemented. So, "now
+> that vGPU migration is done", this should be added.
+>=20
+> Comment 8 suggests that the following domain XML snippet
+>=20
+>     <hostdev mode=3D'subsystem' type=3D'mdev' managed=3D'no'
+> model=3D'vfio-pci' display=3D'on' ramfb=3D'on'> <source>
+>         <address uuid=3D'b155147a-663a-4009-ae7f-e9a96805b3ce'/>
+>       </source>
+>       <alias name=3D'ua-b155147a-663a-4009-ae7f-e9a96805b3ce'/>
+>       <address type=3D'pci' domain=3D'0x0000' bus=3D'0x07' slot=3D'0x00'
+> function=3D'0x0'/> </hostdev>
+>=20
+> is migratable, but the ramfb device malfunctions on the destination
+> host.
+>=20
+> There's also a huge QEMU cmdline in comment#0 of the bug; I've not
+> tried to read that.
+>=20
+> AIUI BTW the property is not for the user to control, it's just a
+> compat knob for versioned machine types. AIUI those are usually
+> implemented with such (user-visible / -tweakable) device properties.
 
-jsnow@scv ~/s/q/build (review)> make
-[1/60] Generating subprojects/dtc/version_gen.h with a custom command
-[2/60] Generating qemu-version.h with a custom command (wrapped by
-meson to capture output)
-[3/44] Generating tests/Test QAPI files with a custom command
-FAILED: tests/qapi-builtin-types.c tests/qapi-builtin-types.h
-tests/qapi-builtin-visit.c tests/qapi-builtin-visit.h
-tests/test-qapi-commands-sub-sub-module.c
-tests/test-qapi-commands-sub-sub-module.h tests/test-qapi-commands.c
-tests/test-qapi-commands.h tests/test-qapi-emit-events.c
-tests/test-qapi-emit-events.h tests/test-qapi-events-sub-sub-module.c
-tests/test-qapi-events-sub-sub-module.h tests/test-qapi-events.c
-tests/test-qapi-events.h tests/test-qapi-init-commands.c
-tests/test-qapi-init-commands.h tests/test-qapi-introspect.c
-tests/test-qapi-introspect.h tests/test-qapi-types-sub-sub-module.c
-tests/test-qapi-types-sub-sub-module.h tests/test-qapi-types.c
-tests/test-qapi-types.h tests/test-qapi-visit-sub-sub-module.c
-tests/test-qapi-visit-sub-sub-module.h tests/test-qapi-visit.c
-tests/test-qapi-visit.h
-/home/jsnow/src/qemu/build/pyvenv/bin/python3
-/home/jsnow/src/qemu/scripts/qapi-gen.py -o
-/home/jsnow/src/qemu/build/tests -b -p test-
-../tests/qapi-schema/qapi-schema-test.json --suppress-tracing
-Traceback (most recent call last):
-  File "/home/jsnow/src/qemu/scripts/qapi-gen.py", line 19, in <module>
-    sys.exit(main.main())
-             ^^^^^^^^^^^
-  File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 96, in main
-    generate(args.schema,
-  File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 58, in generate
-    gen_golang(schema, output_dir, prefix)
-  File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 46, in gen_golan=
-g
-    schema.visit(vis)
-  File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 1227, in visit
-    mod.visit(visitor)
-  File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 209, in visit
-    entity.visit(visitor)
-  File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 346, in visit
-    visitor.visit_enum_type(
-  File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 102, in
-visit_enum_type
-    value =3D qapi_to_field_name_enum(members[0].name)
-                                    ~~~~~~~^^^
-IndexError: list index out of range
-ninja: build stopped: subcommand failed.
-make: *** [Makefile:162: run-ninja] Error 1
+If it's not for user control it's unfortunate that we expose it to the
+user at all, but should it at least use the "x-" prefix to indicate that
+it's not intended to be an API?  It's still odd to think that we can
+have scenarios of a non-migratable vfio device registering a migratable
+ramfb, and vice versa, but I suppose in the end it doesn't matter.
+Thanks,
 
+Alex
 
-For the rest of my review, I commented this line out and continued on.
-
-> +        fields =3D ""
-> +        for member in members:
-> +            value =3D qapi_to_field_name_enum(member.name)
-> +            fields +=3D f'''\t{name}{value} {name} =3D "{member.name}"\n=
-'''
-> +
-> +        self.target["enum"] +=3D TEMPLATE_ENUM.format(name=3Dname, field=
-s=3Dfields[:-1])
-> +
-> +    def visit_array_type(self, name, info, ifcond, element_type):
-> +        pass
-> +
-> +    def visit_command(self,
-> +                      name: str,
-> +                      info: Optional[QAPISourceInfo],
-> +                      ifcond: QAPISchemaIfCond,
-> +                      features: List[QAPISchemaFeature],
-> +                      arg_type: Optional[QAPISchemaObjectType],
-> +                      ret_type: Optional[QAPISchemaType],
-> +                      gen: bool,
-> +                      success_response: bool,
-> +                      boxed: bool,
-> +                      allow_oob: bool,
-> +                      allow_preconfig: bool,
-> +                      coroutine: bool) -> None:
-> +        pass
-> +
-> +    def visit_event(self, name, info, ifcond, features, arg_type, boxed)=
-:
-> +        pass
-> +
-> +    def write(self, output_dir: str) -> None:
-> +        for module_name, content in self.target.items():
-> +            go_module =3D module_name + "s.go"
-> +            go_dir =3D "go"
-> +            pathname =3D os.path.join(output_dir, go_dir, go_module)
-> +            odir =3D os.path.dirname(pathname)
-> +            os.makedirs(odir, exist_ok=3DTrue)
-> +
-> +            with open(pathname, "w", encoding=3D"ascii") as outfile:
-> +                outfile.write(content)
-> diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
-> index 316736b6a2..cdbb3690fd 100644
-> --- a/scripts/qapi/main.py
-> +++ b/scripts/qapi/main.py
-> @@ -15,6 +15,7 @@
->  from .common import must_match
->  from .error import QAPIError
->  from .events import gen_events
-> +from .golang import gen_golang
->  from .introspect import gen_introspect
->  from .schema import QAPISchema
->  from .types import gen_types
-> @@ -54,6 +55,7 @@ def generate(schema_file: str,
->      gen_events(schema, output_dir, prefix)
->      gen_introspect(schema, output_dir, prefix, unmask)
->
-> +    gen_golang(schema, output_dir, prefix)
->
->  def main() -> int:
->      """
-> --
-> 2.41.0
->
+> >>> ---
+> >>>   hw/vfio/pci.h                 | 1 +
+> >>>   include/hw/display/ramfb.h    | 2 +-
+> >>>   hw/display/ramfb-standalone.c | 8 +++++++-
+> >>>   hw/display/ramfb.c            | 6 ++++--
+> >>>   hw/vfio/display.c             | 4 ++--
+> >>>   hw/vfio/pci.c                 | 1 +
+> >>>   stubs/ramfb.c                 | 2 +-
+> >>>   7 files changed, 17 insertions(+), 7 deletions(-)
+> >>>
+> >>> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> >>> index 2d836093a8..671cc78912 100644
+> >>> --- a/hw/vfio/pci.h
+> >>> +++ b/hw/vfio/pci.h
+> >>> @@ -156,6 +156,7 @@ struct VFIOPCIDevice {
+> >>>       OnOffAuto display;
+> >>>       uint32_t display_xres;
+> >>>       uint32_t display_yres;
+> >>> +    bool ramfb_migrate;
+> >>>       int32_t bootindex;
+> >>>       uint32_t igd_gms;
+> >>>       OffAutoPCIBAR msix_relo;
+> >>> diff --git a/include/hw/display/ramfb.h
+> >>> b/include/hw/display/ramfb.h index b33a2c467b..40063b62bd 100644
+> >>> --- a/include/hw/display/ramfb.h
+> >>> +++ b/include/hw/display/ramfb.h
+> >>> @@ -4,7 +4,7 @@
+> >>>   /* ramfb.c */
+> >>>   typedef struct RAMFBState RAMFBState;
+> >>>   void ramfb_display_update(QemuConsole *con, RAMFBState *s);
+> >>> -RAMFBState *ramfb_setup(Error **errp);
+> >>> +RAMFBState *ramfb_setup(bool migrate, Error **errp);
+> >>>  =20
+> >>>   /* ramfb-standalone.c */
+> >>>   #define TYPE_RAMFB_DEVICE "ramfb"
+> >>> diff --git a/hw/display/ramfb-standalone.c
+> >>> b/hw/display/ramfb-standalone.c index 8c0094397f..6bbd69ccdf
+> >>> 100644 --- a/hw/display/ramfb-standalone.c
+> >>> +++ b/hw/display/ramfb-standalone.c
+> >>> @@ -15,6 +15,7 @@ struct RAMFBStandaloneState {
+> >>>       SysBusDevice parent_obj;
+> >>>       QemuConsole *con;
+> >>>       RAMFBState *state;
+> >>> +    bool migrate;
+> >>>   };
+> >>>  =20
+> >>>   static void display_update_wrapper(void *dev)
+> >>> @@ -37,9 +38,13 @@ static void ramfb_realizefn(DeviceState *dev,
+> >>> Error **errp) RAMFBStandaloneState *ramfb =3D RAMFB(dev);
+> >>>  =20
+> >>>       ramfb->con =3D graphic_console_init(dev, 0, &wrapper_ops,
+> >>> dev);
+> >>> -    ramfb->state =3D ramfb_setup(errp);
+> >>> +    ramfb->state =3D ramfb_setup(ramfb->migrate, errp);
+> >>>   }
+> >>>  =20
+> >>> +static Property ramfb_properties[] =3D {
+> >>> +    DEFINE_PROP_BOOL("migrate", RAMFBStandaloneState, migrate,
+> >>> true),
+> >>> +    DEFINE_PROP_END_OF_LIST(),
+> >>> +};
+> >>>   static void ramfb_class_initfn(ObjectClass *klass, void *data)
+> >>>   {
+> >>>       DeviceClass *dc =3D DEVICE_CLASS(klass);
+> >>> @@ -48,6 +53,7 @@ static void ramfb_class_initfn(ObjectClass
+> >>> *klass, void *data) dc->realize =3D ramfb_realizefn;
+> >>>       dc->desc =3D "ram framebuffer standalone device";
+> >>>       dc->user_creatable =3D true;
+> >>> +    device_class_set_props(dc, ramfb_properties);
+> >>>   }
+> >>>  =20
+> >>>   static const TypeInfo ramfb_info =3D {
+> >>> diff --git a/hw/display/ramfb.c b/hw/display/ramfb.c
+> >>> index 4aaaa7d653..73e08d605f 100644
+> >>> --- a/hw/display/ramfb.c
+> >>> +++ b/hw/display/ramfb.c
+> >>> @@ -135,7 +135,7 @@ static const VMStateDescription vmstate_ramfb
+> >>> =3D { }
+> >>>   };
+> >>>  =20
+> >>> -RAMFBState *ramfb_setup(Error **errp)
+> >>> +RAMFBState *ramfb_setup(bool migrate, Error **errp)
+> >>>   {
+> >>>       FWCfgState *fw_cfg =3D fw_cfg_find();
+> >>>       RAMFBState *s;
+> >>> @@ -147,7 +147,9 @@ RAMFBState *ramfb_setup(Error **errp)
+> >>>  =20
+> >>>       s =3D g_new0(RAMFBState, 1);
+> >>>  =20
+> >>> -    vmstate_register(NULL, 0, &vmstate_ramfb, s);
+> >>> +    if (migrate) {
+> >>> +        vmstate_register(NULL, 0, &vmstate_ramfb, s);
+> >>> +    }
+> >>>       rom_add_vga("vgabios-ramfb.bin");
+> >>>       fw_cfg_add_file_callback(fw_cfg, "etc/ramfb",
+> >>>                                NULL, ramfb_fw_cfg_write, s,
+> >>> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+> >>> index bec864f482..3f6b251ccd 100644
+> >>> --- a/hw/vfio/display.c
+> >>> +++ b/hw/vfio/display.c
+> >>> @@ -356,7 +356,7 @@ static int
+> >>> vfio_display_dmabuf_init(VFIOPCIDevice *vdev, Error **errp)
+> >>> &vfio_display_dmabuf_ops, vdev);
+> >>>       if (vdev->enable_ramfb) {
+> >>> -        vdev->dpy->ramfb =3D ramfb_setup(errp);
+> >>> +        vdev->dpy->ramfb =3D ramfb_setup(vdev->ramfb_migrate,
+> >>> errp); }
+> >>>       vfio_display_edid_init(vdev);
+> >>>       return 0;
+> >>> @@ -483,7 +483,7 @@ static int
+> >>> vfio_display_region_init(VFIOPCIDevice *vdev, Error **errp)
+> >>> &vfio_display_region_ops, vdev);
+> >>>       if (vdev->enable_ramfb) {
+> >>> -        vdev->dpy->ramfb =3D ramfb_setup(errp);
+> >>> +        vdev->dpy->ramfb =3D ramfb_setup(vdev->ramfb_migrate,
+> >>> errp); }
+> >>>       return 0;
+> >>>   }
+> >>> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> >>> index 3b2ca3c24c..6575b8f32d 100644
+> >>> --- a/hw/vfio/pci.c
+> >>> +++ b/hw/vfio/pci.c
+> >>> @@ -3484,6 +3484,7 @@ static const TypeInfo vfio_pci_dev_info =3D {
+> >>>  =20
+> >>>   static Property vfio_pci_dev_nohotplug_properties[] =3D {
+> >>>       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb,
+> >>> false),
+> >>> +    DEFINE_PROP_BOOL("ramfb-migrate", VFIOPCIDevice,
+> >>> ramfb_migrate,  true), DEFINE_PROP_END_OF_LIST(),
+> >>>   };
+> >>>  =20
+> >>> diff --git a/stubs/ramfb.c b/stubs/ramfb.c
+> >>> index 48143f3354..8869a5db09 100644
+> >>> --- a/stubs/ramfb.c
+> >>> +++ b/stubs/ramfb.c
+> >>> @@ -6,7 +6,7 @@ void ramfb_display_update(QemuConsole *con,
+> >>> RAMFBState *s) {
+> >>>   }
+> >>>  =20
+> >>> -RAMFBState *ramfb_setup(Error **errp)
+> >>> +RAMFBState *ramfb_setup(bool migrate, Error **errp)
+> >>>   {
+> >>>       error_setg(errp, "ramfb support not available");
+> >>>       return NULL;   =20
+> >> =20
+> >  =20
+>=20
 
 
