@@ -2,89 +2,61 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10EF7B4BED
-	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3627B4BE4
+	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 08:58:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnCrt-00073c-7w; Mon, 02 Oct 2023 02:57:25 -0400
+	id 1qnCrw-00074U-CY; Mon, 02 Oct 2023 02:57:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnCrq-00073S-6J
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:57:22 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qnCrv-00074G-5c
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:57:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnCro-0004iP-P0
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:57:21 -0400
+ (Exim 4.90_1) (envelope-from <aesteve@redhat.com>)
+ id 1qnCrt-0004io-Id
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 02:57:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696229839;
+ s=mimecast20190719; t=1696229844;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+pxd36zTsT0PX2PtoMf5L2s0tJWW5bkpx+2TO+OQ0EE=;
- b=GFtjNzfk2nJOM5I07yxvOBm73fOfMZa9sK7XpcjBvC/t6dtphwEkzm9YZGSEZ/A5aX7CaU
- 55z6V2kg1thm3RUIyfA/CUdv0GmDnZrl2dMoUMYYrWmswGDHGLv/eAka58VeCKIJHCQMeY
- I/mvhUaHWT06pb9cRmcOwD2mR+z/fk0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-365-H7UBK5WqPwGGnHp0cxVgTA-1; Mon, 02 Oct 2023 02:57:08 -0400
-X-MC-Unique: H7UBK5WqPwGGnHp0cxVgTA-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3217fdf913dso11989612f8f.3
- for <qemu-devel@nongnu.org>; Sun, 01 Oct 2023 23:57:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696229827; x=1696834627;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=+pxd36zTsT0PX2PtoMf5L2s0tJWW5bkpx+2TO+OQ0EE=;
- b=dKE/IjxlTr1fyRIHZ5TR8k8NUq8ccQ0YLzHVzfTZKKtL6pJm0wa18kc/5JeSoUmJFM
- CNKtV3DO3KkRCa8T2DSdpYp65GEwWjbPTteDHNOMYEvlhA7spuTPhW2tFWiwobDH5oGW
- NRdBEJl40yaw6UhszFCD2TowcOFraO6nIFLlBFqmia5JloA/ggEq82jLr+TFqibq9fsj
- 36sTpvgm3d24QzZC2TqLs+OYvjsRwo6MkXzHbmhf7mt6esRXHI6z+9o672RU/WEWk39J
- lzoxWlesrdXRC6xYL4Y1MvQsOVRkIpjYmSZJv1m/CkC6zjq0HAPgpEiiuAXhs+Y7cmS4
- jJkQ==
-X-Gm-Message-State: AOJu0YwucFc2gu0yqGOLKbEM/OfuUxLjJ9GXLjL9eur3im274lrZ4saA
- vpntN4XB/iC3HYvzLbHpE24pFpSh3YV9OHXWubY6PBYbFsSJ/Kj2fEmWgkDzFLhDx5lyefnmv70
- 04ifD4wzuKTlRndo=
-X-Received: by 2002:adf:f307:0:b0:31f:a259:73c with SMTP id
- i7-20020adff307000000b0031fa259073cmr8902403wro.27.1696229827421; 
- Sun, 01 Oct 2023 23:57:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEOyHEOaQGxURbKKTUinAZKqFkwasOUVrScWxFpl79c/Stifov5pifZNp0zUYBgE83oZL+Ycw==
-X-Received: by 2002:adf:f307:0:b0:31f:a259:73c with SMTP id
- i7-20020adff307000000b0031fa259073cmr8902385wro.27.1696229827086; 
- Sun, 01 Oct 2023 23:57:07 -0700 (PDT)
-Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
- p10-20020a5d59aa000000b00323287186aasm18569230wrr.32.2023.10.01.23.57.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 01 Oct 2023 23:57:06 -0700 (PDT)
-Date: Mon, 2 Oct 2023 02:57:03 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
- Eugenio Perez Martin <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
- synchronously
-Message-ID: <20231002025001-mutt-send-email-mst@kernel.org>
-References: <20230827182937.146450-1-lersek@redhat.com>
- <20230827182937.146450-8-lersek@redhat.com>
- <CAJSP0QVWSQ8F-A1ryGLtd1jb8Go1Pr_N7AcLb5W5kSFv8T8jTA@mail.gmail.com>
- <6d766ab4-b6b8-b64b-1f9d-60c558b56509@redhat.com>
- <CAJSP0QV9RO7bkkcVFibnTv4tixmO3wKohSY+ia1D-UZiRzh5QA@mail.gmail.com>
- <90e566a6-2ac9-5adf-233c-085df81526c0@redhat.com>
- <c1ed25c6-1493-a1e2-b539-664bdb7d4127@redhat.com>
- <20231001152422-mutt-send-email-mst@kernel.org>
- <20231001152519-mutt-send-email-mst@kernel.org>
- <2d361bac-9f8b-0a3a-ddd0-f66cd1294159@redhat.com>
+ bh=R684FEPSVDteBeV/Q5pd9sApjoEkV1dezQNxB7wf5o8=;
+ b=T9icE14l3wRh7Pke/AXUaUscFAf8qNWuQEhkycLM5k7fzEMGyJWvPxmaoOiHpf38VA7q2e
+ 2lVoHs95yABWDV/fJFPmsXa0yn50i+wk7/NI+uRXSNiAqLozGwL+xFM60C6SCYHF6fa9ve
+ 2lGqWd6OY5y48EoLOw4O8p6w+HKVecQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-249-QtzKPZZ3P7eUCA1cbY_gFw-1; Mon, 02 Oct 2023 02:57:19 -0400
+X-MC-Unique: QtzKPZZ3P7eUCA1cbY_gFw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D42D21019C88;
+ Mon,  2 Oct 2023 06:57:18 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.45.225.78])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 500AA14171B6;
+ Mon,  2 Oct 2023 06:57:17 +0000 (UTC)
+From: Albert Esteve <aesteve@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, "Michael S. Tsirkin" <mst@redhat.com>,
+ philmd@linaro.org, marcandre.lureau@gmail.com, cohuck@redhat.com,
+ Albert Esteve <aesteve@redhat.com>, Fam Zheng <fam@euphon.net>
+Subject: [PATCH v9 1/4] util/uuid: add a hash function
+Date: Mon,  2 Oct 2023 08:57:03 +0200
+Message-ID: <20231002065706.94707-2-aesteve@redhat.com>
+In-Reply-To: <20231002065706.94707-1-aesteve@redhat.com>
+References: <20231002065706.94707-1-aesteve@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2d361bac-9f8b-0a3a-ddd0-f66cd1294159@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=aesteve@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -108,26 +80,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 02, 2023 at 03:56:03AM +0200, Laszlo Ersek wrote:
-> On 10/1/23 21:25, Michael S. Tsirkin wrote:
-> > Not this actually - v2 of this.
-> 
-> Thank you, but:
-> 
-> - Stefan's question should be answered still IMO (although if you pick
-> up this series, then that could be interpreted as "QEMU bug, not spec bug")
-> 
-> - I was supposed to update the commit message on 7/7 in v3; I didn't
-> want to do it before Stefan's question was answered
-> 
-> Thanks!
-> Laszlo
+Add hash function to uuid module using the
+djb2 hash algorithm.
 
-OK I just answered. I am fine with the patch but I think
-virtiofsd should be fixed too.
+Add a couple simple unit tests for the hash
+function, checking collisions for similar UUIDs.
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
+---
+ include/qemu/uuid.h    |  2 ++
+ tests/unit/test-uuid.c | 27 +++++++++++++++++++++++++++
+ util/uuid.c            | 14 ++++++++++++++
+ 3 files changed, 43 insertions(+)
 
+diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
+index dc40ee1fc9..e24a1099e4 100644
+--- a/include/qemu/uuid.h
++++ b/include/qemu/uuid.h
+@@ -96,4 +96,6 @@ int qemu_uuid_parse(const char *str, QemuUUID *uuid);
+ 
+ QemuUUID qemu_uuid_bswap(QemuUUID uuid);
+ 
++uint32_t qemu_uuid_hash(const void *uuid);
++
+ #endif
+diff --git a/tests/unit/test-uuid.c b/tests/unit/test-uuid.c
+index c111de5fc1..aedc125ae9 100644
+--- a/tests/unit/test-uuid.c
++++ b/tests/unit/test-uuid.c
+@@ -171,6 +171,32 @@ static void test_uuid_unparse_strdup(void)
+     }
+ }
+ 
++static void test_uuid_hash(void)
++{
++    QemuUUID uuid;
++    int i;
++
++    for (i = 0; i < 100; i++) {
++        qemu_uuid_generate(&uuid);
++        /* Obtain the UUID hash */
++        uint32_t hash_a = qemu_uuid_hash(&uuid);
++        int data_idx = g_random_int_range(0, 15);
++        /* Change a single random byte of the UUID */
++        if (uuid.data[data_idx] < 0xFF) {
++            uuid.data[data_idx]++;
++        } else {
++            uuid.data[data_idx]--;
++        }
++        /* Obtain the UUID hash again */
++        uint32_t hash_b = qemu_uuid_hash(&uuid);
++        /*
++         * Both hashes shall be different (avoid collision)
++         * for any change in the UUID fields
++         */
++        g_assert_cmpint(hash_a, !=, hash_b);
++    }
++}
++
+ int main(int argc, char **argv)
+ {
+     g_test_init(&argc, &argv, NULL);
+@@ -179,6 +205,7 @@ int main(int argc, char **argv)
+     g_test_add_func("/uuid/parse", test_uuid_parse);
+     g_test_add_func("/uuid/unparse", test_uuid_unparse);
+     g_test_add_func("/uuid/unparse_strdup", test_uuid_unparse_strdup);
++    g_test_add_func("/uuid/hash", test_uuid_hash);
+ 
+     return g_test_run();
+ }
+diff --git a/util/uuid.c b/util/uuid.c
+index b1108dde78..d71aa79e5e 100644
+--- a/util/uuid.c
++++ b/util/uuid.c
+@@ -116,3 +116,17 @@ QemuUUID qemu_uuid_bswap(QemuUUID uuid)
+     bswap16s(&uuid.fields.time_high_and_version);
+     return uuid;
+ }
++
++/* djb2 hash algorithm */
++uint32_t qemu_uuid_hash(const void *uuid)
++{
++    QemuUUID *qid = (QemuUUID *) uuid;
++    uint32_t h = 5381;
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(qid->data); i++) {
++        h = (h << 5) + h + qid->data[i];
++    }
++
++    return h;
++}
 -- 
-MST
+2.41.0
 
 
