@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729D57B56C9
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F777B56C8
 	for <lists+qemu-devel@lfdr.de>; Mon,  2 Oct 2023 17:39:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnKzU-0001uX-Q4; Mon, 02 Oct 2023 11:37:48 -0400
+	id 1qnKzZ-0001z8-UC; Mon, 02 Oct 2023 11:37:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qnKzR-0001uJ-Bn; Mon, 02 Oct 2023 11:37:45 -0400
-Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ id 1qnKzY-0001xm-2x; Mon, 02 Oct 2023 11:37:52 -0400
+Received: from mail-pj1-x102b.google.com ([2607:f8b0:4864:20::102b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <danielhb413@gmail.com>)
- id 1qnKzL-0002u2-IQ; Mon, 02 Oct 2023 11:37:44 -0400
-Received: by mail-pl1-x632.google.com with SMTP id
- d9443c01a7336-1c434c33ec0so124728395ad.3; 
- Mon, 02 Oct 2023 08:37:38 -0700 (PDT)
+ id 1qnKzW-0002ui-NJ; Mon, 02 Oct 2023 11:37:51 -0400
+Received: by mail-pj1-x102b.google.com with SMTP id
+ 98e67ed59e1d1-27736c2a731so11084304a91.3; 
+ Mon, 02 Oct 2023 08:37:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696261058; x=1696865858; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696261069; x=1696865869; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=TXfzbWru7W09CMX3f9N7Tl3U+i9E/Ze2aP9PKWDV9zs=;
- b=gonrdu09ZuuOuJZlbTlGOnIwJqoz3/bIZLUNGwDdAupsumnW1Ke3Som2eA0097GzE3
- CftUHR8f3loRZtcfCpeBPgV0DGWpgfC861skFQuSzwmhqW/0FZPEIXkpbgH7VfoVKsMz
- 5U1YkoOaJvQ31Zz5t14+6l/Pjs1tQdFr7wgQYRgf6IIbnXkbWymijm2z3aJ/qA14hNxu
- 93Xd8gosgtxkPrUU7XLO3S4UlKP7S8HOQrzmFzmGKnLX2Kg1F+KDnrkhb5ehB9HC7a3o
- knmipealQcz6VEJl0Id//eGb6KQwmJlElGNWvnRNn3n43OvElEPNDqwxrlABiI06uCRt
- TQXw==
+ bh=iRq8V4+HiMXts1NbA4HibQ/8v0ahVDNNgXP72zTzgz0=;
+ b=iJc/KSLQWqpTKgM8XIVUbftkFDaCZttUlgn5epcsZo9asBeWCB3ean9fzlzOeXl94b
+ 2JmUQnKKNitBHQJG23zWT0wz0uYf9RceXAd0pD70STVZSIrDD61swrw7AfEfS/YEoAhI
+ wvuh06siC6QPEuseyouC2NjElYBayRy/AzSuCA4RRr9Se3W9V6uT3dml9jp1l93HUdn+
+ gIMqFDIQA7AS0+1bkm+emchEuoOvHAeittM5cMNf1y5Scv/k7nLqJ6/3DYjCz8hVIaUr
+ wGpgJEO1ftAy/7DGyhkN15Ujp9SSbw94nafR5BS2LRpVB1gvV09WIO4KqpqfQNipYN9Y
+ EkRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696261058; x=1696865858;
+ d=1e100.net; s=20230601; t=1696261069; x=1696865869;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TXfzbWru7W09CMX3f9N7Tl3U+i9E/Ze2aP9PKWDV9zs=;
- b=wC/vcwtXOha1/MN8j0x/4HsHqL1MbX9DSH/89BRkCuKoAV8cHGYMXBP0lPGN3Icz6L
- WrS8LlQ8ZAkKsdJpshE1TNmTZlxLeHoGLR3jRjTfc6Ut6Dxq36MdA35kDlhztIxW2hK0
- LKvVZ4cM2Q8ynwbFOmCR+T8ohcLnyWvBXeFicD2Qbe3hemFkNBWNpRMT8zqD/1qOaVhB
- FR3pqmlRLOpoQoRM2+lfZTT1pNsM2iI6z8qzdZAh+mwwJLZpsPmSRzhGDH2JVp4PxMqQ
- wP1xsOfdv04R/nMIIz+nDDzaAzEL4BLoBwuGnNPNBI354KQ1AotTo7xqMS4wVrgzvdKE
- U9yg==
-X-Gm-Message-State: AOJu0Yzl4Jkr5KPOzCJJ4rjmFmRqQJt/QA5AwpPBy0+ky9KSYhujnF31
- j4x471SD8Bwx7dE0SLvB2+w=
-X-Google-Smtp-Source: AGHT+IFK7YPKrpAYxXdhjcObqJxxZky5sFFKLTMmOQqQmbY8Gn5XdGq7Q64Xw5taTgqnbavoW1riOw==
-X-Received: by 2002:a17:902:cec3:b0:1bd:a22a:d409 with SMTP id
- d3-20020a170902cec300b001bda22ad409mr11867699plg.40.1696261057709; 
- Mon, 02 Oct 2023 08:37:37 -0700 (PDT)
+ bh=iRq8V4+HiMXts1NbA4HibQ/8v0ahVDNNgXP72zTzgz0=;
+ b=AZrPFjyrr3XxtIH8zMqcfggFqeOkx/CWCm3BaTUEGzRCSYoXVYUnBAFHsvNbWRINq5
+ Qo1KNzl3IJqwgEiL51OyjHOYHONms5CwR5gtEDMqiMPVALg4DgbnlKNFFmTLQ0gguTUW
+ OnRb2DZkVQWlg2eVU2/xbIrw00GCbsx15nJzihXYva7lkApmnBqMBlcbuY/1ve2VLWcx
+ eTAISeOXIWBWAf7qvw1TsFYLTSHiyRyUmhRbd4sZe6tMkFqTEop1gfx+tZDsj3YrTAE2
+ DNkDVIJT0G5bDw5ZXkabcHDHAHswVWws9Q0pWpISG8R9fEKyn79mAbsFwV/x33Q7RCNz
+ jp+Q==
+X-Gm-Message-State: AOJu0Yw/Y6vYLIBJ9vmewPxb6hRNKyyKL3ybmKXbpJnQS39XT9Zfvu3c
+ kAOUAcC8edctKfQA+p5iXDk=
+X-Google-Smtp-Source: AGHT+IEdzBKO3WogsENzmn6bhlyD8CM7kiTHBt8747tBbn+KtIFl6j1G7aZ4+eSLw+8q+cciXuLhLA==
+X-Received: by 2002:a17:90a:2f24:b0:269:524f:2a19 with SMTP id
+ s33-20020a17090a2f2400b00269524f2a19mr10818023pjd.26.1696261068675; 
+ Mon, 02 Oct 2023 08:37:48 -0700 (PDT)
 Received: from [192.168.68.107] ([177.94.15.124])
  by smtp.gmail.com with ESMTPSA id
- q16-20020a170902dad000b001c0cb2aa2easm21937176plx.121.2023.10.02.08.37.35
+ 19-20020a17090a199300b0026b46ad94c9sm7009194pji.24.2023.10.02.08.37.47
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 08:37:37 -0700 (PDT)
-Message-ID: <e1fe24d3-19a8-1c07-6910-0d621de3602c@gmail.com>
-Date: Mon, 2 Oct 2023 12:37:34 -0300
+ Mon, 02 Oct 2023 08:37:48 -0700 (PDT)
+Message-ID: <e94660fa-ef72-01d7-0926-64afe1790856@gmail.com>
+Date: Mon, 2 Oct 2023 12:37:45 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 1/8] ppc/{bamboo, virtex_ml507}: Remove useless dependency
- on ppc405.h header
+Subject: Re: [PATCH 2/8] MAINTAINERS: Adjust file list for PPC ref405ep machine
 Content-Language: en-US
 To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
  qemu-devel@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
 References: <20231002122326.365368-1-clg@kaod.org>
- <20231002122326.365368-2-clg@kaod.org>
+ <20231002122326.365368-3-clg@kaod.org>
 From: Daniel Henrique Barboza <danielhb413@gmail.com>
-In-Reply-To: <20231002122326.365368-2-clg@kaod.org>
+In-Reply-To: <20231002122326.365368-3-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
- envelope-from=danielhb413@gmail.com; helo=mail-pl1-x632.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102b;
+ envelope-from=danielhb413@gmail.com; helo=mail-pj1-x102b.google.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -81,7 +79,7 @@ X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001, NICE_REPLY_A=-2.321,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,38 +98,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/2/23 09:23, Cédric Le Goater wrote:
-> Cc: "Edgar E. Iglesias" <edgar.iglesias@gmail.com> (odd fixer:virtex_ml507)
 > Signed-off-by: Cédric Le Goater <clg@kaod.org>
 > ---
 
 Reviewed-by: Daniel Henrique Barboza <danielhb413@gmail.com>
 
->   hw/ppc/ppc440_bamboo.c | 1 -
->   hw/ppc/virtex_ml507.c  | 1 -
->   2 files changed, 2 deletions(-)
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/ppc/ppc440_bamboo.c b/hw/ppc/ppc440_bamboo.c
-> index 45f409c83862..a189942de4cf 100644
-> --- a/hw/ppc/ppc440_bamboo.c
-> +++ b/hw/ppc/ppc440_bamboo.c
-> @@ -24,7 +24,6 @@
->   #include "elf.h"
->   #include "hw/char/serial.h"
->   #include "hw/ppc/ppc.h"
-> -#include "ppc405.h"
->   #include "sysemu/sysemu.h"
->   #include "sysemu/reset.h"
->   #include "hw/sysbus.h"
-> diff --git a/hw/ppc/virtex_ml507.c b/hw/ppc/virtex_ml507.c
-> index f2f81bd4259c..d02f330650fc 100644
-> --- a/hw/ppc/virtex_ml507.c
-> +++ b/hw/ppc/virtex_ml507.c
-> @@ -43,7 +43,6 @@
->   #include "hw/ppc/ppc.h"
->   #include "hw/ppc/ppc4xx.h"
->   #include "hw/qdev-properties.h"
-> -#include "ppc405.h"
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 355b1960ce46..3f90264203cc 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -1345,7 +1345,7 @@ PowerPC Machines
+>   405 (ref405ep)
+>   L: qemu-ppc@nongnu.org
+>   S: Orphan
+> -F: hw/ppc/ppc405_boards.c
+> +F: hw/ppc/ppc405*
 >   
->   #include <libfdt.h>
->   
+>   Bamboo
+>   L: qemu-ppc@nongnu.org
 
