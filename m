@@ -2,75 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1707B737E
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 23:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8499E7B742E
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 00:38:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnnCK-0000FX-NE; Tue, 03 Oct 2023 17:44:56 -0400
+	id 1qno0H-0000sZ-3S; Tue, 03 Oct 2023 18:36:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnnCE-0000FO-Q8
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:44:51 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qno0E-0000sC-4L
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 18:36:30 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnnCD-0000kK-6l
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:44:50 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-5345a3dfe3bso2412483a12.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 14:44:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qno0C-0005Vq-Hb
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 18:36:29 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c6219307b2so10605835ad.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 15:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696369487; x=1696974287; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696372586; x=1696977386; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cy5+rg5Vz73McPYlDXpepqQEfWAcSnW8q6WDEzToA9M=;
- b=QD8a9vwmpl6YP8PFYkh9iH+8aduLPvgIZTZM1tmYxAPWWzVp9yWq/JnDHTxJ9yEs7l
- htWOrf/N/ogloUlHFIKWlpV5pMGBYtaG2EpPjaygSIPAbgtcIDgQEjWPSZ0WJwJPvwgV
- cJFmIwW+JSb372GjUnrYFxie0xZ/uyJcxW1f27MuPl0GzYRlm/R7xtxQHm3+bRLZ8/ks
- WGrhXYlOjWIsEKOfZn5audYdrdJlpqLYyrS0X3Lw/0D8HxHT1K6jEXriMwdF1m8FzU94
- nxxa+MSX1lU1U2m0Tx78Ox3QpTua2gz88/GpvHkSXlk9v7W6JRLigMdoDhGx984fYrST
- DvBg==
+ bh=rJdxKUBwtOhHhDDaKNhbEXnQNqTqh4ny1AhelVVqjo4=;
+ b=ZC7M/U9MIRZlC4Mz2Wx2EDrkgJppRfcGyI/B9FPqp6XJwE/3naiOvv7RDN1VD2Soro
+ ZriRCageaenjHea6rXC82YdtIYW8H1SbXJfQJn4uk8yda5h8yW1bgt1Z4lelAYhk5JHh
+ 1VZjvzsDoCuhgD1MecQcoDgHRDL3T5o61kDYNyUAc6C48mpOyaFI4Qp646VyIKeNdb45
+ YfXH8wdAoFM7r1tC8bRa/0vn3D6XLrT1DBlI+QBm0FZsQEM5AoZbK5AE7ehhGauxdiZe
+ Sh/3Ge0/lLMdC+Ys8P050bu33ShxSb2lojHrLHTZdhQvSZ6UqzPM3G7tMCBdJ87RuyF2
+ 6Y0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696369487; x=1696974287;
+ d=1e100.net; s=20230601; t=1696372586; x=1696977386;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=cy5+rg5Vz73McPYlDXpepqQEfWAcSnW8q6WDEzToA9M=;
- b=V4OhvN/yNy+TMwX8tIAW/I99UoG39tvV8FSA4empSUrXo36xA9a6aQm0V2v9ol00bs
- ybjOpZo2Pl77IUhwPWnwRpdiLyAlai+V2zkv3tCYnBz6WO1As17yfAkK69vvWYob+bQ4
- oqg8aAqD1YmvxqYaMgNa0VKbLuee2RHeBI+Gbm0yc1DYdPTzBPVLc82aGIgbdR3kuGdz
- 3iNdjeYpzSj13izKBHahR4LdBag8I6/iN3W6b5k8XfxYu4oOEI+nlnjNR3JY8MG/p/tC
- IOSuuVz+vXXo/j1UpoUVyTalWbD8jQ0SH9wi5wSpMlG2Q2vp1MLKtcJ10kb55/7AExcJ
- aJSQ==
-X-Gm-Message-State: AOJu0YyW87oNUvmFiezy1yuynYrtsB/Xlbqz7ZdiG5sYdrwjJ+zzyzxL
- daKArOUrdptHihWRLlGKQi7I+/7zZy4=
-X-Google-Smtp-Source: AGHT+IFMKiCuiwo7v04oVJ8VDNuCW6rw6lwHPQLQeSQe6ROWlOPcy8IU7w2u707UsJhyKA7t/JCDhQ==
-X-Received: by 2002:a17:907:2e19:b0:9a1:bb8f:17d0 with SMTP id
- ig25-20020a1709072e1900b009a1bb8f17d0mr381168ejc.30.1696369486607; 
- Tue, 03 Oct 2023 14:44:46 -0700 (PDT)
-Received: from archlinux.. (pd95eda61.dip0.t-ipconnect.de. [217.94.218.97])
- by smtp.gmail.com with ESMTPSA id
- g6-20020a1709064e4600b00991faf3810esm1669523ejw.146.2023.10.03.14.44.45
+ bh=rJdxKUBwtOhHhDDaKNhbEXnQNqTqh4ny1AhelVVqjo4=;
+ b=ZJbXXiQ8EX8TrKE93RSbOpmxxex8mv5r+FSnoL7+sSFq3mY/LqNk6K+Lr5+e+26H2G
+ m2/YzcvhhERi2XBquyerelu7yFMMbheD0/Dcz1CLFI3IhzTjFiUcOzVKiNGtYWNrCOQi
+ a2rlrNtQMHC2qAh5eI7+gbMrUYEG2T3f/meKCy0hBnS0iZVb2dPEj6/Opf+O7QUg6OMf
+ 16EwVebG7NpQqn1ZDHoxjIC8cSf5Nkovf4UFUZ5uSjpOQNnuzxU6ljtT6x5RYFLIAkW/
+ MoS9PGPO4lT7Nut8/Ip53O4iewasNrbsf0OCWuXRNA5po2lgxibS3LbbiJKlrYrl8SIN
+ 5Stw==
+X-Gm-Message-State: AOJu0Yzk36P5vrdngmiscWUhXgawRq3Pogb8w/bcr1KJITBwWve3JnUo
+ 6YqGUo0jeNXDvF6prk6Z+ruOHOxeTxCuOHqGSn4=
+X-Google-Smtp-Source: AGHT+IH9mWHkmHlkN6R0YIZLs5su57+OJxuaBobjpUemCpVyMBcAc33p6zaETdVswd9mKMQqfFkAmg==
+X-Received: by 2002:a17:903:11d2:b0:1b8:8b72:fa28 with SMTP id
+ q18-20020a17090311d200b001b88b72fa28mr1012466plh.58.1696372585816; 
+ Tue, 03 Oct 2023 15:36:25 -0700 (PDT)
+Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
+ q16-20020a170902dad000b001c75d7f2597sm2126055plx.141.2023.10.03.15.36.25
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 14:44:46 -0700 (PDT)
-From: Bernhard Beschow <shentey@gmail.com>
+ Tue, 03 Oct 2023 15:36:25 -0700 (PDT)
+From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH] hw/isa/vt82c686: Respect SCI interrupt assignment
-Date: Tue,  3 Oct 2023 23:44:37 +0200
-Message-ID: <20231003214437.29302-1-shentey@gmail.com>
-X-Mailer: git-send-email 2.42.0
+Cc: keithp@keithp.com,
+	laurent@vivier.eu
+Subject: [PATCH v2 0/2] target/m68k: Support semihosting on non-ColdFire
+ targets
+Date: Tue,  3 Oct 2023 15:36:22 -0700
+Message-Id: <20231003223624.1753000-1-richard.henderson@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::532;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -88,116 +89,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-According to the datasheet, SCI interrupts of the power management function
-aren't triggered through the PCI pins but rather directly to the integrated PIC.
-The routing is configurable through the ACPI interrupt select register at offset
-42 in the PCI configuration space of the ISA function.
+Hi Keith,
 
-Signed-off-by: Bernhard Beschow <shentey@gmail.com>
----
- hw/isa/vt82c686.c | 43 +++++++++++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 12 deletions(-)
+Sorry this has languished for a few months.  I wasn't happy with
+the frobbing done by EXCP_HALT_INSN, and less keen to replicate
+it with EXCP_BKPT_INSN, so I've re-organized a bit.
 
-diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-index 57bdfb4e78..2988ad1eda 100644
---- a/hw/isa/vt82c686.c
-+++ b/hw/isa/vt82c686.c
-@@ -46,6 +46,8 @@ struct ViaPMState {
-     ACPIREGS ar;
-     APMState apm;
-     PMSMBus smb;
-+
-+    qemu_irq irq;
- };
- 
- static void pm_io_space_update(ViaPMState *s)
-@@ -148,18 +150,7 @@ static void pm_update_sci(ViaPMState *s)
-                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
-                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
-                    ACPI_BITMASK_TIMER_ENABLE)) != 0);
--    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
--        /*
--         * FIXME:
--         * Fix device model that realizes this PM device and remove
--         * this work around.
--         * The device model should wire SCI and setup
--         * PCI_INTERRUPT_PIN properly.
--         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
--         * work around.
--         */
--        pci_set_irq(&s->dev, sci_level);
--    }
-+    qemu_set_irq(s->irq, sci_level);
-     /* schedule a timer interruption if needed */
-     acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
-                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
-@@ -213,6 +204,13 @@ static void via_pm_realize(PCIDevice *dev, Error **errp)
-     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
- }
- 
-+static void via_pm_init(Object *obj)
-+{
-+    ViaPMState *s = VIA_PM(obj);
-+
-+    qdev_init_gpio_out(DEVICE(obj), &s->irq, 1);
-+}
-+
- typedef struct via_pm_init_info {
-     uint16_t device_id;
- } ViaPMInitInfo;
-@@ -238,6 +236,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
- static const TypeInfo via_pm_info = {
-     .name          = TYPE_VIA_PM,
-     .parent        = TYPE_PCI_DEVICE,
-+    .instance_init = via_pm_init,
-     .instance_size = sizeof(ViaPMState),
-     .abstract      = true,
-     .interfaces = (InterfaceInfo[]) {
-@@ -568,9 +567,25 @@ static const VMStateDescription vmstate_via = {
-     }
- };
- 
-+static void via_isa_set_pm_irq(void *opaque, int n, int level)
-+{
-+    ViaISAState *s = opaque;
-+    uint8_t irq = pci_get_byte(s->pm.dev.config + 0x42) & 0xf;
-+
-+    if (irq == 2) {
-+        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is reserved");
-+        return;
-+    }
-+
-+    if (irq != 0) {
-+        qemu_set_irq(s->isa_irqs_in[irq], level);
-+    }
-+}
-+
- static void via_isa_init(Object *obj)
- {
-     ViaISAState *s = VIA_ISA(obj);
-+    DeviceState *dev = DEVICE(s);
- 
-     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
-     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
-@@ -578,6 +593,8 @@ static void via_isa_init(Object *obj)
-     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
-     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
-     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
-+
-+    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
- }
- 
- static const TypeInfo via_isa_info = {
-@@ -704,6 +721,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
-     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
-         return;
-     }
-+    qdev_connect_gpio_out(DEVICE(&s->pm), 0,
-+                          qdev_get_gpio_in_named(DEVICE(d), "sci", 0));
- 
-     /* Function 5: AC97 Audio */
-     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
+So far only compile-tested.  I guess gcc testing with m68k-elf
+might exercise libgloss and thence semihosting?
+
+
+r~
+
+
+Richard Henderson (2):
+  target/m68k: Perform the semihosting test during translate
+  target/m68k: Support semihosting on non-ColdFire targets
+
+ target/m68k/cpu.h       |  2 +-
+ target/m68k/op_helper.c | 14 ++----------
+ target/m68k/translate.c | 50 +++++++++++++++++++++++++++++++++++++----
+ 3 files changed, 49 insertions(+), 17 deletions(-)
+
 -- 
-2.42.0
+2.34.1
 
 
