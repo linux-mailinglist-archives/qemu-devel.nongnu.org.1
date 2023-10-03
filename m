@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469947B6AFD
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:03:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6D47B6B03
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:05:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnfzo-0006Qm-Ty; Tue, 03 Oct 2023 10:03:32 -0400
+	id 1qng17-0007GL-3M; Tue, 03 Oct 2023 10:04:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnfzO-0006OX-QB
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:03:09 -0400
-Received: from mail-pj1-x1032.google.com ([2607:f8b0:4864:20::1032])
+ id 1qng0U-00074G-Ue
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:04:16 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnfzM-0001fv-Jl
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:03:06 -0400
-Received: by mail-pj1-x1032.google.com with SMTP id
- 98e67ed59e1d1-279294d94acso3104211a91.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:03:04 -0700 (PDT)
+ id 1qng0S-0001r4-BN
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:04:14 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-69101d33315so772240b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:04:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696341783; x=1696946583; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696341843; x=1696946643; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=UnayPkiXpxA7sum5FkQpu1Xk020obqsV+ZF3u+IUD8k=;
- b=a/AmwzIIgnoyuU/MKsa0Bh7Mr0+5AqS+6fQUVvfe0eXcuYA4/y9d+OqjoYEya6GUHQ
- gntwll/XgnvcLN37bN8WlSjH0NTi8Yr2vSbAYB1ueVyiFjMkc1nEOcxVMCbGcmHtczV6
- aR/5chtLsu9ysA8imfpSd9jO+tukewX6CSnaCdUj2mIxGum8ZymsYWaobU4UUA4yS268
- xWjM2pj+6f75hoot0MOy1rqvbDvbGw3SaCyaAotFLf7YWAjt72/6bUmy9mWD2Q8xntwQ
- dBAeiges4EQ8ojNOiaktMQ5Kuzdk/CsWgBMf2n9rTMuzsg/jOd0Neq2oJRYVdzlN7Y0x
- dqHQ==
+ bh=PGhYHTVvUZAkku9032I5Cj12kC+c5Sm175YoL6Kui2A=;
+ b=d5TAaNN439EBNDM8haWMjwOIXAJbqQljcZaNQWdbD6UPQA9wTt+sVR0v+d0CndjT++
+ piuhVAxAtSY2wZw7I7AEf7EeEsIj/FCMSw9+NymlMrAtLZCr2xI6InMN/Vd7E6ileWIf
+ fA0uIkx+uQZBecBQs3BIwwp5z23Ni8qWNrvb/zq92DWNT7qxRA1FGN/gux2Ds9wdiFPY
+ D3L8C8j0sskafGFI/VXIO4auvQJv0TMFbdKVUClVSbHhFTZKlvKrXm8CLgww1eL7ts+O
+ AC22fO5LiVKnGd7yNhzb/ZsBEITLya7ZyD5z98wNqoFrmw/S/0WcD8leY1FxGmmt/r/D
+ AtSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696341783; x=1696946583;
+ d=1e100.net; s=20230601; t=1696341843; x=1696946643;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=UnayPkiXpxA7sum5FkQpu1Xk020obqsV+ZF3u+IUD8k=;
- b=kiC1uWeJb2/tMJjue6IFAivofKJsQgioDPVdsiT7P8UTutX4zk1ecI5PhoCn1UEnRY
- /m2HnDLrSeZstBOeg4IBZ8i8UAA7mVs2ErgPFWSZRmoPvEWpsndEQ/1FiXJPeyr4FgGt
- /7EZVmQj0OHpIso8ZR0IDgsEXsg/ZDUI6MRNxARRAkzMB807CAzcwCZlnBxMOl457bWF
- 3ERvHVg5Vycs1NFZGBDB374M8KhTFDUbCaUtaLuRpsqxp2IBN5JGHyTHoQVeeowki+9O
- cpaodVgwMZTdVebMMDu+0Ml1INgpeHXiFDlawqxsEDTz/J+T46VkeZJlsuZlDtKxCrzX
- HMCA==
-X-Gm-Message-State: AOJu0YyAcOI6uj3W4tZvzPdNtEAOwZdgIHQ8rU2on6r9N+lt1rIKZK9o
- yIsAO1RuoFCor8qmdpds9eNkCA==
-X-Google-Smtp-Source: AGHT+IH7I+k5PdAb84xgljlJPvpciF6SkP3a6EczjIFQlzPhPVWAGaYxbyWpJf26QRI6GU4Y3C+1yA==
-X-Received: by 2002:a17:90a:d985:b0:273:83ac:5eb9 with SMTP id
- d5-20020a17090ad98500b0027383ac5eb9mr4339035pjv.4.1696341782754; 
- Tue, 03 Oct 2023 07:03:02 -0700 (PDT)
+ bh=PGhYHTVvUZAkku9032I5Cj12kC+c5Sm175YoL6Kui2A=;
+ b=IxCPKZvvSbjbFk/fWrVg64ul8T1I8FxlFxc1MqSIjMfEBqy5c5H8ehoCM4pTaf0eoB
+ YSbj0ALYt6b76SWnvm8Tokj17YoFTM2E9HCwGJGYpXytTRXo3dhul6DqH2kMX1IQnD84
+ AqY/mwrRW8gvo/OYBiYE/UTYLFGIkGPzvGnvmalgPkcLWgOf2P1k+CWzpuDbpAqNMTSq
+ X3D/9ByLssxPBXUhVWFG+sR1r+LY2PlUsjtPUJLvRmqKkHSk0+8ZrTpgRooxl/cu8zz+
+ hV/5NVLYKOQZbxdGbunqZJrDZurQT74IWTBV88D+VbegQ1AOWFy8NmonROJsVvKazxY6
+ smcA==
+X-Gm-Message-State: AOJu0YyUl/ob611bZGShr9c9vOvzOU/G4XDhOVrbpqsBwHye6mofv9/Y
+ mEcQnDn8O/8vqR8lSclZKTRngg==
+X-Google-Smtp-Source: AGHT+IHbsC8bIzjKyXDvYfAdfaCcEVwebd0JAM2/o3vR3hGxDCXzAkhavBCserikXogG1mN2b9A0xA==
+X-Received: by 2002:a05:6a00:130b:b0:690:d620:7801 with SMTP id
+ j11-20020a056a00130b00b00690d6207801mr12959180pfu.11.1696341843634; 
+ Tue, 03 Oct 2023 07:04:03 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- mn6-20020a17090b188600b0026b46ad94c9sm1414505pjb.24.2023.10.03.07.03.01
+ c13-20020aa7880d000000b0068e4c5a4f3esm1389122pfo.71.2023.10.03.07.04.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 07:03:02 -0700 (PDT)
-Message-ID: <dbdef0e8-d0cd-8617-02af-a11f69f4a8e1@linaro.org>
-Date: Tue, 3 Oct 2023 07:03:00 -0700
+ Tue, 03 Oct 2023 07:04:03 -0700 (PDT)
+Message-ID: <96a726c8-186c-3f09-9d9b-d17d7f5289e2@linaro.org>
+Date: Tue, 3 Oct 2023 07:04:00 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH RESEND] osdep: set _FORTIFY_SOURCE=2 when optimization is
- enabled
+Subject: Re: [PATCH 0/5] accel: Restrict tcg_exec_[un]realizefn() to TCG
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+Cc: Fabiano Rosas <farosas@suse.de>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Claudio Fontana <cfontana@suse.de>, Eduardo Habkost <eduardo@habkost.net>,
+ kvm@vger.kernel.org, Yanan Wang <wangyanan55@huawei.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>
-References: <20231003091549.223020-1-berrange@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230915190009.68404-1-philmd@linaro.org>
+ <87e1be19-c1c6-73fb-3569-7dbf186662f7@linaro.org>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231003091549.223020-1-berrange@redhat.com>
+In-Reply-To: <87e1be19-c1c6-73fb-3569-7dbf186662f7@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1032;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1032.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -101,41 +101,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 02:15, Daniel P. Berrangé wrote:
-> Currently we set _FORTIFY_SOURCE=2 as a compiler argument when the
-> meson 'optimization' setting is non-zero, the compiler is GCC and
-> the target is Linux.
+On 10/2/23 23:44, Philippe Mathieu-Daudé wrote:
+> On 15/9/23 21:00, Philippe Mathieu-Daudé wrote:
+>> - Add missing accel_cpu_unrealize()
+>> - Add AccelClass::[un]realize_cpu handlers
+>> - Use tcg_exec_[un]realizefn as AccelClass handlers
+>>
+>> Philippe Mathieu-Daudé (5):
+>>    accel: Rename accel_cpu_realizefn() ->  accel_cpu_realize()
+>>    accel: Introduce accel_cpu_unrealize() stub
+>>    accel: Declare AccelClass::[un]realize_cpu() handlers
+>>    accel/tcg: Have tcg_exec_realizefn() return a boolean
+>>    accel/tcg: Restrict tcg_exec_[un]realizefn() to TCG
 > 
-> While the default QEMU optimization level is 2, user could override
-> this by setting CFLAGS="-O0" or --extra-cflags="-O0" when running
-> configure and this won't be reflected in the meson 'optimization'
-> setting. As a result we try to enable _FORTIFY_SOURCE=2 and then the
-> user gets compile errors as it only works with optimization.
+> Ping?
 > 
-> Rather than trying to improve detection in meson, it is simpler to
-> just check the __OPTIMIZE__ define from osdep.h.
-> 
-> The comment about being incompatible with clang appears to be
-> outdated, as compilation works fine without excluding clang.
-> 
-> In the coroutine code we must set _FORTIFY_SOURCE=0 to stop the
-> logic in osdep.h then enabling it.
-> 
-> Signed-off-by: Daniel P. Berrangé<berrange@redhat.com>
-> ---
-> 
-> Re-sent due to previous bad patch submission
-> 
->   include/qemu/osdep.h         |  4 ++++
->   meson.build                  | 10 ----------
->   util/coroutine-sigaltstack.c |  4 ++--
->   util/coroutine-ucontext.c    |  4 ++--
->   4 files changed, 8 insertions(+), 14 deletions(-)
 
-I agree this is better than the meson fragment.
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-
+I have this series queued for the next tcg pull.
 
 r~
 
