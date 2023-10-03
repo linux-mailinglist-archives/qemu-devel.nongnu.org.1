@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B16607B6439
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 10:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFB07B6459
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 10:37:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnaoX-0002aU-B2; Tue, 03 Oct 2023 04:31:33 -0400
+	id 1qnaos-0003LX-BW; Tue, 03 Oct 2023 04:31:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qnaoJ-0002LV-Nh
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:31:21 -0400
+ id 1qnaoM-0002ND-RQ
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:31:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qnaoD-0000JB-1a
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:31:19 -0400
+ id 1qnaoL-0000KG-9s
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:31:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696321872;
+ s=mimecast20190719; t=1696321879;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=062lQOPC+PhYZGAGOhww6XlMuZlq/6DlQrwBd4uWz6k=;
- b=NW8l4ARjGnIOqXHeUb3iMLqoKvdq+eTfnqBr7+LpupuqXCiNtKkQMaVpvznIEVVD4mpdJi
- nr1qORhRieIBzwF2ZB59MCbdvIuDRsEIODsxB8PDXwsXJLzH30ZzOztSyGjMQW77UeFJ0A
- 4HnPwgbF+iTPChgVN4X6nb/856g4iuI=
+ bh=2zaDS58SaB+9o6+flazBQrj9kRQw5pA/KRCUziy84sQ=;
+ b=YMONj6r6VFwiIV1CVrWafvxvdQa3dCPMdDZDLmJxW9kYjziRFV6H/zFwfIwgolzoqECVJf
+ GXnjvYfwMLD84I8d4taNj0ViNoH3SS+n/aUMO/NIubetbEeYuXS/9X6SNBvYFfr9wuYG1y
+ w0mn7iAznlcORMBEgJudWbU1MoT3ojI=
 Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
  [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-98-scm5HJHLMAiGmvJOnvCuoA-1; Tue, 03 Oct 2023 04:31:10 -0400
-X-MC-Unique: scm5HJHLMAiGmvJOnvCuoA-1
+ us-mta-130-FhNX1VbDN76gUAQJa_SfZA-1; Tue, 03 Oct 2023 04:31:12 -0400
+X-MC-Unique: FhNX1VbDN76gUAQJa_SfZA-1
 Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-99c8bbc902eso49810466b.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 01:31:10 -0700 (PDT)
+ a640c23a62f3a-9a9d7a801a3so55232766b.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 01:31:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696321868; x=1696926668;
+ d=1e100.net; s=20230601; t=1696321870; x=1696926670;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=062lQOPC+PhYZGAGOhww6XlMuZlq/6DlQrwBd4uWz6k=;
- b=Ep6n+5114Uj6VXC8GC09hYtjf9vLbBs5aSeIy1TVtF8TdL2wAs8d9hdIvpK+j6+1lG
- y3Ti9CqE//3OLXm7WXZ3pnu4TLxxwbSsj3hnTrLGKWDwjg7QiQPXYkezMI27v7A01NZM
- xSqYdnbbAA8xZiiQTZZxOIELl2TRxVHN/yGi60B5SJ9W3Mq5l5NIBAzhkKiMNTzbB4hu
- BygZ+c0Mb/bTJxWAuyc+O0hSabQ4yr96oO4hmNveJA08yumshTJcZU4FsYK95GFCLt9h
- DJB8oBF9PaiOppfATsOBuWvdSfvrMiPwhgQ+f0wnxAXxbtzCQ9vlWWNkDtNHgTp5NcN0
- AcWw==
-X-Gm-Message-State: AOJu0YwSBR8UxpuJi3Bw2h8SYqB9qhlhSmsN2EYPJMY0hGFM4VOwom5i
- 6747cCwTz/m/pbUYLm7aG1HxunD5xyxM3Uqc+HwjQPFAOqb2ooPQFtJYWs1BDfHwDfxRhg5ZsHL
- qYC8CyLtg57WT/S3JTCOXEPdn8/77lpcWYtZzQOeFBPKiLT+dIiWMNlmyoNBCV6Y06aC9wTxOrG
- U=
-X-Received: by 2002:a17:906:749b:b0:992:c8d7:b66f with SMTP id
- e27-20020a170906749b00b00992c8d7b66fmr11749899ejl.75.1696321868326; 
- Tue, 03 Oct 2023 01:31:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF+03vM2Bn88nAlceA/zx7mvqOsVLZXwBO4PQ8ZpGKTbNzlRiplYww0ShjYW77Z3Pe21ueoJg==
-X-Received: by 2002:a17:906:749b:b0:992:c8d7:b66f with SMTP id
- e27-20020a170906749b00b00992c8d7b66fmr11749883ejl.75.1696321867965; 
- Tue, 03 Oct 2023 01:31:07 -0700 (PDT)
+ bh=2zaDS58SaB+9o6+flazBQrj9kRQw5pA/KRCUziy84sQ=;
+ b=VHkKqC7ly80H4P7jvPBnq/rUEb+6CfDsdf0UykWm8RR1Pc43kYxfvD3IFyLk4ILmAC
+ S0JKWJww3c3z8sQkBB/R2E7FI1Wofbsp4o+XoX65vNr9cFkNi1ZG0ayFONjcdjJHBzU2
+ Ps1mPwcGJIKWCAodoQwLIRDoZhRzyoBcn2jxrQxBP4ZvhhSgYyzl5yHcvUmnV8rf6UHs
+ TWqCaF7oZSJfGT5pmHpWkWMrA5yxE6cNKrx9qh3pG+T5fqBUtVa/XUl6WUpLYnEQXLKf
+ j5vAJQCNWPf/Crk8OQb6CPW5sZxm4KK0knz93iowQupD8YmJIy3pINjIClTjm4JOi1K8
+ 0Eqg==
+X-Gm-Message-State: AOJu0YzZJBdFR1Oqb7xiLXyzMA2uMmswY3Gecz8vWkoD20Omqqp+dpT/
+ /dfiz6aXQwVwsbnCaX8FxqSbsLn/dKNfJEU+Y3SLgFKuW89BQDRSpfvxI09vf3E+9bl3W5kQGSH
+ 6EvMF7RVq2SQn5hT1dNFIV6B7vtyurEllKj5BckHkZZTnEYpckGF1SexpezQa92J42na8m17T06
+ w=
+X-Received: by 2002:a17:906:74ca:b0:9b2:94a8:df5 with SMTP id
+ z10-20020a17090674ca00b009b294a80df5mr12232611ejl.35.1696321870319; 
+ Tue, 03 Oct 2023 01:31:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEK5ocTogznjUcIcfCewj+5asU7+eNkif6eojK06Ls3wBc/c3PyBsADazKtHHdtMEl4MXTOVw==
+X-Received: by 2002:a17:906:74ca:b0:9b2:94a8:df5 with SMTP id
+ z10-20020a17090674ca00b009b294a80df5mr12232599ejl.35.1696321870084; 
+ Tue, 03 Oct 2023 01:31:10 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:1c09:f536:3de6:228c])
  by smtp.gmail.com with ESMTPSA id
- n23-20020a170906089700b009adc77fe165sm653134eje.118.2023.10.03.01.31.06
+ a11-20020a170906468b00b00997cce73cc7sm659455ejr.29.2023.10.03.01.31.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 01:31:06 -0700 (PDT)
+ Tue, 03 Oct 2023 01:31:09 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 12/24] ui/vnc: Require audiodev= to enable audio
-Date: Tue,  3 Oct 2023 10:30:29 +0200
-Message-ID: <20231003083042.110065-13-pbonzini@redhat.com>
+Cc: Martin Kletzander <mkletzan@redhat.com>
+Subject: [PULL 13/24] audio: Require AudioState in AUD_add_capture
+Date: Tue,  3 Oct 2023 10:30:30 +0200
+Message-ID: <20231003083042.110065-14-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231003083042.110065-1-pbonzini@redhat.com>
 References: <20231003083042.110065-1-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
@@ -101,107 +100,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If there is no audiodev do not send the audio ack in response to
-VNC_ENCODING_AUDIO, so that clients aren't told audio exists, and
-immediately drop the client if they try to send any audio control messages
-when audio is not advertised.
+From: Martin Kletzander <mkletzan@redhat.com>
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Since all callers require a valid audiodev this function can now safely
+abort in case of missing AudioState.
+
+Signed-off-by: Martin Kletzander <mkletzan@redhat.com>
+Message-ID: <c6e87e678e914df0f59da2145c2753cdb4a16f63.1650874791.git.mkletzan@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- docs/about/deprecated.rst       |  8 +++-----
- docs/about/removed-features.rst |  6 ++++++
- ui/vnc.c                        | 11 ++++++++++-
- ui/vnc.h                        |  2 ++
- 4 files changed, 21 insertions(+), 6 deletions(-)
+ audio/audio.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 8f3fef97bd4..c07bf58dde1 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -45,13 +45,11 @@ backend settings instead of environment variables.  To ease migration to
- the new format, the ``-audiodev-help`` option can be used to convert
- the current values of the environment variables to ``-audiodev`` options.
+diff --git a/audio/audio.c b/audio/audio.c
+index 2f479657117..d4387cb3e21 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -1876,10 +1876,8 @@ CaptureVoiceOut *AUD_add_capture(
+     struct capture_callback *cb;
  
--Creating sound card devices and vnc without ``audiodev=`` property (since 4.2)
--''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+Creating sound card devices without ``audiodev=`` property (since 4.2)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+     if (!s) {
+-        if (!legacy_config) {
+-            dolog("Capturing without setting an audiodev is deprecated\n");
+-        }
+-        s = audio_init(NULL, NULL);
++        error_report("Capturing without setting an audiodev is not supported");
++        abort();
+     }
  
- When not using the deprecated legacy audio config, each sound card
--should specify an ``audiodev=`` property.  Additionally, when using
--vnc, you should specify an ``audiodev=`` property if you plan to
--transmit audio through the VNC protocol.
-+should specify an ``audiodev=`` property.
- 
- Short-form boolean options (since 6.0)
- ''''''''''''''''''''''''''''''''''''''
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index 97ec47f1d25..276060b320c 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -436,6 +436,12 @@ the process listing. This was replaced by the new ``password-secret``
- option which lets the password be securely provided on the command
- line using a ``secret`` object instance.
- 
-+Creating vnc without ``audiodev=`` property (removed in 8.2)
-+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-+
-+When using vnc, you should specify an ``audiodev=`` property if
-+you plan to transmit audio through the VNC protocol.
-+
- QEMU Machine Protocol (QMP) commands
- ------------------------------------
- 
-diff --git a/ui/vnc.c b/ui/vnc.c
-index c302bb07a5b..acb56461b2d 100644
---- a/ui/vnc.c
-+++ b/ui/vnc.c
-@@ -2195,7 +2195,10 @@ static void set_encodings(VncState *vs, int32_t *encodings, size_t n_encodings)
-             send_ext_key_event_ack(vs);
-             break;
-         case VNC_ENCODING_AUDIO:
--            send_ext_audio_ack(vs);
-+            if (vs->vd->audio_state) {
-+                vs->features |= VNC_FEATURE_AUDIO_MASK;
-+                send_ext_audio_ack(vs);
-+            }
-             break;
-         case VNC_ENCODING_WMVi:
-             vs->features |= VNC_FEATURE_WMVI_MASK;
-@@ -2502,6 +2505,12 @@ static int protocol_client_msg(VncState *vs, uint8_t *data, size_t len)
-                           read_u32(data, 4), read_u32(data, 8));
-             break;
-         case VNC_MSG_CLIENT_QEMU_AUDIO:
-+            if (!vnc_has_feature(vs, VNC_FEATURE_AUDIO)) {
-+                error_report("Audio message %d with audio disabled", read_u8(data, 2));
-+                vnc_client_error(vs);
-+                break;
-+            }
-+
-             if (len == 2)
-                 return 4;
- 
-diff --git a/ui/vnc.h b/ui/vnc.h
-index 757fa83044e..96d19dce199 100644
---- a/ui/vnc.h
-+++ b/ui/vnc.h
-@@ -464,6 +464,7 @@ enum VncFeatures {
-     VNC_FEATURE_LED_STATE,
-     VNC_FEATURE_XVP,
-     VNC_FEATURE_CLIPBOARD_EXT,
-+    VNC_FEATURE_AUDIO,
- };
- 
- #define VNC_FEATURE_RESIZE_MASK              (1 << VNC_FEATURE_RESIZE)
-@@ -481,6 +482,7 @@ enum VncFeatures {
- #define VNC_FEATURE_LED_STATE_MASK           (1 << VNC_FEATURE_LED_STATE)
- #define VNC_FEATURE_XVP_MASK                 (1 << VNC_FEATURE_XVP)
- #define VNC_FEATURE_CLIPBOARD_EXT_MASK       (1 <<  VNC_FEATURE_CLIPBOARD_EXT)
-+#define VNC_FEATURE_AUDIO_MASK               (1 <<  VNC_FEATURE_AUDIO)
- 
- 
- /* Client -> Server message IDs */
+     if (!audio_get_pdo_out(s->dev)->mixing_engine) {
 -- 
 2.41.0
 
