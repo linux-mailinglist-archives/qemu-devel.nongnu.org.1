@@ -2,96 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 814AA7B6696
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 12:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA30C7B66BC
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 12:49:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qncqT-0001Qm-NZ; Tue, 03 Oct 2023 06:41:41 -0400
+	id 1qncwZ-00031C-1j; Tue, 03 Oct 2023 06:47:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qncqQ-0001QG-1p
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:41:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qncqO-0000sn-GK
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:41:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696329695;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=hcJVyH2llOLki8X0rx5ksDogK7/87o8Fg/bvWxrwplg=;
- b=Zq8gI3cDroK4Fm+nbiymwnP2Zfxs4fq59T6PUX3tUfDKnB23+P+0CePtpjzW0nLYfvUImP
- 5AqoVJqG5pc+LgmjfAfdj8IOYFO6OS+0Ih7oenmmzpWZ+2E+U7fGrmPn9uj19/4JF5ozf+
- BItLkQbqG9CDKHbycSRZB+JVpqL6EMU=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-321-lBaZNq3xPFCr7E8tQEnfCA-1; Tue, 03 Oct 2023 06:41:16 -0400
-X-MC-Unique: lBaZNq3xPFCr7E8tQEnfCA-1
-Received: by mail-pf1-f200.google.com with SMTP id
- d2e1a72fcca58-690f9c65205so709167b3a.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 03:41:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qncwX-0002z8-5B
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:47:57 -0400
+Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qncwV-0001vM-Gb
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:47:56 -0400
+Received: by mail-qt1-x832.google.com with SMTP id
+ d75a77b69052e-41517088479so24364081cf.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 03:47:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696330074; x=1696934874; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=HKOznQ+rlBkDAM03Paol71OYGLN6rxAm3HvstM8nrzs=;
+ b=jvCPiqLhwsporV6FUlAscCfE8qDVFTEg14XOBr1oMWyv52njpmQ1L92fiLM1cXT235
+ PgAZR+furGWq8bS8GEmFEWHelGdpNB9dyaIAOS50GU5lho3z7c8uOoptFq4srCDtLmoy
+ 8S9fv5S5b3gNt8c7DhySJsGA1KG0g354VdaJ5o2HpPVeZcV1KYi42jOmJImf1QREOSRj
+ 5a2Vuw86AOr1JJSHVGdnoi0EkFoLDGPzwGtyJBdTwGmo7ea+nprFIK5osJuhnlNPp7Jl
+ Pc4XkPRtgYsV0WRdsDPYZkU8KoeV/S7saIfnvNoKivEqn8FiVCmN9GblXl5tz+9vzKnt
+ yX+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696329676; x=1696934476;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1696330074; x=1696934874;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hcJVyH2llOLki8X0rx5ksDogK7/87o8Fg/bvWxrwplg=;
- b=GZ+gfmhuS9FtXRtiFcj8XHmHMlEbuGhTA4rKrO3js26NK2wUwVLEWE5wLv7OjIYw41
- n1JgabISuMOJ8Pf3f0Ml+G0RHc/lQiWcXhaxtQDCjVEHPh2Ecllf61KYkhADDMAWq/Np
- Ec8tZKrLa3XAOnYsLswL3Qw5KMaSX5KIDkeK7hv8zUi8Iz2B8lkX7+PIDgo6lR4sBfy0
- N/l7WtqCPT/tYcYEblUqoFmgURa6/6z4/+8ifLTsj9xb4TCZBP5B1ybr7l+WVFM97yPf
- Q3YdHJMwtMr0p9NAJHXjDAFy0ZCbmxAij8lV8SUWP3u47VwpPpF3klI9DiUft6VeV2Ok
- QiRg==
-X-Gm-Message-State: AOJu0Yw5KlBz7EjdcLX2IdypmZIJ5ZZvRqLX0P1dVrwzmLFJZ23igFOu
- Ui+oAERDfiAJaF/ExHBKt0yS6kJTEGTHgEn/6Lo6RC/5SDHTDGJppsvq3pw3+XoFuMOgzuVJd45
- cGQj4VdF8tyD8WSo=
-X-Received: by 2002:a05:6a00:c85:b0:68a:5449:7436 with SMTP id
- a5-20020a056a000c8500b0068a54497436mr16194914pfv.32.1696329675805; 
- Tue, 03 Oct 2023 03:41:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqHvvHvZ35guOKSS7OgiRlIG+XCMtavIeQ/iGpG4uP2feMmOnHciINbq2X9V9WfkfMW/GJ9g==
-X-Received: by 2002:a05:6a00:c85:b0:68a:5449:7436 with SMTP id
- a5-20020a056a000c8500b0068a54497436mr16194896pfv.32.1696329675438; 
- Tue, 03 Oct 2023 03:41:15 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.159.31])
- by smtp.gmail.com with ESMTPSA id
- fm18-20020a056a002f9200b00684ca1b45b9sm1082308pfb.149.2023.10.03.03.41.12
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Tue, 03 Oct 2023 03:41:15 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH] hw/i386/intel_iommu: changes towards enabling
- -Wshadow=local
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20231003103601.6245-1-anisinha@redhat.com>
-Date: Tue, 3 Oct 2023 16:11:10 +0530
-Cc: =?utf-8?Q?=22Daniel_P_=2E_Berrang=C3=A9=22?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <58B781D9-1825-4ECF-9634-AFF3F80DB33F@redhat.com>
-References: <20231003103601.6245-1-anisinha@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>, Peter Xu <peterx@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
+ bh=HKOznQ+rlBkDAM03Paol71OYGLN6rxAm3HvstM8nrzs=;
+ b=mr6cfyCHFCSPRJhmvYR5f5LxBFW0n/YtdwxftvMbha1jXPtZ6eJEVJnd+iZpHpdoHF
+ jMbqqV3wDYKs7liL4Ai7kvDUP8PL9RRvtU3Yj7xtqhOKtlqnBb5g3UslkfQWDFIqC9/5
+ N9NsoljOnG1nmVvqVPVtbkPDaLGzaxZDoDMQBNU+3X4uZz76PlNKXBWLyf/H0Ov9lSek
+ 3SyB7WX8y2MdHgi3mvsISFP57HUtr17Hmf7uO9h46bQAQ2Uk/UPmlXYzFXHMdGSCDbdY
+ bzrG99bgqzV3s9ISQ9ME95h6cimlNN8rReM9ze/XKTfkkjFp427amaETfOopM8ahNkqj
+ LBDw==
+X-Gm-Message-State: AOJu0YyDC2unA0yrMoBTxmpXFEAgvMsLUywyhsG+Fei8ck5wLB4bQqGc
+ QRKbuZj64nKxlWMgsb2kYnJlJZ7GrDUb9MslrCQ=
+X-Google-Smtp-Source: AGHT+IEWqSYN+aBFm6BvhsW0ULYjK95ra8YMNbWzmlImZfyRtJeZEmL8u2H0JNQlVgFhmlzQ+/wp4eQLJPB44cPfb2g=
+X-Received: by 2002:a05:622a:1883:b0:417:b06f:6103 with SMTP id
+ v3-20020a05622a188300b00417b06f6103mr2437620qtc.21.1696330074288; Tue, 03 Oct
+ 2023 03:47:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20231003085644.1220326-1-marcandre.lureau@redhat.com>
+ <20231003085644.1220326-6-marcandre.lureau@redhat.com>
+ <7df9e19a-4ead-516c-21b3-04d8e899d7e7@redhat.com>
+In-Reply-To: <7df9e19a-4ead-516c-21b3-04d8e899d7e7@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Tue, 3 Oct 2023 14:47:42 +0400
+Message-ID: <CAJ+F1C+=5uUjdO-DY9iAR0zL+XoPmY7NBjgV3AwvJV6sRqTGfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 5/5] hw/vfio: add ramfb migration support
+To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
+Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
+ lersek@redhat.com, 
+ kraxel@redhat.com, Eduardo Habkost <eduardo@habkost.net>, 
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+ =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Yanan Wang <wangyanan55@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,86 +93,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi
+
+On Tue, Oct 3, 2023 at 2:17=E2=80=AFPM C=C3=A9dric Le Goater <clg@redhat.co=
+m> wrote:
+>
+> On 10/3/23 10:56, marcandre.lureau@redhat.com wrote:
+> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> >
+> > Add a "VFIODisplay" subsection whenever "x-ramfb-migrate" is turned on.
+> >
+> > Turn it off by default on machines <=3D 8.1 for compatibility reasons.
+>
+>
+> This change breaks linking on various platforms with :
+>
+> /usr/bin/ld: libqemu-xtensa-softmmu.fa.p/hw_vfio_display.c.o:(.data.rel+0=
+x50): undefined reference to `ramfb_vmstate'
+>
+> Some stubs updates are missing it seems..
+>
+
+diff --git a/stubs/ramfb.c b/stubs/ramfb.c
+index 48143f3354..cf64733b10 100644
+--- a/stubs/ramfb.c
++++ b/stubs/ramfb.c
+@@ -2,6 +2,8 @@
+ #include "qapi/error.h"
+ #include "hw/display/ramfb.h"
+
++const VMStateDescription ramfb_vmstate =3D {};
++
 
 
-> On 03-Oct-2023, at 4:06 PM, Ani Sinha <anisinha@redhat.com> wrote:
->=20
-> Code changes that addresses all compiler complaints coming from =
-enabling
-> -Wshadow flags. Enabling -Wshadow catches cases of local variables =
-shadowing
-> other local variables or parameters. These makes the code confusing =
-and/or adds
-> bugs that are difficult to catch.
->=20
-> See also
->=20
->   Subject: Help wanted for enabling -Wshadow=3Dlocal
->   Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
->   https://lore.kernel.org/qemu-devel/87r0mqlf9x.fsf@pond.sub.org
->=20
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
+And I think we should also change the "needed" condition to:
 
-Although I sent this for completeness, I see this already got merged
+diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+index 4689f2e5c1..b327844764 100644
+--- a/hw/vfio/pci.c
++++ b/hw/vfio/pci.c
+@@ -2613,7 +2613,7 @@ static bool vfio_display_needed(void *opaque)
+     VFIOPCIDevice *vdev =3D opaque;
 
-=
-https://gitlab.com/qemu-project/qemu/-/commit/a082739eb390d2aad679b5efa9af=
-c40cfa2a496d
+     /* the only thing that justifies the VFIODisplay sub-section atm */
+-    return vdev->ramfb_migrate !=3D ON_OFF_AUTO_OFF;
++    return vdev->enable_ramfb && vdev->ramfb_migrate !=3D ON_OFF_AUTO_OFF;
+ }
 
-So we can toss this patch out.
 
-> ---
-> hw/i386/intel_iommu.c | 8 ++++----
-> 1 file changed, 4 insertions(+), 4 deletions(-)
->=20
-> See also=20
-> Peter's changes from
-> https://lore.kernel.org/r/20230922160410.138786-1-peterx@redhat.com.
-> This patch is same as above.
->=20
-> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> index c0ce896668..2c832ab68b 100644
-> --- a/hw/i386/intel_iommu.c
-> +++ b/hw/i386/intel_iommu.c
-> @@ -3744,7 +3744,7 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState =
-*s, PCIBus *bus,
-> /* Unmap the whole range in the notifier's scope. */
-> static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier =
-*n)
-> {
-> -    hwaddr size, remain;
-> +    hwaddr total, remain;
->     hwaddr start =3D n->start;
->     hwaddr end =3D n->end;
->     IntelIOMMUState *s =3D as->iommu_state;
-> @@ -3765,7 +3765,7 @@ static void =
-vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
->     }
->=20
->     assert(start <=3D end);
-> -    size =3D remain =3D end - start + 1;
-> +    total =3D remain =3D end - start + 1;
->=20
->     while (remain >=3D VTD_PAGE_SIZE) {
->         IOMMUTLBEvent event;
-> @@ -3793,10 +3793,10 @@ static void =
-vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
->     trace_vtd_as_unmap_whole(pci_bus_num(as->bus),
->                              VTD_PCI_SLOT(as->devfn),
->                              VTD_PCI_FUNC(as->devfn),
-> -                             n->start, size);
-> +                             n->start, total);
->=20
->     map.iova =3D n->start;
-> -    map.size =3D size - 1; /* Inclusive */
-> +    map.size =3D total - 1; /* Inclusive */
->     iova_tree_remove(as->iova_tree, map);
-> }
->=20
-> --=20
-> 2.42.0
->=20
 
+> Thanks,
+>
+> C.
+>
+> >
+> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> > ---
+> >   hw/vfio/pci.h     |  3 +++
+> >   hw/core/machine.c |  1 +
+> >   hw/vfio/display.c | 23 +++++++++++++++++++++++
+> >   hw/vfio/pci.c     | 32 ++++++++++++++++++++++++++++++++
+> >   4 files changed, 59 insertions(+)
+> >
+> > diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> > index 2d836093a8..fd06695542 100644
+> > --- a/hw/vfio/pci.h
+> > +++ b/hw/vfio/pci.h
+> > @@ -173,6 +173,7 @@ struct VFIOPCIDevice {
+> >       bool no_kvm_ioeventfd;
+> >       bool no_vfio_ioeventfd;
+> >       bool enable_ramfb;
+> > +    OnOffAuto ramfb_migrate;
+> >       bool defer_kvm_irq_routing;
+> >       bool clear_parent_atomics_on_exit;
+> >       VFIODisplay *dpy;
+> > @@ -226,4 +227,6 @@ void vfio_display_reset(VFIOPCIDevice *vdev);
+> >   int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
+> >   void vfio_display_finalize(VFIOPCIDevice *vdev);
+> >
+> > +extern const VMStateDescription vfio_display_vmstate;
+> > +
+> >   #endif /* HW_VFIO_VFIO_PCI_H */
+> > diff --git a/hw/core/machine.c b/hw/core/machine.c
+> > index 47a07d1d9b..f2f8940a85 100644
+> > --- a/hw/core/machine.c
+> > +++ b/hw/core/machine.c
+> > @@ -32,6 +32,7 @@
+> >
+> >   GlobalProperty hw_compat_8_1[] =3D {
+> >       { "ramfb", "x-migrate", "off" },
+> > +    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" }
+> >   };
+> >   const size_t hw_compat_8_1_len =3D G_N_ELEMENTS(hw_compat_8_1);
+> >
+> > diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+> > index bec864f482..de5bf71dd1 100644
+> > --- a/hw/vfio/display.c
+> > +++ b/hw/vfio/display.c
+> > @@ -542,3 +542,26 @@ void vfio_display_finalize(VFIOPCIDevice *vdev)
+> >       vfio_display_edid_exit(vdev->dpy);
+> >       g_free(vdev->dpy);
+> >   }
+> > +
+> > +static bool migrate_needed(void *opaque)
+> > +{
+> > +    /*
+> > +     * If we are here, it's because vfio_display_needed(), which is on=
+ly true
+> > +     * when dpy->ramfb_migrate atm.
+> > +     *
+> > +     * If the migration condition is changed, we should check here if
+> > +     * ramfb_migrate is true. (this will need a way to lookup the asso=
+ciated
+> > +     * VFIOPCIDevice somehow, or fields to be moved, ..)
+> > +     */
+> > +    return true;
+> > +}
+> > +
+> > +const VMStateDescription vfio_display_vmstate =3D {
+> > +    .name =3D "VFIODisplay",
+> > +    .version_id =3D 1,
+> > +    .minimum_version_id =3D 1,
+> > +    .needed =3D migrate_needed,
+> > +    .fields =3D (VMStateField[]) {
+> > +        VMSTATE_STRUCT_POINTER(ramfb, VFIODisplay, ramfb_vmstate, RAMF=
+BState),
+> > +    }
+> > +};
+> > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> > index 3b2ca3c24c..4689f2e5c1 100644
+> > --- a/hw/vfio/pci.c
+> > +++ b/hw/vfio/pci.c
+> > @@ -2608,6 +2608,25 @@ static bool vfio_msix_present(void *opaque, int =
+version_id)
+> >       return msix_present(pdev);
+> >   }
+> >
+> > +static bool vfio_display_needed(void *opaque)
+> > +{
+> > +    VFIOPCIDevice *vdev =3D opaque;
+> > +
+> > +    /* the only thing that justifies the VFIODisplay sub-section atm *=
+/
+> > +    return vdev->ramfb_migrate !=3D ON_OFF_AUTO_OFF;
+> > +}
+> > +
+> > +const VMStateDescription vmstate_vfio_display =3D {
+> > +    .name =3D "VFIOPCIDevice/VFIODisplay",
+> > +    .version_id =3D 1,
+> > +    .minimum_version_id =3D 1,
+> > +    .needed =3D vfio_display_needed,
+> > +    .fields =3D (VMStateField[]){
+> > +        VMSTATE_STRUCT_POINTER(dpy, VFIOPCIDevice, vfio_display_vmstat=
+e, VFIODisplay),
+> > +        VMSTATE_END_OF_LIST()
+> > +    }
+> > +};
+> > +
+> >   const VMStateDescription vmstate_vfio_pci_config =3D {
+> >       .name =3D "VFIOPCIDevice",
+> >       .version_id =3D 1,
+> > @@ -2616,6 +2635,10 @@ const VMStateDescription vmstate_vfio_pci_config=
+ =3D {
+> >           VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
+> >           VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
+> >           VMSTATE_END_OF_LIST()
+> > +    },
+> > +    .subsections =3D (const VMStateDescription*[]) {
+> > +        &vmstate_vfio_display,
+> > +        NULL
+> >       }
+> >   };
+> >
+> > @@ -3275,6 +3298,14 @@ static void vfio_realize(PCIDevice *pdev, Error =
+**errp)
+> >           if (!vfio_migration_realize(vbasedev, errp)) {
+> >               goto out_deregister;
+> >           }
+> > +        if (vbasedev->enable_migration =3D=3D ON_OFF_AUTO_OFF) {
+> > +            if (vdev->ramfb_migrate =3D=3D ON_OFF_AUTO_AUTO) {
+> > +                vdev->ramfb_migrate =3D ON_OFF_AUTO_OFF;
+> > +            } else if (vdev->ramfb_migrate =3D=3D ON_OFF_AUTO_ON) {
+> > +                error_setg(errp, "x-ramfb-migrate requires migration")=
+;
+> > +                goto out_deregister;
+> > +            }
+> > +        }
+> >       }
+> >
+> >       vfio_register_err_notifier(vdev);
+> > @@ -3484,6 +3515,7 @@ static const TypeInfo vfio_pci_dev_info =3D {
+> >
+> >   static Property vfio_pci_dev_nohotplug_properties[] =3D {
+> >       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
+> > +    DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_mi=
+grate, ON_OFF_AUTO_AUTO),
+> >       DEFINE_PROP_END_OF_LIST(),
+> >   };
+> >
+>
+>
+
+
+--=20
+Marc-Andr=C3=A9 Lureau
 
