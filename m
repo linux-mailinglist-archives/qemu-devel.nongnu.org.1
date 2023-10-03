@@ -2,81 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216B17B727B
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 22:29:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2B17B727F
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 22:32:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnm0m-0006Xm-Qr; Tue, 03 Oct 2023 16:28:57 -0400
+	id 1qnm3J-0001R7-KD; Tue, 03 Oct 2023 16:31:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnm0j-0006X9-5Q
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:28:54 -0400
-Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
+ id 1qnm3D-0001Qb-Uq
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:31:29 -0400
+Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnm0f-0001Xt-T6
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:28:52 -0400
-Received: by mail-pl1-x636.google.com with SMTP id
- d9443c01a7336-1c1e3a4a06fso10462675ad.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 13:28:48 -0700 (PDT)
+ id 1qnm3C-0002HR-9d
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:31:27 -0400
+Received: by mail-pg1-x52e.google.com with SMTP id
+ 41be03b00d2f7-584bfb14c59so965317a12.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 13:31:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696364927; x=1696969727; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696365085; x=1696969885; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=0e4/JO57YQImFLHZPXmeKqU9ZF/znrSmUlXSYTqB6DQ=;
- b=s+giaCL/ESrvpuZM/J4cI7BJoYvM/yDOeMeQ2+hiYvzOcJUcOm/42/P0N9kstZdHbp
- 6DqVkVE0D0BeAZZy9JfQ1DCEzydlmKDg5WDs/iy48c8VU2q59dgqk7q5Nrou92gDbs1U
- 4As9xLuMCVWnJ3Y17SQO4aH9+m+MTghncgpjiWIG0K/mVwLVYh9vztE81xk8Shk1rOfl
- w2i1o5KUBTOTub8Tr6X9pCtxJx3yZ9ObXHwesoYBblkZX4ZXBAAst//UP0cfyQfwD/W6
- HXTi705Gz6TF8HwBj6aZFbPNHcTLjtpU9uKQAEYAO563GnozI7/wEIpWpKnOxUD0C+aD
- NiEg==
+ bh=6Vz7yw+q2MTYV9lvuSdIWvub+JzCN1Z60kT7oZc0WSc=;
+ b=nh2KNwhNwwukky+bJ5cA3AvTmWSk966HnIGcE1DzY1+/NBm4+FmFhQ0SSN25JCTov1
+ sX0rUzNZ3AfD3EWndk2yHGq278EJGcO+i0jXrfghOEbPn4g6Q+2DS9+/meXQ1ljXkHYm
+ aLobT1l6SJONjTh4ESPR3dNKL8bxNWUbM6HXfi7ol+vDBDWzghn0fKQDv5wIMFC1HUDl
+ XA1BWxs5IiTJS0GATt8nzuuRDl4ARS8+wc4OYM1Fd5Z2FOUNuViycIYNlwgCVHHWL7S7
+ HTIkdJk5GQaeXLfcfWYX23CkGv8m5UpsgfqTwNi4nJ+rCnSBZwBxANnetOx+jzR1FqW0
+ VzrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696364927; x=1696969727;
+ d=1e100.net; s=20230601; t=1696365085; x=1696969885;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0e4/JO57YQImFLHZPXmeKqU9ZF/znrSmUlXSYTqB6DQ=;
- b=Arw9axg2fqW9fTSjFqXkyLWCn5jK3If0EmzeZcKemspVUHKHoNuEHhnSNssWUfAKzv
- ksU7qgHI0VAaC047rjxtJW+6EKYnfZWpEJfe2bd2RIYzR8e/xJfuOJ3F5QdCOp5dvgcR
- 23JdHpqR3jV3i/s8Kub8LLgBf2jqb3RvIiCzcswmGBGSUje/PyvxWmrG0OsNjieBPKma
- rJmrK6f4iXIv24jzuhn4uzNwivWvngwaQeCpbEKhQ0rKA+tFUyPW5R/G1tDiTsqjG75S
- 1f6CBaSQXLzNgpuOBkvVcqrfjYTui72mF+ldMN4Gvt6fwlc381KsbfMSuzvqrt9NBwqG
- 7+CA==
-X-Gm-Message-State: AOJu0YxDj9QJv4eMbIcSt4rQ0NpC4DbsXW/dRDkB0pqT2uG6XFY//DYW
- Uk2CE2hdvCdHGtrMbt02es/Nm/0LzpFYQ6xv5ig=
-X-Google-Smtp-Source: AGHT+IGlYpw/julF/9EX1f0LgJOddZmdBIRdyvxHsO8rggRk42RH6DzIygimTyolRcAFO2Do6MJOcQ==
-X-Received: by 2002:a17:902:ec8d:b0:1c3:4210:623f with SMTP id
- x13-20020a170902ec8d00b001c34210623fmr721821plg.13.1696364927620; 
- Tue, 03 Oct 2023 13:28:47 -0700 (PDT)
+ bh=6Vz7yw+q2MTYV9lvuSdIWvub+JzCN1Z60kT7oZc0WSc=;
+ b=mfjjNQ2QPG9vuGK06F7N+CCIxNJ2TiaTs7HIMgPGMNdspGlO21oUC7Ar3M6PvS8Klx
+ jlZ4VsL9NoxThIqGvGGiJncD1bpxhoGW7X2F91cR1V4u1nMcSu5AmIJK9QirjRhbxTXX
+ LMbwVObHmvpmI4nOHpfu3f0k5VQ5ZY80s6wuQTsly0SGfJdsd868Z0EfLbxlqvr+suYt
+ Tajr+MVx3wdaXPA1M43hZIyUjEjIXGACSUZ2byzRzrOuCAALuiXZXpehDsJSUvHhBy+N
+ RlE2NnyPx4D5Ij/gJsmIOACkpNTnndb0nr00doK65DwzIELoQOCPb6JYP224hP82yY4+
+ 6yVQ==
+X-Gm-Message-State: AOJu0YyrUQ1L93eJ1r/6hfNz5tfArdVOXnUILZRDpBWH3iMSfAZMPmSU
+ jOhQopxpyluXY7vBuUNQDQPTLcjvehzkLKW+Stc=
+X-Google-Smtp-Source: AGHT+IGNG7TwxHjbjmJbfB+7TziaxqarOCaCDzb4G/jtoaXfhAU726rDgva+AMCjrccfR1ilmxfE4A==
+X-Received: by 2002:a05:6a20:8419:b0:161:2389:e34b with SMTP id
+ c25-20020a056a20841900b001612389e34bmr697803pzd.13.1696365084411; 
+ Tue, 03 Oct 2023 13:31:24 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- 12-20020a170902c20c00b001b016313b1dsm2026664pll.86.2023.10.03.13.28.46
+ jd22-20020a170903261600b001c72f51b84asm2030039plb.52.2023.10.03.13.31.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 13:28:47 -0700 (PDT)
-Message-ID: <c2166e70-1e2d-0b9b-ba76-2ab27ef17c50@linaro.org>
-Date: Tue, 3 Oct 2023 13:28:45 -0700
+ Tue, 03 Oct 2023 13:31:24 -0700 (PDT)
+Message-ID: <8b441573-6775-75ad-12d5-9a36b0f3591d@linaro.org>
+Date: Tue, 3 Oct 2023 13:31:21 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v2] mips: fix abort on integer overflow
+Subject: Re: [PATCH] target/sh4: fix crashes on signal delivery
 Content-Language: en-US
-To: Mikulas Patocka <mpatocka@redhat.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno
- <aurelien@aurel32.net>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Huacai Chen <chenhuacai@kernel.org>, qemu-devel@nongnu.org
-References: <cfa02bbb-cdaf-4310-ac40-a2837d33c710@redhat.com>
- <6148083e-ba07-798c-4cc3-6cf29236c53c@linaro.org>
- <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
+To: Mikulas Patocka <mpatocka@redhat.com>, Richard Henderson
+ <rth@twiddle.net>, Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Magnus Damm <magnus.damm@gmail.com>
+Cc: qemu-devel@nongnu.org
+References: <b16389f7-6c62-70b7-59b3-87533c0bcc@redhat.com>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
+In-Reply-To: <b16389f7-6c62-70b7-59b3-87533c0bcc@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -99,36 +96,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/28/23 12:55, Mikulas Patocka wrote:
+On 9/28/23 09:42, Mikulas Patocka wrote:
+> sh4 uses gUSA (general UserSpace Atomicity) to provide atomicity on CPUs
+> that don't have atomic instructions. A gUSA region that adds 1 to an
+> atomic variable stored in @R2 looks like this:
 > 
+>    4004b6:       03 c7           mova    4004c4 <gusa+0x10>,r0
+>    4004b8:       f3 61           mov     r15,r1
+>    4004ba:       09 00           nop
+>    4004bc:       fa ef           mov     #-6,r15
+>    4004be:       22 63           mov.l   @r2,r3
+>    4004c0:       01 73           add     #1,r3
+>    4004c2:       32 22           mov.l   r3,@r2
+>    4004c4:       13 6f           mov     r1,r15
 > 
-> On Thu, 28 Sep 2023, Richard Henderson wrote:
+> R0 contains a pointer to the end of the gUSA region
+> R1 contains the saved stack pointer
+> R15 contains negative length of the gUSA region
 > 
->> Just call force_sig_fault directly.
->>
->>
->> r~
+> When this region is interrupted by a signal, the kernel detects if
+> R15 >= -128U. If yes, the kernel rolls back PC to the beginning of the
+> region and restores SP by copying R1 to R15.
 > 
-> OK. Here I'm resending it.
+> The problem happens if we are interrupted by a signal at address 4004c4.
+> R15 still holds the value -6, but the atomic value was already written by
+> an instruction at address 4004c2. In this situation we can't undo the
+> gUSA. The function unwind_gusa does nothing, the signal handler attempts
+> to push a signal frame to the address -6 and crashes.
 > 
-> Mikulas
+> This patch fixes it, so that if we are interrupted at the last instruction
+> in a gUSA region, we copy R1 to R15 to restore the correct stack pointer
+> and avoid crashing.
 > 
-> 
-> 
-> From: Mikulas Patocka <mpatocka@redhat.com>
-> 
-> Qemu mips userspace emulation crashes with "qemu: unhandled CPU exception
-> 0x15 - aborting" when one of the integer arithmetic instructions detects
-> an overflow.
-> 
-> This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
+> There's another bug: if we are interrupted in a delay slot, we save the
+> address of the instruction in the delay slot. We must save the address of
+> the previous instruction.
 > 
 > Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 > Cc: qemu-stable@nongnu.org
+> 
+> ---
+>   linux-user/sh4/signal.c |    8 ++++++++
+>   1 file changed, 8 insertions(+)
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
-and queued to linux-user-next.
+Queued to linux-user-next.
 
 
 r~
