@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEE07B6FCC
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:32:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6A97B6FDF
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:35:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnjFJ-0000GN-5Z; Tue, 03 Oct 2023 13:31:45 -0400
+	id 1qnjFF-00007m-Do; Tue, 03 Oct 2023 13:31:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjF9-0008VK-61
+ id 1qnjF9-0008VN-B4
  for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:35 -0400
-Received: from mail-pf1-x430.google.com ([2607:f8b0:4864:20::430])
+Received: from mail-pf1-x433.google.com ([2607:f8b0:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjF6-0007Xu-ES
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:34 -0400
-Received: by mail-pf1-x430.google.com with SMTP id
- d2e1a72fcca58-692eed30152so920538b3a.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:31:32 -0700 (PDT)
+ id 1qnjF7-0007YD-Gv
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:35 -0400
+Received: by mail-pf1-x433.google.com with SMTP id
+ d2e1a72fcca58-692c70bc440so909263b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:31:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696354291; x=1696959091; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696354292; x=1696959092; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FrUTbAqq5Rh4+S6dQa7CskGzlO2N+g4ynCNykCd/g2Q=;
- b=tXCef8G2J2V7P68D5l4b1DX8jL5sT5gDKQbnuY/8PPYkvbXUhcAdoz/Ajbpep+FGMU
- jyCn4K+pdgsPBcgV9wshh8WXnLHg1ytxeqwces6l2Kf3usg5mI/3GKe91+8n4s/Wzbqy
- ce43omQrMGJka64k89AOIahPCXyieCReHsBzVTaqLST8JU3Wat5VOy3iI7Y9dOexeeBY
- u6IOuqJ/jAmzkRlfMpsTf+1LBo6teUYgAPvNm3hqvoPO2DHnCZ4ca0MmnXsyvy9aM5Jp
- Y7T3c2zQgMQLlkFVvjcmKEUTai3YDKUrgD91GAFJ+rb533DHZrwtXHqu9S9GXLW1bFoi
- ntHQ==
+ bh=0DUsW3Z1l6kI6dnJslOCZY121JffUsDAYF90PScLnzY=;
+ b=SwMY+qmiaRTzpt0RG7mDVi4F2iFMEng93XyR6BJI3cXubfBRuoOHETbFGp6dAAKXDr
+ 0dGJhO3OvhYtVEWHtpRd7V59pg6RQ8vHGadkdMrjkiUmSjFxOhGm5dw4VhnZk8nFrNSk
+ xsO3oCGtSmlwA/5JBGaqKQ4gA0Bp6fkTfq7H3qIpo8oov3O1CzQpWA3nZmpSElFOXB2j
+ L5B6dMh7fEtGBLl/Lgiwk3nKZlYXS/qrusqZ09kf1k3Rn3yT4GjPGPg+sWBsLGcL3mRg
+ uxdEiKiIsR9dc6SKKrIO6mc0CBs79SZThkQycpbnoNzFeY+1X+/4OLkybhKumjdCaYCD
+ 04Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696354291; x=1696959091;
+ d=1e100.net; s=20230601; t=1696354292; x=1696959092;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=FrUTbAqq5Rh4+S6dQa7CskGzlO2N+g4ynCNykCd/g2Q=;
- b=H11WiPZ+PDjikkIgY8+sHhVsmRuoTQXCO8WTZ7NecODhFnAh/UeOSoU1K8ibnbuXms
- TpZmoyeMeirBXkkw0BSuEETIt7ptbwrSNKAxengfaWixxYkdHPqqQAQKbEIZbn3B1lVK
- f2FnOgq3+TTSN72WDcuyptoUOr4hTXIt2uia/VQCkbzeAStGZkwQpChV3ZTeJdt8POaA
- ofdGmB6nV6EJ3g2KmUCuEvxfQyy82+niSgQ1YefDGhBGhdm1zy4iogyXhCKcrQlP6v9U
- +McYgBmCTOcijKHYpkmK2ugOB7qQpwWUTPouKrnW8yDp2WcQZrmik9WGqeCjkEitiOMb
- 3jlQ==
-X-Gm-Message-State: AOJu0Yxlxy2zwMnarbN8SSJ0+bvp+UfT6GbC1ZLVeu+6dv+gx1K8sJgs
- 91Qy6QmbXYf9sT1+4jvCXnASWbKJSEA2lbGx2K0=
-X-Google-Smtp-Source: AGHT+IFqLayzwHsiZP3YpjKuUG8QYOSNAEDT7vieGCM4gwb1+4MzUyyBs6Y9lPPTdYDTXyy+9Hv7IA==
-X-Received: by 2002:a05:6a21:35c8:b0:14c:dc8e:9d3e with SMTP id
- ba8-20020a056a2135c800b0014cdc8e9d3emr132108pzc.26.1696354291228; 
- Tue, 03 Oct 2023 10:31:31 -0700 (PDT)
+ bh=0DUsW3Z1l6kI6dnJslOCZY121JffUsDAYF90PScLnzY=;
+ b=q839ajUu5pC4ClYFL+IzYVS3PFqPs2trQBJS7++iWaMWGrMzzcOsyxeKMpK4DEg4HX
+ stylRnrq2Pp+WlJ/ruBTDaTfdHd372WSoVkL0e32uwHN8sTaNiBenJJfyGqArHj26gGj
+ l+E2cgkJyjeAWznVWFtplm2gtP2j4TwZrFESUEtFY0wdNIuxxdRhO+4JAT76vD+ZaD4/
+ tk9QGZEnFRVRcT6noCnE56VG1jyUa1t3p4575ajjyAjT5wnam8KaMMZDWUx/DXYbovCS
+ 6bV3YeUvsO0nNpvyCr07g16RcnaD3bqZsf/S8w0tRyP4jVoSjVVi7ks1G0eb9SPLWZad
+ cBLA==
+X-Gm-Message-State: AOJu0YxMke24p6/H3qecmZ4yM2iDYi2B91tw3Py9VrbvqbTqB0AJGUF4
+ 46qANhAyFBBM8H5nCJNG95T0DBpGT+EGPbyLSDk=
+X-Google-Smtp-Source: AGHT+IHjB7k7+P9bxE1mw1xqk3RRbW0maUCCfXS0JP7xZcOvV0FjzUJOM3Rtdqo0mdUl0WkYDFiZDA==
+X-Received: by 2002:a05:6a20:7485:b0:161:536d:a13b with SMTP id
+ p5-20020a056a20748500b00161536da13bmr112772pzd.18.1696354292254; 
+ Tue, 03 Oct 2023 10:31:32 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.31.30
+ n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.31.31
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 10:31:30 -0700 (PDT)
+ Tue, 03 Oct 2023 10:31:31 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PULL 34/47] accel: Make accel-blocker.o target agnostic
-Date: Tue,  3 Oct 2023 10:30:39 -0700
-Message-Id: <20231003173052.1601813-35-richard.henderson@linaro.org>
+Subject: [PULL 35/47] accel: Rename accel-common.c -> accel-target.c
+Date: Tue,  3 Oct 2023 10:30:40 -0700
+Message-Id: <20231003173052.1601813-36-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003173052.1601813-1-richard.henderson@linaro.org>
 References: <20231003173052.1601813-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::430;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x430.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::433;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,28 +94,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-accel-blocker.c is not target specific, move it to system_ss[].
+We use the '-common.c' suffix for target agnostic units.
+This file is target specific, rename it using the '-target'
+suffix.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20230914185718.76241-5-philmd@linaro.org>
+Message-Id: <20230914185718.76241-6-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/meson.build | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ accel/{accel-common.c => accel-target.c} | 0
+ accel/meson.build                        | 2 +-
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+ rename accel/{accel-common.c => accel-target.c} (100%)
 
+diff --git a/accel/accel-common.c b/accel/accel-target.c
+similarity index 100%
+rename from accel/accel-common.c
+rename to accel/accel-target.c
 diff --git a/accel/meson.build b/accel/meson.build
-index 638a9a03ba..76f3cbc530 100644
+index 76f3cbc530..fda3157a6e 100644
 --- a/accel/meson.build
 +++ b/accel/meson.build
-@@ -1,5 +1,5 @@
--specific_ss.add(files('accel-common.c', 'accel-blocker.c'))
--system_ss.add(files('accel-softmmu.c'))
-+specific_ss.add(files('accel-common.c'))
-+system_ss.add(files('accel-softmmu.c', 'accel-blocker.c'))
+@@ -1,4 +1,4 @@
+-specific_ss.add(files('accel-common.c'))
++specific_ss.add(files('accel-target.c'))
+ system_ss.add(files('accel-softmmu.c', 'accel-blocker.c'))
  user_ss.add(files('accel-user.c'))
  
- subdir('tcg')
 -- 
 2.34.1
 
