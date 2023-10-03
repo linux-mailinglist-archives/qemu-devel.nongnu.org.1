@@ -2,79 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0C17B6A6B
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:23:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C3567B6A6E
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:26:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnfN9-0004Aa-JK; Tue, 03 Oct 2023 09:23:35 -0400
+	id 1qnfP6-0005tW-LT; Tue, 03 Oct 2023 09:25:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnfN8-0004AR-9l
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:23:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnfN6-0002sc-Fz
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:23:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696339411;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KOqW7N0mK59bio/BAiYphYMGoecpSKERGlFuSYRglC8=;
- b=Xj3GkNk6lSSK7Dljrim1w+1fB3sLpDFzupCk6hPUhpc5KGs71dSbr56Ri9dUtD0zT5Z2dI
- d9EpUDfVQg+Vgm706XEeODRGpvpgY656JUIJK38JiHSQxO1v3uEuBGcgarVPiFLDchMSsd
- GIexHT4YHcq2tvPcKpjfVypEbma3h/g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-593-OKgw618QNWiLo9QpedPvBw-1; Tue, 03 Oct 2023 09:23:28 -0400
-X-MC-Unique: OKgw618QNWiLo9QpedPvBw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58C611C0CCA8;
- Tue,  3 Oct 2023 13:23:27 +0000 (UTC)
-Received: from [10.39.192.186] (unknown [10.39.192.186])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id D99D01005E27;
- Tue,  3 Oct 2023 13:23:25 +0000 (UTC)
-Message-ID: <037ac5f2-8c19-e1ff-fc96-3cda8755924f@redhat.com>
-Date: Tue, 3 Oct 2023 15:23:24 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnfP4-0005rI-9h
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:25:34 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnfP2-0003DW-CB
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:25:33 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4064867903cso9386765e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:25:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696339530; x=1696944330; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=b9EKo/m7U4EHVQlsRnB/t3McfyOJ+8zxrsmJXyTxX70=;
+ b=Wc/RmjVTh48Wl4lQt4zqVOuuVryu82iiPHhO5bS/3qhkxmdvl4kC2Zd51JDHzZSZZC
+ ySJnitXKyr8aCxm83pCV0osyDROZQ9nbdStTQYhV6MuQ47MM+UpaouHXKE4pobNBGOkJ
+ zHRv0+kdau8QkVIwjiUoiDxBzf3u4WnY3xP3XgbZR793u32P/FMDgUXYI5RhMrs4L1PL
+ lOJqBXdOOd3tvhTGcIt3DeF/vqeUL/oOkbpfqubj0WvkUABogT1gmw6R1SYZFbDuZ6jb
+ fiuqiQzJyO3evp26Udkn6cwhYS0hmShgZC+T1lp89iKpxUNyGBI6ZlZaflbJ8ZL0yDeK
+ QL+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696339530; x=1696944330;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=b9EKo/m7U4EHVQlsRnB/t3McfyOJ+8zxrsmJXyTxX70=;
+ b=ND+uYc5WemGUOuaa2oIDxwxlLs7foUB8QzTS6rWJMi4mHePLXeozJlEgE7A2O3XrYX
+ Lf8uE8xRwPtAQTLybdRTsOY+1U8yLUI0n4YiXj9cAR/nQp1NhoMsrXk1TFRDebgxf6yf
+ yLeBpAZdjWgTzPHyAWqrOiWuo2OMs8Lg1pTWgT9zhvRR08Gq1/MJbcH2samVlzR35Cpo
+ 3SJnHPqaVuOeFnOYC5ygriCM1vjSANwc0oGgSYm3d6Er7dqb33DeGycgxYuKE1JwHtz2
+ zSvExxEEXMYDDIDt7VUt9P2BGG+M0opuIfYWI+aY2B+PCrNj/pHPKASIukvHrf1rfcfN
+ zpjA==
+X-Gm-Message-State: AOJu0Yx2x2Um0thdvwMMftpIxNAh1XMMh4mwDngRuk1MhB7sf1T90yKO
+ oNXElly6pouDIJe9pXCkqFSPPA==
+X-Google-Smtp-Source: AGHT+IFq/np3a3QICu6ak5G3P5O6TsQtDP1Ui3Jjchdu4E6/uG3kG2vWCTAI7mo7T11KJC8rkguQaQ==
+X-Received: by 2002:a7b:ce16:0:b0:406:4501:9095 with SMTP id
+ m22-20020a7bce16000000b0040645019095mr13747249wmc.40.1696339530534; 
+ Tue, 03 Oct 2023 06:25:30 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
+ [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
+ z20-20020a7bc7d4000000b004064e3b94afsm9480975wmk.4.2023.10.03.06.25.28
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Oct 2023 06:25:29 -0700 (PDT)
+Message-ID: <d6bd1212-5613-28a4-1cf2-ef5208a4c434@linaro.org>
+Date: Tue, 3 Oct 2023 15:25:27 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
- synchronously
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 1/2] target/riscv/kvm: improve 'init_multiext_cfg'
+ error msg
 Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Eugenio Perez Martin <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>, Liu Jiang <gerry@linux.alibaba.com>,
- Sergio Lopez Pascual <slp@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
-References: <20230827182937.146450-1-lersek@redhat.com>
- <20230827182937.146450-8-lersek@redhat.com>
- <CAJSP0QVWSQ8F-A1ryGLtd1jb8Go1Pr_N7AcLb5W5kSFv8T8jTA@mail.gmail.com>
- <6d766ab4-b6b8-b64b-1f9d-60c558b56509@redhat.com>
- <CAJSP0QV9RO7bkkcVFibnTv4tixmO3wKohSY+ia1D-UZiRzh5QA@mail.gmail.com>
- <20231002015259-mutt-send-email-mst@kernel.org>
- <CAJSP0QXgWsULW_61-MScvuWAiE3c4brYRyFc6q_==Sj6aLE8SQ@mail.gmail.com>
- <CAJSP0QU3jzFGnJ35Zbabf70Tbf+rPA_fvrA_eNxZ8TxOXQxZXA@mail.gmail.com>
- <20231002183627-mutt-send-email-mst@kernel.org>
- <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com
+References: <20231003132148.797921-1-dbarboza@ventanamicro.com>
+ <20231003132148.797921-2-dbarboza@ventanamicro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231003132148.797921-2-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,99 +96,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 15:08, Stefan Hajnoczi wrote:
-> On Tue, 3 Oct 2023 at 08:27, Michael S. Tsirkin <mst@redhat.com> wrote:
->>
->> On Mon, Oct 02, 2023 at 05:13:26PM -0400, Stefan Hajnoczi wrote:
->>> One more question:
->>>
->>> Why is the disabled state not needed by regular (non-vhost) virtio-net devices?
->>
->> Tap does the same - it purges queued packets:
->>
->> int tap_disable(NetClientState *nc)
->> {
->>     TAPState *s = DO_UPCAST(TAPState, nc, nc);
->>     int ret;
->>
->>     if (s->enabled == 0) {
->>         return 0;
->>     } else {
->>         ret = tap_fd_disable(s->fd);
->>         if (ret == 0) {
->>             qemu_purge_queued_packets(nc);
->>             s->enabled = false;
->>             tap_update_fd_handler(s);
->>         }
->>         return ret;
->>     }
->> }
+On 3/10/23 15:21, Daniel Henrique Barboza wrote:
+> Our error message is returning the value of 'ret', which will be always
+> -1 in case of error, and will not be that useful:
 > 
-> tap_disable() is not equivalent to the vhost-user "started but
-> disabled" ring state. tap_disable() is a synchronous one-time action,
-> while "started but disabled" is a continuous state.
+> qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error -1
 > 
-> The "started but disabled" ring state isn't needed to achieve this.
-> The back-end can just drop tx buffers upon receiving
-> VHOST_USER_SET_VRING_ENABLE .num=0.
+> Improve the error message by outputting 'errno' instead of 'ret'. Use
+> strerrorname_np() to output the error name instead of the error code.
+> This will give us what we need to know right away:
 > 
-> The history of the spec is curious. VHOST_USER_SET_VRING_ENABLE was
-> introduced before the the "started but disabled" state was defined,
-> and it explicitly mentions tap attach/detach:
+> qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error code: ENOENT
 > 
-> commit 7263a0ad7899994b719ebed736a1119cc2e08110
-> Author: Changchun Ouyang <changchun.ouyang@intel.com>
-> Date:   Wed Sep 23 12:20:01 2015 +0800
+> Given that we're going to exit(1) in this condition instead of
+> attempting to recover, remove the 'kvm_riscv_destroy_scratch_vcpu()'
+> call.
 > 
->     vhost-user: add a new message to disable/enable a specific virt queue.
-> 
->     Add a new message, VHOST_USER_SET_VRING_ENABLE, to enable or disable
->     a specific virt queue, which is similar to attach/detach queue for
->     tap device.
-> 
-> and then later:
-> 
-> commit c61f09ed855b5009f816242ce281fd01586d4646
-> Author: Michael S. Tsirkin <mst@redhat.com>
-> Date:   Mon Nov 23 12:48:52 2015 +0200
-> 
->     vhost-user: clarify start and enable
-> 
->>
->> what about non tap backends? I suspect they just aren't
->> used widely with multiqueue so no one noticed.
-> 
-> I still don't understand why "started but disabled" is needed instead
-> of just two ring states: enabled and disabled.
-> 
-> It seems like the cleanest path going forward is to keep the "ignore
-> rx, discard tx" semantics for virtio-net devices but to clarify in the
-> spec that other device types do not process the ring:
-> 
-> "
-> * started but disabled: the back-end must not process the ring. For legacy
->   reasons there is an exception for the networking device, where the
->   back-end must process and discard any TX packets and not process
->   other rings.
-> "
-> 
-> What do you think?
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   target/riscv/kvm/kvm-cpu.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
-... from a vhost-user backend perspective, won't this create a need for
-all "ring processor" (~ virtio event loop) implementations to support
-both methods? IIUC, the "virtio pop" is usually independent of the
-particular device to which the requests are ultimately delivered. So the
-event loop would have to grow a new parameter regarding "what to do in
-the started-but-disabled state", the network device would have to pass
-in one value (-> pop & drop), and all other devices would have to pass
-in the other value (stop popping).
-
-... I figure in rust-vmm/vhost it would affect the "handle_event"
-function in "crates/vhost-user-backend/src/event_loop.rs".
-
-Do I understand right? (Not disagreeing, just pondering the impact on
-backends.)
-
-Laszlo
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
