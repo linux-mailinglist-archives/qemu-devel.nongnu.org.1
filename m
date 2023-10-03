@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149837B6933
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D62CF7B6943
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:44:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnehV-000838-IG; Tue, 03 Oct 2023 08:40:34 -0400
+	id 1qnekz-0001jR-7d; Tue, 03 Oct 2023 08:44:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qnehG-0007zW-1q
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:40:18 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnekx-0001iZ-8W
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:44:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qnegz-0001Et-OG
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:40:17 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnekv-0002mS-Ls
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:44:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696336799;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=VXLm2eVTfwYOA2FS3C7AMWxvQGRwMs60TQTNre9p74w=;
- b=aiZBkP9QxLj4MlO8qcNSwVpZKFqZaqddCM97sJzncsOsHJjNPwsfEdOFB+AnQfmkgg5Usm
- jt3D6yOqX11yZp1JWQB/wOxxhFo9WBUdCe9L6JEpP9C3fiR2/1ap+rLUKaks8Xrb185Kax
- k0D2QUXGABJ8ROflOfhu6g7VqWqfBS4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1696337044;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=bp6irl+EWB1q4/By8O9wSojjNa0G3bO5LormJk6g/ms=;
+ b=YZVNoHBThwIA1y6+0F1nNACxJpOoQYortDmybU/G1zvHInYsJB8PCGMgAoOzup+45qNI9J
+ fLmc9iyaoh0NEjTuJX/ZPp5aqd7nl3RNkA2OSa+b0Wiz38ygTk6U1vWXgLdn4xOirGuPhe
+ p/hSRsMr7SWFY5eMHPKd6WumG4ZKJL0=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-2USXhmpwMBWIB_s-XI9ONQ-1; Tue, 03 Oct 2023 08:39:58 -0400
-X-MC-Unique: 2USXhmpwMBWIB_s-XI9ONQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-325a78c806eso621544f8f.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:39:57 -0700 (PDT)
+ us-mta-146-dUozBUrqP9WmP707eKj3Lg-1; Tue, 03 Oct 2023 08:44:03 -0400
+X-MC-Unique: dUozBUrqP9WmP707eKj3Lg-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4063dd6729bso5969545e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:44:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696336797; x=1696941597;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=VXLm2eVTfwYOA2FS3C7AMWxvQGRwMs60TQTNre9p74w=;
- b=tSD33DuCTRby0IfK57kYY5OZF09rgcHMHyc6g+iX4az3cv/nu2Rl877zRNmXRUoVsM
- 1hq3gh90a8j/cf5uyMTdX8zBSwqr86kcZHPqCl5zs9mMSDaOIa1efn8fqV7mMZQoKDw4
- /54gJIF+RADFE9k18GIOVDJB6Gk835DiC0q7iY6gEmI8EI/jUpSH+DVWk2jWBlBMRHzO
- MODT71ORXdIThiKp5qmKpc3FlOWSpVxJufmUit4zLsWZ9D9Ye+6Y92WKe7a95PpRKJGh
- mVlmF4Ev7P70dG1ihz2NF81y+P5402/bHmge5sbTCtJpcw3gcWSda3zXNCQNutfhuNuq
- /05g==
-X-Gm-Message-State: AOJu0YzoslgpVpKE9H327cNEEYQMvkHZi+U4H+h2myOxHpG0lS6YZL3R
- /4ZcfQsJNnYd/EpvS5i4vwAXkUJiRe752+tJA1I3+kfqEGTLQMq8eeF6ppfXIfHHIP7u/m/OqPB
- mQNd+qi5cAQmZy2E=
-X-Received: by 2002:a5d:5390:0:b0:324:7bdb:873a with SMTP id
- d16-20020a5d5390000000b003247bdb873amr12641569wrv.58.1696336796928; 
- Tue, 03 Oct 2023 05:39:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJfHmITYqQLDfONeg0SIeTPDd6gB4y7h+0xowMlc0xhGtNpjRXqbEb7EhVb/h1SkA9FvTn7g==
-X-Received: by 2002:a5d:5390:0:b0:324:7bdb:873a with SMTP id
- d16-20020a5d5390000000b003247bdb873amr12641557wrv.58.1696336796598; 
- Tue, 03 Oct 2023 05:39:56 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- p9-20020a5d4589000000b00326dd5486dcsm1503258wrq.107.2023.10.03.05.39.55
+ d=1e100.net; s=20230601; t=1696337042; x=1696941842;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=bp6irl+EWB1q4/By8O9wSojjNa0G3bO5LormJk6g/ms=;
+ b=dXbyB8Gi5ePys9q8/TAD3nuOUiedRzwtZkHJxKQwrqTMOI4S6miD7z1lYvXHQ+fLFf
+ ijYAIXlAKUXmx8jK4IUKwsDHAbuXGKV2imj1hLBaFRPsMBabhfsXK8f+a3Xlxhtwn4Sc
+ dHyV3tw14i0VNudcLTGCSj7iq3HQhFAEfKZzz38eAf4TVR8DViCcsOCeeZI57UUjON74
+ PooLpBFqxkBFoZvAfgxGpWtTChn5cfCulsR70fqSpdk7Ghi0TLXQGxzBTZtDLyuwUnbp
+ wT55+Qg0OULmTfi1UgBP6iqKyw936yTxvKOswVlGLH8BdWWtp37Hh1IxJGBd4mKqd84T
+ Hu+A==
+X-Gm-Message-State: AOJu0YzguFbGjA16uXLftMnYnSThD0u+uJyTIrC2Ae1b/by0G/5OZ1vN
+ lu5HElHxk7NfnJxvBZ6iXNzCgF+N314bsfwtGe95V8gY9cD8duIlJ99YjfwXdP9+dVvIBVu/xMl
+ UPh1nUIWmA2eQ5/k=
+X-Received: by 2002:a05:600c:22d1:b0:405:3251:47a1 with SMTP id
+ 17-20020a05600c22d100b00405325147a1mr12970335wmg.40.1696337041898; 
+ Tue, 03 Oct 2023 05:44:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9caOT9rgoPXWuz1Z5+je8xpiiK62hqlA29Bgy4tRw58eKIhZYWSiSSqT5x1xelbF63WsYzg==
+X-Received: by 2002:a05:600c:22d1:b0:405:3251:47a1 with SMTP id
+ 17-20020a05600c22d100b00405325147a1mr12970314wmg.40.1696337041548; 
+ Tue, 03 Oct 2023 05:44:01 -0700 (PDT)
+Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
+ l22-20020a7bc456000000b004058e6379d8sm9416630wmi.23.2023.10.03.05.44.00
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 05:39:56 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Tejus GK <tejus.gk@nutanix.com>
-Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com
-Subject: Re: [PATCH v5 1/2] migration/vmstate: Introduce
- vmstate_save_state_with_err
-In-Reply-To: <20231003065538.244752-2-tejus.gk@nutanix.com> (Tejus GK's
- message of "Tue, 3 Oct 2023 06:55:37 +0000")
-References: <20231003065538.244752-1-tejus.gk@nutanix.com>
- <20231003065538.244752-2-tejus.gk@nutanix.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 03 Oct 2023 14:39:55 +0200
-Message-ID: <878r8j7uck.fsf@secure.mitica>
+ Tue, 03 Oct 2023 05:44:00 -0700 (PDT)
+Date: Tue, 3 Oct 2023 08:43:58 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eric Auger <eric.auger@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, jasowang@redhat.com,
+ lvivier@redhat.com
+Subject: Re: [PATCH] vhost: Add a defensive check in vhost_commit against
+ wrong deallocation
+Message-ID: <20231003084047-mutt-send-email-mst@kernel.org>
+References: <20230913074657.523530-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230913074657.523530-1-eric.auger@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,24 +93,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Tejus GK <tejus.gk@nutanix.com> wrote:
-> Currently, a few code paths exist in the function vmstate_save_state_v,
-> which ultimately leads to a migration failure. However, an update in the
-> current MigrationState for the error description is never done.
->
-> vmstate.c somehow doesn't seem to allow	the use	of migrate_set_error due
-> to some	dependencies for unit tests. Hence, this patch introduces a new
-> function vmstate_save_state_with_err, which will eventually propagate
-> the error message to savevm.c where a migrate_set_error	call can be
-> eventually done.
->
-> Acked-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Tejus GK <tejus.gk@nutanix.com>
+On Wed, Sep 13, 2023 at 09:46:57AM +0200, Eric Auger wrote:
+> In vhost_commit(), it may happen that dev->mem_sections and
+> dev->tmp_sections are equal,
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Could you please explain a bit more how this can happen?
+I don't see how.
+
+> in which case, unconditionally
+> freeing old_sections at the end of the function will also free
+> dev->mem_sections used on subsequent call leading to a segmentation
+> fault.
+> 
+> Check this situation before deallocating memory.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Fixes: c44317efecb2 ("vhost: Build temporary section list and deref
+> after commit")
+> CC: QEMU Stable <qemu-stable@nongnu.org>
+> 
+> ---
+> 
+> This SIGSEV condition can be reproduced with
+> https://lore.kernel.org/all/20230904080451.424731-1-eric.auger@redhat.com/#r
+> This is most probably happening in a situation where the memory API is
+> used in a wrong manner but well.
+
+sounds like misusing the memory API can lead to all kind of mischief.
+
+> ---
+>  hw/virtio/vhost.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+> index e2f6ffb446..c02c599ef0 100644
+> --- a/hw/virtio/vhost.c
+> +++ b/hw/virtio/vhost.c
+> @@ -545,6 +545,11 @@ static void vhost_commit(MemoryListener *listener)
+>      dev->mem_sections = dev->tmp_sections;
+>      dev->n_mem_sections = dev->n_tmp_sections;
+>  
+> +    if (old_sections == dev->mem_sections) {
+> +        assert(n_old_sections ==  dev->n_mem_sections);
+> +        return;
+> +    }
+> +
+>      if (dev->n_mem_sections != n_old_sections) {
+>          changed = true;
+>      } else {
+> -- 
+> 2.41.0
 
 
