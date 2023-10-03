@@ -2,85 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FAE7B6256
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBE57B626B
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:18:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnZcF-0007UD-9t; Tue, 03 Oct 2023 03:14:47 -0400
+	id 1qnZfm-0004DB-Ts; Tue, 03 Oct 2023 03:18:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qnZcC-0007Tj-Pb
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:14:44 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qnZcA-0001hg-Qz
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:14:44 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-5048156976cso646764e87.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 00:14:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1696317281; x=1696922081; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yzSpuvNiyZjxVcPUpl33+RuyiyS/VcvR51U6nTfUSj4=;
- b=fblKUTDB5YpegakYh0HVAD0RJiJ02oI6c9xluu00jjzRsPjN8DaeOgGBMKVzryPjZR
- uulj1MGsNUeTepu9Yh6FzsR9MdDsMzr5FDM3xtYjtb91fZCKzIm3H459/WiuF0QpHFar
- 7qnuVE6smIzK0dlEFUloI1gnuoADFz9i+mt+wmGcjJibNlWubHm7g2AHKDx9ku3C9r+p
- uyNbuEZ/tC7MCCb0Af/NTsFeM+bnMFTTfFsba/4tInAS1NfMjPo9t7oZjTNMKPVBfPYY
- uusV/oYdmIB49yt+Kz4cQm/i7BZR7Lq8F6yv1W1yQc6uu0Mat5BE6X2ttkNi4G8JYMdl
- qACQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696317281; x=1696922081;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yzSpuvNiyZjxVcPUpl33+RuyiyS/VcvR51U6nTfUSj4=;
- b=SOeGux9glJ18ghvxkejnO8Nh5aj2ALVA56szGOGMnMOAcUyBi0WIXnQhDQnFCJlLmt
- FGT9cWCYW0qftt6ZRj7OA1dgRjzV31xWAQWDFR97myjvJzQLrYOK+rixQqMnrgPM+9FL
- Tprmz813aen0eTev6nQnxqswmmgnE2zrMr2UbREgHeiv2von45bpEIX4z9pHRy6/Fkwp
- prehJUNbD9QqSKJPi/SCCHM/yPrnM/Fw3zG871BO+X10PHUz1TebPff2B/Mj+B7DvU39
- Ct8tFIRlPvLs3gKVNHBRiwNtjuf4Us7vIU7RRZhlqTRCxsVFle5zfDjXI2r7fpInakh6
- Sy6A==
-X-Gm-Message-State: AOJu0Yxn/u9YViHLLuY6Xk8mdsfv7vRVVmI+mZ30dlfnBoR894KBjJbg
- edttWx6jbCTLmQcScwPzFJeTXvTz4e7FcCpLgtA=
-X-Google-Smtp-Source: AGHT+IGGiEx/8kNQrOTdmjbkNj8W3cMX/ZhMjrPGrDJHRZmPHMPbmC+psRBF1qDN8a/HKbsr2zsxow==
-X-Received: by 2002:a05:6512:4819:b0:505:6ede:20b0 with SMTP id
- eo25-20020a056512481900b005056ede20b0mr8536401lfb.58.1696317280896; 
- Tue, 03 Oct 2023 00:14:40 -0700 (PDT)
-Received: from chigot-Dell.telnowedge.local
- (lmontsouris-659-1-24-67.w81-250.abo.wanadoo.fr. [81.250.175.67])
- by smtp.gmail.com with ESMTPSA id
- y16-20020a5d4710000000b003179d5aee67sm832196wrq.94.2023.10.03.00.14.40
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 00:14:40 -0700 (PDT)
-From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, peter.maydell@linaro.org, alistair23@gmail.com,
- =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
- Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v4 5/5] gdbstub: replace exit calls with proper shutdown for
- softmmu
-Date: Tue,  3 Oct 2023 09:14:27 +0200
-Message-Id: <20231003071427.188697-6-chigot@adacore.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231003071427.188697-1-chigot@adacore.com>
-References: <20231003071427.188697-1-chigot@adacore.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qnZfh-00049H-VQ; Tue, 03 Oct 2023 03:18:22 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qnZff-0002g3-J3; Tue, 03 Oct 2023 03:18:21 -0400
+Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c18:d11:0:640:6943:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id DD2ED5FD89;
+ Tue,  3 Oct 2023 10:18:10 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b52d::1:13] (unknown
+ [2a02:6b8:b081:b52d::1:13])
+ by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id 9IQSBZ0OkiE0-2HBh8Fk6; Tue, 03 Oct 2023 10:18:10 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696317490;
+ bh=1egp4mHBN+q5/ImumduGJItWiixyXULiVRHfMKgkm+M=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=E7vvgqi11bPoNyehilytpBj8PDene82TssrRVeqvMlaNKgjEHQxktfWMKQ1tURVoK
+ OqLkrh2bLIvgabaotbIlTvvhZGRqcyqZHRHlX0H6wyijoaqf5PJwGJ58QT2urfaBZn
+ IxJJyfCnIPC+7ihsoUJqBuC6h30jbvU3IRxBkYzc=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <5c81072d-1af8-f2b5-0477-342e2e173954@yandex-team.ru>
+Date: Tue, 3 Oct 2023 10:18:09 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=chigot@adacore.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/2] blockdev: qmp_transaction: harden transaction
+ properties for bitmaps
+To: Andrey Zhadchenko <andrey.zhadchenko@virtuozzo.com>, qemu-block@nongnu.org
+Cc: kwolf@redhat.com, hreitz@redhat.com, qemu-devel@nongnu.org,
+ den@virtuozzo.com
+References: <20230904083116.568912-1-andrey.zhadchenko@virtuozzo.com>
+ <a8c81f0f-eb3e-0574-e6bb-4fed9005a7e6@yandex-team.ru>
+ <867fb4e0-51ad-8572-f6cb-b2ed3791e34f@virtuozzo.com>
+Content-Language: en-US
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <867fb4e0-51ad-8572-f6cb-b2ed3791e34f@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.321,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,95 +77,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replaces the exit calls by shutdown requests, ensuring a proper
-cleanup of Qemu. Features like net/vhost-vdpa.c are expecting
-qemu_cleanup to be called to remove their last residuals.
+On 19.09.23 13:02, Andrey Zhadchenko wrote:
+> Hi!
+> 
+> Thanks for the review
+> 
+> On 9/12/23 21:29, Vladimir Sementsov-Ogievskiy wrote:
+>> On 04.09.23 11:31, Andrey Zhadchenko wrote:
+>>> Unlike other transaction commands, bitmap operations do not drain target
+>>> bds. If we have an IOThread, this may result in some inconsistencies, as
+>>> bitmap content may change during transaction command.
+>>> Add bdrv_drained_begin()/end() to bitmap operations.
+>>>
+>>> Signed-off-by: Andrey Zhadchenko<andrey.zhadchenko@virtuozzo.com>
+>>
+>> Hi!
+>>
+>> First, please always include cover letter when more than 1 patch.
+>>
+>> Next. Hmm. Good idea, but I'm afraid that's still not enough.
+>>
+>> Assume you have two BSs A and B in two different iothreads. So, the sequence may be like this:
+>>
+>> 1. drain_begin A
+>>
+>> 2. do operation with bitmap in A
+>>
+>> 3. guest writes to B, B is modified and bitmap in B is modified as well
+>>
+>> 4. drain_begin B
+>>
+>> 5. do operation with bitmap in B
+>>
+>> 6. drain_end B
+>>
+>> 7. drain_end A
+>>
+>> User may expect, that all the operations are done atomically in relation to any guest IO operations. And if operations are dependent, the intermediate write [3] make break the result.
+> 
+> I see your point, but can the difference really be observed in this case? It is probably only relevant if user can copy/merge bitmaps between block nodes (as far as I know this is not the case for now)
 
-Signed-off-by: Clément Chigot <chigot@adacore.com>
-Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
----
- gdbstub/gdbstub.c          | 5 +++--
- gdbstub/softmmu.c          | 6 ++++++
- gdbstub/user.c             | 6 ++++++
- include/gdbstub/syscalls.h | 9 +++++++++
- 4 files changed, 24 insertions(+), 2 deletions(-)
+User can (see qmp block-dirty-bitmap-merge). Also consider, for example, starting several backups of all disks, which are in different iothreads. The whole backup should be consistent and should correspond to one point of time, so all backup jobs should be started inside one drained_all section.
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 349d348c7b..1cb6d65306 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -1327,7 +1327,7 @@ static void handle_v_kill(GArray *params, void *user_ctx)
-     gdb_put_packet("OK");
-     error_report("QEMU: Terminated via GDBstub");
-     gdb_exit(0);
--    exit(0);
-+    gdb_qemu_exit(0);
- }
- 
- static const GdbCmdParseEntry gdb_v_commands_table[] = {
-@@ -1846,7 +1846,8 @@ static int gdb_handle_packet(const char *line_buf)
-         /* Kill the target */
-         error_report("QEMU: Terminated via GDBstub");
-         gdb_exit(0);
--        exit(0);
-+        gdb_qemu_exit(0);
-+        break;
-     case 'D':
-         {
-             static const GdbCmdParseEntry detach_cmd_desc = {
-diff --git a/gdbstub/softmmu.c b/gdbstub/softmmu.c
-index 9f0b8b5497..a5d6e04c79 100644
---- a/gdbstub/softmmu.c
-+++ b/gdbstub/softmmu.c
-@@ -435,6 +435,12 @@ void gdb_exit(int code)
-     qemu_chr_fe_deinit(&gdbserver_system_state.chr, true);
- }
- 
-+void gdb_qemu_exit(int code)
-+{
-+    qemu_system_shutdown_request_with_code(SHUTDOWN_CAUSE_GUEST_SHUTDOWN,
-+                                           code);
-+}
-+
- /*
-  * Memory access
-  */
-diff --git a/gdbstub/user.c b/gdbstub/user.c
-index 7ab6e5d975..dbe1d9b887 100644
---- a/gdbstub/user.c
-+++ b/gdbstub/user.c
-@@ -113,6 +113,12 @@ void gdb_exit(int code)
-         gdb_put_packet(buf);
-         gdbserver_state.allow_stop_reply = false;
-     }
-+
-+}
-+
-+void gdb_qemu_exit(int code)
-+{
-+    exit(code);
- }
- 
- int gdb_handlesig(CPUState *cpu, int sig)
-diff --git a/include/gdbstub/syscalls.h b/include/gdbstub/syscalls.h
-index 243eaf8ce4..54ff7245a1 100644
---- a/include/gdbstub/syscalls.h
-+++ b/include/gdbstub/syscalls.h
-@@ -110,4 +110,13 @@ int use_gdb_syscalls(void);
-  */
- void gdb_exit(int code);
- 
-+/**
-+ * gdb_qemu_exit: ask qemu to exit
-+ * @code: exit code reported
-+ *
-+ * This requests qemu to exit. This function is allowed to return as
-+ * the exit request might be processed asynchronously by qemu backend.
-+ */
-+void gdb_qemu_exit(int code);
-+
- #endif /* _SYSCALLS_H_ */
+> 
+>>
+>> So, we should drain all participant drives during the whole transactions. The simplest solution is bdrv_drain_all_begin() / bdrv_drain_all_end() pair in qmp_transaction(), could we start with it?
+>>
+> 
+> That would definitely get rig of all problems, but I do not really like the idea of draining unrelated nodes.
+> 
+> What do you think if I add a new function prototype to the TransactionActionDrv, which will return transaction bds? Then we can get a list of all bds and lock them before prepairing and clean afterwards.
+
+that looks not generic.. Transaction API is not part of block layer, and I'd better not change this. And you add it into TransactionActionDrv, but you'll use it in blockdev.c? You'll have to add somethink like transaction_action() with big switch-case operation. And than no reason to add something to TransactionActionDrv, as that may be just function defined in blockdev.c
+
 -- 
-2.25.1
+Best regards,
+Vladimir
 
 
