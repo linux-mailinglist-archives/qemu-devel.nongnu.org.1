@@ -2,79 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46707B7169
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 21:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F587B716D
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 21:00:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnkap-0007VO-I4; Tue, 03 Oct 2023 14:58:03 -0400
+	id 1qnkdN-0004Ci-87; Tue, 03 Oct 2023 15:00:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qnkaO-00072I-Ql
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:57:36 -0400
+ id 1qnkdB-00041B-Gn
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 15:00:31 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qnkaN-0007Q8-Dt
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:57:36 -0400
+ id 1qnkd8-0000Yq-RJ
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 15:00:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696359454;
+ s=mimecast20190719; t=1696359625;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=Xhi7AbYGcWEpC75VRFc86Xrdx6JuLGsUZ6gNqp6U1wA=;
- b=Dy6UdAvVIOpl653VVQ5RUZLFQ5K2UxAs2eTO4ZGoV2D7MQOD3W1UL97eRHgCkXV9qhgzEq
- vn3Gxm1Kv0Gul7AkM3CF0QECLhvr3MAGlmdFr9Zc+Y3ULNnXEvQZLlBzficB5jamG6TJ9a
- gWo4VM9V94fJIW+0eiyqr1z20Pdxpyk=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=D/VsW9EF5FeDmsxT4EN1NZ0ob3zmVP+4rcmNJDW6FRQ=;
+ b=f2o98wmajdpoyicHgtVHIP/sU4KLBumPgqQnsEtu//eJtbB+GJwGikt4XYShbFMfympcRk
+ zkaHf+nwp5n5YEvO7Rd932XKXWBMSYBL2IROo05w7yM1t5CK9wDrINI6SSCxZ3FsV9VdVZ
+ M1OoEFfxS+YrJlrgFXNnAB8P/7lRxRs=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-1-rdQPW5AkOnGmIhwa0VGR_w-1; Tue, 03 Oct 2023 14:57:33 -0400
-X-MC-Unique: rdQPW5AkOnGmIhwa0VGR_w-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-405535740d2so9751375e9.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:57:33 -0700 (PDT)
+ us-mta-495-lZWDy60bNrS-9MXMOZekKQ-1; Tue, 03 Oct 2023 15:00:23 -0400
+X-MC-Unique: lZWDy60bNrS-9MXMOZekKQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4067f186094so6687725e9.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 12:00:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696359452; x=1696964252;
+ d=1e100.net; s=20230601; t=1696359622; x=1696964422;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Xhi7AbYGcWEpC75VRFc86Xrdx6JuLGsUZ6gNqp6U1wA=;
- b=CDqekcEapP9e3lqff3uh1J3tAuBReGQojxSdVJPb3MJ7mqofuSg2BQycnC5vEkIKNB
- 6Vqy5YxVEUzheXBnQEFBTvdfPqmvxAIrT/dFwmSkG+JfFsEDphNf7I3G+6IJLK8Qrj8O
- N+H42vd13/k5X4KZyOifGVFPBN0xrr0jeW44SI2A4+XyzsRkw9z8UKmwYJ0bu7bdx47G
- s2nk2COIbZHhAfNI5xDWNffBz58YzZGaUYP9WnAydvaUgR4Ua3+fKMxsjdiwxBcdmXp4
- GBsDPLDasnnbDb/69Cw74TQskGh4MqjVl8IuiZV1X00E3S0CsjLjIMzSl62bv6xG1Q13
- iC1A==
-X-Gm-Message-State: AOJu0YzPCSIyoDVfQaBHH9pb6F0ZJkOKPicuKG2lBSbJalsLUPwpxwBM
- rUNF4hHOnxPQ/XqE4XVm0GRh4U+Pg0I97ugDuLboF4+nQ/JEdUlyjCJJLz2jPF7BwycUt1phfTe
- 8Iuu2PGmHKN103H4=
-X-Received: by 2002:a05:600c:4686:b0:405:95ae:4a94 with SMTP id
- p6-20020a05600c468600b0040595ae4a94mr322779wmo.5.1696359452276; 
- Tue, 03 Oct 2023 11:57:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGSk8bT1H/ebMQYJKEnd9rPslb8sHMopVrvt8lp9r2mBA4guaxiXZFTIj2eQNYP/0rftT9CAg==
-X-Received: by 2002:a05:600c:4686:b0:405:95ae:4a94 with SMTP id
- p6-20020a05600c468600b0040595ae4a94mr322768wmo.5.1696359451894; 
- Tue, 03 Oct 2023 11:57:31 -0700 (PDT)
+ bh=D/VsW9EF5FeDmsxT4EN1NZ0ob3zmVP+4rcmNJDW6FRQ=;
+ b=mjnnnN6PgXREeUxmSjPdQ/PneHi27orZAhhqsToAl84sPW8PtGRvMm13k43Q0uq0I3
+ UTYNkUw2TWn+oGyzKg09zwtAsudwXt7/B2rThRahQ9KDlhWCTosD7Gori2pdEAvHgRZR
+ AOfhPS+41UDp5sHtVPSFBoQjFz1IANGoQqz+Lnt00CNGKWoT/xUjT2zMqZeLKc+P6vue
+ xQRMOkh95Pnhig1DkCmCiBpDKuDkzxdCnepMV3BQwEh7VLU/bMwnaScZnSfRUasJokSu
+ gXFvpolEXWp5lVnZswZUR6+mncaKJ+5nUQPNCCB0Kwlg1hXrWpMfsfC8qTNf+skBCc98
+ WQwQ==
+X-Gm-Message-State: AOJu0YyZA1AzC4qBnBl03btMi3HUQmukMLU0/4iJ7DSW8pl4WnAX9xx9
+ G3H1y/9ldBdt2rKoI7uOixxoYBiR3FClbCKWLMFgXPk+sZ1f4qPrqgbEMUpStQeVXgiRJlsN7En
+ yFx2rmZMOyVnThyo=
+X-Received: by 2002:a7b:ca59:0:b0:402:bbe3:827c with SMTP id
+ m25-20020a7bca59000000b00402bbe3827cmr318017wml.31.1696359622745; 
+ Tue, 03 Oct 2023 12:00:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFQT7xbQDp7PW+F82GtBkuxDtmuPbIVVOI56iv33mMfXA7Ek30quGn26w+hHScCN6zVn5c4Lw==
+X-Received: by 2002:a7b:ca59:0:b0:402:bbe3:827c with SMTP id
+ m25-20020a7bca59000000b00402bbe3827cmr318001wml.31.1696359622316; 
+ Tue, 03 Oct 2023 12:00:22 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- h20-20020a05600c261400b003fee53feab5sm1894552wma.10.2023.10.03.11.57.31
+ u5-20020a05600c00c500b004047ac770d1sm10078899wmm.8.2023.10.03.12.00.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 11:57:31 -0700 (PDT)
+ Tue, 03 Oct 2023 12:00:21 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Li Zhijian <lizhijian@fujitsu.com>
-Cc: peterx@redhat.com,  leobras@redhat.com,  qemu-devel@nongnu.org,  Fabiano
- Rosas <farosas@suse.de>
-Subject: Re: [PATCH v2 2/2] migration/rdma: zore out head.repeat to make the
- error more clear
-In-Reply-To: <20230926100103.201564-2-lizhijian@fujitsu.com> (Li Zhijian's
- message of "Tue, 26 Sep 2023 18:01:03 +0800")
+To: Peter Xu <peterx@redhat.com>
+Cc: Li Zhijian <lizhijian@fujitsu.com>,  leobras@redhat.com,
+ qemu-devel@nongnu.org,  Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 1/2] migration: Fix rdma migration failed
+In-Reply-To: <ZRMPJsiSuSso9JGf@x1n> (Peter Xu's message of "Tue, 26 Sep 2023
+ 13:04:38 -0400")
 References: <20230926100103.201564-1-lizhijian@fujitsu.com>
- <20230926100103.201564-2-lizhijian@fujitsu.com>
+ <ZRMPJsiSuSso9JGf@x1n>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Tue, 03 Oct 2023 20:57:30 +0200
-Message-ID: <87a5sz5yat.fsf@secure.mitica>
+Date: Tue, 03 Oct 2023 21:00:20 +0200
+Message-ID: <875y3n5y63.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
@@ -102,21 +101,44 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Li Zhijian <lizhijian@fujitsu.com> wrote:
-> Previously, we got a confusion error that complains
-> the RDMAControlHeader.repeat:
-> qemu-system-x86_64: rdma: Too many requests in this message (3638950032).Bailing.
+Peter Xu <peterx@redhat.com> wrote:
+> On Tue, Sep 26, 2023 at 06:01:02PM +0800, Li Zhijian wrote:
+>> Migration over RDMA failed since
+>> commit: 294e5a4034 ("multifd: Only flush once each full round of memory")
+>> with erors:
+>> qemu-system-x86_64: rdma: Too many requests in this message (3638950032).Bailing.
+>> 
+>> migration with RDMA is different from tcp. RDMA has its own control
+>> message, and all traffic between RDMA_CONTROL_REGISTER_REQUEST and
+>> RDMA_CONTROL_REGISTER_FINISHED should not be disturbed.
+>> 
+>> find_dirty_block() will be called during RDMA_CONTROL_REGISTER_REQUEST
+>> and RDMA_CONTROL_REGISTER_FINISHED, it will send a extra traffic(
+>> RAM_SAVE_FLAG_MULTIFD_FLUSH) to destination and cause migration to fail
+>> even though multifd is disabled.
+>> 
+>> This change make migrate_multifd_flush_after_each_section() return true
+>> when multifd is disabled, that also means RAM_SAVE_FLAG_MULTIFD_FLUSH
+>> will not be sent to destination any more when multifd is disabled.
+>> 
+>> Fixes: 294e5a4034 ("multifd: Only flush once each full round of memory")
+>> CC: Fabiano Rosas <farosas@suse.de>
+>> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+>> ---
+>> 
+>> V2: put that check at the entry of migrate_multifd_flush_after_each_section() # Peter
 >
-> Actually, it's caused by an unexpected RDMAControlHeader.type.
-> After this patch, error will become:
-> qemu-system-x86_64: Unknown control message QEMU FILE
+> When seeing this I notice my suggestion wasn't ideal either, as we rely on
+> both multifd_send_sync_main() and multifd_recv_sync_main() be no-op when
+> !multifd.
 >
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> For the long term, we should not call multifd functions at all, if multifd
+> is not enabled..
+
+Agreed.
+
+Send a different patch that makes this clear.
+
 > Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-
-Reviewed-by: Juan Quintela <quintela@redhat.com>
-
-queued.
 
 
