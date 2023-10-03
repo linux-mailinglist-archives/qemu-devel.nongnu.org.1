@@ -2,81 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80137B6652
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 12:25:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B2E7B666B
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 12:30:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qncZz-0002Y3-5K; Tue, 03 Oct 2023 06:24:39 -0400
+	id 1qncep-0004w4-7u; Tue, 03 Oct 2023 06:29:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qncZw-0002XP-Lh; Tue, 03 Oct 2023 06:24:36 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qnceo-0004vw-1X
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:29:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qncZv-0005yE-18; Tue, 03 Oct 2023 06:24:36 -0400
-Received: from lhrpeml500002.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0DRP0vqXz6K63G;
- Tue,  3 Oct 2023 18:22:57 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 11:24:32 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 11:24:32 +0100
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH 4/9] hw/acpi: Init GED framework with cpu hotplug events
-Thread-Topic: [PATCH 4/9] hw/acpi: Init GED framework with cpu hotplug events
-Thread-Index: AQHZ8tLgHSjbQJaOQUmMJ2ceXEiCmLA2nlaAgAFDUSA=
-Date: Tue, 3 Oct 2023 10:24:31 +0000
-Message-ID: <b4df7316fc5a4871a55e9cc0d40ad4b7@huawei.com>
-References: <20230929124304.13672-1-salil.mehta@huawei.com>
- <20230929124304.13672-5-salil.mehta@huawei.com>
- <20231002170617.000044f2@Huawei.com>
-In-Reply-To: <20231002170617.000044f2@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qncel-0007Ab-RS
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:29:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696328970;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Hc5QZngQ+EztSteTyqW+F+G/LVfZt7WyxLIeehY2Wxw=;
+ b=fEGaFF70nWTx5R1AgUAH3Q1f1axZthsBUtq8bZSybxDsyi8enz11iBw6yO7ndBQajMns0S
+ 7aUsg9GkgfqfZa/7KEO4iUsPyK1b634i/NoPzl3OcVfzGj9sNNsUuNMakhaOuQSpEPZ/NL
+ hLJrms1UekgU3YY213gjPR65ZEpwTwE=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256-p7aQIrR5PK-N-Rtl-eLmOg-1; Tue, 03 Oct 2023 06:29:29 -0400
+X-MC-Unique: p7aQIrR5PK-N-Rtl-eLmOg-1
+Received: by mail-pl1-f199.google.com with SMTP id
+ d9443c01a7336-1c625a7c507so7314855ad.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 03:29:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696328968; x=1696933768;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Hc5QZngQ+EztSteTyqW+F+G/LVfZt7WyxLIeehY2Wxw=;
+ b=iU4yfENAenr7sN0uaoEvDh+3H5YaSkYYjF0j/Nm+fqcDpm0/+0QGB954IlXn8x17B3
+ KvhmTqR3+tDvEG+JxqjNXRW6mSw+RYLwxz1eo5KDPB1EU1Jqc1T9uHbj2ZLwam0TaDH2
+ z6eJeXiZDMY8EPiNlhLHzFvBD07fh5j2xFWskRSjsOkTKxASzpAAZqNJdl/zOb0bgpOw
+ ssficGShqL9Z49mQTD8Ey0Zhb1tDkcrHzMz4f7wL6weykUFL5t8pKpwH/gei4OdTrUZV
+ PI3WCQy0q9GAITUG+My9Fsqfu6myirbeUFbHFta9M0tCcvubDeVXQURGhTqkobYm0DjI
+ Ephw==
+X-Gm-Message-State: AOJu0YwrMX5tVQ7/clO1wci9XMXqpQsBAJnRW7E6+LjmYhsXOW8WXixO
+ njcJT1PkXJoW4QbeHaD3KcBmGuEDy6WLBCUut0EONCN8qkXFG+jqO6gWi4fFAjwRrKRVfi4I+kK
+ R62XdNBEaUbruaC8=
+X-Received: by 2002:a17:903:2587:b0:1c2:218c:3762 with SMTP id
+ jb7-20020a170903258700b001c2218c3762mr9903284plb.42.1696328967864; 
+ Tue, 03 Oct 2023 03:29:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IExxymt8bXe6IGFVykvmQr9oj2EeOM4nv4iry5iqYa02MS+6x/yR7kbWe1IIVPhwPm0se6lAw==
+X-Received: by 2002:a17:903:2587:b0:1c2:218c:3762 with SMTP id
+ jb7-20020a170903258700b001c2218c3762mr9903265plb.42.1696328967492; 
+ Tue, 03 Oct 2023 03:29:27 -0700 (PDT)
+Received: from localhost.localdomain ([115.96.159.31])
+ by smtp.googlemail.com with ESMTPSA id
+ je17-20020a170903265100b001bdd7579b5dsm1150767plb.240.2023.10.03.03.29.23
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 03:29:27 -0700 (PDT)
+From: Ani Sinha <anisinha@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Cc: Ani Sinha <anisinha@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Subject: [PATCH v3] hw/i386: changes towards enabling -Wshadow=local for x86
+ machines
+Date: Tue,  3 Oct 2023 15:58:02 +0530
+Message-ID: <20231003102803.6163-1-anisinha@redhat.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,56 +101,82 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan,
-Thanks for looking at it.
+Code changes that addresses all compiler complaints coming from enabling
+-Wshadow flags. Enabling -Wshadow catches cases of local variables shadowing
+other local variables or parameters. These makes the code confusing and/or adds
+bugs that are difficult to catch.
 
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: Monday, October 2, 2023 5:06 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH 4/9] hw/acpi: Init GED framework with cpu hotplug
-> events
->=20
-> On Fri, 29 Sep 2023 13:42:59 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACP=
-I
-> events
-> > when OSPM/guest receives an interrupt listed in the _CRS object of GED.
-> OSPM
-> > then maps or demultiplexes the event by evaluating _EVT method.
-> >
-> > This change adds the support of cpu hotplug event initialization in the
-> > existing GED framework.
-> >
-> > Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> > Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> FWIW this looks good to me.
->=20
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+See also
 
-Thank you!
-Salil.
+   Subject: Help wanted for enabling -Wshadow=local
+   Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
+   https://lore.kernel.org/qemu-devel/87r0mqlf9x.fsf@pond.sub.org
+
+CC: Markus Armbruster <armbru@redhat.com>
+CC: Philippe Mathieu-Daude <philmd@linaro.org>
+CC: mst@redhat.com
+
+Signed-off-by: Ani Sinha <anisinha@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Reviewed-by: Peter Xu <peterx@redhat.com>
+---
+ hw/i386/acpi-microvm.c | 4 ++--
+ hw/i386/pc.c           | 1 -
+ hw/i386/x86.c          | 2 --
+ 3 files changed, 2 insertions(+), 5 deletions(-)
+
+changelog:
+v3: split the patches. Peter's changes are now in a seperate patch.
+Addressed mst's suggestions. Removed message-ID
+from commit log and added the reference to previous discussion thread
+explicitly.
+v2: kept Peter's changes from https://lore.kernel.org/r/20230922160410.138786-1-peterx@redhat.com
+and removed mine.
+
+diff --git a/hw/i386/acpi-microvm.c b/hw/i386/acpi-microvm.c
+index a075360d85..6ddcfb0419 100644
+--- a/hw/i386/acpi-microvm.c
++++ b/hw/i386/acpi-microvm.c
+@@ -55,8 +55,8 @@ static void acpi_dsdt_add_virtio(Aml *scope,
+ 
+     bus = sysbus_get_default();
+     QTAILQ_FOREACH(kid, &bus->children, sibling) {
+-        DeviceState *dev = kid->child;
+-        Object *obj = object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MMIO);
++        Object *obj = object_dynamic_cast(OBJECT(kid->child),
++                                          TYPE_VIRTIO_MMIO);
+ 
+         if (obj) {
+             VirtIOMMIOProxy *mmio = VIRTIO_MMIO(obj);
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 3db0743f31..e7a233e886 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -1116,7 +1116,6 @@ void pc_memory_init(PCMachineState *pcms,
+ 
+     if (machine->device_memory) {
+         uint64_t *val = g_malloc(sizeof(*val));
+-        PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+         uint64_t res_mem_end = machine->device_memory->base;
+ 
+         if (!pcmc->broken_reserved_end) {
+diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+index f034df8bf6..b3d054889b 100644
+--- a/hw/i386/x86.c
++++ b/hw/i386/x86.c
+@@ -365,8 +365,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+ 
+     cpu_slot = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &idx);
+     if (!cpu_slot) {
+-        MachineState *ms = MACHINE(x86ms);
+-
+         x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
+         error_setg(errp,
+             "Invalid CPU [socket: %u, die: %u, core: %u, thread: %u] with"
+-- 
+2.42.0
 
 
