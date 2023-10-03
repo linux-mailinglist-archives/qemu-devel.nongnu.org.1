@@ -2,93 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371E97B6D66
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B887B6D65
 	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 17:47:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnhbM-0005TH-GT; Tue, 03 Oct 2023 11:46:24 -0400
+	id 1qnhbN-0005ZJ-FJ; Tue, 03 Oct 2023 11:46:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhat-0005Sj-PY
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:45:55 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhar-0004RK-IL
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:45:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696347951;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=2MIKo0D6KLV1x/AuyDO3M7Lg8FwwQ3be98rEZKqPFI4=;
- b=PwNk1VxjPkEYo0rrXgb0z5m+wuPeHIH5UBQ0XaL/IXnIi96etIGER6YQAsx65EUE9kKY0q
- VArxbES+zhtDVRB78Uep+xdRB5TNDH8qbDnaQ9L7M8AdLe18iSgmlSDdssFzuB56d+71+J
- jczLmZP3u/KXV8d8u9/WsSI4yJNj0e8=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-22-Kf_TyIy5P8aXupJ6BFW-4g-1; Tue, 03 Oct 2023 11:45:50 -0400
-X-MC-Unique: Kf_TyIy5P8aXupJ6BFW-4g-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-65b00c2cbb6so13900086d6.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 08:45:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qnhbE-0005Wq-UA
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:46:23 -0400
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qnhbB-0004UJ-8E
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:46:15 -0400
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-6c4bad60a1aso697778a34.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 08:46:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696347971; x=1696952771; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=AWhVrenavtcbKw4ZhcYUIEra2ebOrcPcbB2ptjf/EQA=;
+ b=NlwR2nPvxYm0X85Ixp9OPMaTFubvOFLqw5pOYynTxCYHHAJB0X3JkwPPhWCFZEzZhC
+ 0xmqlTUplRNTEzRCpt3v0f2VF7qP+nFS9WiJ0bTwjZoQo5cy5uko6aPpM80FaKESHyfW
+ SprhPktla8v0gRHC0H2f9p6k3sNB5rXIp9k3MnmOaHhQQG4Iw3OcXq0BpxedBFh8REZK
+ uBmCWmtQD38NA3iv3QwB0PWOH7ns6FdHVduIKW+sMOkljk2jl3KirJFu/W/+MaB+RDjw
+ 9K/Liuk/qFvldDV712yCVI5XYTBvDVbELJoQ4bXvwbbrskuFWExvvqH6nDtap72nxD58
+ RNug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696347949; x=1696952749;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=2MIKo0D6KLV1x/AuyDO3M7Lg8FwwQ3be98rEZKqPFI4=;
- b=XqS5MuX8mow6l6zFPNEgUQ+bmZuBfL9DJD5QNTvReV7PjJVPXrHqBafKWYtwbjGCrJ
- mY8sLCr54PvAf4e72Yqab2lpAvW5bxaCBH5rH69v2R/IOQMKGnUFyz8MsYCb2uUHHssa
- YB9TI35m/CW01ubDWwoPcs9lBtdHFw2H+rxPy/z46SqPWcBnI9cXiS87UJRl41tW5mHJ
- zxcRjfQ44HAMu2IHoGYdpDNwh1SQQU/ghJ2MCIw/6g3W2GJDBfDNatVPjgMzbjE7CZL4
- 6fBPNSyoFp/IwPjY+dyTOrOhKJ+iv1ZU7zNj/Hv3nEEfTKCWcUMQYTv1fjz8GyWJuY7q
- 06JA==
-X-Gm-Message-State: AOJu0Yxwq4j6Um3TYtIQivMcmkPNfxtA0R11RBGW0on6r/JYhzYJDMBQ
- x9VbIy8IyGycmdzxK2JWuNb/MB3V36eE1nuEDBv5Ajcoc92gZQ+lAE1WaDB5bvZtsM8Nqhxrb4j
- mtZl6r2bCqRCqlBU=
-X-Received: by 2002:a0c:aa5b:0:b0:63c:fa7d:74ee with SMTP id
- e27-20020a0caa5b000000b0063cfa7d74eemr14081977qvb.50.1696347949655; 
- Tue, 03 Oct 2023 08:45:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEudGHfBXSmEVEWbsmP6xkks9F0HcyaHu3sefqxOF2M79PJ6aDtgWLlJ8e4NjSk9V85RK1n/g==
-X-Received: by 2002:a0c:aa5b:0:b0:63c:fa7d:74ee with SMTP id
- e27-20020a0caa5b000000b0063cfa7d74eemr14081959qvb.50.1696347949325; 
- Tue, 03 Oct 2023 08:45:49 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- j12-20020a0cf30c000000b0065b079366a7sm567453qvl.114.2023.10.03.08.45.47
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 08:45:48 -0700 (PDT)
-Message-ID: <2b5f76ed-6727-4e4c-c018-d47aa2e1c958@redhat.com>
-Date: Tue, 3 Oct 2023 17:45:46 +0200
+ d=1e100.net; s=20230601; t=1696347971; x=1696952771;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=AWhVrenavtcbKw4ZhcYUIEra2ebOrcPcbB2ptjf/EQA=;
+ b=vQncjkFFp4ocrNZb+4JadtFAl8TAwf2iv6mEy3IuDvtKpLKJyEl8WJPuCy6INlY9/9
+ snjy76pSMnBoz/Vui+iULPiG/inkvmdmH486wqt7djDnmEic3ey02AF1xWNLwg1I7wHB
+ 2yZZ7c7penL+TQXXhuHQFJdsRiXco4OiLYTcTnY5TuaEGkCjTxqhPzNNUhDgLxxIKySX
+ ud1nm+C4QCbRGnsQzEAo2u5m1gTbM6d3e4SxSTeJzFVmrhSCayyWeM3hAd2HcKt19S4M
+ dNfpgoAlrWJvaKcwr/ZZJmvWxKAAFoooNkBpT0+3aOpBN8sijifqprv8CqPYaPmFiW0T
+ nccg==
+X-Gm-Message-State: AOJu0YwNqNMW1ZR9ZgDN0Z3TbkbzzZRYITf+Oo+NYmZ5nzVIyEgvSVf1
+ tGWeFTSehwxNjpo7eIT8r4cchqpbIsexdCD0vOM=
+X-Google-Smtp-Source: AGHT+IH90PLwseOttK39wu9mtqMKg1+2DOjvVZtshBW/csFFFUYDfpz92tTRYhcLOOTesHrzJFEpEvHu/+TUY8PD5W4=
+X-Received: by 2002:a05:6808:308d:b0:3a4:6b13:b721 with SMTP id
+ bl13-20020a056808308d00b003a46b13b721mr16941731oib.46.1696347971191; Tue, 03
+ Oct 2023 08:46:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3 10/15] vfio/ccw: Use vfio_[attach/detach]_device
-Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, zhenzhong.duan@intel.com, alex.williamson@redhat.com,
- jgg@nvidia.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
- peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-11-eric.auger@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231003101530.288864-11-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20230827182937.146450-1-lersek@redhat.com>
+ <20230827182937.146450-8-lersek@redhat.com>
+ <CAJSP0QVWSQ8F-A1ryGLtd1jb8Go1Pr_N7AcLb5W5kSFv8T8jTA@mail.gmail.com>
+ <6d766ab4-b6b8-b64b-1f9d-60c558b56509@redhat.com>
+ <CAJSP0QV9RO7bkkcVFibnTv4tixmO3wKohSY+ia1D-UZiRzh5QA@mail.gmail.com>
+ <20231002015259-mutt-send-email-mst@kernel.org>
+ <CAJSP0QXgWsULW_61-MScvuWAiE3c4brYRyFc6q_==Sj6aLE8SQ@mail.gmail.com>
+ <CAJSP0QU3jzFGnJ35Zbabf70Tbf+rPA_fvrA_eNxZ8TxOXQxZXA@mail.gmail.com>
+ <20231002183627-mutt-send-email-mst@kernel.org>
+ <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
+ <20231003103143-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231003103143-mutt-send-email-mst@kernel.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 3 Oct 2023 11:45:58 -0400
+Message-ID: <CAJSP0QWYZE189K4V9yLyaNnZhAA_uPeH4myL+rLfNkZ5JuUOkA@mail.gmail.com>
+Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Laszlo Ersek <lersek@redhat.com>, 
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>, 
+ Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=stefanha@gmail.com; helo=mail-ot1-x32d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,272 +99,113 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 12:14, Eric Auger wrote:
-> Let the vfio-ccw device use vfio_attach_device() and
-> vfio_detach_device(), hence hiding the details of the used
-> IOMMU backend.
-> 
-> Note that the migration reduces the following trace
-> "vfio: subchannel %s has already been attached" (featuring
-> cssid.ssid.devid) into "device is already attached"
-> 
-> Also now all the devices have been migrated to use the new
-> vfio_attach_device/vfio_detach_device API, let's turn the
-> legacy functions into static functions, local to container.c.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> 
-> ---
-> v2 -> v3:
-> - Hopefully fix confusion beteen vbasedev->name, mdevid and sysfsdev
->    while keeping into account Matthew's comment
->    https://lore.kernel.org/qemu-devel/6e04ab8f-dc84-e9c2-deea-2b6b31678b53@linux.ibm.com/
-> ---
->   include/hw/vfio/vfio-common.h |   5 --
->   hw/vfio/ccw.c                 | 122 +++++++++-------------------------
->   hw/vfio/common.c              |  10 +--
->   3 files changed, 37 insertions(+), 100 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index 12fbfbc37d..c486bdef2a 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -202,7 +202,6 @@ typedef struct {
->       hwaddr pages;
->   } VFIOBitmap;
->   
-> -void vfio_put_base_device(VFIODevice *vbasedev);
->   void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
->   void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
->   void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
-> @@ -220,11 +219,7 @@ void vfio_region_unmap(VFIORegion *region);
->   void vfio_region_exit(VFIORegion *region);
->   void vfio_region_finalize(VFIORegion *region);
->   void vfio_reset_handler(void *opaque);
-> -VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
-> -void vfio_put_group(VFIOGroup *group);
->   struct vfio_device_info *vfio_get_device_info(int fd);
-> -int vfio_get_device(VFIOGroup *group, const char *name,
-> -                    VFIODevice *vbasedev, Error **errp);
->   int vfio_attach_device(char *name, VFIODevice *vbasedev,
->                          AddressSpace *as, Error **errp);
->   void vfio_detach_device(VFIODevice *vbasedev);
-> diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
-> index 1e2fce83b0..84eafb2e87 100644
-> --- a/hw/vfio/ccw.c
-> +++ b/hw/vfio/ccw.c
-> @@ -572,88 +572,15 @@ static void vfio_ccw_put_region(VFIOCCWDevice *vcdev)
->       g_free(vcdev->io_region);
->   }
->   
-> -static void vfio_ccw_put_device(VFIOCCWDevice *vcdev)
-> -{
-> -    g_free(vcdev->vdev.name);
-> -    vfio_put_base_device(&vcdev->vdev);
-> -}
-> -
-> -static void vfio_ccw_get_device(VFIOGroup *group, VFIOCCWDevice *vcdev,
-> -                                Error **errp)
-> -{
-> -    S390CCWDevice *cdev = S390_CCW_DEVICE(vcdev);
-> -    char *name = g_strdup_printf("%x.%x.%04x", cdev->hostid.cssid,
-> -                                 cdev->hostid.ssid,
-> -                                 cdev->hostid.devid);
-> -    VFIODevice *vbasedev;
-> -
-> -    QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -        if (strcmp(vbasedev->name, name) == 0) {
-> -            error_setg(errp, "vfio: subchannel %s has already been attached",
-> -                       name);
-> -            goto out_err;
-> -        }
-> -    }
-> -
-> -    /*
-> -     * All vfio-ccw devices are believed to operate in a way compatible with
-> -     * discarding of memory in RAM blocks, ie. pages pinned in the host are
-> -     * in the current working set of the guest driver and therefore never
-> -     * overlap e.g., with pages available to the guest balloon driver.  This
-> -     * needs to be set before vfio_get_device() for vfio common to handle
-> -     * ram_block_discard_disable().
-> -     */
-> -    vcdev->vdev.ram_block_discard_allowed = true;
-> -
-> -    if (vfio_get_device(group, cdev->mdevid, &vcdev->vdev, errp)) {
-> -        goto out_err;
-> -    }
-> -
-> -    vcdev->vdev.ops = &vfio_ccw_ops;
-> -    vcdev->vdev.type = VFIO_DEVICE_TYPE_CCW;
-> -    vcdev->vdev.name = name;
-> -    vcdev->vdev.dev = DEVICE(vcdev);
-> -
-> -    return;
-> -
-> -out_err:
-> -    g_free(name);
-> -}
-> -
-> -static VFIOGroup *vfio_ccw_get_group(S390CCWDevice *cdev, Error **errp)
-> -{
-> -    char *tmp, group_path[PATH_MAX];
-> -    ssize_t len;
-> -    int groupid;
-> -
-> -    tmp = g_strdup_printf("/sys/bus/css/devices/%x.%x.%04x/%s/iommu_group",
-> -                          cdev->hostid.cssid, cdev->hostid.ssid,
-> -                          cdev->hostid.devid, cdev->mdevid);
-> -    len = readlink(tmp, group_path, sizeof(group_path));
-> -    g_free(tmp);
-> -
-> -    if (len <= 0 || len >= sizeof(group_path)) {
-> -        error_setg(errp, "vfio: no iommu_group found");
-> -        return NULL;
-> -    }
-> -
-> -    group_path[len] = 0;
-> -
-> -    if (sscanf(basename(group_path), "%d", &groupid) != 1) {
-> -        error_setg(errp, "vfio: failed to read %s", group_path);
-> -        return NULL;
-> -    }
-> -
-> -    return vfio_get_group(groupid, &address_space_memory, errp);
-> -}
-> -
->   static void vfio_ccw_realize(DeviceState *dev, Error **errp)
->   {
-> -    VFIOGroup *group;
->       S390CCWDevice *cdev = S390_CCW_DEVICE(dev);
->       VFIOCCWDevice *vcdev = VFIO_CCW(cdev);
->       S390CCWDeviceClass *cdc = S390_CCW_DEVICE_GET_CLASS(cdev);
-> +    VFIODevice *vbasedev = &vcdev->vdev;
->       Error *err = NULL;
-> +    char *name;
-> +    int ret;
->   
->       /* Call the class init function for subchannel. */
->       if (cdc->realize) {
-> @@ -663,14 +590,31 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
->           }
->       }
->   
-> -    group = vfio_ccw_get_group(cdev, &err);
-> -    if (!group) {
-> -        goto out_group_err;
-> -    }
-> +    name = g_strdup_printf("%x.%x.%04x", vcdev->cdev.hostid.cssid,
-> +                           vcdev->cdev.hostid.ssid,
-> +                           vcdev->cdev.hostid.devid);
-> +    vbasedev->sysfsdev = g_strdup_printf("/sys/bus/css/devices/%s/%s",
-> +                                         name,
-> +                                         cdev->mdevid);
-> +    vbasedev->ops = &vfio_ccw_ops;
-> +    vbasedev->type = VFIO_DEVICE_TYPE_CCW;
-> +    vbasedev->name = name;
-> +    vbasedev->dev = &vcdev->cdev.parent_obj.parent_obj;
+On Tue, 3 Oct 2023 at 10:40, Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> On Tue, Oct 03, 2023 at 09:08:15AM -0400, Stefan Hajnoczi wrote:
+> > On Tue, 3 Oct 2023 at 08:27, Michael S. Tsirkin <mst@redhat.com> wrote:
+> > >
+> > > On Mon, Oct 02, 2023 at 05:13:26PM -0400, Stefan Hajnoczi wrote:
+> > > > One more question:
+> > > >
+> > > > Why is the disabled state not needed by regular (non-vhost) virtio-net devices?
+> > >
+> > > Tap does the same - it purges queued packets:
+> > >
+> > > int tap_disable(NetClientState *nc)
+> > > {
+> > >     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+> > >     int ret;
+> > >
+> > >     if (s->enabled == 0) {
+> > >         return 0;
+> > >     } else {
+> > >         ret = tap_fd_disable(s->fd);
+> > >         if (ret == 0) {
+> > >             qemu_purge_queued_packets(nc);
+> > >             s->enabled = false;
+> > >             tap_update_fd_handler(s);
+> > >         }
+> > >         return ret;
+> > >     }
+> > > }
+> >
+> > tap_disable() is not equivalent to the vhost-user "started but
+> > disabled" ring state. tap_disable() is a synchronous one-time action,
+> > while "started but disabled" is a continuous state.
+>
+> well, yes. but practically guests do not queue too many buffers
+> after disabling a queue. I don't know if they reliably don't
+> or it's racy and we didn't notice it yet - I think it
+> was mostly dpdk that had this and that's usually
+> used with vhost-user.
+>
+> > The "started but disabled" ring state isn't needed to achieve this.
+> > The back-end can just drop tx buffers upon receiving
+> > VHOST_USER_SET_VRING_ENABLE .num=0.
+>
+> yes, maybe that would have been a better way to do this.
+>
+>
+> > The history of the spec is curious. VHOST_USER_SET_VRING_ENABLE was
+> > introduced before the the "started but disabled" state was defined,
+> > and it explicitly mentions tap attach/detach:
+> >
+> > commit 7263a0ad7899994b719ebed736a1119cc2e08110
+> > Author: Changchun Ouyang <changchun.ouyang@intel.com>
+> > Date:   Wed Sep 23 12:20:01 2015 +0800
+> >
+> >     vhost-user: add a new message to disable/enable a specific virt queue.
+> >
+> >     Add a new message, VHOST_USER_SET_VRING_ENABLE, to enable or disable
+> >     a specific virt queue, which is similar to attach/detach queue for
+> >     tap device.
+> >
+> > and then later:
+> >
+> > commit c61f09ed855b5009f816242ce281fd01586d4646
+> > Author: Michael S. Tsirkin <mst@redhat.com>
+> > Date:   Mon Nov 23 12:48:52 2015 +0200
+> >
+> >     vhost-user: clarify start and enable
+> >
+> > >
+> > > what about non tap backends? I suspect they just aren't
+> > > used widely with multiqueue so no one noticed.
+> >
+> > I still don't understand why "started but disabled" is needed instead
+> > of just two ring states: enabled and disabled.
+>
+> With dropping packets when ring is disabled? Maybe that would
+> have been enough. I also failed to realize it's specific to
+> net, seemed generic to me :(
+>
+> > It seems like the cleanest path going forward is to keep the "ignore
+> > rx, discard tx" semantics for virtio-net devices but to clarify in the
+> > spec that other device types do not process the ring:
+> >
+> > "
+> > * started but disabled: the back-end must not process the ring. For legacy
+> >   reasons there is an exception for the networking device, where the
+> >   back-end must process and discard any TX packets and not process
+> >   other rings.
+> > "
+> >
+> > What do you think?
+> >
+> > Stefan
+>
+> Okay... I hope we are not missing any devices which need virtio net
+> semantics. Care checking them all?
 
-Would DEVICE(vcdev) be the same ?
+Sure, I will check them. I'm very curious myself whether virtio-vsock
+is affected (it has rx and tx queues).
 
-Thanks,
+I will report back.
 
-C.
+Stefan
 
->   
-> -    vfio_ccw_get_device(group, vcdev, &err);
-> -    if (err) {
-> -        goto out_device_err;
-> +    /*
-> +     * All vfio-ccw devices are believed to operate in a way compatible with
-> +     * discarding of memory in RAM blocks, ie. pages pinned in the host are
-> +     * in the current working set of the guest driver and therefore never
-> +     * overlap e.g., with pages available to the guest balloon driver.  This
-> +     * needs to be set before vfio_get_device() for vfio common to handle
-> +     * ram_block_discard_disable().
-> +     */
-> +    vbasedev->ram_block_discard_allowed = true;
-> +
-> +    ret = vfio_attach_device(cdev->mdevid, vbasedev,
-> +                             &address_space_memory, errp);
-> +    if (ret) {
-> +        goto out_attach_dev_err;
->       }
->   
->       vfio_ccw_get_region(vcdev, &err);
-> @@ -708,10 +652,9 @@ out_irq_notifier_err:
->   out_io_notifier_err:
->       vfio_ccw_put_region(vcdev);
->   out_region_err:
-> -    vfio_ccw_put_device(vcdev);
-> -out_device_err:
-> -    vfio_put_group(group);
-> -out_group_err:
-> +    vfio_detach_device(vbasedev);
-> +out_attach_dev_err:
-> +    g_free(vbasedev->name);
->       if (cdc->unrealize) {
->           cdc->unrealize(cdev);
->       }
-> @@ -724,14 +667,13 @@ static void vfio_ccw_unrealize(DeviceState *dev)
->       S390CCWDevice *cdev = S390_CCW_DEVICE(dev);
->       VFIOCCWDevice *vcdev = VFIO_CCW(cdev);
->       S390CCWDeviceClass *cdc = S390_CCW_DEVICE_GET_CLASS(cdev);
-> -    VFIOGroup *group = vcdev->vdev.group;
->   
->       vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_REQ_IRQ_INDEX);
->       vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_CRW_IRQ_INDEX);
->       vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX);
->       vfio_ccw_put_region(vcdev);
-> -    vfio_ccw_put_device(vcdev);
-> -    vfio_put_group(group);
-> +    vfio_detach_device(&vcdev->vdev);
-> +    g_free(vcdev->vdev.name);
->   
->       if (cdc->unrealize) {
->           cdc->unrealize(cdev);
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index f4c33c9858..56cfe94d97 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -2335,7 +2335,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
->       }
->   }
->   
-> -VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
-> +static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
->   {
->       VFIOGroup *group;
->       char path[32];
-> @@ -2402,7 +2402,7 @@ free_group_exit:
->       return NULL;
->   }
->   
-> -void vfio_put_group(VFIOGroup *group)
-> +static void vfio_put_group(VFIOGroup *group)
->   {
->       if (!group || !QLIST_EMPTY(&group->device_list)) {
->           return;
-> @@ -2447,8 +2447,8 @@ retry:
->       return info;
->   }
->   
-> -int vfio_get_device(VFIOGroup *group, const char *name,
-> -                    VFIODevice *vbasedev, Error **errp)
-> +static int vfio_get_device(VFIOGroup *group, const char *name,
-> +                           VFIODevice *vbasedev, Error **errp)
->   {
->       g_autofree struct vfio_device_info *info = NULL;
->       int fd;
-> @@ -2506,7 +2506,7 @@ int vfio_get_device(VFIOGroup *group, const char *name,
->       return 0;
->   }
->   
-> -void vfio_put_base_device(VFIODevice *vbasedev)
-> +static void vfio_put_base_device(VFIODevice *vbasedev)
->   {
->       if (!vbasedev->group) {
->           return;
-
+>
+> --
+> MST
+>
 
