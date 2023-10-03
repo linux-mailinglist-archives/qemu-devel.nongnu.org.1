@@ -2,106 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8347B7B7331
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 23:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0997B7336
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 23:19:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnmm4-0007LS-Rr; Tue, 03 Oct 2023 17:17:49 -0400
+	id 1qnmnX-0000UA-NT; Tue, 03 Oct 2023 17:19:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qnmm2-0007LI-B9
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:17:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
- id 1qnmm0-0002m3-8o
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:17:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696367862;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=eo29Ru12FGhhu8TfcE+H8JU0YdqcI7P2yohi/6ntiNY=;
- b=EsyDhFRHsacDgag7bNnlvkNmAKHTRNCBhHNnwcACWIvARWA7VHW0L7UOzNNasUO9GqeayG
- 9S1Cm9yg26+AR5No+VNxYcrbLg9evgjKHoR/Z3a4qvF3bMStsJglcsUwFqu3D7qY2EsNJa
- cIOKVWSDX7/vzmWJPqX7PoE7crQmoCw=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-4x1IG_ChOgWj0WhXU3pMcA-1; Tue, 03 Oct 2023 17:17:36 -0400
-X-MC-Unique: 4x1IG_ChOgWj0WhXU3pMcA-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-65afcf18d05so15392926d6.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 14:17:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qnmnV-0000TD-AN
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:19:17 -0400
+Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qnmnT-0002zq-S9
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:19:17 -0400
+Received: by mail-pj1-x1036.google.com with SMTP id
+ 98e67ed59e1d1-278f0f565e2so1027283a91.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 14:19:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696367954; x=1696972754; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=uqxCT41hNwR5lc5LjBcEjFOED6bjk1Q4MnnczZx6+dM=;
+ b=dTIED00QrrnaLjpTJkpVRiD+B1IIqpnR5u7xB6v32XDAVriinC2zkU/wDFAd3TcInu
+ aqMudLNX2G+UCIV6ABMhCPio+/Sf+SZy02NVfbN1X4piBYgZY9iVZeXNLA9umJOMy0lg
+ Yon9sYcyj7lJatWufL1aikxPZexbReUSov1jHvTREeLK9ws1clmrdOWzGp7O/jsGQKxc
+ 2VsfNpXaFrYuzGCQfUI0nY8ikCwnp//X8vEeXfsLu2NVWwTGu2oA0oFwT8yip46nlK6O
+ j6Mq7TQcNOyFCVyVc5qjsPuGZ2XCZoF8eNeLfqnzvXKo2JyXg6SYhDRD9ecO4wW9misT
+ +Kng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696367856; x=1696972656;
+ d=1e100.net; s=20230601; t=1696367954; x=1696972754;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=eo29Ru12FGhhu8TfcE+H8JU0YdqcI7P2yohi/6ntiNY=;
- b=vjWPfSQkEkrznVCRJXImAXCBxBMSQcwznDSjj8PY/ySrL+aPtOyWPy3jjBkhHS0wsw
- nbIGcd+zH1++gDBWjVHTaSHuzMz1kP6r5eEsl84WztVIyz6cX3mU2J2MkKmyrdOs+j6g
- ERJKtwufsFKUeRa8OVydesradPsQwaEXhrBCDj24NYsefBaj/HvcAn+u1xAvL7JABD5S
- lPEJYtstetxnJ05IRVlI4l5UHtKeWoxV3Cp3T7A5wd7lZE4dWKnbic9HayL949CBplS6
- UqOHbmEwk/nrPfJA2JqqNg4ukRV/Bf9UIwuNsJX4IXs3tetuApgPR7loVXT78RGEsXFL
- /nng==
-X-Gm-Message-State: AOJu0YzEk8fABtOAyIaWAK+nDlzrrCyv7GfwBqH1DFi9UHlGft848SDs
- LvQrFstv9ifKTGXiyb8wIcPjCBeK0EB3mDe7gVyt06RLwFDVTE5zHHJ7REuIkGU5eRr6ENmSaaX
- a0TCgpxxA6B57dwE=
-X-Received: by 2002:a0c:b347:0:b0:65b:26d4:7fb6 with SMTP id
- a7-20020a0cb347000000b0065b26d47fb6mr499984qvf.4.1696367856018; 
- Tue, 03 Oct 2023 14:17:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHEiKe79Ojx8XoFbl1BfZyjsbJIkfGyJ+jAh3T3bcIlc7DtIgE7/bgFrgc3LBXNnIMMQco84w==
-X-Received: by 2002:a0c:b347:0:b0:65b:26d4:7fb6 with SMTP id
- a7-20020a0cb347000000b0065b26d47fb6mr499975qvf.4.1696367855783; 
- Tue, 03 Oct 2023 14:17:35 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ bh=uqxCT41hNwR5lc5LjBcEjFOED6bjk1Q4MnnczZx6+dM=;
+ b=gHyQXTE4tcyOYjAzIzG81su8FD4GPBGTcIzO971ynpqlNBs1OqLVb0hx/t3e22moGi
+ /PLP/rNhsfqdpzm+Mzg0+CWW9vy/aauWFcYSUzUPNsCHGB9vc6BNLm8vS8Xste7MTVCP
+ ZdbuTt40YUwCOtEADoTTQZAKU+jGRIhdnty1avT25D6jyKEyaN0t0miT7hLMAGjyfCbF
+ xh1Zm2Ek95QnQFtWDv80XZ67W5UxWLAnLQaks29V+V+hKpvC3eM2Au8P/RFpsezM/Jp4
+ zDLZ9nnAia3LCg7ibmI3hr4LJGR6trc42GT0/RbVimWAOiG66kroixa6+EDHN4y+E/OI
+ k2Hg==
+X-Gm-Message-State: AOJu0Yz8g/sP7PJz/U6EXuOpg/UlhXjv+b3OZ7oOj6Jc7nanWzexpEUc
+ lsn8ICHNuvhlGI6e8N1zxhS6KylQXmefoOvaHPo=
+X-Google-Smtp-Source: AGHT+IEIOJM6xfeTJITX1doU/fa/prR9jOJy0iqpR2URXdo7LUahKT/1PsNp1i9UQDZ7F2w5uRo2fg==
+X-Received: by 2002:a17:90b:1b50:b0:274:8041:94c with SMTP id
+ nv16-20020a17090b1b5000b002748041094cmr533084pjb.13.1696367954381; 
+ Tue, 03 Oct 2023 14:19:14 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- e15-20020a0cb44f000000b00656373f9c30sm801185qvf.75.2023.10.03.14.17.34
+ b7-20020a17090a6ac700b0027768125e24sm28301pjm.39.2023.10.03.14.19.13
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 14:17:35 -0700 (PDT)
-Message-ID: <da918371-ef09-c296-7178-db5f2dcd68ec@redhat.com>
-Date: Tue, 3 Oct 2023 23:17:33 +0200
+ Tue, 03 Oct 2023 14:19:13 -0700 (PDT)
+Message-ID: <1e60c1c2-6b35-27ed-31c0-afbcbc9c7ade@linaro.org>
+Date: Tue, 3 Oct 2023 14:19:12 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH for-8.1] vfio/display: Fix missing update to set backing
- fields
+Subject: Re: [PATCH] target/m68k: Map FPU exceptions to FPSR register
 Content-Language: en-US
-To: Michael Tokarev <mjt@tls.msk.ru>,
- Alex Williamson <alex.williamson@redhat.com>, kraxel@redhat.com
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@gmail.com>,
- "Kim, Dongwon" <dongwon.kim@intel.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Eric Auger <eric.auger@redhat.com>
-References: <20230816215550.1723696-1-alex.williamson@redhat.com>
- <a3a6f8ec-ca61-4472-45b4-1077dd27bb52@linaro.org>
- <acddfb4a-fe42-ba8c-e920-edc7e9ff5268@intel.com>
- <CAJ+F1C+YiDgRuyWcGeUPhaNO4SdjOSFSHKBY1wBS3dJFLO-k2w@mail.gmail.com>
- <20230904081129.3908c083.alex.williamson@redhat.com>
- <CAJ+F1CJFiHCu4FTbSFfLgSANiHJHEowJg7Um3j+ZMiHb_S21aQ@mail.gmail.com>
- <20230905090907.2b70b6a0.alex.williamson@redhat.com>
- <20230913131827.3bfe7bcb.alex.williamson@redhat.com>
- <b138199a-ceaa-4bf9-4d91-50a05ccc3267@redhat.com>
- <ce76c905-71bc-d141-cd98-b310732e4e41@tls.msk.ru>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
-In-Reply-To: <ce76c905-71bc-d141-cd98-b310732e4e41@tls.msk.ru>
+To: Keith Packard <keithp@keithp.com>, qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+References: <20230803035231.429697-1-keithp@keithp.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230803035231.429697-1-keithp@keithp.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,45 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 19:03, Michael Tokarev wrote:
-> 22.09.2023 12:38, Cédric Le Goater:
->> On 9/13/23 21:18, Alex Williamson wrote:
->>>
->>> Hi Gerd,
->>>
->>> Some consultation would be appreciated on this thread to get this patch
->>> out of limbo.  Is there a better solution that what I've proposed?
->>
->> This does fix a regression reproducible on systems with an Intel Gen 8,
->> my T480 laptop for instance.
->>
->> Tested-by: Cédric Le Goater <clg@redhat.com>
->>
->> Also, queuing it in vfio-next.
+On 8/2/23 20:52, Keith Packard via wrote:
+> Add helpers for reading/writing the 68881 FPSR register so that
+> changes in floating point exception state can be seen by the
+> application.
 > 
-> Cédric, can we get this in time for 8.1.2 please
-> (which I'm planning for Oct-14 for now)?  Looks like
-> it hit quite some people already.
-
-yes. I would like to include this series [1] from Eric in my next PR.
-It doesn't need much, an Ack from the s390 team mostly, the rest is
-aesthetic. So, I hope this week, else I will send a smaller PR.
-
-Thanks,
-
-C.
-
-[1] https://lore.kernel.org/qemu-devel/20231003101530.288864-1-eric.auger@redhat.com/
-
-
+> Call these helpers in pre_load/post_load hooks to synchronize
+> exception state.
 > 
-> I dunno what are your plans for vfio-next, maybe this
-> one (which missed 8.1.0 already) can be pushed as a
-> bugfix?
-> 
-> Thank you!
-> 
-> /mjt
-> 
+> Signed-off-by: Keith Packard<keithp@keithp.com>
+> ---
+>   target/m68k/cpu.c        | 12 +++++++
+>   target/m68k/cpu.h        |  2 ++
+>   target/m68k/fpu_helper.c | 72 ++++++++++++++++++++++++++++++++++++++++
+>   target/m68k/helper.c     |  4 +--
+>   target/m68k/helper.h     |  2 ++
+>   target/m68k/translate.c  |  4 +--
+>   6 files changed, 92 insertions(+), 4 deletions(-)
 
+Queued to m68k-next.
+
+r~
 
