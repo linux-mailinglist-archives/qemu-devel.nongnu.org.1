@@ -2,58 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113167B6B4A
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:21:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E43697B6B49
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:21:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qngG7-00085J-M6; Tue, 03 Oct 2023 10:20:23 -0400
+	id 1qngGB-00087S-Tn; Tue, 03 Oct 2023 10:20:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qngG0-00084v-S6
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:20:17 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qngG2-000853-Fh
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:20:19 -0400
 Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qngFz-0005MF-Cw
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:20:16 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qngFz-0005MZ-D3
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:20:17 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id AE78E1F45B;
- Tue,  3 Oct 2023 14:20:09 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 5C6B31F894;
+ Tue,  3 Oct 2023 14:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696342809; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=W7b8o7DC9s2TVZxeM5XJuha5A6qnJo7MhLBsssLe/KY=;
- b=UrOTtbj2SbouegCxyLaKliuH10iknRTn7t1AcT3vf4BjVHwxm4sok/nZPc10QNKyHInDN3
- FZXptn2fPCFV1ZPw067mxoFQ/XiSRCubkQuXnYp6obKqXywbNPjXGNBKvb6aRTBBgd08iv
- b1YNfeYtKzqSchsdozj3zZRcwqQVMG0=
+ t=1696342812; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JBPSiPSrOpI2yCVGuVGu4ZJOaoUnS+0et1HCCtrJUNI=;
+ b=M3ScFDNvcKZlGviB9W5+G7nZA4V6C1t2KyDfH+TsVJLwr6B1hs6VexzpcuHdDIkgIxR0rG
+ ITOv/t4QNqfgsmHE55JPsi9ssoiJhS6t1EIPp2HcMe07j4eY9dXt+r1cyJUpfLlyE5/cFN
+ T3OFKH8hepL468VhR5aooOoI2kSwsQ4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696342809;
+ s=susede2_ed25519; t=1696342812;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=W7b8o7DC9s2TVZxeM5XJuha5A6qnJo7MhLBsssLe/KY=;
- b=IvTWfFccldhKkDgwfCgIEa6OKKJzGE7oI3EZTAogr86k0SlEx4wewqued6FD4lAZGmbKOZ
- e0xb2/B/3f4xTyDA==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=JBPSiPSrOpI2yCVGuVGu4ZJOaoUnS+0et1HCCtrJUNI=;
+ b=fbaLNuSzk/Ptz8w4LW2bzyUEkY+OARHfZpk0FmXuRwDA2QdsHmxTtfhwW0VOR5rAfalddE
+ /aQoDU+2voH3QZAg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 44097139F9;
- Tue,  3 Oct 2023 14:20:08 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 38E19139F9;
+ Tue,  3 Oct 2023 14:20:10 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 2760AxgjHGWuUAAAMHmgww
- (envelope-from <farosas@suse.de>); Tue, 03 Oct 2023 14:20:08 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id SAuIARojHGWuUAAAMHmgww
+ (envelope-from <farosas@suse.de>); Tue, 03 Oct 2023 14:20:10 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [RFC PATCH 0/1] tests/migration-test: Allow testing older machine
- types
-Date: Tue,  3 Oct 2023 11:19:31 -0300
-Message-Id: <20231003141932.2367-1-farosas@suse.de>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: [RFC PATCH 1/1] qtest/migration: Support more than one QEMU binary
+Date: Tue,  3 Oct 2023 11:19:32 -0300
+Message-Id: <20231003141932.2367-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20231003141932.2367-1-farosas@suse.de>
+References: <20231003141932.2367-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
@@ -80,34 +87,353 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi, I had this WIP patch laying around that seems to fit Juan's vision
-about testing older machine types. It is a very rough draft for now,
-but it may be useful for kickstarting the discussion.
+We have strict rules around migration compatibility between different
+QEMU versions but not a single test that validates the migration state
+between different binaries.
 
-With this we can give the tests two different QEMU versions. The test
-picks the older machine type between the two and runs the whole
-migration-test suite.
+Add some infrastructure to allow running the migration tests with two
+different QEMU binaries as migration source and destination.
 
-We'd just need a way to provide the older build. Currently I'm doing
-this by hand.
+The code now recognizes two new environment variables QTEST_QEMU_SRC
+and QTEST_QEMU_DST. Only one of the two is expected to be used along
+with the existing QTEST_QEMU_BINARY, which will automatically be used
+for the other side of migration.
 
-sample output:
- # Using two different QEMU binaries. Common machine type: pc-i440fx-8.1
- ...
- # Using ./qemu-system-x86_64 (v8.1.0-952-g8a940312a2-dirty) as migration source
- ...
- # Using ../build-8.1.0/qemu-system-x86_64 (v8.1.0-dirty) as migration destination
+Usage:
+QTEST_QEMU_DST=./build-8.2.0/qemu-system-x86_64 \
+QTEST_QEMU_BINARY=../build-8.1.0/qemu-system-x86_64 \
+./tests/qtest/migration-test
 
-Let me know what you think.
+This code also works for when debugging with GDB to pass the same
+binary, but different GDB options for src and dst.
 
-Fabiano Rosas (1):
-  qtest/migration: Support more than one QEMU binary
-
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
  tests/qtest/migration-helpers.c | 168 ++++++++++++++++++++++++++++++++
  tests/qtest/migration-helpers.h |   3 +
  tests/qtest/migration-test.c    |  52 ++++++++--
  3 files changed, 216 insertions(+), 7 deletions(-)
 
+diff --git a/tests/qtest/migration-helpers.c b/tests/qtest/migration-helpers.c
+index be00c52d00..e84360c3b3 100644
+--- a/tests/qtest/migration-helpers.c
++++ b/tests/qtest/migration-helpers.c
+@@ -12,6 +12,8 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/qmp/qjson.h"
++#include "qapi/qmp/qlist.h"
++#include "qapi/qmp/qstring.h"
+ 
+ #include "migration-helpers.h"
+ 
+@@ -180,3 +182,169 @@ void wait_for_migration_fail(QTestState *from, bool allow_active)
+     g_assert(qdict_get_bool(rsp_return, "running"));
+     qobject_unref(rsp_return);
+ }
++
++static char *query_pkg_version(QTestState *who)
++{
++    QDict *rsp;
++    char *pkg;
++
++    rsp = qtest_qmp_assert_success_ref(who, "{ 'execute': 'query-version' }");
++    g_assert(rsp);
++
++    pkg = g_strdup(qdict_get_str(rsp, "package"));
++    qobject_unref(rsp);
++
++    return pkg;
++}
++
++static QList *query_machines(void)
++{
++    QDict *response;
++    QList *list;
++    QTestState *qts;
++
++    qts = qtest_init("-machine none");
++    response = qtest_qmp(qts, "{ 'execute': 'query-machines' }");
++    g_assert(response);
++    list = qdict_get_qlist(response, "return");
++    g_assert(list);
++
++    qtest_quit(qts);
++    return list;
++}
++
++static char *get_default_machine(QList *list)
++{
++    QDict *info;
++    QListEntry *entry;
++    QString *qstr;
++    char *name = NULL;
++
++    QLIST_FOREACH_ENTRY(list, entry) {
++        info = qobject_to(QDict, qlist_entry_obj(entry));
++        g_assert(info);
++
++        if (qdict_get(info, "is-default")) {
++            qstr = qobject_to(QString, qdict_get(info, "name"));
++            g_assert(qstr);
++            name = g_strdup(qstring_get_str(qstr));
++            break;
++        }
++    }
++
++    g_assert(name);
++    return name;
++}
++
++static bool search_default_machine(QList *list, const char *theirs)
++{
++    QDict *info;
++    QListEntry *entry;
++    QString *qstr;
++
++    if (!theirs) {
++        return false;
++    }
++
++    QLIST_FOREACH_ENTRY(list, entry) {
++        info = qobject_to(QDict, qlist_entry_obj(entry));
++        g_assert(info);
++
++        qstr = qobject_to(QString, qdict_get(info, "name"));
++        g_assert(qstr);
++
++        if (g_str_equal(qstring_get_str(qstr), theirs)) {
++            return true;
++        }
++    }
++    return false;
++}
++
++/*
++ * We need to ensure that both QEMU instances set via the QTEST_QEMU_*
++ * vars will use the same machine type. Use a custom query_machines
++ * function because the generic one in libqtest has a cache that would
++ * return the same machines for both binaries.
++ */
++char *find_common_machine_type(const char *bin)
++{
++    QList *m1, *m2;
++    g_autofree char *def1 = NULL;
++    g_autofree char *def2 = NULL;
++    const char *qemu_bin = getenv("QTEST_QEMU_BINARY");
++
++    m1 = query_machines();
++
++    g_setenv("QTEST_QEMU_BINARY", bin, true);
++    m2 = query_machines();
++    g_setenv("QTEST_QEMU_BINARY", qemu_bin, true);
++
++    def1 = get_default_machine(m1);
++    def2 = get_default_machine(m2);
++
++    if (g_str_equal(def1, def2)) {
++        /* either can be used */
++        return g_strdup(def1);
++    }
++
++    if (search_default_machine(m1, def2)) {
++        return g_strdup(def2);
++    }
++
++    if (search_default_machine(m2, def1)) {
++        return g_strdup(def1);
++    }
++
++    g_assert_not_reached();
++}
++
++/*
++ * Init a guest for migration tests using an alternate QEMU binary for
++ * either the source or destination, depending on @var. The other
++ * binary should be set as usual via QTEST_QEMU_BINARY.
++ *
++ * Expected values:
++ *   QTEST_QEMU_SRC
++ *   QTEST_QEMU_DST
++ *
++ * Warning: The generic parts of qtest could be using
++ * QTEST_QEMU_BINARY to query for properties before we reach the
++ * migration code. If the alternate binary is too dissimilar that
++ * could cause issues.
++ */
++static QTestState *init_vm(const char *extra_args, const char *var)
++{
++    const char *alt_bin = getenv(var);
++    const char *qemu_bin = getenv("QTEST_QEMU_BINARY");
++    g_autofree char *pkg = NULL;
++    bool src = !!strstr(var, "SRC");
++    QTestState *qts;
++
++    if (alt_bin) {
++        g_setenv("QTEST_QEMU_BINARY", alt_bin, true);
++    }
++
++    qts = qtest_init(extra_args);
++    pkg = query_pkg_version(qts);
++
++    g_test_message("Using %s (%s) as migration %s",
++                   alt_bin ? alt_bin : qemu_bin,
++                   pkg,
++                   src ? "source" : "destination");
++
++    if (alt_bin) {
++        /* restore the original */
++        g_setenv("QTEST_QEMU_BINARY", qemu_bin, true);
++    }
++    return qts;
++}
++
++QTestState *mig_init_src(const char *extra_args)
++{
++    return init_vm(extra_args, "QTEST_QEMU_SRC");
++}
++
++QTestState *mig_init_dst(const char *extra_args)
++{
++    return init_vm(extra_args, "QTEST_QEMU_DST");
++}
+diff --git a/tests/qtest/migration-helpers.h b/tests/qtest/migration-helpers.h
+index 009e250e90..aabdbc7507 100644
+--- a/tests/qtest/migration-helpers.h
++++ b/tests/qtest/migration-helpers.h
+@@ -33,4 +33,7 @@ void wait_for_migration_complete(QTestState *who);
+ 
+ void wait_for_migration_fail(QTestState *from, bool allow_active);
+ 
++QTestState *mig_init_src(const char *extra_args);
++QTestState *mig_init_dst(const char *extra_args);
++char *find_common_machine_type(const char *bin);
+ #endif /* MIGRATION_HELPERS_H */
+diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+index 1b43df5ca7..60f0b15417 100644
+--- a/tests/qtest/migration-test.c
++++ b/tests/qtest/migration-test.c
+@@ -45,6 +45,7 @@ unsigned end_address;
+ static bool uffd_feature_thread_id;
+ static bool got_src_stop;
+ static bool got_dst_resume;
++static char *common_machine_type;
+ 
+ /*
+  * An initial 3 MB offset is used as that corresponds
+@@ -712,6 +713,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+     g_autofree char *shmem_path = NULL;
+     const char *arch = qtest_get_arch();
+     const char *memory_size;
++    g_autofree char *machine = NULL;
+ 
+     if (args->use_shmem) {
+         if (!g_file_test("/dev/shm", G_FILE_TEST_IS_DIR)) {
+@@ -723,18 +725,30 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+     got_src_stop = false;
+     got_dst_resume = false;
+     bootpath = g_strdup_printf("%s/bootsect", tmpfs);
++
+     if (strcmp(arch, "i386") == 0 || strcmp(arch, "x86_64") == 0) {
+         /* the assembled x86 boot sector should be exactly one sector large */
+         assert(sizeof(x86_bootsect) == 512);
+         init_bootfile(bootpath, x86_bootsect, sizeof(x86_bootsect));
+         memory_size = "150M";
+-        arch_opts = g_strdup_printf("-drive file=%s,format=raw", bootpath);
++
++        if (common_machine_type) {
++            machine = g_strdup_printf("-machine %s", common_machine_type);
++        }
++
++        arch_opts = g_strdup_printf("%s -drive file=%s,format=raw",
++                                    machine, bootpath);
+         start_address = X86_TEST_MEM_START;
+         end_address = X86_TEST_MEM_END;
+     } else if (g_str_equal(arch, "s390x")) {
+         init_bootfile(bootpath, s390x_elf, sizeof(s390x_elf));
+         memory_size = "128M";
+-        arch_opts = g_strdup_printf("-bios %s", bootpath);
++
++        if (common_machine_type) {
++            machine = g_strdup_printf("-machine %s", common_machine_type);
++        }
++
++        arch_opts = g_strdup_printf("%s -bios %s", machine, bootpath);
+         start_address = S390_TEST_MEM_START;
+         end_address = S390_TEST_MEM_END;
+     } else if (strcmp(arch, "ppc64") == 0) {
+@@ -745,12 +759,24 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                       "'nvramrc=hex .\" _\" begin %x %x "
+                                       "do i c@ 1 + i c! 1000 +loop .\" B\" 0 "
+                                       "until'", end_address, start_address);
+-        arch_opts = g_strdup("-nodefaults -machine vsmt=8");
++
++        if (common_machine_type) {
++            machine = g_strdup_printf("%s,", common_machine_type);
++        }
++
++        arch_opts = g_strdup_printf("-nodefaults -machine %svsmt=8", machine);
+     } else if (strcmp(arch, "aarch64") == 0) {
+         init_bootfile(bootpath, aarch64_kernel, sizeof(aarch64_kernel));
+         memory_size = "150M";
+-        arch_opts = g_strdup_printf("-machine virt,gic-version=max -cpu max "
+-                                    "-kernel %s", bootpath);
++
++        if (common_machine_type) {
++            machine = g_strdup_printf("%s", common_machine_type);
++        } else {
++            machine = g_strdup("virt");
++        }
++
++        arch_opts = g_strdup_printf("-machine %s,gic-version=max -cpu max "
++                                    "-kernel %s", machine, bootpath);
+         start_address = ARM_TEST_MEM_START;
+         end_address = ARM_TEST_MEM_END;
+ 
+@@ -799,7 +825,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                  args->opts_source ? args->opts_source : "",
+                                  ignore_stderr);
+     if (!args->only_target) {
+-        *from = qtest_init(cmd_source);
++        *from = mig_init_src(cmd_source);
+         qtest_qmp_set_event_callback(*from,
+                                      migrate_watch_for_stop,
+                                      &got_src_stop);
+@@ -819,7 +845,7 @@ static int test_migrate_start(QTestState **from, QTestState **to,
+                                  shmem_opts,
+                                  args->opts_target ? args->opts_target : "",
+                                  ignore_stderr);
+-    *to = qtest_init(cmd_target);
++    *to = mig_init_dst(cmd_target);
+     qtest_qmp_set_event_callback(*to,
+                                  migrate_watch_for_resume,
+                                  &got_dst_resume);
+@@ -2769,6 +2795,8 @@ int main(int argc, char **argv)
+     const char *arch;
+     g_autoptr(GError) err = NULL;
+     int ret;
++    const char *qemu_src = getenv("QTEST_QEMU_SRC");
++    const char *qemu_dst = getenv("QTEST_QEMU_DST");
+ 
+     g_test_init(&argc, &argv, NULL);
+ 
+@@ -2780,6 +2808,16 @@ int main(int argc, char **argv)
+         return 0;
+     }
+ 
++    if (qemu_src || qemu_dst) {
++        if (qemu_src && qemu_dst) {
++            g_test_message("Only one of QTEST_QEMU_SRC, QTEST_QEMU_DST is allowed.");
++            exit(1);
++        }
++        common_machine_type = find_common_machine_type(qemu_src ? qemu_src : qemu_dst);
++        g_test_message("Using two different QEMU binaries. Common machine type: %s",
++                       common_machine_type);
++    }
++
+     has_uffd = ufd_version_check();
+     arch = qtest_get_arch();
+ 
 -- 
 2.35.3
 
