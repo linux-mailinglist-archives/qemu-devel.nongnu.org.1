@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FE27B6FFD
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F527B6FD4
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:33:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnjFC-00005N-N1; Tue, 03 Oct 2023 13:31:38 -0400
+	id 1qnjFD-00006M-M7; Tue, 03 Oct 2023 13:31:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjF6-0008U3-MO
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:32 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
+ id 1qnjF8-0008UY-03
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:34 -0400
+Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjF4-0007XJ-L6
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:32 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-690b7cb71aeso48139b3a.0
+ id 1qnjF5-0007Xd-7G
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:33 -0400
+Received: by mail-oo1-xc2f.google.com with SMTP id
+ 006d021491bc7-57ba2cd3507so686064eaf.2
  for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:31:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696354289; x=1696959089; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696354290; x=1696959090; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CzEQfKezgAt65j3pfMrIbIQsqXw7idxv2pPTvZtkhzo=;
- b=FZeTDFJaK+ckfA6pnBX6woS26qPmHKiShHHQOprA1bpr1vl8W9ApdR1ME6xZZwNP0h
- CsHjfz3T6IjTLYNpD1PLaV6TfXRzHLMBtuagw5vqUEuXeJQb451xEgyFz/y3/zOg86Iu
- KQGL1269eHlm4d9RL573YcyaOBZqru38c/WZt6v+8+K5F/20FxwLRhidCmDyIducZEoY
- Wd/mG0SAJ4nQ1ZLmHNk3w2Ykf/EPkYG5cucAsfekKjQYF9v93hyESKEy9DTQsQY66OSt
- rJ2Y7dCGZYHlGdQuVkVCSQT7uuu5MCpu1or+wdDfhezVA2rM1v1u/PD/GW+IBuz6tc3h
- eYfA==
+ bh=rCQObv9jj94bGM+uw0gpwPFUW1gAHzG1Iim/6umT+FE=;
+ b=Fz40KNil10EwdxT8JvMwr4WVAbwdbfX3bZierP1myHPnlIzNgkzqBMhbUHEPE1c3Tb
+ yXqhLDAukSWYnE6dNSHCyW5dvolUZ6+t5Wrbg5RKixR5LLrZAsqterH0jEZTqPyUo4AQ
+ OrESOhhjGrBZBsNIbkcRik4z6P9NmxiwTD843ASMgQTYZUGcgB/SrYQzTq0wiJA7MuWF
+ FF3J2skx7/IqQYHZekn9FBPDrIu2aC76eR8LGwBzbKVPIO8GHQvnfKS4EUho9yl4MfkI
+ Dv8KGbIoL/f0EdAMscZ5t+Bq3UyqbDZNHYE+BrmiObNr8dbQAmfC5e6mXtnfNb4WlCLc
+ Y32Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696354289; x=1696959089;
+ d=1e100.net; s=20230601; t=1696354290; x=1696959090;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CzEQfKezgAt65j3pfMrIbIQsqXw7idxv2pPTvZtkhzo=;
- b=YI+xb/n/9hX9alZ3QBoD2HsP6driz+6ZK02TScG26U7V7JbLgmkiqJXnnCOuGist80
- APcdnHpMmlh0Yv70y4jqQ4UbOkc1D89N5vVZaUMK5k3RElbrQfJ8B5Yw/mHf3GfIGeyo
- l8LJb3j2xWogM/RjFXQOXu49En9OroHBVx2pOM+etIJXmwAXJ/xYCvOQL5IQ1Mv6RsRL
- slLOVDGze3Lv1f69HaZ/7vqPee8lKbCRl626dHXw15e3tU4JR9d0v2Gg4n9z8vtc9L6o
- yWvYann/YE6evHmg8kB27OVzZ/Wa7rOcywxuJSKs1FGlcleDzFEv9jYgGKF3roWShjk3
- AeJQ==
-X-Gm-Message-State: AOJu0Yx2BvGhuAcajEwkWW9bP1OBeppsSTQbKmzlHf9qq2GKaPmNL0bQ
- SSJj1SI/LJPp4VKOuDd9akOVcOjZnf+/T+pOQLA=
-X-Google-Smtp-Source: AGHT+IEJtT4anM7ZvSJuo6VQuPI4zPUk4d8vrqqB/Qw9oQ6CQPuJfMMZSpMeeGYXB5xLTTAVJ3RPcw==
-X-Received: by 2002:a05:6a00:10cb:b0:68e:3616:604a with SMTP id
- d11-20020a056a0010cb00b0068e3616604amr4911321pfu.8.1696354289287; 
- Tue, 03 Oct 2023 10:31:29 -0700 (PDT)
+ bh=rCQObv9jj94bGM+uw0gpwPFUW1gAHzG1Iim/6umT+FE=;
+ b=vixJYk4AA7b4ntR5TfilN6PfADzBavFV01wINeeWHvhszINPcMmGIt6/yRSJU/Qe7c
+ vmT+wU1TphPYJXHLusysiKQ3+1jbQj9uFzJx8dhA5C4AYuTQ6vLTbrM6iu2XhnRzLPaf
+ KNde86gcdwM39BmrTUP4PtQk0mtlJzFCvQYEMOo64KFXN1rzPKXRssxCWlAepXpgUd6Q
+ YDFulxcxdRZk+ZH9BayYlWOSRwbSyNscVHNh/4Dhkek3QzvUrmmYYuRTTkQxWs+8SKBC
+ xAbRDYq0psr48wIr9PXOhEhnOu8ffEdtci18gVz3f+CX7yrbrdSNedEszxjYlXl+p3PO
+ 75rw==
+X-Gm-Message-State: AOJu0YwlbgtnjB8FX1XP28NiO50mjMJel/hc/b5XCijyQr685lAGqwmy
+ JUxqPd89dETP+pNgjGywPbEh/w9asf22spe1lHY=
+X-Google-Smtp-Source: AGHT+IG2QoJwDqSo9KsVlrr/d88D9ybz9nbtu9oU70a/E8stSuHFhQEy9SxR0PbQXH2HNI7LBqHGxg==
+X-Received: by 2002:a05:6358:910:b0:13a:bd3:3f85 with SMTP id
+ r16-20020a056358091000b0013a0bd33f85mr103916rwi.23.1696354290216; 
+ Tue, 03 Oct 2023 10:31:30 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.31.28
+ n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.31.29
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 10:31:28 -0700 (PDT)
+ Tue, 03 Oct 2023 10:31:29 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Anton Johansson <anjo@rev.ng>
-Subject: [PULL 32/47] exec: Move cpu_loop_foo() target agnostic functions to
- 'cpu-common.h'
-Date: Tue,  3 Oct 2023 10:30:37 -0700
-Message-Id: <20231003173052.1601813-33-richard.henderson@linaro.org>
+Subject: [PULL 33/47] accel/tcg: Restrict dump_exec_info() declaration
+Date: Tue,  3 Oct 2023 10:30:38 -0700
+Message-Id: <20231003173052.1601813-34-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003173052.1601813-1-richard.henderson@linaro.org>
 References: <20231003173052.1601813-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x434.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,101 +94,48 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-While these functions are not TCG specific, they are not target
-specific. Move them to "exec/cpu-common.h" so their callers don't
-have to be tainted as target specific.
+In commit 00c9a5c2c3 ("accel/tcg: Restrict 'qapi-commands-machine.h'
+to system emulation") we moved the definition to accel/tcg/ which is
+where this function is called. No need to expose it outside.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Anton Johansson <anjo@rev.ng>
-Message-Id: <20230914185718.76241-3-philmd@linaro.org>
+Message-Id: <20230914185718.76241-4-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/cpu-common.h | 32 ++++++++++++++++++++++++++++++++
- include/exec/exec-all.h   | 30 ------------------------------
- 2 files changed, 32 insertions(+), 30 deletions(-)
+ accel/tcg/internal.h   | 2 ++
+ include/exec/cpu-all.h | 5 -----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-index 360b8298a4..605b160a7e 100644
---- a/include/exec/cpu-common.h
-+++ b/include/exec/cpu-common.h
-@@ -173,4 +173,36 @@ int cpu_memory_rw_debug(CPUState *cpu, vaddr addr,
- /* vl.c */
- void list_cpus(void);
+diff --git a/accel/tcg/internal.h b/accel/tcg/internal.h
+index 57ab397df1..f2fa52029e 100644
+--- a/accel/tcg/internal.h
++++ b/accel/tcg/internal.h
+@@ -105,6 +105,8 @@ static inline bool cpu_in_serial_context(CPUState *cs)
+ extern int64_t max_delay;
+ extern int64_t max_advance;
  
-+#ifdef CONFIG_TCG
-+/**
-+ * cpu_unwind_state_data:
-+ * @cpu: the cpu context
-+ * @host_pc: the host pc within the translation
-+ * @data: output data
-+ *
-+ * Attempt to load the the unwind state for a host pc occurring in
-+ * translated code.  If @host_pc is not in translated code, the
-+ * function returns false; otherwise @data is loaded.
-+ * This is the same unwind info as given to restore_state_to_opc.
-+ */
-+bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
++void dump_exec_info(GString *buf);
 +
-+/**
-+ * cpu_restore_state:
-+ * @cpu: the cpu context
-+ * @host_pc: the host pc within the translation
-+ * @return: true if state was restored, false otherwise
-+ *
-+ * Attempt to restore the state for a fault occurring in translated
-+ * code. If @host_pc is not in translated code no state is
-+ * restored and the function returns false.
-+ */
-+bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc);
-+
-+G_NORETURN void cpu_loop_exit_noexc(CPUState *cpu);
-+G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
-+#endif /* CONFIG_TCG */
-+G_NORETURN void cpu_loop_exit(CPUState *cpu);
-+G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
-+
- #endif /* CPU_COMMON_H */
-diff --git a/include/exec/exec-all.h b/include/exec/exec-all.h
-index 2e4d337805..ee90ef122b 100644
---- a/include/exec/exec-all.h
-+++ b/include/exec/exec-all.h
-@@ -27,36 +27,6 @@
- #include "exec/translation-block.h"
- #include "qemu/clang-tsa.h"
+ extern bool one_insn_per_tb;
  
--/**
-- * cpu_unwind_state_data:
-- * @cpu: the cpu context
-- * @host_pc: the host pc within the translation
-- * @data: output data
-- *
-- * Attempt to load the the unwind state for a host pc occurring in
-- * translated code.  If @host_pc is not in translated code, the
-- * function returns false; otherwise @data is loaded.
-- * This is the same unwind info as given to restore_state_to_opc.
-- */
--bool cpu_unwind_state_data(CPUState *cpu, uintptr_t host_pc, uint64_t *data);
--
--/**
-- * cpu_restore_state:
-- * @cpu: the cpu context
-- * @host_pc: the host pc within the translation
-- * @return: true if state was restored, false otherwise
-- *
-- * Attempt to restore the state for a fault occurring in translated
-- * code. If @host_pc is not in translated code no state is
-- * restored and the function returns false.
-- */
--bool cpu_restore_state(CPUState *cpu, uintptr_t host_pc);
--
--G_NORETURN void cpu_loop_exit_noexc(CPUState *cpu);
--G_NORETURN void cpu_loop_exit(CPUState *cpu);
--G_NORETURN void cpu_loop_exit_restore(CPUState *cpu, uintptr_t pc);
--G_NORETURN void cpu_loop_exit_atomic(CPUState *cpu, uintptr_t pc);
--
  /**
-  * cpu_loop_exit_requested:
-  * @cpu: The CPU state to be tested
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index b14255923b..5340907cfd 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -406,11 +406,6 @@ static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
+     return tlb_hit_page(tlb_addr, addr & TARGET_PAGE_MASK);
+ }
+ 
+-#ifdef CONFIG_TCG
+-/* accel/tcg/translate-all.c */
+-void dump_exec_info(GString *buf);
+-#endif /* CONFIG_TCG */
+-
+ #endif /* !CONFIG_USER_ONLY */
+ 
+ /* accel/tcg/cpu-exec.c */
 -- 
 2.34.1
 
