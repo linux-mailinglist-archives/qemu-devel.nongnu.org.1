@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C3D7B6212
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33CD7B6211
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:05:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnZSd-0001Ax-Gx; Tue, 03 Oct 2023 03:04:51 -0400
+	id 1qnZSj-0001H5-E2; Tue, 03 Oct 2023 03:04:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnZSb-00018h-64
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:04:49 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnZSh-0001Em-Mc
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:04:55 -0400
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnZSZ-0008RE-GM
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:04:48 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-405497850dbso5796555e9.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 00:04:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnZSg-0008S0-7r
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:04:55 -0400
+Received: by mail-wm1-x330.google.com with SMTP id
+ 5b1f17b1804b1-40566f8a093so5530985e9.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 00:04:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696316686; x=1696921486; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696316692; x=1696921492; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=bgpXhinNPnFvZKdeMS+qc/3fubRg8oTbm/EUaTedB+8=;
- b=FTJaJ5m13lVjAGNs0BbqdWZxblDAF6SxcdhZa4W5Hf//I6P9GZUHT2zYRvBb5hXyK4
- lC5o7Sjs8r4jeWeKz0LmvMorLgFAicI6gMOnRbOWICeGpTeR+8La28BlB2EbdLwe2B65
- fRUbp7+t0ZQ3/3T5gofUpim7Lm6L0EJVJNPJdi/PFDBD/N1yoF2Te5fHE3lavigtL6kV
- 4IcLggKSbNnJsAPsdGcGE8o46dRjZmCoPjClLzsk3Qhy1loKpzdX05pscPd1U+qAtf6S
- uqAQWaB3oSfW0+6XxMf2ARvhLJFLcv4ezx2TrirLmMQ4DuBzrI8QSMT1itXNpGbMpLl5
- QWYA==
+ bh=sQzhyHwmNDSDi5pTVRLTrtcYFBIcSrpF9DmpQnEWx1k=;
+ b=OZu6YVHbTb/BLaIqAkrLJ3FPQoYRKNqWtCi6B60qQJP7C3g+pPkR4sdPAOwk3TMcot
+ jktTOEbq2T9V9PE8Jp0SNyWM+RWaaidIOpOCxGKIyKVJtz5P1ueYqU6jF7PsbpOjT/HV
+ SVQijkb+JVCqROgSABcyqdhM1zkUJGmiJsC12YSnqOnWGqH/4mVkqcnI4JAOrOrTfv2O
+ jaLhgif4g1GjFomSFnzPYHfeZn1pnZLOioqMhw8f31QBeV9evCe5K2Xvilf4viTtmlyf
+ KwWa7BhFP7YW3qSOijbVOreedVrBPy/E/smLwnR2u5v/jtUZtHzriH53Fn0ntmpmtYaL
+ 9V6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696316686; x=1696921486;
+ d=1e100.net; s=20230601; t=1696316692; x=1696921492;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=bgpXhinNPnFvZKdeMS+qc/3fubRg8oTbm/EUaTedB+8=;
- b=g7ClaecQ/kzoTAaZmwfbDNML2fu9rnKUE1qrHVarUMKWi/J+/F7wuulI2YrATAgVhs
- fEnA84stq4f6bl7OGW1bg83Dz8cQOdboRK6BXlo+vG4TANIcTjC2aiqlOE82yq7nFlIT
- uzKXQhiQiKoxgeydfI2ChYPpCZLuEl0vihtSaiHnzF7lmsIVYOcUHmV0ihkdz+IvvUMa
- mwd9BjXQ7w/qSK0G1Khvk5zGlgt00ItxMkZBzFzQ8wEPVyeZhEueFaAwUPAHqmwCmGLH
- SBGeEWh8ZSJXvyAKI9GUO138tjGPaIQSestC6hIr5NK9b21oyfxVcFYCcOuDctFHkivo
- EqOw==
-X-Gm-Message-State: AOJu0YxNGVEgxANDSCC6KxZnyLSKYzofzOWIYEdDyu5xq5QGN8WP9Spm
- /CfURj0A/98UFK8fWkXuRUTtEJ316nE+7dVqT63I4g==
-X-Google-Smtp-Source: AGHT+IFbWPwhAeJVn1i9Pd2IS7QiJyQb6QTE0n/sRe1vRSJsLtP8IpfLi2Zi7CWQx7wnFWTnTIvUsw==
-X-Received: by 2002:a7b:ce89:0:b0:402:f07c:4b48 with SMTP id
- q9-20020a7bce89000000b00402f07c4b48mr10778116wmj.28.1696316685763; 
- Tue, 03 Oct 2023 00:04:45 -0700 (PDT)
+ bh=sQzhyHwmNDSDi5pTVRLTrtcYFBIcSrpF9DmpQnEWx1k=;
+ b=c410nJ7tV3GLPkLtLlUnrJee1/QOQtzPsR2P/n4Lmcorzds3P4pEGR572D3SOSrEhM
+ tCO5LsHE8vvfmza52yTOc/iodZuPJEUHWPIsHTssC/sWGC3cjaua/+DDfOP45jcIQPz8
+ 6sFTiLedKXTDj6SkomkLbhyg9i8xBinlsm5jIrwCTkDfv45YN0rPNSwGdKZyMWjxCrzY
+ R9tOjb7Z9oFgZv0akTbgh85bQ7skMfJl9ozxSskCyQTFmati1n0bhIEEy3zp+TYYqzOR
+ BLO0B3sgiAk+uWm3f3NjKeBZgF++pss1Ow1gifqFOOYRY49TC9aUdbIqJcZRKk945NQn
+ svuA==
+X-Gm-Message-State: AOJu0YzzK0LTHLf+VGyH12F/tPJqan8F/W8l5ReH09NbTP9GPtZkCqZV
+ a2XtX5YjsIAtvE5IIC1MKW6P+4i1/cXiYl48vjAioA==
+X-Google-Smtp-Source: AGHT+IH5gi/VEas+l3NNvHvsWgSkQlY/4YqInldrRsPk6XIBCqPemE3++yzm1NzvbAR+ZF3pEplFwg==
+X-Received: by 2002:a5d:618c:0:b0:31f:eb6a:c824 with SMTP id
+ j12-20020a5d618c000000b0031feb6ac824mr10944176wru.10.1696316692435; 
+ Tue, 03 Oct 2023 00:04:52 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-222-246.abo.bbox.fr. [176.131.222.246])
  by smtp.gmail.com with ESMTPSA id
- y18-20020a1c4b12000000b0040642a1df1csm548808wma.25.2023.10.03.00.04.43
+ f5-20020a5d50c5000000b003200c918c81sm813270wrt.112.2023.10.03.00.04.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Oct 2023 00:04:45 -0700 (PDT)
+ Tue, 03 Oct 2023 00:04:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
@@ -66,17 +66,17 @@ Cc: Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
  Michael Tokarev <mjt@tls.msk.ru>, Greg Kurz <groug@kaod.org>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/4] hw/ppc/e500: Restrict ppce500_init_mpic_kvm() to KVM
-Date: Tue,  3 Oct 2023 09:04:24 +0200
-Message-ID: <20231003070427.69621-3-philmd@linaro.org>
+Subject: [PATCH v2 3/4] target/ppc: Restrict KVM objects to system emulation
+Date: Tue,  3 Oct 2023 09:04:25 +0200
+Message-ID: <20231003070427.69621-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231003070427.69621-1-philmd@linaro.org>
 References: <20231003070427.69621-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::330;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,78 +99,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Inline and guard the single call to kvm_openpic_connect_vcpu()
-allows to remove kvm-stub.c.
+CONFIG_KVM is always FALSE on user emulation, so 'kvm.c'
+won't be added to ppc_ss[] source set; direcly use the system
+specific ppc_system_ss[] source set.
 
 Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ppc/e500.c          |  4 ++++
- target/ppc/kvm-stub.c  | 19 -------------------
- target/ppc/meson.build |  2 +-
- 3 files changed, 5 insertions(+), 20 deletions(-)
- delete mode 100644 target/ppc/kvm-stub.c
+ target/ppc/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ppc/e500.c b/hw/ppc/e500.c
-index d5b6820d1d..d0e199fb2c 100644
---- a/hw/ppc/e500.c
-+++ b/hw/ppc/e500.c
-@@ -834,6 +834,7 @@ static DeviceState *ppce500_init_mpic_qemu(PPCE500MachineState *pms,
- static DeviceState *ppce500_init_mpic_kvm(const PPCE500MachineClass *pmc,
-                                           IrqLines *irqs, Error **errp)
- {
-+#ifdef CONFIG_KVM
-     DeviceState *dev;
-     CPUState *cs;
- 
-@@ -854,6 +855,9 @@ static DeviceState *ppce500_init_mpic_kvm(const PPCE500MachineClass *pmc,
-     }
- 
-     return dev;
-+#else
-+    g_assert_not_reached();
-+#endif
- }
- 
- static DeviceState *ppce500_init_mpic(PPCE500MachineState *pms,
-diff --git a/target/ppc/kvm-stub.c b/target/ppc/kvm-stub.c
-deleted file mode 100644
-index b98e1d404f..0000000000
---- a/target/ppc/kvm-stub.c
-+++ /dev/null
-@@ -1,19 +0,0 @@
--/*
-- * QEMU KVM PPC specific function stubs
-- *
-- * Copyright Freescale Inc. 2013
-- *
-- * Author: Alexander Graf <agraf@suse.de>
-- *
-- * This work is licensed under the terms of the GNU GPL, version 2 or later.
-- * See the COPYING file in the top-level directory.
-- *
-- */
--#include "qemu/osdep.h"
--#include "cpu.h"
--#include "hw/ppc/openpic_kvm.h"
--
--int kvm_openpic_connect_vcpu(DeviceState *d, CPUState *cs)
--{
--    return -EINVAL;
--}
 diff --git a/target/ppc/meson.build b/target/ppc/meson.build
-index 4c2635039e..0bff3e39e5 100644
+index 0bff3e39e5..44462f95cd 100644
 --- a/target/ppc/meson.build
 +++ b/target/ppc/meson.build
-@@ -30,7 +30,7 @@ gen = [
+@@ -30,7 +30,6 @@ gen = [
  ]
  ppc_ss.add(when: 'CONFIG_TCG', if_true: gen)
  
--ppc_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'), if_false: files('kvm-stub.c'))
-+ppc_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
+-ppc_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
  ppc_ss.add(when: 'CONFIG_USER_ONLY', if_true: files('user_only_helper.c'))
  
  ppc_system_ss = ss.source_set()
+@@ -46,6 +45,7 @@ ppc_system_ss.add(when: 'CONFIG_TCG', if_true: files(
+ ), if_false: files(
+   'tcg-stub.c',
+ ))
++ppc_system_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
+ 
+ ppc_system_ss.add(when: 'TARGET_PPC64', if_true: files(
+   'compat.c',
 -- 
 2.41.0
 
