@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1327B7046
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:50:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E50F7B70BD
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:24:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnjWN-0005DL-1m; Tue, 03 Oct 2023 13:49:23 -0400
+	id 1qnk2Z-0003nV-7k; Tue, 03 Oct 2023 14:22:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qnjWK-0005CY-Pg
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:49:20 -0400
+ id 1qnk2V-0003mZ-V8
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:22:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qnjWJ-0002Ab-0c
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:49:20 -0400
+ id 1qnk2T-0008E8-Sw
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:22:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696355358;
+ s=mimecast20190719; t=1696357352;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=uB57zDfbJdIcmMcFrMTrQ0eJbAuG8ZS90+aomXqGtWQ=;
- b=PPpcEYRVu0BabnUZMXz/utkz1a+x1FIMUAGCss/kI8UvgiLdYOtlXlf578zotbl6plB2kx
- iuC4rTuYFMC0jaXzg8RUP6zb9Ow1SfJhceyhCLAxzmm9etcY4fpSoXJorCIpLVeXdwQ30U
- OLt1d/ea382C0+aB/t7vykuu/KI2d0M=
-Received: from mail-yb1-f199.google.com (mail-yb1-f199.google.com
- [209.85.219.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=5pB5RAGKmuf18mm9yCyhsD9z+meFtHcLB/3NCubVHDA=;
+ b=BDEQus9NxicltlRzApzWC6aSFZiBz1vKpvBIw2bZLzHQjJktTD2UTxyst0j5hFL33GSFUF
+ YWG1N+lS0g1JbJ4DVsAwxQT+rryJD9eSjrlKK8WzalY5m8G6GsF8L1137xFw7RWKvjDeqv
+ YP4if/txUfq6+En7qhEVae6QkJnc9TM=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-vq65U3HxNT-NOfkpx3Wc3w-1; Tue, 03 Oct 2023 13:49:06 -0400
-X-MC-Unique: vq65U3HxNT-NOfkpx3Wc3w-1
-Received: by mail-yb1-f199.google.com with SMTP id
- 3f1490d57ef6-d8486b5e780so1392708276.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:49:06 -0700 (PDT)
+ us-mta-92-v0_z0JRlMoeIgddEGjcB2w-1; Tue, 03 Oct 2023 14:22:29 -0400
+X-MC-Unique: v0_z0JRlMoeIgddEGjcB2w-1
+Received: by mail-yb1-f200.google.com with SMTP id
+ 3f1490d57ef6-d84acda47aeso1477780276.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:22:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696355326; x=1696960126;
+ d=1e100.net; s=20230601; t=1696357349; x=1696962149;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=uB57zDfbJdIcmMcFrMTrQ0eJbAuG8ZS90+aomXqGtWQ=;
- b=pUfEIrejDMyoR+mS2pPgVbR6/OHdDXin/RjNU/MnuWXYEo1Jeahrzo2eYnbN6F8wU0
- PIhZ3RvYckbR81Lc36tSgeRHIyD+tQ97bydnffvWu4lUHLSPdVXdAilxWWXJPD48sPRY
- an3UVaX0PKraxTZzPlBkKzyI6RWCX+W6FNRaPk8pmvRgkmVxtbRak7lqqK5g7UK8Rzgr
- yQLawPDQpJliJ7xAuMgSw4pD26s7EbnoTN0pMBTjTMH+t6S2dwxf2S0WlMsPgHrd9teZ
- xlM7oCsy9Teh+5qM1Hat3fqXULKTH8NJgTp3Bnua5UN2cD12yy3bfaJXxCS3qRQZfMKK
- kJhg==
-X-Gm-Message-State: AOJu0Ywh7nU+50OOW3yStPeIbayCz63/jZLmiHuSukVIyWBtZJ34aklF
- G5Sx7u5wqfk3TbFGX70gxNc8GlD67nNeLu1OXpJTsT7roKWROJNhgB8XzXIcmtN2+Ab03+Pj77P
- MeUD54E755vxEtiJd/I6Lep+vnsussJs=
-X-Received: by 2002:a25:abec:0:b0:d89:4829:6a63 with SMTP id
- v99-20020a25abec000000b00d8948296a63mr13454942ybi.65.1696355326569; 
- Tue, 03 Oct 2023 10:48:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH10YPVVfYGkeRglDuia6FeS4xE62qjDrFpfqM8kl6iUnmXZgeKgZXGQKrMYC7x2hswPKNFGtWpMtPC68Q+N7I=
-X-Received: by 2002:a25:abec:0:b0:d89:4829:6a63 with SMTP id
- v99-20020a25abec000000b00d8948296a63mr13454927ybi.65.1696355326314; Tue, 03
- Oct 2023 10:48:46 -0700 (PDT)
+ bh=5pB5RAGKmuf18mm9yCyhsD9z+meFtHcLB/3NCubVHDA=;
+ b=r1i5QEghScmAUACDcQtL1l+ft0YM6RPWa6OTRCdC9xNTWLbdMooS8nHNQnvrzPj/13
+ zEyCz1zprIgXd8+b1peo3FN8VWREZmWZL1QXoqeH+gMfSbO2EDcnB3QjP1LFGAaR8asC
+ R3yqUCJ17Vs8piCPH+VuR7CRzbPD9c7aJwNNWcwAf19hdCHmTtJfJ/TO4n1r5TLFSDn0
+ UhS+aQwFn5jW+ejYThGBxW/9+SuvPPuymnH6eJzN0PfIsisTJV6Jlpb3GG3EZceoy/HO
+ KvdP1+b0asDcpVBy6IaCTesixVJIJxr8kDG/Nxb/uhSDkw6FNYrmX/gOwGMr6/mPyB9K
+ Wylg==
+X-Gm-Message-State: AOJu0YwY/hvDPFEeNmS5PAaJqNwC2XwebJzYun5C2ZoHUmOZLWXoK81p
+ SjrK9U9pBYcBSJ9oZ4blVMxRzVBOnWCauYy84ME72AhqjoHAmH3b3+GVKvKI8VCOsH1Q8s0nkMz
+ 7YvkG/3eo/bM75dkI0F4dq/o2ldrpNyM=
+X-Received: by 2002:a25:5889:0:b0:d71:6bc4:ac6d with SMTP id
+ m131-20020a255889000000b00d716bc4ac6dmr24340ybb.65.1696357349038; 
+ Tue, 03 Oct 2023 11:22:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFy6kqrcSfDuVtnbIOqWtlr7/9vwgWP0N1q05lAF/DaSZDAjhplN4NLaqZBgbGOawxn1uGhQI78x4HJ9bPqYc=
+X-Received: by 2002:a25:5889:0:b0:d71:6bc4:ac6d with SMTP id
+ m131-20020a255889000000b00d716bc4ac6dmr24321ybb.65.1696357348740; Tue, 03 Oct
+ 2023 11:22:28 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1693287885.git.yin31149@gmail.com>
- <a56d91c3cc2ab46f9be1770074c920f5375ddb5e.1693287885.git.yin31149@gmail.com>
-In-Reply-To: <a56d91c3cc2ab46f9be1770074c920f5375ddb5e.1693287885.git.yin31149@gmail.com>
+ <20231001155527-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231001155527-mutt-send-email-mst@kernel.org>
 From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Tue, 3 Oct 2023 19:48:10 +0200
-Message-ID: <CAJaqyWc8AiT0+OQffff22AkSMuwqB3EOJOVh=OknFKY0XL0FJg@mail.gmail.com>
-Subject: Re: [PATCH v4 4/8] vdpa: Avoid using vhost_vdpa_net_load_*() outside
- vhost_vdpa_net_load()
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- leiyang@redhat.com, 18801353760@163.com
+Date: Tue, 3 Oct 2023 20:21:51 +0200
+Message-ID: <CAJaqyWcQu10d6z+qeKSHEunFMKEnGPzyNRrjt0=pHywtRcb2Kw@mail.gmail.com>
+Subject: Re: [PATCH v4 0/8] vdpa: Send all CVQ state load commands in parallel
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Hawkins Jiawei <yin31149@gmail.com>, jasowang@redhat.com,
+ qemu-devel@nongnu.org, leiyang@redhat.com, 18801353760@163.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
@@ -96,99 +95,208 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 7:55=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
+On Sun, Oct 1, 2023 at 9:56=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
+wrote:
 >
-> Next patches in this series will refactor vhost_vdpa_net_load_cmd()
-> to iterate through the control commands shadow buffers, allowing QEMU
-> to send CVQ state load commands in parallel at device startup.
+> On Tue, Aug 29, 2023 at 01:54:42PM +0800, Hawkins Jiawei wrote:
+> > This patchset allows QEMU to delay polling and checking the device
+> > used buffer until either the SVQ is full or control commands shadow
+> > buffers are full, instead of polling and checking immediately after
+> > sending each SVQ control command, so that QEMU can send all the SVQ
+> > control commands in parallel, which have better performance improvement=
+.
+> >
+> > I use vp_vdpa device to simulate vdpa device, and create 4094 VLANS in
+> > guest to build a test environment for sending multiple CVQ state load
+> > commands. This patch series can improve latency from 20455 us to
+> > 13732 us for about 4099 CVQ state load commands, about 1.64 us per comm=
+and.
+> >
+> > Note that this patch should be based on
+> > patch "Vhost-vdpa Shadow Virtqueue VLAN support" at [1].
+> >
+> > [1]. https://lore.kernel.org/all/cover.1690100802.git.yin31149@gmail.co=
+m/
 >
-> Considering that QEMU always forwards the CVQ command serialized
-> outside of vhost_vdpa_net_load(), it is more elegant to send the
-> CVQ commands directly without invoking vhost_vdpa_net_load_*() helpers.
+> Eugenio, you acked patch 1 but it's been a while - care to review the
+> rest of the patchset?
 >
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
-> v4:
->   - pack CVQ command by iov_from_buf() instead of accessing
-> `out` directly suggested by Eugenio
->
-> v3: https://lore.kernel.org/all/428a8fac2a29b37757fa15ca747be93c0226cb1f.=
-1689748694.git.yin31149@gmail.com/
->
->  net/vhost-vdpa.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index e6342b213f..7c67063469 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -1097,12 +1097,14 @@ static NetClientInfo net_vhost_vdpa_cvq_info =3D =
-{
->   */
->  static int vhost_vdpa_net_excessive_mac_filter_cvq_add(VhostVDPAState *s=
-,
->                                                         VirtQueueElement =
-*elem,
-> -                                                       struct iovec *out=
-)
-> +                                                       struct iovec *out=
-,
-> +                                                       const struct iove=
-c *in)
->  {
->      struct virtio_net_ctrl_mac mac_data, *mac_ptr;
->      struct virtio_net_ctrl_hdr *hdr_ptr;
->      uint32_t cursor;
->      ssize_t r;
-> +    uint8_t on =3D 1;
->
->      /* parse the non-multicast MAC address entries from CVQ command */
->      cursor =3D sizeof(*hdr_ptr);
-> @@ -1150,7 +1152,15 @@ static int vhost_vdpa_net_excessive_mac_filter_cvq=
-_add(VhostVDPAState *s,
->       * filter table to the vdpa device, it should send the
->       * VIRTIO_NET_CTRL_RX_PROMISC CVQ command to enable promiscuous mode
->       */
-> -    r =3D vhost_vdpa_net_load_rx_mode(s, VIRTIO_NET_CTRL_RX_PROMISC, 1);
-> +    cursor =3D 0;
 
-I think this is redundant, as "cursor" is not used by the new code and
-it is already set to 0 before its usage, isn't it?
+I'm sorry, I was under the impression that this should go after
+optimizing the memory maps.
 
-> +    hdr_ptr =3D out->iov_base;
-> +    out->iov_len =3D sizeof(*hdr_ptr) + sizeof(on);
-> +    assert(out->iov_len < vhost_vdpa_net_cvq_cmd_page_len());
-> +
+I'll continue with the revision.
 
-I think we can assume this assertion is never hit, as out->iov_len is
-controlled by this function.
+Thanks!
 
-Apart from these nits,
-
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
-
-> +    hdr_ptr->class =3D VIRTIO_NET_CTRL_RX;
-> +    hdr_ptr->cmd =3D VIRTIO_NET_CTRL_RX_PROMISC;
-> +    iov_from_buf(out, 1, sizeof(*hdr_ptr), &on, sizeof(on));
-> +    r =3D vhost_vdpa_net_cvq_add(s, out, 1, in, 1);
->      if (unlikely(r < 0)) {
->          return r;
->      }
-> @@ -1268,7 +1278,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostSh=
-adowVirtqueue *svq,
->           * the CVQ command direclty.
->           */
->          dev_written =3D vhost_vdpa_net_excessive_mac_filter_cvq_add(s, e=
-lem,
-> -                                                                  &out);
-> +                                                            &out, &vdpa_=
-in);
->          if (unlikely(dev_written < 0)) {
->              goto out;
->          }
-> --
-> 2.25.1
+> > TestStep
+> > =3D=3D=3D=3D=3D=3D=3D=3D
+> > 1. regression testing using vp-vdpa device
+> >   - For L0 guest, boot QEMU with two virtio-net-pci net device with
+> > `ctrl_vq`, `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+> >       -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
+> > iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+> > indirect_desc=3Doff,queue_reset=3Doff,ctrl_rx=3Don,ctrl_rx_extra=3Don,.=
+..
+> >
+> >   - For L1 guest, apply the patch series and compile the source code,
+> > start QEMU with two vdpa device with svq mode on, enable the `ctrl_vq`,
+> > `ctrl_rx`, `ctrl_rx_extra` features on, command line like:
+> >       -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+> >       -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
+> > ctrl_rx=3Don,ctrl_rx_extra=3Don...
+> >
+> >   - For L2 source guest, run the following bash command:
+> > ```bash
+> > #!/bin/sh
+> >
+> > for idx1 in {0..9}
+> > do
+> >   for idx2 in {0..9}
+> >   do
+> >     for idx3 in {0..6}
+> >     do
+> >       ip link add macvlan$idx1$idx2$idx3 link eth0
+> > address 4a:30:10:19:$idx1$idx2:1$idx3 type macvlan mode bridge
+> >       ip link set macvlan$idx1$idx2$idx3 up
+> >     done
+> >   done
+> > done
+> > ```
+> >   - Execute the live migration in L2 source monitor
+> >
+> >   - Result
+> >     * with this series, QEMU should not trigger any error or warning.
+> >
+> >
+> >
+> > 2. perf using vp-vdpa device
+> >   - For L0 guest, boot QEMU with two virtio-net-pci net device with
+> > `ctrl_vq`, `ctrl_vlan` features on, command line like:
+> >       -device virtio-net-pci,disable-legacy=3Don,disable-modern=3Doff,
+> > iommu_platform=3Don,mq=3Don,ctrl_vq=3Don,guest_announce=3Doff,
+> > indirect_desc=3Doff,queue_reset=3Doff,ctrl_vlan=3Don,...
+> >
+> >   - For L1 guest, apply the patch series, then apply an addtional
+> > patch to record the load time in microseconds as following:
+> > ```diff
+> > diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+> > index 6b958d6363..501b510fd2 100644
+> > --- a/hw/net/vhost_net.c
+> > +++ b/hw/net/vhost_net.c
+> > @@ -295,7 +295,10 @@ static int vhost_net_start_one(struct vhost_net *n=
+et,
+> >      }
+> >
+> >      if (net->nc->info->load) {
+> > +        int64_t start_us =3D g_get_monotonic_time();
+> >          r =3D net->nc->info->load(net->nc);
+> > +        error_report("vhost_vdpa_net_load() =3D %ld us",
+> > +                     g_get_monotonic_time() - start_us);
+> >          if (r < 0) {
+> >              goto fail;
+> >          }
+> > ```
+> >
+> >   - For L1 guest, compile the code, and start QEMU with two vdpa device
+> > with svq mode on, enable the `ctrl_vq`, `ctrl_vlan` features on,
+> > command line like:
+> >       -netdev type=3Dvhost-vdpa,x-svq=3Dtrue,...
+> >       -device virtio-net-pci,mq=3Don,guest_announce=3Doff,ctrl_vq=3Don,
+> > ctrl_vlan=3Don...
+> >
+> >   - For L2 source guest, run the following bash command:
+> > ```bash
+> > #!/bin/sh
+> >
+> > for idx in {1..4094}
+> > do
+> >   ip link add link eth0 name vlan$idx type vlan id $idx
+> > done
+> > ```
+> >
+> >   - execute the live migration in L2 source monitor
+> >
+> >   - Result
+> >     * with this series, QEMU should not trigger any warning
+> > or error except something like "vhost_vdpa_net_load() =3D 13732 us"
+> >     * without this series, QEMU should not trigger any warning
+> > or error except something like "vhost_vdpa_net_load() =3D 20455 us"
+> >
+> > ChangeLog
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > v4:
+> >   - refactor subject line suggested by Eugenio in patch
+> > "vhost: Add count argument to vhost_svq_poll()"
+> >   - split `in` to `vdpa_in` and `model_in` instead of reusing `in`
+> > in vhost_vdpa_net_handle_ctrl_avail() suggested by Eugenio in patch
+> > "vdpa: Use iovec for vhost_vdpa_net_cvq_add()"
+> >   - pack CVQ command by iov_from_buf() instead of accessing
+> > `out` directly suggested by Eugenio in patch
+> > "vdpa: Avoid using vhost_vdpa_net_load_*() outside vhost_vdpa_net_load(=
+)"
+> >   - always check the return value of vhost_vdpa_net_svq_poll()
+> > suggested Eugenio in patch
+> > "vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_add()"
+> >   - use `struct iovec` instead of `void **` as cursor,
+> > add vhost_vdpa_net_load_cursor_reset() helper function
+> > to reset the cursors, refactor vhost_vdpa_net_load_cmd() to prepare buf=
+fers
+> > by iov_copy() instead of accessing `in` and `out` directly
+> > suggested by Eugenio in patch
+> > "vdpa: Introduce cursors to vhost_vdpa_net_loadx()"
+> >   - refactor argument `cmds_in_flight` to `len` for
+> > vhost_vdpa_net_svq_full(), check the return value of
+> > vhost_vdpa_net_svq_poll() in vhost_vdpa_net_svq_flush(),
+> > use iov_size(), vhost_vdpa_net_load_cursor_reset()
+> > and iov_discard_front() to update the cursors instead of
+> > accessing it directly according to Eugenio in patch
+> > "vdpa: Send cvq state load commands in parallel"
+> >
+> > v3: https://lore.kernel.org/all/cover.1689748694.git.yin31149@gmail.com=
+/
+> >   - refactor vhost_svq_poll() to accept cmds_in_flight
+> > suggested by Jason and Eugenio
+> >   - refactor vhost_vdpa_net_cvq_add() to make control commands buffers
+> > is not tied to `s->cvq_cmd_out_buffer` and `s->status`, so we can reuse
+> > it suggested by Eugenio
+> >   - poll and check when SVQ is full or control commands shadow buffers =
+is
+> > full
+> >
+> > v2: https://lore.kernel.org/all/cover.1683371965.git.yin31149@gmail.com=
+/
+> >   - recover accidentally deleted rows
+> >   - remove extra newline
+> >   - refactor `need_poll_len` to `cmds_in_flight`
+> >   - return -EINVAL when vhost_svq_poll() return 0 or check
+> > on buffers written by device fails
+> >   - change the type of `in_cursor`, and refactor the
+> > code for updating cursor
+> >   - return directly when vhost_vdpa_net_load_{mac,mq}()
+> > returns a failure in vhost_vdpa_net_load()
+> >
+> > v1: https://lore.kernel.org/all/cover.1681732982.git.yin31149@gmail.com=
+/
+> >
+> > Hawkins Jiawei (8):
+> >   vhost: Add count argument to vhost_svq_poll()
+> >   vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+> >   vhost: Expose vhost_svq_available_slots()
+> >   vdpa: Avoid using vhost_vdpa_net_load_*() outside
+> >     vhost_vdpa_net_load()
+> >   vdpa: Check device ack in vhost_vdpa_net_load_rx_mode()
+> >   vdpa: Move vhost_svq_poll() to the caller of vhost_vdpa_net_cvq_add()
+> >   vdpa: Introduce cursors to vhost_vdpa_net_loadx()
+> >   vdpa: Send cvq state load commands in parallel
+> >
+> >  hw/virtio/vhost-shadow-virtqueue.c |  38 +--
+> >  hw/virtio/vhost-shadow-virtqueue.h |   3 +-
+> >  net/vhost-vdpa.c                   | 380 +++++++++++++++++++----------
+> >  3 files changed, 276 insertions(+), 145 deletions(-)
+> >
+> > --
+> > 2.25.1
 >
 
 
