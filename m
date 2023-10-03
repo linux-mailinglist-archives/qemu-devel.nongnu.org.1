@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18E97B7007
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D4C7B6FE6
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:36:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnjF6-0008Su-1o; Tue, 03 Oct 2023 13:31:32 -0400
+	id 1qnjEy-0008Mi-Sx; Tue, 03 Oct 2023 13:31:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjEe-0008FS-DG
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:07 -0400
-Received: from mail-oo1-xc2d.google.com ([2607:f8b0:4864:20::c2d])
+ id 1qnjEg-0008FU-8N
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:10 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjEa-0007Rn-UY
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:02 -0400
-Received: by mail-oo1-xc2d.google.com with SMTP id
- 006d021491bc7-57bc2c2f13dso669465eaf.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:31:00 -0700 (PDT)
+ id 1qnjEe-0007S4-5i
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:05 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-690f7d73a3aso937289b3a.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696354260; x=1696959060; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696354261; x=1696959061; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=gUAwLRvxIzeEWVzqxsRkBR/uxMwVWvXQ9DoS+Fr60wM=;
- b=e21IVnMg0okc4PSxMzV/oQikpKtwsCaw6sFGtgfRmIKXzJI6XQVeg07WYf6rTjdJGS
- kiM3s4V+2lHymiq0H5ftVojbWwAx2TzZLsdkT4VW0yBu6jAhvAliZGCwIqMNGrzdeO/z
- hV5TxmpG+MO94uU+J1VNCWwRwNFPit1rTDBYcM1fzxH/E+2QYs+b8NqHmztgc3gr1oJT
- 2hZ+hzSbDLtjEc4Yj6NDu1nAEV+gk6Ljsap5KyyJZnNE0kYOLYMnZHQ8jzzKhUUCQGbJ
- Mohh4QsXfFBT+ZteBuKjCxQyBorXRH3FRpzZTANwsgDfWRz15Njz+ZZP7PSmeyEz+xqK
- KIqQ==
+ bh=1zFZM0V0cx4lwmDbbxbCpwbX7YB70hzJOZ9UCN0zb+Q=;
+ b=V4ZM71uuEfLKx384Tp0AshQspRgmLabwMRZf78Azp4lY3THIFA5TBoqOOu62ATfEfE
+ dLOtTMGMOUwc3IBBuAosQ+mnqgAl8kDqGgGcg/SsEZl2TkaX+x2AAx94wRTHZOfUncRk
+ JzVJGtxrP+CWGxFJmG+MYtw3QQdPQKwZvzAEii/mvuCPD1WUElB9XOOF3C7+mEtkjVLV
+ 0jXXi2jY0QnVbcd8mH0NE1yZUIl6LJNL7w1WpG34zxrdIbn3Ad3nkLjyw8yH8hFHwHYr
+ emjRGuxnB3IgSMZA0BF0KODWyGqtJfsB0VbBvMj7GUM8jQKJHVleWlGJTRPpB82UXoaY
+ VBXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696354260; x=1696959060;
+ d=1e100.net; s=20230601; t=1696354261; x=1696959061;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=gUAwLRvxIzeEWVzqxsRkBR/uxMwVWvXQ9DoS+Fr60wM=;
- b=lUlTx8dOVXn4za51cI9UAfEngr3qcN/NlJSYsLER/qCeMe+oWHfLun6hX8uCdwp6Qm
- ioYrmJkm5/p6r3Vbzs/o/0dF4YoJXcSmz3G0mQnhNIDGzCPFu0N32Uyzfh9TbP9gvQ2Z
- tx2P+lmhkVdPJRLyKs75x2vTPCetDcWhNCCCdVIkSDLqv8MYr8cC0BlmZYUQU+fF6iMF
- Vfl6XxyVYCFt8PT3R/JLUHE7FDC78Uc10/Ns4mjWNTZVOpG0xpRuZzrLkgU4IIXgZ/4z
- LKDRxAgoWAQCbdXVqrTSAtMBHaG/Gj4OW8iQuPo6i9zTei/YT5RQ6QXnLA08ZXRTOJNS
- LqNg==
-X-Gm-Message-State: AOJu0YwYncHTaq6wC+2ELlTHsBUwRIQPyo94nmys+dBnblZWe6cJgZR9
- MOqKfv5pm0mQYrP31146RQbPOIKBSntqY7ATx/Q=
-X-Google-Smtp-Source: AGHT+IEmB3dlfvQSVc0UgbKcsWB7ZD/Hgw1h56dbTmzljBckA+21aalZWE02ODf7VKPQSdFg1u+mcw==
-X-Received: by 2002:a05:6358:419c:b0:141:ca1:cc62 with SMTP id
- w28-20020a056358419c00b001410ca1cc62mr99572rwc.27.1696354259720; 
- Tue, 03 Oct 2023 10:30:59 -0700 (PDT)
+ bh=1zFZM0V0cx4lwmDbbxbCpwbX7YB70hzJOZ9UCN0zb+Q=;
+ b=OOP/T+fQ5+PaTYk5uh4uVOzRAgUKDx1CY+YpfaYu1Fp29zgIeDSkR8fQ6fW0CiOVON
+ kgOMiRuaS7H0aylXnc3CUoQ0g7cb67eqgbf2pj586hemKIU9OpZ8cg7qGe/42lJ93LMr
+ XTDXrO7jwyOeOvWk2JpwKkLWXEAybq/bSB1/lMYohtFoYXzZES/C7l9liLHjuHOujOsd
+ foYYVYdimIVXi1IYhtBNGZ9i4Yh62010a3ig3LK44ZWxCFp+Lmn981ykm61hY4stBaxD
+ 4sEbR4/MFAKGLlg1FZsNAUkBJcD5C5inQoliXsHrLqcVAfBnKS3ov5p7DNawxFxnALTx
+ zk8Q==
+X-Gm-Message-State: AOJu0YwviRmRjEXh26McOppv/36M8HndPRTnDvkHB2xqfQC4mQoF8YGR
+ lDfDaQ2rXsMW0hSC89zbFjMznr/+8h/wsVYSKFk=
+X-Google-Smtp-Source: AGHT+IH2o5m9IxNYOTF351/Wzqqv24ZwXDQPOsj3q7WkIdM2A++sSUN3x+AZj1TMs+2A2Bv3Cj9qUA==
+X-Received: by 2002:a05:6a00:b84:b0:68c:49e4:bd71 with SMTP id
+ g4-20020a056a000b8400b0068c49e4bd71mr225522pfj.34.1696354260694; 
+ Tue, 03 Oct 2023 10:31:00 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.30.58
+ n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.30.59
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 10:30:59 -0700 (PDT)
+ Tue, 03 Oct 2023 10:31:00 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/47] accel: Declare AccelClass::cpu_common_[un]realize()
- handlers
-Date: Tue,  3 Oct 2023 10:30:10 -0700
-Message-Id: <20231003173052.1601813-6-richard.henderson@linaro.org>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: [PULL 06/47] accel/tcg: Have tcg_exec_realizefn() return a boolean
+Date: Tue,  3 Oct 2023 10:30:11 -0700
+Message-Id: <20231003173052.1601813-7-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003173052.1601813-1-richard.henderson@linaro.org>
 References: <20231003173052.1601813-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2d;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -94,71 +94,54 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Currently accel_cpu_realize() only performs target-specific
-realization. Introduce the cpu_common_[un]realize fields in
-the base AccelClass to be able to perform target-agnostic
-[un]realization of vCPUs.
+Following the example documented since commit e3fe3988d7 ("error:
+Document Error API usage rules"), have tcg_exec_realizefn() return
+a boolean indicating whether an error is set or not.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20231003123026.99229-6-philmd@linaro.org>
+Reviewed-by: Claudio Fontana <cfontana@suse.de>
+Message-Id: <20231003123026.99229-7-philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/accel.h |  2 ++
- accel/accel-common.c | 21 +++++++++++++++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+ include/exec/cpu-all.h | 2 +-
+ accel/tcg/cpu-exec.c   | 4 +++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/qemu/accel.h b/include/qemu/accel.h
-index 446153b145..972a849a2b 100644
---- a/include/qemu/accel.h
-+++ b/include/qemu/accel.h
-@@ -43,6 +43,8 @@ typedef struct AccelClass {
-     bool (*has_memory)(MachineState *ms, AddressSpace *as,
-                        hwaddr start_addr, hwaddr size);
- #endif
-+    bool (*cpu_common_realize)(CPUState *cpu, Error **errp);
-+    void (*cpu_common_unrealize)(CPUState *cpu);
+diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
+index c2c62160c6..1e5c530ee1 100644
+--- a/include/exec/cpu-all.h
++++ b/include/exec/cpu-all.h
+@@ -422,7 +422,7 @@ void dump_exec_info(GString *buf);
  
-     /* gdbstub related hooks */
-     int (*gdbstub_supported_sstep_flags)(void);
-diff --git a/accel/accel-common.c b/accel/accel-common.c
-index e9548eac29..11d74b4ad7 100644
---- a/accel/accel-common.c
-+++ b/accel/accel-common.c
-@@ -122,15 +122,32 @@ void accel_cpu_instance_init(CPUState *cpu)
- bool accel_cpu_common_realize(CPUState *cpu, Error **errp)
+ /* accel/tcg/cpu-exec.c */
+ int cpu_exec(CPUState *cpu);
+-void tcg_exec_realizefn(CPUState *cpu, Error **errp);
++bool tcg_exec_realizefn(CPUState *cpu, Error **errp);
+ void tcg_exec_unrealizefn(CPUState *cpu);
+ 
+ /**
+diff --git a/accel/tcg/cpu-exec.c b/accel/tcg/cpu-exec.c
+index c724e8b6f1..60f1986b85 100644
+--- a/accel/tcg/cpu-exec.c
++++ b/accel/tcg/cpu-exec.c
+@@ -1088,7 +1088,7 @@ int cpu_exec(CPUState *cpu)
+     return ret;
+ }
+ 
+-void tcg_exec_realizefn(CPUState *cpu, Error **errp)
++bool tcg_exec_realizefn(CPUState *cpu, Error **errp)
  {
+     static bool tcg_target_initialized;
      CPUClass *cc = CPU_GET_CLASS(cpu);
-+    AccelState *accel = current_accel();
-+    AccelClass *acc = ACCEL_GET_CLASS(accel);
- 
--    if (cc->accel_cpu && cc->accel_cpu->cpu_target_realize) {
--        return cc->accel_cpu->cpu_target_realize(cpu, errp);
-+    /* target specific realization */
-+    if (cc->accel_cpu && cc->accel_cpu->cpu_target_realize
-+        && !cc->accel_cpu->cpu_target_realize(cpu, errp)) {
-+        return false;
-     }
+@@ -1104,6 +1104,8 @@ void tcg_exec_realizefn(CPUState *cpu, Error **errp)
+     tcg_iommu_init_notifier_list(cpu);
+ #endif /* !CONFIG_USER_ONLY */
+     /* qemu_plugin_vcpu_init_hook delayed until cpu_index assigned. */
 +
-+    /* generic realization */
-+    if (acc->cpu_common_realize && !acc->cpu_common_realize(cpu, errp)) {
-+        return false;
-+    }
-+
-     return true;
++    return true;
  }
  
- void accel_cpu_common_unrealize(CPUState *cpu)
- {
-+    AccelState *accel = current_accel();
-+    AccelClass *acc = ACCEL_GET_CLASS(accel);
-+
-+    /* generic unrealization */
-+    if (acc->cpu_common_unrealize) {
-+        acc->cpu_common_unrealize(cpu);
-+    }
- }
- 
- int accel_supported_gdbstub_sstep_flags(void)
+ /* undo the initializations in reverse order */
 -- 
 2.34.1
 
