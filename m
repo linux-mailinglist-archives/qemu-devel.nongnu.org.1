@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C37A57B69B7
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D68637B69B8
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:03:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnf16-0000cK-Ay; Tue, 03 Oct 2023 09:00:48 -0400
+	id 1qnf2p-0001IN-My; Tue, 03 Oct 2023 09:02:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf0j-0000b2-9j
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:00:26 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf2Q-0001Eh-J8
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:02:18 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf0f-00069H-QL
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:00:23 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-406402933edso8497625e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:00:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf2L-0006XD-71
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:02:07 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40652e570d9so9216175e9.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:02:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696338018; x=1696942818; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696338123; x=1696942923; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=iOknJBTSReGg/Ah87Wo5wMdENcfmdmbpRBcksJRX00s=;
- b=RZALhq0LYiUzsAEgEn2TtlMUaCwxdQoRqru08e1UrcvZYe2gY6mQCpT2VFL9ZBkbyD
- Pn4uqubFjdHOwnW5Eqh/+CjCIwHlhzw5tKwP2doMVTXEnakaLbEPwq7xTOYac2XGJWyC
- kfknBO1Ao8E+s8e7FzlNxMVVuvNXcswtW//gE9kFwaAod1W5c3sSJmJTcgEacaxp9i1w
- vb5MLXy9okug6k2QhqknzEVdLwCA4yDnuU11ZnDOD4CdKKmI/co3QwkVYcLQ6tw5k7Ma
- 1iaG62/DusDey959AOJ6jHvfxPNnrr/PGsEJMiUgGOz0r96MGgimt2GmHXfublWfHUjt
- ZiCg==
+ bh=+ntoH5H1R+uasf7s+GRiyJf8P8r1KZwX5k4NlR69cXw=;
+ b=zVKxumEBdHGkfbq9d+LZoDAnWJK+QeBINFZfOTk1dxriuVo9aXagoLAnajIbK4KxlO
+ X08KDKYgm6vWTLpBK/tQTdjLJDV9LKD1qqvFyHcNmlXWVpIhQSaWPZQecsfa2oF4JEG0
+ Y24yaT4ZlOHK36IuUY3nFFtvRji/J8mwZiEN48dZVcqHnGNHzfEir6fXYWSkCEj4KFw5
+ 05gYyNLOwB/BTSdLyWAJ5vxWd3xmeNJ2sP2FUP7J7PiDcE8gkqOGyRBKsSodXwj81Y58
+ HcKJn8tl+8TSlwMI8R0kXF+2gwunapEqwK2+jI60vXD4UXxXCjUcUBo1WHpOb//VOlwD
+ 5I/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696338018; x=1696942818;
+ d=1e100.net; s=20230601; t=1696338123; x=1696942923;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iOknJBTSReGg/Ah87Wo5wMdENcfmdmbpRBcksJRX00s=;
- b=Vb7BiILz3v275HO1XMDJ07xLPNnu150nOTgg/7cqkBFGacvABAVmNfLeb/JXv+G3qk
- YG56512YegrlyUwb8GXR1xOHWXtafhQ/ij0HE0H7gvtDbiGMVvlZaSf4FlhazgCVyLe7
- rGdr7cGbzFt8LGyJOOB7R6S2i4o0KKeP6V5efNfHtlHPAC3yJrTFmH1LzniuU6GDY3bx
- do05xy/tSuuykUugPSLJaj9ncOfDlYsmJmPH0/WYvY0IFWa/3R+pHSiZnlOy9dEiI2Jk
- 6bS1fLsjS/fpMx0PxXUNa966LPiQ6H0p3uM87pwb2fSf9hRvavjT5wDqOdsGenZ6mmK7
- q6QQ==
-X-Gm-Message-State: AOJu0YywhU92i2vOABWwVktxSpEXBOl0ajf5M4qiweac+UrKXZIC0CoF
- yV4JtX5W+qeL766BMYJ+cXKZsg==
-X-Google-Smtp-Source: AGHT+IEEjmhxgBTcBB3U5rwp4S3A50gwaTf1COp3zluxkRk+jjQllmvVZb1lGaJRoF/uZNkzorutcg==
-X-Received: by 2002:a05:600c:20a:b0:405:36d7:4582 with SMTP id
- 10-20020a05600c020a00b0040536d74582mr11753192wmi.15.1696338017969; 
- Tue, 03 Oct 2023 06:00:17 -0700 (PDT)
+ bh=+ntoH5H1R+uasf7s+GRiyJf8P8r1KZwX5k4NlR69cXw=;
+ b=oJEdbbVoMGTDV/7LDhwLU5BvS/z0KgeGR7lLIjCG1bSkiEHtigtpNYUMxHX00ykZkI
+ VdpfS+tVCGgmhIiB0pAQ+s7APymdEkcHLsN+SjOS3o0lNREvMnMSqiUXSMOEltdlgCmL
+ HX8Wp50sima8nCzbNfJrkNVPMLN77tfljH4zRaGlNKxp/Tx59x+40ohc3AX+Sk1kNSvC
+ 0K3nQeVw0yqWjQ/qqRbo0DngUSNadMvKbRKtPPmRQKcaZnKebTaojQ2on5wYk2eXjtrS
+ 1h0rc0kw+vtqkDeaObXmkJTUBth44Xxm6jQcQj48cXF74GVjqfTtBehRaiCygQh0EmTd
+ N4VQ==
+X-Gm-Message-State: AOJu0Ywi1xiFQ7NAEbWnePi8lXx46gY55hd/AIG2KVrXgVbw2HzsNzd3
+ RdyNCQ2EdLYojyqfdcxL7xBLDg==
+X-Google-Smtp-Source: AGHT+IG6FQ2CdwPghPqMshC7I/sD4puNWNof+Sg3BfVlJWK1wr0ezrc8l64q5527vkjre34LHp9Kpw==
+X-Received: by 2002:a5d:5272:0:b0:31d:74f8:fae with SMTP id
+ l18-20020a5d5272000000b0031d74f80faemr11641477wrc.71.1696338123045; 
+ Tue, 03 Oct 2023 06:02:03 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
  [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
- 11-20020a05600c248b00b003fefe70ec9csm9411855wms.10.2023.10.03.06.00.15
+ q15-20020adfcd8f000000b00327297abe31sm1538995wrj.68.2023.10.03.06.02.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 06:00:15 -0700 (PDT)
-Message-ID: <0afc2728-882a-6f4b-d343-2ce126745034@linaro.org>
-Date: Tue, 3 Oct 2023 15:00:14 +0200
+ Tue, 03 Oct 2023 06:02:02 -0700 (PDT)
+Message-ID: <df7f0256-8220-302e-9897-c7221da23128@linaro.org>
+Date: Tue, 3 Oct 2023 15:02:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v6 08/19] linux-user: Add gen-vdso tool
+Subject: Re: [PATCH v6 19/19] build: Add update-linux-vdso makefile rule
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, laurent@vivier.eu
 References: <20230930021529.987950-1-richard.henderson@linaro.org>
- <20230930021529.987950-9-richard.henderson@linaro.org>
+ <20230930021529.987950-20-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230930021529.987950-9-richard.henderson@linaro.org>
+In-Reply-To: <20230930021529.987950-20-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -94,28 +94,30 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 30/9/23 04:15, Richard Henderson wrote:
-> This tool will be used for post-processing the linked vdso image,
-> turning it into something that is easy to include into elfload.c.
+> This is not ideal, since it requires all cross-compilers
+> to be present rather than a simple subset.  But since it
+> is only run manually, should be good enough for now.
 > 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   linux-user/gen-vdso.c          | 223 ++++++++++++++++++++++++
->   linux-user/gen-vdso-elfn.c.inc | 307 +++++++++++++++++++++++++++++++++
->   linux-user/meson.build         |   6 +-
->   3 files changed, 535 insertions(+), 1 deletion(-)
->   create mode 100644 linux-user/gen-vdso.c
->   create mode 100644 linux-user/gen-vdso-elfn.c.inc
+>   Makefile | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
 
 
-> +static void output_reloc(FILE *outf, void *buf, void *loc)
-> +{
-> +    fprintf(outf, "    0x%08lx,\n", (unsigned long)(loc - buf));
+> @@ -303,6 +310,9 @@ endif
+>   	$(call print-help,distclean,Remove all generated files)
+>   	$(call print-help,dist,Build a distributable tarball)
+>   	@echo  ''
+> +	@echo  'Linux-user targets:'
+> +	$(call print-help,update-linux-vdso,Build linux-user vdso images)
 
-uintptr_t? Otherwise nice!
+Maybe amend '(require all cross-compilers to be present)'? Otherwise,
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> +}
-
+> +	@echo  ''
+>   	@echo  'Test targets:'
+>   	$(call print-help,check,Run all tests (check-help for details))
+>   	$(call print-help,bench,Run all benchmarks)
 
 
