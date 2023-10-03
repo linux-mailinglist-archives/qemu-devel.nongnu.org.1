@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630BF7B640B
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DAE7B640A
 	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 10:29:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnal0-0005Ss-2L; Tue, 03 Oct 2023 04:27:54 -0400
+	id 1qnal4-0005Tb-LK; Tue, 03 Oct 2023 04:27:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnakw-0005Rn-Ay
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:50 -0400
-Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnal3-0005TL-0e
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:57 -0400
+Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnakt-00080X-VC
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:50 -0400
-Received: by mail-wm1-x32c.google.com with SMTP id
- 5b1f17b1804b1-40666aa674fso6071415e9.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 01:27:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnal1-00083W-C9
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:56 -0400
+Received: by mail-lf1-x12d.google.com with SMTP id
+ 2adb3069b0e04-5041d6d8b10so766786e87.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 01:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696321666; x=1696926466; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696321673; x=1696926473; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+NncaZm4Rq7ypawzJ8HayEn0g0SZFapHip8wBEcGgdE=;
- b=t82/BKoJiCOAT3Ux6+Y4iWfkliIsjP7A/D9QISA1mQjQtvLiqYxQW6lkb7Ij4VallT
- xIvHGPe7A7qT1vq2oSF8OdbMuxZlH0SaWceDclQFvoTRNRK9jb+h2Ji2GYAUFC3eoKut
- WM/vAZOhewKO2LaPtvZqorBeo1MKxmxx8WgYorVJ4BsQptJ5Gg0E/k06ZXNq0bMyxUpt
- +iFtm5+qFdT/t13P7QB7AQmIQYCY/XtYt8Tp19Sq25coFpm35b8LWaAG3s+cmj4frWC1
- 9c3nH9cXQkV065atXsFYfUbFj4JQbPX2bXKEFSuLNqcURT6Np9oIhQuM/hI1ylYoeHRr
- OfKg==
+ bh=FLDFiGj6aFnMNrOsUcD90TH387DbLMzLOhHMLFfm8as=;
+ b=CDs2ZZkwojIERq4JmlhF1hv/5Wcp826q1cvlx+hQCVnaAIUyqU3ggACrxG+/U6nmmz
+ lFiXDdViwOSBb9nEh+5VSAh3qlDcM+4qfjZO52Xbk3jypLD1ngenJbPVtccp5WzxJ99/
+ uJjjoH3rvCGCfH75qplPN5mFzz8IJQD9Udc+KgL4dvpHaKohQCzOU+kKCBO1er/WJ38W
+ rqNNHcz3xHLOYfQVn6JvC7kYUv3J9AzQ/0JgLPhjfEZwNrrQSVe7mcTi8+NpiqbQo0tr
+ LSKI6U7hBuj0aDyTYWgeejaaOEERYBoiUQpwLx8jCgvLhzqI50RGRiX8Lo8Rf65zCJQs
+ 0yqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696321666; x=1696926466;
+ d=1e100.net; s=20230601; t=1696321673; x=1696926473;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+NncaZm4Rq7ypawzJ8HayEn0g0SZFapHip8wBEcGgdE=;
- b=rF1LVuMkh+DEdWP50baGaHzvpILpLY6DD3X7qa0MVF9HT88V39Wv4IC3yl4xRao4mZ
- Nx2DmukPCeMeQ3khkEo4EIcUKPZr4GcjFKqMFFwbJ4aCc2iKeWcQimshDkJYlcrkYYmb
- b/tKra6PwNBNBaaw+woTUgAKeX1qjpgKrbBqSlmFeQa0gmk+lvCLJOMU3wXoZdc94qjk
- DXQStCTP+kUz4V3B/IPQMu2ukYf2xy2nzKh7rEfonhosgq5oZpwgYtS06jaNs0K4oEfw
- xYRujAI91/rb32gpPa7M4HyZqKhB4iStBT733yIoLfll+aRT9/fBi4Cmw7YCFWds/74F
- 3BWg==
-X-Gm-Message-State: AOJu0YyOHNuXp4EiwTTgfA5E+ihkzhJGkqnLUyTJ0nlVSNQxabdaR1a0
- Ew0buduFSIGtfzM6wxSjnPlsRa3uvJ7cSC7T40O5DA==
-X-Google-Smtp-Source: AGHT+IFKTop6RARJm3uUlDOI3XgMfv8T8AAVtMSQ4W6hzYJzoHKSeQrFdBbu5EGJVsVOhK4Mdr3L2A==
-X-Received: by 2002:a7b:cbd4:0:b0:3fe:d1e9:e6b8 with SMTP id
- n20-20020a7bcbd4000000b003fed1e9e6b8mr12338088wmi.12.1696321666116; 
- Tue, 03 Oct 2023 01:27:46 -0700 (PDT)
+ bh=FLDFiGj6aFnMNrOsUcD90TH387DbLMzLOhHMLFfm8as=;
+ b=cQQyyzqV0Dv/qtMwJKAfDxinXp7ra9ZIvI49MociuMVpKtScFxotPO0qUKV8ZBswmh
+ CKhFYINJIcg6IbmbB6zb4j0OfPO9v0hGkPpXotwD+1HXU820e3vcljLWYPWkgM813/Xk
+ R93KWdRENGZxileI6HXSciuan1DstCnQABCIaaPup9bnfD0L0bvf2cTtHxgzPmXqSAq4
+ XUvVr5vLokhetMoovzpePdxlc4K0YvEQGDYYRKEVoeZe4CV+HHz4kPK/EYtEaMtOZoOa
+ oSv+q7Fnk5XtQH0XO9Bb5RTwgznF5l3N+SwaTw+cVC2bvkR3pLYmsxwgqiYEiCH15Cbz
+ SzPA==
+X-Gm-Message-State: AOJu0YzjkyR4oClHDcbtb9BgOx2H3EEjENsJp7/HBbUIfZX4MukeObyU
+ sYVpsJwy4QHjzSGpWftbnqW9kXQQsimSaqekeVXGig==
+X-Google-Smtp-Source: AGHT+IE9DhGdJEdRvuEhu0sBcxhTR7XPwaD2+0uen0B4Pmgk0wXZ+xqeP6aRWS68eYgCqpQvQ/ubqQ==
+X-Received: by 2002:a05:6512:704:b0:500:b42f:1830 with SMTP id
+ b4-20020a056512070400b00500b42f1830mr9096945lfs.63.1696321673204; 
+ Tue, 03 Oct 2023 01:27:53 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-222-246.abo.bbox.fr. [176.131.222.246])
  by smtp.gmail.com with ESMTPSA id
- p8-20020a1c7408000000b003fefcbe7fa8sm707360wmc.28.2023.10.03.01.27.44
+ u19-20020a7bc053000000b003fefaf299b6sm698061wmc.38.2023.10.03.01.27.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Oct 2023 01:27:45 -0700 (PDT)
+ Tue, 03 Oct 2023 01:27:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
@@ -64,18 +64,17 @@ Cc: Bernhard Beschow <shentey@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 2/5] hw/i386/apic: Defer error check from apic_get_class to
- kvm_apic_realize
-Date: Tue,  3 Oct 2023 10:27:25 +0200
-Message-ID: <20231003082728.83496-3-philmd@linaro.org>
+Subject: [PATCH v2 3/5] hw/i386/apic: Simplify apic_get_class()
+Date: Tue,  3 Oct 2023 10:27:26 +0200
+Message-ID: <20231003082728.83496-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231003082728.83496-1-philmd@linaro.org>
 References: <20231003082728.83496-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32c.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x12d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,58 +97,87 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-apic_get_class() isn't supposed to fail. kvm_apic_realize() is
-DeviceRealize() handler, which can fail. Defer the error check
-to the latter.
+Now than apic_get_class() can not fail, remove its
+Error** parameter. It can't return NULL neither, so
+simplify x86_cpu_apic_create().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/i386/kvm/apic.c       | 5 +++++
- target/i386/cpu-sysemu.c | 8 --------
- 2 files changed, 5 insertions(+), 8 deletions(-)
+ include/hw/i386/apic_internal.h | 2 +-
+ hw/i386/amd_iommu.c             | 2 +-
+ hw/i386/intel_iommu.c           | 4 ++--
+ target/i386/cpu-sysemu.c        | 4 ++--
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/hw/i386/kvm/apic.c b/hw/i386/kvm/apic.c
-index 1e89ca0899..4883308247 100644
---- a/hw/i386/kvm/apic.c
-+++ b/hw/i386/kvm/apic.c
-@@ -228,6 +228,11 @@ static void kvm_apic_realize(DeviceState *dev, Error **errp)
- {
-     APICCommonState *s = APIC_COMMON(dev);
+diff --git a/include/hw/i386/apic_internal.h b/include/hw/i386/apic_internal.h
+index 5f2ba24bfc..e61ad04769 100644
+--- a/include/hw/i386/apic_internal.h
++++ b/include/hw/i386/apic_internal.h
+@@ -225,6 +225,6 @@ static inline int apic_get_bit(uint32_t *tab, int index)
+     return !!(tab[i] & mask);
+ }
  
-+    if (!kvm_irqchip_in_kernel()) {
-+        error_setg(errp, "KVM does not support userspace APIC");
-+        return;
-+    }
-+
-     memory_region_init_io(&s->io_memory, OBJECT(s), &kvm_apic_io_ops, s,
-                           "kvm-apic-msi", APIC_SPACE_SIZE);
+-APICCommonClass *apic_get_class(Error **errp);
++APICCommonClass *apic_get_class(void);
  
+ #endif /* QEMU_APIC_INTERNAL_H */
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index c98a3c6e11..0a95025ab7 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1368,7 +1368,7 @@ static MemTxResult amdvi_mem_ir_write(void *opaque, hwaddr addr,
+         return MEMTX_ERROR;
+     }
+ 
+-    apic_get_class(NULL)->send_msi(&to);
++    apic_get_class()->send_msi(&to);
+ 
+     trace_amdvi_mem_ir_write(to.address, to.data);
+     return MEMTX_OK;
+diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+index 2c832ab68b..dffe3583bd 100644
+--- a/hw/i386/intel_iommu.c
++++ b/hw/i386/intel_iommu.c
+@@ -397,7 +397,7 @@ static void vtd_generate_interrupt(IntelIOMMUState *s, hwaddr mesg_addr_reg,
+ 
+     trace_vtd_irq_generate(msi.address, msi.data);
+ 
+-    apic_get_class(NULL)->send_msi(&msi);
++    apic_get_class()->send_msi(&msi);
+ }
+ 
+ /* Generate a fault event to software via MSI if conditions are met.
+@@ -3554,7 +3554,7 @@ static MemTxResult vtd_mem_ir_write(void *opaque, hwaddr addr,
+         return MEMTX_ERROR;
+     }
+ 
+-    apic_get_class(NULL)->send_msi(&to);
++    apic_get_class()->send_msi(&to);
+ 
+     return MEMTX_OK;
+ }
 diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
-index 2375e48178..6a228c9178 100644
+index 6a228c9178..9038c65267 100644
 --- a/target/i386/cpu-sysemu.c
 +++ b/target/i386/cpu-sysemu.c
-@@ -253,10 +253,6 @@ APICCommonClass *apic_get_class(Error **errp)
+@@ -247,7 +247,7 @@ void x86_cpu_machine_reset_cb(void *opaque)
+     cpu_reset(CPU(cpu));
+ }
  
-     /* TODO: in-kernel irqchip for hvf */
-     if (kvm_enabled()) {
--        if (!kvm_irqchip_in_kernel()) {
--            error_setg(errp, "KVM does not support userspace APIC");
--            return NULL;
--        }
-         apic_type = "kvm-apic";
-     } else if (xen_enabled()) {
-         apic_type = "xen-apic";
-@@ -272,10 +268,6 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+-APICCommonClass *apic_get_class(Error **errp)
++APICCommonClass *apic_get_class(void)
+ {
+     const char *apic_type = "apic";
+ 
+@@ -266,7 +266,7 @@ APICCommonClass *apic_get_class(Error **errp)
+ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+ {
      APICCommonState *apic;
-     APICCommonClass *apic_class = apic_get_class(errp);
+-    APICCommonClass *apic_class = apic_get_class(errp);
++    APICCommonClass *apic_class = apic_get_class();
  
--    if (!apic_class) {
--        return;
--    }
--
      cpu->apic_state = DEVICE(object_new_with_class(OBJECT_CLASS(apic_class)));
      object_property_add_child(OBJECT(cpu), "lapic",
-                               OBJECT(cpu->apic_state));
 -- 
 2.41.0
 
