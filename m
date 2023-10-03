@@ -2,89 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035B47B69F1
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:15:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B3A7B6A12
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:17:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnfDY-0006Ws-Rj; Tue, 03 Oct 2023 09:13:40 -0400
+	id 1qnfGb-0007sP-Gi; Tue, 03 Oct 2023 09:16:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnfDX-0006Vj-2n
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:13:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qnfGZ-0007qh-Aw
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:16:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnfDU-0000f8-4P
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:13:38 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qnfGX-0001US-Ik
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:16:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696338814;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1696339004;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=jHk6Rr16a1LOwWIdrCC05PI1KU+eOkIS3AMPOVD4AcM=;
- b=eRQCpTGLGVL9x8WNqi9d92dnWWl1pRkvi4b5mJR52uvQGS8pcARQXloCalzT7R3MMNyAKC
- UwvHtMNJvxB3KMJw0gnBeOE/dlJaGkxIXn+T6G8IZtZ2DrmKliNvpo/CwEbmdSvvM6e6xe
- Z9Aj4ARo1K8IjRjQNDLCMucmwY4rV68=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+bWcOMINY2DyosxwYYRHJoRwaNiugsZstLCOluNwiJk=;
+ b=UGKJm/QTz3MVjCpM5KZGOGCGczN7pC1gBOt8aAGz5RUaS7wSiE32PuOctkDoobtOGEACoj
+ Ao03eTsCuZwzO7zOlEbueyqeHAe0V5TSH1d8bQTXmm0LuXV3cUX738aDxW17+GscwNxW2L
+ 2OMnsUzv+I1SgU67nPsPjYi807575L4=
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
+ [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-gueCJeFCMkGOmj5ws2T9vA-1; Tue, 03 Oct 2023 09:13:33 -0400
-X-MC-Unique: gueCJeFCMkGOmj5ws2T9vA-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-31f79595669so1764599f8f.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:13:32 -0700 (PDT)
+ us-mta-605-GoWH7R38N4msLuJ6xjZ3vg-1; Tue, 03 Oct 2023 09:16:43 -0400
+X-MC-Unique: GoWH7R38N4msLuJ6xjZ3vg-1
+Received: by mail-oo1-f70.google.com with SMTP id
+ 006d021491bc7-57badc96ba6so1154967eaf.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:16:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696338812; x=1696943612;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=jHk6Rr16a1LOwWIdrCC05PI1KU+eOkIS3AMPOVD4AcM=;
- b=JMyeOuFuVkTJujQ4HB44319iMjdu8xJHg0A7zUOWLOxIzidtpR72I5sAtCII2wbDZX
- k/7DLzox33IK3HPQpyyMcdmQhEo0uTNMMaAWfaZ88wdZeyU1JANmDrAn/faAm0pENXiC
- 3jNYrR713t/KCATsGD0Kg7AqMNHCa7YJK/7DYUTq+eyaOTpqY7XpOqcGADHC0JpTvmai
- mcg/uLYVHK490bsQ8QTdlCDE1PUJr+zOM0AdigTZVr0luklFywZNXs17zp9KnDLy5015
- LOPNSnduVFiCu0jvSlEAZepdLEmh/rO4GMYUeUOjPDOg4ZlEppFoD1762dTxln3s7C0m
- V6lQ==
-X-Gm-Message-State: AOJu0YzRUyK+i1rsh3aiijZM7xJdLkwKcH+oNqMtMRRMUsQmNbsj8Isg
- YVBH4FbVb0sGcjpZMxJYptSiJCz5Cofm45UUQm+jQOB5hszXM3Y+UySYP7n5Li+Tg1TCWMbeBpZ
- Pz0EeMGvL+TXEtm4=
-X-Received: by 2002:adf:db4d:0:b0:318:720c:bb3 with SMTP id
- f13-20020adfdb4d000000b00318720c0bb3mr1962874wrj.20.1696338812054; 
- Tue, 03 Oct 2023 06:13:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrbNnX4S+17+bq8+RYrr37Nd1cy0DPOeiM96qXIi8KBvp/EcaOii5OYI/RDdwufvK+nQvi5Q==
-X-Received: by 2002:adf:db4d:0:b0:318:720c:bb3 with SMTP id
- f13-20020adfdb4d000000b00318720c0bb3mr1962845wrj.20.1696338811674; 
- Tue, 03 Oct 2023 06:13:31 -0700 (PDT)
-Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
- a10-20020adfeeca000000b0032008f99216sm1551925wrp.96.2023.10.03.06.13.10
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 06:13:30 -0700 (PDT)
-Date: Tue, 3 Oct 2023 09:12:56 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefan Hajnoczi <stefanha@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Michal Privoznik <mprivozn@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>, qemu-block@nongnu.org,
- Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>
-Subject: Re: [PATCH v2 0/2] virtio-blk: add iothread-vq-mapping parameter
-Message-ID: <20231003091237-mutt-send-email-mst@kernel.org>
-References: <20230918161604.1400051-1-stefanha@redhat.com>
+ d=1e100.net; s=20230601; t=1696339002; x=1696943802;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=+bWcOMINY2DyosxwYYRHJoRwaNiugsZstLCOluNwiJk=;
+ b=CvlNxmAxaV51BCQCydMT87sr6rt04FWNPzXjwgG3FQuzAhWmVgPqQXcKNu2nMrjD4Q
+ qQQCE/IV+bVpCGpoZZgYB60F0l+82ICNu/LCRWo1hv54Por1OXHjuQFJSFDOGTOFN9bC
+ M7pHmHwUIldumFhZmzCnI83HJp4qCHX60rm4fBBEP+2ENDgFeKnefz9jVGP22JltFMPy
+ AhWCMnriBXbBD/Ph/74plU8zBlbjavh08Zq8km1FGsH1gPtvtmxUUZtFm8Cqz58eKAOT
+ 6lENwpZ+p5KE6JSKeqNzWhQqc9DGy6dCyGORqeNpnxM4MV94F4y68gR7tCabyYx6ilbh
+ oM6w==
+X-Gm-Message-State: AOJu0Yz4j8I/1WY6SwQdLkwenmrZE7/cNQR331KTM+d0fnnQNS1XWo4x
+ WrItaMkpjGS78xA0c3XO5VHBS2UWWMLvZKAS5Bqg2cz40AX8l8vOiVRmP+FFkQeiml/txmFpGbz
+ /Qy1Ldq/waxCa0v0=
+X-Received: by 2002:a05:6358:e49c:b0:143:9bc0:a975 with SMTP id
+ by28-20020a056358e49c00b001439bc0a975mr16398721rwb.7.1696339002416; 
+ Tue, 03 Oct 2023 06:16:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEUZN5qeZf5MehIW7JBWH/P0B49kzsNdH4foPXxjKufuJHWjVUePR5aAkS1wZy7FZg56+BoWA==
+X-Received: by 2002:a05:6358:e49c:b0:143:9bc0:a975 with SMTP id
+ by28-20020a056358e49c00b001439bc0a975mr16398700rwb.7.1696339002102; 
+ Tue, 03 Oct 2023 06:16:42 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ ka23-20020a05622a441700b0040ff6194ef3sm429544qtb.70.2023.10.03.06.16.40
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Oct 2023 06:16:41 -0700 (PDT)
+Message-ID: <250c14cc-6eba-3ad2-9247-b71316d6ad50@redhat.com>
+Date: Tue, 3 Oct 2023 15:16:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230918161604.1400051-1-stefanha@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] vhost: Add a defensive check in vhost_commit against
+ wrong deallocation
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, jasowang@redhat.com,
+ lvivier@redhat.com
+References: <20230913074657.523530-1-eric.auger@redhat.com>
+ <20231003084047-mutt-send-email-mst@kernel.org>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20231003084047-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,58 +105,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Sep 18, 2023 at 12:16:02PM -0400, Stefan Hajnoczi wrote:
-> virtio-blk and virtio-scsi devices need a way to specify the mapping between
-> IOThreads and virtqueues. At the moment all virtqueues are assigned to a single
-> IOThread or the main loop. This single thread can be a CPU bottleneck, so it is
-> necessary to allow finer-grained assignment to spread the load. With this
-> series applied, "pidstat -t 1" shows that guests with -smp 2 or higher are able
-> to exploit multiple IOThreads.
-> 
-> This series introduces command-line syntax for the new iothread-vq-mapping
-> property is as follows:
-> 
->   --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0","vqs":[0,1,2]},...]},...'
-> 
-> IOThreads are specified by name and virtqueues are specified by 0-based
-> index.
-> 
-> It will be common to simply assign virtqueues round-robin across a set
-> of IOThreads. A convenient syntax that does not require specifying
-> individual virtqueue indices is available:
-> 
->   --device '{"driver":"virtio-blk-pci","iothread-vq-mapping":[{"iothread":"iothread0"},{"iothread":"iothread1"},...]},...'
-> 
-> There is no way to reassign virtqueues at runtime and I expect that to be a
-> very rare requirement.
-> 
-> Note that JSON --device syntax is required for the iothread-vq-mapping
-> parameter because it's non-scalar.
-> 
-> Based-on: 20230912231037.826804-1-stefanha@redhat.com ("[PATCH v3 0/5] block-backend: process I/O in the current AioContext")
+Hi Michael,
 
+On 10/3/23 14:43, Michael S. Tsirkin wrote:
+> On Wed, Sep 13, 2023 at 09:46:57AM +0200, Eric Auger wrote:
+>> In vhost_commit(), it may happen that dev->mem_sections and
+>> dev->tmp_sections are equal,
+> Could you please explain a bit more how this can happen?
+> I don't see how.
+>
+>> in which case, unconditionally
+>> freeing old_sections at the end of the function will also free
+>> dev->mem_sections used on subsequent call leading to a segmentation
+>> fault.
+>>
+>> Check this situation before deallocating memory.
+>>
+>> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+>> Fixes: c44317efecb2 ("vhost: Build temporary section list and deref
+>> after commit")
+>> CC: QEMU Stable <qemu-stable@nongnu.org>
+>>
+>> ---
+>>
+>> This SIGSEV condition can be reproduced with
+>> https://lore.kernel.org/all/20230904080451.424731-1-eric.auger@redhat.com/#r
+>> This is most probably happening in a situation where the memory API is
+>> used in a wrong manner but well.
+> sounds like misusing the memory API can lead to all kind of mischief.
+This happened in a situation where I resized an [IOMMU] MR within the
+VFIO vfio_listener_region_add leading to recursive calls ot region_add
+callbacks.
+The issue is it was not straightforward to find the link with vhost.
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Thanks
 
-More of a block thingy so pls use that tree.
-
-> Stefan Hajnoczi (2):
->   qdev: add IOThreadVirtQueueMappingList property type
->   virtio-blk: add iothread-vq-mapping parameter
-> 
->  qapi/virtio.json                    |  30 +++++
->  hw/block/dataplane/virtio-blk.h     |   3 +
->  include/hw/qdev-properties-system.h |   4 +
->  include/hw/virtio/virtio-blk.h      |   2 +
->  hw/block/dataplane/virtio-blk.c     | 163 +++++++++++++++++++++-------
->  hw/block/virtio-blk.c               |  92 ++++++++++++++--
->  hw/core/qdev-properties-system.c    |  47 ++++++++
->  7 files changed, 287 insertions(+), 54 deletions(-)
-> 
-> -- 
-> 2.41.0
+Eric
+>
+>> ---
+>>  hw/virtio/vhost.c | 5 +++++
+>>  1 file changed, 5 insertions(+)
+>>
+>> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+>> index e2f6ffb446..c02c599ef0 100644
+>> --- a/hw/virtio/vhost.c
+>> +++ b/hw/virtio/vhost.c
+>> @@ -545,6 +545,11 @@ static void vhost_commit(MemoryListener *listener)
+>>      dev->mem_sections = dev->tmp_sections;
+>>      dev->n_mem_sections = dev->n_tmp_sections;
+>>  
+>> +    if (old_sections == dev->mem_sections) {
+>> +        assert(n_old_sections ==  dev->n_mem_sections);
+>> +        return;
+>> +    }
+>> +
+>>      if (dev->n_mem_sections != n_old_sections) {
+>>          changed = true;
+>>      } else {
+>> -- 
+>> 2.41.0
 
 
