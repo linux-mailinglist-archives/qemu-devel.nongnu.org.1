@@ -2,89 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268EE7B74CA
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC2C7B7518
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:37:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnoiM-0008CE-8x; Tue, 03 Oct 2023 19:22:07 -0400
+	id 1qnovC-00040P-0F; Tue, 03 Oct 2023 19:35:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnoiI-0008AL-Fa
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:22:03 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qnov8-0003xJ-PE
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:35:18 -0400
+Received: from mail-io1-xd44.google.com ([2607:f8b0:4864:20::d44])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnoiF-00020W-VG
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:22:01 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-4056ce55e7eso14846715e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 16:21:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qnov1-0006gP-85
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:35:18 -0400
+Received: by mail-io1-xd44.google.com with SMTP id
+ ca18e2360f4ac-79fce245bf6so58295639f.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 16:35:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696375318; x=1696980118; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=0f2vU2Tp5kWcSidG+0GfHM2fCZDc8Gx6g04Mw7tskOQ=;
- b=FkPVVLBrenzPFCdTT4YXv+4mm8vHCq7n6MVUb9xuOa+QG9+V5zBtEpHCgJf9z0sPmh
- O5E+8FqTMctHLQiTK82Rq9RUvezwRIJYGtJ6KJnGHwnfwQDqlzM+ow1GyvqrKtbmvdTC
- xo0hEXampvkejyBQYVcNASSI5z1koh0wlZFM/dfjvNFU73rb35K9z7wWd9owkaJGlXsG
- X4oXfY9aN8MPAN+/zfv2UG379fLOmu8nP58p/aWQW2ZuF6p9Lvq16gRKjOmF5q+owjKO
- mqOdw+VXSLv7h34Hqyuif/L9uaRmeqMD+4rIS3V6Lbi4DHGZBnBJ06x8KcO5rM2BaY5n
- 8DSA==
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696376107; x=1696980907;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=/RUL9UFh0OlgtOXBBvW2u27+qW68S+nSgMNZp08Kprg=;
+ b=MIEPzA6bXfD/+oHbgO2plhCsCiycdmq7xxiOJI/7vQMnxWb9UdnCIRss3k8z88+xdT
+ d4Fh9TK6le1Zz6qvrRmT4i/uN3Yntc0LDJb1yWh/lnncuCHRIRzCuE+Ucvkz+iqIf6d4
+ Fk1I2al0uGbmGdS3pSuJ4Ltz7OvtcsPMlMFEjPDi5FO/MqebyadSw5ME/60YfovOXtOY
+ ie3xIRvwUTTkqBbnHgGtha15XwueM8h393PS8Vr9yuh4hBKuyYEM1wbcMUbU21k550XJ
+ wP8hezLRG1tvYJLe/b6PZfiXMYVJIsJov+1EHamF67aJowXZQSp+pnO22cb359AWvGLp
+ pSpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696375318; x=1696980118;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=0f2vU2Tp5kWcSidG+0GfHM2fCZDc8Gx6g04Mw7tskOQ=;
- b=tOyLtQPNtzbFWaWpgZGBh0uIZVLvPeUjNlp00C38JM68vo2AoNnJIsO9INh8tu/4DU
- SjdbA36nKh6sz/NQdTyvL1O2KFeXGCyhd6lQipgs1hqMa6eKjFv4nCN6Kg90Mia7Aw8O
- 0V9NHnjipDom8J+7VbePMJkYwlFx7kinO2DRHuHAWobDRGsdSYyq3khBc3LdUaeLjOX6
- YgJ+HykSh3FN5xPicpWZLP+YanRtdz/JiMKW85gPNm27mAYiG1WaDxonxj/u+Xyl5b9z
- ZmQJ9EJgceTnSkrXjsPaBS3ClfqoULSu0O7fhzy4yiBBeYOy1/0sFf/1Far0acyckTHG
- Lqkw==
-X-Gm-Message-State: AOJu0YxqFwlSZi3IysrLTOVnsuuOrZDb1jqBrQcRUTp43PZaITTeYP41
- 5lfnHbdVMqMdLXzYk43xbIM=
-X-Google-Smtp-Source: AGHT+IEC074fRZKcdokyRhXPs5k5guhCmyzZ3EFdtul0nSCYX14H1Ts7kvvgI4iSqeWC7v5WZ/YSLA==
-X-Received: by 2002:a5d:4fd2:0:b0:314:15a8:7879 with SMTP id
- h18-20020a5d4fd2000000b0031415a87879mr595484wrw.34.1696375317508; 
- Tue, 03 Oct 2023 16:21:57 -0700 (PDT)
-Received: from ?IPv6:::1?
- (p200300faaf2af200c1d1cd88f0d7c31c.dip0.t-ipconnect.de.
- [2003:fa:af2a:f200:c1d1:cd88:f0d7:c31c])
- by smtp.gmail.com with ESMTPSA id
- q17-20020aa7da91000000b00537f44827a8sm1481276eds.64.2023.10.03.16.21.56
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 16:21:57 -0700 (PDT)
-Date: Tue, 03 Oct 2023 23:21:50 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-CC: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Markus Armbruster <armbru@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_2/5=5D_hw/i386/apic=3A_Defer_error_?=
- =?US-ASCII?Q?check_from_apic=5Fget=5Fclass_to_kvm=5Fapic=5Frealize?=
-In-Reply-To: <20231003082728.83496-3-philmd@linaro.org>
-References: <20231003082728.83496-1-philmd@linaro.org>
- <20231003082728.83496-3-philmd@linaro.org>
-Message-ID: <8527EF0C-E466-41A0-B1A2-9AEF301B5B5E@gmail.com>
+ d=1e100.net; s=20230601; t=1696376107; x=1696980907;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=/RUL9UFh0OlgtOXBBvW2u27+qW68S+nSgMNZp08Kprg=;
+ b=eUkyPhjhpieg7tS/oRprBu4RlL/SxzteKQSz7uYtePeZP54g8R9YUVGDKtwUjrSh2O
+ BS4ouLYk8IQEZKIqFzpqKqv1DRLxHRQkblGMkzQd59YFvLlEG5460abeHEV6FvDn4Nry
+ ayG2u08zcHHGRQTgD00Ha6y/skmEVY0lQ3ElcKr6ehMBg7xQUPdTe84PA0L8WxO8ItDQ
+ FKg3f2ABU8adLavMDDxcMs4AAJTmXdoorsjLUIeiu9C1sELx3GLOx+stBlZ+8kwNBGpK
+ ztGlVATjRVNDrR0fm6jDHP+1q6sqQ8jlUzJzqAkPNNE2kF3SXA2bP0aMqZBDJMsDLnVs
+ 2dMw==
+X-Gm-Message-State: AOJu0YxmKdZoKLPnm+Zo6tyxtHgJia8l0dFvibzbizcpAeAGEdEs0K00
+ 5TX4selOXvJAYNHDw92gFMio8aLgctizk6sO8B36VzL1
+X-Google-Smtp-Source: AGHT+IG9+x06noMB8qRJsTYYPoDbSpnIcIM//pYmT3oy2BopVFTHfB4GS0//1r81b3rYcFaiinH0ZA==
+X-Received: by 2002:a5e:a915:0:b0:794:eddf:daae with SMTP id
+ c21-20020a5ea915000000b00794eddfdaaemr887440iod.12.1696376106850; 
+ Tue, 03 Oct 2023 16:35:06 -0700 (PDT)
+Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
+ [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
+ w25-20020a6b4a19000000b0079fa1a7cd36sm593596iob.30.2023.10.03.16.35.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 16:35:06 -0700 (PDT)
+From: Warner Losh <imp@bsdimp.com>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, Warner Losh <imp@bsdimp.com>,
+ Kyle Evans <kevans@freebsd.org>
+Subject: [PULL 00/51] Bsd user mmap patches
+Date: Tue,  3 Oct 2023 17:31:24 -0600
+Message-ID: <20231003233215.95557-1-imp@bsdimp.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=shentey@gmail.com; helo=mail-wm1-x336.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::d44;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd44.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,69 +92,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+The following changes since commit da1034094d375afe9e3d8ec8980550ea0f06f7e0:
 
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-10-03 07:43:44 -0400)
 
-Am 3=2E Oktober 2023 08:27:25 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <p=
-hilmd@linaro=2Eorg>:
->apic_get_class() isn't supposed to fail=2E kvm_apic_realize() is
->DeviceRealize() handler, which can fail=2E Defer the error check
->to the latter=2E
->
->Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
->---
-> hw/i386/kvm/apic=2Ec       | 5 +++++
-> target/i386/cpu-sysemu=2Ec | 8 --------
-> 2 files changed, 5 insertions(+), 8 deletions(-)
->
->diff --git a/hw/i386/kvm/apic=2Ec b/hw/i386/kvm/apic=2Ec
->index 1e89ca0899=2E=2E4883308247 100644
->--- a/hw/i386/kvm/apic=2Ec
->+++ b/hw/i386/kvm/apic=2Ec
->@@ -228,6 +228,11 @@ static void kvm_apic_realize(DeviceState *dev, Error=
- **errp)
-> {
->     APICCommonState *s =3D APIC_COMMON(dev);
->=20
->+    if (!kvm_irqchip_in_kernel()) {
->+        error_setg(errp, "KVM does not support userspace APIC");
->+        return;
->+    }
->+
->     memory_region_init_io(&s->io_memory, OBJECT(s), &kvm_apic_io_ops, s,
->                           "kvm-apic-msi", APIC_SPACE_SIZE);
->=20
->diff --git a/target/i386/cpu-sysemu=2Ec b/target/i386/cpu-sysemu=2Ec
->index 2375e48178=2E=2E6a228c9178 100644
->--- a/target/i386/cpu-sysemu=2Ec
->+++ b/target/i386/cpu-sysemu=2Ec
->@@ -253,10 +253,6 @@ APICCommonClass *apic_get_class(Error **errp)
->=20
->     /* TODO: in-kernel irqchip for hvf */
->     if (kvm_enabled()) {
->-        if (!kvm_irqchip_in_kernel()) {
->-            error_setg(errp, "KVM does not support userspace APIC");
->-            return NULL;
->-        }
->         apic_type =3D "kvm-apic";
->     } else if (xen_enabled()) {
->         apic_type =3D "xen-apic";
->@@ -272,10 +268,6 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
->     APICCommonState *apic;
->     APICCommonClass *apic_class =3D apic_get_class(errp);
->=20
->-    if (!apic_class) {
->-        return;
->-    }
->-
+are available in the Git repository at:
 
-Did you intend to remove these lines in the next commit? There you're writ=
-ing to simplify x86_cpu_apic_create() which you're doing here already=2E
+  git@gitlab.com:bsdimp/qemu.git tags/bsd-user-mmap-pull-request
 
-Best regards,
-Bernhard
+for you to fetch changes up to dfa1d915756b2d9d22946cbd7d2587f30cdcb7a3:
 
->     cpu->apic_state =3D DEVICE(object_new_with_class(OBJECT_CLASS(apic_c=
-lass)));
->     object_property_add_child(OBJECT(cpu), "lapic",
->                               OBJECT(cpu->apic_state));
+  bsd-user: Add stubs for vadvise(), sbrk() and sstk() (2023-10-03 17:14:07 -0600)
+
+----------------------------------------------------------------
+bsd-user mmap and exec branches from gsoc
+
+This pull request represents the mmap and exec changes from Karim Taha
+for his GSoC project.
+
+They represent all the mmap and exec related system calls and get bsd-user to
+the point that a dynamic hello-world works (at least for armv7).
+
+There are a couple of patch check errors, but they are the lessor evil: I made
+purposely bad style choices to ensure all the commits compiled (and i undid the
+style choices in subsequent commits).
+
+I pushed an earlier version to gitlab, and all but the riscv64 pipelines were
+green.  Since bsd-user doesn't change anything related to ricsv64 (there's no
+support in qemu-project repo, though we do have it in the bsd-user fork: coming
+soon).
+
+I think this is good to go.
+
+https://gitlab.com/bsdimp/qemu.git
+
+Warner
+-----BEGIN PGP SIGNATURE-----
+Comment: GPGTools - https://gpgtools.org
+
+iQIzBAABCgAdFiEEIDX4lLAKo898zeG3bBzRKH2wEQAFAmUcpC4ACgkQbBzRKH2w
+EQDD9xAA3Rg0AnfnFrd+AoWRb/1/gOuO0v+dEGXj50qnGY8OmHeYtg3XecYPArBq
+EicZzL/OG7UZKMl5OfrmGP9tbr32yfeRUTe3AGGHfmnSb11q0yeSaEFZI7felLHj
+9nlq4H/2EDRrY+7EnG1TWqtnuqDJAJf/7M0giiVxIk77XGX+USUNPOSG4NP/yc8E
+D5p2GN23pUsvnI0jBZkyP3gyeXVNCNG5+KobwqJM3r6OjEiTRmLEVBw98YzG12bh
+OY9ekMtVUKHi4Cvsf+2TtkDGRya0wX4uqm4UB1TtV1VUDoCWhYgEKBHp3ozCoVjB
+J+ygbx7/jNfY53cpgEpKUBFH7rnOq1yQQ+ad5Ap5hbp4j6WSvPwdp1N3RCnkZzd/
+L50VIaySd+P6enAgPO5Mbt3kMMVd/eDGhQDWdzNToIjyhXBb5hUNfumg9AgdEwTh
+rW/kKT39YLYWLO123hIJCy2CKU9nvoea9588ExkKb22v0ltrtDcAlWfCbZvZYxNN
+wRzh+MFBt7Cd/bqk7HaJ0J/YyPToqImoUjNuBnBSDPqZQP2H4U8v/FoICQ0mm5kR
+jZCmGLMEP1PiDlusjUjaW0iamHvXiSP8KEzaAbIxx5UUiTWTTkQm4CKY/xPxC9VQ
+0ygJqJVrKHlNrAY9u6ggJAXtorVwmC55z4ZqIVQH6cbzUYFMuJU=
+=WpL4
+-----END PGP SIGNATURE-----
+
+----------------------------------------------------------------
+
+Karim Taha (6):
+  bsd-user: define TARGET_RFSPAWN for rfork to use vfork(2) semantics,
+    and fix RLIM_INFINITY
+  bsd-user: Implement get_filename_from_fd.
+  bsd-user: Implement execve(2) and fexecve(2) system calls.
+  bsd-user: Implement shm_open2(2) system call
+  bsd-user: Add bsd-mem.c to meson.build
+  bsd-user: Implment madvise(2) to match the linux-user implementation.
+
+Kyle Evans (2):
+  bsd-user: Get number of cpus.
+  bsd-user: Implement shm_rename(2) system call
+
+Stacey Son (42):
+  bsd-user: Define procctl(2) related structs
+  bsd-user: Implement host_to_target_siginfo.
+  bsd-user: Add freebsd_exec_common and do_freebsd_procctl to qemu.h.
+  bsd-user: add extern declarations for bsd-proc.c conversion functions
+  bsd-user: Implement target_to_host_resource conversion function
+  bsd-user: Implement target_to_host_rlim and host_to_target_rlim
+    conversion.
+  bsd-user: Implement host_to_target_rusage and host_to_target_wrusage.
+  bsd-user: Implement host_to_target_waitstatus conversion.
+  bsd-user: Implement getgroups(2) and setgroups(2) system calls.
+  bsd-user: Implement umask(2), setlogin(2) and getlogin(2)
+  bsd-user: Implement getrusage(2).
+  bsd-user: Implement getrlimit(2) and setrlimit(2)
+  bsd-user: Implement several get/set system calls:
+  bsd-user: Implement get/set[resuid/resgid/sid] and issetugid.
+  bsd-user: Add stubs for profil(2), ktrace(2), utrace(2) and ptrace(2).
+  bsd-user: Implement getpriority(2) and setpriority(2).
+  bsd-user: Implement freebsd_exec_common, used in implementing
+    execve/fexecve.
+  bsd-user: Implement procctl(2) along with necessary conversion
+    functions.
+  bsd-user: Implement wait4(2) and wait6(2) system calls.
+  bsd-user: Implement setloginclass(2) and getloginclass(2) system
+    calls.
+  bsd-user: Implement pdgetpid(2) and the undocumented setugid.
+  bsd-user: Implement fork(2) and vfork(2) system calls.
+  bsd-user: Implement rfork(2) system call.
+  bsd-user: Implement pdfork(2) system call.
+  bsd-user: Implement struct target_ipc_perm
+  bsd-user: Implement struct target_shmid_ds
+  bsd-user: Declarations for ipc_perm and shmid_ds conversion functions
+  bsd-user: Introduce freebsd/os-misc.h to the source tree
+  bsd-user: Implement target_set_brk function in bsd-mem.c instead of
+    os-syscall.c
+  bsd-user: Implement ipc_perm conversion between host and target.
+  bsd-user: Implement shmid_ds conversion between host and target.
+  bsd-user: Introduce bsd-mem.h to the source tree
+  bsd-user: Implement mmap(2) and munmap(2)
+  bsd-user: Implement mprotect(2)
+  bsd-user: Implement msync(2)
+  bsd-user: Implement mlock(2), munlock(2), mlockall(2), munlockall(2),
+    minherit(2)
+  bsd-user: Implement mincore(2)
+  bsd-user: Implement do_obreak function
+  bsd-user: Implement shm_open(2)
+  bsd-user: Implement shm_unlink(2) and shmget(2)
+  bsd-user: Implement shmctl(2)
+  bsd-user: Implement shmat(2) and shmdt(2)
+
+Warner Losh (1):
+  bsd-user: Add stubs for vadvise(), sbrk() and sstk()
+
+ bsd-user/bsd-mem.c            | 104 ++++++++
+ bsd-user/bsd-mem.h            | 452 ++++++++++++++++++++++++++++++++
+ bsd-user/bsd-proc.c           | 145 ++++++++++
+ bsd-user/bsd-proc.h           | 379 +++++++++++++++++++++++++++
+ bsd-user/freebsd/meson.build  |   1 +
+ bsd-user/freebsd/os-misc.h    |  98 +++++++
+ bsd-user/freebsd/os-proc.c    | 480 ++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-proc.h    | 293 +++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c | 313 +++++++++++++++++++++-
+ bsd-user/main.c               |   2 +-
+ bsd-user/meson.build          |   7 +
+ bsd-user/mmap.c               |   2 +-
+ bsd-user/qemu-bsd.h           |  58 ++++
+ bsd-user/qemu.h               |   8 +
+ bsd-user/signal-common.h      |   1 +
+ bsd-user/signal.c             |   6 +
+ bsd-user/syscall_defs.h       |  89 ++++++-
+ 17 files changed, 2428 insertions(+), 10 deletions(-)
+ create mode 100644 bsd-user/bsd-mem.c
+ create mode 100644 bsd-user/bsd-mem.h
+ create mode 100644 bsd-user/bsd-proc.c
+ create mode 100644 bsd-user/freebsd/os-misc.h
+ create mode 100644 bsd-user/freebsd/os-proc.c
+ create mode 100644 bsd-user/freebsd/os-proc.h
+ create mode 100644 bsd-user/qemu-bsd.h
+
+-- 
+2.41.0
+
 
