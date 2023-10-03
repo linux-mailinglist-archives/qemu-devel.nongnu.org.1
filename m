@@ -2,97 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E727B6BE5
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:41:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 568207B6BE8
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:42:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qngZn-00014t-Qt; Tue, 03 Oct 2023 10:40:43 -0400
+	id 1qngad-0001j6-4r; Tue, 03 Oct 2023 10:41:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qngZl-00014Q-TU
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:40:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qngaZ-0001iF-SW
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:41:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qngZk-0000t7-EI
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:40:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qngaU-0000zx-Kl
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:41:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696344038;
+ s=mimecast20190719; t=1696344085;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L9FLSZ8A4AlBOxFqQHTueEbXw9iCO1zQ60bmxFGexvg=;
- b=dXEtY1UdAhwQI8qnGwn8VIN7UFWL8daynJFabFRjY8S72oZ6KE+DFDmTk5Np442pUE+pNl
- U9m39RGNnL2atuKAyDsw8uJq3u91LLgflc2die6rMrq9w7r4vWKuxIG7r4qbtby7S9eWkD
- Aqd1ZWJqoLH0S3JzDcIO7/q/FUz+Y4g=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=9Ukgq7BfGKvmiAb1h1EQeoTLNqvwUUzsYFbXYYRdZFE=;
+ b=S5r8WNpRrpw0i1NLcJpNJOCaqMCFpH5G7AueCE/UJwYxsYtK8WjEcv9cWmh4fnHglNGzcr
+ 53z25LpAOYhum4f0bSeWzHl5dB4+/qs8dWlBqUlfPK0KiH9p4l+7c+UbFN2rbEr1YUlPyd
+ X5c5HkqZy5MIrhkqiQ8ZUkn1BR+koJk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-677-vrptLPBtNTKKC5YZ_lZo6Q-1; Tue, 03 Oct 2023 10:40:37 -0400
-X-MC-Unique: vrptLPBtNTKKC5YZ_lZo6Q-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4067f186039so4717355e9.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:40:37 -0700 (PDT)
+ us-mta-489-YrhY8itmN5yEUg5-_PsCXg-1; Tue, 03 Oct 2023 10:41:24 -0400
+X-MC-Unique: YrhY8itmN5yEUg5-_PsCXg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-326f05ed8f9so814215f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:41:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696344036; x=1696948836;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=L9FLSZ8A4AlBOxFqQHTueEbXw9iCO1zQ60bmxFGexvg=;
- b=qQYod+xBchvVTTQjUB/ClbGet7693YQ5MskyxarzsjTCgEs/8UaEa0nkChHgYx3+JS
- DVav9gZ2qhEgsOuf8Qa3WgPEodKh7Vx4Z2VNfmJG9DrukBh9UI7W3BYu7Wr0gN0JvSXH
- ZVkHTq8BKLuWgjX4Eu4cL/x0H/9ZxcZuusOusIJsJA0p/4p1sT13JKrdR9qtAW2lSCDx
- 4701LDZUnBlTQ3VVxcIrC+vk9h0OHKqaFBqi7SRAiPtx1IcpG3OaOc5kg3in4Z9Zhi8A
- gPNWUYTICWPABO8oYrxnVtOJib6YocAdh/yvabTOP4qWHr72+w9dU96kiOLDEYzrS6qL
- E/iw==
-X-Gm-Message-State: AOJu0YxqTljafxfM3Av4P4rmw0lmRr54cRR85BPZszujdlPpCpRKtBPR
- lQy4q893S+Afk+HEq/JmNjKdbp1CSk0Bx/1zUIwu1CTKXQ0hVYA5surfIGsFYpTlpbXtdMYioJU
- 6DZzculv5/2bReJQ=
-X-Received: by 2002:a5d:5549:0:b0:31f:fc96:9af1 with SMTP id
- g9-20020a5d5549000000b0031ffc969af1mr14327754wrw.59.1696344036337; 
- Tue, 03 Oct 2023 07:40:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE4SODhwHPB6jzzyl32SVCRHGZQFavhWwWLkK3J3ZZ9ZQJfIhUNHfYXoZlYztqqH/5VgFxbuw==
-X-Received: by 2002:a5d:5549:0:b0:31f:fc96:9af1 with SMTP id
- g9-20020a5d5549000000b0031ffc969af1mr14327734wrw.59.1696344035921; 
- Tue, 03 Oct 2023 07:40:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696344083; x=1696948883;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=9Ukgq7BfGKvmiAb1h1EQeoTLNqvwUUzsYFbXYYRdZFE=;
+ b=lBfEvCQ2oJt7xMt9goI2cFU4+zZJFS5ulBWEZc0n5Wn/WFwpfne/7kNnCOocytyDD+
+ 1nkN5rBJ2sWNK9iy28Yh0K4+CMa5YTYlFbneeIJznkvxlBr2eZjIPepITphIgFiK4gsI
+ w/xPFuXRjuo5lLuF6LWcHhgyU5b0NMvMph73BW8VOGGc3Blr2OW39QKlYaz2HcwlM7bc
+ ac4WBc3SbRgPifWSgC3/mmHEdTjbm87MmxULYpCh7oq9Qh9UjQkyLdND1EgStG2chb5W
+ JTH29sxGZMeAQWxlFi5FTAwVxKchs0Na2JdQHJiM8DWaEvCGpHplIwsGnwO10P0h0uQH
+ SIkQ==
+X-Gm-Message-State: AOJu0YwqNJktpp5QEa0fU90PXeqBLgfLjv5DhvHhw5NVT+ao+3fGawJ1
+ t9/gvpasusi98i0LERJJVPmAlBV8+W+a64zsUYmN4epJFgP8PqTnGJYTLYrSFljschhaqm7W7CR
+ qMhYbTGamet0jaWxLdj7pFmQ=
+X-Received: by 2002:a5d:45c9:0:b0:31f:f326:766b with SMTP id
+ b9-20020a5d45c9000000b0031ff326766bmr12449287wrs.6.1696344082756; 
+ Tue, 03 Oct 2023 07:41:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGkc9tkGOal62Mg8utiGr8xosGaBWFNYzIKEVRnNBpIleahCS4Sj13UzF8t8ueVwhX2UQ3qw==
+X-Received: by 2002:a5d:45c9:0:b0:31f:f326:766b with SMTP id
+ b9-20020a5d45c9000000b0031ff326766bmr12449275wrs.6.1696344082402; 
+ Tue, 03 Oct 2023 07:41:22 -0700 (PDT)
 Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
- q15-20020adfcd8f000000b00327297abe31sm1721221wrj.68.2023.10.03.07.40.32
+ k16-20020a5d4290000000b00325b29a6441sm1723351wrq.82.2023.10.03.07.41.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 07:40:35 -0700 (PDT)
-Date: Tue, 3 Oct 2023 10:40:28 -0400
+ Tue, 03 Oct 2023 07:41:21 -0700 (PDT)
+Date: Tue, 3 Oct 2023 10:41:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Laszlo Ersek <lersek@redhat.com>,
- Eugenio Perez Martin <eperezma@redhat.com>,
+To: Laszlo Ersek <lersek@redhat.com>
+Cc: qemu-devel@nongnu.org, Eugenio Perez Martin <eperezma@redhat.com>,
  German Maglione <gmaglione@redhat.com>,
  Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
+ Stefano Garzarella <sgarzare@redhat.com>
 Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
  synchronously
-Message-ID: <20231003103143-mutt-send-email-mst@kernel.org>
+Message-ID: <20231003104045-mutt-send-email-mst@kernel.org>
 References: <20230827182937.146450-1-lersek@redhat.com>
  <20230827182937.146450-8-lersek@redhat.com>
- <CAJSP0QVWSQ8F-A1ryGLtd1jb8Go1Pr_N7AcLb5W5kSFv8T8jTA@mail.gmail.com>
- <6d766ab4-b6b8-b64b-1f9d-60c558b56509@redhat.com>
- <CAJSP0QV9RO7bkkcVFibnTv4tixmO3wKohSY+ia1D-UZiRzh5QA@mail.gmail.com>
- <20231002015259-mutt-send-email-mst@kernel.org>
- <CAJSP0QXgWsULW_61-MScvuWAiE3c4brYRyFc6q_==Sj6aLE8SQ@mail.gmail.com>
- <CAJSP0QU3jzFGnJ35Zbabf70Tbf+rPA_fvrA_eNxZ8TxOXQxZXA@mail.gmail.com>
- <20231002183627-mutt-send-email-mst@kernel.org>
- <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230827182937.146450-8-lersek@redhat.com>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,103 +101,155 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 03, 2023 at 09:08:15AM -0400, Stefan Hajnoczi wrote:
-> On Tue, 3 Oct 2023 at 08:27, Michael S. Tsirkin <mst@redhat.com> wrote:
+On Sun, Aug 27, 2023 at 08:29:37PM +0200, Laszlo Ersek wrote:
+> (1) The virtio-1.0 specification
+> <http://docs.oasis-open.org/virtio/virtio/v1.0/virtio-v1.0.html> writes:
+> 
+> > 3     General Initialization And Device Operation
+> > 3.1   Device Initialization
+> > 3.1.1 Driver Requirements: Device Initialization
 > >
-> > On Mon, Oct 02, 2023 at 05:13:26PM -0400, Stefan Hajnoczi wrote:
-> > > One more question:
-> > >
-> > > Why is the disabled state not needed by regular (non-vhost) virtio-net devices?
+> > [...]
 > >
-> > Tap does the same - it purges queued packets:
+> > 7. Perform device-specific setup, including discovery of virtqueues for
+> >    the device, optional per-bus setup, reading and possibly writing the
+> >    device’s virtio configuration space, and population of virtqueues.
 > >
-> > int tap_disable(NetClientState *nc)
-> > {
-> >     TAPState *s = DO_UPCAST(TAPState, nc, nc);
-> >     int ret;
+> > 8. Set the DRIVER_OK status bit. At this point the device is “live”.
+> 
+> and
+> 
+> > 4         Virtio Transport Options
+> > 4.1       Virtio Over PCI Bus
+> > 4.1.4     Virtio Structure PCI Capabilities
+> > 4.1.4.3   Common configuration structure layout
+> > 4.1.4.3.2 Driver Requirements: Common configuration structure layout
 > >
-> >     if (s->enabled == 0) {
-> >         return 0;
-> >     } else {
-> >         ret = tap_fd_disable(s->fd);
-> >         if (ret == 0) {
-> >             qemu_purge_queued_packets(nc);
-> >             s->enabled = false;
-> >             tap_update_fd_handler(s);
-> >         }
-> >         return ret;
-> >     }
-> > }
-> 
-> tap_disable() is not equivalent to the vhost-user "started but
-> disabled" ring state. tap_disable() is a synchronous one-time action,
-> while "started but disabled" is a continuous state.
-
-well, yes. but practically guests do not queue too many buffers
-after disabling a queue. I don't know if they reliably don't
-or it's racy and we didn't notice it yet - I think it
-was mostly dpdk that had this and that's usually
-used with vhost-user.
-
-> The "started but disabled" ring state isn't needed to achieve this.
-> The back-end can just drop tx buffers upon receiving
-> VHOST_USER_SET_VRING_ENABLE .num=0.
-
-yes, maybe that would have been a better way to do this.
-
-
-> The history of the spec is curious. VHOST_USER_SET_VRING_ENABLE was
-> introduced before the the "started but disabled" state was defined,
-> and it explicitly mentions tap attach/detach:
-> 
-> commit 7263a0ad7899994b719ebed736a1119cc2e08110
-> Author: Changchun Ouyang <changchun.ouyang@intel.com>
-> Date:   Wed Sep 23 12:20:01 2015 +0800
-> 
->     vhost-user: add a new message to disable/enable a specific virt queue.
-> 
->     Add a new message, VHOST_USER_SET_VRING_ENABLE, to enable or disable
->     a specific virt queue, which is similar to attach/detach queue for
->     tap device.
-> 
-> and then later:
-> 
-> commit c61f09ed855b5009f816242ce281fd01586d4646
-> Author: Michael S. Tsirkin <mst@redhat.com>
-> Date:   Mon Nov 23 12:48:52 2015 +0200
-> 
->     vhost-user: clarify start and enable
-> 
+> > [...]
 > >
-> > what about non tap backends? I suspect they just aren't
-> > used widely with multiqueue so no one noticed.
+> > The driver MUST configure the other virtqueue fields before enabling the
+> > virtqueue with queue_enable.
+> >
+> > [...]
 > 
-> I still don't understand why "started but disabled" is needed instead
-> of just two ring states: enabled and disabled.
-
-With dropping packets when ring is disabled? Maybe that would
-have been enough. I also failed to realize it's specific to
-net, seemed generic to me :(
-
-> It seems like the cleanest path going forward is to keep the "ignore
-> rx, discard tx" semantics for virtio-net devices but to clarify in the
-> spec that other device types do not process the ring:
+> These together mean that the following sub-sequence of steps is valid for
+> a virtio-1.0 guest driver:
 > 
-> "
-> * started but disabled: the back-end must not process the ring. For legacy
->   reasons there is an exception for the networking device, where the
->   back-end must process and discard any TX packets and not process
->   other rings.
-> "
+> (1.1) set "queue_enable" for the needed queues as the final part of device
+> initialization step (7),
 > 
-> What do you think?
+> (1.2) set DRIVER_OK in step (8),
 > 
-> Stefan
+> (1.3) immediately start sending virtio requests to the device.
+> 
+> (2) When vhost-user is enabled, and the VHOST_USER_F_PROTOCOL_FEATURES
+> special virtio feature is negotiated, then virtio rings start in disabled
+> state, according to
+> <https://qemu-project.gitlab.io/qemu/interop/vhost-user.html#ring-states>.
+> In this case, explicit VHOST_USER_SET_VRING_ENABLE messages are needed for
+> enabling vrings.
+> 
+> Therefore setting "queue_enable" from the guest (1.1) is a *control plane*
+> operation, which travels from the guest through QEMU to the vhost-user
+> backend, using a unix domain socket.
+> 
+> Whereas sending a virtio request (1.3) is a *data plane* operation, which
+> evades QEMU -- it travels from guest to the vhost-user backend via
+> eventfd.
+> 
+> This means that steps (1.1) and (1.3) travel through different channels,
+> and their relative order can be reversed, as perceived by the vhost-user
+> backend.
+> 
+> That's exactly what happens when OVMF's virtiofs driver (VirtioFsDxe) runs
+> against the Rust-language virtiofsd version 1.7.2. (Which uses version
+> 0.10.1 of the vhost-user-backend crate, and version 0.8.1 of the vhost
+> crate.)
+> 
+> Namely, when VirtioFsDxe binds a virtiofs device, it goes through the
+> device initialization steps (i.e., control plane operations), and
+> immediately sends a FUSE_INIT request too (i.e., performs a data plane
+> operation). In the Rust-language virtiofsd, this creates a race between
+> two components that run *concurrently*, i.e., in different threads or
+> processes:
+> 
+> - Control plane, handling vhost-user protocol messages:
+> 
+>   The "VhostUserSlaveReqHandlerMut::set_vring_enable" method
+>   [crates/vhost-user-backend/src/handler.rs] handles
+>   VHOST_USER_SET_VRING_ENABLE messages, and updates each vring's "enabled"
+>   flag according to the message processed.
+> 
+> - Data plane, handling virtio / FUSE requests:
+> 
+>   The "VringEpollHandler::handle_event" method
+>   [crates/vhost-user-backend/src/event_loop.rs] handles the incoming
+>   virtio / FUSE request, consuming the virtio kick at the same time. If
+>   the vring's "enabled" flag is set, the virtio / FUSE request is
+>   processed genuinely. If the vring's "enabled" flag is clear, then the
+>   virtio / FUSE request is discarded.
+> 
+> Note that OVMF enables the queue *first*, and sends FUSE_INIT *second*.
+> However, if the data plane processor in virtiofsd wins the race, then it
+> sees the FUSE_INIT *before* the control plane processor took notice of
+> VHOST_USER_SET_VRING_ENABLE and green-lit the queue for the data plane
+> processor. Therefore the latter drops FUSE_INIT on the floor, and goes
+> back to waiting for further virtio / FUSE requests with epoll_wait.
+> Meanwhile OVMF is stuck waiting for the FUSET_INIT response -- a deadlock.
+> 
+> The deadlock is not deterministic. OVMF hangs infrequently during first
+> boot. However, OVMF hangs almost certainly during reboots from the UEFI
+> shell.
+> 
+> The race can be "reliably masked" by inserting a very small delay -- a
+> single debug message -- at the top of "VringEpollHandler::handle_event",
+> i.e., just before the data plane processor checks the "enabled" field of
+> the vring. That delay suffices for the control plane processor to act upon
+> VHOST_USER_SET_VRING_ENABLE.
+> 
+> We can deterministically prevent the race in QEMU, by blocking OVMF inside
+> step (1.1) -- i.e., in the write to the "queue_enable" register -- until
+> VHOST_USER_SET_VRING_ENABLE actually *completes*. That way OVMF's VCPU
+> cannot advance to the FUSE_INIT submission before virtiofsd's control
+> plane processor takes notice of the queue being enabled.
+> 
+> Wait for VHOST_USER_SET_VRING_ENABLE completion by:
+> 
+> - setting the NEED_REPLY flag on VHOST_USER_SET_VRING_ENABLE, and waiting
+>   for the reply, if the VHOST_USER_PROTOCOL_F_REPLY_ACK vhost-user feature
+>   has been negotiated, or
+> 
+> - performing a separate VHOST_USER_GET_FEATURES *exchange*, which requires
+>   a backend response regardless of VHOST_USER_PROTOCOL_F_REPLY_ACK.
+> 
+> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
+> Cc: Eugenio Perez Martin <eperezma@redhat.com>
+> Cc: German Maglione <gmaglione@redhat.com>
+> Cc: Liu Jiang <gerry@linux.alibaba.com>
+> Cc: Sergio Lopez Pascual <slp@redhat.com>
+> Cc: Stefano Garzarella <sgarzare@redhat.com>
+> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
 
-Okay... I hope we are not missing any devices which need virtio net
-semantics. Care checking them all?
 
--- 
-MST
+So you want me to hold on to this patch 7/7 for now?
+And maybe merge rest of the patchset?
+
+> ---
+>  hw/virtio/vhost-user.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
+> index beb4b832245e..01e0ca90c538 100644
+> --- a/hw/virtio/vhost-user.c
+> +++ b/hw/virtio/vhost-user.c
+> @@ -1235,7 +1235,7 @@ static int vhost_user_set_vring_enable(struct vhost_dev *dev, int enable)
+>              .num   = enable,
+>          };
+>  
+> -        ret = vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state, false);
+> +        ret = vhost_set_vring(dev, VHOST_USER_SET_VRING_ENABLE, &state, true);
+>          if (ret < 0) {
+>              /*
+>               * Restoring the previous state is likely infeasible, as well as
 
 
