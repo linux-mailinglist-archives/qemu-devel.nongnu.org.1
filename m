@@ -2,84 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D62CF7B6943
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:44:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6224E7B694E
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:45:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnekz-0001jR-7d; Tue, 03 Oct 2023 08:44:09 -0400
+	id 1qnem8-0002lS-5L; Tue, 03 Oct 2023 08:45:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnekx-0001iZ-8W
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:44:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qnem2-0002kp-5z
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:45:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnekv-0002mS-Ls
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:44:07 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qnelw-0003AE-AR
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:45:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696337044;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=bp6irl+EWB1q4/By8O9wSojjNa0G3bO5LormJk6g/ms=;
- b=YZVNoHBThwIA1y6+0F1nNACxJpOoQYortDmybU/G1zvHInYsJB8PCGMgAoOzup+45qNI9J
- fLmc9iyaoh0NEjTuJX/ZPp5aqd7nl3RNkA2OSa+b0Wiz38ygTk6U1vWXgLdn4xOirGuPhe
- p/hSRsMr7SWFY5eMHPKd6WumG4ZKJL0=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1696337107;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=1FxlBirWaqtOQc57OFySFosviOkv/DM29WIki3vxtWo=;
+ b=EHN8guGgXKgj2Ja4LT9Fq6CZytFxuiZf0SjEInkNqWu1qVUWAeXcXmKb6ts4yM3xtG3NdE
+ J1QN8f3vmvi9pSkkchk0WY10b5V0RH8ZRS7gUZxwlYhi8X8kBtSq0ZfxsmK6bAs8bjlAwf
+ hI+B/JX+aRLZG7uPCAEbwA9LNqpVqa8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-146-dUozBUrqP9WmP707eKj3Lg-1; Tue, 03 Oct 2023 08:44:03 -0400
-X-MC-Unique: dUozBUrqP9WmP707eKj3Lg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4063dd6729bso5969545e9.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:44:02 -0700 (PDT)
+ us-mta-607-yOzBWANpOumVx-D-sBlFlA-1; Tue, 03 Oct 2023 08:44:56 -0400
+X-MC-Unique: yOzBWANpOumVx-D-sBlFlA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-40554735995so6182815e9.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:44:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696337042; x=1696941842;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bp6irl+EWB1q4/By8O9wSojjNa0G3bO5LormJk6g/ms=;
- b=dXbyB8Gi5ePys9q8/TAD3nuOUiedRzwtZkHJxKQwrqTMOI4S6miD7z1lYvXHQ+fLFf
- ijYAIXlAKUXmx8jK4IUKwsDHAbuXGKV2imj1hLBaFRPsMBabhfsXK8f+a3Xlxhtwn4Sc
- dHyV3tw14i0VNudcLTGCSj7iq3HQhFAEfKZzz38eAf4TVR8DViCcsOCeeZI57UUjON74
- PooLpBFqxkBFoZvAfgxGpWtTChn5cfCulsR70fqSpdk7Ghi0TLXQGxzBTZtDLyuwUnbp
- wT55+Qg0OULmTfi1UgBP6iqKyw936yTxvKOswVlGLH8BdWWtp37Hh1IxJGBd4mKqd84T
- Hu+A==
-X-Gm-Message-State: AOJu0YzguFbGjA16uXLftMnYnSThD0u+uJyTIrC2Ae1b/by0G/5OZ1vN
- lu5HElHxk7NfnJxvBZ6iXNzCgF+N314bsfwtGe95V8gY9cD8duIlJ99YjfwXdP9+dVvIBVu/xMl
- UPh1nUIWmA2eQ5/k=
-X-Received: by 2002:a05:600c:22d1:b0:405:3251:47a1 with SMTP id
- 17-20020a05600c22d100b00405325147a1mr12970335wmg.40.1696337041898; 
- Tue, 03 Oct 2023 05:44:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9caOT9rgoPXWuz1Z5+je8xpiiK62hqlA29Bgy4tRw58eKIhZYWSiSSqT5x1xelbF63WsYzg==
-X-Received: by 2002:a05:600c:22d1:b0:405:3251:47a1 with SMTP id
- 17-20020a05600c22d100b00405325147a1mr12970314wmg.40.1696337041548; 
- Tue, 03 Oct 2023 05:44:01 -0700 (PDT)
-Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
- l22-20020a7bc456000000b004058e6379d8sm9416630wmi.23.2023.10.03.05.44.00
+ d=1e100.net; s=20230601; t=1696337095; x=1696941895;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=1FxlBirWaqtOQc57OFySFosviOkv/DM29WIki3vxtWo=;
+ b=msr/x7CGb6AdSac916a6hhiplzMDcRDiglwC5DjEOpXUFglyIeFpwjN6lrIX+7hzOv
+ WiaFYMujnP120FZGEQCvckF5HTyafEfknXjJDwSdPGpP3mxNIlx7DujF2frdV2bYu4hF
+ 3kpX4D6hvcl/WDrc75CNgUq+Lrq59+ftTHbsifONJb+/8XeTLTFVjvRL7242TLmkBOVE
+ qB4plgD4V2qHQxUtiZ3IrJgldQvcU06FguOpfMs/4uweYfEdLChUsdYkkYFCqusHBLWt
+ udGdFpZow0vJ/Ga2/rcwd53YS/0iraXaD3KFrL5oe4HnculsfURZpaPAXQ/PRw+qcoGK
+ 317Q==
+X-Gm-Message-State: AOJu0Yyp+0rvNjQSk47joTCQZgoWpfmAxC/LNNyyq1xtLrEAJYkhZuew
+ TXcb1vWqEL1DPC6w5TMJH4bfZG8aHrbfwekia8JMYsXwt7ppTelZ67O2gtVIWxcLWVYvFEWgLyK
+ GwD7+cRUm3kw94Yk=
+X-Received: by 2002:a05:600c:3543:b0:406:52f1:7e6f with SMTP id
+ i3-20020a05600c354300b0040652f17e6fmr12412020wmq.12.1696337094836; 
+ Tue, 03 Oct 2023 05:44:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFWVqKeHxbcRs2bIW1n6zbgwHnJGXCPSkhxQyooCO/OagDyLJwU9U2rb7dDaRSiqRQNwvk53g==
+X-Received: by 2002:a05:600c:3543:b0:406:52f1:7e6f with SMTP id
+ i3-20020a05600c354300b0040652f17e6fmr12412005wmq.12.1696337094502; 
+ Tue, 03 Oct 2023 05:44:54 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ z8-20020a7bc7c8000000b004053a6b8c41sm1230129wmk.12.2023.10.03.05.44.53
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 05:44:00 -0700 (PDT)
-Date: Tue, 3 Oct 2023 08:43:58 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eric Auger <eric.auger@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, jasowang@redhat.com,
- lvivier@redhat.com
-Subject: Re: [PATCH] vhost: Add a defensive check in vhost_commit against
- wrong deallocation
-Message-ID: <20231003084047-mutt-send-email-mst@kernel.org>
-References: <20230913074657.523530-1-eric.auger@redhat.com>
+ Tue, 03 Oct 2023 05:44:54 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Tejus GK <tejus.gk@nutanix.com>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com
+Subject: Re: [PATCH v5 2/2] migration: Update error description outside
+ migration.c
+In-Reply-To: <20231003065538.244752-3-tejus.gk@nutanix.com> (Tejus GK's
+ message of "Tue, 3 Oct 2023 06:55:38 +0000")
+References: <20231003065538.244752-1-tejus.gk@nutanix.com>
+ <20231003065538.244752-3-tejus.gk@nutanix.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 03 Oct 2023 14:44:53 +0200
+Message-ID: <874jj77u4a.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230913074657.523530-1-eric.auger@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,58 +97,139 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Sep 13, 2023 at 09:46:57AM +0200, Eric Auger wrote:
-> In vhost_commit(), it may happen that dev->mem_sections and
-> dev->tmp_sections are equal,
+Tejus GK <tejus.gk@nutanix.com> wrote:
+> A few code paths exist in the source code,where a migration is
+> marked as failed via MIGRATION_STATUS_FAILED, but the failure happens
+> outside	of migration.c
+>
+> In such	cases, an error_report() call is made, however the current
+> MigrationState is never	updated	with the error description, and	hence
+> clients	like libvirt never know	the actual reason for the failure.
+>
+> This patch covers such cases outside of	migration.c and	updates	the
+> error description at the appropriate places.
+>
+> Acked-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Tejus GK <tejus.gk@nutanix.com>
 
-Could you please explain a bit more how this can happen?
-I don't see how.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-> in which case, unconditionally
-> freeing old_sections at the end of the function will also free
-> dev->mem_sections used on subsequent call leading to a segmentation
-> fault.
-> 
-> Check this situation before deallocating memory.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Fixes: c44317efecb2 ("vhost: Build temporary section list and deref
-> after commit")
-> CC: QEMU Stable <qemu-stable@nongnu.org>
-> 
-> ---
-> 
-> This SIGSEV condition can be reproduced with
-> https://lore.kernel.org/all/20230904080451.424731-1-eric.auger@redhat.com/#r
-> This is most probably happening in a situation where the memory API is
-> used in a wrong manner but well.
+Queued.
 
-sounds like misusing the memory API can lead to all kind of mischief.
+But I wonder.
 
-> ---
->  hw/virtio/vhost.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-> index e2f6ffb446..c02c599ef0 100644
-> --- a/hw/virtio/vhost.c
-> +++ b/hw/virtio/vhost.c
-> @@ -545,6 +545,11 @@ static void vhost_commit(MemoryListener *listener)
->      dev->mem_sections = dev->tmp_sections;
->      dev->n_mem_sections = dev->n_tmp_sections;
+> index 1f65294bf4..60eec7c31f 100644
+> --- a/migration/savevm.c
+> +++ b/migration/savevm.c
+> @@ -979,6 +979,8 @@ static void save_section_footer(QEMUFile *f, SaveStateEntry *se)
+>  static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmdesc)
+>  {
+>      int ret;
+> +    Error *local_err = NULL;
+> +    MigrationState *s = migrate_get_current();
 >  
-> +    if (old_sections == dev->mem_sections) {
-> +        assert(n_old_sections ==  dev->n_mem_sections);
-> +        return;
-> +    }
-> +
->      if (dev->n_mem_sections != n_old_sections) {
->          changed = true;
+>      if ((!se->ops || !se->ops->save_state) && !se->vmsd) {
+>          return 0;
+> @@ -1002,6 +1004,8 @@ static int vmstate_save(QEMUFile *f, SaveStateEntry *se, JSONWriter *vmdesc)
 >      } else {
-> -- 
-> 2.41.0
+>          ret = vmstate_save_state_with_err(f, se->vmsd, se->opaque, vmdesc, &local_err);
+>          if (ret) {
+> +            migrate_set_error(s, local_err);
+> +            error_report_err(local_err);
+
+We are setting the error and reporting it.
+
+>              return ret;
+>          }
+>      }
+> @@ -1068,10 +1072,14 @@ void qemu_savevm_send_open_return_path(QEMUFile *f)
+>  int qemu_savevm_send_packaged(QEMUFile *f, const uint8_t *buf, size_t len)
+>  {
+>      uint32_t tmp;
+> +    MigrationState *ms = migrate_get_current();
+> +    Error *local_err = NULL;
+>  
+>      if (len > MAX_VM_CMD_PACKAGED_SIZE) {
+> -        error_report("%s: Unreasonably large packaged state: %zu",
+> +        error_setg(&local_err, "%s: Unreasonably large packaged state: %zu",
+>                       __func__, len);
+> +        migrate_set_error(ms, local_err);
+> +        error_report_err(local_err);
+
+Again we set the error and we report it.
+
+>          return -1;
+>      }
+>  
+> @@ -1499,8 +1507,11 @@ int qemu_savevm_state_complete_precopy_non_iterable(QEMUFile *f,
+>           * bdrv_activate_all() on the other end won't fail. */
+>          ret = bdrv_inactivate_all();
+>          if (ret) {
+> -            error_report("%s: bdrv_inactivate_all() failed (%d)",
+> -                         __func__, ret);
+> +            Error *local_err = NULL;
+> +            error_setg(&local_err, "%s: bdrv_inactivate_all() failed (%d)",
+> +                       __func__, ret);
+> +            migrate_set_error(ms, local_err);
+> +            error_report_err(local_err);
+
+Again.
+
+>              qemu_file_set_error(f, ret);
+
+And we still have qemu_file_set_error() here, ouch.
+
+>              return ret;
+>          }
+> diff --git a/migration/vmstate.c b/migration/vmstate.c
+> index dd9c76dbeb..4cde30bf2d 100644
+> --- a/migration/vmstate.c
+> +++ b/migration/vmstate.c
+> @@ -14,6 +14,7 @@
+>  #include "migration.h"
+>  #include "migration/vmstate.h"
+>  #include "savevm.h"
+> +#include "qapi/error.h"
+>  #include "qapi/qmp/json-writer.h"
+>  #include "qemu-file.h"
+>  #include "qemu/bitops.h"
+> @@ -336,7 +337,7 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+>          ret = vmsd->pre_save(opaque);
+>          trace_vmstate_save_state_pre_save_res(vmsd->name, ret);
+>          if (ret) {
+> -            error_report("pre-save failed: %s", vmsd->name);
+> +            error_setg(errp, "pre-save failed: %s", vmsd->name);
+
+Here we only set the error
+
+>              return ret;
+>          }
+>      }
+> @@ -389,8 +390,8 @@ int vmstate_save_state_v(QEMUFile *f, const VMStateDescription *vmsd,
+>                                       vmdesc_loop);
+>                  }
+>                  if (ret) {
+> -                    error_report("Save of field %s/%s failed",
+> -                                 vmsd->name, field->name);
+> +                    error_setg(errp, "Save of field %s/%s failed",
+> +                                vmsd->name, field->name);
+
+Same here.
+
+>                      if (vmsd->post_save) {
+>                          vmsd->post_save(opaque);
+>                      }
+
+
+So, I am wondering if it could be better to just report the error in a
+single place for migration, and set it whenever we need it?
+
+That is independent of this patch, though.
+
+Later, Juan.
 
 
