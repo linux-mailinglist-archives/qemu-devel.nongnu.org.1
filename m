@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9237B70F4
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F349D7B70F9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:33:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnkAs-00084T-Kx; Tue, 03 Oct 2023 14:31:14 -0400
+	id 1qnkAs-00084J-5q; Tue, 03 Oct 2023 14:31:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAn-00081C-Qf
+ id 1qnkAp-00082b-4b
  for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:11 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+Received: from mail-pg1-x535.google.com ([2607:f8b0:4864:20::535])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAj-0001eZ-RZ
+ id 1qnkAj-0001ek-PX
  for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:09 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1c60a514f3aso9876375ad.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:04 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id
+ 41be03b00d2f7-5859b06509cso864164a12.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696357863; x=1696962663; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696357864; x=1696962664; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=GGIr9qTLkG6qDPefA3k2dSggXrteDRo4H56lowl7XH4=;
- b=cAf6gcKSGWuWIKayNzbLU6u0lc4dEsDQajDn0v6rIl0Q6grdpU+HJxMWAzB1fBeJBH
- kV04nWoyxyxUMixScDkEVUfi2D08x/6Of8INTnWbxEoK+FHnN9mIXxHyANFXkoBye/tq
- 0TKkq3xZ16IpzK9dj+21uERk9vLuqddIHI6npMP00Qat8oU4jhxc6bp38szqhHPiSYQz
- UuJuVOK3gZTg7aojNiyAjd66VpOsUujXv+VkN5xSQRCrxFSZIykKUWoQdIRt4Hbofrhm
- sxREoj2gvSEMmazp2qZyWXm0MPl9llsg2JEXumQyawfbTdPfa9CpFqtX0ewkp0RziLGq
- EiKA==
+ bh=y0G1CiW3vTsjcXjVH+akh2U1DVquXavshsyj/TJNLXs=;
+ b=qQMjje2hv4SfrrNt5ttn5/R8/LKV/5MTWOP2uAf3C0EBdPP+Ujy3vP6jCmOvoR5m5L
+ 2lbsG2fN/c3h1lN22YLXeMIVyZcDe4es7GkMr2FrcR2QhwlUEf2DZ8iq57J7snRFYCv1
+ XTMNaOMg1Ld9LSurl8ty2s2oZumVnAqwnnpu+fIcJwl1iT442AD/htdqHZyied8o7uSj
+ 4jkR+MS6DlM3THABgvTvce037qvC5FJyCVA4/MQgq98ByBypd7AemM9P9nq+S/0KQnhx
+ 9mXn3h28UhR1tVdvmvdf0aQTph+HWg2ranGwizxYCsmPVc806RKlss9TkFV5XJ2Hgk1c
+ soAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696357863; x=1696962663;
+ d=1e100.net; s=20230601; t=1696357864; x=1696962664;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=GGIr9qTLkG6qDPefA3k2dSggXrteDRo4H56lowl7XH4=;
- b=c3rWhZh5BzW4xKxHN8NecUNrcgPmcDiEPErpIa5z4vk39r1szou7QARRccpHpAGtVy
- CI75Vc8C2NlcNrVzAHb3yQ4jfmoUq8yG/L30Sg5pBIsFrnNwUrxC98ZYhJ3yYSpCdL3C
- qp8ilgS76VQS7xljWZVYNq/79HYrgFS/qI6/+GYpHYyXN0nu1rwxIv6LdR2KLMRjm3qk
- dBebWzTlKadMfLcDX2pi13+YQ+k2suvC8hgxjgNW1gcXaY3s9l+BNtjqS3geGF7FLb0X
- 6GWHrQklWd70yAD59WHQ5lS/TlzBi06Zne5mFIGmsuqFItqSxlATw/Zlry+r5rbYyQm6
- z5rg==
-X-Gm-Message-State: AOJu0Yz8X5DAz8wXQY1j4rC9atcA+6+wDqNMjdo02jsxHGBNx+/p8Z5j
- 8IehM5D0wagSbvdeHNMnykMH39e5B1swokPhtP4=
-X-Google-Smtp-Source: AGHT+IGhYn9ct+jzgbqZpM3OacaOlbHMVu6tjA9GCsxV2rvST4tfnWDIl+S+mDuloU9TKG2da4BO2Q==
-X-Received: by 2002:a17:902:dacd:b0:1bb:2020:be0d with SMTP id
- q13-20020a170902dacd00b001bb2020be0dmr506455plx.14.1696357863437; 
- Tue, 03 Oct 2023 11:31:03 -0700 (PDT)
+ bh=y0G1CiW3vTsjcXjVH+akh2U1DVquXavshsyj/TJNLXs=;
+ b=t0ufQSZPIF17V/iAycfC2+A0CK48xr4qkZoYhjxQyMC/eFrjgz++Q7TlacrperrNMi
+ Rgu+WtmuWf7iRG72+hshw7PeyWk/rpmBLa+wE0f3X7FQnU0KEc3YzBOnBjSKGjtsyDnA
+ BbvJHSeixsVXMRoIwTKZRu/fwgKGTt1nyE2wDAXG3jwBQSAhl/axdMG32L162ULf6tlA
+ 435TwdDtYZyhYyRW7nnc5vUVYeY8HBBt4RxcvwAV70uvGJW/8uPLGoEdn/G/n1GPNacX
+ epNRKNzeCp+N56iE2a70E/0lwc1uHMQYW0YrG7v+1H2cJiixzAOs4b2asQwDLRiSqHAo
+ CaeA==
+X-Gm-Message-State: AOJu0YxLm75eH7s1LW/S+V21ElmOihLQiQQpJvUCC0cFhR/c3kau9ogB
+ sEJjg9rKN36SNNi/lBareX/ARH+4fmmox5Cl1tQ=
+X-Google-Smtp-Source: AGHT+IFqS4xVLboHxHVfllPSvW5Pwr2+JBk6GbNowku3wkaKWLJVGa1hQZpQyiLwmOQ9aTSjHjFGSw==
+X-Received: by 2002:a17:902:d702:b0:1c5:f4c7:b4e4 with SMTP id
+ w2-20020a170902d70200b001c5f4c7b4e4mr337594ply.39.1696357864406; 
+ Tue, 03 Oct 2023 11:31:04 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.02
+ g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.03
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 11:31:02 -0700 (PDT)
+ Tue, 03 Oct 2023 11:31:04 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com
-Subject: [PATCH v17 04/16] tcg: Record nb_spills in TCGContext
-Date: Tue,  3 Oct 2023 11:30:46 -0700
-Message-Id: <20231003183058.1639121-5-richard.henderson@linaro.org>
+Cc: fei2.wu@intel.com,
+	"Vanderson M . do Rosario" <vandersonmr2@gmail.com>
+Subject: [PATCH v17 05/16] accel/tcg: Add TBStatistics structure
+Date: Tue,  3 Oct 2023 11:30:47 -0700
+Message-Id: <20231003183058.1639121-6-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003183058.1639121-1-richard.henderson@linaro.org>
 References: <20231003183058.1639121-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::535;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x535.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,185 +91,366 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Record the number of times a temporary is forced into memory
-and the store would not have been required if there an infinite
-number of call-saved cpu registers available.  This excludes
-stores that are required by semantics to return computed values
-to their home slot in ENV, i.e. NEED_SYNC_ARG.
+Add code to allocate, reset, and free the structures along
+with their corresponding TranslationBlocks.  We do not yet
+collect, display, or enable the statistics.
 
-To be copied into TBStatistics when desired.
-
+Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+Signed-off-by: Fei Wu <fei2.wu@intel.com>
+[rth: Significantly reorganized.]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/tcg/tcg.h |  1 +
- tcg/tcg.c         | 36 +++++++++++++++++++++++-------------
- 2 files changed, 24 insertions(+), 13 deletions(-)
+ accel/tcg/tb-context.h           |   2 +-
+ include/exec/translation-block.h |   3 +
+ include/qemu/typedefs.h          |   1 +
+ include/tcg/tb-stats.h           | 132 +++++++++++++++++++++++++++++++
+ accel/tcg/tb-maint.c             |   3 +-
+ accel/tcg/tb-stats.c             |  85 ++++++++++++++++++++
+ accel/tcg/translate-all.c        |  19 +++++
+ accel/tcg/meson.build            |   1 +
+ 8 files changed, 244 insertions(+), 2 deletions(-)
+ create mode 100644 include/tcg/tb-stats.h
+ create mode 100644 accel/tcg/tb-stats.c
 
-diff --git a/include/tcg/tcg.h b/include/tcg/tcg.h
-index d60349878f..c2b1a2e187 100644
---- a/include/tcg/tcg.h
-+++ b/include/tcg/tcg.h
-@@ -567,6 +567,7 @@ struct TCGContext {
-     /* Used by TBStatistics */
-     int orig_nb_ops;
-     int nb_deleted_ops;
-+    int nb_spills;
+diff --git a/accel/tcg/tb-context.h b/accel/tcg/tb-context.h
+index cac62d9749..4b1abe392b 100644
+--- a/accel/tcg/tb-context.h
++++ b/accel/tcg/tb-context.h
+@@ -29,8 +29,8 @@
+ typedef struct TBContext TBContext;
  
-     /* Exit to translator on overflow. */
-     sigjmp_buf jmp_trans;
-diff --git a/tcg/tcg.c b/tcg/tcg.c
-index 60be2f429c..471e5eaad9 100644
---- a/tcg/tcg.c
-+++ b/tcg/tcg.c
-@@ -1495,6 +1495,7 @@ void tcg_func_start(TCGContext *s)
-     s->nb_ops = 0;
-     s->nb_labels = 0;
-     s->nb_deleted_ops = 0;
-+    s->nb_spills = 0;
-     s->current_frame_offset = s->frame_start;
+ struct TBContext {
+-
+     struct qht htable;
++    struct qht stats;
  
- #ifdef CONFIG_DEBUG_TCG
-@@ -4118,8 +4119,11 @@ static inline void temp_dead(TCGContext *s, TCGTemp *ts)
-    is non-zero, subsequently release the temporary; if it is positive, the
-    temp is dead; if it is negative, the temp is free.  */
- static void temp_sync(TCGContext *s, TCGTemp *ts, TCGRegSet allocated_regs,
--                      TCGRegSet preferred_regs, int free_or_dead)
-+                      TCGRegSet preferred_regs, int free_or_dead,
-+                      bool account_spill)
- {
-+    bool did_spill = false;
+     /* statistics */
+     unsigned tb_flush_count;
+diff --git a/include/exec/translation-block.h b/include/exec/translation-block.h
+index b785751774..4206a72600 100644
+--- a/include/exec/translation-block.h
++++ b/include/exec/translation-block.h
+@@ -141,6 +141,9 @@ struct TranslationBlock {
+     uintptr_t jmp_list_head;
+     uintptr_t jmp_list_next[2];
+     uintptr_t jmp_dest[2];
 +
-     if (!temp_readonly(ts) && !ts->mem_coherent) {
-         if (!ts->mem_allocated) {
-             temp_allocate_frame(s, ts);
-@@ -4132,6 +4136,7 @@ static void temp_sync(TCGContext *s, TCGTemp *ts, TCGRegSet allocated_regs,
-             if (free_or_dead
-                 && tcg_out_sti(s, ts->type, ts->val,
-                                ts->mem_base->reg, ts->mem_offset)) {
-+                did_spill = account_spill;
-                 break;
-             }
-             temp_load(s, ts, tcg_target_available_regs[ts->type],
-@@ -4139,6 +4144,7 @@ static void temp_sync(TCGContext *s, TCGTemp *ts, TCGRegSet allocated_regs,
-             /* fallthrough */
++    /* Pointer to a struct where statistics from the TB is stored */
++    TBStatistics *tb_stats;
+ };
  
-         case TEMP_VAL_REG:
-+            did_spill = account_spill;
-             tcg_out_st(s, ts->type, ts->reg,
-                        ts->mem_base->reg, ts->mem_offset);
-             break;
-@@ -4155,6 +4161,9 @@ static void temp_sync(TCGContext *s, TCGTemp *ts, TCGRegSet allocated_regs,
-     if (free_or_dead) {
-         temp_free_or_dead(s, ts, free_or_dead);
-     }
-+    if (did_spill) {
-+        s->nb_spills += 1;
+ /* The alignment given to TranslationBlock during allocation. */
+diff --git a/include/qemu/typedefs.h b/include/qemu/typedefs.h
+index 5abdbc3874..68011da95b 100644
+--- a/include/qemu/typedefs.h
++++ b/include/qemu/typedefs.h
+@@ -131,6 +131,7 @@ typedef struct Range Range;
+ typedef struct ReservedRegion ReservedRegion;
+ typedef struct SHPCDevice SHPCDevice;
+ typedef struct SSIBus SSIBus;
++typedef struct TBStatistics TBStatistics;
+ typedef struct TCGHelperInfo TCGHelperInfo;
+ typedef struct TranslationBlock TranslationBlock;
+ typedef struct VirtIODevice VirtIODevice;
+diff --git a/include/tcg/tb-stats.h b/include/tcg/tb-stats.h
+new file mode 100644
+index 0000000000..1ec0d13eff
+--- /dev/null
++++ b/include/tcg/tb-stats.h
+@@ -0,0 +1,132 @@
++/*
++ * QEMU System Emulator, Code Quality Monitor System
++ *
++ * Copyright (c) 2019 Vanderson M. do Rosario <vandersonmr2@gmail.com>
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a copy
++ * of this software and associated documentation files (the "Software"), to deal
++ * in the Software without restriction, including without limitation the rights
++ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
++ * copies of the Software, and to permit persons to whom the Software is
++ * furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included in
++ * all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
++ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
++ * THE SOFTWARE.
++ */
++
++#ifndef TCG_TB_STATS_H
++#define TCG_TB_STATS_H 1
++
++#include "qemu/thread.h"
++#include "exec/translation-block.h"
++
++enum {
++    TB_STATS_EXEC = 1u << 0,
++    TB_STATS_JIT  = 1u << 1,
++
++    TB_STATS_NONE = 0,
++    TB_STATS_ALL  = TB_STATS_EXEC | TB_STATS_JIT,
++};
++
++extern uint32_t tb_stats_enabled;
++
++/**
++ * tb_stats_init:
++ * @flags: TB_STATS_* flags to enable.
++ *
++ * Initialize translation block statistics, enabling @flags.
++ * If @flags is 0, disable all statistics.
++ */
++void tb_stats_init(uint32_t flags);
++
++/*
++ * This struct stores statistics such as execution count of the
++ * TranslationBlocks. Each sets of TBs for a given phys_pc/pc/flags
++ * has its own TBStatistics which will persist over tb_flush.
++ *
++ * We include additional counters to track number of translations as
++ * well as variants for compile flags.
++ */
++struct TBStatistics {
++    tb_page_addr_t phys_pc;
++    vaddr pc;
++    uint32_t flags;
++    uint64_t flags2;
++
++    /* Execution stats */
++    struct {
++        unsigned long normal;
++        unsigned long atomic;
++        /* filled only when dumping x% cover set */
++        double coverage;
++    } executions;
++
++    /* JIT Stats - protected by lock */
++    QemuMutex jit_stats_lock;
++
++    /* Sum of all operations for all translations */
++    struct {
++        unsigned long num_guest_inst;
++        unsigned long num_tcg_ops;
++        unsigned long num_tcg_ops_opt;
++        unsigned long spills;
++
++        unsigned long temps;
++        unsigned long deleted_ops;
++        unsigned long in_len;
++        unsigned long out_len;
++        unsigned long search_out_len;
++    } code;
++
++    struct {
++        unsigned long total;
++        unsigned long spanning;
++    } translations;
++
++    /*
++     * All persistent (cached) TranslationBlocks using
++     * this TBStats structure. Has to be reset on a tb_flush.
++     */
++    GPtrArray *tbs;
++};
++
++/**
++ * tb_stats_enabled:
++ * @tb: TranslationBlock
++ * @f: flag to check
++ *
++ * Return true if any stats are enabled for @tb and
++ * if @f is enabled globally.
++ */
++static inline bool tb_stats_enabled_for_tb(TranslationBlock *tb, uint32_t f)
++{
++    return unlikely(tb_stats_enabled & f) && tb->tb_stats;
++}
++
++/**
++ * tb_stats_reset_tbs: reset the linked array of TBs
++ *
++ * Reset the list of tbs for a given array. Should be called from
++ * safe work during tb_flush.
++ */
++void tb_stats_reset_tbs(void);
++
++/**
++ * tb_stats_lookup:
++ *
++ * If any tb_stats are enabled, return a new or existing struct
++ * for the tuple (phys_pc, pc, flags, flags2).  To be used when
++ * building a new TranslationBlock.
++ */
++TBStatistics *tb_stats_lookup(tb_page_addr_t phys_pc, vaddr pc,
++                              uint32_t flags, uint64_t flags2);
++
++#endif /* TCG_TB_STATS_H */
+diff --git a/accel/tcg/tb-maint.c b/accel/tcg/tb-maint.c
+index e678d20dc2..9025459fb1 100644
+--- a/accel/tcg/tb-maint.c
++++ b/accel/tcg/tb-maint.c
+@@ -27,6 +27,7 @@
+ #include "exec/translate-all.h"
+ #include "sysemu/tcg.h"
+ #include "tcg/tcg.h"
++#include "tcg/tb-stats.h"
+ #include "tb-hash.h"
+ #include "tb-context.h"
+ #include "internal-common.h"
+@@ -772,7 +773,7 @@ static void do_tb_flush(CPUState *cpu, run_on_cpu_data tb_flush_count)
+ 
+     qht_reset_size(&tb_ctx.htable, CODE_GEN_HTABLE_SIZE);
+     tb_remove_all();
+-
++    tb_stats_reset_tbs();
+     tcg_region_reset_all();
+     /* XXX: flush processor icache at this point if cache flush is expensive */
+     qatomic_inc(&tb_ctx.tb_flush_count);
+diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
+new file mode 100644
+index 0000000000..424c9a90ec
+--- /dev/null
++++ b/accel/tcg/tb-stats.c
+@@ -0,0 +1,85 @@
++/*
++ * QEMU System Emulator, Code Quality Monitor System
++ *
++ * Copyright (c) 2019 Vanderson M. do Rosario <vandersonmr2@gmail.com>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/xxhash.h"
++#include "tcg/tb-stats.h"
++#include "tb-context.h"
++
++uint32_t tb_stats_enabled;
++
++static bool tb_stats_cmp(const void *ap, const void *bp)
++{
++    const TBStatistics *a = ap;
++    const TBStatistics *b = bp;
++
++    return a->phys_pc == b->phys_pc &&
++           a->pc == b->pc &&
++           a->flags == b->flags &&
++           a->flags2 == b->flags2;
++
++}
++
++static void tb_stats_free(void *p, uint32_t hash, void *userp)
++{
++    TBStatistics *s = p;
++
++    qemu_mutex_destroy(&s->jit_stats_lock);
++    g_ptr_array_free(s->tbs, true);
++    g_free(s);
++}
++
++void tb_stats_init(uint32_t flags)
++{
++    tb_stats_enabled = flags;
++    if (flags) {
++        if (!tb_ctx.stats.map) {
++            qht_init(&tb_ctx.stats, tb_stats_cmp,
++                     CODE_GEN_HTABLE_SIZE, QHT_MODE_AUTO_RESIZE);
++        }
++    } else {
++        qht_iter(&tb_ctx.stats, tb_stats_free, NULL);
++        qht_destroy(&tb_ctx.stats);
 +    }
- }
++}
++
++static void tb_stats_reset(void *p, uint32_t hash, void *userp)
++{
++    TBStatistics *s = p;
++    g_ptr_array_set_size(s->tbs, 0);
++}
++
++void tb_stats_reset_tbs(void)
++{
++    if (tb_ctx.stats.map) {
++        qht_iter(&tb_ctx.stats, tb_stats_reset, NULL);
++    }
++}
++
++TBStatistics *tb_stats_lookup(tb_page_addr_t phys_pc, vaddr pc,
++                              uint32_t flags, uint64_t flags2)
++{
++    TBStatistics *s;
++    uint32_t h;
++    void *existing;
++
++    s = g_new0(TBStatistics, 1);
++    s->phys_pc = phys_pc;
++    s->pc = pc;
++    s->flags = flags;
++    s->flags2 = flags2;
++    s->tbs = g_ptr_array_new();
++    qemu_mutex_init(&s->jit_stats_lock);
++
++    h = qemu_xxhash7(phys_pc, pc, flags2, flags);
++    if (!qht_insert(&tb_ctx.stats, s, h, &existing)) {
++        tb_stats_free(s, 0, NULL);
++        return existing;
++    }
++    return s;
++}
+diff --git a/accel/tcg/translate-all.c b/accel/tcg/translate-all.c
+index e579b0891d..6e64ae2dbe 100644
+--- a/accel/tcg/translate-all.c
++++ b/accel/tcg/translate-all.c
+@@ -65,6 +65,7 @@
+ #include "internal-target.h"
+ #include "perf.h"
+ #include "tcg/insn-start-words.h"
++#include "tcg/tb-stats.h"
  
- /* free register 'reg' by spilling the corresponding temporary if necessary */
-@@ -4162,7 +4171,7 @@ static void tcg_reg_free(TCGContext *s, TCGReg reg, TCGRegSet allocated_regs)
- {
-     TCGTemp *ts = s->reg_to_temp[reg];
-     if (ts != NULL) {
--        temp_sync(s, ts, allocated_regs, 0, -1);
-+        temp_sync(s, ts, allocated_regs, 0, -1, true);
-     }
- }
+ TBContext tb_ctx;
  
-@@ -4442,7 +4451,8 @@ static void tcg_reg_alloc_do_movi(TCGContext *s, TCGTemp *ots,
-     ots->val = val;
-     ots->mem_coherent = 0;
-     if (NEED_SYNC_ARG(0)) {
--        temp_sync(s, ots, s->reserved_regs, preferred_regs, IS_DEAD_ARG(0));
-+        temp_sync(s, ots, s->reserved_regs, preferred_regs,
-+                  IS_DEAD_ARG(0), false);
-     } else if (IS_DEAD_ARG(0)) {
-         temp_dead(s, ots);
-     }
-@@ -4544,7 +4554,7 @@ static void tcg_reg_alloc_mov(TCGContext *s, const TCGOp *op)
-     ots->mem_coherent = 0;
+@@ -353,6 +354,24 @@ TranslationBlock *tb_gen_code(CPUState *cpu,
+     tcg_ctx->guest_mo = TCG_MO_ALL;
+ #endif
  
-     if (NEED_SYNC_ARG(0)) {
--        temp_sync(s, ots, allocated_regs, 0, 0);
-+        temp_sync(s, ots, allocated_regs, 0, 0, false);
-     }
- }
++    /*
++     * Insert the TB into the corresponding stats structure, if required.
++     * Do this before code generation so that translator_loop can see
++     * the structure address.
++     */
++    tb->tb_stats = NULL;
++    if (unlikely(tb_stats_enabled) && qemu_log_in_addr_range(pc)) {
++        TBStatistics *s = tb_stats_lookup(phys_pc,
++                                          cflags & CF_PCREL ? 0 : pc,
++                                          flags, cs_base);
++        if (s) {
++            tb->tb_stats = s;
++            qemu_mutex_lock(&s->jit_stats_lock);
++            g_ptr_array_add(s->tbs, tb);
++            qemu_mutex_unlock(&s->jit_stats_lock);
++        }
++    }
++
+  restart_translate:
+     trace_translate_block(tb, pc, tb->tc.ptr);
  
-@@ -4621,7 +4631,7 @@ static void tcg_reg_alloc_dup(TCGContext *s, const TCGOp *op)
-                 break;
-             }
-             /* Sync the temp back to its slot and load from there.  */
--            temp_sync(s, its, s->reserved_regs, 0, 0);
-+            temp_sync(s, its, s->reserved_regs, 0, 0, true);
-         }
-         /* fall through */
- 
-@@ -4652,7 +4662,7 @@ static void tcg_reg_alloc_dup(TCGContext *s, const TCGOp *op)
-         temp_dead(s, its);
-     }
-     if (NEED_SYNC_ARG(0)) {
--        temp_sync(s, ots, s->reserved_regs, 0, 0);
-+        temp_sync(s, ots, s->reserved_regs, 0, 0, false);
-     }
-     if (IS_DEAD_ARG(0)) {
-         temp_dead(s, ots);
-@@ -4870,7 +4880,7 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
-                  * Cross register class move not supported.  Sync the
-                  * temp back to its slot and load from there.
-                  */
--                temp_sync(s, ts, i_allocated_regs, 0, 0);
-+                temp_sync(s, ts, i_allocated_regs, 0, 0, true);
-                 tcg_out_ld(s, ts->type, reg,
-                            ts->mem_base->reg, ts->mem_offset);
-             }
-@@ -5019,7 +5029,7 @@ static void tcg_reg_alloc_op(TCGContext *s, const TCGOp *op)
-         tcg_debug_assert(!temp_readonly(ts));
- 
-         if (NEED_SYNC_ARG(i)) {
--            temp_sync(s, ts, o_allocated_regs, 0, IS_DEAD_ARG(i));
-+            temp_sync(s, ts, o_allocated_regs, 0, IS_DEAD_ARG(i), false);
-         } else if (IS_DEAD_ARG(i)) {
-             temp_dead(s, ts);
-         }
-@@ -5086,8 +5096,8 @@ static bool tcg_reg_alloc_dup2(TCGContext *s, const TCGOp *op)
-         itsl == itsh + (HOST_BIG_ENDIAN ? 1 : -1)) {
-         TCGTemp *its = itsl - HOST_BIG_ENDIAN;
- 
--        temp_sync(s, its + 0, s->reserved_regs, 0, 0);
--        temp_sync(s, its + 1, s->reserved_regs, 0, 0);
-+        temp_sync(s, its + 0, s->reserved_regs, 0, 0, true);
-+        temp_sync(s, its + 1, s->reserved_regs, 0, 0, true);
- 
-         if (tcg_out_dupm_vec(s, vtype, MO_64, ots->reg,
-                              its->mem_base->reg, its->mem_offset)) {
-@@ -5107,7 +5117,7 @@ static bool tcg_reg_alloc_dup2(TCGContext *s, const TCGOp *op)
-         temp_dead(s, itsh);
-     }
-     if (NEED_SYNC_ARG(0)) {
--        temp_sync(s, ots, s->reserved_regs, 0, IS_DEAD_ARG(0));
-+        temp_sync(s, ots, s->reserved_regs, 0, IS_DEAD_ARG(0), false);
-     } else if (IS_DEAD_ARG(0)) {
-         temp_dead(s, ots);
-     }
-@@ -5125,7 +5135,7 @@ static void load_arg_reg(TCGContext *s, TCGReg reg, TCGTemp *ts,
-                  * Cross register class move not supported.  Sync the
-                  * temp back to its slot and load from there.
-                  */
--                temp_sync(s, ts, allocated_regs, 0, 0);
-+                temp_sync(s, ts, allocated_regs, 0, 0, true);
-                 tcg_out_ld(s, ts->type, reg,
-                            ts->mem_base->reg, ts->mem_offset);
-             }
-@@ -5307,7 +5317,7 @@ static void tcg_reg_alloc_call(TCGContext *s, TCGOp *op)
-     for (i = 0; i < nb_oargs; i++) {
-         TCGTemp *ts = arg_temp(op->args[i]);
-         if (NEED_SYNC_ARG(i)) {
--            temp_sync(s, ts, s->reserved_regs, 0, IS_DEAD_ARG(i));
-+            temp_sync(s, ts, s->reserved_regs, 0, IS_DEAD_ARG(i), false);
-         } else if (IS_DEAD_ARG(i)) {
-             temp_dead(s, ts);
-         }
+diff --git a/accel/tcg/meson.build b/accel/tcg/meson.build
+index 8783edd06e..34312f7a8b 100644
+--- a/accel/tcg/meson.build
++++ b/accel/tcg/meson.build
+@@ -6,6 +6,7 @@ tcg_ss.add(files(
+   'tcg-all.c',
+   'cpu-exec.c',
+   'tb-maint.c',
++  'tb-stats.c',
+   'tcg-runtime-gvec.c',
+   'tcg-runtime.c',
+   'translate-all.c',
 -- 
 2.34.1
 
