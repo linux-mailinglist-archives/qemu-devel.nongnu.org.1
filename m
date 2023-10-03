@@ -2,79 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0557B70E9
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED007B7168
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 21:00:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnkB2-00088O-3a; Tue, 03 Oct 2023 14:31:24 -0400
+	id 1qnkaC-0006jT-P6; Tue, 03 Oct 2023 14:57:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAw-00087B-C4
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:18 -0400
-Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAu-0001hT-AA
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:18 -0400
-Received: by mail-pl1-x633.google.com with SMTP id
- d9443c01a7336-1c0ecb9a075so9569675ad.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696357875; x=1696962675; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=dU5PrzEh8RB8pR6X9cq1FoT7Iyzl/Xdd//HRPtAH/3k=;
- b=os2wkwbnjEnWR4VqxbOz+4Zhia/xT6n4++S+MjvIXmKMXc4qpifcDw7jIUVRPl0LnW
- J+1apyn3b9dwqhmuBvjPXH506DOuK9cwTZeXDpQbBpxPwb/iULjsmuEPisqm31U3AewB
- Ywu1K8gDsUept5M209FR/7kwa3VTpBR9TrUJW5jea2YGsEAk7wTrCvZrVk/B0Yyo9o6i
- TFjmsGKGhlo/bftwcegmz17/s6TCg8tYBbeFWJfqKXaTt1CEfNCMxp1xV7Nn/yEeRprm
- E0SW5yCHKN6J/VM4UtIPMkJJs0gOSSxsUa3IQkj6Vua/MkdvzNpO39J3UcgwrWCnkfXK
- 5vDA==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qnka4-0006W1-3C
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:57:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qnka2-0007F5-8v
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:57:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696359433;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=1IBj+8Ef4wj4DpNxFdSIfh1N5a8Gm+LMR2EzZ8Qn87I=;
+ b=F8HPQec/3UIaSy2ixz7zfH/iXitsBlVtq4bklcWXJoHO2Kagu9XN2GU/jt57QLCUSABXOT
+ f3aqxXyNtmRCWieey4VpApa8t7mNleQCeYJ16U9N8BTnViDqx8qrMtT76B3goxnpjp2PC2
+ boFI3iSn3QW1khZL/AXj2HUv97/I7xk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-497-hIDCq2lCPuCm27QCPPrLkA-1; Tue, 03 Oct 2023 14:57:12 -0400
+X-MC-Unique: hIDCq2lCPuCm27QCPPrLkA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-4030ae94fedso9546065e9.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:57:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696357875; x=1696962675;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1696359429; x=1696964229;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=dU5PrzEh8RB8pR6X9cq1FoT7Iyzl/Xdd//HRPtAH/3k=;
- b=ZXVis++V0SPFE58TLzvokPoiLMI91DPeLv5/lH0VFmgQ2qetu0VaIRZqsaQ1ySiy6O
- MBPtSEQ7zkjWH1A9EwITRq04wAVjPaoNOyrEIW0WucTyEBMVP5ah/eIqXkQY8te49CBw
- j2ZQPUSo0+wTF3FfN8xb7ky1CT7W9+odRy/qf3vyiIowEAOVWjW3uskiM4WO3XkShS2F
- PU3XaYlqz9Crrk6OtagIjS6kI6B6IjBWQqih+Os9lGAAk/nMlcnSReTtGrpKEskQbd4r
- sP+X2dROv2OxzLHqVyK5e5vw+V+a6a6iUF8hAcLccn6ZkVOGqoE2yN28e+82XFI8Mz8b
- 95Lg==
-X-Gm-Message-State: AOJu0YzZ4DATKISnuWSnGGY+fDOuC+Iej0xGPebiEgcqxX5/sDFQkgw3
- gF1W3LJZlwzWpWlI6YY73wR7KkeSSzqKY/nDXAc=
-X-Google-Smtp-Source: AGHT+IEAzuUI0ayhTfiVbttnuYL8ngf3eaoDwAHk2JkHOGe6HytwB9D180PHWPeF5TChjtnhbSJX2g==
-X-Received: by 2002:a17:902:720a:b0:1bc:7001:6e62 with SMTP id
- ba10-20020a170902720a00b001bc70016e62mr291906plb.35.1696357875010; 
- Tue, 03 Oct 2023 11:31:15 -0700 (PDT)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.14
+ bh=1IBj+8Ef4wj4DpNxFdSIfh1N5a8Gm+LMR2EzZ8Qn87I=;
+ b=bX/KjBRzYrGPk+ALOxxkcab+Nvhs8lwHCf8GXporfXdXmjw3sus+uBwHjzcNiKkmBu
+ p1QcG8Md/xJS53mqeyJB64CljxLKOWCIUvU2hbQs+1k4eQaVafJqdgUrTa0EjRct6CeR
+ Tcgeo29HwZeb92iWoqmmtOm38WomaWTGlc8dB3wVpuBFyfRIdSXqylzWwikKw2NX7iFT
+ a/TarIuIzmJuoB+0J8YKNoW7sjBbP1f53a/F4yJaSompdd1hReYY996t2bPz9SDjRF0W
+ xjZTHEqh99huibf8ypxpV53scJuWur7jXs5vykkvKlPYNkc7tFwqbVRc31HNt7tmzkgW
+ ORHQ==
+X-Gm-Message-State: AOJu0YwvswCETusmniD5Pu5UYVsdcKOsWRKWuGkTz3v54li/G2D4hg72
+ Wa1BUuUqTFdtaNGFNBkXK1aTmldDG7LsoxjzvpDhWFXMow2N5xSiUFqYHr+rur3MXERZHc5p/IQ
+ izNx80qEZeTtki0Ks6RbjsMzmYA==
+X-Received: by 2002:a1c:7712:0:b0:401:c52c:5ed9 with SMTP id
+ t18-20020a1c7712000000b00401c52c5ed9mr288773wmi.32.1696359429602; 
+ Tue, 03 Oct 2023 11:57:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFxD40aeJmTZQGUGH2+SrbRZFymvT/KYGfKvAUh0Z3r/Kt2q7WNfDwm52DbDTng3PSFJ9FrQ==
+X-Received: by 2002:a1c:7712:0:b0:401:c52c:5ed9 with SMTP id
+ t18-20020a1c7712000000b00401c52c5ed9mr288759wmi.32.1696359429281; 
+ Tue, 03 Oct 2023 11:57:09 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ 11-20020a05600c020b00b003fe2b081661sm10036210wmi.30.2023.10.03.11.57.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 11:31:14 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com
-Subject: [PATCH v17 16/16] accel/tcg: Dump hot TBs at the end of the execution
-Date: Tue,  3 Oct 2023 11:30:58 -0700
-Message-Id: <20231003183058.1639121-17-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231003183058.1639121-1-richard.henderson@linaro.org>
-References: <20231003183058.1639121-1-richard.henderson@linaro.org>
+ Tue, 03 Oct 2023 11:57:08 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Li Zhijian <lizhijian@fujitsu.com>
+Cc: peterx@redhat.com,  leobras@redhat.com,  qemu-devel@nongnu.org,  Fabiano
+ Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 1/2] migration: Fix rdma migration failed
+In-Reply-To: <20230926100103.201564-1-lizhijian@fujitsu.com> (Li Zhijian's
+ message of "Tue, 26 Sep 2023 18:01:02 +0800")
+References: <20230926100103.201564-1-lizhijian@fujitsu.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Tue, 03 Oct 2023 20:57:07 +0200
+Message-ID: <87edib5ybg.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,265 +96,138 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fei Wu <fei2.wu@intel.com>
+Li Zhijian <lizhijian@fujitsu.com> wrote:
+> Migration over RDMA failed since
+> commit: 294e5a4034 ("multifd: Only flush once each full round of memory")
+> with erors:
+> qemu-system-x86_64: rdma: Too many requests in this message (3638950032).Bailing.
+>
+> migration with RDMA is different from tcp. RDMA has its own control
+> message, and all traffic between RDMA_CONTROL_REGISTER_REQUEST and
+> RDMA_CONTROL_REGISTER_FINISHED should not be disturbed.
+>
+> find_dirty_block() will be called during RDMA_CONTROL_REGISTER_REQUEST
+> and RDMA_CONTROL_REGISTER_FINISHED, it will send a extra traffic(
+> RAM_SAVE_FLAG_MULTIFD_FLUSH) to destination and cause migration to fail
+> even though multifd is disabled.
+>
+> This change make migrate_multifd_flush_after_each_section() return true
+> when multifd is disabled, that also means RAM_SAVE_FLAG_MULTIFD_FLUSH
+> will not be sent to destination any more when multifd is disabled.
+>
+> Fixes: 294e5a4034 ("multifd: Only flush once each full round of memory")
+> CC: Fabiano Rosas <farosas@suse.de>
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 
-Dump the hottest TBs if -d tb_stats:{all,jit,exec}[:dump_num_at_exit]
+Ouch.
 
-Signed-off-by: Fei Wu <fei2.wu@intel.com>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- bsd-user/bsd-proc.h    |  2 ++
- include/tcg/tb-stats.h | 10 +++++++++-
- accel/tcg/monitor.c    |  8 +++++---
- accel/tcg/tb-stats.c   | 27 ++++++++++++++++++++++++++-
- linux-user/exit.c      | 10 ++++++----
- softmmu/runstate.c     |  2 ++
- stubs/tb-stats.c       |  6 +++++-
- util/log.c             | 20 ++++++++++++++++----
- 8 files changed, 71 insertions(+), 14 deletions(-)
+> index 1d1e1321b0..327bcf2fbe 100644
+> --- a/migration/options.c
+> +++ b/migration/options.c
+> @@ -368,7 +368,7 @@ bool migrate_multifd_flush_after_each_section(void)
+>  {
+>      MigrationState *s = migrate_get_current();
+>  
+> -    return s->multifd_flush_after_each_section;
+> +    return !migrate_multifd() || s->multifd_flush_after_each_section;
+>  }
+>  
+>  bool migrate_postcopy(void)
 
-diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-index 0e1d461c4c..84b52b399a 100644
---- a/bsd-user/bsd-proc.h
-+++ b/bsd-user/bsd-proc.h
-@@ -21,12 +21,14 @@
- #define BSD_PROC_H_
- 
- #include <sys/resource.h>
-+#include "tcg/tb-stats.h"
- 
- /* exit(2) */
- static inline abi_long do_bsd_exit(void *cpu_env, abi_long arg1)
- {
-     gdb_exit(arg1);
-     qemu_plugin_user_exit();
-+    tb_stats_dump_atexit();
-     _exit(arg1);
- 
-     return 0;
-diff --git a/include/tcg/tb-stats.h b/include/tcg/tb-stats.h
-index edee73b63b..d3cca94f84 100644
---- a/include/tcg/tb-stats.h
-+++ b/include/tcg/tb-stats.h
-@@ -41,11 +41,12 @@ extern uint32_t tb_stats_enabled;
- /**
-  * tb_stats_init:
-  * @flags: TB_STATS_* flags to enable.
-+ * @atexit: count of hottest tbs to log.
-  *
-  * Initialize translation block statistics, enabling @flags.
-  * If @flags is 0, disable all statistics.
-  */
--void tb_stats_init(uint32_t flags);
-+void tb_stats_init(uint32_t flags, uint32_t atexit);
- 
- /*
-  * This struct stores statistics such as execution count of the
-@@ -154,4 +155,11 @@ gint tb_stats_sort_by_hg(gconstpointer, gconstpointer);
-  */
- GString *tb_stats_dump(TBStatistics *s, unsigned index);
- 
-+/**
-+ * tb_stats_dump_atexit:
-+ *
-+ * Log any requested TBs at end of execution.
-+ */
-+void tb_stats_dump_atexit(void);
-+
- #endif /* TCG_TB_STATS_H */
-diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-index 1be3218715..7719583654 100644
---- a/accel/tcg/monitor.c
-+++ b/accel/tcg/monitor.c
-@@ -245,7 +245,7 @@ static void tb_stats_init_safe(CPUState *cpu, run_on_cpu_data icmd)
- {
-     uint32_t flags = icmd.host_int;
- 
--    tb_stats_init(flags);
-+    tb_stats_init(flags, 0);
-     tb_flush(cpu);
- }
- 
-@@ -335,8 +335,10 @@ static void hmp_info_tblist(Monitor *mon, const QDict *qdict)
-         return;
+But I think this is ugly.
+
+migrate_multifd_flush_after_each_section()
+
+returnls true
+
+with multifd not enabled?
+
+And we are creating a "function" that just reads a property now does
+something else.
+
+What about this?
+
+I know that the change is bigger, but it makes clear what is happening
+here.
+
+commit c638f66121ce30063fbf68c3eab4d7429cf2b209
+Author: Juan Quintela <quintela@redhat.com>
+Date:   Tue Oct 3 20:53:38 2023 +0200
+
+    migration: Non multifd migration don't care about multifd flushes
+    
+    RDMA was having trouble because
+    migrate_multifd_flush_after_each_section() can only be true or false,
+    but we don't want to send any flush when we are not in multifd
+    migration.
+    
+    CC: Fabiano Rosas <farosas@suse.de
+    Reported-by: Li Zhijian <lizhijian@fujitsu.com>
+    Signed-off-by: Juan Quintela <quintela@redhat.com>
+
+diff --git a/migration/ram.c b/migration/ram.c
+index e4bfd39f08..716cef6425 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1387,7 +1387,8 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+         pss->page = 0;
+         pss->block = QLIST_NEXT_RCU(pss->block, next);
+         if (!pss->block) {
+-            if (!migrate_multifd_flush_after_each_section()) {
++            if (migrate_multifd() &&
++                !migrate_multifd_flush_after_each_section()) {
+                 QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
+                 int ret = multifd_send_sync_main(f);
+                 if (ret < 0) {
+@@ -3064,7 +3065,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+         return ret;
      }
  
--    g_ptr_array_unref(tb_ctx.last_search);
--    tb_ctx.last_search = NULL;
-+    if (tb_ctx.last_search) {
-+        g_ptr_array_unref(tb_ctx.last_search);
-+        tb_ctx.last_search = NULL;
-+    }
- 
-     array = tb_stats_collect(max, sort);
-     max = array->len;
-diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
-index 0f84c14a88..62a6228799 100644
---- a/accel/tcg/tb-stats.c
-+++ b/accel/tcg/tb-stats.c
-@@ -8,10 +8,12 @@
- 
- #include "qemu/osdep.h"
- #include "qemu/xxhash.h"
-+#include "qemu/log.h"
- #include "tcg/tb-stats.h"
- #include "tb-context.h"
- 
- uint32_t tb_stats_enabled;
-+static uint32_t tb_stats_atexit;
- 
- static bool tb_stats_cmp(const void *ap, const void *bp)
- {
-@@ -34,7 +36,7 @@ static void tb_stats_free(void *p, uint32_t hash, void *userp)
-     g_free(s);
- }
- 
--void tb_stats_init(uint32_t flags)
-+void tb_stats_init(uint32_t flags, uint32_t atexit)
- {
-     tb_stats_enabled = flags;
-     if (flags) {
-@@ -48,6 +50,14 @@ void tb_stats_init(uint32_t flags)
-         qht_iter(&tb_ctx.stats, tb_stats_free, NULL);
-         qht_destroy(&tb_ctx.stats);
+-    if (!migrate_multifd_flush_after_each_section()) {
++    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
+         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
      }
-+
-+    /*
-+     * This function is also used by HMP, when atexit is 0.
-+     * Preserve the value set from the command-line.
-+     */
-+    if (atexit) {
-+        tb_stats_atexit = atexit;
-+    }
- }
  
- static void tb_stats_reset(void *p, uint32_t hash, void *userp)
-@@ -204,3 +214,18 @@ GString *tb_stats_dump(TBStatistics *s, unsigned index)
+@@ -3176,7 +3177,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+ out:
+     if (ret >= 0
+         && migration_is_setup_or_active(migrate_get_current()->state)) {
+-        if (migrate_multifd_flush_after_each_section()) {
++        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
+             ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
+             if (ret < 0) {
+                 return ret;
+@@ -3253,7 +3254,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+         return ret;
      }
-     return buf;
- }
-+
-+void tb_stats_dump_atexit(void)
-+{
-+    if (tb_stats_enabled && tb_stats_atexit) {
-+        g_autoptr(GPtrArray) array =
-+            tb_stats_collect(tb_stats_atexit, tb_stats_sort_by_coverage);
-+
-+        for (uint32_t i = 0, n = array->len; i < n; ++i) {
-+            TBStatistics *s = g_ptr_array_index(array, i);
-+            g_autoptr(GString) str = tb_stats_dump(s, i);
-+
-+            qemu_log("%s\n", str->str);
-+        }
-+    }
-+}
-diff --git a/linux-user/exit.c b/linux-user/exit.c
-index 50266314e0..4487aaac7e 100644
---- a/linux-user/exit.c
-+++ b/linux-user/exit.c
-@@ -22,6 +22,7 @@
- #include "qemu.h"
- #include "user-internals.h"
- #include "qemu/plugin.h"
-+#include "tcg/tb-stats.h"
  
- #ifdef CONFIG_GCOV
- extern void __gcov_dump(void);
-@@ -30,9 +31,10 @@ extern void __gcov_dump(void);
- void preexit_cleanup(CPUArchState *env, int code)
- {
- #ifdef CONFIG_GCOV
--        __gcov_dump();
-+    __gcov_dump();
- #endif
--        gdb_exit(code);
--        qemu_plugin_user_exit();
--        perf_exit();
-+    gdb_exit(code);
-+    qemu_plugin_user_exit();
-+    perf_exit();
-+    tb_stats_dump_atexit();
- }
-diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index 1652ed0439..2c6fb9bff1 100644
---- a/softmmu/runstate.c
-+++ b/softmmu/runstate.c
-@@ -59,6 +59,7 @@
- #include "sysemu/runstate-action.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/tpm.h"
-+#include "tcg/tb-stats.h"
- #include "trace.h"
- 
- static NotifierList exit_notifiers =
-@@ -846,6 +847,7 @@ void qemu_cleanup(void)
-     /* No more vcpu or device emulation activity beyond this point */
-     vm_shutdown();
-     replay_finish();
-+    tb_stats_dump_atexit();
- 
-     /*
-      * We must cancel all block jobs while the block layer is drained,
-diff --git a/stubs/tb-stats.c b/stubs/tb-stats.c
-index ceaa1622ce..f9e4ef5d04 100644
---- a/stubs/tb-stats.c
-+++ b/stubs/tb-stats.c
-@@ -11,6 +11,10 @@
- #include "qemu/osdep.h"
- #include "tcg/tb-stats.h"
- 
--void tb_stats_init(uint32_t flags)
-+void tb_stats_init(uint32_t flags, uint32_t atexit)
-+{
-+}
-+
-+void tb_stats_dump_atexit(void)
- {
- }
-diff --git a/util/log.c b/util/log.c
-index 0cb987fb74..789b19a226 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -526,19 +526,31 @@ int qemu_str_to_log_mask(const char *str, Error **errp)
- #ifdef CONFIG_TCG
-         } else if (g_str_has_prefix(t, "tb_stats:") && t[9] != '\0') {
-             int flags = TB_STATS_NONE;
-+            unsigned atexit = 0;
-             char *v = t + 9;
-+            char *e = strchr(v, ':');
-+            size_t len;
- 
--            if (g_str_equal(v, "all")) {
-+            if (e) {
-+                len = e - v;
-+                if (qemu_strtoui(e + 1, NULL, 10, &atexit) < 0) {
-+                    error_setg(errp, "Invalid -d option \"%s\"", t);
-+                    goto error;
-+                }
-+            } else {
-+                len = strlen(v);
-+            }
-+            if (strncmp(v, "all", len) == 0) {
-                 flags = TB_STATS_ALL;
--            } else if (g_str_equal(v, "jit")) {
-+            } else if (strncmp(v, "jit", len) == 0) {
-                 flags = TB_STATS_JIT;
--            } else if (g_str_equal(v, "exec")) {
-+            } else if (strncmp(v, "exec", len) == 0) {
-                 flags = TB_STATS_EXEC;
-             } else {
-                 error_setg(errp, "Invalid -d option \"%s\"", t);
-                 goto error;
+-    if (!migrate_multifd_flush_after_each_section()) {
++    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
+         qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+     }
+     qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+@@ -3760,7 +3761,7 @@ int ram_load_postcopy(QEMUFile *f, int channel)
+             break;
+         case RAM_SAVE_FLAG_EOS:
+             /* normal exit */
+-            if (migrate_multifd_flush_after_each_section()) {
++            if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
+                 multifd_recv_sync_main();
              }
--            tb_stats_init(flags);
-+            tb_stats_init(flags, atexit);
- #endif
-         } else {
-             for (item = qemu_log_items; item->mask != 0; item++) {
--- 
-2.34.1
+             break;
+@@ -4038,7 +4039,8 @@ static int ram_load_precopy(QEMUFile *f)
+             break;
+         case RAM_SAVE_FLAG_EOS:
+             /* normal exit */
+-            if (migrate_multifd_flush_after_each_section()) {
++            if (migrate_multifd() &&
++                migrate_multifd_flush_after_each_section()) {
+                 multifd_recv_sync_main();
+             }
+             break;
 
 
