@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A532F7B6733
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA1C7B67C7
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:24:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qndDX-0000aJ-G4; Tue, 03 Oct 2023 07:05:31 -0400
+	id 1qndUU-0007xa-En; Tue, 03 Oct 2023 07:23:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndDR-0000WS-Gi; Tue, 03 Oct 2023 07:05:25 -0400
+ id 1qndUQ-0007xK-SH; Tue, 03 Oct 2023 07:22:58 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndDL-0005xc-9z; Tue, 03 Oct 2023 07:05:23 -0400
-Received: from lhrpeml100001.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0FMz0vlLz67G90;
- Tue,  3 Oct 2023 19:05:03 +0800 (CST)
+ id 1qndUN-0001HH-El; Tue, 03 Oct 2023 07:22:58 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0FmC3hZBz6K6f2;
+ Tue,  3 Oct 2023 19:22:35 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100001.china.huawei.com (7.191.160.183) with Microsoft SMTP Server
+ lhrpeml500005.china.huawei.com (7.191.163.240) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 12:05:11 +0100
+ 15.1.2507.31; Tue, 3 Oct 2023 12:22:44 +0100
 Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
  lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 12:05:11 +0100
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ Tue, 3 Oct 2023 12:22:44 +0100
+To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
  "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
  <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
  <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
@@ -38,9 +38,8 @@ CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
  "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
  <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "rafael@kernel.org" <rafael@kernel.org>, "alex.bennee@linaro.org"
+ <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
  "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
  "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
  "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
@@ -55,20 +54,20 @@ Subject: RE: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
  {creation,parking} code
 Thread-Topic: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
  {creation,parking} code
-Thread-Index: AQHZ8zPpn9wpwkR00kGhOJ6dnPJS7rA2mfgAgAFHXwA=
-Date: Tue, 3 Oct 2023 11:05:11 +0000
-Message-ID: <761a05a972ae4aa088b8e984bd89889f@huawei.com>
+Thread-Index: AQHZ8zPpn9wpwkR00kGhOJ6dnPJS7rA3FhyAgADWeMA=
+Date: Tue, 3 Oct 2023 11:22:43 +0000
+Message-ID: <bbcadd3aa0574dbeba34f055fcdc2819@huawei.com>
 References: <20230930001933.2660-1-salil.mehta@huawei.com>
  <20230930001933.2660-2-salil.mehta@huawei.com>
- <20231002165322.00003a2e@Huawei.com>
-In-Reply-To: <20231002165322.00003a2e@Huawei.com>
+ <a8861b68-5e04-5127-5c0f-77816401741b@redhat.com>
+In-Reply-To: <a8861b68-5e04-5127-5c0f-77816401741b@redhat.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -96,244 +95,108 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan,
-
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: Monday, October 2, 2023 4:53 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
-> {creation,parking} code
->=20
-> On Sat, 30 Sep 2023 01:19:24 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > KVM vCPU creation is done once during the initialization of the VM when=
- Qemu
-> > threads are spawned. This is common to all the architectures.
-> >
-> > Hot-unplug of vCPU results in destruction of the vCPU objects in QOM bu=
-t
-> > the KVM vCPU objects in the Host KVM are not destroyed and their repres=
-entative
-> > KVM vCPU objects/context in Qemu are parked.
-> >
-> > Refactor common logic so that some APIs could be reused by vCPU Hotplug=
- code.
-> >
-> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
->=20
-> Hi Salil,
->=20
-> A few trivial things inline, plus a question about why
-> cpu->cpu_index can now be used but kvm_arch_vcpu_id(cpu);
-> was previously needed.
-
-Good point. I used the API because it was returning
-'unsigned long' and it was being used across the archs.
-I thought maybe the size of the index could vary across
-archs. For example, for PowerPC above API returns vcpu_id
-which presumably could have different data type than
-an 'integer'.
-
-But after Alex's comment, I was made to believe that this
-assumption might not be correct and CPU index is an
-'integer' across archs and perhaps semantics of above
-API is not correct.
-
-But perhaps original code was functionally correct?
-
-
-> >  accel/kvm/kvm-all.c  | 63 +++++++++++++++++++++++++++++++++-----------
-> >  include/sysemu/kvm.h | 14 ++++++++++
-> >  2 files changed, 61 insertions(+), 16 deletions(-)
-> >
-> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> > index ff1578bb32..b8c36ba50a 100644
-> > --- a/accel/kvm/kvm-all.c
-> > +++ b/accel/kvm/kvm-all.c
-> > @@ -80,7 +80,7 @@
-> >  #endif
-> >
-> >  struct KVMParkedVcpu {
-> > -    unsigned long vcpu_id;
-> > +    int vcpu_id;
-> >      int kvm_fd;
-> >      QLIST_ENTRY(KVMParkedVcpu) node;
-> >  };
-> > @@ -137,6 +137,7 @@ static QemuMutex kml_slots_lock;
-> >  #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
-> >
-> >  static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
-> > +static int kvm_get_vcpu(KVMState *s, int vcpu_id);
-> >
-> >  static inline void kvm_resample_fd_remove(int gsi)
-> >  {
-> > @@ -320,11 +321,49 @@ err:
-> >      return ret;
-> >  }
-> >
-> > +void kvm_park_vcpu(CPUState *cpu)
-> > +{
-> > +    int vcpu_id =3D cpu->cpu_index;
-> > +    struct KVMParkedVcpu *vcpu;
-> > +
-> > +    vcpu =3D g_malloc0(sizeof(*vcpu));
-> > +    vcpu->vcpu_id =3D vcpu_id;
->=20
-> As vcpu_id is only used here why have the local variable?
-> Maybe that changes in later patches, in which case ignore this.
->=20
->     vcpu->vcpu_id =3D cpu->cpu_index;
-
-
-Yes, thanks.
-
-
->=20
-> Why is kvm_arch_vcpu_id() not necessary here any more but was
-> before?
-
-
-Because I have now changed the type of vcpu_id from 'unsigned long'
-to an 'integer'.
-
->=20
-> > +    vcpu->kvm_fd =3D cpu->kvm_fd;
-> > +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
-> > +}
-> > +
-> > +int kvm_create_vcpu(CPUState *cpu)
-> > +{
-> > +    int vcpu_id =3D cpu->cpu_index;
->=20
-> See below. I'm not sure why it's safe not to use kvm_arch_vcpu_id()
-> Seems a few architectures have less than trivial implementations of
-> that function currently.
-
-I doubt this as well. Other architectures like PowerPC are returning
-different type?
-
-
-> > +    KVMState *s =3D kvm_state;
-> > +    int kvm_fd;
-> > +
-> > +    DPRINTF("kvm_create_vcpu\n");
-> > +
-> > +    /* check if the KVM vCPU already exist but is parked */
-> > +    kvm_fd =3D kvm_get_vcpu(s, vcpu_id);
-> > +    if (kvm_fd < 0) {
-> > +        /* vCPU not parked: create a new KVM vCPU */
-> > +        kvm_fd =3D kvm_vm_ioctl(s, KVM_CREATE_VCPU, vcpu_id);
-> > +        if (kvm_fd < 0) {
-> > +            error_report("KVM_CREATE_VCPU IOCTL failed for vCPU %d", v=
-cpu_id);
-> > +            return kvm_fd;
-> > +        }
-> > +    }
-> > +
-> > +    cpu->vcpu_dirty =3D true;
-> > +    cpu->kvm_fd =3D kvm_fd;
-> > +    cpu->kvm_state =3D s;
-> > +    cpu->dirty_pages =3D 0;
-> > +    cpu->throttle_us_per_full =3D 0;
->=20
-> Trivial but I would have maintained the order wrt to the code removed
-> below just to avoid a reviewer having to check the two bits of code
-> do the same thing after the reorder.
-
-
-I can do that. No problem.
-
-
-[...]
-
-> >  int kvm_init_vcpu(CPUState *cpu, Error **errp)
-> > @@ -395,19 +431,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
-> >
-> >      trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
-> >
-> > -    ret =3D kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
-> > +    ret =3D kvm_create_vcpu(cpu);
->=20
-> The switch from kvm_arch_vcpu_id(cpu) to using
-> int vcpu_id =3D cpu->cpu_index;
->=20
-> Seems like a functional change on some arch.
-
-
-Yes, but then we need to revert to original change inside the
-new kvm_create_vcpu() API.
-
-
-> >      if (ret < 0) {
-> > -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu fail=
-ed
-> (%lu)",
-> > +        error_setg_errno(errp, -ret,
-> > +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)"=
-,
->=20
-> The rewrap of the lines above seems like an unrelated change.
-
-Function has changed from kvm_get_vcpu to kvm_create_vcpu
-
-[...]
-
-> > diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
-> > index ee9025f8e9..785f3ed083 100644
-> > --- a/include/sysemu/kvm.h
-> > +++ b/include/sysemu/kvm.h
-> > @@ -464,6 +464,20 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int
-> sigmask_len);
-> >
-> >  int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
-> >                                         hwaddr *phys_addr);
-> > +/**
-> > + * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
-> > + * @cpu:  QOM CPUState object for which KVM vCPU has to be
-> created/fetched.
->=20
-> Extra space before QOM (same below)
-
-:)
-
->=20
-> > + *
-> > + * @returns: 0 when success, errno (<0) when failed.
-> > + */
-> > +int kvm_create_vcpu(CPUState *cpu);
->=20
-> Blank line here perhaps.
-
-Ok.
-
-
->=20
-> > +/**
-> > + * kvm_park_vcpu - Gets a parked KVM vCPU if it exists
-> > + * @cpu:  QOM CPUState object for which parked KVM vCPU has to be
-> fetched.
->=20
-> We aren't returning anything, so why fetch?
-
-copy-paste comment error, I think. Thanks!
-
-cheers
-Salil.
-
+SGkgR2F2aW4sDQoNCj4gRnJvbTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gU2Vu
+dDogVHVlc2RheSwgT2N0b2JlciAzLCAyMDIzIDEyOjE4IEFNDQo+IFRvOiBTYWxpbCBNZWh0YSA8
+c2FsaWwubWVodGFAaHVhd2VpLmNvbT47IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZzsgcWVtdS0NCj4g
+YXJtQG5vbmdudS5vcmcNCj4gQ2M6IG1hekBrZXJuZWwub3JnOyBqZWFuLXBoaWxpcHBlQGxpbmFy
+by5vcmc7IEpvbmF0aGFuIENhbWVyb24NCj4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47
+IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsNCj4gcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnOyByaWNo
+YXJkLmhlbmRlcnNvbkBsaW5hcm8ub3JnOw0KPiBpbWFtbWVkb0ByZWRoYXQuY29tOyBhbmRyZXcu
+am9uZXNAbGludXguZGV2OyBkYXZpZEByZWRoYXQuY29tOw0KPiBwaGlsbWRAbGluYXJvLm9yZzsg
+ZXJpYy5hdWdlckByZWRoYXQuY29tOyBvbGl2ZXIudXB0b25AbGludXguZGV2Ow0KPiBwYm9uemlu
+aUByZWRoYXQuY29tOyBtc3RAcmVkaGF0LmNvbTsgd2lsbEBrZXJuZWwub3JnOyByYWZhZWxAa2Vy
+bmVsLm9yZzsNCj4gYWxleC5iZW5uZWVAbGluYXJvLm9yZzsgbGludXhAYXJtbGludXgub3JnLnVr
+Ow0KPiBkYXJyZW5Ab3MuYW1wZXJlY29tcHV0aW5nLmNvbTsgaWxra2FAb3MuYW1wZXJlY29tcHV0
+aW5nLmNvbTsNCj4gdmlzaG51QG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGthcmwuaGV1YmF1bUBv
+cmFjbGUuY29tOw0KPiBtaWd1ZWwubHVpc0BvcmFjbGUuY29tOyBzYWxpbC5tZWh0YUBvcG5zcmMu
+bmV0OyB6aHVrZXFpYW4NCj4gPHpodWtlcWlhbjFAaHVhd2VpLmNvbT47IHdhbmd4aW9uZ2Zlbmcg
+KEMpIDx3YW5neGlvbmdmZW5nMkBodWF3ZWkuY29tPjsNCj4gd2FuZ3lhbmFuIChZKSA8d2FuZ3lh
+bmFuNTVAaHVhd2VpLmNvbT47IGppYWtlcm5lbDJAZ21haWwuY29tOw0KPiBtYW9iaWJvQGxvb25n
+c29uLmNuOyBsaXhpYW5nbGFpQGxvb25nc29uLmNuOyBMaW51eGFybSA8bGludXhhcm1AaHVhd2Vp
+LmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBWMiAwMS8xMF0gYWNjZWwva3ZtOiBFeHRyYWN0
+IGNvbW1vbiBLVk0gdkNQVQ0KPiB7Y3JlYXRpb24scGFya2luZ30gY29kZQ0KPiANCj4gT24gOS8z
+MC8yMyAxMDoxOSwgU2FsaWwgTWVodGEgd3JvdGU6DQo+ID4gS1ZNIHZDUFUgY3JlYXRpb24gaXMg
+ZG9uZSBvbmNlIGR1cmluZyB0aGUgaW5pdGlhbGl6YXRpb24gb2YgdGhlIFZNIHdoZW4gUWVtdQ0K
+PiA+IHRocmVhZHMgYXJlIHNwYXduZWQuIFRoaXMgaXMgY29tbW9uIHRvIGFsbCB0aGUgYXJjaGl0
+ZWN0dXJlcy4NCj4gICAgXl5eXl5eXl5eXl5eXl5eXl5eXg0KPiAgICB0aHJlYWQgaXMgc3Bhd25l
+ZC4NCg0KWWVzLCB3aWxsIGZpeC4NCg0KVGhhbmtzDQpTYWxpbC4NCg0KDQo+ID4gSG90LXVucGx1
+ZyBvZiB2Q1BVIHJlc3VsdHMgaW4gZGVzdHJ1Y3Rpb24gb2YgdGhlIHZDUFUgb2JqZWN0cyBpbiBR
+T00gYnV0DQo+ID4gdGhlIEtWTSB2Q1BVIG9iamVjdHMgaW4gdGhlIEhvc3QgS1ZNIGFyZSBub3Qg
+ZGVzdHJveWVkIGFuZCB0aGVpcg0KPiByZXByZXNlbnRhdGl2ZQ0KPiA+IEtWTSB2Q1BVIG9iamVj
+dHMvY29udGV4dCBpbiBRZW11IGFyZSBwYXJrZWQuDQo+ID4NCj4gPiBSZWZhY3RvciBjb21tb24g
+bG9naWMgc28gdGhhdCBzb21lIEFQSXMgY291bGQgYmUgcmV1c2VkIGJ5IHZDUFUgSG90cGx1ZyBj
+b2RlLg0KPiA+DQo+ID4gU2lnbmVkLW9mZi1ieTogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1
+YXdlaS5jb20+DQo+ID4gLS0tDQo+ID4gICBhY2NlbC9rdm0va3ZtLWFsbC5jICB8IDYzICsrKysr
+KysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tDQo+ID4gICBpbmNsdWRlL3N5
+c2VtdS9rdm0uaCB8IDE0ICsrKysrKysrKysNCj4gPiAgIDIgZmlsZXMgY2hhbmdlZCwgNjEgaW5z
+ZXJ0aW9ucygrKSwgMTYgZGVsZXRpb25zKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvYWNjZWwv
+a3ZtL2t2bS1hbGwuYyBiL2FjY2VsL2t2bS9rdm0tYWxsLmMNCj4gPiBpbmRleCBmZjE1NzhiYjMy
+Li5iOGMzNmJhNTBhIDEwMDY0NA0KPiA+IC0tLSBhL2FjY2VsL2t2bS9rdm0tYWxsLmMNCj4gPiAr
+KysgYi9hY2NlbC9rdm0va3ZtLWFsbC5jDQo+ID4gQEAgLTgwLDcgKzgwLDcgQEANCj4gPiAgICNl
+bmRpZg0KPiA+DQo+ID4gICBzdHJ1Y3QgS1ZNUGFya2VkVmNwdSB7DQo+ID4gLSAgICB1bnNpZ25l
+ZCBsb25nIHZjcHVfaWQ7DQo+ID4gKyAgICBpbnQgdmNwdV9pZDsNCj4gDQo+IEB2Y3B1X2lkIHJl
+cHJlc2VudHMgdGhlIHZDUFUgaW5kZXggKENQVVN0YXRlOjpjcHVfaW5kZXgpIGluc3RlYWQgb2Yg
+dGhlDQo+IGFyY2hpdGVjdHVyYWwgQ1BVIElEIGFueSBtb3JlLiBIb3dldmVyLCBJIGRvbid0IHVu
+ZGVyc3RhbmQgaG93IGl0IHdvcmtzDQo+IGZvciB4ODYsIGFuZCBtb3JlIGNvbW1lbnRzIHJlZ2Fy
+ZGluZyBpdCBjYW4gYmUgc2VlbiBiZWxvdy4NCg0KSSBtaXNzZWQgdGhlIHJlYXNvbiB3aHkgSSBo
+YWQgdXNlZCAndW5zaWduZWQgbG9uZycgZXZlcnl3aGVyZSBpbiB0aGUNCmZpcnN0IGNoYW5nZS4g
+WW91IGNhbiBjaGVjayB0aGUgUG93ZXJQQywgaXQgcmV0dXJucyB2Y3B1X2lkIHdoaWNoIG1pZ2h0
+DQpub3QgYmUgYW4gJ2ludGVnZXInLiBIZW5jZSwgdGhpcyBjaGFuZ2UgY291bGQgYWN0dWFsbHkg
+Y3JlYXRlIGEgcHJvYmxlbS4NCg0KDQo+ID4gICAgICAgaW50IGt2bV9mZDsNCj4gPiAgICAgICBR
+TElTVF9FTlRSWShLVk1QYXJrZWRWY3B1KSBub2RlOw0KPiA+ICAgfTsNCj4gPiBAQCAtMTM3LDYg
+KzEzNyw3IEBAIHN0YXRpYyBRZW11TXV0ZXgga21sX3Nsb3RzX2xvY2s7DQo+ID4gICAjZGVmaW5l
+IGt2bV9zbG90c191bmxvY2soKSAgcWVtdV9tdXRleF91bmxvY2soJmttbF9zbG90c19sb2NrKQ0K
+PiA+DQo+ID4gICBzdGF0aWMgdm9pZCBrdm1fc2xvdF9pbml0X2RpcnR5X2JpdG1hcChLVk1TbG90
+ICptZW0pOw0KPiA+ICtzdGF0aWMgaW50IGt2bV9nZXRfdmNwdShLVk1TdGF0ZSAqcywgaW50IHZj
+cHVfaWQpOw0KPiA+DQo+ID4gICBzdGF0aWMgaW5saW5lIHZvaWQga3ZtX3Jlc2FtcGxlX2ZkX3Jl
+bW92ZShpbnQgZ3NpKQ0KPiA+ICAgew0KPiA+IEBAIC0zMjAsMTEgKzMyMSw0OSBAQCBlcnI6DQo+
+ID4gICAgICAgcmV0dXJuIHJldDsNCj4gPiAgIH0NCj4gPg0KPiA+ICt2b2lkIGt2bV9wYXJrX3Zj
+cHUoQ1BVU3RhdGUgKmNwdSkNCj4gPiArew0KPiA+ICsgICAgaW50IHZjcHVfaWQgPSBjcHUtPmNw
+dV9pbmRleDsNCj4gPiArICAgIHN0cnVjdCBLVk1QYXJrZWRWY3B1ICp2Y3B1Ow0KPiA+ICsNCj4g
+PiArICAgIHZjcHUgPSBnX21hbGxvYzAoc2l6ZW9mKCp2Y3B1KSk7DQo+ID4gKyAgICB2Y3B1LT52
+Y3B1X2lkID0gdmNwdV9pZDsNCj4gPiArICAgIHZjcHUtPmt2bV9mZCA9IGNwdS0+a3ZtX2ZkOw0K
+PiA+ICsgICAgUUxJU1RfSU5TRVJUX0hFQUQoJmt2bV9zdGF0ZS0+a3ZtX3BhcmtlZF92Y3B1cywg
+dmNwdSwgbm9kZSk7DQo+ID4gK30NCj4gPiArDQo+IA0KPiBAdmNwdV9pZCBjYW4gYmUgZHJvcHBl
+ZCBhcyBzdWdnZXN0ZWQgcHJldmlvdXNseS4NCj4gDQo+ICAgICAgICAgdmNwdS0+dmNwdV9pZCA9
+IGNwdS0+Y3B1X2luZGV4Ow0KDQoNClllcywgYWdyZWVkLg0KDQpUaGFua3MNClNhbGlsLg0KDQoN
+Cj4gPiAraW50IGt2bV9jcmVhdGVfdmNwdShDUFVTdGF0ZSAqY3B1KQ0KPiA+ICt7DQo+ID4gKyAg
+ICBpbnQgdmNwdV9pZCA9IGNwdS0+Y3B1X2luZGV4Ow0KPiA+ICsgICAgS1ZNU3RhdGUgKnMgPSBr
+dm1fc3RhdGU7DQo+ID4gKyAgICBpbnQga3ZtX2ZkOw0KPiA+ICsNCj4gPiArICAgIERQUklOVEYo
+Imt2bV9jcmVhdGVfdmNwdVxuIik7DQo+ID4gKw0KPiA+ICsgICAgLyogY2hlY2sgaWYgdGhlIEtW
+TSB2Q1BVIGFscmVhZHkgZXhpc3QgYnV0IGlzIHBhcmtlZCAqLw0KPiA+ICsgICAga3ZtX2ZkID0g
+a3ZtX2dldF92Y3B1KHMsIHZjcHVfaWQpOw0KPiA+ICsgICAgaWYgKGt2bV9mZCA8IDApIHsNCj4g
+PiArICAgICAgICAvKiB2Q1BVIG5vdCBwYXJrZWQ6IGNyZWF0ZSBhIG5ldyBLVk0gdkNQVSAqLw0K
+PiA+ICsgICAgICAgIGt2bV9mZCA9IGt2bV92bV9pb2N0bChzLCBLVk1fQ1JFQVRFX1ZDUFUsIHZj
+cHVfaWQpOw0KPiA+ICsgICAgICAgIGlmIChrdm1fZmQgPCAwKSB7DQo+ID4gKyAgICAgICAgICAg
+IGVycm9yX3JlcG9ydCgiS1ZNX0NSRUFURV9WQ1BVIElPQ1RMIGZhaWxlZCBmb3IgdkNQVSAlZCIs
+IHZjcHVfaWQpOw0KPiA+ICsgICAgICAgICAgICByZXR1cm4ga3ZtX2ZkOw0KPiA+ICsgICAgICAg
+IH0NCj4gPiArICAgIH0NCj4gPiArDQo+ID4gKyAgICBjcHUtPnZjcHVfZGlydHkgPSB0cnVlOw0K
+PiA+ICsgICAgY3B1LT5rdm1fZmQgPSBrdm1fZmQ7DQo+ID4gKyAgICBjcHUtPmt2bV9zdGF0ZSA9
+IHM7DQo+ID4gKyAgICBjcHUtPmRpcnR5X3BhZ2VzID0gMDsNCj4gPiArICAgIGNwdS0+dGhyb3R0
+bGVfdXNfcGVyX2Z1bGwgPSAwOw0KPiA+ICsNCj4gPiArICAgIHJldHVybiAwOw0KPiA+ICt9DQo+
+ID4gKw0KPiANCj4gVGhlIGNvbW1lbnRzIGhlcmUgY2FuIGJlIGRyb3BwZWQgc2luY2UgdGhlIGNv
+ZGUgaXMgc2VsZi1leHBsYWluaW5nLg0KPiANCj4gQHZjcHVfaWQgcmVwcmVzZW50cyB2Q1BVIGlu
+ZGV4LCBpbnN0ZWFkIG9mIHRoZSBhcmNoaXRlY3J1YWwgdkNQVSBJRCBhbnkNCj4gbW9yZS4NCj4g
+QHZjcHVfaWQgaXMgcGFzc2VkIHRvIGhvc3QgdGhyb3VnaCBpb2N0bChLVk1fQ1JFQVRFX1ZDUFUp
+LCB3aGljaCBpcw0KPiBleHBlY3RlZA0KPiBhcyBhbiBhcmNoaXRlY3J1YWwgdkNQVSBJRCBpbnN0
+ZWFkIG9mIGEgdkNQVSBpbmRleCBieSBob3N0LiBJdCdzIGluZGljYXRlZA0KPiBieSAnc3RydWN0
+IGt2bV92Y3B1JyBhcyBiZWxvdy4NCg0KDQpUaGF0IHNob3VsZCBub3QgYmUgcGFydCBvZiB0aGlz
+IGNoYW5nZS4gSSB0aGluay4NCg0KDQo+IHN0cnVjdCBrdm1fdmNwdSB7DQo+IAk6DQo+IAlpbnQg
+dmNwdV9pZDsgIC8qIGlkIGdpdmVuIGJ5IHVzZXJzcGFjZSBhdCBjcmVhdGlvbiAqLw0KPiAgICAg
+ICAgICBpbnQgdmNwdV9pZHg7IC8qIGluZGV4IGludG8ga3ZtLT52Y3B1X2FycmF5ICovDQo+IH07
+DQo+IA0KPiBGdW5jdGlvbiBrdm1fYXJjaF92Y3B1X2lkKCkgY29udmVydHMgdGhlIHZDUFUgaW5z
+dGFuY2Ugb3IgdkNQVSBpbmRleCB0bw0KPiB0aGUgYXJjaGl0ZWNydWFsIHZDUFUgSUQuIEFsbCBh
+cmNoaXRlY3R1cmVzIGV4Y2VwdCB4ODYgc2ltcGx5IHJldHVybnMNCj4gdkNQVSBpbmRleCAoQ1BV
+U3RhdGU6OmNwdV9pbmRleCkgYXMgdGhlIGFyY2hpdGVjcnVyYWwgdkNQVSBJRC4geDg2IHJldHVy
+bnMNCj4gdGhlIEFQSUMgSUQuIFRyZWF0aW5nIHRoZW0gZXF1YWxseSBzZWVtcyB0byBicmVhayB4
+ODYuDQoNCkkgdGhpbmsgUG93ZXJQQyByZXR1cm5zIGEgZGlmZmVyZW50IElkIGFzIHdlbGwuDQoN
+Cg0KWy4uLl0NCg0KPiA+IC1zdGF0aWMgaW50IGt2bV9nZXRfdmNwdShLVk1TdGF0ZSAqcywgdW5z
+aWduZWQgbG9uZyB2Y3B1X2lkKQ0KPiA+ICtzdGF0aWMgaW50IGt2bV9nZXRfdmNwdShLVk1TdGF0
+ZSAqcywgaW50IHZjcHVfaWQpDQo+ID4gICB7DQo+ID4gICAgICAgc3RydWN0IEtWTVBhcmtlZFZj
+cHUgKmNwdTsNCj4gPg0KPiA+IEBAIC0zODQsNyArNDIwLDcgQEAgc3RhdGljIGludCBrdm1fZ2V0
+X3ZjcHUoS1ZNU3RhdGUgKnMsIHVuc2lnbmVkIGxvbmcNCj4gdmNwdV9pZCkNCj4gPiAgICAgICAg
+ICAgfQ0KPiA+ICAgICAgIH0NCj4gPg0KPiA+IC0gICAgcmV0dXJuIGt2bV92bV9pb2N0bChzLCBL
+Vk1fQ1JFQVRFX1ZDUFUsICh2b2lkICopdmNwdV9pZCk7DQo+ID4gKyAgICByZXR1cm4gLTE7DQo+
+ID4gICB9DQo+ID4NCj4gDQo+IFdoeSB3ZSBoYXZlIC0xIGhlcmUuIC1FTk9FTlQgc2VlbXMgbW9y
+ZSBkZXNjcmlwdGl2ZT8NCg0KQWdyZWVkLg0KDQpUaGFua3MNClNhbGlsLg0K
 
