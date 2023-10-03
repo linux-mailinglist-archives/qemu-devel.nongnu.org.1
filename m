@@ -2,100 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0BD7B6055
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 07:23:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8ADC7B6058
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 07:24:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnXr8-0004zr-KA; Tue, 03 Oct 2023 01:22:02 -0400
+	id 1qnXt4-0005uT-2o; Tue, 03 Oct 2023 01:24:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tong.ho@amd.com>)
- id 1qnXr6-0004z7-22; Tue, 03 Oct 2023 01:22:00 -0400
-Received: from mail-bn1nam02on20631.outbound.protection.outlook.com
- ([2a01:111:f400:7eb2::631]
- helo=NAM02-BN1-obe.outbound.protection.outlook.com)
+ id 1qnXt0-0005tg-Nk; Tue, 03 Oct 2023 01:23:58 -0400
+Received: from mail-dm6nam11on20605.outbound.protection.outlook.com
+ ([2a01:111:f400:7eaa::605]
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <tong.ho@amd.com>)
- id 1qnXr3-0005wY-KT; Tue, 03 Oct 2023 01:21:59 -0400
+ id 1qnXsy-0006Gf-WD; Tue, 03 Oct 2023 01:23:58 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ej3RARIT5HCb1ldm4xdrZCr0jDkaoRnt1SLWhBs/b1S+qEyUOaVd6WEzFjH3bm2coPShjwx2BXvUE+MhRhoPIWIt4/WpEL4ELHjXPadLddimSKt5fTiObwmuhwxZGX+PjlIcMtlZ0NcEucvQqZ+Pftlird4agZOa3JPRsizHpuuwTeIR0ZrXnflSMhF18a4s72GVoNe9z81OFvJ9LdlGwIlEKk3TLI/+7BlEnZHUtgq8IFtNJmg+fGQ/i8iTOm5E7WJW4WrjewVh05FAfqShW5IcOLNBuFpJIR0qNE9F8z2+6gLb2PIXkBxVpMscqGcT0jTli40/UEc0hBPfLD7SaA==
+ b=N3Cq6o+i9TM3W0hKkvrEthHmrZ1JMS3Sl12S8dOF7dweIAkYcW5SEwRMlvc+3J/3d+VK8mlcXPc1g9mtNAl+Yo50TdJiHKLQyiJo4n4x1GddnKsf2yKskHevyaydsRBvB2SJcUrQVaZlSM0Z11OZMi2gWqK3u+QnS2KYbwEQ/flaNz6FJ9mm2xBspg2BsMm4JHIDHZrzfGsPWOCelyS5EfDrV9c7Pp8OgaoffzMPHWweUXU61azNCuc+4DSaXG1mcHXoAksEec2wIGeTYNaSfc3JnKSADR5FM9fPfBzJr4MAkoAKIhKAC7b6vKLvodMXDfIgyTrfashxFOp8xQxcgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pd1hU9CK4Z0LNwODqfpgDB0lZnKuFFSveznyy5jzC44=;
- b=cb6cIESg3ov45QhK+D5nQ50AhdjnhTfCERM3k3qiEzndFmx9KWv+iySMV44uMwIqiY6Mw2ZGbQHdGjMkXcZ/BLzU6FK5AzcdCzVbN86tzGhqIx0mRWMRlH7jDpN1FoCm23HVtxq8l87X17m9Olj0vO8E3QfnSMUyY+0cPRLAL243shgpkwG/2/o2hNbEZgGvWg7HvMOxBAqObq5xBSaVwuz06LZsIe/QIoY0QWjiftZlf1d+zDUkY3VZANcn1b+LnwSlAOefELm5QSnrOgd/BuwGr5RhplT1jphY2TJYcTPZJER7SwRJMXCcC0K9WD7QpZSc8rfIETJpxZoetMYQEw==
+ bh=Aft2jw9AnoRYx0/3JFfxkxDpwv8ume3ZhRMNIv/u3Ug=;
+ b=Gxixe7xv6WnfIQucO6rFAimOPIl2yFZskpVRcoaoul6U/dF6+S1yXTqdIJ4JtyPmqQIqefAQvLXwD0hgs4DpW7eTYZshvUW314uX/VIIaj4rl6juNjRzlTQzcrJDPdPXWOcHWSdid+buoPUoMxHweaidKWwIVu1SJGKBPGU7HgI+2HLFLiZY7hbkUEJN7zuX3pA6jz1jtxRQH6Yv2BIg/cZIZSwuZWYWyPbLwXcKOvOje93jYjcpTs/EK9bQHJpcPWTeG0vzgCsZ4JV7aUnxKk2YSRuwf+HKYf6cXExaVLKyOazDt8Dt4G+NhGMGHQ4/CLEHQvJrjAalIhk+1WLkbA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pd1hU9CK4Z0LNwODqfpgDB0lZnKuFFSveznyy5jzC44=;
- b=1uVgUO0eL3vooT8+GMRDy0Y31/BoJijEBQ93ZCEo+7gVeiGnVK7It/tNK1yZo0uXWcYOpUVhPxH/+gXbCK+rwIMau7V4Fn3npGfDBZObhrwT8VwZ+F3Yqnb3JWiyiKSXz8gTlYQS5r42jUyJg3mwDF8jpDHa9l3SmvtBOfUSIr0=
-Received: from MW4PR03CA0065.namprd03.prod.outlook.com (2603:10b6:303:b6::10)
- by SA1PR12MB7152.namprd12.prod.outlook.com (2603:10b6:806:2b2::13)
+ bh=Aft2jw9AnoRYx0/3JFfxkxDpwv8ume3ZhRMNIv/u3Ug=;
+ b=M9S2Qrywcc56ikgYCcSqJ+JM6IZ7E5mPcdTYz1Qn2oc7vWfopr1j1NkuJo6JQEFZ7omQflEFZC1I0okf+6fUwOekzODcnTlLNGgdYEgDWvh2uiW3vBTdU1EDTSrsP9CeWKaTKxY9g03eKVIWsi1rsseUtJj5zX84EaejBdzOBzg=
+Received: from CYXPR02CA0070.namprd02.prod.outlook.com (2603:10b6:930:cd::20)
+ by BN9PR12MB5035.namprd12.prod.outlook.com (2603:10b6:408:134::8)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.28; Tue, 3 Oct
- 2023 05:21:48 +0000
-Received: from CO1PEPF000044EF.namprd05.prod.outlook.com
- (2603:10b6:303:b6:cafe::58) by MW4PR03CA0065.outlook.office365.com
- (2603:10b6:303:b6::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.31 via Frontend
- Transport; Tue, 3 Oct 2023 05:21:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.33; Tue, 3 Oct
+ 2023 05:23:51 +0000
+Received: from CY4PEPF0000EE3E.namprd03.prod.outlook.com
+ (2603:10b6:930:cd:cafe::a8) by CYXPR02CA0070.outlook.office365.com
+ (2603:10b6:930:cd::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.33 via Frontend
+ Transport; Tue, 3 Oct 2023 05:23:51 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CO1PEPF000044EF.mail.protection.outlook.com (10.167.241.69) with Microsoft
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE3E.mail.protection.outlook.com (10.167.242.18) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.14 via Frontend Transport; Tue, 3 Oct 2023 05:21:47 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ 15.20.6838.22 via Frontend Transport; Tue, 3 Oct 2023 05:23:51 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 3 Oct
- 2023 00:21:44 -0500
+ 2023 00:23:51 -0500
 Received: from xsjtongh40.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
- Transport; Tue, 3 Oct 2023 00:21:44 -0500
+ Transport; Tue, 3 Oct 2023 00:23:50 -0500
 From: Tong Ho <tong.ho@amd.com>
 To: <qemu-arm@nongnu.org>
 CC: <qemu-devel@nongnu.org>, <alistair@alistair23.me>,
  <edgar.iglesias@gmail.com>, <peter.maydell@linaro.org>, <tong.ho@amd.com>
-Subject: [PATCH] xlnx-bbram: hw/nvram: Use dot in device type name
-Date: Mon, 2 Oct 2023 22:21:39 -0700
-Message-ID: <20231003052139.199665-1-tong.ho@amd.com>
+Subject: [PATCH] xlnx-bbram: hw/nvram: Remove deprecated device reset
+Date: Mon, 2 Oct 2023 22:23:45 -0700
+Message-ID: <20231003052345.199725-1-tong.ho@amd.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044EF:EE_|SA1PR12MB7152:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7c489842-0fc5-4e23-c07a-08dbc3d0a3f4
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3E:EE_|BN9PR12MB5035:EE_
+X-MS-Office365-Filtering-Correlation-Id: d658f5ba-22c1-43fa-d8bf-08dbc3d0ee00
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1YS7NOLqYMEDhx48H+2dzh4Pg3NndfeQyITjTnmRF9gXGBJIKObeRcsNAOmhlFn7oliRfZ/4VydOGui4kS6pEmcRHCNDgX9w+BciRL2n0ckt/4mBU0Bcbq0hb5f7CcEgQ4LA/fAR2UsjY/QoW4YjheTZ7t5KBUzlEC6/a20gncf40WSsaGAZKRjrDVaBah7KL0vrZHdu9e9jFaD3dLQ9sbNJ+6BtqUzn60uCvSRVf7AUap78AKbLJgjGO8PrnBJDt+cQq3G2su7gyKy+Me7ZK/zWYxzFLvJuQtwexm9U0wUv6uixcEMtvPJ2XpUJvy/C1wRLigQw/zN5pwcydBlvXTXQCiqfOZazFxyvGgezB+21zeVoIeLgKbbiK9A0KkE9xGn8m2xblpNb/1uqHBxpQsYhvaGGM0dPgV43rrHc7mR6a798pD6//FOESMgQw6R3PPUZqrVE/dAX0cM0PgeKWt1fhPLC9lIq8Sy9PB/2y+iEnkDjF2Sodp3Lw1OK3FEkEoIKSRYxvXJChGAqDW8POhIRF00kHkJbJUi9u5RmrAWGh+kTA0ewXPi9kaSrpSnES9n9WfBHKDgWn7UppsQe0EeQEau0DxuitDCyqTpA1a6VRjDHrgFx+5mNW81cNHV1TtzaluRhctVhYe7cbFbWwGcyIP9Wqztzn7GpHO+X37uiomd/RtSTvVkh/6+Uug2PdbvB3lII6O/sTwWrkJ4z8UuJUYpb9N9JgfOrU+td88mCWbEpVL0g08FdMw5pGpTi3ugXgNH2TZj+l7mK8R9qAA==
+X-Microsoft-Antispam-Message-Info: juB4YPDHXWDRMHCLmSWu3yrUsWqX8U4b9qU9tds1rsjanqPYMLH/xm2Sp4iE8DPhLOQpeNEVCaUzsiMunXsaRnTu0tCFGK8CNXYu79EjfbhPq9Q/9Zp53movD66z3k3yDFup8JKy6RAAD8fvLcVNN4LJOlX/KeebOO6hHmIan3dfhroDhPkUgkIZGHks2E6sj/tLl3tYsvGLe0Hw6EzAUIbJQsGlHe7nITGKjx36albvGZsd04ZZzwJxDzDC3tJsRN4dGidHB1KUIhj9RwscT4pDZRXFCxT1iSeGjGm/Ej4m/ds4befUtPxlR68XGLkiTrF8Gp886BpJH6pbokecOS1nMB/lcFH5IdfmAyiMTAYmhEVvlehVwZMB8U/CecGcn1QYAXLoxvc02WsJNYngSTKEFvrYSsIL1SV6kgVWdS24XYzhMP6+u8vrGoVxSOIzQ7BO39A8EjpwZkkar9OEFd8zQHgpMmUc/xyZL9n6jamKM+qECyBFQjbvAwwg0Xj2cHgUwmPQgqK7TndpB/lkxOecahctc8ucQ7SjNCIH+VjPWZRSEt0/IM4G4689wf9ncexIFjWZXLLRW9uRpIJDYH7eQeCATbV8CaO68J3rRlFO2d51mhJA3ScBbOf2XUEHSu4Pw+ITI9oZns723GiXK2gk9kJd8vPgOoTBw3WdspvfW0iFQnt1P5G3V6jOdBUYQxz1QkrG9sDw39zpeaMnDmwgGdRLTsn7dDzYg92pkJwBYT7Zl1IsJtMXH5s4d09PXNg7gKnxnmQJV70KlU5baQ==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230031)(4636009)(376002)(136003)(396003)(39860400002)(346002)(230922051799003)(451199024)(64100799003)(1800799009)(186009)(82310400011)(36840700001)(40470700004)(46966006)(40460700003)(40480700001)(2616005)(336012)(26005)(426003)(1076003)(83380400001)(6916009)(54906003)(5660300002)(44832011)(70586007)(41300700001)(70206006)(6666004)(8676002)(4326008)(8936002)(316002)(478600001)(36860700001)(47076005)(82740400003)(356005)(81166007)(36756003)(4744005)(2906002)(86362001)(36900700001);
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(346002)(376002)(136003)(39860400002)(396003)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(82310400011)(36840700001)(46966006)(40470700004)(47076005)(83380400001)(36860700001)(478600001)(40460700003)(1076003)(26005)(426003)(336012)(66899024)(82740400003)(40480700001)(81166007)(356005)(86362001)(2906002)(8676002)(44832011)(4326008)(5660300002)(8936002)(6666004)(6916009)(316002)(36756003)(41300700001)(54906003)(70586007)(70206006)(2616005)(36900700001);
  DIR:OUT; SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2023 05:21:47.2991 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7c489842-0fc5-4e23-c07a-08dbc3d0a3f4
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Oct 2023 05:23:51.5766 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d658f5ba-22c1-43fa-d8bf-08dbc3d0ee00
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044EF.namprd05.prod.outlook.com
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE3E.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB7152
-Received-SPF: softfail client-ip=2a01:111:f400:7eb2::631;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5035
+Received-SPF: softfail client-ip=2a01:111:f400:7eaa::605;
  envelope-from=tong.ho@amd.com;
- helo=NAM02-BN1-obe.outbound.protection.outlook.com
+ helo=NAM11-DM6-obe.outbound.protection.outlook.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,27 +117,48 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This replaces the comma (,) to dot (.) in the device type name
-so the name can be used with the 'driver=' command line option.
+This change implements the ResettableClass interface for the device.
 
 Signed-off-by: Tong Ho <tong.ho@amd.com>
 ---
- include/hw/nvram/xlnx-bbram.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hw/nvram/xlnx-bbram.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/nvram/xlnx-bbram.h b/include/hw/nvram/xlnx-bbram.h
-index 87d59ef3c0..6fc13f8cc1 100644
---- a/include/hw/nvram/xlnx-bbram.h
-+++ b/include/hw/nvram/xlnx-bbram.h
-@@ -34,7 +34,7 @@
+diff --git a/hw/nvram/xlnx-bbram.c b/hw/nvram/xlnx-bbram.c
+index c6b484cc85..e18e7770e1 100644
+--- a/hw/nvram/xlnx-bbram.c
++++ b/hw/nvram/xlnx-bbram.c
+@@ -2,6 +2,7 @@
+  * QEMU model of the Xilinx BBRAM Battery Backed RAM
+  *
+  * Copyright (c) 2014-2021 Xilinx Inc.
++ * Copyright (c) 2023 Advanced Micro Devices, Inc.
+  *
+  * Permission is hereby granted, free of charge, to any person obtaining a copy
+  * of this software and associated documentation files (the "Software"), to deal
+@@ -416,9 +417,9 @@ static RegisterAccessInfo bbram_ctrl_regs_info[] = {
+     }
+ };
  
- #define RMAX_XLNX_BBRAM ((0x4c / 4) + 1)
+-static void bbram_ctrl_reset(DeviceState *dev)
++static void bbram_ctrl_reset_hold(Object *obj)
+ {
+-    XlnxBBRam *s = XLNX_BBRAM(dev);
++    XlnxBBRam *s = XLNX_BBRAM(obj);
+     unsigned int i;
  
--#define TYPE_XLNX_BBRAM "xlnx,bbram-ctrl"
-+#define TYPE_XLNX_BBRAM "xlnx.bbram-ctrl"
- OBJECT_DECLARE_SIMPLE_TYPE(XlnxBBRam, XLNX_BBRAM);
+     for (i = 0; i < ARRAY_SIZE(s->regs_info); ++i) {
+@@ -522,8 +523,9 @@ static Property bbram_ctrl_props[] = {
+ static void bbram_ctrl_class_init(ObjectClass *klass, void *data)
+ {
+     DeviceClass *dc = DEVICE_CLASS(klass);
++    ResettableClass *rc = RESETTABLE_CLASS(klass);
  
- struct XlnxBBRam {
+-    dc->reset = bbram_ctrl_reset;
++    rc->phases.hold = bbram_ctrl_reset_hold;
+     dc->realize = bbram_ctrl_realize;
+     dc->vmsd = &vmstate_bbram_ctrl;
+     device_class_set_props(dc, bbram_ctrl_props);
 -- 
 2.25.1
 
