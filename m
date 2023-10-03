@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2B17B727F
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 22:32:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9B07B7295
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 22:34:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnm3J-0001R7-KD; Tue, 03 Oct 2023 16:31:33 -0400
+	id 1qnm6B-0002YC-7s; Tue, 03 Oct 2023 16:34:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnm3D-0001Qb-Uq
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:31:29 -0400
-Received: from mail-pg1-x52e.google.com ([2607:f8b0:4864:20::52e])
+ id 1qnm68-0002XW-0O
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:34:28 -0400
+Received: from mail-oi1-x233.google.com ([2607:f8b0:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnm3C-0002HR-9d
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:31:27 -0400
-Received: by mail-pg1-x52e.google.com with SMTP id
- 41be03b00d2f7-584bfb14c59so965317a12.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 13:31:25 -0700 (PDT)
+ id 1qnm66-0002ZK-HR
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:34:27 -0400
+Received: by mail-oi1-x233.google.com with SMTP id
+ 5614622812f47-3add37de892so834711b6e.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 13:34:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696365085; x=1696969885; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696365265; x=1696970065; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=6Vz7yw+q2MTYV9lvuSdIWvub+JzCN1Z60kT7oZc0WSc=;
- b=nh2KNwhNwwukky+bJ5cA3AvTmWSk966HnIGcE1DzY1+/NBm4+FmFhQ0SSN25JCTov1
- sX0rUzNZ3AfD3EWndk2yHGq278EJGcO+i0jXrfghOEbPn4g6Q+2DS9+/meXQ1ljXkHYm
- aLobT1l6SJONjTh4ESPR3dNKL8bxNWUbM6HXfi7ol+vDBDWzghn0fKQDv5wIMFC1HUDl
- XA1BWxs5IiTJS0GATt8nzuuRDl4ARS8+wc4OYM1Fd5Z2FOUNuViycIYNlwgCVHHWL7S7
- HTIkdJk5GQaeXLfcfWYX23CkGv8m5UpsgfqTwNi4nJ+rCnSBZwBxANnetOx+jzR1FqW0
- VzrQ==
+ bh=vEPFvK/4H2zkKiFHbM6EwkQb/E+J3Ru3FBPIoIKrZnw=;
+ b=L2GcmkKG5HcmQZ4axXg9hYgs6J0QB2DNmn5g0wfyoZB+ne2gyyJEkAo/syhMkrR2Qm
+ dgp/M+Z3qTRURpgGCKHn3oGql9/kxguifmLzq1ylaeUiCbsGwXX/GfoTgVgsICJeRTcs
+ 6UthyGFekkVCU1wX+a3jUpse4trPd8CMn1S2IlPnjNnjhRrmfNrGuhtNDhnltWl5cna4
+ 9T8VZ+oTbLpyw4dEPx/xHzEdz31Kk48veBXQ4dGSXFoQmf4fJc4JMKwrOlUVn9JuK2Tv
+ 5Ws3aftzf88lBzoHm7bQWwga3xvwomadN37TvztUYCDO8QWNBlOsN2N7nugqXiA1B7j8
+ 4ARw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696365085; x=1696969885;
+ d=1e100.net; s=20230601; t=1696365265; x=1696970065;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6Vz7yw+q2MTYV9lvuSdIWvub+JzCN1Z60kT7oZc0WSc=;
- b=mfjjNQ2QPG9vuGK06F7N+CCIxNJ2TiaTs7HIMgPGMNdspGlO21oUC7Ar3M6PvS8Klx
- jlZ4VsL9NoxThIqGvGGiJncD1bpxhoGW7X2F91cR1V4u1nMcSu5AmIJK9QirjRhbxTXX
- LMbwVObHmvpmI4nOHpfu3f0k5VQ5ZY80s6wuQTsly0SGfJdsd868Z0EfLbxlqvr+suYt
- Tajr+MVx3wdaXPA1M43hZIyUjEjIXGACSUZ2byzRzrOuCAALuiXZXpehDsJSUvHhBy+N
- RlE2NnyPx4D5Ij/gJsmIOACkpNTnndb0nr00doK65DwzIELoQOCPb6JYP224hP82yY4+
- 6yVQ==
-X-Gm-Message-State: AOJu0YyrUQ1L93eJ1r/6hfNz5tfArdVOXnUILZRDpBWH3iMSfAZMPmSU
- jOhQopxpyluXY7vBuUNQDQPTLcjvehzkLKW+Stc=
-X-Google-Smtp-Source: AGHT+IGNG7TwxHjbjmJbfB+7TziaxqarOCaCDzb4G/jtoaXfhAU726rDgva+AMCjrccfR1ilmxfE4A==
-X-Received: by 2002:a05:6a20:8419:b0:161:2389:e34b with SMTP id
- c25-20020a056a20841900b001612389e34bmr697803pzd.13.1696365084411; 
- Tue, 03 Oct 2023 13:31:24 -0700 (PDT)
+ bh=vEPFvK/4H2zkKiFHbM6EwkQb/E+J3Ru3FBPIoIKrZnw=;
+ b=TNfChI/LDDn2JwmeFAz8V+9OWGv/fjfRwREx/86hGfA2xnSQNa8vWml/ulAcbnhTHI
+ KBWsHzIat+YsyC/n4HQsBROoGG04Znl4oPNQEZcbLcmVlfRQHq0fABxhy4hg2YDJjnXO
+ Le+tSV7DIH3Wa6S7QXI2ZaGhwE2horHQ+JPXvsxRnRG7hhpimgPhVNF6azrsZZ8Kqpuv
+ AMajAM9sqZezOYKx9OvNw5MGRmyEPAXI7fG89qJO5PaV5Nd3IEjoH1iObHeEsQwcquKu
+ 3l5wlu/ecwNFPLVE9rMjcwfNNtMlhZjttBmNeW3y3qyRBa5l5aiCw0IonpHuATJXUQbh
+ G2hw==
+X-Gm-Message-State: AOJu0YzCT7/fucbIOdTbae0TP+2i8mxeeqgPetMzqquysz5cqrUuAcP1
+ WXC2jgvDykLBhwrSrf9DThGtOQ==
+X-Google-Smtp-Source: AGHT+IGy0r8RbK4snN49Vr4DK9CB0PwwB+fHfvGxI27cNYRrJA6Xq4hrU+7a6N8Ngv+K7KOsGbehLg==
+X-Received: by 2002:a05:6808:159c:b0:3a8:512a:41b8 with SMTP id
+ t28-20020a056808159c00b003a8512a41b8mr797398oiw.21.1696365264837; 
+ Tue, 03 Oct 2023 13:34:24 -0700 (PDT)
 Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- jd22-20020a170903261600b001c72f51b84asm2030039plb.52.2023.10.03.13.31.23
+ gz4-20020a17090b0ec400b002790ded9c6dsm1818100pjb.31.2023.10.03.13.34.23
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 13:31:24 -0700 (PDT)
-Message-ID: <8b441573-6775-75ad-12d5-9a36b0f3591d@linaro.org>
-Date: Tue, 3 Oct 2023 13:31:21 -0700
+ Tue, 03 Oct 2023 13:34:24 -0700 (PDT)
+Message-ID: <97fbe6a6-79fd-d2aa-91ed-a1c0444cb209@linaro.org>
+Date: Tue, 3 Oct 2023 13:34:21 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH] target/sh4: fix crashes on signal delivery
+Subject: Re: [PATCH] linux-user/elfload: Enable LSX/LASX in HWCAP for LoongArch
 Content-Language: en-US
-To: Mikulas Patocka <mpatocka@redhat.com>, Richard Henderson
- <rth@twiddle.net>, Yoshinori Sato <ysato@users.sourceforge.jp>,
- Magnus Damm <magnus.damm@gmail.com>
-Cc: qemu-devel@nongnu.org
-References: <b16389f7-6c62-70b7-59b3-87533c0bcc@redhat.com>
+To: Jiajie Chen <c@jia.je>, qemu-devel@nongnu.org
+Cc: gaosong@loongson.cn, git@xen0n.name, Laurent Vivier <laurent@vivier.eu>
+References: <20231001085315.1692667-1-c@jia.je>
 From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <b16389f7-6c62-70b7-59b3-87533c0bcc@redhat.com>
+In-Reply-To: <20231001085315.1692667-1-c@jia.je>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::52e;
- envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x52e.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::233;
+ envelope-from=richard.henderson@linaro.org; helo=mail-oi1-x233.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -96,50 +94,34 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/28/23 09:42, Mikulas Patocka wrote:
-> sh4 uses gUSA (general UserSpace Atomicity) to provide atomicity on CPUs
-> that don't have atomic instructions. A gUSA region that adds 1 to an
-> atomic variable stored in @R2 looks like this:
+On 10/1/23 01:53, Jiajie Chen wrote:
+> Since support for LSX and LASX is landed in QEMU recently, we can update
+> HWCAPS accordingly.
 > 
->    4004b6:       03 c7           mova    4004c4 <gusa+0x10>,r0
->    4004b8:       f3 61           mov     r15,r1
->    4004ba:       09 00           nop
->    4004bc:       fa ef           mov     #-6,r15
->    4004be:       22 63           mov.l   @r2,r3
->    4004c0:       01 73           add     #1,r3
->    4004c2:       32 22           mov.l   r3,@r2
->    4004c4:       13 6f           mov     r1,r15
-> 
-> R0 contains a pointer to the end of the gUSA region
-> R1 contains the saved stack pointer
-> R15 contains negative length of the gUSA region
-> 
-> When this region is interrupted by a signal, the kernel detects if
-> R15 >= -128U. If yes, the kernel rolls back PC to the beginning of the
-> region and restores SP by copying R1 to R15.
-> 
-> The problem happens if we are interrupted by a signal at address 4004c4.
-> R15 still holds the value -6, but the atomic value was already written by
-> an instruction at address 4004c2. In this situation we can't undo the
-> gUSA. The function unwind_gusa does nothing, the signal handler attempts
-> to push a signal frame to the address -6 and crashes.
-> 
-> This patch fixes it, so that if we are interrupted at the last instruction
-> in a gUSA region, we copy R1 to R15 to restore the correct stack pointer
-> and avoid crashing.
-> 
-> There's another bug: if we are interrupted in a delay slot, we save the
-> address of the instruction in the delay slot. We must save the address of
-> the previous instruction.
-> 
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> Cc: qemu-stable@nongnu.org
-> 
+> Signed-off-by: Jiajie Chen <c@jia.je>
 > ---
->   linux-user/sh4/signal.c |    8 ++++++++
+>   linux-user/elfload.c | 8 ++++++++
 >   1 file changed, 8 insertions(+)
-
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+> 
+> diff --git a/linux-user/elfload.c b/linux-user/elfload.c
+> index db75cd4b33..f11f25309e 100644
+> --- a/linux-user/elfload.c
+> +++ b/linux-user/elfload.c
+> @@ -1237,6 +1237,14 @@ static uint32_t get_elf_hwcap(void)
+>           hwcaps |= HWCAP_LOONGARCH_LAM;
+>       }
+>   
+> +    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LSX)) {
+> +        hwcaps |= HWCAP_LOONGARCH_LSX;
+> +    }
+> +
+> +    if (FIELD_EX32(cpu->env.cpucfg[2], CPUCFG2, LASX)) {
+> +        hwcaps |= HWCAP_LOONGARCH_LASX;
+> +    }
+> +
+>       return hwcaps;
+>   }
+>   
 
 Queued to linux-user-next.
 
