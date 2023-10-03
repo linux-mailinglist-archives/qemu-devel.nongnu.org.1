@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68637B69B8
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C3557B69DD
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:08:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnf2p-0001IN-My; Tue, 03 Oct 2023 09:02:38 -0400
+	id 1qnf7S-0003gU-9W; Tue, 03 Oct 2023 09:07:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf2Q-0001Eh-J8
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:02:18 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf7N-0003f2-Pc
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:07:18 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf2L-0006XD-71
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:02:07 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40652e570d9so9216175e9.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:02:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf7L-0007jH-Tz
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:07:17 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-32483535e51so969723f8f.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:07:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696338123; x=1696942923; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696338434; x=1696943234; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=+ntoH5H1R+uasf7s+GRiyJf8P8r1KZwX5k4NlR69cXw=;
- b=zVKxumEBdHGkfbq9d+LZoDAnWJK+QeBINFZfOTk1dxriuVo9aXagoLAnajIbK4KxlO
- X08KDKYgm6vWTLpBK/tQTdjLJDV9LKD1qqvFyHcNmlXWVpIhQSaWPZQecsfa2oF4JEG0
- Y24yaT4ZlOHK36IuUY3nFFtvRji/J8mwZiEN48dZVcqHnGNHzfEir6fXYWSkCEj4KFw5
- 05gYyNLOwB/BTSdLyWAJ5vxWd3xmeNJ2sP2FUP7J7PiDcE8gkqOGyRBKsSodXwj81Y58
- HcKJn8tl+8TSlwMI8R0kXF+2gwunapEqwK2+jI60vXD4UXxXCjUcUBo1WHpOb//VOlwD
- 5I/w==
+ bh=soXVNOY75BLalkQB99WYxBZlBCKNbFdp/x82QwhocGM=;
+ b=dut+lQG7LWmPoP4yYWNJovgTS/Rde7dclYSN3E00MT5LukRktSdr1Y+HMxuhfTnGcE
+ gLv4nOqkf/MJNSAVpZGKFyqgkvVXPX/BtMDPDaBdF7+sCLz+LEhUcgbBmCds+MmzYZNe
+ TYHXwuyUFddyfVvaQcYDjJ2yQWMj5LsKP8z5W3FlCXdzPt7njhHFx9sCBb0NKYx7zVA/
+ bQ+UYFW7AUHJhWbVeLY40fZ7aX8nn3RWgdCLOhE9+cMYBbAArwLOLwlTiu+ypQxjdPaX
+ DGJ0cf4I/XfgaWKmSNHqVpfFom2i6QfZQOvXmMTsZsvqLZ+Vbhue9W7rMPK2g3VI88GZ
+ A2gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696338123; x=1696942923;
+ d=1e100.net; s=20230601; t=1696338434; x=1696943234;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=+ntoH5H1R+uasf7s+GRiyJf8P8r1KZwX5k4NlR69cXw=;
- b=oJEdbbVoMGTDV/7LDhwLU5BvS/z0KgeGR7lLIjCG1bSkiEHtigtpNYUMxHX00ykZkI
- VdpfS+tVCGgmhIiB0pAQ+s7APymdEkcHLsN+SjOS3o0lNREvMnMSqiUXSMOEltdlgCmL
- HX8Wp50sima8nCzbNfJrkNVPMLN77tfljH4zRaGlNKxp/Tx59x+40ohc3AX+Sk1kNSvC
- 0K3nQeVw0yqWjQ/qqRbo0DngUSNadMvKbRKtPPmRQKcaZnKebTaojQ2on5wYk2eXjtrS
- 1h0rc0kw+vtqkDeaObXmkJTUBth44Xxm6jQcQj48cXF74GVjqfTtBehRaiCygQh0EmTd
- N4VQ==
-X-Gm-Message-State: AOJu0Ywi1xiFQ7NAEbWnePi8lXx46gY55hd/AIG2KVrXgVbw2HzsNzd3
- RdyNCQ2EdLYojyqfdcxL7xBLDg==
-X-Google-Smtp-Source: AGHT+IG6FQ2CdwPghPqMshC7I/sD4puNWNof+Sg3BfVlJWK1wr0ezrc8l64q5527vkjre34LHp9Kpw==
-X-Received: by 2002:a5d:5272:0:b0:31d:74f8:fae with SMTP id
- l18-20020a5d5272000000b0031d74f80faemr11641477wrc.71.1696338123045; 
- Tue, 03 Oct 2023 06:02:03 -0700 (PDT)
+ bh=soXVNOY75BLalkQB99WYxBZlBCKNbFdp/x82QwhocGM=;
+ b=nvew9DC60XhoOw49cM8O0LzeYEBGBewn+NQ8U8qH+ahlL0QxTQkEzlGoSs/SXk0lbM
+ YY1eZFLFGfH3ohoAVQiwb96AT3VkG3apEBC+Gt2WLRSiTV3y8ZaCe/zSB8mr2Q8Zbouv
+ qUHtMovRysuQsG9ifF4VI/R2/mRW8Rle+S7gTLWdSJCh2tqvWL0EuU7Jxc3WaHOyX/pk
+ rNkWZUb8H0KVEpHwXJQ0VLhH2Mw+6pK6oTHeLLIX64QxnDrmzqIXQe226q83ce8aROMQ
+ zMFMugL/aVstVPX4E01A2KF3I/xFYnptdnAlA5z81jJsT0qXsoRWjzsjwWiOaw2XV8pA
+ PefQ==
+X-Gm-Message-State: AOJu0YwzogIfw6D9SAt2b93j5aCJgd0YoUnMPKKvBVm7M+nQ1UuIpNnT
+ /MSMZ7hW9MRaCH0ADIDY58Duew==
+X-Google-Smtp-Source: AGHT+IE0Ozh6ksEkeYNOEobkS5+jSvo2nHFv8qZVw2+V/lI0AGjzPeIIDkT+Rm+c4RwRSAR1TCEB6Q==
+X-Received: by 2002:adf:d086:0:b0:31f:b91f:23ef with SMTP id
+ y6-20020adfd086000000b0031fb91f23efmr12922311wrh.51.1696338433090; 
+ Tue, 03 Oct 2023 06:07:13 -0700 (PDT)
 Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
  [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
- q15-20020adfcd8f000000b00327297abe31sm1538995wrj.68.2023.10.03.06.02.02
+ j16-20020a056000125000b00326f5d0ce0asm1558162wrx.21.2023.10.03.06.07.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 06:02:02 -0700 (PDT)
-Message-ID: <df7f0256-8220-302e-9897-c7221da23128@linaro.org>
-Date: Tue, 3 Oct 2023 15:02:01 +0200
+ Tue, 03 Oct 2023 06:07:12 -0700 (PDT)
+Message-ID: <92c8b00d-157e-6a03-7629-c331cf41ffc5@linaro.org>
+Date: Tue, 3 Oct 2023 15:07:10 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v6 19/19] build: Add update-linux-vdso makefile rule
+Subject: Re: [PATCH v6 18/19] linux-user/s390x: Add vdso
 Content-Language: en-US
 To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
 Cc: alex.bennee@linaro.org, laurent@vivier.eu
 References: <20230930021529.987950-1-richard.henderson@linaro.org>
- <20230930021529.987950-20-richard.henderson@linaro.org>
+ <20230930021529.987950-19-richard.henderson@linaro.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230930021529.987950-20-richard.henderson@linaro.org>
+In-Reply-To: <20230930021529.987950-19-richard.henderson@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
@@ -93,31 +93,154 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi Richard,
+
 On 30/9/23 04:15, Richard Henderson wrote:
-> This is not ideal, since it requires all cross-compilers
-> to be present rather than a simple subset.  But since it
-> is only run manually, should be good enough for now.
-> 
 > Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 > ---
->   Makefile | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+>   linux-user/s390x/vdso-asmoffset.h |   2 +
+>   linux-user/elfload.c              |   2 +
+>   linux-user/s390x/signal.c         |   4 +-
+>   linux-user/s390x/Makefile.vdso    |  11 +++++
+>   linux-user/s390x/meson.build      |   6 +++
+>   linux-user/s390x/vdso.S           |  61 ++++++++++++++++++++++++++
+>   linux-user/s390x/vdso.ld          |  69 ++++++++++++++++++++++++++++++
+>   linux-user/s390x/vdso.so          | Bin 0 -> 3464 bytes
+>   8 files changed, 152 insertions(+), 3 deletions(-)
+>   create mode 100644 linux-user/s390x/vdso-asmoffset.h
+>   create mode 100644 linux-user/s390x/Makefile.vdso
+>   create mode 100644 linux-user/s390x/vdso.S
+>   create mode 100644 linux-user/s390x/vdso.ld
+>   create mode 100755 linux-user/s390x/vdso.so
 
 
-> @@ -303,6 +310,9 @@ endif
->   	$(call print-help,distclean,Remove all generated files)
->   	$(call print-help,dist,Build a distributable tarball)
->   	@echo  ''
-> +	@echo  'Linux-user targets:'
-> +	$(call print-help,update-linux-vdso,Build linux-user vdso images)
+> diff --git a/linux-user/s390x/Makefile.vdso b/linux-user/s390x/Makefile.vdso
+> new file mode 100644
+> index 0000000000..e82bf9e29f
+> --- /dev/null
+> +++ b/linux-user/s390x/Makefile.vdso
+> @@ -0,0 +1,11 @@
+> +include $(BUILD_DIR)/tests/tcg/s390x-linux-user/config-target.mak
+> +
+> +SUBDIR = $(SRC_PATH)/linux-user/s390x
+> +VPATH += $(SUBDIR)
+> +
+> +all: $(SUBDIR)/vdso.so
+> +
+> +$(SUBDIR)/vdso.so: vdso.S vdso.ld vdso-asmoffset.h
+> +	$(CC) -o $@ -nostdlib -shared -Wl,-h,linux-vdso64.so.1 \
+> +	  -Wl,--build-id=sha1 -Wl,--hash-style=both \
+> +	  -Wl,-T,$(SUBDIR)/vdso.ld $<
+> diff --git a/linux-user/s390x/meson.build b/linux-user/s390x/meson.build
+> index 0781ccea1d..a7a25ed9ce 100644
+> --- a/linux-user/s390x/meson.build
+> +++ b/linux-user/s390x/meson.build
+> @@ -3,3 +3,9 @@ syscall_nr_generators += {
+>                        arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
+>                        output: '@BASENAME@_nr.h')
+>   }
+> +
+> +vdso_inc = gen_vdso.process('vdso.so', extra_args: [
+> +                                '-s', '__kernel_sigreturn',
+> +                                '-r', '__kernel_rt_sigreturn'
+> +                            ])
+> +linux_user_ss.add(when: 'TARGET_S390X', if_true: vdso_inc)
+> diff --git a/linux-user/s390x/vdso.S b/linux-user/s390x/vdso.S
+> new file mode 100644
+> index 0000000000..3332492477
+> --- /dev/null
+> +++ b/linux-user/s390x/vdso.S
+> @@ -0,0 +1,61 @@
+> +/*
+> + * s390x linux replacement vdso.
+> + *
+> + * Copyright 2023 Linaro, Ltd.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include <asm/unistd.h>
+> +#include "vdso-asmoffset.h"
+> +
+> +.macro endf name
+> +	.globl	\name
+> +	.type	\name, @function
+> +	.size	\name, . - \name
+> +.endm
+> +
+> +.macro raw_syscall n
+> +        .ifne	\n < 0x100
+> +	svc	\n
+> +	.else
+> +	lghi	%r1, \n
+> +	svc	0
+> +        .endif
+> +.endm
+> +
+> +.macro vdso_syscall name, nr
+> +\name:
+> +	.cfi_startproc
+> +	aghi	%r15, -(STACK_FRAME_OVERHEAD + 16)
+> +	.cfi_adjust_cfa_offset STACK_FRAME_OVERHEAD + 16
+> +	stg	%r14, STACK_FRAME_OVERHEAD(%r15)
+> +	.cfi_rel_offset %r14, STACK_FRAME_OVERHEAD
+> +	raw_syscall \nr
+> +	lg	%r14, STACK_FRAME_OVERHEAD(%r15)
+> +	aghi	%r15, STACK_FRAME_OVERHEAD + 16
+> +	.cfi_restore %r14
+> +	.cfi_adjust_cfa_offset -(STACK_FRAME_OVERHEAD + 16)
+> +	br	%r14
+> +	.cfi_endproc
+> +endf	\name
+> +.endm
+> +
+> +vdso_syscall __kernel_gettimeofday, __NR_gettimeofday
+> +vdso_syscall __kernel_clock_gettime, __NR_clock_gettime
+> +vdso_syscall __kernel_clock_getres, __NR_clock_getres
+> +vdso_syscall __kernel_getcpu, __NR_getcpu
+> +
+> +/*
+> + * TODO unwind info, though we're ok without it.
+> + * The kernel supplies bogus empty unwind info, and it is likely ignored
+> + * by all users.  Without it we get the fallback signal frame handling.
+> + */
+> +
+> +__kernel_sigreturn:
+> +	raw_syscall __NR_sigreturn
+> +endf	__kernel_sigreturn
+> +
+> +__kernel_rt_sigreturn:
+> +	raw_syscall __NR_rt_sigreturn
+> +endf	__kernel_rt_sigreturn
+> diff --git a/linux-user/s390x/vdso.ld b/linux-user/s390x/vdso.ld
+> new file mode 100644
+> index 0000000000..2a30ff382a
+> --- /dev/null
+> +++ b/linux-user/s390x/vdso.ld
+> @@ -0,0 +1,69 @@
+> +/*
+> + * Linker script for linux x86-64 replacement vdso.
+> + *
+> + * Copyright 2023 Linaro, Ltd.
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +VERSION {
+> +        LINUX_2.6.29 {
+> +        global:
+> +                __kernel_gettimeofday;
+> +                __kernel_clock_gettime;
+> +                __kernel_clock_getres;
+> +                __kernel_getcpu;
+> +                __kernel_restart_syscall;
 
-Maybe amend '(require all cross-compilers to be present)'? Otherwise,
+Where is __kernel_restart_syscall defined?
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-> +	@echo  ''
->   	@echo  'Test targets:'
->   	$(call print-help,check,Run all tests (check-help for details))
->   	$(call print-help,bench,Run all benchmarks)
+> +                __kernel_rt_sigreturn;
+> +                __kernel_sigreturn;
+> +        local: *;
+> +        };
+> +}
 
 
