@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA30C7B66BC
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 12:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A532F7B6733
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:06:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qncwZ-00031C-1j; Tue, 03 Oct 2023 06:47:59 -0400
+	id 1qndDX-0000aJ-G4; Tue, 03 Oct 2023 07:05:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qncwX-0002z8-5B
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:47:57 -0400
-Received: from mail-qt1-x832.google.com ([2607:f8b0:4864:20::832])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qncwV-0001vM-Gb
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 06:47:56 -0400
-Received: by mail-qt1-x832.google.com with SMTP id
- d75a77b69052e-41517088479so24364081cf.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 03:47:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696330074; x=1696934874; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=HKOznQ+rlBkDAM03Paol71OYGLN6rxAm3HvstM8nrzs=;
- b=jvCPiqLhwsporV6FUlAscCfE8qDVFTEg14XOBr1oMWyv52njpmQ1L92fiLM1cXT235
- PgAZR+furGWq8bS8GEmFEWHelGdpNB9dyaIAOS50GU5lho3z7c8uOoptFq4srCDtLmoy
- 8S9fv5S5b3gNt8c7DhySJsGA1KG0g354VdaJ5o2HpPVeZcV1KYi42jOmJImf1QREOSRj
- 5a2Vuw86AOr1JJSHVGdnoi0EkFoLDGPzwGtyJBdTwGmo7ea+nprFIK5osJuhnlNPp7Jl
- Pc4XkPRtgYsV0WRdsDPYZkU8KoeV/S7saIfnvNoKivEqn8FiVCmN9GblXl5tz+9vzKnt
- yX+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696330074; x=1696934874;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=HKOznQ+rlBkDAM03Paol71OYGLN6rxAm3HvstM8nrzs=;
- b=mr6cfyCHFCSPRJhmvYR5f5LxBFW0n/YtdwxftvMbha1jXPtZ6eJEVJnd+iZpHpdoHF
- jMbqqV3wDYKs7liL4Ai7kvDUP8PL9RRvtU3Yj7xtqhOKtlqnBb5g3UslkfQWDFIqC9/5
- N9NsoljOnG1nmVvqVPVtbkPDaLGzaxZDoDMQBNU+3X4uZz76PlNKXBWLyf/H0Ov9lSek
- 3SyB7WX8y2MdHgi3mvsISFP57HUtr17Hmf7uO9h46bQAQ2Uk/UPmlXYzFXHMdGSCDbdY
- bzrG99bgqzV3s9ISQ9ME95h6cimlNN8rReM9ze/XKTfkkjFp427amaETfOopM8ahNkqj
- LBDw==
-X-Gm-Message-State: AOJu0YyDC2unA0yrMoBTxmpXFEAgvMsLUywyhsG+Fei8ck5wLB4bQqGc
- QRKbuZj64nKxlWMgsb2kYnJlJZ7GrDUb9MslrCQ=
-X-Google-Smtp-Source: AGHT+IEWqSYN+aBFm6BvhsW0ULYjK95ra8YMNbWzmlImZfyRtJeZEmL8u2H0JNQlVgFhmlzQ+/wp4eQLJPB44cPfb2g=
-X-Received: by 2002:a05:622a:1883:b0:417:b06f:6103 with SMTP id
- v3-20020a05622a188300b00417b06f6103mr2437620qtc.21.1696330074288; Tue, 03 Oct
- 2023 03:47:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231003085644.1220326-1-marcandre.lureau@redhat.com>
- <20231003085644.1220326-6-marcandre.lureau@redhat.com>
- <7df9e19a-4ead-516c-21b3-04d8e899d7e7@redhat.com>
-In-Reply-To: <7df9e19a-4ead-516c-21b3-04d8e899d7e7@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Tue, 3 Oct 2023 14:47:42 +0400
-Message-ID: <CAJ+F1C+=5uUjdO-DY9iAR0zL+XoPmY7NBjgV3AwvJV6sRqTGfQ@mail.gmail.com>
-Subject: Re: [PATCH v3 5/5] hw/vfio: add ramfb migration support
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@redhat.com>
-Cc: qemu-devel@nongnu.org, Alex Williamson <alex.williamson@redhat.com>,
- lersek@redhat.com, 
- kraxel@redhat.com, Eduardo Habkost <eduardo@habkost.net>, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
- Yanan Wang <wangyanan55@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qndDR-0000WS-Gi; Tue, 03 Oct 2023 07:05:25 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qndDL-0005xc-9z; Tue, 03 Oct 2023 07:05:23 -0400
+Received: from lhrpeml100001.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0FMz0vlLz67G90;
+ Tue,  3 Oct 2023 19:05:03 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml100001.china.huawei.com (7.191.160.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Tue, 3 Oct 2023 12:05:11 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Tue, 3 Oct 2023 12:05:11 +0100
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
+ <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Thread-Topic: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Thread-Index: AQHZ8zPpn9wpwkR00kGhOJ6dnPJS7rA2mfgAgAFHXwA=
+Date: Tue, 3 Oct 2023 11:05:11 +0000
+Message-ID: <761a05a972ae4aa088b8e984bd89889f@huawei.com>
+References: <20230930001933.2660-1-salil.mehta@huawei.com>
+ <20230930001933.2660-2-salil.mehta@huawei.com>
+ <20231002165322.00003a2e@Huawei.com>
+In-Reply-To: <20231002165322.00003a2e@Huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.168.138]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::832;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x832.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,211 +91,249 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi
+Hi Jonathan,
 
-On Tue, Oct 3, 2023 at 2:17=E2=80=AFPM C=C3=A9dric Le Goater <clg@redhat.co=
-m> wrote:
->
-> On 10/3/23 10:56, marcandre.lureau@redhat.com wrote:
-> > From: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> >
-> > Add a "VFIODisplay" subsection whenever "x-ramfb-migrate" is turned on.
-> >
-> > Turn it off by default on machines <=3D 8.1 for compatibility reasons.
->
->
-> This change breaks linking on various platforms with :
->
-> /usr/bin/ld: libqemu-xtensa-softmmu.fa.p/hw_vfio_display.c.o:(.data.rel+0=
-x50): undefined reference to `ramfb_vmstate'
->
-> Some stubs updates are missing it seems..
->
-
-diff --git a/stubs/ramfb.c b/stubs/ramfb.c
-index 48143f3354..cf64733b10 100644
---- a/stubs/ramfb.c
-+++ b/stubs/ramfb.c
-@@ -2,6 +2,8 @@
- #include "qapi/error.h"
- #include "hw/display/ramfb.h"
-
-+const VMStateDescription ramfb_vmstate =3D {};
-+
-
-
-And I think we should also change the "needed" condition to:
-
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 4689f2e5c1..b327844764 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2613,7 +2613,7 @@ static bool vfio_display_needed(void *opaque)
-     VFIOPCIDevice *vdev =3D opaque;
-
-     /* the only thing that justifies the VFIODisplay sub-section atm */
--    return vdev->ramfb_migrate !=3D ON_OFF_AUTO_OFF;
-+    return vdev->enable_ramfb && vdev->ramfb_migrate !=3D ON_OFF_AUTO_OFF;
- }
-
-
-
-> Thanks,
->
-> C.
->
-> >
-> > Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
-> > ---
-> >   hw/vfio/pci.h     |  3 +++
-> >   hw/core/machine.c |  1 +
-> >   hw/vfio/display.c | 23 +++++++++++++++++++++++
-> >   hw/vfio/pci.c     | 32 ++++++++++++++++++++++++++++++++
-> >   4 files changed, 59 insertions(+)
-> >
-> > diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-> > index 2d836093a8..fd06695542 100644
-> > --- a/hw/vfio/pci.h
-> > +++ b/hw/vfio/pci.h
-> > @@ -173,6 +173,7 @@ struct VFIOPCIDevice {
-> >       bool no_kvm_ioeventfd;
-> >       bool no_vfio_ioeventfd;
-> >       bool enable_ramfb;
-> > +    OnOffAuto ramfb_migrate;
-> >       bool defer_kvm_irq_routing;
-> >       bool clear_parent_atomics_on_exit;
-> >       VFIODisplay *dpy;
-> > @@ -226,4 +227,6 @@ void vfio_display_reset(VFIOPCIDevice *vdev);
-> >   int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
-> >   void vfio_display_finalize(VFIOPCIDevice *vdev);
-> >
-> > +extern const VMStateDescription vfio_display_vmstate;
-> > +
-> >   #endif /* HW_VFIO_VFIO_PCI_H */
-> > diff --git a/hw/core/machine.c b/hw/core/machine.c
-> > index 47a07d1d9b..f2f8940a85 100644
-> > --- a/hw/core/machine.c
-> > +++ b/hw/core/machine.c
-> > @@ -32,6 +32,7 @@
-> >
-> >   GlobalProperty hw_compat_8_1[] =3D {
-> >       { "ramfb", "x-migrate", "off" },
-> > +    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" }
-> >   };
-> >   const size_t hw_compat_8_1_len =3D G_N_ELEMENTS(hw_compat_8_1);
-> >
-> > diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-> > index bec864f482..de5bf71dd1 100644
-> > --- a/hw/vfio/display.c
-> > +++ b/hw/vfio/display.c
-> > @@ -542,3 +542,26 @@ void vfio_display_finalize(VFIOPCIDevice *vdev)
-> >       vfio_display_edid_exit(vdev->dpy);
-> >       g_free(vdev->dpy);
-> >   }
-> > +
-> > +static bool migrate_needed(void *opaque)
-> > +{
-> > +    /*
-> > +     * If we are here, it's because vfio_display_needed(), which is on=
-ly true
-> > +     * when dpy->ramfb_migrate atm.
-> > +     *
-> > +     * If the migration condition is changed, we should check here if
-> > +     * ramfb_migrate is true. (this will need a way to lookup the asso=
-ciated
-> > +     * VFIOPCIDevice somehow, or fields to be moved, ..)
-> > +     */
-> > +    return true;
-> > +}
-> > +
-> > +const VMStateDescription vfio_display_vmstate =3D {
-> > +    .name =3D "VFIODisplay",
-> > +    .version_id =3D 1,
-> > +    .minimum_version_id =3D 1,
-> > +    .needed =3D migrate_needed,
-> > +    .fields =3D (VMStateField[]) {
-> > +        VMSTATE_STRUCT_POINTER(ramfb, VFIODisplay, ramfb_vmstate, RAMF=
-BState),
-> > +    }
-> > +};
-> > diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> > index 3b2ca3c24c..4689f2e5c1 100644
-> > --- a/hw/vfio/pci.c
-> > +++ b/hw/vfio/pci.c
-> > @@ -2608,6 +2608,25 @@ static bool vfio_msix_present(void *opaque, int =
-version_id)
-> >       return msix_present(pdev);
-> >   }
-> >
-> > +static bool vfio_display_needed(void *opaque)
-> > +{
-> > +    VFIOPCIDevice *vdev =3D opaque;
-> > +
-> > +    /* the only thing that justifies the VFIODisplay sub-section atm *=
-/
-> > +    return vdev->ramfb_migrate !=3D ON_OFF_AUTO_OFF;
-> > +}
-> > +
-> > +const VMStateDescription vmstate_vfio_display =3D {
-> > +    .name =3D "VFIOPCIDevice/VFIODisplay",
-> > +    .version_id =3D 1,
-> > +    .minimum_version_id =3D 1,
-> > +    .needed =3D vfio_display_needed,
-> > +    .fields =3D (VMStateField[]){
-> > +        VMSTATE_STRUCT_POINTER(dpy, VFIOPCIDevice, vfio_display_vmstat=
-e, VFIODisplay),
-> > +        VMSTATE_END_OF_LIST()
-> > +    }
-> > +};
-> > +
-> >   const VMStateDescription vmstate_vfio_pci_config =3D {
-> >       .name =3D "VFIOPCIDevice",
-> >       .version_id =3D 1,
-> > @@ -2616,6 +2635,10 @@ const VMStateDescription vmstate_vfio_pci_config=
- =3D {
-> >           VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
-> >           VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
-> >           VMSTATE_END_OF_LIST()
-> > +    },
-> > +    .subsections =3D (const VMStateDescription*[]) {
-> > +        &vmstate_vfio_display,
-> > +        NULL
-> >       }
-> >   };
-> >
-> > @@ -3275,6 +3298,14 @@ static void vfio_realize(PCIDevice *pdev, Error =
-**errp)
-> >           if (!vfio_migration_realize(vbasedev, errp)) {
-> >               goto out_deregister;
-> >           }
-> > +        if (vbasedev->enable_migration =3D=3D ON_OFF_AUTO_OFF) {
-> > +            if (vdev->ramfb_migrate =3D=3D ON_OFF_AUTO_AUTO) {
-> > +                vdev->ramfb_migrate =3D ON_OFF_AUTO_OFF;
-> > +            } else if (vdev->ramfb_migrate =3D=3D ON_OFF_AUTO_ON) {
-> > +                error_setg(errp, "x-ramfb-migrate requires migration")=
+> From: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Sent: Monday, October 2, 2023 4:53 PM
+> To: Salil Mehta <salil.mehta@huawei.com>
+> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
+> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
+> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
 ;
-> > +                goto out_deregister;
-> > +            }
+> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
+> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
+> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
+> alex.bennee@linaro.org; linux@armlinux.org.uk;
+> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
+m>
+> Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
+> {creation,parking} code
+>=20
+> On Sat, 30 Sep 2023 01:19:24 +0100
+> Salil Mehta <salil.mehta@huawei.com> wrote:
+>=20
+> > KVM vCPU creation is done once during the initialization of the VM when=
+ Qemu
+> > threads are spawned. This is common to all the architectures.
+> >
+> > Hot-unplug of vCPU results in destruction of the vCPU objects in QOM bu=
+t
+> > the KVM vCPU objects in the Host KVM are not destroyed and their repres=
+entative
+> > KVM vCPU objects/context in Qemu are parked.
+> >
+> > Refactor common logic so that some APIs could be reused by vCPU Hotplug=
+ code.
+> >
+> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+>=20
+> Hi Salil,
+>=20
+> A few trivial things inline, plus a question about why
+> cpu->cpu_index can now be used but kvm_arch_vcpu_id(cpu);
+> was previously needed.
+
+Good point. I used the API because it was returning
+'unsigned long' and it was being used across the archs.
+I thought maybe the size of the index could vary across
+archs. For example, for PowerPC above API returns vcpu_id
+which presumably could have different data type than
+an 'integer'.
+
+But after Alex's comment, I was made to believe that this
+assumption might not be correct and CPU index is an
+'integer' across archs and perhaps semantics of above
+API is not correct.
+
+But perhaps original code was functionally correct?
+
+
+> >  accel/kvm/kvm-all.c  | 63 +++++++++++++++++++++++++++++++++-----------
+> >  include/sysemu/kvm.h | 14 ++++++++++
+> >  2 files changed, 61 insertions(+), 16 deletions(-)
+> >
+> > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> > index ff1578bb32..b8c36ba50a 100644
+> > --- a/accel/kvm/kvm-all.c
+> > +++ b/accel/kvm/kvm-all.c
+> > @@ -80,7 +80,7 @@
+> >  #endif
+> >
+> >  struct KVMParkedVcpu {
+> > -    unsigned long vcpu_id;
+> > +    int vcpu_id;
+> >      int kvm_fd;
+> >      QLIST_ENTRY(KVMParkedVcpu) node;
+> >  };
+> > @@ -137,6 +137,7 @@ static QemuMutex kml_slots_lock;
+> >  #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
+> >
+> >  static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
+> > +static int kvm_get_vcpu(KVMState *s, int vcpu_id);
+> >
+> >  static inline void kvm_resample_fd_remove(int gsi)
+> >  {
+> > @@ -320,11 +321,49 @@ err:
+> >      return ret;
+> >  }
+> >
+> > +void kvm_park_vcpu(CPUState *cpu)
+> > +{
+> > +    int vcpu_id =3D cpu->cpu_index;
+> > +    struct KVMParkedVcpu *vcpu;
+> > +
+> > +    vcpu =3D g_malloc0(sizeof(*vcpu));
+> > +    vcpu->vcpu_id =3D vcpu_id;
+>=20
+> As vcpu_id is only used here why have the local variable?
+> Maybe that changes in later patches, in which case ignore this.
+>=20
+>     vcpu->vcpu_id =3D cpu->cpu_index;
+
+
+Yes, thanks.
+
+
+>=20
+> Why is kvm_arch_vcpu_id() not necessary here any more but was
+> before?
+
+
+Because I have now changed the type of vcpu_id from 'unsigned long'
+to an 'integer'.
+
+>=20
+> > +    vcpu->kvm_fd =3D cpu->kvm_fd;
+> > +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
+> > +}
+> > +
+> > +int kvm_create_vcpu(CPUState *cpu)
+> > +{
+> > +    int vcpu_id =3D cpu->cpu_index;
+>=20
+> See below. I'm not sure why it's safe not to use kvm_arch_vcpu_id()
+> Seems a few architectures have less than trivial implementations of
+> that function currently.
+
+I doubt this as well. Other architectures like PowerPC are returning
+different type?
+
+
+> > +    KVMState *s =3D kvm_state;
+> > +    int kvm_fd;
+> > +
+> > +    DPRINTF("kvm_create_vcpu\n");
+> > +
+> > +    /* check if the KVM vCPU already exist but is parked */
+> > +    kvm_fd =3D kvm_get_vcpu(s, vcpu_id);
+> > +    if (kvm_fd < 0) {
+> > +        /* vCPU not parked: create a new KVM vCPU */
+> > +        kvm_fd =3D kvm_vm_ioctl(s, KVM_CREATE_VCPU, vcpu_id);
+> > +        if (kvm_fd < 0) {
+> > +            error_report("KVM_CREATE_VCPU IOCTL failed for vCPU %d", v=
+cpu_id);
+> > +            return kvm_fd;
 > > +        }
-> >       }
-> >
-> >       vfio_register_err_notifier(vdev);
-> > @@ -3484,6 +3515,7 @@ static const TypeInfo vfio_pci_dev_info =3D {
-> >
-> >   static Property vfio_pci_dev_nohotplug_properties[] =3D {
-> >       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
-> > +    DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_mi=
-grate, ON_OFF_AUTO_AUTO),
-> >       DEFINE_PROP_END_OF_LIST(),
-> >   };
-> >
->
->
+> > +    }
+> > +
+> > +    cpu->vcpu_dirty =3D true;
+> > +    cpu->kvm_fd =3D kvm_fd;
+> > +    cpu->kvm_state =3D s;
+> > +    cpu->dirty_pages =3D 0;
+> > +    cpu->throttle_us_per_full =3D 0;
+>=20
+> Trivial but I would have maintained the order wrt to the code removed
+> below just to avoid a reviewer having to check the two bits of code
+> do the same thing after the reorder.
 
 
---=20
-Marc-Andr=C3=A9 Lureau
+I can do that. No problem.
+
+
+[...]
+
+> >  int kvm_init_vcpu(CPUState *cpu, Error **errp)
+> > @@ -395,19 +431,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+> >
+> >      trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+> >
+> > -    ret =3D kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
+> > +    ret =3D kvm_create_vcpu(cpu);
+>=20
+> The switch from kvm_arch_vcpu_id(cpu) to using
+> int vcpu_id =3D cpu->cpu_index;
+>=20
+> Seems like a functional change on some arch.
+
+
+Yes, but then we need to revert to original change inside the
+new kvm_create_vcpu() API.
+
+
+> >      if (ret < 0) {
+> > -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu fail=
+ed
+> (%lu)",
+> > +        error_setg_errno(errp, -ret,
+> > +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)"=
+,
+>=20
+> The rewrap of the lines above seems like an unrelated change.
+
+Function has changed from kvm_get_vcpu to kvm_create_vcpu
+
+[...]
+
+> > diff --git a/include/sysemu/kvm.h b/include/sysemu/kvm.h
+> > index ee9025f8e9..785f3ed083 100644
+> > --- a/include/sysemu/kvm.h
+> > +++ b/include/sysemu/kvm.h
+> > @@ -464,6 +464,20 @@ void kvm_set_sigmask_len(KVMState *s, unsigned int
+> sigmask_len);
+> >
+> >  int kvm_physical_memory_addr_from_host(KVMState *s, void *ram_addr,
+> >                                         hwaddr *phys_addr);
+> > +/**
+> > + * kvm_create_vcpu - Gets a parked KVM vCPU or creates a KVM vCPU
+> > + * @cpu:  QOM CPUState object for which KVM vCPU has to be
+> created/fetched.
+>=20
+> Extra space before QOM (same below)
+
+:)
+
+>=20
+> > + *
+> > + * @returns: 0 when success, errno (<0) when failed.
+> > + */
+> > +int kvm_create_vcpu(CPUState *cpu);
+>=20
+> Blank line here perhaps.
+
+Ok.
+
+
+>=20
+> > +/**
+> > + * kvm_park_vcpu - Gets a parked KVM vCPU if it exists
+> > + * @cpu:  QOM CPUState object for which parked KVM vCPU has to be
+> fetched.
+>=20
+> We aren't returning anything, so why fetch?
+
+copy-paste comment error, I think. Thanks!
+
+cheers
+Salil.
+
 
