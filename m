@@ -2,77 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B1D7B7277
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 22:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 216B17B727B
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 22:29:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnlxe-0004ma-4h; Tue, 03 Oct 2023 16:25:42 -0400
+	id 1qnm0m-0006Xm-Qr; Tue, 03 Oct 2023 16:28:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1qnlxb-0004lo-7I
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:25:39 -0400
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qnm0j-0006X9-5Q
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:28:54 -0400
+Received: from mail-pl1-x636.google.com ([2607:f8b0:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1qnlxZ-0000ij-14
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:25:38 -0400
-Received: by mail-lf1-x129.google.com with SMTP id
- 2adb3069b0e04-50336768615so1602001e87.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 13:25:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qnm0f-0001Xt-T6
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 16:28:52 -0400
+Received: by mail-pl1-x636.google.com with SMTP id
+ d9443c01a7336-1c1e3a4a06fso10462675ad.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 13:28:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696364734; x=1696969534;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ev38KSd3vQDsnmGeIX19w1k3uojaXHA2nr8aR5yY8/o=;
- b=FVf9LVus4Oa0iHOHeQnzKWRvFpNYBUPA4EfIVo8dH1hdSIVsmdwKigyvEmetQjiaZA
- 8Z2Xv1O95GX/wN5mFCSi1gsGQ7W5p039owqA9kp66twaWtOeLtEwqem5yXV0SLNoiPoK
- 7hNdUcbuRkasu24tw2HlqZ3CK/ghxsTqwnCMzcxTbc0n/CvSN9JdIh3FX6BljNiOVAZA
- FVSr5EgtTEjChVZulC82tyZjvRWchAvMjcvepmQFob1YPl8l3yEkS6JFHZt1cw5cuC7R
- OQEAjPTqXNfreSNNZAgVWvDgU6I/buy/XH+Z6rlzSj0P7gyrTXVNY2Gs69tqp3Y0jCeJ
- 3HSQ==
+ d=linaro.org; s=google; t=1696364927; x=1696969727; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0e4/JO57YQImFLHZPXmeKqU9ZF/znrSmUlXSYTqB6DQ=;
+ b=s+giaCL/ESrvpuZM/J4cI7BJoYvM/yDOeMeQ2+hiYvzOcJUcOm/42/P0N9kstZdHbp
+ 6DqVkVE0D0BeAZZy9JfQ1DCEzydlmKDg5WDs/iy48c8VU2q59dgqk7q5Nrou92gDbs1U
+ 4As9xLuMCVWnJ3Y17SQO4aH9+m+MTghncgpjiWIG0K/mVwLVYh9vztE81xk8Shk1rOfl
+ w2i1o5KUBTOTub8Tr6X9pCtxJx3yZ9ObXHwesoYBblkZX4ZXBAAst//UP0cfyQfwD/W6
+ HXTi705Gz6TF8HwBj6aZFbPNHcTLjtpU9uKQAEYAO563GnozI7/wEIpWpKnOxUD0C+aD
+ NiEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696364734; x=1696969534;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ev38KSd3vQDsnmGeIX19w1k3uojaXHA2nr8aR5yY8/o=;
- b=GYL9iLOFYWdtntMppM9/mRlUynk8NxuDTqEpjuFS0MRnmjfG3/MsQuB4e/5OULIFdO
- RyIkgDwc2xguLmiYxppyJf2YMLyhg4zSMpybhY0Zy6g73EGxZw/sSmESgeJib1jzQLXM
- KydsxARAhkyAXBwwb1JV1+6zjLGiLyzmaDo0HRVb3bQudpFTEr14EK5ImKcMHsNhJyxl
- XUcj5HMpsGzxQuPjhHc0OwGq2XU/v64CkxV1k4bV83VWN3/SQFQmDYYwsNnzvcfW6WiY
- 6Yjdnj4kd6oGNA/Hm1T5Q/tC5lVzslSHAESenAz70chd8J+9DTVOdZTXU6W5H+ZkuvTq
- 2Eww==
-X-Gm-Message-State: AOJu0YxiE//IABfSlSQhhayHgCTnSOTEnaAefWKbZ9/zIjJ0OM5sEOMl
- dj7sQlMoQPHm2mCYZ1JdD5Yd2ZrMX9M4A/N3QTKxow==
-X-Google-Smtp-Source: AGHT+IHu1HjJ1Gbek08gD6IxrqT41fUNgp6Kt+8A/PGcfvR+WdrL4aaX6pYa5tBWGZj5/012b8q6RhNWs1uBuWefoZ4=
-X-Received: by 2002:a05:6512:3706:b0:500:ce5f:7635 with SMTP id
- z6-20020a056512370600b00500ce5f7635mr217213lfr.54.1696364734157; Tue, 03 Oct
- 2023 13:25:34 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696364927; x=1696969727;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0e4/JO57YQImFLHZPXmeKqU9ZF/znrSmUlXSYTqB6DQ=;
+ b=Arw9axg2fqW9fTSjFqXkyLWCn5jK3If0EmzeZcKemspVUHKHoNuEHhnSNssWUfAKzv
+ ksU7qgHI0VAaC047rjxtJW+6EKYnfZWpEJfe2bd2RIYzR8e/xJfuOJ3F5QdCOp5dvgcR
+ 23JdHpqR3jV3i/s8Kub8LLgBf2jqb3RvIiCzcswmGBGSUje/PyvxWmrG0OsNjieBPKma
+ rJmrK6f4iXIv24jzuhn4uzNwivWvngwaQeCpbEKhQ0rKA+tFUyPW5R/G1tDiTsqjG75S
+ 1f6CBaSQXLzNgpuOBkvVcqrfjYTui72mF+ldMN4Gvt6fwlc381KsbfMSuzvqrt9NBwqG
+ 7+CA==
+X-Gm-Message-State: AOJu0YxDj9QJv4eMbIcSt4rQ0NpC4DbsXW/dRDkB0pqT2uG6XFY//DYW
+ Uk2CE2hdvCdHGtrMbt02es/Nm/0LzpFYQ6xv5ig=
+X-Google-Smtp-Source: AGHT+IGlYpw/julF/9EX1f0LgJOddZmdBIRdyvxHsO8rggRk42RH6DzIygimTyolRcAFO2Do6MJOcQ==
+X-Received: by 2002:a17:902:ec8d:b0:1c3:4210:623f with SMTP id
+ x13-20020a170902ec8d00b001c34210623fmr721821plg.13.1696364927620; 
+ Tue, 03 Oct 2023 13:28:47 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
+ by smtp.gmail.com with ESMTPSA id
+ 12-20020a170902c20c00b001b016313b1dsm2026664pll.86.2023.10.03.13.28.46
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Oct 2023 13:28:47 -0700 (PDT)
+Message-ID: <c2166e70-1e2d-0b9b-ba76-2ab27ef17c50@linaro.org>
+Date: Tue, 3 Oct 2023 13:28:45 -0700
 MIME-Version: 1.0
-References: <20231003125107.34859-1-rbradford@rivosinc.com>
- <20231003125107.34859-3-rbradford@rivosinc.com>
-In-Reply-To: <20231003125107.34859-3-rbradford@rivosinc.com>
-From: Atish Kumar Patra <atishp@rivosinc.com>
-Date: Tue, 3 Oct 2023 13:25:23 -0700
-Message-ID: <CAHBxVyHYJjvADsHPCJeheU4_8s1=DfyeApPyV8QpuPnTm2F=Gw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] target/riscv: Support discontinuous PMU counters
-To: Rob Bradford <rbradford@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::129;
- envelope-from=atishp@rivosinc.com; helo=mail-lf1-x129.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2] mips: fix abort on integer overflow
+Content-Language: en-US
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Aurelien Jarno
+ <aurelien@aurel32.net>, Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+ Huacai Chen <chenhuacai@kernel.org>, qemu-devel@nongnu.org
+References: <cfa02bbb-cdaf-4310-ac40-a2837d33c710@redhat.com>
+ <6148083e-ba07-798c-4cc3-6cf29236c53c@linaro.org>
+ <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <3ef979a8-3ee1-eb2d-71f7-d788ff88dd11@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::636;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x636.google.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,92 +99,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 3, 2023 at 5:51=E2=80=AFAM Rob Bradford <rbradford@rivosinc.com=
-> wrote:
->
-> There is no requirement that the enabled counters in the platform are
-> continuously numbered. Add a "pmu-mask" property that, if specified, can
-> be used to specify the enabled PMUs. In order to avoid ambiguity if
-> "pmu-mask" is specified then "pmu-num" must also match the number of
-> bits set in the mask.
->
-> Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> ---
->  target/riscv/cpu.c     |  1 +
->  target/riscv/cpu_cfg.h |  1 +
->  target/riscv/pmu.c     | 15 +++++++++++++--
->  3 files changed, 15 insertions(+), 2 deletions(-)
->
-> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> index 9d79c20c1a..b89b006a76 100644
-> --- a/target/riscv/cpu.c
-> +++ b/target/riscv/cpu.c
-> @@ -1817,6 +1817,7 @@ static void riscv_cpu_add_misa_properties(Object *c=
-pu_obj)
->  static Property riscv_cpu_extensions[] =3D {
->      /* Defaults for standard extensions */
->      DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
-> +    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, 0),
->      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
->      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
->      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-> diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> index 0e6a0f245c..40f7d970bc 100644
-> --- a/target/riscv/cpu_cfg.h
-> +++ b/target/riscv/cpu_cfg.h
-> @@ -124,6 +124,7 @@ struct RISCVCPUConfig {
->      bool ext_XVentanaCondOps;
->
->      uint8_t pmu_num;
-> +    uint32_t pmu_mask;
->      char *priv_spec;
->      char *user_spec;
->      char *bext_spec;
-> diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-> index 13801ccb78..f97e25a1f6 100644
-> --- a/target/riscv/pmu.c
-> +++ b/target/riscv/pmu.c
-> @@ -437,6 +437,13 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64=
-_t value, uint32_t ctr_idx)
->  void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
->  {
->      uint8_t pmu_num =3D cpu->cfg.pmu_num;
-> +    uint32_t pmu_mask =3D cpu->cfg.pmu_mask;
-> +
-> +    if (pmu_mask && ctpop32(pmu_mask) !=3D pmu_num) {
-> +        error_setg(errp, "Mismatch between number of enabled counters in=
- "
-> +                         "\"pmu-mask\" and \"pmu-num\"");
-> +        return;
-> +    }
->
+On 9/28/23 12:55, Mikulas Patocka wrote:
+> 
+> 
+> On Thu, 28 Sep 2023, Richard Henderson wrote:
+> 
+>> Just call force_sig_fault directly.
+>>
+>>
+>> r~
+> 
+> OK. Here I'm resending it.
+> 
+> Mikulas
+> 
+> 
+> 
+> From: Mikulas Patocka <mpatocka@redhat.com>
+> 
+> Qemu mips userspace emulation crashes with "qemu: unhandled CPU exception
+> 0x15 - aborting" when one of the integer arithmetic instructions detects
+> an overflow.
+> 
+> This patch fixes it so that it delivers SIGFPE with FPE_INTOVF instead.
+> 
+> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+> Cc: qemu-stable@nongnu.org
 
-Is that necessary for the default case? I am thinking of marking
-pmu-num as deprecated and pmu-mask
-as the preferred way of doing things as it is more flexible. There is
-no real benefit carrying both.
-The default pmu-mask value will change in that case.
-We can just overwrite pmu-num with ctpop32(pmu_mask) if pmu-mask is
-available. Thoughts ?
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 
->      if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
->          error_setg(errp, "Number of counters exceeds maximum available")=
-;
-> @@ -449,6 +456,10 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
->          return;
->      }
->
-> -    /* Create a bitmask of available programmable counters */
-> -    cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
-> +    /* Create a bitmask of available programmable counters if none suppl=
-ied */
-> +    if (pmu_mask) {
-> +        cpu->pmu_avail_ctrs =3D pmu_mask;
-> +    } else {
-> +        cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
-> +    }
->  }
-> --
-> 2.41.0
->
+and queued to linux-user-next.
+
+
+r~
 
