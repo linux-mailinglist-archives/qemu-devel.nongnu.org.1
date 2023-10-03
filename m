@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85C947B6973
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D487B6975
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:53:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnesJ-0007fL-Rf; Tue, 03 Oct 2023 08:51:43 -0400
+	id 1qnesL-0007gG-6t; Tue, 03 Oct 2023 08:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qnesH-0007dX-CN
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:51:41 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+ id 1qnesI-0007eF-4D
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:51:42 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qnesB-00049F-IE
+ id 1qnesD-00049V-Nx
  for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:51:41 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-4066692ad35so8509325e9.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:51:35 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-405361bb94eso9174175e9.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:51:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696337494; x=1696942294;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696337496; x=1696942296;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=xXhilRIuHBWjF+VFkRUlon5++d01L6abqEDqyII/pAU=;
- b=QkU2sB0TBc47gN2rDCZ12etMJhPyFh2Uq1PBDLrkEmnmG65ER4Ra5xnk/jDi9VnKni
- WlJs93JovqPH24M+eVifEyUeaBPVfCfhf9AJCrJ4H5tJVZhLHi8tjjvF95Nh4G3ehMkL
- 0pg5qBjXv3nUh4KZgiZzTK9aOTXj0w/FbR8oJVyJoOTVdmc+Gz8aGobgUrqnYBNFBg4t
- Wc/Y4GykFfz5S2zkYCbVoVYsTnM8yYi9UzS4Jn6bXir9owUQUvx8dc5lreU7RGtRI0Qu
- 3liNe41TSky0IgX/Ac1h3trWG/sO2RieNHQ8GhVHG7arhgaYJCUNmfW41mq7d45cE9Nq
- iysg==
+ bh=A202aSukY2P5Lap0mZ3nGZWrKZpOd3+Lv+2bAHWsO9A=;
+ b=hnqBiAlGNVFQqwlkxyIilsA4jmtWWIgvmssiXyJBtlS6pBcP7YkBiwEciHOWePykKg
+ T6jagh9sRQQ3h3GUfeJv/jX0VEV6lBHTXPrFF79011SUtcoVMKcZK7lbIfHa5Vezahoi
+ 2eDjDvu1UdNZuYd6Eq8U6b9XmFKGlKsuc49ZOMZKUCVEyv+6meoQLJUlbtiV2wYA/ZKx
+ zZdGvD9rcEfRc5IKF9EDW3fAb7FmsNZ9DJdu2wDRb2BJJNoMOg+GiuQe91J2Bq4hbCnL
+ q4QCj/Dlim75ThlD3o5VGyebcWvmGEHgi4v2/wKe0Px9ovoAOs5vO2hGGj6vwrN2wGVd
+ 9W7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696337494; x=1696942294;
+ d=1e100.net; s=20230601; t=1696337496; x=1696942296;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=xXhilRIuHBWjF+VFkRUlon5++d01L6abqEDqyII/pAU=;
- b=UjaH9YU62sL5ize/Zae5t8RuGbJqT4YHDsmkgqX/H+qT8kAKUrN3ACgZIMpIGRCRvJ
- YEaB9cQ2JbNA2urtYTk0+ZlbQZ0/ud9L8Hw5E2hMXsV/KiCjAs2LpRnhVhTn6gLGI2uq
- 3VRHXudrFi+0o9JdpNkXPp4PGJ5lOc4uR/dvCGl6mCWI5hFnv8ijgSgz2ccyOH933SvO
- FPWspGaXuG7VMjzJwEkBWDQG4lp0WNruz8kCt1OApM8LHTu+9zkjxqGHMZQ/X2e175Ov
- mrIofOLcJ2u0/Q/I0D01najiZ7UlwehmCQ23NhUdWfGj1Q9JmiWrKSBCUfh6Rn5kDldu
- Sl0Q==
-X-Gm-Message-State: AOJu0YzIChWm21dnMRw4P4R+RqN++M4ApzBi3bGeEMkjmmYR6sy/RMxA
- HeiVZOJhgbCgXz50el3NvRebe3FY13D3m60qbnbIHaHB
-X-Google-Smtp-Source: AGHT+IH6GVpej7xZn6Yxzg3GgzCjaVGBNreSLcpEFF6eIYJiWRLcVbHcMZQRLS5UmIoB1ZL9SgAY3A==
-X-Received: by 2002:a1c:720c:0:b0:3fe:5501:d293 with SMTP id
- n12-20020a1c720c000000b003fe5501d293mr11881208wmc.30.1696337493748; 
- Tue, 03 Oct 2023 05:51:33 -0700 (PDT)
+ bh=A202aSukY2P5Lap0mZ3nGZWrKZpOd3+Lv+2bAHWsO9A=;
+ b=SuN306cU0NDEUwrahMpLwlmv94reehoz0bcevU4yy2+pxzhXTth9AzS7Rom/sFB6nt
+ rYuxMUsCmjn5ONxTryVbMMEJeU2+IuH2NXNJJKgpBUZINVCfks3ca+HWERAdLxVBvMZz
+ +FrC5Hg1131XUgl+NP3rBpV8fKbggaH31ZhbxADf2Bby6l52Hymt6n/JXd3ERSuGCTXH
+ q3KDassGoaM37ECz0e3XtKTyprjkjPAVMGW14t2cWsMWmLkoLcIpZ6GD15klrVgHvsbF
+ AEmUGaYwaoGGOGvxvh+KNuxR6MFy22nOy7KklSh3QZc/a5m+YlURx7EcMjLoIh9YzqtF
+ Tj8Q==
+X-Gm-Message-State: AOJu0Yyypm0E8dEo24nKevX9uhX3swvdOZFlJQOzq7zPXVqnsmW+1v/T
+ LIN6Gr3sU/wsdf/LvEbfnZuIflZT+z9Z+KS0QSmcHA==
+X-Google-Smtp-Source: AGHT+IF6VtE3A9iaXtbSyp+cqmsT6L/6e5EbrSzfN9H4OOXMw5+5monjJIXDAx9Mr8qCEVb6UyGJGQ==
+X-Received: by 2002:a05:600c:3b0e:b0:406:53ab:a9af with SMTP id
+ m14-20020a05600c3b0e00b0040653aba9afmr12265757wms.10.1696337495744; 
+ Tue, 03 Oct 2023 05:51:35 -0700 (PDT)
 Received: from rockhopper.ba.rivosinc.com (214.11.169.217.in-addr.arpa.
  [217.169.11.214]) by smtp.gmail.com with ESMTPSA id
- l21-20020a7bc455000000b0040531f5c51asm1240335wmi.5.2023.10.03.05.51.33
+ l21-20020a7bc455000000b0040531f5c51asm1240335wmi.5.2023.10.03.05.51.35
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 05:51:33 -0700 (PDT)
+ Tue, 03 Oct 2023 05:51:35 -0700 (PDT)
 From: Rob Bradford <rbradford@rivosinc.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, atishp@rivosinc.com, palmer@dabbelt.com,
  alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn,
  dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com,
  Rob Bradford <rbradford@rivosinc.com>
-Subject: [PATCH 1/3] target/riscv: Propagate error from PMU setup
-Date: Tue,  3 Oct 2023 13:49:35 +0100
-Message-ID: <20231003125107.34859-2-rbradford@rivosinc.com>
+Subject: [PATCH 2/3] target/riscv: Support discontinuous PMU counters
+Date: Tue,  3 Oct 2023 13:49:36 +0100
+Message-ID: <20231003125107.34859-3-rbradford@rivosinc.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231003125107.34859-1-rbradford@rivosinc.com>
 References: <20231003125107.34859-1-rbradford@rivosinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=rbradford@rivosinc.com; helo=mail-wm1-x329.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -94,94 +94,74 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-More closely follow the QEMU style by returning an Error and propagating
-it there is an error relating to the PMU setup.
-
-Further simplify the function by removing the num_counters parameter as
-this is available from the passed in cpu pointer.
+There is no requirement that the enabled counters in the platform are
+continuously numbered. Add a "pmu-mask" property that, if specified, can
+be used to specify the enabled PMUs. In order to avoid ambiguity if
+"pmu-mask" is specified then "pmu-num" must also match the number of
+bits set in the mask.
 
 Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
 ---
- target/riscv/cpu.c |  8 +++++++-
- target/riscv/pmu.c | 19 +++++++++----------
- target/riscv/pmu.h |  3 ++-
- 3 files changed, 18 insertions(+), 12 deletions(-)
+ target/riscv/cpu.c     |  1 +
+ target/riscv/cpu_cfg.h |  1 +
+ target/riscv/pmu.c     | 15 +++++++++++++--
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
 diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 4140899c52..9d79c20c1a 100644
+index 9d79c20c1a..b89b006a76 100644
 --- a/target/riscv/cpu.c
 +++ b/target/riscv/cpu.c
-@@ -1488,7 +1488,13 @@ static void riscv_cpu_realize_tcg(DeviceState *dev, Error **errp)
-     }
+@@ -1817,6 +1817,7 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+ static Property riscv_cpu_extensions[] = {
+     /* Defaults for standard extensions */
+     DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
++    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, 0),
+     DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf, false),
+     DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+     DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+index 0e6a0f245c..40f7d970bc 100644
+--- a/target/riscv/cpu_cfg.h
++++ b/target/riscv/cpu_cfg.h
+@@ -124,6 +124,7 @@ struct RISCVCPUConfig {
+     bool ext_XVentanaCondOps;
  
-     if (cpu->cfg.pmu_num) {
--        if (!riscv_pmu_init(cpu, cpu->cfg.pmu_num) && cpu->cfg.ext_sscofpmf) {
-+        riscv_pmu_init(cpu, &local_err);
-+        if (local_err != NULL) {
-+            error_propagate(errp, local_err);
-+            return;
-+        }
-+
-+        if (cpu->cfg.ext_sscofpmf) {
-             cpu->pmu_timer = timer_new_ns(QEMU_CLOCK_VIRTUAL,
-                                           riscv_pmu_timer_cb, cpu);
-         }
+     uint8_t pmu_num;
++    uint32_t pmu_mask;
+     char *priv_spec;
+     char *user_spec;
+     char *bext_spec;
 diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-index 36f6307d28..13801ccb78 100644
+index 13801ccb78..f97e25a1f6 100644
 --- a/target/riscv/pmu.c
 +++ b/target/riscv/pmu.c
-@@ -434,22 +434,21 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
- }
- 
- 
--int riscv_pmu_init(RISCVCPU *cpu, int num_counters)
-+void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+@@ -437,6 +437,13 @@ int riscv_pmu_setup_timer(CPURISCVState *env, uint64_t value, uint32_t ctr_idx)
+ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
  {
--    if (num_counters > (RV_MAX_MHPMCOUNTERS - 3)) {
--        return -1;
-+    uint8_t pmu_num = cpu->cfg.pmu_num;
+     uint8_t pmu_num = cpu->cfg.pmu_num;
++    uint32_t pmu_mask = cpu->cfg.pmu_mask;
 +
-+    if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-+        error_setg(errp, "Number of counters exceeds maximum available");
++    if (pmu_mask && ctpop32(pmu_mask) != pmu_num) {
++        error_setg(errp, "Mismatch between number of enabled counters in "
++                         "\"pmu-mask\" and \"pmu-num\"");
 +        return;
++    }
+ 
+     if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
+         error_setg(errp, "Number of counters exceeds maximum available");
+@@ -449,6 +456,10 @@ void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+         return;
      }
  
-     cpu->pmu_event_ctr_map = g_hash_table_new(g_direct_hash, g_direct_equal);
-     if (!cpu->pmu_event_ctr_map) {
--        /* PMU support can not be enabled */
--        qemu_log_mask(LOG_UNIMP, "PMU events can't be supported\n");
--        cpu->cfg.pmu_num = 0;
--        return -1;
-+        error_setg(errp, "Unable to allocate PMU event hash table");
-+        return;
-     }
- 
-     /* Create a bitmask of available programmable counters */
--    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, num_counters);
--
--    return 0;
-+    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
+-    /* Create a bitmask of available programmable counters */
+-    cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
++    /* Create a bitmask of available programmable counters if none supplied */
++    if (pmu_mask) {
++        cpu->pmu_avail_ctrs = pmu_mask;
++    } else {
++        cpu->pmu_avail_ctrs = MAKE_32BIT_MASK(3, pmu_num);
++    }
  }
-diff --git a/target/riscv/pmu.h b/target/riscv/pmu.h
-index 2bfb71ba87..88e0713296 100644
---- a/target/riscv/pmu.h
-+++ b/target/riscv/pmu.h
-@@ -17,13 +17,14 @@
-  */
- 
- #include "cpu.h"
-+#include "qapi/error.h"
- 
- bool riscv_pmu_ctr_monitor_instructions(CPURISCVState *env,
-                                         uint32_t target_ctr);
- bool riscv_pmu_ctr_monitor_cycles(CPURISCVState *env,
-                                   uint32_t target_ctr);
- void riscv_pmu_timer_cb(void *priv);
--int riscv_pmu_init(RISCVCPU *cpu, int num_counters);
-+void riscv_pmu_init(RISCVCPU *cpu, Error **errp);
- int riscv_pmu_update_event_map(CPURISCVState *env, uint64_t value,
-                                uint32_t ctr_idx);
- int riscv_pmu_incr_ctr(RISCVCPU *cpu, enum riscv_pmu_event_idx event_idx);
 -- 
 2.41.0
 
