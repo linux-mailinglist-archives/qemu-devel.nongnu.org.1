@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3467B5DFB
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 02:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A4D7B5DFE
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 02:12:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnT0I-0001yu-0R; Mon, 02 Oct 2023 20:11:10 -0400
+	id 1qnT1L-0002pa-Nl; Mon, 02 Oct 2023 20:12:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qnT0F-0001yD-Nj
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 20:11:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qnT1J-0002pN-Oa
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 20:12:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qnT0E-0008UK-9Z
- for qemu-devel@nongnu.org; Mon, 02 Oct 2023 20:11:07 -0400
+ (Exim 4.90_1) (envelope-from <gshan@redhat.com>) id 1qnT1C-00008h-HT
+ for qemu-devel@nongnu.org; Mon, 02 Oct 2023 20:12:13 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696291865;
+ s=mimecast20190719; t=1696291925;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9moNmM+DaQ6xrnDbiLNN/vIK+QYde3QGFbF7hxRLbOc=;
- b=IdfrABsfTwDfA+XT6eVh3SOlFeGoFM+frgKe77R5dwByBzRJeAL6hd1E3kFa3FMvL92mGF
- ZUOYEnNrTB890BeakIegYnZnwPlJD9HYDKBExEz/sf6mm+Cmgga3Eq/NAT3M0+4QOwBgL/
- mnNJeFs3/E1FU5cFCdBxpYtOh4/6P7I=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=vOalhfNb/eZqIOQ/CLiocaKQNVnKGkw2Uypd4hV8Y80=;
+ b=a4MIKHyRuvGE9lg+8wnd6NyOL48Y9CYXWaSmHkWD9E5lgW8p7kJImgsHHk8R/gyhk6f0Kz
+ Z806ybgm9+zCLqZQ0Cvsf1QzDMIkTF+i+c2sZyidsYGSsOoracEBwTVGrJNJihT7C8ThYs
+ yfxMBpnSuarjlJQwJa9Tbd2ThGUzkkY=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-Xp1mMc_ePjiqSZQ5rgGs7g-1; Mon, 02 Oct 2023 20:10:52 -0400
-X-MC-Unique: Xp1mMc_ePjiqSZQ5rgGs7g-1
-Received: by mail-pl1-f200.google.com with SMTP id
- d9443c01a7336-1c0e161e18fso27965255ad.1
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 17:10:52 -0700 (PDT)
+ us-mta-693-rY34z3grMKKvFF-LbuoyUQ-1; Mon, 02 Oct 2023 20:11:54 -0400
+X-MC-Unique: rY34z3grMKKvFF-LbuoyUQ-1
+Received: by mail-pf1-f198.google.com with SMTP id
+ d2e1a72fcca58-690bb524a97so335301b3a.2
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 17:11:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696291851; x=1696896651;
+ d=1e100.net; s=20230601; t=1696291913; x=1696896713;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=9moNmM+DaQ6xrnDbiLNN/vIK+QYde3QGFbF7hxRLbOc=;
- b=e/yVqFA/wtfdfoyjOj/XwK3VcYVZZ6WNNA8d8lBUlBAwVn4jg9RQQzmZOGyGGqQFkQ
- T4RGUiK2GHSuBhfsw8P9juAGYxO8OcUOgtNHnEYLwqOuKsxbwDnzd5TPd43DxVIW6B1h
- 8G5KcKvi5QcOY2T5K77phkgOJcKHOpzbt2bU01azHu8VmM/JKNEGRHPDTydsc6BV0Hl1
- 97TQcncmTomXTGgk3FckpP3Ae5c4rtbISOAcDoxR6kcaJcBt1y9ci9lcunEoIjb+Qn9m
- vqsuEgxcyjCKJKyGQ87qrYBeofp3ZbnKN/2+B5nMwBjMuBdrP09Va3GQlEYiLnHgnMZr
- skUw==
-X-Gm-Message-State: AOJu0Yz4C3mOC4E+Xuz3Nu+U25wR+cUmmmTjs220aLKAH1rLg+xVS1C2
- CCM/kDBw4tHO2zFPU1M40b6sJl1DcdU4KoU8NOHlnIUeD7YejwJQB5jN8rrl/1LqVnRc2WE8f2n
- DKuRUJso7dFF4J74=
-X-Received: by 2002:a17:903:2283:b0:1c0:bcbc:d66 with SMTP id
- b3-20020a170903228300b001c0bcbc0d66mr1975300plh.7.1696291851571; 
- Mon, 02 Oct 2023 17:10:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzqlw5/j7ueD0f29wlohvNcFaFO1mH75DtY75nD6Km9BR8wuqyZ195DO+LZiKrzAniO313Uw==
-X-Received: by 2002:a17:903:2283:b0:1c0:bcbc:d66 with SMTP id
- b3-20020a170903228300b001c0bcbc0d66mr1975268plh.7.1696291851286; 
- Mon, 02 Oct 2023 17:10:51 -0700 (PDT)
+ bh=vOalhfNb/eZqIOQ/CLiocaKQNVnKGkw2Uypd4hV8Y80=;
+ b=I81kXu+/F8yJl1VK0FR2dXbBCpopVcFnrDHMbxEru0oQEJo1792V4cjBso3gaVGLeZ
+ MtKIURMKhmyeKiboJnokuxO1c9hbLVpuuj4Cy7OPnEUAAZPi5Y1ogwEwZe+hbmVRD00i
+ WLqxENX/RT3buQhdwV9dt9eluHdYa1THykAF8vZS0UnLdlrKzYwwB88SDufbXnCi1jKO
+ xAshWYnENGf88mJI0o3nLE4We2NATrzYVFvZmPSY2TOWYKummqR2j0XDuxlAva8I8G/G
+ ax7U5/xZg8REMJlvmk94MNj60jkWYZ7s7m73CaVHA1P5rUxI/Y9+HHAlxFZ7FOGodz7c
+ BX6g==
+X-Gm-Message-State: AOJu0Yz6WVEAwV9t6pQxM7eZbpmjylIUVEyMRcegsz6WOE9PWlYfuXGQ
+ eTZf4mNdrmpvDTcpUbiZbrLqf0aqCN8MSMo4FhPlEz77hBRjadaF1fT09ANn9RVYUQ6lH7+piOA
+ fKuQsH4OwUC3dWiw=
+X-Received: by 2002:a05:6a00:1393:b0:68e:3d83:e501 with SMTP id
+ t19-20020a056a00139300b0068e3d83e501mr16145939pfg.13.1696291913628; 
+ Mon, 02 Oct 2023 17:11:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGI2ajdr1Xftqn8qtjxZj640Tqob8MVk/8QE5lNFlwsGy4f9x6ElB76KcAm7XD7YIeggJX8kg==
+X-Received: by 2002:a05:6a00:1393:b0:68e:3d83:e501 with SMTP id
+ t19-20020a056a00139300b0068e3d83e501mr16145914pfg.13.1696291913373; 
+ Mon, 02 Oct 2023 17:11:53 -0700 (PDT)
 Received: from ?IPV6:2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5?
  ([2001:8003:e5b0:9f00:dbbc:1945:6e65:ec5])
  by smtp.gmail.com with ESMTPSA id
- b9-20020a170903228900b001b896686c78sm46059plh.66.2023.10.02.17.10.40
+ e26-20020aa78c5a000000b00693390caf39sm72190pfd.113.2023.10.02.17.11.42
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 02 Oct 2023 17:10:51 -0700 (PDT)
-Message-ID: <810a4999-9954-55f0-9408-b86b36e9e18b@redhat.com>
-Date: Tue, 3 Oct 2023 10:10:38 +1000
+ Mon, 02 Oct 2023 17:11:53 -0700 (PDT)
+Message-ID: <4134b7ab-7a76-77b9-e8c0-7e6d75e0ad50@redhat.com>
+Date: Tue, 3 Oct 2023 10:11:40 +1000
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cpu scan
+Subject: Re: [PATCH V2 07/10] hw/acpi: Update ACPI GED framework to support
+ vCPU Hotplug
 Content-Language: en-US
 To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org
@@ -84,21 +85,20 @@ Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
  jiakernel2@gmail.com, maobibo@loongson.cn, lixianglai@loongson.cn,
  linuxarm@huawei.com
 References: <20230930001933.2660-1-salil.mehta@huawei.com>
- <20230930001933.2660-7-salil.mehta@huawei.com>
+ <20230930001933.2660-8-salil.mehta@huawei.com>
 From: Gavin Shan <gshan@redhat.com>
-In-Reply-To: <20230930001933.2660-7-salil.mehta@huawei.com>
+In-Reply-To: <20230930001933.2660-8-salil.mehta@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=gshan@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=gshan@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.321, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ NICE_REPLY_A=-2.321, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,20 +115,16 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/30/23 10:19, Salil Mehta wrote:
-> OSPM evaluates _EVT method to map the event. The cpu hotplug event eventually
-> results in start of the cpu scan. Scan figures out the cpu and the kind of
-> event(plug/unplug) and notifies it back to the guest.
-> 
-> The change in this patch updates the GED AML _EVT method with the call to
-> \\_SB.CPUS.CSCN which will do above.
+> ACPI GED shall be used to convey to the guest kernel about any CPU hot-(un)plug
+> events. Therefore, existing ACPI GED framework inside QEMU needs to be enhanced
+> to support CPU hotplug state and events.
 > 
 > Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 > ---
->   hw/acpi/generic_event_device.c | 4 ++++
->   include/hw/acpi/cpu_hotplug.h  | 2 ++
->   2 files changed, 6 insertions(+)
+>   hw/acpi/generic_event_device.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
 > 
 
 Reviewed-by: Gavin Shan <gshan@redhat.com>
