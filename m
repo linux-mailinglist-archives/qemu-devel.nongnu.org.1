@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848457B7540
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DBA57B7510
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:36:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnovG-00044P-JW; Tue, 03 Oct 2023 19:35:26 -0400
+	id 1qnovH-00046A-CU; Tue, 03 Oct 2023 19:35:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qnovD-00041v-3R
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qnovD-00042e-Lp
  for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:35:23 -0400
-Received: from mail-io1-xd30.google.com ([2607:f8b0:4864:20::d30])
+Received: from mail-io1-xd2d.google.com ([2607:f8b0:4864:20::d2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qnovA-0006qR-9Y
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:35:22 -0400
-Received: by mail-io1-xd30.google.com with SMTP id
- ca18e2360f4ac-79545e141c7so14837939f.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 16:35:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <imp@bsdimp.com>) id 1qnovC-0006uM-16
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:35:23 -0400
+Received: by mail-io1-xd2d.google.com with SMTP id
+ ca18e2360f4ac-79fa2dbd793so64824839f.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 16:35:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696376119; x=1696980919;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696376120; x=1696980920;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=C7VRFr4gHk91MagU57mxTPEhJmPz5+DN76M+3LJyxsA=;
- b=3FeLSFVnivgvxTLodcbyaV+PWwF17To8sjkZNQOHcHsQbwlXIcgPrJy7utrrTlpoXe
- 7ZXFd9qv98yyHZyrsXMc+QaEAPxfvYuSs9+g8QU6W3H2+bufLV/ajA4vREAG1ok+Oi4a
- nEi/v5ilVvff3T9rvyx6hgC1V5mxmf4ChVqDyXdixsj1PK6g+v7Hr1So/2FotGfnQbvV
- amFHrpbZJ5a4EclFJWO998RfeLPdfNf2BNE7odHmj8AZhEtFFliC0fM4Z+QedEvxJ8Hw
- f5zn4JvNBc8QgNRCEXybkWaYzE6dG/a15goolbPPv9ean9Ysw0dIDwwVQcEmwxeNwpUZ
- 1VhA==
+ bh=+wZeMIbIZWAaczukeU9kCYH0/v8NZZkLUqmuVnhx+go=;
+ b=FWPY3CwqhWgXLpXpus/On1XD0gH5NJj52UzR60NxL8YFuQbtqcFB5iXM7xm6toBynu
+ 2z7y0rivH5H3kcedc4gL32xfu2330MgloaZJD9Pv+OBP8qyw6rhviruWYAtkFXoqgjb4
+ H4iTF/gNXMwnBVVagYii0pFOSoYL44OYl7avm/EowlmckifyiC8PkXlxRd7XeI6uVf2G
+ voAjuD3zMKVxOgRjA3j1c2AY8ckOGvVfySc4sYb6evZPA795otr2zaU8Q6NM5OFEDNze
+ nYFSVYZdw7tuzns2LHzSUeKvI+pkO/N46flc1I/Ab9gVxBtQf62lC8+QutJr/8Mk1FiU
+ W+pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696376119; x=1696980919;
+ d=1e100.net; s=20230601; t=1696376120; x=1696980920;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=C7VRFr4gHk91MagU57mxTPEhJmPz5+DN76M+3LJyxsA=;
- b=mWlVoKL2pp9eCztqOn2LM2O7KlzRNXq/F6gmwc+1CJ+WCN7XTK3x0hCqFBqGtvKxnu
- 3GLSd4Yzly2OcYZI6P80/vkklulPUUvjZUJLqTtcyYmXyY2d6PMVG9xTf/q1D8oKAMIL
- ylPonGqw1coHPdkW8JoGL4hUWOQEU1hU8GMBHcOvrN0VjixGt8rbT4ZyLS3Gd5CNz0yl
- BO9QA0v0uKYPQT1tfmiAr6aTnpEfMBmjdni2aiovoctW+iE8RBxe7Km3XcQeCkBfPowA
- mNgZVVqLZIsFsbRAUeP6d5AOj+yfhy3oV7otQp3bkb4dJnmoHsKVDBzVfdVlM65TlDeU
- 6QUA==
-X-Gm-Message-State: AOJu0Yxlk3RRMoQ+E8V+QKSExKWcfDge93siritPXJYLFegbXXRt1YMu
- 6E8ApOPAULj7AQj3BbWSlr1ObXuGa04/Zq9fhfkygg==
-X-Google-Smtp-Source: AGHT+IEbBdmKKfbHwDq0CPzm+u8y/OaUYYygPT0FNV9jBQxLPC6xSVZkVB8UBcNwtiso3ONvfera8w==
-X-Received: by 2002:a05:6602:2c4c:b0:79f:e800:ea95 with SMTP id
- x12-20020a0566022c4c00b0079fe800ea95mr4015629iov.3.1696376118823; 
- Tue, 03 Oct 2023 16:35:18 -0700 (PDT)
+ bh=+wZeMIbIZWAaczukeU9kCYH0/v8NZZkLUqmuVnhx+go=;
+ b=tH7sXQrjnKnUFsQUcZBZINOMox2wey8ozkaba9oNmxX+XM4Z5QTDSKX+eFth3oDz//
+ NSZIpgzOvrtwhncZRQTo0+o2lFX7BShR6mKr4j98STVsbqGnS8z0to10tR34w27KMsSu
+ 9UMsh9fRjK+y1fNLYdWavoXPvuGBim8RLrZvm4DPXKZVBHKFMAANyElv78PdiGY6d/HW
+ IVVWacb8aIwA6qpDr1zPVLv+iXHffpuf8NVDrGo2/aNXyWCZtEjJgGbYbHQpWSQdYYq+
+ nGex1s/M1oPJenpWZkycYRV2jpvwzX0kgIpHNFoL40jkOAL5I/gKfoxpS/KMykrDiy5f
+ vKIQ==
+X-Gm-Message-State: AOJu0YzgD4kdnWPsd2xZy7NRwtGKsF20xdNhXcNtZA7K/u6Fe2N+8lFU
+ 8tw8PsDaPyF8EkUamUYGdiODcdHDzui1S/cxk1pYaA==
+X-Google-Smtp-Source: AGHT+IF06LilV5Cn0XrVWSHUAxItPfBp/84dkxgYmTo6aI8/AMpUgKW8GXT7rmL/pg+EOHUs+44A6w==
+X-Received: by 2002:a6b:fd01:0:b0:790:c3d0:8f87 with SMTP id
+ c1-20020a6bfd01000000b00790c3d08f87mr834956ioi.19.1696376119699; 
+ Tue, 03 Oct 2023 16:35:19 -0700 (PDT)
 Received: from dune.bsdimp.com (50-253-99-174-static.hfc.comcastbusiness.net.
  [50.253.99.174]) by smtp.gmail.com with ESMTPSA id
  w25-20020a6b4a19000000b0079fa1a7cd36sm593596iob.30.2023.10.03.16.35.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 16:35:18 -0700 (PDT)
+ Tue, 03 Oct 2023 16:35:19 -0700 (PDT)
 From: Warner Losh <imp@bsdimp.com>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
@@ -65,16 +65,16 @@ Cc: Thomas Huth <thuth@redhat.com>, Laurent Vivier <laurent@vivier.eu>,
  Kyle Evans <kevans@freebsd.org>, Stacey Son <sson@FreeBSD.org>,
  Karim Taha <kariem.taha2.7@gmail.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/51] bsd-user: Implement getrusage(2).
-Date: Tue,  3 Oct 2023 17:31:37 -0600
-Message-ID: <20231003233215.95557-14-imp@bsdimp.com>
+Subject: [PULL 14/51] bsd-user: Implement getrlimit(2) and setrlimit(2)
+Date: Tue,  3 Oct 2023 17:31:38 -0600
+Message-ID: <20231003233215.95557-15-imp@bsdimp.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231003233215.95557-1-imp@bsdimp.com>
 References: <20231003233215.95557-1-imp@bsdimp.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::d30;
- envelope-from=imp@bsdimp.com; helo=mail-io1-xd30.google.com
+Received-SPF: none client-ip=2607:f8b0:4864:20::d2d;
+ envelope-from=imp@bsdimp.com; helo=mail-io1-xd2d.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -102,44 +102,94 @@ Signed-off-by: Stacey Son <sson@FreeBSD.org>
 Signed-off-by: Karim Taha <kariem.taha2.7@gmail.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Reviewed-by: Warner Losh <imp@bsdimp.com>
-Message-Id: <20230925182425.3163-14-kariem.taha2.7@gmail.com>
+Message-Id: <20230925182425.3163-15-kariem.taha2.7@gmail.com>
 ---
- bsd-user/bsd-proc.h           | 13 +++++++++++++
- bsd-user/freebsd/os-syscall.c |  4 ++++
- 2 files changed, 17 insertions(+)
+ bsd-user/bsd-proc.h           | 59 +++++++++++++++++++++++++++++++++++
+ bsd-user/freebsd/os-syscall.c |  8 +++++
+ 2 files changed, 67 insertions(+)
 
 diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
-index cb7c69acb0c..133c1b0eaf8 100644
+index 133c1b0eaf8..38d1324034c 100644
 --- a/bsd-user/bsd-proc.h
 +++ b/bsd-user/bsd-proc.h
-@@ -124,4 +124,17 @@ static inline abi_long do_bsd_getlogin(abi_long arg1, abi_long arg2)
+@@ -137,4 +137,63 @@ static inline abi_long do_bsd_getrusage(abi_long who, abi_ulong target_addr)
      return ret;
  }
  
-+/* getrusage(2) */
-+static inline abi_long do_bsd_getrusage(abi_long who, abi_ulong target_addr)
++/* getrlimit(2) */
++static inline abi_long do_bsd_getrlimit(abi_long arg1, abi_ulong arg2)
 +{
 +    abi_long ret;
-+    struct rusage rusage;
++    int resource = target_to_host_resource(arg1);
++    struct target_rlimit *target_rlim;
++    struct rlimit rlim;
 +
-+    ret = get_errno(getrusage(who, &rusage));
++    switch (resource) {
++    case RLIMIT_STACK:
++        rlim.rlim_cur = target_dflssiz;
++        rlim.rlim_max = target_maxssiz;
++        ret = 0;
++        break;
++
++    case RLIMIT_DATA:
++        rlim.rlim_cur = target_dfldsiz;
++        rlim.rlim_max = target_maxdsiz;
++        ret = 0;
++        break;
++
++    default:
++        ret = get_errno(getrlimit(resource, &rlim));
++        break;
++    }
 +    if (!is_error(ret)) {
-+        host_to_target_rusage(target_addr, &rusage);
++        if (!lock_user_struct(VERIFY_WRITE, target_rlim, arg2, 0)) {
++            return -TARGET_EFAULT;
++        }
++        target_rlim->rlim_cur = host_to_target_rlim(rlim.rlim_cur);
++        target_rlim->rlim_max = host_to_target_rlim(rlim.rlim_max);
++        unlock_user_struct(target_rlim, arg2, 1);
++    }
++    return ret;
++}
++
++/* setrlimit(2) */
++static inline abi_long do_bsd_setrlimit(abi_long arg1, abi_ulong arg2)
++{
++    abi_long ret;
++    int resource = target_to_host_resource(arg1);
++    struct target_rlimit *target_rlim;
++    struct rlimit rlim;
++
++    if (RLIMIT_STACK == resource) {
++        /* XXX We should, maybe, allow the stack size to shrink */
++        ret = -TARGET_EPERM;
++    } else {
++        if (!lock_user_struct(VERIFY_READ, target_rlim, arg2, 1)) {
++            return -TARGET_EFAULT;
++        }
++        rlim.rlim_cur = target_to_host_rlim(target_rlim->rlim_cur);
++        rlim.rlim_max = target_to_host_rlim(target_rlim->rlim_max);
++        unlock_user_struct(target_rlim, arg2, 0);
++        ret = get_errno(setrlimit(resource, &rlim));
 +    }
 +    return ret;
 +}
 +
  #endif /* !BSD_PROC_H_ */
 diff --git a/bsd-user/freebsd/os-syscall.c b/bsd-user/freebsd/os-syscall.c
-index 44cbf52f087..5d8693ed550 100644
+index 5d8693ed550..5cb60862303 100644
 --- a/bsd-user/freebsd/os-syscall.c
 +++ b/bsd-user/freebsd/os-syscall.c
-@@ -243,6 +243,10 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
-         ret = do_bsd_getlogin(arg1, arg2);
+@@ -247,6 +247,14 @@ static abi_long freebsd_syscall(void *cpu_env, int num, abi_long arg1,
+         ret = do_bsd_getrusage(arg1, arg2);
          break;
  
-+    case TARGET_FREEBSD_NR_getrusage: /* getrusage(2) */
-+        ret = do_bsd_getrusage(arg1, arg2);
++    case TARGET_FREEBSD_NR_getrlimit: /* getrlimit(2) */
++        ret = do_bsd_getrlimit(arg1, arg2);
++        break;
++
++    case TARGET_FREEBSD_NR_setrlimit: /* setrlimit(2) */
++        ret = do_bsd_setrlimit(arg1, arg2);
 +        break;
 +
  
