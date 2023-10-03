@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070737B70F3
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0557B70E9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:33:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnkB3-00088g-Vi; Tue, 03 Oct 2023 14:31:26 -0400
+	id 1qnkB2-00088O-3a; Tue, 03 Oct 2023 14:31:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAx-00087h-P8
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:20 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1qnkAw-00087B-C4
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:18 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAu-0001hL-Lc
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:19 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c62d61dc96so9275535ad.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:16 -0700 (PDT)
+ id 1qnkAu-0001hT-AA
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:18 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c0ecb9a075so9569675ad.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696357874; x=1696962674; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696357875; x=1696962675; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4tSjnCwo3pjRgK09vqvCcwYk3QeyeC6thVIvJ/sf7yQ=;
- b=uiXs2b2kPfZBv5r3POhKAuAqyI0JfNAnA+wvBvbcJmOd4opSmIMu0JcrZ6HcUTaxBL
- NtKYXEN9YUcnxArYNvs6yTWWiGxAOaNnfLVALi7YUjUlAxLMHEXokWeC2NmksBe44JLf
- qtJnVG8Mi0oQspKmalHnBwEc2Ig+fDeWXW/elmEAh7IBrSa1+ZmWdI4zaAeZ0V7vY+A/
- CaLHR5jPTROPfPq16GC9ItMiCmc4DL+rMZiX1T0pQn0ne7Dr+Tk92mar9tDo6RGc+ENO
- YyzTIL27VsgpEKvFDKEC1l5LryFSg7MlyYHYhZv7bGiskomZYPXg9wHU4gp0U7zqJYch
- 4Dcg==
+ bh=dU5PrzEh8RB8pR6X9cq1FoT7Iyzl/Xdd//HRPtAH/3k=;
+ b=os2wkwbnjEnWR4VqxbOz+4Zhia/xT6n4++S+MjvIXmKMXc4qpifcDw7jIUVRPl0LnW
+ J+1apyn3b9dwqhmuBvjPXH506DOuK9cwTZeXDpQbBpxPwb/iULjsmuEPisqm31U3AewB
+ Ywu1K8gDsUept5M209FR/7kwa3VTpBR9TrUJW5jea2YGsEAk7wTrCvZrVk/B0Yyo9o6i
+ TFjmsGKGhlo/bftwcegmz17/s6TCg8tYBbeFWJfqKXaTt1CEfNCMxp1xV7Nn/yEeRprm
+ E0SW5yCHKN6J/VM4UtIPMkJJs0gOSSxsUa3IQkj6Vua/MkdvzNpO39J3UcgwrWCnkfXK
+ 5vDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696357874; x=1696962674;
+ d=1e100.net; s=20230601; t=1696357875; x=1696962675;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4tSjnCwo3pjRgK09vqvCcwYk3QeyeC6thVIvJ/sf7yQ=;
- b=cnJtr0Vv2pgNphR1NefLrNZ0pBkgGo3gRQ1HZZqBc7pNhy5h2mkrhEx2TM6k5yKNN+
- 50BNFJsbqdFXR+JweBtASLtqRRECO14XBVLJDrkaeLm3ZcJZaWAu8l+/gGZ4ndfVe/ES
- yEHJB6mWTJJ+01sbHHPhJR8yBcUgyC+uV1aAMNF44nO8CrU1irM/EPNHXauAf0NBgpv0
- BZowhJOZbhqauAGSz55J/+FrphlvfUfYzGVSMK1Xk6UXzwqiGpxTh7PX9L3qJ3iuxWm3
- VUjtrMkYrTAaaWo28zfRat3hJJMYDk1OTeNGGFrOD2QCYNvNUrhurSx7KnkvAnL1yZOp
- ahVw==
-X-Gm-Message-State: AOJu0Yz5/ueZEXOAvgDlK0SbOklsGd11wfihG5E7miJdwNjWE7VxVGNf
- ft4HLjZD9bro7rGrG2VdQto9O5x94efKja2ETw8=
-X-Google-Smtp-Source: AGHT+IEN27Rx0b/945NcKwSK0UxmhyhDqnnmxyLKGLqTZV6mb0g617Uk9XIGyUNYBNwl0o+Xi49New==
-X-Received: by 2002:a17:902:ee89:b0:1c1:f5a6:bdfa with SMTP id
- a9-20020a170902ee8900b001c1f5a6bdfamr389810pld.7.1696357874205; 
- Tue, 03 Oct 2023 11:31:14 -0700 (PDT)
+ bh=dU5PrzEh8RB8pR6X9cq1FoT7Iyzl/Xdd//HRPtAH/3k=;
+ b=ZXVis++V0SPFE58TLzvokPoiLMI91DPeLv5/lH0VFmgQ2qetu0VaIRZqsaQ1ySiy6O
+ MBPtSEQ7zkjWH1A9EwITRq04wAVjPaoNOyrEIW0WucTyEBMVP5ah/eIqXkQY8te49CBw
+ j2ZQPUSo0+wTF3FfN8xb7ky1CT7W9+odRy/qf3vyiIowEAOVWjW3uskiM4WO3XkShS2F
+ PU3XaYlqz9Crrk6OtagIjS6kI6B6IjBWQqih+Os9lGAAk/nMlcnSReTtGrpKEskQbd4r
+ sP+X2dROv2OxzLHqVyK5e5vw+V+a6a6iUF8hAcLccn6ZkVOGqoE2yN28e+82XFI8Mz8b
+ 95Lg==
+X-Gm-Message-State: AOJu0YzZ4DATKISnuWSnGGY+fDOuC+Iej0xGPebiEgcqxX5/sDFQkgw3
+ gF1W3LJZlwzWpWlI6YY73wR7KkeSSzqKY/nDXAc=
+X-Google-Smtp-Source: AGHT+IEAzuUI0ayhTfiVbttnuYL8ngf3eaoDwAHk2JkHOGe6HytwB9D180PHWPeF5TChjtnhbSJX2g==
+X-Received: by 2002:a17:902:720a:b0:1bc:7001:6e62 with SMTP id
+ ba10-20020a170902720a00b001bc70016e62mr291906plb.35.1696357875010; 
+ Tue, 03 Oct 2023 11:31:15 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.13
+ g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 11:31:13 -0700 (PDT)
+ Tue, 03 Oct 2023 11:31:14 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com, "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v17 15/16] accel/tcg: Add info [tb-list|tb] commands to HMP
-Date: Tue,  3 Oct 2023 11:30:57 -0700
-Message-Id: <20231003183058.1639121-16-richard.henderson@linaro.org>
+Cc: fei2.wu@intel.com
+Subject: [PATCH v17 16/16] accel/tcg: Dump hot TBs at the end of the execution
+Date: Tue,  3 Oct 2023 11:30:58 -0700
+Message-Id: <20231003183058.1639121-17-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003183058.1639121-1-richard.henderson@linaro.org>
 References: <20231003183058.1639121-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,216 +90,261 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>
+From: Fei Wu <fei2.wu@intel.com>
 
-These commands allow the exploration of TBs generated by the TCG.
-Understand which one hotter, with more guest/host instructions,
-and examine the guest code.
+Dump the hottest TBs if -d tb_stats:{all,jit,exec}[:dump_num_at_exit]
 
-The goal of this command is to allow the dynamic exploration of
-TCG behavior and code quality. Therefore, for now, a corresponding
-QMP command is not worthwhile.
-
-Example of output:
-
-------------------------------
-
-TB id:0 | phys:0xa21f562e virt:0x0000000000000000 flags:0x00028010 0 inv/1
-        | exec:6171503732/0 guest inst cov:94.77%
-        | trans:1 ints: g:8 op:28 op_opt:24 spills:0
-        | h/g (host bytes / guest insts): 37.000000
-
-0xa21f562e:  00002797      auipc         a5,8192           # 0xa21f762e
-0xa21f5632:  a2278793      addi          a5,a5,-1502
-0xa21f5636:  639c          ld            a5,0(a5)
-0xa21f5638:  00178713      addi          a4,a5,1
-0xa21f563c:  00002797      auipc         a5,8192           # 0xa21f763c
-0xa21f5640:  a1478793      addi          a5,a5,-1516
-0xa21f5644:  e398          sd            a4,0(a5)
-0xa21f5646:  b7e5          j             -24               # 0xa21f562e
-
-Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 Signed-off-by: Fei Wu <fei2.wu@intel.com>
-[rth: Split out of a larger patch]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- accel/tcg/tb-context.h |  2 +
- accel/tcg/monitor.c    | 91 ++++++++++++++++++++++++++++++++++++++++++
- accel/tcg/tb-stats.c   |  2 +
- hmp-commands-info.hx   | 14 +++++++
- 4 files changed, 109 insertions(+)
+ bsd-user/bsd-proc.h    |  2 ++
+ include/tcg/tb-stats.h | 10 +++++++++-
+ accel/tcg/monitor.c    |  8 +++++---
+ accel/tcg/tb-stats.c   | 27 ++++++++++++++++++++++++++-
+ linux-user/exit.c      | 10 ++++++----
+ softmmu/runstate.c     |  2 ++
+ stubs/tb-stats.c       |  6 +++++-
+ util/log.c             | 20 ++++++++++++++++----
+ 8 files changed, 71 insertions(+), 14 deletions(-)
 
-diff --git a/accel/tcg/tb-context.h b/accel/tcg/tb-context.h
-index 4b1abe392b..29d87200b6 100644
---- a/accel/tcg/tb-context.h
-+++ b/accel/tcg/tb-context.h
-@@ -35,6 +35,8 @@ struct TBContext {
-     /* statistics */
-     unsigned tb_flush_count;
-     unsigned tb_phys_invalidate_count;
-+
-+    GPtrArray *last_search;
- };
+diff --git a/bsd-user/bsd-proc.h b/bsd-user/bsd-proc.h
+index 0e1d461c4c..84b52b399a 100644
+--- a/bsd-user/bsd-proc.h
++++ b/bsd-user/bsd-proc.h
+@@ -21,12 +21,14 @@
+ #define BSD_PROC_H_
  
- extern TBContext tb_ctx;
+ #include <sys/resource.h>
++#include "tcg/tb-stats.h"
+ 
+ /* exit(2) */
+ static inline abi_long do_bsd_exit(void *cpu_env, abi_long arg1)
+ {
+     gdb_exit(arg1);
+     qemu_plugin_user_exit();
++    tb_stats_dump_atexit();
+     _exit(arg1);
+ 
+     return 0;
+diff --git a/include/tcg/tb-stats.h b/include/tcg/tb-stats.h
+index edee73b63b..d3cca94f84 100644
+--- a/include/tcg/tb-stats.h
++++ b/include/tcg/tb-stats.h
+@@ -41,11 +41,12 @@ extern uint32_t tb_stats_enabled;
+ /**
+  * tb_stats_init:
+  * @flags: TB_STATS_* flags to enable.
++ * @atexit: count of hottest tbs to log.
+  *
+  * Initialize translation block statistics, enabling @flags.
+  * If @flags is 0, disable all statistics.
+  */
+-void tb_stats_init(uint32_t flags);
++void tb_stats_init(uint32_t flags, uint32_t atexit);
+ 
+ /*
+  * This struct stores statistics such as execution count of the
+@@ -154,4 +155,11 @@ gint tb_stats_sort_by_hg(gconstpointer, gconstpointer);
+  */
+ GString *tb_stats_dump(TBStatistics *s, unsigned index);
+ 
++/**
++ * tb_stats_dump_atexit:
++ *
++ * Log any requested TBs at end of execution.
++ */
++void tb_stats_dump_atexit(void);
++
+ #endif /* TCG_TB_STATS_H */
 diff --git a/accel/tcg/monitor.c b/accel/tcg/monitor.c
-index 370fea883c..1be3218715 100644
+index 1be3218715..7719583654 100644
 --- a/accel/tcg/monitor.c
 +++ b/accel/tcg/monitor.c
-@@ -15,12 +15,14 @@
- #include "qapi/qmp/qdict.h"
- #include "monitor/monitor.h"
- #include "monitor/hmp.h"
-+#include "monitor/hmp-target.h"
- #include "sysemu/cpus.h"
- #include "sysemu/cpu-timers.h"
- #include "sysemu/tcg.h"
- #include "tcg/tcg.h"
- #include "tcg/tb-stats.h"
- #include "exec/tb-flush.h"
-+#include "disas/disas.h"
- #include "internal-common.h"
- #include "tb-context.h"
- 
-@@ -303,10 +305,99 @@ static void hmp_tbstats(Monitor *mon, const QDict *qdict)
-                           RUN_ON_CPU_HOST_INT(flags));
- }
- 
-+static void hmp_info_tblist(Monitor *mon, const QDict *qdict)
-+{
-+    int max;
-+    const char *sortedby_str;
-+    GCompareFunc sort;
-+    GPtrArray *array;
-+
-+    if (!tcg_enabled()) {
-+        monitor_printf(mon, "Only available with accel=tcg\n");
-+        return;
-+    }
-+    if (!tb_stats_enabled) {
-+        monitor_printf(mon, "TB statistics not being recorded\n");
-+        return;
-+    }
-+
-+    max = qdict_get_try_int(qdict, "number", 10);
-+    sortedby_str = qdict_get_try_str(qdict, "sortedby");
-+
-+    if (sortedby_str == NULL || g_str_equal(sortedby_str, "hotness")) {
-+        sort = tb_stats_sort_by_coverage;
-+    } else if (g_str_equal(sortedby_str, "hg")) {
-+        sort = tb_stats_sort_by_hg;
-+    } else if (g_str_equal(sortedby_str, "spills")) {
-+        sort = tb_stats_sort_by_spills;
-+    } else {
-+        monitor_printf(mon, "Sort options are: hotness, hg, spills\n");
-+        return;
-+    }
-+
-+    g_ptr_array_unref(tb_ctx.last_search);
-+    tb_ctx.last_search = NULL;
-+
-+    array = tb_stats_collect(max, sort);
-+    max = array->len;
-+    if (max == 0) {
-+        monitor_printf(mon, "No TB statistics collected\n");
-+        g_ptr_array_free(array, true);
-+        return;
-+    }
-+
-+    for (int i = 0; i < max; ++i) {
-+        TBStatistics *s = g_ptr_array_index(array, i);
-+        g_autoptr(GString) buf = tb_stats_dump(s, i);
-+        monitor_puts(mon, buf->str);
-+    }
-+
-+    /* Remember for the next "info tb" */
-+    tb_ctx.last_search = array;
-+}
-+
-+static void hmp_info_tb(Monitor *mon, const QDict *qdict)
-+{
-+    GPtrArray *array;
-+    int id;
-+
-+    if (!tcg_enabled()) {
-+        monitor_printf(mon, "Only available with accel=tcg\n");
-+        return;
-+    }
-+
-+    array = g_ptr_array_ref(tb_ctx.last_search);
-+    if (!array) {
-+        monitor_printf(mon, "No TB statistics collected\n");
-+        return;
-+    }
-+
-+    id = qdict_get_int(qdict, "id");
-+    if (id < array->len) {
-+        TBStatistics *s = g_ptr_array_index(array, id);
-+        g_autoptr(GString) buf = tb_stats_dump(s, id);
-+        monitor_puts(mon, buf->str);
-+
-+        for (int i = s->tbs->len - 1; i >= 0; --i) {
-+            TranslationBlock *tb = g_ptr_array_index(s->tbs, i);
-+            if (!(tb->cflags & CF_INVALID)) {
-+                monitor_disas(mon, mon_get_cpu(mon), s->phys_pc,
-+                              tb->icount, MON_DISAS_GRA);
-+            }
-+        }
-+    } else {
-+        monitor_printf(mon, "TB %d information not recorded\n", id);
-+    }
-+
-+    g_ptr_array_unref(array);
-+}
-+
- static void hmp_tcg_register(void)
+@@ -245,7 +245,7 @@ static void tb_stats_init_safe(CPUState *cpu, run_on_cpu_data icmd)
  {
-     monitor_register_hmp_info_hrt("jit", qmp_x_query_jit);
-     monitor_register_hmp_info_hrt("opcount", qmp_x_query_opcount);
-     monitor_register_hmp("tb_stats", false, hmp_tbstats);
-+    monitor_register_hmp("tb-list", true, hmp_info_tblist);
-+    monitor_register_hmp("tb", true, hmp_info_tb);
+     uint32_t flags = icmd.host_int;
+ 
+-    tb_stats_init(flags);
++    tb_stats_init(flags, 0);
+     tb_flush(cpu);
  }
- type_init(hmp_tcg_register);
-diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
-index b2c9445b67..0f84c14a88 100644
---- a/accel/tcg/tb-stats.c
-+++ b/accel/tcg/tb-stats.c
-@@ -43,6 +43,8 @@ void tb_stats_init(uint32_t flags)
-                      CODE_GEN_HTABLE_SIZE, QHT_MODE_AUTO_RESIZE);
-         }
-     } else {
+ 
+@@ -335,8 +335,10 @@ static void hmp_info_tblist(Monitor *mon, const QDict *qdict)
+         return;
+     }
+ 
+-    g_ptr_array_unref(tb_ctx.last_search);
+-    tb_ctx.last_search = NULL;
++    if (tb_ctx.last_search) {
 +        g_ptr_array_unref(tb_ctx.last_search);
 +        tb_ctx.last_search = NULL;
++    }
+ 
+     array = tb_stats_collect(max, sort);
+     max = array->len;
+diff --git a/accel/tcg/tb-stats.c b/accel/tcg/tb-stats.c
+index 0f84c14a88..62a6228799 100644
+--- a/accel/tcg/tb-stats.c
++++ b/accel/tcg/tb-stats.c
+@@ -8,10 +8,12 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qemu/xxhash.h"
++#include "qemu/log.h"
+ #include "tcg/tb-stats.h"
+ #include "tb-context.h"
+ 
+ uint32_t tb_stats_enabled;
++static uint32_t tb_stats_atexit;
+ 
+ static bool tb_stats_cmp(const void *ap, const void *bp)
+ {
+@@ -34,7 +36,7 @@ static void tb_stats_free(void *p, uint32_t hash, void *userp)
+     g_free(s);
+ }
+ 
+-void tb_stats_init(uint32_t flags)
++void tb_stats_init(uint32_t flags, uint32_t atexit)
+ {
+     tb_stats_enabled = flags;
+     if (flags) {
+@@ -48,6 +50,14 @@ void tb_stats_init(uint32_t flags)
          qht_iter(&tb_ctx.stats, tb_stats_free, NULL);
          qht_destroy(&tb_ctx.stats);
      }
-diff --git a/hmp-commands-info.hx b/hmp-commands-info.hx
-index f5b37eb74a..8e9b64cf7f 100644
---- a/hmp-commands-info.hx
-+++ b/hmp-commands-info.hx
-@@ -262,6 +262,20 @@ ERST
-         .params     = "",
-         .help       = "show dynamic compiler info",
-     },
-+    {
-+        .name       = "tb-list",
-+        .args_type  = "number:i?,sortedby:s?",
-+        .params     = "[number sortedby]",
-+        .help       = "show a [number] translated blocks sorted by [sortedby]"
-+                      "sortedby opts: hotness hg spills",
-+    },
-+    {
-+        .name       = "tb",
-+        .args_type  = "id:i",
-+        .params     = "id",
-+        .help       = "show information about one translated block by id,"
-+                      "from the result of a previous \"info tb-list\"",
-+    },
- #endif
++
++    /*
++     * This function is also used by HMP, when atexit is 0.
++     * Preserve the value set from the command-line.
++     */
++    if (atexit) {
++        tb_stats_atexit = atexit;
++    }
+ }
  
- SRST
+ static void tb_stats_reset(void *p, uint32_t hash, void *userp)
+@@ -204,3 +214,18 @@ GString *tb_stats_dump(TBStatistics *s, unsigned index)
+     }
+     return buf;
+ }
++
++void tb_stats_dump_atexit(void)
++{
++    if (tb_stats_enabled && tb_stats_atexit) {
++        g_autoptr(GPtrArray) array =
++            tb_stats_collect(tb_stats_atexit, tb_stats_sort_by_coverage);
++
++        for (uint32_t i = 0, n = array->len; i < n; ++i) {
++            TBStatistics *s = g_ptr_array_index(array, i);
++            g_autoptr(GString) str = tb_stats_dump(s, i);
++
++            qemu_log("%s\n", str->str);
++        }
++    }
++}
+diff --git a/linux-user/exit.c b/linux-user/exit.c
+index 50266314e0..4487aaac7e 100644
+--- a/linux-user/exit.c
++++ b/linux-user/exit.c
+@@ -22,6 +22,7 @@
+ #include "qemu.h"
+ #include "user-internals.h"
+ #include "qemu/plugin.h"
++#include "tcg/tb-stats.h"
+ 
+ #ifdef CONFIG_GCOV
+ extern void __gcov_dump(void);
+@@ -30,9 +31,10 @@ extern void __gcov_dump(void);
+ void preexit_cleanup(CPUArchState *env, int code)
+ {
+ #ifdef CONFIG_GCOV
+-        __gcov_dump();
++    __gcov_dump();
+ #endif
+-        gdb_exit(code);
+-        qemu_plugin_user_exit();
+-        perf_exit();
++    gdb_exit(code);
++    qemu_plugin_user_exit();
++    perf_exit();
++    tb_stats_dump_atexit();
+ }
+diff --git a/softmmu/runstate.c b/softmmu/runstate.c
+index 1652ed0439..2c6fb9bff1 100644
+--- a/softmmu/runstate.c
++++ b/softmmu/runstate.c
+@@ -59,6 +59,7 @@
+ #include "sysemu/runstate-action.h"
+ #include "sysemu/sysemu.h"
+ #include "sysemu/tpm.h"
++#include "tcg/tb-stats.h"
+ #include "trace.h"
+ 
+ static NotifierList exit_notifiers =
+@@ -846,6 +847,7 @@ void qemu_cleanup(void)
+     /* No more vcpu or device emulation activity beyond this point */
+     vm_shutdown();
+     replay_finish();
++    tb_stats_dump_atexit();
+ 
+     /*
+      * We must cancel all block jobs while the block layer is drained,
+diff --git a/stubs/tb-stats.c b/stubs/tb-stats.c
+index ceaa1622ce..f9e4ef5d04 100644
+--- a/stubs/tb-stats.c
++++ b/stubs/tb-stats.c
+@@ -11,6 +11,10 @@
+ #include "qemu/osdep.h"
+ #include "tcg/tb-stats.h"
+ 
+-void tb_stats_init(uint32_t flags)
++void tb_stats_init(uint32_t flags, uint32_t atexit)
++{
++}
++
++void tb_stats_dump_atexit(void)
+ {
+ }
+diff --git a/util/log.c b/util/log.c
+index 0cb987fb74..789b19a226 100644
+--- a/util/log.c
++++ b/util/log.c
+@@ -526,19 +526,31 @@ int qemu_str_to_log_mask(const char *str, Error **errp)
+ #ifdef CONFIG_TCG
+         } else if (g_str_has_prefix(t, "tb_stats:") && t[9] != '\0') {
+             int flags = TB_STATS_NONE;
++            unsigned atexit = 0;
+             char *v = t + 9;
++            char *e = strchr(v, ':');
++            size_t len;
+ 
+-            if (g_str_equal(v, "all")) {
++            if (e) {
++                len = e - v;
++                if (qemu_strtoui(e + 1, NULL, 10, &atexit) < 0) {
++                    error_setg(errp, "Invalid -d option \"%s\"", t);
++                    goto error;
++                }
++            } else {
++                len = strlen(v);
++            }
++            if (strncmp(v, "all", len) == 0) {
+                 flags = TB_STATS_ALL;
+-            } else if (g_str_equal(v, "jit")) {
++            } else if (strncmp(v, "jit", len) == 0) {
+                 flags = TB_STATS_JIT;
+-            } else if (g_str_equal(v, "exec")) {
++            } else if (strncmp(v, "exec", len) == 0) {
+                 flags = TB_STATS_EXEC;
+             } else {
+                 error_setg(errp, "Invalid -d option \"%s\"", t);
+                 goto error;
+             }
+-            tb_stats_init(flags);
++            tb_stats_init(flags, atexit);
+ #endif
+         } else {
+             for (item = qemu_log_items; item->mask != 0; item++) {
 -- 
 2.34.1
 
