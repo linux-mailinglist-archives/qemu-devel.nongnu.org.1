@@ -2,83 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02E1F7B68C0
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:15:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08CFA7B68F0
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:27:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qneHQ-0001jj-P0; Tue, 03 Oct 2023 08:13:36 -0400
+	id 1qneTH-0004wH-0k; Tue, 03 Oct 2023 08:25:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qneHE-0001ij-P1; Tue, 03 Oct 2023 08:13:25 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qneHB-000450-E9; Tue, 03 Oct 2023 08:13:24 -0400
-Received: from lhrpeml500004.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0Gqc3kD3z6HJc8;
- Tue,  3 Oct 2023 20:10:36 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500004.china.huawei.com (7.191.163.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 13:13:16 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 13:13:16 +0100
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cpu scan
-Thread-Topic: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cpu
- scan
-Thread-Index: AQHZ8zQk6MAP2ANe7ES6Fefhb3Wj6LA2n9eAgAFUrJD///TegIAAFHVQ
-Date: Tue, 3 Oct 2023 12:13:16 +0000
-Message-ID: <50e3672784984b6b85602dd68a6965cd@huawei.com>
-References: <20230930001933.2660-1-salil.mehta@huawei.com>
- <20230930001933.2660-7-salil.mehta@huawei.com>
- <20231002171423.00003c39@Huawei.com>
- <ed93b18d03ef44c5b37815449bdc10c3@huawei.com>
- <20231003125351.00004788@Huawei.com>
-In-Reply-To: <20231003125351.00004788@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qneTE-0004vf-VM
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:25:49 -0400
+Received: from mail-pf1-x42a.google.com ([2607:f8b0:4864:20::42a])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qneTD-0006gg-7i
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:25:48 -0400
+Received: by mail-pf1-x42a.google.com with SMTP id
+ d2e1a72fcca58-6907e44665bso653644b3a.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:25:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1696335945; x=1696940745; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=bosaUuegrcxoWj3ggOi+Hiu7LSbWQp61k7fb4NEy06c=;
+ b=WXUJP3BdvVToreyykn03By9KND2MNpqGBfkjr1FMoc4+AGpI87+xU2AmeMA+XEO3mk
+ U574DHpvXiASrBi3cNRVKUpImdFWDDjZk2D4REOz+IvDNF27fd/jXI+XTxNzH5ulHbGK
+ yTZ1kESOFcOXFGVDFSN9fH5J5I4R9JzexvNEDbDDbgGqnAoLESyScbrznj29iuaOhAo+
+ d43Wikh6Ur4LSRskV1B9lTKFfPKnSSvi5k5M1C3u09nAn0pj7ran7QrYBew9fh78nYlj
+ Hf3kfRZGgGDu4wADOpdMhoHkXQRasl78MULg4UmmgPkSubd3XBizyBBF3dOK95ezgTn2
+ VhJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696335945; x=1696940745;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=bosaUuegrcxoWj3ggOi+Hiu7LSbWQp61k7fb4NEy06c=;
+ b=eUwTp0QsGd0lFsGLycrxIm98KEKcq2fwYLfktgd+zMxkpUSQTQPUSiXXKYBlfCgtkp
+ 78aGVPMOt7EdfKhulp0L/YanOdmBFC558a0zBHNDI4G3emNZFexc1AZHWNHO3O4Zhyfe
+ jKt7IoPsvBL7cZ6xTf5SXpUEtqjdmV88lAsG3tUTCqDZJgCFtiZwA3vxBA5pho/LmUcW
+ arDty10O6vxhhbMdB0Mpt6RZtvndzDBFFynqBiZhdqH8nYvuR1wSNWsD7Q/Loy9msHMF
+ ICS8Se2YZTSPIgorKX+7yoU8n1Dhdv5FsMzuH8wBWuGN03vmrcTARbS0IzUAoNkwhwMw
+ D4+w==
+X-Gm-Message-State: AOJu0Yzx134238vuX2Poi9cIJnHjRoJKpLrEW4XM8r9vUYSI7X+S2YvE
+ A4T68gZqx8+39Y6FGPSN68bHwFGKADVoCFkzFgo=
+X-Google-Smtp-Source: AGHT+IGyfTxLPhcm6cR/3kJauEHWB2PFmnl82xFK9A9HF9G/uXgUSmXU7IpOr1+vJ4BVZQCqtLsd5g==
+X-Received: by 2002:a05:6a20:441c:b0:14d:16c:2d20 with SMTP id
+ ce28-20020a056a20441c00b0014d016c2d20mr17674942pzb.44.1696335945415; 
+ Tue, 03 Oct 2023 05:25:45 -0700 (PDT)
+Received: from grind.. ([177.94.15.124]) by smtp.gmail.com with ESMTPSA id
+ q8-20020a170902dac800b001c44c8d857esm1404450plx.120.2023.10.03.05.25.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 05:25:44 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ "Paul A . Clarke" <pclarke@ventanamicro.com>,
+ Andrew Jones <ajones@ventanamicro.com>
+Subject: [PATCH] target/riscv/tcg: remove RVG warning
+Date: Tue,  3 Oct 2023 09:25:39 -0300
+Message-ID: <20231003122539.775932-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x42a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,55 +88,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: Tuesday, October 3, 2023 12:54 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cp=
-u
-> scan
->=20
->=20
-> > > aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
-> > > > diff --git a/include/hw/acpi/cpu_hotplug.h
-> > > b/include/hw/acpi/cpu_hotplug.h
-> > > > index 48b291e45e..ef631750b4 100644
-> > > > --- a/include/hw/acpi/cpu_hotplug.h
-> > > > +++ b/include/hw/acpi/cpu_hotplug.h
-> > > > @@ -20,6 +20,8 @@
-> > > >  #include "hw/acpi/cpu.h"
-> > > >
-> > > >  #define ACPI_CPU_HOTPLUG_REG_LEN 12
-> > > > +#define ACPI_CPU_SCAN_METHOD "CSCN"
-> > >
-> > > This seems to already be defined in hw/acpi/cpu.c
-> > > Can we drop it from there given that file now includes this
-> > > header anyway.
-> >
-> > Perhaps I can assign this to the macro in the hw/acpi/cpu.c?
-> hw/acpi/cpu.c includes this header now anyway I think.
-> So just drop that definition and should all be good.
+Vendor CPUs that set RVG are displaying user warnings about other
+extensions that RVG must enable, one warning per CPU. E.g.:
 
-Ok.
+$ ./build/qemu-system-riscv64 -smp 8 -M virt -cpu veyron-v1 -nographic
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
+qemu-system-riscv64: warning: Setting G will also set IMAFD_Zicsr_Zifencei
 
+This happens because we decided a while ago that, for simplicity, vendor
+CPUs could set RVG instead of setting each G extension individually in
+their cpu_init(). Our warning isn't taking that into account, and we're
+bugging users with a warning that we're causing ourselves.
+
+In a closer look we conclude that this warning is not warranted in any
+other circumstance since we're just following the ISA [1], which states
+in chapter 24:
+
+"One goal of the RISC-V project is that it be used as a stable software
+development target. For this purpose, we define a combination of a base
+ISA (RV32I or RV64I) plus selected standard extensions (IMAFD, Zicsr,
+Zifencei) as a 'general-purpose' ISA, and we use the abbreviation G for
+the IMAFDZicsr Zifencei combination of instruction-set extensions."
+
+With this in mind, enabling IMAFD_Zicsr_Zifencei if the user explicitly
+enables 'G' is an expected behavior and the warning is unneeded. Any
+user caught by surprise should refer to the ISA.
+
+Remove the warning when handling RVG.
+
+[1] https://github.com/riscv/riscv-isa-manual/releases/download/Ratified-IMAFDQC/riscv-spec-20191213.pdf
+
+Reported-by: Paul A. Clarke <pclarke@ventanamicro.com>
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+---
+ target/riscv/tcg/tcg-cpu.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+index 08b806dc07..f50ce57602 100644
+--- a/target/riscv/tcg/tcg-cpu.c
++++ b/target/riscv/tcg/tcg-cpu.c
+@@ -293,7 +293,6 @@ void riscv_cpu_validate_set_extensions(RISCVCPU *cpu, Error **errp)
+             return;
+         }
+ 
+-        warn_report("Setting G will also set IMAFD_Zicsr_Zifencei");
+         cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_icsr), true);
+         cpu_cfg_ext_auto_update(cpu, CPU_CFG_OFFSET(ext_ifencei), true);
+ 
+-- 
+2.41.0
 
 
