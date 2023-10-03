@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B5D7B640E
+	by mail.lfdr.de (Postfix) with ESMTPS id 844807B640D
 	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 10:29:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnakt-0005P2-Ev; Tue, 03 Oct 2023 04:27:47 -0400
+	id 1qnal6-0005UB-6K; Tue, 03 Oct 2023 04:28:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnakq-0005Nc-6i
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:44 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnal3-0005TT-NS
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:57 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnakg-0007yN-Q9
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:40 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-50325ce89e9so784955e87.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 01:27:34 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnako-0007yq-Vd
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:27:57 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3226b8de467so673200f8f.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 01:27:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696321652; x=1696926452; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=cvFSizht0QLR7BE5OEcX79gZpgM6xlScGli2YAzjrJs=;
- b=VSRX8MNu48odErvx6zUCzlzyekh8zayZEhauj7mUNwryddeQwHRobN1ooAlg+t9aHF
- Qt7VBwrtTX+jr7g6FzQVcQ9JP6Zbfb8KamXnh0gzuD6c7zGt7qHLA7h8hmHPamH806G6
- u0IcYXE0S4v9SrHXnc7NR06375bZBX/R19xMkaGN/smmF+ZWvMK8m/kpngXEh8BwY9Yd
- XqfB+r67tOJLWjtn49EcfFJ/+Ns1AzrBEeoEIuO97hx6DUgGJ15MHqGkJbR1hipI1SxF
- Jg23iBAuNo/gZKy6kW/Vyw0U4mN1NzMFbRkFOwBGGMDUSQ9V29ip19BFScufOVKguZeq
- JQCA==
+ d=linaro.org; s=google; t=1696321660; x=1696926460; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qRhqgq+/HO+RE2gqPE65MUPAQhpDQoUdG/Y8TtFPzOY=;
+ b=PYcbIXDiHkLVLsolrjncON52MbPB2FzSXqAmInNeuUnn16Cq1iUBY639vKC/kswt39
+ r7D6PzLeZBbSSoDY4Gn1iN50YcBrvPmGfglAq5twOi8kpbJpO2BGf8Y2AmmftabzPJhY
+ sEvfNVBQmELSr3BvOcYiSObowHqkj+U5KLPxJUcuY7ehVe92ASdlkPITL2w75t8I3eZP
+ ZATOXTSGz2ihth7LKEpJG+vyMkHU+kjL6QMSD+HDxEb1tGadnsY5iEO2I60cp7ttbNtw
+ NO3vccXDFZa2OQgBB7O/5C7EJl4woYkMHv/GP9quZhsLnzppimm435/L1Grt04nTr4Yt
+ 6INA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696321652; x=1696926452;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=cvFSizht0QLR7BE5OEcX79gZpgM6xlScGli2YAzjrJs=;
- b=xSiaV0bxLMKxKUeeYIZsP0Ydxe8umzE8Ei6LFIsusbYyEXLzQlu6v5mfjARZhG5knb
- EjFS7fJFfq5adXIzbmJ+j5l4q4S+QmEH9UrT8mT2byOsrOXLXoHIAseLW31/5P/Uc5+X
- vdIRRN5KOGTioyllTJ1KGpKtZ2VtzMgsCBKoaUMm4ftZZkZuPI4+qRL2qGwk/8Fb3+39
- hXWkx4s3aeTSuIkSlb5AmEcf31XD26+/ckV01BOZAYCxzzJaVuabP7VvYWUGDU7kIafH
- ttpegJRq9AFUs3Ry9iOSvW7RboGE0pzRZ3ETiqQTko4+49ZmxeSZbdswtR6GOZTEZsPg
- 9MjQ==
-X-Gm-Message-State: AOJu0YyBtEB5cDZgS9mPRzx9fw9VxL9lmOs2ROt6QcCj8YbwCebgCcyb
- dqo5MYA0riN91J/8PcASZxJheY2hM3a6goGyOu3e3A==
-X-Google-Smtp-Source: AGHT+IFvtrUXc1X6JWRX7/alshk/gJA00dOArQggtLzzY14KPGT7P/JsyD7DeiZBXVF9J7ANXHWFHg==
-X-Received: by 2002:a05:6512:1248:b0:502:b1b9:88c5 with SMTP id
- fb8-20020a056512124800b00502b1b988c5mr12371665lfb.26.1696321652065; 
- Tue, 03 Oct 2023 01:27:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696321660; x=1696926460;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=qRhqgq+/HO+RE2gqPE65MUPAQhpDQoUdG/Y8TtFPzOY=;
+ b=RP8ZkviI8ciHFYRh2HHTSfShdch+62aCn2rKepOIOGCbc+AdSP228TRvZM+2AhKEP1
+ IGGV2FBos6Mv0CD3S5kgTYK2t9b0DVEobi6KUWErBIG0sUSV9PQ2C97komeee/ZnRkjN
+ IMeE2Vchs+K8KSB5J3sLQn6cHUVbxlf4MsGB0wvnEYe5pvtQY4fpJcmimoDB6P0ndk1n
+ qcP4/xlTJVJdqxaOHthx+5dl3tpIUtIbKCGd4YCvrdHAydmUUV2+VajzBdqml9cFNW3A
+ s5U8ZbxJBus5vzJiFQA8txcEu/gka9KeB6nQyVFd98Rw52Ft/dOxVOiI83U/cY1Jpo6E
+ IqGw==
+X-Gm-Message-State: AOJu0Yxp0QhwuFDMroDsM3lhWvWGUr8ZWqoJjTRzvrl5H5H0xJciOh/P
+ UHtG3iyFGZX/tCQqU1H0Zw0gi3bAB+C9r5vA20hJfg==
+X-Google-Smtp-Source: AGHT+IGeawFXlCzlrqXl3i276PzO3XBlgMoopqAhl7sP+5lb+A6miKNxcm0+9LQ3Kpsuwq5cjAUlIQ==
+X-Received: by 2002:a5d:6447:0:b0:324:8239:2872 with SMTP id
+ d7-20020a5d6447000000b0032482392872mr10993136wrw.71.1696321659445; 
+ Tue, 03 Oct 2023 01:27:39 -0700 (PDT)
 Received: from m1x-phil.lan (176-131-222-246.abo.bbox.fr. [176.131.222.246])
  by smtp.gmail.com with ESMTPSA id
- q12-20020a05600c040c00b003fc06169ab3sm8881284wmb.20.2023.10.03.01.27.30
+ j16-20020a056000125000b00326f5d0ce0asm997037wrx.21.2023.10.03.01.27.37
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Tue, 03 Oct 2023 01:27:31 -0700 (PDT)
+ Tue, 03 Oct 2023 01:27:38 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Bernhard Beschow <shentey@gmail.com>,
@@ -63,21 +64,22 @@ Cc: Bernhard Beschow <shentey@gmail.com>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 0/5] hw/intc/apic: QOM cleanup
-Date: Tue,  3 Oct 2023 10:27:23 +0200
-Message-ID: <20231003082728.83496-1-philmd@linaro.org>
+Subject: [PATCH v2 1/5] hw/intc/apic: Use ERRP_GUARD() in apic_common_realize()
+Date: Tue,  3 Oct 2023 10:27:24 +0200
+Message-ID: <20231003082728.83496-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231003082728.83496-1-philmd@linaro.org>
+References: <20231003082728.83496-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=philmd@linaro.org; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,31 +96,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- Dropped change in x86_cpu_realizefn (rth)
-- Simplify kvm_apic_realize() error propagation
+APICCommonClass::realize() is a DeviceRealize() handler which
+take an Error** parameter and can fail. Do not proceed further
+on failure.
 
-Minor cleanup extracted from a bigger series
-touching x86_cpu_realizefn().
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ hw/intc/apic_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Philippe Mathieu-Daudé (5):
-  hw/intc/apic: Use ERRP_GUARD() in apic_common_realize()
-  hw/i386/apic: Defer error check from apic_get_class to
-    kvm_apic_realize
-  hw/i386/apic: Simplify apic_get_class()
-  hw/intc/apic: Rename x86_cpu_apic_create() -> x86_cpu_apic_new()
-  hw/intc/apic: Pass CPU using QOM link property
-
- include/hw/i386/apic_internal.h |  2 +-
- target/i386/cpu-internal.h      |  2 +-
- hw/i386/amd_iommu.c             |  2 +-
- hw/i386/intel_iommu.c           |  4 ++--
- hw/i386/kvm/apic.c              |  5 +++++
- hw/intc/apic_common.c           |  8 +++++++-
- target/i386/cpu-sysemu.c        | 23 +++++++----------------
- target/i386/cpu.c               |  5 +----
- 8 files changed, 25 insertions(+), 26 deletions(-)
-
+diff --git a/hw/intc/apic_common.c b/hw/intc/apic_common.c
+index 68ad30e2f5..bccb4241c2 100644
+--- a/hw/intc/apic_common.c
++++ b/hw/intc/apic_common.c
+@@ -257,6 +257,7 @@ static const VMStateDescription vmstate_apic_common;
+ 
+ static void apic_common_realize(DeviceState *dev, Error **errp)
+ {
++    ERRP_GUARD();
+     APICCommonState *s = APIC_COMMON(dev);
+     APICCommonClass *info;
+     static DeviceState *vapic;
+@@ -267,6 +268,9 @@ static void apic_common_realize(DeviceState *dev, Error **errp)
+ 
+     info = APIC_COMMON_GET_CLASS(s);
+     info->realize(dev, errp);
++    if (*errp) {
++        return;
++    }
+ 
+     /* Note: We need at least 1M to map the VAPIC option ROM */
+     if (!vapic && s->vapic_control & VAPIC_ENABLE_MASK &&
 -- 
 2.41.0
 
