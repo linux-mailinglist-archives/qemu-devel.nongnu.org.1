@@ -2,80 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FEB47B7348
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 23:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1707B737E
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 23:46:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnmsM-0001zt-0m; Tue, 03 Oct 2023 17:24:18 -0400
+	id 1qnnCK-0000FX-NE; Tue, 03 Oct 2023 17:44:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnmsK-0001zl-5w
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:24:16 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnnCE-0000FO-Q8
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:44:51 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnmsI-0003mb-2y
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:24:15 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9ad8d47ef2fso254955766b.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 14:24:13 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnnCD-0000kK-6l
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:44:50 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-5345a3dfe3bso2412483a12.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 14:44:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696368252; x=1696973052; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=EkG7v68Trxt68Cu2pyY78mexBbfH0R0LWq30kAO0N3o=;
- b=cSrEOpE4ETYV2Ddc1kfyn2XPxLWA2w2UYlpmaTgWPo+zT+mMRUoNnRqqEGl3JN2HVu
- pyLHrTsmYMjtZCHfP7IVCcUwxReZDV8bA9kHRVFbJIl+h9GoIstPls4APPhkJZVFrSXb
- QGZt+QO5Zyne18VLysgcpOHWhaiTPtka4JRbQqPMbiiDuhRr694UjRbwl7Hpph1+kaz6
- pUOlQNB68ch++XAvNU6hWxgGLmvHTdSDQjGKsAknOg5gnh90iAqgMd8LY1lrtJLbn3No
- 9HQ2gwSE+5MCPQ3KAqCwirmlzg8nZCEOd/d+axR7SlrU+kR6ZBBnasVGX2rbrk+anr6z
- Lh7w==
+ d=gmail.com; s=20230601; t=1696369487; x=1696974287; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cy5+rg5Vz73McPYlDXpepqQEfWAcSnW8q6WDEzToA9M=;
+ b=QD8a9vwmpl6YP8PFYkh9iH+8aduLPvgIZTZM1tmYxAPWWzVp9yWq/JnDHTxJ9yEs7l
+ htWOrf/N/ogloUlHFIKWlpV5pMGBYtaG2EpPjaygSIPAbgtcIDgQEjWPSZ0WJwJPvwgV
+ cJFmIwW+JSb372GjUnrYFxie0xZ/uyJcxW1f27MuPl0GzYRlm/R7xtxQHm3+bRLZ8/ks
+ WGrhXYlOjWIsEKOfZn5audYdrdJlpqLYyrS0X3Lw/0D8HxHT1K6jEXriMwdF1m8FzU94
+ nxxa+MSX1lU1U2m0Tx78Ox3QpTua2gz88/GpvHkSXlk9v7W6JRLigMdoDhGx984fYrST
+ DvBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696368252; x=1696973052;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=EkG7v68Trxt68Cu2pyY78mexBbfH0R0LWq30kAO0N3o=;
- b=sJDWRzGq8D7k5kfosUzu826g1hsbm6RiKMs/rUJu1x61SMSkmA9YIbruib7ARcx/PQ
- Qp3QWJSXaGapZ8Np+SDmvpLJSwwkAvoiJcGxmgEBbSOhGN2TA00IeGOrah5oOqHBekPB
- NgFdNhOo2uebMmZb9cXd8OLtIIWI9MIp7dXtF6/5H10f2YWRLu9lJnVQYvekIxUGLjcZ
- Jx1bVkfhfUpI2uLuzKPYHCiyZenxEBoZi6Zs/WRBCg4tLGgegeTLhb6uBbWmzY0eJJBM
- v4CdbHBiA1SEaBzJadw6XQZ8OvV+OUbOHGq/zyeGJ102Zau5W7RAb8d0AGmoQFefwvFX
- vrrw==
-X-Gm-Message-State: AOJu0YyWUGv5aNIdxPTiNHp3jMxjYTbicGqpMHcvmgjRBhe1OAJkPfGV
- WJGBOvZvuebiow8zfWFEW/2IjKVbrls=
-X-Google-Smtp-Source: AGHT+IEqxqm2N0xGP2NlJrkt0fi3pqRYcnp6vmRVk+1t81Cc8HF4XB1wfBkBEOjWL31M0/XchpIChw==
-X-Received: by 2002:a17:906:2d2:b0:9ad:8ef8:a7e8 with SMTP id
- 18-20020a17090602d200b009ad8ef8a7e8mr383684ejk.25.1696368251621; 
- Tue, 03 Oct 2023 14:24:11 -0700 (PDT)
-Received: from ?IPv6:::1?
- (p200300faaf2af2002dbc26c5e78fe5cc.dip0.t-ipconnect.de.
- [2003:fa:af2a:f200:2dbc:26c5:e78f:e5cc])
+ d=1e100.net; s=20230601; t=1696369487; x=1696974287;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cy5+rg5Vz73McPYlDXpepqQEfWAcSnW8q6WDEzToA9M=;
+ b=V4OhvN/yNy+TMwX8tIAW/I99UoG39tvV8FSA4empSUrXo36xA9a6aQm0V2v9ol00bs
+ ybjOpZo2Pl77IUhwPWnwRpdiLyAlai+V2zkv3tCYnBz6WO1As17yfAkK69vvWYob+bQ4
+ oqg8aAqD1YmvxqYaMgNa0VKbLuee2RHeBI+Gbm0yc1DYdPTzBPVLc82aGIgbdR3kuGdz
+ 3iNdjeYpzSj13izKBHahR4LdBag8I6/iN3W6b5k8XfxYu4oOEI+nlnjNR3JY8MG/p/tC
+ IOSuuVz+vXXo/j1UpoUVyTalWbD8jQ0SH9wi5wSpMlG2Q2vp1MLKtcJ10kb55/7AExcJ
+ aJSQ==
+X-Gm-Message-State: AOJu0YyW87oNUvmFiezy1yuynYrtsB/Xlbqz7ZdiG5sYdrwjJ+zzyzxL
+ daKArOUrdptHihWRLlGKQi7I+/7zZy4=
+X-Google-Smtp-Source: AGHT+IFMKiCuiwo7v04oVJ8VDNuCW6rw6lwHPQLQeSQe6ROWlOPcy8IU7w2u707UsJhyKA7t/JCDhQ==
+X-Received: by 2002:a17:907:2e19:b0:9a1:bb8f:17d0 with SMTP id
+ ig25-20020a1709072e1900b009a1bb8f17d0mr381168ejc.30.1696369486607; 
+ Tue, 03 Oct 2023 14:44:46 -0700 (PDT)
+Received: from archlinux.. (pd95eda61.dip0.t-ipconnect.de. [217.94.218.97])
  by smtp.gmail.com with ESMTPSA id
- kq15-20020a170906abcf00b009875a6d28b0sm1619670ejb.51.2023.10.03.14.24.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 14:24:11 -0700 (PDT)
-Date: Tue, 03 Oct 2023 21:24:03 +0000
+ g6-20020a1709064e4600b00991faf3810esm1669523ejw.146.2023.10.03.14.44.45
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 14:44:46 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
-CC: Richard Henderson <richard.henderson@linaro.org>,
- Ani Sinha <anisinha@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3=5D_hw/i386/acp?=
- =?US-ASCII?Q?i-build=3A_Remove_build-time_?=
- =?US-ASCII?Q?assertion_on_PIIX/ICH9_reset_registers_being_identical?=
-In-Reply-To: <20231003211658.14327-1-shentey@gmail.com>
-References: <20231003211658.14327-1-shentey@gmail.com>
-Message-ID: <8A3B6DC2-95EB-4000-B615-34C2740ADC4E@gmail.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH] hw/isa/vt82c686: Respect SCI interrupt assignment
+Date: Tue,  3 Oct 2023 23:44:37 +0200
+Message-ID: <20231003214437.29302-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,53 +88,116 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The iteration in the subject should have been 1, not 3=2E=2E=2E
+According to the datasheet, SCI interrupts of the power management function
+aren't triggered through the PCI pins but rather directly to the integrated PIC.
+The routing is configurable through the ACPI interrupt select register at offset
+42 in the PCI configuration space of the ISA function.
 
-Am 3=2E Oktober 2023 21:16:58 UTC schrieb Bernhard Beschow <shentey@gmail=
-=2Ecom>:
->Commit 6103451aeb74 ("hw/i386: Build-time assertion on pc/q35 reset regis=
-ter
->being identical=2E") introduced a build-time check where the addresses of=
- the
->reset registers are expected to be equal=2E Back then the code to generat=
-e AML for
->the reset register in the FADT was common=2E However, since commit 937d1b=
-58714b
->("pc: acpi: isolate FADT specific data into AcpiFadtData structure") the =
-AML
->gets generated for ICH9 only=2E There is no need any loger for the assert=
-ion, so
->remove it=2E
->
->Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
->---
-> hw/i386/acpi-build=2Ec | 5 -----
-> 1 file changed, 5 deletions(-)
->
->diff --git a/hw/i386/acpi-build=2Ec b/hw/i386/acpi-build=2Ec
->index 95199c8900=2E=2E6fff1901f5 100644
->--- a/hw/i386/acpi-build=2Ec
->+++ b/hw/i386/acpi-build=2Ec
->@@ -56,7 +56,6 @@
->=20
-> /* Supported chipsets: */
-> #include "hw/southbridge/ich9=2Eh"
->-#include "hw/southbridge/piix=2Eh"
-> #include "hw/acpi/pcihp=2Eh"
-> #include "hw/i386/fw_cfg=2Eh"
-> #include "hw/i386/pc=2Eh"
->@@ -242,10 +241,6 @@ static void acpi_get_pm_info(MachineState *machine, =
-AcpiPmInfo *pm)
->     pm->pcihp_io_len =3D
->         object_property_get_uint(obj, ACPI_PCIHP_IO_LEN_PROP, NULL);
->=20
->-    /* The above need not be conditional on machine type because the res=
-et port
->-     * happens to be the same on PIIX (pc) and ICH9 (q35)=2E */
->-    QEMU_BUILD_BUG_ON(ICH9_RST_CNT_IOPORT !=3D PIIX_RCR_IOPORT);
->-
->     /* Fill in optional s3/s4 related properties */
->     o =3D object_property_get_qobject(obj, ACPI_PM_PROP_S3_DISABLED, NUL=
-L);
->     if (o) {
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+---
+ hw/isa/vt82c686.c | 43 +++++++++++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
+
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index 57bdfb4e78..2988ad1eda 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -46,6 +46,8 @@ struct ViaPMState {
+     ACPIREGS ar;
+     APMState apm;
+     PMSMBus smb;
++
++    qemu_irq irq;
+ };
+ 
+ static void pm_io_space_update(ViaPMState *s)
+@@ -148,18 +150,7 @@ static void pm_update_sci(ViaPMState *s)
+                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
+                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
+                    ACPI_BITMASK_TIMER_ENABLE)) != 0);
+-    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
+-        /*
+-         * FIXME:
+-         * Fix device model that realizes this PM device and remove
+-         * this work around.
+-         * The device model should wire SCI and setup
+-         * PCI_INTERRUPT_PIN properly.
+-         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
+-         * work around.
+-         */
+-        pci_set_irq(&s->dev, sci_level);
+-    }
++    qemu_set_irq(s->irq, sci_level);
+     /* schedule a timer interruption if needed */
+     acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
+                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
+@@ -213,6 +204,13 @@ static void via_pm_realize(PCIDevice *dev, Error **errp)
+     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
+ }
+ 
++static void via_pm_init(Object *obj)
++{
++    ViaPMState *s = VIA_PM(obj);
++
++    qdev_init_gpio_out(DEVICE(obj), &s->irq, 1);
++}
++
+ typedef struct via_pm_init_info {
+     uint16_t device_id;
+ } ViaPMInitInfo;
+@@ -238,6 +236,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
+ static const TypeInfo via_pm_info = {
+     .name          = TYPE_VIA_PM,
+     .parent        = TYPE_PCI_DEVICE,
++    .instance_init = via_pm_init,
+     .instance_size = sizeof(ViaPMState),
+     .abstract      = true,
+     .interfaces = (InterfaceInfo[]) {
+@@ -568,9 +567,25 @@ static const VMStateDescription vmstate_via = {
+     }
+ };
+ 
++static void via_isa_set_pm_irq(void *opaque, int n, int level)
++{
++    ViaISAState *s = opaque;
++    uint8_t irq = pci_get_byte(s->pm.dev.config + 0x42) & 0xf;
++
++    if (irq == 2) {
++        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is reserved");
++        return;
++    }
++
++    if (irq != 0) {
++        qemu_set_irq(s->isa_irqs_in[irq], level);
++    }
++}
++
+ static void via_isa_init(Object *obj)
+ {
+     ViaISAState *s = VIA_ISA(obj);
++    DeviceState *dev = DEVICE(s);
+ 
+     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
+     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
+@@ -578,6 +593,8 @@ static void via_isa_init(Object *obj)
+     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
+     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
+     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
++
++    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
+ }
+ 
+ static const TypeInfo via_isa_info = {
+@@ -704,6 +721,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
+         return;
+     }
++    qdev_connect_gpio_out(DEVICE(&s->pm), 0,
++                          qdev_get_gpio_in_named(DEVICE(d), "sci", 0));
+ 
+     /* Function 5: AC97 Audio */
+     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
+-- 
+2.42.0
+
 
