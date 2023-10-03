@@ -2,85 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5CD77B68F4
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:28:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E63DA7B68F9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:29:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qneVA-0005kg-Tp; Tue, 03 Oct 2023 08:27:48 -0400
+	id 1qneWM-00070n-Ku; Tue, 03 Oct 2023 08:29:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qneV6-0005ik-DF; Tue, 03 Oct 2023 08:27:44 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qneWG-00070b-AQ
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:28:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qneV2-0006oZ-N2; Tue, 03 Oct 2023 08:27:43 -0400
-Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0H886vgMz6HJhS;
- Tue,  3 Oct 2023 20:24:56 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 13:27:36 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 13:27:36 +0100
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
- {creation,parking} code
-Thread-Topic: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
- {creation,parking} code
-Thread-Index: AQHZ8zPpn9wpwkR00kGhOJ6dnPJS7rA2mfgAgAFHXwCAAAdMgIAAFxrA
-Date: Tue, 3 Oct 2023 12:27:36 +0000
-Message-ID: <630c00201fd34c8fa307bed9c25bc334@huawei.com>
-References: <20230930001933.2660-1-salil.mehta@huawei.com>
- <20230930001933.2660-2-salil.mehta@huawei.com>
- <20231002165322.00003a2e@Huawei.com>
- <761a05a972ae4aa088b8e984bd89889f@huawei.com>
- <20231003125111.00002013@Huawei.com>
-In-Reply-To: <20231003125111.00002013@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qneWE-0007AJ-Lq
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:28:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696336133;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lWx3ew8HnV9bynxAEyI0N7u2urcO+wLsiwMh3WVsW1k=;
+ b=U6DE7RPawarRCNsWpJr4CQfgHfMs/dhJeP88aMhdZoUdggSGDbfR1fiDV7m2r3yaNibSdn
+ FaAYBMMn3k3iW/yE+og8mV2R5fzqDbEBcXa5ARRgldsomsb97DOO5DAmWKdqJW5Qm7td22
+ aMDybK2wfRA3X5wNU7uJvKZBvVzG+5M=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-66-IzsQfB3kOdK5FFyCa8Tb0w-1; Tue, 03 Oct 2023 08:28:52 -0400
+X-MC-Unique: IzsQfB3kOdK5FFyCa8Tb0w-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-405334b0873so6011195e9.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:28:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696336131; x=1696940931;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lWx3ew8HnV9bynxAEyI0N7u2urcO+wLsiwMh3WVsW1k=;
+ b=wtx1UQp0kvpdN4tTlE0eItcOVTCaRXBif7gxlWaDURyhIL2yljMk+bujSd79Ywl8NB
+ k/3u/YqrVFpTTXlQS21jhZ8taobdwORX1x4q8nVhG+RasOmMCJ/VNjkJJ3AhqG+FRhk5
+ rfK9JFn2cHsvKvCH2bylmpN+vlDY1b8qs7pCErkExXgf6BTufg3jY5tB35DgCcJ6SjKW
+ zdn+wmTR3GPnBcSGCavGDo3eLJc/chnizsBeD4o8ABLvdf8W5WDdA1SEKzrz0cd6Bxnx
+ g5CqguYm91N4YOTV6o7ySE97sP3SJ2ySYaxjNm1yIQVxNTTggrGAIl41kIcU0mHIh7o8
+ REXw==
+X-Gm-Message-State: AOJu0YwLsFNV5kszlhLwnLSZeEl2PyuDhUqNvK6afAYmzjlprJRtsogE
+ WNtLobtC5uFBUwgY3T9lBrxvYAP5bwYDQv56JLsGjEwomF/UIjgYchGKyrtaIr2MilHr4v0G5uH
+ 2jFWr7W9szZRqh7g=
+X-Received: by 2002:a05:600c:3d99:b0:406:5396:9f9e with SMTP id
+ bi25-20020a05600c3d9900b0040653969f9emr12271481wmb.32.1696336131216; 
+ Tue, 03 Oct 2023 05:28:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGAqBiCVBG44m5ogq6gLFYcC+R23re35aO+H4Dsqul0A0WMeMUzF9pbWhwBuOrIO4lkaf/ysQ==
+X-Received: by 2002:a05:600c:3d99:b0:406:5396:9f9e with SMTP id
+ bi25-20020a05600c3d9900b0040653969f9emr12271463wmb.32.1696336130783; 
+ Tue, 03 Oct 2023 05:28:50 -0700 (PDT)
+Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
+ p17-20020a05600c205100b004064ac107cfsm1193066wmg.39.2023.10.03.05.28.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 05:28:50 -0700 (PDT)
+Date: Tue, 3 Oct 2023 08:28:47 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Ani Sinha <anisinha@redhat.com>
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Peter Xu <peterx@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Subject: Re: [PATCH v2] hw/i386: changes towards enabling -Wshadow=local
+Message-ID: <20231003082821-mutt-send-email-mst@kernel.org>
+References: <20231003054306.4372-1-anisinha@redhat.com>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231003054306.4372-1-anisinha@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,137 +100,114 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: Tuesday, October 3, 2023 12:51 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
-> {creation,parking} code
->=20
-> On Tue, 3 Oct 2023 12:05:11 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > Hi Jonathan,
-> >
-> > > From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > > Sent: Monday, October 2, 2023 4:53 PM
-> > > To: Salil Mehta <salil.mehta@huawei.com>
-> > > Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> > > philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> > > richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux=
-.dev;
-> > > david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> > > oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> > > will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> > > alex.bennee@linaro.org; linux@armlinux.org.uk;
-> > > darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> > > vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> > > miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> > > <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com=
->;
-> > > wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> > > maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawe=
-i.com>
-> > > Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
-> > > {creation,parking} code
-> > >
-> > > On Sat, 30 Sep 2023 01:19:24 +0100
-> > > Salil Mehta <salil.mehta@huawei.com> wrote:
-> > >
-> > > > KVM vCPU creation is done once during the initialization of the VM =
-when Qemu
-> > > > threads are spawned. This is common to all the architectures.
-> > > >
-> > > > Hot-unplug of vCPU results in destruction of the vCPU objects in QO=
-M but
-> > > > the KVM vCPU objects in the Host KVM are not destroyed and their re=
-presentative
-> > > > KVM vCPU objects/context in Qemu are parked.
-> > > >
-> > > > Refactor common logic so that some APIs could be reused by vCPU Hot=
-plug code.
-> > > >
-> > > > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> > >
-> > > Hi Salil,
-> > >
-> > > A few trivial things inline, plus a question about why
-> > > cpu->cpu_index can now be used but kvm_arch_vcpu_id(cpu);
-> > > was previously needed.
-> >
-> > Good point. I used the API because it was returning
-> > 'unsigned long' and it was being used across the archs.
-> > I thought maybe the size of the index could vary across
-> > archs. For example, for PowerPC above API returns vcpu_id
-> > which presumably could have different data type than
-> > an 'integer'.
-> >
-> > But after Alex's comment, I was made to believe that this
-> > assumption might not be correct and CPU index is an
-> > 'integer' across archs and perhaps semantics of above
-> > API is not correct.
-> >
-> > But perhaps original code was functionally correct?
->=20
-> I wasn't concerned with the type, but rather that the
-> value comes from other places than cpu->cpu_index
-> on some architectures.
+On Tue, Oct 03, 2023 at 11:13:06AM +0530, Ani Sinha wrote:
+> Code changes that addresses all compiler complaints coming from enabling
+> -Wshadow flags. Enabling -Wshadow catches cases of local variables shadowing
+> other local variables or parameters. These makes the code confusing and/or adds
+> bugs that are difficult to catch.
+> 
+> CC: Markus Armbruster <armbru@redhat.com>
+> CC: Philippe Mathieu-Daude <philmd@linaro.org>
+> CC: mst@redhat.com
+> Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
+> Signed-off-by: Ani Sinha <anisinha@redhat.com>
+> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
 
-Sure, I meant there is a reason why type was chosen as 'unsigned long'
-and not an 'integer'. Perhaps the value can exceed the 'integer' size
-limits because of the way CPU index is being created on certain archs?
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
-If we try to put value from a larger container 'unsigned long' to a
-smaller container 'integer' things can go wrong.
+feel free to move with the rest of these changes.
 
 
-[...]
+> ---
+>  hw/i386/acpi-microvm.c | 4 ++--
+>  hw/i386/intel_iommu.c  | 8 ++++----
+>  hw/i386/pc.c           | 1 -
+>  hw/i386/x86.c          | 2 --
+>  4 files changed, 6 insertions(+), 9 deletions(-)
+> 
+> changelog:
+> v2: addressed suggestion from mst.
+> 
+> diff --git a/hw/i386/acpi-microvm.c b/hw/i386/acpi-microvm.c
+> index a075360d85..6ddcfb0419 100644
+> --- a/hw/i386/acpi-microvm.c
+> +++ b/hw/i386/acpi-microvm.c
+> @@ -55,8 +55,8 @@ static void acpi_dsdt_add_virtio(Aml *scope,
+>  
+>      bus = sysbus_get_default();
+>      QTAILQ_FOREACH(kid, &bus->children, sibling) {
+> -        DeviceState *dev = kid->child;
+> -        Object *obj = object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MMIO);
+> +        Object *obj = object_dynamic_cast(OBJECT(kid->child),
+> +                                          TYPE_VIRTIO_MMIO);
+>  
+>          if (obj) {
+>              VirtIOMMIOProxy *mmio = VIRTIO_MMIO(obj);
+> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
+> index c0ce896668..2c832ab68b 100644
+> --- a/hw/i386/intel_iommu.c
+> +++ b/hw/i386/intel_iommu.c
+> @@ -3744,7 +3744,7 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUState *s, PCIBus *bus,
+>  /* Unmap the whole range in the notifier's scope. */
+>  static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
+>  {
+> -    hwaddr size, remain;
+> +    hwaddr total, remain;
+>      hwaddr start = n->start;
+>      hwaddr end = n->end;
+>      IntelIOMMUState *s = as->iommu_state;
+> @@ -3765,7 +3765,7 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
+>      }
+>  
+>      assert(start <= end);
+> -    size = remain = end - start + 1;
+> +    total = remain = end - start + 1;
+>  
+>      while (remain >= VTD_PAGE_SIZE) {
+>          IOMMUTLBEvent event;
+> @@ -3793,10 +3793,10 @@ static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifier *n)
+>      trace_vtd_as_unmap_whole(pci_bus_num(as->bus),
+>                               VTD_PCI_SLOT(as->devfn),
+>                               VTD_PCI_FUNC(as->devfn),
+> -                             n->start, size);
+> +                             n->start, total);
+>  
+>      map.iova = n->start;
+> -    map.size = size - 1; /* Inclusive */
+> +    map.size = total - 1; /* Inclusive */
+>      iova_tree_remove(as->iova_tree, map);
+>  }
+>  
+> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+> index 3db0743f31..e7a233e886 100644
+> --- a/hw/i386/pc.c
+> +++ b/hw/i386/pc.c
+> @@ -1116,7 +1116,6 @@ void pc_memory_init(PCMachineState *pcms,
+>  
+>      if (machine->device_memory) {
+>          uint64_t *val = g_malloc(sizeof(*val));
+> -        PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
+>          uint64_t res_mem_end = machine->device_memory->base;
+>  
+>          if (!pcmc->broken_reserved_end) {
+> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
+> index f034df8bf6..b3d054889b 100644
+> --- a/hw/i386/x86.c
+> +++ b/hw/i386/x86.c
+> @@ -365,8 +365,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
+>  
+>      cpu_slot = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &idx);
+>      if (!cpu_slot) {
+> -        MachineState *ms = MACHINE(x86ms);
+> -
+>          x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
+>          error_setg(errp,
+>              "Invalid CPU [socket: %u, die: %u, core: %u, thread: %u] with"
+> -- 
+> 2.42.0
 
-> > >
-> > > > +    vcpu->kvm_fd =3D cpu->kvm_fd;
-> > > > +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
-> > > > +}
-> > > > +
-> > > > +int kvm_create_vcpu(CPUState *cpu)
-> > > > +{
-> > > > +    int vcpu_id =3D cpu->cpu_index;
-> > >
-> > > See below. I'm not sure why it's safe not to use kvm_arch_vcpu_id()
-> > > Seems a few architectures have less than trivial implementations of
-> > > that function currently.
-> >
-> > I doubt this as well. Other architectures like PowerPC are returning
-> > different type?
-> >
-> It wasn't the type that bothered, me but rather that the source of
-> the data isn't always cpu->cpu_index so I have no idea if the values
-> are consistent.
-
-Got it.
-
-I meant 'unsigned long' return type in the kvm_arch_vcpu_id(). On some
-Architectures, the required container size for their vcpu-id could
-exceed an 'integer'. Sorry, for not making it clear.
-
-Thanks
-Salil.
 
