@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453BF7B683F
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF707B6841
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:46:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qndqM-00068m-SW; Tue, 03 Oct 2023 07:45:38 -0400
+	id 1qndr6-00076r-2w; Tue, 03 Oct 2023 07:46:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndpy-0005eS-Oc; Tue, 03 Oct 2023 07:45:15 -0400
+ id 1qndr3-00076Q-D1; Tue, 03 Oct 2023 07:46:21 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndpw-0006Dw-QM; Tue, 03 Oct 2023 07:45:14 -0400
-Received: from lhrpeml100002.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0GG53PW8z6K7jp;
- Tue,  3 Oct 2023 19:45:01 +0800 (CST)
+ id 1qndr1-0006Mj-E7; Tue, 03 Oct 2023 07:46:21 -0400
+Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0GHN07wpz67nc4;
+ Tue,  3 Oct 2023 19:46:08 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100002.china.huawei.com (7.191.160.241) with Microsoft SMTP Server
+ lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 12:45:10 +0100
+ 15.1.2507.31; Tue, 3 Oct 2023 12:46:16 +0100
 Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
  lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 12:45:10 +0100
-To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Tue, 3 Oct 2023 12:46:16 +0100
+To: Jonathan Cameron <jonathan.cameron@huawei.com>
+CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
+ <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
  "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
  <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
  <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
@@ -38,8 +38,9 @@ CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
  "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
  <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "rafael@kernel.org" <rafael@kernel.org>, "alex.bennee@linaro.org"
- <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
  "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
  "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
  "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
@@ -50,24 +51,24 @@ CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
  "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
  <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
  Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V2 07/10] hw/acpi: Update ACPI GED framework to support
- vCPU Hotplug
-Thread-Topic: [PATCH V2 07/10] hw/acpi: Update ACPI GED framework to support
- vCPU Hotplug
-Thread-Index: AQHZ8zQvM2IN4l39W0uWcRE2hMPQGbA3JTEAgADScvA=
-Date: Tue, 3 Oct 2023 11:45:09 +0000
-Message-ID: <2af8fbd7523a4545ab733895ac81454a@huawei.com>
+Subject: RE: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
+ AddressSpace
+Thread-Topic: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
+ AddressSpace
+Thread-Index: AQHZ8zQ7yGl3U6l090SRw8cLGCyLZ7A2oYUAgAFWSiA=
+Date: Tue, 3 Oct 2023 11:46:16 +0000
+Message-ID: <65a71eabfd054646b069710ccfa9f633@huawei.com>
 References: <20230930001933.2660-1-salil.mehta@huawei.com>
- <20230930001933.2660-8-salil.mehta@huawei.com>
- <4134b7ab-7a76-77b9-e8c0-7e6d75e0ad50@redhat.com>
-In-Reply-To: <4134b7ab-7a76-77b9-e8c0-7e6d75e0ad50@redhat.com>
+ <20230930001933.2660-9-salil.mehta@huawei.com>
+ <20231002172024.000042aa@Huawei.com>
+In-Reply-To: <20231002172024.000042aa@Huawei.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -95,35 +96,128 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBP
-Y3RvYmVyIDMsIDIwMjMgMToxMiBBTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1
-YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+IGFybUBub25nbnUub3Jn
-DQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBKb25hdGhh
-biBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFsaXNpQGtl
-cm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5kZXJzb25A
-bGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxpbnV4LmRl
-djsgZGF2aWRAcmVkaGF0LmNvbTsNCj4gcGhpbG1kQGxpbmFyby5vcmc7IGVyaWMuYXVnZXJAcmVk
-aGF0LmNvbTsgb2xpdmVyLnVwdG9uQGxpbnV4LmRldjsNCj4gcGJvbnppbmlAcmVkaGF0LmNvbTsg
-bXN0QHJlZGhhdC5jb207IHdpbGxAa2VybmVsLm9yZzsgcmFmYWVsQGtlcm5lbC5vcmc7DQo+IGFs
-ZXguYmVubmVlQGxpbmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFycmVuQG9z
-LmFtcGVyZWNvbXB1dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IHZp
-c2hudUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNvbTsNCj4g
-bWlndWVsLmx1aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1a2VxaWFu
-DQo+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2FuZ3hpb25n
-ZmVuZzJAaHVhd2VpLmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1YXdlaS5j
-b20+OyBqaWFrZXJuZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsgbGl4aWFu
-Z2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+IFN1Ympl
-Y3Q6IFJlOiBbUEFUQ0ggVjIgMDcvMTBdIGh3L2FjcGk6IFVwZGF0ZSBBQ1BJIEdFRCBmcmFtZXdv
-cmsgdG8gc3VwcG9ydA0KPiB2Q1BVIEhvdHBsdWcNCj4gDQo+IE9uIDkvMzAvMjMgMTA6MTksIFNh
-bGlsIE1laHRhIHdyb3RlOg0KPiA+IEFDUEkgR0VEIHNoYWxsIGJlIHVzZWQgdG8gY29udmV5IHRv
-IHRoZSBndWVzdCBrZXJuZWwgYWJvdXQgYW55IENQVSBob3QtDQo+ICh1bilwbHVnDQo+ID4gZXZl
-bnRzLiBUaGVyZWZvcmUsIGV4aXN0aW5nIEFDUEkgR0VEIGZyYW1ld29yayBpbnNpZGUgUUVNVSBu
-ZWVkcyB0byBiZQ0KPiBlbmhhbmNlZA0KPiA+IHRvIHN1cHBvcnQgQ1BVIGhvdHBsdWcgc3RhdGUg
-YW5kIGV2ZW50cy4NCj4gPg0KPiA+IENvLWRldmVsb3BlZC1ieTogS2VxaWFuIFpodSA8emh1a2Vx
-aWFuMUBodWF3ZWkuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEtlcWlhbiBaaHUgPHpodWtlcWlh
-bjFAaHVhd2VpLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBTYWxpbCBNZWh0YSA8c2FsaWwubWVo
-dGFAaHVhd2VpLmNvbT4NCj4gPiAtLS0NCj4gPiAgIGh3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZp
-Y2UuYyB8IDEwICsrKysrKysrKysNCj4gPiAgIDEgZmlsZSBjaGFuZ2VkLCAxMCBpbnNlcnRpb25z
-KCspDQo+ID4NCj4gDQo+IFJldmlld2VkLWJ5OiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29t
-Pg0KDQoNClRoYW5rcw0KU2FsaWwuDQoNCg==
+Hi Jonathan,
+
+> From: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Sent: Monday, October 2, 2023 5:20 PM
+> To: Salil Mehta <salil.mehta@huawei.com>
+> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
+> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
+> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
+;
+> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
+> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
+> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
+> alex.bennee@linaro.org; linux@armlinux.org.uk;
+> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
+m>
+> Subject: Re: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
+> AddressSpace
+>=20
+> On Sat, 30 Sep 2023 01:19:31 +0100
+> Salil Mehta <salil.mehta@huawei.com> wrote:
+>=20
+> > Virtual CPU Hot-unplug leads to unrealization of a CPU object. This als=
+o
+> > involves destruction of the CPU AddressSpace. Add common function to he=
+lp
+> > destroy the CPU AddressSpace.
+> >
+> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+>=20
+> I'm not that familiar with this bit of the code, so no tag, but
+> as far as I can tell from a fairly superficial look, this is good.
+
+Ok no problem. Thanks.
+
+Salil.
+
+
+> >  include/exec/cpu-common.h |  8 ++++++++
+> >  include/hw/core/cpu.h     |  1 +
+> >  softmmu/physmem.c         | 25 +++++++++++++++++++++++++
+> >  3 files changed, 34 insertions(+)
+> >
+> > diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+> > index 41788c0bdd..eb56a228a2 100644
+> > --- a/include/exec/cpu-common.h
+> > +++ b/include/exec/cpu-common.h
+> > @@ -120,6 +120,14 @@ size_t qemu_ram_pagesize_largest(void);
+> >   */
+> >  void cpu_address_space_init(CPUState *cpu, int asidx,
+> >                              const char *prefix, MemoryRegion *mr);
+> > +/**
+> > + * cpu_address_space_destroy:
+> > + * @cpu: CPU for which address space needs to be destroyed
+> > + * @asidx: integer index of this address space
+> > + *
+> > + * Note that with KVM only one address space is supported.
+> > + */
+> > +void cpu_address_space_destroy(CPUState *cpu, int asidx);
+> >
+> >  void cpu_physical_memory_rw(hwaddr addr, void *buf,
+> >                              hwaddr len, bool is_write);
+> > diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
+> > index 648b5b3586..65d2ae4581 100644
+> > --- a/include/hw/core/cpu.h
+> > +++ b/include/hw/core/cpu.h
+> > @@ -355,6 +355,7 @@ struct CPUState {
+> >      QSIMPLEQ_HEAD(, qemu_work_item) work_list;
+> >
+> >      CPUAddressSpace *cpu_ases;
+> > +    int cpu_ases_count;
+> >      int num_ases;
+> >      AddressSpace *as;
+> >      MemoryRegion *memory;
+> > diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+> > index 4f6ca653b3..4dfa0ca66f 100644
+> > --- a/softmmu/physmem.c
+> > +++ b/softmmu/physmem.c
+> > @@ -761,6 +761,7 @@ void cpu_address_space_init(CPUState *cpu, int asid=
+x,
+> >
+> >      if (!cpu->cpu_ases) {
+> >          cpu->cpu_ases =3D g_new0(CPUAddressSpace, cpu->num_ases);
+> > +        cpu->cpu_ases_count =3D cpu->num_ases;
+> >      }
+> >
+> >      newas =3D &cpu->cpu_ases[asidx];
+> > @@ -774,6 +775,30 @@ void cpu_address_space_init(CPUState *cpu, int
+> asidx,
+> >      }
+> >  }
+> >
+> > +void cpu_address_space_destroy(CPUState *cpu, int asidx)
+> > +{
+> > +    CPUAddressSpace *cpuas;
+> > +
+> > +    assert(asidx < cpu->num_ases);
+> > +    assert(asidx =3D=3D 0 || !kvm_enabled());
+> > +    assert(cpu->cpu_ases);
+> > +
+> > +    cpuas =3D &cpu->cpu_ases[asidx];
+> > +    if (tcg_enabled()) {
+> > +        memory_listener_unregister(&cpuas->tcg_as_listener);
+> > +    }
+> > +
+> > +    address_space_destroy(cpuas->as);
+> > +    g_free_rcu(cpuas->as, rcu);
+> > +
+> > +    if (cpu->cpu_ases_count =3D=3D 1) {
+> > +        g_free(cpu->cpu_ases);
+> > +        cpu->cpu_ases =3D NULL;
+> > +    }
+> > +
+> > +    cpu->cpu_ases_count--;
+> > +}
+> > +
+> >  AddressSpace *cpu_get_address_space(CPUState *cpu, int asidx)
+> >  {
+> >      /* Return the AddressSpace corresponding to the specified index */
+
 
