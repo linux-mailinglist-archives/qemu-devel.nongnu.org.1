@@ -2,95 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CB67B6C77
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943677B6CA0
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 17:06:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qngn5-0003EX-LA; Tue, 03 Oct 2023 10:54:27 -0400
+	id 1qngxL-0006e6-9P; Tue, 03 Oct 2023 11:05:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qngn2-0003DL-Rt
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:54:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qngxH-0006dj-Du
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:05:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qngmy-0003ft-A9
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:54:21 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qngxF-0005PN-Nw
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:04:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696344859;
+ s=mimecast20190719; t=1696345496;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=YdVn9J/4dMFYxzY12Sm72BfHENYSEhIZTLEk8Ychc4g=;
- b=He/bOyOfSftGA8liZGo/8WAXOs7fjSz1mVbTduNc9bzruImKOfxvMJ/iWt81gjjpaNUA8B
- GBqnaC9weZcU0HE7ZWwr/HEYdH28/2srus/vnKJQie+6AeJKt4we+IP0cPWAC9WVUjwRQT
- VkQOMP6gBO18WE0303GU6AnbmaXbUWU=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fQhN2b8FXFipjxiSfkyYEHU1husl4Tbr7PD0b0t5i70=;
+ b=XqE+5MVsVwkHS4WQziJlsDnK8HCHuKY+LUK206Jb39rBQjTjqvHn7BZcMKnDUvFTW7UpbA
+ EO/Ut4UZLz7rjdMeI8ndHFhzHjI9e1Ibf9xXA853r6VLovVCwxBEEMt2sW8GBVQDHtvzu4
+ bXJ6kqKZBDySJLOCygvTJ5vbh7uadto=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-hGGU_uCdNQCLFYue3a-xoA-1; Tue, 03 Oct 2023 10:54:03 -0400
-X-MC-Unique: hGGU_uCdNQCLFYue3a-xoA-1
-Received: by mail-qt1-f200.google.com with SMTP id
- d75a77b69052e-4180b3527c7so11899721cf.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:54:03 -0700 (PDT)
+ us-mta-621-7cnuEYwGP3q00gyB2e8iuA-1; Tue, 03 Oct 2023 11:04:55 -0400
+X-MC-Unique: 7cnuEYwGP3q00gyB2e8iuA-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-7756d0fb11dso29910085a.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 08:04:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696344842; x=1696949642;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=YdVn9J/4dMFYxzY12Sm72BfHENYSEhIZTLEk8Ychc4g=;
- b=tdHEVeOpOZuOOXcQroqY1EylRey7tRXJAigtHK+vtvoi/DE4RIioSfVbQK3EHseswL
- ZdztcM0IGUi42IfO66BaMm6UgHboN7vW0H8ElNIALLm2j9vzaunCdpkkusn91I5ybv42
- 00yOQQh6T06gjOs6Vm9lD4Ozl5hfCucyfVGD8JXwUkcfjgGFZEQ6RAkyw+fhDmyn6hwQ
- 40zdVMWOWbP65rZfgMQEomaNzTEOHFK4WTRYMnb0URC3jUYJBCA7hbCAFdKJOnAHtaiy
- qjkvc8rMx0TaOmHf6OxutSwKsj7E2kez0SC/71nJx6aNMiZFMZxnZM7UsX8Cn+/L0ImW
- PCUw==
-X-Gm-Message-State: AOJu0Yws7nSmq8EI2RhXBM6eSqCy7T9TKWEDib2l0YrSoCdsyLHTuxJg
- ayF3yGbIJtZw9Amx1LIORTJ4REIfz7BwjiIPyyhAH2jHELywmiGh4Kh5maI9+e+kcjT+bZNlIwv
- ZqhF/sD3+vejWses=
-X-Received: by 2002:a05:6214:4a91:b0:658:7441:ff1b with SMTP id
- pi17-20020a0562144a9100b006587441ff1bmr17357483qvb.45.1696344842721; 
- Tue, 03 Oct 2023 07:54:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGk+mvc2e0qbHq3oaq0X06zO00hSngjAdwtkLpJyCKXT1S8AKPDK8FWotPlNyBGZpyeLk/Cow==
-X-Received: by 2002:a05:6214:4a91:b0:658:7441:ff1b with SMTP id
- pi17-20020a0562144a9100b006587441ff1bmr17357449qvb.45.1696344842376; 
- Tue, 03 Oct 2023 07:54:02 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- q7-20020a0cf5c7000000b00656506a1881sm547008qvm.74.2023.10.03.07.54.00
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 07:54:02 -0700 (PDT)
-Message-ID: <302f7b27-b367-d64c-a860-49e41192ac9f@redhat.com>
-Date: Tue, 3 Oct 2023 16:53:59 +0200
+ d=1e100.net; s=20230601; t=1696345494; x=1696950294;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fQhN2b8FXFipjxiSfkyYEHU1husl4Tbr7PD0b0t5i70=;
+ b=olTpgeZkYLsxcpERYSTrEoEn5JZ8IBe8vnTARzRYAplJOT7V+ux1yvsrCSEimA6GuR
+ jJNWswkHRQq3kYx7HHy4wolm4aRhb0p1UDYW54qIC/M96B1+Kybh4XwpNAxnEGhdrKSH
+ z28suH5g5hmufSkQMLTKk2h8dtpPIaEZdV4GFjeLP/fxkguTcuX+tlH06aK2zCO0vTqN
+ R6oRltlmFCtfTrJ44Ci2+A1WG5XYT+PZ7rbWoeYbxFyT2hbYxUqd/lIK3VRcA8+6eIbC
+ HW52FZSt16/Bat8AwyvSghwc03bwizQcA9KplhWR4wkhfp29/+ZzVNHz7Xvmgk1AMlM3
+ yDuA==
+X-Gm-Message-State: AOJu0Yxw2LhDWV+Cu/vDZ59toX89p5ZUIYfPB+I/3wn0aFLy3nAfSzEM
+ UMfUMArHyAjf3lZo3sG0lzBoZI639fiwvn0P0E5G7+DFVxka5BBdfe0/h8pm1hctMYAthHtEMTt
+ +sGijKtAYXlsOwUW852SFzVg=
+X-Received: by 2002:a05:620a:28d0:b0:76f:27af:2797 with SMTP id
+ l16-20020a05620a28d000b0076f27af2797mr15511425qkp.0.1696345494434; 
+ Tue, 03 Oct 2023 08:04:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqhyxnamfjQkk27qx+ZTS4K449X2dUZLVwTpCC+bIZ6X3urzmgU1TF4s8diB85xZBX019RKQ==
+X-Received: by 2002:a05:620a:28d0:b0:76f:27af:2797 with SMTP id
+ l16-20020a05620a28d000b0076f27af2797mr15511394qkp.0.1696345494087; 
+ Tue, 03 Oct 2023 08:04:54 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ oo19-20020a05620a531300b0077569c302d1sm529377qkn.28.2023.10.03.08.04.53
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 08:04:53 -0700 (PDT)
+Date: Tue, 3 Oct 2023 11:04:51 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH] migration: Unify and trace vmstate field_exists() checks
+Message-ID: <ZRwtkwKy2p/gN521@x1n>
+References: <20230906204722.514474-1-peterx@redhat.com>
+ <87ledi8aev.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3 04/15] vfio/common: Propagate KVM_SET_DEVICE_ATTR error
- if any
-Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, zhenzhong.duan@intel.com, alex.williamson@redhat.com,
- jgg@nvidia.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
- peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-5-eric.auger@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231003101530.288864-5-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <87ledi8aev.fsf@suse.de>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,66 +96,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 12:14, Eric Auger wrote:
-> In the VFIO_SPAPR_TCE_v2_IOMMU container case, when
-> KVM_SET_DEVICE_ATTR fails, we currently don't propagate the
-> error as we do on the vfio_spapr_create_window() failure
-> case. Let's align the code. Take the opportunity to
-> reword the error message and make it more explicit.
+On Thu, Sep 07, 2023 at 08:55:52AM -0300, Fabiano Rosas wrote:
+> Peter Xu <peterx@redhat.com> writes:
 > 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> > For both save/load we actually share the logic on deciding whether a field
+> > should exist.  Merge the checks into a helper and use it for both save and
+> > load.  When doing so, add documentations and reformat the code to make it
+> > much easier to read.
+> >
+> > The real benefit here (besides code cleanups) is we add a trace-point for
+> > this; this is a known spot where we can easily break migration
+> > compatibilities between binaries, and this trace point will be critical for
+> > us to identify such issues.
+> >
+> > For example, this will be handy when debugging things like:
+> >
+> > https://gitlab.com/qemu-project/qemu/-/issues/932
+> >
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> > ---
+> >  migration/vmstate.c    | 34 ++++++++++++++++++++++++++--------
+> >  migration/trace-events |  1 +
+> >  2 files changed, 27 insertions(+), 8 deletions(-)
+> >
+> > diff --git a/migration/vmstate.c b/migration/vmstate.c
+> > index 31842c3afb..73e74ddea0 100644
+> > --- a/migration/vmstate.c
+> > +++ b/migration/vmstate.c
+> > @@ -25,6 +25,30 @@ static int vmstate_subsection_save(QEMUFile *f, const VMStateDescription *vmsd,
+> >  static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
+> >                                     void *opaque);
+> >  
+> > +/* Whether this field should exist for either save or load the VM? */
+> > +static bool
+> > +vmstate_field_exists(const VMStateDescription *vmsd, const VMStateField *field,
+> > +                     void *opaque, int version_id)
+> > +{
+> > +    bool result;
+> > +
+> > +    if (field->field_exists) {
+> > +        /* If there's the function checker, that's the solo truth */
+> > +        result = field->field_exists(opaque, version_id);
+> > +        trace_vmstate_field_exists(vmsd->name, field->name, field->version_id,
+> > +                                   version_id, result);
+> > +    } else {
+> > +        /*
+> > +         * Otherwise, we only save/load if field version is same or older.
+> > +         * For example, when loading from an old binary with old version,
+> > +         * we ignore new fields with newer version_ids.
+> > +         */
+> > +        result = field->version_id <= version_id;
 > 
-> ---
+> This one doesn't get a trace?
+
+Right, I didn't add that since I found mostly the bug comes from
+field_exists() returning different values for different qemu binaries.
+So I explicitly didn't include that otherwise we'll see tons of entries
+under that regard but is probably safe.
+
 > 
-> I think thise should end up in the
->      if (!container->initialized) {
->          if (!container->error) {
-> path and call the error_propagate_prepend()
-
-We could have this case also
-
-     if (memory_region_is_ram_device(section->mr)) {
-         error_report("failed to vfio_dma_map. pci p2p may not work");
-         return;
-     }
-
-which was added by commit 567b5b309abe ("vfio/pci: Relax DMA map errors
-for MMIO regions"). There were a few changes in the failure path, like
-commit ac6dc3894fbb ("vfio: Generalize vfio_listener_region_add failure
-path") and it is unclear to me which one will be used. Anyhow, this needs
-some cleanup and this is what this patchset is proposing. Let's move on :
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-> ---
->   hw/vfio/common.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+> Aside from that:
 > 
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 4e122fc4e4..c54a72ec80 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -878,11 +878,11 @@ static void vfio_listener_region_add(MemoryListener *listener,
->                   QLIST_FOREACH(group, &container->group_list, container_next) {
->                       param.groupfd = group->fd;
->                       if (ioctl(vfio_kvm_device_fd, KVM_SET_DEVICE_ATTR, &attr)) {
-> -                        error_report("vfio: failed to setup fd %d "
-> -                                     "for a group with fd %d: %s",
-> -                                     param.tablefd, param.groupfd,
-> -                                     strerror(errno));
-> -                        return;
-> +                        error_setg_errno(&err, errno,
-> +                                         "vfio: failed GROUP_SET_SPAPR_TCE for "
-> +                                         "KVM VFIO device %d and group fd %d",
-> +                                         param.tablefd, param.groupfd);
-> +                        goto fail;
->                       }
->                       trace_vfio_spapr_group_attach(param.groupfd, param.tablefd);
->                   }
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+
+Thanks!
+
+-- 
+Peter Xu
 
 
