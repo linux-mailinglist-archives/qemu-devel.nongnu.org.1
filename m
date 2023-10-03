@@ -2,82 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD577B6A60
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:22:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F0C17B6A6B
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:23:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnfLx-0001xj-Ih; Tue, 03 Oct 2023 09:22:21 -0400
+	id 1qnfN9-0004Aa-JK; Tue, 03 Oct 2023 09:23:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qnfLt-0001tb-Vw
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:22:18 -0400
-Received: from mail-pf1-x434.google.com ([2607:f8b0:4864:20::434])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qnfLj-0002ep-9l
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:22:17 -0400
-Received: by mail-pf1-x434.google.com with SMTP id
- d2e1a72fcca58-692c70bc440so673082b3a.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1696339324; x=1696944124; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=nzlZXFlmrklwSn/+uC5Mi9MdymXGVusYVm5vMvkTEJs=;
- b=nmXLI944vwAPZ71Phw52wXE83k6PBeeY3mIiEJXsICls9WUzxy3ndCwDsmjlyxHHhq
- Thfhy80WTABYRk1B/NP/3rOjzfSBu1Lhq47LGUxldK6fcsVtGNvgo10GYicSAmHig6R1
- oXnHlFrrG0Kk1BKVd44GOJfhX04a3fPjEg+R2Oa/Ep6ZuJE0rIZ1H70MbiWlHxdha+Eo
- JH2/LQaDmBQWPhtVEe/Gy65bTnYWrIBXsSWJVcP1nI9ZxaNb5HcSg6MJnX3ZQ5XOUr3W
- N3Y2OOzciKmCq0WYFxxoDUt4Obo/+WInn3pDpAGd9SW9NF1t89pQ8Bnt4Cka+Qlf+2h1
- hqZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696339324; x=1696944124;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nzlZXFlmrklwSn/+uC5Mi9MdymXGVusYVm5vMvkTEJs=;
- b=OQtGFyLI0tlTEtfD1eVtRLYln38mi4t3sXLMmfUC0aIZnRjCAviDrQgmsKGpl1b2pM
- gzz6hY6pKZ0FgopgPMMkNo8rM46NrnQKNCjFM2BZxXaRZ+/KRyaOYyLP/l6sSXOscPhl
- zRpDskfb8dcGsnicnQSB4F7mp+BhYyvhJCpDivsM3UzV4fJJg8+jbdWaGP9fC1odUX12
- GAPPWfy6/5QZB+KvR7XD6q2/M/d2Rdr3QdVKnQ210d2U/qow3fDelF5kNSP57Cs+M+6Q
- v6dmN8taUSS/FIOTNkOPRfgaRqaoX+c4rZDdYTHXTjk7O1HTCcDnHAfnL9uUbLal46bv
- 8X2A==
-X-Gm-Message-State: AOJu0YzDcHUvvG+xOQPHYu7ZjJShi4lkSaJ4srZVLPNA4tqbWCUB+7l/
- p/nV4jOrZ8Pc3GNwJNwYps0BsDyq01m48NF+wYI=
-X-Google-Smtp-Source: AGHT+IGy97riSrkQtFLtBGDBviyNTvNwXOLl5pEQ9wyGuhVbpjKKAx0JWFij8ft91rYeyD2yA+QN+g==
-X-Received: by 2002:a05:6a20:9750:b0:153:353e:5e39 with SMTP id
- hs16-20020a056a20975000b00153353e5e39mr11708438pzc.51.1696339324189; 
- Tue, 03 Oct 2023 06:22:04 -0700 (PDT)
-Received: from grind.. ([177.94.15.124]) by smtp.gmail.com with ESMTPSA id
- u11-20020a17090282cb00b001bf11cf2e21sm1491777plz.210.2023.10.03.06.22.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 06:22:03 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- ajones@ventanamicro.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 2/2] target/riscv/kvm: support KVM_GET_REG_LIST
-Date: Tue,  3 Oct 2023 10:21:48 -0300
-Message-ID: <20231003132148.797921-3-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231003132148.797921-1-dbarboza@ventanamicro.com>
-References: <20231003132148.797921-1-dbarboza@ventanamicro.com>
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnfN8-0004AR-9l
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:23:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qnfN6-0002sc-Fz
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:23:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696339411;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KOqW7N0mK59bio/BAiYphYMGoecpSKERGlFuSYRglC8=;
+ b=Xj3GkNk6lSSK7Dljrim1w+1fB3sLpDFzupCk6hPUhpc5KGs71dSbr56Ri9dUtD0zT5Z2dI
+ d9EpUDfVQg+Vgm706XEeODRGpvpgY656JUIJK38JiHSQxO1v3uEuBGcgarVPiFLDchMSsd
+ GIexHT4YHcq2tvPcKpjfVypEbma3h/g=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-593-OKgw618QNWiLo9QpedPvBw-1; Tue, 03 Oct 2023 09:23:28 -0400
+X-MC-Unique: OKgw618QNWiLo9QpedPvBw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 58C611C0CCA8;
+ Tue,  3 Oct 2023 13:23:27 +0000 (UTC)
+Received: from [10.39.192.186] (unknown [10.39.192.186])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id D99D01005E27;
+ Tue,  3 Oct 2023 13:23:25 +0000 (UTC)
+Message-ID: <037ac5f2-8c19-e1ff-fc96-3cda8755924f@redhat.com>
+Date: Tue, 3 Oct 2023 15:23:24 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::434;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pf1-x434.google.com
+Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+Content-Language: en-US
+To: Stefan Hajnoczi <stefanha@gmail.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>, Liu Jiang <gerry@linux.alibaba.com>,
+ Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
+References: <20230827182937.146450-1-lersek@redhat.com>
+ <20230827182937.146450-8-lersek@redhat.com>
+ <CAJSP0QVWSQ8F-A1ryGLtd1jb8Go1Pr_N7AcLb5W5kSFv8T8jTA@mail.gmail.com>
+ <6d766ab4-b6b8-b64b-1f9d-60c558b56509@redhat.com>
+ <CAJSP0QV9RO7bkkcVFibnTv4tixmO3wKohSY+ia1D-UZiRzh5QA@mail.gmail.com>
+ <20231002015259-mutt-send-email-mst@kernel.org>
+ <CAJSP0QXgWsULW_61-MScvuWAiE3c4brYRyFc6q_==Sj6aLE8SQ@mail.gmail.com>
+ <CAJSP0QU3jzFGnJ35Zbabf70Tbf+rPA_fvrA_eNxZ8TxOXQxZXA@mail.gmail.com>
+ <20231002183627-mutt-send-email-mst@kernel.org>
+ <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=lersek@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,147 +90,99 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-KVM for RISC-V started supporting KVM_GET_REG_LIST in Linux 6.6. It
-consists of a KVM ioctl() that retrieves a list of all available regs
-for get_one_reg/set_one_reg. Regs that aren't present in the list aren't
-supported in the host.
+On 10/3/23 15:08, Stefan Hajnoczi wrote:
+> On Tue, 3 Oct 2023 at 08:27, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>
+>> On Mon, Oct 02, 2023 at 05:13:26PM -0400, Stefan Hajnoczi wrote:
+>>> One more question:
+>>>
+>>> Why is the disabled state not needed by regular (non-vhost) virtio-net devices?
+>>
+>> Tap does the same - it purges queued packets:
+>>
+>> int tap_disable(NetClientState *nc)
+>> {
+>>     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+>>     int ret;
+>>
+>>     if (s->enabled == 0) {
+>>         return 0;
+>>     } else {
+>>         ret = tap_fd_disable(s->fd);
+>>         if (ret == 0) {
+>>             qemu_purge_queued_packets(nc);
+>>             s->enabled = false;
+>>             tap_update_fd_handler(s);
+>>         }
+>>         return ret;
+>>     }
+>> }
+> 
+> tap_disable() is not equivalent to the vhost-user "started but
+> disabled" ring state. tap_disable() is a synchronous one-time action,
+> while "started but disabled" is a continuous state.
+> 
+> The "started but disabled" ring state isn't needed to achieve this.
+> The back-end can just drop tx buffers upon receiving
+> VHOST_USER_SET_VRING_ENABLE .num=0.
+> 
+> The history of the spec is curious. VHOST_USER_SET_VRING_ENABLE was
+> introduced before the the "started but disabled" state was defined,
+> and it explicitly mentions tap attach/detach:
+> 
+> commit 7263a0ad7899994b719ebed736a1119cc2e08110
+> Author: Changchun Ouyang <changchun.ouyang@intel.com>
+> Date:   Wed Sep 23 12:20:01 2015 +0800
+> 
+>     vhost-user: add a new message to disable/enable a specific virt queue.
+> 
+>     Add a new message, VHOST_USER_SET_VRING_ENABLE, to enable or disable
+>     a specific virt queue, which is similar to attach/detach queue for
+>     tap device.
+> 
+> and then later:
+> 
+> commit c61f09ed855b5009f816242ce281fd01586d4646
+> Author: Michael S. Tsirkin <mst@redhat.com>
+> Date:   Mon Nov 23 12:48:52 2015 +0200
+> 
+>     vhost-user: clarify start and enable
+> 
+>>
+>> what about non tap backends? I suspect they just aren't
+>> used widely with multiqueue so no one noticed.
+> 
+> I still don't understand why "started but disabled" is needed instead
+> of just two ring states: enabled and disabled.
+> 
+> It seems like the cleanest path going forward is to keep the "ignore
+> rx, discard tx" semantics for virtio-net devices but to clarify in the
+> spec that other device types do not process the ring:
+> 
+> "
+> * started but disabled: the back-end must not process the ring. For legacy
+>   reasons there is an exception for the networking device, where the
+>   back-end must process and discard any TX packets and not process
+>   other rings.
+> "
+> 
+> What do you think?
 
-This simplifies our lives when initing the KVM regs since we don't have
-to always attempt a KVM_GET_ONE_REG for all regs QEMU knows. We'll only
-attempt a get_one_reg() if we're sure the reg is supported, i.e. it was
-retrieved by KVM_GET_REG_LIST. Any error in get_one_reg() will then
-always considered fatal, instead of having to handle special error codes
-that might indicate a non-fatal failure.
+... from a vhost-user backend perspective, won't this create a need for
+all "ring processor" (~ virtio event loop) implementations to support
+both methods? IIUC, the "virtio pop" is usually independent of the
+particular device to which the requests are ultimately delivered. So the
+event loop would have to grow a new parameter regarding "what to do in
+the started-but-disabled state", the network device would have to pass
+in one value (-> pop & drop), and all other devices would have to pass
+in the other value (stop popping).
 
-Start by moving the current kvm_riscv_init_multiext_cfg() logic into a
-new kvm_riscv_read_multiext_legacy() helper. We'll prioritize using
-KVM_GET_REG_LIST, so check if we have it available and, in case we
-don't, use the legacy() logic.
+... I figure in rust-vmm/vhost it would affect the "handle_event"
+function in "crates/vhost-user-backend/src/event_loop.rs".
 
-Otherwise, retrieve the available reg list and use it to check if the
-host supports our known KVM regs, doing the usual get_one_reg() for
-the supported regs and setting cpu->cfg accordingly.
+Do I understand right? (Not disagreeing, just pondering the impact on
+backends.)
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- target/riscv/kvm/kvm-cpu.c | 96 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 1 deletion(-)
-
-diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
-index c3daf74fe9..090d617627 100644
---- a/target/riscv/kvm/kvm-cpu.c
-+++ b/target/riscv/kvm/kvm-cpu.c
-@@ -771,7 +771,8 @@ static void kvm_riscv_read_cbomz_blksize(RISCVCPU *cpu, KVMScratchCPU *kvmcpu,
-     }
- }
- 
--static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-+static void kvm_riscv_read_multiext_legacy(RISCVCPU *cpu,
-+                                           KVMScratchCPU *kvmcpu)
- {
-     CPURISCVState *env = &cpu->env;
-     uint64_t val;
-@@ -812,6 +813,99 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-     }
- }
- 
-+static int uint64_cmp(const void *a, const void *b)
-+{
-+    uint64_t val1 = *(const uint64_t *)a;
-+    uint64_t val2 = *(const uint64_t *)b;
-+
-+    if (val1 < val2) {
-+        return -1;
-+    }
-+
-+    if (val1 > val2) {
-+        return 1;
-+    }
-+
-+    return 0;
-+}
-+
-+static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
-+{
-+    KVMCPUConfig *multi_ext_cfg;
-+    struct kvm_one_reg reg;
-+    struct kvm_reg_list rl_struct;
-+    struct kvm_reg_list *reglist;
-+    uint64_t val, reg_id, *reg_search;
-+    int i, ret;
-+
-+    rl_struct.n = 0;
-+    ret = ioctl(kvmcpu->cpufd, KVM_GET_REG_LIST, &rl_struct);
-+
-+    /*
-+     * If KVM_GET_REG_LIST isn't supported we'll get errno 22
-+     * (EINVAL). Use read_legacy() in this case.
-+     */
-+    if (errno == EINVAL) {
-+        return kvm_riscv_read_multiext_legacy(cpu, kvmcpu);
-+    } else if (errno != E2BIG) {
-+        /*
-+         * E2BIG is an expected error message for the API since we
-+         * don't know the number of registers. The right amount will
-+         * be written in rl_struct.n.
-+         *
-+         * Error out if we get any other errno.
-+         */
-+        error_report("Error when accessing get-reg-list, code: %s",
-+                     strerrorname_np(errno));
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    reglist = g_malloc(sizeof(struct kvm_reg_list) +
-+                       rl_struct.n * sizeof(uint64_t));
-+    reglist->n = rl_struct.n;
-+    ret = ioctl(kvmcpu->cpufd, KVM_GET_REG_LIST, reglist);
-+    if (ret) {
-+        error_report("Error when reading KVM_GET_REG_LIST, code %s ",
-+                     strerrorname_np(errno));
-+        exit(EXIT_FAILURE);
-+    }
-+
-+    /* sort reglist to use bsearch() */
-+    qsort(&reglist->reg, reglist->n, sizeof(uint64_t), uint64_cmp);
-+
-+    for (i = 0; i < ARRAY_SIZE(kvm_multi_ext_cfgs); i++) {
-+        multi_ext_cfg = &kvm_multi_ext_cfgs[i];
-+        reg_id = kvm_riscv_reg_id(&cpu->env, KVM_REG_RISCV_ISA_EXT,
-+                                  multi_ext_cfg->kvm_reg_id);
-+        reg_search = bsearch(&reg_id, reglist->reg, reglist->n,
-+                             sizeof(uint64_t), uint64_cmp);
-+        if (!reg_search) {
-+            continue;
-+        }
-+
-+        reg.id = reg_id;
-+        reg.addr = (uint64_t)&val;
-+        ret = ioctl(kvmcpu->cpufd, KVM_GET_ONE_REG, &reg);
-+        if (ret != 0) {
-+            error_report("Unable to read ISA_EXT KVM register %s, "
-+                         "error code: %s", multi_ext_cfg->name,
-+                         strerrorname_np(errno));
-+            exit(EXIT_FAILURE);
-+        }
-+
-+        multi_ext_cfg->supported = true;
-+        kvm_cpu_cfg_set(cpu, multi_ext_cfg, val);
-+    }
-+
-+    if (cpu->cfg.ext_icbom) {
-+        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cbom_blocksize);
-+    }
-+
-+    if (cpu->cfg.ext_icboz) {
-+        kvm_riscv_read_cbomz_blksize(cpu, kvmcpu, &kvm_cboz_blocksize);
-+    }
-+}
-+
- static void riscv_init_kvm_registers(Object *cpu_obj)
- {
-     RISCVCPU *cpu = RISCV_CPU(cpu_obj);
--- 
-2.41.0
+Laszlo
 
 
