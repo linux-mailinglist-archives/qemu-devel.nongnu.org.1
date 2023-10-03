@@ -2,83 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069CB7B6F3F
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960F07B6F47
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:08:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnir9-0005F6-3l; Tue, 03 Oct 2023 13:06:47 -0400
+	id 1qnisd-00067j-Cq; Tue, 03 Oct 2023 13:08:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qniqw-0005DF-87
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:06:34 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qnisX-00065l-My
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:08:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qniqd-0002Q6-1B
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:06:32 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qnisT-0002e0-82
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:08:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696352772;
+ s=mimecast20190719; t=1696352888;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=jR0hFI249lrWQKKqipgoaUdSfR3gpsSHL33Rfe4lKOc=;
- b=IbatT5EtyF3kGmd68WI/xJU2KWm/uF4umz1L9x9wMwgI3qrfZWOliVUQH9hn1AEdhuY0y6
- CbwIZHfbbDBYdzgTMzn8DRlnQGrnhwBWPVGUmNBjtzFbidd6+OqtU3Xz8YhU1gRn/VlpBz
- ijp+tKCEtQJDRcQxOLI++LyyhPBgE9g=
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
- [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=gXE0vN/L0rreRVqxrefBCnsku8gz9f4PQP+8NsmXuj0=;
+ b=Mb0c8gA8XRHdDR2Ri0lY3EtEN99x8BeimVUd1ZNzjmnp9RUOmeAQibebM6GMUU9hnFPF1W
+ 7AlwWrzvvSEqAZXwDZZNkEpP5IyknjI4fLNcODM/oeUCRZwc26wxayX/owFENEezDHE6qd
+ VXa+mu2tHegDvnFltBIt7vN9DytGFmA=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-494-tbV1hcfONl273yo0fTcXRQ-1; Tue, 03 Oct 2023 13:06:00 -0400
-X-MC-Unique: tbV1hcfONl273yo0fTcXRQ-1
-Received: by mail-oi1-f200.google.com with SMTP id
- 5614622812f47-3af5fca6527so1716364b6e.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:06:00 -0700 (PDT)
+ us-mta-537-jEiRsPDWP_OJ8rbHLHvQiA-1; Tue, 03 Oct 2023 13:08:06 -0400
+X-MC-Unique: jEiRsPDWP_OJ8rbHLHvQiA-1
+Received: by mail-oi1-f199.google.com with SMTP id
+ 5614622812f47-3af5a2a0c8fso1704272b6e.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:08:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696352759; x=1696957559;
+ d=1e100.net; s=20230601; t=1696352885; x=1696957685;
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=jR0hFI249lrWQKKqipgoaUdSfR3gpsSHL33Rfe4lKOc=;
- b=lZHc6iVxsCiNsXqV9dwgPdeEOSgahQctfifN5HdNFt8gYqWaMiHO/Ci5ZWkK8raMr5
- rqBSBsR7RT/rZQ5IQmj+OlvKFSNM/ifW8GDwzzhNQY07loU03olXDOoMTwdUnvrVNArT
- nRJe7nWXsGbPmqQYQpOaPY5sqrW33sSIef80In73pkCI4BwK253YgwEYYoV0j7/PckZd
- k8rMZ8ZJtGLU9Ok5Zemiy0bBztuQ/7WADFcxfs4b+fCR2Cq6NSaawDv+Px2OW6BPv8Mz
- Khb7z+3MyvxdDPSNpxLmjDrpJWWHmhKu60TNzUdkMfjLs1M2sRtp3apL6cbhStRA/y2k
- luYQ==
-X-Gm-Message-State: AOJu0YwsZ6DHp0QGPOFbYxP3DooXUMHQX4kdDhAT/5hJcsdyy5xn+IXE
- mh8uqUnOrCDVIGgwLeJ1OUOhfYONyH8mN9gHyv4JJL5OMna2LUB/B7JSgLrxH97xw+ORPJIuf+W
- 54PBARjw71iolDTzJhvArUiZXxXZyCx8=
-X-Received: by 2002:a05:6808:1913:b0:3a7:1e3e:7f97 with SMTP id
- bf19-20020a056808191300b003a71e3e7f97mr270715oib.4.1696352759566; 
- Tue, 03 Oct 2023 10:05:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEMaQ+K6JLvcW6rhJ7nq9cTSHLeYShtvzwcJtTH9divn3M5WJ0rMbx9DWAupkLYZxFNPTXYFEyhMZf57OIG/GY=
-X-Received: by 2002:a05:6808:1913:b0:3a7:1e3e:7f97 with SMTP id
- bf19-20020a056808191300b003a71e3e7f97mr270698oib.4.1696352759332; Tue, 03 Oct
- 2023 10:05:59 -0700 (PDT)
+ bh=gXE0vN/L0rreRVqxrefBCnsku8gz9f4PQP+8NsmXuj0=;
+ b=urJo7HJTpp2fVQ8FFknqgG8s/GlVZoEBiCn80DBEChkTCePYLQwuwek70GtptPrU+M
+ 04SyJQeWyRstVJKG40akc2dzpx4typz11m08F4lUviGayr0Ww+HsqBqyY/qsPsWMQ5i1
+ sFe5k91ag5XJxk5ajNAPkTOcf4hLEH353G6qgchcF7AbPSFPjqUg0v8ettt7D1wI7PHM
+ CEYGmQzZb4Ev0my6LYbzojNEb2iXSt9H8lWaE8ETDEiG0+L+5FE+m6xfeTk9w0/lr9Mj
+ bel0pPuUEAvnoxMgApitG6zAkiWCKR+d9aSEed0Yk2zbpzrI3kbEdvhRM8qnZigCtmtl
+ EF9Q==
+X-Gm-Message-State: AOJu0YzkMku3a0gU4u+Tm6TntFzBk/HbU4Z0unumRssEy71/Q/ho2Zyr
+ CuCJ7m5easTcXmXbLrsWY1080w/eE4td9aUk30hj0Q0vYKZyUF1EhlnosWUumnSzp5u1GclfVFw
+ xQ6hk3bPlMBjlUXNUOmUQWVnlEJQoIArjGzph3o8=
+X-Received: by 2002:a05:6808:3023:b0:3a7:8f94:743a with SMTP id
+ ay35-20020a056808302300b003a78f94743amr257059oib.10.1696352885690; 
+ Tue, 03 Oct 2023 10:08:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSjOfv2quaqdtjZPz9he8AwLF3x/A3Eo4BMSoyU3RyxGv0Wh35dvT7ib/w7AhjByp/3rIXok7eYYA+ic8BSIM=
+X-Received: by 2002:a05:6808:3023:b0:3a7:8f94:743a with SMTP id
+ ay35-20020a056808302300b003a78f94743amr257035oib.10.1696352885385; Tue, 03
+ Oct 2023 10:08:05 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230921160712.99521-1-simon.rowe@nutanix.com>
- <20230921160712.99521-2-simon.rowe@nutanix.com>
- <CAFn=p-YL_hmnrFY9hhuMgMkV4hL3dojMMWUdG9=DBGYuxi_TUw@mail.gmail.com>
- <ZRwf3rInMRkzD/sq@x1-carbon>
-In-Reply-To: <ZRwf3rInMRkzD/sq@x1-carbon>
+References: <b7e00b36-2ac8-44fa-9847-b2025ebe05f6@linaro.org>
+ <F1D854EB-9C6F-4A54-BAA9-D75C40DBE86F@flawful.org>
+ <CAFn=p-a5hbbKTABxrE2+7jfq7fB6+Y46uQhLsWAwbj_xFMhhMA@mail.gmail.com>
+In-Reply-To: <CAFn=p-a5hbbKTABxrE2+7jfq7fB6+Y46uQhLsWAwbj_xFMhhMA@mail.gmail.com>
 From: John Snow <jsnow@redhat.com>
-Date: Tue, 3 Oct 2023 13:05:47 -0400
-Message-ID: <CAFn=p-bmMxJmVj8v31NsRpQd3bHd5zeeRbxQj6bDxUC8Tqh4CQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] hw/ide/core: terminate in-flight DMA on IDE bus reset
-To: Niklas Cassel <Niklas.Cassel@wdc.com>
-Cc: qemu-devel <qemu-devel@nongnu.org>, Qemu-block <qemu-block@nongnu.org>, 
- Fiona Ebner <f.ebner@proxmox.com>, Simon Rowe <simon.rowe@nutanix.com>, 
- Felipe Franciosi <felipe@nutanix.com>
-Content-Type: multipart/alternative; boundary="000000000000a25b930606d2e72b"
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+Date: Tue, 3 Oct 2023 13:07:54 -0400
+Message-ID: <CAFn=p-YkDzGxZuABYoCfd3cKd7X4u=E3OPjyYj_E_CHc=pCP1A@mail.gmail.com>
+Subject: Re: FreeBSD 13.2 installer does not see AHCI devices on
+ aarch64/sbsa-ref and x86-64/q35
+To: Niklas Cassel <nks@flawful.org>
+Cc: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>, 
+ qemu-arm <qemu-arm@nongnu.org>, Qemu-block <qemu-block@nongnu.org>, 
+ Damien Le Moal <dlemoal@kernel.org>, Leif Lindholm <quic_llindhol@quicinc.com>,
+ Ard Biesheuvel <ardb+tianocore@kernel.org>, Michael Tokarev <mjt@tls.msk.ru>
+Content-Type: multipart/alternative; boundary="00000000000025ca3d0606d2ef67"
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=jsnow@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,183 +97,280 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a25b930606d2e72b
+--00000000000025ca3d0606d2ef67
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 3, 2023, 10:07 AM Niklas Cassel <Niklas.Cassel@wdc.com> wrote:
+While I'm poking at IDE today ... any news here?
 
-> On Mon, Sep 25, 2023 at 03:53:23PM -0400, John Snow wrote:
-> > Niklas, I'm sorry to lean on you here a little bit - You've been
-> > working on the SATA side of this a bit more often, can you let me know
-> > if you think this patch is safe?
->
-> FWIW, I prefer Fiona's patch series which calls blk_aio_cancel() before
-> calling ide_reset():
->
-> https://lore.kernel.org/qemu-devel/20230906130922.142845-1-f.ebner@proxmo=
-x.com/T/#u
->
-> Patch 2/2 also adds a qtest which fails before patch 1/2, and passes afte=
-r
-> patch 1/2.
->
 
-I think I also prefer Fiona's patch. Simon makes a good point (I think)
-that it feels correct to dump the DMA as fast as possible, but Fiona's
-patch seems more justifiably and obviously correct.
-
-I think my preference is for Fiona's patches first, and if we want to
-optimize cancellation thereafter we can attempt to do so.
-
+On Tue, Sep 26, 2023, 12:35 PM John Snow <jsnow@redhat.com> wrote:
 
 >
-> >
-> > I'm not immediately sure what the impact of applying it is, but I have
-> > some questions about it:
-> >
-> > (1) When does ide_dma_cb get invoked when DRQ_STAT is set but the
-> > return code we were passed is not < 0, and
-> >
-> > (2) what's the impact of just *not* executing the end-of-transfer
-> > block here; what happens to the state machine?
-> >
-> > On Thu, Sep 21, 2023 at 12:07=E2=80=AFPM Simon Rowe <simon.rowe@nutanix=
-.com>
-> wrote:
-> > >
-> > > When an IDE controller is reset, its internal state is being cleared
-> > > before any outstanding I/O is cancelled. If a response to DMA is
-> > > received in this window, the aio callback will incorrectly continue
-> > > with the next part of the transfer (now using sector 0 from
-> > > the cleared controller state).
-> >
-> > Eugh, yikes. It feels like we should fix the cancellation ... I'm
-> > worried that if we've reset the state machine and we need to bail on a
-> > DMA callback that the heuristics we use for that will eventually be
-> > wrong, unless I am mistaken and this is totally safe and reliable for
-> > a reason I don't intuitively see right away.
-> >
-> > Thoughts?
 >
-> Since Simon has a reliable reproducer, and has offered to test Fiona's
-> patch,
-> perhaps we should simply take him up on that offer :)
+> On Tue, Sep 26, 2023, 8:06 AM Niklas Cassel <nks@flawful.org> wrote:
 >
-
-Yes! I just wanted to understand the differences between the two approaches
-since it looked like it was going to be my job to decide between them =F0=
-=9F=98=85
-
-Simon, can you confirm that Fiona's patches are appropriate for your
-reproducer? In the meantime I'll do my own audit for the problem as you
-described it (thank you very much for that) and see if there's anything
-else that needs to be addressed.
-
-
+>> Hello Marcin,
+>>
+>> I will have a look at this.
+>>
+>>
+>> Kind regards,
+>> Niklas
+>>
 >
-> Kind regards,
-> Niklas
+> Thanks. You have my blessing in advance to get any hot fixes for this
+> merged ASAP, as long as another block maintainer is willing to give it an
+> ACK. (I'll try to be prompt. Please send me a message on IRC to get my
+> attention if you need to. Sorry I'm so hard to get hold of.)
+>
+> Also CC mjt - we might need a fix for stable if you merged these patches.
+>
+>
+>
+>>
+>>
+>> On 26 September 2023 13:23:46 CEST, Marcin Juszkiewicz <
+>> marcin.juszkiewicz@linaro.org> wrote:
+>>
+>>> I work on SBSA Reference Platform (sbsa-ref) at Linaro. And yesterday I
+>>> wanted to check how non-Linux operating systems work on sbsa-ref machine.
+>>>
+>>> One of them was FreeBSD 13.2 - the latest one. Fetched bootonly ISO
+>>> image [1] and booted system.
+>>>
+>>> 1. https://download.freebsd.org/releases/arm64/aarch64/ISO-IMAGES/13.2/FreeBSD-13.2-RELEASE-arm64-aarch64-bootonly.iso
+>>>
+>>> QEMU command line arguments:
+>>>
+>>> -drive if=ide,file=disks/FreeBSD-13.2-RELEASE-arm64-aarch64-bootonly.iso,media=cdrom
+>>> -machine sbsa-ref
+>>> -m 4096
+>>> -smp 2
+>>> -cpu neoverse-n1
+>>> -drive file=fat:rw:/home/marcin/devel/linaro/sbsa-qemu/sbsa-ref-status/disks/virtual/,format=raw
+>>> -drive format=raw,file=/home/marcin/devel/linaro/sbsa-qemu/sbsa-ref-status/disks/full-debian.hddimg
+>>> -watchdog-action none
+>>> -no-reboot
+>>> -monitor telnet::45454,server,nowait
+>>> -serial stdio
+>>> -device igb
+>>> -nographic
+>>> -drive if=pflash,file=SBSA_FLASH0.fd,format=raw
+>>> -drive if=pflash,file=SBSA_FLASH1.fd,format=raw
+>>>
+>>>
+>>> Firmware loaded FreeBSD loader, kernel booted but it does not see
+>>> any AHCI devices:
+>>>
+>>> ahci0: <AHCI SATA controller> iomem 0x60100000-0x6010ffff irq 1 on acpi0
+>>> ahci0: AHCI v1.00 with 6 1.5Gbps ports, Port Multiplier not supported
+>>> ahci0: Caps: 64bit NCQ 1.5Gbps 32cmd 6ports
+>>> ahcich0: <AHCI channel> at channel 0 on ahci0
+>>> ahcich0: Caps:
+>>> [..]
+>>> ahcich0: AHCI reset...
+>>> ahcich0: SATA connect time=0us status=00000113
+>>> ahcich0: AHCI reset: device found
+>>> ahcich0: AHCI reset: device ready after 0ms
+>>> ahcich1: AHCI reset...
+>>> ahcich1: SATA connect time=0us status=00000113
+>>> ahcich1: AHCI reset: device found
+>>> ahcich1: AHCI reset: device ready after 0ms
+>>> ahcich2: AHCI reset...
+>>> ahcich2: SATA connect time=0us status=00000113
+>>> ahcich2: AHCI reset: device found
+>>> ahcich2: AHCI reset: device ready after 0ms
+>>> [..]
+>>> Trying to mount root from cd9660:/dev/iso9660/13_2_RELEASE_AARCH64_BO [ro]...
+>>> Root mount waiting for: CAM
+>>> [..]
+>>> Root mount waiting for: CAM
+>>> ahcich0: Poll timeout on slot 1 port 0
+>>> ahcich0: is 00000000 cs 00000002 ss 00000000 rs 00000002 tfd 170 serr 00000000 cmd 0000c017
+>>>
+>>> And finally it gives up.
+>>>
+>>>
+>>> v8.1.1 was bad, v8.0.5 was bad so I did git bisecting.
+>>> Which gave me this commit:
+>>>
+>>> commit 7bcd32128b227cee1fb39ff242d486ed9fff7648
+>>> Author: Niklas Cassel <niklas.cassel@wdc.com>
+>>> Date:   Fri Jun 9 16:08:40 2023 +0200
+>>>
+>>>     hw/ide/ahci: simplify and document PxCI handling
+>>>
+>>>     The AHCI spec states that:
+>>>     For NCQ, PxCI is cleared on command queued successfully.
+>>>
+>>>
+>>>
+>>> I built x86_64-softmmu target and checked both "pc" and "q35"
+>>> machines.
+>>>
+>>> ./build/x86_64-softmmu/qemu-system-x86_64
+>>> -cdrom FreeBSD-13.2-RELEASE-amd64-bootonly.iso
+>>> -m 2048 -serial stdio  -monitor telnet::45454,server,nowait
+>>>
+>>> PC target ("-M pc") booted fine. But Q35 ("-M q35") failed
+>>> similar way as aarch64/sbsa-ref did:
+>>>
+>>> ahci0: <Intel ICH9 AHCI SATA controller> port 0xc060-0xc07f mem 0xfebd5000-0xfebd5fff irq 16 at device 31.2 on pci0
+>>> ahci0: attempting to allocate 1 MSI vectors (1 supported)
+>>> msi: routing MSI IRQ 26 to local APIC 0 vector 52
+>>> ahci0: using IRQ 26 for MSI
+>>> ahci0: AHCI v1.00 with 6 1.5Gbps ports, Port Multiplier not supported
+>>> ahci0: Caps: 64bit NCQ 1.5Gbps 32cmd 6ports
+>>> ahcich0: <AHCI channel> at channel 0 on ahci0
+>>> ahcich0: Caps:
+>>> ahcich1: <AHCI channel> at channel 1 on ahci0
+>>> ahcich1: Caps:
+>>> ahcich2: <AHCI channel> at channel 2 on ahci0
+>>> ahcich2: Caps:
+>>> [..]
+>>> ahcich2: AHCI reset...
+>>> ahcich2: SATA connect time=0us status=00000113
+>>> ahcich2: AHCI reset: device found
+>>> ahcich2: AHCI reset: device ready after 0ms
+>>> [..]
+>>> Trying to mount root from cd9660:/dev/iso9660/13_2_RELEASE_AMD64_BO [ro]...
+>>> ahcich2: Poll timeout on slot 1 port 0
+>>> ahcich2: is 00000000 cs 00000002 ss 00000000 rs 00000002 tfd 170 serr 00000000 cmd 0000c017
+>>> (aprobe2:ahcich2:0:0:0): SOFT_RESET. ACB: 00 00 00 00 00 00 00 00 00 00 00 00
+>>> (aprobe2:ahcich2:0:0:0): CAM status: Command timeout
+>>> (aprobe2:ahcich2:0:0:0): Error 5, Retries exhausted
+>>> ahcich2: Poll timeout on slot 2 port 0
+>>> ahcich2: is 00000000 cs 00000006 ss 00000000 rs 00000004 tfd 170 serr 00000000 cmd 0000c017
+>>> (aprobe2:ahcich2:0:0:0): SOFT_RESET. ACB: 00 00 00 00 00 00 00 00 00 00 00 00
+>>> (aprobe2:ahcich2:0:0:0): CAM status: Command timeout
+>>> (aprobe2:ahcich2:0:0:0): Error 5, Retries exhausted
+>>> mountroot: waiting for device /dev/iso9660/13_2_RELEASE_AMD64_BO...
+>>> Mounting from cd9660:/dev/iso9660/13_2_RELEASE_AMD64_BO failed with error 19.
+>>>
+>>> Same thing happens with current qemu HEAD:
+>>>
+>>> commit 494a6a2cf7f775d2c20fd6df9601e30606cc2014
+>>> Merge: 29578f5757 b821109583
+>>> Author: Stefan Hajnoczi <stefanha@redhat.com>
+>>> Date:   Mon Sep 25 10:10:30 2023 -0400
+>>>
+>>>     Merge tag 'pull-request-2023-09-25' of https://gitlab.com/thuth/qemu into staging
+>>>
+>>>
+>>> Any ideas?
+>>>
+>>>
 
-
-Thank you everyone.
-
---js
-
---000000000000a25b930606d2e72b
+--00000000000025ca3d0606d2ef67
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Tue, Oct 3, 2023, 10:07 AM Niklas Cassel &lt;<a hre=
-f=3D"mailto:Niklas.Cassel@wdc.com">Niklas.Cassel@wdc.com</a>&gt; wrote:<br>=
-</div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-l=
-eft:1px #ccc solid;padding-left:1ex">On Mon, Sep 25, 2023 at 03:53:23PM -04=
-00, John Snow wrote:<br>
-&gt; Niklas, I&#39;m sorry to lean on you here a little bit - You&#39;ve be=
-en<br>
-&gt; working on the SATA side of this a bit more often, can you let me know=
-<br>
-&gt; if you think this patch is safe?<br>
-<br>
-FWIW, I prefer Fiona&#39;s patch series which calls blk_aio_cancel() before=
-<br>
-calling ide_reset():<br>
-<a href=3D"https://lore.kernel.org/qemu-devel/20230906130922.142845-1-f.ebn=
-er@proxmox.com/T/#u" rel=3D"noreferrer noreferrer" target=3D"_blank">https:=
-//lore.kernel.org/qemu-devel/20230906130922.142845-1-f.ebner@proxmox.com/T/=
-#u</a><br>
-<br>
-Patch 2/2 also adds a qtest which fails before patch 1/2, and passes after<=
-br>
-patch 1/2.<br></blockquote></div></div><div dir=3D"auto"><br></div><div dir=
-=3D"auto">I think I also prefer Fiona&#39;s patch. Simon makes a good point=
- (I think) that it feels correct to dump the DMA as fast as possible, but F=
-iona&#39;s patch seems more justifiably and obviously correct.</div><div di=
-r=3D"auto"><br></div><div dir=3D"auto">I think my preference is for Fiona&#=
-39;s patches first, and if we want to optimize cancellation thereafter we c=
-an attempt to do so.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><di=
-v class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"margin:0=
- 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
-<br>
-<br>
-&gt; <br>
-&gt; I&#39;m not immediately sure what the impact of applying it is, but I =
-have<br>
-&gt; some questions about it:<br>
-&gt; <br>
-&gt; (1) When does ide_dma_cb get invoked when DRQ_STAT is set but the<br>
-&gt; return code we were passed is not &lt; 0, and<br>
-&gt; <br>
-&gt; (2) what&#39;s the impact of just *not* executing the end-of-transfer<=
-br>
-&gt; block here; what happens to the state machine?<br>
-&gt; <br>
-&gt; On Thu, Sep 21, 2023 at 12:07=E2=80=AFPM Simon Rowe &lt;<a href=3D"mai=
-lto:simon.rowe@nutanix.com" target=3D"_blank" rel=3D"noreferrer">simon.rowe=
-@nutanix.com</a>&gt; wrote:<br>
-&gt; &gt;<br>
-&gt; &gt; When an IDE controller is reset, its internal state is being clea=
-red<br>
-&gt; &gt; before any outstanding I/O is cancelled. If a response to DMA is<=
-br>
-&gt; &gt; received in this window, the aio callback will incorrectly contin=
-ue<br>
-&gt; &gt; with the next part of the transfer (now using sector 0 from<br>
-&gt; &gt; the cleared controller state).<br>
-&gt; <br>
-&gt; Eugh, yikes. It feels like we should fix the cancellation ... I&#39;m<=
-br>
-&gt; worried that if we&#39;ve reset the state machine and we need to bail =
-on a<br>
-&gt; DMA callback that the heuristics we use for that will eventually be<br=
->
-&gt; wrong, unless I am mistaken and this is totally safe and reliable for<=
-br>
-&gt; a reason I don&#39;t intuitively see right away.<br>
-&gt; <br>
-&gt; Thoughts?<br>
-<br>
-Since Simon has a reliable reproducer, and has offered to test Fiona&#39;s =
-patch,<br>
-perhaps we should simply take him up on that offer :)<br></blockquote></div=
-></div><div dir=3D"auto"><br></div><div dir=3D"auto">Yes! I just wanted to =
-understand the differences between the two approaches since it looked like =
-it was going to be my job to decide between them =F0=9F=98=85</div><div dir=
-=3D"auto"><br></div><div dir=3D"auto">Simon, can you confirm that Fiona&#39=
-;s patches are appropriate for your reproducer? In the meantime I&#39;ll do=
- my own audit for the problem as you described it (thank you very much for =
-that) and see if there&#39;s anything else that needs to be addressed.</div=
-><div dir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><=
-blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px=
- #ccc solid;padding-left:1ex">
-<br>
-<br>
-Kind regards,<br>
-Niklas</blockquote></div></div><div dir=3D"auto"><br></div><div dir=3D"auto=
-">Thank you everyone.=C2=A0</div><div dir=3D"auto"><br></div><div dir=3D"au=
-to">--js</div><div dir=3D"auto"></div></div>
+<div dir=3D"auto"><div><br>While I&#39;m poking at IDE today ... any news h=
+ere?</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=
+=3D"auto"><div class=3D"gmail_quote" dir=3D"auto"><div dir=3D"ltr" class=3D=
+"gmail_attr">On Tue, Sep 26, 2023, 12:35 PM John Snow &lt;<a href=3D"mailto=
+:jsnow@redhat.com">jsnow@redhat.com</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;pa=
+dding-left:1ex"><div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><=
+div dir=3D"ltr" class=3D"gmail_attr">On Tue, Sep 26, 2023, 8:06 AM Niklas C=
+assel &lt;<a href=3D"mailto:nks@flawful.org" target=3D"_blank" rel=3D"noref=
+errer">nks@flawful.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_q=
+uote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1e=
+x"><div><div dir=3D"auto">Hello Marcin,<br><br>I will have a look at this.<=
+br><br><br>Kind regards,<br>Niklas<br></div></div></blockquote></div></div>=
+<div dir=3D"auto"><br></div><div dir=3D"auto">Thanks. You have my blessing =
+in advance to get any hot fixes for this merged ASAP, as long as another bl=
+ock maintainer is willing to give it an ACK. (I&#39;ll try to be prompt. Pl=
+ease send me a message on IRC to get my attention if you need to. Sorry I&#=
+39;m so hard to get hold of.)</div><div dir=3D"auto"><br></div><div dir=3D"=
+auto">Also CC mjt - we might need a fix for stable if you merged these patc=
+hes.</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=
+=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" styl=
+e=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex"><div><d=
+iv dir=3D"auto"><br></div><br><br><div class=3D"gmail_quote"><div dir=3D"au=
+to">On 26 September 2023 13:23:46 CEST, Marcin Juszkiewicz &lt;<a href=3D"m=
+ailto:marcin.juszkiewicz@linaro.org" rel=3D"noreferrer noreferrer" target=
+=3D"_blank">marcin.juszkiewicz@linaro.org</a>&gt; wrote:</div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0pt 0pt 0pt 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">
+<pre><div dir=3D"auto">I work on SBSA Reference Platform (sbsa-ref) at Lina=
+ro. And yesterday I<br>wanted to check how non-Linux operating systems work=
+ on sbsa-ref machine.<br><br>One of them was FreeBSD 13.2 - the latest one.=
+ Fetched bootonly ISO<br>image [1] and booted system.<br><br>1. <a href=3D"=
+https://download.freebsd.org/releases/arm64/aarch64/ISO-IMAGES/13.2/FreeBSD=
+-13.2-RELEASE-arm64-aarch64-bootonly.iso" rel=3D"noreferrer noreferrer" tar=
+get=3D"_blank">https://download.freebsd.org/releases/arm64/aarch64/ISO-IMAG=
+ES/13.2/FreeBSD-13.2-RELEASE-arm64-aarch64-bootonly.iso</a><br><br>QEMU com=
+mand line arguments:<br><br>-drive if=3Dide,file=3Ddisks/FreeBSD-13.2-RELEA=
+SE-arm64-aarch64-bootonly.iso,media=3Dcdrom<br>-machine sbsa-ref<br>-m 4096=
+<br>-smp 2<br>-cpu neoverse-n1<br>-drive file=3Dfat:rw:/home/marcin/devel/l=
+inaro/sbsa-qemu/sbsa-ref-status/disks/virtual/,format=3Draw<br>-drive forma=
+t=3Draw,file=3D/home/marcin/devel/linaro/sbsa-qemu/sbsa-ref-status/disks/fu=
+ll-debian.hddimg<br>-watchdog-action none<br>-no-reboot<br>-monitor telnet:=
+:45454,server,nowait<br>-serial stdio<br>-device igb<br>-nographic<br>-driv=
+e if=3Dpflash,file=3DSBSA_FLASH0.fd,format=3Draw<br>-drive if=3Dpflash,file=
+=3DSBSA_FLASH1.fd,format=3Draw<br><br><br>Firmware loaded FreeBSD loader, k=
+ernel booted but it does not see<br>any AHCI devices:<br><br>ahci0: &lt;AHC=
+I SATA controller&gt; iomem 0x60100000-0x6010ffff irq 1 on acpi0<br>ahci0: =
+AHCI v1.00 with 6 1.5Gbps ports, Port Multiplier not supported<br>ahci0: Ca=
+ps: 64bit NCQ 1.5Gbps 32cmd 6ports<br>ahcich0: &lt;AHCI channel&gt; at chan=
+nel 0 on ahci0<br>ahcich0: Caps:<br>[..]<br>ahcich0: AHCI reset...<br>ahcic=
+h0: SATA connect time=3D0us status=3D00000113<br>ahcich0: AHCI reset: devic=
+e found<br>ahcich0: AHCI reset: device ready after 0ms<br>ahcich1: AHCI res=
+et...<br>ahcich1: SATA connect time=3D0us status=3D00000113<br>ahcich1: AHC=
+I reset: device found<br>ahcich1: AHCI reset: device ready after 0ms<br>ahc=
+ich2: AHCI reset...<br>ahcich2: SATA connect time=3D0us status=3D00000113<b=
+r>ahcich2: AHCI reset: device found<br>ahcich2: AHCI reset: device ready af=
+ter 0ms<br>[..]<br>Trying to mount root from cd9660:/dev/iso9660/13_2_RELEA=
+SE_AARCH64_BO [ro]...<br>Root mount waiting for: CAM<br>[..]<br>Root mount =
+waiting for: CAM<br>ahcich0: Poll timeout on slot 1 port 0<br>ahcich0: is 0=
+0000000 cs 00000002 ss 00000000 rs 00000002 tfd 170 serr 00000000 cmd 0000c=
+017<br><br>And finally it gives up.<br><br><br>v8.1.1 was bad, v8.0.5 was b=
+ad so I did git bisecting.<br>Which gave me this commit:<br><br>commit 7bcd=
+32128b227cee1fb39ff242d486ed9fff7648<br>Author: Niklas Cassel &lt;<a href=
+=3D"mailto:niklas.cassel@wdc.com" rel=3D"noreferrer noreferrer" target=3D"_=
+blank">niklas.cassel@wdc.com</a>&gt;<br>Date:   Fri Jun 9 16:08:40 2023 +02=
+00<br><br>    hw/ide/ahci: simplify and document PxCI handling<br><br>    T=
+he AHCI spec states that:<br>    For NCQ, PxCI is cleared on command queued=
+ successfully.<br><br><br><br>I built x86_64-softmmu target and checked bot=
+h &quot;pc&quot; and &quot;q35&quot;<br>machines.<br><br>./build/x86_64-sof=
+tmmu/qemu-system-x86_64<br>-cdrom FreeBSD-13.2-RELEASE-amd64-bootonly.iso<b=
+r>-m 2048 -serial stdio  -monitor telnet::45454,server,nowait<br><br>PC tar=
+get (&quot;-M pc&quot;) booted fine. But Q35 (&quot;-M q35&quot;) failed<br=
+>similar way as aarch64/sbsa-ref did:<br><br>ahci0: &lt;Intel ICH9 AHCI SAT=
+A controller&gt; port 0xc060-0xc07f mem 0xfebd5000-0xfebd5fff irq 16 at dev=
+ice 31.2 on pci0<br>ahci0: attempting to allocate 1 MSI vectors (1 supporte=
+d)<br>msi: routing MSI IRQ 26 to local APIC 0 vector 52<br>ahci0: using IRQ=
+ 26 for MSI<br>ahci0: AHCI v1.00 with 6 1.5Gbps ports, Port Multiplier not =
+supported<br>ahci0: Caps: 64bit NCQ 1.5Gbps 32cmd 6ports<br>ahcich0: &lt;AH=
+CI channel&gt; at channel 0 on ahci0<br>ahcich0: Caps:<br>ahcich1: &lt;AHCI=
+ channel&gt; at channel 1 on ahci0<br>ahcich1: Caps:<br>ahcich2: &lt;AHCI c=
+hannel&gt; at channel 2 on ahci0<br>ahcich2: Caps:<br>[..]<br>ahcich2: AHCI=
+ reset...<br>ahcich2: SATA connect time=3D0us status=3D00000113<br>ahcich2:=
+ AHCI reset: device found<br>ahcich2: AHCI reset: device ready after 0ms<br=
+>[..]<br>Trying to mount root from cd9660:/dev/iso9660/13_2_RELEASE_AMD64_B=
+O [ro]...<br>ahcich2: Poll timeout on slot 1 port 0<br>ahcich2: is 00000000=
+ cs 00000002 ss 00000000 rs 00000002 tfd 170 serr 00000000 cmd 0000c017<br>=
+(aprobe2:ahcich2:0:0:0): SOFT_RESET. ACB: 00 00 00 00 00 00 00 00 00 00 00 =
+00<br>(aprobe2:ahcich2:0:0:0): CAM status: Command timeout<br>(aprobe2:ahci=
+ch2:0:0:0): Error 5, Retries exhausted<br>ahcich2: Poll timeout on slot 2 p=
+ort 0<br>ahcich2: is 00000000 cs 00000006 ss 00000000 rs 00000004 tfd 170 s=
+err 00000000 cmd 0000c017<br>(aprobe2:ahcich2:0:0:0): SOFT_RESET. ACB: 00 0=
+0 00 00 00 00 00 00 00 00 00 00<br>(aprobe2:ahcich2:0:0:0): CAM status: Com=
+mand timeout<br>(aprobe2:ahcich2:0:0:0): Error 5, Retries exhausted<br>moun=
+troot: waiting for device /dev/iso9660/13_2_RELEASE_AMD64_BO...<br>Mounting=
+ from cd9660:/dev/iso9660/13_2_RELEASE_AMD64_BO failed with error 19.<br><b=
+r>Same thing happens with current qemu HEAD:<br><br>commit 494a6a2cf7f775d2=
+c20fd6df9601e30606cc2014<br>Merge: 29578f5757 b821109583<br>Author: Stefan =
+Hajnoczi &lt;<a href=3D"mailto:stefanha@redhat.com" rel=3D"noreferrer noref=
+errer" target=3D"_blank">stefanha@redhat.com</a>&gt;<br>Date:   Mon Sep 25 =
+10:10:30 2023 -0400<br><br>    Merge tag &#39;pull-request-2023-09-25&#39; =
+of <a href=3D"https://gitlab.com/thuth/qemu" rel=3D"noreferrer noreferrer" =
+target=3D"_blank">https://gitlab.com/thuth/qemu</a> into staging<br><br><br=
+>Any ideas?<br></div></pre></blockquote></div></div></blockquote></div></di=
+v></div>
+</blockquote></div></div></div>
 
---000000000000a25b930606d2e72b--
+--00000000000025ca3d0606d2ef67--
 
 
