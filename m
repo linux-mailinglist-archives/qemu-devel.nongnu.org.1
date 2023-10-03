@@ -2,81 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CEF7B71AE
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 21:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C257B71AA
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 21:22:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnkxV-00054Y-1H; Tue, 03 Oct 2023 15:21:29 -0400
+	id 1qnkwl-0004qu-IF; Tue, 03 Oct 2023 15:20:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkws-0004th-2a
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 15:20:53 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qnkwi-0004qY-Ek
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 15:20:40 -0400
+Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkwT-0004eG-UK
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 15:20:49 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c7373cff01so1235335ad.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 12:20:22 -0700 (PDT)
+ id 1qnkwT-0004eP-SU
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 15:20:40 -0400
+Received: by mail-pl1-x62d.google.com with SMTP id
+ d9443c01a7336-1c760b34d25so9924595ad.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 12:20:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696360821; x=1696965621; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696360822; x=1696965622; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=MD3OzDuuDGgXDQMB1J8iXNmpATULZDtwIUTwe03wb+E=;
- b=ABfllLMSoaA4iPE8tJXyJl5SB2E/2UKGesTeXJrLzkg39n0xKwqVg8Pq/9ZtiQWijk
- 64uldqz/Sol8WbmmIxj2mHx9tQe6FqTVZM1tDNkd4NtHkh+xCeq5KWk6cHwajL3l7kzW
- qumOz/8PzWY3+H53lbzMooP7xfKuMLIwl61KnnnNCNx+kCeFLi8IQ7dErKl0i/taw0/d
- ttH26pFF+wF25bktr2JzVgCEwqROtUHGgH//scM8bQfEu9F3uSrYAjUp6ZAuarj4JuMV
- rEqN2fK5mzir36TtE+qbAI2+MKAn5pyzFry4I0pxIB2xHYKjrD6nP1/+COjpy1cfO05Z
- v6/w==
+ bh=1E71x8AOuJqRUKKSfRCBk7J7r5yvF1NZG8wQysx060w=;
+ b=bTaY7M1IZio59YDb9lQ1LY2aWuQtcJFOpjPbqB4xE91rORLXP+5zC63K43ZyrMH3ai
+ Xc0DHz5hVxHPnfTLRXS6qzxsvajTYkNZfr4LSPZgSUV7SA4TTsWWPiBFt2L4bhLEzVt4
+ IUobM8beRAPxKRiPE3QLBNaHhMiTfG5NKsnUT/JLpgMrD1N/0F2M3esvXxQAUUGI34Vo
+ xpUZIyALjlVZX+EUMx3g7o4lj6Rzvcdn89UDT7x5vB6TRXm/erBuiF+bBwmT5HiG/oDi
+ gWlTY08wYSTqN8OgmGv/wo35+oN6ne+Q+og4sYHqyqKdRN8kLZ72haeNsNKkIdVOk7y4
+ bSkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696360821; x=1696965621;
+ d=1e100.net; s=20230601; t=1696360822; x=1696965622;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=MD3OzDuuDGgXDQMB1J8iXNmpATULZDtwIUTwe03wb+E=;
- b=Ij+auvVWAsjEX/LV6hLIUCcvMu/ObQ3UflWgT09NC0e6UoYLT8lmKdQbyL15rjTi1o
- 6/tH5oRj8+LvHip2uv5F3D7sNcFZ5huhw6EdM9hcdx3eLssIrasieShseeYwDtiGPggT
- +4sAYP0UOhXnMaqRWdrvesKQlt1hzzYam4XH/PQgGKoWywl8EmTgSaSSg5QarKhNtPKf
- 6UKiGcDen3kJwvyWcrG7+7tYM0prsDqY3DMCc2php82eZZhIY1wFmSkvJ0ybPfjc3aG7
- xMIbhJqgIRdqorXbRSRmbgcsXJkesu1DtXor0wvl4SwH/6UsfqGxXoERsDN3JGVamxCT
- 6N4Q==
-X-Gm-Message-State: AOJu0YyIzcr05K9KnD2OF2wWJew1PHGGipz4Wcw8l5/+FVZg+NtTDwD+
- AS2YceePLxCAfeebiEKuG8u5hHTfRV0wBkZ4ZXs=
-X-Google-Smtp-Source: AGHT+IFVaYDnWXK7NrIenxlou8rgkrTl0uM5OckObaqpHoyqmlBAQ3hoG0H6sUgDU7k+rht6vldtUQ==
-X-Received: by 2002:a17:902:db0a:b0:1c3:432f:9f69 with SMTP id
- m10-20020a170902db0a00b001c3432f9f69mr247445plx.23.1696360821237; 
- Tue, 03 Oct 2023 12:20:21 -0700 (PDT)
+ bh=1E71x8AOuJqRUKKSfRCBk7J7r5yvF1NZG8wQysx060w=;
+ b=k9e5kVHZLHni8gW0YQY2EsdIP9UGd0EH+5m8ZSz+OxM5oRoliFlgZz4l1wbJYBpZoL
+ 3ZRSN4gUN5HJbxPMauqp4Ys8CU2d6Ac0pXC+CQt4Nm1blL6OPuCZvbJiGNEWf4xvug8R
+ HFn+0YpCsN2/awSVllkfcq3DLkhXR4jeoHN5midfdKvXg1y2d0kO1CxqhSFti+qA78e5
+ MvFI+LbqlKOwXMvywwTnulEt7SXEyak3EVf2x+STG7KXGHS0/lXPbejrcSECJ301SOIZ
+ hyvdJXmNK2ypAuCV4WMadeiY+EKc/+XtciywzC3bYGXwCQB2eGamtcEGcoipByvql/yq
+ WwFg==
+X-Gm-Message-State: AOJu0YxIA64eDrx7yw9PqjxsWc8w4xzMhezN3Cjq6qzzXlNpqemT7aPa
+ GmIot8WkTIRh5S8LziUD5PYim5o2BqNUSXgcBKU=
+X-Google-Smtp-Source: AGHT+IEe1HzemXnkmotVP1i4wVnhz5opR30vnHt/7qoBRWHvT5KmYlEJRyjSB+wlvR2/1lDFNhzS9g==
+X-Received: by 2002:a17:902:d4cc:b0:1c3:c687:4793 with SMTP id
+ o12-20020a170902d4cc00b001c3c6874793mr385252plg.63.1696360822094; 
+ Tue, 03 Oct 2023 12:20:22 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- w5-20020a170902d3c500b001c5fd2a28d3sm1978497plb.28.2023.10.03.12.20.20
+ w5-20020a170902d3c500b001c5fd2a28d3sm1978497plb.28.2023.10.03.12.20.21
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 12:20:20 -0700 (PDT)
+ Tue, 03 Oct 2023 12:20:21 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: laurent@vivier.eu,
 	deller@gmx.de
-Subject: [PATCH v5 8/9] linux-user: Detect and report host SIGILL, SIGFPE,
- SIGTRAP
-Date: Tue,  3 Oct 2023 12:20:11 -0700
-Message-Id: <20231003192012.1674888-9-richard.henderson@linaro.org>
+Subject: [PATCH v5 9/9] linux-user: Remap guest SIGABRT
+Date: Tue,  3 Oct 2023 12:20:12 -0700
+Message-Id: <20231003192012.1674888-10-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003192012.1674888-1-richard.henderson@linaro.org>
 References: <20231003192012.1674888-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,82 +90,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-These signals, when not spoofed via kill(), are always bugs.
-Use die_from_signal to report this sensibly.
+Distinguish host SIGABRT from guest SIGABRT by mapping
+the guest signal onto one of the host RT signals.
+
+This prevents a cycle by which a host assertion failure
+is caught and handled by host_signal_handler, queued for
+the guest, and then we attempt to continue past the
+host abort.  What happens next depends on the host libc,
+but is neither good nor helpful.
 
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- linux-user/signal.c | 44 +++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ linux-user/signal.c | 35 ++++++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 7 deletions(-)
 
 diff --git a/linux-user/signal.c b/linux-user/signal.c
-index 706b8ac7a7..b67077f320 100644
+index b67077f320..b7f4ce3cb9 100644
 --- a/linux-user/signal.c
 +++ b/linux-user/signal.c
-@@ -796,6 +796,43 @@ void die_from_signal(siginfo_t *info)
-             break;
-         }
-         break;
-+    case SIGILL:
-+        sig = "ILL";
-+        switch (info->si_code) {
-+        case ILL_ILLOPC:
-+            code = "ILLOPC";
-+            break;
-+        case ILL_ILLOPN:
-+            code = "ILLOPN";
-+            break;
-+        case ILL_ILLADR:
-+            code = "ILLADR";
-+            break;
-+        case ILL_PRVOPC:
-+            code = "PRVOPC";
-+            break;
-+        case ILL_PRVREG:
-+            code = "PRVREG";
-+            break;
-+        case ILL_COPROC:
-+            code = "COPROC";
-+            break;
-+        }
-+        break;
-+    case SIGFPE:
-+        sig = "FPE";
-+        switch (info->si_code) {
-+        case FPE_INTDIV:
-+            code = "INTDIV";
-+            break;
-+        case FPE_INTOVF:
-+            code = "INTOVF";
-+            break;
-+        }
-+        break;
-+    case SIGTRAP:
-+        sig = "TRAP";
-+        break;
-     default:
-         snprintf(sigbuf, sizeof(sigbuf), "%d", info->si_signo);
-         sig = sigbuf;
-@@ -900,7 +937,8 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
- 
-     /*
-      * Non-spoofed SIGSEGV and SIGBUS are synchronous, and need special
--     * handling wrt signal blocking and unwinding.
-+     * handling wrt signal blocking and unwinding.  Non-spoofed SIGILL,
-+     * SIGFPE, SIGTRAP are always host bugs.
+@@ -522,8 +522,16 @@ static void signal_table_init(void)
+      * multiplexed over a single host signal.
+      * Attempts for configure "missing" signals via sigaction will be
+      * silently ignored.
++     *
++     * Remap the target SIGABRT, so that we can distinguish host abort
++     * from guest abort.
       */
-     if (info->si_code > 0) {
-         switch (host_sig) {
-@@ -912,6 +950,10 @@ static void host_signal_handler(int host_sig, siginfo_t *info, void *puc)
-             host_sigbus_handler(cpu, info, uc);
-             sync_sig = true;
-             break;
-+        case SIGILL:
-+        case SIGFPE:
-+        case SIGTRAP:
-+            die_from_signal(info);
+-    for (hsig = SIGRTMIN; hsig <= SIGRTMAX; hsig++) {
++
++    hsig = SIGRTMIN;
++    host_to_target_signal_table[SIGABRT] = 0;
++    host_to_target_signal_table[hsig++] = TARGET_SIGABRT;
++
++    for (; hsig <= SIGRTMAX; hsig++) {
+         tsig = hsig - SIGRTMIN + TARGET_SIGRTMIN;
+         if (tsig <= TARGET_NSIG) {
+             host_to_target_signal_table[hsig] = tsig;
+@@ -582,13 +590,21 @@ void signal_init(void)
+         int hsig = target_to_host_signal(tsig);
+         abi_ptr thand = TARGET_SIG_IGN;
+ 
+-        if (hsig < _NSIG) {
+-            struct sigaction *iact = core_dump_signal(tsig) ? &act : NULL;
++        if (hsig >= _NSIG) {
++            continue;
++        }
+ 
++        /* As we force remap SIGABRT, cannot probe and install in one step. */
++        if (tsig == TARGET_SIGABRT) {
++            sigaction(SIGABRT, NULL, &oact);
++            sigaction(hsig, &act, NULL);
++        } else {
++            struct sigaction *iact = core_dump_signal(tsig) ? &act : NULL;
+             sigaction(hsig, iact, &oact);
+-            if (oact.sa_sigaction != (void *)SIG_IGN) {
+-                thand = TARGET_SIG_DFL;
+-            }
++        }
++
++        if (oact.sa_sigaction != (void *)SIG_IGN) {
++            thand = TARGET_SIG_DFL;
          }
+         sigact_table[tsig - 1]._sa_handler = thand;
      }
+@@ -711,7 +727,12 @@ void dump_core_and_abort(CPUArchState *env, int target_sig)
+     TaskState *ts = (TaskState *)cpu->opaque;
+     int host_sig, core_dumped = 0;
+ 
+-    host_sig = target_to_host_signal(target_sig);
++    /* On exit, undo the remapping of SIGABRT. */
++    if (target_sig == TARGET_SIGABRT) {
++        host_sig = SIGABRT;
++    } else {
++        host_sig = target_to_host_signal(target_sig);
++    }
+     trace_user_dump_core_and_abort(env, target_sig, host_sig);
+     gdb_signalled(env, target_sig);
  
 -- 
 2.34.1
