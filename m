@@ -2,78 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479D27B702B
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1037B7037
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:46:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnjRR-0003Wo-17; Tue, 03 Oct 2023 13:44:17 -0400
+	id 1qnjSm-0008TA-2D; Tue, 03 Oct 2023 13:45:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjRL-0003Ns-Pt
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:44:11 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjRI-0001O1-Td
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:44:11 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c0ecb9a075so9176845ad.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:44:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696355047; x=1696959847; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
- :reply-to; bh=fLvItmIrt15JaLaBIgv2EV2SUjPZVyaPB43Eg76lR6g=;
- b=F/UxaHXZCta1rT7chzZyhqbcOol3hBi4mOK9xCbCE4xECY6LcQZht37vatp+Hd1XaQ
- RANfXsnQYe49t/p5trVxphabNB0dbgCuoqLAoIGUfTcluv19f9aG5Mv0DoZMGK6vGLvl
- wkgva3LQ4Gui0E1FfK/3WejIJMGdqLhMqhZkBqw5kRBCRAg3mVydXjDIwU/Hn5eEJcgq
- yB1vEpn+bUg2cdW5RlZV7CVrFMvw6kozt/CHUk27xBhUFhbbgtwV1MuQmLFvkXq7MZAL
- AUkGg6Ze8s/YtZd6xGS4clyBHe8m4BMEI/a0bQVrw6N5z0lQjzQlka75YbdHuk3iwPZ1
- UT3g==
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qnjSf-00083C-Bm
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:45:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qnjSd-0001lX-Dy
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:45:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696355130;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BqVHOkvsQ5i0T9ZQKQHtm/tuQbNTgTHWYemaUx/TN9E=;
+ b=KH/YbvPYk6zOEHU2+ypN0BqYRdKep/7AChgvfLhtMyhX2ILY3A2si18IT+ECChjNa2O+Ea
+ USQaTxZmy0VndsmwFDwzia8KJszvXMz/X6LOIuQkfFIip9xx8BSh4cjuIsnDNJLmB4hKSq
+ 3mNHp+TuEpfR86LrPdePh0koS2/q4sE=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-392-yIVqVt2POAiqVAziyXRJ8Q-1; Tue, 03 Oct 2023 13:45:29 -0400
+X-MC-Unique: yIVqVt2POAiqVAziyXRJ8Q-1
+Received: by mail-yw1-f198.google.com with SMTP id
+ 00721157ae682-59bdb9fe821so18408067b3.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:45:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696355047; x=1696959847;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1696355128; x=1696959928;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=fLvItmIrt15JaLaBIgv2EV2SUjPZVyaPB43Eg76lR6g=;
- b=kIQK7A6N1vIoP8LsPs2drw5vVyOAfLYSg6qlHUv428oM7Lhb2NHz2PJvZnUgzDCuXm
- bMzBuRxZLpezSCUa7YTB61mzYARCYOSIqCIDRZ1C9tHa6CrlvYlm+7GgsUaW1aTAzEmx
- OAzafA2Sng2+rEkxQxqowhfsDu4yBjYLXDjd487pdYjHJG1WGZXPn6oOHzkKU9n8/mnV
- U9uj88aUNR+30385BnodF9TzbJDE9uciNRlDGewpF3MDIvm9MknwgbSAIJXnlIfFwpvk
- s53wqa9PhM1yXCTJB/9p6WcKY/yg2Lc36E+Vx1VVfNtCZKMkvQzGEgCyzByZLBFzDYat
- yP5Q==
-X-Gm-Message-State: AOJu0Yzw4TKJ1QI/ueJG9ST49GnclyI5LH4yy78/uYthQcObbrTQnGHV
- 6mv+dWCC/H+vLyFAMnnVtsQIGvgc+NIZGQyrTe0=
-X-Google-Smtp-Source: AGHT+IHNO/GVywTgAAGeQPjMc8FXVH6WS8AZAhKrYk5D65cChqqNbx/tX+ZzG39mRd8Bm+IS1tuBTQ==
-X-Received: by 2002:a17:902:c409:b0:1c5:ea60:85c1 with SMTP id
- k9-20020a170902c40900b001c5ea6085c1mr394129plk.12.1696355047308; 
- Tue, 03 Oct 2023 10:44:07 -0700 (PDT)
-Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- jg2-20020a17090326c200b001c32fd9e412sm1876466plb.58.2023.10.03.10.44.06
- for <qemu-devel@nongnu.org>
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 10:44:06 -0700 (PDT)
-From: Richard Henderson <richard.henderson@linaro.org>
-To: qemu-devel@nongnu.org
-Subject: [PATCH 10/10] tcg/s390x: Use tcg_use_softmmu
-Date: Tue,  3 Oct 2023 10:43:56 -0700
-Message-Id: <20231003174356.1602279-11-richard.henderson@linaro.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231003174356.1602279-1-richard.henderson@linaro.org>
-References: <20231003174356.1602279-1-richard.henderson@linaro.org>
+ bh=BqVHOkvsQ5i0T9ZQKQHtm/tuQbNTgTHWYemaUx/TN9E=;
+ b=L9C0XrX347R/R69mYe5vGXFkS3aI3JsIIe2S8HJ7JiY+ZU4QBnmeDJqvIOpm9FaqGL
+ YWYF27FwEuVpJlBS/r6Wg3be2p6WMf+YLgvN3ORHkOFFtw2IRazkFSd4asvNV3nMFWUA
+ 7icKQW06QmZj4ubC6WxsXpJiS2GI4FHJStWXWjiGTC1dEJUkQ/79Wxxun1meoN3u8QDF
+ AgbVendD7RCzpvBvskJie1CXAuMkj8J9cRWhMiwBM5uWy7RjChsa+yZNcA7oTmXZo11f
+ XpSN2bSWcPqSupBO/MOddJ49osaVkfdFoqw6osvSyHTU+m5irBGO3Pnuc8v8wktElEag
+ 2Uhg==
+X-Gm-Message-State: AOJu0YxO7hffBCliAbhEH8sxPfeugyYTLB1QxF7V6TYpUxz09cIK5btT
+ tXUDmFKp//4ZteRsxR+gj8R7vgoUtJYNHkDWEJ2rWY0Vz4lfC5PkpY0s4SiwkD4t3c900qZIVSV
+ kCCtAfy6U5JtAhNENNpXdOnHDBd/JnlE=
+X-Received: by 2002:a0d:e2cf:0:b0:59f:75b9:a37c with SMTP id
+ l198-20020a0de2cf000000b0059f75b9a37cmr251021ywe.35.1696355128438; 
+ Tue, 03 Oct 2023 10:45:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnZ0iPOCFSwP2EFP9WP8KMPZIlv3MrXWblNZKyUEkoZA9LW6AJrQC1swPCLA9+FL9dmPagpq5I2eFaR55lUPA=
+X-Received: by 2002:a0d:e2cf:0:b0:59f:75b9:a37c with SMTP id
+ l198-20020a0de2cf000000b0059f75b9a37cmr251006ywe.35.1696355128158; Tue, 03
+ Oct 2023 10:45:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62d.google.com
+References: <cover.1693287885.git.yin31149@gmail.com>
+ <13b3a36cc33c443a47525957ea38e80594d90595.1693287885.git.yin31149@gmail.com>
+In-Reply-To: <13b3a36cc33c443a47525957ea38e80594d90595.1693287885.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Tue, 3 Oct 2023 19:44:52 +0200
+Message-ID: <CAJaqyWf-jE79jq33FJM8HU=nAjq4qAd+TLHu6Xxt8SS-xYWbJw@mail.gmail.com>
+Subject: Re: [PATCH v4 3/8] vhost: Expose vhost_svq_available_slots()
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ leiyang@redhat.com, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,213 +95,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
----
- tcg/s390x/tcg-target.c.inc | 161 ++++++++++++++++++-------------------
- 1 file changed, 79 insertions(+), 82 deletions(-)
+On Tue, Aug 29, 2023 at 7:55=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> Next patches in this series will delay the polling
+> and checking of buffers until either the SVQ is
+> full or control commands shadow buffers are full,
+> no longer perform an immediate poll and check of
+> the device's used buffers for each CVQ state load command.
+>
+> To achieve this, this patch exposes
+> vhost_svq_available_slots() and introduces a helper function,
+> allowing QEMU to know whether the SVQ is full.
+>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> ---
+>  hw/virtio/vhost-shadow-virtqueue.c | 2 +-
+>  hw/virtio/vhost-shadow-virtqueue.h | 1 +
+>  net/vhost-vdpa.c                   | 9 +++++++++
+>  3 files changed, 11 insertions(+), 1 deletion(-)
+>
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-=
+virtqueue.c
+> index e731b1d2ea..fc5f408f77 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.c
+> +++ b/hw/virtio/vhost-shadow-virtqueue.c
+> @@ -66,7 +66,7 @@ bool vhost_svq_valid_features(uint64_t features, Error =
+**errp)
+>   *
+>   * @svq: The svq
+>   */
+> -static uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *sv=
+q)
+> +uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq)
+>  {
+>      return svq->num_free;
+>  }
+> diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-=
+virtqueue.h
+> index 5bce67837b..19c842a15b 100644
+> --- a/hw/virtio/vhost-shadow-virtqueue.h
+> +++ b/hw/virtio/vhost-shadow-virtqueue.h
+> @@ -114,6 +114,7 @@ typedef struct VhostShadowVirtqueue {
+>
+>  bool vhost_svq_valid_features(uint64_t features, Error **errp);
+>
+> +uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq);
+>  void vhost_svq_push_elem(VhostShadowVirtqueue *svq,
+>                           const VirtQueueElement *elem, uint32_t len);
+>  int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
 
-diff --git a/tcg/s390x/tcg-target.c.inc b/tcg/s390x/tcg-target.c.inc
-index 7552f63a05..c29bc52b3b 100644
---- a/tcg/s390x/tcg-target.c.inc
-+++ b/tcg/s390x/tcg-target.c.inc
-@@ -46,9 +46,7 @@
- /* A scratch register that may be be used throughout the backend.  */
- #define TCG_TMP0        TCG_REG_R1
- 
--#ifndef CONFIG_SOFTMMU
- #define TCG_GUEST_BASE_REG TCG_REG_R13
--#endif
- 
- /* All of the following instructions are prefixed with their instruction
-    format, and are defined as 8- or 16-bit quantities, even when the two
-@@ -1768,94 +1766,95 @@ static TCGLabelQemuLdst *prepare_host_addr(TCGContext *s, HostAddress *h,
-     h->aa = atom_and_align_for_opc(s, opc, MO_ATOM_IFALIGN, s_bits == MO_128);
-     a_mask = (1 << h->aa.align) - 1;
- 
--#ifdef CONFIG_SOFTMMU
--    unsigned s_mask = (1 << s_bits) - 1;
--    int mem_index = get_mmuidx(oi);
--    int fast_off = tlb_mask_table_ofs(s, mem_index);
--    int mask_off = fast_off + offsetof(CPUTLBDescFast, mask);
--    int table_off = fast_off + offsetof(CPUTLBDescFast, table);
--    int ofs, a_off;
--    uint64_t tlb_mask;
-+    if (tcg_use_softmmu) {
-+        unsigned s_mask = (1 << s_bits) - 1;
-+        int mem_index = get_mmuidx(oi);
-+        int fast_off = tlb_mask_table_ofs(s, mem_index);
-+        int mask_off = fast_off + offsetof(CPUTLBDescFast, mask);
-+        int table_off = fast_off + offsetof(CPUTLBDescFast, table);
-+        int ofs, a_off;
-+        uint64_t tlb_mask;
- 
--    ldst = new_ldst_label(s);
--    ldst->is_ld = is_ld;
--    ldst->oi = oi;
--    ldst->addrlo_reg = addr_reg;
--
--    tcg_out_sh64(s, RSY_SRLG, TCG_TMP0, addr_reg, TCG_REG_NONE,
--                 s->page_bits - CPU_TLB_ENTRY_BITS);
--
--    tcg_out_insn(s, RXY, NG, TCG_TMP0, TCG_AREG0, TCG_REG_NONE, mask_off);
--    tcg_out_insn(s, RXY, AG, TCG_TMP0, TCG_AREG0, TCG_REG_NONE, table_off);
--
--    /*
--     * For aligned accesses, we check the first byte and include the alignment
--     * bits within the address.  For unaligned access, we check that we don't
--     * cross pages using the address of the last byte of the access.
--     */
--    a_off = (a_mask >= s_mask ? 0 : s_mask - a_mask);
--    tlb_mask = (uint64_t)s->page_mask | a_mask;
--    if (a_off == 0) {
--        tgen_andi_risbg(s, TCG_REG_R0, addr_reg, tlb_mask);
--    } else {
--        tcg_out_insn(s, RX, LA, TCG_REG_R0, addr_reg, TCG_REG_NONE, a_off);
--        tgen_andi(s, addr_type, TCG_REG_R0, tlb_mask);
--    }
--
--    if (is_ld) {
--        ofs = offsetof(CPUTLBEntry, addr_read);
--    } else {
--        ofs = offsetof(CPUTLBEntry, addr_write);
--    }
--    if (addr_type == TCG_TYPE_I32) {
--        ofs += HOST_BIG_ENDIAN * 4;
--        tcg_out_insn(s, RX, C, TCG_REG_R0, TCG_TMP0, TCG_REG_NONE, ofs);
--    } else {
--        tcg_out_insn(s, RXY, CG, TCG_REG_R0, TCG_TMP0, TCG_REG_NONE, ofs);
--    }
--
--    tcg_out16(s, RI_BRC | (S390_CC_NE << 4));
--    ldst->label_ptr[0] = s->code_ptr++;
--
--    h->index = TCG_TMP0;
--    tcg_out_insn(s, RXY, LG, h->index, TCG_TMP0, TCG_REG_NONE,
--                 offsetof(CPUTLBEntry, addend));
--
--    if (addr_type == TCG_TYPE_I32) {
--        tcg_out_insn(s, RRE, ALGFR, h->index, addr_reg);
--        h->base = TCG_REG_NONE;
--    } else {
--        h->base = addr_reg;
--    }
--    h->disp = 0;
--#else
--    if (a_mask) {
-         ldst = new_ldst_label(s);
-         ldst->is_ld = is_ld;
-         ldst->oi = oi;
-         ldst->addrlo_reg = addr_reg;
- 
--        /* We are expecting a_bits to max out at 7, much lower than TMLL. */
--        tcg_debug_assert(a_mask <= 0xffff);
--        tcg_out_insn(s, RI, TMLL, addr_reg, a_mask);
-+        tcg_out_sh64(s, RSY_SRLG, TCG_TMP0, addr_reg, TCG_REG_NONE,
-+                     s->page_bits - CPU_TLB_ENTRY_BITS);
- 
--        tcg_out16(s, RI_BRC | (7 << 4)); /* CC in {1,2,3} */
-+        tcg_out_insn(s, RXY, NG, TCG_TMP0, TCG_AREG0, TCG_REG_NONE, mask_off);
-+        tcg_out_insn(s, RXY, AG, TCG_TMP0, TCG_AREG0, TCG_REG_NONE, table_off);
-+
-+        /*
-+         * For aligned accesses, we check the first byte and include the
-+         * alignment bits within the address.  For unaligned access, we
-+         * check that we don't cross pages using the address of the last
-+         * byte of the access.
-+         */
-+        a_off = (a_mask >= s_mask ? 0 : s_mask - a_mask);
-+        tlb_mask = (uint64_t)s->page_mask | a_mask;
-+        if (a_off == 0) {
-+            tgen_andi_risbg(s, TCG_REG_R0, addr_reg, tlb_mask);
-+        } else {
-+            tcg_out_insn(s, RX, LA, TCG_REG_R0, addr_reg, TCG_REG_NONE, a_off);
-+            tgen_andi(s, addr_type, TCG_REG_R0, tlb_mask);
-+        }
-+
-+        if (is_ld) {
-+            ofs = offsetof(CPUTLBEntry, addr_read);
-+        } else {
-+            ofs = offsetof(CPUTLBEntry, addr_write);
-+        }
-+        if (addr_type == TCG_TYPE_I32) {
-+            ofs += HOST_BIG_ENDIAN * 4;
-+            tcg_out_insn(s, RX, C, TCG_REG_R0, TCG_TMP0, TCG_REG_NONE, ofs);
-+        } else {
-+            tcg_out_insn(s, RXY, CG, TCG_REG_R0, TCG_TMP0, TCG_REG_NONE, ofs);
-+        }
-+
-+        tcg_out16(s, RI_BRC | (S390_CC_NE << 4));
-         ldst->label_ptr[0] = s->code_ptr++;
--    }
- 
--    h->base = addr_reg;
--    if (addr_type == TCG_TYPE_I32) {
--        tcg_out_ext32u(s, TCG_TMP0, addr_reg);
--        h->base = TCG_TMP0;
--    }
--    if (guest_base < 0x80000) {
--        h->index = TCG_REG_NONE;
--        h->disp = guest_base;
--    } else {
--        h->index = TCG_GUEST_BASE_REG;
-+        h->index = TCG_TMP0;
-+        tcg_out_insn(s, RXY, LG, h->index, TCG_TMP0, TCG_REG_NONE,
-+                     offsetof(CPUTLBEntry, addend));
-+
-+        if (addr_type == TCG_TYPE_I32) {
-+            tcg_out_insn(s, RRE, ALGFR, h->index, addr_reg);
-+            h->base = TCG_REG_NONE;
-+        } else {
-+            h->base = addr_reg;
-+        }
-         h->disp = 0;
-+    } else {
-+        if (a_mask) {
-+            ldst = new_ldst_label(s);
-+            ldst->is_ld = is_ld;
-+            ldst->oi = oi;
-+            ldst->addrlo_reg = addr_reg;
-+
-+            /* We are expecting a_bits to max out at 7, much lower than TMLL. */
-+            tcg_debug_assert(a_mask <= 0xffff);
-+            tcg_out_insn(s, RI, TMLL, addr_reg, a_mask);
-+
-+            tcg_out16(s, RI_BRC | (7 << 4)); /* CC in {1,2,3} */
-+            ldst->label_ptr[0] = s->code_ptr++;
-+        }
-+
-+        h->base = addr_reg;
-+        if (addr_type == TCG_TYPE_I32) {
-+            tcg_out_ext32u(s, TCG_TMP0, addr_reg);
-+            h->base = TCG_TMP0;
-+        }
-+        if (guest_base < 0x80000) {
-+            h->index = TCG_REG_NONE;
-+            h->disp = guest_base;
-+        } else {
-+            h->index = TCG_GUEST_BASE_REG;
-+            h->disp = 0;
-+        }
-     }
--#endif
- 
-     return ldst;
- }
-@@ -3453,12 +3452,10 @@ static void tcg_target_qemu_prologue(TCGContext *s)
-                   TCG_STATIC_CALL_ARGS_SIZE + TCG_TARGET_CALL_STACK_OFFSET,
-                   CPU_TEMP_BUF_NLONGS * sizeof(long));
- 
--#ifndef CONFIG_SOFTMMU
--    if (guest_base >= 0x80000) {
-+    if (!tcg_use_softmmu && guest_base >= 0x80000) {
-         tcg_out_movi(s, TCG_TYPE_PTR, TCG_GUEST_BASE_REG, guest_base);
-         tcg_regset_set_reg(s->reserved_regs, TCG_GUEST_BASE_REG);
-     }
--#endif
- 
-     tcg_out_mov(s, TCG_TYPE_PTR, TCG_AREG0, tcg_target_call_iarg_regs[0]);
- 
--- 
-2.34.1
+I think it is ok to split this export in its own patch. If you decide
+to do it that way, you can add my Acked-by.
+
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index a875767ee9..e6342b213f 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -620,6 +620,13 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState=
+ *s,
+>      return vhost_svq_poll(svq, 1);
+>  }
+>
+> +/* Convenience wrapper to get number of available SVQ descriptors */
+> +static uint16_t vhost_vdpa_net_svq_available_slots(VhostVDPAState *s)
+> +{
+> +    VhostShadowVirtqueue *svq =3D g_ptr_array_index(s->vhost_vdpa.shadow=
+_vqs, 0);
+
+This is not really generic enough for all VhostVDPAState, as dataplane
+ones have two svqs.
+
+I think the best is to just inline the function in the caller, as
+there is only one, isn't it? If not, would it work to just replace
+_net_ by _cvq_ or similar?
+
+> +    return vhost_svq_available_slots(svq);
+> +}
+> +
+>  static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+>                                         uint8_t cmd, const struct iovec *=
+data_sg,
+>                                         size_t data_num)
+> @@ -640,6 +647,8 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState=
+ *s, uint8_t class,
+>      };
+>
+>      assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl))=
+;
+> +    /* Each CVQ command has one out descriptor and one in descriptor */
+> +    assert(vhost_vdpa_net_svq_available_slots(s) >=3D 2);
+>
+
+I think we should remove this assertion. By the end of the series
+there is an "if" checks explicitly for the opposite condition, and
+flushing the queue in that case, so the code can never reach it.
+
+>      /* pack the CVQ command header */
+>      memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
+> --
+> 2.25.1
+>
 
 
