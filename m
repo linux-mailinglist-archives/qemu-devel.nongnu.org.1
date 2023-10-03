@@ -2,77 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4E47B684B
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:52:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EA77B685A
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:54:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qndw5-00087n-8Q; Tue, 03 Oct 2023 07:51:33 -0400
+	id 1qndy8-0000Wg-DW; Tue, 03 Oct 2023 07:53:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qndw1-00086w-HL; Tue, 03 Oct 2023 07:51:29 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qndvx-0007Dw-2j; Tue, 03 Oct 2023 07:51:27 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0GL904xFz6HJZS;
- Tue,  3 Oct 2023 19:48:32 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 3 Oct
- 2023 12:51:12 +0100
-Date: Tue, 3 Oct 2023 12:51:11 +0100
-To: Salil Mehta <salil.mehta@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
- <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
- "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
- <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
- {creation,parking} code
-Message-ID: <20231003125111.00002013@Huawei.com>
-In-Reply-To: <761a05a972ae4aa088b8e984bd89889f@huawei.com>
-References: <20230930001933.2660-1-salil.mehta@huawei.com>
- <20230930001933.2660-2-salil.mehta@huawei.com>
- <20231002165322.00003a2e@Huawei.com>
- <761a05a972ae4aa088b8e984bd89889f@huawei.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qndy6-0000W2-FT
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 07:53:38 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qndy4-0007lS-R1
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 07:53:38 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-40572aeb73cso7491995e9.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 04:53:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696334015; x=1696938815; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=EeVvwXrfxYvI/4qSiiegLJHCdhD76KziI3t7RkZApWI=;
+ b=Aduh2A5msSlsNU9aVoUPDY+2sq2B8FJ1E7OW5gR7nuDgC124yQCoQRAn84x2ZNdJcC
+ 9S6Xc2yTnIPsG939ZMKlFGi2GDMwX/apvUIc/D7rQ2R5LN/v8vf7bU4HnfxxNGAgBn2s
+ 0FBdCPc+5D3qu+0IjT3Y05iiSpQi9yU2od5Gx/EfBvuyMy1vbNfiLJTxhUrVb27udjZi
+ iBTm60N6xLYRtxxYOmOLKdZlBxgQziwD5UanpgHN7FCdSLHiKIYogpr9xBAr61YAMZ3d
+ I9zGMZS/kqLJmimZYQx2hXltplrCUako3Xyf0sOLplwSZrB7TSORw/hmId/cm2Z4VpUS
+ AQxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696334015; x=1696938815;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=EeVvwXrfxYvI/4qSiiegLJHCdhD76KziI3t7RkZApWI=;
+ b=kZPexA7GN0zQ9wc+n889crNlELXMIKqwb69nywTvwLlfFWrmUKhFcNuJM4tYNZzU2m
+ r1xlQhQSuOD+YMvXFl553Ur17+PiTsvRJs1U04M9QWZPZoxRDymB7UXC7/NZ+lsk5kE/
+ qN7wvSz+qcKGm7lQ2EYbTOqzsODzKRXZctasWK9G9UugpFNjDhXFVIkGBNMLmsyeDCsW
+ Yq88Flj3JpD0mJQEgoarfnIilAw4ZHvwKu/QMK9CprVxcFGNQgBm+zM1Gi7AWQ45TPCf
+ oCgHQw968H+S7P4qgSUnjCvHyXVUw38yuTwDaLHs2b5HcOxR9nYPlrH4bW8IbpdR24ag
+ NBwg==
+X-Gm-Message-State: AOJu0YwYAUyyJLwOb00HF4gXWtU4incqtevr4NnpVmBEPieo8gJOvyTI
+ k5uYxq0gSfdg0RwzJ49fgCbRiw==
+X-Google-Smtp-Source: AGHT+IHQp40VaVMij32qBMMaFPOFigpSBci+CbJReOUzjzhZAGvDIUXN8oZEXGjheWDzcsvDzv9/oQ==
+X-Received: by 2002:a7b:cd0a:0:b0:403:787:e878 with SMTP id
+ f10-20020a7bcd0a000000b004030787e878mr12642960wmj.21.1696334015078; 
+ Tue, 03 Oct 2023 04:53:35 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
+ [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
+ z6-20020a1c4c06000000b003fe2a40d287sm1126369wmf.1.2023.10.03.04.53.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Oct 2023 04:53:34 -0700 (PDT)
+Message-ID: <f20c039c-64cd-8530-ef49-bfaa853adc4a@linaro.org>
+Date: Tue, 3 Oct 2023 13:53:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 1/2] target/riscv/kvm: improve 'init_multiext_cfg' error
+ msg
+Content-Language: en-US
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ ajones@ventanamicro.com, Markus Armbruster <armbru@redhat.com>
+References: <20231003113259.771539-1-dbarboza@ventanamicro.com>
+ <20231003113259.771539-2-dbarboza@ventanamicro.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231003113259.771539-2-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -86,161 +93,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 3 Oct 2023 12:05:11 +0100
-Salil Mehta <salil.mehta@huawei.com> wrote:
+Hi Daniel,
 
-> Hi Jonathan,
+On 3/10/23 13:32, Daniel Henrique Barboza wrote:
+> Our error message is returning the value of 'ret', which will be always
+> -1 in case of error, and will not be that useful:
 > 
-> > From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> > Sent: Monday, October 2, 2023 4:53 PM
-> > To: Salil Mehta <salil.mehta@huawei.com>
-> > Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> > philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> > richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev;
-> > david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> > oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> > will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> > alex.bennee@linaro.org; linux@armlinux.org.uk;
-> > darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> > vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> > miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> > <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> > wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> > maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.com>
-> > Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
-> > {creation,parking} code
-> > 
-> > On Sat, 30 Sep 2023 01:19:24 +0100
-> > Salil Mehta <salil.mehta@huawei.com> wrote:
-> >   
-> > > KVM vCPU creation is done once during the initialization of the VM when Qemu
-> > > threads are spawned. This is common to all the architectures.
-> > >
-> > > Hot-unplug of vCPU results in destruction of the vCPU objects in QOM but
-> > > the KVM vCPU objects in the Host KVM are not destroyed and their representative
-> > > KVM vCPU objects/context in Qemu are parked.
-> > >
-> > > Refactor common logic so that some APIs could be reused by vCPU Hotplug code.
-> > >
-> > > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>  
-> > 
-> > Hi Salil,
-> > 
-> > A few trivial things inline, plus a question about why
-> > cpu->cpu_index can now be used but kvm_arch_vcpu_id(cpu);
-> > was previously needed.  
+> qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error -1
 > 
-> Good point. I used the API because it was returning
-> 'unsigned long' and it was being used across the archs.
-> I thought maybe the size of the index could vary across
-> archs. For example, for PowerPC above API returns vcpu_id
-> which presumably could have different data type than
-> an 'integer'.
+> Improve the error message by outputting 'errno' instead of 'ret'. Use
+> strerrorname_np() to output the error name instead of the error code.
+> This will give us what we need to know right away:
 > 
-> But after Alex's comment, I was made to believe that this
-> assumption might not be correct and CPU index is an
-> 'integer' across archs and perhaps semantics of above
-> API is not correct.
+> qemu-system-riscv64: Unable to read ISA_EXT KVM register ssaia, error code: ENOENT
 > 
-> But perhaps original code was functionally correct?
+> Use "error_setg(&error_fatal, ..." since it'll both print the error and
+> do an exit(EXIT_FAILURE) in one single call, allowing us to remove
+> error_report() and exit().
+> 
+> Finally, given that we're going to exit(1) in this condition instead of
+> attempting to recover, remove the 'kvm_riscv_destroy_scratch_vcpu()'
+> call.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>   target/riscv/kvm/kvm-cpu.c | 7 +++----
+>   1 file changed, 3 insertions(+), 4 deletions(-)
+> 
+> diff --git a/target/riscv/kvm/kvm-cpu.c b/target/riscv/kvm/kvm-cpu.c
+> index c6615cb807..847cb2876a 100644
+> --- a/target/riscv/kvm/kvm-cpu.c
+> +++ b/target/riscv/kvm/kvm-cpu.c
+> @@ -791,10 +791,9 @@ static void kvm_riscv_init_multiext_cfg(RISCVCPU *cpu, KVMScratchCPU *kvmcpu)
+>                   multi_ext_cfg->supported = false;
+>                   val = false;
+>               } else {
+> -                error_report("Unable to read ISA_EXT KVM register %s, "
+> -                             "error %d", multi_ext_cfg->name, ret);
+> -                kvm_riscv_destroy_scratch_vcpu(kvmcpu);
+> -                exit(EXIT_FAILURE);
+> +                error_setg(&error_fatal, "Unable to read ISA_EXT "
 
-I wasn't concerned with the type, but rather that the
-value comes from other places than cpu->cpu_index
-on some architectures.
-> 
-> 
-> > >  accel/kvm/kvm-all.c  | 63 +++++++++++++++++++++++++++++++++-----------
-> > >  include/sysemu/kvm.h | 14 ++++++++++
-> > >  2 files changed, 61 insertions(+), 16 deletions(-)
-> > >
-> > > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
-> > > index ff1578bb32..b8c36ba50a 100644
-> > > --- a/accel/kvm/kvm-all.c
-> > > +++ b/accel/kvm/kvm-all.c
-> > > @@ -80,7 +80,7 @@
-> > >  #endif
-> > >
-> > >  struct KVMParkedVcpu {
-> > > -    unsigned long vcpu_id;
-> > > +    int vcpu_id;
-> > >      int kvm_fd;
-> > >      QLIST_ENTRY(KVMParkedVcpu) node;
-> > >  };
-> > > @@ -137,6 +137,7 @@ static QemuMutex kml_slots_lock;
-> > >  #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
-> > >
-> > >  static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
-> > > +static int kvm_get_vcpu(KVMState *s, int vcpu_id);
-> > >
-> > >  static inline void kvm_resample_fd_remove(int gsi)
-> > >  {
-> > > @@ -320,11 +321,49 @@ err:
-> > >      return ret;
-> > >  }
-> > >
-> > > +void kvm_park_vcpu(CPUState *cpu)
-> > > +{
-> > > +    int vcpu_id = cpu->cpu_index;
-> > > +    struct KVMParkedVcpu *vcpu;
-> > > +
-> > > +    vcpu = g_malloc0(sizeof(*vcpu));
-> > > +    vcpu->vcpu_id = vcpu_id;  
-> > 
-> > As vcpu_id is only used here why have the local variable?
-> > Maybe that changes in later patches, in which case ignore this.
-> > 
-> >     vcpu->vcpu_id = cpu->cpu_index;  
-> 
-> 
-> Yes, thanks.
-> 
-> 
-> > 
-> > Why is kvm_arch_vcpu_id() not necessary here any more but was
-> > before?  
-> 
-> 
-> Because I have now changed the type of vcpu_id from 'unsigned long'
-> to an 'integer'.
-> 
-> >   
-> > > +    vcpu->kvm_fd = cpu->kvm_fd;
-> > > +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
-> > > +}
-> > > +
-> > > +int kvm_create_vcpu(CPUState *cpu)
-> > > +{
-> > > +    int vcpu_id = cpu->cpu_index;  
-> > 
-> > See below. I'm not sure why it's safe not to use kvm_arch_vcpu_id()
-> > Seems a few architectures have less than trivial implementations of
-> > that function currently.  
-> 
-> I doubt this as well. Other architectures like PowerPC are returning
-> different type?
-> 
-It wasn't the type that bothered, me but rather that the source of
-the data isn't always cpu->cpu_index so I have no idea if the values
-are consistent.
+See the documentation added in include/qapi/error.h by commit
+10303f04b9 ("error: Improve documentation some more"):
 
-> 
-> 
-> > >      if (ret < 0) {
-> > > -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed  
-> > (%lu)",  
-> > > +        error_setg_errno(errp, -ret,
-> > > +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)",  
-> > 
-> > The rewrap of the lines above seems like an unrelated change.  
-> 
-> Function has changed from kvm_get_vcpu to kvm_create_vcpu
-> 
-ah. Eyes jumped over that :)
+   * Please don't error_setg(&error_fatal, ...), use error_report() and
+   * exit(), because that's more obvious.
 
+> +                           "KVM register %s, error code: %s",
+> +                           multi_ext_cfg->name, strerrorname_np(errno));
+>               }
+>           } else {
+>               multi_ext_cfg->supported = true;
 
 
