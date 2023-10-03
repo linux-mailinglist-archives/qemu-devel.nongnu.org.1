@@ -2,69 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2628E7CC014
-	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 12:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0852B7CC0DF
+	for <lists+qemu-devel@lfdr.de>; Tue, 17 Oct 2023 12:44:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qsguP-00040x-8V; Tue, 17 Oct 2023 06:02:41 -0400
+	id 1qshXd-0003FP-Tk; Tue, 17 Oct 2023 06:43:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qsguM-00040l-Qa
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 06:02:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qshXa-0003BH-58
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 06:43:10 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <kwolf@redhat.com>) id 1qsguL-00075e-AA
- for qemu-devel@nongnu.org; Tue, 17 Oct 2023 06:02:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1697536955;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=9Ja+AaBPPiaEeiGYsXV5YsJJXqFvRIA8Ue6LjSc+qKM=;
- b=KFgj4nCWGEM8Pl1KGBcvhrdsEQLZHn6DnVZMlAs8tIyCLW+VDyZrtWXFYbWubiqFD0IQik
- QAaj/AAO5CK0sRJQnk97eS1TQgXh+yu16VV6P40NFCXltTiPXGftPFJpcVc62grAeXt4n2
- 0/Cm8HF2lJYwgeYJfEcJU61nMZlxwUg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-454-tlTSeVfOPh6-3TqHDULUmA-1; Tue, 17 Oct 2023 06:02:29 -0400
-X-MC-Unique: tlTSeVfOPh6-3TqHDULUmA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A102985A5BE;
- Tue, 17 Oct 2023 10:02:28 +0000 (UTC)
-Received: from redhat.com (unknown [10.39.194.150])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 7ECC540C6CA3;
- Tue, 17 Oct 2023 10:02:27 +0000 (UTC)
-Date: Tue, 17 Oct 2023 12:02:26 +0200
-From: Kevin Wolf <kwolf@redhat.com>
-To: Fiona Ebner <f.ebner@proxmox.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
- Hanna Reitz <hreitz@redhat.com>, hujian <hu.jian@zte.com.cn>
-Subject: Re: [PULL 1/1] virtio-blk: don't start dataplane during the stop of
- dataplane
-Message-ID: <ZS5bstofOtQIdz84@redhat.com>
-References: <20231016194028.163610-1-stefanha@redhat.com>
- <20231016194028.163610-2-stefanha@redhat.com>
- <851be4cf-d3e1-4031-bc5a-95fbef1ce21f@proxmox.com>
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qshXY-0006Ot-3I
+ for qemu-devel@nongnu.org; Tue, 17 Oct 2023 06:43:09 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id 01D6811F37E;
+ Tue, 17 Oct 2023 10:43:05 +0000 (UTC)
+From: ~h0lyalg0rithm <h0lyalg0rithm@git.sr.ht>
+Date: Tue, 03 Oct 2023 14:45:14 +0200
+Subject: [PATCH qemu v3 1/1] Switch memory management calls to new coding
+ conventions
+Message-ID: <169753938460.23804.11418813007617535750-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <169753938460.23804.11418813007617535750-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: trivial@nongnu.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <851be4cf-d3e1-4031-bc5a-95fbef1ce21f@proxmox.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=kwolf@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: 36
+X-Spam_score: 3.6
+X-Spam_bar: +++
+X-Spam_report: (3.6 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_96_XX=3.405,
+ FREEMAIL_FORGED_REPLYTO=2.095, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,32 +52,167 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~h0lyalg0rithm <surajshirvankar@gmail.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Am 17.10.2023 um 11:01 hat Fiona Ebner geschrieben:
-> Am 16.10.23 um 21:40 schrieb Stefan Hajnoczi:
-> > diff --git a/hw/block/virtio-blk.c b/hw/block/virtio-blk.c
-> > index 39e7f23fab..c2d59389cb 100644
-> > --- a/hw/block/virtio-blk.c
-> > +++ b/hw/block/virtio-blk.c
-> > @@ -1166,7 +1166,7 @@ static void virtio_blk_handle_output(VirtIODevice *vdev, VirtQueue *vq)
-> >  {
-> >      VirtIOBlock *s = (VirtIOBlock *)vdev;
-> >  
-> > -    if (s->dataplane && !s->dataplane_started) {
-> > +    if (s->dataplane && !s->dataplane_started && !s->stopping) {
-> 
-> Isn't 'stopping' a property of VirtIOBlockDataPlane? Here, s is VirtIOBlock.
+From: Suraj Shirvankar <surajshirvankar@gmail.com>
 
-Indeed, this patch doesn't even build for me.
+Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
+---
+ contrib/elf2dmp/addrspace.c |  7 ++-----
+ contrib/elf2dmp/main.c      |  6 +++---
+ contrib/elf2dmp/pdb.c       | 16 ++++++++--------
+ contrib/elf2dmp/qemu_elf.c  |  7 ++-----
+ 4 files changed, 15 insertions(+), 21 deletions(-)
 
-However, even if we wrote !s->dataplane->stopping, would it really be
-right to be handling I/O in the main thread while the dataplane hasn't
-stopped yet? At least without all the multiqueue changes, it's not
-obvious to me that it can't cause problems. Unfortunately, the commit
-message doesn't say anything about why it's safe.
-
-Kevin
-
+diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
+index 64b5d680ad..6f608a517b 100644
+--- a/contrib/elf2dmp/addrspace.c
++++ b/contrib/elf2dmp/addrspace.c
+@@ -72,10 +72,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_el=
+f)
+         }
+     }
+=20
+-    ps->block =3D malloc(sizeof(*ps->block) * ps->block_nr);
+-    if (!ps->block) {
+-        return 1;
+-    }
++    ps->block =3D g_new(struct pa_block, ps->block_nr);
+=20
+     for (i =3D 0; i < phdr_nr; i++) {
+         if (phdr[i].p_type =3D=3D PT_LOAD) {
+@@ -97,7 +94,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+ void pa_space_destroy(struct pa_space *ps)
+ {
+     ps->block_nr =3D 0;
+-    free(ps->block);
++    g_free(ps->block);
+ }
+=20
+ void va_space_set_dtb(struct va_space *vs, uint64_t dtb)
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index 5db163bdbe..26a15a9d22 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -120,14 +120,14 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, s=
+truct pdb_reader *pdb,
+         }
+     }
+=20
+-    kdbg =3D malloc(kdbg_hdr.Size);
++    kdbg =3D g_malloc(kdbg_hdr.Size);
+     if (!kdbg) {
+         return NULL;
+     }
+=20
+     if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
+         eprintf("Failed to extract entire KDBG\n");
+-        free(kdbg);
++        g_free(kdbg);
+         return NULL;
+     }
+=20
+@@ -643,7 +643,7 @@ int main(int argc, char *argv[])
+     }
+=20
+ out_kdbg:
+-    free(kdbg);
++    g_free(kdbg);
+ out_pdb:
+     pdb_exit(&pdb);
+ out_pdb_file:
+diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
+index 6ca5086f02..2404f41404 100644
+--- a/contrib/elf2dmp/pdb.c
++++ b/contrib/elf2dmp/pdb.c
+@@ -90,18 +90,18 @@ uint64_t pdb_resolve(uint64_t img_base, struct pdb_reader=
+ *r, const char *name)
+=20
+ static void pdb_reader_ds_exit(struct pdb_reader *r)
+ {
+-    free(r->ds.toc);
++    g_free(r->ds.toc);
+ }
+=20
+ static void pdb_exit_symbols(struct pdb_reader *r)
+ {
+-    free(r->modimage);
+-    free(r->symbols);
++    g_free(r->modimage);
++    g_free(r->symbols);
+ }
+=20
+ static void pdb_exit_segments(struct pdb_reader *r)
+ {
+-    free(r->segs);
++    g_free(r->segs);
+ }
+=20
+ static void *pdb_ds_read(const PDB_DS_HEADER *header,
+@@ -116,7 +116,7 @@ static void *pdb_ds_read(const PDB_DS_HEADER *header,
+=20
+     nBlocks =3D (size + header->block_size - 1) / header->block_size;
+=20
+-    buffer =3D malloc(nBlocks * header->block_size);
++    buffer =3D g_malloc(nBlocks * header->block_size);
+     if (!buffer) {
+         return NULL;
+     }
+@@ -201,7 +201,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
+     return 0;
+=20
+ out_symbols:
+-    free(symbols);
++    g_free(symbols);
+=20
+     return err;
+ }
+@@ -258,7 +258,7 @@ static int pdb_reader_init(struct pdb_reader *r, void *da=
+ta)
+ out_sym:
+     pdb_exit_symbols(r);
+ out_root:
+-    free(r->ds.root);
++    g_free(r->ds.root);
+ out_ds:
+     pdb_reader_ds_exit(r);
+=20
+@@ -269,7 +269,7 @@ static void pdb_reader_exit(struct pdb_reader *r)
+ {
+     pdb_exit_segments(r);
+     pdb_exit_symbols(r);
+-    free(r->ds.root);
++    g_free(r->ds.root);
+     pdb_reader_ds_exit(r);
+ }
+=20
+diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
+index de6ad744c6..055e6f8792 100644
+--- a/contrib/elf2dmp/qemu_elf.c
++++ b/contrib/elf2dmp/qemu_elf.c
+@@ -94,10 +94,7 @@ static int init_states(QEMU_Elf *qe)
+=20
+     printf("%zu CPU states has been found\n", cpu_nr);
+=20
+-    qe->state =3D malloc(sizeof(*qe->state) * cpu_nr);
+-    if (!qe->state) {
+-        return 1;
+-    }
++    qe->state =3D g_new(QEMUCPUState*, cpu_nr);
+=20
+     cpu_nr =3D 0;
+=20
+@@ -115,7 +112,7 @@ static int init_states(QEMU_Elf *qe)
+=20
+ static void exit_states(QEMU_Elf *qe)
+ {
+-    free(qe->state);
++    g_free(qe->state);
+ }
+=20
+ static bool check_ehdr(QEMU_Elf *qe)
+--=20
+2.38.5
 
