@@ -2,78 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8EB7B70EE
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9958C7B70E2
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:32:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnkBD-00089E-PA; Tue, 03 Oct 2023 14:31:36 -0400
+	id 1qnkAw-000877-6o; Tue, 03 Oct 2023 14:31:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkB0-00088N-GU
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:22 -0400
-Received: from mail-pf1-x435.google.com ([2607:f8b0:4864:20::435])
+ id 1qnkAu-00086b-JK
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:16 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAp-0001fw-0Z
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:22 -0400
-Received: by mail-pf1-x435.google.com with SMTP id
- d2e1a72fcca58-692ada71d79so967287b3a.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:09 -0700 (PDT)
+ id 1qnkAp-0001gE-NL
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:16 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c3f97f2239so10080975ad.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696357868; x=1696962668; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696357869; x=1696962669; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=vzdMnZ/qp0IZVfsWupkBnwKkbY4o53yFm+NGR5vmj5I=;
- b=zIhJYxRjwahxpVlq4tEF2wLTtjU78anIkXvVl8oFB2GuvaGdZmh/3VQBRgQ2zFL67R
- /Jv79Qhwnj6hGq2AEOGZF2PDyxjLEG/hulvQ3WpnAPzm6GkInbgC7aQGdtNCqX1wN7t8
- 5lOZ2w9kvVR3Envpg84w/lwnWgL6EBt42H8+kYYHw2IPf7YIXajmsKrI+waVZU03ld10
- ooD4BkfcwdftFXTjlsBA+C9szhLXRejmF/tRpQdAOvAUW4Y1miWom9hPRL3z7dgttbqr
- 0B67V5bWgiekBRRaNFIoZgDQj7Qd+7o+Tn8ONienSkl/1kEup2jnLZw0nFa/J9Mo7TQH
- Gd4g==
+ bh=MD25jSGXV56D96OuAdfZq5dSUt2s3HFUz4HxD2v8rb0=;
+ b=wH1VXlWCJ2Mh3egL1omTGdqNB29L5dbjwuAyNzwXOiu+8/OvOj772lWj9KdVkiT74P
+ VisN9Ps4GKc0zyF2JyAW835QLj+A+JqU6CsW5lM53g848+vFOfDRZbXXyb5cvrZSqR7W
+ cV9aS6Tjk2lnEA/btr6dbTt2nEJXeBfQbBL11SPWMJSZCQHYTe6XZ+ZChCAIegz2U3lK
+ 4b6RAkct684yHvA0Zs8v2f/KypZBeiBnqQMhcOBdIgP0BjJxzEeurfW2Z55y2zym0lRc
+ 6wrA7djQwqgtSHXnCGitROM2079/sher+7oKimsTZMTYu42Ekw4ciHIP3j/zUYGTFWw0
+ Ecgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696357868; x=1696962668;
+ d=1e100.net; s=20230601; t=1696357869; x=1696962669;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=vzdMnZ/qp0IZVfsWupkBnwKkbY4o53yFm+NGR5vmj5I=;
- b=qWZdp7GILw8FqZSdbLte0q6Z/ki0fjEicrK38z8w/jRPJfnEDn84evcCTsPoRYdtvZ
- A9wD6qgHOoXzxyffpPkgxHnQwClZXpbKDK/YXAhkuunnDzx+30vJDKrVuQcNzOSu6maZ
- clAgtsBl1G/KeUjoJD6tmY1JOVAf6/w4H7djLbm1q+aX0x3ziwBAOFh/HlTvtwEfZrsi
- eEppxjV4GNds+C+txcxkVkNKMFJXNBwCXi6UFbQ1VHSfob4+s9mkxBjIdEFa5I1qCKDs
- Vdhqdsfnoxd+eF5cYPSh88MgkPOR+Ygr9tBVoWYrYhetLBdSlqzfsrqM1sN4sIaCHd5G
- U8CQ==
-X-Gm-Message-State: AOJu0YxHMJmiabmvsRgD03SU9ict/IVyD6IPi39K9czYYDOYLcP9Y7Bg
- kkMisV7G6N7KSlW4dromOJ1Qfgs4imNoKoRHKUk=
-X-Google-Smtp-Source: AGHT+IGdYDITcHIKaZkgdI1lJbM+gT9x898s9U3/+xXYm7Qdv6EH+JaK0Aps6ryTxP//eyH7pqVD7w==
-X-Received: by 2002:a05:6a20:9694:b0:15e:707c:904 with SMTP id
- hp20-20020a056a20969400b0015e707c0904mr250590pzc.24.1696357868289; 
- Tue, 03 Oct 2023 11:31:08 -0700 (PDT)
+ bh=MD25jSGXV56D96OuAdfZq5dSUt2s3HFUz4HxD2v8rb0=;
+ b=Pu1qUJC4UhN1OL1nMtI27NKF0K38Xbov13KwnpgSVHxRvtcJPy83URBVVc2NHxgec7
+ VgYeiGnu2AOGqsygA6K5NCXew3+FcNl1WiRFrQpCE7m46HNmjanar9FGNijs6p9PLOv/
+ 8W89KiCZqXv6aZ+rhd+b5gkn+LNfiQ2p9XtfwP33y5Di8HvdsGWizOUAGU7RVwtZ9e3I
+ fpDP8oS6DdRtouadZor4b1lYDtqc0dtLJEQNNF9SJGpzNV2t1vNUAWAs6ZYbX3yuIbn+
+ kQ1soAyCNo5LQ9NIBNERpKnImtfu9GOYWE4ENbyBz7p2G2FOlWlJvxPSzOSVX8aPD0kF
+ OscA==
+X-Gm-Message-State: AOJu0YwEguaWxmZeWSOEL5RmTwp93dVA6RdFRU0+7vUpb890WoVpjCey
+ fdF2BT7h0WNShrNqOkMbCr3QN/qf9oNsf5e1Gag=
+X-Google-Smtp-Source: AGHT+IFJt9dSRz8GOEyNeZb7mfMi1tLIWduJPqsFNkQ+7SNABkYzDQuP+EjKIOmt3D27lZ+6vk+fjQ==
+X-Received: by 2002:a17:903:1c1:b0:1c0:c4be:62ca with SMTP id
+ e1-20020a17090301c100b001c0c4be62camr417335plh.17.1696357869317; 
+ Tue, 03 Oct 2023 11:31:09 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.07
+ g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 11:31:07 -0700 (PDT)
+ Tue, 03 Oct 2023 11:31:08 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com
-Subject: [PATCH v17 09/16] util/log: Add Error argument to qemu_str_to_log_mask
-Date: Tue,  3 Oct 2023 11:30:51 -0700
-Message-Id: <20231003183058.1639121-10-richard.henderson@linaro.org>
+Cc: fei2.wu@intel.com, "Vanderson M . do Rosario" <vandersonmr2@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v17 10/16] util/log: Add -d tb_stats
+Date: Tue,  3 Oct 2023 11:30:52 -0700
+Message-Id: <20231003183058.1639121-11-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003183058.1639121-1-richard.henderson@linaro.org>
 References: <20231003183058.1639121-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::435;
- envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x435.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::633;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x633.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,124 +92,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Do not rely on return value of 0 to indicate error,
-pass along an Error pointer to be set.
+From: Fei Wu <fei2.wu@intel.com>
 
+Enable TBStatistics collection from startup.
+
+Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Fei Wu <fei2.wu@intel.com>
+[rth: Change "tb_stats_foo" to "tb_stats:foo"]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/qemu/log.h | 2 +-
- bsd-user/main.c    | 6 ++++--
- linux-user/main.c  | 7 +++++--
- monitor/hmp-cmds.c | 5 +++--
- softmmu/vl.c       | 7 +++++--
- util/log.c         | 5 +++--
- 6 files changed, 21 insertions(+), 11 deletions(-)
+ stubs/tb-stats.c  | 16 ++++++++++++++++
+ util/log.c        | 36 +++++++++++++++++++++++++++++++-----
+ stubs/meson.build |  1 +
+ 3 files changed, 48 insertions(+), 5 deletions(-)
+ create mode 100644 stubs/tb-stats.c
 
-diff --git a/include/qemu/log.h b/include/qemu/log.h
-index df59bfabcd..9b92d2663e 100644
---- a/include/qemu/log.h
-+++ b/include/qemu/log.h
-@@ -87,7 +87,7 @@ bool qemu_set_log_filename(const char *filename, Error **errp);
- bool qemu_set_log_filename_flags(const char *name, int flags, Error **errp);
- void qemu_set_dfilter_ranges(const char *ranges, Error **errp);
- bool qemu_log_in_addr_range(uint64_t addr);
--int qemu_str_to_log_mask(const char *str);
-+int qemu_str_to_log_mask(const char *str, Error **errp);
- 
- /* Print a usage message listing all the valid logging categories
-  * to the specified FILE*.
-diff --git a/bsd-user/main.c b/bsd-user/main.c
-index 703f3e2c41..a981239a0b 100644
---- a/bsd-user/main.c
-+++ b/bsd-user/main.c
-@@ -411,8 +411,10 @@ int main(int argc, char **argv)
-     {
-         int mask = 0;
-         if (log_mask) {
--            mask = qemu_str_to_log_mask(log_mask);
--            if (!mask) {
-+            Error *err = NULL;
-+            mask = qemu_str_to_log_mask(log_mask, &err);
-+            if (err) {
-+                error_report_err(err);
-                 qemu_print_log_usage(stdout);
-                 exit(1);
-             }
-diff --git a/linux-user/main.c b/linux-user/main.c
-index 0c23584a96..d0464736cc 100644
---- a/linux-user/main.c
-+++ b/linux-user/main.c
-@@ -264,8 +264,11 @@ static void handle_arg_help(const char *arg)
- 
- static void handle_arg_log(const char *arg)
- {
--    last_log_mask = qemu_str_to_log_mask(arg);
--    if (!last_log_mask) {
-+    Error *err = NULL;
+diff --git a/stubs/tb-stats.c b/stubs/tb-stats.c
+new file mode 100644
+index 0000000000..ceaa1622ce
+--- /dev/null
++++ b/stubs/tb-stats.c
+@@ -0,0 +1,16 @@
++/*
++ * TB Stats Stubs
++ *
++ * Copyright (c) 2019
++ * Written by Alex Bennée <alex.bennee@linaro.org>
++ *
++ * This code is licensed under the GNU GPL v2, or later.
++ */
 +
-+    last_log_mask = qemu_str_to_log_mask(arg, &err);
-+    if (err) {
-+        error_report_err(err);
-         qemu_print_log_usage(stdout);
-         exit(EXIT_FAILURE);
-     }
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index 6c559b48c8..c4bd97d467 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -291,8 +291,9 @@ void hmp_log(Monitor *mon, const QDict *qdict)
-     if (!strcmp(items, "none")) {
-         mask = 0;
-     } else {
--        mask = qemu_str_to_log_mask(items);
--        if (!mask) {
-+        mask = qemu_str_to_log_mask(items, &err);
-+        if (err) {
-+            error_free(err);
-             hmp_help_cmd(mon, "log");
-             return;
-         }
-diff --git a/softmmu/vl.c b/softmmu/vl.c
-index 98e071e63b..02193696b9 100644
---- a/softmmu/vl.c
-+++ b/softmmu/vl.c
-@@ -2486,8 +2486,11 @@ static void qemu_process_early_options(void)
-     {
-         int mask = 0;
-         if (log_mask) {
--            mask = qemu_str_to_log_mask(log_mask);
--            if (!mask) {
-+            Error *err = NULL;
 +
-+            mask = qemu_str_to_log_mask(log_mask, &err);
-+            if (err) {
-+                error_report_err(err);
-                 qemu_print_log_usage(stdout);
-                 exit(1);
-             }
++#include "qemu/osdep.h"
++#include "tcg/tb-stats.h"
++
++void tb_stats_init(uint32_t flags)
++{
++}
 diff --git a/util/log.c b/util/log.c
-index def88a9402..b5f08db202 100644
+index b5f08db202..0cb987fb74 100644
 --- a/util/log.c
 +++ b/util/log.c
-@@ -500,8 +500,8 @@ const QEMULogItem qemu_log_items[] = {
-     { 0, NULL, NULL },
- };
+@@ -30,6 +30,9 @@
+ #ifdef CONFIG_LINUX
+ #include <sys/syscall.h>
+ #endif
++#ifdef CONFIG_TCG
++#include "tcg/tb-stats.h"
++#endif
  
--/* takes a comma separated list of log masks. Return 0 if error. */
--int qemu_str_to_log_mask(const char *str)
-+/* Takes a comma separated list of log masks. */
-+int qemu_str_to_log_mask(const char *str, Error **errp)
- {
-     const QEMULogItem *item;
-     int mask = 0;
-@@ -524,6 +524,7 @@ int qemu_str_to_log_mask(const char *str)
+ 
+ typedef struct RCUCloseFILE {
+@@ -509,22 +512,41 @@ int qemu_str_to_log_mask(const char *str, Error **errp)
+     char **tmp;
+ 
+     for (tmp = parts; tmp && *tmp; tmp++) {
+-        if (g_str_equal(*tmp, "all")) {
++        char *t = *tmp;
++
++        if (g_str_equal(t, "all")) {
+             for (item = qemu_log_items; item->mask != 0; item++) {
+                 mask |= item->mask;
+             }
+ #ifdef CONFIG_TRACE_LOG
+-        } else if (g_str_has_prefix(*tmp, "trace:") && (*tmp)[6] != '\0') {
+-            trace_enable_events((*tmp) + 6);
++        } else if (g_str_has_prefix(t, "trace:") && t[6] != '\0') {
++            trace_enable_events(t + 6);
+             mask |= LOG_TRACE;
++#endif
++#ifdef CONFIG_TCG
++        } else if (g_str_has_prefix(t, "tb_stats:") && t[9] != '\0') {
++            int flags = TB_STATS_NONE;
++            char *v = t + 9;
++
++            if (g_str_equal(v, "all")) {
++                flags = TB_STATS_ALL;
++            } else if (g_str_equal(v, "jit")) {
++                flags = TB_STATS_JIT;
++            } else if (g_str_equal(v, "exec")) {
++                flags = TB_STATS_EXEC;
++            } else {
++                error_setg(errp, "Invalid -d option \"%s\"", t);
++                goto error;
++            }
++            tb_stats_init(flags);
+ #endif
+         } else {
+             for (item = qemu_log_items; item->mask != 0; item++) {
+-                if (g_str_equal(*tmp, item->name)) {
++                if (g_str_equal(t, item->name)) {
                      goto found;
                  }
              }
-+            error_setg(errp, "Invalid -d option \"%s\"", *tmp);
+-            error_setg(errp, "Invalid -d option \"%s\"", *tmp);
++            error_setg(errp, "Invalid -d option \"%s\"", t);
              goto error;
          found:
              mask |= item->mask;
+@@ -546,6 +568,10 @@ void qemu_print_log_usage(FILE *f)
+     for (item = qemu_log_items; item->mask != 0; item++) {
+         fprintf(f, "%-15s %s\n", item->name, item->help);
+     }
++#ifdef CONFIG_TCG
++    fprintf(f, "tb_stats:WHICH  enable translation block statistics"
++            " (all, exec, jit)\n");
++#endif
+ #ifdef CONFIG_TRACE_LOG
+     fprintf(f, "trace:PATTERN   enable trace events\n");
+     fprintf(f, "\nUse \"-d trace:help\" to get a list of trace events.\n\n");
+diff --git a/stubs/meson.build b/stubs/meson.build
+index ef6e39a64d..37ca25ea01 100644
+--- a/stubs/meson.build
++++ b/stubs/meson.build
+@@ -65,4 +65,5 @@ else
+   stub_ss.add(files('qdev.c'))
+ endif
+ stub_ss.add(files('semihost-all.c'))
++stub_ss.add(files('tb-stats.c'))
+ stub_ss.add(when: 'CONFIG_VFIO_USER_SERVER', if_false: files('vfio-user-obj.c'))
 -- 
 2.34.1
 
