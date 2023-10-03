@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11657B6903
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:31:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A4D37B690F
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:32:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qneXs-0008Iy-KJ; Tue, 03 Oct 2023 08:30:36 -0400
+	id 1qneYD-0008RT-Pp; Tue, 03 Oct 2023 08:30:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qneXk-0008GJ-Pp
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:30:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qneXi-0007cY-Ak
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:30:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696336225;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=yGFytnyGMBAXWM06A8Hnqh6QOMnrEO4F0/YAXdV4qXg=;
- b=dLgcC3HDdsoIRhY7TYsw60sS24ixXWzf8ehoW7v/XJTslsBH1xSi0R9O8KqWB1KzTOW2gE
- Xsqp3E8abBjqGWYD7vS+zROQiDMyLvQCbJ0gzkHFcCyGIxowli8m2ty6VAXpgV6Z3NE7FO
- 287XPYiWUR6Gy/mXlx9kbD3KSUQN7Nw=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-568-I9UmraAYPW6C4DxZ7Bs-AQ-1; Tue, 03 Oct 2023 08:30:24 -0400
-X-MC-Unique: I9UmraAYPW6C4DxZ7Bs-AQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-3249655593dso745038f8f.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:30:23 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qneXw-0008PF-Qt
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:30:42 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qneXp-0007gQ-Qe
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:30:36 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-3232be274a0so2564612f8f.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 05:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696336229; x=1696941029; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=g7j+ZKjZU7k+0CzG1aKzjQAk8hMMCzbHPgv7YGTA/m4=;
+ b=aBkxC18IAx/RJIMBRZvkXfHDcLgICGvz9/0cz24KZeyMv6LhrN24hm88xUtM85ltZ1
+ gwP9nYIYhv16i4+/RV1yDO/scyneQmObvZLNXZuptN4XsYxek7ZeO4s+s4dmPrg5a2wU
+ gKYHAqLYDaf/bwIjvVqmUEmS0xsqEb9pMg5we9UjX5gwibFNHC5R7qM0UjCGLZArZHWH
+ Ly/vFT28Wo7v4BReEuCUxQa5JmzmUFnp3ph5W44QC2Z7AUBqZDrU/zSXU1p2V0Iyp5XU
+ HkTEZa3F2BYKBaHkdt6WsYxqEVlJzUCii7vmWR1YSapgpRZDO7tDS+zftquLbmrJnCXk
+ 94LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696336223; x=1696941023;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=yGFytnyGMBAXWM06A8Hnqh6QOMnrEO4F0/YAXdV4qXg=;
- b=EbUCagdgDA6rRoSIMjgSrgZQZD7clxO9d9gJHs1f6Ireir/hUCNcx2ZB94WGTgzMwC
- /Sbds48qbI91zUMJ8Uq37F0SGMd0u64AlFxqgOC5CSygEXJ6vhkmGOvqRl93gLwXExM6
- sMuH59aCoJPtq2GVatHwbulw4G1p4xY1gpzUYIKhFFd9rxczKIZSXqdBxt9ST9rG71Cl
- 4Q4uWPl32SY2+6Dr5gwCcfsGRsCciaz0DWBQOdKugXbqAjaxlaShQCerJdxhjnSJC9dx
- yO8e2DWc14PqHXIlGjrTIJc8gJAijfKFAoaT7FJwCDxCouYA3o7WpqywEXjL9ycFEeew
- MATw==
-X-Gm-Message-State: AOJu0Yw+0hTBy/vVvavtpLWLieYmfvgq5reduQmD1J/Cbqzdqt5/Sdr0
- XXnjUrMbX7taB1bEYZda5KngMrObaPifJ5ki1I35WLt2JIbsiXr87guyXXqsKW+5zx9KG3ai/+r
- Rpv9rJX97zXBqY70=
-X-Received: by 2002:a5d:568e:0:b0:321:5d9f:2d9f with SMTP id
- f14-20020a5d568e000000b003215d9f2d9fmr12266995wrv.47.1696336222855; 
- Tue, 03 Oct 2023 05:30:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7VYWQgav4KGmmSpta4ugo1pmkwasqeRhLubn3TrUOtiUjLB8Bte8MtwBPznVE/x09yV8XGg==
-X-Received: by 2002:a5d:568e:0:b0:321:5d9f:2d9f with SMTP id
- f14-20020a5d568e000000b003215d9f2d9fmr12266970wrv.47.1696336222515; 
- Tue, 03 Oct 2023 05:30:22 -0700 (PDT)
-Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
- j10-20020a5d464a000000b00317a04131c5sm1491079wrs.57.2023.10.03.05.30.20
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 05:30:21 -0700 (PDT)
-Date: Tue, 3 Oct 2023 08:30:18 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Ani Sinha <anisinha@redhat.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ d=1e100.net; s=20230601; t=1696336229; x=1696941029;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=g7j+ZKjZU7k+0CzG1aKzjQAk8hMMCzbHPgv7YGTA/m4=;
+ b=vwpIU2ZRoHzMZqeZBkafh1QqWR5MKAM7FBZI/GKRIX/QymIK5dTQm5cifD6Wd5Z6zo
+ hThbGyBkV2Cs9vP0onuvw2crz5VFWTCMqH5iaI3yidFeL7fakZfwmtbEKTzG0jfpnxZI
+ fBsef2XuBeVFU5Ct6WWjEyned6629BFd1m8dG/V4YL4XmwmPwWVi7ThCIA/uO5JVo/5p
+ 8/RtgK8/uXbod1TEhtQ9j96oT/SvpOLvAVFLmCGFM7c1iQd1txS65KXFvH4QsCkr6PEJ
+ HbGCx+9JnRyCoqO0DH6tGEl/2c272WFy98nrWT3Lg+lBbLq0QGXWzu+MBjiTQgx8tVDJ
+ abRA==
+X-Gm-Message-State: AOJu0YxS+UdreI/eb+E/F6kAXHN5Wjvy0YltzriW0nYxlINpaG8nrKK2
+ jTC7dwYbgA/xZpiLFT9I6qI7/CACxebuFPlxxcw8HA==
+X-Google-Smtp-Source: AGHT+IFBxMV4/1nchJeQ/YxQdQE65HU0cTcfcAYgMnGyWOki7FRja2chgmqsuZvdG1rMjy8dNfke8g==
+X-Received: by 2002:adf:f3cd:0:b0:31f:fc9a:a03 with SMTP id
+ g13-20020adff3cd000000b0031ffc9a0a03mr2082106wrp.20.1696336229468; 
+ Tue, 03 Oct 2023 05:30:29 -0700 (PDT)
+Received: from m1x-phil.lan (176-131-222-246.abo.bbox.fr. [176.131.222.246])
+ by smtp.gmail.com with ESMTPSA id
+ n26-20020a1c721a000000b004063c9f68f2sm1186897wmc.26.2023.10.03.05.30.27
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Tue, 03 Oct 2023 05:30:29 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Eduardo Habkost <eduardo@habkost.net>, Yanan Wang <wangyanan55@huawei.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Claudio Fontana <cfontana@suse.de>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- Daniel P =?iso-8859-1?Q?=2E_Berrang=E9?= <berrange@redhat.com>,
- Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Subject: Re: [PATCH v3] hw/i386: changes towards enabling -Wshadow=local for
- x86 machines
-Message-ID: <20231003083010-mutt-send-email-mst@kernel.org>
-References: <20231003102803.6163-1-anisinha@redhat.com>
+ Marcelo Tosatti <mtosatti@redhat.com>,
+ Roman Bolshakov <rbolshakov@ddn.com>, Fabiano Rosas <farosas@suse.de>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Cameron Esfahani <dirty@apple.com>
+Subject: [PATCH v2 0/7] accel: Restrict tcg_exec_[un]realizefn() to TCG
+Date: Tue,  3 Oct 2023 14:30:18 +0200
+Message-ID: <20231003123026.99229-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231003102803.6163-1-anisinha@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,84 +96,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 03, 2023 at 03:58:02PM +0530, Ani Sinha wrote:
-> Code changes that addresses all compiler complaints coming from enabling
-> -Wshadow flags. Enabling -Wshadow catches cases of local variables shadowing
-> other local variables or parameters. These makes the code confusing and/or adds
-> bugs that are difficult to catch.
-> 
-> See also
-> 
->    Subject: Help wanted for enabling -Wshadow=local
->    Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
->    https://lore.kernel.org/qemu-devel/87r0mqlf9x.fsf@pond.sub.org
-> 
-> CC: Markus Armbruster <armbru@redhat.com>
-> CC: Philippe Mathieu-Daude <philmd@linaro.org>
-> CC: mst@redhat.com
-> 
-> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-> Reviewed-by: Peter Xu <peterx@redhat.com>
+Since v1:
+- Use 'target'/'common' in function names (Claudio)
+- Added Claudio R-b tags
 
+From v1:
+- Add missing accel_cpu_common_unrealize()
+- Add AccelClass::cpu_common_[un]realize handlers
+- Use tcg_exec_[un]realizefn as AccelClass handlers
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Philippe Mathieu-DaudÃ© (7):
+  accel: Rename accel_cpu_realizefn() ->  accel_cpu_realize()
+  accel: Rename AccelCPUClass::cpu_realizefn() -> cpu_target_realize()
+  accel: Rename accel_cpu_realize() -> accel_cpu_common_realize()
+  accel: Introduce accel_cpu_common_unrealize() stub
+  accel: Declare AccelClass::cpu_common_[un]realize() handlers
+  accel/tcg: Have tcg_exec_realizefn() return a boolean
+  accel/tcg: Restrict tcg_exec_[un]realizefn() to TCG
 
-> ---
->  hw/i386/acpi-microvm.c | 4 ++--
->  hw/i386/pc.c           | 1 -
->  hw/i386/x86.c          | 2 --
->  3 files changed, 2 insertions(+), 5 deletions(-)
-> 
-> changelog:
-> v3: split the patches. Peter's changes are now in a seperate patch.
-> Addressed mst's suggestions. Removed message-ID
-> from commit log and added the reference to previous discussion thread
-> explicitly.
-> v2: kept Peter's changes from https://lore.kernel.org/r/20230922160410.138786-1-peterx@redhat.com
-> and removed mine.
-> 
-> diff --git a/hw/i386/acpi-microvm.c b/hw/i386/acpi-microvm.c
-> index a075360d85..6ddcfb0419 100644
-> --- a/hw/i386/acpi-microvm.c
-> +++ b/hw/i386/acpi-microvm.c
-> @@ -55,8 +55,8 @@ static void acpi_dsdt_add_virtio(Aml *scope,
->  
->      bus = sysbus_get_default();
->      QTAILQ_FOREACH(kid, &bus->children, sibling) {
-> -        DeviceState *dev = kid->child;
-> -        Object *obj = object_dynamic_cast(OBJECT(dev), TYPE_VIRTIO_MMIO);
-> +        Object *obj = object_dynamic_cast(OBJECT(kid->child),
-> +                                          TYPE_VIRTIO_MMIO);
->  
->          if (obj) {
->              VirtIOMMIOProxy *mmio = VIRTIO_MMIO(obj);
-> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> index 3db0743f31..e7a233e886 100644
-> --- a/hw/i386/pc.c
-> +++ b/hw/i386/pc.c
-> @@ -1116,7 +1116,6 @@ void pc_memory_init(PCMachineState *pcms,
->  
->      if (machine->device_memory) {
->          uint64_t *val = g_malloc(sizeof(*val));
-> -        PCMachineClass *pcmc = PC_MACHINE_GET_CLASS(pcms);
->          uint64_t res_mem_end = machine->device_memory->base;
->  
->          if (!pcmc->broken_reserved_end) {
-> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> index f034df8bf6..b3d054889b 100644
-> --- a/hw/i386/x86.c
-> +++ b/hw/i386/x86.c
-> @@ -365,8 +365,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_dev,
->  
->      cpu_slot = x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &idx);
->      if (!cpu_slot) {
-> -        MachineState *ms = MACHINE(x86ms);
-> -
->          x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids);
->          error_setg(errp,
->              "Invalid CPU [socket: %u, die: %u, core: %u, thread: %u] with"
-> -- 
-> 2.42.0
+ accel/tcg/internal.h        |  3 +++
+ include/exec/cpu-all.h      |  2 --
+ include/hw/core/accel-cpu.h |  2 +-
+ include/qemu/accel.h        | 12 ++++++++++--
+ accel/accel-common.c        | 27 ++++++++++++++++++++++++---
+ accel/tcg/cpu-exec.c        |  4 +++-
+ accel/tcg/tcg-all.c         |  2 ++
+ cpu.c                       | 13 +++----------
+ target/i386/hvf/hvf-cpu.c   |  2 +-
+ target/i386/kvm/kvm-cpu.c   |  4 ++--
+ target/i386/tcg/tcg-cpu.c   |  2 +-
+ 11 files changed, 50 insertions(+), 23 deletions(-)
+
+-- 
+2.41.0
 
 
