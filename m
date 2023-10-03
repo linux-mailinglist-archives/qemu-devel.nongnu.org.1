@@ -2,79 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246907B70E6
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:32:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E117B70E4
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 20:32:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnkAv-000870-Dn; Tue, 03 Oct 2023 14:31:17 -0400
+	id 1qnkB0-00087g-Hc; Tue, 03 Oct 2023 14:31:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAs-000851-VB
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:14 -0400
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+ id 1qnkAt-000869-QV
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:15 -0400
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnkAr-0001gl-4k
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:14 -0400
-Received: by mail-pl1-x62c.google.com with SMTP id
- d9443c01a7336-1c5ff5f858dso9834145ad.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:12 -0700 (PDT)
+ id 1qnkAr-0001gz-U5
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 14:31:15 -0400
+Received: by mail-pf1-x42f.google.com with SMTP id
+ d2e1a72fcca58-69101022969so969511b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 11:31:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696357871; x=1696962671; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696357872; x=1696962672; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=A7XCl0qp/obfnCpndkgxp3n8szX7HRfUMiRlfSbBwN0=;
- b=IZC+cuCPV9xju/wVWSzvrRQbflt5yNBkSfW2yuHVeznB2G+/NQX0AIi//0tDLdxK5R
- g0LIdWG2o9tPoqYezIVbaLJRP9WeLFTA3/DnerNSY1dHfRhHCnToI9grWm+JUIxe2YKo
- YFuQJMFE+X1wB2DOMgtrd0DhOeDBXjjm4I4HLGggUVQ0VI2AyscUhvzojjmQCdi0Jl4W
- 5+UqolGtf6t6EFu5dNqLWKE0MTsD80wEQ25AKPu8lVmZ3pv3UJqsc7+3ApR7hnC8Ri1h
- vE93K2Gk2Oh0Lh84EVS916TBomLLXK7xsCeTNPBNftcIQ4jLUa7y5ddMNFSOnz4RH0xR
- w8uw==
+ bh=Nl5bSvinzi/NL70KSvl04+OPB0c89FFjcDMoM7uppFI=;
+ b=cVRaEPyKFETaGwy0DuTVM5w8uJ3gM7ixFypp2IufexG9vM8+TRyvzUrzeIZrgysRR8
+ wTwn3ThrGQwJJBui95yIPNF8RY2aMWL2j4JA43osYTTiVXBxovK/LvWvvsh+Xz0zRwaH
+ YHXx6O6p0PDzFKtgBMG9IN0dakNzG9J8FR5PTCaJXDHwx5ZYr+FmJx7edd/ir95RMcNg
+ Fo2gKy0lu2rFDSlvhJi7nZvGtr/0NRTJNjtPXFu3PVpd9++oR0B+cx2IUna1tx98AFCC
+ KNiaViB1vMTgNWh8zXoDdDFCqduq1jDerLXQmuShFNPsvIV3Eqai5vUAKnmsHCaWlALU
+ ZRaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696357871; x=1696962671;
+ d=1e100.net; s=20230601; t=1696357872; x=1696962672;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=A7XCl0qp/obfnCpndkgxp3n8szX7HRfUMiRlfSbBwN0=;
- b=aeh4jXH1jZQKH+2NMaU3TXhkTJ5hVVopM+5i69iXh181Tls1K13iprerPw308qQomD
- 5VJaUpDtd/36x6ZaQJy68ikRJJOJg2A3OKNtuPUSK66ehlhT3EyDu2FXZKeHIne+OwXQ
- DlxpaC+xLS3sFHlCO3VmEEDhdDqV0s3eoGVAeE8CEBe/MG+HSuR+LrHZU+5YuwsFLspi
- aAVPSYdM7BqhYXR0Mr2xe8O1nemk0P5G+crm6AXlqNTmd4TEHVJxjHZxSZINuYE6166X
- QrxEl9BiLeTSsxQGEclco9vJ5vlyAYfsNcFgYSwaLtox7m6BC6s1nYJ7VxqN4v8G6Bjj
- PRZg==
-X-Gm-Message-State: AOJu0YyU8lgFGNTrSwn5SGDgWba4cQ3SJpZXcV6czxk/UlvkQBysmqse
- iU+AlJS34gtn/6YLNsmIoQbyAc7jVCTsGNdmej8=
-X-Google-Smtp-Source: AGHT+IEocV43eVlzO9zg938TVFDfWHeph4NLOdOAceVTaoON+DRKh+D9gw3anJiEtFMZo3pxO4DPhA==
-X-Received: by 2002:a17:903:187:b0:1c3:749f:6a5d with SMTP id
- z7-20020a170903018700b001c3749f6a5dmr430295plg.4.1696357871395; 
- Tue, 03 Oct 2023 11:31:11 -0700 (PDT)
+ bh=Nl5bSvinzi/NL70KSvl04+OPB0c89FFjcDMoM7uppFI=;
+ b=UwEZ716qeqdrJvAeo8MQ/G7I+K7xLnOSbnVSJwpOiVNK0suBue/AtSXcAith6jVxjG
+ 2zh0QuvrP3jRGmpReW4iiKrZp9fiLMqkUH7OvsMo3+bFKoyM+slkJQpTNld7h/sTmQYO
+ 5ncKPITIsSZajSo7erXYEx5XAiHtiOW+28z2JCyXOqtyTZ0fALQovwEsUK6+9O2jmWER
+ n4BL/N2LmYrAp4x9RKWSKG1xmiCEy9e5fN/jLplEWMxzCr92fKvS0NoAnFx5lh4yGcuh
+ pCzsemNCU0cauGIE56JU8IpSMxNPDrVEJMq7pC6MWcUjpaYmq6BWPsoL985EULVmEiO9
+ 7l6A==
+X-Gm-Message-State: AOJu0Yxyc5l33ELeFo2CZDVs73kp/pXwfFbwOS7iDN5e4bXhjmSEQYvO
+ rLxJOXqBrSj61BUFn16rHEBoVTcWCYpA2DtSIBg=
+X-Google-Smtp-Source: AGHT+IGbp2asf3fUD2DO9MzAGzg/CErlqY5pDehfC2y3eI1IsFduUFDLcztIbtYkSGShEnec01G/gA==
+X-Received: by 2002:a05:6a21:328a:b0:14d:7b6:cf2f with SMTP id
+ yt10-20020a056a21328a00b0014d07b6cf2fmr263862pzb.47.1696357872372; 
+ Tue, 03 Oct 2023 11:31:12 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.10
+ g7-20020a170902934700b001b7cbc5871csm1920432plp.53.2023.10.03.11.31.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 11:31:10 -0700 (PDT)
+ Tue, 03 Oct 2023 11:31:11 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: fei2.wu@intel.com
-Subject: [PATCH v17 12/16] softmmu: Export qemu_ram_ptr_length
-Date: Tue,  3 Oct 2023 11:30:54 -0700
-Message-Id: <20231003183058.1639121-13-richard.henderson@linaro.org>
+Cc: fei2.wu@intel.com, "Vanderson M. do Rosario" <vandersonmr2@gmail.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v17 13/16] disas: Allow monitor_disas to read from ram_addr_t
+Date: Tue,  3 Oct 2023 11:30:55 -0700
+Message-Id: <20231003183058.1639121-14-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003183058.1639121-1-richard.henderson@linaro.org>
 References: <20231003183058.1639121-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62c;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62c.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42f;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x42f.google.com
+X-Spam_score_int: 0
+X-Spam_score: -0.1
+X-Spam_bar: /
+X-Spam_report: (-0.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ PDS_OTHER_BAD_TLD=1.998, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,40 +92,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+From: "Vanderson M. do Rosario" <vandersonmr2@gmail.com>
+
+Introduce a MonitorDisasSpace to replace the current is_physical
+boolean argument to monitor_disas.  Generate an error if we attempt
+to read past the end of a single RAMBlock.
+
+Signed-off-by: Vanderson M. do Rosario <vandersonmr2@gmail.com>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Fei Wu <fei2.wu@intel.com>
+[rth: Split out of a larger patch; validate the RAMBlock size]
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- include/exec/memory.h | 2 ++
- softmmu/physmem.c     | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ include/disas/disas.h     |  8 +++++++-
+ disas/disas-mon.c         | 32 ++++++++++++++++++++++++++++++--
+ monitor/hmp-cmds-target.c | 27 ++++++++++++++++-----------
+ 3 files changed, 53 insertions(+), 14 deletions(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index ef23d65afc..ebdecf64a6 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -2874,6 +2874,8 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
-                                    hwaddr len, hwaddr addr1, hwaddr l,
-                                    MemoryRegion *mr);
- void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr);
-+void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-+                          hwaddr *size, bool lock);
+diff --git a/include/disas/disas.h b/include/disas/disas.h
+index 176775eff7..cd99b0ccd0 100644
+--- a/include/disas/disas.h
++++ b/include/disas/disas.h
+@@ -5,8 +5,14 @@
+ void disas(FILE *out, const void *code, size_t size);
+ void target_disas(FILE *out, CPUState *cpu, uint64_t code, size_t size);
  
- /* Internal functions, part of the implementation of address_space_read_cached
-  * and address_space_write_cached.  */
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 309653c722..69a853c27a 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -2182,8 +2182,8 @@ void *qemu_map_ram_ptr(RAMBlock *ram_block, ram_addr_t addr)
-  *
-  * Called within RCU critical section.
-  */
--static void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
--                                 hwaddr *size, bool lock)
-+void *qemu_ram_ptr_length(RAMBlock *ram_block, ram_addr_t addr,
-+                          hwaddr *size, bool lock)
++typedef enum {
++    MON_DISAS_GVA, /* virtual */
++    MON_DISAS_GPA, /* physical */
++    MON_DISAS_GRA, /* ram_addr_t */
++} MonitorDisasSpace;
++
+ void monitor_disas(Monitor *mon, CPUState *cpu, uint64_t pc,
+-                   int nb_insn, bool is_physical);
++                   int nb_insn, MonitorDisasSpace space);
+ 
+ char *plugin_disas(CPUState *cpu, uint64_t addr, size_t size);
+ 
+diff --git a/disas/disas-mon.c b/disas/disas-mon.c
+index 48ac492c6c..d486f64c92 100644
+--- a/disas/disas-mon.c
++++ b/disas/disas-mon.c
+@@ -23,9 +23,27 @@ physical_read_memory(bfd_vma memaddr, bfd_byte *myaddr, int length,
+     return res == MEMTX_OK ? 0 : EIO;
+ }
+ 
++static int
++ram_addr_read_memory(bfd_vma memaddr, bfd_byte *myaddr, int length,
++                     struct disassemble_info *info)
++{
++    hwaddr hw_length;
++    void *p;
++
++    RCU_READ_LOCK_GUARD();
++
++    hw_length = length;
++    p = qemu_ram_ptr_length(NULL, memaddr, &hw_length, false);
++    if (hw_length < length) {
++        return EIO;
++    }
++    memcpy(myaddr, p, length);
++    return 0;
++}
++
+ /* Disassembler for the monitor.  */
+ void monitor_disas(Monitor *mon, CPUState *cpu, uint64_t pc,
+-                   int nb_insn, bool is_physical)
++                   int nb_insn, MonitorDisasSpace space)
  {
-     RAMBlock *block = ram_block;
-     if (*size == 0) {
+     int count, i;
+     CPUDebug s;
+@@ -35,8 +53,18 @@ void monitor_disas(Monitor *mon, CPUState *cpu, uint64_t pc,
+     s.info.fprintf_func = disas_gstring_printf;
+     s.info.stream = (FILE *)ds;  /* abuse this slot */
+ 
+-    if (is_physical) {
++    switch (space) {
++    case MON_DISAS_GVA:
++        /* target_read_memory set in disas_initialize_debug_target */
++        break;
++    case MON_DISAS_GPA:
+         s.info.read_memory_func = physical_read_memory;
++        break;
++    case MON_DISAS_GRA:
++        s.info.read_memory_func = ram_addr_read_memory;
++        break;
++    default:
++        g_assert_not_reached();
+     }
+     s.info.buffer_vma = pc;
+ 
+diff --git a/monitor/hmp-cmds-target.c b/monitor/hmp-cmds-target.c
+index d9fbcac08d..476cf68e81 100644
+--- a/monitor/hmp-cmds-target.c
++++ b/monitor/hmp-cmds-target.c
+@@ -120,21 +120,20 @@ void hmp_info_registers(Monitor *mon, const QDict *qdict)
+ }
+ 
+ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+-                        hwaddr addr, int is_physical)
++                        hwaddr addr, MonitorDisasSpace space)
+ {
+     int l, line_size, i, max_digits, len;
+     uint8_t buf[16];
+     uint64_t v;
+     CPUState *cs = mon_get_cpu(mon);
+ 
+-    if (!cs && (format == 'i' || !is_physical)) {
++    if (space == MON_DISAS_GVA || format == 'i') {
+         monitor_printf(mon, "Can not dump without CPU\n");
+         return;
+     }
+ 
+     if (format == 'i') {
+-        monitor_disas(mon, cs, addr, count, is_physical);
+-        return;
++        monitor_disas(mon, cs, addr, count, space);
+     }
+ 
+     len = wsize * count;
+@@ -163,15 +162,21 @@ static void memory_dump(Monitor *mon, int count, int format, int wsize,
+     }
+ 
+     while (len > 0) {
+-        if (is_physical) {
+-            monitor_printf(mon, HWADDR_FMT_plx ":", addr);
+-        } else {
++        switch (space) {
++        case MON_DISAS_GVA:
+             monitor_printf(mon, TARGET_FMT_lx ":", (target_ulong)addr);
++            break;
++        case MON_DISAS_GPA:
++            monitor_printf(mon, HWADDR_FMT_plx ":", addr);
++            break;
++        default:
++            g_assert_not_reached();
+         }
+         l = len;
+-        if (l > line_size)
++        if (l > line_size) {
+             l = line_size;
+-        if (is_physical) {
++        }
++        if (space == MON_DISAS_GPA) {
+             AddressSpace *as = cs ? cs->as : &address_space_memory;
+             MemTxResult r = address_space_read(as, addr,
+                                                MEMTXATTRS_UNSPECIFIED, buf, l);
+@@ -235,7 +240,7 @@ void hmp_memory_dump(Monitor *mon, const QDict *qdict)
+     int size = qdict_get_int(qdict, "size");
+     target_long addr = qdict_get_int(qdict, "addr");
+ 
+-    memory_dump(mon, count, format, size, addr, 0);
++    memory_dump(mon, count, format, size, addr, MON_DISAS_GVA);
+ }
+ 
+ void hmp_physical_memory_dump(Monitor *mon, const QDict *qdict)
+@@ -245,7 +250,7 @@ void hmp_physical_memory_dump(Monitor *mon, const QDict *qdict)
+     int size = qdict_get_int(qdict, "size");
+     hwaddr addr = qdict_get_int(qdict, "addr");
+ 
+-    memory_dump(mon, count, format, size, addr, 1);
++    memory_dump(mon, count, format, size, addr, MON_DISAS_GPA);
+ }
+ 
+ void *gpa2hva(MemoryRegion **p_mr, hwaddr addr, uint64_t size, Error **errp)
 -- 
 2.34.1
 
