@@ -2,97 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B3A7B6A12
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:17:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0B87B6A5F
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:22:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnfGb-0007sP-Gi; Tue, 03 Oct 2023 09:16:49 -0400
+	id 1qnfLA-0001M8-7l; Tue, 03 Oct 2023 09:21:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qnfGZ-0007qh-Aw
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:16:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnfL7-0001Lv-2I
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:21:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qnfGX-0001US-Ik
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:16:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnfL4-0002ao-GR
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:21:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696339004;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1696339284;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=+bWcOMINY2DyosxwYYRHJoRwaNiugsZstLCOluNwiJk=;
- b=UGKJm/QTz3MVjCpM5KZGOGCGczN7pC1gBOt8aAGz5RUaS7wSiE32PuOctkDoobtOGEACoj
- Ao03eTsCuZwzO7zOlEbueyqeHAe0V5TSH1d8bQTXmm0LuXV3cUX738aDxW17+GscwNxW2L
- 2OMnsUzv+I1SgU67nPsPjYi807575L4=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=DsSmi/Zt5uME6pvWTbk/N7D0/KT5w+J1b0pUC4h/oVU=;
+ b=gw7a3T6zIuZHm/9w6u7iamMJpVWnl/HVF1544sokAeUUxusf/q8hyoInLcnVxQmPJVhMiz
+ EO9uGS7NKoplqOJnZzmPsLE950uRDP/EMWMe2eWLAHHqWpheQByTPoonuyVKMQbthOJ13s
+ 7nEBqpsDm6Ub/CClPa8jrGh35OQMqlY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-GoWH7R38N4msLuJ6xjZ3vg-1; Tue, 03 Oct 2023 09:16:43 -0400
-X-MC-Unique: GoWH7R38N4msLuJ6xjZ3vg-1
-Received: by mail-oo1-f70.google.com with SMTP id
- 006d021491bc7-57badc96ba6so1154967eaf.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:16:43 -0700 (PDT)
+ us-mta-108-hP7LhwzDM0SW9sD97F9DAw-1; Tue, 03 Oct 2023 09:21:17 -0400
+X-MC-Unique: hP7LhwzDM0SW9sD97F9DAw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-405535740d2so6921685e9.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:21:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696339002; x=1696943802;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=+bWcOMINY2DyosxwYYRHJoRwaNiugsZstLCOluNwiJk=;
- b=CvlNxmAxaV51BCQCydMT87sr6rt04FWNPzXjwgG3FQuzAhWmVgPqQXcKNu2nMrjD4Q
- qQQCE/IV+bVpCGpoZZgYB60F0l+82ICNu/LCRWo1hv54Por1OXHjuQFJSFDOGTOFN9bC
- M7pHmHwUIldumFhZmzCnI83HJp4qCHX60rm4fBBEP+2ENDgFeKnefz9jVGP22JltFMPy
- AhWCMnriBXbBD/Ph/74plU8zBlbjavh08Zq8km1FGsH1gPtvtmxUUZtFm8Cqz58eKAOT
- 6lENwpZ+p5KE6JSKeqNzWhQqc9DGy6dCyGORqeNpnxM4MV94F4y68gR7tCabyYx6ilbh
- oM6w==
-X-Gm-Message-State: AOJu0Yz4j8I/1WY6SwQdLkwenmrZE7/cNQR331KTM+d0fnnQNS1XWo4x
- WrItaMkpjGS78xA0c3XO5VHBS2UWWMLvZKAS5Bqg2cz40AX8l8vOiVRmP+FFkQeiml/txmFpGbz
- /Qy1Ldq/waxCa0v0=
-X-Received: by 2002:a05:6358:e49c:b0:143:9bc0:a975 with SMTP id
- by28-20020a056358e49c00b001439bc0a975mr16398721rwb.7.1696339002416; 
- Tue, 03 Oct 2023 06:16:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEUZN5qeZf5MehIW7JBWH/P0B49kzsNdH4foPXxjKufuJHWjVUePR5aAkS1wZy7FZg56+BoWA==
-X-Received: by 2002:a05:6358:e49c:b0:143:9bc0:a975 with SMTP id
- by28-20020a056358e49c00b001439bc0a975mr16398700rwb.7.1696339002102; 
- Tue, 03 Oct 2023 06:16:42 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- ka23-20020a05622a441700b0040ff6194ef3sm429544qtb.70.2023.10.03.06.16.40
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 06:16:41 -0700 (PDT)
-Message-ID: <250c14cc-6eba-3ad2-9247-b71316d6ad50@redhat.com>
-Date: Tue, 3 Oct 2023 15:16:38 +0200
+ d=1e100.net; s=20230601; t=1696339277; x=1696944077;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=DsSmi/Zt5uME6pvWTbk/N7D0/KT5w+J1b0pUC4h/oVU=;
+ b=bkrA+d4I8yDAdPlmiV7lsjGWLtVr+bB+z5kp8J+N6QLPErU4CT+wAGRrAIxbCerZ23
+ AFUvRt4yhVc8AMYp5PsO+N/fd106f3KivfWB9RX6jQIYcfq5iIGI/K5e576Dtc9+dLsn
+ dF68heXghoOFqPw5M9J+C3XwAFPXng/xB6wFCnLfqHTYzoJLmdTOjtWWynqbGAoD/I3s
+ EOHJ2Rxklg02Sdud5cqz6Pi11tm3nsTRvuEi7uQgRISzw/Sns13nrwAiuBNIsw5YEXiL
+ Ux58SMLJr/egVvZFuffaMfd+Mz7ibGPG8JgW5QgQUAN2MCCY1mE16XFqnjNXdrVswfrj
+ aFQQ==
+X-Gm-Message-State: AOJu0YzHtT8GAY+yXEXG0mp2D+4fMWLQ5MqSS69uD4JcVYffXKURXvn0
+ tFLndhR+w5lvsFVi+SluoLkopHz91fMCJHfrrT5fzf2IeJ414R2ikd76tBOaOw/jV+O+QHmyN9b
+ MDc4hyEDfkiDGp3c=
+X-Received: by 2002:a5d:568e:0:b0:321:5d9f:2d9f with SMTP id
+ f14-20020a5d568e000000b003215d9f2d9fmr12401784wrv.47.1696339276724; 
+ Tue, 03 Oct 2023 06:21:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF8jHDDQmTthN89Peo1PU8EJm/OLgNDz81/4SvjYgSZiWjXE3UuxBzNPv1BWoXgEuGYxf3wJg==
+X-Received: by 2002:a5d:568e:0:b0:321:5d9f:2d9f with SMTP id
+ f14-20020a5d568e000000b003215d9f2d9fmr12401757wrv.47.1696339276284; 
+ Tue, 03 Oct 2023 06:21:16 -0700 (PDT)
+Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
+ j17-20020a5d5651000000b0031f82743e25sm1569843wrw.67.2023.10.03.06.20.52
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 06:21:15 -0700 (PDT)
+Date: Tue, 3 Oct 2023 09:20:27 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jiqian Chen <Jiqian.Chen@amd.com>
+Cc: Gerd Hoffmann <kraxel@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, David Airlie <airlied@redhat.com>,
+ Gurchetan Singh <gurchetansingh@chromium.org>,
+ Chia-I Wu <olvaffe@gmail.com>,
+ =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@gmail.com>,
+ Robert Beckett <bob.beckett@collabora.com>,
+ virtualization@lists.linux-foundation.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ qemu-devel@nongnu.org,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Juergen Gross <jgross@suse.com>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+ Alex Deucher <Alexander.Deucher@amd.com>,
+ Christian Koenig <Christian.Koenig@amd.com>,
+ Stewart Hildebrand <Stewart.Hildebrand@amd.com>,
+ Xenia Ragiadakou <burzalodowa@gmail.com>,
+ Honglei Huang <Honglei1.Huang@amd.com>,
+ Julia Zhang <Julia.Zhang@amd.com>, Huang Rui <Ray.Huang@amd.com>
+Subject: Re: [LINUX KERNEL PATCH v5 1/2] virtio_pci: Add freeze_mode for
+ virtio_pci_common_cfg
+Message-ID: <20231003091644-mutt-send-email-mst@kernel.org>
+References: <20230919104607.2282248-1-Jiqian.Chen@amd.com>
+ <20230919104607.2282248-2-Jiqian.Chen@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] vhost: Add a defensive check in vhost_commit against
- wrong deallocation
-Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: eric.auger.pro@gmail.com, qemu-devel@nongnu.org, jasowang@redhat.com,
- lvivier@redhat.com
-References: <20230913074657.523530-1-eric.auger@redhat.com>
- <20231003084047-mutt-send-email-mst@kernel.org>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <20231003084047-mutt-send-email-mst@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230919104607.2282248-2-Jiqian.Chen@amd.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,68 +112,224 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+On Tue, Sep 19, 2023 at 06:46:06PM +0800, Jiqian Chen wrote:
+> When guest vm does S3, Qemu will reset and clear some things of virtio
+> devices, but guest can't aware that, so that may cause some problems.
+> For excample, Qemu calls virtio_reset->virtio_gpu_gl_reset, that will
+> destroy render resources of virtio-gpu. As a result, after guest resume,
+> the display can't come back and we only saw a black screen. Due to guest
+> can't re-create all the resources, so we need to let Qemu not to destroy
+> them when S3.
+> 
+> For above purpose, this patch add a new parameter named freeze_mode to
+> struct virtio_pci_common_cfg, and when guest suspends, it can set
+> freeze_mode to be FREEZE_S3, so that virtio devices can change their
+> reset behavior on Qemu side according to that mode.
+> 
+> Signed-off-by: Jiqian Chen <Jiqian.Chen@amd.com>
+> ---
+>  drivers/virtio/virtio.c                | 13 +++++++++++++
+>  drivers/virtio/virtio_pci_modern.c     |  9 +++++++++
+>  drivers/virtio/virtio_pci_modern_dev.c | 16 ++++++++++++++++
+>  include/linux/virtio_config.h          |  1 +
+>  include/linux/virtio_pci_modern.h      |  2 ++
+>  include/uapi/linux/virtio_pci.h        | 16 ++++++++++++++--
+>  6 files changed, 55 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+> index 3893dc29eb26..b4eb8369d5a1 100644
+> --- a/drivers/virtio/virtio.c
+> +++ b/drivers/virtio/virtio.c
+> @@ -7,6 +7,7 @@
+>  #include <linux/idr.h>
+>  #include <linux/of.h>
+>  #include <uapi/linux/virtio_ids.h>
+> +#include <uapi/linux/virtio_pci.h>
+>  
+>  /* Unique numbering for virtio devices. */
+>  static DEFINE_IDA(virtio_index_ida);
+> @@ -486,10 +487,20 @@ void unregister_virtio_device(struct virtio_device *dev)
+>  EXPORT_SYMBOL_GPL(unregister_virtio_device);
+>  
+>  #ifdef CONFIG_PM_SLEEP
+> +static void virtio_set_freeze_mode(struct virtio_device *dev, u16 mode)
+> +{
+> +	if (!dev->config->set_freeze_mode)
+> +		return;
+> +	might_sleep();
+> +	dev->config->set_freeze_mode(dev, mode);
+> +}
+> +
+>  int virtio_device_freeze(struct virtio_device *dev)
+>  {
+>  	struct virtio_driver *drv = drv_to_virtio(dev->dev.driver);
+>  
+> +	virtio_set_freeze_mode(dev, VIRTIO_PCI_FREEZE_MODE_FREEZE_S3);
+> +
+>  	virtio_config_disable(dev);
+>  
+>  	dev->failed = dev->config->get_status(dev) & VIRTIO_CONFIG_S_FAILED;
+> @@ -544,6 +555,8 @@ int virtio_device_restore(struct virtio_device *dev)
+>  
+>  	virtio_config_enable(dev);
+>  
+> +	virtio_set_freeze_mode(dev, VIRTIO_PCI_FREEZE_MODE_UNFREEZE);
+> +
+>  	return 0;
+>  
+>  err:
+> diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+> index d6bb68ba84e5..846b70919cbd 100644
+> --- a/drivers/virtio/virtio_pci_modern.c
+> +++ b/drivers/virtio/virtio_pci_modern.c
+> @@ -491,6 +491,13 @@ static bool vp_get_shm_region(struct virtio_device *vdev,
+>  	return true;
+>  }
+>  
+> +static void vp_set_freeze_mode(struct virtio_device *vdev, u16 mode)
+> +{
+> +	struct virtio_pci_device *vp_dev = to_vp_device(vdev);
+> +
+> +	vp_modern_set_freeze_mode(&vp_dev->mdev, mode);
+> +}
+> +
+>  static const struct virtio_config_ops virtio_pci_config_nodev_ops = {
+>  	.get		= NULL,
+>  	.set		= NULL,
+> @@ -509,6 +516,7 @@ static const struct virtio_config_ops virtio_pci_config_nodev_ops = {
+>  	.get_shm_region  = vp_get_shm_region,
+>  	.disable_vq_and_reset = vp_modern_disable_vq_and_reset,
+>  	.enable_vq_after_reset = vp_modern_enable_vq_after_reset,
+> +	.set_freeze_mode = vp_set_freeze_mode,
+>  };
+>  
+>  static const struct virtio_config_ops virtio_pci_config_ops = {
+> @@ -529,6 +537,7 @@ static const struct virtio_config_ops virtio_pci_config_ops = {
+>  	.get_shm_region  = vp_get_shm_region,
+>  	.disable_vq_and_reset = vp_modern_disable_vq_and_reset,
+>  	.enable_vq_after_reset = vp_modern_enable_vq_after_reset,
+> +	.set_freeze_mode = vp_set_freeze_mode,
+>  };
+>  
+>  /* the PCI probing function */
+> diff --git a/drivers/virtio/virtio_pci_modern_dev.c b/drivers/virtio/virtio_pci_modern_dev.c
+> index aad7d9296e77..4a6f7d130b6e 100644
+> --- a/drivers/virtio/virtio_pci_modern_dev.c
+> +++ b/drivers/virtio/virtio_pci_modern_dev.c
+> @@ -203,6 +203,8 @@ static inline void check_offsets(void)
+>  		     offsetof(struct virtio_pci_common_cfg, queue_used_lo));
+>  	BUILD_BUG_ON(VIRTIO_PCI_COMMON_Q_USEDHI !=
+>  		     offsetof(struct virtio_pci_common_cfg, queue_used_hi));
+> +	BUILD_BUG_ON(VIRTIO_PCI_COMMON_F_MODE !=
+> +		     offsetof(struct virtio_pci_common_cfg, freeze_mode));
+>  }
+>  
+>  /*
+> @@ -714,6 +716,20 @@ void __iomem *vp_modern_map_vq_notify(struct virtio_pci_modern_device *mdev,
+>  }
+>  EXPORT_SYMBOL_GPL(vp_modern_map_vq_notify);
+>  
+> +/*
+> + * vp_modern_set_freeze_mode - set freeze mode to device
+> + * @mdev: the modern virtio-pci device
+> + * @mode: the mode set to device
+> + */
+> +void vp_modern_set_freeze_mode(struct virtio_pci_modern_device *mdev,
+> +				 u16 mode)
+> +{
+> +	struct virtio_pci_common_cfg __iomem *cfg = mdev->common;
+> +
+> +	vp_iowrite16(mode, &cfg->freeze_mode);
+> +}
+> +EXPORT_SYMBOL_GPL(vp_modern_set_freeze_mode);
+> +
+>  MODULE_VERSION("0.1");
+>  MODULE_DESCRIPTION("Modern Virtio PCI Device");
+>  MODULE_AUTHOR("Jason Wang <jasowang@redhat.com>");
+> diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+> index 2b3438de2c4d..2a7443ff7f12 100644
+> --- a/include/linux/virtio_config.h
+> +++ b/include/linux/virtio_config.h
+> @@ -120,6 +120,7 @@ struct virtio_config_ops {
+>  			       struct virtio_shm_region *region, u8 id);
+>  	int (*disable_vq_and_reset)(struct virtqueue *vq);
+>  	int (*enable_vq_after_reset)(struct virtqueue *vq);
+> +	void (*set_freeze_mode)(struct virtio_device *vdev, u16 mode);
+>  };
+>  
+>  /* If driver didn't advertise the feature, it will never appear. */
+> diff --git a/include/linux/virtio_pci_modern.h b/include/linux/virtio_pci_modern.h
+> index 067ac1d789bc..ba6eed216ded 100644
+> --- a/include/linux/virtio_pci_modern.h
+> +++ b/include/linux/virtio_pci_modern.h
+> @@ -121,4 +121,6 @@ int vp_modern_probe(struct virtio_pci_modern_device *mdev);
+>  void vp_modern_remove(struct virtio_pci_modern_device *mdev);
+>  int vp_modern_get_queue_reset(struct virtio_pci_modern_device *mdev, u16 index);
+>  void vp_modern_set_queue_reset(struct virtio_pci_modern_device *mdev, u16 index);
+> +void vp_modern_set_freeze_mode(struct virtio_pci_modern_device *mdev,
+> +		   u16 mode);
+>  #endif
+> diff --git a/include/uapi/linux/virtio_pci.h b/include/uapi/linux/virtio_pci.h
+> index f703afc7ad31..725ace458a1b 100644
+> --- a/include/uapi/linux/virtio_pci.h
+> +++ b/include/uapi/linux/virtio_pci.h
+> @@ -140,6 +140,15 @@ struct virtio_pci_notify_cap {
+>  	__le32 notify_off_multiplier;	/* Multiplier for queue_notify_off. */
+>  };
+>  
+> +typedef enum {
+> +       VIRTIO_PCI_FREEZE_MODE_UNFREEZE = 0,
+> +       VIRTIO_PCI_FREEZE_MODE_FREEZE_S3 = 3,
+> +} virtio_pci_freeze_mode_t;
 
-On 10/3/23 14:43, Michael S. Tsirkin wrote:
-> On Wed, Sep 13, 2023 at 09:46:57AM +0200, Eric Auger wrote:
->> In vhost_commit(), it may happen that dev->mem_sections and
->> dev->tmp_sections are equal,
-> Could you please explain a bit more how this can happen?
-> I don't see how.
+we don't normally do typedefs.
+
+> +
+> +#define VIRTIO_PCI_FREEZE_MODE_MASK \
+> +	((1 << VIRTIO_PCI_FREEZE_MODE_UNFREEZE) | \
+> +	(1 << VIRTIO_PCI_FREEZE_MODE_FREEZE_S3))
+> +
+
+not sure why is this useful generally.
+
+>  /* Fields in VIRTIO_PCI_CAP_COMMON_CFG: */
+>  struct virtio_pci_common_cfg {
+>  	/* About the whole device. */
+> @@ -164,6 +173,8 @@ struct virtio_pci_common_cfg {
+>  	__le32 queue_avail_hi;		/* read-write */
+>  	__le32 queue_used_lo;		/* read-write */
+>  	__le32 queue_used_hi;		/* read-write */
+> +
+> +	__le16 freeze_mode;		/* read-write */
+>  };
 >
->> in which case, unconditionally
->> freeing old_sections at the end of the function will also free
->> dev->mem_sections used on subsequent call leading to a segmentation
->> fault.
->>
->> Check this situation before deallocating memory.
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> Fixes: c44317efecb2 ("vhost: Build temporary section list and deref
->> after commit")
->> CC: QEMU Stable <qemu-stable@nongnu.org>
->>
->> ---
->>
->> This SIGSEV condition can be reproduced with
->> https://lore.kernel.org/all/20230904080451.424731-1-eric.auger@redhat.com/#r
->> This is most probably happening in a situation where the memory API is
->> used in a wrong manner but well.
-> sounds like misusing the memory API can lead to all kind of mischief.
-This happened in a situation where I resized an [IOMMU] MR within the
-VFIO vfio_listener_region_add leading to recursive calls ot region_add
-callbacks.
-The issue is it was not straightforward to find the link with vhost.
 
-Thanks
+Your patch will likely break uses of sizeof(struct virtio_pci_common_cfg)
+on existing devices.
+  
+>  /* Fields in VIRTIO_PCI_CAP_PCI_CFG: */
+> @@ -202,8 +213,9 @@ struct virtio_pci_cfg_cap {
+>  #define VIRTIO_PCI_COMMON_Q_AVAILHI	44
+>  #define VIRTIO_PCI_COMMON_Q_USEDLO	48
+>  #define VIRTIO_PCI_COMMON_Q_USEDHI	52
+> -#define VIRTIO_PCI_COMMON_Q_NDATA	56
+> -#define VIRTIO_PCI_COMMON_Q_RESET	58
+> +#define VIRTIO_PCI_COMMON_F_MODE	56
 
-Eric
->
->> ---
->>  hw/virtio/vhost.c | 5 +++++
->>  1 file changed, 5 insertions(+)
->>
->> diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
->> index e2f6ffb446..c02c599ef0 100644
->> --- a/hw/virtio/vhost.c
->> +++ b/hw/virtio/vhost.c
->> @@ -545,6 +545,11 @@ static void vhost_commit(MemoryListener *listener)
->>      dev->mem_sections = dev->tmp_sections;
->>      dev->n_mem_sections = dev->n_tmp_sections;
->>  
->> +    if (old_sections == dev->mem_sections) {
->> +        assert(n_old_sections ==  dev->n_mem_sections);
->> +        return;
->> +    }
->> +
->>      if (dev->n_mem_sections != n_old_sections) {
->>          changed = true;
->>      } else {
->> -- 
->> 2.41.0
+
+F_ here stands for freeze? Please don't abbreviate.
+Q for queue is a pun that works, F for freeze doesn't.
+
+
+> +#define VIRTIO_PCI_COMMON_Q_NDATA	58
+> +#define VIRTIO_PCI_COMMON_Q_RESET	60
+>  
+>  #endif /* VIRTIO_PCI_NO_MODERN */
+>  
+> -- 
+> 2.34.1
 
 
