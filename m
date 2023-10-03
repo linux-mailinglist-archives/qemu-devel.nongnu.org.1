@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0997B7336
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 23:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FEB47B7348
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 23:25:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnmnX-0000UA-NT; Tue, 03 Oct 2023 17:19:19 -0400
+	id 1qnmsM-0001zt-0m; Tue, 03 Oct 2023 17:24:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnmnV-0000TD-AN
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:19:17 -0400
-Received: from mail-pj1-x1036.google.com ([2607:f8b0:4864:20::1036])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnmsK-0001zl-5w
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:24:16 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnmnT-0002zq-S9
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:19:17 -0400
-Received: by mail-pj1-x1036.google.com with SMTP id
- 98e67ed59e1d1-278f0f565e2so1027283a91.2
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 14:19:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnmsI-0003mb-2y
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 17:24:15 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-9ad8d47ef2fso254955766b.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 14:24:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696367954; x=1696972754; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uqxCT41hNwR5lc5LjBcEjFOED6bjk1Q4MnnczZx6+dM=;
- b=dTIED00QrrnaLjpTJkpVRiD+B1IIqpnR5u7xB6v32XDAVriinC2zkU/wDFAd3TcInu
- aqMudLNX2G+UCIV6ABMhCPio+/Sf+SZy02NVfbN1X4piBYgZY9iVZeXNLA9umJOMy0lg
- Yon9sYcyj7lJatWufL1aikxPZexbReUSov1jHvTREeLK9ws1clmrdOWzGp7O/jsGQKxc
- 2VsfNpXaFrYuzGCQfUI0nY8ikCwnp//X8vEeXfsLu2NVWwTGu2oA0oFwT8yip46nlK6O
- j6Mq7TQcNOyFCVyVc5qjsPuGZ2XCZoF8eNeLfqnzvXKo2JyXg6SYhDRD9ecO4wW9misT
- +Kng==
+ d=gmail.com; s=20230601; t=1696368252; x=1696973052; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=EkG7v68Trxt68Cu2pyY78mexBbfH0R0LWq30kAO0N3o=;
+ b=cSrEOpE4ETYV2Ddc1kfyn2XPxLWA2w2UYlpmaTgWPo+zT+mMRUoNnRqqEGl3JN2HVu
+ pyLHrTsmYMjtZCHfP7IVCcUwxReZDV8bA9kHRVFbJIl+h9GoIstPls4APPhkJZVFrSXb
+ QGZt+QO5Zyne18VLysgcpOHWhaiTPtka4JRbQqPMbiiDuhRr694UjRbwl7Hpph1+kaz6
+ pUOlQNB68ch++XAvNU6hWxgGLmvHTdSDQjGKsAknOg5gnh90iAqgMd8LY1lrtJLbn3No
+ 9HQ2gwSE+5MCPQ3KAqCwirmlzg8nZCEOd/d+axR7SlrU+kR6ZBBnasVGX2rbrk+anr6z
+ Lh7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696367954; x=1696972754;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uqxCT41hNwR5lc5LjBcEjFOED6bjk1Q4MnnczZx6+dM=;
- b=gHyQXTE4tcyOYjAzIzG81su8FD4GPBGTcIzO971ynpqlNBs1OqLVb0hx/t3e22moGi
- /PLP/rNhsfqdpzm+Mzg0+CWW9vy/aauWFcYSUzUPNsCHGB9vc6BNLm8vS8Xste7MTVCP
- ZdbuTt40YUwCOtEADoTTQZAKU+jGRIhdnty1avT25D6jyKEyaN0t0miT7hLMAGjyfCbF
- xh1Zm2Ek95QnQFtWDv80XZ67W5UxWLAnLQaks29V+V+hKpvC3eM2Au8P/RFpsezM/Jp4
- zDLZ9nnAia3LCg7ibmI3hr4LJGR6trc42GT0/RbVimWAOiG66kroixa6+EDHN4y+E/OI
- k2Hg==
-X-Gm-Message-State: AOJu0Yz8g/sP7PJz/U6EXuOpg/UlhXjv+b3OZ7oOj6Jc7nanWzexpEUc
- lsn8ICHNuvhlGI6e8N1zxhS6KylQXmefoOvaHPo=
-X-Google-Smtp-Source: AGHT+IEIOJM6xfeTJITX1doU/fa/prR9jOJy0iqpR2URXdo7LUahKT/1PsNp1i9UQDZ7F2w5uRo2fg==
-X-Received: by 2002:a17:90b:1b50:b0:274:8041:94c with SMTP id
- nv16-20020a17090b1b5000b002748041094cmr533084pjb.13.1696367954381; 
- Tue, 03 Oct 2023 14:19:14 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
+ d=1e100.net; s=20230601; t=1696368252; x=1696973052;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=EkG7v68Trxt68Cu2pyY78mexBbfH0R0LWq30kAO0N3o=;
+ b=sJDWRzGq8D7k5kfosUzu826g1hsbm6RiKMs/rUJu1x61SMSkmA9YIbruib7ARcx/PQ
+ Qp3QWJSXaGapZ8Np+SDmvpLJSwwkAvoiJcGxmgEBbSOhGN2TA00IeGOrah5oOqHBekPB
+ NgFdNhOo2uebMmZb9cXd8OLtIIWI9MIp7dXtF6/5H10f2YWRLu9lJnVQYvekIxUGLjcZ
+ Jx1bVkfhfUpI2uLuzKPYHCiyZenxEBoZi6Zs/WRBCg4tLGgegeTLhb6uBbWmzY0eJJBM
+ v4CdbHBiA1SEaBzJadw6XQZ8OvV+OUbOHGq/zyeGJ102Zau5W7RAb8d0AGmoQFefwvFX
+ vrrw==
+X-Gm-Message-State: AOJu0YyWUGv5aNIdxPTiNHp3jMxjYTbicGqpMHcvmgjRBhe1OAJkPfGV
+ WJGBOvZvuebiow8zfWFEW/2IjKVbrls=
+X-Google-Smtp-Source: AGHT+IEqxqm2N0xGP2NlJrkt0fi3pqRYcnp6vmRVk+1t81Cc8HF4XB1wfBkBEOjWL31M0/XchpIChw==
+X-Received: by 2002:a17:906:2d2:b0:9ad:8ef8:a7e8 with SMTP id
+ 18-20020a17090602d200b009ad8ef8a7e8mr383684ejk.25.1696368251621; 
+ Tue, 03 Oct 2023 14:24:11 -0700 (PDT)
+Received: from ?IPv6:::1?
+ (p200300faaf2af2002dbc26c5e78fe5cc.dip0.t-ipconnect.de.
+ [2003:fa:af2a:f200:2dbc:26c5:e78f:e5cc])
  by smtp.gmail.com with ESMTPSA id
- b7-20020a17090a6ac700b0027768125e24sm28301pjm.39.2023.10.03.14.19.13
+ kq15-20020a170906abcf00b009875a6d28b0sm1619670ejb.51.2023.10.03.14.24.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 14:19:13 -0700 (PDT)
-Message-ID: <1e60c1c2-6b35-27ed-31c0-afbcbc9c7ade@linaro.org>
-Date: Tue, 3 Oct 2023 14:19:12 -0700
+ Tue, 03 Oct 2023 14:24:11 -0700 (PDT)
+Date: Tue, 03 Oct 2023 21:24:03 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: qemu-devel@nongnu.org
+CC: Richard Henderson <richard.henderson@linaro.org>,
+ Ani Sinha <anisinha@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v3=5D_hw/i386/acp?=
+ =?US-ASCII?Q?i-build=3A_Remove_build-time_?=
+ =?US-ASCII?Q?assertion_on_PIIX/ICH9_reset_registers_being_identical?=
+In-Reply-To: <20231003211658.14327-1-shentey@gmail.com>
+References: <20231003211658.14327-1-shentey@gmail.com>
+Message-ID: <8A3B6DC2-95EB-4000-B615-34C2740ADC4E@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] target/m68k: Map FPU exceptions to FPSR register
-Content-Language: en-US
-To: Keith Packard <keithp@keithp.com>, qemu-devel@nongnu.org
-Cc: Laurent Vivier <laurent@vivier.eu>
-References: <20230803035231.429697-1-keithp@keithp.com>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20230803035231.429697-1-keithp@keithp.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::1036;
- envelope-from=richard.henderson@linaro.org; helo=mail-pj1-x1036.google.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -94,25 +98,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 8/2/23 20:52, Keith Packard via wrote:
-> Add helpers for reading/writing the 68881 FPSR register so that
-> changes in floating point exception state can be seen by the
-> application.
-> 
-> Call these helpers in pre_load/post_load hooks to synchronize
-> exception state.
-> 
-> Signed-off-by: Keith Packard<keithp@keithp.com>
-> ---
->   target/m68k/cpu.c        | 12 +++++++
->   target/m68k/cpu.h        |  2 ++
->   target/m68k/fpu_helper.c | 72 ++++++++++++++++++++++++++++++++++++++++
->   target/m68k/helper.c     |  4 +--
->   target/m68k/helper.h     |  2 ++
->   target/m68k/translate.c  |  4 +--
->   6 files changed, 92 insertions(+), 4 deletions(-)
+The iteration in the subject should have been 1, not 3=2E=2E=2E
 
-Queued to m68k-next.
-
-r~
+Am 3=2E Oktober 2023 21:16:58 UTC schrieb Bernhard Beschow <shentey@gmail=
+=2Ecom>:
+>Commit 6103451aeb74 ("hw/i386: Build-time assertion on pc/q35 reset regis=
+ter
+>being identical=2E") introduced a build-time check where the addresses of=
+ the
+>reset registers are expected to be equal=2E Back then the code to generat=
+e AML for
+>the reset register in the FADT was common=2E However, since commit 937d1b=
+58714b
+>("pc: acpi: isolate FADT specific data into AcpiFadtData structure") the =
+AML
+>gets generated for ICH9 only=2E There is no need any loger for the assert=
+ion, so
+>remove it=2E
+>
+>Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+>---
+> hw/i386/acpi-build=2Ec | 5 -----
+> 1 file changed, 5 deletions(-)
+>
+>diff --git a/hw/i386/acpi-build=2Ec b/hw/i386/acpi-build=2Ec
+>index 95199c8900=2E=2E6fff1901f5 100644
+>--- a/hw/i386/acpi-build=2Ec
+>+++ b/hw/i386/acpi-build=2Ec
+>@@ -56,7 +56,6 @@
+>=20
+> /* Supported chipsets: */
+> #include "hw/southbridge/ich9=2Eh"
+>-#include "hw/southbridge/piix=2Eh"
+> #include "hw/acpi/pcihp=2Eh"
+> #include "hw/i386/fw_cfg=2Eh"
+> #include "hw/i386/pc=2Eh"
+>@@ -242,10 +241,6 @@ static void acpi_get_pm_info(MachineState *machine, =
+AcpiPmInfo *pm)
+>     pm->pcihp_io_len =3D
+>         object_property_get_uint(obj, ACPI_PCIHP_IO_LEN_PROP, NULL);
+>=20
+>-    /* The above need not be conditional on machine type because the res=
+et port
+>-     * happens to be the same on PIIX (pc) and ICH9 (q35)=2E */
+>-    QEMU_BUILD_BUG_ON(ICH9_RST_CNT_IOPORT !=3D PIIX_RCR_IOPORT);
+>-
+>     /* Fill in optional s3/s4 related properties */
+>     o =3D object_property_get_qobject(obj, ACPI_PM_PROP_S3_DISABLED, NUL=
+L);
+>     if (o) {
 
