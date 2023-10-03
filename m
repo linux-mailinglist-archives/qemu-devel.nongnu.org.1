@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE7417B6FC7
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0409E7B6FF1
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:37:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnjEw-0008Lh-Vf; Tue, 03 Oct 2023 13:31:23 -0400
+	id 1qnjF0-0008QZ-Cv; Tue, 03 Oct 2023 13:31:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjEi-0008Fw-Rt
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:18 -0400
-Received: from mail-oo1-xc2f.google.com ([2607:f8b0:4864:20::c2f])
+ id 1qnjEj-0008G7-Ip
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:17 -0400
+Received: from mail-pf1-x429.google.com ([2607:f8b0:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnjEg-0007Ss-DU
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:08 -0400
-Received: by mail-oo1-xc2f.google.com with SMTP id
- 006d021491bc7-57bb6a2481fso650103eaf.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:31:06 -0700 (PDT)
+ id 1qnjEh-0007T1-S8
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:31:09 -0400
+Received: by mail-pf1-x429.google.com with SMTP id
+ d2e1a72fcca58-69101022969so916207b3a.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:31:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696354265; x=1696959065; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696354266; x=1696959066; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i3wrIxgr2m5oHMVkH4v8wSAkRBNGt7xc6AFyiVFHwxo=;
- b=ZtoABmUtIrXDFvVTVJsSXPZ8klkFsGAczdU7RZhe6k4uNKZH0vqbl0xuro4/inI+KL
- Mxm8zJiNuZwknkE0oah1jSnbq7bwi7CIOXKrYtSNvftEhyxmvrU9a91RfPW6wm0H9zTI
- h9Lg87TRUrw5pettygtkRk5VzOi3EfjSqKT6qnMciDaSpi/7SKHWRhVLS4l9Mrlub47h
- l9tPy80rBFlVdOOeDcwNULbqnD9EC5oqL3VlNEe4cknEMV82ZpThyEz7c/8/Gfny6+qH
- BG6qHtnEgo1YLEF2YK3F2yHR4+riy5YhKk3k7ATqydRxnOE8QE7Bw3X1Dv9CS/y4sG0/
- W8yw==
+ bh=PCZUgNuN/cpm5AWhhskU6xG8RA6Qz33ls/52yNT5Lro=;
+ b=SBeFhS8XDBnTAI+bDubLC0+qVbUwpta9ojpB3Hnw4C4P+hS0UpnZ7jwIcnuDwQ6SGP
+ ezNh/vRiqJiPlkQYPW4gK5NVOIZvaqc61gJJTALkFpqp5GChW9IIFD3zwANYWe9aK6hX
+ KD3NEuN1Qiz2IefoobGpbY7yObdFAISpT3Z+6L+jF+wSQE3afXad4FAxXlcup0wGjS0P
+ kpP/ICAIptkHI2oh7XLv5T2tBv0tNHDsBTtXHechM/hy1TM/suWM3gmmoPsWSMrKTiI+
+ GsfVoDb/RZYL7xofEWU6D/DTIB4pUj8kxYbjbcp255Dob/U085hgOiy9MsVKDh31rb9B
+ k3aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696354265; x=1696959065;
+ d=1e100.net; s=20230601; t=1696354266; x=1696959066;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i3wrIxgr2m5oHMVkH4v8wSAkRBNGt7xc6AFyiVFHwxo=;
- b=kAZxKcV+42NlLOrzbEMQNx4t13PpWSrGf48czUI0KSNiCRZf4ibjwtnN26fLX06kk3
- 9OGAfycjitMUv+ViFH1SscGD/jXNXsqphdyvy+Qcjd93jBeezJ+BEkWoElGmOwZi5DDn
- 2b2qZSMFsM+V1cu71PvObXDYXLdtiIEyU2Y6IPpiK5gpAfLRgxu6UQ3wx7SmxwERAe1J
- vjWc/E2TmqOklh7IvvXYaaDbidyPo5iIdpI9oprQo6ZErn4UdvGjrkgKLBnl7F/wL2gR
- kOSF6BKrS3xou6E9JVb7mduyN/ozDt0r8ZfS/RD8jrb9sc0UGtTABanxjWhhbxinE4zb
- I7RA==
-X-Gm-Message-State: AOJu0Yw3YaHdxKDELQuBaHKVjFBVi7HJJAYscKK1OoZRbhW8UxcabAyO
- QN2Uy9wWcZM0JSeiDymSzDbTEV7m9fxk17TdzMc=
-X-Google-Smtp-Source: AGHT+IGSmQIacppaytt8AKctsYAV1IxSWjsvHjqVHzBtBgXUEZ2jNRgDnItZlP1BzbutaQxO6LeIgQ==
-X-Received: by 2002:a05:6358:720c:b0:141:162:b0d8 with SMTP id
- h12-20020a056358720c00b001410162b0d8mr59585rwa.30.1696354265314; 
- Tue, 03 Oct 2023 10:31:05 -0700 (PDT)
+ bh=PCZUgNuN/cpm5AWhhskU6xG8RA6Qz33ls/52yNT5Lro=;
+ b=kQtar9J+n4I7ECoUBncZUk2PMEgYwEcEyGpQRFN8wWTIfwHnrHIDTV8hhiDz0MCOTZ
+ TR/5c0+SlefkMZ1WmqGimKwp8BzwVfq1xkOBLTC45JXul/TfkfO6lhJQR7rZ+gsSpaLH
+ klSgS6CPN6j8IRJT6gnzsOmJI6XxwtEvbGitFx+CFRg5yiZLNwgKI71EDWqRx/mvhmSh
+ 4yxdo7BAw5Fr/KaVcdITKmepS95nAjs0+x7UtBH/Skbuf3zDpZa3vR6kogFxrkQTc9Ul
+ fp5ei3pcpdKDQUuuxy3bGIwBiaFkQ6LVMY3MZPoFD021vMirjIz0IvxG36xygBmrhO8F
+ qU6g==
+X-Gm-Message-State: AOJu0YxlkpE9rMDm+gF9UCm3zJlqElneUevrsLGw2peisUMpc/NJmTqB
+ OZI3DdQ8kdNhvAZ/m4if9YCfj47o43XfoQFOUko=
+X-Google-Smtp-Source: AGHT+IE3Fx6G4Fi9EBUJbon4tQCukkLCqdH59J2vqesvlONPmZX7Dhzf/32w4ZHnAr3mfoqPCZwHXA==
+X-Received: by 2002:a05:6a00:1912:b0:690:d2b0:1b37 with SMTP id
+ y18-20020a056a00191200b00690d2b01b37mr301688pfi.10.1696354266239; 
+ Tue, 03 Oct 2023 10:31:06 -0700 (PDT)
 Received: from stoup.. ([71.212.149.95]) by smtp.gmail.com with ESMTPSA id
- n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.31.04
+ n7-20020aa78a47000000b00692c5b1a731sm1620195pfa.186.2023.10.03.10.31.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 10:31:04 -0700 (PDT)
+ Tue, 03 Oct 2023 10:31:05 -0700 (PDT)
 From: Richard Henderson <richard.henderson@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 10/47] qom: Propagate alignment through type system
-Date: Tue,  3 Oct 2023 10:30:15 -0700
-Message-Id: <20231003173052.1601813-11-richard.henderson@linaro.org>
+Subject: [PULL 11/47] target/arm: Remove size and alignment for cpu subclasses
+Date: Tue,  3 Oct 2023 10:30:16 -0700
+Message-Id: <20231003173052.1601813-12-richard.henderson@linaro.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231003173052.1601813-1-richard.henderson@linaro.org>
 References: <20231003173052.1601813-1-richard.henderson@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c2f;
- envelope-from=richard.henderson@linaro.org; helo=mail-oo1-xc2f.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::429;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pf1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -91,48 +91,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Propagate alignment just like size.  This is required in order to
-get the correct alignment on most cpu subclasses where the size and
-alignment is only specified for the base cpu type.
+Inherit the size and alignment from TYPE_ARM_CPU.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
 ---
- qom/object.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ target/arm/cpu.c   | 3 ---
+ target/arm/cpu64.c | 4 ----
+ 2 files changed, 7 deletions(-)
 
-diff --git a/qom/object.c b/qom/object.c
-index e25f1e96db..8557fe8e4e 100644
---- a/qom/object.c
-+++ b/qom/object.c
-@@ -220,6 +220,19 @@ static size_t type_object_get_size(TypeImpl *ti)
-     return 0;
- }
- 
-+static size_t type_object_get_align(TypeImpl *ti)
-+{
-+    if (ti->instance_align) {
-+        return ti->instance_align;
-+    }
-+
-+    if (type_has_parent(ti)) {
-+        return type_object_get_align(type_get_parent(ti));
-+    }
-+
-+    return 0;
-+}
-+
- size_t object_type_get_instance_size(const char *typename)
+diff --git a/target/arm/cpu.c b/target/arm/cpu.c
+index b9e09a702d..d48a70c039 100644
+--- a/target/arm/cpu.c
++++ b/target/arm/cpu.c
+@@ -2423,10 +2423,7 @@ void arm_cpu_register(const ARMCPUInfo *info)
  {
-     TypeImpl *type = type_get_by_name(typename);
-@@ -293,6 +306,7 @@ static void type_initialize(TypeImpl *ti)
+     TypeInfo type_info = {
+         .parent = TYPE_ARM_CPU,
+-        .instance_size = sizeof(ARMCPU),
+-        .instance_align = __alignof__(ARMCPU),
+         .instance_init = arm_cpu_instance_init,
+-        .class_size = sizeof(ARMCPUClass),
+         .class_init = info->class_init ?: cpu_register_class_init,
+         .class_data = (void *)info,
+     };
+diff --git a/target/arm/cpu64.c b/target/arm/cpu64.c
+index f3d87e001f..811f3b38c2 100644
+--- a/target/arm/cpu64.c
++++ b/target/arm/cpu64.c
+@@ -822,9 +822,7 @@ void aarch64_cpu_register(const ARMCPUInfo *info)
+ {
+     TypeInfo type_info = {
+         .parent = TYPE_AARCH64_CPU,
+-        .instance_size = sizeof(ARMCPU),
+         .instance_init = aarch64_cpu_instance_init,
+-        .class_size = sizeof(ARMCPUClass),
+         .class_init = info->class_init ?: cpu_register_class_init,
+         .class_data = (void *)info,
+     };
+@@ -837,10 +835,8 @@ void aarch64_cpu_register(const ARMCPUInfo *info)
+ static const TypeInfo aarch64_cpu_type_info = {
+     .name = TYPE_AARCH64_CPU,
+     .parent = TYPE_ARM_CPU,
+-    .instance_size = sizeof(ARMCPU),
+     .instance_finalize = aarch64_cpu_finalizefn,
+     .abstract = true,
+-    .class_size = sizeof(AArch64CPUClass),
+     .class_init = aarch64_cpu_class_init,
+ };
  
-     ti->class_size = type_class_get_size(ti);
-     ti->instance_size = type_object_get_size(ti);
-+    ti->instance_align = type_object_get_align(ti);
-     /* Any type with zero instance_size is implicitly abstract.
-      * This means interface types are all abstract.
-      */
 -- 
 2.34.1
 
