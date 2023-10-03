@@ -2,94 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54CF07B6D6C
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 17:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCB47B6D71
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 17:53:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnhhH-0001Dq-FH; Tue, 03 Oct 2023 11:52:31 -0400
+	id 1qnhi8-0001sQ-FK; Tue, 03 Oct 2023 11:53:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhhE-0001Dh-U5
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:52:28 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhhA-0005Pl-NW
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:52:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696348343;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=w81jSuw/m2mkqxvfwZtKl2qRax7JM/ceuJoqeD0koVY=;
- b=AcWAd9RdT/QxPZZefXDhAU23RkOuOcXxzvmOa3NxEwkHP3z9HN5xTLPAdTSbHS3W0ImGLH
- SWKnXUpdHD9nInCaORnZwD3851MhaMS+RABP+pdDmdCPDA4Uf9ms3XbawaH/UgdEu8jd9W
- exEk6q8xuyGd8hB3kw9RYb0aJ5bsFq8=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-3Fu8BWBoMUmRfj27f_YfOA-1; Tue, 03 Oct 2023 11:52:21 -0400
-X-MC-Unique: 3Fu8BWBoMUmRfj27f_YfOA-1
-Received: by mail-qv1-f72.google.com with SMTP id
- 6a1803df08f44-65b23c40cefso10955956d6.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 08:52:21 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qnhi2-0001kO-Ps
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:53:18 -0400
+Received: from mail-pg1-x529.google.com ([2607:f8b0:4864:20::529])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
+ id 1qnhhx-0005Yi-Ej
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 11:53:18 -0400
+Received: by mail-pg1-x529.google.com with SMTP id
+ 41be03b00d2f7-5789ffc8ae0so708793a12.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 08:53:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696348392; x=1696953192; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=XWyEo4YvszWy+C4mQBrJsnKg4HigAjP2y5HCxppgS+Y=;
+ b=nZsjol4rIpvY1E7mnpGfB9kHdkgE2mqYNbJbXGijgUJ7VDt7+NgXB2wCMpGk7wzEMm
+ Aho148BZgqj+psin+bKVbxYDnHPps0x34KTqtyobO7UiGjYVBnHagmq08v/fbcaxkXct
+ 5hWlRT/ix7q64YpJ/zqWfXmcbUhP6x53X3L5Yuy/7zggJS7Z6fE16U3x7UDBc8ZTGAn+
+ 3SiZy+KIzct3pMNB0Fi3ddkEzdt9j72+JCPIjHqsW2pcYJ3shN6b2bfH5iiQou/o299P
+ 6ugAI5ym/o9TeHJmvE3dliYkvj0pbV9R5by6+5W9PLMD/5L+sJK40+Mg11pDPfJTIzKB
+ IVzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696348341; x=1696953141;
- h=content-transfer-encoding:in-reply-to:from:references:to
+ d=1e100.net; s=20230601; t=1696348392; x=1696953192;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w81jSuw/m2mkqxvfwZtKl2qRax7JM/ceuJoqeD0koVY=;
- b=InrUjLlkU29aPItTeTI+2zdsUmkW2MN0AKWBMCuSglX8Ac0A4Kn2MI5cRXQpn6dodc
- BEbEjJ0swZQcJn60ipyBJGXa58m/JkQEZPeVHAXIeOD/98CJJ/4JB0JfI8c1wc3elUjX
- xbjGdo5Nb3b/aaNjDPy1Se898TWhcTaiJHI5C7ZysKRNfFR/zIO62eDMq9ApUc62gbgK
- kw0l5JXjTelXByJwBvGvhc28A9jqBJbDR0u7zsGUWfwkmc1Icplxy8Yo/18gLQm+BggT
- dZEb+E/DP90mn75ntqkCpKE/3RbW2CxAeO3GLNNHi9xzxwNmzKtUlFoZ4DIePUDFI9uv
- MJzg==
-X-Gm-Message-State: AOJu0Ywd+m2gfV2xziSBTY8ORt3ot13NrjKdiH/RTIxdEUUGXLTG2tKg
- Ax13w1DMebMzsNnB8aAsvTLZhGvfgZ3yJ6qH1x+qLgLrhP5uZ4W0XrTleQIOKX/LLyx5fr6Dm4K
- 9yhl+65axFFr5UOM=
-X-Received: by 2002:a0c:a792:0:b0:63f:bf70:6796 with SMTP id
- v18-20020a0ca792000000b0063fbf706796mr10939831qva.58.1696348341287; 
- Tue, 03 Oct 2023 08:52:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IETzY7XkZ24Je19jccRakpKIvwmtQZiR/wpu7dn7dUgdDIWpyi4Eqcff4fSVNZtM9c1FVqe1A==
-X-Received: by 2002:a0c:a792:0:b0:63f:bf70:6796 with SMTP id
- v18-20020a0ca792000000b0063fbf706796mr10939818qva.58.1696348340949; 
- Tue, 03 Oct 2023 08:52:20 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ bh=XWyEo4YvszWy+C4mQBrJsnKg4HigAjP2y5HCxppgS+Y=;
+ b=ufGR82d8rzm0G+/YPlYZgef77B5BT50WqF4vGoCVLqylhh++LY+okou5G2LM4oNVce
+ InS2pxKzaLreQ9MmMC/P+m+S+lUJaDMX2PRXUmB5WdZ3WK3Pdzl96oQov/QbZx5Vv+Yg
+ eKP2jDoivGLAr7MHe7NCkjiPWr5QBghKL0vgZTCxzXLqzFziLyBQPUSCjk5l86mWSPIr
+ QaHOybj4ONwolVU5JARaDcdVXZBmZUGaBli6XjqLuN34zVuePwrwp3o00CxQin8uQ3Hx
+ UqO6OAxaQujSWYHhMpPG1M5od3+XXkhKbaevpvyQcXhvAH8NFYY76nQPxXdHt6BlSR59
+ jqyw==
+X-Gm-Message-State: AOJu0YyyjTab/UFJVALTTGVi8BfCi2l4A3uD9+H59YnKkrdQqNsrFSsj
+ O1GY1tCH8zq1A62CBIxfzZUWbg==
+X-Google-Smtp-Source: AGHT+IEFqlo9aQwkVFbu7mvpgwMo7HMnmqTH6W+WhNZHAMiDRlnCdVIqAnCXvB+OXj+BesWoCnF3MA==
+X-Received: by 2002:a05:6a20:7d92:b0:15c:fa48:2c09 with SMTP id
+ v18-20020a056a207d9200b0015cfa482c09mr16192968pzj.15.1696348391861; 
+ Tue, 03 Oct 2023 08:53:11 -0700 (PDT)
+Received: from [192.168.0.4] ([71.212.149.95])
  by smtp.gmail.com with ESMTPSA id
- i10-20020a0cf10a000000b006624e9d51d9sm572954qvl.76.2023.10.03.08.52.18
+ p1-20020a170902e74100b001c619fbd5fbsm1729405plf.298.2023.10.03.08.53.10
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 08:52:20 -0700 (PDT)
-Message-ID: <cd70f534-2b08-3e56-547f-acd182c8e684@redhat.com>
-Date: Tue, 3 Oct 2023 17:52:17 +0200
+ Tue, 03 Oct 2023 08:53:11 -0700 (PDT)
+Message-ID: <50fec210-f37f-ebbe-edb8-bbd61522b2b7@linaro.org>
+Date: Tue, 3 Oct 2023 08:53:09 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v3 12/15] vfio/common: Introduce a per container device
- list
+Subject: Re: [PATCH 1/1] tcg/loongarch64: Fix buid error
 Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, zhenzhong.duan@intel.com, alex.williamson@redhat.com,
- jgg@nvidia.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
- peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-13-eric.auger@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231003101530.288864-13-eric.auger@redhat.com>
+To: Song Gao <gaosong@loongson.cn>, qemu-devel@nongnu.org
+Cc: c@jia.je, philmd@redhat.com, git@xen0n.name, yangxiaojuan@loongson.cn,
+ maobibo@loongson.cn
+References: <20230926075819.3602537-1-gaosong@loongson.cn>
+From: Richard Henderson <richard.henderson@linaro.org>
+In-Reply-To: <20230926075819.3602537-1-gaosong@loongson.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::529;
+ envelope-from=richard.henderson@linaro.org; helo=mail-pg1-x529.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,326 +95,24 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 12:14, Eric Auger wrote:
-> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
+On 9/26/23 00:58, Song Gao wrote:
+> From: gaosong <gaosong@loongson.cn>
 > 
-> Several functions need to iterate over the VFIO devices attached to
-> a given container.  This is currently achieved by iterating over the
-> groups attached to the container and then over the devices in the group.
-> Let's introduce a per container device list that simplifies this
-> search.
+> Fix:
 > 
-> Per container list is used in below functions:
-> vfio_devices_all_dirty_tracking
-> vfio_devices_all_device_dirty_tracking
-> vfio_devices_all_running_and_mig_active
-> vfio_devices_dma_logging_stop
-> vfio_devices_dma_logging_start
-> vfio_devices_query_dirty_bitmap
+>    In file included from ../tcg/tcg.c:735:
+>    /home1/gaosong/bugfix/qemu/tcg/loongarch64/tcg-target.c.inc: In function ‘tcg_out_vec_op’:
+>    /home1/gaosong/bugfix/qemu/tcg/loongarch64/tcg-target.c.inc:1855:9: error: a label can only be part of a statement and a declaration is not a statement
+>             TCGCond cond = args[3];
+>             ^~~~~~~
 > 
-> This will also ease the migration of IOMMUFD by hiding the group
-> specificity.
-> 
-> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-
-LGTM,
-
-
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
-
-Thanks,
-
-C.
-
-
-
+> Signed-off-by: gaosong <gaosong@loongson.cn>
 > ---
->   include/hw/vfio/vfio-common.h |   2 +
->   hw/vfio/common.c              | 145 +++++++++++++++-------------------
->   2 files changed, 67 insertions(+), 80 deletions(-)
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index c486bdef2a..8ca70dd821 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -98,6 +98,7 @@ typedef struct VFIOContainer {
->       QLIST_HEAD(, VFIOGroup) group_list;
->       QLIST_HEAD(, VFIORamDiscardListener) vrdl_list;
->       QLIST_ENTRY(VFIOContainer) next;
-> +    QLIST_HEAD(, VFIODevice) device_list;
->   } VFIOContainer;
->   
->   typedef struct VFIOGuestIOMMU {
-> @@ -129,6 +130,7 @@ typedef struct VFIODeviceOps VFIODeviceOps;
->   
->   typedef struct VFIODevice {
->       QLIST_ENTRY(VFIODevice) next;
-> +    QLIST_ENTRY(VFIODevice) container_next;
->       struct VFIOGroup *group;
->       char *sysfsdev;
->       char *name;
-> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-> index 019da387d2..ef9dc7c747 100644
-> --- a/hw/vfio/common.c
-> +++ b/hw/vfio/common.c
-> @@ -218,7 +218,6 @@ bool vfio_device_state_is_precopy(VFIODevice *vbasedev)
->   
->   static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
->   {
-> -    VFIOGroup *group;
->       VFIODevice *vbasedev;
->       MigrationState *ms = migrate_get_current();
->   
-> @@ -227,19 +226,17 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
->           return false;
->       }
->   
-> -    QLIST_FOREACH(group, &container->group_list, container_next) {
-> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -            VFIOMigration *migration = vbasedev->migration;
-> +    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
-> +        VFIOMigration *migration = vbasedev->migration;
->   
-> -            if (!migration) {
-> -                return false;
-> -            }
-> +        if (!migration) {
-> +            return false;
-> +        }
->   
-> -            if (vbasedev->pre_copy_dirty_page_tracking == ON_OFF_AUTO_OFF &&
-> -                (vfio_device_state_is_running(vbasedev) ||
-> -                 vfio_device_state_is_precopy(vbasedev))) {
-> -                return false;
-> -            }
-> +        if (vbasedev->pre_copy_dirty_page_tracking == ON_OFF_AUTO_OFF &&
-> +            (vfio_device_state_is_running(vbasedev) ||
-> +             vfio_device_state_is_precopy(vbasedev))) {
-> +            return false;
->           }
->       }
->       return true;
-> @@ -247,14 +244,11 @@ static bool vfio_devices_all_dirty_tracking(VFIOContainer *container)
->   
->   static bool vfio_devices_all_device_dirty_tracking(VFIOContainer *container)
->   {
-> -    VFIOGroup *group;
->       VFIODevice *vbasedev;
->   
-> -    QLIST_FOREACH(group, &container->group_list, container_next) {
-> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -            if (!vbasedev->dirty_pages_supported) {
-> -                return false;
-> -            }
-> +    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
-> +        if (!vbasedev->dirty_pages_supported) {
-> +            return false;
->           }
->       }
->   
-> @@ -267,27 +261,24 @@ static bool vfio_devices_all_device_dirty_tracking(VFIOContainer *container)
->    */
->   static bool vfio_devices_all_running_and_mig_active(VFIOContainer *container)
->   {
-> -    VFIOGroup *group;
->       VFIODevice *vbasedev;
->   
->       if (!migration_is_active(migrate_get_current())) {
->           return false;
->       }
->   
-> -    QLIST_FOREACH(group, &container->group_list, container_next) {
-> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -            VFIOMigration *migration = vbasedev->migration;
-> +    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
-> +        VFIOMigration *migration = vbasedev->migration;
->   
-> -            if (!migration) {
-> -                return false;
-> -            }
-> +        if (!migration) {
-> +            return false;
-> +        }
->   
-> -            if (vfio_device_state_is_running(vbasedev) ||
-> -                vfio_device_state_is_precopy(vbasedev)) {
-> -                continue;
-> -            } else {
-> -                return false;
-> -            }
-> +        if (vfio_device_state_is_running(vbasedev) ||
-> +            vfio_device_state_is_precopy(vbasedev)) {
-> +            continue;
-> +        } else {
-> +            return false;
->           }
->       }
->       return true;
-> @@ -1187,20 +1178,17 @@ static bool vfio_section_is_vfio_pci(MemoryRegionSection *section,
->   {
->       VFIOPCIDevice *pcidev;
->       VFIODevice *vbasedev;
-> -    VFIOGroup *group;
->       Object *owner;
->   
->       owner = memory_region_owner(section->mr);
->   
-> -    QLIST_FOREACH(group, &container->group_list, container_next) {
-> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -            if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
-> -                continue;
-> -            }
-> -            pcidev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-> -            if (OBJECT(pcidev) == owner) {
-> -                return true;
-> -            }
-> +    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
-> +        if (vbasedev->type != VFIO_DEVICE_TYPE_PCI) {
-> +            continue;
-> +        }
-> +        pcidev = container_of(vbasedev, VFIOPCIDevice, vbasedev);
-> +        if (OBJECT(pcidev) == owner) {
-> +            return true;
->           }
->       }
->   
-> @@ -1296,24 +1284,21 @@ static void vfio_devices_dma_logging_stop(VFIOContainer *container)
->                                 sizeof(uint64_t))] = {};
->       struct vfio_device_feature *feature = (struct vfio_device_feature *)buf;
->       VFIODevice *vbasedev;
-> -    VFIOGroup *group;
->   
->       feature->argsz = sizeof(buf);
->       feature->flags = VFIO_DEVICE_FEATURE_SET |
->                        VFIO_DEVICE_FEATURE_DMA_LOGGING_STOP;
->   
-> -    QLIST_FOREACH(group, &container->group_list, container_next) {
-> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -            if (!vbasedev->dirty_tracking) {
-> -                continue;
-> -            }
-> -
-> -            if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
-> -                warn_report("%s: Failed to stop DMA logging, err %d (%s)",
-> -                             vbasedev->name, -errno, strerror(errno));
-> -            }
-> -            vbasedev->dirty_tracking = false;
-> +    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
-> +        if (!vbasedev->dirty_tracking) {
-> +            continue;
->           }
-> +
-> +        if (ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature)) {
-> +            warn_report("%s: Failed to stop DMA logging, err %d (%s)",
-> +                        vbasedev->name, -errno, strerror(errno));
-> +        }
-> +        vbasedev->dirty_tracking = false;
->       }
->   }
->   
-> @@ -1396,7 +1381,6 @@ static int vfio_devices_dma_logging_start(VFIOContainer *container)
->       struct vfio_device_feature *feature;
->       VFIODirtyRanges ranges;
->       VFIODevice *vbasedev;
-> -    VFIOGroup *group;
->       int ret = 0;
->   
->       vfio_dirty_tracking_init(container, &ranges);
-> @@ -1406,21 +1390,19 @@ static int vfio_devices_dma_logging_start(VFIOContainer *container)
->           return -errno;
->       }
->   
-> -    QLIST_FOREACH(group, &container->group_list, container_next) {
-> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -            if (vbasedev->dirty_tracking) {
-> -                continue;
-> -            }
-> -
-> -            ret = ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature);
-> -            if (ret) {
-> -                ret = -errno;
-> -                error_report("%s: Failed to start DMA logging, err %d (%s)",
-> -                             vbasedev->name, ret, strerror(errno));
-> -                goto out;
-> -            }
-> -            vbasedev->dirty_tracking = true;
-> +    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
-> +        if (vbasedev->dirty_tracking) {
-> +            continue;
->           }
-> +
-> +        ret = ioctl(vbasedev->fd, VFIO_DEVICE_FEATURE, feature);
-> +        if (ret) {
-> +            ret = -errno;
-> +            error_report("%s: Failed to start DMA logging, err %d (%s)",
-> +                         vbasedev->name, ret, strerror(errno));
-> +            goto out;
-> +        }
-> +        vbasedev->dirty_tracking = true;
->       }
->   
->   out:
-> @@ -1500,21 +1482,18 @@ static int vfio_devices_query_dirty_bitmap(VFIOContainer *container,
->                                              hwaddr size)
->   {
->       VFIODevice *vbasedev;
-> -    VFIOGroup *group;
->       int ret;
->   
-> -    QLIST_FOREACH(group, &container->group_list, container_next) {
-> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
-> -            ret = vfio_device_dma_logging_report(vbasedev, iova, size,
-> -                                                 vbmap->bitmap);
-> -            if (ret) {
-> -                error_report("%s: Failed to get DMA logging report, iova: "
-> -                             "0x%" HWADDR_PRIx ", size: 0x%" HWADDR_PRIx
-> -                             ", err: %d (%s)",
-> -                             vbasedev->name, iova, size, ret, strerror(-ret));
-> +    QLIST_FOREACH(vbasedev, &container->device_list, container_next) {
-> +        ret = vfio_device_dma_logging_report(vbasedev, iova, size,
-> +                                             vbmap->bitmap);
-> +        if (ret) {
-> +            error_report("%s: Failed to get DMA logging report, iova: "
-> +                         "0x%" HWADDR_PRIx ", size: 0x%" HWADDR_PRIx
-> +                         ", err: %d (%s)",
-> +                         vbasedev->name, iova, size, ret, strerror(-ret));
->   
-> -                return ret;
-> -            }
-> +            return ret;
->           }
->       }
->   
-> @@ -2648,6 +2627,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
->       int groupid = vfio_device_groupid(vbasedev, errp);
->       VFIODevice *vbasedev_iter;
->       VFIOGroup *group;
-> +    VFIOContainer *container;
->       int ret;
->   
->       if (groupid < 0) {
-> @@ -2671,8 +2651,12 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
->       ret = vfio_get_device(group, name, vbasedev, errp);
->       if (ret) {
->           vfio_put_group(group);
-> +        return ret;
->       }
->   
-> +    container = group->container;
-> +    QLIST_INSERT_HEAD(&container->device_list, vbasedev, container_next);
-> +
->       return ret;
->   }
->   
-> @@ -2680,6 +2664,7 @@ void vfio_detach_device(VFIODevice *vbasedev)
->   {
->       VFIOGroup *group = vbasedev->group;
->   
-> +    QLIST_REMOVE(vbasedev, container_next);
->       trace_vfio_detach_device(vbasedev->name, group->groupid);
->       vfio_put_base_device(vbasedev);
->       vfio_put_group(group);
+>   tcg/loongarch64/tcg-target.c.inc | 68 ++++++++++++++++----------------
+>   1 file changed, 35 insertions(+), 33 deletions(-)
 
+Thanks, queued to tcg-next.
+
+
+r~
 
