@@ -2,89 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B52077B6B96
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:30:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A627B6DEC
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 18:03:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qngPS-0004w7-0s; Tue, 03 Oct 2023 10:30:02 -0400
+	id 1qnhpn-0007Ll-Vr; Tue, 03 Oct 2023 12:01:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qngPP-0004vI-Sk
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:29:59 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qngPO-0006wh-4O
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:29:59 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-405417465aaso10338385e9.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:29:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696343396; x=1696948196; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=0AsNLbWUO9UMmd8b5Jij1zwO5hgHkJ7ZdZdK4D/2Kbk=;
- b=QwGOoOjmqyAitmFF2kMk+wBXjB7Xyenric+BimnYO3P00LkrhySRfh1/ptFJ2Asg7i
- mr0LzUN9T9srpFMcQfNfGp9AIve33B46nhitEw8prJikPGWSwAl5FfZ0B9vkakesiAq5
- W5Hmnm5rBBsC9I9FtGqZEKWzKQDVf+Jc5Ds63YrGSwCwuH3qcdEk9iw9upp0+m1hZdox
- zWkSfvHvemBRMs3dx9tP4QMufXdXqZTCjzIgijj2NVr5r3PF7zuHS34ouIffEdu99TCl
- veHUhRtofMTmA5iVUkbGp154x0IX7msrOukuvTAewmG5h3rixT2xi4vtLZNnSEEMxUPU
- GagQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696343396; x=1696948196;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=0AsNLbWUO9UMmd8b5Jij1zwO5hgHkJ7ZdZdK4D/2Kbk=;
- b=D/ffWq8aokht3hJEP8zhqJGRv1/1pZ8zUkc4jrt2y1Dt+kOCvx4Lzxs8ZcxpBEHNNI
- Xg5j6NNIaz/Z5P3mpb3lpsoEkPa/l9EW/RKbTCAjQr+E3QTiJhr7baI0QAQN5qAMlR7Y
- QC4I3PcWxxxW2F2PT+OwTzniAtuUVKUGdxp8VWKl6FuO4+Xmtd19CPSVY3qvbAqsz/Vi
- UJ85blrWmxfrwK0m3nnyBmmVveb2rFjN8CQR2il4R7ZSxUnB8puPENs0MLu5NcV7E8ok
- R/hCllGuL+GfTZI77LODKU6afsFd0/G6lGj/qO2U5ZT6DXjXTzYp3sc6M6sVW+RKwcbd
- EzJA==
-X-Gm-Message-State: AOJu0YxvlcMPCyUHu+1O3yX6YD565iXIdNxJBtf55yILnmXX9mHudSbQ
- guQF1nKcXJWQR8pVw98IQmzq58VhPDgtWvOjQXGrpg==
-X-Google-Smtp-Source: AGHT+IHsQMGYX0sFloYUtQ7JodeOoXMzSKIszUSriJqyPVhF/1t3l77+z7Uvz3IR3Ul8W9YAFFRI9w==
-X-Received: by 2002:a05:600c:21d1:b0:401:cb45:3fb8 with SMTP id
- x17-20020a05600c21d100b00401cb453fb8mr13594246wmj.38.1696343396230; 
- Tue, 03 Oct 2023 07:29:56 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
- [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
- v11-20020a1cf70b000000b004065d67c3c9sm1419429wmh.8.2023.10.03.07.29.53
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 07:29:55 -0700 (PDT)
-Message-ID: <2f56c993-39f4-476e-25e6-80969d46e413@linaro.org>
-Date: Tue, 3 Oct 2023 16:29:52 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 0/5] accel: Restrict tcg_exec_[un]realizefn() to TCG
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: Fabiano Rosas <farosas@suse.de>, Marcelo Tosatti <mtosatti@redhat.com>,
- Claudio Fontana <cfontana@suse.de>, Eduardo Habkost <eduardo@habkost.net>,
- kvm@vger.kernel.org, Yanan Wang <wangyanan55@huawei.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
+ (Exim 4.90_1)
+ (envelope-from <SRS0=Cj2E=FR=gmail.com=cz172638@kernel.org>)
+ id 1qngRB-0005yn-VC
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:31:49 -0400
+Received: from ams.source.kernel.org ([145.40.68.75])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1)
+ (envelope-from <SRS0=Cj2E=FR=gmail.com=cz172638@kernel.org>)
+ id 1qngR5-0007cK-RK
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:31:49 -0400
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+ by ams.source.kernel.org (Postfix) with ESMTP id AC9E6B81A32;
+ Tue,  3 Oct 2023 14:31:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD7EC433C8;
+ Tue,  3 Oct 2023 14:31:26 +0000 (UTC)
+Date: Tue, 3 Oct 2023 16:31:23 +0200
+From: Jiri Kastner <cz172638@gmail.com>
+To: Shunsuke Mie <mie@igel.co.jp>
+Cc: Vaishnav Achath <vaishnav.a@ti.com>,
+ Kishon Vijay Abraham I <kvijayab@amd.com>,
+ Lorenzo Pieralisi <lpieralisi@kernel.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230915190009.68404-1-philmd@linaro.org>
- <87e1be19-c1c6-73fb-3569-7dbf186662f7@linaro.org>
- <96a726c8-186c-3f09-9d9b-d17d7f5289e2@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <96a726c8-186c-3f09-9d9b-d17d7f5289e2@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ qemu-devel@nongnu.org, Rob Herring <robh@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ linux-pci@vger.kernel.org,
+ Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+ Kishon Vijay Abraham I <kishon@kernel.org>,
+ Jagannathan Raman <jag.raman@oracle.com>,
+ Thanos Makatos <thanos.makatos@nutanix.com>,
+ John Levon <levon@movementarian.org>,
+ William Henderson <william.henderson@nutanix.com>
+Subject: Re: [RFC] Proposal of QEMU PCI Endpoint test environment
+Message-ID: <20231003143123.esavo6i6pq7ian3h@seskpc0236u.linux.cat.com>
+References: <CANXvt5oKt=AKdqv24LT079e+6URnfqJcfTJh0ajGA17paJUEKw@mail.gmail.com>
+ <d096e88e-aec5-9920-8d5a-bd8200560c2c@amd.com>
+ <fe309259-01f0-871f-4620-3a4bdc56a186@igel.co.jp>
+ <1269bf62-d67f-9f61-0139-dc20d23a9b5e@ti.com>
+ <61d82a6b-ab8a-06cc-9514-0baac736f92f@igel.co.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+In-Reply-To: <61d82a6b-ab8a-06cc-9514-0baac736f92f@igel.co.jp>
+Received-SPF: pass client-ip=145.40.68.75;
+ envelope-from=SRS0=Cj2E=FR=gmail.com=cz172638@kernel.org;
+ helo=ams.source.kernel.org
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_ADSP_CUSTOM_MED=0.001,
+ FORGED_GMAIL_RCVD=1, FREEMAIL_FORGED_FROMDOMAIN=0.249, FREEMAIL_FROM=0.001,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.248, NML_ADSP_CUSTOM_MED=0.9,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=no autolearn_force=no
 X-Spam_action: no action
+X-Mailman-Approved-At: Tue, 03 Oct 2023 12:01:14 -0400
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -99,29 +83,156 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/10/23 16:04, Richard Henderson wrote:
-> On 10/2/23 23:44, Philippe Mathieu-DaudÃ© wrote:
->> On 15/9/23 21:00, Philippe Mathieu-DaudÃ© wrote:
->>> - Add missing accel_cpu_unrealize()
->>> - Add AccelClass::[un]realize_cpu handlers
->>> - Use tcg_exec_[un]realizefn as AccelClass handlers
->>>
->>> Philippe Mathieu-DaudÃ© (5):
->>> Â Â  accel: Rename accel_cpu_realizefn() ->Â  accel_cpu_realize()
->>> Â Â  accel: Introduce accel_cpu_unrealize() stub
->>> Â Â  accel: Declare AccelClass::[un]realize_cpu() handlers
->>> Â Â  accel/tcg: Have tcg_exec_realizefn() return a boolean
->>> Â Â  accel/tcg: Restrict tcg_exec_[un]realizefn() to TCG
->>
->> Ping?
->>
+hi shunsuke, all,
+what about vfio-user + qemu?
+
+qemu already has libvfio-user as submodule.
+there is ongoing work to add qemu vfio-user client functionality.
+
+adding people involved to loop, not sure if i forgot somebody.
+
+regards
+jiri
+
+On Tue, Oct 03, 2023 at 01:56:03PM +0900, Shunsuke Mie wrote:
+> Hi Vaishnav,
 > 
-> I have this series queued for the next tcg pull.
-
-Oh I didn't noticed, thanks!
-
-My preference would be v2, which Claudio already
-reviewed and tested:
-https://lore.kernel.org/qemu-devel/20231003123026.99229-1-philmd@linaro.org/
-
+> On 2023/09/26 21:40, Vaishnav Achath wrote:
+> > Hi Kishon, all,
+> > 
+> > On 26/09/23 15:17, Shunsuke Mie wrote:
+> > > On 2023/09/21 18:11, Kishon Vijay Abraham I wrote:
+> > > > +Vaishnav
+> > > > 
+> > > > Hi Shunsuke,
+> > > > 
+> > > > On 8/18/2023 7:16 PM, Shunsuke Mie wrote:
+> > > > > Hi all,
+> > > > > 
+> > > > > We are proposing to add a new test syste to Linux for PCIe Endpoint. That
+> > > > > can be run on QEMU without real hardware. At present, partially we have
+> > > > > confirmed that pci-epf-test is working, but it is not yet complete.
+> > > > > However, we would appreciate your comments on the architecture design.
+> > > > > 
+> > > > > # Background
+> > > > > The background is as follows.
+> > > > > 
+> > > > > PCI Endpoint function driver is implemented using the PCIe Endpoint
+> > > > > framework, but it requires physical boards for testing, and it is difficult
+> > > > > to test sufficiently. In order to find bugs and hardware-dependent
+> > > > > implementations early, continuous testing is required. Since it is
+> > > > > difficult to automate tests that require hardware, this RFC proposes a
+> > > > > virtual environment for testing PCI endpoint function drivers.
+> > > > This would be quite useful and thank you for attempting it! I would like to
+> > > > compare other mechanisms available in-addition to QEMU before going with the
+> > > > QEMU approach.
+> > > I got it. I'll make a table to compare some methods that includes greybus to
+> > > realize this emulation environment.
+> > > 
+> > > 
+> > > Best,
+> > > 
+> > > Shunsuke
+> > > 
+> > > > Though I don't understand this fully, Looking at
+> > > > https://osseu2023.sched.com/event/1OGk8/emulating-devices-in-linux-using-greybus-subsystem-vaishnav-mohandas-achath-texas-instruments, Vaishnav seems to solve the same problem using greybus for multiple type s of devices.
+> > > > 
+> > > > Vaishnav, we'd wait for your OSS presentation but do you have any initial
+> > > > thoughts on how greybus could be used to test PCIe endpoint drivers?
+> > > > 
+> > Apologies for the delay, I don't think greybus can be used for PCIe testing as
+> > there is no greybus equivalent for PCIe[1], it can only be used for relatively
+> > simpler devices today, I guess roadtest(UML based)[2] could be an alternative in
+> > this case.
+> 
+> Thank you for your comment.
+> 
+> To my understanding, the roadtest uses UML and it interact with hardware
+> model written in python to do testing. This would be grate for automated
+> testing to test drivers and subsystems.
+> 
+> For this PCIe endpoint, I think we need to hosts, one that works as a PCIe
+> endpoint and one that is a PCIe Root Complex to it. Is it possible to
+> realize the system?
+> like:
+> UML + PCIe endpoint function driver <-> python HW model (PCI Endpoint
+> controller) <-> UML + pci driver for the function
+> 
+> 
+> As another option, I'm considering the feasibility of dummy PCIe EPC driver.
+> It works as a PCIe EPC device in kernel and show pci device according to the
+> PCIe endpoint function driver to the same host. so It could be realize a
+> single host and test the function driver.
+> 
+> 
+> Best,
+> 
+> Shunsuke
+> 
+> > 1 -
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/staging/greybus
+> > 2 - https://lore.kernel.org/lkml/YjN1ksNGujV611Ka@sirena.org.uk/
+> > 
+> > Thanks and Regards,
+> > Vaishnav
+> > 
+> > > > Thanks,
+> > > > Kishon
+> > > > 
+> > > > > # Architecture
+> > > > > The overview of the architecture is as follows.
+> > > > > 
+> > > > >     Guest 1                        Guest 2
+> > > > > +-------------------------+    +----------------------------+
+> > > > > | Linux kernel            |    | Linux kernel               |
+> > > > > |                         |    |                            |
+> > > > > | PCI EP function driver  |    |                            |
+> > > > > | (e.g. pci-epf-test)     |    |                            |
+> > > > > |-------------------------|    | PCI Device Driver          |
+> > > > > | (2) QEMU EPC Driver     |    | (e.g. pci_endpoint_test)   |
+> > > > > +-------------------------+    +----------------------------+
+> > > > > +-------------------------+    +----------------------------+
+> > > > > | QEMU                    |    | QEMU                       |
+> > > > > |-------------------------|    |----------------------------|
+> > > > > | (1) QEMU PCI EPC Device *----* (3) QEMU EPF Bridge Device |
+> > > > > +-------------------------+    +----------------------------+
+> > > > > 
+> > > > > At present, it is designed to work guests only on the same host, and
+> > > > > communication is done through Unix domain sockets.
+> > > > > 
+> > > > > The three parts shown in the figure were introduced this time.
+> > > > > 
+> > > > > (1) QEMU PCI Endpoint Controller(EPC) Device
+> > > > > PCI Endpoint Controller implemented as QEMU PCI device.
+> > > > > (2) QEMU PCI Endpoint Controller(EPC) Driver
+> > > > > Linux kernel driver that drives the device (1). It registers a epc device
+> > > > > to linux kernel and handling each operations for the epc device.
+> > > > > (3) QEMU PCI Endpoint function(EPF) Bridge Device
+> > > > > QEMU PCI device that cooperates with (1) and performs accesses to pci
+> > > > > configuration space, BAR and memory space to communicate each guests, and
+> > > > > generates interruptions to the guest 1.
+> > > > > 
+> > > > > Each projects are:
+> > > > > (1), (3) https://github.com/ShunsukeMie/qemu/tree/epf-bridge/v1
+> > > > > <https://github.com/ShunsukeMie/qemu/tree/epf-bridge/v1>
+> > > > > files: hw/misc/{qemu-epc.{c,h}, epf-bridge.c}
+> > > > > (2) https://github.com/ShunsukeMie/linux-virtio-rdma/tree/qemu-epc
+> > > > > <https://github.com/ShunsukeMie/linux-virtio-rdma/tree/qemu-epc>
+> > > > > files: drivers/pci/controller/pcie-qemu-ep.c
+> > > > > 
+> > > > > # Protocol
+> > > > > 
+> > > > > PCI, PCIe has a layer structure that includes Physical, Data Lane and
+> > > > > Transaction. The communicates between the bridge(3) and controller (1)
+> > > > > mimic the Transaction. Specifically, a protocol is implemented for
+> > > > > exchanging fd for communication protocol version check and communication,
+> > > > > in addition to the interaction equivalent to PCIe Transaction Layer Packet
+> > > > > (Read and Write of I/O, Memory, Configuration space and Message). In my
+> > > > > mind, we need to discuss the communication mor.
+> > > > > 
+> > > > > We also are planning to post the patch set after the code is organized and
+> > > > > the protocol discussion is matured.
+> > > > > 
+> > > > > Best regards,
+> > > > > Shunsuke
 
