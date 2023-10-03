@@ -2,44 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6258A7B6FA1
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:24:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E05D07B6E1A
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 18:09:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnj74-0004sR-Uy; Tue, 03 Oct 2023 13:23:14 -0400
+	id 1qnhwr-000496-L0; Tue, 03 Oct 2023 12:08:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qnj72-0004s7-HK
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:23:12 -0400
-Received: from mail-b.sr.ht ([173.195.146.151])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhwm-00048w-Qp
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:08:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qnj70-0005gH-MK
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:23:12 -0400
-Authentication-Results: mail-b.sr.ht; dkim=none 
-Received: from git.sr.ht (unknown [173.195.146.142])
- by mail-b.sr.ht (Postfix) with ESMTPSA id AAEED11EEFB;
- Tue,  3 Oct 2023 17:23:08 +0000 (UTC)
-From: ~h0lyalg0rithm <h0lyalg0rithm@git.sr.ht>
-Date: Tue, 03 Oct 2023 14:45:14 +0200
-Subject: [PATCH qemu 1/1] Switch memory management calls to new coding
- conventions
-Message-ID: <169635378817.28428.8916197505999208589-1@git.sr.ht>
-X-Mailer: git.sr.ht
-In-Reply-To: <169635378817.28428.8916197505999208589-0@git.sr.ht>
-To: qemu-devel@nongnu.org
-Cc: trivial@nongnu.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhwk-0000DB-OC
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:08:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696349309;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NIBa9W8WdALcKcmwXTyrhOLzyXyfazMTmfvDXSnyXdo=;
+ b=BnsUJ6r12aCzRmKBP1mwHQ2U7nhmqt0pYOuzTAHuH88A38Fe52O0Co7fV/HdFxS+/rJpqA
+ syrAdopROYWV2joBBYjZCriglirizZMYv41hTb8BxxqqWgYhVgzuzJZHFE40JOfoUrIkCu
+ 45z1e0cBZ/KH+h4pA9s6SUDWrux3/1Y=
+Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
+ [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-679-lks599UIOleZaNJXWYVd8Q-1; Tue, 03 Oct 2023 12:08:23 -0400
+X-MC-Unique: lks599UIOleZaNJXWYVd8Q-1
+Received: by mail-vs1-f70.google.com with SMTP id
+ ada2fe7eead31-452c988b8e7so515531137.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 09:08:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696349302; x=1696954102;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NIBa9W8WdALcKcmwXTyrhOLzyXyfazMTmfvDXSnyXdo=;
+ b=j2g2Q0zBmr9T6xd6WkdnOLvCbjidz5fGPHxbi+9ycttZgTdiVqLUVaiP8Vh9Zz2/17
+ e6aQ9SQIJNMelAQsql6uLkeV5N5gXrNPk0bR06KnShB+gCXJKTeZSi1n5MrDowkoi5lO
+ 8vGTrkRFWHMz5US/Ae4eN2bJ9SAZ56k1y6LJo8O5AQPU68tY18opfebWSVq6a3L1MrY/
+ oA67tcxLPvq1CvzBwjPHQxZzOqvO6cnAqP+Nbvucf9XWtKqlMoWQEKJSt0yJIpeh+qwV
+ Zu+OcAcxWhwveqEADd+zitQIDvnwgXEniaXpMxv70KLqOi5Gc133jPHmq8GoLJDNNwwp
+ udcA==
+X-Gm-Message-State: AOJu0Yy38RwYo2O+8OkYizD2UYm9D1a13wQvisbleUyDiYpCM1IaoGld
+ EK1fJZWiEoe6BwNDi5sqopA3vDkxK+PtbADn8Y3eftXxGHFOn4YhddVovKZywCOPEt3oJ5nCfiP
+ ecd1RRfkehEfMU3c=
+X-Received: by 2002:a05:6102:34f4:b0:452:819b:f7f5 with SMTP id
+ bi20-20020a05610234f400b00452819bf7f5mr13183776vsb.25.1696349301086; 
+ Tue, 03 Oct 2023 09:08:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFdMHRycDHsrYUZFS1LY3jP0Ljs6Tnvcc/vzghJnThgp/UQ/NXTnh9ajLI6Nfh035PhtE8W9w==
+X-Received: by 2002:a05:6102:34f4:b0:452:819b:f7f5 with SMTP id
+ bi20-20020a05610234f400b00452819bf7f5mr13183706vsb.25.1696349299361; 
+ Tue, 03 Oct 2023 09:08:19 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ t5-20020a05620a004500b007742ad3047asm567118qkt.54.2023.10.03.09.08.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Oct 2023 09:08:18 -0700 (PDT)
+Message-ID: <c030fcde-f82b-b174-6555-efd25896e90e@redhat.com>
+Date: Tue, 3 Oct 2023 18:08:16 +0200
 MIME-Version: 1.0
-Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
- helo=mail-b.sr.ht
-X-Spam_score_int: 18
-X-Spam_score: 1.8
-X-Spam_bar: +
-X-Spam_report: (1.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
- FREEMAIL_FORGED_REPLYTO=2.095, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v3 15/15] vfio/common: Move legacy VFIO backend code into
+ separate container.c
+Content-Language: en-US
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, zhenzhong.duan@intel.com, alex.williamson@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com
+References: <20231003101530.288864-1-eric.auger@redhat.com>
+ <20231003101530.288864-16-eric.auger@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231003101530.288864-16-eric.auger@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -31
+X-Spam_score: -3.2
+X-Spam_bar: ---
+X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -52,108 +103,36 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: ~h0lyalg0rithm <surajshirvankar@gmail.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Suraj Shirvankar <surajshirvankar@gmail.com>
+On 10/3/23 12:14, Eric Auger wrote:
+> From: Yi Liu <yi.l.liu@intel.com>
+> 
+> Move all the code really dependent on the legacy VFIO container/group
+> into a separate file: container.c. What does remain in common.c is
+> the code related to VFIOAddressSpace, MemoryListeners, migration and
+> all other general operations.
+> 
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
----
- contrib/elf2dmp/addrspace.c | 4 ++--
- contrib/elf2dmp/main.c      | 4 ++--
- contrib/elf2dmp/pdb.c       | 4 ++--
- contrib/elf2dmp/qemu_elf.c  | 4 ++--
- 4 files changed, 8 insertions(+), 8 deletions(-)
+We have lost :
 
-diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
-index 64b5d680ad..3bfbb5093c 100644
---- a/contrib/elf2dmp/addrspace.c
-+++ b/contrib/elf2dmp/addrspace.c
-@@ -72,7 +72,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
-         }
-     }
-=20
--    ps->block =3D malloc(sizeof(*ps->block) * ps->block_nr);
-+    ps->block =3D g_new(struct pa_block, ps->block_nr);
-     if (!ps->block) {
-         return 1;
-     }
-@@ -97,7 +97,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
- void pa_space_destroy(struct pa_space *ps)
- {
-     ps->block_nr =3D 0;
--    free(ps->block);
-+    g_free(ps->block);
- }
-=20
- void va_space_set_dtb(struct va_space *vs, uint64_t dtb)
-diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
-index 5db163bdbe..97baf0c0c1 100644
---- a/contrib/elf2dmp/main.c
-+++ b/contrib/elf2dmp/main.c
-@@ -120,14 +120,14 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, s=
-truct pdb_reader *pdb,
-         }
-     }
-=20
--    kdbg =3D malloc(kdbg_hdr.Size);
-+    kdbg =3D g_malloc(kdbg_hdr.Size);
-     if (!kdbg) {
-         return NULL;
-     }
-=20
-     if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
-         eprintf("Failed to extract entire KDBG\n");
--        free(kdbg);
-+        g_free(kdbg);
-         return NULL;
-     }
-=20
-diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
-index 6ca5086f02..625001d1cf 100644
---- a/contrib/elf2dmp/pdb.c
-+++ b/contrib/elf2dmp/pdb.c
-@@ -116,7 +116,7 @@ static void *pdb_ds_read(const PDB_DS_HEADER *header,
-=20
-     nBlocks =3D (size + header->block_size - 1) / header->block_size;
-=20
--    buffer =3D malloc(nBlocks * header->block_size);
-+    buffer =3D g_malloc(nBlocks * header->block_size);
-     if (!buffer) {
-         return NULL;
-     }
-@@ -201,7 +201,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
-     return 0;
-=20
- out_symbols:
--    free(symbols);
-+    g_free(symbols);
-=20
-     return err;
- }
-diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
-index de6ad744c6..9aa8715108 100644
---- a/contrib/elf2dmp/qemu_elf.c
-+++ b/contrib/elf2dmp/qemu_elf.c
-@@ -94,7 +94,7 @@ static int init_states(QEMU_Elf *qe)
-=20
-     printf("%zu CPU states has been found\n", cpu_nr);
-=20
--    qe->state =3D malloc(sizeof(*qe->state) * cpu_nr);
-+    qe->state =3D g_new(QEMUCPUState*, cpu_nr);
-     if (!qe->state) {
-         return 1;
-     }
-@@ -115,7 +115,7 @@ static int init_states(QEMU_Elf *qe)
-=20
- static void exit_states(QEMU_Elf *qe)
- {
--    free(qe->state);
-+    g_free(qe->state);
- }
-=20
- static bool check_ehdr(QEMU_Elf *qe)
---=20
-2.38.5
+-/*
+- * vfio_attach_device: attach a device to a security context
+- * @name and @vbasedev->name are likely to be different depending
+- * on the type of the device, hence the need for passing @name
+- */
+
+with that back,
+
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
+
 
