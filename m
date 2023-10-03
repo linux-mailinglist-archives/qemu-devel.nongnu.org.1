@@ -2,61 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD4E7B6929
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE657B6922
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 14:37:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnedM-0006cs-Qd; Tue, 03 Oct 2023 08:36:16 -0400
+	id 1qnedW-0006kg-V6; Tue, 03 Oct 2023 08:36:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qnedJ-0006Zs-Lj
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:36:14 -0400
+ id 1qnedV-0006kG-GI
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:36:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qnedI-0000FU-6g
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:36:13 -0400
+ id 1qnedT-0000Li-VJ
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 08:36:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696336570;
+ s=mimecast20190719; t=1696336583;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=DvS19ktAf+CvLzn5plzs+/OhAtpzncaQg9JZt2Lgibw=;
- b=eR1cI2HucZYEUkILypLLQo3xwwuBROW87Pxa1fYu4fmZ2q5XInchRQPl4lb2YnuAYJTHyV
- 9EMM5FpWNpxtlBjLPXRY6sg1njU7Nj7wwJgZSBZGuPKbm4wEK6SQe//3xni96tmbgOxEcF
- iySt7H8BQg/3gBSe4Al0ydyBc3/LC3s=
+ bh=HbKmTKt7zzAfu7d4R0MM9/iWqptgI4rr13HDxIYcuuY=;
+ b=dTugBiq04lA3EhRP4JxOB/PgyBwZxto4uq/YKsRUlrzacyGi7H6JBBvRCPYjhLuUeCdIhH
+ af6hqieZMsx/ghgXalAeBw/fLLn26MvbEBFLxG00x4M8a9Lf6CBcj0CGT1dV379jEQt5bh
+ XZ1UAX8EhHkExV1nv4J+KGO0C+2BpeA=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-341-N4bz85ETOhS0nc2pcdoZiQ-1; Tue, 03 Oct 2023 08:36:08 -0400
-X-MC-Unique: N4bz85ETOhS0nc2pcdoZiQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-133-9s340gs_O-KvCSiqPchQ3A-1; Tue, 03 Oct 2023 08:36:12 -0400
+X-MC-Unique: 9s340gs_O-KvCSiqPchQ3A-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BB0781C06515
- for <qemu-devel@nongnu.org>; Tue,  3 Oct 2023 12:36:07 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2CDE1C0651B;
+ Tue,  3 Oct 2023 12:36:11 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 099A1140E953;
- Tue,  3 Oct 2023 12:36:06 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 82309402723;
+ Tue,  3 Oct 2023 12:36:10 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Laszlo Ersek <lersek@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PULL 05/13] ui/console: sanitize search in
- qemu_graphic_console_is_multihead()
-Date: Tue,  3 Oct 2023 16:35:34 +0400
-Message-ID: <20231003123543.1360795-6-marcandre.lureau@redhat.com>
+Cc: stefanha@redhat.com, Ken Xue <Ken.Xue@amd.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PULL 06/13] ui: add XBGR8888 and ABGR8888 in drm_format_pixman_map
+Date: Tue,  3 Oct 2023 16:35:35 +0400
+Message-ID: <20231003123543.1360795-7-marcandre.lureau@redhat.com>
 In-Reply-To: <20231003123543.1360795-1-marcandre.lureau@redhat.com>
 References: <20231003123543.1360795-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.129.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
@@ -82,60 +81,59 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Laszlo Ersek <lersek@redhat.com>
+From: Ken Xue <Ken.Xue@amd.com>
 
-qemu_graphic_console_is_multihead() declares the graphical console "c" a
-"multihead" console if there are two different graphical consoles in the
-system that (a) both reference "c->device", and (b) have different
-"c->head" numbers. In effect, if at least two graphical consoles exist
-that are different heads of the same device that underlies "c". In fact,
-"c" may be one of these two graphical consoles, or "c" may differ from
-both of those consoles (in case "c->device" has at least three heads).
+Android uses XBGR8888 and ABGR8888 as default scanout buffer, But qemu
+does not support them for qemu_pixman_to_drm_format conversion within
+virtio_gpu_create_dmabuf for virtio gpu.
 
-The loop currently uses this awkward "two different consoles" approach
-because the function used not to have access to "c", only to "c->device",
-which didn't allow for fetching (and comparing) "c->head". But, we've
-changed that in the last patch; we now pass all of "c" to
-qemu_graphic_console_is_multihead().
+so, add those 2 formats into drm_format_pixman_map.
 
-Thus, look for the *first* (and possibly *only*) graphical console, if
-any, that refers to the same "device" as "c", but by a different "head"
-number.
-
-Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com> (odd fixer:Graphics)
-Cc: Gerd Hoffmann <kraxel@redhat.com> (odd fixer:Graphics)
-Signed-off-by: Laszlo Ersek <lersek@redhat.com>
+Signed-off-by: Ken Xue <Ken.Xue@amd.com>
 Reviewed-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Message-ID: <20230913144959.41891-5-lersek@redhat.com>
+Message-ID: <20230914013151.805363-1-Ken.Xue@amd.com>
 ---
- ui/console.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ include/ui/qemu-pixman.h | 4 ++++
+ ui/qemu-pixman.c         | 4 +++-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/ui/console.c b/ui/console.c
-index 65463d84a7..8ee66d10c5 100644
---- a/ui/console.c
-+++ b/ui/console.c
-@@ -1437,8 +1437,6 @@ bool qemu_console_is_gl_blocked(QemuConsole *con)
- static bool qemu_graphic_console_is_multihead(QemuGraphicConsole *c)
- {
-     QemuConsole *con;
--    uint32_t f = 0xffffffff;
--    uint32_t h;
+diff --git a/include/ui/qemu-pixman.h b/include/ui/qemu-pixman.h
+index 51f8709327..e587c48b1f 100644
+--- a/include/ui/qemu-pixman.h
++++ b/include/ui/qemu-pixman.h
+@@ -32,6 +32,8 @@
+ # define PIXMAN_LE_r8g8b8     PIXMAN_b8g8r8
+ # define PIXMAN_LE_a8r8g8b8   PIXMAN_b8g8r8a8
+ # define PIXMAN_LE_x8r8g8b8   PIXMAN_b8g8r8x8
++# define PIXMAN_LE_a8b8g8r8   PIXMAN_r8g8b8a8
++# define PIXMAN_LE_x8b8g8r8   PIXMAN_r8g8b8x8
+ #else
+ # define PIXMAN_BE_r8g8b8     PIXMAN_b8g8r8
+ # define PIXMAN_BE_x8r8g8b8   PIXMAN_b8g8r8x8
+@@ -45,6 +47,8 @@
+ # define PIXMAN_LE_r8g8b8     PIXMAN_r8g8b8
+ # define PIXMAN_LE_a8r8g8b8   PIXMAN_a8r8g8b8
+ # define PIXMAN_LE_x8r8g8b8   PIXMAN_x8r8g8b8
++# define PIXMAN_LE_a8b8g8r8   PIXMAN_a8b8g8r8
++# define PIXMAN_LE_x8b8g8r8   PIXMAN_x8b8g8r8
+ #endif
  
-     QTAILQ_FOREACH(con, &consoles, next) {
-         QemuGraphicConsole *candidate;
-@@ -1452,10 +1450,7 @@ static bool qemu_graphic_console_is_multihead(QemuGraphicConsole *c)
-             continue;
-         }
+ #define QEMU_PIXMAN_COLOR(r, g, b)                                               \
+diff --git a/ui/qemu-pixman.c b/ui/qemu-pixman.c
+index be00a96340..b43ec38bf0 100644
+--- a/ui/qemu-pixman.c
++++ b/ui/qemu-pixman.c
+@@ -96,7 +96,9 @@ static const struct {
+ } drm_format_pixman_map[] = {
+     { DRM_FORMAT_RGB888,   PIXMAN_LE_r8g8b8   },
+     { DRM_FORMAT_ARGB8888, PIXMAN_LE_a8r8g8b8 },
+-    { DRM_FORMAT_XRGB8888, PIXMAN_LE_x8r8g8b8 }
++    { DRM_FORMAT_XRGB8888, PIXMAN_LE_x8r8g8b8 },
++    { DRM_FORMAT_XBGR8888, PIXMAN_LE_x8b8g8r8 },
++    { DRM_FORMAT_ABGR8888, PIXMAN_LE_a8b8g8r8 },
+ };
  
--        h = candidate->head;
--        if (f == 0xffffffff) {
--            f = h;
--        } else if (h != f) {
-+        if (candidate->head != c->head) {
-             return true;
-         }
-     }
+ pixman_format_code_t qemu_drm_format_to_pixman(uint32_t drm_format)
 -- 
 2.41.0
 
