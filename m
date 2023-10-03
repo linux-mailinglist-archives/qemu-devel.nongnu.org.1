@@ -2,76 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193507B751D
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:37:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED987B755E
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:43:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnox2-0001io-0V; Tue, 03 Oct 2023 19:37:16 -0400
+	id 1qnp1c-0008Ne-F0; Tue, 03 Oct 2023 19:42:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnoww-0001UC-WD
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:37:11 -0400
-Received: from mail-ej1-x635.google.com ([2a00:1450:4864:20::635])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnp1U-0008DT-G2
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:41:55 -0400
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnowv-0007n3-1i
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:37:10 -0400
-Received: by mail-ej1-x635.google.com with SMTP id
- a640c23a62f3a-9adb9fa7200so75976466b.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 16:37:08 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnp1S-0001J1-BE
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:41:52 -0400
+Received: by mail-ej1-x632.google.com with SMTP id
+ a640c23a62f3a-9936b3d0286so273225766b.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 16:41:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696376226; x=1696981026; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696376509; x=1696981309; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=72vQoCi+4+Rpz8kpqWgejP/tRbOJ9Kf0G55V/PnvpAg=;
- b=andznbEkO/jDIzsLV7U7TY8nB3GPyMQnRs5E2Y5stOkE5I2eb/ao++bvUSHhiDAEJD
- C88ucArznRKnypXn1VvtgW6QVgZqYY9zVLXoHkFh3RYS+ZHD1GAnKA6UPxp1+UXJwVLv
- e1INjZpOVk9gc3sZXTN1QxdSG/uUH5xPRD/UioaC+K4t/V3wqD0dh5fDHzJt8gEzfgz6
- 6Ele2P9cmiZDuYFopyBSMzZ9lrthkfLIcsM4zvV9A39RwDpVeb+dy+jWyGyuY8XkMeNO
- PqZfmWEbrcECyx9OQxbpb1REH0ssmej22ws4hJj+kjaFbTcRjFE5mAcbtgqQmWP1rqGS
- dxrw==
+ bh=g2kKssY1K4Voz5YS0eLOYx2ENbJBdfnUhIYUd/TkOAM=;
+ b=KjTZMQc3dK6bAEY3pomxpz11OwEzuav4KmAzMzAp7gyDVCV8zoGpOeFj/7qUV1a/pP
+ jgD4+8hU33ZfCu2Hpc/RR1YkATVh2ySA2LPBS3uyLlnws27zThLUD+cAbGoQfWTMYP/c
+ VmLQLI9cSd1mNgpUmFII6d1jFMbSZxY7+FaGIUddXt3SRiuDnemGxNDL6BOEpNYXff3g
+ ryKIar4ReZ+T0VzCgwR4crfE9m2Wwm1PKMB3FPlz8Va8ROolJ4XoTdteMdhOcmmyzEy8
+ cODPD7jOF3EBUNAP5S0LQMK1H+/UmZFG4xAVHmuSJuHerMVxsWQmJg+0MWN5GWFVvqww
+ taLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696376226; x=1696981026;
+ d=1e100.net; s=20230601; t=1696376509; x=1696981309;
  h=content-transfer-encoding:mime-version:message-id:references
  :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=72vQoCi+4+Rpz8kpqWgejP/tRbOJ9Kf0G55V/PnvpAg=;
- b=wjOpXnAH6Sx2K2ldz+l6OYQvlfXZOhfDfQiQYlVyHszlwWPgLIhb7zWgLQOro0Et+0
- U9h9+GDzPo8hAevFCJo9ZLdATMcvGF4wbxYJ01TFsAF+r+QVn/CdkzM6m9c55tqZfela
- A2KBnGVJT3XDGKCOxKxMl55b8ACZBUuRtVGhkQGMs0yo94921sJk+g496wc4bd8UWpEr
- 54l6OXpenPB0HmDJ0IbuhaOxfqkxzR91hlD20MZIw5+2A9Pqh0INHe5wOwzpUeURBzca
- KJYe3vMOtwZIj6hpry4DosEpbmVfKY6D/oih4f4I/Rpmmp5b9sOqN6B/5cVNKslWDRCm
- uOVA==
-X-Gm-Message-State: AOJu0YwTcrXfhkSIAFUjp1uDE1sWlsL1FLQF1DJKRgEg1tTKTXn2P2qn
- 6BnRiYKmS8mT2g4x8HTo7x5kCuzfWME=
-X-Google-Smtp-Source: AGHT+IHNORQmAZV5YJfaq40pPl1WWubYCf0HluGXuJkoejXvOCJBoM0WPXklqYdVqFqrcAfe962pKQ==
-X-Received: by 2002:a17:907:728e:b0:9ae:5f52:a491 with SMTP id
- dt14-20020a170907728e00b009ae5f52a491mr3420025ejc.8.1696376226503; 
- Tue, 03 Oct 2023 16:37:06 -0700 (PDT)
+ bh=g2kKssY1K4Voz5YS0eLOYx2ENbJBdfnUhIYUd/TkOAM=;
+ b=OG1ze0c3iDpP5GalknnXv8+a2L/gbdE6LJlgikQ+eqGRgyCnSVehiNCdYCgB6QKhU+
+ EKtDvYMsRx/0TrBJz4AuKbYV0vEr4TSetESw7/dRmUveDXj6JVz6DZpogNCjifM95oQ1
+ TGsFz6psgi/EU5DQcxKwn+sE8ew1GDcUk9yZHPblL2Z00mdUggE8aa2fwr6XMNiSaDnD
+ e8nsukZTUiEixFQmNY3m8Yxm3Rm0L1wrVIFtDOfuc1T2iW+BRyey8fghIwXF9/pKlHFE
+ pu1pze5ULAp//TMZaXfBroVOvbdQDVTosvmFrX4Wtvt8kfssPd4Rk6XYG3MmB3beD3d6
+ d8wA==
+X-Gm-Message-State: AOJu0Yxerj7uT4G7wMInuZk8Aie17bsdIUYZb98l9tSlKEutvUwCNiu9
+ OEQaKyx4tJp31hPRQvoR4Mc=
+X-Google-Smtp-Source: AGHT+IHlmWknz+zqY0gl9Hvs0x5hm0g0VsonMm7uGI4mPXmvv2uWfWsgs+3Zs8N8BYwkAogY1rF6yQ==
+X-Received: by 2002:a17:907:7614:b0:9ae:2438:d6d with SMTP id
+ jx20-20020a170907761400b009ae24380d6dmr582049ejc.51.1696376508641; 
+ Tue, 03 Oct 2023 16:41:48 -0700 (PDT)
 Received: from ?IPv6:::1?
  (p200300faaf2af200c1d1cd88f0d7c31c.dip0.t-ipconnect.de.
  [2003:fa:af2a:f200:c1d1:cd88:f0d7:c31c])
  by smtp.gmail.com with ESMTPSA id
- gv2-20020a170906f10200b009828e26e519sm1745518ejb.122.2023.10.03.16.37.05
+ a18-20020a1709064a5200b009932337747esm1776349ejv.86.2023.10.03.16.41.48
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 16:37:06 -0700 (PDT)
-Date: Tue, 03 Oct 2023 23:36:58 +0000
+ Tue, 03 Oct 2023 16:41:48 -0700 (PDT)
+Date: Tue, 03 Oct 2023 23:41:39 +0000
 From: Bernhard Beschow <shentey@gmail.com>
-To: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
-CC: berrange@redhat.com, balaton@eik.bme.hu,
- Martin Kletzander <mkletzan@redhat.com>
-Subject: Re: [PATCH v3 08/14] Introduce machine property "audiodev"
-In-Reply-To: <20230929085112.983957-9-pbonzini@redhat.com>
-References: <20230929085112.983957-1-pbonzini@redhat.com>
- <20230929085112.983957-9-pbonzini@redhat.com>
-Message-ID: <2F88E9A1-09DE-444A-877A-4D911420E6BC@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v2 3/5] hw/i386/apic: Simplify apic_get_class()
+In-Reply-To: <20231003082728.83496-4-philmd@linaro.org>
+References: <20231003082728.83496-1-philmd@linaro.org>
+ <20231003082728.83496-4-philmd@linaro.org>
+Message-ID: <2D436D7B-D6AA-4825-B2B4-0F9639CA2665@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::635;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x635.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::632;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x632.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -96,130 +101,100 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 
-Am 29=2E September 2023 08:51:01 UTC schrieb Paolo Bonzini <pbonzini@redha=
-t=2Ecom>:
->From: Martin Kletzander <mkletzan@redhat=2Ecom>
->
->Many machine types have default audio devices with no way to set the unde=
-rlying
->audiodev=2E  Instead of adding an option for each and every one of them, =
-this new
->property can be used as a default during machine initialisation when crea=
-ting
->such devices=2E
->
->Signed-off-by: Martin Kletzander <mkletzan@redhat=2Ecom>
->[Make the property optional, instead of including it in all machines=2E -=
- Paolo]
->Signed-off-by: Paolo Bonzini <pbonzini@redhat=2Ecom>
->---
-> hw/core/machine=2Ec   | 33 +++++++++++++++++++++++++++++++++
-> include/hw/boards=2Eh |  9 +++++++++
-> 2 files changed, 42 insertions(+)
->
->diff --git a/hw/core/machine=2Ec b/hw/core/machine=2Ec
->index cb38b8cf4cb=2E=2E6aa49c8d4f1 100644
->--- a/hw/core/machine=2Ec
->+++ b/hw/core/machine=2Ec
->@@ -39,6 +39,7 @@
-> #include "hw/virtio/virtio=2Eh"
-> #include "hw/virtio/virtio-pci=2Eh"
-> #include "hw/virtio/virtio-net=2Eh"
->+#include "audio/audio=2Eh"
->=20
-> GlobalProperty hw_compat_8_1[] =3D {};
-> const size_t hw_compat_8_1_len =3D G_N_ELEMENTS(hw_compat_8_1);
->@@ -686,6 +687,26 @@ bool device_type_is_dynamic_sysbus(MachineClass *mc,=
- const char *type)
->     return allowed;
-> }
->=20
->+static char *machine_get_audiodev(Object *obj, Error **errp)
->+{
->+    MachineState *ms =3D MACHINE(obj);
->+
->+    return g_strdup(ms->audiodev);
->+}
->+
->+static void machine_set_audiodev(Object *obj, const char *value,
->+                                 Error **errp)
->+{
->+    MachineState *ms =3D MACHINE(obj);
->+
->+    if (!audio_state_by_name(value, errp)) {
->+        return;
->+    }
->+
->+    g_free(ms->audiodev);
->+    ms->audiodev =3D g_strdup(value);
->+}
->+
-> HotpluggableCPUList *machine_query_hotpluggable_cpus(MachineState *machi=
-ne)
-> {
->     int i;
->@@ -931,6 +952,17 @@ out_free:
->     qapi_free_BootConfiguration(config);
-> }
->=20
->+void machine_add_audiodev_property(MachineClass *mc)
->+{
->+    ObjectClass *oc =3D OBJECT_CLASS(mc);
->+
->+    object_class_property_add_str(oc, "audiodev",
->+                                  machine_get_audiodev,
->+                                  machine_set_audiodev);
->+    object_class_property_set_description(oc, "audiodev",
->+                                          "Audiodev to use for default m=
-achine devices");
->+}
->+
-> static void machine_class_init(ObjectClass *oc, void *data)
-> {
->     MachineClass *mc =3D MACHINE_CLASS(oc);
->@@ -1136,6 +1168,7 @@ static void machine_finalize(Object *obj)
->     g_free(ms->device_memory);
->     g_free(ms->nvdimms_state);
->     g_free(ms->numa_state);
->+    g_free(ms->audiodev);
-> }
->=20
-> bool machine_usb(MachineState *machine)
->diff --git a/include/hw/boards=2Eh b/include/hw/boards=2Eh
->index 6c67af196a3=2E=2E55a64a13fdf 100644
->--- a/include/hw/boards=2Eh
->+++ b/include/hw/boards=2Eh
->@@ -24,6 +24,7 @@ OBJECT_DECLARE_TYPE(MachineState, MachineClass, MACHINE=
-)
->=20
-> extern MachineState *current_machine;
->=20
->+void machine_add_audiodev_property(MachineClass *mc);
+Am 3=2E Oktober 2023 08:27:26 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <p=
+hilmd@linaro=2Eorg>:
+>Now than apic_get_class() can not fail, remove its
 
-I'm a bit late now since the code is already in master but I wonder if thi=
-s function should've been named machine_*class_*add_audiodev_property()=2E =
-At least similar functions in this header suggest so=2E
+s/than/that/
+s/can not/can't/ (which is stylistically consistent with "neither" below)
 
 Best regards,
 Bernhard
 
-> void machine_run_board_init(MachineState *machine, const char *mem_path,=
- Error **errp);
-> bool machine_usb(MachineState *machine);
-> int machine_phandle_start(MachineState *machine);
->@@ -358,6 +359,14 @@ struct MachineState {
->     MemoryRegion *ram;
->     DeviceMemoryState *device_memory;
+>Error** parameter=2E It can't return NULL neither, so
+>simplify x86_cpu_apic_create()=2E
+>
+>Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>---
+> include/hw/i386/apic_internal=2Eh | 2 +-
+> hw/i386/amd_iommu=2Ec             | 2 +-
+> hw/i386/intel_iommu=2Ec           | 4 ++--
+> target/i386/cpu-sysemu=2Ec        | 4 ++--
+> 4 files changed, 6 insertions(+), 6 deletions(-)
+>
+>diff --git a/include/hw/i386/apic_internal=2Eh b/include/hw/i386/apic_int=
+ernal=2Eh
+>index 5f2ba24bfc=2E=2Ee61ad04769 100644
+>--- a/include/hw/i386/apic_internal=2Eh
+>+++ b/include/hw/i386/apic_internal=2Eh
+>@@ -225,6 +225,6 @@ static inline int apic_get_bit(uint32_t *tab, int ind=
+ex)
+>     return !!(tab[i] & mask);
+> }
 >=20
->+    /*
->+     * Included in MachineState for simplicity, but not supported
->+     * unless machine_add_audiodev_property is called=2E  Boards
->+     * that have embedded audio devices can call it from the
->+     * machine init function and forward the property to the device=2E
->+     */
->+    char *audiodev;
->+
->     ram_addr_t ram_size;
->     ram_addr_t maxram_size;
->     uint64_t   ram_slots;
+>-APICCommonClass *apic_get_class(Error **errp);
+>+APICCommonClass *apic_get_class(void);
+>=20
+> #endif /* QEMU_APIC_INTERNAL_H */
+>diff --git a/hw/i386/amd_iommu=2Ec b/hw/i386/amd_iommu=2Ec
+>index c98a3c6e11=2E=2E0a95025ab7 100644
+>--- a/hw/i386/amd_iommu=2Ec
+>+++ b/hw/i386/amd_iommu=2Ec
+>@@ -1368,7 +1368,7 @@ static MemTxResult amdvi_mem_ir_write(void *opaque,=
+ hwaddr addr,
+>         return MEMTX_ERROR;
+>     }
+>=20
+>-    apic_get_class(NULL)->send_msi(&to);
+>+    apic_get_class()->send_msi(&to);
+>=20
+>     trace_amdvi_mem_ir_write(to=2Eaddress, to=2Edata);
+>     return MEMTX_OK;
+>diff --git a/hw/i386/intel_iommu=2Ec b/hw/i386/intel_iommu=2Ec
+>index 2c832ab68b=2E=2Edffe3583bd 100644
+>--- a/hw/i386/intel_iommu=2Ec
+>+++ b/hw/i386/intel_iommu=2Ec
+>@@ -397,7 +397,7 @@ static void vtd_generate_interrupt(IntelIOMMUState *s=
+, hwaddr mesg_addr_reg,
+>=20
+>     trace_vtd_irq_generate(msi=2Eaddress, msi=2Edata);
+>=20
+>-    apic_get_class(NULL)->send_msi(&msi);
+>+    apic_get_class()->send_msi(&msi);
+> }
+>=20
+> /* Generate a fault event to software via MSI if conditions are met=2E
+>@@ -3554,7 +3554,7 @@ static MemTxResult vtd_mem_ir_write(void *opaque, h=
+waddr addr,
+>         return MEMTX_ERROR;
+>     }
+>=20
+>-    apic_get_class(NULL)->send_msi(&to);
+>+    apic_get_class()->send_msi(&to);
+>=20
+>     return MEMTX_OK;
+> }
+>diff --git a/target/i386/cpu-sysemu=2Ec b/target/i386/cpu-sysemu=2Ec
+>index 6a228c9178=2E=2E9038c65267 100644
+>--- a/target/i386/cpu-sysemu=2Ec
+>+++ b/target/i386/cpu-sysemu=2Ec
+>@@ -247,7 +247,7 @@ void x86_cpu_machine_reset_cb(void *opaque)
+>     cpu_reset(CPU(cpu));
+> }
+>=20
+>-APICCommonClass *apic_get_class(Error **errp)
+>+APICCommonClass *apic_get_class(void)
+> {
+>     const char *apic_type =3D "apic";
+>=20
+>@@ -266,7 +266,7 @@ APICCommonClass *apic_get_class(Error **errp)
+> void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+> {
+>     APICCommonState *apic;
+>-    APICCommonClass *apic_class =3D apic_get_class(errp);
+>+    APICCommonClass *apic_class =3D apic_get_class();
+>=20
+>     cpu->apic_state =3D DEVICE(object_new_with_class(OBJECT_CLASS(apic_c=
+lass)));
+>     object_property_add_child(OBJECT(cpu), "lapic",
 
