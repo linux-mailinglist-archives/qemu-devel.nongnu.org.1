@@ -2,31 +2,29 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF707B6841
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:46:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4E47B684B
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:52:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qndr6-00076r-2w; Tue, 03 Oct 2023 07:46:24 -0400
+	id 1qndw5-00087n-8Q; Tue, 03 Oct 2023 07:51:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndr3-00076Q-D1; Tue, 03 Oct 2023 07:46:21 -0400
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qndw1-00086w-HL; Tue, 03 Oct 2023 07:51:29 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndr1-0006Mj-E7; Tue, 03 Oct 2023 07:46:21 -0400
-Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0GHN07wpz67nc4;
- Tue,  3 Oct 2023 19:46:08 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 12:46:16 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 12:46:16 +0100
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
+ (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
+ id 1qndvx-0007Dw-2j; Tue, 03 Oct 2023 07:51:27 -0400
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0GL904xFz6HJZS;
+ Tue,  3 Oct 2023 19:48:32 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 3 Oct
+ 2023 12:51:12 +0100
+Date: Tue, 3 Oct 2023 12:51:11 +0100
+To: Salil Mehta <salil.mehta@huawei.com>
 CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
  <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
  "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
@@ -51,28 +49,25 @@ CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
  "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
  <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
  Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
- AddressSpace
-Thread-Topic: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
- AddressSpace
-Thread-Index: AQHZ8zQ7yGl3U6l090SRw8cLGCyLZ7A2oYUAgAFWSiA=
-Date: Tue, 3 Oct 2023 11:46:16 +0000
-Message-ID: <65a71eabfd054646b069710ccfa9f633@huawei.com>
+Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Message-ID: <20231003125111.00002013@Huawei.com>
+In-Reply-To: <761a05a972ae4aa088b8e984bd89889f@huawei.com>
 References: <20230930001933.2660-1-salil.mehta@huawei.com>
- <20230930001933.2660-9-salil.mehta@huawei.com>
- <20231002172024.000042aa@Huawei.com>
-In-Reply-To: <20231002172024.000042aa@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <20230930001933.2660-2-salil.mehta@huawei.com>
+ <20231002165322.00003a2e@Huawei.com>
+ <761a05a972ae4aa088b8e984bd89889f@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+ envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
 X-Spam_score_int: -41
 X-Spam_score: -4.2
 X-Spam_bar: ----
@@ -91,133 +86,161 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
+Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan,
+On Tue, 3 Oct 2023 12:05:11 +0100
+Salil Mehta <salil.mehta@huawei.com> wrote:
 
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: Monday, October 2, 2023 5:20 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
-> AddressSpace
->=20
-> On Sat, 30 Sep 2023 01:19:31 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > Virtual CPU Hot-unplug leads to unrealization of a CPU object. This als=
-o
-> > involves destruction of the CPU AddressSpace. Add common function to he=
-lp
-> > destroy the CPU AddressSpace.
-> >
-> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
->=20
-> I'm not that familiar with this bit of the code, so no tag, but
-> as far as I can tell from a fairly superficial look, this is good.
+> Hi Jonathan,
+> 
+> > From: Jonathan Cameron <jonathan.cameron@huawei.com>
+> > Sent: Monday, October 2, 2023 4:53 PM
+> > To: Salil Mehta <salil.mehta@huawei.com>
+> > Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
+> > philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
+> > richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev;
+> > david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
+> > oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
+> > will@kernel.org; gshan@redhat.com; rafael@kernel.org;
+> > alex.bennee@linaro.org; linux@armlinux.org.uk;
+> > darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+> > vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+> > miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+> > <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+> > wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+> > maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.com>
+> > Subject: Re: [PATCH V2 01/10] accel/kvm: Extract common KVM vCPU
+> > {creation,parking} code
+> > 
+> > On Sat, 30 Sep 2023 01:19:24 +0100
+> > Salil Mehta <salil.mehta@huawei.com> wrote:
+> >   
+> > > KVM vCPU creation is done once during the initialization of the VM when Qemu
+> > > threads are spawned. This is common to all the architectures.
+> > >
+> > > Hot-unplug of vCPU results in destruction of the vCPU objects in QOM but
+> > > the KVM vCPU objects in the Host KVM are not destroyed and their representative
+> > > KVM vCPU objects/context in Qemu are parked.
+> > >
+> > > Refactor common logic so that some APIs could be reused by vCPU Hotplug code.
+> > >
+> > > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>  
+> > 
+> > Hi Salil,
+> > 
+> > A few trivial things inline, plus a question about why
+> > cpu->cpu_index can now be used but kvm_arch_vcpu_id(cpu);
+> > was previously needed.  
+> 
+> Good point. I used the API because it was returning
+> 'unsigned long' and it was being used across the archs.
+> I thought maybe the size of the index could vary across
+> archs. For example, for PowerPC above API returns vcpu_id
+> which presumably could have different data type than
+> an 'integer'.
+> 
+> But after Alex's comment, I was made to believe that this
+> assumption might not be correct and CPU index is an
+> 'integer' across archs and perhaps semantics of above
+> API is not correct.
+> 
+> But perhaps original code was functionally correct?
 
-Ok no problem. Thanks.
+I wasn't concerned with the type, but rather that the
+value comes from other places than cpu->cpu_index
+on some architectures.
+> 
+> 
+> > >  accel/kvm/kvm-all.c  | 63 +++++++++++++++++++++++++++++++++-----------
+> > >  include/sysemu/kvm.h | 14 ++++++++++
+> > >  2 files changed, 61 insertions(+), 16 deletions(-)
+> > >
+> > > diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> > > index ff1578bb32..b8c36ba50a 100644
+> > > --- a/accel/kvm/kvm-all.c
+> > > +++ b/accel/kvm/kvm-all.c
+> > > @@ -80,7 +80,7 @@
+> > >  #endif
+> > >
+> > >  struct KVMParkedVcpu {
+> > > -    unsigned long vcpu_id;
+> > > +    int vcpu_id;
+> > >      int kvm_fd;
+> > >      QLIST_ENTRY(KVMParkedVcpu) node;
+> > >  };
+> > > @@ -137,6 +137,7 @@ static QemuMutex kml_slots_lock;
+> > >  #define kvm_slots_unlock()  qemu_mutex_unlock(&kml_slots_lock)
+> > >
+> > >  static void kvm_slot_init_dirty_bitmap(KVMSlot *mem);
+> > > +static int kvm_get_vcpu(KVMState *s, int vcpu_id);
+> > >
+> > >  static inline void kvm_resample_fd_remove(int gsi)
+> > >  {
+> > > @@ -320,11 +321,49 @@ err:
+> > >      return ret;
+> > >  }
+> > >
+> > > +void kvm_park_vcpu(CPUState *cpu)
+> > > +{
+> > > +    int vcpu_id = cpu->cpu_index;
+> > > +    struct KVMParkedVcpu *vcpu;
+> > > +
+> > > +    vcpu = g_malloc0(sizeof(*vcpu));
+> > > +    vcpu->vcpu_id = vcpu_id;  
+> > 
+> > As vcpu_id is only used here why have the local variable?
+> > Maybe that changes in later patches, in which case ignore this.
+> > 
+> >     vcpu->vcpu_id = cpu->cpu_index;  
+> 
+> 
+> Yes, thanks.
+> 
+> 
+> > 
+> > Why is kvm_arch_vcpu_id() not necessary here any more but was
+> > before?  
+> 
+> 
+> Because I have now changed the type of vcpu_id from 'unsigned long'
+> to an 'integer'.
+> 
+> >   
+> > > +    vcpu->kvm_fd = cpu->kvm_fd;
+> > > +    QLIST_INSERT_HEAD(&kvm_state->kvm_parked_vcpus, vcpu, node);
+> > > +}
+> > > +
+> > > +int kvm_create_vcpu(CPUState *cpu)
+> > > +{
+> > > +    int vcpu_id = cpu->cpu_index;  
+> > 
+> > See below. I'm not sure why it's safe not to use kvm_arch_vcpu_id()
+> > Seems a few architectures have less than trivial implementations of
+> > that function currently.  
+> 
+> I doubt this as well. Other architectures like PowerPC are returning
+> different type?
+> 
+It wasn't the type that bothered, me but rather that the source of
+the data isn't always cpu->cpu_index so I have no idea if the values
+are consistent.
 
-Salil.
+> 
+> 
+> > >      if (ret < 0) {
+> > > -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed  
+> > (%lu)",  
+> > > +        error_setg_errno(errp, -ret,
+> > > +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)",  
+> > 
+> > The rewrap of the lines above seems like an unrelated change.  
+> 
+> Function has changed from kvm_get_vcpu to kvm_create_vcpu
+> 
+ah. Eyes jumped over that :)
 
-
-> >  include/exec/cpu-common.h |  8 ++++++++
-> >  include/hw/core/cpu.h     |  1 +
-> >  softmmu/physmem.c         | 25 +++++++++++++++++++++++++
-> >  3 files changed, 34 insertions(+)
-> >
-> > diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
-> > index 41788c0bdd..eb56a228a2 100644
-> > --- a/include/exec/cpu-common.h
-> > +++ b/include/exec/cpu-common.h
-> > @@ -120,6 +120,14 @@ size_t qemu_ram_pagesize_largest(void);
-> >   */
-> >  void cpu_address_space_init(CPUState *cpu, int asidx,
-> >                              const char *prefix, MemoryRegion *mr);
-> > +/**
-> > + * cpu_address_space_destroy:
-> > + * @cpu: CPU for which address space needs to be destroyed
-> > + * @asidx: integer index of this address space
-> > + *
-> > + * Note that with KVM only one address space is supported.
-> > + */
-> > +void cpu_address_space_destroy(CPUState *cpu, int asidx);
-> >
-> >  void cpu_physical_memory_rw(hwaddr addr, void *buf,
-> >                              hwaddr len, bool is_write);
-> > diff --git a/include/hw/core/cpu.h b/include/hw/core/cpu.h
-> > index 648b5b3586..65d2ae4581 100644
-> > --- a/include/hw/core/cpu.h
-> > +++ b/include/hw/core/cpu.h
-> > @@ -355,6 +355,7 @@ struct CPUState {
-> >      QSIMPLEQ_HEAD(, qemu_work_item) work_list;
-> >
-> >      CPUAddressSpace *cpu_ases;
-> > +    int cpu_ases_count;
-> >      int num_ases;
-> >      AddressSpace *as;
-> >      MemoryRegion *memory;
-> > diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-> > index 4f6ca653b3..4dfa0ca66f 100644
-> > --- a/softmmu/physmem.c
-> > +++ b/softmmu/physmem.c
-> > @@ -761,6 +761,7 @@ void cpu_address_space_init(CPUState *cpu, int asid=
-x,
-> >
-> >      if (!cpu->cpu_ases) {
-> >          cpu->cpu_ases =3D g_new0(CPUAddressSpace, cpu->num_ases);
-> > +        cpu->cpu_ases_count =3D cpu->num_ases;
-> >      }
-> >
-> >      newas =3D &cpu->cpu_ases[asidx];
-> > @@ -774,6 +775,30 @@ void cpu_address_space_init(CPUState *cpu, int
-> asidx,
-> >      }
-> >  }
-> >
-> > +void cpu_address_space_destroy(CPUState *cpu, int asidx)
-> > +{
-> > +    CPUAddressSpace *cpuas;
-> > +
-> > +    assert(asidx < cpu->num_ases);
-> > +    assert(asidx =3D=3D 0 || !kvm_enabled());
-> > +    assert(cpu->cpu_ases);
-> > +
-> > +    cpuas =3D &cpu->cpu_ases[asidx];
-> > +    if (tcg_enabled()) {
-> > +        memory_listener_unregister(&cpuas->tcg_as_listener);
-> > +    }
-> > +
-> > +    address_space_destroy(cpuas->as);
-> > +    g_free_rcu(cpuas->as, rcu);
-> > +
-> > +    if (cpu->cpu_ases_count =3D=3D 1) {
-> > +        g_free(cpu->cpu_ases);
-> > +        cpu->cpu_ases =3D NULL;
-> > +    }
-> > +
-> > +    cpu->cpu_ases_count--;
-> > +}
-> > +
-> >  AddressSpace *cpu_get_address_space(CPUState *cpu, int asidx)
-> >  {
-> >      /* Return the AddressSpace corresponding to the specified index */
 
 
