@@ -2,76 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4A47B6BDC
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E727B6BE5
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 16:41:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qngY6-0000Gb-16; Tue, 03 Oct 2023 10:38:58 -0400
+	id 1qngZn-00014t-Qt; Tue, 03 Oct 2023 10:40:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qngY3-0000GE-2Q
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:38:56 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qngZl-00014Q-TU
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:40:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qngY1-0000DE-K8
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:38:54 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qngZk-0000t7-EI
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 10:40:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696343931;
+ s=mimecast20190719; t=1696344038;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=NZjRsetpvfM5QVsVtqHHO1lSLSDnYvYSciVL7xAwjaY=;
- b=g6LL6h6tog6cd7qmtMU1fIRCqfyvcAMCXGAT3P507Yu+Kjem6sDnXm3rWcdgK496z8pOaS
- xV3msLqQ1k+O610LhaH4cNFvbGTxgukxnzflJb47XWPczUc32qrlgheyH2M6SI8Y/uHgvL
- sIGIiUAvJ6RZv8eUHMxWUU6z0wjib4c=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=L9FLSZ8A4AlBOxFqQHTueEbXw9iCO1zQ60bmxFGexvg=;
+ b=dXEtY1UdAhwQI8qnGwn8VIN7UFWL8daynJFabFRjY8S72oZ6KE+DFDmTk5Np442pUE+pNl
+ U9m39RGNnL2atuKAyDsw8uJq3u91LLgflc2die6rMrq9w7r4vWKuxIG7r4qbtby7S9eWkD
+ Aqd1ZWJqoLH0S3JzDcIO7/q/FUz+Y4g=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-fTqfxIOkPVmvR_NErC-OnQ-1; Tue, 03 Oct 2023 10:38:49 -0400
-X-MC-Unique: fTqfxIOkPVmvR_NErC-OnQ-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4197b919ba2so2260561cf.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:38:49 -0700 (PDT)
+ us-mta-677-vrptLPBtNTKKC5YZ_lZo6Q-1; Tue, 03 Oct 2023 10:40:37 -0400
+X-MC-Unique: vrptLPBtNTKKC5YZ_lZo6Q-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4067f186039so4717355e9.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 07:40:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696343929; x=1696948729;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NZjRsetpvfM5QVsVtqHHO1lSLSDnYvYSciVL7xAwjaY=;
- b=uIcR89GpZ9pf7/gRmSXEvKcFSUGTdvd4tWjmcPoszkYMEKZ7Ij+nldSXJpd7MNwZ8Q
- e0spiFOvtCyHQwySkuK5eiFO9TgzqPQDJg1cCk+x4ajgKGoUQXkz/fqPr+6krdyLNPHJ
- B7sPsMCNaAeRCNu6CGEC1lq4t5KDIxNw1wB7DUcAgCAE0KsgdEoQcGeidbN+28w04k0E
- kJyFnuj9KlqLgIUpiGcjjY/BbZkjxyJhZb07goY6E1nJlBMdj1dIITuTSL5s6KVkpkS8
- OLWdp+aEAVQGk7O1ooAXP99QA52NCABs/U7CUah9I9AnWhEjgQ/ckTq5iJD6M5Nyp7yA
- 9QXQ==
-X-Gm-Message-State: AOJu0Yzrhqv/d8gmPtuXU9dESRo3RgduwVY0Kcob99apnPrqOjzmHRm9
- 7Q1RlSHu2QvrMXFMF2Hbjvq/BWNAnFQhix3tNazi7BfRlDEXVkOa1Y3MNssDZ++PIqaQ5+hd+n6
- G77JY3crDtTmAFB8fU4LQJjN40HIFiuWFJL+pWCKBGi4IJweerkfIFL6S7NiAMFIrLre3BdHb
-X-Received: by 2002:ac8:7d0f:0:b0:412:12e8:8538 with SMTP id
- g15-20020ac87d0f000000b0041212e88538mr18240334qtb.1.1696343929005; 
- Tue, 03 Oct 2023 07:38:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEEJlyk0+FIcAJd+OHxcct1M8/vyje0GcOwz/IvMgybyo3ecx6G68r9XNgenk4uv4r4b5mowQ==
-X-Received: by 2002:ac8:7d0f:0:b0:412:12e8:8538 with SMTP id
- g15-20020ac87d0f000000b0041212e88538mr18240311qtb.1.1696343928597; 
- Tue, 03 Oct 2023 07:38:48 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- f19-20020ac840d3000000b00419b0dbec73sm413435qtm.67.2023.10.03.07.38.47
+ d=1e100.net; s=20230601; t=1696344036; x=1696948836;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=L9FLSZ8A4AlBOxFqQHTueEbXw9iCO1zQ60bmxFGexvg=;
+ b=qQYod+xBchvVTTQjUB/ClbGet7693YQ5MskyxarzsjTCgEs/8UaEa0nkChHgYx3+JS
+ DVav9gZ2qhEgsOuf8Qa3WgPEodKh7Vx4Z2VNfmJG9DrukBh9UI7W3BYu7Wr0gN0JvSXH
+ ZVkHTq8BKLuWgjX4Eu4cL/x0H/9ZxcZuusOusIJsJA0p/4p1sT13JKrdR9qtAW2lSCDx
+ 4701LDZUnBlTQ3VVxcIrC+vk9h0OHKqaFBqi7SRAiPtx1IcpG3OaOc5kg3in4Z9Zhi8A
+ gPNWUYTICWPABO8oYrxnVtOJib6YocAdh/yvabTOP4qWHr72+w9dU96kiOLDEYzrS6qL
+ E/iw==
+X-Gm-Message-State: AOJu0YxqTljafxfM3Av4P4rmw0lmRr54cRR85BPZszujdlPpCpRKtBPR
+ lQy4q893S+Afk+HEq/JmNjKdbp1CSk0Bx/1zUIwu1CTKXQ0hVYA5surfIGsFYpTlpbXtdMYioJU
+ 6DZzculv5/2bReJQ=
+X-Received: by 2002:a5d:5549:0:b0:31f:fc96:9af1 with SMTP id
+ g9-20020a5d5549000000b0031ffc969af1mr14327754wrw.59.1696344036337; 
+ Tue, 03 Oct 2023 07:40:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE4SODhwHPB6jzzyl32SVCRHGZQFavhWwWLkK3J3ZZ9ZQJfIhUNHfYXoZlYztqqH/5VgFxbuw==
+X-Received: by 2002:a5d:5549:0:b0:31f:fc96:9af1 with SMTP id
+ g9-20020a5d5549000000b0031ffc969af1mr14327734wrw.59.1696344035921; 
+ Tue, 03 Oct 2023 07:40:35 -0700 (PDT)
+Received: from redhat.com ([2.52.132.27]) by smtp.gmail.com with ESMTPSA id
+ q15-20020adfcd8f000000b00327297abe31sm1721221wrj.68.2023.10.03.07.40.32
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 03 Oct 2023 07:38:48 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>
-Subject: [PATCH] migration: Add co-maintainers for migration
-Date: Tue,  3 Oct 2023 10:38:47 -0400
-Message-ID: <20231003143847.9245-1-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ Tue, 03 Oct 2023 07:40:35 -0700 (PDT)
+Date: Tue, 3 Oct 2023 10:40:28 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Laszlo Ersek <lersek@redhat.com>,
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>,
+ Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
+Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+Message-ID: <20231003103143-mutt-send-email-mst@kernel.org>
+References: <20230827182937.146450-1-lersek@redhat.com>
+ <20230827182937.146450-8-lersek@redhat.com>
+ <CAJSP0QVWSQ8F-A1ryGLtd1jb8Go1Pr_N7AcLb5W5kSFv8T8jTA@mail.gmail.com>
+ <6d766ab4-b6b8-b64b-1f9d-60c558b56509@redhat.com>
+ <CAJSP0QV9RO7bkkcVFibnTv4tixmO3wKohSY+ia1D-UZiRzh5QA@mail.gmail.com>
+ <20231002015259-mutt-send-email-mst@kernel.org>
+ <CAJSP0QXgWsULW_61-MScvuWAiE3c4brYRyFc6q_==Sj6aLE8SQ@mail.gmail.com>
+ <CAJSP0QU3jzFGnJ35Zbabf70Tbf+rPA_fvrA_eNxZ8TxOXQxZXA@mail.gmail.com>
+ <20231002183627-mutt-send-email-mst@kernel.org>
+ <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -95,37 +108,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Per the qemu upstream call a few hours ago, proposing Fabiano and myself as
-the co-maintainer for migration subsystem to help Juan.
+On Tue, Oct 03, 2023 at 09:08:15AM -0400, Stefan Hajnoczi wrote:
+> On Tue, 3 Oct 2023 at 08:27, Michael S. Tsirkin <mst@redhat.com> wrote:
+> >
+> > On Mon, Oct 02, 2023 at 05:13:26PM -0400, Stefan Hajnoczi wrote:
+> > > One more question:
+> > >
+> > > Why is the disabled state not needed by regular (non-vhost) virtio-net devices?
+> >
+> > Tap does the same - it purges queued packets:
+> >
+> > int tap_disable(NetClientState *nc)
+> > {
+> >     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+> >     int ret;
+> >
+> >     if (s->enabled == 0) {
+> >         return 0;
+> >     } else {
+> >         ret = tap_fd_disable(s->fd);
+> >         if (ret == 0) {
+> >             qemu_purge_queued_packets(nc);
+> >             s->enabled = false;
+> >             tap_update_fd_handler(s);
+> >         }
+> >         return ret;
+> >     }
+> > }
+> 
+> tap_disable() is not equivalent to the vhost-user "started but
+> disabled" ring state. tap_disable() is a synchronous one-time action,
+> while "started but disabled" is a continuous state.
 
-Cc: Fabiano Rosas <farosas@suse.de>
-Cc: Juan Quintela <quintela@redhat.com>
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
+well, yes. but practically guests do not queue too many buffers
+after disabling a queue. I don't know if they reliably don't
+or it's racy and we didn't notice it yet - I think it
+was mostly dpdk that had this and that's usually
+used with vhost-user.
 
-Fabiano, would you please ack here publically to acknowledge that you're
-fine with it?  Thank you!
+> The "started but disabled" ring state isn't needed to achieve this.
+> The back-end can just drop tx buffers upon receiving
+> VHOST_USER_SET_VRING_ENABLE .num=0.
 
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- MAINTAINERS | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+yes, maybe that would have been a better way to do this.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 81625f036b..fc6e09aa31 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -3207,7 +3207,8 @@ F: scripts/checkpatch.pl
- 
- Migration
- M: Juan Quintela <quintela@redhat.com>
--R: Peter Xu <peterx@redhat.com>
-+M: Peter Xu <peterx@redhat.com>
-+M: Fabiano Rosas <farosas@suse.de>
- R: Leonardo Bras <leobras@redhat.com>
- S: Maintained
- F: hw/core/vmstate-if.c
+
+> The history of the spec is curious. VHOST_USER_SET_VRING_ENABLE was
+> introduced before the the "started but disabled" state was defined,
+> and it explicitly mentions tap attach/detach:
+> 
+> commit 7263a0ad7899994b719ebed736a1119cc2e08110
+> Author: Changchun Ouyang <changchun.ouyang@intel.com>
+> Date:   Wed Sep 23 12:20:01 2015 +0800
+> 
+>     vhost-user: add a new message to disable/enable a specific virt queue.
+> 
+>     Add a new message, VHOST_USER_SET_VRING_ENABLE, to enable or disable
+>     a specific virt queue, which is similar to attach/detach queue for
+>     tap device.
+> 
+> and then later:
+> 
+> commit c61f09ed855b5009f816242ce281fd01586d4646
+> Author: Michael S. Tsirkin <mst@redhat.com>
+> Date:   Mon Nov 23 12:48:52 2015 +0200
+> 
+>     vhost-user: clarify start and enable
+> 
+> >
+> > what about non tap backends? I suspect they just aren't
+> > used widely with multiqueue so no one noticed.
+> 
+> I still don't understand why "started but disabled" is needed instead
+> of just two ring states: enabled and disabled.
+
+With dropping packets when ring is disabled? Maybe that would
+have been enough. I also failed to realize it's specific to
+net, seemed generic to me :(
+
+> It seems like the cleanest path going forward is to keep the "ignore
+> rx, discard tx" semantics for virtio-net devices but to clarify in the
+> spec that other device types do not process the ring:
+> 
+> "
+> * started but disabled: the back-end must not process the ring. For legacy
+>   reasons there is an exception for the networking device, where the
+>   back-end must process and discard any TX packets and not process
+>   other rings.
+> "
+> 
+> What do you think?
+> 
+> Stefan
+
+Okay... I hope we are not missing any devices which need virtio net
+semantics. Care checking them all?
+
 -- 
-2.41.0
+MST
 
 
