@@ -2,93 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE4E7B6088
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 07:52:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C92D7B60B9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 08:25:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnYJx-0005Mm-Sy; Tue, 03 Oct 2023 01:51:49 -0400
+	id 1qnYoU-0005g1-7C; Tue, 03 Oct 2023 02:23:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qnYJw-0005Me-Bz
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 01:51:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qnYJu-0003iA-Iq
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 01:51:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696312306;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=miTFVY+uLAUGKzHbSoYxsJebD4rQSgUIjkFXPsaF4+c=;
- b=dxis4zmrvsVENohD0K5S3zWIvha8zn7pNH0opZ+nhIjl9H88dBxu048krH1faGPftdh4ph
- wtBXwevAS6AYAnThWbX0L15/pKI33GCVnJCYDHpq9h8dzdMfTJ2MdOerGvUle0FW3IpN+w
- 524/7VJC9CBmXdxYlEebwTL+7B3/jmY=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-58-qdj93riPNEuyjVETA_5M5w-1; Tue, 03 Oct 2023 01:51:37 -0400
-X-MC-Unique: qdj93riPNEuyjVETA_5M5w-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9a9e12a3093so57063066b.0
- for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 22:51:37 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnYoR-0005fd-VQ
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 02:23:19 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnYoQ-0000t0-B6
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 02:23:19 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4054f790190so5387775e9.2
+ for <qemu-devel@nongnu.org>; Mon, 02 Oct 2023 23:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696314196; x=1696918996; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=yNPCrajTh57Jjbi/jtn+1FxXShjLbKmdOEGxNykJkZQ=;
+ b=UsqjcRbDvdclwTBrsbYs0fDhu2UJ7EG97WiVwr4eru7ic3UF6qRQlYpFuBtjNrKEgD
+ Wt9fFhONLwY4h69bt/CniQO1dtM7rWIjELuhxa7tA1OTgpbcgiCXo1VwmdmFegGXV9ur
+ csmxyz9CELXShmFJ7kGDzT5uugmLg/Bj8LK168vnmAMpCL6bIpI8oic16QD7Cmikbw0O
+ WSNbyeAVuV3v4JGPg3xwwc3QJIYFPYwy9nZjjU8m3IncBF0QY3iyAPR6HZCvGyIY99yq
+ cxT86xdUajl5gpcQuHH/lM7jxFKYOchzMMXbKO2SUeUeha4uOw5bCcNMXY9LA4NEGu1O
+ SNng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696312296; x=1696917096;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=miTFVY+uLAUGKzHbSoYxsJebD4rQSgUIjkFXPsaF4+c=;
- b=Pa0Cm3oqASWFlTI6Wou4x4XClu0mv8ZCr4aw6vACeodxqDcMpK/BjbqKaW/ksy6AZg
- 3aXMx0uXePx3/XUXH1/XSetck/H+JdScivWRI62cbIiA0EFQbA8QdYDe5tEyfoRn/H9W
- +FIFfE3/5MF4ZgGCacNl9XZKIUrNRKMmyJcDSHO3XGJZKhE1AdzfUJnR5pTI1Gebdo2o
- hy4b94JxQB9SSwIVK+LwfyAR8IPgn8rLxVReRNWhWIx/zmbv6gQWVq6hDmh4EicoT8LV
- yGCmsX+9bvXpCCn9TycmSPPCXTBHclKiJsdnKMvK3+qvgwyMwfCddDAPdXeCmZ2aCGVy
- /RfA==
-X-Gm-Message-State: AOJu0YxPF/4rNSfO4pSi/fdyLC21YSXvHdzWDmDX4hy7EWuCkDtXi3HO
- 5z+g2RkC+tM6vPSMWChKb+YNoHSVyKTUeTyCzI4IPuSIsl5NMpi/f1uz2+t84yc0Xac7WJj3FpN
- VGYTos93L07sSjicjMz9znAO5cT/4448=
-X-Received: by 2002:a17:907:1c11:b0:9ad:8a96:ad55 with SMTP id
- nc17-20020a1709071c1100b009ad8a96ad55mr1604485ejc.14.1696312296698; 
- Mon, 02 Oct 2023 22:51:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE6TA0DnvZxct6GIAal8l8jpzzUe1EWD/Yt+agHaMOia3TUY+tksTM4FbW8sxDAbaCcDR5+oSbW5MJKwtmgHjg=
-X-Received: by 2002:a17:907:1c11:b0:9ad:8a96:ad55 with SMTP id
- nc17-20020a1709071c1100b009ad8a96ad55mr1604470ejc.14.1696312296369; Mon, 02
- Oct 2023 22:51:36 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696314196; x=1696918996;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yNPCrajTh57Jjbi/jtn+1FxXShjLbKmdOEGxNykJkZQ=;
+ b=ZIYSiqTgT2h/XGDGG3JJ0kK6x4/f7DASyYek/QG6dUDfJfc9DYw1A3pbI4AeWSjucq
+ k48zpM3pnPBQldmLEMMUULlYQt887ZBaRXdpTkyiI1E3M4zaHKGRf9Dp3bqg5RHAUY8Y
+ ex0jMO1n87HECFvcubemlVmIXDDPtDW5swTXtTK/mert/bZvakUDt1jJMvuiJOV8iXn2
+ ZyxGfb0Fmf+/rC3VI0I0v1bue79n6nqumeppmQYYsHb+yahoQiAZ/QnHXkIr3wI6ZMcV
+ WUymiXlmtQ16rSMbJFzsHo9O+PLnDT5FFziLS3R1tBpqxcdOcqvqhuYEIwGPZFkuai8R
+ qa4g==
+X-Gm-Message-State: AOJu0YwwqaB5Qw6zxPnMw6CLsYwwq+QkMBVf1SYhu/ky3iEK2dgeBGFe
+ xCAqd9fzGLuLkPhksG4kCmL8kA==
+X-Google-Smtp-Source: AGHT+IG3wcjYYGEgW5I7yoFeprWFNGoQg7UTEtYVN9GS935ou5c2jXGRl2dirtS5iwVKjCMEyzlWGQ==
+X-Received: by 2002:a5d:6986:0:b0:320:b24:4361 with SMTP id
+ g6-20020a5d6986000000b003200b244361mr11629310wru.34.1696314195987; 
+ Mon, 02 Oct 2023 23:23:15 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
+ [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
+ da4-20020a056000196400b003279518f51dsm750608wrb.2.2023.10.02.23.23.14
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 02 Oct 2023 23:23:15 -0700 (PDT)
+Message-ID: <06cd7690-adb6-e9ff-abf7-21c8c05efc2c@linaro.org>
+Date: Tue, 3 Oct 2023 08:23:12 +0200
 MIME-Version: 1.0
-References: <20230926055235.9164-1-anisinha@redhat.com>
- <20230927112144-mutt-send-email-mst@kernel.org>
- <00B810C8-CB14-40F6-AB54-3AE7CB63B93F@redhat.com>
- <20231002053024-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231002053024-mutt-send-email-mst@kernel.org>
-From: Ani Sinha <anisinha@redhat.com>
-Date: Tue, 3 Oct 2023 11:21:25 +0530
-Message-ID: <CAK3XEhOhwvc88rP=Y5j52H6gAqvoXRRrU1YgcznY_yrusP8hwQ@mail.gmail.com>
-Subject: Re: [PATCH v2] hw/i386: changes towards enabling -Wshadow=local
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>, 
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, 
- Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>, 
- Markus Armbruster <armbru@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>, 
- =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- qemu-devel@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] xlnx-bbram: hw/nvram: Remove deprecated device reset
+To: Tong Ho <tong.ho@amd.com>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, alistair@alistair23.me, edgar.iglesias@gmail.com,
+ peter.maydell@linaro.org
+References: <20231003052345.199725-1-tong.ho@amd.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231003052345.199725-1-tong.ho@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x334.google.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.321,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,208 +93,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 2, 2023 at 4:17=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->
-> On Thu, Sep 28, 2023 at 09:14:07AM +0530, Ani Sinha wrote:
-> >
-> >
-> > > On 27-Sep-2023, at 8:55 PM, Michael S. Tsirkin <mst@redhat.com> wrote=
-:
-> > >
-> > > On Tue, Sep 26, 2023 at 11:22:35AM +0530, Ani Sinha wrote:
-> > >> Code changes that addresses all compiler complaints coming from enab=
-ling
-> > >> -Wshadow flags. Enabling -Wshadow catches cases of local variables s=
-hadowing
-> > >> other local variables or parameters. These makes the code confusing =
-and/or adds
-> > >
-> > > These make
-> > >
-> > >> bugs that are difficult to catch.
-> > >>
-> > >> CC: Markus Armbruster <armbru@redhat.com>
-> > >> CC: Philippe Mathieu-Daude <philmd@linaro.org>
-> > >> CC: mst@redhat.com
-> > >> Message-Id: <87r0mqlf9x.fsf@pond.sub.org>
-> > >> Signed-off-by: Ani Sinha <anisinha@redhat.com>
-> > >> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
-> > >> Reviewed-by: Peter Xu <peterx@redhat.com>
-> > >> ---
-> > >
-> > >
-> > > chunks seem unrelated. why not split them up?
-> >
-> > ? No idea what you talking about. Here and ...
->
-> you patch 4 files in a single patch.
-> intel_iommu is part of vtd emulation and
-> has separate maintainers. Slightly better to split up
-> to have each maintainer get just the patches
-> he cares about.
-> Not critical, for sure.
+Hi Tong,
 
-this was from the original email that Markus sent that had this group:
+On 3/10/23 07:23, Tong Ho wrote:
+> This change implements the ResettableClass interface for the device.
+> 
+> Signed-off-by: Tong Ho <tong.ho@amd.com>
+> ---
+>   hw/nvram/xlnx-bbram.c | 8 +++++---
+>   1 file changed, 5 insertions(+), 3 deletions(-)
 
-X86 Machines
-------------
-PC
-M: Michael S. Tsirkin <mst@redhat.com>
-M: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-   hw/i386/acpi-build.c(*3*)
-   hw/i386/acpi-microvm.c(*2*)
-   hw/i386/intel_iommu.c(*3*)
-   hw/i386/pc.c(*2*)
-   hw/i386/x86.c(*2*)
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Not sure why it was clubbed with others.
+Since you did this one, do you mind updating the other Xilinx devices?
 
->
->
-> > >
-> > >> hw/i386/acpi-microvm.c | 12 ++++++------
-> > >> hw/i386/intel_iommu.c  |  8 ++++----
-> > >> hw/i386/pc.c           |  1 -
-> > >> hw/i386/x86.c          |  2 --
-> > >> 4 files changed, 10 insertions(+), 13 deletions(-)
-> > >>
-> > >> changelog:
-> > >> v2: kept Peter's changes from https://lore.kernel.org/r/202309221604=
-10.138786-1-peterx@redhat.com
-> > >> and removed mine.
-> > >>
-> > >> diff --git a/hw/i386/acpi-microvm.c b/hw/i386/acpi-microvm.c
-> > >> index a075360d85..6e4f8061eb 100644
-> > >> --- a/hw/i386/acpi-microvm.c
-> > >> +++ b/hw/i386/acpi-microvm.c
-> > >> @@ -78,18 +78,18 @@ static void acpi_dsdt_add_virtio(Aml *scope,
-> > >>             hwaddr base =3D VIRTIO_MMIO_BASE + index * 512;
-> > >>             hwaddr size =3D 512;
-> > >>
-> > >> -            Aml *dev =3D aml_device("VR%02u", (unsigned)index);
-> > >> -            aml_append(dev, aml_name_decl("_HID", aml_string("LNRO0=
-005")));
-> > >> -            aml_append(dev, aml_name_decl("_UID", aml_int(index)));
-> > >> -            aml_append(dev, aml_name_decl("_CCA", aml_int(1)));
-> > >> +            Aml *adev =3D aml_device("VR%02u", (unsigned)index);
-> > >> +            aml_append(adev, aml_name_decl("_HID", aml_string("LNRO=
-0005")));
-> > >> +            aml_append(adev, aml_name_decl("_UID", aml_int(index)))=
-;
-> > >> +            aml_append(adev, aml_name_decl("_CCA", aml_int(1)));
-> > >>
-> > >>             Aml *crs =3D aml_resource_template();
-> > >>             aml_append(crs, aml_memory32_fixed(base, size, AML_READ_=
-WRITE));
-> > >>             aml_append(crs,
-> > >>                        aml_interrupt(AML_CONSUMER, AML_LEVEL, AML_AC=
-TIVE_HIGH,
-> > >>                                      AML_EXCLUSIVE, &irq, 1));
-> > >> -            aml_append(dev, aml_name_decl("_CRS", crs));
-> > >> -            aml_append(scope, dev);
-> > >> +            aml_append(adev, aml_name_decl("_CRS", crs));
-> > >> +            aml_append(scope, adev);
-> > >>         }
-> > >>     }
-> > >> }
-> > >
-> > > I would prefer to just drop the devicestate dev pointer, use kid->chi=
-ld inside the
-> > > macro.
-
-good idea. addressed in v2.
-
-> >
-> > Here =E2=80=A6
-> >
->
-> Well, you renamed dev to adev because there's another dev at
-> an outer scope which is set to kid->child, and only used
-> once. I suggest just dropping that one instead of removing
-> this one.
->
->
-> > >
-> > >> diff --git a/hw/i386/intel_iommu.c b/hw/i386/intel_iommu.c
-> > >> index c0ce896668..2c832ab68b 100644
-> > >> --- a/hw/i386/intel_iommu.c
-> > >> +++ b/hw/i386/intel_iommu.c
-> > >> @@ -3744,7 +3744,7 @@ VTDAddressSpace *vtd_find_add_as(IntelIOMMUSta=
-te *s, PCIBus *bus,
-> > >> /* Unmap the whole range in the notifier's scope. */
-> > >> static void vtd_address_space_unmap(VTDAddressSpace *as, IOMMUNotifi=
-er *n)
-> > >> {
-> > >> -    hwaddr size, remain;
-> > >> +    hwaddr total, remain;
-> > >>     hwaddr start =3D n->start;
-> > >>     hwaddr end =3D n->end;
-> > >>     IntelIOMMUState *s =3D as->iommu_state;
-> > >> @@ -3765,7 +3765,7 @@ static void vtd_address_space_unmap(VTDAddress=
-Space *as, IOMMUNotifier *n)
-> > >>     }
-> > >>
-> > >>     assert(start <=3D end);
-> > >> -    size =3D remain =3D end - start + 1;
-> > >> +    total =3D remain =3D end - start + 1;
-> > >>
-> > >>     while (remain >=3D VTD_PAGE_SIZE) {
-> > >>         IOMMUTLBEvent event;
-> > >> @@ -3793,10 +3793,10 @@ static void vtd_address_space_unmap(VTDAddre=
-ssSpace *as, IOMMUNotifier *n)
-> > >>     trace_vtd_as_unmap_whole(pci_bus_num(as->bus),
-> > >>                              VTD_PCI_SLOT(as->devfn),
-> > >>                              VTD_PCI_FUNC(as->devfn),
-> > >> -                             n->start, size);
-> > >> +                             n->start, total);
-> > >>
-> > >>     map.iova =3D n->start;
-> > >> -    map.size =3D size - 1; /* Inclusive */
-> > >> +    map.size =3D total - 1; /* Inclusive */
-> > >>     iova_tree_remove(as->iova_tree, map);
-> > >> }
-> > >>
-> > >
-> > >
-> > > arguably an improvement
-> > >
-> > >
-> > >> diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-> > >> index 3db0743f31..e7a233e886 100644
-> > >> --- a/hw/i386/pc.c
-> > >> +++ b/hw/i386/pc.c
-> > >> @@ -1116,7 +1116,6 @@ void pc_memory_init(PCMachineState *pcms,
-> > >>
-> > >>     if (machine->device_memory) {
-> > >>         uint64_t *val =3D g_malloc(sizeof(*val));
-> > >> -        PCMachineClass *pcmc =3D PC_MACHINE_GET_CLASS(pcms);
-> > >>         uint64_t res_mem_end =3D machine->device_memory->base;
-> > >>
-> > >>         if (!pcmc->broken_reserved_end) {
-> > >> diff --git a/hw/i386/x86.c b/hw/i386/x86.c
-> > >> index f034df8bf6..b3d054889b 100644
-> > >> --- a/hw/i386/x86.c
-> > >> +++ b/hw/i386/x86.c
-> > >> @@ -365,8 +365,6 @@ void x86_cpu_pre_plug(HotplugHandler *hotplug_de=
-v,
-> > >>
-> > >>     cpu_slot =3D x86_find_cpu_slot(MACHINE(x86ms), cpu->apic_id, &id=
-x);
-> > >>     if (!cpu_slot) {
-> > >> -        MachineState *ms =3D MACHINE(x86ms);
-> > >> -
-> > >>         x86_topo_ids_from_apicid(cpu->apic_id, &topo_info, &topo_ids=
-);
-> > >>         error_setg(errp,
-> > >>             "Invalid CPU [socket: %u, die: %u, core: %u, thread: %u]=
- with"
-> > >
-> > >
-> > > killing dead code, nice
-> > >
-> > >> --
-> > >> 2.39.3
->
-
+$ git grep -F -- '->reset = ' hw/*/*xlnx*
+hw/display/xlnx_dp.c:1399:    dc->reset = xlnx_dp_reset;
+hw/dma/xlnx-zdma.c:827:    dc->reset = zdma_reset;
+hw/dma/xlnx-zynq-devcfg.c:387:    dc->reset = xlnx_zynq_devcfg_reset;
+hw/dma/xlnx_csu_dma.c:714:    dc->reset = xlnx_csu_dma_reset;
+hw/dma/xlnx_dpdma.c:601:    dc->reset = xlnx_dpdma_reset;
+hw/intc/xlnx-pmu-iomod-intc.c:539:    dc->reset = xlnx_pmu_io_intc_reset;
+hw/intc/xlnx-zynqmp-ipi.c:362:    dc->reset = xlnx_zynqmp_ipi_reset;
+hw/misc/xlnx-versal-cfu.c:498:    dc->reset = cfu_apb_reset;
+hw/nvram/xlnx-bbram.c:526:    dc->reset = bbram_ctrl_reset;
+hw/nvram/xlnx-versal-efuse-ctrl.c:753:    dc->reset = efuse_ctrl_reset;
+hw/nvram/xlnx-zynqmp-efuse.c:841:    dc->reset = zynqmp_efuse_reset;
+hw/rtc/xlnx-zynqmp-rtc.c:258:    dc->reset = rtc_reset;
+hw/ssi/xlnx-versal-ospi.c:1833:    dc->reset = xlnx_versal_ospi_reset;
 
