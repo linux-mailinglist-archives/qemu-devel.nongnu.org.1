@@ -2,65 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB4D7B6FFE
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FE27B7021
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:43:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnjJT-0000pR-Hb; Tue, 03 Oct 2023 13:36:03 -0400
+	id 1qnjOS-00044L-Fc; Tue, 03 Oct 2023 13:41:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qnjJF-0000WF-A2
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:35:51 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qnjOD-0003vp-83
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:41:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qnjJD-0008LJ-Nh
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:35:48 -0400
+ (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
+ id 1qnjO1-0000fG-5U
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:40:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696354546;
+ s=mimecast20190719; t=1696354815;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hoDPE6Jp0SAGbalSUEQBMwNUPbi8A9taX+0DPotIgd8=;
- b=TCgjk7zO/skLMroL5neKln4BL46xqJytahUmCksma28HJHyqpra92Zhx3A888s/CnDi2C2
- gEkDFhSZVtwhpaRE97e/P6dyQAYqsXPXmwiyAU0lcZRdhi2GtMqbRuB1/BLl/MJOB6kM9k
- SUta+9nbx9qJPnO1/Y7dmL/+QWrdJKA=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-114-6Nj8uNHWNpq73iOKfUi_bA-1; Tue, 03 Oct 2023 13:35:42 -0400
-X-MC-Unique: 6Nj8uNHWNpq73iOKfUi_bA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7BEDD185A79B;
- Tue,  3 Oct 2023 17:35:42 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.102])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 0774E400E89;
- Tue,  3 Oct 2023 17:35:41 +0000 (UTC)
-Date: Tue, 3 Oct 2023 13:35:40 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Daniel =?iso-8859-1?Q?P=2E_Berrang=E9?= <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org,
- Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
- =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>
-Subject: Re: [PATCH RESEND] osdep: set _FORTIFY_SOURCE=2 when optimization is
- enabled
-Message-ID: <20231003173540.GA1133503@fedora>
-References: <20231003091549.223020-1-berrange@redhat.com>
+ bh=Uvrdf3gqUbibwPFS+eC7WMu1xGFolI1XejGVeRPU4Xw=;
+ b=Du5WvuxzePHxaii/wycUaZOsbgA/EMk+umLvy1cjG66CNrMN7rh81a/Z1maLYqdaG1a47S
+ YAmecO7O86nLst7A8OHXw5d4tz3jI30yHhnns+chmSAoFaxVB8VfdvY5fvSU4OJTvohaVb
+ VkghsBiIbIOFz3vhBhtD6xW8B1f/okQ=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-678-xF-n7lVAP52e5XBv4WPsgA-1; Tue, 03 Oct 2023 13:40:03 -0400
+X-MC-Unique: xF-n7lVAP52e5XBv4WPsgA-1
+Received: by mail-yw1-f199.google.com with SMTP id
+ 00721157ae682-5a213b4d0efso16639597b3.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 10:40:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696354802; x=1696959602;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Uvrdf3gqUbibwPFS+eC7WMu1xGFolI1XejGVeRPU4Xw=;
+ b=VoY/ZTowDwyhAXsBS8UQvcEw5qUchEfMNabsvmoooMpPyGQ3adm0AE1VQkzaJqVieD
+ P1X4z7eNMSs/xJK+aIAoiTM6+6RgIMt/GZEGWk+bZoVNRDdKPyhQ3Tx2hU3AFqL0Dbc+
+ 6ctjLxBVY8O1eY/gK6j4+7v706dc1mlV7z+pgrnu5dU34A82aIm036t/7VgCsZ1GTesq
+ i8R628fb2kx4vY8Gst9h5FXSICzHwiy6XN8O6+XbYoIMvs+enG02bzdm7aceksk5c5xz
+ 6YhvlzsUgK3TM5Pl/juDEnBxHtuSJY4pGfF3D2zQm2fof/ittZh/RUzXTIJ05jG4qCHv
+ aWIA==
+X-Gm-Message-State: AOJu0Yzi6H0tf39EqYYwllC9frXg2+5/smpmo818zoNFDaUx1o5uW0Zw
+ fObrMYVZ7DQ7d7Skm4NHTdF5nT0RUlo0Vmrlzw1QOGh80sPgdQd0pAS4BzGNZgz8BRr1EaBhnzD
+ vUA0LEMQZTBqsYFwSDv9sowUPc+j232Y=
+X-Received: by 2002:a81:4f8f:0:b0:576:7dfc:e73e with SMTP id
+ d137-20020a814f8f000000b005767dfce73emr244476ywb.32.1696354802585; 
+ Tue, 03 Oct 2023 10:40:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFHjdh1L/QBdGfyYRWNt+U/6I6FNmXFCD0dRAqaFwYoAE/l4qIn+2BRY05DozWbfAllXJK/hKVqyzTCQCslI4g=
+X-Received: by 2002:a81:4f8f:0:b0:576:7dfc:e73e with SMTP id
+ d137-20020a814f8f000000b005767dfce73emr244457ywb.32.1696354802305; Tue, 03
+ Oct 2023 10:40:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="BqiSaku87RX/lW5w"
-Content-Disposition: inline
-In-Reply-To: <20231003091549.223020-1-berrange@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
+References: <cover.1693287885.git.yin31149@gmail.com>
+ <5e090c2af922192f5897ba7072df4d9e4754e1e0.1693287885.git.yin31149@gmail.com>
+In-Reply-To: <5e090c2af922192f5897ba7072df4d9e4754e1e0.1693287885.git.yin31149@gmail.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Tue, 3 Oct 2023 19:39:26 +0200
+Message-ID: <CAJaqyWc0Geen+o8fPb4mbn-krYgHvQyYT-y_oYiKCwtwp-M8LQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/8] vdpa: Use iovec for vhost_vdpa_net_cvq_add()
+To: Hawkins Jiawei <yin31149@gmail.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ leiyang@redhat.com, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eperezma@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -84,63 +95,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Tue, Aug 29, 2023 at 7:55=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
+ wrote:
+>
+> Next patches in this series will no longer perform an
+> immediate poll and check of the device's used buffers
+> for each CVQ state load command. Consequently, there
+> will be multiple pending buffers in the shadow VirtQueue,
+> making it a must for every control command to have its
+> own buffer.
+>
+> To achieve this, this patch refactor vhost_vdpa_net_cvq_add()
+> to accept `struct iovec`, which eliminates the coupling of
+> control commands to `s->cvq_cmd_out_buffer` and `s->status`,
+> allowing them to use their own buffer.
+>
+> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
 
---BqiSaku87RX/lW5w
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-On Tue, Oct 03, 2023 at 10:15:49AM +0100, Daniel P. Berrang=E9 wrote:
-> Currently we set _FORTIFY_SOURCE=3D2 as a compiler argument when the
-> meson 'optimization' setting is non-zero, the compiler is GCC and
-> the target is Linux.
->=20
-> While the default QEMU optimization level is 2, user could override
-> this by setting CFLAGS=3D"-O0" or --extra-cflags=3D"-O0" when running
-> configure and this won't be reflected in the meson 'optimization'
-> setting. As a result we try to enable _FORTIFY_SOURCE=3D2 and then the
-> user gets compile errors as it only works with optimization.
->=20
-> Rather than trying to improve detection in meson, it is simpler to
-> just check the __OPTIMIZE__ define from osdep.h.
->=20
-> The comment about being incompatible with clang appears to be
-> outdated, as compilation works fine without excluding clang.
->=20
-> In the coroutine code we must set _FORTIFY_SOURCE=3D0 to stop the
-> logic in osdep.h then enabling it.
->=20
-> Signed-off-by: Daniel P. Berrang=E9 <berrange@redhat.com>
 > ---
->=20
-> Re-sent due to previous bad patch submission
->=20
->  include/qemu/osdep.h         |  4 ++++
->  meson.build                  | 10 ----------
->  util/coroutine-sigaltstack.c |  4 ++--
->  util/coroutine-ucontext.c    |  4 ++--
->  4 files changed, 8 insertions(+), 14 deletions(-)
-
-Thanks, applied to my block tree:
-https://gitlab.com/stefanha/qemu/commits/block
-
-Stefan
-
---BqiSaku87RX/lW5w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUcUOwACgkQnKSrs4Gr
-c8g/OQgAsIzXDjEUJaVcQAqyiMZ+31FTSwv/W/xV7XB70nMHg3XsdIKrotmhCoRm
-7eTXZDVR6MYm5nWwTVwu8UrGq9TA/mGLqYQHR5S6pQGnw3l09ZzXWERK9blmKwsP
-IHD++aJw0z6A/Ym615j2bSbAKaKv0g5F1VWBNQtNM0aJNd6DvUZ7wXLCJLkY6GQJ
-CpYggi72zdv+oeFbnaqtHI9V0PVk78KPKXJkfz9qPBXG+DYzK902MTx61pa8rhGa
-NhAwvqAH6jWMQ1qP8CNGLtMlkbBKJl55wtmu9bhZYDy+qR/GSYCs2nPPIhSoT2eB
-hsz93aqMm4NZGEXlRBP8FGib2904mQ==
-=xs4T
------END PGP SIGNATURE-----
-
---BqiSaku87RX/lW5w--
+> v4:
+>   - split `in` to `vdpa_in` and `model_in` instead of reusing `in`
+> in vhost_vdpa_net_handle_ctrl_avail() suggested by Eugenio
+>
+> v3: https://lore.kernel.org/all/b1d473772ec4bcb254ab0d12430c9b1efe758606.=
+1689748694.git.yin31149@gmail.com/
+>
+>  net/vhost-vdpa.c | 39 ++++++++++++++++++++++-----------------
+>  1 file changed, 22 insertions(+), 17 deletions(-)
+>
+> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+> index 3acda8591a..a875767ee9 100644
+> --- a/net/vhost-vdpa.c
+> +++ b/net/vhost-vdpa.c
+> @@ -596,22 +596,14 @@ static void vhost_vdpa_net_cvq_stop(NetClientState =
+*nc)
+>      vhost_vdpa_net_client_stop(nc);
+>  }
+>
+> -static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
+> -                                      size_t in_len)
+> +static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s,
+> +                                    const struct iovec *out_sg, size_t o=
+ut_num,
+> +                                    const struct iovec *in_sg, size_t in=
+_num)
+>  {
+> -    /* Buffers for the device */
+> -    const struct iovec out =3D {
+> -        .iov_base =3D s->cvq_cmd_out_buffer,
+> -        .iov_len =3D out_len,
+> -    };
+> -    const struct iovec in =3D {
+> -        .iov_base =3D s->status,
+> -        .iov_len =3D sizeof(virtio_net_ctrl_ack),
+> -    };
+>      VhostShadowVirtqueue *svq =3D g_ptr_array_index(s->vhost_vdpa.shadow=
+_vqs, 0);
+>      int r;
+>
+> -    r =3D vhost_svq_add(svq, &out, 1, &in, 1, NULL);
+> +    r =3D vhost_svq_add(svq, out_sg, out_num, in_sg, in_num, NULL);
+>      if (unlikely(r !=3D 0)) {
+>          if (unlikely(r =3D=3D -ENOSPC)) {
+>              qemu_log_mask(LOG_GUEST_ERROR, "%s: No space on device queue=
+\n",
+> @@ -637,6 +629,15 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAStat=
+e *s, uint8_t class,
+>          .cmd =3D cmd,
+>      };
+>      size_t data_size =3D iov_size(data_sg, data_num);
+> +    /* Buffers for the device */
+> +    const struct iovec out =3D {
+> +        .iov_base =3D s->cvq_cmd_out_buffer,
+> +        .iov_len =3D sizeof(ctrl) + data_size,
+> +    };
+> +    const struct iovec in =3D {
+> +        .iov_base =3D s->status,
+> +        .iov_len =3D sizeof(*s->status),
+> +    };
+>
+>      assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl))=
+;
+>
+> @@ -647,8 +648,7 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState=
+ *s, uint8_t class,
+>      iov_to_buf(data_sg, data_num, 0,
+>                 s->cvq_cmd_out_buffer + sizeof(ctrl), data_size);
+>
+> -    return vhost_vdpa_net_cvq_add(s, data_size + sizeof(ctrl),
+> -                                  sizeof(virtio_net_ctrl_ack));
+> +    return vhost_vdpa_net_cvq_add(s, &out, 1, &in, 1);
+>  }
+>
+>  static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
+)
+> @@ -1222,10 +1222,15 @@ static int vhost_vdpa_net_handle_ctrl_avail(Vhost=
+ShadowVirtqueue *svq,
+>          .iov_base =3D s->cvq_cmd_out_buffer,
+>      };
+>      /* in buffer used for device model */
+> -    const struct iovec in =3D {
+> +    const struct iovec model_in =3D {
+>          .iov_base =3D &status,
+>          .iov_len =3D sizeof(status),
+>      };
+> +    /* in buffer used for vdpa device */
+> +    const struct iovec vdpa_in =3D {
+> +        .iov_base =3D s->status,
+> +        .iov_len =3D sizeof(*s->status),
+> +    };
+>      ssize_t dev_written =3D -EINVAL;
+>
+>      out.iov_len =3D iov_to_buf(elem->out_sg, elem->out_num, 0,
+> @@ -1259,7 +1264,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostSh=
+adowVirtqueue *svq,
+>              goto out;
+>          }
+>      } else {
+> -        dev_written =3D vhost_vdpa_net_cvq_add(s, out.iov_len, sizeof(st=
+atus));
+> +        dev_written =3D vhost_vdpa_net_cvq_add(s, &out, 1, &vdpa_in, 1);
+>          if (unlikely(dev_written < 0)) {
+>              goto out;
+>          }
+> @@ -1275,7 +1280,7 @@ static int vhost_vdpa_net_handle_ctrl_avail(VhostSh=
+adowVirtqueue *svq,
+>      }
+>
+>      status =3D VIRTIO_NET_ERR;
+> -    virtio_net_handle_ctrl_iov(svq->vdev, &in, 1, &out, 1);
+> +    virtio_net_handle_ctrl_iov(svq->vdev, &model_in, 1, &out, 1);
+>      if (status !=3D VIRTIO_NET_OK) {
+>          error_report("Bad CVQ processing in model");
+>      }
+> --
+> 2.25.1
+>
 
 
