@@ -2,94 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05D07B6E1A
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 18:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B127B6E40
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 18:20:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnhwr-000496-L0; Tue, 03 Oct 2023 12:08:37 -0400
+	id 1qni7C-0000ju-Db; Tue, 03 Oct 2023 12:19:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhwm-00048w-Qp
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:08:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qnhwk-0000DB-OC
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:08:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696349309;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=NIBa9W8WdALcKcmwXTyrhOLzyXyfazMTmfvDXSnyXdo=;
- b=BnsUJ6r12aCzRmKBP1mwHQ2U7nhmqt0pYOuzTAHuH88A38Fe52O0Co7fV/HdFxS+/rJpqA
- syrAdopROYWV2joBBYjZCriglirizZMYv41hTb8BxxqqWgYhVgzuzJZHFE40JOfoUrIkCu
- 45z1e0cBZ/KH+h4pA9s6SUDWrux3/1Y=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-lks599UIOleZaNJXWYVd8Q-1; Tue, 03 Oct 2023 12:08:23 -0400
-X-MC-Unique: lks599UIOleZaNJXWYVd8Q-1
-Received: by mail-vs1-f70.google.com with SMTP id
- ada2fe7eead31-452c988b8e7so515531137.3
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 09:08:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qni7A-0000jK-6P
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:19:16 -0400
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <manos.pitsidianakis@linaro.org>)
+ id 1qni74-0002Gw-2E
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:19:15 -0400
+Received: by mail-wm1-x329.google.com with SMTP id
+ 5b1f17b1804b1-405361bb94eso11850955e9.0
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 09:19:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696349947; x=1696954747; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=22pgLXrfHfm/RuyGMk7LygGpjbQHwUWsKtrXSvR9SQg=;
+ b=BH2Af+WJUZNE52nqtsrLE5DO3Ch0RAl1OkU097HTk0lMTVe3jXx0U/pczvam8bPDKB
+ wUzPOKNwzhHi8TPMtuNe5qHWgAkZqQGbLu8tDGX6Vz+hM04WJLyJz9ZZ4/AZjt0tMvDC
+ V9oAaJuOpZgfz04nEa2EUdEix6qPjKeezCqwdMTvB9c4+tBHFxNw+abKAcqC9dnXPJMw
+ cKjn3luHl7t8RqWdKYeqnj5wjKkjKuyZO7mOoYX3RuInzb7x4bf3osfirE1ZrrNTNWqB
+ Fc1pxyRHTr26IxhaGE8zYGOv7OMJg9BNnEM/6UU6QJJo3WQ87vc7pODoInrd5UQa41ja
+ pAWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696349302; x=1696954102;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=NIBa9W8WdALcKcmwXTyrhOLzyXyfazMTmfvDXSnyXdo=;
- b=j2g2Q0zBmr9T6xd6WkdnOLvCbjidz5fGPHxbi+9ycttZgTdiVqLUVaiP8Vh9Zz2/17
- e6aQ9SQIJNMelAQsql6uLkeV5N5gXrNPk0bR06KnShB+gCXJKTeZSi1n5MrDowkoi5lO
- 8vGTrkRFWHMz5US/Ae4eN2bJ9SAZ56k1y6LJo8O5AQPU68tY18opfebWSVq6a3L1MrY/
- oA67tcxLPvq1CvzBwjPHQxZzOqvO6cnAqP+Nbvucf9XWtKqlMoWQEKJSt0yJIpeh+qwV
- Zu+OcAcxWhwveqEADd+zitQIDvnwgXEniaXpMxv70KLqOi5Gc133jPHmq8GoLJDNNwwp
- udcA==
-X-Gm-Message-State: AOJu0Yy38RwYo2O+8OkYizD2UYm9D1a13wQvisbleUyDiYpCM1IaoGld
- EK1fJZWiEoe6BwNDi5sqopA3vDkxK+PtbADn8Y3eftXxGHFOn4YhddVovKZywCOPEt3oJ5nCfiP
- ecd1RRfkehEfMU3c=
-X-Received: by 2002:a05:6102:34f4:b0:452:819b:f7f5 with SMTP id
- bi20-20020a05610234f400b00452819bf7f5mr13183776vsb.25.1696349301086; 
- Tue, 03 Oct 2023 09:08:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFdMHRycDHsrYUZFS1LY3jP0Ljs6Tnvcc/vzghJnThgp/UQ/NXTnh9ajLI6Nfh035PhtE8W9w==
-X-Received: by 2002:a05:6102:34f4:b0:452:819b:f7f5 with SMTP id
- bi20-20020a05610234f400b00452819bf7f5mr13183706vsb.25.1696349299361; 
- Tue, 03 Oct 2023 09:08:19 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ d=1e100.net; s=20230601; t=1696349947; x=1696954747;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to
+ :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=22pgLXrfHfm/RuyGMk7LygGpjbQHwUWsKtrXSvR9SQg=;
+ b=ihPvOGcK4uE/tCoukox+Jy4F88TC1s61rJ0LY71mIo0RlkC1Lg2BxO54nylf4/fSxo
+ o4u0Q++NF1+FTqRncyGE+kMhj1yu0OGEKHzTx6OqpSZtkfqzw7sIQdbtL9E/Zi0fntq3
+ XmbWBIrOhHPBWMSqAmtWnVS+vYavSZp1lRJ/A/LLCgHUX56i8EWI8Es5+lI5540pYu3a
+ 127Dp94hUkBXNibyeH3J+7RuaA3Ut59uTh6zOClywa/1HyqLfIQLpwuxr1cgYuFS7adu
+ Vl66DPA6dcK06VooGUA2zvOLTbEqvvJa3Shtji3DM8Qow25V2I2b6xr9rwvKQJAfcbiI
+ uCKw==
+X-Gm-Message-State: AOJu0YxqmJlPMFmJ+uzVdWO9ZFo8Bp4hFNDUoHTzI3bUH/CRT8pZUbi+
+ Kx+6Fy6195hODHoGm3HHR7tdhQ==
+X-Google-Smtp-Source: AGHT+IGsdTe7zqOkuDCHm1SRSE/m0PCL3/z2eih3fOmC8KpOO+G+ZxqCaXTrDofkw54iBLBAclg4Gg==
+X-Received: by 2002:a7b:c7d2:0:b0:405:48ba:9c with SMTP id
+ z18-20020a7bc7d2000000b0040548ba009cmr13907202wmk.16.1696349947097; 
+ Tue, 03 Oct 2023 09:19:07 -0700 (PDT)
+Received: from meli.delivery (adsl-98.37.6.1.tellas.gr. [37.6.1.98])
  by smtp.gmail.com with ESMTPSA id
- t5-20020a05620a004500b007742ad3047asm567118qkt.54.2023.10.03.09.08.17
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 09:08:18 -0700 (PDT)
-Message-ID: <c030fcde-f82b-b174-6555-efd25896e90e@redhat.com>
-Date: Tue, 3 Oct 2023 18:08:16 +0200
+ u22-20020a05600c211600b004063d8b43e7sm9678334wml.48.2023.10.03.09.19.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 03 Oct 2023 09:19:06 -0700 (PDT)
+Date: Tue, 03 Oct 2023 19:09:14 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Igor Skalkin <Igor.Skalkin@opensynergy.com>,
+ Anton Yakovlev <Anton.Yakovlev@opensynergy.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Daniel P. Berrang=?UTF-8?B?w6k=?= " <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marc-Andr=?UTF-8?B?w6kg?=Lureau <marcandre.lureau@redhat.com>,
+ Volker R=?UTF-8?B?w7w=?= melin <vr_qemu@t-online.de>,
+ "K=?UTF-8?B?xZE=?= v=?UTF-8?B?w6E=?= g=?UTF-8?B?w7M=?= ,
+ Zolt=?UTF-8?B?w6E=?= n" <DirtY.iCE.hu@gmail.com>,
+ Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>,
+ Philippe Mathieu-Daud=?UTF-8?B?w6kg?=<philmd@linaro.org>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: Re: [PATCH v10 00/11] Add VIRTIO sound card
+User-Agent: meli 0.8.2
+References: <cover.1695996196.git.manos.pitsidianakis@linaro.org>
+ <20231003101002-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231003101002-mutt-send-email-mst@kernel.org>
+Message-ID: <1ynzs.rzef353l0yhq@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v3 15/15] vfio/common: Move legacy VFIO backend code into
- separate container.c
-Content-Language: en-US
-To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, zhenzhong.duan@intel.com, alex.williamson@redhat.com,
- jgg@nvidia.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
- peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
- yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-16-eric.auger@redhat.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <20231003101530.288864-16-eric.auger@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8; format=flowed
+Received-SPF: pass client-ip=2a00:1450:4864:20::329;
+ envelope-from=manos.pitsidianakis@linaro.org; helo=mail-wm1-x329.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,33 +105,23 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 12:14, Eric Auger wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
-> 
-> Move all the code really dependent on the legacy VFIO container/group
-> into a separate file: container.c. What does remain in common.c is
-> the code related to VFIOAddressSpace, MemoryListeners, migration and
-> all other general operations.
-> 
-> Signed-off-by: Eric Auger <eric.auger@redhat.com>
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+On Tue, 03 Oct 2023 17:10, "Michael S. Tsirkin" <mst@redhat.com> wrote:
+>I hope you are also fixing the linux driver to fix this in a robust
+>way, yes?
 
-We have lost :
+Hello Michael,
 
--/*
-- * vfio_attach_device: attach a device to a security context
-- * @name and @vbasedev->name are likely to be different depending
-- * on the type of the device, hence the need for passing @name
-- */
+You can find pertinent discussion on the virtio-comment list here:
 
-with that back,
+https://lists.oasis-open.org/archives/virtio-comment/202309/threads.html#00175
 
+Fixing it is on our radar but it may prove non-trivial if it requires 
+changing how the virtio-snd driver interacts with the kernel alsa API. 
 
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Meanwhile AFAIK the qemu device conforms to the virtio spec in this case 
+both with the previous version behavior and the current one. The change 
+was made to compensate for the linux driver's behavior, not because it 
+was previously incorrect.
 
-Thanks,
-
-C.
-
+Manos
 
