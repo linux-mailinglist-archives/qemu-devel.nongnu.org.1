@@ -2,80 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3557B69DD
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:08:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB4D7B69E2
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 15:09:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnf7S-0003gU-9W; Tue, 03 Oct 2023 09:07:22 -0400
+	id 1qnf8g-0004GT-No; Tue, 03 Oct 2023 09:08:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf7N-0003f2-Pc
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:07:18 -0400
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qnf8Z-0004FP-4k
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:08:31 -0400
+Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnf7L-0007jH-Tz
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:07:17 -0400
-Received: by mail-wr1-x431.google.com with SMTP id
- ffacd0b85a97d-32483535e51so969723f8f.0
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:07:15 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
+ id 1qnf8X-0007y6-LB
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 09:08:30 -0400
+Received: by mail-oo1-xc31.google.com with SMTP id
+ 006d021491bc7-57bb0f5d00aso554995eaf.1
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 06:08:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696338434; x=1696943234; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=soXVNOY75BLalkQB99WYxBZlBCKNbFdp/x82QwhocGM=;
- b=dut+lQG7LWmPoP4yYWNJovgTS/Rde7dclYSN3E00MT5LukRktSdr1Y+HMxuhfTnGcE
- gLv4nOqkf/MJNSAVpZGKFyqgkvVXPX/BtMDPDaBdF7+sCLz+LEhUcgbBmCds+MmzYZNe
- TYHXwuyUFddyfVvaQcYDjJ2yQWMj5LsKP8z5W3FlCXdzPt7njhHFx9sCBb0NKYx7zVA/
- bQ+UYFW7AUHJhWbVeLY40fZ7aX8nn3RWgdCLOhE9+cMYBbAArwLOLwlTiu+ypQxjdPaX
- DGJ0cf4I/XfgaWKmSNHqVpfFom2i6QfZQOvXmMTsZsvqLZ+Vbhue9W7rMPK2g3VI88GZ
- A2gQ==
+ d=gmail.com; s=20230601; t=1696338508; x=1696943308; darn=nongnu.org;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=8AqUpc7x1XC4iM53qntn9MUGF1kqyxrEvTOtd8Lbz4A=;
+ b=dLg5wAqwjFO6vqmFwf2znrXzw5RmHORBH4KbeyEOXUratmq5mM2/5fAzF6dC2nKh2u
+ FhICmsdWvH8e2Sdo793Xr1j0AX7MXdKjtZAkEsw5FqdH6E9NUDEhmx+S26ruuaE3NMsm
+ Eo2H9gtkn4i5/ZverARQEUKdnuZK6ML6HjbOlT2U0aBCVOMZIODotptQOdJPra8AOcOE
+ 2e4CJSA79ac9JwxKMVGtRq9UimVOoscO91xLj+4jOS4OJH790k0GAA+u8bBo3PZq7ZvI
+ nZyIlT/kOPwTfzdJIohWLjVhJ0+2uak6O2pR4OGneguu+u8dHeKExTDzeBKHMgl9LdnV
+ +k5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696338434; x=1696943234;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=soXVNOY75BLalkQB99WYxBZlBCKNbFdp/x82QwhocGM=;
- b=nvew9DC60XhoOw49cM8O0LzeYEBGBewn+NQ8U8qH+ahlL0QxTQkEzlGoSs/SXk0lbM
- YY1eZFLFGfH3ohoAVQiwb96AT3VkG3apEBC+Gt2WLRSiTV3y8ZaCe/zSB8mr2Q8Zbouv
- qUHtMovRysuQsG9ifF4VI/R2/mRW8Rle+S7gTLWdSJCh2tqvWL0EuU7Jxc3WaHOyX/pk
- rNkWZUb8H0KVEpHwXJQ0VLhH2Mw+6pK6oTHeLLIX64QxnDrmzqIXQe226q83ce8aROMQ
- zMFMugL/aVstVPX4E01A2KF3I/xFYnptdnAlA5z81jJsT0qXsoRWjzsjwWiOaw2XV8pA
- PefQ==
-X-Gm-Message-State: AOJu0YwzogIfw6D9SAt2b93j5aCJgd0YoUnMPKKvBVm7M+nQ1UuIpNnT
- /MSMZ7hW9MRaCH0ADIDY58Duew==
-X-Google-Smtp-Source: AGHT+IE0Ozh6ksEkeYNOEobkS5+jSvo2nHFv8qZVw2+V/lI0AGjzPeIIDkT+Rm+c4RwRSAR1TCEB6Q==
-X-Received: by 2002:adf:d086:0:b0:31f:b91f:23ef with SMTP id
- y6-20020adfd086000000b0031fb91f23efmr12922311wrh.51.1696338433090; 
- Tue, 03 Oct 2023 06:07:13 -0700 (PDT)
-Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
- [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
- j16-20020a056000125000b00326f5d0ce0asm1558162wrx.21.2023.10.03.06.07.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 06:07:12 -0700 (PDT)
-Message-ID: <92c8b00d-157e-6a03-7629-c331cf41ffc5@linaro.org>
-Date: Tue, 3 Oct 2023 15:07:10 +0200
+ d=1e100.net; s=20230601; t=1696338508; x=1696943308;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=8AqUpc7x1XC4iM53qntn9MUGF1kqyxrEvTOtd8Lbz4A=;
+ b=Pa2uYhiD4BHer8nOU0v9pHCPJaV2lZli2Uury3An+fJmE9ujP472l7hK3oPGn/3kiT
+ Y42tgkwjNbfYkFJQz5fRWgK77Qlm/JLfaDCdjG2Qm8wJAxqrcPa53U4+KLefozhJzx9T
+ 8sGYULZadutXS6gVh/SfPVFfGbkOSBWLGPkQq9x1b0sFtToRy4YnImBkpFXNerP5r0N+
+ KE3gw5bIeWoY36r88JmZiYAqvQwYUvCsO2p6D1e+IJu1D6J0/mFX5Qu8sigCl8X2I6Cc
+ 8Wh5MjcEibNb4oqTFV7xuT5ccznioEDBkKvUzO0huoH+QT3rZNN3sgQN7p1JNa3GPKw0
+ VKug==
+X-Gm-Message-State: AOJu0Yz5uCdDuTmIlfLhFeYoJx6ala7Ll53wtYJcmy9AnYvtoOWDP3W2
+ H+sFh/34KjL3JWP2t5gSRelY34YA+m7blj18MRs=
+X-Google-Smtp-Source: AGHT+IEWNRLxnl88VZACvLbABys/X1GInVsljx2xupqiW5pb2bTC7R+q8JEAUI3bhbksmgap1LGqTlgnwJbf4PzEfe0=
+X-Received: by 2002:a4a:6c02:0:b0:56e:466c:7393 with SMTP id
+ q2-20020a4a6c02000000b0056e466c7393mr13765697ooc.5.1696338508357; Tue, 03 Oct
+ 2023 06:08:28 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v6 18/19] linux-user/s390x: Add vdso
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, laurent@vivier.eu
-References: <20230930021529.987950-1-richard.henderson@linaro.org>
- <20230930021529.987950-19-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230930021529.987950-19-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::431;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x431.google.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
+References: <20230827182937.146450-1-lersek@redhat.com>
+ <20230827182937.146450-8-lersek@redhat.com>
+ <CAJSP0QVWSQ8F-A1ryGLtd1jb8Go1Pr_N7AcLb5W5kSFv8T8jTA@mail.gmail.com>
+ <6d766ab4-b6b8-b64b-1f9d-60c558b56509@redhat.com>
+ <CAJSP0QV9RO7bkkcVFibnTv4tixmO3wKohSY+ia1D-UZiRzh5QA@mail.gmail.com>
+ <20231002015259-mutt-send-email-mst@kernel.org>
+ <CAJSP0QXgWsULW_61-MScvuWAiE3c4brYRyFc6q_==Sj6aLE8SQ@mail.gmail.com>
+ <CAJSP0QU3jzFGnJ35Zbabf70Tbf+rPA_fvrA_eNxZ8TxOXQxZXA@mail.gmail.com>
+ <20231002183627-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231002183627-mutt-send-email-mst@kernel.org>
+From: Stefan Hajnoczi <stefanha@gmail.com>
+Date: Tue, 3 Oct 2023 09:08:15 -0400
+Message-ID: <CAJSP0QWTRc6Ai+bM9_UwrpgXXmgvN=rMD248nqoGv0PiOd_2Sg@mail.gmail.com>
+Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
+ synchronously
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Laszlo Ersek <lersek@redhat.com>, 
+ Eugenio Perez Martin <eperezma@redhat.com>,
+ German Maglione <gmaglione@redhat.com>, 
+ Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>, 
+ Stefano Garzarella <sgarzare@redhat.com>, Jason Wang <jasowang@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -93,154 +97,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Richard,
+On Tue, 3 Oct 2023 at 08:27, Michael S. Tsirkin <mst@redhat.com> wrote:
+>
+> On Mon, Oct 02, 2023 at 05:13:26PM -0400, Stefan Hajnoczi wrote:
+> > One more question:
+> >
+> > Why is the disabled state not needed by regular (non-vhost) virtio-net devices?
+>
+> Tap does the same - it purges queued packets:
+>
+> int tap_disable(NetClientState *nc)
+> {
+>     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+>     int ret;
+>
+>     if (s->enabled == 0) {
+>         return 0;
+>     } else {
+>         ret = tap_fd_disable(s->fd);
+>         if (ret == 0) {
+>             qemu_purge_queued_packets(nc);
+>             s->enabled = false;
+>             tap_update_fd_handler(s);
+>         }
+>         return ret;
+>     }
+> }
 
-On 30/9/23 04:15, Richard Henderson wrote:
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   linux-user/s390x/vdso-asmoffset.h |   2 +
->   linux-user/elfload.c              |   2 +
->   linux-user/s390x/signal.c         |   4 +-
->   linux-user/s390x/Makefile.vdso    |  11 +++++
->   linux-user/s390x/meson.build      |   6 +++
->   linux-user/s390x/vdso.S           |  61 ++++++++++++++++++++++++++
->   linux-user/s390x/vdso.ld          |  69 ++++++++++++++++++++++++++++++
->   linux-user/s390x/vdso.so          | Bin 0 -> 3464 bytes
->   8 files changed, 152 insertions(+), 3 deletions(-)
->   create mode 100644 linux-user/s390x/vdso-asmoffset.h
->   create mode 100644 linux-user/s390x/Makefile.vdso
->   create mode 100644 linux-user/s390x/vdso.S
->   create mode 100644 linux-user/s390x/vdso.ld
->   create mode 100755 linux-user/s390x/vdso.so
+tap_disable() is not equivalent to the vhost-user "started but
+disabled" ring state. tap_disable() is a synchronous one-time action,
+while "started but disabled" is a continuous state.
 
+The "started but disabled" ring state isn't needed to achieve this.
+The back-end can just drop tx buffers upon receiving
+VHOST_USER_SET_VRING_ENABLE .num=0.
 
-> diff --git a/linux-user/s390x/Makefile.vdso b/linux-user/s390x/Makefile.vdso
-> new file mode 100644
-> index 0000000000..e82bf9e29f
-> --- /dev/null
-> +++ b/linux-user/s390x/Makefile.vdso
-> @@ -0,0 +1,11 @@
-> +include $(BUILD_DIR)/tests/tcg/s390x-linux-user/config-target.mak
-> +
-> +SUBDIR = $(SRC_PATH)/linux-user/s390x
-> +VPATH += $(SUBDIR)
-> +
-> +all: $(SUBDIR)/vdso.so
-> +
-> +$(SUBDIR)/vdso.so: vdso.S vdso.ld vdso-asmoffset.h
-> +	$(CC) -o $@ -nostdlib -shared -Wl,-h,linux-vdso64.so.1 \
-> +	  -Wl,--build-id=sha1 -Wl,--hash-style=both \
-> +	  -Wl,-T,$(SUBDIR)/vdso.ld $<
-> diff --git a/linux-user/s390x/meson.build b/linux-user/s390x/meson.build
-> index 0781ccea1d..a7a25ed9ce 100644
-> --- a/linux-user/s390x/meson.build
-> +++ b/linux-user/s390x/meson.build
-> @@ -3,3 +3,9 @@ syscall_nr_generators += {
->                        arguments: [ meson.current_source_dir() / 'syscallhdr.sh', '@INPUT@', '@OUTPUT@', '@EXTRA_ARGS@' ],
->                        output: '@BASENAME@_nr.h')
->   }
-> +
-> +vdso_inc = gen_vdso.process('vdso.so', extra_args: [
-> +                                '-s', '__kernel_sigreturn',
-> +                                '-r', '__kernel_rt_sigreturn'
-> +                            ])
-> +linux_user_ss.add(when: 'TARGET_S390X', if_true: vdso_inc)
-> diff --git a/linux-user/s390x/vdso.S b/linux-user/s390x/vdso.S
-> new file mode 100644
-> index 0000000000..3332492477
-> --- /dev/null
-> +++ b/linux-user/s390x/vdso.S
-> @@ -0,0 +1,61 @@
-> +/*
-> + * s390x linux replacement vdso.
-> + *
-> + * Copyright 2023 Linaro, Ltd.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +#include <asm/unistd.h>
-> +#include "vdso-asmoffset.h"
-> +
-> +.macro endf name
-> +	.globl	\name
-> +	.type	\name, @function
-> +	.size	\name, . - \name
-> +.endm
-> +
-> +.macro raw_syscall n
-> +        .ifne	\n < 0x100
-> +	svc	\n
-> +	.else
-> +	lghi	%r1, \n
-> +	svc	0
-> +        .endif
-> +.endm
-> +
-> +.macro vdso_syscall name, nr
-> +\name:
-> +	.cfi_startproc
-> +	aghi	%r15, -(STACK_FRAME_OVERHEAD + 16)
-> +	.cfi_adjust_cfa_offset STACK_FRAME_OVERHEAD + 16
-> +	stg	%r14, STACK_FRAME_OVERHEAD(%r15)
-> +	.cfi_rel_offset %r14, STACK_FRAME_OVERHEAD
-> +	raw_syscall \nr
-> +	lg	%r14, STACK_FRAME_OVERHEAD(%r15)
-> +	aghi	%r15, STACK_FRAME_OVERHEAD + 16
-> +	.cfi_restore %r14
-> +	.cfi_adjust_cfa_offset -(STACK_FRAME_OVERHEAD + 16)
-> +	br	%r14
-> +	.cfi_endproc
-> +endf	\name
-> +.endm
-> +
-> +vdso_syscall __kernel_gettimeofday, __NR_gettimeofday
-> +vdso_syscall __kernel_clock_gettime, __NR_clock_gettime
-> +vdso_syscall __kernel_clock_getres, __NR_clock_getres
-> +vdso_syscall __kernel_getcpu, __NR_getcpu
-> +
-> +/*
-> + * TODO unwind info, though we're ok without it.
-> + * The kernel supplies bogus empty unwind info, and it is likely ignored
-> + * by all users.  Without it we get the fallback signal frame handling.
-> + */
-> +
-> +__kernel_sigreturn:
-> +	raw_syscall __NR_sigreturn
-> +endf	__kernel_sigreturn
-> +
-> +__kernel_rt_sigreturn:
-> +	raw_syscall __NR_rt_sigreturn
-> +endf	__kernel_rt_sigreturn
-> diff --git a/linux-user/s390x/vdso.ld b/linux-user/s390x/vdso.ld
-> new file mode 100644
-> index 0000000000..2a30ff382a
-> --- /dev/null
-> +++ b/linux-user/s390x/vdso.ld
-> @@ -0,0 +1,69 @@
-> +/*
-> + * Linker script for linux x86-64 replacement vdso.
-> + *
-> + * Copyright 2023 Linaro, Ltd.
-> + *
-> + * SPDX-License-Identifier: GPL-2.0-or-later
-> + */
-> +
-> +VERSION {
-> +        LINUX_2.6.29 {
-> +        global:
-> +                __kernel_gettimeofday;
-> +                __kernel_clock_gettime;
-> +                __kernel_clock_getres;
-> +                __kernel_getcpu;
-> +                __kernel_restart_syscall;
+The history of the spec is curious. VHOST_USER_SET_VRING_ENABLE was
+introduced before the the "started but disabled" state was defined,
+and it explicitly mentions tap attach/detach:
 
-Where is __kernel_restart_syscall defined?
+commit 7263a0ad7899994b719ebed736a1119cc2e08110
+Author: Changchun Ouyang <changchun.ouyang@intel.com>
+Date:   Wed Sep 23 12:20:01 2015 +0800
 
-> +                __kernel_rt_sigreturn;
-> +                __kernel_sigreturn;
-> +        local: *;
-> +        };
-> +}
+    vhost-user: add a new message to disable/enable a specific virt queue.
 
+    Add a new message, VHOST_USER_SET_VRING_ENABLE, to enable or disable
+    a specific virt queue, which is similar to attach/detach queue for
+    tap device.
+
+and then later:
+
+commit c61f09ed855b5009f816242ce281fd01586d4646
+Author: Michael S. Tsirkin <mst@redhat.com>
+Date:   Mon Nov 23 12:48:52 2015 +0200
+
+    vhost-user: clarify start and enable
+
+>
+> what about non tap backends? I suspect they just aren't
+> used widely with multiqueue so no one noticed.
+
+I still don't understand why "started but disabled" is needed instead
+of just two ring states: enabled and disabled.
+
+It seems like the cleanest path going forward is to keep the "ignore
+rx, discard tx" semantics for virtio-net devices but to clarify in the
+spec that other device types do not process the ring:
+
+"
+* started but disabled: the back-end must not process the ring. For legacy
+  reasons there is an exception for the networking device, where the
+  back-end must process and discard any TX packets and not process
+  other rings.
+"
+
+What do you think?
+
+Stefan
 
