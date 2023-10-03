@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A737B67C9
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2777B67CA
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:25:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qndVg-0000LK-Tf; Tue, 03 Oct 2023 07:24:16 -0400
+	id 1qndWE-0000kN-EY; Tue, 03 Oct 2023 07:24:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndVe-0000Kp-Qf; Tue, 03 Oct 2023 07:24:14 -0400
+ id 1qndW8-0000du-Bj; Tue, 03 Oct 2023 07:24:44 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndVd-0001VJ-2v; Tue, 03 Oct 2023 07:24:14 -0400
-Received: from lhrpeml100001.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0Fky2XZCz6HJb6;
- Tue,  3 Oct 2023 19:21:30 +0800 (CST)
+ id 1qndW4-0001bX-Ky; Tue, 03 Oct 2023 07:24:44 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0FpP1hqQz6K6gZ;
+ Tue,  3 Oct 2023 19:24:29 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100001.china.huawei.com (7.191.160.183) with Microsoft SMTP Server
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 12:24:10 +0100
+ 15.1.2507.31; Tue, 3 Oct 2023 12:24:37 +0100
 Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
  lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 12:24:10 +0100
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ Tue, 3 Oct 2023 12:24:37 +0100
+To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
  "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
  <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
  <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
@@ -38,9 +38,8 @@ CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
  "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
  <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "rafael@kernel.org" <rafael@kernel.org>, "alex.bennee@linaro.org"
+ <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
  "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
  "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
  "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
@@ -55,20 +54,20 @@ Subject: RE: [PATCH V2 02/10] hw/acpi: Move CPU ctrl-dev MMIO region len macro
  to common header file
 Thread-Topic: [PATCH V2 02/10] hw/acpi: Move CPU ctrl-dev MMIO region len
  macro to common header file
-Thread-Index: AQHZ8zP1LrysHzRY/k+39C2qQDqLGrA2mmCAgAFXQzA=
-Date: Tue, 3 Oct 2023 11:24:09 +0000
-Message-ID: <8eb2c7e980934b53818b0e80ecfe048b@huawei.com>
+Thread-Index: AQHZ8zP1LrysHzRY/k+39C2qQDqLGrA3FqMAgADbPOA=
+Date: Tue, 3 Oct 2023 11:24:37 +0000
+Message-ID: <3c6acfadf8ef4f5792125153feb6c3d5@huawei.com>
 References: <20230930001933.2660-1-salil.mehta@huawei.com>
  <20230930001933.2660-3-salil.mehta@huawei.com>
- <20231002165449.00004e17@Huawei.com>
-In-Reply-To: <20231002165449.00004e17@Huawei.com>
+ <64ecbf50-2287-6bd4-d2bd-e37a793ed6a9@redhat.com>
+In-Reply-To: <64ecbf50-2287-6bd4-d2bd-e37a793ed6a9@redhat.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -96,47 +95,35 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Jonathan,
-
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: Monday, October 2, 2023 4:55 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V2 02/10] hw/acpi: Move CPU ctrl-dev MMIO region len
-> macro to common header file
->=20
-> On Sat, 30 Sep 2023 01:19:25 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > CPU ctrl-dev MMIO region length could be used in ACPI GED and various
-> other
-> > architecture specific places. Move ACPI_CPU_HOTPLUG_REG_LEN macro to mo=
-re
-> > appropriate common header file.
-> >
-> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> > Reviewed-by: Alex Benn=E9e <alex.bennee@linaro.org>
-> LGTM
->=20
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Thanks
-Salil.
-
-
-
+SGkgR2F2aW4sDQoNCj4gRnJvbTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gU2Vu
+dDogVHVlc2RheSwgT2N0b2JlciAzLCAyMDIzIDEyOjIwIEFNDQo+IFRvOiBTYWxpbCBNZWh0YSA8
+c2FsaWwubWVodGFAaHVhd2VpLmNvbT47IHFlbXUtZGV2ZWxAbm9uZ251Lm9yZzsgcWVtdS0NCj4g
+YXJtQG5vbmdudS5vcmcNCj4gQ2M6IG1hekBrZXJuZWwub3JnOyBqZWFuLXBoaWxpcHBlQGxpbmFy
+by5vcmc7IEpvbmF0aGFuIENhbWVyb24NCj4gPGpvbmF0aGFuLmNhbWVyb25AaHVhd2VpLmNvbT47
+IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsNCj4gcGV0ZXIubWF5ZGVsbEBsaW5hcm8ub3JnOyByaWNo
+YXJkLmhlbmRlcnNvbkBsaW5hcm8ub3JnOw0KPiBpbWFtbWVkb0ByZWRoYXQuY29tOyBhbmRyZXcu
+am9uZXNAbGludXguZGV2OyBkYXZpZEByZWRoYXQuY29tOw0KPiBwaGlsbWRAbGluYXJvLm9yZzsg
+ZXJpYy5hdWdlckByZWRoYXQuY29tOyBvbGl2ZXIudXB0b25AbGludXguZGV2Ow0KPiBwYm9uemlu
+aUByZWRoYXQuY29tOyBtc3RAcmVkaGF0LmNvbTsgd2lsbEBrZXJuZWwub3JnOyByYWZhZWxAa2Vy
+bmVsLm9yZzsNCj4gYWxleC5iZW5uZWVAbGluYXJvLm9yZzsgbGludXhAYXJtbGludXgub3JnLnVr
+Ow0KPiBkYXJyZW5Ab3MuYW1wZXJlY29tcHV0aW5nLmNvbTsgaWxra2FAb3MuYW1wZXJlY29tcHV0
+aW5nLmNvbTsNCj4gdmlzaG51QG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGthcmwuaGV1YmF1bUBv
+cmFjbGUuY29tOw0KPiBtaWd1ZWwubHVpc0BvcmFjbGUuY29tOyBzYWxpbC5tZWh0YUBvcG5zcmMu
+bmV0OyB6aHVrZXFpYW4NCj4gPHpodWtlcWlhbjFAaHVhd2VpLmNvbT47IHdhbmd4aW9uZ2Zlbmcg
+KEMpIDx3YW5neGlvbmdmZW5nMkBodWF3ZWkuY29tPjsNCj4gd2FuZ3lhbmFuIChZKSA8d2FuZ3lh
+bmFuNTVAaHVhd2VpLmNvbT47IGppYWtlcm5lbDJAZ21haWwuY29tOw0KPiBtYW9iaWJvQGxvb25n
+c29uLmNuOyBsaXhpYW5nbGFpQGxvb25nc29uLmNuOyBMaW51eGFybSA8bGludXhhcm1AaHVhd2Vp
+LmNvbT4NCj4gU3ViamVjdDogUmU6IFtQQVRDSCBWMiAwMi8xMF0gaHcvYWNwaTogTW92ZSBDUFUg
+Y3RybC1kZXYgTU1JTyByZWdpb24gbGVuDQo+IG1hY3JvIHRvIGNvbW1vbiBoZWFkZXIgZmlsZQ0K
+PiANCj4gT24gOS8zMC8yMyAxMDoxOSwgU2FsaWwgTWVodGEgd3JvdGU6DQo+ID4gQ1BVIGN0cmwt
+ZGV2IE1NSU8gcmVnaW9uIGxlbmd0aCBjb3VsZCBiZSB1c2VkIGluIEFDUEkgR0VEIGFuZCB2YXJp
+b3VzDQo+IG90aGVyDQo+ID4gYXJjaGl0ZWN0dXJlIHNwZWNpZmljIHBsYWNlcy4gTW92ZSBBQ1BJ
+X0NQVV9IT1RQTFVHX1JFR19MRU4gbWFjcm8gdG8gbW9yZQ0KPiA+IGFwcHJvcHJpYXRlIGNvbW1v
+biBoZWFkZXIgZmlsZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNhbGlsIE1laHRhIDxzYWxp
+bC5tZWh0YUBodWF3ZWkuY29tPg0KPiA+IFJldmlld2VkLWJ5OiBBbGV4IEJlbm7DqWUgPGFsZXgu
+YmVubmVlQGxpbmFyby5vcmc+DQo+ID4gLS0tDQo+ID4gICBody9hY3BpL2NwdS5jICAgICAgICAg
+ICAgICAgICB8IDIgKy0NCj4gPiAgIGluY2x1ZGUvaHcvYWNwaS9jcHVfaG90cGx1Zy5oIHwgMiAr
+Kw0KPiA+ICAgMiBmaWxlcyBjaGFuZ2VkLCAzIGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkN
+Cj4gPg0KPiANCj4gUmV2aWV3ZWQtYnk6IEdhdmluIFNoYW4gPGdzaGFuQHJlZGhhdC5jb20+DQoN
+ClRoYW5rcw0KU2FsaWwuDQo=
 
