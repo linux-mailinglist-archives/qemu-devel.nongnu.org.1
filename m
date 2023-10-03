@@ -2,71 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0153D7B6542
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 11:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9937B65C9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 11:45:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnbVa-0006yn-2P; Tue, 03 Oct 2023 05:16:02 -0400
+	id 1qnbxB-0000cO-Tm; Tue, 03 Oct 2023 05:44:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qnbVY-0006xH-LY
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 05:16:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qnbVU-00027j-Ur
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 05:15:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696324555;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=T9Y8/40qNCLeaE+QOiY59P5XwxpHGSGC5EN7WJk1KgA=;
- b=HnFefUXtoG0XoRfaW+va6SEGa6YoMjKwAULHvleGD4jO8rc5oqyLNff7kW8ESjnXN3gHMp
- t0gi5wk1MrdQIp6REufZtBxluPnxPB7K7PsUaUknok2MtJBCuaALo1IDR1PvMy7KUGwFxd
- atcRKgvl0Hy7TjJPWWtG+S62q/DzpCE=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-527-fYpPwIiRO5qrVYLCP4h2Mg-1; Tue, 03 Oct 2023 05:15:52 -0400
-X-MC-Unique: fYpPwIiRO5qrVYLCP4h2Mg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F2A42999B31;
- Tue,  3 Oct 2023 09:15:52 +0000 (UTC)
-Received: from toolbox.redhat.com (unknown [10.42.28.41])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B115C1054FC1;
- Tue,  3 Oct 2023 09:15:50 +0000 (UTC)
-From: =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH RESEND] osdep: set _FORTIFY_SOURCE=2 when optimization is
- enabled
-Date: Tue,  3 Oct 2023 10:15:49 +0100
-Message-ID: <20231003091549.223020-1-berrange@redhat.com>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnbxA-0000cF-7p
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 05:44:32 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnbx5-0007LA-Gt
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 05:44:32 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-4054f790190so6929175e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 02:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696326266; x=1696931066; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=8SiphgAucNQGHkryF9frgBMe7PR/MSSiUUKJotN2TEg=;
+ b=CcHBq/bxKXkQazXFcMSdRybaTSGHVk/fajmikteHPgDbyn+T4rkHd92+EAOHkr933U
+ 00T5bxkV4EbdKW1PX2ez0+/q1JC4GOhg2/rrVTJvhc526FSOWxRGf9ohFKI7NlKP0DeX
+ sTQWBC34uOi5/FPwMmKP8LscGYOTpsBsYPBk0LgfbJ9AQDIJ8+N42pKLU05p2MOf1f8w
+ r4O3LEtuY54WEMVh8fyAj3zWnO7srbqr3gpTP61bLfglBGA9aXbWEThxueo7bvcyo9ND
+ HMm7W4O3ijP9ZJrADdpY2NW2vZQu8963dGg1d0fvXYv8sLdlKz00gjAhh5KmfrQv5fP5
+ aSNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696326266; x=1696931066;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=8SiphgAucNQGHkryF9frgBMe7PR/MSSiUUKJotN2TEg=;
+ b=f9ZSAXwYagLYPGMFxG33FHS9CXzBszErn2xP6k0J/zayjNzyIHREcMPbKtqMDXq2wy
+ BbU4+qhn+egho8qA63kQXY0Z3X8natADZ+uef2AuceK5rt52Lh1RYuPUVFjpCvgdbiCz
+ /h1iYJOiBy6Kgy95VPzV3s/l9bcd7lOlgfF13hwy7FxH8agaYR2019T1D8VNL+TeF6mf
+ c9ySEU0EazfwzLu/sGNNNwDNA0tK4Gfx/XhrmTvXjsU/gzcLBl+4tisbzPd85utK7W97
+ 7JFMW1Ysj06BzujWQdQAXSnV8zgwuROS4tDJzUs7p7dTIOXR30pPN738+ZQhnmN2JIDp
+ cJeA==
+X-Gm-Message-State: AOJu0YzEvz1q/leuk/cmQ5/xZsTHwfZlK1/sXDv0v4FSfDimWYbGdJ/3
+ vzFPSATSNUGpsJC1cBmNN/0ckw==
+X-Google-Smtp-Source: AGHT+IGCM3/s1kXMoc0VE92CwctV0Hho3NjC09QRAkR719GNUddg3X21PBuO4Q5zhOifZ+nAKkpCjw==
+X-Received: by 2002:a05:600c:1c1a:b0:406:53c0:3c71 with SMTP id
+ j26-20020a05600c1c1a00b0040653c03c71mr11663731wms.37.1696326265861; 
+ Tue, 03 Oct 2023 02:44:25 -0700 (PDT)
+Received: from [192.168.69.115] (176-131-222-246.abo.bbox.fr.
+ [176.131.222.246]) by smtp.gmail.com with ESMTPSA id
+ w6-20020a5d6806000000b003196b1bb528sm1153901wru.64.2023.10.03.02.44.24
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Oct 2023 02:44:25 -0700 (PDT)
+Message-ID: <213c8a98-5025-6fc1-2926-8f6f15180835@linaro.org>
+Date: Tue, 3 Oct 2023 11:44:23 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 3/5] accel: Declare AccelClass::[un]realize_cpu() handlers
+Content-Language: en-US
+To: Claudio Fontana <cfontana@suse.de>, qemu-devel@nongnu.org
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+ Fabiano Rosas <farosas@suse.de>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>, kvm@vger.kernel.org,
+ Yanan Wang <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+References: <20230915190009.68404-1-philmd@linaro.org>
+ <20230915190009.68404-4-philmd@linaro.org>
+ <39bac54e-be9f-f425-81be-62395633ad13@suse.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <39bac54e-be9f-f425-81be-62395633ad13@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.321,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
+ T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,105 +98,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently we set _FORTIFY_SOURCE=2 as a compiler argument when the
-meson 'optimization' setting is non-zero, the compiler is GCC and
-the target is Linux.
+On 3/10/23 10:55, Claudio Fontana wrote:
+> On 9/15/23 21:00, Philippe Mathieu-Daudé wrote:
+>> Currently accel_cpu_realize() only performs target-specific
+>> realization. Introduce the [un]realize_cpu fields in the
+>> base AccelClass to be able to perform target-agnostic
+>> [un]realization of vCPUs.
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Just thinking, for the benefit of the reader trying to understand the code later on,
+> maybe putting in a "target_" in there somewhere in the function name?
+> like "realize_cpu_target", vs "realize_cpu_generic" ?
 
-While the default QEMU optimization level is 2, user could override
-this by setting CFLAGS="-O0" or --extra-cflags="-O0" when running
-configure and this won't be reflected in the meson 'optimization'
-setting. As a result we try to enable _FORTIFY_SOURCE=2 and then the
-user gets compile errors as it only works with optimization.
-
-Rather than trying to improve detection in meson, it is simpler to
-just check the __OPTIMIZE__ define from osdep.h.
-
-The comment about being incompatible with clang appears to be
-outdated, as compilation works fine without excluding clang.
-
-In the coroutine code we must set _FORTIFY_SOURCE=0 to stop the
-logic in osdep.h then enabling it.
-
-Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
----
-
-Re-sent due to previous bad patch submission
-
- include/qemu/osdep.h         |  4 ++++
- meson.build                  | 10 ----------
- util/coroutine-sigaltstack.c |  4 ++--
- util/coroutine-ucontext.c    |  4 ++--
- 4 files changed, 8 insertions(+), 14 deletions(-)
-
-diff --git a/include/qemu/osdep.h b/include/qemu/osdep.h
-index 18b940db75..475a1c62ff 100644
---- a/include/qemu/osdep.h
-+++ b/include/qemu/osdep.h
-@@ -27,6 +27,10 @@
- #ifndef QEMU_OSDEP_H
- #define QEMU_OSDEP_H
- 
-+#if !defined _FORTIFY_SOURCE && defined __OPTIMIZE__ && __OPTIMIZE__ && defined __linux__
-+# define _FORTIFY_SOURCE 2
-+#endif
-+
- #include "config-host.h"
- #ifdef NEED_CPU_H
- #include CONFIG_TARGET
-diff --git a/meson.build b/meson.build
-index 5139db2ff7..b12ead85f6 100644
---- a/meson.build
-+++ b/meson.build
-@@ -479,16 +479,6 @@ if 'cpp' in all_languages
-   qemu_cxxflags = ['-D__STDC_LIMIT_MACROS', '-D__STDC_CONSTANT_MACROS', '-D__STDC_FORMAT_MACROS'] + qemu_cflags
- endif
- 
--# clang does not support glibc + FORTIFY_SOURCE (is it still true?)
--if get_option('optimization') != '0' and targetos == 'linux'
--  if cc.get_id() == 'gcc'
--    qemu_cflags += ['-U_FORTIFY_SOURCE', '-D_FORTIFY_SOURCE=2']
--  endif
--  if 'cpp' in all_languages and cxx.get_id() == 'gcc'
--    qemu_cxxflags += ['-U_FORTIFY_SOURCE', '-D_FORTIFY_SOURCE=2']
--  endif
--endif
--
- add_project_arguments(qemu_cflags, native: false, language: 'c')
- add_project_arguments(cc.get_supported_arguments(warn_flags), native: false, language: 'c')
- if 'cpp' in all_languages
-diff --git a/util/coroutine-sigaltstack.c b/util/coroutine-sigaltstack.c
-index e2690c5f41..037d6416c4 100644
---- a/util/coroutine-sigaltstack.c
-+++ b/util/coroutine-sigaltstack.c
-@@ -22,9 +22,9 @@
-  */
- 
- /* XXX Is there a nicer way to disable glibc's stack check for longjmp? */
--#ifdef _FORTIFY_SOURCE
- #undef _FORTIFY_SOURCE
--#endif
-+#define _FORTIFY_SOURCE 0
-+
- #include "qemu/osdep.h"
- #include <pthread.h>
- #include "qemu/coroutine_int.h"
-diff --git a/util/coroutine-ucontext.c b/util/coroutine-ucontext.c
-index ddc98fb4f8..7b304c79d9 100644
---- a/util/coroutine-ucontext.c
-+++ b/util/coroutine-ucontext.c
-@@ -19,9 +19,9 @@
-  */
- 
- /* XXX Is there a nicer way to disable glibc's stack check for longjmp? */
--#ifdef _FORTIFY_SOURCE
- #undef _FORTIFY_SOURCE
--#endif
-+#define _FORTIFY_SOURCE 0
-+
- #include "qemu/osdep.h"
- #include <ucontext.h>
- #include "qemu/coroutine_int.h"
--- 
-2.41.0
+Good idea, I like it, thanks!
 
 
