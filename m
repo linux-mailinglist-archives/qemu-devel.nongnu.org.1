@@ -2,109 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29A77B7482
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 268EE7B74CA
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 01:23:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnoVR-00031L-79; Tue, 03 Oct 2023 19:08:45 -0400
+	id 1qnoiM-0008CE-8x; Tue, 03 Oct 2023 19:22:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1qnoVM-00030m-1V
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:08:40 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjrosato@linux.ibm.com>)
- id 1qnoVH-0007Aa-NW
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:08:39 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 393MkX0R023364; Tue, 3 Oct 2023 23:08:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=2IS/w4TSrGlG3f3kWJSMVVKt/rb+UqUBEuVCxwm2aZE=;
- b=iffEXylJdKZEuFfu+O8HEGqYXPpg+suwyyUeJOXlIHCQUT8ma0EsS8M0QFyhgShs6yak
- w4t6DGcsmEa8WzdAaVtdZUrtY8nwOWL8iwejcDQ1czeSJza90mbcIRMAw2ULHqtnzMGx
- bgIlL7gY7RhQHhMjEmolomFZRP9aFguVOf4AEvA329UFzIR+qSD1ZZ4Gx8HSu2tGLeKX
- OlrHOCrJCSct/tK8l4qJT1TV2iA1V+WDuydF1NOY2yZmFr2hCCBJ2wPw0ewLOQA7Ave8
- 6uMjSVNWnjW4wnq1lcWDFBmf5zomCcoMZUl1dj29kBBtUkBIDjZZNVkzRxCI4WdBGvQo xQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgumw16gn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Oct 2023 23:08:31 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 393MMFwu015323;
- Tue, 3 Oct 2023 23:08:31 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgumw16fy-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Oct 2023 23:08:30 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 393MpHSu006684; Tue, 3 Oct 2023 23:08:29 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tf07jx35c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Tue, 03 Oct 2023 23:08:29 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com
- [10.241.53.105])
- by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 393N8Sbc656126
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Tue, 3 Oct 2023 23:08:29 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C7E18580E9;
- Tue,  3 Oct 2023 23:08:28 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C24BE580E4;
- Tue,  3 Oct 2023 23:08:27 +0000 (GMT)
-Received: from [9.61.106.119] (unknown [9.61.106.119])
- by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Tue,  3 Oct 2023 23:08:27 +0000 (GMT)
-Message-ID: <606cfdd1-5ff1-b789-02c6-9a9237694f30@linux.ibm.com>
-Date: Tue, 3 Oct 2023 19:08:27 -0400
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnoiI-0008AL-Fa
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:22:03 -0400
+Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qnoiF-00020W-VG
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 19:22:01 -0400
+Received: by mail-wm1-x336.google.com with SMTP id
+ 5b1f17b1804b1-4056ce55e7eso14846715e9.2
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 16:21:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696375318; x=1696980118; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=0f2vU2Tp5kWcSidG+0GfHM2fCZDc8Gx6g04Mw7tskOQ=;
+ b=FkPVVLBrenzPFCdTT4YXv+4mm8vHCq7n6MVUb9xuOa+QG9+V5zBtEpHCgJf9z0sPmh
+ O5E+8FqTMctHLQiTK82Rq9RUvezwRIJYGtJ6KJnGHwnfwQDqlzM+ow1GyvqrKtbmvdTC
+ xo0hEXampvkejyBQYVcNASSI5z1koh0wlZFM/dfjvNFU73rb35K9z7wWd9owkaJGlXsG
+ X4oXfY9aN8MPAN+/zfv2UG379fLOmu8nP58p/aWQW2ZuF6p9Lvq16gRKjOmF5q+owjKO
+ mqOdw+VXSLv7h34Hqyuif/L9uaRmeqMD+4rIS3V6Lbi4DHGZBnBJ06x8KcO5rM2BaY5n
+ 8DSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696375318; x=1696980118;
+ h=content-transfer-encoding:mime-version:message-id:references
+ :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=0f2vU2Tp5kWcSidG+0GfHM2fCZDc8Gx6g04Mw7tskOQ=;
+ b=tOyLtQPNtzbFWaWpgZGBh0uIZVLvPeUjNlp00C38JM68vo2AoNnJIsO9INh8tu/4DU
+ SjdbA36nKh6sz/NQdTyvL1O2KFeXGCyhd6lQipgs1hqMa6eKjFv4nCN6Kg90Mia7Aw8O
+ 0V9NHnjipDom8J+7VbePMJkYwlFx7kinO2DRHuHAWobDRGsdSYyq3khBc3LdUaeLjOX6
+ YgJ+HykSh3FN5xPicpWZLP+YanRtdz/JiMKW85gPNm27mAYiG1WaDxonxj/u+Xyl5b9z
+ ZmQJ9EJgceTnSkrXjsPaBS3ClfqoULSu0O7fhzy4yiBBeYOy1/0sFf/1Far0acyckTHG
+ Lqkw==
+X-Gm-Message-State: AOJu0YxqFwlSZi3IysrLTOVnsuuOrZDb1jqBrQcRUTp43PZaITTeYP41
+ 5lfnHbdVMqMdLXzYk43xbIM=
+X-Google-Smtp-Source: AGHT+IEC074fRZKcdokyRhXPs5k5guhCmyzZ3EFdtul0nSCYX14H1Ts7kvvgI4iSqeWC7v5WZ/YSLA==
+X-Received: by 2002:a5d:4fd2:0:b0:314:15a8:7879 with SMTP id
+ h18-20020a5d4fd2000000b0031415a87879mr595484wrw.34.1696375317508; 
+ Tue, 03 Oct 2023 16:21:57 -0700 (PDT)
+Received: from ?IPv6:::1?
+ (p200300faaf2af200c1d1cd88f0d7c31c.dip0.t-ipconnect.de.
+ [2003:fa:af2a:f200:c1d1:cd88:f0d7:c31c])
+ by smtp.gmail.com with ESMTPSA id
+ q17-20020aa7da91000000b00537f44827a8sm1481276eds.64.2023.10.03.16.21.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 03 Oct 2023 16:21:57 -0700 (PDT)
+Date: Tue, 03 Oct 2023 23:21:50 +0000
+From: Bernhard Beschow <shentey@gmail.com>
+To: =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+CC: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost <eduardo@habkost.net>, 
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2_2/5=5D_hw/i386/apic=3A_Defer_error_?=
+ =?US-ASCII?Q?check_from_apic=5Fget=5Fclass_to_kvm=5Fapic=5Frealize?=
+In-Reply-To: <20231003082728.83496-3-philmd@linaro.org>
+References: <20231003082728.83496-1-philmd@linaro.org>
+ <20231003082728.83496-3-philmd@linaro.org>
+Message-ID: <8527EF0C-E466-41A0-B1A2-9AEF301B5B5E@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 09/15] vfio/ap: Use vfio_[attach/detach]_device
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
- qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
- alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-10-eric.auger@redhat.com>
- <952d6ce5-8523-0337-8bb9-ba45b728172e@redhat.com>
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <952d6ce5-8523-0337-8bb9-ba45b728172e@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kVidl8mZQjaokqo_Cd9QSS-odbP39HGm
-X-Proofpoint-ORIG-GUID: z9nRWmzrTDM9xZIYHnHOQ0_XM-BWu3uu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-03_18,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1015
- suspectscore=0 adultscore=0 impostorscore=0 phishscore=0 malwarescore=0
- bulkscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310030175
-Received-SPF: pass client-ip=148.163.158.5;
- envelope-from=mjrosato@linux.ibm.com; helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -30
-X-Spam_score: -3.1
-X-Spam_bar: ---
-X-Spam_report: (-3.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::336;
+ envelope-from=shentey@gmail.com; helo=mail-wm1-x336.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -121,173 +100,69 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 11:25 AM, Cédric Le Goater wrote:
-> On 10/3/23 12:14, Eric Auger wrote:
->> Let the vfio-ap device use vfio_attach_device() and
->> vfio_detach_device(), hence hiding the details of the used
->> IOMMU backend.
->>
->> We take the opportunity to use g_path_get_basename() which
->> is prefered, as suggested by
->> 3e015d815b ("use g_path_get_basename instead of basename")
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>
->> ---
->>
->> v2 -> v3:
->> - Mention g_path_get_basename in commit message and properly free
->>    vbasedev->name, call vfio_detach_device
->> ---
->>   hw/vfio/ap.c | 70 ++++++++++------------------------------------------
->>   1 file changed, 13 insertions(+), 57 deletions(-)
->>
->> diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
->> index 6e21d1da5a..d0b587b3b1 100644
->> --- a/hw/vfio/ap.c
->> +++ b/hw/vfio/ap.c
->> @@ -53,40 +53,6 @@ struct VFIODeviceOps vfio_ap_ops = {
->>       .vfio_compute_needs_reset = vfio_ap_compute_needs_reset,
->>   };
->>   -static void vfio_ap_put_device(VFIOAPDevice *vapdev)
->> -{
->> -    g_free(vapdev->vdev.name);
->> -    vfio_put_base_device(&vapdev->vdev);
->> -}
->> -
->> -static VFIOGroup *vfio_ap_get_group(VFIOAPDevice *vapdev, Error **errp)
->> -{
->> -    GError *gerror = NULL;
->> -    char *symlink, *group_path;
->> -    int groupid;
->> -
->> -    symlink = g_strdup_printf("%s/iommu_group", vapdev->vdev.sysfsdev);
->> -    group_path = g_file_read_link(symlink, &gerror);
->> -    g_free(symlink);
->> -
->> -    if (!group_path) {
->> -        error_setg(errp, "%s: no iommu_group found for %s: %s",
->> -                   TYPE_VFIO_AP_DEVICE, vapdev->vdev.sysfsdev, gerror->message);
->> -        g_error_free(gerror);
->> -        return NULL;
->> -    }
->> -
->> -    if (sscanf(basename(group_path), "%d", &groupid) != 1) {
->> -        error_setg(errp, "vfio: failed to read %s", group_path);
->> -        g_free(group_path);
->> -        return NULL;
->> -    }
->> -
->> -    g_free(group_path);
->> -
->> -    return vfio_get_group(groupid, &address_space_memory, errp);
->> -}
->> -
->>   static void vfio_ap_req_notifier_handler(void *opaque)
->>   {
->>       VFIOAPDevice *vapdev = opaque;
->> @@ -189,22 +155,15 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
->>   static void vfio_ap_realize(DeviceState *dev, Error **errp)
->>   {
->>       int ret;
->> -    char *mdevid;
->>       Error *err = NULL;
->> -    VFIOGroup *vfio_group;
->>       APDevice *apdev = AP_DEVICE(dev);
->>       VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
->> +    VFIODevice *vbasedev = &vapdev->vdev;
->>   -    vfio_group = vfio_ap_get_group(vapdev, errp);
->> -    if (!vfio_group) {
->> -        return;
->> -    }
->> -
->> -    vapdev->vdev.ops = &vfio_ap_ops;
->> -    vapdev->vdev.type = VFIO_DEVICE_TYPE_AP;
->> -    mdevid = basename(vapdev->vdev.sysfsdev);
->> -    vapdev->vdev.name = g_strdup_printf("%s", mdevid);
->> -    vapdev->vdev.dev = dev;
->> +    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
->> +    vbasedev->ops = &vfio_ap_ops;
->> +    vbasedev->type = VFIO_DEVICE_TYPE_AP;
->> +    vbasedev->dev = dev;
->>         /*
->>        * vfio-ap devices operate in a way compatible with discarding of
->> @@ -214,9 +173,11 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
->>        */
->>       vapdev->vdev.ram_block_discard_allowed = true;
->>   -    ret = vfio_get_device(vfio_group, mdevid, &vapdev->vdev, errp);
->> +    ret = vfio_attach_device(vbasedev->name, vbasedev,
->> +                             &address_space_memory, errp);
->>       if (ret) {
->> -        goto out_get_dev_err;
->> +        g_free(vbasedev->name);
->> +        return;
->>       }
->>         vfio_ap_register_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX, &err);
->> @@ -225,25 +186,20 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
->>            * Report this error, but do not make it a failing condition.
->>            * Lack of this IRQ in the host does not prevent normal operation.
->>            */
->> +        vfio_detach_device(vbasedev);
->>           error_report_err(err);
->> +        g_free(vbasedev->name);
 
-This patch overall looks good to me and passes basic tests with vfio-ap devices.  But I note that this addition of detach+free here runs counter to what the comment block above it states and prior behavior (where we did not goto out_get_dev_err for this case and expect the realize to complete successfully despite this error).  
 
-In this error case, we only report the local 'err' contents and nothing is propagated into 'errp' -- which means that to the caller dc->realize() should be viewed as successful (errp is NULL) and so we should be able to assume a subsequent dc->unrealize() will do this g_free+detach later. 
+Am 3=2E Oktober 2023 08:27:25 UTC schrieb "Philippe Mathieu-Daud=C3=A9" <p=
+hilmd@linaro=2Eorg>:
+>apic_get_class() isn't supposed to fail=2E kvm_apic_realize() is
+>DeviceRealize() handler, which can fail=2E Defer the error check
+>to the latter=2E
+>
+>Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro=2Eorg>
+>---
+> hw/i386/kvm/apic=2Ec       | 5 +++++
+> target/i386/cpu-sysemu=2Ec | 8 --------
+> 2 files changed, 5 insertions(+), 8 deletions(-)
+>
+>diff --git a/hw/i386/kvm/apic=2Ec b/hw/i386/kvm/apic=2Ec
+>index 1e89ca0899=2E=2E4883308247 100644
+>--- a/hw/i386/kvm/apic=2Ec
+>+++ b/hw/i386/kvm/apic=2Ec
+>@@ -228,6 +228,11 @@ static void kvm_apic_realize(DeviceState *dev, Error=
+ **errp)
+> {
+>     APICCommonState *s =3D APIC_COMMON(dev);
+>=20
+>+    if (!kvm_irqchip_in_kernel()) {
+>+        error_setg(errp, "KVM does not support userspace APIC");
+>+        return;
+>+    }
+>+
+>     memory_region_init_io(&s->io_memory, OBJECT(s), &kvm_apic_io_ops, s,
+>                           "kvm-apic-msi", APIC_SPACE_SIZE);
+>=20
+>diff --git a/target/i386/cpu-sysemu=2Ec b/target/i386/cpu-sysemu=2Ec
+>index 2375e48178=2E=2E6a228c9178 100644
+>--- a/target/i386/cpu-sysemu=2Ec
+>+++ b/target/i386/cpu-sysemu=2Ec
+>@@ -253,10 +253,6 @@ APICCommonClass *apic_get_class(Error **errp)
+>=20
+>     /* TODO: in-kernel irqchip for hvf */
+>     if (kvm_enabled()) {
+>-        if (!kvm_irqchip_in_kernel()) {
+>-            error_setg(errp, "KVM does not support userspace APIC");
+>-            return NULL;
+>-        }
+>         apic_type =3D "kvm-apic";
+>     } else if (xen_enabled()) {
+>         apic_type =3D "xen-apic";
+>@@ -272,10 +268,6 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+>     APICCommonState *apic;
+>     APICCommonClass *apic_class =3D apic_get_class(errp);
+>=20
+>-    if (!apic_class) {
+>-        return;
+>-    }
+>-
 
->>       }
->> -
->> -    return;
->> -
->> -out_get_dev_err:
->> -    vfio_ap_put_device(vapdev);
->> -    vfio_put_group(vfio_group);
->>   }
-> 
-> 
-> To be consistent with vfio_(pci)_realize(), I would introduce the same
-> failure path at the end the routine :
-> 
->   out_detach:
->       vfio_detach_device(vbasedev);
->   error:
->       error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
->       g_free(vbasedev->name);
+Did you intend to remove these lines in the next commit? There you're writ=
+ing to simplify x86_cpu_apic_create() which you're doing here already=2E
 
-So based on my comment above, I think you'd only need the 'error:' case now, but otherwise adding this error_prepend seems reasonable to me too. 
+Best regards,
+Bernhard
 
-Thanks,
-Matt
-
-> 
-> 
-> and add the VFIO_MSG_PREFIX while we are at it.
-> 
-> This is minor, so :
-> 
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
-> 
-> Thanks,
-> 
-> C.
-> 
-> 
-> 
->>     static void vfio_ap_unrealize(DeviceState *dev)
->>   {
->>       APDevice *apdev = AP_DEVICE(dev);
->>       VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
->> -    VFIOGroup *group = vapdev->vdev.group;
->>         vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX);
->> -    vfio_ap_put_device(vapdev);
->> -    vfio_put_group(group);
->> +    vfio_detach_device(&vapdev->vdev);
->> +    g_free(vapdev->vdev.name);
->>   }
->>     static Property vfio_ap_properties[] = {
-> 
-
+>     cpu->apic_state =3D DEVICE(object_new_with_class(OBJECT_CLASS(apic_c=
+lass)));
+>     object_property_add_child(OBJECT(cpu), "lapic",
+>                               OBJECT(cpu->apic_state));
 
