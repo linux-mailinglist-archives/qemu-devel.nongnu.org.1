@@ -2,90 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08F87B6DEB
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 18:03:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6258A7B6FA1
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 19:24:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnhrA-0000Ja-0J; Tue, 03 Oct 2023 12:02:44 -0400
+	id 1qnj74-0004sR-Uy; Tue, 03 Oct 2023 13:23:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnhr7-0000IN-Sq
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:02:41 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <richard.henderson@linaro.org>)
- id 1qnhr6-0007C6-DZ
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 12:02:41 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1c5db4925f9so8310005ad.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 09:02:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696348958; x=1696953758; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=sVV/60md6UTA8bNGRck53WOsmLRvjYk6hRbd3CAsgEY=;
- b=W08Gf07MFg6n/QX29GBsYBD1/zrEfOdTVM43Xskrl3Gmer18M7ZuB7M4sUCC3XUvQ1
- Iju94X6khlQspnuB9dHuBc4kAM///wCvSzwRM0+/Gt9inb+rYXkOVy/d9F4Tyio7oGja
- sDGG4eZFlXeiDLmzVB/6Jrz5dWRhmYnQ2PRnGfGx7IYLUNaOi4qiLMOox1m7YEHbOGxP
- rYTjiJQ0lqSsrgV+LqbQOkEul0cJhT3kLPggHOPyhBuZtNCLOK+SdqUyoWPmmTDNPi4b
- tsn8UwbBNq+rYyEKR9ZLwh+8O2UJ05jpSOgy8dRh7QGVwJfDE7tZ9vZBOT0JOa0CNByJ
- YjWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696348958; x=1696953758;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=sVV/60md6UTA8bNGRck53WOsmLRvjYk6hRbd3CAsgEY=;
- b=ksLXqBIqm5gWCa/8cfoc+SrmrmBgbUq8O0ResRXPHp+6fFJ9fjIhxx468p3iDQ9Ksu
- GfF5yhU7+JKt1l/hHnQn4T9IZVW/lYLx/UZSu7Al+E3kVvbdPHq/zccjLX2GMAjPw/z8
- xn4u2/V4/2HN0P299xHhrhFtQWnKclSt2QzlKRFh3Ik5mdEH7sGrfT70w2fytOAJOie5
- Mq7oGORO+FGuzv7znf5NTxgNDL9abRy29/Wja7GhZfsb4G0XW77Xs79bOsEvn2mHXRNo
- vZP7cDjHajRaJ0p3peG7b7y5ggT0IysCJttMglKvLSOmhYJowluhDBuzedbCsuwfO/rg
- lhDA==
-X-Gm-Message-State: AOJu0YwL9k+lSKR2UuZajTDdDuSF7O9Z9mZgo6mYPaXoINpnf9OLIb2f
- E8tNuQsyQrr3SefBO143jmnITOF/4mgJ3qo+ukM=
-X-Google-Smtp-Source: AGHT+IEvEqPZQ+DR0k8LUG1+eyMFnzgqbxZG1B9bkAcJEpckkAYgHokRYwzGgVprr6o/5kivsqv0sA==
-X-Received: by 2002:a17:903:41d1:b0:1c3:9928:7b28 with SMTP id
- u17-20020a17090341d100b001c399287b28mr4308533ple.6.1696348958050; 
- Tue, 03 Oct 2023 09:02:38 -0700 (PDT)
-Received: from [192.168.0.4] ([71.212.149.95])
- by smtp.gmail.com with ESMTPSA id
- jb17-20020a170903259100b001bbdd44bbb6sm1742609plb.136.2023.10.03.09.02.36
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 09:02:37 -0700 (PDT)
-Message-ID: <e6476524-a8bc-0071-eef8-1ee9e1dcba37@linaro.org>
-Date: Tue, 3 Oct 2023 09:02:35 -0700
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qnj72-0004s7-HK
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:23:12 -0400
+Received: from mail-b.sr.ht ([173.195.146.151])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <outgoing@sr.ht>) id 1qnj70-0005gH-MK
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 13:23:12 -0400
+Authentication-Results: mail-b.sr.ht; dkim=none 
+Received: from git.sr.ht (unknown [173.195.146.142])
+ by mail-b.sr.ht (Postfix) with ESMTPSA id AAEED11EEFB;
+ Tue,  3 Oct 2023 17:23:08 +0000 (UTC)
+From: ~h0lyalg0rithm <h0lyalg0rithm@git.sr.ht>
+Date: Tue, 03 Oct 2023 14:45:14 +0200
+Subject: [PATCH qemu 1/1] Switch memory management calls to new coding
+ conventions
+Message-ID: <169635378817.28428.8916197505999208589-1@git.sr.ht>
+X-Mailer: git.sr.ht
+In-Reply-To: <169635378817.28428.8916197505999208589-0@git.sr.ht>
+To: qemu-devel@nongnu.org
+Cc: trivial@nongnu.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 0/7] accel: Restrict tcg_exec_[un]realizefn() to TCG
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Eduardo Habkost <eduardo@habkost.net>, Yanan Wang
- <wangyanan55@huawei.com>, Paolo Bonzini <pbonzini@redhat.com>,
- kvm@vger.kernel.org, =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>,
- Claudio Fontana <cfontana@suse.de>, Marcelo Tosatti <mtosatti@redhat.com>,
- Roman Bolshakov <rbolshakov@ddn.com>, Fabiano Rosas <farosas@suse.de>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Cameron Esfahani <dirty@apple.com>
-References: <20231003123026.99229-1-philmd@linaro.org>
-From: Richard Henderson <richard.henderson@linaro.org>
-In-Reply-To: <20231003123026.99229-1-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=richard.henderson@linaro.org; helo=mail-pl1-x62a.google.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=173.195.146.151; envelope-from=outgoing@sr.ht;
+ helo=mail-b.sr.ht
+X-Spam_score_int: 18
+X-Spam_score: 1.8
+X-Spam_bar: +
+X-Spam_report: (1.8 / 5.0 requ) BAYES_00=-1.9, DATE_IN_PAST_03_06=1.592,
+ FREEMAIL_FORGED_REPLYTO=2.095, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,21 +52,108 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: ~h0lyalg0rithm <surajshirvankar@gmail.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/3/23 05:30, Philippe Mathieu-Daudé wrote:
-> Since v1:
-> - Use 'target'/'common' in function names (Claudio)
-> - Added Claudio R-b tags
-> 
->  From v1:
-> - Add missing accel_cpu_common_unrealize()
-> - Add AccelClass::cpu_common_[un]realize handlers
-> - Use tcg_exec_[un]realizefn as AccelClass handlers
+From: Suraj Shirvankar <surajshirvankar@gmail.com>
 
-Thanks, queued to tcg-next, replacing v1 that I queued before my holiday.  :-)
+Signed-off-by: Suraj Shirvankar <surajshirvankar@gmail.com>
+---
+ contrib/elf2dmp/addrspace.c | 4 ++--
+ contrib/elf2dmp/main.c      | 4 ++--
+ contrib/elf2dmp/pdb.c       | 4 ++--
+ contrib/elf2dmp/qemu_elf.c  | 4 ++--
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-
-r~
+diff --git a/contrib/elf2dmp/addrspace.c b/contrib/elf2dmp/addrspace.c
+index 64b5d680ad..3bfbb5093c 100644
+--- a/contrib/elf2dmp/addrspace.c
++++ b/contrib/elf2dmp/addrspace.c
+@@ -72,7 +72,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+         }
+     }
+=20
+-    ps->block =3D malloc(sizeof(*ps->block) * ps->block_nr);
++    ps->block =3D g_new(struct pa_block, ps->block_nr);
+     if (!ps->block) {
+         return 1;
+     }
+@@ -97,7 +97,7 @@ int pa_space_create(struct pa_space *ps, QEMU_Elf *qemu_elf)
+ void pa_space_destroy(struct pa_space *ps)
+ {
+     ps->block_nr =3D 0;
+-    free(ps->block);
++    g_free(ps->block);
+ }
+=20
+ void va_space_set_dtb(struct va_space *vs, uint64_t dtb)
+diff --git a/contrib/elf2dmp/main.c b/contrib/elf2dmp/main.c
+index 5db163bdbe..97baf0c0c1 100644
+--- a/contrib/elf2dmp/main.c
++++ b/contrib/elf2dmp/main.c
+@@ -120,14 +120,14 @@ static KDDEBUGGER_DATA64 *get_kdbg(uint64_t KernBase, s=
+truct pdb_reader *pdb,
+         }
+     }
+=20
+-    kdbg =3D malloc(kdbg_hdr.Size);
++    kdbg =3D g_malloc(kdbg_hdr.Size);
+     if (!kdbg) {
+         return NULL;
+     }
+=20
+     if (va_space_rw(vs, KdDebuggerDataBlock, kdbg, kdbg_hdr.Size, 0)) {
+         eprintf("Failed to extract entire KDBG\n");
+-        free(kdbg);
++        g_free(kdbg);
+         return NULL;
+     }
+=20
+diff --git a/contrib/elf2dmp/pdb.c b/contrib/elf2dmp/pdb.c
+index 6ca5086f02..625001d1cf 100644
+--- a/contrib/elf2dmp/pdb.c
++++ b/contrib/elf2dmp/pdb.c
+@@ -116,7 +116,7 @@ static void *pdb_ds_read(const PDB_DS_HEADER *header,
+=20
+     nBlocks =3D (size + header->block_size - 1) / header->block_size;
+=20
+-    buffer =3D malloc(nBlocks * header->block_size);
++    buffer =3D g_malloc(nBlocks * header->block_size);
+     if (!buffer) {
+         return NULL;
+     }
+@@ -201,7 +201,7 @@ static int pdb_init_symbols(struct pdb_reader *r)
+     return 0;
+=20
+ out_symbols:
+-    free(symbols);
++    g_free(symbols);
+=20
+     return err;
+ }
+diff --git a/contrib/elf2dmp/qemu_elf.c b/contrib/elf2dmp/qemu_elf.c
+index de6ad744c6..9aa8715108 100644
+--- a/contrib/elf2dmp/qemu_elf.c
++++ b/contrib/elf2dmp/qemu_elf.c
+@@ -94,7 +94,7 @@ static int init_states(QEMU_Elf *qe)
+=20
+     printf("%zu CPU states has been found\n", cpu_nr);
+=20
+-    qe->state =3D malloc(sizeof(*qe->state) * cpu_nr);
++    qe->state =3D g_new(QEMUCPUState*, cpu_nr);
+     if (!qe->state) {
+         return 1;
+     }
+@@ -115,7 +115,7 @@ static int init_states(QEMU_Elf *qe)
+=20
+ static void exit_states(QEMU_Elf *qe)
+ {
+-    free(qe->state);
++    g_free(qe->state);
+ }
+=20
+ static bool check_ehdr(QEMU_Elf *qe)
+--=20
+2.38.5
 
