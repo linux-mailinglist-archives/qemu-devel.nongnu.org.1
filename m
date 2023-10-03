@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126607B6836
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A42B7B6837
 	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 13:44:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qndo9-0004Ea-FT; Tue, 03 Oct 2023 07:43:21 -0400
+	id 1qndoi-0004IV-Pg; Tue, 03 Oct 2023 07:43:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndo6-0004Dm-Lo; Tue, 03 Oct 2023 07:43:18 -0400
+ id 1qndof-0004Hv-H2; Tue, 03 Oct 2023 07:43:53 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qndo4-0005nT-4b; Tue, 03 Oct 2023 07:43:18 -0400
-Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0GB81s8xz6K6Ds;
- Tue,  3 Oct 2023 19:41:36 +0800 (CST)
+ id 1qndod-0005rB-SC; Tue, 03 Oct 2023 07:43:53 -0400
+Received: from lhrpeml100003.china.huawei.com (unknown [172.18.147.200])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0GBq14Nzz6K5nM;
+ Tue,  3 Oct 2023 19:42:11 +0800 (CST)
 Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
+ lhrpeml100003.china.huawei.com (7.191.160.210) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Tue, 3 Oct 2023 12:43:11 +0100
+ 15.1.2507.31; Tue, 3 Oct 2023 12:43:46 +0100
 Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
  lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Tue, 3 Oct 2023 12:43:11 +0100
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
- <qemu-arm@nongnu.org>, "maz@kernel.org" <maz@kernel.org>,
- "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ Tue, 3 Oct 2023 12:43:46 +0100
+To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
  "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
  <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
  <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
@@ -38,9 +38,8 @@ CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
  "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
  <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
  "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
- "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "rafael@kernel.org" <rafael@kernel.org>, "alex.bennee@linaro.org"
+ <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
  "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
  "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
  "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
@@ -54,20 +53,20 @@ CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org"
 Subject: RE: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cpu scan
 Thread-Topic: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cpu
  scan
-Thread-Index: AQHZ8zQk6MAP2ANe7ES6Fefhb3Wj6LA2n9eAgAFUrJA=
-Date: Tue, 3 Oct 2023 11:43:11 +0000
-Message-ID: <ed93b18d03ef44c5b37815449bdc10c3@huawei.com>
+Thread-Index: AQHZ8zQk6MAP2ANe7ES6Fefhb3Wj6LA3JOcAgADSWNA=
+Date: Tue, 3 Oct 2023 11:43:46 +0000
+Message-ID: <efa6db58fc564941aeb827d9dc753a7f@huawei.com>
 References: <20230930001933.2660-1-salil.mehta@huawei.com>
  <20230930001933.2660-7-salil.mehta@huawei.com>
- <20231002171423.00003c39@Huawei.com>
-In-Reply-To: <20231002171423.00003c39@Huawei.com>
+ <810a4999-9954-55f0-9408-b86b36e9e18b@redhat.com>
+In-Reply-To: <810a4999-9954-55f0-9408-b86b36e9e18b@redhat.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-originating-ip: [10.126.168.138]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
 X-CFilter-Loop: Reflected
 Received-SPF: pass client-ip=185.176.79.56;
@@ -95,96 +94,38 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-> From: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Sent: Monday, October 2, 2023 5:14 PM
-> To: Salil Mehta <salil.mehta@huawei.com>
-> Cc: qemu-devel@nongnu.org; qemu-arm@nongnu.org; maz@kernel.org; jean-
-> philippe@linaro.org; lpieralisi@kernel.org; peter.maydell@linaro.org;
-> richard.henderson@linaro.org; imammedo@redhat.com; andrew.jones@linux.dev=
-;
-> david@redhat.com; philmd@linaro.org; eric.auger@redhat.com;
-> oliver.upton@linux.dev; pbonzini@redhat.com; mst@redhat.com;
-> will@kernel.org; gshan@redhat.com; rafael@kernel.org;
-> alex.bennee@linaro.org; linux@armlinux.org.uk;
-> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
-> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
-> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
-> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
-> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
-> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.co=
-m>
-> Subject: Re: [PATCH V2 06/10] hw/acpi: Update GED _EVT method AML with cp=
-u
-> scan
->=20
-> On Sat, 30 Sep 2023 01:19:29 +0100
-> Salil Mehta <salil.mehta@huawei.com> wrote:
->=20
-> > OSPM evaluates _EVT method to map the event. The cpu hotplug event even=
-tually
-> > results in start of the cpu scan. Scan figures out the cpu and the kind=
- of
-> > event(plug/unplug) and notifies it back to the guest.
-> >
-> > The change in this patch updates the GED AML _EVT method with the call =
-to
-> > \\_SB.CPUS.CSCN which will do above.
-> >
-> > Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
-> > Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
-> > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> One trivial suggested addition inline (dropping existing definition that =
-this
-> replicates). With that tidied up
->=20
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-Thanks
-Salil.
-
->=20
-> > ---
-> >  hw/acpi/generic_event_device.c | 4 ++++
-> >  include/hw/acpi/cpu_hotplug.h  | 2 ++
-> >  2 files changed, 6 insertions(+)
-> >
-> > diff --git a/hw/acpi/generic_event_device.c
-> b/hw/acpi/generic_event_device.c
-> > index d2fa1d0e4a..62d504d231 100644
-> > --- a/hw/acpi/generic_event_device.c
-> > +++ b/hw/acpi/generic_event_device.c
-> > @@ -108,6 +108,10 @@ void build_ged_aml(Aml *table, const char *name,
-> HotplugHandler *hotplug_dev,
-> >                  aml_append(if_ctx, aml_call0(MEMORY_DEVICES_CONTAINER
-> "."
-> >                                               MEMORY_SLOT_SCAN_METHOD))=
-;
-> >                  break;
-> > +            case ACPI_GED_CPU_HOTPLUG_EVT:
-> > +                aml_append(if_ctx, aml_call0(ACPI_CPU_CONTAINER "."
-> > +                                             ACPI_CPU_SCAN_METHOD));
-> > +                break;
-> >              case ACPI_GED_PWR_DOWN_EVT:
-> >                  aml_append(if_ctx,
-> >
-> aml_notify(aml_name(ACPI_POWER_BUTTON_DEVICE),
-> > diff --git a/include/hw/acpi/cpu_hotplug.h
-> b/include/hw/acpi/cpu_hotplug.h
-> > index 48b291e45e..ef631750b4 100644
-> > --- a/include/hw/acpi/cpu_hotplug.h
-> > +++ b/include/hw/acpi/cpu_hotplug.h
-> > @@ -20,6 +20,8 @@
-> >  #include "hw/acpi/cpu.h"
-> >
-> >  #define ACPI_CPU_HOTPLUG_REG_LEN 12
-> > +#define ACPI_CPU_SCAN_METHOD "CSCN"
->=20
-> This seems to already be defined in hw/acpi/cpu.c
-> Can we drop it from there given that file now includes this
-> header anyway.
-
-Perhaps I can assign this to the macro in the hw/acpi/cpu.c?
-
-Thanks
-Salil.
+PiBGcm9tOiBHYXZpbiBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBP
+Y3RvYmVyIDMsIDIwMjMgMToxMSBBTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1
+YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+IGFybUBub25nbnUub3Jn
+DQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBKb25hdGhh
+biBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFsaXNpQGtl
+cm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5kZXJzb25A
+bGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxpbnV4LmRl
+djsgZGF2aWRAcmVkaGF0LmNvbTsNCj4gcGhpbG1kQGxpbmFyby5vcmc7IGVyaWMuYXVnZXJAcmVk
+aGF0LmNvbTsgb2xpdmVyLnVwdG9uQGxpbnV4LmRldjsNCj4gcGJvbnppbmlAcmVkaGF0LmNvbTsg
+bXN0QHJlZGhhdC5jb207IHdpbGxAa2VybmVsLm9yZzsgcmFmYWVsQGtlcm5lbC5vcmc7DQo+IGFs
+ZXguYmVubmVlQGxpbmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFycmVuQG9z
+LmFtcGVyZWNvbXB1dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IHZp
+c2hudUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNvbTsNCj4g
+bWlndWVsLmx1aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1a2VxaWFu
+DQo+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2FuZ3hpb25n
+ZmVuZzJAaHVhd2VpLmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1YXdlaS5j
+b20+OyBqaWFrZXJuZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsgbGl4aWFu
+Z2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+IFN1Ympl
+Y3Q6IFJlOiBbUEFUQ0ggVjIgMDYvMTBdIGh3L2FjcGk6IFVwZGF0ZSBHRUQgX0VWVCBtZXRob2Qg
+QU1MIHdpdGggY3B1DQo+IHNjYW4NCj4gDQo+IE9uIDkvMzAvMjMgMTA6MTksIFNhbGlsIE1laHRh
+IHdyb3RlOg0KPiA+IE9TUE0gZXZhbHVhdGVzIF9FVlQgbWV0aG9kIHRvIG1hcCB0aGUgZXZlbnQu
+IFRoZSBjcHUgaG90cGx1ZyBldmVudA0KPiBldmVudHVhbGx5DQo+ID4gcmVzdWx0cyBpbiBzdGFy
+dCBvZiB0aGUgY3B1IHNjYW4uIFNjYW4gZmlndXJlcyBvdXQgdGhlIGNwdSBhbmQgdGhlIGtpbmQN
+Cj4gb2YNCj4gPiBldmVudChwbHVnL3VucGx1ZykgYW5kIG5vdGlmaWVzIGl0IGJhY2sgdG8gdGhl
+IGd1ZXN0Lg0KPiA+DQo+ID4gVGhlIGNoYW5nZSBpbiB0aGlzIHBhdGNoIHVwZGF0ZXMgdGhlIEdF
+RCBBTUwgX0VWVCBtZXRob2Qgd2l0aCB0aGUgY2FsbCB0bw0KPiA+IFxcX1NCLkNQVVMuQ1NDTiB3
+aGljaCB3aWxsIGRvIGFib3ZlLg0KPiA+DQo+ID4gQ28tZGV2ZWxvcGVkLWJ5OiBLZXFpYW4gWmh1
+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogS2VxaWFuIFpodSA8
+emh1a2VxaWFuMUBodWF3ZWkuY29tPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNhbGlsIE1laHRhIDxz
+YWxpbC5tZWh0YUBodWF3ZWkuY29tPg0KPiA+IC0tLQ0KPiA+ICAgaHcvYWNwaS9nZW5lcmljX2V2
+ZW50X2RldmljZS5jIHwgNCArKysrDQo+ID4gICBpbmNsdWRlL2h3L2FjcGkvY3B1X2hvdHBsdWcu
+aCAgfCAyICsrDQo+ID4gICAyIGZpbGVzIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+
+IA0KPiBSZXZpZXdlZC1ieTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCg0KVGhhbmtz
+DQpTYWxpbC4NCg0K
 
