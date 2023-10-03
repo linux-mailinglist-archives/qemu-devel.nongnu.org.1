@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C89A7B64D8
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 10:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E36E37B64C9
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 10:57:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnbDH-0004YE-FZ; Tue, 03 Oct 2023 04:57:07 -0400
+	id 1qnbDJ-0004Yk-UK; Tue, 03 Oct 2023 04:57:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qnbDD-0004Xj-Hk
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:57:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qnbDF-0004Xt-01
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:57:05 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qnbDA-00061O-U1
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:57:03 -0400
+ id 1qnbDA-00061P-AA
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 04:57:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1696323419;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CvgWK1OCdtf04IF1Gguceuv0a9rcTqZNHJSEAT+LKpY=;
- b=KvOx9Qnh3BgsMa3Mzb0AqJZQlpvGZLWYhJXa+le9sQs4RWkZ2+iqpf93FNCDUIxHZ1NGZO
- DjaD72Jfj5o8HwlWMnhczwXcqitFcG1A4R3dnRcAbZ1fXZE0PT+4EfgruUqAJP0MnkK59y
- pZ0a6kFGQ/qpkUUNzqZAdH7vGt+4LaM=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-353-n1P9-VvmMlaWrgNnSp1_ug-1; Tue, 03 Oct 2023 04:56:53 -0400
-X-MC-Unique: n1P9-VvmMlaWrgNnSp1_ug-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=MasSAAVsO3OueY3RL2PBX64ZOkCPFHLe6CAtsAvT3cI=;
+ b=h9wx5kvMXNzQwz/YzrvhCtl0hh/RSJtKP+D+U9bh2ESxJD6mlLRv9NbLQgjjx8fv1B29pg
+ dWIBzueZeGBBY4Yo12WXsgUhgBR1Zd6XYRVT9jj3jiJVPReixAzLKVnsFmik6CxI+onqJw
+ F+69sUvzeza9hznuWkydq3REqMyTxBI=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-470-Uk7zDn_BOrypkXuKhV2Ocw-1; Tue, 03 Oct 2023 04:56:57 -0400
+X-MC-Unique: Uk7zDn_BOrypkXuKhV2Ocw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5C9173C100A6;
- Tue,  3 Oct 2023 08:56:53 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 76EAA811E7D;
+ Tue,  3 Oct 2023 08:56:57 +0000 (UTC)
 Received: from localhost (unknown [10.39.208.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id ECBD0493113;
- Tue,  3 Oct 2023 08:56:51 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 74887400E89;
+ Tue,  3 Oct 2023 08:56:56 +0000 (UTC)
 From: marcandre.lureau@redhat.com
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>, lersek@redhat.com,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, kraxel@redhat.com,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PATCH v3 1/5] hw/core: remove needless includes
-Date: Tue,  3 Oct 2023 12:56:40 +0400
-Message-ID: <20231003085644.1220326-2-marcandre.lureau@redhat.com>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v3 2/5] hw/pc: remove needless includes
+Date: Tue,  3 Oct 2023 12:56:41 +0400
+Message-ID: <20231003085644.1220326-3-marcandre.lureau@redhat.com>
 In-Reply-To: <20231003085644.1220326-1-marcandre.lureau@redhat.com>
 References: <20231003085644.1220326-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=marcandre.lureau@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -68,7 +69,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -87,50 +88,97 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-The include list is large, make it smaller.
+The include list is gigantic, make it smaller.
 
 Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 Acked-by: Laszlo Ersek <lersek@redhat.com>
 ---
- hw/core/machine.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ hw/i386/pc.c | 41 -----------------------------------------
+ 1 file changed, 41 deletions(-)
 
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index a232ae0bcd..df40f10dfa 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -11,32 +11,22 @@
-  */
+diff --git a/hw/i386/pc.c b/hw/i386/pc.c
+index 5d399b6247..c376c5032d 100644
+--- a/hw/i386/pc.c
++++ b/hw/i386/pc.c
+@@ -24,79 +24,38 @@
  
  #include "qemu/osdep.h"
--#include "qemu/option.h"
- #include "qemu/accel.h"
- #include "sysemu/replay.h"
--#include "qemu/units.h"
- #include "hw/boards.h"
- #include "hw/loader.h"
- #include "qapi/error.h"
--#include "qapi/qapi-visit-common.h"
- #include "qapi/qapi-visit-machine.h"
--#include "qapi/visitor.h"
- #include "qom/object_interfaces.h"
--#include "hw/sysbus.h"
+ #include "qemu/units.h"
+-#include "hw/i386/x86.h"
+ #include "hw/i386/pc.h"
+ #include "hw/char/serial.h"
+ #include "hw/char/parallel.h"
+-#include "hw/i386/topology.h"
+ #include "hw/i386/fw_cfg.h"
+ #include "hw/i386/vmport.h"
  #include "sysemu/cpus.h"
- #include "sysemu/sysemu.h"
- #include "sysemu/reset.h"
- #include "sysemu/runstate.h"
--#include "sysemu/numa.h"
- #include "sysemu/xen.h"
--#include "qemu/error-report.h"
- #include "sysemu/qtest.h"
+-#include "hw/block/fdc.h"
+ #include "hw/ide/internal.h"
+-#include "hw/ide/isa.h"
 -#include "hw/pci/pci.h"
- #include "hw/mem/nvdimm.h"
- #include "migration/global_state.h"
+-#include "hw/pci/pci_bus.h"
+-#include "hw/pci-bridge/pci_expander_bridge.h"
+-#include "hw/nvram/fw_cfg.h"
+ #include "hw/timer/hpet.h"
+-#include "hw/firmware/smbios.h"
+ #include "hw/loader.h"
+-#include "elf.h"
 -#include "migration/vmstate.h"
- #include "exec/confidential-guest-support.h"
--#include "hw/virtio/virtio.h"
- #include "hw/virtio/virtio-pci.h"
- #include "hw/virtio/virtio-net.h"
+-#include "multiboot.h"
+ #include "hw/rtc/mc146818rtc.h"
+ #include "hw/intc/i8259.h"
+-#include "hw/intc/ioapic.h"
+ #include "hw/timer/i8254.h"
+ #include "hw/input/i8042.h"
+-#include "hw/irq.h"
+ #include "hw/audio/pcspk.h"
+-#include "hw/pci/msi.h"
+-#include "hw/sysbus.h"
+ #include "sysemu/sysemu.h"
+-#include "sysemu/tcg.h"
+-#include "sysemu/numa.h"
+-#include "sysemu/kvm.h"
+ #include "sysemu/xen.h"
+ #include "sysemu/reset.h"
+-#include "sysemu/runstate.h"
+ #include "kvm/kvm_i386.h"
+-#include "hw/xen/xen.h"
+-#include "hw/xen/start_info.h"
+-#include "ui/qemu-spice.h"
+-#include "exec/memory.h"
+-#include "qemu/bitmap.h"
+-#include "qemu/config-file.h"
+-#include "qemu/error-report.h"
+-#include "qemu/option.h"
+-#include "qemu/cutils.h"
+-#include "hw/acpi/acpi.h"
+ #include "hw/acpi/cpu_hotplug.h"
+ #include "acpi-build.h"
+-#include "hw/mem/pc-dimm.h"
+ #include "hw/mem/nvdimm.h"
+-#include "hw/cxl/cxl.h"
+ #include "hw/cxl/cxl_host.h"
+-#include "qapi/error.h"
+-#include "qapi/qapi-visit-common.h"
+-#include "qapi/qapi-visit-machine.h"
+-#include "qapi/visitor.h"
+-#include "hw/core/cpu.h"
+ #include "hw/usb.h"
+ #include "hw/i386/intel_iommu.h"
+ #include "hw/net/ne2000-isa.h"
+-#include "standard-headers/asm-x86/bootparam.h"
+ #include "hw/virtio/virtio-iommu.h"
+ #include "hw/virtio/virtio-md-pci.h"
+ #include "hw/i386/kvm/xen_overlay.h"
+ #include "hw/i386/kvm/xen_evtchn.h"
+ #include "hw/i386/kvm/xen_gnttab.h"
+ #include "hw/i386/kvm/xen_xenstore.h"
+-#include "sysemu/replay.h"
+-#include "target/i386/cpu.h"
+ #include "e820_memory_layout.h"
+-#include "fw_cfg.h"
+ #include "trace.h"
+ #include CONFIG_DEVICES
  
 -- 
 2.41.0
