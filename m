@@ -2,65 +2,111 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104DF7B62D3
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC6A07B62FC
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:58:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnaCD-0003Ex-Oh; Tue, 03 Oct 2023 03:51:57 -0400
+	id 1qnaHX-0004cP-8m; Tue, 03 Oct 2023 03:57:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qnaCC-0003Eo-Nh
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:51:56 -0400
-Received: from forwardcorp1a.mail.yandex.net
- ([2a02:6b8:c0e:500:1:45:d181:df01])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qnaHU-0004bi-T3; Tue, 03 Oct 2023 03:57:24 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qnaCA-00019n-3L
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:51:56 -0400
-Received: from mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c18:d11:0:640:6943:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 843B75FDB3;
- Tue,  3 Oct 2023 10:51:48 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b52d::1:13])
- by mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id VpQXBa0OjmI0-ckkpnEBc; Tue, 03 Oct 2023 10:51:47 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696319507;
- bh=Fkbi+wNQnwK3AN/eUec82YS4Rb1p0kz+NR6miw9eUe0=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=eXE4haEH5i5iqzQ6KEeb/u6E1lM9TpL8xSn5aVGWofzIcU7jcjwxe4Pa7yzqDi5fO
- VnjevABgbPzWhVka4tv29YQla9EWdg1fAf5JYVb+Jhx38qfudDP3dBEUcBfCS5bqS/
- qFkbjoG9C8drukZjdXof4pHpudZI6AiU250eO3S0=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-83.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: eblake@redhat.com, eduardo@habkost.net, berrange@redhat.com,
- pbonzini@redhat.com, armbru@redhat.com, dave@treblig.org, mst@redhat.com,
- vsementsov@yandex-team.ru, yc-core@yandex-team.ru,
- den-plotnikov@yandex-team.ru
-Subject: [PATCH v3] virtio: add VIRTQUEUE_ERROR QAPI event
-Date: Tue,  3 Oct 2023 10:51:29 +0300
-Message-Id: <20231003075129.27440-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qnaHT-0002UW-08; Tue, 03 Oct 2023 03:57:24 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3937r09R020951; Tue, 3 Oct 2023 07:57:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=j72u0hXcBeqgS26N9fwsXuA5bh58pta6bVgempEZ+ds=;
+ b=phwk4kCfyuDhFHdT3fSdvvlmfT6y1GY2ZUZlB4IwOwuTyBwYoT1Lu5oLkg1btudFUciT
+ 4WrG2f//nME1CantC6836gWtETDPrEGJ8B6QlRPn0tzdpBqbLb8NvUFRpG22RF1cRngc
+ i5uwG/s8YtK33qcamqC/078HPTK4AIZjesX0M7bZVD2kTPXYC46NLnxRJkqqEwPUGmZ+
+ uwUI7MvumM9skn5DO9Bdrvl1vlStQayqPhK0ojmWeNtLcPu9QM4ltoALttdnf1kUTfd6
+ 8yVtqFbTrdYQRDG9asnrrjCoVnBwxwtun6JwRuZQCxPqWYpWH3/RS9H6Kx4WHsHakOFa xg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgesy8ej8-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 Oct 2023 07:57:17 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3937grnf017090;
+ Tue, 3 Oct 2023 07:57:17 GMT
+Received: from ppma12.dal12v.mail.ibm.com
+ (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tgesy8ehr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 Oct 2023 07:57:17 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3936jJQt005868; Tue, 3 Oct 2023 07:57:16 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tex0sgaaf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Tue, 03 Oct 2023 07:57:16 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
+ [10.241.53.100])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3937vFS930671314
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Tue, 3 Oct 2023 07:57:15 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 41CF458057;
+ Tue,  3 Oct 2023 07:57:15 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 478D858058;
+ Tue,  3 Oct 2023 07:57:12 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+ Tue,  3 Oct 2023 07:57:11 +0000 (GMT)
+Message-ID: <8cd839d4-b0fc-5d3f-a16a-fd13f750d49b@linux.ibm.com>
+Date: Tue, 3 Oct 2023 13:27:10 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c0e:500:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH RESEND 08/15] ppc: spapr: Implement nested PAPR hcall -
+ H_GUEST_CREATE
+Content-Language: en-US
+To: Nicholas Piggin <npiggin@gmail.com>, danielhb413@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, mikey@neuling.org, vaibhav@linux.ibm.com,
+ jniethe5@gmail.com, sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com
+References: <20230906043333.448244-1-harshpb@linux.ibm.com>
+ <20230906043333.448244-9-harshpb@linux.ibm.com>
+ <CVCBX2FBQ7B8.KXFOWS32C9IQ@wheely>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CVCBX2FBQ7B8.KXFOWS32C9IQ@wheely>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Z3Pmh9ldUqkkgP6z7NzEJ8RMm2MbiMSb
+X-Proofpoint-GUID: 5D3SuDuqHXKMeDWUB-qirB3L8-x-PDzk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-03_04,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 mlxlogscore=727
+ malwarescore=0 clxscore=1015 adultscore=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310030056
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
+X-Spam_bar: ----
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-2.321,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,145 +118,171 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-For now we only log the vhost device error, when virtqueue is actually
-stopped. Let's add a QAPI event, which makes possible:
 
- - collect statistics of such errors
- - make immediate actions: take core dumps or do some other debugging
- - inform the user through a management API or UI, so that (s)he can
-  react somehow, e.g. reset the device driver in the guest or even
-  build up some automation to do so
 
-Note that basically every inconsistency discovered during virtqueue
-processing results in a silent virtqueue stop.  The guest then just
-sees the requests getting stuck somewhere in the device for no visible
-reason.  This event provides a means to inform the management layer of
-this situation in a timely fashion.
+On 9/7/23 07:58, Nicholas Piggin wrote:
+> On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
+>> This hcall is used by L1 to indicate to L0 that a new nested guest needs
+>> to be created and therefore necessary resource allocation shall be made.
+>> The L0 uses a hash table for nested guest specific resource management.
+>> This data structure is further utilized by other hcalls to operate on
+>> related members during entire life cycle of the nested guest.
+> 
+> Similar comment for changelog re detail. Detailed specification of API
+> and implementation could go in comments or documentation if useful.
+> 
+Sure, squashing guest create/delete together and updating commit log to 
+be abstract as needed.
 
-The event could be reused for some other virtqueue problems (not only
-for vhost devices) in future. For this it gets a generic name and
-structure.
+>>
+>> Signed-off-by: Michael Neuling <mikey@neuling.org>
+>> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> ---
+>>   hw/ppc/spapr_nested.c         | 75 +++++++++++++++++++++++++++++++++++
+>>   include/hw/ppc/spapr_nested.h |  3 ++
+>>   2 files changed, 78 insertions(+)
+>>
+>> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+>> index 9af65f257f..09bbbfb341 100644
+>> --- a/hw/ppc/spapr_nested.c
+>> +++ b/hw/ppc/spapr_nested.c
+>> @@ -444,6 +444,80 @@ static target_ulong h_guest_set_capabilities(PowerPCCPU *cpu,
+>>       return H_SUCCESS;
+>>   }
+>>   
+>> +static void
+>> +destroy_guest_helper(gpointer value)
+>> +{
+>> +    struct SpaprMachineStateNestedGuest *guest = value;
+>> +    g_free(guest);
+>> +}
+>> +
+>> +static target_ulong h_guest_create(PowerPCCPU *cpu,
+>> +                                   SpaprMachineState *spapr,
+>> +                                   target_ulong opcode,
+>> +                                   target_ulong *args)
+>> +{
+>> +    CPUPPCState *env = &cpu->env;
+>> +    target_ulong flags = args[0];
+>> +    target_ulong continue_token = args[1];
+>> +    uint64_t lpid;
+>> +    int nguests = 0;
+>> +    struct SpaprMachineStateNestedGuest *guest;
+>> +
+>> +    if (flags) { /* don't handle any flags for now */
+>> +        return H_UNSUPPORTED_FLAG;
+>> +    }
+>> +
+>> +    if (continue_token != -1) {
+>> +        return H_P2;
+>> +    }
+>> +
+>> +    if (!spapr_get_cap(spapr, SPAPR_CAP_NESTED_PAPR)) {
+>> +        return H_FUNCTION;
+>> +    }
+>> +
+>> +    if (!spapr->nested.capabilities_set) {
+>> +        return H_STATE;
+>> +    }
+>> +
+>> +    if (!spapr->nested.guests) {
+>> +        spapr->nested.lpid_max = NESTED_GUEST_MAX;
+>> +        spapr->nested.guests = g_hash_table_new_full(NULL,
+>> +                                                     NULL,
+>> +                                                     NULL,
+>> +                                                     destroy_guest_helper);
+> 
+> Is lpid_max only used by create? Probably no need to have it in spapr
+> then->nested then. Also, do we even need to have a limit?
 
-We keep original VHOST_OPS_DEBUG(), to keep original debug output as is
-here, it's not the only call to VHOST_OPS_DEBUG in the file.
+Yes, as of now, it is being used only by create and doesnt need to part
+of spapr->nested. We can simply use the macro for max guests. Keeping it
+to emulate a finite resource model.
+For all practical purposes, nested guests in an TCG emulated L0
+shouldn't reach that limit.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Reviewed-by: Denis Plotnikov <den-plotnikov@yandex-team.ru>
----
+> 
+>> +    }
+>> +
+>> +    nguests = g_hash_table_size(spapr->nested.guests);
+>> +
+>> +    if (nguests == spapr->nested.lpid_max) {
+>> +        return H_NO_MEM;
+>> +    }
+>> +
+>> +    /* Lookup for available lpid */
+>> +    for (lpid = 1; lpid < spapr->nested.lpid_max; lpid++) {
+> 
+> PAPR API calls it "guest ID" I think. Should change all references to
+> lpid to that.
 
-v3: add r-b by Den
-    s/err/error/ in qapi
-    add host-vring-err description in qapi
+Changing it to "guestid".
 
- hw/virtio/vhost.c | 12 +++++++++---
- monitor/monitor.c | 10 ++++++++++
- qapi/qdev.json    | 28 ++++++++++++++++++++++++++++
- 3 files changed, 47 insertions(+), 3 deletions(-)
+> 
+>> +        if (!(g_hash_table_lookup(spapr->nested.guests,
+>> +                                  GINT_TO_POINTER(lpid)))) {
+>> +            break;
+>> +        }
+>> +    }
+>> +    if (lpid == spapr->nested.lpid_max) {
+>> +        return H_NO_MEM;
+>> +    }
+>> +
+>> +    guest = g_try_new0(struct SpaprMachineStateNestedGuest, 1);
+>> +    if (!guest) {
+>> +        return H_NO_MEM;
+>> +    }
+>> +
+>> +    guest->pvr_logical = spapr->nested.pvr_base;
+>> +
+>> +    g_hash_table_insert(spapr->nested.guests, GINT_TO_POINTER(lpid), guest);
+>> +    printf("%s: lpid: %lu (MAX: %i)\n", __func__, lpid, spapr->nested.lpid_max);
+> 
+> Remove printf.
+> 
+Done.
 
-diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
-index e2f6ffb446..43b7caaff3 100644
---- a/hw/virtio/vhost.c
-+++ b/hw/virtio/vhost.c
-@@ -15,6 +15,7 @@
- 
- #include "qemu/osdep.h"
- #include "qapi/error.h"
-+#include "qapi/qapi-events-qdev.h"
- #include "hw/virtio/vhost.h"
- #include "qemu/atomic.h"
- #include "qemu/range.h"
-@@ -1332,11 +1333,16 @@ static void vhost_virtqueue_error_notifier(EventNotifier *n)
-     struct vhost_virtqueue *vq = container_of(n, struct vhost_virtqueue,
-                                               error_notifier);
-     struct vhost_dev *dev = vq->dev;
--    int index = vq - dev->vqs;
- 
-     if (event_notifier_test_and_clear(n) && dev->vdev) {
--        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d",
--                        dev->vq_index + index);
-+        int ind = vq - dev->vqs + dev->vq_index;
-+        DeviceState *ds = &dev->vdev->parent_obj;
-+
-+        VHOST_OPS_DEBUG(-EINVAL,  "vhost vring error in virtqueue %d", ind);
-+        qapi_event_send_virtqueue_error(ds->id, ds->canonical_path, ind,
-+                                        VIRTQUEUE_ERROR_VHOST_VRING_ERROR,
-+                                        "vhost reported failure through vring "
-+                                        "error fd");
-     }
- }
- 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 941f87815a..cb1ee31156 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -313,6 +313,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_BALLOON_CHANGE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_REPORT_BAD] = { 1000 * SCALE_MS },
-     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_VIRTQUEUE_ERROR]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
- };
-@@ -497,6 +498,10 @@ static unsigned int qapi_event_throttle_hash(const void *key)
-         hash += g_str_hash(qdict_get_str(evstate->data, "qom-path"));
-     }
- 
-+    if (evstate->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        hash += g_str_hash(qdict_get_str(evstate->data, "device"));
-+    }
-+
-     return hash;
- }
- 
-@@ -524,6 +529,11 @@ static gboolean qapi_event_throttle_equal(const void *a, const void *b)
-                        qdict_get_str(evb->data, "qom-path"));
-     }
- 
-+    if (eva->event == QAPI_EVENT_VIRTQUEUE_ERROR) {
-+        return !strcmp(qdict_get_str(eva->data, "device"),
-+                       qdict_get_str(evb->data, "device"));
-+    }
-+
-     return TRUE;
- }
- 
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 6bc5a733b8..55d6c9018e 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -161,3 +161,31 @@
- ##
- { 'event': 'DEVICE_UNPLUG_GUEST_ERROR',
-   'data': { '*device': 'str', 'path': 'str' } }
-+
-+##
-+# @VirtqueueError:
-+#
-+# @vhost-vring-error: Vhost device reported failure through
-+#     through vring error fd.
-+#
-+# Since: 8.2
-+##
-+{ 'enum': 'VirtqueueError',
-+  'data': [ 'vhost-vring-error' ] }
-+
-+##
-+# @VIRTQUEUE_ERROR:
-+#
-+# Emitted when a device virtqueue fails in runtime.
-+#
-+# @device: the device's ID if it has one
-+# @path: the device's QOM path
-+# @virtqueue: virtqueue index
-+# @error: error identifier
-+# @description: human readable description
-+#
-+# Since: 8.2
-+##
-+{ 'event': 'VIRTQUEUE_ERROR',
-+ 'data': { '*device': 'str', 'path': 'str', 'virtqueue': 'int',
-+            'error': 'VirtqueueError', 'description': 'str'} }
--- 
-2.34.1
+>> +
+>> +    env->gpr[4] = lpid;
+>> +    return H_SUCCESS;
+>> +}
+>> +
+>>   void spapr_register_nested(void)
+>>   {
+>>       spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
+>> @@ -456,6 +530,7 @@ void spapr_register_nested_phyp(void)
+>>   {
+>>       spapr_register_hypercall(H_GUEST_GET_CAPABILITIES, h_guest_get_capabilities);
+>>       spapr_register_hypercall(H_GUEST_SET_CAPABILITIES, h_guest_set_capabilities);
+>> +    spapr_register_hypercall(H_GUEST_CREATE          , h_guest_create);
+>>   }
+>>   
+>>   #else
+>> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+>> index a7996251cb..7841027df8 100644
+>> --- a/include/hw/ppc/spapr_nested.h
+>> +++ b/include/hw/ppc/spapr_nested.h
+>> @@ -197,6 +197,9 @@
+>>   #define H_GUEST_CAP_P9_MODE_BMAP    1
+>>   #define H_GUEST_CAP_P10_MODE_BMAP   2
+>>   
+>> +/* Nested PAPR API macros */
+>> +#define NESTED_GUEST_MAX 4096
+> 
+> Prefix with PAPR_?
 
+Done.
+
+Thanks
+Harsh
+> 
+> Thanks,
+> Nick
+> 
+>> +
+>>   typedef struct SpaprMachineStateNestedGuest {
+>>       unsigned long vcpus;
+>>       struct SpaprMachineStateNestedGuestVcpu *vcpu;
+> 
 
