@@ -2,59 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5658F7B625E
-	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:16:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 017B57B6257
+	for <lists+qemu-devel@lfdr.de>; Tue,  3 Oct 2023 09:15:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnZcD-0007Tn-Bu; Tue, 03 Oct 2023 03:14:45 -0400
+	id 1qnZcC-0007T4-ES; Tue, 03 Oct 2023 03:14:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qnZcA-0007Ry-Si
+ id 1qnZcA-0007Rj-P1
  for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:14:42 -0400
-Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <chigot@adacore.com>)
- id 1qnZc8-0001gY-Cx
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:14:41 -0400
-Received: by mail-ej1-x630.google.com with SMTP id
- a640c23a62f3a-9a6190af24aso96047966b.0
+ id 1qnZc9-0001gk-6W
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 03:14:42 -0400
+Received: by mail-wm1-x32d.google.com with SMTP id
+ 5b1f17b1804b1-406618d0992so5582435e9.0
  for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 00:14:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=adacore.com; s=google; t=1696317278; x=1696922078; darn=nongnu.org;
+ d=adacore.com; s=google; t=1696317279; x=1696922079; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=OkiKnEYkM6j4qggxOGznItB/swiKFsiVyTm3GYtzm9w=;
- b=aiY7L+8NNUbyzpaJPdDGirdmZzkXKxuuumsWIf8dL38FmkpCuNG/o9dzaFBOcdrWRI
- B4dQw5bneMraXc/e44dUqarc4Qk/QLBPl9WOkHqPmznR9W0JJ8Vr6q+vMhGRSrJfLHtK
- vB/oV0ie3fYPIGy5sHjQa439W1sU799LXJWk5Yukzs+zZ6kQH4kN22YFLuWCVCPTDXyt
- f/Te2XxDByIRH0JOLfEvk7jwOhteIXLoad8pjbLGDq/MDOvu3BzAdWSXOZFW1xeO1L5h
- ct7s4U1/hVhboGbOD/ptEy4COxD42kIjmO6tZW7We8WGpITpynixFzbM/UUVOrIjnaNg
- Mbog==
+ bh=5HOWFAUIjoYOvAaPK+iqc8J3TSNnmeBOgrcE2Swe+lQ=;
+ b=CwA26jvo7hlAtBHt0wdwQ0AQ/QA7OiariXhgYZy3JMGKQMUQoGO1HbOSP+aR2NhKuY
+ QQCG71b4qW9/G9tvqPczQu26TlacEoyqPu8lK80RqUc1wlMYBEF+xppKdiM490NxrjST
+ f16dxJIm5S7Bo1ZTteNpDC5iz1oiJB3Bkb3Qb2SB5XoDtOdxDHgYGgSXZZlVE67jojHV
+ 9X4BWJATEsZE4MELkbm7bHyi+eFVrvV0IF8wB9kEPAkpjvm8El2do4/n11E71a6WrZ3q
+ O55WyspsO+UxsZgm3zmbepC42sMkJ87lgacoPD8jmHMgfhIBU63cQeDfJ/wpK+BiQJ2i
+ 9l3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696317278; x=1696922078;
+ d=1e100.net; s=20230601; t=1696317279; x=1696922079;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=OkiKnEYkM6j4qggxOGznItB/swiKFsiVyTm3GYtzm9w=;
- b=iuJLZsy7xTaQS3dq4OrzEGCmF2av7IxDZlbC07SUpvNWLd9XiSFqEH6kbzwdKhJ+xB
- aCqz8v/jVnsccDF6Gga97I9yNnTTCgvOzbZuf5/XsrpXAAzztgu5j59pMv91UhdiIYv6
- 10D9vZcd/TJmRqXlSjaQgHgi014UsW6AC+/wTC1Gj/XhgEjb5fCyFoeKgTVNP5stcvx6
- WahN6Zdy77PkuCNFP4IxTUymV1KsceaM2hRvcXjYuGYDBbwXoBzTYhwAfobtjLH9hXGG
- CHYWeSjqJKPXZvpu3UC+JysyK2PG3+aB0PVatJWoCQEtCzpUtI8/KoCzQtYAgsldKCK7
- BeHQ==
-X-Gm-Message-State: AOJu0YzTHAN0V2dupNwkuoKwTQqDOoVfqSXKUzx2WsJguCYfGyOXIYWz
- 9IaR0QtZxvM2HdNWnIh3D9e0uRMWieIemyj0BA0=
-X-Google-Smtp-Source: AGHT+IF+hrvXIcNN+MkDWKiHKBP7C2W6OroVn0mUkEsqfSaJVxL4vpsKb+FLy+6ws9Rwq5xm6OrRuA==
-X-Received: by 2002:a17:906:eb82:b0:9ad:ef31:6ef6 with SMTP id
- mh2-20020a170906eb8200b009adef316ef6mr13726121ejb.20.1696317278510; 
- Tue, 03 Oct 2023 00:14:38 -0700 (PDT)
+ bh=5HOWFAUIjoYOvAaPK+iqc8J3TSNnmeBOgrcE2Swe+lQ=;
+ b=BsWvwFWZKhIEfxezCK/hBPYpJwMW8f/h5vh3qr6UVaBRKfzYM2rjtk8PNWK7J9/VC7
+ UTeztsawe4HqDpx64sdyYFk/0Pyi8FLzKDgUlP9qfUyJH91GyBz7tkksmwUVrCBkZwJF
+ DTnaMROUAeW/HbZVlGsbaFUTTtDZ30njPHVsSMC2+CoDmq3eyLlARR8qk4/dM2jFMA7n
+ Ml0V3Q+2IuxX5y1apLmZZPueTRAnULTk0yEMu3gvAmEjcqBT8XvARFfLtLZaS8vBmzdO
+ TWBGTnoBtPhnBd26sqkUN57BexXez0e8Grm6EuLC/MawxzR9Izqc9OoM6HoJuNOdEDZh
+ Hwew==
+X-Gm-Message-State: AOJu0YwMjlPZ+gS/UrxiTSCIIAlR0a1YyzNGqVm35sbeTBEHcNGaNcUZ
+ YAuFWHk+KlkhR1evkpkBwTkv2ndPLSrnBhYAdJU=
+X-Google-Smtp-Source: AGHT+IFWW3YuS9cACNEFJy4rebJE0chXVjrJcnS5IEZCiLXLXDXHiPZj+NUx1gd+TctGbWdl6OlZtQ==
+X-Received: by 2002:a5d:6a50:0:b0:314:2fdd:28ef with SMTP id
+ t16-20020a5d6a50000000b003142fdd28efmr11141052wrw.18.1696317279299; 
+ Tue, 03 Oct 2023 00:14:39 -0700 (PDT)
 Received: from chigot-Dell.telnowedge.local
  (lmontsouris-659-1-24-67.w81-250.abo.wanadoo.fr. [81.250.175.67])
  by smtp.gmail.com with ESMTPSA id
- y16-20020a5d4710000000b003179d5aee67sm832196wrq.94.2023.10.03.00.14.37
+ y16-20020a5d4710000000b003179d5aee67sm832196wrq.94.2023.10.03.00.14.38
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Tue, 03 Oct 2023 00:14:38 -0700 (PDT)
 From: =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>
@@ -62,17 +62,18 @@ To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, peter.maydell@linaro.org, alistair23@gmail.com,
  =?UTF-8?q?Cl=C3=A9ment=20Chigot?= <chigot@adacore.com>,
  Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v4 2/5] softmmu: pass the main loop status to gdb "Wxx" packet
-Date: Tue,  3 Oct 2023 09:14:24 +0200
-Message-Id: <20231003071427.188697-3-chigot@adacore.com>
+Subject: [PATCH v4 3/5] hw/misc/sifive_test.c: replace exit calls with proper
+ shutdown
+Date: Tue,  3 Oct 2023 09:14:25 +0200
+Message-Id: <20231003071427.188697-4-chigot@adacore.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20231003071427.188697-1-chigot@adacore.com>
 References: <20231003071427.188697-1-chigot@adacore.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::630;
- envelope-from=chigot@adacore.com; helo=mail-ej1-x630.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
+ envelope-from=chigot@adacore.com; helo=mail-wm1-x32d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,63 +96,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-gdb_exit function aims to close gdb sessions and sends the exit code of
-the current execution. It's being called by qemu_cleanup once the main
-loop is over.
-Until now, the exit code sent was always 0. Now that hardware can
-shutdown this main loop with custom exit codes, these codes must be
-transfered to gdb as well.
+This replaces the exit calls by shutdown requests, ensuring a proper
+cleanup of Qemu. Otherwise, some connections like gdb could be broken
+before its final packet ("Wxx") is being sent. This part, being done
+inside qemu_cleanup function, can be reached only when the main loop
+exits after a shutdown request.
 
 Signed-off-by: Clément Chigot <chigot@adacore.com>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 ---
- include/sysemu/sysemu.h | 2 +-
- softmmu/main.c          | 2 +-
- softmmu/runstate.c      | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ hw/misc/sifive_test.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/sysemu/sysemu.h b/include/sysemu/sysemu.h
-index 25be2a692e..73a37949c2 100644
---- a/include/sysemu/sysemu.h
-+++ b/include/sysemu/sysemu.h
-@@ -101,7 +101,7 @@ bool defaults_enabled(void);
+diff --git a/hw/misc/sifive_test.c b/hw/misc/sifive_test.c
+index 56df45bfe5..ad688079c4 100644
+--- a/hw/misc/sifive_test.c
++++ b/hw/misc/sifive_test.c
+@@ -25,6 +25,7 @@
+ #include "qemu/module.h"
+ #include "sysemu/runstate.h"
+ #include "hw/misc/sifive_test.h"
++#include "sysemu/sysemu.h"
  
- void qemu_init(int argc, char **argv);
- int qemu_main_loop(void);
--void qemu_cleanup(void);
-+void qemu_cleanup(int);
- 
- extern QemuOptsList qemu_legacy_drive_opts;
- extern QemuOptsList qemu_common_drive_opts;
-diff --git a/softmmu/main.c b/softmmu/main.c
-index 694388bd7f..9b91d21ea8 100644
---- a/softmmu/main.c
-+++ b/softmmu/main.c
-@@ -35,7 +35,7 @@ int qemu_default_main(void)
-     int status;
- 
-     status = qemu_main_loop();
--    qemu_cleanup();
-+    qemu_cleanup(status);
- 
-     return status;
- }
-diff --git a/softmmu/runstate.c b/softmmu/runstate.c
-index 363a5ea8dd..ea9d6c2a32 100644
---- a/softmmu/runstate.c
-+++ b/softmmu/runstate.c
-@@ -834,9 +834,9 @@ void qemu_init_subsystems(void)
- }
- 
- 
--void qemu_cleanup(void)
-+void qemu_cleanup(int status)
+ static uint64_t sifive_test_read(void *opaque, hwaddr addr, unsigned int size)
  {
--    gdb_exit(0);
-+    gdb_exit(status);
- 
-     /*
-      * cleaning up the migration object cancels any existing migration
+@@ -39,9 +40,13 @@ static void sifive_test_write(void *opaque, hwaddr addr,
+         int code = (val64 >> 16) & 0xffff;
+         switch (status) {
+         case FINISHER_FAIL:
+-            exit(code);
++            qemu_system_shutdown_request_with_code(
++                SHUTDOWN_CAUSE_GUEST_PANIC, code);
++            return;
+         case FINISHER_PASS:
+-            exit(0);
++            qemu_system_shutdown_request_with_code(
++                SHUTDOWN_CAUSE_GUEST_SHUTDOWN, code);
++            return;
+         case FINISHER_RESET:
+             qemu_system_reset_request(SHUTDOWN_CAUSE_GUEST_RESET);
+             return;
 -- 
 2.25.1
 
