@@ -2,101 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4725A7B802F
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:04:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA1F7B8032
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:05:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo1Xe-0001Ek-0l; Wed, 04 Oct 2023 09:03:54 -0400
+	id 1qo1Xx-0001RD-3y; Wed, 04 Oct 2023 09:04:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qo1XS-0001CU-Nk
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:03:44 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo1Xv-0001R0-HW
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:04:11 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qo1XP-0004tY-Tc
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:03:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo1Xu-0005yG-4V
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:04:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696424618;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1696424649;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gOuptJIvqKcGX6qUJ15EFP95BUh8z4+leGsmCY5MAsE=;
- b=TKvBeYQVyYaTFlviwTOye3j6e8Fv2Hn7gAUs3T8MwEz9QBtz6MfNTnP6qntEkGelKuUEzC
- sCTG8RkUgEpJ8VN4pCkqE3IKqIMLdFmAVhksDho5JQgIjAhSL0PSGa3Il2W7JxbCt48YXM
- EgJodogiEy77YqvvuBSqoRiy0VFysjU=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=D1EiTpLeGcKJPVJ8XPKLqPNau5gg28GmfPqDjf9inu4=;
+ b=O/cvsoB8oKlPNChpLZmgG8NoHMVsGdfnBhsx3b4LrdIswBDtb6k6/q4jwRy9A19Rw11HMG
+ G/y1l40fS/ARunGXGHpJYw1/xYOBXzhqx9lkXEXehcx3nwmtZViMH4CGVd+hLDy8AUYRh5
+ rYvRg3+MlC0p92H7owYt4yyf7F1Nvhk=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-580-EW18TAcZMf2iYwN7qSSL-A-1; Wed, 04 Oct 2023 09:03:37 -0400
-X-MC-Unique: EW18TAcZMf2iYwN7qSSL-A-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-774086da4dbso245485785a.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 06:03:36 -0700 (PDT)
+ us-mta-658-9Op31unSO2uwthCVnrOZ6w-1; Wed, 04 Oct 2023 09:03:56 -0400
+X-MC-Unique: 9Op31unSO2uwthCVnrOZ6w-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-65b14f88921so21476586d6.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 06:03:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696424616; x=1697029416;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=gOuptJIvqKcGX6qUJ15EFP95BUh8z4+leGsmCY5MAsE=;
- b=DhHS2ighs0caIohmpn0oNLrCldqoyHpzSGeMMP1i8XixwklaBoPwBxxej+IEk49RGK
- IiGNc8tl/889DAfDduviniOEET/N03BTE+d0AYzFu1gBWL5xHjM8vZGmG/eUJiYok1Kr
- cfOfdRe0uanoo5KvjbW0Li9zXl5AVe77Y/jvv1Hn9rCz+j5HJklMSzoc4j2WKlmdC4y+
- BrCM1GKMhtQ05tgjOQS3fD7/8d5XIsgN4QWiIilyuMZxCXBqNbz5YTINDBMKue0kgikf
- s8a3tfzIzGFijBWp2YPK1Le2huMOdAbROSgEb0FAG2/svOHUkK+tdh0P8bKZqDNldI2B
- KfPw==
-X-Gm-Message-State: AOJu0Yy1fRqFLQ0rVE/C/KPDsJCc0NewYRyRcdD94He0ZFXlkCXnOuVl
- DizfC+iXjjfAl1qqlvZqxxDS9VGdM3MTYk/k6Fq85ucLWo6qPL8uz28jiYLqzuy8QfzjbnzbdUv
- XwqHyCsL4sAuJM94=
-X-Received: by 2002:a05:620a:2ac5:b0:775:69b4:b4e6 with SMTP id
- bn5-20020a05620a2ac500b0077569b4b4e6mr2436938qkb.7.1696424616292; 
- Wed, 04 Oct 2023 06:03:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHSYfXmu+9v+NgC9cjt1J9SHXt6clcIRYDWpYDt0TK/og8yxenANwg6gTbaQq9yV7kFsR3Vrw==
-X-Received: by 2002:a05:620a:2ac5:b0:775:69b4:b4e6 with SMTP id
- bn5-20020a05620a2ac500b0077569b4b4e6mr2436915qkb.7.1696424616024; 
- Wed, 04 Oct 2023 06:03:36 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ d=1e100.net; s=20230601; t=1696424636; x=1697029436;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=D1EiTpLeGcKJPVJ8XPKLqPNau5gg28GmfPqDjf9inu4=;
+ b=MGvOlmOJ89rxMh6rEm1aWR74tLDz+cndFKOsX8GL9oM8flxOXxm0XU3LjEh5obdKMT
+ T2G+w3GpwP1qWxQge0Lx5XLxhogQ2czZ0byAGUpu7nnsIIcFviYyJfAwFSt8oe2i2vzw
+ xsqzQmeMFodwo6D61Mlc2mpI8W4sPEotifQe9Oc7d0tCa9Z4hN8aMfbgEnAQWvhvkOau
+ ECen7bHzy7i+Pd1/FFI0tCt32KI2IXefZRL7qUCjCmqtYHZzHNddflL3kP/gm6+VUgpL
+ 91NaICx54byuxpZ3/eeZMC+Nhw97M+lAw4nrHyq8EoWC8B4KJJtNb4UQOPryxbfjcrdY
+ HjPQ==
+X-Gm-Message-State: AOJu0Yw9r5kTdaqtfwXaYJG6xIf0LwPlHDSj2P/yEwUwMeNYVp1/yEjJ
+ DibUF1uHxDJ61XI+ZDuo/noCOtfkz6tn83vKoTttg4h5Ce+fcJYQn0tIROPW4A4q8JvoAopJOD2
+ 3ueiQTspsO6+hz6A=
+X-Received: by 2002:a05:6214:16d1:b0:658:9cd9:ec64 with SMTP id
+ d17-20020a05621416d100b006589cd9ec64mr2123237qvz.54.1696424636087; 
+ Wed, 04 Oct 2023 06:03:56 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFqvIczrR/NwleOKhY8HVZDAnbHUKS1NIbUoX1IQ9Qj+AEybyZ6W0KUIrB58TtTYg7odLpX2A==
+X-Received: by 2002:a05:6214:16d1:b0:658:9cd9:ec64 with SMTP id
+ d17-20020a05621416d100b006589cd9ec64mr2123220qvz.54.1696424635834; 
+ Wed, 04 Oct 2023 06:03:55 -0700 (PDT)
+Received: from [10.33.192.181] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- b10-20020ac86bca000000b00417fa7d33dbsm1193749qtt.93.2023.10.04.06.03.31
+ u12-20020a0cdd0c000000b0062ffbf23c22sm1301416qvk.131.2023.10.04.06.03.54
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 06:03:34 -0700 (PDT)
-Message-ID: <4098f81f-bb7c-bbcb-4d73-04e3981a08f5@redhat.com>
-Date: Wed, 4 Oct 2023 15:03:30 +0200
+ Wed, 04 Oct 2023 06:03:55 -0700 (PDT)
+Message-ID: <8cc80be6-4bf3-e5fd-9b2c-c2961905cdef@redhat.com>
+Date: Wed, 4 Oct 2023 15:03:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 13/15] vfio/common: Store the parent container in
- VFIODevice
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] hw/usb: Silence compiler warnings in USB code when
+ compiling with -Wshadow
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
- alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-14-eric.auger@redhat.com>
- <79fb6650-783c-f9d7-4294-668bebe23fe0@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <79fb6650-783c-f9d7-4294-668bebe23fe0@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ qemu-trivial@nongnu.org
+References: <20231004093620.97906-1-thuth@redhat.com>
+ <8734yqfw85.fsf@pond.sub.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <8734yqfw85.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,86 +100,23 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+On 04/10/2023 13.44, Markus Armbruster wrote:
+> I got one more:
+> 
+> ../hw/usb/host-libusb.c: In function ‘usb_host_open’:
+> ../hw/usb/host-libusb.c:1013:13: warning: declaration of ‘rc’ shadows a previous local [-Wshadow=compatible-local]
+>   1013 |         int rc = ioctl(hostfd, USBDEVFS_GET_SPEED, NULL);
+>        |             ^~
+> ../hw/usb/host-libusb.c:954:9: note: shadowed declaration is here
+>    954 |     int rc;
+>        |         ^~
+> 
 
-On 10/3/23 17:59, Cédric Le Goater wrote:
-> On 10/3/23 12:14, Eric Auger wrote:
->> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>
->> let's store the parent contaienr within the VFIODevice.
->> This simplifies the logic in vfio_viommu_preset() and
->> brings the benefice to hide the group specificity which
->> is useful for IOMMUFD migration.
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> ---
->>   include/hw/vfio/vfio-common.h | 1 +
->>   hw/vfio/common.c              | 8 +++++++-
->>   2 files changed, 8 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/hw/vfio/vfio-common.h
->> b/include/hw/vfio/vfio-common.h
->> index 8ca70dd821..bf12e40667 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -132,6 +132,7 @@ typedef struct VFIODevice {
->>       QLIST_ENTRY(VFIODevice) next;
->>       QLIST_ENTRY(VFIODevice) container_next;
->>       struct VFIOGroup *group;
->> +    VFIOContainer *container;
->>       char *sysfsdev;
->>       char *name;
->>       DeviceState *dev;
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index ef9dc7c747..55f8a113ea 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -184,7 +184,7 @@ void vfio_unblock_multiple_devices_migration(void)
->>     bool vfio_viommu_preset(VFIODevice *vbasedev)
->>   {
->> -    return vbasedev->group->container->space->as !=
->> &address_space_memory;
->> +    return vbasedev->container->space->as != &address_space_memory;
->>   }
->>     static void vfio_set_migration_error(int err)
->> @@ -2655,6 +2655,7 @@ int vfio_attach_device(char *name, VFIODevice
->> *vbasedev,
->>       }
->>         container = group->container;
->> +    vbasedev->container = container;
->>       QLIST_INSERT_HEAD(&container->device_list, vbasedev,
->> container_next);
->>         return ret;
->> @@ -2664,7 +2665,12 @@ void vfio_detach_device(VFIODevice *vbasedev)
->>   {
->>       VFIOGroup *group = vbasedev->group;
->>   +    if (!vbasedev->container) {
->> +        return;
->> +    }
->
-> Can this happen ? Should it be an assert ?
-I don't think so. Let me simply drop the check.
+Drat, I missed that indeed. I'll send a v2.
 
-Thanks
-
-Eric
->
-> Thanks,
->
-> C.
->
->
->> +
->>       QLIST_REMOVE(vbasedev, container_next);
->> +    vbasedev->container = NULL;
->>       trace_vfio_detach_device(vbasedev->name, group->groupid);
->>       vfio_put_base_device(vbasedev);
->>       vfio_put_group(group);
->
+  Thomas
 
 
