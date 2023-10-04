@@ -2,40 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20B9C7B7EC3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBA57B7ED0
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:12:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0gT-00063Q-NI; Wed, 04 Oct 2023 08:08:57 -0400
+	id 1qo0ja-0000jK-P6; Wed, 04 Oct 2023 08:12:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qo0gO-000638-FF
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:08:54 -0400
+ id 1qo0jT-0000gl-0Y
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:12:05 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qo0gM-00068O-9k
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:08:52 -0400
+ id 1qo0jQ-0006qc-Sw
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:12:02 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 60C0674632B;
- Wed,  4 Oct 2023 14:08:02 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 08EFF7456AA;
+ Wed,  4 Oct 2023 14:11:17 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 220CF7456AA; Wed,  4 Oct 2023 14:08:02 +0200 (CEST)
+ id BD6A97456A7; Wed,  4 Oct 2023 14:11:16 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 1FDFD745681;
- Wed,  4 Oct 2023 14:08:02 +0200 (CEST)
-Date: Wed, 4 Oct 2023 14:08:02 +0200 (CEST)
+ by zero.eik.bme.hu (Postfix) with ESMTP id BB80C745681;
+ Wed,  4 Oct 2023 14:11:16 +0200 (CEST)
+Date: Wed, 4 Oct 2023 14:11:16 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
 To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH] hw/isa/vt82c686: Respect SCI interrupt assignment
-In-Reply-To: <20231003214437.29302-1-shentey@gmail.com>
-Message-ID: <f5b9d133-864a-fd13-9bc5-523e1ad77efe@eik.bme.hu>
-References: <20231003214437.29302-1-shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Huacai Chen <chenhuacai@kernel.org>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2] hw/isa/vt82c686: Respect SCI interrupt assignment
+In-Reply-To: <20231004105709.16994-1-shentey@gmail.com>
+Message-ID: <c3447ac2-662a-65a6-19d7-336041c68b66@eik.bme.hu>
+References: <20231004105709.16994-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII; format=flowed
 X-Spam-Probability: 9%
@@ -61,27 +61,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 3 Oct 2023, Bernhard Beschow wrote:
+On Wed, 4 Oct 2023, Bernhard Beschow wrote:
 > According to the datasheet, SCI interrupts of the power management function
-> aren't triggered through the PCI pins but rather directly to the integrated PIC.
+> aren't routed through the PCI pins but rather directly to the integrated PIC.
 > The routing is configurable through the ACPI interrupt select register at offset
-> 42 in the PCI configuration space of the ISA function.
-
-This should be config reg 42 of the PM function 4 not ISA function 0 but 
-the code seems to do it right just this description is wrong.
-
+> 0x42 in the PCI configuration space of the ISA function.
 >
 > Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-
-You could cc me on vt82c686 too as now I have two machines using these 
-(one is not yet upstream).
-
+>
 > ---
-> hw/isa/vt82c686.c | 43 +++++++++++++++++++++++++++++++------------
-> 1 file changed, 31 insertions(+), 12 deletions(-)
+>
+> v2:
+> * Introduce named constants for the ACPI interrupt select register at offset
+>  0x42 (Phil)
+> ---
+> hw/isa/vt82c686.c | 47 +++++++++++++++++++++++++++++++++++------------
+> 1 file changed, 35 insertions(+), 12 deletions(-)
 >
 > diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
-> index 57bdfb4e78..2988ad1eda 100644
+> index 57bdfb4e78..93ffaaf706 100644
 > --- a/hw/isa/vt82c686.c
 > +++ b/hw/isa/vt82c686.c
 > @@ -46,6 +46,8 @@ struct ViaPMState {
@@ -89,11 +87,6 @@ You could cc me on vt82c686 too as now I have two machines using these
 >     APMState apm;
 >     PMSMBus smb;
 > +
-
-No empty line needed here. It you want to, you could add an empty line 
-after the first member and rename that to parent_obj as per new convention 
-while you're changing this object state.
-
 > +    qemu_irq irq;
 > };
 >
@@ -140,14 +133,34 @@ while you're changing this object state.
 >     .instance_size = sizeof(ViaPMState),
 >     .abstract      = true,
 >     .interfaces = (InterfaceInfo[]) {
-> @@ -568,9 +567,25 @@ static const VMStateDescription vmstate_via = {
+> @@ -545,6 +544,9 @@ static const TypeInfo vt8231_superio_info = {
+> #define TYPE_VIA_ISA "via-isa"
+> OBJECT_DECLARE_SIMPLE_TYPE(ViaISAState, VIA_ISA)
+>
+> +#define VIA_ISA_SCI_SELECT_OFS 0x42
+> +#define VIA_ISA_SCI_SELECT_MASK 0xf
+
+Missed this before revieweing v1. As this should belong to the PM function 
+it should not be here but above so maybe Philippe's other suggestion to 
+use a getter function is clearer then to define that function above in the 
+via_pm section.
+
+Regards,
+BALATON Zoltan
+
+> +
+> struct ViaISAState {
+>     PCIDevice dev;
+>     qemu_irq cpu_intr;
+> @@ -568,9 +570,26 @@ static const VMStateDescription vmstate_via = {
 >     }
 > };
 >
 > +static void via_isa_set_pm_irq(void *opaque, int n, int level)
 > +{
 > +    ViaISAState *s = opaque;
-> +    uint8_t irq = pci_get_byte(s->pm.dev.config + 0x42) & 0xf;
+> +    uint8_t irq = pci_get_byte(s->pm.dev.config + VIA_ISA_SCI_SELECT_OFS)
+> +                  & VIA_ISA_SCI_SELECT_MASK;
 > +
 > +    if (irq == 2) {
 > +        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is reserved");
@@ -163,19 +176,10 @@ while you're changing this object state.
 > {
 >     ViaISAState *s = VIA_ISA(obj);
 > +    DeviceState *dev = DEVICE(s);
-
-No need to add local variable for single use unless you expect to have 
-more of these later but for single use you caould just use DEVICE(obj or 
-s) in the call below.
-
-Other than these small nits:
-
-Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
-
 >
 >     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
 >     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
-> @@ -578,6 +593,8 @@ static void via_isa_init(Object *obj)
+> @@ -578,6 +597,8 @@ static void via_isa_init(Object *obj)
 >     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
 >     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
 >     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
@@ -184,7 +188,7 @@ Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
 > }
 >
 > static const TypeInfo via_isa_info = {
-> @@ -704,6 +721,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+> @@ -704,6 +725,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
 >     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
 >         return;
 >     }
