@@ -2,89 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E17B7B8D76
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:34:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3CB7B8D78
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:35:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo7cj-0008DU-Dd; Wed, 04 Oct 2023 15:33:33 -0400
+	id 1qo7dm-0000O2-IA; Wed, 04 Oct 2023 15:34:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo7ch-0008DK-4K
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:33:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qo7dj-0000GB-TO
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:34:35 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo7ce-0007tQ-IF
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:33:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696448007;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=Zre+NC+YM73/BpFlGN5GvaxbFFp0QqKPYM/MPqgT5XI=;
- b=CTr1xNgIwwVr1e/ig69uuQtpnt1L5x6ia/Xr6DPVlC/Mc0TsLZWd9ZjmX7tWO97HEQkPgs
- W+3I/0YkNqnIdW2htg9S9Qf1zBPRTfPcmxZIfvdr+sfqkvEKzJio/tDrJVg/jnx6Y4FE+6
- ai4EteFdj5dtAvwCQjEeNOWt7PD5wDg=
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
- [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-137-remtLjG_NSqO31Y9UGM3xQ-1; Wed, 04 Oct 2023 15:33:11 -0400
-X-MC-Unique: remtLjG_NSqO31Y9UGM3xQ-1
-Received: by mail-oo1-f71.google.com with SMTP id
- 006d021491bc7-57e1d604cc5so48111eaf.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 12:33:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696447990; x=1697052790;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Zre+NC+YM73/BpFlGN5GvaxbFFp0QqKPYM/MPqgT5XI=;
- b=K1z3QOJYo18JrCqBUFiX13ulX9Rd/2SJcYIrDImt2tavI/IifoRPxI1DZY1S7W7Vjo
- BjZePGWYVh5Rxn2cU05Q7ffgyMK2FxpzrSp7ewUOL9r3Ho3h304vuLfRzGJUDmKrQk5k
- HSEUDQyShXGX9vaUuLrdMkbhfEVtXac6IQ5rhdikbaeWMpnDEoNBr2EflLkUnRxJTU3w
- uRO5qZYcmWSnVP9QUB9y3PDj9FNA8hzpDNUKJ4kYiQut1nqOhIg3X+WYUqiZto8hWRgd
- vnU3BENXxxEq4t284/eqijXyC5Jx21POiqhCbaXqP8jtjBXPqwY4krTYAaGJWXtE3Ios
- Zddw==
-X-Gm-Message-State: AOJu0YyRwS7ieCEITBexEIvo3J8X9XxvRvQSPad5NwPWBwp6+I77LFfx
- +k5hCj0FSPdG6pEUuMRH6xxIDjRfz3sPMpATPVTY7I87p9QWtjMTSu9Fvoxf3IEsN3S00u/EI98
- UkQIFoVcfJIRfpiQ=
-X-Received: by 2002:a05:6870:7024:b0:1e1:372:1fcf with SMTP id
- u36-20020a056870702400b001e103721fcfmr3798941oae.5.1696447990361; 
- Wed, 04 Oct 2023 12:33:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHobYZXJX/ojc8A+3FAq0jmPkn/Q1FG2TunNXNz0mU/pL/dlKBWuWtlfT7xmN9ws2AmHfRg9Q==
-X-Received: by 2002:a05:6870:7024:b0:1e1:372:1fcf with SMTP id
- u36-20020a056870702400b001e103721fcfmr3798919oae.5.1696447990008; 
- Wed, 04 Oct 2023 12:33:10 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- m22-20020ae9e016000000b0076d08d5f93asm1479776qkk.60.2023.10.04.12.33.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 12:33:09 -0700 (PDT)
-Date: Wed, 4 Oct 2023 15:33:07 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
- Yishai Hadas <yishaih@nvidia.com>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: Re: [PATCH 5/5] migration: Print expected-downtime on completion
-Message-ID: <ZR29849MU0dmXBlg@x1n>
-References: <20230926161841.98464-1-joao.m.martins@oracle.com>
- <20230926161841.98464-6-joao.m.martins@oracle.com>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qo7de-00087f-Jc
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:34:35 -0400
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 6823364D10;
+ Wed,  4 Oct 2023 22:34:26 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:2::1:1c] (unknown [2a02:6b8:b081:2::1:1c])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (smtpcorp/Yandex) with ESMTPSA id OYdpGF3OoKo0-bIMZBJEh; 
+ Wed, 04 Oct 2023 22:34:25 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696448065;
+ bh=HbqrGniURF4NtD6RWc8RLd7aFuy+y2eK7vKqFF0YdRA=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=f3rrdwSKV1YxAGqkLqEMLl07bWVKK6JZoRidAbPc7Bxy6Z5aJ7ICScmw3rsKmI3ox
+ Kurd2AFNYYFSxx6lJBbRFonFkGu7XhHu63P21W+ZZoS8maNmJoxcWO8Mc/fyCoLvd9
+ t1w59ZvmGy12YQizxdizpItRNsbBZpAbu9/LNAOw=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <e31e4d30-3c78-3c28-6b7a-6dc132c36bc8@yandex-team.ru>
+Date: Wed, 4 Oct 2023 22:34:23 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230926161841.98464-6-joao.m.martins@oracle.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v7 2/4] qapi: add DEVICE_ON and query-hotplug
+ infrastructure
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: armbru@redhat.com, eblake@redhat.com, eduardo@habkost.net,
+ berrange@redhat.com, pbonzini@redhat.com, marcel.apfelbaum@gmail.com,
+ mst@redhat.com, antonkuchin@yandex-team.ru, den-plotnikov@yandex-team.ru
+References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
+ <20230421103207.845847-3-vsementsov@yandex-team.ru>
+ <9f61f7f4-4c78-bf82-b140-6706a912e45a@linaro.org>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <9f61f7f4-4c78-bf82-b140-6706a912e45a@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,89 +81,251 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Sep 26, 2023 at 05:18:41PM +0100, Joao Martins wrote:
-> Right now, migration statistics either print downtime or expected
-> downtime depending on migration completing of in progress. Also in the
-> beginning of migration by printing the downtime limit as expected
-> downtime, when estimation is not available.
+A bit old thread, but I'm going to resend, so should answer here about things I don't want to change. Be free to ignore it and come to review from scratch in v8 (coming soon) if you don't remember, what was it :)
+
+On 19.05.23 18:20, Philippe Mathieu-Daudé wrote:
+> Hi Vladimir,
 > 
-> The pending_size is private in migration iteration and not necessarily
-> accessible outside. Given the non-determinism of the switchover cost, it
-> can be useful to understand if the downtime was far off from the one
-> detected by the migration algoritm, thus print the resultant downtime
-> alongside its estimation.
+> On 21/4/23 12:32, Vladimir Sementsov-Ogievskiy wrote:
+>> We have DEVICE_DELETED event, that signals that device_del command is
+>> actually completed. But we don't have a counter-part for device_add.
+>> Still it's sensible for SHPC and PCIe-native hotplug, as there are time
+>> when the device in some intermediate state. Let's add an event that say
+>> that the device is finally powered on, power indicator is on and
+>> everything is OK for next manipulation on that device.
+>>
+>> Motivations:
+>> 1. To be sure that device is "accepted" by guest. Guest may ignore
+>> hotplugged device for some reason (for example during OS booting).
+>> Management wants to catch this and handle the problem, instead of
+>> silent assume that everything is OK. So, if we don't get the event by
+>> some timeout, we can report an error, try to unplug/plug the disk again
+>> or do some other things to handle the problem.
+>>
+>> 2. The device can't be removed (by blockdev-del) while power indicator
+>> of hotplug controller is blinking (QEMU reports "guest is busy (power
+>> indicator blinking)"). So, management should avoid removing the device
+>> until it gets the DEVICE_ON event.
+>> (Probably, better solution for this point is to automatically postpone
+>> deletion until power indicator stops blinking)
+>>
+>> 3. Also, management tool may make a GUI visualization of power
+>> indicator with help of this event.
+>>
+>> New query-hotplug command in additon to "device-on" state also provides
+>> SHPC/PCIe-native specific hotplug controller properties (like leds)
+>> that may help to determine real state of hotplug controller. That may
+>> help to get additional information for further debugging when DEVICE_ON
+>> / DEVICE_DELETED not come in time as expected.
+>>
+>> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+[..]
+
+>>   #endif
+>> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
+>> index bd50ad5ee1..63889e41c0 100644
+>> --- a/include/hw/qdev-core.h
+>> +++ b/include/hw/qdev-core.h
+>> @@ -180,6 +180,7 @@ struct DeviceState {
+>>       char *id;
+>>       char *canonical_path;
+>>       bool realized;
+>> +    bool device_on_sent; /* set once by SHPC or PCIE-hotplug */
 > 
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> ---
->  migration/migration.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> This seems to belong to the next patch (not used here).
+> Anyhow (besides the field misses its description) from the name
+> I can't figure out what this is about. Probably too generic name
+> IMHO.
+
+Actually it's used in this patch and forces the event to be sent at most once.
+The comment is misleading.
+
 > 
-> diff --git a/migration/migration.c b/migration/migration.c
-> index dec6c88fbff9..f08f65b4b1c3 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -943,6 +943,10 @@ static void populate_time_info(MigrationInfo *info, MigrationState *s)
->      if (s->state == MIGRATION_STATUS_COMPLETED) {
->          info->has_total_time = true;
->          info->total_time = s->total_time;
-> +        if (s->expected_downtime) {
-> +            info->has_expected_downtime = true;
-> +            info->expected_downtime = s->expected_downtime;
-> +        }
-
-There's another chunk right below that will also show
-expected_downtime.. How about we merge them to be clear?
-
-IIUC the current patch will not display expected_downtime during postcopy,
-which makes sense.  But it'll pop up again after postcopy completes... so
-not ideal either. If so sounds easier to just show it as long as we have a
-value, and the user can ignore it.
-
-@@ -913,7 +913,9 @@ static void populate_time_info(MigrationInfo *info, MigrationState *s)
-     if (migrate_show_downtime(s)) {
-         info->has_downtime = true;
-         info->downtime = s->downtime;
--    } else {
-+    }
-+
-+    if (s->expected_downtime) {
-         info->has_expected_downtime = true;
-         info->expected_downtime = s->expected_downtime;
-     }
-
-IIUC currently expected_downtime for postcopy makes less sense.  Maybe one
-day we can make it reflect reality, by taking more things into account
-(besides dirty RAM rate).
-
->      } else {
->          info->has_total_time = true;
->          info->total_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) -
-> @@ -2844,6 +2848,10 @@ static MigIterateState migration_iteration_run(MigrationState *s)
->  
->      if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
->          trace_migration_thread_low_pending(pending_size);
-> +        if (s->threshold_size) {
-> +            s->expected_downtime = (pending_size * s->parameters.downtime_limit) /
-> +                                   s->threshold_size;
-> +        }
-
-I had a feeling that you did the calculation to avoid accessing ->mbps. :)
-
-I'd suggest we move this into migration_completion(), and use ->mbps
-(before the other avail-switchover-bandwidth patch lands).  It's just that
-using the bandwidth value seems more straightforward.  Or maybe I missed
-something tricky?
-
->          migration_completion(s);
->          return MIG_ITERATE_BREAK;
->      }
-> -- 
-> 2.39.3
+>>       bool pending_deleted_event;
+>>       int64_t pending_deleted_expires_ms;
+>>       QDict *opts;
+>> diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
+>> index 1d57bf6577..c1c8798e89 100644
+>> --- a/include/monitor/qdev.h
+>> +++ b/include/monitor/qdev.h
+>> @@ -36,4 +36,6 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+>>    */
+>>   const char *qdev_set_id(DeviceState *dev, char *id, Error **errp);
+>> +void qdev_hotplug_device_on_event(DeviceState *dev);
+>> +
+>>   #endif
+>> diff --git a/qapi/qdev.json b/qapi/qdev.json
+>> index 135cd81586..ffd20c43e0 100644
+>> --- a/qapi/qdev.json
+>> +++ b/qapi/qdev.json
+>> @@ -173,3 +173,147 @@
+>>   #
+>>   ##
+>>   { 'event': 'DEVICE_UNPLUG_GUEST_ERROR', 'data': 'DeviceAndPath' }
+>> +
+>> +##
+>> +# @LedActivity:
+>> +#
+>> +# Three-state led indicator state.
+>> +#
+>> +# @on: Indicator is on.
+>> +#
+>> +# @blink: Indicator is blinking.
+>> +#
+>> +# @off: Indicator is off.
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'enum': 'LedActivity',
+>> +  'data': [ 'on', 'blink', 'off' ] }
 > 
+> Possibly useful enough to add in a new qapi/led.json.
 
-Thanks,
+I'd postpone it until another user of the enum appear.
+
+> 
+>> +##
+>> +# @HotplugSHPCSlotState:
+>> +#
+>> +# Standard Hot-Plug Controller slot state.
+>> +#
+>> +# @power-only: Slot is powered on but neither clock nor bus are connected.
+>> +#
+>> +# @enabled: Slot is powered on, clock and bus are connected, the card is
+>> +#           fully functional from a hardware standpoint.
+>> +#
+>> +# @disabled: Slot is disabled, card is safe to be removed.
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'enum': 'HotplugSHPCSlotState',
+>> +  'data': [ 'power-only', 'enabled', 'disabled' ] }
+>> +
+>> +##
+>> +# @HotplugBaseState:
+>> +#
+>> +# Base structure for SHPC and PCIe-native hotplug.
+>> +#
+>> +# @power-led: Power indicator. When power indicator is on the device is
+>> +#             ready and accepted by guest. Off status means that device
+>> +#             is safe to remove and blinking is an intermediate state of
+>> +#             hot-plug or hot-unplug.
+>> +#
+>> +# @attention-led: Attention indicator. Off status means normal operation,
+>> +#                 On signals about operational problem, Blinking is for
+>> +#                 locating the slot.
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'struct': 'HotplugBaseState',
+>> +  'data': { '*power-led': 'LedActivity',
+>> +            '*attention-led': 'LedActivity' } }
+>> +
+>> +##
+>> +# @HotplugSHPCState:
+>> +#
+>> +# Standard Hot Plug Controller state.
+>> +#
+>> +# @slot-state: The slot state field of Slot Status.
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'struct': 'HotplugSHPCState',
+>> +  'base': 'HotplugBaseState',
+>> +  'data': { '*slot-state': 'HotplugSHPCSlotState' } }
+>> +
+>> +##
+>> +# @HotplugPCIeNativeState:
+>> +#
+>> +# PCIe Native hotplug slot state.
+> 
+> Doesn't this belong to qapi/pci.json?
+
+Now I think it shouldn't. I'd keep all hotplug-related together, even when ACPI hotplug will be supported by new event.
+
+Probably it makes sense to make qdev-hotplug.json, but then what to keep in qdev.json? Only device-list-properties command.. Seems that it not worth the split for now.
+
+> 
+>> +#
+>> +# @power-on: PCIe Power Controller Control of Slot Control Register.
+>> +#            True means Power On (Power Controller Control bit is 0),
+>> +#            False means Power Off (Power Controller Control bit is 1).
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'struct': 'HotplugPCIeNativeState',
+>> +  'base': 'HotplugBaseState',
+>> +  'data': { '*power-on': 'bool' } }
+>> +
+>> +##
+>> +# @HotplugType:
+>> +#
+>> +# Type of hotplug controller / provider.
+>> +#
+>> +# @shpc: Standard Hot Plug Controller
+>> +#
+>> +# @pcie-native: PCIe Native hotplug
+> 
+> Ditto.
+> 
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'enum': 'HotplugType',
+>> +  'data': ['shpc', 'pcie-native'] }
+>> +
+>> +##
+>> +# @HotplugInfo:
+>> +#
+>> +# Generic hotplug slot state.
+>> +#
+>> +# @type: type of the hotplug (shpc or pcie-native)
+>> +#
+>> +# @bus: The QOM path of the parent bus where device is hotplugged.
+>> +#
+>> +# @addr: The bus address for hotplugged device if applicable.
+>> +#
+>> +# @child: the hotplugged device
+>> +#
+>> +# @device-on: Device is powered-on by guest. This state changes at most
+>> +#             once for the device and corresponds to DEVICE_ON event.
+>> +#
+>> +# Single: 8.1
+>> +##
+>> +{ 'union': 'HotplugInfo',
+>> +  'base': { 'type': 'HotplugType',
+>> +            'bus': 'DeviceAndPath',
+>> +            '*addr': 'str',
+>> +            'child': 'DeviceAndPath',
+>> +            'device-on': 'bool' },
+>> +  'discriminator': 'type',
+>> +  'data': { 'shpc': 'HotplugSHPCState',
+>> +            'pcie-native': 'HotplugPCIeNativeState' } }
+>> +
+>> +##
+>> +# @query-hotplug:
+>> +#
+>> +# Query the state of hotplug controller.
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'command': 'query-hotplug',
+>> +  'data': { 'id': 'str' },
+>> +  'returns': 'HotplugInfo' }
+>> +
+>> +##
+>> +# @DEVICE_ON:
+>> +#
+>> +# Emitted whenever the device insertion completion is acknowledged by the guest.
+>> +# For now only emitted for SHPC and PCIe-native hotplug.
+>> +#
+>> +# Since: 8.1
+>> +##
+>> +{ 'event': 'DEVICE_ON', 'data': 'DeviceAndPath' }
 
 -- 
-Peter Xu
+Best regards,
+Vladimir
 
 
