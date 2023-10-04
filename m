@@ -2,95 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 085797B86C0
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2024C7B86C4
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:41:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5oh-0003Zn-J1; Wed, 04 Oct 2023 13:37:47 -0400
+	id 1qo5s7-00080Y-7A; Wed, 04 Oct 2023 13:41:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo5oe-0003Yu-04
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:37:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo5ry-0007cq-TL
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:41:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo5oR-00024P-LM
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:37:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo5rn-0005FW-L0
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:41:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696441050;
+ s=mimecast20190719; t=1696441258;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=PstiGGB3qn3D8jCb7jeXQwuehLpvqpSWMSYnr2qacko=;
- b=Nci5pbcFlH+El33kvklA0lXmKD+tcoR3QssvQe/S73inHUWMl1j8kld2A0Y1Nl/GfJPYKm
- TUfH3Lkw4tkNBgFaAUpS6f+GWVMFHw0NqBYkIMp435I7c6jDP60F8/9yD90v8CB3nYR0Ke
- fPdRKgjPXrq1U0NDXZ18/eKtbT0RHuM=
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
- [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6jja1Toq2ED/NoKg+nlZ36TlRfx1pf/ROvYR/09q1HY=;
+ b=i7NqkEg327eKETsnNqr93Rx4KnOnBxZmB8KLvPWKRn5+8oLUImcIsrl+NWHgMiqVtl4+jY
+ OAN4wofMMMagVcNROo4Kp2N02t+cSGrEYnLL9u3jgeqq6DbSBu/OaWOTE5NI3XY4rH/IRK
+ kE/+1Y28ozmvFW3ibnwEZv48VUPv1v4=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-369-DBnCACavOk2YUMPS-r1fWA-1; Wed, 04 Oct 2023 13:37:29 -0400
-X-MC-Unique: DBnCACavOk2YUMPS-r1fWA-1
-Received: by mail-qv1-f71.google.com with SMTP id
- 6a1803df08f44-6564dbde089so16948966d6.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:37:29 -0700 (PDT)
+ us-mta-496-C9nJ73xZPdilzf0MqyS34Q-1; Wed, 04 Oct 2023 13:40:57 -0400
+X-MC-Unique: C9nJ73xZPdilzf0MqyS34Q-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-41957273209so446311cf.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:40:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696441048; x=1697045848;
+ d=1e100.net; s=20230601; t=1696441257; x=1697046057;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PstiGGB3qn3D8jCb7jeXQwuehLpvqpSWMSYnr2qacko=;
- b=Za1MnvmeVc6hguFICNmm+eGb0lqhFTO67oUSgB6m2jwCmEX5bE352pLSnEhAqzuWWK
- ezDmUaiqAuYazWFukXKPGcPhB/3bNLW0iEhAVIup4yvbDFVLPWN9x2yGs0CzdwNInPRG
- nFMSHlw8dHUmtuM68qBG5YWkdNs2YtR9WVIZXJEX+uSFpU82N8PuRXchO0d0e/0mdtF4
- XRAbi0AiBA2ROM6l1dXqDeH2gsP0W6Tk7PE55+EBSpX4jKUdpjijbaRZcCwOzPX+X1ig
- JlyWVYbMgjVU2LUuMcoZqF3PPVC9Am+8YMa9CBkE1S4b4Hzmroq8Y0pOn/jGu1iPXfbu
- 0IHA==
-X-Gm-Message-State: AOJu0YxbY9ZbaKzrEw7Lvpqjh0WeGdhlSfT1oDnyqCNcNo83v4vewBbo
- GdNb6S4NoOZsCYBT6NDqhOrdlKt0T1BmNoKmgJTdAmhQjVHwz/pANJ88Kv20+grZjfhkf9RLvfl
- pGA/S8jxpFmk+1u8=
-X-Received: by 2002:a05:6214:5299:b0:656:25fb:2a16 with SMTP id
- kj25-20020a056214529900b0065625fb2a16mr393229qvb.28.1696441048601; 
- Wed, 04 Oct 2023 10:37:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFd7ugUt1PC2cXBHqx1RU9F03bSmwW9+xgJx+nzPDW3nV1MlA2SpNNK9hIqGaaocwWW4q1Rog==
-X-Received: by 2002:a05:6214:5299:b0:656:25fb:2a16 with SMTP id
- kj25-20020a056214529900b0065625fb2a16mr393213qvb.28.1696441048289; 
- Wed, 04 Oct 2023 10:37:28 -0700 (PDT)
+ bh=6jja1Toq2ED/NoKg+nlZ36TlRfx1pf/ROvYR/09q1HY=;
+ b=O00eS1Rlqx1Fv9FoGA2lOVdu+KCt7p0kUY90xM4vUjwFHSVOHSWApsuqizt4eUpnwi
+ aY+yaMFUYDG3agmjX03a2QlJ+MWgfAvUrFHpMv/8rvSMui41ee679NvdiLNgPYHt5JAy
+ nIvZYWBTlB/LF9cDgcvvnAj0clGxSTtao510LXg5Bafmm1ChD7cTtC9ZNgM3O7fP+eii
+ h4H4NdBKEp89PzGJvIvR0AwflRmm4TbvzlgeFV86FfOx4hFKPjLQDsS0YRKRTCFf8B+g
+ x2W1HXugldJm+RKvU269mqP4oFsAdG/mYgc5DH5M6CJ3If9P9nUqLSLHpE66OCXmDO3E
+ qSXw==
+X-Gm-Message-State: AOJu0YyowZpcFt1mJWosYv4VtrZiwuxUTGlBnhGsJ5Ys1bfTRvgX0jNA
+ Ogp72ujWCp6qH4Ca5huIMIHElBWUPRzvpLIzOT5zgPlC+zqqnccljYM43FUWCzE4SJYyTRGYs5m
+ dEzkl0hZ9kWGVA7U=
+X-Received: by 2002:a05:622a:13ca:b0:418:152d:bf6 with SMTP id
+ p10-20020a05622a13ca00b00418152d0bf6mr3343927qtk.26.1696441257037; 
+ Wed, 04 Oct 2023 10:40:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFe4GFz17lchpP3z8e0nfjuBKWa7JzS7t/P49DL0zfVV1MMyrs2EfC83bvVT1nEYLx543S2Ew==
+X-Received: by 2002:a05:622a:13ca:b0:418:152d:bf6 with SMTP id
+ p10-20020a05622a13ca00b00418152d0bf6mr3343903qtk.26.1696441256581; 
+ Wed, 04 Oct 2023 10:40:56 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
  [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
- x15-20020a0ce0cf000000b0065b2e561c17sm1473039qvk.123.2023.10.04.10.37.26
+ y8-20020ac87c88000000b00419b6567ed6sm969619qtv.55.2023.10.04.10.40.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 10:37:27 -0700 (PDT)
-Message-ID: <5f3b973d-1de6-5c99-cf94-ad9617b2d6da@redhat.com>
-Date: Wed, 4 Oct 2023 19:37:25 +0200
+ Wed, 04 Oct 2023 10:40:56 -0700 (PDT)
+Message-ID: <ff0806b3-b597-33ac-5597-f8eda5a7df0f@redhat.com>
+Date: Wed, 4 Oct 2023 19:40:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 07/21] qapi: Inline QERR_INVALID_PARAMETER_TYPE definition
- (constant param)
+Subject: Re: [PULL 00/63] virtio,pci: features, cleanups
 Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-References: <20231004173158.42591-1-philmd@linaro.org>
- <20231004173158.42591-8-philmd@linaro.org>
+To: "Michael S. Tsirkin" <mst@redhat.com>, Stefan Hajnoczi <stefanha@gmail.com>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+References: <cover.1696408966.git.mst@redhat.com>
+ <CAJSP0QVfn__LKXVO5puOs4h5AV9FWGNKiJXUnSe-K+ANP+=wCg@mail.gmail.com>
+ <20231004130205-mutt-send-email-mst@kernel.org>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20231004173158.42591-8-philmd@linaro.org>
+In-Reply-To: <20231004130205-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
 X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,77 +101,243 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/10/2023 19.31, Philippe Mathieu-Daudé wrote:
-> Address the comment added in commit 4629ed1e98
-> ("qerror: Finally unused, clean up"), from 2015:
+On 04/10/2023 19.04, Michael S. Tsirkin wrote:
+> On Wed, Oct 04, 2023 at 12:50:18PM -0400, Stefan Hajnoczi wrote:
+>> On Wed, 4 Oct 2023 at 04:43, Michael S. Tsirkin <mst@redhat.com> wrote:
+>>>
+>>> The following changes since commit 494a6a2cf7f775d2c20fd6df9601e30606cc2014:
+>>>
+>>>    Merge tag 'pull-request-2023-09-25' of https://gitlab.com/thuth/qemu into staging (2023-09-25 10:10:30 -0400)
+>>>
+>>> are available in the Git repository at:
+>>>
+>>>    https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
+>>>
+>>> for you to fetch changes up to dc1499091ca09db0ac7a5615a592e55f27d4965d:
+>>>
+>>>    libvhost-user: handle shared_object msg (2023-10-04 04:28:35 -0400)
+>>>
+>>> ----------------------------------------------------------------
+>>> virtio,pci: features, cleanups
+>>>
+>>> vdpa:
+>>>        shadow vq vlan support
+>>>        net migration with cvq
+>>> cxl:
+>>>       dummy ACPI QTG DSM
+>>>       support emulating 4 HDM decoders
+>>>       serial number extended capability
+>>> virtio:
+>>>        hared dma-buf
+>>>
+>>> Fixes, cleanups all over the place.
+>>>
+>>> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>>>
+>>> ----------------------------------------------------------------
+>>> Akihiko Odaki (1):
+>>>        amd_iommu: Fix APIC address check
+>>>
+>>> Albert Esteve (4):
+>>>        util/uuid: add a hash function
+>>>        hw/display: introduce virtio-dmabuf
+>>>        vhost-user: add shared_object msg
+>>>        libvhost-user: handle shared_object msg
+>>>
+>>> Alex Bennée (2):
+>>>        virtio: add vhost-user-base and a generic vhost-user-device
+>>>        hw/virtio: add config support to vhost-user-device
+>>>
+>>> Ani Sinha (1):
+>>>        hw/i386/pc: improve physical address space bound check for 32-bit x86 systems
+>>>
+>>> Bernhard Beschow (8):
+>>>        hw/i386/acpi-build: Use pc_madt_cpu_entry() directly
+>>>        hw/acpi/cpu: Have build_cpus_aml() take a build_madt_cpu_fn callback
+>>>        hw/acpi/acpi_dev_interface: Remove now unused madt_cpu virtual method
+>>>        hw/acpi/acpi_dev_interface: Remove now unused #include "hw/boards.h"
+>>>        hw/i386: Remove now redundant TYPE_ACPI_GED_X86
+>>>        hw/i386/acpi-build: Determine SMI command port just once
+>>>        hw/acpi: Trace GPE access in all device models, not just PIIX4
+>>>        hw/acpi/core: Trace enable and status registers of GPE separately
+>>>
+>>> Dave Jiang (1):
+>>>        hw/cxl: Add QTG _DSM support for ACPI0017 device
+>>>
+>>> David Woodhouse (1):
+>>>        hw/isa/ich9: Add comment on imperfect emulation of PIC vs. I/O APIC routing
+>>>
+>>> Eugenio Pérez (9):
+>>>        vdpa: use first queue SVQ state for CVQ default
+>>>        vdpa: export vhost_vdpa_set_vring_ready
+>>>        vdpa: rename vhost_vdpa_net_load to vhost_vdpa_net_cvq_load
+>>>        vdpa: move vhost_vdpa_set_vring_ready to the caller
+>>>        vdpa: remove net cvq migration blocker
+>>>        vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
+>>>        vdpa net: fix error message setting virtio status
+>>>        vdpa net: stop probing if cannot set features
+>>>        vdpa net: follow VirtIO initialization properly at cvq isolation probing
+>>>
+>>> Hawkins Jiawei (5):
+>>>        virtio-net: do not reset vlan filtering at set_features
+>>>        virtio-net: Expose MAX_VLAN
+>>>        vdpa: Restore vlan filtering state
+>>>        vdpa: Allow VIRTIO_NET_F_CTRL_VLAN in SVQ
+>>>        vhost: Add count argument to vhost_svq_poll()
+>>>
+>>> Ilya Maximets (4):
+>>>        virtio: don't zero out memory region cache for indirect descriptors
+>>>        virtio: use shadow_avail_idx while checking number of heads
+>>>        virtio: remove unnecessary thread fence while reading next descriptor
+>>>        virtio: remove unused next argument from virtqueue_split_read_next_desc()
+>>>
+>>> Jonah Palmer (3):
+>>>        qmp: remove virtio_list, search QOM tree instead
+>>>        qmp: update virtio feature maps, vhost-user-gpio introspection
+>>>        vhost-user: move VhostUserProtocolFeature definition to header file
+>>>
+>>> Jonathan Cameron (7):
+>>>        tests/acpi: Allow update of DSDT.cxl
+>>>        tests/acpi: Update DSDT.cxl with QTG DSM
+>>>        hw/cxl: Push cxl_decoder_count_enc() and cxl_decode_ig() into .c
+>>>        hw/cxl: Add utility functions decoder interleave ways and target count.
+>>>        hw/cxl: Fix and use same calculation for HDM decoder block size everywhere
+>>>        hw/cxl: Support 4 HDM decoders at all levels of topology
+>>>        hw/pci-bridge/cxl-upstream: Add serial number extended capability support
+>>>
+>>> Laszlo Ersek (7):
+>>>        vhost-user: strip superfluous whitespace
+>>>        vhost-user: tighten "reply_supported" scope in "set_vring_addr"
+>>>        vhost-user: factor out "vhost_user_write_sync"
+>>>        vhost-user: flatten "enforce_reply" into "vhost_user_write_sync"
+>>>        vhost-user: hoist "write_sync", "get_features", "get_u64"
+>>>        vhost-user: allow "vhost_set_vring" to wait for a reply
+>>>        vhost-user: call VHOST_USER_SET_VRING_ENABLE synchronously
+>>>
+>>> Michael S. Tsirkin (1):
+>>>        pci: SLT must be RO
+>>>
+>>> Philippe Mathieu-Daudé (6):
+>>>        hw/virtio: Propagate page_mask to vhost_vdpa_listener_skipped_section()
+>>>        hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
+>>>        hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
+>>>        hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
+>>>        hw/virtio: Build vhost-vdpa.o once
+>>>        hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
+>>>
+>>> Stefan Hajnoczi (1):
+>>>        vdpa: fix gcc cvq_isolated uninitialized variable warning
+>>>
+>>> Vladimir Sementsov-Ogievskiy (2):
+>>>        pcie_sriov: unregister_vfs(): fix error path
+>>>        libvhost-user.c: add assertion to vu_message_read_default
+>>>
+>>>   hw/acpi/hmat.h                            |   3 +-
+>>>   hw/i386/acpi-common.h                     |   3 +-
+>>>   hw/i386/amd_iommu.h                       |   2 -
+>>>   hw/virtio/vhost-shadow-virtqueue.h        |   2 +-
+>>>   hw/virtio/virtio-qmp.h                    |   7 -
+>>>   include/exec/memory.h                     |  16 +-
+>>>   include/hw/acpi/acpi_dev_interface.h      |   3 -
+>>>   include/hw/acpi/cpu.h                     |   6 +-
+>>>   include/hw/acpi/cxl.h                     |   1 +
+>>>   include/hw/acpi/generic_event_device.h    |   2 -
+>>>   include/hw/cxl/cxl_component.h            |  30 ++-
+>>>   include/hw/i386/pc.h                      |   6 +
+>>>   include/hw/pci/pci_bridge.h               |   3 +
+>>>   include/hw/virtio/vhost-backend.h         |   3 +
+>>>   include/hw/virtio/vhost-user-device.h     |  46 ++++
+>>>   include/hw/virtio/vhost-user.h            |  22 ++
+>>>   include/hw/virtio/vhost-vdpa.h            |   1 +
+>>>   include/hw/virtio/virtio-dmabuf.h         | 100 ++++++++
+>>>   include/hw/virtio/virtio-net.h            |   6 +
+>>>   include/qemu/uuid.h                       |   2 +
+>>>   subprojects/libvhost-user/libvhost-user.h |  55 +++-
+>>>   hw/acpi/acpi-x86-stub.c                   |   6 -
+>>>   hw/acpi/core.c                            |   9 +
+>>>   hw/acpi/cpu.c                             |   9 +-
+>>>   hw/acpi/cxl.c                             |  57 +++++
+>>>   hw/acpi/hmat.c                            |   1 +
+>>>   hw/acpi/memory_hotplug.c                  |   1 +
+>>>   hw/acpi/piix4.c                           |   5 -
+>>>   hw/core/machine.c                         |   5 +-
+>>>   hw/cxl/cxl-component-utils.c              |  92 ++++++-
+>>>   hw/cxl/cxl-host.c                         |  67 +++--
+>>>   hw/display/virtio-dmabuf.c                | 138 ++++++++++
+>>>   hw/i386/acpi-build.c                      |  14 +-
+>>>   hw/i386/acpi-common.c                     |   5 +-
+>>>   hw/i386/acpi-microvm.c                    |   3 +-
+>>>   hw/i386/amd_iommu.c                       |   9 +-
+>>>   hw/i386/generic_event_device_x86.c        |  36 ---
+>>>   hw/i386/microvm.c                         |   2 +-
+>>>   hw/i386/pc.c                              |  32 ++-
+>>>   hw/i386/pc_piix.c                         |   4 +
+>>>   hw/i386/pc_q35.c                          |   2 +
+>>>   hw/isa/lpc_ich9.c                         |  16 +-
+>>>   hw/mem/cxl_type3.c                        | 106 +++++---
+>>>   hw/net/virtio-net.c                       |   6 +-
+>>>   hw/pci-bridge/cxl_upstream.c              |  15 +-
+>>>   hw/pci/pci.c                              |   2 +-
+>>>   hw/pci/pci_bridge.c                       |  14 ++
+>>>   hw/pci/pcie_sriov.c                       |   9 +-
+>>>   hw/scsi/vhost-user-scsi.c                 |   4 -
+>>>   hw/virtio/vdpa-dev.c                      |   3 +
+>>>   hw/virtio/vhost-shadow-virtqueue.c        |  36 +--
+>>>   hw/virtio/vhost-user-device-pci.c         |  71 ++++++
+>>>   hw/virtio/vhost-user-device.c             | 380 ++++++++++++++++++++++++++++
+>>>   hw/virtio/vhost-user-gpio.c               |   7 +
+>>>   hw/virtio/vhost-user.c                    | 404 +++++++++++++++++++-----------
+>>>   hw/virtio/vhost-vdpa.c                    |  66 ++---
+>>>   hw/virtio/virtio-qmp.c                    | 139 +++++-----
+>>>   hw/virtio/virtio.c                        |  64 +++--
+>>>   net/vhost-vdpa.c                          | 153 +++++++----
+>>>   subprojects/libvhost-user/libvhost-user.c | 121 +++++++++
+>>>   tests/qtest/bios-tables-test.c            |  26 +-
+>>>   tests/qtest/numa-test.c                   |   7 +-
+>>>   tests/unit/test-uuid.c                    |  27 ++
+>>>   tests/unit/test-virtio-dmabuf.c           | 137 ++++++++++
+>>>   util/uuid.c                               |  14 ++
+>>>   MAINTAINERS                               |   7 +
+>>>   docs/interop/vhost-user.rst               |  57 +++++
+>>>   hw/acpi/trace-events                      |  10 +-
+>>>   hw/display/meson.build                    |   1 +
+>>>   hw/i386/meson.build                       |   1 -
+>>>   hw/virtio/meson.build                     |  28 ++-
+>>>   hw/virtio/trace-events                    |   2 +-
+>>>   tests/data/acpi/q35/DSDT.cxl              | Bin 9655 -> 9723 bytes
+>>
+>> Hi Michael,
+>> There is a CI failure, probably related to the DSDT.cxl change in this
+>> pull request:
+>>
+>> QTEST_QEMU_BINARY=./qemu-system-x86_64 QTEST_QEMU_IMG=./qemu-img
+>> QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon
+>> MALLOC_PERTURB_=165
+>> G_TEST_DBUS_DAEMON=/home/gitlab-runner/builds/FLaZkdt1/0/qemu-project/qemu/tests/dbus-vmstate-daemon.sh
+>> /home/gitlab-runner/builds/FLaZkdt1/0/qemu-project/qemu/build/tests/qtest/bios-tables-test
+>> --tap -k
+>> ――――――――――――――――――――――――――――――――――――― ✀ ―――――――――――――――――――――――――――――――――――――
+>> stderr:
+>> acpi-test: Warning! DSDT binary file mismatch. Actual
+>> [aml:/tmp/aml-O8CAC2], Expected [aml:tests/data/acpi/q35/DSDT.cxl].
+>> See source file tests/qtest/bios-tables-test.c for instructions on how
+>> to update expected files.
+>> to see ASL diff between mismatched files install IASL, rebuild QEMU
+>> from scratch and re-run tests with V=1 environment variable set**
+>> ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion
+>> failed: (all_tables_match)
+>> (test program exited with status code -6)
+>>
+>> Please take a look:
+>> https://gitlab.com/qemu-project/qemu/-/jobs/5222693360
+>>
+>> Stefan
 > 
->    /*
->     * These macros will go away, please don't use
->     * in new code, and do not add new ones!
->     */
-> 
-> Mechanical transformation using the following
-> coccinelle semantic patch:
-> 
->      @match@
->      expression errp;
->      constant param;
->      constant value;
->      @@
->           error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
-> 
->      @script:python strformat depends on match@
->      param << match.param;
->      value << match.value;
->      fixedfmt; // new var
->      @@
->      fixedfmt = f'"Invalid parameter type for \'{param[1:-1]}\', expected: {value[1:-1]}"'
->      coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
-> 
->      @replace@
->      expression match.errp;
->      constant match.param;
->      constant match.value;
->      identifier strformat.fixedfmt;
->      @@
->      -    error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
->      +    error_setg(errp, fixedfmt);
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->   target/arm/arm-qmp-cmds.c        | 3 ++-
->   target/s390x/cpu_models_sysemu.c | 3 ++-
->   2 files changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
-> index b53d5efe13..3c99fd8222 100644
-> --- a/target/arm/arm-qmp-cmds.c
-> +++ b/target/arm/arm-qmp-cmds.c
-> @@ -154,7 +154,8 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
->       if (model->props) {
->           qdict_in = qobject_to(QDict, model->props);
->           if (!qdict_in) {
-> -            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict");
-> +            error_setg(errp,
-> +                       "Invalid parameter type for 'props', expected: dict");
->               return NULL;
->           }
->       }
-> diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
-> index 63981bf36b..4507714493 100644
-> --- a/target/s390x/cpu_models_sysemu.c
-> +++ b/target/s390x/cpu_models_sysemu.c
-> @@ -111,7 +111,8 @@ static void cpu_model_from_info(S390CPUModel *model, const CpuModelInfo *info,
->       if (info->props) {
->           qdict = qobject_to(QDict, info->props);
->           if (!qdict) {
-> -            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict");
-> +            error_setg(errp,
-> +                       "Invalid parameter type for 'props', expected: dict");
->               return;
->           }
->       }
+> OK but .. CI seemed to pass for me. Interesting.
+> Could you send the link to the pipeline please?
 
-Acked-by: Thomas Huth <thuth@redhat.com>
+It's on a big endian s390x host ... so it's likely an endianness issue?
+
+  Thomas
 
 
