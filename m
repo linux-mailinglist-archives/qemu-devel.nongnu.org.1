@@ -2,93 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC687B7F53
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F097B7F65
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:41:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo17z-0001gm-L5; Wed, 04 Oct 2023 08:37:23 -0400
+	id 1qo1B5-0006VX-7n; Wed, 04 Oct 2023 08:40:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo17y-0001fk-89
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:37:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1qo1B3-0006Uo-9l
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:40:33 -0400
+Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo17v-00011t-N0
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:37:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696423039;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=QAi0IIFmd1uLGA69a3sYX8NgxiuutGABC52gw0w1l+k=;
- b=X4bZLOb0K8SGJSrpkSGC6ieN5/wamWVPucrvS3JyzdSEKVHKC4r1TbYz47ljBzaWr7AC5y
- TzDlYWLYMTlJKao+6Hp0ae+Qako7wsNUaop12K4Sk2bro4iJgtKsHdhOifHIcHvDCmeVfu
- pGIp8hlLQu/vjRt358NMQ8TCHdhMvd0=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-364-83mB7VynOsS7eYN0wSMVng-1; Wed, 04 Oct 2023 08:37:17 -0400
-X-MC-Unique: 83mB7VynOsS7eYN0wSMVng-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-4180b3a5119so21790401cf.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:37:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696423037; x=1697027837;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QAi0IIFmd1uLGA69a3sYX8NgxiuutGABC52gw0w1l+k=;
- b=CVXrjHasR4DVjBam6Trk617DeKGEB/OyeTM0Cx/2HpL0pplJT3tWQv0qxfMi6OEGmN
- jehLjciy63gBQJ7SdH/NK70CN0qId06X1MEc3ivOhDj0eTnOFkEmQmg1Ac7posxWITfs
- q0JDU2xQZ2bC3SzGFb3/6eHoadLpz9vebsh+T+lVN/I/4bFf4ckvqaDk99AjUAp+g1vz
- Bu9QnBmmNnz8pgkmxkFp7z0rWtKd5u6LN4cK+wBuYsrDuC1hrf5GstJSZSxHKbpiPE2w
- kssAwNQAzg+U4AL94uABSUO23Bc55A/8lxcXUgSTlcLZNW6lyzMi8ZXwMxmT1LSTCw0X
- Q3Kw==
-X-Gm-Message-State: AOJu0YyeybQTEcC7PN67QdsySonu2sFzavDlFSudpvQzp7dloSlJQe8y
- yTGWIAK3M4+zCeYeGJHGKRdN0gSFfzuZtkkWPMo2QdunJuovgP5xCACNkLAE2CvgS3En5CZ1u//
- jzLYhBQQko8ZrDU819/TVK+c=
-X-Received: by 2002:a05:622a:30c:b0:417:f9e1:664f with SMTP id
- q12-20020a05622a030c00b00417f9e1664fmr2064826qtw.36.1696423037202; 
- Wed, 04 Oct 2023 05:37:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHEIEGPh3VjHBS2G5OxAuSF9eExLVpg8FiVDNgJE9L4xs9bmKUgF0JBLq/AWSHfMT+tUsI1ig==
-X-Received: by 2002:a05:622a:30c:b0:417:f9e1:664f with SMTP id
- q12-20020a05622a030c00b00417f9e1664fmr2064814qtw.36.1696423036930; 
- Wed, 04 Oct 2023 05:37:16 -0700 (PDT)
-Received: from [10.200.209.159] (nat-pool-str-u.redhat.com. [149.14.88.107])
- by smtp.gmail.com with ESMTPSA id
- b6-20020ac87546000000b00419792c1be7sm1179462qtr.30.2023.10.04.05.37.15
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 05:37:16 -0700 (PDT)
-Message-ID: <85be2979-c0ca-3eb4-dae9-bbabf256c201@redhat.com>
-Date: Wed, 4 Oct 2023 14:37:14 +0200
+ (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1qo1Al-0002eU-FW
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:40:33 -0400
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 39484xZQ028794; Wed, 4 Oct 2023 12:40:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
+ h=from : to : cc :
+ subject : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=qcppdkim1;
+ bh=g49TtmhlUmNxJsQTnb2Qok+1zkUEOTtGcIm7ALbhDi4=;
+ b=FyQhoA4ffUiu7ywKpk6oRPWTSxNtcf/Q6Y2YTGsi+O+hJ7pN5WagO+KD8ay049tLwxT3
+ JZMGFzn1ec40i2kSb4q2EOMrHpsEXpHgRm7734jpSnkHgciZPEHu9yYOwLEOw67EUMRc
+ 2br5zdPPxN7nhC8R3z3w9d3UbdhZnkxVFVhUaeKL3+NP30y+5+t7r0+onH8YmTrMIBnl
+ fA6czLlik1UwF3JxHDh/9Mc1oazRJJKEPi2WQ9csGDSRdU3eXse/ARdiqNtvZpT+aqx7
+ f1+unnAp2m91OgPQkbuLlpXg4IafAsPJ8+rtOQr06CmyH+I+/nbXWDN7fwtRjuSPpcum DA== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tgynh951m-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Oct 2023 12:40:05 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
+ [10.47.209.196])
+ by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 394Ce4eA002104
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 4 Oct 2023 12:40:04 GMT
+Received: from hu-bcain-lv.qualcomm.com (10.49.16.6) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.36; Wed, 4 Oct 2023 05:40:04 -0700
+From: Brian Cain <bcain@quicinc.com>
+To: <qemu-devel@nongnu.org>
+CC: <bcain@quicinc.com>, <armbru@redhat.com>, <richard.henderson@linaro.org>, 
+ <philmd@linaro.org>, <peter.maydell@linaro.org>,
+ <quic_mathbern@quicinc.com>, <stefanha@redhat.com>, <ale@rev.ng>,
+ <anjo@rev.ng>, <quic_mliebel@quicinc.com>, <ltaylorsimpson@gmail.com>
+Subject: [PATCH 0/2] Fix usage of GETPC(), variable shadowing
+Date: Wed, 4 Oct 2023 05:39:55 -0700
+Message-ID: <20231004123957.1732915-1-bcain@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 00/13] misc: Rename 'softmmu' -> 'system'
-Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231004090629.37473-1-philmd@linaro.org>
- <ZR1bjpEi5HdFp2xj@redhat.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <ZR1bjpEi5HdFp2xj@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-GUID: to-d5EykJ9N8tN25a9echEzUKZTWM2m2
+X-Proofpoint-ORIG-GUID: to-d5EykJ9N8tN25a9echEzUKZTWM2m2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-04_04,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 mlxscore=0
+ mlxlogscore=335 clxscore=1011 adultscore=0 lowpriorityscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310040092
+Received-SPF: pass client-ip=205.220.168.131; envelope-from=bcain@quicinc.com;
+ helo=mx0a-0031df01.pphosted.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,37 +96,16 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/10/2023 14.33, Daniel P. Berrangé wrote:
-> On Wed, Oct 04, 2023 at 11:06:15AM +0200, Philippe Mathieu-Daudé wrote:
->> This series finishes the cleanup which remove the confusion
->> of using 'softmmu' when we really mean 'system emulation',
->> as opposition to 'user emulation'.
-> 
-> Am I mis-understanding what you mean by 'finishes' here, as
-> I see many references to softmmu remaining
-> 
->    $ git grep softmmu | wc -l
->    270
-> 
-> In particular under configs/
-> 
-> I was also hoping it meant that we'd be changing configure
-> to allow
-> 
->      configure --target-list=x86_64-system
-> 
-> though the lazy side of me would like
-> 
->      configure --target-list=x86_64-vm
-> 
-> for less typing
-
-Maybe we should also bikeshed about the naming first... "system" is a quite 
-overloaded word in this context already, and "vm" sounds rather like 
-hardware-accelerated stuff ... what about using something like "sysemu"? Or 
-"fullsys" for "full system emulation" (in contrast to "user space"-only 
-emulation)?
-
-  Thomas
-
+TWF0aGV1cycgcGF0Y2ggaGFzIHByZXZpb3VzbHkgYmVlbiByZXZpZXdlZCwgYnV0IEkgYmFzZWQg
+bXkgLVdzaGFkb3cKcGF0Y2ggb24gaGlzLiAgU28gSSdtIHN1Ym1pdHRpbmcgdGhlIHNlcmllcyBm
+b3IgcmV2aWV3LgoKQnJpYW4gQ2FpbiAoMSk6CiAgdGFyZ2V0L2hleGFnb246IGZpeCBzb21lIG9j
+Y3VycmVuY2VzIG9mIC1Xc2hhZG93PWxvY2FsCgpNYXRoZXVzIFRhdmFyZXMgQmVybmFyZGlubyAo
+MSk6CiAgdGFyZ2V0L2hleGFnb246IG1vdmUgR0VUUEMoKSBjYWxscyB0byB0b3AgbGV2ZWwgaGVs
+cGVycwoKIHRhcmdldC9oZXhhZ29uL2ltcG9ydGVkL2FsdS5pZGVmIHwgIDYgKy0tCiB0YXJnZXQv
+aGV4YWdvbi9tYWNyb3MuaCAgICAgICAgICB8IDE5ICsrKystLS0tCiB0YXJnZXQvaGV4YWdvbi9t
+bXZlYy9tYWNyb3MuaCAgICB8ICAyICstCiB0YXJnZXQvaGV4YWdvbi9vcF9oZWxwZXIuYyAgICAg
+ICB8IDg0ICsrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0tCiB0YXJnZXQvaGV4YWdvbi9v
+cF9oZWxwZXIuaCAgICAgICB8ICA5IC0tLS0KIHRhcmdldC9oZXhhZ29uL3RyYW5zbGF0ZS5jICAg
+ICAgIHwgMTAgKystLQogNiBmaWxlcyBjaGFuZ2VkLCA1MCBpbnNlcnRpb25zKCspLCA4MCBkZWxl
+dGlvbnMoLSkKCi0tIAoyLjI1LjEKCg==
 
