@@ -2,67 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321B57B84B8
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9FBC7B84BA
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:17:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo4Vi-0005gi-Ca; Wed, 04 Oct 2023 12:14:06 -0400
+	id 1qo4Y6-0007HL-9g; Wed, 04 Oct 2023 12:16:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qo4VY-0005dp-Hu; Wed, 04 Oct 2023 12:13:56 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo4Y1-0007Gz-RE
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:16:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qo4VT-0001ad-He; Wed, 04 Oct 2023 12:13:54 -0400
-Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:b9a4:0:640:eb37:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 1013D635CE;
- Wed,  4 Oct 2023 19:13:46 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:2::1:1c] (unknown [2a02:6b8:b081:2::1:1c])
- by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (smtpcorp/Yandex) with ESMTPSA id iDaOPt2OrmI0-WfxCdJiu; 
- Wed, 04 Oct 2023 19:13:45 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696436025;
- bh=VW4ZHHiriMqO9ycMOqBhVBRfU0w9RDBjhfDZ7O7HtcA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=YNhW2SOq0CaDlOdk8B1ikEJQkyyIR+NJW6bmkFBN/H9na5iS2R+va+dZkakKvNXrs
- Li0mD0PEs1mtxbWA1IXfiMt0vwCi4SmL1vxsjv4TwTAGHBcn5VeLkDTB1VNEq/G/vU
- ibLLbN9p+cG1pFY7xyz8stdTRgRmAu6R7CC8rwSA=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <2bd867e1-1556-63f4-0ed8-6474278bad33@yandex-team.ru>
-Date: Wed, 4 Oct 2023 19:13:44 +0300
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo4Xz-0002ql-2K
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:16:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696436186;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=XRel4v96xs2j5ayXmJxWAXFjXER1IgxJR9hXycgULlU=;
+ b=NCtFGRPpIXRwIyVMtvIzjZ5wGNhWvDHQMBb/IJNH9c2D3STm7NIWgdUIfxktTvPA0Xto+8
+ s3htrNgTxXRoad1+reSCe4aMGEIXsdEwGJ2JTI3j81l+1wpyZ8jbT93bFhheCIurXJG2e3
+ JBV3x7ZEo6FaIOLC+iQWki6kM/adn3k=
+Received: from mail-oa1-f72.google.com (mail-oa1-f72.google.com
+ [209.85.160.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-XS2UbIGANFOeG3TKHEK9vA-1; Wed, 04 Oct 2023 12:16:24 -0400
+X-MC-Unique: XS2UbIGANFOeG3TKHEK9vA-1
+Received: by mail-oa1-f72.google.com with SMTP id
+ 586e51a60fabf-1d664a00910so242583fac.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 09:16:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696436183; x=1697040983;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=XRel4v96xs2j5ayXmJxWAXFjXER1IgxJR9hXycgULlU=;
+ b=afYtcMfRa0wj/ziTzKajo6UT87Mw2aXx+yNl7HqhlaYKjHve6QrVarQzVyw+ZO0gQm
+ ZC3kwE6wLVynqXNNkGy5DwyJNJigsSkHkJUBEQiPFaDZTkNYULEKh8yxT02OqxQWOua/
+ vVGzn+XTASuvlJZRbMmebQrQisbTeFvwe89h9O1A96SVRVSMcfoZnluWjZe11htn6heh
+ IdQZSpjQllGhrQeuApZJy+dxWycWx/nD4/L24bBZyPBqueEjtVFyCfT8rCprLgFYI9YA
+ 5nRk6ChT//1oVk7UH2pwYrluU37Qvp8CAqBev3Oo7UttGoqwypomK1EKWH7N+TaQaun7
+ 0g7Q==
+X-Gm-Message-State: AOJu0YywTs9bWJ+0QUHSfz4kSff/9Xo4h+ukd/aFH0YHSnbNIrxd6jgI
+ rpBtxcvEAxIAKg8DfThhAsBw8EB34EA5nM93hC35UI3Im3cJ4mgGWVRcwpwqz3G9iBZmkLyfzgd
+ DCXLtZ9f3/lQywzI=
+X-Received: by 2002:a05:6870:509:b0:1bf:9fa2:bfa3 with SMTP id
+ j9-20020a056870050900b001bf9fa2bfa3mr2830775oao.1.1696436183345; 
+ Wed, 04 Oct 2023 09:16:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEMEUJyLuFghhU4KLyEJB0fdsiuIjpaP0Cmk5l52liMF6iPn4LKpUfdfEIFzubIpjZm6oGqaw==
+X-Received: by 2002:a05:6870:509:b0:1bf:9fa2:bfa3 with SMTP id
+ j9-20020a056870050900b001bf9fa2bfa3mr2830749oao.1.1696436183028; 
+ Wed, 04 Oct 2023 09:16:23 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ q19-20020a0cf5d3000000b0065afe8f149asm1430393qvm.69.2023.10.04.09.16.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 09:16:22 -0700 (PDT)
+Date: Wed, 4 Oct 2023 12:16:21 -0400
+From: Peter Xu <peterx@redhat.com>
+To: marcandre.lureau@redhat.com
+Cc: qemu-devel@nongnu.org, Samuel Thibault <samuel.thibault@ens-lyon.org>,
+ qemu-block@nongnu.org, Jason Wang <jasowang@redhat.com>,
+ Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
+ John Snow <jsnow@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+Subject: Re: [PATCH 4/5] RFC: migration: check required subsections are
+ loaded, once
+Message-ID: <ZR2P1RbxCfBdYBaQ@x1n>
+References: <20230926155925.1396309-1-marcandre.lureau@redhat.com>
+ <20230926155925.1396309-5-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [RFC] migration/block-dirty-bitmap: make loading bitmap for
- device with iothread future-proof
-Content-Language: en-US
-To: Fiona Ebner <f.ebner@proxmox.com>, qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, fam@euphon.net, eblake@redhat.com, jsnow@redhat.com, 
- quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- qemu-block@nongnu.org, Kevin Wolf <kwolf@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Emanuele Giuseppe Esposito <eesposit@redhat.com>
-References: <20230728133928.256898-1-f.ebner@proxmox.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <20230728133928.256898-1-f.ebner@proxmox.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230926155925.1396309-5-marcandre.lureau@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,78 +102,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-add Kevin, Paolo, Emanuele, pls take a look
+On Tue, Sep 26, 2023 at 07:59:24PM +0400, marcandre.lureau@redhat.com wrote:
+> @@ -484,6 +513,13 @@ static int vmstate_subsection_load(QEMUFile *f, const VMStateDescription *vmsd,
+>          }
+>      }
+>  
+> +    for (i = 0; i < n; i++) {
+> +        if (!visited[i] && vmstate_save_needed(vmsd->subsections[i], opaque)) {
+> +            trace_vmstate_subsection_load_bad(vmsd->name, vmsd->subsections[i]->name, "(not visited)");
+> +            return -ENOENT;
+> +        }
+> +    }
 
-On 28.07.23 16:39, Fiona Ebner wrote:
-> The bdrv_create_dirty_bitmap() function (which is also called by
-> bdrv_dirty_bitmap_create_successor()) uses bdrv_getlength(bs). This is
-> a wrapper around a coroutine, and when not called in coroutine context
-> would use bdrv_poll_co(). Such a call would trigger an assert() if the
-> correct AioContext hasn't been acquired before, because polling would
-> try to release the AioContext.
-> 
-> The issue does not happen for migration, because the call happens
-> from process_incoming_migration_co(), i.e. in coroutine context. So
-> the bdrv_getlength() wrapper will just call bdrv_co_getlength()
-> directly without polling.
-> 
-> The issue would happen for snapshots, but won't in practice, because
-> saving a snapshot with a block dirty bitmap is currently not possible.
-> The reason is that dirty_bitmap_save_iterate() returns whether it has
-> completed the bulk phase, which only happens in postcopy, so
-> qemu_savevm_state_iterate() will always return 0, meaning the call
-> to iterate will be repeated over and over again without ever reaching
-> the completion phase.
-> 
-> Still, this would make the code more robust for the future.
-> 
-> Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
-> ---
-> 
-> We ran into this issue downstream, because we have a custom snapshot
-> mechanism which does support dirty bitmaps and does not run in
-> coroutine context during load.
-> 
->   migration/block-dirty-bitmap.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/migration/block-dirty-bitmap.c b/migration/block-dirty-bitmap.c
-> index 032fc5f405..e1ae3b7316 100644
-> --- a/migration/block-dirty-bitmap.c
-> +++ b/migration/block-dirty-bitmap.c
-> @@ -805,8 +805,11 @@ static int dirty_bitmap_load_start(QEMUFile *f, DBMLoadState *s)
->                        "destination", bdrv_dirty_bitmap_name(s->bitmap));
->           return -EINVAL;
->       } else {
-> +        AioContext *ctx = bdrv_get_aio_context(s->bs);
-> +        aio_context_acquire(ctx);
->           s->bitmap = bdrv_create_dirty_bitmap(s->bs, granularity,
->                                                s->bitmap_name, &local_err);
-> +        aio_context_release(ctx);
->           if (!s->bitmap) {
->               error_report_err(local_err);
->               return -EINVAL;
-> @@ -833,7 +836,10 @@ static int dirty_bitmap_load_start(QEMUFile *f, DBMLoadState *s)
->   
->       bdrv_disable_dirty_bitmap(s->bitmap);
->       if (flags & DIRTY_BITMAP_MIG_START_FLAG_ENABLED) {
-> +        AioContext *ctx = bdrv_get_aio_context(s->bs);
-> +        aio_context_acquire(ctx);
->           bdrv_dirty_bitmap_create_successor(s->bitmap, &local_err);
-> +        aio_context_release(ctx);
+One thing that might be tricky to call needed() on loading side is, IMHO
+the needed() hooks normally was designed to be only called on a complete VM
+state. IOW, I think it can reference any machine/device state, or whatever
+variable assuming all of them contain valid data.
 
-Would not this deadlock in current code? When we have the only one aio context and therefore we are already in it?
+But the load side may not yet contain everything..  we can guarantee here
+we loaded the full device state of this one as subsections should be the
+last to come, and all we've loaded so far.  But what if it references
+something else outside what we've loaded?  It looks possible in some
+special .needed() hook we can return something unexpected.
 
-If as Juan said, we rework incoming migration coroutine to be a separate thread, this patch becomes more correct, I think..
+I assume most needed() hooks are fine (and it does look like we can find
+bugs with this, which means this might be proved useful already at least in
+some form or another). I just worry on something start to break after we
+become strict on this.
 
-If keep coroutine, I think, we should check are we already in that aio context, and if so we should not acquire it.
+Maybe.. make the check only throw warnings, but not yet fail the migration?
 
->           if (local_err) {
->               error_report_err(local_err);
->               return -EINVAL;
+> +
+>      trace_vmstate_subsection_load_good(vmsd->name);
+>      return 0;
+>  }
+> -- 
+> 2.41.0
+> 
 
 -- 
-Best regards,
-Vladimir
+Peter Xu
 
 
