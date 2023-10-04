@@ -2,81 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4827B77CE
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 08:28:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3847B77D2
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 08:29:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnvMS-0002qZ-90; Wed, 04 Oct 2023 02:27:56 -0400
+	id 1qnvNK-0003TV-Ul; Wed, 04 Oct 2023 02:28:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnvMQ-0002qP-0A
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 02:27:54 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnvMN-00073z-Na
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 02:27:53 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-3248ac76acbso1627678f8f.1
- for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 23:27:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696400870; x=1697005670; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=RuCjSWIgDYu7V95+A3V2sYkrRBP+eMZWKe+jQ8WoI7g=;
- b=shhqAxXu30rqsMY5vDDCyYaXrJvYr8yFOzBkBLyehZdLs0CrD6gFFj3RLPeAp2nCY9
- 54+/tBpusuLg9z50KjxsnkzG8MQWXUx8re7thX/xjrHxp1fX/mhKbyXokkkv/EqFaAhu
- bBujp57KbUpPoz0UpSO97O+diUz1H+AP1J6lVKxawFewtvyLnHy+Dk1WP3xiiAVy4RXh
- ky+6mX1tTC4D+xA3+z1oOokfLhkJpa0V+zyATmMActEWpcfSOnBbiBBX320bQIdy8Z0L
- Mxf2tbWWZ8QqdKW4PG2HAEBp1hzpY117qkUEH/KVmJwJp512UTAzzOcv/0jtnxwNqpcT
- JRjw==
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qnvNJ-0003TJ-8y
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 02:28:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qnvNH-0008EK-PK
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 02:28:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696400926;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=W6FQtXcCoMJ2WCg4Wqron6IvRupcnWPQvBpmwS4+H60=;
+ b=J5DVyBYqgJyPJRYf+PcRWQbDHuFRP5lVBfjCbVBZ9/y3Q5fkebpZHyoPQzjFjRtUbsOWtO
+ j9dPNX2/OfsFlPY+JUOGYQJimMxwzDxKawjyLen4t8aahH25i20rfU3zBoUOMGz3vVQegN
+ /tltGjezqvCS0f64B8BT0hXSCqf3aSE=
+Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
+ [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-550-B2MN2F4ZPRGKZ07GRgqEjw-1; Wed, 04 Oct 2023 02:28:31 -0400
+X-MC-Unique: B2MN2F4ZPRGKZ07GRgqEjw-1
+Received: by mail-ua1-f71.google.com with SMTP id
+ a1e0cc1a2514c-7a880a5b9a5so759495241.3
+ for <qemu-devel@nongnu.org>; Tue, 03 Oct 2023 23:28:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696400870; x=1697005670;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=RuCjSWIgDYu7V95+A3V2sYkrRBP+eMZWKe+jQ8WoI7g=;
- b=LrIvFLsPmdgEyMkmFefZkN+bBiemWSbo0mlE4cSh/ZxEqJh7xn1ZsinCNv3fcok5vI
- UULjK5NDKv5EekrwPIzyDdYasa3dtCnTKzlnp5plFuHI3paucvGq2zGlGH5fCDwdgnaR
- 1Jler2miqy8/LDkNIEATfXUEFcjJSiVtSvp4G5nETKkIw51G+ND6mzIx94PJA39aA+Dy
- 6Rcuerpdrk8XrZH7Epw/TBPo5mV8vKzEy5Wfx4rCSLe1d1uAVIvNGtXm43XjTCPAnNb+
- xYK5WKIV2tT8okizl8FBzxvVzPfpuNOKwMBmiXgnM9qc7Tui9329JP4FyD6K3ETdE1Y1
- hO7Q==
-X-Gm-Message-State: AOJu0YzPmJQX8irgDB4Q825u+8WSogwhnXI20ZC4Z3WEsDuZTSGt3q/M
- eTQyWan4g4QXAXl4iXEOQHn798i+1zMsHw8KCoQ=
-X-Google-Smtp-Source: AGHT+IH4VnbxQgS+np+oSfLxU7SNhHDO+dxOTbCiZvW9ChNBO25g3g9XN/MVKdy37u0hVpbaxW0tXw==
-X-Received: by 2002:a5d:61ca:0:b0:319:735c:73e1 with SMTP id
- q10-20020a5d61ca000000b00319735c73e1mr1281789wrv.4.1696400870196; 
- Tue, 03 Oct 2023 23:27:50 -0700 (PDT)
-Received: from [192.168.69.115] (5ep85-h01-176-173-163-52.dslam.bbox.fr.
- [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- q13-20020adff78d000000b00327db11731csm3190861wrp.22.2023.10.03.23.27.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 03 Oct 2023 23:27:49 -0700 (PDT)
-Message-ID: <15ee3a25-af72-72a9-a773-c1ba7a6d613c@linaro.org>
-Date: Wed, 4 Oct 2023 08:27:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 01/10] tcg: Introduce tcg_use_softmmu
-Content-Language: en-US
-To: Richard Henderson <richard.henderson@linaro.org>, qemu-devel@nongnu.org
-References: <20231003174356.1602279-1-richard.henderson@linaro.org>
- <20231003174356.1602279-2-richard.henderson@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231003174356.1602279-2-richard.henderson@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ d=1e100.net; s=20230601; t=1696400910; x=1697005710;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=W6FQtXcCoMJ2WCg4Wqron6IvRupcnWPQvBpmwS4+H60=;
+ b=af8cRHDIhqfGB8tB2BcVFrv4Ri8kxM17KuUhxS7I8zASzuQX++MXZhof7Pai6bezEM
+ xhGy/OOcpaOcJOmiEcFVKW8b2EMMHhR3KzRM35CRVAtJ6ko4UpSqymU+JopY0oeACjrr
+ g1DG41SaL6M1f3OeIKa1ETZEqN+p6FyoQKdloOKZccY2XvH8O5AqhxtFL7tsJ/P8dedV
+ oIiLVX2eZBFO6RUxSemC4hEMUO3CP+uAPEwwfM9614G7Fv1p/PzSQMnSsz8Ewxj2g/cq
+ Cy57NtJ8oNyJfQjWOa7KHWhwE18cmRpFTq4MP8lsdNzq48aF1FI7z9a8SW077Mq67tr9
+ OIFg==
+X-Gm-Message-State: AOJu0YzRTbh49WkVmRKAds7N1uzeL+wE+Mb61ZldVOxqTJDpwvu6s1no
+ zrN0BVAICTJ0WP67f2ZpTkflmRgfbvNol1oLJs79CwqRl1SX+1jXN0Wpip0b+KSiRKlS7qy4RdW
+ JXLeXL7HpqVGGEU0=
+X-Received: by 2002:a05:6102:8c:b0:44d:453c:a838 with SMTP id
+ t12-20020a056102008c00b0044d453ca838mr1106650vsp.5.1696400910721; 
+ Tue, 03 Oct 2023 23:28:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVpqWrZnPSB/LH+LTLGxj8QlYauOmrVJbnm3ywTY76aB1p9Ume533Z+GcGKZ49iEPsgxyvdw==
+X-Received: by 2002:a05:6102:8c:b0:44d:453c:a838 with SMTP id
+ t12-20020a056102008c00b0044d453ca838mr1106634vsp.5.1696400909502; 
+ Tue, 03 Oct 2023 23:28:29 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.137.52])
+ by smtp.gmail.com with ESMTPSA id
+ a24-20020a637058000000b00581048ffc13sm2540118pgn.81.2023.10.03.23.28.26
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Tue, 03 Oct 2023 23:28:29 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: [PATCH v3] hw/i386/acpi-build: Remove build-time assertion on
+ PIIX/ICH9 reset registers being identical
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20231003211658.14327-1-shentey@gmail.com>
+Date: Wed, 4 Oct 2023 11:58:23 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <E9E8328F-80A3-4C46-BAB3-81DE7A6C8D17@redhat.com>
+References: <20231003211658.14327-1-shentey@gmail.com>
+To: Bernhard Beschow <shentey@gmail.com>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=anisinha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,18 +105,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 3/10/23 19:43, Richard Henderson wrote:
-> Begin disconnecting CONFIG_SOFTMMU from !CONFIG_USER_ONLY.
-> Introduce a variable which can be set at startup to select
-> one method or another for user-only.
-> 
-> Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-> ---
->   include/tcg/tcg.h |  8 ++++++--
->   tcg/tcg-op-ldst.c | 14 +++++++-------
->   tcg/tcg.c         |  9 ++++++---
->   3 files changed, 19 insertions(+), 12 deletions(-)
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+> On 04-Oct-2023, at 2:46 AM, Bernhard Beschow <shentey@gmail.com> =
+wrote:
+>=20
+> Commit 6103451aeb74 ("hw/i386: Build-time assertion on pc/q35 reset =
+register
+> being identical.") introduced a build-time check where the addresses =
+of the
+> reset registers are expected to be equal. Back then the code to =
+generate AML for
+> the reset register in the FADT was common. However, since commit =
+937d1b58714b
+> ("pc: acpi: isolate FADT specific data into AcpiFadtData structure") =
+the AML
+> gets generated for ICH9 only.
+
+This isn=E2=80=99t quite true. See 3a3fcc75f92ab0d71ba (" pc: acpi: =
+force FADT rev1 for 440fx based machine types=E2=80=9D) where the fadt =
+table size for i440fx is no longer *fadt but offsetof(typeof(*fadt), =
+reset_register). The above commit simply makes sure we do not populate =
+reset_register etc for i440fx since its not used anyway.
+
+
+> There is no need any loger for the assertion, so
+Typo                  ^^^^^
+           =20
+> remove it.
+>=20
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+
+Other than the above, I agree with the change. So ..
+
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+> ---
+> hw/i386/acpi-build.c | 5 -----
+> 1 file changed, 5 deletions(-)
+>=20
+> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+> index 95199c8900..6fff1901f5 100644
+> --- a/hw/i386/acpi-build.c
+> +++ b/hw/i386/acpi-build.c
+> @@ -56,7 +56,6 @@
+>=20
+> /* Supported chipsets: */
+> #include "hw/southbridge/ich9.h"
+> -#include "hw/southbridge/piix.h"
+> #include "hw/acpi/pcihp.h"
+> #include "hw/i386/fw_cfg.h"
+> #include "hw/i386/pc.h"
+> @@ -242,10 +241,6 @@ static void acpi_get_pm_info(MachineState =
+*machine, AcpiPmInfo *pm)
+>     pm->pcihp_io_len =3D
+>         object_property_get_uint(obj, ACPI_PCIHP_IO_LEN_PROP, NULL);
+>=20
+> -    /* The above need not be conditional on machine type because the =
+reset port
+> -     * happens to be the same on PIIX (pc) and ICH9 (q35). */
+> -    QEMU_BUILD_BUG_ON(ICH9_RST_CNT_IOPORT !=3D PIIX_RCR_IOPORT);
+> -
+>     /* Fill in optional s3/s4 related properties */
+>     o =3D object_property_get_qobject(obj, ACPI_PM_PROP_S3_DISABLED, =
+NULL);
+>     if (o) {
+> --=20
+> 2.42.0
+>=20
 
 
