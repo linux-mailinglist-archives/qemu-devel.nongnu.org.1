@@ -2,101 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AFD7B7C8C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:46:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B54C7B7C93
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:50:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnyRp-00087L-Nd; Wed, 04 Oct 2023 05:45:43 -0400
+	id 1qnyVP-0003Un-Uw; Wed, 04 Oct 2023 05:49:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qnyRj-00081m-1B
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:45:35 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qnyVO-0003UZ-Ha
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:49:22 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qnyRe-0007dt-34
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:45:34 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qnyVN-0000CA-5x
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:49:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696412716;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1696412960;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=1P9Rw6j8myufL84z9TViQ0y87k6NBofEvaPnlhzyteo=;
- b=dQrAb9wgfG/heiCt2Gc47WYnNKo10NQMVilHfdYk4ghSb1VgSkKsmDBylTmzBkTjJpNcor
- xIYmYotH/HPCtQwBbX0+tEOkGXpCf9hCj17/EzWIKJtB5QhWshwj+lkYyXGZBJ5KGlWRkj
- DaijFNPkVVinprT/J1mEonQioHmsxYo=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Pm/DtyYHeZRb1EslrlRBvgIX5Yx2sC1Cfhq7VKNRRy8=;
+ b=JHhJrMDlqR48Qci5G9pRCPMkUTyrMWtnA8xH59mvQ4I9Kxjm4uc/cWAvKyJPt0NiyLzmsY
+ iFKqoDyVeGB5afrux44oBVsx4ATwFxhUkSbl2y7vd/mOx0mvN0bUilVYPNXsURLdEQdqrm
+ 8m+O/WQyAOC6z9VKRm0b5Zc3XTmAErE=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-345-0BSZvFlyNtKDfYI1eAESVg-1; Wed, 04 Oct 2023 05:45:05 -0400
-X-MC-Unique: 0BSZvFlyNtKDfYI1eAESVg-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41957273209so21280031cf.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:45:05 -0700 (PDT)
+ us-mta-377-xcvxIt1gO4aTnhvfE_Ssag-1; Wed, 04 Oct 2023 05:49:09 -0400
+X-MC-Unique: xcvxIt1gO4aTnhvfE_Ssag-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7757523b84aso231981685a.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:49:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696412704; x=1697017504;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1P9Rw6j8myufL84z9TViQ0y87k6NBofEvaPnlhzyteo=;
- b=IUk9OCqUDdgvWX6BMpkhVsuPTazqL49rUKFrjL/AwTwmyF9yHKGsEq32dl51ttR9Pn
- I4ZhyRDh23bsdaImGk0/W2Q9iKr7Rhq59eFWaduIfjex9LLAKt+xCR+J9+VA1CYEIKrb
- JO46dGkR5DaZelcCEHHpXuj2df1lBDdr9olNbctGLVplhDSBMsgp3eDcoBZdWd7qFtCx
- fnnfr/Fmedv3+OGVAY1oM/yw4kYONiDmYp4CVZiFxiTxlnpcG9h66GAmnfGcTCaUTQNG
- YUgkkZNCNjYKaryTOSgUn1gZu7nkbJoh1TSkgXmGlGD+AHQ2lVJSwS/DmnUjNx7ItkTr
- yjFw==
-X-Gm-Message-State: AOJu0YxKPRVbsiY43pr0hiB7rL5waRIyVhT0dw9eYUHnOIq4oT8mA7Am
- O7UnRgBBdjLEhDjxCbo/W07AGw6z+SW7HYr0Apkrbqvps/kQNZQWKLTJyTxPZ5jij1h4DdhnePz
- VcXW5VMqaPv1VSn4=
-X-Received: by 2002:a05:622a:13ca:b0:418:152d:bf6 with SMTP id
- p10-20020a05622a13ca00b00418152d0bf6mr2033866qtk.26.1696412704635; 
- Wed, 04 Oct 2023 02:45:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFcC+CH9/LXu77Qo+l2zaeeHrhjdJk89atQtyPyex/HhVLuAhICOlLnb25YfR0SJiqSt8jk8Q==
-X-Received: by 2002:a05:622a:13ca:b0:418:152d:bf6 with SMTP id
- p10-20020a05622a13ca00b00418152d0bf6mr2033850qtk.26.1696412704347; 
- Wed, 04 Oct 2023 02:45:04 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ d=1e100.net; s=20230601; t=1696412948; x=1697017748;
+ h=content-transfer-encoding:in-reply-to:content-language:references
+ :cc:to:from:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Pm/DtyYHeZRb1EslrlRBvgIX5Yx2sC1Cfhq7VKNRRy8=;
+ b=vKYr2FUFCH1SZAkx2exhBRwY262VrUse6Sqh8nbq1zz5PvQT9j8UCbAk2Jn56i+Vdy
+ d6zTEX3R1FEFhYCAeOctJIHmWmF/gQCg6JxdPcnzgSYuPj+ZhEQyFKvKT6g3mbRHlMqt
+ 4cJFVdLRdkMaOjOAOESvf9M0PEf4G4W9+HotZZoX2mKwGgdKzCMYi1LYQXaxj7qlMPxN
+ ZrKYEoO/vsK2PHbsr9OBFW+uXgSlScwJAxruH/eF1uUXJyHdT6D+0SstiGzJRIMyoSm4
+ QTEN5O8i5R5JU19dyi2JXgiXzNpaozZpO8dDKPmmQsjNV8WuRteleB2LEPY/Tt5VT4wd
+ iWYQ==
+X-Gm-Message-State: AOJu0YyzNDJxNCL39scAUkO3Kbduh7CCgZze323CCPtENUjRQDI5SfMX
+ 4uJk29W/O47p1sN8kW6KXmjd0zYQ85nIiiIZq8DhRijZiFt1adKDmIcCyAHtMXTV1mizixOhNN6
+ 7seudsYddywl4avX8U4C6Uouo/S+Mi3SIiWQC6C4xYMOtdrrcqtJpZVroEwYL6KRn2OhI47I=
+X-Received: by 2002:a05:620a:254c:b0:760:7760:fdaa with SMTP id
+ s12-20020a05620a254c00b007607760fdaamr2193816qko.12.1696412948649; 
+ Wed, 04 Oct 2023 02:49:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzgWzi1apz0z6CkltKLAtLmRej02bCMsWm2cTmUt/PJdzC9FoGb0es/AElCGg0kPjZY9jqwg==
+X-Received: by 2002:a05:620a:254c:b0:760:7760:fdaa with SMTP id
+ s12-20020a05620a254c00b007607760fdaamr2193801qko.12.1696412948342; 
+ Wed, 04 Oct 2023 02:49:08 -0700 (PDT)
+Received: from [10.33.192.181] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- kq18-20020ac86192000000b00407906a4c6fsm1095462qtb.71.2023.10.04.02.45.00
+ c7-20020ae9e207000000b007757acf488esm1136909qkc.39.2023.10.04.02.49.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 02:45:03 -0700 (PDT)
-Message-ID: <9a9533d1-87cf-810d-426a-3dc8f6648e2b@redhat.com>
-Date: Wed, 4 Oct 2023 11:44:59 +0200
+ Wed, 04 Oct 2023 02:49:08 -0700 (PDT)
+Message-ID: <bbda26f2-28cf-a52e-1622-95afc6638eac@redhat.com>
+Date: Wed, 4 Oct 2023 11:49:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 04/15] vfio/common: Propagate KVM_SET_DEVICE_ATTR error
- if any
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] hw/virtio/virtio-pci: Avoid compiler warning with -Wshadow
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org
+References: <20231004075536.48219-1-thuth@redhat.com>
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
- alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-5-eric.auger@redhat.com>
- <302f7b27-b367-d64c-a860-49e41192ac9f@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <302f7b27-b367-d64c-a860-49e41192ac9f@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+In-Reply-To: <20231004075536.48219-1-thuth@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,86 +97,49 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+On 04/10/2023 09.55, Thomas Huth wrote:
+> "len" is used as parameter of the function virtio_write_config()
+> and as a local variable, so this causes a compiler warning
+> when compiling with "-Wshadow" and can be confusing for the reader.
+> Rename the local variable to "caplen" to avoid this problem.
+> 
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   hw/virtio/virtio-pci.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
+> index edbc0daa18..d0ef1edd66 100644
+> --- a/hw/virtio/virtio-pci.c
+> +++ b/hw/virtio/virtio-pci.c
+> @@ -780,15 +780,15 @@ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
+>                                                                     pci_cfg_data),
+>                          sizeof cfg->pci_cfg_data)) {
+>           uint32_t off;
+> -        uint32_t len;
+> +        uint32_t caplen;
+>   
+>           cfg = (void *)(proxy->pci_dev.config + proxy->config_cap);
+>           off = le32_to_cpu(cfg->cap.offset);
+> -        len = le32_to_cpu(cfg->cap.length);
+> +        caplen = le32_to_cpu(cfg->cap.length);
+>   
+> -        if (len == 1 || len == 2 || len == 4) {
+> -            assert(len <= sizeof cfg->pci_cfg_data);
+> -            virtio_address_space_write(proxy, off, cfg->pci_cfg_data, len);
+> +        if (caplen == 1 || caplen == 2 || caplen == 4) {
+> +            assert(caplen <= sizeof cfg->pci_cfg_data);
+> +            virtio_address_space_write(proxy, off, cfg->pci_cfg_data, caplen);
+>           }
+>       }
+>   }
 
-On 10/3/23 16:53, Cédric Le Goater wrote:
-> On 10/3/23 12:14, Eric Auger wrote:
->> In the VFIO_SPAPR_TCE_v2_IOMMU container case, when
->> KVM_SET_DEVICE_ATTR fails, we currently don't propagate the
->> error as we do on the vfio_spapr_create_window() failure
->> case. Let's align the code. Take the opportunity to
->> reword the error message and make it more explicit.
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->>
->> ---
->>
->> I think thise should end up in the
->>      if (!container->initialized) {
->>          if (!container->error) {
->> path and call the error_propagate_prepend()
->
-> We could have this case also
->
->     if (memory_region_is_ram_device(section->mr)) {
->         error_report("failed to vfio_dma_map. pci p2p may not work");
->         return;
->     }
->
-> which was added by commit 567b5b309abe ("vfio/pci: Relax DMA map errors
-> for MMIO regions"). There were a few changes in the failure path, like
-> commit ac6dc3894fbb ("vfio: Generalize vfio_listener_region_add failure
-> path") and it is unclear to me which one will be used. Anyhow, this needs
-> some cleanup and this is what this patchset is proposing. Let's move on :
->
-> Reviewed-by: Cédric Le Goater <clg@redhat.com>
+Ooops, there is a second warning in this file, in the virtio_read_config() 
+... I somehow missed that in the crowded console output, sorry. I'll send a v2.
 
-yep the original error_report() looks strange in that context,
-especially without comment. Let's hope the lack of propagation was not
-done on purpose. I will add the original committer to the cc list.
-
-Eric
->
-> Thanks,
->
-> C.
->
->
->> ---
->>   hw/vfio/common.c | 10 +++++-----
->>   1 file changed, 5 insertions(+), 5 deletions(-)
->>
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 4e122fc4e4..c54a72ec80 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -878,11 +878,11 @@ static void
->> vfio_listener_region_add(MemoryListener *listener,
->>                   QLIST_FOREACH(group, &container->group_list,
->> container_next) {
->>                       param.groupfd = group->fd;
->>                       if (ioctl(vfio_kvm_device_fd,
->> KVM_SET_DEVICE_ATTR, &attr)) {
->> -                        error_report("vfio: failed to setup fd %d "
->> -                                     "for a group with fd %d: %s",
->> -                                     param.tablefd, param.groupfd,
->> -                                     strerror(errno));
->> -                        return;
->> +                        error_setg_errno(&err, errno,
->> +                                         "vfio: failed
->> GROUP_SET_SPAPR_TCE for "
->> +                                         "KVM VFIO device %d and
->> group fd %d",
->> +                                         param.tablefd, param.groupfd);
->> +                        goto fail;
->>                       }
->>                       trace_vfio_spapr_group_attach(param.groupfd,
->> param.tablefd);
->>                   }
->
+  Thomas
 
 
