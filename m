@@ -2,69 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084987B86BA
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 079BA7B86C7
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:41:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5jW-00039h-Tr; Wed, 04 Oct 2023 13:32:27 -0400
+	id 1qo5ja-0003C4-ES; Wed, 04 Oct 2023 13:32:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5jP-00035J-Vx
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:20 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5jW-0003A3-Sq
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:26 -0400
 Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5jO-0000ti-E4
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:19 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5jV-0000wR-ES
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:26 -0400
 Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40651a72807so465355e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:32:17 -0700 (PDT)
+ 5b1f17b1804b1-40537481094so569695e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:32:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696440736; x=1697045536; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696440742; x=1697045542; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iUgMeUD+upV2LccJ26enpy7uECYexY6ww0G/2qJYl+4=;
- b=cLNJVtnKzc3wwJ8rHg5Okc/FfO/MF9cDGfyPqUrJbR+SE5a7jEkcyzChoJNz/eenyt
- 5snfuiD9zPLjYwTep1hk9QrrDosGq+Xz/vlWj5p6ExfZ5orWKou87rbmZ+9Fl39ya11b
- PbtUIzcHrHXzgStA39PICdJE3CyaADSkRypNJ/l8PPayEqEPGmK0Imx+M1iSaxvI8aYL
- /4jR82Na4Et7nZgceGt1J2IHNqBuKxMADFZd5eYE2likYUhVvUxIAaPPouIvxJsPpF2C
- Jrguj8gw5he5RVqdRQZLfG2/bGXtQx5DLF/lNndUMJPLvvM55vWZ0EQEr2ptBXgFNDAt
- gdQQ==
+ bh=bBDxOWnGC99luImlqjntVhvHvQ5f4z9cF2Uz6KLOjxk=;
+ b=VSp17taar6VbWZfp9AnJdLculXNb7EzI8Dnwscv462lHqLzlYqw/y4CyFkunO52/dE
+ cxPizSyaUzKfJrRTlWCUMkKSO8IoVKOe9lFeJ62WykY8apykTO7EerUUAxQAYperJGcI
+ CbGBc439kYpxUy04d2iXe+BmI6JzixbKIv6LVGJ2Px6y8WtizoEoo5NvVZC23HvQZurw
+ yXOWufh8COCAVsQeYzDx+L+xwLwPJJCIoS6nFphY5RorLQcwd2jTrMXxlO05dQA9IQ7a
+ JxkRcbdF5s4FezaXNdyQmQEY8LEHO9Vp95TGjZ76wQYX1CvrbWPUvLbrIcjN1fEM/4wD
+ Razg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696440736; x=1697045536;
+ d=1e100.net; s=20230601; t=1696440742; x=1697045542;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iUgMeUD+upV2LccJ26enpy7uECYexY6ww0G/2qJYl+4=;
- b=gKA4CtZ16r5caCgUGRSbMBj3m+AfrPoKsrUMHUiAWbepESnS0ui+zjD3RkRxZaQhAN
- /ANip8BdoBynwcOWu/nFrOtKqisiWjtEyJsHqfHF/TbbRRIHhaERa/itPOfMP5S1u3j6
- x/KLos4P4V4zfHb/cY0qNnOusguJKfD0L46Jo31t7bxtsD6LtxWud37XSWB/EJLBNgsx
- CrP/0rdTvfEoyc8l8oHPe2gStKN1+LsSZcLKsjOInWEyNlRdUPxgZPs6zecEVEgAlmwM
- emMn8NI7AVFHhVHCi47DlxJngoFSZnFqltiE23F+vXlkY0FwOnH4oK+yZmPnAhJu01ZW
- SPZA==
-X-Gm-Message-State: AOJu0Yz1ZI9Zz2NWIqL4o4ZHkoJjhDS56kvPw0OJ+lDr8on7tR4Ce5Rw
- 2vRQN40v520pBdnp0apJ8HJ7r4IaHtCl2f/sQd0=
-X-Google-Smtp-Source: AGHT+IHsPNCReIto6W+6CAHbw8CGfedRQ9MqS3svW1ytyQvvdaFPi/eTwK9ztJfcZ3+YqlCygjwaMg==
-X-Received: by 2002:adf:e606:0:b0:317:6314:96e2 with SMTP id
- p6-20020adfe606000000b00317631496e2mr2624583wrm.14.1696440735924; 
- Wed, 04 Oct 2023 10:32:15 -0700 (PDT)
+ bh=bBDxOWnGC99luImlqjntVhvHvQ5f4z9cF2Uz6KLOjxk=;
+ b=bgOfzc4lWnthomkzNciV0bBLTzT2Ziko55QT6Yn5nc5VuS5D99nfXyPAwZ3BOl3Rio
+ z49VcQJeo13o+bAkEJhmkl3jCX/CxfTHu661JeEaPRdejA3aCi4q9Xjz/qnPOcI80Oq+
+ 1H56ZF8VgyJMG3kzuD+Pii0yiyz1ZoIoNrQ2r7ygbWCaV134LK/YCpOfnIfK2hB53quE
+ Twq2XcWS95rAxsSOHISknHXnVa8gYdQTi7DP7+zl4OILf8ntRM1DGZP1ZXW7gEzO3iM3
+ MtTSNWf4mIgsAP4+tZ3dLg+0bjpShKPhQlwt8cTCuooCEbnfppnDUxcP65x6yhI8Vdmy
+ AhGg==
+X-Gm-Message-State: AOJu0YxPJRTirZ0/GEeIm2DgDp8bKbE8E9c3sBe1ONk24LAk88McVTiY
+ vu8AFzZR/HSjIiqy9eYuDPb8AT7wYDL7BtCgZtI=
+X-Google-Smtp-Source: AGHT+IEVljxrxbsTZQVFDgQIe0njJ4Lx923OxtxzyYWRZsBZF6rMONC8Boq2o3sO5PkWTZQcaosXkg==
+X-Received: by 2002:a5d:6991:0:b0:320:976:f940 with SMTP id
+ g17-20020a5d6991000000b003200976f940mr2718283wru.13.1696440742687; 
+ Wed, 04 Oct 2023 10:32:22 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- 10-20020a05600c228a00b004065d72ab19sm2059688wmf.0.2023.10.04.10.32.14
+ d9-20020adff849000000b003248a490e3asm4502639wrq.39.2023.10.04.10.32.20
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 10:32:15 -0700 (PDT)
+ Wed, 04 Oct 2023 10:32:22 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH 02/21] qapi: Inline and remove QERR_DEVICE_HAS_NO_MEDIUM
- definition
-Date: Wed,  4 Oct 2023 19:31:37 +0200
-Message-ID: <20231004173158.42591-3-philmd@linaro.org>
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 03/21] qapi: Inline and remove QERR_DEVICE_IN_USE definition
+Date: Wed,  4 Oct 2023 19:31:38 +0200
+Message-ID: <20231004173158.42591-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004173158.42591-1-philmd@linaro.org>
 References: <20231004173158.42591-1-philmd@linaro.org>
@@ -79,7 +80,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,58 +110,49 @@ removing the definition in include/qapi/qmp/qerror.h.
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
  include/qapi/qmp/qerror.h | 3 ---
- block/snapshot.c          | 4 ++--
  blockdev.c                | 2 +-
- 3 files changed, 3 insertions(+), 6 deletions(-)
+ chardev/char-fe.c         | 2 +-
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index 1a9c2d3502..168177bcd7 100644
+index 168177bcd7..daa889809b 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
 @@ -17,9 +17,6 @@
   * add new ones!
   */
  
--#define QERR_DEVICE_HAS_NO_MEDIUM \
--    "Device '%s' has no medium"
+-#define QERR_DEVICE_IN_USE \
+-    "Device '%s' is in use"
 -
- #define QERR_DEVICE_IN_USE \
-     "Device '%s' is in use"
+ #define QERR_DEVICE_NO_HOTPLUG \
+     "Device '%s' does not support hotplugging"
  
-diff --git a/block/snapshot.c b/block/snapshot.c
-index b86b5b24ad..eb43e957e1 100644
---- a/block/snapshot.c
-+++ b/block/snapshot.c
-@@ -345,7 +345,7 @@ int bdrv_snapshot_delete(BlockDriverState *bs,
-     GLOBAL_STATE_CODE();
- 
-     if (!drv) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, bdrv_get_device_name(bs));
-+        error_setg(errp, "Device '%s' has no medium", bdrv_get_device_name(bs));
-         return -ENOMEDIUM;
-     }
-     if (!snapshot_id && !name) {
-@@ -420,7 +420,7 @@ int bdrv_snapshot_load_tmp(BlockDriverState *bs,
-     GLOBAL_STATE_CODE();
- 
-     if (!drv) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, bdrv_get_device_name(bs));
-+        error_setg(errp, "Device '%s' has no medium", bdrv_get_device_name(bs));
-         return -ENOMEDIUM;
-     }
-     if (!snapshot_id && !name) {
 diff --git a/blockdev.c b/blockdev.c
-index 325b7a3bef..e5617faf0f 100644
+index e5617faf0f..da39da457e 100644
 --- a/blockdev.c
 +++ b/blockdev.c
-@@ -1422,7 +1422,7 @@ static void external_snapshot_action(TransactionAction *action,
-     bdrv_drained_begin(state->old_bs);
- 
-     if (!bdrv_is_inserted(state->old_bs)) {
--        error_setg(errp, QERR_DEVICE_HAS_NO_MEDIUM, device);
-+        error_setg(errp, "Device '%s' has no medium", device);
-         goto out;
+@@ -2345,7 +2345,7 @@ void coroutine_fn qmp_block_resize(const char *device, const char *node_name,
      }
+ 
+     if (bdrv_op_is_blocked(bs, BLOCK_OP_TYPE_RESIZE, NULL)) {
+-        error_setg(errp, QERR_DEVICE_IN_USE, device);
++        error_setg(errp, "Device '%s' is in use", device);
+         return;
+     }
+ 
+diff --git a/chardev/char-fe.c b/chardev/char-fe.c
+index 7789f7be9c..7d33b3ccd1 100644
+--- a/chardev/char-fe.c
++++ b/chardev/char-fe.c
+@@ -217,7 +217,7 @@ bool qemu_chr_fe_init(CharBackend *b, Chardev *s, Error **errp)
+     return true;
+ 
+ unavailable:
+-    error_setg(errp, QERR_DEVICE_IN_USE, s->label);
++    error_setg(errp, "Device '%s' is in use", s->label);
+     return false;
+ }
  
 -- 
 2.41.0
