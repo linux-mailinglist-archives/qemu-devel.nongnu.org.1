@@ -2,77 +2,104 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707407B86C5
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C02A17B86CB
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:42:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5mf-00076H-83; Wed, 04 Oct 2023 13:35:41 -0400
+	id 1qo5md-0006vn-Ao; Wed, 04 Oct 2023 13:35:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lR-0005rj-Eq
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:28 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lb-00060E-Qh
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:36 -0400
+Received: from mail-ed1-x52f.google.com ([2a00:1450:4864:20::52f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lN-0001NR-9D
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:25 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4064876e8b8so642535e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:34:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lW-0001Pd-FM
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:35 -0400
+Received: by mail-ed1-x52f.google.com with SMTP id
+ 4fb4d7f45d1cf-533d31a8523so40396a12.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:34:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696440857; x=1697045657; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696440868; x=1697045668; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=YgccYr5Dzt6X/tQjLL34w8Nky+uqW63WT4BtHcxYfTM=;
- b=B28vahGQlyU8GcBmWGfC1IdSYJ/qmaUEVa6qF3Fg5KhacuwOUY3PQBWCXJcy9v9Syc
- xeJiP5ooRifmcQ6Iz8GSVJyREXJeqSa6Fztb/n8ixZjyknFa6Bu9ySmNM9CUTFWt7Mhv
- 9g7sOKmszhT1sRPlGZpcn8XXFdBtHKPayyxnUusVWv5IYqKS8qsuv3faBL836AI++ydt
- qA1pICwpBL9GGxOShF+0QK6QZJmpQF+oxvhUInqjqO23HcQXige3bmcn0S/FGm7I5bpb
- bTUAv+QCZ8IPtdiLRAVL6iiRIF+l5sUWhdcfE7iP9VndhA0pu8EQZh3o4WQrlcWOxQih
- vEGw==
+ bh=rXQCp069O7lED68gZDU7dxJmBJ+oYWkpx632klsL3dA=;
+ b=i5SXpg81F0UjGpHEmVydVIo8vRDisliVYOcQZ7ovnDl/oo75bVRfL3imyh7sjvvoN2
+ U8m9sENWA0s6H42S/fEz6rcuv3i9YnbWGAeEhoUJ6QMcfAvzr3SWGEAFmh3jXe1uRLIE
+ D2Ie/9+WlAqfx6DQ1xinROMTTXN22REp9wrpYvJ3y6lFjTYevZQtWSspjTBrWhjIvWqG
+ 7EQ3cTA5KRO99gNGGVUbElgw2L0GPL+5yULFOHFZWZsYNRbzVsTActr8eOc1RM2Xxa0h
+ J0JSrojAi//PbLARM8HyqH6gtYYOhsNKHdd3ooPJQpX18HycueLm7FKtQaW9ZLyFPe7d
+ LZZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696440857; x=1697045657;
+ d=1e100.net; s=20230601; t=1696440868; x=1697045668;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=YgccYr5Dzt6X/tQjLL34w8Nky+uqW63WT4BtHcxYfTM=;
- b=YGj/Jia0pbnWW6nNkFfFOvBIEXaUYfaqn78eHvbzWdRAXWy7Ic6gNGPyQ9qHx287Zh
- euImOLLcA/4ERHGDv791nFn5jd3UzICfQgJwj9fc6qxTAXXCpiENZhxSs60UYkfK0t27
- ANW/auEI4hMprLKczAvq/Ui4RC114J/Ap1mXK+qb3ez3agHNALeRiyrJ6foHNLhWI63I
- 8KmV8OWZQ2yKj0Em1mqYIQuVE2p71ZatrxukX5IUx7meW3OgA7kKh9TJ0F7xUeK0yb1Y
- u8xnYm8GLaLx3ku7w5ax3Sjb56YU2FveNmOnODJZI+KPBUJIko7UPAmtk6NIOlI795yd
- gNMQ==
-X-Gm-Message-State: AOJu0YyQfy6sfVIgXNSWi4I3/rGsdyCT2ccbng1LJRfas8aH+CwKCM0g
- 9CoKDM7ru2n3foBSsMTcnf7il78XDvIJy1RLTxU=
-X-Google-Smtp-Source: AGHT+IH2o2Gng+1SrnejbxrC4tv3PQLdT9tsmy55o2/RKY/aAKdiskJdopcyCS262aLlxfXNZXtS9g==
-X-Received: by 2002:a5d:4564:0:b0:314:152d:f8db with SMTP id
- a4-20020a5d4564000000b00314152df8dbmr2759811wrc.58.1696440857397; 
- Wed, 04 Oct 2023 10:34:17 -0700 (PDT)
+ bh=rXQCp069O7lED68gZDU7dxJmBJ+oYWkpx632klsL3dA=;
+ b=WpKzYtlWt3jsfijuMuAGbjGE6b3f3DXtYnvz91qEMalK2XtA7cjcIoPiudPhBy6Jkp
+ j2K3f/q4PbOZIHOygUs70T84rQcJmH7R/t/znMyXIz03R55Y6IhYTd3OHkyIDpnxvaF2
+ XJJ25CxmjibhH2DPIH7y2zDBZ3nrya+ayePMBc2FWwCn0ym4/vJxdqIMm2N7h95AI73S
+ JtRyeMtt3o+ep04Y9GEcFAtLK1EnTyRwh9gx85zg6+5QAqDBpLeTWUEUaD+77h5GNdo8
+ mCHLJO02W4wAOUP2DBxAT7u+3jT+7W9Bl6+3UzVhm1FGlRclnfX2T4ZY7qs/GXiTF8+E
+ 8ITw==
+X-Gm-Message-State: AOJu0Ywt3+5Y+Q5u0E0TssZiJA+6zNxd8qiABd1gdKfpdAZUywl9LbjE
+ 0dm+NuXuutFZSCRvnkliq7Uw+1TAU8w3yzXBEeM=
+X-Google-Smtp-Source: AGHT+IHPhW6ayLnVni3KMHCowb+9GxWmztfZsqT1LwYvlRdMjFaZhND6b58aJ0JnlO5SJZM+8xUUYA==
+X-Received: by 2002:a50:fb12:0:b0:536:e03f:62b6 with SMTP id
+ d18-20020a50fb12000000b00536e03f62b6mr2739021edq.30.1696440867971; 
+ Wed, 04 Oct 2023 10:34:27 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- bf7-20020a0560001cc700b003140f47224csm4457730wrb.15.2023.10.04.10.34.15
+ j24-20020a50ed18000000b005232ea6a330sm180106eds.2.2023.10.04.10.34.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 10:34:17 -0700 (PDT)
+ Wed, 04 Oct 2023 10:34:27 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>
-Subject: [RFC PATCH 20/21] qapi: Inline and remove QERR_UNSUPPORTED definition
-Date: Wed,  4 Oct 2023 19:31:55 +0200
-Message-ID: <20231004173158.42591-21-philmd@linaro.org>
+ "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>, Amit Shah <amit@kernel.org>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Alberto Garcia <berto@igalia.com>, Fam Zheng <fam@euphon.net>,
+ John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Jason Wang <jasowang@redhat.com>, Michael Roth <michael.roth@amd.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ integration@gluster.org
+Subject: [PATCH 21/21] qapi: Remove 'qapi/qmp/qerror.h' header
+Date: Wed,  4 Oct 2023 19:31:56 +0200
+Message-ID: <20231004173158.42591-22-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004173158.42591-1-philmd@linaro.org>
 References: <20231004173158.42591-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::52f;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,378 +122,814 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Address the comment added in commit 4629ed1e98
-("qerror: Finally unused, clean up"), from 2015:
+This file is now empty. Avoid new definitions by killing it,
+paying off a 8 years old debt (with interests).
 
-  /*
-   * These macros will go away, please don't use
-   * in new code, and do not add new ones!
-   */
+Mechanical change using:
 
-Mechanical transformation using:
-
-  $ sed -i -e 's/QERR_UNSUPPORTED/"this feature or command is not currently supported"/' \
-    $(git grep -wl QERR_UNSUPPORTED)
-
-then manually removing the definition in include/qapi/qmp/qerror.h.
+  $ git grep -l qapi/qmp/qerror.h | while read f; do \
+      gawk -i inplace '/#include "qapi\/qmp\/qerror.h"/ && !p {p++;next}1' $f; \
+    done
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
-RFC: Not sure what is the best way to change the comment
-     in qga/qapi-schema.json...
----
- qga/qapi-schema.json      |  5 +++--
- include/qapi/qmp/qerror.h |  3 ---
- qga/commands-bsd.c        |  8 +++----
- qga/commands-posix.c      | 46 +++++++++++++++++++--------------------
- qga/commands-win32.c      | 22 +++++++++----------
- 5 files changed, 41 insertions(+), 43 deletions(-)
+ include/qapi/qmp/qerror.h        | 20 --------------------
+ backends/cryptodev-vhost-user.c  |  1 -
+ backends/dbus-vmstate.c          |  1 -
+ backends/rng-egd.c               |  1 -
+ backends/rng-random.c            |  1 -
+ block/gluster.c                  |  1 -
+ block/monitor/block-hmp-cmds.c   |  1 -
+ block/quorum.c                   |  1 -
+ block/snapshot.c                 |  1 -
+ block/vmdk.c                     |  1 -
+ blockdev.c                       |  1 -
+ blockjob.c                       |  1 -
+ chardev/char-fe.c                |  1 -
+ chardev/char.c                   |  1 -
+ dump/dump.c                      |  1 -
+ dump/win_dump.c                  |  1 -
+ hw/core/qdev-properties-system.c |  1 -
+ hw/core/qdev-properties.c        |  1 -
+ hw/core/qdev.c                   |  1 -
+ hw/intc/openpic.c                |  1 -
+ hw/ppc/spapr_pci.c               |  1 -
+ hw/usb/redirect.c                |  1 -
+ migration/migration.c            |  1 -
+ migration/options.c              |  1 -
+ migration/page_cache.c           |  1 -
+ migration/ram.c                  |  1 -
+ migration/savevm.c               |  1 -
+ monitor/fds.c                    |  1 -
+ monitor/hmp-cmds.c               |  1 -
+ monitor/qmp-cmds.c               |  1 -
+ net/filter-buffer.c              |  1 -
+ net/filter.c                     |  1 -
+ net/net.c                        |  1 -
+ qapi/opts-visitor.c              |  1 -
+ qapi/qapi-forward-visitor.c      |  1 -
+ qapi/qapi-util.c                 |  1 -
+ qapi/qapi-visit-core.c           |  1 -
+ qapi/qobject-input-visitor.c     |  1 -
+ qapi/string-input-visitor.c      |  1 -
+ qga/commands-bsd.c               |  1 -
+ qga/commands-posix.c             |  1 -
+ qga/commands-win32.c             |  1 -
+ qga/commands.c                   |  1 -
+ qom/object.c                     |  1 -
+ qom/object_interfaces.c          |  1 -
+ qom/qom-qmp-cmds.c               |  1 -
+ softmmu/balloon.c                |  1 -
+ softmmu/cpus.c                   |  1 -
+ softmmu/qdev-monitor.c           |  1 -
+ softmmu/rtc.c                    |  1 -
+ softmmu/tpm.c                    |  1 -
+ softmmu/vl.c                     |  1 -
+ target/arm/arm-qmp-cmds.c        |  1 -
+ target/i386/cpu.c                |  1 -
+ target/s390x/cpu_models_sysemu.c |  1 -
+ ui/input-barrier.c               |  1 -
+ ui/ui-qmp-cmds.c                 |  1 -
+ util/block-helpers.c             |  1 -
+ util/qemu-option.c               |  1 -
+ scripts/qapi/visit.py            |  1 -
+ 60 files changed, 79 deletions(-)
+ delete mode 100644 include/qapi/qmp/qerror.h
 
-diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
-index b720dd4379..51683f4dc2 100644
---- a/qga/qapi-schema.json
-+++ b/qga/qapi-schema.json
-@@ -6,8 +6,9 @@
- #
- # "unsupported" is a higher-level error than the errors that
- # individual commands might document.  The caller should always be
--# prepared to receive QERR_UNSUPPORTED, even if the given command
--# doesn't specify it, or doesn't document any failure mode at all.
-+# prepared to receive the "this feature or command is not currently supported"
-+# message, even if the given command doesn't specify it, or doesn't document
-+# any failure mode at all.
- ##
- 
- ##
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index 840831cc6a..7606f4525d 100644
+deleted file mode 100644
+index 7606f4525d..0000000000
 --- a/include/qapi/qmp/qerror.h
-+++ b/include/qapi/qmp/qerror.h
-@@ -17,7 +17,4 @@
-  * add new ones!
-  */
- 
--#define QERR_UNSUPPORTED \
--    "this feature or command is not currently supported"
++++ /dev/null
+@@ -1,20 +0,0 @@
+-/*
+- * QError Module
+- *
+- * Copyright (C) 2009 Red Hat Inc.
+- *
+- * Authors:
+- *  Luiz Capitulino <lcapitulino@redhat.com>
+- *
+- * This work is licensed under the terms of the GNU LGPL, version 2.1 or later.
+- * See the COPYING.LIB file in the top-level directory.
+- */
+-#ifndef QERROR_H
+-#define QERROR_H
 -
- #endif /* QERROR_H */
+-/*
+- * These macros will go away, please don't use in new code, and do not
+- * add new ones!
+- */
+-
+-#endif /* QERROR_H */
+diff --git a/backends/cryptodev-vhost-user.c b/backends/cryptodev-vhost-user.c
+index d93ccd5528..5a41aa7be8 100644
+--- a/backends/cryptodev-vhost-user.c
++++ b/backends/cryptodev-vhost-user.c
+@@ -23,7 +23,6 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "hw/virtio/vhost-user.h"
+ #include "standard-headers/linux/virtio_crypto.h"
+diff --git a/backends/dbus-vmstate.c b/backends/dbus-vmstate.c
+index e781ded17c..0006f8c400 100644
+--- a/backends/dbus-vmstate.c
++++ b/backends/dbus-vmstate.c
+@@ -16,7 +16,6 @@
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+ #include "qom/object_interfaces.h"
+-#include "qapi/qmp/qerror.h"
+ #include "migration/vmstate.h"
+ #include "trace.h"
+ #include "qom/object.h"
+diff --git a/backends/rng-egd.c b/backends/rng-egd.c
+index 8f101afadc..35f19257bd 100644
+--- a/backends/rng-egd.c
++++ b/backends/rng-egd.c
+@@ -14,7 +14,6 @@
+ #include "sysemu/rng.h"
+ #include "chardev/char-fe.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/module.h"
+ #include "qom/object.h"
+ 
+diff --git a/backends/rng-random.c b/backends/rng-random.c
+index 9cb7d26cb5..a49e4a4970 100644
+--- a/backends/rng-random.c
++++ b/backends/rng-random.c
+@@ -14,7 +14,6 @@
+ #include "sysemu/rng-random.h"
+ #include "sysemu/rng.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/module.h"
+ 
+diff --git a/block/gluster.c b/block/gluster.c
+index 8d97d698c3..91df6f1d07 100644
+--- a/block/gluster.c
++++ b/block/gluster.c
+@@ -16,7 +16,6 @@
+ #include "block/qdict.h"
+ #include "qapi/error.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/uri.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
+index 90e593ed38..9c3d3bedc6 100644
+--- a/block/monitor/block-hmp-cmds.c
++++ b/block/monitor/block-hmp-cmds.c
+@@ -43,7 +43,6 @@
+ #include "qapi/qapi-commands-block-export.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/config-file.h"
+ #include "qemu/option.h"
+ #include "qemu/sockets.h"
+diff --git a/block/quorum.c b/block/quorum.c
+index 8e9f279568..34ebbf4ce0 100644
+--- a/block/quorum.c
++++ b/block/quorum.c
+@@ -24,7 +24,6 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-events-block.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qapi/qmp/qstring.h"
+ #include "crypto/hash.h"
+diff --git a/block/snapshot.c b/block/snapshot.c
+index eb43e957e1..131b4bd6d0 100644
+--- a/block/snapshot.c
++++ b/block/snapshot.c
+@@ -28,7 +28,6 @@
+ #include "block/qdict.h"
+ #include "qapi/error.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qstring.h"
+ #include "qemu/option.h"
+ #include "sysemu/block-backend.h"
+diff --git a/block/vmdk.c b/block/vmdk.c
+index 6779a181f0..ed9742f9da 100644
+--- a/block/vmdk.c
++++ b/block/vmdk.c
+@@ -28,7 +28,6 @@
+ #include "block/block_int.h"
+ #include "sysemu/block-backend.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+ #include "qemu/option.h"
+diff --git a/blockdev.c b/blockdev.c
+index 228cebf9a2..5a76bb1498 100644
+--- a/blockdev.c
++++ b/blockdev.c
+@@ -50,7 +50,6 @@
+ #include "qapi/qmp/qnum.h"
+ #include "qapi/qmp/qstring.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qapi/qobject-output-visitor.h"
+ #include "sysemu/sysemu.h"
+diff --git a/blockjob.c b/blockjob.c
+index f95f73244e..d359ea72e5 100644
+--- a/blockjob.c
++++ b/blockjob.c
+@@ -32,7 +32,6 @@
+ #include "sysemu/block-backend.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-events-block-core.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/main-loop.h"
+ #include "qemu/timer.h"
+ 
+diff --git a/chardev/char-fe.c b/chardev/char-fe.c
+index 7d33b3ccd1..ff4cee00fc 100644
+--- a/chardev/char-fe.c
++++ b/chardev/char-fe.c
+@@ -24,7 +24,6 @@
+ #include "qemu/osdep.h"
+ #include "qemu/error-report.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "sysemu/replay.h"
+ 
+ #include "chardev/char-fe.h"
+diff --git a/chardev/char.c b/chardev/char.c
+index 447b4d9d06..cc61f3a6e7 100644
+--- a/chardev/char.c
++++ b/chardev/char.c
+@@ -32,7 +32,6 @@
+ #include "chardev/char.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-char.h"
+-#include "qapi/qmp/qerror.h"
+ #include "sysemu/replay.h"
+ #include "qemu/help_option.h"
+ #include "qemu/module.h"
+diff --git a/dump/dump.c b/dump/dump.c
+index 642b952985..daa0c69305 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -23,7 +23,6 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-dump.h"
+ #include "qapi/qapi-events-dump.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "qemu/main-loop.h"
+ #include "hw/misc/vmcoreinfo.h"
+diff --git a/dump/win_dump.c b/dump/win_dump.c
+index 0115a609e0..1772db8530 100644
+--- a/dump/win_dump.c
++++ b/dump/win_dump.c
+@@ -12,7 +12,6 @@
+ #include "sysemu/dump.h"
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+-#include "qapi/qmp/qerror.h"
+ #include "exec/cpu-defs.h"
+ #include "hw/core/cpu.h"
+ #include "qemu/win_dump_defs.h"
+diff --git a/hw/core/qdev-properties-system.c b/hw/core/qdev-properties-system.c
+index 7752c5fda5..ec68281b61 100644
+--- a/hw/core/qdev-properties-system.c
++++ b/hw/core/qdev-properties-system.c
+@@ -18,7 +18,6 @@
+ #include "qapi/qapi-types-block.h"
+ #include "qapi/qapi-types-machine.h"
+ #include "qapi/qapi-types-migration.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/ctype.h"
+ #include "qemu/cutils.h"
+ #include "qemu/units.h"
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 44fc1686e0..5005954b50 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -2,7 +2,6 @@
+ #include "hw/qdev-properties.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-types-misc.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/ctype.h"
+ #include "qemu/error-report.h"
+ #include "qapi/visitor.h"
+diff --git a/hw/core/qdev.c b/hw/core/qdev.c
+index 9b62e0573d..165ce95a11 100644
+--- a/hw/core/qdev.c
++++ b/hw/core/qdev.c
+@@ -29,7 +29,6 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-events-qdev.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/visitor.h"
+ #include "qemu/error-report.h"
+ #include "qemu/option.h"
+diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
+index 4f6ee930e2..991b2efa25 100644
+--- a/hw/intc/openpic.c
++++ b/hw/intc/openpic.c
+@@ -41,7 +41,6 @@
+ #include "hw/pci/msi.h"
+ #include "qapi/error.h"
+ #include "qemu/bitops.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/module.h"
+ #include "qemu/timer.h"
+ #include "qemu/error-report.h"
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index 7f063f5852..a24755c8ff 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -39,7 +39,6 @@
+ #include "trace.h"
+ #include "qemu/error-report.h"
+ #include "qemu/module.h"
+-#include "qapi/qmp/qerror.h"
+ #include "hw/ppc/fdt.h"
+ #include "hw/pci/pci_bridge.h"
+ #include "hw/pci/pci_bus.h"
+diff --git a/hw/usb/redirect.c b/hw/usb/redirect.c
+index 83bfc9dc19..1147e8d018 100644
+--- a/hw/usb/redirect.c
++++ b/hw/usb/redirect.c
+@@ -32,7 +32,6 @@
+ #include "qemu/timer.h"
+ #include "sysemu/runstate.h"
+ #include "sysemu/sysemu.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "qemu/iov.h"
+ #include "qemu/module.h"
+diff --git a/migration/migration.c b/migration/migration.c
+index 5703cc34ae..a6b3e83867 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -42,7 +42,6 @@
+ #include "qapi/qapi-visit-sockets.h"
+ #include "qapi/qapi-commands-migration.h"
+ #include "qapi/qapi-events-migration.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qnull.h"
+ #include "qemu/rcu.h"
+ #include "block.h"
+diff --git a/migration/options.c b/migration/options.c
+index e363b4885f..47577f3bc5 100644
+--- a/migration/options.c
++++ b/migration/options.c
+@@ -17,7 +17,6 @@
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-migration.h"
+ #include "qapi/qapi-visit-migration.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qnull.h"
+ #include "sysemu/runstate.h"
+ #include "migration/colo.h"
+diff --git a/migration/page_cache.c b/migration/page_cache.c
+index d430ce742b..af6683c45e 100644
+--- a/migration/page_cache.c
++++ b/migration/page_cache.c
+@@ -14,7 +14,6 @@
+ 
+ #include "qemu/osdep.h"
+ 
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/error.h"
+ #include "qemu/host-utils.h"
+ #include "page_cache.h"
+diff --git a/migration/ram.c b/migration/ram.c
+index 0a4a0d7a0e..a5f05c5832 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -47,7 +47,6 @@
+ #include "qapi/qapi-types-migration.h"
+ #include "qapi/qapi-events-migration.h"
+ #include "qapi/qapi-commands-migration.h"
+-#include "qapi/qmp/qerror.h"
+ #include "trace.h"
+ #include "exec/ram_addr.h"
+ #include "exec/target_page.h"
+diff --git a/migration/savevm.c b/migration/savevm.c
+index c0e0585bc1..3c49f2dbff 100644
+--- a/migration/savevm.c
++++ b/migration/savevm.c
+@@ -45,7 +45,6 @@
+ #include "qapi/qapi-commands-migration.h"
+ #include "qapi/clone-visitor.h"
+ #include "qapi/qapi-builtin-visit.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "sysemu/cpus.h"
+ #include "exec/memory.h"
+diff --git a/monitor/fds.c b/monitor/fds.c
+index 17e9c126e3..4882db3232 100644
+--- a/monitor/fds.c
++++ b/monitor/fds.c
+@@ -26,7 +26,6 @@
+ #include "monitor-internal.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-misc.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/ctype.h"
+ #include "qemu/cutils.h"
+ #include "sysemu/runstate.h"
+diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
+index 9d6533643d..912471f419 100644
+--- a/monitor/hmp-cmds.c
++++ b/monitor/hmp-cmds.c
+@@ -24,7 +24,6 @@
+ #include "qapi/qapi-commands-control.h"
+ #include "qapi/qapi-commands-misc.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/cutils.h"
+ #include "hw/intc/intc.h"
+ #include "qemu/log.h"
+diff --git a/monitor/qmp-cmds.c b/monitor/qmp-cmds.c
+index 2d2e71b867..c2d81b2f77 100644
+--- a/monitor/qmp-cmds.c
++++ b/monitor/qmp-cmds.c
+@@ -27,7 +27,6 @@
+ #include "qapi/qapi-init-commands.h"
+ #include "qapi/qapi-commands-control.h"
+ #include "qapi/qapi-commands-misc.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/type-helpers.h"
+ #include "hw/mem/memory-device.h"
+ #include "hw/intc/intc.h"
+diff --git a/net/filter-buffer.c b/net/filter-buffer.c
+index 071029a6c7..46738415b7 100644
+--- a/net/filter-buffer.c
++++ b/net/filter-buffer.c
+@@ -13,7 +13,6 @@
+ #include "qemu/timer.h"
+ #include "qemu/iov.h"
+ #include "qapi/qapi-builtin-visit.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qom/object.h"
+ 
+ #define TYPE_FILTER_BUFFER "filter-buffer"
+diff --git a/net/filter.c b/net/filter.c
+index 1621513bab..8ff1eae923 100644
+--- a/net/filter.c
++++ b/net/filter.c
+@@ -8,7 +8,6 @@
+ 
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ 
+ #include "net/filter.h"
+diff --git a/net/net.c b/net/net.c
+index 5cdbd9c218..fdfe4f8eb1 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -37,7 +37,6 @@
+ #include "qapi/qapi-commands-net.h"
+ #include "qapi/qapi-visit-net.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "qemu/sockets.h"
+ #include "qemu/cutils.h"
+diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
+index bf0d8acbd6..7b595bb00b 100644
+--- a/qapi/opts-visitor.c
++++ b/qapi/opts-visitor.c
+@@ -13,7 +13,6 @@
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+ #include "qemu/cutils.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/opts-visitor.h"
+ #include "qemu/queue.h"
+ #include "qemu/option_int.h"
+diff --git a/qapi/qapi-forward-visitor.c b/qapi/qapi-forward-visitor.c
+index 3fb2c954aa..613e6d0f19 100644
+--- a/qapi/qapi-forward-visitor.c
++++ b/qapi/qapi-forward-visitor.c
+@@ -17,7 +17,6 @@
+ #include "qapi/qmp/qjson.h"
+ #include "qapi/qmp/qbool.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qapi/qmp/qnull.h"
+ #include "qapi/qmp/qnum.h"
+diff --git a/qapi/qapi-util.c b/qapi/qapi-util.c
+index 82c3425566..f144ac1f70 100644
+--- a/qapi/qapi-util.c
++++ b/qapi/qapi-util.c
+@@ -14,7 +14,6 @@
+ #include "qapi/compat-policy.h"
+ #include "qapi/error.h"
+ #include "qemu/ctype.h"
+-#include "qapi/qmp/qerror.h"
+ 
+ CompatPolicy compat_policy;
+ 
+diff --git a/qapi/qapi-visit-core.c b/qapi/qapi-visit-core.c
+index 01793d6e74..a3214fa1a1 100644
+--- a/qapi/qapi-visit-core.c
++++ b/qapi/qapi-visit-core.c
+@@ -15,7 +15,6 @@
+ #include "qemu/osdep.h"
+ #include "qapi/compat-policy.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/visitor.h"
+ #include "qapi/visitor-impl.h"
+ #include "trace.h"
+diff --git a/qapi/qobject-input-visitor.c b/qapi/qobject-input-visitor.c
+index 17e9f3b638..82b33b6b64 100644
+--- a/qapi/qobject-input-visitor.c
++++ b/qapi/qobject-input-visitor.c
+@@ -22,7 +22,6 @@
+ #include "qapi/qmp/qjson.h"
+ #include "qapi/qmp/qbool.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qlist.h"
+ #include "qapi/qmp/qnull.h"
+ #include "qapi/qmp/qnum.h"
+diff --git a/qapi/string-input-visitor.c b/qapi/string-input-visitor.c
+index 6ea6a0c676..bb1c43a6d7 100644
+--- a/qapi/string-input-visitor.c
++++ b/qapi/string-input-visitor.c
+@@ -14,7 +14,6 @@
+ #include "qapi/error.h"
+ #include "qapi/string-input-visitor.h"
+ #include "qapi/visitor-impl.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qnull.h"
+ #include "qemu/option.h"
+ #include "qemu/cutils.h"
 diff --git a/qga/commands-bsd.c b/qga/commands-bsd.c
-index 17bddda1cf..11536f148f 100644
+index 11536f148f..5508bc02ab 100644
 --- a/qga/commands-bsd.c
 +++ b/qga/commands-bsd.c
-@@ -152,25 +152,25 @@ int qmp_guest_fsfreeze_do_thaw(Error **errp)
+@@ -12,7 +12,6 @@
  
- GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- #endif /* CONFIG_FSFREEZE */
+ #include "qemu/osdep.h"
+ #include "qga-qapi-commands.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/error.h"
+ #include "qemu/queue.h"
+ #include "commands-common.h"
 diff --git a/qga/commands-posix.c b/qga/commands-posix.c
-index 6169bbf7a0..f510add366 100644
+index f510add366..6ea8a03e61 100644
 --- a/qga/commands-posix.c
 +++ b/qga/commands-posix.c
-@@ -165,7 +165,7 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
-     }
- 
-     if (!hwclock_available) {
--        error_setg(errp, QERR_UNSUPPORTED);
-+        error_setg(errp, "this feature or command is not currently supported");
-         return;
-     }
- 
-@@ -1540,7 +1540,7 @@ GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
- 
- GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
-@@ -2235,7 +2235,7 @@ void qmp_guest_set_user_password(const char *username,
-                                  bool crypted,
-                                  Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- }
- #endif /* __linux__ || __FreeBSD__ */
- 
-@@ -2751,47 +2751,47 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
- 
- void qmp_guest_suspend_disk(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- }
- 
- void qmp_guest_suspend_ram(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- }
- 
- void qmp_guest_suspend_hybrid(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- }
- 
- GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return -1;
- }
- 
- GuestMemoryBlockList *qmp_guest_get_memory_blocks(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestMemoryBlockResponseList *
- qmp_guest_set_memory_blocks(GuestMemoryBlockList *mem_blks, Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
-@@ -3056,7 +3056,7 @@ error:
- 
- GuestNetworkInterfaceList *qmp_guest_network_get_interfaces(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
-@@ -3066,20 +3066,20 @@ GuestNetworkInterfaceList *qmp_guest_network_get_interfaces(Error **errp)
- 
- GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- 
-     return 0;
- }
- 
- int64_t qmp_guest_fsfreeze_freeze(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- 
-     return 0;
- }
-@@ -3088,33 +3088,33 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
-                                        strList *mountpoints,
-                                        Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- 
-     return 0;
- }
- 
- int64_t qmp_guest_fsfreeze_thaw(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- 
-     return 0;
- }
- 
- GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
-@@ -3124,7 +3124,7 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
- GuestFilesystemTrimResponse *
- qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- #endif
-@@ -3243,7 +3243,7 @@ GuestUserList *qmp_guest_get_users(Error **errp)
- 
- GuestUserList *qmp_guest_get_users(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
-@@ -3386,7 +3386,7 @@ GuestOSInfo *qmp_guest_get_osinfo(Error **errp)
- 
- GuestDeviceInfoList *qmp_guest_get_devices(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- 
-     return NULL;
- }
+@@ -18,7 +18,6 @@
+ #include <dirent.h>
+ #include "qga-qapi-commands.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/host-utils.h"
+ #include "qemu/sockets.h"
+ #include "qemu/base64.h"
 diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index aa8c9770d4..5c9f8e0923 100644
+index 5c9f8e0923..db973c2e7e 100644
 --- a/qga/commands-win32.c
 +++ b/qga/commands-win32.c
-@@ -1213,7 +1213,7 @@ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
- GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
- {
-     if (!vss_initialized()) {
--        error_setg(errp, QERR_UNSUPPORTED);
-+        error_setg(errp, "this feature or command is not currently supported");
-         return 0;
-     }
+@@ -32,7 +32,6 @@
+ #include "vss-win32.h"
+ #include "qga-qapi-commands.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/queue.h"
+ #include "qemu/host-utils.h"
+ #include "qemu/base64.h"
+diff --git a/qga/commands.c b/qga/commands.c
+index 936634c50a..738d3d9da6 100644
+--- a/qga/commands.c
++++ b/qga/commands.c
+@@ -15,7 +15,6 @@
+ #include "guest-agent-core.h"
+ #include "qga-qapi-commands.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/base64.h"
+ #include "qemu/cutils.h"
+ #include "commands-common.h"
+diff --git a/qom/object.c b/qom/object.c
+index eea61a5068..66b02c0f22 100644
+--- a/qom/object.c
++++ b/qom/object.c
+@@ -23,7 +23,6 @@
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/forward-visitor.h"
+ #include "qapi/qapi-builtin-visit.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qjson.h"
+ #include "trace.h"
  
-@@ -1241,7 +1241,7 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
-     Error *local_err = NULL;
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index be04b2c5ab..391ea8561b 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -5,7 +5,6 @@
+ #include "qapi/qapi-visit-qom.h"
+ #include "qapi/qmp/qobject.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qjson.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/qobject-output-visitor.h"
+diff --git a/qom/qom-qmp-cmds.c b/qom/qom-qmp-cmds.c
+index 3d014f1bea..67ab1774eb 100644
+--- a/qom/qom-qmp-cmds.c
++++ b/qom/qom-qmp-cmds.c
+@@ -21,7 +21,6 @@
+ #include "qapi/qapi-commands-qom.h"
+ #include "qapi/qapi-visit-qom.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/qobject-output-visitor.h"
+ #include "qemu/cutils.h"
+diff --git a/softmmu/balloon.c b/softmmu/balloon.c
+index d941c6b9c1..f2545a6e58 100644
+--- a/softmmu/balloon.c
++++ b/softmmu/balloon.c
+@@ -30,7 +30,6 @@
+ #include "sysemu/balloon.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-machine.h"
+-#include "qapi/qmp/qerror.h"
+ #include "trace.h"
  
-     if (!vss_initialized()) {
--        error_setg(errp, QERR_UNSUPPORTED);
-+        error_setg(errp, "this feature or command is not currently supported");
-         return 0;
-     }
+ static QEMUBalloonEvent *balloon_event_fn;
+diff --git a/softmmu/cpus.c b/softmmu/cpus.c
+index f7c743b0ce..bee6afbd6d 100644
+--- a/softmmu/cpus.c
++++ b/softmmu/cpus.c
+@@ -29,7 +29,6 @@
+ #include "qapi/qapi-commands-machine.h"
+ #include "qapi/qapi-commands-misc.h"
+ #include "qapi/qapi-events-run-state.h"
+-#include "qapi/qmp/qerror.h"
+ #include "exec/gdbstub.h"
+ #include "sysemu/hw_accel.h"
+ #include "exec/cpu-common.h"
+diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+index b7b2bf18d4..9d608d5d65 100644
+--- a/softmmu/qdev-monitor.c
++++ b/softmmu/qdev-monitor.c
+@@ -27,7 +27,6 @@
+ #include "qapi/qapi-commands-qdev.h"
+ #include "qapi/qmp/dispatch.h"
+ #include "qapi/qmp/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qstring.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qemu/config-file.h"
+diff --git a/softmmu/rtc.c b/softmmu/rtc.c
+index 4904581abe..dc44576686 100644
+--- a/softmmu/rtc.c
++++ b/softmmu/rtc.c
+@@ -25,7 +25,6 @@
+ #include "qemu/osdep.h"
+ #include "qemu/cutils.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/error-report.h"
+ #include "qemu/option.h"
+ #include "qemu/timer.h"
+diff --git a/softmmu/tpm.c b/softmmu/tpm.c
+index 3a7d4b5c67..aee351e896 100644
+--- a/softmmu/tpm.c
++++ b/softmmu/tpm.c
+@@ -16,7 +16,6 @@
  
-@@ -1276,7 +1276,7 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
-     int i;
+ #include "qapi/error.h"
+ #include "qapi/qapi-commands-tpm.h"
+-#include "qapi/qmp/qerror.h"
+ #include "sysemu/tpm_backend.h"
+ #include "sysemu/tpm.h"
+ #include "qemu/config-file.h"
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index 840ac84069..8bfe51fce4 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -129,7 +129,6 @@
+ #include "qapi/qapi-visit-qom.h"
+ #include "qapi/qapi-commands-ui.h"
+ #include "block/qdict.h"
+-#include "qapi/qmp/qerror.h"
+ #include "sysemu/iothread.h"
+ #include "qemu/guest-random.h"
+ #include "qemu/keyval.h"
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index 3c99fd8222..dabe89e4bc 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -28,7 +28,6 @@
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/qapi-commands-machine-target.h"
+ #include "qapi/qapi-commands-misc-target.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qom/qom-qobject.h"
  
-     if (!vss_initialized()) {
--        error_setg(errp, QERR_UNSUPPORTED);
-+        error_setg(errp, "this feature or command is not currently supported");
-         return 0;
-     }
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index 273f865228..53124f5319 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -31,7 +31,6 @@
+ #include "qapi/error.h"
+ #include "qemu/error-report.h"
+ #include "qapi/qapi-visit-machine.h"
+-#include "qapi/qmp/qerror.h"
+ #include "standard-headers/asm-x86/kvm_para.h"
+ #include "hw/qdev-properties.h"
+ #include "hw/i386/topology.h"
+diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
+index 4507714493..4b3fd70ea1 100644
+--- a/target/s390x/cpu_models_sysemu.c
++++ b/target/s390x/cpu_models_sysemu.c
+@@ -17,7 +17,6 @@
+ #include "sysemu/kvm.h"
+ #include "qapi/error.h"
+ #include "qapi/visitor.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qapi/qobject-input-visitor.h"
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/qapi-commands-machine-target.h"
+diff --git a/ui/input-barrier.c b/ui/input-barrier.c
+index ecbba4adc2..8df118b440 100644
+--- a/ui/input-barrier.c
++++ b/ui/input-barrier.c
+@@ -21,7 +21,6 @@
+ #include "qom/object.h"
+ #include "ui/vnc_keysym.h" /* use name2keysym from VNC as we use X11 values */
+ #include "qemu/cutils.h"
+-#include "qapi/qmp/qerror.h"
+ #include "input-barrier.h"
  
-@@ -1509,7 +1509,7 @@ out:
+ #define TYPE_INPUT_BARRIER "input-barrier"
+diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
+index 0e350fc333..a7ce9c1892 100644
+--- a/ui/ui-qmp-cmds.c
++++ b/ui/ui-qmp-cmds.c
+@@ -18,7 +18,6 @@
+ #include "io/channel-file.h"
+ #include "monitor/qmp-helpers.h"
+ #include "qapi/qapi-commands-ui.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/coroutine.h"
+ #include "qemu/cutils.h"
+ #include "trace.h"
+diff --git a/util/block-helpers.c b/util/block-helpers.c
+index de94909bc4..85b53e30d2 100644
+--- a/util/block-helpers.c
++++ b/util/block-helpers.c
+@@ -10,7 +10,6 @@
  
- void qmp_guest_suspend_hybrid(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
- }
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "block-helpers.h"
  
- static IP_ADAPTER_ADDRESSES *guest_get_adapters_addresses(Error **errp)
-@@ -1877,7 +1877,7 @@ GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
- 
- int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return -1;
- }
- 
-@@ -1938,7 +1938,7 @@ void qmp_guest_set_user_password(const char *username,
-     GError *gerr = NULL;
- 
-     if (crypted) {
--        error_setg(errp, QERR_UNSUPPORTED);
-+        error_setg(errp, "this feature or command is not currently supported");
-         return;
-     }
- 
-@@ -1983,20 +1983,20 @@ done:
- 
- GuestMemoryBlockList *qmp_guest_get_memory_blocks(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestMemoryBlockResponseList *
- qmp_guest_set_memory_blocks(GuestMemoryBlockList *mem_blks, Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
-@@ -2522,12 +2522,12 @@ char *qga_get_host_name(Error **errp)
- 
- GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
- 
- GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
- {
--    error_setg(errp, QERR_UNSUPPORTED);
-+    error_setg(errp, "this feature or command is not currently supported");
-     return NULL;
- }
+ /**
+diff --git a/util/qemu-option.c b/util/qemu-option.c
+index 9440224e5b..6b86792ae7 100644
+--- a/util/qemu-option.c
++++ b/util/qemu-option.c
+@@ -31,7 +31,6 @@
+ #include "qapi/qmp/qdict.h"
+ #include "qapi/qmp/qnum.h"
+ #include "qapi/qmp/qstring.h"
+-#include "qapi/qmp/qerror.h"
+ #include "qemu/option_int.h"
+ #include "qemu/cutils.h"
+ #include "qemu/id.h"
+diff --git a/scripts/qapi/visit.py b/scripts/qapi/visit.py
+index 4b4a442383..a21b7b1468 100644
+--- a/scripts/qapi/visit.py
++++ b/scripts/qapi/visit.py
+@@ -356,7 +356,6 @@ def _begin_user_module(self, name: str) -> None:
+         self._genc.preamble_add(mcgen('''
+ #include "qemu/osdep.h"
+ #include "qapi/error.h"
+-#include "qapi/qmp/qerror.h"
+ #include "%(visit)s.h"
+ ''',
+                                       visit=visit))
 -- 
 2.41.0
 
