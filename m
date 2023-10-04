@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361A47B7E9D
+	by mail.lfdr.de (Postfix) with ESMTPS id 217927B7E9B
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:03:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0aJ-0000Ib-7e; Wed, 04 Oct 2023 08:02:40 -0400
+	id 1qo0ap-0001Wx-0E; Wed, 04 Oct 2023 08:03:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0YQ-0008Tq-0Q
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:00:38 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Yd-0008Um-Km
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:04 -0400
+Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0YO-0000xi-IH
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:00:37 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-405417465aaso20780485e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:00:36 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Yb-00010J-J5
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:00:50 -0400
+Received: by mail-wr1-x42a.google.com with SMTP id
+ ffacd0b85a97d-32487efc319so2025082f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:00:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696420835; x=1697025635; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696420847; x=1697025647; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TCSsB1yBxNop9ElFEQPzo8eRpaAPTBMtrtJV+7OJslM=;
- b=t4338tGYkiUc6DA3kdmPzoUcnvxTiagrrCHzwn4Jl2V3xLzOME4aasw+DmzOryX4ZL
- Z6AGUL8bGPWxf7IKMLk4Q7ClvH/CQwZ9WIHUCIpl7N8ePhdPMGzA8MWxOc5HJYnoZAnn
- UCtQhuyfpL/vkmr6QP4OS9357288pZ/hDOorJmP3/AZA8EEc7Uqq4F81NpevsrUalnSL
- 1Zl8acIb3Qqy5pXQwawdZ8cL/rSRrOfz0R0rj/RvP78BZ7/Xnu1YRlJk2AkelNVZLjHJ
- juUVdmFTwso9UNmlJD53ekzDT/ZZKsWWwvQAmPYUEHdO5cq4CEQkK6rpP9Fc/zJUcs3C
- MsMQ==
+ bh=f0GICmTJrrPt/1QlpCchvnQWSMZXbQVxu/WDlIYHaUw=;
+ b=nkBv0Brz1RN7FapVpWhzuWM8V6GSNfbuacwqPnZBgPvFQzLZa75lk6m47VIgbdN6lP
+ 3j9XojSuwyCJoaRiaQJy4J6BLWtCT6QZ0ql2uKvhVRe/WCPV3S/GSXJWbY1JRnMlZdME
+ QVnvq5dh9+MJub9SdfAl4fWN7+k6qFKZa+PuxiWweYBR7Z7ChNuVqCeyLwcjJshK5FbV
+ 43ojjzFc7roXh9fb9WSeE8Y3aR3aH3AEtpOafLFMhdFhN7pV6Mcqe3GxOt/4yaTHpWjy
+ KOn9MPDvpgfk1PaAgYjS9fZh1tnf+cs1drywL6qyCWcZ1wLcCix9oelOU5U/RsfVCfVe
+ sNIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696420835; x=1697025635;
+ d=1e100.net; s=20230601; t=1696420847; x=1697025647;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TCSsB1yBxNop9ElFEQPzo8eRpaAPTBMtrtJV+7OJslM=;
- b=YGcgXAeicZwMF01lherRn221PuDE9aP+E/761W3RENZanHUk1rXQh9dIsuXai1+v0m
- sw1UkRfglHIc+cGQ0UOuwVS6fH7bCjpsOVGmDir+H/UcchItoTAnaizk+vbqPcapgtdI
- 64AY8BuUE9qwGZ0BgAYyu11LbqmIdfPByJV2UryYQ54ZV6LCahFDGXucjoTwS53JfZBb
- O/NO1CV4ffNaIt8ExWG4Ulrb1gYfrjXKnTsRvcsZWPvRkEjfzvlu+AGM1yGIE9wNdUqA
- cmUj7i+4zziV68gIcZdiq0CpXAa6lnURny4S4pZQ7RG9253ucbgfs/GncdrhEf0nhcss
- Zw9g==
-X-Gm-Message-State: AOJu0YwcsajUNz/Gct70kk9q86fOt6p68yung8zmj9x8HSZbJI3wH2cb
- uuw7GJXX8HYZPEwyuvl1TYteRRpfMj93IKuFKGE=
-X-Google-Smtp-Source: AGHT+IGK8aYCctUtCXrj5L0wSBym/N9vDYk5wPrTb/m2SCQX7FAR+R2IYm5MnEmO2FY+x7+HAEZs0w==
-X-Received: by 2002:a5d:6a4c:0:b0:31f:8a6d:e527 with SMTP id
- t12-20020a5d6a4c000000b0031f8a6de527mr1957218wrw.45.1696420834925; 
- Wed, 04 Oct 2023 05:00:34 -0700 (PDT)
+ bh=f0GICmTJrrPt/1QlpCchvnQWSMZXbQVxu/WDlIYHaUw=;
+ b=Kkj09+6xuKK2a8F06JWSEQ/9Q9TozhM5tGv3KPLtLqH55jK7zhp1tCu1bWzBagV9NW
+ fPelRoveaD2JLdqEln9iIDe0H1MCHtyj9uQ39oVkc59FUdDyWNm7RFK5xV/QJ5pZu3Yl
+ 7rm8NS9v/h1eiHJS33y3dxWFepB3J1lzdFJHCJo0OQEZ7fj583v3TfWkkqNZEqeTDfWm
+ o29J34QOr6soqx5Gmfmvr0hoHPoRmLg8P6Omr7HUMCgMh+3ppWD7d6nhVSlFPtLIt/SG
+ 7IuaFNzl1Y1ccva5XccvMORY1+hjHov97QTbQmTw9Ucm6r6V+HBq916SU91VnE+DqrgE
+ VTkQ==
+X-Gm-Message-State: AOJu0YwiOZVvAxmk0Y5OAhjlBL2AzVvRm7nUXyhnKm6Zdpq19cc3H3Fc
+ sumE3oWBWn6CJ97M7MaReNcNEtOiCd9rbGPha1U=
+X-Google-Smtp-Source: AGHT+IHL2TIN4V+wokEd1/Sv4SaIhDM5Y9hsgAMKSI224mQSj1xFlgTYkUI5x2ZhZEzj5ShVR3VXqw==
+X-Received: by 2002:a5d:504e:0:b0:320:bbb:5ab1 with SMTP id
+ h14-20020a5d504e000000b003200bbb5ab1mr1955791wrt.14.1696420846661; 
+ Wed, 04 Oct 2023 05:00:46 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- v11-20020adfedcb000000b0031fd849e797sm3845151wro.105.2023.10.04.05.00.33
+ q4-20020a5d5744000000b003231a0ca5ebsm3817200wrw.49.2023.10.04.05.00.45
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 05:00:34 -0700 (PDT)
+ Wed, 04 Oct 2023 05:00:46 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- John Snow <jsnow@redhat.com>
-Subject: [PATCH v3 02/16] hw/ide/ahci: Clean up local variable shadowing
-Date: Wed,  4 Oct 2023 14:00:05 +0200
-Message-ID: <20231004120019.93101-3-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v3 04/16] os-posix: Clean up global variable shadowing
+Date: Wed,  4 Oct 2023 14:00:07 +0200
+Message-ID: <20231004120019.93101-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004120019.93101-1-philmd@linaro.org>
 References: <20231004120019.93101-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,33 +95,86 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  hw/ide/ahci.c:1577:23: error: declaration shadows a local variable [-Werror,-Wshadow]
-            IDEState *s = &ad->port.ifs[j];
-                      ^
-  hw/ide/ahci.c:1569:29: note: previous declaration is here
-    void ahci_uninit(AHCIState *s)
+  os-posix.c:103:31: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  bool os_set_runas(const char *optarg)
                                 ^
+  os-posix.c:176:32: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  void os_set_chroot(const char *optarg)
+                                 ^
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
+  extern char *optarg;                    /* getopt(3) external variables */
+               ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/ide/ahci.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/sysemu/os-posix.h |  4 ++--
+ os-posix.c                | 12 ++++++------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index d0a774bc17..fcc5476e9e 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -1622,9 +1622,7 @@ void ahci_uninit(AHCIState *s)
-         AHCIDevice *ad = &s->dev[i];
+diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
+index 6dfdcbb086..dff32ae185 100644
+--- a/include/sysemu/os-posix.h
++++ b/include/sysemu/os-posix.h
+@@ -49,8 +49,8 @@ void os_setup_signal_handling(void);
+ int os_set_daemonize(bool d);
+ bool is_daemonized(void);
+ void os_daemonize(void);
+-bool os_set_runas(const char *optarg);
+-void os_set_chroot(const char *optarg);
++bool os_set_runas(const char *user_id);
++void os_set_chroot(const char *path);
+ void os_setup_post(void);
+ int os_mlock(void);
  
-         for (j = 0; j < 2; j++) {
--            IDEState *s = &ad->port.ifs[j];
--
--            ide_exit(s);
-+            ide_exit(&ad->port.ifs[j]);
-         }
-         object_unparent(OBJECT(&ad->port));
+diff --git a/os-posix.c b/os-posix.c
+index f90dfda9b0..52ef6990ff 100644
+--- a/os-posix.c
++++ b/os-posix.c
+@@ -94,13 +94,13 @@ static uid_t user_uid = (uid_t)-1; /*   -1      -1        >=0    */
+ static gid_t user_gid = (gid_t)-1; /*   -1      -1        >=0    */
+ 
+ /*
+- * Prepare to change user ID. optarg can be one of 3 forms:
++ * Prepare to change user ID. user_id can be one of 3 forms:
+  *   - a username, in which case user ID will be changed to its uid,
+  *     with primary and supplementary groups set up too;
+  *   - a numeric uid, in which case only the uid will be set;
+  *   - a pair of numeric uid:gid.
+  */
+-bool os_set_runas(const char *optarg)
++bool os_set_runas(const char *user_id)
+ {
+     unsigned long lv;
+     const char *ep;
+@@ -108,14 +108,14 @@ bool os_set_runas(const char *optarg)
+     gid_t got_gid;
+     int rc;
+ 
+-    user_pwd = getpwnam(optarg);
++    user_pwd = getpwnam(user_id);
+     if (user_pwd) {
+         user_uid = -1;
+         user_gid = -1;
+         return true;
      }
+ 
+-    rc = qemu_strtoul(optarg, &ep, 0, &lv);
++    rc = qemu_strtoul(user_id, &ep, 0, &lv);
+     got_uid = lv; /* overflow here is ID in C99 */
+     if (rc || *ep != ':' || got_uid != lv || got_uid == (uid_t)-1) {
+         return false;
+@@ -173,9 +173,9 @@ static void change_process_uid(void)
+ 
+ static const char *chroot_dir;
+ 
+-void os_set_chroot(const char *optarg)
++void os_set_chroot(const char *path)
+ {
+-    chroot_dir = optarg;
++    chroot_dir = path;
+ }
+ 
+ static void change_root(void)
 -- 
 2.41.0
 
