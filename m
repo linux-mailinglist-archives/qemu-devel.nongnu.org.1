@@ -2,58 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EBF7B7A3F
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF9087B7A44
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:39:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxPF-000457-9r; Wed, 04 Oct 2023 04:38:57 -0400
+	id 1qnxPJ-0004Bd-BX; Wed, 04 Oct 2023 04:39:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qnxPD-00042M-Gs
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:38:55 -0400
+ id 1qnxPG-0004Al-RS
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:38:58 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qnxPB-0007f4-2R
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:38:54 -0400
+ id 1qnxPF-0007fo-9b
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:38:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
- MIME-Version:References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:
- Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
- Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
- List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=1YYmerWrP1fexZav6nISrGNLIh0dqGrzl0rAYflDWKk=; b=X4vQ8lvw5gTmiCUmrnW56rPcsh
- i6OdGahQ/mXAt9ZevrjWaJHZQVq9Q6lOwejmLIfsKkvloQ/sWrLUxOYRtyG+OeFbbx7H4rgdKl5kj
- Oc7ZLsvAu2i8YRSiv83Ssd1phNBe82+/pQ6zn4ceK3sGhJ8ZKHUS7KE/cxCXC/b0cf8E/Ddmtjs45
- akCIoiQ/XRkkTZ1HTuT+o2mYytKtyLjpNPnuBlb4pIuVR92E+HpHjcFz5IGsyISuotSAsc4i+/D1q
- dOLTPiq2ltym+uY54RP/qYYNcIoY6YK5Iudfql09WAHLCieA9P8CkHdq17w6kK1aXqfLy4UiOTzDU
- gCfU1ilfkq5wT1HePJfwc6ngtnLaCDrulIvo2k5epn8bY7SRtY7dZnfRtE8ojb9ilfv4fepANdyH8
- 0Cl9iUplV5np7bjLbD1Px+pm4llUbl5hKoV5MCVv6UXKu5xLRLbYQhShYeFsvTh7KvXCZCw1w8N/r
- mvVHcDUC3IfyHjpIxkb0oL35sJv1g1KFx6BVvcKtAGDaETJrwb9MYPAQvgFzzPLDH4w9I4twoTnUy
- MGWUbwz+hVhNh6zghu/pUm97OsQakQo5h1T73Dz9UgOI/n6QAL1zvj8A6Ca9dbWqykf2WXNeCzJDw
- 2FodwQKaISwRu886hO3MQGORtRzdnZZCORh1V9Tdk=;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
+ References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
+ Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+ Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+ List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=EeJUdGQriujDLVWAuyFisLNH+ZEjrZeVSKeIvh0lhw8=; b=OdMXC/J04qrwImEUm/WN7i3iPh
+ wCkwYFJ1zYU7HMtlalYMtC6OALO1wHCiN86Ok1iBZ0fpNTDQZF6lqaa8mfJZRlal56lYmNGtAGhXJ
+ N5RN43M/6E5CPxDFSsMTKMmreg6IvC8kpdlgpYxuNdWQIJudUvrSwcin0WdLmKAaIzx/b/pE3I78o
+ rDDLb2fQCH4+J6MG4hRmflxea8atGIB2XwguG9RTwfwKQ3OqLJLRmglbeyIJ6UO/IHv3+xBDaOR6w
+ KrC23q1+PlGABr3QBRnKcxG3XnGIV417Gp2+IAf8ru/rxND+zQyKzvXctbsWlRL2xPaQhtc44A1xe
+ yufPjIjvJ4mLgqbYO10JWcjfTfqNzw14uTCyrsKGwADUaX2FWXVTeS5oALQd3SLdR1NbWJdqXQSpI
+ Pdg877MUXvyxpMpOKyk9zXMDCWSsXd0KXSxi6tUDV38EQiw+UxhgF4Ok4WLFpo6MPu9fUcKOTyGkB
+ 2AUlSHymEaFLsb4XhkovE+Dtl8n1zRMP4RK4X8e51zFbVmy8s3NbBAV1i62aJlX/L1L+klVYupR4Y
+ gOTOu3hLOf8o3cZKPlg8POjrpB7V/x7YYjOrjsB5X4pfYwJ+EFWfjaMYzpFvCBSxvAGXdKR+sq8xP
+ 8uRZZVgFT9DaFxCjU9tba5BthSWyuRJ4rPnMnn6Io=;
 Received: from host86-159-123-68.range86-159.btcentralplus.com
  ([86.159.123.68] helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qnxOw-0006za-NP; Wed, 04 Oct 2023 09:38:42 +0100
+ id 1qnxP0-0006za-98; Wed, 04 Oct 2023 09:38:46 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed,  4 Oct 2023 09:37:56 +0100
-Message-Id: <20231004083806.757242-11-mark.cave-ayland@ilande.co.uk>
+Date: Wed,  4 Oct 2023 09:37:57 +0100
+Message-Id: <20231004083806.757242-12-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231004083806.757242-1-mark.cave-ayland@ilande.co.uk>
 References: <20231004083806.757242-1-mark.cave-ayland@ilande.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.159.123.68
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 10/20] q800: add easc bool machine class property to switch
- between ASC and EASC
+Subject: [PATCH v4 11/20] swim: add trace events for IWM and ISM registers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -79,93 +77,95 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This determines whether the Apple Sound Chip (ASC) is set to enhanced mode
-(default) or to original mode. The real Q800 hardware used an EASC chip however
-a lot of older software only works with the older ASC chip.
-
-Adding this as a machine parameter allows QEMU to be used as an developer aid
-for testing and migrating code from ASC to EASC.
-
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
- include/hw/m68k/q800.h |  1 +
- 2 files changed, 30 insertions(+), 1 deletion(-)
+ hw/block/swim.c       | 14 ++++++++++++++
+ hw/block/trace-events |  7 +++++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 249fedde7a..ac3115d328 100644
---- a/hw/m68k/q800.c
-+++ b/hw/m68k/q800.c
-@@ -484,7 +484,8 @@ static void q800_machine_init(MachineState *machine)
-     /* Apple Sound Chip */
+diff --git a/hw/block/swim.c b/hw/block/swim.c
+index 333da08ce0..7df36ea139 100644
+--- a/hw/block/swim.c
++++ b/hw/block/swim.c
+@@ -19,6 +19,7 @@
+ #include "hw/block/block.h"
+ #include "hw/block/swim.h"
+ #include "hw/qdev-properties.h"
++#include "trace.h"
  
-     object_initialize_child(OBJECT(machine), "asc", &m->asc, TYPE_ASC);
--    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", ASC_TYPE_EASC);
-+    qdev_prop_set_uint8(DEVICE(&m->asc), "asctype", m->easc ? ASC_TYPE_EASC
-+                                                            : ASC_TYPE_ASC);
-     if (machine->audiodev) {
-         qdev_prop_set_string(DEVICE(&m->asc), "audiodev", machine->audiodev);
-     }
-@@ -677,6 +678,28 @@ static void q800_machine_init(MachineState *machine)
-     }
+ /* IWM registers */
+ 
+@@ -125,6 +126,13 @@
+ #define SWIM_HEDSEL          0x20
+ #define SWIM_MOTON           0x80
+ 
++static const char *swim_reg_names[] = {
++    "WRITE_DATA", "WRITE_MARK", "WRITE_CRC", "WRITE_PARAMETER",
++    "WRITE_PHASE", "WRITE_SETUP", "WRITE_MODE0", "WRITE_MODE1",
++    "READ_DATA", "READ_MARK", "READ_ERROR", "READ_PARAMETER",
++    "READ_PHASE", "READ_SETUP", "READ_STATUS", "READ_HANDSHAKE"
++};
++
+ static void fd_recalibrate(FDrive *drive)
+ {
+ }
+@@ -267,6 +275,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
+     reg >>= REG_SHIFT;
+ 
+     swimctrl->regs[reg >> 1] = reg & 1;
++    trace_swim_iwmctrl_write((reg >> 1), size, (reg & 1));
+ 
+     if (swimctrl->regs[IWM_Q6] &&
+         swimctrl->regs[IWM_Q7]) {
+@@ -297,6 +306,7 @@ static void iwmctrl_write(void *opaque, hwaddr reg, uint64_t value,
+                 if (value == 0x57) {
+                     swimctrl->mode = SWIM_MODE_SWIM;
+                     swimctrl->iwm_switch = 0;
++                    trace_swim_iwm_switch();
+                 }
+                 break;
+             }
+@@ -312,6 +322,7 @@ static uint64_t iwmctrl_read(void *opaque, hwaddr reg, unsigned size)
+ 
+     swimctrl->regs[reg >> 1] = reg & 1;
+ 
++    trace_swim_iwmctrl_read((reg >> 1), size, (reg & 1));
+     return 0;
  }
  
-+static bool q800_get_easc(Object *obj, Error **errp)
-+{
-+    Q800MachineState *ms = Q800_MACHINE(obj);
+@@ -327,6 +338,8 @@ static void swimctrl_write(void *opaque, hwaddr reg, uint64_t value,
+ 
+     reg >>= REG_SHIFT;
+ 
++    trace_swim_swimctrl_write(reg, swim_reg_names[reg], size, value);
 +
-+    return ms->easc;
-+}
-+
-+static void q800_set_easc(Object *obj, bool value, Error **errp)
-+{
-+    Q800MachineState *ms = Q800_MACHINE(obj);
-+
-+    ms->easc = value;
-+}
-+
-+static void q800_init(Object *obj)
-+{
-+    Q800MachineState *ms = Q800_MACHINE(obj);
-+
-+    /* Default to EASC */
-+    ms->easc = true;
-+}
-+
- static GlobalProperty hw_compat_q800[] = {
-     { "scsi-hd", "quirk_mode_page_vendor_specific_apple", "on" },
-     { "scsi-hd", "vendor", " SEAGATE" },
-@@ -710,11 +733,16 @@ static void q800_machine_class_init(ObjectClass *oc, void *data)
-     mc->default_ram_id = "m68k_mac.ram";
-     machine_add_audiodev_property(mc);
-     compat_props_add(mc->compat_props, hw_compat_q800, hw_compat_q800_len);
-+
-+    object_class_property_add_bool(oc, "easc", q800_get_easc, q800_set_easc);
-+    object_class_property_set_description(oc, "easc",
-+        "Set to off to use ASC rather than EASC");
+     switch (reg) {
+     case SWIM_WRITE_PHASE:
+         swimctrl->swim_phase = value;
+@@ -376,6 +389,7 @@ static uint64_t swimctrl_read(void *opaque, hwaddr reg, unsigned size)
+         break;
+     }
+ 
++    trace_swim_swimctrl_read(reg, swim_reg_names[reg], size, value);
+     return value;
  }
  
- static const TypeInfo q800_machine_typeinfo = {
-     .name       = MACHINE_TYPE_NAME("q800"),
-     .parent     = TYPE_MACHINE,
-+    .instance_init = q800_init,
-     .instance_size = sizeof(Q800MachineState),
-     .class_init = q800_machine_class_init,
- };
-diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 790cf433f3..fbaacd88bd 100644
---- a/include/hw/m68k/q800.h
-+++ b/include/hw/m68k/q800.h
-@@ -47,6 +47,7 @@
- struct Q800MachineState {
-     MachineState parent_obj;
- 
-+    bool easc;
-     M68kCPU cpu;
-     MemoryRegion rom;
-     GLUEState glue;
+diff --git a/hw/block/trace-events b/hw/block/trace-events
+index 34be8b9135..c041ec45e3 100644
+--- a/hw/block/trace-events
++++ b/hw/block/trace-events
+@@ -90,3 +90,10 @@ m25p80_read_data(void *s, uint32_t pos, uint8_t v) "[%p] Read data 0x%"PRIx32"=0
+ m25p80_read_sfdp(void *s, uint32_t addr, uint8_t v) "[%p] Read SFDP 0x%"PRIx32"=0x%"PRIx8
+ m25p80_binding(void *s) "[%p] Binding to IF_MTD drive"
+ m25p80_binding_no_bdrv(void *s) "[%p] No BDRV - binding to RAM"
++
++# swim.c
++swim_swimctrl_read(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
++swim_swimctrl_write(int reg, const char *name, unsigned size, uint64_t value) "reg=%d [%s] size=%u value=0x%"PRIx64
++swim_iwmctrl_read(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
++swim_iwmctrl_write(int reg, unsigned size, uint64_t value) "reg=%d size=%u value=0x%"PRIx64
++swim_iwm_switch(void) "switch from IWM to SWIM mode"
 -- 
 2.39.2
 
