@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2906A7B8D48
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6CE7B8D4A
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:22:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo7Qz-0001WL-2b; Wed, 04 Oct 2023 15:21:25 -0400
+	id 1qo7S1-0003jN-7B; Wed, 04 Oct 2023 15:22:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qo7Qx-0001N2-Dv; Wed, 04 Oct 2023 15:21:23 -0400
-Received: from mail-lf1-x12d.google.com ([2a00:1450:4864:20::12d])
+ id 1qo7Rl-0003SU-CU; Wed, 04 Oct 2023 15:22:13 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qo7Qv-0002M8-Ji; Wed, 04 Oct 2023 15:21:23 -0400
-Received: by mail-lf1-x12d.google.com with SMTP id
- 2adb3069b0e04-50444e756deso250690e87.0; 
- Wed, 04 Oct 2023 12:21:20 -0700 (PDT)
+ id 1qo7Rg-0002TI-9K; Wed, 04 Oct 2023 15:22:12 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-504a7f9204eso234096e87.3; 
+ Wed, 04 Oct 2023 12:22:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696447279; x=1697052079; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696447324; x=1697052124; darn=nongnu.org;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=CT8CjkyW/qAVTukpqo9XqNgrhGiKGcDkIGDpw65wGGc=;
- b=k9a1Y1FNzkTzCzd9CEYF5q0ufRrrvjv/e+E0YC4LnHFlWhJ251CirXRPD2Eukmrrq4
- TkvMOYY9qNdUMj1bbFt8RLJ7vIFAf7wSPRjiF32yMa8MYDFJRboSjbnls6DMFgngyww9
- /tUZmyR8zRdFIamiyXPwamrJRtkscoRrr7+uhLF9N2dU+hKNgBbnO64y6czm1KuY9tqh
- R5ri0azuMF0DGgSnUbf3N3lN1FRZYCSzTHbRahv1bW9Eg699jrYNbybGSy9RDeS2lHpC
- CCjrAcgIhcZaJz81U6t/oWJreBx40sE7+/OcrtOIFz+vwPuCCmswh5eCREAdMagTR0Ng
- QDig==
+ bh=7/FXvH4AVeLIX4JBWjI7WQhiI1KBXoKB/o0+b6JzizA=;
+ b=jvHFkOjNnTnwV9vJ3BDhc8fugyevOcuLIwfHyj/8zR67YefLLPdj/9414XuHWFJiv/
+ LIcyAAjNBOOMfKKK1RZOBOOlhSv5RlXX9i+YB3JIAfuFJunwgQWe5ycdghs9N5NAbTg5
+ eb6AEsGH/16T4QUacAWQPnr2lZWyFwee8MG4IU9goJyaTCElb5gvUl/zsnr19CLUMjtw
+ af0jnQxcq8YHqAMjWZX948TBEMY1UupbvDlzTt4OcoABJNHwjlwnwkhcYeWYB7LtqY/I
+ JXnnBRF2DebOSiBf8talSN+jlOWz15lXukAH5SFagBfdWxgoyipm3f4vb4cEfjBn+o7m
+ nRLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696447279; x=1697052079;
+ d=1e100.net; s=20230601; t=1696447324; x=1697052124;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=CT8CjkyW/qAVTukpqo9XqNgrhGiKGcDkIGDpw65wGGc=;
- b=w4U9RtE2Q7hSpJVcJSezygX4bb5yKkX2CP/d6CnSjP/cuCO0J7lARZlcP3tRa/JI+2
- VMQ07/AIjszJgC7gHIlTXSt/0FVX6BFvyaTme0YKSa4EQhSKkkGOfuuHVHnhe8voguvj
- z4VhWI9t8HMQkr56oeXHWAcrq8eK3P/5J620GSBdHIx+I2HKrwFDqg72g2r4lDfpk/is
- KirlV4u4RPspTjK/IuH9XDoYUAeFdNNXqnc3f1Lm6FWHkpjR82gwjGWl46LlJ4BgUGMY
- hDNIIlVu+nizpNhvviXHQFd5vFbptnm28MpKDDlKAeOtFlguQ54Yp7LEUa+VNyf9a/0X
- fRaA==
-X-Gm-Message-State: AOJu0Yzk/A7etP8XXTAtdCCeebqqsKaa1NgoBpdLjq2vRBRYZO5Og8/4
- HeFROWuGuIDEz+hSngAl3xZiW6mdMcw=
-X-Google-Smtp-Source: AGHT+IHFHwriAgAV4UMe5N6e5UpAHgCnsRRvxJ05QoCsqYttnieq8LTfld99wmLexTivWYna0wUZpw==
-X-Received: by 2002:a05:6512:1104:b0:505:6ede:20ab with SMTP id
- l4-20020a056512110400b005056ede20abmr3363545lfg.53.1696447279486; 
- Wed, 04 Oct 2023 12:21:19 -0700 (PDT)
+ bh=7/FXvH4AVeLIX4JBWjI7WQhiI1KBXoKB/o0+b6JzizA=;
+ b=fvoGko9DyPr6m+yABfEDCXmfWPQSO54C2TNezchiyySz7cdLU4F1lnIw87YrxosHwF
+ aJp1b/rk8UgHlFHhPrhPHtQv0oBGtdadA5mhFVtRKHqOIYaOUAeSzfv35Ec4DkSgPbtB
+ pMQZ0r6BAjZXUE7D9Ujxhc0yoqr0RNdtKYSavqMwsSZTbEDBDEV/EOIeWB5TejauJLIw
+ 0WclXBYSFLzI4GoSNb+Evmyb9G0qeuEtq7Ns4J4qK3Gi3IoeEUtp4+BxlzIi3GkUMWZB
+ ICB81iY1b0ECUwkaJ53XNU9cB3j2ZsuWyBy2fAjekmA4UWik8RjLLctvmqihwKABY43M
+ +5vg==
+X-Gm-Message-State: AOJu0Yyt79nAI03L1jWaFxecL+Jq+u7b+s6ClwHIKK6BC8uDW0pzJH/v
+ ituMkw1T+S8xEpFplk/F2ks=
+X-Google-Smtp-Source: AGHT+IE2UHZPF/1mFMcgjN3fDZO3KpVD3j/Mant69uN/Kjg/D4JpcYrJ4150v3cn58DpyCUXWatPGg==
+X-Received: by 2002:a05:6512:3095:b0:503:2a53:7480 with SMTP id
+ z21-20020a056512309500b005032a537480mr3187139lfd.49.1696447324370; 
+ Wed, 04 Oct 2023 12:22:04 -0700 (PDT)
 Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
  by smtp.gmail.com with ESMTPSA id
- n14-20020ac2490e000000b004fe3bd81278sm714788lfi.70.2023.10.04.12.21.19
+ c22-20020ac25316000000b00502d7365e8fsm715351lfh.137.2023.10.04.12.22.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 12:21:19 -0700 (PDT)
-Date: Wed, 4 Oct 2023 21:21:17 +0200
+ Wed, 04 Oct 2023 12:22:04 -0700 (PDT)
+Date: Wed, 4 Oct 2023 21:22:02 +0200
 From: Francisco Iglesias <frasse.iglesias@gmail.com>
 To: Tong Ho <tong.ho@amd.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, alistair@alistair23.me,
  edgar.iglesias@gmail.com, peter.maydell@linaro.org
-Subject: Re: [PATCH] xlnx-versal-efuse: hw/nvram: Remove deprecated device
- reset
-Message-ID: <20231004192117.GE18959@fralle-msi>
-References: <20231004055339.323833-1-tong.ho@amd.com>
+Subject: Re: [PATCH] xlnx-bbram: hw/nvram: Use dot in device type name
+Message-ID: <20231004192202.GF18959@fralle-msi>
+References: <20231003052139.199665-1-tong.ho@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231004055339.323833-1-tong.ho@amd.com>
+In-Reply-To: <20231003052139.199665-1-tong.ho@amd.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::12d;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x12d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -1020
 X-Spam_score: -102.1
 X-Spam_bar: ---------------------------------------------------
@@ -93,52 +92,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 Oct 03] Tue 22:53:39, Tong Ho wrote:
-> This change implements the ResettableClass interface for the device.
+On [2023 Oct 02] Mon 22:21:39, Tong Ho wrote:
+> This replaces the comma (,) to dot (.) in the device type name
+> so the name can be used with the 'driver=' command line option.
 > 
 > Signed-off-by: Tong Ho <tong.ho@amd.com>
 
 Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 
 > ---
->  hw/nvram/xlnx-versal-efuse-ctrl.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  include/hw/nvram/xlnx-bbram.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/hw/nvram/xlnx-versal-efuse-ctrl.c b/hw/nvram/xlnx-versal-efuse-ctrl.c
-> index b35ba65ab5..beb5661c35 100644
-> --- a/hw/nvram/xlnx-versal-efuse-ctrl.c
-> +++ b/hw/nvram/xlnx-versal-efuse-ctrl.c
-> @@ -2,6 +2,7 @@
->   * QEMU model of the Versal eFuse controller
->   *
->   * Copyright (c) 2020 Xilinx Inc.
-> + * Copyright (c) 2023 Advanced Micro Devices, Inc.
->   *
->   * Permission is hereby granted, free of charge, to any person obtaining a copy
->   * of this software and associated documentation files (the "Software"), to deal
-> @@ -657,9 +658,9 @@ static void efuse_ctrl_register_reset(RegisterInfo *reg)
->      register_reset(reg);
->  }
+> diff --git a/include/hw/nvram/xlnx-bbram.h b/include/hw/nvram/xlnx-bbram.h
+> index 87d59ef3c0..6fc13f8cc1 100644
+> --- a/include/hw/nvram/xlnx-bbram.h
+> +++ b/include/hw/nvram/xlnx-bbram.h
+> @@ -34,7 +34,7 @@
 >  
-> -static void efuse_ctrl_reset(DeviceState *dev)
-> +static void efuse_ctrl_reset_hold(Object *obj)
->  {
-> -    XlnxVersalEFuseCtrl *s = XLNX_VERSAL_EFUSE_CTRL(dev);
-> +    XlnxVersalEFuseCtrl *s = XLNX_VERSAL_EFUSE_CTRL(obj);
->      unsigned int i;
+>  #define RMAX_XLNX_BBRAM ((0x4c / 4) + 1)
 >  
->      for (i = 0; i < ARRAY_SIZE(s->regs_info); ++i) {
-> @@ -749,8 +750,9 @@ static Property efuse_ctrl_props[] = {
->  static void efuse_ctrl_class_init(ObjectClass *klass, void *data)
->  {
->      DeviceClass *dc = DEVICE_CLASS(klass);
-> +    ResettableClass *rc = RESETTABLE_CLASS(klass);
+> -#define TYPE_XLNX_BBRAM "xlnx,bbram-ctrl"
+> +#define TYPE_XLNX_BBRAM "xlnx.bbram-ctrl"
+>  OBJECT_DECLARE_SIMPLE_TYPE(XlnxBBRam, XLNX_BBRAM);
 >  
-> -    dc->reset = efuse_ctrl_reset;
-> +    rc->phases.hold = efuse_ctrl_reset_hold;
->      dc->realize = efuse_ctrl_realize;
->      dc->vmsd = &vmstate_efuse_ctrl;
->      device_class_set_props(dc, efuse_ctrl_props);
+>  struct XlnxBBRam {
 > -- 
 > 2.25.1
 > 
