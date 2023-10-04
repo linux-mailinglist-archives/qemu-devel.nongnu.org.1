@@ -2,85 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD5E7B7C3C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A84A7B7C40
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:36:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnyIb-000347-UC; Wed, 04 Oct 2023 05:36:11 -0400
+	id 1qnyIy-0003YQ-T8; Wed, 04 Oct 2023 05:36:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qnyIY-00031E-1Q
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:36:06 -0400
-Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <rbradford@rivosinc.com>)
- id 1qnyIU-0004R4-UV
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:36:05 -0400
-Received: by mail-ej1-x633.google.com with SMTP id
- a640c23a62f3a-99de884ad25so340492166b.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:36:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696412160; x=1697016960;
- darn=nongnu.org; 
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
- :date:message-id:reply-to;
- bh=XwWQxAyxODDkhCTQpDWs5F3KR0Z3rGjvpdnR4kmJuDs=;
- b=aDQDUDt7ACkux5OUFCusV73G+9dUnex4MKwtUdbqDz1h3XQzE/9sVhVc1A1gQMA1Cl
- JYB4Rj//AjVfR3TNl27V7LKkpB/a6WHtqIsg/QfF4S2F4lOayItj6LGNx5zZtHklzO14
- bJnUrYnXNkTucfy4iHH6KLbnM0j3sRba9PxTRSqqwwmnUHtDD33BUQRBrmWGXkFwINeA
- XsJfjfrFmaD66n5tEtRj98hseoOFT3Hk1kD1qToT+WWhj8G5Np08Xgtvc/7Z4OqMyphL
- u7i6dSeDwBsX06HPtdfz+o8gxKH6YlBkUfd+Su4m6G3KtgK2Ymzsh/Mm2eC5Fqi45fS7
- umQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696412160; x=1697016960;
- h=mime-version:user-agent:content-transfer-encoding:references
- :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=XwWQxAyxODDkhCTQpDWs5F3KR0Z3rGjvpdnR4kmJuDs=;
- b=oha+EyllOTBh0kSNsImw/qFv5Fa5ryhUVhRP3V0sw4v3nzzfsNcQlvTPFc5zRbTYdE
- NhbT+hYeazmnisUf1a5+BTsNILRDG1aHMcstR0OnFFRZnp3cc1cLxtvFHNl/YCdjZsHB
- RDmotmH02S5AujheD0th9VqTIvNQcFI4SfJnR/4XImCmCLWxBQbzHIFpV8p97e/UfuVl
- 2TLFTuiN4OYnLZITRYX3pNftTU64KP75sIC4pfJm4RbqyTJLAyFdipcof5LCFDMJ6HDi
- phNpasxG/2oFIbfNnrfjmHxleeEXsCVqja1/LDy/5gP8pTrMMWVLMWNRCAOK7Y16UWdk
- hc4w==
-X-Gm-Message-State: AOJu0YyuJfW2E4QoMcdWwUDMNMo5oMpVXUR0UEDahBGhriRa8wJQVGB7
- EvI+UVlpGt85bZrXBWxXitII7A==
-X-Google-Smtp-Source: AGHT+IEPPY9J0VKOhewzM9j+8+q7eIRWWv+ipClM0JjoO8Rah7I2lf/pVRPBq3FkwJIua8AHtkkyRw==
-X-Received: by 2002:a17:906:8a67:b0:9a1:f3a6:b906 with SMTP id
- hy7-20020a1709068a6700b009a1f3a6b906mr1629271ejc.36.1696412159424; 
- Wed, 04 Oct 2023 02:35:59 -0700 (PDT)
-Received: from [192.168.1.9] (214.11.169.217.in-addr.arpa. [217.169.11.214])
- by smtp.gmail.com with ESMTPSA id
- v22-20020a1cf716000000b003fefcbe7fa8sm1038757wmh.28.2023.10.04.02.35.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 02:35:58 -0700 (PDT)
-Message-ID: <d2a170aeb3f05614c3801c1819afbbddc3ff4f37.camel@rivosinc.com>
-Subject: Re: [PATCH 2/3] target/riscv: Support discontinuous PMU counters
-From: Rob Bradford <rbradford@rivosinc.com>
-To: Atish Kumar Patra <atishp@rivosinc.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, palmer@dabbelt.com, 
- alistair.francis@wdc.com, bin.meng@windriver.com, liweiwei@iscas.ac.cn, 
- dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Date: Wed, 04 Oct 2023 10:35:58 +0100
-In-Reply-To: <CAHBxVyHYJjvADsHPCJeheU4_8s1=DfyeApPyV8QpuPnTm2F=Gw@mail.gmail.com>
-References: <20231003125107.34859-1-rbradford@rivosinc.com>
- <20231003125107.34859-3-rbradford@rivosinc.com>
- <CAHBxVyHYJjvADsHPCJeheU4_8s1=DfyeApPyV8QpuPnTm2F=Gw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.3 (3.48.3-1.module_f38+16987+774193ea) 
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qnyIu-0003Ur-RJ
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:36:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qnyIr-0004US-4r
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:36:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696412183;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=ligNa6l5VLv3GbjYat3IiPYE0gZ/FrJ8CZxSDLKEYUg=;
+ b=Otok6Fe82rvFCvr8elWM8WHN2VvmAEHlMP2J4+IlGgosnLmG0wqxtFbNSt3hDdpFzWrxHi
+ R35PDPl8jZgsWAjlDSG73AtOg4CEE6+ZrBIs4X8GiUmjLOwc5s5gFO4pmHG1Sa/A40P84n
+ cpap0Hpr/sAl7kHKFn/oAa+FiSukU+0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-93-dsyWXCPpNuaFINSey2nOlQ-1; Wed, 04 Oct 2023 05:36:22 -0400
+X-MC-Unique: dsyWXCPpNuaFINSey2nOlQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1AC15811E86;
+ Wed,  4 Oct 2023 09:36:22 +0000 (UTC)
+Received: from thuth-p1g4.str.redhat.com (dhcp-192-181.str.redhat.com
+ [10.33.192.181])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 6D33BC15BB8;
+ Wed,  4 Oct 2023 09:36:21 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	Gerd Hoffmann <kraxel@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+	qemu-trivial@nongnu.org
+Subject: [PATCH] hw/usb: Silence compiler warnings in USB code when compiling
+ with -Wshadow
+Date: Wed,  4 Oct 2023 11:36:20 +0200
+Message-ID: <20231004093620.97906-1-thuth@redhat.com>
 MIME-Version: 1.0
-Received-SPF: pass client-ip=2a00:1450:4864:20::633;
- envelope-from=rbradford@rivosinc.com; helo=mail-ej1-x633.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,135 +76,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Atish,
+Rename variables or remove nested definitions where it makes sense,
+so that we can finally compile the USB code with "-Wshadow", too.
 
-On Tue, 2023-10-03 at 13:25 -0700, Atish Kumar Patra wrote:
-> On Tue, Oct 3, 2023 at 5:51=E2=80=AFAM Rob Bradford <rbradford@rivosinc.c=
-om>
-> wrote:
-> >=20
-> > There is no requirement that the enabled counters in the platform
-> > are
-> > continuously numbered. Add a "pmu-mask" property that, if
-> > specified, can
-> > be used to specify the enabled PMUs. In order to avoid ambiguity if
-> > "pmu-mask" is specified then "pmu-num" must also match the number
-> > of
-> > bits set in the mask.
-> >=20
-> > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> > ---
-> > =C2=A0target/riscv/cpu.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
-> > =C2=A0target/riscv/cpu_cfg.h |=C2=A0 1 +
-> > =C2=A0target/riscv/pmu.c=C2=A0=C2=A0=C2=A0=C2=A0 | 15 +++++++++++++--
-> > =C2=A03 files changed, 15 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > index 9d79c20c1a..b89b006a76 100644
-> > --- a/target/riscv/cpu.c
-> > +++ b/target/riscv/cpu.c
-> > @@ -1817,6 +1817,7 @@ static void
-> > riscv_cpu_add_misa_properties(Object *cpu_obj)
-> > =C2=A0static Property riscv_cpu_extensions[] =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 /* Defaults for standard extensions */
-> > =C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu=
-_num, 16),
-> > +=C2=A0=C2=A0=C2=A0 DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_ma=
-sk, 0),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext=
-_sscofpmf,
-> > false),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext=
-_ifencei, true),
-> > =C2=A0=C2=A0=C2=A0=C2=A0 DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_ic=
-sr, true),
-> > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> > index 0e6a0f245c..40f7d970bc 100644
-> > --- a/target/riscv/cpu_cfg.h
-> > +++ b/target/riscv/cpu_cfg.h
-> > @@ -124,6 +124,7 @@ struct RISCVCPUConfig {
-> > =C2=A0=C2=A0=C2=A0=C2=A0 bool ext_XVentanaCondOps;
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0 uint8_t pmu_num;
-> > +=C2=A0=C2=A0=C2=A0 uint32_t pmu_mask;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 char *priv_spec;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 char *user_spec;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 char *bext_spec;
-> > diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-> > index 13801ccb78..f97e25a1f6 100644
-> > --- a/target/riscv/pmu.c
-> > +++ b/target/riscv/pmu.c
-> > @@ -437,6 +437,13 @@ int riscv_pmu_setup_timer(CPURISCVState *env,
-> > uint64_t value, uint32_t ctr_idx)
-> > =C2=A0void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
-> > =C2=A0{
-> > =C2=A0=C2=A0=C2=A0=C2=A0 uint8_t pmu_num =3D cpu->cfg.pmu_num;
-> > +=C2=A0=C2=A0=C2=A0 uint32_t pmu_mask =3D cpu->cfg.pmu_mask;
-> > +
-> > +=C2=A0=C2=A0=C2=A0 if (pmu_mask && ctpop32(pmu_mask) !=3D pmu_num) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Mismatch =
-between number of enabled
-> > counters in "
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
- "\"pmu-mask\" and \"pmu-num\"");
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > +=C2=A0=C2=A0=C2=A0 }
-> >=20
->=20
-> Is that necessary for the default case? I am thinking of marking
-> pmu-num as deprecated and pmu-mask
-> as the preferred way of doing things as it is more flexible. There is
-> no real benefit carrying both.
-> The default pmu-mask value will change in that case.
-> We can just overwrite pmu-num with ctpop32(pmu_mask) if pmu-mask is
-> available. Thoughts ?
->=20
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/usb/desc.c        |  2 +-
+ hw/usb/dev-hub.c     |  8 ++++----
+ hw/usb/dev-storage.c |  6 +++---
+ hw/usb/hcd-xhci.c    | 10 +++++-----
+ 4 files changed, 13 insertions(+), 13 deletions(-)
 
-I agree it makes sense to me that there is only one way for the user to
-adjust the PMU count. However i'm not sure how we can handle the
-transition if we choose to deprecate "pmu-num".
-
-If we change the default "pmu-mask" to MAKE_32BIT_MASK(3, 16) then that
-value in the config will always be set - you propose that we overwrite
-"pmu-num" with the popcount of that property. But that will break if
-the user has an existing setup that changes the value of "pmu-num"
-(either as a property at runtime or in the CPU init code).
-
-One option would be to not make the mask configurable as property and
-make choosing the layout of the counters something that the specialised
-CPU init can choose to do.
-
-Cheers,
-
-Rob
-
-> > =C2=A0=C2=A0=C2=A0=C2=A0 if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 error_setg(errp, "Numb=
-er of counters exceeds maximum
-> > available");
-> > @@ -449,6 +456,10 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
-> > **errp)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
-> > =C2=A0=C2=A0=C2=A0=C2=A0 }
-> >=20
-> > -=C2=A0=C2=A0=C2=A0 /* Create a bitmask of available programmable count=
-ers */
-> > -=C2=A0=C2=A0=C2=A0 cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num)=
-;
-> > +=C2=A0=C2=A0=C2=A0 /* Create a bitmask of available programmable count=
-ers if none
-> > supplied */
-> > +=C2=A0=C2=A0=C2=A0 if (pmu_mask) {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu->pmu_avail_ctrs =3D pmu=
-_mask;
-> > +=C2=A0=C2=A0=C2=A0 } else {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cpu->pmu_avail_ctrs =3D MAK=
-E_32BIT_MASK(3, pmu_num);
-> > +=C2=A0=C2=A0=C2=A0 }
-> > =C2=A0}
-> > --
-> > 2.41.0
-> >=20
+diff --git a/hw/usb/desc.c b/hw/usb/desc.c
+index 7f6cc2f99b..f2bdc05a95 100644
+--- a/hw/usb/desc.c
++++ b/hw/usb/desc.c
+@@ -227,7 +227,7 @@ int usb_desc_endpoint(const USBDescEndpoint *ep, int flags,
+     }
+ 
+     if (superlen) {
+-        USBDescriptor *d = (void *)(dest + bLength);
++        d = (void *)(dest + bLength);
+ 
+         d->bLength                       = 0x06;
+         d->bDescriptorType               = USB_DT_ENDPOINT_COMPANION;
+diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
+index a6b50dbc8d..5703e0e826 100644
+--- a/hw/usb/dev-hub.c
++++ b/hw/usb/dev-hub.c
+@@ -402,7 +402,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
+         {
+             unsigned int n = index - 1;
+             USBHubPort *port;
+-            USBDevice *dev;
++            USBDevice *pdev;
+ 
+             trace_usb_hub_set_port_feature(s->dev.addr, index,
+                                            feature_name(value));
+@@ -411,7 +411,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
+                 goto fail;
+             }
+             port = &s->ports[n];
+-            dev = port->port.dev;
++            pdev = port->port.dev;
+             switch(value) {
+             case PORT_SUSPEND:
+                 port->wPortStatus |= PORT_STAT_SUSPEND;
+@@ -419,8 +419,8 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
+             case PORT_RESET:
+                 usb_hub_port_set(port, PORT_STAT_RESET);
+                 usb_hub_port_clear(port, PORT_STAT_RESET);
+-                if (dev && dev->attached) {
+-                    usb_device_reset(dev);
++                if (pdev && pdev->attached) {
++                    usb_device_reset(pdev);
+                     usb_hub_port_set(port, PORT_STAT_ENABLE);
+                 }
+                 usb_wakeup(s->intr, 0);
+diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
+index e3bcffb3e0..a496c811a7 100644
+--- a/hw/usb/dev-storage.c
++++ b/hw/usb/dev-storage.c
+@@ -403,7 +403,7 @@ static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
+     struct usb_msd_cbw cbw;
+     uint8_t devep = p->ep->nr;
+     SCSIDevice *scsi_dev;
+-    uint32_t len;
++    int len;
+ 
+     if (s->needs_reset) {
+         p->status = USB_RET_STALL;
+@@ -465,7 +465,7 @@ static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
+                 usb_msd_copy_data(s, p);
+             }
+             if (le32_to_cpu(s->csw.residue)) {
+-                int len = p->iov.size - p->actual_length;
++                len = p->iov.size - p->actual_length;
+                 if (len) {
+                     usb_packet_skip(p, len);
+                     if (len > s->data_len) {
+@@ -526,7 +526,7 @@ static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
+                 usb_msd_copy_data(s, p);
+             }
+             if (le32_to_cpu(s->csw.residue)) {
+-                int len = p->iov.size - p->actual_length;
++                len = p->iov.size - p->actual_length;
+                 if (len) {
+                     usb_packet_skip(p, len);
+                     if (len > s->data_len) {
+diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
+index 324177ad5d..4b60114207 100644
+--- a/hw/usb/hcd-xhci.c
++++ b/hw/usb/hcd-xhci.c
+@@ -217,10 +217,10 @@ enum {
+     (((data) >> field##_SHIFT) & field##_MASK)
+ 
+ #define set_field(data, newval, field) do {                     \
+-        uint32_t val = *data;                                   \
+-        val &= ~(field##_MASK << field##_SHIFT);                \
+-        val |= ((newval) & field##_MASK) << field##_SHIFT;      \
+-        *data = val;                                            \
++        uint32_t val_ = *data;                                  \
++        val_ &= ~(field##_MASK << field##_SHIFT);               \
++        val_ |= ((newval) & field##_MASK) << field##_SHIFT;     \
++        *data = val_;                                           \
+     } while (0)
+ 
+ typedef enum EPType {
+@@ -1894,7 +1894,7 @@ static void xhci_kick_epctx(XHCIEPContext *epctx, unsigned int streamid)
+     }
+ 
+     if (epctx->retry) {
+-        XHCITransfer *xfer = epctx->retry;
++        xfer = epctx->retry;
+ 
+         trace_usb_xhci_xfer_retry(xfer);
+         assert(xfer->running_retry);
+-- 
+2.41.0
 
 
