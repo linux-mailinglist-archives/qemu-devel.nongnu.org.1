@@ -2,99 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3917B7B5E
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1097B7B5F
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:12:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxsq-0005mW-BI; Wed, 04 Oct 2023 05:09:33 -0400
+	id 1qnxsd-0004vG-N2; Wed, 04 Oct 2023 05:09:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxrI-00035I-M3
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:07:59 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxrM-00036y-17
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:08:04 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxr9-0007eg-MF
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:07:56 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso19114815e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:07:47 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxrH-0007fZ-9F
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:07:59 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-406618d080eso19004015e9.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:07:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696410466; x=1697015266; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696410472; x=1697015272; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=qiNXcx//OKxcNi+4uj00e9PISfa3ZvRXmQUUf+9xB68=;
- b=U8AJrgdIjMJch3fl6nnqWu7QPohryxayI4n4FWPXJpyHKgoVdSkjOJx8tMv9CtI1EW
- mLv67bPXYjT5/0cZKDSqEGuvfP1cDJZHpzgzpZGPE5FGhNccAMTAA1Igp3oByCPsZ7c9
- ZXt4fYqqLyqqO4EEFa6Z5lKXm4fkcWSP0GaILteiFeUsMNwltp0vn4+hthx+uBLuVGNa
- zq9vc8+jVk2kldbN1Z6e2Ag5Oqs1fmBvx4dN3cBUjG4B2pzB0rp7ogblj4t7GnvNRfEy
- 6F8GTjzW5YLxaystFULkT1Im1/+yNZ+M6rqVr0B9uBY1p2Hn771bI0IchyCQ0esHK9TB
- XAUQ==
+ bh=n1miO2dVg32MNtE8qiVkrZLyGPe64MlUNhP6hyq8PUU=;
+ b=dEkzeKJtM7A++ZopAmnu4Itblp9qO2VFVlh4q6ic2IVp9UXjHi94i+0eDJ4wm64t3N
+ ZSe32ty2r0XIzggVNoOEkRkcZvGG4tkHH1g/GLu63MVi4/Z4E9c5cT5HU5cj8CCOsc0S
+ po44gkPQWv7hXHTPGeEUHDJv1JXrynYbq7cxqe8JX6i8FsZvjyY3hibN1+aLk59PhTfb
+ jGVQlSeIaR+5l8w3UevSsAzXgRqgYVMsK0F/L64eqbUl0J6i/QNS8Tn9YVQt2FDWCWoZ
+ Qa5CcdHbbTsIdxLsPfwdZWKoVeKJDAuVSG4XHDd5rVEEUDR+UqNvE8vHArCYn1sj6k9c
+ NbwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696410466; x=1697015266;
+ d=1e100.net; s=20230601; t=1696410472; x=1697015272;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=qiNXcx//OKxcNi+4uj00e9PISfa3ZvRXmQUUf+9xB68=;
- b=jcY1EUiB4WKt8DpLkPnZ8QMEnL1XZlunC8syqCRmBFW59nGDc4kvEnTLxNa7d1cZTf
- iBv764O8mkz70BNyHYkG99bNbXlKvyUete75xa/8ttyTe8awTU8lrRrBFnDOlmb7v3rW
- 2MDQE6S7nme601g4ad3gFzH/aFluPF3k2n903zDgtIsRLzdpFc+U5G3QBwK6mCUt/b0V
- CQAsUnAnKSs9WknmDHzAoohmzlw0RdRZnMEapWRWyJnySH/hFfuXSfBNFnagVkOy7kxw
- skYpQL7kvoLJAxTfl/T+bKxBNJjFTNLBkOEAfdn5QPYTVciNRqOkTxr6RBhhg8WqKG4V
- 7fgg==
-X-Gm-Message-State: AOJu0YwXgHtWPUUbnoz+goZYC/+1jSv4Ahmg/IBkSDBB47urp98fNd0B
- /tRrvA40pSnbOd1JoNjd+IP08/GSRIR+eu+g008=
-X-Google-Smtp-Source: AGHT+IHCMQv0prc6HXoJ14evrqKani1ePZuyqNDIlG7jrPK3F7Y4cR3ZCidO/ipM/bMUclUFiWF1Qg==
-X-Received: by 2002:a05:600c:2191:b0:405:36a0:108f with SMTP id
- e17-20020a05600c219100b0040536a0108fmr1718805wme.41.1696410466051; 
- Wed, 04 Oct 2023 02:07:46 -0700 (PDT)
+ bh=n1miO2dVg32MNtE8qiVkrZLyGPe64MlUNhP6hyq8PUU=;
+ b=ZDUCLT5MEFkXhigcze7qtFLtP2PJL9i4Q46Q3pJRN94DyjKmzyeX9jMffJnDLRs77+
+ leHgKH2zXBOQ2r6h2gRkbPA/3iVSQp6LeGBFys8RBnyGsKacejk3e49W2elpMbL0CfMw
+ 3/0+Mfbw4cJkbV0paMBMMJFeVJsAAQs5iN5m/Gk4owHnOvaVTGx2HZlv+cpJ4A3Ora3X
+ z9aNpTq6CLFq0seDNIcPPTVVzowqEUGmBnd+3zekWfvgd0erpJMzN0orddecWjTsiZze
+ vvxi/7CSHQ09IBT/s45+G/rG/1kJre+nZSpQeY3CSF7OEd4T0LgrB31pfO+/MFzXoUwW
+ kLew==
+X-Gm-Message-State: AOJu0YzZZDOYeGxlu+dRgSRL58igTTAORSHGj3LlsKqBJwyWJoAeBeVh
+ HLuI60NSJAC9IM055scGKlm2+mJwOvGqwdsILVs=
+X-Google-Smtp-Source: AGHT+IE9U2uZazBR5WjAiO2ooQVIW7E+jhi6N5SkHMnh28gmf2Ti88R9H4dp9vdwBpIImsv/P21TBg==
+X-Received: by 2002:a1c:f710:0:b0:404:746e:c601 with SMTP id
+ v16-20020a1cf710000000b00404746ec601mr1494591wmh.9.1696410472306; 
+ Wed, 04 Oct 2023 02:07:52 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- k16-20020a5d4290000000b00325b29a6441sm3494803wrq.82.2023.10.04.02.07.42
+ j10-20020a5d464a000000b00317a04131c5sm3499122wrs.57.2023.10.04.02.07.50
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 02:07:45 -0700 (PDT)
+ Wed, 04 Oct 2023 02:07:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Laurent Vivier <lvivier@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Michael Rolnik <mrolnik@gmail.com>,
- "Edgar E. Iglesias" <edgar.iglesias@gmail.com>,
- Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- Laurent Vivier <laurent@vivier.eu>, Aurelien Jarno <aurelien@aurel32.net>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
- Chris Wulff <crwulff@gmail.com>, Marek Vasut <marex@denx.de>,
- Stafford Horne <shorne@gmail.com>, Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Artyom Tarasenko <atar4qemu@gmail.com>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Max Filippov <jcmvbkbc@gmail.com>
-Subject: [PATCH 12/13] meson: Rename target_softmmu_arch -> target_system_arch
-Date: Wed,  4 Oct 2023 11:06:27 +0200
-Message-ID: <20231004090629.37473-13-philmd@linaro.org>
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+Subject: [PATCH 13/13] system: Rename softmmu/ directory as system/
+Date: Wed,  4 Oct 2023 11:06:28 +0200
+Message-ID: <20231004090629.37473-14-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004090629.37473-1-philmd@linaro.org>
 References: <20231004090629.37473-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -117,288 +98,490 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Finish the convertion started with commit de6cd7599b
-("meson: Replace softmmu_ss -> system_ss"). If the
-$target_type is 'system', then use the target_system_arch[]
-source set :)
-
-Mechanical change doing:
-
-  $ sed -i -e s/target_softmmu_arch/target_system_arch/g \
-      $(git grep -l target_softmmu_arch)
+The softmmu/ directory contains files specific to system
+emulation. Rename it as system/. Update meson rules, the
+MAINTAINERS file and all the documentation and comments.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- docs/devel/build-system.rst   | 4 ++--
- meson.build                   | 4 ++--
- target/alpha/meson.build      | 2 +-
- target/arm/meson.build        | 2 +-
- target/avr/meson.build        | 2 +-
- target/cris/meson.build       | 2 +-
- target/hppa/meson.build       | 2 +-
- target/i386/meson.build       | 2 +-
- target/loongarch/meson.build  | 2 +-
- target/m68k/meson.build       | 2 +-
- target/microblaze/meson.build | 2 +-
- target/mips/meson.build       | 2 +-
- target/nios2/meson.build      | 2 +-
- target/openrisc/meson.build   | 2 +-
- target/ppc/meson.build        | 2 +-
- target/riscv/meson.build      | 2 +-
- target/rx/meson.build         | 2 +-
- target/s390x/meson.build      | 2 +-
- target/sh4/meson.build        | 2 +-
- target/sparc/meson.build      | 2 +-
- target/tricore/meson.build    | 2 +-
- target/xtensa/meson.build     | 2 +-
- 22 files changed, 24 insertions(+), 24 deletions(-)
+ MAINTAINERS                             | 44 ++++++++++++-------------
+ docs/devel/qtest.rst                    |  2 +-
+ meson.build                             |  8 ++---
+ include/sysemu/runstate-action.h        |  2 +-
+ softmmu/trace.h                         |  1 -
+ {softmmu => system}/timers-state.h      |  0
+ system/trace.h                          |  1 +
+ {softmmu => system}/arch_init.c         |  0
+ {softmmu => system}/async-teardown.c    |  0
+ {softmmu => system}/balloon.c           |  0
+ {softmmu => system}/bootdevice.c        |  0
+ {softmmu => system}/cpu-throttle.c      |  0
+ {softmmu => system}/cpu-timers.c        |  0
+ {softmmu => system}/cpus.c              |  0
+ {softmmu => system}/datadir.c           |  0
+ {softmmu => system}/device_tree.c       |  0
+ {softmmu => system}/dirtylimit.c        |  0
+ {softmmu => system}/dma-helpers.c       |  0
+ {softmmu => system}/globals.c           |  0
+ {softmmu => system}/icount.c            |  0
+ {softmmu => system}/ioport.c            |  0
+ {softmmu => system}/main.c              |  0
+ {softmmu => system}/memory.c            |  0
+ {softmmu => system}/memory_mapping.c    |  0
+ {softmmu => system}/physmem.c           |  6 ++--
+ {softmmu => system}/qdev-monitor.c      |  0
+ {softmmu => system}/qemu-seccomp.c      |  0
+ {softmmu => system}/qtest.c             |  0
+ {softmmu => system}/rtc.c               |  0
+ {softmmu => system}/runstate-action.c   |  0
+ {softmmu => system}/runstate-hmp-cmds.c |  0
+ {softmmu => system}/runstate.c          |  0
+ {softmmu => system}/tpm-hmp-cmds.c      |  0
+ {softmmu => system}/tpm.c               |  0
+ {softmmu => system}/vl.c                |  0
+ {softmmu => system}/watchpoint.c        |  0
+ scripts/checkpatch.pl                   |  2 +-
+ scripts/coverity-scan/COMPONENTS.md     |  2 +-
+ scripts/get_maintainer.pl               |  2 +-
+ {softmmu => system}/meson.build         |  0
+ {softmmu => system}/trace-events        |  0
+ tests/unit/meson.build                  |  2 +-
+ 42 files changed, 37 insertions(+), 35 deletions(-)
+ delete mode 100644 softmmu/trace.h
+ rename {softmmu => system}/timers-state.h (100%)
+ create mode 100644 system/trace.h
+ rename {softmmu => system}/arch_init.c (100%)
+ rename {softmmu => system}/async-teardown.c (100%)
+ rename {softmmu => system}/balloon.c (100%)
+ rename {softmmu => system}/bootdevice.c (100%)
+ rename {softmmu => system}/cpu-throttle.c (100%)
+ rename {softmmu => system}/cpu-timers.c (100%)
+ rename {softmmu => system}/cpus.c (100%)
+ rename {softmmu => system}/datadir.c (100%)
+ rename {softmmu => system}/device_tree.c (100%)
+ rename {softmmu => system}/dirtylimit.c (100%)
+ rename {softmmu => system}/dma-helpers.c (100%)
+ rename {softmmu => system}/globals.c (100%)
+ rename {softmmu => system}/icount.c (100%)
+ rename {softmmu => system}/ioport.c (100%)
+ rename {softmmu => system}/main.c (100%)
+ rename {softmmu => system}/memory.c (100%)
+ rename {softmmu => system}/memory_mapping.c (100%)
+ rename {softmmu => system}/physmem.c (99%)
+ rename {softmmu => system}/qdev-monitor.c (100%)
+ rename {softmmu => system}/qemu-seccomp.c (100%)
+ rename {softmmu => system}/qtest.c (100%)
+ rename {softmmu => system}/rtc.c (100%)
+ rename {softmmu => system}/runstate-action.c (100%)
+ rename {softmmu => system}/runstate-hmp-cmds.c (100%)
+ rename {softmmu => system}/runstate.c (100%)
+ rename {softmmu => system}/tpm-hmp-cmds.c (100%)
+ rename {softmmu => system}/tpm.c (100%)
+ rename {softmmu => system}/vl.c (100%)
+ rename {softmmu => system}/watchpoint.c (100%)
+ rename {softmmu => system}/meson.build (100%)
+ rename {softmmu => system}/trace-events (100%)
 
-diff --git a/docs/devel/build-system.rst b/docs/devel/build-system.rst
-index 0f990bb3e9..21f78da7d1 100644
---- a/docs/devel/build-system.rst
-+++ b/docs/devel/build-system.rst
-@@ -225,14 +225,14 @@ Target-dependent emulator sourcesets:
-   The sourceset is only used for system emulators.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 81625f036b..2ddc3413b0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -137,8 +137,8 @@ Overall TCG CPUs
+ M: Richard Henderson <richard.henderson@linaro.org>
+ R: Paolo Bonzini <pbonzini@redhat.com>
+ S: Maintained
+-F: softmmu/cpus.c
+-F: softmmu/watchpoint.c
++F: system/cpus.c
++F: system/watchpoint.c
+ F: cpus-common.c
+ F: page-vary.c
+ F: page-vary-common.c
+@@ -2108,7 +2108,7 @@ S: Maintained
+ F: docs/interop/virtio-balloon-stats.rst
+ F: hw/virtio/virtio-balloon*.c
+ F: include/hw/virtio/virtio-balloon.h
+-F: softmmu/balloon.c
++F: system/balloon.c
+ F: include/sysemu/balloon.h
  
-   Each subdirectory in ``target/`` instead should add one sourceset to each
--  of the ``target_arch`` and ``target_softmmu_arch``, which are used respectively
-+  of the ``target_arch`` and ``target_system_arch``, which are used respectively
-   for all emulators and for system emulators only.  For example::
+ virtio-9p
+@@ -2788,7 +2788,7 @@ Device Tree
+ M: Alistair Francis <alistair.francis@wdc.com>
+ R: David Gibson <david@gibson.dropbear.id.au>
+ S: Maintained
+-F: softmmu/device_tree.c
++F: system/device_tree.c
+ F: include/sysemu/device_tree.h
  
-     arm_ss = ss.source_set()
-     arm_system_ss = ss.source_set()
-     ...
-     target_arch += {'arm': arm_ss}
--    target_softmmu_arch += {'arm': arm_system_ss}
-+    target_system_arch += {'arm': arm_system_ss}
+ Dump
+@@ -2844,11 +2844,11 @@ F: include/exec/memory.h
+ F: include/exec/ram_addr.h
+ F: include/exec/ramblock.h
+ F: include/sysemu/memory_mapping.h
+-F: softmmu/dma-helpers.c
+-F: softmmu/ioport.c
+-F: softmmu/memory.c
+-F: softmmu/memory_mapping.c
+-F: softmmu/physmem.c
++F: system/dma-helpers.c
++F: system/ioport.c
++F: system/memory.c
++F: system/memory_mapping.c
++F: system/physmem.c
+ F: include/exec/memory-internal.h
+ F: scripts/coccinelle/memory-region-housekeeping.cocci
  
- Module sourcesets:
-   There are two dictionaries for modules: ``modules`` is used for
+@@ -2901,13 +2901,13 @@ F: include/sysemu/runstate.h
+ F: include/sysemu/runstate-action.h
+ F: util/main-loop.c
+ F: util/qemu-timer.c
+-F: softmmu/vl.c
+-F: softmmu/main.c
+-F: softmmu/cpus.c
+-F: softmmu/cpu-throttle.c
+-F: softmmu/cpu-timers.c
+-F: softmmu/icount.c
+-F: softmmu/runstate*
++F: system/vl.c
++F: system/main.c
++F: system/cpus.c
++F: system/cpu-throttle.c
++F: system/cpu-timers.c
++F: system/icount.c
++F: system/runstate*
+ F: qapi/run-state.json
+ 
+ Read, Copy, Update (RCU)
+@@ -3081,7 +3081,7 @@ F: qapi/qom.json
+ F: qapi/qdev.json
+ F: scripts/coccinelle/qom-parent-type.cocci
+ F: scripts/qom-cast-macro-clean-cocci-gen.py
+-F: softmmu/qdev-monitor.c
++F: system/qdev-monitor.c
+ F: stubs/qdev.c
+ F: qom/
+ F: tests/unit/check-qom-interface.c
+@@ -3115,7 +3115,7 @@ M: Thomas Huth <thuth@redhat.com>
+ M: Laurent Vivier <lvivier@redhat.com>
+ R: Paolo Bonzini <pbonzini@redhat.com>
+ S: Maintained
+-F: softmmu/qtest.c
++F: system/qtest.c
+ F: accel/qtest/
+ F: tests/qtest/
+ F: docs/devel/qgraph.rst
+@@ -3191,7 +3191,7 @@ F: scripts/simpletrace.py
+ TPM
+ M: Stefan Berger <stefanb@linux.ibm.com>
+ S: Maintained
+-F: softmmu/tpm*
++F: system/tpm*
+ F: hw/tpm/*
+ F: include/hw/acpi/tpm.h
+ F: include/sysemu/tpm*
+@@ -3226,7 +3226,7 @@ F: util/userfaultfd.c
+ Migration dirty limit and dirty page rate
+ M: Hyman Huang <yong.huang@smartx.com>
+ S: Maintained
+-F: softmmu/dirtylimit.c
++F: system/dirtylimit.c
+ F: include/sysemu/dirtylimit.h
+ F: migration/dirtyrate.c
+ F: migration/dirtyrate.h
+@@ -3250,7 +3250,7 @@ F: scripts/xml-preprocess*
+ Seccomp
+ M: Daniel P. Berrange <berrange@redhat.com>
+ S: Odd Fixes
+-F: softmmu/qemu-seccomp.c
++F: system/qemu-seccomp.c
+ F: include/sysemu/seccomp.h
+ F: tests/unit/test-seccomp.c
+ 
+@@ -3669,7 +3669,7 @@ T: git https://github.com/stefanha/qemu.git block
+ Bootdevice
+ M: Gonglei <arei.gonglei@huawei.com>
+ S: Maintained
+-F: softmmu/bootdevice.c
++F: system/bootdevice.c
+ 
+ Quorum
+ M: Alberto Garcia <berto@igalia.com>
+diff --git a/docs/devel/qtest.rst b/docs/devel/qtest.rst
+index 0455aa06ab..c5b8546b3e 100644
+--- a/docs/devel/qtest.rst
++++ b/docs/devel/qtest.rst
+@@ -81,7 +81,7 @@ which you can run manually.
+ QTest Protocol
+ --------------
+ 
+-.. kernel-doc:: softmmu/qtest.c
++.. kernel-doc:: system/qtest.c
+    :doc: QTest Protocol
+ 
+ 
 diff --git a/meson.build b/meson.build
-index 8890dc5748..497a85eb9f 100644
+index 497a85eb9f..05387853af 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -3214,7 +3214,7 @@ modules = {}
- target_modules = {}
- hw_arch = {}
- target_arch = {}
--target_softmmu_arch = {}
-+target_system_arch = {}
- target_user_arch = {}
+@@ -3307,7 +3307,7 @@ if have_system
+     'hw/gpio',
+     'migration',
+     'net',
+-    'softmmu',
++    'system',
+     'ui',
+     'hw/remote',
+   ]
+@@ -3434,7 +3434,7 @@ endif
+ common_ss.add(files('cpus-common.c'))
+ specific_ss.add(files('cpu.c'))
  
- ###############
-@@ -3734,7 +3734,7 @@ foreach target : target_dirs
+-subdir('softmmu')
++subdir('system')
+ 
+ # Work around a gcc bug/misfeature wherein constant propagation looks
+ # through an alias:
+@@ -3813,14 +3813,14 @@ foreach target : target_dirs
+     execs = [{
+       'name': 'qemu-system-' + target_name,
+       'win_subsystem': 'console',
+-      'sources': files('softmmu/main.c'),
++      'sources': files('system/main.c'),
+       'dependencies': []
+     }]
+     if targetos == 'windows' and (sdl.found() or gtk.found())
+       execs += [{
+         'name': 'qemu-system-' + target_name + 'w',
+         'win_subsystem': 'windows',
+-        'sources': files('softmmu/main.c'),
++        'sources': files('system/main.c'),
+         'dependencies': []
+       }]
+     endif
+diff --git a/include/sysemu/runstate-action.h b/include/sysemu/runstate-action.h
+index cff45a047b..db4e3099ae 100644
+--- a/include/sysemu/runstate-action.h
++++ b/include/sysemu/runstate-action.h
+@@ -11,7 +11,7 @@
+ 
+ #include "qapi/qapi-commands-run-state.h"
+ 
+-/* in softmmu/runstate-action.c */
++/* in system/runstate-action.c */
+ extern RebootAction reboot_action;
+ extern ShutdownAction shutdown_action;
+ extern PanicAction panic_action;
+diff --git a/softmmu/trace.h b/softmmu/trace.h
+deleted file mode 100644
+index 2ad1011572..0000000000
+--- a/softmmu/trace.h
++++ /dev/null
+@@ -1 +0,0 @@
+-#include "trace/trace-softmmu.h"
+diff --git a/softmmu/timers-state.h b/system/timers-state.h
+similarity index 100%
+rename from softmmu/timers-state.h
+rename to system/timers-state.h
+diff --git a/system/trace.h b/system/trace.h
+new file mode 100644
+index 0000000000..cd0136dcdc
+--- /dev/null
++++ b/system/trace.h
+@@ -0,0 +1 @@
++#include "trace/trace-system.h"
+diff --git a/softmmu/arch_init.c b/system/arch_init.c
+similarity index 100%
+rename from softmmu/arch_init.c
+rename to system/arch_init.c
+diff --git a/softmmu/async-teardown.c b/system/async-teardown.c
+similarity index 100%
+rename from softmmu/async-teardown.c
+rename to system/async-teardown.c
+diff --git a/softmmu/balloon.c b/system/balloon.c
+similarity index 100%
+rename from softmmu/balloon.c
+rename to system/balloon.c
+diff --git a/softmmu/bootdevice.c b/system/bootdevice.c
+similarity index 100%
+rename from softmmu/bootdevice.c
+rename to system/bootdevice.c
+diff --git a/softmmu/cpu-throttle.c b/system/cpu-throttle.c
+similarity index 100%
+rename from softmmu/cpu-throttle.c
+rename to system/cpu-throttle.c
+diff --git a/softmmu/cpu-timers.c b/system/cpu-timers.c
+similarity index 100%
+rename from softmmu/cpu-timers.c
+rename to system/cpu-timers.c
+diff --git a/softmmu/cpus.c b/system/cpus.c
+similarity index 100%
+rename from softmmu/cpus.c
+rename to system/cpus.c
+diff --git a/softmmu/datadir.c b/system/datadir.c
+similarity index 100%
+rename from softmmu/datadir.c
+rename to system/datadir.c
+diff --git a/softmmu/device_tree.c b/system/device_tree.c
+similarity index 100%
+rename from softmmu/device_tree.c
+rename to system/device_tree.c
+diff --git a/softmmu/dirtylimit.c b/system/dirtylimit.c
+similarity index 100%
+rename from softmmu/dirtylimit.c
+rename to system/dirtylimit.c
+diff --git a/softmmu/dma-helpers.c b/system/dma-helpers.c
+similarity index 100%
+rename from softmmu/dma-helpers.c
+rename to system/dma-helpers.c
+diff --git a/softmmu/globals.c b/system/globals.c
+similarity index 100%
+rename from softmmu/globals.c
+rename to system/globals.c
+diff --git a/softmmu/icount.c b/system/icount.c
+similarity index 100%
+rename from softmmu/icount.c
+rename to system/icount.c
+diff --git a/softmmu/ioport.c b/system/ioport.c
+similarity index 100%
+rename from softmmu/ioport.c
+rename to system/ioport.c
+diff --git a/softmmu/main.c b/system/main.c
+similarity index 100%
+rename from softmmu/main.c
+rename to system/main.c
+diff --git a/softmmu/memory.c b/system/memory.c
+similarity index 100%
+rename from softmmu/memory.c
+rename to system/memory.c
+diff --git a/softmmu/memory_mapping.c b/system/memory_mapping.c
+similarity index 100%
+rename from softmmu/memory_mapping.c
+rename to system/memory_mapping.c
+diff --git a/softmmu/physmem.c b/system/physmem.c
+similarity index 99%
+rename from softmmu/physmem.c
+rename to system/physmem.c
+index 309653c722..edc3ed8ab9 100644
+--- a/softmmu/physmem.c
++++ b/system/physmem.c
+@@ -2301,8 +2301,10 @@ RAMBlock *qemu_ram_block_by_name(const char *name)
+     return NULL;
+ }
+ 
+-/* Some of the softmmu routines need to translate from a host pointer
+-   (typically a TLB entry) back to a ram offset.  */
++/*
++ * Some of the system routines need to translate from a host pointer
++ * (typically a TLB entry) back to a ram offset.
++ */
+ ram_addr_t qemu_ram_addr_from_host(void *ptr)
+ {
+     RAMBlock *block;
+diff --git a/softmmu/qdev-monitor.c b/system/qdev-monitor.c
+similarity index 100%
+rename from softmmu/qdev-monitor.c
+rename to system/qdev-monitor.c
+diff --git a/softmmu/qemu-seccomp.c b/system/qemu-seccomp.c
+similarity index 100%
+rename from softmmu/qemu-seccomp.c
+rename to system/qemu-seccomp.c
+diff --git a/softmmu/qtest.c b/system/qtest.c
+similarity index 100%
+rename from softmmu/qtest.c
+rename to system/qtest.c
+diff --git a/softmmu/rtc.c b/system/rtc.c
+similarity index 100%
+rename from softmmu/rtc.c
+rename to system/rtc.c
+diff --git a/softmmu/runstate-action.c b/system/runstate-action.c
+similarity index 100%
+rename from softmmu/runstate-action.c
+rename to system/runstate-action.c
+diff --git a/softmmu/runstate-hmp-cmds.c b/system/runstate-hmp-cmds.c
+similarity index 100%
+rename from softmmu/runstate-hmp-cmds.c
+rename to system/runstate-hmp-cmds.c
+diff --git a/softmmu/runstate.c b/system/runstate.c
+similarity index 100%
+rename from softmmu/runstate.c
+rename to system/runstate.c
+diff --git a/softmmu/tpm-hmp-cmds.c b/system/tpm-hmp-cmds.c
+similarity index 100%
+rename from softmmu/tpm-hmp-cmds.c
+rename to system/tpm-hmp-cmds.c
+diff --git a/softmmu/tpm.c b/system/tpm.c
+similarity index 100%
+rename from softmmu/tpm.c
+rename to system/tpm.c
+diff --git a/softmmu/vl.c b/system/vl.c
+similarity index 100%
+rename from softmmu/vl.c
+rename to system/vl.c
+diff --git a/softmmu/watchpoint.c b/system/watchpoint.c
+similarity index 100%
+rename from softmmu/watchpoint.c
+rename to system/watchpoint.c
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 1ad9ccb74b..6e4100d2a4 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -466,7 +466,7 @@ sub top_of_kernel_tree {
+ 	my @tree_check = (
+ 		"COPYING", "MAINTAINERS", "Makefile",
+ 		"README.rst", "docs", "VERSION",
+-		"linux-user", "softmmu"
++		"linux-user", "system"
+ 	);
+ 
+ 	foreach my $check (@tree_check) {
+diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
+index 883da95aff..0e62f10aad 100644
+--- a/scripts/coverity-scan/COMPONENTS.md
++++ b/scripts/coverity-scan/COMPONENTS.md
+@@ -148,7 +148,7 @@ tcg
+   ~ (/qemu)?(/accel/tcg|/replay|/tcg)/.*
+ 
+ sysemu
+-  ~ (/qemu)?(/softmmu/.*|/accel/.*)
++  ~ (/qemu)?(/system/.*|/accel/.*)
+ 
+ (headers)
+   ~ (/qemu)?(/include/.*)
+diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
+index e5499b94b4..02fa828100 100755
+--- a/scripts/get_maintainer.pl
++++ b/scripts/get_maintainer.pl
+@@ -796,7 +796,7 @@ sub top_of_tree {
+         && (-d "${lk_path}docs")
+         && (-f "${lk_path}VERSION")
+         && (-d "${lk_path}linux-user/")
+-        && (-d "${lk_path}softmmu/")) {
++        && (-d "${lk_path}system/")) {
+ 	return 1;
+     }
+     return 0;
+diff --git a/softmmu/meson.build b/system/meson.build
+similarity index 100%
+rename from softmmu/meson.build
+rename to system/meson.build
+diff --git a/softmmu/trace-events b/system/trace-events
+similarity index 100%
+rename from softmmu/trace-events
+rename to system/trace-events
+diff --git a/tests/unit/meson.build b/tests/unit/meson.build
+index 0299ef6906..e7d72ee80a 100644
+--- a/tests/unit/meson.build
++++ b/tests/unit/meson.build
+@@ -58,7 +58,7 @@ if have_system or have_tools
+   }
+ 
+   if seccomp.found()
+-    tests += {'test-seccomp': ['../../softmmu/qemu-seccomp.c', seccomp]}
++    tests += {'test-seccomp': ['../../system/qemu-seccomp.c', seccomp]}
    endif
-   if target.endswith('-softmmu')
-     target_type='system'
--    t = target_softmmu_arch[target_base_arch].apply(config_target, strict: false)
-+    t = target_system_arch[target_base_arch].apply(config_target, strict: false)
-     arch_srcs += t.sources()
-     arch_deps += t.dependencies()
- 
-diff --git a/target/alpha/meson.build b/target/alpha/meson.build
-index 3f5253c002..d3502dd823 100644
---- a/target/alpha/meson.build
-+++ b/target/alpha/meson.build
-@@ -15,4 +15,4 @@ alpha_system_ss = ss.source_set()
- alpha_system_ss.add(files('machine.c'))
- 
- target_arch += {'alpha': alpha_ss}
--target_softmmu_arch += {'alpha': alpha_system_ss}
-+target_system_arch += {'alpha': alpha_system_ss}
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index e645e456da..5d04a8e94f 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -35,4 +35,4 @@ else
  endif
  
- target_arch += {'arm': arm_ss}
--target_softmmu_arch += {'arm': arm_system_ss}
-+target_system_arch += {'arm': arm_system_ss}
-diff --git a/target/avr/meson.build b/target/avr/meson.build
-index a24cf6d26d..3e172bde1c 100644
---- a/target/avr/meson.build
-+++ b/target/avr/meson.build
-@@ -17,4 +17,4 @@ avr_ss.add(files(
- avr_system_ss.add(files('machine.c'))
- 
- target_arch += {'avr': avr_ss}
--target_softmmu_arch += {'avr': avr_system_ss}
-+target_system_arch += {'avr': avr_system_ss}
-diff --git a/target/cris/meson.build b/target/cris/meson.build
-index 07dc3a5682..bbfcdf7f7a 100644
---- a/target/cris/meson.build
-+++ b/target/cris/meson.build
-@@ -14,4 +14,4 @@ cris_system_ss.add(files(
- ))
- 
- target_arch += {'cris': cris_ss}
--target_softmmu_arch += {'cris': cris_system_ss}
-+target_system_arch += {'cris': cris_system_ss}
-diff --git a/target/hppa/meson.build b/target/hppa/meson.build
-index 59b68e82e2..f47e54f5fa 100644
---- a/target/hppa/meson.build
-+++ b/target/hppa/meson.build
-@@ -20,4 +20,4 @@ hppa_system_ss.add(files(
- ))
- 
- target_arch += {'hppa': hppa_ss}
--target_softmmu_arch += {'hppa': hppa_system_ss}
-+target_system_arch += {'hppa': hppa_system_ss}
-diff --git a/target/i386/meson.build b/target/i386/meson.build
-index 6f1036d469..7c74bfa859 100644
---- a/target/i386/meson.build
-+++ b/target/i386/meson.build
-@@ -31,5 +31,5 @@ subdir('hvf')
- subdir('tcg')
- 
- target_arch += {'i386': i386_ss}
--target_softmmu_arch += {'i386': i386_system_ss}
-+target_system_arch += {'i386': i386_system_ss}
- target_user_arch += {'i386': i386_user_ss}
-diff --git a/target/loongarch/meson.build b/target/loongarch/meson.build
-index 7fbf045a5d..18e8191e2b 100644
---- a/target/loongarch/meson.build
-+++ b/target/loongarch/meson.build
-@@ -30,4 +30,4 @@ common_ss.add(when: 'CONFIG_LOONGARCH_DIS', if_true: [files('disas.c'), gen])
- loongarch_ss.add_all(when: 'CONFIG_TCG', if_true: [loongarch_tcg_ss])
- 
- target_arch += {'loongarch': loongarch_ss}
--target_softmmu_arch += {'loongarch': loongarch_system_ss}
-+target_system_arch += {'loongarch': loongarch_system_ss}
-diff --git a/target/m68k/meson.build b/target/m68k/meson.build
-index 355db26c6f..8d3f9ce288 100644
---- a/target/m68k/meson.build
-+++ b/target/m68k/meson.build
-@@ -16,4 +16,4 @@ m68k_system_ss.add(files(
- ))
- 
- target_arch += {'m68k': m68k_ss}
--target_softmmu_arch += {'m68k': m68k_system_ss}
-+target_system_arch += {'m68k': m68k_system_ss}
-diff --git a/target/microblaze/meson.build b/target/microblaze/meson.build
-index 50fd9ff378..3ed4fbb67a 100644
---- a/target/microblaze/meson.build
-+++ b/target/microblaze/meson.build
-@@ -17,4 +17,4 @@ microblaze_system_ss.add(files(
- ))
- 
- target_arch += {'microblaze': microblaze_ss}
--target_softmmu_arch += {'microblaze': microblaze_system_ss}
-+target_system_arch += {'microblaze': microblaze_system_ss}
-diff --git a/target/mips/meson.build b/target/mips/meson.build
-index f35e8f0eca..e57ef24ecf 100644
---- a/target/mips/meson.build
-+++ b/target/mips/meson.build
-@@ -19,5 +19,5 @@ endif
- mips_ss.add(when: 'CONFIG_KVM', if_true: files('kvm.c'))
- 
- target_arch += {'mips': mips_ss}
--target_softmmu_arch += {'mips': mips_system_ss}
-+target_system_arch += {'mips': mips_system_ss}
- target_user_arch += {'mips': mips_user_ss}
-diff --git a/target/nios2/meson.build b/target/nios2/meson.build
-index 8f0f9dc628..12d8abf0bd 100644
---- a/target/nios2/meson.build
-+++ b/target/nios2/meson.build
-@@ -14,4 +14,4 @@ nios2_system_ss.add(files(
- ))
- 
- target_arch += {'nios2': nios2_ss}
--target_softmmu_arch += {'nios2': nios2_system_ss}
-+target_system_arch += {'nios2': nios2_system_ss}
-diff --git a/target/openrisc/meson.build b/target/openrisc/meson.build
-index c1cd943f78..31608b6dc7 100644
---- a/target/openrisc/meson.build
-+++ b/target/openrisc/meson.build
-@@ -22,4 +22,4 @@ openrisc_system_ss.add(files(
- ))
- 
- target_arch += {'openrisc': openrisc_ss}
--target_softmmu_arch += {'openrisc': openrisc_system_ss}
-+target_system_arch += {'openrisc': openrisc_system_ss}
-diff --git a/target/ppc/meson.build b/target/ppc/meson.build
-index 4c2635039e..97ceb6e7c0 100644
---- a/target/ppc/meson.build
-+++ b/target/ppc/meson.build
-@@ -55,4 +55,4 @@ ppc_system_ss.add(when: 'TARGET_PPC64', if_true: files(
- ))
- 
- target_arch += {'ppc': ppc_ss}
--target_softmmu_arch += {'ppc': ppc_system_ss}
-+target_system_arch += {'ppc': ppc_system_ss}
-diff --git a/target/riscv/meson.build b/target/riscv/meson.build
-index 660078bda1..ff60b21d04 100644
---- a/target/riscv/meson.build
-+++ b/target/riscv/meson.build
-@@ -39,4 +39,4 @@ riscv_system_ss.add(files(
- ))
- 
- target_arch += {'riscv': riscv_ss}
--target_softmmu_arch += {'riscv': riscv_system_ss}
-+target_system_arch += {'riscv': riscv_system_ss}
-diff --git a/target/rx/meson.build b/target/rx/meson.build
-index 8de0ad49b9..d196737ce3 100644
---- a/target/rx/meson.build
-+++ b/target/rx/meson.build
-@@ -13,4 +13,4 @@ rx_ss.add(files(
-   'disas.c'))
- 
- target_arch += {'rx': rx_ss}
--target_softmmu_arch += {'rx': ss.source_set()}
-+target_system_arch += {'rx': ss.source_set()}
-diff --git a/target/s390x/meson.build b/target/s390x/meson.build
-index 42ed38942a..02ca43d9f0 100644
---- a/target/s390x/meson.build
-+++ b/target/s390x/meson.build
-@@ -40,5 +40,5 @@ subdir('tcg')
- subdir('kvm')
- 
- target_arch += {'s390x': s390x_ss}
--target_softmmu_arch += {'s390x': s390x_system_ss}
-+target_system_arch += {'s390x': s390x_system_ss}
- target_user_arch += {'s390x': s390x_user_ss}
-diff --git a/target/sh4/meson.build b/target/sh4/meson.build
-index a78e9ec7e4..fe09f96684 100644
---- a/target/sh4/meson.build
-+++ b/target/sh4/meson.build
-@@ -11,4 +11,4 @@ sh4_system_ss = ss.source_set()
- sh4_system_ss.add(files('monitor.c'))
- 
- target_arch += {'sh4': sh4_ss}
--target_softmmu_arch += {'sh4': sh4_system_ss}
-+target_system_arch += {'sh4': sh4_system_ss}
-diff --git a/target/sparc/meson.build b/target/sparc/meson.build
-index d32e67b287..48025cce76 100644
---- a/target/sparc/meson.build
-+++ b/target/sparc/meson.build
-@@ -20,4 +20,4 @@ sparc_system_ss.add(files(
- ))
- 
- target_arch += {'sparc': sparc_ss}
--target_softmmu_arch += {'sparc': sparc_system_ss}
-+target_system_arch += {'sparc': sparc_system_ss}
-diff --git a/target/tricore/meson.build b/target/tricore/meson.build
-index 34825b6048..45f49f0128 100644
---- a/target/tricore/meson.build
-+++ b/target/tricore/meson.build
-@@ -12,4 +12,4 @@ tricore_ss.add(zlib)
- tricore_system_ss = ss.source_set()
- 
- target_arch += {'tricore': tricore_ss}
--target_softmmu_arch += {'tricore': tricore_system_ss}
-+target_system_arch += {'tricore': tricore_system_ss}
-diff --git a/target/xtensa/meson.build b/target/xtensa/meson.build
-index 95692bd75f..f8d60101e3 100644
---- a/target/xtensa/meson.build
-+++ b/target/xtensa/meson.build
-@@ -24,4 +24,4 @@ xtensa_system_ss.add(files(
- ))
- 
- target_arch += {'xtensa': xtensa_ss}
--target_softmmu_arch += {'xtensa': xtensa_system_ss}
-+target_system_arch += {'xtensa': xtensa_system_ss}
 -- 
 2.41.0
 
