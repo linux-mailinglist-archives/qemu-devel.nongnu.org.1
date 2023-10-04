@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7D47B86C9
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:42:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03377B86C8
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5ll-0005xF-46; Wed, 04 Oct 2023 13:34:45 -0400
+	id 1qo5m1-0006So-BP; Wed, 04 Oct 2023 13:35:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5l5-0005QC-H6
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:06 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lE-0005bi-46
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:16 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5l1-0001IW-NL
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:02 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3232be274a0so774322f8f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:33:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lA-0001Jo-4u
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:11 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-406402933edso395525e9.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:34:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696440838; x=1697045638; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696440844; x=1697045644; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=+wgGQUdIqiLvE9KKvhjp7xkKxDkuA49hJ4+Z2t/uhpA=;
- b=hZB/CKx1pd5p0+oU/wOex0HZCaYFijZ2K/ar+bchIzz/D5Fnu2njue/V4x0xcDxi2x
- OAJ0RXuQrDx5xzhc3ck+/X6wsaNLJBzDBD3C2cgRp2dZFnmt7WZKjvyNPgHwP86gayCJ
- Fzsc8SSqRNRR+jo49UolpGnkyIcPVl3vHIc19zux/5eFLC/kjpI9LBD9XEKb53YO2tlA
- +Xo4KRZUAO4Yofty+sYVxHXfcJMoA7ZP8buj4SrF2iss/mI6h7Y7wWuHrKSdZrMjeQ3l
- 81pGp2KGIjMum+Oz+iSi0oYgY1XkXDuwP/GLdPn02BRv7wU60f9JOE8b3ZRhY0K2pRb2
- aNEg==
+ bh=xsWfVZc9VxkTZJYVgn0fspMadC16MHZrVQJV0TPl4cg=;
+ b=EK/dmszo5RUMDwl/9yLoS1u5JAsct6KgBScTDAr942Tz/sE9lthUUILICcjtLE6cij
+ igZLBlY439bHpH8XsnVCzGu+YH9CP4yd1HIbYIFh64AAWZH5sOEEqw0R6y1qWOMUQyJ6
+ K0AJ7Yzaxc7qpoPklsju7oitKReG8lDz25+FbhRZxjERm2ityF3EIOKMlOkWtXNckw2+
+ 8I6BZNUnYGSyEdvrPpW6HaDqSzi9p0mEw1G6BNncuXHVqq051doybvn3PIThri327TSo
+ Vl8Nj04MyCezXuhzuJuc0YB+yUv09aU7PrTHJU43KF1fylia2hTvGmhLUGZ43Vc9I47l
+ 8kPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696440838; x=1697045638;
+ d=1e100.net; s=20230601; t=1696440844; x=1697045644;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+wgGQUdIqiLvE9KKvhjp7xkKxDkuA49hJ4+Z2t/uhpA=;
- b=GbSNJa+S+4/4U8WvDDhFPlos3bWrak6Fle4TGh4lqZcz56RNPaLawmb7w35pxKpKoS
- d2Q1jC2GzoqCdV8mOZZDxjCnVtM6YDXnxJFIddQ8JVDqKD2g30sA05gAn6/bsKcqhXUl
- NYz76sUok19TKfpGbgkp7AoF4E83h8zk1BfbkQ/XWzC7Zg7qC0NSqH2dcaxhKOduLfZ2
- raxYlhLaJUtIqHGJzDVl7BU4qa81/qAY2hgiMsT+j/OnT1bkzdftPKCA3vrdbZ8ecpxW
- rB7i2Jxd0dM4vl8w6NZxAktvN9ZidEPM5pZ9rsWMWpV8QDeJivUrh5uUXnpoO5z8ib4l
- D6ug==
-X-Gm-Message-State: AOJu0YzXGZG7i0vExhYpBatQ+eiY3SZCp5RDbZ8KhtgUXuwdQp8x0kls
- G1JHgoyMHc27vav1y97KHGcNEM5N1GffO91tJZQ=
-X-Google-Smtp-Source: AGHT+IG5t9+ERq5Dx3FYyAIHdJmdCRaZM1DB1dv9z2ImlObMWh99iAzoLGLOaSxi5d0tVcFlpve3bQ==
-X-Received: by 2002:adf:cd81:0:b0:31c:2f95:8056 with SMTP id
- q1-20020adfcd81000000b0031c2f958056mr249994wrj.23.1696440838160; 
- Wed, 04 Oct 2023 10:33:58 -0700 (PDT)
+ bh=xsWfVZc9VxkTZJYVgn0fspMadC16MHZrVQJV0TPl4cg=;
+ b=tLtfY0JAwZKacMx7iznhj6lIXZLt1dpc+mteiwDigxBeM1dCCe8Xf2b2A+WPal7O55
+ 1faATIQ/bNTIBxH78HvT3nfUiJc9EJ8F4pyJLzNU27fH5jQYPtOOBwxX+KDEjr85wsDl
+ u7+GfCfoyZPC12XNP+1wLOxmP17vuyQF2CmTCJAKDPg4s9DYAZuYLdmSK95iPd/bYzJr
+ O5MRfADA71UiP83vrOUdjW2n8201VwLCmKQRQTMDi3dwVmLBPiSH/96i8Nj4zYNlQKoy
+ +7/QMxPDn/vXgipdut1JHhInPupKL2Q2X2MlL2gki7aisCc/lVCJxHRL4141PYs+Nv/p
+ c97w==
+X-Gm-Message-State: AOJu0YwooDHTktEtjqjdLIX5ppkhyWKsdYyLdCGhL71nOPHPwtdABJZd
+ r31l6NhOYZeWbkG2km3WbQmOQulIwMCAbVPtm4o=
+X-Google-Smtp-Source: AGHT+IG1kBwi1v3Csgfs6npWCLFTp3rIzq63qhG9QDSDnQhnP+HzXD1teddfXNTohsxN/1UpTML6rA==
+X-Received: by 2002:a7b:c7d7:0:b0:3fd:2e89:31bd with SMTP id
+ z23-20020a7bc7d7000000b003fd2e8931bdmr2995592wmk.14.1696440844525; 
+ Wed, 04 Oct 2023 10:34:04 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- b7-20020a5d5507000000b003247f732c11sm4499225wrv.76.2023.10.04.10.33.56
+ f16-20020a5d4dd0000000b00323384e04e8sm4460434wru.111.2023.10.04.10.34.02
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 10:33:57 -0700 (PDT)
+ Wed, 04 Oct 2023 10:34:04 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 17/21] qapi: Inline and remove QERR_PROPERTY_VALUE_BAD
- definition
-Date: Wed,  4 Oct 2023 19:31:52 +0200
-Message-ID: <20231004173158.42591-18-philmd@linaro.org>
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+Subject: [PATCH 18/21] qapi: Inline and remove
+ QERR_PROPERTY_VALUE_OUT_OF_RANGE definition
+Date: Wed,  4 Oct 2023 19:31:53 +0200
+Message-ID: <20231004173158.42591-19-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004173158.42591-1-philmd@linaro.org>
 References: <20231004173158.42591-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,56 +103,103 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Manual change. Remove the definition in
-include/qapi/qmp/qerror.h.
+Mechanical transformation using sed, manually
+removing the definition in include/qapi/qmp/qerror.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qapi/qmp/qerror.h | 3 ---
- hw/core/qdev-properties.c | 2 +-
- target/i386/cpu.c         | 2 +-
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ include/qapi/qmp/qerror.h |  3 ---
+ hw/intc/openpic.c         |  3 ++-
+ target/i386/cpu.c         | 12 ++++++++----
+ util/block-helpers.c      |  3 ++-
+ 4 files changed, 12 insertions(+), 9 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index b0f48f22fe..7862ac55a1 100644
+index 7862ac55a1..e094f13114 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
 @@ -17,9 +17,6 @@
   * add new ones!
   */
  
--#define QERR_PROPERTY_VALUE_BAD \
--    "Property '%s.%s' doesn't take value '%s'"
+-#define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
+-    "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 ", maximum: %" PRId64 ")"
 -
- #define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
-     "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 ", maximum: %" PRId64 ")"
+ #define QERR_QGA_COMMAND_FAILED \
+     "Guest agent command failed, error was '%s'"
  
-diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
-index 357b8761b5..44fc1686e0 100644
---- a/hw/core/qdev-properties.c
-+++ b/hw/core/qdev-properties.c
-@@ -682,7 +682,7 @@ void error_set_from_qdev_prop_error(Error **errp, int ret, Object *obj,
-         break;
-     default:
-     case -EINVAL:
--        error_setg(errp, QERR_PROPERTY_VALUE_BAD,
-+        error_setg(errp, "Property '%s.%s' doesn't take value '%s'",
-                    object_get_typename(obj), name, value);
-         break;
-     case -ENOENT:
+diff --git a/hw/intc/openpic.c b/hw/intc/openpic.c
+index a6f91d4bcd..4f6ee930e2 100644
+--- a/hw/intc/openpic.c
++++ b/hw/intc/openpic.c
+@@ -1535,7 +1535,8 @@ static void openpic_realize(DeviceState *dev, Error **errp)
+     };
+ 
+     if (opp->nb_cpus > MAX_CPU) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE,
++        error_setg(errp, "Property %s.%s doesn't take value %" PRId64
++                         " (minimum: %" PRId64 ", maximum: %" PRId64 ")",
+                    TYPE_OPENPIC, "nb_cpus", (uint64_t)opp->nb_cpus,
+                    (uint64_t)0, (uint64_t)MAX_CPU);
+         return;
 diff --git a/target/i386/cpu.c b/target/i386/cpu.c
-index ed72883bf3..e5a14885ed 100644
+index e5a14885ed..273f865228 100644
 --- a/target/i386/cpu.c
 +++ b/target/i386/cpu.c
-@@ -5190,7 +5190,7 @@ static void x86_cpuid_set_vendor(Object *obj, const char *value,
-     int i;
- 
-     if (strlen(value) != CPUID_VENDOR_SZ) {
--        error_setg(errp, QERR_PROPERTY_VALUE_BAD, "", "vendor", value);
-+        error_setg(errp, "Property 'vendor' doesn't take value '%s'", value);
+@@ -5086,7 +5086,8 @@ static void x86_cpuid_version_set_family(Object *obj, Visitor *v,
          return;
      }
- 
+     if (value < min || value > max) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
++        error_setg(errp, "Property %s doesn't take value %" PRId64
++                         " (minimum: %" PRId64 ", maximum: %" PRId64 ")",
+                    name ? name : "null", value, min, max);
+         return;
+     }
+@@ -5126,7 +5127,8 @@ static void x86_cpuid_version_set_model(Object *obj, Visitor *v,
+         return;
+     }
+     if (value < min || value > max) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
++        error_setg(errp, "Property %s doesn't take value %" PRId64
++                         " (minimum: %" PRId64 ", maximum: %" PRId64 ")",
+                    name ? name : "null", value, min, max);
+         return;
+     }
+@@ -5161,7 +5163,8 @@ static void x86_cpuid_version_set_stepping(Object *obj, Visitor *v,
+         return;
+     }
+     if (value < min || value > max) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
++        error_setg(errp, "Property %s doesn't take value %" PRId64
++                         " (minimum: %" PRId64 ", maximum: %" PRId64 ")",
+                    name ? name : "null", value, min, max);
+         return;
+     }
+@@ -5263,7 +5266,8 @@ static void x86_cpuid_set_tsc_freq(Object *obj, Visitor *v, const char *name,
+         return;
+     }
+     if (value < min || value > max) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE, "",
++        error_setg(errp, "Property %s doesn't take value %" PRId64
++                         " (minimum: %" PRId64 ", maximum: %" PRId64 ")",
+                    name ? name : "null", value, min, max);
+         return;
+     }
+diff --git a/util/block-helpers.c b/util/block-helpers.c
+index c4851432f5..de94909bc4 100644
+--- a/util/block-helpers.c
++++ b/util/block-helpers.c
+@@ -30,7 +30,8 @@ void check_block_size(const char *id, const char *name, int64_t value,
+ {
+     /* value of 0 means "unset" */
+     if (value && (value < MIN_BLOCK_SIZE || value > MAX_BLOCK_SIZE)) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_OUT_OF_RANGE,
++        error_setg(errp, "Property %s.%s doesn't take value %" PRId64
++                         " (minimum: %" PRId64 ", maximum: %" PRId64 ")",
+                    id, name, value, MIN_BLOCK_SIZE, MAX_BLOCK_SIZE);
+         return;
+     }
 -- 
 2.41.0
 
