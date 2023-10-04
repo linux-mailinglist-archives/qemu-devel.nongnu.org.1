@@ -2,70 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 082897B86CD
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:42:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 707407B86C5
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:41:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5md-0006vv-8e; Wed, 04 Oct 2023 13:35:39 -0400
+	id 1qo5mf-00076H-83; Wed, 04 Oct 2023 13:35:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lN-0005lK-Hb
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:24 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lR-0005rj-Eq
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:28 -0400
 Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lH-0001M9-KV
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:20 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5lN-0001NR-9D
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:25 -0400
 Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-405417465aaso493345e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:34:12 -0700 (PDT)
+ 5b1f17b1804b1-4064876e8b8so642535e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:34:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696440851; x=1697045651; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696440857; x=1697045657; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=JgzZrOytqrUApWTqn24h2uNs6StZKBnGHRMADJvQBG0=;
- b=ESdxJKxt0pIV9/8opF4/xCqE11XKvMbvHy9zLbfzYLJgakO+TFl68jjWNZc22r/bUe
- tIT9E2sJ3ujnZYE0FVx5O4tI1J33Z8EYK+agGatUlmOZIplHsURV4mc6pu3qg4iVxin/
- SGdNIHOEdoySQADNEUtJVEEbAwRPWEnxPZisgEAXIcYl/GoKF/BZcXmIr0fY/dV5a6AL
- CstWAFa5QXAutDbvnh/NvL1jiXaNEA4LgQY6wMmYWU9bjyIEDe1REx4VVJ5BMzqDUEGJ
- Ko7YKvV6649bzuphft2UUKVCGszBL4Z1cUgOqysqc2FRRverNFXkBATtFazQu86VB+x2
- Nnjw==
+ bh=YgccYr5Dzt6X/tQjLL34w8Nky+uqW63WT4BtHcxYfTM=;
+ b=B28vahGQlyU8GcBmWGfC1IdSYJ/qmaUEVa6qF3Fg5KhacuwOUY3PQBWCXJcy9v9Syc
+ xeJiP5ooRifmcQ6Iz8GSVJyREXJeqSa6Fztb/n8ixZjyknFa6Bu9ySmNM9CUTFWt7Mhv
+ 9g7sOKmszhT1sRPlGZpcn8XXFdBtHKPayyxnUusVWv5IYqKS8qsuv3faBL836AI++ydt
+ qA1pICwpBL9GGxOShF+0QK6QZJmpQF+oxvhUInqjqO23HcQXige3bmcn0S/FGm7I5bpb
+ bTUAv+QCZ8IPtdiLRAVL6iiRIF+l5sUWhdcfE7iP9VndhA0pu8EQZh3o4WQrlcWOxQih
+ vEGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696440851; x=1697045651;
+ d=1e100.net; s=20230601; t=1696440857; x=1697045657;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=JgzZrOytqrUApWTqn24h2uNs6StZKBnGHRMADJvQBG0=;
- b=kd2MhOSaf88lw8bXZWNJgLOub3hsXyUBbYzk2F5g0MFWy4m/oTuI7xBF/XZstykKxl
- p1Al0qckWoleoDN62HY2pmiu+UteEzsbc17TBHSe35qqQd4FzBj6rhPY5ig6PgPTdFYH
- cJIzSUF9Tetn+s39ywQz7rw57VhixkfbTBjqAG1D+FTzTBBKsMXTke4GUwq9wMsQcTqP
- wB/VLQBaUpXe0mXvvikGdo39toyQqKUfYyYl5/aiAqlJXn6HeeJhD/q25r5xPP9nvDQH
- UDxS2Vxt7f1V7KuXGGjZlBmx6NXhknFPVeD/+AO2WtAjLZJgUDyE4wqzpCfqVeQlaBMh
- VDlQ==
-X-Gm-Message-State: AOJu0YyEVjjkhG4sIsNpH/61/+QIqelkAH4tF6sl9tiPV80NJFwWj89C
- Jj2GmOwzC+b1uhPrJMcpgHHdw4xACPbaIxhaizQ=
-X-Google-Smtp-Source: AGHT+IHAga3heVXWns2qU5ZRkKRbIoAycmyM+teHZW6jqYex9EGAd7QLDFI5uD9YXVAUxC/WWtti2w==
-X-Received: by 2002:a7b:cc8e:0:b0:401:38dc:8916 with SMTP id
- p14-20020a7bcc8e000000b0040138dc8916mr2831246wma.10.1696440850986; 
- Wed, 04 Oct 2023 10:34:10 -0700 (PDT)
+ bh=YgccYr5Dzt6X/tQjLL34w8Nky+uqW63WT4BtHcxYfTM=;
+ b=YGj/Jia0pbnWW6nNkFfFOvBIEXaUYfaqn78eHvbzWdRAXWy7Ic6gNGPyQ9qHx287Zh
+ euImOLLcA/4ERHGDv791nFn5jd3UzICfQgJwj9fc6qxTAXXCpiENZhxSs60UYkfK0t27
+ ANW/auEI4hMprLKczAvq/Ui4RC114J/Ap1mXK+qb3ez3agHNALeRiyrJ6foHNLhWI63I
+ 8KmV8OWZQ2yKj0Em1mqYIQuVE2p71ZatrxukX5IUx7meW3OgA7kKh9TJ0F7xUeK0yb1Y
+ u8xnYm8GLaLx3ku7w5ax3Sjb56YU2FveNmOnODJZI+KPBUJIko7UPAmtk6NIOlI795yd
+ gNMQ==
+X-Gm-Message-State: AOJu0YyQfy6sfVIgXNSWi4I3/rGsdyCT2ccbng1LJRfas8aH+CwKCM0g
+ 9CoKDM7ru2n3foBSsMTcnf7il78XDvIJy1RLTxU=
+X-Google-Smtp-Source: AGHT+IH2o2Gng+1SrnejbxrC4tv3PQLdT9tsmy55o2/RKY/aAKdiskJdopcyCS262aLlxfXNZXtS9g==
+X-Received: by 2002:a5d:4564:0:b0:314:152d:f8db with SMTP id
+ a4-20020a5d4564000000b00314152df8dbmr2759811wrc.58.1696440857397; 
+ Wed, 04 Oct 2023 10:34:17 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- v7-20020a5d4a47000000b00321773bb933sm4520859wrs.77.2023.10.04.10.34.09
+ bf7-20020a0560001cc700b003140f47224csm4457730wrb.15.2023.10.04.10.34.15
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 10:34:10 -0700 (PDT)
+ Wed, 04 Oct 2023 10:34:17 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Konstantin Kostiuk <kkostiuk@redhat.com>,
- Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 19/21] qapi: Inline and remove QERR_QGA_COMMAND_FAILED
- definition
-Date: Wed,  4 Oct 2023 19:31:54 +0200
-Message-ID: <20231004173158.42591-20-philmd@linaro.org>
+ Michael Roth <michael.roth@amd.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: [RFC PATCH 20/21] qapi: Inline and remove QERR_UNSUPPORTED definition
+Date: Wed,  4 Oct 2023 19:31:55 +0200
+Message-ID: <20231004173158.42591-21-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004173158.42591-1-philmd@linaro.org>
 References: <20231004173158.42591-1-philmd@linaro.org>
@@ -104,184 +103,370 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using the following
-coccinelle semantic patch:
+Mechanical transformation using:
 
-    @match exists@
-    expression errp;
-    expression errmsg;
-    @@
-         error_setg(errp, QERR_QGA_COMMAND_FAILED, errmsg);
-
-    @script:python strformat depends on match@
-    errmsg << match.errmsg;
-    fixedfmt; // new var
-    @@
-    # Format skipping '"'.
-    fixedfmt = f'"Guest agent command failed, error was \'{errmsg[1:-1]}\'"'
-    coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
-
-    @replace@
-    expression match.errp;
-    expression match.errmsg;
-    identifier strformat.fixedfmt;
-    @@
-    -    error_setg(errp, QERR_QGA_COMMAND_FAILED, errmsg);
-    +    error_setg(errp, fixedfmt);
+  $ sed -i -e 's/QERR_UNSUPPORTED/"this feature or command is not currently supported"/' \
+    $(git grep -wl QERR_UNSUPPORTED)
 
 then manually removing the definition in include/qapi/qmp/qerror.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
+RFC: Not sure what is the best way to change the comment
+     in qga/qapi-schema.json...
+---
+ qga/qapi-schema.json      |  5 +++--
  include/qapi/qmp/qerror.h |  3 ---
- qga/commands-win32.c      | 38 ++++++++++++++++++++------------------
- qga/commands.c            |  7 ++++---
- 3 files changed, 24 insertions(+), 24 deletions(-)
+ qga/commands-bsd.c        |  8 +++----
+ qga/commands-posix.c      | 46 +++++++++++++++++++--------------------
+ qga/commands-win32.c      | 22 +++++++++----------
+ 5 files changed, 41 insertions(+), 43 deletions(-)
 
+diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+index b720dd4379..51683f4dc2 100644
+--- a/qga/qapi-schema.json
++++ b/qga/qapi-schema.json
+@@ -6,8 +6,9 @@
+ #
+ # "unsupported" is a higher-level error than the errors that
+ # individual commands might document.  The caller should always be
+-# prepared to receive QERR_UNSUPPORTED, even if the given command
+-# doesn't specify it, or doesn't document any failure mode at all.
++# prepared to receive the "this feature or command is not currently supported"
++# message, even if the given command doesn't specify it, or doesn't document
++# any failure mode at all.
+ ##
+ 
+ ##
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index e094f13114..840831cc6a 100644
+index 840831cc6a..7606f4525d 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
-@@ -17,9 +17,6 @@
+@@ -17,7 +17,4 @@
   * add new ones!
   */
  
--#define QERR_QGA_COMMAND_FAILED \
--    "Guest agent command failed, error was '%s'"
+-#define QERR_UNSUPPORTED \
+-    "this feature or command is not currently supported"
 -
- #define QERR_UNSUPPORTED \
-     "this feature or command is not currently supported"
+ #endif /* QERROR_H */
+diff --git a/qga/commands-bsd.c b/qga/commands-bsd.c
+index 17bddda1cf..11536f148f 100644
+--- a/qga/commands-bsd.c
++++ b/qga/commands-bsd.c
+@@ -152,25 +152,25 @@ int qmp_guest_fsfreeze_do_thaw(Error **errp)
  
-diff --git a/qga/commands-win32.c b/qga/commands-win32.c
-index 946dbafbb6..aa8c9770d4 100644
---- a/qga/commands-win32.c
-+++ b/qga/commands-win32.c
-@@ -245,7 +245,8 @@ int64_t qmp_guest_file_open(const char *path, const char *mode, Error **errp)
- 
- done:
-     if (gerr) {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED, gerr->message);
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'err -> messag'");
-         g_error_free(gerr);
-     }
-     g_free(w_path);
-@@ -279,8 +280,8 @@ static void acquire_privilege(const char *name, Error **errp)
-         TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &token))
-     {
-         if (!LookupPrivilegeValue(NULL, name, &priv.Privileges[0].Luid)) {
--            error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                       "no luid for requested privilege");
-+            error_setg(errp,
-+                       "Guest agent command failed, error was 'no luid for requested privilege'");
-             goto out;
-         }
- 
-@@ -288,14 +289,14 @@ static void acquire_privilege(const char *name, Error **errp)
-         priv.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
- 
-         if (!AdjustTokenPrivileges(token, FALSE, &priv, 0, NULL, 0)) {
--            error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                       "unable to acquire requested privilege");
-+            error_setg(errp,
-+                       "Guest agent command failed, error was 'unable to acquire requested privilege'");
-             goto out;
-         }
- 
-     } else {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                   "failed to open privilege token");
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'failed to open privilege token'");
-     }
- 
- out:
-@@ -309,8 +310,8 @@ static void execute_async(DWORD WINAPI (*func)(LPVOID), LPVOID opaque,
+ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
  {
-     HANDLE thread = CreateThread(NULL, 0, func, opaque, 0, NULL);
-     if (!thread) {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                   "failed to dispatch asynchronous command");
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'failed to dispatch asynchronous command'");
-     }
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
  }
  
-@@ -1423,22 +1424,22 @@ static void check_suspend_mode(GuestSuspendMode mode, Error **errp)
+ GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
  
-     ZeroMemory(&sys_pwr_caps, sizeof(sys_pwr_caps));
-     if (!GetPwrCapabilities(&sys_pwr_caps)) {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                   "failed to determine guest suspend capabilities");
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'failed to determine guest suspend capabilities'");
+ GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ #endif /* CONFIG_FSFREEZE */
+diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+index 6169bbf7a0..f510add366 100644
+--- a/qga/commands-posix.c
++++ b/qga/commands-posix.c
+@@ -165,7 +165,7 @@ void qmp_guest_set_time(bool has_time, int64_t time_ns, Error **errp)
+     }
+ 
+     if (!hwclock_available) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "this feature or command is not currently supported");
          return;
      }
  
-     switch (mode) {
-     case GUEST_SUSPEND_MODE_DISK:
-         if (!sys_pwr_caps.SystemS4) {
--            error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                       "suspend-to-disk not supported by OS");
-+            error_setg(errp,
-+                       "Guest agent command failed, error was 'suspend-to-disk not supported by OS'");
-         }
-         break;
-     case GUEST_SUSPEND_MODE_RAM:
-         if (!sys_pwr_caps.SystemS3) {
--            error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                       "suspend-to-ram not supported by OS");
-+            error_setg(errp,
-+                       "Guest agent command failed, error was 'suspend-to-ram not supported by OS'");
-         }
-         break;
-     default:
-@@ -1971,7 +1972,8 @@ void qmp_guest_set_user_password(const char *username,
+@@ -1540,7 +1540,7 @@ GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
  
- done:
-     if (gerr) {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED, gerr->message);
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'err -> messag'");
-         g_error_free(gerr);
+ GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+@@ -2235,7 +2235,7 @@ void qmp_guest_set_user_password(const char *username,
+                                  bool crypted,
+                                  Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ }
+ #endif /* __linux__ || __FreeBSD__ */
+ 
+@@ -2751,47 +2751,47 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+ 
+ void qmp_guest_suspend_disk(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ }
+ 
+ void qmp_guest_suspend_ram(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ }
+ 
+ void qmp_guest_suspend_hybrid(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ }
+ 
+ GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return -1;
+ }
+ 
+ GuestMemoryBlockList *qmp_guest_get_memory_blocks(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestMemoryBlockResponseList *
+ qmp_guest_set_memory_blocks(GuestMemoryBlockList *mem_blks, Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+@@ -3056,7 +3056,7 @@ error:
+ 
+ GuestNetworkInterfaceList *qmp_guest_network_get_interfaces(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+@@ -3066,20 +3066,20 @@ GuestNetworkInterfaceList *qmp_guest_network_get_interfaces(Error **errp)
+ 
+ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ 
+     return 0;
+ }
+ 
+ int64_t qmp_guest_fsfreeze_freeze(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ 
+     return 0;
+ }
+@@ -3088,33 +3088,33 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
+                                        strList *mountpoints,
+                                        Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ 
+     return 0;
+ }
+ 
+ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ 
+     return 0;
+ }
+ 
+ GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+@@ -3124,7 +3124,7 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+ GuestFilesystemTrimResponse *
+ qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ #endif
+@@ -3243,7 +3243,7 @@ GuestUserList *qmp_guest_get_users(Error **errp)
+ 
+ GuestUserList *qmp_guest_get_users(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+@@ -3386,7 +3386,7 @@ GuestOSInfo *qmp_guest_get_osinfo(Error **errp)
+ 
+ GuestDeviceInfoList *qmp_guest_get_devices(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ 
+     return NULL;
+ }
+diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+index aa8c9770d4..5c9f8e0923 100644
+--- a/qga/commands-win32.c
++++ b/qga/commands-win32.c
+@@ -1213,7 +1213,7 @@ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
+ GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+ {
+     if (!vss_initialized()) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "this feature or command is not currently supported");
+         return 0;
      }
-     g_free(user);
-@@ -2180,8 +2182,8 @@ static void ga_get_win_version(RTL_OSVERSIONINFOEXW *info, Error **errp)
-     HMODULE module = GetModuleHandle("ntdll");
-     PVOID fun = GetProcAddress(module, "RtlGetVersion");
-     if (fun == NULL) {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED,
--            "Failed to get address of RtlGetVersion");
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'Failed to get address of RtlGetVersion'");
+ 
+@@ -1241,7 +1241,7 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_mountpoints,
+     Error *local_err = NULL;
+ 
+     if (!vss_initialized()) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "this feature or command is not currently supported");
+         return 0;
+     }
+ 
+@@ -1276,7 +1276,7 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+     int i;
+ 
+     if (!vss_initialized()) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "this feature or command is not currently supported");
+         return 0;
+     }
+ 
+@@ -1509,7 +1509,7 @@ out:
+ 
+ void qmp_guest_suspend_hybrid(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+ }
+ 
+ static IP_ADAPTER_ADDRESSES *guest_get_adapters_addresses(Error **errp)
+@@ -1877,7 +1877,7 @@ GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
+ 
+ int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return -1;
+ }
+ 
+@@ -1938,7 +1938,7 @@ void qmp_guest_set_user_password(const char *username,
+     GError *gerr = NULL;
+ 
+     if (crypted) {
+-        error_setg(errp, QERR_UNSUPPORTED);
++        error_setg(errp, "this feature or command is not currently supported");
          return;
      }
  
-diff --git a/qga/commands.c b/qga/commands.c
-index 871210ab0b..936634c50a 100644
---- a/qga/commands.c
-+++ b/qga/commands.c
-@@ -475,7 +475,8 @@ GuestExec *qmp_guest_exec(const char *path,
-             guest_exec_task_setup, &has_merge, &pid, input_data ? &in_fd : NULL,
-             has_output ? &out_fd : NULL, has_output ? &err_fd : NULL, &gerr);
-     if (!ret) {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED, gerr->message);
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'err -> messag'");
-         g_error_free(gerr);
-         goto done;
-     }
-@@ -586,8 +587,8 @@ GuestTimezone *qmp_guest_get_timezone(Error **errp)
-     info = g_new0(GuestTimezone, 1);
-     tz = g_time_zone_new_local();
-     if (tz == NULL) {
--        error_setg(errp, QERR_QGA_COMMAND_FAILED,
--                   "Couldn't retrieve local timezone");
-+        error_setg(errp,
-+                   "Guest agent command failed, error was 'Couldn't retrieve local timezone'");
-         goto error;
-     }
+@@ -1983,20 +1983,20 @@ done:
  
+ GuestMemoryBlockList *qmp_guest_get_memory_blocks(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestMemoryBlockResponseList *
+ qmp_guest_set_memory_blocks(GuestMemoryBlockList *mem_blks, Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+@@ -2522,12 +2522,12 @@ char *qga_get_host_name(Error **errp)
+ 
+ GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
+ 
+ GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+ {
+-    error_setg(errp, QERR_UNSUPPORTED);
++    error_setg(errp, "this feature or command is not currently supported");
+     return NULL;
+ }
 -- 
 2.41.0
 
