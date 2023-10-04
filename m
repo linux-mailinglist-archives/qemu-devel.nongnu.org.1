@@ -2,80 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029997B81E6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E94B17B8210
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:18:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2cf-0002Tv-7h; Wed, 04 Oct 2023 10:13:09 -0400
+	id 1qo2gf-00049B-7c; Wed, 04 Oct 2023 10:17:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo2ca-0002RT-3Y
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:13:07 -0400
+ id 1qo2gR-00047I-Gg
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:17:04 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo2cW-0001ib-ER
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:13:02 -0400
+ id 1qo2gN-0005FR-5V
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:17:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696428779;
+ s=mimecast20190719; t=1696429017;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=X9AQZhLCwLgH9ynUOBaY6IrchR7vDj5l0M4l2rHMBTs=;
- b=OkPwu6g444dM6rVT66pPzg9ZxIjVCrskfK8XJh0QN68lGEMRZN2ZBLwVdar9uN8uFqj0UR
- tn8aY7m6KVYu5yxz7BdtOlQPQIyi7Jr4ACAwgmIe5S7XowCsL08rUf22K/EJfOZCvnLDyr
- SZ9Q8o9BvYYE8J5BhMMxr3M44bnQJI8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iLTKkZOSMAtA7etidNFnUnYn7xYm1fQU2GPYCuy0zpY=;
+ b=Vk5ANUSwMo4HlpGxSBtls14NMhkBn/HNym+j4Ey8Cz/0r6K91YORjP/MJBU9h8lDuSONHh
+ LwtZHgxBLR3Cy/krP4HJjR1ZWDyEscrXP8xomPvS+LMAb6bt1yjZ91lMp1UrAIHtyI6xYD
+ Vht+Il5Mqw+kLAS+6PeELRoSWDK7u3w=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-gOilgjjpPJ-Ep7aSuq3VMg-1; Wed, 04 Oct 2023 10:12:57 -0400
-X-MC-Unique: gOilgjjpPJ-Ep7aSuq3VMg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-32661ca30d9so1542714f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:12:57 -0700 (PDT)
+ us-mta-357-ogolJYXdP7aUfsdUMl_SoA-1; Wed, 04 Oct 2023 10:16:46 -0400
+X-MC-Unique: ogolJYXdP7aUfsdUMl_SoA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4064e7a166dso15901005e9.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:16:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696428776; x=1697033576;
+ d=1e100.net; s=20230601; t=1696429004; x=1697033804;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=X9AQZhLCwLgH9ynUOBaY6IrchR7vDj5l0M4l2rHMBTs=;
- b=cvozBiwfFoDzIiUSVXJTN3CkEBvtuhM3E2bZ/+TMZ41J6waagmHP6Uf7feb19SJqQm
- tDbc77GTJxymD/174ogqRuEvL1vIHaoQ9pti+Iis1pE0hDjXRl7pYelCoKR0RE44QWfc
- LSmtSTv78py8ILG5TeDmS3fj7xpjtSS9GITPyYfs2iCxTCzxzXeWKLc0fiGBOABU7/1x
- vHoSUH+n+iDruT+GNKc3RbMcVwT+bfIWzDDU7erLLXUJn8PdKT1JGsDL9evjuWQr9FnZ
- 14MFcFvTYY5T/CsEdCgYr7ujpuTy5jgiFU09bq0Gs20iOxj46nqQvLfh+FNSZSGu7q34
- IhDw==
-X-Gm-Message-State: AOJu0YytaIsFEuviDEHoJH5/QB1W1hffTHT01yvSibOYQ1pxSPfU6U/g
- V2VzaBYHf2VYlSaGI1N0chaNGI1yi5eBCBe8Yu64LYCHpk8ojjBWf4hPrdPoBn0sVLQJYXSH4Zt
- MusRHNDOZ+jWLutM=
-X-Received: by 2002:a5d:6a07:0:b0:314:350a:6912 with SMTP id
- m7-20020a5d6a07000000b00314350a6912mr2199301wru.36.1696428776648; 
- Wed, 04 Oct 2023 07:12:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEgIS1cPe4Woeg4GBKBP92l6lTShKoy4OIZI8iqGJRV+RJdLNZQcv4nghYlQ/auRUhu6W/NYA==
-X-Received: by 2002:a5d:6a07:0:b0:314:350a:6912 with SMTP id
- m7-20020a5d6a07000000b00314350a6912mr2199285wru.36.1696428776319; 
- Wed, 04 Oct 2023 07:12:56 -0700 (PDT)
+ bh=iLTKkZOSMAtA7etidNFnUnYn7xYm1fQU2GPYCuy0zpY=;
+ b=BpSWtnNUe9FSB9uw7xUIT5/P8NU2fSxUO9Zbx7QCufMMV/3RJbEwSEKctN4noJ7fSP
+ HpB45p5Ftb2CezTa+aKSmdlGJzxjnJJ49kI6RKA6SsvHEJcl6CVb+M3xpxIfYuPDFz+k
+ 13Lgf7mCw+AHg8WsCV01FsrUglyGXwIIIBq3lMK736aF8jWf/mSZKp9NvwI2OVDVpzG6
+ glt4Ligc0QxF18V5ggDK36KANyqkrGUmM6+PBTSeLvFhGjSOsRZ3HETrYxIcKUzZMjBv
+ A8yISbyr+yUTrfBBvuuM8uZSRzdigED5vfeT+8ikpUeLca0yXVssiPNgGZov9IpHLEsU
+ gCKQ==
+X-Gm-Message-State: AOJu0YzWf7UlYeZzzm72sSoiETCUVEkxYGIdD7NuCin8fPBttSPFd+He
+ 7t8yiP9vTamDVwefNvMqR5ZrU7Lh90ws9S+T8iTBQFWvacRgnbsnEiTebuRYUqbag/TPCBMLpaU
+ CDAUC5ytuFLVhjVk=
+X-Received: by 2002:a05:600c:2113:b0:401:73b2:f043 with SMTP id
+ u19-20020a05600c211300b0040173b2f043mr2562001wml.1.1696429004685; 
+ Wed, 04 Oct 2023 07:16:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG2Ct4ROQVoIpYbhSgv9nph0ay2b44BPsC2+xsoadBiU3u1VF0Lb6f2MWeGaTGUK+eU82gTKw==
+X-Received: by 2002:a05:600c:2113:b0:401:73b2:f043 with SMTP id
+ u19-20020a05600c211300b0040173b2f043mr2561980wml.1.1696429004282; 
+ Wed, 04 Oct 2023 07:16:44 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- g9-20020a5d46c9000000b0031ae8d86af4sm4128151wrs.103.2023.10.04.07.12.55
+ m19-20020a7bcb93000000b003fe61c33df5sm1652973wmi.3.2023.10.04.07.16.43
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 07:12:55 -0700 (PDT)
+ Wed, 04 Oct 2023 07:16:43 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Fabiano Rosas <farosas@suse.de>
 Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Steve Sistare
  <steven.sistare@oracle.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
- <berrange@redhat.com>, Leonardo Bras <leobras@redhat.com>
-Subject: Re: [PATCH v5 4/6] migration: Set migration status early in
- incoming side
-In-Reply-To: <20230712190742.22294-5-farosas@suse.de> (Fabiano Rosas's message
- of "Wed, 12 Jul 2023 16:07:40 -0300")
+ <berrange@redhat.com>
+Subject: Re: [PATCH v5 0/6] migration: Test the new "file:" migration
+In-Reply-To: <20230712190742.22294-1-farosas@suse.de> (Fabiano Rosas's message
+ of "Wed, 12 Jul 2023 16:07:36 -0300")
 References: <20230712190742.22294-1-farosas@suse.de>
- <20230712190742.22294-5-farosas@suse.de>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 16:12:54 +0200
-Message-ID: <87r0ma1no9.fsf@secure.mitica>
+Date: Wed, 04 Oct 2023 16:16:42 +0200
+Message-ID: <87jzs21nhx.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
@@ -104,28 +102,49 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fabiano Rosas <farosas@suse.de> wrote:
-> We are sending a migration event of MIGRATION_STATUS_SETUP at
-> qemu_start_incoming_migration but never actually setting the state.
->
-> This creates a window between qmp_migrate_incoming and
-> process_incoming_migration_co where the migration status is still
-> MIGRATION_STATUS_NONE. Calling query-migrate during this time will
-> return an empty response even though the incoming migration command
-> has already been issued.
->
-> Commit 7cf1fe6d68 ("migration: Add migration events on target side")
-> has added support to the 'events' capability to the incoming part of
-> migration, but chose to send the SETUP event without setting the
-> state. I'm assuming this was a mistake.
->
-> This introduces a change in behavior, any QMP client waiting for the
-> SETUP event will hang, unless it has previously enabled the 'events'
-> capability. Having the capability enabled is sufficient to continue to
-> receive the event.
->
-> Reviewed-by: Peter Xu <peterx@redhat.com>
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+> Based-on:
+> [PATCH V4 0/2] migration file URI
+> https://lore.kernel.org/r/1688135108-316997-1-git-send-email-steven.sistare@oracle.com
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+Full series are integrated for next PULL request.
+
+Thanks, Juan.
+
+>
+> Since v4:
+>
+> - Implemented a separate version of test_precopy_common to be used
+>   with the file transport (patch 6).
+>
+> v4:
+> https://lore.kernel.org/r/20230706201927.15442-1-farosas@suse.de
+>
+> v3:
+> https://lore.kernel.org/r/20230630212902.19925-1-farosas@suse.de
+>
+> v2:
+> https://lore.kernel.org/r/20230628165542.17214-1-farosas@suse.de
+>
+> v1:
+> https://lore.kernel.org/r/20230626182210.8792-1-farosas@suse.de
+>
+> Fabiano Rosas (6):
+>   tests/qtest: migration: Expose migrate_set_capability
+>   tests/qtest: migration: Add migrate_incoming_qmp helper
+>   tests/qtest: migration: Use migrate_incoming_qmp where appropriate
+>   migration: Set migration status early in incoming side
+>   tests/qtest: migration: Add support for negative testing of
+>     qmp_migrate
+>   tests/qtest: migration-test: Add tests for file-based migration
+>
+>  migration/migration.c             |   7 +-
+>  tests/qtest/libqtest.c            |  33 ++++++
+>  tests/qtest/libqtest.h            |  28 +++++
+>  tests/qtest/meson.build           |   1 +
+>  tests/qtest/migration-helpers.c   |  60 ++++++++++
+>  tests/qtest/migration-helpers.h   |  10 ++
+>  tests/qtest/migration-test.c      | 185 ++++++++++++++++++++++++++----
+>  tests/qtest/virtio-net-failover.c |  77 ++-----------
+>  8 files changed, 308 insertions(+), 93 deletions(-)
 
 
