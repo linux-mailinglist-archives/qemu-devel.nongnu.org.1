@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF7C07B7A70
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1CE7B7A67
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:44:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxTq-0002Qe-Cb; Wed, 04 Oct 2023 04:43:42 -0400
+	id 1qnxTn-0002IV-Kr; Wed, 04 Oct 2023 04:43:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxTk-0002Ia-W3
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:43:39 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxTi-0002Eb-8J
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:43:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxTi-0000un-Jq
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:43:36 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxTg-0000uP-MF
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:43:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409014;
+ s=mimecast20190719; t=1696409011;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=UJkiTw8U/nk2edqHVe6dUwNUdcRD7I2JmYKj4vEBhwM=;
- b=SQTXHWC91XVX66cE1rVF7oGZS6BLWGJ5dZFNmEgJHy96AnbTyCJQr86g/6951ui9Opl2Iz
- qdoZI+UN55f5glVu7yldg85j8cW13JnXb0B5bTVwlHEkmjW9zBSr22fo/fhZoQECwc8M6o
- gTfipQubJ2A4d3nhsayvaoYNCjB5G/k=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=W0fAAn8UFyb8KBtfxAsFqqpol8c8vZQYpO/ekzLxr6g=;
+ b=fWYmquRyTYk4Lt5GtfDpA/d+jtbUUdcI0pp8yn8YFvuO/LRu5KqOPdZMr383PbnfauJLZA
+ 649cRXv1C3x0e8IG3aHrlDZAA6Kqk2JGkITRAWj0mvX/U6Q9osuHv96QKuGBAWeSvFAyzw
+ To9VybFYmUI8FClAitA84N30b40+XJM=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-530-aOJjjzw7NgexeobiJlurrg-1; Wed, 04 Oct 2023 04:43:18 -0400
-X-MC-Unique: aOJjjzw7NgexeobiJlurrg-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-503343a850aso1689736e87.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:43:18 -0700 (PDT)
+ us-mta-538-k9SFH9qzNDWlay_fFAgqmw-1; Wed, 04 Oct 2023 04:43:20 -0400
+X-MC-Unique: k9SFH9qzNDWlay_fFAgqmw-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3248ebee5f4so1305429f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:43:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696408996; x=1697013796;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=UJkiTw8U/nk2edqHVe6dUwNUdcRD7I2JmYKj4vEBhwM=;
- b=aPO8MbrXfwVJ1ulGW6fswuSANvjCLOban5uvt+pC3u/ANB7GOrzhQ6vJD8cROJVHMX
- TGGppGw7mwb9zQPgBYdKIwGe0qnwR45khdNmd5l05y/y97KVIFacyne1te9umgVcpfHU
- EG6FyHe1lOCBWWqMX2L4h2V8Slvz58nHTOrea+x9XC9LFeKTeORpKTmTXAc0m9LsN7IL
- JO5qeYKs0elIM1wNaUHhaprytkQuzuNwzLb8U9vctp+4DVUD6NcgOmR0tALa3EKkkOvu
- /EdibPUBSOTubaN974MW/FyvhPxa0Os98YMBiNoVTNYNLxo7Z3I3FRl+r6+/Bu08xDDT
- 8PHw==
-X-Gm-Message-State: AOJu0YyVLX0VoBFKJu6Rgh60xwfcNDcwaTjJqADqQ3HM8Tapwp9WEFo5
- km+bJqS3vKEr/eHhAcO/vnIcfJd4dY51ZNZ/Sp8YvuVp7+N6TZJnnabHBzsDvf2P5Rl9hrRhqR5
- MVf7Te6eJe2wMgY8y3Lfp4uh39lOA93/5Ta9Sxwvi8ynE/UcdotNzk2a8exB0Dcu+rHlx
-X-Received: by 2002:a05:6512:695:b0:503:28cb:c087 with SMTP id
- t21-20020a056512069500b0050328cbc087mr2307413lfe.29.1696408996341; 
- Wed, 04 Oct 2023 01:43:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGIwwbLUnNBE2fJNz5ibVOk3hdFFQ4R4QdK+kBQM11ObRX7EnbD0I2ynwUVe7AdKG/BllwZUg==
-X-Received: by 2002:a05:6512:695:b0:503:28cb:c087 with SMTP id
- t21-20020a056512069500b0050328cbc087mr2307385lfe.29.1696408995965; 
- Wed, 04 Oct 2023 01:43:15 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696408999; x=1697013799;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=W0fAAn8UFyb8KBtfxAsFqqpol8c8vZQYpO/ekzLxr6g=;
+ b=REyVPFFQfEWXUW7Huvtd9TxXaYo7dK6TUnWwgw//N+4zw06HckipdVxfr5jErXqZcM
+ sNPw0moXW25y85HqKKSG3YCW+oO3wNuI7EQgmNKzMQcCi0QQoT+m0e9f8fjGxH7g5lcl
+ db0mo9bT+sJJZwChHkhk6UQ/TCWg1Q8vIvKYp7++2ByiY5WwNiFF18b0vc2BtcKN9KyH
+ cJtkHhM0B/6t3rWEsGHsMZc0PBkYAWOgNV28cEmRIF+CkhgOGdH7qG0raRoRB8y8wY3+
+ Zyl3UlCdIWvJNILTOgwiKAgv1Z8cgqqZlGb5NyI8YEa/tutTg/0ufl++kMA9j06ieTm2
+ Sl8A==
+X-Gm-Message-State: AOJu0YzHTNH22dGpstMo9+6CoeSIHUMG9099MD6bfU0RUOoWikIB+xib
+ zoB/8lKDNjMzAU1dPy6qO5RxLAEDL2NTNySAV2D7ip+/0NhO9/u1ZJBqWu5RtHAwZnM7ECQvYhe
+ N7rY7Yi94VnzGMxU94guXCz4cXRIhi47+DPAMQvMzYxANs0mQnfJjhaMqc6Me98AkAkyh
+X-Received: by 2002:a5d:6a4c:0:b0:31f:8a6d:e527 with SMTP id
+ t12-20020a5d6a4c000000b0031f8a6de527mr1495199wrw.45.1696408998868; 
+ Wed, 04 Oct 2023 01:43:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFAWaOrDzS0FKbvpSKoYqtw1k6P4Pokk1OU7W5NugEJnx0E3R1O+6aeSAoYS9dzYC5No8rUTw==
+X-Received: by 2002:a5d:6a4c:0:b0:31f:8a6d:e527 with SMTP id
+ t12-20020a5d6a4c000000b0031f8a6de527mr1495182wrw.45.1696408998562; 
+ Wed, 04 Oct 2023 01:43:18 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- m7-20020a05600c280700b004047ac770d1sm950199wmb.8.2023.10.04.01.43.14
+ r5-20020a5d4e45000000b003176c6e87b1sm3461288wrt.81.2023.10.04.01.43.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:43:15 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:43:13 -0400
+ Wed, 04 Oct 2023 01:43:18 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:43:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>
-Subject: [PULL 01/63] pci: SLT must be RO
-Message-ID: <971c71a2dd22b9cde228a2a74f2a65622d037a9b.1696408966.git.mst@redhat.com>
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 02/63] hw/virtio: Propagate page_mask to
+ vhost_vdpa_listener_skipped_section()
+Message-ID: <ed054ee3d4194c20da06981407e2e0515e6467b2.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1696408966.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -101,121 +101,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-current code sets PCI_SEC_LATENCY_TIMER to RW, but for
-pcie to pcie bridges it must be RO 0 according to
-pci express spec which says:
-    This register does not apply to PCI Express. It must be read-only
-    and hardwired to 00h. For PCI Express to PCI/PCI-X Bridges, refer to the
-    [PCIe-to-PCI-PCI-X-Bridge] for requirements for this register.
+From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-also, fix typo in comment where it's made writeable - this typo
-is likely what prevented us noticing we violate this requirement
-in the 1st place.
+In order to make vhost-vdpa.c a target-agnostic source unit,
+we need to remove the TARGET_PAGE_SIZE / TARGET_PAGE_MASK /
+TARGET_PAGE_ALIGN uses. TARGET_PAGE_SIZE will be replaced by
+the runtime qemu_target_page_size(). The other ones will be
+deduced from TARGET_PAGE_SIZE.
 
-Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Message-Id: <de9d05366a70172e1789d10591dbe59e39c3849c.1693432039.git.mst@redhat.com>
-Tested-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Since the 3 macros are used in 3 related functions (sharing
+the same call tree), we'll refactor them to only depend on
+TARGET_PAGE_MASK.
+
+Having the following call tree:
+
+  vhost_vdpa_listener_region_del()
+    -> vhost_vdpa_listener_skipped_section()
+       -> vhost_vdpa_section_end()
+
+The first step is to propagate TARGET_PAGE_MASK to
+vhost_vdpa_listener_skipped_section().
+
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230710094931.84402-2-philmd@linaro.org>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/pci/pci_bridge.h |  3 +++
- hw/core/machine.c           |  5 ++++-
- hw/pci/pci.c                |  2 +-
- hw/pci/pci_bridge.c         | 14 ++++++++++++++
- 4 files changed, 22 insertions(+), 2 deletions(-)
+ hw/virtio/vhost-vdpa.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/hw/pci/pci_bridge.h b/include/hw/pci/pci_bridge.h
-index ea54a81a15..5cd452115a 100644
---- a/include/hw/pci/pci_bridge.h
-+++ b/include/hw/pci/pci_bridge.h
-@@ -77,6 +77,9 @@ struct PCIBridge {
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index 42f2a4bae9..118c588205 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -42,7 +42,8 @@ static Int128 vhost_vdpa_section_end(const MemoryRegionSection *section)
  
-     pci_map_irq_fn map_irq;
-     const char *bus_name;
-+
-+    /* SLT is RO for PCIE to PCIE bridges, but old QEMU versions had it RW */
-+    bool pcie_writeable_slt_bug;
- };
- 
- #define PCI_BRIDGE_DEV_PROP_CHASSIS_NR "chassis_nr"
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index cb38b8cf4c..9ae8f793ae 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -32,6 +32,7 @@
- #include "qemu/error-report.h"
- #include "sysemu/qtest.h"
- #include "hw/pci/pci.h"
-+#include "hw/pci/pci_bridge.h"
- #include "hw/mem/nvdimm.h"
- #include "migration/global_state.h"
- #include "migration/vmstate.h"
-@@ -40,7 +41,9 @@
- #include "hw/virtio/virtio-pci.h"
- #include "hw/virtio/virtio-net.h"
- 
--GlobalProperty hw_compat_8_1[] = {};
-+GlobalProperty hw_compat_8_1[] = {
-+    { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
-+};
- const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
- 
- GlobalProperty hw_compat_8_0[] = {
-diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-index 881d774fb6..b0d21bf43a 100644
---- a/hw/pci/pci.c
-+++ b/hw/pci/pci.c
-@@ -893,7 +893,7 @@ static void pci_init_w1cmask(PCIDevice *dev)
- static void pci_init_mask_bridge(PCIDevice *d)
+ static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
+                                                 uint64_t iova_min,
+-                                                uint64_t iova_max)
++                                                uint64_t iova_max,
++                                                int page_mask)
  {
-     /* PCI_PRIMARY_BUS, PCI_SECONDARY_BUS, PCI_SUBORDINATE_BUS and
--       PCI_SEC_LETENCY_TIMER */
-+       PCI_SEC_LATENCY_TIMER */
-     memset(d->wmask + PCI_PRIMARY_BUS, 0xff, 4);
+     Int128 llend;
  
-     /* base and limit */
-diff --git a/hw/pci/pci_bridge.c b/hw/pci/pci_bridge.c
-index e7b9345615..6a4e38856d 100644
---- a/hw/pci/pci_bridge.c
-+++ b/hw/pci/pci_bridge.c
-@@ -38,6 +38,7 @@
- #include "qapi/error.h"
- #include "hw/acpi/acpi_aml_interface.h"
- #include "hw/acpi/pci.h"
-+#include "hw/qdev-properties.h"
+@@ -313,7 +314,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
+     int ret;
  
- /* PCI bridge subsystem vendor ID helper functions */
- #define PCI_SSVID_SIZEOF        8
-@@ -385,6 +386,11 @@ void pci_bridge_initfn(PCIDevice *dev, const char *typename)
-     pci_bridge_region_init(br);
-     QLIST_INIT(&sec_bus->child);
-     QLIST_INSERT_HEAD(&parent->child, sec_bus, sibling);
-+
-+    /* For express secondary buses, secondary latency timer is RO 0 */
-+    if (pci_bus_is_express(sec_bus) && !br->pcie_writeable_slt_bug) {
-+        dev->wmask[PCI_SEC_LATENCY_TIMER] = 0;
-+    }
- }
+     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+-                                            v->iova_range.last)) {
++                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+         return;
+     }
+     if (memory_region_is_iommu(section->mr)) {
+@@ -398,7 +399,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+     int ret;
  
- /* default qdev clean up function for PCI-to-PCI bridge */
-@@ -466,10 +472,18 @@ int pci_bridge_qemu_reserve_cap_init(PCIDevice *dev, int cap_offset,
-     return 0;
- }
- 
-+static Property pci_bridge_properties[] = {
-+    DEFINE_PROP_BOOL("x-pci-express-writeable-slt-bug", PCIBridge,
-+                     pcie_writeable_slt_bug, false),
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- static void pci_bridge_class_init(ObjectClass *klass, void *data)
- {
-     AcpiDevAmlIfClass *adevc = ACPI_DEV_AML_IF_CLASS(klass);
-+    DeviceClass *k = DEVICE_CLASS(klass);
- 
-+    device_class_set_props(k, pci_bridge_properties);
-     adevc->build_dev_aml = build_pci_bridge_aml;
- }
- 
+     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
+-                                            v->iova_range.last)) {
++                                            v->iova_range.last, TARGET_PAGE_MASK)) {
+         return;
+     }
+     if (memory_region_is_iommu(section->mr)) {
 -- 
 MST
 
