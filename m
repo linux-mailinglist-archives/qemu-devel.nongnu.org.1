@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2E97B8DA2
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 708557B8D9D
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:48:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo7pV-0004uA-Ck; Wed, 04 Oct 2023 15:46:45 -0400
+	id 1qo7pR-0004r6-El; Wed, 04 Oct 2023 15:46:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qo7pT-0004rT-5v
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:46:43 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qo7pP-0004qo-DB
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:46:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qo7pD-0005AF-Hh
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:46:42 -0400
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qo7pC-00059g-4q
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:46:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696448787;
+ s=mimecast20190719; t=1696448785;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mVjnzkFb6jqe186MzH7ifkiBtaZPoadf/dEtoPMNUEY=;
- b=QC82YGhWqrRxsEVWIXtij1VSVBDKSK+4sl9/AbZcSmqkmX1zVyd8KOKqcALrO60UsyW8yS
- 1jqDkduusLM6+Mld2aI9QwAO+p5GF0jMwmf3JfmN7WrXAhSJNvYQTFy2ts6vDyM+gUEdA0
- CDZcQkeVkVQwur9iuv+fcijMGdHr5uk=
+ bh=EKJk7XVB2DViVMMKfF/Lt/CVsitRtP9avGJrQHTVjGQ=;
+ b=CiTiROXTmhefPyXwTJcF+Z1Wu8w91UXCHH2ap0P+Khyu7K3MqoRcn4bRyCiU/qizi5fUJX
+ XSg8u0nxPGwXpIMzqE52xZHBDp4Q31WvXJdd8G48emR2HPDPeO+9nlzc1e09OqMuyFgE8I
+ 4j7e2BgDAhxq55r8Xtm/ms+lRcAV/8k=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-510--1mErR4kPPGo29Qvissxxg-1; Wed, 04 Oct 2023 15:46:21 -0400
-X-MC-Unique: -1mErR4kPPGo29Qvissxxg-1
+ us-mta-246-_yoS9iTfP7-Z29OlqBEk6A-1; Wed, 04 Oct 2023 15:46:22 -0400
+X-MC-Unique: _yoS9iTfP7-Z29OlqBEk6A-1
 Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
  [10.11.54.3])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9AC713C0E660;
- Wed,  4 Oct 2023 19:46:20 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8D5F12825E9A;
+ Wed,  4 Oct 2023 19:46:21 +0000 (UTC)
 Received: from scv.redhat.com (unknown [10.22.16.75])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B73E21054FC2;
- Wed,  4 Oct 2023 19:46:19 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id AD4471054FC2;
+ Wed,  4 Oct 2023 19:46:20 +0000 (UTC)
 From: John Snow <jsnow@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
@@ -58,9 +58,9 @@ Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PULL 5/9] python/machine: use socketpair() for console connections
-Date: Wed,  4 Oct 2023 15:46:09 -0400
-Message-ID: <20231004194613.2900323-6-jsnow@redhat.com>
+Subject: [PULL 6/9] python/machine: use socketpair() for qtest connection
+Date: Wed,  4 Oct 2023 15:46:10 -0400
+Message-ID: <20231004194613.2900323-7-jsnow@redhat.com>
 In-Reply-To: <20231004194613.2900323-1-jsnow@redhat.com>
 References: <20231004194613.2900323-1-jsnow@redhat.com>
 MIME-Version: 1.0
@@ -74,7 +74,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,99 +91,131 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Create a socketpair for the console output. This should help eliminate
-race conditions around console text early in the boot process that might
-otherwise have been dropped on the floor before being able to connect to
-QEMU under "server,nowait".
+Like the QMP and console sockets, begin using socketpairs for the qtest
+connection, too. After this patch, we'll be able to remove the vestigial
+sock_dir argument, but that cleanup is best done in its own patch.
 
 Signed-off-by: John Snow <jsnow@redhat.com>
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
 Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Message-id: 20230928044943.849073-5-jsnow@redhat.com
+Message-id: 20230928044943.849073-6-jsnow@redhat.com
 Signed-off-by: John Snow <jsnow@redhat.com>
 ---
- python/qemu/machine/machine.py | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ python/qemu/machine/qtest.py | 49 +++++++++++++++++++++++++++++-------
+ 1 file changed, 40 insertions(+), 9 deletions(-)
 
-diff --git a/python/qemu/machine/machine.py b/python/qemu/machine/machine.py
-index e26109e6f0e..4156b8cf7d4 100644
---- a/python/qemu/machine/machine.py
-+++ b/python/qemu/machine/machine.py
-@@ -159,6 +159,8 @@ def __init__(self,
+diff --git a/python/qemu/machine/qtest.py b/python/qemu/machine/qtest.py
+index 1c46138bd0c..8180d3ab017 100644
+--- a/python/qemu/machine/qtest.py
++++ b/python/qemu/machine/qtest.py
+@@ -24,6 +24,7 @@
+     Optional,
+     Sequence,
+     TextIO,
++    Tuple,
+ )
  
-         self._name = name or f"{id(self):x}"
-         self._sock_pair: Optional[Tuple[socket.socket, socket.socket]] = None
-+        self._cons_sock_pair: Optional[
+ from qemu.qmp import SocketAddrT
+@@ -38,23 +39,41 @@ class QEMUQtestProtocol:
+     :param address: QEMU address, can be either a unix socket path (string)
+                     or a tuple in the form ( address, port ) for a TCP
+                     connection
+-    :param server: server mode, listens on the socket (bool)
++    :param sock: An existing socket can be provided as an alternative to
++                 an address. One of address or sock must be provided.
++    :param server: server mode, listens on the socket. Only meaningful
++                   in conjunction with an address and not an existing
++                   socket.
++
+     :raise socket.error: on socket connection errors
+ 
+     .. note::
+        No connection is established by __init__(), this is done
+        by the connect() or accept() methods.
+     """
+-    def __init__(self, address: SocketAddrT,
++    def __init__(self,
++                 address: Optional[SocketAddrT] = None,
++                 sock: Optional[socket.socket] = None,
+                  server: bool = False):
++        if address is None and sock is None:
++            raise ValueError("Either 'address' or 'sock' must be specified")
++        if address is not None and sock is not None:
++            raise ValueError(
++                "Either 'address' or 'sock' must be specified, but not both")
++        if sock is not None and server:
++            raise ValueError("server=True is meaningless when passing socket")
++
+         self._address = address
+-        self._sock = self._get_sock()
++        self._sock = sock or self._get_sock()
+         self._sockfile: Optional[TextIO] = None
++
+         if server:
++            assert self._address is not None
+             self._sock.bind(self._address)
+             self._sock.listen(1)
+ 
+     def _get_sock(self) -> socket.socket:
++        assert self._address is not None
+         if isinstance(self._address, tuple):
+             family = socket.AF_INET
+         else:
+@@ -67,7 +86,8 @@ def connect(self) -> None:
+ 
+         @raise socket.error on socket connection errors
+         """
+-        self._sock.connect(self._address)
++        if self._address is not None:
++            self._sock.connect(self._address)
+         self._sockfile = self._sock.makefile(mode='r')
+ 
+     def accept(self) -> None:
+@@ -127,29 +147,40 @@ def __init__(self,
+                          base_temp_dir=base_temp_dir,
+                          sock_dir=sock_dir, qmp_timer=qmp_timer)
+         self._qtest: Optional[QEMUQtestProtocol] = None
+-        self._qtest_path = os.path.join(sock_dir, name + "-qtest.sock")
++        self._qtest_sock_pair: Optional[
 +            Tuple[socket.socket, socket.socket]] = None
-         self._temp_dir: Optional[str] = None
-         self._base_temp_dir = base_temp_dir
-         self._sock_dir = sock_dir
-@@ -316,8 +318,9 @@ def _base_args(self) -> List[str]:
-         for _ in range(self._console_index):
-             args.extend(['-serial', 'null'])
-         if self._console_set:
--            chardev = ('socket,id=console,path=%s,server=on,wait=off' %
--                       self._console_address)
-+            assert self._cons_sock_pair is not None
-+            fd = self._cons_sock_pair[0].fileno()
-+            chardev = f"socket,id=console,fd={fd}"
-             args.extend(['-chardev', chardev])
-             if self._console_device_type is None:
-                 args.extend(['-serial', 'chardev:console'])
-@@ -352,6 +355,10 @@ def _pre_launch(self) -> None:
-                 nickname=self._name
-             )
- 
-+        if self._console_set:
-+            self._cons_sock_pair = socket.socketpair()
-+            os.set_inheritable(self._cons_sock_pair[0].fileno(), True)
-+
-         # NOTE: Make sure any opened resources are *definitely* freed in
-         # _post_shutdown()!
-         # pylint: disable=consider-using-with
-@@ -369,6 +376,9 @@ def _pre_launch(self) -> None:
-     def _post_launch(self) -> None:
-         if self._sock_pair:
-             self._sock_pair[0].close()
-+        if self._cons_sock_pair:
-+            self._cons_sock_pair[0].close()
-+
-         if self._qmp_connection:
-             if self._sock_pair:
-                 self._qmp.connect()
-@@ -524,6 +534,11 @@ def _early_cleanup(self) -> None:
-             self._console_socket.close()
-             self._console_socket = None
- 
-+        if self._cons_sock_pair:
-+            self._cons_sock_pair[0].close()
-+            self._cons_sock_pair[1].close()
-+            self._cons_sock_pair = None
-+
-     def _hard_shutdown(self) -> None:
-         """
-         Perform early cleanup, kill the VM, and wait for it to terminate.
-@@ -885,10 +900,19 @@ def console_socket(self) -> socket.socket:
-         """
-         if self._console_socket is None:
-             LOG.debug("Opening console socket")
-+            if not self._console_set:
-+                raise QEMUMachineError(
-+                    "Attempt to access console socket with no connection")
-+            assert self._cons_sock_pair is not None
-+            # os.dup() is used here for sock_fd because otherwise we'd
-+            # have two rich python socket objects that would each try to
-+            # close the same underlying fd when either one gets garbage
-+            # collected.
-             self._console_socket = console_socket.ConsoleSocket(
--                self._console_address,
-+                sock_fd=os.dup(self._cons_sock_pair[1].fileno()),
-                 file=self._console_log_path,
-                 drain=self._drain_console)
-+            self._cons_sock_pair[1].close()
-         return self._console_socket
  
      @property
+     def _base_args(self) -> List[str]:
+         args = super()._base_args
++        assert self._qtest_sock_pair is not None
++        fd = self._qtest_sock_pair[0].fileno()
+         args.extend([
+-            '-qtest', f"unix:path={self._qtest_path}",
++            '-chardev', f"socket,id=qtest,fd={fd}",
++            '-qtest', 'chardev:qtest',
+             '-accel', 'qtest'
+         ])
+         return args
+ 
+     def _pre_launch(self) -> None:
++        self._qtest_sock_pair = socket.socketpair()
++        os.set_inheritable(self._qtest_sock_pair[0].fileno(), True)
+         super()._pre_launch()
+-        self._qtest = QEMUQtestProtocol(self._qtest_path, server=True)
++        self._qtest = QEMUQtestProtocol(sock=self._qtest_sock_pair[1])
+ 
+     def _post_launch(self) -> None:
+         assert self._qtest is not None
+         super()._post_launch()
+-        self._qtest.accept()
++        if self._qtest_sock_pair:
++            self._qtest_sock_pair[0].close()
++        self._qtest.connect()
+ 
+     def _post_shutdown(self) -> None:
++        if self._qtest_sock_pair:
++            self._qtest_sock_pair[0].close()
++            self._qtest_sock_pair[1].close()
++            self._qtest_sock_pair = None
+         super()._post_shutdown()
+-        self._remove_if_exists(self._qtest_path)
+ 
+     def qtest(self, cmd: str) -> str:
+         """
 -- 
 2.41.0
 
