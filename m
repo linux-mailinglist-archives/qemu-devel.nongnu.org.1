@@ -2,81 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0607B8466
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AB007B8478
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:05:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo4IM-0000qC-2e; Wed, 04 Oct 2023 12:00:18 -0400
+	id 1qo4ME-0005D2-L8; Wed, 04 Oct 2023 12:04:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo4I2-0000og-FX
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:00:00 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo4Hy-0003Fi-2w
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:59:57 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 3039C21847;
- Wed,  4 Oct 2023 15:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696435192; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=V4eTiVYNc8iTHVLUJRwz9wghlB+/3v6PMNh74prsOl4=;
- b=iSOnSRWFAGZzYSKM07UuZUArNQzsuTOgLUqr2j6M+ayveOyeYoI9arwLhVleSFpoluTQP9
- n4gM0ic7zwXsNtDEoJ8BhwZ5ZHyRGUUXb5dpbJX+6hfQfFENyvEUikumoSYimrs1XW9F7h
- GaY+L/lxLlfVvJhMyr2itTp48emgOw4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696435192;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=V4eTiVYNc8iTHVLUJRwz9wghlB+/3v6PMNh74prsOl4=;
- b=sli0snFIm77tEtBEGbv1qX0i9o4WxHf05X+hV1vpmOn2wpUMiPyryM3NccaUFgXq/mEoz5
- O5Qnax7J+bV+5YBw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id AF25A139F9;
- Wed,  4 Oct 2023 15:59:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id z82SHfeLHWUTLgAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 15:59:51 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: quintela@redhat.com
-Cc: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, qemu-devel@nongnu.org,
- Peter Xu
- <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>, Laurent Vivier
- <lvivier@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras
- <leobras@redhat.com>, Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [RFC PATCH 1/1] qtest/migration: Support more than one QEMU binary
-In-Reply-To: <87wmw24vzg.fsf@secure.mitica>
-References: <20231003141932.2367-1-farosas@suse.de>
- <20231003141932.2367-2-farosas@suse.de>
- <3dd8e410-982b-3ea6-78aa-08c1ba26f8da@linaro.org>
- <ZRw5Myc/joWb6why@redhat.com> <874jj7u11d.fsf@suse.de>
- <87wmw24vzg.fsf@secure.mitica>
-Date: Wed, 04 Oct 2023 12:59:49 -0300
-Message-ID: <8734yqpedm.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qo4M9-00053f-DM; Wed, 04 Oct 2023 12:04:15 -0400
+Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qo4M7-00055t-1B; Wed, 04 Oct 2023 12:04:13 -0400
+Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0f:4c13:0:640:3c7:0])
+ by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id A555A60264;
+ Wed,  4 Oct 2023 19:04:05 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:2::1:1c] (unknown [2a02:6b8:b081:2::1:1c])
+ by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
+ (smtpcorp/Yandex) with ESMTPSA id 24aNuV2OmmI0-ALoByiBa; 
+ Wed, 04 Oct 2023 19:04:05 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696435445;
+ bh=h9WdnQrX/TJwJECYK2YDdxuprPB86mGS1StWTkf2vLE=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=W+9FeC7VQUwDTuBeKRtjEvt679NTVUeSlQphCtpPxMOJ3VE9Agv5rObbcunX8Y9Ad
+ RZGtA2pppKoIoEitrQ6fQgwKB9slo/8FWbjr7N6XI5TrPtUP33I7OaOYErkzOt/XUe
+ VtBpCgZk3LsegzomBm5YWyWV23yiPZ4n0STnbjNE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <91c048b3-99f4-b057-5acb-36bbcb5f8e75@yandex-team.ru>
+Date: Wed, 4 Oct 2023 19:04:02 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [RFC] migration/block-dirty-bitmap: make loading bitmap for
+ device with iothread future-proof
+Content-Language: en-US
+To: quintela@redhat.com, Fiona Ebner <f.ebner@proxmox.com>
+Cc: qemu-devel@nongnu.org, stefanha@redhat.com, fam@euphon.net,
+ eblake@redhat.com, jsnow@redhat.com, peterx@redhat.com, leobras@redhat.com,
+ qemu-block@nongnu.org
+References: <20230728133928.256898-1-f.ebner@proxmox.com>
+ <871qgocz3l.fsf@secure.mitica>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <871qgocz3l.fsf@secure.mitica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.72;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -93,123 +77,57 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On 31.07.23 10:35, Juan Quintela wrote:
+> Fiona Ebner <f.ebner@proxmox.com> wrote:
+>> The bdrv_create_dirty_bitmap() function (which is also called by
+>> bdrv_dirty_bitmap_create_successor()) uses bdrv_getlength(bs). This is
+>> a wrapper around a coroutine, and when not called in coroutine context
+>> would use bdrv_poll_co(). Such a call would trigger an assert() if the
+>> correct AioContext hasn't been acquired before, because polling would
+>> try to release the AioContext.
+> 
+> The ingenous in me thinks:
+> 
+> If the problem is that bdrv_poll_co() release an AioContext that it
+> don't have acquired, perhaps we should fix bdrv_poll_co().
+> 
+> Ha!!!
+> 
+> $ find . -type f -exec grep --color=auto -nH --null -e bdrv_poll_co \{\} +
+> ./scripts/block-coroutine-wrapper.py\0173:
+> bdrv_poll_co(&s.poll_state);
+> ./scripts/block-coroutine-wrapper.py\0198:
+> bdrv_poll_co(&s.poll_state);
+> ./block/block-gen.h\038:static inline void bdrv_poll_co(BdrvPollCo *s)
+> $
+> 
+> /me retreats
 
-> Fabiano Rosas <farosas@suse.de> wrote:
->> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->>
->>> On Tue, Oct 03, 2023 at 05:24:50PM +0200, Philippe Mathieu-Daud=C3=A9 w=
-rote:
-> [...]
->
->>> $ cat myqemu.dkr=20
->>> FROM fedora:38
->>>
->>> RUN dnf -y install qemu-kvm
->>>
->>> $ podman build -f myqemu.dkr --tag myqemu .
->>>
->>> $ cat > myqemu <<EOF
->>> #!/bin/sh
->>> exec podman run --volume /tmp=3D/tmp --security-opt label=3Ddisable myq=
-emu qemu-system-x86_64 "$@"
->>>
->>> $ chmod +x myqemu
->>>
->>> $ QTEST_QEMU_BINARY=3D./myqemu.sh  ./build/tests/qtest/rtc-test
->>
->> I'm favor of this. I usually set that variable to something like 'gdb
->> --args ...' and it works just fine.
->>
->>> Except we fail on the last step, because bind mounts don't make UNIX do=
-main
->>> sockets accessible. So we can see the /tmp/qtest-$PID.sock in the conta=
-iner,
->>> but it can't be used.
->>>
->>> UNIX domain sockets in the filesystem are tied to the mount namespace, =
-and
->>> podman/docker inherantly creates a new mount namespace making the UNIX
->>> domani socket inaccessible.
->>>
->>> UNIX domain sockets in the abstract namespace, however, are tied to the
->>> network namespace, so if you used podman --network host, they should be
->>> accessible.
->>>
->>> libqtest could be changed to use abstract UNIX domain sockets on Linux
->>> only, and likely unlock the use of podman for QEMU.
->
-> That is one idea, but why can't we convince a container to compile
-> _both_ qemus?
->
-> I am not familiar with containers, but:
-> - We already know how to compile a qemu inside a container
-> - We can teach it to compile $HEAD and v8.0.0 (or whatever)
->
-> And do the test inside, right?
->
-> On the other hand, your approach has the advantage that one can test
-> opensuse qemu against fedora qemu, and similar.  Not sure how useful is
-> that, though.
->
-> [lots of code to find common machine types]
+The function is used in generated code. There are a lot of calls in build/block/block-gen.c if grep after make.
 
-I'm working on a cleanup of this patch to make it more integrated with
-libqtest. If we teach qtest_get_machines() to sometimes refresh the list
-of machines then it becomes way less code.
+> 
+>> The issue does not happen for migration, because the call happens
+>> from process_incoming_migration_co(), i.e. in coroutine context. So
+>> the bdrv_getlength() wrapper will just call bdrv_co_getlength()
+>> directly without polling.
+> 
+> The ingenous in me wonders why bdrv_getlength() needs to use coroutines
+> at all, but as I have been burned on the previous paragraph, I learn not
+> to even try.
+> 
+> Ok, I never learn, so I do a grep and I see two appearces of
+> bdrv_getlength in include files, but grep only shows uses of the
+> function, not a real definition.
 
-> I think that it is just easier to pass the machine type we want to test
-> to whatever script we have.  Specially where [sane] architectures like
-> arm don't have a default machine type (no, I haven't double checked if
-> that has changed lately).
+the function is generated, and after building, it's definition is in build/block/block-gen.c
 
-We still need to enforce the same machine type for both binaries and a
-sane range of QEMU versions. I think our docs state that we only support
-migration from QEMU n->n+1 and vice versa? If the test will know what
-combinations are allowed, it could just go ahead and use those.
+The information is in comment in include/block/block-common.h.
 
->>> IMHO, we should just create a new qtest_init_env variant, that is the
->>> same as qtest_init, but accepts an environment variable name to use as
->>> an override.
->>>
->>> eg
->>>
->>>    qtest_init_env("QTEST_QEMU_BINARY_SRC", extra_args)
->
-> That was going to be my suggestion.
->
->>> it would look for $QTEST_QEMU_BINARY_SRC and if not found automatically
->>> fallback to $QTEST_QEMU_BINARY.
->>>
->>
->> This was initially intended to be an off-tree patch that I could use to
->> test migration compatibility, so I avoided touching libqtest. Now that I
->> learned this might be of interest we can make it less hackish.
->>
->>> I don't think there's any need to explicitly forbid setting both
->>> QTEST_QEMU_BINARY_SRC and QTEST_QEMU_BINARY_DST at the same time.
->>>
->>
->> This is a little biased on my usage of migration-test from the command
->> line. Adding one of SRC|DST is easier when coming/going from a test that
->> already uses QTEST_QEMU_BINARY. No big deal, of course.
->>
->> We'll just have to do something about qtest_get_machines(),
->> qtest_has_device() and qtest_get_arch(), which expect QTEST_QEMU_BINARY
->> to be present.
->
-> I think we can do the same trick here:
->
-> qtest_has_device_env("VARIABLE") and let qemu_has_device() just call it
-> with QTEST_QEMU_BINARY.  Same for the others.
->
-> It is more, if we can do it easy, we can do that qtest_init_env() checks
-> in the case that variable is not QTEST_QEMU_BINARY that this one is also
-> set, and assume in the rest of the code that options are compatible
-> between whatever we passed an QTEST_QEMU_BINARY, that way we don't need
-> to change anything else.  Well, just put a big warning in a comment
-> saying that using qtest_init_env() means that you know what you are
-> doing.
->
-> Later, Juan.
+The link, which lead from function declaration to the comment is "co_wrapper", but that's not obvious when just grep the function name.
+
+
+-- 
+Best regards,
+Vladimir
+
 
