@@ -2,88 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6975B7B9718
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 00:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 712377B971A
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 00:04:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo9xQ-0004aB-Vh; Wed, 04 Oct 2023 18:03:05 -0400
+	id 1qo9z3-0002of-FL; Wed, 04 Oct 2023 18:04:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xN-0004Nz-H1
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:03:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qo9z1-0002my-0l; Wed, 04 Oct 2023 18:04:43 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xI-0003vP-E3
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:03:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696456975;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=CFhEl8wwd9dTqoVR02b8lIiRWMn2Dn8nrLJ9swljZms=;
- b=WlWPxArXgb8zM928A76fCte6Ubfakfw+0ueeZDpJIgpPduT5diFjsBq12vMTbWAz5lp+I/
- zqpHsBsdF5wXzqKSY5c2FMak/unD1ZWEglM+hD3GiRxSEPd7YUKMZ5jyrAAD3IXaLYBCpP
- I/4f/BlbkSKf2qolNvHJPVuBSYVlXpA=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-hOcWWHIsPiOLgvC22qK-DQ-1; Wed, 04 Oct 2023 18:02:54 -0400
-X-MC-Unique: hOcWWHIsPiOLgvC22qK-DQ-1
-Received: by mail-yb1-f198.google.com with SMTP id
- 3f1490d57ef6-d81ad678f5aso78126276.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 15:02:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696456974; x=1697061774;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=CFhEl8wwd9dTqoVR02b8lIiRWMn2Dn8nrLJ9swljZms=;
- b=FC22RAredXj/k7xK7P51CkFDY6xpn1FazxnLdvX95SosxeJXadeBF0kcNBzYnFLV3B
- ZSn5/ornfJ5HWLysFUzpLMTchaO3PtGPOG7beSkoEiy1WZek0enuTkRraUplLX4Um1Ef
- DmDIf3i6R6Mk1SZrmtgs1Oq3lIjWAcPIKHiN10OiNb3BaNjNlsxau/IRPtOwOjbTMYpN
- XONDDVQTDN7vo2Xvb37RC+vTzWYsKBmsKH48ofz6Y4+zYZhpozqZzP2qrTK6OUKXFj4X
- a+X0Fomv1NGRECYgJiE1nRwJtExKncq9e7a+LcqSdcolheX+QMkgJoy7eK9T/SPeIKuR
- spdQ==
-X-Gm-Message-State: AOJu0Yycbt8nRU0NXFuvFwNSd1N34zk7saC6tgoCQGlJmAl9ZVEban5R
- xEFOdG8HIUrdU/twdv5AokH+vjXUo9fnst2KDF7CVBas/+SgMHeVNFGCYAiaKRLfgx4/DTTPJGf
- jERr0/UOXdgddVdKCGdu38in1qltZM4TlCBMOQnarHsVa0bJ+xKYoUxUMyS9qm1apv5XWWyKj
-X-Received: by 2002:a25:f446:0:b0:d90:e580:2b23 with SMTP id
- p6-20020a25f446000000b00d90e5802b23mr2776691ybe.4.1696456973824; 
- Wed, 04 Oct 2023 15:02:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHeTibOH544rdIb8uLKt+bgYS98/fU7LsCvmduZr3WDm9KyEWOYeiKS8fCE3IIVZuG+2csOcw==
-X-Received: by 2002:a25:f446:0:b0:d90:e580:2b23 with SMTP id
- p6-20020a25f446000000b00d90e5802b23mr2776654ybe.4.1696456973405; 
- Wed, 04 Oct 2023 15:02:53 -0700 (PDT)
-Received: from x1n.redhat.com
- (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
- by smtp.gmail.com with ESMTPSA id
- w17-20020a0cdf91000000b0063d162a8b8bsm10821qvl.19.2023.10.04.15.02.52
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 15:02:52 -0700 (PDT)
-From: Peter Xu <peterx@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
- Juan Quintela <quintela@redhat.com>
-Subject: [PATCH v3 10/10] tests/migration-test: Add a test for postcopy hangs
- during RECOVER
-Date: Wed,  4 Oct 2023 18:02:40 -0400
-Message-ID: <20231004220240.167175-11-peterx@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231004220240.167175-1-peterx@redhat.com>
-References: <20231004220240.167175-1-peterx@redhat.com>
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qo9yy-0005BC-N8; Wed, 04 Oct 2023 18:04:42 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 394Lrv2H011126; Wed, 4 Oct 2023 22:04:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=SN7B2C72peGSDFGYI0S6afh6Wo2s+XULg/YGD5hexk8=;
+ b=IOEMklrsIxMjxH6fFcTawG4maxY4MIf7GW6dqOx64lN7DkXesTV5yx27DiHmHJlDyNBg
+ xSgvHzcag20+Ms37eQHu4xJkqVwut9uvGH36l9WfDUePlbz6a4ihUUNQI4yKIqqOQLmN
+ luo6Sygzpp9LdicyU2rEjrFTqeA0c9Ct0kznaWpDFPUw5JbvymOsDNTTHKqG4NF2iD6t
+ Qz50bGgk9qJc1Tc0yQnLS/3S2epDt3cPWeAT1jmxZ3G/+xoL7Pco0mmZpfllr3EXNfa/
+ NS+eUcx9VFyhm/B21aMbClmytLyOdd8f/SQE/01RjqgaGExiG0cfpwNcytnZHyodESc+ zg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3thgccr7yt-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Oct 2023 22:04:36 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 394Lsamq012600;
+ Wed, 4 Oct 2023 22:04:35 GMT
+Received: from ppma23.wdc07v.mail.ibm.com
+ (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3thgccr7xu-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Oct 2023 22:04:35 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 394L9NNR007467; Wed, 4 Oct 2023 22:04:34 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+ by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3teygkvthr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Oct 2023 22:04:34 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
+ [10.241.53.104])
+ by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 394M4Ylf22807114
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Oct 2023 22:04:34 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id F02DB58069;
+ Wed,  4 Oct 2023 22:04:33 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6D98D58052;
+ Wed,  4 Oct 2023 22:04:33 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed,  4 Oct 2023 22:04:33 +0000 (GMT)
+Message-ID: <661cf24b-1c9f-97a0-8259-c0b995089df6@linux.ibm.com>
+Date: Wed, 4 Oct 2023 18:04:32 -0400
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 12/21] qapi: Inline and remove
+ QERR_INVALID_PARAMETER_VALUE definition
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>
+Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, Michael Roth <michael.roth@amd.com>,
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20231004173158.42591-1-philmd@linaro.org>
+ <20231004173158.42591-13-philmd@linaro.org>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20231004173158.42591-13-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JEDTWAFhwFCPHaIQTRb7BqkQmP2A6fm3
+X-Proofpoint-GUID: gAVzrTUIbvuMt7_8FzqT5V2s3dGB3p2Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-04_12,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 phishscore=0
+ clxscore=1011 impostorscore=0 mlxscore=0 malwarescore=0 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 adultscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310040159
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,158 +118,102 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
 
-To do so, create two paired sockets, but make them not providing real data.
-Feed those fake sockets to src/dst QEMUs for recovery to let them go into
-RECOVER stage without going out.  Test that we can always kick it out and
-recover again with the right ports.
+On 10/4/23 13:31, Philippe Mathieu-Daudé wrote:
+> Address the comment added in commit 4629ed1e98
+> ("qerror: Finally unused, clean up"), from 2015:
+>
+>    /*
+>     * These macros will go away, please don't use
+>     * in new code, and do not add new ones!
+>     */
+>
+> Manually modify the error_report() call in softmmu/tpm.c,
+> then use sed to mechanically transform the rest. Finally
+> remove the definition in include/qapi/qmp/qerror.h.
+>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-This patch is based on Fabiano's version here:
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
-https://lore.kernel.org/r/877cowmdu0.fsf@suse.de
 
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-[peterx: write commit message, remove case 1, fix bugs, and more]
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- tests/qtest/migration-test.c | 94 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 46f1c275a2..fb7a3765e4 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -729,6 +729,7 @@ typedef struct {
-     /* Postcopy specific fields */
-     void *postcopy_data;
-     bool postcopy_preempt;
-+    bool postcopy_recovery_test_fail;
- } MigrateCommon;
- 
- static int test_migrate_start(QTestState **from, QTestState **to,
-@@ -1381,6 +1382,78 @@ static void test_postcopy_preempt_tls_psk(void)
- }
- #endif
- 
-+static void wait_for_postcopy_status(QTestState *one, const char *status)
-+{
-+    wait_for_migration_status(one, status,
-+                              (const char * []) { "failed", "active",
-+                                                  "completed", NULL });
-+}
-+
-+static void postcopy_recover_fail(QTestState *from, QTestState *to)
-+{
-+    int ret, pair1[2], pair2[2];
-+    char c;
-+
-+    /* Create two unrelated socketpairs */
-+    ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair1);
-+    g_assert_cmpint(ret, ==, 0);
-+
-+    ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair2);
-+    g_assert_cmpint(ret, ==, 0);
-+
-+    /*
-+     * Give the guests unpaired ends of the sockets, so they'll all blocked
-+     * at reading.  This mimics a wrong channel established.
-+     */
-+    qtest_qmp_fds_assert_success(from, &pair1[0], 1,
-+                                 "{ 'execute': 'getfd',"
-+                                 "  'arguments': { 'fdname': 'fd-mig' }}");
-+    qtest_qmp_fds_assert_success(to, &pair2[0], 1,
-+                                 "{ 'execute': 'getfd',"
-+                                 "  'arguments': { 'fdname': 'fd-mig' }}");
-+
-+    /*
-+     * Write the 1st byte as QEMU_VM_COMMAND (0x8) for the dest socket, to
-+     * emulate the 1st byte of a real recovery, but stops from there to
-+     * keep dest QEMU in RECOVER.  This is needed so that we can kick off
-+     * the recover process on dest QEMU (by triggering the G_IO_IN event).
-+     *
-+     * NOTE: this trick is not needed on src QEMUs, because src doesn't
-+     * rely on an pre-existing G_IO_IN event, so it will always trigger the
-+     * upcoming recovery anyway even if it can read nothing.
-+     */
-+#define QEMU_VM_COMMAND              0x08
-+    c = QEMU_VM_COMMAND;
-+    ret = send(pair2[1], &c, 1, 0);
-+    g_assert_cmpint(ret, ==, 1);
-+
-+    migrate_recover(to, "fd:fd-mig");
-+    migrate_qmp(from, "fd:fd-mig", "{'resume': true}");
-+
-+    /*
-+     * Make sure both QEMU instances will go into RECOVER stage, then test
-+     * kicking them out using migrate-pause.
-+     */
-+    wait_for_postcopy_status(from, "postcopy-recover");
-+    wait_for_postcopy_status(to, "postcopy-recover");
-+
-+    /*
-+     * This would be issued by the admin upon noticing the hang, we should
-+     * make sure we're able to kick this out.
-+     */
-+    migrate_pause(from);
-+    wait_for_postcopy_status(from, "postcopy-paused");
-+
-+    /* Do the same test on dest */
-+    migrate_pause(to);
-+    wait_for_postcopy_status(to, "postcopy-paused");
-+
-+    close(pair1[0]);
-+    close(pair1[1]);
-+    close(pair2[0]);
-+    close(pair2[1]);
-+}
-+
- static void test_postcopy_recovery_common(MigrateCommon *args)
- {
-     QTestState *from, *to;
-@@ -1420,6 +1493,15 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
-                               (const char * []) { "failed", "active",
-                                                   "completed", NULL });
- 
-+    if (args->postcopy_recovery_test_fail) {
-+        /*
-+         * Test when a wrong socket specified for recover, and then the
-+         * ability to kick it out, and continue with a correct socket.
-+         */
-+        postcopy_recover_fail(from, to);
-+        /* continue with a good recovery */
-+    }
-+
-     /*
-      * Create a new socket to emulate a new channel that is different
-      * from the broken migration channel; tell the destination to
-@@ -1459,6 +1541,15 @@ static void test_postcopy_recovery_compress(void)
-     test_postcopy_recovery_common(&args);
- }
- 
-+static void test_postcopy_recovery_double_fail(void)
-+{
-+    MigrateCommon args = {
-+        .postcopy_recovery_test_fail = true,
-+    };
-+
-+    test_postcopy_recovery_common(&args);
-+}
-+
- #ifdef CONFIG_GNUTLS
- static void test_postcopy_recovery_tls_psk(void)
- {
-@@ -2841,6 +2932,9 @@ int main(int argc, char **argv)
-             qtest_add_func("/migration/postcopy/recovery/compress/plain",
-                            test_postcopy_recovery_compress);
-         }
-+        qtest_add_func("/migration/postcopy/recovery/double-failures",
-+                       test_postcopy_recovery_double_fail);
-+
-     }
- 
-     qtest_add_func("/migration/bad_dest", test_baddest);
--- 
-2.41.0
-
+> ---
+>   include/qapi/qmp/qerror.h | 3 ---
+>   qapi/opts-visitor.c       | 4 ++--
+>   qapi/qapi-visit-core.c    | 4 ++--
+>   softmmu/tpm.c             | 3 +--
+>   4 files changed, 5 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
+> index b723830eff..ac727d1c2d 100644
+> --- a/include/qapi/qmp/qerror.h
+> +++ b/include/qapi/qmp/qerror.h
+> @@ -17,9 +17,6 @@
+>    * add new ones!
+>    */
+>
+> -#define QERR_INVALID_PARAMETER_VALUE \
+> -    "Parameter '%s' expects %s"
+> -
+>   #define QERR_IO_ERROR \
+>       "An IO error has occurred"
+>
+> diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
+> index 0393704a73..844db583f4 100644
+> --- a/qapi/opts-visitor.c
+> +++ b/qapi/opts-visitor.c
+> @@ -441,7 +441,7 @@ opts_type_int64(Visitor *v, const char *name, int64_t *obj, Error **errp)
+>               }
+>           }
+>       }
+> -    error_setg(errp, QERR_INVALID_PARAMETER_VALUE, opt->name,
+> +    error_setg(errp, "Parameter '%s' expects %s", opt->name,
+>                  (ov->list_mode == LM_NONE) ? "an int64 value" :
+>                                               "an int64 value or range");
+>       return false;
+> @@ -494,7 +494,7 @@ opts_type_uint64(Visitor *v, const char *name, uint64_t *obj, Error **errp)
+>               }
+>           }
+>       }
+> -    error_setg(errp, QERR_INVALID_PARAMETER_VALUE, opt->name,
+> +    error_setg(errp, "Parameter '%s' expects %s", opt->name,
+>                  (ov->list_mode == LM_NONE) ? "a uint64 value" :
+>                                               "a uint64 value or range");
+>       return false;
+> diff --git a/qapi/qapi-visit-core.c b/qapi/qapi-visit-core.c
+> index 6c13510a2b..01793d6e74 100644
+> --- a/qapi/qapi-visit-core.c
+> +++ b/qapi/qapi-visit-core.c
+> @@ -194,7 +194,7 @@ static bool visit_type_uintN(Visitor *v, uint64_t *obj, const char *name,
+>       }
+>       if (value > max) {
+>           assert(v->type == VISITOR_INPUT);
+> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+> +        error_setg(errp, "Parameter '%s' expects %s",
+>                      name ? name : "null", type);
+>           return false;
+>       }
+> @@ -262,7 +262,7 @@ static bool visit_type_intN(Visitor *v, int64_t *obj, const char *name,
+>       }
+>       if (value < min || value > max) {
+>           assert(v->type == VISITOR_INPUT);
+> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE,
+> +        error_setg(errp, "Parameter '%s' expects %s",
+>                      name ? name : "null", type);
+>           return false;
+>       }
+> diff --git a/softmmu/tpm.c b/softmmu/tpm.c
+> index 578563f05a..8437c4efc3 100644
+> --- a/softmmu/tpm.c
+> +++ b/softmmu/tpm.c
+> @@ -120,8 +120,7 @@ static int tpm_init_tpmdev(void *dummy, QemuOpts *opts, Error **errp)
+>       i = qapi_enum_parse(&TpmType_lookup, value, -1, NULL);
+>       be = i >= 0 ? tpm_be_find_by_type(i) : NULL;
+>       if (be == NULL) {
+> -        error_report(QERR_INVALID_PARAMETER_VALUE,
+> -                     "type", "a TPM backend type");
+> +        error_report("Parameter 'type' expects a TPM backend type");
+>           tpm_display_backend_drivers();
+>           return 1;
+>       }
 
