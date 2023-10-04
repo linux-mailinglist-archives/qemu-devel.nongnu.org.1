@@ -2,48 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B737B8342
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 17:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 214F67B8377
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 17:23:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo3Xn-00029x-JZ; Wed, 04 Oct 2023 11:12:11 -0400
+	id 1qo3hO-0007lI-J3; Wed, 04 Oct 2023 11:22:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qo3Xl-00025s-0o
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:12:09 -0400
-Received: from rev.ng ([5.9.113.41])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anjo@rev.ng>) id 1qo3Xj-000254-BK
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:12:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rev.ng;
- s=dkim; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject
- :Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
- Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
- :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=MtlAgjzH0mooShSNYxz3APPHnC6Tw2U5G9Z8CAARVX8=; b=e90sbcK/UVMvvvF8uaoNbYMtpF
- V10sgXqJM2RlMZoXLEvxR/i6qYbGT4+DcDp/Ei/lfS10UPpZbIcPOGypeCgPHqJTF4UHoNrb9Mm8N
- lGwYQyJMk+oa5mbQW7peC8jy/38J+n33kW/CAI1K6whQb9FMItW48Z7C3He99hAUTz9s=;
-Date: Wed, 4 Oct 2023 17:11:34 +0200
-To: Brian Cain <bcain@quicinc.com>
-Cc: qemu-devel@nongnu.org, armbru@redhat.com, richard.henderson@linaro.org, 
- philmd@linaro.org, peter.maydell@linaro.org, quic_mathbern@quicinc.com, 
- stefanha@redhat.com, ale@rev.ng, quic_mliebel@quicinc.com,
- ltaylorsimpson@gmail.com
-Subject: Re: [PATCH 0/2] Fix usage of GETPC(), variable shadowing
-Message-ID: <6sjolxezgdzyjz26brymfvzan5dwaltvkkdbuxzixxttvpe4ft@yd2j65m7fcld>
-References: <20231004123957.1732915-1-bcain@quicinc.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo3h9-0007hK-Ec
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:21:51 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo3h2-0006ax-TU
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:21:51 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 450E021228;
+ Wed,  4 Oct 2023 15:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696432902; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BIjW2yaA575OWyhlc9bJtSecnO8eRb/2iAFGCjQ5A6E=;
+ b=JsGsH2ZOGe6quwXmeBq3gHgsBRAgUy05Ix7hSPHO+5s+31g190haLKj/aW9FKQ5rYIxnTG
+ Oehyj3GeoJzDcAktRdQ1LBOLLbSN6Fti84zYreGoQ/M9LiVZkkFP+VdTISX8TJCwWq6w4b
+ Zp0QZkX4CYY90LifyOwnqTHzknypcOc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696432902;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=BIjW2yaA575OWyhlc9bJtSecnO8eRb/2iAFGCjQ5A6E=;
+ b=/VzHRxv40qhwDnOZGpZRQ5iiwfo6PfFUXd1JfJLQ7H2+RQkAQuUkjkt7BGDL3habEbhamk
+ di1eLXVfHFW9k4Cw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CA95A13A2E;
+ Wed,  4 Oct 2023 15:21:41 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id pgw3JQWDHWVfGgAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 15:21:41 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com, Het Gala <het.gala@nutanix.com>
+Subject: Re: [PATCH v11 08/10] migration: Implement MigrateChannelList to
+ qmp migration flow.
+In-Reply-To: <20231004075851.219173-9-het.gala@nutanix.com>
+References: <20231004075851.219173-1-het.gala@nutanix.com>
+ <20231004075851.219173-9-het.gala@nutanix.com>
+Date: Wed, 04 Oct 2023 12:21:39 -0300
+Message-ID: <87ediapg58.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231004123957.1732915-1-bcain@quicinc.com>
-Received-SPF: pass client-ip=5.9.113.41; envelope-from=anjo@rev.ng; helo=rev.ng
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -57,34 +86,229 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Anton Johansson <anjo@rev.ng>
-From:  Anton Johansson via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04/10/23, Brian Cain wrote:
-> Matheus' patch has previously been reviewed, but I based my -Wshadow
-> patch on his.  So I'm submitting the series for review.
-> 
-> Brian Cain (1):
->   target/hexagon: fix some occurrences of -Wshadow=local
-> 
-> Matheus Tavares Bernardino (1):
->   target/hexagon: move GETPC() calls to top level helpers
-> 
->  target/hexagon/imported/alu.idef |  6 +--
->  target/hexagon/macros.h          | 19 ++++----
->  target/hexagon/mmvec/macros.h    |  2 +-
->  target/hexagon/op_helper.c       | 84 ++++++++++++--------------------
->  target/hexagon/op_helper.h       |  9 ----
->  target/hexagon/translate.c       | 10 ++--
->  6 files changed, 50 insertions(+), 80 deletions(-)
-> 
-> -- 
-> 2.25.1
-> 
+Het Gala <het.gala@nutanix.com> writes:
 
-Both patches:
-Reviewed-by: Anton Johansson <anjo@rev.ng>
-Tested-by: Anton Johansson <anjo@rev.ng>
+> Integrate MigrateChannelList with all transport backends
+> (socket, exec and rdma) for both src and dest migration
+> endpoints for qmp migration.
+>
+> For current series, limit the size of MigrateChannelList
+> to single element (single interface) as runtime check.
+>
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  migration/migration.c | 95 +++++++++++++++++++++++--------------------
+>  1 file changed, 52 insertions(+), 43 deletions(-)
+>
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 6f948988ec..3eae32e616 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -432,9 +432,10 @@ void migrate_add_address(SocketAddress *address)
+>  }
+>=20=20
+>  static bool migrate_uri_parse(const char *uri,
+> -                              MigrationAddress **channel,
+> +                              MigrationChannel **channel,
+>                                Error **errp)
+>  {
+> +    g_autoptr(MigrationChannel) val =3D g_new0(MigrationChannel, 1);
+
+Here val is passed out of scope so it shouldn't be g_autoptr.
+
+>      g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
+>      SocketAddress *saddr =3D &addr->u.socket;
+>      InetSocketAddress *isock =3D &addr->u.rdma;
+> @@ -471,7 +472,9 @@ static bool migrate_uri_parse(const char *uri,
+>          return false;
+>      }
+>=20=20
+> -    *channel =3D addr;
+> +    val->channel_type =3D MIGRATION_CHANNEL_TYPE_MAIN;
+> +    val->addr =3D addr;
+> +    *channel =3D val;
+>      return true;
+>  }
+>=20=20
+> @@ -479,41 +482,44 @@ static void qemu_start_incoming_migration(const cha=
+r *uri, bool has_channels,
+>                                            MigrationChannelList *channels,
+>                                            Error **errp)
+>  {
+> -    g_autoptr(MigrationAddress) channel =3D g_new0(MigrationAddress, 1);
+> +    g_autoptr(MigrationChannel) channel =3D g_new0(MigrationChannel, 1);
+> +    g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
+
+Here we want just the pointer, no allocation, no freeing. For both
+channel and addr.
+
+>=20=20
+>      /*
+>       * Having preliminary checks for uri and channel
+>       */
+> -    if (has_channels) {
+> -        error_setg(errp, "'channels' argument should not be set yet.");
+> -        return;
+> -    }
+> -
+>      if (uri && has_channels) {
+>          error_setg(errp, "'uri' and 'channels' arguments are mutually "
+>                     "exclusive; exactly one of the two should be present =
+in "
+>                     "'migrate-incoming' qmp command ");
+>          return;
+> -    }
+> -
+> -    if (!uri && !has_channels) {
+> +    } else if (channels) {
+> +        /* To verify that Migrate channel list has only item */
+> +        if (channels->next) {
+> +            error_setg(errp, "Channel list has more than one entries");
+> +            return;
+> +        }
+> +        channel =3D channels->value;
+> +    } else if (uri) {
+> +        /* caller uses the old URI syntax */
+> +        if (!migrate_uri_parse(uri, &channel, errp)) {
+> +            return;
+> +        }
+> +    } else {
+>          error_setg(errp, "neither 'uri' or 'channels' argument are "
+>                     "specified in 'migrate-incoming' qmp command ");
+>          return;
+>      }
+> -
+> -    if (uri && !migrate_uri_parse(uri, &channel, errp)) {
+> -        return;
+> -    }
+> +    addr =3D channel->addr;
+>=20=20
+>      /* transport mechanism not suitable for migration? */
+> -    if (!migration_channels_and_transport_compatible(channel, errp)) {
+> +    if (!migration_channels_and_transport_compatible(addr, errp)) {
+>          return;
+>      }
+>=20=20
+>      qapi_event_send_migration(MIGRATION_STATUS_SETUP);
+> -    if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
+> -        SocketAddress *saddr =3D &channel->u.socket;
+> +    if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
+> +        SocketAddress *saddr =3D &addr->u.socket;
+>          if (saddr->type =3D=3D SOCKET_ADDRESS_TYPE_INET ||
+>              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_UNIX ||
+>              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_VSOCK) {
+> @@ -522,11 +528,11 @@ static void qemu_start_incoming_migration(const cha=
+r *uri, bool has_channels,
+>              fd_start_incoming_migration(saddr->u.fd.str, errp);
+>          }
+>  #ifdef CONFIG_RDMA
+> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
+> -        rdma_start_incoming_migration(&channel->u.rdma, errp);
+> -#endif
+> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
+> -        exec_start_incoming_migration(channel->u.exec.args, errp);
+> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
+> +        rdma_start_incoming_migration(&addr->u.rdma, errp);
+> + #endif
+> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
+> +        exec_start_incoming_migration(addr->u.exec.args, errp);
+>      } else {
+>          error_setg(errp, "unknown migration protocol: %s", uri);
+>      }
+> @@ -1750,35 +1756,38 @@ void qmp_migrate(const char *uri, bool has_channe=
+ls,
+>      bool resume_requested;
+>      Error *local_err =3D NULL;
+>      MigrationState *s =3D migrate_get_current();
+> -    g_autoptr(MigrationAddress) channel =3D g_new0(MigrationAddress, 1);
+> +    g_autoptr(MigrationChannel) channel =3D g_new0(MigrationChannel, 1);
+> +    g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
+
+Again just the pointers.
+
+We'll have to make another pass and check whether we're missing freeing
+something. But for now let's first clear all the errors then we can look
+at the code working and do the necessary changes.
+
+>=20=20
+>      /*
+>       * Having preliminary checks for uri and channel
+>       */
+> -    if (has_channels) {
+> -        error_setg(errp, "'channels' argument should not be set yet.");
+> -        return;
+> -    }
+> -
+>      if (uri && has_channels) {
+>          error_setg(errp, "'uri' and 'channels' arguments are mutually "
+>                     "exclusive; exactly one of the two should be present =
+in "
+>                     "'migrate' qmp command ");
+>          return;
+> -    }
+> -
+> -    if (!uri && !has_channels) {
+> +    } else if (channels) {
+> +        /* To verify that Migrate channel list has only item */
+> +        if (channels->next) {
+> +            error_setg(errp, "Channel list has more than one entries");
+> +            return;
+> +        }
+> +        channel =3D channels->value;
+> +    } else if (uri) {
+> +        /* caller uses the old URI syntax */
+> +        if (!migrate_uri_parse(uri, &channel, errp)) {
+> +            return;
+> +        }
+> +    } else {
+>          error_setg(errp, "neither 'uri' or 'channels' argument are "
+>                     "specified in 'migrate' qmp command ");
+>          return;
+>      }
+> -
+> -    if (!migrate_uri_parse(uri, &channel, errp)) {
+> -        return;
+> -    }
+> +    addr =3D channel->addr;
+>=20=20
+>      /* transport mechanism not suitable for migration? */
+> -    if (!migration_channels_and_transport_compatible(channel, errp)) {
+> +    if (!migration_channels_and_transport_compatible(addr, errp)) {
+>          return;
+>      }
+>=20=20
+> @@ -1795,8 +1804,8 @@ void qmp_migrate(const char *uri, bool has_channels,
+>          }
+>      }
+>=20=20
+> -    if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
+> -        SocketAddress *saddr =3D &channel->u.socket;
+> +    if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
+> +        SocketAddress *saddr =3D &addr->u.socket;
+>          if (saddr->type =3D=3D SOCKET_ADDRESS_TYPE_INET ||
+>              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_UNIX ||
+>              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_VSOCK) {
+> @@ -1805,11 +1814,11 @@ void qmp_migrate(const char *uri, bool has_channe=
+ls,
+>              fd_start_outgoing_migration(s, saddr->u.fd.str, &local_err);
+>          }
+>  #ifdef CONFIG_RDMA
+> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
+> -        rdma_start_outgoing_migration(s, &channel->u.rdma, &local_err);
+> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
+> +        rdma_start_outgoing_migration(s, &addr->u.rdma, &local_err);
+>  #endif
+> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
+> -        exec_start_outgoing_migration(s, channel->u.exec.args, &local_er=
+r);
+> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
+> +        exec_start_outgoing_migration(s, addr->u.exec.args, &local_err);
+>      } else {
+>          error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
+>                     "a valid migration protocol");
 
