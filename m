@@ -2,48 +2,48 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844107B7A59
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:41:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F3C7B7A50
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:40:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxPe-00052u-0H; Wed, 04 Oct 2023 04:39:22 -0400
+	id 1qnxPj-0005Cn-7T; Wed, 04 Oct 2023 04:39:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qnxPZ-0004yl-PS
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:39:18 -0400
+ id 1qnxPg-0005CN-V6
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:39:25 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qnxPX-0007jB-Qe
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:39:17 -0400
+ id 1qnxPc-0007jy-A6
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:39:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:MIME-Version:
  References:In-Reply-To:Message-Id:Date:To:From:Sender:Reply-To:Cc:
  Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
  Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
  List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=3cK7mneHmXDNy7JJNlaYZg+pj4RJY5qtD7UyWcf/zd4=; b=00vLPv3lcAOH3ihG4/1rovrpWm
- DUZ3DVUhIJV5FXQaJ8L+HKbPj6RnyesoFdNzXmZ5x1TRj+PT3Tx1jiK3ty1GTDGrZ98XjaMS5iAq1
- aVdpQwXg2QO5jmG42dmxBdQ4QfCJzAuzqW3jssmKcq8maLezMmYl56vHWrP5j17HctNnh9l6l2pHg
- iH9RAZKYGws/wq36mbRPHewIoSB71AvkQPXMYoSVCd1tmiF9+GMMV8812hztng1R2MQtps75Syb+i
- WHQnyu5wE5DcQfBGTSugbqO2Deb5l0n9ge66ZI4Z5CVF5+N6abJFp+qdYAAQkgmZliV1YLjZnaGG0
- BmQSshr0piKh1VR/HQiWHs7fnxA/t7Zt6/+pfXGQ51gZUKiBfab8Z7nnAfslXCmx7PEXEz5bc2Zlg
- SMclVgSnSXtOycOU9WoZxEw9sWRCfUuz0mzK4axf1KzGijDC/lgyO7sAic8S6yG9qnFmGOLaqu3rL
- 03i2vr5ngIHePxWxD3Srr3oVsg62k4zC++F/avFJ6KPdVkZm7lpuMtSe6t48eIss53xX/dTL8kVXs
- gZjXk1HDRYLZDsk8hy9rF9xoyoawWRsE+JdQhWR8lA8oJoI8ysm+E9Eqwu8nBqQ6q1nePZ86wJcYc
- zhSKRxs49OaZdP3Ozo3qzTt+2z+GDxhnRtmzL5qUw=;
+ bh=wj1kRK2UFSUTjJkP3sSSNCXThjQ7dL0dyJS9XEJSezI=; b=XRRQqZPEkI/Rm4GW52k03i7BXL
+ eiIWir5CePRsVXlGVl0HKuCoMTaSSYwPqqVuDh5VoUoc657FVzu9P/SHYKznABWOvRM+VZagDsNIl
+ FY9Z5ANCI188r5cvPYsTMH9M3lK7rHLIZwrTr34yA9/rCOmZ7+m8vlW/rIZCNONyHIQq+RNamjK1u
+ az4IXpIgmkWq7RxXhXAmokdqEiawx/dteu2mK+f6AdXt1fR5BWOexygHJU0e9p0mpTbrF48r1l4ix
+ 4hHn65Y1kR7BayykfQ3fkZvb61o3ibS6S+xogeevBjwZKMOQe4hXgmnQP68K7NXU2YGJBRt3Fn6o9
+ 8dqD315kU2DH5BA/uaqzgp/Mh6p6MiNQMWj8NxOeCZghVWwvGWwBQZ+SLR1TaRGYTPnEEIvmpyvWk
+ 6rUVxsohpwBM56qAY2Z3mQI8K1cpWOiJW4C5Ef4HTR3ZxuXAh1O6VjMLMNwxxxZ76dix95FB2e+iN
+ yo8950YxNLtrZ3J8jpniuVjalCWxTkZU4imFdtMy4wn51OwiByw6ahcHK64zvxKJ3p4NzNEICE4Ku
+ c2pKhDr9i2wJskxbkGOF3StSWmAeRdDZ3Ruqo+LxnqUGIfbsyCL03RWDmFU+vbzDmyY9WgK1F/mIY
+ Oc7wHl/7Cs5cgY912TPZbmwwcywN5jFUF95eBMJbY=;
 Received: from host86-159-123-68.range86-159.btcentralplus.com
  ([86.159.123.68] helo=localhost.localdomain)
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qnxPH-0006za-Tb; Wed, 04 Oct 2023 09:39:03 +0100
+ id 1qnxPL-0006za-Pd; Wed, 04 Oct 2023 09:39:09 +0100
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 To: laurent@vivier.eu,
 	qemu-devel@nongnu.org
-Date: Wed,  4 Oct 2023 09:38:01 +0100
-Message-Id: <20231004083806.757242-16-mark.cave-ayland@ilande.co.uk>
+Date: Wed,  4 Oct 2023 09:38:02 +0100
+Message-Id: <20231004083806.757242-17-mark.cave-ayland@ilande.co.uk>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231004083806.757242-1-mark.cave-ayland@ilande.co.uk>
 References: <20231004083806.757242-1-mark.cave-ayland@ilande.co.uk>
@@ -51,17 +51,18 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 86.159.123.68
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: [PATCH v4 15/20] mac_via: workaround NetBSD ADB bus enumeration issue
+Subject: [PATCH v4 16/20] mac_via: implement ADB_STATE_IDLE state if shift
+ register in input mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
  envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,84 +78,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-NetBSD assumes it can send its first ADB command after sending the ADB_BUSRESET
-command in ADB_STATE_NEW without changing the state back to ADB_STATE_IDLE
-first as detailed in the ADB protocol.
-
-Add a workaround to detect this condition at the start of ADB enumeration
-and send the next command written to SR after a ADB_BUSRESET onto the bus
-regardless, even if we don't detect a state transition to ADB_STATE_NEW.
+NetBSD switches directly to IDLE state without switching the shift register to
+input mode. Duplicate the existing ADB_STATE_IDLE logic in input mode from when
+the shift register is in output mode which allows the ADB autopoll handler to
+handle the response.
 
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Reviewed-by: Laurent Vivier <laurent@vivier.eu>
 ---
- hw/misc/mac_via.c    | 34 ++++++++++++++++++++++++++++++++++
- hw/misc/trace-events |  1 +
- 2 files changed, 35 insertions(+)
+ hw/misc/mac_via.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index f2ccb12d64..9f9c2815d0 100644
+index 9f9c2815d0..3c41d6263d 100644
 --- a/hw/misc/mac_via.c
 +++ b/hw/misc/mac_via.c
-@@ -1001,6 +1001,8 @@ static void mos6522_q800_via1_write(void *opaque, hwaddr addr, uint64_t val,
- {
-     MOS6522Q800VIA1State *v1s = MOS6522_Q800_VIA1(opaque);
-     MOS6522State *ms = MOS6522(v1s);
-+    int oldstate, state;
-+    int oldsr = ms->sr;
- 
-     addr = (addr >> 9) & 0xf;
- 
-@@ -1016,6 +1018,38 @@ static void mos6522_q800_via1_write(void *opaque, hwaddr addr, uint64_t val,
- 
-         v1s->last_b = ms->b;
+@@ -702,6 +702,12 @@ static void adb_via_send(MOS6522Q800VIA1State *v1s, int state, uint8_t data)
          break;
-+
-+    case VIA_REG_SR:
-+        {
-+            /*
-+             * NetBSD assumes it can send its first ADB command after sending
-+             * the ADB_BUSRESET command in ADB_STATE_NEW without changing the
-+             * state back to ADB_STATE_IDLE first as detailed in the ADB
-+             * protocol.
-+             *
-+             * Add a workaround to detect this condition at the start of ADB
-+             * enumeration and send the next command written to SR after a
-+             * ADB_BUSRESET onto the bus regardless, even if we don't detect a
-+             * state transition to ADB_STATE_NEW.
-+             *
-+             * Note that in my tests the NetBSD state machine takes one ADB
-+             * operation to recover which means the probe for an ADB device at
-+             * address 1 always fails. However since the first device is at
-+             * address 2 then this will work fine, without having to come up
-+             * with a more complicated and invasive solution.
-+             */
-+            oldstate = (v1s->last_b & VIA1B_vADB_StateMask) >>
-+                       VIA1B_vADB_StateShift;
-+            state = (ms->b & VIA1B_vADB_StateMask) >> VIA1B_vADB_StateShift;
-+
-+            if (oldstate == ADB_STATE_NEW && state == ADB_STATE_NEW &&
-+                    (ms->acr & VIA1ACR_vShiftOut) &&
-+                    oldsr == 0 /* ADB_BUSRESET */) {
-+                trace_via1_adb_netbsd_enum_hack();
-+                adb_via_send(v1s, state, ms->sr);
-+            }
-+        }
-+        break;
-     }
- }
  
-diff --git a/hw/misc/trace-events b/hw/misc/trace-events
-index 5a998f5e4e..24ba7cc4d0 100644
---- a/hw/misc/trace-events
-+++ b/hw/misc/trace-events
-@@ -271,6 +271,7 @@ via1_rtc_cmd_pram_sect_write(int sector, int offset, int addr, int value) "secto
- via1_adb_send(const char *state, uint8_t data, const char *vadbint) "state %s data=0x%02x vADBInt=%s"
- via1_adb_receive(const char *state, uint8_t data, const char *vadbint, int status, int index, int size) "state %s data=0x%02x vADBInt=%s status=0x%x index=%d size=%d"
- via1_adb_poll(uint8_t data, const char *vadbint, int status, int index, int size) "data=0x%02x vADBInt=%s status=0x%x index=%d size=%d"
-+via1_adb_netbsd_enum_hack(void) "using NetBSD enum hack"
- via1_auxmode(int mode) "setting auxmode to %d"
- via1_timer_hack_state(int state) "setting timer_hack_state to %d"
+     case ADB_STATE_IDLE:
++        ms->b |= VIA1B_vADBInt;
++        adb_autopoll_unblock(adb_bus);
++
++        trace_via1_adb_send("IDLE", data,
++                            (ms->b & VIA1B_vADBInt) ? "+" : "-");
++
+         return;
+     }
  
 -- 
 2.39.2
