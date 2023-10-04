@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A17A97B79CB
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 397FF7B7991
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:08:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwvy-00035q-LG; Wed, 04 Oct 2023 04:08:42 -0400
+	id 1qnwuC-0006J1-RT; Wed, 04 Oct 2023 04:06:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwtM-0005tk-KF; Wed, 04 Oct 2023 04:06:07 -0400
+ id 1qnwtW-00060L-Vf; Wed, 04 Oct 2023 04:06:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwtA-0003gI-3z; Wed, 04 Oct 2023 04:05:50 -0400
+ id 1qnwtR-0003hU-6H; Wed, 04 Oct 2023 04:06:08 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 877E2275B2;
+ by isrv.corpit.ru (Postfix) with ESMTP id BA426275B3;
  Wed,  4 Oct 2023 11:02:30 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C06AF2CBEB;
- Wed,  4 Oct 2023 11:02:29 +0300 (MSK)
-Received: (nullmailer pid 2702862 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 0E32F2CBEC;
+ Wed,  4 Oct 2023 11:02:30 +0300 (MSK)
+Received: (nullmailer pid 2702865 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:22 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 37/45] accel/tcg: Track current value of can_do_io in
- the TB
-Date: Wed,  4 Oct 2023 11:01:58 +0300
-Message-Id: <20231004080221.2702636-37-mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 38/45] accel/tcg: Improve setting of can_do_io at start
+ of TB
+Date: Wed,  4 Oct 2023 11:01:59 +0300
+Message-Id: <20231004080221.2702636-38-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
@@ -63,121 +63,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Richard Henderson <richard.henderson@linaro.org>
 
-Simplify translator_io_start by recording the current
-known value of can_do_io within DisasContextBase.
+Initialize can_do_io to true if this the TB has CF_LAST_IO
+and will consist of a single instruction.  This avoids a
+set to 0 followed immediately by a set to 1.
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 0ca41ccf1c555f97873b8e02a47390fd6af4b18f)
+(cherry picked from commit a2f99d484c54adda13e62bf75ba512618a3fe470)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
-index b6ab9f3d33..850d82e26f 100644
+index 850d82e26f..dd507cd471 100644
 --- a/accel/tcg/translator.c
 +++ b/accel/tcg/translator.c
-@@ -16,11 +16,14 @@
- #include "tcg/tcg-op-common.h"
- #include "internal.h"
- 
--static void gen_io_start(void)
-+static void set_can_do_io(DisasContextBase *db, bool val)
- {
--    tcg_gen_st_i32(tcg_constant_i32(1), cpu_env,
--                   offsetof(ArchCPU, parent_obj.can_do_io) -
--                   offsetof(ArchCPU, env));
-+    if (db->saved_can_do_io != val) {
-+        db->saved_can_do_io = val;
-+        tcg_gen_st_i32(tcg_constant_i32(val), cpu_env,
-+                       offsetof(ArchCPU, parent_obj.can_do_io) -
-+                       offsetof(ArchCPU, env));
-+    }
- }
- 
- bool translator_io_start(DisasContextBase *db)
-@@ -30,12 +33,8 @@ bool translator_io_start(DisasContextBase *db)
-     if (!(cflags & CF_USE_ICOUNT)) {
-         return false;
-     }
--    if (db->num_insns == db->max_insns && (cflags & CF_LAST_IO)) {
--        /* Already started in translator_loop. */
--        return true;
--    }
- 
--    gen_io_start();
-+    set_can_do_io(db, true);
- 
-     /*
-      * Ensure that this instruction will be the last in the TB.
-@@ -47,7 +46,7 @@ bool translator_io_start(DisasContextBase *db)
-     return true;
- }
- 
--static TCGOp *gen_tb_start(uint32_t cflags)
-+static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
- {
-     TCGv_i32 count = NULL;
-     TCGOp *icount_start_insn = NULL;
-@@ -91,12 +90,9 @@ static TCGOp *gen_tb_start(uint32_t cflags)
-          * cpu->can_do_io is cleared automatically here at the beginning of
+@@ -87,12 +87,12 @@ static TCGOp *gen_tb_start(DisasContextBase *db, uint32_t cflags)
+                          offsetof(ArchCPU, neg.icount_decr.u16.low) -
+                          offsetof(ArchCPU, env));
+         /*
+-         * cpu->can_do_io is cleared automatically here at the beginning of
++         * cpu->can_do_io is set automatically here at the beginning of
           * each translation block.  The cost is minimal and only paid for
           * -icount, plus it would be very easy to forget doing it in the
--         * translator. Doing it here means we don't need a gen_io_end() to
--         * go with gen_io_start().
-+         * translator.
+          * translator.
           */
--        tcg_gen_st_i32(tcg_constant_i32(0), cpu_env,
--                       offsetof(ArchCPU, parent_obj.can_do_io) -
--                       offsetof(ArchCPU, env));
-+        set_can_do_io(db, false);
+-        set_can_do_io(db, false);
++        set_can_do_io(db, db->max_insns == 1 && (cflags & CF_LAST_IO));
      }
  
      return icount_start_insn;
-@@ -147,6 +143,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     db->num_insns = 0;
-     db->max_insns = *max_insns;
-     db->singlestep_enabled = cflags & CF_SINGLE_STEP;
-+    db->saved_can_do_io = -1;
-     db->host_addr[0] = host_pc;
-     db->host_addr[1] = NULL;
- 
-@@ -154,7 +151,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
- 
-     /* Start translating.  */
--    icount_start_insn = gen_tb_start(cflags);
-+    icount_start_insn = gen_tb_start(db, cflags);
-     ops->tb_start(db, cpu);
-     tcg_debug_assert(db->is_jmp == DISAS_NEXT);  /* no early exit */
- 
-@@ -181,7 +178,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
-            the next instruction.  */
-         if (db->num_insns == db->max_insns && (cflags & CF_LAST_IO)) {
-             /* Accept I/O on the last instruction.  */
--            gen_io_start();
-+            set_can_do_io(db, true);
-         }
-         ops->translate_insn(db, cpu);
- 
-diff --git a/include/exec/translator.h b/include/exec/translator.h
-index a53d3243d4..0f4ecad7a2 100644
---- a/include/exec/translator.h
-+++ b/include/exec/translator.h
-@@ -72,6 +72,7 @@ typedef enum DisasJumpType {
-  * @num_insns: Number of translated instructions (including current).
-  * @max_insns: Maximum number of instructions to be translated in this TB.
-  * @singlestep_enabled: "Hardware" single stepping enabled.
-+ * @saved_can_do_io: Known value of cpu->neg.can_do_io, or -1 for unknown.
-  *
-  * Architecture-agnostic disassembly context.
-  */
-@@ -83,6 +84,7 @@ typedef struct DisasContextBase {
-     int num_insns;
-     int max_insns;
-     bool singlestep_enabled;
-+    int8_t saved_can_do_io;
-     void *host_addr[2];
- } DisasContextBase;
- 
 -- 
 2.39.2
 
