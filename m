@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1647B7ADD
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5797D7B7ACF
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:55:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxY3-00036Y-PK; Wed, 04 Oct 2023 04:48:04 -0400
+	id 1qnxYS-00041R-6C; Wed, 04 Oct 2023 04:48:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWo-0000X3-8I
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWr-0000bK-1V
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:49 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWf-0002Y5-N5
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:46 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWk-0002b5-DJ
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409178;
+ s=mimecast20190719; t=1696409201;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=4+2AkEDFAeUGwi9xAK78UKYezxVoHbtT5EOiRdYvUo8=;
- b=OUmxw6l6aOuuDJ5xzJYQvrdytMZ62r6swS7oUQadm8flScFjv80d95cujDCYt/PUVF7WmW
- LxJ5GV190XhW2VJhcMjXcf3TzaDfSwpUVg5OYERZoMWGeQEoiUkN3+FTxgqPMyNeV7csIi
- eR2PtvXCIyhOtKiqG95/B4quRPokkag=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=FYiqXRxzTWfTn4i/+SBced8bQTg6zrqu/s2l3fD1Gks=;
+ b=HqKXvF+Uoezemv/rRteCJl+DN07JrGkuIGXtBwmF9eV4iSie0R+65B9IYHaGNtTTb3SEtg
+ 4UcE0Ek/qqsulLUg9N/dIDGZezN0hu1a0LZ/+aSd3lTA3xHx+32P2XoGRow290PEIeEIBx
+ xJ27sm9iAzCt++amjVRO4N+FtHHbbrg=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546--dVpBUf4PW6se-EkEHh4RQ-1; Wed, 04 Oct 2023 04:46:17 -0400
-X-MC-Unique: -dVpBUf4PW6se-EkEHh4RQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-3f41a04a297so13529555e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:46:16 -0700 (PDT)
+ us-mta-611-I_qaptONPg2bmSYiuo_wSA-1; Wed, 04 Oct 2023 04:46:20 -0400
+X-MC-Unique: I_qaptONPg2bmSYiuo_wSA-1
+Received: by mail-lf1-f72.google.com with SMTP id
+ 2adb3069b0e04-5041a779c75so1746920e87.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:46:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409175; x=1697013975;
+ d=1e100.net; s=20230601; t=1696409178; x=1697013978;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4+2AkEDFAeUGwi9xAK78UKYezxVoHbtT5EOiRdYvUo8=;
- b=W6ztXHQDICTu43eDVHhe9SdxHkTAXUblvg/pD2xxX2uNAfmzZPf76sjGvc+tqdFX6B
- nxFC2Drmu26lfwKF0hs0s+R8hgO0+gFS5PoOrDl+U+pbQUUkFf7aunyli5+3I5/000l+
- YcBOc411ErmLd2RvYIV7Q5OauS4gBoW9NSNQI0EKJgSjxga7+n3zNISqmG6WpiAN86Y6
- E6arJ6qR9aEOgQn0v10JpqQEXjLKzs6XCcB3zda5c4h7VstHsb7MH46Afe53C0DZelXZ
- gDoAfe9l7nTSjz3khyaca+hHyZtcsIjnolsYtoTDHz0B0E0W+8ti1RqLU9CGud+hDnHJ
- Iw8Q==
-X-Gm-Message-State: AOJu0Yw1z7FAEs9j1rXHJCBlIwGDuVX+yabR370ELmYopNjzEPFai8Pa
- MJDmIO92Kbb5byWPCpcgwvRM629JWEgD9XDNSZsD1dBfdkAC5lkD7CFGIuF2J9WebrSBlpnUo1W
- X464KYTuSTT+Fg6PpbNsWs8JGSa1QiVbFWn+/MZpmbDg50d8eBusLDREJNf1glcedr9MN
-X-Received: by 2002:a1c:f710:0:b0:404:746e:c601 with SMTP id
- v16-20020a1cf710000000b00404746ec601mr1456955wmh.9.1696409175252; 
- Wed, 04 Oct 2023 01:46:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IElZuTU/jh4AqyPDwYm/2wp0AJxG7XvEvIFMd7rP5k3h4SE02T/GO5D/a/6WU+Vs8lJIfohEQ==
-X-Received: by 2002:a1c:f710:0:b0:404:746e:c601 with SMTP id
- v16-20020a1cf710000000b00404746ec601mr1456935wmh.9.1696409174822; 
- Wed, 04 Oct 2023 01:46:14 -0700 (PDT)
+ bh=FYiqXRxzTWfTn4i/+SBced8bQTg6zrqu/s2l3fD1Gks=;
+ b=GiHazpYci/teWmOjQNp2Tk9t2hZkuUIqRHr4bgbHgySkMnh7RAKhYowacsEX5qUZKr
+ eqT0hX9Awn4HcNIfpN5mz4HV5XbIYvo3/R0hihKYYF9PjQROU/4iQdV51tPCCzkXMsar
+ cKYfb8qw13tK+3qWFo5D/ITFBMoRjEL9tGx4/x94jLJXBCXkhiGbNA0B5O6+LAOEx8Rr
+ Z1BWDfK0yR0Z+2Jiu9Kq0FO9C33NW2aylrv0GkoNGRUxEbfYPM7V9rnwJ3V7F9QcodnS
+ 3eVewhCnKsBECinjPvF7N5nkep15nsf1wnNAM14JBJDs+mS0fJROCbzkfnE933BDzzce
+ Z/iA==
+X-Gm-Message-State: AOJu0YzKq11LPfiCvxKlKbz6rU5eASbA5oqar53WsT7jXFj6sjKZF679
+ FDK7mTE5P0cVmVmVe96MPGnzwcmTMcz0FvwRfcCDtDMZxyybNCp5e37g2torqadr8+RlZ6Z9Fz0
+ Hbox1fsyXxj+K8PCQI5iZuC9XYgrymIzqQgyLqY4ZfemhAMM2nAJsc0AUzR6OsPZ4njtg
+X-Received: by 2002:a05:6512:3246:b0:505:6fed:33a0 with SMTP id
+ c6-20020a056512324600b005056fed33a0mr1271883lfr.34.1696409178265; 
+ Wed, 04 Oct 2023 01:46:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrVqDNMw+SaXTODCfHft+/JifvNVCe5L/GgMyqLXJ/GnjIaShVyua1PgiDWNCXrMeSkIZa2Q==
+X-Received: by 2002:a05:6512:3246:b0:505:6fed:33a0 with SMTP id
+ c6-20020a056512324600b005056fed33a0mr1271874lfr.34.1696409178026; 
+ Wed, 04 Oct 2023 01:46:18 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- u10-20020a05600c210a00b004063c9f68f2sm938651wml.26.2023.10.04.01.46.13
+ l15-20020a1c790f000000b00404719b05b5sm932697wme.27.2023.10.04.01.46.16
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:46:14 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:46:12 -0400
+ Wed, 04 Oct 2023 01:46:17 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:46:15 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ilya Maximets <i.maximets@ovn.org>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL 57/63] virtio: use shadow_avail_idx while checking number of
- heads
-Message-ID: <99eb1f8a5d8f2a58479141a6155bbc786df05720.1696408966.git.mst@redhat.com>
+Subject: [PULL 58/63] virtio: remove unnecessary thread fence while reading
+ next descriptor
+Message-ID: <4cc182dbf5ad3947812e822cea04b804fccdee5d.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,14 +74,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1696408966.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,60 +100,39 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Maximets <i.maximets@ovn.org>
 
-We do not need the most up to date number of heads, we only want to
-know if there is at least one.
+It was supposed to be a compiler barrier and it was a compiler barrier
+initially called 'wmb' when virtio core support was introduced.
+Later all the instances of 'wmb' were switched to smp_wmb to fix memory
+ordering issues on non-x86 platforms.  However, this one doesn't need
+to be an actual barrier, as its only purpose was to ensure that the
+value is not read twice.
 
-Use shadow variable as long as it is not equal to the last available
-index checked.  This avoids expensive qatomic dereference of the
-RCU-protected memory region cache as well as the memory access itself.
-
-The change improves performance of the af-xdp network backend by 2-3%.
+And since commit aa570d6fb6bd ("virtio: combine the read of a descriptor")
+there is no need for a barrier at all, since we're no longer reading
+guest memory here, but accessing a local structure.
 
 Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Message-Id: <20230927135157.2316982-1-i.maximets@ovn.org>
+Message-Id: <20230927140016.2317404-2-i.maximets@ovn.org>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ hw/virtio/virtio.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index c727e9201b..2058b838e9 100644
+index 2058b838e9..87e8f990c5 100644
 --- a/hw/virtio/virtio.c
 +++ b/hw/virtio/virtio.c
-@@ -997,7 +997,12 @@ void virtqueue_push(VirtQueue *vq, const VirtQueueElement *elem,
- /* Called within rcu_read_lock().  */
- static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
- {
--    uint16_t num_heads = vring_avail_idx(vq) - idx;
-+    uint16_t avail_idx, num_heads;
-+
-+    /* Use shadow index whenever possible. */
-+    avail_idx = (vq->shadow_avail_idx != idx) ? vq->shadow_avail_idx
-+                                              : vring_avail_idx(vq);
-+    num_heads = avail_idx - idx;
+@@ -1060,8 +1060,6 @@ static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
  
-     /* Check it isn't doing very strange things with descriptor numbers. */
-     if (num_heads > vq->vring.num) {
-@@ -1005,8 +1010,15 @@ static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
-                      idx, vq->shadow_avail_idx);
-         return -EINVAL;
-     }
--    /* On success, callers read a descriptor at vq->last_avail_idx.
--     * Make sure descriptor read does not bypass avail index read. */
-+    /*
-+     * On success, callers read a descriptor at vq->last_avail_idx.
-+     * Make sure descriptor read does not bypass avail index read.
-+     *
-+     * This is necessary even if we are using a shadow index, since
-+     * the shadow index could have been initialized by calling
-+     * vring_avail_idx() outside of this function, i.e., by a guest
-+     * memory read not accompanied by a barrier.
-+     */
-     if (num_heads) {
-         smp_rmb();
-     }
+     /* Check they're not leading us off end of descriptors. */
+     *next = desc->next;
+-    /* Make sure compiler knows to grab that: we don't want it changing! */
+-    smp_wmb();
+ 
+     if (*next >= max) {
+         virtio_error(vdev, "Desc next is %u", *next);
 -- 
 MST
 
