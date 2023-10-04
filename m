@@ -2,93 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BA757B855B
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0A57B855E
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:33:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo4nT-0002uI-L6; Wed, 04 Oct 2023 12:32:27 -0400
+	id 1qo4oD-0004RZ-B2; Wed, 04 Oct 2023 12:33:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo4nQ-0002t6-Mg
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:32:24 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qo4oB-0004Mk-6j
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:33:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo4nL-0001pn-NH
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:32:24 -0400
+ id 1qo4o9-0001uG-NP
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:33:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696437138;
+ s=mimecast20190719; t=1696437188;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=AcEdXlR9I20btEo5PCSIzjw+Rlrw1w1JJo87dQyO0mI=;
- b=bUSngmluiYp6e+PR8yv4B7ihYqm2bMSZGY+0PHiQFWE+KBJ2MydDajInNi8CXtqZrc4h7M
- SmTgkvKh/SF2/18RYzrKWD5zkuXJCDC8KRAXTsYXnUo0oAVRWsWw2uFkqYguG1dWuu7/B4
- T4+J1xdkAjMtr7ExmYUhFbS5sB/Pp+0=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RM59J6QL5gIVh1B59g1i5XixKsI4dyp+XF/EED2/pRA=;
+ b=UZnb2d8IgUGvxx42EEFZZo9rnlIm9rxsdtE9UvpRuH3nr9oVl7ZRF3wN2y/esuPKNEMGjV
+ s7SSMdJ9xeIwg4YaArAdMCdk6TwjCBF1aKjRf25jjBEVx3yobGcKlzLQbV7rKT7GCa2chr
+ fzZ3KBaE3tyUVZbLsP+QBwkBG2mUCq4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-Jy8bnlRWPdSj2_I5ppNqaQ-1; Wed, 04 Oct 2023 12:32:16 -0400
-X-MC-Unique: Jy8bnlRWPdSj2_I5ppNqaQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-3249655593dso29391f8f.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 09:32:16 -0700 (PDT)
+ us-mta-22-6gfrG7p4MzOVJaXniudb0Q-1; Wed, 04 Oct 2023 12:33:06 -0400
+X-MC-Unique: 6gfrG7p4MzOVJaXniudb0Q-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32006e08483so35913f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 09:33:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696437136; x=1697041936;
+ d=1e100.net; s=20230601; t=1696437185; x=1697041985;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AcEdXlR9I20btEo5PCSIzjw+Rlrw1w1JJo87dQyO0mI=;
- b=G3DsrMJ/HFAw8XHJSZ5hr3G68oiBGfZ8sX2Uw5CAERpLvs4Ibe0dKZTWtM/cdC7Cci
- eNR5wcqsLZjm9xSi9RSDocQMh4hoCkh2z04OAq+R9qkk2vF8UruzvTDEHD0fde7DAeYQ
- eLuGjPMoEODIYCgABtOdOUSJyWxLrl4Ua9g2fzaTsmN86Ojnm80/DopJEbcjA56hqk+8
- nFpScL2Uso3Vu0DR8mt+rvyMUPX0L5MHvOGJjKSIQnn+3Bf5t5OWpjcg1eMcF2X61lIX
- Blvj2EjPpk1R7v58AUE0f5lhu8yj98CxI0spvvLuZVKpPxy/h/p311jkqMe+GXIw5zqS
- gS4Q==
-X-Gm-Message-State: AOJu0YyfO8o0g5KLoQDGz7aALWf98YaLtGb5oj5ypxID2/SaLuI6XyFn
- 6IWE3AqlJzY21H7OPX2lmSBxLm6xHo39TI4bzZTvMW6WklgkUYMWZwb/PtO0nUK9+b7Iqb06nHf
- G/BFuRy6okG6AS5w=
-X-Received: by 2002:a5d:4d43:0:b0:31c:6420:fff with SMTP id
- a3-20020a5d4d43000000b0031c64200fffmr2462505wru.62.1696437135819; 
- Wed, 04 Oct 2023 09:32:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVWQGcd0mIDVcbDAb1KlkWzAxolcZyetmDsQqp+GviG78imPsChdBEu0X8304iPQTLYeRC2Q==
-X-Received: by 2002:a5d:4d43:0:b0:31c:6420:fff with SMTP id
- a3-20020a5d4d43000000b0031c64200fffmr2462488wru.62.1696437135392; 
- Wed, 04 Oct 2023 09:32:15 -0700 (PDT)
+ bh=RM59J6QL5gIVh1B59g1i5XixKsI4dyp+XF/EED2/pRA=;
+ b=GxJcbXQ/xKWmLSmxP/0Uvb+khAdaNurj7n2Td7a+Jiw/OZ/c07rmKr6FjgaDYeS8IF
+ us5Nhr86oYpoFXSyyQWQAHWJ6kc8t/zV2aitCwdVlJ1CjRys61fiPwKj/y+fVYVyyLw8
+ taBvwyx8ivRV8yxm49sxD4gBJsYZA/QrPntWeImNovqJdquEs4RH6r6EdEgLTkSSWr1L
+ 2tyOnFMp8JwwtwculvLQpWhi/RU4sICTG/zdUNRpL7MTxoDQsbn6o1oE3FXPFdxR11NG
+ lsFl2iQ57cpLGXPYLqpCEf/eIy5DS2OcjAB9H8xGAr/Nqe3WfPzLM0Ypg4laDmNTqQqv
+ 3QTQ==
+X-Gm-Message-State: AOJu0Yz2vWDm6XtepPQyO+TzWV4FhZMmr2fJDO2t9HC6MV78/JfA29iK
+ vPouuSnGXQmMdwhKhEBQwsiq08GJR//aSUvBkqXuY/PHEZ/1alYXvaQd4ik4HJsKub6a5mL8636
+ kLF4aSd1Kg9snpEsdwcSW92ndPA==
+X-Received: by 2002:adf:f683:0:b0:321:5141:5523 with SMTP id
+ v3-20020adff683000000b0032151415523mr2417473wrp.67.1696437185049; 
+ Wed, 04 Oct 2023 09:33:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGzXmCDHLGKRDATd4IEZoGlw2SIxD5XGzQ4+qGta3xA+iPiAv9vpBFfM+SBuc7mjXdAl23nUw==
+X-Received: by 2002:adf:f683:0:b0:321:5141:5523 with SMTP id
+ v3-20020adff683000000b0032151415523mr2417456wrp.67.1696437184717; 
+ Wed, 04 Oct 2023 09:33:04 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- p5-20020adfcc85000000b0031f300a4c26sm4352163wrj.93.2023.10.04.09.32.14
+ da4-20020a056000196400b003279518f51dsm4436035wrb.2.2023.10.04.09.33.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 09:32:14 -0700 (PDT)
+ Wed, 04 Oct 2023 09:33:04 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Markus Armbruster <armbru@redhat.com>
-Cc: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,  "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>,  "peterx@redhat.com" <peterx@redhat.com>,
- "leobras@redhat.com" <leobras@redhat.com>
-Subject: Re: [PATCH 28/52] migration/rdma: Check negative error values the
- same way everywhere
-In-Reply-To: <87wmwed824.fsf@pond.sub.org> (Markus Armbruster's message of
- "Mon, 25 Sep 2023 09:29:55 +0200")
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-29-armbru@redhat.com>
- <5b2560b5-63ed-37f0-5367-07ca55d43ab4@fujitsu.com>
- <87wmwed824.fsf@pond.sub.org>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
+ farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
+Subject: Re: [PATCH v2 29/53] migration/rdma: Check negative error values
+ the same way everywhere
+In-Reply-To: <20230928132019.2544702-30-armbru@redhat.com> (Markus
+ Armbruster's message of "Thu, 28 Sep 2023 15:19:55 +0200")
+References: <20230928132019.2544702-1-armbru@redhat.com>
+ <20230928132019.2544702-30-armbru@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 18:32:14 +0200
-Message-ID: <87jzs2uz5d.fsf@secure.mitica>
+Date: Wed, 04 Oct 2023 18:33:03 +0200
+Message-ID: <87cyxuuz40.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,79 +103,12 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Markus Armbruster <armbru@redhat.com> wrote:
-> "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> writes:
+> When a function returns 0 on success, negative value on error,
+> checking for non-zero suffices, but checking for negative is clearer.
+> So do that.
 >
->> On 18/09/2023 22:41, Markus Armbruster wrote:
->>> When a function returns 0 on success, negative value on error,
->>> checking for non-zero suffices, but checking for negative is clearer.
->>> So do that.
->>> 
->>
->> This patch is no my favor convention.
->
-> Certainly a matter of taste, which means maintainers get to decide, not
-> me.
->
-> Failure checks can be confusing in C.  Is
->
->     if (foo(...))
->
-> checking for success or for failure?  Impossible to tell.  If foo()
-> returns a pointer, it almost certainly checks for success.  If it
-> returns bool, likewise.  But if it returns an integer, it probably
-> checks for failure.
->
-> Getting a condition backwards is a common coding mistake.  Consider
-> patch review of
->
->     if (condition) {
->         obviously the error case
->     }
->
-> Patch review is more likely to catch a backward condition when the
-> condition's sense is locally obvious.
->
-> Conventions can help.  Here's the one I like:
->
-> * Check for a function's failure the same way everywhere.
->
-> * When a function returns something "truthy" on success, and something
->   "falsy" on failure, use
->
->     if (!fun(...))
->
->   Special cases:
->
->   - bool true on success, false on failure
->
->   - non-null pointer on success, null pointer on failure
->
-> * When a function returns non-negative value on success, negative value
->   on failure, use
->
->     if (fun(...) < 0)
->
-> * Avoid non-negative integer error values.
->
-> * Avoid if (fun(...)), because it's locally ambiguous.
->
->> @Peter, Juan
->>
->> I'd like to hear your opinions.
->
-> Yes, please.
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
-I agree with Markus here for three reasons:
-
-1 - He is my C - lawyer of reference O-)
-
-2 - He has done a lot of work cleaning the error handling on this file,
-    that was completely ugly.
-
-3 - I fully agree that code is more maintenable this way.  I.e. if any
-    function changes to return positive values for non error, we get
-    better coverage.
-
-Later, Juan.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
 
