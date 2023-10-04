@@ -2,79 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0707B8712
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3217B8713
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:57:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo671-00051H-Vv; Wed, 04 Oct 2023 13:56:44 -0400
+	id 1qo673-00057k-Lk; Wed, 04 Oct 2023 13:56:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qo66y-000501-Rk
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:56:41 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo670-000528-SJ
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:56:42 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qo66v-0002Fl-UP
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:56:40 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo66z-0002Ft-3p
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:56:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696442197;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ s=mimecast20190719; t=1696442200;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nJw5rz3B3VR+Q39ZHiofKtI64P+c873N9o5Y0sg9EaE=;
- b=KZIBJBHDr97f29nJB3M5qzaOGki/d4h37Kqu2FsTcYutL2Nbw5gCvu/qUpoeSI5s8kSQRI
- ChEqtJr1SZoWPzZvgDbdCFAOz0hGe66lB5F4IUTd/pmKxaYUke8w2pvYyIDxvDPQTV+jw0
- U9pui+3gX0fhAjH/SlPOhY7CIHL/hgc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-593-Zi6K4o3xO9O-CT1-bXLKAQ-1; Wed, 04 Oct 2023 13:56:35 -0400
-X-MC-Unique: Zi6K4o3xO9O-CT1-bXLKAQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68BE0858F1C;
- Wed,  4 Oct 2023 17:56:35 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.15])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id ECE0340C2015;
- Wed,  4 Oct 2023 17:56:32 +0000 (UTC)
-Date: Wed, 4 Oct 2023 18:56:30 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: quintela@redhat.com,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: Re: [RFC PATCH 1/1] qtest/migration: Support more than one QEMU binary
-Message-ID: <ZR2nTmmf8AaUV1g2@redhat.com>
-References: <20231003141932.2367-1-farosas@suse.de>
- <20231003141932.2367-2-farosas@suse.de>
- <3dd8e410-982b-3ea6-78aa-08c1ba26f8da@linaro.org>
- <ZRw5Myc/joWb6why@redhat.com> <874jj7u11d.fsf@suse.de>
- <87wmw24vzg.fsf@secure.mitica> <8734yqpedm.fsf@suse.de>
+ bh=+5gClMKl3e0ID9u6UMhmsytgUaZNhBLwf+u9p0u2vhQ=;
+ b=C3NORYD4m4cmH5xxmab6YNcbrq2gQozou4gGB8lI/BtzHVRfQzAAkU0tVhr0ZIuuRtK95V
+ d8U8PbTKgZ4T/SIdB37CNlGV8S48q5eHJwmCneKmP/MYOzynuyXTrWzPQIdyeEwBnzvwb6
+ IYk3c/hnIFpqlkUpcxv6ZI3ppgvThKY=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-xmLq5x9mMhuG99aDy9NUnA-1; Wed, 04 Oct 2023 13:56:39 -0400
+X-MC-Unique: xmLq5x9mMhuG99aDy9NUnA-1
+Received: by mail-oi1-f198.google.com with SMTP id
+ 5614622812f47-3af603daa10so143859b6e.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:56:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696442198; x=1697046998;
+ h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+ :content-language:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+5gClMKl3e0ID9u6UMhmsytgUaZNhBLwf+u9p0u2vhQ=;
+ b=eIUwsnAT1UcAQVZJie4jkLmAAeMO7MTyYv0EYdJYWziRFHG+JUmlJIcnIBYF9aIxQz
+ qPvF8ZGC3rDbXBLo4Azqql8MQYL1DXcqj5N3hTV5cOCWHttgr5mTxibUcl3UVSnsmcv6
+ 76eP4smMxYi99LnWEvf6B8MLGkdushninWNg7zsR3xkzFcJH74ViyiwQdZPmTghpJw65
+ 5LK7kmfGWatg2KBRHlr5zZtvOaZNCg7weh1ZdslwnV5L8wrbKPYUGIJI6qoTR2j9tMQH
+ xYL9rnEoOtPjwbHsNl0uBUSWewFwpEfVD54fJjEJf6/zmI8VYyNhcpbVaGvv32K1t489
+ AnaQ==
+X-Gm-Message-State: AOJu0Yzy82TTLQ1A5kWEvefEkfwloXZXQfc/oByizrEFvU2FZQQwVG1P
+ RqFkokHOjXw7uEfR8VtPQlJ/Wwq7bbymR/Xx7Vr2+PqCpHjI9c35aCIIhGuLbyssBN73sb/D8OG
+ EJCZtw7Uk71I4x2M=
+X-Received: by 2002:a05:6870:a99a:b0:1d5:c417:503e with SMTP id
+ ep26-20020a056870a99a00b001d5c417503emr3159762oab.57.1696442198556; 
+ Wed, 04 Oct 2023 10:56:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFHPftd+OidC9NtqvqBLc8I7t8VhUO/UQoMb4Rup4Hzau1iNifvpKm+W0XL1hhvJshEuJRauA==
+X-Received: by 2002:a05:6870:a99a:b0:1d5:c417:503e with SMTP id
+ ep26-20020a056870a99a00b001d5c417503emr3159748oab.57.1696442198292; 
+ Wed, 04 Oct 2023 10:56:38 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
+ [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
+ h6-20020a37c446000000b007759a81d88esm1416929qkm.50.2023.10.04.10.56.36
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 10:56:37 -0700 (PDT)
+Message-ID: <11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com>
+Date: Wed, 4 Oct 2023 19:56:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <14cd0201-1507-bfa8-fe9e-f482c35d21ca@linaro.org>
+ <d688281c-d019-c1ff-6927-d1791911c57d@linaro.org>
+ <e13885b5-06a2-599f-e0fe-c5e8f0671742@redhat.com>
+ <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
+Subject: Re: Wshadow: Better name for 'optarg'?
+In-Reply-To: <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <8734yqpedm.fsf@suse.de>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,92 +104,55 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 04, 2023 at 12:59:49PM -0300, Fabiano Rosas wrote:
-> Juan Quintela <quintela@redhat.com> writes:
+On 04/10/2023 19.43, Philippe Mathieu-Daudé wrote:
+> On 4/10/23 19:35, Thomas Huth wrote:
+>> On 04/10/2023 19.23, Richard Henderson wrote:
+>>> On 10/4/23 03:05, Philippe Mathieu-Daudé wrote:
+>>>> Hi,
+>>>>
+>>>> I'm getting a bunch of errors for 'optarg' declared in <unistd.h>:
+>>>
+>>> I thought things like this is why we were trying -Wshadow=local.
+>>>
+>>> I think it's unlikely that we'll be able to prevent all such cases.
+>>
+>> Given the broad range of operating systems and libraries that we support 
+>> in QEMU, I agree with Richard - it will likely be impossible to enable 
+>> that option without =local by default without risking that compilation 
+>> breaks on some exotic systems or new versions of various libraries.
 > 
-> > Fabiano Rosas <farosas@suse.de> wrote:
-> >> Daniel P. Berrangé <berrange@redhat.com> writes:
-> >>
-> >>> On Tue, Oct 03, 2023 at 05:24:50PM +0200, Philippe Mathieu-Daudé wrote:
-> > [...]
-> >
-> >>> $ cat myqemu.dkr 
-> >>> FROM fedora:38
-> >>>
-> >>> RUN dnf -y install qemu-kvm
-> >>>
-> >>> $ podman build -f myqemu.dkr --tag myqemu .
-> >>>
-> >>> $ cat > myqemu <<EOF
-> >>> #!/bin/sh
-> >>> exec podman run --volume /tmp=/tmp --security-opt label=disable myqemu qemu-system-x86_64 "$@"
-> >>>
-> >>> $ chmod +x myqemu
-> >>>
-> >>> $ QTEST_QEMU_BINARY=./myqemu.sh  ./build/tests/qtest/rtc-test
-> >>
-> >> I'm favor of this. I usually set that variable to something like 'gdb
-> >> --args ...' and it works just fine.
-> >>
-> >>> Except we fail on the last step, because bind mounts don't make UNIX domain
-> >>> sockets accessible. So we can see the /tmp/qtest-$PID.sock in the container,
-> >>> but it can't be used.
-> >>>
-> >>> UNIX domain sockets in the filesystem are tied to the mount namespace, and
-> >>> podman/docker inherantly creates a new mount namespace making the UNIX
-> >>> domani socket inaccessible.
-> >>>
-> >>> UNIX domain sockets in the abstract namespace, however, are tied to the
-> >>> network namespace, so if you used podman --network host, they should be
-> >>> accessible.
-> >>>
-> >>> libqtest could be changed to use abstract UNIX domain sockets on Linux
-> >>> only, and likely unlock the use of podman for QEMU.
-> >
-> > That is one idea, but why can't we convince a container to compile
-> > _both_ qemus?
-> >
-> > I am not familiar with containers, but:
-> > - We already know how to compile a qemu inside a container
-> > - We can teach it to compile $HEAD and v8.0.0 (or whatever)
-> >
-> > And do the test inside, right?
-> >
-> > On the other hand, your approach has the advantage that one can test
-> > opensuse qemu against fedora qemu, and similar.  Not sure how useful is
-> > that, though.
-> >
-> > [lots of code to find common machine types]
+> -Wshadow=local doesn't seem to work here which is why I switched
+> to -Wshadow. I probably misunderstood something from Markus cover
+> letter. My setup is:
 > 
-> I'm working on a cleanup of this patch to make it more integrated with
-> libqtest. If we teach qtest_get_machines() to sometimes refresh the list
-> of machines then it becomes way less code.
+> C compiler for the host machine: clang (clang 14.0.3 "Apple clang version 
+> 14.0.3 (clang-1403.0.22.14.1)")
 > 
-> > I think that it is just easier to pass the machine type we want to test
-> > to whatever script we have.  Specially where [sane] architectures like
-> > arm don't have a default machine type (no, I haven't double checked if
-> > that has changed lately).
-> 
-> We still need to enforce the same machine type for both binaries and a
-> sane range of QEMU versions. I think our docs state that we only support
-> migration from QEMU n->n+1 and vice versa? If the test will know what
-> combinations are allowed, it could just go ahead and use those.
+> I suppose we'll figure that out when eventually enabling -Wshadow=local
+> on CI. Meanwhile I already cleaned the 'optarg' warnings that were
+> bugging me, see:
+> https://lore.kernel.org/qemu-devel/20231004120019.93101-1-philmd@linaro.org/
+> I'll try to get -Wshadow=local, but the other series still seems a
+> good cleanup, as I used more meaningful variable names.
 
-Query the 'pc' (or 'q35' as appropriate) alias on both QEMU versions,
-to resolve them into versioned machines.
+If I got that right, -Wshadow=local only works with gcc and not with clang 
+yet, so we'll need a check in configure or meson.build and will be able to 
+only use it when it's available.
 
-Then find which resolved machine version(s) exist in both QEMUs, and
-prefer the src machine if multiple matches exist.
+If we could use "-Wshadow" to check global variables, too, that would be 
+great, but given my experience with some other project, it's very unlikely 
+that you can get it running reliably everywhere, since there is often a bad 
+library header somewhere that declares some global variable(s) that spoil 
+your plans (IIRC I've once seen a bad library that even declared a global 
+variable called "x" ... and you certainly don't want to rename all 
+occurances of "x" in the QEMU source code just because of a bad library ... 
+however, that's been many years ago, though, maybe the situation got better 
+nowadays, so if you like, feel free to continue your quest - just be aware 
+that it might not be solvable at the end).
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+  Thomas
 
 
