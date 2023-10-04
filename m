@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9AE7B8336
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 17:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 608567B8338
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 17:11:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo3WG-00083Z-Dl; Wed, 04 Oct 2023 11:10:36 -0400
+	id 1qo3WP-00085B-AY; Wed, 04 Oct 2023 11:10:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo3W6-00081T-Oi
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:10:27 -0400
+ id 1qo3WO-00084x-2W
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:10:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo3Vq-0001gt-1m
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:10:25 -0400
+ id 1qo3WM-0001w0-Na
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:10:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696432203;
+ s=mimecast20190719; t=1696432242;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=mFPWWUk7DVhQZsiHCDlUZmk8o98y9JEVFqA4r3wmx5o=;
- b=OPhqVsfVikeQ9xEermHavr7ltbWIDX5qbJlKANXNeSVk1JQM9Djz2roHwF1KG4MRhSbBEW
- oJXNbdNQfMyTS9z+3K4WfYyH+9SzwQTF6PqPJrRNvoJJigEaxH+DXgULOZ2iAqYf0icDoD
- dAUCMYi4jcxVXjKvDTY9X/sSsjy/7vw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=kaKHAD80E66htPSR2IJpZiSwxj6yLC9JkvZiwTIvNEE=;
+ b=Enn5IN7neRK/KB1/hJIGuHGUduejojysXG7xEFJQOZaHDDc/+gmVf9MkZBNWgjH+exP8QK
+ I8w5PPIimC7Xk6ESSPIRtgHdhRbVqkMDZ1oI0YUiqHJVt3H4JcgdIUnu4hC8lT87H3mmya
+ 9+56aWakPxBE3TGuELI5woF1uHuP9vo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-HuR6lnd_NBKT4K1QkwY67g-1; Wed, 04 Oct 2023 11:10:01 -0400
-X-MC-Unique: HuR6lnd_NBKT4K1QkwY67g-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40554735995so16567365e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 08:10:01 -0700 (PDT)
+ us-mta-609-851XxfEEOLOCf1l3Wq6qww-1; Wed, 04 Oct 2023 11:10:30 -0400
+X-MC-Unique: 851XxfEEOLOCf1l3Wq6qww-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4066e59840eso15456075e9.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 08:10:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696432200; x=1697037000;
+ d=1e100.net; s=20230601; t=1696432229; x=1697037029;
  h=mime-version:message-id:date:reply-to:user-agent:references
  :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mFPWWUk7DVhQZsiHCDlUZmk8o98y9JEVFqA4r3wmx5o=;
- b=QKINN7wuz/2+DerBNXXGkQVpt41tHbfIVvJVZf+k/NdcErE3uQ2fGDqCkKQRDk4qYX
- IR7RLSuYYMxjnMdwAzUodkJtXH8dVP0tQ7+OqwmxwPwdNZudJDQ/YWMFf9Km7LapJ5+F
- R0GJRdeDHhpQM/t2YUnBvAnFMifqdS9udw2xoJ3JD3yG6VOTbyrtdfCcWQvd1JUGuL0a
- Oxw6dEOHSgF1m8s+nkUq2JxNijGYzSc26lhsjKk9CHWiO7YwdVThGLow8roaeAEmPOF5
- POXxz8BSDKywlgBvK7apsATGaEnFqvpwi7XLukc3qa6CIRL85eeyZou2mufFzNU1w0nQ
- eFNA==
-X-Gm-Message-State: AOJu0Yw2ukrikYPHfUkTGJmlQ4VXUIDQ1uV1K62dYGpix35U0sqTXDOB
- r+wdJhFWb7Xfm1hdGl62GBOujakRP2Q9II4V+FLuSCvkhNYI/VULlXHvecspG4edO6Vp9/I7/7o
- WbX9bmRNIKBIH2sY=
-X-Received: by 2002:a05:600c:c9:b0:406:3fda:962c with SMTP id
- u9-20020a05600c00c900b004063fda962cmr2395971wmm.31.1696432200585; 
- Wed, 04 Oct 2023 08:10:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFecFXNNL2xgTcX3bwwOLjV8GJsULgk4X5kSASTbWy24L6DeDhL9qf6X8QIBCaUURWSygMMmQ==
-X-Received: by 2002:a05:600c:c9:b0:406:3fda:962c with SMTP id
- u9-20020a05600c00c900b004063fda962cmr2395954wmm.31.1696432200262; 
- Wed, 04 Oct 2023 08:10:00 -0700 (PDT)
+ bh=kaKHAD80E66htPSR2IJpZiSwxj6yLC9JkvZiwTIvNEE=;
+ b=RkjlR57x0Wk8LD6SKd7qBck0FUEW8i/mqnWN+BkTWi40fSpf/k/bUyterCbOBr4Swn
+ VXxTVf8yVQtC5TKBLvAVOGLOekkoTr/Ty7Ym78qY6yFwh6H8jjKykaMF6qC7Ek4DM1Yr
+ eYrs3B+BglJXdkOU2IgErO5CzCrK7BZbfZ3I2ilBStbfI9AEc6BU8fJvtYAzYdu4KThK
+ XAYKFBjJ9hvvenypgnhIgS3Xv+3YT1AxxKKCoiFdCR+VdTI9jHkRKkGhGxsjwlOraEVm
+ SZl1HvUL20XhUqlc447R2RHcm4iMx/7vB9LhCJwS/KtiWzc3YjodWZp5msOllD9RCrZ3
+ CZyw==
+X-Gm-Message-State: AOJu0YzVx3OoVVL34VmrMpYYxb9YgsZ+05XfaaWwvmeb9HK9kJb9xaik
+ Abta3AtoHEDLrpqWbtTXEstFiv+edfn1qsIzhBKOqrvtA093YuMtnhxHOWBTwyFHwEJSMceL5kc
+ 98DFIRI63LsuMXBM=
+X-Received: by 2002:a7b:ca57:0:b0:405:34e4:14cf with SMTP id
+ m23-20020a7bca57000000b0040534e414cfmr2775923wml.4.1696432229218; 
+ Wed, 04 Oct 2023 08:10:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE/7hSy7LBxK5eRGwYt/SVSrVlJIK8D00fiHgp65zsPhHEPGazhIvxMeJtt5O5wT3q71J0H1A==
+X-Received: by 2002:a7b:ca57:0:b0:405:34e4:14cf with SMTP id
+ m23-20020a7bca57000000b0040534e414cfmr2775896wml.4.1696432228849; 
+ Wed, 04 Oct 2023 08:10:28 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- z9-20020a7bc7c9000000b004060f0a0fd5sm1745935wmk.13.2023.10.04.08.09.59
+ z7-20020a7bc7c7000000b003fee567235bsm1772497wmk.1.2023.10.04.08.10.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 08:09:59 -0700 (PDT)
+ Wed, 04 Oct 2023 08:10:28 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Markus Armbruster <armbru@redhat.com>
 Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
  farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
-Subject: Re: [PATCH v2 18/53] migration/rdma: Fix io_writev(), io_readv()
- methods to obey contract
-In-Reply-To: <20230928132019.2544702-19-armbru@redhat.com> (Markus
- Armbruster's message of "Thu, 28 Sep 2023 15:19:44 +0200")
+Subject: Re: [PATCH v2 19/53] migration/rdma: Replace dangerous macro
+ CHECK_ERROR_STATE()
+In-Reply-To: <20230928132019.2544702-20-armbru@redhat.com> (Markus
+ Armbruster's message of "Thu, 28 Sep 2023 15:19:45 +0200")
 References: <20230928132019.2544702-1-armbru@redhat.com>
- <20230928132019.2544702-19-armbru@redhat.com>
+ <20230928132019.2544702-20-armbru@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 17:09:58 +0200
-Message-ID: <87cyxuxw3d.fsf@secure.mitica>
+Date: Wed, 04 Oct 2023 17:10:27 +0200
+Message-ID: <878r8ixw2k.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
@@ -84,6 +84,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -102,33 +103,15 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Markus Armbruster <armbru@redhat.com> wrote:
-> QIOChannelClass methods qio_channel_rdma_readv() and
-> qio_channel_rdma_writev() violate their method contract when
-> rdma->error_state is non-zero:
->
-> 1. They return whatever is in rdma->error_state then.  Only -1 will be
->    fine.  -2 will be misinterpreted as "would block".  Anything less
->    than -2 isn't defined in the contract.  A positive value would be
->    misinterpreted as success, but I believe that's not actually
->    possible.
->
-> 2. They neglect to set an error then.  If something up the call stack
->    dereferences the error when failure is returned, it will crash.  If
->    it ignores the return value and checks the error instead, it will
->    miss the error.
->
-> Crap like this happens when return statements hide in macros,
-> especially when their uses are far away from the definition.
->
-> I elected not to investigate how callers are impacted.
->
-> Expand the two bad macro uses, so we can set an error and return -1.
-> The next commit will then get rid of the macro altogether.
+> Hiding return statements in macros is a bad idea.  Use a function
+> instead, and open code the return part.
 >
 > Signed-off-by: Markus Armbruster <armbru@redhat.com>
 > Reviewed-by: Fabiano Rosas <farosas@suse.de>
 > Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 
 Reviewed-by: Juan Quintela <quintela@redhat.com>
+
+I hated this macro, thanks.
 
 
