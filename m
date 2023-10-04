@@ -2,84 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7F47B810B
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:34:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD1D7B8121
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:38:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo210-0002zZ-3o; Wed, 04 Oct 2023 09:34:14 -0400
+	id 1qo24I-0004Li-3v; Wed, 04 Oct 2023 09:37:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qo20c-0002rR-39
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:33:54 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qo20T-00030m-4M
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:33:48 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-9b96c3b4be4so26681066b.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 06:33:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696426419; x=1697031219; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=x+uP3/2CvOC+n7FL+aUMgFW5jSKd4lUO3yFqeK9iyi4=;
- b=I/vijMTVfywFOiRQD+ZN1KbmI8ecNhMQryY4TGS5EH9IeKK258BCqA6JxrUjwm9/q1
- KOYG4Y+Zel5XhmX8qGQ5Zhf05TxzLNDsqzN6RcjMC0pd1HPgmk40/ps87lGtVEyHIW3q
- toQOPnOlMf3iO5tuXVmJiNIIe5Wq8/ahX7LlCHqE0wGLjmPEOsmO0zLVjPXmSP7eochX
- 20C/E2r1uj/GwgCumQvwgCv+kaIHz1KasFBtC4Idsuv3JCUlkOH9VrfaEWA36P+e+6cl
- K1vJVtwpObx5yODlhB1MlUb14WqPqyEuT210cDn4sjy3hLCYqfq8Z3rMY9zjMv72wPnF
- 3Mlg==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo24F-0004LH-MD
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:37:35 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo24D-0003m1-7X
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:37:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696426652;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=LBWyA/ofUWVGkMoY+v1hKEcmSsljCHGGaFXNRZoRGBk=;
+ b=Q5tnsh5vaTSYv7K3U3x5Woul/4X+yxwzr3L+QB4r0fCCYQ26U+cmomff4n27YxeixJIbP+
+ 2yOGSmXoxSQQo6tHWCwCpIED2BEwK0jD5g6vHsCxmO5HnwHlrnH+UrmlqHyG/Hgdq5FPOG
+ l2Wmkba74GH8O1Gwe18rhZVywvnakXk=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-31-a9opxvXlNTKPMbINPugYDA-1; Wed, 04 Oct 2023 09:37:30 -0400
+X-MC-Unique: a9opxvXlNTKPMbINPugYDA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4065478afd3so15701525e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 06:37:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696426419; x=1697031219;
- h=content-transfer-encoding:mime-version:message-id:references
- :in-reply-to:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1696426649; x=1697031449;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=x+uP3/2CvOC+n7FL+aUMgFW5jSKd4lUO3yFqeK9iyi4=;
- b=CzGGTTBxf2NNnvCeSKU1sut84b6mDwM/wPcZd4ybvHlRgfOU2+fmesbC7mXzlJKfkt
- ZhyulsHsUdgZWnfs+0owiDJZl+A2O+2h56gGqZteAy4ZRyM7/SFxE+aheWaZPCaQTfVX
- wz6EwYRtwNOWUTpZStozs+Fk+t8pPSj87GoTHUzDUH/4Cry5WKXkVYgQZ9fF7TlHMCNJ
- qo8bzs3iROTIdOODfPDvJzLEdj7YnY9Yu21ItAxXpOJDG+x9b898mok/VeqNHbZxMb+l
- g5S3CQnp/EjHUonWYj1iWgH9YhKuegMnNgfY/AH0nXPeTMUhA5wvWNBPJrcOI6geCNGq
- o6MQ==
-X-Gm-Message-State: AOJu0YzZ9LxSefKOq8BX7LM1q7ImkGIEHAsI++VAIrdrHGBkTMTiHA22
- UjFdKTvZho+HL/bQpxo08os+sqd0bRQ=
-X-Google-Smtp-Source: AGHT+IElkaWevO5nT64qu5ARRT223cVLZ+K+NcDnC9YutAmFAVSBAo6JSfKmW4rXyfScm47nQiqNQA==
-X-Received: by 2002:a17:906:300f:b0:9a5:7f99:be54 with SMTP id
- 15-20020a170906300f00b009a57f99be54mr1839798ejz.67.1696426418494; 
- Wed, 04 Oct 2023 06:33:38 -0700 (PDT)
-Received: from ?IPv6:::1?
- (p200300faaf2af200e89e5c3401969328.dip0.t-ipconnect.de.
- [2003:fa:af2a:f200:e89e:5c34:196:9328])
- by smtp.gmail.com with ESMTPSA id
- g6-20020a1709064e4600b00991faf3810esm2836748ejw.146.2023.10.04.06.33.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 06:33:38 -0700 (PDT)
-Date: Wed, 04 Oct 2023 13:33:25 +0000
-From: Bernhard Beschow <shentey@gmail.com>
-To: BALATON Zoltan <balaton@eik.bme.hu>
-CC: qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
- =?ISO-8859-1?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH] hw/isa/vt82c686: Respect SCI interrupt assignment
-In-Reply-To: <f5b9d133-864a-fd13-9bc5-523e1ad77efe@eik.bme.hu>
-References: <20231003214437.29302-1-shentey@gmail.com>
- <f5b9d133-864a-fd13-9bc5-523e1ad77efe@eik.bme.hu>
-Message-ID: <B7E8646E-A72B-419D-A427-D132F66289F7@gmail.com>
+ bh=LBWyA/ofUWVGkMoY+v1hKEcmSsljCHGGaFXNRZoRGBk=;
+ b=O+QBYWhus9F5xibWjMZ7Vob2VfHR4jfrHsqeXWQEWMjFD9ypIMQcy5Qpg8gSkYGdUm
+ InEANhNmcwZxrQL+LQawoXJaIR1wVQ2TYiT0sXy9JqzLKXLtHZtfxY1WGLR72KY0fc/p
+ QdsF7U//5g7xXnTpB68sCzj8UZTg4+cNT/9BYwiKmMAOLTMljBwe49pGdoIKyoUj2XN1
+ UsDj5Np2zp4OYguxZ+kPJiNgqEtZKNoS+pW5xne64tKbpcLvNzm5GXRhnknZXt6b0NGQ
+ tzvlvRbIpPNM/fDYmkrzZj601NlPwhCvw0uuRb54VIY4yLaRitUB3ovVZbh7FoFZ0r9N
+ ZRaA==
+X-Gm-Message-State: AOJu0YyqsJqZ0S98wZvRNTsTT9lp40eSDNUqUn0fvVXzfwYIgmRLPROf
+ kgqgA+6ZCsUySvEHfdDGlYacjF5/Kx2NRkxY0TA4+dUrsz+JrRCPVCrVrNFHL8dV0l1MKQeNVcE
+ 6Mu+lCtX2lFqW7Rw=
+X-Received: by 2002:a05:600c:4686:b0:405:95ae:4a94 with SMTP id
+ p6-20020a05600c468600b0040595ae4a94mr2232293wmo.5.1696426649754; 
+ Wed, 04 Oct 2023 06:37:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF2zN8mYVwnkuwh7lF39AiSCAXNPhf+AAjTm94fxCE6jJKmQh+t1hXY/aHVcx60EnpWQxez/g==
+X-Received: by 2002:a05:600c:4686:b0:405:95ae:4a94 with SMTP id
+ p6-20020a05600c468600b0040595ae4a94mr2232281wmo.5.1696426649428; 
+ Wed, 04 Oct 2023 06:37:29 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ fl16-20020a05600c0b9000b00406847c988asm1501182wmb.12.2023.10.04.06.37.28
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 06:37:28 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Tejus GK <tejus.gk@nutanix.com>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
+ farosas@suse.de
+Subject: Re: [PATCH v5 2/2] migration: Update error description outside
+ migration.c
+In-Reply-To: <87leci36db.fsf@secure.mitica> (Juan Quintela's message of "Wed, 
+ 04 Oct 2023 14:43:44 +0200")
+References: <20231003065538.244752-1-tejus.gk@nutanix.com>
+ <20231003065538.244752-3-tejus.gk@nutanix.com>
+ <874jj77u4a.fsf@secure.mitica>
+ <c281b1e9-a027-4871-a1d5-7fc10f4ba1ed@nutanix.com>
+ <871qea6bk1.fsf@secure.mitica>
+ <68db0be7-694a-44da-8513-e761109d5902@nutanix.com>
+ <87leci36db.fsf@secure.mitica>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 04 Oct 2023 15:37:28 +0200
+Message-ID: <87h6n633vr.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62b.google.com
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,182 +103,119 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-Am 4=2E Oktober 2023 12:08:02 UTC schrieb BALATON Zoltan <balaton@eik=2Ebm=
-e=2Ehu>:
->On Tue, 3 Oct 2023, Bernhard Beschow wrote:
->> According to the datasheet, SCI interrupts of the power management func=
-tion
->> aren't triggered through the PCI pins but rather directly to the integr=
-ated PIC=2E
->> The routing is configurable through the ACPI interrupt select register =
-at offset
->> 42 in the PCI configuration space of the ISA function=2E
+Juan Quintela <quintela@redhat.com> wrote:
+> Tejus GK <tejus.gk@nutanix.com> wrote:
+>> On 04/10/23 1:53 pm, Juan Quintela wrote:
+>>> Tejus GK <tejus.gk@nutanix.com> wrote:
+>>>> On 03/10/23 6:14 pm, Juan Quintela wrote:
+> Ouch, that again.
 >
->This should be config reg 42 of the PM function 4 not ISA function 0 but =
-the code seems to do it right just this description is wrong=2E
-
-Notice via_isa_set_pm_irq() using ViaISAState for routing the SCI to the P=
-IC=2E Hence, the description seems correct to me=2E
-
+> I think that I know how to fix that.
 >
->>=20
->> Signed-off-by: Bernhard Beschow <shentey@gmail=2Ecom>
+> Will take a look.
 >
->You could cc me on vt82c686 too as now I have two machines using these (o=
-ne is not yet upstream)=2E
+> Later, Juan.
 
-Usually I let git-publish handle the cc which derives it from the MAINTAIN=
-ERS file=2E You could add yourself there to get cc'ed automatically=2E
+I first only saw that you were missing migrate_set_error().
+migrate_get_current() is .... more interesting.
 
-I'm curious what the other machine not yet upstreamed is?
+The problem is that migration.c has lots of things that depend of qemu
+and we can't use that in qtest.
+This is one disection toh help fix it, but I can't see a trivial way to
+get current_migration() working as needed.  Really what we should have
+is a way to have vmstate store its own error, and only set
+migrate_set_error() at callers time, but that don't seem completely
+obvious how to do it.
 
->
->> ---
->> hw/isa/vt82c686=2Ec | 43 +++++++++++++++++++++++++++++++------------
->> 1 file changed, 31 insertions(+), 12 deletions(-)
->>=20
->> diff --git a/hw/isa/vt82c686=2Ec b/hw/isa/vt82c686=2Ec
->> index 57bdfb4e78=2E=2E2988ad1eda 100644
->> --- a/hw/isa/vt82c686=2Ec
->> +++ b/hw/isa/vt82c686=2Ec
->> @@ -46,6 +46,8 @@ struct ViaPMState {
->>     ACPIREGS ar;
->>     APMState apm;
->>     PMSMBus smb;
->> +
->
->No empty line needed here=2E
+Later, Juan.
 
-Here I took inspiration from struct PIIX4PMState which separates the qemu_=
-irqs, too=2E The long term plan is to also add an smi_irq attribute in orde=
-r to bring both device models to feature parity=2E So I'd rather leave it a=
-s is=2E
 
-> It you want to, you could add an empty line after the first member and r=
-ename that to parent_obj as per new convention while you're changing this o=
-bject state=2E
+From cdbdbca65059ebb9fd6a4d354a94c3be7cf69f92 Mon Sep 17 00:00:00 2001
+From: Juan Quintela <quintela@redhat.com>
+Date: Wed, 4 Oct 2023 15:22:39 +0200
+Subject: [PATCH] migration: Create common.c
 
-I didn't want to add this style fix in this single commit series=2E I thin=
-k this would deserve its own commit where all device models in this file ar=
-e fixed=2E
+We can (yet) add migration.c to migration_files because it brings too
+many dependencies to the tests.
 
->
->> +    qemu_irq irq;
->> };
->>=20
->> static void pm_io_space_update(ViaPMState *s)
->> @@ -148,18 +150,7 @@ static void pm_update_sci(ViaPMState *s)
->>                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
->>                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
->>                    ACPI_BITMASK_TIMER_ENABLE)) !=3D 0);
->> -    if (pci_get_byte(s->dev=2Econfig + PCI_INTERRUPT_PIN)) {
->> -        /*
->> -         * FIXME:
->> -         * Fix device model that realizes this PM device and remove
->> -         * this work around=2E
->> -         * The device model should wire SCI and setup
->> -         * PCI_INTERRUPT_PIN properly=2E
->> -         * If PIN# =3D 0(interrupt pin isn't used), don't raise SCI as
->> -         * work around=2E
->> -         */
->> -        pci_set_irq(&s->dev, sci_level);
->> -    }
->> +    qemu_set_irq(s->irq, sci_level);
->>     /* schedule a timer interruption if needed */
->>     acpi_pm_tmr_update(&s->ar, (s->ar=2Epm1=2Eevt=2Een & ACPI_BITMASK_T=
-IMER_ENABLE) &&
->>                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
->> @@ -213,6 +204,13 @@ static void via_pm_realize(PCIDevice *dev, Error *=
-*errp)
->>     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
->> }
->>=20
->> +static void via_pm_init(Object *obj)
->> +{
->> +    ViaPMState *s =3D VIA_PM(obj);
->> +
->> +    qdev_init_gpio_out(DEVICE(obj), &s->irq, 1);
->> +}
->> +
->> typedef struct via_pm_init_info {
->>     uint16_t device_id;
->> } ViaPMInitInfo;
->> @@ -238,6 +236,7 @@ static void via_pm_class_init(ObjectClass *klass, v=
-oid *data)
->> static const TypeInfo via_pm_info =3D {
->>     =2Ename          =3D TYPE_VIA_PM,
->>     =2Eparent        =3D TYPE_PCI_DEVICE,
->> +    =2Einstance_init =3D via_pm_init,
->>     =2Einstance_size =3D sizeof(ViaPMState),
->>     =2Eabstract      =3D true,
->>     =2Einterfaces =3D (InterfaceInfo[]) {
->> @@ -568,9 +567,25 @@ static const VMStateDescription vmstate_via =3D {
->>     }
->> };
->>=20
->> +static void via_isa_set_pm_irq(void *opaque, int n, int level)
->> +{
->> +    ViaISAState *s =3D opaque;
->> +    uint8_t irq =3D pci_get_byte(s->pm=2Edev=2Econfig + 0x42) & 0xf;
->> +
->> +    if (irq =3D=3D 2) {
->> +        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is res=
-erved");
->> +        return;
->> +    }
->> +
->> +    if (irq !=3D 0) {
->> +        qemu_set_irq(s->isa_irqs_in[irq], level);
->> +    }
->> +}
->> +
->> static void via_isa_init(Object *obj)
->> {
->>     ViaISAState *s =3D VIA_ISA(obj);
->> +    DeviceState *dev =3D DEVICE(s);
->
->No need to add local variable for single use unless you expect to have mo=
-re of these later but for single use you caould just use DEVICE(obj or s) i=
-n the call below=2E
+This file is a place where to move things that are also needed for
+tests.
 
-I have one more user on my pc-via branch for wiring the ISA interrupts=2E
+Signed-off-by: Juan Quintela <quintela@redhat.com>
+---
+ migration/common.c    | 25 +++++++++++++++++++++++++
+ migration/migration.c |  8 --------
+ migration/meson.build |  1 +
+ 3 files changed, 26 insertions(+), 8 deletions(-)
+ create mode 100644 migration/common.c
 
-Best regards,
-Bernhard
+diff --git a/migration/common.c b/migration/common.c
+new file mode 100644
+index 0000000000..1d02f37c99
+--- /dev/null
++++ b/migration/common.c
+@@ -0,0 +1,25 @@
++/*
++ * QEMU live migration common code for qemu and qtests
++ *
++ * Copyright (c) 2011 Red Hat Inc
++ *
++ * Authors:
++ *  Juan Quintela <quintela@redhat.com>
++ *
++ * This work is licensed under the terms of the GNU GPL, version 2 or later.
++ * See the COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/cutils.h"
++#include "qemu/error-report.h"
++#include "qapi/error.h"
++#include "migration.h"
++
++void migrate_set_error(MigrationState *s, const Error *error)
++{
++    QEMU_LOCK_GUARD(&s->error_mutex);
++    if (!s->error) {
++        s->error = error_copy(error);
++    }
++}
+diff --git a/migration/migration.c b/migration/migration.c
+index 585d3c8f55..f143b3a41e 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -1221,14 +1221,6 @@ static void migrate_fd_cleanup_bh(void *opaque)
+     object_unref(OBJECT(s));
+ }
+ 
+-void migrate_set_error(MigrationState *s, const Error *error)
+-{
+-    QEMU_LOCK_GUARD(&s->error_mutex);
+-    if (!s->error) {
+-        s->error = error_copy(error);
+-    }
+-}
+-
+ static void migrate_error_free(MigrationState *s)
+ {
+     QEMU_LOCK_GUARD(&s->error_mutex);
+diff --git a/migration/meson.build b/migration/meson.build
+index 92b1cc4297..57b3098c46 100644
+--- a/migration/meson.build
++++ b/migration/meson.build
+@@ -1,5 +1,6 @@
+ # Files needed by unit tests
+ migration_files = files(
++  'common.c',
+   'migration-stats.c',
+   'page_cache.c',
+   'xbzrle.c',
 
->
->Other than these small nits:
->
->Reviewed-by: BALATON Zoltan <balaton@eik=2Ebme=2Ehu>
->
->>=20
->>     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
->>     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
->> @@ -578,6 +593,8 @@ static void via_isa_init(Object *obj)
->>     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_U=
-SB_UHCI);
->>     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
->>     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
->> +
->> +    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
->> }
->>=20
->> static const TypeInfo via_isa_info =3D {
->> @@ -704,6 +721,8 @@ static void via_isa_realize(PCIDevice *d, Error **e=
-rrp)
->>     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
->>         return;
->>     }
->> +    qdev_connect_gpio_out(DEVICE(&s->pm), 0,
->> +                          qdev_get_gpio_in_named(DEVICE(d), "sci", 0))=
-;
->>=20
->>     /* Function 5: AC97 Audio */
->>     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
->>=20
+-- 
+2.41.0
+
 
