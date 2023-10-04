@@ -2,95 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6837C7B8226
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4F67B8241
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:28:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2jz-00065z-SJ; Wed, 04 Oct 2023 10:20:43 -0400
+	id 1qo2pt-0008CI-IV; Wed, 04 Oct 2023 10:26:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo2jv-00064n-Mx
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:20:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ id 1qo2pr-0008C8-Vl
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:26:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo2ju-00079c-31
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:20:39 -0400
+ id 1qo2pq-0008Jh-Iw
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:26:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696429237;
+ s=mimecast20190719; t=1696429605;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=V48ZP1MstJU0g8aENgQUi185lJMNu6BIKVmdhZ4t4vM=;
- b=H9SCW72+hurn9dQMcSCqMPVyfqIxHzheOgpKiUhZ6tVWQ8EipTzCpphIvCl+nG0JouP3KL
- 1i+twLTgq6F+XaeLBgpg+jcjiCV3zkY2xPXbbwpfdAF7fmc0KnpApxOME9ZfX5A6Gl3c0y
- JDTfY6f7oF1V/DMV1YdrVTBNIKdxGA8=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=7VGQ5opNOBxr48TXRQquNlGnMouVC1pzOcaHXlpbHAU=;
+ b=Z777F+v9VYzJ5C3BhMQc7tKW+cEJWLgkUmHvvxZcVxR3nEEt66fdiG+gBDdySoI0Ljg+tF
+ bgxDpstPg/jb8oiNTitR7SIOcJWwl8VAP3qslieqIlL0PcgimnuZ/f93j8964ctiD3KmzG
+ sOGIr+NCm8AonSd9l9sZVG3u5wDByPM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-672-UL14W1MNMzaIxadkCk-9Lg-1; Wed, 04 Oct 2023 10:20:33 -0400
-X-MC-Unique: UL14W1MNMzaIxadkCk-9Lg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-326f05ed8f9so1679034f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:20:33 -0700 (PDT)
+ us-mta-399-qOWx5wC2OGqDzxHJ_OUhQw-1; Wed, 04 Oct 2023 10:26:42 -0400
+X-MC-Unique: qOWx5wC2OGqDzxHJ_OUhQw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3247f646affso494726f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:26:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696429232; x=1697034032;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=V48ZP1MstJU0g8aENgQUi185lJMNu6BIKVmdhZ4t4vM=;
- b=VBxcNxZANxliqHF0uzeqhCwkHgHsRXsAIdzPxO/ldCfsz4RYVvtnkIQcMOEF12mD19
- dVyz6Yu6U66jxL/wLKDJsB/HC0Gu9jzBeWH9Mc/UJDWgzkJSQRzlS96qqMoicL+HT3km
- 180+yl+jTi+MGvYd6ITi3rpVxZ70dLAuQukWsWcTaG8asCY40xuOtR40QdV00hQMPKUc
- +vNY+jHDBd3iJs4p0muYLDSJNwl1j6Wg6zOB1EdUs87QwS49l2BkURX1HLgxsK80SufS
- iUwP122aQuJ4XezQfHSXCjb1ju/BVvyxn5HTvgMCjxQhWDWZvBi17LZY88Mjv37Nwi2j
- fe8w==
-X-Gm-Message-State: AOJu0YxHaUrk+db5kfBO9SK2a03OEb8PwJIleIXzMcOGH5/vTN9BExUS
- tntBSzpjIBe+5v//idC6OBjKXMVBYBDToVixdAV/Dr0Cmtu6K5ivEceZdRNMW7mV8NEkjcMNhG4
- bVJuOinwrXRu6nOo=
-X-Received: by 2002:a5d:628a:0:b0:320:254:b874 with SMTP id
- k10-20020a5d628a000000b003200254b874mr2248446wru.11.1696429232431; 
- Wed, 04 Oct 2023 07:20:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2e0b3AvB2q8ZK9qzqK5rssyXTxT99fT/RKV/Zq4DU8Fh/2+zsCYNuZt7PyWzkAhBnj5aqcw==
-X-Received: by 2002:a5d:628a:0:b0:320:254:b874 with SMTP id
- k10-20020a5d628a000000b003200254b874mr2248422wru.11.1696429232075; 
- Wed, 04 Oct 2023 07:20:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696429601; x=1697034401;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=7VGQ5opNOBxr48TXRQquNlGnMouVC1pzOcaHXlpbHAU=;
+ b=MHZ0rpnvm74LuesEKZscyocJ1u3B1k/NZo6NkOBElm0Fjh6NSN5gRvnNb3Pd4NBGMF
+ tzQbTK0YB/ApaT5stuU955GkdzRcpZUokvoEYyvXO4X3s+cMO0G/azKeNvBAgpNOVR7e
+ q/UUPN/AwB/sBq0Wu+c2wlZHpje5Rfb3dyKxLKBKTmW1/HxVa8L3AfHBY0Am0qMGMZTC
+ DtmUl4gT9vz8svKrvQD9oTtuAvc1w8QzOM4UzW7EYjHh0yP9NQoNaM8Os/EcyGKnMeet
+ y2DEgzdBTIOqlVbELQarQkfGbAyKsYeEhNlD6AF+p1vJI+VazdllvTPS7BzVDkbziniC
+ Ub8w==
+X-Gm-Message-State: AOJu0Yyz1CbxKVeh8omWyEeE98BFgATglstMyI9Typ9MTdOittnZfbCh
+ ozdDBHU8r6G3inZVyGi/+CPUgdJowC9gpxTFht13i8FOawqYAjNfeDAqvQOgA2tnjXPya0zhDlT
+ Kev2CLA/0HBGiTHg=
+X-Received: by 2002:a5d:4fc6:0:b0:317:6734:c2ae with SMTP id
+ h6-20020a5d4fc6000000b003176734c2aemr3990471wrw.11.1696429601706; 
+ Wed, 04 Oct 2023 07:26:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGxwYrpblE51Zr5EZDK9ZcYXcVfI1hf2eV2YoCqxbVprh4YwnS7Z+8MrHPAzxHRehfPXxeFxQ==
+X-Received: by 2002:a5d:4fc6:0:b0:317:6734:c2ae with SMTP id
+ h6-20020a5d4fc6000000b003176734c2aemr3990450wrw.11.1696429601393; 
+ Wed, 04 Oct 2023 07:26:41 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- c6-20020a5d4cc6000000b00325c7295450sm4144527wrt.3.2023.10.04.07.20.30
+ l26-20020a7bc45a000000b00405bbfd5d16sm1686421wmi.7.2023.10.04.07.26.40
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 07:20:31 -0700 (PDT)
+ Wed, 04 Oct 2023 07:26:40 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Li Zhijian
- <lizhijian@fujitsu.com>,  qemu-s390x@nongnu.org,  Steve Sistare
- <steven.sistare@oracle.com>,  Michael Galaxy <mgalaxy@akamai.com>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PULL 09/11] migration: file URI
-In-Reply-To: <87o7hepjpl.fsf@suse.de> (Fabiano Rosas's message of "Wed, 04 Oct
- 2023 11:04:38 -0300")
-References: <20231004124038.16002-1-quintela@redhat.com>
- <20231004124038.16002-10-quintela@redhat.com> <87y1gi4i32.fsf@suse.de>
- <87cyxu33fp.fsf@secure.mitica> <87o7hepjpl.fsf@suse.de>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
+ farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
+Subject: Re: [PATCH v2 01/53] migration/rdma: Clean up qemu_rdma_poll()'s
+ return type
+In-Reply-To: <20230928132019.2544702-2-armbru@redhat.com> (Markus Armbruster's
+ message of "Thu, 28 Sep 2023 15:19:27 +0200")
+References: <20230928132019.2544702-1-armbru@redhat.com>
+ <20230928132019.2544702-2-armbru@redhat.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 16:20:30 +0200
-Message-ID: <87fs2q1nbl.fsf@secure.mitica>
+Date: Wed, 04 Oct 2023 16:26:40 +0200
+Message-ID: <877co21n1b.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,60 +102,19 @@ Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> Juan Quintela <quintela@redhat.com> writes:
+Markus Armbruster <armbru@redhat.com> wrote:
+> qemu_rdma_poll()'s return type is uint64_t, even though it returns 0,
+> -1, or @ret, which is int.  Its callers assign the return value to int
+> variables, then check whether it's negative.  Unclean.
 >
->> Fabiano Rosas <farosas@suse.de> wrote:
->>> Juan Quintela <quintela@redhat.com> writes:
->>>
->>>> From: Steve Sistare <steven.sistare@oracle.com>
->>>>
->>>> Extend the migration URI to support file:<filename>.  This can be used=
- for
->>>> any migration scenario that does not require a reverse path.  It can be
->>>> used as an alternative to 'exec:cat > file' in minimized containers th=
-at
->>>> do not contain /bin/sh, and it is easier to use than the fd:<fdname> U=
-RI.
->>>> It can be used in HMP commands, and as a qemu command-line parameter.
->>>>
->>>> For best performance, guest ram should be shared and x-ignore-shared
->>>> should be true, so guest pages are not written to the file, in which c=
-ase
->>>> the guest may remain running.  If ram is not so configured, then the u=
-ser
->>>> is advised to stop the guest first.  Otherwise, a busy guest may re-di=
-rty
->>>> the same page, causing it to be appended to the file multiple times,
->>>> and the file may grow unboundedly.  That issue is being addressed in t=
-he
->>>> "fixed-ram" patch series.
->>>>
->>>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>>> Tested-by: Michael Galaxy <mgalaxy@akamai.com>
->>>> Reviewed-by: Michael Galaxy <mgalaxy@akamai.com>
->>>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
->>>> Reviewed-by: Peter Xu <peterx@redhat.com>
->>>> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->>>> Reviewed-by: Juan Quintela <quintela@redhat.com>
->>>> Signed-off-by: Juan Quintela <quintela@redhat.com>
->>>> Message-ID: <1694182931-61390-2-git-send-email-steven.sistare@oracle.c=
-om>
->>>
->>> Juan, FYI we have tests for this feature already reviewed and ready to
->>> merge:
->>>
->>> [PATCH v5 0/6] migration: Test the new "file:" migration
->>> https://lore.kernel.org/r/20230712190742.22294-1-farosas@suse.de
->>
->> I searched for URI and didn't found it.
->>
->> Will got it on next PULL request.
+> Return int instead.
 >
-> Do you want me to do resend? It's no big deal.
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+> Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
 
-Not integrated already on my tree.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-Thanks.
+queued.
 
 
