@@ -2,63 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3962F7B7E71
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 13:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B03F7B7E77
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 13:49:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0J0-0002YZ-Br; Wed, 04 Oct 2023 07:44:42 -0400
+	id 1qo0Mi-00049x-Mu; Wed, 04 Oct 2023 07:48:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qo0Iw-0002Y4-4H
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 07:44:38 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo0MX-000474-Ev
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 07:48:21 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qo0Iu-0002ol-M6
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 07:44:37 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo0MW-0003e9-0y
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 07:48:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696419876;
+ s=mimecast20190719; t=1696420099;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wiSYiINJ6uJtsfq+/pK3ClNYYFDydaBPPc3U/qA2TUo=;
- b=IsOGuPL1muj11xzTsOewmTaEswEKuwcU5L2gPv24iH6h+elZxKP5IXW2QqpAxWcEg1qoMu
- QbuLRBmKZYWQIwQ8HpOEVMTTdQ1R7KdwMK7PDfDN0CNjps+Hbrb/VbCSkF2iltXe624swB
- nuGRqPhu4R+t+goKy+n92P++yqrWlzU=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-462-lQ-wbkF9P_6tn0mKQ44Kng-1; Wed, 04 Oct 2023 07:44:28 -0400
-X-MC-Unique: lQ-wbkF9P_6tn0mKQ44Kng-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1Dv6cYSoMMilPNs/9rWnaaObeP3PNkFU0bmTRXlZRuI=;
+ b=PqXxbS6Ntr0wx6HGdCjp3Ar6aiNhHJzhiPMPhyPkg5ekIFgdS8LsnnY49vXjSD1bwQAv66
+ 97sE6Nug/Tc7TmPop0PYtLpaiW/FarnXIQBBqZ+amdREeDPWHlmUkkYi2BT8WfBRZxO+l2
+ 4WL86fphxW2u2NQJ/Tnvn6pObA9AMZg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-422-2NOMnpPpOxCbk6u0QxpStg-1; Wed, 04 Oct 2023 07:48:11 -0400
+X-MC-Unique: 2NOMnpPpOxCbk6u0QxpStg-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8F2628EA6E4;
- Wed,  4 Oct 2023 11:44:27 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id A6A4B40C2013;
- Wed,  4 Oct 2023 11:44:27 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 9B14021E6904; Wed,  4 Oct 2023 13:44:26 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org,  Gerd Hoffmann <kraxel@redhat.com>,  Markus
- Armbruster <armbru@redhat.com>,  qemu-trivial@nongnu.org
-Subject: Re: [PATCH] hw/usb: Silence compiler warnings in USB code when
- compiling with -Wshadow
-References: <20231004093620.97906-1-thuth@redhat.com>
-Date: Wed, 04 Oct 2023 13:44:26 +0200
-In-Reply-To: <20231004093620.97906-1-thuth@redhat.com> (Thomas Huth's message
- of "Wed, 4 Oct 2023 11:36:20 +0200")
-Message-ID: <8734yqfw85.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 977CB80349A;
+ Wed,  4 Oct 2023 11:48:10 +0000 (UTC)
+Received: from thuth-p1g4.str.redhat.com (dhcp-192-181.str.redhat.com
+ [10.33.192.181])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id EBF604A9B0A;
+ Wed,  4 Oct 2023 11:48:09 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: qemu-devel@nongnu.org,
+	"Michael S. Tsirkin" <mst@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+	qemu-trivial@nongnu.org
+Subject: [PATCH] hw/virtio/vhost: Silence compiler warnings in vhost code when
+ using -Wshadow
+Date: Wed,  4 Oct 2023 13:48:09 +0200
+Message-ID: <20231004114809.105672-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -82,15 +76,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-I got one more:
+Rename a variable in vhost_dev_sync_region() and remove a superfluous
+declaration in vhost_commit() to make this code compilable with "-Wshadow".
 
-../hw/usb/host-libusb.c: In function =E2=80=98usb_host_open=E2=80=99:
-../hw/usb/host-libusb.c:1013:13: warning: declaration of =E2=80=98rc=E2=80=
-=99 shadows a previous local [-Wshadow=3Dcompatible-local]
- 1013 |         int rc =3D ioctl(hostfd, USBDEVFS_GET_SPEED, NULL);
-      |             ^~
-../hw/usb/host-libusb.c:954:9: note: shadowed declaration is here
-  954 |     int rc;
-      |         ^~
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ hw/virtio/vhost.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/hw/virtio/vhost.c b/hw/virtio/vhost.c
+index e2f6ffb446..9cfac40fde 100644
+--- a/hw/virtio/vhost.c
++++ b/hw/virtio/vhost.c
+@@ -66,12 +66,12 @@ static void vhost_dev_sync_region(struct vhost_dev *dev,
+                                   uint64_t mfirst, uint64_t mlast,
+                                   uint64_t rfirst, uint64_t rlast)
+ {
+-    vhost_log_chunk_t *log = dev->log->log;
++    vhost_log_chunk_t *dev_log = dev->log->log;
+ 
+     uint64_t start = MAX(mfirst, rfirst);
+     uint64_t end = MIN(mlast, rlast);
+-    vhost_log_chunk_t *from = log + start / VHOST_LOG_CHUNK;
+-    vhost_log_chunk_t *to = log + end / VHOST_LOG_CHUNK + 1;
++    vhost_log_chunk_t *from = dev_log + start / VHOST_LOG_CHUNK;
++    vhost_log_chunk_t *to = dev_log + end / VHOST_LOG_CHUNK + 1;
+     uint64_t addr = QEMU_ALIGN_DOWN(start, VHOST_LOG_CHUNK);
+ 
+     if (end < start) {
+@@ -549,7 +549,7 @@ static void vhost_commit(MemoryListener *listener)
+         changed = true;
+     } else {
+         /* Same size, lets check the contents */
+-        for (int i = 0; i < n_old_sections; i++) {
++        for (i = 0; i < n_old_sections; i++) {
+             if (!MemoryRegionSection_eq(&old_sections[i],
+                                         &dev->mem_sections[i])) {
+                 changed = true;
+-- 
+2.41.0
 
 
