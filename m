@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C696D7B7662
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1107B7663
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 03:47:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnqxa-0000wR-If; Tue, 03 Oct 2023 21:45:58 -0400
+	id 1qnqxZ-0000vd-9a; Tue, 03 Oct 2023 21:45:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qnqxN-0000uZ-6f
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 21:45:45 -0400
+ id 1qnqxN-0000uh-N2
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 21:45:46 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qnqxK-0003RI-7s
- for qemu-devel@nongnu.org; Tue, 03 Oct 2023 21:45:44 -0400
+ id 1qnqxL-0003Ri-64
+ for qemu-devel@nongnu.org; Tue, 03 Oct 2023 21:45:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696383941;
+ s=mimecast20190719; t=1696383942;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=shRHyR1nxnb2BQrxMeZmP1n/TeAPtkgV8J0Z5HKWjl4=;
- b=XRAn8CeqxhmClcdmDloA1LTzYFUtQDWU52nyiNab6jiApT2vHZVPlsjmqTbdAb6zCB5iqJ
- /txjB00kCpehF+PyEYaZNn1aB7mGfW8as6VsHJ8x1MrMKUc5oMUNqacT9SWhq0++ybAKCf
- bDLqE9b6HwIuOiuoXwQtlxxKoPoNoDg=
+ bh=kLi4qYinLQYnX/WuJPcNmtBNJtt2fgcflDkKxHFpHVc=;
+ b=VY27pDKX21TvRSYo0U5/bb069Ik/Buu5KQ2GJOFTKrV1a8dPanAtO3TdNXEOZwUFErve6J
+ X4LGZZ5X5gKCo08SyZagJHpX7CazuQSnIQXg18TvGxQOszuf1D97uQPF9hu7Nm/2OPqyC1
+ gZj/gkSmX/+XGm8p90rmf+TQ9wXMivM=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-541-K3QLPWUvOvuj5gn-JxnULw-1; Tue, 03 Oct 2023 21:45:37 -0400
-X-MC-Unique: K3QLPWUvOvuj5gn-JxnULw-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ us-mta-45-k-tTKNi4NZSpSp6sVv7n2g-1; Tue, 03 Oct 2023 21:45:39 -0400
+X-MC-Unique: k-tTKNi4NZSpSp6sVv7n2g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CFB2D29AA39A;
- Wed,  4 Oct 2023 01:45:36 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B708538041D5;
+ Wed,  4 Oct 2023 01:45:38 +0000 (UTC)
 Received: from localhost (unknown [10.39.192.46])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 4D10AC154CA;
- Wed,  4 Oct 2023 01:45:36 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 346E614171B6;
+ Wed,  4 Oct 2023 01:45:38 +0000 (UTC)
 From: Stefan Hajnoczi <stefanha@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
@@ -53,14 +53,14 @@ Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
  eperezma@redhat.com,
  =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH v2 1/3] vhost-user: do not send RESET_OWNER on device reset
-Date: Tue,  3 Oct 2023 21:45:30 -0400
-Message-ID: <20231004014532.1228637-2-stefanha@redhat.com>
+Subject: [PATCH v2 2/3] vhost-backend: remove vhost_kernel_reset_device()
+Date: Tue,  3 Oct 2023 21:45:31 -0400
+Message-ID: <20231004014532.1228637-3-stefanha@redhat.com>
 In-Reply-To: <20231004014532.1228637-1-stefanha@redhat.com>
 References: <20231004014532.1228637-1-stefanha@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,93 +85,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The VHOST_USER_RESET_OWNER message is deprecated in the spec:
+vhost_kernel_reset_device() invokes RESET_OWNER, which disassociates the
+owner process from the device. The device is left non-operational since
+SET_OWNER is only called once during startup in vhost_dev_init().
 
-   This is no longer used. Used to be sent to request disabling all
-   rings, but some back-ends interpreted it to also discard connection
-   state (this interpretation would lead to bugs).  It is recommended
-   that back-ends either ignore this message, or use it to disable all
-   rings.
-
-The only caller of vhost_user_reset_device() is vhost_user_scsi_reset().
-It checks that F_RESET_DEVICE was negotiated before calling it:
-
-  static void vhost_user_scsi_reset(VirtIODevice *vdev)
-  {
-      VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
-      struct vhost_dev *dev = &vsc->dev;
-
-      /*
-       * Historically, reset was not implemented so only reset devices
-       * that are expecting it.
-       */
-      if (!virtio_has_feature(dev->protocol_features,
-                              VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
-          return;
-      }
-
-      if (dev->vhost_ops->vhost_reset_device) {
-          dev->vhost_ops->vhost_reset_device(dev);
-      }
-  }
-
-Therefore VHOST_USER_RESET_OWNER is actually never sent by
-vhost_user_reset_device(). Remove the dead code. This effectively moves
-the vhost-user protocol specific code from vhost-user-scsi.c into
-vhost-user.c where it belongs.
+vhost_kernel_reset_device() is never called so this latent bug never
+appears. Get rid of vhost_kernel_reset_device() for now. If someone
+needs it in the future they'll need to implement it correctly.
 
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- hw/scsi/vhost-user-scsi.c |  9 ---------
- hw/virtio/vhost-user.c    | 13 +++++++++----
- 2 files changed, 9 insertions(+), 13 deletions(-)
+ hw/virtio/vhost-backend.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index ee99b19e7a..8582b2e8ab 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -71,15 +71,6 @@ static void vhost_user_scsi_reset(VirtIODevice *vdev)
-     VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
-     struct vhost_dev *dev = &vsc->dev;
- 
--    /*
--     * Historically, reset was not implemented so only reset devices
--     * that are expecting it.
--     */
--    if (!virtio_has_feature(dev->protocol_features,
--                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
--        return;
--    }
--
-     if (dev->vhost_ops->vhost_reset_device) {
-         dev->vhost_ops->vhost_reset_device(dev);
-     }
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..7bed9ad7d5 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -1492,12 +1492,17 @@ static int vhost_user_reset_device(struct vhost_dev *dev)
- {
-     VhostUserMsg msg = {
-         .hdr.flags = VHOST_USER_VERSION,
-+        .hdr.request = VHOST_USER_RESET_DEVICE,
-     };
- 
--    msg.hdr.request = virtio_has_feature(dev->protocol_features,
--                                         VHOST_USER_PROTOCOL_F_RESET_DEVICE)
--        ? VHOST_USER_RESET_DEVICE
--        : VHOST_USER_RESET_OWNER;
-+    /*
-+     * Historically, reset was not implemented so only reset devices
-+     * that are expecting it.
-+     */
-+    if (!virtio_has_feature(dev->protocol_features,
-+                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
-+        return -ENOSYS;
-+    }
- 
-     return vhost_user_write(dev, &msg, NULL, 0);
+diff --git a/hw/virtio/vhost-backend.c b/hw/virtio/vhost-backend.c
+index 8e581575c9..17f3fc6a08 100644
+--- a/hw/virtio/vhost-backend.c
++++ b/hw/virtio/vhost-backend.c
+@@ -197,11 +197,6 @@ static int vhost_kernel_set_owner(struct vhost_dev *dev)
+     return vhost_kernel_call(dev, VHOST_SET_OWNER, NULL);
  }
+ 
+-static int vhost_kernel_reset_device(struct vhost_dev *dev)
+-{
+-    return vhost_kernel_call(dev, VHOST_RESET_OWNER, NULL);
+-}
+-
+ static int vhost_kernel_get_vq_index(struct vhost_dev *dev, int idx)
+ {
+     assert(idx >= dev->vq_index && idx < dev->vq_index + dev->nvqs);
+@@ -322,7 +317,6 @@ const VhostOps kernel_ops = {
+         .vhost_get_features = vhost_kernel_get_features,
+         .vhost_set_backend_cap = vhost_kernel_set_backend_cap,
+         .vhost_set_owner = vhost_kernel_set_owner,
+-        .vhost_reset_device = vhost_kernel_reset_device,
+         .vhost_get_vq_index = vhost_kernel_get_vq_index,
+         .vhost_vsock_set_guest_cid = vhost_kernel_vsock_set_guest_cid,
+         .vhost_vsock_set_running = vhost_kernel_vsock_set_running,
 -- 
 2.41.0
 
