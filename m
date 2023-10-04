@@ -2,91 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBEC47B79E9
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:20:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AA37B79EF
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:23:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnx6Z-0001hu-TM; Wed, 04 Oct 2023 04:19:39 -0400
+	id 1qnx9b-0004ba-GO; Wed, 04 Oct 2023 04:22:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qnx6W-0001hd-K6; Wed, 04 Oct 2023 04:19:36 -0400
-Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.21])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <olaf@aepfle.de>)
- id 1qnx6U-0007bQ-Tb; Wed, 04 Oct 2023 04:19:36 -0400
-ARC-Seal: i=1; a=rsa-sha256; t=1696407569; cv=none;
- d=strato.com; s=strato-dkim-0002;
- b=tvz83TXIEx0hFQOoAZRE+7287uJufZ6/n0k25K9ZS7KLXeolUMh1OiaoFa8SSOv6ZK
- eAHjSZvNX9Hx+ibCfcc0C8lSwZHPORS0i7XN7nGvSM0MmSWDeNtHxP7EQs+GokUz7boA
- vUAYGibUOVHioNIwPw4RULfuXmQB5bc2g31xzPukK8uQ/VAam34GdGB/W8CpB0iajIAK
- GFxKzcMoWbjJnDHwRfaSxlY2qAb0rnNI7zXzCdY+UfoDke3VaRJ+CerDrDwDFTAqHlLt
- AWmYnk0nE1qK0AJuZQn7fd5sKFUFPACUB7gJ4F0qNlz44EO3OIMXSY43o0VzWZDYDG92
- T/Tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1696407569;
- s=strato-dkim-0002; d=strato.com;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=aQuidPncmYrRO8veqOkluDv72olOAQAJhohHFSyIcCs=;
- b=M1+uZqGaQzwuwH4nVVkVpKT7988jrFPmMt7MrfpUs01kGFr9U1NagTq3faalnPMsh+
- Aj3j2S1XPZbgit0vhAlWyuoXk9mQjQo8WwlfpJ39KURRv8HB52PX3k57jSC8bn8XDogr
- 0QITL1yRZTKnLdaasYfLXMl1dXWRNQSc2ZI+KkSk9Qe7nbLp8iqjqok++Ka0ekNRUVCH
- D8Npi8VeoNCQgcTaNI01TCfu9+fj0BHRxkCv27ANLYmDCWD5Y/z3MHR2gyG3l5HUQTzg
- 3pGxJX3rmzLkX3cWVA5+x25ZKK+Fn9jCdmwiWC3lqMY8sQ6Cyh55KBCfJyWOF6LL5gYi
- JgJQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1696407569;
- s=strato-dkim-0002; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=aQuidPncmYrRO8veqOkluDv72olOAQAJhohHFSyIcCs=;
- b=YfH8K9gs9dGEeGCGCKfJkWv84lhSxi9uLKkfwwZnTUF3o7JO3pSc2E2ejPgoLBIGvV
- /aJFWEcAjoPcFVXgEKhcX7Ztxama4CKMwpq1uBbJs6kYNSR4Z1MKrnBlO0BpSGN+vH1h
- ImIF8bP38eMLEgw5NmJlobJpZGs5kc7FqTG+V3wB4Yb6jbRcJGC74FevkxVNsuUUc57P
- kT/fQGmKe4Edp+p36f4zPTDAWdjEXlkPlBCLLMEDs/qO+iUrCp8ZbfTe3fU9ij/descO
- m/iTzjN7PxXvYxWYaA3gndeiiRDd+g6QMoEAcNIiffxcfnYi8DjgXkOI3zd4tvkKQCYT
- lwGw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1696407569;
- s=strato-dkim-0003; d=aepfle.de;
- h=References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
- From:Subject:Sender;
- bh=aQuidPncmYrRO8veqOkluDv72olOAQAJhohHFSyIcCs=;
- b=6C/TW5uWTvCp9Blx121WKOqtfnhhTE/UKF68v9is3ili0EkzOXPSGss6C6tKMr6yfM
- TDMInUpw9oFLjhLTmNBw==
-X-RZG-AUTH: ":P2EQZWCpfu+qG7CngxMFH1J+3q8wa/QLpd5ylWvMDX3y/OuD5rXVisR4WhOIYxjs6IbxwdWV2aAyqkbNw03IRPl3Vg6+Rg=="
-Received: from sender by smtp.strato.de (RZmta 49.8.2 AUTH)
- with ESMTPSA id C041b2z948JTuh1
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
- (Client did not present a certificate);
- Wed, 4 Oct 2023 10:19:29 +0200 (CEST)
-Date: Wed, 4 Oct 2023 10:19:21 +0200
-From: Olaf Hering <olaf@aepfle.de>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: qemu-devel@nongnu.org, qemu-stable@nongnu.org
-Subject: Re: [Stable-8.1.2 00/45] Patch Round-up for stable 8.1.2, freeze on
- 2023-10-14
-Message-ID: <20231004101921.03d0260e.olaf@aepfle.de>
-In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
-References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
-X-Mailer: Claws Mail 20230817T113819.a897c59c hat ein Softwareproblem,
- kann man nichts machen.
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnx9Z-0004b5-4Z
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:22:45 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnx9X-0001T7-E0
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:22:44 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4053c6f0db8so17345265e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:22:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696407761; x=1697012561; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=ulxJvNPaFsUpt1xwZlIqLy1G0lNEneBUvuubnQZmz1I=;
+ b=pbuUwJRXDyXvsQZs+4VlKyXtZAPJ9Sb+FAdD8Le6GaKiAHb/hlnqWlFuLu8Uv56Q+x
+ 0dWQqn1uUCyVrkGu0OFO6XfbyXV5W6eWNhdyYfkVeXCiKHZbEqRPk8Tg5Atkn95lLq+r
+ WxGKkyA/UoZmPBCggLNDV3mjxepBT0VplbFhqteh3S9t7bLAOazSZ4uY97ZKRtmWh8LF
+ z8+D7UA/bxInWlyI5VFqnsVOSVhzHr/wwB4Zpfvmo7dDgr5ms+toAEFjtwkR4YllyE9M
+ dNqSaV9Sx5j3RAlBU9ilCRHIsMkV+E5hijdLJpjP13evB+NslsSXwmenEuXhaMsrZRT+
+ 540w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696407761; x=1697012561;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ulxJvNPaFsUpt1xwZlIqLy1G0lNEneBUvuubnQZmz1I=;
+ b=U52sHJ9H7qmaJku36nSyeEgG0pItDRjwo6mhUrGlJ1J5AhDLgQhbk3ZzjmoJ5kfGll
+ /Z/wt0nImxVQD1/gvnL+bjbh/xb+Fa2ygT0pzdB9fCwAPTRmW+29BkUdWn56fCk4khZq
+ A4nE0kSKc7zMa7gOXMSmadqmvHax2ttRqhYJa7rxoNJIPppxPhtDjrLWOzeLNd0m4VUW
+ 6mbVTB0TWNXy1Jcd9LAUGBQgORc6qg4UW+roF6E7wlVcCJJj0TLKRBZyqg7yhzIPJThX
+ bsaaUJSJ7Yhl2NyQOaWPRAdtfF8hM30D6ifNWULXRQLcgLO5XeAz6u02/tYOewJqi+PP
+ 55eQ==
+X-Gm-Message-State: AOJu0YxqtmFYfawJaC3i5UpVMmWVjmlz8D0Cbf/4bRKo88NQjZjgAzJ4
+ ILp12jegpouNpFnigjzoPipPG/SEH7V4FQ8azs8=
+X-Google-Smtp-Source: AGHT+IHXSLmvsCNGvtLSCU0Ifc6nikZPWU64nrnsKlm8Qn35OW3lU1HQdHdX/XvcOunAAZibDjMVhg==
+X-Received: by 2002:a1c:7914:0:b0:401:1b58:72f7 with SMTP id
+ l20-20020a1c7914000000b004011b5872f7mr1580704wme.38.1696407761581; 
+ Wed, 04 Oct 2023 01:22:41 -0700 (PDT)
+Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
+ [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
+ z3-20020a5d4d03000000b003232f167df5sm3393793wrt.108.2023.10.04.01.22.40
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 04 Oct 2023 01:22:41 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] target/i386: Check for USER_ONLY definition instead of
+ SOFTMMU one
+Date: Wed,  4 Oct 2023 10:22:39 +0200
+Message-ID: <20231004082239.27251-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/.XJEj21Q0fz4=3Ixy0wkxDn";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-Content-Transfer-Encoding: 7bit
-Received-SPF: none client-ip=85.215.255.21; envelope-from=olaf@aepfle.de;
- helo=mo4-p00-ob.smtp.rzone.de
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_PASS=-0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,44 +91,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---Sig_/.XJEj21Q0fz4=3Ixy0wkxDn
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Since we *might* have user emulation with softmmu,
+replace the system emulation check by !user emulation one.
 
-Wed,  4 Oct 2023 11:01:21 +0300 Michael Tokarev <mjt@tls.msk.ru>:
+(target/ was cleaned from invalid CONFIG_SOFTMMU uses at
+commit cab35c73be, but these files were merged few days
+after, thus missed the cleanup.)
 
-> Please respond here or CC qemu-stable@nongnu.org on any additional patches
-> you think should (or shouldn't) be included in the release.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+Ideally we'd restrict CONFIG_SOFTMMU to tcg meson source sets,
+and #poison it for the rest of the code base.
+---
+ target/i386/cpu.c             | 2 +-
+ target/i386/tcg/misc_helper.c | 2 +-
+ target/i386/tcg/translate.c   | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-How about this change for 8.1.x? This will allow usage in openSUSE Tumblewe=
-ed.
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index ed72883bf3..af872c2f4b 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -718,7 +718,7 @@ void x86_cpu_vendor_words2str(char *dst, uint32_t vendor1,
+           CPUID_7_0_EBX_HLE
+           CPUID_7_0_EBX_INVPCID, CPUID_7_0_EBX_RTM */
+ 
+-#if defined CONFIG_SOFTMMU || defined CONFIG_LINUX
++#if !defined CONFIG_USER_ONLY || defined CONFIG_LINUX
+ #define TCG_7_0_ECX_RDPID CPUID_7_0_ECX_RDPID
+ #else
+ #define TCG_7_0_ECX_RDPID 0
+diff --git a/target/i386/tcg/misc_helper.c b/target/i386/tcg/misc_helper.c
+index 868f36ab7f..babff06186 100644
+--- a/target/i386/tcg/misc_helper.c
++++ b/target/i386/tcg/misc_helper.c
+@@ -134,7 +134,7 @@ void helper_wrpkru(CPUX86State *env, uint32_t ecx, uint64_t val)
+ 
+ target_ulong HELPER(rdpid)(CPUX86State *env)
+ {
+-#if defined CONFIG_SOFTMMU
++#if !defined CONFIG_USER_ONLY
+     return env->tsc_aux;
+ #elif defined CONFIG_LINUX && defined CONFIG_GETCPU
+     unsigned cpu, node;
+diff --git a/target/i386/tcg/translate.c b/target/i386/tcg/translate.c
+index 72635b87d3..aa4cdf45b4 100644
+--- a/target/i386/tcg/translate.c
++++ b/target/i386/tcg/translate.c
+@@ -178,10 +178,10 @@ typedef struct DisasContext {
+ #else
+ #define CODE64(S) (((S)->flags & HF_CS64_MASK) != 0)
+ #endif
+-#if defined(CONFIG_SOFTMMU) && !defined(TARGET_X86_64)
+-#define LMA(S)    false
+-#else
++#if defined(CONFIG_USER_ONLY) || defined(TARGET_X86_64)
+ #define LMA(S)    (((S)->flags & HF_LMA_MASK) != 0)
++#else
++#define LMA(S)    false
+ #endif
+ 
+ #ifdef TARGET_X86_64
+-- 
+2.41.0
 
-c01196bddd subprojects/berkeley-testfloat-3: Update to fix a problem with c=
-ompiler warnings
-
-
-Olaf
-
---Sig_/.XJEj21Q0fz4=3Ixy0wkxDn
-Content-Type: application/pgp-signature
-Content-Description: Digitale Signatur von OpenPGP
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEE97o7Um30LT3B+5b/86SN7mm1DoAFAmUdIAoACgkQ86SN7mm1
-DoB5Hg//akUmOELMOTXv6eQAB6mukZZl3wSTzbBQ4Oe4wjd+6KNlxUH5yMyiFa4u
-7nUH4zQGPivtIYdkoeMLXwvhgxdzXIfHjbtH3TttblrL6z3+iU9tKXmkorWIOHch
-N+H/lCsQyMZsERMxomJN80J/ZgNPoAM8CzpRjGGd9ZMeZeCFqm2HOytpqcGPbjNR
-W/xzUYumjXnj5gTXiWzCV5qugTODd5ctKySzUsdwPAgCIrwuRN7MOYLP7aDTCBU8
-A46S5jfZpsdO8Kb/ibGiDHNOt+/WHn78x8w6BcX0SaEXLZLV1iV2b3HArbm9TBMG
-I3fftcVJsxXWRYiIkS43ddUgA+yLE3e3seyw0BYyi3QkhGcPeFCPe6WGz7irdRPl
-qGC8c34ehL3w1V2n0FgFPpQ6WMlw58VApN3L6I/yPDwtjM1bTvpwy1vAzAGz3+rq
-IopYI/EwRlNFWTvfhOHWCsCXRWO5Gt5EKtcJNOaLxR7U4oQeC5EDftjPGK6c+s5r
-QMEWZBcs/nnKHWL175ALak0wqxyGZOaUZJazj/3S5Ns0Ao/c/VTaYUJlhLz3Cjwb
-9pr4d3qiiauD3uIkGCdUoXe1mGAvLARVx9VvUn0HjuGOIvwucuDAEp2EuZnxEQkB
-jWPB2kF3IllkLTqeG4SpjnyczafDZ2OiPEhNXUp/SC0jQxxBTzI=
-=GsvY
------END PGP SIGNATURE-----
-
---Sig_/.XJEj21Q0fz4=3Ixy0wkxDn--
 
