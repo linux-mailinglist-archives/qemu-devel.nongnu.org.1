@@ -2,95 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3737B854F
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA757B855B
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:33:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo4lz-0000aE-Cl; Wed, 04 Oct 2023 12:30:55 -0400
+	id 1qo4nT-0002uI-L6; Wed, 04 Oct 2023 12:32:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qo4lj-0000Xj-Kn
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:30:42 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo4nQ-0002t6-Mg
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:32:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qo4le-0001dx-AX
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:30:39 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo4nL-0001pn-NH
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:32:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696437031;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=v2XbOgwtKKTotNdO9TL1jfo8sF9UQDRgbkhDVuIiEoc=;
- b=TqIqeBW9S8OYT2cGdAdbSGKtDqh1lxbGHF4AuRDkrJ/OIPnM6HEMHhj7gYioCFoeTfDu6C
- 4GzROqkpduFNRjfyVaMVKElzAK4dtX1Os9tIW0iBkWykxUdM8K9NZJlZpOYy4KFrZd/jRv
- J2leqNm99pIERTCbDieZgv1lRsR2XhQ=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ s=mimecast20190719; t=1696437138;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=AcEdXlR9I20btEo5PCSIzjw+Rlrw1w1JJo87dQyO0mI=;
+ b=bUSngmluiYp6e+PR8yv4B7ihYqm2bMSZGY+0PHiQFWE+KBJ2MydDajInNi8CXtqZrc4h7M
+ SmTgkvKh/SF2/18RYzrKWD5zkuXJCDC8KRAXTsYXnUo0oAVRWsWw2uFkqYguG1dWuu7/B4
+ T4+J1xdkAjMtr7ExmYUhFbS5sB/Pp+0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-401-nR0_ReF_OCOaNZT-8I6xcg-1; Wed, 04 Oct 2023 12:30:19 -0400
-X-MC-Unique: nR0_ReF_OCOaNZT-8I6xcg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-3251bc06680so26266f8f.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 09:30:19 -0700 (PDT)
+ us-mta-347-Jy8bnlRWPdSj2_I5ppNqaQ-1; Wed, 04 Oct 2023 12:32:16 -0400
+X-MC-Unique: Jy8bnlRWPdSj2_I5ppNqaQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-3249655593dso29391f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 09:32:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696437018; x=1697041818;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=v2XbOgwtKKTotNdO9TL1jfo8sF9UQDRgbkhDVuIiEoc=;
- b=HlA/SuI2ypk65JdQxmrnRORrK8RXWMmBtWerpFd3Gpmvumqopld4GGmFi2PVvsfvKq
- 5oocys74Lq9c/EVdszhqmSaASphoZLpgaDav0UXvmWrFyY4tbXvIEmfMDNJ4ZP3Oc9H1
- JexMf938CgOj0kgRdzyJDA/UnvFdXg2ZoP2i5dWl28cO8MlGz7Yk8NKcun25vASQWw/X
- d2PxUZ51CzI7h7EIYiuUWWxnaluDUrlhcsAggS8QVIzpE/x5Q13odF11995kYouAwuZ1
- lDrjdhR7Lqd0JeLeCPH5sKfStx/skFSpU4tZWrW92F7Ft+h78hi/MbA88NK6gnrfFEel
- peDg==
-X-Gm-Message-State: AOJu0Yw+HrmMJ6XP4POvlQNs7+dMgd2/PdRAZfO9KeJI4GAAIhHtO7g/
- YCeQ+I61CFVekzWJjhxRTVuHEl1/cpmtuBKD1ZddZw0rycndgctXkxxq1cfu6voaqUvIsX/NBf5
- zTiiXRXcS2niRYBY=
-X-Received: by 2002:a05:6000:114d:b0:324:8502:6355 with SMTP id
- d13-20020a056000114d00b0032485026355mr2556354wrx.46.1696437018746; 
- Wed, 04 Oct 2023 09:30:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGYp85yBGtglPr5WS9TZDBwgeWWNzBZgM6+sNGCXDp0RMpLD2NMhpE+VP46BJ4tryOznlocgQ==
-X-Received: by 2002:a05:6000:114d:b0:324:8502:6355 with SMTP id
- d13-20020a056000114d00b0032485026355mr2556328wrx.46.1696437018352; 
- Wed, 04 Oct 2023 09:30:18 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
- by smtp.gmail.com with ESMTPSA id
- p9-20020adfcc89000000b00326028b4dd5sm4361478wrj.113.2023.10.04.09.30.16
+ d=1e100.net; s=20230601; t=1696437136; x=1697041936;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AcEdXlR9I20btEo5PCSIzjw+Rlrw1w1JJo87dQyO0mI=;
+ b=G3DsrMJ/HFAw8XHJSZ5hr3G68oiBGfZ8sX2Uw5CAERpLvs4Ibe0dKZTWtM/cdC7Cci
+ eNR5wcqsLZjm9xSi9RSDocQMh4hoCkh2z04OAq+R9qkk2vF8UruzvTDEHD0fde7DAeYQ
+ eLuGjPMoEODIYCgABtOdOUSJyWxLrl4Ua9g2fzaTsmN86Ojnm80/DopJEbcjA56hqk+8
+ nFpScL2Uso3Vu0DR8mt+rvyMUPX0L5MHvOGJjKSIQnn+3Bf5t5OWpjcg1eMcF2X61lIX
+ Blvj2EjPpk1R7v58AUE0f5lhu8yj98CxI0spvvLuZVKpPxy/h/p311jkqMe+GXIw5zqS
+ gS4Q==
+X-Gm-Message-State: AOJu0YyfO8o0g5KLoQDGz7aALWf98YaLtGb5oj5ypxID2/SaLuI6XyFn
+ 6IWE3AqlJzY21H7OPX2lmSBxLm6xHo39TI4bzZTvMW6WklgkUYMWZwb/PtO0nUK9+b7Iqb06nHf
+ G/BFuRy6okG6AS5w=
+X-Received: by 2002:a5d:4d43:0:b0:31c:6420:fff with SMTP id
+ a3-20020a5d4d43000000b0031c64200fffmr2462505wru.62.1696437135819; 
+ Wed, 04 Oct 2023 09:32:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVWQGcd0mIDVcbDAb1KlkWzAxolcZyetmDsQqp+GviG78imPsChdBEu0X8304iPQTLYeRC2Q==
+X-Received: by 2002:a5d:4d43:0:b0:31c:6420:fff with SMTP id
+ a3-20020a5d4d43000000b0031c64200fffmr2462488wru.62.1696437135392; 
+ Wed, 04 Oct 2023 09:32:15 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ p5-20020adfcc85000000b0031f300a4c26sm4352163wrj.93.2023.10.04.09.32.14
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 09:30:16 -0700 (PDT)
-Date: Wed, 4 Oct 2023 12:30:14 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: Stefan Hajnoczi <stefanha@gmail.com>, qemu-devel@nongnu.org,
- Eugenio Perez Martin <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: [PATCH 7/7] vhost-user: call VHOST_USER_SET_VRING_ENABLE
- synchronously
-Message-ID: <20231004122927-mutt-send-email-mst@kernel.org>
-References: <20230827182937.146450-1-lersek@redhat.com>
- <20230827182937.146450-8-lersek@redhat.com>
- <20231003104045-mutt-send-email-mst@kernel.org>
- <CAJSP0QUmU1zq=b2QxFSmF_hJ9hDT5G2TcK3R33r=gzcNhOKEpw@mail.gmail.com>
- <67502261-0e48-60e1-f5d4-10f7f3bd164e@redhat.com>
+ Wed, 04 Oct 2023 09:32:14 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,  "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>,  "peterx@redhat.com" <peterx@redhat.com>,
+ "leobras@redhat.com" <leobras@redhat.com>
+Subject: Re: [PATCH 28/52] migration/rdma: Check negative error values the
+ same way everywhere
+In-Reply-To: <87wmwed824.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Mon, 25 Sep 2023 09:29:55 +0200")
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-29-armbru@redhat.com>
+ <5b2560b5-63ed-37f0-5367-07ca55d43ab4@fujitsu.com>
+ <87wmwed824.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 04 Oct 2023 18:32:14 +0200
+Message-ID: <87jzs2uz5d.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <67502261-0e48-60e1-f5d4-10f7f3bd164e@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,166 +101,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 04, 2023 at 12:15:48PM +0200, Laszlo Ersek wrote:
-> On 10/3/23 17:55, Stefan Hajnoczi wrote:
-> > On Tue, 3 Oct 2023 at 10:41, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >>
-> >> On Sun, Aug 27, 2023 at 08:29:37PM +0200, Laszlo Ersek wrote:
-> >>> (1) The virtio-1.0 specification
-> >>> <http://docs.oasis-open.org/virtio/virtio/v1.0/virtio-v1.0.html> writes:
-> >>>
-> >>>> 3     General Initialization And Device Operation
-> >>>> 3.1   Device Initialization
-> >>>> 3.1.1 Driver Requirements: Device Initialization
-> >>>>
-> >>>> [...]
-> >>>>
-> >>>> 7. Perform device-specific setup, including discovery of virtqueues for
-> >>>>    the device, optional per-bus setup, reading and possibly writing the
-> >>>>    device’s virtio configuration space, and population of virtqueues.
-> >>>>
-> >>>> 8. Set the DRIVER_OK status bit. At this point the device is “live”.
-> >>>
-> >>> and
-> >>>
-> >>>> 4         Virtio Transport Options
-> >>>> 4.1       Virtio Over PCI Bus
-> >>>> 4.1.4     Virtio Structure PCI Capabilities
-> >>>> 4.1.4.3   Common configuration structure layout
-> >>>> 4.1.4.3.2 Driver Requirements: Common configuration structure layout
-> >>>>
-> >>>> [...]
-> >>>>
-> >>>> The driver MUST configure the other virtqueue fields before enabling the
-> >>>> virtqueue with queue_enable.
-> >>>>
-> >>>> [...]
-> >>>
-> >>> These together mean that the following sub-sequence of steps is valid for
-> >>> a virtio-1.0 guest driver:
-> >>>
-> >>> (1.1) set "queue_enable" for the needed queues as the final part of device
-> >>> initialization step (7),
-> >>>
-> >>> (1.2) set DRIVER_OK in step (8),
-> >>>
-> >>> (1.3) immediately start sending virtio requests to the device.
-> >>>
-> >>> (2) When vhost-user is enabled, and the VHOST_USER_F_PROTOCOL_FEATURES
-> >>> special virtio feature is negotiated, then virtio rings start in disabled
-> >>> state, according to
-> >>> <https://qemu-project.gitlab.io/qemu/interop/vhost-user.html#ring-states>.
-> >>> In this case, explicit VHOST_USER_SET_VRING_ENABLE messages are needed for
-> >>> enabling vrings.
-> >>>
-> >>> Therefore setting "queue_enable" from the guest (1.1) is a *control plane*
-> >>> operation, which travels from the guest through QEMU to the vhost-user
-> >>> backend, using a unix domain socket.
-> >>>
-> >>> Whereas sending a virtio request (1.3) is a *data plane* operation, which
-> >>> evades QEMU -- it travels from guest to the vhost-user backend via
-> >>> eventfd.
-> >>>
-> >>> This means that steps (1.1) and (1.3) travel through different channels,
-> >>> and their relative order can be reversed, as perceived by the vhost-user
-> >>> backend.
-> >>>
-> >>> That's exactly what happens when OVMF's virtiofs driver (VirtioFsDxe) runs
-> >>> against the Rust-language virtiofsd version 1.7.2. (Which uses version
-> >>> 0.10.1 of the vhost-user-backend crate, and version 0.8.1 of the vhost
-> >>> crate.)
-> >>>
-> >>> Namely, when VirtioFsDxe binds a virtiofs device, it goes through the
-> >>> device initialization steps (i.e., control plane operations), and
-> >>> immediately sends a FUSE_INIT request too (i.e., performs a data plane
-> >>> operation). In the Rust-language virtiofsd, this creates a race between
-> >>> two components that run *concurrently*, i.e., in different threads or
-> >>> processes:
-> >>>
-> >>> - Control plane, handling vhost-user protocol messages:
-> >>>
-> >>>   The "VhostUserSlaveReqHandlerMut::set_vring_enable" method
-> >>>   [crates/vhost-user-backend/src/handler.rs] handles
-> >>>   VHOST_USER_SET_VRING_ENABLE messages, and updates each vring's "enabled"
-> >>>   flag according to the message processed.
-> >>>
-> >>> - Data plane, handling virtio / FUSE requests:
-> >>>
-> >>>   The "VringEpollHandler::handle_event" method
-> >>>   [crates/vhost-user-backend/src/event_loop.rs] handles the incoming
-> >>>   virtio / FUSE request, consuming the virtio kick at the same time. If
-> >>>   the vring's "enabled" flag is set, the virtio / FUSE request is
-> >>>   processed genuinely. If the vring's "enabled" flag is clear, then the
-> >>>   virtio / FUSE request is discarded.
-> >>>
-> >>> Note that OVMF enables the queue *first*, and sends FUSE_INIT *second*.
-> >>> However, if the data plane processor in virtiofsd wins the race, then it
-> >>> sees the FUSE_INIT *before* the control plane processor took notice of
-> >>> VHOST_USER_SET_VRING_ENABLE and green-lit the queue for the data plane
-> >>> processor. Therefore the latter drops FUSE_INIT on the floor, and goes
-> >>> back to waiting for further virtio / FUSE requests with epoll_wait.
-> >>> Meanwhile OVMF is stuck waiting for the FUSET_INIT response -- a deadlock.
-> >>>
-> >>> The deadlock is not deterministic. OVMF hangs infrequently during first
-> >>> boot. However, OVMF hangs almost certainly during reboots from the UEFI
-> >>> shell.
-> >>>
-> >>> The race can be "reliably masked" by inserting a very small delay -- a
-> >>> single debug message -- at the top of "VringEpollHandler::handle_event",
-> >>> i.e., just before the data plane processor checks the "enabled" field of
-> >>> the vring. That delay suffices for the control plane processor to act upon
-> >>> VHOST_USER_SET_VRING_ENABLE.
-> >>>
-> >>> We can deterministically prevent the race in QEMU, by blocking OVMF inside
-> >>> step (1.1) -- i.e., in the write to the "queue_enable" register -- until
-> >>> VHOST_USER_SET_VRING_ENABLE actually *completes*. That way OVMF's VCPU
-> >>> cannot advance to the FUSE_INIT submission before virtiofsd's control
-> >>> plane processor takes notice of the queue being enabled.
-> >>>
-> >>> Wait for VHOST_USER_SET_VRING_ENABLE completion by:
-> >>>
-> >>> - setting the NEED_REPLY flag on VHOST_USER_SET_VRING_ENABLE, and waiting
-> >>>   for the reply, if the VHOST_USER_PROTOCOL_F_REPLY_ACK vhost-user feature
-> >>>   has been negotiated, or
-> >>>
-> >>> - performing a separate VHOST_USER_GET_FEATURES *exchange*, which requires
-> >>>   a backend response regardless of VHOST_USER_PROTOCOL_F_REPLY_ACK.
-> >>>
-> >>> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
-> >>> Cc: Eugenio Perez Martin <eperezma@redhat.com>
-> >>> Cc: German Maglione <gmaglione@redhat.com>
-> >>> Cc: Liu Jiang <gerry@linux.alibaba.com>
-> >>> Cc: Sergio Lopez Pascual <slp@redhat.com>
-> >>> Cc: Stefano Garzarella <sgarzare@redhat.com>
-> >>> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-> >>
-> >>
-> >> So you want me to hold on to this patch 7/7 for now?
-> >> And maybe merge rest of the patchset?
-> > 
-> > Up to Laszlo, but I wanted to mention that I support merging this
-> > patch series. A ring has not been enabled/disabled until the back-end
-> > replies, so I think this patch series makes sense.
-> 
-> Sorry, I didn't get to see this part of the discussion yesterday, and
-> now I see that Michael has gone ahead with a PR that contains v2 of this
-> set. The night before yesterday I posted v3
-> <https://patchwork.ozlabs.org/project/qemu-devel/cover/20231002203221.17241-1-lersek@redhat.com/>,
-> with commit message updates / improvements only (based on feedback), so
-> please merge that one.
-> 
-> Thanks!
-> Laszlo
+Markus Armbruster <armbru@redhat.com> wrote:
+> "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com> writes:
+>
+>> On 18/09/2023 22:41, Markus Armbruster wrote:
+>>> When a function returns 0 on success, negative value on error,
+>>> checking for non-zero suffices, but checking for negative is clearer.
+>>> So do that.
+>>> 
+>>
+>> This patch is no my favor convention.
+>
+> Certainly a matter of taste, which means maintainers get to decide, not
+> me.
+>
+> Failure checks can be confusing in C.  Is
+>
+>     if (foo(...))
+>
+> checking for success or for failure?  Impossible to tell.  If foo()
+> returns a pointer, it almost certainly checks for success.  If it
+> returns bool, likewise.  But if it returns an integer, it probably
+> checks for failure.
+>
+> Getting a condition backwards is a common coding mistake.  Consider
+> patch review of
+>
+>     if (condition) {
+>         obviously the error case
+>     }
+>
+> Patch review is more likely to catch a backward condition when the
+> condition's sense is locally obvious.
+>
+> Conventions can help.  Here's the one I like:
+>
+> * Check for a function's failure the same way everywhere.
+>
+> * When a function returns something "truthy" on success, and something
+>   "falsy" on failure, use
+>
+>     if (!fun(...))
+>
+>   Special cases:
+>
+>   - bool true on success, false on failure
+>
+>   - non-null pointer on success, null pointer on failure
+>
+> * When a function returns non-negative value on success, negative value
+>   on failure, use
+>
+>     if (fun(...) < 0)
+>
+> * Avoid non-negative integer error values.
+>
+> * Avoid if (fun(...)), because it's locally ambiguous.
+>
+>> @Peter, Juan
+>>
+>> I'd like to hear your opinions.
+>
+> Yes, please.
 
+I agree with Markus here for three reasons:
 
-OK. I'll need to do another PR soonish since a bunch of patchsets
-which I wanted in this PR had issues and I had to drop them.
-v3 will be there.
+1 - He is my C - lawyer of reference O-)
 
--- 
-MST
+2 - He has done a lot of work cleaning the error handling on this file,
+    that was completely ugly.
+
+3 - I fully agree that code is more maintenable this way.  I.e. if any
+    function changes to return positive values for non error, we get
+    better coverage.
+
+Later, Juan.
 
 
