@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F5C7B7EB2
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 095827B7EBB
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:07:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0bc-0003nl-HY; Wed, 04 Oct 2023 08:03:56 -0400
+	id 1qo0c8-0004PW-7d; Wed, 04 Oct 2023 08:04:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Ze-0000WB-Jz
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:02:02 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Zi-0000ZJ-I1
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:02:03 -0400
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZZ-0001CB-HK
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:53 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-3231df68584so1912410f8f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:48 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Zg-0001Dk-At
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:58 -0400
+Received: by mail-wr1-x434.google.com with SMTP id
+ ffacd0b85a97d-31f71b25a99so2000258f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696420907; x=1697025707; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696420914; x=1697025714; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=VbE/h6HUxHm1fKUuktISJWotuykVg/wSDPAOtZyCrGc=;
- b=hdDcmOioNI1LwLw1KWdoNWmvMAdoxQ5O3opOQmCc2efN0ryEmuV3wIJPTjJQEGHtwr
- rvt7M+wXW7pb6dwH8UqG9zfuak4cmMdzUK0NFGhP9eccAwPQuL0yPRrHnSbCRnyqZ30c
- OZdGcW6WQJYkIYNpnC/YCKLhtvuaWT8bzXYF35uNNBzJvpeesnWdC7YA2/MyJHgxHR3m
- Fy5ueucVPXHDgz50r31kgo4jVEqeyHe6rsPiw6pxcmVnvIAymyzQzSK6QbmBfnJFGH2X
- LhXCBNZ/bjKuKdjQTZCLDn/AssShD90taR3i6WrkyAzx+7c6u6GABR0Qwb46xWmm7j6V
- y0vA==
+ bh=JFR7669aVf4KyLNHSFRJbfPNWIK7DIVGhVdjQEp6ZNY=;
+ b=c410cBrinHdXKPh/0GXFNIujJc8p4HC82P2XH8G4B3vdYLUvxsIUdRnhmrvAD/dkeX
+ cuPjaKXmXo23PPNdFeV8KdzLJMk9XNArzbfyVT6ygFFdq+mo838RliNJ3YjWdT/rUNCz
+ doDJqYQIIhuXp5WaseOgHjy3Y9LK9ZA/4lPy2mGeHTiwIjcfzs9KETQRggujMmPozxF+
+ R6P3uxxLgGR4d7JgI2N7pALGnRhlwHX1Vt/JiV3qldwsHgERQEbI0AVEMtf3bZoMI48w
+ pHay0DIcmyCZN8mcS1MtyM7fAkpK6aYAnGd1lMxTvhY7yEZ+jGE4IBpltUDtFlTz1avG
+ Pyag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696420907; x=1697025707;
+ d=1e100.net; s=20230601; t=1696420914; x=1697025714;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VbE/h6HUxHm1fKUuktISJWotuykVg/wSDPAOtZyCrGc=;
- b=LFm4gzsh+rD4ILzc1fAH1sTKSk8HrCI5ejbp2hyuf8kY57s51f6cB2y854hAXztTA7
- n+LJwMVGJaz1jBnPoxuAJqPYBHBqqper2S7OanYGvstSRZG6gnbwO9jDS2af6sXM3Rhk
- lV/c9GAPK0sLn6cERjznCdfqS3W5JhIwKdEHVgIYhriQokVk4fmfB3vK6BLwu9gRizYR
- ey45Im7ei9p05sa1i+JBlxo2ttp7I0nEePgaESsVvRELdmx4804Uvg3XchXrDuN9Cxbr
- PWeVJFU0w5OEk6VXvk2ihB87C0+Ild3sKWsav1YHyOPx0P8nic+yKCxsuUCoVgEHrAX5
- l/gA==
-X-Gm-Message-State: AOJu0YzvSkykVa/oovUyM0xObD34U7ev6MZ0LcPMtUi6cq90xr7cSiUJ
- Jbc5dOdkh8a2AT66h/Ry9gZPqPo07CcdhK9SH9o=
-X-Google-Smtp-Source: AGHT+IGm4UV2ii+97ouFej/zuni8IHRqZGQ/5lAmriv3wImpdvXXr8pYR67CVUHmV/igjzSa5G5fFw==
-X-Received: by 2002:adf:d4cb:0:b0:31a:ed75:75e9 with SMTP id
- w11-20020adfd4cb000000b0031aed7575e9mr2097115wrk.13.1696420906827; 
- Wed, 04 Oct 2023 05:01:46 -0700 (PDT)
+ bh=JFR7669aVf4KyLNHSFRJbfPNWIK7DIVGhVdjQEp6ZNY=;
+ b=ZztG/2bvfdhRKqFyE1+mQlMx6VvlztduCB2ZPql8w1NQlOeH/Xa2CoPxLjxOlLuxpg
+ OGzR+udvZRYHsM0RFqOOGsdgHd3inny2K6JkoK0ZVtpw2OUwGT4+t4b9YOaw4fwlblbm
+ y+F1T0dGGmteRzuEN/1DK2jaaLFsnKCKuz2LOpQV2ZeuN+xmhQNKo0Gd1dwQsTELE6dP
+ GxQxsFZanfJoaTsCUQPmXmhM/l0iWGoIfOqldjuPGvNXX4Jh2KE1Cd3lSAzCjaGLPovP
+ Q60RJ2ixWaPEVEj7OyQlGSOZJ6DBctASz11MY1CRoEu7Lx++GtvKOlzyu5QIxmrGtK7I
+ lpwA==
+X-Gm-Message-State: AOJu0YyY22Yjq0JLlgKzSacPM+mfbyLAWOZVoJZhn9V2c39CDfk78le1
+ qGoxpD1aFVn+Kg18GvuJIrHWh4ZMQ7ecFOaxOYs=
+X-Google-Smtp-Source: AGHT+IHZ41iGInbPZOVU8UhgLtndX8zP3LDRDVfJV5h821e+xsqPNMXYAvE4PA2cB5n8T97TgZh+Xw==
+X-Received: by 2002:a5d:4586:0:b0:321:5e2f:37e1 with SMTP id
+ p6-20020a5d4586000000b003215e2f37e1mr1904926wrq.19.1696420912872; 
+ Wed, 04 Oct 2023 05:01:52 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- w10-20020adfd4ca000000b0031ad5470f89sm3894894wrk.18.2023.10.04.05.01.45
+ q4-20020a5d5744000000b003231a0ca5ebsm3819548wrw.49.2023.10.04.05.01.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 05:01:46 -0700 (PDT)
+ Wed, 04 Oct 2023 05:01:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v3 14/16] softmmu/vl: Clean up global variable shadowing
-Date: Wed,  4 Oct 2023 14:00:17 +0200
-Message-ID: <20231004120019.93101-15-philmd@linaro.org>
+ Stefan Berger <stefanb@linux.vnet.ibm.com>
+Subject: [PATCH v3 15/16] sysemu/tpm: Clean up global variable shadowing
+Date: Wed,  4 Oct 2023 14:00:18 +0200
+Message-ID: <20231004120019.93101-16-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004120019.93101-1-philmd@linaro.org>
 References: <20231004120019.93101-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::434;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x434.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,114 +95,55 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  softmmu/vl.c:1069:44: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static void parse_display_qapi(const char *optarg)
-                                             ^
-  softmmu/vl.c:1224:39: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static void monitor_parse(const char *optarg, const char *mode, bool pretty)
-                                        ^
-  softmmu/vl.c:1634:17: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      const char *optarg = qdict_get_try_str(qdict, "type");
-                  ^
-  softmmu/vl.c:1784:45: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static void object_option_parse(const char *optarg)
-                                              ^
+  softmmu/tpm.c:178:59: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  int tpm_config_parse(QemuOptsList *opts_list, const char *optarg)
+                                                            ^
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
   extern char *optarg;                    /* getopt(3) external variables */
                ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- softmmu/vl.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ include/sysemu/tpm.h | 2 +-
+ softmmu/tpm.c        | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/softmmu/vl.c b/softmmu/vl.c
-index 98e071e63b..ae1ff9887d 100644
---- a/softmmu/vl.c
-+++ b/softmmu/vl.c
-@@ -1066,12 +1066,12 @@ static void select_vgahw(const MachineClass *machine_class, const char *p)
-     }
- }
+diff --git a/include/sysemu/tpm.h b/include/sysemu/tpm.h
+index 66e3b45f30..1ee568b3b6 100644
+--- a/include/sysemu/tpm.h
++++ b/include/sysemu/tpm.h
+@@ -17,7 +17,7 @@
  
--static void parse_display_qapi(const char *optarg)
-+static void parse_display_qapi(const char *optstr)
- {
-     DisplayOptions *opts;
-     Visitor *v;
+ #ifdef CONFIG_TPM
  
--    v = qobject_input_visitor_new_str(optarg, "type", &error_fatal);
-+    v = qobject_input_visitor_new_str(optstr, "type", &error_fatal);
+-int tpm_config_parse(QemuOptsList *opts_list, const char *optarg);
++int tpm_config_parse(QemuOptsList *opts_list, const char *optstr);
+ int tpm_init(void);
+ void tpm_cleanup(void);
  
-     visit_type_DisplayOptions(v, NULL, &opts, &error_fatal);
-     QAPI_CLONE_MEMBERS(DisplayOptions, &dpy, opts);
-@@ -1221,21 +1221,21 @@ static int mon_init_func(void *opaque, QemuOpts *opts, Error **errp)
-     return monitor_init_opts(opts, errp);
- }
- 
--static void monitor_parse(const char *optarg, const char *mode, bool pretty)
-+static void monitor_parse(const char *str, const char *mode, bool pretty)
- {
-     static int monitor_device_index = 0;
-     QemuOpts *opts;
-     const char *p;
-     char label[32];
- 
--    if (strstart(optarg, "chardev:", &p)) {
-+    if (strstart(str, "chardev:", &p)) {
-         snprintf(label, sizeof(label), "%s", p);
-     } else {
-         snprintf(label, sizeof(label), "compat_monitor%d",
-                  monitor_device_index);
--        opts = qemu_chr_parse_compat(label, optarg, true);
-+        opts = qemu_chr_parse_compat(label, str, true);
-         if (!opts) {
--            error_report("parse error: %s", optarg);
-+            error_report("parse error: %s", str);
-             exit(1);
-         }
-     }
-@@ -1631,13 +1631,13 @@ static const QEMUOption *lookup_opt(int argc, char **argv,
- 
- static MachineClass *select_machine(QDict *qdict, Error **errp)
- {
--    const char *optarg = qdict_get_try_str(qdict, "type");
-+    const char *machine_type = qdict_get_try_str(qdict, "type");
-     GSList *machines = object_class_get_list(TYPE_MACHINE, false);
-     MachineClass *machine_class;
-     Error *local_err = NULL;
- 
--    if (optarg) {
--        machine_class = find_machine(optarg, machines);
-+    if (machine_type) {
-+        machine_class = find_machine(machine_type, machines);
-         qdict_del(qdict, "type");
-         if (!machine_class) {
-             error_setg(&local_err, "unsupported machine type");
-@@ -1781,20 +1781,20 @@ static void object_option_add_visitor(Visitor *v)
-     QTAILQ_INSERT_TAIL(&object_opts, opt, next);
- }
- 
--static void object_option_parse(const char *optarg)
-+static void object_option_parse(const char *optstr)
+diff --git a/softmmu/tpm.c b/softmmu/tpm.c
+index 578563f05a..7164ea7ff1 100644
+--- a/softmmu/tpm.c
++++ b/softmmu/tpm.c
+@@ -175,15 +175,15 @@ int tpm_init(void)
+  * Parse the TPM configuration options.
+  * To display all available TPM backends the user may use '-tpmdev help'
+  */
+-int tpm_config_parse(QemuOptsList *opts_list, const char *optarg)
++int tpm_config_parse(QemuOptsList *opts_list, const char *optstr)
  {
      QemuOpts *opts;
-     const char *type;
-     Visitor *v;
  
--    if (optarg[0] == '{') {
--        QObject *obj = qobject_from_json(optarg, &error_fatal);
-+    if (optstr[0] == '{') {
-+        QObject *obj = qobject_from_json(optstr, &error_fatal);
- 
-         v = qobject_input_visitor_new(obj);
-         qobject_unref(obj);
-     } else {
-         opts = qemu_opts_parse_noisily(qemu_find_opts("object"),
--                                       optarg, true);
-+                                       optstr, true);
-         if (!opts) {
-             exit(1);
-         }
+-    if (!strcmp(optarg, "help")) {
++    if (!strcmp(optstr, "help")) {
+         tpm_display_backend_drivers();
+         return -1;
+     }
+-    opts = qemu_opts_parse_noisily(opts_list, optarg, true);
++    opts = qemu_opts_parse_noisily(opts_list, optstr, true);
+     if (!opts) {
+         return -1;
+     }
 -- 
 2.41.0
 
