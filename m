@@ -2,99 +2,57 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27EF17B816C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:55:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 958D47B817D
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:57:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2Ky-0002kN-Kv; Wed, 04 Oct 2023 09:54:52 -0400
+	id 1qo2N7-0005wB-6F; Wed, 04 Oct 2023 09:57:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qo2Kd-0002UA-L9
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:54:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qo2N2-0005uA-QB; Wed, 04 Oct 2023 09:57:01 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qo2Kb-0002uP-V4
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:54:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696427669;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=LK+zxju4RfPbiDu2DDmdG2+fKT/V8QDtEOa8g8zPjFQ=;
- b=QXzoqQfX6rujXc3f1PC14a6lw/zAJGkBG6PJrV9lXt/jt1F+ZM93TAoF1x4oB1kPHG26lI
- FQmiQvtWgVjcOrqrGOjIipzrg9XKh9BqK9Qq7kvD+6epQu/ieD5fHZe15qKMdGBZl/l1jO
- RKzQ7A1YEclaP9Sj2sYOlRSJg8TeY4c=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-IGjMCOqgPIKLP_YOudatHg-1; Wed, 04 Oct 2023 09:54:28 -0400
-X-MC-Unique: IGjMCOqgPIKLP_YOudatHg-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-77576c78c11so232522385a.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 06:54:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696427667; x=1697032467;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LK+zxju4RfPbiDu2DDmdG2+fKT/V8QDtEOa8g8zPjFQ=;
- b=qYfKhTI1IxhwQy1tHKLxLyKlVnv1ZYq7jdZuBY+ynOVRiy4rIE63yPPEGZW54bTjdk
- 7rNGtiiCTvPq/FyB1LT8hTyn+hF9RcTzHFeSwhVLNjAHEWjDS/ll1DkdwsXBNk45C+Vg
- XsftjiSxVGh7Z49G38E9uuuqddf998jpa1XcD8hwamBMAbGwcsOKG4qobFoUQNSSgLwc
- KK07z36WpqB7DCcfQWZudN3sXkFgdeq7FFNn1rDCoG2aSDo4LNCMMvks1D67WIi/tK1g
- ffH0SuQ/wLokHqDVGmbeAHD83Rmv49cU2TBdO8fY6qsnRUSta3yPdR53BrOdBRzFYO3r
- XN0g==
-X-Gm-Message-State: AOJu0Yzt8+cEn63coLId3ndqgP337yt3pYvRFJoVt7qOz/79/EgU2p1R
- w6mVpKFT7aB/qJRmppU3IzfsDqOFQ2m6hyZss0aFv6yBZGKguS4igvY28prBarrvJG2NbJ5J+jL
- efOg1swm7onkwtns=
-X-Received: by 2002:a05:620a:4046:b0:775:7fdc:42ac with SMTP id
- i6-20020a05620a404600b007757fdc42acmr2849357qko.7.1696427667516; 
- Wed, 04 Oct 2023 06:54:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEqzFAAlBfDNEN70uLFPxSZ4ipSthX0rCosXHXnTtslrx/fqXBduOBd/mVOMD+LiA0R4orRsQ==
-X-Received: by 2002:a05:620a:4046:b0:775:7fdc:42ac with SMTP id
- i6-20020a05620a404600b007757fdc42acmr2849337qko.7.1696427667249; 
- Wed, 04 Oct 2023 06:54:27 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- m22-20020ae9e016000000b0076d08d5f93asm1268386qkk.60.2023.10.04.06.54.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 06:54:25 -0700 (PDT)
-Message-ID: <43fa4606-1d03-ff89-42e6-04d3ee4e71b9@redhat.com>
-Date: Wed, 4 Oct 2023 15:54:19 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qo2Mx-00051j-39; Wed, 04 Oct 2023 09:57:00 -0400
+Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
+ [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id A454E60DBC;
+ Wed,  4 Oct 2023 16:56:48 +0300 (MSK)
+Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:a413::1:9])
+ by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id YuX2Zj2OlCg0-g8XO8rDF; Wed, 04 Oct 2023 16:56:45 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696427805;
+ bh=PS7xLMRHLgk/ydLaBYBrrkPgfO7n2MQtbUdgD4lGMCA=;
+ h=Message-Id:Date:Cc:Subject:To:From;
+ b=qzWxpOA2v7PYdpk63csaNWrHunDV/3eNOeuILjDAzZudT74wkLrXDqn9e7Oxdev6G
+ SDnGK9c7N/JCgWoijpJ2ibjR9htd8apqBwNqdah627MAsfmMHOFWOxXE7Hsf0GXUte
+ a9wfmM8pxRZi9NABGuiOgghe1t4/HcR5UA07NT9s=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+To: qemu-block@nongnu.org
+Cc: qemu-devel@nongnu.org, hreitz@redhat.com, kwolf@redhat.com,
+ vsementsov@yandex-team.ru, jsnow@redhat.com, Evanzhang@archeros.com,
+ den@openvz.org, Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
+Subject: [PATCH] block-jobs: add final flush
+Date: Wed,  4 Oct 2023 16:56:32 +0300
+Message-Id: <20231004135632.18196-1-vsementsov@yandex-team.ru>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 14/15] vfio/common: Introduce a global VFIODevice list
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
- alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-15-eric.auger@redhat.com>
- <2bcff7f9-b4d0-4942-953c-1b25533217d1@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <2bcff7f9-b4d0-4942-953c-1b25533217d1@redhat.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -108,164 +66,204 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+From: Vladimir Sementsov-Ogievskiy <vsementsov@virtuozzo.com>
 
-On 10/3/23 17:56, Cédric Le Goater wrote:
-> On 10/3/23 12:14, Eric Auger wrote:
->> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
->>
->> Some functions iterate over all the VFIODevices. This is currently
->> achieved by iterating over all groups/devices. Let's
->> introduce a global list of VFIODevices simplifying that scan.
->
-> Maybe we should move the qemu_register_reset() when the first device
-> is added to the list, in vfio_attach_device() ?
+Actually block job is not completed without the final flush. It's
+rather unexpected to have broken target when job was successfully
+completed long ago and now we fail to flush or process just
+crashed/killed.
 
-Well at the moment this is done on the first address space addition to
-vfio_address_spaces. I think it is quite similar and I would be tempted
-to leave it there atm except if you or anybody has a strong opinion here.
+Mirror job already has mirror_flush() for this. So, it's OK.
 
-Eric
->
-> Thanks,
->
-> C.
->
->>
->> This will also be useful while migrating to IOMMUFD by hiding the
->> group specificity.
->>
->> Signed-off-by: Eric Auger <eric.auger@redhat.com>
->> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
->> Suggested-by: Alex Williamson <alex.williamson@redhat.com>
->> ---
->>   include/hw/vfio/vfio-common.h |  2 ++
->>   hw/vfio/common.c              | 45 +++++++++++++++--------------------
->>   2 files changed, 21 insertions(+), 26 deletions(-)
->>
->> diff --git a/include/hw/vfio/vfio-common.h
->> b/include/hw/vfio/vfio-common.h
->> index bf12e40667..54905b9dd4 100644
->> --- a/include/hw/vfio/vfio-common.h
->> +++ b/include/hw/vfio/vfio-common.h
->> @@ -131,6 +131,7 @@ typedef struct VFIODeviceOps VFIODeviceOps;
->>   typedef struct VFIODevice {
->>       QLIST_ENTRY(VFIODevice) next;
->>       QLIST_ENTRY(VFIODevice) container_next;
->> +    QLIST_ENTRY(VFIODevice) global_next;
->>       struct VFIOGroup *group;
->>       VFIOContainer *container;
->>       char *sysfsdev;
->> @@ -232,6 +233,7 @@ int vfio_kvm_device_del_fd(int fd, Error **errp);
->>     extern const MemoryRegionOps vfio_region_ops;
->>   typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
->> +typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
->>   extern VFIOGroupList vfio_group_list;
->>     bool vfio_mig_active(void);
->> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
->> index 55f8a113ea..95bc50bcda 100644
->> --- a/hw/vfio/common.c
->> +++ b/hw/vfio/common.c
->> @@ -48,6 +48,8 @@
->>     VFIOGroupList vfio_group_list =
->>       QLIST_HEAD_INITIALIZER(vfio_group_list);
->> +static VFIODeviceList vfio_device_list =
->> +    QLIST_HEAD_INITIALIZER(vfio_device_list);
->>   static QLIST_HEAD(, VFIOAddressSpace) vfio_address_spaces =
->>       QLIST_HEAD_INITIALIZER(vfio_address_spaces);
->>   @@ -94,18 +96,15 @@ static int vfio_get_dirty_bitmap(VFIOContainer
->> *container, uint64_t iova,
->>     bool vfio_mig_active(void)
->>   {
->> -    VFIOGroup *group;
->>       VFIODevice *vbasedev;
->>   -    if (QLIST_EMPTY(&vfio_group_list)) {
->> +    if (QLIST_EMPTY(&vfio_device_list)) {
->>           return false;
->>       }
->>   -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->migration_blocker) {
->> -                return false;
->> -            }
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +        if (vbasedev->migration_blocker) {
->> +            return false;
->>           }
->>       }
->>       return true;
->> @@ -120,19 +119,16 @@ static Error *multiple_devices_migration_blocker;
->>    */
->>   static bool vfio_multiple_devices_migration_is_supported(void)
->>   {
->> -    VFIOGroup *group;
->>       VFIODevice *vbasedev;
->>       unsigned int device_num = 0;
->>       bool all_support_p2p = true;
->>   -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->migration) {
->> -                device_num++;
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +        if (vbasedev->migration) {
->> +            device_num++;
->>   -                if (!(vbasedev->migration->mig_flags &
->> VFIO_MIGRATION_P2P)) {
->> -                    all_support_p2p = false;
->> -                }
->> +            if (!(vbasedev->migration->mig_flags &
->> VFIO_MIGRATION_P2P)) {
->> +                all_support_p2p = false;
->>               }
->>           }
->>       }
->> @@ -1777,22 +1773,17 @@ bool vfio_get_info_dma_avail(struct
->> vfio_iommu_type1_info *info,
->>     void vfio_reset_handler(void *opaque)
->>   {
->> -    VFIOGroup *group;
->>       VFIODevice *vbasedev;
->>   -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->dev->realized) {
->> -                vbasedev->ops->vfio_compute_needs_reset(vbasedev);
->> -            }
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +        if (vbasedev->dev->realized) {
->> +            vbasedev->ops->vfio_compute_needs_reset(vbasedev);
->>           }
->>       }
->>   -    QLIST_FOREACH(group, &vfio_group_list, next) {
->> -        QLIST_FOREACH(vbasedev, &group->device_list, next) {
->> -            if (vbasedev->dev->realized && vbasedev->needs_reset) {
->> -                vbasedev->ops->vfio_hot_reset_multi(vbasedev);
->> -            }
->> +    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
->> +        if (vbasedev->dev->realized && vbasedev->needs_reset) {
->> +            vbasedev->ops->vfio_hot_reset_multi(vbasedev);
->>           }
->>       }
->>   }
->> @@ -2657,6 +2648,7 @@ int vfio_attach_device(char *name, VFIODevice
->> *vbasedev,
->>       container = group->container;
->>       vbasedev->container = container;
->>       QLIST_INSERT_HEAD(&container->device_list, vbasedev,
->> container_next);
->> +    QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
->>         return ret;
->>   }
->> @@ -2669,6 +2661,7 @@ void vfio_detach_device(VFIODevice *vbasedev)
->>           return;
->>       }
->>   +    QLIST_REMOVE(vbasedev, global_next);
->>       QLIST_REMOVE(vbasedev, container_next);
->>       vbasedev->container = NULL;
->>       trace_vfio_detach_device(vbasedev->name, group->groupid);
->
+Add similar things for other jobs: backup, stream, commit.
+
+Note, that stream has (documented) different treatment of IGNORE
+action: it don't retry the operation, continue execution and report
+error at last. We keep it for final flush too.
+
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+
+Was: [PATCH v4] block-jobs: flush target at the end of .run()
+  But now rewritten.
+Supersedes: <20230725174008.1147467-1-vsementsov@yandex-team.ru>
+
+ block/backup.c             |  2 +-
+ block/block-copy.c         |  7 +++++++
+ block/commit.c             | 16 ++++++++++++----
+ block/stream.c             | 21 +++++++++++++++++----
+ include/block/block-copy.h |  1 +
+ 5 files changed, 38 insertions(+), 9 deletions(-)
+
+diff --git a/block/backup.c b/block/backup.c
+index db3791f4d1..6a1321092a 100644
+--- a/block/backup.c
++++ b/block/backup.c
+@@ -156,7 +156,7 @@ static int coroutine_fn backup_loop(BackupBlockJob *job)
+         job->bg_bcs_call = s = block_copy_async(job->bcs, 0,
+                 QEMU_ALIGN_UP(job->len, job->cluster_size),
+                 job->perf.max_workers, job->perf.max_chunk,
+-                backup_block_copy_callback, job);
++                true, backup_block_copy_callback, job);
+ 
+         while (!block_copy_call_finished(s) &&
+                !job_is_cancelled(&job->common.job))
+diff --git a/block/block-copy.c b/block/block-copy.c
+index 1c60368d72..9b8672d4c8 100644
+--- a/block/block-copy.c
++++ b/block/block-copy.c
+@@ -54,6 +54,7 @@ typedef struct BlockCopyCallState {
+     int max_workers;
+     int64_t max_chunk;
+     bool ignore_ratelimit;
++    bool need_final_flush;
+     BlockCopyAsyncCallbackFunc cb;
+     void *cb_opaque;
+     /* Coroutine where async block-copy is running */
+@@ -880,6 +881,10 @@ block_copy_common(BlockCopyCallState *call_state)
+          */
+     } while (ret > 0 && !qatomic_read(&call_state->cancelled));
+ 
++    if (ret == 0 && call_state->need_final_flush) {
++        ret = bdrv_co_flush(s->target->bs);
++    }
++
+     qatomic_store_release(&call_state->finished, true);
+ 
+     if (call_state->cb) {
+@@ -935,6 +940,7 @@ int coroutine_fn block_copy(BlockCopyState *s, int64_t start, int64_t bytes,
+ BlockCopyCallState *block_copy_async(BlockCopyState *s,
+                                      int64_t offset, int64_t bytes,
+                                      int max_workers, int64_t max_chunk,
++                                     bool need_final_flush,
+                                      BlockCopyAsyncCallbackFunc cb,
+                                      void *cb_opaque)
+ {
+@@ -946,6 +952,7 @@ BlockCopyCallState *block_copy_async(BlockCopyState *s,
+         .bytes = bytes,
+         .max_workers = max_workers,
+         .max_chunk = max_chunk,
++        .need_final_flush = need_final_flush,
+         .cb = cb,
+         .cb_opaque = cb_opaque,
+ 
+diff --git a/block/commit.c b/block/commit.c
+index aa45beb0f0..5205c77ec9 100644
+--- a/block/commit.c
++++ b/block/commit.c
+@@ -120,6 +120,7 @@ static int coroutine_fn commit_run(Job *job, Error **errp)
+     int64_t n = 0; /* bytes */
+     QEMU_AUTO_VFREE void *buf = NULL;
+     int64_t len, base_len;
++    BlockErrorAction action;
+ 
+     len = blk_co_getlength(s->top);
+     if (len < 0) {
+@@ -169,9 +170,8 @@ static int coroutine_fn commit_run(Job *job, Error **errp)
+             }
+         }
+         if (ret < 0) {
+-            BlockErrorAction action =
+-                block_job_error_action(&s->common, s->on_error,
+-                                       error_in_source, -ret);
++            action = block_job_error_action(&s->common, s->on_error,
++                                            error_in_source, -ret);
+             if (action == BLOCK_ERROR_ACTION_REPORT) {
+                 return ret;
+             } else {
+@@ -187,7 +187,15 @@ static int coroutine_fn commit_run(Job *job, Error **errp)
+         }
+     }
+ 
+-    return 0;
++    do {
++        ret = blk_co_flush(s->base);
++        if (ret < 0) {
++            action = block_job_error_action(&s->common, s->on_error,
++                                            false, -ret);
++        }
++    } while (ret < 0 && action != BLOCK_ERROR_ACTION_REPORT);
++
++    return ret;
+ }
+ 
+ static const BlockJobDriver commit_job_driver = {
+diff --git a/block/stream.c b/block/stream.c
+index 133cb72fb4..41eb536feb 100644
+--- a/block/stream.c
++++ b/block/stream.c
+@@ -143,6 +143,8 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
+     int64_t offset = 0;
+     int error = 0;
+     int64_t n = 0; /* bytes */
++    BlockErrorAction action;
++    int ret;
+ 
+     if (unfiltered_bs == s->base_overlay) {
+         /* Nothing to stream */
+@@ -159,7 +161,6 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
+ 
+     for ( ; offset < len; offset += n) {
+         bool copy;
+-        int ret;
+ 
+         /* Note that even when no rate limit is applied we need to yield
+          * with no pending I/O here so that bdrv_drain_all() returns.
+@@ -196,8 +197,8 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
+             ret = stream_populate(s->blk, offset, n);
+         }
+         if (ret < 0) {
+-            BlockErrorAction action =
+-                block_job_error_action(&s->common, s->on_error, true, -ret);
++            action = block_job_error_action(&s->common, s->on_error,
++                                            true, -ret);
+             if (action == BLOCK_ERROR_ACTION_STOP) {
+                 n = 0;
+                 continue;
+@@ -206,7 +207,7 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
+                 error = ret;
+             }
+             if (action == BLOCK_ERROR_ACTION_REPORT) {
+-                break;
++                return error;
+             }
+         }
+ 
+@@ -217,6 +218,18 @@ static int coroutine_fn stream_run(Job *job, Error **errp)
+         }
+     }
+ 
++    do {
++        ret = blk_co_flush(s->blk);
++        if (ret < 0) {
++            action = block_job_error_action(&s->common, s->on_error,
++                                            false, -ret);
++        }
++    } while (ret < 0 && action == BLOCK_ERROR_ACTION_STOP);
++
++    if (error == 0) {
++        error = ret;
++    }
++
+     /* Do not remove the backing file if an error was there but ignored. */
+     return error;
+ }
+diff --git a/include/block/block-copy.h b/include/block/block-copy.h
+index 0700953ab8..6fe1e07aa3 100644
+--- a/include/block/block-copy.h
++++ b/include/block/block-copy.h
+@@ -60,6 +60,7 @@ int coroutine_fn block_copy(BlockCopyState *s, int64_t offset, int64_t bytes,
+ BlockCopyCallState *block_copy_async(BlockCopyState *s,
+                                      int64_t offset, int64_t bytes,
+                                      int max_workers, int64_t max_chunk,
++                                     bool need_final_flush,
+                                      BlockCopyAsyncCallbackFunc cb,
+                                      void *cb_opaque);
+ 
+-- 
+2.34.1
 
 
