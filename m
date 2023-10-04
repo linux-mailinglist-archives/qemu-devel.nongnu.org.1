@@ -2,36 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CFD7B796E
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:03:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61EE97B796F
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:03:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwqa-00049b-5Q; Wed, 04 Oct 2023 04:03:11 -0400
+	id 1qnwr1-0005PC-3A; Wed, 04 Oct 2023 04:03:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwpx-0003dt-4E; Wed, 04 Oct 2023 04:02:32 -0400
+ id 1qnwq3-0003n1-RP; Wed, 04 Oct 2023 04:02:36 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwpu-00084W-QM; Wed, 04 Oct 2023 04:02:28 -0400
+ id 1qnwq2-000861-2F; Wed, 04 Oct 2023 04:02:35 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 7DDE12758A;
- Wed,  4 Oct 2023 11:02:22 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 63D572758E;
+ Wed,  4 Oct 2023 11:02:23 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id C4F932CBC6;
- Wed,  4 Oct 2023 11:02:21 +0300 (MSK)
-Received: (nullmailer pid 2702748 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id AC0482CBCA;
+ Wed,  4 Oct 2023 11:02:22 +0300 (MSK)
+Received: (nullmailer pid 2702762 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 00/45] Patch Round-up for stable 8.1.2,
- freeze on 2023-10-14
-Date: Wed,  4 Oct 2023 11:01:21 +0300
-Message-Id: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 04/45] hw/ppc: Avoid decrementer rounding errors
+Date: Wed,  4 Oct 2023 11:01:25 +0300
+Message-Id: <20231004080221.2702636-4-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
+References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,119 +60,108 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The following patches are queued for QEMU stable v8.1.2:
+From: Nicholas Piggin <npiggin@gmail.com>
 
-  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
+The decrementer register contains a relative time in timebase units.
+When writing to DECR this is converted and stored as an absolute value
+in nanosecond units, reading DECR converts back to relative timebase.
 
-Patch freeze is 2023-10-14, and the release is planned for 2023-10-16:
+The tb<->ns conversion of the relative part can cause rounding such that
+a value writen to the decrementer can read back a different, with time
+held constant. This is a particular problem for a deterministic icount
+and record-replay trace.
 
-  https://wiki.qemu.org/Planning/8.1
+Fix this by storing the absolute value in timebase units rather than
+nanoseconds. The math before:
+  store:  decr_next = now_ns + decr * ns_per_sec / tb_per_sec
+  load:        decr = (decr_next - now_ns) * tb_per_sec / ns_per_sec
+  load(store): decr = decr * ns_per_sec / tb_per_sec * tb_per_sec /
+                      ns_per_sec
 
-Please respond here or CC qemu-stable@nongnu.org on any additional patches
-you think should (or shouldn't) be included in the release.
+After:
+  store:  decr_next = now_ns * tb_per_sec / ns_per_sec + decr
+  load:        decr = decr_next - now_ns * tb_per_sec / ns_per_sec
+  load(store): decr = decr
 
-The changes which are staging for inclusion, with the original commit hash
-from master branch, are given below the bottom line.
+Fixes: 9fddaa0c0cab ("PowerPC merge: real time TB and decrementer - faster and simpler exception handling (Jocelyn Mayer)")
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+(cherry picked from commit 8e0a5ac87800ccc6dd5013f89f27652f4480ab33)
+Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-This release supposed to finally fix some long-standing issues in 8.1.x series,
-by including commit 0d58c660689f "softmmu: Use async_run_on_cpu in tcg_commit"
-and follow-up series fixing issues in other areas it uncovered, among other
-fixes.
+diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
+index 3a82c97d5a..57d0aae7d7 100644
+--- a/hw/ppc/ppc.c
++++ b/hw/ppc/ppc.c
+@@ -707,16 +707,17 @@ bool ppc_decr_clear_on_delivery(CPUPPCState *env)
+ static inline int64_t _cpu_ppc_load_decr(CPUPPCState *env, uint64_t next)
+ {
+     ppc_tb_t *tb_env = env->tb_env;
+-    int64_t decr, diff;
++    uint64_t now, n;
++    int64_t decr;
+ 
+-    diff = next - qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-    if (diff >= 0) {
+-        decr = ns_to_tb(tb_env->decr_freq, diff);
+-    } else if (tb_env->flags & PPC_TIMER_BOOKE) {
++    now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    n = ns_to_tb(tb_env->decr_freq, now);
++    if (next > n && tb_env->flags & PPC_TIMER_BOOKE) {
+         decr = 0;
+-    }  else {
+-        decr = -ns_to_tb(tb_env->decr_freq, -diff);
++    } else {
++        decr = next - n;
+     }
++
+     trace_ppc_decr_load(decr);
+ 
+     return decr;
+@@ -853,13 +854,18 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
+         (*lower_excp)(cpu);
+     }
+ 
+-    /* Calculate the next timer event */
++    /*
++     * Calculate the next decrementer event and set a timer.
++     * decr_next is in timebase units to keep rounding simple. Note it is
++     * not adjusted by tb_offset because if TB changes via tb_offset changing,
++     * decrementer does not change, so not directly comparable with TB.
++     */
+     now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-    next = now + tb_to_ns_round_up(tb_env->decr_freq, value);
++    next = ns_to_tb(tb_env->decr_freq, now) + value;
+     *nextp = next;
+ 
+     /* Adjust timer */
+-    timer_mod(timer, next);
++    timer_mod(timer, tb_to_ns_round_up(tb_env->decr_freq, next));
+ }
+ 
+ static inline void _cpu_ppc_store_decr(PowerPCCPU *cpu, target_ulong decr,
+@@ -1172,12 +1178,15 @@ static void start_stop_pit (CPUPPCState *env, ppc_tb_t *tb_env, int is_excp)
+     } else {
+         trace_ppc4xx_pit_start(ppc40x_timer->pit_reload);
+         now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+-        next = now + tb_to_ns_round_up(tb_env->decr_freq,
+-                                       ppc40x_timer->pit_reload);
+-        if (is_excp)
+-            next += tb_env->decr_next - now;
++
++        if (is_excp) {
++            tb_env->decr_next += ppc40x_timer->pit_reload;
++        } else {
++            tb_env->decr_next = ns_to_tb(tb_env->decr_freq, now)
++                                + ppc40x_timer->pit_reload;
++        }
++        next = tb_to_ns_round_up(tb_env->decr_freq, tb_env->decr_next);
+         timer_mod(tb_env->decr_timer, next);
+-        tb_env->decr_next = next;
+     }
+ }
+ 
+-- 
+2.39.2
 
-Thanks!
-
-/mjt
-
---------------------------------------
-01 7798f5c576d8 Nicholas Piggin:
-   hw/ppc: Introduce functions for conversion between timebase and 
-   nanoseconds
-02 47de6c4c2870 Nicholas Piggin:
-   host-utils: Add muldiv64_round_up
-03 eab0888418ab Nicholas Piggin:
-   hw/ppc: Round up the decrementer interval when converting to ns
-04 8e0a5ac87800 Nicholas Piggin:
-   hw/ppc: Avoid decrementer rounding errors
-05 c8fbc6b9f2f3 Nicholas Piggin:
-   target/ppc: Sign-extend large decrementer to 64-bits
-06 febb71d543a8 Nicholas Piggin:
-   hw/ppc: Always store the decrementer value
-07 30d0647bcfa9 Nicholas Piggin:
-   hw/ppc: Reset timebase facilities on machine reset
-08 ea62f8a5172c Nicholas Piggin:
-   hw/ppc: Read time only once to perform decrementer write
-09 2529497cb6b2 Mikulas Patocka:
-   linux-user/hppa: clear the PSW 'N' bit when delivering signals
-10 5b1270ef1477 Mikulas Patocka:
-   linux-user/hppa: lock both words of function descriptor
-11 7b165fa16402 Li Zhijian:
-   hw/cxl: Fix CFMW config memory leak
-12 de5bbfc602ef Dmitry Frolov:
-   hw/cxl: Fix out of bound array access
-13 56d1a022a77e Hanna Czenczek:
-   file-posix: Clear bs->bl.zoned on error
-14 4b5d80f3d020 Hanna Czenczek:
-   file-posix: Check bs->bl.zoned for zone info
-15 deab5c9a4ed7 Hanna Czenczek:
-   file-posix: Fix zone update in I/O error path
-16 d31b50a15dd2 Hanna Czenczek:
-   file-posix: Simplify raw_co_prw's 'out' zone code
-17 380448464dd8 Hanna Czenczek:
-   tests/file-io-error: New test
-18 c78edb563942 Anton Johansson:
-   include/exec: Widen tlb_hit/tlb_hit_page()
-19 32b214384e1e Fabian Vogt:
-   hw/arm/boot: Set SCR_EL3.FGTEn when booting kernel
-20 903dbefc2b69 Peter Maydell:
-   target/arm: Don't skip MTE checks for LDRT/STRT at EL0
-21 c64023b0ba67 Thomas Huth:
-   meson.build: Make keyutils independent from keyring
-22 0e5903436de7 Nicholas Piggin:
-   accel/tcg: mttcg remove false-negative halted assertion
-23 7cfcc79b0ab8 Thomas Huth:
-   hw/scsi/scsi-disk: Disallow block sizes smaller than 512 [CVE-2023-42467]
-24 0cb9c5880e6b Paolo Bonzini:
-   ui/vnc: fix debug output for invalid audio message
-25 477b301000d6 Paolo Bonzini:
-   ui/vnc: fix handling of VNC_FEATURE_XVP
-26 cf02f29e1e38 Peter Xu:
-   migration: Fix race that dest preempt thread close too early
-27 28a8347281e2 Fabiano Rosas:
-   migration: Fix possible race when setting rp_state.error
-28 639decf52979 Fabiano Rosas:
-   migration: Fix possible races when shutting down the return path
-29 7478fb0df914 Fabiano Rosas:
-   migration: Fix possible race when shutting down to_dst_file
-30 b3b101157d46 Fabiano Rosas:
-   migration: Remove redundant cleanup of postcopy_qemufile_src
-31 d50f5dc075cb Fabiano Rosas:
-   migration: Consolidate return path closing code
-32 ef796ee93b31 Fabiano Rosas:
-   migration: Replace the return path retry logic
-33 36e9aab3c569 Fabiano Rosas:
-   migration: Move return path cleanup to main migration thread
-34 0d58c660689f Richard Henderson:
-   softmmu: Use async_run_on_cpu in tcg_commit
-35 f47a90dacca8 Richard Henderson:
-   accel/tcg: Avoid load of icount_decr if unused
-36 5d97e9463810 Richard Henderson:
-   accel/tcg: Hoist CF_MEMI_ONLY check outside translation loop
-37 0ca41ccf1c55 Richard Henderson:
-   accel/tcg: Track current value of can_do_io in the TB
-38 a2f99d484c54 Richard Henderson:
-   accel/tcg: Improve setting of can_do_io at start of TB
-39 200c1f904f46 Richard Henderson:
-   accel/tcg: Always set CF_LAST_IO with CF_NOIRQ
-40 18a536f1f8d6 Richard Henderson:
-   accel/tcg: Always require can_do_io
-41 23fa6f56b33f Bastian Koppelmann:
-   target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
-42 35ed01ba5448 Fabiano Rosas:
-   optionrom: Remove build-id section
-43 b86dc5cb0b41 Mark Cave-Ayland:
-   esp: use correct type for esp_dma_enable() in sysbus_esp_gpio_demux()
-44 77668e4b9bca Mark Cave-Ayland:
-   esp: restrict non-DMA transfer length to that of available data
-45 be2b619a1734 Mark Cave-Ayland:
-   scsi-disk: ensure that FORMAT UNIT commands are terminated
 
