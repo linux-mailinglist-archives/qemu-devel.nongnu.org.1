@@ -2,35 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3577B7F90
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 002947B7FAA
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:48:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo1FV-0001Gy-RX; Wed, 04 Oct 2023 08:45:09 -0400
+	id 1qo1Ht-0002IQ-7d; Wed, 04 Oct 2023 08:47:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qo1FP-0001GY-Fm; Wed, 04 Oct 2023 08:45:03 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qo1Hq-0002GW-7q; Wed, 04 Oct 2023 08:47:34 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qo1FN-0005UE-9p; Wed, 04 Oct 2023 08:45:03 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 12BCD445AC;
- Wed,  4 Oct 2023 14:44:50 +0200 (CEST)
-From: Fiona Ebner <f.ebner@proxmox.com>
-To: qemu-devel@nongnu.org
-Cc: alex.bennee@linaro.org, pbonzini@redhat.com, richard.henderson@linaro.org,
- groug@kaod.org, qemu-stable@nongnu.org
-Subject: [PATCH] util/log: re-allow switching away from stderr log file
-Date: Wed,  4 Oct 2023 14:44:46 +0200
-Message-Id: <20231004124446.491481-1-f.ebner@proxmox.com>
-X-Mailer: git-send-email 2.39.2
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qo1Ho-0006Dw-3K; Wed, 04 Oct 2023 08:47:33 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id D20FE7456AA;
+ Wed,  4 Oct 2023 14:46:45 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 950297456A7; Wed,  4 Oct 2023 14:46:45 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 93132745681;
+ Wed,  4 Oct 2023 14:46:45 +0200 (CEST)
+Date: Wed, 4 Oct 2023 14:46:45 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, 
+ Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, 
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, 
+ Laurent Vivier <lvivier@redhat.com>, 
+ =?ISO-8859-15?Q?Marc-Andr=E9_Lureau?= <marcandre.lureau@redhat.com>, 
+ =?ISO-8859-15?Q?Daniel_P=2E_Berrang=E9?= <berrange@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>, 
+ David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH 13/13] system: Rename softmmu/ directory as system/
+In-Reply-To: <e3341fd8-b122-ac6a-4a55-07fa80c5142f@linaro.org>
+Message-ID: <7145d71d-a255-05f9-d36a-6e2375cdec78@eik.bme.hu>
+References: <20231004090629.37473-1-philmd@linaro.org>
+ <20231004090629.37473-14-philmd@linaro.org>
+ <e3341fd8-b122-ac6a-4a55-07fa80c5142f@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
- helo=proxmox-new.maurer-it.com
+Content-Type: multipart/mixed;
+ boundary="3866299591-1512138473-1696423605=:55550"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -51,35 +67,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit 59bde21374 ("util/log: do not close and reopen log files when
-flags are turned off") prevented switching away from stderr on a
-subsequent invocation of qemu_set_log_internal(). This prevented
-switching away from stderr with the 'logfile' monitor command as well
-as an invocation like
-> ./qemu-system-x86_64 -trace 'qemu_mutex_lock,file=log'
-from opening the specified log file.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Fixes: 59bde21374 ("util/log: do not close and reopen log files when flags are turned off")
-Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
----
- util/log.c | 2 ++
- 1 file changed, 2 insertions(+)
+--3866299591-1512138473-1696423605=:55550
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-diff --git a/util/log.c b/util/log.c
-index def88a9402..d36c98da0b 100644
---- a/util/log.c
-+++ b/util/log.c
-@@ -298,6 +298,8 @@ static bool qemu_set_log_internal(const char *filename, bool changed_name,
-             r->fd = logfile;
-             qatomic_rcu_set(&global_file, NULL);
-             call_rcu(r, rcu_close_file, rcu);
-+        }
-+        if (changed_name) {
-             logfile = NULL;
-         }
-     }
--- 
-2.39.2
+On Wed, 4 Oct 2023, Philippe Mathieu-Daudé wrote:
+> On 4/10/23 11:06, Philippe Mathieu-Daudé wrote:
+>> The softmmu/ directory contains files specific to system
+>> emulation. Rename it as system/. Update meson rules, the
+>> MAINTAINERS file and all the documentation and comments.
+>> 
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>
+>>   include/sysemu/runstate-action.h        |  2 +-
+>
+>>   rename {softmmu => system}/timers-state.h (100%)
+>>   create mode 100644 system/trace.h
+>>   rename {softmmu => system}/arch_init.c (100%)
+>>   rename {softmmu => system}/async-teardown.c (100%)
+>>   rename {softmmu => system}/balloon.c (100%)
+>>   rename {softmmu => system}/bootdevice.c (100%)
+>>   rename {softmmu => system}/cpu-throttle.c (100%)
+>>   rename {softmmu => system}/cpu-timers.c (100%)
+>>   rename {softmmu => system}/cpus.c (100%)
+>>   rename {softmmu => system}/datadir.c (100%)
+>>   rename {softmmu => system}/device_tree.c (100%)
+>>   rename {softmmu => system}/dirtylimit.c (100%)
+>>   rename {softmmu => system}/dma-helpers.c (100%)
+>>   rename {softmmu => system}/globals.c (100%)
+>>   rename {softmmu => system}/icount.c (100%)
+>>   rename {softmmu => system}/ioport.c (100%)
+>>   rename {softmmu => system}/main.c (100%)
+>>   rename {softmmu => system}/memory.c (100%)
+>>   rename {softmmu => system}/memory_mapping.c (100%)
+>>   rename {softmmu => system}/physmem.c (99%)
+>>   rename {softmmu => system}/qdev-monitor.c (100%)
+>>   rename {softmmu => system}/qemu-seccomp.c (100%)
+>>   rename {softmmu => system}/qtest.c (100%)
+>>   rename {softmmu => system}/rtc.c (100%)
+>>   rename {softmmu => system}/runstate-action.c (100%)
+>>   rename {softmmu => system}/runstate-hmp-cmds.c (100%)
+>>   rename {softmmu => system}/runstate.c (100%)
+>>   rename {softmmu => system}/tpm-hmp-cmds.c (100%)
+>>   rename {softmmu => system}/tpm.c (100%)
+>>   rename {softmmu => system}/vl.c (100%)
+>>   rename {softmmu => system}/watchpoint.c (100%)
+>>   rename {softmmu => system}/meson.build (100%)
+>>   rename {softmmu => system}/trace-events (100%)
+>
+> Maybe I should also move include/sysemu/ -> include/system/
+> to keep it coherent?
 
+I think I've proposed some years ago to rename softmmu to sysemu because 
+besides actual softmmu code it conrains a lot of system emulation. Calling 
+it system is also similar, maybe less specific than sysemu but basically 
+the same.
 
+Regards,
+BALATON Zoltan
+--3866299591-1512138473-1696423605=:55550--
 
