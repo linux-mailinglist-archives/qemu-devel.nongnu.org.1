@@ -2,36 +2,36 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 283E67B79BF
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0427B7986
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:05:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwsr-0004EC-F3; Wed, 04 Oct 2023 04:05:29 -0400
+	id 1qnwsJ-00012e-1x; Wed, 04 Oct 2023 04:04:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwrE-0006zi-KX; Wed, 04 Oct 2023 04:03:48 -0400
+ id 1qnwrG-00072D-4G; Wed, 04 Oct 2023 04:03:51 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwrC-0008IX-3p; Wed, 04 Oct 2023 04:03:48 -0400
+ id 1qnwrD-0008Ll-Ct; Wed, 04 Oct 2023 04:03:49 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1CE312759C;
+ by isrv.corpit.ru (Postfix) with ESMTP id 3C4B82759D;
  Wed,  4 Oct 2023 11:02:26 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 70E1E2CBD8;
+ by tsrv.corpit.ru (Postfix) with SMTP id 988EF2CBD9;
  Wed,  4 Oct 2023 11:02:25 +0300 (MSK)
-Received: (nullmailer pid 2702804 invoked by uid 1000);
+Received: (nullmailer pid 2702807 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Anton Johansson <anjo@rev.ng>,
- Richard Henderson <richard.henderson@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 18/45] include/exec: Widen tlb_hit/tlb_hit_page()
-Date: Wed,  4 Oct 2023 11:01:39 +0300
-Message-Id: <20231004080221.2702636-18-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Fabian Vogt <fvogt@suse.de>,
+ Peter Maydell <peter.maydell@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 19/45] hw/arm/boot: Set SCR_EL3.FGTEn when booting
+ kernel
+Date: Wed,  4 Oct 2023 11:01:40 +0300
+Message-Id: <20231004080221.2702636-19-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
@@ -59,40 +59,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Anton Johansson <anjo@rev.ng>
+From: Fabian Vogt <fvogt@suse.de>
 
-tlb_addr is changed from target_ulong to uint64_t to match the type of
-a CPUTLBEntry value, and the addressed is changed to vaddr.
+Just like d7ef5e16a17c sets SCR_EL3.HXEn for FEAT_HCX, this commit
+handles SCR_EL3.FGTEn for FEAT_FGT:
 
-Signed-off-by: Anton Johansson <anjo@rev.ng>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230807155706.9580-8-anjo@rev.ng>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit c78edb563942ce80c9c6c03b07397725b006b625)
+When we direct boot a kernel on a CPU which emulates EL3, we need to
+set up the EL3 system registers as the Linux kernel documentation
+specifies:
+    https://www.kernel.org/doc/Documentation/arm64/booting.rst
+
+> For CPUs with the Fine Grained Traps (FEAT_FGT) extension present:
+> - If EL3 is present and the kernel is entered at EL2:
+>   - SCR_EL3.FGTEn (bit 27) must be initialised to 0b1.
+
+Cc: qemu-stable@nongnu.org
+Signed-off-by: Fabian Vogt <fvogt@suse.de>
+Message-id: 4831384.GXAFRqVoOG@linux-e202.suse.de
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
+(cherry picked from commit 32b214384e1e1472ddfa875196c57f6620172301)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/include/exec/cpu-all.h b/include/exec/cpu-all.h
-index 94f44f1f59..c2c62160c6 100644
---- a/include/exec/cpu-all.h
-+++ b/include/exec/cpu-all.h
-@@ -397,7 +397,7 @@ QEMU_BUILD_BUG_ON(TLB_FLAGS_MASK & TLB_SLOW_FLAGS_MASK);
-  * @addr: virtual address to test (must be page aligned)
-  * @tlb_addr: TLB entry address (a CPUTLBEntry addr_read/write/code value)
-  */
--static inline bool tlb_hit_page(target_ulong tlb_addr, target_ulong addr)
-+static inline bool tlb_hit_page(uint64_t tlb_addr, vaddr addr)
- {
-     return addr == (tlb_addr & (TARGET_PAGE_MASK | TLB_INVALID_MASK));
- }
-@@ -408,7 +408,7 @@ static inline bool tlb_hit_page(target_ulong tlb_addr, target_ulong addr)
-  * @addr: virtual address to test (need not be page aligned)
-  * @tlb_addr: TLB entry address (a CPUTLBEntry addr_read/write/code value)
-  */
--static inline bool tlb_hit(target_ulong tlb_addr, target_ulong addr)
-+static inline bool tlb_hit(uint64_t tlb_addr, vaddr addr)
- {
-     return tlb_hit_page(tlb_addr, addr & TARGET_PAGE_MASK);
- }
+diff --git a/hw/arm/boot.c b/hw/arm/boot.c
+index 720f22531a..24fa169060 100644
+--- a/hw/arm/boot.c
++++ b/hw/arm/boot.c
+@@ -761,6 +761,10 @@ static void do_cpu_reset(void *opaque)
+                     if (cpu_isar_feature(aa64_hcx, cpu)) {
+                         env->cp15.scr_el3 |= SCR_HXEN;
+                     }
++                    if (cpu_isar_feature(aa64_fgt, cpu)) {
++                        env->cp15.scr_el3 |= SCR_FGTEN;
++                    }
++
+                     /* AArch64 kernels never boot in secure mode */
+                     assert(!info->secure_boot);
+                     /* This hook is only supported for AArch32 currently:
 -- 
 2.39.2
 
