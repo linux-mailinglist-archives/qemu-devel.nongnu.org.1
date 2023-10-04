@@ -2,74 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E63EC7B7B19
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBA587B7ABD
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:52:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxWO-0008Mg-MW; Wed, 04 Oct 2023 04:46:22 -0400
+	id 1qnxXS-0001p8-7t; Wed, 04 Oct 2023 04:47:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxVW-0007Qj-VV
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:45:27 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxVn-00085Z-0d
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:45:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxVS-0002Bx-QF
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:45:26 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxVk-0002KO-Ht
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:45:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409121;
+ s=mimecast20190719; t=1696409138;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mKGCCnmqWzFiFS2Xm/PXYhwhVbskQX1u9fUtGauWkBQ=;
- b=TIFho6VEL9P04IefSZFwSPcBM/eLo6E2zPm+C3Fnxf6BB9Jkf71eZpwu5G2GajiksbWyoC
- EovoZyUWyN80PXUfV6mA8QuHjqWSUtKkZBZe/Z3CmgNO68CrdJyCHvDJpc8hieOe96Ayjf
- izk4VzpAKj22nNxyz8/J8DRqkPYQ/xk=
+ bh=Ox4XVp7cPjoZ2q7tSEzM/GAHifS80JBi3Z8qpCVmbvw=;
+ b=b0ehuYtAWYUB14XFqyAeTM+F94SWpBMkus5bmZ+OUGGR9qtyAce5YT8+CbkgGmZUNf3uFE
+ vpWfRpLikpCC+pDmtGAUIhCyEhrkg7iZrzjDnWZ+Jyx0jxcuTN6bVHt1bBEMVmifs78DjT
+ 4134hirJm+F9EJ9FBtz9wI8lkuvAJlI=
 Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
  [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-ZD4e8f3NMPeBMcPL52j7Sg-1; Wed, 04 Oct 2023 04:45:20 -0400
-X-MC-Unique: ZD4e8f3NMPeBMcPL52j7Sg-1
+ us-mta-161-gXhUiGRmNPqarjYU8V4hFA-1; Wed, 04 Oct 2023 04:45:22 -0400
+X-MC-Unique: gXhUiGRmNPqarjYU8V4hFA-1
 Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-50467783718so1796807e87.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:45:20 -0700 (PDT)
+ 2adb3069b0e04-5043353efbdso1757293e87.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:45:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409118; x=1697013918;
+ d=1e100.net; s=20230601; t=1696409120; x=1697013920;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mKGCCnmqWzFiFS2Xm/PXYhwhVbskQX1u9fUtGauWkBQ=;
- b=pe+TTuDbA/kS0HmjLoFJ2iy8adkTCxgZpo1VdVXWQn7EXx8XSMf/ZRZVT63lbPwGqC
- pgcuYPFBNG8X4kq5yXHGl1GAZPg9UFvY5/uacZB5RRnWcE/lWCz3OgJRysOvuziLyvWL
- 67LsYwgbUNNCa/7invZJZX0ArFzQ0lrJOJZSPgmeZkgjmth2QVvlnapIhdshKibHQ36b
- KyGSIE31c5HeCQG0MzDTKkT9P91r1qoLM1v1a50wm61p2uN2IuGPowTWLw1B2XKdZ79z
- XAcgJM6v1z0iupQUafBsFkONEFd1sSgON8AYgSHUf1chAb/Cxw18p9gLRL+rkVNT+yUH
- EgkA==
-X-Gm-Message-State: AOJu0YyEbfKSmUOGGn0Q4wOJgfj36iFOB8GPFOHS02JHeoNOeju7XujQ
- hXG7gYnOijuWoo68336vLvfQ7egqKMWPEZeKcxs2XGmoLvEpZgusoMwYeQW+PQnvmK4aqpzYwg9
- Ob1zUNuLcyH9ht8pOK+tJrPnMPby69zYmSpo3iiAJ+zErXOnE0uIKvz4/BumUxjdV1n4r
-X-Received: by 2002:a05:6512:457:b0:503:35af:3058 with SMTP id
- y23-20020a056512045700b0050335af3058mr1188284lfk.52.1696409118747; 
- Wed, 04 Oct 2023 01:45:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHd7TGcnbgZF1Qe5yxyZTPkIl11qpVVZtlhlaM6wTDN7x4qNeSdJBXv8MkgVJbyHkJYAnlAtw==
-X-Received: by 2002:a05:6512:457:b0:503:35af:3058 with SMTP id
- y23-20020a056512045700b0050335af3058mr1188023lfk.52.1696409111887; 
- Wed, 04 Oct 2023 01:45:11 -0700 (PDT)
+ bh=Ox4XVp7cPjoZ2q7tSEzM/GAHifS80JBi3Z8qpCVmbvw=;
+ b=k94jcgha0NcCPMgjYszhzJxBNvX1QfWXSL37npxS/9jOJZaWjo0AI1JmQzyAe7S1NI
+ fZUdg90d0CZWpB9IqDWmLxG6X08Xt6eqztABNC63Y2G8UiSjGYkwohw7d2ZTggxuYfw8
+ GEw2z4Wr5uIlzM5Yil2NWYjtqydLq2nVkZPw6tc0KyzzSLnxDU8PTXLpX/v+cxRlbFyh
+ 2hbFN9dXd3u/CuT57+UKOg9DszCmKsimZlDzq7TiQVJsEw3ZvkF0E/gy0oWMWeT8V1wT
+ tMYAcDlFvsl0lge7gTS6Shh3g/c6h9bV0cpiVtyZyoaGDsyy6vVKCyXnQ8fN93r+qCdx
+ BM/g==
+X-Gm-Message-State: AOJu0YwZTpEwEm72lpwj++nwEM4HpAgkGlykJ1KtRh27v56/xb/N8rOj
+ cmgm2i75s9dpq8GTZmBNm7UBz6vGtPKArwuHMYM3hoNc/CNhDfrmsYFTVvR0WxDMlhgzmlXkA7s
+ CVMIV+uukxHQwbiQpdE4ZjpaJZSIkiIaYcpp9qavsUOXaC21x54PY3T0pOA8RirXLF4Ha
+X-Received: by 2002:a19:4f4d:0:b0:503:2683:ec7b with SMTP id
+ a13-20020a194f4d000000b005032683ec7bmr1121070lfk.33.1696409120319; 
+ Wed, 04 Oct 2023 01:45:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE7u8aoYFiSntmAMt1t1bT+psXme5AJkMscc4RW6lqaG/EwcXdSCkX484bvWEUwVzUFB4FGbA==
+X-Received: by 2002:a19:4f4d:0:b0:503:2683:ec7b with SMTP id
+ a13-20020a194f4d000000b005032683ec7bmr1121048lfk.33.1696409119992; 
+ Wed, 04 Oct 2023 01:45:19 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- c11-20020a7bc84b000000b0040648217f4fsm936294wml.39.2023.10.04.01.45.10
+ f23-20020a7bc8d7000000b003fe1c332810sm935860wml.33.2023.10.04.01.45.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:45:11 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:45:09 -0400
+ Wed, 04 Oct 2023 01:45:19 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:45:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
-Subject: [PULL 38/63] hw/acpi/acpi_dev_interface: Remove now unused #include
- "hw/boards.h"
-Message-ID: <82969cc6fa0ae1f4df6f553eea78d417b82a3340.1696408966.git.mst@redhat.com>
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Sergio Lopez <slp@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>
+Subject: [PULL 39/63] hw/i386: Remove now redundant TYPE_ACPI_GED_X86
+Message-ID: <99096c2b23cd74bb440ae6433bace3d369f756fe.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -104,85 +108,93 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The "hw/boards.h" is unused since the previous commit. Since its removal
-requires include fixes in various unrelated files to keep the code compiling it
-has been split in a dedicated commit.
+Now that TYPE_ACPI_GED_X86 doesn't assign AcpiDeviceIfClass::madt_cpu any more
+it is the same as TYPE_ACPI_GED.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230908084234.17642-5-shentey@gmail.com>
+Message-Id: <20230908084234.17642-6-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/acpi/hmat.h                       | 3 ++-
- include/hw/acpi/acpi_dev_interface.h | 1 -
- hw/acpi/cpu.c                        | 1 +
- hw/acpi/hmat.c                       | 1 +
- hw/acpi/memory_hotplug.c             | 1 +
- 5 files changed, 5 insertions(+), 2 deletions(-)
+ include/hw/acpi/generic_event_device.h |  2 --
+ hw/i386/generic_event_device_x86.c     | 27 --------------------------
+ hw/i386/microvm.c                      |  2 +-
+ hw/i386/meson.build                    |  1 -
+ 4 files changed, 1 insertion(+), 31 deletions(-)
+ delete mode 100644 hw/i386/generic_event_device_x86.c
 
-diff --git a/hw/acpi/hmat.h b/hw/acpi/hmat.h
-index b57f0e7e80..fd989cb661 100644
---- a/hw/acpi/hmat.h
-+++ b/hw/acpi/hmat.h
-@@ -27,7 +27,8 @@
- #ifndef HMAT_H
- #define HMAT_H
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index d831bbd889..ba84ce0214 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -69,8 +69,6 @@
+ #define TYPE_ACPI_GED "acpi-ged"
+ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
  
--#include "hw/acpi/aml-build.h"
-+#include "hw/acpi/bios-linker-loader.h"
-+#include "sysemu/numa.h"
+-#define TYPE_ACPI_GED_X86 "acpi-ged-x86"
+-
+ #define ACPI_GED_EVT_SEL_OFFSET    0x0
+ #define ACPI_GED_EVT_SEL_LEN       0x4
  
- /*
-  * ACPI 6.3: 5.2.27.3 Memory Proximity Domain Attributes Structure,
-diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
-index ca92928124..68d9d15f50 100644
---- a/include/hw/acpi/acpi_dev_interface.h
-+++ b/include/hw/acpi/acpi_dev_interface.h
-@@ -3,7 +3,6 @@
+diff --git a/hw/i386/generic_event_device_x86.c b/hw/i386/generic_event_device_x86.c
+deleted file mode 100644
+index 8fc233e1f1..0000000000
+--- a/hw/i386/generic_event_device_x86.c
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/*
+- * x86 variant of the generic event device for hw reduced acpi
+- *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms and conditions of the GNU General Public License,
+- * version 2 or later, as published by the Free Software Foundation.
+- */
+-
+-#include "qemu/osdep.h"
+-#include "hw/acpi/generic_event_device.h"
+-
+-static const TypeInfo acpi_ged_x86_info = {
+-    .name          = TYPE_ACPI_GED_X86,
+-    .parent        = TYPE_ACPI_GED,
+-    .interfaces = (InterfaceInfo[]) {
+-        { TYPE_HOTPLUG_HANDLER },
+-        { TYPE_ACPI_DEVICE_IF },
+-        { }
+-    }
+-};
+-
+-static void acpi_ged_x86_register_types(void)
+-{
+-    type_register_static(&acpi_ged_x86_info);
+-}
+-
+-type_init(acpi_ged_x86_register_types)
+diff --git a/hw/i386/microvm.c b/hw/i386/microvm.c
+index 8deeb62774..b9c93039e2 100644
+--- a/hw/i386/microvm.c
++++ b/hw/i386/microvm.c
+@@ -204,7 +204,7 @@ static void microvm_devices_init(MicrovmMachineState *mms)
  
- #include "qapi/qapi-types-acpi.h"
- #include "qom/object.h"
--#include "hw/boards.h"
- #include "hw/qdev-core.h"
+     /* Optional and legacy devices */
+     if (x86_machine_is_acpi_enabled(x86ms)) {
+-        DeviceState *dev = qdev_new(TYPE_ACPI_GED_X86);
++        DeviceState *dev = qdev_new(TYPE_ACPI_GED);
+         qdev_prop_set_uint32(dev, "ged-event", ACPI_GED_PWR_DOWN_EVT);
+         sysbus_mmio_map(SYS_BUS_DEVICE(dev), 0, GED_MMIO_BASE);
+         /* sysbus_mmio_map(SYS_BUS_DEVICE(dev), 1, GED_MMIO_BASE_MEMHP); */
+diff --git a/hw/i386/meson.build b/hw/i386/meson.build
+index cfdbfdcbcb..ff879069c9 100644
+--- a/hw/i386/meson.build
++++ b/hw/i386/meson.build
+@@ -20,7 +20,6 @@ i386_ss.add(when: 'CONFIG_SGX', if_true: files('sgx-epc.c','sgx.c'),
+                                 if_false: files('sgx-stub.c'))
  
- /* These values are part of guest ABI, and can not be changed */
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 65a3202d3f..011d2c6c2d 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -1,6 +1,7 @@
- #include "qemu/osdep.h"
- #include "migration/vmstate.h"
- #include "hw/acpi/cpu.h"
-+#include "hw/core/cpu.h"
- #include "qapi/error.h"
- #include "qapi/qapi-events-acpi.h"
- #include "trace.h"
-diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c
-index 2d5e199ba9..3042d223c8 100644
---- a/hw/acpi/hmat.c
-+++ b/hw/acpi/hmat.c
-@@ -27,6 +27,7 @@
- #include "qemu/osdep.h"
- #include "qemu/units.h"
- #include "sysemu/numa.h"
-+#include "hw/acpi/aml-build.h"
- #include "hw/acpi/hmat.h"
- 
- /*
-diff --git a/hw/acpi/memory_hotplug.c b/hw/acpi/memory_hotplug.c
-index d926f4f77d..0b883df813 100644
---- a/hw/acpi/memory_hotplug.c
-+++ b/hw/acpi/memory_hotplug.c
-@@ -1,6 +1,7 @@
- #include "qemu/osdep.h"
- #include "hw/acpi/memory_hotplug.h"
- #include "hw/mem/pc-dimm.h"
-+#include "hw/boards.h"
- #include "hw/qdev-core.h"
- #include "migration/vmstate.h"
- #include "trace.h"
+ i386_ss.add(when: 'CONFIG_ACPI', if_true: files('acpi-common.c'))
+-i386_ss.add(when: 'CONFIG_ACPI_HW_REDUCED', if_true: files('generic_event_device_x86.c'))
+ i386_ss.add(when: 'CONFIG_PC', if_true: files(
+   'pc.c',
+   'pc_sysfw.c',
 -- 
 MST
 
