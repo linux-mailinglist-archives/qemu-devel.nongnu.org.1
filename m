@@ -2,97 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572E77B7D7C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 12:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A9817B7D81
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 12:49:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnzMr-00015b-GE; Wed, 04 Oct 2023 06:44:37 -0400
+	id 1qnzQm-0003dU-Mb; Wed, 04 Oct 2023 06:48:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qnzMg-00012e-Fp
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 06:44:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qnzQk-0003dF-5X; Wed, 04 Oct 2023 06:48:38 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qnzMd-0001ah-VO
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 06:44:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696416262;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=OvoR9a1Vl0iCq+mDQkWoWTD9UW9RXt13PsHyN3NUyYU=;
- b=fPodAmv27yv21X7gaCx3W/fk6qb1/9Zd4gZ6OrqI72ZIuzy42IK8ieH0S42HYrl/70J4qv
- v27L1jYG4FNb2lqBjIpFaaTycypOOk8751hdTJj015ngpfiYiWiT8Dhke2bFHP+EnIQ5xp
- g0p5ZQXVawMrb/KFcrKovDN/gDjJbgs=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-ED_9k5a4N2GzCtRqZbGbSw-1; Wed, 04 Oct 2023 06:44:16 -0400
-X-MC-Unique: ED_9k5a4N2GzCtRqZbGbSw-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9adc78b386cso174340266b.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 03:44:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696416255; x=1697021055;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=OvoR9a1Vl0iCq+mDQkWoWTD9UW9RXt13PsHyN3NUyYU=;
- b=xH6BXsM/TNfTBJZfF1sxCZeFEpNqeHPxR0rNo1MEZajf8r6Oci9xbHny9lDHo7Ep3L
- CXpiInUyvjhSMJIJYqRUmwEPG8RxB9nWFkT1nVUpybacKhIgMNn5a8QEmAUktxWsbb+F
- Y7BFECJH9wn/cpuGpP2zdXvSOSYRYXlE9R2IR6jPHU1yzZhpa6PgPLm5SG46jrQwoXPh
- jyAXEIoDSMM84aKjFST+OgdNZ7lc/pMxpJEYtr9XHMM8QgwwaL4nv6FmE1lQ6sP4P+t3
- KjaQ9dRbo7pTwU6UBwYAqJ7mek2qWRMA9KImdCs/7LIwe2rW8wfoT6hOtiu1uFq97TTq
- Ii/A==
-X-Gm-Message-State: AOJu0YzqEQWjV9CCH9Wd5WlXRJzorJxjJDyoW6FyqhKUxcb6Jh107sy/
- ljS7M0/a6chXB4BvzQacDJCrdc7uNbtk8w/0QjSDCjvb+DprU+0ohhBkz8S7jcY5xzhJe4ZAGN2
- S2Udzk1S2TwLR9Ws=
-X-Received: by 2002:a17:906:5193:b0:9ae:5848:3f8e with SMTP id
- y19-20020a170906519300b009ae58483f8emr1717315ejk.49.1696416255230; 
- Wed, 04 Oct 2023 03:44:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEKhaxuYkQ6lZ/9Er/zDarCccZUDfhzj1F2fNZyds64x4TIdwJqlTeAiUO18U1pOFDA32dlZQ==
-X-Received: by 2002:a17:906:5193:b0:9ae:5848:3f8e with SMTP id
- y19-20020a170906519300b009ae58483f8emr1717298ejk.49.1696416254862; 
- Wed, 04 Oct 2023 03:44:14 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
- by smtp.gmail.com with ESMTPSA id
- i12-20020a1709063c4c00b0099275c59bc9sm2625903ejg.33.2023.10.04.03.44.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 03:44:14 -0700 (PDT)
-Message-ID: <346cfde5-82af-724e-cc02-8f55d06e67ee@redhat.com>
-Date: Wed, 4 Oct 2023 12:44:12 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/3] vhost-user: do not send RESET_OWNER on device reset
-To: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- Thomas Huth <thuth@redhat.com>, Raphael Norwitz
- <raphael.norwitz@nutanix.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, eperezma@redhat.com,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>
-References: <20231004014532.1228637-1-stefanha@redhat.com>
- <20231004014532.1228637-2-stefanha@redhat.com>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qnzQh-0002Gv-7R; Wed, 04 Oct 2023 06:48:37 -0400
+Received: from lhrpeml500006.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0rwG6HVCz6K67l;
+ Wed,  4 Oct 2023 18:46:38 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500006.china.huawei.com (7.191.161.198) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Wed, 4 Oct 2023 11:48:17 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Wed, 4 Oct 2023 11:48:17 +0100
+To: Gavin Shan <gshan@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "david@redhat.com"
+ <david@redhat.com>, "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>, "oliver.upton@linux.dev"
+ <oliver.upton@linux.dev>, "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "mst@redhat.com" <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "rafael@kernel.org" <rafael@kernel.org>, "alex.bennee@linaro.org"
+ <alex.bennee@linaro.org>, "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
+ AddressSpace
+Thread-Topic: [PATCH V2 08/10] physmem: Add helper function to destroy CPU
+ AddressSpace
+Thread-Index: AQHZ8zQ7yGl3U6l090SRw8cLGCyLZ7A3POkAgAI4RuA=
+Date: Wed, 4 Oct 2023 10:48:17 +0000
+Message-ID: <81113790e5ae41b792cef94024c27d38@huawei.com>
+References: <20230930001933.2660-1-salil.mehta@huawei.com>
+ <20230930001933.2660-9-salil.mehta@huawei.com>
+ <bc5e5558-8899-30d1-e64a-c1012437766e@redhat.com>
+In-Reply-To: <bc5e5558-8899-30d1-e64a-c1012437766e@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20231004014532.1228637-2-stefanha@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -31
-X-Spam_score: -3.2
-X-Spam_bar: ---
-X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.09, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.174.92]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -106,148 +90,84 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.10.23 03:45, Stefan Hajnoczi wrote:
-> The VHOST_USER_RESET_OWNER message is deprecated in the spec:
->
->     This is no longer used. Used to be sent to request disabling all
->     rings, but some back-ends interpreted it to also discard connection
->     state (this interpretation would lead to bugs).  It is recommended
->     that back-ends either ignore this message, or use it to disable all
->     rings.
-
-According to the spec, it is then indeed better to not call it in 
-vhost_user_reset_device, because it seems like it would be interpreted 
-as something completely different.
-
-However, between the three back-end implementations of vhost-user I know 
-of (libvhost-user, DPDK, the vhost crates; four if you count RSD), none 
-implement RESET_DEVICE.  libvhost-user and DPDK do implement 
-RESET_OWNER, though, and they both do it by resetting the device, not by 
-disabling any vring.  The vhost crate also implements RESET_OWNER, but 
-it doesn’t do anything but forward it as such to the actual device 
-implementation (virtiofsd doesn’t implement this function, so ignores 
-it).  It does document that it would disable all vrings, but does so in 
-the past and has marked it deprecated (ever since the method was 
-introduced in the fourth commit to the repository, making it extremely 
-unlikely that anyone would implement it).
-
-So I would like to know why the spec says that it would disable all 
-vrings, when none of the implementations (qemu, libvhost-user, DPDK) 
-agree on that.  Let me look it up:
-
-Before commit c61f09ed855, it did say “stopping” instead of 
-“disabling”.  The commit doesn’t explain why it changed this. Commit 
-a586e65bbd0 (just a week prior) deprecated the command, changing it from 
-“connection is about to be closed, [front-end] will no longer own this 
-connection” to “deprecated, used to be sent to request stopping all 
-vrings”.  To me, the front-end closing the connection sounds like a good 
-point to reset, which would indeed stop all vrings, but not just that.  
-Notably, qemu agrees, because RESET_OWNER is used only in the 
-vhost_user_reset_device() function. a586e65bbd0^ removed that function’s 
-use, though, specifically because it would cause a reset, when the 
-intention was just to stop.
-
-So it sounds to me like “used to be sent to request stopping all vrings” 
-is rather what vhost_net wanted, but specifically not what the message 
-did, which was anything between nothing and a reset, I presume (because 
-it never specified what the back-end was supposed to do, though 
-apparently libvhost-user and DPDK both took it to mean reset).  Why it 
-was then changed to “disabling”, I absolutely cannot say.
-
-Now, the code change here is indeed effectively a no-op, as you deduce 
-below, but in the context of the whole series the situation is a bit 
-different: As far as I understand, the point is to have guest-initiated 
-resets be forwarded to back-ends.  But by removing the RESET_OWNER 
-fallback, no back-end will actually do a reset still.
-
-I understand that as per the specification, using RESET_OWNER for 
-resetting is wrong.  But all implementations that implemented it before 
-it was deprecated do interpret it as a reset, so I don’t think using it 
-as a fallback is actually wrong.
-
-Hanna
-
-> The only caller of vhost_user_reset_device() is vhost_user_scsi_reset().
-> It checks that F_RESET_DEVICE was negotiated before calling it:
->
->    static void vhost_user_scsi_reset(VirtIODevice *vdev)
->    {
->        VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
->        struct vhost_dev *dev = &vsc->dev;
->
->        /*
->         * Historically, reset was not implemented so only reset devices
->         * that are expecting it.
->         */
->        if (!virtio_has_feature(dev->protocol_features,
->                                VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
->            return;
->        }
->
->        if (dev->vhost_ops->vhost_reset_device) {
->            dev->vhost_ops->vhost_reset_device(dev);
->        }
->    }
->
-> Therefore VHOST_USER_RESET_OWNER is actually never sent by
-> vhost_user_reset_device(). Remove the dead code. This effectively moves
-> the vhost-user protocol specific code from vhost-user-scsi.c into
-> vhost-user.c where it belongs.
->
-> Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-> ---
->   hw/scsi/vhost-user-scsi.c |  9 ---------
->   hw/virtio/vhost-user.c    | 13 +++++++++----
->   2 files changed, 9 insertions(+), 13 deletions(-)
->
-> diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-> index ee99b19e7a..8582b2e8ab 100644
-> --- a/hw/scsi/vhost-user-scsi.c
-> +++ b/hw/scsi/vhost-user-scsi.c
-> @@ -71,15 +71,6 @@ static void vhost_user_scsi_reset(VirtIODevice *vdev)
->       VHostSCSICommon *vsc = VHOST_SCSI_COMMON(vdev);
->       struct vhost_dev *dev = &vsc->dev;
->   
-> -    /*
-> -     * Historically, reset was not implemented so only reset devices
-> -     * that are expecting it.
-> -     */
-> -    if (!virtio_has_feature(dev->protocol_features,
-> -                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
-> -        return;
-> -    }
-> -
->       if (dev->vhost_ops->vhost_reset_device) {
->           dev->vhost_ops->vhost_reset_device(dev);
->       }
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 8dcf049d42..7bed9ad7d5 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -1492,12 +1492,17 @@ static int vhost_user_reset_device(struct vhost_dev *dev)
->   {
->       VhostUserMsg msg = {
->           .hdr.flags = VHOST_USER_VERSION,
-> +        .hdr.request = VHOST_USER_RESET_DEVICE,
->       };
->   
-> -    msg.hdr.request = virtio_has_feature(dev->protocol_features,
-> -                                         VHOST_USER_PROTOCOL_F_RESET_DEVICE)
-> -        ? VHOST_USER_RESET_DEVICE
-> -        : VHOST_USER_RESET_OWNER;
-> +    /*
-> +     * Historically, reset was not implemented so only reset devices
-> +     * that are expecting it.
-> +     */
-> +    if (!virtio_has_feature(dev->protocol_features,
-> +                            VHOST_USER_PROTOCOL_F_RESET_DEVICE)) {
-> +        return -ENOSYS;
-> +    }
->   
->       return vhost_user_write(dev, &msg, NULL, 0);
->   }
-
+SGkgR2F2aW4sDQpSZXZpc2l0ZWQgeW91ciBjb21tZW50cyBhZ2Fpbi4NCg0KPiBGcm9tOiBHYXZp
+biBTaGFuIDxnc2hhbkByZWRoYXQuY29tPg0KPiBTZW50OiBUdWVzZGF5LCBPY3RvYmVyIDMsIDIw
+MjMgMjozNyBBTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+OyBx
+ZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+IGFybUBub25nbnUub3JnDQo+IENjOiBtYXpA
+a2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBKb25hdGhhbiBDYW1lcm9uDQo+
+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFsaXNpQGtlcm5lbC5vcmc7DQo+
+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5kZXJzb25AbGluYXJvLm9yZzsN
+Cj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxpbnV4LmRldjsgZGF2aWRAcmVk
+aGF0LmNvbTsNCj4gcGhpbG1kQGxpbmFyby5vcmc7IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xp
+dmVyLnVwdG9uQGxpbnV4LmRldjsNCj4gcGJvbnppbmlAcmVkaGF0LmNvbTsgbXN0QHJlZGhhdC5j
+b207IHdpbGxAa2VybmVsLm9yZzsgcmFmYWVsQGtlcm5lbC5vcmc7DQo+IGFsZXguYmVubmVlQGxp
+bmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFycmVuQG9zLmFtcGVyZWNvbXB1
+dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207DQo+IHZpc2hudUBvcy5hbXBl
+cmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNvbTsNCj4gbWlndWVsLmx1aXNA
+b3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1a2VxaWFuDQo+IDx6aHVrZXFp
+YW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2FuZ3hpb25nZmVuZzJAaHVhd2Vp
+LmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1YXdlaS5jb20+OyBqaWFrZXJu
+ZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsgbGl4aWFuZ2xhaUBsb29uZ3Nv
+bi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+IFN1YmplY3Q6IFJlOiBbUEFU
+Q0ggVjIgMDgvMTBdIHBoeXNtZW06IEFkZCBoZWxwZXIgZnVuY3Rpb24gdG8gZGVzdHJveSBDUFUN
+Cj4gQWRkcmVzc1NwYWNlDQo+IA0KPiBPbiA5LzMwLzIzIDEwOjE5LCBTYWxpbCBNZWh0YSB3cm90
+ZToNCj4gPiBWaXJ0dWFsIENQVSBIb3QtdW5wbHVnIGxlYWRzIHRvIHVucmVhbGl6YXRpb24gb2Yg
+YSBDUFUgb2JqZWN0LiBUaGlzIGFsc28NCj4gPiBpbnZvbHZlcyBkZXN0cnVjdGlvbiBvZiB0aGUg
+Q1BVIEFkZHJlc3NTcGFjZS4gQWRkIGNvbW1vbiBmdW5jdGlvbiB0byBoZWxwDQo+ID4gZGVzdHJv
+eSB0aGUgQ1BVIEFkZHJlc3NTcGFjZS4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IFNhbGlsIE1l
+aHRhIDxzYWxpbC5tZWh0YUBodWF3ZWkuY29tPg0KPiA+IC0tLQ0KPiA+ICAgaW5jbHVkZS9leGVj
+L2NwdS1jb21tb24uaCB8ICA4ICsrKysrKysrDQo+ID4gICBpbmNsdWRlL2h3L2NvcmUvY3B1Lmgg
+ICAgIHwgIDEgKw0KPiA+ICAgc29mdG1tdS9waHlzbWVtLmMgICAgICAgICB8IDI1ICsrKysrKysr
+KysrKysrKysrKysrKysrKysNCj4gPiAgIDMgZmlsZXMgY2hhbmdlZCwgMzQgaW5zZXJ0aW9ucygr
+KQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvZXhlYy9jcHUtY29tbW9uLmggYi9pbmNs
+dWRlL2V4ZWMvY3B1LWNvbW1vbi5oDQo+ID4gaW5kZXggNDE3ODhjMGJkZC4uZWI1NmEyMjhhMiAx
+MDA2NDQNCj4gPiAtLS0gYS9pbmNsdWRlL2V4ZWMvY3B1LWNvbW1vbi5oDQo+ID4gKysrIGIvaW5j
+bHVkZS9leGVjL2NwdS1jb21tb24uaA0KPiA+IEBAIC0xMjAsNiArMTIwLDE0IEBAIHNpemVfdCBx
+ZW11X3JhbV9wYWdlc2l6ZV9sYXJnZXN0KHZvaWQpOw0KPiA+ICAgICovDQo+ID4gICB2b2lkIGNw
+dV9hZGRyZXNzX3NwYWNlX2luaXQoQ1BVU3RhdGUgKmNwdSwgaW50IGFzaWR4LA0KPiA+ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgIGNvbnN0IGNoYXIgKnByZWZpeCwgTWVtb3J5UmVnaW9u
+ICptcik7DQo+ID4gKy8qKg0KPiA+ICsgKiBjcHVfYWRkcmVzc19zcGFjZV9kZXN0cm95Og0KPiA+
+ICsgKiBAY3B1OiBDUFUgZm9yIHdoaWNoIGFkZHJlc3Mgc3BhY2UgbmVlZHMgdG8gYmUgZGVzdHJv
+eWVkDQo+ID4gKyAqIEBhc2lkeDogaW50ZWdlciBpbmRleCBvZiB0aGlzIGFkZHJlc3Mgc3BhY2UN
+Cj4gPiArICoNCj4gPiArICogTm90ZSB0aGF0IHdpdGggS1ZNIG9ubHkgb25lIGFkZHJlc3Mgc3Bh
+Y2UgaXMgc3VwcG9ydGVkLg0KPiA+ICsgKi8NCj4gPiArdm9pZCBjcHVfYWRkcmVzc19zcGFjZV9k
+ZXN0cm95KENQVVN0YXRlICpjcHUsIGludCBhc2lkeCk7DQo+ID4NCj4gPiAgIHZvaWQgY3B1X3Bo
+eXNpY2FsX21lbW9yeV9ydyhod2FkZHIgYWRkciwgdm9pZCAqYnVmLA0KPiA+ICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIGh3YWRkciBsZW4sIGJvb2wgaXNfd3JpdGUpOw0KPiA+IGRpZmYg
+LS1naXQgYS9pbmNsdWRlL2h3L2NvcmUvY3B1LmggYi9pbmNsdWRlL2h3L2NvcmUvY3B1LmgNCj4g
+PiBpbmRleCA2NDhiNWIzNTg2Li42NWQyYWU0NTgxIDEwMDY0NA0KPiA+IC0tLSBhL2luY2x1ZGUv
+aHcvY29yZS9jcHUuaA0KPiA+ICsrKyBiL2luY2x1ZGUvaHcvY29yZS9jcHUuaA0KPiA+IEBAIC0z
+NTUsNiArMzU1LDcgQEAgc3RydWN0IENQVVN0YXRlIHsNCj4gPiAgICAgICBRU0lNUExFUV9IRUFE
+KCwgcWVtdV93b3JrX2l0ZW0pIHdvcmtfbGlzdDsNCj4gPg0KPiA+ICAgICAgIENQVUFkZHJlc3NT
+cGFjZSAqY3B1X2FzZXM7DQo+ID4gKyAgICBpbnQgY3B1X2FzZXNfY291bnQ7DQo+ID4gICAgICAg
+aW50IG51bV9hc2VzOw0KPiA+ICAgICAgIEFkZHJlc3NTcGFjZSAqYXM7DQo+ID4gICAgICAgTWVt
+b3J5UmVnaW9uICptZW1vcnk7DQo+IA0KPiBAbnVtX2FzZXMgYW5kIEBjcHVfYXNlc19jb3VudCBh
+cmUgZHVwbGljYXRlIHRvIGVhY2ggb3RoZXIgdG8gc29tZSBleHRlbnQuDQo+IFRoZQ0KPiByZWFs
+IHByb2JsZW0gaXMgQGNwdV9hc2VzIGlzIGFsbG9jYXRlZCBhdCBvbmNlIGFuZCB3ZSBuZWVkIHRv
+IG1ha2UgdGhlDQo+IGFsbG9jYXRpb24NCj4gc3BhcnNlLiBJbiB0aGF0IHdheSwgZWFjaCBDUFUg
+YWRkcmVzcyBzcGFjZSBpcyBpbmRlcGVuZGVudCBhbmQgY2FuIGJlDQo+IGRlc3Ryb3llZA0KPiBp
+bmRlcGVuZGVudGx5Lg0KDQoocmV2aXNpdGluZyB0aGlzIGNvbW1lbnQgaS5lLiAnc3BhcnNlJykN
+Cg0KSWYgeW91IG1lYW50LCB0aGUgb3JkZXIgb2YgaW5pdGlhbGl6YXRpb24gYW5kIGRlc3RydWN0
+aW9uIG1pZ2h0IG5vdCBiZSBzYW1lDQp0aGVuIHllcywgQWRkcmVzc1NwYWNlIGNhbiBiZSAqY29u
+ZGl0aW9uYWxseSogYWxsb2NhdGVkIGR1cmluZyBDUFUgcmVhbGl6YXRpb24NCnBoYXNlIGFuZCBz
+aG91bGQgYmUgKmNvbmRpdGlvbmFsbHkqIGRlc3Ryb3llZCBhcyB3ZWxsIGR1cmluZyBDUFUNCnVu
+LXJlYWxpemF0aW9uIHBoYXNlLiBMYXRlciBtZWFucywgaXQgaXMgbm90IHNhZmUgdG8gYXNzdW1l
+IHRoYXQgaW5kZXhlcyB0bw0KdGhlIGFycmF5IG9mIEFkZHJlc3NTcGFjZSBtaWdodCBiZSBjb25z
+ZWN1dGl2ZS4gSGVuY2UsIHRoZWlyIGRlc3RydWN0aW9uDQphdCBvbmNlIGNhbiBjcmVhdGUgcHJv
+YmxlbXMuIA0KDQoNCmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwvMjAyMzA5MjYx
+MDA0MzYuMjgyODQtMS1zYWxpbC5tZWh0YUBodWF3ZWkuY29tL1QvI200NGI4MWZiYmJhMzNhMzQ2
+ZGQyMjkyMjU2MDEyZjg2ZWY3YzhlNzYxDQoNCg0KDQogVGhlIHNwYXJzZSBhbGxvY2F0aW9uIGZv
+ciB0aGUgQ1BVIGFkZHJlc3Mgc3BhY2UgY2FuIGJlIGRvbmUNCj4gaW4NCj4gY3B1X2FkZHJlc3Nf
+c3BhY2VfaW5pdCgpIGxpa2UgYmVsb3c6DQo+IA0KPiAjZGVmaW5lIENQVV9BRERSRVNTX1NQQUNF
+X01BWCA4DQo+IA0KPiBzdHJ1Y3QgQ1BVU3RhdGUgew0KPiAgICAgIENQVUFkZHJlc3NTcGFjZSAq
+Y3B1X2FzZXNbQ1BVX0FERFJFU1NfU1BBQ0VfTUFYXTsNCj4gfQ0KDQpZZXMsIHRoaXMgd2lsbCBh
+bHNvIHdvcmsgYnV0IHdlIHdpbGwgZW5kIHVwIHJlZmFjdG9yaW5nDQpleGlzdGluZyBpbml0aWFs
+aXphdGlvbiBpbnRlcmZhY2UuIERvIHdlIHJlcXVpcmUgYWxsIG9mIHRoaXMNCndoZW4gY291bnRl
+ciBiYXNlZCBhcHByb2FjaCBhbHNvIHdvcmtzIHdpdGhvdXQgY2hhbmdpbmcNCmFueXRoaW5nPw0K
+DQoNClRoYW5rcw0KU2FsaWwuDQo=
 
