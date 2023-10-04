@@ -2,87 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBD47B7EAA
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20B9C7B7EC3
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:09:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0cC-0005Gq-6p; Wed, 04 Oct 2023 08:04:32 -0400
+	id 1qo0gT-00063Q-NI; Wed, 04 Oct 2023 08:08:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0b4-0002ky-Ko
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:03:22 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0aq-0001Uw-F1
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:03:22 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso20901015e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:03:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696420986; x=1697025786; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=5M6K0MFXwRhUOt/MGBFSyTxLejRBkATmsturnncN2LA=;
- b=Fwm/tTuxDC7F+9B+yUKSfmRSu9bBKOUqHXhK4C+kLPIAuSJgWnWbIClhdFIwF9f8kQ
- IE1n751po9Jzf1KqSz/GgbBxx/TcTWn/DYYfSJhXhutpU2j9senhs4qYC9vwcO0vcJZZ
- dO8Ap5y72u8h4hwrcNGpK8ogLNZ5IBhQ2eK8u17zjFClguYsWc8iHS4Qwpkln+X9ZaaO
- lp0XfagAis5sEtFpeHmxSnI5gn00ps/tqn5DyGjLh8Uz1c/OroAlfhx4IHUN81susyVS
- MAj4puH5z/xiG5PHcWrBH3AdnUla2QGjO8JV7M+nEzgr/dXSzJ2DL9X168vN7Luf/WTA
- 61Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696420986; x=1697025786;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=5M6K0MFXwRhUOt/MGBFSyTxLejRBkATmsturnncN2LA=;
- b=fqFVlZpGTALhecjPNLUvO8bd9+q6Icnh95Q808bFYHY72CIbxNCVeuFPKPtjmC8M5K
- xuLpH2JU1xcuUg5eV4fZ+lmFQFdWxmARSv95Ff8Qy2duXWW6xaLkZ9mj/6+2CL267lZG
- RhAWIm9jdT6WICYXybKrG14EKn8T1+hKK/oXLsFZTrgMo7QKDOYeoErdD6fwSts02qzV
- tC9URunCFPJH4ws+Lr1VWqRBofI2bnThRYxfk7oiey8mmcz8/WYONwbQ55KbwBLmMgQ9
- 40/A7s+REmxJg/2gcEFg1Zrbet0PcRViIah8IzQrf3ZSnScrpphteOgNBM5p30k2QNqX
- f3sA==
-X-Gm-Message-State: AOJu0Yz5eIEb36I3px+w3G5G5R9nU/bzC2MZ+FhMIDpm4+y+CTuS+w6i
- 3JimUcMskne5w/uEmxhWNYxR5URvGMoz5yPFi8Q=
-X-Google-Smtp-Source: AGHT+IHt+fi1D5aZxOAg0Xo9Idt6UvjbsjOm2b+G8uLHj+jcEY5t9ehmyzyLQ1Ux+UPZ8vUkDXIRpA==
-X-Received: by 2002:a05:600c:21d1:b0:406:53ab:a9af with SMTP id
- x17-20020a05600c21d100b0040653aba9afmr2070621wmj.10.1696420985646; 
- Wed, 04 Oct 2023 05:03:05 -0700 (PDT)
-Received: from [192.168.69.115] (5ep85-h01-176-173-163-52.dslam.bbox.fr.
- [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- x9-20020a05600c21c900b003fefe70ec9csm1365054wmj.10.2023.10.04.05.03.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 05:03:05 -0700 (PDT)
-Message-ID: <e3341fd8-b122-ac6a-4a55-07fa80c5142f@linaro.org>
-Date: Wed, 4 Oct 2023 14:03:03 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qo0gO-000638-FF
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:08:54 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qo0gM-00068O-9k
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:08:52 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 60C0674632B;
+ Wed,  4 Oct 2023 14:08:02 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 220CF7456AA; Wed,  4 Oct 2023 14:08:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 1FDFD745681;
+ Wed,  4 Oct 2023 14:08:02 +0200 (CEST)
+Date: Wed, 4 Oct 2023 14:08:02 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: Re: [PATCH] hw/isa/vt82c686: Respect SCI interrupt assignment
+In-Reply-To: <20231003214437.29302-1-shentey@gmail.com>
+Message-ID: <f5b9d133-864a-fd13-9bc5-523e1ad77efe@eik.bme.hu>
+References: <20231003214437.29302-1-shentey@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 13/13] system: Rename softmmu/ directory as system/
-Content-Language: en-US
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, Thomas Huth <thuth@redhat.com>,
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>
-References: <20231004090629.37473-1-philmd@linaro.org>
- <20231004090629.37473-14-philmd@linaro.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231004090629.37473-14-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,50 +61,137 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/10/23 11:06, Philippe Mathieu-Daudé wrote:
-> The softmmu/ directory contains files specific to system
-> emulation. Rename it as system/. Update meson rules, the
-> MAINTAINERS file and all the documentation and comments.
-> 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+On Tue, 3 Oct 2023, Bernhard Beschow wrote:
+> According to the datasheet, SCI interrupts of the power management function
+> aren't triggered through the PCI pins but rather directly to the integrated PIC.
+> The routing is configurable through the ACPI interrupt select register at offset
+> 42 in the PCI configuration space of the ISA function.
+
+This should be config reg 42 of the PM function 4 not ISA function 0 but 
+the code seems to do it right just this description is wrong.
+
+>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+
+You could cc me on vt82c686 too as now I have two machines using these 
+(one is not yet upstream).
+
 > ---
+> hw/isa/vt82c686.c | 43 +++++++++++++++++++++++++++++++------------
+> 1 file changed, 31 insertions(+), 12 deletions(-)
+>
+> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+> index 57bdfb4e78..2988ad1eda 100644
+> --- a/hw/isa/vt82c686.c
+> +++ b/hw/isa/vt82c686.c
+> @@ -46,6 +46,8 @@ struct ViaPMState {
+>     ACPIREGS ar;
+>     APMState apm;
+>     PMSMBus smb;
+> +
 
->   include/sysemu/runstate-action.h        |  2 +-
+No empty line needed here. It you want to, you could add an empty line 
+after the first member and rename that to parent_obj as per new convention 
+while you're changing this object state.
 
->   rename {softmmu => system}/timers-state.h (100%)
->   create mode 100644 system/trace.h
->   rename {softmmu => system}/arch_init.c (100%)
->   rename {softmmu => system}/async-teardown.c (100%)
->   rename {softmmu => system}/balloon.c (100%)
->   rename {softmmu => system}/bootdevice.c (100%)
->   rename {softmmu => system}/cpu-throttle.c (100%)
->   rename {softmmu => system}/cpu-timers.c (100%)
->   rename {softmmu => system}/cpus.c (100%)
->   rename {softmmu => system}/datadir.c (100%)
->   rename {softmmu => system}/device_tree.c (100%)
->   rename {softmmu => system}/dirtylimit.c (100%)
->   rename {softmmu => system}/dma-helpers.c (100%)
->   rename {softmmu => system}/globals.c (100%)
->   rename {softmmu => system}/icount.c (100%)
->   rename {softmmu => system}/ioport.c (100%)
->   rename {softmmu => system}/main.c (100%)
->   rename {softmmu => system}/memory.c (100%)
->   rename {softmmu => system}/memory_mapping.c (100%)
->   rename {softmmu => system}/physmem.c (99%)
->   rename {softmmu => system}/qdev-monitor.c (100%)
->   rename {softmmu => system}/qemu-seccomp.c (100%)
->   rename {softmmu => system}/qtest.c (100%)
->   rename {softmmu => system}/rtc.c (100%)
->   rename {softmmu => system}/runstate-action.c (100%)
->   rename {softmmu => system}/runstate-hmp-cmds.c (100%)
->   rename {softmmu => system}/runstate.c (100%)
->   rename {softmmu => system}/tpm-hmp-cmds.c (100%)
->   rename {softmmu => system}/tpm.c (100%)
->   rename {softmmu => system}/vl.c (100%)
->   rename {softmmu => system}/watchpoint.c (100%)
->   rename {softmmu => system}/meson.build (100%)
->   rename {softmmu => system}/trace-events (100%)
+> +    qemu_irq irq;
+> };
+>
+> static void pm_io_space_update(ViaPMState *s)
+> @@ -148,18 +150,7 @@ static void pm_update_sci(ViaPMState *s)
+>                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
+>                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
+>                    ACPI_BITMASK_TIMER_ENABLE)) != 0);
+> -    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
+> -        /*
+> -         * FIXME:
+> -         * Fix device model that realizes this PM device and remove
+> -         * this work around.
+> -         * The device model should wire SCI and setup
+> -         * PCI_INTERRUPT_PIN properly.
+> -         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
+> -         * work around.
+> -         */
+> -        pci_set_irq(&s->dev, sci_level);
+> -    }
+> +    qemu_set_irq(s->irq, sci_level);
+>     /* schedule a timer interruption if needed */
+>     acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
+>                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
+> @@ -213,6 +204,13 @@ static void via_pm_realize(PCIDevice *dev, Error **errp)
+>     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
+> }
+>
+> +static void via_pm_init(Object *obj)
+> +{
+> +    ViaPMState *s = VIA_PM(obj);
+> +
+> +    qdev_init_gpio_out(DEVICE(obj), &s->irq, 1);
+> +}
+> +
+> typedef struct via_pm_init_info {
+>     uint16_t device_id;
+> } ViaPMInitInfo;
+> @@ -238,6 +236,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
+> static const TypeInfo via_pm_info = {
+>     .name          = TYPE_VIA_PM,
+>     .parent        = TYPE_PCI_DEVICE,
+> +    .instance_init = via_pm_init,
+>     .instance_size = sizeof(ViaPMState),
+>     .abstract      = true,
+>     .interfaces = (InterfaceInfo[]) {
+> @@ -568,9 +567,25 @@ static const VMStateDescription vmstate_via = {
+>     }
+> };
+>
+> +static void via_isa_set_pm_irq(void *opaque, int n, int level)
+> +{
+> +    ViaISAState *s = opaque;
+> +    uint8_t irq = pci_get_byte(s->pm.dev.config + 0x42) & 0xf;
+> +
+> +    if (irq == 2) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is reserved");
+> +        return;
+> +    }
+> +
+> +    if (irq != 0) {
+> +        qemu_set_irq(s->isa_irqs_in[irq], level);
+> +    }
+> +}
+> +
+> static void via_isa_init(Object *obj)
+> {
+>     ViaISAState *s = VIA_ISA(obj);
+> +    DeviceState *dev = DEVICE(s);
 
-Maybe I should also move include/sysemu/ -> include/system/
-to keep it coherent?
+No need to add local variable for single use unless you expect to have 
+more of these later but for single use you caould just use DEVICE(obj or 
+s) in the call below.
+
+Other than these small nits:
+
+Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
+
+>
+>     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
+>     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
+> @@ -578,6 +593,8 @@ static void via_isa_init(Object *obj)
+>     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
+>     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
+>     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
+> +
+> +    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
+> }
+>
+> static const TypeInfo via_isa_info = {
+> @@ -704,6 +721,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+>     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
+>         return;
+>     }
+> +    qdev_connect_gpio_out(DEVICE(&s->pm), 0,
+> +                          qdev_get_gpio_in_named(DEVICE(d), "sci", 0));
+>
+>     /* Function 5: AC97 Audio */
+>     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
+>
 
