@@ -2,83 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76A67B78D1
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 09:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A117B78D4
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 09:37:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwOX-00068M-EG; Wed, 04 Oct 2023 03:34:09 -0400
+	id 1qnwQs-0000PW-S5; Wed, 04 Oct 2023 03:36:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qnwOV-00065r-AU
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 03:34:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eperezma@redhat.com>)
- id 1qnwOS-0004Es-Rm
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 03:34:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696404843;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6afriAIYFf2D4KsGakkmV7GcA4HGH/FO1QjI70OKrXk=;
- b=As8BzV4sguLxf+B6qWpXPdOOCbi6p+Mt01dLs5f7xv2qz+Pmzqtq73d16v7mfiQkHjouya
- /BR/2oID8JamkRMr+Ssj55yAn3+g4slbnh1K7Dpr9vCHgNTAbjbxWjnr2xYMV7862zCMaW
- QuTrO5We7K4due87wMMvh41lDn88RC4=
-Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
- [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-255-YBgHzhv2Mc-JakK5SWlSEg-1; Wed, 04 Oct 2023 03:33:51 -0400
-X-MC-Unique: YBgHzhv2Mc-JakK5SWlSEg-1
-Received: by mail-yw1-f197.google.com with SMTP id
- 00721157ae682-5a21c283542so27098127b3.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 00:33:51 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qnwQq-0000PH-8L
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 03:36:32 -0400
+Received: from mail-ot1-x32d.google.com ([2607:f8b0:4864:20::32d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
+ id 1qnwQn-0004lQ-Fr
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 03:36:31 -0400
+Received: by mail-ot1-x32d.google.com with SMTP id
+ 46e09a7af769-6beff322a97so1175280a34.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 00:36:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696404987; x=1697009787;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+ :date:message-id:reply-to;
+ bh=gcxx6dsVALTb+rscrLWDR1ktx6okwFHk9uAzWDT/pAs=;
+ b=r2iBGnZFbbMmCIcJ+SNUvKholbFcKAFmcYlq6usnFBlrnOJEKf/evieCH7RS9Sv3zv
+ 1mc1MLvmvyf0uIGExaZKns6wvttede7OwjiG+w8MrOo387jAihKETN++StCzxnDUm22F
+ 6ggu66ao/Zvugz5duMc2ZK85gv9l/d/nXtET6ypHMnW96deELCB3C2/KFXLmqce6hzZf
+ v6vvBNBBdqL3eb3PFDWV1ryB9qnOcDIlBKGCfJqIFxSLsfICBkLkHTGojPo680NeV1/k
+ kRlCiQUF+X/WpDuFsM46fByRez4pOg0y4ivZZKTjusJUWy/zo5za4oeQUzEgPhwiOJwN
+ RwDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696404831; x=1697009631;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6afriAIYFf2D4KsGakkmV7GcA4HGH/FO1QjI70OKrXk=;
- b=qP1uks1NgQUl8wqEv33ILSQogzoiO39ya04NLgKUBkh6nYHu4f+4ybmEY51Tus0bWo
- wrj3WjFogL1pn0iKREbCBYrjBFxXKzGb5d95BIEfI4uCB/gz495Kdvh9pvl3Oz3blH2K
- 6Wavd7a1XMHV2F4fz4TCiyKCBsMzEvREXQSK0yLirpit4zQXNLktnddM+YvnLhpfRkkE
- vXJo62o0mg0qqQSBm4+CPeJwb8/oeTIM/P9sc4z5AcV6yr+/Ud50Bs6Pf9VVakm4I7o1
- zoqcjPvdQd2YeWaQzOVu1Cz2YZhgFS4DrgJ5LcOxDMZjArcTZbiv/DLnnsHRbfPHzZHI
- ZEUg==
-X-Gm-Message-State: AOJu0YzE0Ctuxvc9XUmCvk8jmrkeKebi0MFTFtLTAqy3fqExVkBed+WW
- 7CGRYXaCeH7lVVCVvhHsLJMBVQeHUNt6KIsICj4ib1V09e5500ENJlEFcg2CxJvCecaKj69829t
- ZWkc+cDoqd123FiVXzfZqALv6nSUcoMo=
-X-Received: by 2002:a81:6d17:0:b0:5a1:d398:ff7a with SMTP id
- i23-20020a816d17000000b005a1d398ff7amr1693812ywc.13.1696404831080; 
- Wed, 04 Oct 2023 00:33:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExWxy0BEmt72f41BI27y5IGPU8u4WWolh7Fc7sMSfj2+E3nO6e6pwQbdjAUQzQbEfHzzhBccD/U8GrhHfOgis=
-X-Received: by 2002:a81:6d17:0:b0:5a1:d398:ff7a with SMTP id
- i23-20020a816d17000000b005a1d398ff7amr1693794ywc.13.1696404830664; Wed, 04
- Oct 2023 00:33:50 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696404987; x=1697009787;
+ h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=gcxx6dsVALTb+rscrLWDR1ktx6okwFHk9uAzWDT/pAs=;
+ b=p7Jj4PMb0coc8rKkmpFev5nOc9/4+SkBDVMw1byMhVB3hQXmSJ9wrWeVnLoWmiCnGE
+ r/RsV3xK0Eoz48BqVbXZNlo8pyAuHy5GDiFlXC71VWQVHQDHMXpaAynGBq1MdQCvH0NW
+ MvSK9m1DBighE0mJBcIvpxm+wbZUbazjmFuORu6ErK61dZcYWQvwWLN7CRLvs3yd7fAP
+ KGTRbIZRrKH/fOyIptMxugAu73ETWRQDYnaqtMkhnr1FNAl/TXoonKepWksAMyK0gxov
+ iTpgvA8YATfBuKh5VudAP/NbspZarYhrizS9R56tjR/mbKQO0gDS6+1KP4VcaysTIw1c
+ 2zbQ==
+X-Gm-Message-State: AOJu0YxtraENjjfgyaGBe4u+l0e7w6nLhxEyy8TO6ezFDGfanH31Zt28
+ JX+AMyGUYVc192/xFGGc0rFbe/sF80eQKWx68tuwzQ==
+X-Google-Smtp-Source: AGHT+IHNkJpyHPhAUz7MGxd2P/FBYoTvVO7vi3xbnnYwfITWpZe1/z3OaIeRGnumwxJSYP2a8nbYYYtKaVCB7HVPi2c=
+X-Received: by 2002:a05:6870:3310:b0:1d5:cdf7:bd95 with SMTP id
+ x16-20020a056870331000b001d5cdf7bd95mr1860975oae.16.1696404987540; Wed, 04
+ Oct 2023 00:36:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1693287885.git.yin31149@gmail.com>
- <f25fea0b0aed78bad2dd5744a4cc5538243672e6.1693287885.git.yin31149@gmail.com>
-In-Reply-To: <f25fea0b0aed78bad2dd5744a4cc5538243672e6.1693287885.git.yin31149@gmail.com>
-From: Eugenio Perez Martin <eperezma@redhat.com>
-Date: Wed, 4 Oct 2023 09:33:14 +0200
-Message-ID: <CAJaqyWdHkenU+VVZbnBP3Duuj3CLKL7x0ahb-pBrdfJ+Ydro5g@mail.gmail.com>
-Subject: Re: [PATCH v4 8/8] vdpa: Send cvq state load commands in parallel
-To: Hawkins Jiawei <yin31149@gmail.com>
-Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
- leiyang@redhat.com, 18801353760@163.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eperezma@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+From: Mattias Nissler <mnissler@rivosinc.com>
+Date: Wed, 4 Oct 2023 09:36:16 +0200
+Message-ID: <CAGNS4TbhS3XnCFAEi378+cSmJvGMdjN2oTv=tES36vbV4CaDuA@mail.gmail.com>
+Subject: Re: [RFC] Proposal of QEMU PCI Endpoint test environment
+To: cz172638@gmail.com
+Cc: bhelgaas@google.com, Jagannathan Raman <jag.raman@oracle.com>,
+ kishon@kernel.org, 
+ kvijayab@amd.com, kw@linux.com, levon@movementarian.org, 
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ lpieralisi@kernel.org, manivannan.sadhasivam@linaro.org, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, mie@igel.co.jp, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ qemu-devel@nongnu.org, 
+ robh@kernel.org, thanos.makatos@nutanix.com, vaishnav.a@ti.com, 
+ william.henderson@nutanix.com
+Content-Type: multipart/alternative; boundary="000000000000ad8d680606df1061"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::32d;
+ envelope-from=mnissler@rivosinc.com; helo=mail-ot1-x32d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,331 +90,86 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Aug 29, 2023 at 7:55=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.com>=
- wrote:
->
-> This patch enables sending CVQ state load commands
-> in parallel at device startup by following steps:
->
->   * Refactor vhost_vdpa_net_load_cmd() to iterate through
-> the control commands shadow buffers. This allows different
-> CVQ state load commands to use their own unique buffers.
->
->   * Delay the polling and checking of buffers until either
-> the SVQ is full or control commands shadow buffers are full.
->
-> Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1578
-> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-> ---
-> v4:
->   - refactor argument `cmds_in_flight` to `len` for
-> vhost_vdpa_net_svq_full()
->   - check the return value of vhost_vdpa_net_svq_poll()
-> in vhost_vdpa_net_svq_flush() suggested by Eugenio
->   - use iov_size(), vhost_vdpa_net_load_cursor_reset()
-> and iov_discard_front() to update the cursors instead of
-> accessing it directly according to Eugenio
->
-> v3: https://lore.kernel.org/all/3a002790e6c880af928c6470ecbf03e7c65a68bb.=
-1689748694.git.yin31149@gmail.com/
->
->  net/vhost-vdpa.c | 155 +++++++++++++++++++++++++++++------------------
->  1 file changed, 97 insertions(+), 58 deletions(-)
->
-> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-> index a71e8c9090..818464b702 100644
-> --- a/net/vhost-vdpa.c
-> +++ b/net/vhost-vdpa.c
-> @@ -646,6 +646,31 @@ static void vhost_vdpa_net_load_cursor_reset(VhostVD=
-PAState *s,
->      in_cursor->iov_len =3D vhost_vdpa_net_cvq_cmd_page_len();
->  }
->
-> +/*
-> + * Poll SVQ for multiple pending control commands and check the device's=
- ack.
-> + *
-> + * Caller should hold the BQL when invoking this function.
-> + *
-> + * @s: The VhostVDPAState
-> + * @len: The length of the pending status shadow buffer
-> + */
-> +static ssize_t vhost_vdpa_net_svq_flush(VhostVDPAState *s, size_t len)
-> +{
-> +    /* Device uses a one-byte length ack for each control command */
-> +    ssize_t dev_written =3D vhost_vdpa_net_svq_poll(s, len);
-> +    if (unlikely(dev_written !=3D len)) {
-> +        return -EIO;
-> +    }
-> +
-> +    /* check the device's ack */
-> +    for (int i =3D 0; i < len; ++i) {
-> +        if (s->status[i] !=3D VIRTIO_NET_OK) {
-> +            return -EIO;
-> +        }
-> +    }
-> +    return 0;
-> +}
-> +
->  static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s,
->                                         struct iovec *out_cursor,
->                                         struct iovec *in_cursor, uint8_t =
-class,
-> @@ -660,10 +685,30 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPASta=
-te *s,
->             cmd_size =3D sizeof(ctrl) + data_size;
->      struct iovec out, in;
->      ssize_t r;
-> +    unsigned dummy_cursor_iov_cnt;
->
->      assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl))=
-;
-> +    if (vhost_vdpa_net_svq_available_slots(s) < 2 ||
-> +        iov_size(out_cursor, 1) < cmd_size) {
-> +        /*
-> +         * It is time to flush all pending control commands if SVQ is fu=
-ll
-> +         * or control commands shadow buffers are full.
-> +         *
-> +         * We can poll here since we've had BQL from the time
-> +         * we sent the descriptor.
-> +         */
-> +        r =3D vhost_vdpa_net_svq_flush(s, in_cursor->iov_base -
-> +                                     (void *)s->status);
-> +        if (unlikely(r < 0)) {
-> +            return r;
-> +        }
-> +
-> +        vhost_vdpa_net_load_cursor_reset(s, out_cursor, in_cursor);
-> +    }
-> +
+--000000000000ad8d680606df1061
+Content-Type: text/plain; charset="UTF-8"
 
-It would be great to merge this flush with the one at
-vhost_vdpa_net_load. We would need to return ENOSPC or similar and
-handle it there.
-
-But it would make it more difficult to iterate through the loading of
-the different parameters, so I think it can be done on top.
-
->      /* Each CVQ command has one out descriptor and one in descriptor */
->      assert(vhost_vdpa_net_svq_available_slots(s) >=3D 2);
-> +    assert(iov_size(out_cursor, 1) >=3D cmd_size);
+>
+> hi shunsuke, all,
+> what about vfio-user + qemu?
 >
 
-Same here, I think we can avoid the assertion, right?
+FWIW, I have had some good success using VFIO-user to bridge software
+components to hardware designs. For the most part, I have been hooking up
+software endpoint models to hardware design components speaking the PCIe
+transaction layer protocol. The central piece you need is a way to
+translate between the VFIO-user protocol and PCIe transaction layer
+messages, basically converting ECAM accesses, memory accesses (DMA+MMIO),
+and interrupts between the two worlds. I have some code which implements
+the basics of that. It's certainly far from complete (TLP is a massive
+protocol), but it works well enough for me. I believe we should be able to
+open-source this if there's interest, let me know.
 
-Apart from that,
+One thing to note is that there are currently some limits to bridging
+VFIO-user / TLP that I haven't figured out and/or will need further work:
+Advanced PCIe concepts like PASID, ATS/PRI, SR-IOV etc. may lack
+equivalents on the VFIO-user side that would have to be filled in. The folk
+behind libvfio-user[2] have been very approachable and open to improvements
+in my experience though.
 
-Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+If I understand correctly, the specific goal here is testing PCIe endpoint
+designs against a Linux host. What you'd need for that is a PCI host
+controller for the Linux side to talk to and then hooking up endpoints on
+the transaction layer. QEMU can simulate host controllers that work with
+existing Linux drivers just fine. Then you can put a vfio-user-pci stub
+device (I don't think this has landed in qemu yet, but you can find the
+code at [1]) on the simulated PCI bus which will expose any software
+interactions with the endpoint as VFIO-user protocol messages over unix
+domain socket. The piece you need to bring is a VFIO-user server that
+handles these messages. Its task is basically translating between VFIO-user
+and TLP and then injecting TLP into your hardware design.
 
->      /* Prepare the buffer for out descriptor for the device */
->      iov_copy(&out, 1, out_cursor, 1, 0, cmd_size);
-> @@ -681,11 +726,13 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPASta=
-te *s,
->          return r;
->      }
->
-> -    /*
-> -     * We can poll here since we've had BQL from the time
-> -     * we sent the descriptor.
-> -     */
-> -    return vhost_vdpa_net_svq_poll(s, 1);
-> +    /* iterate the cursors */
-> +    dummy_cursor_iov_cnt =3D 1;
-> +    iov_discard_front(&out_cursor, &dummy_cursor_iov_cnt, cmd_size);
-> +    dummy_cursor_iov_cnt =3D 1;
-> +    iov_discard_front(&in_cursor, &dummy_cursor_iov_cnt, sizeof(*s->stat=
-us));
-> +
-> +    return 0;
->  }
->
->  static int vhost_vdpa_net_load_mac(VhostVDPAState *s, const VirtIONet *n=
-,
-> @@ -697,15 +744,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
-s, const VirtIONet *n,
->              .iov_base =3D (void *)n->mac,
->              .iov_len =3D sizeof(n->mac),
->          };
-> -        ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, i=
-n_cursor,
-> -                                                  VIRTIO_NET_CTRL_MAC,
-> -                                                  VIRTIO_NET_CTRL_MAC_AD=
-DR_SET,
-> -                                                  &data, 1);
-> -        if (unlikely(dev_written < 0)) {
-> -            return dev_written;
-> -        }
-> -        if (*s->status !=3D VIRTIO_NET_OK) {
-> -            return -EIO;
-> +        ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> +                                               VIRTIO_NET_CTRL_MAC,
-> +                                               VIRTIO_NET_CTRL_MAC_ADDR_=
-SET,
-> +                                               &data, 1);
-> +        if (unlikely(r < 0)) {
-> +            return r;
->          }
->      }
->
-> @@ -750,15 +794,12 @@ static int vhost_vdpa_net_load_mac(VhostVDPAState *=
-s, const VirtIONet *n,
->              .iov_len =3D mul_macs_size,
->          },
->      };
-> -    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cu=
-rsor,
-> +    ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
->                                  VIRTIO_NET_CTRL_MAC,
->                                  VIRTIO_NET_CTRL_MAC_TABLE_SET,
->                                  data, ARRAY_SIZE(data));
-> -    if (unlikely(dev_written < 0)) {
-> -        return dev_written;
-> -    }
-> -    if (*s->status !=3D VIRTIO_NET_OK) {
-> -        return -EIO;
-> +    if (unlikely(r < 0)) {
-> +        return r;
->      }
->
->      return 0;
-> @@ -770,7 +811,7 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s,
->                                    struct iovec *in_cursor)
->  {
->      struct virtio_net_ctrl_mq mq;
-> -    ssize_t dev_written;
-> +    ssize_t r;
->
->      if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_MQ)) {
->          return 0;
-> @@ -781,15 +822,12 @@ static int vhost_vdpa_net_load_mq(VhostVDPAState *s=
-,
->          .iov_base =3D &mq,
->          .iov_len =3D sizeof(mq),
->      };
-> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> -                                          VIRTIO_NET_CTRL_MQ,
-> -                                          VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SE=
-T,
-> -                                          &data, 1);
-> -    if (unlikely(dev_written < 0)) {
-> -        return dev_written;
-> -    }
-> -    if (*s->status !=3D VIRTIO_NET_OK) {
-> -        return -EIO;
-> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> +                                   VIRTIO_NET_CTRL_MQ,
-> +                                   VIRTIO_NET_CTRL_MQ_VQ_PAIRS_SET,
-> +                                   &data, 1);
-> +    if (unlikely(r < 0)) {
-> +        return r;
->      }
->
->      return 0;
-> @@ -801,7 +839,7 @@ static int vhost_vdpa_net_load_offloads(VhostVDPAStat=
-e *s,
->                                          struct iovec *in_cursor)
->  {
->      uint64_t offloads;
-> -    ssize_t dev_written;
-> +    ssize_t r;
->
->      if (!virtio_vdev_has_feature(&n->parent_obj,
->                                   VIRTIO_NET_F_CTRL_GUEST_OFFLOADS)) {
-> @@ -829,15 +867,12 @@ static int vhost_vdpa_net_load_offloads(VhostVDPASt=
-ate *s,
->          .iov_base =3D &offloads,
->          .iov_len =3D sizeof(offloads),
->      };
-> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> -                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS=
-,
-> -                                          VIRTIO_NET_CTRL_GUEST_OFFLOADS=
-_SET,
-> -                                          &data, 1);
-> -    if (unlikely(dev_written < 0)) {
-> -        return dev_written;
-> -    }
-> -    if (*s->status !=3D VIRTIO_NET_OK) {
-> -        return -EIO;
-> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> +                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS,
-> +                                   VIRTIO_NET_CTRL_GUEST_OFFLOADS_SET,
-> +                                   &data, 1);
-> +    if (unlikely(r < 0)) {
-> +        return r;
->      }
->
->      return 0;
-> @@ -853,16 +888,12 @@ static int vhost_vdpa_net_load_rx_mode(VhostVDPASta=
-te *s,
->          .iov_base =3D &on,
->          .iov_len =3D sizeof(on),
->      };
-> -    ssize_t dev_written;
-> +    ssize_t r;
->
-> -    dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> -                                          VIRTIO_NET_CTRL_RX,
-> -                                          cmd, &data, 1);
-> -    if (unlikely(dev_written < 0)) {
-> -        return dev_written;
-> -    }
-> -    if (*s->status !=3D VIRTIO_NET_OK) {
-> -        return -EIO;
-> +    r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> +                                VIRTIO_NET_CTRL_RX, cmd, &data, 1);
-> +    if (unlikely(r < 0)) {
-> +        return r;
->      }
->
->      return 0;
-> @@ -1019,15 +1050,12 @@ static int vhost_vdpa_net_load_single_vlan(VhostV=
-DPAState *s,
->          .iov_base =3D &vid,
->          .iov_len =3D sizeof(vid),
->      };
-> -    ssize_t dev_written =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cu=
-rsor,
-> -                                                  VIRTIO_NET_CTRL_VLAN,
-> -                                                  VIRTIO_NET_CTRL_VLAN_A=
-DD,
-> -                                                  &data, 1);
-> -    if (unlikely(dev_written < 0)) {
-> -        return dev_written;
-> -    }
-> -    if (unlikely(*s->status !=3D VIRTIO_NET_OK)) {
-> -        return -EIO;
-> +    ssize_t r =3D vhost_vdpa_net_load_cmd(s, out_cursor, in_cursor,
-> +                                           VIRTIO_NET_CTRL_VLAN,
-> +                                           VIRTIO_NET_CTRL_VLAN_ADD,
-> +                                           &data, 1);
-> +    if (unlikely(r < 0)) {
-> +        return r;
->      }
->
->      return 0;
-> @@ -1096,6 +1124,17 @@ static int vhost_vdpa_net_load(NetClientState *nc)
->          return r;
->      }
->
-> +    /*
-> +     * We need to poll and check all pending device's used buffers.
-> +     *
-> +     * We can poll here since we've had BQL from the time
-> +     * we sent the descriptor.
-> +     */
-> +    r =3D vhost_vdpa_net_svq_flush(s, in_cursor.iov_base - (void *)s->st=
-atus);
-> +    if (unlikely(r)) {
-> +        return r;
-> +    }
-> +
->      return 0;
->  }
->
-> --
-> 2.25.1
->
+[1] https://github.com/oracle/qemu/tree/vfio-user-p3.1 - I believe that's
+the latest version, Jagannathan Raman will know best
+[2] https://github.com/nutanix/libvfio-user
 
+--000000000000ad8d680606df1061
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
+0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">hi shuns=
+uke, all,<br>what about vfio-user + qemu?<br></blockquote><div><br></div><d=
+iv>FWIW, I have had some good success using VFIO-user to bridge software co=
+mponents to hardware designs. For the most part, I have been hooking up sof=
+tware endpoint models to hardware design components speaking the PCIe trans=
+action layer protocol. The central piece you need is a way to translate bet=
+ween the VFIO-user protocol and PCIe transaction layer messages, basically =
+converting ECAM accesses, memory accesses (DMA+MMIO), and interrupts betwee=
+n the two worlds. I have some code which implements the basics of that. It&=
+#39;s certainly far from complete (TLP is a massive protocol), but it works=
+ well enough for me. I believe we should be able to open-source this if the=
+re&#39;s interest, let me know.<br></div><div><br></div><div>One thing to n=
+ote is that there are currently some limits to bridging VFIO-user / TLP tha=
+t I haven&#39;t figured out and/or will need further work: Advanced PCIe co=
+ncepts like PASID, ATS/PRI, SR-IOV etc. may lack equivalents on the VFIO-us=
+er side that would have to be filled in. The folk behind libvfio-user[2] ha=
+ve been very approachable and open to improvements in my experience though.=
+<br></div><div><br></div><div>If I understand correctly, the specific goal =
+here is testing PCIe endpoint designs against a Linux host. What you&#39;d =
+need for that is a PCI host controller for the Linux side to talk to and th=
+en hooking up endpoints on the transaction layer. QEMU can simulate host co=
+ntrollers that work with existing Linux drivers just fine. Then you can put=
+ a vfio-user-pci stub device (I don&#39;t think this has landed in qemu yet=
+, but you can find the code at [1]) on the simulated PCI bus which will exp=
+ose any software interactions with the endpoint as VFIO-user protocol messa=
+ges over unix domain socket. The piece you need to bring is a VFIO-user ser=
+ver that handles these messages. Its task is basically translating between =
+VFIO-user and TLP and then injecting TLP into your hardware design.<br></di=
+v><div><br></div><div>[1] <a href=3D"https://github.com/oracle/qemu/tree/vf=
+io-user-p3.1">https://github.com/oracle/qemu/tree/vfio-user-p3.1</a> - I be=
+lieve that&#39;s the latest version,=C2=A0Jagannathan Raman will know best<=
+/div><div>[2] <a href=3D"https://github.com/nutanix/libvfio-user">https://g=
+ithub.com/nutanix/libvfio-user</a></div><br></div>
+
+--000000000000ad8d680606df1061--
 
