@@ -2,155 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007A87B7F80
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7677B7F81
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:43:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo1CZ-0008RV-FC; Wed, 04 Oct 2023 08:42:07 -0400
+	id 1qo1Dc-0007pb-KW; Wed, 04 Oct 2023 08:43:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1qo1CV-0008Ky-IZ
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:42:04 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qo1DZ-0007gy-IW
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:43:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1qo1CS-0004kf-53
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:42:03 -0400
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3947AsRq012110; Wed, 4 Oct 2023 12:41:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=qcppdkim1;
- bh=qnEZXwApC8rC3HzGX28N3DwkAGWP0kZQI/tRLI0zOas=;
- b=Gf7e6sBYCl0pHtsboTJbGxEfD7bXRrV7VzCgxqXvxl1d1N5dzpSJW1tl9zVMMupEQe1k
- hG1/S3aFaXPAyA5O1NkVBVUQUMRfdjDwfg3OKpCL1Rrec1Gg7i3T/MWA3pVAPNYdqvqj
- W0U69Vpf4J5CVtGtYpIt+562dpwfJbdeUKA/f3yW3V/kIyDYu2CZQ0UqCfDbo4kK2viL
- dQg5K3MC3km8KfIeZu66JPGswficezJXB4Acxt/aD5MfyJKwLxrGQwUoRUhOBIN/Y2jr
- 1kwLbFsSNQ9ibk4bBOCOIhfIfcvF5Cobj+/Xy/50yn7iih1GJvaZdO4VxWK3p/4BTaFR LQ== 
-Received: from nam10-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tgynh954v-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Oct 2023 12:41:50 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T3fEdQgB93+nhyhBj4wkc1yHdo6PCY0VhqToJXubqhMWHEZFSFN6scJSuXMRletXwVghUFbZOISCM4+DuhxrMPyQRfojJ3OLYLk/gv37ad3BoTe30GEuPzfIUPju658U12LImhioJDDffwEhiwwRKeh7D+wfiVBmim8rFQg7lLZBjTY99o/IJhaCJSWCQAsNjlgLKFI3/m1BmFRn2f8Pu8l+xXSfBaktXR7CdcAxW3NipR4tbqIq7f1SN7qx0TqIWNY36pxZTcL5OKm26kd/VYVlT3Vdj49PBycktqYExmvfqHqUclmqf/w593j5xIv+6iFMBwIEEf+dqPLct6dqsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qnEZXwApC8rC3HzGX28N3DwkAGWP0kZQI/tRLI0zOas=;
- b=jrTsWNBx4uNFNfQvm12rwMPsnOP60iBiFtCqKtmUknKwl3B+3IEO15dFavJN3TwL7IIKwsYAxaRyiiJp/ztDJAGjzJwyaBn6EWugPm4zMAUH/YSnVwNOw/cR1IEbZ9obXd9BkuRrtl5YWCL6u7XyQItuSRcq5Hk3qqSlpcaarTC77T9y0lbV2lDef+HUWMjvdSd8eMmmrTABvKVdLGzsLDhW9TzwYCVQIAK3byD+zUvMdV+02HQ64ni7XGrl1vXULDL2gV5vnYZ4BG2k5TfUY6stPCI4SYdv1BnMhSeAkWfBCt5J16EQDJKhJSDuwcZYTH89TAlTQ6NK84Ks6WBc0A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=quicinc.com; dmarc=pass action=none header.from=quicinc.com;
- dkim=pass header.d=quicinc.com; arc=none
-Received: from SN6PR02MB4205.namprd02.prod.outlook.com (2603:10b6:805:35::17)
- by DS0PR02MB9355.namprd02.prod.outlook.com (2603:10b6:8:150::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.25; Wed, 4 Oct
- 2023 12:41:47 +0000
-Received: from SN6PR02MB4205.namprd02.prod.outlook.com
- ([fe80::4e82:c5b1:f941:be35]) by SN6PR02MB4205.namprd02.prod.outlook.com
- ([fe80::4e82:c5b1:f941:be35%6]) with mapi id 15.20.6838.033; Wed, 4 Oct 2023
- 12:41:47 +0000
-From: Brian Cain <bcain@quicinc.com>
-To: Markus Armbruster <armbru@redhat.com>
-CC: "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
- "philmd@linaro.org" <philmd@linaro.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "Matheus Bernardino (QUIC)"
- <quic_mathbern@quicinc.com>,
- "stefanha@redhat.com" <stefanha@redhat.com>, "ale@rev.ng" <ale@rev.ng>,
- "anjo@rev.ng" <anjo@rev.ng>, "Marco Liebel (QUIC)"
- <quic_mliebel@quicinc.com>, "ltaylorsimpson@gmail.com"
- <ltaylorsimpson@gmail.com>
-Subject: RE: [PULL 0/2] hex queue
-Thread-Topic: [PULL 0/2] hex queue
-Thread-Index: AQHZ9lx7Jq8mlfoNdk2ypDLZR94cErA5PtNUgABUWYA=
-Date: Wed, 4 Oct 2023 12:41:46 +0000
-Message-ID: <SN6PR02MB4205C95307F85E2DA102EB24B8CBA@SN6PR02MB4205.namprd02.prod.outlook.com>
-References: <20231004004806.1461248-1-bcain@quicinc.com>
- <87mswyltwl.fsf@pond.sub.org>
-In-Reply-To: <87mswyltwl.fsf@pond.sub.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4205:EE_|DS0PR02MB9355:EE_
-x-ms-office365-filtering-correlation-id: 827d00ee-70ea-4614-7ec3-08dbc4d745be
-x-ld-processed: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: RoUg67IAZZ+lglNOS2+9o17TDrYGNRB318EIVnFJOlrmPi3nOqOSxOct2Lbo6BQriPQXHagH28UdsPcTUmQUpOZNDaxfJZL9QPIoeBOGNwEPAKbp+ypl3XT4SNy+TfPN7jZxhNYlGxQ87a3KPhve6etzkzchLv/FS1eDo/y6/trNxs88j4DOaxiqBcwhxciD4plYTVNcBx+zXUjjbBFt3XrsweiTXaqAbkovaceoALUVDaflmPaPuiWigirCt9WBbZGEv6K+8Y6a6K7+R44CbXJetl7ge5OHv4uKpaiQ3eC6IxUHrrReR34U1oejKe2DYE+VK4p9831wHb3WkTghwZQsiK/592UeiqPFIxtyQQKxLq6J5YnehL37gEC0HPLpLDCzipXy75t+xKgfx2VFDOelIc3EZoqxY9LrqB/Hg9soLyQCLloI5mQG5NuWi1U6XEjvbvLSjf60lzmk2bUhAQICnhMoqf5DQ6if2DZUzUpqEivKbQWZE62L+Z1+RAiqybOMlZRZ0o7vrYd5tIVSI5BbokxY9n41Mz1aoFwyCoSYKdnG7wTwhIWCGH1+pa51UosFhoQbjvoyZ2iFs+1site2oEMo1b+bNEvqKQaYAdRSMfw988uoEDfZBlzc3az+
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN6PR02MB4205.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(39860400002)(376002)(346002)(366004)(136003)(396003)(230922051799003)(451199024)(186009)(64100799003)(1800799009)(7696005)(9686003)(2906002)(8676002)(8936002)(316002)(5660300002)(4326008)(55016003)(33656002)(4744005)(76116006)(41300700001)(52536014)(53546011)(66446008)(71200400001)(86362001)(54906003)(38100700002)(66946007)(6506007)(64756008)(66556008)(6916009)(26005)(66476007)(38070700005)(83380400001)(478600001)(122000001);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?jYywYT04VPd4qGU/ycL2+ZQn2AN+KaYxvh7zetssxZ5Kymt9tzwgvNg9Xc4H?=
- =?us-ascii?Q?oGzR5rlXDxCHlFZwYDgmcmSrL1dokzS2ytxF4q69MaZ5DbvqknDfURpWA2SF?=
- =?us-ascii?Q?5ZEpk4HY80AfqUFs+bklccW9HdFoZpBfKzCA1W7V0YU6kXBUKFIl5nJOA61h?=
- =?us-ascii?Q?9/h2p1Q7O9GAt5+XE1AiJjceQE513cCtJG4f/mvAKO6asH5c5j+vLG5o1OQs?=
- =?us-ascii?Q?2TPvRHDE6fuPct1N9PGTBIJ93TTJ/XxYIv4pqyl5RhUQ5SrJ5HF4VksGxRLk?=
- =?us-ascii?Q?MaR/FrvWhYMixLkWd6k+d6wUoqoS8Z0xxveq1nYa+zzgGzHeg2IVJlpuJjvK?=
- =?us-ascii?Q?tJEni+Ch4PulagNGXuS7EUq55L9q2ozOy/Ujnv4yXPme3Pf8nLlZDzJzqKT9?=
- =?us-ascii?Q?f4YDB2QuODc3gMsqJOX/mIa9oULyNoUlZR1PZcwK1OjXyj8elqUFA+x2DSQF?=
- =?us-ascii?Q?YkhHK2d1SHXYvm+QdsBa0riB9+IVib+9XYiY/OMxDb0tdOYuYMtmysf2cyu3?=
- =?us-ascii?Q?OWzUlJqG5KNVtgMjYM6R+91dSkMjkMFXYRQ+tQ2JU74ovOHWeabgZ5xer5FB?=
- =?us-ascii?Q?wUHD4nUa3jgmPYZaBXSge2RdwWi5AejnIgXwAEK8IOGwqwLfCPGq+1bopotg?=
- =?us-ascii?Q?A5oTdwGnmlyJsTUgq2Yb3V9CLxqXcQJ7aaeSWFLvxR/IzyHdDJ0BA90VDffP?=
- =?us-ascii?Q?b2GeWEp/K0hqVyKYPOv1rxE1c50HhuGcis+UlYZFqEOZ+licGYlVVdGSVT04?=
- =?us-ascii?Q?61YEI30qH4mbHu08ENL52s+eroOj1WoR6n5lx8Mu7QbBckzDc635aZD6xSIP?=
- =?us-ascii?Q?H3KppuRetiDZ30dZcHOyH46T7ue/wnYwIwMvcJ+fEKyEvr2X1/UVglZFZhp9?=
- =?us-ascii?Q?jPmY9G8xh6zHAN9U0/Vp9Od6z8pO9YL5b2jXUFskXXxh+ZdkKBFtPoU5GrHs?=
- =?us-ascii?Q?TwBxQOj8P2V2gWadNzHl29Dv7JzUQIL1FmNSOdeLxhxs3q4MnKcp2PlEdqLt?=
- =?us-ascii?Q?0rZiozTJ/ust3YaWp5sQUFL9P6eqJ2Tuj56scrElnkl6+nlvOS2GnUaAbOnJ?=
- =?us-ascii?Q?3E6rkWXCPXZNgC/P/vX13BVK+YtDN9uWK1qzsMtnarPRbQj0ZUp41vVV5afM?=
- =?us-ascii?Q?o11hSLEdMvfi86bLo6QWyJP5LGEabdLl9eBZDon0eFS68ScXV7fB1XGUqDtG?=
- =?us-ascii?Q?5SfAtKXqOmpamnN/+/VAOBoE7qavtJhn3IFgYW4lC6aat3mpP+EzJPSuBwv1?=
- =?us-ascii?Q?QmIDE/m4YYY4Clt1RjtkcwWrbkTWFXsXUxB5ERJ9m+5evBjEUOYPgrS+frz0?=
- =?us-ascii?Q?Q/fK/gSZ8zofgKoVPqu6k5rhRT8GSmM5bVx0DxfwxRgJhyk0WqzaS/tgN/OC?=
- =?us-ascii?Q?U+69mENEPZDGvIE8D6a4W4Aeot9z1Ak64CLsemyBh8dMROHV1X5klG3UwOme?=
- =?us-ascii?Q?AM9yKXrjWmPqM6UzbwvJ5TuyizGKGFFOO10nPgrziyZQnOziqXF4rFP6bZxo?=
- =?us-ascii?Q?olpUocIpH7NXwk3yc0SQX05f+w7DJ7caNDb1s2STdVoM0yaSpSL8VzRdUGte?=
- =?us-ascii?Q?HnZNJ6AhL/VYWPxdn+NrVykFswnrTDoCFGj9abHM?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qo1DW-000556-Pi
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:43:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696423386;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dnGptwhOh3TP/Hcicz/4I/C1dLbsd+mudv1fuV6fWHM=;
+ b=E+0UdhVRGOofdBksxZqSA15tFGLlkGnlky4TGg32DuK/L1Xzcz0nlenturIs3uPtKxraqv
+ Z5loLPtaCSk8juuAdsTww4/zV4+YTcVwCvR6fyhqkU4AWO8V0h4pHaw7Amyrh41PQe6J3/
+ DNzQUEondPK46dr1S/PTg+h8JKY0fU0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-423-FqIecflBN0CGnj4YxHwraQ-1; Wed, 04 Oct 2023 08:43:04 -0400
+X-MC-Unique: FqIecflBN0CGnj4YxHwraQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE28880349A
+ for <qemu-devel@nongnu.org>; Wed,  4 Oct 2023 12:43:03 +0000 (UTC)
+Received: from localhost (unknown [10.45.226.150])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 4459240C6EC0;
+ Wed,  4 Oct 2023 12:43:03 +0000 (UTC)
+Date: Wed, 4 Oct 2023 14:43:02 +0200
+From: Victor Toso <victortoso@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH v1 1/9] qapi: golang: Generate qapi's enum types in Go
+Message-ID: <3duepujid3nbcfzqgadqbbmzepxzztpqpofipoargriykwfnbg@5frv62vvteeb>
+References: <20230927112544.85011-1-victortoso@redhat.com>
+ <20230927112544.85011-2-victortoso@redhat.com>
+ <CAFn=p-ZdgaCuTZF-yYa6E_CMFobR--Yt6ycSBNDz7S+sFxX14Q@mail.gmail.com>
+ <CAFn=p-ZpZN+TjBqN_5RTm0ZxHQ4pzDtMwgr-NKKyAR83hKfwOw@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 2T7sz3wWNk71htR5WnHFKZd/4KvPt1OUcXBGkEVCUYKNHmpHq9apFZaTPH3usGe25RjkW0XbsKanGVBK0x4yZm0yeNOJ0WcsWgq4fmnMCFyA7ovG6/4cPz9pes1TykL/kXb5Ewsjsi7tFw2EUuAy4sHikMi8eJCOJVV6lqRnynxWwp3lVO/3K+F5vkaimTwq9HyRqsoTHXdfWGm2ZGc5g4Wz1JXAMyxtkvIRa+7zIMPOxms9xsnaw1Pli2kv/y/4/N+A4aQ1xixi9fU+et9OT3u2xDcVTFzcr+PsPS/njQ2SJ4M7VJeY3s1E7qTGsbG1o84ZkeEwIYQOxBHzE36UkPL/Kfk0ipjbl8Xzqn1HWJlnRUxn1PYnJ2szwLnLV/UJC5X/JgGAK9A0eAhfKLadp+KB1dxD3NrAs0VLVdzr5Fgq7QBA820LiggPQ2PTJXqcyGmwrjTI0u99FLxvSOmNtbYTp8vHhivhG5k/WJb6uRE+sd9iYvUPXX8T13ZgxQeYFL6rBRy3vvnKDqaWeRZRwJXqS9S6Dse2Z6xjHbKnBdYSmEg2h0PlyPG7n6twQFPR8slINdoWXNhCmxufO4j61DqP63GHFB6g0wJkvWsq3QIZM5YoS8i8n3mPvAwKipQgfB/248LeUGGpjA44mnxehZN5vQpHiCAnxcEf7lxU0y4QHPpcjjoQyRFl227pPKg4mR01Tp57FxPgoPk2GUx3wYNxRFcBmFOEkBa2LsNsTanrfwm3P69Kh28G3QE7jVSGlMLxQkoufO10TRkJ9j2NtZQkBXwz0Zi6ZEyQtkIIL+O5cY0qAsfuL0D7W6P2x6+t3caFl2iFvaDQse/iqZnY4zHj3tATWoiSHZ0I7Gpx/d+FKfwOxx6kCE+LD+Oj/AVv
-X-OriginatorOrg: quicinc.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4205.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 827d00ee-70ea-4614-7ec3-08dbc4d745be
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Oct 2023 12:41:46.9858 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 98e9ba89-e1a1-4e38-9007-8bdabc25de1d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +37wJLlxH0daiKcsEgzn29THH7lBfj/9DImwkMi+HlxAsrk3Ly9yT2Xt5hB6JwcnHJYTe0t2ty/S1XWD6VXFeg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR02MB9355
-X-Proofpoint-GUID: yA8sGZcZMWEjXlxLJujwzGvPcz0UOibn
-X-Proofpoint-ORIG-GUID: yA8sGZcZMWEjXlxLJujwzGvPcz0UOibn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-04_04,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 mlxscore=0
- mlxlogscore=439 clxscore=1015 adultscore=0 lowpriorityscore=0 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310040092
-Received-SPF: pass client-ip=205.220.168.131; envelope-from=bcain@quicinc.com;
- helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="j6th2slvo32bqtfr"
+Content-Disposition: inline
+In-Reply-To: <CAFn=p-ZpZN+TjBqN_5RTm0ZxHQ4pzDtMwgr-NKKyAR83hKfwOw@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -167,28 +83,398 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
+--j6th2slvo32bqtfr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> -----Original Message-----
-> From: Markus Armbruster <armbru@redhat.com>
-> Sent: Wednesday, October 4, 2023 2:38 AM
-> To: Brian Cain <bcain@quicinc.com>
-> Cc: qemu-devel@nongnu.org; richard.henderson@linaro.org;
-> philmd@linaro.org; peter.maydell@linaro.org; Matheus Bernardino (QUIC)
-> <quic_mathbern@quicinc.com>; stefanha@redhat.com; ale@rev.ng;
-> anjo@rev.ng; Marco Liebel (QUIC) <quic_mliebel@quicinc.com>;
-> ltaylorsimpson@gmail.com
-> Subject: Re: [PULL 0/2] hex queue
+Hi,
+
+On Mon, Oct 02, 2023 at 04:09:29PM -0400, John Snow wrote:
+> On Mon, Oct 2, 2023 at 3:07=E2=80=AFPM John Snow <jsnow@redhat.com> wrote:
+> >
+> > On Wed, Sep 27, 2023 at 7:25=E2=80=AFAM Victor Toso <victortoso@redhat.=
+com> wrote:
+> > >
+> > > This patch handles QAPI enum types and generates its equivalent in Go.
+> > >
+> > > Basically, Enums are being handled as strings in Golang.
+> > >
+> > > 1. For each QAPI enum, we will define a string type in Go to be the
+> > >    assigned type of this specific enum.
+> > >
+> > > 2. Naming: CamelCase will be used in any identifier that we want to
+> > >    export [0], which is everything.
+> > >
+> > > [0] https://go.dev/ref/spec#Exported_identifiers
+> > >
+> > > Example:
+> > >
+> > > qapi:
+> > >   | { 'enum': 'DisplayProtocol',
+> > >   |   'data': [ 'vnc', 'spice' ] }
+> > >
+> > > go:
+> > >   | type DisplayProtocol string
+> > >   |
+> > >   | const (
+> > >   |     DisplayProtocolVnc   DisplayProtocol =3D "vnc"
+> > >   |     DisplayProtocolSpice DisplayProtocol =3D "spice"
+> > >   | )
+> > >
+> > > Signed-off-by: Victor Toso <victortoso@redhat.com>
+> > > ---
+> > >  scripts/qapi/golang.py | 140 +++++++++++++++++++++++++++++++++++++++=
+++
+> > >  scripts/qapi/main.py   |   2 +
+> > >  2 files changed, 142 insertions(+)
+> > >  create mode 100644 scripts/qapi/golang.py
+> > >
+> > > diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
+> > > new file mode 100644
+> > > index 0000000000..87081cdd05
+> > > --- /dev/null
+> > > +++ b/scripts/qapi/golang.py
+> > > @@ -0,0 +1,140 @@
+> > > +"""
+> > > +Golang QAPI generator
+> > > +"""
+> > > +# Copyright (c) 2023 Red Hat Inc.
+> > > +#
+> > > +# Authors:
+> > > +#  Victor Toso <victortoso@redhat.com>
+> > > +#
+> > > +# This work is licensed under the terms of the GNU GPL, version 2.
+> > > +# See the COPYING file in the top-level directory.
+> > > +
+> > > +# due QAPISchemaVisitor interface
+> > > +# pylint: disable=3Dtoo-many-arguments
 >=20
-> WARNING: This email originated from outside of Qualcomm. Please be wary o=
-f
-> any links or attachments, and do not enable macros.
+> "due to" - also, you could more selectively disable this warning by
+> putting this comment in the body of the QAPISchemaVisitor class which
+> would make your exemption from the linter more locally obvious.
 >=20
-> Looks like these patches haven't been posted to the list for (public)
-> review.  Needs to happen before a pull request.
+> > > +
+> > > +# Just for type hint on self
+> > > +from __future__ import annotations
+>=20
+> Oh, you know - it's been so long since I worked on QAPI I didn't
+> realize we had access to this now. That's awesome!
+>=20
+> (It was introduced in Python 3.7+)
+>=20
+> > > +
+> > > +import os
+> > > +from typing import List, Optional
+> > > +
+> > > +from .schema import (
+> > > +    QAPISchema,
+> > > +    QAPISchemaType,
+> > > +    QAPISchemaVisitor,
+> > > +    QAPISchemaEnumMember,
+> > > +    QAPISchemaFeature,
+> > > +    QAPISchemaIfCond,
+> > > +    QAPISchemaObjectType,
+> > > +    QAPISchemaObjectTypeMember,
+> > > +    QAPISchemaVariants,
+> > > +)
+> > > +from .source import QAPISourceInfo
+> > > +
+>=20
+> Try running isort here:
+>=20
+> > cd ~/src/qemu/scripts
+> > isort -c qapi/golang.py
+>=20
+> ERROR: /home/jsnow/src/qemu/scripts/qapi/golang.py Imports are
+> incorrectly sorted and/or formatted.
+>=20
+> you can have it fix the import order for you:
+>=20
+> > isort qapi/golang.py
+>=20
+> It's very pedantic stuff, but luckily there's a tool to just handle it fo=
+r you.
 
-I'm sorry -- that was careless.  Matheus' patch had been but mine had not.
+Thanks! Also fixed for the next iteration.
+=20
+> > > +TEMPLATE_ENUM =3D '''
+> > > +type {name} string
+> > > +const (
+> > > +{fields}
+> > > +)
+> > > +'''
+> > > +
+> > > +
+> > > +def gen_golang(schema: QAPISchema,
+> > > +               output_dir: str,
+> > > +               prefix: str) -> None:
+> > > +    vis =3D QAPISchemaGenGolangVisitor(prefix)
+> > > +    schema.visit(vis)
+> > > +    vis.write(output_dir)
+> > > +
+> > > +
+> > > +def qapi_to_field_name_enum(name: str) -> str:
+> > > +    return name.title().replace("-", "")
+> > > +
+> > > +
+> > > +class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
+> > > +
+> > > +    def __init__(self, _: str):
+> > > +        super().__init__()
+> > > +        types =3D ["enum"]
+> > > +        self.target =3D {name: "" for name in types}
+>=20
+> you *could* say:
+>=20
+> types =3D ("enum",)
+> self.target =3D dict.fromkeys(types, "")
+>=20
+> 1. We don't need a list because we won't be modifying it, so a tuple suff=
+ices
+> 2. There's an idiom for doing what you want that reads a little better
+> 3. None of it really matters, though.
 
-I've sent Matheus and my patches to the list for review only just now.
+No complains with moving it to a tuple.
 
--Brian
+> Also keep in mind you don't *need* to initialize a dict in this way,
+> you can just arbitrarily assign into it whenever you'd like.
+>=20
+> sellf.target['enum'] =3D foo
+
+I think it is a problem with +=3D operator when not initialized.
+
+    self.target['enum'] =3D foo
+
+At least I recall having errors around dict not being
+initialized.
+=20
+> I don't know if that makes things easier or not with however the
+> subsequent patches are written.
+>=20
+> > > +        self.schema =3D None
+> > > +        self.golang_package_name =3D "qapi"
+> > > +
+> > > +    def visit_begin(self, schema):
+> > > +        self.schema =3D schema
+> > > +
+> > > +        # Every Go file needs to reference its package name
+> > > +        for target in self.target:
+> > > +            self.target[target] =3D f"package {self.golang_package_n=
+ame}\n"
+> > > +
+> > > +    def visit_end(self):
+> > > +        self.schema =3D None
+> > > +
+> > > +    def visit_object_type(self: QAPISchemaGenGolangVisitor,
+> > > +                          name: str,
+> > > +                          info: Optional[QAPISourceInfo],
+> > > +                          ifcond: QAPISchemaIfCond,
+> > > +                          features: List[QAPISchemaFeature],
+> > > +                          base: Optional[QAPISchemaObjectType],
+> > > +                          members: List[QAPISchemaObjectTypeMember],
+> > > +                          variants: Optional[QAPISchemaVariants]
+> > > +                          ) -> None:
+> > > +        pass
+> > > +
+> > > +    def visit_alternate_type(self: QAPISchemaGenGolangVisitor,
+> > > +                             name: str,
+> > > +                             info: Optional[QAPISourceInfo],
+> > > +                             ifcond: QAPISchemaIfCond,
+> > > +                             features: List[QAPISchemaFeature],
+> > > +                             variants: QAPISchemaVariants
+> > > +                             ) -> None:
+> > > +        pass
+> > > +
+> > > +    def visit_enum_type(self: QAPISchemaGenGolangVisitor,
+>=20
+> Was there a problem when you omitted the type for 'self'?
+> Usually that can be inferred. As of this patch, at least, I
+> think this can be safely dropped. (Maybe it becomes important
+> later.)
+
+I don't think I tried removing the type for self. I actually
+tried to keep all types expressed, just for the sake of knowing
+what types they were.
+
+Yes, it can be easily inferred and removed.
+
+> > > +                        name: str,
+> > > +                        info: Optional[QAPISourceInfo],
+> > > +                        ifcond: QAPISchemaIfCond,
+> > > +                        features: List[QAPISchemaFeature],
+> > > +                        members: List[QAPISchemaEnumMember],
+> > > +                        prefix: Optional[str]
+> > > +                        ) -> None:
+> > > +
+> > > +        value =3D qapi_to_field_name_enum(members[0].name)
+> >
+> > Unsure if this was addressed on the mailing list yet, but in our call
+> > we discussed how this call was vestigial and was causing the QAPI
+> > tests to fail. Actually, I can't quite run "make check-qapi-schema"
+> > and see the failure, I'm seeing it when I run "make check" and I'm not
+> > sure how to find the failure more efficiently/quickly:
+> >
+> > jsnow@scv ~/s/q/build (review)> make
+> > [1/60] Generating subprojects/dtc/version_gen.h with a custom command
+> > [2/60] Generating qemu-version.h with a custom command (wrapped by
+> > meson to capture output)
+> > [3/44] Generating tests/Test QAPI files with a custom command
+> > FAILED: tests/qapi-builtin-types.c tests/qapi-builtin-types.h
+> > tests/qapi-builtin-visit.c tests/qapi-builtin-visit.h
+> > tests/test-qapi-commands-sub-sub-module.c
+> > tests/test-qapi-commands-sub-sub-module.h tests/test-qapi-commands.c
+> > tests/test-qapi-commands.h tests/test-qapi-emit-events.c
+> > tests/test-qapi-emit-events.h tests/test-qapi-events-sub-sub-module.c
+> > tests/test-qapi-events-sub-sub-module.h tests/test-qapi-events.c
+> > tests/test-qapi-events.h tests/test-qapi-init-commands.c
+> > tests/test-qapi-init-commands.h tests/test-qapi-introspect.c
+> > tests/test-qapi-introspect.h tests/test-qapi-types-sub-sub-module.c
+> > tests/test-qapi-types-sub-sub-module.h tests/test-qapi-types.c
+> > tests/test-qapi-types.h tests/test-qapi-visit-sub-sub-module.c
+> > tests/test-qapi-visit-sub-sub-module.h tests/test-qapi-visit.c
+> > tests/test-qapi-visit.h
+> > /home/jsnow/src/qemu/build/pyvenv/bin/python3
+> > /home/jsnow/src/qemu/scripts/qapi-gen.py -o
+> > /home/jsnow/src/qemu/build/tests -b -p test-
+> > ../tests/qapi-schema/qapi-schema-test.json --suppress-tracing
+> > Traceback (most recent call last):
+> >   File "/home/jsnow/src/qemu/scripts/qapi-gen.py", line 19, in <module>
+> >     sys.exit(main.main())
+> >              ^^^^^^^^^^^
+> >   File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 96, in main
+> >     generate(args.schema,
+> >   File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 58, in generate
+> >     gen_golang(schema, output_dir, prefix)
+> >   File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 46, in gen_g=
+olang
+> >     schema.visit(vis)
+> >   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 1227, in vis=
+it
+> >     mod.visit(visitor)
+> >   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 209, in visit
+> >     entity.visit(visitor)
+> >   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 346, in visit
+> >     visitor.visit_enum_type(
+> >   File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 102, in
+> > visit_enum_type
+> >     value =3D qapi_to_field_name_enum(members[0].name)
+> >                                     ~~~~~~~^^^
+> > IndexError: list index out of range
+> > ninja: build stopped: subcommand failed.
+> > make: *** [Makefile:162: run-ninja] Error 1
+> >
+> >
+> > For the rest of my review, I commented this line out and continued on.
+> >
+> > > +        fields =3D ""
+> > > +        for member in members:
+> > > +            value =3D qapi_to_field_name_enum(member.name)
+> > > +            fields +=3D f'''\t{name}{value} {name} =3D "{member.name=
+}"\n'''
+> > > +
+> > > +        self.target["enum"] +=3D TEMPLATE_ENUM.format(name=3Dname, f=
+ields=3Dfields[:-1])
+>=20
+> This line is a little too long. (sorry)
+>=20
+> try:
+>=20
+> cd ~/src/qemu/scripts
+> flake8 qapi/
+
+
+toso@tapioca ~/s/qemu > flake8 scripts/qapi | wc
+     89     734    6260
+
+Yep, I'll fix them.
+
+> jsnow@scv ~/s/q/scripts (review)> flake8 qapi/
+> qapi/main.py:60:1: E302 expected 2 blank lines, found 1
+> qapi/golang.py:106:80: E501 line too long (82 > 79 characters)
+
+Cheers,
+Victor
+
+>=20
+> > > +
+> > > +    def visit_array_type(self, name, info, ifcond, element_type):
+> > > +        pass
+> > > +
+> > > +    def visit_command(self,
+> > > +                      name: str,
+> > > +                      info: Optional[QAPISourceInfo],
+> > > +                      ifcond: QAPISchemaIfCond,
+> > > +                      features: List[QAPISchemaFeature],
+> > > +                      arg_type: Optional[QAPISchemaObjectType],
+> > > +                      ret_type: Optional[QAPISchemaType],
+> > > +                      gen: bool,
+> > > +                      success_response: bool,
+> > > +                      boxed: bool,
+> > > +                      allow_oob: bool,
+> > > +                      allow_preconfig: bool,
+> > > +                      coroutine: bool) -> None:
+> > > +        pass
+> > > +
+> > > +    def visit_event(self, name, info, ifcond, features, arg_type, bo=
+xed):
+> > > +        pass
+> > > +
+> > > +    def write(self, output_dir: str) -> None:
+> > > +        for module_name, content in self.target.items():
+> > > +            go_module =3D module_name + "s.go"
+> > > +            go_dir =3D "go"
+> > > +            pathname =3D os.path.join(output_dir, go_dir, go_module)
+> > > +            odir =3D os.path.dirname(pathname)
+> > > +            os.makedirs(odir, exist_ok=3DTrue)
+> > > +
+> > > +            with open(pathname, "w", encoding=3D"ascii") as outfile:
+> > > +                outfile.write(content)
+> > > diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+> > > index 316736b6a2..cdbb3690fd 100644
+> > > --- a/scripts/qapi/main.py
+> > > +++ b/scripts/qapi/main.py
+> > > @@ -15,6 +15,7 @@
+> > >  from .common import must_match
+> > >  from .error import QAPIError
+> > >  from .events import gen_events
+> > > +from .golang import gen_golang
+> > >  from .introspect import gen_introspect
+> > >  from .schema import QAPISchema
+> > >  from .types import gen_types
+> > > @@ -54,6 +55,7 @@ def generate(schema_file: str,
+> > >      gen_events(schema, output_dir, prefix)
+> > >      gen_introspect(schema, output_dir, prefix, unmask)
+> > >
+> > > +    gen_golang(schema, output_dir, prefix)
+> > >
+> > >  def main() -> int:
+> > >      """
+> > > --
+> > > 2.41.0
+> > >
+>=20
+
+--j6th2slvo32bqtfr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmUdXdUACgkQl9kSPeN6
+SE+Ujg//SLR53ldFr160xtGVzzW8iLzEVfiaFs4rKnhU0A3h4305HQc/Fyr3e1WL
+wuSd7EJVdVDraKaLLSRc7CvI/e/YBsyyyzf+02UpBiiE58WCcOkMP+QQ8xC2Pume
+uB77/kLcmmSa/muxzDUJS2EKXdb8ufGzTlny0VRkShPT8QWgYCqZ84Ef3xD9RWq+
+xjtNWPYpRWkKYF102C0VDWqeLfFwIrfzvSTjc+CHOsl4GUlA3hlp7sgqQaObRE6C
+yGu0oFmq9BBjILfDD9HBA/Ow/DtkACCAchjbBo+Uv/3P0dIwcWXdcWPcFKRMmGgx
+we1wcqU0eVsvTNy2nKrMh3ysuf6pIGTzFEyyMwje5/apLZjRqOyWMDLQMBCSmswX
+xjjQBh6NV8NQTxd50TJl2i07K6MELyZ800rZf4lYiWF6t5oMOjYU9apkP+BE1293
+GVsvIBa/sdkXnnUP69CxDzIeDervAlffWJaCSLjH+H10zRmC6AUUvNnlxk57IXTK
+Mpd2oNsx/mD8voQK1YFkucVMhHlFstMIq5rbRzMAw74LRmDqifAz0NRynlhrvkPM
+ECZaGewPnXZ2uY2n51xvl7rNHk5UekDqHyVimC2snB1BK5VSlAitCZ0W8ff37Gp8
+Qwzio7U3nWdyjC58TETVR4D+mCRaYTn0w8xg+HxPkw+3jwPdi0M=
+=7hzF
+-----END PGP SIGNATURE-----
+
+--j6th2slvo32bqtfr--
+
 
