@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D227B8944
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35FD47B8A13
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:32:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo6XB-00007h-1t; Wed, 04 Oct 2023 14:23:45 -0400
+	id 1qo6dr-0005Yu-1r; Wed, 04 Oct 2023 14:30:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qo6X1-00004t-9n
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:23:36 -0400
-Received: from mail-oo1-xc31.google.com ([2607:f8b0:4864:20::c31])
+ id 1qo6dS-0005Ty-9T
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:30:15 -0400
+Received: from mail-oo1-xc35.google.com ([2607:f8b0:4864:20::c35])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <stefanha@gmail.com>)
- id 1qo6Wv-0003Lr-Kx
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:23:35 -0400
-Received: by mail-oo1-xc31.google.com with SMTP id
- 006d021491bc7-57bb6a2481fso57770eaf.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 11:23:28 -0700 (PDT)
+ id 1qo6dO-00071r-Ve
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:30:13 -0400
+Received: by mail-oo1-xc35.google.com with SMTP id
+ 006d021491bc7-57bb6b1f764so60059eaf.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 11:30:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696443808; x=1697048608; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696444209; x=1697049009; darn=nongnu.org;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=TPD4NqM88aAiplKkzkofTCm2yROaCLdjq5REV3kpVpk=;
- b=hBHYLBQpjrEbAcVFeUCb3Ctm1FNZ1o27psWfhkePl0T4CzRaqtfTj4iZgsg51vVTUf
- VK26tR2V7QsfE7odDU84mY2W24uqe4Eo2Ss5WAKzMYbDOBd+pSOOrXJO/h3q4NoYwX+Y
- VpPgXyWe6DGeN03XGyBZz3PO4dLHXUIUVGUa2s6jXhl9nGINFwiGgQLmMXZiD2CWtxh7
- V1+CILpTnZrm/54MBzsdWuB8GdmyuK7ToZy9Qyr0w3p9hFWwDd7tpyOmQSbH2S5Vk8WX
- SKZVXaxqQJC2RCeukhEpVhyM1KdbN8HPmG01zfzl/nVNJXIlx9qjkJUtkaxq1k40w530
- ac9Q==
+ bh=RTqWM5yicXLheqTuJKCyZLRdjwEAUdj0mTtAYUNyDG0=;
+ b=L/63aGkaxWD4VMcaBlnci/ABQy2J47hpen0d8f3BFSEOVKitoun5N62oe7NGBtmI1v
+ qEz7znijnTIFUgJS0jXulWhXgOE9t7LAtObqpGgRJiNABgodYAiqLsmywjrU2/MGmbZz
+ LXcLFdgYgkPhRyN8cRghtT6+eAyZg3oDlZnSfyXE6jubC0FZ/ccK97Bb1lzi9yzr0UOH
+ P9Fi31JERbSAYXSbb1MGMdc5O3ZuwCso3kpCGpd4/s9+6xJ4PIxrGlg/1nSt5LkylvBH
+ gh0VVa2oZfTSCnY+quyZYXJF14EhJMz15Z5aMlE4qECExR8bo0SScR4oYt5OGWRBdFGV
+ jC7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696443808; x=1697048608;
+ d=1e100.net; s=20230601; t=1696444209; x=1697049009;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=TPD4NqM88aAiplKkzkofTCm2yROaCLdjq5REV3kpVpk=;
- b=tpaA8Q0PUM7BfEzNcMn4mjUmgBKPZR9r49rMBv5eQ11PtVgc/x4TlUi+kx1hh9wVMG
- PPNxrLxt8av+ww9iT++6jcgr4XEb67y+PRcyE+NLJOCp62p8CVShuEtO5A7IHTLSFWwA
- mTLAZLDBxGDV7d74cvCCLCl/u0dMSBgbdGP6DaZtO03+TTtUYO0bAlDBiVUl/lgpcx/a
- ZD3ttzixPvuksSxHc8kFxBVTzk7MvFk0bVHDSN+UpWxWAy/KXoS8ER5A8lRfTJcCcsvv
- eURNlVqZyHqAaFjiqRKkCi/60GjPSOYA8cZRmKwjwyWjMregZUoDlCyo56wFOOSAfj7u
- cK2w==
-X-Gm-Message-State: AOJu0YxaRyhGVKBSsnQDME7TJ8IcK+QPX7oyY9VJBYynEKD4hol+falF
- VxhLsb5KN8XtpaF6SJbeXOJx1+Oah6yT7ugdGTIAucHhZys=
-X-Google-Smtp-Source: AGHT+IFnQVYl5xsWj39iUR2SqJryJC0HQZBk3ZIBkX/68RJ/3VDc0EiPNhoY3S5Jndhx2f1655NxxsNj1fkobzH8ta8=
-X-Received: by 2002:a4a:6c02:0:b0:57b:8f92:aefb with SMTP id
- q2-20020a4a6c02000000b0057b8f92aefbmr2937662ooc.7.1696443807788; Wed, 04 Oct
- 2023 11:23:27 -0700 (PDT)
+ bh=RTqWM5yicXLheqTuJKCyZLRdjwEAUdj0mTtAYUNyDG0=;
+ b=pIoe8AHb3Xmr2qnnBKcrnhWSt2KFdpyassvbUm1MyYGtWMcXl6fuUx8ar8yFC3mepV
+ WwS+sLLSILK7x65WEUT5sWJDr0EBwdzVc4R+uMuU+B6oi6fbnecu99ZAu+b8oQk1F8sI
+ eX8dMtRm8sg3i+0XkJM+SjvP8yrDMs/n6PUJ1zJBoS7OXuGEagutEp+PskytUfM+993S
+ 0D8Xs3HPMm4o/Y4pow8bD22cZ3Yn9PFSdxBtMqYoBGtSulaNi8TQg0Qwp8At8IZLnQ29
+ rwA+g63XHycG7yTa34GOWFX2RwvLmfDnJRo9Sv/ATVYsvf/FRJ6vQqT7ftDFH1P8Pi26
+ GufQ==
+X-Gm-Message-State: AOJu0Yywxa0Kb9I50Uks9BcWJVezsbgB0XJ4yTILngH5VMO3osmYgZ8p
+ eS0XrN0yAbrTGkv/u1tTQjs44I5vIj4dCKjiFsw=
+X-Google-Smtp-Source: AGHT+IHuU4V9XLIX7G2tQtYghKaeyMVpX5iGtu3tTvqrG+s6BLFyJlBkLJFoPgIPBDACbO6Jqg7HqZ0HMPcbQCpchdI=
+X-Received: by 2002:a4a:6c5d:0:b0:57b:a92a:ece9 with SMTP id
+ u29-20020a4a6c5d000000b0057ba92aece9mr2887508oof.6.1696444209187; Wed, 04 Oct
+ 2023 11:30:09 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1696408966.git.mst@redhat.com>
  <CAJSP0QVfn__LKXVO5puOs4h5AV9FWGNKiJXUnSe-K+ANP+=wCg@mail.gmail.com>
- <20231004130205-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231004130205-mutt-send-email-mst@kernel.org>
+ <20231004131751-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20231004131751-mutt-send-email-mst@kernel.org>
 From: Stefan Hajnoczi <stefanha@gmail.com>
-Date: Wed, 4 Oct 2023 14:23:15 -0400
-Message-ID: <CAJSP0QUN5E0jZPw+qCvTrs-RmT1UXkKNFAMbWO=53HbfDQ0SGA@mail.gmail.com>
+Date: Wed, 4 Oct 2023 14:29:57 -0400
+Message-ID: <CAJSP0QVJTXxvWqQqQBa5KmizcqM_D28Mzz6p20WhQ5Ugp8R4SA@mail.gmail.com>
 Subject: Re: [PULL 00/63] virtio,pci: features, cleanups
 To: "Michael S. Tsirkin" <mst@redhat.com>
 Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::c31;
- envelope-from=stefanha@gmail.com; helo=mail-oo1-xc31.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::c35;
+ envelope-from=stefanha@gmail.com; helo=mail-oo1-xc35.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -88,13 +88,7 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The link to the job is https://gitlab.com/qemu-project/qemu/-/jobs/52226933=
-60.
-
-The link to the pipeline is
-https://gitlab.com/qemu-project/qemu/-/pipelines/1025613961.
-
-On Wed, 4 Oct 2023 at 13:04, Michael S. Tsirkin <mst@redhat.com> wrote:
+On Wed, 4 Oct 2023 at 13:20, Michael S. Tsirkin <mst@redhat.com> wrote:
 >
 > On Wed, Oct 04, 2023 at 12:50:18PM -0400, Stefan Hajnoczi wrote:
 > > On Wed, 4 Oct 2023 at 04:43, Michael S. Tsirkin <mst@redhat.com> wrote:
@@ -362,11 +356,7 @@ st/bios-tables-test
 > > https://gitlab.com/qemu-project/qemu/-/jobs/5222693360
 > >
 > > Stefan
->
-> OK but .. CI seemed to pass for me. Interesting.
-> Could you send the link to the pipeline please?
->
->
+> >
 > > >  tests/unit/meson.build                    |   1 +
 > > >  74 files changed, 2192 insertions(+), 558 deletions(-)
 > > >  create mode 100644 include/hw/virtio/vhost-user-device.h
@@ -378,5 +368,27 @@ st/bios-tables-test
 > > >  create mode 100644 tests/unit/test-virtio-dmabuf.c
 > > >
 > > >
+>
+>
+> Hmm something related to that (ubuntu on s390) environment and triggered
+> by fortify source somehow? Weird. My guess would be an uninitialized
+> variable somwhere, which if true would be serious enough. Unfortunately
+> IIRC IASL is not available on that platform. Is there a way to get the
+> binaries from that build to compare against expected files?
+
+The job artifacts only include the meson logs, not the binaries:
+https://gitlab.com/qemu-project/qemu/-/jobs/5222693360/artifacts/browse
+
+Two options for reproducing this:
+- Access an s390 system via Red Hat and reproduce it.
+- Point me to a branch that has debugging modifications (e.g. GitLab
+CI YAML that saves files you need as artifacts) and I'll run the job
+on the qemu-project GitLab account for you.
+
+Stefan
+
+>
+> --
+> MST
 >
 
