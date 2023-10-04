@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E8B7B8C4F
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4603C7B8D49
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:22:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo7HI-00069I-VH; Wed, 04 Oct 2023 15:11:24 -0400
+	id 1qo7Qg-0000fH-Tw; Wed, 04 Oct 2023 15:21:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qo7HG-00068U-JI; Wed, 04 Oct 2023 15:11:22 -0400
-Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
+ id 1qo7Qd-0000Uh-DA; Wed, 04 Oct 2023 15:21:03 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qo7HE-0005yF-R9; Wed, 04 Oct 2023 15:11:22 -0400
-Received: by mail-lf1-x131.google.com with SMTP id
- 2adb3069b0e04-5044dd5b561so221858e87.1; 
- Wed, 04 Oct 2023 12:11:20 -0700 (PDT)
+ id 1qo7Qa-0002Gg-PV; Wed, 04 Oct 2023 15:21:02 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-5033918c09eso216348e87.2; 
+ Wed, 04 Oct 2023 12:20:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696446679; x=1697051479; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696447257; x=1697052057; darn=nongnu.org;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Dh02cZXuc8d5hqIGOuDPJRkeEkb+fm9iaMPOZoIsNNc=;
- b=kWoFWlsmxPLj6hrVI3HLyXvEcJC72Ycm8hoZ21G5toX6Wou+lorBwi+xJp4DN+Z6rd
- KAbF+/6G7MK9kyydIY5C0WOxfuCje7hVes/WixpCs3/0Y5X3QtQ9Eld1Y9pZEhjGek2f
- P1TUkxy57VPLkqRqYWkF0bA+E1UYjO/N2gsYD5T5kI2YIpuPeD2DyB51Zr1mEO0b9yKX
- xfrFnLsralaKjQjaEBJdGr7IutlXTS8vbv1HgUGuOehJPb3a9neUNh9udUT8CRco6ZHw
- qNGxE1YO7oe8yrVTUCp6LMttv2dd8o+iaTar8Zb0EnOnJwf4lfKymZ70SNV3w7UPTr4O
- 6SMA==
+ bh=0tYTiak3/0bWBm11AAZ6N5wEs3JE+pIf/Mh2FyXA03s=;
+ b=OBiFe7iP+kS5CpJn5bqfrOfxGou3ZbSGyvACMz7Lmguz8B1Xozpf8BYG7L0JJyezG2
+ /wuutQhd/pkp2dVB1L1SJOyJv5IGbndo57DJXxgIbHYpehK8IgpNESmxD5XNhiQxBDB3
+ sIvtwCS3ZLI0XGJydLZBplTqXCICiqkc64EtmTzJvcLYrU2/CT9rG+5VG1Z4rLy2zE21
+ DPy399YB0lVbJlt1Qc57SiEoI3UVlACuYHC/4ITf0scoqovGkPf4kw5a9Nkc/Fs5hyku
+ N+1XnAFDXJLEGGIDkuB3PHWGHuPI4YdNb9flbOkx88D34bHq3UGbRWPqaoSZpU07Mg/O
+ XF4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696446679; x=1697051479;
+ d=1e100.net; s=20230601; t=1696447257; x=1697052057;
  h=user-agent:in-reply-to:content-disposition:mime-version:references
  :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Dh02cZXuc8d5hqIGOuDPJRkeEkb+fm9iaMPOZoIsNNc=;
- b=lTD/CkmzMcfFrjk6Qb/XH99fGbDorXDqEb9G/wgo41Iy1ANliH+lqlHAfAvIJ/8Itk
- or8tcCQ8QmljtIhKphBqyOcr/9lcEIyQbaxaWNpAE8WxL4fxvv67Zo1CMx5ooje7IIEY
- 9WU5hCK2fMD4Q+2Avis+o3HfEFI1yrwicJSAASohDproTjN1o9X0dEQmqz7XbUi+lxLW
- +hfx1Zhmd6hhaor/YUVUDICMtjsBk0HmZx2MDkojbqisgreEXF2+0Pel6Im9rTSS87uy
- hotlPsidoNS1Qvzao0bRXmqruqpulvGQk2SSFS7Qmzce8fCR2dWp9Do6JcdvLTwSA2Y1
- OhgQ==
-X-Gm-Message-State: AOJu0YyYOXfSuHXKJLfIqpb8uqWPqPZeCLuhgcc9oS94K5/34moh4iyL
- Dilr0LTNMGHpR2PbtxptnKc=
-X-Google-Smtp-Source: AGHT+IFMBYn24ZnAlo0S0nCd46UgGDVa6MOtqRZWuNJqi8Yuy8Wo9Ugu0BjDDyqzAV4PjnkKFJTeuw==
-X-Received: by 2002:a19:e009:0:b0:500:c2d8:a2a2 with SMTP id
- x9-20020a19e009000000b00500c2d8a2a2mr2405082lfg.46.1696446678399; 
- Wed, 04 Oct 2023 12:11:18 -0700 (PDT)
+ bh=0tYTiak3/0bWBm11AAZ6N5wEs3JE+pIf/Mh2FyXA03s=;
+ b=MX8azrWC0DgOpzRMu+/UKTnByxyzY+P4v6r8VW15AJN3Lcy8SNiPaCNuzR4CpRzqbd
+ UaIeFHjy+XdT3Nr0/CRfGC+JwUqvZZV6trG0YOzEH+pa6QW7MpgjPe3kQMGR/37Hw+LM
+ hMm6EG46mCVHg9NgUubYCWNqK4kj9wneVzmTY5A+ABDpLIjwewKDyrAqMg5HTZm40pgn
+ he6+J6XM9DCDVvSQhTum3EH1dDdu5qlzL+9BbYZVyV+XkC5PSqujzdvtFjeNz6OBqwNp
+ CWxt8BuwABBDBlv+FvPxYosEXsvqOcWDymguTn8r2NX6XHw1zvW0AT8FWJ3a8l1n48pi
+ oWaw==
+X-Gm-Message-State: AOJu0Yz93u9dlctp9XPr5Xt/wSHDv3Yx/5Ecbvi81YGV4yAa5XgPuwvx
+ N9PMUm3SKPu9zdI25kRPhV8=
+X-Google-Smtp-Source: AGHT+IFeeJRxVdXCtmE/EwbMbvHT8ycv2c+kXv6CugLFk9SMA1Sr2Y0Quq9rGTdwTmxnNhIk6+YKkg==
+X-Received: by 2002:a05:6512:39d1:b0:500:ac71:8464 with SMTP id
+ k17-20020a05651239d100b00500ac718464mr3433128lfu.66.1696447257377; 
+ Wed, 04 Oct 2023 12:20:57 -0700 (PDT)
 Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
  by smtp.gmail.com with ESMTPSA id
- k16-20020ac257d0000000b004fbac2646e3sm703210lfo.195.2023.10.04.12.11.17
+ f19-20020a2e3813000000b002c182a942f1sm768031lja.139.2023.10.04.12.20.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 12:11:17 -0700 (PDT)
-Date: Wed, 4 Oct 2023 21:11:16 +0200
+ Wed, 04 Oct 2023 12:20:57 -0700 (PDT)
+Date: Wed, 4 Oct 2023 21:20:55 +0200
 From: Francisco Iglesias <frasse.iglesias@gmail.com>
 To: Tong Ho <tong.ho@amd.com>
 Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, alistair@alistair23.me,
  edgar.iglesias@gmail.com, peter.maydell@linaro.org
-Subject: Re: [PATCH v3 2/3] hw/arm: xlnx-versal-virt: Add AMD/Xilinx TRNG
- device
-Message-ID: <20231004191115.GB20007@fralle-msi>
-References: <20231004142746.350225-1-tong.ho@amd.com>
- <20231004142746.350225-3-tong.ho@amd.com>
+Subject: Re: [PATCH] xlnx-zynqmp-efuse: hw/nvram: Remove deprecated device
+ reset
+Message-ID: <20231004192055.GD18959@fralle-msi>
+References: <20231004055713.324009-1-tong.ho@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231004142746.350225-3-tong.ho@amd.com>
+In-Reply-To: <20231004055713.324009-1-tong.ho@amd.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::131;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x131.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -1020
 X-Spam_score: -102.1
 X-Spam_bar: ---------------------------------------------------
@@ -94,107 +93,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 Oct 04] Wed 07:27:45, Tong Ho wrote:
-> Connect the support for Versal True Random Number Generator
-> (TRNG) device.
-> 
-> Warning: unlike the TRNG component in a real device from the
-> Versal device familiy, the connected TRNG model is not of
-> cryptographic grade and is not intended for use cases when
-> cryptograpically strong TRNG is needed.
+On [2023 Oct 03] Tue 22:57:13, Tong Ho wrote:
+> This change implements the ResettableClass interface for the device.
 > 
 > Signed-off-by: Tong Ho <tong.ho@amd.com>
 
 Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
 
 > ---
->  hw/arm/Kconfig               |  1 +
->  hw/arm/xlnx-versal.c         | 16 ++++++++++++++++
->  include/hw/arm/xlnx-versal.h |  5 +++++
->  3 files changed, 22 insertions(+)
+>  hw/nvram/xlnx-zynqmp-efuse.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
 > 
-> diff --git a/hw/arm/Kconfig b/hw/arm/Kconfig
-> index 7e68348440..0a3ff6748d 100644
-> --- a/hw/arm/Kconfig
-> +++ b/hw/arm/Kconfig
-> @@ -482,6 +482,7 @@ config XLNX_VERSAL
->      select XLNX_BBRAM
->      select XLNX_EFUSE_VERSAL
->      select XLNX_USB_SUBSYS
-> +    select XLNX_VERSAL_TRNG
->  
->  config NPCM7XX
->      bool
-> diff --git a/hw/arm/xlnx-versal.c b/hw/arm/xlnx-versal.c
-> index fa556d8764..4f74a64a0d 100644
-> --- a/hw/arm/xlnx-versal.c
-> +++ b/hw/arm/xlnx-versal.c
-> @@ -373,6 +373,21 @@ static void versal_create_rtc(Versal *s, qemu_irq *pic)
->                         qdev_get_gpio_in(DEVICE(&s->pmc.apb_irq_orgate), 0));
+> diff --git a/hw/nvram/xlnx-zynqmp-efuse.c b/hw/nvram/xlnx-zynqmp-efuse.c
+> index 228ba0bbfa..3db5f98ec1 100644
+> --- a/hw/nvram/xlnx-zynqmp-efuse.c
+> +++ b/hw/nvram/xlnx-zynqmp-efuse.c
+> @@ -2,6 +2,7 @@
+>   * QEMU model of the ZynqMP eFuse
+>   *
+>   * Copyright (c) 2015 Xilinx Inc.
+> + * Copyright (c) 2023 Advanced Micro Devices, Inc.
+>   *
+>   * Written by Edgar E. Iglesias <edgari@xilinx.com>
+>   *
+> @@ -769,9 +770,9 @@ static void zynqmp_efuse_register_reset(RegisterInfo *reg)
+>      register_reset(reg);
 >  }
 >  
-> +static void versal_create_trng(Versal *s, qemu_irq *pic)
-> +{
-> +    SysBusDevice *sbd;
-> +    MemoryRegion *mr;
-> +
-> +    object_initialize_child(OBJECT(s), "trng", &s->pmc.trng,
-> +                            TYPE_XLNX_VERSAL_TRNG);
-> +    sbd = SYS_BUS_DEVICE(&s->pmc.trng);
-> +    sysbus_realize(sbd, &error_fatal);
-> +
-> +    mr = sysbus_mmio_get_region(sbd, 0);
-> +    memory_region_add_subregion(&s->mr_ps, MM_PMC_TRNG, mr);
-> +    sysbus_connect_irq(sbd, 0, pic[VERSAL_TRNG_IRQ]);
-> +}
-> +
->  static void versal_create_xrams(Versal *s, qemu_irq *pic)
+> -static void zynqmp_efuse_reset(DeviceState *dev)
+> +static void zynqmp_efuse_reset_hold(Object *obj)
 >  {
->      int nr_xrams = ARRAY_SIZE(s->lpd.xram.ctrl);
-> @@ -909,6 +924,7 @@ static void versal_realize(DeviceState *dev, Error **errp)
->      versal_create_sds(s, pic);
->      versal_create_pmc_apb_irq_orgate(s, pic);
->      versal_create_rtc(s, pic);
-> +    versal_create_trng(s, pic);
->      versal_create_xrams(s, pic);
->      versal_create_bbram(s, pic);
->      versal_create_efuse(s, pic);
-> diff --git a/include/hw/arm/xlnx-versal.h b/include/hw/arm/xlnx-versal.h
-> index 7b419f88c2..54f4b98d9d 100644
-> --- a/include/hw/arm/xlnx-versal.h
-> +++ b/include/hw/arm/xlnx-versal.h
-> @@ -31,6 +31,7 @@
->  #include "hw/dma/xlnx_csu_dma.h"
->  #include "hw/misc/xlnx-versal-crl.h"
->  #include "hw/misc/xlnx-versal-pmc-iou-slcr.h"
-> +#include "hw/misc/xlnx-versal-trng.h"
->  #include "hw/net/xlnx-versal-canfd.h"
->  #include "hw/misc/xlnx-versal-cfu.h"
->  #include "hw/misc/xlnx-versal-cframe-reg.h"
-> @@ -116,6 +117,7 @@ struct Versal {
->          } iou;
+> -    XlnxZynqMPEFuse *s = XLNX_ZYNQMP_EFUSE(dev);
+> +    XlnxZynqMPEFuse *s = XLNX_ZYNQMP_EFUSE(obj);
+>      unsigned int i;
 >  
->          XlnxZynqMPRTC rtc;
-> +        XlnxVersalTRng trng;
->          XlnxBBRam bbram;
->          XlnxEFuse efuse;
->          XlnxVersalEFuseCtrl efuse_ctrl;
-> @@ -160,6 +162,7 @@ struct Versal {
->  #define VERSAL_OSPI_IRQ            124
->  #define VERSAL_SD0_IRQ_0           126
->  #define VERSAL_EFUSE_IRQ           139
-> +#define VERSAL_TRNG_IRQ            141
->  #define VERSAL_RTC_ALARM_IRQ       142
->  #define VERSAL_RTC_SECONDS_IRQ     143
+>      for (i = 0; i < ARRAY_SIZE(s->regs_info); ++i) {
+> @@ -837,8 +838,9 @@ static Property zynqmp_efuse_props[] = {
+>  static void zynqmp_efuse_class_init(ObjectClass *klass, void *data)
+>  {
+>      DeviceClass *dc = DEVICE_CLASS(klass);
+> +    ResettableClass *rc = RESETTABLE_CLASS(klass);
 >  
-> @@ -329,4 +332,6 @@ struct Versal {
->  #define MM_PMC_CRP_SIZE             0x10000
->  #define MM_PMC_RTC                  0xf12a0000
->  #define MM_PMC_RTC_SIZE             0x10000
-> +#define MM_PMC_TRNG                 0xf1230000
-> +#define MM_PMC_TRNG_SIZE            0x10000
->  #endif
+> -    dc->reset = zynqmp_efuse_reset;
+> +    rc->phases.hold = zynqmp_efuse_reset_hold;
+>      dc->realize = zynqmp_efuse_realize;
+>      dc->vmsd = &vmstate_efuse;
+>      device_class_set_props(dc, zynqmp_efuse_props);
 > -- 
 > 2.25.1
+> 
 > 
 
