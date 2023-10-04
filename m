@@ -2,44 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0076F7B8014
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:00:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB68D7B8019
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:01:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo1TK-0002Qu-76; Wed, 04 Oct 2023 08:59:26 -0400
+	id 1qo1TM-0002SM-QY; Wed, 04 Oct 2023 08:59:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qo1TH-0002Ou-SA
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:59:23 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qo1TK-0002RJ-6u
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:59:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qo1TF-0003mw-8I
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:59:22 -0400
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qo1TF-0003n9-Pd
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:59:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696424359;
+ s=mimecast20190719; t=1696424361;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=RQ8aGLKSDdJr2DxXlf7NmH/QfRIonMavGxc1ULxd56E=;
- b=HeHeO/mL+GBi8bazUoYkEZ9nTDNCkiwxJGjvHfEMo5DLKzBKgU2u7fboyGHVY88VYusWTg
- VfpHxDPLm9umiZqB2OvjBkBNltTswA4RdAV88Ty8N1su5XP2YFMLHpLmR7QioGg8sF9Ccc
- 6NkBBdFM/7Ng6XiAHjYsFAV0AARnmLc=
+ bh=6OKisskQH1vZdytH1183DTn5W9VAneg4cyCydaD9Auw=;
+ b=Q962G9sqhFG0/+4qDCIHc5K0md8p2oGM4ZHHFAmZOojqEc44xNMAbEupV7P/Aq2noySKVD
+ c70yDaaVt9uSzFl3zUXFEsqD6OwPyqiJ7hF7FBuZQcLq9r/GyA6Vbi6QuTIomog84VWefk
+ a1CQw20JIvnZE/ziMH0nD6JK1nPis6g=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-647-WoklyCWLNN6zLHZV7jq1Sw-1; Wed, 04 Oct 2023 08:59:16 -0400
-X-MC-Unique: WoklyCWLNN6zLHZV7jq1Sw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ us-mta-637--LX12krUN0i4cyYMjmngXQ-1; Wed, 04 Oct 2023 08:59:18 -0400
+X-MC-Unique: -LX12krUN0i4cyYMjmngXQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C41D7185A78E;
- Wed,  4 Oct 2023 12:59:15 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F1EA811E88;
+ Wed,  4 Oct 2023 12:59:18 +0000 (UTC)
 Received: from localhost (unknown [10.39.194.56])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 527914026FC;
- Wed,  4 Oct 2023 12:59:15 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8782BC15BB8;
+ Wed,  4 Oct 2023 12:59:17 +0000 (UTC)
 From: Hanna Czenczek <hreitz@redhat.com>
 To: qemu-devel@nongnu.org,
 	virtio-fs@redhat.com
@@ -48,15 +48,15 @@ Cc: Hanna Czenczek <hreitz@redhat.com>, "Michael S . Tsirkin" <mst@redhat.com>,
  German Maglione <gmaglione@redhat.com>,
  =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
  Anton Kuchin <antonkuchin@yandex-team.ru>
-Subject: [PATCH v4 4/8] vhost-user.rst: Introduce suspended state
-Date: Wed,  4 Oct 2023 14:59:00 +0200
-Message-ID: <20231004125904.110781-5-hreitz@redhat.com>
+Subject: [PATCH v4 5/8] vhost-user.rst: Migrating back-end-internal state
+Date: Wed,  4 Oct 2023 14:59:01 +0200
+Message-ID: <20231004125904.110781-6-hreitz@redhat.com>
 In-Reply-To: <20231004125904.110781-1-hreitz@redhat.com>
 References: <20231004125904.110781-1-hreitz@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -81,66 +81,247 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In vDPA, GET_VRING_BASE does not stop the queried vring, which is why
-SUSPEND was introduced so that the returned index would be stable.  In
-vhost-user, it does stop the vring, so under the same reasoning, it can
-get away without SUSPEND.
+For vhost-user devices, qemu can migrate the virtio state, but not the
+back-end's internal state.  To do so, we need to be able to transfer
+this internal state between front-end (qemu) and back-end.
 
-Still, we do want to clarify that if the device is completely stopped,
-i.e. all vrings are stopped, the back-end should cease to modify any
-state relating to the guest.  Do this by calling it "suspended".
+At this point, this new feature is added for the purpose of virtio-fs
+migration.  Because virtiofsd's internal state will not be too large, we
+believe it is best to transfer it as a single binary blob after the
+streaming phase.
 
-Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
+These are the additions to the protocol:
+- New vhost-user protocol feature VHOST_USER_PROTOCOL_F_DEVICE_STATE
+- SET_DEVICE_STATE_FD function: Front-end and back-end negotiate a file
+  descriptor over which to transfer the state.
+- CHECK_DEVICE_STATE: After the state has been transferred through the
+  file descriptor, the front-end invokes this function to verify
+  success.  There is no in-band way (through the file descriptor) to
+  indicate failure, so we need to check explicitly.
+
+Once the transfer FD has been established via SET_DEVICE_STATE_FD
+(which includes establishing the direction of transfer and migration
+phase), the sending side writes its data into it, and the reading side
+reads it until it sees an EOF.  Then, the front-end will check for
+success via CHECK_DEVICE_STATE, which on the destination side includes
+checking for integrity (i.e. errors during deserialization).
+
 Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
 ---
- docs/interop/vhost-user.rst | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ docs/interop/vhost-user.rst | 172 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 172 insertions(+)
 
 diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
-index 9f4940a036..d282155562 100644
+index d282155562..aa91e2b34e 100644
 --- a/docs/interop/vhost-user.rst
 +++ b/docs/interop/vhost-user.rst
-@@ -426,6 +426,19 @@ back-end must enable all rings immediately.
- While processing the rings (whether they are enabled or not), the back-end
- must support changing some configuration aspects on the fly.
+@@ -306,6 +306,32 @@ Inflight description
  
-+.. _suspended_device_state:
+ :queue size: a 16-bit size of virtqueues
+ 
++Device state transfer parameters
++^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 +
-+Suspended device state
-+^^^^^^^^^^^^^^^^^^^^^^
+++--------------------+-----------------+
++| transfer direction | migration phase |
+++--------------------+-----------------+
 +
-+While all vrings are stopped, the device is *suspended*.  In addition to
-+not processing any vring (because they are stopped), the device must:
++:transfer direction: a 32-bit enum, describing the direction in which
++  the state is transferred:
 +
-+* not write to any guest memory regions,
-+* not send any notifications to the guest,
-+* not send any messages to the front-end,
-+* still process and reply to messages from the front-end.
++  - 0: Save: Transfer the state from the back-end to the front-end,
++    which happens on the source side of migration
++  - 1: Load: Transfer the state from the front-end to the back-end,
++    which happens on the destination side of migration
 +
- Multiple queue support
++:migration phase: a 32-bit enum, describing the state in which the VM
++  guest and devices are:
++
++  - 0: Stopped (in the period after the transfer of memory-mapped
++    regions before switch-over to the destination): The VM guest is
++    stopped, and the vhost-user device is suspended (see
++    :ref:`Suspended device state <suspended_device_state>`).
++
++  In the future, additional phases might be added e.g. to allow
++  iterative migration while the device is running.
++
+ C structure
+ -----------
+ 
+@@ -365,6 +391,7 @@ in the ancillary data:
+ * ``VHOST_USER_SET_VRING_ERR``
+ * ``VHOST_USER_SET_BACKEND_REQ_FD`` (previous name ``VHOST_USER_SET_SLAVE_REQ_FD``)
+ * ``VHOST_USER_SET_INFLIGHT_FD`` (if ``VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD``)
++* ``VHOST_USER_SET_DEVICE_STATE_FD``
+ 
+ If *front-end* is unable to send the full message or receives a wrong
+ reply it will close the connection. An optional reconnection mechanism
+@@ -539,6 +566,80 @@ it performs WAKE ioctl's on the userfaultfd to wake the stalled
+ back-end.  The front-end indicates support for this via the
+ ``VHOST_USER_PROTOCOL_F_PAGEFAULT`` feature.
+ 
++.. _migrating_backend_state:
++
++Migrating back-end state
++^^^^^^^^^^^^^^^^^^^^^^^^
++
++Migrating device state involves transferring the state from one
++back-end, called the source, to another back-end, called the
++destination.  After migration, the destination transparently resumes
++operation without requiring the driver to re-initialize the device at
++the VIRTIO level.  If the migration fails, then the source can
++transparently resume operation until another migration attempt is made.
++
++Generally, the front-end is connected to a virtual machine guest (which
++contains the driver), which has its own state to transfer between source
++and destination, and therefore will have an implementation-specific
++mechanism to do so.  The ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature
++provides functionality to have the front-end include the back-end's
++state in this transfer operation so the back-end does not need to
++implement its own mechanism, and so the virtual machine may have its
++complete state, including vhost-user devices' states, contained within a
++single stream of data.
++
++To do this, the back-end state is transferred from back-end to front-end
++on the source side, and vice versa on the destination side.  This
++transfer happens over a channel that is negotiated using the
++``VHOST_USER_SET_DEVICE_STATE_FD`` message.  This message has two
++parameters:
++
++* Direction of transfer: On the source, the data is saved, transferring
++  it from the back-end to the front-end.  On the destination, the data
++  is loaded, transferring it from the front-end to the back-end.
++
++* Migration phase: Currently, the only supported phase is the period
++  after the transfer of memory-mapped regions before switch-over to the
++  destination, when both the source and destination devices are
++  suspended (:ref:`Suspended device state <suspended_device_state>`).
++  In the future, additional phases might be supported to allow iterative
++  migration while the device is running.
++
++The nature of the channel is implementation-defined, but it must
++generally behave like a pipe: The writing end will write all the data it
++has into it, signalling the end of data by closing its end.  The reading
++end must read all of this data (until encountering the end of file) and
++process it.
++
++* When saving, the writing end is the source back-end, and the reading
++  end is the source front-end.  After reading the state data from the
++  channel, the source front-end must transfer it to the destination
++  front-end through an implementation-defined mechanism.
++
++* When loading, the writing end is the destination front-end, and the
++  reading end is the destination back-end.  After reading the state data
++  from the channel, the destination back-end must deserialize its
++  internal state from that data and set itself up to allow the driver to
++  seamlessly resume operation on the VIRTIO level.
++
++Seamlessly resuming operation means that the migration must be
++transparent to the guest driver, which operates on the VIRTIO level.
++This driver will not perform any re-initialization steps, but continue
++to use the device as if no migration had occurred.  The vhost-user
++front-end, however, will re-initialize the vhost state on the
++destination, following the usual protocol for establishing a connection
++to a vhost-user back-end: This includes, for example, setting up memory
++mappings and kick and call FDs as necessary, negotiating protocol
++features, or setting the initial vring base indices (to the same value
++as on the source side, so that operation can resume).
++
++Both on the source and on the destination side, after the respective
++front-end has seen all data transferred (when the transfer FD has been
++closed), it sends the ``VHOST_USER_CHECK_DEVICE_STATE`` message to
++verify that data transfer was successful in the back-end, too.  The
++back-end responds once it knows whether the transfer and processing was
++successful or not.
++
+ Memory access
+ -------------
+ 
+@@ -932,6 +1033,7 @@ Protocol features
+   #define VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS  15
+   #define VHOST_USER_PROTOCOL_F_STATUS               16
+   #define VHOST_USER_PROTOCOL_F_XEN_MMAP             17
++  #define VHOST_USER_PROTOCOL_F_DEVICE_STATE         18
+ 
+ Front-end message types
+ -----------------------
+@@ -1532,6 +1634,76 @@ Front-end message types
+   back-end for its device status as defined in the Virtio specification.
+   Deprecated together with VHOST_USER_SET_STATUS.
+ 
++``VHOST_USER_SET_DEVICE_STATE_FD``
++  :id: 41
++  :equivalent ioctl: N/A
++  :request payload: device state transfer parameters
++  :reply payload: ``u64``
++
++  Front-end and back-end negotiate a channel over which to transfer the
++  back-end’s internal state during migration.  Either side (front-end or
++  back-end) may create the channel.  The nature of this channel is not
++  restricted or defined in this document, but whichever side creates it
++  must create a file descriptor that is provided to the respectively
++  other side, allowing access to the channel.  This FD must behave as
++  follows:
++
++  * For the writing end, it must allow writing the whole back-end state
++    sequentially.  Closing the file descriptor signals the end of
++    transfer.
++
++  * For the reading end, it must allow reading the whole back-end state
++    sequentially.  The end of file signals the end of the transfer.
++
++  For example, the channel may be a pipe, in which case the two ends of
++  the pipe fulfill these requirements respectively.
++
++  Initially, the front-end creates a channel along with such an FD.  It
++  passes the FD to the back-end as ancillary data of a
++  ``VHOST_USER_SET_DEVICE_STATE_FD`` message.  The back-end may create a
++  different transfer channel, passing the respective FD back to the
++  front-end as ancillary data of the reply.  If so, the front-end must
++  then discard its channel and use the one provided by the back-end.
++
++  Whether the back-end should decide to use its own channel is decided
++  based on efficiency: If the channel is a pipe, both ends will most
++  likely need to copy data into and out of it.  Any channel that allows
++  for more efficient processing on at least one end, e.g. through
++  zero-copy, is considered more efficient and thus preferred.  If the
++  back-end can provide such a channel, it should decide to use it.
++
++  The request payload contains parameters for the subsequent data
++  transfer, as described in the :ref:`Migrating back-end state
++  <migrating_backend_state>` section.
++
++  The value returned is both an indication for success, and whether a
++  file descriptor for a back-end-provided channel is returned: Bits 0–7
++  are 0 on success, and non-zero on error.  Bit 8 is the invalid FD
++  flag; this flag is set when there is no file descriptor returned.
++  When this flag is not set, the front-end must use the returned file
++  descriptor as its end of the transfer channel.  The back-end must not
++  both indicate an error and return a file descriptor.
++
++  Using this function requires prior negotiation of the
++  ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
++
++``VHOST_USER_CHECK_DEVICE_STATE``
++  :id: 42
++  :equivalent ioctl: N/A
++  :request payload: N/A
++  :reply payload: ``u64``
++
++  After transferring the back-end’s internal state during migration (see
++  the :ref:`Migrating back-end state <migrating_backend_state>`
++  section), check whether the back-end was able to successfully fully
++  process the state.
++
++  The value returned indicates success or error; 0 is success, any
++  non-zero value is an error.
++
++  Using this function requires prior negotiation of the
++  ``VHOST_USER_PROTOCOL_F_DEVICE_STATE`` feature.
++
+ 
+ Back-end message types
  ----------------------
- 
-@@ -513,7 +526,8 @@ ancillary data, it may be used to inform the front-end that the log has
- been modified.
- 
- Once the source has finished migration, rings will be stopped by the
--source. No further update must be done before rings are restarted.
-+source (:ref:`Suspended device state <suspended_device_state>`). No
-+further update must be done before rings are restarted.
- 
- In postcopy migration the back-end is started before all the memory has
- been received from the source host, and care must be taken to avoid
-@@ -1101,6 +1115,10 @@ Front-end message types
-   (*a vring descriptor index for split virtqueues* vs. *vring descriptor
-   indices for packed virtqueues*).
- 
-+  When and as long as all of a device’s vrings are stopped, it is
-+  *suspended*, see :ref:`Suspended device state
-+  <suspended_device_state>`.
-+
-   The request payload’s *num* field is currently reserved and must be
-   set to 0.
- 
 -- 
 2.41.0
 
