@@ -2,78 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA087B86EE
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7929D7B86EF
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:48:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5yP-0006HS-DP; Wed, 04 Oct 2023 13:47:49 -0400
+	id 1qo5yi-0006Kb-S0; Wed, 04 Oct 2023 13:48:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qo5yM-0006HB-8V
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:47:46 -0400
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qo5yK-0006Ub-0w
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:47:45 -0400
-Received: by mail-ed1-x532.google.com with SMTP id
- 4fb4d7f45d1cf-522bd411679so75781a12.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:47:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696441662; x=1697046462;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=LXcKFoixUVnEhhrmhmqtIgTIzGvORxjCO9uoBmKKYDs=;
- b=MlGoqMxApCVaQCFFGenDQ6/aZZXcpbC7DWUSWzf23RI4ZWmo/+CbhkPLPQHa+S0G/j
- QB9rFiUEmsAMOk3oNOam65+sEfYVJCCqYl4tMpiCD0YG/0VOxYbMflz8q2HI+nNm8Pac
- H7oLy0/uU4PTcm5eqVEllv6MH0G0L//B1nw3VpdreTo8DzFZFqrL6cSIoeydnU/dXVCq
- JEKjV6uyl3zzCKXSUp/yJ19IVLPJabd1gIJA99FmhVjl/LeALjKmLv6hnbSuduG2PYq+
- FnMQU17ctubJYnnni4ubp+Ey2N4CfwYmYyLxBQewjWY53wTar+ITIH13bwB64vQu2+as
- Y7Dg==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo5yX-0006Hw-GE
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:47:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo5yU-0006VR-5R
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:47:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696441673;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=vwBAPAdZ5TCG/FMbh+3dvMv9loFC60B2aA9Z3WArG3E=;
+ b=dHwvOd60LX0iIw/aTWwAiZIB9ljXoxp2tRHpa5wCZ/90yp8Jo8bw4LBdU8AWqVt34T52F0
+ Vj/d19Kk/QeMkYX4Hyv/USaTW1aJKfFamF8yukkubFYKlo00lKT1GC+l/0n+ooX3qwFZdy
+ 3tT6ThPACe413ZDy/sp1KaloCuFiO1Q=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-213-taYLSLLWO_ucqv-rXg2Mfw-1; Wed, 04 Oct 2023 13:47:49 -0400
+X-MC-Unique: taYLSLLWO_ucqv-rXg2Mfw-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32686c75f8fso94809f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:47:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696441662; x=1697046462;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=LXcKFoixUVnEhhrmhmqtIgTIzGvORxjCO9uoBmKKYDs=;
- b=c8zuKVcsbwUfArWUUeNjvA2X8cLA01lbfVjudAcPH+Vf3ZJDF2FcxY4z8dP0QVVrE/
- 2fPm09i15dlWgqeyslVL/HKI/QmDNYMAJYRhvGsnTyZqWx07sssrJwtEo5owU2RBk2Xz
- gt/NtlhDgS6qF0++N3H1WHxUDiYydsqbgDDwOCrsFAxJtskMI8kSkBX6aNjebPe/g1AV
- +GKXvT/dH7fxvkIZMe4q7igZaKFBRrZT/4lVK1Z0kg2OFfl+AGWXsgJPiCNPIStZzPt/
- 5oHtdQ5u6kPUoEH4V3wCWUENgBKDVDUmGsAvuxIZSxpppW5gr3o0dynLPNqDsu+Spawy
- onWg==
-X-Gm-Message-State: AOJu0Yy8blMKcyNiBcPTWTolryrHdBTpalXrf7Y1Iglej8h/QFM4UNT7
- rqDigKx4LJIqXP+g6O3hglZmipW9mY1RTiamuF4m3A==
-X-Google-Smtp-Source: AGHT+IFZt2EmA72xLOJs83/cXid71lLbjD9cOM6wjSqS9qWJx6heN4jDu2kmptQrz/lf9xGI5nCmGHwr014tMKu/AW0=
-X-Received: by 2002:a05:6402:b18:b0:531:1875:bbc8 with SMTP id
- bm24-20020a0564020b1800b005311875bbc8mr2644398edb.19.1696441661963; Wed, 04
- Oct 2023 10:47:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696441668; x=1697046468;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vwBAPAdZ5TCG/FMbh+3dvMv9loFC60B2aA9Z3WArG3E=;
+ b=Q+/xbx717p6PTIdEksXwNihzNHGF/ld6gx+IU70lngUKkOaY8TBvHM/z73dmKsu9jH
+ dfxdd2iC0u7ZMuxI9KIyzg6hB+RMvNgVAkezMW2NwsR/Yo785ApY+EMDXsnlsdisXnqw
+ o2u4x3cDgnx/j5337wYjDGH+T6sosUVuBKQYG3opFOmBP1qF+S1yIgjsCX8cN1FnR/qV
+ 4zOQ4DbynKv+tkgLs5GB8x4/fIVG7/gbSW1o5WzvLKMQZug/SB6ceOW6haj2oLDVe+ue
+ umoml2DSMDvYhccdDkq8jEDVcV0Om7mdLcZu6CJfzJ+D26srzKHP1oA0Ryp3NCSJh75T
+ MXGA==
+X-Gm-Message-State: AOJu0Yz5ijq2X10xI+dUE984MFKi8fg8cdpnzYn5GFDPemcqjXjvkjds
+ xViyP0BLWrL5AFgMqaxyLtW2vrZdYKfbhDdr3iCC1QULBR1YuLRd7nnHwSC+F/lBoD9Xu22ep+c
+ hhxmNeBpExfAtasU=
+X-Received: by 2002:a05:6000:369:b0:313:f0d7:a43 with SMTP id
+ f9-20020a056000036900b00313f0d70a43mr2576228wrf.23.1696441668665; 
+ Wed, 04 Oct 2023 10:47:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE9rb0I0xkDbqzsynOlbDDiOuSNOa6a2DYpyqZASAvAoMAnqjogRggb1A36inEuQJSvcQWxcA==
+X-Received: by 2002:a05:6000:369:b0:313:f0d7:a43 with SMTP id
+ f9-20020a056000036900b00313f0d70a43mr2576209wrf.23.1696441668339; 
+ Wed, 04 Oct 2023 10:47:48 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ v16-20020a5d6110000000b0031912c0ffebsm4498191wrt.23.2023.10.04.10.47.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 10:47:47 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
+ farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
+Subject: Re: [PATCH v2 51/53] migration/rdma: Downgrade qemu_rdma_cleanup()
+ errors to warnings
+In-Reply-To: <20230928132019.2544702-52-armbru@redhat.com> (Markus
+ Armbruster's message of "Thu, 28 Sep 2023 15:20:17 +0200")
+References: <20230928132019.2544702-1-armbru@redhat.com>
+ <20230928132019.2544702-52-armbru@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 04 Oct 2023 19:47:46 +0200
+Message-ID: <87pm1us2il.fsf@secure.mitica>
 MIME-Version: 1.0
-References: <14cd0201-1507-bfa8-fe9e-f482c35d21ca@linaro.org>
- <d688281c-d019-c1ff-6927-d1791911c57d@linaro.org>
- <e13885b5-06a2-599f-e0fe-c5e8f0671742@redhat.com>
- <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
-In-Reply-To: <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
-From: Warner Losh <imp@bsdimp.com>
-Date: Wed, 4 Oct 2023 11:47:29 -0600
-Message-ID: <CANCZdfpaCMNtB-87jBKe4kQUGX+c-+4sK9hJxj-iPzEsHbzcrg@mail.gmail.com>
-Subject: Re: Wshadow: Better name for 'optarg'?
-To: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>
-Cc: Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>, 
- Markus Armbruster <armbru@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000a4d1070606e79a10"
-Received-SPF: none client-ip=2a00:1450:4864:20::532;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x532.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,129 +98,30 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000a4d1070606e79a10
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Oct 4, 2023, 11:44 AM Philippe Mathieu-Daud=C3=A9 <philmd@linaro.or=
-g>
-wrote:
-
-> On 4/10/23 19:35, Thomas Huth wrote:
-> > On 04/10/2023 19.23, Richard Henderson wrote:
-> >> On 10/4/23 03:05, Philippe Mathieu-Daud=C3=A9 wrote:
-> >>> Hi,
-> >>>
-> >>> I'm getting a bunch of errors for 'optarg' declared in <unistd.h>:
-> >>
-> >> I thought things like this is why we were trying -Wshadow=3Dlocal.
-> >>
-> >> I think it's unlikely that we'll be able to prevent all such cases.
-> >
-> > Given the broad range of operating systems and libraries that we suppor=
-t
-> > in QEMU, I agree with Richard - it will likely be impossible to enable
-> > that option without =3Dlocal by default without risking that compilatio=
-n
-> > breaks on some exotic systems or new versions of various libraries.
+Markus Armbruster <armbru@redhat.com> wrote:
+> Functions that use an Error **errp parameter to return errors should
+> not also report them to the user, because reporting is the caller's
+> job.  When the caller does, the error is reported twice.  When it
+> doesn't (because it recovered from the error), there is no error to
+> report, i.e. the report is bogus.
 >
-> -Wshadow=3Dlocal doesn't seem to work here which is why I switched
-> to -Wshadow. I probably misunderstood something from Markus cover
-> letter. My setup is:
+> qemu_rdma_source_init(), qemu_rdma_connect(),
+> rdma_start_incoming_migration(), and rdma_start_outgoing_migration()
+> violate this principle: they call error_report() via
+> qemu_rdma_cleanup().
 >
-> C compiler for the host machine: clang (clang 14.0.3 "Apple clang
-> version 14.0.3 (clang-1403.0.22.14.1)")
+> Moreover, qemu_rdma_cleanup() can't fail.  It is called on error
+> paths, and QIOChannel close and finalization.  Are the conditions it
+> reports really errors?  I doubt it.
 >
+> Downgrade qemu_rdma_cleanup()'s errors to warnings.
+>
+> Signed-off-by: Markus Armbruster <armbru@redhat.com>
 
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-I had trouble with -Wshadow=3Dlocal with clang too.
-
-In general I agree not wanting it by default... but for globals defined by
-the standard, we'd definitely want to fix.
-
-Warner
-
-I suppose we'll figure that out when eventually enabling -Wshadow=3Dlocal
-> on CI. Meanwhile I already cleaned the 'optarg' warnings that were
-> bugging me, see:
->
-> https://lore.kernel.org/qemu-devel/20231004120019.93101-1-philmd@linaro.o=
-rg/
-> I'll try to get -Wshadow=3Dlocal, but the other series still seems a
-> good cleanup, as I used more meaningful variable names.
->
-> Regards,
->
-> Phil.
->
->
-
---000000000000a4d1070606e79a10
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Wed, Oct 4, 2023, 11:44 AM Philippe Mathieu-Daud=C3=
-=A9 &lt;<a href=3D"mailto:philmd@linaro.org">philmd@linaro.org</a>&gt; wrot=
-e:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bo=
-rder-left:1px #ccc solid;padding-left:1ex">On 4/10/23 19:35, Thomas Huth wr=
-ote:<br>
-&gt; On 04/10/2023 19.23, Richard Henderson wrote:<br>
-&gt;&gt; On 10/4/23 03:05, Philippe Mathieu-Daud=C3=A9 wrote:<br>
-&gt;&gt;&gt; Hi,<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; I&#39;m getting a bunch of errors for &#39;optarg&#39; declare=
-d in &lt;unistd.h&gt;:<br>
-&gt;&gt;<br>
-&gt;&gt; I thought things like this is why we were trying -Wshadow=3Dlocal.=
-<br>
-&gt;&gt;<br>
-&gt;&gt; I think it&#39;s unlikely that we&#39;ll be able to prevent all su=
-ch cases.<br>
-&gt; <br>
-&gt; Given the broad range of operating systems and libraries that we suppo=
-rt <br>
-&gt; in QEMU, I agree with Richard - it will likely be impossible to enable=
- <br>
-&gt; that option without =3Dlocal by default without risking that compilati=
-on <br>
-&gt; breaks on some exotic systems or new versions of various libraries.<br=
->
-<br>
--Wshadow=3Dlocal doesn&#39;t seem to work here which is why I switched<br>
-to -Wshadow. I probably misunderstood something from Markus cover<br>
-letter. My setup is:<br>
-<br>
-C compiler for the host machine: clang (clang 14.0.3 &quot;Apple clang <br>
-version 14.0.3 (clang-1403.0.22.14.1)&quot;)<br></blockquote></div></div><d=
-iv dir=3D"auto"><br></div><div dir=3D"auto"><br></div><div dir=3D"auto">I h=
-ad trouble with -Wshadow=3Dlocal with clang too.</div><div dir=3D"auto"><br=
-></div><div dir=3D"auto">In general I agree not wanting it by default... bu=
-t for globals defined by the standard, we&#39;d definitely want to fix.</di=
-v><div dir=3D"auto"><br></div><div dir=3D"auto">Warner</div><div dir=3D"aut=
-o"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=
-=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padd=
-ing-left:1ex">
-I suppose we&#39;ll figure that out when eventually enabling -Wshadow=3Dloc=
-al<br>
-on CI. Meanwhile I already cleaned the &#39;optarg&#39; warnings that were<=
-br>
-bugging me, see:<br>
-<a href=3D"https://lore.kernel.org/qemu-devel/20231004120019.93101-1-philmd=
-@linaro.org/" rel=3D"noreferrer noreferrer" target=3D"_blank">https://lore.=
-kernel.org/qemu-devel/20231004120019.93101-1-philmd@linaro.org/</a><br>
-I&#39;ll try to get -Wshadow=3Dlocal, but the other series still seems a<br=
->
-good cleanup, as I used more meaningful variable names.<br>
-<br>
-Regards,<br>
-<br>
-Phil.<br>
-<br>
-</blockquote></div></div></div>
-
---000000000000a4d1070606e79a10--
 
