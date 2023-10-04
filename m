@@ -2,77 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FED17B86C3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7D47B86C9
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:42:18 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5lA-0005Fh-5X; Wed, 04 Oct 2023 13:34:10 -0400
+	id 1qo5ll-0005xF-46; Wed, 04 Oct 2023 13:34:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5kw-00053c-UD
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:33:55 -0400
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5l5-0005QC-H6
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:06 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5kv-0001Gp-3s
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:33:54 -0400
-Received: by mail-wr1-x429.google.com with SMTP id
- ffacd0b85a97d-31c5cac3ae2so94724f8f.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:33:52 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5l1-0001IW-NL
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:34:02 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3232be274a0so774322f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:33:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696440831; x=1697045631; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696440838; x=1697045638; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=ZMzoYshmIKgiyI46JZRTSl2tAoK4bhnefguZfodjbZQ=;
- b=SPzsInjlowfDayG/a8nkQuspKf6w14l0qIKS7blCzN1gGAXtU23Sh/2et7Cn3Bt1fr
- 4c9bj5uXVYIN4xG3UbSN0+YTznXSoCfCEX6sGDDHGgHXKnv6k2CcObZNEnlY05u7iB0x
- pj4j45Bt/BltLAKsJ885Pix+3M4e5/jLFmhT+uvfzz2+SXpTThENqGNp0inKPZqstl7p
- QiV+airD+6AT2xZVusRhG0//rG4+YMbbkmOfuwf7oKAGG04Ju7cxQ6cFRlCDHmYCbu6a
- X64u897h+LiJr8ywe3yOwB/2Zj6egGo+67Y2+H5l1AoFDHzXssft/jZTGxkjYp0vJ79I
- z/GQ==
+ bh=+wgGQUdIqiLvE9KKvhjp7xkKxDkuA49hJ4+Z2t/uhpA=;
+ b=hZB/CKx1pd5p0+oU/wOex0HZCaYFijZ2K/ar+bchIzz/D5Fnu2njue/V4x0xcDxi2x
+ OAJ0RXuQrDx5xzhc3ck+/X6wsaNLJBzDBD3C2cgRp2dZFnmt7WZKjvyNPgHwP86gayCJ
+ Fzsc8SSqRNRR+jo49UolpGnkyIcPVl3vHIc19zux/5eFLC/kjpI9LBD9XEKb53YO2tlA
+ +Xo4KRZUAO4Yofty+sYVxHXfcJMoA7ZP8buj4SrF2iss/mI6h7Y7wWuHrKSdZrMjeQ3l
+ 81pGp2KGIjMum+Oz+iSi0oYgY1XkXDuwP/GLdPn02BRv7wU60f9JOE8b3ZRhY0K2pRb2
+ aNEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696440831; x=1697045631;
+ d=1e100.net; s=20230601; t=1696440838; x=1697045638;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=ZMzoYshmIKgiyI46JZRTSl2tAoK4bhnefguZfodjbZQ=;
- b=I6BVTk2fSATZnn0eNxi9gVjRcHTJuVXLHTaNxSih2Oyif/5pv13hC9SbCOZ1e/BUhg
- s+qeGss+rCmjbEs/gCE93tPvQu8otrsap4vPjS/cKJDD/4yLt2j6/6yk/jR+EJJ5hfS2
- 4AUq56gmHTfeB68yQnkK2Kf/B6sYFZIQsRBTOaZq7OlvYCKLtcFB33g1EG6a28tErf1S
- ffBcUns8NUij4uU9zOIxRe715XYBsQvwn5o/Rh3yUBDdmOHcfiuhYAxtgyCPTVxGpDq5
- IbRUkpGjfAu4Jk8cNybVOvc54l8yXA5c3Q/S73VadsrFznBVx00FWr+sklupt/9FSxYr
- 1ueg==
-X-Gm-Message-State: AOJu0YzHjlGf9UhsRzfCHUsGSIJagMZNftY2G9LLsfqlOhygJ0RzjlAE
- 2SrR99dG4wI2B2erRulM7Ueu8IzztygkU3ZO10I=
-X-Google-Smtp-Source: AGHT+IFJJpzTqkzOF039EX+CWtVdV0BjqrGr/qWew7l0FrUMdg2ttar1aWp6F3Fwm7b2+vLI2m8qiQ==
-X-Received: by 2002:adf:ecc3:0:b0:319:7c0f:d920 with SMTP id
- s3-20020adfecc3000000b003197c0fd920mr2875094wro.57.1696440831513; 
- Wed, 04 Oct 2023 10:33:51 -0700 (PDT)
+ bh=+wgGQUdIqiLvE9KKvhjp7xkKxDkuA49hJ4+Z2t/uhpA=;
+ b=GbSNJa+S+4/4U8WvDDhFPlos3bWrak6Fle4TGh4lqZcz56RNPaLawmb7w35pxKpKoS
+ d2Q1jC2GzoqCdV8mOZZDxjCnVtM6YDXnxJFIddQ8JVDqKD2g30sA05gAn6/bsKcqhXUl
+ NYz76sUok19TKfpGbgkp7AoF4E83h8zk1BfbkQ/XWzC7Zg7qC0NSqH2dcaxhKOduLfZ2
+ raxYlhLaJUtIqHGJzDVl7BU4qa81/qAY2hgiMsT+j/OnT1bkzdftPKCA3vrdbZ8ecpxW
+ rB7i2Jxd0dM4vl8w6NZxAktvN9ZidEPM5pZ9rsWMWpV8QDeJivUrh5uUXnpoO5z8ib4l
+ D6ug==
+X-Gm-Message-State: AOJu0YzXGZG7i0vExhYpBatQ+eiY3SZCp5RDbZ8KhtgUXuwdQp8x0kls
+ G1JHgoyMHc27vav1y97KHGcNEM5N1GffO91tJZQ=
+X-Google-Smtp-Source: AGHT+IG5t9+ERq5Dx3FYyAIHdJmdCRaZM1DB1dv9z2ImlObMWh99iAzoLGLOaSxi5d0tVcFlpve3bQ==
+X-Received: by 2002:adf:cd81:0:b0:31c:2f95:8056 with SMTP id
+ q1-20020adfcd81000000b0031c2f958056mr249994wrj.23.1696440838160; 
+ Wed, 04 Oct 2023 10:33:58 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- v22-20020a1cf716000000b003fefcbe7fa8sm2013488wmh.28.2023.10.04.10.33.50
+ b7-20020a5d5507000000b003247f732c11sm4499225wrv.76.2023.10.04.10.33.56
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 10:33:51 -0700 (PDT)
+ Wed, 04 Oct 2023 10:33:57 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Roth <michael.roth@amd.com>
-Subject: [PATCH 16/21] qapi: Inline and remove QERR_MISSING_PARAMETER
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH 17/21] qapi: Inline and remove QERR_PROPERTY_VALUE_BAD
  definition
-Date: Wed,  4 Oct 2023 19:31:51 +0200
-Message-ID: <20231004173158.42591-17-philmd@linaro.org>
+Date: Wed,  4 Oct 2023 19:31:52 +0200
+Message-ID: <20231004173158.42591-18-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004173158.42591-1-philmd@linaro.org>
 References: <20231004173158.42591-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::429;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -103,70 +105,56 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using sed, manually
-removing the definition in include/qapi/qmp/qerror.h.
+Manual change. Remove the definition in
+include/qapi/qmp/qerror.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qapi/qmp/qerror.h    | 3 ---
- qapi/opts-visitor.c          | 2 +-
- qapi/qapi-forward-visitor.c  | 2 +-
- qapi/qobject-input-visitor.c | 2 +-
- 4 files changed, 3 insertions(+), 6 deletions(-)
+ include/qapi/qmp/qerror.h | 3 ---
+ hw/core/qdev-properties.c | 2 +-
+ target/i386/cpu.c         | 2 +-
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index cc4dae1076..b0f48f22fe 100644
+index b0f48f22fe..7862ac55a1 100644
 --- a/include/qapi/qmp/qerror.h
 +++ b/include/qapi/qmp/qerror.h
 @@ -17,9 +17,6 @@
   * add new ones!
   */
  
--#define QERR_MISSING_PARAMETER \
--    "Parameter '%s' is missing"
+-#define QERR_PROPERTY_VALUE_BAD \
+-    "Property '%s.%s' doesn't take value '%s'"
 -
- #define QERR_PROPERTY_VALUE_BAD \
-     "Property '%s.%s' doesn't take value '%s'"
+ #define QERR_PROPERTY_VALUE_OUT_OF_RANGE \
+     "Property %s.%s doesn't take value %" PRId64 " (minimum: %" PRId64 ", maximum: %" PRId64 ")"
  
-diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
-index 844db583f4..bf0d8acbd6 100644
---- a/qapi/opts-visitor.c
-+++ b/qapi/opts-visitor.c
-@@ -218,7 +218,7 @@ lookup_distinct(const OptsVisitor *ov, const char *name, Error **errp)
+diff --git a/hw/core/qdev-properties.c b/hw/core/qdev-properties.c
+index 357b8761b5..44fc1686e0 100644
+--- a/hw/core/qdev-properties.c
++++ b/hw/core/qdev-properties.c
+@@ -682,7 +682,7 @@ void error_set_from_qdev_prop_error(Error **errp, int ret, Object *obj,
+         break;
+     default:
+     case -EINVAL:
+-        error_setg(errp, QERR_PROPERTY_VALUE_BAD,
++        error_setg(errp, "Property '%s.%s' doesn't take value '%s'",
+                    object_get_typename(obj), name, value);
+         break;
+     case -ENOENT:
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index ed72883bf3..e5a14885ed 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -5190,7 +5190,7 @@ static void x86_cpuid_set_vendor(Object *obj, const char *value,
+     int i;
  
-     list = g_hash_table_lookup(ov->unprocessed_opts, name);
-     if (!list) {
--        error_setg(errp, QERR_MISSING_PARAMETER, name);
-+        error_setg(errp, "Parameter '%s' is missing", name);
+     if (strlen(value) != CPUID_VENDOR_SZ) {
+-        error_setg(errp, QERR_PROPERTY_VALUE_BAD, "", "vendor", value);
++        error_setg(errp, "Property 'vendor' doesn't take value '%s'", value);
+         return;
      }
-     return list;
- }
-diff --git a/qapi/qapi-forward-visitor.c b/qapi/qapi-forward-visitor.c
-index e36d9bc9ba..3fb2c954aa 100644
---- a/qapi/qapi-forward-visitor.c
-+++ b/qapi/qapi-forward-visitor.c
-@@ -49,7 +49,7 @@ static bool forward_field_translate_name(ForwardFieldVisitor *v, const char **na
-         *name = v->to;
-         return true;
-     }
--    error_setg(errp, QERR_MISSING_PARAMETER, *name);
-+    error_setg(errp, "Parameter '%s' is missing", *name);
-     return false;
- }
  
-diff --git a/qapi/qobject-input-visitor.c b/qapi/qobject-input-visitor.c
-index f5fa6c1878..17e9f3b638 100644
---- a/qapi/qobject-input-visitor.c
-+++ b/qapi/qobject-input-visitor.c
-@@ -168,7 +168,7 @@ static QObject *qobject_input_get_object(QObjectInputVisitor *qiv,
-     QObject *obj = qobject_input_try_get_object(qiv, name, consume);
- 
-     if (!obj) {
--        error_setg(errp, QERR_MISSING_PARAMETER, full_name(qiv, name));
-+        error_setg(errp, "Parameter '%s' is missing", full_name(qiv, name));
-     }
-     return obj;
- }
 -- 
 2.41.0
 
