@@ -2,81 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6CE7B8D4A
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E17B7B8D76
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:34:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo7S1-0003jN-7B; Wed, 04 Oct 2023 15:22:29 -0400
+	id 1qo7cj-0008DU-Dd; Wed, 04 Oct 2023 15:33:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qo7Rl-0003SU-CU; Wed, 04 Oct 2023 15:22:13 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <frasse.iglesias@gmail.com>)
- id 1qo7Rg-0002TI-9K; Wed, 04 Oct 2023 15:22:12 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-504a7f9204eso234096e87.3; 
- Wed, 04 Oct 2023 12:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696447324; x=1697052124; darn=nongnu.org;
- h=user-agent:in-reply-to:content-disposition:mime-version:references
- :message-id:subject:cc:to:from:date:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7/FXvH4AVeLIX4JBWjI7WQhiI1KBXoKB/o0+b6JzizA=;
- b=jvHFkOjNnTnwV9vJ3BDhc8fugyevOcuLIwfHyj/8zR67YefLLPdj/9414XuHWFJiv/
- LIcyAAjNBOOMfKKK1RZOBOOlhSv5RlXX9i+YB3JIAfuFJunwgQWe5ycdghs9N5NAbTg5
- eb6AEsGH/16T4QUacAWQPnr2lZWyFwee8MG4IU9goJyaTCElb5gvUl/zsnr19CLUMjtw
- af0jnQxcq8YHqAMjWZX948TBEMY1UupbvDlzTt4OcoABJNHwjlwnwkhcYeWYB7LtqY/I
- JXnnBRF2DebOSiBf8talSN+jlOWz15lXukAH5SFagBfdWxgoyipm3f4vb4cEfjBn+o7m
- nRLg==
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo7ch-0008DK-4K
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:33:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo7ce-0007tQ-IF
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:33:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696448007;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=Zre+NC+YM73/BpFlGN5GvaxbFFp0QqKPYM/MPqgT5XI=;
+ b=CTr1xNgIwwVr1e/ig69uuQtpnt1L5x6ia/Xr6DPVlC/Mc0TsLZWd9ZjmX7tWO97HEQkPgs
+ W+3I/0YkNqnIdW2htg9S9Qf1zBPRTfPcmxZIfvdr+sfqkvEKzJio/tDrJVg/jnx6Y4FE+6
+ ai4EteFdj5dtAvwCQjEeNOWt7PD5wDg=
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com
+ [209.85.161.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-137-remtLjG_NSqO31Y9UGM3xQ-1; Wed, 04 Oct 2023 15:33:11 -0400
+X-MC-Unique: remtLjG_NSqO31Y9UGM3xQ-1
+Received: by mail-oo1-f71.google.com with SMTP id
+ 006d021491bc7-57e1d604cc5so48111eaf.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 12:33:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696447324; x=1697052124;
- h=user-agent:in-reply-to:content-disposition:mime-version:references
- :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=7/FXvH4AVeLIX4JBWjI7WQhiI1KBXoKB/o0+b6JzizA=;
- b=fvoGko9DyPr6m+yABfEDCXmfWPQSO54C2TNezchiyySz7cdLU4F1lnIw87YrxosHwF
- aJp1b/rk8UgHlFHhPrhPHtQv0oBGtdadA5mhFVtRKHqOIYaOUAeSzfv35Ec4DkSgPbtB
- pMQZ0r6BAjZXUE7D9Ujxhc0yoqr0RNdtKYSavqMwsSZTbEDBDEV/EOIeWB5TejauJLIw
- 0WclXBYSFLzI4GoSNb+Evmyb9G0qeuEtq7Ns4J4qK3Gi3IoeEUtp4+BxlzIi3GkUMWZB
- ICB81iY1b0ECUwkaJ53XNU9cB3j2ZsuWyBy2fAjekmA4UWik8RjLLctvmqihwKABY43M
- +5vg==
-X-Gm-Message-State: AOJu0Yyt79nAI03L1jWaFxecL+Jq+u7b+s6ClwHIKK6BC8uDW0pzJH/v
- ituMkw1T+S8xEpFplk/F2ks=
-X-Google-Smtp-Source: AGHT+IE2UHZPF/1mFMcgjN3fDZO3KpVD3j/Mant69uN/Kjg/D4JpcYrJ4150v3cn58DpyCUXWatPGg==
-X-Received: by 2002:a05:6512:3095:b0:503:2a53:7480 with SMTP id
- z21-20020a056512309500b005032a537480mr3187139lfd.49.1696447324370; 
- Wed, 04 Oct 2023 12:22:04 -0700 (PDT)
-Received: from fralle-msi (217-76-87-243.cust.bredband2.com. [217.76.87.243])
- by smtp.gmail.com with ESMTPSA id
- c22-20020ac25316000000b00502d7365e8fsm715351lfh.137.2023.10.04.12.22.04
+ d=1e100.net; s=20230601; t=1696447990; x=1697052790;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Zre+NC+YM73/BpFlGN5GvaxbFFp0QqKPYM/MPqgT5XI=;
+ b=K1z3QOJYo18JrCqBUFiX13ulX9Rd/2SJcYIrDImt2tavI/IifoRPxI1DZY1S7W7Vjo
+ BjZePGWYVh5Rxn2cU05Q7ffgyMK2FxpzrSp7ewUOL9r3Ho3h304vuLfRzGJUDmKrQk5k
+ HSEUDQyShXGX9vaUuLrdMkbhfEVtXac6IQ5rhdikbaeWMpnDEoNBr2EflLkUnRxJTU3w
+ uRO5qZYcmWSnVP9QUB9y3PDj9FNA8hzpDNUKJ4kYiQut1nqOhIg3X+WYUqiZto8hWRgd
+ vnU3BENXxxEq4t284/eqijXyC5Jx21POiqhCbaXqP8jtjBXPqwY4krTYAaGJWXtE3Ios
+ Zddw==
+X-Gm-Message-State: AOJu0YyRwS7ieCEITBexEIvo3J8X9XxvRvQSPad5NwPWBwp6+I77LFfx
+ +k5hCj0FSPdG6pEUuMRH6xxIDjRfz3sPMpATPVTY7I87p9QWtjMTSu9Fvoxf3IEsN3S00u/EI98
+ UkQIFoVcfJIRfpiQ=
+X-Received: by 2002:a05:6870:7024:b0:1e1:372:1fcf with SMTP id
+ u36-20020a056870702400b001e103721fcfmr3798941oae.5.1696447990361; 
+ Wed, 04 Oct 2023 12:33:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHobYZXJX/ojc8A+3FAq0jmPkn/Q1FG2TunNXNz0mU/pL/dlKBWuWtlfT7xmN9ws2AmHfRg9Q==
+X-Received: by 2002:a05:6870:7024:b0:1e1:372:1fcf with SMTP id
+ u36-20020a056870702400b001e103721fcfmr3798919oae.5.1696447990008; 
+ Wed, 04 Oct 2023 12:33:10 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ m22-20020ae9e016000000b0076d08d5f93asm1479776qkk.60.2023.10.04.12.33.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 12:22:04 -0700 (PDT)
-Date: Wed, 4 Oct 2023 21:22:02 +0200
-From: Francisco Iglesias <frasse.iglesias@gmail.com>
-To: Tong Ho <tong.ho@amd.com>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, alistair@alistair23.me,
- edgar.iglesias@gmail.com, peter.maydell@linaro.org
-Subject: Re: [PATCH] xlnx-bbram: hw/nvram: Use dot in device type name
-Message-ID: <20231004192202.GF18959@fralle-msi>
-References: <20231003052139.199665-1-tong.ho@amd.com>
+ Wed, 04 Oct 2023 12:33:09 -0700 (PDT)
+Date: Wed, 4 Oct 2023 15:33:07 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Joao Martins <joao.m.martins@oracle.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
+ Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
+ Yishai Hadas <yishaih@nvidia.com>,
+ "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Subject: Re: [PATCH 5/5] migration: Print expected-downtime on completion
+Message-ID: <ZR29849MU0dmXBlg@x1n>
+References: <20230926161841.98464-1-joao.m.martins@oracle.com>
+ <20230926161841.98464-6-joao.m.martins@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231003052139.199665-1-tong.ho@amd.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=frasse.iglesias@gmail.com; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -1020
-X-Spam_score: -102.1
-X-Spam_bar: ---------------------------------------------------
-X-Spam_report: (-102.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
- USER_IN_WELCOMELIST=-0.01,
- USER_IN_WHITELIST=-100 autolearn=ham autolearn_force=no
+In-Reply-To: <20230926161841.98464-6-joao.m.martins@oracle.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,33 +100,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On [2023 Oct 02] Mon 22:21:39, Tong Ho wrote:
-> This replaces the comma (,) to dot (.) in the device type name
-> so the name can be used with the 'driver=' command line option.
+On Tue, Sep 26, 2023 at 05:18:41PM +0100, Joao Martins wrote:
+> Right now, migration statistics either print downtime or expected
+> downtime depending on migration completing of in progress. Also in the
+> beginning of migration by printing the downtime limit as expected
+> downtime, when estimation is not available.
 > 
-> Signed-off-by: Tong Ho <tong.ho@amd.com>
-
-Reviewed-by: Francisco Iglesias <frasse.iglesias@gmail.com>
-
+> The pending_size is private in migration iteration and not necessarily
+> accessible outside. Given the non-determinism of the switchover cost, it
+> can be useful to understand if the downtime was far off from the one
+> detected by the migration algoritm, thus print the resultant downtime
+> alongside its estimation.
+> 
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
 > ---
->  include/hw/nvram/xlnx-bbram.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  migration/migration.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> diff --git a/include/hw/nvram/xlnx-bbram.h b/include/hw/nvram/xlnx-bbram.h
-> index 87d59ef3c0..6fc13f8cc1 100644
-> --- a/include/hw/nvram/xlnx-bbram.h
-> +++ b/include/hw/nvram/xlnx-bbram.h
-> @@ -34,7 +34,7 @@
+> diff --git a/migration/migration.c b/migration/migration.c
+> index dec6c88fbff9..f08f65b4b1c3 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -943,6 +943,10 @@ static void populate_time_info(MigrationInfo *info, MigrationState *s)
+>      if (s->state == MIGRATION_STATUS_COMPLETED) {
+>          info->has_total_time = true;
+>          info->total_time = s->total_time;
+> +        if (s->expected_downtime) {
+> +            info->has_expected_downtime = true;
+> +            info->expected_downtime = s->expected_downtime;
+> +        }
+
+There's another chunk right below that will also show
+expected_downtime.. How about we merge them to be clear?
+
+IIUC the current patch will not display expected_downtime during postcopy,
+which makes sense.  But it'll pop up again after postcopy completes... so
+not ideal either. If so sounds easier to just show it as long as we have a
+value, and the user can ignore it.
+
+@@ -913,7 +913,9 @@ static void populate_time_info(MigrationInfo *info, MigrationState *s)
+     if (migrate_show_downtime(s)) {
+         info->has_downtime = true;
+         info->downtime = s->downtime;
+-    } else {
++    }
++
++    if (s->expected_downtime) {
+         info->has_expected_downtime = true;
+         info->expected_downtime = s->expected_downtime;
+     }
+
+IIUC currently expected_downtime for postcopy makes less sense.  Maybe one
+day we can make it reflect reality, by taking more things into account
+(besides dirty RAM rate).
+
+>      } else {
+>          info->has_total_time = true;
+>          info->total_time = qemu_clock_get_ms(QEMU_CLOCK_REALTIME) -
+> @@ -2844,6 +2848,10 @@ static MigIterateState migration_iteration_run(MigrationState *s)
 >  
->  #define RMAX_XLNX_BBRAM ((0x4c / 4) + 1)
->  
-> -#define TYPE_XLNX_BBRAM "xlnx,bbram-ctrl"
-> +#define TYPE_XLNX_BBRAM "xlnx.bbram-ctrl"
->  OBJECT_DECLARE_SIMPLE_TYPE(XlnxBBRam, XLNX_BBRAM);
->  
->  struct XlnxBBRam {
+>      if ((!pending_size || pending_size < s->threshold_size) && can_switchover) {
+>          trace_migration_thread_low_pending(pending_size);
+> +        if (s->threshold_size) {
+> +            s->expected_downtime = (pending_size * s->parameters.downtime_limit) /
+> +                                   s->threshold_size;
+> +        }
+
+I had a feeling that you did the calculation to avoid accessing ->mbps. :)
+
+I'd suggest we move this into migration_completion(), and use ->mbps
+(before the other avail-switchover-bandwidth patch lands).  It's just that
+using the bandwidth value seems more straightforward.  Or maybe I missed
+something tricky?
+
+>          migration_completion(s);
+>          return MIG_ITERATE_BREAK;
+>      }
 > -- 
-> 2.25.1
+> 2.39.3
 > 
-> 
+
+Thanks,
+
+-- 
+Peter Xu
+
 
