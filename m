@@ -2,88 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232EB7B7B63
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:12:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA48F7B7B62
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:12:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxqe-0000yC-5E; Wed, 04 Oct 2023 05:07:16 -0400
+	id 1qnxsi-0005Eb-Mh; Wed, 04 Oct 2023 05:09:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxqP-0000GD-2V
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:07:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxrt-0003Pz-T7
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:08:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxq9-0007Lf-LM
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:06:58 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxrq-0007jb-J7
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:08:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696410404;
+ s=mimecast20190719; t=1696410505;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=xpsr8FBMtvFLAG8/6szkpUYl6AW7uRdDeMMdwZWpLsg=;
- b=GiUGwAU8uJuSosiceDLQTcYk2ewfMl9PR9MUxhifMEyxhCl6BN0wn/6t4TQPM99Avnuylr
- 6uOG3mlZ+L9OeVOwu5S1tbsFIe7p7fviGWqe4J/SUyZuzLHhcIxTBNUhKtT0mcLjKJJMxL
- +Gd5B/vSQEGrquzfC0nOqjBdRgVLM84=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=B8zzgbmGxjQIikDZJdsLWoj3bPCkZiXfK9GZbCg9Luk=;
+ b=BLmTbn95XXyx7L/fNbmxf705BWfNDIyqHMGpQXliIaP7sAaIoDuhFa2zAeI+qyqWKgyc04
+ a/dbO6oPF/SRM6s0rW+IkRkNkyEtrRWE7DMZxhKHfkxL+qQhT3blU9xDDY4T7V+Jg2/C+I
+ Fc309IhhdBls8N9LQ9N8+FC7UDbN9Z0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-222-NBEzP07pM-iYs6vMUC_5fg-1; Wed, 04 Oct 2023 05:06:43 -0400
-X-MC-Unique: NBEzP07pM-iYs6vMUC_5fg-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-321f75cf2bdso1343640f8f.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:06:43 -0700 (PDT)
+ us-mta-531-LyiaQDbnPjuO95Okzk1hMQ-1; Wed, 04 Oct 2023 05:08:21 -0400
+X-MC-Unique: LyiaQDbnPjuO95Okzk1hMQ-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4054743df06so13547995e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:08:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696410402; x=1697015202;
+ d=1e100.net; s=20230601; t=1696410500; x=1697015300;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xpsr8FBMtvFLAG8/6szkpUYl6AW7uRdDeMMdwZWpLsg=;
- b=Qc2XFhauVeLxZLCMoTWbQ3pr7DzKIaUeB8s3WWx1lIMFg5ZVponZSFm6o/o78FHZ7y
- ZROCBll5Hlkg++KTEjXcsSnHxJ8TNbV6k26zJVX05IRwYxdwlbHBefxnmnCCe4v5JiO8
- D5G7ERJvsltBLDy5tHUGgr0MK89k68KGy4+fxyOTPDjWy8JWcCIHRBB8ImdRE0dK37GV
- FZ0tilw59V1xyv6z5qsvhl1OgfD7MmVzfU4pkfdw5+duqS9QiDcoOjmS20xRW0VA7mA0
- kcpNbFHuGr22smaWZSe1jwwBGET/N8V6gTHPbXDlRitF+f2bzUdSI/M7EgdDv5aTlHkz
- fymg==
-X-Gm-Message-State: AOJu0Yxx6as9a9oGX0ckKstOudYfvxkMEshKoj9iNGzFe5UpRJ4Iu2+M
- L6Ke2v2RCwz7LoSXo8Gpzqo8n4Z3HzRXKAdYK9L4/jeNmSLPBkk4BY+hN/xr/5/YyfyCfHL3+qO
- TY6G+EsM4YGTBwgY=
-X-Received: by 2002:adf:f005:0:b0:326:c623:3bbf with SMTP id
- j5-20020adff005000000b00326c6233bbfmr1619637wro.26.1696410402173; 
- Wed, 04 Oct 2023 02:06:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHKTzeEXLfUskYS3Mh7V5xiRtfb6rfaCiXzcG5zb2P5uhmJi+VyBScUix5Pn/N9uQ5AP1E4eA==
-X-Received: by 2002:adf:f005:0:b0:326:c623:3bbf with SMTP id
- j5-20020adff005000000b00326c6233bbfmr1619620wro.26.1696410401834; 
- Wed, 04 Oct 2023 02:06:41 -0700 (PDT)
+ bh=B8zzgbmGxjQIikDZJdsLWoj3bPCkZiXfK9GZbCg9Luk=;
+ b=ekBbpG0Sa1xDrk9CP9qgRYmATYltKn1dv1GhXxT7CTODsanBr94MhAxNW1o+DvyS3l
+ L7Z9nVbKR55mtgATBDyPypO7eST103EICoKbtGREIFGXgWdp91/VLonaUoEiRS2qfI1S
+ 7xQ5515zLuqbJkE6WV9+3nQLNyo3Gjks16NmgyPnVl1ehrUlrHhr/rZg2Bb8KDq+0fO+
+ k49GM8bFCFNc+FlA7J9eJ+HOilQSZVpqRBPG8rCOmd75mcgkrGjd3acmHzBkIeUCeAkX
+ Ejom/HdyYRrOSjk7qezyhSUT21dunwiWdLSi3dBIYRwntSAhS5Zrt1qq8PF6IOFc1KBq
+ j/5w==
+X-Gm-Message-State: AOJu0YxgNMCExTYiErNLZXEglKZ9Bp6OQFZL5QKzf+mp54+qStE7zSTc
+ I2HDti6rdgwYqwy2LQr/XeTJWNtqDuFrHTbgeFqDmL0UPIqYuz2a0heaAjIbj4eKFxig/Y1agL4
+ 0RudPScXnaCFLP78=
+X-Received: by 2002:a7b:c387:0:b0:3f9:b430:199b with SMTP id
+ s7-20020a7bc387000000b003f9b430199bmr1645130wmj.15.1696410500377; 
+ Wed, 04 Oct 2023 02:08:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFmV/Fuhl0jeGUwnYHCpv39o4WoUrlUsh2WSKoDz3uPCwaHIpHC/fC+Fn1bnZvlqldj+3Iq9g==
+X-Received: by 2002:a7b:c387:0:b0:3f9:b430:199b with SMTP id
+ s7-20020a7bc387000000b003f9b430199bmr1645118wmj.15.1696410500039; 
+ Wed, 04 Oct 2023 02:08:20 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- c4-20020a5d4f04000000b0031773a8e5c4sm3469131wru.37.2023.10.04.02.06.39
+ 1-20020a05600c230100b0040644e699a0sm980882wmo.45.2023.10.04.02.08.18
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 02:06:41 -0700 (PDT)
-Date: Wed, 4 Oct 2023 05:06:37 -0400
+ Wed, 04 Oct 2023 02:08:19 -0700 (PDT)
+Date: Wed, 4 Oct 2023 05:08:16 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Laszlo Ersek <lersek@redhat.com>
-Cc: qemu-devel@nongnu.org, Eugenio Perez Martin <eperezma@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Liu Jiang <gerry@linux.alibaba.com>, Sergio Lopez Pascual <slp@redhat.com>,
- Stefano Garzarella <sgarzare@redhat.com>
-Subject: Re: [PATCH v3 1/7] vhost-user: strip superfluous whitespace
-Message-ID: <20231004050519-mutt-send-email-mst@kernel.org>
-References: <20231002203221.17241-1-lersek@redhat.com>
- <20231002203221.17241-2-lersek@redhat.com>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
+Subject: Re: [PULL 00/63] virtio,pci: features, cleanups
+Message-ID: <20231004050719-mutt-send-email-mst@kernel.org>
+References: <cover.1696408966.git.mst@redhat.com>
+ <aa1bc6ef-e444-7ec4-683d-5f437007bfe0@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231002203221.17241-2-lersek@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+In-Reply-To: <aa1bc6ef-e444-7ec4-683d-5f437007bfe0@linaro.org>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,52 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 02, 2023 at 10:32:15PM +0200, Laszlo Ersek wrote:
-> Cc: "Michael S. Tsirkin" <mst@redhat.com> (supporter:vhost)
+On Wed, Oct 04, 2023 at 10:54:35AM +0200, Philippe Mathieu-DaudÃ© wrote:
+> On 4/10/23 10:43, Michael S. Tsirkin wrote:
+> 
+> > ----------------------------------------------------------------
+> > virtio,pci: features, cleanups
+> > 
+> > vdpa:
+> >        shadow vq vlan support
+> >        net migration with cvq
+> > cxl:
+> >       dummy ACPI QTG DSM
+> >       support emulating 4 HDM decoders
+> >       serial number extended capability
+> > virtio:
+> >        hared dma-buf
+> > 
+> > Fixes, cleanups all over the place.
+> > 
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > 
+> > ----------------------------------------------------------------
+> 
+> 
+> > Philippe Mathieu-DaudÃ© (6):
+> >        hw/virtio: Propagate page_mask to vhost_vdpa_listener_skipped_section()
+> >        hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
+> >        hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
+> >        hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
+> >        hw/virtio: Build vhost-vdpa.o once
+> >        hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
+> 
+> Woohoo \o/ thanks for merging this!
 
-why the (supporter:vhost) part? not all scripts will cope
-well with text after the mail. If you really want to keep
-it around, I think you should add a hash tag # before that -
-more tools know to ignore that.
 
-
-> Cc: Eugenio Perez Martin <eperezma@redhat.com>
-> Cc: German Maglione <gmaglione@redhat.com>
-> Cc: Liu Jiang <gerry@linux.alibaba.com>
-> Cc: Sergio Lopez Pascual <slp@redhat.com>
-> Cc: Stefano Garzarella <sgarzare@redhat.com>
-> Signed-off-by: Laszlo Ersek <lersek@redhat.com>
-> Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> Tested-by: Albert Esteve <aesteve@redhat.com>
-> Reviewed-by: Eugenio Pérez <eperezma@redhat.com>
-> ---
-> 
-> Notes:
->     v3:
->     
->     - pick up R-b from Phil and Eugenio, T-b from Albert
->     
->     v2:
->     
->     - pick up Stefano's R-b
-> 
->  hw/virtio/vhost-user.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-> index 8dcf049d422b..b4b677c1ce66 100644
-> --- a/hw/virtio/vhost-user.c
-> +++ b/hw/virtio/vhost-user.c
-> @@ -398,7 +398,7 @@ static int vhost_user_write(struct vhost_dev *dev, VhostUserMsg *msg,
->       * operations such as configuring device memory mappings or issuing device
->       * resets, which affect the whole device instead of individual VQs,
->       * vhost-user messages should only be sent once.
-> -     * 
-> +     *
->       * Devices with multiple vhost_devs are given an associated dev->vq_index
->       * so per_device requests are only sent if vq_index is 0.
->       */
-> 
+ðŸ˜³
 
 
