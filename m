@@ -2,79 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD05C7B81C0
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:05:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B67B81CD
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:07:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2UY-0003qa-Gf; Wed, 04 Oct 2023 10:04:46 -0400
+	id 1qo2WW-0005XZ-Oi; Wed, 04 Oct 2023 10:06:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qo2UW-0003pw-Oi; Wed, 04 Oct 2023 10:04:44 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo2WR-0005VI-RP
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:06:44 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>)
- id 1qo2UU-0006nR-Rk; Wed, 04 Oct 2023 10:04:44 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 52CE321855;
- Wed,  4 Oct 2023 14:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696428281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Gci+VsQJo6i2NjQiY0nCGeiIES/5YTkgy0m2PG7G7q4=;
- b=lU66kDNSMuZ7ECm1btvaQfs9UJmxgtEwg9zwY3C+I4SO1EdtRCa5cwKWTKr59WJwl9uZq8
- GaR3rt8ROmns34mvx9OKLOObAJtACjmNmuSvGSyI1seRS4dN8HJ67ll9/alSPWlvBF5PQN
- ouLGdIQD2Ez2BKkMvKBViuWJjz+QsAA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696428281;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Gci+VsQJo6i2NjQiY0nCGeiIES/5YTkgy0m2PG7G7q4=;
- b=noYb2ycw3nq3jGjuPd44FXGsJiIzjh/bcvKCDnAyiQDcTzXWqQXuKul4DXxhXV+BBR/ZZ7
- NMgwOxzadODiMtCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DA907139F9;
- Wed,  4 Oct 2023 14:04:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id gYwdKfhwHWVcbAAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 14:04:40 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: quintela@redhat.com
-Cc: qemu-devel@nongnu.org, Leonardo Bras <leobras@redhat.com>, Peter Xu
- <peterx@redhat.com>, Thomas Huth <thuth@redhat.com>, Li Zhijian
- <lizhijian@fujitsu.com>, qemu-s390x@nongnu.org, Steve Sistare
- <steven.sistare@oracle.com>, Michael Galaxy <mgalaxy@akamai.com>,
- =?utf-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PULL 09/11] migration: file URI
-In-Reply-To: <87cyxu33fp.fsf@secure.mitica>
-References: <20231004124038.16002-1-quintela@redhat.com>
- <20231004124038.16002-10-quintela@redhat.com> <87y1gi4i32.fsf@suse.de>
- <87cyxu33fp.fsf@secure.mitica>
-Date: Wed, 04 Oct 2023 11:04:38 -0300
-Message-ID: <87o7hepjpl.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo2WO-0007Dt-Ur
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:06:43 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40684f53bfcso6346285e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:06:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696428399; x=1697033199; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BvmtLqtZwV4gWiHuY3IW+B7giJD8PGIdyPHkZim0nX4=;
+ b=RQSO2Qdh76iTKqJsEAqULlkazhK0oNu6ekaWlLudgY8/S+E++FIdhyHXi1c9ZCOfml
+ ib+4dwCdC6Nt5ILFbs25h+mjQGTfm0BziMlUjwdWfpebmJkJPDFyNH6ouD0O2IJl+Tx1
+ CpXl4d92d4oVRhIW4PV9dWtKrx2dtqUHgUxpvYQbhQTB1QQTb87WmzRKf2sCmyqRVZ4l
+ 4fDZhGi2dkQex8RfdzCkncJT6z7zZ7DaziM7lky0WJZmelj9HUmK4LBzhZwNXt7KxwYg
+ 1WwmWK+w0TY5wIXK881XwsGEUr+F/kzt+17Ql43h7ihTf6+h4fBLj3xEJEdZ5yYjEL2Y
+ DTIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696428399; x=1697033199;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BvmtLqtZwV4gWiHuY3IW+B7giJD8PGIdyPHkZim0nX4=;
+ b=NT4WDpBm4tUvVpyXah0c/KMsTQMK6Vu6OpqPAXOaT/7/4WElT9HGUSQJ3xVq8M9G+P
+ e+mZT0/4FRQjo5XRkwOePihQOdqg9/xnwyaX6LTpb3saw+Stt08JPQw+hiejwfkEQ4Ix
+ 7skpY4G9Sn9LaW5+Dtx5CIqRw2Rt1KIN0/3CY/y++J7e7afsuB/8ILuVyOS4Tx75+ToP
+ 9i01JYGsgll+cbv5PfyFwaIn1Pw2ntx6QWdztSzgchdl2yyUyNa4d+JTk6dGTO5lNt3H
+ czF5LEIHPQriEIVDQ5P6kNGa35hVg1pEtQBMM2sI21zze0oMuj12PWBVTc3Fzp15cw0U
+ A1pA==
+X-Gm-Message-State: AOJu0YzDeGNajfzzpp0FpuP/T6ek56jpPw9Vl4gEe0vflxF26ogyTlI+
+ 9+/GCUgseRHUVOphPYA1pO3eog==
+X-Google-Smtp-Source: AGHT+IEbTvdXJskOq2r4K4RoT+3YvkUEHjnWQrvJnbBpeUy5bP3Gr7FyuzBr4NuuQh6NwuJu4jpUbQ==
+X-Received: by 2002:adf:e9c1:0:b0:31f:f2dc:db7d with SMTP id
+ l1-20020adfe9c1000000b0031ff2dcdb7dmr2178875wrn.65.1696428398785; 
+ Wed, 04 Oct 2023 07:06:38 -0700 (PDT)
+Received: from [192.168.69.115] (5ep85-h01-176-173-163-52.dslam.bbox.fr.
+ [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
+ f2-20020a056000128200b0032196c508e3sm4137728wrx.53.2023.10.04.07.06.37
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 07:06:38 -0700 (PDT)
+Message-ID: <191a6af3-489b-04bc-0afb-092bdb437a47@linaro.org>
+Date: Wed, 4 Oct 2023 16:06:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 00/13] misc: Rename 'softmmu' -> 'system'
+Content-Language: en-US
+To: Paolo Bonzini <pbonzini@redhat.com>, Claudio Fontana <cfontana@suse.de>
+Cc: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org
+References: <20231004090629.37473-1-philmd@linaro.org>
+ <ZR1bjpEi5HdFp2xj@redhat.com>
+ <85be2979-c0ca-3eb4-dae9-bbabf256c201@redhat.com>
+ <00b2ec16-162e-9204-3a04-f45e0edeeb15@suse.de>
+ <CABgObfZBTZZvcSPcMSRLWscyEz7B-2h9g28FJx7t7Ggux6E9cA@mail.gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <CABgObfZBTZZvcSPcMSRLWscyEz7B-2h9g28FJx7t7Ggux6E9cA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,52 +98,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Juan Quintela <quintela@redhat.com> writes:
+On 4/10/23 15:49, Paolo Bonzini wrote:
+> On Wed, Oct 4, 2023 at 3:41 PM Claudio Fontana <cfontana@suse.de> wrote:
+>>
+>> On 10/4/23 14:37, Thomas Huth wrote:
+>>> On 04/10/2023 14.33, Daniel P. Berrangé wrote:
+>>>> Am I mis-understanding what you mean by 'finishes' here, as
+>>>> I see many references to softmmu remaining
+>>>> In particular under configs/
+>>>>
+>>>> I was also hoping it meant that we'd be changing configure
+>>>> to allow
+>>>>
+>>>>       configure --target-list=x86_64-system
+>>>>       configure --target-list=x86_64-vm
+>>>>
+>>>> for less typing
+>>>
+>>> Maybe we should also bikeshed about the naming first... "system" is a quite
+>>> overloaded word in this context already, and "vm" sounds rather like
+>>> hardware-accelerated stuff ... what about using something like "sysemu"? Or
+>>> "fullsys" for "full system emulation" (in contrast to "user space"-only
+>>> emulation)?
+> 
+> I agree that changing other remnants should be done right
+> after this patch, for example $softmmu in configure. Changing
+> all targets is a very large and very user-visible change, it is
+> required but it should be planned very well.
 
-> Fabiano Rosas <farosas@suse.de> wrote:
->> Juan Quintela <quintela@redhat.com> writes:
->>
->>> From: Steve Sistare <steven.sistare@oracle.com>
->>>
->>> Extend the migration URI to support file:<filename>.  This can be used =
-for
->>> any migration scenario that does not require a reverse path.  It can be
->>> used as an alternative to 'exec:cat > file' in minimized containers that
->>> do not contain /bin/sh, and it is easier to use than the fd:<fdname> UR=
-I.
->>> It can be used in HMP commands, and as a qemu command-line parameter.
->>>
->>> For best performance, guest ram should be shared and x-ignore-shared
->>> should be true, so guest pages are not written to the file, in which ca=
-se
->>> the guest may remain running.  If ram is not so configured, then the us=
-er
->>> is advised to stop the guest first.  Otherwise, a busy guest may re-dir=
-ty
->>> the same page, causing it to be appended to the file multiple times,
->>> and the file may grow unboundedly.  That issue is being addressed in the
->>> "fixed-ram" patch series.
->>>
->>> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->>> Tested-by: Michael Galaxy <mgalaxy@akamai.com>
->>> Reviewed-by: Michael Galaxy <mgalaxy@akamai.com>
->>> Reviewed-by: Fabiano Rosas <farosas@suse.de>
->>> Reviewed-by: Peter Xu <peterx@redhat.com>
->>> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->>> Reviewed-by: Juan Quintela <quintela@redhat.com>
->>> Signed-off-by: Juan Quintela <quintela@redhat.com>
->>> Message-ID: <1694182931-61390-2-git-send-email-steven.sistare@oracle.co=
-m>
->>
->> Juan, FYI we have tests for this feature already reviewed and ready to
->> merge:
->>
->> [PATCH v5 0/6] migration: Test the new "file:" migration
->> https://lore.kernel.org/r/20230712190742.22294-1-farosas@suse.de
->
-> I searched for URI and didn't found it.
->
-> Will got it on next PULL request.
+As usual I should have been more verbose in my cover.
 
-Do you want me to do resend? It's no big deal.
+This series focus on the C code (and travis) to avoid misuse
+of 'softmmu'.
+
+Yes I agree it would be nice to also rename the binaries, but
+this is a buildsys change (even if we use symlinks/aliases for
+some deprecation period). This is not a tiny patch, and requires
+thoughts.
+
+On one hand I'd rather not rush renaming binaries -- annoying
+users -- without a clear long term plan (which I'm not clear about).
+
+On another hand I wouldn't delay Richard user-mode work.
+Renaming binaries seems orthogonal to me, and could be done
+later IMO.
+
+> As to the actual target names, I think system is the only
+> consistent choice since we have --enable/--disable-system
+> (as pointed out by Claudio) and qemu-system-*.  sysemu
+> may make a little more sense in the codebase (we have
+> include/sysemu after all), but maybe that ship has sailed
+> since we have many occurrences of "system", for example
+> system_ss and other related sourcesets.
+> 
+> Paolo
+> 
+
 
