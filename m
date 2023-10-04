@@ -2,102 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 575D47B8607
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2C77B8608
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:01:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5F5-000563-JQ; Wed, 04 Oct 2023 13:00:59 -0400
+	id 1qo5F3-00056d-V1; Wed, 04 Oct 2023 13:00:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qo5Es-00054t-2p
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo5Es-00054u-Jx
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:00:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qo5El-0003uF-Fa
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:00:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696438836;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo5En-0003uG-Et
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:00:46 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 0C98C1F893;
+ Wed,  4 Oct 2023 17:00:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696438836; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=ZfhnVzbJctGN+gGkebJQNKU0GANU6NIvRE3DYYRLpaI=;
- b=YwfqBmCi1Q3jYPW2tUwdvBDOtcZ0yERv2gpHoGCaLPixO2xuKGFABa8mru3UAZ6uRcHdWI
- cIhgPwEynLrSRK4BrVXbBSFuE3nPb3hi1h2kQDYJr3gWyheuKGUZvj02Q53sWEU4ricl8m
- ZbK0a29qRgv5okUoGhnobPMZlgWjljw=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-467-YfLs0Q5bPaOLBjGTv0pICg-1; Wed, 04 Oct 2023 13:00:29 -0400
-X-MC-Unique: YfLs0Q5bPaOLBjGTv0pICg-1
-Received: by mail-qk1-f197.google.com with SMTP id
- af79cd13be357-77409676d7dso1741485a.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:00:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696438829; x=1697043629;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ZfhnVzbJctGN+gGkebJQNKU0GANU6NIvRE3DYYRLpaI=;
- b=dDccA7mYEg9WJksSbQj2zdl5qRVzaW6XJa5SB5tm50vt3xVbOg8/5pM86Tnmx6Z+/B
- MGE2Qb56KKSFtDrPwrj+s6rdKyme5WBzKAyp6ITH/ip5E5WmtKrkVErySDMVcbr//bh4
- 9CJZLRFheSOnARFsM7Bw/MyJfBNsLrg8Eu3Obs58ui3j3jZBnDZlwIblZvruB3DDyyCH
- qqyD3lr5LU/effrDXcP2JrNMoFEm0o2O0RW26d9/IkpkUt9Tog8HCk9j7ib5rRqI8rci
- 5F9ZAxVCRSh0xVbjAjs3dR4OCSJgg+CM1cadf8HQdyIJbagi5TwS8RcVP5+fTpTbmCeM
- tQIg==
-X-Gm-Message-State: AOJu0YyjiICHf6xkJ+mflgLitc3Zlxnl6OGeOxsdFsLtKShOooTGXFGv
- 8FpF+En9/bjPF6zpjrZTpVpBdwCYqRTHERtPwKnrxe0yYoM9tp1UDinfOiNkGTWJ+cmKXLMdahZ
- vPW9LtODdF0Nkwp4=
-X-Received: by 2002:a05:620a:141a:b0:774:1f74:fe2c with SMTP id
- d26-20020a05620a141a00b007741f74fe2cmr3034457qkj.21.1696438829374; 
- Wed, 04 Oct 2023 10:00:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEyjrsNcQEbOCcEQpWiuKoAo0hirOdkO0DnhbmblIb5JGGLuxfRC7rPNNwT+OPlwC1P6zYpxQ==
-X-Received: by 2002:a05:620a:141a:b0:774:1f74:fe2c with SMTP id
- d26-20020a05620a141a00b007741f74fe2cmr3034440qkj.21.1696438829142; 
- Wed, 04 Oct 2023 10:00:29 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- 19-20020a05620a079300b007742c6823a3sm1390988qka.108.2023.10.04.10.00.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 10:00:26 -0700 (PDT)
-Message-ID: <f50737da-af8c-ff3a-2e4b-1ae0327a422c@redhat.com>
-Date: Wed, 4 Oct 2023 19:00:22 +0200
+ bh=o5gcbVQCzNDyA5fibEWE18INiNUE6IAqyvpTW4m7chI=;
+ b=fDuynTRC8iCNp5X4G6yNnIbgZaRFk0pkrvptYxuWGW6aBJqL1bRR4GHwaQY/kWKNTbtZ/n
+ qEifs698vcuSqVaAjwYoUhw711Mfr8nHdhAXWQx8+zi+VqJlu0KNOZoCV/SV0JW0GZJ8x8
+ uA/noKyYltlbkvfBo00YJh2elEztixY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696438836;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=o5gcbVQCzNDyA5fibEWE18INiNUE6IAqyvpTW4m7chI=;
+ b=uBjFeBEma4lmCeHIjvdtRZUYsckL3uuDddidZ+Fxo2bQBqwnnQ16wi3humJQEyAGVC/Mad
+ qf51lgEM7TPri1CA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 933C613A2E;
+ Wed,  4 Oct 2023 17:00:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 1smIFzOaHWXuSwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 17:00:35 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Juan Quintela <quintela@redhat.com>, qemu-devel@nongnu.org
+Cc: Li Zhijian <lizhijian@fujitsu.com>, Juan Quintela <quintela@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>
+Subject: Re: [PATCH v2 02/10] migration/rdma: Unfold
+ ram_control_before_iterate()
+In-Reply-To: <20231004124913.16360-3-quintela@redhat.com>
+References: <20231004124913.16360-1-quintela@redhat.com>
+ <20231004124913.16360-3-quintela@redhat.com>
+Date: Wed, 04 Oct 2023 14:00:33 -0300
+Message-ID: <87zg0ynwzy.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 13/15] vfio/common: Store the parent container in
- VFIODevice
-Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
- alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- mjrosato@linux.ibm.com
-References: <20231003101530.288864-1-eric.auger@redhat.com>
- <20231003101530.288864-14-eric.auger@redhat.com>
- <79fb6650-783c-f9d7-4294-668bebe23fe0@redhat.com>
- <4098f81f-bb7c-bbcb-4d73-04e3981a08f5@redhat.com>
- <52120fe3-1647-1513-b005-f5099c16a862@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <52120fe3-1647-1513-b005-f5099c16a862@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -111,19 +81,130 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+Juan Quintela <quintela@redhat.com> writes:
 
-On 10/4/23 18:55, Cédric Le Goater wrote:
-> the device-introspect-test needs it. No need to resend a v5, I can add it
-> back in v4 if you are ok with that. 
+> Once there:
+> - Remove unused data parameter
+> - unfold it in its callers.
+> - change all callers to call qemu_rdma_registration_start()
+> - We need to call QIO_CHANNEL_RDMA() after we check for migrate_rdma()
+>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+>
+> --
+>
+> initilazize rioc after checknig that rdma is enabled.
+>
+> Signed-off-by: Juan Quintela <quintela@redhat.com>
+> ---
+>  migration/qemu-file.h |  2 --
+>  migration/rdma.h      |  7 +++++++
+>  migration/qemu-file.c | 13 +------------
+>  migration/ram.c       | 16 +++++++++++++---
+>  migration/rdma.c      | 12 ++++--------
+>  5 files changed, 25 insertions(+), 25 deletions(-)
+>
+> diff --git a/migration/qemu-file.h b/migration/qemu-file.h
+> index 03e718c264..d6a370c569 100644
+> --- a/migration/qemu-file.h
+> +++ b/migration/qemu-file.h
+> @@ -55,7 +55,6 @@ typedef int (QEMURamSaveFunc)(QEMUFile *f,
+>                                size_t size);
+>  
+>  typedef struct QEMUFileHooks {
+> -    QEMURamHookFunc *before_ram_iterate;
+>      QEMURamHookFunc *after_ram_iterate;
+>      QEMURamHookFunc *hook_ram_load;
+>      QEMURamSaveFunc *save_page;
+> @@ -127,7 +126,6 @@ void qemu_fflush(QEMUFile *f);
+>  void qemu_file_set_blocking(QEMUFile *f, bool block);
+>  int qemu_file_get_to_fd(QEMUFile *f, int fd, size_t size);
+>  
+> -void ram_control_before_iterate(QEMUFile *f, uint64_t flags);
+>  void ram_control_after_iterate(QEMUFile *f, uint64_t flags);
+>  void ram_control_load_hook(QEMUFile *f, uint64_t flags, void *data);
+>  
+> diff --git a/migration/rdma.h b/migration/rdma.h
+> index de2ba09dc5..670c67a8cb 100644
+> --- a/migration/rdma.h
+> +++ b/migration/rdma.h
+> @@ -22,4 +22,11 @@ void rdma_start_outgoing_migration(void *opaque, const char *host_port,
+>  
+>  void rdma_start_incoming_migration(const char *host_port, Error **errp);
+>  
+> +
+> +#ifdef CONFIG_RDMA
+> +int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags);
+> +#else
+> +static inline
+> +int qemu_rdma_registration_start(QEMUFile *f, uint64_t flags) { return 0; }
+> +#endif
+>  #endif
+> diff --git a/migration/qemu-file.c b/migration/qemu-file.c
+> index 5e8207dae4..1a8170421f 100644
+> --- a/migration/qemu-file.c
+> +++ b/migration/qemu-file.c
+> @@ -32,6 +32,7 @@
+>  #include "trace.h"
+>  #include "options.h"
+>  #include "qapi/error.h"
+> +#include "rdma.h"
+>  
+>  #define IO_BUF_SIZE 32768
+>  #define MAX_IOV_SIZE MIN_CONST(IOV_MAX, 64)
+> @@ -288,18 +289,6 @@ void qemu_fflush(QEMUFile *f)
+>      f->iovcnt = 0;
+>  }
+>  
+> -void ram_control_before_iterate(QEMUFile *f, uint64_t flags)
+> -{
+> -    int ret = 0;
+> -
+> -    if (f->hooks && f->hooks->before_ram_iterate) {
+> -        ret = f->hooks->before_ram_iterate(f, flags, NULL);
+> -        if (ret < 0) {
+> -            qemu_file_set_error(f, ret);
+> -        }
+> -    }
+> -}
+> -
+>  void ram_control_after_iterate(QEMUFile *f, uint64_t flags)
+>  {
+>      int ret = 0;
+> diff --git a/migration/ram.c b/migration/ram.c
+> index e4bfd39f08..407760b3a2 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -59,6 +59,7 @@
+>  #include "qemu/iov.h"
+>  #include "multifd.h"
+>  #include "sysemu/runstate.h"
+> +#include "rdma.h"
+>  #include "options.h"
+>  #include "sysemu/dirtylimit.h"
+>  #include "sysemu/kvm.h"
+> @@ -3054,7 +3055,10 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+>          }
+>      }
+>  
+> -    ram_control_before_iterate(f, RAM_CONTROL_SETUP);
+> +    ret = qemu_rdma_registration_start(f, RAM_CONTROL_SETUP);
+> +    if (ret < 0) {
+> +        qemu_file_set_error(f, ret);
 
-Ah OK. I am definitively OK for you to restore it if nothing else shows
-up inbetween
+Markus' patch 23 will turn the return code from
+qemu_rdma_registration_start() from -EIO into -1. Any code that uses
+strerr to report it will now see an EPERM (-1).
 
-Eric
+We should someday give an Error argument to savevm functions and stop
+using QEMUFile as an error carrier. Or perhaps add an Error pointer to
+RAMState?
 
+Anyway, out scope for this patch.
+
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
