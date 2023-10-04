@@ -2,78 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EB877B7AC0
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:52:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0B27B7A96
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxYM-0003tA-Uw; Wed, 04 Oct 2023 04:48:23 -0400
+	id 1qnxYE-0003ET-4g; Wed, 04 Oct 2023 04:48:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWt-0000dj-CT
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:52 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWn-0000X0-Ge
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:49 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWV-0002Y3-Px
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:50 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWd-0002Z0-GE
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409178;
+ s=mimecast20190719; t=1696409186;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TiDNScbhBDu1OBLTc4HNPqS+XxNNdWzPEzlFooKGhj8=;
- b=fZXN5tMfQUShR0fBbJPvMiWep17li6eSBJ/q6jPNIEhMKiJbFk5PTw6FDWtoh8aFczSyCs
- 8gI9hyahawwJZWCnIWOgCwWxNQapOJAd14ASqw0pc+nk+raaOe9ewfH9lozteHj9cbIq3n
- MLERwRgdWZCwMkThWHef1KeD6ys4ReY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=paof42DUy5YVFM8ix/mc19HfT2JnvVvvPuSSyPQvY8Q=;
+ b=Y6TOOfjENjzFMd+2AupPcUK+8kYWTPvJj/+C4cOf79adhR8CvYubjMo2U6PBznRoKrhUMZ
+ 3cbmMCZ44YJ/ECJ7XKdfPAhaXAQMIme0CDI8Wz1bhUnzzQFLtiBacGOBkpdfvjaMPc3dAG
+ UM04R33+uqjTnHqpHnQ8Xa0WAdXHMQg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-493-evKk1MSwNX6crNby7ga_tQ-1; Wed, 04 Oct 2023 04:46:01 -0400
-X-MC-Unique: evKk1MSwNX6crNby7ga_tQ-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4053d832d51so12997855e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:46:01 -0700 (PDT)
+ us-mta-551-y8YvC0pOPtKWcuOXb51yfw-1; Wed, 04 Oct 2023 04:46:04 -0400
+X-MC-Unique: y8YvC0pOPtKWcuOXb51yfw-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3217fdf913dso1400432f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:46:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409160; x=1697013960;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=TiDNScbhBDu1OBLTc4HNPqS+XxNNdWzPEzlFooKGhj8=;
- b=kkRJPLwhK8r6+AikS1LWG14GleRVynyShBrbt9ERnuVPHfSWLkfTi3mNuI9yhJCVqK
- tZm0jK0Ky+fBvKlRWDR3YmajhfNZJ8qBIpVtwx0kOP0S0tIe5GWBnXwyVsSgffYs8eb9
- bhr15RklL3OWiamRa7Xw92+rMCWY6jr9bXCdouJXVKajSXUtrQJ5DnoWTtSrMv6lJS1S
- pbDhtMV/30oKlFtfooIG+lJ89VMDPKd3ow/cSuAvf3SP2im6tdwEOIlsWPt5+ALEbmnn
- je539tW0XvXwy1jR//1l/RPeFXV34RNyShU5Nh82l5lYHyb7xkhvMzWxelo72jfEIKo5
- bTcg==
-X-Gm-Message-State: AOJu0Yz8MpYBk421ldrGWTi0hJPJe65MYJJxP4bh7Q6yF82kcPqATcAB
- A4RptQHiX6mj1jb3oq8Ms50nDI5x0mT6tl5J96neUUIPeuVVRrUArPg4E3pTvQaPpDlvBuPnUAc
- 7WARFQLyKzT/tVmsFCao9RxJCxRxMKvBxw5kpoXwxkerWQUAN2gSHQFNDKYBLs8Gqgmic
-X-Received: by 2002:a05:600c:143:b0:405:377f:5417 with SMTP id
- w3-20020a05600c014300b00405377f5417mr1525269wmm.39.1696409159858; 
- Wed, 04 Oct 2023 01:45:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJFO+vPNmpkV5hNBmoLGmADCWGBvd+Rni4S0RFvxXgXZbCZOv6LOh1ohKH8G5VFwG1XcLH3Q==
-X-Received: by 2002:a05:600c:143:b0:405:377f:5417 with SMTP id
- w3-20020a05600c014300b00405377f5417mr1525252wmm.39.1696409159499; 
- Wed, 04 Oct 2023 01:45:59 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696409163; x=1697013963;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=paof42DUy5YVFM8ix/mc19HfT2JnvVvvPuSSyPQvY8Q=;
+ b=EL7KPOjDIbsxjtau7dIuHTn3/CJgZYZfWpl3KfmshA3XqMbxBQ6ljidVpes1cI/WtE
+ PAxNOzjYm1Mhu/llqVrN/m40f1onsd1WgPGE0gRFjmy1zXHie46QP6RCzKd9reii4rlr
+ 5ojJXBbko2ZvLirmNYYjXQdJQOZA0xSPiC7e5KC6X5Ao0ZwGmEJEJOuCaCpJgKiFziLt
+ L2COZsrgfeD50eQdjzExORjfaHwkXhRpjBxa4sqfTeBGstGKffpTpQh1elVoiQKGGH/k
+ VySoHmczxDr7Eki4i9RQyczoPYSwlXyQeRm7MnwKY7urXzscWJs35vlRV5GmK9tqMHbz
+ uZvw==
+X-Gm-Message-State: AOJu0YzhBIAHawb9yGcCbqS2wdv0siH+Qs3O0vCUrDXlLh7V3ANEmbTk
+ VlQWFhE09Nbl9DF+/dfqlBT1/pSYJlxPmLo+uAvso/1flCzQImiqZAXM7VT0SuCJohRJ3dPQVQq
+ i5S4CJztWQbUoFlHLn7DB/PvFOman5jrWdqwTzZKo8/46Lno+8kIUfaekufdiNVEbSawR
+X-Received: by 2002:a05:6000:1b07:b0:321:6450:62ea with SMTP id
+ f7-20020a0560001b0700b00321645062eamr1484562wrz.36.1696409163160; 
+ Wed, 04 Oct 2023 01:46:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFLUlY3j/lDgrU/XiBauRmpG1mshZAdRFfaodU44oJq5CjhHtd+v/wryhCuGiPMJ31MRZdmeA==
+X-Received: by 2002:a05:6000:1b07:b0:321:6450:62ea with SMTP id
+ f7-20020a0560001b0700b00321645062eamr1484545wrz.36.1696409162858; 
+ Wed, 04 Oct 2023 01:46:02 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- o4-20020adfcf04000000b00326f0ca3566sm3414547wrj.50.2023.10.04.01.45.58
+ u10-20020a05600c210a00b004063c9f68f2sm938183wml.26.2023.10.04.01.46.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:45:58 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:45:56 -0400
+ Wed, 04 Oct 2023 01:46:02 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:46:00 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL 52/63] vdpa net: follow VirtIO initialization properly at cvq
- isolation probing
-Message-ID: <1a01317172f01d910210dc49309944a8f87d4467.1696408966.git.mst@redhat.com>
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL 53/63] amd_iommu: Fix APIC address check
+Message-ID: <ec271975abaee23d1ad06c82dbedf8642703521d.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1696408966.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -84,6 +84,7 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,63 +101,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-This patch solves a few issues.  The most obvious is that the feature
-set was done previous to ACKNOWLEDGE | DRIVER status bit set.  Current
-vdpa devices are permissive with this, but it is better to follow the
-standard.
+An MSI from I/O APIC may not exactly equal to APIC_DEFAULT_ADDRESS. In
+fact, Windows 17763.3650 configures I/O APIC to set the dest_mode bit.
+Cover the range assigned to APIC.
 
-Fixes: 152128d646 ("vdpa: move CVQ isolation check to net_init_vhost_vdpa")
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20230915170836.3078172-4-eperezma@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
+Fixes: 577c470f43 ("x86_iommu/amd: Prepare for interrupt remap support")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Message-Id: <20230921114612.40671-1-akihiko.odaki@daynix.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ hw/i386/amd_iommu.h | 2 --
+ hw/i386/amd_iommu.c | 9 ++-------
+ 2 files changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index b688877f90..939c984d5b 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -1345,8 +1345,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-     uint64_t backend_features;
-     int64_t cvq_group;
-     uint8_t status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
--                     VIRTIO_CONFIG_S_DRIVER |
--                     VIRTIO_CONFIG_S_FEATURES_OK;
-+                     VIRTIO_CONFIG_S_DRIVER;
-     int r;
+diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
+index 6da893ee57..c5065a3e27 100644
+--- a/hw/i386/amd_iommu.h
++++ b/hw/i386/amd_iommu.h
+@@ -210,8 +210,6 @@
+ #define AMDVI_INT_ADDR_FIRST    0xfee00000
+ #define AMDVI_INT_ADDR_LAST     0xfeefffff
+ #define AMDVI_INT_ADDR_SIZE     (AMDVI_INT_ADDR_LAST - AMDVI_INT_ADDR_FIRST + 1)
+-#define AMDVI_MSI_ADDR_HI_MASK  (0xffffffff00000000ULL)
+-#define AMDVI_MSI_ADDR_LO_MASK  (0x00000000ffffffffULL)
  
-     ERRP_GUARD();
-@@ -1361,15 +1360,22 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-         return 0;
+ /* SB IOAPIC is always on this device in AMD systems */
+ #define AMDVI_IOAPIC_SB_DEVID   PCI_BUILD_BDF(0, PCI_DEVFN(0x14, 0))
+diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
+index c98a3c6e11..8d0f2f99dd 100644
+--- a/hw/i386/amd_iommu.c
++++ b/hw/i386/amd_iommu.c
+@@ -1246,13 +1246,8 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
+         return -AMDVI_IR_ERR;
      }
  
--    r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-+    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-     if (unlikely(r)) {
--        error_setg_errno(errp, errno, "Cannot set features");
-+        error_setg_errno(errp, -r, "Cannot set device status");
-         goto out;
+-    if (origin->address & AMDVI_MSI_ADDR_HI_MASK) {
+-        trace_amdvi_err("MSI address high 32 bits non-zero when "
+-                        "Interrupt Remapping enabled.");
+-        return -AMDVI_IR_ERR;
+-    }
+-
+-    if ((origin->address & AMDVI_MSI_ADDR_LO_MASK) != APIC_DEFAULT_ADDRESS) {
++    if (origin->address < AMDVI_INT_ADDR_FIRST ||
++        origin->address + sizeof(origin->data) > AMDVI_INT_ADDR_LAST + 1) {
+         trace_amdvi_err("MSI is not from IOAPIC.");
+         return -AMDVI_IR_ERR;
      }
- 
-+    r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-+    if (unlikely(r)) {
-+        error_setg_errno(errp, -r, "Cannot set features");
-+        goto out;
-+    }
-+
-+    status |= VIRTIO_CONFIG_S_FEATURES_OK;
-     r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
-     if (unlikely(r)) {
--        error_setg_errno(errp, -r, "Cannot set status");
-+        error_setg_errno(errp, -r, "Cannot set device status");
-         goto out;
-     }
- 
 -- 
 MST
 
