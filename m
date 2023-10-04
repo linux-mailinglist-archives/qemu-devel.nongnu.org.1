@@ -2,70 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3BA7B7F1B
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:29:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53BF7B7F1D
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:30:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0zb-0004Iu-9X; Wed, 04 Oct 2023 08:28:43 -0400
+	id 1qo10p-0004se-U1; Wed, 04 Oct 2023 08:30:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qo0zZ-0004Ii-0k
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:28:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qo10d-0004gZ-ET
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:29:50 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
- id 1qo0zV-00060w-Nk
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:28:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696422516;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=PxQsA2wYV7+9U+B8scBpqM6y1/V0NGh0g3vnAsr2eN0=;
- b=It4E/XQ40zFMSq8JmDir5vrPkDQSaUEFYqJ6TPeXDY1o7794WaycsZ2/nn4oEhVaE9XUJU
- V7RSCGGFokuU8/w8wFw6/JdH70TgmozX+h7Ep0FIUhOwhGuaQPPYviSwiIITwCGyZPVw8b
- kSA0w3/AJZSPccdIxYJ9U+g5UNUkmjA=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-417-33uM6KqCMDSPf2ucdb0NPg-1; Wed, 04 Oct 2023 08:28:24 -0400
-X-MC-Unique: 33uM6KqCMDSPf2ucdb0NPg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FFCC3822E88
- for <qemu-devel@nongnu.org>; Wed,  4 Oct 2023 12:28:24 +0000 (UTC)
-Received: from localhost (unknown [10.45.226.150])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 9F9DA215670B;
- Wed,  4 Oct 2023 12:28:23 +0000 (UTC)
-Date: Wed, 4 Oct 2023 14:28:22 +0200
-From: Victor Toso <victortoso@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
- Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
-Subject: Re: [PATCH v1 1/9] qapi: golang: Generate qapi's enum types in Go
-Message-ID: <jfec4n52zy67wmjhcjb3bb6scu4pvc52g2ejtl2b3z46eyofxj@vxgv7ocoev5k>
-References: <20230927112544.85011-1-victortoso@redhat.com>
- <20230927112544.85011-2-victortoso@redhat.com>
- <CAFn=p-ZdgaCuTZF-yYa6E_CMFobR--Yt6ycSBNDz7S+sFxX14Q@mail.gmail.com>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qo10b-0007pX-4p
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:29:47 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id CF8D074632B;
+ Wed,  4 Oct 2023 14:28:58 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 8E9BE7456A7; Wed,  4 Oct 2023 14:28:58 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8CAB1745681;
+ Wed,  4 Oct 2023 14:28:58 +0200 (CEST)
+Date: Wed, 4 Oct 2023 14:28:58 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Huacai Chen <chenhuacai@kernel.org>, 
+ =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
+Subject: Re: [PATCH v2] hw/isa/vt82c686: Respect SCI interrupt assignment
+In-Reply-To: <20231004105709.16994-1-shentey@gmail.com>
+Message-ID: <c786c82e-88bb-5333-1b74-a1bf0fd2cad5@eik.bme.hu>
+References: <20231004105709.16994-1-shentey@gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="bzrs4hl2zxetsih7"
-Content-Disposition: inline
-In-Reply-To: <CAFn=p-ZdgaCuTZF-yYa6E_CMFobR--Yt6ycSBNDz7S+sFxX14Q@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,312 +61,143 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Wed, 4 Oct 2023, Bernhard Beschow wrote:
+> According to the datasheet, SCI interrupts of the power management function
+> aren't routed through the PCI pins but rather directly to the integrated PIC.
+> The routing is configurable through the ACPI interrupt select register at offset
+> 0x42 in the PCI configuration space of the ISA function.
+>
+> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+>
+> ---
+>
+> v2:
+> * Introduce named constants for the ACPI interrupt select register at offset
+>  0x42 (Phil)
+> ---
+> hw/isa/vt82c686.c | 47 +++++++++++++++++++++++++++++++++++------------
+> 1 file changed, 35 insertions(+), 12 deletions(-)
+>
+> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+> index 57bdfb4e78..93ffaaf706 100644
+> --- a/hw/isa/vt82c686.c
+> +++ b/hw/isa/vt82c686.c
+> @@ -46,6 +46,8 @@ struct ViaPMState {
+>     ACPIREGS ar;
+>     APMState apm;
+>     PMSMBus smb;
+> +
+> +    qemu_irq irq;
 
---bzrs4hl2zxetsih7
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Is it better to name this sci_irq because there seems to be an smi_irq 
+too? Also there seems to be no SCI pin but there's an SMI pin so does this 
+sci_irq need to be forwaeded to the ISA bridge and exposed as a qemu_gpio 
+or could it just set the ISA IRQ within its own handler in the via_pm 
+object? There are also other registers that select between SMI and SCI, do 
+those need to be taken into account?
 
-Hi,
+Regards,
+BALATON Zoltan
 
-On Mon, Oct 02, 2023 at 03:07:49PM -0400, John Snow wrote:
-> On Wed, Sep 27, 2023 at 7:25=E2=80=AFAM Victor Toso <victortoso@redhat.co=
-m> wrote:
-> >
-> > This patch handles QAPI enum types and generates its equivalent in Go.
-> >
-> > Basically, Enums are being handled as strings in Golang.
-> >
-> > 1. For each QAPI enum, we will define a string type in Go to be the
-> >    assigned type of this specific enum.
-> >
-> > 2. Naming: CamelCase will be used in any identifier that we want to
-> >    export [0], which is everything.
-> >
-> > [0] https://go.dev/ref/spec#Exported_identifiers
-> >
-> > Example:
-> >
-> > qapi:
-> >   | { 'enum': 'DisplayProtocol',
-> >   |   'data': [ 'vnc', 'spice' ] }
-> >
-> > go:
-> >   | type DisplayProtocol string
-> >   |
-> >   | const (
-> >   |     DisplayProtocolVnc   DisplayProtocol =3D "vnc"
-> >   |     DisplayProtocolSpice DisplayProtocol =3D "spice"
-> >   | )
-> >
-> > Signed-off-by: Victor Toso <victortoso@redhat.com>
-> > ---
-> >  scripts/qapi/golang.py | 140 +++++++++++++++++++++++++++++++++++++++++
-> >  scripts/qapi/main.py   |   2 +
-> >  2 files changed, 142 insertions(+)
-> >  create mode 100644 scripts/qapi/golang.py
-> >
-> > diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
-> > new file mode 100644
-> > index 0000000000..87081cdd05
-> > --- /dev/null
-> > +++ b/scripts/qapi/golang.py
-> > @@ -0,0 +1,140 @@
-> > +"""
-> > +Golang QAPI generator
-> > +"""
-> > +# Copyright (c) 2023 Red Hat Inc.
-> > +#
-> > +# Authors:
-> > +#  Victor Toso <victortoso@redhat.com>
-> > +#
-> > +# This work is licensed under the terms of the GNU GPL, version 2.
-> > +# See the COPYING file in the top-level directory.
-> > +
-> > +# due QAPISchemaVisitor interface
-> > +# pylint: disable=3Dtoo-many-arguments
-> > +
-> > +# Just for type hint on self
-> > +from __future__ import annotations
-> > +
-> > +import os
-> > +from typing import List, Optional
-> > +
-> > +from .schema import (
-> > +    QAPISchema,
-> > +    QAPISchemaType,
-> > +    QAPISchemaVisitor,
-> > +    QAPISchemaEnumMember,
-> > +    QAPISchemaFeature,
-> > +    QAPISchemaIfCond,
-> > +    QAPISchemaObjectType,
-> > +    QAPISchemaObjectTypeMember,
-> > +    QAPISchemaVariants,
-> > +)
-> > +from .source import QAPISourceInfo
-> > +
-> > +TEMPLATE_ENUM =3D '''
-> > +type {name} string
-> > +const (
-> > +{fields}
-> > +)
-> > +'''
-> > +
-> > +
-> > +def gen_golang(schema: QAPISchema,
-> > +               output_dir: str,
-> > +               prefix: str) -> None:
-> > +    vis =3D QAPISchemaGenGolangVisitor(prefix)
-> > +    schema.visit(vis)
-> > +    vis.write(output_dir)
-> > +
-> > +
-> > +def qapi_to_field_name_enum(name: str) -> str:
-> > +    return name.title().replace("-", "")
-> > +
-> > +
-> > +class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
-> > +
-> > +    def __init__(self, _: str):
-> > +        super().__init__()
-> > +        types =3D ["enum"]
-> > +        self.target =3D {name: "" for name in types}
-> > +        self.schema =3D None
-> > +        self.golang_package_name =3D "qapi"
-> > +
-> > +    def visit_begin(self, schema):
-> > +        self.schema =3D schema
-> > +
-> > +        # Every Go file needs to reference its package name
-> > +        for target in self.target:
-> > +            self.target[target] =3D f"package {self.golang_package_nam=
-e}\n"
-> > +
-> > +    def visit_end(self):
-> > +        self.schema =3D None
-> > +
-> > +    def visit_object_type(self: QAPISchemaGenGolangVisitor,
-> > +                          name: str,
-> > +                          info: Optional[QAPISourceInfo],
-> > +                          ifcond: QAPISchemaIfCond,
-> > +                          features: List[QAPISchemaFeature],
-> > +                          base: Optional[QAPISchemaObjectType],
-> > +                          members: List[QAPISchemaObjectTypeMember],
-> > +                          variants: Optional[QAPISchemaVariants]
-> > +                          ) -> None:
-> > +        pass
-> > +
-> > +    def visit_alternate_type(self: QAPISchemaGenGolangVisitor,
-> > +                             name: str,
-> > +                             info: Optional[QAPISourceInfo],
-> > +                             ifcond: QAPISchemaIfCond,
-> > +                             features: List[QAPISchemaFeature],
-> > +                             variants: QAPISchemaVariants
-> > +                             ) -> None:
-> > +        pass
-> > +
-> > +    def visit_enum_type(self: QAPISchemaGenGolangVisitor,
-> > +                        name: str,
-> > +                        info: Optional[QAPISourceInfo],
-> > +                        ifcond: QAPISchemaIfCond,
-> > +                        features: List[QAPISchemaFeature],
-> > +                        members: List[QAPISchemaEnumMember],
-> > +                        prefix: Optional[str]
-> > +                        ) -> None:
-> > +
-> > +        value =3D qapi_to_field_name_enum(members[0].name)
->=20
-> Unsure if this was addressed on the mailing list yet, but in our call
-> we discussed how this call was vestigial and was causing the QAPI
-> tests to fail. Actually, I can't quite run "make check-qapi-schema"
-> and see the failure, I'm seeing it when I run "make check" and I'm not
-> sure how to find the failure more efficiently/quickly:
->=20
-> jsnow@scv ~/s/q/build (review)> make
-> [1/60] Generating subprojects/dtc/version_gen.h with a custom command
-> [2/60] Generating qemu-version.h with a custom command (wrapped by
-> meson to capture output)
-> [3/44] Generating tests/Test QAPI files with a custom command
-> FAILED: tests/qapi-builtin-types.c tests/qapi-builtin-types.h
-> tests/qapi-builtin-visit.c tests/qapi-builtin-visit.h
-> tests/test-qapi-commands-sub-sub-module.c
-> tests/test-qapi-commands-sub-sub-module.h tests/test-qapi-commands.c
-> tests/test-qapi-commands.h tests/test-qapi-emit-events.c
-> tests/test-qapi-emit-events.h tests/test-qapi-events-sub-sub-module.c
-> tests/test-qapi-events-sub-sub-module.h tests/test-qapi-events.c
-> tests/test-qapi-events.h tests/test-qapi-init-commands.c
-> tests/test-qapi-init-commands.h tests/test-qapi-introspect.c
-> tests/test-qapi-introspect.h tests/test-qapi-types-sub-sub-module.c
-> tests/test-qapi-types-sub-sub-module.h tests/test-qapi-types.c
-> tests/test-qapi-types.h tests/test-qapi-visit-sub-sub-module.c
-> tests/test-qapi-visit-sub-sub-module.h tests/test-qapi-visit.c
-> tests/test-qapi-visit.h
-> /home/jsnow/src/qemu/build/pyvenv/bin/python3
-> /home/jsnow/src/qemu/scripts/qapi-gen.py -o
-> /home/jsnow/src/qemu/build/tests -b -p test-
-> ../tests/qapi-schema/qapi-schema-test.json --suppress-tracing
-> Traceback (most recent call last):
->   File "/home/jsnow/src/qemu/scripts/qapi-gen.py", line 19, in <module>
->     sys.exit(main.main())
->              ^^^^^^^^^^^
->   File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 96, in main
->     generate(args.schema,
->   File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 58, in generate
->     gen_golang(schema, output_dir, prefix)
->   File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 46, in gen_gol=
-ang
->     schema.visit(vis)
->   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 1227, in visit
->     mod.visit(visitor)
->   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 209, in visit
->     entity.visit(visitor)
->   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 346, in visit
->     visitor.visit_enum_type(
->   File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 102, in
-> visit_enum_type
->     value =3D qapi_to_field_name_enum(members[0].name)
->                                     ~~~~~~~^^^
-> IndexError: list index out of range
-> ninja: build stopped: subcommand failed.
-> make: *** [Makefile:162: run-ninja] Error 1
->=20
->=20
-> For the rest of my review, I commented this line out and continued on.
-
-Yes, it was a leftover when I was reorganizing the patches. You
-can see this value is not actually used.
-
-I removed it in my branch for v2.
-
-Cheers,
-Victor
-
-> > +        fields =3D ""
-> > +        for member in members:
-> > +            value =3D qapi_to_field_name_enum(member.name)
-> > +            fields +=3D f'''\t{name}{value} {name} =3D "{member.name}"=
-\n'''
-> > +
-> > +        self.target["enum"] +=3D TEMPLATE_ENUM.format(name=3Dname, fie=
-lds=3Dfields[:-1])
-> > +
-> > +    def visit_array_type(self, name, info, ifcond, element_type):
-> > +        pass
-> > +
-> > +    def visit_command(self,
-> > +                      name: str,
-> > +                      info: Optional[QAPISourceInfo],
-> > +                      ifcond: QAPISchemaIfCond,
-> > +                      features: List[QAPISchemaFeature],
-> > +                      arg_type: Optional[QAPISchemaObjectType],
-> > +                      ret_type: Optional[QAPISchemaType],
-> > +                      gen: bool,
-> > +                      success_response: bool,
-> > +                      boxed: bool,
-> > +                      allow_oob: bool,
-> > +                      allow_preconfig: bool,
-> > +                      coroutine: bool) -> None:
-> > +        pass
-> > +
-> > +    def visit_event(self, name, info, ifcond, features, arg_type, boxe=
-d):
-> > +        pass
-> > +
-> > +    def write(self, output_dir: str) -> None:
-> > +        for module_name, content in self.target.items():
-> > +            go_module =3D module_name + "s.go"
-> > +            go_dir =3D "go"
-> > +            pathname =3D os.path.join(output_dir, go_dir, go_module)
-> > +            odir =3D os.path.dirname(pathname)
-> > +            os.makedirs(odir, exist_ok=3DTrue)
-> > +
-> > +            with open(pathname, "w", encoding=3D"ascii") as outfile:
-> > +                outfile.write(content)
-> > diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
-> > index 316736b6a2..cdbb3690fd 100644
-> > --- a/scripts/qapi/main.py
-> > +++ b/scripts/qapi/main.py
-> > @@ -15,6 +15,7 @@
-> >  from .common import must_match
-> >  from .error import QAPIError
-> >  from .events import gen_events
-> > +from .golang import gen_golang
-> >  from .introspect import gen_introspect
-> >  from .schema import QAPISchema
-> >  from .types import gen_types
-> > @@ -54,6 +55,7 @@ def generate(schema_file: str,
-> >      gen_events(schema, output_dir, prefix)
-> >      gen_introspect(schema, output_dir, prefix, unmask)
-> >
-> > +    gen_golang(schema, output_dir, prefix)
-> >
-> >  def main() -> int:
-> >      """
-> > --
-> > 2.41.0
-> >
->=20
-
---bzrs4hl2zxetsih7
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmUdWmYACgkQl9kSPeN6
-SE8ijBAAwe8xbKR0kkPmT4F6Ndb5T74sgVxVSNO0D9+4xHaZK+o/mGugrROl2nEJ
-w7Xdauh8LoeSsYuskIQzfFGQZWWfkDrs7U2jwW1N06WijP91vtFmxKQFjH0+7oon
-QLCPmlP+k82dFheayWVmWXM+c2DTlxAHxy4XsyonpQ6dORjWWN5h92lKCUZtzHwM
-sAqkFzGgDpp85M1hIdgkbj19Q1Udg97L1bj4NbpjxCG4Hnely9O7/sOhIIYmmaBC
-dGw2Es6plbDpbcHJzTFZUtz59HZ2KYpClhnf9e7hMGuqdqbX0USQqmlvsPxgfFcA
-4If7yqfzbKA1pgbf2f1u6d6BB+TgVCE+6JP7P25xHD8O24JUX31FnxkTFaYMHREs
-6T8J+a2t+M6f+3wDJeOk2MgoAAiwNJJDc7FVADhlRPPfYNK/HmwcLHwEn6c9f9u1
-2ij8QZRXR9N5atOfEVweBLmwsV+0cQGIPgsR6l6kwN8VeUD9kTBPFDG8CUu+Dctt
-sRPULl1gSX9F0VEyAceNnzlc+j0i3g5MjLvKrF6vo/ncf3kJH9dMi7e+vF3L+6P6
-cwJiG7AWzCOKw0maZXsmMCtUM7A6GRljpnXGVXVq1l10jqU3Qn1CFxD7tPkfz3BX
-HQYwTtnpe/wx6pA0l+H/5LAGd20a3k7F2fnzHUxnyDxI39dXTgQ=
-=ojoG
------END PGP SIGNATURE-----
-
---bzrs4hl2zxetsih7--
-
+> };
+>
+> static void pm_io_space_update(ViaPMState *s)
+> @@ -148,18 +150,7 @@ static void pm_update_sci(ViaPMState *s)
+>                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
+>                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
+>                    ACPI_BITMASK_TIMER_ENABLE)) != 0);
+> -    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
+> -        /*
+> -         * FIXME:
+> -         * Fix device model that realizes this PM device and remove
+> -         * this work around.
+> -         * The device model should wire SCI and setup
+> -         * PCI_INTERRUPT_PIN properly.
+> -         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
+> -         * work around.
+> -         */
+> -        pci_set_irq(&s->dev, sci_level);
+> -    }
+> +    qemu_set_irq(s->irq, sci_level);
+>     /* schedule a timer interruption if needed */
+>     acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
+>                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
+> @@ -213,6 +204,13 @@ static void via_pm_realize(PCIDevice *dev, Error **errp)
+>     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
+> }
+>
+> +static void via_pm_init(Object *obj)
+> +{
+> +    ViaPMState *s = VIA_PM(obj);
+> +
+> +    qdev_init_gpio_out(DEVICE(obj), &s->irq, 1);
+> +}
+> +
+> typedef struct via_pm_init_info {
+>     uint16_t device_id;
+> } ViaPMInitInfo;
+> @@ -238,6 +236,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
+> static const TypeInfo via_pm_info = {
+>     .name          = TYPE_VIA_PM,
+>     .parent        = TYPE_PCI_DEVICE,
+> +    .instance_init = via_pm_init,
+>     .instance_size = sizeof(ViaPMState),
+>     .abstract      = true,
+>     .interfaces = (InterfaceInfo[]) {
+> @@ -545,6 +544,9 @@ static const TypeInfo vt8231_superio_info = {
+> #define TYPE_VIA_ISA "via-isa"
+> OBJECT_DECLARE_SIMPLE_TYPE(ViaISAState, VIA_ISA)
+>
+> +#define VIA_ISA_SCI_SELECT_OFS 0x42
+> +#define VIA_ISA_SCI_SELECT_MASK 0xf
+> +
+> struct ViaISAState {
+>     PCIDevice dev;
+>     qemu_irq cpu_intr;
+> @@ -568,9 +570,26 @@ static const VMStateDescription vmstate_via = {
+>     }
+> };
+>
+> +static void via_isa_set_pm_irq(void *opaque, int n, int level)
+> +{
+> +    ViaISAState *s = opaque;
+> +    uint8_t irq = pci_get_byte(s->pm.dev.config + VIA_ISA_SCI_SELECT_OFS)
+> +                  & VIA_ISA_SCI_SELECT_MASK;
+> +
+> +    if (irq == 2) {
+> +        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is reserved");
+> +        return;
+> +    }
+> +
+> +    if (irq != 0) {
+> +        qemu_set_irq(s->isa_irqs_in[irq], level);
+> +    }
+> +}
+> +
+> static void via_isa_init(Object *obj)
+> {
+>     ViaISAState *s = VIA_ISA(obj);
+> +    DeviceState *dev = DEVICE(s);
+>
+>     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
+>     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
+> @@ -578,6 +597,8 @@ static void via_isa_init(Object *obj)
+>     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
+>     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
+>     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
+> +
+> +    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
+> }
+>
+> static const TypeInfo via_isa_info = {
+> @@ -704,6 +725,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+>     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
+>         return;
+>     }
+> +    qdev_connect_gpio_out(DEVICE(&s->pm), 0,
+> +                          qdev_get_gpio_in_named(DEVICE(d), "sci", 0));
+>
+>     /* Function 5: AC97 Audio */
+>     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
+>
 
