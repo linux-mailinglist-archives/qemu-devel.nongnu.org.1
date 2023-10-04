@@ -2,40 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEE27B79C8
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7947B79AE
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:09:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwuS-0006gz-EF; Wed, 04 Oct 2023 04:07:11 -0400
+	id 1qnwv2-0007Fj-Vn; Wed, 04 Oct 2023 04:07:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwrm-0007oO-1W; Wed, 04 Oct 2023 04:04:25 -0400
+ id 1qnwry-0007wD-Jg; Wed, 04 Oct 2023 04:04:34 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwrh-0000JI-QC; Wed, 04 Oct 2023 04:04:21 -0400
+ id 1qnwro-00019p-Iu; Wed, 04 Oct 2023 04:04:34 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 1B4D4275A1;
+ by isrv.corpit.ru (Postfix) with ESMTP id 52962275A2;
  Wed,  4 Oct 2023 11:02:27 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5B1DC2CBDD;
+ by tsrv.corpit.ru (Postfix) with SMTP id 97A2A2CBDE;
  Wed,  4 Oct 2023 11:02:26 +0300 (MSK)
-Received: (nullmailer pid 2702819 invoked by uid 1000);
+Received: (nullmailer pid 2702822 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 23/45] hw/scsi/scsi-disk: Disallow block sizes smaller
- than 512 [CVE-2023-42467]
-Date: Wed,  4 Oct 2023 11:01:44 +0300
-Message-Id: <20231004080221.2702636-23-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 24/45] ui/vnc: fix debug output for invalid audio
+ message
+Date: Wed,  4 Oct 2023 11:01:45 +0300
+Message-Id: <20231004080221.2702636-24-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -59,42 +61,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-We are doing things like
+The debug message was cut and pasted from the invalid audio format
+case, but the audio message is at bytes 2-3.
 
-    nb_sectors /= (s->qdev.blocksize / BDRV_SECTOR_SIZE);
-
-in the code here (e.g. in scsi_disk_emulate_mode_sense()), so if
-the blocksize is smaller than BDRV_SECTOR_SIZE (=512), this crashes
-with a division by 0 exception. Thus disallow block sizes of 256
-bytes to avoid this situation.
-
-Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1813
-CVE: 2023-42467
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20230925091854.49198-1-thuth@redhat.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit 7cfcc79b0ab800959716738aff9419f53fc68c9c)
+(cherry picked from commit 0cb9c5880e6b8dedc4e20026ce859dd1ea9aac84)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/scsi/scsi-disk.c b/hw/scsi/scsi-disk.c
-index e0d79c7966..477ee2bcd4 100644
---- a/hw/scsi/scsi-disk.c
-+++ b/hw/scsi/scsi-disk.c
-@@ -1628,9 +1628,10 @@ static void scsi_disk_emulate_mode_select(SCSIDiskReq *r, uint8_t *inbuf)
-          * Since the existing code only checks/updates bits 8-15 of the block
-          * size, restrict ourselves to the same requirement for now to ensure
-          * that a block size set by a block descriptor and then read back by
--         * a subsequent SCSI command will be the same
-+         * a subsequent SCSI command will be the same. Also disallow a block
-+         * size of 256 since we cannot handle anything below BDRV_SECTOR_SIZE.
-          */
--        if (bs && !(bs & ~0xff00) && bs != s->qdev.blocksize) {
-+        if (bs && !(bs & ~0xfe00) && bs != s->qdev.blocksize) {
-             s->qdev.blocksize = bs;
-             trace_scsi_disk_mode_select_set_blocksize(s->qdev.blocksize);
-         }
+diff --git a/ui/vnc.c b/ui/vnc.c
+index 92964dcc0c..538581929a 100644
+--- a/ui/vnc.c
++++ b/ui/vnc.c
+@@ -2551,7 +2551,7 @@ static int protocol_client_msg(VncState *vs, uint8_t *data, size_t len)
+                     vs, vs->ioc, vs->as.fmt, vs->as.nchannels, vs->as.freq);
+                 break;
+             default:
+-                VNC_DEBUG("Invalid audio message %d\n", read_u8(data, 4));
++                VNC_DEBUG("Invalid audio message %d\n", read_u8(data, 2));
+                 vnc_client_error(vs);
+                 break;
+             }
 -- 
 2.39.2
 
