@@ -2,76 +2,95 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E76D7B81A3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:04:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6285D7B81B6
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:04:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2TF-0002Mc-1j; Wed, 04 Oct 2023 10:03:25 -0400
+	id 1qo2UP-0003dV-6r; Wed, 04 Oct 2023 10:04:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo2TB-0002Kq-L5
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:03:21 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo2T9-0006Yf-IW
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:03:21 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id C289821847;
- Wed,  4 Oct 2023 14:03:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696428195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mStMJpk9FTbXy+kDfX5oAY8Jg9x9w4XQ4o4PXYvtLuo=;
- b=FqyDMVILXGzWzPhaKWnX3niUoB7OQK6YAlPy0yOGD4mcA/5BTf2u1LV+nlvCZ8mA7kIXPI
- GvAxEeJcarseRV/iDGuuHvZ/f5/pz91UCneCHMA8s4QE+/9zX0izahyZpigGdkV6uQKGjs
- qff6ljgesJAW48/rdjp+1H24AmmVHjk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696428195;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=mStMJpk9FTbXy+kDfX5oAY8Jg9x9w4XQ4o4PXYvtLuo=;
- b=5WfB4RkZHltBppdQFl0VChmTUJVhAPBk/rYRx86JZ5OCTBXuWMz/21cy0g1racl/bjU2jj
- fyM9vRTugZQnvCCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 54801139F9;
- Wed,  4 Oct 2023 14:03:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id OSK5B6NwHWWIawAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 14:03:15 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v11 00/10] migration: Modify 'migrate' and
- 'migrate-incoming' QAPI commands for migration
-In-Reply-To: <ec1a8f2e-ec10-46e2-1a2c-1ae593080ad4@nutanix.com>
-References: <20231004075851.219173-1-het.gala@nutanix.com>
- <871qea5x7w.fsf@suse.de>
- <ec1a8f2e-ec10-46e2-1a2c-1ae593080ad4@nutanix.com>
-Date: Wed, 04 Oct 2023 11:03:12 -0300
-Message-ID: <87sf6qpjrz.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo2UM-0003bP-Ji
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:04:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo2UL-0006mb-0H
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:04:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696428272;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=KcdxC79HL336v3e2in8zo6K9/7pGEaRpfSCQsFm6tBc=;
+ b=jM0zR5nViVLQX8ZQFHwq/GFRhsxEBU+tq2kMS9ZPsdZ4ijLoICzcuceHBqT7Q6Jr8Msfua
+ rfohgSaJqJQdyfjOV+YfkIvOR+mVNs2L26mB5UyeCoIRlQLLo6H6zgX/70RVfE4I+Ns63+
+ OFEJCIT2NQUZXzj7CHq067pURV+f5D8=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-130-ahwaUv6vN0a1gOR3eNjwlg-1; Wed, 04 Oct 2023 10:04:25 -0400
+X-MC-Unique: ahwaUv6vN0a1gOR3eNjwlg-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-4053a5c6a59so14883875e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:04:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696428264; x=1697033064;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=KcdxC79HL336v3e2in8zo6K9/7pGEaRpfSCQsFm6tBc=;
+ b=ATDFe2LMAw1bw/X8Z3/xiR24RvhE0cRQTqVWJbfsFYYwR2YgOd37fi9MisBXgmSrLs
+ JqnmhycXpVTwhWppR+TiREoX2Poq7HstO4irWSQEe5Som4+HJsddKqLm6A/u6xO5LL+1
+ TYsH8yiIdeGSKGu+5k1R8cByTtb3W8MOwqs9W/QKmjisIKf82u63uG/5nmeDSi6XCvyi
+ l2DmdUmgG8Z9FSmTNbzKcywiuaDn37kNi5rTh1CPUvqFrDjBRqnSQfKVxjjZrEyL5j+X
+ WNjJ+8bt6HmrBQD8vvMIQST+peddVK6POx0GqWSyFLytHkAQb586CVXhrTH1T1ZSWeLD
+ ebmQ==
+X-Gm-Message-State: AOJu0YxlACZSpzAL7D/eR9tOQqb8gwIOR1LNZkJAsGMwD82y8M9dHMnF
+ 8V7DcizrKUYm3xtmoYA2NPr1N8uL2MezMi3wRyr5vhHgvDl5Nd4LVjLN0GITrUa+DuXZuGoVDwr
+ WNQMPapBTjzhZcxc=
+X-Received: by 2002:a7b:c454:0:b0:403:b6bc:dc83 with SMTP id
+ l20-20020a7bc454000000b00403b6bcdc83mr2248902wmi.38.1696428263876; 
+ Wed, 04 Oct 2023 07:04:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH9ZCgFxqVRQU0CFKuuiBM1fvMXMfa74Ce7KKDasdwc5bj+OFhC3iCycaKmbrU9Oys9JhJxlQ==
+X-Received: by 2002:a7b:c454:0:b0:403:b6bc:dc83 with SMTP id
+ l20-20020a7bc454000000b00403b6bcdc83mr2248851wmi.38.1696428262908; 
+ Wed, 04 Oct 2023 07:04:22 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ b7-20020a5d5507000000b003247f732c11sm4111949wrv.76.2023.10.04.07.04.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 07:04:22 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Yuval Shaia <yuval.shaia.ml@gmail.com>,  Marcel Apfelbaum
+ <marcel.apfelbaum@gmail.com>,  qemu-devel@nongnu.org,  Markus Armbruster
+ <armbru@redhat.com>,  Zhijian Li <lizhijian@fujitsu.com>,  Peter Xu
+ <peterx@redhat.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ libvir-list@redhat.com,  Eric Auger <eric.auger@redhat.com>,  Fabiano
+ Rosas <farosas@suse.de>,  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: Re: [PATCH] hw/rdma: Deprecate the pvrdma device and the rdma
+ subsystem
+In-Reply-To: <20230927133019.228495-1-thuth@redhat.com> (Thomas Huth's message
+ of "Wed, 27 Sep 2023 15:30:19 +0200")
+References: <20230927133019.228495-1-thuth@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 04 Oct 2023 16:04:21 +0200
+Message-ID: <87zg0y1o2i.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,66 +103,31 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
+Thomas Huth <thuth@redhat.com> wrote:
+> This subsystem is said to be in a bad shape (see e.g. [1], [2]
+> and [3]), and nobody seems to feel responsible to pick up patches
+> for this and send them via a pull request. For example there is
+> a patch for a CVE-worthy bug posted more than half a year ago [4]
+> which has never been merged.
+>
+> Quoting Markus: "Given the shape it is in, I wouldn't let friends
+> use it in production" - we shouldn't expose this to our users in
+> the current state. Thus let's mark it as deprecated and finally
+> remove it unless somebody steps up and improves the code quality
+> and adds proper regression tests.
+>
+> [1] https://lore.kernel.org/qemu-devel/20230918144206.560120-1-armbru@redhat.com/
+> [2] https://lore.kernel.org/qemu-devel/ZQnojJOqoFu73995@redhat.com/
+> [3] https://lore.kernel.org/qemu-devel/1054981c-e8ae-c676-3b04-eeb030e11f65@tls.msk.ru/
+> [4] https://lore.kernel.org/qemu-devel/20230301142926.18686-1-yuval.shaia.ml@gmail.com/
+> [5] https://lore.kernel.org/qemu-devel/8734z9f086.fsf@pond.sub.org/
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
-> On 04/10/23 7:03 pm, Fabiano Rosas wrote:
->> Het Gala <het.gala@nutanix.com> writes:
->>
->>> This is v11 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
->>> for upstream review.
->>>
->>> Update: Daniel has reviewed all patches and is okay with them. Markus has also
->>>          given Acked-by tag for patches related to QAPI syntax change.
->>> Fabiano, Juan and other migration maintainers, let me know if there are still
->>> improvements to be made in this patchset series.
->>>
->>> Link to previous upstream community patchset links:
->>> v1: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&e=
->>> v2: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&e=
->>> v3: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&e=
->>> v4: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&e=
->>> v5: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&e=
->>> v6: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&e=
->>> v7: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&e=
->>> v8: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&e=
->>> v9: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&e=
->>> v10: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&e=
->>>
->>> v10 -> v11 changelog:
->>> -------------------
->>> - Resolved make check errors as its been almost two months since v10
->>>    version of this patchset series went out. Till date migration workflow
->>>    might have changed which caused make check errors.
->> Sorry, there must be a misunderstanding here. This series still has
->> problems. Just look at patch 6 that adds the "channel-type" parameter and
->> patch 10 that uses "channeltype" in the test (without hyphen). This
->> cannot work.
-> Ack. I will change that.
->> There's also several instances of g_autoptr being used incorrectly. I
->> could comment on every patch individually, but this series cannot have
->> passed make check.
-> Are we allowed to run the make checks ? I am not aware from where these 
-> failures are arising. It would be helpful if you could point out to me 
-> where g_autoptr is incorrectly used ?
-
-I mean just the project's make check command:
-
-cd build/
-../configure
-make -j$(nproc)
-make -j$(nproc) check
-
->> Please resend this with the issues fixed and drop the Reviewed-bys from
->> the affected patches.
-> How to verify which are the affected patches here ?
-
-I'll comment in each patch individually.
-
-We'll also have to add compatibility with the new file: URI that's
-included in the latest migration pull request. I'll add comments on
-where I think we'll need to add code to support that feature.
+Acked-by: Juan Quintela <quintela@redhat.com>
 
 
