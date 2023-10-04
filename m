@@ -2,91 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E607E7B85F3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 575D47B8607
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:01:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5Bl-0008BO-Le; Wed, 04 Oct 2023 12:57:33 -0400
+	id 1qo5F5-000563-JQ; Wed, 04 Oct 2023 13:00:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo5Bi-0008AM-NI
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:57:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qo5Es-00054t-2p
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:00:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo5Bh-00034U-7z
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:57:30 -0400
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qo5El-0003uF-Fa
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:00:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696438648;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ s=mimecast20190719; t=1696438836;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ezd/CoV/GEBcVf/HfHpFk/z0Ot+fDjvjJnet0zxS+vo=;
- b=DILOGUkkF0bq7dUwu+1bC1XMCrbd1vk2jZhubn09bY1mgyFYUDap9C3PurP+b4eTf5+cEz
- HO0bzZIYmj8veleH+l5ULu141tXUhFpv6nFCudU+uVofRik4UE4SFGIYfCuo07wSBkC/8/
- NaUIGl6gEsi5VlZPN+GQGlvyLsCOl6w=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=ZfhnVzbJctGN+gGkebJQNKU0GANU6NIvRE3DYYRLpaI=;
+ b=YwfqBmCi1Q3jYPW2tUwdvBDOtcZ0yERv2gpHoGCaLPixO2xuKGFABa8mru3UAZ6uRcHdWI
+ cIhgPwEynLrSRK4BrVXbBSFuE3nPb3hi1h2kQDYJr3gWyheuKGUZvj02Q53sWEU4ricl8m
+ ZbK0a29qRgv5okUoGhnobPMZlgWjljw=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-hF3c0OOBPl2Yi7uIXaGZZA-1; Wed, 04 Oct 2023 12:57:06 -0400
-X-MC-Unique: hF3c0OOBPl2Yi7uIXaGZZA-1
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-41951447612so67811cf.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 09:57:06 -0700 (PDT)
+ us-mta-467-YfLs0Q5bPaOLBjGTv0pICg-1; Wed, 04 Oct 2023 13:00:29 -0400
+X-MC-Unique: YfLs0Q5bPaOLBjGTv0pICg-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-77409676d7dso1741485a.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:00:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696438626; x=1697043426;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ezd/CoV/GEBcVf/HfHpFk/z0Ot+fDjvjJnet0zxS+vo=;
- b=mJOBPcC7ALsPM0N7YJ/VLRi41ZBqOsjsODq8vk8vxPq75hTlw129RQbv1p+b5cXO8G
- JLnqTsq2i4/8ui39NRbZtCRedZ+vN8rwwNluL82yFZR/Cemxl5GkG+/eWhrZjzA2Oc4k
- /FBWPj7idp/vY7g6wyekCFDaK/8385SAvqngSFePekOgwLBeK7ZSvv85R3GMde7jvsQm
- GP73/le0X9YjwPL72CzIGslF/JQ0gKG7Rxf1LMI7wNWKvr5n5k/nFDklmYC97nvfyAw7
- L0VXvBZ34r+N7jeMvBN9mYI8vqSa8Yrxv4kPEiGkOHbFUv84I6eZpH3CuDFWJmN+4LLV
- w9sg==
-X-Gm-Message-State: AOJu0YxNnBg3VBDtfKAgzxAl98NQKc4/10pO7Yxp6HW7PVmKhWiFzVWu
- gl6IwjYH7Z8GEIs2LxNMtUO/Hj+L8kUjkQnsykhAkbJ3Z6a2B1iTVUkV1bSbBH0KgwUHHeoz5b/
- YJwsGRvpxR7nSgIQ=
-X-Received: by 2002:a05:6214:21e4:b0:668:e10e:3ca9 with SMTP id
- p4-20020a05621421e400b00668e10e3ca9mr2926550qvj.6.1696438626435; 
- Wed, 04 Oct 2023 09:57:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGTITEzhvh11qmI4n5mdOEaklQrb1aSYwK9TQ2j+WZzntBR318ZNjTDyDZRLuLWXJyFLy8+IA==
-X-Received: by 2002:a05:6214:21e4:b0:668:e10e:3ca9 with SMTP id
- p4-20020a05621421e400b00668e10e3ca9mr2926533qvj.6.1696438626107; 
- Wed, 04 Oct 2023 09:57:06 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- f14-20020a0caa8e000000b006516780a0a5sm1457086qvb.117.2023.10.04.09.57.05
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 09:57:05 -0700 (PDT)
-Date: Wed, 4 Oct 2023 12:57:04 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Juan Quintela <quintela@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
- "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
- "leobras@redhat.com" <leobras@redhat.com>
-Subject: Re: [PATCH 28/52] migration/rdma: Check negative error values the
- same way everywhere
-Message-ID: <ZR2ZYNB2Mw1Tej9i@x1n>
-References: <20230918144206.560120-1-armbru@redhat.com>
- <20230918144206.560120-29-armbru@redhat.com>
- <5b2560b5-63ed-37f0-5367-07ca55d43ab4@fujitsu.com>
- <87wmwed824.fsf@pond.sub.org> <87jzs2uz5d.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1696438829; x=1697043629;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=ZfhnVzbJctGN+gGkebJQNKU0GANU6NIvRE3DYYRLpaI=;
+ b=dDccA7mYEg9WJksSbQj2zdl5qRVzaW6XJa5SB5tm50vt3xVbOg8/5pM86Tnmx6Z+/B
+ MGE2Qb56KKSFtDrPwrj+s6rdKyme5WBzKAyp6ITH/ip5E5WmtKrkVErySDMVcbr//bh4
+ 9CJZLRFheSOnARFsM7Bw/MyJfBNsLrg8Eu3Obs58ui3j3jZBnDZlwIblZvruB3DDyyCH
+ qqyD3lr5LU/effrDXcP2JrNMoFEm0o2O0RW26d9/IkpkUt9Tog8HCk9j7ib5rRqI8rci
+ 5F9ZAxVCRSh0xVbjAjs3dR4OCSJgg+CM1cadf8HQdyIJbagi5TwS8RcVP5+fTpTbmCeM
+ tQIg==
+X-Gm-Message-State: AOJu0YyjiICHf6xkJ+mflgLitc3Zlxnl6OGeOxsdFsLtKShOooTGXFGv
+ 8FpF+En9/bjPF6zpjrZTpVpBdwCYqRTHERtPwKnrxe0yYoM9tp1UDinfOiNkGTWJ+cmKXLMdahZ
+ vPW9LtODdF0Nkwp4=
+X-Received: by 2002:a05:620a:141a:b0:774:1f74:fe2c with SMTP id
+ d26-20020a05620a141a00b007741f74fe2cmr3034457qkj.21.1696438829374; 
+ Wed, 04 Oct 2023 10:00:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyjrsNcQEbOCcEQpWiuKoAo0hirOdkO0DnhbmblIb5JGGLuxfRC7rPNNwT+OPlwC1P6zYpxQ==
+X-Received: by 2002:a05:620a:141a:b0:774:1f74:fe2c with SMTP id
+ d26-20020a05620a141a00b007741f74fe2cmr3034440qkj.21.1696438829142; 
+ Wed, 04 Oct 2023 10:00:29 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ 19-20020a05620a079300b007742c6823a3sm1390988qka.108.2023.10.04.10.00.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 10:00:26 -0700 (PDT)
+Message-ID: <f50737da-af8c-ff3a-2e4b-1ae0327a422c@redhat.com>
+Date: Wed, 4 Oct 2023 19:00:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87jzs2uz5d.fsf@secure.mitica>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 13/15] vfio/common: Store the parent container in
+ VFIODevice
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ eric.auger.pro@gmail.com, qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
+ alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
+ yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
+ mjrosato@linux.ibm.com
+References: <20231003101530.288864-1-eric.auger@redhat.com>
+ <20231003101530.288864-14-eric.auger@redhat.com>
+ <79fb6650-783c-f9d7-4294-668bebe23fe0@redhat.com>
+ <4098f81f-bb7c-bbcb-4d73-04e3981a08f5@redhat.com>
+ <52120fe3-1647-1513-b005-f5099c16a862@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <52120fe3-1647-1513-b005-f5099c16a862@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,36 +111,19 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Sorry Zhijian, I missed this email.
+Hi Cédric,
 
-On Wed, Oct 04, 2023 at 06:32:14PM +0200, Juan Quintela wrote:
-> > * Avoid non-negative integer error values.
+On 10/4/23 18:55, Cédric Le Goater wrote:
+> the device-introspect-test needs it. No need to resend a v5, I can add it
+> back in v4 if you are ok with that. 
 
-Perhaps we need to forbid that if doing this.
+Ah OK. I am definitively OK for you to restore it if nothing else shows
+up inbetween
 
-I can see Zhijian's point, where "if (ret)" can also capture unexpected
-positive returns, while "if (ret < 0)" is not clear on who's handling ret>0
-case.  Personally I like that, too.
-
-> 3 - I fully agree that code is more maintenable this way.  I.e. if any
->     function changes to return positive values for non error, we get
->     better coverage.
-
-This patch does at least try to unify error handling, though..
-
-$ git grep "ret < 0" migration/rdma.c | wc -l
-36
-
-So we have half doing this and half doing that, makes sense to do the same.
-
-Let's assume no vote from my side due to pros and cons, so it's 2:1. :)
-
-Thanks,
-
--- 
-Peter Xu
+Eric
 
 
