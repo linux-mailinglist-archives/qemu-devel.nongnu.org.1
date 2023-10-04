@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24BCF7B7ABB
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:52:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 262077B7A95
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:49:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxUu-0004v3-TA; Wed, 04 Oct 2023 04:44:48 -0400
+	id 1qnxUu-0004un-RF; Wed, 04 Oct 2023 04:44:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxUN-00045h-PG
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:16 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxUR-0004Ns-DN
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxUM-0001Df-4x
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:15 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxUP-0001Hs-Li
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409053;
+ s=mimecast20190719; t=1696409057;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wAoyD8naooe+1owbsXcnZ1RIo6I7CUVOQ7MqfozanzM=;
- b=WOv19mm7IxzP9+QfZPokGi8Vx5tIIFFQrq4sbd/ktSCTiYMT3Pm4UN8tAGoNjSLv+zfd2N
- 7UmaT1ukp2lWs5QiLgnXXQBxUYihJDtuQ/kbkxd0FmsC+heu2Jt3fg77NqXKpYPo5cSSzv
- X7AfHQJz6ynYxgC5ep8ZzxsmYdvgH68=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=C2NPGrQYFO7suu/6rLXZ26kV9f2KwiOFOwW2bXOoSQ4=;
+ b=Lm9VjHrOpLqRlj3rux7uL/QEtV/R2+RdJ1C1rp/AkHSNST1PPS7T9a1VixKR0TgFEyBDFJ
+ fgepcZhBOespSdDbrNBoW7FGpi/BAWbgcfxPdZcMQSuH1NT6B5lDfEvFYHUJicq2sMbBos
+ pGldLS+rNmoV2y5Hk+ypXykB4L41vJk=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-lkTr44dPO4mQXvjStXCLhw-1; Wed, 04 Oct 2023 04:44:12 -0400
-X-MC-Unique: lkTr44dPO4mQXvjStXCLhw-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fe1521678fso14557875e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:44:11 -0700 (PDT)
+ us-mta-76-5Uqg9ke7MayZ7x0mekm9Pw-1; Wed, 04 Oct 2023 04:44:15 -0400
+X-MC-Unique: 5Uqg9ke7MayZ7x0mekm9Pw-1
+Received: by mail-lf1-f69.google.com with SMTP id
+ 2adb3069b0e04-504319087d9so1781114e87.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:44:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409050; x=1697013850;
+ d=1e100.net; s=20230601; t=1696409053; x=1697013853;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wAoyD8naooe+1owbsXcnZ1RIo6I7CUVOQ7MqfozanzM=;
- b=l949pEby95kWgJTxsaYe5fwADUr74tOheQ6ofEJXNpVYF+wqEwjlxAEokDqIlk2KGT
- Z8TjTM3Xk2Fwfhx28efgg+Hie1UtSp+4/n0EVzOFGgrc2rKtdzeXpdZ4CHc3v5im4HCG
- 19aQ5kNEpWLFtAMoKdLHuE85GA/cnlA+tQTbIIOc+1dVO5L9gXy9esYnyri/APmA9hdG
- 85E1ExFtiv+tRfCQJJxg5rsVvXOAfirdqDO7eUkOLNeZZ4JP4crvNj6P6Olgeey3jC2e
- 9OR7RhhbuOcNCDZexJ6qiZscN1Lwj1/zuzlXrHiL31fVXzPwAvkQ+34Gou+AWFUaeVwJ
- FnMQ==
-X-Gm-Message-State: AOJu0YwQrvrnC9lhc+QOQXeKe3ayxzVg5kDyWmRG/EA+5Om+qKYwius8
- rG9pTZ8LSuQBZMKQW5mZUr/cszJMj6u8JdnT7RjDL+2ecZ6vJUeQeG5GET9/voJhkekTbmxMVT0
- JW6JMbjZFQAt+vX0ENmwz35Pb+xTFdd/5gpAdHIc4d+iH0aVRDVlJDjKNjM15Bb0GhXrV
-X-Received: by 2002:a05:600c:b91:b0:406:84cb:b014 with SMTP id
- fl17-20020a05600c0b9100b0040684cbb014mr929759wmb.22.1696409050754; 
- Wed, 04 Oct 2023 01:44:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFhL0LEBlxG9Gw0c36n0nP3Brj48WF+Ql3+Q1fvJq+iC2TkXknO86CFYaR47JPDcWPhEYpLOA==
-X-Received: by 2002:a05:600c:b91:b0:406:84cb:b014 with SMTP id
- fl17-20020a05600c0b9100b0040684cbb014mr929741wmb.22.1696409050503; 
- Wed, 04 Oct 2023 01:44:10 -0700 (PDT)
+ bh=C2NPGrQYFO7suu/6rLXZ26kV9f2KwiOFOwW2bXOoSQ4=;
+ b=QsXOicfNjiOd1DJiyLOdP9kFyTNXJdbbMwW6XSzCn2rnei2yAw/ejOQV80NTaUZ1+l
+ 9pElhMF+p/K6ZO5+UTIJ+dQ35cTpnAKAoR/CtwDzzXH17FiNmQY7xE6kvSeMAAa8ia6W
+ ctqKME5GjbxYyRjwL9adUjucbaM8HqFy4+pHYf774A1gy8J3wTRBNDsR7l2sPyxPMrmO
+ NsQN1kbK4IllEWiY051f5r8LbyXaX2+xL6I4e2GorBAQhrrkGe//AKtL6wBHDC8yKGxf
+ 5xOgkwl5HuExjoQpiR+ucjviKYav2DZ7ZYaKRRoJ6aJu2wCoxQH9qnVb0KCfsE82sMmV
+ v12Q==
+X-Gm-Message-State: AOJu0Yxg90og3O5jvJH0kILRyV5UptoSK+mSy0w6N1vlfGqLTFuBX7KH
+ DbRH/P+ztM7nL5pKuvMwGMJ5wb/fZJhcSFLUCRU11oHzf6oH9oUYESgUlj7/mc7I11o4kO9Xbo+
+ ARcUUUT2tYc/LJVhA1NrML9/kC/nlEHSzNqIZZyrqyZBpcIARlg6nm8JV39ShdWfcLrp0
+X-Received: by 2002:a05:6512:532:b0:505:7113:1d12 with SMTP id
+ o18-20020a056512053200b0050571131d12mr1165751lfc.3.1696409053562; 
+ Wed, 04 Oct 2023 01:44:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFRStNm7A7RGV3ZOF9OmKZc0xc6TiTBPolN9KgYkG/EnEhA6i8GhHnPBHenXAH0OlTYFMqjLQ==
+X-Received: by 2002:a05:6512:532:b0:505:7113:1d12 with SMTP id
+ o18-20020a056512053200b0050571131d12mr1165737lfc.3.1696409053231; 
+ Wed, 04 Oct 2023 01:44:13 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- y8-20020a7bcd88000000b00406447b798bsm935840wmj.37.2023.10.04.01.44.08
+ x16-20020a05600c2a5000b00405c7591b09sm936813wme.35.2023.10.04.01.44.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:44:09 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:44:07 -0400
+ Wed, 04 Oct 2023 01:44:12 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:44:10 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
+ Hawkins Jiawei <yin31149@gmail.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
-Subject: [PULL 19/63] vdpa: remove net cvq migration blocker
-Message-ID: <8134d128881c6392f091aa4cd51986daa42f62bb.1696408966.git.mst@redhat.com>
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 20/63] vhost: Add count argument to vhost_svq_poll()
+Message-ID: <c3790ad6d2ca17420051ee69597e28805de829e9.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -100,45 +101,110 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
 
-Now that we have add migration blockers if the device does not support
-all the needed features, remove the general blocker applied to all net
-devices with CVQ.
+Next patches in this series will no longer perform an
+immediate poll and check of the device's used buffers
+for each CVQ state load command. Instead, they will
+send CVQ state load commands in parallel by polling
+multiple pending buffers at once.
 
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20230822085330.3978829-6-eperezma@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+To achieve this, this patch refactoring vhost_svq_poll()
+to accept a new argument `num`, which allows vhost_svq_poll()
+to wait for the device to use multiple elements,
+rather than polling for a single element.
+
+Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <950b3bfcfc5d446168b9d6a249d554a013a691d4.1693287885.git.yin31149@gmail.com>
 ---
- net/vhost-vdpa.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ hw/virtio/vhost-shadow-virtqueue.h |  2 +-
+ hw/virtio/vhost-shadow-virtqueue.c | 36 ++++++++++++++++++------------
+ net/vhost-vdpa.c                   |  2 +-
+ 3 files changed, 24 insertions(+), 16 deletions(-)
 
+diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
+index 6efe051a70..5bce67837b 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.h
++++ b/hw/virtio/vhost-shadow-virtqueue.h
+@@ -119,7 +119,7 @@ void vhost_svq_push_elem(VhostShadowVirtqueue *svq,
+ int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
+                   size_t out_num, const struct iovec *in_sg, size_t in_num,
+                   VirtQueueElement *elem);
+-size_t vhost_svq_poll(VhostShadowVirtqueue *svq);
++size_t vhost_svq_poll(VhostShadowVirtqueue *svq, size_t num);
+ 
+ void vhost_svq_set_svq_kick_fd(VhostShadowVirtqueue *svq, int svq_kick_fd);
+ void vhost_svq_set_svq_call_fd(VhostShadowVirtqueue *svq, int call_fd);
+diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
+index 49e5aed931..e731b1d2ea 100644
+--- a/hw/virtio/vhost-shadow-virtqueue.c
++++ b/hw/virtio/vhost-shadow-virtqueue.c
+@@ -514,29 +514,37 @@ static void vhost_svq_flush(VhostShadowVirtqueue *svq,
+ }
+ 
+ /**
+- * Poll the SVQ for one device used buffer.
++ * Poll the SVQ to wait for the device to use the specified number
++ * of elements and return the total length written by the device.
+  *
+  * This function race with main event loop SVQ polling, so extra
+  * synchronization is needed.
+  *
+- * Return the length written by the device.
++ * @svq: The svq
++ * @num: The number of elements that need to be used
+  */
+-size_t vhost_svq_poll(VhostShadowVirtqueue *svq)
++size_t vhost_svq_poll(VhostShadowVirtqueue *svq, size_t num)
+ {
+-    int64_t start_us = g_get_monotonic_time();
+-    uint32_t len = 0;
++    size_t len = 0;
++    uint32_t r;
+ 
+-    do {
+-        if (vhost_svq_more_used(svq)) {
+-            break;
+-        }
++    while (num--) {
++        int64_t start_us = g_get_monotonic_time();
+ 
+-        if (unlikely(g_get_monotonic_time() - start_us > 10e6)) {
+-            return 0;
+-        }
+-    } while (true);
++        do {
++            if (vhost_svq_more_used(svq)) {
++                break;
++            }
++
++            if (unlikely(g_get_monotonic_time() - start_us > 10e6)) {
++                return len;
++            }
++        } while (true);
++
++        vhost_svq_get_buf(svq, &r);
++        len += r;
++    }
+ 
+-    vhost_svq_get_buf(svq, &len);
+     return len;
+ }
+ 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 0715bed8e6..90beda42e0 100644
+index 90beda42e0..5808d1b60c 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -1465,18 +1465,6 @@ static NetClientState *net_vhost_vdpa_init(NetClientState *peer,
-         s->vhost_vdpa.shadow_vq_ops = &vhost_vdpa_net_svq_ops;
-         s->vhost_vdpa.shadow_vq_ops_opaque = s;
-         s->cvq_isolated = cvq_isolated;
--
--        /*
--         * TODO: We cannot migrate devices with CVQ and no x-svq enabled as
--         * there is no way to set the device state (MAC, MQ, etc) before
--         * starting the datapath.
--         *
--         * Migration blocker ownership now belongs to s->vhost_vdpa.
--         */
--        if (!svq) {
--            error_setg(&s->vhost_vdpa.migration_blocker,
--                       "net vdpa cannot migrate with CVQ feature");
--        }
-     }
-     ret = vhost_vdpa_add(nc, (void *)&s->vhost_vdpa, queue_pair_index, nvqs);
-     if (ret) {
+@@ -645,7 +645,7 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
+      * descriptor. Also, we need to take the answer before SVQ pulls by itself,
+      * when BQL is released
+      */
+-    return vhost_svq_poll(svq);
++    return vhost_svq_poll(svq, 1);
+ }
+ 
+ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
 -- 
 MST
 
