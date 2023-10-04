@@ -2,101 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD237B87F6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BD97B8825
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:13:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo6K1-0000Qu-3R; Wed, 04 Oct 2023 14:10:09 -0400
+	id 1qo6MQ-0003Gh-4q; Wed, 04 Oct 2023 14:12:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo6Jq-0000LE-5Z
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:10:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo6Jo-0006wz-8A
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:09:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696442994;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo6ML-0003Du-Ao
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:12:33 -0400
+Received: from smtp-out2.suse.de ([195.135.220.29])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo6MJ-0007Sk-M9
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:12:33 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id 1F1341F460;
+ Wed,  4 Oct 2023 18:12:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696443150; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CGgUH+/DC7+0bJHF2H1Z4fWwcqsgr3MLcfkdFyOfe1k=;
- b=g+gJfW72CPAN8NAOAgfw03cWu35pJbfXIoAWp5CxCHxeqTmnQvozIP2NJdsNHTyg3E8wyy
- K1tOjT786+X5r1UmF00wjUvlDRHymcxN4YQ4fE9KlksHY/vq7jfM6RngKjlBH73HzWtvbc
- rJ5qxTGkb1qyDRaLCtxb8v5tgeBrA18=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-diHNysjfMhqMNI81gVKciQ-1; Wed, 04 Oct 2023 14:09:52 -0400
-X-MC-Unique: diHNysjfMhqMNI81gVKciQ-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fef5403093so859705e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 11:09:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696442991; x=1697047791;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=CGgUH+/DC7+0bJHF2H1Z4fWwcqsgr3MLcfkdFyOfe1k=;
- b=gYAPe6Y3lA2BHCsbXV91FLGQGII4+e/QXQVj6IaHQFgtBxJXmaGkuoWfsoRgsh0a8h
- od+6ajo3XHr/Zg6z+p5YUJG+zovl5alX/vnmfMeLJH6qrvMGq8wYoGmYTJ4UilkukkwI
- zzoaacaYQ5uE6CoKaNQk87++GMvSoY9nVF/8gsG2IpC2WzEsqind0mtaA1PworzfY+0Y
- 3OUVlmpvzT2wpB/3pqEZBTNpX9RNAa6GRbctdgYMDAAL+YOR04bXOs/Nh+qbRQdcqgt0
- rolYFSpaQPwDojZJ5suIebKeBw0At4M5PMhil0cdmJfXlolu62dAgulQr7TMhQ5kIbdK
- zgCw==
-X-Gm-Message-State: AOJu0YyB9VL307MUEZkfYngqYl3HEA55jv+pV2m5Q2uC9JDlQfiuUTN8
- 1wCcvgJhcERUOy2qsSsm63Q7QetCifeREq2mGXIYxUIkhoW03f13yKXobeaVddaGXT+tCx+9CA0
- ATftXNnLu+yBrrqQ=
-X-Received: by 2002:a05:600c:3b0e:b0:403:aced:f7f4 with SMTP id
- m14-20020a05600c3b0e00b00403acedf7f4mr347844wms.12.1696442991275; 
- Wed, 04 Oct 2023 11:09:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGyKfCPhBMqd0jqq8Gqm2LobbMubqNfcn2X85k/gRj7Br7zvhNvMQCYXe2MDUT1OEBaq8XEGQ==
-X-Received: by 2002:a05:600c:3b0e:b0:403:aced:f7f4 with SMTP id
- m14-20020a05600c3b0e00b00403acedf7f4mr347829wms.12.1696442990892; 
- Wed, 04 Oct 2023 11:09:50 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- p5-20020a1c7405000000b004064e3b94afsm2085949wmc.4.2023.10.04.11.09.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 11:09:50 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Cc: Fabiano Rosas <farosas@suse.de>,  Philippe =?utf-8?Q?Mathieu-Daud?=
- =?utf-8?Q?=C3=A9?= <philmd@linaro.org>,  qemu-devel@nongnu.org,  Peter Xu
- <peterx@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent Vivier
- <lvivier@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Leonardo Bras
- <leobras@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
- <alex.bennee@linaro.org>
-Subject: Re: [RFC PATCH 1/1] qtest/migration: Support more than one QEMU binary
-In-Reply-To: <ZR2nTmmf8AaUV1g2@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
- =?utf-8?Q?=C3=A9=22's?= message of
- "Wed, 4 Oct 2023 18:56:30 +0100")
-References: <20231003141932.2367-1-farosas@suse.de>
- <20231003141932.2367-2-farosas@suse.de>
- <3dd8e410-982b-3ea6-78aa-08c1ba26f8da@linaro.org>
- <ZRw5Myc/joWb6why@redhat.com> <874jj7u11d.fsf@suse.de>
- <87wmw24vzg.fsf@secure.mitica> <8734yqpedm.fsf@suse.de>
- <ZR2nTmmf8AaUV1g2@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 20:09:49 +0200
-Message-ID: <875y3ms1hu.fsf@secure.mitica>
+ bh=13YR344gzaY6V0Kz7wIUpu7FJ+r0opgDhEHFcseJ8z0=;
+ b=dYf5usBzRTHhep9Jdb3gkUkRdGesXEdZ1kSuY8xEW7tHizr1HhohuQZerKvEGbErkISjvM
+ CtGoaqwTtpCsnpBn41mHiQFwlrOCMqasXK5/vw5OdJzmrdRr6YPGzCZtbhLH0mT/g5mVN8
+ AI+Vmz23KHpaFz9AYwsiQNQ5jmbrQ3Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696443150;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=13YR344gzaY6V0Kz7wIUpu7FJ+r0opgDhEHFcseJ8z0=;
+ b=+O98SZJMImIrn09Hs+N1mtTKBGGf/HPZDUJ39v6tHgkdU1/054JIFbnoSuhqVcjQ0I3YB/
+ QXLFKUTdv6jQ5wCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A6831139F9;
+ Wed,  4 Oct 2023 18:12:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id RkBsHA2rHWW6bAAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 18:12:29 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org,
+ prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, armbru@redhat.com, eblake@redhat.com,
+ manish.mishra@nutanix.com, aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v11 02/10] migration: convert migration 'uri' into
+ 'MigrateAddress'
+In-Reply-To: <ZR2nuqQ7s1D5BweM@redhat.com>
+References: <20231004075851.219173-1-het.gala@nutanix.com>
+ <20231004075851.219173-3-het.gala@nutanix.com> <87jzs2phxb.fsf@suse.de>
+ <ZR2nuqQ7s1D5BweM@redhat.com>
+Date: Wed, 04 Oct 2023 15:12:27 -0300
+Message-ID: <87h6n65kac.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,72 +87,87 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
-> On Wed, Oct 04, 2023 at 12:59:49PM -0300, Fabiano Rosas wrote:
->> Juan Quintela <quintela@redhat.com> writes:
->>=20
->> > Fabiano Rosas <farosas@suse.de> wrote:
->> >> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
->> >>
->> >>> On Tue, Oct 03, 2023 at 05:24:50PM +0200, Philippe Mathieu-Daud=C3=
-=A9 wrote:
->> > [...]
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
 
->> I'm working on a cleanup of this patch to make it more integrated with
->> libqtest. If we teach qtest_get_machines() to sometimes refresh the list
->> of machines then it becomes way less code.
+> On Wed, Oct 04, 2023 at 11:43:12AM -0300, Fabiano Rosas wrote:
+>> Het Gala <het.gala@nutanix.com> writes:
 >>=20
->> > I think that it is just easier to pass the machine type we want to test
->> > to whatever script we have.  Specially where [sane] architectures like
->> > arm don't have a default machine type (no, I haven't double checked if
->> > that has changed lately).
+>> > This patch parses 'migrate' and 'migrate-incoming' QAPI's 'uri'
+>> > string containing migration connection related information
+>> > and stores them inside well defined 'MigrateAddress' struct.
+>> >
+>> > Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+>> > Signed-off-by: Het Gala <het.gala@nutanix.com>
+>> > Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+>> > ---
+>> >  migration/exec.c      |  1 -
+>> >  migration/exec.h      |  4 ++++
+>> >  migration/migration.c | 55 +++++++++++++++++++++++++++++++++++++++++++
+>> >  3 files changed, 59 insertions(+), 1 deletion(-)
+>> >
+>> > diff --git a/migration/exec.c b/migration/exec.c
+>> > index 2bf882bbe1..32f5143dfd 100644
+>> > --- a/migration/exec.c
+>> > +++ b/migration/exec.c
+>> > @@ -27,7 +27,6 @@
+>> >  #include "qemu/cutils.h"
+>> >=20=20
+>> >  #ifdef WIN32
+>> > -const char *exec_get_cmd_path(void);
+>> >  const char *exec_get_cmd_path(void)
+>> >  {
+>> >      g_autofree char *detected_path =3D g_new(char, MAX_PATH);
+>> > diff --git a/migration/exec.h b/migration/exec.h
+>> > index b210ffde7a..736cd71028 100644
+>> > --- a/migration/exec.h
+>> > +++ b/migration/exec.h
+>> > @@ -19,6 +19,10 @@
+>> >=20=20
+>> >  #ifndef QEMU_MIGRATION_EXEC_H
+>> >  #define QEMU_MIGRATION_EXEC_H
+>> > +
+>> > +#ifdef WIN32
+>> > +const char *exec_get_cmd_path(void);
+>> > +#endif
+>> >  void exec_start_incoming_migration(const char *host_port, Error **err=
+p);
+>> >=20=20
+>> >  void exec_start_outgoing_migration(MigrationState *s, const char *hos=
+t_port,
+>> > diff --git a/migration/migration.c b/migration/migration.c
+>> > index 6d3cf5d5cd..dcbd509d56 100644
+>> > --- a/migration/migration.c
+>> > +++ b/migration/migration.c
+>> > @@ -65,6 +65,7 @@
+>> >  #include "sysemu/qtest.h"
+>> >  #include "options.h"
+>> >  #include "sysemu/dirtylimit.h"
+>> > +#include "qemu/sockets.h"
+>> >=20=20
+>> >  static NotifierList migration_state_notifiers =3D
+>> >      NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
+>> > @@ -427,15 +428,64 @@ void migrate_add_address(SocketAddress *address)
+>> >                        QAPI_CLONE(SocketAddress, address));
+>> >  }
+>> >=20=20
+>> > +static bool migrate_uri_parse(const char *uri,
+>> > +                              MigrationAddress **channel,
+>> > +                              Error **errp)
+>> > +{
+>> > +    g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
 >>=20
->> We still need to enforce the same machine type for both binaries and a
->> sane range of QEMU versions. I think our docs state that we only support
->> migration from QEMU n->n+1 and vice versa? If the test will know what
->> combinations are allowed, it could just go ahead and use those.
+>> This cannot be g_autoptr because you're passing it out of scope at the
+>> end of the function.
 >
-> Query the 'pc' (or 'q35' as appropriate) alias on both QEMU versions,
-> to resolve them into versioned machines.
+> It is still good to use g_autoptr to deal with the error paths.
 >
-> Then find which resolved machine version(s) exist in both QEMUs, and
-> prefer the src machine if multiple matches exist.
+> On the success path though you need   g_steal_pointer(&addr) to
+> prevent the autofree cleanup running.
 
-We only change Machine Type with each qemu version, so having to change
-it by hand don't look so complicated.
-
-Let's assume for a moment that "pc" and "q35" machine types don't exist
-(rest of architectures needs to do a similar thing)
-
-latest qemu has:
-pc-i440fx-8.2        Standard PC (i440FX + PIIX, 1996) (default)
-pc-i440fx-8.1        Standard PC (i440FX + PIIX, 1996) (default)
-pc-i440fx-8.0        Standard PC (i440FX + PIIX, 1996) (default)
-pc-i440fx-7.2        Standard PC (i440FX + PIIX, 1996) (default)
-
-Previous version one has everything except 8.2
-
-We want to test:
-
-(this is what we do now)
-qemu-8.2 -M pc-i440fx-8.2  -> qemu-8.2 -M pc-i440fx-8.2
-
-And we want to test additionally:
-
-qemu-8.1 -M pc-i440fx-8.1  -> qemu-8.2 -M pc-i440fx-8.1
-qemu-8.2 -M pc-i440fx-8.1  -> qemu-8.1 -M pc-i440fx-8.1
-
-And that is it.
-
-So the thing that we need is a sane way to get qtest_init() to use the
-right machine type without inventing what machine type they want.  Not
-having a default machine type has other advantages, but that is a
-different discussion.
-
-Later, Juan.
-
+Ah good point, this has been suggested in an earlier version already, I
+forgot to mention. We should definitely use g_steal_pointer() whenever
+the variable goes out of scope.
 
