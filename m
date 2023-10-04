@@ -2,89 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F53E7B82C9
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:55:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 863D97B82D0
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:56:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo3Gw-0002p5-PW; Wed, 04 Oct 2023 10:54:46 -0400
+	id 1qo3Hs-00049o-Fa; Wed, 04 Oct 2023 10:55:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo3Gr-0002lw-84
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:54:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo3Go-0004IQ-In
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:54:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696431277;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=nlR+jCZIKOSxsApgI5z4n+etcCgA5EREG8gbKalU2hs=;
- b=e9fSazLAYzjjUGbWU7CmIfIH1bPdA49IaeDMrtW54BOFSMmdZzBLY8d2aQOhWj/+4faW7C
- FFzXhdDKboi81S4nqlcUWnYkAMFCcnFry9kdxw8TTzaEK0RVOVc9k0nQGaaQqXNggEKdjO
- 7SXMlfrFPBIASD7OY79d59efauZ6Ofw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-z_MatqNSOXi9SzLYJyfJbg-1; Wed, 04 Oct 2023 10:54:31 -0400
-X-MC-Unique: z_MatqNSOXi9SzLYJyfJbg-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4067f186094so14701315e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:54:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696431270; x=1697036070;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=nlR+jCZIKOSxsApgI5z4n+etcCgA5EREG8gbKalU2hs=;
- b=DRF9OLwwSJm6+TptgWQNe1Ex5M5PZU5V6fS6NFbQBtgqL9EB0ro9wK/35tJI88CDm5
- 1b3pSKJD4zE9KNb6+5h60YMhI2esanTP42waFRx30WVLBeDc+BT4iHC69NocgY42ebqC
- 9fHCiOgG+sNOm9XuIyFOmOx9ogPiniVRKjdXzm7Ds+9/A566g9xHZQRUkYKLTQPCbYze
- K7uNriokeYLELTtj0BtGeVVn2vCW0XpC3qMetoR96f2w0VjqzJqG2fd1sQCvPiFuKrOp
- CO/gSyLwc6j8vS/PkaK4I8wBnZxKKBKWk39FSJeA7cd46tMMFmYKShqmKLiscl3uv6dz
- tZAg==
-X-Gm-Message-State: AOJu0YwRsCtFG7lPexV3jMXQZZJIy8H6mMy6FCotlwUW0UbToz1Ep95n
- u4HZAHWdwzHi/n+tfeM9ghDo+TtysNs6oBrl4APRrlzAky5JE8wQRWky3UUqcbQtKuNKeFjZ/l5
- +xctJd2xIeuQD5zc=
-X-Received: by 2002:a05:600c:ac1:b0:405:39b4:3145 with SMTP id
- c1-20020a05600c0ac100b0040539b43145mr2864391wmr.2.1696431270076; 
- Wed, 04 Oct 2023 07:54:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH9I05Wv5LHKaDJTmS3zY4tIa4Obj+e/t22IVJ/X/Uyl4vUVyVd+W4Deje8re6wB8tWDc98qw==
-X-Received: by 2002:a05:600c:ac1:b0:405:39b4:3145 with SMTP id
- c1-20020a05600c0ac100b0040539b43145mr2864371wmr.2.1696431269717; 
- Wed, 04 Oct 2023 07:54:29 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- w21-20020a05600c015500b0040652e8ca13sm1717929wmm.43.2023.10.04.07.54.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 07:54:28 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
- farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
-Subject: Re: [PATCH v2 10/53] migration/rdma: Put @errp parameter last
-In-Reply-To: <20230928132019.2544702-11-armbru@redhat.com> (Markus
- Armbruster's message of "Thu, 28 Sep 2023 15:19:36 +0200")
-References: <20230928132019.2544702-1-armbru@redhat.com>
- <20230928132019.2544702-11-armbru@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 16:54:28 +0200
-Message-ID: <8734yqzbdn.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo3Hl-00045J-VU
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:55:37 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo3Hj-0004vq-SU
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:55:37 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 4B42521855;
+ Wed,  4 Oct 2023 14:55:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696431334; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ido6CvnikoFHjSY3kjmtHVtdbgtj7AIgy0rY+xIxKwY=;
+ b=1bIET3JYIubJsOgZZIOkaOV3Mk3tdET9G7WoE92wWJhcjan2RRe7qVgFluOaWZYFjNWrlw
+ 5IpWGVDmh3Jt34wXnAVZWNRQZJdyGlzgPCEM3f2FhKpZ/dC/vSlPnOjecONlpMhryFU7Ui
+ X0J87h+QJdkGNGi15VciJCBjtWM1c4o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696431334;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ido6CvnikoFHjSY3kjmtHVtdbgtj7AIgy0rY+xIxKwY=;
+ b=ukUuabdrSV7u84lZoyE/2jal6VIo5c4JMCNksNx/hlyfqWjBacZCaTPrT3Jbwr4Hq3F8pI
+ 7HHmmkHldej1boDQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D1D2A13A2E;
+ Wed,  4 Oct 2023 14:55:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id kPr1JuV8HWWLCwAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 14:55:33 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com, Het Gala <het.gala@nutanix.com>
+Subject: Re: [PATCH v11 05/10] migration: convert exec backend to accept
+ MigrateAddress.
+In-Reply-To: <20231004075851.219173-6-het.gala@nutanix.com>
+References: <20231004075851.219173-1-het.gala@nutanix.com>
+ <20231004075851.219173-6-het.gala@nutanix.com>
+Date: Wed, 04 Oct 2023 11:55:31 -0300
+Message-ID: <87h6n6phcs.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,23 +86,194 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> include/qapi/error.h demands:
->
->  * - Functions that use Error to report errors have an Error **errp
->  *   parameter.  It should be the last parameter, except for functions
->  *   taking variable arguments.
->
-> qemu_rdma_connect() does not conform.  Clean it up.
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> Reviewed-by: Fabiano Rosas <farosas@suse.de>
-> Reviewed-by: Li Zhijian <lizhijian@fujitsu.com>
+Het Gala <het.gala@nutanix.com> writes:
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+> Exec transport backend for 'migrate'/'migrate-incoming' QAPIs accept
+> new wire protocol of MigrateAddress struct.
+>
+> It is achived by parsing 'uri' string and storing migration parameters
+> required for exec connection into strList struct.
+>
+> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
+> Signed-off-by: Het Gala <het.gala@nutanix.com>
+> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> ---
+>  migration/exec.c      | 71 +++++++++++++++++++++++++++++++------------
+>  migration/exec.h      |  4 +--
+>  migration/migration.c | 10 +++---
+>  3 files changed, 57 insertions(+), 28 deletions(-)
+>
+> diff --git a/migration/exec.c b/migration/exec.c
+> index 32f5143dfd..8bc321c66b 100644
+> --- a/migration/exec.c
+> +++ b/migration/exec.c
+> @@ -39,20 +39,50 @@ const char *exec_get_cmd_path(void)
+>  }
+>  #endif
+>=20=20
+> -void exec_start_outgoing_migration(MigrationState *s, const char *comman=
+d, Error **errp)
+> +/* provides the length of strList */
+> +static int
+> +str_list_length(strList *list)
+> +{
+> +    int len =3D 0;
+> +    strList *elem;
+> +
+> +    for (elem =3D list; elem !=3D NULL; elem =3D elem->next) {
+> +        len++;
+> +    }
+> +
+> +    return len;
+> +}
+> +
+> +static void
+> +init_exec_array(strList *command, char **argv, Error **errp)
+> +{
+> +    int i =3D 0;
+> +    strList *lst;
+> +
+> +    for (lst =3D command; lst; lst =3D lst->next) {
+> +        argv[i++] =3D lst->value;
+> +    }
+> +
+> +    argv[i] =3D NULL;
 
+This will write out of bounds.=20
+
+> +    return;
+> +}
+> +
+> +void exec_start_outgoing_migration(MigrationState *s, strList *command,
+> +                                   Error **errp)
+>  {
+>      QIOChannel *ioc;
+>=20=20
+> -#ifdef WIN32
+> -    const char *argv[] =3D { exec_get_cmd_path(), "/c", command, NULL };
+> -#else
+> -    const char *argv[] =3D { "/bin/sh", "-c", command, NULL };
+> -#endif
+> +    int length =3D str_list_length(command);
+> +    g_auto(GStrv) argv =3D (char **) g_new0(const char *, length);
+
+This allocation does not leave space for the NULL byte.
+
+>=20=20
+> -    trace_migration_exec_outgoing(command);
+> -    ioc =3D QIO_CHANNEL(qio_channel_command_new_spawn(argv,
+> -                                                    O_RDWR,
+> -                                                    errp));
+> +    init_exec_array(command, argv, errp);
+> +    g_autofree char *new_command =3D g_strjoinv(" ", (char **)argv);
+> +
+> +    trace_migration_exec_outgoing(new_command);
+> +    ioc =3D QIO_CHANNEL(
+> +        qio_channel_command_new_spawn((const char * const *) argv,
+> +                                      O_RDWR,
+> +                                      errp));
+>      if (!ioc) {
+>          return;
+>      }
+> @@ -71,20 +101,21 @@ static gboolean exec_accept_incoming_migration(QIOCh=
+annel *ioc,
+>      return G_SOURCE_REMOVE;
+>  }
+>=20=20
+> -void exec_start_incoming_migration(const char *command, Error **errp)
+> +void exec_start_incoming_migration(strList *command, Error **errp)
+>  {
+>      QIOChannel *ioc;
+>=20=20
+> -#ifdef WIN32
+> -    const char *argv[] =3D { exec_get_cmd_path(), "/c", command, NULL };
+> -#else
+> -    const char *argv[] =3D { "/bin/sh", "-c", command, NULL };
+> -#endif
+> +    int length =3D str_list_length(command);
+> +    g_auto(GStrv) argv =3D (char **) g_new0(const char *, length);
+
+Here as well.
+
+> +
+> +    init_exec_array(command, argv, errp);
+> +    g_autofree char *new_command =3D g_strjoinv(" ", (char **)argv);
+>=20=20
+> -    trace_migration_exec_incoming(command);
+> -    ioc =3D QIO_CHANNEL(qio_channel_command_new_spawn(argv,
+> -                                                    O_RDWR,
+> -                                                    errp));
+> +    trace_migration_exec_incoming(new_command);
+> +    ioc =3D QIO_CHANNEL(
+> +        qio_channel_command_new_spawn((const char * const *) argv,
+> +                                      O_RDWR,
+> +                                      errp));
+>      if (!ioc) {
+>          return;
+>      }
+> diff --git a/migration/exec.h b/migration/exec.h
+> index 736cd71028..3107f205e3 100644
+> --- a/migration/exec.h
+> +++ b/migration/exec.h
+> @@ -23,8 +23,8 @@
+>  #ifdef WIN32
+>  const char *exec_get_cmd_path(void);
+>  #endif
+> -void exec_start_incoming_migration(const char *host_port, Error **errp);
+> +void exec_start_incoming_migration(strList *host_port, Error **errp);
+>=20=20
+> -void exec_start_outgoing_migration(MigrationState *s, const char *host_p=
+ort,
+> +void exec_start_outgoing_migration(MigrationState *s, strList *host_port,
+>                                     Error **errp);
+>  #endif
+> diff --git a/migration/migration.c b/migration/migration.c
+> index b41fda6f80..ebe14b9c38 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -474,7 +474,6 @@ static bool migrate_uri_parse(const char *uri,
+>=20=20
+>  static void qemu_start_incoming_migration(const char *uri, Error **errp)
+>  {
+> -    const char *p =3D NULL;
+>      g_autoptr(MigrationAddress) channel =3D g_new0(MigrationAddress, 1);
+>=20=20
+>      /* URI is not suitable for migration? */
+> @@ -500,8 +499,8 @@ static void qemu_start_incoming_migration(const char =
+*uri, Error **errp)
+>      } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
+>          rdma_start_incoming_migration(&channel->u.rdma, errp);
+>  #endif
+> -    } else if (strstart(uri, "exec:", &p)) {
+> -        exec_start_incoming_migration(p, errp);
+> +    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
+> +        exec_start_incoming_migration(channel->u.exec.args, errp);
+>      } else {
+>          error_setg(errp, "unknown migration protocol: %s", uri);
+>      }
+> @@ -1723,7 +1722,6 @@ void qmp_migrate(const char *uri, bool has_blk, boo=
+l blk,
+>      bool resume_requested;
+>      Error *local_err =3D NULL;
+>      MigrationState *s =3D migrate_get_current();
+> -    const char *p =3D NULL;
+>      g_autoptr(MigrationAddress) channel =3D g_new0(MigrationAddress, 1);
+>=20=20
+>      /* URI is not suitable for migration? */
+> @@ -1761,8 +1759,8 @@ void qmp_migrate(const char *uri, bool has_blk, boo=
+l blk,
+>      } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
+>          rdma_start_outgoing_migration(s, &channel->u.rdma, &local_err);
+>  #endif
+> -    } else if (strstart(uri, "exec:", &p)) {
+> -        exec_start_outgoing_migration(s, p, &local_err);
+> +    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
+> +        exec_start_outgoing_migration(s, channel->u.exec.args, &local_er=
+r);
+>      } else {
+>          error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
+>                     "a valid migration protocol");
 
