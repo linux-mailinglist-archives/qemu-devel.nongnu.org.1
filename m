@@ -2,88 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BA87B7F64
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 539367B7F76
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:42:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo1B1-0006Tk-OC; Wed, 04 Oct 2023 08:40:31 -0400
+	id 1qo1BL-0006Ym-Sc; Wed, 04 Oct 2023 08:40:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1qo1Av-0006Qs-VI
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:40:25 -0400
-Received: from mx0a-0031df01.pphosted.com ([205.220.168.131])
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo1BJ-0006Yd-UV
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:40:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <bcain@quicinc.com>) id 1qo1Al-0002eW-L6
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:40:23 -0400
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 394ALrHd011057; Wed, 4 Oct 2023 12:40:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=Thf0G5eyJfUpiOBYfgs/BIc7lt7DdKKiymR1fqYllwA=;
- b=KI0trxmEfMbulZZNUk28RpF+AMjeiun88nfOV+GOd8l7sK0O8TXsovn/tYPTkP6yCs0R
- k25Wm2EGfzG2GNANQdKuiajDJS8rT2AGDj6jM7OClvvOKb8nT0bY52kemmIESzx2IrNr
- YWGDi5ZeJkjSLZNnaZWSOyn+J1MhObhsGToq8PHERPswvajNKbiKHJDonqXha+PT4YTR
- Sppgit323pATdssUM4pddSPuegJxtrDIXDmF0B3bjAvhFOVPcCiZd7AzPm3loFeY+tuI
- mNtOxRoNNrOyIznOuYRkOS81F/7xm+0wcUbaYQyHInuabc8O5mRaAelK3aj7ieHyT53E 1g== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tgxrjs8ya-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Oct 2023 12:40:06 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 394Ce5Fw002113
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 4 Oct 2023 12:40:05 GMT
-Received: from hu-bcain-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Wed, 4 Oct 2023 05:40:05 -0700
-From: Brian Cain <bcain@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: <bcain@quicinc.com>, <armbru@redhat.com>, <richard.henderson@linaro.org>, 
- <philmd@linaro.org>, <peter.maydell@linaro.org>,
- <quic_mathbern@quicinc.com>, <stefanha@redhat.com>, <ale@rev.ng>,
- <anjo@rev.ng>, <quic_mliebel@quicinc.com>, <ltaylorsimpson@gmail.com>
-Subject: [PATCH 2/2] target/hexagon: fix some occurrences of -Wshadow=local
-Date: Wed, 4 Oct 2023 05:39:57 -0700
-Message-ID: <20231004123957.1732915-3-bcain@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231004123957.1732915-1-bcain@quicinc.com>
-References: <20231004123957.1732915-1-bcain@quicinc.com>
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo1BE-0003Tr-R2
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:40:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696423242;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=5Jjk2pZHP1jVIqKEdcHxFlgQrZSx4iLJHz4C1FXNNBg=;
+ b=HTJfj+DuJ8yFStcjl3by73rYsXPX3arkaJd5xcSe9mS+UEGnycVJpAHkCJjlHoydox0cQl
+ HAi27qUpaKhL3XAdJsNoH2CQu9bwL/CpQoH03aOrIHSJ9wzPjMZUU0SMoHxSTt26kbXXvy
+ cbd/ikeF79SIQVM9cPVnjDrcTgw/zvs=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-609-2-E5sPEZPAGLklA1oQJoZQ-1; Wed, 04 Oct 2023 08:40:41 -0400
+X-MC-Unique: 2-E5sPEZPAGLklA1oQJoZQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E3AF4858293;
+ Wed,  4 Oct 2023 12:40:40 +0000 (UTC)
+Received: from secure.mitica (unknown [10.39.194.90])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 8E8B32026D4B;
+ Wed,  4 Oct 2023 12:40:39 +0000 (UTC)
+From: Juan Quintela <quintela@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Leonardo Bras <leobras@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Juan Quintela <quintela@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Li Zhijian <lizhijian@fujitsu.com>, Fabiano Rosas <farosas@suse.de>,
+ qemu-s390x@nongnu.org
+Subject: [PULL 00/11] Migration 20231004 patches
+Date: Wed,  4 Oct 2023 14:40:27 +0200
+Message-ID: <20231004124038.16002-1-quintela@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-GUID: zGQy1ydypLTxrcwfBGAHMEJPFkDilkDX
-X-Proofpoint-ORIG-GUID: zGQy1ydypLTxrcwfBGAHMEJPFkDilkDX
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-04_04,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 malwarescore=0
- clxscore=1015 suspectscore=0 phishscore=0 mlxlogscore=669 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 spamscore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310040092
-Received-SPF: pass client-ip=205.220.168.131; envelope-from=bcain@quicinc.com;
- helo=mx0a-0031df01.pphosted.com
-X-Spam_score_int: -27
-X-Spam_score: -2.8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_LOW=-0.7, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_PASS=-0.001, T_SPF_HELO_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,133 +78,83 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-T2YgdGhlIGNoYW5nZXMgaW4gdGhpcyBjb21taXQsIHRoZSBjaGFuZ2VzIGluIGBIRUxQRVIoY29t
-bWl0X2h2eF9zdG9yZXMpKClgCmFyZSBsZXNzIG9idmlvdXMuICBUaGV5IGFyZSByZXF1aXJlZCBi
-ZWNhdXNlIG9mIHNvbWUgbWFjcm8gaW52b2NhdGlvbnMgbGlrZQpTQ0FUVEVSX09QX1dSSVRFX1RP
-X01FTSgpLgoKZS5nLjoKCiAgICBJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi4vdGFyZ2V0L2hleGFn
-b24vb3BfaGVscGVyLmM6MzE6CiAgICAuLi90YXJnZXQvaGV4YWdvbi9tbXZlYy9tYWNyb3MuaDoy
-MDU6MTg6IGVycm9yOiBkZWNsYXJhdGlvbiBvZiDigJhp4oCZIHNoYWRvd3MgYSBwcmV2aW91cyBs
-b2NhbCBbLVdlcnJvcj1zaGFkb3c9Y29tcGF0aWJsZS1sb2NhbF0KICAgICAgMjA1IHwgICAgICAg
-ICBmb3IgKGludCBpID0gMDsgaSA8IHNpemVvZihNTVZlY3Rvcik7IGkgKz0gc2l6ZW9mKFRZUEUp
-KSB7IFwKICAgICAgICAgIHwgICAgICAgICAgICAgICAgICBeCiAgICAuLi90YXJnZXQvaGV4YWdv
-bi9vcF9oZWxwZXIuYzoxNTc6MTc6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyDigJhTQ0FU
-VEVSX09QX1dSSVRFX1RPX01FTeKAmQogICAgICAxNTcgfCAgICAgICAgICAgICAgICAgU0NBVFRF
-Ul9PUF9XUklURV9UT19NRU0odWludDE2X3QpOwogICAgICAgICAgfCAgICAgICAgICAgICAgICAg
-Xn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4KICAgIC4uL3RhcmdldC9oZXhhZ29uL29wX2hlbHBlci5j
-OjEzNTo5OiBub3RlOiBzaGFkb3dlZCBkZWNsYXJhdGlvbiBpcyBoZXJlCiAgICAgIDEzNSB8ICAg
-ICBpbnQgaTsKICAgICAgICAgIHwgICAgICAgICBeCiAgICBJbiBmaWxlIGluY2x1ZGVkIGZyb20g
-Li4vdGFyZ2V0L2hleGFnb24vb3BfaGVscGVyLmM6MzE6CiAgICAuLi90YXJnZXQvaGV4YWdvbi9t
-bXZlYy9tYWNyb3MuaDoyMDQ6MTk6IGVycm9yOiBkZWNsYXJhdGlvbiBvZiDigJhyYeKAmSBzaGFk
-b3dzIGEgcHJldmlvdXMgbG9jYWwgWy1XZXJyb3I9c2hhZG93PWNvbXBhdGlibGUtbG9jYWxdCiAg
-ICAgIDIwNCB8ICAgICAgICAgdWludHB0cl90IHJhID0gR0VUUEMoKTsgXAogICAgICAgICAgfCAg
-ICAgICAgICAgICAgICAgICBefgogICAgLi4vdGFyZ2V0L2hleGFnb24vb3BfaGVscGVyLmM6MTYw
-OjE3OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8g4oCYU0NBVFRFUl9PUF9XUklURV9UT19N
-RU3igJkKICAgICAgMTYwIHwgICAgICAgICAgICAgICAgIFNDQVRURVJfT1BfV1JJVEVfVE9fTUVN
-KHVpbnQzMl90KTsKICAgICAgICAgIHwgICAgICAgICAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+CiAgICAuLi90YXJnZXQvaGV4YWdvbi9vcF9oZWxwZXIuYzoxMzQ6MTU6IG5vdGU6IHNo
-YWRvd2VkIGRlY2xhcmF0aW9uIGlzIGhlcmUKICAgICAgMTM0IHwgICAgIHVpbnRwdHJfdCByYSA9
-IEdFVFBDKCk7CiAgICAgICAgICB8ICAgICAgICAgICAgICAgXn4KClJldmlld2VkLWJ5OiBNYXRo
-ZXVzIFRhdmFyZXMgQmVybmFyZGlubyA8cXVpY19tYXRoYmVybkBxdWljaW5jLmNvbT4KU2lnbmVk
-LW9mZi1ieTogQnJpYW4gQ2FpbiA8YmNhaW5AcXVpY2luYy5jb20+Ci0tLQogdGFyZ2V0L2hleGFn
-b24vaW1wb3J0ZWQvYWx1LmlkZWYgfCAgNiArKystLS0KIHRhcmdldC9oZXhhZ29uL21tdmVjL21h
-Y3Jvcy5oICAgIHwgIDIgKy0KIHRhcmdldC9oZXhhZ29uL29wX2hlbHBlci5jICAgICAgIHwgIDkg
-KysrLS0tLS0tCiB0YXJnZXQvaGV4YWdvbi90cmFuc2xhdGUuYyAgICAgICB8IDEwICsrKysrLS0t
-LS0KIDQgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygrKSwgMTUgZGVsZXRpb25zKC0pCgpk
-aWZmIC0tZ2l0IGEvdGFyZ2V0L2hleGFnb24vaW1wb3J0ZWQvYWx1LmlkZWYgYi90YXJnZXQvaGV4
-YWdvbi9pbXBvcnRlZC9hbHUuaWRlZgppbmRleCAxMmQyYWFjNWQ0Li5iODU1Njc2OTg5IDEwMDY0
-NAotLS0gYS90YXJnZXQvaGV4YWdvbi9pbXBvcnRlZC9hbHUuaWRlZgorKysgYi90YXJnZXQvaGV4
-YWdvbi9pbXBvcnRlZC9hbHUuaWRlZgpAQCAtMTE0Miw5ICsxMTQyLDkgQEAgUTZJTlNOKEE0X2Ny
-b3VuZF9yciwiUmQzMj1jcm91bmQoUnMzMixSdDMyKSIsQVRUUklCUygpLCJDb252ZXJnZW50IFJv
-dW5kIiwge1JkVgogICAgICAgICAgICAgdG1wMTI4ID0gZlNISUZUUjEyOCh0bXAxMjgsIFNISUZU
-KTtcCiAgICAgICAgICAgICBEU1QgPSAgZkNBU1QxNlNfOFModG1wMTI4KTtcCiAgICAgICAgIH0g
-ZWxzZSB7XAotICAgICAgICAgICAgc2l6ZTE2c190IHJuZGJpdF8xMjggPSAgZkNBU1Q4U18xNlMo
-KDFMTCA8PCAoU0hJRlQgLSAxKSkpOyBcCi0gICAgICAgICAgICBzaXplMTZzX3Qgc3JjXzEyOCA9
-ICBmQ0FTVDhTXzE2UyhTUkMpOyBcCi0gICAgICAgICAgICBzaXplMTZzX3QgdG1wMTI4ID0gZkFE
-RDEyOChzcmNfMTI4LCBybmRiaXRfMTI4KTtcCisgICAgICAgICAgICBybmRiaXRfMTI4ID0gIGZD
-QVNUOFNfMTZTKCgxTEwgPDwgKFNISUZUIC0gMSkpKTsgXAorICAgICAgICAgICAgc3JjXzEyOCA9
-ICBmQ0FTVDhTXzE2UyhTUkMpOyBcCisgICAgICAgICAgICB0bXAxMjggPSBmQUREMTI4KHNyY18x
-MjgsIHJuZGJpdF8xMjgpO1wKICAgICAgICAgICAgIHRtcDEyOCA9IGZTSElGVFIxMjgodG1wMTI4
-LCBTSElGVCk7XAogICAgICAgICAgICAgRFNUID0gIGZDQVNUMTZTXzhTKHRtcDEyOCk7XAogICAg
-ICAgICB9CmRpZmYgLS1naXQgYS90YXJnZXQvaGV4YWdvbi9tbXZlYy9tYWNyb3MuaCBiL3Rhcmdl
-dC9oZXhhZ29uL21tdmVjL21hY3Jvcy5oCmluZGV4IGE2NTU2MzRmZDEuLjFjZWI5NDUzZWUgMTAw
-NjQ0Ci0tLSBhL3RhcmdldC9oZXhhZ29uL21tdmVjL21hY3Jvcy5oCisrKyBiL3RhcmdldC9oZXhh
-Z29uL21tdmVjL21hY3Jvcy5oCkBAIC0yMDEsNyArMjAxLDcgQEAKICAgICB9IHdoaWxlICgwKQog
-I2RlZmluZSBTQ0FUVEVSX09QX1dSSVRFX1RPX01FTShUWVBFKSBcCiAgICAgZG8geyBcCi0gICAg
-ICAgIHVpbnRwdHJfdCByYSA9IEdFVFBDKCk7IFwKKyAgICAgICAgcmEgPSBHRVRQQygpOyBcCiAg
-ICAgICAgIGZvciAoaW50IGkgPSAwOyBpIDwgc2l6ZW9mKE1NVmVjdG9yKTsgaSArPSBzaXplb2Yo
-VFlQRSkpIHsgXAogICAgICAgICAgICAgaWYgKHRlc3RfYml0KGksIGVudi0+dnRjbV9sb2cubWFz
-aykpIHsgXAogICAgICAgICAgICAgICAgIFRZUEUgZHN0ID0gMDsgXApkaWZmIC0tZ2l0IGEvdGFy
-Z2V0L2hleGFnb24vb3BfaGVscGVyLmMgYi90YXJnZXQvaGV4YWdvbi9vcF9oZWxwZXIuYwppbmRl
-eCA4Y2EzOTc2YTY1Li5kYTEwYWM1ODQ3IDEwMDY0NAotLS0gYS90YXJnZXQvaGV4YWdvbi9vcF9o
-ZWxwZXIuYworKysgYi90YXJnZXQvaGV4YWdvbi9vcF9oZWxwZXIuYwpAQCAtMTMyLDEwICsxMzIs
-OSBAQCB2b2lkIEhFTFBFUihnYXRoZXJfc3RvcmUpKENQVUhleGFnb25TdGF0ZSAqZW52LCB1aW50
-MzJfdCBhZGRyLCBpbnQgc2xvdCkKIHZvaWQgSEVMUEVSKGNvbW1pdF9odnhfc3RvcmVzKShDUFVI
-ZXhhZ29uU3RhdGUgKmVudikKIHsKICAgICB1aW50cHRyX3QgcmEgPSBHRVRQQygpOwotICAgIGlu
-dCBpOwogCiAgICAgLyogTm9ybWFsIChwb3NzaWJseSBtYXNrZWQpIHZlY3RvciBzdG9yZSAqLwot
-ICAgIGZvciAoaSA9IDA7IGkgPCBWU1RPUkVTX01BWDsgaSsrKSB7CisgICAgZm9yIChpbnQgaSA9
-IDA7IGkgPCBWU1RPUkVTX01BWDsgaSsrKSB7CiAgICAgICAgIGlmIChlbnYtPnZzdG9yZV9wZW5k
-aW5nW2ldKSB7CiAgICAgICAgICAgICBlbnYtPnZzdG9yZV9wZW5kaW5nW2ldID0gMDsKICAgICAg
-ICAgICAgIHRhcmdldF91bG9uZyB2YSA9IGVudi0+dnN0b3JlW2ldLnZhOwpAQCAtMTYyLDcgKzE2
-MSw3IEBAIHZvaWQgSEVMUEVSKGNvbW1pdF9odnhfc3RvcmVzKShDUFVIZXhhZ29uU3RhdGUgKmVu
-dikKICAgICAgICAgICAgICAgICBnX2Fzc2VydF9ub3RfcmVhY2hlZCgpOwogICAgICAgICAgICAg
-fQogICAgICAgICB9IGVsc2UgewotICAgICAgICAgICAgZm9yIChpID0gMDsgaSA8IHNpemVvZihN
-TVZlY3Rvcik7IGkrKykgeworICAgICAgICAgICAgZm9yIChpbnQgaSA9IDA7IGkgPCBzaXplb2Yo
-TU1WZWN0b3IpOyBpKyspIHsKICAgICAgICAgICAgICAgICBpZiAodGVzdF9iaXQoaSwgZW52LT52
-dGNtX2xvZy5tYXNrKSkgewogICAgICAgICAgICAgICAgICAgICBjcHVfc3RiX2RhdGFfcmEoZW52
-LCBlbnYtPnZ0Y21fbG9nLnZhW2ldLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgZW52LT52dGNtX2xvZy5kYXRhLnViW2ldLCByYSk7CkBAIC01MDUsMTAgKzUwNCw4IEBAIHZv
-aWQgSEVMUEVSKHByb2JlX3BrdF9zY2FsYXJfc3RvcmVfczApKENQVUhleGFnb25TdGF0ZSAqZW52
-LCBpbnQgYXJncykKIHN0YXRpYyB2b2lkIHByb2JlX2h2eF9zdG9yZXMoQ1BVSGV4YWdvblN0YXRl
-ICplbnYsIGludCBtbXVfaWR4LAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-dWludHB0cl90IHJldGFkZHIpCiB7Ci0gICAgaW50IGk7Ci0KICAgICAvKiBOb3JtYWwgKHBvc3Np
-Ymx5IG1hc2tlZCkgdmVjdG9yIHN0b3JlICovCi0gICAgZm9yIChpID0gMDsgaSA8IFZTVE9SRVNf
-TUFYOyBpKyspIHsKKyAgICBmb3IgKGludCBpID0gMDsgaSA8IFZTVE9SRVNfTUFYOyBpKyspIHsK
-ICAgICAgICAgaWYgKGVudi0+dnN0b3JlX3BlbmRpbmdbaV0pIHsKICAgICAgICAgICAgIHRhcmdl
-dF91bG9uZyB2YSA9IGVudi0+dnN0b3JlW2ldLnZhOwogICAgICAgICAgICAgaW50IHNpemUgPSBl
-bnYtPnZzdG9yZVtpXS5zaXplOwpkaWZmIC0tZ2l0IGEvdGFyZ2V0L2hleGFnb24vdHJhbnNsYXRl
-LmMgYi90YXJnZXQvaGV4YWdvbi90cmFuc2xhdGUuYwppbmRleCBjMDAyNTRlNGQ1Li5hMWM3Y2Q2
-ZjIxIDEwMDY0NAotLS0gYS90YXJnZXQvaGV4YWdvbi90cmFuc2xhdGUuYworKysgYi90YXJnZXQv
-aGV4YWdvbi90cmFuc2xhdGUuYwpAQCAtNTUzLDcgKzU1Myw3IEBAIHN0YXRpYyB2b2lkIGdlbl9z
-dGFydF9wYWNrZXQoRGlzYXNDb250ZXh0ICpjdHgpCiAgICAgLyogUHJlbG9hZCB0aGUgcHJlZGlj
-YXRlZCByZWdpc3RlcnMgaW50byBnZXRfcmVzdWx0X2dwcihjdHgsIGkpICovCiAgICAgaWYgKGN0
-eC0+bmVlZF9jb21taXQgJiYKICAgICAgICAgIWJpdG1hcF9lbXB0eShjdHgtPnByZWRpY2F0ZWRf
-cmVncywgVE9UQUxfUEVSX1RIUkVBRF9SRUdTKSkgewotICAgICAgICBpbnQgaSA9IGZpbmRfZmly
-c3RfYml0KGN0eC0+cHJlZGljYXRlZF9yZWdzLCBUT1RBTF9QRVJfVEhSRUFEX1JFR1MpOworICAg
-ICAgICBpID0gZmluZF9maXJzdF9iaXQoY3R4LT5wcmVkaWNhdGVkX3JlZ3MsIFRPVEFMX1BFUl9U
-SFJFQURfUkVHUyk7CiAgICAgICAgIHdoaWxlIChpIDwgVE9UQUxfUEVSX1RIUkVBRF9SRUdTKSB7
-CiAgICAgICAgICAgICB0Y2dfZ2VuX21vdl90bChnZXRfcmVzdWx0X2dwcihjdHgsIGkpLCBoZXhf
-Z3ByW2ldKTsKICAgICAgICAgICAgIGkgPSBmaW5kX25leHRfYml0KGN0eC0+cHJlZGljYXRlZF9y
-ZWdzLCBUT1RBTF9QRVJfVEhSRUFEX1JFR1MsCkBAIC01NjYsNyArNTY2LDcgQEAgc3RhdGljIHZv
-aWQgZ2VuX3N0YXJ0X3BhY2tldChEaXNhc0NvbnRleHQgKmN0eCkKICAgICAgKiBPbmx5IGVuZGxv
-b3AgaW5zdHJ1Y3Rpb25zIGNvbmRpdGlvbmFsbHkgd3JpdGUgdG8gcHJlZCByZWdpc3RlcnMKICAg
-ICAgKi8KICAgICBpZiAoY3R4LT5uZWVkX2NvbW1pdCAmJiBwa3QtPnBrdF9oYXNfZW5kbG9vcCkg
-ewotICAgICAgICBmb3IgKGludCBpID0gMDsgaSA8IGN0eC0+cHJlZ19sb2dfaWR4OyBpKyspIHsK
-KyAgICAgICAgZm9yIChpID0gMDsgaSA8IGN0eC0+cHJlZ19sb2dfaWR4OyBpKyspIHsKICAgICAg
-ICAgICAgIGludCBwcmVkX251bSA9IGN0eC0+cHJlZ19sb2dbaV07CiAgICAgICAgICAgICBjdHgt
-Pm5ld19wcmVkX3ZhbHVlW3ByZWRfbnVtXSA9IHRjZ190ZW1wX25ldygpOwogICAgICAgICAgICAg
-dGNnX2dlbl9tb3ZfdGwoY3R4LT5uZXdfcHJlZF92YWx1ZVtwcmVkX251bV0sIGhleF9wcmVkW3By
-ZWRfbnVtXSk7CkBAIC01NzUsNyArNTc1LDcgQEAgc3RhdGljIHZvaWQgZ2VuX3N0YXJ0X3BhY2tl
-dChEaXNhc0NvbnRleHQgKmN0eCkKIAogICAgIC8qIFByZWxvYWQgdGhlIHByZWRpY2F0ZWQgSFZY
-IHJlZ2lzdGVycyBpbnRvIGZ1dHVyZV9WUmVncyBhbmQgdG1wX1ZSZWdzICovCiAgICAgaWYgKCFi
-aXRtYXBfZW1wdHkoY3R4LT5wcmVkaWNhdGVkX2Z1dHVyZV92cmVncywgTlVNX1ZSRUdTKSkgewot
-ICAgICAgICBpbnQgaSA9IGZpbmRfZmlyc3RfYml0KGN0eC0+cHJlZGljYXRlZF9mdXR1cmVfdnJl
-Z3MsIE5VTV9WUkVHUyk7CisgICAgICAgIGkgPSBmaW5kX2ZpcnN0X2JpdChjdHgtPnByZWRpY2F0
-ZWRfZnV0dXJlX3ZyZWdzLCBOVU1fVlJFR1MpOwogICAgICAgICB3aGlsZSAoaSA8IE5VTV9WUkVH
-UykgewogICAgICAgICAgICAgY29uc3QgaW50cHRyX3QgVmRWX29mZiA9CiAgICAgICAgICAgICAg
-ICAgY3R4X2Z1dHVyZV92cmVnX29mZihjdHgsIGksIDEsIHRydWUpOwpAQCAtNTg4LDcgKzU4OCw3
-IEBAIHN0YXRpYyB2b2lkIGdlbl9zdGFydF9wYWNrZXQoRGlzYXNDb250ZXh0ICpjdHgpCiAgICAg
-ICAgIH0KICAgICB9CiAgICAgaWYgKCFiaXRtYXBfZW1wdHkoY3R4LT5wcmVkaWNhdGVkX3RtcF92
-cmVncywgTlVNX1ZSRUdTKSkgewotICAgICAgICBpbnQgaSA9IGZpbmRfZmlyc3RfYml0KGN0eC0+
-cHJlZGljYXRlZF90bXBfdnJlZ3MsIE5VTV9WUkVHUyk7CisgICAgICAgIGkgPSBmaW5kX2ZpcnN0
-X2JpdChjdHgtPnByZWRpY2F0ZWRfdG1wX3ZyZWdzLCBOVU1fVlJFR1MpOwogICAgICAgICB3aGls
-ZSAoaSA8IE5VTV9WUkVHUykgewogICAgICAgICAgICAgY29uc3QgaW50cHRyX3QgVmRWX29mZiA9
-CiAgICAgICAgICAgICAgICAgY3R4X3RtcF92cmVnX29mZihjdHgsIGksIDEsIHRydWUpOwpAQCAt
-MTIyOCw3ICsxMjI4LDcgQEAgdm9pZCBoZXhhZ29uX3RyYW5zbGF0ZV9pbml0KHZvaWQpCiAgICAg
-ICAgICAgICBvZmZzZXRvZihDUFVIZXhhZ29uU3RhdGUsIG1lbV9sb2dfc3RvcmVzW2ldLmRhdGE2
-NCksCiAgICAgICAgICAgICBzdG9yZV92YWw2NF9uYW1lc1tpXSk7CiAgICAgfQotICAgIGZvciAo
-aW50IGkgPSAwOyBpIDwgVlNUT1JFU19NQVg7IGkrKykgeworICAgIGZvciAoaSA9IDA7IGkgPCBW
-U1RPUkVTX01BWDsgaSsrKSB7CiAgICAgICAgIHNucHJpbnRmKHZzdG9yZV9hZGRyX25hbWVzW2ld
-LCBOQU1FX0xFTiwgInZzdG9yZV9hZGRyXyVkIiwgaSk7CiAgICAgICAgIGhleF92c3RvcmVfYWRk
-cltpXSA9IHRjZ19nbG9iYWxfbWVtX25ldyhjcHVfZW52LAogICAgICAgICAgICAgb2Zmc2V0b2Yo
-Q1BVSGV4YWdvblN0YXRlLCB2c3RvcmVbaV0udmEpLAotLSAKMi4yNS4xCgo=
+The following changes since commit da1034094d375afe9e3d8ec8980550ea0f06f7e0:
+
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-10-03 07:43:44 -0400)
+
+are available in the Git repository at:
+
+  https://gitlab.com/juan.quintela/qemu.git tags/migration-20231004-pull-request
+
+for you to fetch changes up to 579cedf430582b37f804f6b6ed131554cebb11b5:
+
+  migration: Unify and trace vmstate field_exists() checks (2023-10-04 13:19:47 +0200)
+
+----------------------------------------------------------------
+Migration Pull request (20231004)
+
+Hi
+
+In this series:
+
+* make sure migration-tests get 0's (daniil)
+  Notice that this creates a checkpatch negative, everything on that
+  file is volatile, no need to add a comment.
+
+* RDMA fix from li
+* MAINTAINERS
+  Get peter and fabiano to become co-maintainers of migration
+  Get Entry fro migration-rdma for Li Zhijian
+* Create field_exists() (peterx)
+* Improve error messages (Tejus)
+
+Please apply.
+
+s
+
+----------------------------------------------------------------
+
+Daniil Tatianin (3):
+  i386/a-b-bootblock: factor test memory addresses out into constants
+  i386/a-b-bootblock: zero the first byte of each page on start
+  s390x/a-b-bios: zero the first byte of each page on start
+
+Li Zhijian (1):
+  migration/rdma: zore out head.repeat to make the error more clear
+
+Peter Xu (3):
+  MAINTAINERS: Add entry for rdma migration
+  migration: Add co-maintainers for migration
+  migration: Unify and trace vmstate field_exists() checks
+
+Steve Sistare (2):
+  migration: file URI
+  migration: file URI offset
+
+Tejus GK (2):
+  migration/vmstate: Introduce vmstate_save_state_with_err
+  migration: Update error description outside migration.c
+
+ MAINTAINERS                          |  12 +-
+ include/migration/vmstate.h          |   4 +-
+ migration/file.h                     |  14 +
+ tests/migration/i386/a-b-bootblock.h |  16 +-
+ tests/migration/s390x/a-b-bios.h     | 404 ++++++++++++++-------------
+ migration/file.c                     | 103 +++++++
+ migration/migration.c                |   5 +
+ migration/rdma.c                     |   2 +-
+ migration/savevm.c                   |  19 +-
+ migration/vmstate.c                  |  53 +++-
+ tests/migration/s390x/a-b-bios.c     |   8 +
+ migration/meson.build                |   1 +
+ migration/trace-events               |   5 +
+ qemu-options.hx                      |   7 +-
+ tests/migration/i386/a-b-bootblock.S |  18 +-
+ 15 files changed, 449 insertions(+), 222 deletions(-)
+ create mode 100644 migration/file.h
+ create mode 100644 migration/file.c
+
+-- 
+2.41.0
+
 
