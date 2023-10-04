@@ -2,82 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA3D7B8195
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E76D7B81A3
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:04:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2QR-0000yx-Dv; Wed, 04 Oct 2023 10:00:31 -0400
+	id 1qo2TF-0002Mc-1j; Wed, 04 Oct 2023 10:03:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo2QN-0000tA-RV
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:00:28 -0400
-Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo2TB-0002Kq-L5
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:03:21 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo2QJ-0005vF-1w
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:00:26 -0400
-Received: by mail-wr1-x432.google.com with SMTP id
- ffacd0b85a97d-31f71b25a99so2133705f8f.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:00:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696428019; x=1697032819; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=mxkfMazXZ9pC6J+fVXB2XfhH4yYHxtRyZcSQHXz7Ir4=;
- b=PcrTdoa9qoy/sMYNUPLkF4VOGKZQf6k9HshjFwWIcBz9Y2PDZqodRMygyWtc5NiRiD
- UKheBDnCHgxEaOjuexzvzpDVnrOQXtjVDMD5eXamtXKEIgr+tVyoMUBVUwtcRFkBY03G
- bjPi6ZECEN00XvUmOodGJ92KKYD1nf6MWf8arRk4ENRLEYBAcdJPTOdFaqTYr+F5xGBA
- 4dCWl0iBqmBbAgSgajkdxGTYHFnV7yscpJuiZMMAnv8qC9PenWXscm2EIwsud8DYsBo/
- DmadIHWJmjTl6JLeZTQgM+YXuMOfGDKIUr5NVZO0Pb8NpzeaOdIQG2sViFLXIlXD+kPw
- k8xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696428019; x=1697032819;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=mxkfMazXZ9pC6J+fVXB2XfhH4yYHxtRyZcSQHXz7Ir4=;
- b=Omq5HK4QUcKkXE76V9sOavZvyvFWYZpTnvz1fce5/Qa0CB16D1D5VozS9aPnnyfCgh
- Upwy817/ORHP1tsZbSlydbqyfQIwsYpP1MUJvKD5MSvfRyq8/VLPIMaea0fXf0NcrKq0
- +ERitp7tuwXqkU4HtreqdGFpHfS0Z3FzXnCGdGLmlymarRPSt1ULqDmWDGxS9XQWbStq
- a8NddjWRJeFT1nEpFWwaq+7aLDOyWN3lBXajUcoYPd2WqdC8CwyfJzszhJCzD+zqcPgZ
- 61eS/z7pxrcF39rPVHmCE4jnyCL+dFho4ta+22JeL3H5PbPksH3JuKVlmo+XFwMd5jht
- cjAg==
-X-Gm-Message-State: AOJu0YyKilDLUWe0/pk9Lo4KF8r2Zwz0ocbZYnmthRLyuN2WH+QVE7zo
- NPycJjzGP4QeRKEd5p9bq67O1Q==
-X-Google-Smtp-Source: AGHT+IFRtnojtXYeRRMkQbpN6M/sbK9UGrtCj1+SXzTyvUcrRfPrriJQX1RealbzEf4O4jSNSx5XGw==
-X-Received: by 2002:a5d:6909:0:b0:321:6a61:e45a with SMTP id
- t9-20020a5d6909000000b003216a61e45amr2451711wru.15.1696428018796; 
- Wed, 04 Oct 2023 07:00:18 -0700 (PDT)
-Received: from [192.168.69.115] (5ep85-h01-176-173-163-52.dslam.bbox.fr.
- [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- l19-20020a5d5273000000b0031ad5fb5a0fsm4095818wrc.58.2023.10.04.06.59.44
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 07:00:01 -0700 (PDT)
-Message-ID: <9a764fd1-4ca1-fd8a-7b88-bdf46e713972@linaro.org>
-Date: Wed, 4 Oct 2023 15:59:37 +0200
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo2T9-0006Yf-IW
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:03:21 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id C289821847;
+ Wed,  4 Oct 2023 14:03:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696428195; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mStMJpk9FTbXy+kDfX5oAY8Jg9x9w4XQ4o4PXYvtLuo=;
+ b=FqyDMVILXGzWzPhaKWnX3niUoB7OQK6YAlPy0yOGD4mcA/5BTf2u1LV+nlvCZ8mA7kIXPI
+ GvAxEeJcarseRV/iDGuuHvZ/f5/pz91UCneCHMA8s4QE+/9zX0izahyZpigGdkV6uQKGjs
+ qff6ljgesJAW48/rdjp+1H24AmmVHjk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696428195;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=mStMJpk9FTbXy+kDfX5oAY8Jg9x9w4XQ4o4PXYvtLuo=;
+ b=5WfB4RkZHltBppdQFl0VChmTUJVhAPBk/rYRx86JZ5OCTBXuWMz/21cy0g1racl/bjU2jj
+ fyM9vRTugZQnvCCg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 54801139F9;
+ Wed,  4 Oct 2023 14:03:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id OSK5B6NwHWWIawAAMHmgww
+ (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 14:03:15 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v11 00/10] migration: Modify 'migrate' and
+ 'migrate-incoming' QAPI commands for migration
+In-Reply-To: <ec1a8f2e-ec10-46e2-1a2c-1ae593080ad4@nutanix.com>
+References: <20231004075851.219173-1-het.gala@nutanix.com>
+ <871qea5x7w.fsf@suse.de>
+ <ec1a8f2e-ec10-46e2-1a2c-1ae593080ad4@nutanix.com>
+Date: Wed, 04 Oct 2023 11:03:12 -0300
+Message-ID: <87sf6qpjrz.fsf@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] dump: Silence compiler warning in dump code when
- compiling with -Wshadow
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org
-References: <20231004131338.215081-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231004131338.215081-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::432;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,14 +87,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/10/23 15:13, Thomas Huth wrote:
-> Rename a variable to make this code compilable with -Wshadow.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   dump/dump.c | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
+Het Gala <het.gala@nutanix.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> On 04/10/23 7:03 pm, Fabiano Rosas wrote:
+>> Het Gala <het.gala@nutanix.com> writes:
+>>
+>>> This is v11 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
+>>> for upstream review.
+>>>
+>>> Update: Daniel has reviewed all patches and is okay with them. Markus has also
+>>>          given Acked-by tag for patches related to QAPI syntax change.
+>>> Fabiano, Juan and other migration maintainers, let me know if there are still
+>>> improvements to be made in this patchset series.
+>>>
+>>> Link to previous upstream community patchset links:
+>>> v1: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&e=
+>>> v2: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&e=
+>>> v3: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&e=
+>>> v4: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&e=
+>>> v5: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&e=
+>>> v6: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&e=
+>>> v7: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&e=
+>>> v8: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&e=
+>>> v9: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&e=
+>>> v10: https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&e=
+>>>
+>>> v10 -> v11 changelog:
+>>> -------------------
+>>> - Resolved make check errors as its been almost two months since v10
+>>>    version of this patchset series went out. Till date migration workflow
+>>>    might have changed which caused make check errors.
+>> Sorry, there must be a misunderstanding here. This series still has
+>> problems. Just look at patch 6 that adds the "channel-type" parameter and
+>> patch 10 that uses "channeltype" in the test (without hyphen). This
+>> cannot work.
+> Ack. I will change that.
+>> There's also several instances of g_autoptr being used incorrectly. I
+>> could comment on every patch individually, but this series cannot have
+>> passed make check.
+> Are we allowed to run the make checks ? I am not aware from where these 
+> failures are arising. It would be helpful if you could point out to me 
+> where g_autoptr is incorrectly used ?
+
+I mean just the project's make check command:
+
+cd build/
+../configure
+make -j$(nproc)
+make -j$(nproc) check
+
+>> Please resend this with the issues fixed and drop the Reviewed-bys from
+>> the affected patches.
+> How to verify which are the affected patches here ?
+
+I'll comment in each patch individually.
+
+We'll also have to add compatibility with the new file: URI that's
+included in the latest migration pull request. I'll add comments on
+where I think we'll need to add code to support that feature.
 
 
