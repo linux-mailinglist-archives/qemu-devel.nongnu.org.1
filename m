@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8627B7AFF
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB877B7AC0
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:52:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxXT-0001wZ-4G; Wed, 04 Oct 2023 04:47:28 -0400
+	id 1qnxYM-0003tA-Uw; Wed, 04 Oct 2023 04:48:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxW6-0008Pn-6j
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWt-0000dj-CT
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxW4-0002Ph-Dj
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWV-0002Y3-Px
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409159;
+ s=mimecast20190719; t=1696409178;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Dc0LwezzCtuJZwfRfwd6fEilbxVEAWIE8I0MI4RifxI=;
- b=iF4AXAOqzV4y4PdQ1FFdblOI8ljEKuTEGqZZ9UM5VvKxxcM6CIafV2QomFADpYdcu3I/PN
- +JJ2a9VpvZgHMYDudVPhT0Alu/IOk43u3C2RGVDGd67KfybMUkM4+o+pKCC+hxD9DrCsOi
- Vf7gtBul87KOUFFaKG1MjUIJV0KoCQw=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=TiDNScbhBDu1OBLTc4HNPqS+XxNNdWzPEzlFooKGhj8=;
+ b=fZXN5tMfQUShR0fBbJPvMiWep17li6eSBJ/q6jPNIEhMKiJbFk5PTw6FDWtoh8aFczSyCs
+ 8gI9hyahawwJZWCnIWOgCwWxNQapOJAd14ASqw0pc+nk+raaOe9ewfH9lozteHj9cbIq3n
+ MLERwRgdWZCwMkThWHef1KeD6ys4ReY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-417-9-ydC1q6PpCVzvXdJ0Qf2A-1; Wed, 04 Oct 2023 04:45:58 -0400
-X-MC-Unique: 9-ydC1q6PpCVzvXdJ0Qf2A-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-3fef3606d8cso14738125e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:45:58 -0700 (PDT)
+ us-mta-493-evKk1MSwNX6crNby7ga_tQ-1; Wed, 04 Oct 2023 04:46:01 -0400
+X-MC-Unique: evKk1MSwNX6crNby7ga_tQ-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-4053d832d51so12997855e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:46:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409156; x=1697013956;
+ d=1e100.net; s=20230601; t=1696409160; x=1697013960;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Dc0LwezzCtuJZwfRfwd6fEilbxVEAWIE8I0MI4RifxI=;
- b=Div9GCzhYYoWDTmUJGslvixZGENBsFR8oOn6Oy6EJ4V+5HQYeznBjUlpA3+T0YdF3N
- 0MPLCRa/WUeSEJWpju7fmlv6aydlh9WFEd7+KQn8XzPdkNloBmSklfKwmR65+QoVbKLI
- uPJ0iCYlWW68jqFbTmwlt8AKeEB88gNj3CGOrhO1UT/6WZjp8aOrHU/6Shotu3RE1tmA
- iCkNUfeJQasV66eeXxgW1SDrEvhDnlKDcriATi+ifR2xQ/0iYpXHdEgZNr7KWP1wtRKz
- RVarRFRfLIXjnEzK55e2qFJ6H8uyj1KrXvGIzuffoD4VK3Y+POk1G2R0ZDwvm48qrmnu
- zfEA==
-X-Gm-Message-State: AOJu0Yy1WNxcQMsRJ9TuIu07kkrWFdk5aUfXdZH+Pp70Jt2t65KLaxhT
- QDiNOqZAH4VJR6yUIuf6S/CStPPiSnNKT83YQb1j+V69UiO9tE0a9Bjivr8Va/gIpiZ3O56U7+1
- g5XroQksYGhATUhab80Q84FZGxNg0VTTA/FFW51JDTl0x2dOop7x6CCXunHqN95qyENEf
-X-Received: by 2002:adf:de09:0:b0:317:e515:d623 with SMTP id
- b9-20020adfde09000000b00317e515d623mr1507104wrm.60.1696409156657; 
- Wed, 04 Oct 2023 01:45:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHJSXv8LpebvWumM4x4vMBaUxO1fpxzAwEgJlFBAv31mu3UL0zYcn58XGR1MJoBBusEQAlT+Q==
-X-Received: by 2002:adf:de09:0:b0:317:e515:d623 with SMTP id
- b9-20020adfde09000000b00317e515d623mr1507087wrm.60.1696409156375; 
- Wed, 04 Oct 2023 01:45:56 -0700 (PDT)
+ bh=TiDNScbhBDu1OBLTc4HNPqS+XxNNdWzPEzlFooKGhj8=;
+ b=kkRJPLwhK8r6+AikS1LWG14GleRVynyShBrbt9ERnuVPHfSWLkfTi3mNuI9yhJCVqK
+ tZm0jK0Ky+fBvKlRWDR3YmajhfNZJ8qBIpVtwx0kOP0S0tIe5GWBnXwyVsSgffYs8eb9
+ bhr15RklL3OWiamRa7Xw92+rMCWY6jr9bXCdouJXVKajSXUtrQJ5DnoWTtSrMv6lJS1S
+ pbDhtMV/30oKlFtfooIG+lJ89VMDPKd3ow/cSuAvf3SP2im6tdwEOIlsWPt5+ALEbmnn
+ je539tW0XvXwy1jR//1l/RPeFXV34RNyShU5Nh82l5lYHyb7xkhvMzWxelo72jfEIKo5
+ bTcg==
+X-Gm-Message-State: AOJu0Yz8MpYBk421ldrGWTi0hJPJe65MYJJxP4bh7Q6yF82kcPqATcAB
+ A4RptQHiX6mj1jb3oq8Ms50nDI5x0mT6tl5J96neUUIPeuVVRrUArPg4E3pTvQaPpDlvBuPnUAc
+ 7WARFQLyKzT/tVmsFCao9RxJCxRxMKvBxw5kpoXwxkerWQUAN2gSHQFNDKYBLs8Gqgmic
+X-Received: by 2002:a05:600c:143:b0:405:377f:5417 with SMTP id
+ w3-20020a05600c014300b00405377f5417mr1525269wmm.39.1696409159858; 
+ Wed, 04 Oct 2023 01:45:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJFO+vPNmpkV5hNBmoLGmADCWGBvd+Rni4S0RFvxXgXZbCZOv6LOh1ohKH8G5VFwG1XcLH3Q==
+X-Received: by 2002:a05:600c:143:b0:405:377f:5417 with SMTP id
+ w3-20020a05600c014300b00405377f5417mr1525252wmm.39.1696409159499; 
+ Wed, 04 Oct 2023 01:45:59 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- p13-20020a5d638d000000b00318147fd2d3sm3469330wru.41.2023.10.04.01.45.54
+ o4-20020adfcf04000000b00326f0ca3566sm3414547wrj.50.2023.10.04.01.45.58
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:45:55 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:45:53 -0400
+ Wed, 04 Oct 2023 01:45:58 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:45:56 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Lei Yang <leiyang@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL 51/63] vdpa net: stop probing if cannot set features
-Message-ID: <a063893b1c2f72b8fb8e331a526b9464adec3746.1696408966.git.mst@redhat.com>
+ Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
+Subject: [PULL 52/63] vdpa net: follow VirtIO initialization properly at cvq
+ isolation probing
+Message-ID: <1a01317172f01d910210dc49309944a8f87d4467.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -85,7 +84,6 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -104,32 +102,61 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-Otherwise it continues the CVQ isolation probing.
+This patch solves a few issues.  The most obvious is that the feature
+set was done previous to ACKNOWLEDGE | DRIVER status bit set.  Current
+vdpa devices are permissive with this, but it is better to follow the
+standard.
 
 Fixes: 152128d646 ("vdpa: move CVQ isolation check to net_init_vhost_vdpa")
-Reported-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20230915170836.3078172-3-eperezma@redhat.com>
+Message-Id: <20230915170836.3078172-4-eperezma@redhat.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- net/vhost-vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/vhost-vdpa.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 650125bb0f..b688877f90 100644
+index b688877f90..939c984d5b 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -1364,6 +1364,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
-     r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
-     if (unlikely(r)) {
-         error_setg_errno(errp, errno, "Cannot set features");
-+        goto out;
+@@ -1345,8 +1345,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
+     uint64_t backend_features;
+     int64_t cvq_group;
+     uint8_t status = VIRTIO_CONFIG_S_ACKNOWLEDGE |
+-                     VIRTIO_CONFIG_S_DRIVER |
+-                     VIRTIO_CONFIG_S_FEATURES_OK;
++                     VIRTIO_CONFIG_S_DRIVER;
+     int r;
+ 
+     ERRP_GUARD();
+@@ -1361,15 +1360,22 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
+         return 0;
      }
  
+-    r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
++    r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+     if (unlikely(r)) {
+-        error_setg_errno(errp, errno, "Cannot set features");
++        error_setg_errno(errp, -r, "Cannot set device status");
+         goto out;
+     }
+ 
++    r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
++    if (unlikely(r)) {
++        error_setg_errno(errp, -r, "Cannot set features");
++        goto out;
++    }
++
++    status |= VIRTIO_CONFIG_S_FEATURES_OK;
      r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+     if (unlikely(r)) {
+-        error_setg_errno(errp, -r, "Cannot set status");
++        error_setg_errno(errp, -r, "Cannot set device status");
+         goto out;
+     }
+ 
 -- 
 MST
 
