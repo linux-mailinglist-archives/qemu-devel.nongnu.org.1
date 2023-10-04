@@ -2,75 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DEE7B7EAB
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:07:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E80FB7B7EA6
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:06:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0b7-0002nh-5m; Wed, 04 Oct 2023 08:03:25 -0400
+	id 1qo0b9-0003FY-K1; Wed, 04 Oct 2023 08:03:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Yv-000092-0u
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:18 -0400
-Received: from mail-wm1-x336.google.com ([2a00:1450:4864:20::336])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZF-0000O1-NB
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:34 -0400
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Yq-00011W-BD
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:08 -0400
-Received: by mail-wm1-x336.google.com with SMTP id
- 5b1f17b1804b1-40651a726acso19299245e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:00 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZC-00015k-Gw
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:29 -0400
+Received: by mail-wr1-x42f.google.com with SMTP id
+ ffacd0b85a97d-32487efc319so2025839f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696420859; x=1697025659; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696420884; x=1697025684; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=DZOn2Cyb3kswX+CAOC8A0GBq7vdEIRLvrDWoI8N+PSM=;
- b=t3mZf4PtJVLMY4/kl0HRxnfPOoBa9YnDkkb9yvlyyduFx6EFr6I727reDsUeEsuo6h
- y/2Wg/mx+ccf3R0ayfVo1lrJf9cxtChYQ+iOPvBPNYNDAah9dvaQ8xdk58Z3qc0SG6PE
- z9lAMtQjPfGTz56HEGV4AE9CtMtllbNnP2xKvLhIIU+3mOIpK/o7mDSuJ5sllcVXyBPb
- 1+IIEHsm3OFbUvHUz4Bay98PexVcRbC4d3bKNF3NDgGl4NVxAyxhvSnv4AfpKpS6WXf9
- 6PPGYA3upfHf9m/0sAXGgyd+r8/pOujs49YwKflOyLA9b3YGwBaqz4RU+ACmjoDfJ7E8
- cI3A==
+ bh=aaBKBsLGQ/LuJm7hrK1IdnE8JEzy7Etr5v11yBfp1ug=;
+ b=Rfm1la5sKrMWtTpzIbcfi0jV0qof3ooOZgH8CpV9gcrrjH10bwiScPAgu3jx7PobnM
+ QAlNEf3ip/u/oGVWc0JPq+x3X6pPioysbNhnWHY3rp7UDa1UKnDBIdrfUXFEpxz54Pgs
+ YoZmz2Dqa7fe/GsGAp2UvPwJlRYj3NcS8eckt13AsBawIqC/KbN0hbIi9NgdxpXkPPsA
+ zCdNuJEBYNXP63Htk9SfifdNCfIXEb79zO8aOPWeKccQX29jTpk6fieKn2zYfCgQtz4s
+ jbXtMIvV9P0v3AzFS6eG1PRdRo6nvcBABmIg/oEO0KRYhqYd4twMYAsVTN2gHYmKhi6o
+ YuQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696420859; x=1697025659;
+ d=1e100.net; s=20230601; t=1696420884; x=1697025684;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=DZOn2Cyb3kswX+CAOC8A0GBq7vdEIRLvrDWoI8N+PSM=;
- b=aPss3uRHuCduajEXU/t0Dd7SrVZjfK3WKN1bGGVVAYV9KXfWpe9d9tcZ+pRTbnyhgd
- HPNKM9Ab3k4Gmztw6T2RwO85g9ULAh0cN20pIRonmWI6Qp+gh+nhrm8jGOR9iVKAECJC
- JbYxe8p11lN/DCYMrkM6O5uLr5UBmtqc4j3o+gH0odTrRoTE/fULqh5tUF59/CI+ex4Y
- vPmqyw4wQNfmHO6GXcUko2wzO8sLG13zDFbeQdRZ7oqaUkViHBBeYvGDnlNQnSEBGuHg
- YwAS+1n34pBSrz33390pZ1BbQpRxSLSTpMo4yll8ISu16KYqg3WY7/PU/gVGU19hinb/
- 3iWg==
-X-Gm-Message-State: AOJu0YxeYrKZA9H7hDaiycPtw3kEMurm/xqmhc+Kfwu9CFpdxrDSlY7s
- RWPxYMFHQaEFazJev3/x6yGkT8cKO8Mpfa5sLf4=
-X-Google-Smtp-Source: AGHT+IEeZMe+THQCTIWqRpKf2iDMGPxGxlm3EB5Lukifxoa7+fPWeRy/68FE34HyipEy5zM8UcrGQg==
-X-Received: by 2002:a1c:7710:0:b0:405:3ee3:c69c with SMTP id
- t16-20020a1c7710000000b004053ee3c69cmr2222087wmi.15.1696420858586; 
- Wed, 04 Oct 2023 05:00:58 -0700 (PDT)
+ bh=aaBKBsLGQ/LuJm7hrK1IdnE8JEzy7Etr5v11yBfp1ug=;
+ b=O7D1PYN3KTNaHZvmH10F35atMfIRa8kZ4UOkzchfffu735iOScShOqDPuSTcjXrb6F
+ BEs+wnOB0m2+4GJRDfSmdFvhmMKciurFifhr+EsTTDRe5XNd9fRtE8wlIW/B1G732nN5
+ HSxbkPkZC7R+qhQxzVeEZFdklEILZ4OYNWYnnLPAOxMPzbM4hJl4zVEjYsTpvJ4Hznv8
+ 5KavJty365iSfvfzCQ9ZzlQsHYnNkn6Hv4DYqVAi3rmHNwOIqivwSkkcjn04c0QCE2mZ
+ /NFTiOpweB32eW3zxhGOauABg3FtnrOkPvysZYsf9wRWck7xcdS9cHsAJVeE8fBhXnnN
+ y1Ug==
+X-Gm-Message-State: AOJu0Yx7qLj5X86zWWCmv/JClJk9Kl/2ohtBFKz3HSZSTVsP7qZxoE9q
+ 69LBJa0sBrJ2GlRdd68bImj/zOG7Xka9LNQ1Atc=
+X-Google-Smtp-Source: AGHT+IESLymds+pnPfiIjWjB+IzTvFThDGHRqlErQmqXu4f56VtY5QXAn1g4OxkDQW/vSmLSiuryvw==
+X-Received: by 2002:adf:f845:0:b0:31f:e74d:c82a with SMTP id
+ d5-20020adff845000000b0031fe74dc82amr1772147wrq.31.1696420883499; 
+ Wed, 04 Oct 2023 05:01:23 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- y11-20020a05600c364b00b004063977eccesm1346353wmq.42.2023.10.04.05.00.56
+ x15-20020a5d60cf000000b003271be8440csm3844037wrt.101.2023.10.04.05.01.22
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 05:00:57 -0700 (PDT)
+ Wed, 04 Oct 2023 05:01:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v3 06/16] qemu-img: Clean up global variable shadowing
-Date: Wed,  4 Oct 2023 14:00:09 +0200
-Message-ID: <20231004120019.93101-7-philmd@linaro.org>
+ Peter Maydell <peter.maydell@linaro.org>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v3 10/16] ui/cocoa: Clean up global variable shadowing
+Date: Wed,  4 Oct 2023 14:00:13 +0200
+Message-ID: <20231004120019.93101-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004120019.93101-1-philmd@linaro.org>
 References: <20231004120019.93101-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::336;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x336.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -95,81 +98,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  qemu-img.c:247:46: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static bool is_valid_option_list(const char *optarg)
-                                               ^
-  qemu-img.c:265:53: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static int accumulate_options(char **options, char *optarg)
-                                                      ^
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
-  extern char *optarg;                    /* getopt(3) external variables */
-               ^
+  ui/cocoa.m:346:20: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      QemuCocoaView *cocoaView = userInfo;
+                     ^
+  ui/cocoa.m:342:16: note: previous declaration is here
+  QemuCocoaView *cocoaView;
+                 ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qemu-img.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ ui/cocoa.m | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/qemu-img.c b/qemu-img.c
-index a48edb7101..6068ab0d27 100644
---- a/qemu-img.c
-+++ b/qemu-img.c
-@@ -235,25 +235,25 @@ void help(void)
- }
+diff --git a/ui/cocoa.m b/ui/cocoa.m
+index df6d13be38..15477288fd 100644
+--- a/ui/cocoa.m
++++ b/ui/cocoa.m
+@@ -343,9 +343,9 @@ - (void) raiseAllKeys;
  
- /*
-- * Is @optarg safe for accumulate_options()?
-+ * Is @list safe for accumulate_options()?
-  * It is when multiple of them can be joined together separated by ','.
-- * To make that work, @optarg must not start with ',' (or else a
-+ * To make that work, @list must not start with ',' (or else a
-  * separating ',' preceding it gets escaped), and it must not end with
-  * an odd number of ',' (or else a separating ',' following it gets
-  * escaped), or be empty (or else a separating ',' preceding it can
-  * escape a separating ',' following it).
-  * 
-  */
--static bool is_valid_option_list(const char *optarg)
-+static bool is_valid_option_list(const char *list)
+ static CGEventRef handleTapEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef cgEvent, void *userInfo)
  {
--    size_t len = strlen(optarg);
-+    size_t len = strlen(list);
-     size_t i;
- 
--    if (!optarg[0] || optarg[0] == ',') {
-+    if (!list[0] || list[0] == ',') {
-         return false;
-     }
- 
--    for (i = len; i > 0 && optarg[i - 1] == ','; i--) {
-+    for (i = len; i > 0 && list[i - 1] == ','; i--) {
-     }
-     if ((len - i) % 2) {
-         return false;
-@@ -262,19 +262,19 @@ static bool is_valid_option_list(const char *optarg)
-     return true;
- }
- 
--static int accumulate_options(char **options, char *optarg)
-+static int accumulate_options(char **options, char *list)
- {
-     char *new_options;
- 
--    if (!is_valid_option_list(optarg)) {
--        error_report("Invalid option list: %s", optarg);
-+    if (!is_valid_option_list(list)) {
-+        error_report("Invalid option list: %s", list);
-         return -1;
-     }
- 
-     if (!*options) {
--        *options = g_strdup(optarg);
-+        *options = g_strdup(list);
-     } else {
--        new_options = g_strdup_printf("%s,%s", *options, optarg);
-+        new_options = g_strdup_printf("%s,%s", *options, list);
-         g_free(*options);
-         *options = new_options;
+-    QemuCocoaView *cocoaView = userInfo;
++    QemuCocoaView *view = userInfo;
+     NSEvent *event = [NSEvent eventWithCGEvent:cgEvent];
+-    if ([cocoaView isMouseGrabbed] && [cocoaView handleEvent:event]) {
++    if ([view isMouseGrabbed] && [view handleEvent:event]) {
+         COCOA_DEBUG("Global events tap: qemu handled the event, capturing!\n");
+         return NULL;
      }
 -- 
 2.41.0
