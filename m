@@ -2,70 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3657B8749
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:03:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AD237B87F6
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:11:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo6Cp-00057v-A2; Wed, 04 Oct 2023 14:02:43 -0400
+	id 1qo6K1-0000Qu-3R; Wed, 04 Oct 2023 14:10:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qo6Co-00057g-1V
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:02:42 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo6Jq-0000LE-5Z
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:10:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qo6Cm-0003El-A4
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:02:41 -0400
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo6Jo-0006wz-8A
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:09:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696442559;
+ s=mimecast20190719; t=1696442994;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fVj1aQpOljHPtbE4XSUFt6PjvqxaigPt63LnGyIgmI4=;
- b=fbej7EtHRT22FhnGhPApgIbmKEoBel6BIXZr9/ZeQNvXROpYkWjLejjNixpnNM1KKFrAfM
- tfkHVBPc/xLkLOeQh9hbtR6jAVvRcG4ox92TmvBXcwco1GhnLs473pi86n1DCv9pp0pWUD
- rBBY1vTt2i+TFcewl/uPjY0EHgGzqM4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-554-sTVnnVyaP5exRr4_zpZJcg-1; Wed, 04 Oct 2023 14:02:36 -0400
-X-MC-Unique: sTVnnVyaP5exRr4_zpZJcg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5AF5A805BAC;
- Wed,  4 Oct 2023 18:02:36 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.15])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 76F72140E950;
- Wed,  4 Oct 2023 18:02:35 +0000 (UTC)
-Date: Wed, 4 Oct 2023 19:02:33 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: Wshadow: Better name for 'optarg'?
-Message-ID: <ZR2ouS/Wy4YsSjwd@redhat.com>
-References: <14cd0201-1507-bfa8-fe9e-f482c35d21ca@linaro.org>
- <d688281c-d019-c1ff-6927-d1791911c57d@linaro.org>
- <e13885b5-06a2-599f-e0fe-c5e8f0671742@redhat.com>
- <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
- <11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com>
+ bh=CGgUH+/DC7+0bJHF2H1Z4fWwcqsgr3MLcfkdFyOfe1k=;
+ b=g+gJfW72CPAN8NAOAgfw03cWu35pJbfXIoAWp5CxCHxeqTmnQvozIP2NJdsNHTyg3E8wyy
+ K1tOjT786+X5r1UmF00wjUvlDRHymcxN4YQ4fE9KlksHY/vq7jfM6RngKjlBH73HzWtvbc
+ rJ5qxTGkb1qyDRaLCtxb8v5tgeBrA18=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-140-diHNysjfMhqMNI81gVKciQ-1; Wed, 04 Oct 2023 14:09:52 -0400
+X-MC-Unique: diHNysjfMhqMNI81gVKciQ-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fef5403093so859705e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 11:09:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696442991; x=1697047791;
+ h=content-transfer-encoding:mime-version:message-id:date:reply-to
+ :user-agent:references:in-reply-to:subject:cc:to:from
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CGgUH+/DC7+0bJHF2H1Z4fWwcqsgr3MLcfkdFyOfe1k=;
+ b=gYAPe6Y3lA2BHCsbXV91FLGQGII4+e/QXQVj6IaHQFgtBxJXmaGkuoWfsoRgsh0a8h
+ od+6ajo3XHr/Zg6z+p5YUJG+zovl5alX/vnmfMeLJH6qrvMGq8wYoGmYTJ4UilkukkwI
+ zzoaacaYQ5uE6CoKaNQk87++GMvSoY9nVF/8gsG2IpC2WzEsqind0mtaA1PworzfY+0Y
+ 3OUVlmpvzT2wpB/3pqEZBTNpX9RNAa6GRbctdgYMDAAL+YOR04bXOs/Nh+qbRQdcqgt0
+ rolYFSpaQPwDojZJ5suIebKeBw0At4M5PMhil0cdmJfXlolu62dAgulQr7TMhQ5kIbdK
+ zgCw==
+X-Gm-Message-State: AOJu0YyB9VL307MUEZkfYngqYl3HEA55jv+pV2m5Q2uC9JDlQfiuUTN8
+ 1wCcvgJhcERUOy2qsSsm63Q7QetCifeREq2mGXIYxUIkhoW03f13yKXobeaVddaGXT+tCx+9CA0
+ ATftXNnLu+yBrrqQ=
+X-Received: by 2002:a05:600c:3b0e:b0:403:aced:f7f4 with SMTP id
+ m14-20020a05600c3b0e00b00403acedf7f4mr347844wms.12.1696442991275; 
+ Wed, 04 Oct 2023 11:09:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGyKfCPhBMqd0jqq8Gqm2LobbMubqNfcn2X85k/gRj7Br7zvhNvMQCYXe2MDUT1OEBaq8XEGQ==
+X-Received: by 2002:a05:600c:3b0e:b0:403:aced:f7f4 with SMTP id
+ m14-20020a05600c3b0e00b00403acedf7f4mr347829wms.12.1696442990892; 
+ Wed, 04 Oct 2023 11:09:50 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ p5-20020a1c7405000000b004064e3b94afsm2085949wmc.4.2023.10.04.11.09.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 11:09:50 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Daniel P. =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
+Cc: Fabiano Rosas <farosas@suse.de>,  Philippe =?utf-8?Q?Mathieu-Daud?=
+ =?utf-8?Q?=C3=A9?= <philmd@linaro.org>,  qemu-devel@nongnu.org,  Peter Xu
+ <peterx@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Laurent Vivier
+ <lvivier@redhat.com>,  Paolo Bonzini <pbonzini@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>,  Alex =?utf-8?Q?Benn=C3=A9e?=
+ <alex.bennee@linaro.org>
+Subject: Re: [RFC PATCH 1/1] qtest/migration: Support more than one QEMU binary
+In-Reply-To: <ZR2nTmmf8AaUV1g2@redhat.com> ("Daniel P. =?utf-8?Q?Berrang?=
+ =?utf-8?Q?=C3=A9=22's?= message of
+ "Wed, 4 Oct 2023 18:56:30 +0100")
+References: <20231003141932.2367-1-farosas@suse.de>
+ <20231003141932.2367-2-farosas@suse.de>
+ <3dd8e410-982b-3ea6-78aa-08c1ba26f8da@linaro.org>
+ <ZRw5Myc/joWb6why@redhat.com> <874jj7u11d.fsf@suse.de>
+ <87wmw24vzg.fsf@secure.mitica> <8734yqpedm.fsf@suse.de>
+ <ZR2nTmmf8AaUV1g2@redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 04 Oct 2023 20:09:49 +0200
+Message-ID: <875y3ms1hu.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,78 +109,72 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 04, 2023 at 07:56:35PM +0200, Thomas Huth wrote:
-> On 04/10/2023 19.43, Philippe Mathieu-Daudé wrote:
-> > On 4/10/23 19:35, Thomas Huth wrote:
-> > > On 04/10/2023 19.23, Richard Henderson wrote:
-> > > > On 10/4/23 03:05, Philippe Mathieu-Daudé wrote:
-> > > > > Hi,
-> > > > > 
-> > > > > I'm getting a bunch of errors for 'optarg' declared in <unistd.h>:
-> > > > 
-> > > > I thought things like this is why we were trying -Wshadow=local.
-> > > > 
-> > > > I think it's unlikely that we'll be able to prevent all such cases.
-> > > 
-> > > Given the broad range of operating systems and libraries that we
-> > > support in QEMU, I agree with Richard - it will likely be impossible
-> > > to enable that option without =local by default without risking that
-> > > compilation breaks on some exotic systems or new versions of various
-> > > libraries.
-> > 
-> > -Wshadow=local doesn't seem to work here which is why I switched
-> > to -Wshadow. I probably misunderstood something from Markus cover
-> > letter. My setup is:
-> > 
-> > C compiler for the host machine: clang (clang 14.0.3 "Apple clang
-> > version 14.0.3 (clang-1403.0.22.14.1)")
-> > 
-> > I suppose we'll figure that out when eventually enabling -Wshadow=local
-> > on CI. Meanwhile I already cleaned the 'optarg' warnings that were
-> > bugging me, see:
-> > https://lore.kernel.org/qemu-devel/20231004120019.93101-1-philmd@linaro.org/
-> > I'll try to get -Wshadow=local, but the other series still seems a
-> > good cleanup, as I used more meaningful variable names.
-> 
-> If I got that right, -Wshadow=local only works with gcc and not with clang
-> yet, so we'll need a check in configure or meson.build and will be able to
-> only use it when it's available.
-> 
-> If we could use "-Wshadow" to check global variables, too, that would be
-> great, but given my experience with some other project, it's very unlikely
-> that you can get it running reliably everywhere, since there is often a bad
-> library header somewhere that declares some global variable(s) that spoil
-> your plans (IIRC I've once seen a bad library that even declared a global
-> variable called "x" ... and you certainly don't want to rename all
-> occurances of "x" in the QEMU source code just because of a bad library ...
-> however, that's been many years ago, though, maybe the situation got better
-> nowadays, so if you like, feel free to continue your quest - just be aware
-> that it might not be solvable at the end).
+Daniel P. Berrang=C3=A9 <berrange@redhat.com> wrote:
+> On Wed, Oct 04, 2023 at 12:59:49PM -0300, Fabiano Rosas wrote:
+>> Juan Quintela <quintela@redhat.com> writes:
+>>=20
+>> > Fabiano Rosas <farosas@suse.de> wrote:
+>> >> Daniel P. Berrang=C3=A9 <berrange@redhat.com> writes:
+>> >>
+>> >>> On Tue, Oct 03, 2023 at 05:24:50PM +0200, Philippe Mathieu-Daud=C3=
+=A9 wrote:
+>> > [...]
 
-FWIW, libvirt has successfully used -Wshadow for 10 years with no
-real ongoing burden. There is of course a bit of an initial pain,
-but if you have good CI coverage (as we do), we'll be able to validate
-all the important platforms.
+>> I'm working on a cleanup of this patch to make it more integrated with
+>> libqtest. If we teach qtest_get_machines() to sometimes refresh the list
+>> of machines then it becomes way less code.
+>>=20
+>> > I think that it is just easier to pass the machine type we want to test
+>> > to whatever script we have.  Specially where [sane] architectures like
+>> > arm don't have a default machine type (no, I haven't double checked if
+>> > that has changed lately).
+>>=20
+>> We still need to enforce the same machine type for both binaries and a
+>> sane range of QEMU versions. I think our docs state that we only support
+>> migration from QEMU n->n+1 and vice versa? If the test will know what
+>> combinations are allowed, it could just go ahead and use those.
+>
+> Query the 'pc' (or 'q35' as appropriate) alias on both QEMU versions,
+> to resolve them into versioned machines.
+>
+> Then find which resolved machine version(s) exist in both QEMUs, and
+> prefer the src machine if multiple matches exist.
 
-Windows is normally the worst platform for -Wshadow since some win32
-headers defnie some incredibly generic names !
+We only change Machine Type with each qemu version, so having to change
+it by hand don't look so complicated.
 
-For the unimportant/niche platforms, people can send fixes as needed,
-and shouldn't be using -Werror for production builds anyway.
+Let's assume for a moment that "pc" and "q35" machine types don't exist
+(rest of architectures needs to do a similar thing)
 
-IOW, if we can see a path to going all the way to -Wshadow that isn't
-going to need 100's more patches, we might as well do it, or at least
-accept patches to walk towards full -Wshadow.
+latest qemu has:
+pc-i440fx-8.2        Standard PC (i440FX + PIIX, 1996) (default)
+pc-i440fx-8.1        Standard PC (i440FX + PIIX, 1996) (default)
+pc-i440fx-8.0        Standard PC (i440FX + PIIX, 1996) (default)
+pc-i440fx-7.2        Standard PC (i440FX + PIIX, 1996) (default)
 
-With regards,
-Daniel
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+Previous version one has everything except 8.2
+
+We want to test:
+
+(this is what we do now)
+qemu-8.2 -M pc-i440fx-8.2  -> qemu-8.2 -M pc-i440fx-8.2
+
+And we want to test additionally:
+
+qemu-8.1 -M pc-i440fx-8.1  -> qemu-8.2 -M pc-i440fx-8.1
+qemu-8.2 -M pc-i440fx-8.1  -> qemu-8.1 -M pc-i440fx-8.1
+
+And that is it.
+
+So the thing that we need is a sane way to get qtest_init() to use the
+right machine type without inventing what machine type they want.  Not
+having a default machine type has other advantages, but that is a
+different discussion.
+
+Later, Juan.
 
 
