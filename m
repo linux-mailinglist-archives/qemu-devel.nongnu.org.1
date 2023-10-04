@@ -2,41 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDBCF7B79B3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:09:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 445667B79AD
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:09:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwso-0003nx-6t; Wed, 04 Oct 2023 04:05:26 -0400
+	id 1qnwt2-00054t-7p; Wed, 04 Oct 2023 04:05:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwsh-0003KM-FD; Wed, 04 Oct 2023 04:05:19 -0400
+ id 1qnwsk-0003hp-Ho; Wed, 04 Oct 2023 04:05:22 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwse-0002W4-Ky; Wed, 04 Oct 2023 04:05:19 -0400
+ id 1qnwsg-0002bj-Uh; Wed, 04 Oct 2023 04:05:22 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id A7FD0275AD;
+ by isrv.corpit.ru (Postfix) with ESMTP id D429A275AE;
  Wed,  4 Oct 2023 11:02:29 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id F30EF2CBE7;
- Wed,  4 Oct 2023 11:02:28 +0300 (MSK)
-Received: (nullmailer pid 2702850 invoked by uid 1000);
+ by tsrv.corpit.ru (Postfix) with SMTP id 2EEDE2CBE8;
+ Wed,  4 Oct 2023 11:02:29 +0300 (MSK)
+Received: (nullmailer pid 2702853 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
- Peter Xu <peterx@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 33/45] migration: Move return path cleanup to main
- migration thread
-Date: Wed,  4 Oct 2023 11:01:54 +0300
-Message-Id: <20231004080221.2702636-33-mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 34/45] softmmu: Use async_run_on_cpu in tcg_commit
+Date: Wed,  4 Oct 2023 11:01:55 +0300
+Message-Id: <20231004080221.2702636-34-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,62 +60,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Fabiano Rosas <farosas@suse.de>
+From: Richard Henderson <richard.henderson@linaro.org>
 
-Now that the return path thread is allowed to finish during a paused
-migration, we can move the cleanup of the QEMUFiles to the main
-migration thread.
+After system startup, run the update to memory_dispatch
+and the tlb_flush on the cpu.  This eliminates a race,
+wherein a running cpu sees the memory_dispatch change
+but has not yet seen the tlb_flush.
 
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Signed-off-by: Fabiano Rosas <farosas@suse.de>
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230918172822.19052-9-farosas@suse.de>
-(cherry picked from commit 36e9aab3c569d4c9ad780473596e18479838d1aa)
+Since the update now happens on the cpu, we need not use
+qatomic_rcu_read to protect the read of memory_dispatch.
+
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1826
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1834
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1846
+Tested-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
+(cherry picked from commit 0d58c660689f6da1e3feff8a997014003d928b3b)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/migration/migration.c b/migration/migration.c
-index a0782c64a1..7a4c8beb5d 100644
---- a/migration/migration.c
-+++ b/migration/migration.c
-@@ -98,6 +98,7 @@ static int migration_maybe_pause(MigrationState *s,
-                                  int *current_active_state,
-                                  int new_state);
- static void migrate_fd_cancel(MigrationState *s);
-+static int await_return_path_close_on_source(MigrationState *s);
+diff --git a/accel/tcg/cpu-exec-common.c b/accel/tcg/cpu-exec-common.c
+index 9a5fabf625..7e35d7f4b5 100644
+--- a/accel/tcg/cpu-exec-common.c
++++ b/accel/tcg/cpu-exec-common.c
+@@ -33,36 +33,6 @@ void cpu_loop_exit_noexc(CPUState *cpu)
+     cpu_loop_exit(cpu);
+ }
  
- static bool migration_needs_multiple_sockets(void)
+-#if defined(CONFIG_SOFTMMU)
+-void cpu_reloading_memory_map(void)
+-{
+-    if (qemu_in_vcpu_thread() && current_cpu->running) {
+-        /* The guest can in theory prolong the RCU critical section as long
+-         * as it feels like. The major problem with this is that because it
+-         * can do multiple reconfigurations of the memory map within the
+-         * critical section, we could potentially accumulate an unbounded
+-         * collection of memory data structures awaiting reclamation.
+-         *
+-         * Because the only thing we're currently protecting with RCU is the
+-         * memory data structures, it's sufficient to break the critical section
+-         * in this callback, which we know will get called every time the
+-         * memory map is rearranged.
+-         *
+-         * (If we add anything else in the system that uses RCU to protect
+-         * its data structures, we will need to implement some other mechanism
+-         * to force TCG CPUs to exit the critical section, at which point this
+-         * part of this callback might become unnecessary.)
+-         *
+-         * This pair matches cpu_exec's rcu_read_lock()/rcu_read_unlock(), which
+-         * only protects cpu->as->dispatch. Since we know our caller is about
+-         * to reload it, it's safe to split the critical section.
+-         */
+-        rcu_read_unlock();
+-        rcu_read_lock();
+-    }
+-}
+-#endif
+-
+ void cpu_loop_exit(CPUState *cpu)
  {
-@@ -1178,6 +1179,12 @@ static void migrate_fd_cleanup(MigrationState *s)
-         qemu_fclose(tmp);
-     }
+     /* Undo the setting in cpu_tb_exec.  */
+diff --git a/include/exec/cpu-common.h b/include/exec/cpu-common.h
+index 87dc9a752c..41788c0bdd 100644
+--- a/include/exec/cpu-common.h
++++ b/include/exec/cpu-common.h
+@@ -133,7 +133,6 @@ static inline void cpu_physical_memory_write(hwaddr addr,
+ {
+     cpu_physical_memory_rw(addr, (void *)buf, len, true);
+ }
+-void cpu_reloading_memory_map(void);
+ void *cpu_physical_memory_map(hwaddr addr,
+                               hwaddr *plen,
+                               bool is_write);
+diff --git a/softmmu/physmem.c b/softmmu/physmem.c
+index 7597dc1c39..18277ddd67 100644
+--- a/softmmu/physmem.c
++++ b/softmmu/physmem.c
+@@ -680,8 +680,7 @@ address_space_translate_for_iotlb(CPUState *cpu, int asidx, hwaddr orig_addr,
+     IOMMUTLBEntry iotlb;
+     int iommu_idx;
+     hwaddr addr = orig_addr;
+-    AddressSpaceDispatch *d =
+-        qatomic_rcu_read(&cpu->cpu_ases[asidx].memory_dispatch);
++    AddressSpaceDispatch *d = cpu->cpu_ases[asidx].memory_dispatch;
  
+     for (;;) {
+         section = address_space_translate_internal(d, addr, &addr, plen, false);
+@@ -2412,7 +2411,7 @@ MemoryRegionSection *iotlb_to_section(CPUState *cpu,
+ {
+     int asidx = cpu_asidx_from_attrs(cpu, attrs);
+     CPUAddressSpace *cpuas = &cpu->cpu_ases[asidx];
+-    AddressSpaceDispatch *d = qatomic_rcu_read(&cpuas->memory_dispatch);
++    AddressSpaceDispatch *d = cpuas->memory_dispatch;
+     int section_index = index & ~TARGET_PAGE_MASK;
+     MemoryRegionSection *ret;
+ 
+@@ -2487,23 +2486,42 @@ static void tcg_log_global_after_sync(MemoryListener *listener)
+     }
+ }
+ 
++static void tcg_commit_cpu(CPUState *cpu, run_on_cpu_data data)
++{
++    CPUAddressSpace *cpuas = data.host_ptr;
++
++    cpuas->memory_dispatch = address_space_to_dispatch(cpuas->as);
++    tlb_flush(cpu);
++}
++
+ static void tcg_commit(MemoryListener *listener)
+ {
+     CPUAddressSpace *cpuas;
+-    AddressSpaceDispatch *d;
++    CPUState *cpu;
+ 
+     assert(tcg_enabled());
+     /* since each CPU stores ram addresses in its TLB cache, we must
+        reset the modified entries */
+     cpuas = container_of(listener, CPUAddressSpace, tcg_as_listener);
+-    cpu_reloading_memory_map();
+-    /* The CPU and TLB are protected by the iothread lock.
+-     * We reload the dispatch pointer now because cpu_reloading_memory_map()
+-     * may have split the RCU critical section.
++    cpu = cpuas->cpu;
++
 +    /*
-+     * We already cleaned up to_dst_file, so errors from the return
-+     * path might be due to that, ignore them.
-+     */
-+    await_return_path_close_on_source(s);
-+
-     assert(!migration_is_active(s));
- 
-     if (s->state == MIGRATION_STATUS_CANCELLING) {
-@@ -1986,7 +1993,6 @@ out:
-     }
- 
-     trace_source_return_path_thread_end();
--    migration_release_dst_files(ms);
-     rcu_unregister_thread();
-     return NULL;
++     * Defer changes to as->memory_dispatch until the cpu is quiescent.
++     * Otherwise we race between (1) other cpu threads and (2) ongoing
++     * i/o for the current cpu thread, with data cached by mmu_lookup().
++     *
++     * In addition, queueing the work function will kick the cpu back to
++     * the main loop, which will end the RCU critical section and reclaim
++     * the memory data structures.
++     *
++     * That said, the listener is also called during realize, before
++     * all of the tcg machinery for run-on is initialized: thus halt_cond.
+      */
+-    d = address_space_to_dispatch(cpuas->as);
+-    qatomic_rcu_set(&cpuas->memory_dispatch, d);
+-    tlb_flush(cpuas->cpu);
++    if (cpu->halt_cond) {
++        async_run_on_cpu(cpu, tcg_commit_cpu, RUN_ON_CPU_HOST_PTR(cpuas));
++    } else {
++        tcg_commit_cpu(cpu, RUN_ON_CPU_HOST_PTR(cpuas));
++    }
  }
-@@ -2040,6 +2046,9 @@ static int await_return_path_close_on_source(MigrationState *ms)
  
-     ret = ms->rp_state.error;
-     ms->rp_state.error = false;
-+
-+    migration_release_dst_files(ms);
-+
-     trace_migration_return_path_end_after(ret);
-     return ret;
- }
+ static void memory_map_init(void)
 -- 
 2.39.2
 
