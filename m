@@ -2,64 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3754C7B8078
+	by mail.lfdr.de (Postfix) with ESMTPS id 303B27B8077
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:15:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo1hi-0006hV-1v; Wed, 04 Oct 2023 09:14:18 -0400
+	id 1qo1hy-0006oy-TR; Wed, 04 Oct 2023 09:14:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo1hI-0006dR-Ek
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:13:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qo1hG-0001c3-C8
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:13:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696425229;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=+E8fYpbb8ncGc3U9mYCKCyFZn4aX85S9z4TeFI0ash8=;
- b=H/oOwzKJyUypEBdgbkIbeU7RQ9Cu7tQkPMzBqPeIka3A5IR+8VuHbAkkW7DkKQaU2KMop2
- +NQpjtYr+zDY6CFYKbQjFd1B+lMN8QlATbspdYNsIVt+R9zq08UMHyfCQnR49NTMELRc2R
- bez7ilm7RvO1cw4VEwxCYvZfdqWMtu8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-362-8SJuIeA_PSmshVCFfuYpuw-1; Wed, 04 Oct 2023 09:13:41 -0400
-X-MC-Unique: 8SJuIeA_PSmshVCFfuYpuw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E9461811E86;
- Wed,  4 Oct 2023 13:13:40 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.194.172])
- by smtp.corp.redhat.com (Postfix) with ESMTP id E2E0B40C2015;
- Wed,  4 Oct 2023 13:13:39 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
-	qemu-trivial@nongnu.org
-Subject: [PATCH] dump: Silence compiler warning in dump code when compiling
- with -Wshadow
-Date: Wed,  4 Oct 2023 15:13:38 +0200
-Message-ID: <20231004131338.215081-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qo1hp-0006mt-Fm
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:14:25 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qo1hm-0001lc-Gt
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:14:25 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-99c3c8adb27so405438366b.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 06:14:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696425259; x=1697030059;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=vrN7Xlm8FTq6oA3b7nLWs38RZVjznB5Vtlx1WPo8Zco=;
+ b=czPpXVDW+2YZe3zVMDi3UsKf9ZevL7wAhxZrgN0oBMJ3MTMVyyWvq9sMvNPmt0IxNr
+ DorVHmN/mM8eyrcXlCe1rrGcjInmE8kPf2whEAZz6U4zpjj8ahqnI4hW+qaukB/Q0D2G
+ WVThjihmAk5+AydFttYIND6KmTlWzxhtzoQ/ubl+4+FWCLj0UPrU0IZVIheZ8iQRho/J
+ Z3yweNdCkGIhFJ3F+q+dspD7IvFOaak38sn/l64SR6AN5vjSKFfDvgm1ZDSbOUjYr0ax
+ bmHoobjilbflcMTRjgbSeBtkFosYh6TWDbv82al5MeFLti54GqT3v65AEkTKjs6oIHZ3
+ mW8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696425259; x=1697030059;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=vrN7Xlm8FTq6oA3b7nLWs38RZVjznB5Vtlx1WPo8Zco=;
+ b=TwdXz/kkVcK+ND0p9kaUSHbrjWecgij1JowfRFkW7pTgE+HnBxWpAjtKEN9Sgc5xgK
+ CsOey7WN5snxle/aRPdnFoeSeuLjQuZ4EcxKd5BLscS/fbmNd/Tsj65md98JP17R5xb4
+ djbIImoYaRGqwH4nDDdeI3hRacJ9Su9iJ3ci5dWrSdFPsmqHNqQejr2BvvCu3TntcBvd
+ fl62UIkTPTsu1niAM/duLB3SvHvM7IgWN7/3wcMZL+3vr2gIk/kbFz6JgFfbH4hHV0UC
+ hA0A+mPakSfCRX0H2V0Y04sTpjB5lvt81DNR/NAuGmrckOAvup9yQHfjUZ4lmfR2gu0g
+ vJQA==
+X-Gm-Message-State: AOJu0YxGmQHGhrCzyoHgP/Iv+TzGBLd9Cziho6pBpmDlHXPxZXpHmkr3
+ iyXd3d+JutUxKIo7lpUZ8AmBB2xseQ1QfYMdtraOiA==
+X-Google-Smtp-Source: AGHT+IGYnqG4n2BoAL5wElCrYRtNLxiadGbTL8NrrhAvgxqwxeiM0K0hqowBt+iy2jcp8oQs7SpoxoYsUl8eICoaG3E=
+X-Received: by 2002:a17:906:74dd:b0:9ae:5a9f:6aa0 with SMTP id
+ z29-20020a17090674dd00b009ae5a9f6aa0mr2159154ejl.33.1696425259319; Wed, 04
+ Oct 2023 06:14:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+References: <14cd0201-1507-bfa8-fe9e-f482c35d21ca@linaro.org>
+ <ZR07WvspRlftPpMV@redhat.com>
+In-Reply-To: <ZR07WvspRlftPpMV@redhat.com>
+From: Warner Losh <imp@bsdimp.com>
+Date: Wed, 4 Oct 2023 07:14:07 -0600
+Message-ID: <CANCZdfrKb1XG-QsCxW1ON1B3H3uqV0wnF9QQ3HrBErN+A0jLmA@mail.gmail.com>
+Subject: Re: Wshadow: Better name for 'optarg'?
+To: =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?= <berrange@redhat.com>
+Cc: =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>, 
+ Markus Armbruster <armbru@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>,
+ Thomas Huth <thuth@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Content-Type: multipart/alternative; boundary="000000000000f8580f0606e3c860"
+Received-SPF: none client-ip=2a00:1450:4864:20::62d;
+ envelope-from=wlosh@bsdimp.com; helo=mail-ej1-x62d.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,43 +85,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename a variable to make this code compilable with -Wshadow.
+--000000000000f8580f0606e3c860
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- dump/dump.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On Wed, Oct 4, 2023, 4:16 AM Daniel P. Berrang=C3=A9 <berrange@redhat.com> =
+wrote:
 
-diff --git a/dump/dump.c b/dump/dump.c
-index d4ef713cd0..d3578ddc62 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -1872,20 +1872,20 @@ static void dump_init(DumpState *s, int fd, bool has_format,
-     if (vmci) {
-         uint64_t addr, note_head_size, name_size, desc_size;
-         uint32_t size;
--        uint16_t format;
-+        uint16_t guest_format;
- 
-         note_head_size = dump_is_64bit(s) ?
-             sizeof(Elf64_Nhdr) : sizeof(Elf32_Nhdr);
- 
--        format = le16_to_cpu(vmci->vmcoreinfo.guest_format);
-+        guest_format = le16_to_cpu(vmci->vmcoreinfo.guest_format);
-         size = le32_to_cpu(vmci->vmcoreinfo.size);
-         addr = le64_to_cpu(vmci->vmcoreinfo.paddr);
-         if (!vmci->has_vmcoreinfo) {
-             warn_report("guest note is not present");
-         } else if (size < note_head_size || size > MAX_GUEST_NOTE_SIZE) {
-             warn_report("guest note size is invalid: %" PRIu32, size);
--        } else if (format != FW_CFG_VMCOREINFO_FORMAT_ELF) {
--            warn_report("guest note format is unsupported: %" PRIu16, format);
-+        } else if (guest_format != FW_CFG_VMCOREINFO_FORMAT_ELF) {
-+            warn_report("guest note format is unsupported: %" PRIu16, guest_format);
-         } else {
-             s->guest_note = g_malloc(size + 1); /* +1 for adding \0 */
-             cpu_physical_memory_read(addr, s->guest_note, size);
--- 
-2.41.0
+> On Wed, Oct 04, 2023 at 12:05:04PM +0200, Philippe Mathieu-Daud=C3=A9 wro=
+te:
+> > Hi,
+> >
+> > I'm getting a bunch of errors for 'optarg' declared in <unistd.h>:
+> >
+> > NAME
+> >      getopt =E2=80=93 get option character from command line argument l=
+ist
+> >
+> > LIBRARY
+> >      Standard C Library (libc, -lc)
+> >
+> > SYNOPSIS
+> >      #include <unistd.h>
+> >
+> >      extern char *optarg;
+> >
+> >
+> > qom/object_interfaces.c:262:53: error: declaration shadows a variable i=
+n
+> the
+> > global scope [-Werror,-Wshadow]
+> > ObjectOptions *user_creatable_parse_str(const char *optarg, Error **err=
+p)
+>
+> snip
+>
+> > Do we want to clean those? Any good name suggestion?
+>
+> Yes.  any of "argval", "opts", "optstr", "optval".
+>
 
+For the parsing in bsd-user I just removed the variable entirely and
+removed the updating of its value since the parsing code was trying to do
+what getopt also did...
+
+Warner
+
+With regards,
+> Daniel
+> --
+> |: https://berrange.com      -o-
+> https://www.flickr.com/photos/dberrange :|
+> |: https://libvirt.org         -o-
+> https://fstop138.berrange.com :|
+> |: https://entangle-photo.org    -o-
+> https://www.instagram.com/dberrange :|
+>
+>
+>
+
+--000000000000f8580f0606e3c860
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">On Wed, Oct 4, 2023, 4:16 AM Daniel P. Berrang=C3=A9 &=
+lt;<a href=3D"mailto:berrange@redhat.com">berrange@redhat.com</a>&gt; wrote=
+:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;bor=
+der-left:1px #ccc solid;padding-left:1ex">On Wed, Oct 04, 2023 at 12:05:04P=
+M +0200, Philippe Mathieu-Daud=C3=A9 wrote:<br>
+&gt; Hi,<br>
+&gt; <br>
+&gt; I&#39;m getting a bunch of errors for &#39;optarg&#39; declared in &lt=
+;unistd.h&gt;:<br>
+&gt; <br>
+&gt; NAME<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 getopt =E2=80=93 get option character from command=
+ line argument list<br>
+&gt; <br>
+&gt; LIBRARY<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 Standard C=C2=A0Library (libc, -lc)<br>
+&gt; <br>
+&gt; SYNOPSIS<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 #include &lt;unistd.h&gt;<br>
+&gt; <br>
+&gt;=C2=A0 =C2=A0 =C2=A0 extern char *optarg;<br>
+&gt; <br>
+&gt; <br>
+&gt; qom/object_interfaces.c:262:53: error: declaration shadows a variable =
+in the<br>
+&gt; global scope [-Werror,-Wshadow]<br>
+&gt; ObjectOptions *user_creatable_parse_str(const char *optarg, Error **er=
+rp)<br>
+<br>
+snip<br>
+<br>
+&gt; Do we want to clean those? Any good name suggestion?<br>
+<br>
+Yes.=C2=A0 any of &quot;argval&quot;, &quot;opts&quot;, &quot;optstr&quot;,=
+ &quot;optval&quot;.<br></blockquote></div></div><div dir=3D"auto"><br></di=
+v><div dir=3D"auto">For the parsing in bsd-user I just removed the variable=
+ entirely and removed the updating of its value since the parsing code was =
+trying to do what getopt also did...</div><div dir=3D"auto"><br></div><div =
+dir=3D"auto">Warner=C2=A0</div><div dir=3D"auto"><br></div><div dir=3D"auto=
+"><div class=3D"gmail_quote"><blockquote class=3D"gmail_quote" style=3D"mar=
+gin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+With regards,<br>
+Daniel<br>
+-- <br>
+|: <a href=3D"https://berrange.com" rel=3D"noreferrer noreferrer" target=3D=
+"_blank">https://berrange.com</a>=C2=A0 =C2=A0 =C2=A0 -o-=C2=A0 =C2=A0 <a h=
+ref=3D"https://www.flickr.com/photos/dberrange" rel=3D"noreferrer noreferre=
+r" target=3D"_blank">https://www.flickr.com/photos/dberrange</a> :|<br>
+|: <a href=3D"https://libvirt.org" rel=3D"noreferrer noreferrer" target=3D"=
+_blank">https://libvirt.org</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-o-=C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <a href=3D"https://fstop138.berrange.com=
+" rel=3D"noreferrer noreferrer" target=3D"_blank">https://fstop138.berrange=
+.com</a> :|<br>
+|: <a href=3D"https://entangle-photo.org" rel=3D"noreferrer noreferrer" tar=
+get=3D"_blank">https://entangle-photo.org</a>=C2=A0 =C2=A0 -o-=C2=A0 =C2=A0=
+ <a href=3D"https://www.instagram.com/dberrange" rel=3D"noreferrer noreferr=
+er" target=3D"_blank">https://www.instagram.com/dberrange</a> :|<br>
+<br>
+<br>
+</blockquote></div></div></div>
+
+--000000000000f8580f0606e3c860--
 
