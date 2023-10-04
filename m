@@ -2,87 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855507B887D
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:17:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 320E77B88AF
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 20:18:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo6Ph-000781-AE; Wed, 04 Oct 2023 14:16:01 -0400
+	id 1qo6Pv-0007MM-O4; Wed, 04 Oct 2023 14:16:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo6PJ-0006pe-Fs
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:15:41 -0400
+ id 1qo6Ph-0007B9-77
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:16:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo6PG-0007vU-SJ
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:15:37 -0400
+ id 1qo6Pc-00086c-2V
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 14:15:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696443333;
+ s=mimecast20190719; t=1696443355;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
  content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iZdeQOwpAjNhw7qtpgYcUXCh3y1KKQKJaqogrumSLGU=;
- b=h3FGPw1uaWnnRsO6SDpfqtuPXwUGgoLY3HDNw41i7hMtA3hhoKjn8dqOB8hG8nFF4m7RSX
- EWD2kkMlUzzCoJqB09jdFCb9jJwq1Y/BQig+n04l1Pq0MyipZ6XHmNDvziQaGs7Yzeu5se
- x8UEbRTcAMojIIRessdLoxtCuz6dmbg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=L3vfV70nt6Z476QmDhBufxf1KpaFQSxr161KBGLmeVY=;
+ b=aiDDQZBd5udjGcSMXDIW783Rtc3CcEWrwC5yU2T09W0qxUSUGOksl2JLnJCyLL3jyMKTxu
+ e9I+kEkyJzsS4zCfEg0IGF1YWaQhDeadFKYWQ9tb4Wt09uwAAx80TCMPSLuLrF9SjGhh+F
+ kKnNSSpsmBlQpaXEPP4HtUnpEU+D6fk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466--sc4DHKfMr6eAP1G47DNCQ-1; Wed, 04 Oct 2023 14:15:31 -0400
-X-MC-Unique: -sc4DHKfMr6eAP1G47DNCQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3f5df65f9f4so971075e9.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 11:15:31 -0700 (PDT)
+ us-mta-572-b2ugnbeMNu-Gd4Iu6PFvdg-1; Wed, 04 Oct 2023 14:15:44 -0400
+X-MC-Unique: b2ugnbeMNu-Gd4Iu6PFvdg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-326f05ed8f9so137763f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 11:15:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696443330; x=1697048130;
+ d=1e100.net; s=20230601; t=1696443343; x=1697048143;
  h=content-transfer-encoding:mime-version:message-id:date:reply-to
  :user-agent:references:in-reply-to:subject:cc:to:from
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=iZdeQOwpAjNhw7qtpgYcUXCh3y1KKQKJaqogrumSLGU=;
- b=VdBslW8tIzbY41Bs1thvr/SaTVo87XNLL/lOAC+wzqmxMQWiYlnxH/ud52GPuhC1/6
- v6/W2+NsAWOkv7oh4J4YHiubOAiadbv6gjqdW7NZBmEB7LlZ8ChQT2sXzYS4Cw3+Cf6y
- TOi2diOJluqELNVsVFpmwAUIvvoMBz7tXhyDh8yvIilw0pF21vzxzyr9FMxcOERIxo15
- LCDOe4MeE8niSjcjLPDaowYaGbpYwOlUx+x3+OLvAx+0CSrq48MyUNh4MAdbSVSKBzJf
- haOLhksCVKVQXZlxgbE6YjsIcMs7tjR4VG+ZjaLv4dXG6io6q6XCUYmCsvOMWyb6ZQPG
- o+KA==
-X-Gm-Message-State: AOJu0YxuQOAfUhjw7/pEiVXvG0iT4uVA8UjytRfR7om4J07p0B0kYtiK
- xVj+5+ZA+1vttnBc+jZ7xcANQwuWlovUCUCfzU6kkQxZF68k4kGMaVzTMYNNuIf3NGpUa/KICQO
- 5sAHlVSwu5qHeVnw=
-X-Received: by 2002:a05:600c:2195:b0:406:53aa:7a5f with SMTP id
- e21-20020a05600c219500b0040653aa7a5fmr2887169wme.10.1696443330707; 
- Wed, 04 Oct 2023 11:15:30 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGaaoiaT4I2n7MYgw4ZSunBz4ENwVhEjQz2qEMK4DpkDa0AKvDQxgt/NhCR5dQCOPu0L78qsQ==
-X-Received: by 2002:a05:600c:2195:b0:406:53aa:7a5f with SMTP id
- e21-20020a05600c219500b0040653aa7a5fmr2887140wme.10.1696443330361; 
- Wed, 04 Oct 2023 11:15:30 -0700 (PDT)
+ bh=L3vfV70nt6Z476QmDhBufxf1KpaFQSxr161KBGLmeVY=;
+ b=ciEe+OIG/LJ59hAdY8zvKm9MPl7VJN/V1CAXiYliKwJfJakJAeRxqXnj2QA/BoVtxO
+ zZ0Id+pimW3A6KKdhpkFBbxLBOVl9l2T9vYQEgBFJdSebbT9h1Umo6o0Reg7wBgNfQVo
+ 1KlFyUh4XMFTDzLJHs2oi8Nx1NTfqoC7L/eyclEnEQ2dcmEX6wyuDbd1rTG2crFjwgnC
+ nKnWNcAPt5ThwQ9K8YuZE30V8EaSzR8VbPzjkX9mJ/YD7aVwZz82Sdh5+YmmuKWsDkvj
+ 0JnskK1YOUR4mymdmR/OsFIfxbfpNFM1spKHTwfk8Oj393TqImgANk5tD1prMEIbwa0A
+ fS1w==
+X-Gm-Message-State: AOJu0YwIdMttEZLdYBpYmX2NPDCTu1G9WuY/i8rECfMi+g8HFcvLU6+6
+ c2HQAtnt9XsYoAMiF8CgagXMkZO53W+W3KmWFZQpiorDLkqFZAVMcPROAmPXgmc6jV3LIea22Qa
+ fc2o+94COZxb+24Y=
+X-Received: by 2002:adf:d4cb:0:b0:31f:d95d:20a6 with SMTP id
+ w11-20020adfd4cb000000b0031fd95d20a6mr2789029wrk.12.1696443342917; 
+ Wed, 04 Oct 2023 11:15:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEivlBGDqrXK9uOz+2ihhml6MoqGMDtgy/eHWt+59SwRDpZlOHxq/AhY4P+VS7PRWsX4tvB0Q==
+X-Received: by 2002:adf:d4cb:0:b0:31f:d95d:20a6 with SMTP id
+ w11-20020adfd4cb000000b0031fd95d20a6mr2789012wrk.12.1696443342583; 
+ Wed, 04 Oct 2023 11:15:42 -0700 (PDT)
 Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
  [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- p9-20020adfcc89000000b00326028b4dd5sm4537759wrj.113.2023.10.04.11.15.29
+ j16-20020a056000125000b00326f5d0ce0asm4536916wrx.21.2023.10.04.11.15.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 11:15:29 -0700 (PDT)
+ Wed, 04 Oct 2023 11:15:41 -0700 (PDT)
 From: Juan Quintela <quintela@redhat.com>
 To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org,  Markus Armbruster <armbru@redhat.com>,
  qemu-block@nongnu.org,  qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,
- qemu-s390x@nongnu.org,  Fam Zheng <fam@euphon.net>,  Kevin Wolf
- <kwolf@redhat.com>,  Hanna Reitz <hreitz@redhat.com>,  =?utf-8?Q?Marc-And?=
- =?utf-8?Q?r=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  Peter Xu <peterx@redhat.com>,  Leonardo
- Bras <leobras@redhat.com>,  Richard Henderson
- <richard.henderson@linaro.org>,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 13/21] qapi: Inline and remove QERR_IO_ERROR definition
-In-Reply-To: <20231004173158.42591-14-philmd@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 4 Oct 2023 19:31:48
+ qemu-s390x@nongnu.org,  Peter Xu <peterx@redhat.com>,  Leonardo Bras
+ <leobras@redhat.com>
+Subject: Re: [PATCH 14/21] qapi: Inline and remove QERR_MIGRATION_ACTIVE
+ definition
+In-Reply-To: <20231004173158.42591-15-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Wed, 4 Oct 2023 19:31:49
  +0200")
 References: <20231004173158.42591-1-philmd@linaro.org>
- <20231004173158.42591-14-philmd@linaro.org>
+ <20231004173158.42591-15-philmd@linaro.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 20:15:28 +0200
-Message-ID: <87wmw2qmnz.fsf@secure.mitica>
+Date: Wed, 04 Oct 2023 20:15:41 +0200
+Message-ID: <87sf6qqmnm.fsf@secure.mitica>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
@@ -120,12 +117,8 @@ Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> wrote:
 >    * in new code, and do not add new ones!
 >    */
 >
-> Mechanical transformation using:
->
->   $ sed -i -e 's/QERR_IO_ERROR/"An IO error has occurred"/' \
->     $(git grep -wl QERR_IO_ERROR)
->
-> then manually removing the definition in include/qapi/qmp/qerror.h.
+> Mechanical transformation using sed, manually
+> removing the definition in include/qapi/qmp/qerror.h.
 >
 > Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
