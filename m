@@ -2,42 +2,40 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DF57B7988
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9DEE7B7985
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:05:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwsE-0000Nc-CT; Wed, 04 Oct 2023 04:04:50 -0400
+	id 1qnws4-0007xl-Bk; Wed, 04 Oct 2023 04:04:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwqK-0004H0-HE; Wed, 04 Oct 2023 04:02:53 -0400
+ id 1qnwqh-0004iR-2y; Wed, 04 Oct 2023 04:03:19 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwqI-00089d-L2; Wed, 04 Oct 2023 04:02:52 -0400
+ id 1qnwqf-0008A8-8e; Wed, 04 Oct 2023 04:03:14 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C8C9F27595;
- Wed,  4 Oct 2023 11:02:24 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 0566A27596;
+ Wed,  4 Oct 2023 11:02:25 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 1D4AC2CBD1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 504332CBD2;
  Wed,  4 Oct 2023 11:02:24 +0300 (MSK)
-Received: (nullmailer pid 2702783 invoked by uid 1000);
+Received: (nullmailer pid 2702786 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Li Zhijian <lizhijian@cn.fujitsu.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, Fan Ni <fan.ni@samsung.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 11/45] hw/cxl: Fix CFMW config memory leak
-Date: Wed,  4 Oct 2023 11:01:32 +0300
-Message-Id: <20231004080221.2702636-11-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org, Dmitry Frolov <frolov@swemel.ru>,
+ Michael Tokarev <mjt@tls.msk.ru>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [Stable-8.1.2 12/45] hw/cxl: Fix out of bound array access
+Date: Wed,  4 Oct 2023 11:01:33 +0300
+Message-Id: <20231004080221.2702636-12-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -61,51 +59,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Li Zhijian <lizhijian@cn.fujitsu.com>
+From: Dmitry Frolov <frolov@swemel.ru>
 
-Allocate targets and targets[n] resources when all sanity checks are
-passed to avoid memory leaks.
+According to cxl_interleave_ways_enc(), fw->num_targets is allowed to be up
+to 16. This also corresponds to CXL r3.0 spec. So, the fw->target_hbs[]
+array is iterated from 0 to 15. But it is statically declared of length 8.
+Thus, out of bound array access may occur.
 
+Fixes: c28db9e000 ("hw/pci-bridge: Make PCIe and CXL PXB Devices inherit from TYPE_PXB_DEV")
+Signed-off-by: Dmitry Frolov <frolov@swemel.ru>
+Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+Link: https://lore.kernel.org/r/20230913101055.754709-1-frolov@swemel.ru
 Cc: qemu-stable@nongnu.org
-Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Li Zhijian <lizhijian@cn.fujitsu.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
-(cherry picked from commit 7b165fa164022b756c2b001d0a1525f98199d3ac)
+(cherry picked from commit de5bbfc602ef1b9b79c494a914c6083a1a23cca2)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/hw/cxl/cxl-host.c b/hw/cxl/cxl-host.c
-index 034c7805b3..f0920da956 100644
---- a/hw/cxl/cxl-host.c
-+++ b/hw/cxl/cxl-host.c
-@@ -39,12 +39,6 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
-         return;
-     }
- 
--    fw->targets = g_malloc0_n(fw->num_targets, sizeof(*fw->targets));
--    for (i = 0, target = object->targets; target; i++, target = target->next) {
--        /* This link cannot be resolved yet, so stash the name for now */
--        fw->targets[i] = g_strdup(target->value);
--    }
--
-     if (object->size % (256 * MiB)) {
-         error_setg(errp,
-                    "Size of a CXL fixed memory window must be a multiple of 256MiB");
-@@ -64,6 +58,12 @@ static void cxl_fixed_memory_window_config(CXLState *cxl_state,
-         fw->enc_int_gran = 0;
-     }
- 
-+    fw->targets = g_malloc0_n(fw->num_targets, sizeof(*fw->targets));
-+    for (i = 0, target = object->targets; target; i++, target = target->next) {
-+        /* This link cannot be resolved yet, so stash the name for now */
-+        fw->targets[i] = g_strdup(target->value);
-+    }
-+
-     cxl_state->fixed_windows = g_list_append(cxl_state->fixed_windows,
-                                              g_steal_pointer(&fw));
- 
+diff --git a/include/hw/cxl/cxl.h b/include/hw/cxl/cxl.h
+index 56c9e7676e..4944725849 100644
+--- a/include/hw/cxl/cxl.h
++++ b/include/hw/cxl/cxl.h
+@@ -29,7 +29,7 @@ typedef struct PXBCXLDev PXBCXLDev;
+ typedef struct CXLFixedWindow {
+     uint64_t size;
+     char **targets;
+-    PXBCXLDev *target_hbs[8];
++    PXBCXLDev *target_hbs[16];
+     uint8_t num_targets;
+     uint8_t enc_int_ways;
+     uint8_t enc_int_gran;
 -- 
 2.39.2
 
