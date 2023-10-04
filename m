@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED27A7B7979
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F03887B7995
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:08:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwrj-00075g-Cx; Wed, 04 Oct 2023 04:04:23 -0400
+	id 1qnws2-0007sx-KO; Wed, 04 Oct 2023 04:04:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwq0-0003jM-IO; Wed, 04 Oct 2023 04:02:34 -0400
+ id 1qnwq7-0003zK-TN; Wed, 04 Oct 2023 04:02:44 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwpy-00085Y-IH; Wed, 04 Oct 2023 04:02:32 -0400
+ id 1qnwq6-00086M-5f; Wed, 04 Oct 2023 04:02:39 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 342022758D;
+ by isrv.corpit.ru (Postfix) with ESMTP id 93B2E2758F;
  Wed,  4 Oct 2023 11:02:23 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 73C1F2CBC9;
+ by tsrv.corpit.ru (Postfix) with SMTP id E15AD2CBCB;
  Wed,  4 Oct 2023 11:02:22 +0300 (MSK)
-Received: (nullmailer pid 2702759 invoked by uid 1000);
+Received: (nullmailer pid 2702765 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 03/45] hw/ppc: Round up the decrementer interval when
- converting to ns
-Date: Wed,  4 Oct 2023 11:01:24 +0300
-Message-Id: <20231004080221.2702636-3-mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 05/45] target/ppc: Sign-extend large decrementer to
+ 64-bits
+Date: Wed,  4 Oct 2023 11:01:26 +0300
+Message-Id: <20231004080221.2702636-5-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
@@ -63,99 +63,46 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Nicholas Piggin <npiggin@gmail.com>
 
-The rule of timers is typically that they should never expire before the
-timeout, but some time afterward. Rounding timer intervals up when doing
-conversion is the right thing to do.
+When storing a large decrementer value with the most significant
+implemented bit set, it is to be treated as a negative and sign
+extended.
 
-Under most circumstances it is impossible observe the decrementer
-interrupt before the dec register has triggered. However with icount
-timing, problems can arise. For example setting DEC to 0 can schedule
-the timer for now, causing it to fire before any more instructions
-have been executed and DEC is still 0.
+This isn't hit for book3s DEC because of another bug, fixing it
+in the next patch exposes this one and can cause additional
+problems, so fix this first. It can be hit with HDECR and other
+edge triggered types.
 
+Fixes: a8dafa52518 ("target/ppc: Implement large decrementer support for TCG")
 Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+[ clg: removed extra cpu and pcc variables shadowing local variables ]
 Signed-off-by: Cédric Le Goater <clg@kaod.org>
-(cherry picked from commit eab0888418ab44344864965193cf6cd194ab6858)
+(cherry picked from commit c8fbc6b9f2f3c732ee3307093c1c5c367eaa64ae)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/hw/ppc/ppc.c b/hw/ppc/ppc.c
-index 9d14fdcc98..3a82c97d5a 100644
+index 57d0aae7d7..befa9d95b3 100644
 --- a/hw/ppc/ppc.c
 +++ b/hw/ppc/ppc.c
-@@ -482,14 +482,26 @@ void ppce500_set_mpic_proxy(bool enabled)
- /*****************************************************************************/
- /* PowerPC time base and decrementer emulation */
- 
-+/*
-+ * Conversion between QEMU_CLOCK_VIRTUAL ns and timebase (TB) ticks:
-+ * TB ticks are arrived at by multiplying tb_freq then dividing by
-+ * ns per second, and rounding down. TB ticks drive all clocks and
-+ * timers in the target machine.
-+ *
-+ * Converting TB intervals to ns for the purpose of setting a
-+ * QEMU_CLOCK_VIRTUAL timer should go the other way, but rounding
-+ * up. Rounding down could cause the timer to fire before the TB
-+ * value has been reached.
-+ */
- static uint64_t ns_to_tb(uint32_t freq, int64_t clock)
- {
-     return muldiv64(clock, freq, NANOSECONDS_PER_SECOND);
+@@ -739,7 +739,9 @@ target_ulong cpu_ppc_load_decr(CPUPPCState *env)
+      * to 64 bits, otherwise it is a 32 bit value.
+      */
+     if (env->spr[SPR_LPCR] & LPCR_LD) {
+-        return decr;
++        PowerPCCPU *cpu = env_archcpu(env);
++        PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(cpu);
++        return sextract64(decr, 0, pcc->lrg_decr_bits);
+     }
+     return (uint32_t) decr;
  }
- 
--static int64_t tb_to_ns(uint32_t freq, uint64_t tb)
-+/* virtual clock in TB ticks, not adjusted by TB offset */
-+static int64_t tb_to_ns_round_up(uint32_t freq, uint64_t tb)
- {
--    return muldiv64(tb, NANOSECONDS_PER_SECOND, freq);
-+    return muldiv64_round_up(tb, NANOSECONDS_PER_SECOND, freq);
+@@ -758,7 +760,7 @@ target_ulong cpu_ppc_load_hdecr(CPUPPCState *env)
+      * extended to 64 bits, otherwise it is 32 bits.
+      */
+     if (pcc->lrg_decr_bits > 32) {
+-        return hdecr;
++        return sextract64(hdecr, 0, pcc->lrg_decr_bits);
+     }
+     return (uint32_t) hdecr;
  }
- 
- uint64_t cpu_ppc_get_tb(ppc_tb_t *tb_env, uint64_t vmclk, int64_t tb_offset)
-@@ -843,7 +855,7 @@ static void __cpu_ppc_store_decr(PowerPCCPU *cpu, uint64_t *nextp,
- 
-     /* Calculate the next timer event */
-     now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--    next = now + tb_to_ns(tb_env->decr_freq, value);
-+    next = now + tb_to_ns_round_up(tb_env->decr_freq, value);
-     *nextp = next;
- 
-     /* Adjust timer */
-@@ -1134,9 +1146,7 @@ static void cpu_4xx_fit_cb (void *opaque)
-         /* Cannot occur, but makes gcc happy */
-         return;
-     }
--    next = now + tb_to_ns(tb_env->tb_freq, next);
--    if (next == now)
--        next++;
-+    next = now + tb_to_ns_round_up(tb_env->tb_freq, next);
-     timer_mod(ppc40x_timer->fit_timer, next);
-     env->spr[SPR_40x_TSR] |= 1 << 26;
-     if ((env->spr[SPR_40x_TCR] >> 23) & 0x1) {
-@@ -1162,11 +1172,10 @@ static void start_stop_pit (CPUPPCState *env, ppc_tb_t *tb_env, int is_excp)
-     } else {
-         trace_ppc4xx_pit_start(ppc40x_timer->pit_reload);
-         now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
--        next = now + tb_to_ns(tb_env->decr_freq, ppc40x_timer->pit_reload);
-+        next = now + tb_to_ns_round_up(tb_env->decr_freq,
-+                                       ppc40x_timer->pit_reload);
-         if (is_excp)
-             next += tb_env->decr_next - now;
--        if (next == now)
--            next++;
-         timer_mod(tb_env->decr_timer, next);
-         tb_env->decr_next = next;
-     }
-@@ -1221,9 +1230,7 @@ static void cpu_4xx_wdt_cb (void *opaque)
-         /* Cannot occur, but makes gcc happy */
-         return;
-     }
--    next = now + tb_to_ns(tb_env->decr_freq, next);
--    if (next == now)
--        next++;
-+    next = now + tb_to_ns_round_up(tb_env->decr_freq, next);
-     trace_ppc4xx_wdt(env->spr[SPR_40x_TCR], env->spr[SPR_40x_TSR]);
-     switch ((env->spr[SPR_40x_TSR] >> 30) & 0x3) {
-     case 0x0:
 -- 
 2.39.2
 
