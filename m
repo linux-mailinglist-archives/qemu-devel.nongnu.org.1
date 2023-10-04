@@ -2,81 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C207B7E9C
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B48D7B7E9A
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:03:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0aw-0001uI-BM; Wed, 04 Oct 2023 08:03:15 -0400
+	id 1qo0ap-0001bo-8o; Wed, 04 Oct 2023 08:03:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZC-0000Jz-66
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:33 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Z3-0000Bc-3r
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:18 -0400
+Received: from mail-wr1-x42c.google.com ([2a00:1450:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Ys-00012m-KC
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:24 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-406609df1a6so20681565e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:06 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Yz-00013c-Sc
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:16 -0400
+Received: by mail-wr1-x42c.google.com with SMTP id
+ ffacd0b85a97d-3248aa5cf4eso2042319f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696420865; x=1697025665; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696420871; x=1697025671; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=6gKDMfa7dSai1h/sgemtp7pr068K3EYlzpE9zbZdHuU=;
- b=mo8FY6sUjvXEI+5WT3rHqjr27ipxS/Lyohoh/ucQp3aePWMB+9BoVReAoao4i2Frc6
- LyZyWBNxTNZXo1+VBNMyXCOHbc/3d1dAwm4s7CoRB0ljYLUpjXKfdGQu6fWZpeoIBT9R
- XN9+I85rlIbjUFdn2mH+HTDCxwWGiD8Tv+ea9WhFejOHtCcnNxzyFr/TGAgFCdWsELP/
- NRcp19LHyAlJ7zncwyQ8xDUFhlxpkr0y+Of1xiEtRqfCnPTXi+eK0X7lQqFUCsp/XN+V
- 6UIpJYpH8JAg6phGVm2EFxazHWGyvhvONyynIBC9f1PuzAaPB4XmdKf36D4a6NmZFpKA
- MszQ==
+ bh=dSsZst+VBCRAXvBcctI1DdSiyNeof1zy8WHkK6DbNv0=;
+ b=W0kQUSP1RninGVGh1C8T+Fwdvu2rCnhH+0hNPfhUmPibqFtxidGxr/Jeph40GIvMyt
+ g9pXYI3VpIA0k9ST6Y/jj8bg2LTqO7zldlZib+LvhAZ0aco+gxdgxnzmSmqLmBjXp1PJ
+ 5+agjujZaO3xFPsoii+aDwxcxCyjQecvG2TDJwcgB/jkuze7+/c0QpDNWa2nY0MTveP4
+ 0FQL/pisxGYC2wYMoRs8QzX5BGTEeavyydyAR/CrvsMrXDOUF9p3JSud7mfKB7pg1n8H
+ U2hc0UZnRgVx/ebK1pR5dpLdhe/0w+Y2ApHrVmpqxB7vm1HyzS/gAKCu3LlPHcK6ZMJ+
+ Ydlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696420865; x=1697025665;
+ d=1e100.net; s=20230601; t=1696420871; x=1697025671;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6gKDMfa7dSai1h/sgemtp7pr068K3EYlzpE9zbZdHuU=;
- b=UtsvYD0QpP9yT68iUVUAkI8fFtC1v7MXD7xRIDAOsxavpCH658pXaJxfwySzyXlydN
- 7FcuD7MOHf28HGxD6lFGYvL3G5rGe04yLr2hutstPmArgZTv7iFU07OOBgIeRJND8H4k
- LxRJd1C70mDMy3ivKK9VHM5/pp1r+FT90j9lQBi0rtTZ1Lc5+R9Rs9HxJfXAl2w0PjOF
- ywVwgC72kgJAsLQWKy5PwEcR4XTxDxo86LCLYcgYezhw08kTGueHu3LxsgsryAUDEoiJ
- 3FD8BBD7FvKunoQ9qD84C62BAokmtDy3L69hNzbEcbeIqj+6bbbyjZKMgDehvcrL3dSi
- y1/Q==
-X-Gm-Message-State: AOJu0Yz5K1kBeYo8wm++eADLV99XxNIVniYLrtEv6rqYeZnlT661U7MN
- BcdICeckHpbo2L5Kf737fbZThmzvPdNUG53d4o8=
-X-Google-Smtp-Source: AGHT+IEPMlqsQ/w4grTD1Hcrw0TJCSty32loqCY8HwMPahqXshgVyQ/9ugHvWlZjOKchvkAn8xPV1Q==
-X-Received: by 2002:a05:600c:2287:b0:400:57d1:4911 with SMTP id
- 7-20020a05600c228700b0040057d14911mr2041971wmf.16.1696420864999; 
- Wed, 04 Oct 2023 05:01:04 -0700 (PDT)
+ bh=dSsZst+VBCRAXvBcctI1DdSiyNeof1zy8WHkK6DbNv0=;
+ b=HYn9/N3lCE3JeM38F8YB9AH/ImeJHfCzl1zgmFruGzaM0+aTOv2qaSFTj0jcHGRPwG
+ AS87OCv0hiMR8J3NiPVUzlJLsOOiYxbgJxE/3gUlMHb4vHJy28eMJG4UEZ4afmoPF7lP
+ E5/51+m7cEsQxelzlY+3iw6wl2gmsBUvtBGs0XMIMEqBNHnnxsoSVkRz1noIYl94vo8+
+ 8t0jbEMs+lZ9TYBCBkSYG3tDoEWmL5wX57SWcqzKelAyqCaOpmMK5Sd4hStOPmnHRrAA
+ 31XmZnJ2cThJ0+gZJFfu2uuwU/JtmkZRgyIUioJ5AJNef0TZMlXxSOH8aWfgFT0EoemX
+ P67g==
+X-Gm-Message-State: AOJu0YyLFL+tcGP+SCDCVQOwidpTOjWbqP+EOQRE8/hvzhQ4c1vLMNtZ
+ m03VGc42aVxtGFxA9Mv82pGWBO/YIz5hmwNKKQc=
+X-Google-Smtp-Source: AGHT+IFHnxfX0hdWAcNtmdBKTKDUyXwbxoBSvzl69Kgnya+2rYyG3gXbTthq1ZYiYEo8Yr1N+CbJug==
+X-Received: by 2002:a5d:6091:0:b0:317:5747:b955 with SMTP id
+ w17-20020a5d6091000000b003175747b955mr1630470wrt.17.1696420870820; 
+ Wed, 04 Oct 2023 05:01:10 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- r2-20020a05600c320200b0040641ce36a8sm1453822wmp.1.2023.10.04.05.01.03
+ g9-20020a5d46c9000000b0031ae8d86af4sm3862502wrs.103.2023.10.04.05.01.09
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 05:01:04 -0700 (PDT)
+ Wed, 04 Oct 2023 05:01:10 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
-Subject: [PATCH v3 07/16] qemu-io: Clean up global variable shadowing
-Date: Wed,  4 Oct 2023 14:00:10 +0200
-Message-ID: <20231004120019.93101-8-philmd@linaro.org>
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v3 08/16] qom/object_interfaces: Clean up global variable
+ shadowing
+Date: Wed,  4 Oct 2023 14:00:11 +0200
+Message-ID: <20231004120019.93101-9-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004120019.93101-1-philmd@linaro.org>
 References: <20231004120019.93101-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42c;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -94,35 +98,140 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  qemu-io.c:478:36: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static void add_user_command(char *optarg)
-                                     ^
+  qom/object_interfaces.c:262:53: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
+                                                      ^
+  qom/object_interfaces.c:298:46: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  bool user_creatable_add_from_str(const char *optarg, Error **errp)
+                                               ^
+  qom/object_interfaces.c:313:49: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  void user_creatable_process_cmdline(const char *optarg)
+                                                  ^
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
   extern char *optarg;                    /* getopt(3) external variables */
                ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- qemu-io.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/qom/object_interfaces.h | 16 ++++++++--------
+ qom/object_interfaces.c         | 16 ++++++++--------
+ 2 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/qemu-io.c b/qemu-io.c
-index 2bd7bfb650..050c70835f 100644
---- a/qemu-io.c
-+++ b/qemu-io.c
-@@ -475,10 +475,10 @@ static int command_loop(void)
-     return last_error;
+diff --git a/include/qom/object_interfaces.h b/include/qom/object_interfaces.h
+index 81541e2080..02b11a7ef0 100644
+--- a/include/qom/object_interfaces.h
++++ b/include/qom/object_interfaces.h
+@@ -99,7 +99,7 @@ void user_creatable_add_qapi(ObjectOptions *options, Error **errp);
+ 
+ /**
+  * user_creatable_parse_str:
+- * @optarg: the object definition string as passed on the command line
++ * @str: the object definition string as passed on the command line
+  * @errp: if an error occurs, a pointer to an area to store the error
+  *
+  * Parses the option for the user creatable object with a keyval parser and
+@@ -110,14 +110,14 @@ void user_creatable_add_qapi(ObjectOptions *options, Error **errp);
+  * Returns: ObjectOptions on success, NULL when an error occurred (*errp is set
+  * then) or help was printed (*errp is not set).
+  */
+-ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp);
++ObjectOptions *user_creatable_parse_str(const char *str, Error **errp);
+ 
+ /**
+  * user_creatable_add_from_str:
+- * @optarg: the object definition string as passed on the command line
++ * @str: the object definition string as passed on the command line
+  * @errp: if an error occurs, a pointer to an area to store the error
+  *
+- * Create an instance of the user creatable object by parsing optarg
++ * Create an instance of the user creatable object by parsing @str
+  * with a keyval parser and implicit key 'qom-type', converting the
+  * result to ObjectOptions and calling into qmp_object_add().
+  *
+@@ -126,13 +126,13 @@ ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp);
+  * Returns: true when an object was successfully created, false when an error
+  * occurred (*errp is set then) or help was printed (*errp is not set).
+  */
+-bool user_creatable_add_from_str(const char *optarg, Error **errp);
++bool user_creatable_add_from_str(const char *str, Error **errp);
+ 
+ /**
+  * user_creatable_process_cmdline:
+- * @optarg: the object definition string as passed on the command line
++ * @cmdline: the object definition string as passed on the command line
+  *
+- * Create an instance of the user creatable object by parsing optarg
++ * Create an instance of the user creatable object by parsing @cmdline
+  * with a keyval parser and implicit key 'qom-type', converting the
+  * result to ObjectOptions and calling into qmp_object_add().
+  *
+@@ -141,7 +141,7 @@ bool user_creatable_add_from_str(const char *optarg, Error **errp);
+  * This function is only meant to be called during command line parsing.
+  * It exits the process on failure or after printing help.
+  */
+-void user_creatable_process_cmdline(const char *optarg);
++void user_creatable_process_cmdline(const char *cmdline);
+ 
+ /**
+  * user_creatable_print_help:
+diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
+index 7d31589b04..e0833c8bfe 100644
+--- a/qom/object_interfaces.c
++++ b/qom/object_interfaces.c
+@@ -259,7 +259,7 @@ static void user_creatable_print_help_from_qdict(QDict *args)
+     }
  }
  
--static void add_user_command(char *optarg)
-+static void add_user_command(char *user_cmd)
+-ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
++ObjectOptions *user_creatable_parse_str(const char *str, Error **errp)
  {
-     cmdline = g_renew(char *, cmdline, ++ncmdline);
--    cmdline[ncmdline-1] = optarg;
-+    cmdline[ncmdline - 1] = user_cmd;
+     ERRP_GUARD();
+     QObject *obj;
+@@ -267,14 +267,14 @@ ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
+     Visitor *v;
+     ObjectOptions *options;
+ 
+-    if (optarg[0] == '{') {
+-        obj = qobject_from_json(optarg, errp);
++    if (str[0] == '{') {
++        obj = qobject_from_json(str, errp);
+         if (!obj) {
+             return NULL;
+         }
+         v = qobject_input_visitor_new(obj);
+     } else {
+-        QDict *args = keyval_parse(optarg, "qom-type", &help, errp);
++        QDict *args = keyval_parse(str, "qom-type", &help, errp);
+         if (*errp) {
+             return NULL;
+         }
+@@ -295,12 +295,12 @@ ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
+     return options;
  }
  
- static void reenable_tty_echo(void)
+-bool user_creatable_add_from_str(const char *optarg, Error **errp)
++bool user_creatable_add_from_str(const char *str, Error **errp)
+ {
+     ERRP_GUARD();
+     ObjectOptions *options;
+ 
+-    options = user_creatable_parse_str(optarg, errp);
++    options = user_creatable_parse_str(str, errp);
+     if (!options) {
+         return false;
+     }
+@@ -310,9 +310,9 @@ bool user_creatable_add_from_str(const char *optarg, Error **errp)
+     return !*errp;
+ }
+ 
+-void user_creatable_process_cmdline(const char *optarg)
++void user_creatable_process_cmdline(const char *cmdline)
+ {
+-    if (!user_creatable_add_from_str(optarg, &error_fatal)) {
++    if (!user_creatable_add_from_str(cmdline, &error_fatal)) {
+         /* Help was printed */
+         exit(EXIT_SUCCESS);
+     }
 -- 
 2.41.0
 
