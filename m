@@ -2,87 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B67B81CD
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AFB7B81E5
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 16:13:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2WW-0005XZ-Oi; Wed, 04 Oct 2023 10:06:48 -0400
+	id 1qo2bT-0001nF-1F; Wed, 04 Oct 2023 10:11:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo2WR-0005VI-RP
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:06:44 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo2WO-0007Dt-Ur
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:06:43 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40684f53bfcso6346285e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696428399; x=1697033199; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=BvmtLqtZwV4gWiHuY3IW+B7giJD8PGIdyPHkZim0nX4=;
- b=RQSO2Qdh76iTKqJsEAqULlkazhK0oNu6ekaWlLudgY8/S+E++FIdhyHXi1c9ZCOfml
- ib+4dwCdC6Nt5ILFbs25h+mjQGTfm0BziMlUjwdWfpebmJkJPDFyNH6ouD0O2IJl+Tx1
- CpXl4d92d4oVRhIW4PV9dWtKrx2dtqUHgUxpvYQbhQTB1QQTb87WmzRKf2sCmyqRVZ4l
- 4fDZhGi2dkQex8RfdzCkncJT6z7zZ7DaziM7lky0WJZmelj9HUmK4LBzhZwNXt7KxwYg
- 1WwmWK+w0TY5wIXK881XwsGEUr+F/kzt+17Ql43h7ihTf6+h4fBLj3xEJEdZ5yYjEL2Y
- DTIQ==
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo2bE-0001mo-E7
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:11:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
+ id 1qo2b9-0001Z0-Ir
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 10:11:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696428694;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=NSvg31Q/uMUXuwBFyMj7dr2msIONUBx59eZp/JNT9hM=;
+ b=QD715NWlRWabEyC/LtbC6RIu4p+p1zqA8MqOH7WGdYN5r6EavmjV283osu32MkvxPgPAnF
+ VL0ZrDpB2ezIP+36qEKW74oN4OY5+vj+ya2KFFVzRCsjLg1Tje332C7nC67UuRVPtgCJ5o
+ SyGYkDLqAq+xW1m+IK5HpqfkGq8xL78=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-310-2xxfQmn1ObKY1BkqZEtDNw-1; Wed, 04 Oct 2023 10:11:28 -0400
+X-MC-Unique: 2xxfQmn1ObKY1BkqZEtDNw-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-40652e8cb57so16102775e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 07:11:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696428399; x=1697033199;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=BvmtLqtZwV4gWiHuY3IW+B7giJD8PGIdyPHkZim0nX4=;
- b=NT4WDpBm4tUvVpyXah0c/KMsTQMK6Vu6OpqPAXOaT/7/4WElT9HGUSQJ3xVq8M9G+P
- e+mZT0/4FRQjo5XRkwOePihQOdqg9/xnwyaX6LTpb3saw+Stt08JPQw+hiejwfkEQ4Ix
- 7skpY4G9Sn9LaW5+Dtx5CIqRw2Rt1KIN0/3CY/y++J7e7afsuB/8ILuVyOS4Tx75+ToP
- 9i01JYGsgll+cbv5PfyFwaIn1Pw2ntx6QWdztSzgchdl2yyUyNa4d+JTk6dGTO5lNt3H
- czF5LEIHPQriEIVDQ5P6kNGa35hVg1pEtQBMM2sI21zze0oMuj12PWBVTc3Fzp15cw0U
- A1pA==
-X-Gm-Message-State: AOJu0YzDeGNajfzzpp0FpuP/T6ek56jpPw9Vl4gEe0vflxF26ogyTlI+
- 9+/GCUgseRHUVOphPYA1pO3eog==
-X-Google-Smtp-Source: AGHT+IEbTvdXJskOq2r4K4RoT+3YvkUEHjnWQrvJnbBpeUy5bP3Gr7FyuzBr4NuuQh6NwuJu4jpUbQ==
-X-Received: by 2002:adf:e9c1:0:b0:31f:f2dc:db7d with SMTP id
- l1-20020adfe9c1000000b0031ff2dcdb7dmr2178875wrn.65.1696428398785; 
- Wed, 04 Oct 2023 07:06:38 -0700 (PDT)
-Received: from [192.168.69.115] (5ep85-h01-176-173-163-52.dslam.bbox.fr.
- [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- f2-20020a056000128200b0032196c508e3sm4137728wrx.53.2023.10.04.07.06.37
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 07:06:38 -0700 (PDT)
-Message-ID: <191a6af3-489b-04bc-0afb-092bdb437a47@linaro.org>
-Date: Wed, 4 Oct 2023 16:06:36 +0200
+ d=1e100.net; s=20230601; t=1696428687; x=1697033487;
+ h=mime-version:message-id:date:reply-to:user-agent:references
+ :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=NSvg31Q/uMUXuwBFyMj7dr2msIONUBx59eZp/JNT9hM=;
+ b=XHfXSUZUO3ngIN/Jy2Tn7xalhaI2IQea/YErn3gMV735RWwx4l8xDdkh7zEuKy+lPg
+ 5riOmzVRZDWYtr6CE6e9dEKazYhf3WMJVhspxriWo4FNucWSFpUoXLhTMJAhemASEyhC
+ OXnhORFmcj78Uk5B24J9CPjoUXsYS2e1SZC/ayQPX2OTuchEfQiSdBVV9a7/4Xk9rMFm
+ PVQJfEMJFa+8WeaN2t8coieRtmf9cY6+hWxQDS9Bsf5p+2XjPAfJtrf/aWjqtl8+rvel
+ oywE3p/7T0hxdNTDWItaAqFQkOK8lzAT0HyywA/dB2qAkyF80PskhqW1pdpBUDPhatF2
+ cJ8Q==
+X-Gm-Message-State: AOJu0YwI+OIWL4QolWzYLHLtTcMkfc70VAZUfD8SzUKMtL5YIKBsUNNo
+ 2PhnMO7NI3BEGXNI3yhKrDxctyTnPSYEft0g5tQTq2qufO3wWhv9eDv+HT0Xs9D6+oXevLXu9cC
+ dFglt+5DJvtR2WhY=
+X-Received: by 2002:a7b:c4cb:0:b0:401:cb45:3fb8 with SMTP id
+ g11-20020a7bc4cb000000b00401cb453fb8mr2369959wmk.38.1696428687330; 
+ Wed, 04 Oct 2023 07:11:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEVD89RSNe+wG/rz6mmOzxq3qS7ERmoLeaH73dFoVXoTsE1IXtPZ9/nx4Hwq20j0mjn1VtClQ==
+X-Received: by 2002:a7b:c4cb:0:b0:401:cb45:3fb8 with SMTP id
+ g11-20020a7bc4cb000000b00401cb453fb8mr2369939wmk.38.1696428686930; 
+ Wed, 04 Oct 2023 07:11:26 -0700 (PDT)
+Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
+ [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
+ c5-20020a05600c0ac500b0040586360a36sm1620107wmr.17.2023.10.04.07.11.25
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 07:11:25 -0700 (PDT)
+From: Juan Quintela <quintela@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: qemu-devel@nongnu.org,  Peter Xu <peterx@redhat.com>,  Steve Sistare
+ <steven.sistare@oracle.com>,  Daniel P . =?utf-8?Q?Berrang=C3=A9?=
+ <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,  Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH v5 2/6] tests/qtest: migration: Add migrate_incoming_qmp
+ helper
+In-Reply-To: <20230712190742.22294-3-farosas@suse.de> (Fabiano Rosas's message
+ of "Wed, 12 Jul 2023 16:07:38 -0300")
+References: <20230712190742.22294-1-farosas@suse.de>
+ <20230712190742.22294-3-farosas@suse.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
+Date: Wed, 04 Oct 2023 16:11:24 +0200
+Message-ID: <87v8bm1nqr.fsf@secure.mitica>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH 00/13] misc: Rename 'softmmu' -> 'system'
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, Claudio Fontana <cfontana@suse.de>
-Cc: Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, qemu-devel@nongnu.org, qemu-riscv@nongnu.org,
- qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org
-References: <20231004090629.37473-1-philmd@linaro.org>
- <ZR1bjpEi5HdFp2xj@redhat.com>
- <85be2979-c0ca-3eb4-dae9-bbabf256c201@redhat.com>
- <00b2ec16-162e-9204-3a04-f45e0edeeb15@suse.de>
- <CABgObfZBTZZvcSPcMSRLWscyEz7B-2h9g28FJx7t7Ggux6E9cA@mail.gmail.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <CABgObfZBTZZvcSPcMSRLWscyEz7B-2h9g28FJx7t7Ggux6E9cA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,63 +101,25 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/10/23 15:49, Paolo Bonzini wrote:
-> On Wed, Oct 4, 2023 at 3:41 PM Claudio Fontana <cfontana@suse.de> wrote:
->>
->> On 10/4/23 14:37, Thomas Huth wrote:
->>> On 04/10/2023 14.33, Daniel P. Berrangé wrote:
->>>> Am I mis-understanding what you mean by 'finishes' here, as
->>>> I see many references to softmmu remaining
->>>> In particular under configs/
->>>>
->>>> I was also hoping it meant that we'd be changing configure
->>>> to allow
->>>>
->>>>       configure --target-list=x86_64-system
->>>>       configure --target-list=x86_64-vm
->>>>
->>>> for less typing
->>>
->>> Maybe we should also bikeshed about the naming first... "system" is a quite
->>> overloaded word in this context already, and "vm" sounds rather like
->>> hardware-accelerated stuff ... what about using something like "sysemu"? Or
->>> "fullsys" for "full system emulation" (in contrast to "user space"-only
->>> emulation)?
-> 
-> I agree that changing other remnants should be done right
-> after this patch, for example $softmmu in configure. Changing
-> all targets is a very large and very user-visible change, it is
-> required but it should be planned very well.
+Fabiano Rosas <farosas@suse.de> wrote:
+> file-based migration requires the target to initiate its migration after
+> the source has finished writing out the data in the file. Currently
+> there's no easy way to initiate 'migrate-incoming', allow this by
+> introducing migrate_incoming_qmp helper, similarly to migrate_qmp.
+>
+> Also make sure migration events are enabled and wait for the incoming
+> migration to start before returning. This avoid a race when querying
+> the migration status too soon after issuing the command.
+>
+> Reviewed-by: Peter Xu <peterx@redhat.com>
+> Signed-off-by: Fabiano Rosas <farosas@suse.de>
 
-As usual I should have been more verbose in my cover.
+Reviewed-by: Juan Quintela <quintela@redhat.com>
 
-This series focus on the C code (and travis) to avoid misuse
-of 'softmmu'.
-
-Yes I agree it would be nice to also rename the binaries, but
-this is a buildsys change (even if we use symlinks/aliases for
-some deprecation period). This is not a tiny patch, and requires
-thoughts.
-
-On one hand I'd rather not rush renaming binaries -- annoying
-users -- without a clear long term plan (which I'm not clear about).
-
-On another hand I wouldn't delay Richard user-mode work.
-Renaming binaries seems orthogonal to me, and could be done
-later IMO.
-
-> As to the actual target names, I think system is the only
-> consistent choice since we have --enable/--disable-system
-> (as pointed out by Claudio) and qemu-system-*.  sysemu
-> may make a little more sense in the codebase (we have
-> include/sysemu after all), but maybe that ship has sailed
-> since we have many occurrences of "system", for example
-> system_ss and other related sourcesets.
-> 
-> Paolo
-> 
+queued.
 
 
