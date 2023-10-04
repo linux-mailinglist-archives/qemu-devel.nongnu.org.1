@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810077B86AC
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE18F7B86CC
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:42:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5jk-0003JQ-IZ; Wed, 04 Oct 2023 13:32:40 -0400
+	id 1qo5k5-0003bW-8U; Wed, 04 Oct 2023 13:33:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5jd-0003D9-DJ
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:34 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5k3-0003aw-DI
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:59 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5jb-0000yQ-Ab
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:33 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3215f19a13aso97798f8f.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:32:30 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo5ji-0000zz-1S
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:32:59 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-3231d6504e1so102555f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:32:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696440749; x=1697045549; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696440756; x=1697045556; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4tlfU+e5P66No2dfLjlw3nceh1BAOvyaTo2g5TESIX0=;
- b=fbTjUTTwnb1isW0M5J9DD8eMgHw+UZqumH3fg+8XPQmpPKdQB8XaGN+9ofhial+yNf
- Oj/nGAvU9Woe702khrsVN39GszY+nIGkpd5+bkhftJ7V8xBzhaV47x4wbpIsef7MyO5I
- tfTBMfS8NXK5gXcRh4HDHn4af74au+RedR6iRwXnvF2RPYbF+YhAUC2PIqletZo2IxLu
- eqiQwRGL3QiM4uKa6dwThg+fql621CM8lvP8+Djnqk5wmwsj6fiAabpoMp17R63ziAHn
- rRzmIJzYmo5+VkJXFNq5iOiMUeSOw81KFuqb9rEcFlnnCU27PBfWrVq6eOPi3xlWuZrW
- ir4w==
+ bh=i0f/S9sk5n4iTXtNvEpxFckitQTJsYOjTpjl0/I1BCA=;
+ b=PmqwI1mTj7JMI2SxH81d4YYnLWp5gevd4JSRKqgkEmuJAr3oBEUXQnduWReC14Wvhp
+ iWML/SAKHzI4H+YxidQM0MMBjo9ti/nuk2csQSNwvSofFKr16VRTQHC9LdlmobptxNiA
+ coFD6jynmjbhOqN5vRm/D/LbHpJ1COYPZUBNncYaP5X62uBJ4DIALCKhfjo3Ys2fl0f0
+ iMz2tjGhI+5RvA3bc1aPv4BcUVXQcM5ryu+uobH8EYqrDTgUxhepXskfhffUVHJVKaPW
+ +dWzaCqlZx5mua+un7N0UceFS6fcKFS6PwXkGj3reyeX/cKLjymsHH/QEh9s91ZOT0ZK
+ u0Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696440749; x=1697045549;
+ d=1e100.net; s=20230601; t=1696440756; x=1697045556;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4tlfU+e5P66No2dfLjlw3nceh1BAOvyaTo2g5TESIX0=;
- b=BZ1w6FnvlXmblkkJ1P/2ht6oAhWwqYE6TLJn2pgcBOb/3rZeSRZ/S4uNgw+OLMbHNs
- kBq4OJhVJ5Uwb3HcqS2gmaphJtiskbc4A5jZdA5PyBoG4nMSfdy7j13wgWaK7lkK60y1
- c3tnorjEiHrCZaL1qhaSoAsQKmeQH5ZNLuvTicArDmnBmcalRtbSqucGVPIs2fW9z42M
- st0hfaynV2W2XN/YdRlZDCfU1NXVKrxTalbVXmYYEDOeWPRtIXQzjyE9dgYnAj56BnKS
- q6QWtQSJPKoHAZp/rzC4ebpBaZNgh59kExo6NW0WApnSkbncBed1JEVuxI8Y+G9iet4F
- zGZQ==
-X-Gm-Message-State: AOJu0YyGPeLfAWkHh7qxan9vguZcVP+A4FOrq8tsmCPTNKRNWgzOApqa
- jiGU7/XXJEWvjx3aSBxDgQ0sAGPTZSSNeLXqR34=
-X-Google-Smtp-Source: AGHT+IFoPPWXzQA0A8EQzmJZASy0AdPWwEXQC8fHhFBqt+F+/8YBKZcmN6FPNzHMTZ221trQvpljXw==
-X-Received: by 2002:a5d:60d1:0:b0:321:7052:6406 with SMTP id
- x17-20020a5d60d1000000b0032170526406mr2778244wrt.12.1696440749298; 
- Wed, 04 Oct 2023 10:32:29 -0700 (PDT)
+ bh=i0f/S9sk5n4iTXtNvEpxFckitQTJsYOjTpjl0/I1BCA=;
+ b=O5VuYvDRje6t3EiwSq/YS1FkmopPVMXZjiWptm5Hlc2kbu+CFqr8A5qAQv+DjY6jHC
+ PrBo/53LQxHksyidOtcVGNYuA34AU9xNodymc/PEHTErmf980Ma8MerScH2lqWC/aIfZ
+ 5fLiTn37llSxJP4mQ07MxE5dYyFCAq6KzQEeITmEWcR7c4DVRbBqoUsGIoNm4K+diMTG
+ dFax4U57f257Ees4c6SjnZAcRKqKNNTwGKEiVWNWByRctYSrysiBcbZ/fsUU9fct7RsR
+ /2PafiyhwenFhiLD6e0n/l8dtCEDmKEow7uIB35q8j5h7BJrylF+NUI09JfIDSjDnKaS
+ 9i7A==
+X-Gm-Message-State: AOJu0YxOwMmo/9BmGThdUZOwZv0jwqHcBAQwYKYNdU4YBFB4IaQ0j/0S
+ Sv4OAPMQm4BWmnsaKMoqDO8upBhYZF8RsY6Qgxs=
+X-Google-Smtp-Source: AGHT+IEyJRF13iyLbNh6DMzMUU/xyLRb/9FWN5daRf86NmsoNelUul76wjR8GQLPMWAtW6Oyc61i+w==
+X-Received: by 2002:adf:efd1:0:b0:31f:fc96:9af1 with SMTP id
+ i17-20020adfefd1000000b0031ffc969af1mr2729111wrp.59.1696440756089; 
+ Wed, 04 Oct 2023 10:32:36 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- y6-20020adff6c6000000b0031c6581d55esm4448332wrp.91.2023.10.04.10.32.27
+ j6-20020adfff86000000b0031423a8f4f7sm4508086wrr.56.2023.10.04.10.32.34
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 10:32:28 -0700 (PDT)
+ Wed, 04 Oct 2023 10:32:35 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PATCH 04/21] qapi: Inline and remove QERR_DEVICE_NO_HOTPLUG
- definition
-Date: Wed,  4 Oct 2023 19:31:39 +0200
-Message-ID: <20231004173158.42591-5-philmd@linaro.org>
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Michael Roth <michael.roth@amd.com>,
+ Konstantin Kostiuk <kkostiuk@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: [PATCH 05/21] qapi: Inline QERR_INVALID_PARAMETER definition
+ (constant parameter)
+Date: Wed,  4 Oct 2023 19:31:40 +0200
+Message-ID: <20231004173158.42591-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004173158.42591-1-philmd@linaro.org>
 References: <20231004173158.42591-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -105,57 +105,108 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using sed, manually
-removing the definition in include/qapi/qmp/qerror.h.
+Mechanical transformation using the following
+coccinelle semantic patch:
+
+    @match@
+    expression errp;
+    constant param;
+    @@
+         error_setg(errp, QERR_INVALID_PARAMETER, param);
+
+    @script:python strformat depends on match@
+    param << match.param;
+    fixedfmt; // new var
+    @@
+    fixedfmt = f'"Invalid parameter \'{param[1:-1]}\'"' # Format skipping '"'.
+    coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
+
+    @replace@
+    expression match.errp;
+    constant match.param;
+    identifier strformat.fixedfmt;
+    @@
+    -    error_setg(errp, QERR_INVALID_PARAMETER, param);
+    +    error_setg(errp, fixedfmt);
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/qapi/qmp/qerror.h | 3 ---
- hw/core/qdev.c            | 3 ++-
- softmmu/qdev-monitor.c    | 2 +-
- 3 files changed, 3 insertions(+), 5 deletions(-)
+ dump/dump.c        | 6 +++---
+ qga/commands.c     | 2 +-
+ ui/ui-qmp-cmds.c   | 2 +-
+ util/qemu-option.c | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index daa889809b..e93211085a 100644
---- a/include/qapi/qmp/qerror.h
-+++ b/include/qapi/qmp/qerror.h
-@@ -17,9 +17,6 @@
-  * add new ones!
-  */
+diff --git a/dump/dump.c b/dump/dump.c
+index d4ef713cd0..e173f1f14c 100644
+--- a/dump/dump.c
++++ b/dump/dump.c
+@@ -1810,7 +1810,7 @@ static void dump_init(DumpState *s, int fd, bool has_format,
  
--#define QERR_DEVICE_NO_HOTPLUG \
--    "Device '%s' does not support hotplugging"
--
- #define QERR_INVALID_PARAMETER \
-     "Invalid parameter '%s'"
+     s->fd = fd;
+     if (has_filter && !length) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, "length");
++        error_setg(errp, "Invalid parameter 'length'");
+         goto cleanup;
+     }
+     s->filter_area_begin = begin;
+@@ -1841,7 +1841,7 @@ static void dump_init(DumpState *s, int fd, bool has_format,
  
-diff --git a/hw/core/qdev.c b/hw/core/qdev.c
-index 43d863b0c5..9b62e0573d 100644
---- a/hw/core/qdev.c
-+++ b/hw/core/qdev.c
-@@ -479,7 +479,8 @@ static void device_set_realized(Object *obj, bool value, Error **errp)
-     static int unattached_count;
+     /* Is the filter filtering everything? */
+     if (validate_start_block(s) == -1) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, "begin");
++        error_setg(errp, "Invalid parameter 'begin'");
+         goto cleanup;
+     }
  
-     if (dev->hotplugged && !dc->hotpluggable) {
--        error_setg(errp, QERR_DEVICE_NO_HOTPLUG, object_get_typename(obj));
-+        error_setg(errp, "Device '%s' does not support hotplugging",
-+                   object_get_typename(obj));
+@@ -2145,7 +2145,7 @@ void qmp_dump_guest_memory(bool paging, const char *file,
+     }
+ 
+     if (fd == -1) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, "protocol");
++        error_setg(errp, "Invalid parameter 'protocol'");
          return;
      }
  
-diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
-index 3a9740dcbd..a964bd80df 100644
---- a/softmmu/qdev-monitor.c
-+++ b/softmmu/qdev-monitor.c
-@@ -911,7 +911,7 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+diff --git a/qga/commands.c b/qga/commands.c
+index 09c683e263..871210ab0b 100644
+--- a/qga/commands.c
++++ b/qga/commands.c
+@@ -154,7 +154,7 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
+ 
+     gei = guest_exec_info_find(pid);
+     if (gei == NULL) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, "pid");
++        error_setg(errp, "Invalid parameter 'pid'");
+         return NULL;
      }
  
-     if (!dc->hotpluggable) {
--        error_setg(errp, QERR_DEVICE_NO_HOTPLUG,
-+        error_setg(errp, "Device '%s' does not support hotplugging",
-                    object_get_typename(OBJECT(dev)));
-         return;
-     }
+diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
+index debc07d678..41ca0100e7 100644
+--- a/ui/ui-qmp-cmds.c
++++ b/ui/ui-qmp-cmds.c
+@@ -44,7 +44,7 @@ void qmp_set_password(SetPasswordOptions *opts, Error **errp)
+         assert(opts->protocol == DISPLAY_PROTOCOL_VNC);
+         if (opts->connected != SET_PASSWORD_ACTION_KEEP) {
+             /* vnc supports "connected=keep" only */
+-            error_setg(errp, QERR_INVALID_PARAMETER, "connected");
++            error_setg(errp, "Invalid parameter 'connected'");
+             return;
+         }
+         /*
+diff --git a/util/qemu-option.c b/util/qemu-option.c
+index eedd08929b..fb391a7904 100644
+--- a/util/qemu-option.c
++++ b/util/qemu-option.c
+@@ -612,7 +612,7 @@ QemuOpts *qemu_opts_create(QemuOptsList *list, const char *id,
+ 
+     if (list->merge_lists) {
+         if (id) {
+-            error_setg(errp, QERR_INVALID_PARAMETER, "id");
++            error_setg(errp, "Invalid parameter 'id'");
+             return NULL;
+         }
+         opts = qemu_opts_find(list, NULL);
 -- 
 2.41.0
 
