@@ -2,101 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE4767B7EFB
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3BA7B7F1B
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:29:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0vG-0002MA-IE; Wed, 04 Oct 2023 08:24:14 -0400
+	id 1qo0zb-0004Iu-9X; Wed, 04 Oct 2023 08:28:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qo0vE-0002LH-Ve
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:24:12 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qo0zZ-0004Ii-0k
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:28:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qo0vC-0003uq-RS
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:24:12 -0400
+ (Exim 4.90_1) (envelope-from <victortoso@redhat.com>)
+ id 1qo0zV-00060w-Nk
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:28:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696422249;
+ s=mimecast20190719; t=1696422516;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Jmkpb2MHofs4U+lH07lDbbLiKX8CXGFx15ixU7AxlKM=;
- b=UQlc3T8WJFDWXcU9OnWc3h3So4NOP2sFOpo5hhXI3QgyAKJSNfzNtEQ+FKIK25YE7ax1AE
- ESyFHmY7K5SjH3sGPIa89IygPK9SwC3pOgTizRQszF7a8PdkYxcqkH9CpglxNmQ3WHbDXb
- Dbuy3oYeejACM/ytP9+Y5YbMbwF6FRk=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-EzEwcAvkMeOh-N0EEMAT8Q-1; Wed, 04 Oct 2023 08:23:58 -0400
-X-MC-Unique: EzEwcAvkMeOh-N0EEMAT8Q-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-99c8bbc902eso101212666b.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:23:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696422237; x=1697027037;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Jmkpb2MHofs4U+lH07lDbbLiKX8CXGFx15ixU7AxlKM=;
- b=QuzShrDuWoIMZn5BuZqooJ0pTkRLxU2w4wnRHcSCxUCtG4trHx1bwMBEKzlVqdYTpH
- piBBfPaJ1dNcZMZFWm/o6wnJP7MM5iRMOuQv+XoQGkvRfhPY0XP7YgW8723Wi3fKvqUJ
- 4kf3IAZ5sPQEk2hwTMaMRJiv2aZxbyEAkX1K33lHg2+VyLSEBps95dQHU0gqmt7tNYzZ
- 8AhaxyLV3TBMLRTiG3S7ixjhVuLGie6mm8j37FYvEYClFtzMkP3xuR/O3+ntqCrmm1nc
- xoSe1PS19HaXhnQnYsZt5+L7BWtlTggmtDmTaDBLO+RXV84JE9NAy72QzuwILGn1UH7B
- s+cg==
-X-Gm-Message-State: AOJu0Yx1fyOzeYwVEISk4BdJoEElZAqHMjdGRdnhhyNqilvYZEgPy8UB
- 9XzHG/6gi42qQ8L5I4Tme1k16aX5prcF2vHq6w0/Pwz3hGp5OREztp3/fy+2UuwMyAXbZeIRbVK
- zPXnSEvAMq58FaZw=
-X-Received: by 2002:a17:907:7857:b0:9b2:b153:925 with SMTP id
- lb23-20020a170907785700b009b2b1530925mr1791116ejc.21.1696422237513; 
- Wed, 04 Oct 2023 05:23:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFUV//bx0bFjj9czDG/W7MgKFieE/+cLiIYgWNXGjs7aIaSw+W1USSDph6b6Ar41Jw/hbf5dg==
-X-Received: by 2002:a17:907:7857:b0:9b2:b153:925 with SMTP id
- lb23-20020a170907785700b009b2b1530925mr1791103ejc.21.1696422237123; 
- Wed, 04 Oct 2023 05:23:57 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
- by smtp.gmail.com with ESMTPSA id
- h14-20020a17090634ce00b0099b6becb107sm2735732ejb.95.2023.10.04.05.23.55
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 05:23:56 -0700 (PDT)
-Message-ID: <80b221c8-cf25-522b-777f-a88f1638b1e6@redhat.com>
-Date: Wed, 4 Oct 2023 14:23:55 +0200
+ bh=PxQsA2wYV7+9U+B8scBpqM6y1/V0NGh0g3vnAsr2eN0=;
+ b=It4E/XQ40zFMSq8JmDir5vrPkDQSaUEFYqJ6TPeXDY1o7794WaycsZ2/nn4oEhVaE9XUJU
+ V7RSCGGFokuU8/w8wFw6/JdH70TgmozX+h7Ep0FIUhOwhGuaQPPYviSwiIITwCGyZPVw8b
+ kSA0w3/AJZSPccdIxYJ9U+g5UNUkmjA=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-417-33uM6KqCMDSPf2ucdb0NPg-1; Wed, 04 Oct 2023 08:28:24 -0400
+X-MC-Unique: 33uM6KqCMDSPf2ucdb0NPg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3FFCC3822E88
+ for <qemu-devel@nongnu.org>; Wed,  4 Oct 2023 12:28:24 +0000 (UTC)
+Received: from localhost (unknown [10.45.226.150])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9F9DA215670B;
+ Wed,  4 Oct 2023 12:28:23 +0000 (UTC)
+Date: Wed, 4 Oct 2023 14:28:22 +0200
+From: Victor Toso <victortoso@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>, 
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: Re: [PATCH v1 1/9] qapi: golang: Generate qapi's enum types in Go
+Message-ID: <jfec4n52zy67wmjhcjb3bb6scu4pvc52g2ejtl2b3z46eyofxj@vxgv7ocoev5k>
+References: <20230927112544.85011-1-victortoso@redhat.com>
+ <20230927112544.85011-2-victortoso@redhat.com>
+ <CAFn=p-ZdgaCuTZF-yYa6E_CMFobR--Yt6ycSBNDz7S+sFxX14Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/3] vhost-user: do not send RESET_OWNER on device reset
-Content-Language: en-US
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>, =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?=
- <marcandre.lureau@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- eperezma@redhat.com, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>
-References: <20231004014532.1228637-1-stefanha@redhat.com>
- <20231004014532.1228637-2-stefanha@redhat.com>
- <346cfde5-82af-724e-cc02-8f55d06e67ee@redhat.com>
- <CAJSP0QV0OWEAYB8h45fK4Gep2OVC7VM0daJbdDXunSpj-2Wctw@mail.gmail.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <CAJSP0QV0OWEAYB8h45fK4Gep2OVC7VM0daJbdDXunSpj-2Wctw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature"; boundary="bzrs4hl2zxetsih7"
+Content-Disposition: inline
+In-Reply-To: <CAFn=p-ZdgaCuTZF-yYa6E_CMFobR--Yt6ycSBNDz7S+sFxX14Q@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=victortoso@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,95 +81,312 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 04.10.23 13:15, Stefan Hajnoczi wrote:
-> On Wed, 4 Oct 2023 at 06:44, Hanna Czenczek <hreitz@redhat.com> wrote:
->> On 04.10.23 03:45, Stefan Hajnoczi wrote:
->>> The VHOST_USER_RESET_OWNER message is deprecated in the spec:
->>>
->>>      This is no longer used. Used to be sent to request disabling all
->>>      rings, but some back-ends interpreted it to also discard connection
->>>      state (this interpretation would lead to bugs).  It is recommended
->>>      that back-ends either ignore this message, or use it to disable all
->>>      rings.
->> According to the spec, it is then indeed better to not call it in
->> vhost_user_reset_device, because it seems like it would be interpreted
->> as something completely different.
->>
->> However, between the three back-end implementations of vhost-user I know
->> of (libvhost-user, DPDK, the vhost crates; four if you count RSD), none
->> implement RESET_DEVICE.  libvhost-user and DPDK do implement
->> RESET_OWNER, though, and they both do it by resetting the device, not by
->> disabling any vring.  The vhost crate also implements RESET_OWNER, but
->> it doesn’t do anything but forward it as such to the actual device
->> implementation (virtiofsd doesn’t implement this function, so ignores
->> it).  It does document that it would disable all vrings, but does so in
->> the past and has marked it deprecated (ever since the method was
->> introduced in the fourth commit to the repository, making it extremely
->> unlikely that anyone would implement it).
-> Hi Hanna,
-> vhost-user-backend still seems to reset all vhost-user protocol state,
-> making RESET_OWNER unusable:
-> https://github.com/rust-vmm/vhost/blob/main/crates/vhost-user-backend/src/handler.rs#L230
->
-> Have I missed something?
 
-No, I missed that.  I overlooked that when grepping for reset_owner.
+--bzrs4hl2zxetsih7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This implementation kind of does follow the original pre-2015 
-description of RESET_OWNER, but I can’t believe this code originated 
-from pre-2015, which makes it really weird.  It’s strange that in a 
-commit from April 2019 the vhost crate marked the function as (“no 
-longer used”), and then it was implemented in September of 2019, notably 
-as something completely different than “Used to be sent to request 
-disabling all rings”.
+Hi,
 
-Another thing I noticed is that while libvhost-user does call the 
-function vu_reset_device_exec(), what it does is indeed disable all 
-vrings instead of resetting anything, i.e. what the spec says (and what 
-I didn’t think anyone did).
+On Mon, Oct 02, 2023 at 03:07:49PM -0400, John Snow wrote:
+> On Wed, Sep 27, 2023 at 7:25=E2=80=AFAM Victor Toso <victortoso@redhat.co=
+m> wrote:
+> >
+> > This patch handles QAPI enum types and generates its equivalent in Go.
+> >
+> > Basically, Enums are being handled as strings in Golang.
+> >
+> > 1. For each QAPI enum, we will define a string type in Go to be the
+> >    assigned type of this specific enum.
+> >
+> > 2. Naming: CamelCase will be used in any identifier that we want to
+> >    export [0], which is everything.
+> >
+> > [0] https://go.dev/ref/spec#Exported_identifiers
+> >
+> > Example:
+> >
+> > qapi:
+> >   | { 'enum': 'DisplayProtocol',
+> >   |   'data': [ 'vnc', 'spice' ] }
+> >
+> > go:
+> >   | type DisplayProtocol string
+> >   |
+> >   | const (
+> >   |     DisplayProtocolVnc   DisplayProtocol =3D "vnc"
+> >   |     DisplayProtocolSpice DisplayProtocol =3D "spice"
+> >   | )
+> >
+> > Signed-off-by: Victor Toso <victortoso@redhat.com>
+> > ---
+> >  scripts/qapi/golang.py | 140 +++++++++++++++++++++++++++++++++++++++++
+> >  scripts/qapi/main.py   |   2 +
+> >  2 files changed, 142 insertions(+)
+> >  create mode 100644 scripts/qapi/golang.py
+> >
+> > diff --git a/scripts/qapi/golang.py b/scripts/qapi/golang.py
+> > new file mode 100644
+> > index 0000000000..87081cdd05
+> > --- /dev/null
+> > +++ b/scripts/qapi/golang.py
+> > @@ -0,0 +1,140 @@
+> > +"""
+> > +Golang QAPI generator
+> > +"""
+> > +# Copyright (c) 2023 Red Hat Inc.
+> > +#
+> > +# Authors:
+> > +#  Victor Toso <victortoso@redhat.com>
+> > +#
+> > +# This work is licensed under the terms of the GNU GPL, version 2.
+> > +# See the COPYING file in the top-level directory.
+> > +
+> > +# due QAPISchemaVisitor interface
+> > +# pylint: disable=3Dtoo-many-arguments
+> > +
+> > +# Just for type hint on self
+> > +from __future__ import annotations
+> > +
+> > +import os
+> > +from typing import List, Optional
+> > +
+> > +from .schema import (
+> > +    QAPISchema,
+> > +    QAPISchemaType,
+> > +    QAPISchemaVisitor,
+> > +    QAPISchemaEnumMember,
+> > +    QAPISchemaFeature,
+> > +    QAPISchemaIfCond,
+> > +    QAPISchemaObjectType,
+> > +    QAPISchemaObjectTypeMember,
+> > +    QAPISchemaVariants,
+> > +)
+> > +from .source import QAPISourceInfo
+> > +
+> > +TEMPLATE_ENUM =3D '''
+> > +type {name} string
+> > +const (
+> > +{fields}
+> > +)
+> > +'''
+> > +
+> > +
+> > +def gen_golang(schema: QAPISchema,
+> > +               output_dir: str,
+> > +               prefix: str) -> None:
+> > +    vis =3D QAPISchemaGenGolangVisitor(prefix)
+> > +    schema.visit(vis)
+> > +    vis.write(output_dir)
+> > +
+> > +
+> > +def qapi_to_field_name_enum(name: str) -> str:
+> > +    return name.title().replace("-", "")
+> > +
+> > +
+> > +class QAPISchemaGenGolangVisitor(QAPISchemaVisitor):
+> > +
+> > +    def __init__(self, _: str):
+> > +        super().__init__()
+> > +        types =3D ["enum"]
+> > +        self.target =3D {name: "" for name in types}
+> > +        self.schema =3D None
+> > +        self.golang_package_name =3D "qapi"
+> > +
+> > +    def visit_begin(self, schema):
+> > +        self.schema =3D schema
+> > +
+> > +        # Every Go file needs to reference its package name
+> > +        for target in self.target:
+> > +            self.target[target] =3D f"package {self.golang_package_nam=
+e}\n"
+> > +
+> > +    def visit_end(self):
+> > +        self.schema =3D None
+> > +
+> > +    def visit_object_type(self: QAPISchemaGenGolangVisitor,
+> > +                          name: str,
+> > +                          info: Optional[QAPISourceInfo],
+> > +                          ifcond: QAPISchemaIfCond,
+> > +                          features: List[QAPISchemaFeature],
+> > +                          base: Optional[QAPISchemaObjectType],
+> > +                          members: List[QAPISchemaObjectTypeMember],
+> > +                          variants: Optional[QAPISchemaVariants]
+> > +                          ) -> None:
+> > +        pass
+> > +
+> > +    def visit_alternate_type(self: QAPISchemaGenGolangVisitor,
+> > +                             name: str,
+> > +                             info: Optional[QAPISourceInfo],
+> > +                             ifcond: QAPISchemaIfCond,
+> > +                             features: List[QAPISchemaFeature],
+> > +                             variants: QAPISchemaVariants
+> > +                             ) -> None:
+> > +        pass
+> > +
+> > +    def visit_enum_type(self: QAPISchemaGenGolangVisitor,
+> > +                        name: str,
+> > +                        info: Optional[QAPISourceInfo],
+> > +                        ifcond: QAPISchemaIfCond,
+> > +                        features: List[QAPISchemaFeature],
+> > +                        members: List[QAPISchemaEnumMember],
+> > +                        prefix: Optional[str]
+> > +                        ) -> None:
+> > +
+> > +        value =3D qapi_to_field_name_enum(members[0].name)
+>=20
+> Unsure if this was addressed on the mailing list yet, but in our call
+> we discussed how this call was vestigial and was causing the QAPI
+> tests to fail. Actually, I can't quite run "make check-qapi-schema"
+> and see the failure, I'm seeing it when I run "make check" and I'm not
+> sure how to find the failure more efficiently/quickly:
+>=20
+> jsnow@scv ~/s/q/build (review)> make
+> [1/60] Generating subprojects/dtc/version_gen.h with a custom command
+> [2/60] Generating qemu-version.h with a custom command (wrapped by
+> meson to capture output)
+> [3/44] Generating tests/Test QAPI files with a custom command
+> FAILED: tests/qapi-builtin-types.c tests/qapi-builtin-types.h
+> tests/qapi-builtin-visit.c tests/qapi-builtin-visit.h
+> tests/test-qapi-commands-sub-sub-module.c
+> tests/test-qapi-commands-sub-sub-module.h tests/test-qapi-commands.c
+> tests/test-qapi-commands.h tests/test-qapi-emit-events.c
+> tests/test-qapi-emit-events.h tests/test-qapi-events-sub-sub-module.c
+> tests/test-qapi-events-sub-sub-module.h tests/test-qapi-events.c
+> tests/test-qapi-events.h tests/test-qapi-init-commands.c
+> tests/test-qapi-init-commands.h tests/test-qapi-introspect.c
+> tests/test-qapi-introspect.h tests/test-qapi-types-sub-sub-module.c
+> tests/test-qapi-types-sub-sub-module.h tests/test-qapi-types.c
+> tests/test-qapi-types.h tests/test-qapi-visit-sub-sub-module.c
+> tests/test-qapi-visit-sub-sub-module.h tests/test-qapi-visit.c
+> tests/test-qapi-visit.h
+> /home/jsnow/src/qemu/build/pyvenv/bin/python3
+> /home/jsnow/src/qemu/scripts/qapi-gen.py -o
+> /home/jsnow/src/qemu/build/tests -b -p test-
+> ../tests/qapi-schema/qapi-schema-test.json --suppress-tracing
+> Traceback (most recent call last):
+>   File "/home/jsnow/src/qemu/scripts/qapi-gen.py", line 19, in <module>
+>     sys.exit(main.main())
+>              ^^^^^^^^^^^
+>   File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 96, in main
+>     generate(args.schema,
+>   File "/home/jsnow/src/qemu/scripts/qapi/main.py", line 58, in generate
+>     gen_golang(schema, output_dir, prefix)
+>   File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 46, in gen_gol=
+ang
+>     schema.visit(vis)
+>   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 1227, in visit
+>     mod.visit(visitor)
+>   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 209, in visit
+>     entity.visit(visitor)
+>   File "/home/jsnow/src/qemu/scripts/qapi/schema.py", line 346, in visit
+>     visitor.visit_enum_type(
+>   File "/home/jsnow/src/qemu/scripts/qapi/golang.py", line 102, in
+> visit_enum_type
+>     value =3D qapi_to_field_name_enum(members[0].name)
+>                                     ~~~~~~~^^^
+> IndexError: list index out of range
+> ninja: build stopped: subcommand failed.
+> make: *** [Makefile:162: run-ninja] Error 1
+>=20
+>=20
+> For the rest of my review, I commented this line out and continued on.
 
-DPDK interestingly does do a reset, and this includes clearing 
-protocol_features (in reset_device()).
+Yes, it was a leftover when I was reorganizing the patches. You
+can see this value is not actually used.
 
-So two things: First, I’d prefer (slightly) for the commit message to 
-mention that while RESET_OWNER would not be usable for a reset if 
-everything were according to spec, the main problem to me seems that 
-RESET_OWNER was never clearly defined before being deprecated, so 
-different implementations do different things regardless of what the 
-spec says now, which means it’s basically burned and no front-end may 
-ever issue it at all lest it wants to get the back-end into an 
-implementation-defined state.
+I removed it in my branch for v2.
 
-Second, I wonder what exactly you mean by saying that RESET_OWNER 
-resetting all vhost-user protocol state were to make the command 
-unusable for resetting.  The vhost-user-backend implementation doesn’t 
-clear all state, but resets only three things: The @owned field (which I 
-don’t think is really used outside of 
-vhost/src/vhost_user/dummy_slave.rs (this name is begging for a 
-conscious language overhaul...), which appears not really important?), 
-the virtio features (this I would expect any device reset to do), and 
-the vhost-user protocol features.  Now, yes, clearing the vhost-user 
-protocol features doesn’t seem like something that should be done just 
-because of a device reset. However, note that DPDK’s reset_device() does 
-this, too.  What I’m getting at is that we don’t have a clear definition 
-of what RESET_DEVICE is supposed to do either, i.e. it doesn’t 
-explicitly say that protocol features are not to be reset.  Sure, that 
-may be obvious, but we should clarify this so that if e.g. DPDK is to 
-implement RESET_DEVICE, they will take care not use its reset_device() 
-implementation, which does reset protocol_features.
+Cheers,
+Victor
 
-(Also, now that I look at RESET_DEVICE – why does it say that it 
-disables all vrings?  (Has done so since its introduction.)  Is this 
-something that qemu expects and will handle, i.e. that after a 
-guest-initiated reset, the rings are enabled when the guest wants to use 
-the device again?  Also, it doesn’t say the rings are stopped, so 
-basically, as it is *right now* (where we only have three ring states, 
-stopped, started+disabled, started+enabled), disabling vrings implicitly 
-means they must still be started, because they can’t be disabled when 
-stopped.  I’m going to change that, but as it reads right now, 
-RESET_DEVICE does not seem like the reset we want. We should really get 
-to fix that, too, before back-ends start to actually implement it.)
+> > +        fields =3D ""
+> > +        for member in members:
+> > +            value =3D qapi_to_field_name_enum(member.name)
+> > +            fields +=3D f'''\t{name}{value} {name} =3D "{member.name}"=
+\n'''
+> > +
+> > +        self.target["enum"] +=3D TEMPLATE_ENUM.format(name=3Dname, fie=
+lds=3Dfields[:-1])
+> > +
+> > +    def visit_array_type(self, name, info, ifcond, element_type):
+> > +        pass
+> > +
+> > +    def visit_command(self,
+> > +                      name: str,
+> > +                      info: Optional[QAPISourceInfo],
+> > +                      ifcond: QAPISchemaIfCond,
+> > +                      features: List[QAPISchemaFeature],
+> > +                      arg_type: Optional[QAPISchemaObjectType],
+> > +                      ret_type: Optional[QAPISchemaType],
+> > +                      gen: bool,
+> > +                      success_response: bool,
+> > +                      boxed: bool,
+> > +                      allow_oob: bool,
+> > +                      allow_preconfig: bool,
+> > +                      coroutine: bool) -> None:
+> > +        pass
+> > +
+> > +    def visit_event(self, name, info, ifcond, features, arg_type, boxe=
+d):
+> > +        pass
+> > +
+> > +    def write(self, output_dir: str) -> None:
+> > +        for module_name, content in self.target.items():
+> > +            go_module =3D module_name + "s.go"
+> > +            go_dir =3D "go"
+> > +            pathname =3D os.path.join(output_dir, go_dir, go_module)
+> > +            odir =3D os.path.dirname(pathname)
+> > +            os.makedirs(odir, exist_ok=3DTrue)
+> > +
+> > +            with open(pathname, "w", encoding=3D"ascii") as outfile:
+> > +                outfile.write(content)
+> > diff --git a/scripts/qapi/main.py b/scripts/qapi/main.py
+> > index 316736b6a2..cdbb3690fd 100644
+> > --- a/scripts/qapi/main.py
+> > +++ b/scripts/qapi/main.py
+> > @@ -15,6 +15,7 @@
+> >  from .common import must_match
+> >  from .error import QAPIError
+> >  from .events import gen_events
+> > +from .golang import gen_golang
+> >  from .introspect import gen_introspect
+> >  from .schema import QAPISchema
+> >  from .types import gen_types
+> > @@ -54,6 +55,7 @@ def generate(schema_file: str,
+> >      gen_events(schema, output_dir, prefix)
+> >      gen_introspect(schema, output_dir, prefix, unmask)
+> >
+> > +    gen_golang(schema, output_dir, prefix)
+> >
+> >  def main() -> int:
+> >      """
+> > --
+> > 2.41.0
+> >
+>=20
 
-Hanna
+--bzrs4hl2zxetsih7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEIG07NS9WbzsOZXLpl9kSPeN6SE8FAmUdWmYACgkQl9kSPeN6
+SE8ijBAAwe8xbKR0kkPmT4F6Ndb5T74sgVxVSNO0D9+4xHaZK+o/mGugrROl2nEJ
+w7Xdauh8LoeSsYuskIQzfFGQZWWfkDrs7U2jwW1N06WijP91vtFmxKQFjH0+7oon
+QLCPmlP+k82dFheayWVmWXM+c2DTlxAHxy4XsyonpQ6dORjWWN5h92lKCUZtzHwM
+sAqkFzGgDpp85M1hIdgkbj19Q1Udg97L1bj4NbpjxCG4Hnely9O7/sOhIIYmmaBC
+dGw2Es6plbDpbcHJzTFZUtz59HZ2KYpClhnf9e7hMGuqdqbX0USQqmlvsPxgfFcA
+4If7yqfzbKA1pgbf2f1u6d6BB+TgVCE+6JP7P25xHD8O24JUX31FnxkTFaYMHREs
+6T8J+a2t+M6f+3wDJeOk2MgoAAiwNJJDc7FVADhlRPPfYNK/HmwcLHwEn6c9f9u1
+2ij8QZRXR9N5atOfEVweBLmwsV+0cQGIPgsR6l6kwN8VeUD9kTBPFDG8CUu+Dctt
+sRPULl1gSX9F0VEyAceNnzlc+j0i3g5MjLvKrF6vo/ncf3kJH9dMi7e+vF3L+6P6
+cwJiG7AWzCOKw0maZXsmMCtUM7A6GRljpnXGVXVq1l10jqU3Qn1CFxD7tPkfz3BX
+HQYwTtnpe/wx6pA0l+H/5LAGd20a3k7F2fnzHUxnyDxI39dXTgQ=
+=ojoG
+-----END PGP SIGNATURE-----
+
+--bzrs4hl2zxetsih7--
 
 
