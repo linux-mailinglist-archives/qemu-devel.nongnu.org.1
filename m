@@ -2,75 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12A377B8164
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0467B816A
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:55:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2IY-0008Ho-9T; Wed, 04 Oct 2023 09:52:22 -0400
+	id 1qo2K4-0001AM-Hr; Wed, 04 Oct 2023 09:53:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo2IW-0008Hd-S9
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:52:20 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo2IV-000296-7l
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:52:20 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qo2Jh-00014q-OF
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:53:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
+ id 1qo2Jg-0002kS-4U
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:53:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696427610;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=M5h1/kZ/bfou2M6Bf2orQuTGwg/bl7LNzqxAiXkOYAU=;
+ b=bRTdXs546nUPLE8rRl8LAbmuYXrR7QwcvkB6a8A2CNZe/WoCzgZleKrR5Bwqy4QHxIzmjH
+ nqqGPvxHDoNXsB/POyuW4e3yMv86quhipeH5y5FYqwBztnrN0WNqRQp3Yi4jZjAcKjdnQi
+ 6X1yomSQYkrUUudDr9XpAHP0KKCdNqQ=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-301-8bxdPBwaOseeYRPQt3hmZg-1; Wed, 04 Oct 2023 09:53:19 -0400
+X-MC-Unique: 8bxdPBwaOseeYRPQt3hmZg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.5])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 9679421846;
- Wed,  4 Oct 2023 13:52:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696427537; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wftMimQhtViClKd6l/etaEAja3g3eWduKbqhpMLpvyQ=;
- b=HCZTT08dmsOkR76oRvM5x3dEZG5/ICyS/HNFnNCDQJ4+BDIn4YUlzKr55y6x2LdHtKmMJ4
- q21XvGGlau1Dbwa03Q0eVYbrLJ5+dVzRdW+Z3p1gpQR8OPyuC1cU7ORJZ8J+Z6EOlA7H4R
- WMHJaNePEo42q3PJKv6kVm9ZT+ZqSn0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696427537;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=wftMimQhtViClKd6l/etaEAja3g3eWduKbqhpMLpvyQ=;
- b=VWGtIq8VIsoiEOLeMuc7Gwwf/vwxk7hMREFE3hZZ0PxzHh2YfX2FC2n1u5wUJa5o8H++/i
- 6eAim0V1ZbKiQ1AA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 27F7E139F9;
- Wed,  4 Oct 2023 13:52:16 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id dxc5ORBuHWUtZQAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 13:52:16 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org,
- quintela@redhat.com, peterx@redhat.com, leobras@redhat.com,
- lizhijian@fujitsu.com, eblake@redhat.com
-Subject: Re: [PATCH v2 52/53] migration/rdma: Use error_report() & friends
- instead of stderr
-In-Reply-To: <87y1gihc49.fsf@pond.sub.org>
-References: <20230928132019.2544702-1-armbru@redhat.com>
- <20230928132019.2544702-53-armbru@redhat.com> <87msx5yosr.fsf@suse.de>
- <87y1gihc49.fsf@pond.sub.org>
-Date: Wed, 04 Oct 2023 10:52:14 -0300
-Message-ID: <87v8bmpka9.fsf@suse.de>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 4680C1C01E9C;
+ Wed,  4 Oct 2023 13:53:19 +0000 (UTC)
+Received: from localhost (unknown [10.39.194.165])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id BF79A440E3;
+ Wed,  4 Oct 2023 13:53:18 +0000 (UTC)
+From: Stefan Hajnoczi <stefanha@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ qemu-block@nongnu.org,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PULL 0/1] Block patches
+Date: Wed,  4 Oct 2023 09:53:16 -0400
+Message-ID: <20231004135317.1254548-1-stefanha@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=stefanha@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,78 +80,33 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> writes:
+The following changes since commit da1034094d375afe9e3d8ec8980550ea0f06f7e0:
 
-> Fabiano Rosas <farosas@suse.de> writes:
->
->> Markus Armbruster <armbru@redhat.com> writes:
->>
->>> error_report() obeys -msg, reports the current error location if any,
->>> and reports to the current monitor if any.  Reporting to stderr
->>> directly with fprintf() or perror() is wrong, because it loses all
->>> this.
->>>
->>> Fix the offenders.  Bonus: resolves a FIXME about problematic use of
->>> errno.
->>>
->>> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->>> ---
->>>  migration/rdma.c | 44 +++++++++++++++++++++-----------------------
->>>  1 file changed, 21 insertions(+), 23 deletions(-)
->>>
->>> diff --git a/migration/rdma.c b/migration/rdma.c
->>> index 54b59d12b1..dba0802fca 100644
->>> --- a/migration/rdma.c
->>> +++ b/migration/rdma.c
->>> @@ -877,12 +877,12 @@ static int qemu_rdma_broken_ipv6_kernel(struct ibv_context *verbs, Error **errp)
->>>  
->>>          if (roce_found) {
->>>              if (ib_found) {
->>> -                fprintf(stderr, "WARN: migrations may fail:"
->>> -                                " IPv6 over RoCE / iWARP in linux"
->>> -                                " is broken. But since you appear to have a"
->>> -                                " mixed RoCE / IB environment, be sure to only"
->>> -                                " migrate over the IB fabric until the kernel "
->>> -                                " fixes the bug.\n");
->>> +                warn_report("WARN: migrations may fail:"
->>> +                            " IPv6 over RoCE / iWARP in linux"
->>> +                            " is broken. But since you appear to have a"
->>> +                            " mixed RoCE / IB environment, be sure to only"
->>> +                            " migrate over the IB fabric until the kernel "
->>> +                            " fixes the bug.");
->>
->> Won't this become "warning: WARN:"?
->
-> It will.  I'll drop the "WARN: " prefix.
->
->>>              } else {
->>>                  error_setg(errp, "RDMA ERROR: "
->>>                             "You only have RoCE / iWARP devices in your systems"
->>> @@ -1418,12 +1418,8 @@ static int qemu_rdma_unregister_waiting(RDMAContext *rdma)
->>>          block->remote_keys[chunk] = 0;
->>>  
->>>          if (ret != 0) {
->>> -            /*
->>> -             * FIXME perror() is problematic, bcause ibv_dereg_mr() is
->>> -             * not documented to set errno.  Will go away later in
->>> -             * this series.
->>> -             */
->>> -            perror("unregistration chunk failed");
->>> +            error_report("unregistration chunk failed: %s",
->>> +                         strerror(ret));
->>
->> Doesn't seem to fix the issue, ret might still not be an errno. Am I
->> missing something?
->
-> Yes :)
->
-> ibv_dereg_mr(3) section RETURN VALUE has:
->
->        ibv_dereg_mr()  returns  0 on success, or the value of errno on failure
->        (which indicates the failure reason).
->
-> Clearer now?
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging (2023-10-03 07:43:44 -0400)
 
-Yep, thank you. 
+are available in the Git repository at:
+
+  https://gitlab.com/stefanha/qemu.git tags/block-pull-request
+
+for you to fetch changes up to 9afa888ce0f816d0f2cfc95eebe4f49244c518af:
+
+  osdep: set _FORTIFY_SOURCE=2 when optimization is enabled (2023-10-04 09:52:06 -0400)
+
+----------------------------------------------------------------
+Pull request
+
+----------------------------------------------------------------
+
+Daniel P. Berrangé (1):
+  osdep: set _FORTIFY_SOURCE=2 when optimization is enabled
+
+ meson.build                  | 10 ----------
+ include/qemu/osdep.h         |  4 ++++
+ util/coroutine-sigaltstack.c |  4 ++--
+ util/coroutine-ucontext.c    |  4 ++--
+ 4 files changed, 8 insertions(+), 14 deletions(-)
+
+-- 
+2.41.0
 
 
