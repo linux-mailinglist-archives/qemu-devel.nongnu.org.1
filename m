@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCDA7B7C0E
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CF47B7C0D
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:26:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qny8B-0000GM-V6; Wed, 04 Oct 2023 05:25:23 -0400
+	id 1qny8M-0000VW-Od; Wed, 04 Oct 2023 05:25:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qny8A-0000Fy-8v
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:25:22 -0400
-Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qny8K-0000OB-2w
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:25:32 -0400
+Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qny88-0006WX-Q9
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:25:22 -0400
-Received: by mail-wr1-x436.google.com with SMTP id
- ffacd0b85a97d-307d20548adso1734498f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:25:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qny8E-0006aY-PT
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:25:28 -0400
+Received: by mail-lf1-x134.google.com with SMTP id
+ 2adb3069b0e04-50437c618b4so2223131e87.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:25:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696411518; x=1697016318; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696411524; x=1697016324; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=RRWPGyvamS9BaoZFO7yButK2HqJrbjFh2qkgdvEVg64=;
- b=IYHnlVjo/fO8K868lxPmwQ6lwq7ZbvUEDXbT9vALQDu0snFXK6zYHoDaNLBBR5Y80x
- dYo1j5G8apdbO+X3GWqEsLzTQe1hPRVSwUCD15fSPC8/YmbbxAdXWU+Rs96oofp8cye5
- Lu6CtY21n/P7r4RyIAVs8bLN6X5Rupt+leRoUSQzyL3fg4FJ4Jus9dDYYREfVe8Omohg
- kongmMm+0Lq6dFVAmlHglS4mSC1oidjrZPJ5V/cPXy3ahFk2xrCPCRCEuZLed/b24ZHV
- 4NvsFb67Ax+/cVUkYQs8o/oPD4QXIpp/yavD+1l7kU0lcGpfLC9UZkw3wolOjNqambpo
- mYEg==
+ bh=Ht6f+EI+Idu4pYIpXB1U3bVhNwTUfL0DoVlLTOdL73U=;
+ b=wGYJ4FIocMYNM/joNKxw9WH0U8qOqdy9rz0+xlG9UjCLj6qQpLLRL4guMlVN54TmFb
+ EkYa5poNu8DUkIhMZ6dAZWa4sViMW+/35kMg+Ep1gRmpLklgJq3YMelJmTGstSqkRVZg
+ G2P1xLOA84PdL2N9NnFDtLMm5b9PaE7SkPNTd6NZTh9wksXig+FTCeKJyCdyZFHWH0rM
+ xK0z1x2mV8Y0gYCSGhZFji8IFZUxQsGCcp462WPo1cqaZz2nQcLlfnd7xhk1qS96f7bA
+ VX2/ZtcCTEQKYC/d7XzPH4Q+Pc2BAK4J9ZFb6CFQcbqIDiAypC5QXy+o0cxfwoMNQshz
+ tGtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696411518; x=1697016318;
+ d=1e100.net; s=20230601; t=1696411524; x=1697016324;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=RRWPGyvamS9BaoZFO7yButK2HqJrbjFh2qkgdvEVg64=;
- b=GcY39I4VhtHh0PKzDFBu7+A7bTkdtr4wMzdffTdq/72o1Y5+8zWVAjISZe+0HPDf/m
- JaKccAedI8jOmg1+seSHFgQj3AVmN68YNWnt81WFF+wJoRzfJLq44vWtrEgYcCjjIh+u
- tCfQ7T3Z5H85Ay+E/i0Hz0LTomZ8orD1lBgjgwMA3Sf6Ly/xBMNhroQFHipFLelwx/YI
- P5PTCy+88dwLhTz4RwFx/v2rCHgUOdHsSytIEG00kK9SsPvgV+1snOgdx2EM39V4UyIG
- /QNc/xFshLwYl9VvU1EmOEbHjUrMC2dSrTkr9iPRFxUMhoTF1A2375fgepSXspwzO+0O
- U13g==
-X-Gm-Message-State: AOJu0Yx1d5sETRS/XffHM3cxbdEKsaMDzmaPRqi9NETXwvXMvTKHQhJm
- e5nDe7YG3buYuIn5RaySYx4tNvPvvWqMYo4EbEs=
-X-Google-Smtp-Source: AGHT+IFuFZreDy3qyIlJHmh6DquPUSR5Mg4Q+rPsRUYNROq5KORSMHqS5Bb14nM/PABFsF2U8Ri+bw==
-X-Received: by 2002:adf:ea4c:0:b0:320:bae:2dfd with SMTP id
- j12-20020adfea4c000000b003200bae2dfdmr1625172wrn.5.1696411518596; 
- Wed, 04 Oct 2023 02:25:18 -0700 (PDT)
+ bh=Ht6f+EI+Idu4pYIpXB1U3bVhNwTUfL0DoVlLTOdL73U=;
+ b=HHg3VgDN1p7AK04MAE3ocpkdl8BJzE+qEQlkp7eBxEHQc6vKcu2ulQmzPmBcdbycUj
+ JJpTTF1jRRzuIw5vo00FOz2uoyppyTdghNdZoz3lNn6HHggTg0/PrgShROvpKvTvNEm9
+ Z5g7x3jPXPpQyKEtMnvL1bINw7dtAxBP9PIvKxSuQoh0Ts9u30CytumCLRVg6nG4BSPP
+ zv3guuwMdYInI5QbYtv4muOUjYnvGX7MK4FEZCNw2Q37ghY7/mFzTtXKv7uml35QgXMG
+ bsINc+1+gLYvtxkeYONVO0NMugU4BbAF5TkPUhYMYluBIF+w/lSHTvJvTuG0+Qvm0N8c
+ 9Tug==
+X-Gm-Message-State: AOJu0YxY/2Ms20AFMIUNc/3sr9H7rYHh4JL478UVYYC7uf2m5y1+6G6t
+ lJJ5RD3yJ80Fa1htclWoPUuVpm+q4d/KYCLW+4c=
+X-Google-Smtp-Source: AGHT+IE9Nzagqv8EpOaU9dnoJJfndbNVanEQItgTOi5VYUtWArFS+IehE9AVd4zQuH4A6NSCY23Wpg==
+X-Received: by 2002:a05:6512:250c:b0:503:1b83:e352 with SMTP id
+ be12-20020a056512250c00b005031b83e352mr1868328lfb.52.1696411524470; 
+ Wed, 04 Oct 2023 02:25:24 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- j10-20020a5d464a000000b00317a04131c5sm3534791wrs.57.2023.10.04.02.25.17
+ v14-20020a05600c214e00b00401c595fcc7sm1021759wml.11.2023.10.04.02.25.23
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 02:25:18 -0700 (PDT)
+ Wed, 04 Oct 2023 02:25:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Roman Bolshakov <rbolshakov@ddn.com>, Cameron Esfahani <dirty@apple.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Roman Bolshakov <roman@roolebo.dev>
-Subject: [PATCH v2 1/2] target/i386/hvf: Remove unused includes in 'hvf-i386.h'
-Date: Wed,  4 Oct 2023 11:25:08 +0200
-Message-ID: <20231004092510.39498-2-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2 2/2] sysemu/kvm: Restrict hvf_get_supported_cpuid() to x86
+ targets
+Date: Wed,  4 Oct 2023 11:25:09 +0200
+Message-ID: <20231004092510.39498-3-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004092510.39498-1-philmd@linaro.org>
 References: <20231004092510.39498-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::436;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::134;
+ envelope-from=philmd@linaro.org; helo=mail-lf1-x134.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,34 +92,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The only non standard type -- CPUArchState -- is forward
-declared in "qemu/typedefs.h", so no particular header is
-required here.
+hvf_get_supported_cpuid() is only defined for x86 targets
+(in target/i386/hvf/x86_cpuid.c).
+Its declaration is pointless on all other targets.
+
+All the calls to it in target/i386/cpu.c are guarded by
+a call on hvf_enabled(), so are elided when HVF is not
+built in. Therefore we can remove the unnecessary function
+stub.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Roman Bolshakov <roman@roolebo.dev>
-Tested-by: Roman Bolshakov <roman@roolebo.dev>
 ---
- target/i386/hvf/hvf-i386.h | 6 ------
- 1 file changed, 6 deletions(-)
+ include/sysemu/hvf.h        | 3 ---
+ target/i386/hvf/hvf-i386.h  | 2 ++
+ target/i386/cpu.c           | 1 +
+ target/i386/hvf/hvf-cpu.c   | 1 +
+ target/i386/hvf/x86_cpuid.c | 1 +
+ 5 files changed, 5 insertions(+), 3 deletions(-)
 
+diff --git a/include/sysemu/hvf.h b/include/sysemu/hvf.h
+index 4037cd6a73..4a7c6af3a5 100644
+--- a/include/sysemu/hvf.h
++++ b/include/sysemu/hvf.h
+@@ -20,13 +20,10 @@
+ #include "cpu.h"
+ 
+ #ifdef CONFIG_HVF
+-uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx,
+-                                 int reg);
+ extern bool hvf_allowed;
+ #define hvf_enabled() (hvf_allowed)
+ #else /* !CONFIG_HVF */
+ #define hvf_enabled() 0
+-#define hvf_get_supported_cpuid(func, idx, reg) 0
+ #endif /* !CONFIG_HVF */
+ 
+ #endif /* NEED_CPU_H */
 diff --git a/target/i386/hvf/hvf-i386.h b/target/i386/hvf/hvf-i386.h
-index 95b47c1c2e..243bc111cc 100644
+index 243bc111cc..e99c02cd4b 100644
 --- a/target/i386/hvf/hvf-i386.h
 +++ b/target/i386/hvf/hvf-i386.h
-@@ -16,12 +16,6 @@
+@@ -16,6 +16,8 @@
  #ifndef HVF_I386_H
  #define HVF_I386_H
  
--#include "qemu/accel.h"
--#include "sysemu/hvf.h"
--#include "sysemu/hvf_int.h"
--#include "cpu.h"
--#include "x86.h"
--
++uint32_t hvf_get_supported_cpuid(uint32_t func, uint32_t idx, int reg);
++
  void hvf_handle_io(CPUArchState *, uint16_t, void *, int, int, int);
  
  /* Host specific functions */
+diff --git a/target/i386/cpu.c b/target/i386/cpu.c
+index ed72883bf3..5b620500ab 100644
+--- a/target/i386/cpu.c
++++ b/target/i386/cpu.c
+@@ -26,6 +26,7 @@
+ #include "tcg/helper-tcg.h"
+ #include "sysemu/reset.h"
+ #include "sysemu/hvf.h"
++#include "hvf/hvf-i386.h"
+ #include "kvm/kvm_i386.h"
+ #include "sev.h"
+ #include "qapi/error.h"
+diff --git a/target/i386/hvf/hvf-cpu.c b/target/i386/hvf/hvf-cpu.c
+index 333db59898..21c519be74 100644
+--- a/target/i386/hvf/hvf-cpu.c
++++ b/target/i386/hvf/hvf-cpu.c
+@@ -15,6 +15,7 @@
+ #include "hw/boards.h"
+ #include "sysemu/hvf.h"
+ #include "hw/core/accel-cpu.h"
++#include "hvf-i386.h"
+ 
+ static void hvf_cpu_max_instance_init(X86CPU *cpu)
+ {
+diff --git a/target/i386/hvf/x86_cpuid.c b/target/i386/hvf/x86_cpuid.c
+index 7323a7a94b..9380b90496 100644
+--- a/target/i386/hvf/x86_cpuid.c
++++ b/target/i386/hvf/x86_cpuid.c
+@@ -25,6 +25,7 @@
+ #include "x86.h"
+ #include "vmx.h"
+ #include "sysemu/hvf.h"
++#include "hvf-i386.h"
+ 
+ static bool xgetbv(uint32_t cpuid_ecx, uint32_t idx, uint64_t *xcr)
+ {
 -- 
 2.41.0
 
