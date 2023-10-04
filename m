@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6507B9710
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 00:04:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FC17B9717
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 00:04:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo9xE-0003zv-Cc; Wed, 04 Oct 2023 18:02:52 -0400
+	id 1qo9xP-0004SB-Vp; Wed, 04 Oct 2023 18:03:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xB-0003zk-Bc
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:02:49 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xN-0004Mm-5B
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:03:01 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9x9-0003rS-N3
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:02:49 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xK-0003wK-LT
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:03:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696456966;
+ s=mimecast20190719; t=1696456977;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=LzKZuZquPAsiKzUY2JHiaYVJqmKsq9gZ4aRLuK68dRY=;
- b=hMBYsaeVtSunviszex2n7szzhKeEcBNckgztoBNhVfBSeRpxBkI80viSlZpGFENzEiBkQx
- GneMfnGxymEAUWgmeHokPwlSPoPnHSbz63pVDKa1IHVt1wHqTljadIu+zuLKKQXXd2N3sd
- uvFPy42ztbcWuiApFrFePCMu3EDwe2Y=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=R6va2VZkT9QMl2V1pnSCWMJi0Dr6Cze5jEB4h8TfOtM=;
+ b=Rk0vsegzOm+Um9HLqiaMnve96mWDyeZkBsH3l7SuK7Aw2aa/oDpLkM1hwthXBSbAdlM1Th
+ zLzWV037Ma3PKJPT1msWg2P+IdEca3xEZM9a/AM2rvtp0rUNf3AtwMYPHsFFRsq+OhTjx4
+ aLv0xmA31L6RbkAypDJR+GG7Rp2ypak=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-569-i6xxX3TLPimTfRhWtIm3nA-1; Wed, 04 Oct 2023 18:02:45 -0400
-X-MC-Unique: i6xxX3TLPimTfRhWtIm3nA-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-59beab24599so727367b3.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 15:02:45 -0700 (PDT)
+ us-mta-217-XDmow_a-M4OHPbYYSQmt5w-1; Wed, 04 Oct 2023 18:02:46 -0400
+X-MC-Unique: XDmow_a-M4OHPbYYSQmt5w-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-65d0ea9d271so562206d6.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 15:02:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696456964; x=1697061764;
+ d=1e100.net; s=20230601; t=1696456966; x=1697061766;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=LzKZuZquPAsiKzUY2JHiaYVJqmKsq9gZ4aRLuK68dRY=;
- b=U8o5merpTBe/jUWP8GTlGa+RPUhkGRXMYozd4K6zlMdbsHDbfYY7PKon5bJph6Psp1
- EDkJ3LH6AkWzRW6ENx6AiLajEUCFPgYjgVd8l7dzB9IjbLROGXXp5g6CrfT9D+57Yh0/
- RCW/KOxGDeF6bRuSZgkaLQXGsV8aA8DNpF7hfW5319uzLbjj/DLdRF7ODpZUrkh1rHdO
- r5s94SUXb7IEvs7zazdQwWotFA46dBh8TFKkXcwj8a/78JrTzbuPZm0bifEZzpYgzItt
- IM+Ra1xyyTuDIu5bb8njExo+LalKiA+Svrr3E9qkx5Tl8FXUu10gQQHEnmFSDCDiKrUI
- mWZw==
-X-Gm-Message-State: AOJu0YykxXCsRB+M/MojAXfbmewP/v7qbwtDOFhIkY1N6XPIcOTK1Bpr
- l4fHgoPiyqfWHMzDwyvMMtNpncnQlEff/YgFTmj3PRsAmk9S3n5hfSn5Ozc1EvcwCo6p19Zoq0Q
- DEknnU6hBJT71LYYe38VxrEuTGRCdDjHbodo/tyMQA0g4KGVoc2AW7hmJHFeD3iHFXyDivWAT
-X-Received: by 2002:a25:69c8:0:b0:d7a:bcef:c2ab with SMTP id
- e191-20020a2569c8000000b00d7abcefc2abmr2829829ybc.4.1696456964476; 
- Wed, 04 Oct 2023 15:02:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbXPlHofG1fxzP/tV3uRRxNDybCQwJJuqUZ+OT+wyOZCJzfPe2TMrLouB4prb1BizU4WmMaw==
-X-Received: by 2002:a25:69c8:0:b0:d7a:bcef:c2ab with SMTP id
- e191-20020a2569c8000000b00d7abcefc2abmr2829808ybc.4.1696456964000; 
- Wed, 04 Oct 2023 15:02:44 -0700 (PDT)
+ bh=R6va2VZkT9QMl2V1pnSCWMJi0Dr6Cze5jEB4h8TfOtM=;
+ b=NwEpiH2SpWEwVvZ2PCcjRidmYrYuzPVpCt/RrawDRHL3MmC9juvu9RIMpq7VZl1DLs
+ dwhbBooyr2UHGlNfFZ9BWpBHekdg0oZm68W+i5/saM9MudvqFPDK7gM/lR+0KjyR0ffE
+ U9SjVKp5XR5uMRsk8TZAF+b0wYwfWPRK7wk3/XhT+IxwX+bIRknOQfJJKINvF7TOX32Z
+ xbPgayni7Ogp59XVmcnWAVRB8ftkr5lZazoOv3qorgaW6brt2g4VkiBtYPVwzsdnz2xo
+ U0ADkSKiwHxB3rmxyvOO7JSCI01BmQnrxRcs/82kXSJHqUBpz23gmarjFMBy0A4MG9uq
+ bfCg==
+X-Gm-Message-State: AOJu0YyW1wZXO/NvEGGRSzpfteQU8OnzRffhW8BNvA72w/nDu35DB7Zm
+ lM+cUOdyhZRwQJFg/apeA9iPrnLheSSXIhRiVNtdR7TSUMJs53gRK+cKFfCsaRSFDB5g5M2c7pU
+ 4zK8olrQDdjef0CvfZlm0GLo7ytaPcYgHCrRClCOw3DQyp2rSoalUPrBgUYIUc9bznqjogOYh
+X-Received: by 2002:a05:6214:4019:b0:653:5880:ed9e with SMTP id
+ kd25-20020a056214401900b006535880ed9emr3610529qvb.6.1696456965892; 
+ Wed, 04 Oct 2023 15:02:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCVoSEFnjkZCq6B3z9cQrQNm9/2uzJMVHqOzOdVKqgqPrXFtB4ftlwxYfbYepV+B42GnfzrA==
+X-Received: by 2002:a05:6214:4019:b0:653:5880:ed9e with SMTP id
+ kd25-20020a056214401900b006535880ed9emr3610497qvb.6.1696456965312; 
+ Wed, 04 Oct 2023 15:02:45 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- w17-20020a0cdf91000000b0063d162a8b8bsm10821qvl.19.2023.10.04.15.02.43
+ w17-20020a0cdf91000000b0063d162a8b8bsm10821qvl.19.2023.10.04.15.02.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 15:02:43 -0700 (PDT)
+ Wed, 04 Oct 2023 15:02:44 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
  Juan Quintela <quintela@redhat.com>
-Subject: [PATCH v3 02/10] migration: Introduce migrate_has_error()
-Date: Wed,  4 Oct 2023 18:02:32 -0400
-Message-ID: <20231004220240.167175-3-peterx@redhat.com>
+Subject: [PATCH v3 03/10] migration: Refactor error handling in source return
+ path
+Date: Wed,  4 Oct 2023 18:02:33 -0400
+Message-ID: <20231004220240.167175-4-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004220240.167175-1-peterx@redhat.com>
 References: <20231004220240.167175-1-peterx@redhat.com>
@@ -98,50 +99,488 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Introduce a helper to detect whether MigrationState.error is set for
-whatever reason.
+rp_state.error was a boolean used to show error happened in return path
+thread.  That's not only duplicating error reporting (migrate_set_error),
+but also not good enough in that we only do error_report() and set it to
+true, we never can keep a history of the exact error and show it in
+query-migrate.
 
-This is preparation work for any thread (e.g. source return path thread) to
-setup errors in an unified way to MigrationState, rather than relying on
-its own way to set errors (mark_source_rp_bad()).
+To make this better, a few things done:
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+  - Use error_setg() rather than error_report() across the whole lifecycle
+    of return path thread, keeping the error in an Error*.
+
+  - Use migrate_set_error() to apply that captured error to the global
+    migration object when error occured in this thread.
+
+  - With above, no need to have mark_source_rp_bad(), remove it, alongside
+    with rp_state.error itself.
+
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/migration.h | 1 +
- migration/migration.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+ migration/migration.h  |   1 -
+ migration/ram.h        |   5 +-
+ migration/migration.c  | 123 ++++++++++++++++++-----------------------
+ migration/ram.c        |  41 +++++++-------
+ migration/trace-events |   4 +-
+ 5 files changed, 79 insertions(+), 95 deletions(-)
 
 diff --git a/migration/migration.h b/migration/migration.h
-index 972597f4de..4106a1dc54 100644
+index 4106a1dc54..33a7831da4 100644
 --- a/migration/migration.h
 +++ b/migration/migration.h
-@@ -476,6 +476,7 @@ bool  migration_has_all_channels(void);
- uint64_t migrate_max_downtime(void);
+@@ -308,7 +308,6 @@ struct MigrationState {
+         /* Protected by qemu_file_lock */
+         QEMUFile     *from_dst_file;
+         QemuThread    rp_thread;
+-        bool          error;
+         /*
+          * We can also check non-zero of rp_thread, but there's no "official"
+          * way to do this, so this bool makes it slightly more elegant.
+diff --git a/migration/ram.h b/migration/ram.h
+index 145c915ca7..14ed666d58 100644
+--- a/migration/ram.h
++++ b/migration/ram.h
+@@ -51,7 +51,8 @@ uint64_t ram_bytes_total(void);
+ void mig_throttle_counter_reset(void);
  
- void migrate_set_error(MigrationState *s, const Error *error);
-+bool migrate_has_error(MigrationState *s);
- 
- void migrate_fd_connect(MigrationState *s, Error *error_in);
- 
+ uint64_t ram_pagesize_summary(void);
+-int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len);
++int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
++                         Error **errp);
+ void ram_postcopy_migrated_memory_release(MigrationState *ms);
+ /* For outgoing discard bitmap */
+ void ram_postcopy_send_discard_bitmap(MigrationState *ms);
+@@ -71,7 +72,7 @@ void ramblock_recv_bitmap_set(RAMBlock *rb, void *host_addr);
+ void ramblock_recv_bitmap_set_range(RAMBlock *rb, void *host_addr, size_t nr);
+ int64_t ramblock_recv_bitmap_send(QEMUFile *file,
+                                   const char *block_name);
+-int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *rb);
++int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *rb, Error **errp);
+ bool ramblock_page_is_discarded(RAMBlock *rb, ram_addr_t start);
+ void postcopy_preempt_shutdown_file(MigrationState *s);
+ void *postcopy_preempt_thread(void *opaque);
 diff --git a/migration/migration.c b/migration/migration.c
-index 010056d6f3..4c6de8c2dd 100644
+index 4c6de8c2dd..e821e80094 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -1231,6 +1231,13 @@ void migrate_set_error(MigrationState *s, const Error *error)
-     }
+@@ -99,7 +99,7 @@ static int migration_maybe_pause(MigrationState *s,
+                                  int *current_active_state,
+                                  int new_state);
+ static void migrate_fd_cancel(MigrationState *s);
+-static int await_return_path_close_on_source(MigrationState *s);
++static void await_return_path_close_on_source(MigrationState *s);
+ 
+ static bool migration_needs_multiple_sockets(void)
+ {
+@@ -1427,7 +1427,6 @@ int migrate_init(MigrationState *s, Error **errp)
+     s->to_dst_file = NULL;
+     s->state = MIGRATION_STATUS_NONE;
+     s->rp_state.from_dst_file = NULL;
+-    s->rp_state.error = false;
+     s->mbps = 0.0;
+     s->pages_per_second = 0.0;
+     s->downtime = 0;
+@@ -1750,16 +1749,6 @@ void qmp_migrate_continue(MigrationStatus state, Error **errp)
+     qemu_sem_post(&s->pause_sem);
  }
  
-+bool migrate_has_error(MigrationState *s)
-+{
-+    /* The lock is not helpful here, but still follow the rule */
-+    QEMU_LOCK_GUARD(&s->error_mutex);
-+    return qatomic_read(&s->error);
-+}
-+
- static void migrate_error_free(MigrationState *s)
+-/* migration thread support */
+-/*
+- * Something bad happened to the RP stream, mark an error
+- * The caller shall print or trace something to indicate why
+- */
+-static void mark_source_rp_bad(MigrationState *s)
+-{
+-    s->rp_state.error = true;
+-}
+-
+ static struct rp_cmd_args {
+     ssize_t     len; /* -1 = variable */
+     const char *name;
+@@ -1781,7 +1770,7 @@ static struct rp_cmd_args {
+  * and we don't need to send pages that have already been sent.
+  */
+ static void migrate_handle_rp_req_pages(MigrationState *ms, const char* rbname,
+-                                       ram_addr_t start, size_t len)
++                                        ram_addr_t start, size_t len, Error **errp)
  {
-     QEMU_LOCK_GUARD(&s->error_mutex);
+     long our_host_ps = qemu_real_host_page_size();
+ 
+@@ -1793,37 +1782,36 @@ static void migrate_handle_rp_req_pages(MigrationState *ms, const char* rbname,
+      */
+     if (!QEMU_IS_ALIGNED(start, our_host_ps) ||
+         !QEMU_IS_ALIGNED(len, our_host_ps)) {
+-        error_report("%s: Misaligned page request, start: " RAM_ADDR_FMT
+-                     " len: %zd", __func__, start, len);
+-        mark_source_rp_bad(ms);
++        error_setg(errp, "MIG_RP_MSG_REQ_PAGES: Misaligned page request, start:"
++                   RAM_ADDR_FMT " len: %zd", start, len);
+         return;
+     }
+ 
+-    if (ram_save_queue_pages(rbname, start, len)) {
+-        mark_source_rp_bad(ms);
+-    }
++    ram_save_queue_pages(rbname, start, len, errp);
+ }
+ 
+-static int migrate_handle_rp_recv_bitmap(MigrationState *s, char *block_name)
++static int migrate_handle_rp_recv_bitmap(MigrationState *s, char *block_name,
++                                         Error **errp)
+ {
+     RAMBlock *block = qemu_ram_block_by_name(block_name);
+ 
+     if (!block) {
+-        error_report("%s: invalid block name '%s'", __func__, block_name);
++        error_setg(errp, "MIG_RP_MSG_RECV_BITMAP has invalid block name '%s'",
++                   block_name);
+         return -EINVAL;
+     }
+ 
+     /* Fetch the received bitmap and refresh the dirty bitmap */
+-    return ram_dirty_bitmap_reload(s, block);
++    return ram_dirty_bitmap_reload(s, block, errp);
+ }
+ 
+-static int migrate_handle_rp_resume_ack(MigrationState *s, uint32_t value)
++static int migrate_handle_rp_resume_ack(MigrationState *s,
++                                        uint32_t value, Error **errp)
+ {
+     trace_source_return_path_thread_resume_ack(value);
+ 
+     if (value != MIGRATION_RESUME_ACK_VALUE) {
+-        error_report("%s: illegal resume_ack value %"PRIu32,
+-                     __func__, value);
++        error_setg(errp, "illegal resume_ack value %"PRIu32, value);
+         return -1;
+     }
+ 
+@@ -1882,48 +1870,46 @@ static void *source_return_path_thread(void *opaque)
+     uint32_t tmp32, sibling_error;
+     ram_addr_t start = 0; /* =0 to silence warning */
+     size_t  len = 0, expected_len;
++    Error *err = NULL;
+     int res;
+ 
+     trace_source_return_path_thread_entry();
+     rcu_register_thread();
+ 
+-    while (!ms->rp_state.error && !qemu_file_get_error(rp) &&
++    while (!migrate_has_error(ms) && !qemu_file_get_error(rp) &&
+            migration_is_setup_or_active(ms->state)) {
+         trace_source_return_path_thread_loop_top();
++
+         header_type = qemu_get_be16(rp);
+         header_len = qemu_get_be16(rp);
+ 
+         if (qemu_file_get_error(rp)) {
+-            mark_source_rp_bad(ms);
+             goto out;
+         }
+ 
+         if (header_type >= MIG_RP_MSG_MAX ||
+             header_type == MIG_RP_MSG_INVALID) {
+-            error_report("RP: Received invalid message 0x%04x length 0x%04x",
+-                         header_type, header_len);
+-            mark_source_rp_bad(ms);
++            error_setg(&err, "Received invalid message 0x%04x length 0x%04x",
++                       header_type, header_len);
+             goto out;
+         }
+ 
+         if ((rp_cmd_args[header_type].len != -1 &&
+             header_len != rp_cmd_args[header_type].len) ||
+             header_len > sizeof(buf)) {
+-            error_report("RP: Received '%s' message (0x%04x) with"
+-                         "incorrect length %d expecting %zu",
+-                         rp_cmd_args[header_type].name, header_type, header_len,
+-                         (size_t)rp_cmd_args[header_type].len);
+-            mark_source_rp_bad(ms);
++            error_setg(&err, "Received '%s' message (0x%04x) with"
++                       "incorrect length %d expecting %zu",
++                       rp_cmd_args[header_type].name, header_type, header_len,
++                       (size_t)rp_cmd_args[header_type].len);
+             goto out;
+         }
+ 
+         /* We know we've got a valid header by this point */
+         res = qemu_get_buffer(rp, buf, header_len);
+         if (res != header_len) {
+-            error_report("RP: Failed reading data for message 0x%04x"
+-                         " read %d expected %d",
+-                         header_type, res, header_len);
+-            mark_source_rp_bad(ms);
++            error_setg(&err, "Failed reading data for message 0x%04x"
++                       " read %d expected %d",
++                       header_type, res, header_len);
+             goto out;
+         }
+ 
+@@ -1933,8 +1919,7 @@ static void *source_return_path_thread(void *opaque)
+             sibling_error = ldl_be_p(buf);
+             trace_source_return_path_thread_shut(sibling_error);
+             if (sibling_error) {
+-                error_report("RP: Sibling indicated error %d", sibling_error);
+-                mark_source_rp_bad(ms);
++                error_setg(&err, "Sibling indicated error %d", sibling_error);
+             }
+             /*
+              * We'll let the main thread deal with closing the RP
+@@ -1952,7 +1937,10 @@ static void *source_return_path_thread(void *opaque)
+         case MIG_RP_MSG_REQ_PAGES:
+             start = ldq_be_p(buf);
+             len = ldl_be_p(buf + 8);
+-            migrate_handle_rp_req_pages(ms, NULL, start, len);
++            migrate_handle_rp_req_pages(ms, NULL, start, len, &err);
++            if (err) {
++                goto out;
++            }
+             break;
+ 
+         case MIG_RP_MSG_REQ_PAGES_ID:
+@@ -1967,32 +1955,32 @@ static void *source_return_path_thread(void *opaque)
+                 expected_len += tmp32;
+             }
+             if (header_len != expected_len) {
+-                error_report("RP: Req_Page_id with length %d expecting %zd",
+-                             header_len, expected_len);
+-                mark_source_rp_bad(ms);
++                error_setg(&err, "Req_Page_id with length %d expecting %zd",
++                           header_len, expected_len);
++                goto out;
++            }
++            migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len,
++                                        &err);
++            if (err) {
+                 goto out;
+             }
+-            migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len);
+             break;
+ 
+         case MIG_RP_MSG_RECV_BITMAP:
+             if (header_len < 1) {
+-                error_report("%s: missing block name", __func__);
+-                mark_source_rp_bad(ms);
++                error_setg(&err, "MIG_RP_MSG_RECV_BITMAP missing block name");
+                 goto out;
+             }
+             /* Format: len (1B) + idstr (<255B). This ends the idstr. */
+             buf[buf[0] + 1] = '\0';
+-            if (migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1))) {
+-                mark_source_rp_bad(ms);
++            if (migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1), &err)) {
+                 goto out;
+             }
+             break;
+ 
+         case MIG_RP_MSG_RESUME_ACK:
+             tmp32 = ldl_be_p(buf);
+-            if (migrate_handle_rp_resume_ack(ms, tmp32)) {
+-                mark_source_rp_bad(ms);
++            if (migrate_handle_rp_resume_ack(ms, tmp32, &err)) {
+                 goto out;
+             }
+             break;
+@@ -2008,9 +1996,14 @@ static void *source_return_path_thread(void *opaque)
+     }
+ 
+ out:
+-    if (qemu_file_get_error(rp)) {
++    if (err) {
++        /*
++         * Collect any error in return-path thread and report it to the
++         * migration state object.
++         */
++        migrate_set_error(ms, err);
++        error_free(err);
+         trace_source_return_path_thread_bad_end();
+-        mark_source_rp_bad(ms);
+     }
+ 
+     trace_source_return_path_thread_end();
+@@ -2036,13 +2029,10 @@ static int open_return_path_on_source(MigrationState *ms)
+     return 0;
+ }
+ 
+-/* Returns 0 if the RP was ok, otherwise there was an error on the RP */
+-static int await_return_path_close_on_source(MigrationState *ms)
++static void await_return_path_close_on_source(MigrationState *ms)
+ {
+-    int ret;
+-
+     if (!ms->rp_state.rp_thread_created) {
+-        return 0;
++        return;
+     }
+ 
+     trace_migration_return_path_end_before();
+@@ -2060,18 +2050,10 @@ static int await_return_path_close_on_source(MigrationState *ms)
+         }
+     }
+ 
+-    trace_await_return_path_close_on_source_joining();
+     qemu_thread_join(&ms->rp_state.rp_thread);
+     ms->rp_state.rp_thread_created = false;
+-    trace_await_return_path_close_on_source_close();
+-
+-    ret = ms->rp_state.error;
+-    ms->rp_state.error = false;
+-
+     migration_release_dst_files(ms);
+-
+-    trace_migration_return_path_end_after(ret);
+-    return ret;
++    trace_migration_return_path_end_after();
+ }
+ 
+ static inline void
+@@ -2367,7 +2349,10 @@ static void migration_completion(MigrationState *s)
+         goto fail;
+     }
+ 
+-    if (await_return_path_close_on_source(s)) {
++    await_return_path_close_on_source(s);
++
++    /* If return path has error, should have been set here */
++    if (migrate_has_error(s)) {
+         goto fail;
+     }
+ 
+diff --git a/migration/ram.c b/migration/ram.c
+index e4bfd39f08..c54e071ea3 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -1951,7 +1951,8 @@ static void migration_page_queue_free(RAMState *rs)
+  * @start: starting address from the start of the RAMBlock
+  * @len: length (in bytes) to send
+  */
+-int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len)
++int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len,
++                         Error **errp)
+ {
+     RAMBlock *ramblock;
+     RAMState *rs = ram_state;
+@@ -1968,7 +1969,7 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len)
+              * Shouldn't happen, we can't reuse the last RAMBlock if
+              * it's the 1st request.
+              */
+-            error_report("ram_save_queue_pages no previous block");
++            error_setg(errp, "MIG_RP_MSG_REQ_PAGES has no previous block");
+             return -1;
+         }
+     } else {
+@@ -1976,16 +1977,17 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len)
+ 
+         if (!ramblock) {
+             /* We shouldn't be asked for a non-existent RAMBlock */
+-            error_report("ram_save_queue_pages no block '%s'", rbname);
++            error_setg(errp, "MIG_RP_MSG_REQ_PAGES has no block '%s'", rbname);
+             return -1;
+         }
+         rs->last_req_rb = ramblock;
+     }
+     trace_ram_save_queue_pages(ramblock->idstr, start, len);
+     if (!offset_in_ramblock(ramblock, start + len - 1)) {
+-        error_report("%s request overrun start=" RAM_ADDR_FMT " len="
+-                     RAM_ADDR_FMT " blocklen=" RAM_ADDR_FMT,
+-                     __func__, start, len, ramblock->used_length);
++        error_setg(errp, "MIG_RP_MSG_REQ_PAGES request overrun, "
++                   "start=" RAM_ADDR_FMT " len="
++                   RAM_ADDR_FMT " blocklen=" RAM_ADDR_FMT,
++                   start, len, ramblock->used_length);
+         return -1;
+     }
+ 
+@@ -2017,9 +2019,9 @@ int ram_save_queue_pages(const char *rbname, ram_addr_t start, ram_addr_t len)
+         assert(len % page_size == 0);
+         while (len) {
+             if (ram_save_host_page_urgent(pss)) {
+-                error_report("%s: ram_save_host_page_urgent() failed: "
+-                             "ramblock=%s, start_addr=0x"RAM_ADDR_FMT,
+-                             __func__, ramblock->idstr, start);
++                error_setg(errp, "ram_save_host_page_urgent() failed: "
++                           "ramblock=%s, start_addr=0x"RAM_ADDR_FMT,
++                           ramblock->idstr, start);
+                 ret = -1;
+                 break;
+             }
+@@ -4151,7 +4153,7 @@ static void ram_dirty_bitmap_reload_notify(MigrationState *s)
+  * This is only used when the postcopy migration is paused but wants
+  * to resume from a middle point.
+  */
+-int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block)
++int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+ {
+     int ret = -EINVAL;
+     /* from_dst_file is always valid because we're within rp_thread */
+@@ -4163,8 +4165,8 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block)
+     trace_ram_dirty_bitmap_reload_begin(block->idstr);
+ 
+     if (s->state != MIGRATION_STATUS_POSTCOPY_RECOVER) {
+-        error_report("%s: incorrect state %s", __func__,
+-                     MigrationStatus_str(s->state));
++        error_setg(errp, "Reload bitmap in incorrect state %s",
++                   MigrationStatus_str(s->state));
+         return -EINVAL;
+     }
+ 
+@@ -4181,9 +4183,8 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block)
+ 
+     /* The size of the bitmap should match with our ramblock */
+     if (size != local_size) {
+-        error_report("%s: ramblock '%s' bitmap size mismatch "
+-                     "(0x%"PRIx64" != 0x%"PRIx64")", __func__,
+-                     block->idstr, size, local_size);
++        error_setg(errp, "ramblock '%s' bitmap size mismatch (0x%"PRIx64
++                   " != 0x%"PRIx64")", block->idstr, size, local_size);
+         ret = -EINVAL;
+         goto out;
+     }
+@@ -4193,16 +4194,16 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block)
+ 
+     ret = qemu_file_get_error(file);
+     if (ret || size != local_size) {
+-        error_report("%s: read bitmap failed for ramblock '%s': %d"
+-                     " (size 0x%"PRIx64", got: 0x%"PRIx64")",
+-                     __func__, block->idstr, ret, local_size, size);
++        error_setg(errp, "read bitmap failed for ramblock '%s': %d"
++                   " (size 0x%"PRIx64", got: 0x%"PRIx64")",
++                   block->idstr, ret, local_size, size);
+         ret = -EIO;
+         goto out;
+     }
+ 
+     if (end_mark != RAMBLOCK_RECV_BITMAP_ENDING) {
+-        error_report("%s: ramblock '%s' end mark incorrect: 0x%"PRIx64,
+-                     __func__, block->idstr, end_mark);
++        error_setg(errp, "ramblock '%s' end mark incorrect: 0x%"PRIx64,
++                   block->idstr, end_mark);
+         ret = -EINVAL;
+         goto out;
+     }
+diff --git a/migration/trace-events b/migration/trace-events
+index 002abe3a4e..5739f6b266 100644
+--- a/migration/trace-events
++++ b/migration/trace-events
+@@ -147,8 +147,6 @@ multifd_tls_outgoing_handshake_complete(void *ioc) "ioc=%p"
+ multifd_set_outgoing_channel(void *ioc, const char *ioctype, const char *hostname, void *err)  "ioc=%p ioctype=%s hostname=%s err=%p"
+ 
+ # migration.c
+-await_return_path_close_on_source_close(void) ""
+-await_return_path_close_on_source_joining(void) ""
+ migrate_set_state(const char *new_state) "new state %s"
+ migrate_fd_cleanup(void) ""
+ migrate_fd_error(const char *error_desc) "error=%s"
+@@ -165,7 +163,7 @@ migration_completion_postcopy_end_after_complete(void) ""
+ migration_rate_limit_pre(int ms) "%d ms"
+ migration_rate_limit_post(int urgent) "urgent: %d"
+ migration_return_path_end_before(void) ""
+-migration_return_path_end_after(int rp_error) "%d"
++migration_return_path_end_after(void) ""
+ migration_thread_after_loop(void) ""
+ migration_thread_file_err(void) ""
+ migration_thread_setup_complete(void) ""
 -- 
 2.41.0
 
