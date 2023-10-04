@@ -2,78 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 214F67B8377
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 17:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C68CE7B837B
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 17:24:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo3hO-0007lI-J3; Wed, 04 Oct 2023 11:22:06 -0400
+	id 1qo3jI-0002Hb-9c; Wed, 04 Oct 2023 11:24:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo3h9-0007hK-Ec
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:21:51 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qo3jE-00029a-GP
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:24:00 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qo3h2-0006ax-TU
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:21:51 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 450E021228;
- Wed,  4 Oct 2023 15:21:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696432902; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BIjW2yaA575OWyhlc9bJtSecnO8eRb/2iAFGCjQ5A6E=;
- b=JsGsH2ZOGe6quwXmeBq3gHgsBRAgUy05Ix7hSPHO+5s+31g190haLKj/aW9FKQ5rYIxnTG
- Oehyj3GeoJzDcAktRdQ1LBOLLbSN6Fti84zYreGoQ/M9LiVZkkFP+VdTISX8TJCwWq6w4b
- Zp0QZkX4CYY90LifyOwnqTHzknypcOc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696432902;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=BIjW2yaA575OWyhlc9bJtSecnO8eRb/2iAFGCjQ5A6E=;
- b=/VzHRxv40qhwDnOZGpZRQ5iiwfo6PfFUXd1JfJLQ7H2+RQkAQuUkjkt7BGDL3habEbhamk
- di1eLXVfHFW9k4Cw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CA95A13A2E;
- Wed,  4 Oct 2023 15:21:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id pgw3JQWDHWVfGgAAMHmgww
- (envelope-from <farosas@suse.de>); Wed, 04 Oct 2023 15:21:41 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com, Het Gala <het.gala@nutanix.com>
-Subject: Re: [PATCH v11 08/10] migration: Implement MigrateChannelList to
- qmp migration flow.
-In-Reply-To: <20231004075851.219173-9-het.gala@nutanix.com>
-References: <20231004075851.219173-1-het.gala@nutanix.com>
- <20231004075851.219173-9-het.gala@nutanix.com>
-Date: Wed, 04 Oct 2023 12:21:39 -0300
-Message-ID: <87ediapg58.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qo3jB-0006z5-CR
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 11:24:00 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-406650da82bso21524085e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 08:23:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696433035; x=1697037835; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=JNBRBArcAlhVpIBuXhlmFFCPwlURTQAesQHQuoOacgc=;
+ b=KTjgAS1yWivUzipA0jInc2uXZhqTeWh+MkMxHpV4IQwW3RnDmDAqdOb+Y6PymiNxxc
+ rLdOkV12RXyuwFx6lRJ3ndlpg/c4dci0NDKVwT4i3/SZ9zecRvXrIGzLeVY96kWovU9b
+ DnaO/0ax++mEBt/mg3HmzrT/gryQQBN/tsVjE5Ffn1qH5/R5eIDugNK/UG7UWpyA2U0z
+ hmxoNiuAdNalcRHuaL9kYpfkddfbaftCMg2yGp881blhlC9P1qvIwc89uIF8RLiwzjGC
+ GHE8M71lbW4uioaAewWP2bdI+S337XTurbvpnqLWNNNi0WHj1nVCUX8VL06Wdnh1jsGU
+ pJOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696433035; x=1697037835;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=JNBRBArcAlhVpIBuXhlmFFCPwlURTQAesQHQuoOacgc=;
+ b=PL7pv7dKx+iVaKfMPogl40Ba70uv9rmpri3OjklAb+6x+xl3xxWymhIY/+CV5/dIMX
+ KEYWoq8XuQNNXVIVnrfD1W6ga9fyNIJwnOaJtWNOsMewSSbcWT77HI45F8iPkYQx/jRw
+ YWtiY96MVNwclu32qPobSEEvXOBk2XhYNEt43tLxV/wa11t3PBzzDEvPEKrI8lMEvHsv
+ zvtH7M8FLrlY9kfvnv90JA+Qg+JFFt8ERsPf8KepbntBP4moTkYCeKJq0R+KL6p+jAHd
+ SAmESujVHcpoRzbKZlD/tAe69KmF9pUYWkzPZcLt+MAbcWaN/D2KDnKruw16Ipd88JKo
+ zE/w==
+X-Gm-Message-State: AOJu0YzRm+aMVIA1SxVOvIeR6UIPWEvUgapJ25n74ScPywVKZPsljwUc
+ /4ppI8MID8UWZNJ5WJsziSHUww==
+X-Google-Smtp-Source: AGHT+IH0iM8nQzfT+7DudeZdl0xc4jiB9vdJlPRlz3eMYY50aQxiIDQg5H+7f1JSQlUCDsI3OTWdOw==
+X-Received: by 2002:a1c:7910:0:b0:401:c0ef:c287 with SMTP id
+ l16-20020a1c7910000000b00401c0efc287mr2903233wme.27.1696433035197; 
+ Wed, 04 Oct 2023 08:23:55 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ i5-20020adffdc5000000b0031fb91f23e9sm4281936wrs.43.2023.10.04.08.23.54
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 08:23:54 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 193871FFBB;
+ Wed,  4 Oct 2023 16:23:54 +0100 (BST)
+References: <20231004090629.37473-1-philmd@linaro.org>
+ <20231004090629.37473-8-philmd@linaro.org>
+User-agent: mu4e 1.11.21; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, Thomas Huth
+ <thuth@redhat.com>, qemu-ppc@nongnu.org, qemu-s390x@nongnu.org,
+ qemu-arm@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 07/13] gdbstub: Rename 'softmmu' -> 'system'
+Date: Wed, 04 Oct 2023 16:23:48 +0100
+In-reply-to: <20231004090629.37473-8-philmd@linaro.org>
+Message-ID: <874jj6h0mt.fsf@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -89,226 +98,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
 
-> Integrate MigrateChannelList with all transport backends
-> (socket, exec and rdma) for both src and dest migration
-> endpoints for qmp migration.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+
+> We have gdbstub/user.c for user emulation code,
+> use gdbstub/system.c for system emulation part.
 >
-> For current series, limit the size of MigrateChannelList
-> to single element (single interface) as runtime check.
+> Rename s/softmmu/system/ in meson and few comments.
 >
-> Suggested-by: Aravind Retnakaran <aravind.retnakaran@nutanix.com>
-> Signed-off-by: Het Gala <het.gala@nutanix.com>
-> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
+Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
 > ---
->  migration/migration.c | 95 +++++++++++++++++++++++--------------------
->  1 file changed, 52 insertions(+), 43 deletions(-)
+>  gdbstub/internals.h             |  4 ++--
+>  gdbstub/{softmmu.c =3D> system.c} |  2 +-
+>  gdbstub/meson.build             | 10 +++++-----
+>  gdbstub/trace-events            |  2 +-
+>  4 files changed, 9 insertions(+), 9 deletions(-)
+>  rename gdbstub/{softmmu.c =3D> system.c} (99%)
 >
-> diff --git a/migration/migration.c b/migration/migration.c
-> index 6f948988ec..3eae32e616 100644
-> --- a/migration/migration.c
-> +++ b/migration/migration.c
-> @@ -432,9 +432,10 @@ void migrate_add_address(SocketAddress *address)
+> diff --git a/gdbstub/internals.h b/gdbstub/internals.h
+> index fee243081f..f7fd1bede5 100644
+> --- a/gdbstub/internals.h
+> +++ b/gdbstub/internals.h
+> @@ -103,7 +103,7 @@ static inline int tohex(int v)
 >  }
 >=20=20
->  static bool migrate_uri_parse(const char *uri,
-> -                              MigrationAddress **channel,
-> +                              MigrationChannel **channel,
->                                Error **errp)
->  {
-> +    g_autoptr(MigrationChannel) val =3D g_new0(MigrationChannel, 1);
-
-Here val is passed out of scope so it shouldn't be g_autoptr.
-
->      g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
->      SocketAddress *saddr =3D &addr->u.socket;
->      InetSocketAddress *isock =3D &addr->u.rdma;
-> @@ -471,7 +472,9 @@ static bool migrate_uri_parse(const char *uri,
->          return false;
->      }
+>  /*
+> - * Connection helpers for both softmmu and user backends
+> + * Connection helpers for both system and user backends
+>   */
 >=20=20
-> -    *channel =3D addr;
-> +    val->channel_type =3D MIGRATION_CHANNEL_TYPE_MAIN;
-> +    val->addr =3D addr;
-> +    *channel =3D val;
->      return true;
+>  void gdb_put_strbuf(void);
+> @@ -229,7 +229,7 @@ void gdb_breakpoint_remove_all(CPUState *cs);
+>   * @is_write: is it a write operation
+>   *
+>   * This function is specialised depending on the mode we are running
+> - * in. For softmmu guests we can switch the interpretation of the
+> + * in. For system guests we can switch the interpretation of the
+>   * address to a physical address.
+>   */
+>  int gdb_target_memory_rw_debug(CPUState *cs, hwaddr addr,
+> diff --git a/gdbstub/softmmu.c b/gdbstub/system.c
+> similarity index 99%
+> rename from gdbstub/softmmu.c
+> rename to gdbstub/system.c
+> index 9f0b8b5497..189975b1d6 100644
+> --- a/gdbstub/softmmu.c
+> +++ b/gdbstub/system.c
+> @@ -104,7 +104,7 @@ static void gdb_chr_event(void *opaque, QEMUChrEvent =
+event)
 >  }
 >=20=20
-> @@ -479,41 +482,44 @@ static void qemu_start_incoming_migration(const cha=
-r *uri, bool has_channels,
->                                            MigrationChannelList *channels,
->                                            Error **errp)
->  {
-> -    g_autoptr(MigrationAddress) channel =3D g_new0(MigrationAddress, 1);
-> +    g_autoptr(MigrationChannel) channel =3D g_new0(MigrationChannel, 1);
-> +    g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
+>  /*
+> - * In softmmu mode we stop the VM and wait to send the syscall packet
+> + * In system-mode we stop the VM and wait to send the syscall packet
+>   * until notification that the CPU has stopped. This must be done
+>   * because if the packet is sent now the reply from the syscall
+>   * request could be received while the CPU is still in the running
+> diff --git a/gdbstub/meson.build b/gdbstub/meson.build
+> index a5a1f4e433..e5bccba34e 100644
+> --- a/gdbstub/meson.build
+> +++ b/gdbstub/meson.build
+> @@ -1,6 +1,6 @@
+>  #
+>  # The main gdbstub still relies on per-build definitions of various
+> -# types. The bits pushed to softmmu/user.c try to use guest agnostic
+> +# types. The bits pushed to system/user.c try to use guest agnostic
+>  # types such as hwaddr.
+>  #
+>=20=20
+> @@ -12,7 +12,7 @@ gdb_system_ss =3D ss.source_set()
+>=20=20
+>  # We build two versions of gdbstub, one for each mode
+>  gdb_user_ss.add(files('gdbstub.c', 'user.c'))
+> -gdb_system_ss.add(files('gdbstub.c', 'softmmu.c'))
+> +gdb_system_ss.add(files('gdbstub.c', 'system.c'))
+>=20=20
+>  gdb_user_ss =3D gdb_user_ss.apply(config_targetos, strict: false)
+>  gdb_system_ss =3D gdb_system_ss.apply(config_targetos, strict: false)
+> @@ -23,15 +23,15 @@ libgdb_user =3D static_library('gdb_user',
+>                               c_args: '-DCONFIG_USER_ONLY',
+>                               build_by_default: false)
+>=20=20
+> -libgdb_softmmu =3D static_library('gdb_softmmu',
+> +libgdb_system =3D static_library('gdb_system',
+>                                  gdb_system_ss.sources() + genh,
+>                                  name_suffix: 'fa',
+>                                  build_by_default: false)
+>=20=20
+>  gdb_user =3D declare_dependency(link_whole: libgdb_user)
+>  user_ss.add(gdb_user)
+> -gdb_softmmu =3D declare_dependency(link_whole: libgdb_softmmu)
+> -system_ss.add(gdb_softmmu)
+> +gdb_system =3D declare_dependency(link_whole: libgdb_system)
+> +system_ss.add(gdb_system)
+>=20=20
+>  common_ss.add(files('syscalls.c'))
+>=20=20
+> diff --git a/gdbstub/trace-events b/gdbstub/trace-events
+> index 7bc79a73c4..4fd126a38c 100644
+> --- a/gdbstub/trace-events
+> +++ b/gdbstub/trace-events
+> @@ -28,5 +28,5 @@ gdbstub_err_checksum_invalid(uint8_t ch) "got invalid c=
+ommand checksum digit: 0x
+>  gdbstub_err_checksum_incorrect(uint8_t expected, uint8_t got) "got comma=
+nd packet with incorrect checksum, expected=3D0x%02x, received=3D0x%02x"
+>  gdbstub_err_unexpected_runpkt(uint8_t ch) "unexpected packet (0x%02x) wh=
+ile target running"
+>=20=20
+> -# softmmu.c
+> +# system.c
+>  gdbstub_hit_watchpoint(const char *type, int cpu_gdb_index, uint64_t vad=
+dr) "Watchpoint hit, type=3D\"%s\" cpu=3D%d, vaddr=3D0x%" PRIx64 ""
 
-Here we want just the pointer, no allocation, no freeing. For both
-channel and addr.
 
->=20=20
->      /*
->       * Having preliminary checks for uri and channel
->       */
-> -    if (has_channels) {
-> -        error_setg(errp, "'channels' argument should not be set yet.");
-> -        return;
-> -    }
-> -
->      if (uri && has_channels) {
->          error_setg(errp, "'uri' and 'channels' arguments are mutually "
->                     "exclusive; exactly one of the two should be present =
-in "
->                     "'migrate-incoming' qmp command ");
->          return;
-> -    }
-> -
-> -    if (!uri && !has_channels) {
-> +    } else if (channels) {
-> +        /* To verify that Migrate channel list has only item */
-> +        if (channels->next) {
-> +            error_setg(errp, "Channel list has more than one entries");
-> +            return;
-> +        }
-> +        channel =3D channels->value;
-> +    } else if (uri) {
-> +        /* caller uses the old URI syntax */
-> +        if (!migrate_uri_parse(uri, &channel, errp)) {
-> +            return;
-> +        }
-> +    } else {
->          error_setg(errp, "neither 'uri' or 'channels' argument are "
->                     "specified in 'migrate-incoming' qmp command ");
->          return;
->      }
-> -
-> -    if (uri && !migrate_uri_parse(uri, &channel, errp)) {
-> -        return;
-> -    }
-> +    addr =3D channel->addr;
->=20=20
->      /* transport mechanism not suitable for migration? */
-> -    if (!migration_channels_and_transport_compatible(channel, errp)) {
-> +    if (!migration_channels_and_transport_compatible(addr, errp)) {
->          return;
->      }
->=20=20
->      qapi_event_send_migration(MIGRATION_STATUS_SETUP);
-> -    if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
-> -        SocketAddress *saddr =3D &channel->u.socket;
-> +    if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
-> +        SocketAddress *saddr =3D &addr->u.socket;
->          if (saddr->type =3D=3D SOCKET_ADDRESS_TYPE_INET ||
->              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_UNIX ||
->              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_VSOCK) {
-> @@ -522,11 +528,11 @@ static void qemu_start_incoming_migration(const cha=
-r *uri, bool has_channels,
->              fd_start_incoming_migration(saddr->u.fd.str, errp);
->          }
->  #ifdef CONFIG_RDMA
-> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
-> -        rdma_start_incoming_migration(&channel->u.rdma, errp);
-> -#endif
-> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
-> -        exec_start_incoming_migration(channel->u.exec.args, errp);
-> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
-> +        rdma_start_incoming_migration(&addr->u.rdma, errp);
-> + #endif
-> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
-> +        exec_start_incoming_migration(addr->u.exec.args, errp);
->      } else {
->          error_setg(errp, "unknown migration protocol: %s", uri);
->      }
-> @@ -1750,35 +1756,38 @@ void qmp_migrate(const char *uri, bool has_channe=
-ls,
->      bool resume_requested;
->      Error *local_err =3D NULL;
->      MigrationState *s =3D migrate_get_current();
-> -    g_autoptr(MigrationAddress) channel =3D g_new0(MigrationAddress, 1);
-> +    g_autoptr(MigrationChannel) channel =3D g_new0(MigrationChannel, 1);
-> +    g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
-
-Again just the pointers.
-
-We'll have to make another pass and check whether we're missing freeing
-something. But for now let's first clear all the errors then we can look
-at the code working and do the necessary changes.
-
->=20=20
->      /*
->       * Having preliminary checks for uri and channel
->       */
-> -    if (has_channels) {
-> -        error_setg(errp, "'channels' argument should not be set yet.");
-> -        return;
-> -    }
-> -
->      if (uri && has_channels) {
->          error_setg(errp, "'uri' and 'channels' arguments are mutually "
->                     "exclusive; exactly one of the two should be present =
-in "
->                     "'migrate' qmp command ");
->          return;
-> -    }
-> -
-> -    if (!uri && !has_channels) {
-> +    } else if (channels) {
-> +        /* To verify that Migrate channel list has only item */
-> +        if (channels->next) {
-> +            error_setg(errp, "Channel list has more than one entries");
-> +            return;
-> +        }
-> +        channel =3D channels->value;
-> +    } else if (uri) {
-> +        /* caller uses the old URI syntax */
-> +        if (!migrate_uri_parse(uri, &channel, errp)) {
-> +            return;
-> +        }
-> +    } else {
->          error_setg(errp, "neither 'uri' or 'channels' argument are "
->                     "specified in 'migrate' qmp command ");
->          return;
->      }
-> -
-> -    if (!migrate_uri_parse(uri, &channel, errp)) {
-> -        return;
-> -    }
-> +    addr =3D channel->addr;
->=20=20
->      /* transport mechanism not suitable for migration? */
-> -    if (!migration_channels_and_transport_compatible(channel, errp)) {
-> +    if (!migration_channels_and_transport_compatible(addr, errp)) {
->          return;
->      }
->=20=20
-> @@ -1795,8 +1804,8 @@ void qmp_migrate(const char *uri, bool has_channels,
->          }
->      }
->=20=20
-> -    if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
-> -        SocketAddress *saddr =3D &channel->u.socket;
-> +    if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_SOCKET) {
-> +        SocketAddress *saddr =3D &addr->u.socket;
->          if (saddr->type =3D=3D SOCKET_ADDRESS_TYPE_INET ||
->              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_UNIX ||
->              saddr->type =3D=3D SOCKET_ADDRESS_TYPE_VSOCK) {
-> @@ -1805,11 +1814,11 @@ void qmp_migrate(const char *uri, bool has_channe=
-ls,
->              fd_start_outgoing_migration(s, saddr->u.fd.str, &local_err);
->          }
->  #ifdef CONFIG_RDMA
-> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
-> -        rdma_start_outgoing_migration(s, &channel->u.rdma, &local_err);
-> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_RDMA) {
-> +        rdma_start_outgoing_migration(s, &addr->u.rdma, &local_err);
->  #endif
-> -    } else if (channel->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
-> -        exec_start_outgoing_migration(s, channel->u.exec.args, &local_er=
-r);
-> +    } else if (addr->transport =3D=3D MIGRATION_ADDRESS_TYPE_EXEC) {
-> +        exec_start_outgoing_migration(s, addr->u.exec.args, &local_err);
->      } else {
->          error_setg(&local_err, QERR_INVALID_PARAMETER_VALUE, "uri",
->                     "a valid migration protocol");
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
