@@ -2,84 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D852A7B79FD
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E863A7B7A40
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:39:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxCC-0006Ky-HJ; Wed, 04 Oct 2023 04:25:28 -0400
+	id 1qnxOg-0003co-Aa; Wed, 04 Oct 2023 04:38:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxCA-0006K2-1b
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:25:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qnxOe-0003b6-0H
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:38:20 -0400
+Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxC8-00020v-Hp
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:25:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696407923;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=1HFi+4XvaZgzW3fTljaqROcsaQzq+XO0ia+9DJlILs8=;
- b=MnY0ryB6jp9EUMj4p3I8LRaYMl8b/Qo4IGoflI9rOpokRDnZg8fBg0mIzaEMHY4KRWX9w6
- sRMv8dnYImF/qfR5+A5g1hTpItsR2FQx+YEYunN3ZmH2CMq2gm40kKazgAbQaLkyqeqT4/
- 3NAf7KqWyzsb1CIbeIVv7oduofu0rxI=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-671-u-vQ6bn4NuipiEwOYkHvcw-1; Wed, 04 Oct 2023 04:25:16 -0400
-X-MC-Unique: u-vQ6bn4NuipiEwOYkHvcw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4054016ff33so3073625e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:25:15 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696407915; x=1697012715;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=1HFi+4XvaZgzW3fTljaqROcsaQzq+XO0ia+9DJlILs8=;
- b=ILHFYISIav1bJp1Vgq66aePO2JIOCzQweqFdB8SgoHtow4dJxh9AQS1TJBN2v6setv
- Hg9HHFJuNpZm3LvAOHxhcwf6Djrp5+qH2nweAYeoXr/M6qq8LPBhqHELYCQR2yey7dIs
- I+TiH/FfzYu2EvXpqXDuaxNOooz/VyQ42loyfoY9UMTg4cqUWglS9wvmpd/kGi6DWtir
- fBWGiuau9Sgauf66rnrNcMLZPLBOC41oN3wO86Auwfw+YyQM/9uUiB/bOOtjuxwtkZXx
- eodc8dogumA5TUpOsKr3fMCRJQoahlLomVlxst7PEPBMroliPpJSMhPDWrICX2gYXo8S
- kfIA==
-X-Gm-Message-State: AOJu0Yzo1s3jDw2CQe5RPA4ovJp2WkqFxTTRwQhaddbZVCZUrTDcPcWz
- CV4DobMg0KLXTLBRQ++kP5wwqlt7d5vzMJwBg3mn0EAqWY8uaO8a9fvAAlSWRymk+h5mt1cse4I
- xZIrq72qU2sW8bRY=
-X-Received: by 2002:a05:600c:218b:b0:405:784a:d53e with SMTP id
- e11-20020a05600c218b00b00405784ad53emr1025955wme.20.1696407915088; 
- Wed, 04 Oct 2023 01:25:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGH09tX8Nz/XYmAQDciwGBfpzoXPZH6OtnTj/T7YKc6bGAJwrznCrWCOlad3NadzlivXzDxdw==
-X-Received: by 2002:a05:600c:218b:b0:405:784a:d53e with SMTP id
- e11-20020a05600c218b00b00405784ad53emr1025937wme.20.1696407914696; 
- Wed, 04 Oct 2023 01:25:14 -0700 (PDT)
-Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- t14-20020a05600c198e00b0040531f5c51asm918375wmq.5.2023.10.04.01.25.12
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:25:13 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:25:10 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- qemu-trivial@nongnu.org
-Subject: Re: [PATCH] hw/virtio/virtio-pci: Avoid compiler warning with -Wshadow
-Message-ID: <20231004042441-mutt-send-email-mst@kernel.org>
-References: <20231004075536.48219-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qnxOc-0007Si-5y
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:38:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Message-Id:Date:To:From:Sender:Reply-To:Cc:Content-ID:
+ Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+ :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+ List-Subscribe:List-Post:List-Owner:List-Archive;
+ bh=YV8nHNcsbd6o0yGcY5ig1X5fdu4k3mrgqEfaSSZLg8A=; b=BTJ/YRbDdON+C0GKCYIq4OKa87
+ Yt2lEZctJzanTgqZ23YQsf0wpw5G2+iDKQAKwP1bdHARd1wLcYspSG7bpmpQL9Fr7nl3cAmuMmc1j
+ CTJaaQaYpMtC6pl1OZmutRUVU/lLSKqFj13lBkLxzt1ov+6kQPDDJTfBJDnBNuasBbuHv2Hs/gRk1
+ FRXZj8b2KlCDllhHbE9bCswsDajD3NIZxoHFbGFInZZu5S0WeSwrX6dy9PdmH2YqtLnrsb3dkTKVJ
+ qIwDUZf784dOiJsMvnEiuzLZOe4ACzQY0QMtHDMLm5CTmzPcoh40zEyuMgnPs47jjutSYPv/ZnrB1
+ Fdx5+aQ2t4YV8Ik0sL/owuSbyLUo0RTQhDpp+88DgTvqz0e+oAyX/5T3fLli/xtWr8IHiPr0OKayM
+ 6Cki2QAn+gBdQKJxB18ya2a0x9zCDLGUQFoxsx+NicLHyDkuEAk9KAHL+Qi2MNU8Bsdd8CMZMtR5L
+ 6wbIrPoreh3pVwyMC5uUD5o1p/HRPoho0I9yDuWfgkLiDxr3ywo5rq6Qoub0+30tQqW1oLSt5nddv
+ hMbDbUXml9IKXUxiBZvd3/FXDO5hexVia67UXKgjjfCeSA4asGVD07cZGvvI4+00YPjOOa0+RHQL6
+ TUFjCAOz4syDuMlNGQBB7ugFTimf2o4wAA3Hz1+IA=;
+Received: from host86-159-123-68.range86-159.btcentralplus.com
+ ([86.159.123.68] helo=localhost.localdomain)
+ by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
+ id 1qnxOI-0006za-RW; Wed, 04 Oct 2023 09:38:03 +0100
+From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+To: laurent@vivier.eu,
+	qemu-devel@nongnu.org
+Date: Wed,  4 Oct 2023 09:37:46 +0100
+Message-Id: <20231004083806.757242-1-mark.cave-ayland@ilande.co.uk>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231004075536.48219-1-thuth@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 86.159.123.68
+X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
+Subject: [PATCH v4 00/20] q800: add support for booting MacOS Classic - part 2
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
+Received-SPF: pass client-ip=2001:41c9:1:41f::167;
+ envelope-from=mark.cave-ayland@ilande.co.uk; helo=mail.ilande.co.uk
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -95,50 +76,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 04, 2023 at 09:55:36AM +0200, Thomas Huth wrote:
-> "len" is used as parameter of the function virtio_write_config()
-> and as a local variable, so this causes a compiler warning
-> when compiling with "-Wshadow" and can be confusing for the reader.
-> Rename the local variable to "caplen" to avoid this problem.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+This series contains the remaining patches needed to allow QEMU's q800
+machine to boot MacOS Classic when used in conjunction with a real
+Quadra 800 ROM image. In fact with this series applied it is possible
+to boot all of the following OSs:
 
-ok sure
+  - MacOS 7.1 - 8.1, with or without virtual memory enabled
+  - A/UX 3.0.1
+  - NetBSD 9.3
+  - Linux (via EMILE)
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+If you are ready to experience some 90s nostalgia then all you need is
+to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
+suitable install ISO as follows:
 
-feel free to merge with rest of -Wshadow things.
+  # Prepare a PRAM image
+  $ qemu-img create -f raw pram.img 256b
 
-> ---
->  hw/virtio/virtio-pci.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-> index edbc0daa18..d0ef1edd66 100644
-> --- a/hw/virtio/virtio-pci.c
-> +++ b/hw/virtio/virtio-pci.c
-> @@ -780,15 +780,15 @@ static void virtio_write_config(PCIDevice *pci_dev, uint32_t address,
->                                                                    pci_cfg_data),
->                         sizeof cfg->pci_cfg_data)) {
->          uint32_t off;
-> -        uint32_t len;
-> +        uint32_t caplen;
->  
->          cfg = (void *)(proxy->pci_dev.config + proxy->config_cap);
->          off = le32_to_cpu(cfg->cap.offset);
-> -        len = le32_to_cpu(cfg->cap.length);
-> +        caplen = le32_to_cpu(cfg->cap.length);
->  
-> -        if (len == 1 || len == 2 || len == 4) {
-> -            assert(len <= sizeof cfg->pci_cfg_data);
-> -            virtio_address_space_write(proxy, off, cfg->pci_cfg_data, len);
-> +        if (caplen == 1 || caplen == 2 || caplen == 4) {
-> +            assert(caplen <= sizeof cfg->pci_cfg_data);
-> +            virtio_address_space_write(proxy, off, cfg->pci_cfg_data, caplen);
->          }
->      }
->  }
-> -- 
-> 2.41.0
+  # Launch QEMU with blank disk and install CDROM
+  $ ./qemu-system-m68k \
+      -M q800 \
+      -m 128 \
+      -bios Quadra800.rom \
+      -drive file=pram.img,format=raw,if=mtd \
+      -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
+      -device scsi-hd,scsi-id=0,drive=hd \
+      -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
+      -device scsi-cd,scsi-id=3,drive=cd
+
+And off you go! For more in-depth information about the installation process
+I highly recommend the installation guide over at emaculation.com [1].
+Compatibility is generally very good, and I'm pleased to report it is possible
+to run one of the most popular productivity apps from the 90s [2].
+
+I'd like to add a big thank you to all the people who have helped me work on
+this series, including testing on real hardware, answering questions about
+MacOS Classic internals and helping to diagnose and fix bugs in the 68k
+emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
+Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
+Elliot Nunn, and SolraBizna.
+
+Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+
+[1] https://www.emaculation.com/doku.php/qemu
+[2] https://www.youtube.com/watch?v=yI21gURQ1Ew
+
+
+v4:
+- Rebase onto master
+- Add R-B tag from Zoltan to patch 5
+- Adjust AUD_register_card() and add machine audiodev property for ASC to reflect Paolo's
+  recent audiodev changes
+
+v3:
+- Rebase onto master
+- Add R-B tags from Laurent
+- Squash fixes from Volker into patch 7 ("audio: add Apple Sound Chip (ASC) emulation")
+- Change iwmregs from uint16_t to uint8_t in patch 12 ("swim: split into separate IWM
+  and ISM register blocks")
+
+v2:
+- Rebase onto master
+- Add R-B tags from Phil and Laurent
+- Improve ASC logic for generating interrupts when FIFO underflow occurs
+- Rework ASC silence generation logic similar to Volker's original proposal
+- Update A/UX timer calibration hack to reflect the change of accesses now that
+  #360 is resolved
+
+
+Mark Cave-Ayland (20):
+  q800-glue.c: convert to Resettable interface
+  q800: add djMEMC memory controller
+  q800: add machine id register
+  q800: implement additional machine id bits on VIA1 port A
+  q800: add IOSB subsystem
+  q800: allow accesses to RAM area even if less memory is available
+  audio: add Apple Sound Chip (ASC) emulation
+  asc: generate silence if FIFO empty but engine still running
+  q800: add Apple Sound Chip (ASC) audio to machine
+  q800: add easc bool machine class property to switch between ASC and
+    EASC
+  swim: add trace events for IWM and ISM registers
+  swim: split into separate IWM and ISM register blocks
+  swim: update IWM/ISM register block decoding
+  mac_via: work around underflow in TimeDBRA timing loop in SETUPTIMEK
+  mac_via: workaround NetBSD ADB bus enumeration issue
+  mac_via: implement ADB_STATE_IDLE state if shift register in input
+    mode
+  mac_via: always clear ADB interrupt when switching to A/UX mode
+  q800: add ESCC alias at 0xc000
+  q800: add alias for MacOS toolbox ROM at 0x40000000
+  mac_via: extend timer calibration hack to work with A/UX
+
+ MAINTAINERS                 |   6 +
+ hw/audio/Kconfig            |   3 +
+ hw/audio/asc.c              | 727 ++++++++++++++++++++++++++++++++++++
+ hw/audio/meson.build        |   1 +
+ hw/audio/trace-events       |  10 +
+ hw/block/swim.c             | 261 ++++++++-----
+ hw/block/trace-events       |   8 +
+ hw/m68k/Kconfig             |   3 +
+ hw/m68k/q800-glue.c         |  18 +-
+ hw/m68k/q800.c              | 138 ++++++-
+ hw/misc/Kconfig             |   6 +
+ hw/misc/djmemc.c            | 135 +++++++
+ hw/misc/iosb.c              | 133 +++++++
+ hw/misc/mac_via.c           | 234 +++++++++++-
+ hw/misc/meson.build         |   2 +
+ hw/misc/trace-events        |  10 +
+ include/hw/audio/asc.h      |  86 +++++
+ include/hw/block/swim.h     |  21 +-
+ include/hw/m68k/q800-glue.h |   4 +-
+ include/hw/m68k/q800.h      |  11 +
+ include/hw/misc/djmemc.h    |  30 ++
+ include/hw/misc/iosb.h      |  25 ++
+ include/hw/misc/mac_via.h   |   3 +
+ 23 files changed, 1769 insertions(+), 106 deletions(-)
+ create mode 100644 hw/audio/asc.c
+ create mode 100644 hw/misc/djmemc.c
+ create mode 100644 hw/misc/iosb.c
+ create mode 100644 include/hw/audio/asc.h
+ create mode 100644 include/hw/misc/djmemc.h
+ create mode 100644 include/hw/misc/iosb.h
+
+-- 
+2.39.2
 
 
