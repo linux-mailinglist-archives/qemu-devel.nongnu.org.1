@@ -2,81 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ABFE7B7AF3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:01:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1D8A7B7AE3
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:58:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxeX-00036N-NG; Wed, 04 Oct 2023 04:54:45 -0400
+	id 1qnxfY-0004ln-2t; Wed, 04 Oct 2023 04:55:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxeT-0002zr-Ri
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:54:41 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxfB-0004fz-RO
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:55:27 -0400
+Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxeR-0001bb-4b
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:54:40 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-405505b07dfso3725915e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:54:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxf9-0001uk-Gg
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:55:25 -0400
+Received: by mail-wm1-x332.google.com with SMTP id
+ 5b1f17b1804b1-4066241289bso17848125e9.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:55:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696409677; x=1697014477; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696409722; x=1697014522; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=ovgClf4L331W0xhcDjLJLOTgkITxTnjgVNWkSmKgIn0=;
- b=fbNxV74ARTOYLiCv3QOLvAOqV65wosf1vMh+gPFVi/cUUfyfaGnie60EPhb1pez/uR
- wriFxr6Bi0fpG0likGvZVHp1+1Nbwifv9tKmvyNRkzDqPzBZlUY7UwcNGcRwJC2qs/pz
- tBzqQ07zaTIG/yBiGndQodpIFkwYlhQvvpg3Za2DgkmX0hWQZeztKGf25F1CXyT+2gOv
- nAjzFA+fUR9MXmSbtG7LVm8tLmqQhI5ttop7UcQ7qNeZqb+NvdtYE+sRn2xKLFN4BI/1
- zjvbYYaUOANbya+8l/Rt4nEY+2LvsantnaFcM2LkOGELudgvpkA8LnzL+kNZYTDun58I
- HDuQ==
+ bh=FiCvpEEyOTffHwW13ToQOIh4DwJnaN//d1fVHgrp/7A=;
+ b=y2BKwDp+gAPMf3caUjQ5SU10TjLUeemSxvSF5x15ovIlu7CFbsagVt+oKdaw/M/gBt
+ M6YJ0hY74V36WGj1Bq02LqV1CvJVdiGh6exD1eLimSBDW/wIsy5Lxni16+VdN4I08fuH
+ +yENFEKF1iVbWGzEm0uoWqcRNdI9iJgOUhzlVt7awMMwNw6pMGCN6ksOkqZuL8cNypRH
+ YTDalmiZbAASE6at6XxxPZPFzMIA1jJ9X8HSYTo2I5oGMeOTgLOI2xNJKrjJTRVqmsrc
+ GfXIgPri6N2c0y5Uc4ui4ELQr1hPTng/rR4s3rnOntAtUdhC4cXjhrJyYO9x+7K3EgzF
+ bZ6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409677; x=1697014477;
+ d=1e100.net; s=20230601; t=1696409722; x=1697014522;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ovgClf4L331W0xhcDjLJLOTgkITxTnjgVNWkSmKgIn0=;
- b=RAOAqhSmVRQJ82LfS1tH+L/ax2VNouM976iO40Rdqjhwm7p8aEaYv6h9hESFMA9NbI
- a4CnGtPbE8UbRjvos94UkBF7VsEsFuBbRmk3yIdpgsL+bfiCTn8o20U/pbUsW/xaA7k1
- sZ3+JxRGaQUd6sxG95WxTlpRAOjQtaaXvkUCZk8+e6uncuV/3qzsV3fef7lw/tuaWMQw
- QialNtb11X5ceTZ4auz66UzJc11laH98h3iX/LjqZKWBice9/bGdcrOk0/U6206u1XKJ
- 9PDeu4B9x5GWNTUwZXtCquriG/WJINKlSAxEsdH5YgUXtlAVu4OwQh6F1ERbqqLm9IMp
- VLbw==
-X-Gm-Message-State: AOJu0Yyla4VwTFbzNYbPgGNey5QVaTFYNoB34JLWrb/oBBkzu/8EDAn1
- bX3M0I4idKaB4PIm41dqTDbMYg==
-X-Google-Smtp-Source: AGHT+IFRLtvcg+V51L8gOzMBodPHSfpLfq/ShIywsh6a0n2NqFRYWyWL7D44w15u6XOJ9/fIcwspAw==
-X-Received: by 2002:adf:f8c3:0:b0:31f:e7f9:628e with SMTP id
- f3-20020adff8c3000000b0031fe7f9628emr3934179wrq.17.1696409677286; 
- Wed, 04 Oct 2023 01:54:37 -0700 (PDT)
+ bh=FiCvpEEyOTffHwW13ToQOIh4DwJnaN//d1fVHgrp/7A=;
+ b=sQWA7PHYCdGVhxM5zk82BQa7BegHhFg8OoYFyGTFymE+sCKo1zbtd8PDOAVG0CqlV5
+ EbRf4CtARtfIOeP1BvzYhLCvPXWxv2CvFcLx4XxFt3hAoGYVCkk7evfTAW0z5vykf37H
+ kp0vSkccxiQ/ooQruPOBy4Qsxp7CQPtiw80TfuUuOeBvzrUfFak/5m2dBfNkGklLBWzx
+ lHXdO4kSyqL2I7W0q4ikCxNPssu0BwrOL+uwviD/R4thlWVhbozwe8lsBR3ZkemOx2Yj
+ hY3jZHo7mODu3NgSsEki80CiE9x3KsktkxeRABR2VAJuHgM4fYj6divjXkRTO3j3N0UD
+ UvgA==
+X-Gm-Message-State: AOJu0YyCD1h/LTkOM6OZTVMH2702fC+8POG0C1aLRkZsy8dGulonv43p
+ kRhUHXosj2DsdYuwLXn42VVldJ04o9/h3I3tqNk=
+X-Google-Smtp-Source: AGHT+IHQK0tbCyDpbZqqPHBYN4VeegAXf2YwFpabMBgh5KHsYZDPE6fiPwoGy7kyX1r6VHk4AgKFvQ==
+X-Received: by 2002:a7b:c858:0:b0:404:737a:17d with SMTP id
+ c24-20020a7bc858000000b00404737a017dmr1466047wml.9.1696409721801; 
+ Wed, 04 Oct 2023 01:55:21 -0700 (PDT)
 Received: from [192.168.69.115] (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- p21-20020a05600c205500b003fefaf299b6sm957822wmg.38.2023.10.04.01.54.36
+ hn32-20020a05600ca3a000b004053e9276easm959833wmb.32.2023.10.04.01.55.20
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 01:54:36 -0700 (PDT)
-Message-ID: <aa1bc6ef-e444-7ec4-683d-5f437007bfe0@linaro.org>
-Date: Wed, 4 Oct 2023 10:54:35 +0200
+ Wed, 04 Oct 2023 01:55:21 -0700 (PDT)
+Message-ID: <8dfca186-50ea-611d-b833-a4326efc5ae7@linaro.org>
+Date: Wed, 4 Oct 2023 10:55:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PULL 00/63] virtio,pci: features, cleanups
+Subject: Re: [PATCH] audio/ossaudio: Fix compiler warning with -Wshadow
 Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>
-References: <cover.1696408966.git.mst@redhat.com>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ Gerd Hoffmann <kraxel@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org
+References: <20231004083900.95856-1-thuth@redhat.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <cover.1696408966.git.mst@redhat.com>
+In-Reply-To: <20231004083900.95856-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::332;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x332.google.com
 X-Spam_score_int: -31
 X-Spam_score: -3.2
 X-Spam_bar: ---
 X-Spam_report: (-3.2 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.09,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,35 +93,19 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/10/23 10:43, Michael S. Tsirkin wrote:
-
-> ----------------------------------------------------------------
-> virtio,pci: features, cleanups
+On 4/10/23 10:39, Thomas Huth wrote:
+> The "err" variable is only used twice in this code, in a very
+> local fashion of first assigning it and then checking it in the
+> next line. So there is no need to declare this variable a second
+> time in the innermost block, we can re-use the variable that is
+> declared at the beginning of the function. This fixes the compiler
+> warning that occurs with "-Wshadow".
 > 
-> vdpa:
->        shadow vq vlan support
->        net migration with cvq
-> cxl:
->       dummy ACPI QTG DSM
->       support emulating 4 HDM decoders
->       serial number extended capability
-> virtio:
->        hared dma-buf
-> 
-> Fixes, cleanups all over the place.
-> 
-> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> 
-> ----------------------------------------------------------------
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
+>   audio/ossaudio.c | 1 -
+>   1 file changed, 1 deletion(-)
 
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-> Philippe Mathieu-Daudé (6):
->        hw/virtio: Propagate page_mask to vhost_vdpa_listener_skipped_section()
->        hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
->        hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
->        hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
->        hw/virtio: Build vhost-vdpa.o once
->        hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
-
-Woohoo \o/ thanks for merging this!
 
