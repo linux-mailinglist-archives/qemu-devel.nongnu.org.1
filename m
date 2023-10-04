@@ -2,113 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7E0B7B8586
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CC67B8585
 	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 18:41:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo4vY-0001w9-TD; Wed, 04 Oct 2023 12:40:48 -0400
+	id 1qo4ve-00023g-4C; Wed, 04 Oct 2023 12:40:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qo4vH-0001vX-2X; Wed, 04 Oct 2023 12:40:31 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qo4vC-0004YV-P9; Wed, 04 Oct 2023 12:40:30 -0400
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 394GdFuJ002417; Wed, 4 Oct 2023 16:40:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=Cdhn/iYCZtBd9G6+yAU3mlLGexTwjZKPR/mPhyIBJaM=;
- b=ULiwCjRR6JL+SdQEn5l/d/SSY1aUeLTblHdEdfiAxeM3BmhGlRpZxERYd6M7tFkGy7EY
- cTapoAHzpaCZ4CWxjWh+eVwbX4oWM70bc0PDlNrR6mRPXcgjbN+Rj5cwZd0gOkxIP7ZJ
- YNrrXBKAreQvxjDmCmsBexM6NWtMwKYQ/bb6aVQaddWhezFUzfkxIZsCszSo/71N+JB2
- AKP5TYDAKO3FphqmEjWWfHrQA1s2H0kSJMwF7JcaVBJ4SEp486rQREDt8NjGWRF8To/S
- I9ndZVucXSsL0os4myUYFrFssBsKkZBMPQfPHDYaekggRc1ixsU4LA1AfGCnxXjAWGBf Dg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3thbhsr8np-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Oct 2023 16:40:04 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 394GdaG8003368;
- Wed, 4 Oct 2023 16:40:04 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3thbhsr8mr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Oct 2023 16:40:03 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 394Fje2S025087; Wed, 4 Oct 2023 16:40:02 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3texcygjk6-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 04 Oct 2023 16:40:02 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com
- [10.20.54.103])
- by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 394GdwfB27067092
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Wed, 4 Oct 2023 16:39:59 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id DE06820043;
- Wed,  4 Oct 2023 16:39:58 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id C7D172004D;
- Wed,  4 Oct 2023 16:39:57 +0000 (GMT)
-Received: from li-978a334c-2cba-11b2-a85c-a0743a31b510.ibm.com (unknown
- [9.171.13.103]) by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Wed,  4 Oct 2023 16:39:57 +0000 (GMT)
-Message-ID: <5be3d005e0aef68996b72cf9c757ca55d0bd190c.camel@linux.ibm.com>
-Subject: Re: [PATCH v24 02/21] CPU topology: extend with s390 specifics
-From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-To: Eduardo Habkost <eduardo@habkost.net>, Marcel Apfelbaum
- <marcel.apfelbaum@gmail.com>
-Cc: Philippe =?ISO-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>, Paolo
- Bonzini <pbonzini@redhat.com>, Richard Henderson
- <richard.henderson@linaro.org>, David Hildenbrand <david@redhat.com>, Halil
- Pasic <pasic@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Eric Farman <farman@linux.ibm.com>, Thomas
- Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>, Markus Armbruster
- <armbru@redhat.com>,
- Michael Roth <michael.roth@amd.com>, qemu-s390x@nongnu.org,
- qemu-devel@nongnu.org, Yanan Wang <wangyanan55@huawei.com>,
- "Daniel P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Date: Wed, 04 Oct 2023 18:39:57 +0200
-In-Reply-To: <20230926121534.406035-3-nsg@linux.ibm.com>
-References: <20230926121534.406035-1-nsg@linux.ibm.com>
- <20230926121534.406035-3-nsg@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1qo4vc-00023G-L9
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:40:52 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <minhquangbui99@gmail.com>)
+ id 1qo4va-0005eA-S7
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 12:40:52 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1c87a85332bso5704775ad.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 09:40:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696437649; x=1697042449; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=o97dIzY+wFB7gls2DScRGaQk48ccwDJeGF2jVr7xCjg=;
+ b=af0qOLr4MMFw7rQkAmOr9N5waa2atwn2JsqVvnYAIi+2P4GDT75s6Ysg83ubcGOOLz
+ ePhnXapKmCRffvJ8qGzxZP167ETcbGuFHYWzkexXAMNvgTczVCW2kBxZmbIVSI1f9hdN
+ HYzq5ui9DP5u6eApi1F+STHCJwJaLeKKwPtty1bdAjQQCg2lHWnTBRjVQOCVclJ51j0b
+ Cj3C8mjiJMLlzSeHhIM2yl2JRWbw06oWe5bGtfvFh6Of7ddRMp+8ybt+lKUKxOa5bCui
+ MbqqIeD43wazwDbjEnwo6A5RLstfb77qJfLFTvRbnjhGYCdlKsvnrVXoglsi2PqDTz7k
+ 1DOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696437649; x=1697042449;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=o97dIzY+wFB7gls2DScRGaQk48ccwDJeGF2jVr7xCjg=;
+ b=mvmU4vG/rQ2rkPFaQnrcKQ3d8vJ4gbINr3Lx2fx7s+ytZ03vJVr+umymAxcDW6oSw5
+ Qh7JZNRB85RrMrxtdO6K/gONkz/ncL+9j0+yeNm0ciLfJSHC0DFwmRiat8Wx/B4RD4rw
+ 2qRnODVMqGSj4QD8+JNSwZrYSusFQ3d/y7dUpJdelOMBGUf00kja7ZfLw24TiPVM/XBw
+ bHaF1XF6Hmeu2TAUGuoRx1To4tNlEftadDgdk2Z6f9oVJUTBsRbNfuj2uZOxlkqX/3LD
+ kH/unYOAdy8eIcGfU4uX5e0eavTr9G+wyQCdZs6EDnww8Z1Pygz+P8jg6f8sxC5Cxt4i
+ ca/Q==
+X-Gm-Message-State: AOJu0YxlqB8phtmUWBGuwmCa6q6Iz/eOUYNLw2ky9pygcUEq39VKCq4G
+ deRKIzy0lbyGzL7EkQR+bcc=
+X-Google-Smtp-Source: AGHT+IHSoclzZxnCxR5lkN0VLtD/DYZaE4ZP1g1FxtEElWfmVFIr+rkSVYSNRsse4sLBPvoKtpjKJg==
+X-Received: by 2002:a17:902:ab82:b0:1c4:387a:3259 with SMTP id
+ f2-20020a170902ab8200b001c4387a3259mr2947141plr.46.1696437648865; 
+ Wed, 04 Oct 2023 09:40:48 -0700 (PDT)
+Received: from ?IPV6:2001:ee0:50f4:9050:320e:6006:517:e141?
+ ([2001:ee0:50f4:9050:320e:6006:517:e141])
+ by smtp.gmail.com with ESMTPSA id
+ y5-20020a1709029b8500b001b8b2b95068sm3930467plp.204.2023.10.04.09.40.45
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 09:40:48 -0700 (PDT)
+Message-ID: <d7e14546-96e0-4ee2-928e-bd4035f09b89@gmail.com>
+Date: Wed, 4 Oct 2023 23:40:43 +0700
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 1ydcNCFDxqoZqrRGENFLz5tM_id3UanF
-X-Proofpoint-ORIG-GUID: 8ZMDe3gYQzKe8vvAoFyY7VuCpjUs1csW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-04_08,2023-10-02_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxscore=0 clxscore=1015
- priorityscore=1501 bulkscore=0 phishscore=0 malwarescore=0 spamscore=0
- suspectscore=0 impostorscore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=721 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310040119
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=nsg@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 0/5] Support x2APIC mode with TCG accelerator
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, David Woodhouse <dwmw2@infradead.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Igor Mammedov <imammedo@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Joao Martins <joao.m.martins@oracle.com>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+References: <20230926160637.27995-1-minhquangbui99@gmail.com>
+ <1e402165-24bd-7380-a5a7-c32fe33e457d@gmail.com>
+ <20231004025051-mutt-send-email-mst@kernel.org>
+From: Bui Quang Minh <minhquangbui99@gmail.com>
+In-Reply-To: <20231004025051-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::632;
+ envelope-from=minhquangbui99@gmail.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -125,28 +105,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, 2023-09-26 at 14:15 +0200, Nina Schoetterl-Glausch wrote:
-> From: Pierre Morel <pmorel@linux.ibm.com>
->=20
-> S390 adds two new SMP levels, drawers and books to the CPU
-> topology.
-> S390 CPUs have specific topology features like dedication and
-> entitlement. These indicate to the guest information on host
-> vCPU scheduling and help the guest make better scheduling decisions.
->=20
-> Let us provide the SMP properties with books and drawers levels
-> and S390 CPU with dedication and entitlement,
->=20
-> Add machine-common.json so we can later include it in
-> machine-target.json also.
->=20
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> ---
->  qapi/machine-common.json            | 21 +++++++++++++
+On 10/4/23 13:51, Michael S. Tsirkin wrote:
+> On Tue, Sep 26, 2023 at 11:23:53PM +0700, Bui Quang Minh wrote:
+>> On 9/26/23 23:06, Bui Quang Minh wrote:
+>>
+>>> Version 8 changes,
+>>> - Patch 2, 4:
+>>>     + Rebase to master and resolve conflicts in these 2 patches
+>>
+>> The conflicts when rebasing is due to the commit 9926cf34de5fa15da
+>> ("target/i386: Allow elision of kvm_enable_x2apic()"). AFAIK, this commit
+>> adds kvm_enabled() before kvm_enable_x2apic() in the and (&&) expression so
+>> that when kvm_enabled() is known to be false at the compile time
+>> (CONFIG_KVM_IS_POSSIBLE is undefined), the compiler can omit the
+>> kvm_enable_x2apic() in the and expression.
+>>
+>> In patch 2, I simply combine the change logic in patch 2 with logic in the
+>> commit 9926cf34de5fa15da.
+>>
+>> In patch 4, the end result of version 8 is the same as version 7. I don't
+>> think we need to add the kvm_enabled() to make the expression become
+>>
+>> 	if (kvm_enabled() && kvm_irqchip_is_split() && !kvm_enable_x2apic())
+>>
+>> Because when CONFIG_KVM_IS_POSSIBLE is undefined, kvm_irqchip_is_split() is
+>> known to be false at the compile time too so just keep the expression as
+>>
+>> 	if (kvm_irqchip_is_split() && !kvm_enable_x2apic())
+>>
+>> is enough.
+>>
+>>> git range-diff feat/tcg-x2apic-v7~5..feat/tcg-x2apic-v7
+>> feat/tcg-x2apic-v8~5..feat/tcg-x2apic-v8
+>>
+>> 1:  c1d197a230 = 1:  f6e3918e0f i386/tcg: implement x2APIC registers MSR
+>> access
+>> 2:  dd96cb0238 ! 2:  54d44a15b6 apic: add support for x2APIC mode
+>>      @@ Commit message
+>>
+>>        ## hw/i386/x86.c ##
+>>       @@ hw/i386/x86.c: void x86_cpus_init(X86MachineState *x86ms, int
+>> default_cpu_version)
+>>      -      * Can we support APIC ID 255 or higher?
+>>      -      *
+>>      -      * Under Xen: yes.
+>>      --     * With userspace emulated lapic: no
+>>      -+     * With userspace emulated lapic: checked later in
+>> apic_common_set_id.
+>>      -      * With KVM's in-kernel lapic: only if X2APIC API is enabled.
+>>      +      * both in-kernel lapic and X2APIC userspace API.
+>>             */
+>>      -     if (x86ms->apic_id_limit > 255 && !xen_enabled() &&
+>>      +     if (x86ms->apic_id_limit > 255 && kvm_enabled() &&
+>>       -        (!kvm_irqchip_in_kernel() || !kvm_enable_x2apic())) {
+>>       +        kvm_irqchip_in_kernel() && !kvm_enable_x2apic()) {
+>>                error_report("current -smp configuration requires kernel "
+>> 3:  31a5c555a6 = 3:  eb080d1e2c apic, i386/tcg: add x2apic transitions
+>> 4:  d78b5c43b4 ! 4:  59f028f119 intel_iommu: allow Extended Interrupt Mode
+>> when using userspace APIC
+>>      @@ hw/i386/intel_iommu.c: static bool vtd_decide_config(IntelIOMMUState
+>> *s, Error *
+>>       -            error_setg(errp, "eim=on requires
+>> accel=kvm,kernel-irqchip=split");
+>>       -            return false;
+>>       -        }
+>>      --        if (!kvm_enable_x2apic()) {
+>>      +-        if (kvm_enabled() && !kvm_enable_x2apic()) {
+>>       +        if (kvm_irqchip_is_split() && !kvm_enable_x2apic()) {
+>>                    error_setg(errp, "eim=on requires support on the KVM side"
+>>                                     "(X2APIC_API, first shipped in v4.7)");
+>> 5:  51f558035d = 5:  bc95c3cb60 amd_iommu: report x2APIC support to the
+>> operating system
+>>
+>> As the change is minor and does not change the main logic, I keep the
+>> Reviewed-by and Acked-by tags.
+>>
+>> Thank you,
+>> Quang Minh.
+> 
+> 
+> 
+> Causes some build failures:
+> 
+> https://gitlab.com/mstredhat/qemu/-/jobs/5216377483
+> /builds/mstredhat/qemu/build/../hw/intc/apic.c:1023: undefined reference to `raise_exception_ra'
 
-I guess I should also add this new file to MAINTAINERS under Machine core, =
-right?
+raise_exception_ra is tcg specific so the builds are failed as tcg is 
+disabled. I will remove the use of raise_exception_ra, the invalid 
+register read just returns 0, invalid register write has no effect 
+without raising the exception anymore. The APIC state invalid transition 
+does not raise exception either, just don't change the APIC state. As a 
+side effect, we fail some more KVM unit test of invalid APIC state 
+transition, as they expect to catch exception in these cases. I think 
+it's not a big problem. What's your opinion?
+
+Thank you,
+Quang Minh.
 
