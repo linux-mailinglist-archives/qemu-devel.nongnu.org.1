@@ -2,95 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070267B8141
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:47:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B9477B8151
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 15:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo2Dd-0003v2-25; Wed, 04 Oct 2023 09:47:17 -0400
+	id 1qo2EV-00050O-EF; Wed, 04 Oct 2023 09:48:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo2Da-0003tz-FJ
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:47:14 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qo2EM-0004zx-3G; Wed, 04 Oct 2023 09:48:02 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo2DY-0008PT-Hs
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 09:47:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696427231;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=xD1q743p4qoLb0i1P/o5mOl+Lhe0Em5H8/cbFPS4tcw=;
- b=jCyjklfM+UcPryjUKBXhcEBCQUexihVEiNPih7NvI2uqrpMH32TjY2VRqMMMCu659zP92B
- t3FqXc/fUNxS/FfA8xJycTYOofqBWFUTLTxv4y/xIHD+LiehoV+FbkMw1B7vOZZ0ohHOj+
- TubdkjXSQN/sKKL10O61MMGEVTmnrSo=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-7iq6s_kYO2CSaAhyxXr5Yw-1; Wed, 04 Oct 2023 09:47:10 -0400
-X-MC-Unique: 7iq6s_kYO2CSaAhyxXr5Yw-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-30e4943ca7fso1619062f8f.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 06:47:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696427228; x=1697032028;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xD1q743p4qoLb0i1P/o5mOl+Lhe0Em5H8/cbFPS4tcw=;
- b=JZpqDH42Kx8hoG6sdvMMbv4SaZFKFxq4RacwI/dREv8xyQZtwmve6t1otIqtVyf3fX
- oWSNZyjF3vPBhBGRlSjFGvQB/eWhchvudlA7J+LZqkLU9P28KF2T8YR5B7pYJvO6+KEa
- /bmBSqTvqeOx5qZpVGe6/Zqik3YfU2BujV0H4NNwQvTM4lbYcc63SzpqrwYNroMpqrRl
- q5ahFNpPOP/Kxm130HLsyWuVF/2us8kIpddAaeM/u1/1eKajrbOYM6jIWfvE3gcLgbAc
- 25aFXR5UcZ+6zglOI81G5jJSDwb/PidPru0INrvDUKvimt612EF1we9HKgON5USuKt+S
- 7vjg==
-X-Gm-Message-State: AOJu0YwWnXNxiGCnTQqQ/QJXW0N0Cm5qD7OHOIKYu9L8oQ6578r1nAry
- dyRDMH2whKyH+gfVq0cJBaQibK/c368MRIBXL2u5xkyBfcBdFll2eKMx81ozPBwnaaj6jHjaerN
- ZTRfr02lCTUFzpgs=
-X-Received: by 2002:a5d:6986:0:b0:31a:e972:3601 with SMTP id
- g6-20020a5d6986000000b0031ae9723601mr2292919wru.54.1696427227952; 
- Wed, 04 Oct 2023 06:47:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEbpCK5gYR0C5D+NG3t7hVWWCnQiZw5VU+aoVSmhVJzA2didFDf4onHh6YJrolPRnKW53e3fg==
-X-Received: by 2002:a5d:6986:0:b0:31a:e972:3601 with SMTP id
- g6-20020a5d6986000000b0031ae9723601mr2292893wru.54.1696427227610; 
- Wed, 04 Oct 2023 06:47:07 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- f16-20020adff590000000b0032326908972sm4054028wro.17.2023.10.04.06.47.06
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 06:47:07 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Fabiano Rosas <farosas@suse.de>
-Cc: qemu-devel@nongnu.org,  Leonardo Bras <leobras@redhat.com>,  Peter Xu
- <peterx@redhat.com>,  Thomas Huth <thuth@redhat.com>,  Li Zhijian
- <lizhijian@fujitsu.com>,  qemu-s390x@nongnu.org,  Steve Sistare
- <steven.sistare@oracle.com>,  Michael Galaxy <mgalaxy@akamai.com>,  Daniel
- P . =?utf-8?Q?Berrang=C3=A9?= <berrange@redhat.com>
-Subject: Re: [PULL 09/11] migration: file URI
-In-Reply-To: <87y1gi4i32.fsf@suse.de> (Fabiano Rosas's message of "Wed, 04 Oct
- 2023 10:45:21 -0300")
-References: <20231004124038.16002-1-quintela@redhat.com>
- <20231004124038.16002-10-quintela@redhat.com> <87y1gi4i32.fsf@suse.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 15:47:06 +0200
-Message-ID: <87cyxu33fp.fsf@secure.mitica>
+ (Exim 4.90_1) (envelope-from <stefanb@linux.ibm.com>)
+ id 1qo2EI-00007c-VC; Wed, 04 Oct 2023 09:48:00 -0400
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 394DgJQw017408; Wed, 4 Oct 2023 13:47:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=QLZ61d/Bj8ie6VpJfdo/Wk8E+53pPs04LiAcjfypJ3Y=;
+ b=Lu2SKQ7oAZKe076kjq++vUGZXdizNCiIEoyoxC1+IGKv/aEp0Qg+0SuppqXWkXZvg3vq
+ DSzDgv4dJv3Zxc3dL5DUOn1/+nOTIr+0X7XxHN3FRR/IDTmS/+KWZqXlcXhZIpAwZptk
+ 0AoVkT2bi+XckW/kjMpiaT32vUh4LXhDKNog1iWpBezd94A+A5KlHHU1KGwFkboOkf99
+ nwGjQM3xcvQDIUBVD2K6Fgw1iEjf5AFQD1vuOcECrk2N/z97QgRYLiKM+5qhMZI3wH0k
+ teeAsn7c3ewa3BOhTAFkF3ihzgLF7EZU5UGeErq2f7sIPNfKS0MxJzht0kgrXPqYLjju qA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3th95s868e-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Oct 2023 13:47:49 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 394Dgahb017827;
+ Wed, 4 Oct 2023 13:47:49 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3th95s867p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Oct 2023 13:47:49 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 394DdNkL017611; Wed, 4 Oct 2023 13:47:48 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tey0nd3rd-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 04 Oct 2023 13:47:48 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com
+ [10.241.53.103])
+ by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 394DllZm28639606
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Wed, 4 Oct 2023 13:47:47 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 6555158052;
+ Wed,  4 Oct 2023 13:47:47 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id A1B735805A;
+ Wed,  4 Oct 2023 13:47:46 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+ by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTPS;
+ Wed,  4 Oct 2023 13:47:46 +0000 (GMT)
+Message-ID: <818ebdcc-e2e1-be09-ad50-06cb9d1d3987@linux.ibm.com>
+Date: Wed, 4 Oct 2023 09:47:45 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3 15/16] sysemu/tpm: Clean up global variable shadowing
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Stefan Berger <stefanb@linux.vnet.ibm.com>
+References: <20231004120019.93101-1-philmd@linaro.org>
+ <20231004120019.93101-16-philmd@linaro.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20231004120019.93101-16-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: CQoUI55q-sb4I2d--fc1Fca1zoaY1eqs
+X-Proofpoint-ORIG-GUID: JI4frXQQNY7IHGZcz5DSc82S0-LEvi5H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-04_05,2023-10-02_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0
+ clxscore=1011 phishscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ mlxscore=0 priorityscore=1501 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310040099
+Received-SPF: pass client-ip=148.163.156.1; envelope-from=stefanb@linux.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -34
+X-Spam_score: -3.5
+X-Spam_bar: ---
+X-Spam_report: (-3.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,50 +113,65 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> wrote:
-> Juan Quintela <quintela@redhat.com> writes:
+
+On 10/4/23 08:00, Philippe Mathieu-Daudé wrote:
+> Fix:
 >
->> From: Steve Sistare <steven.sistare@oracle.com>
->>
->> Extend the migration URI to support file:<filename>.  This can be used f=
-or
->> any migration scenario that does not require a reverse path.  It can be
->> used as an alternative to 'exec:cat > file' in minimized containers that
->> do not contain /bin/sh, and it is easier to use than the fd:<fdname> URI.
->> It can be used in HMP commands, and as a qemu command-line parameter.
->>
->> For best performance, guest ram should be shared and x-ignore-shared
->> should be true, so guest pages are not written to the file, in which case
->> the guest may remain running.  If ram is not so configured, then the user
->> is advised to stop the guest first.  Otherwise, a busy guest may re-dirty
->> the same page, causing it to be appended to the file multiple times,
->> and the file may grow unboundedly.  That issue is being addressed in the
->> "fixed-ram" patch series.
->>
->> Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
->> Tested-by: Michael Galaxy <mgalaxy@akamai.com>
->> Reviewed-by: Michael Galaxy <mgalaxy@akamai.com>
->> Reviewed-by: Fabiano Rosas <farosas@suse.de>
->> Reviewed-by: Peter Xu <peterx@redhat.com>
->> Reviewed-by: Daniel P. Berrang=C3=A9 <berrange@redhat.com>
->> Reviewed-by: Juan Quintela <quintela@redhat.com>
->> Signed-off-by: Juan Quintela <quintela@redhat.com>
->> Message-ID: <1694182931-61390-2-git-send-email-steven.sistare@oracle.com>
+>    softmmu/tpm.c:178:59: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    int tpm_config_parse(QemuOptsList *opts_list, const char *optarg)
+>                                                              ^
+>    /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
+>    extern char *optarg;                    /* getopt(3) external variables */
+>                 ^
 >
-> Juan, FYI we have tests for this feature already reviewed and ready to
-> merge:
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+
+
+
+> ---
+>   include/sysemu/tpm.h | 2 +-
+>   softmmu/tpm.c        | 6 +++---
+>   2 files changed, 4 insertions(+), 4 deletions(-)
 >
-> [PATCH v5 0/6] migration: Test the new "file:" migration
-> https://lore.kernel.org/r/20230712190742.22294-1-farosas@suse.de
-
-I searched for URI and didn't found it.
-
-Will got it on next PULL request.
-
-Thanks, Juan.
-
+> diff --git a/include/sysemu/tpm.h b/include/sysemu/tpm.h
+> index 66e3b45f30..1ee568b3b6 100644
+> --- a/include/sysemu/tpm.h
+> +++ b/include/sysemu/tpm.h
+> @@ -17,7 +17,7 @@
+>
+>   #ifdef CONFIG_TPM
+>
+> -int tpm_config_parse(QemuOptsList *opts_list, const char *optarg);
+> +int tpm_config_parse(QemuOptsList *opts_list, const char *optstr);
+>   int tpm_init(void);
+>   void tpm_cleanup(void);
+>
+> diff --git a/softmmu/tpm.c b/softmmu/tpm.c
+> index 578563f05a..7164ea7ff1 100644
+> --- a/softmmu/tpm.c
+> +++ b/softmmu/tpm.c
+> @@ -175,15 +175,15 @@ int tpm_init(void)
+>    * Parse the TPM configuration options.
+>    * To display all available TPM backends the user may use '-tpmdev help'
+>    */
+> -int tpm_config_parse(QemuOptsList *opts_list, const char *optarg)
+> +int tpm_config_parse(QemuOptsList *opts_list, const char *optstr)
+>   {
+>       QemuOpts *opts;
+>
+> -    if (!strcmp(optarg, "help")) {
+> +    if (!strcmp(optstr, "help")) {
+>           tpm_display_backend_drivers();
+>           return -1;
+>       }
+> -    opts = qemu_opts_parse_noisily(opts_list, optarg, true);
+> +    opts = qemu_opts_parse_noisily(opts_list, optstr, true);
+>       if (!opts) {
+>           return -1;
+>       }
 
