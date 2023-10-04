@@ -2,72 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42C9C7B7B5C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:11:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20AE67B7B3F
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 11:09:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxqT-0000BZ-2z; Wed, 04 Oct 2023 05:07:05 -0400
+	id 1qnxqT-0000Fs-AQ; Wed, 04 Oct 2023 05:07:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxqC-0008KQ-4x
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:06:52 -0400
-Received: from mail-wm1-x32f.google.com ([2a00:1450:4864:20::32f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxqG-00005X-Au
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:06:53 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxpy-0007HE-8S
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:06:47 -0400
-Received: by mail-wm1-x32f.google.com with SMTP id
- 5b1f17b1804b1-40651a726acso17721135e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:06:33 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qnxq7-0007JQ-9R
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 05:06:51 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-32329d935d4so1817430f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 02:06:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696410392; x=1697015192; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=qNBSS5i6sU4lyaj8Yfkc45yB1bV/cBSP3bR/QJlwa/s=;
- b=aufznRQhp6pTADROYYqbNIfDqbK4vGlwKZA57FgDKhmxzh2zL+PBjlKkDTjKNYuMic
- yp76kMoRaYZJ0hC9zlU/Lf1nmDvvXe28GNC9LR0EpX5YD7Ban5FjPFPi6NGrgqht4Aym
- 6552gg0F268MQpZrhXXd2JwdfYO7HtkCQb8zDAlY1DDbUQAGWGVmldbM4QRhyTEQX0F9
- HhQWAbB9ix5t1vBZ1+DlwkCrVwCKM7DSlYuaV3+FFlvCcX7mbvPc8qBqrYwx5tY+WY9R
- /QXmVwhgmfVfc3X4/5FA8lGny2XGI/pJeT59DfsbVCXIorg3saTgVPVQoQeuKCpB3zrc
- Mu5w==
+ d=linaro.org; s=google; t=1696410398; x=1697015198; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vq400Z/hRo2TzTvAVidPJS+emom/nhiL5bExw++dGXQ=;
+ b=UeVimI+1VpoiK1h0uLcdMkNNDyQ9joSOI8LdSZyYdH4iXrgMFc3nwoVCwQJWDIXDbw
+ 5ZRyVnr3ShOzEMN6mL17mPhE2ybWdZQZQx8ff30MNV4Lk0G9Y0oB7Lw1/xdmP1pj3oYk
+ PccqLFdioKIllcQoC/Mj2dkHphPzRALFhgC642EUcSLgedS08HqgqbxxzpiikJB52sk5
+ AI6skg5eBdbO0CYlCAza5Nio1YP4qTMqfp5Q2r9Z2sNWvJJ8hoN8h3/NwyLHJE3p0hqv
+ cGsuLt9HBx7bhAsOF5hMiKXnnz36wTMewt2rloY7DJqs4xPzIGcaQNQsQ1lM+1LlLgUa
+ Thrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696410392; x=1697015192;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=qNBSS5i6sU4lyaj8Yfkc45yB1bV/cBSP3bR/QJlwa/s=;
- b=aYophJSOv0G6IV5RlQcOW+PupqOJ2pCRV/5fwpA7LcdvWuUN+Hf62Wpw0MH+V/f7AY
- RhNZTSIRf/I/Fe0gotS/OsKv5oJ8b4MACMGSOEQmZKJ4KUvPIazziHB/hghZ0Nr5psu/
- UgmtpzIiAKmiao+5DhSPFoL4GXAsHAHHKrH4PrCTl+qOxiZQ4aEKLo3Go0pBmUwIDl+f
- 1KZwG6qb/uBDNpD2Vo2zuO0HYAHhQqeXh9OBeKa35ASoaVpl/32B7VfX9YyBcg2EoIlS
- MfhZKcl1qamLNCVrZY5cUZT+XCgp6wppFs0HM7xTXSWkeJmfdgz72njuULvcHOVwtEox
- fzrg==
-X-Gm-Message-State: AOJu0YyS0Trl5cYJCAVL2hi1bAF+obmJGefndSWHCSuMWzKN/GgazwKb
- 0iwIXjz4BQ7xPcvvKrc5G0HuP/Q9RmACiFaVJEY=
-X-Google-Smtp-Source: AGHT+IEdYCr4A8Zv1QnAoN23ZEEmmH3LN00c+tG7rJT8B8mg6Y4NxigL5SwMuMNDUtOTL1yJkWZH7g==
-X-Received: by 2002:a5d:460a:0:b0:321:521f:836f with SMTP id
- t10-20020a5d460a000000b00321521f836fmr1870415wrq.26.1696410392331; 
- Wed, 04 Oct 2023 02:06:32 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696410398; x=1697015198;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vq400Z/hRo2TzTvAVidPJS+emom/nhiL5bExw++dGXQ=;
+ b=sd0RYkij201ha6sGX9hCWaiIHcoLGxOmd1o04pDMfhOQ/EXFqWGajhKeBqhnnPgD+4
+ Dte0PHzx0kEBnU3ixJ4OFcJJyXlIrAbvSwk7bycfRG+VpUFPBEEQpBPna7OGoPE+m4/f
+ sY2X3ToD5Gp1iAcwSJ/86YRtc1kS0WrsXKIGF+uD1VrevFfQ9kUewmkvH3iE534w1jYB
+ t8suC3p9CLlNS5NYID5UOJ546x0bZSBciJwFwb/Szw7dNWoZklkCt14seG8HlTqOCTER
+ CybqIqYOP4jaFb0JHFu4Y7rsdmX3OIQGsV2n5Lu5ANYL1AuWN84NESS2f/DSgmfoG3xN
+ NN3w==
+X-Gm-Message-State: AOJu0YxR8V1JnS+qHIHKr92FoEkSxiit5FxA6jVG0h1YieQZI8M3d15o
+ ayVkr1OlQxSlbncUFSY4dpZaQbKq4VgZ2Czh6JI=
+X-Google-Smtp-Source: AGHT+IHycCeab5oMDXM1XeeaxEgiovNyEXd4G5yJrPGXhRY9V3ZqcRfvXbSSXsEUG7+VuOe6HtspjA==
+X-Received: by 2002:adf:fdc7:0:b0:31f:f982:5395 with SMTP id
+ i7-20020adffdc7000000b0031ff9825395mr1573683wrs.35.1696410397897; 
+ Wed, 04 Oct 2023 02:06:37 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- v10-20020adff68a000000b003197869bcd7sm3501098wrp.13.2023.10.04.02.06.31
+ i15-20020a5d438f000000b003250aec5e97sm3517480wrq.4.2023.10.04.02.06.36
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 02:06:31 -0700 (PDT)
+ Wed, 04 Oct 2023 02:06:37 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, Thomas Huth <thuth@redhat.com>, qemu-ppc@nongnu.org,
  qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
  Paolo Bonzini <pbonzini@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/13] misc: Rename 'softmmu' -> 'system'
-Date: Wed,  4 Oct 2023 11:06:15 +0200
-Message-ID: <20231004090629.37473-1-philmd@linaro.org>
+Subject: [PATCH 01/13] softmmu/trace-events: Fix a typo
+Date: Wed,  4 Oct 2023 11:06:16 +0200
+Message-ID: <20231004090629.37473-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231004090629.37473-1-philmd@linaro.org>
+References: <20231004090629.37473-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32f;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -90,184 +93,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This series finishes the cleanup which remove the confusion
-of using 'softmmu' when we really mean 'system emulation',
-as opposition to 'user emulation'.
+Commit 8af3f5c6d6 ("softmmu: add trace point when bdrv_flush_all
+fails") added calls to trace_vm_stop_flush_all() in 'cpus.c'.
 
-Now that Richard posted its "tcg: Allow softmmu for user-only"
-series, this is particularly relevant:
-https://lore.kernel.org/qemu-devel/20231003174356.1602279-1-richard.henderson@linaro.org/
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ softmmu/trace-events | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Philippe Mathieu-Daudé (13):
-  softmmu/trace-events: Fix a typo
-  travis-ci: Correct invalid mentions of 'softmmu' by 'system'
-  cpu: Correct invalid mentions of 'softmmu' by 'system-mode'
-  fuzz: Correct invalid mentions of 'softmmu' by 'system'
-  tcg: Correct invalid mentions of 'softmmu' by 'system-mode'
-  accel: Rename accel_softmmu* -> accel_system*
-  gdbstub: Rename 'softmmu' -> 'system'
-  semihosting: Rename softmmu_FOO_user() -> uaccess_FOO_user()
-  target/i386: Rename i386_softmmu_kvm_ss -> i386_kvm_ss
-  hw/virtio/meson: Rename softmmu_virtio_ss -> system_virtio_ss
-  meson: Rename softmmu_mods -> system_mods
-  meson: Rename target_softmmu_arch -> target_system_arch
-  system: Rename softmmu/ directory as system/
-
- MAINTAINERS                                   | 44 +++++++++----------
- docs/devel/build-system.rst                   |  4 +-
- docs/devel/qtest.rst                          |  2 +-
- docs/devel/testing.rst                        |  2 +-
- tests/tcg/s390x/pgm-specification.mak         |  2 +-
- meson.build                                   | 22 +++++-----
- accel/{accel-softmmu.h => accel-system.h}     |  6 +--
- gdbstub/internals.h                           |  4 +-
- include/qemu/atomic128.h                      |  4 +-
- .../{softmmu-uaccess.h => uaccess.h}          | 24 +++++-----
- include/sysemu/runstate-action.h              |  2 +-
- include/tcg/tcg-op-common.h                   |  2 +-
- softmmu/trace.h                               |  1 -
- {softmmu => system}/timers-state.h            |  0
- system/trace.h                                |  1 +
- tests/qtest/fuzz/fuzz.h                       |  4 +-
- accel/accel-common.c                          |  2 +-
- accel/{accel-softmmu.c => accel-system.c}     |  6 +--
- accel/tcg/user-exec.c                         |  2 +-
- cpu.c                                         |  2 +-
- gdbstub/{softmmu.c => system.c}               |  2 +-
- hw/core/cpu-common.c                          |  4 +-
- semihosting/arm-compat-semi.c                 |  4 +-
- semihosting/config.c                          |  2 +-
- semihosting/guestfd.c                         |  2 +-
- semihosting/syscalls.c                        |  2 +-
- semihosting/uaccess.c                         | 14 +++---
- stubs/semihost.c                              |  4 +-
- {softmmu => system}/arch_init.c               |  0
- {softmmu => system}/async-teardown.c          |  0
- {softmmu => system}/balloon.c                 |  0
- {softmmu => system}/bootdevice.c              |  0
- {softmmu => system}/cpu-throttle.c            |  0
- {softmmu => system}/cpu-timers.c              |  0
- {softmmu => system}/cpus.c                    |  0
- {softmmu => system}/datadir.c                 |  0
- {softmmu => system}/device_tree.c             |  0
- {softmmu => system}/dirtylimit.c              |  0
- {softmmu => system}/dma-helpers.c             |  0
- {softmmu => system}/globals.c                 |  0
- {softmmu => system}/icount.c                  |  0
- {softmmu => system}/ioport.c                  |  0
- {softmmu => system}/main.c                    |  0
- {softmmu => system}/memory.c                  |  2 +-
- {softmmu => system}/memory_mapping.c          |  0
- {softmmu => system}/physmem.c                 |  6 ++-
- {softmmu => system}/qdev-monitor.c            |  0
- {softmmu => system}/qemu-seccomp.c            |  0
- {softmmu => system}/qtest.c                   |  0
- {softmmu => system}/rtc.c                     |  0
- {softmmu => system}/runstate-action.c         |  0
- {softmmu => system}/runstate-hmp-cmds.c       |  0
- {softmmu => system}/runstate.c                |  0
- {softmmu => system}/tpm-hmp-cmds.c            |  0
- {softmmu => system}/tpm.c                     |  0
- {softmmu => system}/vl.c                      |  0
- {softmmu => system}/watchpoint.c              |  0
- target/m68k/m68k-semi.c                       |  2 +-
- target/mips/tcg/sysemu/mips-semi.c            |  2 +-
- target/nios2/nios2-semi.c                     |  2 +-
- target/riscv/vector_helper.c                  |  2 +-
- tcg/region.c                                  |  4 +-
- tcg/tcg.c                                     | 11 ++---
- tests/qtest/fuzz/fuzz.c                       |  2 +-
- tests/tcg/multiarch/system/memory.c           |  4 +-
- tcg/aarch64/tcg-target.c.inc                  |  4 +-
- tcg/arm/tcg-target.c.inc                      |  2 +-
- tcg/i386/tcg-target.c.inc                     |  2 +-
- tcg/loongarch64/tcg-target.c.inc              |  4 +-
- tcg/mips/tcg-target.c.inc                     |  4 +-
- tcg/ppc/tcg-target.c.inc                      |  4 +-
- tcg/riscv/tcg-target.c.inc                    |  4 +-
- tcg/s390x/tcg-target.c.inc                    |  4 +-
- tcg/sparc64/tcg-target.c.inc                  |  4 +-
- .travis.yml                                   |  4 +-
- accel/meson.build                             |  2 +-
- accel/stubs/meson.build                       | 10 ++---
- gdbstub/meson.build                           | 10 ++---
- gdbstub/trace-events                          |  2 +-
- hw/virtio/meson.build                         | 22 +++++-----
- scripts/checkpatch.pl                         |  2 +-
- scripts/coverity-scan/COMPONENTS.md           |  2 +-
- scripts/get_maintainer.pl                     |  2 +-
- {softmmu => system}/meson.build               |  0
- {softmmu => system}/trace-events              |  2 +-
- target/alpha/meson.build                      |  2 +-
- target/arm/meson.build                        |  2 +-
- target/avr/meson.build                        |  2 +-
- target/cris/meson.build                       |  2 +-
- target/hppa/meson.build                       |  2 +-
- target/i386/kvm/meson.build                   | 10 ++---
- target/i386/meson.build                       |  2 +-
- target/loongarch/meson.build                  |  2 +-
- target/m68k/meson.build                       |  2 +-
- target/microblaze/meson.build                 |  2 +-
- target/mips/meson.build                       |  2 +-
- target/nios2/meson.build                      |  2 +-
- target/openrisc/meson.build                   |  2 +-
- target/ppc/meson.build                        |  2 +-
- target/riscv/meson.build                      |  2 +-
- target/rx/meson.build                         |  2 +-
- target/s390x/meson.build                      |  2 +-
- target/sh4/meson.build                        |  2 +-
- target/sparc/meson.build                      |  2 +-
- target/tricore/meson.build                    |  2 +-
- target/xtensa/meson.build                     |  2 +-
- tcg/meson.build                               |  6 +--
- tests/tcg/Makefile.target                     |  2 +-
- tests/tcg/multiarch/gdbstub/interrupt.py      |  2 +-
- tests/tcg/multiarch/gdbstub/memory.py         |  2 +-
- tests/tcg/s390x/pgm-specification-softmmu.S   |  2 +-
- tests/tcg/s390x/softmmu.ld                    |  2 +-
- tests/tcg/xtensa/Makefile.softmmu-target      |  2 +-
- tests/tcg/xtensaeb/Makefile.softmmu-target    |  2 +-
- tests/unit/meson.build                        |  2 +-
- 115 files changed, 188 insertions(+), 181 deletions(-)
- rename accel/{accel-softmmu.h => accel-system.h} (77%)
- rename include/semihosting/{softmmu-uaccess.h => uaccess.h} (75%)
- delete mode 100644 softmmu/trace.h
- rename {softmmu => system}/timers-state.h (100%)
- create mode 100644 system/trace.h
- rename accel/{accel-softmmu.c => accel-system.c} (96%)
- rename gdbstub/{softmmu.c => system.c} (99%)
- rename {softmmu => system}/arch_init.c (100%)
- rename {softmmu => system}/async-teardown.c (100%)
- rename {softmmu => system}/balloon.c (100%)
- rename {softmmu => system}/bootdevice.c (100%)
- rename {softmmu => system}/cpu-throttle.c (100%)
- rename {softmmu => system}/cpu-timers.c (100%)
- rename {softmmu => system}/cpus.c (100%)
- rename {softmmu => system}/datadir.c (100%)
- rename {softmmu => system}/device_tree.c (100%)
- rename {softmmu => system}/dirtylimit.c (100%)
- rename {softmmu => system}/dma-helpers.c (100%)
- rename {softmmu => system}/globals.c (100%)
- rename {softmmu => system}/icount.c (100%)
- rename {softmmu => system}/ioport.c (100%)
- rename {softmmu => system}/main.c (100%)
- rename {softmmu => system}/memory.c (99%)
- rename {softmmu => system}/memory_mapping.c (100%)
- rename {softmmu => system}/physmem.c (99%)
- rename {softmmu => system}/qdev-monitor.c (100%)
- rename {softmmu => system}/qemu-seccomp.c (100%)
- rename {softmmu => system}/qtest.c (100%)
- rename {softmmu => system}/rtc.c (100%)
- rename {softmmu => system}/runstate-action.c (100%)
- rename {softmmu => system}/runstate-hmp-cmds.c (100%)
- rename {softmmu => system}/runstate.c (100%)
- rename {softmmu => system}/tpm-hmp-cmds.c (100%)
- rename {softmmu => system}/tpm.c (100%)
- rename {softmmu => system}/vl.c (100%)
- rename {softmmu => system}/watchpoint.c (100%)
- rename {softmmu => system}/meson.build (100%)
- rename {softmmu => system}/trace-events (99%)
-
+diff --git a/softmmu/trace-events b/softmmu/trace-events
+index 22606dc27b..69c9044151 100644
+--- a/softmmu/trace-events
++++ b/softmmu/trace-events
+@@ -21,7 +21,7 @@ flatview_destroy(void *view, void *root) "%p (root %p)"
+ flatview_destroy_rcu(void *view, void *root) "%p (root %p)"
+ global_dirty_changed(unsigned int bitmask) "bitmask 0x%"PRIx32
+ 
+-# softmmu.c
++# cpus.c
+ vm_stop_flush_all(int ret) "ret %d"
+ 
+ # vl.c
 -- 
 2.41.0
 
