@@ -2,78 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80FB7B7EA6
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:06:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 600987B7EA8
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:06:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0b9-0003FY-K1; Wed, 04 Oct 2023 08:03:37 -0400
+	id 1qo0b7-00036E-Le; Wed, 04 Oct 2023 08:03:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZF-0000O1-NB
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:34 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZK-0000Pb-6G
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:37 -0400
+Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZC-00015k-Gw
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:29 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-32487efc319so2025839f8f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:25 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0ZI-00017M-21
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:01:33 -0400
+Received: by mail-wm1-x32e.google.com with SMTP id
+ 5b1f17b1804b1-406650da82bso19153275e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:01:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696420884; x=1697025684; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696420890; x=1697025690; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=aaBKBsLGQ/LuJm7hrK1IdnE8JEzy7Etr5v11yBfp1ug=;
- b=Rfm1la5sKrMWtTpzIbcfi0jV0qof3ooOZgH8CpV9gcrrjH10bwiScPAgu3jx7PobnM
- QAlNEf3ip/u/oGVWc0JPq+x3X6pPioysbNhnWHY3rp7UDa1UKnDBIdrfUXFEpxz54Pgs
- YoZmz2Dqa7fe/GsGAp2UvPwJlRYj3NcS8eckt13AsBawIqC/KbN0hbIi9NgdxpXkPPsA
- zCdNuJEBYNXP63Htk9SfifdNCfIXEb79zO8aOPWeKccQX29jTpk6fieKn2zYfCgQtz4s
- jbXtMIvV9P0v3AzFS6eG1PRdRo6nvcBABmIg/oEO0KRYhqYd4twMYAsVTN2gHYmKhi6o
- YuQQ==
+ bh=9QTZPnGa7dzlAxYI3K0r+uL7KCteU3g2TmxdKpGNVN0=;
+ b=AFm0zfRDJoWdXeEUqHwgxSFITCWXs1/nS40U2pGSA1YbQoX5FKNnYF/gJH4J+463hC
+ W1nFq05MjC1BebyLaMGtEVb+JSvpspdr+ZRy/D0dtZWgSBNHJfoNrEdGjeHV70/Rozi0
+ rFeHWPbUZe91ubilp6d9Dy05yL6I3UToJc/EUJZtbiVA0U3KNIba6nWK3Y0hGIUoSO5d
+ TEiSqodx2koWjfLNuIpMA1fdZsKmKmacMPY2nPegfYJ9YU/rg+FdJmi919LKZk/tJKj+
+ o6p2kuht2u/W0+UsHdeZbhoxDMePN5Jc/m4RmPCqSFUaNdIS9/dce8+CXbRWeTn8DOSw
+ pA6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696420884; x=1697025684;
+ d=1e100.net; s=20230601; t=1696420890; x=1697025690;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=aaBKBsLGQ/LuJm7hrK1IdnE8JEzy7Etr5v11yBfp1ug=;
- b=O7D1PYN3KTNaHZvmH10F35atMfIRa8kZ4UOkzchfffu735iOScShOqDPuSTcjXrb6F
- BEs+wnOB0m2+4GJRDfSmdFvhmMKciurFifhr+EsTTDRe5XNd9fRtE8wlIW/B1G732nN5
- HSxbkPkZC7R+qhQxzVeEZFdklEILZ4OYNWYnnLPAOxMPzbM4hJl4zVEjYsTpvJ4Hznv8
- 5KavJty365iSfvfzCQ9ZzlQsHYnNkn6Hv4DYqVAi3rmHNwOIqivwSkkcjn04c0QCE2mZ
- /NFTiOpweB32eW3zxhGOauABg3FtnrOkPvysZYsf9wRWck7xcdS9cHsAJVeE8fBhXnnN
- y1Ug==
-X-Gm-Message-State: AOJu0Yx7qLj5X86zWWCmv/JClJk9Kl/2ohtBFKz3HSZSTVsP7qZxoE9q
- 69LBJa0sBrJ2GlRdd68bImj/zOG7Xka9LNQ1Atc=
-X-Google-Smtp-Source: AGHT+IESLymds+pnPfiIjWjB+IzTvFThDGHRqlErQmqXu4f56VtY5QXAn1g4OxkDQW/vSmLSiuryvw==
-X-Received: by 2002:adf:f845:0:b0:31f:e74d:c82a with SMTP id
- d5-20020adff845000000b0031fe74dc82amr1772147wrq.31.1696420883499; 
- Wed, 04 Oct 2023 05:01:23 -0700 (PDT)
+ bh=9QTZPnGa7dzlAxYI3K0r+uL7KCteU3g2TmxdKpGNVN0=;
+ b=qRsCYd8I1Qjy8lM7NVEIeoWG85fsdh70OrqKUIZBeWrcALKiywuaptJTb55aZE2XoF
+ Q/gaPXw7WaMMIWeqmjj34PaWbM4NVHFBJ8LYJ42OWKL5Q0yUnYhwB/DxA1bBmsKYmNqf
+ 0ncnqTXTdZdFOuDvRH33EPkBlMz2VRKvxRlR9PonsmSY/Ly3DTDKCKv+jl/g/sSIta28
+ Q4VszlbRm6F5HezoVV+5FTqCYO/DOgzw1cXkRYixS7I8hSCsmcXqrWYjv2RKvnhwSpmM
+ MdeW8WvDQHwtCbrV0BQ/uhrPkVlGctrer+2PIqOSbMM0vUKGOmHbZUJAUWHto4uYUgKN
+ Y2dg==
+X-Gm-Message-State: AOJu0YxKJ2ikRFRjOcAu2D78yaMwbiGQF8tFNBoncMOgv82FALFdEySY
+ MnjAtdCJqRyfm9D2mMId4EjYUNz0CRCFZPrUGDg=
+X-Google-Smtp-Source: AGHT+IFgZJVdmWW1rDVNPvd43g/WPuP39kPXM7D50nGRVd8lRFQ08yURJeYc0kn2TT47yqcmSnKBmA==
+X-Received: by 2002:a1c:7209:0:b0:405:a30:151e with SMTP id
+ n9-20020a1c7209000000b004050a30151emr2290577wmc.12.1696420889413; 
+ Wed, 04 Oct 2023 05:01:29 -0700 (PDT)
 Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- x15-20020a5d60cf000000b003271be8440csm3844037wrt.101.2023.10.04.05.01.22
+ e16-20020a056000121000b00324853fc8adsm3838124wrx.104.2023.10.04.05.01.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 05:01:23 -0700 (PDT)
+ Wed, 04 Oct 2023 05:01:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
  Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>,
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
-Subject: [PATCH v3 10/16] ui/cocoa: Clean up global variable shadowing
-Date: Wed,  4 Oct 2023 14:00:13 +0200
-Message-ID: <20231004120019.93101-11-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v3 11/16] util/cutils: Clean up global variable shadowing in
+ get_relocated_path()
+Date: Wed,  4 Oct 2023 14:00:14 +0200
+Message-ID: <20231004120019.93101-12-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004120019.93101-1-philmd@linaro.org>
 References: <20231004120019.93101-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -98,34 +95,30 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  ui/cocoa.m:346:20: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      QemuCocoaView *cocoaView = userInfo;
+  util/cutils.c:1147:17: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      const char *exec_dir = qemu_get_exec_dir();
+                  ^
+  util/cutils.c:1035:20: note: previous declaration is here
+  static const char *exec_dir;
                      ^
-  ui/cocoa.m:342:16: note: previous declaration is here
-  QemuCocoaView *cocoaView;
-                 ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- ui/cocoa.m | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ util/cutils.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index df6d13be38..15477288fd 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -343,9 +343,9 @@ - (void) raiseAllKeys;
- 
- static CGEventRef handleTapEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef cgEvent, void *userInfo)
+diff --git a/util/cutils.c b/util/cutils.c
+index 25373198ad..b44718a6a2 100644
+--- a/util/cutils.c
++++ b/util/cutils.c
+@@ -1144,7 +1144,6 @@ char *get_relocated_path(const char *dir)
  {
--    QemuCocoaView *cocoaView = userInfo;
-+    QemuCocoaView *view = userInfo;
-     NSEvent *event = [NSEvent eventWithCGEvent:cgEvent];
--    if ([cocoaView isMouseGrabbed] && [cocoaView handleEvent:event]) {
-+    if ([view isMouseGrabbed] && [view handleEvent:event]) {
-         COCOA_DEBUG("Global events tap: qemu handled the event, capturing!\n");
-         return NULL;
-     }
+     size_t prefix_len = strlen(CONFIG_PREFIX);
+     const char *bindir = CONFIG_BINDIR;
+-    const char *exec_dir = qemu_get_exec_dir();
+     GString *result;
+     int len_dir, len_bindir;
+ 
 -- 
 2.41.0
 
