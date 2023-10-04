@@ -2,70 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3CB7B8D78
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:35:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 857797B8DA4
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 21:48:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo7dm-0000O2-IA; Wed, 04 Oct 2023 15:34:38 -0400
+	id 1qo7pE-0004gp-9b; Wed, 04 Oct 2023 15:46:28 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qo7dj-0000GB-TO
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:34:35 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qo7pA-0004fR-5m
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:46:24 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qo7de-00087f-Jc
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:34:35 -0400
-Received: from mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- [IPv6:2a02:6b8:c14:750a:0:640:e46:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 6823364D10;
- Wed,  4 Oct 2023 22:34:26 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:2::1:1c] (unknown [2a02:6b8:b081:2::1:1c])
- by mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net
- (smtpcorp/Yandex) with ESMTPSA id OYdpGF3OoKo0-bIMZBJEh; 
- Wed, 04 Oct 2023 22:34:25 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696448065;
- bh=HbqrGniURF4NtD6RWc8RLd7aFuy+y2eK7vKqFF0YdRA=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=f3rrdwSKV1YxAGqkLqEMLl07bWVKK6JZoRidAbPc7Bxy6Z5aJ7ICScmw3rsKmI3ox
- Kurd2AFNYYFSxx6lJBbRFonFkGu7XhHu63P21W+ZZoS8maNmJoxcWO8Mc/fyCoLvd9
- t1w59ZvmGy12YQizxdizpItRNsbBZpAbu9/LNAOw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-34.sas.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <e31e4d30-3c78-3c28-6b7a-6dc132c36bc8@yandex-team.ru>
-Date: Wed, 4 Oct 2023 22:34:23 +0300
+ (Exim 4.90_1) (envelope-from <jsnow@redhat.com>) id 1qo7p6-00057V-RE
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 15:46:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696448779;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=TX7kKZmBtJZ5PBGYSWB5p9gNJO/hUqyWgAymBZ2GhF0=;
+ b=TTekZrTq/ztHm0PlN0K5WnDLy0XWzCVvBieqjkAzmNA48GwftYarwuHl1xMrTICXI/CyKk
+ 6E3VsKL4s7nTXb77rP8MINjFuIty50H+O8G5AkZOiz+yKWVcDGYeKd9P0NAobTe4vjfuyh
+ f3yD+HwbGjrW7Cu+gqLHKGo3fNPnx/s=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-462-phOAvBEzOEylcy3t1q5R3A-1; Wed, 04 Oct 2023 15:46:16 -0400
+X-MC-Unique: phOAvBEzOEylcy3t1q5R3A-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 85F271C05AA7;
+ Wed,  4 Oct 2023 19:46:15 +0000 (UTC)
+Received: from scv.redhat.com (unknown [10.22.16.75])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 9CA4B1054FC2;
+ Wed,  4 Oct 2023 19:46:13 +0000 (UTC)
+From: John Snow <jsnow@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Andrew Jeffery <andrew@aj.id.au>,
+ John Snow <jsnow@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ qemu-arm@nongnu.org, Joel Stanley <joel@jms.id.au>, qemu-block@nongnu.org,
+ Beraldo Leal <bleal@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>,
+ Thomas Huth <thuth@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: [PULL 0/9] Python patches
+Date: Wed,  4 Oct 2023 15:46:04 -0400
+Message-ID: <20231004194613.2900323-1-jsnow@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v7 2/4] qapi: add DEVICE_ON and query-hotplug
- infrastructure
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: armbru@redhat.com, eblake@redhat.com, eduardo@habkost.net,
- berrange@redhat.com, pbonzini@redhat.com, marcel.apfelbaum@gmail.com,
- mst@redhat.com, antonkuchin@yandex-team.ru, den-plotnikov@yandex-team.ru
-References: <20230421103207.845847-1-vsementsov@yandex-team.ru>
- <20230421103207.845847-3-vsementsov@yandex-team.ru>
- <9f61f7f4-4c78-bf82-b140-6706a912e45a@linaro.org>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <9f61f7f4-4c78-bf82-b140-6706a912e45a@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=jsnow@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,251 +87,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-A bit old thread, but I'm going to resend, so should answer here about things I don't want to change. Be free to ignore it and come to review from scratch in v8 (coming soon) if you don't remember, what was it :)
-
-On 19.05.23 18:20, Philippe Mathieu-Daudé wrote:
-> Hi Vladimir,
-> 
-> On 21/4/23 12:32, Vladimir Sementsov-Ogievskiy wrote:
->> We have DEVICE_DELETED event, that signals that device_del command is
->> actually completed. But we don't have a counter-part for device_add.
->> Still it's sensible for SHPC and PCIe-native hotplug, as there are time
->> when the device in some intermediate state. Let's add an event that say
->> that the device is finally powered on, power indicator is on and
->> everything is OK for next manipulation on that device.
->>
->> Motivations:
->> 1. To be sure that device is "accepted" by guest. Guest may ignore
->> hotplugged device for some reason (for example during OS booting).
->> Management wants to catch this and handle the problem, instead of
->> silent assume that everything is OK. So, if we don't get the event by
->> some timeout, we can report an error, try to unplug/plug the disk again
->> or do some other things to handle the problem.
->>
->> 2. The device can't be removed (by blockdev-del) while power indicator
->> of hotplug controller is blinking (QEMU reports "guest is busy (power
->> indicator blinking)"). So, management should avoid removing the device
->> until it gets the DEVICE_ON event.
->> (Probably, better solution for this point is to automatically postpone
->> deletion until power indicator stops blinking)
->>
->> 3. Also, management tool may make a GUI visualization of power
->> indicator with help of this event.
->>
->> New query-hotplug command in additon to "device-on" state also provides
->> SHPC/PCIe-native specific hotplug controller properties (like leds)
->> that may help to determine real state of hotplug controller. That may
->> help to get additional information for further debugging when DEVICE_ON
->> / DEVICE_DELETED not come in time as expected.
->>
->> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-
-[..]
-
->>   #endif
->> diff --git a/include/hw/qdev-core.h b/include/hw/qdev-core.h
->> index bd50ad5ee1..63889e41c0 100644
->> --- a/include/hw/qdev-core.h
->> +++ b/include/hw/qdev-core.h
->> @@ -180,6 +180,7 @@ struct DeviceState {
->>       char *id;
->>       char *canonical_path;
->>       bool realized;
->> +    bool device_on_sent; /* set once by SHPC or PCIE-hotplug */
-> 
-> This seems to belong to the next patch (not used here).
-> Anyhow (besides the field misses its description) from the name
-> I can't figure out what this is about. Probably too generic name
-> IMHO.
-
-Actually it's used in this patch and forces the event to be sent at most once.
-The comment is misleading.
-
-> 
->>       bool pending_deleted_event;
->>       int64_t pending_deleted_expires_ms;
->>       QDict *opts;
->> diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
->> index 1d57bf6577..c1c8798e89 100644
->> --- a/include/monitor/qdev.h
->> +++ b/include/monitor/qdev.h
->> @@ -36,4 +36,6 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
->>    */
->>   const char *qdev_set_id(DeviceState *dev, char *id, Error **errp);
->> +void qdev_hotplug_device_on_event(DeviceState *dev);
->> +
->>   #endif
->> diff --git a/qapi/qdev.json b/qapi/qdev.json
->> index 135cd81586..ffd20c43e0 100644
->> --- a/qapi/qdev.json
->> +++ b/qapi/qdev.json
->> @@ -173,3 +173,147 @@
->>   #
->>   ##
->>   { 'event': 'DEVICE_UNPLUG_GUEST_ERROR', 'data': 'DeviceAndPath' }
->> +
->> +##
->> +# @LedActivity:
->> +#
->> +# Three-state led indicator state.
->> +#
->> +# @on: Indicator is on.
->> +#
->> +# @blink: Indicator is blinking.
->> +#
->> +# @off: Indicator is off.
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'enum': 'LedActivity',
->> +  'data': [ 'on', 'blink', 'off' ] }
-> 
-> Possibly useful enough to add in a new qapi/led.json.
-
-I'd postpone it until another user of the enum appear.
-
-> 
->> +##
->> +# @HotplugSHPCSlotState:
->> +#
->> +# Standard Hot-Plug Controller slot state.
->> +#
->> +# @power-only: Slot is powered on but neither clock nor bus are connected.
->> +#
->> +# @enabled: Slot is powered on, clock and bus are connected, the card is
->> +#           fully functional from a hardware standpoint.
->> +#
->> +# @disabled: Slot is disabled, card is safe to be removed.
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'enum': 'HotplugSHPCSlotState',
->> +  'data': [ 'power-only', 'enabled', 'disabled' ] }
->> +
->> +##
->> +# @HotplugBaseState:
->> +#
->> +# Base structure for SHPC and PCIe-native hotplug.
->> +#
->> +# @power-led: Power indicator. When power indicator is on the device is
->> +#             ready and accepted by guest. Off status means that device
->> +#             is safe to remove and blinking is an intermediate state of
->> +#             hot-plug or hot-unplug.
->> +#
->> +# @attention-led: Attention indicator. Off status means normal operation,
->> +#                 On signals about operational problem, Blinking is for
->> +#                 locating the slot.
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'struct': 'HotplugBaseState',
->> +  'data': { '*power-led': 'LedActivity',
->> +            '*attention-led': 'LedActivity' } }
->> +
->> +##
->> +# @HotplugSHPCState:
->> +#
->> +# Standard Hot Plug Controller state.
->> +#
->> +# @slot-state: The slot state field of Slot Status.
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'struct': 'HotplugSHPCState',
->> +  'base': 'HotplugBaseState',
->> +  'data': { '*slot-state': 'HotplugSHPCSlotState' } }
->> +
->> +##
->> +# @HotplugPCIeNativeState:
->> +#
->> +# PCIe Native hotplug slot state.
-> 
-> Doesn't this belong to qapi/pci.json?
-
-Now I think it shouldn't. I'd keep all hotplug-related together, even when ACPI hotplug will be supported by new event.
-
-Probably it makes sense to make qdev-hotplug.json, but then what to keep in qdev.json? Only device-list-properties command.. Seems that it not worth the split for now.
-
-> 
->> +#
->> +# @power-on: PCIe Power Controller Control of Slot Control Register.
->> +#            True means Power On (Power Controller Control bit is 0),
->> +#            False means Power Off (Power Controller Control bit is 1).
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'struct': 'HotplugPCIeNativeState',
->> +  'base': 'HotplugBaseState',
->> +  'data': { '*power-on': 'bool' } }
->> +
->> +##
->> +# @HotplugType:
->> +#
->> +# Type of hotplug controller / provider.
->> +#
->> +# @shpc: Standard Hot Plug Controller
->> +#
->> +# @pcie-native: PCIe Native hotplug
-> 
-> Ditto.
-> 
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'enum': 'HotplugType',
->> +  'data': ['shpc', 'pcie-native'] }
->> +
->> +##
->> +# @HotplugInfo:
->> +#
->> +# Generic hotplug slot state.
->> +#
->> +# @type: type of the hotplug (shpc or pcie-native)
->> +#
->> +# @bus: The QOM path of the parent bus where device is hotplugged.
->> +#
->> +# @addr: The bus address for hotplugged device if applicable.
->> +#
->> +# @child: the hotplugged device
->> +#
->> +# @device-on: Device is powered-on by guest. This state changes at most
->> +#             once for the device and corresponds to DEVICE_ON event.
->> +#
->> +# Single: 8.1
->> +##
->> +{ 'union': 'HotplugInfo',
->> +  'base': { 'type': 'HotplugType',
->> +            'bus': 'DeviceAndPath',
->> +            '*addr': 'str',
->> +            'child': 'DeviceAndPath',
->> +            'device-on': 'bool' },
->> +  'discriminator': 'type',
->> +  'data': { 'shpc': 'HotplugSHPCState',
->> +            'pcie-native': 'HotplugPCIeNativeState' } }
->> +
->> +##
->> +# @query-hotplug:
->> +#
->> +# Query the state of hotplug controller.
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'command': 'query-hotplug',
->> +  'data': { 'id': 'str' },
->> +  'returns': 'HotplugInfo' }
->> +
->> +##
->> +# @DEVICE_ON:
->> +#
->> +# Emitted whenever the device insertion completion is acknowledged by the guest.
->> +# For now only emitted for SHPC and PCIe-native hotplug.
->> +#
->> +# Since: 8.1
->> +##
->> +{ 'event': 'DEVICE_ON', 'data': 'DeviceAndPath' }
-
--- 
-Best regards,
-Vladimir
+The following changes since commit da1034094d375afe9e3d8ec8980550ea0f06f7e0=
+:=0D
+=0D
+  Merge tag 'for-upstream' of https://gitlab.com/bonzini/qemu into staging =
+(2023-10-03 07:43:44 -0400)=0D
+=0D
+are available in the Git repository at:=0D
+=0D
+  https://gitlab.com/jsnow/qemu.git tags/python-pull-request=0D
+=0D
+for you to fetch changes up to 4d7a663cbe8343e884b88e44bd88d37dd0a470e5:=0D
+=0D
+  Python: test Python 3.12 (2023-10-04 15:19:00 -0400)=0D
+=0D
+----------------------------------------------------------------=0D
+Python pullreq=0D
+=0D
+Buffering improvements for qemu machine, minor changes to support the=0D
+newly released Python 3.12=0D
+=0D
+----------------------------------------------------------------=0D
+=0D
+John Snow (9):=0D
+  Python/iotests: Add type hint for nbd module=0D
+  python/machine: move socket setup out of _base_args property=0D
+  python/machine: close sock_pair in cleanup path=0D
+  python/console_socket: accept existing FD in initializer=0D
+  python/machine: use socketpair() for console connections=0D
+  python/machine: use socketpair() for qtest connection=0D
+  python/machine: remove unused sock_dir argument=0D
+  python/qmp: remove Server.wait_closed() call for Python 3.12=0D
+  Python: test Python 3.12=0D
+=0D
+ python/qemu/machine/console_socket.py      | 29 ++++++++---=0D
+ python/qemu/machine/machine.py             | 58 +++++++++++++---------=0D
+ python/qemu/machine/qtest.py               | 54 +++++++++++++++-----=0D
+ python/qemu/qmp/protocol.py                |  1 -=0D
+ python/setup.cfg                           |  3 +-=0D
+ tests/avocado/acpi-bits.py                 |  5 +-=0D
+ tests/avocado/avocado_qemu/__init__.py     |  2 +-=0D
+ tests/avocado/machine_aspeed.py            |  5 +-=0D
+ tests/docker/dockerfiles/python.docker     |  6 ++-=0D
+ tests/qemu-iotests/iotests.py              |  2 +-=0D
+ tests/qemu-iotests/tests/copy-before-write |  3 +-=0D
+ tests/qemu-iotests/tests/nbd-multiconn     |  4 +-=0D
+ 12 files changed, 114 insertions(+), 58 deletions(-)=0D
+=0D
+-- =0D
+2.41.0=0D
+=0D
 
 
