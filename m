@@ -2,41 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3AC7B79B0
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53B737B79B5
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:09:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwt2-00054e-82; Wed, 04 Oct 2023 04:05:40 -0400
+	id 1qnwuA-0006Cr-OD; Wed, 04 Oct 2023 04:06:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwrI-00075f-Ov; Wed, 04 Oct 2023 04:03:53 -0400
+ id 1qnwrL-0007AF-8h; Wed, 04 Oct 2023 04:03:56 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnwrG-00005l-4v; Wed, 04 Oct 2023 04:03:51 -0400
+ id 1qnwrI-00008K-Ra; Wed, 04 Oct 2023 04:03:54 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 6707E2759E;
+ by isrv.corpit.ru (Postfix) with ESMTP id 8D7A02759F;
  Wed,  4 Oct 2023 11:02:26 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id B80F72CBDA;
+ by tsrv.corpit.ru (Postfix) with SMTP id E33722CBDB;
  Wed,  4 Oct 2023 11:02:25 +0300 (MSK)
-Received: (nullmailer pid 2702810 invoked by uid 1000);
+Received: (nullmailer pid 2702813 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Peter Maydell <peter.maydell@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
+Cc: qemu-stable@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 20/45] target/arm: Don't skip MTE checks for LDRT/STRT
- at EL0
-Date: Wed,  4 Oct 2023 11:01:41 +0300
-Message-Id: <20231004080221.2702636-20-mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 21/45] meson.build: Make keyutils independent from
+ keyring
+Date: Wed,  4 Oct 2023 11:01:42 +0300
+Message-Id: <20231004080221.2702636-21-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
@@ -60,54 +61,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Peter Maydell <peter.maydell@linaro.org>
+From: Thomas Huth <thuth@redhat.com>
 
-The LDRT/STRT "unprivileged load/store" instructions behave like
-normal ones if executed at EL0. We handle this correctly for
-the load/store semantics, but get the MTE checking wrong.
-
-We always look at s->mte_active[is_unpriv] to see whether we should
-be doing MTE checks, but in hflags.c when we set the TB flags that
-will be used to fill the mte_active[] array we only set the
-MTE0_ACTIVE bit if UNPRIV is true (i.e.  we are not at EL0).
-
-This means that a LDRT at EL0 will see s->mte_active[1] as 0,
-and will not do MTE checks even when MTE is enabled.
-
-To avoid the translate-time code having to do an explicit check on
-s->unpriv to see if it is OK to index into the mte_active[] array,
-duplicate MTE_ACTIVE into MTE0_ACTIVE when UNPRIV is false.
-
-(This isn't a very serious bug because generally nobody executes
-LDRT/STRT at EL0, because they have no use there.)
+Commit 0db0fbb5cf ("Add conditional dependency for libkeyutils")
+tried to provide a possibility for the user to disable keyutils
+if not required by makeing it depend on the keyring feature. This
+looked reasonable at a first glance (the unit test in tests/unit/
+needs both), but the condition in meson.build fails if the feature
+is meant to be detected automatically, and there is also another
+spot in backends/meson.build where keyutils is used independently
+from keyring. So let's remove the dependency on keyring again and
+introduce a proper meson build option instead.
 
 Cc: qemu-stable@nongnu.org
-Signed-off-by: Peter Maydell <peter.maydell@linaro.org>
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-id: 20230912140434.1333369-2-peter.maydell@linaro.org
-(cherry picked from commit 903dbefc2b6918c10d12d9aafa0168cee8d287c7)
+Fixes: 0db0fbb5cf ("Add conditional dependency for libkeyutils")
+Resolves: https://gitlab.com/qemu-project/qemu/-/issues/1842
+Message-ID: <20230824094208.255279-1-thuth@redhat.com>
+Reviewed-by: "Daniel P. Berrangé" <berrange@redhat.com>
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+(cherry picked from commit c64023b0ba677cfa6b878e82ea8e18507a597396)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/target/arm/tcg/hflags.c b/target/arm/tcg/hflags.c
-index 616c5fa723..ea642384f5 100644
---- a/target/arm/tcg/hflags.c
-+++ b/target/arm/tcg/hflags.c
-@@ -306,6 +306,15 @@ static CPUARMTBFlags rebuild_hflags_a64(CPUARMState *env, int el, int fp_el,
-                 && !(env->pstate & PSTATE_TCO)
-                 && (sctlr & (el == 0 ? SCTLR_TCF0 : SCTLR_TCF))) {
-                 DP_TBFLAG_A64(flags, MTE_ACTIVE, 1);
-+                if (!EX_TBFLAG_A64(flags, UNPRIV)) {
-+                    /*
-+                     * In non-unpriv contexts (eg EL0), unpriv load/stores
-+                     * act like normal ones; duplicate the MTE info to
-+                     * avoid translate-a64.c having to check UNPRIV to see
-+                     * whether it is OK to index into MTE_ACTIVE[].
-+                     */
-+                    DP_TBFLAG_A64(flags, MTE0_ACTIVE, 1);
-+                }
-             }
-         }
-         /* And again for unprivileged accesses, if required.  */
+diff --git a/meson.build b/meson.build
+index 912c7e7847..a9c4f28247 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1771,8 +1771,9 @@ if gnutls.found()
+                      method: 'pkg-config')
+ endif
+ keyutils = not_found
+-if get_option('keyring').enabled()
+-  keyutils = dependency('libkeyutils', required: false, method: 'pkg-config')
++if not get_option('libkeyutils').auto() or have_block
++  keyutils = dependency('libkeyutils', required: get_option('libkeyutils'),
++                        method: 'pkg-config')
+ endif
+ 
+ has_gettid = cc.has_function('gettid')
+@@ -4211,6 +4212,7 @@ endif
+ summary_info += {'AF_ALG support':    have_afalg}
+ summary_info += {'rng-none':          get_option('rng_none')}
+ summary_info += {'Linux keyring':     have_keyring}
++summary_info += {'Linux keyutils':    keyutils}
+ summary(summary_info, bool_yn: true, section: 'Crypto')
+ 
+ # UI
+diff --git a/meson_options.txt b/meson_options.txt
+index aaea5ddd77..ae6d8f469d 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -119,6 +119,8 @@ option('avx512bw', type: 'feature', value: 'auto',
+        description: 'AVX512BW optimizations')
+ option('keyring', type: 'feature', value: 'auto',
+        description: 'Linux keyring support')
++option('libkeyutils', type: 'feature', value: 'auto',
++       description: 'Linux keyutils support')
+ 
+ option('attr', type : 'feature', value : 'auto',
+        description: 'attr/xattr support')
+diff --git a/scripts/meson-buildoptions.sh b/scripts/meson-buildoptions.sh
+index 9da3fe299b..d7020af175 100644
+--- a/scripts/meson-buildoptions.sh
++++ b/scripts/meson-buildoptions.sh
+@@ -120,6 +120,7 @@ meson_options_help() {
+   printf "%s\n" '  libdaxctl       libdaxctl support'
+   printf "%s\n" '  libdw           debuginfo support'
+   printf "%s\n" '  libiscsi        libiscsi userspace initiator'
++  printf "%s\n" '  libkeyutils     Linux keyutils support'
+   printf "%s\n" '  libnfs          libnfs block device driver'
+   printf "%s\n" '  libpmem         libpmem support'
+   printf "%s\n" '  libssh          ssh block device support'
+@@ -341,6 +342,8 @@ _meson_option_parse() {
+     --libexecdir=*) quote_sh "-Dlibexecdir=$2" ;;
+     --enable-libiscsi) printf "%s" -Dlibiscsi=enabled ;;
+     --disable-libiscsi) printf "%s" -Dlibiscsi=disabled ;;
++    --enable-libkeyutils) printf "%s" -Dlibkeyutils=enabled ;;
++    --disable-libkeyutils) printf "%s" -Dlibkeyutils=disabled ;;
+     --enable-libnfs) printf "%s" -Dlibnfs=enabled ;;
+     --disable-libnfs) printf "%s" -Dlibnfs=disabled ;;
+     --enable-libpmem) printf "%s" -Dlibpmem=enabled ;;
 -- 
 2.39.2
 
