@@ -2,82 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A82F7B7EA3
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBD47B7EAA
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 14:07:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo0c7-0004Jh-8p; Wed, 04 Oct 2023 08:04:27 -0400
+	id 1qo0cC-0005Gq-6p; Wed, 04 Oct 2023 08:04:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Zy-0000iQ-14
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:02:18 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0b4-0002ky-Ko
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:03:22 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0Zm-0001H2-2r
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:02:09 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-4064867903cso20899025e9.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:02:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qo0aq-0001Uw-F1
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 08:03:22 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40566f89f6eso20901015e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 05:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696420920; x=1697025720; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=bBGVE0DoG3fp73QBVo0q6OJfPVhOCAa/aXxiQ7+SOqM=;
- b=TE5CK8a90U5D2mlq/2X2jrpsmiQUwjjXA9laJk8hU817U+l+11qJY10K4lIBmprLry
- KqJ97qNrifVn40AAId2BxJ8o5btJP9uxzHJqlR+a6uK6i3Z3aOR62xedab7oQDpHFp3K
- 7kak/o9wcyV8B6PclALOz/PtUlRyuM/JRHSiU41ERffu3C3Q6YeAmThSVyPdhEEvmPbi
- 6KXBKv1fL/c0yK0xyYXG5BVQ4glqQCLQ25+bIE2Rm4nIx+tDHBl/dQrHzT1Hnb50ICBP
- 1/9K4uTRO9+It/SfNQDKBgcSMNtplzqNz1stmkPo7acO0fYmjjYimrochHTZVbh4VTiw
- ej5w==
+ d=linaro.org; s=google; t=1696420986; x=1697025786; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=5M6K0MFXwRhUOt/MGBFSyTxLejRBkATmsturnncN2LA=;
+ b=Fwm/tTuxDC7F+9B+yUKSfmRSu9bBKOUqHXhK4C+kLPIAuSJgWnWbIClhdFIwF9f8kQ
+ IE1n751po9Jzf1KqSz/GgbBxx/TcTWn/DYYfSJhXhutpU2j9senhs4qYC9vwcO0vcJZZ
+ dO8Ap5y72u8h4hwrcNGpK8ogLNZ5IBhQ2eK8u17zjFClguYsWc8iHS4Qwpkln+X9ZaaO
+ lp0XfagAis5sEtFpeHmxSnI5gn00ps/tqn5DyGjLh8Uz1c/OroAlfhx4IHUN81susyVS
+ MAj4puH5z/xiG5PHcWrBH3AdnUla2QGjO8JV7M+nEzgr/dXSzJ2DL9X168vN7Luf/WTA
+ 61Bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696420920; x=1697025720;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=bBGVE0DoG3fp73QBVo0q6OJfPVhOCAa/aXxiQ7+SOqM=;
- b=WzEQCBsKzCYoYSOh+mda13gC09Fk64CseFE4cspMkyL7fLnB1B0k6fg/htQBa+wY90
- pla5rS5vyxAM4bbtKqjMgyG/lxCkzP8IRtqPSOakZQfN4qiL/TOjswbNGsJvLGq7yZsd
- prgOwLRwOCZqb3DJoe32c5Ni+Jyaj9rpAbdewndpfTo/A3HDyJDw8V/oKtACTHa21Ggk
- kHaSBQ66KM6QZna287k316Il49C6a8G1j1dWAEQtzTUCLenkwBI3WRe1kjaLHCngFb8y
- qSWW/Wm7L0NmKHXzCKDUowpV3+Gonqy7Mmn1RNEdvTr9eXSd2TknanhwCU0exmLweQs8
- aCTQ==
-X-Gm-Message-State: AOJu0Yy8LD1JUfoOvfIqQqLqWoQ1aYi1Y0X15OAkyMz/tBJRXaJScmRq
- 5o1M3SwEVLXziftknFtQRCV/QzBh/+NQ4BK7s38=
-X-Google-Smtp-Source: AGHT+IFKBiCh3mm7umXWjhYGHybFCd7VpPslSYNol+gjEruY4r/GKaSlgvsZ8tS/yjSxFEIR6zFveg==
-X-Received: by 2002:a1c:ed17:0:b0:406:7d74:a29e with SMTP id
- l23-20020a1ced17000000b004067d74a29emr2149020wmh.19.1696420919371; 
- Wed, 04 Oct 2023 05:01:59 -0700 (PDT)
-Received: from m1x-phil.lan (5ep85-h01-176-173-163-52.dslam.bbox.fr.
+ d=1e100.net; s=20230601; t=1696420986; x=1697025786;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=5M6K0MFXwRhUOt/MGBFSyTxLejRBkATmsturnncN2LA=;
+ b=fqFVlZpGTALhecjPNLUvO8bd9+q6Icnh95Q808bFYHY72CIbxNCVeuFPKPtjmC8M5K
+ xuLpH2JU1xcuUg5eV4fZ+lmFQFdWxmARSv95Ff8Qy2duXWW6xaLkZ9mj/6+2CL267lZG
+ RhAWIm9jdT6WICYXybKrG14EKn8T1+hKK/oXLsFZTrgMo7QKDOYeoErdD6fwSts02qzV
+ tC9URunCFPJH4ws+Lr1VWqRBofI2bnThRYxfk7oiey8mmcz8/WYONwbQ55KbwBLmMgQ9
+ 40/A7s+REmxJg/2gcEFg1Zrbet0PcRViIah8IzQrf3ZSnScrpphteOgNBM5p30k2QNqX
+ f3sA==
+X-Gm-Message-State: AOJu0Yz5eIEb36I3px+w3G5G5R9nU/bzC2MZ+FhMIDpm4+y+CTuS+w6i
+ 3JimUcMskne5w/uEmxhWNYxR5URvGMoz5yPFi8Q=
+X-Google-Smtp-Source: AGHT+IHt+fi1D5aZxOAg0Xo9Idt6UvjbsjOm2b+G8uLHj+jcEY5t9ehmyzyLQ1Ux+UPZ8vUkDXIRpA==
+X-Received: by 2002:a05:600c:21d1:b0:406:53ab:a9af with SMTP id
+ x17-20020a05600c21d100b0040653aba9afmr2070621wmj.10.1696420985646; 
+ Wed, 04 Oct 2023 05:03:05 -0700 (PDT)
+Received: from [192.168.69.115] (5ep85-h01-176-173-163-52.dslam.bbox.fr.
  [176.173.163.52]) by smtp.gmail.com with ESMTPSA id
- q23-20020a7bce97000000b003feea62440bsm1351186wmj.43.2023.10.04.05.01.58
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 05:01:59 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: qemu-block@nongnu.org, Markus Armbruster <armbru@redhat.com>,
- Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, Mads Ynddal <mads@ynddal.dk>
-Subject: [PATCH v3 16/16] trace/control: Clean up global variable shadowing
-Date: Wed,  4 Oct 2023 14:00:19 +0200
-Message-ID: <20231004120019.93101-17-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231004120019.93101-1-philmd@linaro.org>
-References: <20231004120019.93101-1-philmd@linaro.org>
+ x9-20020a05600c21c900b003fefe70ec9csm1365054wmj.10.2023.10.04.05.03.04
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 05:03:05 -0700 (PDT)
+Message-ID: <e3341fd8-b122-ac6a-4a55-07fa80c5142f@linaro.org>
+Date: Wed, 4 Oct 2023 14:03:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 13/13] system: Rename softmmu/ directory as system/
+Content-Language: en-US
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, Thomas Huth <thuth@redhat.com>,
+ qemu-ppc@nongnu.org, qemu-s390x@nongnu.org, qemu-arm@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Peter Maydell <peter.maydell@linaro.org>, Peter Xu <peterx@redhat.com>,
+ David Hildenbrand <david@redhat.com>
+References: <20231004090629.37473-1-philmd@linaro.org>
+ <20231004090629.37473-14-philmd@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231004090629.37473-14-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_PASS=-0.001,
- T_SPF_HELO_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,57 +98,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fix:
+On 4/10/23 11:06, Philippe Mathieu-Daudé wrote:
+> The softmmu/ directory contains files specific to system
+> emulation. Rename it as system/. Update meson rules, the
+> MAINTAINERS file and all the documentation and comments.
+> 
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
 
-  trace/control.c:288:34: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  void trace_opt_parse(const char *optarg)
-                                   ^
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
-  extern char *optarg;                    /* getopt(3) external variables */
-               ^
+>   include/sysemu/runstate-action.h        |  2 +-
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- trace/control.h | 4 ++--
- trace/control.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+>   rename {softmmu => system}/timers-state.h (100%)
+>   create mode 100644 system/trace.h
+>   rename {softmmu => system}/arch_init.c (100%)
+>   rename {softmmu => system}/async-teardown.c (100%)
+>   rename {softmmu => system}/balloon.c (100%)
+>   rename {softmmu => system}/bootdevice.c (100%)
+>   rename {softmmu => system}/cpu-throttle.c (100%)
+>   rename {softmmu => system}/cpu-timers.c (100%)
+>   rename {softmmu => system}/cpus.c (100%)
+>   rename {softmmu => system}/datadir.c (100%)
+>   rename {softmmu => system}/device_tree.c (100%)
+>   rename {softmmu => system}/dirtylimit.c (100%)
+>   rename {softmmu => system}/dma-helpers.c (100%)
+>   rename {softmmu => system}/globals.c (100%)
+>   rename {softmmu => system}/icount.c (100%)
+>   rename {softmmu => system}/ioport.c (100%)
+>   rename {softmmu => system}/main.c (100%)
+>   rename {softmmu => system}/memory.c (100%)
+>   rename {softmmu => system}/memory_mapping.c (100%)
+>   rename {softmmu => system}/physmem.c (99%)
+>   rename {softmmu => system}/qdev-monitor.c (100%)
+>   rename {softmmu => system}/qemu-seccomp.c (100%)
+>   rename {softmmu => system}/qtest.c (100%)
+>   rename {softmmu => system}/rtc.c (100%)
+>   rename {softmmu => system}/runstate-action.c (100%)
+>   rename {softmmu => system}/runstate-hmp-cmds.c (100%)
+>   rename {softmmu => system}/runstate.c (100%)
+>   rename {softmmu => system}/tpm-hmp-cmds.c (100%)
+>   rename {softmmu => system}/tpm.c (100%)
+>   rename {softmmu => system}/vl.c (100%)
+>   rename {softmmu => system}/watchpoint.c (100%)
+>   rename {softmmu => system}/meson.build (100%)
+>   rename {softmmu => system}/trace-events (100%)
 
-diff --git a/trace/control.h b/trace/control.h
-index dfd209edd8..6754bfe052 100644
---- a/trace/control.h
-+++ b/trace/control.h
-@@ -197,11 +197,11 @@ extern QemuOptsList qemu_trace_opts;
- 
- /**
-  * trace_opt_parse:
-- * @optarg: A string argument of --trace command line argument
-+ * @optstr: A string argument of --trace command line argument
-  *
-  * Initialize tracing subsystem.
-  */
--void trace_opt_parse(const char *optarg);
-+void trace_opt_parse(const char *optstr);
- 
- /**
-  * trace_get_vcpu_event_count:
-diff --git a/trace/control.c b/trace/control.c
-index 1a48a7e266..ef107829ac 100644
---- a/trace/control.c
-+++ b/trace/control.c
-@@ -285,10 +285,10 @@ bool trace_init_backends(void)
-     return true;
- }
- 
--void trace_opt_parse(const char *optarg)
-+void trace_opt_parse(const char *optstr)
- {
-     QemuOpts *opts = qemu_opts_parse_noisily(qemu_find_opts("trace"),
--                                             optarg, true);
-+                                             optstr, true);
-     if (!opts) {
-         exit(1);
-     }
--- 
-2.41.0
-
+Maybe I should also move include/sysemu/ -> include/system/
+to keep it coherent?
 
