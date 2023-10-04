@@ -2,76 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F417B7ACB
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:53:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 932287B7ABA
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:52:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxXu-0002Mg-27; Wed, 04 Oct 2023 04:47:56 -0400
+	id 1qnxXQ-0001Ji-4T; Wed, 04 Oct 2023 04:47:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWD-0008QU-Ip
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxWD-0008QT-IQ
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:10 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxW8-0002R0-Gc
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxW7-0002Pz-Cr
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:46:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409163;
+ s=mimecast20190719; t=1696409161;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=3U17/oa5P7mPsBmst5AlGCXHwzW+EDnuhpAyDnkjh7s=;
- b=BY500f+GVgZ+pxZ5GUhOp+V3bybd+ch6VbsC48qCCLeiI+cIo+8cL4YcbHNgCEVS9yLNoM
- xx9c1DJK4F2MUm0AXYVIg/ZrD7TELLE/+c6Zy+5K74PY9EkcylNfop+t7C/1aBi2DxtexQ
- hADafCAxDMM+7MkUHdB6+iBANrDbKBw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=fi0K9Am3IfJincw8VDTgn5xt0/GGjlt5fWIa13TNowA=;
+ b=JNhp70IPlKBPN2X4qb+yafRDosq/mM9UcW1Aj1G0YsKY6r7jKV62mnTGka3FBMi1VTlOl9
+ giNyay9My6nWIVSc7AhUh8zWum+mD8NGj7jnhNBfr4aQBHoT8kFyuvFy4fqCl4/c3fOAhG
+ 6072LJQDn7to7O33+O8yzHXPUCSRRQM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-10-IMJAfIE9MNab5axiKFC1Lg-1; Wed, 04 Oct 2023 04:45:52 -0400
-X-MC-Unique: IMJAfIE9MNab5axiKFC1Lg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3fef3606d8cso14737485e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:45:52 -0700 (PDT)
+ us-mta-32-bFZdRxTrO_CxgXi0tROAHA-1; Wed, 04 Oct 2023 04:45:55 -0400
+X-MC-Unique: bFZdRxTrO_CxgXi0tROAHA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32320b9d671so1465887f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:45:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409150; x=1697013950;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=3U17/oa5P7mPsBmst5AlGCXHwzW+EDnuhpAyDnkjh7s=;
- b=qKd1tenAjg5uz/Xpn6BfJbQ5YxAcS0Skd7EmEcLcNFV4rM0wkor9PqBTZhmSVych4R
- 9nxvu5xH1sL+AtKnR89FX2zZNNFfk5tc5qJ203UHDNNhBg79aMLiQelOWIWhHMA3RbVY
- uUtp7XIqe/N1oylg9J3A9/NQV2LZd2m6wXPax/wEb55llMx/Hop3YrbXhDk5IHalloz6
- fLd68xWw8aOdHTCuUOM/zplG/xywq1d0+3DvOldAkkN+f19OA5M05WJwMyf0zGTYzRbs
- B+Xxl32G5i9SMURrsdWHhqtiKsKhdQ/vEPgdjhAChVGIE56WocOFgIPFmORFIy8QesFE
- 1I+w==
-X-Gm-Message-State: AOJu0YwUnoFX/7AwRddEjiDx5cZHaTiCJBVS4i6evVSeuY0jf/yWFqCQ
- ePDXLsuNGgmWrD+jLRZtEArFtfMRT2f9TKwPYKGmJCSsCZqNhhX615bfACHa62yY64vjtRzZxJb
- LGWxmaZaYcqDs95e1bDq/raynWSaehRmZvO0sU+53ma5+NtwzW5BLC1uaB3MYEQYjhben
-X-Received: by 2002:a7b:c394:0:b0:403:31a:77b9 with SMTP id
- s20-20020a7bc394000000b00403031a77b9mr1618114wmj.37.1696409150795; 
- Wed, 04 Oct 2023 01:45:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHwbwDVFfJ+zenqRA+nGTa6gwh/YKDlH+5YC66n7OeR3g4rAkrwbCFrFWaDFYmZixQDEIHDbw==
-X-Received: by 2002:a7b:c394:0:b0:403:31a:77b9 with SMTP id
- s20-20020a7bc394000000b00403031a77b9mr1618095wmj.37.1696409150512; 
- Wed, 04 Oct 2023 01:45:50 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696409153; x=1697013953;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=fi0K9Am3IfJincw8VDTgn5xt0/GGjlt5fWIa13TNowA=;
+ b=HeVgarF6d96FQ91S1cnrKOxEl/GGvvYQGWCwq84rBv16xEUpoKYfq6uxMqXG0G0KW5
+ yiwSQ3K50Y8BcwW/hBCG9KirzVfgare++6oNM+glyvF+itC/sOyER5WCq5tUEbbOPu4W
+ qcByIvjO6aRKYMlGoSz7pIEoV1e8DJ2HXkIQakIBfariigGedXXRnj0oa4EtT+FoDehX
+ Bi+j6ph2IcqHYKcjhxB0PJMaq3XAvbpUJY2mfBirE56qmXLoliz17jPpmRXbU8Bm604I
+ Axa1/cDvW2B9r2DHmGVymeS4ls7/m/RHDQKdW7XezNPyNRUpSu2YrwbPMsROADdnq+DU
+ o4lQ==
+X-Gm-Message-State: AOJu0YzQzY7OZvQ+dN24N8t+13LbJfTFt6lz/naKrGh7OLWB5ppihJTN
+ r6zNBf94BPUV0/SdmzO4XsPkCxrYrzTqWRJY6IhRrK04TzngIxbtzivPK9ygqJGE2QIgVdVhniN
+ NR0ZbabuQJkicxmN+6bcjjph9o8h5kFfJpLLLUYzgqAFoZEJ8uUSE+4ZESg5zaZ2WOm/X
+X-Received: by 2002:a5d:60d1:0:b0:31f:d8ba:c997 with SMTP id
+ x17-20020a5d60d1000000b0031fd8bac997mr1515489wrt.41.1696409153721; 
+ Wed, 04 Oct 2023 01:45:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHqBYfG1RTViHmBiZ3/PlNGYG/Cgx9xuFskgcR5+gldFH8yf5jV3atACG1RYu1OioOsXrz1Tw==
+X-Received: by 2002:a5d:60d1:0:b0:31f:d8ba:c997 with SMTP id
+ x17-20020a5d60d1000000b0031fd8bac997mr1515468wrt.41.1696409153425; 
+ Wed, 04 Oct 2023 01:45:53 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- r2-20020a05600c320200b0040641ce36a8sm1307307wmp.1.2023.10.04.01.45.48
+ z17-20020a5d4d11000000b0032485046055sm3478494wrt.5.2023.10.04.01.45.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:45:49 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:45:47 -0400
+ Wed, 04 Oct 2023 01:45:52 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:45:50 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL 49/63] hw/pci-bridge/cxl-upstream: Add serial number extended
- capability support
-Message-ID: <8ad87a4505cd681117655593ea1add578252fdb5.1696408966.git.mst@redhat.com>
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Lei Yang <leiyang@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Jason Wang <jasowang@redhat.com>
+Subject: [PULL 50/63] vdpa net: fix error message setting virtio status
+Message-ID: <181359e6cb42698753ec7dd1260b1c7a0b36a055.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1696408966.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -83,7 +86,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,73 +102,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-Will be needed so there is a defined serial number for
-information queries via the Switch CCI.
+It incorrectly prints "error setting features", probably because a copy
+paste miss.
 
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Message-Id: <20230913133615.29876-1-Jonathan.Cameron@huawei.com>
+Fixes: 152128d646 ("vdpa: move CVQ isolation check to net_init_vhost_vdpa")
+Reported-by: Peter Maydell <peter.maydell@linaro.org>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230915170836.3078172-2-eperezma@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- hw/pci-bridge/cxl_upstream.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/vhost-vdpa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/pci-bridge/cxl_upstream.c b/hw/pci-bridge/cxl_upstream.c
-index 2b9cf0cc97..a57806fb31 100644
---- a/hw/pci-bridge/cxl_upstream.c
-+++ b/hw/pci-bridge/cxl_upstream.c
-@@ -14,14 +14,21 @@
- #include "hw/pci/msi.h"
- #include "hw/pci/pcie.h"
- #include "hw/pci/pcie_port.h"
-+/*
-+ * Null value of all Fs suggested by IEEE RA guidelines for use of
-+ * EU, OUI and CID
-+ */
-+#define UI64_NULL (~0ULL)
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index fe519d908d..650125bb0f 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -1368,7 +1368,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
  
- #define CXL_UPSTREAM_PORT_MSI_NR_VECTOR 2
- 
- #define CXL_UPSTREAM_PORT_MSI_OFFSET 0x70
- #define CXL_UPSTREAM_PORT_PCIE_CAP_OFFSET 0x90
- #define CXL_UPSTREAM_PORT_AER_OFFSET 0x100
--#define CXL_UPSTREAM_PORT_DVSEC_OFFSET \
-+#define CXL_UPSTREAM_PORT_SN_OFFSET \
-     (CXL_UPSTREAM_PORT_AER_OFFSET + PCI_ERR_SIZEOF)
-+#define CXL_UPSTREAM_PORT_DVSEC_OFFSET \
-+    (CXL_UPSTREAM_PORT_SN_OFFSET + PCI_EXT_CAP_DSN_SIZEOF)
- 
- typedef struct CXLUpstreamPort {
-     /*< private >*/
-@@ -30,6 +37,7 @@ typedef struct CXLUpstreamPort {
-     /*< public >*/
-     CXLComponentState cxl_cstate;
-     DOECap doe_cdat;
-+    uint64_t sn;
- } CXLUpstreamPort;
- 
- CXLComponentState *cxl_usp_to_cstate(CXLUpstreamPort *usp)
-@@ -326,7 +334,9 @@ static void cxl_usp_realize(PCIDevice *d, Error **errp)
-     if (rc) {
-         goto err_cap;
+     r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+     if (unlikely(r)) {
+-        error_setg_errno(errp, -r, "Cannot set device features");
++        error_setg_errno(errp, -r, "Cannot set status");
+         goto out;
      }
--
-+    if (usp->sn != UI64_NULL) {
-+        pcie_dev_ser_num_init(d, CXL_UPSTREAM_PORT_SN_OFFSET, usp->sn);
-+    }
-     cxl_cstate->dvsec_offset = CXL_UPSTREAM_PORT_DVSEC_OFFSET;
-     cxl_cstate->pdev = d;
-     build_dvsecs(cxl_cstate);
-@@ -366,6 +376,7 @@ static void cxl_usp_exitfn(PCIDevice *d)
- }
  
- static Property cxl_upstream_props[] = {
-+    DEFINE_PROP_UINT64("sn", CXLUpstreamPort, sn, UI64_NULL),
-     DEFINE_PROP_STRING("cdat", CXLUpstreamPort, cxl_cstate.cdat.filename),
-     DEFINE_PROP_END_OF_LIST()
- };
 -- 
 MST
 
