@@ -2,87 +2,96 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F267B8618
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E61C67B8619
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:06:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo5IU-0007vm-2K; Wed, 04 Oct 2023 13:04:30 -0400
+	id 1qo5JW-0000Cc-H8; Wed, 04 Oct 2023 13:05:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qo5IS-0007vZ-Jh
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:04:28 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qo5JV-0000CT-2x
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:05:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qo5IQ-0005f4-8n
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:04:28 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qo5JT-0007Rp-H8
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:05:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696439064;
+ s=mimecast20190719; t=1696439129;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vGw2YerPWuBR1bh5WS2KcGRWcP7+Jh6fQVKaPX+lugI=;
- b=WIClZykoVNeU7H+Bu1PxYWOj2WlGAGW20u0vCiH0X+t66y72sKofQmC2nsEjgwoC9rmoNC
- oiSTi8oHaY+n8kxRKqNso627zWkE5Z/x6HNKkY62ojDkueUzkvlxtuUM8V8KQMw7BA33Jo
- WBqqNvz5iVt08bolFOpjofF63uq4T8g=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=SRZ3UZARu1wa3n+KiuKNDu2+h486azt0cIpjj4bTfkY=;
+ b=I7nxQmOkQWSFI24xt9vEAT/Rv6+MHvA06UIvrhOXV9flO6H/uW33sQ8E0gXsAKrcGztCCD
+ 7tAc8/uYuDHPGsY0sa7ACIR3FT1x/HEzZtZCpYBxWFHAm2IyheI26LU0gl/VYR2q6vYhjC
+ osYHwlxGdNAxZ1tMHPbHB9gQzSvlx8M=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-447-YZHWfy_FNFO4HTsO65RdDQ-1; Wed, 04 Oct 2023 13:04:12 -0400
-X-MC-Unique: YZHWfy_FNFO4HTsO65RdDQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-314256aedcbso65659f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:04:12 -0700 (PDT)
+ us-mta-333-wuV-ga_dMX-2TpXIIErIjw-1; Wed, 04 Oct 2023 13:05:28 -0400
+X-MC-Unique: wuV-ga_dMX-2TpXIIErIjw-1
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-65afd7597baso25212376d6.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:05:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696439051; x=1697043851;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1696439128; x=1697043928;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vGw2YerPWuBR1bh5WS2KcGRWcP7+Jh6fQVKaPX+lugI=;
- b=IeD43VQUXdyEG1143TCSXIHJFwl5VXAbkYeXSEpi+yF2++PKoAHWzpkXa97EEQd7Hm
- ZyJoeDjQUiGT1iQEeMBlv9yMCSg3li1VhIVbESmrkfbUvrYALEwAQBhOO4mf3vafKjvE
- bT3rz+bzIvSaH47ECeENaxmYYTvYRhoXggNfcabR9djQEuQQ1N17azx3Sm9a38QcF+Te
- aoPssOECATv7rf6GeJwDBNF1SbEUDsbrT9GINZfWC1oNjPBSzIMbwvKiS3Q+LKbXeITY
- 7Xxdrpp0JT5isgYX9IcidSBhBBsnrZ473YBsxh3bb3dVfLwRFuf4zv4fM9YkL+5VsT3U
- 0SxQ==
-X-Gm-Message-State: AOJu0YwK1pfBNPh0+KKTfS4wk/RSYXYEoVi27Pfkhe7+AuFaOueglV67
- G0V+IT4wAPQjY5p75gLbD9PaHUHtsFdBivRHv/lg5GkmKJhowu4oQZK3RDXJ3kQzV3vO4ACm9nB
- w4a2EQuFqHBYMfDR8NKusDvg=
-X-Received: by 2002:adf:ee82:0:b0:317:f70b:3156 with SMTP id
- b2-20020adfee82000000b00317f70b3156mr2724408wro.28.1696439050934; 
- Wed, 04 Oct 2023 10:04:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHF13GZheLfeN1yEp3lJB605Mkq2Czw+BJBB28Y8aozPpGcnR1B0BUxOtler7R6JsMZ5/n2zw==
-X-Received: by 2002:adf:ee82:0:b0:317:f70b:3156 with SMTP id
- b2-20020adfee82000000b00317f70b3156mr2724382wro.28.1696439050486; 
- Wed, 04 Oct 2023 10:04:10 -0700 (PDT)
-Received: from redhat.com ([2a06:c701:73d2:bf00:e379:826:5137:6b23])
+ bh=SRZ3UZARu1wa3n+KiuKNDu2+h486azt0cIpjj4bTfkY=;
+ b=bPZ/BPRDLuWj9E97ndDFKubcsNM14y3GEpZfnTcjRGT+Qu+fgK/p8eVHY39rwhULfG
+ 1UxMd3eqUdVRTsQyY14l0L/2sjBlU8VR2MuJUGK6HJrXzOx5f6GL55BDNtagEtzFKbd6
+ Sr7u0y99icEMNvKrIn03LaAf/+Drw0iVw1SWwCfHMkgqzRlKL8/i8Dmd+N807WvwuvHV
+ iDXRIAtFLGkfENyi+2NVpUu4ZcTj1+awOFNJEOS1/FDlp4HLsewJaRtV0ZN8nAJnmpBY
+ YnNeJUnZbzaYoXjwEZ+p4x5BOcerp9AT26iOzK5PoCgn9WQlI+7gbIqajp8wIGz9PJBv
+ /uHA==
+X-Gm-Message-State: AOJu0YyE/h1aVGX5H3BBLGUOgvt9N2M9SfyrPrCQHSQsVUcJ+CUSTNDw
+ zgoYO42MjXWlm70DsQfjNQ9U89B0M3uFZ0TV45eIEB1qDjMSv+NzDcPSTSj4ZkKUKgJlrJ4N5UY
+ HgF1cJYarUr+MByI7aI/mhZs=
+X-Received: by 2002:a0c:dd87:0:b0:656:5199:77a9 with SMTP id
+ v7-20020a0cdd87000000b00656519977a9mr2781464qvk.28.1696439127896; 
+ Wed, 04 Oct 2023 10:05:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcVUg4geeTNPYPJ2ViYtVnm6kCEnQNJcZOA47NhZfdcRz+8qTt1150t9GK9gzy1G2c1HcjDg==
+X-Received: by 2002:a0c:dd87:0:b0:656:5199:77a9 with SMTP id
+ v7-20020a0cdd87000000b00656519977a9mr2781445qvk.28.1696439127648; 
+ Wed, 04 Oct 2023 10:05:27 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- a15-20020a5d570f000000b003217cbab88bsm4412025wrv.16.2023.10.04.10.04.09
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 10:04:09 -0700 (PDT)
-Date: Wed, 4 Oct 2023 13:04:07 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefan Hajnoczi <stefanha@gmail.com>
-Cc: qemu-devel@nongnu.org, Peter Maydell <peter.maydell@linaro.org>
-Subject: Re: [PULL 00/63] virtio,pci: features, cleanups
-Message-ID: <20231004130205-mutt-send-email-mst@kernel.org>
-References: <cover.1696408966.git.mst@redhat.com>
- <CAJSP0QVfn__LKXVO5puOs4h5AV9FWGNKiJXUnSe-K+ANP+=wCg@mail.gmail.com>
+ 13-20020a05620a070d00b007756f60bcacsm1392789qkc.79.2023.10.04.10.05.25
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 10:05:27 -0700 (PDT)
+Message-ID: <9bf175c1-8932-7ad1-32fb-8011750c3f10@redhat.com>
+Date: Wed, 4 Oct 2023 19:05:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 13/15] vfio/common: Store the parent container in
+ VFIODevice
+Content-Language: en-US
+To: Eric Auger <eric.auger@redhat.com>, eric.auger.pro@gmail.com,
+ qemu-devel@nongnu.org, zhenzhong.duan@intel.com, alex.williamson@redhat.com,
+ jgg@nvidia.com, nicolinc@nvidia.com, joao.m.martins@oracle.com,
+ peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
+ yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com,
+ aik@ozlabs.ru
+References: <20231004154518.334760-1-eric.auger@redhat.com>
+ <20231004154518.334760-14-eric.auger@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231004154518.334760-14-eric.auger@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJSP0QVfn__LKXVO5puOs4h5AV9FWGNKiJXUnSe-K+ANP+=wCg@mail.gmail.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,251 +107,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 04, 2023 at 12:50:18PM -0400, Stefan Hajnoczi wrote:
-> On Wed, 4 Oct 2023 at 04:43, Michael S. Tsirkin <mst@redhat.com> wrote:
-> >
-> > The following changes since commit 494a6a2cf7f775d2c20fd6df9601e30606cc2014:
-> >
-> >   Merge tag 'pull-request-2023-09-25' of https://gitlab.com/thuth/qemu into staging (2023-09-25 10:10:30 -0400)
-> >
-> > are available in the Git repository at:
-> >
-> >   https://git.kernel.org/pub/scm/virt/kvm/mst/qemu.git tags/for_upstream
-> >
-> > for you to fetch changes up to dc1499091ca09db0ac7a5615a592e55f27d4965d:
-> >
-> >   libvhost-user: handle shared_object msg (2023-10-04 04:28:35 -0400)
-> >
-> > ----------------------------------------------------------------
-> > virtio,pci: features, cleanups
-> >
-> > vdpa:
-> >       shadow vq vlan support
-> >       net migration with cvq
-> > cxl:
-> >      dummy ACPI QTG DSM
-> >      support emulating 4 HDM decoders
-> >      serial number extended capability
-> > virtio:
-> >       hared dma-buf
-> >
-> > Fixes, cleanups all over the place.
-> >
-> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> >
-> > ----------------------------------------------------------------
-> > Akihiko Odaki (1):
-> >       amd_iommu: Fix APIC address check
-> >
-> > Albert Esteve (4):
-> >       util/uuid: add a hash function
-> >       hw/display: introduce virtio-dmabuf
-> >       vhost-user: add shared_object msg
-> >       libvhost-user: handle shared_object msg
-> >
-> > Alex Bennée (2):
-> >       virtio: add vhost-user-base and a generic vhost-user-device
-> >       hw/virtio: add config support to vhost-user-device
-> >
-> > Ani Sinha (1):
-> >       hw/i386/pc: improve physical address space bound check for 32-bit x86 systems
-> >
-> > Bernhard Beschow (8):
-> >       hw/i386/acpi-build: Use pc_madt_cpu_entry() directly
-> >       hw/acpi/cpu: Have build_cpus_aml() take a build_madt_cpu_fn callback
-> >       hw/acpi/acpi_dev_interface: Remove now unused madt_cpu virtual method
-> >       hw/acpi/acpi_dev_interface: Remove now unused #include "hw/boards.h"
-> >       hw/i386: Remove now redundant TYPE_ACPI_GED_X86
-> >       hw/i386/acpi-build: Determine SMI command port just once
-> >       hw/acpi: Trace GPE access in all device models, not just PIIX4
-> >       hw/acpi/core: Trace enable and status registers of GPE separately
-> >
-> > Dave Jiang (1):
-> >       hw/cxl: Add QTG _DSM support for ACPI0017 device
-> >
-> > David Woodhouse (1):
-> >       hw/isa/ich9: Add comment on imperfect emulation of PIC vs. I/O APIC routing
-> >
-> > Eugenio Pérez (9):
-> >       vdpa: use first queue SVQ state for CVQ default
-> >       vdpa: export vhost_vdpa_set_vring_ready
-> >       vdpa: rename vhost_vdpa_net_load to vhost_vdpa_net_cvq_load
-> >       vdpa: move vhost_vdpa_set_vring_ready to the caller
-> >       vdpa: remove net cvq migration blocker
-> >       vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
-> >       vdpa net: fix error message setting virtio status
-> >       vdpa net: stop probing if cannot set features
-> >       vdpa net: follow VirtIO initialization properly at cvq isolation probing
-> >
-> > Hawkins Jiawei (5):
-> >       virtio-net: do not reset vlan filtering at set_features
-> >       virtio-net: Expose MAX_VLAN
-> >       vdpa: Restore vlan filtering state
-> >       vdpa: Allow VIRTIO_NET_F_CTRL_VLAN in SVQ
-> >       vhost: Add count argument to vhost_svq_poll()
-> >
-> > Ilya Maximets (4):
-> >       virtio: don't zero out memory region cache for indirect descriptors
-> >       virtio: use shadow_avail_idx while checking number of heads
-> >       virtio: remove unnecessary thread fence while reading next descriptor
-> >       virtio: remove unused next argument from virtqueue_split_read_next_desc()
-> >
-> > Jonah Palmer (3):
-> >       qmp: remove virtio_list, search QOM tree instead
-> >       qmp: update virtio feature maps, vhost-user-gpio introspection
-> >       vhost-user: move VhostUserProtocolFeature definition to header file
-> >
-> > Jonathan Cameron (7):
-> >       tests/acpi: Allow update of DSDT.cxl
-> >       tests/acpi: Update DSDT.cxl with QTG DSM
-> >       hw/cxl: Push cxl_decoder_count_enc() and cxl_decode_ig() into .c
-> >       hw/cxl: Add utility functions decoder interleave ways and target count.
-> >       hw/cxl: Fix and use same calculation for HDM decoder block size everywhere
-> >       hw/cxl: Support 4 HDM decoders at all levels of topology
-> >       hw/pci-bridge/cxl-upstream: Add serial number extended capability support
-> >
-> > Laszlo Ersek (7):
-> >       vhost-user: strip superfluous whitespace
-> >       vhost-user: tighten "reply_supported" scope in "set_vring_addr"
-> >       vhost-user: factor out "vhost_user_write_sync"
-> >       vhost-user: flatten "enforce_reply" into "vhost_user_write_sync"
-> >       vhost-user: hoist "write_sync", "get_features", "get_u64"
-> >       vhost-user: allow "vhost_set_vring" to wait for a reply
-> >       vhost-user: call VHOST_USER_SET_VRING_ENABLE synchronously
-> >
-> > Michael S. Tsirkin (1):
-> >       pci: SLT must be RO
-> >
-> > Philippe Mathieu-Daudé (6):
-> >       hw/virtio: Propagate page_mask to vhost_vdpa_listener_skipped_section()
-> >       hw/virtio: Propagate page_mask to vhost_vdpa_section_end()
-> >       hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
-> >       hw/virtio/vhost-vdpa: Use target-agnostic qemu_target_page_mask()
-> >       hw/virtio: Build vhost-vdpa.o once
-> >       hw/virtio/meson: Rename softmmu_virtio_ss[] -> system_virtio_ss[]
-> >
-> > Stefan Hajnoczi (1):
-> >       vdpa: fix gcc cvq_isolated uninitialized variable warning
-> >
-> > Vladimir Sementsov-Ogievskiy (2):
-> >       pcie_sriov: unregister_vfs(): fix error path
-> >       libvhost-user.c: add assertion to vu_message_read_default
-> >
-> >  hw/acpi/hmat.h                            |   3 +-
-> >  hw/i386/acpi-common.h                     |   3 +-
-> >  hw/i386/amd_iommu.h                       |   2 -
-> >  hw/virtio/vhost-shadow-virtqueue.h        |   2 +-
-> >  hw/virtio/virtio-qmp.h                    |   7 -
-> >  include/exec/memory.h                     |  16 +-
-> >  include/hw/acpi/acpi_dev_interface.h      |   3 -
-> >  include/hw/acpi/cpu.h                     |   6 +-
-> >  include/hw/acpi/cxl.h                     |   1 +
-> >  include/hw/acpi/generic_event_device.h    |   2 -
-> >  include/hw/cxl/cxl_component.h            |  30 ++-
-> >  include/hw/i386/pc.h                      |   6 +
-> >  include/hw/pci/pci_bridge.h               |   3 +
-> >  include/hw/virtio/vhost-backend.h         |   3 +
-> >  include/hw/virtio/vhost-user-device.h     |  46 ++++
-> >  include/hw/virtio/vhost-user.h            |  22 ++
-> >  include/hw/virtio/vhost-vdpa.h            |   1 +
-> >  include/hw/virtio/virtio-dmabuf.h         | 100 ++++++++
-> >  include/hw/virtio/virtio-net.h            |   6 +
-> >  include/qemu/uuid.h                       |   2 +
-> >  subprojects/libvhost-user/libvhost-user.h |  55 +++-
-> >  hw/acpi/acpi-x86-stub.c                   |   6 -
-> >  hw/acpi/core.c                            |   9 +
-> >  hw/acpi/cpu.c                             |   9 +-
-> >  hw/acpi/cxl.c                             |  57 +++++
-> >  hw/acpi/hmat.c                            |   1 +
-> >  hw/acpi/memory_hotplug.c                  |   1 +
-> >  hw/acpi/piix4.c                           |   5 -
-> >  hw/core/machine.c                         |   5 +-
-> >  hw/cxl/cxl-component-utils.c              |  92 ++++++-
-> >  hw/cxl/cxl-host.c                         |  67 +++--
-> >  hw/display/virtio-dmabuf.c                | 138 ++++++++++
-> >  hw/i386/acpi-build.c                      |  14 +-
-> >  hw/i386/acpi-common.c                     |   5 +-
-> >  hw/i386/acpi-microvm.c                    |   3 +-
-> >  hw/i386/amd_iommu.c                       |   9 +-
-> >  hw/i386/generic_event_device_x86.c        |  36 ---
-> >  hw/i386/microvm.c                         |   2 +-
-> >  hw/i386/pc.c                              |  32 ++-
-> >  hw/i386/pc_piix.c                         |   4 +
-> >  hw/i386/pc_q35.c                          |   2 +
-> >  hw/isa/lpc_ich9.c                         |  16 +-
-> >  hw/mem/cxl_type3.c                        | 106 +++++---
-> >  hw/net/virtio-net.c                       |   6 +-
-> >  hw/pci-bridge/cxl_upstream.c              |  15 +-
-> >  hw/pci/pci.c                              |   2 +-
-> >  hw/pci/pci_bridge.c                       |  14 ++
-> >  hw/pci/pcie_sriov.c                       |   9 +-
-> >  hw/scsi/vhost-user-scsi.c                 |   4 -
-> >  hw/virtio/vdpa-dev.c                      |   3 +
-> >  hw/virtio/vhost-shadow-virtqueue.c        |  36 +--
-> >  hw/virtio/vhost-user-device-pci.c         |  71 ++++++
-> >  hw/virtio/vhost-user-device.c             | 380 ++++++++++++++++++++++++++++
-> >  hw/virtio/vhost-user-gpio.c               |   7 +
-> >  hw/virtio/vhost-user.c                    | 404 +++++++++++++++++++-----------
-> >  hw/virtio/vhost-vdpa.c                    |  66 ++---
-> >  hw/virtio/virtio-qmp.c                    | 139 +++++-----
-> >  hw/virtio/virtio.c                        |  64 +++--
-> >  net/vhost-vdpa.c                          | 153 +++++++----
-> >  subprojects/libvhost-user/libvhost-user.c | 121 +++++++++
-> >  tests/qtest/bios-tables-test.c            |  26 +-
-> >  tests/qtest/numa-test.c                   |   7 +-
-> >  tests/unit/test-uuid.c                    |  27 ++
-> >  tests/unit/test-virtio-dmabuf.c           | 137 ++++++++++
-> >  util/uuid.c                               |  14 ++
-> >  MAINTAINERS                               |   7 +
-> >  docs/interop/vhost-user.rst               |  57 +++++
-> >  hw/acpi/trace-events                      |  10 +-
-> >  hw/display/meson.build                    |   1 +
-> >  hw/i386/meson.build                       |   1 -
-> >  hw/virtio/meson.build                     |  28 ++-
-> >  hw/virtio/trace-events                    |   2 +-
-> >  tests/data/acpi/q35/DSDT.cxl              | Bin 9655 -> 9723 bytes
+On 10/4/23 17:44, Eric Auger wrote:
+> From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 > 
-> Hi Michael,
-> There is a CI failure, probably related to the DSDT.cxl change in this
-> pull request:
+> let's store the parent contaienr within the VFIODevice.
+> This simplifies the logic in vfio_viommu_preset() and
+> brings the benefice to hide the group specificity which
+> is useful for IOMMUFD migration.
 > 
-> QTEST_QEMU_BINARY=./qemu-system-x86_64 QTEST_QEMU_IMG=./qemu-img
-> QTEST_QEMU_STORAGE_DAEMON_BINARY=./storage-daemon/qemu-storage-daemon
-> MALLOC_PERTURB_=165
-> G_TEST_DBUS_DAEMON=/home/gitlab-runner/builds/FLaZkdt1/0/qemu-project/qemu/tests/dbus-vmstate-daemon.sh
-> /home/gitlab-runner/builds/FLaZkdt1/0/qemu-project/qemu/build/tests/qtest/bios-tables-test
-> --tap -k
-> ――――――――――――――――――――――――――――――――――――― ✀ ―――――――――――――――――――――――――――――――――――――
-> stderr:
-> acpi-test: Warning! DSDT binary file mismatch. Actual
-> [aml:/tmp/aml-O8CAC2], Expected [aml:tests/data/acpi/q35/DSDT.cxl].
-> See source file tests/qtest/bios-tables-test.c for instructions on how
-> to update expected files.
-> to see ASL diff between mismatched files install IASL, rebuild QEMU
-> from scratch and re-run tests with V=1 environment variable set**
-> ERROR:../tests/qtest/bios-tables-test.c:535:test_acpi_asl: assertion
-> failed: (all_tables_match)
-> (test program exited with status code -6)
-> 
-> Please take a look:
-> https://gitlab.com/qemu-project/qemu/-/jobs/5222693360
-> 
-> Stefan
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-OK but .. CI seemed to pass for me. Interesting.
-Could you send the link to the pipeline please?
+with the re-added check on !vbasedev->container,
+
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+
+Thanks,
+
+C.
 
 
-> >  tests/unit/meson.build                    |   1 +
-> >  74 files changed, 2192 insertions(+), 558 deletions(-)
-> >  create mode 100644 include/hw/virtio/vhost-user-device.h
-> >  create mode 100644 include/hw/virtio/virtio-dmabuf.h
-> >  create mode 100644 hw/display/virtio-dmabuf.c
-> >  delete mode 100644 hw/i386/generic_event_device_x86.c
-> >  create mode 100644 hw/virtio/vhost-user-device-pci.c
-> >  create mode 100644 hw/virtio/vhost-user-device.c
-> >  create mode 100644 tests/unit/test-virtio-dmabuf.c
-> >
-> >
+> ---
+> 
+> v3 -> v4:
+> - Dropped check on !vbasedev->container
+> ---
+>   include/hw/vfio/vfio-common.h | 1 +
+>   hw/vfio/common.c              | 4 +++-
+>   2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+> index 8ca70dd821..bf12e40667 100644
+> --- a/include/hw/vfio/vfio-common.h
+> +++ b/include/hw/vfio/vfio-common.h
+> @@ -132,6 +132,7 @@ typedef struct VFIODevice {
+>       QLIST_ENTRY(VFIODevice) next;
+>       QLIST_ENTRY(VFIODevice) container_next;
+>       struct VFIOGroup *group;
+> +    VFIOContainer *container;
+>       char *sysfsdev;
+>       char *name;
+>       DeviceState *dev;
+> diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+> index ef9dc7c747..b14f04c9b0 100644
+> --- a/hw/vfio/common.c
+> +++ b/hw/vfio/common.c
+> @@ -184,7 +184,7 @@ void vfio_unblock_multiple_devices_migration(void)
+>   
+>   bool vfio_viommu_preset(VFIODevice *vbasedev)
+>   {
+> -    return vbasedev->group->container->space->as != &address_space_memory;
+> +    return vbasedev->container->space->as != &address_space_memory;
+>   }
+>   
+>   static void vfio_set_migration_error(int err)
+> @@ -2655,6 +2655,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+>       }
+>   
+>       container = group->container;
+> +    vbasedev->container = container;
+>       QLIST_INSERT_HEAD(&container->device_list, vbasedev, container_next);
+>   
+>       return ret;
+> @@ -2665,6 +2666,7 @@ void vfio_detach_device(VFIODevice *vbasedev)
+>       VFIOGroup *group = vbasedev->group;
+>   
+>       QLIST_REMOVE(vbasedev, container_next);
+> +    vbasedev->container = NULL;
+>       trace_vfio_detach_device(vbasedev->name, group->groupid);
+>       vfio_put_base_device(vbasedev);
+>       vfio_put_group(group);
 
 
