@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9251B7B9713
+	by mail.lfdr.de (Postfix) with ESMTPS id 734F77B9712
 	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 00:04:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo9xM-0004ID-AD; Wed, 04 Oct 2023 18:03:00 -0400
+	id 1qo9xO-0004Nx-VZ; Wed, 04 Oct 2023 18:03:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xJ-0004Hk-JF
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:02:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xK-0004JB-SG
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:02:59 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xH-0003vE-9E
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:02:57 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qo9xJ-0003vq-70
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 18:02:58 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696456974;
+ s=mimecast20190719; t=1696456976;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=VxO3OdtMyeeaxOri15W9iSHPGH8x5n6UYkaAADCs9aY=;
- b=PU4BTCNgpmB/2q7FUjc+QPP/RxiDoiKdrsJinNp2AdrgeOPPpWaLBjic9LUWYzoCSpkDYm
- M6gVQvzs7yFT9on9A9xicvc5/8TpIZf4e1VkTgP808goHaErxGBoenbJlsa+/FZdGVchvv
- GTdP+8Fcf9ZIYeCcjMwSjpe4Z6eKiE8=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=2vHYMUUZwdgemINSHDTriLnfve6+5EiI4PRPsUAHgjs=;
+ b=d5JmZY0fh+4e3qmlv8UwAFmDUyE0ul1KZe9/mOHGFXtl4hUlMUpUoXZNj6+cYjtwgMidqZ
+ 9sHgEZ2IWT0GI8WdymniR82ZQpMfO/84PEZCuhmzFk/xfCn0O5cv1WGv7whWJ+ZgyBzbji
+ +cQ5BUu+C2/vi/x/hCiCJkgR+oGQBro=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-77-KMXCoxP9MuiO117iMjonug-1; Wed, 04 Oct 2023 18:02:48 -0400
-X-MC-Unique: KMXCoxP9MuiO117iMjonug-1
-Received: by mail-yb1-f197.google.com with SMTP id
- 3f1490d57ef6-d868c33252fso84847276.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 15:02:48 -0700 (PDT)
+ us-mta-295-6cbw9iAlMPOrTgEh6dqYyQ-1; Wed, 04 Oct 2023 18:02:50 -0400
+X-MC-Unique: 6cbw9iAlMPOrTgEh6dqYyQ-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-41810d0d8c2so702261cf.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 15:02:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696456967; x=1697061767;
+ d=1e100.net; s=20230601; t=1696456969; x=1697061769;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=VxO3OdtMyeeaxOri15W9iSHPGH8x5n6UYkaAADCs9aY=;
- b=UoHXlYDuB2Prprzy2nFvBqSbSM77qHUVZCaTsRY2zHGN66nDnSMXXu8R7J2lAPg8p4
- U5vS911yR2zXL9+24NGAQoiRetHTeRso98prw0ORUNtIJdxfvZq2kJ2R5z1X/GnWbjpD
- vG91+kDEVzQZGgapLUtiTsRgm6Awjn1rV5AySwIFsdxe9Xj2Sd5rqsM1jccwFYfljcXT
- rbhEIFQrDPBquK1gVh2+Sy+AYAfLmCSCZhc/0CSmI21DakWzyVHJPVuDd/qoqeK6syVR
- UspX1Msw5VgT5rLZz0NYZ2eeM2MXgTO8AEaRa/5GLi0sF860UESeQHtNCdLwEup2EVsu
- Qvow==
-X-Gm-Message-State: AOJu0YzzebdfSEBVciO1pd1RN+9RCoVuVtW1BTWOzKXvjlG4f/KLlMqS
- WPs9pURZFq8LBhDs67qGGYqSeIVQhG5C2KIoQDhNoSmKxWWX6EZyzDMIjlZbvRK+2xZ1wyBgOCm
- XHOxBit5iFfI2/Bk5fjdKfOsrwg2irjpUzWUPFMpSYemF2dHbwBhrvZxAFuPoXgtFXn6zUypk
-X-Received: by 2002:a25:ab89:0:b0:d89:49a4:448c with SMTP id
- v9-20020a25ab89000000b00d8949a4448cmr3045214ybi.2.1696456967596; 
- Wed, 04 Oct 2023 15:02:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEnxSiwfWYLW/ZHB7DxsuTQvAij8OoTSqeyXHt9U/MpvsqSowozeRhP8Ag3z849Hsx1Eq3b2Q==
-X-Received: by 2002:a25:ab89:0:b0:d89:49a4:448c with SMTP id
- v9-20020a25ab89000000b00d8949a4448cmr3045195ybi.2.1696456967275; 
- Wed, 04 Oct 2023 15:02:47 -0700 (PDT)
+ bh=2vHYMUUZwdgemINSHDTriLnfve6+5EiI4PRPsUAHgjs=;
+ b=G+5CERwdxDcgsX471Xmok9dCz/KN9MV3kDlVbfAJvOYHjLqeaHeWcpCDf6VhZYLu8S
+ 0vUCoExt0VAp4ZdCuCCqxCCYFWUQqfU/O96Ubigr5U/k63SaPEL5uIJ0suBDPQgF8dS8
+ ntGjCgdJ4Seh8wCrW9gy9afxAdur/3przZdMw++1onlADJm/LHWEf9NTWwkZ5UNnouC5
+ Gn54iTWB2eRWpjr0bAfkhSaXXCYyzMcY0s+whuFvt4KJJBYcbp8+MTv3KMdR11rtCVmz
+ /kwikrNoKu4sO9G9LZn5kYYXjyrSgnjXgGYGf4MPmubaszTIbX1mJ0s3wCxOuvTZOUBU
+ 0NaQ==
+X-Gm-Message-State: AOJu0YyJYJCCfEvqhvZdAvBiBGycyPBDn4hX5tART292chHnVkB22i1r
+ J0tqDFRm0wP6AX45DDt0iuI9xF8vdsHh/u2LghL23R3ErcMifppAuv7Te0At2zgebvNOK4uKRTo
+ wd3U2+nBpaAbfeTBJ2xuXZ5Gu8RuSEIjCKDZnCR04hrEq8dSHiG2ZexOMLNnBYCjQApybdpMG
+X-Received: by 2002:a05:6214:e62:b0:65a:fd40:24d8 with SMTP id
+ jz2-20020a0562140e6200b0065afd4024d8mr3700408qvb.4.1696456969176; 
+ Wed, 04 Oct 2023 15:02:49 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE99+TLip7o5d37PG2efjr7xA1ZDJgFnB8zquaxa2TXbLIVNXB/pGS+LLzukN2J3hJQ+jrFtQ==
+X-Received: by 2002:a05:6214:e62:b0:65a:fd40:24d8 with SMTP id
+ jz2-20020a0562140e6200b0065afd4024d8mr3700378qvb.4.1696456968702; 
+ Wed, 04 Oct 2023 15:02:48 -0700 (PDT)
 Received: from x1n.redhat.com
  (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com. [99.254.144.39])
  by smtp.gmail.com with ESMTPSA id
- w17-20020a0cdf91000000b0063d162a8b8bsm10821qvl.19.2023.10.04.15.02.46
+ w17-20020a0cdf91000000b0063d162a8b8bsm10821qvl.19.2023.10.04.15.02.47
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 15:02:46 -0700 (PDT)
+ Wed, 04 Oct 2023 15:02:47 -0700 (PDT)
 From: Peter Xu <peterx@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: peterx@redhat.com, Fabiano Rosas <farosas@suse.de>,
  Juan Quintela <quintela@redhat.com>
-Subject: [PATCH v3 05/10] qemufile: Always return a verbose error
-Date: Wed,  4 Oct 2023 18:02:35 -0400
-Message-ID: <20231004220240.167175-6-peterx@redhat.com>
+Subject: [PATCH v3 06/10] migration: Remember num of ramblocks to sync during
+ recovery
+Date: Wed,  4 Oct 2023 18:02:36 -0400
+Message-ID: <20231004220240.167175-7-peterx@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231004220240.167175-1-peterx@redhat.com>
 References: <20231004220240.167175-1-peterx@redhat.com>
@@ -98,53 +99,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-There're a lot of cases where we only have an errno set in last_error but
-without a detailed error description.  When this happens, try to generate
-an error contains the errno as a descriptive error.
+Instead of only relying on the count of rp_sem, make the counter be part of
+RAMState so it can be used in both threads to synchronize on the process.
 
-This will be helpful in cases where one relies on the Error*.  E.g.,
-migration state only caches Error* in MigrationState.error.  With this,
-we'll display correct error messages in e.g. query-migrate when the error
-was only set by qemu_file_set_error().
+rp_sem will be further reused in follow up patches, as a way to kick the
+main thread, e.g., on recovery failures.
 
 Reviewed-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Peter Xu <peterx@redhat.com>
 ---
- migration/qemu-file.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ migration/ram.c | 17 ++++++++++++++---
+ 1 file changed, 14 insertions(+), 3 deletions(-)
 
-diff --git a/migration/qemu-file.c b/migration/qemu-file.c
-index ffa9c0a48a..c12a905a34 100644
---- a/migration/qemu-file.c
-+++ b/migration/qemu-file.c
-@@ -142,15 +142,24 @@ void qemu_file_set_hooks(QEMUFile *f, const QEMUFileHooks *hooks)
-  *
-  * Return negative error value if there has been an error on previous
-  * operations, return 0 if no error happened.
-- * Optional, it returns Error* in errp, but it may be NULL even if return value
-- * is not 0.
-  *
-+ * If errp is specified, a verbose error message will be copied over.
-  */
- int qemu_file_get_error_obj(QEMUFile *f, Error **errp)
- {
-+    if (!f->last_error) {
-+        return 0;
-+    }
+diff --git a/migration/ram.c b/migration/ram.c
+index c54e071ea3..ef4af3fbce 100644
+--- a/migration/ram.c
++++ b/migration/ram.c
+@@ -394,6 +394,14 @@ struct RAMState {
+     /* Queue of outstanding page requests from the destination */
+     QemuMutex src_page_req_mutex;
+     QSIMPLEQ_HEAD(, RAMSrcPageRequest) src_page_requests;
 +
-+    /* There is an error */
-     if (errp) {
--        *errp = f->last_error_obj ? error_copy(f->last_error_obj) : NULL;
-+        if (f->last_error_obj) {
-+            *errp = error_copy(f->last_error_obj);
-+        } else {
-+            error_setg_errno(errp, -f->last_error, "Channel error");
-+        }
-     }
-+
-     return f->last_error;
- }
++    /*
++     * This is only used when postcopy is in recovery phase, to communicate
++     * between the migration thread and the return path thread on dirty
++     * bitmap synchronizations.  This field is unused in other stages of
++     * RAM migration.
++     */
++    unsigned int postcopy_bmap_sync_requested;
+ };
+ typedef struct RAMState RAMState;
  
+@@ -4121,20 +4129,20 @@ static int ram_dirty_bitmap_sync_all(MigrationState *s, RAMState *rs)
+ {
+     RAMBlock *block;
+     QEMUFile *file = s->to_dst_file;
+-    int ramblock_count = 0;
+ 
+     trace_ram_dirty_bitmap_sync_start();
+ 
++    qatomic_set(&rs->postcopy_bmap_sync_requested, 0);
+     RAMBLOCK_FOREACH_NOT_IGNORED(block) {
+         qemu_savevm_send_recv_bitmap(file, block->idstr);
+         trace_ram_dirty_bitmap_request(block->idstr);
+-        ramblock_count++;
++        qatomic_inc(&rs->postcopy_bmap_sync_requested);
+     }
+ 
+     trace_ram_dirty_bitmap_sync_wait();
+ 
+     /* Wait until all the ramblocks' dirty bitmap synced */
+-    while (ramblock_count--) {
++    while (qatomic_read(&rs->postcopy_bmap_sync_requested)) {
+         qemu_sem_wait(&s->rp_state.rp_sem);
+     }
+ 
+@@ -4161,6 +4169,7 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+     unsigned long *le_bitmap, nbits = block->used_length >> TARGET_PAGE_BITS;
+     uint64_t local_size = DIV_ROUND_UP(nbits, 8);
+     uint64_t size, end_mark;
++    RAMState *rs = ram_state;
+ 
+     trace_ram_dirty_bitmap_reload_begin(block->idstr);
+ 
+@@ -4226,6 +4235,8 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+     /* We'll recalculate migration_dirty_pages in ram_state_resume_prepare(). */
+     trace_ram_dirty_bitmap_reload_complete(block->idstr);
+ 
++    qatomic_dec(&rs->postcopy_bmap_sync_requested);
++
+     /*
+      * We succeeded to sync bitmap for current ramblock. If this is
+      * the last one to sync, we need to notify the main send thread.
 -- 
 2.41.0
 
