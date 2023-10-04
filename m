@@ -2,80 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BDA7B86FD
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE0707B8712
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 19:57:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qo62s-0000uI-Uz; Wed, 04 Oct 2023 13:52:26 -0400
+	id 1qo671-00051H-Vv; Wed, 04 Oct 2023 13:56:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo62p-0000u4-Jk
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:52:23 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qo66y-000501-Rk
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:56:41 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qo62o-0007Zw-6F
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:52:23 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qo66v-0002Fl-UP
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 13:56:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696441941;
+ s=mimecast20190719; t=1696442197;
  h=from:from:reply-to:reply-to:subject:subject:date:date:
  message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=mtuTP+Q1j+KLtqkCGDrFyo5DiYFtFIr5jfbQCLUd2Yo=;
- b=H+oPxueQZAeTWo5O3y3Uobyz3IcSAU7DVDtHxRqimaCWQ9ZhHs0mCFIvFe8k7/ElQ4xB8C
- zAq/DKcJuf23DT2+RNk2T0bBHKIVHjiPlWzat+9CsBKnW2+bZZaAdOCVfbwgltppyRgCiQ
- itHemvVUVoeh92qYwmB5RAPS1EthN98=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-669-sXMJ8SY_PxG-2-1AV1bGQg-1; Wed, 04 Oct 2023 13:52:19 -0400
-X-MC-Unique: sXMJ8SY_PxG-2-1AV1bGQg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40590e6bd67so470615e9.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 10:52:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696441938; x=1697046738;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=mtuTP+Q1j+KLtqkCGDrFyo5DiYFtFIr5jfbQCLUd2Yo=;
- b=lzp883oK9HZq5LmiE13+0T6If2bo8U0JsN4ay1v1L/p2xbAVIdbp2MUqMcl4n/9BGh
- SgP00Ud6VyHd69iHdM+pASpNGxI7/VJBvFyHXNhxsqEer87RoIZARxcbZVGxGCGnkL/z
- MO3wIFtjZDqRr/FVWnVC20krtfh+IW9lF8QROFKdRYnCCOTxcuDs5VmubYS/qu11JFBN
- PU4n4Qjri8SVUjS6kU651afNxvM31RLQJhaaQIk8WDhVJBYmmiTVuPVdujjENLbraskz
- EPT94BLgBk24JFDuBsv8wy/J601mK65ut3fmwl54GJHPb/iiMYEKHYWb64qt0qP0OMgH
- zhlg==
-X-Gm-Message-State: AOJu0YzmnilDrZYSVGFYj/tN44yttFl8W/+5PMZLH9XQMYcIA/lUCM39
- GDzIxEPjRmtNywat8nAgrzMDowvd1euAcr9cOrAZH3+I2GGlwniwc4pyktow/8Y+qfyu64XFzN6
- DSITnVOU6ovjZMPu2bcXZjqV3SQ==
-X-Received: by 2002:adf:ed88:0:b0:320:28e:b638 with SMTP id
- c8-20020adfed88000000b00320028eb638mr2911488wro.36.1696441937886; 
- Wed, 04 Oct 2023 10:52:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHZD7BD6eBv5WmHYwYKMwXdP8A2uW7g5Fdd5gJexKtBGeJJaVNlcgj5gbrUzRShvXmNdO4SDA==
-X-Received: by 2002:adf:ed88:0:b0:320:28e:b638 with SMTP id
- c8-20020adfed88000000b00320028eb638mr2911477wro.36.1696441937608; 
- Wed, 04 Oct 2023 10:52:17 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- j17-20020a5d5651000000b0031f82743e25sm4493532wrw.67.2023.10.04.10.52.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 10:52:16 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
- farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
-Subject: Re: [PATCH v2 00/53] migration/rdma: Error handling fixes
-In-Reply-To: <20230928132019.2544702-1-armbru@redhat.com> (Markus Armbruster's
- message of "Thu, 28 Sep 2023 15:19:26 +0200")
-References: <20230928132019.2544702-1-armbru@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Wed, 04 Oct 2023 19:52:16 +0200
-Message-ID: <87fs2qs2b3.fsf@secure.mitica>
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nJw5rz3B3VR+Q39ZHiofKtI64P+c873N9o5Y0sg9EaE=;
+ b=KZIBJBHDr97f29nJB3M5qzaOGki/d4h37Kqu2FsTcYutL2Nbw5gCvu/qUpoeSI5s8kSQRI
+ ChEqtJr1SZoWPzZvgDbdCFAOz0hGe66lB5F4IUTd/pmKxaYUke8w2pvYyIDxvDPQTV+jw0
+ U9pui+3gX0fhAjH/SlPOhY7CIHL/hgc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-593-Zi6K4o3xO9O-CT1-bXLKAQ-1; Wed, 04 Oct 2023 13:56:35 -0400
+X-MC-Unique: Zi6K4o3xO9O-CT1-bXLKAQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 68BE0858F1C;
+ Wed,  4 Oct 2023 17:56:35 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.15])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id ECE0340C2015;
+ Wed,  4 Oct 2023 17:56:32 +0000 (UTC)
+Date: Wed, 4 Oct 2023 18:56:30 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Fabiano Rosas <farosas@suse.de>
+Cc: quintela@redhat.com,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, Peter Xu <peterx@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: Re: [RFC PATCH 1/1] qtest/migration: Support more than one QEMU binary
+Message-ID: <ZR2nTmmf8AaUV1g2@redhat.com>
+References: <20231003141932.2367-1-farosas@suse.de>
+ <20231003141932.2367-2-farosas@suse.de>
+ <3dd8e410-982b-3ea6-78aa-08c1ba26f8da@linaro.org>
+ <ZRw5Myc/joWb6why@redhat.com> <874jj7u11d.fsf@suse.de>
+ <87wmw24vzg.fsf@secure.mitica> <8734yqpedm.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=quintela@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8734yqpedm.fsf@suse.de>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -96,47 +87,92 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> Oh dear, where to start.  There's so much wrong, and in pretty obvious
-> ways.  This code should never have passed review.  I'm refraining from
-> saying more; see the commit messages instead.
->
-> Issues remaining after this series include:
->
-> * Terrible error messages
->
-> * Some error message cascades remain
->
-> * There is no written contract for QEMUFileHooks, and the
->   responsibility for reporting errors is unclear
->
-> * There seem to be no tests whatsoever
->
-> PATCH 29 is arguably a matter of taste.  I made my case for it during
-> review of v1.  If maintainers don't want it, I'll drop it.
->
-> Related: [PATCH 1/7] migration/rdma: Fix save_page method to fail on
-> polling error
+On Wed, Oct 04, 2023 at 12:59:49PM -0300, Fabiano Rosas wrote:
+> Juan Quintela <quintela@redhat.com> writes:
+> 
+> > Fabiano Rosas <farosas@suse.de> wrote:
+> >> Daniel P. Berrangé <berrange@redhat.com> writes:
+> >>
+> >>> On Tue, Oct 03, 2023 at 05:24:50PM +0200, Philippe Mathieu-Daudé wrote:
+> > [...]
+> >
+> >>> $ cat myqemu.dkr 
+> >>> FROM fedora:38
+> >>>
+> >>> RUN dnf -y install qemu-kvm
+> >>>
+> >>> $ podman build -f myqemu.dkr --tag myqemu .
+> >>>
+> >>> $ cat > myqemu <<EOF
+> >>> #!/bin/sh
+> >>> exec podman run --volume /tmp=/tmp --security-opt label=disable myqemu qemu-system-x86_64 "$@"
+> >>>
+> >>> $ chmod +x myqemu
+> >>>
+> >>> $ QTEST_QEMU_BINARY=./myqemu.sh  ./build/tests/qtest/rtc-test
+> >>
+> >> I'm favor of this. I usually set that variable to something like 'gdb
+> >> --args ...' and it works just fine.
+> >>
+> >>> Except we fail on the last step, because bind mounts don't make UNIX domain
+> >>> sockets accessible. So we can see the /tmp/qtest-$PID.sock in the container,
+> >>> but it can't be used.
+> >>>
+> >>> UNIX domain sockets in the filesystem are tied to the mount namespace, and
+> >>> podman/docker inherantly creates a new mount namespace making the UNIX
+> >>> domani socket inaccessible.
+> >>>
+> >>> UNIX domain sockets in the abstract namespace, however, are tied to the
+> >>> network namespace, so if you used podman --network host, they should be
+> >>> accessible.
+> >>>
+> >>> libqtest could be changed to use abstract UNIX domain sockets on Linux
+> >>> only, and likely unlock the use of podman for QEMU.
+> >
+> > That is one idea, but why can't we convince a container to compile
+> > _both_ qemus?
+> >
+> > I am not familiar with containers, but:
+> > - We already know how to compile a qemu inside a container
+> > - We can teach it to compile $HEAD and v8.0.0 (or whatever)
+> >
+> > And do the test inside, right?
+> >
+> > On the other hand, your approach has the advantage that one can test
+> > opensuse qemu against fedora qemu, and similar.  Not sure how useful is
+> > that, though.
+> >
+> > [lots of code to find common machine types]
+> 
+> I'm working on a cleanup of this patch to make it more integrated with
+> libqtest. If we teach qtest_get_machines() to sometimes refresh the list
+> of machines then it becomes way less code.
+> 
+> > I think that it is just easier to pass the machine type we want to test
+> > to whatever script we have.  Specially where [sane] architectures like
+> > arm don't have a default machine type (no, I haven't double checked if
+> > that has changed lately).
+> 
+> We still need to enforce the same machine type for both binaries and a
+> sane range of QEMU versions. I think our docs state that we only support
+> migration from QEMU n->n+1 and vice versa? If the test will know what
+> combinations are allowed, it could just go ahead and use those.
 
-Hi Markus
+Query the 'pc' (or 'q35' as appropriate) alias on both QEMU versions,
+to resolve them into versioned machines.
 
-I integrated everything except:
+Then find which resolved machine version(s) exist in both QEMUs, and
+prefer the src machine if multiple matches exist.
 
->   migration/rdma: Fix or document problematic uses of errno
-
-Most of them are dropped on following patches.
-
->   migration/rdma: Use error_report() & friends instead of stderr
-
-You said you have to resend this one.
-
-There were some conflicts, I was careful, but one never knows.  So you
-are wellcome to take a look when the PULL cames to the tree.
-
-Thanks, Juan.
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
