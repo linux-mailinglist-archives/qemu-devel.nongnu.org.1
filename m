@@ -2,79 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8D17B7A6C
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:44:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE4DD7B7A6F
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnxUK-0003Zt-0o; Wed, 04 Oct 2023 04:44:12 -0400
+	id 1qnxUg-0004MQ-Uu; Wed, 04 Oct 2023 04:44:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxU9-00032t-Uk
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:03 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxUD-0003IC-HM
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:07 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxU8-00016N-69
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:01 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qnxUB-00017E-8S
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 04:44:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696409039;
+ s=mimecast20190719; t=1696409042;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XPImF4K2pL45lQ4EfG0s+CTn23uOSVuTqBqWIA624PQ=;
- b=L2oXVEqMKA1UIvYRPU6n2lD5BYG0pafNn15iCKXt4R1/udEMP2jVvFq9ojR57TTOE9/gao
- NviH6OfQ/jds+SDL2Dm1ZnbwmXKukYep0q+MsHpF0TeoNEh+bpZYSdROT87ADfc6MbVX83
- 6Dy0K+2MLAkU85CdvpRmVRGfFcu155o=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=CIDUejF6EpBPfsNHFdD2Xl6gePUB6dtvvan4JQ2+wgc=;
+ b=dOMfXi5xH2GwlKz+96EjKS/cHCwhnak8RiotsSUP+F+xwlP5Mgomt2Tn7vklUhEEaxZGkA
+ PNGlsJ2pi3l9uYP6gas9rlaR4vZT14RSVwaG0UIXP9WHeajBKnNwlHLVxPGAbeaeu/aazD
+ LDZVxnQ8chyh327RUk0wQg2Grw1s5pQ=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-456-MQfsB5YVO2Og71Mp39DbxA-1; Wed, 04 Oct 2023 04:43:58 -0400
-X-MC-Unique: MQfsB5YVO2Og71Mp39DbxA-1
-Received: by mail-lf1-f70.google.com with SMTP id
- 2adb3069b0e04-5056eada207so1737905e87.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:43:58 -0700 (PDT)
+ us-mta-206-RuNN1R1aMy6jhzHJ3bUAPg-1; Wed, 04 Oct 2023 04:44:01 -0400
+X-MC-Unique: RuNN1R1aMy6jhzHJ3bUAPg-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3fef3606d8cso14727915e9.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 01:44:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696409036; x=1697013836;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=XPImF4K2pL45lQ4EfG0s+CTn23uOSVuTqBqWIA624PQ=;
- b=tpyfUdM3jBzW6r0/uSb+sNHVN3Cagh0prQsN+Xu9FTTrlkMcEdQr3UFcmMbC/fhxEA
- wZ+sYDQCmWVdPhydZdVhZ0KdjB/k4xn6JomDDUl9RGfrBAMdQYccnRCfGMPXFndpvtAB
- n1Ai3dqqKrawGinuk3zlJYy9myBimuRToN8Z/z2krzKXq4vIb+x2GCsmjSKfBcVFv7Hg
- hblVvYMFd6H9+xlXMbHXPLgOQwa3hVS4KCA43GhEnIGZW47HpFDaqnX+2+819n5SLdPm
- OAmXAo5UVtb+rHkrRjpw76Il68jtOnC8Y4KKk/LZpETZVhOxDqIqLrtE89dmScZGrAce
- OYrg==
-X-Gm-Message-State: AOJu0YzJP6WgIcTC0SvUr25tkKCrlpGjLCmGhP/NR3VLyzydj46uqRfg
- ewTgJDLp2Z+vxfFyD23YVTtHjc/BMEP4pKWkcG/gDqSvIp9bMMXRTxvVTzM4t1m7ZvAkoUDFRi7
- yZgM/zOInG9f61NeRl+f1fXzUmjGWWs1Lq/pBbfuN7m5eGf590n2nvjpLWOTaKP+DT/2q
-X-Received: by 2002:a19:5f5b:0:b0:502:adbc:9b74 with SMTP id
- a27-20020a195f5b000000b00502adbc9b74mr1175168lfj.68.1696409036339; 
- Wed, 04 Oct 2023 01:43:56 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEDA6TouP/WvN4eqYpa5F0N11tR48g0FbCQvSIFO3E9LVcceE7uQzXJHDwZRyitmCrxGjOxxg==
-X-Received: by 2002:a19:5f5b:0:b0:502:adbc:9b74 with SMTP id
- a27-20020a195f5b000000b00502adbc9b74mr1175151lfj.68.1696409036050; 
- Wed, 04 Oct 2023 01:43:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696409039; x=1697013839;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CIDUejF6EpBPfsNHFdD2Xl6gePUB6dtvvan4JQ2+wgc=;
+ b=R7M1NuGDjMJLPo1QXAOEhdb8oXQE1pbuC6U9ooQDLrT4+M6FVeLhIaMY7f6n/J8Xyg
+ xfjbwAz6eTvajEg38w4jcAECISYny9mkiFU5dNJc71KmKuXEvKUfsJyzddRwMl+UDNXI
+ xUNOLM2M4UKI2TR2fCefYrqGHSFKpb8HJG60yENKxovCnFOdCGIWVOY7pYZb5YrNQ8d7
+ JpkE8IZsGnnmZOIXwR9xER+Nme4wmvBPGSQ+SPfmMsIvZQ4kAkiCH8CRVdxHREU2/grp
+ qoHaxouiDJVbsez0nIthKVLHbGAeGH1ZkjP8lLVztpEYrrNwO5x/uTVL7yYfGuoNE1/X
+ JDww==
+X-Gm-Message-State: AOJu0YwSFWJ6a8uy/HEMzqF++OOqChlEt5+cbZQQRuQ2wwiJ4cg7IyCg
+ /Pal2ZAI8z1QMxKH1cWicNUyLFMXnCz1jKPo8lwSE8VYOiKZQQaPnPWNWpwq9z2PNYf9r9VdYWW
+ ZfI46/3XGNDUxdgh/zXnXABdXfkbSQhvc9794DRaZqqRyphi99Ok0r32CAckOr/UCLLFf
+X-Received: by 2002:a5d:4b48:0:b0:319:7a91:7107 with SMTP id
+ w8-20020a5d4b48000000b003197a917107mr1328991wrs.48.1696409039266; 
+ Wed, 04 Oct 2023 01:43:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGD7MgbAm4UPUJAr14BC+W0RceW7ndCcAQPzXaWCOJiHWlw0VTKyxSFqr8csCVJt6n57sEAlw==
+X-Received: by 2002:a5d:4b48:0:b0:319:7a91:7107 with SMTP id
+ w8-20020a5d4b48000000b003197a917107mr1328972wrs.48.1696409038846; 
+ Wed, 04 Oct 2023 01:43:58 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- n16-20020a05600c3b9000b0040684abb623sm804633wms.24.2023.10.04.01.43.54
+ c15-20020a5d63cf000000b003143c9beeaesm3427134wrw.44.2023.10.04.01.43.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 01:43:55 -0700 (PDT)
-Date: Wed, 4 Oct 2023 04:43:53 -0400
+ Wed, 04 Oct 2023 01:43:58 -0700 (PDT)
+Date: Wed, 4 Oct 2023 04:43:56 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Ilya Maximets <i.maximets@ovn.org>, Stefan Hajnoczi <stefanha@redhat.com>,
- Jason Wang <jasowang@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/63] virtio: don't zero out memory region cache for indirect
- descriptors
-Message-ID: <219e986b0191c7e315bec4e011e2e8c188b5f025.1696408966.git.mst@redhat.com>
+ Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
+Subject: [PULL 15/63] vdpa: use first queue SVQ state for CVQ default
+Message-ID: <f28f469914c31eff4c86e019363d1e93421c2ff8.1696408966.git.mst@redhat.com>
 References: <cover.1696408966.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1696408966.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -102,155 +100,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-Lots of virtio functions that are on a hot path in data transmission
-are initializing indirect descriptor cache at the point of stack
-allocation.  It's a 112 byte structure that is getting zeroed out on
-each call adding unnecessary overhead.  It's going to be correctly
-initialized later via special init function.  The only reason to
-actually initialize right away is the ability to safely destruct it.
-Replacing a designated initializer with a function to only initialize
-what is necessary.
+Previous to this patch the only way CVQ would be shadowed is if it does
+support to isolate CVQ group or if all vqs were shadowed from the
+beginning.  The second condition was checked at the beginning, and no
+more configuration was done.
 
-Removal of the unnecessary stack initializations improves throughput
-of virtio-net devices in terms of 64B packets per second by 6-14 %
-depending on the case.  Tested with a proposed af-xdp network backend
-and a dpdk testpmd application in the guest, but should be beneficial
-for other virtio devices as well.
+After this series we need to check if data queues are shadowed because
+they are in the middle of the migration.  As checking if they are
+shadowed already covers the previous case, let's just mimic it.
 
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Message-Id: <20230811143423.3258788-1-i.maximets@ovn.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20230822085330.3978829-2-eperezma@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/exec/memory.h | 16 +++++++++++++---
- hw/virtio/virtio.c    | 20 +++++++++++++++-----
- 2 files changed, 28 insertions(+), 8 deletions(-)
+ net/vhost-vdpa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index ef23d65afc..c99842d2fc 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -2671,9 +2671,6 @@ struct MemoryRegionCache {
-     bool is_write;
- };
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 144b33f997..30dc7e77c9 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -509,7 +509,7 @@ static int vhost_vdpa_net_cvq_start(NetClientState *nc)
  
--#define MEMORY_REGION_CACHE_INVALID ((MemoryRegionCache) { .mrs.mr = NULL })
--
--
- /* address_space_ld*_cached: load from a cached #MemoryRegion
-  * address_space_st*_cached: store into a cached #MemoryRegion
-  *
-@@ -2762,6 +2759,19 @@ int64_t address_space_cache_init(MemoryRegionCache *cache,
-                                  hwaddr len,
-                                  bool is_write);
+     s0 = vhost_vdpa_net_first_nc_vdpa(s);
+     v->shadow_data = s0->vhost_vdpa.shadow_vqs_enabled;
+-    v->shadow_vqs_enabled = s->always_svq;
++    v->shadow_vqs_enabled = s0->vhost_vdpa.shadow_vqs_enabled;
+     s->vhost_vdpa.address_space_id = VHOST_VDPA_GUEST_PA_ASID;
  
-+/**
-+ * address_space_cache_init_empty: Initialize empty #MemoryRegionCache
-+ *
-+ * @cache: The #MemoryRegionCache to operate on.
-+ *
-+ * Initializes #MemoryRegionCache structure without memory region attached.
-+ * Cache initialized this way can only be safely destroyed, but not used.
-+ */
-+static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
-+{
-+    cache->mrs.mr = NULL;
-+}
-+
- /**
-  * address_space_cache_invalidate: complete a write to a #MemoryRegionCache
-  *
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 4577f3f5b3..d3a22e3d36 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -1071,10 +1071,12 @@ static void virtqueue_split_get_avail_bytes(VirtQueue *vq,
-     VirtIODevice *vdev = vq->vdev;
-     unsigned int idx;
-     unsigned int total_bufs, in_total, out_total;
--    MemoryRegionCache indirect_desc_cache = MEMORY_REGION_CACHE_INVALID;
-+    MemoryRegionCache indirect_desc_cache;
-     int64_t len = 0;
-     int rc;
- 
-+    address_space_cache_init_empty(&indirect_desc_cache);
-+
-     idx = vq->last_avail_idx;
-     total_bufs = in_total = out_total = 0;
- 
-@@ -1207,12 +1209,14 @@ static void virtqueue_packed_get_avail_bytes(VirtQueue *vq,
-     VirtIODevice *vdev = vq->vdev;
-     unsigned int idx;
-     unsigned int total_bufs, in_total, out_total;
-+    MemoryRegionCache indirect_desc_cache;
-     MemoryRegionCache *desc_cache;
--    MemoryRegionCache indirect_desc_cache = MEMORY_REGION_CACHE_INVALID;
-     int64_t len = 0;
-     VRingPackedDesc desc;
-     bool wrap_counter;
- 
-+    address_space_cache_init_empty(&indirect_desc_cache);
-+
-     idx = vq->last_avail_idx;
-     wrap_counter = vq->last_avail_wrap_counter;
-     total_bufs = in_total = out_total = 0;
-@@ -1487,7 +1491,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
- {
-     unsigned int i, head, max;
-     VRingMemoryRegionCaches *caches;
--    MemoryRegionCache indirect_desc_cache = MEMORY_REGION_CACHE_INVALID;
-+    MemoryRegionCache indirect_desc_cache;
-     MemoryRegionCache *desc_cache;
-     int64_t len;
-     VirtIODevice *vdev = vq->vdev;
-@@ -1498,6 +1502,8 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
-     VRingDesc desc;
-     int rc;
- 
-+    address_space_cache_init_empty(&indirect_desc_cache);
-+
-     RCU_READ_LOCK_GUARD();
-     if (virtio_queue_empty_rcu(vq)) {
-         goto done;
-@@ -1624,7 +1630,7 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
- {
-     unsigned int i, max;
-     VRingMemoryRegionCaches *caches;
--    MemoryRegionCache indirect_desc_cache = MEMORY_REGION_CACHE_INVALID;
-+    MemoryRegionCache indirect_desc_cache;
-     MemoryRegionCache *desc_cache;
-     int64_t len;
-     VirtIODevice *vdev = vq->vdev;
-@@ -1636,6 +1642,8 @@ static void *virtqueue_packed_pop(VirtQueue *vq, size_t sz)
-     uint16_t id;
-     int rc;
- 
-+    address_space_cache_init_empty(&indirect_desc_cache);
-+
-     RCU_READ_LOCK_GUARD();
-     if (virtio_queue_packed_empty_rcu(vq)) {
-         goto done;
-@@ -3970,13 +3978,15 @@ VirtioQueueElement *qmp_x_query_virtio_queue_element(const char *path,
-     } else {
-         unsigned int head, i, max;
-         VRingMemoryRegionCaches *caches;
--        MemoryRegionCache indirect_desc_cache = MEMORY_REGION_CACHE_INVALID;
-+        MemoryRegionCache indirect_desc_cache;
-         MemoryRegionCache *desc_cache;
-         VRingDesc desc;
-         VirtioRingDescList *list = NULL;
-         VirtioRingDescList *node;
-         int rc; int ndescs;
- 
-+        address_space_cache_init_empty(&indirect_desc_cache);
-+
-         RCU_READ_LOCK_GUARD();
- 
-         max = vq->vring.num;
+     if (s->vhost_vdpa.shadow_data) {
 -- 
 MST
 
