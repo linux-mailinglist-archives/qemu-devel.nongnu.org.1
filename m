@@ -2,37 +2,37 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515F37B7992
-	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:08:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B397B7990
+	for <lists+qemu-devel@lfdr.de>; Wed,  4 Oct 2023 10:08:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qnwsq-00045Q-89; Wed, 04 Oct 2023 04:05:28 -0400
+	id 1qnwsk-0003By-ET; Wed, 04 Oct 2023 04:05:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnws5-0008Vf-Lm; Wed, 04 Oct 2023 04:04:41 -0400
+ id 1qnwsY-0002fj-OF; Wed, 04 Oct 2023 04:05:10 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qnws3-0001VP-Vo; Wed, 04 Oct 2023 04:04:41 -0400
+ id 1qnwsR-0001Z8-OL; Wed, 04 Oct 2023 04:05:10 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 199F1275A7;
+ by isrv.corpit.ru (Postfix) with ESMTP id B1832275A8;
  Wed,  4 Oct 2023 11:02:28 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 5905B2CBE1;
+ by tsrv.corpit.ru (Postfix) with SMTP id 9448E2CBE2;
  Wed,  4 Oct 2023 11:02:27 +0300 (MSK)
-Received: (nullmailer pid 2702831 invoked by uid 1000);
+Received: (nullmailer pid 2702834 invoked by uid 1000);
  Wed, 04 Oct 2023 08:02:21 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Fabiano Rosas <farosas@suse.de>,
  Peter Xu <peterx@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 27/45] migration: Fix possible race when setting
- rp_state.error
-Date: Wed,  4 Oct 2023 11:01:48 +0300
-Message-Id: <20231004080221.2702636-27-mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 28/45] migration: Fix possible races when shutting down
+ the return path
+Date: Wed,  4 Oct 2023 11:01:49 +0300
+Message-Id: <20231004080221.2702636-28-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231003193203@cover.tls.msk.ru>
@@ -62,32 +62,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Fabiano Rosas <farosas@suse.de>
 
-We don't need to set the rp_state.error right after a shutdown because
-qemu_file_shutdown() always sets the QEMUFile error, so the return
-path thread would have seen it and set the rp error itself.
+We cannot call qemu_file_shutdown() on the return path file without
+taking the file lock. The return path thread could be running it's
+cleanup code and have just cleared the from_dst_file pointer.
 
-Setting the error outside of the thread is also racy because the
-thread could clear it after we set it.
+Checking ms->to_dst_file for errors could also race with
+migrate_fd_cleanup() which clears the to_dst_file pointer.
+
+Protect both accesses by taking the file lock.
+
+This was caught by inspection, it should be rare, but the next patches
+will start calling this code from other places, so let's do the
+correct thing.
 
 Reviewed-by: Peter Xu <peterx@redhat.com>
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-ID: <20230918172822.19052-3-farosas@suse.de>
-(cherry picked from commit 28a8347281e24c2e7bba6d3301472eda41d4c096)
+Message-ID: <20230918172822.19052-4-farosas@suse.de>
+(cherry picked from commit 639decf529793fc544c8055b82be8abe77fa48fa)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/migration/migration.c b/migration/migration.c
-index 6a7122694a..b92c6ae436 100644
+index b92c6ae436..517b3e04d2 100644
 --- a/migration/migration.c
 +++ b/migration/migration.c
-@@ -2063,7 +2063,6 @@ static int await_return_path_close_on_source(MigrationState *ms)
-          * waiting for the destination.
-          */
-         qemu_file_shutdown(ms->rp_state.from_dst_file);
--        mark_source_rp_bad(ms);
+@@ -2053,17 +2053,18 @@ static int open_return_path_on_source(MigrationState *ms,
+ static int await_return_path_close_on_source(MigrationState *ms)
+ {
+     /*
+-     * If this is a normal exit then the destination will send a SHUT and the
+-     * rp_thread will exit, however if there's an error we need to cause
+-     * it to exit.
++     * If this is a normal exit then the destination will send a SHUT
++     * and the rp_thread will exit, however if there's an error we
++     * need to cause it to exit. shutdown(2), if we have it, will
++     * cause it to unblock if it's stuck waiting for the destination.
+      */
+-    if (qemu_file_get_error(ms->to_dst_file) && ms->rp_state.from_dst_file) {
+-        /*
+-         * shutdown(2), if we have it, will cause it to unblock if it's stuck
+-         * waiting for the destination.
+-         */
+-        qemu_file_shutdown(ms->rp_state.from_dst_file);
++    WITH_QEMU_LOCK_GUARD(&ms->qemu_file_lock) {
++        if (ms->to_dst_file && ms->rp_state.from_dst_file &&
++            qemu_file_get_error(ms->to_dst_file)) {
++            qemu_file_shutdown(ms->rp_state.from_dst_file);
++        }
      }
++
      trace_await_return_path_close_on_source_joining();
      qemu_thread_join(&ms->rp_state.rp_thread);
+     ms->rp_state.rp_thread_created = false;
 -- 
 2.39.2
 
