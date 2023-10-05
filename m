@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F27C7BA7D5
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 19:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A20A7BA7CD
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 19:21:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoS2g-0004lI-Dh; Thu, 05 Oct 2023 13:21:42 -0400
+	id 1qoS0Q-0003N7-AG; Thu, 05 Oct 2023 13:19:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qoS2e-0004kq-Sn; Thu, 05 Oct 2023 13:21:40 -0400
+ id 1qoS0O-0003Mt-8g; Thu, 05 Oct 2023 13:19:20 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qoS2d-0007HR-Eh; Thu, 05 Oct 2023 13:21:40 -0400
+ id 1qoS0M-0006eU-72; Thu, 05 Oct 2023 13:19:20 -0400
 Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395HHKWs029203; Thu, 5 Oct 2023 17:21:28 GMT
+ 395HHMGd029370; Thu, 5 Oct 2023 17:19:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=S1kZzCE+MqCyHvoHHaQChEgUxia3+OkWWmfw2hYFiIg=;
- b=tcSAkPA1EA2kmCviplMcyr+7oOm/ZAhHLVSCbfZsdasMWHlVo4PyeYmdyv0KGAePaGqu
- VhGfkyKlIjG7dcVIF721Wtx6oVorPzZCi2D3u9z+p2SVBk2QgdJtOW9j31cRn5B9YyHS
- Of89UACEJ1DUFV2tRBS8fMtDI6YfFkeZnWHc0LDaE1sKgesKeKrEwSuFkBT0uAQa1JbW
- LBED38L4ieEPgne0zdWu7rsmhwH36K5oRXWT/lIjGqJJc2THWNftj2eTc2iql99CaclQ
- bAXGU0ASgvU4HOIqiK0pflbtvhWpiheWvyA14gY3QiEZxztkVNZeY91LxZivSzwtjOVb 7A== 
+ bh=ueJgLrPkrB/fJbptxJnv/z4eahPguy4hJ+M3nN0aviY=;
+ b=I86zkBe0LNmI1gE6+MvmnDrkwWsd28dMGI+6XkVDp4yljwg8oIzhvp8aghHcDXbP6t94
+ k67Z+39Iqv1ml4krKLkInC4CYEESx1hksAyfXVOf1nJtTZA4G4oAk52FmC/TmtedZ/+i
+ OVdTTQV3HYBaWZkvWE1uQ2iHTo5JPPNBFDYDthtlJjlBk9pUZwGxi7eAVjTjCFpVF7bp
+ 8kZNRp5EiHuOil2xehDwjmydrsgomJBcGxWvMY4RjrxOBVo6fDihkXJJZdQlZxREO5Tx
+ LxT7IQOzOQWlO7iUxv9GSs4gM4Yq1l3hmrYUvk36J9aTBtuD2St5v3wdpni4MM4O4uF1 uA== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj1dqr29j-90
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj1dqr0wy-13
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 17:21:28 +0000
+ Thu, 05 Oct 2023 17:19:07 +0000
 Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 395G1oB1010017;
- Thu, 5 Oct 2023 16:03:16 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj09s82tc-1
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 395GAX5c029255;
+ Thu, 5 Oct 2023 16:12:04 GMT
+Received: from ppma13.dal12v.mail.ibm.com
+ (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj0dhg0ms-60
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 16:03:16 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395FhXcs005870; Thu, 5 Oct 2023 16:02:05 GMT
+ Thu, 05 Oct 2023 16:12:04 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+ by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 395FkEd7006698; Thu, 5 Oct 2023 16:02:06 GMT
 Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tex0tdqk5-1
+ by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tf07kmys3-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 16:02:05 +0000
+ Thu, 05 Oct 2023 16:02:06 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
  by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 395G23Va19202722
+ 395G23LA11207366
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
  Thu, 5 Oct 2023 16:02:03 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id EB81A2005A;
- Thu,  5 Oct 2023 16:02:02 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 420CA20040;
+ Thu,  5 Oct 2023 16:02:03 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A40BE2004F;
+ by IMSVA (Postfix) with ESMTP id F0F2D2006A;
  Thu,  5 Oct 2023 16:02:02 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -81,17 +81,17 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Subject: [PATCH v25 19/21] tests/avocado: s390x cpu topology test socket full
-Date: Thu,  5 Oct 2023 18:01:53 +0200
-Message-Id: <20231005160155.1945588-20-nsg@linux.ibm.com>
+Subject: [PATCH v25 20/21] tests/avocado: s390x cpu topology dedicated errors
+Date: Thu,  5 Oct 2023 18:01:54 +0200
+Message-Id: <20231005160155.1945588-21-nsg@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231005160155.1945588-1-nsg@linux.ibm.com>
 References: <20231005160155.1945588-1-nsg@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1zvblMpcF_9hYa-1hzIoT0HIqX3Zfl5q
-X-Proofpoint-GUID: qeYagwJ72BYx6EAYJ6P2uQAkGv9fCSk6
+X-Proofpoint-ORIG-GUID: YPn1V9M6jXuhoZ_7Pyyq6PjzuXuwQHOw
+X-Proofpoint-GUID: Ji-75azlv4ZmksCy9cDlnXCH-5JaNAcH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-05_12,2023-10-05_01,2023-05-22_02
@@ -127,48 +127,70 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierre Morel <pmorel@linux.ibm.com>
 
-This test verifies that QMP set-cpu-topology does not accept
-to overload a socket.
+Let's test that QEMU refuses to setup a dedicated CPU with
+low or medium entitlement.
 
 Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/s390_topology.py | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ tests/avocado/s390_topology.py | 48 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
 diff --git a/tests/avocado/s390_topology.py b/tests/avocado/s390_topology.py
-index 3661048f4c..a63c2b2923 100644
+index a63c2b2923..d3e6556c0f 100644
 --- a/tests/avocado/s390_topology.py
 +++ b/tests/avocado/s390_topology.py
-@@ -338,3 +338,29 @@ def test_dedicated(self):
-         self.guest_set_dispatching('0');
-         self.check_topology(0, 0, 0, 0, 'high', True)
-         self.check_polarization("horizontal")
+@@ -364,3 +364,51 @@ def test_socket_full(self):
+         res = self.vm.qmp('set-cpu-topology',
+                           {'core-id': 2, 'socket-id': 0, 'book-id': 1})
+         self.assertEqual(res['return'], {})
 +
-+
-+    def test_socket_full(self):
++    def test_dedicated_error(self):
 +        """
-+        This test verifies that QEMU does not accept to overload a socket.
-+        The socket-id 0 on book-id 0 already contains CPUs 0 and 1 and can
-+        not accept any new CPU while socket-id 0 on book-id 1 is free.
++        This test verifies that QEMU refuses to lower the entitlement
++        of a dedicated CPU
 +
 +        :avocado: tags=arch:s390x
 +        :avocado: tags=machine:s390-ccw-virtio
 +        """
 +        self.kernel_init()
-+        self.vm.add_args('-smp',
-+                         '3,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
 +        self.vm.launch()
 +        self.wait_until_booted()
 +
 +        self.system_init()
 +
 +        res = self.vm.qmp('set-cpu-topology',
-+                          {'core-id': 2, 'socket-id': 0, 'book-id': 0})
++                          {'core-id': 0, 'dedicated': True})
++        self.assertEqual(res['return'], {})
++
++        self.check_topology(0, 0, 0, 0, 'high', True)
++
++        self.guest_set_dispatching('1');
++
++        self.check_topology(0, 0, 0, 0, 'high', True)
++
++        res = self.vm.qmp('set-cpu-topology',
++                          {'core-id': 0, 'entitlement': 'low', 'dedicated': True})
 +        self.assertEqual(res['error']['class'], 'GenericError')
 +
 +        res = self.vm.qmp('set-cpu-topology',
-+                          {'core-id': 2, 'socket-id': 0, 'book-id': 1})
++                          {'core-id': 0, 'entitlement': 'low'})
++        self.assertEqual(res['error']['class'], 'GenericError')
++
++        res = self.vm.qmp('set-cpu-topology',
++                          {'core-id': 0, 'entitlement': 'medium', 'dedicated': True})
++        self.assertEqual(res['error']['class'], 'GenericError')
++
++        res = self.vm.qmp('set-cpu-topology',
++                          {'core-id': 0, 'entitlement': 'medium'})
++        self.assertEqual(res['error']['class'], 'GenericError')
++
++        res = self.vm.qmp('set-cpu-topology',
++                          {'core-id': 0, 'entitlement': 'low', 'dedicated': False})
++        self.assertEqual(res['return'], {})
++
++        res = self.vm.qmp('set-cpu-topology',
++                          {'core-id': 0, 'entitlement': 'medium', 'dedicated': False})
 +        self.assertEqual(res['return'], {})
 -- 
 2.39.2
