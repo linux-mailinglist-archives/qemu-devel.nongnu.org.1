@@ -2,77 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840237B9ABF
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 06:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7DF7B9AC0
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 06:52:20 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoGKU-0005Sm-VZ; Thu, 05 Oct 2023 00:51:18 -0400
+	id 1qoGKT-0005RU-Tm; Thu, 05 Oct 2023 00:51:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKH-0005Gy-IA
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKH-0005Gs-BI
  for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:11 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGK0-0005Ql-HU
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGK9-0005RW-Nm
  for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:05 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-405361bb94eso5254445e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 21:50:46 -0700 (PDT)
+Received: by mail-wr1-x429.google.com with SMTP id
+ ffacd0b85a97d-3248e90f032so580025f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 21:50:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696481445; x=1697086245; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=G5/bL+UFb8aN7V1hRtFDrx4S/Prog5l18VX5gdr2wlo=;
- b=vsogpc9VOjBJtK0AcDTd/9UpKnb2IedL12rktCegIHF6aM1wYhbdfXXFv+mcGfabJb
- KGTskxRfWbh9NnJW8xRrX3ltVLPZCtC63dSXLMbmtJN8W4bYkOVp2SuUmIkCpzTqLxp4
- iZ7QddHoS+n5WoW8GDxJCJqIFkL4TtxNVMuBiYiV29C0gPmwBAd9rQgOiv9rBPyQjMn1
- 4i7W/oOEVbVAwux7ipKnongfpADHrJ3yseHteU0pw0rDDunWQ3brovjfcPldGhrKozxN
- SE65wylwkazP+HVIU6dD32dMDWwrcuvBPEuocywV/gMWVZjHs+exXiKnxu55JO+BCwJH
- h6Yw==
+ d=linaro.org; s=google; t=1696481451; x=1697086251; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zxIwwvtSDa6HXj+GPDZLsyAAO0jyEUx+3zbxHDZan+w=;
+ b=lYp3Rah3WIR8DU2cOsjo2zMX9kyQrgP48g+O+DQ8/PHjLbTENBjoJKQy2K7W05qp8X
+ w/yxFqIv/JwZaiwSDi/K/v+wblVPG2ch1Ph/SGPX/khHxTAsxN2nc6orUbwPqs6fxnhX
+ QQS5j+bB7ik4qt3XSBYzF67Kvz7teWM6qFfq3Uw1QUxolyaRfaafPjlhsyM4EHmZuvcg
+ gIjC3fpjupjUq+XkMKIKk2mGcAUPsA0HYFg6gy/8vIXDh1/WWn10RxmzGGrASsdP9K9q
+ FgoQP2K1cGTrzp3TNm+v8ymXC+kfghBzC+kn3dCo2fHHM42NKjKRm5ZW4Adyf7ccqlIf
+ xIWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696481445; x=1697086245;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=G5/bL+UFb8aN7V1hRtFDrx4S/Prog5l18VX5gdr2wlo=;
- b=kfuAc2Njs5zbogSpVKlAPwL0ttruSIGdMN04LORDvjIqGKRgYKxTniBBe+AiBUI539
- XO7RkdmIw1xyocIT+t9SjQxd1k0ZCKfrSccuhElIOPLIYzt1/eOCMV34LhbfPBmusW5G
- OvvPh/YdeXAVK+q/P1PD2T35xfgKIjLtZpLiBR8T9LBCIovj9car7GspyI4VjlEYErXX
- /ZXD97D+lSJM5oxaBN6x743w+M9Hr7Jm06zfuOD/JkzNLvSLmowpm+t9LtXH3YWmCFK6
- XGxAbPA/PPxo67NqKITATNc7k9/X1YvOCcauzwy8GWrnBAOz5pwctv8MaBSfBM1FDGXO
- 700Q==
-X-Gm-Message-State: AOJu0Yz93fGR3L6W6wE/fCnwjw0mbsA7PCbHhZ3ahfvROmZxh5yAsnP5
- D9lxtwgxb64GARsRtqka0EYzmfuBSELATkZGwsk=
-X-Google-Smtp-Source: AGHT+IHtIxae6pMe+yle46vIAqmQ1lXBJXfxQZ04grEB+PU+BSYCOk7/jxBfL08mlbJ6/aAGkaYajA==
-X-Received: by 2002:a7b:ce8f:0:b0:3fe:2bb1:11ba with SMTP id
- q15-20020a7bce8f000000b003fe2bb111bamr4169410wmj.27.1696481444698; 
- Wed, 04 Oct 2023 21:50:44 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696481451; x=1697086251;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=zxIwwvtSDa6HXj+GPDZLsyAAO0jyEUx+3zbxHDZan+w=;
+ b=ZVYcTr/0op3/2ZV+0WKM3QSameorVp4rRMPeb2vgWyXC3ZffgDAtkwqOF0nI36IY7F
+ LbsdGEuLfy9E4QBs96PUiV6XrFRoxbFH5ykF0XVw+JajBsqRRlpVakIHmDpIm1txgCtR
+ eAM/hrxDZbqXw9b9M2umVguHh3O5pbRj1VkB+ym4969gegyFi7l/kWyjokmLoX6XWbWq
+ 1wNvxysdWW7G+cFXadh+RJX/w84a8e5gD35/fpsqB8mN8SIwnCAOVimcHfe9nPJT+reK
+ PQKsQiK475dYNpD/awZUn+YnrjCR/fqrFLAkUTU3paMlzLJJkLFJX41s0qpsMH06FumT
+ roSw==
+X-Gm-Message-State: AOJu0Yy+iE5P0oxPJID65aJPCTLQ1Wn7Bj/Rvk6iMaemACyZJW6PJMGm
+ Qjv48hxuhckLqaxlO501BdSbjKkGp3KY9ogoZCQ=
+X-Google-Smtp-Source: AGHT+IEu0wAuIRz51orToDerPT8z/EUbSV+V2N/LQ8evkDdjW8FC2xr0FZwCLxZoDbHQ/6wLAo0jQA==
+X-Received: by 2002:adf:de0d:0:b0:31f:e759:d687 with SMTP id
+ b13-20020adfde0d000000b0031fe759d687mr3578604wrm.50.1696481451473; 
+ Wed, 04 Oct 2023 21:50:51 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr.
  [176.171.211.120]) by smtp.gmail.com with ESMTPSA id
- k22-20020a7bc416000000b00404719b05b5sm617269wmi.27.2023.10.04.21.50.43
+ u2-20020a5d5142000000b003142e438e8csm751402wrt.26.2023.10.04.21.50.49
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 21:50:44 -0700 (PDT)
+ Wed, 04 Oct 2023 21:50:51 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
  qemu-s390x@nongnu.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH v2 00/22] qapi: Kill 'qapi/qmp/qerror.h' for good
-Date: Thu,  5 Oct 2023 06:50:17 +0200
-Message-ID: <20231005045041.52649-1-philmd@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ David Gibson <david@gibson.dropbear.id.au>,
+ Harsh Prateek Bora <harshpb@linux.ibm.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PATCH v2 01/22] qapi: Inline and remove QERR_BUS_NO_HOTPLUG
+ definition
+Date: Thu,  5 Oct 2023 06:50:18 +0200
+Message-ID: <20231005045041.52649-2-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231005045041.52649-1-philmd@linaro.org>
+References: <20231005045041.52649-1-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::429;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x429.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,124 +102,93 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Since v1:
-- Fixed checkpatch warnings (Juan)
-- Added R-b tags
-- New patch for 'vcpu_dirty_limit'
+Address the comment added in commit 4629ed1e98
+("qerror: Finally unused, clean up"), from 2015:
 
-Hi,
+  /*
+   * These macros will go away, please don't use
+   * in new code, and do not add new ones!
+   */
 
-This is kind of a selfish series. I'm really tired to grep
-and read this comment from 2015 in qapi/qmp/qerror.h:
-      /*
-       * These macros will go away, please don't use
-       * in new code, and do not add new ones!
-       */
+Mechanical transformation using sed, manually
+removing the definition in include/qapi/qmp/qerror.h.
 
-Besides, these definitions are still added in recent code
-(see for example commit 09f9ec9913 from June 2023). So
-let's finish with this 8 years old technical debt.
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ include/qapi/qmp/qerror.h | 3 ---
+ hw/ppc/spapr_pci.c        | 4 ++--
+ softmmu/qdev-monitor.c    | 8 +++++---
+ 3 files changed, 7 insertions(+), 8 deletions(-)
 
-Overall it took me 3h: 1h to find the correct Coccinelle
-doc about Python use and read it again [*], then 1h to
-adapt the script for each patch, rest is testing and
-writing comments, so the scripts used could be used as
-reference later.
-
-Regards,
-
-Phil.
-
-[*] https://www.lrz.de/services/compute/courses/x_lecturenotes/hspc1w19.pdf
-
-Philippe Mathieu-Daudé (22):
-  qapi: Inline and remove QERR_BUS_NO_HOTPLUG definition
-  qapi: Inline and remove QERR_DEVICE_HAS_NO_MEDIUM definition
-  qapi: Inline and remove QERR_DEVICE_IN_USE definition
-  qapi: Inline and remove QERR_DEVICE_NO_HOTPLUG definition
-  qapi: Inline QERR_INVALID_PARAMETER definition (constant parameter)
-  qapi: Inline and remove QERR_INVALID_PARAMETER definition
-  qapi: Inline QERR_INVALID_PARAMETER_TYPE definition (constant param)
-  qapi: Inline QERR_INVALID_PARAMETER_TYPE definition (constant value)
-  qapi: Inline and remove QERR_INVALID_PARAMETER_TYPE definition
-  qapi: Correct error message for 'vcpu_dirty_limit' parameter
-  qapi: Inline QERR_INVALID_PARAMETER_VALUE definition (constant value)
-  qapi: Inline QERR_INVALID_PARAMETER_VALUE definition (constant param)
-  qapi: Inline and remove QERR_INVALID_PARAMETER_VALUE definition
-  qapi: Inline and remove QERR_IO_ERROR definition
-  qapi: Inline and remove QERR_MIGRATION_ACTIVE definition
-  qapi: Inline QERR_MISSING_PARAMETER definition (constant parameter)
-  qapi: Inline and remove QERR_MISSING_PARAMETER definition
-  qapi: Inline and remove QERR_PROPERTY_VALUE_BAD definition
-  qapi: Inline and remove QERR_PROPERTY_VALUE_OUT_OF_RANGE definition
-  qapi: Inline and remove QERR_QGA_COMMAND_FAILED  definition
-  RFC qapi: Inline and remove QERR_UNSUPPORTED definition
-  qapi: Remove 'qapi/qmp/qerror.h' header
-
- qga/qapi-schema.json             |   5 +-
- include/qapi/qmp/qerror.h        |  62 -------------------
- backends/cryptodev-vhost-user.c  |   5 +-
- backends/dbus-vmstate.c          |   3 +-
- backends/rng-egd.c               |   5 +-
- backends/rng-random.c            |   4 +-
- block/gluster.c                  |  22 +++----
- block/monitor/block-hmp-cmds.c   |   7 +--
- block/quorum.c                   |   4 +-
- block/snapshot.c                 |   5 +-
- block/vmdk.c                     |   9 ++-
- blockdev.c                       |  16 +++--
- blockjob.c                       |   4 +-
- chardev/char-fe.c                |   3 +-
- chardev/char.c                   |   4 +-
- dump/dump.c                      |  11 ++--
- dump/win_dump.c                  |   5 +-
- hw/core/qdev-properties-system.c |   6 +-
- hw/core/qdev-properties.c        |   3 +-
- hw/core/qdev.c                   |   4 +-
- hw/intc/openpic.c                |   4 +-
- hw/ppc/spapr_pci.c               |   5 +-
- hw/usb/redirect.c                |   7 +--
- migration/migration.c            |   7 +--
- migration/options.c              | 102 +++++++++++++------------------
- migration/page_cache.c           |   9 ++-
- migration/ram.c                  |   5 +-
- migration/savevm.c               |   7 +--
- monitor/fds.c                    |   9 ++-
- monitor/hmp-cmds.c               |   3 +-
- monitor/qmp-cmds.c               |   4 +-
- net/filter-buffer.c              |   4 +-
- net/filter.c                     |   8 +--
- net/net.c                        |  10 ++-
- qapi/opts-visitor.c              |  12 ++--
- qapi/qapi-forward-visitor.c      |   3 +-
- qapi/qapi-util.c                 |   4 +-
- qapi/qapi-visit-core.c           |   5 +-
- qapi/qobject-input-visitor.c     |  53 ++++++++--------
- qapi/string-input-visitor.c      |  27 ++++----
- qga/commands-bsd.c               |   9 ++-
- qga/commands-posix.c             |  47 +++++++-------
- qga/commands-win32.c             |  65 ++++++++++----------
- qga/commands.c                   |  10 +--
- qom/object.c                     |  16 +++--
- qom/object_interfaces.c          |   3 +-
- qom/qom-qmp-cmds.c               |   8 +--
- softmmu/balloon.c                |   3 +-
- softmmu/cpus.c                   |   8 +--
- softmmu/qdev-monitor.c           |  24 ++++----
- softmmu/rtc.c                    |   1 -
- softmmu/tpm.c                    |   8 +--
- softmmu/vl.c                     |   5 +-
- target/arm/arm-qmp-cmds.c        |   4 +-
- target/i386/cpu.c                |  15 +++--
- target/s390x/cpu_models_sysemu.c |   4 +-
- ui/input-barrier.c               |   3 +-
- ui/ui-qmp-cmds.c                 |   7 +--
- util/block-helpers.c             |   4 +-
- util/qemu-option.c               |  21 +++----
- scripts/qapi/visit.py            |   5 +-
- 61 files changed, 308 insertions(+), 437 deletions(-)
- delete mode 100644 include/qapi/qmp/qerror.h
-
+diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
+index 8dd9fcb071..1a9c2d3502 100644
+--- a/include/qapi/qmp/qerror.h
++++ b/include/qapi/qmp/qerror.h
+@@ -17,9 +17,6 @@
+  * add new ones!
+  */
+ 
+-#define QERR_BUS_NO_HOTPLUG \
+-    "Bus '%s' does not support hotplugging"
+-
+ #define QERR_DEVICE_HAS_NO_MEDIUM \
+     "Device '%s' has no medium"
+ 
+diff --git a/hw/ppc/spapr_pci.c b/hw/ppc/spapr_pci.c
+index 370c5a90f2..7f063f5852 100644
+--- a/hw/ppc/spapr_pci.c
++++ b/hw/ppc/spapr_pci.c
+@@ -1550,7 +1550,7 @@ static void spapr_pci_pre_plug(HotplugHandler *plug_handler,
+          * we need to let them know it's not enabled
+          */
+         if (plugged_dev->hotplugged) {
+-            error_setg(errp, QERR_BUS_NO_HOTPLUG,
++            error_setg(errp, "Bus '%s' does not support hotplugging",
+                        object_get_typename(OBJECT(phb)));
+             return;
+         }
+@@ -1671,7 +1671,7 @@ static void spapr_pci_unplug_request(HotplugHandler *plug_handler,
+     SpaprDrc *drc = drc_from_dev(phb, pdev);
+ 
+     if (!phb->dr_enabled) {
+-        error_setg(errp, QERR_BUS_NO_HOTPLUG,
++        error_setg(errp, "Bus '%s' does not support hotplugging",
+                    object_get_typename(OBJECT(phb)));
+         return;
+     }
+diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
+index 74f4e41338..3a9740dcbd 100644
+--- a/softmmu/qdev-monitor.c
++++ b/softmmu/qdev-monitor.c
+@@ -656,7 +656,8 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+ 
+     if (qdev_should_hide_device(opts, from_json, errp)) {
+         if (bus && !qbus_is_hotpluggable(bus)) {
+-            error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
++            error_setg(errp, "Bus '%s' does not support hotplugging",
++                       bus->name);
+         }
+         return NULL;
+     } else if (*errp) {
+@@ -664,7 +665,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
+     }
+ 
+     if (phase_check(PHASE_MACHINE_READY) && bus && !qbus_is_hotpluggable(bus)) {
+-        error_setg(errp, QERR_BUS_NO_HOTPLUG, bus->name);
++        error_setg(errp, "Bus '%s' does not support hotplugging", bus->name);
+         return NULL;
+     }
+ 
+@@ -904,7 +905,8 @@ void qdev_unplug(DeviceState *dev, Error **errp)
+     }
+ 
+     if (dev->parent_bus && !qbus_is_hotpluggable(dev->parent_bus)) {
+-        error_setg(errp, QERR_BUS_NO_HOTPLUG, dev->parent_bus->name);
++        error_setg(errp, "Bus '%s' does not support hotplugging",
++                   dev->parent_bus->name);
+         return;
+     }
+ 
 -- 
 2.41.0
 
