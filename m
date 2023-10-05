@@ -2,78 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392B17B9A6C
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A507B9A4D
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:44:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFIH-0007CH-77; Wed, 04 Oct 2023 23:44:57 -0400
+	id 1qoFI9-0006le-Qt; Wed, 04 Oct 2023 23:44:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFI8-0006sf-7L
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFI3-0006eT-S0
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:44 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFI6-0000Kh-LZ
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:47 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFI1-0000K7-S9
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477486;
+ s=mimecast20190719; t=1696477480;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=SD/pP7NiyThvBXd+OfzcmY5b45I6wA7NnZdpFrf/vjg=;
- b=isam87ojbgXI1iwQi8t9dAeWvlnROK7VGvZ1yCbFOgdi0Cg5wAAJ/p539aganxSC+f1TlF
- UmiszRBFbbeNDvm54cCvT4WulYvkEkTR6CJmz0pR7ijEeFs9HjjQO54qqiOwB/DMF9m1U6
- CUXYqUQcqovVkEbxTWi98Bwfp/K21Xo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uTXr5CWcV3lblSQfJBOfseEIqv48hvGb7/OS7uALRI4=;
+ b=OlkITIfyS+CEnqRRFoMdjfyITy49lPy0NcCJKEiq2048bM5/qSoxF9RifmLPYnIEYpgSEJ
+ KOAs5GO5s4PE9VEU3KgmgumMqv6nzX4yEwM6oFaQr4dKutJ4vAIKB20E6u5PP2zLCsGGye
+ k0VngGfoRE+8E2yenuJ0d+jg64WNfvo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-654-hpzSny24MHSLgj612s5KBQ-1; Wed, 04 Oct 2023 23:44:34 -0400
-X-MC-Unique: hpzSny24MHSLgj612s5KBQ-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fe182913c5so3636645e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:34 -0700 (PDT)
+ us-mta-622-X7izp8rpMkm1-fbhkNbX7A-1; Wed, 04 Oct 2023 23:44:39 -0400
+X-MC-Unique: X7izp8rpMkm1-fbhkNbX7A-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-326f05ed8f9so479281f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477472; x=1697082272;
+ d=1e100.net; s=20230601; t=1696477477; x=1697082277;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=SD/pP7NiyThvBXd+OfzcmY5b45I6wA7NnZdpFrf/vjg=;
- b=FGdrXi1NHDV7mudPEhgLHuDlKo0cFGfYh6DUXg/Rou1n4zb6B77gye+oOaBa142GBe
- bzgrLXt9kxuGhLsnvLk/97B5a0BUn0ezwAsdWHNR5voRNcrFZUXCE/mtbMll1IwrqZwk
- yIs71iD/BasceOy1Wh6+L7XEr/b5CGnGahXT1RXgfq9ymUOsj9DwzamJACj8c23a2mhZ
- SOVHghngsAKtRwOtfLMoxd3ytWi/9dvlwRF0LLtz1CvAHTDr4aNNVWrMJSubFaVCqjzq
- TwCqBr2Ghjqg10lkBaMPG3HsIGRqBC2AMtTFgSIcyT2AOEqu30rKIb0ydTCRl0aVIGxa
- KD3w==
-X-Gm-Message-State: AOJu0YxdG86UgWPs0DM+QKOEDip2oAuGOp2N1q7Ko9cH+hkR8mvLFeZl
- UeipSNNhQ3UZIViO2+QLRdpfsovtNKAAANNOnxT6U8fXiOS63y7uWn+1ZbyNLwVJQKZaAiHFqMT
- DCNLv2Z5202MfIJa+K37QojQmrh3qEO0Ez8QpOoOxXVWxcmX5gz8jiYIjcCM9GRXtYTB1
-X-Received: by 2002:a7b:cd98:0:b0:405:1ba2:4fcb with SMTP id
- y24-20020a7bcd98000000b004051ba24fcbmr3934735wmj.16.1696477472809; 
- Wed, 04 Oct 2023 20:44:32 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEoOsNYc3LEDhHsuD0fIMd/D5T6mh6IenAhcuvT2559mWYWrtyyD1+MRJxaNZWUs6Z7mJoUFA==
-X-Received: by 2002:a7b:cd98:0:b0:405:1ba2:4fcb with SMTP id
- y24-20020a7bcd98000000b004051ba24fcbmr3934717wmj.16.1696477472388; 
- Wed, 04 Oct 2023 20:44:32 -0700 (PDT)
+ bh=uTXr5CWcV3lblSQfJBOfseEIqv48hvGb7/OS7uALRI4=;
+ b=pBQj9yA1zviLkrsMO8ESum+vT6Isgb60FaXbvGrV4NGV+z62fX6grhw5RJgT/l5ang
+ 5GafBdlIRkG3BE0qkBz6TOrVLt4JmpvvFQ8GehnROVxPSKpSXwtCwtcWhSAgFbFhjXwA
+ OgZ/FAaPDW3vVdwr+L0HNDbCg14yJ0YiujE+PGrvMqtqCGJKzC/oAyTbbPVcCrPsgtrv
+ f+mIImbgxdoRsLBKrWXphgLsWJKk6K+zP416Q2rQcrVkTC2GdGiDWHnn3oV8FJGaav80
+ z+WiQSXycAhMg4jmLqUILJqhCqg9r7hLioaaY/RY9DxOLhWfBHCs97rs/eHSBNw0YTsb
+ mjTA==
+X-Gm-Message-State: AOJu0YxC1AdpBHcvAcWjk7metrrxk0CmyjOtei3tggObDjwqgQaeWdhp
+ 40rY1X1HRBdJUZqICXHtG0OHJvjhcrj1KXfWYkcqgywxlYI2S3KHAxPqECAUCM982TXPfSGdqLH
+ TcaIAJTOwIIArr0tC5pRqRRouhZL7fT/R4G/+8Io1mEeh9Pke/WiujdjsQ6CUT1A0oS5C
+X-Received: by 2002:a5d:4d12:0:b0:31f:f9a9:a742 with SMTP id
+ z18-20020a5d4d12000000b0031ff9a9a742mr3434182wrt.23.1696477477578; 
+ Wed, 04 Oct 2023 20:44:37 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFGL/DUi9P0Ul0u3NI297Pg52hs9zlcH9/y827Lrrr+o5Sp2AnrnzubcwVbWR5li2904L+Mww==
+X-Received: by 2002:a5d:4d12:0:b0:31f:f9a9:a742 with SMTP id
+ z18-20020a5d4d12000000b0031ff9a9a742mr3434170wrt.23.1696477477301; 
+ Wed, 04 Oct 2023 20:44:37 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- k22-20020a7bc416000000b00404719b05b5sm537774wmi.27.2023.10.04.20.44.29
+ d16-20020adff850000000b003232d122dbfsm623692wrq.66.2023.10.04.20.44.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:44:31 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:44:28 -0400
+ Wed, 04 Oct 2023 20:44:36 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:44:32 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Bernhard Beschow <shentey@gmail.com>,
+ Bernhard Beschow <shentey@gmail.com>, Igor Mammedov <imammedo@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Ani Sinha <anisinha@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL v2 30/53] hw/i386/acpi-build: Determine SMI command port just
- once
-Message-ID: <5cdb639d25f9951a90b6b7ba31d376d8ab132a61.1696477105.git.mst@redhat.com>
+ Aurelien Jarno <aurelien@aurel32.net>
+Subject: [PULL v2 31/53] hw/acpi: Trace GPE access in all device models, not
+ just PIIX4
+Message-ID: <7f558ea58bb60257b111abac0424dc601ff54875.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -108,44 +106,102 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-The SMI command port is currently hardcoded by means of the ACPI_PORT_SMI_CMD
-macro. This hardcoding is Intel specific and doesn't match VIA, for example.
-There is already the AcpiFadtData::smi_cmd attribute which is used when building
-the FADT. Let's also use it when building the DSDT which confines SMI command
-port determination to just one place. This allows it to become a property later,
-thus resolving the Intel assumption.
-
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Igor Mammedov <imammedo@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230908084234.17642-7-shentey@gmail.com>
+Message-Id: <20230908084234.17642-8-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/i386/acpi-build.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ hw/acpi/core.c       | 5 +++++
+ hw/acpi/piix4.c      | 3 ---
+ hw/acpi/trace-events | 8 ++++----
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 76581d51aa..863a939210 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1495,14 +1495,14 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-             aml_append(crs,
-                 aml_io(
-                        AML_DECODE16,
--                       ACPI_PORT_SMI_CMD,
--                       ACPI_PORT_SMI_CMD,
-+                       pm->fadt.smi_cmd,
-+                       pm->fadt.smi_cmd,
-                        1,
-                        2)
-             );
-             aml_append(dev, aml_name_decl("_CRS", crs));
-             aml_append(dev, aml_operation_region("SMIR", AML_SYSTEM_IO,
--                aml_int(ACPI_PORT_SMI_CMD), 2));
-+                aml_int(pm->fadt.smi_cmd), 2));
-             field = aml_field("SMIR", AML_BYTE_ACC, AML_NOLOCK,
-                               AML_WRITE_AS_ZEROS);
-             aml_append(field, aml_named_field("SMIC", 8));
+diff --git a/hw/acpi/core.c b/hw/acpi/core.c
+index 00b1e79a30..c561845a4a 100644
+--- a/hw/acpi/core.c
++++ b/hw/acpi/core.c
+@@ -32,6 +32,7 @@
+ #include "qemu/module.h"
+ #include "qemu/option.h"
+ #include "sysemu/runstate.h"
++#include "trace.h"
+ 
+ struct acpi_table_header {
+     uint16_t _length;         /* our length, not actual part of the hdr */
+@@ -686,6 +687,8 @@ void acpi_gpe_ioport_writeb(ACPIREGS *ar, uint32_t addr, uint32_t val)
+ {
+     uint8_t *cur;
+ 
++    trace_acpi_gpe_ioport_writeb(addr, val);
++
+     cur = acpi_gpe_ioport_get_ptr(ar, addr);
+     if (addr < ar->gpe.len / 2) {
+         /* GPE_STS */
+@@ -709,6 +712,8 @@ uint32_t acpi_gpe_ioport_readb(ACPIREGS *ar, uint32_t addr)
+         val = *cur;
+     }
+ 
++    trace_acpi_gpe_ioport_readb(addr, val);
++
+     return val;
+ }
+ 
+diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
+index a7892c444c..dd523d2e4c 100644
+--- a/hw/acpi/piix4.c
++++ b/hw/acpi/piix4.c
+@@ -42,7 +42,6 @@
+ #include "hw/acpi/acpi_dev_interface.h"
+ #include "migration/vmstate.h"
+ #include "hw/core/cpu.h"
+-#include "trace.h"
+ #include "qom/object.h"
+ 
+ #define GPE_BASE 0xafe0
+@@ -517,7 +516,6 @@ static uint64_t gpe_readb(void *opaque, hwaddr addr, unsigned width)
+     PIIX4PMState *s = opaque;
+     uint32_t val = acpi_gpe_ioport_readb(&s->ar, addr);
+ 
+-    trace_piix4_gpe_readb(addr, width, val);
+     return val;
+ }
+ 
+@@ -526,7 +524,6 @@ static void gpe_writeb(void *opaque, hwaddr addr, uint64_t val,
+ {
+     PIIX4PMState *s = opaque;
+ 
+-    trace_piix4_gpe_writeb(addr, width, val);
+     acpi_gpe_ioport_writeb(&s->ar, addr, val);
+     acpi_update_sci(&s->ar, s->irq);
+ }
+diff --git a/hw/acpi/trace-events b/hw/acpi/trace-events
+index 78e0a8670e..159937ddb9 100644
+--- a/hw/acpi/trace-events
++++ b/hw/acpi/trace-events
+@@ -17,6 +17,10 @@ mhp_acpi_clear_remove_evt(uint32_t slot) "slot[0x%"PRIx32"] clear remove event"
+ mhp_acpi_pc_dimm_deleted(uint32_t slot) "slot[0x%"PRIx32"] pc-dimm deleted"
+ mhp_acpi_pc_dimm_delete_failed(uint32_t slot) "slot[0x%"PRIx32"] pc-dimm delete failed"
+ 
++# core.c
++acpi_gpe_ioport_readb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " ==> 0x%" PRIx8
++acpi_gpe_ioport_writeb(uint32_t addr, uint8_t val) "addr: 0x%" PRIx32 " <== 0x%" PRIx8
++
+ # cpu.c
+ cpuhp_acpi_invalid_idx_selected(uint32_t idx) "0x%"PRIx32
+ cpuhp_acpi_read_flags(uint32_t idx, uint8_t flags) "idx[0x%"PRIx32"] flags: 0x%"PRIx8
+@@ -48,10 +52,6 @@ acpi_pci_sel_read(uint32_t val) "%" PRIu32
+ acpi_pci_ej_write(uint64_t addr, uint64_t data) "0x%" PRIx64 " <== %" PRIu64
+ acpi_pci_sel_write(uint64_t addr, uint64_t data) "0x%" PRIx64 " <== %" PRIu64
+ 
+-# piix4.c
+-piix4_gpe_readb(uint64_t addr, unsigned width, uint64_t val) "addr: 0x%" PRIx64 " width: %d ==> 0x%" PRIx64
+-piix4_gpe_writeb(uint64_t addr, unsigned width, uint64_t val) "addr: 0x%" PRIx64 " width: %d <== 0x%" PRIx64
+-
+ # tco.c
+ tco_timer_reload(int ticks, int msec) "ticks=%d (%d ms)"
+ tco_timer_expired(int timeouts_no, bool strap, bool no_reboot) "timeouts_no=%d no_reboot=%d/%d"
 -- 
 MST
 
