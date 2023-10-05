@@ -2,77 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FB87B9B2B
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 335F47B9B2E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:54:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoIAv-0003vV-BS; Thu, 05 Oct 2023 02:49:33 -0400
+	id 1qoIER-0005fd-EN; Thu, 05 Oct 2023 02:53:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIAt-0003v8-3m
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:49:31 -0400
-Received: from mail-wr1-x42a.google.com ([2a00:1450:4864:20::42a])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIEK-0005fG-Ji
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:53:04 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIAr-0001uH-7Z
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:49:30 -0400
-Received: by mail-wr1-x42a.google.com with SMTP id
- ffacd0b85a97d-3231df054c4so636452f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:49:28 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIEI-0003Po-Qf
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:53:04 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-327be5fe4beso616687f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:53:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696488567; x=1697093367; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696488781; x=1697093581; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=vo/DTzLq37qj27YbytgTdlW7fbh84Qr9RpThrSGRRws=;
- b=X1u2bD/qf91SuZIWFNZdF7ZMdKZ2jCfQa/+/GjJ8LXVAIaWcbUmxMcG1Mo//5i4xNG
- hSSR9ISAwfi1UO58TOX0mEqQhjLzHhhJc+2iMnXYMPm9lRGoTDuyYFHun+CSxfuAalyw
- GC2ue3C87iVt0nJqGgLa1+oGPmo5Z0mA7nVBjVHCtpXdqJJoxQvbqWceXu6g3ayV1qKy
- i3ttDdcxY+/d+TBL5v6LqZOwYpPc5/NW0Dkd8pZrpgcK13Cd4kUOqU6QseKsyZ2h3wew
- uXooWBSUe4qzN1weL8fYOyyzRxkns0kO2wZTtmd9qgAHd0IDmMLKHu+73CvFy1b6LTwp
- 5Qsg==
+ bh=fgkOuBM06YdQudXzdfP4cijXvUf8+ZgZiji2YsGfoq0=;
+ b=XVEGYMJld6mjQtbl/oiE4Htfur8OSURt4G577iv7e+6XNe6wIlo9+divptbFn+bXVL
+ 2fXi5bj83AfMuUCqMB24xGPKbj5g8aKfHktbZ5+Unti0xIKvc9n9O8aqF9sI7mcgYcmW
+ nu4My9gfuIaTQ9+OOvw3LoIbZQ4eK/NRiozNmD8wuwUnut+XqHeQ6m/M+bPJpdzWMW0J
+ b8hE19vdNe7oUB6EI56fM/xdFnMjbLtB7DMoCkZ6c73ONlrPQl57JFMNkYaqciU8pMTy
+ UX+gIqGZ2cANVmssXHNyS5uWAp9hGgNddEb9uX5iYWDVtQ69+TNIVdDGyi9KNro1Oa9N
+ JoHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696488567; x=1697093367;
+ d=1e100.net; s=20230601; t=1696488781; x=1697093581;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vo/DTzLq37qj27YbytgTdlW7fbh84Qr9RpThrSGRRws=;
- b=sU+crop6Ca3bmmse4Obcp4ltDQmwWUo4Pk34HIckrpmgHQh/1XcNJazqp8z2/p4djZ
- 9DJJz7otPjowjkgflg1Yrzvpxgquho6I9zpdclVfe3BCa+wRu5lQhkLvWP4YQS30FbZe
- fae/zQ5qQlBin9dnyFYObAf/lQMYC4xwXZ6po4RWAkGwgMfdTkb5pgyN1eMYrqr6YCQO
- 4SYr75hhCLaW4q3i5IuJ8jdjdEuIbyI9yT6mSHlZRfk1Hx22RmoQ+6kT73m4OuHXowAg
- xUf87V+EeAv7ZuZ3vSYP2a9RiVwE/4eiTpSbNtzA2fXMyiOMddFxbTbTpkFJe4gXO8hz
- HNOg==
-X-Gm-Message-State: AOJu0Yznqso/9SpMKQRjMa8FLWmaF8CW0ZEi3REvvB80LHz8Z4paxlN7
- j6ijiD+N3ujQGtft0atFsRR9wQ==
-X-Google-Smtp-Source: AGHT+IEOA0Fu6s3bz/Xux1GjBcOQKGdRaJONtpetsfYyp4YkGrM9jLYX1nmhFLjtttb4K+2AAlVy4Q==
-X-Received: by 2002:a5d:4dcc:0:b0:318:69:ab03 with SMTP id
- f12-20020a5d4dcc000000b003180069ab03mr3982794wru.17.1696488567592; 
- Wed, 04 Oct 2023 23:49:27 -0700 (PDT)
+ bh=fgkOuBM06YdQudXzdfP4cijXvUf8+ZgZiji2YsGfoq0=;
+ b=HHpuOkXpQ4NVA46fY2x7/hSGCDmU8N53efxIvSjthhnBODmYLMlRxzGmy/20zUzTIN
+ pcoYa/wkbrtJFcjgYJofhrpYvweL0qSAsHfGXz4RSQaKovw5Heq2pJvvoKVnsamEDy8O
+ mmFcT2/2e4vQYuCh29MAwEwjulUfdgd0fL9Z135RNyIA/mRiJy8LzbmMGEALUoLdHUqw
+ uERsVAPf5x6BVGfOAXZTFeR9dO1xUTC9Fiu5Wz1hxdzq+C8cC4Qlf12jANGaD2sSHVS6
+ ZvtSedffzFEUX3rZu0WwtJ2ulnbVWJBC66bAWJ0b1yx1oNeqFPGMYfGfH80SuqfeIO/d
+ 3lmw==
+X-Gm-Message-State: AOJu0YyB56fBxG51255GoNvx5MaRA1XC+vJDmXA7uqesq5G4sj2MmxXZ
+ Q7o0Dngo00IJ07IKZXmcEnE/4g==
+X-Google-Smtp-Source: AGHT+IEz8NYMFuHKm05e3Vu96S3+/zVqkmDkzkop1/gRaVg6L/4m6onbbSUqoQ0C5PAbUSjKxs2vsA==
+X-Received: by 2002:a5d:568e:0:b0:31f:d2dc:df26 with SMTP id
+ f14-20020a5d568e000000b0031fd2dcdf26mr3941883wrv.28.1696488781018; 
+ Wed, 04 Oct 2023 23:53:01 -0700 (PDT)
 Received: from [192.168.69.115]
  (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
  by smtp.gmail.com with ESMTPSA id
- s10-20020a5d510a000000b00324887a13f7sm1009771wrt.0.2023.10.04.23.49.26
+ e13-20020a5d500d000000b003259b068ba6sm1000980wrt.7.2023.10.04.23.52.59
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 23:49:27 -0700 (PDT)
-Message-ID: <afab0b07-51b4-81e5-2e7f-03099a7be858@linaro.org>
-Date: Thu, 5 Oct 2023 08:49:25 +0200
+ Wed, 04 Oct 2023 23:53:00 -0700 (PDT)
+Message-ID: <dec9cc07-e57d-a65a-b929-ee9fba51dd16@linaro.org>
+Date: Thu, 5 Oct 2023 08:52:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v8 2/2] tpm: add backend for mssim
+Subject: Re: Wshadow: Better name for 'optarg'?
 Content-Language: en-US
-To: James Bottomley <jejb@linux.ibm.com>, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Stefan Berger <stefanb@linux.ibm.com>
-References: <20231004184219.6594-1-jejb@linux.ibm.com>
- <20231004184219.6594-3-jejb@linux.ibm.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ QEMU Developers <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <14cd0201-1507-bfa8-fe9e-f482c35d21ca@linaro.org>
+ <d688281c-d019-c1ff-6927-d1791911c57d@linaro.org>
+ <e13885b5-06a2-599f-e0fe-c5e8f0671742@redhat.com>
+ <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
+ <87lechabs2.fsf@pond.sub.org>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231004184219.6594-3-jejb@linux.ibm.com>
+In-Reply-To: <87lechabs2.fsf@pond.sub.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42a;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42a.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -95,125 +101,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi James,
+On 5/10/23 07:17, Markus Armbruster wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> On 4/10/23 19:35, Thomas Huth wrote:
+>>> On 04/10/2023 19.23, Richard Henderson wrote:
+>>>> On 10/4/23 03:05, Philippe Mathieu-Daudé wrote:
+>>>>> Hi,
+>>>>>
+>>>>> I'm getting a bunch of errors for 'optarg' declared in <unistd.h>:
+>>>>
+>>>> I thought things like this is why we were trying -Wshadow=local.
+>>>>
+>>>> I think it's unlikely that we'll be able to prevent all such cases.
+>>> Given the broad range of operating systems and libraries that we support in QEMU, I agree with Richard - it will likely be impossible to enable that option without =local by default without risking that compilation breaks on some exotic systems or new versions of various libraries.
+>>
+>> -Wshadow=local doesn't seem to work here which is why I switched
+>> to -Wshadow. I probably misunderstood something from Markus cover
+>> letter. My setup is:
+>>
+>> C compiler for the host machine: clang (clang 14.0.3 "Apple clang version 14.0.3 (clang-1403.0.22.14.1)")
+>>
+>> I suppose we'll figure that out when eventually enabling -Wshadow=local
+>> on CI. Meanwhile I already cleaned the 'optarg' warnings that were
+>> bugging me, see:
+>> https://lore.kernel.org/qemu-devel/20231004120019.93101-1-philmd@linaro.org/
+>> I'll try to get -Wshadow=local, but the other series still seems a
+>> good cleanup, as I used more meaningful variable names.
+> 
+> I'm aiming just for -Wshadow=local now.  If somebody else gets us all
+> the way to -Wshadow, I'll clap from the sidelines.
+> 
+> I'm mildly skeptical about -Wshadow without =local when targeting a wide
+> range of toolchains over a long time.
 
-On 4/10/23 20:42, James Bottomley wrote:
-> From: James Bottomley <James.Bottomley@HansenPartnership.com>
-> 
-> The Microsoft Simulator (mssim) is the reference emulation platform
-> for the TCG TPM 2.0 specification.
-> 
-> https://github.com/Microsoft/ms-tpm-20-ref.git
-> 
-> It exports a fairly simple network socket based protocol on two
-> sockets, one for command (default 2321) and one for control (default
-> 2322).  This patch adds a simple backend that can speak the mssim
-> protocol over the network.  It also allows the two sockets to be
-> specified on the command line.  The benefits are twofold: firstly it
-> gives us a backend that actually speaks a standard TPM emulation
-> protocol instead of the linux specific TPM driver format of the
-> current emulated TPM backend and secondly, using the microsoft
-> protocol, the end point of the emulator can be anywhere on the
-> network, facilitating the cloud use case where a central TPM service
-> can be used over a control network.
-> 
-> The implementation does basic control commands like power off/on, but
-> doesn't implement cancellation or startup.  The former because
-> cancellation is pretty much useless on a fast operating TPM emulator
-> and the latter because this emulator is designed to be used with OVMF
-> which itself does TPM startup and I wanted to validate that.
-> 
-> To run this, simply download an emulator based on the MS specification
-> (package ibmswtpm2 on openSUSE) and run it, then add these two lines
-> to the qemu command and it will use the emulator.
-> 
->      -tpmdev mssim,id=tpm0 \
->      -device tpm-crb,tpmdev=tpm0 \
-> 
-> to use a remote emulator replace the first line with
-> 
->      -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':inet,'host':'remote','port':'2321'}}"
-> 
-> tpm-tis also works as the backend.
-> 
-> Signed-off-by: James Bottomley <jejb@linux.ibm.com>
-> Acked-by: Markus Armbruster <armbru@redhat.com>
-> 
-> ---
-> 
-> v2: convert to SocketAddr json and use qio_channel_socket_connect_sync()
-> v3: gate control power off by migration state keep control socket disconnected
->      to test outside influence and add docs.
-> v7: TPMmssim -> TPMMssim; doc and json fixes
->      Make command socket open each time (makes OS debugging easier)
-> ---
->   MAINTAINERS              |   6 +
->   backends/tpm/Kconfig     |   5 +
->   backends/tpm/meson.build |   1 +
->   backends/tpm/tpm_mssim.c | 319 +++++++++++++++++++++++++++++++++++++++
->   backends/tpm/tpm_mssim.h |  44 ++++++
->   docs/specs/tpm.rst       |  39 +++++
->   qapi/tpm.json            |  32 +++-
->   softmmu/tpm-hmp-cmds.c   |   9 ++
->   8 files changed, 451 insertions(+), 4 deletions(-)
->   create mode 100644 backends/tpm/tpm_mssim.c
->   create mode 100644 backends/tpm/tpm_mssim.h
+Well sorry about the confusion, this is an oversight from my part:
+I didn't understood your work is focused on GCC, so I was trying to
+get it working on my Darwin host which default to Clang (from what
+Warner also said, it seems to be the default on FreeBSD too).
 
-
-> diff --git a/docs/specs/tpm.rst b/docs/specs/tpm.rst
-> index efe124a148..4fe6c5f051 100644
-> --- a/docs/specs/tpm.rst
-> +++ b/docs/specs/tpm.rst
-> @@ -274,6 +274,42 @@ available as a module (assuming a TPM 2 is passed through):
->     /sys/devices/LNXSYSTEM:00/LNXSYBUS:00/MSFT0101:00/tpm/tpm0/pcr-sha256/9
->     ...
->   
-> +The QEMU TPM Microsoft Simulator Device
-> +---------------------------------------
-> +
-> +The Microsoft Simulator (mssim) is the reference emulation platform
-> +for the TCG TPM 2.0 specification.  It provides a reference
-> +implementation for the TPM 2.0 written by Microsoft (See
-> +`ms-tpm-20-ref`_ on github).  The reference implementation starts a
-> +network server and listens for TPM commands on port 2321 and TPM
-> +Platform control commands on port 2322, although these can be altered.
-> +The QEMU mssim TPM backend talks to this implementation.  By default
-> +it connects to the default ports on localhost:
-> +
-> +.. code-block:: console
-> +
-> +  qemu-system-x86_64 <qemu-options> \
-> +    -tpmdev mssim,id=tpm0 \
-> +    -device tpm-crb,tpmdev=tpm0
-> +
-> +
-> +Although it can also communicate with a remote host, which must be
-> +specified as a SocketAddress via json or dotted keys on the command
-> +line for each of the command and control ports:
-> +
-> +.. code-block:: console
-> +
-> +  qemu-system-x86_64 <qemu-options> \
-> +    -tpmdev "{'type':'mssim','id':'tpm0','command':{'type':'inet','host':'remote','port':'2321'},'control':{'type':'inet','host':'remote','port':'2322'}}" \
-> +    -device tpm-crb,tpmdev=tpm0
-
-Did you test running this command line on a big-endian host?
-
-> +The mssim backend supports snapshotting and migration by not resetting
-> +the TPM on start up and not powering it down on halt if the VM is in
-> +migration, but the state of the Microsoft Simulator server must be
-> +preserved (or the server kept running) outside of QEMU for restore to
-> +be successful.
-> +
->   The QEMU TPM emulator device
->   ----------------------------
->   
-> @@ -547,3 +583,6 @@ the following:
->   
->   .. _SWTPM protocol:
->      https://github.com/stefanberger/swtpm/blob/master/man/man3/swtpm_ioctls.pod
-> +
-> +.. _ms-tpm-20-ref:
-> +   https://github.com/microsoft/ms-tpm-20-ref
+> Not an objection to cleanup patches such as yours!
+> 
 
 
