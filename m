@@ -2,86 +2,97 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61D577BA20B
+	by mail.lfdr.de (Postfix) with ESMTPS id 4001F7BA20A
 	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 17:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoQ0C-0008CD-87; Thu, 05 Oct 2023 11:11:00 -0400
+	id 1qoQ0J-0008Es-Gm; Thu, 05 Oct 2023 11:11:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoPzk-00088X-E9
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 11:10:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qoQ0I-0008Ef-1A
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 11:11:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoPzj-0000JR-1C
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 11:10:32 -0400
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qoQ0F-0000Rr-Sl
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 11:11:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696518613;
+ s=mimecast20190719; t=1696518663;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aKftOfvSvqSHYlgT+Fba504Ofia/MLPLI1WdPKFHjGo=;
- b=QGJIPrfjjFA11ceR6JsYtMV1tgnQ7c/CqwBmc9YzxPDYR4/aCA113ZaTauGLnq+jW7u0Tc
- OlB0VFha8YGnQvS7DmXhjMx9FpK6PUmE7gJHW9fsb5GG+x9Jwbule4jNHHkEzSbvoZoVjk
- gJtud8reO92kY54aHbMmmYMbXEe4R2s=
-Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
- [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=1Lo8x5QUmG21Iu4TvA3S6+svq8moJHxytHfY7BREn9I=;
+ b=aZ/wSC9LhZytxd40xknBnN2F7EBNgY5MLUwnbgRkjKiipV7r4s/96Ifwc4/WN4ESXzy4IT
+ dtBnP6zyMAjoIycgaHqY1Y41ZBcMlNt/wkU+LNyeTITsT+kcTlZ+pdsxDoqhqJr/zgKk6V
+ /gyCbUOl4layE2/sP4mLIU7o2O51cfY=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-64-WRsdrtR3N-aEAEEvvI5l5A-1; Thu, 05 Oct 2023 11:10:11 -0400
-X-MC-Unique: WRsdrtR3N-aEAEEvvI5l5A-1
-Received: by mail-yw1-f200.google.com with SMTP id
- 00721157ae682-59f61a639b9so15468337b3.1
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 08:10:11 -0700 (PDT)
+ us-mta-539-G8WMz6moPWOavyuYriH2Zw-1; Thu, 05 Oct 2023 11:11:00 -0400
+X-MC-Unique: G8WMz6moPWOavyuYriH2Zw-1
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-774335cb98cso114137385a.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 08:11:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696518611; x=1697123411;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=aKftOfvSvqSHYlgT+Fba504Ofia/MLPLI1WdPKFHjGo=;
- b=h+VNeZORv4yNY8ZkM7HyUskcAapFL2XrB0QpVxI8Mffp15CWB72N3u/taEPzyoaKDr
- 1zEIYxckTjk/8e8z7wrZwoUFAy7xh/Rt5CTbys8HGfJzdG2ON02u9dWDX5JVBRpn7uRp
- dCSnZ3mQ+Lgch6ByNfCIa2jeP4TUJJxOuDX9Dhh58ZM7h1QsMZ56M0Vxfow9vSKy4bZ0
- AxC9dcExOCAtRchmCQUxr1bCERK9tns0rpreF9h57pzd3dRVLNfOTc2s8yAPcKFOcg+3
- /s+sZ0y8TKas738PDVH6YwjfC+91rPViBS5fpUibSR8Rh2gFxe/OJAUM/oU9DydVBlgD
- WCQw==
-X-Gm-Message-State: AOJu0YzVxvy0nTXln3aP1l6aB3uzWRxnYNXYL852DzIHMmcGQ0RbZIjj
- 9LyeoLo/TUjjSZE7tw4Erl+RvL8SiDK7juak6xQ+F5BNHp1mibU7tuBaDYVUyusCwfT6yvgHY6G
- 5/ux7fgE8YqUsaQFvNnTngp3CWjBqYKs=
-X-Received: by 2002:a81:484b:0:b0:59f:7fb0:d0d0 with SMTP id
- v72-20020a81484b000000b0059f7fb0d0d0mr5495666ywa.22.1696518610984; 
- Thu, 05 Oct 2023 08:10:10 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG1n99bbeRJ+SfzZ6RPzEYB7D8+YgdyUCXDQV1LhjXjYKMoLmIjzjmbGZR0LB6udHWEEZ7j/h9PHJBO8CurCY4=
-X-Received: by 2002:a81:484b:0:b0:59f:7fb0:d0d0 with SMTP id
- v72-20020a81484b000000b0059f7fb0d0d0mr5495647ywa.22.1696518610694; Thu, 05
- Oct 2023 08:10:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696518660; x=1697123460;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1Lo8x5QUmG21Iu4TvA3S6+svq8moJHxytHfY7BREn9I=;
+ b=v8O67Vz3uga+URD1aOOM41f58hJWYo1D0tmC3s/0tt1g7N5DilwxB92TTuGq+HlWL7
+ ZpAcoOcEvj0Tl8IAHUx+6k5fnBh54yySA2tldG2p2W35X4QW8bmsP3+cF1vyJXN6cZhx
+ uKTtiwg0jXTSiVlfJrApeAnEAtLjcaFSn3Y9Y2kiNqqAc+i7DelGRbtiHqGes8bhPuE+
+ vQY3ZkCgkX4pwL/ccDGxJ7E0LbGHTu+9otv9oXu9bPJLd761LpbacEvPcHgsTelVV3pw
+ KSXbjT18k8niMGm5/ZyLvg6KJ9aqc73zCoqgwiR3tqw6Djq9RUFt2E7z5vntJzYTJP5L
+ uI1w==
+X-Gm-Message-State: AOJu0YyHZ1POTO68PvbID5kp+qOFuQgJbu502dPNVT4hbO5wocSb6OzN
+ j5aonS3qztw5iw8PP/CSjvynX3And/u0A3aov8sBPeJK43P9bqkxYsZ7HUTSmADGTuMQ4RlYdZf
+ Tk63Z/sOkOFs3rsg=
+X-Received: by 2002:a05:620a:2404:b0:773:a9f7:eaf1 with SMTP id
+ d4-20020a05620a240400b00773a9f7eaf1mr6927372qkn.21.1696518660158; 
+ Thu, 05 Oct 2023 08:11:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKMUTIXdzZnlcPlORsqx9e691yJmm6Gmxx0SD2SlGq892230g+8v9k8ptEWcL9CpC/7Gv2PA==
+X-Received: by 2002:a05:620a:2404:b0:773:a9f7:eaf1 with SMTP id
+ d4-20020a05620a240400b00773a9f7eaf1mr6927339qkn.21.1696518659885; 
+ Thu, 05 Oct 2023 08:10:59 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ x13-20020a05620a14ad00b007756736aed7sm545303qkj.106.2023.10.05.08.10.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 05 Oct 2023 08:10:59 -0700 (PDT)
+Message-ID: <552cfc35-102b-f4ed-b666-e41611cf996c@redhat.com>
+Date: Thu, 5 Oct 2023 17:10:56 +0200
 MIME-Version: 1.0
-References: <20231005125815.66082-1-pbonzini@redhat.com>
- <20231005125815.66082-6-pbonzini@redhat.com>
- <d8327a5f-9a06-2c35-a0c8-372707ea0c4a@eik.bme.hu>
- <18a7de6d-b542-9bf6-2128-d005e2e08a64@eik.bme.hu>
-In-Reply-To: <18a7de6d-b542-9bf6-2128-d005e2e08a64@eik.bme.hu>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 5 Oct 2023 17:09:59 +0200
-Message-ID: <CABgObfa9yfxr7LTKcCBeRN=KToE860sEdNGG5OjUD1CdVU4a0A@mail.gmail.com>
-Subject: Re: [PATCH 5/7] audio: do not use first -audiodev as default audio
- device
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, berrange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v4 3/3] hw/vfio: add ramfb migration support
+Content-Language: en-US
+To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: kraxel@redhat.com, lersek@redhat.com,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <20231005113027.1827078-1-marcandre.lureau@redhat.com>
+ <20231005113027.1827078-4-marcandre.lureau@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <20231005113027.1827078-4-marcandre.lureau@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -62
+X-Spam_score: -6.3
+X-Spam_bar: ------
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,40 +108,178 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 5, 2023 at 3:39=E2=80=AFPM BALATON Zoltan <balaton@eik.bme.hu> =
-wrote:
-> >> QEMU does not create default audio backends anymore if any of the
-> >> ``-audiodev``, ``-audio`` or ``-nodefaults`` options are used on the
-> >> command line.
-> >
-> > Maybe this needs further updating because -audio can now define the def=
-ault
-> > and is what should be used instead of -audiodev but this is not clear f=
-rom
-> > this documentation.
->
-> And while at it, maybe also mention machine audiodev property here as a
-> way to set audiodev of embedded devices.
+On 10/5/23 13:30, marcandre.lureau@redhat.com wrote:
+> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+> 
+> Add a "VFIODisplay" subsection whenever "x-ramfb-migrate" is turned on.
+> 
+> Turn it off by default on machines <= 8.1 for compatibility reasons.
+> 
+> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
+> ---
+>   hw/vfio/pci.h     |  3 +++
+>   hw/core/machine.c |  1 +
+>   hw/vfio/display.c | 20 ++++++++++++++++++++
+>   hw/vfio/pci.c     | 44 ++++++++++++++++++++++++++++++++++++++++++++
+>   stubs/ramfb.c     |  2 ++
+>   5 files changed, 70 insertions(+)
+> 
+> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
+> index 2d836093a8..fd06695542 100644
+> --- a/hw/vfio/pci.h
+> +++ b/hw/vfio/pci.h
+> @@ -173,6 +173,7 @@ struct VFIOPCIDevice {
+>       bool no_kvm_ioeventfd;
+>       bool no_vfio_ioeventfd;
+>       bool enable_ramfb;
+> +    OnOffAuto ramfb_migrate;
+>       bool defer_kvm_irq_routing;
+>       bool clear_parent_atomics_on_exit;
+>       VFIODisplay *dpy;
+> @@ -226,4 +227,6 @@ void vfio_display_reset(VFIOPCIDevice *vdev);
+>   int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
+>   void vfio_display_finalize(VFIOPCIDevice *vdev);
+>   
+> +extern const VMStateDescription vfio_display_vmstate;
+> +
+>   #endif /* HW_VFIO_VFIO_PCI_H */
+> diff --git a/hw/core/machine.c b/hw/core/machine.c
+> index e4361e3d48..f2c59a293c 100644
+> --- a/hw/core/machine.c
+> +++ b/hw/core/machine.c
+> @@ -33,6 +33,7 @@
+>   
+>   GlobalProperty hw_compat_8_1[] = {
+>       { "ramfb", "x-migrate", "off" },
+> +    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" }
+>   };
+>   const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
+>   
+> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
+> index bec864f482..0bdb807642 100644
+> --- a/hw/vfio/display.c
+> +++ b/hw/vfio/display.c
+> @@ -542,3 +542,23 @@ void vfio_display_finalize(VFIOPCIDevice *vdev)
+>       vfio_display_edid_exit(vdev->dpy);
+>       g_free(vdev->dpy);
+>   }
+> +
+> +static bool migrate_needed(void *opaque)
+> +{
+> +    VFIODisplay *dpy = opaque;
+> +    bool ramfb_exists = dpy->ramfb != NULL;
+> +
+> +    /* see vfio_display_migration_needed() */
+> +    assert(ramfb_exists);
+> +    return ramfb_exists;
+> +}
+> +
+> +const VMStateDescription vfio_display_vmstate = {
+> +    .name = "VFIODisplay",
+> +    .version_id = 1,
+> +    .minimum_version_id = 1,
+> +    .needed = migrate_needed,
+> +    .fields = (VMStateField[]) {
+> +        VMSTATE_STRUCT_POINTER(ramfb, VFIODisplay, ramfb_vmstate, RAMFBState),
 
-Sure, here is my next attempt:
+This vfio_display_vmstate lacks :
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Using ``-audiodev`` to define the default audio backend (removed in 8.2)
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-If no audiodev property is specified, previous versions would use the
-first ``-audiodev`` command line option as a fallback.  Starting with
-version 8.2, audio backends created with ``-audiodev`` will only be
-used by clients (sound cards, machines with embedded sound hardware, VNC)
-that refer to it in an ``audiodev=3D`` property.
+  VMSTATE_END_OF_LIST()
 
-In order to configure a default audio backend, use the ``-audio``
-command line option without specifying a ``model``; while previous
-versions of QEMU required a model, starting with version 8.2
-QEMU does not require a model and will not create any sound card
-in this case.
+Thanks,
 
-Note that the default audio backend must be configured on the command
-line if the ``-nodefaults`` options is used.
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+C.
+
+> +    }
+> +};
+> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
+> index 3b2ca3c24c..d2ede2f1a2 100644
+> --- a/hw/vfio/pci.c
+> +++ b/hw/vfio/pci.c
+> @@ -2608,6 +2608,32 @@ static bool vfio_msix_present(void *opaque, int version_id)
+>       return msix_present(pdev);
+>   }
+>   
+> +static bool vfio_display_migration_needed(void *opaque)
+> +{
+> +    VFIOPCIDevice *vdev = opaque;
+> +
+> +    /*
+> +     * We need to migrate the VFIODisplay object if ramfb *migration* was
+> +     * explicitly requested (in which case we enforced both ramfb=on and
+> +     * display=on), or ramfb migration was left at the default "auto"
+> +     * setting, and *ramfb* was explicitly requested (in which case we
+> +     * enforced display=on).
+> +     */
+> +    return vdev->ramfb_migrate == ON_OFF_AUTO_ON ||
+> +        (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO && vdev->enable_ramfb);
+> +}
+> +
+> +const VMStateDescription vmstate_vfio_display = {
+> +    .name = "VFIOPCIDevice/VFIODisplay",
+> +    .version_id = 1,
+> +    .minimum_version_id = 1,
+> +    .needed = vfio_display_migration_needed,
+> +    .fields = (VMStateField[]){
+> +        VMSTATE_STRUCT_POINTER(dpy, VFIOPCIDevice, vfio_display_vmstate, VFIODisplay),
+> +        VMSTATE_END_OF_LIST()
+> +    }
+> +};
+> +
+>   const VMStateDescription vmstate_vfio_pci_config = {
+>       .name = "VFIOPCIDevice",
+>       .version_id = 1,
+> @@ -2616,6 +2642,10 @@ const VMStateDescription vmstate_vfio_pci_config = {
+>           VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
+>           VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
+>           VMSTATE_END_OF_LIST()
+> +    },
+> +    .subsections = (const VMStateDescription*[]) {
+> +        &vmstate_vfio_display,
+> +        NULL
+>       }
+>   };
+>   
+> @@ -3271,6 +3301,19 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
+>           }
+>       }
+>   
+> +    if (vdev->ramfb_migrate == ON_OFF_AUTO_ON && !vdev->enable_ramfb) {
+> +        error_setg(errp, "x-ramfb-migrate requires ramfb=on");
+> +        goto out_deregister;
+> +    }
+> +    if (vbasedev->enable_migration == ON_OFF_AUTO_OFF) {
+> +        if (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO) {
+> +            vdev->ramfb_migrate = ON_OFF_AUTO_OFF;
+> +        } else if (vdev->ramfb_migrate == ON_OFF_AUTO_ON) {
+> +            error_setg(errp, "x-ramfb-migrate requires enable-migration");
+> +            goto out_deregister;
+> +        }
+> +    }
+> +
+>       if (!pdev->failover_pair_id) {
+>           if (!vfio_migration_realize(vbasedev, errp)) {
+>               goto out_deregister;
+> @@ -3484,6 +3527,7 @@ static const TypeInfo vfio_pci_dev_info = {
+>   
+>   static Property vfio_pci_dev_nohotplug_properties[] = {
+>       DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
+> +    DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate, ON_OFF_AUTO_AUTO),
+>       DEFINE_PROP_END_OF_LIST(),
+>   };
+>   
+> diff --git a/stubs/ramfb.c b/stubs/ramfb.c
+> index 48143f3354..cf64733b10 100644
+> --- a/stubs/ramfb.c
+> +++ b/stubs/ramfb.c
+> @@ -2,6 +2,8 @@
+>   #include "qapi/error.h"
+>   #include "hw/display/ramfb.h"
+>   
+> +const VMStateDescription ramfb_vmstate = {};
+> +
+>   void ramfb_display_update(QemuConsole *con, RAMFBState *s)
+>   {
+>   }
 
 
