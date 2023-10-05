@@ -2,86 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE597B9A58
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F26977B9AB7
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 06:29:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFJW-0000t7-5u; Wed, 04 Oct 2023 23:46:14 -0400
+	id 1qoFy9-0005Wl-Sn; Thu, 05 Oct 2023 00:28:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJS-0000oZ-Lm
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:46:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJQ-0000qL-Lz
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:46:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477567;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=/o+pWUz+EoH/jGO7Kt6c0rJ1UNqPWmD2dEHSCZyKa5w=;
- b=Q498j464aj3q7mR36rMMhPj8NLUCy0ZbO35pNTVZzdLlZw/jMAkDD1I8VI8T9VjAksk/BG
- gFOJ1cL11i+OHuh1fBf0wpvzw9drnYt3x8mAeoamWdoFRDdMsjfg6Pga5Ak+u02xcVdlrE
- 15NjP99BophFxCgAfJr91J3T6hAtdbA=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-Q-go0QmUO_2OrkDrHs21QQ-1; Wed, 04 Oct 2023 23:46:05 -0400
-X-MC-Unique: Q-go0QmUO_2OrkDrHs21QQ-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-30932d15a30so385675f8f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:46:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoFy7-0005UC-32
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:28:11 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoFxq-0006fQ-QS
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:28:10 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-4065dea9a33so4878815e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 21:27:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696480073; x=1697084873; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=JyARwz5g+qIO6iCsgXaWy8OpoudmDME00w3m4DWPCAs=;
+ b=TIjOEjFjlyXNoPTK5/joPiRIR0Zt8RFx97dTlT6AmOKmCEKTfFl0qpK0odzsZZyEeU
+ f7GXfPffRQeC6Yy5PhDdFr65Qt1BRkhgp43vMFDHdNU0k8eWt5El5XHLNEo1dW2yAfWH
+ GIsWqNYDmR96yN64jKXfv3B/apgcO9wMW4Th/CYToZI5MR8U/1fZXE11bYMbsx6uV2b2
+ Qg2xPVGYHfsh+6eZH07cv9iuXpEwaSw/Zk5rf5L7qOGl2lCuNViFwlxfXaq8yuI01B2Q
+ kKfekOVDj205+GUoOMkX6CmQimS2ge+L1uTFsVgrgHgSAWf1WgXGyDEYqSzQG4BQtD1G
+ VT3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477563; x=1697082363;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/o+pWUz+EoH/jGO7Kt6c0rJ1UNqPWmD2dEHSCZyKa5w=;
- b=eRjYPiZVr0wVSpQrNqC/cTMUhr/xrD9WwPpfOrWIYleQ7bDVss4jINFWICj2GJEfhb
- oxbFFekpCbVXJhnNkVqxAiMlhXPdq1VEwcxInB1tx4u9MMICTTSXKNM8q6PXRrnsWr5Y
- tO3hGAKsS5Y4OUGmPq2KeOE9pofcsfw4fiDeq0yzZX9ADC4zAlh4LwA9epJ5oW6Vxv6V
- 6DSHZBx0l3wXKo1Zo7UIay5jIX6y7VXC6AIY0W33T6auhezu5hsPNFu/YAokOkxVm5Ci
- tNXntUVW9SpG974ZuLLyi/EBhiJPb4T+0cQonaDYwo/dp/ynqy3ai7Z6Gj1K5MfsmATa
- PRyw==
-X-Gm-Message-State: AOJu0Yz7uxjWlTS9ND71nEiv2h1tm8lWOkBBorRS6SDt2rzWhkNADovm
- U9R7EyOUnFKQqskMqR5kIE/u8doeD4Ca9L356FuqSdOpKwzzzjyjOLVD7YRQ10B/+Pf/wzHV8GL
- LoDHrc+lSxcrQokPnXodCn4WgMgRRjGeiZ8qlCunbTtXoVnw/x06xWZ+pTrWPoXtm9b4I
-X-Received: by 2002:a5d:4106:0:b0:31a:dc58:cdd9 with SMTP id
- l6-20020a5d4106000000b0031adc58cdd9mr3672855wrp.60.1696477563669; 
- Wed, 04 Oct 2023 20:46:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFgtlHs9eZcYG1Gcd8KfywdWy6VZ2+XUvnsAaBbBcXZU+3hVY16iAfyGZnnG6sy0VvDv40jlA==
-X-Received: by 2002:a5d:4106:0:b0:31a:dc58:cdd9 with SMTP id
- l6-20020a5d4106000000b0031adc58cdd9mr3672845wrp.60.1696477563329; 
- Wed, 04 Oct 2023 20:46:03 -0700 (PDT)
-Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- d9-20020adff849000000b0031fbbe347e1sm636885wrq.65.2023.10.04.20.46.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:46:02 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:45:59 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Peter Maydell <peter.maydell@linaro.org>,
- Albert Esteve <aesteve@redhat.com>
-Subject: [PULL v2 53/53] libvhost-user: handle shared_object msg
-Message-ID: <ce0f3b032a960726c0dddfb4f81f223215179f26.1696477105.git.mst@redhat.com>
-References: <cover.1696477105.git.mst@redhat.com>
+ d=1e100.net; s=20230601; t=1696480073; x=1697084873;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=JyARwz5g+qIO6iCsgXaWy8OpoudmDME00w3m4DWPCAs=;
+ b=VZmqipAXrJDA/l3plDz6hcfhtG3bbLU2nbL8+1RMA+jCqEKlrfIPrhcp7T2HHik4Wq
+ dcKScRn0g3RkwZlAIv4LM7WJhOj6WOoOGN8+f4k5r5TMMSBtTlGueEV/NmB5bbZfv2cs
+ Mbc+QzfOzDaedIOjuuFdsAqpS6o/gR94r2uBvgLnIDXgmNL6fSd2OVhrhn6IrE2HekoF
+ ma4WgTZqY12eMz7KBewwwKDsjwzK5AT9O85VgzuvmCoK3oY9WszXe0aZ4MSr0TKcTL9c
+ 46/VW+cC8gVvyPtg2Ux8B6Yum47ng9HMyUW2Qed9eOvxR3p3g2VA1qO5uFdhj3QdmSnD
+ 65yA==
+X-Gm-Message-State: AOJu0Yw8OA2lVRAWmNJi2ATYHMDqmzi3lbolvn6NEKX1Vd20RuvP23Yk
+ 0M2T9bzX/atw0I/ZCQQhm2bdBA==
+X-Google-Smtp-Source: AGHT+IFk6V5MxGhQc4AGpCoVUTwXdX4Vi4s+9691AKM+uLvYz2WnPJUMrOX6AZIM+LVBmlt9vLEfuw==
+X-Received: by 2002:a05:600c:b59:b0:3ff:233f:2cfb with SMTP id
+ k25-20020a05600c0b5900b003ff233f2cfbmr3932702wmr.23.1696480073001; 
+ Wed, 04 Oct 2023 21:27:53 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
+ by smtp.gmail.com with ESMTPSA id
+ e17-20020a05600c219100b0040646a708dasm597311wme.15.2023.10.04.21.27.50
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 21:27:52 -0700 (PDT)
+Message-ID: <5d6eb736-04da-b0e5-0e88-e09fc7c122bc@linaro.org>
+Date: Thu, 5 Oct 2023 06:27:49 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1696477105.git.mst@redhat.com>
-X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
-X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 10/21] qapi: Inline QERR_INVALID_PARAMETER_VALUE
+ definition (constant value)
+To: quintela@redhat.com
+Cc: qemu-devel@nongnu.org, Markus Armbruster <armbru@redhat.com>,
+ qemu-block@nongnu.org, qemu-arm@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Zhenwei Pi <pizhenwei@bytedance.com>, Laurent Vivier <lvivier@redhat.com>,
+ Amit Shah <amit@kernel.org>, Alberto Garcia <berto@igalia.com>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
+ Peter Xu <peterx@redhat.com>, Leonardo Bras <leobras@redhat.com>,
+ Jason Wang <jasowang@redhat.com>, Konstantin Kostiuk <kkostiuk@redhat.com>,
+ Michael Roth <michael.roth@amd.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ "Michael S. Tsirkin" <mst@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+References: <20231004173158.42591-1-philmd@linaro.org>
+ <20231004173158.42591-11-philmd@linaro.org> <871qeas18v.fsf@secure.mitica>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <871qeas18v.fsf@secure.mitica>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,291 +109,75 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Albert Esteve <aesteve@redhat.com>
+On 4/10/23 20:15, Juan Quintela wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>> Address the comment added in commit 4629ed1e98
+>> ("qerror: Finally unused, clean up"), from 2015:
+>>
+>>    /*
+>>     * These macros will go away, please don't use
+>>     * in new code, and do not add new ones!
+>>     */
+>>
+>> Mechanical transformation using the following
+>> coccinelle semantic patch:
+>>
+>>      @match@
+>>      expression errp;
+>>      constant param;
+>>      constant value;
+>>      @@
+>>           error_setg(errp, QERR_INVALID_PARAMETER_VALUE, param, value);
+>>
+>>      @script:python strformat depends on match@
+>>      param << match.param;
+>>      value << match.value;
+>>      fixedfmt; // new var
+>>      @@
+>>      fixedfmt = "\"Parameter '%s' expects %s\"" % (param[1:-1], value[1:-1])
+>>      coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
+>>
+>>      @replace@
+>>      expression match.errp;
+>>      constant match.param;
+>>      constant match.value;
+>>      identifier strformat.fixedfmt;
+>>      @@
+>>      -    error_setg(errp, QERR_INVALID_PARAMETER_VALUE, param, value);
+>>      +    error_setg(errp, fixedfmt);
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> 
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> 
+> And like the approach, but
+> 
+>>       if (granularity != 0 && (granularity < 512 || granularity > 1048576 * 64)) {
+>> -        error_setg(errp, QERR_INVALID_PARAMETER_VALUE, "granularity",
+>> -                   "a value in range [512B, 64MB]");
+>> +        error_setg(errp,
+>> +                   "Parameter 'granularity' expects a value in range [512B, 64MB]");
+>>           return;
+> 
+> There are several lines like this one that become way bigger than 80
+> characters.
 
-In the libvhost-user library we need to
-handle VHOST_USER_GET_SHARED_OBJECT requests,
-and add helper functions to allow sending messages
-to interact with the virtio shared objects
-hash table.
+Yes, I just realized I forgot to run checkpatch.pl :/
 
-Signed-off-by: Albert Esteve <aesteve@redhat.com>
-Message-Id: <20231002065706.94707-5-aesteve@redhat.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- subprojects/libvhost-user/libvhost-user.h |  55 +++++++++-
- subprojects/libvhost-user/libvhost-user.c | 120 ++++++++++++++++++++++
- 2 files changed, 174 insertions(+), 1 deletion(-)
+Now done, this is the single patch producing:
 
-diff --git a/subprojects/libvhost-user/libvhost-user.h b/subprojects/libvhost-user/libvhost-user.h
-index 708370c5f5..b36a42a7ca 100644
---- a/subprojects/libvhost-user/libvhost-user.h
-+++ b/subprojects/libvhost-user/libvhost-user.h
-@@ -64,7 +64,8 @@ enum VhostUserProtocolFeature {
-     VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
-     VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-     VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--
-+    /* Feature 16 is reserved for VHOST_USER_PROTOCOL_F_STATUS. */
-+    VHOST_USER_PROTOCOL_F_SHARED_OBJECT = 17,
-     VHOST_USER_PROTOCOL_F_MAX
- };
- 
-@@ -109,6 +110,7 @@ typedef enum VhostUserRequest {
-     VHOST_USER_GET_MAX_MEM_SLOTS = 36,
-     VHOST_USER_ADD_MEM_REG = 37,
-     VHOST_USER_REM_MEM_REG = 38,
-+    VHOST_USER_GET_SHARED_OBJECT = 41,
-     VHOST_USER_MAX
- } VhostUserRequest;
- 
-@@ -119,6 +121,9 @@ typedef enum VhostUserBackendRequest {
-     VHOST_USER_BACKEND_VRING_HOST_NOTIFIER_MSG = 3,
-     VHOST_USER_BACKEND_VRING_CALL = 4,
-     VHOST_USER_BACKEND_VRING_ERR = 5,
-+    VHOST_USER_BACKEND_SHARED_OBJECT_ADD = 6,
-+    VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE = 7,
-+    VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP = 8,
-     VHOST_USER_BACKEND_MAX
- }  VhostUserBackendRequest;
- 
-@@ -172,6 +177,12 @@ typedef struct VhostUserInflight {
-     uint16_t queue_size;
- } VhostUserInflight;
- 
-+#define UUID_LEN 16
-+
-+typedef struct VhostUserShared {
-+    unsigned char uuid[UUID_LEN];
-+} VhostUserShared;
-+
- #if defined(_WIN32) && (defined(__x86_64__) || defined(__i386__))
- # define VU_PACKED __attribute__((gcc_struct, packed))
- #else
-@@ -199,6 +210,7 @@ typedef struct VhostUserMsg {
-         VhostUserConfig config;
-         VhostUserVringArea area;
-         VhostUserInflight inflight;
-+        VhostUserShared object;
-     } payload;
- 
-     int fds[VHOST_MEMORY_BASELINE_NREGIONS];
-@@ -232,6 +244,7 @@ typedef int (*vu_get_config_cb) (VuDev *dev, uint8_t *config, uint32_t len);
- typedef int (*vu_set_config_cb) (VuDev *dev, const uint8_t *data,
-                                  uint32_t offset, uint32_t size,
-                                  uint32_t flags);
-+typedef int (*vu_get_shared_object_cb) (VuDev *dev, const unsigned char *uuid);
- 
- typedef struct VuDevIface {
-     /* called by VHOST_USER_GET_FEATURES to get the features bitmask */
-@@ -258,6 +271,8 @@ typedef struct VuDevIface {
-     vu_get_config_cb get_config;
-     /* set the config space of the device */
-     vu_set_config_cb set_config;
-+    /* get virtio shared object from the underlying vhost implementation. */
-+    vu_get_shared_object_cb get_shared_object;
- } VuDevIface;
- 
- typedef void (*vu_queue_handler_cb) (VuDev *dev, int qidx);
-@@ -541,6 +556,44 @@ void vu_set_queue_handler(VuDev *dev, VuVirtq *vq,
- bool vu_set_queue_host_notifier(VuDev *dev, VuVirtq *vq, int fd,
-                                 int size, int offset);
- 
-+/**
-+ * vu_lookup_shared_object:
-+ * @dev: a VuDev context
-+ * @uuid: UUID of the shared object
-+ * @dmabuf_fd: output dma-buf file descriptor
-+ *
-+ * Lookup for a virtio shared object (i.e., dma-buf fd) associated with the
-+ * received UUID. Result, if found, is stored in the dmabuf_fd argument.
-+ *
-+ * Returns: whether the virtio object was found.
-+ */
-+bool vu_lookup_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
-+                             int *dmabuf_fd);
-+
-+/**
-+ * vu_add_shared_object:
-+ * @dev: a VuDev context
-+ * @uuid: UUID of the shared object
-+ *
-+ * Registers this back-end as the exporter for the object associated with
-+ * the received UUID.
-+ *
-+ * Returns: TRUE on success, FALSE on failure.
-+ */
-+bool vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN]);
-+
-+/**
-+ * vu_rm_shared_object:
-+ * @dev: a VuDev context
-+ * @uuid: UUID of the shared object
-+ *
-+ * Removes a shared object entry (i.e., back-end entry) associated with the
-+ * received UUID key from the hash table.
-+ *
-+ * Returns: TRUE on success, FALSE on failure.
-+ */
-+bool vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN]);
-+
- /**
-  * vu_queue_set_notification:
-  * @dev: a VuDev context
-diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index 49b57c7ef4..051a611da3 100644
---- a/subprojects/libvhost-user/libvhost-user.c
-+++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -161,6 +161,7 @@ vu_request_to_string(unsigned int req)
-         REQ(VHOST_USER_GET_MAX_MEM_SLOTS),
-         REQ(VHOST_USER_ADD_MEM_REG),
-         REQ(VHOST_USER_REM_MEM_REG),
-+        REQ(VHOST_USER_GET_SHARED_OBJECT),
-         REQ(VHOST_USER_MAX),
-     };
- #undef REQ
-@@ -901,6 +902,24 @@ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
-     return false;
- }
- 
-+static bool
-+vu_get_shared_object(VuDev *dev, VhostUserMsg *vmsg)
-+{
-+    int fd_num = 0;
-+    int dmabuf_fd = -1;
-+    if (dev->iface->get_shared_object) {
-+        dmabuf_fd = dev->iface->get_shared_object(
-+            dev, &vmsg->payload.object.uuid[0]);
-+    }
-+    if (dmabuf_fd != -1) {
-+        DPRINT("dmabuf_fd found for requested UUID\n");
-+        vmsg->fds[fd_num++] = dmabuf_fd;
-+    }
-+    vmsg->fd_num = fd_num;
-+
-+    return true;
-+}
-+
- static bool
- vu_set_mem_table_exec_postcopy(VuDev *dev, VhostUserMsg *vmsg)
- {
-@@ -1404,6 +1423,105 @@ bool vu_set_queue_host_notifier(VuDev *dev, VuVirtq *vq, int fd,
-     return vu_process_message_reply(dev, &vmsg);
- }
- 
-+bool
-+vu_lookup_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN],
-+                        int *dmabuf_fd)
-+{
-+    bool result = false;
-+    VhostUserMsg msg_reply;
-+    VhostUserMsg msg = {
-+        .request = VHOST_USER_BACKEND_SHARED_OBJECT_LOOKUP,
-+        .size = sizeof(msg.payload.object),
-+        .flags = VHOST_USER_VERSION | VHOST_USER_NEED_REPLY_MASK,
-+    };
-+
-+    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
-+
-+    if (!vu_has_protocol_feature(dev, VHOST_USER_PROTOCOL_F_SHARED_OBJECT)) {
-+        return false;
-+    }
-+
-+    pthread_mutex_lock(&dev->backend_mutex);
-+    if (!vu_message_write(dev, dev->backend_fd, &msg)) {
-+        goto out;
-+    }
-+
-+    if (!vu_message_read_default(dev, dev->backend_fd, &msg_reply)) {
-+        goto out;
-+    }
-+
-+    if (msg_reply.request != msg.request) {
-+        DPRINT("Received unexpected msg type. Expected %d, received %d",
-+               msg.request, msg_reply.request);
-+        goto out;
-+    }
-+
-+    if (msg_reply.fd_num != 1) {
-+        DPRINT("Received unexpected number of fds. Expected 1, received %d",
-+               msg_reply.fd_num);
-+        goto out;
-+    }
-+
-+    *dmabuf_fd = msg_reply.fds[0];
-+    result = *dmabuf_fd > 0 && msg_reply.payload.u64 == 0;
-+out:
-+    pthread_mutex_unlock(&dev->backend_mutex);
-+
-+    return result;
-+}
-+
-+static bool
-+vu_send_message(VuDev *dev, VhostUserMsg *vmsg)
-+{
-+    bool result = false;
-+    pthread_mutex_lock(&dev->backend_mutex);
-+    if (!vu_message_write(dev, dev->backend_fd, vmsg)) {
-+        goto out;
-+    }
-+
-+    result = true;
-+out:
-+    pthread_mutex_unlock(&dev->backend_mutex);
-+
-+    return result;
-+}
-+
-+bool
-+vu_add_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN])
-+{
-+    VhostUserMsg msg = {
-+        .request = VHOST_USER_BACKEND_SHARED_OBJECT_ADD,
-+        .size = sizeof(msg.payload.object),
-+        .flags = VHOST_USER_VERSION,
-+    };
-+
-+    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
-+
-+    if (!vu_has_protocol_feature(dev, VHOST_USER_PROTOCOL_F_SHARED_OBJECT)) {
-+        return false;
-+    }
-+
-+    return vu_send_message(dev, &msg);
-+}
-+
-+bool
-+vu_rm_shared_object(VuDev *dev, unsigned char uuid[UUID_LEN])
-+{
-+    VhostUserMsg msg = {
-+        .request = VHOST_USER_BACKEND_SHARED_OBJECT_REMOVE,
-+        .size = sizeof(msg.payload.object),
-+        .flags = VHOST_USER_VERSION,
-+    };
-+
-+    memcpy(msg.payload.object.uuid, uuid, sizeof(uuid[0]) * UUID_LEN);
-+
-+    if (!vu_has_protocol_feature(dev, VHOST_USER_PROTOCOL_F_SHARED_OBJECT)) {
-+        return false;
-+    }
-+
-+    return vu_send_message(dev, &msg);
-+}
-+
- static bool
- vu_set_vring_call_exec(VuDev *dev, VhostUserMsg *vmsg)
- {
-@@ -1944,6 +2062,8 @@ vu_process_message(VuDev *dev, VhostUserMsg *vmsg)
-         return vu_add_mem_reg(dev, vmsg);
-     case VHOST_USER_REM_MEM_REG:
-         return vu_rem_mem_reg(dev, vmsg);
-+    case VHOST_USER_GET_SHARED_OBJECT:
-+        return vu_get_shared_object(dev, vmsg);
-     default:
-         vmsg_close_fds(vmsg);
-         vu_panic(dev, "Unhandled request: %d", vmsg->request);
--- 
-MST
+   ERROR: line over 90 characters
 
+> Later, Juan.
+> 
+> PD.  No, I have no clue about how to convince coccinelle to obey qemu
+>       indentation rules.
+
+Well this use Python, so we could check the length and split (returning
+some tuple) but:
+
+   $ ./scripts/checkpatch.pl origin/master.. | fgrep 'ERROR:' | wc -l
+         10
+
+So I guess I'll just manually adapt :)
 
