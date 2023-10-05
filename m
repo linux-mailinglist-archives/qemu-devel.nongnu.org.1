@@ -2,73 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD587BAE90
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 00:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A4E7BAEAE
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 00:15:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoWPn-0001vg-Il; Thu, 05 Oct 2023 18:01:51 -0400
+	id 1qoWbR-0000pQ-Sm; Thu, 05 Oct 2023 18:13:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoWPP-0001vF-TL
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 18:01:30 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoWPM-00034n-Jj
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 18:01:26 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 42FE21F853;
- Thu,  5 Oct 2023 22:01:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696543282; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ucNrq8ADqJf2q7fVXEC54h5/25ThUZw01stDgnPRIuY=;
- b=Qsr2wTQDBj4VH+00jsb8w6NVZTj0zu8mW1Tkjnx9sr8VqA6cIj8CPrNc9J30aYxVUGJXcV
- 0/P7PHRIY5owtVwlcP3vF9PTGUCGLi5M8lCPZBwYx/Xrvw27f1UvHguTFw10CWCafCU6ed
- TWkZqhbyIr+hKE/vp5zRhksXy1q6UmE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696543282;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ucNrq8ADqJf2q7fVXEC54h5/25ThUZw01stDgnPRIuY=;
- b=OlDHSLzgE1xxs9xHXWoZ0lankg/osjDj2X2OmSq9ol7FYh+B1PhpZMfjtUB7CWu3QTj0NP
- 5aYa3B3MgKSf+6Bw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C9DC213438;
- Thu,  5 Oct 2023 22:01:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 1UQeJTEyH2UaCwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 05 Oct 2023 22:01:21 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v3 10/10] tests/migration-test: Add a test for postcopy
- hangs during RECOVER
-In-Reply-To: <ZR8uMcN5WwA2kC9k@x1n>
-References: <20231004220240.167175-1-peterx@redhat.com>
- <20231004220240.167175-11-peterx@redhat.com> <87edi9fbh5.fsf@suse.de>
- <878r8hfavf.fsf@suse.de> <ZR8iwwOeXWI+x9YX@x1n> <875y3kg4hv.fsf@suse.de>
- <ZR8uMcN5WwA2kC9k@x1n>
-Date: Thu, 05 Oct 2023 19:01:19 -0300
-Message-ID: <87zg0wenkg.fsf@suse.de>
-MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qoWbP-0000oX-7e; Thu, 05 Oct 2023 18:13:51 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qoWbM-0005tV-Ug; Thu, 05 Oct 2023 18:13:50 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 266F4756BF9;
+ Fri,  6 Oct 2023 00:13:00 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id E5912748FF4; Fri,  6 Oct 2023 00:12:59 +0200 (CEST)
+Message-Id: <cover.1696542537.git.balaton@eik.bme.hu>
+From: BALATON Zoltan <balaton@eik.bme.hu>
+Subject: [PATCH 0/3] Add emulation of AmigaOne XE board
+To: qemu-devel@nongnu.org,
+    qemu-ppc@nongnu.org
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Date: Fri,  6 Oct 2023 00:12:59 +0200 (CEST)
+X-Spam-Probability: 8%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,103 +54,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+This small series adds amigaone PPC machine which can be emulated
+mostly reusing existing models used by pegasos2 as these machines are
+very similar. The reason to add another board is that AmigaOS has
+different versions for different machines that only run on that
+machine and the AmigaOne version is more common than the PegasosII one.
+Also it's useful for debugging to be able to test with both machines
+as problems in emulation can be identified if they occur on both
+machines as opposed to problems specific only to one version. Since
+this only needs a very minimal north bridge emulation and a simple
+board code with everything else shared with pegasos2 it is not a big
+maintenance burden.
 
-> On Thu, Oct 05, 2023 at 06:10:20PM -0300, Fabiano Rosas wrote:
->> Peter Xu <peterx@redhat.com> writes:
->> 
->> > On Thu, Oct 05, 2023 at 10:37:56AM -0300, Fabiano Rosas wrote:
->> >> >> +    /*
->> >> >> +     * Make sure both QEMU instances will go into RECOVER stage, then test
->> >> >> +     * kicking them out using migrate-pause.
->> >> >> +     */
->> >> >> +    wait_for_postcopy_status(from, "postcopy-recover");
->> >> >> +    wait_for_postcopy_status(to, "postcopy-recover");
->> >> >
->> >> > Is this wait out of place? I think we're trying to resume too fast after
->> >> > migrate_recover():
->> >> >
->> >> > # {
->> >> > #     "error": {
->> >> > #         "class": "GenericError",
->> >> > #         "desc": "Cannot resume if there is no paused migration"
->> >> > #     }
->> >> > # }
->> >> >
->> >> 
->> >> Ugh, sorry about the long lines:
->> >> 
->> >> {
->> >>     "error": {
->> >>         "class": "GenericError",
->> >>         "desc": "Cannot resume if there is no paused migration"
->> >>     }
->> >> }
->> >
->> > Sorry I didn't get you here.  Could you elaborate your question?
->> >
->> 
->> The test is sometimes failing with the above message.
->> 
->> But indeed my question doesn't make sense. I forgot migrate_recover
->> happens on the destination. Nevermind.
->> 
->> The bug is still present nonetheless. We're going into migrate_prepare
->> in some state other than POSTCOPY_PAUSED.
->
-> Oh I see.  Interestingly I cannot reproduce on my host, just like last
-> time..
->
-> What is your setup for running the test?  Anything special?  Here's my
-> cmdline:
+The board uses a modofied U-Boot that is needed to boot AmigaOS which
+is freely available and distributable under GPL (see comment in
+hw/ppc/amigaone.c added in patch 3 for details on how to get firmware
+binary) but the sources for it could not be recovered so I could not
+reproduce it from source. Ideally this firmware should be included
+here for convenience which should be OK due to its GPL licence but
+since there's only a binary I did not include it here. Let me know if
+that would be OK to include but even without that firmware adding the
+machine is useful as users can get the rom binary separately which
+they are used to as pegasos2 also needed a firmware image to boot
+AmigaOS until recently.
 
-The crudest oneliner:
+I hope this could be merged for 8.2 with this series being the minimum
+set of patches needed to add this machine. This was tested by a Few
+people already and can run AmigaOS and Linux distro for AmigaOne well.
 
-for i in $(seq 1 9999); do echo "$i ============="; \
-QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-./tests/qtest/migration-test -r /x86_64/migration/postcopy/recovery || break ; done
+Regards,
+BALATON Zoltan
 
-I suspect my system has something specific to it that affects the timing
-of the tests. But I have no idea what it could be.
+BALATON Zoltan (3):
+  via-ide: Fix legacy mode emulation
+  hw/pci-host: Add emulation of Mai Logic Articia S
+  hw/ppc: Add emulation of AmigaOne XE board
 
-$ lscpu       
-Architecture:            x86_64      
-  CPU op-mode(s):        32-bit, 64-bit
-  Address sizes:         39 bits physical, 48 bits virtual
-  Byte Order:            Little Endian
-CPU(s):                  16
-  On-line CPU(s) list:   0-15
-Vendor ID:               GenuineIntel
-  Model name:            11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz
-    CPU family:          6
-    Model:               141
-    Thread(s) per core:  2
-    Core(s) per socket:  8
-    Socket(s):           1
-    Stepping:            1
-    CPU max MHz:         4800.0000
-    CPU min MHz:         800.0000
-    BogoMIPS:            4992.00
+ MAINTAINERS                             |   8 +
+ configs/devices/ppc-softmmu/default.mak |   1 +
+ hw/ide/via.c                            |  35 +++-
+ hw/pci-host/Kconfig                     |   5 +
+ hw/pci-host/articia.c                   | 266 ++++++++++++++++++++++++
+ hw/pci-host/meson.build                 |   2 +
+ hw/ppc/Kconfig                          |   7 +
+ hw/ppc/amigaone.c                       | 164 +++++++++++++++
+ hw/ppc/meson.build                      |   2 +
+ include/hw/pci-host/articia.h           |  17 ++
+ 10 files changed, 502 insertions(+), 5 deletions(-)
+ create mode 100644 hw/pci-host/articia.c
+ create mode 100644 hw/ppc/amigaone.c
+ create mode 100644 include/hw/pci-host/articia.h
 
->
-> $ cat reproduce.sh 
-> index=$1
-> loop=0
->
-> while :; do
->         echo "Starting loop=$loop..."
->         QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test -p /x86_64/migration/postcopy/recovery/double-failures
->         if [[ $? != 0 ]]; then
->                 echo "index $index REPRODUCED (loop=$loop) !"
->                 break
->         fi
->         loop=$(( loop + 1 ))
-> done
->
-> Survives 200+ loops and kept going.
->
-> However I think I saw what's wrong here, could you help try below fixup?
->
+-- 
+2.30.9
 
-Sure. I won't get to it until tomorrow though.
 
