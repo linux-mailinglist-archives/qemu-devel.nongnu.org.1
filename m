@@ -2,52 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AE17B9CBE
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 13:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7540D7B9CC0
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 13:31:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoMWC-0003dd-Ih; Thu, 05 Oct 2023 07:27:48 -0400
+	id 1qoMYx-0004bO-NG; Thu, 05 Oct 2023 07:30:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoMW8-0003cT-Q5
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:27:45 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qoMYv-0004Zu-Ar
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:30:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoMW6-00081E-8y
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:27:44 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id D3EC5756BF9;
- Thu,  5 Oct 2023 13:26:56 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 97C9B748FF4; Thu,  5 Oct 2023 13:26:56 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 961AE74632B;
- Thu,  5 Oct 2023 13:26:56 +0200 (CEST)
-Date: Thu, 5 Oct 2023 13:26:56 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
- Huacai Chen <chenhuacai@kernel.org>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>
-Subject: Re: [PATCH v2] hw/isa/vt82c686: Respect SCI interrupt assignment
-In-Reply-To: <4D35354B-1289-4B67-B913-7EC5F4D6D07F@gmail.com>
-Message-ID: <9bedc976-9d10-90e0-f1d6-dff9618854e5@eik.bme.hu>
-References: <20231004105709.16994-1-shentey@gmail.com>
- <c786c82e-88bb-5333-1b74-a1bf0fd2cad5@eik.bme.hu>
- <4D35354B-1289-4B67-B913-7EC5F4D6D07F@gmail.com>
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
+ id 1qoMYt-0001i8-In
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:30:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696505433;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=p1eJwZKR6fnb8ed41K60Zj80qY6tjHdUqdKD00T5SOM=;
+ b=ZTOR1uLxeCJVUuXJ4sU2tPIZRmM4/jLu2Z6Uwjx0lIu69IIcY/qjQ9yFYt9LQ4tfJfmgYN
+ 5D3O1UurpmGDM4hj1sVC2R/VFbnjKWRKIrkuky8gGBTOwPSZ57AxEW2bFBATn8zUKZKGf3
+ tdsac0cKbAmoJZrrfhgBlSdNL6m9DuU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-650-gPG6-epkPByyvSWV-s3rZQ-1; Thu, 05 Oct 2023 07:30:32 -0400
+X-MC-Unique: gPG6-epkPByyvSWV-s3rZQ-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B908481D785
+ for <qemu-devel@nongnu.org>; Thu,  5 Oct 2023 11:30:31 +0000 (UTC)
+Received: from localhost (unknown [10.39.208.2])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CEB082026D4B;
+ Thu,  5 Oct 2023 11:30:30 +0000 (UTC)
+From: marcandre.lureau@redhat.com
+To: qemu-devel@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, kraxel@redhat.com,
+ lersek@redhat.com,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>
+Subject: [PATCH v4 0/3] WIP: ramfb: migration support
+Date: Thu,  5 Oct 2023 15:30:23 +0400
+Message-ID: <20231005113027.1827078-1-marcandre.lureau@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124;
+ envelope-from=marcandre.lureau@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -63,73 +78,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 5 Oct 2023, Bernhard Beschow wrote:
-> Am 4. Oktober 2023 12:28:58 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
->> On Wed, 4 Oct 2023, Bernhard Beschow wrote:
->>> According to the datasheet, SCI interrupts of the power management function
->>> aren't routed through the PCI pins but rather directly to the integrated PIC.
->>> The routing is configurable through the ACPI interrupt select register at offset
->>> 0x42 in the PCI configuration space of the ISA function.
->>>
->>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->>>
->>> ---
->>>
->>> v2:
->>> * Introduce named constants for the ACPI interrupt select register at offset
->>>  0x42 (Phil)
->>> ---
->>> hw/isa/vt82c686.c | 47 +++++++++++++++++++++++++++++++++++------------
->>> 1 file changed, 35 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
->>> index 57bdfb4e78..93ffaaf706 100644
->>> --- a/hw/isa/vt82c686.c
->>> +++ b/hw/isa/vt82c686.c
->>> @@ -46,6 +46,8 @@ struct ViaPMState {
->>>     ACPIREGS ar;
->>>     APMState apm;
->>>     PMSMBus smb;
->>> +
->>> +    qemu_irq irq;
->>
->> Is it better to name this sci_irq because there seems to be an smi_irq 
->> too? Also there seems to be no SCI pin but there's an SMI pin so does 
->> this sci_irq need to be forwaeded to the ISA bridge and exposed as a 
->> qemu_gpio or could it just set the ISA IRQ within its own handler in 
->> the via_pm object?
->
-> Triggering the PIC in the PM function seems more complicated since ISA 
-> function embeds PM function and also PM function is implemented before 
-> ISA function, so this would create nesting problems in the code. Either
+From: Marc-André Lureau <marcandre.lureau@redhat.com>
 
-Where PM function is implemented is just because it was there before or 
-that's how I went through the functions when cleaning it up and ended up 
-there but it could be moved, it's not bolted down...
+Hi,
 
-However even if it comes before, we had the pattern before for via-ide and 
-usb that they can look up function 0 of their own devfn to find the ISA 
-bridge and sinve we're in vt82b686.c here you can consider these to be 
-friend classes so pm func could access the ISA irq's directly (or bring 
-back the via_isa_set_irq func I had before for this). That way it's 
-simpler and does not need QOM wizardry in ISA function that does not even 
-model what real chip does so I think this should be implemented in an irq 
-handler func within the PM object that matches what happens in the real 
-chip.
+Implement RAMFB migration, and add properties to enable it only on >= 8.2
+machines, + a few related cleanups.
 
-> way, both approaches need to sneak into the other PCI function's data, 
-> so I'd keep via_isa_set_pm_irq() and just update the constants.
->
->> There are also other registers that select between SMI and SCI, do 
->> those need to be taken into account?
->
-> Maybe later. The current code already made the decision to use SCI by 
-> triggering the PIC, so I'd declare this to be out of scope for now.
+Cedric, did you get the chance to test the VFIO display/ramfb code?
 
-Yes, if you're now just handling sci with one wpecific mapping then those 
-can wait until adding smi, just found them now and asked if they need to 
-be considered for sci now.
+thanks
 
-Regards,
-BALATON Zoltan
+v4: (Laszlo review and suggestions)
+- change migrate_needed() to assert(ramfb_exists)
+- rename vfio_display_needed() to vfio_display_migration_needed(),
+  update the condition and associated comment
+- move the ramfb-migrate option check and add a check for ramfb=on
+- add a stub to fix compilation on some architectures
+
+v3:
+- add a "x-" prefix to properties, as they are not meant for users.
+- RAMFB now exports a ramfb_vmstate for actual devices to include
+- VFIOPCIDevice now has a VFIODisplay optional subsection whenever ramfb
+  migration is required (untested)
+
+Fixes:
+https://bugzilla.redhat.com/show_bug.cgi?id=1859424
+
+Marc-André Lureau (3):
+  ramfb: add migration support
+  ramfb-standalone: add migration support
+  hw/vfio: add ramfb migration support
+
+ hw/vfio/pci.h                 |  3 +++
+ include/hw/display/ramfb.h    |  4 ++++
+ hw/core/machine.c             |  5 +++-
+ hw/display/ramfb-standalone.c | 27 +++++++++++++++++++++
+ hw/display/ramfb.c            | 19 +++++++++++++++
+ hw/vfio/display.c             | 20 ++++++++++++++++
+ hw/vfio/pci.c                 | 44 +++++++++++++++++++++++++++++++++++
+ stubs/ramfb.c                 |  2 ++
+ 8 files changed, 123 insertions(+), 1 deletion(-)
+
+-- 
+2.41.0
+
 
