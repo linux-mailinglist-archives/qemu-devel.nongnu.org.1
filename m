@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865097B9A62
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 132CF7B9A7A
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFH5-0002ag-0L; Wed, 04 Oct 2023 23:43:43 -0400
+	id 1qoFHK-00044k-O3; Wed, 04 Oct 2023 23:43:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFH2-0002LH-HQ
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHI-00042P-NL
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFH0-00009x-TO
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:40 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHH-0000BQ-3I
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477418;
+ s=mimecast20190719; t=1696477433;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=D9qcIDsSMMkJCqsoeBuaE/sgIJa1XEttY+aCH5LMOdA=;
- b=SucnFecEbGXF4dmpBcwc5zerwVAWQmJ+Hh+LE0oiXYTg7PCNY21Bp+24M0OZL/Fb73+bbB
- wAX98z47WLb6V0YPxaBPk0dlTv5bGKtETVqhENDd10Z8xLK9HobN2NgsPx9vo17LboVlA1
- HmRYRG9K+tURBoc+nqs2gr4MRif0N+Y=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=t5XOx5uSgyVSXpoNfTcwoFWgq5vZoBZe4Va9ktCDvYA=;
+ b=IeU5SlleRBMhYTiY6QelAU+ZQAFcVWBERWK8k9Sq9cX34NRcD/P9ZGP/tuIGERxH8jn2xU
+ 5yx4ytCSTtpww+raX3YkNhyE4Z4zNhn+iZNQeW/+3tpmJ0a99SBC7CiouFwZ7mU86QPrjp
+ c8vpoRNFn8b1PeV5Z4kwu+kiRghHaoE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-395-o3ZQzx7qP1mCP4LrQ5K28Q-1; Wed, 04 Oct 2023 23:43:37 -0400
-X-MC-Unique: o3ZQzx7qP1mCP4LrQ5K28Q-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-323334992fbso471609f8f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:43:36 -0700 (PDT)
+ us-mta-391-ycKuftdFO9C6pTih846qXQ-1; Wed, 04 Oct 2023 23:43:42 -0400
+X-MC-Unique: ycKuftdFO9C6pTih846qXQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-314256aedcbso478085f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:43:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477415; x=1697082215;
+ d=1e100.net; s=20230601; t=1696477419; x=1697082219;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=D9qcIDsSMMkJCqsoeBuaE/sgIJa1XEttY+aCH5LMOdA=;
- b=gPeviioT1jGAJxGTdyqe0PGs/6GJw8YOV7Rd7T1bU6sCMCPjiiUiDGS+bEwT+sCGIk
- Y1vMGaXlyE7cZYkRb6ru8Zfsc94yFY7RNpWXPIk1eJAzz5G3CySt/unuPac9EiFHTcAq
- NIEptzMlvp7ybsoLApZ97DiNwdlS2UhGGFDYCusm537ZVzVNkq0IxLdw+YOOU+3pHavK
- l7NjbNNQAxP7cM0sSMJq6ZSdkO/pKYwwMcConU0fSt5rNTjzTepmZZdOQBm+WG/t8hxL
- 0cvoLrKXT4I4JI2xioKX5BW27EQATgek/n3COx8K6xiJ30GoR49EkvbGElEe5gJ46/yA
- VGZg==
-X-Gm-Message-State: AOJu0Yw5m9gBv4aFdWWVkGYoWR1fiHwKplSVZu5HV5sESIxGg42T5A4H
- AhPPVcC4tOyPVQtfsWsAKwvKPFiX6uhVTvBs9UicHk01OTYx/evsy7kKKgPX3zmU+Aq2roJLYHR
- Fbx7ezE9/MWTn5SJLMcldRUmcwhvYdK6nM1JBEJxW2xrPqy61dbKUszmp4p97qp13T5mW
-X-Received: by 2002:a05:6000:100e:b0:320:485:7010 with SMTP id
- a14-20020a056000100e00b0032004857010mr3884417wrx.67.1696477415388; 
- Wed, 04 Oct 2023 20:43:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHDlGSMp5uxDZte1h0BJWBWLazTNKlDBJ/AKVFPzrJVKoAWnpCpqtJqcepf9QQ91VWxiRKoDw==
-X-Received: by 2002:a05:6000:100e:b0:320:485:7010 with SMTP id
- a14-20020a056000100e00b0032004857010mr3884405wrx.67.1696477415107; 
- Wed, 04 Oct 2023 20:43:35 -0700 (PDT)
+ bh=t5XOx5uSgyVSXpoNfTcwoFWgq5vZoBZe4Va9ktCDvYA=;
+ b=RFY2bZ0FTCySLDWREGCGy0BoMLGJdHETsd45sIp0J7rqd6KA4Lgo9spKzfoNODvyKq
+ TcvXIcjbkbfU60FsG7EjCQeHziFIpy14zcB89SgyJxN5v3gGcfhZOx5+U0AE46qxXJI4
+ RczW2ITNOcDVJa/RpE7x9CutJH6R9eZ42fq3OooJ0gM+WIZH8QmcRTZIQVDuIp+m+GIJ
+ zVzz0+ASXaJyvdCeQJa/2HXYyuzTAGmCpGa/Ep2LOIqjoU5p0oIR7RO2fDU/0sHwgUeO
+ remrfKqd3MdQBA9VzK3XzGSAyTN/SlzfnD2l2E6JpMw9fRAKJzTw558stOqTk8psLffc
+ uS9w==
+X-Gm-Message-State: AOJu0YySoEyR0+rZH/LiKfD73HCnBPq47S0F1qcVlr4ig9JYQzY+CEmb
+ 3kGljtRZ5UFUSo0HpnbaHKJt+Ywed4iheZGH4MvA38ym4Czuns06Jz1gSRXYacmdf0/AsKq+b5p
+ oHHUb4GnagH1kuluJrRBnsttRAqejC1ZKs8iCbY9pazcyiBH9wCGPHOTDyakYFtapPitV
+X-Received: by 2002:adf:f801:0:b0:323:2c3b:4307 with SMTP id
+ s1-20020adff801000000b003232c3b4307mr3634390wrp.0.1696477419609; 
+ Wed, 04 Oct 2023 20:43:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZG4F3th8V3N2cde6JF7i2LkQKDIWlPRTVE8t3uYhTYCncWzU6sEFGpKRoG1rv8SByo3BvDA==
+X-Received: by 2002:adf:f801:0:b0:323:2c3b:4307 with SMTP id
+ s1-20020adff801000000b003232c3b4307mr3634378wrp.0.1696477419220; 
+ Wed, 04 Oct 2023 20:43:39 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- h16-20020a056000001000b003217c096c1esm628111wrx.73.2023.10.04.20.43.33
+ d7-20020adfe887000000b00326dd5486dcsm625795wrm.107.2023.10.04.20.43.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:43:34 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:43:31 -0400
+ Wed, 04 Oct 2023 20:43:38 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:43:35 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
  Jason Wang <jasowang@redhat.com>, Lei Yang <leiyang@redhat.com>
-Subject: [PULL v2 17/53] vdpa: rename vhost_vdpa_net_load to
- vhost_vdpa_net_cvq_load
-Message-ID: <f3fada598c909bac12bd18da36437d9bed0b9f06.1696477105.git.mst@redhat.com>
+Subject: [PULL v2 18/53] vdpa: move vhost_vdpa_set_vring_ready to the caller
+Message-ID: <6c4825476a4351530bcac17abab72295b75ffe98.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -103,40 +102,147 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-Next patches will add the corresponding data load.
+Doing that way allows CVQ to be enabled before the dataplane vqs,
+restoring the state as MQ or MAC addresses properly in the case of a
+migration.
+
+The patch does it by defining a ->load NetClientInfo callback also for
+dataplane.  Ideally, this should be done by an independent patch, but
+the function is already static so it would only add an empty
+vhost_vdpa_net_data_load stub.
 
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230822085330.3978829-5-eperezma@redhat.com>
 Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20230822085330.3978829-4-eperezma@redhat.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ hw/virtio/vdpa-dev.c   |  3 ++
+ hw/virtio/vhost-vdpa.c |  3 --
+ net/vhost-vdpa.c       | 65 ++++++++++++++++++++++++++++--------------
+ 3 files changed, 46 insertions(+), 25 deletions(-)
 
+diff --git a/hw/virtio/vdpa-dev.c b/hw/virtio/vdpa-dev.c
+index 363b625243..f22d5d5bc0 100644
+--- a/hw/virtio/vdpa-dev.c
++++ b/hw/virtio/vdpa-dev.c
+@@ -255,6 +255,9 @@ static int vhost_vdpa_device_start(VirtIODevice *vdev, Error **errp)
+         error_setg_errno(errp, -ret, "Error starting vhost");
+         goto err_guest_notifiers;
+     }
++    for (i = 0; i < s->dev.nvqs; ++i) {
++        vhost_vdpa_set_vring_ready(&s->vdpa, i);
++    }
+     s->started = true;
+ 
+     /*
+diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
+index e7de880d51..89ff02a999 100644
+--- a/hw/virtio/vhost-vdpa.c
++++ b/hw/virtio/vhost-vdpa.c
+@@ -1303,9 +1303,6 @@ static int vhost_vdpa_dev_start(struct vhost_dev *dev, bool started)
+         if (unlikely(!ok)) {
+             return -1;
+         }
+-        for (int i = 0; i < dev->nvqs; ++i) {
+-            vhost_vdpa_set_vring_ready(v, dev->vq_index + i);
+-        }
+     } else {
+         vhost_vdpa_suspend(dev);
+         vhost_vdpa_svqs_stop(dev);
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 30dc7e77c9..008c0cf8b3 100644
+index 008c0cf8b3..0715bed8e6 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -1013,7 +1013,7 @@ static int vhost_vdpa_net_load_vlan(VhostVDPAState *s,
+@@ -375,6 +375,22 @@ static int vhost_vdpa_net_data_start(NetClientState *nc)
      return 0;
  }
  
--static int vhost_vdpa_net_load(NetClientState *nc)
-+static int vhost_vdpa_net_cvq_load(NetClientState *nc)
++static int vhost_vdpa_net_data_load(NetClientState *nc)
++{
++    VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
++    struct vhost_vdpa *v = &s->vhost_vdpa;
++    bool has_cvq = v->dev->vq_index_end % 2;
++
++    if (has_cvq) {
++        return 0;
++    }
++
++    for (int i = 0; i < v->dev->nvqs; ++i) {
++        vhost_vdpa_set_vring_ready(v, i + v->dev->vq_index);
++    }
++    return 0;
++}
++
+ static void vhost_vdpa_net_client_stop(NetClientState *nc)
  {
      VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
-     struct vhost_vdpa *v = &s->vhost_vdpa;
-@@ -1056,7 +1056,7 @@ static NetClientInfo net_vhost_vdpa_cvq_info = {
-     .size = sizeof(VhostVDPAState),
-     .receive = vhost_vdpa_receive,
-     .start = vhost_vdpa_net_cvq_start,
--    .load = vhost_vdpa_net_load,
-+    .load = vhost_vdpa_net_cvq_load,
-     .stop = vhost_vdpa_net_cvq_stop,
-     .cleanup = vhost_vdpa_cleanup,
-     .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
+@@ -397,6 +413,7 @@ static NetClientInfo net_vhost_vdpa_info = {
+         .size = sizeof(VhostVDPAState),
+         .receive = vhost_vdpa_receive,
+         .start = vhost_vdpa_net_data_start,
++        .load = vhost_vdpa_net_data_load,
+         .stop = vhost_vdpa_net_client_stop,
+         .cleanup = vhost_vdpa_cleanup,
+         .has_vnet_hdr = vhost_vdpa_has_vnet_hdr,
+@@ -1022,30 +1039,34 @@ static int vhost_vdpa_net_cvq_load(NetClientState *nc)
+ 
+     assert(nc->info->type == NET_CLIENT_DRIVER_VHOST_VDPA);
+ 
+-    if (!v->shadow_vqs_enabled) {
+-        return 0;
++    vhost_vdpa_set_vring_ready(v, v->dev->vq_index);
++
++    if (v->shadow_vqs_enabled) {
++        n = VIRTIO_NET(v->dev->vdev);
++        r = vhost_vdpa_net_load_mac(s, n);
++        if (unlikely(r < 0)) {
++            return r;
++        }
++        r = vhost_vdpa_net_load_mq(s, n);
++        if (unlikely(r)) {
++            return r;
++        }
++        r = vhost_vdpa_net_load_offloads(s, n);
++        if (unlikely(r)) {
++            return r;
++        }
++        r = vhost_vdpa_net_load_rx(s, n);
++        if (unlikely(r)) {
++            return r;
++        }
++        r = vhost_vdpa_net_load_vlan(s, n);
++        if (unlikely(r)) {
++            return r;
++        }
+     }
+ 
+-    n = VIRTIO_NET(v->dev->vdev);
+-    r = vhost_vdpa_net_load_mac(s, n);
+-    if (unlikely(r < 0)) {
+-        return r;
+-    }
+-    r = vhost_vdpa_net_load_mq(s, n);
+-    if (unlikely(r)) {
+-        return r;
+-    }
+-    r = vhost_vdpa_net_load_offloads(s, n);
+-    if (unlikely(r)) {
+-        return r;
+-    }
+-    r = vhost_vdpa_net_load_rx(s, n);
+-    if (unlikely(r)) {
+-        return r;
+-    }
+-    r = vhost_vdpa_net_load_vlan(s, n);
+-    if (unlikely(r)) {
+-        return r;
++    for (int i = 0; i < v->dev->vq_index; ++i) {
++        vhost_vdpa_set_vring_ready(v, i);
+     }
+ 
+     return 0;
 -- 
 MST
 
