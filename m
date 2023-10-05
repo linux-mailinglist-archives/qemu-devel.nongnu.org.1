@@ -2,65 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19AFC7B9E50
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CCB7B9E74
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:07:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOxj-0001Ui-BA; Thu, 05 Oct 2023 10:04:24 -0400
+	id 1qoOzJ-0004ZE-Pv; Thu, 05 Oct 2023 10:06:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qoOx9-0001LI-DR
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:03:57 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoOzH-0004XS-DW
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:05:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qoOx6-0003aR-Hz
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:03:46 -0400
-Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
- [IPv6:2a02:6b8:c0c:b9a4:0:640:eb37:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 3628A5E9FD;
- Thu,  5 Oct 2023 17:03:36 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b584::1:2f])
- by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id S3ZG5c4OcuQ0-u9kSpZIR; Thu, 05 Oct 2023 17:03:35 +0300
-Precedence: bulk
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696514615;
- bh=+ijQGzf9+1Vmu+joIt+FN5yLOHI/eKxM5/GLqNhvo3k=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=AzpQvaO+uYITsj33Jw5q4m0PtUyhufPZwonY9xS1CAzSI6I7K0UUoxKCwY9bc4X3p
- ySf4f3/lp2sv+PrAmLeVY+c4nQVKGUAw2rC94iapJMjA5ulEzIm9age+G1LT//68+w
- 2bgjQGRfnUyWcsGiV0xsYi2mH2VPsIoW+FpzoBuo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org, david@redhat.com, peterx@redhat.com,
- pbonzini@redhat.com, peter.maydell@linaro.org, vsementsov@yandex-team.ru,
- yc-core@yandex-team.ru
-Subject: [PATCH v2] coverity: physmem: use simple assertions instead of
- modelling
-Date: Thu,  5 Oct 2023 17:03:26 +0300
-Message-Id: <20231005140326.332830-1-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoOzF-0005Ek-Oo
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:05:59 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696514757;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yknJkCwR0b+emy/Wf/qMM6fTnIcbO/vojHGvb1RvAow=;
+ b=GOet5PlGj9lie0wJUiOrPSlMJJBnB01My7PWpXe+5diVpKWMV+YeOIT449FfCCMKBxdmRk
+ PaI+3BUBUKxAWtD4JvWWi+j31qU+32S3z1W2qmySzcPYf9+umDCE7F1Pp2mMgLye/e/d0F
+ 6HAN2quNfs6Ezo16DZcgq5qNvaU3s1w=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-397-k8iY5kUxMlqXBBzfJ7WoJQ-1; Thu, 05 Oct 2023 10:05:51 -0400
+X-MC-Unique: k8iY5kUxMlqXBBzfJ7WoJQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23EAD2810D4A;
+ Thu,  5 Oct 2023 14:05:51 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.63])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 3778040C2015;
+ Thu,  5 Oct 2023 14:05:49 +0000 (UTC)
+Date: Thu, 5 Oct 2023 09:05:47 -0500
+From: Eric Blake <eblake@redhat.com>
+To: John Snow <jsnow@redhat.com>
+Cc: qemu-devel@nongnu.org, 
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, 
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Andrew Jeffery <andrew@aj.id.au>, 
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cleber Rosa <crosa@redhat.com>, 
+ Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
+ Joel Stanley <joel@jms.id.au>, 
+ qemu-block@nongnu.org, Beraldo Leal <bleal@redhat.com>, 
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>, 
+ Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
+ Eduardo Habkost <eduardo@habkost.net>, Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PULL 1/9] Python/iotests: Add type hint for nbd module
+Message-ID: <cnpmerggwpvnybezttkrnxmt7xpscxxlc4rglmzijpm4f3onzt@thdoszxqyint>
+References: <20231004194613.2900323-1-jsnow@redhat.com>
+ <20231004194613.2900323-2-jsnow@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231004194613.2900323-2-jsnow@redhat.com>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -72,181 +91,63 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Unfortunately Coverity doesn't follow the logic aroung "len" and "l"
-variables in stacks finishing with flatview_{read,write}_continue() and
-generate a lot of OVERRUN false-positives. When small buffer (2 or 4
-bytes) is passed to mem read/write path, Coverity assumes the worst
-case of sz=8 in stn_he_p()/ldn_he_p() (defined in
-include/qemu/bswap.h), and reports buffer overrun.
+On Wed, Oct 04, 2023 at 03:46:05PM -0400, John Snow wrote:
+> The test bails gracefully if this module isn't installed, but linters
+> need a little help understanding that. It's enough to just declare the
+> type in this case.
+> 
+> (Fixes pylint complaining about use of an uninitialized variable because
+> it isn't wise enough to understand the notrun call is noreturn.)
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>  tests/qemu-iotests/tests/nbd-multiconn | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-To silence these false-positives we have model functions, which hide
-real logic from Coverity.
+Since there's questions about this pull request seeming to be the
+first time this patch has appeared on list, I'll go ahead and review
+it here on the assumption that a v2 pull request is warranted.
 
-However, it turned out that these new two assertions are enough to
-quiet Coverity.
+> 
+> diff --git a/tests/qemu-iotests/tests/nbd-multiconn b/tests/qemu-iotests/tests/nbd-multiconn
+> index 478a1eaba27..7e686a786ea 100755
+> --- a/tests/qemu-iotests/tests/nbd-multiconn
+> +++ b/tests/qemu-iotests/tests/nbd-multiconn
+> @@ -20,6 +20,8 @@
+>  
+>  import os
+>  from contextlib import contextmanager
+> +from types import ModuleType
+> +
+>  import iotests
+>  from iotests import qemu_img_create, qemu_io
+>  
+> @@ -28,7 +30,7 @@ disk = os.path.join(iotests.test_dir, 'disk')
+>  size = '4M'
+>  nbd_sock = os.path.join(iotests.sock_dir, 'nbd_sock')
+>  nbd_uri = 'nbd+unix:///{}?socket=' + nbd_sock
+> -
+> +nbd: ModuleType
 
-Assertions are better than hiding the logic, so let's drop the
-modelling and move to assertions for memory r/w call stacks.
+Is it possible to put this closer to the code actually using 'nbd', as
+in this region?
 
-After patch, the sequence
+| if __name__ == '__main__':
+|     try:
+|         # Easier to use libnbd than to try and set up parallel
+|         # 'qemu-nbd --list' or 'qemu-io' processes, but not all systems
+|         # have libnbd installed.
+|         import nbd  # type: ignore
 
- cov-make-library --output-file /tmp/master.xmldb \
-    scripts/coverity-scan/model.c
- cov-build --dir ~/covtmp/master make -j9
- cov-analyze --user-model-file /tmp/master.xmldb \
-    --dir ~/covtmp/master --all --strip-path "$(pwd)
- cov-format-errors --dir ~/covtmp/master \
-    --html-output ~/covtmp/master_html_report
+but then again, open_nbd() right after your current location utilizes
+the variable, so I guess not.  I trust your judgment on silencing the
+linters, so whether or not you move it (if moving is even possible),
 
-Generate for me the same big set of CIDs excepept for 6 disappeared (so
-it becomes even better).
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Acked-by: David Hildenbrand <david@redhat.com>
----
-
-v2: add a-b by Devid
-
- scripts/coverity-scan/model.c | 88 -----------------------------------
- softmmu/physmem.c             | 18 +++++++
- 2 files changed, 18 insertions(+), 88 deletions(-)
-
-diff --git a/scripts/coverity-scan/model.c b/scripts/coverity-scan/model.c
-index 686d1a3008..a064d84084 100644
---- a/scripts/coverity-scan/model.c
-+++ b/scripts/coverity-scan/model.c
-@@ -42,94 +42,6 @@ typedef _Bool bool;
- 
- typedef struct va_list_str *va_list;
- 
--/* exec.c */
--
--typedef struct AddressSpace AddressSpace;
--typedef struct MemoryRegionCache MemoryRegionCache;
--typedef uint64_t hwaddr;
--typedef uint32_t MemTxResult;
--typedef struct MemTxAttrs {} MemTxAttrs;
--
--static void __bufwrite(uint8_t *buf, ssize_t len)
--{
--    int first, last;
--    __coverity_negative_sink__(len);
--    if (len == 0) return;
--    buf[0] = first;
--    buf[len-1] = last;
--    __coverity_writeall__(buf);
--}
--
--static void __bufread(uint8_t *buf, ssize_t len)
--{
--    __coverity_negative_sink__(len);
--    if (len == 0) return;
--    int first = buf[0];
--    int last = buf[len-1];
--}
--
--MemTxResult address_space_read_cached(MemoryRegionCache *cache, hwaddr addr,
--                                      MemTxAttrs attrs,
--                                      void *buf, int len)
--{
--    MemTxResult result;
--    // TODO: investigate impact of treating reads as producing
--    // tainted data, with __coverity_tainted_data_argument__(buf).
--    __bufwrite(buf, len);
--    return result;
--}
--
--MemTxResult address_space_write_cached(MemoryRegionCache *cache, hwaddr addr,
--                                MemTxAttrs attrs,
--                                const void *buf, int len)
--{
--    MemTxResult result;
--    __bufread(buf, len);
--    return result;
--}
--
--MemTxResult address_space_rw_cached(MemoryRegionCache *cache, hwaddr addr,
--                                    MemTxAttrs attrs,
--                                    void *buf, int len, bool is_write)
--{
--    if (is_write) {
--        return address_space_write_cached(cache, addr, attrs, buf, len);
--    } else {
--        return address_space_read_cached(cache, addr, attrs, buf, len);
--    }
--}
--
--MemTxResult address_space_read(AddressSpace *as, hwaddr addr,
--                               MemTxAttrs attrs,
--                               void *buf, int len)
--{
--    MemTxResult result;
--    // TODO: investigate impact of treating reads as producing
--    // tainted data, with __coverity_tainted_data_argument__(buf).
--    __bufwrite(buf, len);
--    return result;
--}
--
--MemTxResult address_space_write(AddressSpace *as, hwaddr addr,
--                                MemTxAttrs attrs,
--                                const void *buf, int len)
--{
--    MemTxResult result;
--    __bufread(buf, len);
--    return result;
--}
--
--MemTxResult address_space_rw(AddressSpace *as, hwaddr addr,
--                             MemTxAttrs attrs,
--                             void *buf, int len, bool is_write)
--{
--    if (is_write) {
--        return address_space_write(as, addr, attrs, buf, len);
--    } else {
--        return address_space_read(as, addr, attrs, buf, len);
--    }
--}
--
- /* Tainting */
- 
- typedef struct {} name2keysym_t;
-diff --git a/softmmu/physmem.c b/softmmu/physmem.c
-index 309653c722..03e2f9bee6 100644
---- a/softmmu/physmem.c
-+++ b/softmmu/physmem.c
-@@ -2714,6 +2714,15 @@ static MemTxResult flatview_write_continue(FlatView *fv, hwaddr addr,
-             l = memory_access_size(mr, l, addr1);
-             /* XXX: could force current_cpu to NULL to avoid
-                potential bugs */
-+
-+            /*
-+             * Assure Coverity (and ourselves) that we are not going to OVERRUN
-+             * the buffer by following ldn_he_p().
-+             */
-+            assert((l == 1 && len >= 1) ||
-+                   (l == 2 && len >= 2) ||
-+                   (l == 4 && len >= 4) ||
-+                   (l == 8 && len >= 8));
-             val = ldn_he_p(buf, l);
-             result |= memory_region_dispatch_write(mr, addr1, val,
-                                                    size_memop(l), attrs);
-@@ -2784,6 +2793,15 @@ MemTxResult flatview_read_continue(FlatView *fv, hwaddr addr,
-             l = memory_access_size(mr, l, addr1);
-             result |= memory_region_dispatch_read(mr, addr1, &val,
-                                                   size_memop(l), attrs);
-+
-+            /*
-+             * Assure Coverity (and ourselves) that we are not going to OVERRUN
-+             * the buffer by following stn_he_p().
-+             */
-+            assert((l == 1 && len >= 1) ||
-+                   (l == 2 && len >= 2) ||
-+                   (l == 4 && len >= 4) ||
-+                   (l == 8 && len >= 8));
-             stn_he_p(buf, l, val);
-         } else {
-             /* RAM case */
 -- 
-2.34.1
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
 
 
