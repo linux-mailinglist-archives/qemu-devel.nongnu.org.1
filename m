@@ -2,70 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B287D7B988E
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 01:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9DC97B99AD
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 03:33:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoAzX-0002FV-DV; Wed, 04 Oct 2023 19:09:19 -0400
+	id 1qoDDi-0007A5-8I; Wed, 04 Oct 2023 21:32:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
- id 1qoAzV-0002FN-6t
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 19:09:17 -0400
-Received: from mgamail.intel.com ([134.134.136.100])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
- id 1qoAzS-0003gX-Hf
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 19:09:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1696460954; x=1727996954;
- h=subject:from:to:cc:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=JirY2Bdn8JuUO/u42w284pidYgz9P2BCOP348Whj8RY=;
- b=cXUW+v+J8Nu94VWk9Ba/x4PAQykOLuNAtuYFI5Fby9X1/LttZvWyTFLM
- Uds0/stkHc65S7darIaPlX3t1ubEsW/5GI/IVvz8MNod74xWun2Gxqhgm
- D0TjaaiEHdff7tVi4lIFX3aDnPQDSsjjOWbqhYmy3hj9onoVbZ2PUZm7u
- 4U+aKvHFpmc286y8fDWFRZPTODbRbKFHEkxIoV2nn6V/yvoZv9d5rBRvx
- zAYFuaYxqdqv624YuUbJUYEznq0ip2Qrzq6BQ5oUVqSP9YoEI1s1rakx0
- QW1+KxToUMHypLi+hJRzAzZyAxW3b748m0d13jJtyZxGUsbv23Cjst3BJ A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="449821146"
-X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; d="scan'208";a="449821146"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
- by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2023 16:09:09 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10853"; a="728202753"
-X-IronPort-AV: E=Sophos;i="6.03,201,1694761200"; d="scan'208";a="728202753"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177])
- ([10.213.170.46])
- by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2023 16:09:08 -0700
-Subject: [PATCH v3] hw/cxl: Add QTG _DSM support for ACPI0017 device
-From: Dave Jiang <dave.jiang@intel.com>
-To: mst@redhat.com
-Cc: thuth@redhat.com, qemu-devel@nongnu.org, peter.maydell@linaro.org,
- Jonathan.Cameron@huawei.com, imammedo@redhat.com, anisinha@redhat.com,
- marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
- richard.henderson@linaro.org, eduardo@habkost.net
-Date: Wed, 04 Oct 2023 16:09:07 -0700
-Message-ID: <169646094762.643966.16021192876985391476.stgit@djiang5-mobl3>
-In-Reply-To: <20231004180529-mutt-send-email-mst@kernel.org>
-References: <20231004180529-mutt-send-email-mst@kernel.org>
-User-Agent: StGit/1.5
+ (Exim 4.90_1) (envelope-from <mie@igel.co.jp>) id 1qoDDe-0006z2-O6
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 21:32:02 -0400
+Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <mie@igel.co.jp>) id 1qoDDT-0001ZJ-63
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 21:31:56 -0400
+Received: by mail-vs1-xe2c.google.com with SMTP id
+ ada2fe7eead31-4545d8a95d9so194114137.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 18:31:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1696469508; x=1697074308;
+ darn=nongnu.org; 
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:from:to:cc:subject:date:message-id:reply-to;
+ bh=sdttXZsYVKYNhVdFLS7zKGLp8vWLUS/hHtqctwej5Cw=;
+ b=ymmgg3xIIDJENsLJ72JWi+4AKuGWIPXVaB1Yufegp7d2OvSXfyJu4v7lXHaYjE5Z14
+ LPuJVYrBZ8xzw4jWMhtXJIbDxGkvqtOxsS6AlP8U574Z6qR2g/CPUsiRWjweR1E9LpHp
+ QRUGgImoiR3w2IrgXqE+uqcZx/uhUC06kehekMExeBXABYJ88ssTHI0bI5r+ZDYQ2xrK
+ AawPkRsYf2T0skQwBX2ut3sFvSZE4T99TJiTkuys+MfA6tDwtfAqvR8RjCISZO1OfMUU
+ 7KJnbT3dKn4dQBZjXan27JLdrq2kQadHCP/8c/x9s8V8GrhlhniFc1yYdJ98ZZHgOIUJ
+ vmcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696469508; x=1697074308;
+ h=cc:to:subject:message-id:date:from:in-reply-to:references
+ :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=sdttXZsYVKYNhVdFLS7zKGLp8vWLUS/hHtqctwej5Cw=;
+ b=JTbDvvHFZlnRNG+LUNnIDM302A+yf5BhHt97hCWArdFvBHY6NnrUwh/eIVW+SRusuM
+ UCNysVs9lc1DGxjJTobDOH2v12zo9vZ1waA7xFbz3wdBuOuBOP40Z94/cuyboF0yYa6R
+ a+mVwKaOqeKdd6Dh2QiFS+nhqSo2WsWmAQlvdRkCcaeQ9o76gseQYCRq4aopkYsSPFtL
+ n/sLRSGXlVci1BNDlENvs+ox5APIaCJWyZPidEWtdoYCmAvoG7yC8+/T6Xg3UfTX2QpC
+ qBaKp6Z8ptDC+APdDwa8EVgXVRJgiiTrOs0YRGr6fAsj2jlKNav47E/IrritghibLppz
+ WAAA==
+X-Gm-Message-State: AOJu0YxvJgtG72Ed7pRH8QArP+Ry0r5b8UDSNuTH+2b09u4mzhLjDETN
+ 1a8FmYJhsx9f0W0tw58f9MSfcCrsVedMAKATcAc7nw==
+X-Google-Smtp-Source: AGHT+IFj7YUwQqklFB38MGhKothyz2wFVITqiXgxZGZ9Plrr6jOSVH3XMIhmgBymbK7jfHvR8+JNmYX29oL9NrCqf9Y=
+X-Received: by 2002:a05:6102:215:b0:454:6d8b:3346 with SMTP id
+ z21-20020a056102021500b004546d8b3346mr3196627vsp.12.1696469508194; Wed, 04
+ Oct 2023 18:31:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=134.134.136.100;
- envelope-from=dave.jiang@intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+References: <CAGNS4TbhS3XnCFAEi378+cSmJvGMdjN2oTv=tES36vbV4CaDuA@mail.gmail.com>
+In-Reply-To: <CAGNS4TbhS3XnCFAEi378+cSmJvGMdjN2oTv=tES36vbV4CaDuA@mail.gmail.com>
+From: Shunsuke Mie <mie@igel.co.jp>
+Date: Thu, 5 Oct 2023 10:31:37 +0900
+Message-ID: <CANXvt5qKxfU3p1eSK4fkzRFRBXHSVvSkJrnQRLKPkQjhsMGNzQ@mail.gmail.com>
+Subject: Re: [RFC] Proposal of QEMU PCI Endpoint test environment
+To: Mattias Nissler <mnissler@rivosinc.com>
+Cc: cz172638@gmail.com, bhelgaas@google.com, 
+ Jagannathan Raman <jag.raman@oracle.com>, kishon@kernel.org, kvijayab@amd.com,
+ kw@linux.com, levon@movementarian.org, linux-kernel@vger.kernel.org, 
+ linux-pci@vger.kernel.org, lpieralisi@kernel.org, 
+ manivannan.sadhasivam@linaro.org, 
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, robh@kernel.org, 
+ thanos.makatos@nutanix.com, vaishnav.a@ti.com, william.henderson@nutanix.com
+Content-Type: multipart/alternative; boundary="00000000000068a73c0606ee16da"
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
+ envelope-from=mie@igel.co.jp; helo=mail-vs1-xe2c.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,151 +90,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a simple _DSM call support for the ACPI0017 device to return a fake QTG
-ID value of 0 in all cases. The enabling is for _DSM plumbing testing
-from the OS.
+--00000000000068a73c0606ee16da
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Following edited for readbility only
+Hi Jiri, Mattias and all.
 
-Device (CXLM)
-{
-    Name (_HID, "ACPI0017")  // _HID: Hardware ID
-...
-    Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-    {
-        If ((Arg0 == ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52")))
-        {
-            If ((Arg2 == Zero))
-            {
-                Return (Buffer (One) { 0x01 })
-            }
+2023=E5=B9=B410=E6=9C=884=E6=97=A5(=E6=B0=B4) 16:36 Mattias Nissler <mnissl=
+er@rivosinc.com>:
 
-            If ((Arg2 == One))
-            {
-                Return (Package (0x02)
-                {
-                    Buffer (0x02)
-                    { 0x01, 0x00 },
-                    Package (0x01)
-                    {
-                        Buffer (0x02)
-                        { 0x00, 0x00 }
-                    }
-                })
-            }
-        }
-    }
+> hi shunsuke, all,
+>> what about vfio-user + qemu?
+>
+> Thank you for the suggestion.
 
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+FWIW, I have had some good success using VFIO-user to bridge software
+> components to hardware designs. For the most part, I have been hooking up
+> software endpoint models to hardware design components speaking the PCIe
+> transaction layer protocol. The central piece you need is a way to
+> translate between the VFIO-user protocol and PCIe transaction layer
+> messages, basically converting ECAM accesses, memory accesses (DMA+MMIO),
+> and interrupts between the two worlds. I have some code which implements
+> the basics of that. It's certainly far from complete (TLP is a massive
+> protocol), but it works well enough for me. I believe we should be able t=
+o
+> open-source this if there's interest, let me know.
+>
+It is what I want to do, but I'm not familiar with the vfio and vfio-user,
+and I have a question. QEMU has a PCI TLP communication implementation for
+Multi-process QEMU[1]. It is similar to your success. The multi-process
+qemu also communicates TLP over UDS. Could you let me know your opinion
+about it?
 
---
-v3: Fix output assignment to be BE host friendly. Fix typo in comment.
-According to the CXL spec, the DSM output should be 1 WORD to indicate
-the max suppoted QTG ID and a package of 0 or more WORDs for the QTG IDs.
-In this dummy impementation, we have first WORD with a 1 to indcate max
-supprted QTG ID of 1. And second WORD in a package to indicate the QTG
-ID of 0.
+One thing to note is that there are currently some limits to bridging
+> VFIO-user / TLP that I haven't figured out and/or will need further work:
+> Advanced PCIe concepts like PASID, ATS/PRI, SR-IOV etc. may lack
+> equivalents on the VFIO-user side that would have to be filled in. The fo=
+lk
+> behind libvfio-user[2] have been very approachable and open to improvemen=
+ts
+> in my experience though.
+>
+> If I understand correctly, the specific goal here is testing PCIe endpoin=
+t
+> designs against a Linux host. What you'd need for that is a PCI host
+> controller for the Linux side to talk to and then hooking up endpoints on
+> the transaction layer. QEMU can simulate host controllers that work with
+> existing Linux drivers just fine. Then you can put a vfio-user-pci stub
+> device (I don't think this has landed in qemu yet, but you can find the
+> code at [1]) on the simulated PCI bus which will expose any software
+> interactions with the endpoint as VFIO-user protocol messages over unix
+> domain socket. The piece you need to bring is a VFIO-user server that
+> handles these messages. Its task is basically translating between VFIO-us=
+er
+> and TLP and then injecting TLP into your hardware design.
+>
+Yes, If the pci host controller you said can be implemented, I can achieve
+my goal.
 
-v2: Minor edit to drop reference to switches in patch description.
-Message-Id: <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/acpi/cxl.c         |   55 +++++++++++++++++++++++++++++++++++++++++++++++++
- hw/i386/acpi-build.c  |    1 +
- include/hw/acpi/cxl.h |    1 +
- 3 files changed, 57 insertions(+)
+To begin with, I'll investigate the vfio and libvfio-user.  Thanks!.
 
-diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
-index 92b46bc9323b..cce12d5bc81c 100644
---- a/hw/acpi/cxl.c
-+++ b/hw/acpi/cxl.c
-@@ -30,6 +30,61 @@
- #include "qapi/error.h"
- #include "qemu/uuid.h"
- 
-+void build_cxl_dsm_method(Aml *dev)
-+{
-+    Aml *method, *ifctx, *ifctx2;
-+
-+    method = aml_method("_DSM", 4, AML_SERIALIZED);
-+    {
-+        Aml *function, *uuid;
-+
-+        uuid = aml_arg(0);
-+        function = aml_arg(2);
-+        /* CXL spec v3.0 9.17.3.1 *, QTG ID _DSM */
-+        ifctx = aml_if(aml_equal(
-+            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
-+
-+        /* Function 0, standard DSM query function */
-+        ifctx2 = aml_if(aml_equal(function, aml_int(0)));
-+        {
-+            uint8_t byte_list[1] = { 0x01 }; /* functions 1 only */
-+
-+            aml_append(ifctx2,
-+                       aml_return(aml_buffer(sizeof(byte_list), byte_list)));
-+        }
-+        aml_append(ifctx, ifctx2);
-+
-+        /*
-+         * Function 1
-+         * A return value of {1, {0}} indicates that
-+         * max supported QTG ID of 1 and recommended QTG is 0.
-+         * The values here are faked to simplify emulation.
-+         */
-+        ifctx2 = aml_if(aml_equal(function, aml_int(1)));
-+        {
-+            uint16_t word_list = cpu_to_le16(1);
-+            uint16_t word_list2 = 0;
-+            Aml *pak, *pak1;
-+
-+            /*
-+             * The return package is a package of a WORD and another package.
-+             * The embedded package contains 0 or more WORDs for the
-+             * recommended QTG IDs.
-+             */
-+            pak1 = aml_package(1);
-+            aml_append(pak1, aml_buffer(sizeof(uint16_t), word_list2));
-+            pak = aml_package(2);
-+            aml_append(pak, aml_buffer(sizeof(uint16_t), word_list));
-+            aml_append(pak, pak1);
-+
-+            aml_append(ifctx2, aml_return(pak));
-+        }
-+        aml_append(ifctx, ifctx2);
-+    }
-+    aml_append(method, ifctx);
-+    aml_append(dev, method);
-+}
-+
- static void cedt_build_chbs(GArray *table_data, PXBCXLDev *cxl)
- {
-     PXBDev *pxb = PXB_DEV(cxl);
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 95199c89008a..692af40b1a75 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1422,6 +1422,7 @@ static void build_acpi0017(Aml *table)
-     method = aml_method("_STA", 0, AML_NOTSERIALIZED);
-     aml_append(method, aml_return(aml_int(0x01)));
-     aml_append(dev, method);
-+    build_cxl_dsm_method(dev);
- 
-     aml_append(scope, dev);
-     aml_append(table, scope);
-diff --git a/include/hw/acpi/cxl.h b/include/hw/acpi/cxl.h
-index acf441888683..8f22c71530d8 100644
---- a/include/hw/acpi/cxl.h
-+++ b/include/hw/acpi/cxl.h
-@@ -25,5 +25,6 @@ void cxl_build_cedt(GArray *table_offsets, GArray *table_data,
-                     BIOSLinker *linker, const char *oem_id,
-                     const char *oem_table_id, CXLState *cxl_state);
- void build_cxl_osc_method(Aml *dev);
-+void build_cxl_dsm_method(Aml *dev);
- 
- #endif
+[1] https://www.qemu.org/docs/master/system/multi-process.html
 
+Best,
+Shunsuke
 
+>
+> [1] https://github.com/oracle/qemu/tree/vfio-user-p3.1 - I believe that's
+> the latest version, Jagannathan Raman will know best
+> [2] https://github.com/nutanix/libvfio-user
+>
+>
+
+--00000000000068a73c0606ee16da
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hi Jiri, Mattias and all.<div><br></div><div><div class=3D=
+"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">2023=E5=B9=B410=E6=9C=
+=884=E6=97=A5(=E6=B0=B4) 16:36 Mattias Nissler &lt;<a href=3D"mailto:mnissl=
+er@rivosinc.com" target=3D"_blank">mnissler@rivosinc.com</a>&gt;:<br></div>=
+<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
+left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><blockqu=
+ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
+ solid rgb(204,204,204);padding-left:1ex">hi shunsuke, all,<br>what about v=
+fio-user + qemu?</blockquote></div></blockquote><div>Thank you for the sugg=
+estion.</div><div><br></div><blockquote class=3D"gmail_quote" style=3D"marg=
+in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
+x"><div dir=3D"ltr"><div>FWIW, I have had some good success using VFIO-user=
+ to bridge software components to hardware designs. For the most part, I ha=
+ve been hooking up software endpoint models to hardware design components s=
+peaking the PCIe transaction layer protocol. The central piece you need is =
+a way to translate between the VFIO-user protocol and PCIe transaction laye=
+r messages, basically converting ECAM accesses, memory accesses (DMA+MMIO),=
+ and interrupts between the two worlds. I have some code which implements t=
+he basics of that. It&#39;s certainly far from complete (TLP is a massive p=
+rotocol), but it works well enough for me. I believe we should be able to o=
+pen-source this if there&#39;s interest, let me know.</div></div></blockquo=
+te><div>It is what I want to do, but I&#39;m not familiar with the vfio and=
+ vfio-user, and I have a question. QEMU has a PCI TLP communication impleme=
+ntation for Multi-process QEMU[1]. It is similar to your success. The multi=
+-process qemu also communicates TLP over UDS. Could you let me know your op=
+inion about it?</div><div><br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex"><div dir=3D"ltr"><div>One thing to note is that there are curren=
+tly some limits to bridging VFIO-user / TLP that I haven&#39;t figured out =
+and/or will need further work: Advanced PCIe concepts like PASID, ATS/PRI, =
+SR-IOV etc. may lack equivalents on the VFIO-user side that would have to b=
+e filled in. The folk behind libvfio-user[2] have been very approachable an=
+d open to improvements in my experience though.<br></div><div><br></div><di=
+v>If I understand correctly, the specific goal here is testing PCIe endpoin=
+t designs against a Linux host. What you&#39;d need for that is a PCI host =
+controller for the Linux side to talk to and then hooking up endpoints on t=
+he transaction layer. QEMU can simulate host controllers that work with exi=
+sting Linux drivers just fine. Then you can put a vfio-user-pci stub device=
+ (I don&#39;t think this has landed in qemu yet, but you can find the code =
+at [1]) on the simulated PCI bus which will expose any software interaction=
+s with the endpoint as VFIO-user protocol messages over unix domain socket.=
+ The piece you need to bring is a VFIO-user server that handles these messa=
+ges. Its task is basically translating between VFIO-user and TLP and then i=
+njecting TLP into your hardware design.<br></div></div></blockquote><div>Ye=
+s, If the pci host controller you said can be implemented, I can achieve my=
+ goal.</div><div><br></div><div>To begin with, I&#39;ll investigate the vfi=
+o and libvfio-user.=C2=A0 Thanks!.</div><div><br></div><div>[1]=C2=A0<a hre=
+f=3D"https://www.qemu.org/docs/master/system/multi-process.html">https://ww=
+w.qemu.org/docs/master/system/multi-process.html</a>=C2=A0<br></div><div><b=
+r></div><div>Best,</div><div>Shunsuke</div><blockquote class=3D"gmail_quote=
+" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
+padding-left:1ex"><div dir=3D"ltr"><div></div><div><br></div><div>[1] <a hr=
+ef=3D"https://github.com/oracle/qemu/tree/vfio-user-p3.1" target=3D"_blank"=
+>https://github.com/oracle/qemu/tree/vfio-user-p3.1</a> - I believe that&#3=
+9;s the latest version,=C2=A0Jagannathan Raman will know best</div><div>[2]=
+ <a href=3D"https://github.com/nutanix/libvfio-user" target=3D"_blank">http=
+s://github.com/nutanix/libvfio-user</a></div><br></div></blockquote><div><b=
+r></div></div></div></div>
+
+--00000000000068a73c0606ee16da--
 
