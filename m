@@ -2,73 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB7F7B9A44
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 652AC7B9A5A
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:47:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFGc-0001Vy-9f; Wed, 04 Oct 2023 23:43:14 -0400
+	id 1qoFGh-0001YB-W5; Wed, 04 Oct 2023 23:43:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGb-0001Va-8Z
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGf-0001Xd-Pj
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGZ-0008AX-Kr
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:13 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGe-0008DE-8d
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477391;
+ s=mimecast20190719; t=1696477395;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Lc/nKWVTsa5uQri9/4hS3uQQgaFw+KjqHoK0q8BNN2c=;
- b=aHlD1I12R6sP91Zb5O9bFQ5pDGxT4SBTq3KGi/xBRm0Scif+o5+LdzmYIb+ThGxbzBG/nn
- EdcNt933LIzfnhhUs7eX0eIkEd1mEnd7KmPDzs06y5HN/2erFiW81NgPYQDAqvBKnd3GO5
- +LXsWl8GHB/ndzLSVZvr2NKuDDwRJsI=
+ bh=0n/b+8AZz3jcidGbH0sE58APwKjUxPw2/iP69uivWYc=;
+ b=Dqa9pNlFdkPNeEInU93smJTRhsOhXqMnNGDREyZp8RLRQbbIjGmd+dP4xXLkIEweJaSzJM
+ yqOtpHDwmrD3pn96pqyAwaAUP4M1/7FPUnGUifDYMN2rTD6fR4X0rlVEEz/DSOb6JLVa+9
+ 2Ti8luE4nY7rOQ9mC/cqPuJ3sdXSXcY=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-388-RGtS5GBHPRe7MiLcJgOMpA-1; Wed, 04 Oct 2023 23:43:09 -0400
-X-MC-Unique: RGtS5GBHPRe7MiLcJgOMpA-1
+ us-mta-403-YRGGT-QVNA2hgygPHSXQxw-1; Wed, 04 Oct 2023 23:43:14 -0400
+X-MC-Unique: YRGGT-QVNA2hgygPHSXQxw-1
 Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40554735995so3752295e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:43:09 -0700 (PDT)
+ 5b1f17b1804b1-4063dd6729bso3749165e9.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:43:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477388; x=1697082188;
+ d=1e100.net; s=20230601; t=1696477392; x=1697082192;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Lc/nKWVTsa5uQri9/4hS3uQQgaFw+KjqHoK0q8BNN2c=;
- b=KZcBk4za82RJAfcmEJ91H0UupOhZG9a9q7nCJF9CJQlF+GNHEj4o0hKA3EXFppXlLu
- MZbBWTd3ktl58dS0E9VhD3Q+2uuIhyLNSGDfW+jIWAu99pabs5NO96qNAY+ci2TkodMS
- udOfNQdHtj4wD8P737ge9TKmav8nvPx61Zz3QJrWoorBG6Zct2PH+3+XO8KLzb0k6UWw
- 2HmKYCz3NR4IGIQ5rqVXMaHT6Af4Ajxpob/C2DYI1Do6Pk0de/tZMh41hAqHicwBia0V
- 9vehUzKX5mPGDE619870FnaHLg67mKzVnNebTJ7SapYssMFWuj8tC+DcY5GUcev6CCwI
- qmcg==
-X-Gm-Message-State: AOJu0YwK96t7mqaK55Nkh8MhlwqtUBQpAREmUwt3KwK/0ZMdq5lz0ISk
- uHDbs2tEgO5bjRpVPHow9L02qxpYli1b4SzxfYRx6VYbR0gpK/FdPybw6jpnaoNiS1qDuO6ZAtC
- Mo0SQG8k6a3ECSk9SpuAbJNtUySw729aj1daTTPM5jEAq0b/GS4l70lydQiYsnYaoWyPO
-X-Received: by 2002:a05:600c:2116:b0:405:4743:de12 with SMTP id
- u22-20020a05600c211600b004054743de12mr3770332wml.21.1696477387791; 
- Wed, 04 Oct 2023 20:43:07 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF0bdZRJGUwQjd879tDSCorUVGoJj6NbB+CMWtUFXxYXZgT/mQu8lVQAbMF6C/Embl3xCtLtw==
-X-Received: by 2002:a05:600c:2116:b0:405:4743:de12 with SMTP id
- u22-20020a05600c211600b004054743de12mr3770314wml.21.1696477387484; 
- Wed, 04 Oct 2023 20:43:07 -0700 (PDT)
+ bh=0n/b+8AZz3jcidGbH0sE58APwKjUxPw2/iP69uivWYc=;
+ b=Ztw9/PWOuPsxHcHkCJru3tN+AHnImgHSg0SkgULbly5c6o4VAnOLw3VdjJsb4D8yfD
+ rLYs7Hfe8gkZUkbB7AiewxIm+Bm/QK5kMqx8qJQgx1JFETq8Hi2zpi7KzjPO7TqDH7CM
+ nXjCcPO2x2CcfTei1gC+RAwDVSnOdeAlf9u/YXcFpEVpODxA4EoDj6Ny4Q0jOlwmSDym
+ XThe2cDFiTPNGHsRAumgITFhDyYZOYqm4OxcqyneG72xyZk3L0wkeG4ORjQ45VZJ1AEE
+ m7Mz9zdZJHXa1/1EW7ykkJjPCF1/YX6riZo3vBKoR3yjv4M0sX2TYGNilhQyrnQrkAJP
+ XLAQ==
+X-Gm-Message-State: AOJu0YypcXPWVQfj+Sb3dwOnKXt1I6XqLPIHmVGYJI6RKnvJx0Spdctw
+ BxxXRvKBjdmOUbj311ElDJg7rfJzw5uaWsNFzB1ai7vt8A5DvEpTWGDlBrHgjiS9DO9UAS7QmRA
+ fLkFSpu/UWYq4KNdX+tZzKHEST4DfPlWpb8Cg666pDAjQ9rZ3uWk2beq/3dj8RyLfqbxm
+X-Received: by 2002:a7b:c4d6:0:b0:406:7074:301d with SMTP id
+ g22-20020a7bc4d6000000b004067074301dmr4355673wmk.11.1696477392309; 
+ Wed, 04 Oct 2023 20:43:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHZbbiZVasm5u+nRwSGWUSOBs1MqAkRTUXiR5ZC8osGGLVOTlMc3sixhg7jWTr75KlfP9GRaw==
+X-Received: by 2002:a7b:c4d6:0:b0:406:7074:301d with SMTP id
+ g22-20020a7bc4d6000000b004067074301dmr4355656wmk.11.1696477391939; 
+ Wed, 04 Oct 2023 20:43:11 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- y4-20020adff144000000b0032769103ae9sm622606wro.69.2023.10.04.20.43.05
+ m16-20020a7bca50000000b004064ac107cfsm534428wml.39.2023.10.04.20.43.09
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:43:06 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:43:04 -0400
+ Wed, 04 Oct 2023 20:43:11 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:43:07 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Hawkins Jiawei <yin31149@gmail.com>,
  Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
  Lei Yang <leiyang@redhat.com>, Jason Wang <jasowang@redhat.com>
-Subject: [PULL v2 11/53] virtio-net: Expose MAX_VLAN
-Message-ID: <e19751a32f140a232fafb037e703abb961a94abb.1696477105.git.mst@redhat.com>
+Subject: [PULL v2 12/53] vdpa: Restore vlan filtering state
+Message-ID: <8f7e9967484dec2a727c24a509962ca3a4f5dad4.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -77,14 +77,14 @@ Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1696477105.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,52 +103,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Hawkins Jiawei <yin31149@gmail.com>
 
-vhost-vdpa shadowed CVQ needs to know the maximum number of
-vlans supported by the virtio-net device, so QEMU can restore
-the VLAN state in a migration.
+This patch introduces vhost_vdpa_net_load_single_vlan()
+and vhost_vdpa_net_load_vlan() to restore the vlan
+filtering state at device's startup.
 
 Co-developed-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
 Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Message-Id: <ca03403319c6405ea7c400836a572255bbc9ceba.1690106284.git.yin31149@gmail.com>
+Message-Id: <e76a29f77bb3f386e4a643c8af94b77b775d1752.1690106284.git.yin31149@gmail.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/virtio-net.h | 6 ++++++
- hw/net/virtio-net.c            | 2 --
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ net/vhost-vdpa.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/include/hw/virtio/virtio-net.h b/include/hw/virtio/virtio-net.h
-index e07a723027..55977f01f0 100644
---- a/include/hw/virtio/virtio-net.h
-+++ b/include/hw/virtio/virtio-net.h
-@@ -38,6 +38,12 @@ OBJECT_DECLARE_SIMPLE_TYPE(VirtIONet, VIRTIO_NET)
- /* Maximum VIRTIO_NET_CTRL_MAC_TABLE_SET unicast + multicast entries. */
- #define MAC_TABLE_ENTRIES    64
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 4e94c50bc7..8648d86f64 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -968,6 +968,50 @@ static int vhost_vdpa_net_load_rx(VhostVDPAState *s,
+     return 0;
+ }
  
-+/*
-+ * The maximum number of VLANs in the VLAN filter table
-+ * added by VIRTIO_NET_CTRL_VLAN_ADD
-+ */
-+#define MAX_VLAN    (1 << 12)   /* Per 802.1Q definition */
++static int vhost_vdpa_net_load_single_vlan(VhostVDPAState *s,
++                                           const VirtIONet *n,
++                                           uint16_t vid)
++{
++    const struct iovec data = {
++        .iov_base = &vid,
++        .iov_len = sizeof(vid),
++    };
++    ssize_t dev_written = vhost_vdpa_net_load_cmd(s, VIRTIO_NET_CTRL_VLAN,
++                                                  VIRTIO_NET_CTRL_VLAN_ADD,
++                                                  &data, 1);
++    if (unlikely(dev_written < 0)) {
++        return dev_written;
++    }
++    if (unlikely(*s->status != VIRTIO_NET_OK)) {
++        return -EIO;
++    }
 +
- typedef struct virtio_net_conf
++    return 0;
++}
++
++static int vhost_vdpa_net_load_vlan(VhostVDPAState *s,
++                                    const VirtIONet *n)
++{
++    int r;
++
++    if (!virtio_vdev_has_feature(&n->parent_obj, VIRTIO_NET_F_CTRL_VLAN)) {
++        return 0;
++    }
++
++    for (int i = 0; i < MAX_VLAN >> 5; i++) {
++        for (int j = 0; n->vlans[i] && j <= 0x1f; j++) {
++            if (n->vlans[i] & (1U << j)) {
++                r = vhost_vdpa_net_load_single_vlan(s, n, (i << 5) + j);
++                if (unlikely(r != 0)) {
++                    return r;
++                }
++            }
++        }
++    }
++
++    return 0;
++}
++
+ static int vhost_vdpa_net_load(NetClientState *nc)
  {
-     uint32_t txtimer;
-diff --git a/hw/net/virtio-net.c b/hw/net/virtio-net.c
-index 1c31374334..29e33ea5ed 100644
---- a/hw/net/virtio-net.c
-+++ b/hw/net/virtio-net.c
-@@ -49,8 +49,6 @@
+     VhostVDPAState *s = DO_UPCAST(VhostVDPAState, nc, nc);
+@@ -998,6 +1042,10 @@ static int vhost_vdpa_net_load(NetClientState *nc)
+     if (unlikely(r)) {
+         return r;
+     }
++    r = vhost_vdpa_net_load_vlan(s, n);
++    if (unlikely(r)) {
++        return r;
++    }
  
- #define VIRTIO_NET_VM_VERSION    11
- 
--#define MAX_VLAN    (1 << 12)   /* Per 802.1Q definition */
--
- /* previously fixed value */
- #define VIRTIO_NET_RX_QUEUE_DEFAULT_SIZE 256
- #define VIRTIO_NET_TX_QUEUE_DEFAULT_SIZE 256
+     return 0;
+ }
 -- 
 MST
 
