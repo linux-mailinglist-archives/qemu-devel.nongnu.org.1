@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC427B9A0E
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 04:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C807B9A0A
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 04:44:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoEL6-0004dl-Dy; Wed, 04 Oct 2023 22:43:48 -0400
+	id 1qoEL9-0004eo-Bw; Wed, 04 Oct 2023 22:43:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qoEL4-0004d4-IG
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 22:43:46 -0400
-Received: from mail-pl1-x62a.google.com ([2607:f8b0:4864:20::62a])
+ id 1qoEL5-0004da-H5
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 22:43:47 -0400
+Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
- id 1qoEL2-0006x3-U5
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 22:43:46 -0400
-Received: by mail-pl1-x62a.google.com with SMTP id
- d9443c01a7336-1c5ff5f858dso3429065ad.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 19:43:44 -0700 (PDT)
+ id 1qoEL3-0006xI-HV
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 22:43:47 -0400
+Received: by mail-pl1-x62e.google.com with SMTP id
+ d9443c01a7336-1c434c33ec0so3154785ad.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 19:43:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=chromium.org; s=google; t=1696473822; x=1697078622; darn=nongnu.org;
+ d=chromium.org; s=google; t=1696473824; x=1697078624; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=hNutk3g7zI8cd0Kbp5PWNVDxy5ZnIIuZ8vIEI0kDwH8=;
- b=iExyUUb4lSWNxJE9iDicGKdaN7f6mHtT+lOj49GgRzlOlT+bt24cyrEGrPnx3YFJ0i
- 4TYfEJ6PBP2r0ZPfCAesMPO3Gtfga/3kKFUgazJ7DSd7QfzzxA7g7G7jjiZF+pNyhJ4S
- cu9DmIYsOP/6ot3tuVrqtI3rDntjCrk5xxkOs=
+ bh=RPRoe1Z+pnUafK0TuSSHgeUBCFeZKQNZ2M7A6f2nDVk=;
+ b=Vp8HgVTItIe/a589GSj+jgnilN1mDNlhrHaTk5crHIa4eJfoWBV26Q0BtkSR4Hz0T6
+ di4/9sc23VZMD0RYPbNc5p3KDDAq14mvTKLC1Y9zhpSOTZSaKHT1KAaXqaPNANGd3ZUm
+ qik2Nj4IVdxvXSuLD4P6fKVzJ8V7AMQZ2HZRk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696473822; x=1697078622;
+ d=1e100.net; s=20230601; t=1696473824; x=1697078624;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hNutk3g7zI8cd0Kbp5PWNVDxy5ZnIIuZ8vIEI0kDwH8=;
- b=NSDd1qSazk/m604WUgTieZ/Ci58Z9wWuUcjdujapmLR79pTV7QEU+eUQVgshHvJI6Z
- zI0xwwmCjBrOxgzX9mk90PbhkJePeT4bVc2qVKdgZKh9/CjIhEI2JVtPsszttk8/nhJ+
- HttI1LDPr2Bh1FsrYUjW9T4xfrITp+/qbtf1YFF5YOF6vbL9PtaYweomsYhIrxOU/9hs
- 9QimVvpNE61uBPL98hZfVYgZtfcGhEiiuG/yy7gYB7gbI8/YHNK/iEsuZTDVS5urGaJo
- lJclU+4khxiJqeH95y2D3Zbd2w/CDbgN5dqD+HT1VXULQa9/mEqfk5QZjljmE8rhAib+
- xkiQ==
-X-Gm-Message-State: AOJu0Yw2JaCWPM6pXpXNQUeh0A0HejUIGSz06drkqnAOowjxzR7ZLuSj
- WpkYdzyTYy+mSXmwkl7NfmjjhOxH2OzbLJgrjr8=
-X-Google-Smtp-Source: AGHT+IHpwqnLw+SI9YJKz1E2OwzgZvG1dR3GjcM3lqM89CJMRuU3gC8LzP34jVAeCPDYqaxEHn8/xg==
-X-Received: by 2002:a17:902:f54b:b0:1c0:9d6f:9d28 with SMTP id
- h11-20020a170902f54b00b001c09d6f9d28mr4065721plf.11.1696473822623; 
- Wed, 04 Oct 2023 19:43:42 -0700 (PDT)
+ bh=RPRoe1Z+pnUafK0TuSSHgeUBCFeZKQNZ2M7A6f2nDVk=;
+ b=HwX4dZjeHdkExoE25mN9nt4d9g4DoDP7m3t2jTaiKKUgupcr3QOKG2w6OMavdULEAF
+ I2AE9pXyWMdz2qDH5r2caq+ECR/KMGyMTRyFZHAie0/1vhqqeyYX2xZ1Xy5Yws0gFfUd
+ z0DYUZWp7ZXk9UT/K4hrZUD8s9DLD9sMkNL36SnAKP71Tp7jxVDgtZQ0c2DhoT0TSxHI
+ TCEjbDT6eGhm76ewnS1y2YRNAvStDFflfSXpr3R7tnIuPgy+aifGL0UIx2hLTRXzECaD
+ rP9NL6EhFl/Tml5d+hqz6UzBJZQLFQee6GGG+CyS0rRZEC81FAtzL7HzT700KJo9x+Rn
+ eVJA==
+X-Gm-Message-State: AOJu0Yyg2tvIXGwZJphM6ifZpcvbAxyG1QSZLJoLoE5/nEZVwkuUd7FA
+ bZIn4HbqSm5iVIREfVUzOCHhCLOvgrbadcehHeQ=
+X-Google-Smtp-Source: AGHT+IFmFpa3ypbyErpyVAfagJdry+omynDhUU/weMAPBlcu3Be4bctFncfx2H+losR8ChlECaZRDA==
+X-Received: by 2002:a17:902:6f02:b0:1c5:cd1c:46f6 with SMTP id
+ w2-20020a1709026f0200b001c5cd1c46f6mr3718902plk.24.1696473823751; 
+ Wed, 04 Oct 2023 19:43:43 -0700 (PDT)
 Received: from gurchetansingh0.mtv.corp.google.com
  ([2620:15c:a7:2:95d7:bc26:d70d:81bd])
  by smtp.gmail.com with ESMTPSA id
- f8-20020a170902ce8800b001c76fcccee8sm295209plg.156.2023.10.04.19.43.41
+ f8-20020a170902ce8800b001c76fcccee8sm295209plg.156.2023.10.04.19.43.42
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 19:43:42 -0700 (PDT)
+ Wed, 04 Oct 2023 19:43:43 -0700 (PDT)
 From: Gurchetan Singh <gurchetansingh@chromium.org>
 To: qemu-devel@nongnu.org
 Cc: marcandre.lureau@redhat.com, akihiko.odaki@gmail.com, ray.huang@amd.com,
  alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is,
  ernunes@redhat.com, manos.pitsidianakis@linaro.org,
  mark.cave-ayland@ilande.co.uk, thuth@redhat.com
-Subject: [PATCH v16 8/9] gfxstream + rutabaga: enable rutabaga
-Date: Wed,  4 Oct 2023 19:43:29 -0700
-Message-Id: <20231005024330.836-9-gurchetansingh@chromium.org>
+Subject: [PATCH v16 9/9] docs/system: add basic virtio-gpu documentation
+Date: Wed,  4 Oct 2023 19:43:30 -0700
+Message-Id: <20231005024330.836-10-gurchetansingh@chromium.org>
 X-Mailer: git-send-email 2.31.0
 In-Reply-To: <20231005024330.836-1-gurchetansingh@chromium.org>
 References: <20231005024330.836-1-gurchetansingh@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62a;
- envelope-from=gurchetansingh@chromium.org; helo=mail-pl1-x62a.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::62e;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-pl1-x62e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,79 +92,152 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This change enables rutabaga to receive virtio-gpu-3d hypercalls
-when it is active.
+This adds basic documentation for virtio-gpu.
 
+Suggested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Gurchetan Singh <gurchetansingh@chromium.org>
 Tested-by: Alyssa Ross <hi@alyssa.is>
 Tested-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
 Tested-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
+Reviewed-by: Antonio Caggiano <quic_acaggian@quicinc.com>
 Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 ---
- hw/display/virtio-gpu-base.c | 3 ++-
- hw/display/virtio-gpu.c      | 5 +++--
- softmmu/qdev-monitor.c       | 3 +++
- softmmu/vl.c                 | 1 +
- 4 files changed, 9 insertions(+), 3 deletions(-)
+ docs/system/device-emulation.rst   |   1 +
+ docs/system/devices/virtio-gpu.rst | 112 +++++++++++++++++++++++++++++
+ 2 files changed, 113 insertions(+)
+ create mode 100644 docs/system/devices/virtio-gpu.rst
 
-diff --git a/hw/display/virtio-gpu-base.c b/hw/display/virtio-gpu-base.c
-index 4f2b0ba1f3..50c5373b65 100644
---- a/hw/display/virtio-gpu-base.c
-+++ b/hw/display/virtio-gpu-base.c
-@@ -223,7 +223,8 @@ virtio_gpu_base_get_features(VirtIODevice *vdev, uint64_t features,
- {
-     VirtIOGPUBase *g = VIRTIO_GPU_BASE(vdev);
- 
--    if (virtio_gpu_virgl_enabled(g->conf)) {
-+    if (virtio_gpu_virgl_enabled(g->conf) ||
-+        virtio_gpu_rutabaga_enabled(g->conf)) {
-         features |= (1 << VIRTIO_GPU_F_VIRGL);
-     }
-     if (virtio_gpu_edid_enabled(g->conf)) {
-diff --git a/hw/display/virtio-gpu.c b/hw/display/virtio-gpu.c
-index be16efbd38..6efd15b6ae 100644
---- a/hw/display/virtio-gpu.c
-+++ b/hw/display/virtio-gpu.c
-@@ -1363,8 +1363,9 @@ void virtio_gpu_device_realize(DeviceState *qdev, Error **errp)
-     VirtIOGPU *g = VIRTIO_GPU(qdev);
- 
-     if (virtio_gpu_blob_enabled(g->parent_obj.conf)) {
--        if (!virtio_gpu_have_udmabuf()) {
--            error_setg(errp, "cannot enable blob resources without udmabuf");
-+        if (!virtio_gpu_rutabaga_enabled(g->parent_obj.conf) &&
-+            !virtio_gpu_have_udmabuf()) {
-+            error_setg(errp, "need rutabaga or udmabuf for blob resources");
-             return;
-         }
- 
-diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
-index 74f4e41338..1b8005ae55 100644
---- a/softmmu/qdev-monitor.c
-+++ b/softmmu/qdev-monitor.c
-@@ -86,6 +86,9 @@ static const QDevAlias qdev_alias_table[] = {
-     { "virtio-gpu-pci", "virtio-gpu", QEMU_ARCH_VIRTIO_PCI },
-     { "virtio-gpu-gl-device", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_MMIO },
-     { "virtio-gpu-gl-pci", "virtio-gpu-gl", QEMU_ARCH_VIRTIO_PCI },
-+    { "virtio-gpu-rutabaga-device", "virtio-gpu-rutabaga",
-+      QEMU_ARCH_VIRTIO_MMIO },
-+    { "virtio-gpu-rutabaga-pci", "virtio-gpu-rutabaga", QEMU_ARCH_VIRTIO_PCI },
-     { "virtio-input-host-device", "virtio-input-host", QEMU_ARCH_VIRTIO_MMIO },
-     { "virtio-input-host-ccw", "virtio-input-host", QEMU_ARCH_VIRTIO_CCW },
-     { "virtio-input-host-pci", "virtio-input-host", QEMU_ARCH_VIRTIO_PCI },
-diff --git a/softmmu/vl.c b/softmmu/vl.c
-index 98e071e63b..dd82c6eb13 100644
---- a/softmmu/vl.c
-+++ b/softmmu/vl.c
-@@ -215,6 +215,7 @@ static struct {
-     { .driver = "ati-vga",              .flag = &default_vga       },
-     { .driver = "vhost-user-vga",       .flag = &default_vga       },
-     { .driver = "virtio-vga-gl",        .flag = &default_vga       },
-+    { .driver = "virtio-vga-rutabaga",  .flag = &default_vga       },
- };
- 
- static QemuOptsList qemu_rtc_opts = {
+diff --git a/docs/system/device-emulation.rst b/docs/system/device-emulation.rst
+index 4491c4cbf7..1167f3a9f2 100644
+--- a/docs/system/device-emulation.rst
++++ b/docs/system/device-emulation.rst
+@@ -91,6 +91,7 @@ Emulated Devices
+    devices/nvme.rst
+    devices/usb.rst
+    devices/vhost-user.rst
++   devices/virtio-gpu.rst
+    devices/virtio-pmem.rst
+    devices/vhost-user-rng.rst
+    devices/canokey.rst
+diff --git a/docs/system/devices/virtio-gpu.rst b/docs/system/devices/virtio-gpu.rst
+new file mode 100644
+index 0000000000..cb73dd7998
+--- /dev/null
++++ b/docs/system/devices/virtio-gpu.rst
+@@ -0,0 +1,112 @@
++..
++   SPDX-License-Identifier: GPL-2.0-or-later
++
++virtio-gpu
++==========
++
++This document explains the setup and usage of the virtio-gpu device.
++The virtio-gpu device paravirtualizes the GPU and display controller.
++
++Linux kernel support
++--------------------
++
++virtio-gpu requires a guest Linux kernel built with the
++``CONFIG_DRM_VIRTIO_GPU`` option.
++
++QEMU virtio-gpu variants
++------------------------
++
++QEMU virtio-gpu device variants come in the following form:
++
++ * ``virtio-vga[-BACKEND]``
++ * ``virtio-gpu[-BACKEND][-INTERFACE]``
++ * ``vhost-user-vga``
++ * ``vhost-user-pci``
++
++**Backends:** QEMU provides a 2D virtio-gpu backend, and two accelerated
++backends: virglrenderer ('gl' device label) and rutabaga_gfx ('rutabaga'
++device label).  There is a vhost-user backend that runs the graphics stack
++in a separate process for improved isolation.
++
++**Interfaces:** QEMU further categorizes virtio-gpu device variants based
++on the interface exposed to the guest. The interfaces can be classified
++into VGA and non-VGA variants. The VGA ones are prefixed with virtio-vga
++or vhost-user-vga while the non-VGA ones are prefixed with virtio-gpu or
++vhost-user-gpu.
++
++The VGA ones always use the PCI interface, but for the non-VGA ones, the
++user can further pick between MMIO or PCI. For MMIO, the user can suffix
++the device name with -device, though vhost-user-gpu does not support MMIO.
++For PCI, the user can suffix it with -pci. Without these suffixes, the
++platform default will be chosen.
++
++virtio-gpu 2d
++-------------
++
++The default 2D backend only performs 2D operations. The guest needs to
++employ a software renderer for 3D graphics.
++
++Typically, the software renderer is provided by `Mesa`_ or `SwiftShader`_.
++Mesa's implementations (LLVMpipe, Lavapipe and virgl below) work out of box
++on typical modern Linux distributions.
++
++.. parsed-literal::
++    -device virtio-gpu
++
++.. _Mesa: https://www.mesa3d.org/
++.. _SwiftShader: https://github.com/google/swiftshader
++
++virtio-gpu virglrenderer
++------------------------
++
++When using virgl accelerated graphics mode in the guest, OpenGL API calls
++are translated into an intermediate representation (see `Gallium3D`_). The
++intermediate representation is communicated to the host and the
++`virglrenderer`_ library on the host translates the intermediate
++representation back to OpenGL API calls.
++
++.. parsed-literal::
++    -device virtio-gpu-gl
++
++.. _Gallium3D: https://www.freedesktop.org/wiki/Software/gallium/
++.. _virglrenderer: https://gitlab.freedesktop.org/virgl/virglrenderer/
++
++virtio-gpu rutabaga
++-------------------
++
++virtio-gpu can also leverage rutabaga_gfx to provide `gfxstream`_
++rendering and `Wayland display passthrough`_.  With the gfxstream rendering
++mode, GLES and Vulkan calls are forwarded to the host with minimal
++modification.
++
++The crosvm book provides directions on how to build a `gfxstream-enabled
++rutabaga`_ and launch a `guest Wayland proxy`_.
++
++This device does require host blob support (``hostmem`` field below). The
++``hostmem`` field specifies the size of virtio-gpu host memory window.
++This is typically between 256M and 8G.
++
++At least one virtio-gpu capability set ("capset") must be specified when
++starting the device.  The currently capsets supported are ``gfxstream-vulkan``
++and ``cross-domain`` for Linux guests. For Android guests, the experimental
++``x-gfxstream-gles`` and ``x-gfxstream-composer`` capsets are also supported.
++
++The device will try to auto-detect the wayland socket path if the
++``cross-domain`` capset name is set.  The user may optionally specify
++``wayland-socket-path`` for non-standard paths.
++
++The ``wsi`` option can be set to ``surfaceless`` or ``headless``.
++Surfaceless doesn't create a native window surface, but does copy from the
++render target to the Pixman buffer if a virtio-gpu 2D hypercall is issued.
++Headless is like surfaceless, but doesn't copy to the Pixman buffer.
++Surfaceless is the default if ``wsi`` is not specified.
++
++.. parsed-literal::
++    -device virtio-gpu-rutabaga,gfxstream-vulkan=on,cross-domain=on,
++       hostmem=8G,wayland-socket-path=/tmp/nonstandard/mock_wayland.sock,
++       wsi=headless
++
++.. _gfxstream: https://android.googlesource.com/platform/hardware/google/gfxstream/
++.. _Wayland display passthrough: https://www.youtube.com/watch?v=OZJiHMtIQ2M
++.. _gfxstream-enabled rutabaga: https://crosvm.dev/book/appendix/rutabaga_gfx.html
++.. _guest Wayland proxy: https://crosvm.dev/book/devices/wayland.html
 -- 
 2.42.0.582.g8ccd20d70d-goog
 
