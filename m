@@ -2,72 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375D47B9A42
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:43:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 342947B9A55
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:46:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFGF-0001D4-3o; Wed, 04 Oct 2023 23:42:51 -0400
+	id 1qoFGQ-0001IY-Cm; Wed, 04 Oct 2023 23:43:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGC-0001CT-KN
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGM-0001H4-9A
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGB-0007yD-3d
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:48 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGK-0007zN-Pz
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477366;
+ s=mimecast20190719; t=1696477376;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Qziaif5jFzedGkKOEqZ/+iEupJFwfjmUm3vm30zmedI=;
- b=KnkOBc4U3/hVlFMwgGA6t+qBSyXlDjLFMXQtyK6TpcJhdlnnoCjyisPDQkgEj+sKz+BQvi
- Zu7Lj1i4ullyO1PvcWh63n/El0M1BN1Adhm6ej9Vw55VP2lI3N39f0UdE5oDrCVVusWYE4
- /+zpnKagDP4kLZzwCZlKj07YzcIQ75k=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=NW2NOMzgBdCNK5ZXMj4UrgviAiZWrBVJEYGFoltgO4I=;
+ b=gkj6KACqsmoUoFIcy4NfKY/yMeZeEz8yRNp27KYx6o/+VIssSEK9WKOuBy6ps+YCaHNAis
+ iJ9ABkaoWfqark4SoiJ+fnd/AebpQQEMH1wBxEt2XePlpF0xJTPMDkTaiLPEBv6sHXMEjE
+ 6s6I1HxiHqLRWm9uxWkMK9UIYQ0Xmcs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-53-n8qsFWEzN1C_a9F48hl8ug-1; Wed, 04 Oct 2023 23:42:44 -0400
-X-MC-Unique: n8qsFWEzN1C_a9F48hl8ug-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-325a78c806eso400746f8f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:42:44 -0700 (PDT)
+ us-mta-49-lj1SKyVfPGK5XO4RmZ1HbA-1; Wed, 04 Oct 2023 23:42:49 -0400
+X-MC-Unique: lj1SKyVfPGK5XO4RmZ1HbA-1
+Received: by mail-wm1-f72.google.com with SMTP id
+ 5b1f17b1804b1-3f42bcef2acso3144215e9.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:42:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477363; x=1697082163;
+ d=1e100.net; s=20230601; t=1696477367; x=1697082167;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Qziaif5jFzedGkKOEqZ/+iEupJFwfjmUm3vm30zmedI=;
- b=aJpBc3XoemFDmwd9lF6EvEGuDFTDTJwirFl+YpOCV/uM2wp838o+Y5D/o6oAvm7WeY
- jIUKB84NUYsm7BGH3SqxUpjNBtCa6Y0s4zc8GmsFW1kowWBmB7/ueEjIA7pVhsRNjC7c
- tThKh/4gcfg+IkVdSzRYYNf3e+4h+wg9BPUkhwRMUa+/senpFnplbpEEfmXTmOaaTXVb
- o1thnNP+er1A8nYLT4YSG2tAfwXpx6DkvWNK6bIQQFfqVjxwgbQYDd14x8h/Wj7w/sef
- Gz/GUbgmQgjXyZvXWJcpFvO3RGs5k86Scy2p7H+Y5PZ5IwiCCo3zTHPIyjoyT8ySpqUj
- fZOA==
-X-Gm-Message-State: AOJu0YwW6dT+CTSeCzfY11faMW+jD4sSxdJlsgP3cVHBagZNyqwsEqgJ
- zS1CX3MN4+MI5Kn0u+QkVyGNFd4ecyRL/wTC1P+dvEQ1d2qZdhc8olRSJp4yrrhLQmYjH16ZLfU
- XajZA6yL5pj27FR43YOiLKHaKUJ+wDghAJ7fvDluOIMFTr0sFbNgnm/RSaq5KDGzlon5U
-X-Received: by 2002:a5d:4247:0:b0:31f:fa66:5852 with SMTP id
- s7-20020a5d4247000000b0031ffa665852mr3825758wrr.21.1696477362885; 
- Wed, 04 Oct 2023 20:42:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFggBgr4928W+Me55dUB7eSrR0avfRvudmnPAcEEkbpQtB7+VZ6my3Oxwu1whaN9w004W3CLA==
-X-Received: by 2002:a5d:4247:0:b0:31f:fa66:5852 with SMTP id
- s7-20020a5d4247000000b0031ffa665852mr3825749wrr.21.1696477362608; 
- Wed, 04 Oct 2023 20:42:42 -0700 (PDT)
+ bh=NW2NOMzgBdCNK5ZXMj4UrgviAiZWrBVJEYGFoltgO4I=;
+ b=gLtUzq/WWzGlo6KKEOc/Md+WyMgxMSqLBR64CH3KETf9XfEnZ9NdSQLMPdDkvwpWbw
+ JxeQVw2TplJ80nHnK2gDkQwKfFVFE03um7cBFjvGgNRA9Z0i5H2K1/edcD7+QosCd1En
+ kqKbs16OPXxgdVYaNxPRuNmKHev8XoGNB/ZEXwTGmkFMxkvmPA8mC8DnMRynnSdti0yW
+ 9DA7hTEsPMwXolVq1QCxWLiflB/y5BaeX/liFuS0SCK6NQITh9N1Dnla17QwLY6DYglQ
+ 8KA/Y6S+AcO/baAHNHOmWKQciZwljQylrv+Fs2y7OyGd1jepo/3uaFUo4gNTspuQuMUD
+ bnog==
+X-Gm-Message-State: AOJu0Yxg1doQBP6QkaJT9htM3G3lnOFLmW58xPjg4N1Ry/wMYEIo46F5
+ gMTOWUzo3WnRQ5I588stESyLDuLBQaJDjJ+ipoc07KzqeOQEj5msXGkQ6tiMJDZhwHqnXtWE29S
+ rmsFul3OZkHAUB3qSXHW6QcpX3zStEp2BSto7ev+RwxxxJ5p6c6w6SMfR5ox1dvxhQ+KA
+X-Received: by 2002:a7b:c851:0:b0:406:5301:4320 with SMTP id
+ c17-20020a7bc851000000b0040653014320mr3855862wml.16.1696477367089; 
+ Wed, 04 Oct 2023 20:42:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGvVfT5Ph3zky850qCUlsOmGrymPhsw/odVy9qMIpBfh8LB/8KbM6XZ7J3X4vTjLW8BKazvJQ==
+X-Received: by 2002:a7b:c851:0:b0:406:5301:4320 with SMTP id
+ c17-20020a7bc851000000b0040653014320mr3855850wml.16.1696477366867; 
+ Wed, 04 Oct 2023 20:42:46 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- u17-20020a5d6ad1000000b003247f732c11sm624573wrw.76.2023.10.04.20.42.41
+ x2-20020a1c7c02000000b003fe23b10fdfsm2760216wmc.36.2023.10.04.20.42.44
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:42:42 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:42:39 -0400
+ Wed, 04 Oct 2023 20:42:46 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:42:42 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL v2 05/53] hw/virtio/vhost-vdpa: Use target-agnostic
- qemu_target_page_mask()
-Message-ID: <33f21860b766701f92c01094dcfc5390974d4020.1696477105.git.mst@redhat.com>
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PULL v2 06/53] hw/virtio: Build vhost-vdpa.o once
+Message-ID: <05632635f84311f241ad4dbffdb591f97339a5dc.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -102,111 +104,34 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Similarly to commit e414ed2c47 ("virtio-iommu: Use
-target-agnostic qemu_target_page_mask"), Replace the
-target-specific TARGET_PAGE_SIZE and TARGET_PAGE_MASK
-definitions by a call to the runtime qemu_target_page_size()
-helper which is target agnostic.
+The previous commit removed the dependencies on the
+target-specific TARGET_PAGE_FOO macros. We can now
+move vhost-vdpa.c to the 'softmmu_virtio_ss' source
+set to build it once for all our targets.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230710094931.84402-5-philmd@linaro.org>
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Message-Id: <20230710100432.84819-1-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ hw/virtio/meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 0e0ed6d7ac..50b932a930 100644
---- a/hw/virtio/vhost-vdpa.c
-+++ b/hw/virtio/vhost-vdpa.c
-@@ -14,6 +14,7 @@
- #include <linux/vfio.h>
- #include <sys/eventfd.h>
- #include <sys/ioctl.h>
-+#include "exec/target_page.h"
- #include "hw/virtio/vhost.h"
- #include "hw/virtio/vhost-backend.h"
- #include "hw/virtio/virtio-net.h"
-@@ -23,7 +24,6 @@
- #include "migration/blocker.h"
- #include "qemu/cutils.h"
- #include "qemu/main-loop.h"
--#include "cpu.h"
- #include "trace.h"
- #include "qapi/error.h"
- 
-@@ -313,9 +313,11 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     Int128 llend, llsize;
-     void *vaddr;
-     int ret;
-+    int page_size = qemu_target_page_size();
-+    int page_mask = -page_size;
- 
-     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
--                                            v->iova_range.last, TARGET_PAGE_MASK)) {
-+                                            v->iova_range.last, page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
-@@ -323,16 +325,16 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-         return;
-     }
- 
--    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
--                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
-+    if (unlikely((section->offset_within_address_space & ~page_mask) !=
-+                 (section->offset_within_region & ~page_mask))) {
-         trace_vhost_vdpa_listener_region_add_unaligned(v, section->mr->name,
--                       section->offset_within_address_space & ~TARGET_PAGE_MASK,
--                       section->offset_within_region & ~TARGET_PAGE_MASK);
-+                       section->offset_within_address_space & ~page_mask,
-+                       section->offset_within_region & ~page_mask);
-         return;
-     }
- 
--    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
--    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
-+    iova = ROUND_UP(section->offset_within_address_space, page_size);
-+    llend = vhost_vdpa_section_end(section, page_mask);
-     if (int128_ge(int128_make64(iova), llend)) {
-         return;
-     }
-@@ -398,25 +400,27 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
-     hwaddr iova;
-     Int128 llend, llsize;
-     int ret;
-+    int page_size = qemu_target_page_size();
-+    int page_mask = -page_size;
- 
-     if (vhost_vdpa_listener_skipped_section(section, v->iova_range.first,
--                                            v->iova_range.last, TARGET_PAGE_MASK)) {
-+                                            v->iova_range.last, page_mask)) {
-         return;
-     }
-     if (memory_region_is_iommu(section->mr)) {
-         vhost_vdpa_iommu_region_del(listener, section);
-     }
- 
--    if (unlikely((section->offset_within_address_space & ~TARGET_PAGE_MASK) !=
--                 (section->offset_within_region & ~TARGET_PAGE_MASK))) {
-+    if (unlikely((section->offset_within_address_space & ~page_mask) !=
-+                 (section->offset_within_region & ~page_mask))) {
-         trace_vhost_vdpa_listener_region_del_unaligned(v, section->mr->name,
--                       section->offset_within_address_space & ~TARGET_PAGE_MASK,
--                       section->offset_within_region & ~TARGET_PAGE_MASK);
-+                       section->offset_within_address_space & ~page_mask,
-+                       section->offset_within_region & ~page_mask);
-         return;
-     }
- 
--    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
--    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
-+    iova = ROUND_UP(section->offset_within_address_space, page_size);
-+    llend = vhost_vdpa_section_end(section, page_mask);
- 
-     trace_vhost_vdpa_listener_region_del(v, iova,
-         int128_get64(int128_sub(llend, int128_one())));
+diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
+index 13e7c6c272..9737450afd 100644
+--- a/hw/virtio/meson.build
++++ b/hw/virtio/meson.build
+@@ -18,7 +18,8 @@ if have_vhost
+     specific_virtio_ss.add(files('vhost-user.c'))
+   endif
+   if have_vhost_vdpa
+-    specific_virtio_ss.add(files('vhost-vdpa.c', 'vhost-shadow-virtqueue.c'))
++    softmmu_virtio_ss.add(files('vhost-vdpa.c'))
++    specific_virtio_ss.add(files('vhost-shadow-virtqueue.c'))
+   endif
+ else
+   softmmu_virtio_ss.add(files('vhost-stub.c'))
 -- 
 MST
 
