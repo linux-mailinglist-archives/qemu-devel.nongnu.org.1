@@ -2,83 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F867B9ABD
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 06:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7CA7B9AC6
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 06:53:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoGKv-00067K-Jz; Thu, 05 Oct 2023 00:51:45 -0400
+	id 1qoGKn-0005sX-3K; Thu, 05 Oct 2023 00:51:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKs-00066U-2s
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:42 -0400
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKl-0005nj-Lw
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:35 -0400
+Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKb-0005Zt-5N
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:40 -0400
-Received: by mail-wm1-x32b.google.com with SMTP id
- 5b1f17b1804b1-40651a726acso4850815e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 21:51:24 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKh-0005ax-Rg
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:35 -0400
+Received: by mail-wm1-x335.google.com with SMTP id
+ 5b1f17b1804b1-40566f89f6eso5049745e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 21:51:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696481483; x=1697086283; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696481490; x=1697086290; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mQJAMU/w6o8m8TBpb8PzaVjQ4Gp1ZRSyPEWXTvxRp/M=;
- b=gCE//ublxXWKxHmL7oM6TpQw4h7XLRzAqKeCyu+Y2CJZwe7kfCIKnZ51S10lhg9s3+
- /cnC6SNbEnU5hhcsy0d1bmEWZssgJZvMm/OInpuIPOa+xhJjjt2yhRmHeY/3YUXxfbTf
- yR1TQ6DRlE1ebFirlPj39jSvmE4FtPtDn4Ewh/8wmPcIIBrpgRmGPCttkZfViBDL5sYr
- J0HeljewFvHygE68Tm1MmmsGkFLTcoeXOadXOKDuFTyZrr5Jj0f/d9Wz5ZwBmdVibV5i
- wbjS08sWijIG61FhP035mAk0ewGWpkcN1cJxsdqVX3GodHxX9tcNs0de/HJqxZtQiqMI
- gIbA==
+ bh=GescFgTUfXFoVvcmAz4axPebdRl/aulbPng86nuCdlw=;
+ b=l7uFcOCtRzmUqLB1K42VH6z8E6Say+znLJID+2p7OkEJvXa4J8R3/GWJNxegNkQX1V
+ 7jb3SpqONoB3PmlaZXF+Fi2dJIpGlPflSXW6BW5uA70APTNDhrMvR7/Tue5s1GHUnvqP
+ NIY4OgeDw78G1Tw24/ZYtl5n1+g1XEFzx5o62DyyKI5ZC+9H4kj7WLA6NEKJdxAcbq9G
+ 6x/Vtf0TSnGHI238+fdGMcAhGAObJTOp0S/SueAGQ80JyROXC9cSBDxksc4vMEcMSAvP
+ N8qyMQ3GRezI79dmOM8eYxAW/QO36KHWP7yk917OS2QdKo6v973dxdkKB9LdYOkqOokW
+ m7jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696481483; x=1697086283;
+ d=1e100.net; s=20230601; t=1696481490; x=1697086290;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mQJAMU/w6o8m8TBpb8PzaVjQ4Gp1ZRSyPEWXTvxRp/M=;
- b=ms6x82ETAP/yB/+3HJY3MvNI6fCtVVgR9c34Kx8+04xlnQVnOugHu//753hik44RyQ
- 0UVfOjRqceolHI+2UcfHaynUVIjXRcj41C0yWOs0URUmhvuGJySolOTgL8HTBq1VJKr+
- ppG1r2VygoZWruWD/pBLIiSQGkdUx8dEdFhCLdSfqfguVWFDS+o9tM6yBvq7YM8fk9+Q
- 2ZwP9sAYtGpHOeQlgOWMp9NrEZeGGNbb+GX3S9yWD+FtDmn5fTmWXTDCNPpE7ZTZQbAz
- XU7NUxQ2bDQEGzubn48hYCT76zi/X0/R6FEhF64Jh3cssbkme2edr5Ixg2J9Webom2CJ
- AkgQ==
-X-Gm-Message-State: AOJu0YweAT3Z0fCP9uPFZDGe6AqYdHv6mW0/BLOYTzVVQVa5WGzsGcEl
- PjA1axcTOt1SqMRKPo/CB5LwELmdkY0q/xrsx7Y=
-X-Google-Smtp-Source: AGHT+IEeF41HA09h+ZYwQntMbGp3lSSvFL7a3fkEGJfVxM+mrtIus80uXIJQU3yQvwJpSEd+EqUnuQ==
-X-Received: by 2002:adf:de11:0:b0:31f:f753:9938 with SMTP id
- b17-20020adfde11000000b0031ff7539938mr3660400wrm.58.1696481483506; 
- Wed, 04 Oct 2023 21:51:23 -0700 (PDT)
+ bh=GescFgTUfXFoVvcmAz4axPebdRl/aulbPng86nuCdlw=;
+ b=YJlHpYdNLbh7uZHwVqA0vZSLs86Dtzuexo8VOW3wP5YB27eX+nfYA7b8gXW83g0ynw
+ 7ZSLio5sBZccf0Bq9aJ3o7skqduUsNQOcXmL51CqJYkYy3p5JmoVGPGeYt3Y7WVoLSaJ
+ 8uXtC3Ol7CG4dT3DhntJUxX+bIyRAXf6RbTiRtIAMjQZSmmF/dfqHweUVtmAgBRJGx/T
+ URQeaqJijaGUfPm3eQpsaYIByuiGy+7Uk2+FVCvUy4LLEt9XlM/82gpPKTMporA4aWdz
+ euWBtHZhCq5DPdSeqw9BL9M7UiER9Yh15k/wZhaEM82u/ZNNAxkZJrrA5urUoNxyPmz3
+ 703Q==
+X-Gm-Message-State: AOJu0Yz7MGc+taIF8XF7UhQfpmokFC414Kp4W2WLukGatsyUYgMszezH
+ u+q3iDBjfpp2AI7nLIM04W5pgyEuaDZMxR6cSJw=
+X-Google-Smtp-Source: AGHT+IGxLYVUbMBFrb2WJOfAEqzPV3hAo01ZO34c4ht7Cen4NsXKc/CzbzYetFQbPsABjPhRmYrghw==
+X-Received: by 2002:a7b:ce8f:0:b0:3fe:2bb1:11ba with SMTP id
+ q15-20020a7bce8f000000b003fe2bb111bamr4170385wmj.27.1696481490269; 
+ Wed, 04 Oct 2023 21:51:30 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr.
  [176.171.211.120]) by smtp.gmail.com with ESMTPSA id
- z11-20020a5d4d0b000000b0031ff89af0e4sm739425wrt.99.2023.10.04.21.51.21
+ w21-20020a05600c015500b0040652e8ca13sm2856084wmm.43.2023.10.04.21.51.28
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 21:51:23 -0700 (PDT)
+ Wed, 04 Oct 2023 21:51:29 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- "Dr. David Alan Gilbert" <dave@treblig.org>,
- Michael Roth <michael.roth@amd.com>
-Subject: [PATCH v2 06/22] qapi: Inline and remove QERR_INVALID_PARAMETER
- definition
-Date: Thu,  5 Oct 2023 06:50:23 +0200
-Message-ID: <20231005045041.52649-7-philmd@linaro.org>
+ Thomas Huth <thuth@redhat.com>, Peter Maydell <peter.maydell@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ David Hildenbrand <david@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Subject: [PATCH v2 07/22] qapi: Inline QERR_INVALID_PARAMETER_TYPE definition
+ (constant param)
+Date: Thu,  5 Oct 2023 06:50:24 +0200
+Message-ID: <20231005045041.52649-8-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231005045041.52649-1-philmd@linaro.org>
 References: <20231005045041.52649-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::335;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x335.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -103,101 +105,68 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using:
+Mechanical transformation using the following
+coccinelle semantic patch:
 
-  $ sed -i -e "s/QERR_INVALID_PARAMETER,/\"Invalid parameter '%s'\",/" \
-    $(git grep -lw QERR_INVALID_PARAMETER)
+    @match@
+    expression errp;
+    constant param;
+    constant value;
+    @@
+         error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
 
-then manually removing the definition in include/qapi/qmp/qerror.h.
+    @script:python strformat depends on match@
+    param << match.param;
+    value << match.value;
+    fixedfmt; // new var
+    @@
+    fixedfmt = f'"Invalid parameter type for \'{param[1:-1]}\', expected: {value[1:-1]}"'
+    coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
+
+    @replace@
+    expression match.errp;
+    constant match.param;
+    constant match.value;
+    identifier strformat.fixedfmt;
+    @@
+    -    error_setg(errp, QERR_INVALID_PARAMETER_TYPE, param, value);
+    +    error_setg(errp, fixedfmt);
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Acked-by: Thomas Huth <thuth@redhat.com>
 ---
- include/qapi/qmp/qerror.h | 3 ---
- monitor/hmp-cmds.c        | 2 +-
- qapi/opts-visitor.c       | 2 +-
- util/qemu-option.c        | 8 ++++----
- 4 files changed, 6 insertions(+), 9 deletions(-)
+ target/arm/arm-qmp-cmds.c        | 3 ++-
+ target/s390x/cpu_models_sysemu.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
-index e93211085a..63ab775dc5 100644
---- a/include/qapi/qmp/qerror.h
-+++ b/include/qapi/qmp/qerror.h
-@@ -17,9 +17,6 @@
-  * add new ones!
-  */
- 
--#define QERR_INVALID_PARAMETER \
--    "Invalid parameter '%s'"
--
- #define QERR_INVALID_PARAMETER_TYPE \
-     "Invalid parameter type for '%s', expected: %s"
- 
-diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
-index 6c559b48c8..9d6533643d 100644
---- a/monitor/hmp-cmds.c
-+++ b/monitor/hmp-cmds.c
-@@ -138,7 +138,7 @@ void hmp_sync_profile(Monitor *mon, const QDict *qdict)
-     } else {
-         Error *err = NULL;
- 
--        error_setg(&err, QERR_INVALID_PARAMETER, op);
-+        error_setg(&err, "Invalid parameter '%s'", op);
-         hmp_handle_error(mon, err);
-     }
- }
-diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
-index 8f1efab8b9..3d1a28b419 100644
---- a/qapi/opts-visitor.c
-+++ b/qapi/opts-visitor.c
-@@ -184,7 +184,7 @@ opts_check_struct(Visitor *v, Error **errp)
-         const QemuOpt *first;
- 
-         first = g_queue_peek_head(any);
--        error_setg(errp, QERR_INVALID_PARAMETER, first->name);
-+        error_setg(errp, "Invalid parameter '%s'", first->name);
-         return false;
-     }
-     return true;
-diff --git a/util/qemu-option.c b/util/qemu-option.c
-index fb391a7904..201f7a87f3 100644
---- a/util/qemu-option.c
-+++ b/util/qemu-option.c
-@@ -498,7 +498,7 @@ static bool opt_validate(QemuOpt *opt, Error **errp)
- 
-     desc = find_desc_by_name(list->desc, opt->name);
-     if (!desc && !opts_accepts_any(list)) {
--        error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
-+        error_setg(errp, "Invalid parameter '%s'", opt->name);
-         return false;
-     }
- 
-@@ -531,7 +531,7 @@ bool qemu_opt_set_bool(QemuOpts *opts, const char *name, bool val,
- 
-     desc = find_desc_by_name(list->desc, name);
-     if (!desc && !opts_accepts_any(list)) {
--        error_setg(errp, QERR_INVALID_PARAMETER, name);
-+        error_setg(errp, "Invalid parameter '%s'", name);
-         return false;
-     }
- 
-@@ -554,7 +554,7 @@ bool qemu_opt_set_number(QemuOpts *opts, const char *name, int64_t val,
- 
-     desc = find_desc_by_name(list->desc, name);
-     if (!desc && !opts_accepts_any(list)) {
--        error_setg(errp, QERR_INVALID_PARAMETER, name);
-+        error_setg(errp, "Invalid parameter '%s'", name);
-         return false;
-     }
- 
-@@ -1103,7 +1103,7 @@ bool qemu_opts_validate(QemuOpts *opts, const QemuOptDesc *desc, Error **errp)
-     QTAILQ_FOREACH(opt, &opts->head, next) {
-         opt->desc = find_desc_by_name(desc, opt->name);
-         if (!opt->desc) {
--            error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
-+            error_setg(errp, "Invalid parameter '%s'", opt->name);
-             return false;
+diff --git a/target/arm/arm-qmp-cmds.c b/target/arm/arm-qmp-cmds.c
+index b53d5efe13..3c99fd8222 100644
+--- a/target/arm/arm-qmp-cmds.c
++++ b/target/arm/arm-qmp-cmds.c
+@@ -154,7 +154,8 @@ CpuModelExpansionInfo *qmp_query_cpu_model_expansion(CpuModelExpansionType type,
+     if (model->props) {
+         qdict_in = qobject_to(QDict, model->props);
+         if (!qdict_in) {
+-            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict");
++            error_setg(errp,
++                       "Invalid parameter type for 'props', expected: dict");
+             return NULL;
          }
- 
+     }
+diff --git a/target/s390x/cpu_models_sysemu.c b/target/s390x/cpu_models_sysemu.c
+index 63981bf36b..4507714493 100644
+--- a/target/s390x/cpu_models_sysemu.c
++++ b/target/s390x/cpu_models_sysemu.c
+@@ -111,7 +111,8 @@ static void cpu_model_from_info(S390CPUModel *model, const CpuModelInfo *info,
+     if (info->props) {
+         qdict = qobject_to(QDict, info->props);
+         if (!qdict) {
+-            error_setg(errp, QERR_INVALID_PARAMETER_TYPE, "props", "dict");
++            error_setg(errp,
++                       "Invalid parameter type for 'props', expected: dict");
+             return;
+         }
+     }
 -- 
 2.41.0
 
