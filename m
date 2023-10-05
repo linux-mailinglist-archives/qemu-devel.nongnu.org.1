@@ -2,49 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6107B9D59
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:34:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C8E7B9D6B
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:39:08 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOUU-0005ed-RF; Thu, 05 Oct 2023 09:34:10 -0400
+	id 1qoOYI-0006fM-Ur; Thu, 05 Oct 2023 09:38:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoOUR-0005e7-7J
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:34:07 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoOUO-00039e-Ae
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:34:06 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id D3DCA74632B;
- Thu,  5 Oct 2023 15:33:17 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 947FD7456A7; Thu,  5 Oct 2023 15:33:17 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 92A09745681;
- Thu,  5 Oct 2023 15:33:17 +0200 (CEST)
-Date: Thu, 5 Oct 2023 15:33:17 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-cc: qemu-devel@nongnu.org, berrange@redhat.com
-Subject: Re: [PATCH 5/7] audio: do not use first -audiodev as default audio
- device
-In-Reply-To: <20231005125815.66082-6-pbonzini@redhat.com>
-Message-ID: <d8327a5f-9a06-2c35-a0c8-372707ea0c4a@eik.bme.hu>
-References: <20231005125815.66082-1-pbonzini@redhat.com>
- <20231005125815.66082-6-pbonzini@redhat.com>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOYF-0006f3-Qi
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:38:03 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOYD-0003v7-Nr
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:38:03 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 3A0D621869;
+ Thu,  5 Oct 2023 13:37:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696513079; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jt9vFEAKquRg1bUJkjp1WkMMmaOYJV/A98PSaZJgFjI=;
+ b=Q6uywKF8o0+LZl+TzscD2EnOGmGrDCRHAyfzioAkAJysIi8LGtVGF2OubJJCq31/wUwfzf
+ pnHomRWxIXJhuhabl6Vzta3drlpfQ8bscOLXPKRMJwkNuTB9qc8+E3oC0zNrL0lxp55RjJ
+ WuzmPtF33yR2452ZpYcbe4oBGhH6riA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696513079;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=jt9vFEAKquRg1bUJkjp1WkMMmaOYJV/A98PSaZJgFjI=;
+ b=GiV/7lHeBvlcpMARyzzHimf3cYM5wIsxrUKRSGD4qecf0K4U1zWhKjZyqDUvqXUYvkYK4N
+ e5stKv5V7E96MMBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id C32D9139C2;
+ Thu,  5 Oct 2023 13:37:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id DFSCIza8HmUZEwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 05 Oct 2023 13:37:58 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH v3 10/10] tests/migration-test: Add a test for postcopy
+ hangs during RECOVER
+In-Reply-To: <87edi9fbh5.fsf@suse.de>
+References: <20231004220240.167175-1-peterx@redhat.com>
+ <20231004220240.167175-11-peterx@redhat.com> <87edi9fbh5.fsf@suse.de>
+Date: Thu, 05 Oct 2023 10:37:56 -0300
+Message-ID: <878r8hfavf.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+Content-Type: text/plain
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -61,130 +83,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 5 Oct 2023, Paolo Bonzini wrote:
-> It is now possible to specify the options for the default audio device
-> using -audio, so there is no need anymore to use a fake -audiodev option.
->
-> Remove the fall back to QTAILQ_FIRST(&audio_states), instead remember the
-> AudioState that was created from default_audiodevs and use that one.
->
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
-> audio/audio.c                   | 25 +++++++------------------
-> docs/about/deprecated.rst       |  6 ------
-> docs/about/removed-features.rst |  8 ++++++++
-> 3 files changed, 15 insertions(+), 24 deletions(-)
->
-> diff --git a/audio/audio.c b/audio/audio.c
-> index 186cc4d336e..de37ad7c074 100644
-> --- a/audio/audio.c
-> +++ b/audio/audio.c
-> @@ -104,6 +104,7 @@ static audio_driver *audio_driver_lookup(const char *name)
->
-> static QTAILQ_HEAD(AudioStateHead, AudioState) audio_states =
->     QTAILQ_HEAD_INITIALIZER(audio_states);
-> +static AudioState *default_audio_state;
->
-> const struct mixeng_volume nominal_volume = {
->     .mute = 0,
-> @@ -1660,6 +1661,7 @@ static void free_audio_state(AudioState *s)
->
-> void audio_cleanup(void)
-> {
-> +    default_audio_state = NULL;
->     while (!QTAILQ_EMPTY(&audio_states)) {
->         AudioState *s = QTAILQ_FIRST(&audio_states);
->         QTAILQ_REMOVE(&audio_states, s, list);
-> @@ -1760,6 +1762,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
->             goto out;
->         }
->     } else {
-> +        assert(!default_audio_state);
->         for (;;) {
->             AudiodevListEntry *e = QSIMPLEQ_FIRST(&default_audiodevs);
->             if (!e) {
-> @@ -1801,24 +1804,9 @@ out:
-> bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
-> {
->     if (!card->state) {
-> -        if (!QTAILQ_EMPTY(&audio_states)) {
-> -            /*
-> -             * FIXME: once it is possible to create an arbitrary
-> -             * default device via -audio DRIVER,OPT=VALUE (no "model"),
-> -             * replace this special case with the default AudioState*,
-> -             * storing it in a separate global.  For now, keep the
-> -             * warning to encourage moving off magic use of the first
-> -             * -audiodev.
-> -             */
-> -            if (QSIMPLEQ_EMPTY(&default_audiodevs)) {
-> -                dolog("Device %s: audiodev default parameter is deprecated, please "
-> -                      "specify audiodev=%s\n", name,
-> -                      QTAILQ_FIRST(&audio_states)->dev->id);
-> -            }
-> -            card->state = QTAILQ_FIRST(&audio_states);
-> -        } else {
-> -            card->state = audio_init(NULL, errp);
-> -            if (!card->state) {
-> +        if (!default_audio_state) {
-> +            default_audio_state = audio_init(NULL, errp);
-> +            if (!default_audio_state) {
->                 if (!QSIMPLEQ_EMPTY(&audiodevs)) {
->                     error_append_hint(errp, "Perhaps you wanted to set audiodev=%s?\n",
->                                       QSIMPLEQ_FIRST(&audiodevs)->dev->id);
-> @@ -1826,6 +1814,7 @@ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
->                 return false;
->             }
->         }
-> +        card->state = default_audio_state;
->     }
->
->     card->name = g_strdup (name);
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 2f51cf770ae..d59bcf36230 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -37,12 +37,6 @@ coverage.
-> System emulator command line arguments
-> --------------------------------------
->
-> -Creating sound card devices without ``audiodev=`` property (since 4.2)
-> -''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-> -
-> -When not using the deprecated legacy audio config, each sound card
-> -should specify an ``audiodev=`` property.
-> -
-> Short-form boolean options (since 6.0)
-> ''''''''''''''''''''''''''''''''''''''
->
-> diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-> index 58c94392c65..27639370f96 100644
-> --- a/docs/about/removed-features.rst
-> +++ b/docs/about/removed-features.rst
-> @@ -442,10 +442,18 @@ line using a ``secret`` object instance.
-> The ``-audiodev`` and ``-audio`` command line options are now the only
-> way to specify audio backend settings.
->
-> +Using ``-audiodev`` to define the default audio backend (removed in 8.2)
-> +''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-> +
-> QEMU does not create default audio backends anymore if any of the
-> ``-audiodev``, ``-audio`` or ``-nodefaults`` options are used on the
-> command line.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Maybe this needs further updating because -audio can now define the 
-default and is what should be used instead of -audiodev but this is not 
-clear from this documentation.
-
-Regards,
-BALATON Zoltan
-
-> +If an audio backend is created with ``-audiodev``, each sound card
-> +that wants to use it should specify an ``audiodev=``
-> +property.  Previously, the first audiodev command line option would be
-> +used as a fallback.
-> +
-> Creating vnc without ``audiodev=`` property (removed in 8.2)
-> ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+> Peter Xu <peterx@redhat.com> writes:
 >
+>> From: Fabiano Rosas <farosas@suse.de>
+>>
+>> To do so, create two paired sockets, but make them not providing real data.
+>> Feed those fake sockets to src/dst QEMUs for recovery to let them go into
+>> RECOVER stage without going out.  Test that we can always kick it out and
+>> recover again with the right ports.
+>>
+>> This patch is based on Fabiano's version here:
+>>
+>> https://lore.kernel.org/r/877cowmdu0.fsf@suse.de
+>>
+>> Signed-off-by: Fabiano Rosas <farosas@suse.de>
+>> [peterx: write commit message, remove case 1, fix bugs, and more]
+>> Signed-off-by: Peter Xu <peterx@redhat.com>
+>> ---
+>>  tests/qtest/migration-test.c | 94 ++++++++++++++++++++++++++++++++++++
+>>  1 file changed, 94 insertions(+)
+>>
+>> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
+>> index 46f1c275a2..fb7a3765e4 100644
+>> --- a/tests/qtest/migration-test.c
+>> +++ b/tests/qtest/migration-test.c
+>> @@ -729,6 +729,7 @@ typedef struct {
+>>      /* Postcopy specific fields */
+>>      void *postcopy_data;
+>>      bool postcopy_preempt;
+>> +    bool postcopy_recovery_test_fail;
+>>  } MigrateCommon;
+>>  
+>>  static int test_migrate_start(QTestState **from, QTestState **to,
+>> @@ -1381,6 +1382,78 @@ static void test_postcopy_preempt_tls_psk(void)
+>>  }
+>>  #endif
+>>  
+>> +static void wait_for_postcopy_status(QTestState *one, const char *status)
+>> +{
+>> +    wait_for_migration_status(one, status,
+>> +                              (const char * []) { "failed", "active",
+>> +                                                  "completed", NULL });
+>> +}
+>> +
+>> +static void postcopy_recover_fail(QTestState *from, QTestState *to)
+>> +{
+>> +    int ret, pair1[2], pair2[2];
+>> +    char c;
+>> +
+>> +    /* Create two unrelated socketpairs */
+>> +    ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair1);
+>> +    g_assert_cmpint(ret, ==, 0);
+>> +
+>> +    ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair2);
+>> +    g_assert_cmpint(ret, ==, 0);
+>> +
+>> +    /*
+>> +     * Give the guests unpaired ends of the sockets, so they'll all blocked
+>> +     * at reading.  This mimics a wrong channel established.
+>> +     */
+>> +    qtest_qmp_fds_assert_success(from, &pair1[0], 1,
+>> +                                 "{ 'execute': 'getfd',"
+>> +                                 "  'arguments': { 'fdname': 'fd-mig' }}");
+>> +    qtest_qmp_fds_assert_success(to, &pair2[0], 1,
+>> +                                 "{ 'execute': 'getfd',"
+>> +                                 "  'arguments': { 'fdname': 'fd-mig' }}");
+>> +
+>> +    /*
+>> +     * Write the 1st byte as QEMU_VM_COMMAND (0x8) for the dest socket, to
+>> +     * emulate the 1st byte of a real recovery, but stops from there to
+>> +     * keep dest QEMU in RECOVER.  This is needed so that we can kick off
+>> +     * the recover process on dest QEMU (by triggering the G_IO_IN event).
+>> +     *
+>> +     * NOTE: this trick is not needed on src QEMUs, because src doesn't
+>> +     * rely on an pre-existing G_IO_IN event, so it will always trigger the
+>> +     * upcoming recovery anyway even if it can read nothing.
+>> +     */
+>> +#define QEMU_VM_COMMAND              0x08
+>> +    c = QEMU_VM_COMMAND;
+>> +    ret = send(pair2[1], &c, 1, 0);
+>> +    g_assert_cmpint(ret, ==, 1);
+>> +
+>> +    migrate_recover(to, "fd:fd-mig");
+>> +    migrate_qmp(from, "fd:fd-mig", "{'resume': true}");
+>> +
+>> +    /*
+>> +     * Make sure both QEMU instances will go into RECOVER stage, then test
+>> +     * kicking them out using migrate-pause.
+>> +     */
+>> +    wait_for_postcopy_status(from, "postcopy-recover");
+>> +    wait_for_postcopy_status(to, "postcopy-recover");
 >
+> Is this wait out of place? I think we're trying to resume too fast after
+> migrate_recover():
+>
+> # {
+> #     "error": {
+> #         "class": "GenericError",
+> #         "desc": "Cannot resume if there is no paused migration"
+> #     }
+> # }
+>
+
+Ugh, sorry about the long lines:
+
+{
+    "error": {
+        "class": "GenericError",
+        "desc": "Cannot resume if there is no paused migration"
+    }
+}
+
 
