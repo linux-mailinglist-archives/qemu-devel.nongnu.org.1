@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1A27B9A77
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A557B9A78
 	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFMQ-0008LT-WF; Wed, 04 Oct 2023 23:49:15 -0400
+	id 1qoFJR-0000fV-7r; Wed, 04 Oct 2023 23:46:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFMJ-0007MC-Rx
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:49:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJH-0000HC-AT
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFMH-0001Pp-MD
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:49:07 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJC-0000or-I7
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477744;
+ s=mimecast20190719; t=1696477553;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=hmbr6Yy0aSGhAeUFXnJnhooAueC1pSdc2KnGldQB5w4=;
- b=eO9d6D1RWSyolLo+qLeZRQEODlplkxCmiz546vgDrUuHzFe/8tLpNfMBFd+49sQlrar+aA
- 15XfFlFY1spHrnT3SVJuvefc7JFwczj4xpmTACGQDumpSmiJI+WgyjgvAJSCew/ud/LrRa
- vmb2Azbb0QQRquQ1RCNnIdHn48i57sE=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=tctm3+uo+cxVRzR1eAsWLGEe5b6Azf26SVqS4Nhd8Io=;
+ b=eXVih8fhFKFv+6x3fsXbHOGZVWnD9WkPOWruEP8Jk/bOtdXkElVihascwlEv3qAifMEc0a
+ HqqJyCME3ydvhEwvH7/TVG2cbutfVTd5L3t65umCA/rf4dcRJNHTSYZlIJS1NSX14QBT5G
+ x4eUjfJTVhRlIH5uRqeyGjO8AXlughI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-191-1NM9B4DOO9-TGfKwglP-WQ-1; Wed, 04 Oct 2023 23:45:48 -0400
-X-MC-Unique: 1NM9B4DOO9-TGfKwglP-WQ-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32172e3679bso464260f8f.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:48 -0700 (PDT)
+ us-mta-399-zqNP7IyiP-m9xH60L4u8NA-1; Wed, 04 Oct 2023 23:45:52 -0400
+X-MC-Unique: zqNP7IyiP-m9xH60L4u8NA-1
+Received: by mail-wm1-f69.google.com with SMTP id
+ 5b1f17b1804b1-405535740d2so3377745e9.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477547; x=1697082347;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=hmbr6Yy0aSGhAeUFXnJnhooAueC1pSdc2KnGldQB5w4=;
- b=dfh7eiRcOc8FyTfx7fT0iFhYLcNOdCVs7xgmUWajKpXMDoGRaaYrKDAW7nwqsiUsP/
- 0fTsBrT9d0dsroCkMR8FKV6oqChTOdq+h+QwZkvXIjjVe4MewMP+wQeuLnbUie3Cymmi
- QMbcc+8SyeCCzT13jGiJBywekc/x7R0fp83jVJ+lVXGF8RZvalMWi2UGEUL4t8k4EWuS
- XLkoMNm8f3AHtfoezwiFnMcVpUUtIBRyIIE4t2qnc47q+w8vg9rJQbqmxk7oHLn5pwsG
- vqbuPJ/CipoG0amnr8sZGLD+HMVmz+89r8j9hvH5DKHX4T9PfVi+Sc2WCz5RjrxF3Va9
- S5IA==
-X-Gm-Message-State: AOJu0Yw9n6sJRRhg5q6bKCyY20/fGq5KXvFPHkHz+CnbqE16yjut9P4t
- PFq2W5dU7iJ47Zu6YVMjOA2nLu9qutMzgaRcW8bcrAJzq99Z5PrwfpnHvAw5ly2Oe+KzYicg4IK
- jtup3ah5ypzFgihLJ6SOEDu/2E7oMmyUAmIZCls5H24BE9kpoPdfwU4SB8nUTiM0CE8kV
-X-Received: by 2002:a5d:664a:0:b0:31f:f91c:d872 with SMTP id
- f10-20020a5d664a000000b0031ff91cd872mr4366733wrw.19.1696477547032; 
- Wed, 04 Oct 2023 20:45:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKR4+rGqD99tX0YIdLp8cA1/oUBQ/oFy50etu9i43M+/QwMCPL1uK4dAlBF26WaofK/Vn7ew==
-X-Received: by 2002:a5d:664a:0:b0:31f:f91c:d872 with SMTP id
- f10-20020a5d664a000000b0031ff91cd872mr4366724wrw.19.1696477546814; 
- Wed, 04 Oct 2023 20:45:46 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696477551; x=1697082351;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=tctm3+uo+cxVRzR1eAsWLGEe5b6Azf26SVqS4Nhd8Io=;
+ b=JaUx4hq1fgm2WGZCdKx9PVELENAs+1MPICJ7pKsTXbldR3ai/9HjpLJ9XJpLjCMUyf
+ MFjcamTjMQ8NqVesmzUiD3vvYXTDdouZQXqQ9ljZOWQCHV4MhB+ubF0pNDFn7fyTFkL3
+ NqTMWfN+iDYRoUjaYgset0dOqo9QrbXThEM1V4DIMu/NWf+GJdOYig317bGAAC6x9fOU
+ Mtgv2J9ogrBgr5EeJcEBpJzXXzeYWsvw7+SGnSSaM6Nvs+9KjBwgzVQNcsF2upSYCeTA
+ MEtZiY8+Jyq6FflpWeF2PR8BZtdy9+1NTlj2sn5sGm3ordAAbrByjH1RM72cGWUkRfkd
+ MheA==
+X-Gm-Message-State: AOJu0Yzar0VJbwXoaIPL2n6RrIXPHGuDqJvhXZrJylMnr7dpbYlhVCEJ
+ rIA/ngKklqXv5CVjVxJCIMdWtBRUKcusqVdExIbSlDwXsClDuykEDBBOPZrXCs0zpRHkdaLo90t
+ AsC5dTiR2q9KYYopwhNtE+4AxxNVhOCq/kMYKp8jdomIgwUN2D2GQty/OZQCQO0w9TOZr
+X-Received: by 2002:a1c:4c10:0:b0:402:f8eb:28d8 with SMTP id
+ z16-20020a1c4c10000000b00402f8eb28d8mr3834728wmf.6.1696477550944; 
+ Wed, 04 Oct 2023 20:45:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCiT7PtRntGlHemVVDYg9MPUiIu4p7LcVIDr9vdB/qWNLG2gAWobKBYKzCwcSf9Ma3TGIYdA==
+X-Received: by 2002:a1c:4c10:0:b0:402:f8eb:28d8 with SMTP id
+ z16-20020a1c4c10000000b00402f8eb28d8mr3834714wmf.6.1696477550500; 
+ Wed, 04 Oct 2023 20:45:50 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- s10-20020a05600c044a00b004063c9f68f2sm538641wmb.26.2023.10.04.20.45.45
+ o4-20020a05600c378400b003fc0505be19sm526383wmr.37.2023.10.04.20.45.48
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:45:46 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:45:43 -0400
+ Wed, 04 Oct 2023 20:45:49 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:45:46 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Ilya Maximets <i.maximets@ovn.org>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL v2 49/53] virtio: remove unused next argument from
- virtqueue_split_read_next_desc()
-Message-ID: <70f88436aa5a8aeddd33e4d06270146af5d5bb52.1696477105.git.mst@redhat.com>
+ Albert Esteve <aesteve@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fam Zheng <fam@euphon.net>
+Subject: [PULL v2 50/53] util/uuid: add a hash function
+Message-ID: <a6ceee591acdb9c9c772bf59544a57891308222e.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1696477105.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,93 +101,103 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Albert Esteve <aesteve@redhat.com>
 
-The 'next' was converted from a local variable to an output parameter
-in commit:
-  412e0e81b174 ("virtio: handle virtqueue_read_next_desc() errors")
+Add hash function to uuid module using the
+djb2 hash algorithm.
 
-But all the actual uses of the 'i/next' as an output were removed a few
-months prior in commit:
-  aa570d6fb6bd ("virtio: combine the read of a descriptor")
+Add a couple simple unit tests for the hash
+function, checking collisions for similar UUIDs.
 
-Remove the unused argument to simplify the code.
-
-Also, adding a comment to the function to describe what it is actually
-doing, as it is not obvious that the 'desc' is both an input and an
-output argument.
-
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Message-Id: <20230927140016.2317404-3-i.maximets@ovn.org>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Albert Esteve <aesteve@redhat.com>
+Message-Id: <20231002065706.94707-2-aesteve@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ include/qemu/uuid.h    |  2 ++
+ tests/unit/test-uuid.c | 27 +++++++++++++++++++++++++++
+ util/uuid.c            | 14 ++++++++++++++
+ 3 files changed, 43 insertions(+)
 
-diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 87e8f990c5..6facd64fbc 100644
---- a/hw/virtio/virtio.c
-+++ b/hw/virtio/virtio.c
-@@ -1049,9 +1049,10 @@ enum {
-     VIRTQUEUE_READ_DESC_MORE = 1,   /* more buffers in chain */
- };
+diff --git a/include/qemu/uuid.h b/include/qemu/uuid.h
+index dc40ee1fc9..e24a1099e4 100644
+--- a/include/qemu/uuid.h
++++ b/include/qemu/uuid.h
+@@ -96,4 +96,6 @@ int qemu_uuid_parse(const char *str, QemuUUID *uuid);
  
-+/* Reads the 'desc->next' descriptor into '*desc'. */
- static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
-                                           MemoryRegionCache *desc_cache,
--                                          unsigned int max, unsigned int *next)
-+                                          unsigned int max)
- {
-     /* If this descriptor says it doesn't chain, we're done. */
-     if (!(desc->flags & VRING_DESC_F_NEXT)) {
-@@ -1059,14 +1060,12 @@ static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
+ QemuUUID qemu_uuid_bswap(QemuUUID uuid);
+ 
++uint32_t qemu_uuid_hash(const void *uuid);
++
+ #endif
+diff --git a/tests/unit/test-uuid.c b/tests/unit/test-uuid.c
+index c111de5fc1..aedc125ae9 100644
+--- a/tests/unit/test-uuid.c
++++ b/tests/unit/test-uuid.c
+@@ -171,6 +171,32 @@ static void test_uuid_unparse_strdup(void)
      }
- 
-     /* Check they're not leading us off end of descriptors. */
--    *next = desc->next;
--
--    if (*next >= max) {
--        virtio_error(vdev, "Desc next is %u", *next);
-+    if (desc->next >= max) {
-+        virtio_error(vdev, "Desc next is %u", desc->next);
-         return VIRTQUEUE_READ_DESC_ERROR;
-     }
- 
--    vring_split_desc_read(vdev, desc, desc_cache, *next);
-+    vring_split_desc_read(vdev, desc, desc_cache, desc->next);
-     return VIRTQUEUE_READ_DESC_MORE;
  }
  
-@@ -1146,7 +1145,7 @@ static void virtqueue_split_get_avail_bytes(VirtQueue *vq,
-                 goto done;
-             }
++static void test_uuid_hash(void)
++{
++    QemuUUID uuid;
++    int i;
++
++    for (i = 0; i < 100; i++) {
++        qemu_uuid_generate(&uuid);
++        /* Obtain the UUID hash */
++        uint32_t hash_a = qemu_uuid_hash(&uuid);
++        int data_idx = g_random_int_range(0, 15);
++        /* Change a single random byte of the UUID */
++        if (uuid.data[data_idx] < 0xFF) {
++            uuid.data[data_idx]++;
++        } else {
++            uuid.data[data_idx]--;
++        }
++        /* Obtain the UUID hash again */
++        uint32_t hash_b = qemu_uuid_hash(&uuid);
++        /*
++         * Both hashes shall be different (avoid collision)
++         * for any change in the UUID fields
++         */
++        g_assert_cmpint(hash_a, !=, hash_b);
++    }
++}
++
+ int main(int argc, char **argv)
+ {
+     g_test_init(&argc, &argv, NULL);
+@@ -179,6 +205,7 @@ int main(int argc, char **argv)
+     g_test_add_func("/uuid/parse", test_uuid_parse);
+     g_test_add_func("/uuid/unparse", test_uuid_unparse);
+     g_test_add_func("/uuid/unparse_strdup", test_uuid_unparse_strdup);
++    g_test_add_func("/uuid/hash", test_uuid_hash);
  
--            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max, &i);
-+            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max);
-         } while (rc == VIRTQUEUE_READ_DESC_MORE);
- 
-         if (rc == VIRTQUEUE_READ_DESC_ERROR) {
-@@ -1601,7 +1600,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
-             goto err_undo_map;
-         }
- 
--        rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max, &i);
-+        rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max);
-     } while (rc == VIRTQUEUE_READ_DESC_MORE);
- 
-     if (rc == VIRTQUEUE_READ_DESC_ERROR) {
-@@ -4055,8 +4054,7 @@ VirtioQueueElement *qmp_x_query_virtio_queue_element(const char *path,
-             list = node;
- 
-             ndescs++;
--            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache,
--                                                max, &i);
-+            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max);
-         } while (rc == VIRTQUEUE_READ_DESC_MORE);
-         element->descs = list;
- done:
+     return g_test_run();
+ }
+diff --git a/util/uuid.c b/util/uuid.c
+index b1108dde78..d71aa79e5e 100644
+--- a/util/uuid.c
++++ b/util/uuid.c
+@@ -116,3 +116,17 @@ QemuUUID qemu_uuid_bswap(QemuUUID uuid)
+     bswap16s(&uuid.fields.time_high_and_version);
+     return uuid;
+ }
++
++/* djb2 hash algorithm */
++uint32_t qemu_uuid_hash(const void *uuid)
++{
++    QemuUUID *qid = (QemuUUID *) uuid;
++    uint32_t h = 5381;
++    int i;
++
++    for (i = 0; i < ARRAY_SIZE(qid->data); i++) {
++        h = (h << 5) + h + qid->data[i];
++    }
++
++    return h;
++}
 -- 
 MST
 
