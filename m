@@ -2,71 +2,110 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3AF87BA86C
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 19:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A21D7BA8FA
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 20:22:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoSSS-0000VK-PI; Thu, 05 Oct 2023 13:48:20 -0400
+	id 1qoSzG-0007uC-OS; Thu, 05 Oct 2023 14:22:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qoSSQ-0000Us-N4
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 13:48:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1qoSzE-0007sj-F5
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:22:12 -0400
+Received: from mail-bn8nam12on2073.outbound.protection.outlook.com
+ ([40.107.237.73] helo=NAM12-BN8-obe.outbound.protection.outlook.com)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <stefanha@redhat.com>)
- id 1qoSSO-0005qH-E6
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 13:48:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696528095;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=ECP7IDOEDTjkevFHFfuJxtdaOfQHpXJehiYmyPZnBdM=;
- b=dh69TEpALVSHh+hX0kumad07CYCh0hGB/e5saDQwrxeL6jc5WlxX8R9Xg6xAFFb26V0PcK
- z4hHFEpM5ehUdvjjaaGsw1cC67W6+XDf9cKIQUansMBfG4e71bpG9X0NLC1bKZOYWXRARL
- 1LLRB4rlLl7CDiSRJ4Ym+nV+FNuZzQo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-508-WNZz_MqgNGaZ2RRm59UHdw-1; Thu, 05 Oct 2023 13:48:13 -0400
-X-MC-Unique: WNZz_MqgNGaZ2RRm59UHdw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 139122810D51;
- Thu,  5 Oct 2023 17:48:13 +0000 (UTC)
-Received: from localhost (unknown [10.39.192.20])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 80F4A10F1BE7;
- Thu,  5 Oct 2023 17:48:12 +0000 (UTC)
-Date: Thu, 5 Oct 2023 13:48:11 -0400
-From: Stefan Hajnoczi <stefanha@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
- "Michael S . Tsirkin" <mst@redhat.com>,
- German Maglione <gmaglione@redhat.com>,
- Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
- Anton Kuchin <antonkuchin@yandex-team.ru>
-Subject: Re: [PATCH v4 0/8] vhost-user: Back-end state migration
-Message-ID: <20231005174811.GJ1342722@fedora>
-References: <20231004125904.110781-1-hreitz@redhat.com>
+ (Exim 4.90_1) (envelope-from <vikram.garhwal@amd.com>)
+ id 1qoSzA-0007kc-F5
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:22:12 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IRzSU4l1BFcyFhQs2Wltr2GSsBFFDWUGg0GJi+evgVhj1oBrIk9Ern1k7dP1Mzvn9gF2RSHuJ/EJ8baNN8kRIH3ioQg3Ai90gJ1/kjdBLirvDA58UITQ6ooTX5RnIUYrACjJC91vFSv0ZiDJyLoGmOLy+JPsLwgiXm5GeGwUQQ+njjCcW67VMd1BvCmQaACVwBnVPmTIDtOBavoSXAwji5H+QcgFl9ROPnVM6jeInohAVuKEA73hMbSApzBcUifYUFhnWTHob6+MVmMt2jIvaUdYtl+ThnxZ4UlfZwXcvJvEiMXuIzYbLTBmmNoHMwOdTJymOuwTvSq1qqGQjJmzzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gzG8/xPrDQXVCqBOsY4uZEiPo7KrL44AluxOdY2Qw48=;
+ b=jpIvqRBpu9jUwMM97IgwslLTJC3ED61fnb0y30Ox6A+cW+Sjp27hTBHBJOJ7d7gj2XNM/BD7H1P2Sjf1B6L1QUaRmQNci0NOiq8IHngCgOUxESQ8FhDQ8y7A21SCArJdEUfEiBpLHSur71BIp1mAr967KM2smgfpkfIQ6Wk06QX3FsRUt5Q38AAWfJktcosfRQ4e7ynmgyH0AayXSPSHdkWMKU+TwmLYglccvlfTmljar6g8N1jno7btGUNKTnYTxArLmg2I6Q59PuDAW4Z3GUnchMejnVDUsJ1GOjITj11tY52+jarZjPkztEzJS1ApMEvdLPXZHuXNx1AlMVzosw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=nongnu.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gzG8/xPrDQXVCqBOsY4uZEiPo7KrL44AluxOdY2Qw48=;
+ b=EudNfZbPVCihe83Spd6pjvDFdajIIwDaIDSjFYMwdu/PI0vdWgdMJvA88KmSa29EvDFDSEc51fXPAJ9hhXOhNOJoyClicjODlGLw/iw7202s3rQbQaanydughE8+2s2GR0m2lSY8GBseyUdVEPg0G3xck5Iw93zT/h3p5kEHrn4=
+Received: from BL1PR13CA0262.namprd13.prod.outlook.com (2603:10b6:208:2ba::27)
+ by BL3PR12MB6451.namprd12.prod.outlook.com (2603:10b6:208:3ba::9)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.22; Thu, 5 Oct
+ 2023 18:17:01 +0000
+Received: from BL6PEPF0001AB4A.namprd04.prod.outlook.com
+ (2603:10b6:208:2ba:cafe::24) by BL1PR13CA0262.outlook.office365.com
+ (2603:10b6:208:2ba::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.11 via Frontend
+ Transport; Thu, 5 Oct 2023 18:17:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ BL6PEPF0001AB4A.mail.protection.outlook.com (10.167.242.68) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6838.14 via Frontend Transport; Thu, 5 Oct 2023 18:17:01 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 5 Oct
+ 2023 13:16:50 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 5 Oct
+ 2023 13:16:50 -0500
+Received: from xsjfnuv50.xilinx.com (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
+ Transport; Thu, 5 Oct 2023 13:16:49 -0500
+From: Vikram Garhwal <vikram.garhwal@amd.com>
+To: <qemu-devel@nongnu.org>
+CC: <sstabellini@kernel.org>, Vikram Garhwal <vikram.garhwal@amd.com>
+Subject: [QEMU][PATCH v1 0/7] Xen: support grant mappings.
+Date: Thu, 5 Oct 2023 11:16:22 -0700
+Message-ID: <20231005181629.4046-1-vikram.garhwal@amd.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature"; boundary="mNw8fgYOgCi8R7Nz"
-Content-Disposition: inline
-In-Reply-To: <20231004125904.110781-1-hreitz@redhat.com>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=stefanha@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4A:EE_|BL3PR12MB6451:EE_
+X-MS-Office365-Filtering-Correlation-Id: fb4bfe46-2fd4-4b05-6809-08dbc5cf451c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: ie2vez262LjNY9qslUS4JSSxA93U5RAdN7VrLEgyMT9mz7w/ZbhYLAquVdaXQpRJh5BQ9fWTQqKf3ceeXcfB+YkMHqoNb3S2t5dhx3vXrYcoq8j0edOu4NCxLXj1kTfKigtKyU4SMkGiWYErskXnJ9eCliD/JXPQWwMicj4yrDtvNBdmcrxOxL93oJFHEbyJO0KFLobotZ7IA3yaon752y7G09xH7fzTFL+hNksUWNOQN2jash6wLl547mVL0+9FqNiP5v9TJhj+/n7QA9xWW1THX5AWi31qzK349JKSivx0M7uq5DnyOKNNgxKk/Fbq1igVGCNhoGQpcLUmBKhOEdxl0WdUu6/LFfLb0txOMZv619LhHeHnWuLB4zFR+tf2P2ayxMusueLEhh7zZpMPdKixCGsgFpPpYrvzAqfONY4cx6YAHW61VzgZ0joPJdoUc3oRbJ3x7ioIwSqovl4IDtlbiz2LIJE5QUAcpFzz+uNqBcUErlCY88KFqsdzZH+tJTm0nUMar7QzyzxI72pEiQpVZNhz/XVl5Ukf+IrneHwjzTWGygWQVwgP+o1v7i8a6pxhkEjoM99lWPqJMX88MOxMYlsIK1ftqcDOyFFkhlyE1kU2zcDd4owK8VS8ERTW2e5vMASTtg46KWNSJfehoRBULE9FjTQp7K+JnqxqankwKrTjmDQ9X2ulSJ3vA1jM4GnIZSkkSq0MZvNucO/LbsuawyyqY4zbO37Xr11HdTgRYiekaHfUkbMA9D7O0F8tOV5Yqrl23brlz0MM2QNcow==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230031)(4636009)(346002)(376002)(396003)(136003)(39860400002)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(82310400011)(36840700001)(40470700004)(46966006)(54906003)(70206006)(1076003)(2616005)(316002)(6916009)(41300700001)(44832011)(86362001)(6666004)(5660300002)(2906002)(478600001)(70586007)(26005)(47076005)(83380400001)(426003)(4326008)(8676002)(36860700001)(8936002)(336012)(40460700003)(82740400003)(356005)(81166007)(40480700001)(36756003)(36900700001);
+ DIR:OUT; SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2023 18:17:01.0980 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: fb4bfe46-2fd4-4b05-6809-08dbc5cf451c
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4A.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6451
+Received-SPF: softfail client-ip=40.107.237.73;
+ envelope-from=vikram.garhwal@amd.com;
+ helo=NAM12-BN8-obe.outbound.protection.outlook.com
+X-Spam_score_int: -25
+X-Spam_score: -2.6
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_report: (-2.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H2=-0.493, SPF_HELO_PASS=-0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,127 +121,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+Hi,
+This patch series add support for grant mappings as a pseudo RAM region for Xen.
 
---mNw8fgYOgCi8R7Nz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Enabling grant mappings patches(first 6) are written by Juergen in 2021.
 
-On Wed, Oct 04, 2023 at 02:58:56PM +0200, Hanna Czenczek wrote:
-> RFC:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-03/msg04263.html
->=20
-> v1:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-04/msg01575.html
->=20
-> v2:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-07/msg02604.html
->=20
-> v3:
-> https://lists.nongnu.org/archive/html/qemu-devel/2023-09/msg03750.html
->=20
->=20
-> Based-on: <20231004014532.1228637-1-stefanha@redhat.com>
->           ([PATCH v2 0/3] vhost: clean up device reset)
->=20
->=20
-> Hi,
->=20
-> This v4 includes largely unchanged patches from v3.  The main
-> addition/change is what came out of the discussion between Stefan and me
-> around how to proceed without SUSPEND/RESUME, which is that this series
-> is now based on his reset fix, and it includes more documentation
-> changes.
+QEMU Virtio device provides an emulated backends for Virtio frontned devices
+in Xen.
+Please set "iommu_platform=on" option when invoking QEMU. As this will set
+VIRTIO_F_ACCESS_PLATFORM feature which will be used by virtio frontend in Xen
+to know whether backend supports grants or not.
 
-This looks good. I posted some minor comments on the new patches.
+Regards,
+Vikram
 
-Stefan
+Juergen Gross (6):
+  xen: when unplugging emulated devices skip virtio devices
+  xen: add pseudo RAM region for grant mappings
+  softmmu: let qemu_map_ram_ptr() use qemu_ram_ptr_length()
+  xen: let xen_ram_addr_from_mapcache() return -1 in case of not found
+    entry
+  memory: add MemoryRegion map and unmap callbacks
+  xen: add map and unmap callbacks for grant region
 
->=20
-> Changes in detail:
->=20
-> - Patch 1: Fall-out from the reset fix: Currently, the status byte is
->   effectively unused (qemu only uses it for resetting, which all
->   back-ends ignore; DPDK uses it to announce potential feature
->   negotiation failure, which qemu ignores).  It is also not defined what
->   exactly front-end or back-end should do with this byte, except
->   pointing at the virtio spec, which however naturally does not say how
->   this integrates with vhost-user=E2=80=99s RESET_DEVICE or [GS]ET_FEATUR=
-ES.
->   Furthermore, there does not seem to be a use for this; we have
->   RESET_DEVICE for resetting, and we have [GS]ET_FEATURES (and
->   REPLY_ACK, which can be used on SET_FEATURES) for feature
->   negotation.
->   Therefore, deprecate the status byte, pointing to those other commands
->   instead.
->=20
-> - Patch 2: Patch 4 defines a suspended state for the whole back-end if
->   all vrings are stopped.  I think this should be mentioned in
->   GET_VRING_BASE, but upon trying to add it, I found that it does not
->   even mention that it stops the vring (mentioned only in the Ring
->   States section), and remembered that the whole description of both
->   GET_VRING_BASE and SET_VRING_BASE really was not helpful when trying
->   to implement a vhost-user back-end.  Took the opportunity to overhaul
->   both.
->=20
-> - Patch 3: This one=E2=80=99s from v3, but quite heavily modified.  Stefan
->   suggested consistently defining the started/stopped and
->   enabled/disabled states to be independent, and indeed doing so
->   simplifies a whole lot of stuff.  Specifically, it makes the magic
->   =E2=80=9Cenabled/disabled when started=E2=80=9D go away.  Basically, I =
-found this
->   change alone is enough to remove the confusion I had with the existing
->   documentation.
->=20
-> - Patch 4: As suggested by Stefan, just define a suspended state without
->   introducing SUSPEND.  vDPA needs SUSPEND because its GET_VRING_BASE
->   does not stop the vring, but vhost-user=E2=80=99s does, so we can defin=
-e the
->   suspended state to be when all vrings are stopped.
->=20
-> - Patch 5: Reference the suspended state.
->=20
-> - Patches 6 through 8: Unmodified, except for them being rebase on
->   Stefan=E2=80=99s series.
->=20
->=20
-> Hanna Czenczek (8):
->   vhost-user.rst: Deprecate [GS]ET_STATUS
->   vhost-user.rst: Improve [GS]ET_VRING_BASE doc
->   vhost-user.rst: Clarify enabling/disabling vrings
->   vhost-user.rst: Introduce suspended state
->   vhost-user.rst: Migrating back-end-internal state
->   vhost-user: Interface for migration state transfer
->   vhost: Add high-level state save/load functions
->   vhost-user-fs: Implement internal migration
->=20
->  docs/interop/vhost-user.rst       | 318 +++++++++++++++++++++++++++---
->  include/hw/virtio/vhost-backend.h |  24 +++
->  include/hw/virtio/vhost.h         | 113 +++++++++++
->  hw/virtio/vhost-user-fs.c         | 101 +++++++++-
->  hw/virtio/vhost-user.c            | 148 ++++++++++++++
->  hw/virtio/vhost.c                 | 241 ++++++++++++++++++++++
->  6 files changed, 917 insertions(+), 28 deletions(-)
->=20
-> --=20
-> 2.41.0
->=20
+Vikram Garhwal (1):
+  hw: arm: Add grant mapping.
 
---mNw8fgYOgCi8R7Nz
-Content-Type: application/pgp-signature; name="signature.asc"
+ hw/arm/xen_arm.c                |   3 +
+ hw/i386/xen/xen-hvm.c           |   3 +
+ hw/i386/xen/xen_platform.c      |   8 +-
+ hw/xen/xen-hvm-common.c         |   4 +-
+ hw/xen/xen-mapcache.c           | 206 ++++++++++++++++++++++++++++++--
+ include/exec/memory.h           |  21 ++++
+ include/exec/ram_addr.h         |   1 +
+ include/hw/xen/xen-hvm-common.h |   2 +
+ include/hw/xen/xen_pvdev.h      |   3 +
+ include/sysemu/xen-mapcache.h   |   3 +
+ softmmu/physmem.c               | 181 +++++++++++++++++-----------
+ 11 files changed, 349 insertions(+), 86 deletions(-)
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhpWov9P5fNqsNXdanKSrs4Grc8gFAmUe9tsACgkQnKSrs4Gr
-c8iA0QgAgmWhPPx/hRn39Jsq3bGeI2mdhbYZbtTE18k2ZdrspkyKPMB45nc8Rj2t
-zWn/ifLC1tV2UhXYj494uHD4ACPCRv/4KqX16Su1TS3ARcOZcchc9rxmFDN+RrIl
-faoh+ybFvmDBFFjmbhP4mf/eQeWRttfWEYz9y2TJTOQKMEbpYy/c3PFX8FQrHaz6
-+xXW2UvjQ1S2A1zM7XSLWCiAIYO7cVtu5LNFmCkrUAh0fDzui891BteZZaVpYrqB
-3Kdee9cnFLhR4+KZRXTkmH7Q1VHZoJRxWhcyLURlx/9YZ5bkx/1wLUQYo8+m12Qm
-iuKHpsTjElpLmFqGG00n1C9uoOYEUQ==
-=TZJp
------END PGP SIGNATURE-----
-
---mNw8fgYOgCi8R7Nz--
+-- 
+2.17.1
 
 
