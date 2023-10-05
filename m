@@ -2,62 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2D57BA62B
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 18:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB81C7BA62C
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 18:29:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoRCh-0007So-4x; Thu, 05 Oct 2023 12:27:59 -0400
+	id 1qoRDa-0007wH-NL; Thu, 05 Oct 2023 12:28:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qoRCY-0007JV-Fc; Thu, 05 Oct 2023 12:27:52 -0400
+ id 1qoRDF-0007pD-6b; Thu, 05 Oct 2023 12:28:33 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qoRCT-0006pr-7b; Thu, 05 Oct 2023 12:27:50 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ id 1qoRDD-0007IL-GB; Thu, 05 Oct 2023 12:28:32 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395GPopu012127; Thu, 5 Oct 2023 16:27:31 GMT
+ 395GL5Af006955; Thu, 5 Oct 2023 16:28:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
- : date : message-id : in-reply-to : references : content-transfer-encoding
- : mime-version; s=pp1; bh=3ZdPNuRAIlPjmtHFAgGxoAyCD/tXYH5FBfHGZ5AR9XA=;
- b=VbVx8EtSSG/9Sqb32TglFjvQw6TBjrTeGBmwwTyd9YziFPQXKIrUEST/hlYX3/XC+Bdv
- qEckCDXUp5jQcbsGg2IpRoD4pYiTrVWf97OXPPCa46AA8CzmawbXQbhN0gLbz2X4XBFU
- luVZJ2ZB0dR4KOiXQ/bI+CESsA5K6nwV+tnDQMo64+DEQvxSzeUn5v6kcQct2QMHofjN
- o/OxJdDOapU64xOLHbAr6t7c4vc6FP74QbZKXctWoq1MTKxXVfkG8dz4Dezp8zukytAQ
- PWP2tUj2CQlYwcdHJQ+s9iunewat12F7FNfUK7K272BVHhlhqupxNwiejWZBUjlv93Qv eg== 
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=Z5thTqTzj8mpKA3dC17IXFxpVm2NBV7EmYtSi9WZSVw=;
+ b=A/qRFXWo2fdxHnRvKUfJbqtH5ORU+Szrp5y/4TTutUmSH7SDoQXZIx+zHuYWySZ+nXM7
+ bC+41BQKkJJVz0cmc6WPz3Jho+x9gI6kHZJj7wRJ6XDHKu37gXuYJKS3QFheCvtwX24Z
+ KSpDQzpLhTnkJzJcz41oOSgc0z7C4ifk899VE57mOx+lZ9H7uyF8QyNU90lM8LrJp856
+ 9ph61zOTC4oEalodihNEu+sOHH+FH4CTs2808SA47OoT3UUy/ORbtxsDKyVBg2H9WEAn
+ qqwpsSRWVP/lCdmmB/jIInfaRX4qAs4IyJ1TuvkDiXKSLgLGNfEbI29mIoNp1cdVWHtv jQ== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj0ndg3v2-1
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj0kb8gyc-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 16:27:30 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 395GPx2n013423;
- Thu, 5 Oct 2023 16:27:29 GMT
+ Thu, 05 Oct 2023 16:28:24 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 395GMVnZ016467;
+ Thu, 5 Oct 2023 16:28:10 GMT
 Received: from ppma21.wdc07v.mail.ibm.com
  (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj0ndg2x1-17
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj0kb8fw5-43
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 16:27:29 +0000
+ Thu, 05 Oct 2023 16:28:10 +0000
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
  by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395FUO6P017592; Thu, 5 Oct 2023 16:02:05 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tey0nwcj9-1
+ 395FN0TM017649; Thu, 5 Oct 2023 16:02:05 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tey0nwcjd-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 16:02:04 +0000
+ Thu, 05 Oct 2023 16:02:05 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
- by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 395G21Jr24445652
+ by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 395G22Ko25428510
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Oct 2023 16:02:01 GMT
+ Thu, 5 Oct 2023 16:02:02 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id A19D52006A;
- Thu,  5 Oct 2023 16:02:01 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 0419B2004E;
+ Thu,  5 Oct 2023 16:02:02 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 5EF2C2005A;
+ by IMSVA (Postfix) with ESMTP id B13E020040;
  Thu,  5 Oct 2023 16:02:01 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
@@ -80,25 +81,24 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Subject: [PATCH v25 15/21] tests/avocado: s390x cpu topology core
-Date: Thu,  5 Oct 2023 18:01:49 +0200
-Message-Id: <20231005160155.1945588-16-nsg@linux.ibm.com>
+Subject: [PATCH v25 16/21] tests/avocado: s390x cpu topology polarization
+Date: Thu,  5 Oct 2023 18:01:50 +0200
+Message-Id: <20231005160155.1945588-17-nsg@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231005160155.1945588-1-nsg@linux.ibm.com>
 References: <20231005160155.1945588-1-nsg@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zqOvanrtDPElhHG_G48mnppGNNZnK4V_
-X-Proofpoint-ORIG-GUID: vokxkP2pGPRfyWuPsjl-bVVWz0HMNtAV
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: deRcns-G47X1h2UjqDIbNoHK8gDWLeRG
+X-Proofpoint-ORIG-GUID: 0gVT4N40NLhuhMlSX8ycTHNvZqu362zc
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-05_11,2023-10-05_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0
- impostorscore=0 phishscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
- suspectscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=999
+ mlxlogscore=999
+ malwarescore=0 priorityscore=1501 mlxscore=0 clxscore=1015 spamscore=0
+ bulkscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2309180000 definitions=main-2310050128
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
@@ -127,149 +127,63 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierre Morel <pmorel@linux.ibm.com>
 
-Introduction of the s390x cpu topology core functions and
-basic tests.
-
-We test the correlation between the command line and
-the QMP results in query-cpus-fast for various CPU topology.
+Polarization is changed on a request from the guest.
+Let's verify the polarization is accordingly set by QEMU.
 
 Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Tested-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 ---
- MAINTAINERS                    |   1 +
- tests/avocado/s390_topology.py | 200 +++++++++++++++++++++++++++++++++
- 2 files changed, 201 insertions(+)
- create mode 100644 tests/avocado/s390_topology.py
+ tests/avocado/s390_topology.py | 45 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 45 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index da4f099877..9cd6973ace 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1699,6 +1699,7 @@ F: hw/s390x/cpu-topology.c
- F: target/s390x/kvm/stsi-topology.c
- F: docs/devel/s390-cpu-topology.rst
- F: docs/system/s390x/cpu-topology.rst
-+F: tests/avocado/s390_topology.py
- 
- X86 Machines
- ------------
 diff --git a/tests/avocado/s390_topology.py b/tests/avocado/s390_topology.py
-new file mode 100644
-index 0000000000..9078b45281
---- /dev/null
+index 9078b45281..8166cee134 100644
+--- a/tests/avocado/s390_topology.py
 +++ b/tests/avocado/s390_topology.py
-@@ -0,0 +1,200 @@
-+# Functional test that boots a Linux kernel and checks the console
-+#
-+# Copyright IBM Corp. 2023
-+#
-+# Author:
-+#  Pierre Morel <pmorel@linux.ibm.com>
-+#
-+# This work is licensed under the terms of the GNU GPL, version 2 or
-+# later.  See the COPYING file in the top-level directory.
+@@ -41,6 +41,7 @@ class S390CPUTopology(QemuSystemTest):
+     The polarization is changed on a request from the guest.
+     """
+     timeout = 90
++    event_timeout = 10
+ 
+     KERNEL_COMMON_COMMAND_LINE = ('printk.time=0 '
+                                   'root=/dev/ram '
+@@ -103,6 +104,14 @@ def kernel_init(self):
+                          '-initrd', initrd_path,
+                          '-append', kernel_command_line)
+ 
++    def system_init(self):
++        self.log.info("System init")
++        exec_command_and_wait_for_pattern(self,
++                """ mount proc -t proc /proc;
++                    mount sys -t sysfs /sys;
++                    cat /sys/devices/system/cpu/dispatching """,
++                    '0')
 +
-+import os
-+import shutil
-+import time
-+
-+from avocado_qemu import QemuSystemTest
-+from avocado_qemu import exec_command
-+from avocado_qemu import exec_command_and_wait_for_pattern
-+from avocado_qemu import interrupt_interactive_console_until_pattern
-+from avocado_qemu import wait_for_console_pattern
-+from avocado.utils import process
-+from avocado.utils import archive
+     def test_single(self):
+         """
+         This test checks the simplest topology with a single CPU.
+@@ -198,3 +207,39 @@ def test_dash_device(self):
+         self.check_topology(3, 1, 1, 1, 'high', False)
+         self.check_topology(4, 1, 1, 1, 'medium', False)
+         self.check_topology(5, 2, 1, 1, 'high', True)
 +
 +
-+class S390CPUTopology(QemuSystemTest):
-+    """
-+    S390x CPU topology consists of 4 topology layers, from bottom to top,
-+    the cores, sockets, books and drawers and 2 modifiers attributes,
-+    the entitlement and the dedication.
-+    See: docs/system/s390x/cpu-topology.rst.
++    def guest_set_dispatching(self, dispatching):
++        exec_command(self,
++                f'echo {dispatching} > /sys/devices/system/cpu/dispatching')
++        self.vm.event_wait('CPU_POLARIZATION_CHANGE', self.event_timeout)
++        exec_command_and_wait_for_pattern(self,
++                'cat /sys/devices/system/cpu/dispatching', dispatching)
 +
-+    S390x CPU topology is setup in different ways:
-+    - implicitly from the '-smp' argument by completing each topology
-+      level one after the other beginning with drawer 0, book 0 and
-+      socket 0.
-+    - explicitly from the '-device' argument on the QEMU command line
-+    - explicitly by hotplug of a new CPU using QMP or HMP
-+    - it is modified by using QMP 'set-cpu-topology'
 +
-+    The S390x modifier attribute entitlement depends on the machine
-+    polarization, which can be horizontal or vertical.
-+    The polarization is changed on a request from the guest.
-+    """
-+    timeout = 90
-+
-+    KERNEL_COMMON_COMMAND_LINE = ('printk.time=0 '
-+                                  'root=/dev/ram '
-+                                  'selinux=0 '
-+                                  'rdinit=/bin/sh')
-+
-+    def wait_until_booted(self):
-+        wait_for_console_pattern(self, 'no job control',
-+                                 failure_message='Kernel panic - not syncing',
-+                                 vm=None)
-+
-+    def check_topology(self, c, s, b, d, e, t):
-+        res = self.vm.qmp('query-cpus-fast')
-+        cpus =  res['return']
-+        for cpu in cpus:
-+            core = cpu['props']['core-id']
-+            socket = cpu['props']['socket-id']
-+            book = cpu['props']['book-id']
-+            drawer = cpu['props']['drawer-id']
-+            entitlement = cpu.get('entitlement')
-+            dedicated = cpu.get('dedicated')
-+            if core == c:
-+                self.assertEqual(drawer, d)
-+                self.assertEqual(book, b)
-+                self.assertEqual(socket, s)
-+                self.assertEqual(entitlement, e)
-+                self.assertEqual(dedicated, t)
-+
-+    def kernel_init(self):
++    def test_polarization(self):
 +        """
-+        We need a VM that supports CPU topology,
-+        currently this only the case when using KVM, not TCG.
-+        We need a kernel supporting the CPU topology.
-+        We need a minimal root filesystem with a shell.
-+        """
-+        self.require_accelerator("kvm")
-+        kernel_url = ('https://archives.fedoraproject.org/pub/archive'
-+                      '/fedora-secondary/releases/35/Server/s390x/os'
-+                      '/images/kernel.img')
-+        kernel_hash = '0d1aaaf303f07cf0160c8c48e56fe638'
-+        kernel_path = self.fetch_asset(kernel_url, algorithm='md5',
-+                                       asset_hash=kernel_hash)
-+
-+        initrd_url = ('https://archives.fedoraproject.org/pub/archive'
-+                      '/fedora-secondary/releases/35/Server/s390x/os'
-+                      '/images/initrd.img')
-+        initrd_hash = 'a122057d95725ac030e2ec51df46e172'
-+        initrd_path_xz = self.fetch_asset(initrd_url, algorithm='md5',
-+                                          asset_hash=initrd_hash)
-+        initrd_path = os.path.join(self.workdir, 'initrd-raw.img')
-+        archive.lzma_uncompress(initrd_path_xz, initrd_path)
-+
-+        self.vm.set_console()
-+        kernel_command_line = self.KERNEL_COMMON_COMMAND_LINE
-+        self.vm.add_args('-nographic',
-+                         '-enable-kvm',
-+                         '-cpu', 'max,ctop=on',
-+                         '-m', '512',
-+                         '-kernel', kernel_path,
-+                         '-initrd', initrd_path,
-+                         '-append', kernel_command_line)
-+
-+    def test_single(self):
-+        """
-+        This test checks the simplest topology with a single CPU.
++        This test verifies that QEMU modifies the entitlement change after
++        several guest polarization change requests.
 +
 +        :avocado: tags=arch:s390x
 +        :avocado: tags=machine:s390-ccw-virtio
@@ -277,91 +191,21 @@ index 0000000000..9078b45281
 +        self.kernel_init()
 +        self.vm.launch()
 +        self.wait_until_booted()
++
++        self.system_init()
++        res = self.vm.qmp('query-s390x-cpu-polarization')
++        self.assertEqual(res['return']['polarization'], 'horizontal')
 +        self.check_topology(0, 0, 0, 0, 'medium', False)
 +
-+    def test_default(self):
-+        """
-+        This test checks the implicit topology.
-+
-+        :avocado: tags=arch:s390x
-+        :avocado: tags=machine:s390-ccw-virtio
-+        """
-+        self.kernel_init()
-+        self.vm.add_args('-smp',
-+                         '13,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
-+        self.vm.launch()
-+        self.wait_until_booted()
++        self.guest_set_dispatching('1');
++        res = self.vm.qmp('query-s390x-cpu-polarization')
++        self.assertEqual(res['return']['polarization'], 'vertical')
 +        self.check_topology(0, 0, 0, 0, 'medium', False)
-+        self.check_topology(1, 0, 0, 0, 'medium', False)
-+        self.check_topology(2, 1, 0, 0, 'medium', False)
-+        self.check_topology(3, 1, 0, 0, 'medium', False)
-+        self.check_topology(4, 2, 0, 0, 'medium', False)
-+        self.check_topology(5, 2, 0, 0, 'medium', False)
-+        self.check_topology(6, 0, 1, 0, 'medium', False)
-+        self.check_topology(7, 0, 1, 0, 'medium', False)
-+        self.check_topology(8, 1, 1, 0, 'medium', False)
-+        self.check_topology(9, 1, 1, 0, 'medium', False)
-+        self.check_topology(10, 2, 1, 0, 'medium', False)
-+        self.check_topology(11, 2, 1, 0, 'medium', False)
-+        self.check_topology(12, 0, 0, 1, 'medium', False)
 +
-+    def test_move(self):
-+        """
-+        This test checks the topology modification by moving a CPU
-+        to another socket: CPU 0 is moved from socket 0 to socket 2.
-+
-+        :avocado: tags=arch:s390x
-+        :avocado: tags=machine:s390-ccw-virtio
-+        """
-+        self.kernel_init()
-+        self.vm.add_args('-smp',
-+                         '1,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
-+        self.vm.launch()
-+        self.wait_until_booted()
-+
++        self.guest_set_dispatching('0');
++        res = self.vm.qmp('query-s390x-cpu-polarization')
++        self.assertEqual(res['return']['polarization'], 'horizontal')
 +        self.check_topology(0, 0, 0, 0, 'medium', False)
-+        res = self.vm.qmp('set-cpu-topology',
-+                          {'core-id': 0, 'socket-id': 2, 'entitlement': 'low'})
-+        self.assertEqual(res['return'], {})
-+        self.check_topology(0, 2, 0, 0, 'low', False)
-+
-+    def test_dash_device(self):
-+        """
-+        This test verifies that a CPU defined with the '-device'
-+        command line option finds its right place inside the topology.
-+
-+        :avocado: tags=arch:s390x
-+        :avocado: tags=machine:s390-ccw-virtio
-+        """
-+        self.kernel_init()
-+        self.vm.add_args('-smp',
-+                         '1,drawers=2,books=2,sockets=3,cores=2,maxcpus=24')
-+        self.vm.add_args('-device', 'max-s390x-cpu,core-id=10')
-+        self.vm.add_args('-device',
-+                         'max-s390x-cpu,'
-+                         'core-id=1,socket-id=0,book-id=1,drawer-id=1,entitlement=low')
-+        self.vm.add_args('-device',
-+                         'max-s390x-cpu,'
-+                         'core-id=2,socket-id=0,book-id=1,drawer-id=1,entitlement=medium')
-+        self.vm.add_args('-device',
-+                         'max-s390x-cpu,'
-+                         'core-id=3,socket-id=1,book-id=1,drawer-id=1,entitlement=high')
-+        self.vm.add_args('-device',
-+                         'max-s390x-cpu,'
-+                         'core-id=4,socket-id=1,book-id=1,drawer-id=1')
-+        self.vm.add_args('-device',
-+                         'max-s390x-cpu,'
-+                         'core-id=5,socket-id=2,book-id=1,drawer-id=1,dedicated=true')
-+
-+        self.vm.launch()
-+        self.wait_until_booted()
-+
-+        self.check_topology(10, 2, 1, 0, 'medium', False)
-+        self.check_topology(1, 0, 1, 1, 'low', False)
-+        self.check_topology(2, 0, 1, 1, 'medium', False)
-+        self.check_topology(3, 1, 1, 1, 'high', False)
-+        self.check_topology(4, 1, 1, 1, 'medium', False)
-+        self.check_topology(5, 2, 1, 1, 'high', True)
 -- 
 2.39.2
 
