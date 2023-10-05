@@ -2,72 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D037B7B99C5
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 03:47:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF907B9A09
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 04:44:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoDR0-0004Tz-S2; Wed, 04 Oct 2023 21:45:50 -0400
+	id 1qoEKy-0004aK-0O; Wed, 04 Oct 2023 22:43:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qoDQv-0004Sn-Cq; Wed, 04 Oct 2023 21:45:47 -0400
-Received: from mail-vs1-xe2e.google.com ([2607:f8b0:4864:20::e2e])
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qoEKv-0004Qc-Pt
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 22:43:37 -0400
+Received: from mail-pl1-x635.google.com ([2607:f8b0:4864:20::635])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
- id 1qoDQt-0005hL-9B; Wed, 04 Oct 2023 21:45:45 -0400
-Received: by mail-vs1-xe2e.google.com with SMTP id
- ada2fe7eead31-4525dd7f9d0so194961137.3; 
- Wed, 04 Oct 2023 18:45:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <gurchetansingh@chromium.org>)
+ id 1qoEKt-0006v6-Nj
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 22:43:37 -0400
+Received: by mail-pl1-x635.google.com with SMTP id
+ d9443c01a7336-1c877f27e8fso3586385ad.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 19:43:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696470341; x=1697075141; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=n9d4judrISOnFbc3H46tgC8UqBGA5egJwhcka51ND+o=;
- b=B1KWmraoqMd95QrkC+8sJBhpLP0857eT3HWT7ZZmXV2jEAjTPCghyOgE5gZOlR2A7p
- GNfa6TJj/gpB6m+EpyuKl13N+FhgkBRrdlY5NV9lDXc4jFJTv00T1BnRs9EppQ88ghSC
- HzQvYlFI/3NTl6Yj9nbGHrpxTye3nNn9ZFtko42J/MjbV0NgAzQczC5Xz9Am4d73LXb3
- xbAyN01I61jZ6vfeSttBOQ4QzsFypZWdib8Dv93/FX4oBXUIaajyTMfiARYYYSiCHPxS
- 7+JiIpLJyeUq0fwh7fJzTK2hPK+60z5O9SyW1zpe6gijRm+N2lyMk5WCq+gTkzOOIYht
- rInQ==
+ d=chromium.org; s=google; t=1696473813; x=1697078613; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=RQnHmueUqQl8D6QRZcZYl6n3iDxtzhW+gZ+LsCoAIzc=;
+ b=Z6qmrKCMTrCOIfEiJE2y9mO+f10Utcif+wYGwfjZincEMp9oLAO/rd/6xWysGvE1L9
+ Do93YwD7MAmhbaC3gTN/hQbFfxFquSL69lfZputON3UE8BizF4TGhtmO1VzC+xUM2Y+O
+ CJkoIWHdAcX1SqQxhWpD1Hqy7IGUMRjfKLAjA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696470341; x=1697075141;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=n9d4judrISOnFbc3H46tgC8UqBGA5egJwhcka51ND+o=;
- b=JzK+HqCeZoOPArHFkdKKjhxaXKWvADOwtLirI6ofj1C8zdCst/jd7QUflbrNRbehr5
- O3r+9llplaA7GSwxKQrHS9hfaE7pMLYstkgtNtdGocZbrcXT5qajEIxLKM9Q+VL6+LSK
- +o1wyQY1a89CLzJ4XHBO2i7i4lrCX1X76F5ouQh+W6Xw1VlvlzQPmraQs6YhuKwP8/X/
- aHFf8uvecvOyeFQ2pn/oZvHRmp5gA6r59+ucMBwf8Xuf8rF2qK4lVOl9gshyvbFB/1L5
- c9LsWn80D4apTYuzdzKiMxkmGzFprk9+MvuxpjvyrSI3OSHS5n7SOxcmplM3+obXpTYW
- sdFQ==
-X-Gm-Message-State: AOJu0Yw2Y07+riSisyvmoS1pp1Qk479G1iBSOOQedfZ1ERaZ9PhxsBZa
- nGZXKNS1J4uKRpQTOQHVIK3JCu3r4tHU+0DYzRWdeTul0x4=
-X-Google-Smtp-Source: AGHT+IHgjoBZ7umppmyNahZ1kjvn9/NQrb1WXd4z1azRe8CKcOks5taPP+417tFqNPnetBFgb+lYM8nk7BbPEh+pGoM=
-X-Received: by 2002:a67:f701:0:b0:452:81b3:4b07 with SMTP id
- m1-20020a67f701000000b0045281b34b07mr3489179vso.17.1696470341053; Wed, 04 Oct
- 2023 18:45:41 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696473813; x=1697078613;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RQnHmueUqQl8D6QRZcZYl6n3iDxtzhW+gZ+LsCoAIzc=;
+ b=I4mVAH/5yMt/keZ0doAYnvT2o3Ijt0rZ1/6P6k0mc9bbwJDsI/EFPrJQEW/zIykxfn
+ j7oBRZDrKC5Ztsva6wGCVjN17poPMp4hz8FcGpbey6sDOSAHHgYINDWDYpCM79Qrh9vq
+ B0IZOWuTSK34SOL3mZHMUsbJsDVJ7Mu3SvPmVZc5COTl0iysSpyN5TMnN65+3H+O05iZ
+ KRbWty1zlrW5sAW4RGAKcuDj7JJOKOiQ/PYNL5GW1sHWHw/4mDMloPNgK6oKFdDKqboa
+ kH6mWZCk74jufWJTLsDDVpUcpSUTpd0AhW8jHmw6iFPkl4r1E/woWgsbk3CHzs8VvX3t
+ 0b7A==
+X-Gm-Message-State: AOJu0YxAuaAilWV55TKknh0cO7OhFr31FUpZd5nJwBKLF/PB0TcXyf1L
+ +0CnkCKMkuEsFfUjk7bN4BtlGQl1lO5TpKT4AmI=
+X-Google-Smtp-Source: AGHT+IG5ykvWAppYz64Ygd3v1RbacubyTImQQINf++M7xX+fEM4IjZ/7zLzymX+G30T8HyQWzsKZSw==
+X-Received: by 2002:a17:902:ced2:b0:1be:f45c:bc38 with SMTP id
+ d18-20020a170902ced200b001bef45cbc38mr4848581plg.2.1696473813155; 
+ Wed, 04 Oct 2023 19:43:33 -0700 (PDT)
+Received: from gurchetansingh0.mtv.corp.google.com
+ ([2620:15c:a7:2:95d7:bc26:d70d:81bd])
+ by smtp.gmail.com with ESMTPSA id
+ f8-20020a170902ce8800b001c76fcccee8sm295209plg.156.2023.10.04.19.43.32
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 04 Oct 2023 19:43:32 -0700 (PDT)
+From: Gurchetan Singh <gurchetansingh@chromium.org>
+To: qemu-devel@nongnu.org
+Cc: marcandre.lureau@redhat.com, akihiko.odaki@gmail.com, ray.huang@amd.com,
+ alex.bennee@linaro.org, shentey@gmail.com, hi@alyssa.is,
+ ernunes@redhat.com, manos.pitsidianakis@linaro.org,
+ mark.cave-ayland@ilande.co.uk, thuth@redhat.com
+Subject: [PATCH v16 0/9] rutabaga_gfx + gfxstream
+Date: Wed,  4 Oct 2023 19:43:21 -0700
+Message-Id: <20231005024330.836-1-gurchetansingh@chromium.org>
+X-Mailer: git-send-email 2.31.0
 MIME-Version: 1.0
-References: <20231003071427.188697-1-chigot@adacore.com>
-In-Reply-To: <20231003071427.188697-1-chigot@adacore.com>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Thu, 5 Oct 2023 11:45:14 +1000
-Message-ID: <CAKmqyKP6OKbfvg4FCG2m3ORrSXRh-a-tQKR+aZgRUK+bvyX7HA@mail.gmail.com>
-Subject: Re: [PATCH v4 0/5] Risc-V/gdb: replace exit calls with proper shutdown
-To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
-Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2e;
- envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2e.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::635;
+ envelope-from=gurchetansingh@chromium.org; helo=mail-pl1-x635.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -85,49 +90,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Tue, Oct 3, 2023 at 5:14=E2=80=AFPM Cl=C3=A9ment Chigot <chigot@adacore.=
-com> wrote:
->
-> This series replaces some of the call to exit in hardware used by
-> Risc-V boards. Otherwise, the gdb connection can be abruptly
-> disconnected resulting in the last gdb packet "Wxx" being not sent.
->
-> For the gdbstub modification, gdb_exit calls ensure that the "Wxx"
-> packet is sent before exiting. However, some features (see
-> net/vhost-vdpa.c: vhost_vdpa_cleanup for example) are expecting
-> that a cleanup is being made before exiting. This, it's probably
-> safer to follow the same logic here as well.
->
-> Difference with v3:
->  - Rebase on riscv-to-apply
->
-> Cl=C3=A9ment Chigot (5):
->   softmmu: add means to pass an exit code when requesting a shutdown
->   softmmu: pass the main loop status to gdb "Wxx" packet
->   hw/misc/sifive_test.c: replace exit calls with proper shutdown
->   hw/char: riscv_htif: replace exit calls with proper shutdown
->   gdbstub: replace exit calls with proper shutdown for softmmu
+From: Gurchetan Singh <gurchetansingh@google.com>
 
-Thanks!
+Branch containing changes:
 
-Applied to riscv-to-apply.next
+https://gitlab.com/gurchetansingh/qemu/-/commits/qemu-gfxstream-v16
 
-Alistair
+Changes since v15:
 
->
->  gdbstub/gdbstub.c          |  5 +++--
->  gdbstub/softmmu.c          |  6 ++++++
->  gdbstub/user.c             |  6 ++++++
->  hw/char/riscv_htif.c       |  5 ++++-
->  hw/misc/sifive_test.c      |  9 +++++++--
->  include/gdbstub/syscalls.h |  9 +++++++++
->  include/sysemu/runstate.h  |  2 ++
->  include/sysemu/sysemu.h    |  2 +-
->  softmmu/main.c             |  2 +-
->  softmmu/runstate.c         | 16 +++++++++++++---
->  10 files changed, 52 insertions(+), 10 deletions(-)
->
-> --
-> 2.25.1
->
+- Incorporated review feedback from here:
+
+https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg00800.html
+
+Antonio Caggiano (2):
+  virtio-gpu: CONTEXT_INIT feature
+  virtio-gpu: blob prep
+
+Dr. David Alan Gilbert (1):
+  virtio: Add shared memory capability
+
+Gerd Hoffmann (1):
+  virtio-gpu: hostmem
+
+Gurchetan Singh (5):
+  gfxstream + rutabaga prep: added need defintions, fields, and options
+  gfxstream + rutabaga: add initial support for gfxstream
+  gfxstream + rutabaga: meson support
+  gfxstream + rutabaga: enable rutabaga
+  docs/system: add basic virtio-gpu documentation
+
+ docs/system/device-emulation.rst     |    1 +
+ docs/system/devices/virtio-gpu.rst   |  112 +++
+ hw/display/meson.build               |   22 +
+ hw/display/virtio-gpu-base.c         |    6 +-
+ hw/display/virtio-gpu-pci-rutabaga.c |   47 ++
+ hw/display/virtio-gpu-pci.c          |   14 +
+ hw/display/virtio-gpu-rutabaga.c     | 1113 ++++++++++++++++++++++++++
+ hw/display/virtio-gpu.c              |   16 +-
+ hw/display/virtio-vga-rutabaga.c     |   50 ++
+ hw/display/virtio-vga.c              |   33 +-
+ hw/virtio/virtio-pci.c               |   18 +
+ include/hw/virtio/virtio-gpu-bswap.h |   15 +
+ include/hw/virtio/virtio-gpu.h       |   40 +
+ include/hw/virtio/virtio-pci.h       |    4 +
+ meson.build                          |    7 +
+ meson_options.txt                    |    2 +
+ scripts/meson-buildoptions.sh        |    3 +
+ softmmu/qdev-monitor.c               |    3 +
+ softmmu/vl.c                         |    1 +
+ 19 files changed, 1488 insertions(+), 19 deletions(-)
+ create mode 100644 docs/system/devices/virtio-gpu.rst
+ create mode 100644 hw/display/virtio-gpu-pci-rutabaga.c
+ create mode 100644 hw/display/virtio-gpu-rutabaga.c
+ create mode 100644 hw/display/virtio-vga-rutabaga.c
+
+-- 
+2.42.0.582.g8ccd20d70d-goog
+
 
