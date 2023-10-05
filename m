@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504C27B9D50
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:28:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8177B9D57
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:34:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOMi-00075K-Eu; Thu, 05 Oct 2023 09:26:08 -0400
+	id 1qoOTM-0004Zt-25; Thu, 05 Oct 2023 09:33:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOMc-00072v-DN
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:26:02 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qoOTI-0004Pc-6d
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:32:56 -0400
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOMJ-0000J8-HA
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:26:01 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id CD78D21875;
- Thu,  5 Oct 2023 13:25:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696512331; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EePAU8Kb9bJydQic4yCtvXVOI6HJ6cQ/QBynIu5197A=;
- b=Kd14n6f6DjcxkEPAxKMcIezmVG9b/K/fOP2lNYUWaP8gjx4HzYKUS4qpEQDKlE40jN9FLv
- wPb8rG0Con50MkyZXIh80tCH9gcwCB6yqRlzITLmMRaFYEmj6f/n4Dd4zVNyBkrltJVgOW
- 4NBejFYV4GIp3WUYsjW7JqJW0reuSWg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696512331;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=EePAU8Kb9bJydQic4yCtvXVOI6HJ6cQ/QBynIu5197A=;
- b=Cz/36DCApUgSjczb2drmzYI9K9dg8hOfoA13mI5AQGnI6p7ggxX+G6P2i3QWD5mWTs/R3S
- lw54pNM/AGOiIBDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 627E413438;
- Thu,  5 Oct 2023 13:25:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id Sf3WC0u5HmV5CwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 05 Oct 2023 13:25:31 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>, Xiaohui Li
- <xiaohli@redhat.com>
-Subject: Re: [PATCH v3 08/10] migration: Allow network to fail even during
- recovery
-In-Reply-To: <20231004220240.167175-9-peterx@redhat.com>
-References: <20231004220240.167175-1-peterx@redhat.com>
- <20231004220240.167175-9-peterx@redhat.com>
-Date: Thu, 05 Oct 2023 10:25:29 -0300
-Message-ID: <87bkddfbg6.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qoOTG-0002yo-Cs
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:32:55 -0400
+Received: by mail-wr1-x435.google.com with SMTP id
+ ffacd0b85a97d-3232be274a0so1316940f8f.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 06:32:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696512770; x=1697117570; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=7O0DPIUsshgMzg56U5gjGAa98HBP+wpMN6ZdMzffRyk=;
+ b=smQmQa6uo1bkGAH6XyzKutFvkeR5xLvwZ0sfWjNdNH5KTSuTFLabqpviHxioNDzzWr
+ C5/bw5WOv63L0dqHo3Tx2JU3spPq9nqrQRYxoG3C70KALfd4G1bXhibOR+/migbZnhie
+ 4bwf/6ihuaoaZPaBa8m6aia74Llv4KklyeHt6gfdOpvuMJjwL0yjDOijUAXamRZFDuIq
+ Mo89+KAxE46gZiVjLcdC/pscTXE0L+0GQBDQ7ertPZrKZrkdRYRJ66TE/cwDS7XdPTi3
+ koe2Tb/sa8r/SmmCikvHPgOsDy6uvteu98VxxdXnbabH6X84P1Vz8PSA4+/QoAfaGFI1
+ aL7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696512770; x=1697117570;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=7O0DPIUsshgMzg56U5gjGAa98HBP+wpMN6ZdMzffRyk=;
+ b=a4qokev02f7WiUZdg5043AcG823sNAtacuZ+vtNYaoaR1zBKrvnlXax9A4d6lE//rs
+ r94GCkov6OcSSXCgNl8Ih2VUy3+4bR4kyjQNWuBtqGx7POxEOC3XNjDDJvLIsaZ6X9Q2
+ M7+QqU5r/hW0w5pBw5OzUqITkDQHKZu4LV80L+ZSS4Rr90DMgDpOJWnhigtRaHlonuG2
+ dZmzNyh705EG23YMVL9OXoqfSmVsrYaGiMd3/XhCh9V0ZNUXbQTt+fj8BqR7MUjSr4XO
+ ljWEgOTOBJphrHpdWwKY4U9IQvh9KOX56t7TKWG1eZzx624SmkPRXu69AGaJcvrFUsHg
+ kHkg==
+X-Gm-Message-State: AOJu0YyXG7MjA4uE7Z0+mNhWhak+T21X4Yxn7y8aLsgRG98+oKZ4yJPU
+ zn2fU7MWyyKPNe5MQ1l2GHmAxQ==
+X-Google-Smtp-Source: AGHT+IFA57HOw8cwPiEHEpJ1fbr3f0uT0A6PQ1yZEAhj8Xcp5z4wpyNt3MmPrb5aRmnHbTLzr7xhtQ==
+X-Received: by 2002:a05:6000:1c6:b0:320:67:1887 with SMTP id
+ t6-20020a05600001c600b0032000671887mr1319925wrx.28.1696512770679; 
+ Thu, 05 Oct 2023 06:32:50 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ b15-20020a05600010cf00b0031912c0ffebsm1820437wrx.23.2023.10.05.06.32.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Oct 2023 06:32:50 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 378E31FFBB;
+ Thu,  5 Oct 2023 14:32:49 +0100 (BST)
+References: <20231005062610.57351-1-philmd@linaro.org>
+User-agent: mu4e 1.11.21; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: [PATCH] semihosting/arm-compat: Have TARGET_SYS_EXIT[_EXTENDED]
+ return signed
+Date: Thu, 05 Oct 2023 14:32:44 +0100
+In-reply-to: <20231005062610.57351-1-philmd@linaro.org>
+Message-ID: <87v8blfb3y.fsf@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::435;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,69 +96,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
 
-> Normally the postcopy recover phase should only exist for a super short
-> period, that's the duration when QEMU is trying to recover from an
-> interrupted postcopy migration, during which handshake will be carried out
-> for continuing the procedure with state changes from PAUSED -> RECOVER ->
-> POSTCOPY_ACTIVE again.
->
-> Here RECOVER phase should be super small, that happens right after the
-> admin specified a new but working network link for QEMU to reconnect to
-> dest QEMU.
->
-> However there can still be case where the channel is broken in this small
-> RECOVER window.
->
-> If it happens, with current code there's no way the src QEMU can got kicked
-> out of RECOVER stage. No way either to retry the recover in another channel
-> when established.
->
-> This patch allows the RECOVER phase to fail itself too - we're mostly
-> ready, just some small things missing, e.g. properly kick the main
-> migration thread out when sleeping on rp_sem when we found that we're at
-> RECOVER stage.  When this happens, it fails the RECOVER itself, and
-> rollback to PAUSED stage.  Then the user can retry another round of
-> recovery.
->
-> To make it even stronger, teach QMP command migrate-pause to explicitly
-> kick src/dst QEMU out when needed, so even if for some reason the migration
-> thread didn't got kicked out already by a failing rethrn-path thread, the
-> admin can also kick it out.
->
-> This will be an super, super corner case, but still try to cover that.
->
-> One can try to test this with two proxy channels for migration:
->
->   (a) socat unix-listen:/tmp/src.sock,reuseaddr,fork tcp:localhost:10000
->   (b) socat tcp-listen:10000,reuseaddr,fork unix:/tmp/dst.sock
->
-> So the migration channel will be:
->
->                       (a)          (b)
->   src -> /tmp/src.sock -> tcp:10000 -> /tmp/dst.sock -> dst
->
-> Then to make QEMU hang at RECOVER stage, one can do below:
->
->   (1) stop the postcopy using QMP command postcopy-pause
->   (2) kill the 2nd proxy (b)
->   (3) try to recover the postcopy using /tmp/src.sock on src
->   (4) src QEMU will go into RECOVER stage but won't be able to continue
->       from there, because the channel is actually broken at (b)
->
-> Before this patch, step (4) will make src QEMU stuck in RECOVER stage,
-> without a way to kick the QEMU out or continue the postcopy again.  After
-> this patch, (4) will quickly fail qemu and bounce back to PAUSED stage.
->
-> Admin can also kick QEMU from (4) into PAUSED when needed using
-> migrate-pause when needed.
->
-> After bouncing back to PAUSED stage, one can recover again.
->
-> Reported-by: Xiaohui Li <xiaohli@redhat.com>
-> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2111332
-> Signed-off-by: Peter Xu <peterx@redhat.com>
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> Per the "Semihosting for AArch32 and AArch64" spec. v2 (2023Q3) [*]:
+>
+>   6.5   SYS_EXIT (0x18)
+>   6.5.2   Entry (64-bit)
+>
+>     On entry, the PARAMETER REGISTER contains a pointer to
+>     a two-field argument block:
+>
+>     . field 1
+>       The exception type, which is one of the set of reason
+>       codes in the above tables.
+>
+>     . field 2
+>       A subcode, whose meaning depends on the reason code in
+>       field 1.
+>
+>     In particular, if field 1 is ADP_Stopped_ApplicationExit
+>     then field 2 is an exit status code, as passed to the C
+>     standard library exit() function. [...]
+>
+> Having libc exit() is declared as:
+>
+>   LIBRARY
+>        Standard C Library (libc, -lc)
+>
+>   SYNOPSIS
+>
+>        void
+>        exit(int status);
+>
+> the status is expected to be signed.
+>
+> [*] https://github.com/ARM-software/abi-aa/blob/2023q3-release/semihostin=
+g/semihosting.rst#652entry-64-bit
+>
+> Fixes: 7446d35e1d ("target-arm/arm-semi.c: SYS_EXIT on A64 takes a parame=
+ter block")
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
+Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
