@@ -2,89 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23157B9AD9
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 07:04:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D74227B9ADD
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 07:08:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoGWs-00008b-HL; Thu, 05 Oct 2023 01:04:06 -0400
+	id 1qoGZr-0001pz-5S; Thu, 05 Oct 2023 01:07:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGWr-000081-1S
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 01:04:05 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGWp-0001b0-65
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 01:04:04 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-40684f53bfcso5021965e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 22:04:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696482241; x=1697087041; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=jzEKfXVX0+58rDdXtVzlcdO7Myyj7usmO3hpLxb3Hh8=;
- b=DkmzEKKoUJUBj6DQVNV74uSSxcEgbCPZKrp8pHHygw/rjP5VQKEghe6vmUBBejAmN+
- TVDySTuAsblKq+IkNrrpdK9I1uga403No42xyCj2syOnDAmbrrUHf9l1q5Yw9XWe5SmS
- JBqnOD5QJfaAohm9LsaTxAKpZvFYcRqmHfSiRC4OLQBXFV7/kmT56GKJrdImH4BaWOEI
- 4h3EUN2wTcTAeMPMhsLVg0FTVgB00jzqXq9iAEE613YHcCjvxRX9epLz4hTsfoIK2meX
- kKXkYkBEubl3NgWRrTxVy3jIQ73/A+ix3fLdUPn881mjY2IdMuc0gTCQLalAcQwp+MUX
- q6Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696482241; x=1697087041;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=jzEKfXVX0+58rDdXtVzlcdO7Myyj7usmO3hpLxb3Hh8=;
- b=tFa/m22dtKYRkTsPIJEg56RbNxX+YFj/Ohp0quOTp1NTI9j66tnxxEWcbth1mWMP5W
- SLKBAd8rbh+q88Jtb7UaWCOMdCHN0sM4A82T2fphelynpr1GDqU7I9vNhh7PP0kOULFS
- oCjMxvs6Rm5KvOKAy1dqI+Ptc1g19cz6KT++LNbUTfQ1zBWJDpYupXPmngQb4tgSokQ1
- vMNMwhYoj4FQKBQWPFbhTWxnLlP1YCLgAVQYvxusWBeukyBhLNuBmqd+PY577nzeVU2i
- Z8IuO3N7i1A0dlbVK5OvW7Sx0fFXr+4DmYRwwvbWRwXvVMviQ4lxH2msctGliMj5fIiN
- gP7A==
-X-Gm-Message-State: AOJu0YxyPXv1EJawZSXVPGlYNXR9M30nRgHJqLJWteHyr8N3K/BPAOcP
- 5GrLQ4wCjLjk+NgNXSOOLliu6A==
-X-Google-Smtp-Source: AGHT+IEVq6Sqn/U1jiZ6twky0xLJXfPbEcqgPIs2ihAfqOGs1kwQEwsp19S83xZ5zdvGiYn10ewLqw==
-X-Received: by 2002:a7b:cd0a:0:b0:405:3ae6:2400 with SMTP id
- f10-20020a7bcd0a000000b004053ae62400mr4137711wmj.23.1696482241429; 
- Wed, 04 Oct 2023 22:04:01 -0700 (PDT)
-Received: from [192.168.69.115]
- (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
- by smtp.gmail.com with ESMTPSA id
- e17-20020a05600c219100b0040646a708dasm643947wme.15.2023.10.04.22.03.59
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 22:04:01 -0700 (PDT)
-Message-ID: <344dcdcb-cb10-9cca-df24-5451c444475c@linaro.org>
-Date: Thu, 5 Oct 2023 07:03:58 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoGZp-0001pq-5m
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 01:07:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoGZn-0002gY-LK
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 01:07:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696482426;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=0EDcoejOaglWegJvf5u6z5h7y3aDJfcOdLeQ6V0BaSM=;
+ b=KMdXhvkQxzvMZZGzMUsfl3p/Sj5wNH0FyYg9Ys9rykc6xm7pgX7dzKamH1TF9uJReN5yRx
+ +GfwTRZ/hwvxnOuNJM11Um6k8SOBK1y/yH6FQzgZLMiWLnY7/q1meDZk+RRqAIoyknKcLa
+ z65DvmExgUhJLrPDixDRF53hZNpsgUQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-696-svEcgklQPQyDx0zHRCBwEQ-1; Thu, 05 Oct 2023 01:07:02 -0400
+X-MC-Unique: svEcgklQPQyDx0zHRCBwEQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A5D088039C8;
+ Thu,  5 Oct 2023 05:07:01 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 83EC040C2015;
+ Thu,  5 Oct 2023 05:07:01 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 6F62E21E6904; Thu,  5 Oct 2023 07:07:00 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
+ farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
+Subject: Re: [PATCH v2 00/53] migration/rdma: Error handling fixes
+References: <20230928132019.2544702-1-armbru@redhat.com>
+ <87fs2qs2b3.fsf@secure.mitica>
+Date: Thu, 05 Oct 2023 07:07:00 +0200
+In-Reply-To: <87fs2qs2b3.fsf@secure.mitica> (Juan Quintela's message of "Wed, 
+ 04 Oct 2023 19:52:16 +0200")
+Message-ID: <87r0m9ac97.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] hw/rdma: Deprecate the pvrdma device and the rdma
- subsystem
-Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, Yuval Shaia <yuval.shaia.ml@gmail.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>, Zhijian Li
- <lizhijian@fujitsu.com>, Peter Xu <peterx@redhat.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- libvir-list@redhat.com, Juan Quintela <quintela@redhat.com>,
- Eric Auger <eric.auger@redhat.com>, Fabiano Rosas <farosas@suse.de>,
- Michael Tokarev <mjt@tls.msk.ru>
-References: <20230927133019.228495-1-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230927133019.228495-1-thuth@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
-X-Spam_score_int: -35
-X-Spam_score: -3.6
-X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -100,32 +80,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 27/9/23 15:30, Thomas Huth wrote:
-> This subsystem is said to be in a bad shape (see e.g. [1], [2]
-> and [3]), and nobody seems to feel responsible to pick up patches
-> for this and send them via a pull request. For example there is
-> a patch for a CVE-worthy bug posted more than half a year ago [4]
-> which has never been merged.
-> 
-> Quoting Markus: "Given the shape it is in, I wouldn't let friends
-> use it in production" - we shouldn't expose this to our users in
-> the current state. Thus let's mark it as deprecated and finally
-> remove it unless somebody steps up and improves the code quality
-> and adds proper regression tests.
-> 
-> [1] https://lore.kernel.org/qemu-devel/20230918144206.560120-1-armbru@redhat.com/
-> [2] https://lore.kernel.org/qemu-devel/ZQnojJOqoFu73995@redhat.com/
-> [3] https://lore.kernel.org/qemu-devel/1054981c-e8ae-c676-3b04-eeb030e11f65@tls.msk.ru/
-> [4] https://lore.kernel.org/qemu-devel/20230301142926.18686-1-yuval.shaia.ml@gmail.com/
-> [5] https://lore.kernel.org/qemu-devel/8734z9f086.fsf@pond.sub.org/
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->   MAINTAINERS               | 2 +-
->   docs/about/deprecated.rst | 8 ++++++++
->   hw/rdma/vmw/pvrdma_main.c | 2 ++
->   3 files changed, 11 insertions(+), 1 deletion(-)
+Juan Quintela <quintela@redhat.com> writes:
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Markus Armbruster <armbru@redhat.com> wrote:
+>> Oh dear, where to start.  There's so much wrong, and in pretty obvious
+>> ways.  This code should never have passed review.  I'm refraining from
+>> saying more; see the commit messages instead.
+>>
+>> Issues remaining after this series include:
+>>
+>> * Terrible error messages
+>>
+>> * Some error message cascades remain
+>>
+>> * There is no written contract for QEMUFileHooks, and the
+>>   responsibility for reporting errors is unclear
+>>
+>> * There seem to be no tests whatsoever
+>>
+>> PATCH 29 is arguably a matter of taste.  I made my case for it during
+>> review of v1.  If maintainers don't want it, I'll drop it.
+>>
+>> Related: [PATCH 1/7] migration/rdma: Fix save_page method to fail on
+>> polling error
+>
+> Hi Markus
+>
+> I integrated everything except:
+>
+>>   migration/rdma: Fix or document problematic uses of errno
+>
+> Most of them are dropped on following patches.
+
+The hunks that are dropped in later patches are:
+
+* Four FIXME comments about incorrect or problematic use of perror().
+
+  If you drop the patch, you have to adjust the later patches that
+  remove these hunks.  Resolving the conflicts is *not* enough; you also
+  have to correct the commit messages.
+
+The hunks that are not dropped are:
+
+* Three comments about bugs (either library doc bug or incorrect use of
+  @errno here).  I'd hate to lose them.
+
+* One bug fix, in qemu_rdma_advise_prefetch_mr().  Losing this one would
+  be foolish.
+
+Please consider keeping the patch.
+
+>>   migration/rdma: Use error_report() & friends instead of stderr
+>
+> You said you have to resend this one.
+
+Can do, but since the change is trivial, perhaps you could make it in
+your tree without a resend.  Change the line
+
+                warn_report("WARN: migrations may fail:"
+
+to
+
+                warn_report("migrations may fail:"
+
+> There were some conflicts, I was careful, but one never knows.  So you
+> are wellcome to take a look when the PULL cames to the tree.
+>
+> Thanks, Juan.
 
 
