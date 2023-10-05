@@ -2,67 +2,67 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD34D7BA743
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 19:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 202907BA62D
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 18:29:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoRls-0006Hr-VP; Thu, 05 Oct 2023 13:04:20 -0400
+	id 1qoRDD-0007oD-S0; Thu, 05 Oct 2023 12:28:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qoRlp-0006Gi-8p; Thu, 05 Oct 2023 13:04:17 -0400
+ id 1qoRDB-0007jc-Ou; Thu, 05 Oct 2023 12:28:29 -0400
 Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nsg@linux.ibm.com>)
- id 1qoRlm-0001Lf-VD; Thu, 05 Oct 2023 13:04:16 -0400
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+ id 1qoRDA-0007Hh-4g; Thu, 05 Oct 2023 12:28:29 -0400
+Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
  by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395GoQsG002533; Thu, 5 Oct 2023 17:04:02 GMT
+ 395GLPee007274; Thu, 5 Oct 2023 16:28:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
  h=from : to : cc : subject
  : date : message-id : in-reply-to : references : mime-version :
  content-transfer-encoding; s=pp1;
- bh=k8qBIOpmy37rd4XQhzL/6pkgeA8Xn9sTBONZdbTxwBA=;
- b=K8Txwrj97748HRggnplhlMqpQ4cbyBJZzhutwk7+QX8ZsqT0KPVwq/81HZATCrwKy5x5
- tEwO7sQu+WGBZLoFC0rqFd2k+E/9kjsaGi3PNH+ztRQKa18oIf1xDB+ZGzSECOXq7wOG
- sa1YPt7CyBPbIuRgH8D+JHvmJZKZcqpPwGrwzPhX4H5VmtRRBNIOvfGKxQYyhNPNR7I3
- YEAE/0xwuC/oHCfLV2wt4tndokxDo7UcjY/j7rcIJd3jtNnCslu6KYBeQbB2+lsQi23i
- 8vgNUCxvnab7lOlrtkZuQSAzhuz4g56VBTLZjqL44zDtpoasdQMMnh9W8ej38rUI+TiW ZA== 
+ bh=VOy3dGFzA3opfVjgxZwTs1nOEdo4c0f/Rs+cnZr0K/Y=;
+ b=MbqNJpXH4SyCbuFm3IGjHceRQL1HNlcVJh9cYaxBhtAUyoEkLTd1ionOTHbHg6jUiOjZ
+ m+RPKyvPKSPMKhtqdox2BE66E1rE3w5WfJ/N0sgxVxePUSoXp39/Chd/t94nyt4k/D4S
+ 24RLj9sP/DgcftN6XJoOZvEb78vpCFo8heSB2C/6qeysqpTvGcRxEX0Qd81vVPSSufMu
+ V+IqqweatH8ttk6qsY6Iei/oHnb6DYGj09ol+x42uRncOOySIHRrd2EZWr+qn3GnligD
+ PhNHCWTt/L5xLDSiSZjW27zI3tEz5yXkA03YLxtMCSMuy73NQbDeG3DmBQWrUOf3znMN Wg== 
 Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj1110u6v-6
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj0kb8gx0-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 17:04:02 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 395G20Fk011452;
- Thu, 5 Oct 2023 16:02:27 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj09s82nr-1
+ Thu, 05 Oct 2023 16:28:16 +0000
+Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 395GLcd0008589;
+ Thu, 5 Oct 2023 16:28:08 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj0kb8fw7-19
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 16:02:27 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395FB36a005924; Thu, 5 Oct 2023 16:02:04 GMT
+ Thu, 05 Oct 2023 16:28:08 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 395FNt6p017644; Thu, 5 Oct 2023 16:02:04 GMT
 Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tex0tdqje-1
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tey0nwchr-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
  Thu, 05 Oct 2023 16:02:04 +0000
 Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com
  [10.20.54.101])
  by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 395G21EK42009152
+ 395G20ek42402394
  (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Oct 2023 16:02:01 GMT
+ Thu, 5 Oct 2023 16:02:00 GMT
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 0AACF20040;
+ by IMSVA (Postfix) with ESMTP id 57D9A2004E;
  Thu,  5 Oct 2023 16:02:00 +0000 (GMT)
 Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BA4882004F;
- Thu,  5 Oct 2023 16:01:59 +0000 (GMT)
+ by IMSVA (Postfix) with ESMTP id 108602004B;
+ Thu,  5 Oct 2023 16:02:00 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
  by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
- Thu,  5 Oct 2023 16:01:59 +0000 (GMT)
+ Thu,  5 Oct 2023 16:02:00 +0000 (GMT)
 From: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 To: qemu-devel@nongnu.org, qemu-s390x@nongnu.org,
  Eduardo Habkost <eduardo@habkost.net>,
@@ -81,26 +81,27 @@ Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Ilya Leoshkevich <iii@linux.ibm.com>, Cleber Rosa <crosa@redhat.com>,
  Wainer dos Santos Moschetta <wainersm@redhat.com>,
  Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-Subject: [PATCH v25 10/21] machine: adding s390 topology to query-cpu-fast
-Date: Thu,  5 Oct 2023 18:01:44 +0200
-Message-Id: <20231005160155.1945588-11-nsg@linux.ibm.com>
+Subject: [PATCH v25 11/21] machine: adding s390 topology to info
+ hotpluggable-cpus
+Date: Thu,  5 Oct 2023 18:01:45 +0200
+Message-Id: <20231005160155.1945588-12-nsg@linux.ibm.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231005160155.1945588-1-nsg@linux.ibm.com>
 References: <20231005160155.1945588-1-nsg@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: AdVgRix5W69B2b6m2aDEYnhGabEMXeyW
-X-Proofpoint-ORIG-GUID: A6F0UyiSmf9r6g-_r8yydVSHfmZ0JT-W
+X-Proofpoint-GUID: z9Tz6sPbCX-XLtaKvjxkIMZd1L8Hhr2N
+X-Proofpoint-ORIG-GUID: IpY7kB-3aw-zb2XlxCGWpaOpxs3bA8M8
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-05_12,2023-10-05_01,2023-05-22_02
+ definitions=2023-10-05_11,2023-10-05_01,2023-05-22_02
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 clxscore=1015
- mlxscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 phishscore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310050132
+ mlxlogscore=999
+ malwarescore=0 priorityscore=1501 mlxscore=0 clxscore=1015 spamscore=0
+ bulkscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310050128
 Received-SPF: pass client-ip=148.163.158.5; envelope-from=nsg@linux.ibm.com;
  helo=mx0b-001b2d01.pphosted.com
 X-Spam_score_int: -19
@@ -127,71 +128,33 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Pierre Morel <pmorel@linux.ibm.com>
 
-S390x provides two more topology attributes, entitlement and dedication.
-
-Let's add these CPU attributes to the QAPI command query-cpu-fast.
+S390 topology adds books and drawers topology containers.
+Let's add these to the HMP information for hotpluggable cpus.
 
 Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
 Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 Reviewed-by: Thomas Huth <thuth@redhat.com>
-Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
 ---
- qapi/machine.json  | 11 ++++++++++-
- target/s390x/cpu.c |  9 +++++++++
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ hw/core/machine-hmp-cmds.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/qapi/machine.json b/qapi/machine.json
-index 7aacd26af0..072a12d168 100644
---- a/qapi/machine.json
-+++ b/qapi/machine.json
-@@ -57,9 +57,18 @@
- #
- # @cpu-state: the virtual CPU's state
- #
-+# @dedicated: the virtual CPU's dedication (since 8.2)
-+#
-+# @entitlement: the virtual CPU's entitlement (since 8.2)
-+#
- # Since: 2.12
- ##
--{ 'struct': 'CpuInfoS390', 'data': { 'cpu-state': 'CpuS390State' } }
-+{ 'struct': 'CpuInfoS390',
-+  'data': { 'cpu-state': 'CpuS390State',
-+            '*dedicated': 'bool',
-+            '*entitlement': 'CpuS390Entitlement'
-+  }
-+}
- 
- ##
- # @CpuInfoFast:
-diff --git a/target/s390x/cpu.c b/target/s390x/cpu.c
-index 74405beb51..5967e34a85 100644
---- a/target/s390x/cpu.c
-+++ b/target/s390x/cpu.c
-@@ -38,6 +38,7 @@
- #ifndef CONFIG_USER_ONLY
- #include "sysemu/reset.h"
- #endif
-+#include "hw/s390x/cpu-topology.h"
- 
- #define CR0_RESET       0xE0UL
- #define CR14_RESET      0xC2000000UL;
-@@ -146,6 +147,14 @@ static void s390_query_cpu_fast(CPUState *cpu, CpuInfoFast *value)
-     S390CPU *s390_cpu = S390_CPU(cpu);
- 
-     value->u.s390x.cpu_state = s390_cpu->env.cpu_state;
-+#if !defined(CONFIG_USER_ONLY)
-+    if (s390_has_topology()) {
-+        value->u.s390x.has_dedicated = true;
-+        value->u.s390x.dedicated = s390_cpu->env.dedicated;
-+        value->u.s390x.has_entitlement = true;
-+        value->u.s390x.entitlement = s390_cpu->env.entitlement;
-+    }
-+#endif
- }
- 
- /* S390CPUClass::reset() */
+diff --git a/hw/core/machine-hmp-cmds.c b/hw/core/machine-hmp-cmds.c
+index c3e55ef9e9..9a4b59c6f2 100644
+--- a/hw/core/machine-hmp-cmds.c
++++ b/hw/core/machine-hmp-cmds.c
+@@ -71,6 +71,12 @@ void hmp_hotpluggable_cpus(Monitor *mon, const QDict *qdict)
+         if (c->has_node_id) {
+             monitor_printf(mon, "    node-id: \"%" PRIu64 "\"\n", c->node_id);
+         }
++        if (c->has_drawer_id) {
++            monitor_printf(mon, "    drawer-id: \"%" PRIu64 "\"\n", c->drawer_id);
++        }
++        if (c->has_book_id) {
++            monitor_printf(mon, "    book-id: \"%" PRIu64 "\"\n", c->book_id);
++        }
+         if (c->has_socket_id) {
+             monitor_printf(mon, "    socket-id: \"%" PRIu64 "\"\n", c->socket_id);
+         }
 -- 
 2.39.2
 
