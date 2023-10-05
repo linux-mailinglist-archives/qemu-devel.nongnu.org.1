@@ -2,86 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D467B9D18
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 14:55:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9447B7B9D1B
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 14:58:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoNsY-0005UO-04; Thu, 05 Oct 2023 08:54:58 -0400
+	id 1qoNvb-0007DN-Q6; Thu, 05 Oct 2023 08:58:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoNsL-0005Mv-M6
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:54:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoNsJ-00065B-GH
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:54:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696510482;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=busP+bVpSl/RstJK/8SVRYqvgUwuC4Qnz0JrNaFQ5Kw=;
- b=Be6igvb5OulMjZmZnF6iftrzlnuPVixcIvOJCDzn6Nv0abnwiah097VeszoUzXA9Ta8q5x
- SzL14g9zP42gGAzl01tRSXlQ33ahEaUtoGHsSiFbuHSG6HyFd9ylBNTcXmF1L8ns4RNILE
- eQzbKzDgc2imXG3yYL8I4l1hGvytLtw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-66-AWAqublEPHyzt-E_CyIzVg-1; Thu, 05 Oct 2023 08:54:31 -0400
-X-MC-Unique: AWAqublEPHyzt-E_CyIzVg-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-52310058f1eso2493439a12.0
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 05:54:30 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696510469; x=1697115269;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=busP+bVpSl/RstJK/8SVRYqvgUwuC4Qnz0JrNaFQ5Kw=;
- b=HD/PH/G3+HdB+x7WSyxsD0oxZMWrl/4It2+O4F/IW137Y2OpZPXouHRRHwFTTXml8Q
- fh0Ucse2qOKqTaeazjwayz5T5esQT1RJmgt/yEi7l2UyhUxsLdmMB5ZWeV1qCkpGC12h
- ZetCM3l7ZL9+1IsTEzlhggttZ66/GpnFC23rZweheb5CZ+jsIiR6p+3h+D2qK7GWmsyC
- yhp7uvX6JGKu3hiRuyrVxHes7Ont7hOicpDW5ZWkEkmZbvUSuop+H9r5gVsdAaiwf07x
- oL3BRUrr6ZYSliaL6YkaRz6N2Fx/5FFlYfcJndpwDv9ZGF+UlskuoR0sPNVw3M11HAGO
- 2SxQ==
-X-Gm-Message-State: AOJu0YwsvGQavgpF58UOyLJ9grU9eq3TlnvlZQd6O77buEg56DUTUYvy
- PbsqgGP1lXRKU3hLCOgYHwJlKsVhzxQfEU1HHbu0yOEv0PJfzdJK/Fp7pFcYKgD8Hz1aqwdreVz
- NMOtZFEslQTIb2MTqovQxmnId7i0xT8B4okCPrPMMHl7M3KuQ93nTZ7ixMhs2lAhohhTRLTZIrq
- c=
-X-Received: by 2002:a17:907:1c1e:b0:9a5:7dec:fab9 with SMTP id
- nc30-20020a1709071c1e00b009a57decfab9mr1249936ejc.9.1696510469456; 
- Thu, 05 Oct 2023 05:54:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF1M5sWj/bBSXZFgwhF2riOgO27zFylbaP9qeptJhYbS44auT70M8Euaiix9Hd1kAZP02KJaA==
-X-Received: by 2002:a17:907:1c1e:b0:9a5:7dec:fab9 with SMTP id
- nc30-20020a1709071c1e00b009a57decfab9mr1249917ejc.9.1696510469031; 
- Thu, 05 Oct 2023 05:54:29 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
- by smtp.gmail.com with ESMTPSA id
- jp20-20020a170906f75400b009a1c05bd672sm1131174ejb.127.2023.10.05.05.54.28
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Oct 2023 05:54:28 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: philmd@linaro.org
-Subject: [PATCH] configure: change $softmmu to $system
-Date: Thu,  5 Oct 2023 14:54:05 +0200
-Message-ID: <20231005125427.65625-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoNvZ-0007DE-Q7
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:06 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoNvX-0007Zv-QT
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:05 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id BB8E3218FC;
+ Thu,  5 Oct 2023 12:58:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696510681; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5EIz57xAdaOquTcPFcaKrMp2hKnY7zytYFq7qJ1w5ek=;
+ b=JTuPtDfn0B+CZ2AVNJwFhGg96Yc0pdn8HroWcoewLzXLVOnTRIMVhzaPWtLDMjMt1e23zQ
+ ftAheFCBXfVO2wBAQrPxKYsAUD+epsJutk8sx5FjTzBeL0qe1H1uw1iv/MHuhOyX3/UxhF
+ GCizeXYDxDw5qN5x3CsE1CBiM3vE/uM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696510681;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5EIz57xAdaOquTcPFcaKrMp2hKnY7zytYFq7qJ1w5ek=;
+ b=+pgVmujP4iL+FdAr69ZCEkkCxxl9WT+29dVMERqzJ5zbYag5k3Swd6J+Hys4xDNifh0bEg
+ jPJrgFIWHoSfp0Bw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4E68813438;
+ Thu,  5 Oct 2023 12:58:01 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 4Dj+BtmyHmX/eQAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 05 Oct 2023 12:58:01 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
+Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH v3 03/10] migration: Refactor error handling in source
+ return path
+In-Reply-To: <20231004220240.167175-4-peterx@redhat.com>
+References: <20231004220240.167175-1-peterx@redhat.com>
+ <20231004220240.167175-4-peterx@redhat.com>
+Date: Thu, 05 Oct 2023 09:57:58 -0300
+Message-ID: <87il7lfcq1.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,59 +83,158 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"softmmu" is a deprecated moniker, do the easy change matching
-the variable to the command line option.
+Peter Xu <peterx@redhat.com> writes:
 
-Based-on: <20231004090629.37473-1-philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- configure | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> @@ -1882,48 +1870,46 @@ static void *source_return_path_thread(void *opaque)
+>      uint32_t tmp32, sibling_error;
+>      ram_addr_t start = 0; /* =0 to silence warning */
+>      size_t  len = 0, expected_len;
+> +    Error *err = NULL;
+>      int res;
+>  
+>      trace_source_return_path_thread_entry();
+>      rcu_register_thread();
+>  
+> -    while (!ms->rp_state.error && !qemu_file_get_error(rp) &&
+> +    while (!migrate_has_error(ms) && !qemu_file_get_error(rp) &&
+>             migration_is_setup_or_active(ms->state)) {
+>          trace_source_return_path_thread_loop_top();
+> +
+>          header_type = qemu_get_be16(rp);
+>          header_len = qemu_get_be16(rp);
+>  
+>          if (qemu_file_get_error(rp)) {
+> -            mark_source_rp_bad(ms);
+>              goto out;
+>          }
 
-diff --git a/configure b/configure
-index e08127045d0..97a5e8de491 100755
---- a/configure
-+++ b/configure
-@@ -252,7 +252,7 @@ docs="auto"
- EXESUF=""
- prefix="/usr/local"
- qemu_suffix="qemu"
--softmmu="yes"
-+system="yes"
- linux_user=""
- bsd_user=""
- plugins="$default_feature"
-@@ -740,9 +740,9 @@ for opt do
-   ;;
-   --enable-tcg) tcg="enabled"
-   ;;
--  --disable-system) softmmu="no"
-+  --disable-system) system="no"
-   ;;
--  --enable-system) softmmu="yes"
-+  --enable-system) system="yes"
-   ;;
-   --disable-user)
-       linux_user="no" ;
-@@ -864,7 +864,7 @@ else
-         error_exit "user mode emulation not supported on this architecture"
-     fi
- fi
--if [ "$softmmu" = "yes" ]; then
-+if [ "$system" = "yes" ]; then
-     mak_wilds="${mak_wilds} $source_path/configs/targets/*-softmmu.mak"
- fi
- 
-@@ -1756,7 +1756,7 @@ for target in $target_list; do
- 
-   case $target in
-     xtensa*-linux-user)
--      # the toolchain is not complete with headers, only build softmmu tests
-+      # the toolchain is not complete with headers, only build system tests
-       continue
-       ;;
-     *-softmmu)
--- 
-2.41.0
+This error will be lost because outside the loop we only check for err.
 
+>  
+>          if (header_type >= MIG_RP_MSG_MAX ||
+>              header_type == MIG_RP_MSG_INVALID) {
+> -            error_report("RP: Received invalid message 0x%04x length 0x%04x",
+> -                         header_type, header_len);
+> -            mark_source_rp_bad(ms);
+> +            error_setg(&err, "Received invalid message 0x%04x length 0x%04x",
+> +                       header_type, header_len);
+>              goto out;
+>          }
+>  
+>          if ((rp_cmd_args[header_type].len != -1 &&
+>              header_len != rp_cmd_args[header_type].len) ||
+>              header_len > sizeof(buf)) {
+> -            error_report("RP: Received '%s' message (0x%04x) with"
+> -                         "incorrect length %d expecting %zu",
+> -                         rp_cmd_args[header_type].name, header_type, header_len,
+> -                         (size_t)rp_cmd_args[header_type].len);
+> -            mark_source_rp_bad(ms);
+> +            error_setg(&err, "Received '%s' message (0x%04x) with"
+> +                       "incorrect length %d expecting %zu",
+> +                       rp_cmd_args[header_type].name, header_type, header_len,
+> +                       (size_t)rp_cmd_args[header_type].len);
+>              goto out;
+>          }
+>  
+>          /* We know we've got a valid header by this point */
+>          res = qemu_get_buffer(rp, buf, header_len);
+>          if (res != header_len) {
+> -            error_report("RP: Failed reading data for message 0x%04x"
+> -                         " read %d expected %d",
+> -                         header_type, res, header_len);
+> -            mark_source_rp_bad(ms);
+> +            error_setg(&err, "Failed reading data for message 0x%04x"
+> +                       " read %d expected %d",
+> +                       header_type, res, header_len);
+>              goto out;
+>          }
+>  
+> @@ -1933,8 +1919,7 @@ static void *source_return_path_thread(void *opaque)
+>              sibling_error = ldl_be_p(buf);
+>              trace_source_return_path_thread_shut(sibling_error);
+>              if (sibling_error) {
+> -                error_report("RP: Sibling indicated error %d", sibling_error);
+> -                mark_source_rp_bad(ms);
+> +                error_setg(&err, "Sibling indicated error %d", sibling_error);
+>              }
+>              /*
+>               * We'll let the main thread deal with closing the RP
+> @@ -1952,7 +1937,10 @@ static void *source_return_path_thread(void *opaque)
+>          case MIG_RP_MSG_REQ_PAGES:
+>              start = ldq_be_p(buf);
+>              len = ldl_be_p(buf + 8);
+> -            migrate_handle_rp_req_pages(ms, NULL, start, len);
+> +            migrate_handle_rp_req_pages(ms, NULL, start, len, &err);
+> +            if (err) {
+> +                goto out;
+> +            }
+>              break;
+>  
+>          case MIG_RP_MSG_REQ_PAGES_ID:
+> @@ -1967,32 +1955,32 @@ static void *source_return_path_thread(void *opaque)
+>                  expected_len += tmp32;
+>              }
+>              if (header_len != expected_len) {
+> -                error_report("RP: Req_Page_id with length %d expecting %zd",
+> -                             header_len, expected_len);
+> -                mark_source_rp_bad(ms);
+> +                error_setg(&err, "Req_Page_id with length %d expecting %zd",
+> +                           header_len, expected_len);
+> +                goto out;
+> +            }
+> +            migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len,
+> +                                        &err);
+> +            if (err) {
+>                  goto out;
+>              }
+> -            migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len);
+>              break;
+>  
+>          case MIG_RP_MSG_RECV_BITMAP:
+>              if (header_len < 1) {
+> -                error_report("%s: missing block name", __func__);
+> -                mark_source_rp_bad(ms);
+> +                error_setg(&err, "MIG_RP_MSG_RECV_BITMAP missing block name");
+>                  goto out;
+>              }
+>              /* Format: len (1B) + idstr (<255B). This ends the idstr. */
+>              buf[buf[0] + 1] = '\0';
+> -            if (migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1))) {
+> -                mark_source_rp_bad(ms);
+> +            if (migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1), &err)) {
+>                  goto out;
+>              }
+>              break;
+>  
+>          case MIG_RP_MSG_RESUME_ACK:
+>              tmp32 = ldl_be_p(buf);
+> -            if (migrate_handle_rp_resume_ack(ms, tmp32)) {
+> -                mark_source_rp_bad(ms);
+> +            if (migrate_handle_rp_resume_ack(ms, tmp32, &err)) {
+>                  goto out;
+>              }
+>              break;
+> @@ -2008,9 +1996,14 @@ static void *source_return_path_thread(void *opaque)
+>      }
+>  
+>  out:
+> -    if (qemu_file_get_error(rp)) {
+> +    if (err) {
+
+Need to keep both checks here.
+
+> +        /*
+> +         * Collect any error in return-path thread and report it to the
+> +         * migration state object.
+> +         */
+> +        migrate_set_error(ms, err);
+> +        error_free(err);
+>          trace_source_return_path_thread_bad_end();
+> -        mark_source_rp_bad(ms);
+>      }
+>  
+>      trace_source_return_path_thread_end();
+> @@ -2036,13 +2029,10 @@ static int open_return_path_on_source(MigrationState *ms)
+>      return 0;
+>  }
 
