@@ -2,98 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B507B9B2F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:56:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 243357B9B31
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:57:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoIGk-0007nB-9y; Thu, 05 Oct 2023 02:55:34 -0400
+	id 1qoIHv-0008Vx-1X; Thu, 05 Oct 2023 02:56:47 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qoIGi-0007lP-9V
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:55:32 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qoIGg-0004oP-Cl
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:55:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696488929;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Qhu7+UZGaEOQibJPCIBtZ2lujUlWrDW6Cl1mQhkeGmY=;
- b=YJnDjYkJHHbfeNaTY+VYkPELzwD7O+bhcOk2EHfyCEg0sRWICgDVRGc4Z6+vFKfb8C1sy4
- jslWuyhJBQqWRJ38VBzumxyc/44OOOx3pV9ILNVtFi3RkCWPK9Sto3Eufz8IEvSGClvMqh
- arc++L/n+/qlZtG/HrIvnBLvaRrWHVo=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-14--GFt-1OYMcOKdAkXu5qJsQ-1; Thu, 05 Oct 2023 02:55:22 -0400
-X-MC-Unique: -GFt-1OYMcOKdAkXu5qJsQ-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-77578227e4bso83357385a.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:55:22 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIHs-0008Vj-Lh
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:56:44 -0400
+Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIHq-00059h-T7
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:56:44 -0400
+Received: by mail-wr1-x42b.google.com with SMTP id
+ ffacd0b85a97d-3247d69ed2cso659731f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:56:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696489001; x=1697093801; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=qdMrzHGMMkzppJqF9JAQo1sLPeYRU4L6kggdmxboclE=;
+ b=doLdFjhKXdP/7K2fGSvLe07aNYCbpVuLE/WJkyiKzu7TRiltLhlLEzvCNSsInuu5vB
+ P2nxLkrxGZJ9e9vuE4w0aJvxFSXuAZyYkXsPiDwRQNlgjgfhmhkgwMBRKneqv6ZDU/3Q
+ uBPsW/Tf8F9b2/ha5+x4oiGXvL3oWnzYcqmAk5kn8vmZMTL3LLfvGzLbMR+sM3l9uzsK
+ +wKRGzV4adriVkTBGp4pchUpgnAco/3SCRrbSUlJJq/GBpUN8KgwCjnyWTXTCZwLIQKB
+ Jvsyb8lnuFSnlpVSV0m1rNu1nanTOkORkimJDRJCDCK4gB7s0LowmSImPuwGPPUidUEy
+ cU7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696488922; x=1697093722;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Qhu7+UZGaEOQibJPCIBtZ2lujUlWrDW6Cl1mQhkeGmY=;
- b=ce76cbityjezC5I/c8uhvyhnLqs3ZcBxuUuvyj59pfycNV+IeMZLpvsps07NtARVuN
- 1McAVU4keITJcXevIcYhFtfPWV5sTMWL71N7pQbE4upJE0hDaITCIABwIxQTAgwA7RnU
- I9ZARcd8NjCd/hsKqNTLH6Mcnt5S114KGp52BZWlehJjfVsrCbFykii8PfHC0nHFsCS3
- TM/2VvnkScXp9wOidY62hDIghagjEkQWLCm3ppD7anGRIXPWWb0FpNMFd00Jwrg5REZA
- 4DXtaZx9GezxkDyx56caiEpAwOsc/nywqGYd87+c3oTW7eNYdfNJZWuMt3CM3XvGMhRn
- SbCQ==
-X-Gm-Message-State: AOJu0YxWI97Kt1JXrtAPymjvAx5xwZ03XTx/IRf0DbLxaheFBJUg56lO
- S+uQt39EgpSte4vYPG9PxHS/7lxbKwkqIIGRcKQXZ1sYa09wjoJrkNQKfOOhbyxearaK1imyi/8
- ZzWcUSUebRtDrTXQ=
-X-Received: by 2002:a05:620a:234:b0:774:15ad:f34c with SMTP id
- u20-20020a05620a023400b0077415adf34cmr4132497qkm.70.1696488922258; 
- Wed, 04 Oct 2023 23:55:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCau9U3B/IJ3t3bO6dotJ+oNBNm1OQT4ekCgdC2y1V63zpo/wxl8s4+MK8ZPbH5Rnr7KJP9g==
-X-Received: by 2002:a05:620a:234:b0:774:15ad:f34c with SMTP id
- u20-20020a05620a023400b0077415adf34cmr4132476qkm.70.1696488921907; 
- Wed, 04 Oct 2023 23:55:21 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ d=1e100.net; s=20230601; t=1696489001; x=1697093801;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qdMrzHGMMkzppJqF9JAQo1sLPeYRU4L6kggdmxboclE=;
+ b=pStDItVpRPM2VzSef9UtFqsVNGrTO8zfCbnFd+kMG/loyHQFF2DlWBlDdsGlrmKyDf
+ xw3wV7W7GrjHRjhQroJcBQHaJMm/7W50h3+1lpKEWpJ/ri1s9o50K1OQAl3waXD1ImIX
+ PAwodnIAjpan+eOlhkw2jo+3OJTqAXRb30kPpxLUaXdu0MUXcxBoEc92CUwIp6iAGLZb
+ uBuNsAYpl62HxBBTNjlxJj9hIdrW8v0V2c0Hwvfu5lNqACQlOXFMNvHym6ZTZGawu4pG
+ tlnDTi48jqD0nsaOc01DwGfel7OCtYgQdOiMJ99Mq9qB/PypAOyYLb6k+3LLkX6NzJ9D
+ nfMA==
+X-Gm-Message-State: AOJu0YzrlVo/pI/jvYWcwEY0DhtHuODgNDWM/f9nJdieJ46VNjT+t6Xv
+ kE14xoZdBArZWG8rnRNdM7aKSw==
+X-Google-Smtp-Source: AGHT+IFtMhRqXfrjm540BfEyyoE4QGb8G/PyEbiMBdPNp1cOGuWHEGhKir8qCjEfH++c8y3bV6+Dxg==
+X-Received: by 2002:adf:e9c1:0:b0:31f:f2dc:db7d with SMTP id
+ l1-20020adfe9c1000000b0031ff2dcdb7dmr3866932wrn.65.1696489001520; 
+ Wed, 04 Oct 2023 23:56:41 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
  by smtp.gmail.com with ESMTPSA id
- s8-20020ae9f708000000b0077411a459a8sm286785qkg.4.2023.10.04.23.55.18
+ a8-20020a056000100800b00326f5d0ce0asm1006544wrx.21.2023.10.04.23.56.40
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 23:55:21 -0700 (PDT)
-Message-ID: <ed47f078-9c50-c7d7-d6ee-d702a9ce0b0c@redhat.com>
-Date: Thu, 5 Oct 2023 08:55:16 +0200
+ Wed, 04 Oct 2023 23:56:41 -0700 (PDT)
+Message-ID: <1628d62e-28ac-58f9-9efb-147db95d2b37@linaro.org>
+Date: Thu, 5 Oct 2023 08:56:39 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 00/15] Prerequisite changes for IOMMUFD support
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: Wshadow: Better name for 'optarg'?
 Content-Language: en-US
-To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- eric.auger.pro@gmail.com, qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
- alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
- joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
- yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
- mjrosato@linux.ibm.com, aik@ozlabs.ru
-References: <20231004154518.334760-1-eric.auger@redhat.com>
- <81ead96c-e7e7-2d38-db77-264d7aee924a@redhat.com>
-From: Eric Auger <eric.auger@redhat.com>
-In-Reply-To: <81ead96c-e7e7-2d38-db77-264d7aee924a@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+To: Thomas Huth <thuth@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>
+Cc: QEMU Developers <qemu-devel@nongnu.org>,
+ =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+References: <14cd0201-1507-bfa8-fe9e-f482c35d21ca@linaro.org>
+ <d688281c-d019-c1ff-6927-d1791911c57d@linaro.org>
+ <e13885b5-06a2-599f-e0fe-c5e8f0671742@redhat.com>
+ <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
+ <11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124;
- envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
-X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.528, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -107,178 +98,68 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Cédric,
+On 4/10/23 19:56, Thomas Huth wrote:
+> On 04/10/2023 19.43, Philippe Mathieu-Daudé wrote:
+>> On 4/10/23 19:35, Thomas Huth wrote:
+>>> On 04/10/2023 19.23, Richard Henderson wrote:
+>>>> On 10/4/23 03:05, Philippe Mathieu-Daudé wrote:
+>>>>> Hi,
+>>>>>
+>>>>> I'm getting a bunch of errors for 'optarg' declared in <unistd.h>:
+>>>>
+>>>> I thought things like this is why we were trying -Wshadow=local.
+>>>>
+>>>> I think it's unlikely that we'll be able to prevent all such cases.
+>>>
+>>> Given the broad range of operating systems and libraries that we 
+>>> support in QEMU, I agree with Richard - it will likely be impossible 
+>>> to enable that option without =local by default without risking that 
+>>> compilation breaks on some exotic systems or new versions of various 
+>>> libraries.
+>>
+>> -Wshadow=local doesn't seem to work here which is why I switched
+>> to -Wshadow. I probably misunderstood something from Markus cover
+>> letter. My setup is:
+>>
+>> C compiler for the host machine: clang (clang 14.0.3 "Apple clang 
+>> version 14.0.3 (clang-1403.0.22.14.1)")
+>>
+>> I suppose we'll figure that out when eventually enabling -Wshadow=local
+>> on CI. Meanwhile I already cleaned the 'optarg' warnings that were
+>> bugging me, see:
+>> https://lore.kernel.org/qemu-devel/20231004120019.93101-1-philmd@linaro.org/
+>> I'll try to get -Wshadow=local, but the other series still seems a
+>> good cleanup, as I used more meaningful variable names.
+> 
+> If I got that right, -Wshadow=local only works with gcc and not with 
+> clang yet, so we'll need a check in configure or meson.build and will be 
+> able to only use it when it's available.
+> 
+> If we could use "-Wshadow" to check global variables, too, that would be 
+> great, but given my experience with some other project, it's very 
+> unlikely that you can get it running reliably everywhere, since there is 
+> often a bad library header somewhere that declares some global 
+> variable(s) that spoil your plans (IIRC I've once seen a bad library 
+> that even declared a global variable called "x" ... and you certainly 
+> don't want to rename all occurances of "x" in the QEMU source code just 
+> because of a bad library ... however, that's been many years ago, 
+> though, maybe the situation got better nowadays, so if you like, feel 
+> free to continue your quest - just be aware that it might not be 
+> solvable at the end).
 
-On 10/4/23 21:58, Cédric Le Goater wrote:
-> On 10/4/23 17:43, Eric Auger wrote:
->> Hi All,
->>
->> With the agreement of Zhenzhong, here is a v3 respin of the IOMMUFD
->> prerequisite series. This applies on top of vfio-next:
->> https://github.com/legoater/qemu/, branch vfio-next.
->>
->> Per Cédric's suggestion, the IOMMUFD patchset v1[1] is now split
->> into two series, this prerequisite series and the new IOMMUFD backend
->> introduction support series. Hopefully this will ease the review.
->>
->> The main purpose of this series is to make "common.c" group agnostic:
->> all group related code are moved into container.c. Then we are prepared
->> for next series, abstract base container, adding new backend, etc.
->>
->> This series can be found at
->> https://github.com/eauger/qemu/tree/prereq_v4
->>
->> Test done:
->> - PCI device were tested
->> - device hotplug test
->> - with or without vIOMMU
->> - VFIO migration with a E800 net card(no dirty sync support) passthrough
->> - platform and ccw were only compile-tested due to environment limit
->>
->> Zhenzhong, Yi, Eric
->
-> LGTM, I did a small adjustment in vfio_detach_device() in patches 13+15.
->
-> Applied to vfio-next.
+Nah I'm not interested in such a quest, this is simply an oversight
+that this is restricted to GCC.
 
-Thanks!
+My view on those warnings cleanups is, once we start, either we
+finish the full conversion and enforce the warning, or better not
+to start wasting energy. I wanted to help Markus, getting closer
+to the end. Sorry about the confusion, I'll wait this get enforced
+for our GCC jobs on CI before revisiting.
 
-Eric
->
-> Thanks,
->
-> C.
->
->
->> [1]
->> https://lore.kernel.org/all/20230830103754.36461-1-zhenzhong.duan@intel.com/t/#u
->>
->> Changelog:
->>
->> v4:
->> - include qemu/error-report.h in helpers.c
->> - in ap.c, fix the wrongly added
->>    vfio_detach_device(vbasedev) and g_free(vbasedev->name);
->>    also added error_prepend
->> - simplified vbasedev setting in ccw.c
->> - vfio_detach_device: dropped check on
->>    !vbasedev->container
->> - container.c: restore dropped comment
->>
->> v3:
->> - rebased on vfio-next as suggested by Cedric
->> - added vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
->> - collected Cedric's R-b
->> - Fix some error paths in vfio/cpi which now properly detach the device
->>    and also free the vbasedev->name
->> - Fix vfio/ccw migration (hopefully) [Matthew inputs]
->> - Split [PATCH v2 11/12] vfio/common: Introduce two kinds of VFIO
->> device lists
->>    into 3 patches
->>
->> v2:
->> - Refine patch description per Eric
->> - return errno and errp in vfio_kvm_device_[add/del]_fd per Eric
->> - make memory listener register/deregister in seperate patch per Eric
->> - Include the .h file first per Cédric
->> - Add trace event in vfio_attach_device per Cédric
->> - drop the change to vfio_viommu_preset by refactor per Cédric
->> - Introduce global VFIO device list and per container list per Alex
->>
->> Note changelog below are from full IOMMUFD series:
->>
->> v1:
->> - Alloc hwpt instead of using auto hwpt
->> - elaborate iommufd code per Nicolin
->> - consolidate two patches and drop as.c
->> - typo error fix and function rename
->>
->> rfcv4:
->> - rebase on top of v8.0.3
->> - Add one patch from Yi which is about vfio device add in kvm
->> - Remove IOAS_COPY optimization and focus on functions in this patchset
->> - Fix wrong name issue reported and fix suggested by Matthew
->> - Fix compilation issue reported and fix sugggsted by Nicolin
->> - Use query_dirty_bitmap callback to replace get_dirty_bitmap for better
->> granularity
->> - Add dev_iter_next() callback to avoid adding so many callback
->>    at container scope, add VFIODevice.hwpt to support that
->> - Restore all functions back to common from container whenever possible,
->>    mainly migration and reset related functions
->> - Add --enable/disable-iommufd config option, enabled by default in
->> linux
->> - Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
->> - Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
->> - vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to
->> remove
->> redundant code
->> - Add FD passing support for vfio device backed by IOMMUFD
->> - Fix hot unplug resource leak issue in vfio_legacy_detach_device()
->> - Fix FD leak in vfio_get_devicefd()
->>
->> rfcv3:
->> - rebase on top of v7.2.0
->> - Fix the compilation with CONFIG_IOMMUFD unset by using true classes
->> for
->>    VFIO backends
->> - Fix use after free in error path, reported by Alister
->> - Split common.c in several steps to ease the review
->>
->> rfcv2:
->> - remove the first three patches of rfcv1
->> - add open cdev helper suggested by Jason
->> - remove the QOMification of the VFIOContainer and simply use
->> standard ops
->> (David)
->> - add "-object iommufd" suggested by Alex
->>
->> Thanks
->> Zhenzhong
->>
->>
->> Eric Auger (7):
->>    scripts/update-linux-headers: Add iommufd.h
->>    vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
->>    vfio/common: Introduce vfio_container_add|del_section_window()
->>    vfio/pci: Introduce vfio_[attach/detach]_device
->>    vfio/platform: Use vfio_[attach/detach]_device
->>    vfio/ap: Use vfio_[attach/detach]_device
->>    vfio/ccw: Use vfio_[attach/detach]_device
->>
->> Yi Liu (2):
->>    vfio/common: Move IOMMU agnostic helpers to a separate file
->>    vfio/common: Move legacy VFIO backend code into separate container.c
->>
->> Zhenzhong Duan (6):
->>    linux-headers: Add iommufd.h
->>    vfio/common: Extract out vfio_kvm_device_[add/del]_fd
->>    vfio/common: Move VFIO reset handler registration to a group agnostic
->>      function
->>    vfio/common: Introduce a per container device list
->>    vfio/common: Store the parent container in VFIODevice
->>    vfio/common: Introduce a global VFIODevice list
->>
->>   include/hw/vfio/vfio-common.h   |   60 +-
->>   linux-headers/linux/iommufd.h   |  444 ++++++++
->>   hw/vfio/ap.c                    |   69 +-
->>   hw/vfio/ccw.c                   |  122 +-
->>   hw/vfio/common.c                | 1851 ++-----------------------------
->>   hw/vfio/container.c             | 1157 +++++++++++++++++++
->>   hw/vfio/helpers.c               |  612 ++++++++++
->>   hw/vfio/pci.c                   |   67 +-
->>   hw/vfio/platform.c              |   43 +-
->>   hw/vfio/meson.build             |    2 +
->>   hw/vfio/trace-events            |    4 +-
->>   scripts/update-linux-headers.sh |    3 +-
->>   12 files changed, 2458 insertions(+), 1976 deletions(-)
->>   create mode 100644 linux-headers/linux/iommufd.h
->>   create mode 100644 hw/vfio/container.c
->>   create mode 100644 hw/vfio/helpers.c
->>
->
+Regards,
 
+Phil.
 
