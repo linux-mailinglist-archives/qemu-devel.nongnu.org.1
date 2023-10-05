@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C1E7B9A5F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F9EE7B9A74
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFJG-0000Br-Bk; Wed, 04 Oct 2023 23:45:58 -0400
+	id 1qoFJL-0000Se-Oo; Wed, 04 Oct 2023 23:46:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJ1-0008J3-RE
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJ8-0008Tl-AA
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIz-0000mK-Eq
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:42 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJ6-0000oM-OE
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477539;
+ s=mimecast20190719; t=1696477548;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=7o6L3Hf/e9kUu5lCaCSDHMU6Bu6TjGI//1ytCFQ5e54=;
- b=hWd8bei/m2jspmUN/+9mA+6uIFZ9tk2MnMLNfNwosfDFfLQce4qcfbLnaIhddAZbB73bO3
- 5fPMD0uvXSyftB6AnKQQJa8zkh4U42lHGSDb6fTuc85Wi/2b9nH91p/nBRZLfHRmrttuv7
- CG2xrdG/q8GOpDC8LuNbGrFLm1vziUw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=4+2AkEDFAeUGwi9xAK78UKYezxVoHbtT5EOiRdYvUo8=;
+ b=XY0lpGaPkb2f39JLVQyl+6E14DWW707iNnHJCQ5GKoyykrylKSBQwxfjmjPTvvnVv3950u
+ /CgkFmsBjl6vClk6MRoSIuncT8B/HmRCLKuRGc0YmjEMZc0Y8Q30t2mhNQqgw9Ij3uGvrv
+ AV8pCFRF97UF/yrwchzRhwgH6SQbw1g=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-VKKnfuOuNlmMNKUtW3x3DA-1; Wed, 04 Oct 2023 23:45:38 -0400
-X-MC-Unique: VKKnfuOuNlmMNKUtW3x3DA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f42bcef2acso3152665e9.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:38 -0700 (PDT)
+ us-mta-357-Gbxv-NMMNJWqBnjiUdOapQ-1; Wed, 04 Oct 2023 23:45:41 -0400
+X-MC-Unique: Gbxv-NMMNJWqBnjiUdOapQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-32172e3679bso464204f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477536; x=1697082336;
+ d=1e100.net; s=20230601; t=1696477540; x=1697082340;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7o6L3Hf/e9kUu5lCaCSDHMU6Bu6TjGI//1ytCFQ5e54=;
- b=JtCuiPCoZhCvJUz6gvCZbEm3J5n+bnlg9BtjD/vgg2ktvcltZDI/yVmK71cdy6BM4G
- e/fRUeI73U6ArYeaPimMpWcPNLLEU0iE3/XMtfpjPb6jY/4Br+t4Nhcf8WNK6ammdbS3
- G9cADxDg/DYdZFmu9bbr0mgc07t+GvExfR6nRfOxe6XelqE78VncnABki179BsRIc2Fg
- LtdVYQgWIexhjhc0/ek75T4yDIxH1SQPXQGnweVG1NUSwneYlTltE1xpEb5+wUC38jhY
- mKam3LlC6T2tWBBuBlfdtZfB7HlNAsaS7TQEm53//mtZFX4innq7gb43ujPU9MW8HBqV
- bynw==
-X-Gm-Message-State: AOJu0Yz98D8EvpPZCfYVPZLdPTPCFIWMm9C+sDqxrSIj1QeTkMx7llav
- sYHzCJ5/VcDrO6OwnzZAZZIaNkr21QHJqo5BmgluiCevpJ4wgP7Om7BYG5aaFvcQ91JQAdhBc+j
- dX0bqHzAu5qF9EbuEHqPuO0U7QmOSpAdL1BbtF3ciIsF3KUr/oVQURrO9IiIBy0FjIl8K
-X-Received: by 2002:a7b:cbd5:0:b0:3ff:ca80:eda3 with SMTP id
- n21-20020a7bcbd5000000b003ffca80eda3mr3737026wmi.10.1696477536707; 
- Wed, 04 Oct 2023 20:45:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvgbqf/fYxS5Omj4lAlvfJcsdeeSkzvFcE7h7wuZAvVmJBXO/78UVSy2lbKMWnF/H+IjoCvw==
-X-Received: by 2002:a7b:cbd5:0:b0:3ff:ca80:eda3 with SMTP id
- n21-20020a7bcbd5000000b003ffca80eda3mr3737015wmi.10.1696477536300; 
- Wed, 04 Oct 2023 20:45:36 -0700 (PDT)
+ bh=4+2AkEDFAeUGwi9xAK78UKYezxVoHbtT5EOiRdYvUo8=;
+ b=cXdGPHSUKZ3YBG+INWsoa/gEJy2/UBaTkhEcS5MCb4oJaWIUSQclZY1lT4sZenkhKx
+ eXrbIrCEuo9vd8JdFB2pCGaCph6w5DLUibKyW8f6qgqxQeLexyERI0mhNKYy1SSX3vGB
+ Gip5JzGVRr1WcN96FauxZIrbMEwDEdQ7WL9xWY8fqNNom0B0Nkkv9LhP2VeNDmQj2ZcZ
+ i0FDjAfxtgY5ysla0fQBiotFWu1pUHdJjhna1alCUirOSkx3qyauaQgBaiGFsp677TnN
+ haRZPvf1zsYqWlQjsVx93FUdc2JOM+m+qQvG8MKkiSwCtlXkQ7IKRsn21jEzzlGkFTAo
+ GfNQ==
+X-Gm-Message-State: AOJu0YyrsIQ6/uRPPKcqqSf7o39urj15AWGGCP6XgyNp3C3rIkiN+fRM
+ QIpmZQRGPkSwpEUR702X/aLr8T2X/40hoTqG6+Qrj4WmQIVkV5jwhA2vkfRkktdhb+QQxWXd7sD
+ C43hCntZTjHih4dSgVYd4W9bzTnNlwX33sJzJza583VVw+NRaBeVHR23Mgdpv5ziwRdi3
+X-Received: by 2002:a5d:5187:0:b0:31f:ec06:20f with SMTP id
+ k7-20020a5d5187000000b0031fec06020fmr3882918wrv.14.1696477539945; 
+ Wed, 04 Oct 2023 20:45:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFiXsXwMge9QP3zHGQIqLRPaKSzw4qbrQk0IQz0ke4JOb7bJRlPPDEmXTSBfiKe75xvvda/KA==
+X-Received: by 2002:a5d:5187:0:b0:31f:ec06:20f with SMTP id
+ k7-20020a5d5187000000b0031fec06020fmr3882907wrv.14.1696477539733; 
+ Wed, 04 Oct 2023 20:45:39 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- u20-20020a05600c211400b0040642a1df1csm544327wml.25.2023.10.04.20.45.34
+ q8-20020a05600000c800b00324ae863ac1sm635727wrx.35.2023.10.04.20.45.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:45:35 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:45:33 -0400
+ Wed, 04 Oct 2023 20:45:39 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:45:36 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Subject: [PULL v2 46/53] libvhost-user.c: add assertion to
- vu_message_read_default
-Message-ID: <a6f4d2ec42f3feb6c399f5760a2567ca78897bd7.1696477105.git.mst@redhat.com>
+ Ilya Maximets <i.maximets@ovn.org>, Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PULL v2 47/53] virtio: use shadow_avail_idx while checking number
+ of heads
+Message-ID: <850cd20b072cd330cb24aa1c92732b9722998d40.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,14 +74,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1696477105.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,30 +98,62 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-Explain Coverity that we are not going to overflow vmsg->fds.
+We do not need the most up to date number of heads, we only want to
+know if there is at least one.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-Id: <20230925194040.68592-5-vsementsov@yandex-team.ru>
+Use shadow variable as long as it is not equal to the last available
+index checked.  This avoids expensive qatomic dereference of the
+RCU-protected memory region cache as well as the memory access itself.
+
+The change improves performance of the af-xdp network backend by 2-3%.
+
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Message-Id: <20230927135157.2316982-1-i.maximets@ovn.org>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- subprojects/libvhost-user/libvhost-user.c | 1 +
- 1 file changed, 1 insertion(+)
+ hw/virtio/virtio.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index 0469a50101..49b57c7ef4 100644
---- a/subprojects/libvhost-user/libvhost-user.c
-+++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -322,6 +322,7 @@ vu_message_read_default(VuDev *dev, int conn_fd, VhostUserMsg *vmsg)
-         if (cmsg->cmsg_level == SOL_SOCKET && cmsg->cmsg_type == SCM_RIGHTS) {
-             fd_size = cmsg->cmsg_len - CMSG_LEN(0);
-             vmsg->fd_num = fd_size / sizeof(int);
-+            assert(fd_size < VHOST_MEMORY_BASELINE_NREGIONS);
-             memcpy(vmsg->fds, CMSG_DATA(cmsg), fd_size);
-             break;
-         }
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index c727e9201b..2058b838e9 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -997,7 +997,12 @@ void virtqueue_push(VirtQueue *vq, const VirtQueueElement *elem,
+ /* Called within rcu_read_lock().  */
+ static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
+ {
+-    uint16_t num_heads = vring_avail_idx(vq) - idx;
++    uint16_t avail_idx, num_heads;
++
++    /* Use shadow index whenever possible. */
++    avail_idx = (vq->shadow_avail_idx != idx) ? vq->shadow_avail_idx
++                                              : vring_avail_idx(vq);
++    num_heads = avail_idx - idx;
+ 
+     /* Check it isn't doing very strange things with descriptor numbers. */
+     if (num_heads > vq->vring.num) {
+@@ -1005,8 +1010,15 @@ static int virtqueue_num_heads(VirtQueue *vq, unsigned int idx)
+                      idx, vq->shadow_avail_idx);
+         return -EINVAL;
+     }
+-    /* On success, callers read a descriptor at vq->last_avail_idx.
+-     * Make sure descriptor read does not bypass avail index read. */
++    /*
++     * On success, callers read a descriptor at vq->last_avail_idx.
++     * Make sure descriptor read does not bypass avail index read.
++     *
++     * This is necessary even if we are using a shadow index, since
++     * the shadow index could have been initialized by calling
++     * vring_avail_idx() outside of this function, i.e., by a guest
++     * memory read not accompanied by a barrier.
++     */
+     if (num_heads) {
+         smp_rmb();
+     }
 -- 
 MST
 
