@@ -2,83 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7858B7B9B36
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 09:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8EEC7B9B3D
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 09:07:42 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoIOM-0002sr-GM; Thu, 05 Oct 2023 03:03:26 -0400
+	id 1qoIRj-0004iv-5a; Thu, 05 Oct 2023 03:06:55 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qoIOB-0002sX-JO
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 03:03:16 -0400
-Received: from mail-oa1-x32.google.com ([2001:4860:4864:20::32])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIRd-0004hX-Ik
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 03:06:50 -0400
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mnissler@rivosinc.com>)
- id 1qoIO1-0006Ql-0f
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 03:03:15 -0400
-Received: by mail-oa1-x32.google.com with SMTP id
- 586e51a60fabf-1dd7139aa57so413833fac.1
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 00:02:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIRa-0008Q6-Kc
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 03:06:48 -0400
+Received: by mail-lj1-x233.google.com with SMTP id
+ 38308e7fff4ca-2bfea381255so7812091fa.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 00:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696489375; x=1697094175;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=/sykav7kHqqi8q7/u6IWk2uLR08rKtlD8qNcinnjqeE=;
- b=yF2b8CZhQGsmr1kMq+wZM/SSxuE5dGg30IFAKkV6n+uXnxLjmX310cWYwmRk5wrmCN
- JkWj5uftCDpkveSJMcXw4v/mIt+/zl+L/uJoDs+gGERBxAeJaoDp8gua5XzEDw3r1qaN
- GBdvMI0V12IJD7P0muYSUJdl7blDjTHqk1EjUsDqAJKgb1crXe1K5gPK2BDpWnMoCY4T
- U8Yf4bekOSBtFYOyRmqRWYnMUevwfERcRM8DVN2c3QGQEgaZ9imOy1vtTKwbA7BbE9a+
- IcT+MkQs/TN8W3/Bml2C1fInWC+7F7P6OmBsOsERST7OWtik3hEm1i4vVQ/merkpFFfL
- u3FA==
+ d=linaro.org; s=google; t=1696489603; x=1697094403; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+d6KY11DqRLjvBXz5XKaI7m2MfBxT2g08tYpGKrrrT0=;
+ b=r3ulq+ESKb8uaClBdPDeDjnQbBGvbWsZ02K645EFgqaG9u3MdWl5wQklpCQwCVBW4L
+ K9oIvxj//PZnaVstYW2AjPITVl4U4Xwco19fdw9lHzzzQHrfIJxHqcKAxaBPze8pO48h
+ ZQk5pZQt2pHVwfQWjMGs1qYLhERve6W/WgQknMg0w+DtBLy1M7KXiNPQxJeCoJyKqFAO
+ f6J8KN6djo8JY4lL+bu9hQu21DZ9DATLKOf4Q0Dg+qu2uk/GUhHIO9kUPN952JfaWSEt
+ QGgpjpgszm4XZpEZpSoHa6BBXWNvVxnXfvsnEqRPBT2lN9rwDfIVWoUJg/6ijZ2Svq0U
+ oJiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696489375; x=1697094175;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=/sykav7kHqqi8q7/u6IWk2uLR08rKtlD8qNcinnjqeE=;
- b=OdXYXw1AfZblFhfmuBGukorrPjvlFI04ikg2Rxtxq6Cps6FunJuej945ljyb4NKGpy
- 5cYvzKv44+K5Ujr5+U/eTJtKHCuyQo5GPrcUGSw25V9c2KWX4USMYXyVEuh/iJlREN98
- pM9J+hwc/aoX4wLM30oC9dKRppBi06PFBof8yauvRC/UV8q69RurRnES25xFX2tuvgj9
- FvGmtA6GWM7Oczoi/VqbJqn8wk93lxzECAzXdgo9X0R4/TkFmv0KLfCfcZoCV7BJOT3J
- lzWIlr5bPdQhSz4RGZl5PNMQQbtNEtbYoytYB7yMB6mRoKTLZttBPtIs6dpDxi2V2VCM
- 6DsA==
-X-Gm-Message-State: AOJu0Yx4hy1dEHAPAxpC6WxICzVd7otGEceHsabY7kXIrPi8i7H57C9A
- t2rJqi4FRB2BHW8JXN2IYxB9R22WRuYYTdrYSj1tpg==
-X-Google-Smtp-Source: AGHT+IEohgIk5UquNb/UwnJ5C2hvcdK98D8tmyk7HEt7s924VZVpqhRHV2s1uYLWOC8Y/4LxNPQ3sYtYYNYJ/BjIuxs=
-X-Received: by 2002:a05:6870:c195:b0:1be:ffae:29a3 with SMTP id
- h21-20020a056870c19500b001beffae29a3mr4873386oad.23.1696489375332; Thu, 05
- Oct 2023 00:02:55 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696489603; x=1697094403;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+d6KY11DqRLjvBXz5XKaI7m2MfBxT2g08tYpGKrrrT0=;
+ b=tWmutSywA4gxkewdea0RKdQQ6cSw+Qz/4nEDqn9/pBG+g/+tAa302Zufz9Ukmb+f1x
+ pBAQM+wHus/dyDMFzGbjXrGBjKIeJNKfQUijekNhDrkm/xu0K/yqPRhGUXKjNeW9UDng
+ Z1W4/RA7ZFfHA45zqO1XNX7kqvFKPF0MiOFpMxM+jkJLpjhFHsjIwTLMjRM4yndwjwSY
+ 9WuPBOMJ2424FG4NJim2t3XamsxiWpcPVfOjVD1nC73TF2zpCqyib2ZqdFEN0yN+qOlB
+ bjOCf6LgQDYOLZf5LDHJ3/iEZo/zl12pVr554S3Gf61c+R9rbB1hnboeGyhy4Orb0b9T
+ Cpdg==
+X-Gm-Message-State: AOJu0YybqDYoZtseoDcmG74+CSundYXFb8zw84GJgFhE6F2VzLCpXPef
+ 22Yel6dTnEGhCu4hMZ5OF1u6Uw==
+X-Google-Smtp-Source: AGHT+IHIuJ79lJZmSnnfiOX4jKSdP3hymnG4PfMgVOHzYn3SK3RmFC7cfiBL7Ikhy37HU7ytFIwmCw==
+X-Received: by 2002:a19:ca08:0:b0:4ff:9efd:8a9e with SMTP id
+ a8-20020a19ca08000000b004ff9efd8a9emr3570822lfg.7.1696489601725; 
+ Thu, 05 Oct 2023 00:06:41 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
+ by smtp.gmail.com with ESMTPSA id
+ q5-20020a7bce85000000b0040596352951sm3100553wmj.5.2023.10.05.00.06.39
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 05 Oct 2023 00:06:41 -0700 (PDT)
+Message-ID: <e2dc91e2-9ed3-6919-8a7e-d9e159a55b43@linaro.org>
+Date: Thu, 5 Oct 2023 09:06:38 +0200
 MIME-Version: 1.0
-References: <CAGNS4TbhS3XnCFAEi378+cSmJvGMdjN2oTv=tES36vbV4CaDuA@mail.gmail.com>
- <CANXvt5qKxfU3p1eSK4fkzRFRBXHSVvSkJrnQRLKPkQjhsMGNzQ@mail.gmail.com>
-In-Reply-To: <CANXvt5qKxfU3p1eSK4fkzRFRBXHSVvSkJrnQRLKPkQjhsMGNzQ@mail.gmail.com>
-From: Mattias Nissler <mnissler@rivosinc.com>
-Date: Thu, 5 Oct 2023 09:02:44 +0200
-Message-ID: <CAGNS4TbAgqRQepv=fMoUxo02Qea5S9LwWFm-jjt1ej8DdLjshw@mail.gmail.com>
-Subject: Re: [RFC] Proposal of QEMU PCI Endpoint test environment
-To: Shunsuke Mie <mie@igel.co.jp>
-Cc: cz172638@gmail.com, bhelgaas@google.com, 
- Jagannathan Raman <jag.raman@oracle.com>, kishon@kernel.org, kvijayab@amd.com,
- kw@linux.com, levon@movementarian.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org, lpieralisi@kernel.org, 
- manivannan.sadhasivam@linaro.org, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, robh@kernel.org, 
- thanos.makatos@nutanix.com, vaishnav.a@ti.com, william.henderson@nutanix.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:4860:4864:20::32;
- envelope-from=mnissler@rivosinc.com; helo=mail-oa1-x32.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 2/5] hw/i386/apic: Defer error check from
+ apic_get_class to kvm_apic_realize
+Content-Language: en-US
+To: Bernhard Beschow <shentey@gmail.com>, qemu-devel@nongnu.org
+Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Eduardo Habkost
+ <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231003082728.83496-1-philmd@linaro.org>
+ <20231003082728.83496-3-philmd@linaro.org>
+ <8527EF0C-E466-41A0-B1A2-9AEF301B5B5E@gmail.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <8527EF0C-E466-41A0-B1A2-9AEF301B5B5E@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::233;
+ envelope-from=philmd@linaro.org; helo=mail-lj1-x233.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -95,85 +101,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 5, 2023 at 3:31=E2=80=AFAM Shunsuke Mie <mie@igel.co.jp> wrote:
->
-> Hi Jiri, Mattias and all.
->
-> 2023=E5=B9=B410=E6=9C=884=E6=97=A5(=E6=B0=B4) 16:36 Mattias Nissler <mnis=
-sler@rivosinc.com>:
->>>
->>> hi shunsuke, all,
->>> what about vfio-user + qemu?
->
-> Thank you for the suggestion.
->
->> FWIW, I have had some good success using VFIO-user to bridge software co=
-mponents to hardware designs. For the most part, I have been hooking up sof=
-tware endpoint models to hardware design components speaking the PCIe trans=
-action layer protocol. The central piece you need is a way to translate bet=
-ween the VFIO-user protocol and PCIe transaction layer messages, basically =
-converting ECAM accesses, memory accesses (DMA+MMIO), and interrupts betwee=
-n the two worlds. I have some code which implements the basics of that. It'=
-s certainly far from complete (TLP is a massive protocol), but it works wel=
-l enough for me. I believe we should be able to open-source this if there's=
- interest, let me know.
->
-> It is what I want to do, but I'm not familiar with the vfio and vfio-user=
-, and I have a question. QEMU has a PCI TLP communication implementation fo=
-r Multi-process QEMU[1]. It is similar to your success.
+Hi Bernhard,
 
-I'm no qemu expert, but my understanding is that the plan is for the
-existing multi-process QEMU implementation to eventually be
-superseded/replaced by the VFIO-user based one (qemu folks, please
-correct me if I'm wrong). From a functional perspective they are more
-or less equivalent AFAICT.
-
-> The multi-process qemu also communicates TLP over UDS. Could you let me k=
-now your opinion about it?
-
-Note that neither multi-process qemu nor VFIO-user actually pass
-around TLPs, but rather have their own command language to encode
-ECAM, MMIO, DMA, interrupts etc. However, translation from/to TLP is
-possible and works well enough in my experience.
-
->
->> One thing to note is that there are currently some limits to bridging VF=
-IO-user / TLP that I haven't figured out and/or will need further work: Adv=
-anced PCIe concepts like PASID, ATS/PRI, SR-IOV etc. may lack equivalents o=
-n the VFIO-user side that would have to be filled in. The folk behind libvf=
-io-user[2] have been very approachable and open to improvements in my exper=
-ience though.
+On 4/10/23 01:21, Bernhard Beschow wrote:
+> Am 3. Oktober 2023 08:27:25 UTC schrieb "Philippe Mathieu-Daudé" <philmd@linaro.org>:
+>> apic_get_class() isn't supposed to fail. kvm_apic_realize() is
+>> DeviceRealize() handler, which can fail. Defer the error check
+>> to the latter.
 >>
->> If I understand correctly, the specific goal here is testing PCIe endpoi=
-nt designs against a Linux host. What you'd need for that is a PCI host con=
-troller for the Linux side to talk to and then hooking up endpoints on the =
-transaction layer. QEMU can simulate host controllers that work with existi=
-ng Linux drivers just fine. Then you can put a vfio-user-pci stub device (I=
- don't think this has landed in qemu yet, but you can find the code at [1])=
- on the simulated PCI bus which will expose any software interactions with =
-the endpoint as VFIO-user protocol messages over unix domain socket. The pi=
-ece you need to bring is a VFIO-user server that handles these messages. It=
-s task is basically translating between VFIO-user and TLP and then injectin=
-g TLP into your hardware design.
->
-> Yes, If the pci host controller you said can be implemented, I can achiev=
-e my goal.
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> hw/i386/kvm/apic.c       | 5 +++++
+>> target/i386/cpu-sysemu.c | 8 --------
+>> 2 files changed, 5 insertions(+), 8 deletions(-)
 
-I meant to say that the existing PCIe host controller implementations
-in qemu can be used as is.
+                         "kvm-apic-msi", APIC_SPACE_SIZE);
+>>
+>> diff --git a/target/i386/cpu-sysemu.c b/target/i386/cpu-sysemu.c
+>> index 2375e48178..6a228c9178 100644
+>> --- a/target/i386/cpu-sysemu.c
+>> +++ b/target/i386/cpu-sysemu.c
+>> @@ -253,10 +253,6 @@ APICCommonClass *apic_get_class(Error **errp)
+>>
+>>      /* TODO: in-kernel irqchip for hvf */
+>>      if (kvm_enabled()) {
+>> -        if (!kvm_irqchip_in_kernel()) {
+>> -            error_setg(errp, "KVM does not support userspace APIC");
+>> -            return NULL;
+>> -        }
+>>          apic_type = "kvm-apic";
+>>      } else if (xen_enabled()) {
+>>          apic_type = "xen-apic";
+>> @@ -272,10 +268,6 @@ void x86_cpu_apic_create(X86CPU *cpu, Error **errp)
+>>      APICCommonState *apic;
+>>      APICCommonClass *apic_class = apic_get_class(errp);
+>>
+>> -    if (!apic_class) {
+>> -        return;
+>> -    }
+>> -
+> 
+> Did you intend to remove these lines in the next commit? There you're writing to simplify x86_cpu_apic_create() which you're doing here already.
 
->
-> To begin with, I'll investigate the vfio and libvfio-user.  Thanks!.
->
-> [1] https://www.qemu.org/docs/master/system/multi-process.html
->
-> Best,
-> Shunsuke
->>
->>
->> [1] https://github.com/oracle/qemu/tree/vfio-user-p3.1 - I believe that'=
-s the latest version, Jagannathan Raman will know best
->> [2] https://github.com/nutanix/libvfio-user
->>
->
+No: apic_get_class() doesn't return NULL anymore, so this is dead code.
+
+> 
+> Best regards,
+> Bernhard
 
