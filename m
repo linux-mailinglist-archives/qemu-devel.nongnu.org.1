@@ -2,100 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593167BAB95
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 22:43:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5D97BAB9F
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 22:49:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoVBc-0004XR-FW; Thu, 05 Oct 2023 16:43:08 -0400
+	id 1qoVGK-00010J-IH; Thu, 05 Oct 2023 16:48:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qoVBY-0004RG-21
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 16:43:05 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qoVGG-000109-Hh
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 16:47:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
- id 1qoVBW-0006Se-F2
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 16:43:03 -0400
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395KYNlq020124; Thu, 5 Oct 2023 20:42:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=qBTyIjkX0FsTY0uSX1euWarZaz2rnIXwWz2NVHKjHdA=;
- b=YCb1epPQkNsFaCPcJ+U4skHnJeslcQ6T/jWCRYTf2f8EeG00OLYEyq32KvQoWoTMSwyT
- VX8f7vRamg9yQ5/cfLzp3jGCFq6yjhTeCiGfjiu5dLZHkR3Z4GGTQy85B+dSch546iGU
- dnM7iX4OgsYXOs+qojColrtGKSY3rsho7qzbdKMdUP2FAyKr7oRJ7XLHXPARtpdF5k3A
- fEJwYqjf3M2SYEF5cpzj3npDA8Sm3EMeR2MZDE4haVKEycvMPfgTRMxFhN/enuA12CC5
- bOaXGt+59KcmT0IMBtkMd7AF7nHK8rX1vUYf6NGcqRtwRJZRxsFALcgYvjuOa2zNVexl aw== 
-Received: from ppma23.wdc07v.mail.ibm.com
- (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tj438gbgp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 20:42:32 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 395KKsOh007437; Thu, 5 Oct 2023 20:42:32 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
- by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3teygmbaag-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 20:42:32 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com
- [10.241.53.104])
- by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 395KgV0i21824216
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Thu, 5 Oct 2023 20:42:31 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9B4A15806B;
- Thu,  5 Oct 2023 20:42:31 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 8AFA358069;
- Thu,  5 Oct 2023 20:42:31 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
- by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTPS;
- Thu,  5 Oct 2023 20:42:31 +0000 (GMT)
-Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
- by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id 0A3EC16A0848;
- Thu,  5 Oct 2023 15:42:31 -0500 (CDT)
-Received: (from mglenn@localhost)
- by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 395KgUVc3523027;
- Thu, 5 Oct 2023 15:42:30 -0500
-From: Glenn Miles <milesg@linux.vnet.ibm.com>
-To: qemu-devel@nongnu.org
-Cc: Glenn Miles <milesg@linux.vnet.ibm.com>, qemu-arm@nongnu.org,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- andrew@codeconstruct.com.au, Joel Stanley <joel@jms.id.au>
-Subject: [PATCH] misc/pca9552: Fix for pca9552 not getting reset
-Date: Thu,  5 Oct 2023 15:42:26 -0500
-Message-Id: <20231005204226.3522978-1-milesg@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qoVGE-0007W6-Od
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 16:47:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696538873;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=qBJngKnD41yJ/G1yj4t1L4sOyQjkicC1dIlXJgveiDs=;
+ b=SxSBpHaAjoNZD9wa9LfzYrc9Q5F2v6kHzEMiOJh4iurMoRXpz72FJtruQMinvle1rHrkRa
+ RLzym1x1I4ghh1/COhZ35YX4BiVlqr9xjZTrXgbPDQp/xFnco/0r6C2RzTHyv9RSCALFer
+ YDH6i7/IaMPnl2bmW0VzCoWBTNQbcdg=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-176-4rMbZltrNhiBRyU6DweWUQ-1; Thu, 05 Oct 2023 16:47:51 -0400
+X-MC-Unique: 4rMbZltrNhiBRyU6DweWUQ-1
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-4182f829a79so2344181cf.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 13:47:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696538871; x=1697143671;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=qBJngKnD41yJ/G1yj4t1L4sOyQjkicC1dIlXJgveiDs=;
+ b=u+eZDlvnfJ2mGeUZWWMRfK+ilwdPlUZ8Gw+ikFfpQZ3uuq84dF3GI6e9gelBW+HFsY
+ 3fzzHV9DtFiELbVmA2l7RSvmujUe9E1iFvfLTzYjLUZ28WE7v25fNhEEsw/rG0nx7nVw
+ x2HeVmkH4+EYgYeH0dLofKXauqE3ZhsZuzupLljSOQYrvYupH64IIHryoMeOi4W0oSmP
+ 0RC6HZUuPQjmuaGIeHnOTCxNzPQ5DvvXx9ILaFXoljRmq8iBNOH6cgfYHXP2pOBdbctA
+ f9InfJJarF8nBXrsXirYQAgBgjcnWx7eg8CfIh50fXyoE0DihRPDKqllGXkDtWkXo9FJ
+ 6bbw==
+X-Gm-Message-State: AOJu0YyihcKPsEtqxD3zs6kc6/9ySzlEHAh0VNoMmXu6xPsjIwXRnD75
+ Pd9DJU7IN+eBS3wphusvZ+b9ufMs2m7iSgRY9i7LM441Rw92ddBRvBKg7/+t5Z4nL2yAtn//WO+
+ D3CZQDsN9S0g6odU=
+X-Received: by 2002:ac8:5a8a:0:b0:412:1aa7:786 with SMTP id
+ c10-20020ac85a8a000000b004121aa70786mr7624797qtc.1.1696538871200; 
+ Thu, 05 Oct 2023 13:47:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHrktARyqo7aHI1nKJVkc6EsPnQSL8p3ID22VyXDZoD+NN/TlI2NWnqrWCFuBVWnkMtHhez3g==
+X-Received: by 2002:ac8:5a8a:0:b0:412:1aa7:786 with SMTP id
+ c10-20020ac85a8a000000b004121aa70786mr7624786qtc.1.1696538870854; 
+ Thu, 05 Oct 2023 13:47:50 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ v2-20020ac873c2000000b00419576c7b75sm735502qtp.23.2023.10.05.13.47.50
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Oct 2023 13:47:50 -0700 (PDT)
+Date: Thu, 5 Oct 2023 16:47:48 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v3 07/10] migration: Add migration_rp_wait|kick()
+Message-ID: <ZR8g9K34IY95/Ser@x1n>
+References: <20231004220240.167175-1-peterx@redhat.com>
+ <20231004220240.167175-8-peterx@redhat.com>
+ <874jj5pkze.fsf@secure.mitica>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: FTW6Xi2ZC-RLBRWD0VS8NW3z8OKTedXy
-X-Proofpoint-ORIG-GUID: FTW6Xi2ZC-RLBRWD0VS8NW3z8OKTedXy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-05_15,2023-10-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0
- impostorscore=0 phishscore=0 mlxlogscore=999 bulkscore=0 suspectscore=0
- priorityscore=1501 clxscore=1015 mlxscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310050157
-Received-SPF: none client-ip=148.163.158.5;
- envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <874jj5pkze.fsf@secure.mitica>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,46 +97,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Testing of the pca9552 device on the powernv platform
-showed that the reset method was not being called when
-an instance of the device was realized.  This was causing
-the INPUT0/INPUT1 POR values to be incorrect.
+On Thu, Oct 05, 2023 at 09:49:25AM +0200, Juan Quintela wrote:
+> Peter Xu <peterx@redhat.com> wrote:
+> > It's just a simple wrapper for rp_sem on either wait() or kick(), make it
+> > even clearer on how it is used.  Prepared to be used even for other things.
+> >
+> > Reviewed-by: Fabiano Rosas <farosas@suse.de>
+> > Signed-off-by: Peter Xu <peterx@redhat.com>
+> 
+> Reviewed-by: Juan Quintela <quintela@redhat.com>
+> 
+> I agree with the idea, but I think that the problem is the name of the
+> semaphore.
+> 
+> > +void migration_rp_wait(MigrationState *s)
+> > +{
+> > +    qemu_sem_wait(&s->rp_state.rp_sem);
+> 
+> I am not sure if it would be better to have the wrappers or just rename
+> 
+> If we rename the remaphore to migration_thread, this becomes:
+> 
+>     qemu_sem_wait(&s->rp_state.return_path_ready);
+> 
+>     qemu_sem_post(&s->rp_state.return_path_ready);
+> 
+> Or something similar?
 
-Fixed by calling pca9552_reset from within the
-pca9552_realize method.
+I'd prefer keeping a pair of helpers, but I'm open to other suggestions,
+e.g. I can rename the sem at the same time, or have a better name just for
+the helpers.
 
-Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
----
- hw/misc/pca9552.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Thanks,
 
-diff --git a/hw/misc/pca9552.c b/hw/misc/pca9552.c
-index f28b5ecd7e..4e198af137 100644
---- a/hw/misc/pca9552.c
-+++ b/hw/misc/pca9552.c
-@@ -418,6 +418,12 @@ static void pca955x_realize(DeviceState *dev, Error **errp)
-     qdev_init_gpio_in(dev, pca955x_gpio_in_handler, k->pin_count);
- }
- 
-+static void pca9552_realize(DeviceState *dev, Error **errp)
-+{
-+    pca955x_realize(dev, errp);
-+    pca9552_reset(dev);
-+}
-+
- static Property pca955x_properties[] = {
-     DEFINE_PROP_STRING("description", PCA955xState, description),
-     DEFINE_PROP_END_OF_LIST(),
-@@ -450,7 +456,7 @@ static void pca9552_class_init(ObjectClass *oc, void *data)
-     DeviceClass *dc = DEVICE_CLASS(oc);
-     PCA955xClass *pc = PCA955X_CLASS(oc);
- 
--    dc->reset = pca9552_reset;
-+    dc->realize = pca9552_realize;
-     dc->vmsd = &pca9552_vmstate;
-     pc->max_reg = PCA9552_LS3;
-     pc->pin_count = 16;
 -- 
-2.31.1
+Peter Xu
 
 
