@@ -2,75 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043797B9D23
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 14:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F0C7B9D21
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 14:59:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoNwl-0000AM-5c; Thu, 05 Oct 2023 08:59:21 -0400
+	id 1qoNw5-0007lz-Qx; Thu, 05 Oct 2023 08:58:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoNwL-0008K8-RE
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:53 -0400
+ id 1qoNw0-0007hc-5L
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoNwC-0007m9-24
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:49 -0400
+ id 1qoNvy-0007kC-EG
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696510721;
+ s=mimecast20190719; t=1696510709;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+UN/2lHlsKjyWdODn3no2MX1PZjTG24Zr1xY9Gvy6c0=;
- b=MEjEIujan8WNARpv6MJ3bm/LPQlgsm4g60ezwxfqjpFWsypOrVj+95EdnKLDTKeqS3FyyL
- lFW+YAu2E9YDBnU9KTUCdzmz1S8ZD376i8sB/JRRF/+MLQXjp6vM07eUZTYmlXIztlp1w3
- GvbdfjblG4LqmsFEmI4oOZUpe88yL/k=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zT0mvsYGj0W3YfH+3Z5zqBtAhqUNz5Jtuejiza4ByXU=;
+ b=MZL+AQqiHUCzN3M/sPJ6e2sa1dXomnoAVOKyDC9JmIrTL4KMLDDBsTRIXo7gTyl67HNoGl
+ 4DJnLwc/iBWfzYa7KdDoWF/U/394IYAX5DhPhOcBgIDybOD0qfeMBRE7lkGKHwRwtCKxBT
+ mBXFLfrCh8w8yas01myt1nKFOlfbrlA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-_YVPUlBbM-SCEoQp2fbD0w-1; Thu, 05 Oct 2023 08:58:26 -0400
-X-MC-Unique: _YVPUlBbM-SCEoQp2fbD0w-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9b274cc9636so87712766b.0
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 05:58:25 -0700 (PDT)
+ us-mta-679-VsKAAwJjOCyhCkGfXVz8gQ-1; Thu, 05 Oct 2023 08:58:28 -0400
+X-MC-Unique: VsKAAwJjOCyhCkGfXVz8gQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9a9d7a801a3so88863766b.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 05:58:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696510704; x=1697115504;
+ d=1e100.net; s=20230601; t=1696510706; x=1697115506;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=+UN/2lHlsKjyWdODn3no2MX1PZjTG24Zr1xY9Gvy6c0=;
- b=i4GxSqnA3elcJVHpJrlHXA6GJkev+eAMoMCJmySywD2XBFwNL0i8veMWEErh/xni4k
- KsDc2Ffx3mHabbBCpdIG4fgvAhbblVbCiPFQPDSHqZEo7wDzkCTgWJ9Ztc9zVskBG62o
- nPmaymdFFbT4YULEH0ia3PNFPrIWlO6kXCHSmMn3p3o7M7JpaBmUIs2U3NAs40NEFmgo
- gJUpNIkEpYD0ShHotEZCDUZ255q40b7dwPeK3Ga43iJLhdZVoxu2KLb4YHYLV9CG1o4g
- LiNxIu6f3eTZvj9aycLEVVzfMmo5UG77SlLQp120pxudJUYj68MHuMFWdA+suS1Ub4hx
- qcyw==
-X-Gm-Message-State: AOJu0YxzGTDoIUTHtrOJ0Sqw4Vut/xPae74yPTbUMge7qRxlemsGtJYe
- C17J4g49zPJUxNp/Rdv/qzB74EOhIFeSU60fEVVLFqvM+c9tWk4bsx58FcCfMRtOVOVNYOuRTU8
- jejUgJBrc/ZZx4mvObyOGHGviOf55KqzcbiFogQpRfCkIMxZqYphq1s4/6BX28oM32RUxHyduC8
- Y=
-X-Received: by 2002:a17:906:100e:b0:9b3:47f:1c05 with SMTP id
- 14-20020a170906100e00b009b3047f1c05mr4125878ejm.64.1696510704472; 
- Thu, 05 Oct 2023 05:58:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEi5UjYnfBhF4whb5VPv8Bo4zvw4BHKefSFmcl0MZUMlX3uggQVSnNkVjFEMxIOIj0/PTnugQ==
-X-Received: by 2002:a17:906:100e:b0:9b3:47f:1c05 with SMTP id
- 14-20020a170906100e00b009b3047f1c05mr4125870ejm.64.1696510704184; 
- Thu, 05 Oct 2023 05:58:24 -0700 (PDT)
+ bh=zT0mvsYGj0W3YfH+3Z5zqBtAhqUNz5Jtuejiza4ByXU=;
+ b=e0b9Wptm3DBTSVIMIFfzjcHPise/tH7p45Kl2VBmoiIdhPFVNb1gVLJjX2+vegm9U1
+ +iuMyn7Ak6loVpYUBj0Cg/UVmPz1bw2fla2IZ30/MxMiodxcQCyllFpJ8w6nSkveqnqX
+ pqVDd0FTWnpG1wyU424Krd8s6vpaUqEa021VzpoOQPCzifTVhX+7gfmf2ANGmEYOXD6S
+ NFo1lBSx3iV+A5a1c8WVD6XAI17PjLz2bRw5J1EtKO5tV0QozAA+GMZr0/HB9P1/2FVo
+ iK/BW0D/wWnH9b8azO3o8hGHZ/nObHVyAtYdqxkNiBHL27d4vU5i9xDT+1UCNarhw6gD
+ Ulrg==
+X-Gm-Message-State: AOJu0Yx1f19sz1AzI5PvBe4O6Kc9EshCGcFm33hgARVm0ZMkyIT/TWm+
+ LGHF7i/F7p7r+tXo77WJtFdcpYLI8Wg1bvpGelJVJrbVv99Dho7Xjh/OCEoGYKXe2iLU6I/BL12
+ O97z/itdRvJSdlnX0+EpnzpyVHQ8+wr033tz4y74dSAyN3TWncstCzypRjDozIklg0D6l160GY4
+ U=
+X-Received: by 2002:a17:906:29a:b0:9aa:23c9:aa52 with SMTP id
+ 26-20020a170906029a00b009aa23c9aa52mr4688076ejf.20.1696510706364; 
+ Thu, 05 Oct 2023 05:58:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+Qb96Y84Of0jNFbogxf9Yc6Iz9pXMSQC+cs0v+tlvLID1Br8j3hIKrnk6ro59sa6dhVpizg==
+X-Received: by 2002:a17:906:29a:b0:9aa:23c9:aa52 with SMTP id
+ 26-20020a170906029a00b009aa23c9aa52mr4688058ejf.20.1696510706046; 
+ Thu, 05 Oct 2023 05:58:26 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
  by smtp.gmail.com with ESMTPSA id
- h13-20020a17090619cd00b009ae587ce135sm1151954ejd.223.2023.10.05.05.58.22
+ cw11-20020a170906c78b00b0099e12a49c8fsm1177812ejb.173.2023.10.05.05.58.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Oct 2023 05:58:22 -0700 (PDT)
+ Thu, 05 Oct 2023 05:58:24 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: balaton@eik.bme.hu,
 	berrange@redhat.com
-Subject: [PATCH 4/7] audio: extend -audio to allow creating a default backend
-Date: Thu,  5 Oct 2023 14:58:12 +0200
-Message-ID: <20231005125815.66082-5-pbonzini@redhat.com>
+Subject: [PATCH 5/7] audio: do not use first -audiodev as default audio device
+Date: Thu,  5 Oct 2023 14:58:13 +0200
+Message-ID: <20231005125815.66082-6-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231005125815.66082-1-pbonzini@redhat.com>
 References: <20231005125815.66082-1-pbonzini@redhat.com>
@@ -101,118 +101,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-If "-audio BACKEND" is used without a model, the resulting backend
-will be used whenever the audiodev property is not specified.
+It is now possible to specify the options for the default audio device
+using -audio, so there is no need anymore to use a fake -audiodev option.
+
+Remove the fall back to QTAILQ_FIRST(&audio_states), instead remember the
+AudioState that was created from default_audiodevs and use that one.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- qemu-options.hx | 29 +++++++++++++++++++++--------
- system/vl.c     | 27 +++++++++++++++------------
- 2 files changed, 36 insertions(+), 20 deletions(-)
+ audio/audio.c                   | 25 +++++++------------------
+ docs/about/deprecated.rst       |  6 ------
+ docs/about/removed-features.rst |  8 ++++++++
+ 3 files changed, 15 insertions(+), 24 deletions(-)
 
-diff --git a/qemu-options.hx b/qemu-options.hx
-index 9ce8a5b9578..5f4c240a1e2 100644
---- a/qemu-options.hx
-+++ b/qemu-options.hx
-@@ -728,20 +728,22 @@ ERST
+diff --git a/audio/audio.c b/audio/audio.c
+index 186cc4d336e..de37ad7c074 100644
+--- a/audio/audio.c
++++ b/audio/audio.c
+@@ -104,6 +104,7 @@ static audio_driver *audio_driver_lookup(const char *name)
  
+ static QTAILQ_HEAD(AudioStateHead, AudioState) audio_states =
+     QTAILQ_HEAD_INITIALIZER(audio_states);
++static AudioState *default_audio_state;
  
- DEF("audio", HAS_ARG, QEMU_OPTION_audio,
-+    "-audio [driver=]driver[,prop[=value][,...]]\n"
-+    "                specifies default audio backend when `audiodev` is not\n"
-+    "                used to create a machine or sound device;"
-+    "                options are the same as for -audiodev\n"
-     "-audio [driver=]driver,model=value[,prop[=value][,...]]\n"
-     "                specifies the audio backend and device to use;\n"
-     "                apart from 'model', options are the same as for -audiodev.\n"
-     "                use '-audio model=help' to show possible devices.\n",
-     QEMU_ARCH_ALL)
- SRST
--``-audio [driver=]driver,model=value[,prop[=value][,...]]``
--    This option is a shortcut for configuring both the guest audio
--    hardware and the host audio backend in one go.
--    The driver option is the same as with the corresponding ``-audiodev`` option below.
--    The guest hardware model can be set with ``model=modelname``.
--
--    Use ``driver=help`` to list the available drivers,
--    and ``model=help`` to list the available device types.
-+``-audio [driver=]driver[,model=value][,prop[=value][,...]]``
-+    If the ``model`` option is specified, ``-audio`` is a shortcut
-+    for configuring both the guest audio hardware and the host audio
-+    backend in one go. The guest hardware model can be set with
-+    ``model=modelname``.  Use ``model=help`` to list the available
-+    device types.
+ const struct mixeng_volume nominal_volume = {
+     .mute = 0,
+@@ -1660,6 +1661,7 @@ static void free_audio_state(AudioState *s)
  
-     The following two example do exactly the same, to show how ``-audio``
-     can be used to shorten the command line length:
-@@ -750,6 +752,17 @@ SRST
- 
-         |qemu_system| -audiodev pa,id=pa -device sb16,audiodev=pa
-         |qemu_system| -audio pa,model=sb16
-+
-+    If the ``model`` option is not specified, ``-audio`` is used to
-+    configure a default audio backend that will be used whenever the
-+    ``audiodev`` property is not set on a device or machine.  In
-+    particular, ``-audio none`` ensures that no audio is produced even
-+    for machines that have embedded sound hardware.
-+
-+    In both cases, the driver option is the same as with the corresponding
-+    ``-audiodev`` option below.  Use ``driver=help`` to list the available
-+    drivers.
-+
- ERST
- 
- DEF("audiodev", HAS_ARG, QEMU_OPTION_audiodev,
-diff --git a/system/vl.c b/system/vl.c
-index 7ca92d4490d..72be5a49764 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -2935,7 +2935,7 @@ void qemu_init(int argc, char **argv)
-                 break;
-             case QEMU_OPTION_audio: {
-                 bool help;
--                char *model;
-+                char *model = NULL;
-                 Audiodev *dev = NULL;
-                 Visitor *v;
-                 QDict *dict = keyval_parse(optarg, "driver", &help, &error_fatal);
-@@ -2948,22 +2948,25 @@ void qemu_init(int argc, char **argv)
-                 if (!qdict_haskey(dict, "id")) {
-                     qdict_put_str(dict, "id", "audiodev0");
-                 }
--                if (!qdict_haskey(dict, "model")) {
--                    error_setg(&error_fatal, "Parameter 'model' is missing");
--                }
--                model = g_strdup(qdict_get_str(dict, "model"));
--                qdict_del(dict, "model");
--                if (is_help_option(model)) {
--                    show_valid_soundhw();
--                    exit(0);
-+                if (qdict_haskey(dict, "model")) {
-+                    model = g_strdup(qdict_get_str(dict, "model"));
-+                    qdict_del(dict, "model");
-+                    if (is_help_option(model)) {
-+                        show_valid_soundhw();
-+                        exit(0);
-+                    }
-                 }
-                 v = qobject_input_visitor_new_keyval(QOBJECT(dict));
-                 qobject_unref(dict);
-                 visit_type_Audiodev(v, NULL, &dev, &error_fatal);
-                 visit_free(v);
--                audio_define(dev);
--                select_soundhw(model, dev->id);
--                g_free(model);
-+                if (model) {
-+                    audio_define(dev);
-+                    select_soundhw(model, dev->id);
-+                    g_free(model);
-+                } else {
-+                    audio_define_default(dev, &error_fatal);
-+                }
-                 break;
+ void audio_cleanup(void)
+ {
++    default_audio_state = NULL;
+     while (!QTAILQ_EMPTY(&audio_states)) {
+         AudioState *s = QTAILQ_FIRST(&audio_states);
+         QTAILQ_REMOVE(&audio_states, s, list);
+@@ -1760,6 +1762,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
+             goto out;
+         }
+     } else {
++        assert(!default_audio_state);
+         for (;;) {
+             AudiodevListEntry *e = QSIMPLEQ_FIRST(&default_audiodevs);
+             if (!e) {
+@@ -1801,24 +1804,9 @@ out:
+ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
+ {
+     if (!card->state) {
+-        if (!QTAILQ_EMPTY(&audio_states)) {
+-            /*
+-             * FIXME: once it is possible to create an arbitrary
+-             * default device via -audio DRIVER,OPT=VALUE (no "model"),
+-             * replace this special case with the default AudioState*,
+-             * storing it in a separate global.  For now, keep the
+-             * warning to encourage moving off magic use of the first
+-             * -audiodev.
+-             */
+-            if (QSIMPLEQ_EMPTY(&default_audiodevs)) {
+-                dolog("Device %s: audiodev default parameter is deprecated, please "
+-                      "specify audiodev=%s\n", name,
+-                      QTAILQ_FIRST(&audio_states)->dev->id);
+-            }
+-            card->state = QTAILQ_FIRST(&audio_states);
+-        } else {
+-            card->state = audio_init(NULL, errp);
+-            if (!card->state) {
++        if (!default_audio_state) {
++            default_audio_state = audio_init(NULL, errp);
++            if (!default_audio_state) {
+                 if (!QSIMPLEQ_EMPTY(&audiodevs)) {
+                     error_append_hint(errp, "Perhaps you wanted to set audiodev=%s?\n",
+                                       QSIMPLEQ_FIRST(&audiodevs)->dev->id);
+@@ -1826,6 +1814,7 @@ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
+                 return false;
              }
-             case QEMU_OPTION_h:
+         }
++        card->state = default_audio_state;
+     }
+ 
+     card->name = g_strdup (name);
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 2f51cf770ae..d59bcf36230 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -37,12 +37,6 @@ coverage.
+ System emulator command line arguments
+ --------------------------------------
+ 
+-Creating sound card devices without ``audiodev=`` property (since 4.2)
+-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+-
+-When not using the deprecated legacy audio config, each sound card
+-should specify an ``audiodev=`` property.
+-
+ Short-form boolean options (since 6.0)
+ ''''''''''''''''''''''''''''''''''''''
+ 
+diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+index 58c94392c65..27639370f96 100644
+--- a/docs/about/removed-features.rst
++++ b/docs/about/removed-features.rst
+@@ -442,10 +442,18 @@ line using a ``secret`` object instance.
+ The ``-audiodev`` and ``-audio`` command line options are now the only
+ way to specify audio backend settings.
+ 
++Using ``-audiodev`` to define the default audio backend (removed in 8.2)
++''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
++
+ QEMU does not create default audio backends anymore if any of the
+ ``-audiodev``, ``-audio`` or ``-nodefaults`` options are used on the
+ command line.
+ 
++If an audio backend is created with ``-audiodev``, each sound card
++that wants to use it should specify an ``audiodev=``
++property.  Previously, the first audiodev command line option would be
++used as a fallback.
++
+ Creating vnc without ``audiodev=`` property (removed in 8.2)
+ ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+ 
 -- 
 2.41.0
 
