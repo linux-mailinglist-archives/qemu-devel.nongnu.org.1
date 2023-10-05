@@ -2,52 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394C87BA961
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 20:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ACBA7BA95F
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 20:47:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoTME-0001NA-AS; Thu, 05 Oct 2023 14:45:58 -0400
+	id 1qoTMF-0001SC-4r; Thu, 05 Oct 2023 14:45:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoTLv-0000is-9R
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoTLt-0000ga-TB
  for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:45:39 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoTLq-00061E-DP
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:45:39 -0400
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoTLp-000600-AE
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:45:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696531533;
+ s=mimecast20190719; t=1696531532;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=gfsbBYcXKJfQVHlt88edJXgHE53hpvmcTLZ2ibr4w+E=;
- b=MYdzv1jjGmpZZtxLM95uEDocsJglywtHaZzsWe63mxZJfDP0AmJneyEvNM1we1PrRrUxl9
- Mi19ErrScWqsdQrQwpTHwHfCvlLivkfXtRFQpJcpR4CMTcAFbNnDhCE9lima/cgLu/vcuG
- NEM1rEeuO6QMhiJBJwWTnZZY29XOm6k=
+ bh=us053DXwqKmj6k4Trn9X//vQFXWW8uYwhgjthrl2XnI=;
+ b=g5GvJPi2VCMihUPUd8SY/Wbq7YDCbrAKA8hvPnwgl4wipRQG2LUom/pKvXUJqMlo4VnNrt
+ t2/avyUAbZBJs88JW+bDHWTzLAg61pqBLk5Sl4hpcfFShfYagHJhtvWnIoKgnMi5409EkO
+ kKn+VoZuZThXxFbRJYlmSbuzK/H5upU=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-623-x-9IV35OM-icy1AT9h_21w-1; Thu, 05 Oct 2023 14:45:30 -0400
-X-MC-Unique: x-9IV35OM-icy1AT9h_21w-1
+ us-mta-627-sF8aF5KQOCS_QqIXQelTpg-1; Thu, 05 Oct 2023 14:45:31 -0400
+X-MC-Unique: sF8aF5KQOCS_QqIXQelTpg-1
 Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
  [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 36F11801E91;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E0B73101A598;
  Thu,  5 Oct 2023 18:45:30 +0000 (UTC)
 Received: from green.redhat.com (unknown [10.2.16.63])
- by smtp.corp.redhat.com (Postfix) with ESMTP id B9D2C215670B;
- Thu,  5 Oct 2023 18:45:29 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7109F215670B;
+ Thu,  5 Oct 2023 18:45:30 +0000 (UTC)
 From: Eric Blake <eblake@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
  Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
  qemu-block@nongnu.org (open list:Network Block Dev...)
-Subject: [PULL 09/15] nbd/client: Plumb errp through nbd_receive_replies
-Date: Thu,  5 Oct 2023 13:44:56 -0500
-Message-ID: <20231005184447.682556-26-eblake@redhat.com>
+Subject: [PULL 10/15] nbd/client: Initial support for extended headers
+Date: Thu,  5 Oct 2023 13:44:57 -0500
+Message-ID: <20231005184447.682556-27-eblake@redhat.com>
 In-Reply-To: <20231005184447.682556-17-eblake@redhat.com>
 References: <20231005184447.682556-17-eblake@redhat.com>
 MIME-Version: 1.0
@@ -78,72 +78,263 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Instead of ignoring the low-level error just to refabricate our own
-message to pass to the caller, we can just plumb the caller's errp
-down to the low level.
+Update the client code to be able to send an extended request, and
+parse an extended header from the server.  Note that since we reject
+any structured reply with a too-large payload, we can always normalize
+a valid header back into the compact form, so that the caller need not
+deal with two branches of a union.  Still, until a later patch lets
+the client negotiate extended headers, the code added here should not
+be reached.  Note that because of the different magic numbers, it is
+just as easy to trace and then tolerate a non-compliant server sending
+the wrong header reply as it would be to insist that the server is
+compliant.
 
 Signed-off-by: Eric Blake <eblake@redhat.com>
-Message-ID: <20230925192229.3186470-20-eblake@redhat.com>
+Message-ID: <20230925192229.3186470-21-eblake@redhat.com>
+[eblake: fix trace format]
 Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
- block/nbd.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ include/block/nbd.h |   3 +-
+ block/nbd.c         |   2 +-
+ nbd/client.c        | 104 +++++++++++++++++++++++++++++---------------
+ nbd/trace-events    |   3 +-
+ 4 files changed, 74 insertions(+), 38 deletions(-)
 
+diff --git a/include/block/nbd.h b/include/block/nbd.h
+index 8a765e78dfb..ba8724f5336 100644
+--- a/include/block/nbd.h
++++ b/include/block/nbd.h
+@@ -389,7 +389,8 @@ int nbd_init(int fd, QIOChannelSocket *sioc, NBDExportInfo *info,
+              Error **errp);
+ int nbd_send_request(QIOChannel *ioc, NBDRequest *request);
+ int coroutine_fn nbd_receive_reply(BlockDriverState *bs, QIOChannel *ioc,
+-                                   NBDReply *reply, Error **errp);
++                                   NBDReply *reply, NBDMode mode,
++                                   Error **errp);
+ int nbd_client(int fd);
+ int nbd_disconnect(int fd);
+ int nbd_errno_to_system_errno(int err);
 diff --git a/block/nbd.c b/block/nbd.c
-index 4a7f37da1c6..22d3cb11ac8 100644
+index 22d3cb11ac8..76461430411 100644
 --- a/block/nbd.c
 +++ b/block/nbd.c
-@@ -416,7 +416,8 @@ static void coroutine_fn GRAPH_RDLOCK nbd_reconnect_attempt(BDRVNBDState *s)
-     reconnect_delay_timer_del(s);
- }
-
--static coroutine_fn int nbd_receive_replies(BDRVNBDState *s, uint64_t cookie)
-+static coroutine_fn int nbd_receive_replies(BDRVNBDState *s, uint64_t cookie,
-+                                            Error **errp)
- {
-     int ret;
-     uint64_t ind = COOKIE_TO_INDEX(cookie), ind2;
-@@ -457,20 +458,25 @@ static coroutine_fn int nbd_receive_replies(BDRVNBDState *s, uint64_t cookie)
+@@ -458,7 +458,7 @@ static coroutine_fn int nbd_receive_replies(BDRVNBDState *s, uint64_t cookie,
 
          /* We are under mutex and cookie is 0. We have to do the dirty work. */
          assert(s->reply.cookie == 0);
--        ret = nbd_receive_reply(s->bs, s->ioc, &s->reply, NULL);
--        if (ret <= 0) {
--            ret = ret ? ret : -EIO;
-+        ret = nbd_receive_reply(s->bs, s->ioc, &s->reply, errp);
-+        if (ret == 0) {
-+            ret = -EIO;
-+            error_setg(errp, "server dropped connection");
-+        }
-+        if (ret < 0) {
-             nbd_channel_error(s, ret);
-             return ret;
-         }
-         if (nbd_reply_is_structured(&s->reply) &&
-             s->info.mode < NBD_MODE_STRUCTURED) {
-             nbd_channel_error(s, -EINVAL);
-+            error_setg(errp, "unexpected structured reply");
-             return -EINVAL;
-         }
-         ind2 = COOKIE_TO_INDEX(s->reply.cookie);
-         if (ind2 >= MAX_NBD_REQUESTS || !s->requests[ind2].coroutine) {
-             nbd_channel_error(s, -EINVAL);
-+            error_setg(errp, "unexpected cookie value");
-             return -EINVAL;
-         }
-         if (s->reply.cookie == cookie) {
-@@ -842,9 +848,9 @@ static coroutine_fn int nbd_co_do_receive_one_chunk(
-     }
-     *request_ret = 0;
+-        ret = nbd_receive_reply(s->bs, s->ioc, &s->reply, errp);
++        ret = nbd_receive_reply(s->bs, s->ioc, &s->reply, s->info.mode, errp);
+         if (ret == 0) {
+             ret = -EIO;
+             error_setg(errp, "server dropped connection");
+diff --git a/nbd/client.c b/nbd/client.c
+index cecb0f04377..a2f253062aa 100644
+--- a/nbd/client.c
++++ b/nbd/client.c
+@@ -1346,22 +1346,29 @@ int nbd_disconnect(int fd)
 
--    ret = nbd_receive_replies(s, cookie);
-+    ret = nbd_receive_replies(s, cookie, errp);
+ int nbd_send_request(QIOChannel *ioc, NBDRequest *request)
+ {
+-    uint8_t buf[NBD_REQUEST_SIZE];
++    uint8_t buf[NBD_EXTENDED_REQUEST_SIZE];
++    size_t len;
+
+-    assert(request->mode <= NBD_MODE_STRUCTURED); /* TODO handle extended */
+-    assert(request->len <= UINT32_MAX);
+     trace_nbd_send_request(request->from, request->len, request->cookie,
+                            request->flags, request->type,
+                            nbd_cmd_lookup(request->type));
+
+-    stl_be_p(buf, NBD_REQUEST_MAGIC);
+     stw_be_p(buf + 4, request->flags);
+     stw_be_p(buf + 6, request->type);
+     stq_be_p(buf + 8, request->cookie);
+     stq_be_p(buf + 16, request->from);
+-    stl_be_p(buf + 24, request->len);
++    if (request->mode >= NBD_MODE_EXTENDED) {
++        stl_be_p(buf, NBD_EXTENDED_REQUEST_MAGIC);
++        stq_be_p(buf + 24, request->len);
++        len = NBD_EXTENDED_REQUEST_SIZE;
++    } else {
++        assert(request->len <= UINT32_MAX);
++        stl_be_p(buf, NBD_REQUEST_MAGIC);
++        stl_be_p(buf + 24, request->len);
++        len = NBD_REQUEST_SIZE;
++    }
+
+-    return nbd_write(ioc, buf, sizeof(buf), NULL);
++    return nbd_write(ioc, buf, len, NULL);
+ }
+
+ /* nbd_receive_simple_reply
+@@ -1388,30 +1395,36 @@ static int nbd_receive_simple_reply(QIOChannel *ioc, NBDSimpleReply *reply,
+     return 0;
+ }
+
+-/* nbd_receive_structured_reply_chunk
++/* nbd_receive_reply_chunk_header
+  * Read structured reply chunk except magic field (which should be already
+- * read).
++ * read).  Normalize into the compact form.
+  * Payload is not read.
+  */
+-static int nbd_receive_structured_reply_chunk(QIOChannel *ioc,
+-                                              NBDStructuredReplyChunk *chunk,
+-                                              Error **errp)
++static int nbd_receive_reply_chunk_header(QIOChannel *ioc, NBDReply *chunk,
++                                          Error **errp)
+ {
+     int ret;
++    size_t len;
++    uint64_t payload_len;
+
+-    assert(chunk->magic == NBD_STRUCTURED_REPLY_MAGIC);
++    if (chunk->magic == NBD_STRUCTURED_REPLY_MAGIC) {
++        len = sizeof(chunk->structured);
++    } else {
++        assert(chunk->magic == NBD_EXTENDED_REPLY_MAGIC);
++        len = sizeof(chunk->extended);
++    }
+
+     ret = nbd_read(ioc, (uint8_t *)chunk + sizeof(chunk->magic),
+-                   sizeof(*chunk) - sizeof(chunk->magic), "structured chunk",
++                   len - sizeof(chunk->magic), "structured chunk",
+                    errp);
      if (ret < 0) {
--        error_setg(errp, "Connection closed");
-+        error_prepend(errp, "Connection closed: ");
-         return -EIO;
+         return ret;
      }
-     assert(s->ioc);
+
+-    chunk->flags = be16_to_cpu(chunk->flags);
+-    chunk->type = be16_to_cpu(chunk->type);
+-    chunk->cookie = be64_to_cpu(chunk->cookie);
+-    chunk->length = be32_to_cpu(chunk->length);
++    /* flags, type, and cookie occupy same space between forms */
++    chunk->structured.flags = be16_to_cpu(chunk->structured.flags);
++    chunk->structured.type = be16_to_cpu(chunk->structured.type);
++    chunk->structured.cookie = be64_to_cpu(chunk->structured.cookie);
+
+     /*
+      * Because we use BLOCK_STATUS with REQ_ONE, and cap READ requests
+@@ -1419,11 +1432,20 @@ static int nbd_receive_structured_reply_chunk(QIOChannel *ioc,
+      * this.  Even if we stopped using REQ_ONE, sane servers will cap
+      * the number of extents they return for block status.
+      */
+-    if (chunk->length > NBD_MAX_BUFFER_SIZE + sizeof(NBDStructuredReadData)) {
++    if (chunk->magic == NBD_STRUCTURED_REPLY_MAGIC) {
++        payload_len = be32_to_cpu(chunk->structured.length);
++    } else {
++        /* For now, we are ignoring the extended header offset. */
++        payload_len = be64_to_cpu(chunk->extended.length);
++        chunk->magic = NBD_STRUCTURED_REPLY_MAGIC;
++    }
++    if (payload_len > NBD_MAX_BUFFER_SIZE + sizeof(NBDStructuredReadData)) {
+         error_setg(errp, "server chunk %" PRIu32 " (%s) payload is too long",
+-                   chunk->type, nbd_rep_lookup(chunk->type));
++                   chunk->structured.type,
++                   nbd_rep_lookup(chunk->structured.type));
+         return -EINVAL;
+     }
++    chunk->structured.length = payload_len;
+
+     return 0;
+ }
+@@ -1470,19 +1492,21 @@ nbd_read_eof(BlockDriverState *bs, QIOChannel *ioc, void *buffer, size_t size,
+
+ /* nbd_receive_reply
+  *
+- * Decreases bs->in_flight while waiting for a new reply. This yield is where
+- * we wait indefinitely and the coroutine must be able to be safely reentered
+- * for nbd_client_attach_aio_context().
++ * Wait for a new reply. If this yields, the coroutine must be able to be
++ * safely reentered for nbd_client_attach_aio_context().  @mode determines
++ * which reply magic we are expecting, although this normalizes the result
++ * so that the caller only has to work with compact headers.
+  *
+  * Returns 1 on success
+- *         0 on eof, when no data was read (errp is not set)
+- *         negative errno on failure (errp is set)
++ *         0 on eof, when no data was read
++ *         negative errno on failure
+  */
+ int coroutine_fn nbd_receive_reply(BlockDriverState *bs, QIOChannel *ioc,
+-                                   NBDReply *reply, Error **errp)
++                                   NBDReply *reply, NBDMode mode, Error **errp)
+ {
+     int ret;
+     const char *type;
++    uint32_t expected;
+
+     ret = nbd_read_eof(bs, ioc, &reply->magic, sizeof(reply->magic), errp);
+     if (ret <= 0) {
+@@ -1491,34 +1515,44 @@ int coroutine_fn nbd_receive_reply(BlockDriverState *bs, QIOChannel *ioc,
+
+     reply->magic = be32_to_cpu(reply->magic);
+
++    /* Diagnose but accept wrong-width header */
+     switch (reply->magic) {
+     case NBD_SIMPLE_REPLY_MAGIC:
++        if (mode >= NBD_MODE_EXTENDED) {
++            trace_nbd_receive_wrong_header(reply->magic,
++                                           nbd_mode_lookup(mode));
++        }
+         ret = nbd_receive_simple_reply(ioc, &reply->simple, errp);
+         if (ret < 0) {
+-            break;
++            return ret;
+         }
+         trace_nbd_receive_simple_reply(reply->simple.error,
+                                        nbd_err_lookup(reply->simple.error),
+                                        reply->cookie);
+         break;
+     case NBD_STRUCTURED_REPLY_MAGIC:
+-        ret = nbd_receive_structured_reply_chunk(ioc, &reply->structured, errp);
++    case NBD_EXTENDED_REPLY_MAGIC:
++        expected = mode >= NBD_MODE_EXTENDED ? NBD_EXTENDED_REPLY_MAGIC
++            : NBD_STRUCTURED_REPLY_MAGIC;
++        if (reply->magic != expected) {
++            trace_nbd_receive_wrong_header(reply->magic,
++                                           nbd_mode_lookup(mode));
++        }
++        ret = nbd_receive_reply_chunk_header(ioc, reply, errp);
+         if (ret < 0) {
+-            break;
++            return ret;
+         }
+         type = nbd_reply_type_lookup(reply->structured.type);
+-        trace_nbd_receive_structured_reply_chunk(reply->structured.flags,
+-                                                 reply->structured.type, type,
+-                                                 reply->structured.cookie,
+-                                                 reply->structured.length);
++        trace_nbd_receive_reply_chunk_header(reply->structured.flags,
++                                             reply->structured.type, type,
++                                             reply->structured.cookie,
++                                             reply->structured.length);
+         break;
+     default:
++        trace_nbd_receive_wrong_header(reply->magic, nbd_mode_lookup(mode));
+         error_setg(errp, "invalid magic (got 0x%" PRIx32 ")", reply->magic);
+         return -EINVAL;
+     }
+-    if (ret < 0) {
+-        return ret;
+-    }
+
+     return 1;
+ }
+diff --git a/nbd/trace-events b/nbd/trace-events
+index c1a3227613f..cb5d719ed60 100644
+--- a/nbd/trace-events
++++ b/nbd/trace-events
+@@ -33,7 +33,8 @@ nbd_client_clear_queue(void) "Clearing NBD queue"
+ nbd_client_clear_socket(void) "Clearing NBD socket"
+ nbd_send_request(uint64_t from, uint64_t len, uint64_t cookie, uint16_t flags, uint16_t type, const char *name) "Sending request to server: { .from = %" PRIu64", .len = %" PRIu64 ", .cookie = %" PRIu64 ", .flags = 0x%" PRIx16 ", .type = %" PRIu16 " (%s) }"
+ nbd_receive_simple_reply(int32_t error, const char *errname, uint64_t cookie) "Got simple reply: { .error = %" PRId32 " (%s), cookie = %" PRIu64" }"
+-nbd_receive_structured_reply_chunk(uint16_t flags, uint16_t type, const char *name, uint64_t cookie, uint32_t length) "Got structured reply chunk: { flags = 0x%" PRIx16 ", type = %d (%s), cookie = %" PRIu64 ", length = %" PRIu32 " }"
++nbd_receive_reply_chunk_header(uint16_t flags, uint16_t type, const char *name, uint64_t cookie, uint32_t length) "Got reply chunk header: { flags = 0x%" PRIx16 ", type = %" PRIu16 " (%s), cookie = %" PRIu64 ", length = %" PRIu32 " }"
++nbd_receive_wrong_header(uint32_t magic, const char *mode) "Server sent unexpected magic 0x%" PRIx32 " for negotiated mode %s"
+
+ # common.c
+ nbd_unknown_error(int err) "Squashing unexpected error %d to EINVAL"
 -- 
 2.41.0
 
