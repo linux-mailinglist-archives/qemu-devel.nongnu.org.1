@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746BA7B9A56
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:46:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0852D7B9A50
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:45:01 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFHb-0004U7-Ht; Wed, 04 Oct 2023 23:44:19 -0400
+	id 1qoFHM-00049s-FT; Wed, 04 Oct 2023 23:44:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHL-00048x-IU
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:59 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHK-00044l-8S
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:58 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHI-0000Bs-RG
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:59 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHH-0000Bd-MH
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:43:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477436;
+ s=mimecast20190719; t=1696477435;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=px/NIHIU5yx2rY5OSFOtW4f6DdL5xcRfB3kvq/fso7Y=;
- b=MCQ5Yiz/IokpphMy67codvWZbSwYlFhp7RMQOdjGKn1myE3l+pIg67IjIM8BHFEost5U4g
- DAk/mfC78PGAUQwSI0TAf/vNdog/f7F7CmklCpnG+zXbzpG7phQ4O/Nzu5Gr6xtZDmKQxR
- LEXIzrbaIViuO6BBXbGa92sdNSFGqFo=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=6Ins0qLJ2S+b0ktKmityoiu5P8h7JluJ1ZGdKo7qxL0=;
+ b=J5kwtJPoa8pOWfVBG2arbXMUdmzaq8dK4+IB2R/5FInzJfLj8dYSTIdrV7h/1W4coT17Ll
+ oei2+vB3RmR2Qxh6krtmVF8QEC2m8MQTs0orDlzdrHKRQRT/3G2zn4mCKoIbsG/NkMFuHi
+ JaomRFt6bgdB5IjxicgUdkeJDdDQmZY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-312-rYDFiNFPP9Ok6_019dE7PA-1; Wed, 04 Oct 2023 23:43:49 -0400
-X-MC-Unique: rYDFiNFPP9Ok6_019dE7PA-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-40652e8cb57so3848105e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:43:49 -0700 (PDT)
+ us-mta-22-4FaYlJXyODqqsVniC2zUEA-1; Wed, 04 Oct 2023 23:43:53 -0400
+X-MC-Unique: 4FaYlJXyODqqsVniC2zUEA-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-324810f3bfcso691311f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:43:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477428; x=1697082228;
+ d=1e100.net; s=20230601; t=1696477431; x=1697082231;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=px/NIHIU5yx2rY5OSFOtW4f6DdL5xcRfB3kvq/fso7Y=;
- b=eD2UkUWHqvKV2H3qtoPk5nVUeESurlGOr8az54nyqMv0NJgwiQbUUFpRUV0+T0ADSR
- 85NdgFSVQYHFNdhgeZIC/hQ/pPJ36qYsPvBcsGapdctECdDX5ExpEaEVehuFiRkBA3M9
- kkomwl3TzJRv4dsGf98lDtaiER9nS38Sh9ZdnFYf5Ui+H0jaUNCqTCYFyGuq21kWoHjI
- Go3QXcB1sxSLfQX6LfJkc757g5bqw+3JV4ym+evMm06R6Yll1Up27OibbmPdalaSh/B0
- 9wP4jQxL8EXKHVIp/tbie8i5AVqqd3rrGV788rxkkNZ0xkR4K0KSQmlqt4iI7aYT5dkO
- /O4g==
-X-Gm-Message-State: AOJu0YwsJIRUqMd3eZnbSi8Z73Kzve4xz5UkVtgZdK3AA7ghsxdcyorv
- 954gxuDLvX5vNi7rJTf5H0lKS9dfl62nmeGJ0JSTTBX+aZmxc1ybuM2wd5xYitjlJZ5CRxjZdmK
- 2yCLwH9HyQNqLGPRuW3hiKidsJMHYMehrwZ8l/1o9KNNKoldqAL2Da20/RvLVL/DVgjNa
-X-Received: by 2002:a05:600c:ad6:b0:3fc:7eb:1119 with SMTP id
- c22-20020a05600c0ad600b003fc07eb1119mr3740490wmr.15.1696477428067; 
- Wed, 04 Oct 2023 20:43:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERUUrgccmSFpvnvagau9oaRIGrdt7ehuc984oR4/yUgbtQkdbbku+CDbdi31GWPM5vKvbl5g==
-X-Received: by 2002:a05:600c:ad6:b0:3fc:7eb:1119 with SMTP id
- c22-20020a05600c0ad600b003fc07eb1119mr3740474wmr.15.1696477427683; 
- Wed, 04 Oct 2023 20:43:47 -0700 (PDT)
+ bh=6Ins0qLJ2S+b0ktKmityoiu5P8h7JluJ1ZGdKo7qxL0=;
+ b=ujfSsuQSTXx7M6F+7yoWB2BQy2Kbj57mX0ITFbeKt4HzLcVwOLjUfKp1xv741vtd+O
+ v+CoOiDcZVt+qfHX+bgUxmLS49uUfa4h6sfLjCt68wYGTX4R0pWPiBb0yJNRUWEeKXt4
+ AptVB38aFRjS9q26AuLcwGFVuljzvLkjehZDmG7V5vWRq13ZRmLh+eGkesxub8f/+oKG
+ SwvZ+3je56JAICzggMsxULih2J1kAZDUkKoNMCSr7OYxJJXnVR2FJ8xjW8wZsHQgfRaU
+ MI6YkK5N1Im4pjnbkQZ0RF9eatky/5zEzIhZoACjV8+JLvaLpeQPJJwwvxnaDknym6RJ
+ JwWg==
+X-Gm-Message-State: AOJu0YxWr0YLQQRDJ4rgwt9Yk1EaR+9kxh7D9R2ffO483mQ6kwmH/zbM
+ e1xrUCrIXjIvAsElUFWS1levuJ8fPtuQI6XUFHanfUGipaSMFuoCmZ6ou3Nl6z0Ft6qC94WPlHT
+ JieSO5YyXxT7xf1st+EZZwzuLXhy7mFLMbAKmpnlEmfccQUjAnShOBJHe7VlJNPDihC+G
+X-Received: by 2002:a05:600c:2986:b0:406:4e2e:b185 with SMTP id
+ r6-20020a05600c298600b004064e2eb185mr1047009wmd.1.1696477431604; 
+ Wed, 04 Oct 2023 20:43:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGkdfSBstqYZ69fu16hmCZgfFCgDi6JUmrK3zECFaR9HbvYbDVouyTw+1q8KKc3fwo/dhWFlQ==
+X-Received: by 2002:a05:600c:2986:b0:406:4e2e:b185 with SMTP id
+ r6-20020a05600c298600b004064e2eb185mr1047000wmd.1.1696477431249; 
+ Wed, 04 Oct 2023 20:43:51 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- fl16-20020a05600c0b9000b00406847c988asm2727261wmb.12.2023.10.04.20.43.45
+ p15-20020a7bcc8f000000b003fee6e170f9sm527151wma.45.2023.10.04.20.43.49
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:43:46 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:43:43 -0400
+ Wed, 04 Oct 2023 20:43:50 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:43:47 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Hawkins Jiawei <yin31149@gmail.com>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Jason Wang <jasowang@redhat.com>
-Subject: [PULL v2 20/53] vhost: Add count argument to vhost_svq_poll()
-Message-ID: <b0de17a2e28de477e09e77a587fcbeafbbc897c4.1696477105.git.mst@redhat.com>
+ Jonah Palmer <jonah.palmer@oracle.com>,
+ Daniel P =?utf-8?B?LiBCZXJyYW5nw6k=?= <berrange@redhat.com>
+Subject: [PULL v2 21/53] qmp: remove virtio_list, search QOM tree instead
+Message-ID: <b532c684e0d71bc69fa56a30f1c7588101aa086a.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -101,112 +100,196 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Hawkins Jiawei <yin31149@gmail.com>
+From: Jonah Palmer <jonah.palmer@oracle.com>
 
-Next patches in this series will no longer perform an
-immediate poll and check of the device's used buffers
-for each CVQ state load command. Instead, they will
-send CVQ state load commands in parallel by polling
-multiple pending buffers at once.
+The virtio_list duplicates information about virtio devices that already
+exist in the QOM composition tree. Instead of creating this list of
+realized virtio devices, search the QOM composition tree instead.
 
-To achieve this, this patch refactoring vhost_svq_poll()
-to accept a new argument `num`, which allows vhost_svq_poll()
-to wait for the device to use multiple elements,
-rather than polling for a single element.
+This patch modifies the QMP command qmp_x_query_virtio to instead
+recursively search the QOM composition tree for devices of type
+'TYPE_VIRTIO_DEVICE'. The device is also checked to ensure it's
+realized.
 
-Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <950b3bfcfc5d446168b9d6a249d554a013a691d4.1693287885.git.yin31149@gmail.com>
+Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
+Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
+Message-Id: <20230926224107.2951144-2-jonah.palmer@oracle.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-shadow-virtqueue.h |  2 +-
- hw/virtio/vhost-shadow-virtqueue.c | 36 ++++++++++++++++++------------
- net/vhost-vdpa.c                   |  2 +-
- 3 files changed, 24 insertions(+), 16 deletions(-)
+ hw/virtio/virtio-qmp.h |  7 ----
+ hw/virtio/virtio-qmp.c | 85 ++++++++++++++----------------------------
+ hw/virtio/virtio.c     |  6 ---
+ 3 files changed, 29 insertions(+), 69 deletions(-)
 
-diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow-virtqueue.h
-index 6efe051a70..5bce67837b 100644
---- a/hw/virtio/vhost-shadow-virtqueue.h
-+++ b/hw/virtio/vhost-shadow-virtqueue.h
-@@ -119,7 +119,7 @@ void vhost_svq_push_elem(VhostShadowVirtqueue *svq,
- int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_sg,
-                   size_t out_num, const struct iovec *in_sg, size_t in_num,
-                   VirtQueueElement *elem);
--size_t vhost_svq_poll(VhostShadowVirtqueue *svq);
-+size_t vhost_svq_poll(VhostShadowVirtqueue *svq, size_t num);
+diff --git a/hw/virtio/virtio-qmp.h b/hw/virtio/virtio-qmp.h
+index 8af5f5e65a..245a446a56 100644
+--- a/hw/virtio/virtio-qmp.h
++++ b/hw/virtio/virtio-qmp.h
+@@ -15,13 +15,6 @@
+ #include "hw/virtio/virtio.h"
+ #include "hw/virtio/vhost.h"
  
- void vhost_svq_set_svq_kick_fd(VhostShadowVirtqueue *svq, int svq_kick_fd);
- void vhost_svq_set_svq_call_fd(VhostShadowVirtqueue *svq, int call_fd);
-diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow-virtqueue.c
-index 49e5aed931..e731b1d2ea 100644
---- a/hw/virtio/vhost-shadow-virtqueue.c
-+++ b/hw/virtio/vhost-shadow-virtqueue.c
-@@ -514,29 +514,37 @@ static void vhost_svq_flush(VhostShadowVirtqueue *svq,
+-#include "qemu/queue.h"
+-
+-typedef QTAILQ_HEAD(QmpVirtIODeviceList, VirtIODevice) QmpVirtIODeviceList;
+-
+-/* QAPI list of realized VirtIODevices */
+-extern QmpVirtIODeviceList virtio_list;
+-
+ VirtIODevice *qmp_find_virtio_device(const char *path);
+ VirtioDeviceStatus *qmp_decode_status(uint8_t bitmap);
+ VhostDeviceProtocols *qmp_decode_protocols(uint64_t bitmap);
+diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
+index 7515b0947b..adebf87e9b 100644
+--- a/hw/virtio/virtio-qmp.c
++++ b/hw/virtio/virtio-qmp.c
+@@ -667,70 +667,43 @@ VirtioDeviceFeatures *qmp_decode_features(uint16_t device_id, uint64_t bitmap)
+     return features;
  }
  
- /**
-- * Poll the SVQ for one device used buffer.
-+ * Poll the SVQ to wait for the device to use the specified number
-+ * of elements and return the total length written by the device.
-  *
-  * This function race with main event loop SVQ polling, so extra
-  * synchronization is needed.
-  *
-- * Return the length written by the device.
-+ * @svq: The svq
-+ * @num: The number of elements that need to be used
-  */
--size_t vhost_svq_poll(VhostShadowVirtqueue *svq)
-+size_t vhost_svq_poll(VhostShadowVirtqueue *svq, size_t num)
- {
--    int64_t start_us = g_get_monotonic_time();
--    uint32_t len = 0;
-+    size_t len = 0;
-+    uint32_t r;
- 
--    do {
--        if (vhost_svq_more_used(svq)) {
--            break;
--        }
-+    while (num--) {
-+        int64_t start_us = g_get_monotonic_time();
- 
--        if (unlikely(g_get_monotonic_time() - start_us > 10e6)) {
--            return 0;
--        }
--    } while (true);
-+        do {
-+            if (vhost_svq_more_used(svq)) {
-+                break;
-+            }
++static int query_dev_child(Object *child, void *opaque)
++{
++    VirtioInfoList **vdevs = opaque;
++    Object *dev = object_dynamic_cast(child, TYPE_VIRTIO_DEVICE);
++    if (dev != NULL && DEVICE(dev)->realized) {
++        VirtIODevice *vdev = VIRTIO_DEVICE(dev);
++        VirtioInfo *info = g_new(VirtioInfo, 1);
 +
-+            if (unlikely(g_get_monotonic_time() - start_us > 10e6)) {
-+                return len;
-+            }
-+        } while (true);
-+
-+        vhost_svq_get_buf(svq, &r);
-+        len += r;
++        /* Get canonical path & name of device */
++        info->path = object_get_canonical_path(dev);
++        info->name = g_strdup(vdev->name);
++        QAPI_LIST_PREPEND(*vdevs, info);
 +    }
++    return 0;
++}
++
+ VirtioInfoList *qmp_x_query_virtio(Error **errp)
+ {
+-    VirtioInfoList *list = NULL;
+-    VirtioInfo *node;
+-    VirtIODevice *vdev;
++    VirtioInfoList *vdevs = NULL;
  
--    vhost_svq_get_buf(svq, &len);
-     return len;
+-    QTAILQ_FOREACH(vdev, &virtio_list, next) {
+-        DeviceState *dev = DEVICE(vdev);
+-        Error *err = NULL;
+-        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
+-
+-        if (err == NULL) {
+-            GString *is_realized = qobject_to_json_pretty(obj, true);
+-            /* virtio device is NOT realized, remove it from list */
+-            if (!strncmp(is_realized->str, "false", 4)) {
+-                QTAILQ_REMOVE(&virtio_list, vdev, next);
+-            } else {
+-                node = g_new(VirtioInfo, 1);
+-                node->path = g_strdup(dev->canonical_path);
+-                node->name = g_strdup(vdev->name);
+-                QAPI_LIST_PREPEND(list, node);
+-            }
+-           g_string_free(is_realized, true);
+-        }
+-        qobject_unref(obj);
++    /* Query the QOM composition tree recursively for virtio devices */
++    object_child_foreach_recursive(object_get_root(), query_dev_child, &vdevs);
++    if (vdevs == NULL) {
++        error_setg(errp, "No virtio devices found");
+     }
+-
+-    return list;
++    return vdevs;
  }
  
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 90beda42e0..5808d1b60c 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -645,7 +645,7 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAState *s, size_t out_len,
-      * descriptor. Also, we need to take the answer before SVQ pulls by itself,
-      * when BQL is released
-      */
--    return vhost_svq_poll(svq);
-+    return vhost_svq_poll(svq, 1);
+ VirtIODevice *qmp_find_virtio_device(const char *path)
+ {
+-    VirtIODevice *vdev;
+-
+-    QTAILQ_FOREACH(vdev, &virtio_list, next) {
+-        DeviceState *dev = DEVICE(vdev);
+-
+-        if (strcmp(dev->canonical_path, path) != 0) {
+-            continue;
+-        }
+-
+-        Error *err = NULL;
+-        QObject *obj = qmp_qom_get(dev->canonical_path, "realized", &err);
+-        if (err == NULL) {
+-            GString *is_realized = qobject_to_json_pretty(obj, true);
+-            /* virtio device is NOT realized, remove it from list */
+-            if (!strncmp(is_realized->str, "false", 4)) {
+-                g_string_free(is_realized, true);
+-                qobject_unref(obj);
+-                QTAILQ_REMOVE(&virtio_list, vdev, next);
+-                return NULL;
+-            }
+-            g_string_free(is_realized, true);
+-        } else {
+-            /* virtio device doesn't exist in QOM tree */
+-            QTAILQ_REMOVE(&virtio_list, vdev, next);
+-            qobject_unref(obj);
+-            return NULL;
+-        }
+-        /* device exists in QOM tree & is realized */
+-        qobject_unref(obj);
+-        return vdev;
++    /* Verify the canonical path is a realized virtio device */
++    Object *dev = object_dynamic_cast(object_resolve_path(path, NULL),
++                                      TYPE_VIRTIO_DEVICE);
++    if (!dev || !DEVICE(dev)->realized) {
++        return NULL;
+     }
+-    return NULL;
++    return VIRTIO_DEVICE(dev);
  }
  
- static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t class,
+ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+@@ -740,7 +713,7 @@ VirtioStatus *qmp_x_query_virtio_status(const char *path, Error **errp)
+ 
+     vdev = qmp_find_virtio_device(path);
+     if (vdev == NULL) {
+-        error_setg(errp, "Path %s is not a VirtIODevice", path);
++        error_setg(errp, "Path %s is not a realized VirtIODevice", path);
+         return NULL;
+     }
+ 
+diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
+index d3a22e3d36..c727e9201b 100644
+--- a/hw/virtio/virtio.c
++++ b/hw/virtio/virtio.c
+@@ -45,8 +45,6 @@
+ #include "standard-headers/linux/virtio_mem.h"
+ #include "standard-headers/linux/virtio_vsock.h"
+ 
+-QmpVirtIODeviceList virtio_list;
+-
+ /*
+  * Maximum size of virtio device config space
+  */
+@@ -3659,7 +3657,6 @@ static void virtio_device_realize(DeviceState *dev, Error **errp)
+     vdev->listener.commit = virtio_memory_listener_commit;
+     vdev->listener.name = "virtio";
+     memory_listener_register(&vdev->listener, vdev->dma_as);
+-    QTAILQ_INSERT_TAIL(&virtio_list, vdev, next);
+ }
+ 
+ static void virtio_device_unrealize(DeviceState *dev)
+@@ -3674,7 +3671,6 @@ static void virtio_device_unrealize(DeviceState *dev)
+         vdc->unrealize(dev);
+     }
+ 
+-    QTAILQ_REMOVE(&virtio_list, vdev, next);
+     g_free(vdev->bus_name);
+     vdev->bus_name = NULL;
+ }
+@@ -3848,8 +3844,6 @@ static void virtio_device_class_init(ObjectClass *klass, void *data)
+     vdc->stop_ioeventfd = virtio_device_stop_ioeventfd_impl;
+ 
+     vdc->legacy_features |= VIRTIO_LEGACY_FEATURES;
+-
+-    QTAILQ_INIT(&virtio_list);
+ }
+ 
+ bool virtio_device_ioeventfd_enabled(VirtIODevice *vdev)
 -- 
 MST
 
