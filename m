@@ -2,81 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CB97B9F86
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:25:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 344FC7B9F75
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:25:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoPHR-0005Zf-Th; Thu, 05 Oct 2023 10:24:45 -0400
+	id 1qoPHi-0005zh-Or; Thu, 05 Oct 2023 10:25:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoPHF-0005WR-Ep
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:24:33 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoPHD-0002cq-NN
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:24:33 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-31427ddd3fbso1088506f8f.0
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 07:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696515869; x=1697120669; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=QoksXV4VH41Q9nJf3qLN5IyOztrANqIOhVmpis5Ir5w=;
- b=EBQormuDwwUfD8xcMZ/K3WVyhe+NlFHJzRi1xXBNs7iQmQVeoOvsOKkCELWZYr71Mq
- dK4mUg0ALTXrXMx7a+sKWN7VD2d0fHBlfVtAcBdd9Cjxruqjscw0P8JpwMFfyGM1x2xi
- ZEUG+sbCTHKqZS+bzMxheIgZlnM2yo/DdbLEZXnDev1oUBDp63nUV8tI58XjIcpov3N2
- iTRlQR1uqlgX+YCXTGc2awY+PlTsWg6l/wo7ZKN3r+qt6Y3U1YhfPG5D/cWS0Xqcvohu
- nMfFogyWgxh+qLVDdLRYJCwjf6gKUtaBH15DEMUf4a9ISlfbUk6GsNh2sw5IFGOGshWy
- 5Vrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696515869; x=1697120669;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=QoksXV4VH41Q9nJf3qLN5IyOztrANqIOhVmpis5Ir5w=;
- b=WihDc1ZDrMdlJ90EFE0v4IzejVen0bXMj2aOBayvvQYgk+YW25jUv/CFTOTPmp/u57
- aPfopJojRgj/m2IhC1eIc2rNjFrBHsgVK3HdDuPWCaaTXg0Hph5Nm6WxL213/VH+a76a
- 6TCIDEqb4P6d+419D5q8elx3Af4Zz6FIeyKn/8J5mhVlBgT8USzKS7P7xrcIK/bEIlLi
- 9CU15znS5rCbPiuvxfWMkWI8XDgocodVJw81cNW1VZu19jgRmAK2G9/QolS64Zn5MKzO
- hvZTJgPmHcC+vPI70XziNRJcnYWDsHqwAZfEYgP5hzIuxzcVKx7K0eRLEOsS0n8tDXCr
- W80w==
-X-Gm-Message-State: AOJu0YxLJyfj18ERuDhmjyaC7Q94zBhFyaIyaLc6ylHfTkFllulxN4hB
- sBU6LaB1jWfjJY0+HXE7nlzDNQ==
-X-Google-Smtp-Source: AGHT+IEUTJbRfRJbXUZPVeEWO1PGozgefR3GIJmq2bFMEeIGw7WnuAfjePJB7CrDLRtWVaj9eX/FqQ==
-X-Received: by 2002:a5d:538e:0:b0:317:6a7c:6e07 with SMTP id
- d14-20020a5d538e000000b003176a7c6e07mr4856257wrv.32.1696515868694; 
- Thu, 05 Oct 2023 07:24:28 -0700 (PDT)
-Received: from [192.168.69.115]
- (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
- by smtp.gmail.com with ESMTPSA id
- x2-20020a5d6502000000b00323293bd023sm1931945wru.6.2023.10.05.07.24.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Oct 2023 07:24:28 -0700 (PDT)
-Message-ID: <57414b7e-960b-e002-7d79-d76902a7ebac@linaro.org>
-Date: Thu, 5 Oct 2023 16:24:26 +0200
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoPHa-0005yV-5T
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:24:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoPHR-0002gr-LJ
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:24:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696515884;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=GZpZ/r+289/hOf6ZfU/NxhAuSRoB30YR/8Pu9AQy3G0=;
+ b=gtXW2l3aorRB1Q/BsudIdblQAqBb795j68f8cxiu7IVsSz+b4Jm1Ll/fawtBtfWtB/PIeA
+ 9gbNV5HaYePjqLC5j/n2gfg1hpJDd9IduHm+ffeMMa98u7W1vVF394xItDHnlTDFfFx/vH
+ mj7pJQhgWOMsUB0Nu1VfDNoVFJFDKDM=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-390-UlPUrdNENDCDBOyIV76jrQ-1; Thu, 05 Oct 2023 10:24:41 -0400
+X-MC-Unique: UlPUrdNENDCDBOyIV76jrQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D8CD62815E39;
+ Thu,  5 Oct 2023 14:24:40 +0000 (UTC)
+Received: from redhat.com (unknown [10.2.16.63])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1FEB8492C37;
+ Thu,  5 Oct 2023 14:24:40 +0000 (UTC)
+Date: Thu, 5 Oct 2023 09:24:38 -0500
+From: Eric Blake <eblake@redhat.com>
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org, jsnow@redhat.com, 
+ crosa@redhat.com, kwolf@redhat.com, hreitz@redhat.com, 
+ Beraldo Leal <bleal@redhat.com>
+Subject: Re: [PATCH v6 02/14] qmp_shell.py: _fill_completion() use .command()
+ instead of .cmd()
+Message-ID: <jxg2k4u2twm62xkoqwdvc54z5xc3xjr64sl3sz2y2k62a6v3ok@oiinbpvmlgjk>
+References: <20231005135550.331657-1-vsementsov@yandex-team.ru>
+ <20231005135550.331657-3-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] configure: change $softmmu to $system
-Content-Language: en-US
-To: Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org
-References: <20231005125427.65625-1-pbonzini@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231005125427.65625-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x430.google.com
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.219,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231005135550.331657-3-vsementsov@yandex-team.ru>
+User-Agent: NeoMutt/20230517
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eblake@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001,
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,17 +81,21 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/10/23 14:54, Paolo Bonzini wrote:
-> "softmmu" is a deprecated moniker, do the easy change matching
-> the variable to the command line option.
+On Thu, Oct 05, 2023 at 04:55:38PM +0300, Vladimir Sementsov-Ogievskiy wrote:
+> We just want to ignore failure, so we don't need low level .cmd(). This
+> helps further renaming .command() to .cmd().
 > 
-> Based-on: <20231004090629.37473-1-philmd@linaro.org>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 > ---
->   configure | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+>  python/qemu/qmp/qmp_shell.py | 20 ++++++++++++++------
+>  1 file changed, 14 insertions(+), 6 deletions(-)
+> 
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 
-Thanks!
+-- 
+Eric Blake, Principal Software Engineer
+Red Hat, Inc.
+Virtualization:  qemu.org | libguestfs.org
+
 
