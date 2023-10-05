@@ -2,72 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081117B9D4F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:28:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 504C27B9D50
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:28:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOLr-0006lf-0b; Thu, 05 Oct 2023 09:25:16 -0400
+	id 1qoOMi-00075K-Eu; Thu, 05 Oct 2023 09:26:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOLn-0006lW-Hi
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:25:11 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOMc-00072v-DN
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:26:02 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOLg-0008OP-GY
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:25:11 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoOMJ-0000J8-HA
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:26:01 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id E55891F74D;
- Thu,  5 Oct 2023 13:24:56 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CD78D21875;
+ Thu,  5 Oct 2023 13:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696512296; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1696512331; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=3QFYtCDxppgzV7F2xVOHyWPZ9UJz/bSxfa9ulzMi4XA=;
- b=kQYJzAL6spaYaZy8Zvz7LdmYhp/Ws0UGS7/6hlh8N+fvTVHakMncFdsrG9+8BhpmVErrN/
- Tw585iwEOr6jtLmhqS5mlwwFfNFUgZFSzFnOua3FC/oja7DQ1PynpQaA3uhYWSFnmjqVzy
- ADosLOwUOd7lS9x/pgw0PiH2UPCYUSU=
+ bh=EePAU8Kb9bJydQic4yCtvXVOI6HJ6cQ/QBynIu5197A=;
+ b=Kd14n6f6DjcxkEPAxKMcIezmVG9b/K/fOP2lNYUWaP8gjx4HzYKUS4qpEQDKlE40jN9FLv
+ wPb8rG0Con50MkyZXIh80tCH9gcwCB6yqRlzITLmMRaFYEmj6f/n4Dd4zVNyBkrltJVgOW
+ 4NBejFYV4GIp3WUYsjW7JqJW0reuSWg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696512296;
+ s=susede2_ed25519; t=1696512331;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=3QFYtCDxppgzV7F2xVOHyWPZ9UJz/bSxfa9ulzMi4XA=;
- b=1wB1iYe9hXwQEYsAk57GPmBF4ecyu+fCjmt7ziDkCW7Ua4SK1a6je44gTZb5RdjC9N98fG
- MD9cOgz4vwSEIzDQ==
+ bh=EePAU8Kb9bJydQic4yCtvXVOI6HJ6cQ/QBynIu5197A=;
+ b=Cz/36DCApUgSjczb2drmzYI9K9dg8hOfoA13mI5AQGnI6p7ggxX+G6P2i3QWD5mWTs/R3S
+ lw54pNM/AGOiIBDw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6F79213438;
- Thu,  5 Oct 2023 13:24:56 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 627E413438;
+ Thu,  5 Oct 2023 13:25:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 1Wb9Dii5HmUCCwAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 05 Oct 2023 13:24:56 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id Sf3WC0u5HmV5CwAAMHmgww
+ (envelope-from <farosas@suse.de>); Thu, 05 Oct 2023 13:25:31 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v3 10/10] tests/migration-test: Add a test for postcopy
- hangs during RECOVER
-In-Reply-To: <20231004220240.167175-11-peterx@redhat.com>
+Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>, Xiaohui Li
+ <xiaohli@redhat.com>
+Subject: Re: [PATCH v3 08/10] migration: Allow network to fail even during
+ recovery
+In-Reply-To: <20231004220240.167175-9-peterx@redhat.com>
 References: <20231004220240.167175-1-peterx@redhat.com>
- <20231004220240.167175-11-peterx@redhat.com>
-Date: Thu, 05 Oct 2023 10:24:54 -0300
-Message-ID: <87edi9fbh5.fsf@suse.de>
+ <20231004220240.167175-9-peterx@redhat.com>
+Date: Thu, 05 Oct 2023 10:25:29 -0300
+Message-ID: <87bkddfbg6.fsf@suse.de>
 MIME-Version: 1.0
 Content-Type: text/plain
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
 X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -85,166 +86,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Peter Xu <peterx@redhat.com> writes:
 
-> From: Fabiano Rosas <farosas@suse.de>
+> Normally the postcopy recover phase should only exist for a super short
+> period, that's the duration when QEMU is trying to recover from an
+> interrupted postcopy migration, during which handshake will be carried out
+> for continuing the procedure with state changes from PAUSED -> RECOVER ->
+> POSTCOPY_ACTIVE again.
 >
-> To do so, create two paired sockets, but make them not providing real data.
-> Feed those fake sockets to src/dst QEMUs for recovery to let them go into
-> RECOVER stage without going out.  Test that we can always kick it out and
-> recover again with the right ports.
+> Here RECOVER phase should be super small, that happens right after the
+> admin specified a new but working network link for QEMU to reconnect to
+> dest QEMU.
 >
-> This patch is based on Fabiano's version here:
+> However there can still be case where the channel is broken in this small
+> RECOVER window.
 >
-> https://lore.kernel.org/r/877cowmdu0.fsf@suse.de
+> If it happens, with current code there's no way the src QEMU can got kicked
+> out of RECOVER stage. No way either to retry the recover in another channel
+> when established.
 >
-> Signed-off-by: Fabiano Rosas <farosas@suse.de>
-> [peterx: write commit message, remove case 1, fix bugs, and more]
+> This patch allows the RECOVER phase to fail itself too - we're mostly
+> ready, just some small things missing, e.g. properly kick the main
+> migration thread out when sleeping on rp_sem when we found that we're at
+> RECOVER stage.  When this happens, it fails the RECOVER itself, and
+> rollback to PAUSED stage.  Then the user can retry another round of
+> recovery.
+>
+> To make it even stronger, teach QMP command migrate-pause to explicitly
+> kick src/dst QEMU out when needed, so even if for some reason the migration
+> thread didn't got kicked out already by a failing rethrn-path thread, the
+> admin can also kick it out.
+>
+> This will be an super, super corner case, but still try to cover that.
+>
+> One can try to test this with two proxy channels for migration:
+>
+>   (a) socat unix-listen:/tmp/src.sock,reuseaddr,fork tcp:localhost:10000
+>   (b) socat tcp-listen:10000,reuseaddr,fork unix:/tmp/dst.sock
+>
+> So the migration channel will be:
+>
+>                       (a)          (b)
+>   src -> /tmp/src.sock -> tcp:10000 -> /tmp/dst.sock -> dst
+>
+> Then to make QEMU hang at RECOVER stage, one can do below:
+>
+>   (1) stop the postcopy using QMP command postcopy-pause
+>   (2) kill the 2nd proxy (b)
+>   (3) try to recover the postcopy using /tmp/src.sock on src
+>   (4) src QEMU will go into RECOVER stage but won't be able to continue
+>       from there, because the channel is actually broken at (b)
+>
+> Before this patch, step (4) will make src QEMU stuck in RECOVER stage,
+> without a way to kick the QEMU out or continue the postcopy again.  After
+> this patch, (4) will quickly fail qemu and bounce back to PAUSED stage.
+>
+> Admin can also kick QEMU from (4) into PAUSED when needed using
+> migrate-pause when needed.
+>
+> After bouncing back to PAUSED stage, one can recover again.
+>
+> Reported-by: Xiaohui Li <xiaohli@redhat.com>
+> Bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=2111332
 > Signed-off-by: Peter Xu <peterx@redhat.com>
-> ---
->  tests/qtest/migration-test.c | 94 ++++++++++++++++++++++++++++++++++++
->  1 file changed, 94 insertions(+)
->
-> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-> index 46f1c275a2..fb7a3765e4 100644
-> --- a/tests/qtest/migration-test.c
-> +++ b/tests/qtest/migration-test.c
-> @@ -729,6 +729,7 @@ typedef struct {
->      /* Postcopy specific fields */
->      void *postcopy_data;
->      bool postcopy_preempt;
-> +    bool postcopy_recovery_test_fail;
->  } MigrateCommon;
->  
->  static int test_migrate_start(QTestState **from, QTestState **to,
-> @@ -1381,6 +1382,78 @@ static void test_postcopy_preempt_tls_psk(void)
->  }
->  #endif
->  
-> +static void wait_for_postcopy_status(QTestState *one, const char *status)
-> +{
-> +    wait_for_migration_status(one, status,
-> +                              (const char * []) { "failed", "active",
-> +                                                  "completed", NULL });
-> +}
-> +
-> +static void postcopy_recover_fail(QTestState *from, QTestState *to)
-> +{
-> +    int ret, pair1[2], pair2[2];
-> +    char c;
-> +
-> +    /* Create two unrelated socketpairs */
-> +    ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair1);
-> +    g_assert_cmpint(ret, ==, 0);
-> +
-> +    ret = qemu_socketpair(PF_LOCAL, SOCK_STREAM, 0, pair2);
-> +    g_assert_cmpint(ret, ==, 0);
-> +
-> +    /*
-> +     * Give the guests unpaired ends of the sockets, so they'll all blocked
-> +     * at reading.  This mimics a wrong channel established.
-> +     */
-> +    qtest_qmp_fds_assert_success(from, &pair1[0], 1,
-> +                                 "{ 'execute': 'getfd',"
-> +                                 "  'arguments': { 'fdname': 'fd-mig' }}");
-> +    qtest_qmp_fds_assert_success(to, &pair2[0], 1,
-> +                                 "{ 'execute': 'getfd',"
-> +                                 "  'arguments': { 'fdname': 'fd-mig' }}");
-> +
-> +    /*
-> +     * Write the 1st byte as QEMU_VM_COMMAND (0x8) for the dest socket, to
-> +     * emulate the 1st byte of a real recovery, but stops from there to
-> +     * keep dest QEMU in RECOVER.  This is needed so that we can kick off
-> +     * the recover process on dest QEMU (by triggering the G_IO_IN event).
-> +     *
-> +     * NOTE: this trick is not needed on src QEMUs, because src doesn't
-> +     * rely on an pre-existing G_IO_IN event, so it will always trigger the
-> +     * upcoming recovery anyway even if it can read nothing.
-> +     */
-> +#define QEMU_VM_COMMAND              0x08
-> +    c = QEMU_VM_COMMAND;
-> +    ret = send(pair2[1], &c, 1, 0);
-> +    g_assert_cmpint(ret, ==, 1);
-> +
-> +    migrate_recover(to, "fd:fd-mig");
-> +    migrate_qmp(from, "fd:fd-mig", "{'resume': true}");
-> +
-> +    /*
-> +     * Make sure both QEMU instances will go into RECOVER stage, then test
-> +     * kicking them out using migrate-pause.
-> +     */
-> +    wait_for_postcopy_status(from, "postcopy-recover");
-> +    wait_for_postcopy_status(to, "postcopy-recover");
 
-Is this wait out of place? I think we're trying to resume too fast after
-migrate_recover():
-
-# {                        
-#     "error": {                                                                                                                                                                               
-#         "class": "GenericError",                                                                                                                                                             
-#         "desc": "Cannot resume if there is no paused migration"
-#     }                                                                                                                                                                                        
-# }  
-
-> +
-> +    /*
-> +     * This would be issued by the admin upon noticing the hang, we should
-> +     * make sure we're able to kick this out.
-> +     */
-> +    migrate_pause(from);
-> +    wait_for_postcopy_status(from, "postcopy-paused");
-> +
-> +    /* Do the same test on dest */
-> +    migrate_pause(to);
-> +    wait_for_postcopy_status(to, "postcopy-paused");
-> +
-> +    close(pair1[0]);
-> +    close(pair1[1]);
-> +    close(pair2[0]);
-> +    close(pair2[1]);
-> +}
-> +
->  static void test_postcopy_recovery_common(MigrateCommon *args)
->  {
->      QTestState *from, *to;
-> @@ -1420,6 +1493,15 @@ static void test_postcopy_recovery_common(MigrateCommon *args)
->                                (const char * []) { "failed", "active",
->                                                    "completed", NULL });
->  
-> +    if (args->postcopy_recovery_test_fail) {
-> +        /*
-> +         * Test when a wrong socket specified for recover, and then the
-> +         * ability to kick it out, and continue with a correct socket.
-> +         */
-> +        postcopy_recover_fail(from, to);
-> +        /* continue with a good recovery */
-> +    }
-> +
->      /*
->       * Create a new socket to emulate a new channel that is different
->       * from the broken migration channel; tell the destination to
-> @@ -1459,6 +1541,15 @@ static void test_postcopy_recovery_compress(void)
->      test_postcopy_recovery_common(&args);
->  }
->  
-> +static void test_postcopy_recovery_double_fail(void)
-> +{
-> +    MigrateCommon args = {
-> +        .postcopy_recovery_test_fail = true,
-> +    };
-> +
-> +    test_postcopy_recovery_common(&args);
-> +}
-> +
->  #ifdef CONFIG_GNUTLS
->  static void test_postcopy_recovery_tls_psk(void)
->  {
-> @@ -2841,6 +2932,9 @@ int main(int argc, char **argv)
->              qtest_add_func("/migration/postcopy/recovery/compress/plain",
->                             test_postcopy_recovery_compress);
->          }
-> +        qtest_add_func("/migration/postcopy/recovery/double-failures",
-> +                       test_postcopy_recovery_double_fail);
-> +
->      }
->  
->      qtest_add_func("/migration/bad_dest", test_baddest);
+Reviewed-by: Fabiano Rosas <farosas@suse.de>
 
