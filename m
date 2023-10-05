@@ -2,78 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D895A7B9A6D
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BEEA7B9A57
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:46:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFHs-0005Gm-Ib; Wed, 04 Oct 2023 23:44:32 -0400
+	id 1qoFHz-0006CT-Fw; Wed, 04 Oct 2023 23:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHf-0004v6-FD
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:22 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHu-00063V-Rg
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHd-0000Fg-Tj
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:19 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHt-0000Im-07
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:34 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477457;
+ s=mimecast20190719; t=1696477472;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=h5eWtGUZ1Sz0a7PtH5EXwS3f64jDeuvdbuje94iZaYI=;
- b=ePRtqr4cpgWF7TnaahTHdBUgT0WdU4zrBFrj11uK75aPQ93XHF5ykTLYEaba+MDE08dQ99
- H4oSG3mu2ym3Vc1IoMDxFcKuCaCbwn/+P9x67FuPJxRghdcE2uIP92okOQILOK85aWk/s/
- 3uCMpKEW2c0sfi9LeMnVlWNs6pdE8iU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=twDnxCIZ4gi16W+P0IcrGb7JEdH581l09+veM2VEhWI=;
+ b=gnPGvwXB3ury0H95Cb2WWNBaORF3bX944sIHiutJ3xbL58eRQlY1CfMnSAskauoAYQtUaW
+ +uWb7VbBBERyQcM0NFiDe5QeV93ButZ8LYKFC/IpHShyn2IilWTyeXYxIazd4A+EM1SpMj
+ PffNnzkSBgxATbnyalAwIhldNiJqFQo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-518-Tj4R8C7lPJSBW0h33FUlDw-1; Wed, 04 Oct 2023 23:44:16 -0400
-X-MC-Unique: Tj4R8C7lPJSBW0h33FUlDw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-4065d52a83aso4026805e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:15 -0700 (PDT)
+ us-mta-596-GIh3zxCbMo69qXWQeTB-kg-1; Wed, 04 Oct 2023 23:44:20 -0400
+X-MC-Unique: GIh3zxCbMo69qXWQeTB-kg-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-30e3ee8a42eso410420f8f.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477454; x=1697082254;
+ d=1e100.net; s=20230601; t=1696477459; x=1697082259;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=h5eWtGUZ1Sz0a7PtH5EXwS3f64jDeuvdbuje94iZaYI=;
- b=ETA1sjQ7Y7mHSsSOu434vagE2IcCAUr8MaHB3tzY68y84FiaclbAESg+YLPijJGbXi
- xgV7Rmd4Gek58nWZHZrkfwaDq5DplYgPfOv8GnWMNsMGgdkNw9cWJoMlVrPpZ84nkaWC
- IEuxdkRDM+lV+KLB6wO7BloahPIi7BJo4JBi85k9YIAD4FzGSTrFokWZ20c96+WjMkW3
- TzFPkfctcAAVpc2zYaash6FlL7WuuwtEwJpJtj1bjVjLNGFJirE/PMEV7CL+j/zFEgAT
- FdEnhTyqC18jqYlQ+loGJ0dTLf6QFH96DrL8m5bR6TVVmmnI0FA1BvHv8lvWP3+rgZp2
- 1bMw==
-X-Gm-Message-State: AOJu0YxJKv8TV/qyFCkN7dIAyYbgPfHpDhyYrQ3vYOv3n31C+WOkEqPx
- VFlL+Fzq7YFyS4UdYNiJoJTrpoosOwrKVV9PqthEsSbKFDMtpfT+kaYLQH21SyQmYWKNmzjOqoF
- cZ2hedid+ijnnhFXl2FmDFwc6pvdu5o6fL7/JP1IqDSDb7V0CGN51dyC6P+J5+0ldNdSH
-X-Received: by 2002:a05:600c:2219:b0:405:1c19:b747 with SMTP id
- z25-20020a05600c221900b004051c19b747mr3650759wml.15.1696477454370; 
- Wed, 04 Oct 2023 20:44:14 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHg6cErA8fFS56a0+kNkfyzZ9RFgwqK96cUyhGJcJmspkwR+nEtTMVRXxa4IEj9HrusZo89BA==
-X-Received: by 2002:a05:600c:2219:b0:405:1c19:b747 with SMTP id
- z25-20020a05600c221900b004051c19b747mr3650742wml.15.1696477453931; 
- Wed, 04 Oct 2023 20:44:13 -0700 (PDT)
+ bh=twDnxCIZ4gi16W+P0IcrGb7JEdH581l09+veM2VEhWI=;
+ b=pghG4s1/LAZ54p4mjOxQ/MHkXrPzXAabKyuXn+E+Zo9TXSLtBksW1+VKSGCiz75KS6
+ q0Qz9HMk7v/I7H4/REM0Lz6kw9sfs54IwNrUrtsXBrarqW9GoyPbtmnwYco/02Hz7ycx
+ dPeObsbJLZut3K0UnWltCf5c3B98pz2G+0KNrCTznDaGA19c8zGqyMnClQ5LUpKmXdnG
+ ae985J7AB7Zu2uisjZO74hWkIaR8yBGk6glaPu2kl83qnZThLmcqSgpgxmnIbjPVmz0U
+ lxdvF8d8Hv2V7ET5Hrov0/4Xv96zpIUeGTLAeIYR+QgYZYTwmcdBtyignflCzD5HNMFD
+ M7WA==
+X-Gm-Message-State: AOJu0Yy0QGt4o7C50WdRlh8cd9qAtUer3ZCW3/UBgUWL3IEKAT48UNZ3
+ KV7U0S2wf4D3yvJ1mqs7S96rLli7RkezlSPK8oV/l1uPN2nLLImjhiuudEOmXyPY4BBFSYLal+M
+ 6Up6h3YjPdX+xpmd1nBFaQxs8+oGQ0yWk4jZ8L1NQWozIkb8R35GsESx3O1GqIWOBAVaQ
+X-Received: by 2002:a5d:4b11:0:b0:31f:ecb2:1bed with SMTP id
+ v17-20020a5d4b11000000b0031fecb21bedmr3921944wrq.15.1696477459201; 
+ Wed, 04 Oct 2023 20:44:19 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHc/rkCUq2U7Xy2UyZcVw/gmmHEZpa+WgG4TKbw8mrmyM5l/vDeMi5GqrjL4XWm6WwrAI8YvQ==
+X-Received: by 2002:a5d:4b11:0:b0:31f:ecb2:1bed with SMTP id
+ v17-20020a5d4b11000000b0031fecb21bedmr3921927wrq.15.1696477458857; 
+ Wed, 04 Oct 2023 20:44:18 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- c5-20020a05600c0ac500b0040586360a36sm2766997wmr.17.2023.10.04.20.44.10
+ k12-20020a5d628c000000b003233a31a467sm635337wru.34.2023.10.04.20.44.15
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:44:13 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:44:09 -0400
+ Wed, 04 Oct 2023 20:44:18 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:44:14 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Aurelien Jarno <aurelien@aurel32.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v2 26/53] hw/acpi/cpu: Have build_cpus_aml() take a
- build_madt_cpu_fn callback
-Message-ID: <9a4fedcf12ae388722fa5430df92d0f41e3ba9be.1696477105.git.mst@redhat.com>
+ Eduardo Habkost <eduardo@habkost.net>
+Subject: [PULL v2 27/53] hw/acpi/acpi_dev_interface: Remove now unused
+ madt_cpu virtual method
+Message-ID: <c461f3e3820f2a033e7eed08689060328b31dcbf.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -108,102 +109,111 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-build_cpus_aml() is architecture independent but needs to create architecture-
-specific CPU AML. So far this was achieved by using a virtual method from
-TYPE_ACPI_DEVICE_IF. However, build_cpus_aml() would resolve this interface from
-global (!) state. This makes it quite incomprehensible where this interface
-comes from (TYPE_PIIX4_PM?, TYPE_ICH9_LPC_DEVICE?, TYPE_ACPI_GED_X86?) an can
-lead to crashes when the generic code is ported to new architectures.
+This virtual method was always set to the x86-specific pc_madt_cpu_entry(),
+even in piix4 which is also used in MIPS. The previous changes use
+pc_madt_cpu_entry() otherwise, so madt_cpu can be dropped.
 
-So far, build_cpus_aml() is only called in architecture-specific code -- and
-only in x86. We can therefore simply pass pc_madt_cpu_entry() as callback to
-build_cpus_aml(). This is the same callback that would be used through
-TYPE_ACPI_DEVICE_IF.
+Since pc_madt_cpu_entry() is now only used in x86-specific code, the stub
+in hw/acpi/acpi-x86-stub can be removed as well.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230908084234.17642-3-shentey@gmail.com>
+Message-Id: <20230908084234.17642-4-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/acpi/cpu.h | 6 +++++-
- hw/acpi/cpu.c         | 8 ++------
- hw/i386/acpi-build.c  | 4 ++--
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ include/hw/acpi/acpi_dev_interface.h | 2 --
+ hw/acpi/acpi-x86-stub.c              | 6 ------
+ hw/acpi/piix4.c                      | 2 --
+ hw/i386/generic_event_device_x86.c   | 9 ---------
+ hw/isa/lpc_ich9.c                    | 1 -
+ 5 files changed, 20 deletions(-)
 
-diff --git a/include/hw/acpi/cpu.h b/include/hw/acpi/cpu.h
-index 999caaf510..bc901660fb 100644
---- a/include/hw/acpi/cpu.h
-+++ b/include/hw/acpi/cpu.h
-@@ -15,6 +15,7 @@
- #include "hw/qdev-core.h"
- #include "hw/acpi/acpi.h"
- #include "hw/acpi/aml-build.h"
-+#include "hw/boards.h"
- #include "hw/hotplug.h"
+diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
+index a1648220ff..ca92928124 100644
+--- a/include/hw/acpi/acpi_dev_interface.h
++++ b/include/hw/acpi/acpi_dev_interface.h
+@@ -52,7 +52,5 @@ struct AcpiDeviceIfClass {
+     /* <public> */
+     void (*ospm_status)(AcpiDeviceIf *adev, ACPIOSTInfoList ***list);
+     void (*send_event)(AcpiDeviceIf *adev, AcpiEventStatusBits ev);
+-    void (*madt_cpu)(int uid, const CPUArchIdList *apic_ids, GArray *entry,
+-                     bool force_enabled);
+ };
+ #endif
+diff --git a/hw/acpi/acpi-x86-stub.c b/hw/acpi/acpi-x86-stub.c
+index d0d399d26b..9662a594ad 100644
+--- a/hw/acpi/acpi-x86-stub.c
++++ b/hw/acpi/acpi-x86-stub.c
+@@ -1,12 +1,6 @@
+ #include "qemu/osdep.h"
+-#include "hw/i386/pc.h"
+ #include "hw/i386/acpi-build.h"
  
- typedef struct AcpiCpuStatus {
-@@ -55,8 +56,11 @@ typedef struct CPUHotplugFeatures {
-     const char *smi_path;
- } CPUHotplugFeatures;
- 
-+typedef void (*build_madt_cpu_fn)(int uid, const CPUArchIdList *apic_ids,
-+                                  GArray *entry, bool force_enabled);
-+
- void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
--                    hwaddr io_base,
-+                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
-                     const char *res_root,
-                     const char *event_handler_method);
- 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 19c154d78f..65a3202d3f 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -338,7 +338,7 @@ const VMStateDescription vmstate_cpu_hotplug = {
- #define CPU_FW_EJECT_EVENT "CEJF"
- 
- void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
--                    hwaddr io_base,
-+                    build_madt_cpu_fn build_madt_cpu, hwaddr io_base,
-                     const char *res_root,
-                     const char *event_handler_method)
+-void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
+-                       GArray *entry, bool force_enabled)
+-{
+-}
+-
+ Object *acpi_get_i386_pci_host(void)
  {
-@@ -353,8 +353,6 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     const CPUArchIdList *arch_ids = mc->possible_cpu_arch_ids(machine);
-     char *cphp_res_path = g_strdup_printf("%s." CPUHP_RES_DEVICE, res_root);
--    Object *obj = object_resolve_path_type("", TYPE_ACPI_DEVICE_IF, NULL);
--    AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_GET_CLASS(obj);
+        return NULL;
+diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
+index 63d2113b86..a7892c444c 100644
+--- a/hw/acpi/piix4.c
++++ b/hw/acpi/piix4.c
+@@ -20,7 +20,6 @@
+  */
  
-     cpu_ctrl_dev = aml_device("%s", cphp_res_path);
-     {
-@@ -664,9 +662,7 @@ void build_cpus_aml(Aml *table, MachineState *machine, CPUHotplugFeatures opts,
-             aml_append(dev, method);
+ #include "qemu/osdep.h"
+-#include "hw/i386/pc.h"
+ #include "hw/irq.h"
+ #include "hw/isa/apm.h"
+ #include "hw/i2c/pm_smbus.h"
+@@ -654,7 +653,6 @@ static void piix4_pm_class_init(ObjectClass *klass, void *data)
+     hc->is_hotpluggable_bus = piix4_is_hotpluggable_bus;
+     adevc->ospm_status = piix4_ospm_status;
+     adevc->send_event = piix4_send_gpe;
+-    adevc->madt_cpu = pc_madt_cpu_entry;
+ }
  
-             /* build _MAT object */
--            assert(adevc && adevc->madt_cpu);
--            adevc->madt_cpu(i, arch_ids, madt_buf,
--                            true); /* set enabled flag */
-+            build_madt_cpu(i, arch_ids, madt_buf, true); /* set enabled flag */
-             aml_append(dev, aml_name_decl("_MAT",
-                 aml_buffer(madt_buf->len, (uint8_t *)madt_buf->data)));
-             g_array_free(madt_buf, true);
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 2879e0d555..76581d51aa 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1549,8 +1549,8 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
-             .smi_path = pm->smi_on_cpuhp ? "\\_SB.PCI0.SMI0.SMIC" : NULL,
-             .fw_unplugs_cpu = pm->smi_on_cpu_unplug,
-         };
--        build_cpus_aml(dsdt, machine, opts, pm->cpu_hp_io_base,
--                       "\\_SB.PCI0", "\\_GPE._E02");
-+        build_cpus_aml(dsdt, machine, opts, pc_madt_cpu_entry,
-+                       pm->cpu_hp_io_base, "\\_SB.PCI0", "\\_GPE._E02");
-     }
+ static const TypeInfo piix4_pm_info = {
+diff --git a/hw/i386/generic_event_device_x86.c b/hw/i386/generic_event_device_x86.c
+index e26fb02a2e..8fc233e1f1 100644
+--- a/hw/i386/generic_event_device_x86.c
++++ b/hw/i386/generic_event_device_x86.c
+@@ -8,19 +8,10 @@
  
-     if (pcms->memhp_io_base && nr_mem) {
+ #include "qemu/osdep.h"
+ #include "hw/acpi/generic_event_device.h"
+-#include "hw/i386/pc.h"
+-
+-static void acpi_ged_x86_class_init(ObjectClass *class, void *data)
+-{
+-    AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_CLASS(class);
+-
+-    adevc->madt_cpu = pc_madt_cpu_entry;
+-}
+ 
+ static const TypeInfo acpi_ged_x86_info = {
+     .name          = TYPE_ACPI_GED_X86,
+     .parent        = TYPE_ACPI_GED,
+-    .class_init    = acpi_ged_x86_class_init,
+     .interfaces = (InterfaceInfo[]) {
+         { TYPE_HOTPLUG_HANDLER },
+         { TYPE_ACPI_DEVICE_IF },
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+index bce487ac4e..3f59980aa0 100644
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -891,7 +891,6 @@ static void ich9_lpc_class_init(ObjectClass *klass, void *data)
+     hc->is_hotpluggable_bus = ich9_pm_is_hotpluggable_bus;
+     adevc->ospm_status = ich9_pm_ospm_status;
+     adevc->send_event = ich9_send_gpe;
+-    adevc->madt_cpu = pc_madt_cpu_entry;
+     amldevc->build_dev_aml = build_ich9_isa_aml;
+ }
+ 
 -- 
 MST
 
