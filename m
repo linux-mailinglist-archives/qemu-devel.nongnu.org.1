@@ -2,80 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CCB7B9E74
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:07:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3305E7B9F0E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:17:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOzJ-0004ZE-Pv; Thu, 05 Oct 2023 10:06:01 -0400
+	id 1qoP9O-00053z-05; Thu, 05 Oct 2023 10:16:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoOzH-0004XS-DW
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:05:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qoP97-00050h-Sy
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:16:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoOzF-0005Ek-Oo
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:05:59 -0400
+ (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qoP96-00087J-Bk
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:16:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696514757;
+ s=mimecast20190719; t=1696515365;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=yknJkCwR0b+emy/Wf/qMM6fTnIcbO/vojHGvb1RvAow=;
- b=GOet5PlGj9lie0wJUiOrPSlMJJBnB01My7PWpXe+5diVpKWMV+YeOIT449FfCCMKBxdmRk
- PaI+3BUBUKxAWtD4JvWWi+j31qU+32S3z1W2qmySzcPYf9+umDCE7F1Pp2mMgLye/e/d0F
- 6HAN2quNfs6Ezo16DZcgq5qNvaU3s1w=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-397-k8iY5kUxMlqXBBzfJ7WoJQ-1; Thu, 05 Oct 2023 10:05:51 -0400
-X-MC-Unique: k8iY5kUxMlqXBBzfJ7WoJQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
- [10.11.54.1])
+ bh=yKvbXZq4T+rz3iviuGeoBuaGaO2BmegjbTMS0pcAycc=;
+ b=XoJ/kMJ6Fj6bx3rjsv9gUexcU6i95qswsh6hQg6tvR1gSoaKTeNN0yY5sXWg981pBL3dKf
+ ZN7t+e8gnUBWxR//rjTipeKd/6AoB5ey/DPNxtl6XfxMhqlJWPgG4NLTex9r2/HZVtdSiG
+ hUqb6OqZREi/9q+9RFKKyNmMzZ9zi9E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-468-P7ciWIkqNNSmLCaMvXr_Ng-1; Thu, 05 Oct 2023 10:16:04 -0400
+X-MC-Unique: P7ciWIkqNNSmLCaMvXr_Ng-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.10])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 23EAD2810D4A;
- Thu,  5 Oct 2023 14:05:51 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.63])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3778040C2015;
- Thu,  5 Oct 2023 14:05:49 +0000 (UTC)
-Date: Thu, 5 Oct 2023 09:05:47 -0500
-From: Eric Blake <eblake@redhat.com>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-devel@nongnu.org, 
- Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
- =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>, 
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Andrew Jeffery <andrew@aj.id.au>, 
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Cleber Rosa <crosa@redhat.com>, 
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- Joel Stanley <joel@jms.id.au>, 
- qemu-block@nongnu.org, Beraldo Leal <bleal@redhat.com>, 
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Hanna Reitz <hreitz@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Vladimir Sementsov-Ogievskiy <v.sementsov-og@mail.ru>, 
- Thomas Huth <thuth@redhat.com>, Ani Sinha <anisinha@redhat.com>, 
- Eduardo Habkost <eduardo@habkost.net>, Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PULL 1/9] Python/iotests: Add type hint for nbd module
-Message-ID: <cnpmerggwpvnybezttkrnxmt7xpscxxlc4rglmzijpm4f3onzt@thdoszxqyint>
-References: <20231004194613.2900323-1-jsnow@redhat.com>
- <20231004194613.2900323-2-jsnow@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id ED11A801E91
+ for <qemu-devel@nongnu.org>; Thu,  5 Oct 2023 14:16:03 +0000 (UTC)
+Received: from [10.39.194.153] (unknown [10.39.194.153])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 15B24492C37;
+ Thu,  5 Oct 2023 14:16:02 +0000 (UTC)
+Message-ID: <0bdd14ac-2964-1da1-716f-7aa69e773129@redhat.com>
+Date: Thu, 5 Oct 2023 16:16:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231004194613.2900323-2-jsnow@redhat.com>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Subject: Re: [PATCH v4 0/3] WIP: ramfb: migration support
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ marcandre.lureau@redhat.com, qemu-devel@nongnu.org
+Cc: kraxel@redhat.com
+References: <20231005113027.1827078-1-marcandre.lureau@redhat.com>
+ <2907c142-13c1-01ad-f603-e39983d65859@redhat.com>
+From: Laszlo Ersek <lersek@redhat.com>
+In-Reply-To: <2907c142-13c1-01ad-f603-e39983d65859@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -91,63 +79,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 04, 2023 at 03:46:05PM -0400, John Snow wrote:
-> The test bails gracefully if this module isn't installed, but linters
-> need a little help understanding that. It's enough to just declare the
-> type in this case.
+On 10/5/23 14:01, Cédric Le Goater wrote:
+> On 10/5/23 13:30, marcandre.lureau@redhat.com wrote:
+>> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+>>
+>> Hi,
+>>
+>> Implement RAMFB migration, and add properties to enable it only on >= 8.2
+>> machines, + a few related cleanups.
+>>
+>> Cedric, did you get the chance to test the VFIO display/ramfb code?
 > 
-> (Fixes pylint complaining about use of an uninitialized variable because
-> it isn't wise enough to understand the notrun call is noreturn.)
+> Nope. I was busy with VFIO stuff. I haven't even read Laszlo's
+> email yet. I will try this or next week.
 > 
-> Signed-off-by: John Snow <jsnow@redhat.com>
-> ---
->  tests/qemu-iotests/tests/nbd-multiconn | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> That said, could we avoid adding another migration property in
+> VFIOPCIDevice and use the available "enable-migration" ?
 
-Since there's questions about this pull request seeming to be the
-first time this patch has appeared on list, I'll go ahead and review
-it here on the assumption that a v2 pull request is warranted.
+I'm not entirely sure, but I suspect we can't / shouldn't do that.
+"x-ramfb-migrate" is effectively a machine type compat prop, so if it
+doesn't *precisely* line up with enable-migration (i.e., if they aren't
+equivalent), then we shouldn't merge them. AFAICT, a 8.1 machine type
+may have "enable-migration" set, but it should still have
+"x-ramfb-migrate" clear.
 
-> 
-> diff --git a/tests/qemu-iotests/tests/nbd-multiconn b/tests/qemu-iotests/tests/nbd-multiconn
-> index 478a1eaba27..7e686a786ea 100755
-> --- a/tests/qemu-iotests/tests/nbd-multiconn
-> +++ b/tests/qemu-iotests/tests/nbd-multiconn
-> @@ -20,6 +20,8 @@
->  
->  import os
->  from contextlib import contextmanager
-> +from types import ModuleType
-> +
->  import iotests
->  from iotests import qemu_img_create, qemu_io
->  
-> @@ -28,7 +30,7 @@ disk = os.path.join(iotests.test_dir, 'disk')
->  size = '4M'
->  nbd_sock = os.path.join(iotests.sock_dir, 'nbd_sock')
->  nbd_uri = 'nbd+unix:///{}?socket=' + nbd_sock
-> -
-> +nbd: ModuleType
-
-Is it possible to put this closer to the code actually using 'nbd', as
-in this region?
-
-| if __name__ == '__main__':
-|     try:
-|         # Easier to use libnbd than to try and set up parallel
-|         # 'qemu-nbd --list' or 'qemu-io' processes, but not all systems
-|         # have libnbd installed.
-|         import nbd  # type: ignore
-
-but then again, open_nbd() right after your current location utilizes
-the variable, so I guess not.  I trust your judgment on silencing the
-linters, so whether or not you move it (if moving is even possible),
-
-Reviewed-by: Eric Blake <eblake@redhat.com>
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+Laszlo
 
 
