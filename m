@@ -2,84 +2,49 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C8177B9D57
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:34:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA6107B9D59
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:34:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOTM-0004Zt-25; Thu, 05 Oct 2023 09:33:00 -0400
+	id 1qoOUU-0005ed-RF; Thu, 05 Oct 2023 09:34:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qoOTI-0004Pc-6d
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:32:56 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qoOTG-0002yo-Cs
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:32:55 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3232be274a0so1316940f8f.1
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 06:32:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696512770; x=1697117570; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=7O0DPIUsshgMzg56U5gjGAa98HBP+wpMN6ZdMzffRyk=;
- b=smQmQa6uo1bkGAH6XyzKutFvkeR5xLvwZ0sfWjNdNH5KTSuTFLabqpviHxioNDzzWr
- C5/bw5WOv63L0dqHo3Tx2JU3spPq9nqrQRYxoG3C70KALfd4G1bXhibOR+/migbZnhie
- 4bwf/6ihuaoaZPaBa8m6aia74Llv4KklyeHt6gfdOpvuMJjwL0yjDOijUAXamRZFDuIq
- Mo89+KAxE46gZiVjLcdC/pscTXE0L+0GQBDQ7ertPZrKZrkdRYRJ66TE/cwDS7XdPTi3
- koe2Tb/sa8r/SmmCikvHPgOsDy6uvteu98VxxdXnbabH6X84P1Vz8PSA4+/QoAfaGFI1
- aL7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696512770; x=1697117570;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=7O0DPIUsshgMzg56U5gjGAa98HBP+wpMN6ZdMzffRyk=;
- b=a4qokev02f7WiUZdg5043AcG823sNAtacuZ+vtNYaoaR1zBKrvnlXax9A4d6lE//rs
- r94GCkov6OcSSXCgNl8Ih2VUy3+4bR4kyjQNWuBtqGx7POxEOC3XNjDDJvLIsaZ6X9Q2
- M7+QqU5r/hW0w5pBw5OzUqITkDQHKZu4LV80L+ZSS4Rr90DMgDpOJWnhigtRaHlonuG2
- dZmzNyh705EG23YMVL9OXoqfSmVsrYaGiMd3/XhCh9V0ZNUXbQTt+fj8BqR7MUjSr4XO
- ljWEgOTOBJphrHpdWwKY4U9IQvh9KOX56t7TKWG1eZzx624SmkPRXu69AGaJcvrFUsHg
- kHkg==
-X-Gm-Message-State: AOJu0YyXG7MjA4uE7Z0+mNhWhak+T21X4Yxn7y8aLsgRG98+oKZ4yJPU
- zn2fU7MWyyKPNe5MQ1l2GHmAxQ==
-X-Google-Smtp-Source: AGHT+IFA57HOw8cwPiEHEpJ1fbr3f0uT0A6PQ1yZEAhj8Xcp5z4wpyNt3MmPrb5aRmnHbTLzr7xhtQ==
-X-Received: by 2002:a05:6000:1c6:b0:320:67:1887 with SMTP id
- t6-20020a05600001c600b0032000671887mr1319925wrx.28.1696512770679; 
- Thu, 05 Oct 2023 06:32:50 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- b15-20020a05600010cf00b0031912c0ffebsm1820437wrx.23.2023.10.05.06.32.49
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Oct 2023 06:32:50 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 378E31FFBB;
- Thu,  5 Oct 2023 14:32:49 +0100 (BST)
-References: <20231005062610.57351-1-philmd@linaro.org>
-User-agent: mu4e 1.11.21; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org
-Subject: Re: [PATCH] semihosting/arm-compat: Have TARGET_SYS_EXIT[_EXTENDED]
- return signed
-Date: Thu, 05 Oct 2023 14:32:44 +0100
-In-reply-to: <20231005062610.57351-1-philmd@linaro.org>
-Message-ID: <87v8blfb3y.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qoOUR-0005e7-7J
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:34:07 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qoOUO-00039e-Ae
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:34:06 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id D3DCA74632B;
+ Thu,  5 Oct 2023 15:33:17 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 947FD7456A7; Thu,  5 Oct 2023 15:33:17 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 92A09745681;
+ Thu,  5 Oct 2023 15:33:17 +0200 (CEST)
+Date: Thu, 5 Oct 2023 15:33:17 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Paolo Bonzini <pbonzini@redhat.com>
+cc: qemu-devel@nongnu.org, berrange@redhat.com
+Subject: Re: [PATCH 5/7] audio: do not use first -audiodev as default audio
+ device
+In-Reply-To: <20231005125815.66082-6-pbonzini@redhat.com>
+Message-ID: <d8327a5f-9a06-2c35-a0c8-372707ea0c4a@eik.bme.hu>
+References: <20231005125815.66082-1-pbonzini@redhat.com>
+ <20231005125815.66082-6-pbonzini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -96,51 +61,130 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On Thu, 5 Oct 2023, Paolo Bonzini wrote:
+> It is now possible to specify the options for the default audio device
+> using -audio, so there is no need anymore to use a fake -audiodev option.
+>
+> Remove the fall back to QTAILQ_FIRST(&audio_states), instead remember the
+> AudioState that was created from default_audiodevs and use that one.
+>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+> audio/audio.c                   | 25 +++++++------------------
+> docs/about/deprecated.rst       |  6 ------
+> docs/about/removed-features.rst |  8 ++++++++
+> 3 files changed, 15 insertions(+), 24 deletions(-)
+>
+> diff --git a/audio/audio.c b/audio/audio.c
+> index 186cc4d336e..de37ad7c074 100644
+> --- a/audio/audio.c
+> +++ b/audio/audio.c
+> @@ -104,6 +104,7 @@ static audio_driver *audio_driver_lookup(const char *name)
+>
+> static QTAILQ_HEAD(AudioStateHead, AudioState) audio_states =
+>     QTAILQ_HEAD_INITIALIZER(audio_states);
+> +static AudioState *default_audio_state;
+>
+> const struct mixeng_volume nominal_volume = {
+>     .mute = 0,
+> @@ -1660,6 +1661,7 @@ static void free_audio_state(AudioState *s)
+>
+> void audio_cleanup(void)
+> {
+> +    default_audio_state = NULL;
+>     while (!QTAILQ_EMPTY(&audio_states)) {
+>         AudioState *s = QTAILQ_FIRST(&audio_states);
+>         QTAILQ_REMOVE(&audio_states, s, list);
+> @@ -1760,6 +1762,7 @@ static AudioState *audio_init(Audiodev *dev, Error **errp)
+>             goto out;
+>         }
+>     } else {
+> +        assert(!default_audio_state);
+>         for (;;) {
+>             AudiodevListEntry *e = QSIMPLEQ_FIRST(&default_audiodevs);
+>             if (!e) {
+> @@ -1801,24 +1804,9 @@ out:
+> bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
+> {
+>     if (!card->state) {
+> -        if (!QTAILQ_EMPTY(&audio_states)) {
+> -            /*
+> -             * FIXME: once it is possible to create an arbitrary
+> -             * default device via -audio DRIVER,OPT=VALUE (no "model"),
+> -             * replace this special case with the default AudioState*,
+> -             * storing it in a separate global.  For now, keep the
+> -             * warning to encourage moving off magic use of the first
+> -             * -audiodev.
+> -             */
+> -            if (QSIMPLEQ_EMPTY(&default_audiodevs)) {
+> -                dolog("Device %s: audiodev default parameter is deprecated, please "
+> -                      "specify audiodev=%s\n", name,
+> -                      QTAILQ_FIRST(&audio_states)->dev->id);
+> -            }
+> -            card->state = QTAILQ_FIRST(&audio_states);
+> -        } else {
+> -            card->state = audio_init(NULL, errp);
+> -            if (!card->state) {
+> +        if (!default_audio_state) {
+> +            default_audio_state = audio_init(NULL, errp);
+> +            if (!default_audio_state) {
+>                 if (!QSIMPLEQ_EMPTY(&audiodevs)) {
+>                     error_append_hint(errp, "Perhaps you wanted to set audiodev=%s?\n",
+>                                       QSIMPLEQ_FIRST(&audiodevs)->dev->id);
+> @@ -1826,6 +1814,7 @@ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
+>                 return false;
+>             }
+>         }
+> +        card->state = default_audio_state;
+>     }
+>
+>     card->name = g_strdup (name);
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 2f51cf770ae..d59bcf36230 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -37,12 +37,6 @@ coverage.
+> System emulator command line arguments
+> --------------------------------------
+>
+> -Creating sound card devices without ``audiodev=`` property (since 4.2)
+> -''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+> -
+> -When not using the deprecated legacy audio config, each sound card
+> -should specify an ``audiodev=`` property.
+> -
+> Short-form boolean options (since 6.0)
+> ''''''''''''''''''''''''''''''''''''''
+>
+> diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
+> index 58c94392c65..27639370f96 100644
+> --- a/docs/about/removed-features.rst
+> +++ b/docs/about/removed-features.rst
+> @@ -442,10 +442,18 @@ line using a ``secret`` object instance.
+> The ``-audiodev`` and ``-audio`` command line options are now the only
+> way to specify audio backend settings.
+>
+> +Using ``-audiodev`` to define the default audio backend (removed in 8.2)
+> +''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+> +
+> QEMU does not create default audio backends anymore if any of the
+> ``-audiodev``, ``-audio`` or ``-nodefaults`` options are used on the
+> command line.
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+Maybe this needs further updating because -audio can now define the 
+default and is what should be used instead of -audiodev but this is not 
+clear from this documentation.
 
-> Per the "Semihosting for AArch32 and AArch64" spec. v2 (2023Q3) [*]:
->
->   6.5   SYS_EXIT (0x18)
->   6.5.2   Entry (64-bit)
->
->     On entry, the PARAMETER REGISTER contains a pointer to
->     a two-field argument block:
->
->     . field 1
->       The exception type, which is one of the set of reason
->       codes in the above tables.
->
->     . field 2
->       A subcode, whose meaning depends on the reason code in
->       field 1.
->
->     In particular, if field 1 is ADP_Stopped_ApplicationExit
->     then field 2 is an exit status code, as passed to the C
->     standard library exit() function. [...]
->
-> Having libc exit() is declared as:
->
->   LIBRARY
->        Standard C Library (libc, -lc)
->
->   SYNOPSIS
->
->        void
->        exit(int status);
->
-> the status is expected to be signed.
->
-> [*] https://github.com/ARM-software/abi-aa/blob/2023q3-release/semihostin=
-g/semihosting.rst#652entry-64-bit
->
-> Fixes: 7446d35e1d ("target-arm/arm-semi.c: SYS_EXIT on A64 takes a parame=
-ter block")
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+Regards,
+BALATON Zoltan
 
-Acked-by: Alex Benn=C3=A9e <alex.bennee@linaro.org>
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+> +If an audio backend is created with ``-audiodev``, each sound card
+> +that wants to use it should specify an ``audiodev=``
+> +property.  Previously, the first audiodev command line option would be
+> +used as a fallback.
+> +
+> Creating vnc without ``audiodev=`` property (removed in 8.2)
+> ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+>
+>
 
