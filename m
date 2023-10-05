@@ -2,69 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63047B9D94
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2351A7B9D97
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:51:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOjg-0003ft-JI; Thu, 05 Oct 2023 09:49:52 -0400
+	id 1qoOki-0004N9-SZ; Thu, 05 Oct 2023 09:50:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoOje-0003fj-3A
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:49:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoOkg-0004MI-AL
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:50:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eblake@redhat.com>) id 1qoOjb-0007jk-P2
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:49:49 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoOke-000869-Sw
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:50:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696513787;
+ s=mimecast20190719; t=1696513850;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=EhBEQpwJGHngATaGB5FMEbYXSre5urSJHCpf9OHdp1E=;
- b=PjjB1Z151jruyCXgPifaZhs7m6e/wwU5qpnYMVdlV0DHudbVrzMxDwZGJkPOqmZk41+aZf
- nVCdfsjtl2T4TcFDftvRVCGMZHDE9sRoeComtyi4XD6kEpNX2U/pIvKS4f8b76tsfI/X53
- zDwqIMQgLrYn7kO45QuXMiYCsTMtXPo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-391-etSOHMfDP86LcgtZL9mNAw-1; Thu, 05 Oct 2023 09:49:35 -0400
-X-MC-Unique: etSOHMfDP86LcgtZL9mNAw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=O+aTixGgJote8cKgx77d6vFHfq7qN1ogOnnuXux4EvA=;
+ b=H+H/n6EyvEwOlpqXMLkAW1DY2G+URADX+6P5hKg8EkJTjNM5egk8aKFTc5qdw5NmU70ZPE
+ 5LALCRMgZGJze4q3tXgM/CzkN0T5JfFrI/sT8l03luC7RJBuv0rPAfHoF/EuqUw/tbrnAz
+ LjW5GTl0bKmRRVqE9LQi4kS7XgZjJt0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-166-A6vpPNqnPUSpI2ExPGPkHA-1; Thu, 05 Oct 2023 09:50:37 -0400
+X-MC-Unique: A6vpPNqnPUSpI2ExPGPkHA-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.1])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 631CA1C041AD;
- Thu,  5 Oct 2023 13:49:35 +0000 (UTC)
-Received: from redhat.com (unknown [10.2.16.63])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id CB35F402F1E;
- Thu,  5 Oct 2023 13:49:34 +0000 (UTC)
-Date: Thu, 5 Oct 2023 08:49:32 -0500
-From: Eric Blake <eblake@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>, 
- qemu-block@nongnu.org, qemu-devel@nongnu.org, libguestfs@redhat.com
-Subject: Re: [Libguestfs] [PATCH v7 12/12] nbd/server: Add FLAG_PAYLOAD
- support to CMD_BLOCK_STATUS
-Message-ID: <dlaxybxq6zrujpqfztz26rbr4kyru6upy5wdiv3c7j3akaijhg@twyctydbcg6g>
-References: <20230925192229.3186470-14-eblake@redhat.com>
- <20230925192229.3186470-26-eblake@redhat.com>
- <6b380866-b707-89d5-7478-476582cdd255@yandex-team.ru>
- <bhi75jjd4pv2va73e2h6ypkfuo4wdzpl4s7dqesalsqkrda5ec@js77c4frs25o>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 93AEF811E8F;
+ Thu,  5 Oct 2023 13:50:36 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 68A9E40C2015;
+ Thu,  5 Oct 2023 13:50:36 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 7940221E6904; Thu,  5 Oct 2023 15:50:35 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: =?utf-8?Q?C=C3=A9dric?= Le Goater <clg@kaod.org>
+Cc: qemu-devel@nongnu.org,  Nicholas Piggin <npiggin@gmail.com>,  Daniel
+ Henrique Barboza <danielhb413@gmail.com>,  Richard Henderson
+ <richard.henderson@linaro.org>
+Subject: Re: MAINTAINERS still leaves more files uncovered than I'd like
+References: <87lecp6w7x.fsf@pond.sub.org>
+ <88854727-a895-3727-8cd9-592caa41c3fc@kaod.org>
+Date: Thu, 05 Oct 2023 15:50:35 +0200
+In-Reply-To: <88854727-a895-3727-8cd9-592caa41c3fc@kaod.org>
+ (=?utf-8?Q?=22C=C3=A9dric?= Le
+ Goater"'s message of "Mon, 2 Oct 2023 13:35:48 +0200")
+Message-ID: <87v8blxjo4.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bhi75jjd4pv2va73e2h6ypkfuo4wdzpl4s7dqesalsqkrda5ec@js77c4frs25o>
-User-Agent: NeoMutt/20230517
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eblake@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,81 +84,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 04, 2023 at 04:55:02PM -0500, Eric Blake wrote:
-> > > +static int
-> > > +nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
-> > > +                                 Error **errp)
-> > 
-> > [..]
+C=C3=A9dric Le Goater <clg@kaod.org> writes:
 
-> > > +    for (i = 0; i < count; i++) {
-> > > +        id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
-> > > +        if (id == NBD_META_ID_BASE_ALLOCATION) {
-> > > +            if (request->contexts->base_allocation) {
-> > > +                goto skip;
-> > > +            }
-> > 
-> > should we also check that base_allocation is negotiated?
-> 
-> Oh, good point.  Without that check, the client can pass in random id
-> numbers that it never negotiated.  I've queued 1-11 and will probably
-> send a pull request for those this week, while respinning this patch
-> to fix the remaining issues you pointed out.
+> Regarding PPC, I am not sure where these common PPC files should go :
+>
+>  configs/targets/ppc*
+>  docs/system/ppc/embedded.rst
+>  docs/system/target-ppc.rst
+>  hw/ppc/meson.build
+>  hw/ppc/trace*
+>
+> under "PowerPC TCG CPUs" may be ?
+>
+> These files :
+>
+>  tests/tcg/ppc*
+>
+> should go under "PPC TCG target" I believe.
 
-I'm squashing in the following. If you can review it today, I'll
-include it in my pull request this afternoon; if not, we still have
-time before soft freeze to get it in the next batch.
+Suggest to check other targets for precedence you like.  Preferably
+well-maintained ones.
 
-diff --git i/nbd/server.c w/nbd/server.c
-index 30816b42386..62654579cbc 100644
---- i/nbd/server.c
-+++ w/nbd/server.c
-@@ -2478,19 +2478,22 @@ nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
-     for (i = 0; i < count; i++) {
-         id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
-         if (id == NBD_META_ID_BASE_ALLOCATION) {
--            if (request->contexts->base_allocation) {
-+            if (!client->contexts.base_allocation ||
-+                request->contexts->base_allocation) {
-                 goto skip;
-             }
-             request->contexts->base_allocation = true;
-         } else if (id == NBD_META_ID_ALLOCATION_DEPTH) {
--            if (request->contexts->allocation_depth) {
-+            if (!client->contexts.allocation_depth ||
-+                request->contexts->allocation_depth) {
-                 goto skip;
-             }
-             request->contexts->allocation_depth = true;
-         } else {
--            int idx = id - NBD_META_ID_DIRTY_BITMAP;
-+            unsigned idx = id - NBD_META_ID_DIRTY_BITMAP;
+For what it's worth, Risc-V and CRIS keep it under "RISC-V TCG CPUs" and
+"CRIS TCG CPUs", respectively.  S390 keeps it under "S390 general
+architecture support".
 
--            if (idx > nr_bitmaps || request->contexts->bitmaps[idx]) {
-+            if (idx > nr_bitmaps || !client->contexts.bitmaps[idx] ||
-+                request->contexts->bitmaps[idx]) {
-                 goto skip;
-             }
-             request->contexts->bitmaps[idx] = true;
-diff --git i/nbd/trace-events w/nbd/trace-events
-index 3cf2d00e458..00ae3216a11 100644
---- i/nbd/trace-events
-+++ w/nbd/trace-events
-@@ -70,7 +70,7 @@ nbd_co_send_chunk_read(uint64_t cookie, uint64_t offset, void *data, uint64_t si
- nbd_co_send_chunk_read_hole(uint64_t cookie, uint64_t offset, uint64_t size) "Send structured read hole reply: cookie = %" PRIu64 ", offset = %" PRIu64 ", len = %" PRIu64
- nbd_co_send_extents(uint64_t cookie, unsigned int extents, uint32_t id, uint64_t length, int last) "Send block status reply: cookie = %" PRIu64 ", extents = %u, context = %d (extents cover %" PRIu64 " bytes, last chunk = %d)"
- nbd_co_send_chunk_error(uint64_t cookie, int err, const char *errname, const char *msg) "Send structured error reply: cookie = %" PRIu64 ", error = %d (%s), msg = '%s'"
--nbd_co_receive_block_status_payload_compliance(uint64_t from, int len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%x"
-+nbd_co_receive_block_status_payload_compliance(uint64_t from, uint64_t len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%" PRIx64
- nbd_co_receive_request_decode_type(uint64_t cookie, uint16_t type, const char *name) "Decoding type: cookie = %" PRIu64 ", type = %" PRIu16 " (%s)"
- nbd_co_receive_request_payload_received(uint64_t cookie, uint64_t len) "Payload received: cookie = %" PRIu64 ", len = %" PRIu64
- nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
-
-
-
--- 
-Eric Blake, Principal Software Engineer
-Red Hat, Inc.
-Virtualization:  qemu.org | libguestfs.org
+> I have patches for the rest.
+>
+> Thanks,
+>
+> C.
 
 
