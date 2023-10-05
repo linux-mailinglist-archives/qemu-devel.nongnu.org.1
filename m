@@ -2,88 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CE77B9C5C
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 11:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3A47B9C5E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 11:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoL3J-0008FG-DE; Thu, 05 Oct 2023 05:53:53 -0400
+	id 1qoL7t-0002JY-CN; Thu, 05 Oct 2023 05:58:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1qoL3H-0008F3-G6; Thu, 05 Oct 2023 05:53:51 -0400
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1qoL7q-0002JM-Tl
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 05:58:34 -0400
+Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <nks.gnu@gmail.com>)
- id 1qoL3F-0003RG-1l; Thu, 05 Oct 2023 05:53:51 -0400
-Received: by mail-lj1-x232.google.com with SMTP id
- 38308e7fff4ca-2c008042211so9525011fa.2; 
- Thu, 05 Oct 2023 02:53:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696499627; x=1697104427;
+ (Exim 4.90_1) (envelope-from <max.chou@sifive.com>)
+ id 1qoL7p-0004Zo-Dd
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 05:58:34 -0400
+Received: by mail-pf1-x42b.google.com with SMTP id
+ d2e1a72fcca58-690ba63891dso639238b3a.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 02:58:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=sifive.com; s=google; t=1696499911; x=1697104711; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:dkim-signature:dkim-signature:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=XYdM1jYF/zEpUfpPfr6NpWYzcbKmGrsScXf922GXC0I=;
- b=XPoj4MAivk76QDvU4L4uEX6M3ubJUgGEBv0WGfpLnJWpPYrm0ufqE4FWj572QMiUV+
- 400BMQQ+q+eAnWv0k6qudjJhZTABCs2NyxofmiQ2pS2VARvOrx9pEu8iDMpthlyd2BPo
- Kgi7N60agke2hR/oIvo5pkwrHY31ecytG/pptKVO97qIMh+vECqp+KHIMULe4u3/SorE
- ZxN+n9hUtS1oRQqa05hCSD6x20DuTg8C5uEwgb+jeHZWNRLTRFit7aDh+X7RTRA5pZSs
- OPTzoPb7yTO2rEvMJ8dNlLRYgeiHdTHmTGOAZ48Z0MuGnQHcjriZwFFZuZijiSPVnSBo
- 93yg==
-X-Gm-Message-State: AOJu0YyHZ9C0uWRcv76Ba6r+dz6jlh00wwutDyHcPPxP6mGTOC4i84ie
- mr4AVwPQLmZVAFWhtaQt5QmyneB4ZbSyvg==
-X-Google-Smtp-Source: AGHT+IGUXQiyA/Pvu65l+eEJxcB3XJmx3Z9htruh/+L9t97SpR0Kn6522mn9tiTuFl6n9xDPwljsoQ==
-X-Received: by 2002:a2e:b005:0:b0:2bc:b29e:8ff7 with SMTP id
- y5-20020a2eb005000000b002bcb29e8ff7mr4515502ljk.20.1696499626577; 
- Thu, 05 Oct 2023 02:53:46 -0700 (PDT)
-Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se.
- [85.226.240.245]) by smtp.gmail.com with ESMTPSA id
- n16-20020a2eb790000000b002b736576a10sm231887ljo.137.2023.10.05.02.53.46
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=UvlJbfC9iU1xlm0Y4EWFEt+DFsas2Cq22UlJ01mNphM=;
+ b=JUWdA//LV0pLTuEPTE0FXgPX5UflRO+0vvwb3jAhsPu5xwfIyVdItXp2vCJ00wVq/G
+ 8ykg8Xv2479Za/3vfJD83WMXLlpyLu5C0criG944RpHjrOw0QGD6Lgo38q3wj09Ivb/K
+ 17aGskc8x7/+mdkkoFTZaIUSj6M+vWTV6kjg2AZSgcqAicHX4jr8ksTy+B9sw+KDorXq
+ ZfRWBteSd1juhyDDEkbOrpcgkxKyJyfa94J+LR7aAZhq+FBJbJlhYl8f4+etxL55lbpd
+ r2Z5+22wXgBewZjBqVqHUdlMzEg6blkNqPdunA1UavLgNnSVr8XhScO+p446aWkEbPNF
+ eG7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696499911; x=1697104711;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=UvlJbfC9iU1xlm0Y4EWFEt+DFsas2Cq22UlJ01mNphM=;
+ b=di1vE3MPHcngjqX06DMSWYTxcm8/yD5qUzF55aYFPS+9mFmUcyza0ZM/O8nUphoDP9
+ MUZLpJoslDDjBIZ8cbQBfwV6F9crXV32YavRmR5b9S58fnNEE0UCDo3mKOSlQ9JYuZz+
+ 8gSfrNBH99Tu6gJ5G1Cvgf1Kcpj8HPcDJ9t3161LNwNvKLHVQlYqJHpD5Wy/kPrUokRG
+ IJWEXKmMrx80Ia8dBv5K2wJ/cA3R6lQhfWsEsdbLhfggC82OC4Lr+K+5jWjTCk1UcnYk
+ VmsmEd6gsC0MzV0v3cLkR2+EV1Ew9RiS77gKuj2GYjbJsWign7ninXQcw/zJPoY2hSgG
+ w9tQ==
+X-Gm-Message-State: AOJu0YwPAPr6r6f3tbM8Y3fVa8a7iaPWiFwEwf14+evBZklrn2ESeYdd
+ l6sOhlP68gIfRz14b2TrokkXWii1kgn8yBgTH80jW83rYuatABboEeR2vqdoM7NtYohyAI86bQH
+ warw60XrL93nfXHbM0T8XnB/oUZ79HDVEJJvE8HJRe6SuQDrb1KkOTektFZIrE9QS1FA3R7q8Sc
+ 5L
+X-Google-Smtp-Source: AGHT+IGnOGSfPGHa5NCOwtTBp8AssIFqSo3omGr9QdrMJaug35jbcf2IxGIXr4eeL8NwkE/KikYVPA==
+X-Received: by 2002:a05:6a00:1a92:b0:690:bdda:7c35 with SMTP id
+ e18-20020a056a001a9200b00690bdda7c35mr5098131pfv.1.1696499910537; 
+ Thu, 05 Oct 2023 02:58:30 -0700 (PDT)
+Received: from localhost.localdomain ([146.70.201.138])
+ by smtp.gmail.com with ESMTPSA id
+ c14-20020aa781ce000000b006936294bc32sm976018pfn.128.2023.10.05.02.58.27
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Oct 2023 02:53:46 -0700 (PDT)
-Received: by flawful.org (Postfix, from userid 112)
- id 75E38B825; Thu,  5 Oct 2023 11:53:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1696499625; bh=sckq77aRXO98P+R2IilWFCQxE9IIMhum/P/8l/R/AJU=;
- h=From:To:Cc:Subject:Date:From;
- b=ZZ6YUm0yVwkmoHwHVzATZGViL3uhr3wimrGKa+wNuxAP8gblIk6JsvoEgm83/SC8Q
- jjtMxvxwBvo3I59oVhIPdWd7Sd+YP5wc87lBdIE/jUStj+O45eIKwMQp8q+cJpBVRc
- 5swdhTQmJRU3eED1zzaC++yCZHxeEQJ5T0yz0Sz0=
-Received: from x1-carbon.lan (OpenWrt.lan [192.168.1.1])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
- (No client certificate requested)
- by flawful.org (Postfix) with ESMTPSA id 2E6733EEC;
- Thu,  5 Oct 2023 11:53:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
- t=1696499608; bh=sckq77aRXO98P+R2IilWFCQxE9IIMhum/P/8l/R/AJU=;
- h=From:To:Cc:Subject:Date:From;
- b=kZq0DIKMZoJcms2DyNBFLjBg/buQVGHwcXquyxyPzsBdktgY2OsgJgB6ir7RnQm8w
- RXQ1fPkcSegYZLjNG4XGp0inWgCYJyB05SNmZ3mdm7WdxUWH/hI4KKc9mHscs2OkiK
- At3/hz38ubkBWxEgShCMC1QLI5Jf2T58PXfWXPiU=
-From: Niklas Cassel <nks@flawful.org>
-To: John Snow <jsnow@redhat.com>
-Cc: qemu-block@nongnu.org, qemu-devel@nongnu.org,
- Damien Le Moal <dlemoal@kernel.org>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH] hw/ide/ahci: fix legacy software reset
-Date: Thu,  5 Oct 2023 11:53:21 +0200
-Message-ID: <20231005095322.1133817-1-nks@flawful.org>
-X-Mailer: git-send-email 2.41.0
+ Thu, 05 Oct 2023 02:58:30 -0700 (PDT)
+From: Max Chou <max.chou@sifive.com>
+To: qemu-devel@nongnu.org,
+	qemu-riscv@nongnu.org
+Cc: Max Chou <max.chou@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+Subject: [PATCH] target/riscv: Fix vfwmaccbf16.vf
+Date: Thu,  5 Oct 2023 17:57:32 +0800
+Message-Id: <20231005095734.567575-1-max.chou@sifive.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::232;
- envelope-from=nks.gnu@gmail.com; helo=mail-lj1-x232.google.com
-X-Spam_score_int: -14
-X-Spam_score: -1.5
-X-Spam_bar: -
-X-Spam_report: (-1.5 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, FREEMAIL_FORGED_FROMDOMAIN=0.249,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.249,
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42b;
+ envelope-from=max.chou@sifive.com; helo=mail-pf1-x42b.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,68 +95,28 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
+The operator (fwmacc16) of vfwmaccbf16.vf helper function should be
+replaced by fwmaccbf16.
 
-Legacy software contains a standard mechanism for generating a reset to a
-Serial ATA device - setting the SRST (software reset) bit in the Device
-Control register.
-
-Serial ATA has a more robust mechanism called COMRESET, also referred to
-as port reset. A port reset is the preferred mechanism for error
-recovery and should be used in place of software reset.
-
-Commit e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
-improved the handling of PxCI, such that PxCI gets cleared after handling
-a non-NCQ, or NCQ command (instead of incorrectly clearing PxCI after
-receiving an arbitrary FIS).
-
-However, simply clearing PxCI after a non-NCQ, or NCQ command, is not
-enough, we also need to clear PxCI when receiving a SRST in the Device
-Control register.
-
-This fixes an issue for FreeBSD where the device would fail to reset.
-The problem was not noticed in Linux, because Linux uses a COMRESET
-instead of a legacy software reset by default.
-
-Fixes: e2a5d9b3d9c3 ("hw/ide/ahci: simplify and document PxCI handling")
-Reported-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Max Chou <max.chou@sifive.com>
 ---
- hw/ide/ahci.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ target/riscv/vector_helper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/hw/ide/ahci.c b/hw/ide/ahci.c
-index babdd7b458..3a8b97c325 100644
---- a/hw/ide/ahci.c
-+++ b/hw/ide/ahci.c
-@@ -1254,10 +1254,26 @@ static void handle_reg_h2d_fis(AHCIState *s, int port,
-         case STATE_RUN:
-             if (cmd_fis[15] & ATA_SRST) {
-                 s->dev[port].port_state = STATE_RESET;
-+                /*
-+                 * When setting SRST in the first H2D FIS in the reset sequence,
-+                 * the device does not send a D2H FIS. Host software thus has to
-+                 * set the "Clear Busy upon R_OK" bit such that PxCI (and BUSY)
-+                 * gets cleared. See AHCI 1.3.1, section 10.4.1 Software Reset.
-+                 */
-+                if (opts & AHCI_CMD_CLR_BUSY) {
-+                    ahci_clear_cmd_issue(ad, slot);
-+                }
-             }
-             break;
-         case STATE_RESET:
-             if (!(cmd_fis[15] & ATA_SRST)) {
-+                /*
-+                 * When clearing SRST in the second H2D FIS in the reset
-+                 * sequence, the device will send a D2H FIS. See SATA 3.5a Gold,
-+                 * section 11.4 Software reset protocol.
-+                 */
-+                ahci_write_fis_d2h(ad, false);
-+                ahci_clear_cmd_issue(ad, slot);
-                 ahci_reset_port(s, port);
-             }
-             break;
+diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+index 3fb05cc3d6e..c45d94c165c 100644
+--- a/target/riscv/vector_helper.c
++++ b/target/riscv/vector_helper.c
+@@ -3361,7 +3361,7 @@ static uint32_t fwmaccbf16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
+ 
+ RVVCALL(OPFVV3, vfwmaccbf16_vv, WOP_UUU_H, H4, H2, H2, fwmaccbf16)
+ GEN_VEXT_VV_ENV(vfwmaccbf16_vv, 4)
+-RVVCALL(OPFVF3, vfwmaccbf16_vf, WOP_UUU_H, H4, H2, fwmacc16)
++RVVCALL(OPFVF3, vfwmaccbf16_vf, WOP_UUU_H, H4, H2, fwmaccbf16)
+ GEN_VEXT_VF(vfwmaccbf16_vf, 4)
+ 
+ static uint32_t fwnmacc16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
 -- 
-2.41.0
+2.34.1
 
 
