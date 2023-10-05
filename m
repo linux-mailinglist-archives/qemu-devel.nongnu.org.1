@@ -2,85 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220837B9ABE
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 06:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F867B9ABD
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 06:52:16 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoGKa-0005Ya-G5; Thu, 05 Oct 2023 00:51:24 -0400
+	id 1qoGKv-00067K-Jz; Thu, 05 Oct 2023 00:51:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKX-0005Ww-PC
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:21 -0400
-Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKs-00066U-2s
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:42 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKU-0005X8-S8
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:21 -0400
-Received: by mail-wm1-x329.google.com with SMTP id
- 5b1f17b1804b1-405524e6769so3034865e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 21:51:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoGKb-0005Zt-5N
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 00:51:40 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-40651a726acso4850815e9.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 21:51:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696481477; x=1697086277; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696481483; x=1697086283; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=i0f/S9sk5n4iTXtNvEpxFckitQTJsYOjTpjl0/I1BCA=;
- b=reKEUX/E5S9dXFUpMCzT1K/QIvP9KkZ5kyXP6w9VMwXm/jsRSZYWyRBnglh4q8LF9P
- Kh30Y197bawa6rHG7npdnA0zJz6Jfc2tRy4mwKjESgIim0vGG6J/yJLAd2vEHI4VReIl
- pT4No/0bqeXV+ltRjd4hEki/o+8Nlre+Z9+JGpdWkcddiVhzEqBi35+eut55BK/83mvR
- h9syXsb2htdzDSIhTAY855lt5CZ3G/IaxVoDAc+GjDvyd6fn4l14/ra8OHnJeVlZVc9z
- 5GBUVFlHgLrMtkgTuORCUQ37DnEbQA2eOmCP/c2vJUgGsoOJkNkqd/rerEB8SaMneFz0
- 2jDA==
+ bh=mQJAMU/w6o8m8TBpb8PzaVjQ4Gp1ZRSyPEWXTvxRp/M=;
+ b=gCE//ublxXWKxHmL7oM6TpQw4h7XLRzAqKeCyu+Y2CJZwe7kfCIKnZ51S10lhg9s3+
+ /cnC6SNbEnU5hhcsy0d1bmEWZssgJZvMm/OInpuIPOa+xhJjjt2yhRmHeY/3YUXxfbTf
+ yR1TQ6DRlE1ebFirlPj39jSvmE4FtPtDn4Ewh/8wmPcIIBrpgRmGPCttkZfViBDL5sYr
+ J0HeljewFvHygE68Tm1MmmsGkFLTcoeXOadXOKDuFTyZrr5Jj0f/d9Wz5ZwBmdVibV5i
+ wbjS08sWijIG61FhP035mAk0ewGWpkcN1cJxsdqVX3GodHxX9tcNs0de/HJqxZtQiqMI
+ gIbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696481477; x=1697086277;
+ d=1e100.net; s=20230601; t=1696481483; x=1697086283;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=i0f/S9sk5n4iTXtNvEpxFckitQTJsYOjTpjl0/I1BCA=;
- b=jnOodSxwK67zBGvs7KvoKZsK3dObcMu+f9DV8smU95QYhiDJ8z3+IZqwxYvdbZGq5e
- i85mUrTbyIVhBy44Zvjnc3sGQ3A9e5bcO8yEejgEUaR7Pk4lCVCX8ep09HYToTMwwf15
- UmNGR1/h6p0CK0E+1GkO8FQIco5WviftHhF2AtczdXYzpPV2TxQR014qLRS7nxMMTmnl
- S8IAgLWm+9B0BGHlSlalnqyOy8ukM5RzQ4Axomv962CgtUO+WSJu8p3q54DxRWK/VeUs
- G3DeYZADNzSarAQ+GjeC0uICl5/bxyPzA3+BR8B4rGV6wjRxrz/BXtHZDC/mzQydNP/C
- wr8A==
-X-Gm-Message-State: AOJu0YxyMJkhEvG3KItQLS9u8YT830FYytPjM+VCiROJ+sjCXwohcd62
- EXubSYP07fAfZVeutUjj8uXGDW/L2oJdLGx79Do=
-X-Google-Smtp-Source: AGHT+IEuv0mnBKzurvVcYS2C6mYAZONCJmEDmHz1zoBzTEj/qJGrxd2v9wpWJAzcgE5dTyY0HCdWng==
-X-Received: by 2002:a1c:7505:0:b0:405:3f06:d2ef with SMTP id
- o5-20020a1c7505000000b004053f06d2efmr174242wmc.4.1696481477187; 
- Wed, 04 Oct 2023 21:51:17 -0700 (PDT)
+ bh=mQJAMU/w6o8m8TBpb8PzaVjQ4Gp1ZRSyPEWXTvxRp/M=;
+ b=ms6x82ETAP/yB/+3HJY3MvNI6fCtVVgR9c34Kx8+04xlnQVnOugHu//753hik44RyQ
+ 0UVfOjRqceolHI+2UcfHaynUVIjXRcj41C0yWOs0URUmhvuGJySolOTgL8HTBq1VJKr+
+ ppG1r2VygoZWruWD/pBLIiSQGkdUx8dEdFhCLdSfqfguVWFDS+o9tM6yBvq7YM8fk9+Q
+ 2ZwP9sAYtGpHOeQlgOWMp9NrEZeGGNbb+GX3S9yWD+FtDmn5fTmWXTDCNPpE7ZTZQbAz
+ XU7NUxQ2bDQEGzubn48hYCT76zi/X0/R6FEhF64Jh3cssbkme2edr5Ixg2J9Webom2CJ
+ AkgQ==
+X-Gm-Message-State: AOJu0YweAT3Z0fCP9uPFZDGe6AqYdHv6mW0/BLOYTzVVQVa5WGzsGcEl
+ PjA1axcTOt1SqMRKPo/CB5LwELmdkY0q/xrsx7Y=
+X-Google-Smtp-Source: AGHT+IEeF41HA09h+ZYwQntMbGp3lSSvFL7a3fkEGJfVxM+mrtIus80uXIJQU3yQvwJpSEd+EqUnuQ==
+X-Received: by 2002:adf:de11:0:b0:31f:f753:9938 with SMTP id
+ b17-20020adfde11000000b0031ff7539938mr3660400wrm.58.1696481483506; 
+ Wed, 04 Oct 2023 21:51:23 -0700 (PDT)
 Received: from m1x-phil.lan (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr.
  [176.171.211.120]) by smtp.gmail.com with ESMTPSA id
- y4-20020a05600c364400b0040472ad9a3dsm623215wmq.14.2023.10.04.21.51.15
+ z11-20020a5d4d0b000000b0031ff89af0e4sm739425wrt.99.2023.10.04.21.51.21
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Wed, 04 Oct 2023 21:51:16 -0700 (PDT)
+ Wed, 04 Oct 2023 21:51:23 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org,
 	Markus Armbruster <armbru@redhat.com>
 Cc: qemu-arm@nongnu.org, qemu-ppc@nongnu.org, qemu-block@nongnu.org,
  qemu-s390x@nongnu.org,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Michael Roth <michael.roth@amd.com>,
- Konstantin Kostiuk <kkostiuk@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: [PATCH v2 05/22] qapi: Inline QERR_INVALID_PARAMETER definition
- (constant parameter)
-Date: Thu,  5 Oct 2023 06:50:22 +0200
-Message-ID: <20231005045041.52649-6-philmd@linaro.org>
+ "Dr. David Alan Gilbert" <dave@treblig.org>,
+ Michael Roth <michael.roth@amd.com>
+Subject: [PATCH v2 06/22] qapi: Inline and remove QERR_INVALID_PARAMETER
+ definition
+Date: Thu,  5 Oct 2023 06:50:23 +0200
+Message-ID: <20231005045041.52649-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231005045041.52649-1-philmd@linaro.org>
 References: <20231005045041.52649-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::329;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x329.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -105,108 +103,101 @@ Address the comment added in commit 4629ed1e98
    * in new code, and do not add new ones!
    */
 
-Mechanical transformation using the following
-coccinelle semantic patch:
+Mechanical transformation using:
 
-    @match@
-    expression errp;
-    constant param;
-    @@
-         error_setg(errp, QERR_INVALID_PARAMETER, param);
+  $ sed -i -e "s/QERR_INVALID_PARAMETER,/\"Invalid parameter '%s'\",/" \
+    $(git grep -lw QERR_INVALID_PARAMETER)
 
-    @script:python strformat depends on match@
-    param << match.param;
-    fixedfmt; // new var
-    @@
-    fixedfmt = f'"Invalid parameter \'{param[1:-1]}\'"' # Format skipping '"'.
-    coccinelle.fixedfmt = cocci.make_ident(fixedfmt)
-
-    @replace@
-    expression match.errp;
-    constant match.param;
-    identifier strformat.fixedfmt;
-    @@
-    -    error_setg(errp, QERR_INVALID_PARAMETER, param);
-    +    error_setg(errp, fixedfmt);
+then manually removing the definition in include/qapi/qmp/qerror.h.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- dump/dump.c        | 6 +++---
- qga/commands.c     | 2 +-
- ui/ui-qmp-cmds.c   | 2 +-
- util/qemu-option.c | 2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ include/qapi/qmp/qerror.h | 3 ---
+ monitor/hmp-cmds.c        | 2 +-
+ qapi/opts-visitor.c       | 2 +-
+ util/qemu-option.c        | 8 ++++----
+ 4 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/dump/dump.c b/dump/dump.c
-index d4ef713cd0..e173f1f14c 100644
---- a/dump/dump.c
-+++ b/dump/dump.c
-@@ -1810,7 +1810,7 @@ static void dump_init(DumpState *s, int fd, bool has_format,
+diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
+index e93211085a..63ab775dc5 100644
+--- a/include/qapi/qmp/qerror.h
++++ b/include/qapi/qmp/qerror.h
+@@ -17,9 +17,6 @@
+  * add new ones!
+  */
  
-     s->fd = fd;
-     if (has_filter && !length) {
--        error_setg(errp, QERR_INVALID_PARAMETER, "length");
-+        error_setg(errp, "Invalid parameter 'length'");
-         goto cleanup;
+-#define QERR_INVALID_PARAMETER \
+-    "Invalid parameter '%s'"
+-
+ #define QERR_INVALID_PARAMETER_TYPE \
+     "Invalid parameter type for '%s', expected: %s"
+ 
+diff --git a/monitor/hmp-cmds.c b/monitor/hmp-cmds.c
+index 6c559b48c8..9d6533643d 100644
+--- a/monitor/hmp-cmds.c
++++ b/monitor/hmp-cmds.c
+@@ -138,7 +138,7 @@ void hmp_sync_profile(Monitor *mon, const QDict *qdict)
+     } else {
+         Error *err = NULL;
+ 
+-        error_setg(&err, QERR_INVALID_PARAMETER, op);
++        error_setg(&err, "Invalid parameter '%s'", op);
+         hmp_handle_error(mon, err);
      }
-     s->filter_area_begin = begin;
-@@ -1841,7 +1841,7 @@ static void dump_init(DumpState *s, int fd, bool has_format,
+ }
+diff --git a/qapi/opts-visitor.c b/qapi/opts-visitor.c
+index 8f1efab8b9..3d1a28b419 100644
+--- a/qapi/opts-visitor.c
++++ b/qapi/opts-visitor.c
+@@ -184,7 +184,7 @@ opts_check_struct(Visitor *v, Error **errp)
+         const QemuOpt *first;
  
-     /* Is the filter filtering everything? */
-     if (validate_start_block(s) == -1) {
--        error_setg(errp, QERR_INVALID_PARAMETER, "begin");
-+        error_setg(errp, "Invalid parameter 'begin'");
-         goto cleanup;
+         first = g_queue_peek_head(any);
+-        error_setg(errp, QERR_INVALID_PARAMETER, first->name);
++        error_setg(errp, "Invalid parameter '%s'", first->name);
+         return false;
      }
- 
-@@ -2145,7 +2145,7 @@ void qmp_dump_guest_memory(bool paging, const char *file,
-     }
- 
-     if (fd == -1) {
--        error_setg(errp, QERR_INVALID_PARAMETER, "protocol");
-+        error_setg(errp, "Invalid parameter 'protocol'");
-         return;
-     }
- 
-diff --git a/qga/commands.c b/qga/commands.c
-index 09c683e263..871210ab0b 100644
---- a/qga/commands.c
-+++ b/qga/commands.c
-@@ -154,7 +154,7 @@ GuestExecStatus *qmp_guest_exec_status(int64_t pid, Error **errp)
- 
-     gei = guest_exec_info_find(pid);
-     if (gei == NULL) {
--        error_setg(errp, QERR_INVALID_PARAMETER, "pid");
-+        error_setg(errp, "Invalid parameter 'pid'");
-         return NULL;
-     }
- 
-diff --git a/ui/ui-qmp-cmds.c b/ui/ui-qmp-cmds.c
-index debc07d678..41ca0100e7 100644
---- a/ui/ui-qmp-cmds.c
-+++ b/ui/ui-qmp-cmds.c
-@@ -44,7 +44,7 @@ void qmp_set_password(SetPasswordOptions *opts, Error **errp)
-         assert(opts->protocol == DISPLAY_PROTOCOL_VNC);
-         if (opts->connected != SET_PASSWORD_ACTION_KEEP) {
-             /* vnc supports "connected=keep" only */
--            error_setg(errp, QERR_INVALID_PARAMETER, "connected");
-+            error_setg(errp, "Invalid parameter 'connected'");
-             return;
-         }
-         /*
+     return true;
 diff --git a/util/qemu-option.c b/util/qemu-option.c
-index eedd08929b..fb391a7904 100644
+index fb391a7904..201f7a87f3 100644
 --- a/util/qemu-option.c
 +++ b/util/qemu-option.c
-@@ -612,7 +612,7 @@ QemuOpts *qemu_opts_create(QemuOptsList *list, const char *id,
+@@ -498,7 +498,7 @@ static bool opt_validate(QemuOpt *opt, Error **errp)
  
-     if (list->merge_lists) {
-         if (id) {
--            error_setg(errp, QERR_INVALID_PARAMETER, "id");
-+            error_setg(errp, "Invalid parameter 'id'");
-             return NULL;
+     desc = find_desc_by_name(list->desc, opt->name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
++        error_setg(errp, "Invalid parameter '%s'", opt->name);
+         return false;
+     }
+ 
+@@ -531,7 +531,7 @@ bool qemu_opt_set_bool(QemuOpts *opts, const char *name, bool val,
+ 
+     desc = find_desc_by_name(list->desc, name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, name);
++        error_setg(errp, "Invalid parameter '%s'", name);
+         return false;
+     }
+ 
+@@ -554,7 +554,7 @@ bool qemu_opt_set_number(QemuOpts *opts, const char *name, int64_t val,
+ 
+     desc = find_desc_by_name(list->desc, name);
+     if (!desc && !opts_accepts_any(list)) {
+-        error_setg(errp, QERR_INVALID_PARAMETER, name);
++        error_setg(errp, "Invalid parameter '%s'", name);
+         return false;
+     }
+ 
+@@ -1103,7 +1103,7 @@ bool qemu_opts_validate(QemuOpts *opts, const QemuOptDesc *desc, Error **errp)
+     QTAILQ_FOREACH(opt, &opts->head, next) {
+         opt->desc = find_desc_by_name(desc, opt->name);
+         if (!opt->desc) {
+-            error_setg(errp, QERR_INVALID_PARAMETER, opt->name);
++            error_setg(errp, "Invalid parameter '%s'", opt->name);
+             return false;
          }
-         opts = qemu_opts_find(list, NULL);
+ 
 -- 
 2.41.0
 
