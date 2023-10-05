@@ -2,42 +2,42 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC98B7BA8F1
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 20:19:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA5A7BA8F0
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 20:19:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoSwQ-0003V3-Cb; Thu, 05 Oct 2023 14:19:18 -0400
+	id 1qoSwQ-0003Yx-Ar; Thu, 05 Oct 2023 14:19:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoSw6-00038Q-6c
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:19:02 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ id 1qoSw6-00039e-9P
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:19:04 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoSw2-0006pm-7s
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:18:57 -0400
+ id 1qoSw4-0006s9-6C
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 14:18:58 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id C23AE757244;
- Thu,  5 Oct 2023 20:18:05 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 4F6B8757234;
+ Thu,  5 Oct 2023 20:18:10 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 8EA7475723D; Thu,  5 Oct 2023 20:18:05 +0200 (CEST)
+ id 1867E757233; Thu,  5 Oct 2023 20:18:10 +0200 (CEST)
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH] MAINTANERS: Split vt82c686 out of fuloong2e
 To: qemu-devel@nongnu.org
-Cc: Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+CC: Bernhard Beschow <shentey@gmail.com>, jiaxun.yang@flygoat.com,
  philmd@linaro.org
-Message-Id: <20231005181805.8EA7475723D@zero.eik.bme.hu>
-Date: Thu,  5 Oct 2023 20:18:05 +0200 (CEST)
+Subject: [PATCH v4] hw/isa/vt82c686: Respect SCI interrupt assignment
+Message-Id: <20231005181810.1867E757233@zero.eik.bme.hu>
+Date: Thu,  5 Oct 2023 20:18:10 +0200 (CEST)
 X-Spam-Probability: 8%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, PP_MIME_FAKE_ASCII_TEXT=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -53,48 +53,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-It is used by other machines not just fuloong2e so put it in a
-separate section and add myself as reviewer.
+According to the datasheet, SCI interrupts of the power management
+function aren't routed through the PCI pins but rather directly to the
+integrated PIC. The routing is configurable through the ACPI interrupt
+select register at offset 0x42 in the PCI configuration space of the
+power management function.
 
 Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 ---
-By the way, PIIX4 already has a section just above where I've added
-this but some files are still listed in Malta. You may want to have a
-look at that.
+Alternative proposal to Bernhard's patch to remove FIXME about SCI.
 
- MAINTAINERS | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Apply this on top of reverting commit 4e5a20b6da9 which could also be
+squashed in this patch but I let you decide if you want that as
+separete commit or part of this. I did not test this beyond compiling
+but I think this is all there is to it. (Overusing QOM within a chip
+model does not make sense as QOM is meant to allow users to introspect
+and configure device models and combine different models into new
+machines eventually without modifying QEMU but this is not applicable
+here within a single device model that can be considered as friend
+classes so don't go oveboard with it when not needed.)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ea91f9e804..7f0e20fde6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1307,10 +1307,7 @@ M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Jiaxun Yang <jiaxun.yang@flygoat.com>
- S: Odd Fixes
- F: hw/mips/fuloong2e.c
--F: hw/isa/vt82c686.c
- F: hw/pci-host/bonito.c
--F: hw/usb/vt82c686-uhci-pci.c
--F: include/hw/isa/vt82c686.h
- F: include/hw/pci-host/bonito.h
- F: tests/avocado/machine_mips_fuloong2e.py
+ hw/isa/vt82c686.c | 30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
+
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index 8016c71315..2eb769c7fa 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -140,25 +140,21 @@ static const MemoryRegionOps pm_io_ops = {
  
-@@ -2462,6 +2459,14 @@ S: Maintained
- F: hw/isa/piix4.c
- F: include/hw/southbridge/piix.h
+ static void pm_update_sci(ViaPMState *s)
+ {
+-    int sci_level, pmsts;
++    int sci_irq, pmsts;
  
-+VIA south bridges (VT82C686B, VT8231)
-+M: Philippe Mathieu-Daudé <philmd@linaro.org>
-+R: Jiaxun Yang <jiaxun.yang@flygoat.com>
-+R: BALATON Zoltan <balaton@eik.bme.hu>
-+F: hw/isa/vt82c686.c
-+F: hw/usb/vt82c686-uhci-pci.c
-+F: include/hw/isa/vt82c686.h
+     pmsts = acpi_pm1_evt_get_sts(&s->ar);
+-    sci_level = (((pmsts & s->ar.pm1.evt.en) &
+-                  (ACPI_BITMASK_RT_CLOCK_ENABLE |
+-                   ACPI_BITMASK_POWER_BUTTON_ENABLE |
+-                   ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
+-                   ACPI_BITMASK_TIMER_ENABLE)) != 0);
+-    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
+-        /*
+-         * FIXME:
+-         * Fix device model that realizes this PM device and remove
+-         * this work around.
+-         * The device model should wire SCI and setup
+-         * PCI_INTERRUPT_PIN properly.
+-         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
+-         * work around.
+-         */
+-        pci_set_irq(&s->dev, sci_level);
++    sci_irq = pci_get_byte(s->dev.config + 0x42) & 0xf;
++    if (sci_irq) {
++        int sci_level = (((pmsts & s->ar.pm1.evt.en) &
++                          (ACPI_BITMASK_RT_CLOCK_ENABLE |
++                              ACPI_BITMASK_POWER_BUTTON_ENABLE |
++                              ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
++                              ACPI_BITMASK_TIMER_ENABLE)) != 0);
 +
- Firmware configuration (fw_cfg)
- M: Philippe Mathieu-Daudé <philmd@linaro.org>
- R: Gerd Hoffmann <kraxel@redhat.com>
++        if (sci_irq == 2) {
++            qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for VIA PM SCI is reserved");
++        }
++        via_isa_set_irq(pci_get_function_0(&s->dev), sci_irq, sci_level);
+     }
+     /* schedule a timer interruption if needed */
+     acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
 -- 
 2.30.9
 
