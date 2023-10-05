@@ -2,83 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 243357B9B31
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B9C7B9B32
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:58:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoIHv-0008Vx-1X; Thu, 05 Oct 2023 02:56:47 -0400
+	id 1qoIJX-0001lT-1M; Thu, 05 Oct 2023 02:58:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIHs-0008Vj-Lh
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:56:44 -0400
-Received: from mail-wr1-x42b.google.com ([2a00:1450:4864:20::42b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIJU-0001k4-Vf
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:58:25 -0400
+Received: from mail-wr1-x42d.google.com ([2a00:1450:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIHq-00059h-T7
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:56:44 -0400
-Received: by mail-wr1-x42b.google.com with SMTP id
- ffacd0b85a97d-3247d69ed2cso659731f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:56:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoIJT-0005Vo-DC
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:58:24 -0400
+Received: by mail-wr1-x42d.google.com with SMTP id
+ ffacd0b85a97d-327b7e08456so650515f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:58:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696489001; x=1697093801; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696489101; x=1697093901; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=qdMrzHGMMkzppJqF9JAQo1sLPeYRU4L6kggdmxboclE=;
- b=doLdFjhKXdP/7K2fGSvLe07aNYCbpVuLE/WJkyiKzu7TRiltLhlLEzvCNSsInuu5vB
- P2nxLkrxGZJ9e9vuE4w0aJvxFSXuAZyYkXsPiDwRQNlgjgfhmhkgwMBRKneqv6ZDU/3Q
- uBPsW/Tf8F9b2/ha5+x4oiGXvL3oWnzYcqmAk5kn8vmZMTL3LLfvGzLbMR+sM3l9uzsK
- +wKRGzV4adriVkTBGp4pchUpgnAco/3SCRrbSUlJJq/GBpUN8KgwCjnyWTXTCZwLIQKB
- Jvsyb8lnuFSnlpVSV0m1rNu1nanTOkORkimJDRJCDCK4gB7s0LowmSImPuwGPPUidUEy
- cU7Q==
+ bh=uvyb+PHHLDs0bLHkxu6L2jQEkGclaB15dNWW9R8Oo98=;
+ b=ZuFFGGA2eLw+DeZjm5E1MxzdQ5QEJ0ooWaG6VXoclnoaKqj3dinS+MsYCjukSCUxRI
+ 5GGIURrB/Vmr/WCDxbWnVzJDccXVAzIgfmTUaPuIVPHIHQUxptgsxnIYbAyh5lCvTZG3
+ PGAmpXgQRyQ542NIeg1NkIiNE80y6eFG0DyxgcL0p9bLugatxSaFZIluaGaAka5Hy27L
+ JfQ7g2/vj0hk3wJvE89UcXAzfTXKpfBCmmW/EigMQMKGGqaqujnOKLPvx5Mq15DLgGiN
+ qXeWlDWufg1a+MZJOxHr9xLBmEkGgejbNNdjL/2RMixunQUGoMkjq3ukp2WzMaHj6ddr
+ 8mQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696489001; x=1697093801;
+ d=1e100.net; s=20230601; t=1696489101; x=1697093901;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qdMrzHGMMkzppJqF9JAQo1sLPeYRU4L6kggdmxboclE=;
- b=pStDItVpRPM2VzSef9UtFqsVNGrTO8zfCbnFd+kMG/loyHQFF2DlWBlDdsGlrmKyDf
- xw3wV7W7GrjHRjhQroJcBQHaJMm/7W50h3+1lpKEWpJ/ri1s9o50K1OQAl3waXD1ImIX
- PAwodnIAjpan+eOlhkw2jo+3OJTqAXRb30kPpxLUaXdu0MUXcxBoEc92CUwIp6iAGLZb
- uBuNsAYpl62HxBBTNjlxJj9hIdrW8v0V2c0Hwvfu5lNqACQlOXFMNvHym6ZTZGawu4pG
- tlnDTi48jqD0nsaOc01DwGfel7OCtYgQdOiMJ99Mq9qB/PypAOyYLb6k+3LLkX6NzJ9D
- nfMA==
-X-Gm-Message-State: AOJu0YzrlVo/pI/jvYWcwEY0DhtHuODgNDWM/f9nJdieJ46VNjT+t6Xv
- kE14xoZdBArZWG8rnRNdM7aKSw==
-X-Google-Smtp-Source: AGHT+IFtMhRqXfrjm540BfEyyoE4QGb8G/PyEbiMBdPNp1cOGuWHEGhKir8qCjEfH++c8y3bV6+Dxg==
-X-Received: by 2002:adf:e9c1:0:b0:31f:f2dc:db7d with SMTP id
- l1-20020adfe9c1000000b0031ff2dcdb7dmr3866932wrn.65.1696489001520; 
- Wed, 04 Oct 2023 23:56:41 -0700 (PDT)
+ bh=uvyb+PHHLDs0bLHkxu6L2jQEkGclaB15dNWW9R8Oo98=;
+ b=akDgsaaXCr0bdwWDn3dLNuuzHQXEKCe0DurZESAAWCpN2fIi3TXHOXstg/HX8vF5pc
+ RbRjgsRostHBMl6fWH30+dlASXr6C6/v6LtFWmJ3Tn/6Ral2FU3bTm01Lono8rhbwlEy
+ oS9MPTVgMoOONv27A4raDPHT+tBuaotKReweM6n8RHAcGy3f3O89ZNg/ux+DZV+x8/tR
+ mDFZvS/BXVabYxBPw0nRmfLx3/IYWnzFNW3MvyVaJD5Bs0ON/qlC8fXZsUcuGLvrExdk
+ E4pLwlYRXJT8VOnWrEJTf2JWpv1waX9cWO1mOtel/y6Ut9wNvaLD5UbrD3X/vFCjk/vl
+ 4EMg==
+X-Gm-Message-State: AOJu0Yy4eu9TnUGSLRJeWGf1nb1ywGhw7URtWrnkNjv2bhKyfjQUdfGY
+ zK+GqJW4O+VgvVXrHm0bRuybXA==
+X-Google-Smtp-Source: AGHT+IGQ6c71jRl94h7Kf8+nK2ldmgv7+Uop6Gy5PYsLuy6M0r8Y8EHdqHCvBSS+ryCl720YlAh73Q==
+X-Received: by 2002:adf:ed52:0:b0:31f:fa1a:83fb with SMTP id
+ u18-20020adfed52000000b0031ffa1a83fbmr3798159wro.7.1696489101293; 
+ Wed, 04 Oct 2023 23:58:21 -0700 (PDT)
 Received: from [192.168.69.115]
  (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
  by smtp.gmail.com with ESMTPSA id
- a8-20020a056000100800b00326f5d0ce0asm1006544wrx.21.2023.10.04.23.56.40
+ r16-20020a5d4990000000b0031431fb40fasm1003134wrq.89.2023.10.04.23.58.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 04 Oct 2023 23:56:41 -0700 (PDT)
-Message-ID: <1628d62e-28ac-58f9-9efb-147db95d2b37@linaro.org>
-Date: Thu, 5 Oct 2023 08:56:39 +0200
+ Wed, 04 Oct 2023 23:58:20 -0700 (PDT)
+Message-ID: <241f98b3-8d23-9fda-5182-8b8a21ef8131@linaro.org>
+Date: Thu, 5 Oct 2023 08:58:18 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: Wshadow: Better name for 'optarg'?
+Subject: Re: [PATCH v2] cutils: Fix get_relocated_path on Windows
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>
-Cc: QEMU Developers <qemu-devel@nongnu.org>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <14cd0201-1507-bfa8-fe9e-f482c35d21ca@linaro.org>
- <d688281c-d019-c1ff-6927-d1791911c57d@linaro.org>
- <e13885b5-06a2-599f-e0fe-c5e8f0671742@redhat.com>
- <b8b28fa6-6224-cf6c-9aa9-016083ed994f@linaro.org>
- <11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Peter Maydell <peter.maydell@linaro.org>, Jason Wang
+ <jasowang@redhat.com>, qemu-devel <qemu-devel@nongnu.org>,
+ Programmingkid <programmingkidx@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <f4bug@amsat.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>, Thomas Huth <thuth@redhat.com>,
+ John Snow <jsnow@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Stefan Weil <sw@weilnetz.de>
+References: <20231005064726.6945-1-akihiko.odaki@daynix.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com>
+In-Reply-To: <20231005064726.6945-1-akihiko.odaki@daynix.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42b;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42d;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x42d.google.com
 X-Spam_score_int: -35
 X-Spam_score: -3.6
 X-Spam_bar: ---
@@ -101,65 +101,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 4/10/23 19:56, Thomas Huth wrote:
-> On 04/10/2023 19.43, Philippe Mathieu-Daudé wrote:
->> On 4/10/23 19:35, Thomas Huth wrote:
->>> On 04/10/2023 19.23, Richard Henderson wrote:
->>>> On 10/4/23 03:05, Philippe Mathieu-Daudé wrote:
->>>>> Hi,
->>>>>
->>>>> I'm getting a bunch of errors for 'optarg' declared in <unistd.h>:
->>>>
->>>> I thought things like this is why we were trying -Wshadow=local.
->>>>
->>>> I think it's unlikely that we'll be able to prevent all such cases.
->>>
->>> Given the broad range of operating systems and libraries that we 
->>> support in QEMU, I agree with Richard - it will likely be impossible 
->>> to enable that option without =local by default without risking that 
->>> compilation breaks on some exotic systems or new versions of various 
->>> libraries.
->>
->> -Wshadow=local doesn't seem to work here which is why I switched
->> to -Wshadow. I probably misunderstood something from Markus cover
->> letter. My setup is:
->>
->> C compiler for the host machine: clang (clang 14.0.3 "Apple clang 
->> version 14.0.3 (clang-1403.0.22.14.1)")
->>
->> I suppose we'll figure that out when eventually enabling -Wshadow=local
->> on CI. Meanwhile I already cleaned the 'optarg' warnings that were
->> bugging me, see:
->> https://lore.kernel.org/qemu-devel/20231004120019.93101-1-philmd@linaro.org/
->> I'll try to get -Wshadow=local, but the other series still seems a
->> good cleanup, as I used more meaningful variable names.
+On 5/10/23 08:47, Akihiko Odaki wrote:
+> get_relocated_path() did not have error handling for PathCchSkipRoot()
+> because a path given to get_relocated_path() was expected to be a valid
+> path containing a drive letter or UNC server/share path elements on
+> Windows, but sometimes it turned out otherwise.
 > 
-> If I got that right, -Wshadow=local only works with gcc and not with 
-> clang yet, so we'll need a check in configure or meson.build and will be 
-> able to only use it when it's available.
+> The paths passed to get_relocated_path() are defined by macros generated
+> by Meson. Meson in turn uses a prefix given by the configure script to
+> generate them. For Windows, the script passes /qemu as a prefix to
+> Meson by default.
 > 
-> If we could use "-Wshadow" to check global variables, too, that would be 
-> great, but given my experience with some other project, it's very 
-> unlikely that you can get it running reliably everywhere, since there is 
-> often a bad library header somewhere that declares some global 
-> variable(s) that spoil your plans (IIRC I've once seen a bad library 
-> that even declared a global variable called "x" ... and you certainly 
-> don't want to rename all occurances of "x" in the QEMU source code just 
-> because of a bad library ... however, that's been many years ago, 
-> though, maybe the situation got better nowadays, so if you like, feel 
-> free to continue your quest - just be aware that it might not be 
-> solvable at the end).
+> As documented in docs/about/build-platforms.rst, typically MSYS2 is used
+> for the build system, but it is also possible to use Linux as well. When
+> MSYS2 is used, its Bash variant recognizes /qemu as a MSYS2 path, and
+> converts it to a Windows path, adding the MSYS2 prefix including a drive
+> letter or UNC server/share path elements. Such a conversion does not
+> happen on a shell on Linux however, and /qemu will be passed as is in
+> the case.
+> 
+> Implement a proper error handling of PathCchSkipRoot() in
+> get_relocated_path() so that it can handle a path without a drive letter
+> or UNC server/share path elements.
+> 
+> Reported-by: Stefan Weil <sw@weilnetz.de>
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+> V1 -> V2: Compare against S_OK for clarity (Philippe Mathieu-Daudé)
+> 
+>   util/cutils.c | 18 +++++++++++-------
+>   1 file changed, 11 insertions(+), 7 deletions(-)
 
-Nah I'm not interested in such a quest, this is simply an oversight
-that this is restricted to GCC.
-
-My view on those warnings cleanups is, once we start, either we
-finish the full conversion and enforce the warning, or better not
-to start wasting energy. I wanted to help Markus, getting closer
-to the end. Sorry about the confusion, I'll wait this get enforced
-for our GCC jobs on CI before revisiting.
-
-Regards,
-
-Phil.
+Thanks, if Paolo doesn't take it I'll queue it in my next PR.
 
