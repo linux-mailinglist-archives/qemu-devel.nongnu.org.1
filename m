@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C837B9A66
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1A27B9A77
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFJQ-0000fT-Bd; Wed, 04 Oct 2023 23:46:08 -0400
+	id 1qoFMQ-0008LT-WF; Wed, 04 Oct 2023 23:49:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJL-0000Xo-JG
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:46:03 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFMJ-0007MC-Rx
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:49:08 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJG-0000pS-2q
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:46:03 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFMH-0001Pp-MD
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:49:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477556;
+ s=mimecast20190719; t=1696477744;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=FYiqXRxzTWfTn4i/+SBced8bQTg6zrqu/s2l3fD1Gks=;
- b=U807K68wy35vvmChWOFaV85rxASauTY/WwOQMKEv3oSN2NGEfyHLVMcXsy3RRI5H49WcIM
- tSHGpjPbPzizAvcbAxKm/Fqm3peGD6zqRN7/UPSmkvFM+RtfoXAfJcr80eezVCpF/BYfer
- z2+3+yii3/bwdy27Ong/7EcmEbxcX4o=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=hmbr6Yy0aSGhAeUFXnJnhooAueC1pSdc2KnGldQB5w4=;
+ b=eO9d6D1RWSyolLo+qLeZRQEODlplkxCmiz546vgDrUuHzFe/8tLpNfMBFd+49sQlrar+aA
+ 15XfFlFY1spHrnT3SVJuvefc7JFwczj4xpmTACGQDumpSmiJI+WgyjgvAJSCew/ud/LrRa
+ vmb2Azbb0QQRquQ1RCNnIdHn48i57sE=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-ZLW1vzwmOhGlw1RK5w49Dw-1; Wed, 04 Oct 2023 23:45:45 -0400
-X-MC-Unique: ZLW1vzwmOhGlw1RK5w49Dw-1
-Received: by mail-wm1-f72.google.com with SMTP id
- 5b1f17b1804b1-40647c6f71dso4316005e9.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:45 -0700 (PDT)
+ us-mta-191-1NM9B4DOO9-TGfKwglP-WQ-1; Wed, 04 Oct 2023 23:45:48 -0400
+X-MC-Unique: 1NM9B4DOO9-TGfKwglP-WQ-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-32172e3679bso464260f8f.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477543; x=1697082343;
+ d=1e100.net; s=20230601; t=1696477547; x=1697082347;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=FYiqXRxzTWfTn4i/+SBced8bQTg6zrqu/s2l3fD1Gks=;
- b=PQn5jMtA6rkis1x058qQf1U/BCqTiR32VFg6B1LXhI9uVYKukm14B5SUOnHlI5hUWs
- ers+/qFMRdGNK6Vu8pg5SclwTbopYtm/WOZDIi6pEMwPterPe+UQTffGcUOG7TnqmASx
- JYaLAuGh3U5W7shfOImp6EAPqy+t6MeFeZ0GsyKH1WIIezi20tyJym2yWYP/13tYv8sX
- Y3WVtDZ7t+r+pmcm8lWSm8mK2W++rbM4u2bthBuhwj31N1e0+N4hpyE5L2z/Um/GkTae
- LUwgT93m4nW57EuhvbZEt36NUdZnQQYSWcCS/dU5E+7KOXpk9xS/CmE9qPuNA+BTaiGn
- 86fw==
-X-Gm-Message-State: AOJu0YxxYpwbe5AgEbFe0JJ0mgrLf5kIzzvWhtZmb120anBcJJAbySYn
- M1Pb4dxr2i0w5tdP5Zhmv7MTAKfNKPULEHzI8efdNIgoeR4TUIxMfMYGsE8tRm1rHQAQCioqs3i
- +w8TsIP64rGeouA6KL9O4k/CfYPiZWiof4pscQezde42XwSV55medUU4PtEOBtOrpvvlG
-X-Received: by 2002:a05:600c:ac4:b0:406:599f:f934 with SMTP id
- c4-20020a05600c0ac400b00406599ff934mr3961237wmr.12.1696477543557; 
- Wed, 04 Oct 2023 20:45:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFftP7lgNUwMrf0xOVBmqnG01o6rUvgWM+GONrO1aNv77SqA2JyXQeq+uAOpGopYCk6m+9g0A==
-X-Received: by 2002:a05:600c:ac4:b0:406:599f:f934 with SMTP id
- c4-20020a05600c0ac400b00406599ff934mr3961222wmr.12.1696477543254; 
- Wed, 04 Oct 2023 20:45:43 -0700 (PDT)
+ bh=hmbr6Yy0aSGhAeUFXnJnhooAueC1pSdc2KnGldQB5w4=;
+ b=dfh7eiRcOc8FyTfx7fT0iFhYLcNOdCVs7xgmUWajKpXMDoGRaaYrKDAW7nwqsiUsP/
+ 0fTsBrT9d0dsroCkMR8FKV6oqChTOdq+h+QwZkvXIjjVe4MewMP+wQeuLnbUie3Cymmi
+ QMbcc+8SyeCCzT13jGiJBywekc/x7R0fp83jVJ+lVXGF8RZvalMWi2UGEUL4t8k4EWuS
+ XLkoMNm8f3AHtfoezwiFnMcVpUUtIBRyIIE4t2qnc47q+w8vg9rJQbqmxk7oHLn5pwsG
+ vqbuPJ/CipoG0amnr8sZGLD+HMVmz+89r8j9hvH5DKHX4T9PfVi+Sc2WCz5RjrxF3Va9
+ S5IA==
+X-Gm-Message-State: AOJu0Yw9n6sJRRhg5q6bKCyY20/fGq5KXvFPHkHz+CnbqE16yjut9P4t
+ PFq2W5dU7iJ47Zu6YVMjOA2nLu9qutMzgaRcW8bcrAJzq99Z5PrwfpnHvAw5ly2Oe+KzYicg4IK
+ jtup3ah5ypzFgihLJ6SOEDu/2E7oMmyUAmIZCls5H24BE9kpoPdfwU4SB8nUTiM0CE8kV
+X-Received: by 2002:a5d:664a:0:b0:31f:f91c:d872 with SMTP id
+ f10-20020a5d664a000000b0031ff91cd872mr4366733wrw.19.1696477547032; 
+ Wed, 04 Oct 2023 20:45:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKR4+rGqD99tX0YIdLp8cA1/oUBQ/oFy50etu9i43M+/QwMCPL1uK4dAlBF26WaofK/Vn7ew==
+X-Received: by 2002:a5d:664a:0:b0:31f:f91c:d872 with SMTP id
+ f10-20020a5d664a000000b0031ff91cd872mr4366724wrw.19.1696477546814; 
+ Wed, 04 Oct 2023 20:45:46 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- bd5-20020a05600c1f0500b004030e8ff964sm2815082wmb.34.2023.10.04.20.45.41
+ s10-20020a05600c044a00b004063c9f68f2sm538641wmb.26.2023.10.04.20.45.45
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:45:42 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:45:39 -0400
+ Wed, 04 Oct 2023 20:45:46 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:45:43 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Ilya Maximets <i.maximets@ovn.org>, Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PULL v2 48/53] virtio: remove unnecessary thread fence while
- reading next descriptor
-Message-ID: <d501f97d9607eff1750549e0270c034102786d33.1696477105.git.mst@redhat.com>
+Subject: [PULL v2 49/53] virtio: remove unused next argument from
+ virtqueue_split_read_next_desc()
+Message-ID: <70f88436aa5a8aeddd33e4d06270146af5d5bb52.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -100,39 +100,91 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Ilya Maximets <i.maximets@ovn.org>
 
-It was supposed to be a compiler barrier and it was a compiler barrier
-initially called 'wmb' when virtio core support was introduced.
-Later all the instances of 'wmb' were switched to smp_wmb to fix memory
-ordering issues on non-x86 platforms.  However, this one doesn't need
-to be an actual barrier, as its only purpose was to ensure that the
-value is not read twice.
+The 'next' was converted from a local variable to an output parameter
+in commit:
+  412e0e81b174 ("virtio: handle virtqueue_read_next_desc() errors")
 
-And since commit aa570d6fb6bd ("virtio: combine the read of a descriptor")
-there is no need for a barrier at all, since we're no longer reading
-guest memory here, but accessing a local structure.
+But all the actual uses of the 'i/next' as an output were removed a few
+months prior in commit:
+  aa570d6fb6bd ("virtio: combine the read of a descriptor")
+
+Remove the unused argument to simplify the code.
+
+Also, adding a comment to the function to describe what it is actually
+doing, as it is not obvious that the 'desc' is both an input and an
+output argument.
 
 Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Message-Id: <20230927140016.2317404-2-i.maximets@ovn.org>
+Message-Id: <20230927140016.2317404-3-i.maximets@ovn.org>
 Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/virtio.c | 2 --
- 1 file changed, 2 deletions(-)
+ hw/virtio/virtio.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
 diff --git a/hw/virtio/virtio.c b/hw/virtio/virtio.c
-index 2058b838e9..87e8f990c5 100644
+index 87e8f990c5..6facd64fbc 100644
 --- a/hw/virtio/virtio.c
 +++ b/hw/virtio/virtio.c
-@@ -1060,8 +1060,6 @@ static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
+@@ -1049,9 +1049,10 @@ enum {
+     VIRTQUEUE_READ_DESC_MORE = 1,   /* more buffers in chain */
+ };
+ 
++/* Reads the 'desc->next' descriptor into '*desc'. */
+ static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
+                                           MemoryRegionCache *desc_cache,
+-                                          unsigned int max, unsigned int *next)
++                                          unsigned int max)
+ {
+     /* If this descriptor says it doesn't chain, we're done. */
+     if (!(desc->flags & VRING_DESC_F_NEXT)) {
+@@ -1059,14 +1060,12 @@ static int virtqueue_split_read_next_desc(VirtIODevice *vdev, VRingDesc *desc,
+     }
  
      /* Check they're not leading us off end of descriptors. */
-     *next = desc->next;
--    /* Make sure compiler knows to grab that: we don't want it changing! */
--    smp_wmb();
+-    *next = desc->next;
+-
+-    if (*next >= max) {
+-        virtio_error(vdev, "Desc next is %u", *next);
++    if (desc->next >= max) {
++        virtio_error(vdev, "Desc next is %u", desc->next);
+         return VIRTQUEUE_READ_DESC_ERROR;
+     }
  
-     if (*next >= max) {
-         virtio_error(vdev, "Desc next is %u", *next);
+-    vring_split_desc_read(vdev, desc, desc_cache, *next);
++    vring_split_desc_read(vdev, desc, desc_cache, desc->next);
+     return VIRTQUEUE_READ_DESC_MORE;
+ }
+ 
+@@ -1146,7 +1145,7 @@ static void virtqueue_split_get_avail_bytes(VirtQueue *vq,
+                 goto done;
+             }
+ 
+-            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max, &i);
++            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max);
+         } while (rc == VIRTQUEUE_READ_DESC_MORE);
+ 
+         if (rc == VIRTQUEUE_READ_DESC_ERROR) {
+@@ -1601,7 +1600,7 @@ static void *virtqueue_split_pop(VirtQueue *vq, size_t sz)
+             goto err_undo_map;
+         }
+ 
+-        rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max, &i);
++        rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max);
+     } while (rc == VIRTQUEUE_READ_DESC_MORE);
+ 
+     if (rc == VIRTQUEUE_READ_DESC_ERROR) {
+@@ -4055,8 +4054,7 @@ VirtioQueueElement *qmp_x_query_virtio_queue_element(const char *path,
+             list = node;
+ 
+             ndescs++;
+-            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache,
+-                                                max, &i);
++            rc = virtqueue_split_read_next_desc(vdev, &desc, desc_cache, max);
+         } while (rc == VIRTQUEUE_READ_DESC_MORE);
+         element->descs = list;
+ done:
 -- 
 MST
 
