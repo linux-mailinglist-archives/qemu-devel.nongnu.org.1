@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9DC97B99AD
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 03:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D037B7B99C5
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 03:47:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoDDi-0007A5-8I; Wed, 04 Oct 2023 21:32:06 -0400
+	id 1qoDR0-0004Tz-S2; Wed, 04 Oct 2023 21:45:50 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mie@igel.co.jp>) id 1qoDDe-0006z2-O6
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 21:32:02 -0400
-Received: from mail-vs1-xe2c.google.com ([2607:f8b0:4864:20::e2c])
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qoDQv-0004Sn-Cq; Wed, 04 Oct 2023 21:45:47 -0400
+Received: from mail-vs1-xe2e.google.com ([2607:f8b0:4864:20::e2e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mie@igel.co.jp>) id 1qoDDT-0001ZJ-63
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 21:31:56 -0400
-Received: by mail-vs1-xe2c.google.com with SMTP id
- ada2fe7eead31-4545d8a95d9so194114137.2
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 18:31:49 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alistair23@gmail.com>)
+ id 1qoDQt-0005hL-9B; Wed, 04 Oct 2023 21:45:45 -0400
+Received: by mail-vs1-xe2e.google.com with SMTP id
+ ada2fe7eead31-4525dd7f9d0so194961137.3; 
+ Wed, 04 Oct 2023 18:45:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=igel-co-jp.20230601.gappssmtp.com; s=20230601; t=1696469508; x=1697074308;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=sdttXZsYVKYNhVdFLS7zKGLp8vWLUS/hHtqctwej5Cw=;
- b=ymmgg3xIIDJENsLJ72JWi+4AKuGWIPXVaB1Yufegp7d2OvSXfyJu4v7lXHaYjE5Z14
- LPuJVYrBZ8xzw4jWMhtXJIbDxGkvqtOxsS6AlP8U574Z6qR2g/CPUsiRWjweR1E9LpHp
- QRUGgImoiR3w2IrgXqE+uqcZx/uhUC06kehekMExeBXABYJ88ssTHI0bI5r+ZDYQ2xrK
- AawPkRsYf2T0skQwBX2ut3sFvSZE4T99TJiTkuys+MfA6tDwtfAqvR8RjCISZO1OfMUU
- 7KJnbT3dKn4dQBZjXan27JLdrq2kQadHCP/8c/x9s8V8GrhlhniFc1yYdJ98ZZHgOIUJ
- vmcg==
+ d=gmail.com; s=20230601; t=1696470341; x=1697075141; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=n9d4judrISOnFbc3H46tgC8UqBGA5egJwhcka51ND+o=;
+ b=B1KWmraoqMd95QrkC+8sJBhpLP0857eT3HWT7ZZmXV2jEAjTPCghyOgE5gZOlR2A7p
+ GNfa6TJj/gpB6m+EpyuKl13N+FhgkBRrdlY5NV9lDXc4jFJTv00T1BnRs9EppQ88ghSC
+ HzQvYlFI/3NTl6Yj9nbGHrpxTye3nNn9ZFtko42J/MjbV0NgAzQczC5Xz9Am4d73LXb3
+ xbAyN01I61jZ6vfeSttBOQ4QzsFypZWdib8Dv93/FX4oBXUIaajyTMfiARYYYSiCHPxS
+ 7+JiIpLJyeUq0fwh7fJzTK2hPK+60z5O9SyW1zpe6gijRm+N2lyMk5WCq+gTkzOOIYht
+ rInQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696469508; x=1697074308;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=sdttXZsYVKYNhVdFLS7zKGLp8vWLUS/hHtqctwej5Cw=;
- b=JTbDvvHFZlnRNG+LUNnIDM302A+yf5BhHt97hCWArdFvBHY6NnrUwh/eIVW+SRusuM
- UCNysVs9lc1DGxjJTobDOH2v12zo9vZ1waA7xFbz3wdBuOuBOP40Z94/cuyboF0yYa6R
- a+mVwKaOqeKdd6Dh2QiFS+nhqSo2WsWmAQlvdRkCcaeQ9o76gseQYCRq4aopkYsSPFtL
- n/sLRSGXlVci1BNDlENvs+ox5APIaCJWyZPidEWtdoYCmAvoG7yC8+/T6Xg3UfTX2QpC
- qBaKp6Z8ptDC+APdDwa8EVgXVRJgiiTrOs0YRGr6fAsj2jlKNav47E/IrritghibLppz
- WAAA==
-X-Gm-Message-State: AOJu0YxvJgtG72Ed7pRH8QArP+Ry0r5b8UDSNuTH+2b09u4mzhLjDETN
- 1a8FmYJhsx9f0W0tw58f9MSfcCrsVedMAKATcAc7nw==
-X-Google-Smtp-Source: AGHT+IFj7YUwQqklFB38MGhKothyz2wFVITqiXgxZGZ9Plrr6jOSVH3XMIhmgBymbK7jfHvR8+JNmYX29oL9NrCqf9Y=
-X-Received: by 2002:a05:6102:215:b0:454:6d8b:3346 with SMTP id
- z21-20020a056102021500b004546d8b3346mr3196627vsp.12.1696469508194; Wed, 04
- Oct 2023 18:31:48 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696470341; x=1697075141;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=n9d4judrISOnFbc3H46tgC8UqBGA5egJwhcka51ND+o=;
+ b=JzK+HqCeZoOPArHFkdKKjhxaXKWvADOwtLirI6ofj1C8zdCst/jd7QUflbrNRbehr5
+ O3r+9llplaA7GSwxKQrHS9hfaE7pMLYstkgtNtdGocZbrcXT5qajEIxLKM9Q+VL6+LSK
+ +o1wyQY1a89CLzJ4XHBO2i7i4lrCX1X76F5ouQh+W6Xw1VlvlzQPmraQs6YhuKwP8/X/
+ aHFf8uvecvOyeFQ2pn/oZvHRmp5gA6r59+ucMBwf8Xuf8rF2qK4lVOl9gshyvbFB/1L5
+ c9LsWn80D4apTYuzdzKiMxkmGzFprk9+MvuxpjvyrSI3OSHS5n7SOxcmplM3+obXpTYW
+ sdFQ==
+X-Gm-Message-State: AOJu0Yw2Y07+riSisyvmoS1pp1Qk479G1iBSOOQedfZ1ERaZ9PhxsBZa
+ nGZXKNS1J4uKRpQTOQHVIK3JCu3r4tHU+0DYzRWdeTul0x4=
+X-Google-Smtp-Source: AGHT+IHgjoBZ7umppmyNahZ1kjvn9/NQrb1WXd4z1azRe8CKcOks5taPP+417tFqNPnetBFgb+lYM8nk7BbPEh+pGoM=
+X-Received: by 2002:a67:f701:0:b0:452:81b3:4b07 with SMTP id
+ m1-20020a67f701000000b0045281b34b07mr3489179vso.17.1696470341053; Wed, 04 Oct
+ 2023 18:45:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAGNS4TbhS3XnCFAEi378+cSmJvGMdjN2oTv=tES36vbV4CaDuA@mail.gmail.com>
-In-Reply-To: <CAGNS4TbhS3XnCFAEi378+cSmJvGMdjN2oTv=tES36vbV4CaDuA@mail.gmail.com>
-From: Shunsuke Mie <mie@igel.co.jp>
-Date: Thu, 5 Oct 2023 10:31:37 +0900
-Message-ID: <CANXvt5qKxfU3p1eSK4fkzRFRBXHSVvSkJrnQRLKPkQjhsMGNzQ@mail.gmail.com>
-Subject: Re: [RFC] Proposal of QEMU PCI Endpoint test environment
-To: Mattias Nissler <mnissler@rivosinc.com>
-Cc: cz172638@gmail.com, bhelgaas@google.com, 
- Jagannathan Raman <jag.raman@oracle.com>, kishon@kernel.org, kvijayab@amd.com,
- kw@linux.com, levon@movementarian.org, linux-kernel@vger.kernel.org, 
- linux-pci@vger.kernel.org, lpieralisi@kernel.org, 
- manivannan.sadhasivam@linaro.org, 
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org, robh@kernel.org, 
- thanos.makatos@nutanix.com, vaishnav.a@ti.com, william.henderson@nutanix.com
-Content-Type: multipart/alternative; boundary="00000000000068a73c0606ee16da"
-Received-SPF: pass client-ip=2607:f8b0:4864:20::e2c;
- envelope-from=mie@igel.co.jp; helo=mail-vs1-xe2c.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+References: <20231003071427.188697-1-chigot@adacore.com>
+In-Reply-To: <20231003071427.188697-1-chigot@adacore.com>
+From: Alistair Francis <alistair23@gmail.com>
+Date: Thu, 5 Oct 2023 11:45:14 +1000
+Message-ID: <CAKmqyKP6OKbfvg4FCG2m3ORrSXRh-a-tQKR+aZgRUK+bvyX7HA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/5] Risc-V/gdb: replace exit calls with proper shutdown
+To: =?UTF-8?Q?Cl=C3=A9ment_Chigot?= <chigot@adacore.com>
+Cc: qemu-devel@nongnu.org, qemu-riscv@nongnu.org, peter.maydell@linaro.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::e2e;
+ envelope-from=alistair23@gmail.com; helo=mail-vs1-xe2e.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,140 +85,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---00000000000068a73c0606ee16da
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Jiri, Mattias and all.
-
-2023=E5=B9=B410=E6=9C=884=E6=97=A5(=E6=B0=B4) 16:36 Mattias Nissler <mnissl=
-er@rivosinc.com>:
-
-> hi shunsuke, all,
->> what about vfio-user + qemu?
+On Tue, Oct 3, 2023 at 5:14=E2=80=AFPM Cl=C3=A9ment Chigot <chigot@adacore.=
+com> wrote:
 >
-> Thank you for the suggestion.
-
-FWIW, I have had some good success using VFIO-user to bridge software
-> components to hardware designs. For the most part, I have been hooking up
-> software endpoint models to hardware design components speaking the PCIe
-> transaction layer protocol. The central piece you need is a way to
-> translate between the VFIO-user protocol and PCIe transaction layer
-> messages, basically converting ECAM accesses, memory accesses (DMA+MMIO),
-> and interrupts between the two worlds. I have some code which implements
-> the basics of that. It's certainly far from complete (TLP is a massive
-> protocol), but it works well enough for me. I believe we should be able t=
-o
-> open-source this if there's interest, let me know.
+> This series replaces some of the call to exit in hardware used by
+> Risc-V boards. Otherwise, the gdb connection can be abruptly
+> disconnected resulting in the last gdb packet "Wxx" being not sent.
 >
-It is what I want to do, but I'm not familiar with the vfio and vfio-user,
-and I have a question. QEMU has a PCI TLP communication implementation for
-Multi-process QEMU[1]. It is similar to your success. The multi-process
-qemu also communicates TLP over UDS. Could you let me know your opinion
-about it?
-
-One thing to note is that there are currently some limits to bridging
-> VFIO-user / TLP that I haven't figured out and/or will need further work:
-> Advanced PCIe concepts like PASID, ATS/PRI, SR-IOV etc. may lack
-> equivalents on the VFIO-user side that would have to be filled in. The fo=
-lk
-> behind libvfio-user[2] have been very approachable and open to improvemen=
-ts
-> in my experience though.
+> For the gdbstub modification, gdb_exit calls ensure that the "Wxx"
+> packet is sent before exiting. However, some features (see
+> net/vhost-vdpa.c: vhost_vdpa_cleanup for example) are expecting
+> that a cleanup is being made before exiting. This, it's probably
+> safer to follow the same logic here as well.
 >
-> If I understand correctly, the specific goal here is testing PCIe endpoin=
-t
-> designs against a Linux host. What you'd need for that is a PCI host
-> controller for the Linux side to talk to and then hooking up endpoints on
-> the transaction layer. QEMU can simulate host controllers that work with
-> existing Linux drivers just fine. Then you can put a vfio-user-pci stub
-> device (I don't think this has landed in qemu yet, but you can find the
-> code at [1]) on the simulated PCI bus which will expose any software
-> interactions with the endpoint as VFIO-user protocol messages over unix
-> domain socket. The piece you need to bring is a VFIO-user server that
-> handles these messages. Its task is basically translating between VFIO-us=
-er
-> and TLP and then injecting TLP into your hardware design.
+> Difference with v3:
+>  - Rebase on riscv-to-apply
 >
-Yes, If the pci host controller you said can be implemented, I can achieve
-my goal.
+> Cl=C3=A9ment Chigot (5):
+>   softmmu: add means to pass an exit code when requesting a shutdown
+>   softmmu: pass the main loop status to gdb "Wxx" packet
+>   hw/misc/sifive_test.c: replace exit calls with proper shutdown
+>   hw/char: riscv_htif: replace exit calls with proper shutdown
+>   gdbstub: replace exit calls with proper shutdown for softmmu
 
-To begin with, I'll investigate the vfio and libvfio-user.  Thanks!.
+Thanks!
 
-[1] https://www.qemu.org/docs/master/system/multi-process.html
+Applied to riscv-to-apply.next
 
-Best,
-Shunsuke
+Alistair
 
 >
-> [1] https://github.com/oracle/qemu/tree/vfio-user-p3.1 - I believe that's
-> the latest version, Jagannathan Raman will know best
-> [2] https://github.com/nutanix/libvfio-user
+>  gdbstub/gdbstub.c          |  5 +++--
+>  gdbstub/softmmu.c          |  6 ++++++
+>  gdbstub/user.c             |  6 ++++++
+>  hw/char/riscv_htif.c       |  5 ++++-
+>  hw/misc/sifive_test.c      |  9 +++++++--
+>  include/gdbstub/syscalls.h |  9 +++++++++
+>  include/sysemu/runstate.h  |  2 ++
+>  include/sysemu/sysemu.h    |  2 +-
+>  softmmu/main.c             |  2 +-
+>  softmmu/runstate.c         | 16 +++++++++++++---
+>  10 files changed, 52 insertions(+), 10 deletions(-)
 >
+> --
+> 2.25.1
 >
-
---00000000000068a73c0606ee16da
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hi Jiri, Mattias and all.<div><br></div><div><div class=3D=
-"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">2023=E5=B9=B410=E6=9C=
-=884=E6=97=A5(=E6=B0=B4) 16:36 Mattias Nissler &lt;<a href=3D"mailto:mnissl=
-er@rivosinc.com" target=3D"_blank">mnissler@rivosinc.com</a>&gt;:<br></div>=
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">hi shunsuke, all,<br>what about v=
-fio-user + qemu?</blockquote></div></blockquote><div>Thank you for the sugg=
-estion.</div><div><br></div><blockquote class=3D"gmail_quote" style=3D"marg=
-in:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1e=
-x"><div dir=3D"ltr"><div>FWIW, I have had some good success using VFIO-user=
- to bridge software components to hardware designs. For the most part, I ha=
-ve been hooking up software endpoint models to hardware design components s=
-peaking the PCIe transaction layer protocol. The central piece you need is =
-a way to translate between the VFIO-user protocol and PCIe transaction laye=
-r messages, basically converting ECAM accesses, memory accesses (DMA+MMIO),=
- and interrupts between the two worlds. I have some code which implements t=
-he basics of that. It&#39;s certainly far from complete (TLP is a massive p=
-rotocol), but it works well enough for me. I believe we should be able to o=
-pen-source this if there&#39;s interest, let me know.</div></div></blockquo=
-te><div>It is what I want to do, but I&#39;m not familiar with the vfio and=
- vfio-user, and I have a question. QEMU has a PCI TLP communication impleme=
-ntation for Multi-process QEMU[1]. It is similar to your success. The multi=
--process qemu also communicates TLP over UDS. Could you let me know your op=
-inion about it?</div><div><br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
--left:1ex"><div dir=3D"ltr"><div>One thing to note is that there are curren=
-tly some limits to bridging VFIO-user / TLP that I haven&#39;t figured out =
-and/or will need further work: Advanced PCIe concepts like PASID, ATS/PRI, =
-SR-IOV etc. may lack equivalents on the VFIO-user side that would have to b=
-e filled in. The folk behind libvfio-user[2] have been very approachable an=
-d open to improvements in my experience though.<br></div><div><br></div><di=
-v>If I understand correctly, the specific goal here is testing PCIe endpoin=
-t designs against a Linux host. What you&#39;d need for that is a PCI host =
-controller for the Linux side to talk to and then hooking up endpoints on t=
-he transaction layer. QEMU can simulate host controllers that work with exi=
-sting Linux drivers just fine. Then you can put a vfio-user-pci stub device=
- (I don&#39;t think this has landed in qemu yet, but you can find the code =
-at [1]) on the simulated PCI bus which will expose any software interaction=
-s with the endpoint as VFIO-user protocol messages over unix domain socket.=
- The piece you need to bring is a VFIO-user server that handles these messa=
-ges. Its task is basically translating between VFIO-user and TLP and then i=
-njecting TLP into your hardware design.<br></div></div></blockquote><div>Ye=
-s, If the pci host controller you said can be implemented, I can achieve my=
- goal.</div><div><br></div><div>To begin with, I&#39;ll investigate the vfi=
-o and libvfio-user.=C2=A0 Thanks!.</div><div><br></div><div>[1]=C2=A0<a hre=
-f=3D"https://www.qemu.org/docs/master/system/multi-process.html">https://ww=
-w.qemu.org/docs/master/system/multi-process.html</a>=C2=A0<br></div><div><b=
-r></div><div>Best,</div><div>Shunsuke</div><blockquote class=3D"gmail_quote=
-" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);=
-padding-left:1ex"><div dir=3D"ltr"><div></div><div><br></div><div>[1] <a hr=
-ef=3D"https://github.com/oracle/qemu/tree/vfio-user-p3.1" target=3D"_blank"=
->https://github.com/oracle/qemu/tree/vfio-user-p3.1</a> - I believe that&#3=
-9;s the latest version,=C2=A0Jagannathan Raman will know best</div><div>[2]=
- <a href=3D"https://github.com/nutanix/libvfio-user" target=3D"_blank">http=
-s://github.com/nutanix/libvfio-user</a></div><br></div></blockquote><div><b=
-r></div></div></div></div>
-
---00000000000068a73c0606ee16da--
 
