@@ -2,76 +2,82 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B13427B9A69
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C50B7B9A4E
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:44:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFHv-0005tB-EM; Wed, 04 Oct 2023 23:44:35 -0400
+	id 1qoFHz-0006Bg-Ek; Wed, 04 Oct 2023 23:44:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHa-0004rF-Gs
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:18 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHk-0004yz-KK
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHZ-0000E2-46
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:14 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHi-0000G1-R2
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477452;
+ s=mimecast20190719; t=1696477462;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=i08g2Y3CGAaSjKQp/C/ixb+I7WFjEj9qgGznvzU8bM4=;
- b=hAMaGO8YpLHm3Aya20474NcXr1fbBzTU/vekHcItsEcbIfkbp64luUOmJDISrqYgQjDQgs
- AwIbt9CMgDxL0z0LC9Ims4++r+uprxGTu5b9VuXdTvZUXqU9qP3mpyG4mzsHPkl5rYKF04
- aor+lSM2mr/M5XjfOUnXxAQfs6bscNY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Lsmr9uE1xRXPM9KOL778YFqc28uXJQm8cgVPqwE4uHY=;
+ b=gzPVl9QGpVKQY3PSCV65lXvV1i/+rI8es0W5DME4zfu8ZL8Ywf1Qo+4fvwkW8FGTqm/+bn
+ Ue+9bHY8pRdREkuuImfBYFpOLHLZ5yZXjOe1ForIr1X6nqxTEajBgf+ZFGCK4k7SGsVeof
+ MyW+maZar3eKBDHc97V7h91AZLWQDC0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-GRg5-Z0hP1-CtB6q-3qDqg-1; Wed, 04 Oct 2023 23:44:05 -0400
-X-MC-Unique: GRg5-Z0hP1-CtB6q-3qDqg-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-3fe1521678fso3817195e9.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:05 -0700 (PDT)
+ us-mta-530-7Zx1uVLPMTiESzDfs_wphA-1; Wed, 04 Oct 2023 23:44:10 -0400
+X-MC-Unique: 7Zx1uVLPMTiESzDfs_wphA-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-3217fdf913dso406704f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477444; x=1697082244;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=i08g2Y3CGAaSjKQp/C/ixb+I7WFjEj9qgGznvzU8bM4=;
- b=IRtxqzZ8A21WTXi2RCesvcvXSdvdBt/ipLGT2jBkbFkX1o3tuBglBwFvEpZt25z5hK
- bE5i15cgLjKjrgKDa9hODNo61ULmgBmZoRIctbzyp+QWyuG5N5uxjU+7faVg5JA/Q7aW
- 5UAofj62tsQ6kqDnjeMHZnptJ0QTAmp2A4AT0sMgGdEN+uBCX/D6ungagXRTh2BFadvA
- E1n9+VLPn2vbYH5OlmnG5pWjNKnYdtcA5Hb8k+Nw0ct0VXKwAQXYBd3XtT2X0VXHLDcs
- /77lutlnXDnWiL8+ULwTyG/IPbw/JsFohfJe5rnW0iu5jpi6qI6BjSo9xgC461EA2H3E
- m3sQ==
-X-Gm-Message-State: AOJu0YwWmHUGRDaDsWsQ4UzvCemmSloUr+aT7v1/f/H65DSslUi1zzoh
- gCBBcVrhpRH/41HHYSIGAAc1atTpnwsqFRisutyOlvO5zVeGiKEkFgaAmctwpaY0kdWGfJSygvI
- t9J6XhJlVfLk4wwNWmqlwnP+zxGCHCL9TLG4+g9GsnXJT1lWvVIkDKxz6RAwTN0uzVh08
-X-Received: by 2002:a05:600c:21d5:b0:3fe:5501:d284 with SMTP id
- x21-20020a05600c21d500b003fe5501d284mr4164791wmj.11.1696477443865; 
- Wed, 04 Oct 2023 20:44:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHsKpVIVnrxh6H+LdzE/Zqc7KSYb/JdrXTo/GHIVFmHqMpL1lknkU4tTHiW4hWoQ2yrf2tYBA==
-X-Received: by 2002:a05:600c:21d5:b0:3fe:5501:d284 with SMTP id
- x21-20020a05600c21d500b003fe5501d284mr4164781wmj.11.1696477443554; 
- Wed, 04 Oct 2023 20:44:03 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696477449; x=1697082249;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=Lsmr9uE1xRXPM9KOL778YFqc28uXJQm8cgVPqwE4uHY=;
+ b=kjU/SR0JMtxJqEw9r4Q5AcT7jBOdFOaewX+yrqVaEb9b0ZkIlE/Bc+jlKdPRJRpg/V
+ 7HUR0wsezMoz2zuFsqLgq1XyRvAAsWOUyOPEXldnlpD35EkaAUVg+S2hJKm/ZNLz46WS
+ QW/NpNePplS9A2NNMmk7H+Wkx6zoq6KS5wW3OIT6NVxEuP2U+5ao+z/CDlKD8IFRnYxN
+ a3D73sMDIPmE9ZdPBj8dmKyqRdefVyHKbx/Ow5Ai5DLlj1PJaYu2egIfWwO+Bk9qd2Ng
+ BrayPHB4CBza9WpUEFFRHTuYbh94R8rViCdEaWwcM329PniGjYiQN4cp3JTEpH46KBER
+ 5cqQ==
+X-Gm-Message-State: AOJu0YwPSuIeEkFslHkA/F1POZLSKYv7N+7QdJt1G7ffxRSqMAs0vgA3
+ ms/R3a3uTGfXCf8xxjCjTo8G10mQZeGYyr9jRrZQv58fGlGVkBiNe4v3aBoZH0VnA9zGwb4pW0G
+ Ljw2YUn6EJI78zwxeSzOKuuPYOwuV4pvIBv9d3VbumtHJrxVpeq/1XtUoOtlHV4MLyNJY
+X-Received: by 2002:adf:ee04:0:b0:31f:fcee:afcf with SMTP id
+ y4-20020adfee04000000b0031ffceeafcfmr3454394wrn.71.1696477448946; 
+ Wed, 04 Oct 2023 20:44:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG7/fBRSZMnex7Pf6Vt0/iplQJ7CJmVP/B9A0RX1f7nitJpOoMdCZxH0jhFFpTt8l8RKnY3fw==
+X-Received: by 2002:adf:ee04:0:b0:31f:fcee:afcf with SMTP id
+ y4-20020adfee04000000b0031ffceeafcfmr3454379wrn.71.1696477448701; 
+ Wed, 04 Oct 2023 20:44:08 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- 1-20020a05600c230100b0040644e699a0sm2775561wmo.45.2023.10.04.20.44.01
+ e13-20020a5d500d000000b003259b068ba6sm636913wrt.7.2023.10.04.20.44.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:44:02 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:44:00 -0400
+ Wed, 04 Oct 2023 20:44:08 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:44:03 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- David Woodhouse <dwmw@amazon.co.uk>,
+ Bernhard Beschow <shentey@gmail.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v2 24/53] hw/isa/ich9: Add comment on imperfect emulation of
- PIC vs. I/O APIC routing
-Message-ID: <886e0a5f31bf3d40dd8d9199674a4bad64942fde.1696477105.git.mst@redhat.com>
+Subject: [PULL v2 25/53] hw/i386/acpi-build: Use pc_madt_cpu_entry() directly
+Message-ID: <f4a06e5921ec93bbb8baeca59f662672077535c3.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 In-Reply-To: <cover.1696477105.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
@@ -99,52 +105,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Bernhard Beschow <shentey@gmail.com>
 
-As noted in the comment, the PCI INTx lines are supposed to be routed
-to *both* the PIC and the I/O APIC. It's just that we don't cope with
-the concept of an IRQ being asserted to two *different* pins on the
-two irqchips.
+This is x86-specific code, so there is no advantage in using
+pc_madt_cpu_entry() behind an architecture-agnostic interface.
 
-So we have this hack of routing to I/O APIC only if the PIRQ routing to
-the PIC is disabled. Which seems to work well enough, even when I try
-hard to break it with kexec. But should be explicitly documented and
-understood.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Message-Id: <112a09643b8191c4eae7d92fa247a861ab90a9ee.camel@infradead.org>
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-Id: <20230908084234.17642-2-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/isa/lpc_ich9.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ hw/i386/acpi-common.h  | 3 +--
+ hw/i386/acpi-build.c   | 3 +--
+ hw/i386/acpi-common.c  | 5 ++---
+ hw/i386/acpi-microvm.c | 3 +--
+ 4 files changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index 9c47a2f6c7..bce487ac4e 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -304,6 +304,21 @@ static PCIINTxRoute ich9_route_intx_pin_to_irq(void *opaque, int pirq_pin)
-             route.irq = -1;
-         }
-     } else {
-+        /*
-+         * Strictly speaking, this is wrong. The PIRQ should be routed
-+         * to *both* the I/O APIC and the PIC, on different pins. The
-+         * I/O APIC has a fixed mapping to IRQ16-23, while the PIC is
-+         * routed according to the PIRQx_ROUT configuration. But QEMU
-+         * doesn't (yet) cope with the concept of pin numbers differing
-+         * between PIC and I/O APIC, and neither does the in-kernel KVM
-+         * irqchip support. So we route to the I/O APIC *only* if the
-+         * routing to the PIC is disabled in the PIRQx_ROUT settings.
-+         *
-+         * This seems to work even if we boot a Linux guest with 'noapic'
-+         * to make it use the legacy PIC, and then kexec directly into a
-+         * new kernel which uses the I/O APIC. The new kernel explicitly
-+         * disables the PIRQ routing even though it doesn't need to care.
-+         */
-         route.irq = ich9_pirq_to_gsi(pirq_pin);
-     }
+diff --git a/hw/i386/acpi-common.h b/hw/i386/acpi-common.h
+index a68825acf5..b3c56ee014 100644
+--- a/hw/i386/acpi-common.h
++++ b/hw/i386/acpi-common.h
+@@ -1,7 +1,6 @@
+ #ifndef HW_I386_ACPI_COMMON_H
+ #define HW_I386_ACPI_COMMON_H
  
+-#include "hw/acpi/acpi_dev_interface.h"
+ #include "hw/acpi/bios-linker-loader.h"
+ #include "hw/i386/x86.h"
+ 
+@@ -9,7 +8,7 @@
+ #define ACPI_BUILD_IOAPIC_ID 0x0
+ 
+ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+-                     X86MachineState *x86ms, AcpiDeviceIf *adev,
++                     X86MachineState *x86ms,
+                      const char *oem_id, const char *oem_table_id);
+ 
+ #endif
+diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
+index 4d2d40bab5..2879e0d555 100644
+--- a/hw/i386/acpi-build.c
++++ b/hw/i386/acpi-build.c
+@@ -2547,8 +2547,7 @@ void acpi_build(AcpiBuildTables *tables, MachineState *machine)
+ 
+     acpi_add_table(table_offsets, tables_blob);
+     acpi_build_madt(tables_blob, tables->linker, x86ms,
+-                    ACPI_DEVICE_IF(x86ms->acpi_dev), x86ms->oem_id,
+-                    x86ms->oem_table_id);
++                    x86ms->oem_id, x86ms->oem_table_id);
+ 
+ #ifdef CONFIG_ACPI_ERST
+     {
+diff --git a/hw/i386/acpi-common.c b/hw/i386/acpi-common.c
+index 8a0932fe84..43dc23f7e0 100644
+--- a/hw/i386/acpi-common.c
++++ b/hw/i386/acpi-common.c
+@@ -94,14 +94,13 @@ build_xrupt_override(GArray *entry, uint8_t src, uint32_t gsi, uint16_t flags)
+  * 5.2.8 Multiple APIC Description Table
+  */
+ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+-                     X86MachineState *x86ms, AcpiDeviceIf *adev,
++                     X86MachineState *x86ms,
+                      const char *oem_id, const char *oem_table_id)
+ {
+     int i;
+     bool x2apic_mode = false;
+     MachineClass *mc = MACHINE_GET_CLASS(x86ms);
+     const CPUArchIdList *apic_ids = mc->possible_cpu_arch_ids(MACHINE(x86ms));
+-    AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_GET_CLASS(adev);
+     AcpiTable table = { .sig = "APIC", .rev = 3, .oem_id = oem_id,
+                         .oem_table_id = oem_table_id };
+ 
+@@ -111,7 +110,7 @@ void acpi_build_madt(GArray *table_data, BIOSLinker *linker,
+     build_append_int_noprefix(table_data, 1 /* PCAT_COMPAT */, 4); /* Flags */
+ 
+     for (i = 0; i < apic_ids->len; i++) {
+-        adevc->madt_cpu(i, apic_ids, table_data, false);
++        pc_madt_cpu_entry(i, apic_ids, table_data, false);
+         if (apic_ids->cpus[i].arch_id > 254) {
+             x2apic_mode = true;
+         }
+diff --git a/hw/i386/acpi-microvm.c b/hw/i386/acpi-microvm.c
+index a075360d85..fec22d85c1 100644
+--- a/hw/i386/acpi-microvm.c
++++ b/hw/i386/acpi-microvm.c
+@@ -214,8 +214,7 @@ static void acpi_build_microvm(AcpiBuildTables *tables,
+ 
+     acpi_add_table(table_offsets, tables_blob);
+     acpi_build_madt(tables_blob, tables->linker, X86_MACHINE(machine),
+-                    ACPI_DEVICE_IF(x86ms->acpi_dev), x86ms->oem_id,
+-                    x86ms->oem_table_id);
++                    x86ms->oem_id, x86ms->oem_table_id);
+ 
+ #ifdef CONFIG_ACPI_ERST
+     {
 -- 
 MST
 
