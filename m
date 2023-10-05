@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C97D7B9A72
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 177477B9A63
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFJE-00006C-Iz; Wed, 04 Oct 2023 23:45:56 -0400
+	id 1qoFJJ-0000KP-3x; Wed, 04 Oct 2023 23:46:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIj-0008Cj-PE
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIj-0008Cg-LY
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:29 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIh-0000bg-RQ
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIg-0000bS-6G
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:25 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477520;
+ s=mimecast20190719; t=1696477519;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=fi0K9Am3IfJincw8VDTgn5xt0/GGjlt5fWIa13TNowA=;
- b=afeIcArU9JS81kPTVRZjxfEJFhRUSOojmbCy72llYoIaUR7UerdoWEvgJt1MuiwKQfkdm3
- BGqTVZjW6mdtx1qOxrKFu39G9NPm7kfKv/BGCRVmReG2HNOVsUqxsONhGe71kolWz7JqxH
- Ze3tWoTUkJXgnf+WdDQT37ldHxnCCl8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Dc0LwezzCtuJZwfRfwd6fEilbxVEAWIE8I0MI4RifxI=;
+ b=RGRDH0/7NuMj3h2t7y/Fg1XeOfpwns4jHImmOyFihaEVrCg4FwBGp3s6mgqSg4vKRdFolg
+ juXwc4gAf0sVMCz3TXAt0nWMKCAd0yN6F6j+Sg+a4/YWypM4uKltgSMMZEtwaZObJTW5d1
+ JtY5nNRQR04uhz9gkI5VKY4qeaZSq7A=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-591-uPndyjheMfWVliu_GDzquQ-1; Wed, 04 Oct 2023 23:45:14 -0400
-X-MC-Unique: uPndyjheMfWVliu_GDzquQ-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-313c930ee0eso408187f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:13 -0700 (PDT)
+ us-mta-91-RQOZmJaAOJGUvvnltEFXJQ-1; Wed, 04 Oct 2023 23:45:17 -0400
+X-MC-Unique: RQOZmJaAOJGUvvnltEFXJQ-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-327cd5c7406so388776f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477512; x=1697082312;
+ d=1e100.net; s=20230601; t=1696477516; x=1697082316;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=fi0K9Am3IfJincw8VDTgn5xt0/GGjlt5fWIa13TNowA=;
- b=W2L4FLa1Iq6zYJmslIPp46BVB2pR8iHs6DGGzdZOJvvc4vlHy1sqxFZrL8pVweFe5b
- pFZHaX/gLOChcnghjka56u3KrCchz7/4jjGTfQyku5QwS+Dr5KmP0jVVRKFsSSo+zq6f
- ZFpkBiCmXPM4QUFjGaqQkONk1q2YWuK/IzjE4ztnfHCVgSufjSSBFKYIEDNgObZ/Q7Ab
- 4FrMqbpQCclaroZb2EBFHqmwD5ah0HFTz29cwwMVjMOE+dvOx218G+4dkkt9+bpfgn+m
- 4SM7yEl86/BKeumY/budMMOD8iElN57nW3YuZotCVnzi/+kACMRYIBRDlQe5j75eQaAQ
- ABgQ==
-X-Gm-Message-State: AOJu0YzYP6eQRuw4p2GshWu2GMADE4MqVNnv88AAqJtW25sZJySzuDCs
- J4XgSIUG9MZ/MBF9LI2OOX2qLyz3w0lCzfYXG5yYB4CYZo2Py4EygeX2hn8O3DdpeN5NP1EKzFO
- IPi5bHv1BAQ6bVRQaafrB5VJDk8OV/G7xXkgV6AIajrdK5O7jEYYHS9U5p2BdimhB8RRL
-X-Received: by 2002:a5d:56ca:0:b0:319:6e74:1637 with SMTP id
- m10-20020a5d56ca000000b003196e741637mr3461631wrw.27.1696477512490; 
- Wed, 04 Oct 2023 20:45:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFHWk/Px8OO6gJkgolgaKQIrECYd33pSKdauB0QN0onKNFpHbeBdFpeW0VCHDt7rLL2r4b16w==
-X-Received: by 2002:a5d:56ca:0:b0:319:6e74:1637 with SMTP id
- m10-20020a5d56ca000000b003196e741637mr3461619wrw.27.1696477512285; 
- Wed, 04 Oct 2023 20:45:12 -0700 (PDT)
+ bh=Dc0LwezzCtuJZwfRfwd6fEilbxVEAWIE8I0MI4RifxI=;
+ b=xAax/fmKW8JF+dO2eYBEOPiNHNXyeZUq3PNZrvg/W7DztkTOqKFQeb25+W+3+If2Na
+ 9J3qIrRcgCjWDFEEL4xjzKw+3QCveKNCF0IDGHinVGq/qqvTIJaUR7pqQB73zpvU3wur
+ IZzZ8VlfK41GmSyU3pX/dSU2Zut4KgG+3+JdzJKvcXItFpZDJMGn1AqBlcuAor8tsjmH
+ yvh/VbrGY1fHWEsNnEO7WQ5sMMbr/XzJrqrD66RcVnWKgjRsq7jBmLz2BpCaAI5vVdv5
+ FDIylB2ApscmUSp0E5r6dNmbJXoDdfbPNTrHjmHGtDV+80ZjMVmL7IbRG8785Wz3+f+A
+ F82A==
+X-Gm-Message-State: AOJu0YymQqmhylhwJAxqyXlvM3aKJe3HIHnOia8HTlnTGs1YepE3asMr
+ azacu8hmlSfc84AjUCHaoSD5SXyvMp+VOn2hDqhBeUmcfdE5RjP7N803UUfjLaKeEDIfX7D89tZ
+ xmWwEvSBb4tO293BGQkgkMTdrFcsDX2/duKgfGi1m13wuWocwdZT1RCL6/wq9+1Lggqmi
+X-Received: by 2002:adf:f452:0:b0:31f:fed4:d79d with SMTP id
+ f18-20020adff452000000b0031ffed4d79dmr3761974wrp.30.1696477515935; 
+ Wed, 04 Oct 2023 20:45:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFFbb1tgLhrr+l0+JwNuyAcLbbQE7hIb0UvVNzSO6Ja3+Z9fYhYyF/B+QI2EfG0k5quwYtvmw==
+X-Received: by 2002:adf:f452:0:b0:31f:fed4:d79d with SMTP id
+ f18-20020adff452000000b0031ffed4d79dmr3761960wrp.30.1696477515642; 
+ Wed, 04 Oct 2023 20:45:15 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- v11-20020adfedcb000000b0031fd849e797sm621531wro.105.2023.10.04.20.45.10
+ j14-20020a5d564e000000b0032320a9b010sm633779wrw.28.2023.10.04.20.45.13
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:45:11 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:45:08 -0400
+ Wed, 04 Oct 2023 20:45:15 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:45:12 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
@@ -68,8 +68,8 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
  Lei Yang <leiyang@redhat.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Jason Wang <jasowang@redhat.com>
-Subject: [PULL v2 40/53] vdpa net: fix error message setting virtio status
-Message-ID: <cbc9ae87b5f6f81c52a249e0b64100d5011fca53.1696477105.git.mst@redhat.com>
+Subject: [PULL v2 41/53] vdpa net: stop probing if cannot set features
+Message-ID: <f1085882d028e5a1b227443cd6e96bbb63d66f43.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -104,34 +104,32 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eugenio Pérez <eperezma@redhat.com>
 
-It incorrectly prints "error setting features", probably because a copy
-paste miss.
+Otherwise it continues the CVQ isolation probing.
 
 Fixes: 152128d646 ("vdpa: move CVQ isolation check to net_init_vhost_vdpa")
 Reported-by: Peter Maydell <peter.maydell@linaro.org>
 Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20230915170836.3078172-2-eperezma@redhat.com>
+Message-Id: <20230915170836.3078172-3-eperezma@redhat.com>
 Tested-by: Lei Yang <leiyang@redhat.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- net/vhost-vdpa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/vhost-vdpa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index fe519d908d..650125bb0f 100644
+index 650125bb0f..b688877f90 100644
 --- a/net/vhost-vdpa.c
 +++ b/net/vhost-vdpa.c
-@@ -1368,7 +1368,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
- 
-     r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
+@@ -1364,6 +1364,7 @@ static int vhost_vdpa_probe_cvq_isolation(int device_fd, uint64_t features,
+     r = ioctl(device_fd, VHOST_SET_FEATURES, &features);
      if (unlikely(r)) {
--        error_setg_errno(errp, -r, "Cannot set device features");
-+        error_setg_errno(errp, -r, "Cannot set status");
-         goto out;
+         error_setg_errno(errp, errno, "Cannot set features");
++        goto out;
      }
  
+     r = ioctl(device_fd, VHOST_VDPA_SET_STATUS, &status);
 -- 
 MST
 
