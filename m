@@ -2,94 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 156C07BA01F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 662C67BA021
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:34:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoPOj-0005rW-Hj; Thu, 05 Oct 2023 10:32:20 -0400
+	id 1qoPQF-0007Lb-KA; Thu, 05 Oct 2023 10:33:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qoPOb-0005qq-Vs
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:32:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qoPPz-0007Cm-Cd; Thu, 05 Oct 2023 10:33:37 -0400
+Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qoPOW-0005Up-G9
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:32:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696516319;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=By4HQqu0HduQ7XjjwLx5typ/4r8lacldykqjQcqGRTc=;
- b=fmIAGjKghtkHOJ/JJ6H9OfTCazo89inRJ8+XoySNyziU8T0YB1UNoJvTElIOncI3gSi2Vl
- n071lyzSw8bPjf/gxjbBto+mtYBOYYg74Ok/4sRG/n31edsYMFjRFE8OeHwLROgH/GsGXe
- k0aohMt8XSckJUk2SjQYu0ATUybrh2Y=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-288-ETh2WCMoOAyXPQXIdnP5Pg-1; Thu, 05 Oct 2023 10:31:55 -0400
-X-MC-Unique: ETh2WCMoOAyXPQXIdnP5Pg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9b2e030e4caso245815066b.1
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 07:31:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696516312; x=1697121112;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=By4HQqu0HduQ7XjjwLx5typ/4r8lacldykqjQcqGRTc=;
- b=Anp/uQ2zPRx7Qa8hzUA9a5ItdaFxNEZGWfh2V75IJAUKPEd1hXPAa8leGUUucI6Ox7
- 5+YpFy6TVfSzH+fX10pzpsqQ7c5q9viCBn4go95dKzwx6Mik8khjuPbXjpLMH9pdXYbI
- 0bXKAA/U3v196SCQ6HdRkIiqPXTBktcXz8g7SqnXQXo2nCHyl3b5vmh+FvhPRYZW4gae
- wbbd3G3MG3wxUnXyjvQYAjCoblPxAq32Rn3Vawye5oTVlxlhRQP1g1l7NHgKCrmrxyie
- yoPPTYIS8FcWn/LnE2BvS3yTocj7aBj1AhjUjFXYOH/iGWp9gukbQlOe+x5fNV8YEinq
- xtyA==
-X-Gm-Message-State: AOJu0YxWM5obqBkmrk9onUFz/noFWbfXzx6yct9gYoR8k/TmOOtj05T/
- 2u+6lKGAqiW3E7GCAp9Bc28JNLFhHvR+oO7z9FbPmdr4mt+7QakA4Jh5JOS8C/X3qfXVTeVsKI6
- CWCKU0bfeO5Bkaj0=
-X-Received: by 2002:a17:906:fd84:b0:9ad:e3fd:d46c with SMTP id
- xa4-20020a170906fd8400b009ade3fdd46cmr1345928ejb.10.1696516312431; 
- Thu, 05 Oct 2023 07:31:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFzJxESbg25EcO47evB/Wk6Y/mZjG+/kz15xGe0N33SUr3R/XB5rZQJ8J8IsBrd9KJ00snGlg==
-X-Received: by 2002:a17:906:fd84:b0:9ad:e3fd:d46c with SMTP id
- xa4-20020a170906fd8400b009ade3fdd46cmr1345900ejb.10.1696516311987; 
- Thu, 05 Oct 2023 07:31:51 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
- [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
- t8-20020a17090616c800b009a1be9c29d7sm1291106ejd.179.2023.10.05.07.31.50
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Oct 2023 07:31:51 -0700 (PDT)
-Message-ID: <454b4732-d9ce-3cc5-e018-8fe2f88cc406@redhat.com>
-Date: Thu, 5 Oct 2023 16:31:50 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qoPPv-0005nw-RX; Thu, 05 Oct 2023 10:33:35 -0400
+Received: from mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:7d8a:0:640:8fc3:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 6FDA560E16;
+ Thu,  5 Oct 2023 17:33:27 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b584::1:2f] (unknown
+ [2a02:6b8:b081:b584::1:2f])
+ by mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id QXZdiZ4OoeA0-NDjjSqdO; Thu, 05 Oct 2023 17:33:26 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696516406;
+ bh=kVkUUuqAW+75tq8WI7pw+QSXJ9B8Z9ugKl/fh73HT8g=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=vD7dv9OHgcR+6nmIekkIJwtGwVy3dqaPc4iJ1yMzEm//2t8pLVckgVvFktswlVTlB
+ mEYbCeSNh7DPVOMCTFV9/iFVSGpUrXGxEK+LTxDz6Vw8SRCPJD/MhsYshyEqtEXJ3U
+ b0Xbp0OvTS5oRH1JCMrGm0aIqJ/wQo6RllQeWjCU=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-11.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <0ebcd70e-faf2-4a63-9fa6-6a2334151c22@yandex-team.ru>
+Date: Thu, 5 Oct 2023 17:33:26 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] MAINTAINERS: Add some unowned files to the SBSA-REF
- section
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 12/12] nbd/server: Add FLAG_PAYLOAD support to
+ CMD_BLOCK_STATUS
 Content-Language: en-US
-To: Leif Lindholm <quic_llindhol@quicinc.com>
-Cc: Radoslaw Biernacki <rad@semihalf.com>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>,
- Peter Maydell <peter.maydell@linaro.org>, qemu-arm@nongnu.org,
- qemu-devel@nongnu.org, QEMU Trivial <qemu-trivial@nongnu.org>
-References: <20230929141918.397096-1-thuth@redhat.com>
- <ZRb3aTLxBSnVGGr2@qc-i7.hemma.eciton.net>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <ZRb3aTLxBSnVGGr2@qc-i7.hemma.eciton.net>
+To: Eric Blake <eblake@redhat.com>, qemu-devel@nongnu.org
+Cc: libguestfs@redhat.com, qemu-block@nongnu.org,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>
+References: <20230925192229.3186470-14-eblake@redhat.com>
+ <20230925192229.3186470-26-eblake@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20230925192229.3186470-26-eblake@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=178.154.239.136;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,61 +75,126 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 29/09/2023 18.12, Leif Lindholm wrote:
-> On Fri, Sep 29, 2023 at 16:19:18 +0200, Thomas Huth wrote:
->> These files belong to the sbsa-ref machine and thus should
->> be listed here.
+On 25.09.23 22:22, Eric Blake wrote:
+> Allow a client to request a subset of negotiated meta contexts.  For
+> example, a client may ask to use a single connection to learn about
+> both block status and dirty bitmaps, but where the dirty bitmap
+> queries only need to be performed on a subset of the disk; forcing the
+> server to compute that information on block status queries in the rest
+> of the disk is wasted effort (both at the server, and on the amount of
+> traffic sent over the wire to be parsed and ignored by the client).
 > 
-> First of all, thanks for this.
+> Qemu as an NBD client never requests to use more than one meta
+> context, so it has no need to use block status payloads.  Testing this
+> instead requires support from libnbd, which CAN access multiple meta
+> contexts in parallel from a single NBD connection; an interop test
+> submitted to the libnbd project at the same time as this patch
+> demonstrates the feature working, as well as testing some corner cases
+> (for example, when the payload length is longer than the export
+> length), although other corner cases (like passing the same id
+> duplicated) requires a protocol fuzzer because libnbd is not wired up
+> to break the protocol that badly.
 > 
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   MAINTAINERS | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 874234cb7b..fc415d3cea 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -954,6 +954,9 @@ R: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
->>   L: qemu-arm@nongnu.org
->>   S: Maintained
->>   F: hw/arm/sbsa-ref.c
->> +F: hw/misc/sbsa_ec.c
+> This also includes tweaks to 'qemu-nbd --list' to show when a server
+> is advertising the capability, and to the testsuite to reflect the
+> addition to that output.
 > 
-> Yes, pure oversight, sorry about that.
+> Of note: qemu will always advertise the new feature bit during
+> NBD_OPT_INFO if extended headers have alreay been negotiated
+> (regardless of whether any NBD_OPT_SET_META_CONTEXT negotiation has
+> occurred); but for NBD_OPT_GO, qemu only advertises the feature if
+> block status is also enabled (that is, if the client does not
+> negotiate any contexts, then NBD_CMD_BLOCK_STATUS cannot be used, so
+> the feature is not advertised).
 > 
->> +F: hw/watchdog/sbsa_gwdt.c
->> +F: include/hw/watchdog/sbsa_gwdt.h
+> Signed-off-by: Eric Blake <eblake@redhat.com>
+> ---
 > 
-> I just want to clarify that this is not "the watchdog for the SBSA
-> platform", but "the watchdog defined by Arm's SBSA specification"
-> (and belatedly the BSA specification)" - the specification that
-> sbsa-ref (intends to) provide a compliant platform implementation for.
+> v5: factor out 'id - NBD_MTA_ID_DIRTY_BITMAP' [Vladimir], rework logic
+> on zero-length requests to be clearer [Vladimir], rebase to earlier
+> changes
 
-Thanks for the clarification!
+[..]
 
-> Another such component is the "generic UART", but since that is a
-> subset of pl011 there is no real value in providing a dedicated model
-> of it.
+> +/*
+> + * nbd_co_block_status_payload_read
+> + * Called when a client wants a subset of negotiated contexts via a
+> + * BLOCK_STATUS payload.  Check the payload for valid length and
+> + * contents.  On success, return 0 with request updated to effective
+> + * length.  If request was invalid but all payload consumed, return 0
+> + * with request->len and request->contexts->count set to 0 (which will
+> + * trigger an appropriate NBD_EINVAL response later on).  Return
+> + * negative errno if the payload was not fully consumed.
+> + */
+> +static int
+> +nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
+> +                                 Error **errp)
+> +{
+> +    int payload_len = request->len;
+
+payload_len should be uint64_t
+
+> +    g_autofree char *buf = NULL;
+> +    size_t count, i, nr_bitmaps;
+> +    uint32_t id;
+> +
+
+otherwise, we may do something unexpected here, when reqeuest->len is too big for int:
+
+> +    if (payload_len > NBD_MAX_BUFFER_SIZE) {
+> +        error_setg(errp, "len (%" PRIu64 ") is larger than max len (%u)",
+> +                   request->len, NBD_MAX_BUFFER_SIZE);
+> +        return -EINVAL;
+> +    }
+> +
+> +    assert(client->contexts.exp == client->exp);
+> +    nr_bitmaps = client->exp->nr_export_bitmaps;
+> +    request->contexts = g_new0(NBDMetaContexts, 1);
+> +    request->contexts->exp = client->exp;
+> +
+> +    if (payload_len % sizeof(uint32_t) ||
+> +        payload_len < sizeof(NBDBlockStatusPayload) ||
+> +        payload_len > (sizeof(NBDBlockStatusPayload) +
+> +                       sizeof(id) * client->contexts.count)) {
+> +        goto skip;
+> +    }
+
+[..]
+
+>    * connection right away, -EAGAIN to indicate we were interrupted and the
+> @@ -2505,7 +2593,18 @@ static int coroutine_fn nbd_co_receive_request(NBDRequestData *req,
+>           break;
 > 
-> Which I guess is a long-winded way of saying: this component does not
-> necessarily want/need the same maintainers as the sbsa-ref platform.
-> I'm still happy to maintain it, and it may make sense to keep it under
-> this header for now.
+>       case NBD_CMD_BLOCK_STATUS:
+> -        request->contexts = &client->contexts;
+> +        if (extended_with_payload) {
+> +            ret = nbd_co_block_status_payload_read(client, request, errp);
+> +            if (ret < 0) {
+> +                return ret;
+> +            }
+> +            /* payload now consumed */
+> +            check_length = extended_with_payload = false;
 
-I think as long as the sbsa-ref machine is the only one in our git tree that 
-uses this device, it's fine if we add the sbsa watchdog to this section 
-here. If there will ever be another machine that uses this device, we can 
-still reconsider and create a dedicated section for it in the MAINTAINERS 
-file if necessary.
+why set extended_with_payload to false? it's a bit misleading. And you don't do this for WRITE request.
 
-> (In which case
-> Reviewed-by: Leif Lindholm <quic_llindhol@quicinc.com>
-> )
+> +            payload_len = 0;
+> +            valid_flags |= NBD_CMD_FLAG_PAYLOAD_LEN;
+> +        } else {
+> +            request->contexts = &client->contexts;
+> +        }
+>           valid_flags |= NBD_CMD_FLAG_REQ_ONE;
+>           break;
+> 
 
-  Thanks!
-   Thomas
+[..]
 
+
+with payload_len changed to uint64_t, your squash-in applied and s/>/>=/ fixed:
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+
+
+-- 
+Best regards,
+Vladimir
 
 
