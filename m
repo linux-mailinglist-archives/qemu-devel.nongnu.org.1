@@ -2,73 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3EA37B9A76
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71EC87B9A5D
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFJE-000052-6J; Wed, 04 Oct 2023 23:45:56 -0400
+	id 1qoFJF-00009T-KB; Wed, 04 Oct 2023 23:45:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIF-0007Sy-6d
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:55 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIb-00089t-L7
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:25 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFID-0000Lt-MR
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:54 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIX-0000Zl-KO
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477493;
+ s=mimecast20190719; t=1696477507;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=vDsZnUicENX14uBrPv90iIre5SOYaN6w5F3yw6zce+M=;
- b=Hi7uxFL3C3xxb5AN4ScA/rgAZwzWhGjEv9734bSV0MAc67zcFGHL9kr5eKR5Y4WsEzgm1s
- ZXZ1q8HcvuS3Bct/gQc5GAYey1JhFyC4PHSAxJdjk4FuEU3ACORKGApw4X2GoiX78zRv6X
- 5qyEWKq/mpw+DG2sgDQyhGyCLJdomqk=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=lIgJ5oPfxO9wyqqBUeBUKavXa8KETRJWhHSgRUqGuy8=;
+ b=dNWYTLQgP4jwkbH8F69hiqL4cYOzf+sxzdvaf+Z+CNS+EkMaz/NIeN+UjRRtFvT2+NvOl7
+ 0poXTbEibzcw7dRr5T8ud5WiycwCDiAChWyVo+J97b5bZHzQgLDabrwH9wvwyBh0BMQBwu
+ 8ykSOh5kUAo04d2AxuRwAQFa60O+Jgw=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-86-fzDSKiUNNkCHoHvYA0H0XA-1; Wed, 04 Oct 2023 23:44:51 -0400
-X-MC-Unique: fzDSKiUNNkCHoHvYA0H0XA-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-4065ca278b3so3144285e9.3
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:51 -0700 (PDT)
+ us-mta-186-ZQL_T-rxPp-LqlgPDHXl9A-1; Wed, 04 Oct 2023 23:44:55 -0400
+X-MC-Unique: ZQL_T-rxPp-LqlgPDHXl9A-1
+Received: by mail-wr1-f69.google.com with SMTP id
+ ffacd0b85a97d-314256aedcbso478568f8f.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477490; x=1697082290;
+ d=1e100.net; s=20230601; t=1696477494; x=1697082294;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=vDsZnUicENX14uBrPv90iIre5SOYaN6w5F3yw6zce+M=;
- b=IkKcYSJw4I1LF1vq8BrRAKjBr4duJNG6WA99K0GALzxFlFOMi/9yti2V6xLn74es2d
- WLKN9iVOKlW6dcgoeu/Yep1EUblLHPXD5jPYiQ7R8L9VzHlOsMo0vaMk3CvrPD8E062R
- nZVEaKwAZP4cTdUuB4LA3LWBv0LX9XV/SbfxXrJLmfqcZQBKHWBOUfjLhNFskmbz1GXD
- XLIpGhGY64VMN1QY795n8+nsCT8GDP6KgQunA76/sfN2hTV/9AuG4iTbdO0beC24JTo2
- erL+MCoSFxQdTiZ4Zq6bZBm/DoiRuJ4b8Kv9GqGA5RvxsmtPxmL7trn7qRoXQXi15ZCn
- mG/w==
-X-Gm-Message-State: AOJu0Yy2Zl0RGeGnOWQxHmP+ci6zcFqcBHDYEXLq70u54yyMoxTHLYfW
- Ns7PfJ7BfZLViThHqV7tnwP+Tw4QVkMWVfTtFwsXlslzDDiIOcB36QLJOu1Bqftu8gyV77o1BLf
- sgswUky92yFSryrMW6xwY9C7YnX7aDX3sefuhdGGoowfxvZ4eQpponqFHL9ubSb3x4boy
-X-Received: by 2002:a05:600c:2116:b0:406:53c0:3c71 with SMTP id
- u22-20020a05600c211600b0040653c03c71mr3692985wml.37.1696477489934; 
- Wed, 04 Oct 2023 20:44:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfAqKThazVyTEs53Y0AjEpnc4R4ROrkHQNPEjszCYklFUZw4Pup+O6ze2sLsgpn4M9j/UtsQ==
-X-Received: by 2002:a05:600c:2116:b0:406:53c0:3c71 with SMTP id
- u22-20020a05600c211600b0040653c03c71mr3692972wml.37.1696477489609; 
- Wed, 04 Oct 2023 20:44:49 -0700 (PDT)
+ bh=lIgJ5oPfxO9wyqqBUeBUKavXa8KETRJWhHSgRUqGuy8=;
+ b=vhRxjqB5NsQ4NHHUgOyyKBnUJ68iy5x5zYzutASaTc5E7aO3RJvGk+gBZrPElxMNkW
+ MlyUjTB+C4v1z1I2+bqIR75Pz5kJrTeZJrhFyoUuxS/K0YUDtbZEJDiBphQwc5hoYTam
+ 1gc6o85ohD8b4/FpI7e76e+GW0dz5gJD9tbSHTi68MK+Od1ZU1KH+nI9LZ6IrHaRX+fY
+ hoMEAOTFzCkTArbY72n+3vvA1G3Sy4A5ZguZKP3CKFwtkGbmvZkw236S0kIsOpsK89Ux
+ Jmk7AZ5Eer1/cbzafowciCznn8FcHFEeT4tdDLmtVA7QpgIoQyEHYjl8FiYahaU8q02R
+ Oqrg==
+X-Gm-Message-State: AOJu0YwQvrKX8Jq01ShB1HocEiBx4Tbqcayfkt5diY/15sRZidUASWoA
+ HxGxtnD/C2sUwNeJkP9hZSHtWCk2mabX0amDaBZocrL/LBnqwyxqey43VH/Wqn11XxwBpqYOSKI
+ PmiP5q6cDD1bxidDNBTnaPfqz4pVxeNCavYZfYms7h5Q2FvoEGMh43XfdlPSYS/fz9G9h
+X-Received: by 2002:adf:f48c:0:b0:317:e025:5a5c with SMTP id
+ l12-20020adff48c000000b00317e0255a5cmr3783251wro.48.1696477493998; 
+ Wed, 04 Oct 2023 20:44:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHPn9+2aBUMkDRoU24rvmhwRS4RciPAN8/vylwumUj2KGfQ1hAxVTMRVtu5sFtQ5rVI0igyWw==
+X-Received: by 2002:adf:f48c:0:b0:317:e025:5a5c with SMTP id
+ l12-20020adff48c000000b00317e0255a5cmr3783239wro.48.1696477493677; 
+ Wed, 04 Oct 2023 20:44:53 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- p15-20020a7bcc8f000000b003fee6e170f9sm528184wma.45.2023.10.04.20.44.46
+ t18-20020a5d49d2000000b0031c6581d55esm626527wrs.91.2023.10.04.20.44.51
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:44:49 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:44:45 -0400
+ Wed, 04 Oct 2023 20:44:53 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:44:50 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Yanhui Ma <yama@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Lei Yang <leiyang@redhat.com>, Si-Wei Liu <si-wei.liu@oracle.com>
-Subject: [PULL v2 34/53] vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
-Message-ID: <0a7a164bc37b4ecbf74466e1e5243d72a768ad06.1696477105.git.mst@redhat.com>
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Fan Ni <fan.ni@samsung.com>
+Subject: [PULL v2 35/53] hw/cxl: Push cxl_decoder_count_enc() and
+ cxl_decode_ig() into .c
+Message-ID: <f5a4e1a697e98c7bd0a663d53a378d8c6918ed72.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -101,42 +102,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Eugenio Pérez <eperezma@redhat.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Not zeroing it causes a SIGSEGV if the live migration is cancelled, at
-net device restart.
+There is no strong justification for keeping these in the header
+so push them down into the associated cxl-component-utils.c file.
 
-This is caused because CVQ tries to reuse the iova_tree that is present
-in the first vhost_vdpa device at the end of vhost_vdpa_net_cvq_start.
-As a consequence, it tries to access an iova_tree that has been already
-free.
-
-Fixes: 00ef422e9fbf ("vdpa net: move iova tree creation from init to start")
-Reported-by: Yanhui Ma <yama@redhat.com>
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Message-Id: <20230913123408.2819185-1-eperezma@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Tested-by: Lei Yang <leiyang@redhat.com>
-Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Message-Id: <20230913132523.29780-2-Jonathan.Cameron@huawei.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- net/vhost-vdpa.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/hw/cxl/cxl_component.h | 18 ++----------------
+ hw/cxl/cxl-component-utils.c   | 18 ++++++++++++++++++
+ 2 files changed, 20 insertions(+), 16 deletions(-)
 
-diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
-index 94635fcbee..fe519d908d 100644
---- a/net/vhost-vdpa.c
-+++ b/net/vhost-vdpa.c
-@@ -405,6 +405,8 @@ static void vhost_vdpa_net_client_stop(NetClientState *nc)
-     dev = s->vhost_vdpa.dev;
-     if (dev->vq_index + dev->nvqs == dev->vq_index_end) {
-         g_clear_pointer(&s->vhost_vdpa.iova_tree, vhost_iova_tree_delete);
-+    } else {
-+        s->vhost_vdpa.iova_tree = NULL;
-     }
- }
+diff --git a/include/hw/cxl/cxl_component.h b/include/hw/cxl/cxl_component.h
+index 42c7e581a7..bdb3881a6b 100644
+--- a/include/hw/cxl/cxl_component.h
++++ b/include/hw/cxl/cxl_component.h
+@@ -225,26 +225,12 @@ void cxl_component_create_dvsec(CXLComponentState *cxl_cstate,
+                                 enum reg_type cxl_dev_type, uint16_t length,
+                                 uint16_t type, uint8_t rev, uint8_t *body);
  
+-static inline int cxl_decoder_count_enc(int count)
+-{
+-    switch (count) {
+-    case 1: return 0;
+-    case 2: return 1;
+-    case 4: return 2;
+-    case 6: return 3;
+-    case 8: return 4;
+-    case 10: return 5;
+-    }
+-    return 0;
+-}
++int cxl_decoder_count_enc(int count);
+ 
+ uint8_t cxl_interleave_ways_enc(int iw, Error **errp);
+ uint8_t cxl_interleave_granularity_enc(uint64_t gran, Error **errp);
+ 
+-static inline hwaddr cxl_decode_ig(int ig)
+-{
+-    return 1ULL << (ig + 8);
+-}
++hwaddr cxl_decode_ig(int ig);
+ 
+ CXLComponentState *cxl_get_hb_cstate(PCIHostState *hb);
+ bool cxl_get_hb_passthrough(PCIHostState *hb);
+diff --git a/hw/cxl/cxl-component-utils.c b/hw/cxl/cxl-component-utils.c
+index 378f1082ce..ea2d4770ec 100644
+--- a/hw/cxl/cxl-component-utils.c
++++ b/hw/cxl/cxl-component-utils.c
+@@ -13,6 +13,24 @@
+ #include "hw/pci/pci.h"
+ #include "hw/cxl/cxl.h"
+ 
++int cxl_decoder_count_enc(int count)
++{
++    switch (count) {
++    case 1: return 0;
++    case 2: return 1;
++    case 4: return 2;
++    case 6: return 3;
++    case 8: return 4;
++    case 10: return 5;
++    }
++    return 0;
++}
++
++hwaddr cxl_decode_ig(int ig)
++{
++    return 1ULL << (ig + 8);
++}
++
+ static uint64_t cxl_cache_mem_read_reg(void *opaque, hwaddr offset,
+                                        unsigned size)
+ {
 -- 
 MST
 
