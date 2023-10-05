@@ -2,81 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 668627B9C8A
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 12:42:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EF8D27B9C97
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 12:47:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoLn5-00074a-IQ; Thu, 05 Oct 2023 06:41:11 -0400
+	id 1qoLsF-0007wV-GB; Thu, 05 Oct 2023 06:46:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1qoLn2-00074F-HK
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 06:41:08 -0400
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoLsC-0007or-U1
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 06:46:28 -0400
+Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <anthony.perard@cloud.com>)
- id 1qoLmx-0000gQ-Sx
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 06:41:08 -0400
-Received: by mail-lf1-x134.google.com with SMTP id
- 2adb3069b0e04-504b84d59cbso1063277e87.3
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 03:41:01 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoLsA-0002O3-Cc
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 06:46:28 -0400
+Received: by mail-wr1-x433.google.com with SMTP id
+ ffacd0b85a97d-3215f19a13aso823758f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 03:46:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=citrix.com; s=google; t=1696502460; x=1697107260; darn=nongnu.org;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date:from:to
- :cc:subject:date:message-id:reply-to;
- bh=elJ0Tzj6T7qM2spwIIeOqzynuJZr3Ab3gERMDu8A5G8=;
- b=uDjMigYxtcq+yqRziI0NlrrHmOJ/Hwbj1FQgX2jmpHeAn/7bN6ajn9O5TZhxDKgI9g
- PetoVHGXbZKcM5dPiLvaXC2EsMXWhV84DSiAe8Xt3A3nzK5VHC8JpBs0AV8AW0udhDr4
- MlNN2z5U6VWNiIRPg05rvR5Kf9en4F9rUWFm8=
+ d=linaro.org; s=google; t=1696502784; x=1697107584; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=jOGI1vHsiW0fZviMZDwPzetoQKljIsCMO+n79K4VLIc=;
+ b=PFnJpfCUCBDZ45LnEsDg4UkyDC60cPVoBm1RV8ughRQdBEiSfeXLVIgqqwcUr26ciF
+ etpYa9RF+QYcvsFkwUqZiR0IG9IYKb78Iw6Q04hBU9RiqARnAFZ45D+sjn2fvDdmzUPQ
+ 41lnCCgZO9Ay4Z3oUeKxOM09Vx/8J0GrBhNXbKnvqrvHDqdSYLLaoAO6Rk3bzWkn0hvo
+ sSJdVPmQBLyxEGo0knoDflU5xqKX6lijcfwO78WgHBfK9OmzTbVZOnOf+yO/qFSnMgDd
+ /Q4XNuKRFowMKU8xjk+XMk2Dp5v4rKFb+fv91uIp+iQfsCOyFlMreA/NG7SCutb5+sXt
+ HxJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696502460; x=1697107260;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1696502784; x=1697107584;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=elJ0Tzj6T7qM2spwIIeOqzynuJZr3Ab3gERMDu8A5G8=;
- b=VxEE/Fy2hcOY13BubnyWqxiulH3vO8h6h/2Mk7hAH/SMqnI8d2Oy4cePsBFz8RAWQ1
- 7ky7GA8WjJzfpXCT8NqlyX8tqBX/k4xUvpIUIArHW1ZkaU0sF3aKzMMZqEKoyRLnjuZ6
- LL1FAoUimRVeBSb4JQ88Yup/oM8MGT8Km/sfFQO5MYr469bcNLxY4X9iRaC2LNa6rOa4
- PiTJ2KI70rW3u+NgQKD3clKkd5iZnrGbPI6t2TtEn/X5FiKYFXThShYtanUaUIHt9au7
- rvVzel4zvrEPxaWrdlOZPe5U9nZLBkdw5A0T/nO+ZnQS/2ygQNcyCqsYTdasQeEmsjkO
- IRKA==
-X-Gm-Message-State: AOJu0YzvoW+pSnF7jZMgALnZLh6bLI8w3ahE6a3iEhw4LdY5YcHXe9w4
- 9p/KUT3iFCQfGLwruk8QDyXDjw==
-X-Google-Smtp-Source: AGHT+IG4uRnJ5/h4OL8IQ3dapEHs799vm2iduRA3BIQdiOhLrJ0RIa1js4UwuDHq4+rRat304vPV/Q==
-X-Received: by 2002:a19:3807:0:b0:504:4165:54ab with SMTP id
- f7-20020a193807000000b00504416554abmr3683664lfa.56.1696502460429; 
- Thu, 05 Oct 2023 03:41:00 -0700 (PDT)
-Received: from perard.uk.xensource.com (default-46-102-197-194.interdsl.co.uk.
- [46.102.197.194]) by smtp.gmail.com with ESMTPSA id
- l34-20020a05600c1d2200b003fef5e76f2csm879911wms.0.2023.10.05.03.40.58
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Oct 2023 03:40:59 -0700 (PDT)
-Date: Thu, 5 Oct 2023 11:40:57 +0100
-From: Anthony PERARD <anthony.perard@citrix.com>
-To: Vikram Garhwal <vikram.garhwal@amd.com>
-Cc: qemu-devel@nongnu.org, sstabellini@kernel.org,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Subject: Re: [QEMU][PATCH v4 1/2] xen_arm: Create virtio-mmio devices during
- initialization
-Message-ID: <9f3aad26-0233-4987-9fb0-cfcf8d424ef4@perard>
-References: <20230830043518.21584-1-vikram.garhwal@amd.com>
- <20230830043518.21584-2-vikram.garhwal@amd.com>
+ bh=jOGI1vHsiW0fZviMZDwPzetoQKljIsCMO+n79K4VLIc=;
+ b=ck1XX3oprPp7jFmjAWxBCPQ5Wpu/PTsO8zvaf+F+zzsLSK0vkkTVZ/B1F2U6nge6WH
+ sHn/LtI8CAWjhwyO0yItZ6Ui7Hvg5TWbvlAiSj5M8uro4lgaVDxqCAxM5YB04CCRAQwa
+ iR3Gci/iBbzLod8WAZUvR8lJHiMaDpsk3NLTZMC+Q2RKNjAdUZghKuH822VXfW1+XpVR
+ DjxUuE6FCrz2DKzJW6p7F6eoDMI2onmytF0kFVvTmaGKuS0oD1dJfSiRdiO8gaLD/KlF
+ L2if1DooYwKnDE6rkW6TVKyYAwX5DaBqW11YphjNHxQWebaRjyIj3Sn1mzy2FDnL0QHO
+ A8kg==
+X-Gm-Message-State: AOJu0YwT1WmVO9hpjvsc3wfl9TEF9kOlQbWrAXChTA5oD6dmWGrNDNwI
+ Te+bx8ac7T12Oa3auVOMYne5PQ==
+X-Google-Smtp-Source: AGHT+IHYDF4MiL9jC+lP9GCbZHy/x+Yuk/CjoBYTRKN+2UxFI18RVx4E/ANzJUhXtL9OPoEwEBioaw==
+X-Received: by 2002:a5d:5903:0:b0:323:2c39:bb3d with SMTP id
+ v3-20020a5d5903000000b003232c39bb3dmr4516276wrd.64.1696502784307; 
+ Thu, 05 Oct 2023 03:46:24 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
+ by smtp.gmail.com with ESMTPSA id
+ o3-20020a5d62c3000000b003179b3fd837sm1485808wrv.33.2023.10.05.03.46.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 05 Oct 2023 03:46:23 -0700 (PDT)
+Message-ID: <f8439658-27fc-f27a-6c99-27eb33d3cada@linaro.org>
+Date: Thu, 5 Oct 2023 12:46:22 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] target/riscv: Fix vfwmaccbf16.vf
+Content-Language: en-US
+To: Max Chou <max.chou@sifive.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Bin Meng <bin.meng@windriver.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>
+References: <20231005095734.567575-1-max.chou@sifive.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231005095734.567575-1-max.chou@sifive.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230830043518.21584-2-vikram.garhwal@amd.com>
-Received-SPF: pass client-ip=2a00:1450:4864:20::134;
- envelope-from=anthony.perard@cloud.com; helo=mail-lf1-x134.google.com
-X-Spam_score_int: -17
-X-Spam_score: -1.8
-X-Spam_bar: -
-X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1,
- HEADER_FROM_DIFFERENT_DOMAINS=0.249, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::433;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x433.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,54 +98,32 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Vikram,
+On 5/10/23 11:57, Max Chou wrote:
+> The operator (fwmacc16) of vfwmaccbf16.vf helper function should be
+> replaced by fwmaccbf16.
+> 
 
-This patch prevent QEMU from been build with Xen 4.15. See comments.
+Fixes: adf772b0f7 ("target/riscv: Add support for Zvfbfwma extension")
 
-Also, why didn't you CC all the maintainers of
-include/hw/xen/xen_native.h?
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-On Tue, Aug 29, 2023 at 09:35:17PM -0700, Vikram Garhwal wrote:
-> diff --git a/include/hw/xen/xen_native.h b/include/hw/xen/xen_native.h
-> index 4dce905fde..a4b1aa9e5d 100644
-> --- a/include/hw/xen/xen_native.h
-> +++ b/include/hw/xen/xen_native.h
-> @@ -523,4 +523,20 @@ static inline int xen_set_ioreq_server_state(domid_t dom,
->                                                   enable);
->  }
->  
-> +#if CONFIG_XEN_CTRL_INTERFACE_VERSION <= 41500
+> Signed-off-by: Max Chou <max.chou@sifive.com>
+> ---
+>   target/riscv/vector_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/riscv/vector_helper.c b/target/riscv/vector_helper.c
+> index 3fb05cc3d6e..c45d94c165c 100644
+> --- a/target/riscv/vector_helper.c
+> +++ b/target/riscv/vector_helper.c
+> @@ -3361,7 +3361,7 @@ static uint32_t fwmaccbf16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
+>   
+>   RVVCALL(OPFVV3, vfwmaccbf16_vv, WOP_UUU_H, H4, H2, H2, fwmaccbf16)
+>   GEN_VEXT_VV_ENV(vfwmaccbf16_vv, 4)
+> -RVVCALL(OPFVF3, vfwmaccbf16_vf, WOP_UUU_H, H4, H2, fwmacc16)
+> +RVVCALL(OPFVF3, vfwmaccbf16_vf, WOP_UUU_H, H4, H2, fwmaccbf16)
+>   GEN_VEXT_VF(vfwmaccbf16_vf, 4)
+>   
+>   static uint32_t fwnmacc16(uint16_t a, uint16_t b, uint32_t d, float_status *s)
 
-xendevicemodel_set_irq_level() was introduced in Xen 4.15, so this
-should say '<' and not '<=', otherwise, we have:
-    include/hw/xen/xen_native.h:527:19: error: static declaration of ‘xendevicemodel_set_irq_level’ follows non-static declaration
-
-> +static inline int xendevicemodel_set_irq_level(xendevicemodel_handle *dmod,
-> +                                               domid_t domid, uint32_t irq,
-> +                                               unsigned int level)
-> +{
-> +    return 0;
-
-Shouldn't this return something like -ENOSYS, instead of returning a
-success?
-
-> diff --git a/hw/arm/xen_arm.c b/hw/arm/xen_arm.c
-> index 1d3e6d481a..7393b37355 100644
-> --- a/hw/arm/xen_arm.c
-> +++ b/hw/arm/xen_arm.c
-> +
-> +static void xen_set_irq(void *opaque, int irq, int level)
-> +{
-> +    xendevicemodel_set_irq_level(xen_dmod, xen_domid, irq, level);
-
-So, you just ignore the return value here. Shouldn't there be some kind
-of error check?
-
-And is it OK to create a virtio-mmio device without an error, even when
-we could find out that it never going to work (e.g. on Xen 4.14)?
-
-Cheers,
-
--- 
-Anthony PERARD
 
