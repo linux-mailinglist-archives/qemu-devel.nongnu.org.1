@@ -2,51 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881BC7B9D6D
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:40:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C007B9D80
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 15:47:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoOZl-0007Ke-Dj; Thu, 05 Oct 2023 09:39:37 -0400
+	id 1qoOgK-0001ep-FA; Thu, 05 Oct 2023 09:46:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoOZh-0007KM-Qf
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:39:33 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoOgH-0001eC-3J
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:46:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoOZd-00049e-M6
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:39:33 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 7491275715B;
- Thu,  5 Oct 2023 15:38:42 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 33D27756BF9; Thu,  5 Oct 2023 15:38:42 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 32381748FF4;
- Thu,  5 Oct 2023 15:38:42 +0200 (CEST)
-Date: Thu, 5 Oct 2023 15:38:42 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Paolo Bonzini <pbonzini@redhat.com>
-cc: qemu-devel@nongnu.org, berrange@redhat.com
-Subject: Re: [PATCH 5/7] audio: do not use first -audiodev as default audio
- device
-In-Reply-To: <d8327a5f-9a06-2c35-a0c8-372707ea0c4a@eik.bme.hu>
-Message-ID: <18a7de6d-b542-9bf6-2128-d005e2e08a64@eik.bme.hu>
-References: <20231005125815.66082-1-pbonzini@redhat.com>
- <20231005125815.66082-6-pbonzini@redhat.com>
- <d8327a5f-9a06-2c35-a0c8-372707ea0c4a@eik.bme.hu>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoOgA-00071L-TB
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 09:46:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696513573;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=lcPE8sD+Ltnegn3oYNrKCaF5w7h+dF2fnQ+7SJzxwgI=;
+ b=T0PMDzG1V6a5eaKpW9WssR3sFo+c2NeJDMWZeHigawEhFU0TlYrrxE3VR0DbIYgjrrjg6W
+ 3GW1if40L0BeCsA/zXh4rRU4vEkP+XxMlbNfWKX8qeKaUUDK7ibK653ENW0/ErpHwYziQ6
+ EqWQHqgD/JnLJ7C2SS/HI4xFuO6nd+Y=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-665-NxndKoPHPYCPipKMk92L7w-1; Thu, 05 Oct 2023 09:46:05 -0400
+X-MC-Unique: NxndKoPHPYCPipKMk92L7w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 672D5101AA70;
+ Thu,  5 Oct 2023 13:46:01 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A14CC15BB8;
+ Thu,  5 Oct 2023 13:46:01 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0845821E6904; Thu,  5 Oct 2023 15:46:00 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org
+Subject: Re: MAINTAINERS still leaves more files uncovered than I'd like
+References: <87lecp6w7x.fsf@pond.sub.org>
+ <1b36bc2a-3bba-d876-5ea7-f3e37d9ec464@linaro.org>
+Date: Thu, 05 Oct 2023 15:46:00 +0200
+In-Reply-To: <1b36bc2a-3bba-d876-5ea7-f3e37d9ec464@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 2 Oct 2023 08:20:47
+ +0200")
+Message-ID: <871qe9yyg7.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -62,143 +82,186 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 5 Oct 2023, BALATON Zoltan wrote:
-> On Thu, 5 Oct 2023, Paolo Bonzini wrote:
->> It is now possible to specify the options for the default audio device
->> using -audio, so there is no need anymore to use a fake -audiodev option.
->> 
->> Remove the fall back to QTAILQ_FIRST(&audio_states), instead remember the
->> AudioState that was created from default_audiodevs and use that one.
->> 
->> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->> ---
->> audio/audio.c                   | 25 +++++++------------------
->> docs/about/deprecated.rst       |  6 ------
->> docs/about/removed-features.rst |  8 ++++++++
->> 3 files changed, 15 insertions(+), 24 deletions(-)
->> 
->> diff --git a/audio/audio.c b/audio/audio.c
->> index 186cc4d336e..de37ad7c074 100644
->> --- a/audio/audio.c
->> +++ b/audio/audio.c
->> @@ -104,6 +104,7 @@ static audio_driver *audio_driver_lookup(const char 
->> *name)
->> 
->> static QTAILQ_HEAD(AudioStateHead, AudioState) audio_states =
->>     QTAILQ_HEAD_INITIALIZER(audio_states);
->> +static AudioState *default_audio_state;
->> 
->> const struct mixeng_volume nominal_volume = {
->>     .mute = 0,
->> @@ -1660,6 +1661,7 @@ static void free_audio_state(AudioState *s)
->> 
->> void audio_cleanup(void)
->> {
->> +    default_audio_state = NULL;
->>     while (!QTAILQ_EMPTY(&audio_states)) {
->>         AudioState *s = QTAILQ_FIRST(&audio_states);
->>         QTAILQ_REMOVE(&audio_states, s, list);
->> @@ -1760,6 +1762,7 @@ static AudioState *audio_init(Audiodev *dev, Error 
->> **errp)
->>             goto out;
->>         }
->>     } else {
->> +        assert(!default_audio_state);
->>         for (;;) {
->>             AudiodevListEntry *e = QSIMPLEQ_FIRST(&default_audiodevs);
->>             if (!e) {
->> @@ -1801,24 +1804,9 @@ out:
->> bool AUD_register_card (const char *name, QEMUSoundCard *card, Error 
->> **errp)
->> {
->>     if (!card->state) {
->> -        if (!QTAILQ_EMPTY(&audio_states)) {
->> -            /*
->> -             * FIXME: once it is possible to create an arbitrary
->> -             * default device via -audio DRIVER,OPT=VALUE (no "model"),
->> -             * replace this special case with the default AudioState*,
->> -             * storing it in a separate global.  For now, keep the
->> -             * warning to encourage moving off magic use of the first
->> -             * -audiodev.
->> -             */
->> -            if (QSIMPLEQ_EMPTY(&default_audiodevs)) {
->> -                dolog("Device %s: audiodev default parameter is 
->> deprecated, please "
->> -                      "specify audiodev=%s\n", name,
->> -                      QTAILQ_FIRST(&audio_states)->dev->id);
->> -            }
->> -            card->state = QTAILQ_FIRST(&audio_states);
->> -        } else {
->> -            card->state = audio_init(NULL, errp);
->> -            if (!card->state) {
->> +        if (!default_audio_state) {
->> +            default_audio_state = audio_init(NULL, errp);
->> +            if (!default_audio_state) {
->>                 if (!QSIMPLEQ_EMPTY(&audiodevs)) {
->>                     error_append_hint(errp, "Perhaps you wanted to set 
->> audiodev=%s?\n",
->>                                       QSIMPLEQ_FIRST(&audiodevs)->dev->id);
->> @@ -1826,6 +1814,7 @@ bool AUD_register_card (const char *name, 
->> QEMUSoundCard *card, Error **errp)
->>                 return false;
->>             }
->>         }
->> +        card->state = default_audio_state;
->>     }
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+
+> On 29/9/23 13:43, Markus Armbruster wrote:
+>> Back in 2014 (time flies), I posted
 >>
->>     card->name = g_strdup (name);
->> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
->> index 2f51cf770ae..d59bcf36230 100644
->> --- a/docs/about/deprecated.rst
->> +++ b/docs/about/deprecated.rst
->> @@ -37,12 +37,6 @@ coverage.
->> System emulator command line arguments
->> --------------------------------------
->> 
->> -Creating sound card devices without ``audiodev=`` property (since 4.2)
->> -''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
->> -
->> -When not using the deprecated legacy audio config, each sound card
->> -should specify an ``audiodev=`` property.
->> -
->> Short-form boolean options (since 6.0)
->> ''''''''''''''''''''''''''''''''''''''
->> 
->> diff --git a/docs/about/removed-features.rst 
->> b/docs/about/removed-features.rst
->> index 58c94392c65..27639370f96 100644
->> --- a/docs/about/removed-features.rst
->> +++ b/docs/about/removed-features.rst
->> @@ -442,10 +442,18 @@ line using a ``secret`` object instance.
->> The ``-audiodev`` and ``-audio`` command line options are now the only
->> way to specify audio backend settings.
->> 
->> +Using ``-audiodev`` to define the default audio backend (removed in 8.2)
->> +''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
->> +
->> QEMU does not create default audio backends anymore if any of the
->> ``-audiodev``, ``-audio`` or ``-nodefaults`` options are used on the
->> command line.
+>>      Subject: MAINTAINERS leaves too many files uncovered
+>>      Message-ID: <87mw8rumhb.fsf@blackfin.pond.sub.org>
+>>      https://lore.kernel.org/qemu-devel/87mw8rumhb.fsf@blackfin.pond.sub=
+.org/
+>>
+>> I updated my findings in 2015, 2016 (at commit e00da552a0d), and 2018
+>> (at v3.1.0-rc2).  This is another update, at commit 36e9aab3c56.
+>>
+>> Unsurprisingly, the number of files in the tree
+>>
+>>      $ git-ls-files | wc -l
+>>
+>> grows over time:
+>>
+>>      year  2014  2015  2016  2018  2023
+>>      #     3746  4387  4921  6461  9788
+>>
+>> Looks exponential to me, doubling every seven years or so.
+>>
+>> The number of .c files has grown more slowly:
+>>
+>>      year  2014  2015  2016  2018  2023
+>>      #     1836  1945  2132  2633  3588
+>>
+>> The number of .c files not covered by MAINTAINERS
+>>
+>>      $ for i in `git-ls-files`; do [ "`scripts/get_maintainer.pl -f --no=
+-git-fallback $i | grep -v '^qemu-devel@nongnu\.org'`" ] || echo $i; done >=
+unmaintained-files
+>>      $ grep -c '\.c$' unmaintained-files
+>>
+>> went down a lot after my first post, but has since flatlined:
+>>
+>>      year  2014  2015  2016  2018  2023
+>>      #     1066   461   402   259   246
+>>
+>> It looks like we've pretty much stopped adding more unmaintained .c
+>> files, i.e. cherry-picking the kernel's 13f1937ef33 (checkpatch: emit a
+>> warning on file add/move/delete) as commit 4be6131e329 worked.
+>> On the other hand, we're not making progress on the remaining old ones
+>> anymore.
 >
-> Maybe this needs further updating because -audio can now define the default 
-> and is what should be used instead of -audiodev but this is not clear from 
-> this documentation.
+> How many new files without maintainers?
 
-And while at it, maybe also mention machine audiodev property here as a 
-way to set audiodev of embedded devices.
+Since we added the warning:
 
-Regards,
-BALATON Zoltan
+    $ git-diff --diff-filter=3DA --name-only 4be6131e329 36e9aab3c56 | grep=
+ '\.c$' | join unmaintained-files - | wc -l
+    105
 
->> +If an audio backend is created with ``-audiodev``, each sound card
->> +that wants to use it should specify an ``audiodev=``
->> +property.  Previously, the first audiodev command line option would be
->> +used as a fallback.
->> +
->> Creating vnc without ``audiodev=`` property (removed in 8.2)
->> ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
->> 
->> 
->
->
+Less than 20 per year.  Could be worse.
+
+Full list appended.
+
+> Shouldn't we turn this warning into an error, so new files must have
+> maintainers?
+
+We'd have to make the check a lot smarter first.  Not sure that's worth
+it.
+
+checkpatch.pl warns when it detects file additions, deletions, or
+renames without MAINTAINERS update.
+
+It doesn't warn when the MAINTAINERS update doesn't cover everything
+changed.
+
+It may warn when no MAINTAINERS change is needed, say because existing
+patterns cover the new files.
+
+
+
+accel/dummy-cpus.c
+backends/confidential-guest-support.c
+disas/capstone.c
+disas/disas-mon.c
+disas/disas.c
+disas/riscv-xthead.c
+disas/riscv-xventana.c
+event-loop-base.c
+hw/core/cpu-sysemu.c
+hw/core/gpio.c
+hw/core/hotplug-stubs.c
+hw/core/machine-hmp-cmds.c
+hw/core/resettable.c
+hw/core/vm-change-state-handler.c
+hw/display/acpi-vga-stub.c
+hw/display/acpi-vga.c
+hw/display/artist.c
+hw/display/ati.c
+hw/display/ati_2d.c
+hw/display/ati_dbg.c
+hw/display/i2c-ddc.c
+hw/gpio/gpio_pwr.c
+hw/hyperv/hyperv.c
+hw/hyperv/hyperv_testdev.c
+hw/hyperv/syndbg.c
+hw/input/lasips2.c
+hw/intc/nios2_vic.c
+hw/intc/riscv_aclint.c
+hw/intc/riscv_aplic.c
+hw/intc/riscv_imsic.c
+hw/mem/cxl_type3_stubs.c
+hw/misc/axp2xx.c
+hw/misc/i2c-echo.c
+hw/misc/pvpanic-isa.c
+hw/misc/pvpanic-pci.c
+hw/misc/sbsa_ec.c
+hw/pci-host/gpex-acpi.c
+hw/ppc/fw_cfg.c
+hw/ppc/pef.c
+hw/sensor/dps310.c
+hw/sensor/emc141x.c
+hw/sensor/lsm303dlhc_mag.c
+hw/sensor/max31785.c
+hw/virtio/vdpa-dev-pci.c
+hw/virtio/vdpa-dev.c
+hw/watchdog/sbsa_gwdt.c
+monitor/fds.c
+pc-bios/optionrom/pvh_main.c
+softmmu/async-teardown.c
+softmmu/datadir.c
+softmmu/globals.c
+softmmu/rtc.c
+stats/stats-hmp-cmds.c
+stats/stats-qmp-cmds.c
+target/i386/cpu-dump.c
+target/i386/cpu-sysemu.c
+target/i386/host-cpu.c
+tests/bench/atomic64-bench.c
+tests/bench/qtree-bench.c
+tests/tcg/hppa/stby.c
+tests/tcg/m68k/denormal.c
+tests/tcg/m68k/trap.c
+tests/tcg/minilib/printf.c
+tests/tcg/ppc64/bcdsub.c
+tests/tcg/ppc64/byte_reverse.c
+tests/tcg/ppc64/mffsce.c
+tests/tcg/ppc64/mtfsf.c
+tests/tcg/ppc64/non_signalling_xscv.c
+tests/tcg/ppc64/signal_save_restore_xer.c
+tests/tcg/ppc64/test-aes.c
+tests/tcg/ppc64/vector.c
+tests/tcg/ppc64/xxspltw.c
+tests/tcg/riscv64/noexec.c
+tests/tcg/riscv64/test-aes.c
+tests/tcg/riscv64/test-div.c
+tests/tcg/riscv64/test-fcvtmod.c
+tests/unit/test-bdrv-drain.c
+tests/unit/test-bdrv-graph-mod.c
+tests/unit/test-bitmap.c
+tests/unit/test-block-iothread.c
+tests/unit/test-blockjob.c
+tests/unit/test-char.c
+tests/unit/test-cutils.c
+tests/unit/test-div128.c
+tests/unit/test-error-report.c
+tests/unit/test-image-locking.c
+tests/unit/test-interval-tree.c
+tests/unit/test-nested-aio-poll.c
+tests/unit/test-qgraph.c
+tests/unit/test-qtree.c
+tests/unit/test-write-threshold.c
+tests/unit/test-xs-node.c
+util/atomic64.c
+util/block-helpers.c
+util/crc-ccitt.c
+util/guest-random.c
+util/int128.c
+util/interval-tree.c
+util/memalign.c
+util/nvdimm-utils.c
+util/qemu-co-timeout.c
+util/qsp.c
+util/qtree.c
+util/selfmap.c
+util/thread-context.c
+
 
