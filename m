@@ -2,82 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 176927B9FAB
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E02F7B9FAC
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:27:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoPJB-000845-4T; Thu, 05 Oct 2023 10:26:33 -0400
+	id 1qoPJQ-0008B9-NB; Thu, 05 Oct 2023 10:26:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoPJ5-00081Y-VB
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:26:29 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoPJ4-0003DS-6J
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:26:27 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-405505b07dfso13399865e9.0
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 07:26:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696515984; x=1697120784; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=zoDxMZnxOXNMlxpSgRU+uUZryUDhePHfETK0uNtLkbw=;
- b=Fl72q2Z7X705vHxF67tn1+MMVVScm2jdv/O3pK47GDhyyLesgBYXGR9Rx7FzgID+JK
- NMkMnDgThMFf2yIrrZR6e7V4ud9SOKm7dZQtoqrCS5iIhsFHmCL8QwYjbKL8zKTipZfU
- FxM7/AXE7YyRgUWtA3luZ9eWrmpSRUd8t47WzbTVR1Ku43V/Mn/S5y+pfoHnlnHoQD3k
- DPrAuxKhcgMi8bCAnPnoIuj1/ue8NwvKpVoTwWTbjjDJvX9lykPqquav+juWN2G78qTK
- V4IwKSbXKwww8BRrw9fcDEvttnLbHQd5CU/i/c1U7MBL2XLFfTviGu5Dm97KdqBessJG
- BkVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696515984; x=1697120784;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zoDxMZnxOXNMlxpSgRU+uUZryUDhePHfETK0uNtLkbw=;
- b=XRD320svWope+B6iAXy3q6ByxzOOBdT8Vu5b6p5WrCuNkO7TAipgVthhPbE9J8Qra3
- Cr99TqkQJAx3C1uYQN9B1oC6YiaP2yWxxLzxiPsM4DinBZYlaB6aw1l80cnlzoxo/orb
- omlrGdpRQ7tExrSNf5j3FyXrqC1auDK5zNBOPAPHrVWWzXZoIU7bGm6biGtA4VIP72t3
- sEJXSZ2Nhrf54hiduzo7DdXrvqB9xdXeVppCZ7eNv9SEWfCVGcSJNGdGP00z7lGFD4j5
- tTfxWJwX9Oyc0+moEJSVEVWI23+fPqFbJ9cZtP3ErQ7uR+LKK5TN1l7t9Hq4WpVAqtP3
- to3Q==
-X-Gm-Message-State: AOJu0Yztja2m6daUUz+chTt7IIlHTweL5d9LO/CRYydHNTqBqyTU84YB
- X/VmxAFlvc3Ug8juwUuSJmn3Dw==
-X-Google-Smtp-Source: AGHT+IFMYcDOR5bFZ2OaW8zw586TelsMQ8v9AXUrZZNctQ2qgPwaH7lZgPbH7Sy2q2g73UlruGRNMw==
-X-Received: by 2002:a05:600c:224d:b0:406:80b4:efd5 with SMTP id
- a13-20020a05600c224d00b0040680b4efd5mr2636331wmm.14.1696515984465; 
- Thu, 05 Oct 2023 07:26:24 -0700 (PDT)
-Received: from [192.168.69.115]
- (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
- by smtp.gmail.com with ESMTPSA id
- z18-20020a05600c221200b0040607da271asm3870747wml.31.2023.10.05.07.26.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Oct 2023 07:26:24 -0700 (PDT)
-Message-ID: <0aaedb1e-2461-6ca5-0f6c-8f50f6eb0686@linaro.org>
-Date: Thu, 5 Oct 2023 16:26:22 +0200
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qoPJK-00088I-7i; Thu, 05 Oct 2023 10:26:42 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qoPJF-0003Eg-Vq; Thu, 05 Oct 2023 10:26:40 -0400
+Received: from mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net
+ [IPv6:2a02:6b8:c0c:b9a4:0:640:eb37:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id DA5F65EC90;
+ Thu,  5 Oct 2023 17:26:33 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b584::1:2f] (unknown
+ [2a02:6b8:b081:b584::1:2f])
+ by mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id XQZMsd4OlGk0-kvGVyRDo; Thu, 05 Oct 2023 17:26:33 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696515993;
+ bh=F0xGKcT9FolsiJLX31ZRIvm27qd1zNrhAHDHtLs5rOw=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=VEEYUp3SKjNLSCacQX2pfooGWu8wNttDQO7c5DHv8QMlfAHklIR5710Inlb5iIIBP
+ vUdUv2vZyepfpHBSrbZa3cvCBa1UFNdnOxxgPTJehPqB5XyLRFE3jKq2GpPHO3w3I8
+ nhcoULKsPugYtfNnJ4SSqD8GtF0/igN6An8GOdmE=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-44.iva.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <c16ed175-db4f-4900-82be-294ad81f643c@yandex-team.ru>
+Date: Thu, 5 Oct 2023 17:26:32 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3] hw/isa/vt82c686: Respect SCI interrupt assignment
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Libguestfs] [PATCH v7 12/12] nbd/server: Add FLAG_PAYLOAD
+ support to CMD_BLOCK_STATUS
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>, Bernhard Beschow <shentey@gmail.com>
-Cc: qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-References: <20231005115159.81202-1-shentey@gmail.com>
- <7f0a480e-3b30-36d8-daaf-cb817dcad3ca@eik.bme.hu>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <7f0a480e-3b30-36d8-daaf-cb817dcad3ca@eik.bme.hu>
+To: Eric Blake <eblake@redhat.com>
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ qemu-block@nongnu.org, qemu-devel@nongnu.org, libguestfs@redhat.com
+References: <20230925192229.3186470-14-eblake@redhat.com>
+ <20230925192229.3186470-26-eblake@redhat.com>
+ <6b380866-b707-89d5-7478-476582cdd255@yandex-team.ru>
+ <bhi75jjd4pv2va73e2h6ypkfuo4wdzpl4s7dqesalsqkrda5ec@js77c4frs25o>
+ <dlaxybxq6zrujpqfztz26rbr4kyru6upy5wdiv3c7j3akaijhg@twyctydbcg6g>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <dlaxybxq6zrujpqfztz26rbr4kyru6upy5wdiv3c7j3akaijhg@twyctydbcg6g>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x330.google.com
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.219,
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -95,83 +78,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 5/10/23 14:45, BALATON Zoltan wrote:
-> On Thu, 5 Oct 2023, Bernhard Beschow wrote:
->> According to the datasheet, SCI interrupts of the power management 
->> function
->> aren't routed through the PCI pins but rather directly to the 
->> integrated PIC.
->> The routing is configurable through the ACPI interrupt select register 
->> at offset
->> 0x42 in the PCI configuration space of the power management function.
->>
->> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->> Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>
->> ---
->>
->> v3:
->> * Rename SCI irq attribute to sci_irq (Zoltan)
->> * Fix confusion about location of ACPI interrupt select register (Zoltan)
->> * Model SCI as named GPIO (Bernhard)
->> * Perform upcast via macro rather than sub structure selection (Bernhard)
->>
->> v2:
->> * Introduce named constants for the ACPI interrupt select register at 
->> offset
->>  0x42 (Phil)
->> ---
->> hw/isa/vt82c686.c | 48 +++++++++++++++++++++++++++++++++++------------
->> 1 file changed, 36 insertions(+), 12 deletions(-)
->>
->> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
->> index 57bdfb4e78..aeb9434a46 100644
->> --- a/hw/isa/vt82c686.c
->> +++ b/hw/isa/vt82c686.c
->> @@ -40,12 +40,17 @@
->> #define TYPE_VIA_PM "via-pm"
->> OBJECT_DECLARE_SIMPLE_TYPE(ViaPMState, VIA_PM)
->>
->> +#define VIA_PM_SCI_SELECT_OFS 0x42
->> +#define VIA_PM_SCI_SELECT_MASK 0xf
->> +
->> struct ViaPMState {
->>     PCIDevice dev;
->>     MemoryRegion io;
->>     ACPIREGS ar;
->>     APMState apm;
->>     PMSMBus smb;
->> +
->> +    qemu_irq sci_irq;
->> };
->>
->> static void pm_io_space_update(ViaPMState *s)
->> @@ -148,18 +153,7 @@ static void pm_update_sci(ViaPMState *s)
->>                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
->>                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
->>                    ACPI_BITMASK_TIMER_ENABLE)) != 0);
->> -    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
->> -        /*
->> -         * FIXME:
->> -         * Fix device model that realizes this PM device and remove
->> -         * this work around.
->> -         * The device model should wire SCI and setup
->> -         * PCI_INTERRUPT_PIN properly.
->> -         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
->> -         * work around.
->> -         */
->> -        pci_set_irq(&s->dev, sci_level);
->> -    }
->> +    qemu_set_irq(s->sci_irq, sci_level);
+On 05.10.23 16:49, Eric Blake wrote:
+> On Wed, Oct 04, 2023 at 04:55:02PM -0500, Eric Blake wrote:
+>>>> +static int
+>>>> +nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
+>>>> +                                 Error **errp)
+>>>
+>>> [..]
 > 
-> I still think this it more complex that it should be and what's in 
-> via_isa_set_pm_irq() below should be here instead and drop all the named 
-> gpio wizardry that's just unneeded complication here.
+>>>> +    for (i = 0; i < count; i++) {
+>>>> +        id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
+>>>> +        if (id == NBD_META_ID_BASE_ALLOCATION) {
+>>>> +            if (request->contexts->base_allocation) {
+>>>> +                goto skip;
+>>>> +            }
+>>>
+>>> should we also check that base_allocation is negotiated?
+>>
+>> Oh, good point.  Without that check, the client can pass in random id
+>> numbers that it never negotiated.  I've queued 1-11 and will probably
+>> send a pull request for those this week, while respinning this patch
+>> to fix the remaining issues you pointed out.
+> 
+> I'm squashing in the following. If you can review it today, I'll
+> include it in my pull request this afternoon; if not, we still have
+> time before soft freeze to get it in the next batch.
+> 
+> diff --git i/nbd/server.c w/nbd/server.c
+> index 30816b42386..62654579cbc 100644
+> --- i/nbd/server.c
+> +++ w/nbd/server.c
+> @@ -2478,19 +2478,22 @@ nbd_co_block_status_payload_read(NBDClient *client, NBDRequest *request,
+>       for (i = 0; i < count; i++) {
+>           id = ldl_be_p(buf + sizeof(NBDBlockStatusPayload) + sizeof(id) * i);
+>           if (id == NBD_META_ID_BASE_ALLOCATION) {
+> -            if (request->contexts->base_allocation) {
+> +            if (!client->contexts.base_allocation ||
+> +                request->contexts->base_allocation) {
+>                   goto skip;
+>               }
+>               request->contexts->base_allocation = true;
+>           } else if (id == NBD_META_ID_ALLOCATION_DEPTH) {
+> -            if (request->contexts->allocation_depth) {
+> +            if (!client->contexts.allocation_depth ||
+> +                request->contexts->allocation_depth) {
+>                   goto skip;
+>               }
+>               request->contexts->allocation_depth = true;
+>           } else {
+> -            int idx = id - NBD_META_ID_DIRTY_BITMAP;
+> +            unsigned idx = id - NBD_META_ID_DIRTY_BITMAP;
+> 
+> -            if (idx > nr_bitmaps || request->contexts->bitmaps[idx]) {
+> +            if (idx > nr_bitmaps || !client->contexts.bitmaps[idx] ||
 
-Zoltan, I'm not sure I get what you mean. Do you mind respining a v4
-of Bernhard's patch?
+Oops, I didn't notice: s/>/>=/, as nr_bitmaps is length of array.
 
-Regards,
+> +                request->contexts->bitmaps[idx]) {
+>                   goto skip;
+>               }
+>               request->contexts->bitmaps[idx] = true;
+> diff --git i/nbd/trace-events w/nbd/trace-events
+> index 3cf2d00e458..00ae3216a11 100644
+> --- i/nbd/trace-events
+> +++ w/nbd/trace-events
+> @@ -70,7 +70,7 @@ nbd_co_send_chunk_read(uint64_t cookie, uint64_t offset, void *data, uint64_t si
+>   nbd_co_send_chunk_read_hole(uint64_t cookie, uint64_t offset, uint64_t size) "Send structured read hole reply: cookie = %" PRIu64 ", offset = %" PRIu64 ", len = %" PRIu64
+>   nbd_co_send_extents(uint64_t cookie, unsigned int extents, uint32_t id, uint64_t length, int last) "Send block status reply: cookie = %" PRIu64 ", extents = %u, context = %d (extents cover %" PRIu64 " bytes, last chunk = %d)"
+>   nbd_co_send_chunk_error(uint64_t cookie, int err, const char *errname, const char *msg) "Send structured error reply: cookie = %" PRIu64 ", error = %d (%s), msg = '%s'"
+> -nbd_co_receive_block_status_payload_compliance(uint64_t from, int len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%x"
+> +nbd_co_receive_block_status_payload_compliance(uint64_t from, uint64_t len) "client sent unusable block status payload: from=0x%" PRIx64 ", len=0x%" PRIx64
+>   nbd_co_receive_request_decode_type(uint64_t cookie, uint16_t type, const char *name) "Decoding type: cookie = %" PRIu64 ", type = %" PRIu16 " (%s)"
+>   nbd_co_receive_request_payload_received(uint64_t cookie, uint64_t len) "Payload received: cookie = %" PRIu64 ", len = %" PRIu64
+>   nbd_co_receive_ext_payload_compliance(uint64_t from, uint64_t len) "client sent non-compliant write without payload flag: from=0x%" PRIx64 ", len=0x%" PRIx64
+> 
+> 
+> 
 
-Phil.
+-- 
+Best regards,
+Vladimir
+
 
