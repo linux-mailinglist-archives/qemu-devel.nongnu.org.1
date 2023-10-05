@@ -2,72 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9447B7B9D1B
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 14:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A727B9D22
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 14:59:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoNvb-0007DN-Q6; Thu, 05 Oct 2023 08:58:07 -0400
+	id 1qoNvs-0007QR-2s; Thu, 05 Oct 2023 08:58:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoNvZ-0007DE-Q7
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:06 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qoNvX-0007Zv-QT
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:05 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id BB8E3218FC;
- Thu,  5 Oct 2023 12:58:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696510681; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5EIz57xAdaOquTcPFcaKrMp2hKnY7zytYFq7qJ1w5ek=;
- b=JTuPtDfn0B+CZ2AVNJwFhGg96Yc0pdn8HroWcoewLzXLVOnTRIMVhzaPWtLDMjMt1e23zQ
- ftAheFCBXfVO2wBAQrPxKYsAUD+epsJutk8sx5FjTzBeL0qe1H1uw1iv/MHuhOyX3/UxhF
- GCizeXYDxDw5qN5x3CsE1CBiM3vE/uM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696510681;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=5EIz57xAdaOquTcPFcaKrMp2hKnY7zytYFq7qJ1w5ek=;
- b=+pgVmujP4iL+FdAr69ZCEkkCxxl9WT+29dVMERqzJ5zbYag5k3Swd6J+Hys4xDNifh0bEg
- jPJrgFIWHoSfp0Bw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4E68813438;
- Thu,  5 Oct 2023 12:58:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 4Dj+BtmyHmX/eQAAMHmgww
- (envelope-from <farosas@suse.de>); Thu, 05 Oct 2023 12:58:01 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>, qemu-devel@nongnu.org
-Cc: peterx@redhat.com, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v3 03/10] migration: Refactor error handling in source
- return path
-In-Reply-To: <20231004220240.167175-4-peterx@redhat.com>
-References: <20231004220240.167175-1-peterx@redhat.com>
- <20231004220240.167175-4-peterx@redhat.com>
-Date: Thu, 05 Oct 2023 09:57:58 -0300
-Message-ID: <87il7lfcq1.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qoNvp-0007O7-Q7
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:21 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qoNvo-0007i8-9D
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 08:58:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696510699;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=1raQsL2QqbhKzV1guKRCoSwnyVNHJAKVg/RTwTuKOUw=;
+ b=i1fxmKfJTHOnkFHH5suEj8aasKdiYzgiVeKA/ISWIyfHKslnWUbe7ByfuOtaSoVOddm7ud
+ 6Lnqj8zKa6VdHBnJWrNTMu2/m4hKOwAALgGLQgmWZ9srIzowLEU7rlPX/e6bBF81I3L8Gu
+ 4W6UKAFUd5TuQwAYFiHIHXL2ca+ut+U=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-225-j6TBIxRBMyGYfmMJ_CXv_Q-1; Thu, 05 Oct 2023 08:58:18 -0400
+X-MC-Unique: j6TBIxRBMyGYfmMJ_CXv_Q-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9a1cf3e6c04so80481866b.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 05:58:18 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696510697; x=1697115497;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1raQsL2QqbhKzV1guKRCoSwnyVNHJAKVg/RTwTuKOUw=;
+ b=P0dLniKBoNkACcMM/EL6CkfbQ1qXxN3o5OyuAriJeaxq6yo2iZR15hObAeJegqlShI
+ +sxJOkjLgEtIz82Klglq7skAIKD0s4c99+5PxYX+GgjAqYAuX1SCivp7jJs7elGYkiyF
+ q00sBpake+ze8zjfR0F8k5GqdCQ/khjtWFTyyTbLvAzyO9jgbU+8KIiFZpSVWgwzWpph
+ TaiKbW2ACH0rFdfB20JuH0RvRRi/Db1dRsdaFFUz11otRBdamay2XecMWsQSlv9uY0sz
+ jAr0mqki7lsdYMJ/hPYjoeGyZESfTEOGq08dPtGnNhnwDj99dXhaTWT2jikwL0sWKea/
+ ZXHA==
+X-Gm-Message-State: AOJu0YwYJqG38CfbJV++yMWQODt+OwT4iqk6HmypWj8ZDmIWdfG84yOF
+ 70dFNVUW4ggKuOCou0hPWK54UwhAZBbdmXnRYC3Vf3Z4y5NynBI21ld4h7LGWeN2zPTDT4r5ox3
+ x2cJyJNuF723UMwErHlYDzPIMCQ3iSRkHbK8ZBIADjOVmhe+Q/AyzGl6Efv0zEJpNek5vcepIDD
+ 8=
+X-Received: by 2002:a17:906:7383:b0:9ae:6196:a4d1 with SMTP id
+ f3-20020a170906738300b009ae6196a4d1mr5001095ejl.68.1696510696771; 
+ Thu, 05 Oct 2023 05:58:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHSuB/wUXXFB2eBYI+C9y1Cqe+zPL6TQSyai3xz7DRwm97I+s3cszPF7JGqLWJqpk1+G+f1+A==
+X-Received: by 2002:a17:906:7383:b0:9ae:6196:a4d1 with SMTP id
+ f3-20020a170906738300b009ae6196a4d1mr5001073ejl.68.1696510696342; 
+ Thu, 05 Oct 2023 05:58:16 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:9af8:e5f5:7516:fa89])
+ by smtp.gmail.com with ESMTPSA id
+ fi10-20020a170906da0a00b009ad8796a6aesm1169188ejb.56.2023.10.05.05.58.15
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Oct 2023 05:58:15 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: balaton@eik.bme.hu,
+	berrange@redhat.com
+Subject: [PATCH 0/7] audio: redo default audio backend creation
+Date: Thu,  5 Oct 2023 14:58:08 +0200
+Message-ID: <20231005125815.66082-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,158 +98,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Peter Xu <peterx@redhat.com> writes:
+Currently, AUD_register_card picks the audio backend from either:
 
-> @@ -1882,48 +1870,46 @@ static void *source_return_path_thread(void *opaque)
->      uint32_t tmp32, sibling_error;
->      ram_addr_t start = 0; /* =0 to silence warning */
->      size_t  len = 0, expected_len;
-> +    Error *err = NULL;
->      int res;
->  
->      trace_source_return_path_thread_entry();
->      rcu_register_thread();
->  
-> -    while (!ms->rp_state.error && !qemu_file_get_error(rp) &&
-> +    while (!migrate_has_error(ms) && !qemu_file_get_error(rp) &&
->             migration_is_setup_or_active(ms->state)) {
->          trace_source_return_path_thread_loop_top();
-> +
->          header_type = qemu_get_be16(rp);
->          header_len = qemu_get_be16(rp);
->  
->          if (qemu_file_get_error(rp)) {
-> -            mark_source_rp_bad(ms);
->              goto out;
->          }
+- the first audiodev that was created
 
-This error will be lost because outside the loop we only check for err.
+- the audio_prio_list[] array, which can be customized at
+  configure time
 
->  
->          if (header_type >= MIG_RP_MSG_MAX ||
->              header_type == MIG_RP_MSG_INVALID) {
-> -            error_report("RP: Received invalid message 0x%04x length 0x%04x",
-> -                         header_type, header_len);
-> -            mark_source_rp_bad(ms);
-> +            error_setg(&err, "Received invalid message 0x%04x length 0x%04x",
-> +                       header_type, header_len);
->              goto out;
->          }
->  
->          if ((rp_cmd_args[header_type].len != -1 &&
->              header_len != rp_cmd_args[header_type].len) ||
->              header_len > sizeof(buf)) {
-> -            error_report("RP: Received '%s' message (0x%04x) with"
-> -                         "incorrect length %d expecting %zu",
-> -                         rp_cmd_args[header_type].name, header_type, header_len,
-> -                         (size_t)rp_cmd_args[header_type].len);
-> -            mark_source_rp_bad(ms);
-> +            error_setg(&err, "Received '%s' message (0x%04x) with"
-> +                       "incorrect length %d expecting %zu",
-> +                       rp_cmd_args[header_type].name, header_type, header_len,
-> +                       (size_t)rp_cmd_args[header_type].len);
->              goto out;
->          }
->  
->          /* We know we've got a valid header by this point */
->          res = qemu_get_buffer(rp, buf, header_len);
->          if (res != header_len) {
-> -            error_report("RP: Failed reading data for message 0x%04x"
-> -                         " read %d expected %d",
-> -                         header_type, res, header_len);
-> -            mark_source_rp_bad(ms);
-> +            error_setg(&err, "Failed reading data for message 0x%04x"
-> +                       " read %d expected %d",
-> +                       header_type, res, header_len);
->              goto out;
->          }
->  
-> @@ -1933,8 +1919,7 @@ static void *source_return_path_thread(void *opaque)
->              sibling_error = ldl_be_p(buf);
->              trace_source_return_path_thread_shut(sibling_error);
->              if (sibling_error) {
-> -                error_report("RP: Sibling indicated error %d", sibling_error);
-> -                mark_source_rp_bad(ms);
-> +                error_setg(&err, "Sibling indicated error %d", sibling_error);
->              }
->              /*
->               * We'll let the main thread deal with closing the RP
-> @@ -1952,7 +1937,10 @@ static void *source_return_path_thread(void *opaque)
->          case MIG_RP_MSG_REQ_PAGES:
->              start = ldq_be_p(buf);
->              len = ldl_be_p(buf + 8);
-> -            migrate_handle_rp_req_pages(ms, NULL, start, len);
-> +            migrate_handle_rp_req_pages(ms, NULL, start, len, &err);
-> +            if (err) {
-> +                goto out;
-> +            }
->              break;
->  
->          case MIG_RP_MSG_REQ_PAGES_ID:
-> @@ -1967,32 +1955,32 @@ static void *source_return_path_thread(void *opaque)
->                  expected_len += tmp32;
->              }
->              if (header_len != expected_len) {
-> -                error_report("RP: Req_Page_id with length %d expecting %zd",
-> -                             header_len, expected_len);
-> -                mark_source_rp_bad(ms);
-> +                error_setg(&err, "Req_Page_id with length %d expecting %zd",
-> +                           header_len, expected_len);
-> +                goto out;
-> +            }
-> +            migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len,
-> +                                        &err);
-> +            if (err) {
->                  goto out;
->              }
-> -            migrate_handle_rp_req_pages(ms, (char *)&buf[13], start, len);
->              break;
->  
->          case MIG_RP_MSG_RECV_BITMAP:
->              if (header_len < 1) {
-> -                error_report("%s: missing block name", __func__);
-> -                mark_source_rp_bad(ms);
-> +                error_setg(&err, "MIG_RP_MSG_RECV_BITMAP missing block name");
->                  goto out;
->              }
->              /* Format: len (1B) + idstr (<255B). This ends the idstr. */
->              buf[buf[0] + 1] = '\0';
-> -            if (migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1))) {
-> -                mark_source_rp_bad(ms);
-> +            if (migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1), &err)) {
->                  goto out;
->              }
->              break;
->  
->          case MIG_RP_MSG_RESUME_ACK:
->              tmp32 = ldl_be_p(buf);
-> -            if (migrate_handle_rp_resume_ack(ms, tmp32)) {
-> -                mark_source_rp_bad(ms);
-> +            if (migrate_handle_rp_resume_ack(ms, tmp32, &err)) {
->                  goto out;
->              }
->              break;
-> @@ -2008,9 +1996,14 @@ static void *source_return_path_thread(void *opaque)
->      }
->  
->  out:
-> -    if (qemu_file_get_error(rp)) {
-> +    if (err) {
+This series instead extends -audio to define a default audio
+backend if no "model" is used.  This preserves simple command line
+use where a single "-audio" option applies to all audio devices
+and captures, and also uses a single QAPI-based configuration
+syntax for both -audio and -audiodev.
 
-Need to keep both checks here.
+The current hack to use the first -audiodev as a default audio
+device is removed.  For migration purposes, the first audiodev
+is suggested in case of an error:
 
-> +        /*
-> +         * Collect any error in return-path thread and report it to the
-> +         * migration state object.
-> +         */
-> +        migrate_set_error(ms, err);
-> +        error_free(err);
->          trace_source_return_path_thread_bad_end();
-> -        mark_source_rp_bad(ms);
->      }
->  
->      trace_source_return_path_thread_end();
-> @@ -2036,13 +2029,10 @@ static int open_return_path_on_source(MigrationState *ms)
->      return 0;
->  }
+  ./qemu-system-x86_64 -device sb16 -audiodev pa,id=default
+  qemu-system-x86_64: -device sb16: no default audio driver available
+  Perhaps you wanted to set audiodev=default?
+
+VNC is changed to reintroduce use of the default audio backend;
+still, compared to before the cleanup effort this will not be
+enabled if -nodefaults is use, which is an improvement as it
+removes magic.
+
+Paolo
+
+
+Paolo Bonzini (7):
+  audio: error hints need a trailing \n
+  audio: disable default backends if -audio/-audiodev is used
+  audio: extract audio_define_default
+  audio: extend -audio to allow creating a default backend
+  audio: do not use first -audiodev as default audio device
+  audio: reintroduce default audio backend for VNC
+  audio, qtest: get rid of QEMU_AUDIO_DRV
+
+ audio/audio.c                   | 85 +++++++++++++--------------------
+ audio/audio.h                   |  3 ++
+ docs/about/deprecated.rst       |  6 ---
+ docs/about/removed-features.rst | 14 ++++--
+ qemu-options.hx                 | 29 +++++++----
+ system/vl.c                     | 34 ++++++++-----
+ tests/qtest/libqtest.c          |  4 +-
+ ui/vnc.c                        |  2 +
+ 8 files changed, 93 insertions(+), 84 deletions(-)
+
+-- 
+2.41.0
+
 
