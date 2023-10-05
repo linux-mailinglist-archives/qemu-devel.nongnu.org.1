@@ -2,73 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7667B9A75
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:49:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 217F17B9A43
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:43:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFGI-0001Dd-Ji; Wed, 04 Oct 2023 23:42:54 -0400
+	id 1qoFGG-0001D8-J1; Wed, 04 Oct 2023 23:42:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGF-0001D7-7U
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:51 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGE-0001Ch-2f
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGD-0007yr-R3
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:50 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFGC-0007yd-MJ
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:42:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477369;
+ s=mimecast20190719; t=1696477367;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=ZPz4GnJfkENcst/YvbRzP3MUYaB7CKMx8l9nJBdXF6s=;
- b=UKy/ksWekDirJnj5y2rG8YFQsfDO0qn+i6iVQ1DxYn6kcFLrE8Lt7OYa/4SHbfp0pH/zFc
- gei2OyPDYZDALU3CPstRyk3OEFmiY5cqYp8pqytdUgpGfGWQ25dgvAoyEOqhbj206nhLrC
- YPNpG5vY7qBYLukbh0uup3fKylVOaG0=
+ bh=g3XainUJVMKa+Hs4fQFDx+vYokCoMuU5n+RMYZYnWdU=;
+ b=CnO5siIQZFD+l3pBY2kYJBrw5BLyKycwGg8iqsuUSClU0/Dy06FWIPxfunb6NS6Ry/FTWY
+ Q4qNBWePpHoNoewKUOio84F/dsWOfTaCzz98YKaiWm/oGZD7dOuXl2Z3+p2o4d7f+6jmXU
+ +axfYsiUG/V683RXYubxCrWLenhAGdc=
 Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
  [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-196-FSkK6sFWPy-HU0h3q1V0Aw-1; Wed, 04 Oct 2023 23:42:37 -0400
-X-MC-Unique: FSkK6sFWPy-HU0h3q1V0Aw-1
+ us-mta-18-fnbvjn0bNjCYSit5ZEMirg-1; Wed, 04 Oct 2023 23:42:41 -0400
+X-MC-Unique: fnbvjn0bNjCYSit5ZEMirg-1
 Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-326f05ed8f9so478398f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:42:37 -0700 (PDT)
+ ffacd0b85a97d-30e4943ca7fso462436f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:42:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477356; x=1697082156;
+ d=1e100.net; s=20230601; t=1696477359; x=1697082159;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=ZPz4GnJfkENcst/YvbRzP3MUYaB7CKMx8l9nJBdXF6s=;
- b=Vyg7uPOMm7eIewO0qpull5mlxTktenTBvYPKfZiDXcQIv3DmXZPpCzP8TKCvRE/rfZ
- cwp8pK/ZgHGFCdBKYtlSBa6gjNwhZOgZSaDKSYYSffOJRSiCJI88MFIW8+INwi+s2vzK
- kjllrc7LJ8oB9xqIARAfz1fDDUCYTfHx0V7kEU9alDqm0qA7/f/SvUytotbQPs3/it0f
- YJ8Iq3z07Sb6kBE8xUAo3BZRMDSKwm6/fbk+EJ3CANBpfQgNYjOvJRHXueH/L/1Hwz4K
- 6nNhOel+Dg9Dt1ze1A5BvfR8Tpy+58CziPkQnxTgPUuZ4amjbCHzH0jYVJjdOM1o8+/0
- 9NlQ==
-X-Gm-Message-State: AOJu0YyCRzrfeBIubbboOat8cqkPwXzOP3GcGQIC1Q5UYl9uultDFenv
- TSAUo9AOH4amL9j+5Io+8sWIziiNRTVAgZp3x2ENcVkPtSnm+mUUC4KdEWXQIavzKnueJMQ67Oa
- MlvM3alF4RJuB4fgYAtq7Ko+vm5SAM5M4+6SvDjBMTmdm/N/7y27uIQhX9gRsklRJ4DA4
-X-Received: by 2002:a5d:6991:0:b0:320:976:f940 with SMTP id
- g17-20020a5d6991000000b003200976f940mr3665981wru.13.1696477356160; 
- Wed, 04 Oct 2023 20:42:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHCI4zHIPwYLi9l+0QDcbzylXUhu64LG4WWlqXfS6EU7OnZ8TVAokrqG2PfE5iktRV0ChxjvQ==
-X-Received: by 2002:a5d:6991:0:b0:320:976:f940 with SMTP id
- g17-20020a5d6991000000b003200976f940mr3665970wru.13.1696477355843; 
- Wed, 04 Oct 2023 20:42:35 -0700 (PDT)
+ bh=g3XainUJVMKa+Hs4fQFDx+vYokCoMuU5n+RMYZYnWdU=;
+ b=cQr1rDJbS2idipLLdBLxlEDMOVycleCiN85IrcQJxIsV1ZNtlBtUtlA+PfMmeKIFvg
+ 9+g+WVWVY/CCFWxDtN1dwJ9zRZyXvcNoiQ4MBI31/mzlMpdXvMqWd0BFGV55J4kScSg7
+ 40/obFxetS1B3CmNceBeDCTrWQocq2XF9B5+ce4zv45/aXAbROnqqn/AyeInwR7YJNiG
+ rgLuj21ZpjgMmCf25yrQ4qo6eGbgmZGsZpqRCYzKXoMQk5I61dzwA16W9W8rvEVVkTzj
+ eYz40/xkAhIaLlY7Bv4TBE8j1cxo9AyW+G/URdzHk4S2WQ5sdxnXoK6v5Mq/nv3cHS+o
+ 5TWw==
+X-Gm-Message-State: AOJu0YxvBLVoTU/T219lZ1bSd6e39b/bkJ76T8a2Ym9dm1O1EPrahLp6
+ QzYLGJ01D0eN7/5GEwUedrECxe1w2GBSq9tX7B2O1SvkJOpiYA0ZJS6IOmMhCzEvA5rJ8feXQq8
+ UVithWhfooJOqXenM5hNrYRgE2MpM1sSUf5JPaAlct57Z9tE+Xh1ynIKjSYnd+v6S/B3h
+X-Received: by 2002:a5d:46cf:0:b0:31f:8e7c:6ebe with SMTP id
+ g15-20020a5d46cf000000b0031f8e7c6ebemr3975115wrs.5.1696477359748; 
+ Wed, 04 Oct 2023 20:42:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE1KErItLpYI5ZGQJyQjJN7K6UQDBrD8SO6xnsj4FRVoDXkVEp4TU1JdldPrTmelJ1JszRtaQ==
+X-Received: by 2002:a5d:46cf:0:b0:31f:8e7c:6ebe with SMTP id
+ g15-20020a5d46cf000000b0031f8e7c6ebemr3975103wrs.5.1696477359540; 
+ Wed, 04 Oct 2023 20:42:39 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- c7-20020a5d4f07000000b00317e77106dbsm628436wru.48.2023.10.04.20.42.33
+ v2-20020a5d4b02000000b00326028b4dd5sm621110wrq.113.2023.10.04.20.42.37
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:42:35 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:42:32 -0400
+ Wed, 04 Oct 2023 20:42:38 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:42:35 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL v2 03/53] hw/virtio: Propagate page_mask to
- vhost_vdpa_section_end()
-Message-ID: <8b1a8884c6aacd9a35863d18a757be17ec7b1369.1696477105.git.mst@redhat.com>
+Subject: [PULL v2 04/53] hw/virtio/vhost-vdpa: Inline TARGET_PAGE_ALIGN() macro
+Message-ID: <1dca36fb3d4f07354c9f6bc38b6e5c72fe1e9855.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -103,64 +102,40 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Propagate TARGET_PAGE_MASK (see the previous commit for
-rationale).
+Use TARGET_PAGE_SIZE to calculate TARGET_PAGE_ALIGN
+(see the rationale in previous commits).
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230710094931.84402-3-philmd@linaro.org>
+Message-Id: <20230710094931.84402-4-philmd@linaro.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/virtio/vhost-vdpa.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ hw/virtio/vhost-vdpa.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/hw/virtio/vhost-vdpa.c b/hw/virtio/vhost-vdpa.c
-index 118c588205..3ab0dc0b5b 100644
+index 3ab0dc0b5b..0e0ed6d7ac 100644
 --- a/hw/virtio/vhost-vdpa.c
 +++ b/hw/virtio/vhost-vdpa.c
-@@ -31,11 +31,12 @@
-  * Return one past the end of the end of section. Be careful with uint64_t
-  * conversions!
-  */
--static Int128 vhost_vdpa_section_end(const MemoryRegionSection *section)
-+static Int128 vhost_vdpa_section_end(const MemoryRegionSection *section,
-+                                     int page_mask)
- {
-     Int128 llend = int128_make64(section->offset_within_address_space);
-     llend = int128_add(llend, section->size);
--    llend = int128_and(llend, int128_exts64(TARGET_PAGE_MASK));
-+    llend = int128_and(llend, int128_exts64(page_mask));
- 
-     return llend;
- }
-@@ -69,7 +70,7 @@ static bool vhost_vdpa_listener_skipped_section(MemoryRegionSection *section,
-      */
- 
-     if (!memory_region_is_iommu(section->mr)) {
--        llend = vhost_vdpa_section_end(section);
-+        llend = vhost_vdpa_section_end(section, page_mask);
-         if (int128_gt(llend, int128_make64(iova_max))) {
-             error_report("RAM section out of device range (max=0x%" PRIx64
-                          ", end addr=0x%" PRIx64 ")",
-@@ -331,7 +332,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
-     }
- 
-     iova = TARGET_PAGE_ALIGN(section->offset_within_address_space);
--    llend = vhost_vdpa_section_end(section);
-+    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
-     if (int128_ge(int128_make64(iova), llend)) {
+@@ -331,7 +331,7 @@ static void vhost_vdpa_listener_region_add(MemoryListener *listener,
          return;
      }
-@@ -415,7 +416,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+ 
+-    iova = TARGET_PAGE_ALIGN(section->offset_within_address_space);
++    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
+     llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
+     if (int128_ge(int128_make64(iova), llend)) {
+         return;
+@@ -415,7 +415,7 @@ static void vhost_vdpa_listener_region_del(MemoryListener *listener,
+         return;
      }
  
-     iova = TARGET_PAGE_ALIGN(section->offset_within_address_space);
--    llend = vhost_vdpa_section_end(section);
-+    llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
+-    iova = TARGET_PAGE_ALIGN(section->offset_within_address_space);
++    iova = ROUND_UP(section->offset_within_address_space, TARGET_PAGE_SIZE);
+     llend = vhost_vdpa_section_end(section, TARGET_PAGE_MASK);
  
      trace_vhost_vdpa_listener_region_del(v, iova,
-         int128_get64(int128_sub(llend, int128_one())));
 -- 
 MST
 
