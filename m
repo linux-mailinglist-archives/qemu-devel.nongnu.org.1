@@ -2,54 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB65F7B9CB8
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 13:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2930E7B9CB9
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 13:23:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoMPt-0001Uj-Lr; Thu, 05 Oct 2023 07:21:17 -0400
+	id 1qoMRG-00024I-Kx; Thu, 05 Oct 2023 07:22:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoMPr-0001UW-53
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:21:15 -0400
-Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoMRC-000241-W5
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:22:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qoMPo-0006pp-2W
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:21:14 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id E288975715B;
- Thu,  5 Oct 2023 13:20:23 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 53772756BF9; Thu,  5 Oct 2023 13:20:23 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 5079F748FF4;
- Thu,  5 Oct 2023 13:20:23 +0200 (CEST)
-Date: Thu, 5 Oct 2023 13:20:23 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Bernhard Beschow <shentey@gmail.com>
-cc: qemu-devel@nongnu.org, Huacai Chen <chenhuacai@kernel.org>, 
- =?ISO-8859-15?Q?Philippe_Mathieu-Daud=E9?= <philmd@linaro.org>, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-Subject: Re: [PATCH] hw/isa/vt82c686: Respect SCI interrupt assignment
-In-Reply-To: <741F3E86-BFD2-440F-93C5-010A81CD90FC@gmail.com>
-Message-ID: <82994ed4-90e0-f3ee-d3da-b0471a42e146@eik.bme.hu>
-References: <20231003214437.29302-1-shentey@gmail.com>
- <f5b9d133-864a-fd13-9bc5-523e1ad77efe@eik.bme.hu>
- <B7E8646E-A72B-419D-A427-D132F66289F7@gmail.com>
- <93e48abe-b6d4-af1a-f40f-728c8d215bbb@eik.bme.hu>
- <741F3E86-BFD2-440F-93C5-010A81CD90FC@gmail.com>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoMRA-00071S-R7
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:22:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696504956;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
+ cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=+/N5B4S6L0a9eEYKUi1Gw/lFxaPashkLcSCEvR/v+24=;
+ b=Xbwz+ZU9cExBxfyW8bCz7PdXVs2Vq7cOPzu6Wg8PW1MSlDg/KyhByr7N/ZbrLWZ/o5eru8
+ iHuY8AwBF+w6yaxPqAxKK5gnR8pYL+oHzMes0V/huugrcc/UY5lSNA6SGJR/7nT8VJOU/n
+ erUBRl/HTa6yaX89VrLyZ1FB6NElHME=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-166-0n_NLAriNReJpbdG4URbwQ-1; Thu, 05 Oct 2023 07:22:31 -0400
+X-MC-Unique: 0n_NLAriNReJpbdG4URbwQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 74E902815E2E;
+ Thu,  5 Oct 2023 11:22:30 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 1844A40C6EA8;
+ Thu,  5 Oct 2023 11:22:30 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 0587F21E6904; Thu,  5 Oct 2023 13:22:29 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org,  qemu-arm@nongnu.org,  qemu-ppc@nongnu.org,
+ qemu-block@nongnu.org,  qemu-s390x@nongnu.org,  Michael Roth
+ <michael.roth@amd.com>,  Konstantin Kostiuk <kkostiuk@redhat.com>
+Subject: Re: [RFC PATCH v2 21/22] qapi: Inline and remove QERR_UNSUPPORTED
+ definition
+References: <20231005045041.52649-1-philmd@linaro.org>
+ <20231005045041.52649-22-philmd@linaro.org>
+>To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Date: Thu, 05 Oct 2023 13:22:28 +0200
+In-Reply-To: <20231005045041.52649-22-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Thu, 5 Oct 2023 06:50:38
+ +0200")
+Message-ID: <87mswx5n63.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=2001:738:2001:2001::2001;
- envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -10
+X-Spam_score: -1.1
 X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ MISSING_HEADERS=1.021, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -65,199 +86,527 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, 5 Oct 2023, Bernhard Beschow wrote:
-> Am 4. Oktober 2023 14:52:14 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
->> On Wed, 4 Oct 2023, Bernhard Beschow wrote:
->>> Am 4. Oktober 2023 12:08:02 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
->>>> On Tue, 3 Oct 2023, Bernhard Beschow wrote:
->>>>> According to the datasheet, SCI interrupts of the power management function
->>>>> aren't triggered through the PCI pins but rather directly to the integrated PIC.
->>>>> The routing is configurable through the ACPI interrupt select register at offset
->>>>> 42 in the PCI configuration space of the ISA function.
->>>>
->>>> This should be config reg 42 of the PM function 4 not ISA function 0 but the code seems to do it right just this description is wrong.
->>>
->>> Notice via_isa_set_pm_irq() using ViaISAState for routing the SCI to the PIC. Hence, the description seems correct to me.
->>
->> It uses s->pm.dev.config + 0x42 so that's the PM device not s->dev.config which is a different register so I think the description should also talk about offset 0x42 of PCI configuration of the PM function, shouldn't it?
->
-> Oh right, I'll fix the commit message.
->
->>
->>>>>
->>>>> Signed-off-by: Bernhard Beschow <shentey@gmail.com>
->>>>
->>>> You could cc me on vt82c686 too as now I have two machines using these (one is not yet upstream).
->>>
->>> Usually I let git-publish handle the cc which derives it from the MAINTAINERS file. You could add yourself there to get cc'ed automatically.
->>
->> I thought about sending a patch splitting off vt82c686 from fuloong2e so I can add myself as reviewer there. I may do that later.
->>
->>> I'm curious what the other machine not yet upstreamed is?
->>
->> Tou can read about it here:
->>
->> https://www.amigans.net/modules/newbb/viewtopic.php?topic_id=9282
->>
->> I'll plan to send it when it's better tested but it needs a firmware image that I could not yet solve.
->>
->>>>> ---
->>>>> hw/isa/vt82c686.c | 43 +++++++++++++++++++++++++++++++------------
->>>>> 1 file changed, 31 insertions(+), 12 deletions(-)
->>>>>
->>>>> diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
->>>>> index 57bdfb4e78..2988ad1eda 100644
->>>>> --- a/hw/isa/vt82c686.c
->>>>> +++ b/hw/isa/vt82c686.c
->>>>> @@ -46,6 +46,8 @@ struct ViaPMState {
->>>>>     ACPIREGS ar;
->>>>>     APMState apm;
->>>>>     PMSMBus smb;
->>>>> +
->>>>
->>>> No empty line needed here.
->>>
->>> Here I took inspiration from struct PIIX4PMState which separates the qemu_irqs, too. The long term plan is to also add an smi_irq attribute in order to bring both device models to feature parity. So I'd rather leave it as is.
->>
->> Maybe better name it sci_irq then to avoid confusion.
->
-> Will do. And I'll turn it into a named GPIO.
->
->> If you add smi later as well then maybe it's time to think now how to best model this. Does sci needs to be exposed as named qemu_gpio on function 0 or should that be smi and sci routed to smi optionally whcch seems to be what the real chip does? I don't know how these work just looked at the data sheet briefly so I have more questions than answers but looks like exposing sci is not needed and this patch could just add an irq to PM func only that could set ISA IRQ and then later when smi_irq is added that might need a qemu_gpio in func 0 modelling the SMI pin of the chip.
->
-> Right, I think the SCI doesn't need to be exposed since it is handled internally in the chip. This is what this patch implements.
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-So then no need to add a named gpio for it and this patch does noe need to 
-touch the isa part and can handle it within PM part. See reply to next 
-message why I think so.
+> Address the comment added in commit 4629ed1e98
+> ("qerror: Finally unused, clean up"), from 2015:
+>
+>   /*
+>    * These macros will go away, please don't use
+>    * in new code, and do not add new ones!
+>    */
+>
+> Mechanical transformation using:
+>
+>   $ sed -i -e 's/QERR_UNSUPPORTED/"this feature or command is not current=
+ly supported"/' \
+>     $(git grep -wl QERR_UNSUPPORTED)
+>
+> then manually removing the definition in include/qapi/qmp/qerror.h.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+> ---
+> RFC: Not sure what is the best way to change the comment
+>      in qga/qapi-schema.json...
+> ---
+>  qga/qapi-schema.json      |  5 +++--
+>  include/qapi/qmp/qerror.h |  3 ---
+>  qga/commands-bsd.c        |  8 +++----
+>  qga/commands-posix.c      | 46 +++++++++++++++++++--------------------
+>  qga/commands-win32.c      | 22 +++++++++----------
+>  5 files changed, 41 insertions(+), 43 deletions(-)
+>
+> diff --git a/qga/qapi-schema.json b/qga/qapi-schema.json
+> index b720dd4379..51683f4dc2 100644
+> --- a/qga/qapi-schema.json
+> +++ b/qga/qapi-schema.json
+> @@ -6,8 +6,9 @@
+   ##
+   # =3D General note concerning the use of guest agent interfaces
+>  #
+>  # "unsupported" is a higher-level error than the errors that
+>  # individual commands might document.  The caller should always be
+> -# prepared to receive QERR_UNSUPPORTED, even if the given command
+> -# doesn't specify it, or doesn't document any failure mode at all.
+> +# prepared to receive the "this feature or command is not currently supp=
+orted"
+> +# message, even if the given command doesn't specify it, or doesn't docu=
+ment
+> +# any failure mode at all.
+>  ##
+>=20=20
+>  ##
 
-Regards,
-BALATON Zoltan
+The comment is problematic before the patch.  It's a doc comment,
+i.e. it goes into the "QEMU Guest Agent Protocol Reference" manual,
+where QERR_UNSUPPORTED is meaningless.  Back when the comment was added
+(commit 9481ecd737b "qga schema: document generic QERR_UNSUPPORTED"), it
+was still internal documentation, where QERR_UNSUPPORTED made sense.  It
+became external documentation four years later (commit 56e8bdd46a8
+"build-sys: add qapi doc generation targets")
 
-> The SMI will need to be exposed since it puts an x86 CPU in system management mode via a dedicated pin.
->
-> Best regards,
-> Bernhard
->
->>
->>>> It you want to, you could add an empty line after the first member and rename that to parent_obj as per new convention while you're changing this object state.
->>>
->>> I didn't want to add this style fix in this single commit series. I think this would deserve its own commit where all device models in this file are fixed.
->>
->> That works for me too, no need to do it here, just mentioned that's where I think a new line may be acceptable but not really needed elsewhere.
->>
->>>>
->>>>> +    qemu_irq irq;
->>>>> };
->>>>>
->>>>> static void pm_io_space_update(ViaPMState *s)
->>>>> @@ -148,18 +150,7 @@ static void pm_update_sci(ViaPMState *s)
->>>>>                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
->>>>>                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
->>>>>                    ACPI_BITMASK_TIMER_ENABLE)) != 0);
->>>>> -    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
->>>>> -        /*
->>>>> -         * FIXME:
->>>>> -         * Fix device model that realizes this PM device and remove
->>>>> -         * this work around.
->>>>> -         * The device model should wire SCI and setup
->>>>> -         * PCI_INTERRUPT_PIN properly.
->>>>> -         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
->>>>> -         * work around.
->>>>> -         */
->>>>> -        pci_set_irq(&s->dev, sci_level);
->>>>> -    }
->>>>> +    qemu_set_irq(s->irq, sci_level);
->>>>>     /* schedule a timer interruption if needed */
->>>>>     acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
->>>>>                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
->>>>> @@ -213,6 +204,13 @@ static void via_pm_realize(PCIDevice *dev, Error **errp)
->>>>>     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
->>>>> }
->>>>>
->>>>> +static void via_pm_init(Object *obj)
->>>>> +{
->>>>> +    ViaPMState *s = VIA_PM(obj);
->>>>> +
->>>>> +    qdev_init_gpio_out(DEVICE(obj), &s->irq, 1);
->>>>> +}
->>>>> +
->>>>> typedef struct via_pm_init_info {
->>>>>     uint16_t device_id;
->>>>> } ViaPMInitInfo;
->>>>> @@ -238,6 +236,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
->>>>> static const TypeInfo via_pm_info = {
->>>>>     .name          = TYPE_VIA_PM,
->>>>>     .parent        = TYPE_PCI_DEVICE,
->>>>> +    .instance_init = via_pm_init,
->>>>>     .instance_size = sizeof(ViaPMState),
->>>>>     .abstract      = true,
->>>>>     .interfaces = (InterfaceInfo[]) {
->>>>> @@ -568,9 +567,25 @@ static const VMStateDescription vmstate_via = {
->>>>>     }
->>>>> };
->>>>>
->>>>> +static void via_isa_set_pm_irq(void *opaque, int n, int level)
->>>>> +{
->>>>> +    ViaISAState *s = opaque;
->>>>> +    uint8_t irq = pci_get_byte(s->pm.dev.config + 0x42) & 0xf;
->>>>> +
->>>>> +    if (irq == 2) {
->>>>> +        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is reserved");
->>>>> +        return;
->>>>> +    }
->>>>> +
->>>>> +    if (irq != 0) {
->>>>> +        qemu_set_irq(s->isa_irqs_in[irq], level);
->>>>> +    }
->>>>> +}
->>>>> +
->>>>> static void via_isa_init(Object *obj)
->>>>> {
->>>>>     ViaISAState *s = VIA_ISA(obj);
->>>>> +    DeviceState *dev = DEVICE(s);
->>>>
->>>> No need to add local variable for single use unless you expect to have more of these later but for single use you caould just use DEVICE(obj or s) in the call below.
->>>
->>> I have one more user on my pc-via branch for wiring the ISA interrupts.
->>
->> OK as said if you expect more usages then a local variable can be useful just seems unnecessary for a single use but if you'll follow up with something that will use it it can be added now.
->>
->> Regards,
->> BALATON Zoltan
->>
->>> Best regards,
->>> Bernhard
->>>
->>>>
->>>> Other than these small nits:
->>>>
->>>> Reviewed-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>>
->>>>>
->>>>>     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
->>>>>     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
->>>>> @@ -578,6 +593,8 @@ static void via_isa_init(Object *obj)
->>>>>     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
->>>>>     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
->>>>>     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
->>>>> +
->>>>> +    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
->>>>> }
->>>>>
->>>>> static const TypeInfo via_isa_info = {
->>>>> @@ -704,6 +721,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
->>>>>     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
->>>>>         return;
->>>>>     }
->>>>> +    qdev_connect_gpio_out(DEVICE(&s->pm), 0,
->>>>> +                          qdev_get_gpio_in_named(DEVICE(d), "sci", 0));
->>>>>
->>>>>     /* Function 5: AC97 Audio */
->>>>>     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
->>>>>
->>>
->>>
->
->
+I'm not sure how useful the comment is.
+
+I guess we could instead simply point out that clients should always be
+prepared for errors, even when the command doesn't document any, simply
+because commands need not exist in all versions or builds of qemu-ga.
+
+> diff --git a/include/qapi/qmp/qerror.h b/include/qapi/qmp/qerror.h
+> index 840831cc6a..7606f4525d 100644
+> --- a/include/qapi/qmp/qerror.h
+> +++ b/include/qapi/qmp/qerror.h
+> @@ -17,7 +17,4 @@
+>   * add new ones!
+>   */
+>=20=20
+> -#define QERR_UNSUPPORTED \
+> -    "this feature or command is not currently supported"
+> -
+>  #endif /* QERROR_H */
+> diff --git a/qga/commands-bsd.c b/qga/commands-bsd.c
+> index 17bddda1cf..11536f148f 100644
+> --- a/qga/commands-bsd.c
+> +++ b/qga/commands-bsd.c
+> @@ -152,25 +152,25 @@ int qmp_guest_fsfreeze_do_thaw(Error **errp)
+>=20=20
+>  GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+
+These are all commands that are not supported by this build of qemu-ga.
+We could use the opportunity to improve the error message: scratch
+"feature or ".  Or maybe change the message to "this command is not
+supported in this version of qemu-ga".
+
+More of the same below, marked [*].
+
+Taking a step back...  Do we really need to make this a failure of its
+own?  Why not fail exactly as if the command didn't exist?  Why would a
+client ever care for the difference between "command doesn't exist in
+this build of qemu-ga (but it does in other builds of this version of
+qemu-ga)" and "command doesn't exist in this build of qemu-ga (and it
+won't in any build of this version of qemu-ga)"?
+
+If clients don't care, we could instead unregister these commands,
+i.e. undo qmp_register_command().  The command will then fail exactly
+like any other unknown command.  We still need to provide the functions
+to make the linker happy (unless we play with weak symbols), but they
+can simply abort().
+
+Michael and/or Konstantin, do you have comments as maintainers?  A
+preference even?
+
+Hmm, there's yet another mechanism to disable commands:
+qmp_disable_command() & friends.  Looks like its purpose is letting
+guest system administrators disable commands, and also to disable a
+bunch of commands in "frozen state", whatever that is.  Alright, I
+didn't see that, lalala.
+
+>  #endif /* CONFIG_FSFREEZE */
+> diff --git a/qga/commands-posix.c b/qga/commands-posix.c
+> index 6169bbf7a0..f510add366 100644
+> --- a/qga/commands-posix.c
+> +++ b/qga/commands-posix.c
+> @@ -165,7 +165,7 @@ void qmp_guest_set_time(bool has_time, int64_t time_n=
+s, Error **errp)
+>      }
+>=20=20
+>      if (!hwclock_available) {
+> -        error_setg(errp, QERR_UNSUPPORTED);
+> +        error_setg(errp, "this feature or command is not currently suppo=
+rted");
+>          return;
+>      }
+>=20=20
+
+!hwclock_available means /sbin/hwclock grants execute permission for the
+process's real UID and GID.  I'm not sure why we bother to check that.
+Why not let execl() fail, and report that error?  Oh, we don't:
+
+           /* Use '/sbin/hwclock -w' to set RTC from the system time,
+            * or '/sbin/hwclock -s' to set the system time from RTC. */
+           execl(hwclock_path, "hwclock", has_time ? "-w" : "-s", NULL);
+           _exit(EXIT_FAILURE);
+
+This is wrong.  We should error_setg_errno(errp, errno, ...); return
+instead.  Not your patch's problem.
+
+Until we do that: [*]
+
+> @@ -1540,7 +1540,7 @@ GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+>=20=20
+>  GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+
+Command not supported by this build of qemu-qa: [*].
+
+>=20=20
+> @@ -2235,7 +2235,7 @@ void qmp_guest_set_user_password(const char *userna=
+me,
+>                                   bool crypted,
+>                                   Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>  }
+>  #endif /* __linux__ || __FreeBSD__ */
+>=20=20
+> @@ -2751,47 +2751,47 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error *=
+*errp)
+>=20=20
+>  void qmp_guest_suspend_disk(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>  }
+>=20=20
+>  void qmp_guest_suspend_ram(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>  }
+>=20=20
+>  void qmp_guest_suspend_hybrid(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>  }
+>=20=20
+>  GuestLogicalProcessorList *qmp_guest_get_vcpus(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **er=
+rp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return -1;
+>  }
+>=20=20
+>  GuestMemoryBlockList *qmp_guest_get_memory_blocks(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestMemoryBlockResponseList *
+>  qmp_guest_set_memory_blocks(GuestMemoryBlockList *mem_blks, Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+> @@ -3056,7 +3056,7 @@ error:
+>=20=20
+>  GuestNetworkInterfaceList *qmp_guest_network_get_interfaces(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+> @@ -3066,20 +3066,20 @@ GuestNetworkInterfaceList *qmp_guest_network_get_=
+interfaces(Error **errp)
+>=20=20
+>  GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>=20=20
+>      return 0;
+>  }
+>=20=20
+>  int64_t qmp_guest_fsfreeze_freeze(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>=20=20
+>      return 0;
+>  }
+> @@ -3088,33 +3088,33 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_m=
+ountpoints,
+>                                         strList *mountpoints,
+>                                         Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>=20=20
+>      return 0;
+>  }
+>=20=20
+>  int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>=20=20
+>      return 0;
+>  }
+>=20=20
+>  GuestDiskInfoList *qmp_guest_get_disks(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+> @@ -3124,7 +3124,7 @@ GuestCpuStatsList *qmp_guest_get_cpustats(Error **e=
+rrp)
+>  GuestFilesystemTrimResponse *
+>  qmp_guest_fstrim(bool has_minimum, int64_t minimum, Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>  #endif
+> @@ -3243,7 +3243,7 @@ GuestUserList *qmp_guest_get_users(Error **errp)
+>=20=20
+>  GuestUserList *qmp_guest_get_users(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+> @@ -3386,7 +3386,7 @@ GuestOSInfo *qmp_guest_get_osinfo(Error **errp)
+>=20=20
+>  GuestDeviceInfoList *qmp_guest_get_devices(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>=20=20
+>      return NULL;
+>  }
+
+Commands not supported by this build of qemu-qa: [*].
+
+> diff --git a/qga/commands-win32.c b/qga/commands-win32.c
+> index aa8c9770d4..5c9f8e0923 100644
+> --- a/qga/commands-win32.c
+> +++ b/qga/commands-win32.c
+> @@ -1213,7 +1213,7 @@ GuestFilesystemInfoList *qmp_guest_get_fsinfo(Error=
+ **errp)
+>  GuestFsfreezeStatus qmp_guest_fsfreeze_status(Error **errp)
+>  {
+>      if (!vss_initialized()) {
+> -        error_setg(errp, QERR_UNSUPPORTED);
+> +        error_setg(errp, "this feature or command is not currently suppo=
+rted");
+>          return 0;
+>      }
+>=20=20
+> @@ -1241,7 +1241,7 @@ int64_t qmp_guest_fsfreeze_freeze_list(bool has_mou=
+ntpoints,
+>      Error *local_err =3D NULL;
+>=20=20
+>      if (!vss_initialized()) {
+> -        error_setg(errp, QERR_UNSUPPORTED);
+> +        error_setg(errp, "this feature or command is not currently suppo=
+rted");
+>          return 0;
+>      }
+>=20=20
+> @@ -1276,7 +1276,7 @@ int64_t qmp_guest_fsfreeze_thaw(Error **errp)
+>      int i;
+>=20=20
+>      if (!vss_initialized()) {
+> -        error_setg(errp, QERR_UNSUPPORTED);
+> +        error_setg(errp, "this feature or command is not currently suppo=
+rted");
+>          return 0;
+>      }
+>=20=20
+
+!vss_initialized() means qga-vss.dll failed to load and initialize.
+
+Another [*].
+
+> @@ -1509,7 +1509,7 @@ out:
+>=20=20
+>  void qmp_guest_suspend_hybrid(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>  }
+>=20=20
+>  static IP_ADAPTER_ADDRESSES *guest_get_adapters_addresses(Error **errp)
+> @@ -1877,7 +1877,7 @@ GuestLogicalProcessorList *qmp_guest_get_vcpus(Erro=
+r **errp)
+>=20=20
+>  int64_t qmp_guest_set_vcpus(GuestLogicalProcessorList *vcpus, Error **er=
+rp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return -1;
+>  }
+>=20=20
+
+Commands not supported by this build of qemu-qa: [*].
+
+> @@ -1938,7 +1938,7 @@ void qmp_guest_set_user_password(const char *userna=
+me,
+>      GError *gerr =3D NULL;
+>=20=20
+>      if (crypted) {
+> -        error_setg(errp, QERR_UNSUPPORTED);
+> +        error_setg(errp, "this feature or command is not currently suppo=
+rted");
+>          return;
+>      }
+
+Command does not support "crypted": true in this build of qemu-ga.  The
+error message is crap.  Better would be some variation of "this machine
+supports only clear-text passwords".
+
+>=20=20
+> @@ -1983,20 +1983,20 @@ done:
+>=20=20
+>  GuestMemoryBlockList *qmp_guest_get_memory_blocks(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestMemoryBlockResponseList *
+>  qmp_guest_set_memory_blocks(GuestMemoryBlockList *mem_blks, Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestMemoryBlockInfo *qmp_guest_get_memory_block_info(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+> @@ -2522,12 +2522,12 @@ char *qga_get_host_name(Error **errp)
+>=20=20
+>  GuestDiskStatsInfoList *qmp_guest_get_diskstats(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+>=20=20
+>  GuestCpuStatsList *qmp_guest_get_cpustats(Error **errp)
+>  {
+> -    error_setg(errp, QERR_UNSUPPORTED);
+> +    error_setg(errp, "this feature or command is not currently supported=
+");
+>      return NULL;
+>  }
+
+Commands not supported by this build of qemu-qa: [*].
+
+Summary of my review:
+
+* You're unsure about your change to the "General note concerning the
+  use of guest agent interfaces".  I suggested a way to rewrite it.
+
+* Error messages could use improvement.  Since your patch doesn't change
+  any, feel free to leave that for another day.
+
+* How we do compiled-out commands could use improvement.  Feel even more
+  free to leave for another day.  I'd like to hear the maintainers'
+  opinion, though.
+
 
