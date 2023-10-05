@@ -2,71 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34057B9A68
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C1E7B9A5F
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFJK-0000Ls-PR; Wed, 04 Oct 2023 23:46:02 -0400
+	id 1qoFJG-0000Br-Bk; Wed, 04 Oct 2023 23:45:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJ1-0008J2-Q9
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFJ1-0008J3-RE
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIx-0000lv-Gu
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:41 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFIz-0000mK-Eq
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:45:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477537;
+ s=mimecast20190719; t=1696477539;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=dXZPD0CN1EMknhNwzhqLjrYqmgqO9D2C6C8XhFWkRR0=;
- b=PFN1pGeHE4CRp40JcS/TkVClkoZc3GTj3Ee1TYKaRRq6dV571Sg6mNCuHReolX+/sDr++g
- 9tgUy5WcUck2TydEDANmwEWQ5vp+7BWoEo132aO0ezg/h7kQiqy44e0ITsm4ZihhuJl/RJ
- imCKd96Pacvo/VLW5KEAYWIoaV78FCY=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=7o6L3Hf/e9kUu5lCaCSDHMU6Bu6TjGI//1ytCFQ5e54=;
+ b=hWd8bei/m2jspmUN/+9mA+6uIFZ9tk2MnMLNfNwosfDFfLQce4qcfbLnaIhddAZbB73bO3
+ 5fPMD0uvXSyftB6AnKQQJa8zkh4U42lHGSDb6fTuc85Wi/2b9nH91p/nBRZLfHRmrttuv7
+ CG2xrdG/q8GOpDC8LuNbGrFLm1vziUw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-9YkK6oGlPxKVGbhJN3ie5Q-1; Wed, 04 Oct 2023 23:45:36 -0400
-X-MC-Unique: 9YkK6oGlPxKVGbhJN3ie5Q-1
-Received: by mail-wr1-f72.google.com with SMTP id
- ffacd0b85a97d-32480c0ad52so418641f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:35 -0700 (PDT)
+ us-mta-682-VKKnfuOuNlmMNKUtW3x3DA-1; Wed, 04 Oct 2023 23:45:38 -0400
+X-MC-Unique: VKKnfuOuNlmMNKUtW3x3DA-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f42bcef2acso3152665e9.2
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:45:38 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477533; x=1697082333;
+ d=1e100.net; s=20230601; t=1696477536; x=1697082336;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=dXZPD0CN1EMknhNwzhqLjrYqmgqO9D2C6C8XhFWkRR0=;
- b=mVOCkJnWum7q37aoPZCYsHzoArIKnDy10+aPby+QfdJnRKUuWpONlnaYgPC4YhsRCl
- QzQ0x3hanBLi6TAL3kzlW23KK+S+Xl3OpEPpkBHiJh4Q3nr0lNoiddMYMQCgMHswM75F
- N0lqkddhvxjznJkXFdjuygEoLTAQBAAwbRUL3ActsjXYGlmq1fTQaceRY/zxi874CoqX
- WVdQl9io3+1D5Val6oJ6TETe8FYneNeuFhqPw3IqYdt8Y62PEEYXV5ysJRn+HdbdgISb
- ntHxWg4SM+UXLV+91rAtFYeY8zL+BbTesvvXA5RM5IkXXuGmGqfLe4W/trR/88dxM1Hj
- 4fqw==
-X-Gm-Message-State: AOJu0Yy6T2mX/itr21UW7SXv0TZh0qR6np4eQixNfJsawJ5hHVrukSj5
- hY7SZxBK3oQ3OZhrwsamgQgblMiuwPE0g5X0KEvwkHiJ9OwRzoBR0r3CpzJCBp0Jq1yCgApX1W/
- gWJJ61VVSYQGhVEgf3VZmQ71OoU4g4xnCmxuhgxG2Kk1NPPqrRLV3nrU/JFOJzlmpsXyC
-X-Received: by 2002:adf:f386:0:b0:324:84cf:11ab with SMTP id
- m6-20020adff386000000b0032484cf11abmr3502935wro.51.1696477533803; 
- Wed, 04 Oct 2023 20:45:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGcRtaE8dgPU4SHorG/QmFYCvXLP6WAK1j/YdRcDT67L1V+PGHIfWN9G7e92MIPFemE0E2aJg==
-X-Received: by 2002:adf:f386:0:b0:324:84cf:11ab with SMTP id
- m6-20020adff386000000b0032484cf11abmr3502926wro.51.1696477533546; 
- Wed, 04 Oct 2023 20:45:33 -0700 (PDT)
+ bh=7o6L3Hf/e9kUu5lCaCSDHMU6Bu6TjGI//1ytCFQ5e54=;
+ b=JtCuiPCoZhCvJUz6gvCZbEm3J5n+bnlg9BtjD/vgg2ktvcltZDI/yVmK71cdy6BM4G
+ e/fRUeI73U6ArYeaPimMpWcPNLLEU0iE3/XMtfpjPb6jY/4Br+t4Nhcf8WNK6ammdbS3
+ G9cADxDg/DYdZFmu9bbr0mgc07t+GvExfR6nRfOxe6XelqE78VncnABki179BsRIc2Fg
+ LtdVYQgWIexhjhc0/ek75T4yDIxH1SQPXQGnweVG1NUSwneYlTltE1xpEb5+wUC38jhY
+ mKam3LlC6T2tWBBuBlfdtZfB7HlNAsaS7TQEm53//mtZFX4innq7gb43ujPU9MW8HBqV
+ bynw==
+X-Gm-Message-State: AOJu0Yz98D8EvpPZCfYVPZLdPTPCFIWMm9C+sDqxrSIj1QeTkMx7llav
+ sYHzCJ5/VcDrO6OwnzZAZZIaNkr21QHJqo5BmgluiCevpJ4wgP7Om7BYG5aaFvcQ91JQAdhBc+j
+ dX0bqHzAu5qF9EbuEHqPuO0U7QmOSpAdL1BbtF3ciIsF3KUr/oVQURrO9IiIBy0FjIl8K
+X-Received: by 2002:a7b:cbd5:0:b0:3ff:ca80:eda3 with SMTP id
+ n21-20020a7bcbd5000000b003ffca80eda3mr3737026wmi.10.1696477536707; 
+ Wed, 04 Oct 2023 20:45:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvgbqf/fYxS5Omj4lAlvfJcsdeeSkzvFcE7h7wuZAvVmJBXO/78UVSy2lbKMWnF/H+IjoCvw==
+X-Received: by 2002:a7b:cbd5:0:b0:3ff:ca80:eda3 with SMTP id
+ n21-20020a7bcbd5000000b003ffca80eda3mr3737015wmi.10.1696477536300; 
+ Wed, 04 Oct 2023 20:45:36 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- t11-20020a5d460b000000b003197c7d08ddsm629952wrq.71.2023.10.04.20.45.31
+ u20-20020a05600c211400b0040642a1df1csm544327wml.25.2023.10.04.20.45.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:45:32 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:45:28 -0400
+ Wed, 04 Oct 2023 20:45:35 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:45:33 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Subject: [PULL v2 45/53] pcie_sriov: unregister_vfs(): fix error path
-Message-ID: <f1a153857abc1ba8835b12a01520df9f1b64e15b.1696477105.git.mst@redhat.com>
+ Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+Subject: [PULL v2 46/53] libvhost-user.c: add assertion to
+ vu_message_read_default
+Message-ID: <a6f4d2ec42f3feb6c399f5760a2567ca78897bd7.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -74,14 +74,14 @@ Content-Disposition: inline
 In-Reply-To: <cover.1696477105.git.mst@redhat.com>
 X-Mailer: git-send-email 2.27.0.106.g8ac3dc51b1
 X-Mutt-Fcc: =sent
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -100,45 +100,28 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-local_err must be NULL before calling object_property_set_bool(), so we
-must clear it on each iteration. Let's also use more convenient
-error_reportf_err().
+Explain Coverity that we are not going to overflow vmsg->fds.
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Message-Id: <20230925194040.68592-8-vsementsov@yandex-team.ru>
+Message-Id: <20230925194040.68592-5-vsementsov@yandex-team.ru>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/pci/pcie_sriov.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ subprojects/libvhost-user/libvhost-user.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/hw/pci/pcie_sriov.c b/hw/pci/pcie_sriov.c
-index 76a3b6917e..5ef8950940 100644
---- a/hw/pci/pcie_sriov.c
-+++ b/hw/pci/pcie_sriov.c
-@@ -196,19 +196,16 @@ static void register_vfs(PCIDevice *dev)
- 
- static void unregister_vfs(PCIDevice *dev)
- {
--    Error *local_err = NULL;
-     uint16_t num_vfs = dev->exp.sriov_pf.num_vfs;
-     uint16_t i;
- 
-     trace_sriov_unregister_vfs(dev->name, PCI_SLOT(dev->devfn),
-                                PCI_FUNC(dev->devfn), num_vfs);
-     for (i = 0; i < num_vfs; i++) {
-+        Error *err = NULL;
-         PCIDevice *vf = dev->exp.sriov_pf.vf[i];
--        object_property_set_bool(OBJECT(vf), "realized", false, &local_err);
--        if (local_err) {
--            fprintf(stderr, "Failed to unplug: %s\n",
--                    error_get_pretty(local_err));
--            error_free(local_err);
-+        if (!object_property_set_bool(OBJECT(vf), "realized", false, &err)) {
-+            error_reportf_err(err, "Failed to unplug: ");
+diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
+index 0469a50101..49b57c7ef4 100644
+--- a/subprojects/libvhost-user/libvhost-user.c
++++ b/subprojects/libvhost-user/libvhost-user.c
+@@ -322,6 +322,7 @@ vu_message_read_default(VuDev *dev, int conn_fd, VhostUserMsg *vmsg)
+         if (cmsg->cmsg_level == SOL_SOCKET && cmsg->cmsg_type == SCM_RIGHTS) {
+             fd_size = cmsg->cmsg_len - CMSG_LEN(0);
+             vmsg->fd_num = fd_size / sizeof(int);
++            assert(fd_size < VHOST_MEMORY_BASELINE_NREGIONS);
+             memcpy(vmsg->fds, CMSG_DATA(cmsg), fd_size);
+             break;
          }
-         object_unparent(OBJECT(vf));
-         object_unref(OBJECT(vf));
 -- 
 MST
 
