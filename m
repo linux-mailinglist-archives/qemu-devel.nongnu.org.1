@@ -2,89 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ED57BA059
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 852A07BA17B
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 16:53:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoPSd-0001EM-JH; Thu, 05 Oct 2023 10:36:19 -0400
+	id 1qoPiO-0003HP-0J; Thu, 05 Oct 2023 10:52:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qoPSc-0001ED-EB
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:36:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qoPiL-0003H9-8w
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:52:33 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qoPSa-0006Zv-Ld
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:36:18 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qoPiJ-0002eS-FA
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 10:52:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696516575;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
+ s=mimecast20190719; t=1696517550;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=k5UOn5jRpuFs7zhUIbU/ju3hxTpHVT3ou0PquEBgnPU=;
- b=hDd2B/UUORVHoiaLFmFof/F0eiCoqcuwHjQ+xcECY8ZzSu2lpvoPIoyPTCOkB3t0JwMAQv
- tCFiwVlYgvMZUKEeVw8Jh8AkGB7pEuPdchWyce6kRdHGTP13l2TomkRKpK+Wo2HM2Ds0uJ
- R4uaDO+s6PLNzI8utZ2PtXJf5e6Vnjw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=iZ9Vxv6NW5k6kQY+zJXrArYJgt6OYpUwlsKnGntUfUE=;
+ b=MIQqz+NmSz27yDl45cNVR49trtlVNVFXHrfeJDdDHSy0kmmgl3uXraLW7ucYtkULJF5H5S
+ gGpAjJxCQ6gEBUsLzMc/7SA2XPAHVHa5MwuQKTZMW9InARHqyKQ/yI7kSbxCHYYh0ajbbD
+ 0WUmeAexHLbXLkea3IjQAlSefkrhKEU=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-394-mrPqFVHnO5u8Fv2urnhBsg-1; Thu, 05 Oct 2023 10:36:13 -0400
-X-MC-Unique: mrPqFVHnO5u8Fv2urnhBsg-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-4055ce1e8c4so10141485e9.0
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 07:36:13 -0700 (PDT)
+ us-mta-370-rMQaNOWLPZ6dlLzO8Zn4hw-1; Thu, 05 Oct 2023 10:52:23 -0400
+X-MC-Unique: rMQaNOWLPZ6dlLzO8Zn4hw-1
+Received: by mail-oi1-f200.google.com with SMTP id
+ 5614622812f47-3ae3056a67fso301627b6e.0
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 07:52:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696516573; x=1697121373;
- h=content-transfer-encoding:mime-version:message-id:date:reply-to
- :user-agent:references:in-reply-to:subject:cc:to:from
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=k5UOn5jRpuFs7zhUIbU/ju3hxTpHVT3ou0PquEBgnPU=;
- b=tGsQoVkz+LmFGU3QMIQBzS8ZH5XABtsmQv+YWSC38EmItiJnfLc2mo6pRWZV9biz+J
- ASekH9vORMHdXwy1vXrywfZuwGNSvCQsOmF+uPaDJdWruz9tYrQuj3MxSnw0lV81MZTo
- Yam0iKy5aEXh3jnavJbkEQROT7oLcruwlb08n2avJDu1/oLaWozbBJ3Ll33qV/RsS5j5
- IpR9eFcmz5cgy5Ab44ogaOYc43QgvKNSIFHjN5T/nrTEV4xgbW+C528fShXe+cGsJbzQ
- krPp8hwHE5QYIA0Ab9Ux4VwfCS7Cl/gISf4KTDIFbnRXcJ/D1A8W/zUitZsCU20OEiWE
- p5jg==
-X-Gm-Message-State: AOJu0YyTo+mhTaCnZ2Cg01ewdlqZWxE7+X67yaHRdczpDQn9eZf/ER60
- 22058jVyEzpiRokqZUwV0F4fUSy000z0o9QWjg1wOdCXfChb2ZSsPO+kR+59J6Vd/G0aeItxqWa
- 6/omEwVTB8JGqYzI=
-X-Received: by 2002:a05:600c:3795:b0:401:b92f:eec5 with SMTP id
- o21-20020a05600c379500b00401b92feec5mr1525183wmr.9.1696516572864; 
- Thu, 05 Oct 2023 07:36:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFM4kBaamAxZkyfzGd/bs0LHmVkKqqk5Ms43+uCdHeZVm9RKpS+OOkyY9J94de828fBlw6drw==
-X-Received: by 2002:a05:600c:3795:b0:401:b92f:eec5 with SMTP id
- o21-20020a05600c379500b00401b92feec5mr1525160wmr.9.1696516572479; 
- Thu, 05 Oct 2023 07:36:12 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- m10-20020a7bce0a000000b00405953973c3sm3886456wmc.6.2023.10.05.07.36.11
+ d=1e100.net; s=20230601; t=1696517542; x=1697122342;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iZ9Vxv6NW5k6kQY+zJXrArYJgt6OYpUwlsKnGntUfUE=;
+ b=wjvWCYIwMYAmxOchRem3jlYI5+CPSIfpbS0LSq3KA+FUlcWpPnwiFzlMCOrG4HZl3i
+ DP6d6gALSmNWTj8dGp4QuLBpJVnH4EIPxAHBIwE4QNGoTX0PxL/j9JELL/b/+t/wzq5x
+ gKq5ROiGwtb66dXsebaIYGg0/C5kr1S4ZsZnsLkTf18+kgZElofJClv8WBUbjaVX2TT6
+ 7C4YSakWViktmxLbkm2sNEXeNTKVKmQCTC9Mb/gGBJPDIaKo3teF5DmOlGVUgI7Z/egC
+ hvpWIR/Z5xNlRXDQ2Gw2mHCJLCYEZUodtXCc1KWMvZc+Etu1LRJ7k1IVn4MxXGNix9kr
+ 3dCg==
+X-Gm-Message-State: AOJu0YygpC6bXvrLm43034M49PxAlIfBKIBnryCxXlCjZU7/1KHVK7LR
+ GXvg0ISZBuU2mClL83EOqD3qrn6Gld2qKTbi62eci+HheqX7VnbFSE7Zla9ILhUDQJqEz5DMVOP
+ Gtq98Vo3WrV9pEsc=
+X-Received: by 2002:a05:6808:138b:b0:3ad:aadd:6cbf with SMTP id
+ c11-20020a056808138b00b003adaadd6cbfmr6576632oiw.0.1696517541932; 
+ Thu, 05 Oct 2023 07:52:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnbv5C2feq1kwmy7Qja1D9p8910RJ4dYCHrikU+n0YQMGXythPyeKHAzWDNNkLn6EPxe9CUA==
+X-Received: by 2002:a05:6808:138b:b0:3ad:aadd:6cbf with SMTP id
+ c11-20020a056808138b00b003adaadd6cbfmr6576622oiw.0.1696517541639; 
+ Thu, 05 Oct 2023 07:52:21 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ g26-20020ac870da000000b00400a99b8b38sm522668qtp.78.2023.10.05.07.52.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 05 Oct 2023 07:36:11 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-Cc: Thomas Huth <thuth@redhat.com>,  Peter Maydell
- <peter.maydell@linaro.org>,  Kevin Wolf <kwolf@redhat.com>,
- hreitz@redhat.com,  qemu-devel@nongnu.org,  Daniel Berrange
- <berrange@redhat.com>,  richard.henderson@linaro.org,  Qemu-block
- <qemu-block@nongnu.org>
-Subject: Re: How to tame CI?
-In-Reply-To: <602039f4-2a22-49ed-ab19-5ca62c9f2b47@yandex-team.ru> (Vladimir
- Sementsov-Ogievskiy's message of "Thu, 5 Oct 2023 15:35:15 +0300")
-References: <87fs5aho6e.fsf@secure.mitica>
- <CAFEAcA89zgd+ZFBcMasTZErH6eTknXJhnDaXyW_LWj_vAYKrnw@mail.gmail.com>
- <e68d2e2f-6afe-820b-fa45-44db5b6edf09@redhat.com>
- <602039f4-2a22-49ed-ab19-5ca62c9f2b47@yandex-team.ru>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 05 Oct 2023 16:36:10 +0200
-Message-ID: <87ttr5jfvp.fsf@secure.mitica>
+ Thu, 05 Oct 2023 07:52:21 -0700 (PDT)
+Date: Thu, 5 Oct 2023 10:52:18 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Markus Armbruster <armbru@redhat.com>
+Cc: Juan Quintela <quintela@redhat.com>,
+ "Zhijian Li (Fujitsu)" <lizhijian@fujitsu.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "leobras@redhat.com" <leobras@redhat.com>
+Subject: Re: [PATCH 28/52] migration/rdma: Check negative error values the
+ same way everywhere
+Message-ID: <ZR7Nov6Gu+4V14jf@x1n>
+References: <20230918144206.560120-1-armbru@redhat.com>
+ <20230918144206.560120-29-armbru@redhat.com>
+ <5b2560b5-63ed-37f0-5367-07ca55d43ab4@fujitsu.com>
+ <87wmwed824.fsf@pond.sub.org> <87jzs2uz5d.fsf@secure.mitica>
+ <ZR2ZYNB2Mw1Tej9i@x1n> <87a5sxaahv.fsf@pond.sub.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
+Content-Disposition: inline
+In-Reply-To: <87a5sxaahv.fsf@pond.sub.org>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -105,121 +100,63 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru> wrote:
-> On 26.07.23 16:32, Thomas Huth wrote:
->> On 26/07/2023 15.00, Peter Maydell wrote:
->>> On Wed, 26 Jul 2023 at 13:06, Juan Quintela <quintela@redhat.com> wrote:
->>>> To make things easier, this is the part that show how it breaks (this =
-is
->>>> the gcov test):
->>>>
->>>> 357/423 qemu:block / io-qcow2-copy-before-write=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ERROR=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 6.38s=C2=A0=C2=A0=
- exit status 1
->>>>>>> PYTHON=3D/builds/juan.quintela/qemu/build/pyvenv/bin/python3
->>>> MALLOC_PERTURB_=3D44
->>>> /builds/juan.quintela/qemu/build/pyvenv/bin/python3
->>>> /builds/juan.quintela/qemu/build/../tests/qemu-iotests/check -tap
->>>> -qcow2 copy-before-write --source-dir
->>>> /builds/juan.quintela/qemu/tests/qemu-iotests --build-dir
->>>> /builds/juan.quintela/qemu/build/tests/qemu-iotests
->>>> =E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95 =E2=9C=80=C2=A0 =E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=
-=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=
-=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=80=95=E2=
-=80=95=E2=80=95
->>>> stderr:
->>>> --- /builds/juan.quintela/qemu/tests/qemu-iotests/tests/copy-before-wr=
-ite.out
->>>> +++ /builds/juan.quintela/qemu/build/scratch/qcow2-file-copy-before-wr=
-ite/copy-before-write.out.bad
->>>> @@ -1,5 +1,21 @@
->>>> -....
->>>> +...F
->>>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>>> +FAIL: test_timeout_break_snapshot (__main__.TestCbwError)
->>>> +----------------------------------------------------------------------
->>>> +Traceback (most recent call last):
->>>> +=C2=A0 File "/builds/juan.quintela/qemu/tests/qemu-iotests/tests/copy=
--before-write", line 210, in test_timeout_break_snapshot
->>>> +=C2=A0=C2=A0=C2=A0 self.assertEqual(log, """\
->>>> +AssertionError: 'wrot[195 chars]read 1048576/1048576 bytes at
->>>> offset 0\n1 MiB,[46 chars]c)\n' !=3D 'wrot[195 chars]read failed:
->>>> Permission denied\n'
->>>> +=C2=A0 wrote 524288/524288 bytes at offset 0
->>>> +=C2=A0 512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
->>>> +=C2=A0 wrote 524288/524288 bytes at offset 524288
->>>> +=C2=A0 512 KiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
->>>> ++ read failed: Permission denied
->>>> +- read 1048576/1048576 bytes at offset 0
->>>> +- 1 MiB, X ops; XX:XX:XX.X (XXX YYY/sec and XXX ops/sec)
->>>> +
->>>
->>> This iotest failing is an intermittent that I've seen running
->>> pullreqs on master. I tend to see it on the s390 host. I
->>> suspect a race condition somewhere where it fails if the host
->>> is heavily loaded.
->> It's obviously a failure in an iotest, so let's CC: the
->> corresponding people (done now).
->>=20
->
-> Sorry for long delay.
->
-> Does it still fail?
->
-> In the test we expect that copy-before-write operation fails (because
-> of throttling and timeout), and therefore snapshot is broken and next
-> read from snapshot should fail.
->
-> But most probably the copy-before-write operation succeeded in this
-> case for some reason.. I don't think that throttling and timeouts in
-> block layer can guarantee some determinism.. But usually it works.
->
-> we use throttling with bps-write =3D 300 * 1024, i.e. 300KB per second. a=
-nd cbw-timeout is set to 1 second.
->
-> Then we do write 512K,
->
-> then the comment say:
-> # We need second write to trigger throttling
->
-> and we write another 512K.
->
-> first 512K are written, and we should wait 512/300 =3D 1.7 seconds since
-> _start_ of that write before issuing the second one.. But if write was
-> slow we may have to wait less than a second from finish of the first
-> write start the second one. Then timeout will not fire.
->
-> =3D=3D=3D=3D
->
-> I see two possible ways to fix that:
->
-> 1. decrease bps-write a bit. For example to 200 BPS.
->
-> 2. rework the test to use null-co instead of real images. This way we wil=
-l not suffer from unstable IO duration.
->
->
-> So, is the problem still fire sometimes?=09
+On Thu, Oct 05, 2023 at 07:45:00AM +0200, Markus Armbruster wrote:
+> Peter Xu <peterx@redhat.com> writes:
+> 
+> > Sorry Zhijian, I missed this email.
+> >
+> > On Wed, Oct 04, 2023 at 06:32:14PM +0200, Juan Quintela wrote:
+> >> > * Avoid non-negative integer error values.
+> >
+> > Perhaps we need to forbid that if doing this.
+> >
+> > I can see Zhijian's point, where "if (ret)" can also capture unexpected
+> > positive returns, while "if (ret < 0)" is not clear on who's handling ret>0
+> > case.  Personally I like that, too.
+> 
+> It's clear either way :)
+> 
+> The problem is calling a function whose contract specifies "return 0 on
+> success, negative value on failure".
+> 
+> If it returns positive value, the contract is broken, and all bets are
+> off.
+> 
+> If you check the return value like
+> 
+>     if (ret < 0) {
+>         ... handle error and fail ...
+>     }
+>     ... carry on ...
+> 
+> then an unexpected positive value will clearly be treated as success.
+> 
+> If you check it like
+> 
+>     if (ret) {
+>         ... handle error and fail ...
+>     }
+>     ... carry on ...
+> 
+> then it will clearly be treated as failure.
+> 
+> But we don't know what it is!  Treating it as success can be wrong,
+> treating it as failure can be just as wrong.
 
-For me it is random.  When it happens, it do it forever.
-And then it stops, and don't happens for a while.
+Right, IMHO the major difference is when there's a bug in the retval
+protocl of the API we're invoking.
 
-It is not happening for me now.
+With "if (ret)" we capture that protocol bug, treating it as a failure (of
+that buggy API). With "if (ret<0)" we don't yet capture it, either
+everything will just keep working, or something weird happens later.  Not
+so predictable in this case.
 
-Later, Juan.
+Thanks,
+
+-- 
+Peter Xu
 
 
