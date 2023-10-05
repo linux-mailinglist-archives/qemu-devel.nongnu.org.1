@@ -2,154 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A347B9C9F
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 12:50:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC2EB7B9CAD
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 13:07:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoLvZ-0002z7-JU; Thu, 05 Oct 2023 06:49:57 -0400
+	id 1qoMBJ-0004qj-PG; Thu, 05 Oct 2023 07:06:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <simon.rowe@nutanix.com>)
- id 1qoLvX-0002yT-1w; Thu, 05 Oct 2023 06:49:55 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <simon.rowe@nutanix.com>)
- id 1qoLvU-0002zd-Ny; Thu, 05 Oct 2023 06:49:54 -0400
-Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 3950x2C7018356; Thu, 5 Oct 2023 03:49:46 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- from:to:cc:subject:date:message-id:references:in-reply-to
- :content-type:mime-version; s=proofpoint20171006; bh=UmvnHkj5nLF
- ackzRtdyf9zE6TDsSg4LMaIs2qk2aoig=; b=QtH1JXqFW+U2daMchrTKA1wMty6
- JwSR4zsgeYaYt/AgQcTneDKsDbdgz5cX1CHTVBROund00wcTcdPPCsTnMVbvik2o
- tmFNXgijY5pMrDf4VN8NzxxITIQ1uQcwkYQsd0J+5Qt0K9VoNtByclJgKorbbgxW
- l7fghiqZXW2hjxMC0mS62oSlUujaiDij9b4fSGcTsA9sehT44BDDv4XAoxlZyiop
- 8BGao5Yw+tR5/ve0Adu26aLVXIcVxsMtzcK8NneIJ8ri1PbjvpOOuGGR9Lfu+DYk
- zMky8i1CD3PUr98X7BOE7YOgVxfUCfKvI/YuALAIRRuUcQkuq7kIX2i3T5Q==
-Received: from nam12-dm6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2174.outbound.protection.outlook.com [104.47.59.174])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3tek0cu5yu-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Thu, 05 Oct 2023 03:49:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=E4b7REtmZDAHOziDs1tzdfMtgWpH8loCDfy27uJSf8uGFTVGrIthNLwnJ9BxhcVuVfD/lt/MbeO8hBw8QXhi+mF68IcxPaKtKpwjglz5cDn2a7yvohlZnOfHkxnCAq0PW5lsNLceU3KnRhBiVRcgtn0pffgrwOA2g7OsZZEovHIV63BxGANGBcUasBt6QnAtc/q8tY2Pv/0V38gLkB5tieypxjZTBNzFIDOXK0TvPhshGTPFfVQjWRl+XiOetlnjtUvNdSY/hTgug/+XIzqIadClQmEwN9Ekk2eOsEPlrTB43J9UwabGMLDSPFdIFKeyx3NqJxHKV3nRXFniGumCew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UmvnHkj5nLFackzRtdyf9zE6TDsSg4LMaIs2qk2aoig=;
- b=HeEfrHbpTRLUYgHCqcw31Lnz7tpSc69Ax26hzChIWxcEZfSvtunDHxB/2N1NYfvVxdfQbIFSqncK7SZvijS4EtDZRP2milxaBpryEL+WsZvXsndx2eRJsdY06L6ELTeDL1bzIezfFY7FJmAshgakLgG8Sg8MDMNsQ86pp42OQY6zKoRSxnR99E2mlu1a+CNwEJWF2B3xHrNz8AyZCbj5nlHdWSzPnHcgln4HjQ7GGaolkgwjHUIevITrAuSbP/6Uiu54mgeafJGMgXoPLsecRHxp7l/cbt/CjDnWV/EAXVBq4NJpjQ7nIRg3Lhr/o6viJEU69A7ZNy5TnIf166PzdQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UmvnHkj5nLFackzRtdyf9zE6TDsSg4LMaIs2qk2aoig=;
- b=ZM5NZ/o5SmDzizkPsqTw1IdxqN50JZeUNjjM0Xjn5fPml+zsINAQPCnVUc+4v6jf4FACWq4/Eo0mRKCPDC1XvQn8+v4siAAY400vW7iNRx0yNY8tcCnWLzi29zmSiBLd/2LbNUhritFYcEowgpBW7XXD/LIyDuZlTtyzA11DHkxlVY9Mgocxqh+zv+H5swCYeVWMKwDftLw9Efwak0W35YadhIMAnlw61TNi0g9KrPfK9wkutAqsN12F03UZY0QQRZd27W4Zm/y/zfxKo3wI5om4pFDGwxQeYzJnEPew2FQqBBDZ+bY59+bEknejb3tH1qGood04uok5MxJgg7CoFA==
-Received: from DM8PR02MB8121.namprd02.prod.outlook.com (2603:10b6:8:1a::12) by
- DM6PR02MB6843.namprd02.prod.outlook.com (2603:10b6:5:21e::8) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6838.33; Thu, 5 Oct 2023 10:49:44 +0000
-Received: from DM8PR02MB8121.namprd02.prod.outlook.com
- ([fe80::b986:4843:ab24:54cd]) by DM8PR02MB8121.namprd02.prod.outlook.com
- ([fe80::b986:4843:ab24:54cd%7]) with mapi id 15.20.6838.033; Thu, 5 Oct 2023
- 10:49:44 +0000
-From: Simon Rowe <simon.rowe@nutanix.com>
-To: Fiona Ebner <f.ebner@proxmox.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>
-CC: "jsnow@redhat.com" <jsnow@redhat.com>, "thuth@redhat.com"
- <thuth@redhat.com>, "lvivier@redhat.com" <lvivier@redhat.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>, "srowe@mose.org.uk"
- <srowe@mose.org.uk>, "mike.maslenkin@gmail.com" <mike.maslenkin@gmail.com>,
- "qemu-block@nongnu.org" <qemu-block@nongnu.org>, "t.lamprecht@proxmox.com"
- <t.lamprecht@proxmox.com>,
- "a.lauterer@proxmox.com" <a.lauterer@proxmox.com>,
- "philmd@linaro.org" <philmd@linaro.org>, "kwolf@redhat.com"
- <kwolf@redhat.com>
-Subject: Re: [PATCH v2 1/2] hw/ide: reset: cancel async DMA operation before
- resetting state
-Thread-Topic: [PATCH v2 1/2] hw/ide: reset: cancel async DMA operation before
- resetting state
-Thread-Index: AQHZ4MOj+7qWyCkiLk+9tPq0cKYkYrA7MTLZ
-Date: Thu, 5 Oct 2023 10:49:44 +0000
-Message-ID: <DM8PR02MB8121F2AFF6FB7A5A054252AF93CAA@DM8PR02MB8121.namprd02.prod.outlook.com>
-References: <20230906130922.142845-1-f.ebner@proxmox.com>
-In-Reply-To: <20230906130922.142845-1-f.ebner@proxmox.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR02MB8121:EE_|DM6PR02MB6843:EE_
-x-ms-office365-filtering-correlation-id: 783d8e9f-6a4c-4e9f-38e9-08dbc590c927
-x-proofpoint-crosstenant: true
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: vLh0UEzGVA0LY0rNSulKObulf8esqOEkyKpI8xUOh256n7PkVZ+uUhBdg90ioGlWpHLaHFwuAVdwMXjCt5BW2W14vQ0z542oGNwO0V2jhUqPeSut6oJlSU2JxVHTm37R8X4xrlzCVSNp5OxdJFiaWs4fCAk5weO41blZY00H0UU23UcJ4hSI7Ri7x+rnJMbT2wW02F1vPEahJvqvnzp6U8CAuWGN5IIM03lzFiUq2jYwtOR1sXyuWC2StG4HrDJEqLR+RXBe+G4LOBAl5ji3GHNqSPhlf3knZ43uH8lhQ2W3jk0XV+ROzA4FnTMMS0uux+/Y/It35GEWC+fddqN5NQd0Wc4H+5x+qn2kVIRn7nrqDqC2oeJ+yYzFnx1R4lv+MNhv/ZvWAtlAGJ1L9zj81wSBpAKOClkIkZWaYaQ2aIG+0x91psPiCn+6GwyaDLZrICbYwapGcFZ53vrj9tEuxoux0+WBCgPtlx7HbFOaKaLYKKmuVe9G4pq96ioV3Sha3PTMRQRSJiRI3W2hdDHJ2sbbzfQ0TgIVatg12CFkC/ngvAOAr1zxIcV4ZtdDy7GhV4M5ZBKYOFksq6biFQEN2Km2xLDPrdvLfFkSKsy3UpdC9Nr+vgg33mWYnf3G/HkQ
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR02MB8121.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(376002)(346002)(39860400002)(396003)(366004)(136003)(230922051799003)(451199024)(1800799009)(186009)(64100799003)(41300700001)(110136005)(7696005)(6506007)(316002)(66446008)(76116006)(66946007)(66556008)(66476007)(9686003)(64756008)(54906003)(44832011)(8676002)(4326008)(71200400001)(26005)(5660300002)(8936002)(478600001)(52536014)(7416002)(4744005)(2906002)(122000001)(38070700005)(55016003)(38100700002)(86362001)(33656002);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?f/ZwuPVn1fb8YRCZRdLzOHuBJiZMfDD/2g9jNevu4EzjW4Qk6WMQbFm+glPH?=
- =?us-ascii?Q?S+lxTKrvyuiKhsXzd5tVFSqubjW+wLqyZoTw0jMWLQiBjGuq+D7X6G3aVXjC?=
- =?us-ascii?Q?HsxNMVZqlzcWo25LapEQLVrURYKw0Rc6xxSrpRHjeYhUl465heuOIp0p2hnt?=
- =?us-ascii?Q?g1InmH2vO890fP86vs/Cnfq5Km/YOMOyfVeCDQUeR9R26zWk6QxutfflLADv?=
- =?us-ascii?Q?Ey/LCX1Fry3kuma3Y9zYWy7/mVq8A/3N8+P5lmyEUORH+zj4kM25LkDqzCcf?=
- =?us-ascii?Q?LA4DE1cLqnOgxbiJx0L2/wpD6uxJ3nLbK9T3Vg9QRT2miEgvimIxatwCBhsB?=
- =?us-ascii?Q?0zG+U7hAh7Vzl9zW2QLyRVOlhYh7A3tLczXlrPJJAwtY+8jc0wIp0ZjFZR+1?=
- =?us-ascii?Q?KBSgBeeuWeqzTbdpuxA3COLdOTX8vV67IRgoamHb76nMYgFrR3sLrODUyL0p?=
- =?us-ascii?Q?XGXxqEfpAQrjIUVS6GCRblNoPNd436C/izKZjjRE9+IYXAMRT3oXld3X1Gbj?=
- =?us-ascii?Q?4bATbIOCj77kGr4Lw+thUdeJ7E49CYB6Ji9be+SExdR6+MS95QTVa1bxGgJ6?=
- =?us-ascii?Q?dBDE7QP5hA4/nMv9ztDfo2wKzzFG5vtX8n/2SzSrJlHXhw1z165ZdF2BFbSY?=
- =?us-ascii?Q?+a8RRA8ZdQGadvN19rKVXrt5FCO/K43qrazjmSeBpI7YdR2lqxmgfzT63mFT?=
- =?us-ascii?Q?O43RaBh2mmFcDpfgmXMgd0oUCsrUXLlZOvZFYjQIZxZRAC/0utFtd0j8+Bsn?=
- =?us-ascii?Q?qPz/wi/Dz2fwVDPBRfOnhjiy5S6uQOWxc/alrH59AixsGiF1Kh4Tha5iyYNB?=
- =?us-ascii?Q?2hyctKdfmSC8OIVH/IniNn2SZjDVIGFRh0SRcIsyGFJJl+gt+N0q1WLFi5Gu?=
- =?us-ascii?Q?RCPUQmF1pHKUCOLHBKFF3GC1kqaFaXphXSN3jkpe4xtF3n4EIZT+Gzckjycs?=
- =?us-ascii?Q?EaYUG5BYH/1F9DNwv8LiPfN1FXVb+CDZmUyn+Ac7Q67/qw+Wo9724yYOFmbj?=
- =?us-ascii?Q?8cGnv7FA7El307lFzxCDxyftPFzMLR7r1jARqKo3tRaRHm1+pN92CswWLnvH?=
- =?us-ascii?Q?GWTcJLu3nH5fn5IwqRYgjkA9fhCxazDGOH6BxrZXMxYd2TJee+D4AclBVPYZ?=
- =?us-ascii?Q?U56vbe+2ZnQtsjWo6zTnNLcLY5ymUAnrDgbY4xH8DGxdbYw8Vs+y5e9DiiDy?=
- =?us-ascii?Q?S5MwObvlYzsl7vfutcjaOhwX8F2BX2GuGh3p3AYwbe3gEtFUjS0Duxln3/cB?=
- =?us-ascii?Q?foUvGEGf3CAhd/9YP/2GywXaZRoH++qIrarZ0zGhrIBZl807YKjaBvEl1zhZ?=
- =?us-ascii?Q?6gbTDysLZ7JBGNd6u2eg9LMfNH6pE9ysbrUcPROMQRKG9eujo9n5RBmAnq27?=
- =?us-ascii?Q?CCEjWdQjAYAhlICAsj/1GOMODqkXh2xugLL9jiChp2Iuhn1S+2mkGENwFDKx?=
- =?us-ascii?Q?XvjlqYaIwf6zmNYSD7rHlXEhvzELPn2i3vnJOPBQKkSEAH0UrOnhZqvq8jrk?=
- =?us-ascii?Q?Yq+3ZNUCbf0p6IloKixzr7qezIl91Rp0g5E1WNkkRz/YeF6GhSr0pKscmDif?=
- =?us-ascii?Q?YfFLTGM792M0H2tDZqHr5KpvxPZqPkvte+OhiSHMDJi1QAJszSaiLCxHywnv?=
- =?us-ascii?Q?9Q=3D=3D?=
-Content-Type: multipart/alternative;
- boundary="_000_DM8PR02MB8121F2AFF6FB7A5A054252AF93CAADM8PR02MB8121namp_"
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoMBG-0004qP-8p
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:06:11 -0400
+Received: from mail-wr1-x436.google.com ([2a00:1450:4864:20::436])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qoMBC-0001Ix-4p
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:06:10 -0400
+Received: by mail-wr1-x436.google.com with SMTP id
+ ffacd0b85a97d-3231d6504e1so809461f8f.2
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 04:06:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696503962; x=1697108762; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=PA4Uf/bGM1iRf5RFAi6BKe64UH/qk2KI1I6Wp58zwUM=;
+ b=ZFU4aj8fHwUJTCu1Swo597Yndx6Q0OdV4ow1BTEW8W6HH1Y9+hdNxlf8HyAAbcdg/c
+ Md2DCx1G/2bhXmLam3wv5sytXVVxRIIRbC4HozXTznta+vqPKyVSB7JiYIylhhOFmwL0
+ Dd21c83VeUf5QtWTkfNbvYGPrMBLlMSUl46QeQamvO/EdnG+KN8K/j6zLM9NfnDuVxAp
+ c5XHeonvn0Tq8MuwK5quumSG8RlpEUH6eKFA2Eux7onzkPqFvzwgx6uYRLSVw15lMY6h
+ tH/lQ+MyBMn0AjVGOq9WXG5EcryH9AtvmPIpBJ9xgG+iMB56DLz1K3tVHzrTnFvLOHvn
+ VRHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696503962; x=1697108762;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=PA4Uf/bGM1iRf5RFAi6BKe64UH/qk2KI1I6Wp58zwUM=;
+ b=PbwIgoNsCVJP/bnYA1EE+GPDgPTFP3fDvrkw+6k+qNigmgaicxXdapb8aHLRSNlU/K
+ ILdAe74j4KnrgphNA1NJ85QMmEcMwfgrQVWnTCSUxVeo/Z8KeoPV/o2tg9JWJNevpg9s
+ QdvT3Y3HBUIgo07truNFDcShzyGU1+ypucUIVp4tQGLX3z0Axhr9mjRJ7dRktb07XiUY
+ IreAzWv72kawUIucOvQTgVJqtHlt1HPER998+8Sth9J8Ccg9FE+kNKM+cd2SoOQR+S0B
+ yo4Ol24O5K36nUA+Vjex/6ZFRsxrKX8je0OkmJ/KjPU9yDdlHdlT9QWbhQdantNCjNCV
+ mpqQ==
+X-Gm-Message-State: AOJu0Yw/yMJzTo1Cl0DmgwqcikN1BjIBXyvTG4j+jB1WjgXnz87SXiqR
+ muYHi/WWEXeCQbJVvE9XKtGqRujh6HrnYkLOadQ=
+X-Google-Smtp-Source: AGHT+IH9wSn/rROu1gyXPpAkyxDiFRsRvoJgR4YCBx8ThY65uTITXfupkvnGnby+gaGWmSSFp32MRg==
+X-Received: by 2002:a5d:680d:0:b0:319:83e4:bbbf with SMTP id
+ w13-20020a5d680d000000b0031983e4bbbfmr5038275wru.20.1696503962403; 
+ Thu, 05 Oct 2023 04:06:02 -0700 (PDT)
+Received: from [192.168.69.115]
+ (tbo33-h01-176-171-211-120.dsl.sta.abo.bbox.fr. [176.171.211.120])
+ by smtp.gmail.com with ESMTPSA id
+ p1-20020adfce01000000b003258934a4bfsm1527504wrn.36.2023.10.05.04.06.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 05 Oct 2023 04:06:01 -0700 (PDT)
+Message-ID: <d0380a09-62e3-d296-6d3d-3ffbc2b9eca3@linaro.org>
+Date: Thu, 5 Oct 2023 13:05:59 +0200
 MIME-Version: 1.0
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR02MB8121.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 783d8e9f-6a4c-4e9f-38e9-08dbc590c927
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Oct 2023 10:49:44.3568 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: enZ/H7LlnGNkOYSRZ8uAnzq2uaY0jZ+InNIYVyexl5ET/BbVjaHqYSjKKGel2m2dCuP/2dszTGJ/1aLyfwMmGw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6843
-X-Proofpoint-ORIG-GUID: YhnC8zvsX-nPlJb8i9X6VUspX8G5XDuP
-X-Proofpoint-GUID: YhnC8zvsX-nPlJb8i9X6VUspX8G5XDuP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-05_08,2023-10-05_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12;
- envelope-from=simon.rowe@nutanix.com; helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 2/2] target/hexagon: fix some occurrences of -Wshadow=local
+To: Brian Cain <bcain@quicinc.com>, qemu-devel@nongnu.org
+Cc: armbru@redhat.com, richard.henderson@linaro.org,
+ peter.maydell@linaro.org, quic_mathbern@quicinc.com, stefanha@redhat.com,
+ ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com
+References: <20231004123957.1732915-1-bcain@quicinc.com>
+ <20231004123957.1732915-3-bcain@quicinc.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231004123957.1732915-3-bcain@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::436;
+ envelope-from=philmd@linaro.org; helo=mail-wr1-x436.google.com
+X-Spam_score_int: -35
+X-Spam_score: -3.6
+X-Spam_bar: ---
+X-Spam_report: (-3.6 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.528,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -166,101 +96,166 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---_000_DM8PR02MB8121F2AFF6FB7A5A054252AF93CAADM8PR02MB8121namp_
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Hi Matheus,
 
-On Wednesday, 6 September 2023 Fiona Ebner <f.ebner@proxmox.com> wrote:
+On 4/10/23 14:39, Brian Cain wrote:
+> Of the changes in this commit, the changes in `HELPER(commit_hvx_stores)()`
+> are less obvious.  They are required because of some macro invocations like
+> SCATTER_OP_WRITE_TO_MEM().
+> 
+> e.g.:
+> 
+>      In file included from ../target/hexagon/op_helper.c:31:
+>      ../target/hexagon/mmvec/macros.h:205:18: error: declaration of ‘i’ shadows a previous local [-Werror=shadow=compatible-local]
+>        205 |         for (int i = 0; i < sizeof(MMVector); i += sizeof(TYPE)) { \
+>            |                  ^
+>      ../target/hexagon/op_helper.c:157:17: note: in expansion of macro ‘SCATTER_OP_WRITE_TO_MEM’
+>        157 |                 SCATTER_OP_WRITE_TO_MEM(uint16_t);
+>            |                 ^~~~~~~~~~~~~~~~~~~~~~~
+>      ../target/hexagon/op_helper.c:135:9: note: shadowed declaration is here
+>        135 |     int i;
+>            |         ^
+>      In file included from ../target/hexagon/op_helper.c:31:
+>      ../target/hexagon/mmvec/macros.h:204:19: error: declaration of ‘ra’ shadows a previous local [-Werror=shadow=compatible-local]
+>        204 |         uintptr_t ra = GETPC(); \
+>            |                   ^~
+>      ../target/hexagon/op_helper.c:160:17: note: in expansion of macro ‘SCATTER_OP_WRITE_TO_MEM’
+>        160 |                 SCATTER_OP_WRITE_TO_MEM(uint32_t);
+>            |                 ^~~~~~~~~~~~~~~~~~~~~~~
+>      ../target/hexagon/op_helper.c:134:15: note: shadowed declaration is here
+>        134 |     uintptr_t ra = GETPC();
+>            |               ^~
+> 
+> Reviewed-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Signed-off-by: Brian Cain <bcain@quicinc.com>
+> ---
+>   target/hexagon/imported/alu.idef |  6 +++---
+>   target/hexagon/mmvec/macros.h    |  2 +-
+>   target/hexagon/op_helper.c       |  9 +++------
+>   target/hexagon/translate.c       | 10 +++++-----
+>   4 files changed, 12 insertions(+), 15 deletions(-)
+> 
+> diff --git a/target/hexagon/imported/alu.idef b/target/hexagon/imported/alu.idef
+> index 12d2aac5d4..b855676989 100644
+> --- a/target/hexagon/imported/alu.idef
+> +++ b/target/hexagon/imported/alu.idef
+> @@ -1142,9 +1142,9 @@ Q6INSN(A4_cround_rr,"Rd32=cround(Rs32,Rt32)",ATTRIBS(),"Convergent Round", {RdV
+>               tmp128 = fSHIFTR128(tmp128, SHIFT);\
+>               DST =  fCAST16S_8S(tmp128);\
+>           } else {\
+> -            size16s_t rndbit_128 =  fCAST8S_16S((1LL << (SHIFT - 1))); \
+> -            size16s_t src_128 =  fCAST8S_16S(SRC); \
+> -            size16s_t tmp128 = fADD128(src_128, rndbit_128);\
+> +            rndbit_128 =  fCAST8S_16S((1LL << (SHIFT - 1))); \
+> +            src_128 =  fCAST8S_16S(SRC); \
+> +            tmp128 = fADD128(src_128, rndbit_128);\
 
-> If there is a pending DMA operation during ide_bus_reset(), the fact
-> that the IDEState is already reset before the operation is canceled
-> can be problematic. In particular, ide_dma_cb() might be called and
-> then use the reset IDEState which contains the signature after the
-> reset. When used to construct the IO operation this leads to
-> ide_get_sector() returning 0 and nsector being 1. This is particularly
-> bad, because a write command will thus destroy the first sector which
-> often contains a partition table or similar.
+Correct.
 
-Tested-by: simon.rowe@nutanix.com
+>               tmp128 = fSHIFTR128(tmp128, SHIFT);\
+>               DST =  fCAST16S_8S(tmp128);\
+>           }
+> diff --git a/target/hexagon/mmvec/macros.h b/target/hexagon/mmvec/macros.h
+> index a655634fd1..1ceb9453ee 100644
+> --- a/target/hexagon/mmvec/macros.h
+> +++ b/target/hexagon/mmvec/macros.h
+> @@ -201,7 +201,7 @@
+>       } while (0)
+>   #define SCATTER_OP_WRITE_TO_MEM(TYPE) \
+>       do { \
+> -        uintptr_t ra = GETPC(); \
+> +        ra = GETPC(); \
 
+Hmm I'm not a big fan of having "public" macros (exposed in header)
+which depend on local variable name. I'd rather rename the local 'ra'
+variable.
 
---_000_DM8PR02MB8121F2AFF6FB7A5A054252AF93CAADM8PR02MB8121namp_
-Content-Type: text/html; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+That said, this macro is used twice, for 16/32bits, iterating on 8bits.
+You could probably save some cycles using cpu_lduw_le_data_ra() /
+cpu_ldl_be_data_ra(). If so, can be done later.
 
-<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" xmlns:w=3D"urn:sc=
-hemas-microsoft-com:office:word" xmlns:m=3D"http://schemas.microsoft.com/of=
-fice/2004/12/omml" xmlns=3D"http://www.w3.org/TR/REC-html40">
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
->
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	font-size:10.0pt;
-	font-family:"Calibri",sans-serif;}
-span.EmailStyle19
-	{mso-style-type:personal-reply;
-	font-family:"Calibri",sans-serif;
-	color:windowtext;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-size:10.0pt;
-	mso-ligatures:none;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:72.0pt 72.0pt 72.0pt 72.0pt;}
-div.WordSection1
-	{page:WordSection1;}
---></style>
-</head>
-<body lang=3D"EN-GB" link=3D"#0563C1" vlink=3D"#954F72" style=3D"word-wrap:=
-break-word">
-<div class=3D"WordSection1">
-<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt;mso-fareast-language=
-:EN-US">On
-</span><span style=3D"font-size:12.0pt;color:black">Wednesday, 6 September =
-2023 Fiona Ebner &lt;f.ebner@proxmox.com&gt; wrote:<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"font-size:12.0pt;color:black"><o:p>&n=
-bsp;</o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">&gt; If there is a =
-pending DMA operation during ide_bus_reset(), the fact<br>
-&gt; that the IDEState is already reset before the operation is canceled<br=
->
-&gt; can be problematic. In particular, ide_dma_cb() might be called and<br=
->
-&gt; then use the reset IDEState which contains the signature after the<br>
-&gt; reset. When used to construct the IO operation this leads to<br>
-&gt; ide_get_sector() returning 0 and nsector being 1. This is particularly=
-<br>
-&gt; bad, because a write command will thus destroy the first sector which<=
-br>
-&gt; often contains a partition table or similar.<o:p></o:p></span></p>
-<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
-span></p>
-<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Tested-by: simon.ro=
-we@nutanix.com</span><span style=3D"font-size:11.0pt;mso-fareast-language:E=
-N-US"><o:p></o:p></span></p>
-<div id=3D"mail-editor-reference-message-container">
-<div>
-<div>
-<p class=3D"MsoNormal" style=3D"margin-bottom:12.0pt"><span style=3D"font-s=
-ize:11.0pt"><o:p>&nbsp;</o:p></span></p>
-</div>
-</div>
-</div>
-</div>
-</body>
-</html>
+>           for (int i = 0; i < sizeof(MMVector); i += sizeof(TYPE)) { \
+>               if (test_bit(i, env->vtcm_log.mask)) { \
+>                   TYPE dst = 0; \
+> diff --git a/target/hexagon/op_helper.c b/target/hexagon/op_helper.c
+> index 8ca3976a65..da10ac5847 100644
+> --- a/target/hexagon/op_helper.c
+> +++ b/target/hexagon/op_helper.c
+> @@ -132,10 +132,9 @@ void HELPER(gather_store)(CPUHexagonState *env, uint32_t addr, int slot)
+>   void HELPER(commit_hvx_stores)(CPUHexagonState *env)
+>   {
+>       uintptr_t ra = GETPC();
+> -    int i;
+>   
+>       /* Normal (possibly masked) vector store */
+> -    for (i = 0; i < VSTORES_MAX; i++) {
+> +    for (int i = 0; i < VSTORES_MAX; i++) {
+>           if (env->vstore_pending[i]) {
+>               env->vstore_pending[i] = 0;
+>               target_ulong va = env->vstore[i].va;
+> @@ -162,7 +161,7 @@ void HELPER(commit_hvx_stores)(CPUHexagonState *env)
+>                   g_assert_not_reached();
+>               }
+>           } else {
+> -            for (i = 0; i < sizeof(MMVector); i++) {
+> +            for (int i = 0; i < sizeof(MMVector); i++) {
+>                   if (test_bit(i, env->vtcm_log.mask)) {
+>                       cpu_stb_data_ra(env, env->vtcm_log.va[i],
+>                                       env->vtcm_log.data.ub[i], ra);
 
---_000_DM8PR02MB8121F2AFF6FB7A5A054252AF93CAADM8PR02MB8121namp_--
+Correct.
+
+> @@ -505,10 +504,8 @@ void HELPER(probe_pkt_scalar_store_s0)(CPUHexagonState *env, int args)
+>   static void probe_hvx_stores(CPUHexagonState *env, int mmu_idx,
+>                                       uintptr_t retaddr)
+>   {
+> -    int i;
+> -
+>       /* Normal (possibly masked) vector store */
+> -    for (i = 0; i < VSTORES_MAX; i++) {
+> +    for (int i = 0; i < VSTORES_MAX; i++) {
+
+Correct.
+
+>           if (env->vstore_pending[i]) {
+>               target_ulong va = env->vstore[i].va;
+>               int size = env->vstore[i].size;
+> diff --git a/target/hexagon/translate.c b/target/hexagon/translate.c
+> index c00254e4d5..a1c7cd6f21 100644
+> --- a/target/hexagon/translate.c
+> +++ b/target/hexagon/translate.c
+> @@ -553,7 +553,7 @@ static void gen_start_packet(DisasContext *ctx)
+>       /* Preload the predicated registers into get_result_gpr(ctx, i) */
+>       if (ctx->need_commit &&
+>           !bitmap_empty(ctx->predicated_regs, TOTAL_PER_THREAD_REGS)) {
+> -        int i = find_first_bit(ctx->predicated_regs, TOTAL_PER_THREAD_REGS);
+
+Hmmm, matter of taste, in big functions where a very generic
+variable is reused, reducing the scope seems safer (like you
+did int commit_hvx_stores).
+
+> +        i = find_first_bit(ctx->predicated_regs, TOTAL_PER_THREAD_REGS);
+>           while (i < TOTAL_PER_THREAD_REGS) {
+>               tcg_gen_mov_tl(get_result_gpr(ctx, i), hex_gpr[i]);
+>               i = find_next_bit(ctx->predicated_regs, TOTAL_PER_THREAD_REGS,
+> @@ -566,7 +566,7 @@ static void gen_start_packet(DisasContext *ctx)
+>        * Only endloop instructions conditionally write to pred registers
+>        */
+>       if (ctx->need_commit && pkt->pkt_has_endloop) {
+> -        for (int i = 0; i < ctx->preg_log_idx; i++) {
+> +        for (i = 0; i < ctx->preg_log_idx; i++) {
+>               int pred_num = ctx->preg_log[i];
+>               ctx->new_pred_value[pred_num] = tcg_temp_new();
+>               tcg_gen_mov_tl(ctx->new_pred_value[pred_num], hex_pred[pred_num]);
+
+[...]
+
+Preferably reworking SCATTER_OP_WRITE_TO_MEM:
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
+Regards,
+
+Phil.
+
 
