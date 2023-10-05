@@ -2,74 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702DC7B9A61
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B13427B9A69
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFHs-0005M0-Kz; Wed, 04 Oct 2023 23:44:32 -0400
+	id 1qoFHv-0005tB-EM; Wed, 04 Oct 2023 23:44:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHa-0004rG-Iv
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHa-0004rF-Gs
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:18 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHV-0000DS-Nb
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHZ-0000E2-46
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477443;
+ s=mimecast20190719; t=1696477452;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  in-reply-to:in-reply-to:references:references;
- bh=e6RIGJDZm9vqgaVvilT/iqK5gBS9e4D2YBhuylyTSNo=;
- b=Is+EOulXnMOyqRInXR8eUsgGABFfVf0+C19UFidgDXyyeeK5N6s6iiTLWjXibSfjNd2PY1
- IVZuB9G6SGl3iqV1B1xdaLGYvA3YryzHhSSeoM9sTx8l44BcnjqXbEJO+EL36ZYyvyvzdm
- QldsD5oFiW9gmg3lVXpsBJ/eGFdji1Y=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=i08g2Y3CGAaSjKQp/C/ixb+I7WFjEj9qgGznvzU8bM4=;
+ b=hAMaGO8YpLHm3Aya20474NcXr1fbBzTU/vekHcItsEcbIfkbp64luUOmJDISrqYgQjDQgs
+ AwIbt9CMgDxL0z0LC9Ims4++r+uprxGTu5b9VuXdTvZUXqU9qP3mpyG4mzsHPkl5rYKF04
+ aor+lSM2mr/M5XjfOUnXxAQfs6bscNY=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-484-szO76y9fNDmL3hUDaV4Srw-1; Wed, 04 Oct 2023 23:44:01 -0400
-X-MC-Unique: szO76y9fNDmL3hUDaV4Srw-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-4059475c174so4085665e9.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:01 -0700 (PDT)
+ us-mta-70-GRg5-Z0hP1-CtB6q-3qDqg-1; Wed, 04 Oct 2023 23:44:05 -0400
+X-MC-Unique: GRg5-Z0hP1-CtB6q-3qDqg-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-3fe1521678fso3817195e9.1
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477440; x=1697082240;
+ d=1e100.net; s=20230601; t=1696477444; x=1697082244;
  h=in-reply-to:content-disposition:mime-version:references:message-id
  :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e6RIGJDZm9vqgaVvilT/iqK5gBS9e4D2YBhuylyTSNo=;
- b=LBN81VN6CDJheGwM/3tk+UOfGzu7Z/cY8eHQrmNyU/yoehVO0W6IcOK8gQ34fRh0eK
- TLDSOI+zMGmPbF7BdMmYUJD+T2jwXIueTehLqNUUB7DekWbfZy3cbL6F9cpIw3WEVh9W
- 2YP4fWASelGS+UJdkdyzAwbpfp4hK7m27sSS1HCRtSN+Rma5SpqAq7iDi93z3Pl5Q3h9
- lmu/oMoKWCnh6dqxZpqZwFYBS/V5yW3ifW3GI32ATKC/z9wR33Eymv7SGRG8pasNspSa
- rH84Hjg3dCKEq2R+tDu4sx+zRegU/he/OZpA4+saQm2+bNZxDnrFeFYCBSd6mSSVIS8j
- Eigw==
-X-Gm-Message-State: AOJu0YwlzOkvKAFmCUR9D1R+jBihkc70hGfVvB23MccA2QO9aXqPwxtt
- pc15ZeclVql91Ej/AhabH5tDDdDRhZuSxYmZeUwmM2fAypIjkWnq5Rn8rNIHMDkz459ORETWOXw
- SX/iTGYxQNRNlZZquFjldMUKtJ1XRMPA1qKUq4lPf9COgeCQUOUmpZFELZbikRe4Io6/R
-X-Received: by 2002:a7b:c5ca:0:b0:406:7021:7d8 with SMTP id
- n10-20020a7bc5ca000000b00406702107d8mr4205032wmk.20.1696477439938; 
- Wed, 04 Oct 2023 20:43:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCOynrgc4dy2uJwSL4wI6VNAK3YfoQwE5LhjNL631Fjn8W0Qa7LXZCxqY0a32xxIyk4Zqqqw==
-X-Received: by 2002:a7b:c5ca:0:b0:406:7021:7d8 with SMTP id
- n10-20020a7bc5ca000000b00406702107d8mr4205017wmk.20.1696477439657; 
- Wed, 04 Oct 2023 20:43:59 -0700 (PDT)
+ bh=i08g2Y3CGAaSjKQp/C/ixb+I7WFjEj9qgGznvzU8bM4=;
+ b=IRtxqzZ8A21WTXi2RCesvcvXSdvdBt/ipLGT2jBkbFkX1o3tuBglBwFvEpZt25z5hK
+ bE5i15cgLjKjrgKDa9hODNo61ULmgBmZoRIctbzyp+QWyuG5N5uxjU+7faVg5JA/Q7aW
+ 5UAofj62tsQ6kqDnjeMHZnptJ0QTAmp2A4AT0sMgGdEN+uBCX/D6ungagXRTh2BFadvA
+ E1n9+VLPn2vbYH5OlmnG5pWjNKnYdtcA5Hb8k+Nw0ct0VXKwAQXYBd3XtT2X0VXHLDcs
+ /77lutlnXDnWiL8+ULwTyG/IPbw/JsFohfJe5rnW0iu5jpi6qI6BjSo9xgC461EA2H3E
+ m3sQ==
+X-Gm-Message-State: AOJu0YwWmHUGRDaDsWsQ4UzvCemmSloUr+aT7v1/f/H65DSslUi1zzoh
+ gCBBcVrhpRH/41HHYSIGAAc1atTpnwsqFRisutyOlvO5zVeGiKEkFgaAmctwpaY0kdWGfJSygvI
+ t9J6XhJlVfLk4wwNWmqlwnP+zxGCHCL9TLG4+g9GsnXJT1lWvVIkDKxz6RAwTN0uzVh08
+X-Received: by 2002:a05:600c:21d5:b0:3fe:5501:d284 with SMTP id
+ x21-20020a05600c21d500b003fe5501d284mr4164791wmj.11.1696477443865; 
+ Wed, 04 Oct 2023 20:44:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHsKpVIVnrxh6H+LdzE/Zqc7KSYb/JdrXTo/GHIVFmHqMpL1lknkU4tTHiW4hWoQ2yrf2tYBA==
+X-Received: by 2002:a05:600c:21d5:b0:3fe:5501:d284 with SMTP id
+ x21-20020a05600c21d500b003fe5501d284mr4164781wmj.11.1696477443554; 
+ Wed, 04 Oct 2023 20:44:03 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- hn8-20020a05600ca38800b00405959bbf4fsm543902wmb.19.2023.10.04.20.43.57
+ 1-20020a05600c230100b0040644e699a0sm2775561wmo.45.2023.10.04.20.44.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:43:59 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:43:56 -0400
+ Wed, 04 Oct 2023 20:44:02 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:44:00 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
- Jonah Palmer <jonah.palmer@oracle.com>,
- Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>
-Subject: [PULL v2 23/53] vhost-user: move VhostUserProtocolFeature definition
- to header file
-Message-ID: <3d123a8b411706423581db7d26a7bbe548360751.1696477105.git.mst@redhat.com>
+ David Woodhouse <dwmw@amazon.co.uk>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
+Subject: [PULL v2 24/53] hw/isa/ich9: Add comment on imperfect emulation of
+ PIC vs. I/O APIC routing
+Message-ID: <886e0a5f31bf3d40dd8d9199674a4bad64942fde.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -101,148 +99,52 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Jonah Palmer <jonah.palmer@oracle.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-Move the definition of VhostUserProtocolFeature to
-include/hw/virtio/vhost-user.h.
+As noted in the comment, the PCI INTx lines are supposed to be routed
+to *both* the PIC and the I/O APIC. It's just that we don't cope with
+the concept of an IRQ being asserted to two *different* pins on the
+two irqchips.
 
-Remove previous definitions in hw/scsi/vhost-user-scsi.c,
-hw/virtio/vhost-user.c, and hw/virtio/virtio-qmp.c.
+So we have this hack of routing to I/O APIC only if the PIRQ routing to
+the PIC is disabled. Which seems to work well enough, even when I try
+hard to break it with kexec. But should be explicitly documented and
+understood.
 
-Previously there were 3 separate definitions of this over 3 different
-files. Now only 1 definition of this will be present for these 3 files.
-
-Signed-off-by: Jonah Palmer <jonah.palmer@oracle.com>
-Reviewed-by: Emmanouil Pitsidianakis <manos.pitsidianakis@linaro.org>
-Message-Id: <20230926224107.2951144-4-jonah.palmer@oracle.com>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Message-Id: <112a09643b8191c4eae7d92fa247a861ab90a9ee.camel@infradead.org>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/virtio/vhost-user.h | 21 +++++++++++++++++++++
- hw/scsi/vhost-user-scsi.c      |  4 ----
- hw/virtio/vhost-user.c         | 21 ---------------------
- hw/virtio/virtio-qmp.c         | 22 +---------------------
- 4 files changed, 22 insertions(+), 46 deletions(-)
+ hw/isa/lpc_ich9.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/hw/virtio/vhost-user.h b/include/hw/virtio/vhost-user.h
-index 191216a74f..80e2b4a463 100644
---- a/include/hw/virtio/vhost-user.h
-+++ b/include/hw/virtio/vhost-user.h
-@@ -11,6 +11,27 @@
- #include "chardev/char-fe.h"
- #include "hw/virtio/virtio.h"
+diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
+index 9c47a2f6c7..bce487ac4e 100644
+--- a/hw/isa/lpc_ich9.c
++++ b/hw/isa/lpc_ich9.c
+@@ -304,6 +304,21 @@ static PCIINTxRoute ich9_route_intx_pin_to_irq(void *opaque, int pirq_pin)
+             route.irq = -1;
+         }
+     } else {
++        /*
++         * Strictly speaking, this is wrong. The PIRQ should be routed
++         * to *both* the I/O APIC and the PIC, on different pins. The
++         * I/O APIC has a fixed mapping to IRQ16-23, while the PIC is
++         * routed according to the PIRQx_ROUT configuration. But QEMU
++         * doesn't (yet) cope with the concept of pin numbers differing
++         * between PIC and I/O APIC, and neither does the in-kernel KVM
++         * irqchip support. So we route to the I/O APIC *only* if the
++         * routing to the PIC is disabled in the PIRQx_ROUT settings.
++         *
++         * This seems to work even if we boot a Linux guest with 'noapic'
++         * to make it use the legacy PIC, and then kexec directly into a
++         * new kernel which uses the I/O APIC. The new kernel explicitly
++         * disables the PIRQ routing even though it doesn't need to care.
++         */
+         route.irq = ich9_pirq_to_gsi(pirq_pin);
+     }
  
-+enum VhostUserProtocolFeature {
-+    VHOST_USER_PROTOCOL_F_MQ = 0,
-+    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
-+    VHOST_USER_PROTOCOL_F_RARP = 2,
-+    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
-+    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
-+    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
-+    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
-+    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
-+    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
-+    VHOST_USER_PROTOCOL_F_CONFIG = 9,
-+    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
-+    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
-+    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
-+    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
-+    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
-+    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
-+    VHOST_USER_PROTOCOL_F_STATUS = 16,
-+    VHOST_USER_PROTOCOL_F_MAX
-+};
-+
- /**
-  * VhostUserHostNotifier - notifier information for one queue
-  * @rcu: rcu_head for cleanup
-diff --git a/hw/scsi/vhost-user-scsi.c b/hw/scsi/vhost-user-scsi.c
-index ee99b19e7a..df6b66cc1a 100644
---- a/hw/scsi/vhost-user-scsi.c
-+++ b/hw/scsi/vhost-user-scsi.c
-@@ -39,10 +39,6 @@ static const int user_feature_bits[] = {
-     VHOST_INVALID_FEATURE_BIT
- };
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--};
--
- static void vhost_user_scsi_set_status(VirtIODevice *vdev, uint8_t status)
- {
-     VHostUserSCSI *s = (VHostUserSCSI *)vdev;
-diff --git a/hw/virtio/vhost-user.c b/hw/virtio/vhost-user.c
-index 8dcf049d42..a096335921 100644
---- a/hw/virtio/vhost-user.c
-+++ b/hw/virtio/vhost-user.c
-@@ -56,27 +56,6 @@
-  */
- #define VHOST_USER_MAX_CONFIG_SIZE 256
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    /* Feature 14 reserved for VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS. */
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- #define VHOST_USER_PROTOCOL_FEATURE_MASK ((1 << VHOST_USER_PROTOCOL_F_MAX) - 1)
- 
- typedef enum VhostUserRequest {
-diff --git a/hw/virtio/virtio-qmp.c b/hw/virtio/virtio-qmp.c
-index 3431711db5..1dd96ed20f 100644
---- a/hw/virtio/virtio-qmp.c
-+++ b/hw/virtio/virtio-qmp.c
-@@ -17,6 +17,7 @@
- #include "qapi/qapi-commands-qom.h"
- #include "qapi/qmp/qobject.h"
- #include "qapi/qmp/qjson.h"
-+#include "hw/virtio/vhost-user.h"
- 
- #include "standard-headers/linux/virtio_ids.h"
- #include "standard-headers/linux/vhost_types.h"
-@@ -37,27 +38,6 @@
- #define FEATURE_ENTRY(name, desc) (qmp_virtio_feature_map_t) \
-     { .virtio_bit = name, .feature_desc = desc }
- 
--enum VhostUserProtocolFeature {
--    VHOST_USER_PROTOCOL_F_MQ = 0,
--    VHOST_USER_PROTOCOL_F_LOG_SHMFD = 1,
--    VHOST_USER_PROTOCOL_F_RARP = 2,
--    VHOST_USER_PROTOCOL_F_REPLY_ACK = 3,
--    VHOST_USER_PROTOCOL_F_NET_MTU = 4,
--    VHOST_USER_PROTOCOL_F_BACKEND_REQ = 5,
--    VHOST_USER_PROTOCOL_F_CROSS_ENDIAN = 6,
--    VHOST_USER_PROTOCOL_F_CRYPTO_SESSION = 7,
--    VHOST_USER_PROTOCOL_F_PAGEFAULT = 8,
--    VHOST_USER_PROTOCOL_F_CONFIG = 9,
--    VHOST_USER_PROTOCOL_F_BACKEND_SEND_FD = 10,
--    VHOST_USER_PROTOCOL_F_HOST_NOTIFIER = 11,
--    VHOST_USER_PROTOCOL_F_INFLIGHT_SHMFD = 12,
--    VHOST_USER_PROTOCOL_F_RESET_DEVICE = 13,
--    VHOST_USER_PROTOCOL_F_INBAND_NOTIFICATIONS = 14,
--    VHOST_USER_PROTOCOL_F_CONFIGURE_MEM_SLOTS = 15,
--    VHOST_USER_PROTOCOL_F_STATUS = 16,
--    VHOST_USER_PROTOCOL_F_MAX
--};
--
- /* Virtio transport features mapping */
- static const qmp_virtio_feature_map_t virtio_transport_map[] = {
-     /* Virtio device transport features */
 -- 
 MST
 
