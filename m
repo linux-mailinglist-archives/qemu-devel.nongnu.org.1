@@ -2,90 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF41D7B9B29
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B51ED7B9B2A
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 08:47:58 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoI7p-0001tD-SX; Thu, 05 Oct 2023 02:46:21 -0400
+	id 1qoI9B-0002ia-CB; Thu, 05 Oct 2023 02:47:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qoI7k-0001sr-6D
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:46:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quintela@redhat.com>)
- id 1qoI7g-0001Rm-W9
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:46:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696488371;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:in-reply-to:in-reply-to:  references:references;
- bh=I9xyqp5g78lEp1vY0wkaw8CQ0PWJOazPVzsJw+O1nIc=;
- b=H4wi6F32HqBYLF+fU2iB1X0zH53uFSQ0ovAEZKSCVNKgCEb3qmZjRVOfvC3RMc5rfFFZsM
- V1tWqxV70OIFTcZVqEfSn+0pzrxv7XHirvITAxqJSGIG1974YQnWfCTBJoWyFNN01GXxfq
- /roNyPaT6EBqgJ6rxQN7Vwmwz6YX8z0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-230-Eqv5_mLFNvqgPUz9-uofRA-1; Thu, 05 Oct 2023 02:46:10 -0400
-X-MC-Unique: Eqv5_mLFNvqgPUz9-uofRA-1
-Received: by mail-wr1-f71.google.com with SMTP id
- ffacd0b85a97d-317d5b38194so283770f8f.0
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:46:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qoI97-0002eV-Pa
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:47:43 -0400
+Received: from mail-pl1-x632.google.com ([2607:f8b0:4864:20::632])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qoI93-0001gb-2s
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 02:47:39 -0400
+Received: by mail-pl1-x632.google.com with SMTP id
+ d9443c01a7336-1bf6ea270b2so4299345ad.0
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 23:47:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696488454; x=1697093254;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=zGHIZ/nFu0V+cvCgaiJjxfj7nZj/2FIabbcqcODY2Bg=;
+ b=23zJDARF8Wk+RVNfZTw2bbdB68CKl/TKt0bYNiiNQA9HjqSg0DbaA9Ypn4KUmgolum
+ rcUD4cLih87tOISNUBCDLsFM+siQ3P/D5JINQOvYxw0kjXU3GKjAYYU7EjuYjqC/+o5q
+ 4AdFf/lnb3vlU2xCWJtRAu2JkBI4c7P8BCsnKTQPI7XTKmwHc7/OxY5yuDxrDbpeo6n6
+ 4+FBl4E1ppthyQgbQaQX6J2Mc8hs3m0G+VEsuuXdg3SdVWr0j0jcqiwDkaIzuwVJiIuq
+ wyCPKXUEQjlqgtOefvys4S0gXYVQZTlZ3bfMfm2nktunRWUtNmOK93Ft0pbw3IqiQpVg
+ kJ2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696488369; x=1697093169;
- h=mime-version:message-id:date:reply-to:user-agent:references
- :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=I9xyqp5g78lEp1vY0wkaw8CQ0PWJOazPVzsJw+O1nIc=;
- b=OOdJRzaAc3sQMO+4qoLUAIIPgyE80/eQVaNKeUH8VwaM/e0txzzzJXjNuHZG20ECAF
- e2GQzecfv07sv72/Tid3Js7okThx2QNj5CPCG2i3uMrDMyoM0K4Hu2TzYyFNdu1v6rUY
- 2r9ohSMjhz2JYOZkNVIDiXgH9fbvbnloCx9PL8Z0HvAS8FSrpK16zLQiwgvwV3fFW/5+
- ykUEGMyfXNepBlfTIvAc0lHMLVjIlavp1/AE6W1XeW0FH8IndwUO0X9BKcDeR7/NUE8k
- a1sR2qEKIds2dNe/Iks5h/GY57W4APEtjbmZPJTRFXQ/GO1ChM7SgVTClCv8uQ0elRkb
- Cp9A==
-X-Gm-Message-State: AOJu0YxT1+vi58N54T3bIUlE4MzCIDrCSxGYfqeY+fyCR2PK1V1js4PO
- /2LfCtWAR6TDoDzgVCcwWv8Pv6Wni/v1hNZu4Uu5tglM/1/Vt2yJH5AtHOr/SfHUiolo429GEQk
- gVLN7X/IWlIuGDk8=
-X-Received: by 2002:a5d:660c:0:b0:31f:a15f:2cdc with SMTP id
- n12-20020a5d660c000000b0031fa15f2cdcmr346055wru.29.1696488369285; 
- Wed, 04 Oct 2023 23:46:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFNwA9y+VpoGCfXgUmgvmZfhGyVSCTW9oZy7VSn0Xxr6p35SbftYc3I9E+3/oplKZU3SXyHKg==
-X-Received: by 2002:a5d:660c:0:b0:31f:a15f:2cdc with SMTP id
- n12-20020a5d660c000000b0031fa15f2cdcmr346036wru.29.1696488368933; 
- Wed, 04 Oct 2023 23:46:08 -0700 (PDT)
-Received: from redhat.com (static-151-150-85-188.ipcom.comunitel.net.
- [188.85.150.151]) by smtp.gmail.com with ESMTPSA id
- j14-20020a5d448e000000b0032196c508e3sm982742wrq.53.2023.10.04.23.46.08
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 23:46:08 -0700 (PDT)
-From: Juan Quintela <quintela@redhat.com>
-To: Markus Armbruster <armbru@redhat.com>
-Cc: qemu-devel@nongnu.org,  peterx@redhat.com,  leobras@redhat.com,
- farosas@suse.de,  lizhijian@fujitsu.com,  eblake@redhat.com
-Subject: Re: [PATCH v2 16/53] migration/rdma: Fix or document problematic
- uses of errno
-In-Reply-To: <20230928132019.2544702-17-armbru@redhat.com> (Markus
- Armbruster's message of "Thu, 28 Sep 2023 15:19:42 +0200")
-References: <20230928132019.2544702-1-armbru@redhat.com>
- <20230928132019.2544702-17-armbru@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.3 (gnu/linux)
-Date: Thu, 05 Oct 2023 08:46:07 +0200
-Message-ID: <871qe9r2hc.fsf@secure.mitica>
+ d=1e100.net; s=20230601; t=1696488454; x=1697093254;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=zGHIZ/nFu0V+cvCgaiJjxfj7nZj/2FIabbcqcODY2Bg=;
+ b=cjgKwMx83cZxzFXnqEX4xK3s6JAG+VTXOg55CMU3vh0DaBlSKgCyIbedG8m9UoBFqC
+ u8UFyiNzpC2TEx7sWyNHXccC2yBS1x1a/c57pTTTCskzZ3r239a2Hkz/W5EGmKBu2wDG
+ xTsXzgkhyk88VWsjFeZtvd6E5VCCdG8zKbMfRtViglO2wXOlhWVCQtw7rZA1oC1HPKED
+ KSimiH3ODog0lv2U3f86A8A4P/njGi1p8LJRcQglw49+5attNHJw+s4WvRDZ6peIA4iR
+ K/qMZ7+L+1Na4SbKK89CWppVZGtKhKkR29rjqh9RXV6CSP20ZkQyFt2x8n+f3El0eyg6
+ bbUQ==
+X-Gm-Message-State: AOJu0YwOPHYYm+ATrI2EdI9CBEqnM6xorOg0LjzNPPl5nvIu5TAjZW/v
+ vPkW7jv50YPki5vOnR9bEi9KWw==
+X-Google-Smtp-Source: AGHT+IFq9J3yy2mi4+946+ZctoFhX9fffqcquBAIoVyMXDj4uzgyt71XTgM4cBUCf1+LVpspFtCYKg==
+X-Received: by 2002:a17:902:db06:b0:1c4:2ca5:8b7c with SMTP id
+ m6-20020a170902db0600b001c42ca58b7cmr4453693plx.61.1696488454679; 
+ Wed, 04 Oct 2023 23:47:34 -0700 (PDT)
+Received: from localhost ([2400:4050:a840:1e00:d54:e521:8bac:7bed])
+ by smtp.gmail.com with UTF8SMTPSA id
+ jw17-20020a170903279100b001b89466a5f4sm771565plb.105.2023.10.04.23.47.29
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Wed, 04 Oct 2023 23:47:34 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: Peter Maydell <peter.maydell@linaro.org>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel <qemu-devel@nongnu.org>,
+ Programmingkid <programmingkidx@gmail.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <f4bug@amsat.org>,
+ Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
+ Cleber Rosa <crosa@redhat.com>, Stefan Weil <sw@weilnetz.de>,
+ Akihiko Odaki <akihiko.odaki@daynix.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH v2] cutils: Fix get_relocated_path on Windows
+Date: Thu,  5 Oct 2023 15:47:25 +0900
+Message-ID: <20231005064726.6945-1-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=quintela@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::632;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x632.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,48 +96,74 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: quintela@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Markus Armbruster <armbru@redhat.com> wrote:
-> We use errno after calling Libibverbs functions that are not
-> documented to set errno (manual page does not mention errno), or where
-> the documentation is unclear ("returns [...] the value of errno on
-> failure").  While this could be read as "sets errno and returns it",
-> a glance at the source code[*] kills that hope:
->
->     static inline int ibv_post_send(struct ibv_qp *qp, struct ibv_send_wr *wr,
->                                     struct ibv_send_wr **bad_wr)
->     {
->             return qp->context->ops.post_send(qp, wr, bad_wr);
->     }
->
-> The callback can be
->
->     static int mana_post_send(struct ibv_qp *ibqp, struct ibv_send_wr *wr,
->                               struct ibv_send_wr **bad)
->     {
->             /* This version of driver supports RAW QP only.
->              * Posting WR is done directly in the application.
->              */
->             return EOPNOTSUPP;
->     }
->
-> Neither of them touches errno.
->
-> One of these errno uses is easy to fix, so do that now.  Several more
-> will go away later in the series; add temporary FIXME commments.
-> Three will remain; add TODO comments.  TODO, not FIXME, because the
-> bug might be in Libibverbs documentation.
->
-> [*] https://github.com/linux-rdma/rdma-core.git
->     commit 55fa316b4b18f258d8ac1ceb4aa5a7a35b094dcf
->
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
+get_relocated_path() did not have error handling for PathCchSkipRoot()
+because a path given to get_relocated_path() was expected to be a valid
+path containing a drive letter or UNC server/share path elements on
+Windows, but sometimes it turned out otherwise.
 
-Reviewed-by: Juan Quintela <quintela@redhat.com>
+The paths passed to get_relocated_path() are defined by macros generated
+by Meson. Meson in turn uses a prefix given by the configure script to
+generate them. For Windows, the script passes /qemu as a prefix to
+Meson by default.
 
-And here I am, re-merging from this patch O:-)
+As documented in docs/about/build-platforms.rst, typically MSYS2 is used
+for the build system, but it is also possible to use Linux as well. When
+MSYS2 is used, its Bash variant recognizes /qemu as a MSYS2 path, and
+converts it to a Windows path, adding the MSYS2 prefix including a drive
+letter or UNC server/share path elements. Such a conversion does not
+happen on a shell on Linux however, and /qemu will be passed as is in
+the case.
+
+Implement a proper error handling of PathCchSkipRoot() in
+get_relocated_path() so that it can handle a path without a drive letter
+or UNC server/share path elements.
+
+Reported-by: Stefan Weil <sw@weilnetz.de>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+V1 -> V2: Compare against S_OK for clarity (Philippe Mathieu-Daudé)
+
+ util/cutils.c | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
+
+diff --git a/util/cutils.c b/util/cutils.c
+index 25373198ad..770d6e023c 100644
+--- a/util/cutils.c
++++ b/util/cutils.c
+@@ -1155,17 +1155,21 @@ char *get_relocated_path(const char *dir)
+     g_string_append(result, "/qemu-bundle");
+     if (access(result->str, R_OK) == 0) {
+ #ifdef G_OS_WIN32
+-        size_t size = mbsrtowcs(NULL, &dir, 0, &(mbstate_t){0}) + 1;
++        const char *src = dir;
++        size_t size = mbsrtowcs(NULL, &src, 0, &(mbstate_t){0}) + 1;
+         PWSTR wdir = g_new(WCHAR, size);
+-        mbsrtowcs(wdir, &dir, size, &(mbstate_t){0});
++        mbsrtowcs(wdir, &src, size, &(mbstate_t){0});
+ 
+         PCWSTR wdir_skipped_root;
+-        PathCchSkipRoot(wdir, &wdir_skipped_root);
++        if (PathCchSkipRoot(wdir, &wdir_skipped_root) == S_OK) {
++            size = wcsrtombs(NULL, &wdir_skipped_root, 0, &(mbstate_t){0});
++            char *cursor = result->str + result->len;
++            g_string_set_size(result, result->len + size);
++            wcsrtombs(cursor, &wdir_skipped_root, size + 1, &(mbstate_t){0});
++        } else {
++            g_string_append(result, dir);
++        }
+ 
+-        size = wcsrtombs(NULL, &wdir_skipped_root, 0, &(mbstate_t){0});
+-        char *cursor = result->str + result->len;
+-        g_string_set_size(result, result->len + size);
+-        wcsrtombs(cursor, &wdir_skipped_root, size + 1, &(mbstate_t){0});
+         g_free(wdir);
+ #else
+         g_string_append(result, dir);
+-- 
+2.41.0
 
 
