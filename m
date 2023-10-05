@@ -2,76 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A33F27B9CC2
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 13:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE5187B9CD1
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 13:53:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoMZR-0004r6-85; Thu, 05 Oct 2023 07:31:09 -0400
+	id 1qoMtu-00048A-OL; Thu, 05 Oct 2023 07:52:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qoMZP-0004qe-4Q
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:31:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qoMZN-0001sm-Ek
- for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:31:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696505464;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=lGNha8VUjmmkr1NEjXwB+/ZjV4+3CDK8BQVzB2h5LYw=;
- b=KYwBAIPutcQqbyOuTaD/jvs2ywfAlRFM/faNf5IUaZZOCdM3YHCvFlYPznl6xQFth9Vqbq
- s65lAfNZ4x3Nt50NH2rdCNWn2FlPgZ+abuOm53NpOPTkAflCM1rWboX24nN8blxSdaUyPz
- R6xPoGbuOif1xbtWAauR/Qdfk9fuc6o=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-653-_n2I_EwNPNqOzaETdbZPrw-1; Thu, 05 Oct 2023 07:30:46 -0400
-X-MC-Unique: _n2I_EwNPNqOzaETdbZPrw-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 94A4A2815E20;
- Thu,  5 Oct 2023 11:30:45 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.2])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 41F1A111CD24;
- Thu,  5 Oct 2023 11:30:43 +0000 (UTC)
-From: marcandre.lureau@redhat.com
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qoMtr-00042Q-PW
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:52:15 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qoMtm-0000az-0c
+ for qemu-devel@nongnu.org; Thu, 05 Oct 2023 07:52:15 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-533d31a8523so1574926a12.1
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 04:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696506727; x=1697111527; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=cN4KWEbAGL9Si9m7TYvwpIygqSnqw4TMk3YyNzvKNzc=;
+ b=EuMPnwgP8JQwPFU69MhqIuw2PB5qE0cbUr9SqD3liLiHILFXoFxYt2cnGkvCAMSrX/
+ 0JoGDTSMU38M+ZZhkwJzAETkXz4Y4zoQ2PPIEnyqsg26R5dNmG7D7GfVWqz7CKXa2gbr
+ 16BY8/GKAUotfStWtTka3ApYTwAugini4pkNRaEHODGTrv6UR7E/Vq72lEU3TGSqZK9h
+ 1kWP/hgWknEETDNTTmI7CEEBQ7lW8LPRTYyRscIec31SySXK9Arf1fV7M7bxjaXPOiu+
+ 5igGAhOAghSlnTL4+2jZA5OEHu/pb6SmCPZznYB9Em7uHIPoJtZL0fJ1kWCS/Yhsa1Xp
+ 1IJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696506727; x=1697111527;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=cN4KWEbAGL9Si9m7TYvwpIygqSnqw4TMk3YyNzvKNzc=;
+ b=Ly0N0gXjoxkDu2YFZ/sOiypb1UG933+TY491TRhAyAO2zX4ixvM/LSl+M9yWtwlZjK
+ R0TAc5WJGc4CKFaEBbonZoF+9E9yEuEe5aHOFaNHhQKdSD+2Meq8pNK/1dgEQfUUhWWC
+ ouvJvcsPUFsN3GSfUKj+v3SlsD4gFyp7FNnrpj8cAa5yIKGblhX+/25QQHi7rhhcBG1G
+ y0oePOnjTpjGiktIfIZ+2tMwjCxgJahdtVgpNQS8ZGWQzgzDvLEhrYsJkmZTECBXN0bG
+ 5itVjGaOsvIkpVmowlwn5NqZC4giec199KiiRU5+yobJ8BWRzy/ClpMf3XNEGowRKMLk
+ sTPg==
+X-Gm-Message-State: AOJu0YzUQI7Gdxj3fC/anK8EbmGIM8QIoUAQYgGxFzvFoMDF1nH0zK7+
+ FhJzHejaizYr7eByX0VLqPEtloTCJcU=
+X-Google-Smtp-Source: AGHT+IGe9UfryJan/CqIleUP6ahVemqI772RMecTQTZRgKbVQqnuvKmhodHC5HkHaVRC4GmuAHoX/w==
+X-Received: by 2002:a17:907:7809:b0:9ae:5be8:ff90 with SMTP id
+ la9-20020a170907780900b009ae5be8ff90mr4673490ejc.68.1696506727260; 
+ Thu, 05 Oct 2023 04:52:07 -0700 (PDT)
+Received: from archlinux.. (pd95eda61.dip0.t-ipconnect.de. [217.94.218.97])
+ by smtp.gmail.com with ESMTPSA id
+ a14-20020a17090680ce00b0099cb1a2cab0sm1070544ejx.28.2023.10.05.04.52.06
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Oct 2023 04:52:06 -0700 (PDT)
+From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, kraxel@redhat.com,
- lersek@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v4 3/3] hw/vfio: add ramfb migration support
-Date: Thu,  5 Oct 2023 15:30:26 +0400
-Message-ID: <20231005113027.1827078-4-marcandre.lureau@redhat.com>
-In-Reply-To: <20231005113027.1827078-1-marcandre.lureau@redhat.com>
-References: <20231005113027.1827078-1-marcandre.lureau@redhat.com>
+Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Bernhard Beschow <shentey@gmail.com>
+Subject: [PATCH v3] hw/isa/vt82c686: Respect SCI interrupt assignment
+Date: Thu,  5 Oct 2023 13:51:59 +0200
+Message-ID: <20231005115159.81202-1-shentey@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -16
+X-Spam_score: -1.7
+X-Spam_bar: -
+X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, FREEMAIL_FROM=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,170 +88,140 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+According to the datasheet, SCI interrupts of the power management function
+aren't routed through the PCI pins but rather directly to the integrated PIC.
+The routing is configurable through the ACPI interrupt select register at offset
+0x42 in the PCI configuration space of the power management function.
 
-Add a "VFIODisplay" subsection whenever "x-ramfb-migrate" is turned on.
+Signed-off-by: Bernhard Beschow <shentey@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Turn it off by default on machines <= 8.1 for compatibility reasons.
-
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
 ---
- hw/vfio/pci.h     |  3 +++
- hw/core/machine.c |  1 +
- hw/vfio/display.c | 20 ++++++++++++++++++++
- hw/vfio/pci.c     | 44 ++++++++++++++++++++++++++++++++++++++++++++
- stubs/ramfb.c     |  2 ++
- 5 files changed, 70 insertions(+)
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 2d836093a8..fd06695542 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -173,6 +173,7 @@ struct VFIOPCIDevice {
-     bool no_kvm_ioeventfd;
-     bool no_vfio_ioeventfd;
-     bool enable_ramfb;
-+    OnOffAuto ramfb_migrate;
-     bool defer_kvm_irq_routing;
-     bool clear_parent_atomics_on_exit;
-     VFIODisplay *dpy;
-@@ -226,4 +227,6 @@ void vfio_display_reset(VFIOPCIDevice *vdev);
- int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
- void vfio_display_finalize(VFIOPCIDevice *vdev);
+v3:
+* Rename SCI irq attribute to sci_irq (Zoltan)
+* Fix confusion about location of ACPI interrupt select register (Zoltan)
+* Model SCI as named GPIO (Bernhard)
+* Perform upcast via macro rather than sub structure selection (Bernhard)
+
+v2:
+* Introduce named constants for the ACPI interrupt select register at offset
+  0x42 (Phil)
+---
+ hw/isa/vt82c686.c | 48 +++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 36 insertions(+), 12 deletions(-)
+
+diff --git a/hw/isa/vt82c686.c b/hw/isa/vt82c686.c
+index 57bdfb4e78..aeb9434a46 100644
+--- a/hw/isa/vt82c686.c
++++ b/hw/isa/vt82c686.c
+@@ -40,12 +40,17 @@
+ #define TYPE_VIA_PM "via-pm"
+ OBJECT_DECLARE_SIMPLE_TYPE(ViaPMState, VIA_PM)
  
-+extern const VMStateDescription vfio_display_vmstate;
++#define VIA_PM_SCI_SELECT_OFS 0x42
++#define VIA_PM_SCI_SELECT_MASK 0xf
 +
- #endif /* HW_VFIO_VFIO_PCI_H */
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index e4361e3d48..f2c59a293c 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -33,6 +33,7 @@
- 
- GlobalProperty hw_compat_8_1[] = {
-     { "ramfb", "x-migrate", "off" },
-+    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" }
+ struct ViaPMState {
+     PCIDevice dev;
+     MemoryRegion io;
+     ACPIREGS ar;
+     APMState apm;
+     PMSMBus smb;
++
++    qemu_irq sci_irq;
  };
- const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
  
-diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-index bec864f482..0bdb807642 100644
---- a/hw/vfio/display.c
-+++ b/hw/vfio/display.c
-@@ -542,3 +542,23 @@ void vfio_display_finalize(VFIOPCIDevice *vdev)
-     vfio_display_edid_exit(vdev->dpy);
-     g_free(vdev->dpy);
- }
-+
-+static bool migrate_needed(void *opaque)
-+{
-+    VFIODisplay *dpy = opaque;
-+    bool ramfb_exists = dpy->ramfb != NULL;
-+
-+    /* see vfio_display_migration_needed() */
-+    assert(ramfb_exists);
-+    return ramfb_exists;
-+}
-+
-+const VMStateDescription vfio_display_vmstate = {
-+    .name = "VFIODisplay",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = migrate_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_STRUCT_POINTER(ramfb, VFIODisplay, ramfb_vmstate, RAMFBState),
-+    }
-+};
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 3b2ca3c24c..d2ede2f1a2 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2608,6 +2608,32 @@ static bool vfio_msix_present(void *opaque, int version_id)
-     return msix_present(pdev);
+ static void pm_io_space_update(ViaPMState *s)
+@@ -148,18 +153,7 @@ static void pm_update_sci(ViaPMState *s)
+                    ACPI_BITMASK_POWER_BUTTON_ENABLE |
+                    ACPI_BITMASK_GLOBAL_LOCK_ENABLE |
+                    ACPI_BITMASK_TIMER_ENABLE)) != 0);
+-    if (pci_get_byte(s->dev.config + PCI_INTERRUPT_PIN)) {
+-        /*
+-         * FIXME:
+-         * Fix device model that realizes this PM device and remove
+-         * this work around.
+-         * The device model should wire SCI and setup
+-         * PCI_INTERRUPT_PIN properly.
+-         * If PIN# = 0(interrupt pin isn't used), don't raise SCI as
+-         * work around.
+-         */
+-        pci_set_irq(&s->dev, sci_level);
+-    }
++    qemu_set_irq(s->sci_irq, sci_level);
+     /* schedule a timer interruption if needed */
+     acpi_pm_tmr_update(&s->ar, (s->ar.pm1.evt.en & ACPI_BITMASK_TIMER_ENABLE) &&
+                        !(pmsts & ACPI_BITMASK_TIMER_STATUS));
+@@ -213,6 +207,13 @@ static void via_pm_realize(PCIDevice *dev, Error **errp)
+     acpi_pm1_cnt_init(&s->ar, &s->io, false, false, 2, false);
  }
  
-+static bool vfio_display_migration_needed(void *opaque)
++static void via_pm_init(Object *obj)
 +{
-+    VFIOPCIDevice *vdev = opaque;
++    ViaPMState *s = VIA_PM(obj);
 +
-+    /*
-+     * We need to migrate the VFIODisplay object if ramfb *migration* was
-+     * explicitly requested (in which case we enforced both ramfb=on and
-+     * display=on), or ramfb migration was left at the default "auto"
-+     * setting, and *ramfb* was explicitly requested (in which case we
-+     * enforced display=on).
-+     */
-+    return vdev->ramfb_migrate == ON_OFF_AUTO_ON ||
-+        (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO && vdev->enable_ramfb);
++    qdev_init_gpio_out_named(DEVICE(obj), &s->sci_irq, "sci", 1);
 +}
 +
-+const VMStateDescription vmstate_vfio_display = {
-+    .name = "VFIOPCIDevice/VFIODisplay",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = vfio_display_migration_needed,
-+    .fields = (VMStateField[]){
-+        VMSTATE_STRUCT_POINTER(dpy, VFIOPCIDevice, vfio_display_vmstate, VFIODisplay),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- const VMStateDescription vmstate_vfio_pci_config = {
-     .name = "VFIOPCIDevice",
-     .version_id = 1,
-@@ -2616,6 +2642,10 @@ const VMStateDescription vmstate_vfio_pci_config = {
-         VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
-         VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
-         VMSTATE_END_OF_LIST()
-+    },
-+    .subsections = (const VMStateDescription*[]) {
-+        &vmstate_vfio_display,
-+        NULL
+ typedef struct via_pm_init_info {
+     uint16_t device_id;
+ } ViaPMInitInfo;
+@@ -238,6 +239,7 @@ static void via_pm_class_init(ObjectClass *klass, void *data)
+ static const TypeInfo via_pm_info = {
+     .name          = TYPE_VIA_PM,
+     .parent        = TYPE_PCI_DEVICE,
++    .instance_init = via_pm_init,
+     .instance_size = sizeof(ViaPMState),
+     .abstract      = true,
+     .interfaces = (InterfaceInfo[]) {
+@@ -568,9 +570,27 @@ static const VMStateDescription vmstate_via = {
      }
  };
  
-@@ -3271,6 +3301,19 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         }
-     }
- 
-+    if (vdev->ramfb_migrate == ON_OFF_AUTO_ON && !vdev->enable_ramfb) {
-+        error_setg(errp, "x-ramfb-migrate requires ramfb=on");
-+        goto out_deregister;
-+    }
-+    if (vbasedev->enable_migration == ON_OFF_AUTO_OFF) {
-+        if (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO) {
-+            vdev->ramfb_migrate = ON_OFF_AUTO_OFF;
-+        } else if (vdev->ramfb_migrate == ON_OFF_AUTO_ON) {
-+            error_setg(errp, "x-ramfb-migrate requires enable-migration");
-+            goto out_deregister;
-+        }
++static void via_isa_set_pm_irq(void *opaque, int n, int level)
++{
++    ViaISAState *s = opaque;
++    PCIDevice *pci_dev = PCI_DEVICE(&s->pm);
++    uint8_t irq = pci_get_byte(pci_dev->config + VIA_PM_SCI_SELECT_OFS)
++                  & VIA_PM_SCI_SELECT_MASK;
++
++    if (irq == 2) {
++        qemu_log_mask(LOG_GUEST_ERROR, "IRQ 2 for PM controller is reserved");
++        return;
 +    }
 +
-     if (!pdev->failover_pair_id) {
-         if (!vfio_migration_realize(vbasedev, errp)) {
-             goto out_deregister;
-@@ -3484,6 +3527,7 @@ static const TypeInfo vfio_pci_dev_info = {
- 
- static Property vfio_pci_dev_nohotplug_properties[] = {
-     DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
-+    DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/stubs/ramfb.c b/stubs/ramfb.c
-index 48143f3354..cf64733b10 100644
---- a/stubs/ramfb.c
-+++ b/stubs/ramfb.c
-@@ -2,6 +2,8 @@
- #include "qapi/error.h"
- #include "hw/display/ramfb.h"
- 
-+const VMStateDescription ramfb_vmstate = {};
++    if (irq != 0) {
++        qemu_set_irq(s->isa_irqs_in[irq], level);
++    }
++}
 +
- void ramfb_display_update(QemuConsole *con, RAMFBState *s)
+ static void via_isa_init(Object *obj)
  {
+     ViaISAState *s = VIA_ISA(obj);
++    DeviceState *dev = DEVICE(s);
+ 
+     object_initialize_child(obj, "rtc", &s->rtc, TYPE_MC146818_RTC);
+     object_initialize_child(obj, "ide", &s->ide, TYPE_VIA_IDE);
+@@ -578,6 +598,8 @@ static void via_isa_init(Object *obj)
+     object_initialize_child(obj, "uhci2", &s->uhci[1], TYPE_VT82C686B_USB_UHCI);
+     object_initialize_child(obj, "ac97", &s->ac97, TYPE_VIA_AC97);
+     object_initialize_child(obj, "mc97", &s->mc97, TYPE_VIA_MC97);
++
++    qdev_init_gpio_in_named(dev, via_isa_set_pm_irq, "sci", 1);
  }
+ 
+ static const TypeInfo via_isa_info = {
+@@ -704,6 +726,8 @@ static void via_isa_realize(PCIDevice *d, Error **errp)
+     if (!qdev_realize(DEVICE(&s->pm), BUS(pci_bus), errp)) {
+         return;
+     }
++    qdev_connect_gpio_out_named(DEVICE(&s->pm), "sci", 0,
++                                qdev_get_gpio_in_named(DEVICE(d), "sci", 0));
+ 
+     /* Function 5: AC97 Audio */
+     qdev_prop_set_int32(DEVICE(&s->ac97), "addr", d->devfn + 5);
 -- 
-2.41.0
+2.42.0
 
 
