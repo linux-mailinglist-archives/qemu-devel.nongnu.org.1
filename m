@@ -2,79 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEEA7B9A57
-	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:46:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF317B9A60
+	for <lists+qemu-devel@lfdr.de>; Thu,  5 Oct 2023 05:48:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoFHz-0006CT-Fw; Wed, 04 Oct 2023 23:44:39 -0400
+	id 1qoFI2-0006Ol-Ue; Wed, 04 Oct 2023 23:44:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHu-00063V-Rg
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHt-0005uZ-Tl
  for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:34 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHt-0000Im-07
- for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:34 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoFHm-0000IB-TR
+ for qemu-devel@nongnu.org; Wed, 04 Oct 2023 23:44:33 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696477472;
+ s=mimecast20190719; t=1696477466;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=twDnxCIZ4gi16W+P0IcrGb7JEdH581l09+veM2VEhWI=;
- b=gnPGvwXB3ury0H95Cb2WWNBaORF3bX944sIHiutJ3xbL58eRQlY1CfMnSAskauoAYQtUaW
- +uWb7VbBBERyQcM0NFiDe5QeV93ButZ8LYKFC/IpHShyn2IilWTyeXYxIazd4A+EM1SpMj
- PffNnzkSBgxATbnyalAwIhldNiJqFQo=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mKGCCnmqWzFiFS2Xm/PXYhwhVbskQX1u9fUtGauWkBQ=;
+ b=cGLcEYGQ4hP0e2X9OvL8SN2XK8S1cbzi5SYnelsYgpSEWsoP0a1qh63KHlDwoOBnivuloK
+ dMoqU/VUNysjox9KwwuglqghmCbTfFaCo2EHd4eGBIKVW3tABH3d28idknXJt2BimVWl4v
+ dEdku2qt0PYHOVevpDu1oyKdGxgkyFQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-596-GIh3zxCbMo69qXWQeTB-kg-1; Wed, 04 Oct 2023 23:44:20 -0400
-X-MC-Unique: GIh3zxCbMo69qXWQeTB-kg-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-30e3ee8a42eso410420f8f.1
- for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:20 -0700 (PDT)
+ us-mta-594-_-_zCnPlPVGwB0xhVKd-Vw-1; Wed, 04 Oct 2023 23:44:25 -0400
+X-MC-Unique: _-_zCnPlPVGwB0xhVKd-Vw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32320b3ee93so382916f8f.3
+ for <qemu-devel@nongnu.org>; Wed, 04 Oct 2023 20:44:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696477459; x=1697082259;
+ d=1e100.net; s=20230601; t=1696477463; x=1697082263;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=twDnxCIZ4gi16W+P0IcrGb7JEdH581l09+veM2VEhWI=;
- b=pghG4s1/LAZ54p4mjOxQ/MHkXrPzXAabKyuXn+E+Zo9TXSLtBksW1+VKSGCiz75KS6
- q0Qz9HMk7v/I7H4/REM0Lz6kw9sfs54IwNrUrtsXBrarqW9GoyPbtmnwYco/02Hz7ycx
- dPeObsbJLZut3K0UnWltCf5c3B98pz2G+0KNrCTznDaGA19c8zGqyMnClQ5LUpKmXdnG
- ae985J7AB7Zu2uisjZO74hWkIaR8yBGk6glaPu2kl83qnZThLmcqSgpgxmnIbjPVmz0U
- lxdvF8d8Hv2V7ET5Hrov0/4Xv96zpIUeGTLAeIYR+QgYZYTwmcdBtyignflCzD5HNMFD
- M7WA==
-X-Gm-Message-State: AOJu0Yy0QGt4o7C50WdRlh8cd9qAtUer3ZCW3/UBgUWL3IEKAT48UNZ3
- KV7U0S2wf4D3yvJ1mqs7S96rLli7RkezlSPK8oV/l1uPN2nLLImjhiuudEOmXyPY4BBFSYLal+M
- 6Up6h3YjPdX+xpmd1nBFaQxs8+oGQ0yWk4jZ8L1NQWozIkb8R35GsESx3O1GqIWOBAVaQ
-X-Received: by 2002:a5d:4b11:0:b0:31f:ecb2:1bed with SMTP id
- v17-20020a5d4b11000000b0031fecb21bedmr3921944wrq.15.1696477459201; 
- Wed, 04 Oct 2023 20:44:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHc/rkCUq2U7Xy2UyZcVw/gmmHEZpa+WgG4TKbw8mrmyM5l/vDeMi5GqrjL4XWm6WwrAI8YvQ==
-X-Received: by 2002:a5d:4b11:0:b0:31f:ecb2:1bed with SMTP id
- v17-20020a5d4b11000000b0031fecb21bedmr3921927wrq.15.1696477458857; 
- Wed, 04 Oct 2023 20:44:18 -0700 (PDT)
+ bh=mKGCCnmqWzFiFS2Xm/PXYhwhVbskQX1u9fUtGauWkBQ=;
+ b=a5gSYxGH5bJYl4hKfQF0aphoYj49fvvUJ/tOc2LtZmCFFyjRybUEzowulgxheQRkFW
+ /HeWFsWXORBVHlzX1jlN2es/FrhivQm2jbliqkUjSoZxKeYMkkMGlYit11T2Tq3t9Gwm
+ J/MdqA1hyWwWS+vZJwNrtdkJK5dv3RqGnabaa5NYMxSCREW8p91SprPiDPZx9ELk3WPI
+ A6BjdOC6TGcD8pHD2w3+FNnj7hsc/a6lWtfZ920E4vMlq6k672HCdu3JC4kdRqnQ8By2
+ BHCLISQUg2dj6bdjvM/G68po4Ag4VLdTnU1WQDEa919YjvAzqWk84ctz8nsskbmiifNm
+ R3KA==
+X-Gm-Message-State: AOJu0YygR/tA/9cXl5xAPkbsIZQ8Na2kCTMDKV4Ynv6NBBQDQ8QF5QSG
+ XIEWRulTE5ucUqTqWX+Ho1FUlKIcy89FZ27bM3E0W0e4mVL5cpmHLkarNCYmWllsSZbWIBWxKvd
+ GAmgMH5rTWYrlnyEnyaZv3U1mTtBnD3K4TfnDVcQ4aRfMMyx/x53jshK+hln3bb7D5EAD
+X-Received: by 2002:adf:f641:0:b0:31f:b6ea:af48 with SMTP id
+ x1-20020adff641000000b0031fb6eaaf48mr3590154wrp.49.1696477463327; 
+ Wed, 04 Oct 2023 20:44:23 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEKYr5po5Vza7CChdNadPIMbbNtsC017NjGGu+zLxjYUrgLdvGtmujx+eA11bkdshonTucn2w==
+X-Received: by 2002:adf:f641:0:b0:31f:b6ea:af48 with SMTP id
+ x1-20020adff641000000b0031fb6eaaf48mr3590141wrp.49.1696477463053; 
+ Wed, 04 Oct 2023 20:44:23 -0700 (PDT)
 Received: from redhat.com ([2.52.137.96]) by smtp.gmail.com with ESMTPSA id
- k12-20020a5d628c000000b003233a31a467sm635337wru.34.2023.10.04.20.44.15
+ t18-20020a5d49d2000000b0031c6581d55esm625752wrs.91.2023.10.04.20.44.20
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 04 Oct 2023 20:44:18 -0700 (PDT)
-Date: Wed, 4 Oct 2023 23:44:14 -0400
+ Wed, 04 Oct 2023 20:44:22 -0700 (PDT)
+Date: Wed, 4 Oct 2023 23:44:19 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Peter Maydell <peter.maydell@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>,
  Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>,
- Aurelien Jarno <aurelien@aurel32.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>
-Subject: [PULL v2 27/53] hw/acpi/acpi_dev_interface: Remove now unused
- madt_cpu virtual method
-Message-ID: <c461f3e3820f2a033e7eed08689060328b31dcbf.1696477105.git.mst@redhat.com>
+ Igor Mammedov <imammedo@redhat.com>, Ani Sinha <anisinha@redhat.com>
+Subject: [PULL v2 28/53] hw/acpi/acpi_dev_interface: Remove now unused
+ #include "hw/boards.h"
+Message-ID: <4f70dd5f6366ac04b0f67d026ee2e17eb35daa45.1696477105.git.mst@redhat.com>
 References: <cover.1696477105.git.mst@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -91,7 +86,7 @@ X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -109,111 +104,85 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Bernhard Beschow <shentey@gmail.com>
 
-This virtual method was always set to the x86-specific pc_madt_cpu_entry(),
-even in piix4 which is also used in MIPS. The previous changes use
-pc_madt_cpu_entry() otherwise, so madt_cpu can be dropped.
-
-Since pc_madt_cpu_entry() is now only used in x86-specific code, the stub
-in hw/acpi/acpi-x86-stub can be removed as well.
+The "hw/boards.h" is unused since the previous commit. Since its removal
+requires include fixes in various unrelated files to keep the code compiling it
+has been split in a dedicated commit.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-Id: <20230908084234.17642-4-shentey@gmail.com>
+Message-Id: <20230908084234.17642-5-shentey@gmail.com>
 Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- include/hw/acpi/acpi_dev_interface.h | 2 --
- hw/acpi/acpi-x86-stub.c              | 6 ------
- hw/acpi/piix4.c                      | 2 --
- hw/i386/generic_event_device_x86.c   | 9 ---------
- hw/isa/lpc_ich9.c                    | 1 -
- 5 files changed, 20 deletions(-)
+ hw/acpi/hmat.h                       | 3 ++-
+ include/hw/acpi/acpi_dev_interface.h | 1 -
+ hw/acpi/cpu.c                        | 1 +
+ hw/acpi/hmat.c                       | 1 +
+ hw/acpi/memory_hotplug.c             | 1 +
+ 5 files changed, 5 insertions(+), 2 deletions(-)
 
+diff --git a/hw/acpi/hmat.h b/hw/acpi/hmat.h
+index b57f0e7e80..fd989cb661 100644
+--- a/hw/acpi/hmat.h
++++ b/hw/acpi/hmat.h
+@@ -27,7 +27,8 @@
+ #ifndef HMAT_H
+ #define HMAT_H
+ 
+-#include "hw/acpi/aml-build.h"
++#include "hw/acpi/bios-linker-loader.h"
++#include "sysemu/numa.h"
+ 
+ /*
+  * ACPI 6.3: 5.2.27.3 Memory Proximity Domain Attributes Structure,
 diff --git a/include/hw/acpi/acpi_dev_interface.h b/include/hw/acpi/acpi_dev_interface.h
-index a1648220ff..ca92928124 100644
+index ca92928124..68d9d15f50 100644
 --- a/include/hw/acpi/acpi_dev_interface.h
 +++ b/include/hw/acpi/acpi_dev_interface.h
-@@ -52,7 +52,5 @@ struct AcpiDeviceIfClass {
-     /* <public> */
-     void (*ospm_status)(AcpiDeviceIf *adev, ACPIOSTInfoList ***list);
-     void (*send_event)(AcpiDeviceIf *adev, AcpiEventStatusBits ev);
--    void (*madt_cpu)(int uid, const CPUArchIdList *apic_ids, GArray *entry,
--                     bool force_enabled);
- };
- #endif
-diff --git a/hw/acpi/acpi-x86-stub.c b/hw/acpi/acpi-x86-stub.c
-index d0d399d26b..9662a594ad 100644
---- a/hw/acpi/acpi-x86-stub.c
-+++ b/hw/acpi/acpi-x86-stub.c
-@@ -1,12 +1,6 @@
+@@ -3,7 +3,6 @@
+ 
+ #include "qapi/qapi-types-acpi.h"
+ #include "qom/object.h"
+-#include "hw/boards.h"
+ #include "hw/qdev-core.h"
+ 
+ /* These values are part of guest ABI, and can not be changed */
+diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
+index 65a3202d3f..011d2c6c2d 100644
+--- a/hw/acpi/cpu.c
++++ b/hw/acpi/cpu.c
+@@ -1,6 +1,7 @@
  #include "qemu/osdep.h"
--#include "hw/i386/pc.h"
- #include "hw/i386/acpi-build.h"
- 
--void pc_madt_cpu_entry(int uid, const CPUArchIdList *apic_ids,
--                       GArray *entry, bool force_enabled)
--{
--}
--
- Object *acpi_get_i386_pci_host(void)
- {
-        return NULL;
-diff --git a/hw/acpi/piix4.c b/hw/acpi/piix4.c
-index 63d2113b86..a7892c444c 100644
---- a/hw/acpi/piix4.c
-+++ b/hw/acpi/piix4.c
-@@ -20,7 +20,6 @@
-  */
- 
+ #include "migration/vmstate.h"
+ #include "hw/acpi/cpu.h"
++#include "hw/core/cpu.h"
+ #include "qapi/error.h"
+ #include "qapi/qapi-events-acpi.h"
+ #include "trace.h"
+diff --git a/hw/acpi/hmat.c b/hw/acpi/hmat.c
+index 2d5e199ba9..3042d223c8 100644
+--- a/hw/acpi/hmat.c
++++ b/hw/acpi/hmat.c
+@@ -27,6 +27,7 @@
  #include "qemu/osdep.h"
--#include "hw/i386/pc.h"
- #include "hw/irq.h"
- #include "hw/isa/apm.h"
- #include "hw/i2c/pm_smbus.h"
-@@ -654,7 +653,6 @@ static void piix4_pm_class_init(ObjectClass *klass, void *data)
-     hc->is_hotpluggable_bus = piix4_is_hotpluggable_bus;
-     adevc->ospm_status = piix4_ospm_status;
-     adevc->send_event = piix4_send_gpe;
--    adevc->madt_cpu = pc_madt_cpu_entry;
- }
+ #include "qemu/units.h"
+ #include "sysemu/numa.h"
++#include "hw/acpi/aml-build.h"
+ #include "hw/acpi/hmat.h"
  
- static const TypeInfo piix4_pm_info = {
-diff --git a/hw/i386/generic_event_device_x86.c b/hw/i386/generic_event_device_x86.c
-index e26fb02a2e..8fc233e1f1 100644
---- a/hw/i386/generic_event_device_x86.c
-+++ b/hw/i386/generic_event_device_x86.c
-@@ -8,19 +8,10 @@
- 
+ /*
+diff --git a/hw/acpi/memory_hotplug.c b/hw/acpi/memory_hotplug.c
+index d926f4f77d..0b883df813 100644
+--- a/hw/acpi/memory_hotplug.c
++++ b/hw/acpi/memory_hotplug.c
+@@ -1,6 +1,7 @@
  #include "qemu/osdep.h"
- #include "hw/acpi/generic_event_device.h"
--#include "hw/i386/pc.h"
--
--static void acpi_ged_x86_class_init(ObjectClass *class, void *data)
--{
--    AcpiDeviceIfClass *adevc = ACPI_DEVICE_IF_CLASS(class);
--
--    adevc->madt_cpu = pc_madt_cpu_entry;
--}
- 
- static const TypeInfo acpi_ged_x86_info = {
-     .name          = TYPE_ACPI_GED_X86,
-     .parent        = TYPE_ACPI_GED,
--    .class_init    = acpi_ged_x86_class_init,
-     .interfaces = (InterfaceInfo[]) {
-         { TYPE_HOTPLUG_HANDLER },
-         { TYPE_ACPI_DEVICE_IF },
-diff --git a/hw/isa/lpc_ich9.c b/hw/isa/lpc_ich9.c
-index bce487ac4e..3f59980aa0 100644
---- a/hw/isa/lpc_ich9.c
-+++ b/hw/isa/lpc_ich9.c
-@@ -891,7 +891,6 @@ static void ich9_lpc_class_init(ObjectClass *klass, void *data)
-     hc->is_hotpluggable_bus = ich9_pm_is_hotpluggable_bus;
-     adevc->ospm_status = ich9_pm_ospm_status;
-     adevc->send_event = ich9_send_gpe;
--    adevc->madt_cpu = pc_madt_cpu_entry;
-     amldevc->build_dev_aml = build_ich9_isa_aml;
- }
- 
+ #include "hw/acpi/memory_hotplug.h"
+ #include "hw/mem/pc-dimm.h"
++#include "hw/boards.h"
+ #include "hw/qdev-core.h"
+ #include "migration/vmstate.h"
+ #include "trace.h"
 -- 
 MST
 
