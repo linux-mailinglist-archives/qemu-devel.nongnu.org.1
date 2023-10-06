@@ -2,39 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4067BB199
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 08:38:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F103E7BB19C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 08:39:30 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoeRy-0003cN-IF; Fri, 06 Oct 2023 02:36:38 -0400
+	id 1qoeTv-0004RT-R1; Fri, 06 Oct 2023 02:38:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qoeRv-0003br-UN; Fri, 06 Oct 2023 02:36:35 -0400
+ id 1qoeTt-0004RG-Sm; Fri, 06 Oct 2023 02:38:37 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qoeRu-0006tQ-2r; Fri, 06 Oct 2023 02:36:35 -0400
+ id 1qoeTs-0007At-CX; Fri, 06 Oct 2023 02:38:37 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id 2596B28167;
- Fri,  6 Oct 2023 09:36:34 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 70FC42816B;
+ Fri,  6 Oct 2023 09:38:38 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id B9A8F2D48A;
- Fri,  6 Oct 2023 09:36:29 +0300 (MSK)
-Message-ID: <c1234fb9-f591-4944-8020-20eb43c9dfe5@tls.msk.ru>
-Date: Fri, 6 Oct 2023 09:36:29 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id 10BB52D48C;
+ Fri,  6 Oct 2023 09:38:34 +0300 (MSK)
+Message-ID: <1a1747f0-9895-4d7e-8890-a3683630538c@tls.msk.ru>
+Date: Fri, 6 Oct 2023 09:38:34 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] hw/usb: Silence compiler warnings in USB code when
+Subject: Re: [PATCH] dump: Silence compiler warning in dump code when
  compiling with -Wshadow
 Content-Language: en-US
 To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Gerd Hoffmann <kraxel@redhat.com>
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
 Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org
-References: <20231004130822.113343-1-thuth@redhat.com>
+References: <20231004131338.215081-1-thuth@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <20231004130822.113343-1-thuth@redhat.com>
+In-Reply-To: <20231004131338.215081-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
