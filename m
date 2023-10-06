@@ -2,104 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82917BBD7D
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 19:10:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB14E7BBD8A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 19:17:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qooKp-0002TV-8W; Fri, 06 Oct 2023 13:09:55 -0400
+	id 1qooQb-0005cT-RE; Fri, 06 Oct 2023 13:15:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qooKm-0002RY-Q8
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 13:09:52 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qooQV-0005c7-Vu
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 13:15:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qooKl-0000dv-Cv
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 13:09:52 -0400
+ (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qooQU-0002FQ-ET
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 13:15:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696612190;
+ s=mimecast20190719; t=1696612545;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wBrKdjxyA5gc6cgDEyTN/dpYyZHaWkYK3zp2HkdeLuM=;
- b=dcoLEGMMMhgDZ76BJFb33b3lDnPIy0sC+V2QCkHlud0bshcd0mMSgwtVwMqt9urew1fOH5
- KXGXHK94Szg4zjymVW/7Mhd7U0fynagTh1bs8ROQ+LDDJJcJbZ6caM3iDR9GrEakV+71/1
- BNxSewilGvXPKTWj5KxFczWfoi6+ybk=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=zrRpT6B1V2JmCBNTJdv4w/8KID9qTEJCNsX3inx6ySo=;
+ b=RJFZk2cGQSgvEGrWLkYW1AMcH7IL2n2g0SvpStm1ZUvjpwHiAMHrjK0kaH08j98hr0z18i
+ RJ9IdvJFT4MXFdQOv8NX0apN+srYA2CTq+XOMZsdZx7kNCHn4C/RdPV5j7qTEpwqiMel3I
+ zkfETgUmKGHfHbAYAYFbwCUnvIk2VT0=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-416-SiXbqF5kPVaI94Dlmy9aZQ-1; Fri, 06 Oct 2023 13:09:48 -0400
-X-MC-Unique: SiXbqF5kPVaI94Dlmy9aZQ-1
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-41975c9e66fso37676031cf.0
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 10:09:48 -0700 (PDT)
+ us-mta-463-UmewHghqPPCDPv0br0XGnw-1; Fri, 06 Oct 2023 13:15:43 -0400
+X-MC-Unique: UmewHghqPPCDPv0br0XGnw-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-7742bd869e4so43428785a.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 10:15:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696612188; x=1697216988;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=wBrKdjxyA5gc6cgDEyTN/dpYyZHaWkYK3zp2HkdeLuM=;
- b=llkjvLGnnEGF7DMKuUilxFZWfIcy/wVF18R9cOLonbCjO/4jSnfhamnpdQ9uce5uja
- RQH8KplMGVrdmSA9/q8o4iyViZJNy2KHYK/oS5xod4MSbEvTbLp+rg71+UpOfvRJVFls
- gNWBcOjGIdWS8SpTwQIDSvDc04cXFu0AU2f8qRjkXgPtW73d+NJ3z4daEjsFdh+o7k3F
- tVK7bQNg7IzyG5qaK6DPXpVD1yINLzflhoThb/KdboQVPUDo7q5X6/DVmAlTARcwMFRL
- VArG/4+fXbHKyEn9/RxXMN66Z4i4LtNYBl/MDc91LzTQ1uAT9dlZ6Of3EO/vwSaudIwB
- kZAg==
-X-Gm-Message-State: AOJu0YzZNFAg6BYFo/8gMLpIFtnUf03JCaQJuoQBkvdqYIA9M25E3DDZ
- u0I19ogRe2jKD9DJcy8gOQIyi01jLCS/eCL5E/GeLNIWtwBqy+Sv44ujD6O9QVIsykd8VTgMSsl
- 1kGFEU2ReEXGkvJE=
-X-Received: by 2002:ac8:7fc8:0:b0:417:fa23:4f40 with SMTP id
- b8-20020ac87fc8000000b00417fa234f40mr8068621qtk.33.1696612188459; 
- Fri, 06 Oct 2023 10:09:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEopv4GZT2f4IlJFQmVLT8Pe5MPFlmIzXLnSXoJNAotWIQgi3pxgi9MQ7jFwc64urkwjNGLhA==
-X-Received: by 2002:ac8:7fc8:0:b0:417:fa23:4f40 with SMTP id
- b8-20020ac87fc8000000b00417fa234f40mr8068594qtk.33.1696612188214; 
- Fri, 06 Oct 2023 10:09:48 -0700 (PDT)
-Received: from ?IPV6:2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891?
- ([2a01:cb19:853d:fa00:c28a:3e3d:34f3:3891])
- by smtp.gmail.com with ESMTPSA id
- e1-20020ac81301000000b0040331a24f16sm1413232qtj.3.2023.10.06.10.09.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 10:09:47 -0700 (PDT)
-Message-ID: <bcf861f4-50a7-495c-3497-87454fc99492@redhat.com>
-Date: Fri, 6 Oct 2023 19:09:44 +0200
+ d=1e100.net; s=20230601; t=1696612543; x=1697217343;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=zrRpT6B1V2JmCBNTJdv4w/8KID9qTEJCNsX3inx6ySo=;
+ b=GzJnUjvEF9imBzwAS1iuGBSrCKObbpwfoIIQz4jxNLYcJpV/8qXMUmxvDGUgMF0yEO
+ Bn//DS8ghOk4F9hWpiNv8kFERieRYatQxETb7o54S7iqS/8OqOZmZAR6efPn0iYigCa1
+ ieSHWwEPN5J+DFaw8A9uMZMKKIUMZFRhBE/q/Pa9xNBCeqTUFm9BOoiZv7jAVIp03G2U
+ m/7VZVisstW1KFe722HsOl4lJ89iuuGChGcTTu7SXLmbEuxtJIJkoQ3ZZoH7y1Yl2Jjp
+ qLUO7296DaF4Y1dR3oB/VU5fSSoMt7hjASyb0wszzHGcYtfLwPz197MhDLs9Iys4uX6Y
+ UFbg==
+X-Gm-Message-State: AOJu0YzzwhVr6WG+IEMJqvxw6rTa6AQjVMgBVlGoWo/hXN11gb4kI7nQ
+ DlJuzMBcICUaY3L0X/RDEWevmpcVI9KDruzCeTOgoFwOUCYi6CDS8j4vLrAtsdkOKxz9vwGLaBO
+ 18bh9wywB3XKzfyg=
+X-Received: by 2002:a05:620a:19a0:b0:76e:f686:cacb with SMTP id
+ bm32-20020a05620a19a000b0076ef686cacbmr9439781qkb.3.1696612543274; 
+ Fri, 06 Oct 2023 10:15:43 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGfdXRGF8i9v2Pi9YOcA9+bVfj20b6ZIsiijO1vemNu8mXHuFxK+FO0nH2zY/clKAO2wh3C6w==
+X-Received: by 2002:a05:620a:19a0:b0:76e:f686:cacb with SMTP id
+ bm32-20020a05620a19a000b0076ef686cacbmr9439758qkb.3.1696612542902; 
+ Fri, 06 Oct 2023 10:15:42 -0700 (PDT)
+Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
+ [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
+ i16-20020a05620a145000b00767dc4c539bsm1451364qkl.44.2023.10.06.10.15.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Oct 2023 10:15:42 -0700 (PDT)
+Date: Fri, 6 Oct 2023 13:15:41 -0400
+From: Peter Xu <peterx@redhat.com>
+To: Juan Quintela <quintela@redhat.com>
+Cc: Li Zhijian <lizhijian@fujitsu.com>, leobras@redhat.com,
+ qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>
+Subject: Re: [PATCH v2 1/2] migration: Fix rdma migration failed
+Message-ID: <ZSBAvU2PHST7/Tte@x1n>
+References: <20230926100103.201564-1-lizhijian@fujitsu.com>
+ <87edib5ybg.fsf@secure.mitica> <ZSAtKmOFkomgXyJ7@x1n>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 01/15] hw/pci: Add a pci_setup_iommu_ops() helper
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-2-joao.m.martins@oracle.com>
- <18343982-d554-61b4-fb17-b6955245e9b0@redhat.com>
- <db965f35-e568-44bb-9da4-2c2888928eb8@oracle.com>
- <d09a2778-8097-b6a7-b570-7d36bf29d9d5@redhat.com>
- <4f3eccb0-a3ff-4acf-a849-d54ee8d66eaf@oracle.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <4f3eccb0-a3ff-4acf-a849-d54ee8d66eaf@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZSAtKmOFkomgXyJ7@x1n>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=peterx@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.797, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -115,40 +98,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Joao,
-
->>>> I think you should first convert all PHBs to PCIIOMMUOps to avoid all the
->>>> tests as below and adapt pci_setup_iommu_ops() with the new parameter.
->>>>
->>>
->>> OK, that's Yi's original patch:
->>>
->>> https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
->>>
->>> I went with this one is that 1) it might take eons to get every single IOMMU
->>> maintainer ack; and 2) it would allow each IOMMU to move at its own speed
->>> specially as I can't test most of the other ones. essentially iterative, rather
->>> than invasive change? Does that make sense?
->>
->> I think it is ok to make global changes to replace a function by a struct
->> of ops. This is not major (unless the extra indirection has a major perf
->> impact on some platforms).
+On Fri, Oct 06, 2023 at 11:52:10AM -0400, Peter Xu wrote:
+> On Tue, Oct 03, 2023 at 08:57:07PM +0200, Juan Quintela wrote:
+> > commit c638f66121ce30063fbf68c3eab4d7429cf2b209
+> > Author: Juan Quintela <quintela@redhat.com>
+> > Date:   Tue Oct 3 20:53:38 2023 +0200
+> > 
+> >     migration: Non multifd migration don't care about multifd flushes
+> >     
+> >     RDMA was having trouble because
+> >     migrate_multifd_flush_after_each_section() can only be true or false,
+> >     but we don't want to send any flush when we are not in multifd
+> >     migration.
+> >     
+> >     CC: Fabiano Rosas <farosas@suse.de
+> >     Reported-by: Li Zhijian <lizhijian@fujitsu.com>
+> >     Signed-off-by: Juan Quintela <quintela@redhat.com>
+> > 
+> > diff --git a/migration/ram.c b/migration/ram.c
+> > index e4bfd39f08..716cef6425 100644
+> > --- a/migration/ram.c
+> > +++ b/migration/ram.c
+> > @@ -1387,7 +1387,8 @@ static int find_dirty_block(RAMState *rs, PageSearchStatus *pss)
+> >          pss->page = 0;
+> >          pss->block = QLIST_NEXT_RCU(pss->block, next);
+> >          if (!pss->block) {
+> > -            if (!migrate_multifd_flush_after_each_section()) {
+> > +            if (migrate_multifd() &&
+> > +                !migrate_multifd_flush_after_each_section()) {
+> >                  QEMUFile *f = rs->pss[RAM_CHANNEL_PRECOPY].pss_channel;
+> >                  int ret = multifd_send_sync_main(f);
+> >                  if (ret < 0) {
+> > @@ -3064,7 +3065,7 @@ static int ram_save_setup(QEMUFile *f, void *opaque)
+> >          return ret;
+> >      }
+> >  
+> > -    if (!migrate_multifd_flush_after_each_section()) {
+> > +    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
+> >          qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+> >      }
+> >  
+> > @@ -3176,7 +3177,7 @@ static int ram_save_iterate(QEMUFile *f, void *opaque)
+> >  out:
+> >      if (ret >= 0
+> >          && migration_is_setup_or_active(migrate_get_current()->state)) {
+> > -        if (migrate_multifd_flush_after_each_section()) {
+> > +        if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
+> >              ret = multifd_send_sync_main(rs->pss[RAM_CHANNEL_PRECOPY].pss_channel);
+> >              if (ret < 0) {
+> >                  return ret;
+> > @@ -3253,7 +3254,7 @@ static int ram_save_complete(QEMUFile *f, void *opaque)
+> >          return ret;
+> >      }
+> >  
+> > -    if (!migrate_multifd_flush_after_each_section()) {
+> > +    if (migrate_multifd() && !migrate_multifd_flush_after_each_section()) {
+> >          qemu_put_be64(f, RAM_SAVE_FLAG_MULTIFD_FLUSH);
+> >      }
+> >      qemu_put_be64(f, RAM_SAVE_FLAG_EOS);
+> > @@ -3760,7 +3761,7 @@ int ram_load_postcopy(QEMUFile *f, int channel)
+> >              break;
+> >          case RAM_SAVE_FLAG_EOS:
+> >              /* normal exit */
+> > -            if (migrate_multifd_flush_after_each_section()) {
+> > +            if (migrate_multifd() && migrate_multifd_flush_after_each_section()) {
+> >                  multifd_recv_sync_main();
+> >              }
+> >              break;
+> > @@ -4038,7 +4039,8 @@ static int ram_load_precopy(QEMUFile *f)
+> >              break;
+> >          case RAM_SAVE_FLAG_EOS:
+> >              /* normal exit */
+> > -            if (migrate_multifd_flush_after_each_section()) {
+> > +            if (migrate_multifd() &&
+> > +                migrate_multifd_flush_after_each_section()) {
+> >                  multifd_recv_sync_main();
+> >              }
+> >              break;
 > 
-> It should be a mechanical change. As the pci_setup_iommu_ops() should be
-> functionally equivalent to pci_setup_iommu() [...]
-
-Thanks for going back to the previous proposal.
-
->> Getting acks from everyone will be difficultsince some PHBs are orphans.
+> Reviewed-by: Peter Xu <peterx@redhat.com>
 > 
-> [...] This is what gets me a bit hesitant
+> Did you forget to send this out formally?  Even if f1de309792d6656e landed
+> (which, IMHO, shouldn't..), but IIUC rdma is still broken..
 
-orphans shouldn't be an issue, nor the PPC emulated machines. We will see
-what other maintainers have to say.
+Two more things to mention..
 
-Thanks,
+$ git tag --contains 294e5a4034e81b
 
-C.
-  
+It tells me v8.1 is also affected.. so we may want to copy stable too for
+8.1, for whichever patch we want to merge (either yours or Zhijian's)..
+
+Meanwhile, it also breaks migration as long as user specifies the new
+behavior.. for example: v8.1->v8.0 will break with this:
+
+$ (echo "migrate exec:cat>out"; echo "quit") | ./qemu-v8.1.1 -M pc-q35-8.0 -global migration.multifd-flush-after-each-section=false -monitor stdio
+QEMU 8.1.1 monitor - type 'help' for more information
+VNC server running on ::1:5900
+(qemu) migrate exec:cat>out
+(qemu) quit
+
+$ ./qemu-v8.0.5 -M pc-q35-8.0 -incoming "exec:cat<out"
+VNC server running on ::1:5900
+qemu-v8.0.5: Unknown combination of migration flags: 0x200
+qemu-v8.0.5: error while loading state for instance 0x0 of device 'ram'
+qemu-v8.0.5: load of migration failed: Invalid argument
+
+IOW, besides rdma and the script, it can also break in other ways.
+
+-- 
+Peter Xu
 
 
