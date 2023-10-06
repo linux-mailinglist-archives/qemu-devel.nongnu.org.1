@@ -2,43 +2,41 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 898217BB599
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 12:47:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D907BB59B
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 12:47:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoiLM-0007EB-VL; Fri, 06 Oct 2023 06:46:05 -0400
+	id 1qoiMT-0007mC-2i; Fri, 06 Oct 2023 06:47:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qoiLI-0007Du-GL; Fri, 06 Oct 2023 06:46:00 -0400
+ id 1qoiMC-0007PE-9T; Fri, 06 Oct 2023 06:46:57 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qoiLF-0000rQ-12; Fri, 06 Oct 2023 06:46:00 -0400
+ id 1qoiM6-00010S-RN; Fri, 06 Oct 2023 06:46:56 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id CB6B3282E2;
- Fri,  6 Oct 2023 13:45:55 +0300 (MSK)
+ by isrv.corpit.ru (Postfix) with ESMTP id 937BC282E4;
+ Fri,  6 Oct 2023 13:46:53 +0300 (MSK)
 Received: from [192.168.177.130] (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with ESMTP id 19AAF2D5DE;
- Fri,  6 Oct 2023 13:45:51 +0300 (MSK)
-Message-ID: <29a2a188-ec5b-452f-be63-92e8f0ec7110@tls.msk.ru>
-Date: Fri, 6 Oct 2023 13:45:51 +0300
+ by tsrv.corpit.ru (Postfix) with ESMTP id D244C2D5E0;
+ Fri,  6 Oct 2023 13:46:48 +0300 (MSK)
+Message-ID: <3a1ea91e-03cf-4350-8f28-ba9fd78b1e30@tls.msk.ru>
+Date: Fri, 6 Oct 2023 13:46:48 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] hw/virtio/vhost: Silence compiler warnings in vhost code
- when using -Wshadow
+Subject: Re: [PATCH] dump: Silence compiler warning in dump code when
+ compiling with -Wshadow
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-trivial@nongnu.org
-References: <20231004114809.105672-1-thuth@redhat.com>
- <18f1faab-71f4-4dbd-a319-fcd65721f58b@tls.msk.ru>
- <87h6n4p1ts.fsf@pond.sub.org>
+To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
+ =?UTF-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Cc: Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org
+References: <20231004131338.215081-1-thuth@redhat.com>
 From: Michael Tokarev <mjt@tls.msk.ru>
-In-Reply-To: <87h6n4p1ts.fsf@pond.sub.org>
+In-Reply-To: <20231004131338.215081-1-thuth@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
  helo=isrv.corpit.ru
 X-Spam_score_int: -68
@@ -61,25 +59,44 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-06.10.2023 11:55, Markus Armbruster пишет:
-> Michael Tokarev <mjt@tls.msk.ru> writes:
+04.10.2023 16:13, Thomas Huth:
+> Rename a variable to make this code compilable with -Wshadow.
 > 
->> Applied to my trivial-patches tree, thanks!
->>
->> Marcus, you picked up previous patches of this theme, --
->> you can continue this tradition if you like :)
-> 
-> I intend to post a pull request for the -Wshadow patches that have
-> R-bys.  I'm also tracking the unreviewed ones, and hope they get
-> reviewed.
-
-Ahh, ok.
-
-I've added my own R-bys for the ones I picked up, and for this one
-by Thomas too:
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 
 Reviewed-By: Michael Tokarev <mjt@tls.msk.ru>
 
-/mjt
+>   dump/dump.c | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/dump/dump.c b/dump/dump.c
+> index d4ef713cd0..d3578ddc62 100644
+> --- a/dump/dump.c
+> +++ b/dump/dump.c
+> @@ -1872,20 +1872,20 @@ static void dump_init(DumpState *s, int fd, bool has_format,
+>       if (vmci) {
+>           uint64_t addr, note_head_size, name_size, desc_size;
+>           uint32_t size;
+> -        uint16_t format;
+> +        uint16_t guest_format;
+>   
+>           note_head_size = dump_is_64bit(s) ?
+>               sizeof(Elf64_Nhdr) : sizeof(Elf32_Nhdr);
+>   
+> -        format = le16_to_cpu(vmci->vmcoreinfo.guest_format);
+> +        guest_format = le16_to_cpu(vmci->vmcoreinfo.guest_format);
+>           size = le32_to_cpu(vmci->vmcoreinfo.size);
+>           addr = le64_to_cpu(vmci->vmcoreinfo.paddr);
+>           if (!vmci->has_vmcoreinfo) {
+>               warn_report("guest note is not present");
+>           } else if (size < note_head_size || size > MAX_GUEST_NOTE_SIZE) {
+>               warn_report("guest note size is invalid: %" PRIu32, size);
+> -        } else if (format != FW_CFG_VMCOREINFO_FORMAT_ELF) {
+> -            warn_report("guest note format is unsupported: %" PRIu16, format);
+> +        } else if (guest_format != FW_CFG_VMCOREINFO_FORMAT_ELF) {
+> +            warn_report("guest note format is unsupported: %" PRIu16, guest_format);
+>           } else {
+>               s->guest_note = g_malloc(size + 1); /* +1 for adding \0 */
+>               cpu_physical_memory_read(addr, s->guest_note, size);
 
 
