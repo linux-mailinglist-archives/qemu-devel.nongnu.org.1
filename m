@@ -2,63 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3867BB5DF
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1114B7BB5EC
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:06:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoidT-0006lG-On; Fri, 06 Oct 2023 07:04:47 -0400
+	id 1qoieA-0008BV-TB; Fri, 06 Oct 2023 07:05:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qoidQ-0006aG-W1
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:04:45 -0400
-Received: from mout.kundenserver.de ([212.227.126.134])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qoie6-0008BM-NG
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:05:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qoidO-0005qb-HR
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:04:44 -0400
-Received: from [192.168.100.1] ([82.142.8.70]) by mrelayeu.kundenserver.de
- (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
- 1MRC3Y-1r0lqE3yMe-00NAfC; Fri, 06 Oct 2023 13:04:39 +0200
-Message-ID: <db65e8f3-b3d0-2edc-c0c1-b92cad7852ff@vivier.eu>
-Date: Fri, 6 Oct 2023 13:04:37 +0200
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qoie5-0006ON-6W
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:05:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696590324;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=CcfTJPBkqRp4r/kflobRIgnFndbLwv/7bA1bcqLiqBs=;
+ b=CPJtr4u/wctvDYHe6112QDhpqkQQYx5QJ7ksr2G6ca3DpyeWxBPmKXfKbEaLyZB9oZL6t+
+ Dyxt6vGbm6hbT6UyWystkHz73qgTToMhb98yBMY1ZuFTcPlYn7QlR0WzpSshbWtnsAtJpU
+ 6aL16H57fE17x/etpPpBKeMbeUd5/qY=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-145-bPO3ZuruN7Cqig5g260nBg-1; Fri, 06 Oct 2023 07:05:07 -0400
+X-MC-Unique: bPO3ZuruN7Cqig5g260nBg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9b98bbf130cso168644866b.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:05:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696590306; x=1697195106;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=CcfTJPBkqRp4r/kflobRIgnFndbLwv/7bA1bcqLiqBs=;
+ b=TBpa3CHBZOKD7D85ASR7Eq6ns/EPDwfa9fRWNgPn5uuAMnYh1+2OWi9x5pxTTgUDSg
+ RA9MLIvVtPupIfALFLDqJcVSmOUdTvS3NMwy/H8ba7txcg+U+Ys7co3iP58apFDCSwOL
+ iiVR8R9NlmzF3MhU9gPWLNtnq6z1t67vaOhJdv7+gi/t5LWYBgx4MF+VgfavvuUiRV/i
+ 4mjVka96pFhzfJpZ+mQMLUcp8v5gHwIlgO9BFaerzKztzh2GBGkT0SVf0GRgAEUQlI4q
+ 9IpyoakO/zdzcV4W/d2vFV0s3dzGjrz7Ts53wizwKC+dbLQ8CjzipJkgC/OeS+IGfY8L
+ aADQ==
+X-Gm-Message-State: AOJu0YzeCIrX37X9efLCUR1A8C+T8SZijmVPsvhaGJo9vhPslpkKcmn3
+ DkIOLni4ejV8QajKCPMUmWIvAIQaQloPi+gRTNrdpk1hSHxmKgs0d5YY2QagIiuM1a9tTNgtzgk
+ TRc+ke6NIZ4mX0f0=
+X-Received: by 2002:a17:906:ce:b0:9a6:426f:7dfd with SMTP id
+ 14-20020a17090600ce00b009a6426f7dfdmr6413008eji.66.1696590306498; 
+ Fri, 06 Oct 2023 04:05:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyE1DEgFLHT2a9WKstnZE0w4Z6vDCOITpEr/yqyOXrLbefJ/ANANFvBX6+WA7kZdynm5P3KA==
+X-Received: by 2002:a17:906:ce:b0:9a6:426f:7dfd with SMTP id
+ 14-20020a17090600ce00b009a6426f7dfdmr6412987eji.66.1696590306167; 
+ Fri, 06 Oct 2023 04:05:06 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
+ [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
+ b13-20020a170906d10d00b009930c80b87csm2734298ejz.142.2023.10.06.04.05.05
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 06 Oct 2023 04:05:05 -0700 (PDT)
+Message-ID: <f99f21f2-d1b8-9471-39e0-0756c7f0457b@redhat.com>
+Date: Fri, 6 Oct 2023 13:05:04 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 00/20] q800: add support for booting MacOS Classic -
- part 2
-Content-Language: fr
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org
-References: <20231004083806.757242-1-mark.cave-ayland@ilande.co.uk>
-From: Laurent Vivier <laurent@vivier.eu>
-In-Reply-To: <20231004083806.757242-1-mark.cave-ayland@ilande.co.uk>
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 3/5] linux-user/syscall.c: clean up local variable
+ shadowing in do_ioctl_dm()
+Content-Language: en-US
+To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>
+References: <20230925151029.461358-1-laurent@vivier.eu>
+ <20230925151029.461358-4-laurent@vivier.eu>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20230925151029.461358-4-laurent@vivier.eu>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:Aekkxkbm/ESY2VFguV/nT4FajgSm9ThL7cw223+mEMEF7B4WWAe
- tJwSaEPV5p6GNhIu9NLcd71LeCrf7R7FwEiWj/+GqzzmOajehuh03HTzCHv1nosv8ElPlOn
- sHN4galD2DAk7YGKjP7LThnWk+Df2JlePq0nzOjXI2mqzFHmhwciOi/KTVOr5m3dWALjUKT
- LNrPiNVygLUmTxdq3Uc+w==
-UI-OutboundReport: notjunk:1;M01:P0:RhjrkywvQV0=;Re9CnYie2P+GDGHWsHSLdwdXdns
- NRmQ9rdZwRu6vnxQkM4jjE9nzHJuXSFkrqEEnDcsEyEdD/GumMlcht1k44T7FwpAnTagCx1aP
- p6f5C91UR6rZ0ITTDk7qHCFDap93V8/IBFxVdXMu/eAzFzqphpVdQ2MWeU/JulrFl6XpgdNoo
- G1hU3JbIcfRt9oYvoZGPiZ9W4inmwGf8Hyas2G+2eGtZd72agmUNHFI47GjfbuH8rCabOV9HS
- AVU4qWNilOITxTul6XCisI3aNabZaeBo2KiDqedRXzsoE0s1VhcUjn3gU5qYK/+AUfhBEvtPM
- Bv3c3kJLi05iYU7Nzdnf/avRq/ckIuAAfkzrbzNOHKmjzqaAM++X7FWYtrff5MN5G0xByIJXI
- /fWTQh3nHdJ2neJLzQOoUd3DehOW21baTwpLLU8/Fp+ZJ1vtDdXRBC+sWppdsZrbpudRa8df1
- ivaUZ0UIiqOFMsDS7kuadQEn6XSRKhTXgAiIbHCpEAHwLyQkwJmek9O0JyreziMR6w3qjNPdy
- 81KskFtlbTXsPAwHYOgfSfbfYe/cA1FdKtQfW1MSC+jjZCRH6JsEwQoJs6l8w3ehC6tLB2Nla
- AQXQnzfi5QLEw7513tMaQA98WQeO0WmB/oCLmuYSQpJI8Am0KkkVAvZtDDLUOJH5gtHOiJOW7
- X4lZYAaulC6glbbZyHfPdbg/5VinQr93/E1z+c+u9Layi54Us7Hom1O+WN3PCwvDZVxd9rrN+
- q3rDmCCKruMHm7b9sl+HWhD3gaGigpdBvT0NH/aY1RG4s0mYVDJhQAXLwgx7e4363r2AuyM2A
- acqaKrschFKzcUGeAV0qY8qYN1C5g/TZe2u/ufq8mwhcyhG2/HD/TLphtzuRq2MX417K787NI
- 1meh0IUrpnEffDw==
-Received-SPF: none client-ip=212.227.126.134; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -46
-X-Spam_score: -4.7
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -48
+X-Spam_score: -4.9
 X-Spam_bar: ----
-X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.797,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-2.797, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,133 +102,40 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Le 04/10/2023 à 10:37, Mark Cave-Ayland a écrit :
-> This series contains the remaining patches needed to allow QEMU's q800
-> machine to boot MacOS Classic when used in conjunction with a real
-> Quadra 800 ROM image. In fact with this series applied it is possible
-> to boot all of the following OSs:
+On 25/09/2023 17.10, Laurent Vivier wrote:
+> Fix following warnings:
 > 
->    - MacOS 7.1 - 8.1, with or without virtual memory enabled
->    - A/UX 3.0.1
->    - NetBSD 9.3
->    - Linux (via EMILE)
+> .../linux-user/syscall.c: In function 'do_ioctl_dm':
+> .../linux-user/syscall.c:5053:23: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
+>   5053 |         const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
+>        |                       ^~~~~~~~
+> .../linux-user/syscall.c:4991:20: note: shadowed declaration is here
+>   4991 |     const argtype *arg_type = ie->arg_type;
+>        |                    ^~~~~~~~
+> ...//linux-user/syscall.c:5102:27: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
+>   5102 |             const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_name_list) };
+>        |                           ^~~~~~~~
+> .../linux-user/syscall.c:4991:20: note: shadowed declaration is here
+>   4991 |     const argtype *arg_type = ie->arg_type;
+>        |                    ^~~~~~~~
+> .../linux-user/syscall.c:5130:27: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
+>   5130 |             const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_spec) };
+>        |                           ^~~~~~~~
+> .../linux-user/syscall.c:4991:20: note: shadowed declaration is here
+>   4991 |     const argtype *arg_type = ie->arg_type;
+>        |                    ^~~~~~~~
+> .../linux-user/syscall.c:5170:27: warning: declaration of 'arg_type' shadows a previous local [-Wshadow=local]
+>   5170 |             const argtype arg_type[] = { MK_STRUCT(STRUCT_dm_target_versions) };
+>        |                           ^~~~~~~~
+> .../linux-user/syscall.c:4991:20: note: shadowed declaration is here
+>   4991 |     const argtype *arg_type = ie->arg_type;
+>        |                    ^~~~~~~~
 > 
-> If you are ready to experience some 90s nostalgia then all you need is
-> to grab yourself a copy of the Quadra 800 ROM (checksum 0xf1acad13) and a
-> suitable install ISO as follows:
-> 
->    # Prepare a PRAM image
->    $ qemu-img create -f raw pram.img 256b
-> 
->    # Launch QEMU with blank disk and install CDROM
->    $ ./qemu-system-m68k \
->        -M q800 \
->        -m 128 \
->        -bios Quadra800.rom \
->        -drive file=pram.img,format=raw,if=mtd \
->        -drive file=disk.img,media=disk,format=raw,if=none,id=hd \
->        -device scsi-hd,scsi-id=0,drive=hd \
->        -drive file=cdrom.iso,media=cdrom,if=none,id=cd \
->        -device scsi-cd,scsi-id=3,drive=cd
-> 
-> And off you go! For more in-depth information about the installation process
-> I highly recommend the installation guide over at emaculation.com [1].
-> Compatibility is generally very good, and I'm pleased to report it is possible
-> to run one of the most popular productivity apps from the 90s [2].
-> 
-> I'd like to add a big thank you to all the people who have helped me work on
-> this series, including testing on real hardware, answering questions about
-> MacOS Classic internals and helping to diagnose and fix bugs in the 68k
-> emulation. In particular thanks go to Laurent Vivier, Finn Thain, Howard
-> Spoelstra, Volker Rümelin, Richard Henderson, Martin Husemann, Rin Okuyama,
-> Elliot Nunn, and SolraBizna.
-> 
-> Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-> 
-> [1] https://www.emaculation.com/doku.php/qemu
-> [2] https://www.youtube.com/watch?v=yI21gURQ1Ew
-> 
-> 
-> v4:
-> - Rebase onto master
-> - Add R-B tag from Zoltan to patch 5
-> - Adjust AUD_register_card() and add machine audiodev property for ASC to reflect Paolo's
->    recent audiodev changes
-> 
-> v3:
-> - Rebase onto master
-> - Add R-B tags from Laurent
-> - Squash fixes from Volker into patch 7 ("audio: add Apple Sound Chip (ASC) emulation")
-> - Change iwmregs from uint16_t to uint8_t in patch 12 ("swim: split into separate IWM
->    and ISM register blocks")
-> 
-> v2:
-> - Rebase onto master
-> - Add R-B tags from Phil and Laurent
-> - Improve ASC logic for generating interrupts when FIFO underflow occurs
-> - Rework ASC silence generation logic similar to Volker's original proposal
-> - Update A/UX timer calibration hack to reflect the change of accesses now that
->    #360 is resolved
-> 
-> 
-> Mark Cave-Ayland (20):
->    q800-glue.c: convert to Resettable interface
->    q800: add djMEMC memory controller
->    q800: add machine id register
->    q800: implement additional machine id bits on VIA1 port A
->    q800: add IOSB subsystem
->    q800: allow accesses to RAM area even if less memory is available
->    audio: add Apple Sound Chip (ASC) emulation
->    asc: generate silence if FIFO empty but engine still running
->    q800: add Apple Sound Chip (ASC) audio to machine
->    q800: add easc bool machine class property to switch between ASC and
->      EASC
->    swim: add trace events for IWM and ISM registers
->    swim: split into separate IWM and ISM register blocks
->    swim: update IWM/ISM register block decoding
->    mac_via: work around underflow in TimeDBRA timing loop in SETUPTIMEK
->    mac_via: workaround NetBSD ADB bus enumeration issue
->    mac_via: implement ADB_STATE_IDLE state if shift register in input
->      mode
->    mac_via: always clear ADB interrupt when switching to A/UX mode
->    q800: add ESCC alias at 0xc000
->    q800: add alias for MacOS toolbox ROM at 0x40000000
->    mac_via: extend timer calibration hack to work with A/UX
-> 
->   MAINTAINERS                 |   6 +
->   hw/audio/Kconfig            |   3 +
->   hw/audio/asc.c              | 727 ++++++++++++++++++++++++++++++++++++
->   hw/audio/meson.build        |   1 +
->   hw/audio/trace-events       |  10 +
->   hw/block/swim.c             | 261 ++++++++-----
->   hw/block/trace-events       |   8 +
->   hw/m68k/Kconfig             |   3 +
->   hw/m68k/q800-glue.c         |  18 +-
->   hw/m68k/q800.c              | 138 ++++++-
->   hw/misc/Kconfig             |   6 +
->   hw/misc/djmemc.c            | 135 +++++++
->   hw/misc/iosb.c              | 133 +++++++
->   hw/misc/mac_via.c           | 234 +++++++++++-
->   hw/misc/meson.build         |   2 +
->   hw/misc/trace-events        |  10 +
->   include/hw/audio/asc.h      |  86 +++++
->   include/hw/block/swim.h     |  21 +-
->   include/hw/m68k/q800-glue.h |   4 +-
->   include/hw/m68k/q800.h      |  11 +
->   include/hw/misc/djmemc.h    |  30 ++
->   include/hw/misc/iosb.h      |  25 ++
->   include/hw/misc/mac_via.h   |   3 +
->   23 files changed, 1769 insertions(+), 106 deletions(-)
->   create mode 100644 hw/audio/asc.c
->   create mode 100644 hw/misc/djmemc.c
->   create mode 100644 hw/misc/iosb.c
->   create mode 100644 include/hw/audio/asc.h
->   create mode 100644 include/hw/misc/djmemc.h
->   create mode 100644 include/hw/misc/iosb.h
-> 
+> Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+> ---
+>   linux-user/syscall.c | 22 +++++++++++-----------
+>   1 file changed, 11 insertions(+), 11 deletions(-)
 
-Applied to my q800-for-8.2 branch.
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
-Thanks,
-LAurent
 
