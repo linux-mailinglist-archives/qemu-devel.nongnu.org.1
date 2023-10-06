@@ -2,43 +2,44 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5053B7BB3E7
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BD7FB7BB3EA
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:08:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qognt-0000Hq-9A; Fri, 06 Oct 2023 05:07:25 -0400
+	id 1qognv-0000fP-Fw; Fri, 06 Oct 2023 05:07:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1qognZ-0008HA-NN
+ id 1qognZ-0008HB-Um
  for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:07:06 -0400
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1qognV-00012p-MI
+ id 1qognX-00013M-QF
  for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:07:05 -0400
-Received: (qmail 19894 invoked by uid 484); 6 Oct 2023 09:06:49 -0000
+Received: (qmail 19924 invoked by uid 484); 6 Oct 2023 09:06:52 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.333814 secs); 06 Oct 2023 09:06:49 -0000
+ Processed in 0.072039 secs); 06 Oct 2023 09:06:52 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 6 Oct 2023 09:06:47 -0000
+ encrypted SMTP for <qemu-devel@nongnu.org>; 6 Oct 2023 09:06:50 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Christian.Boenig@lauterbach.com,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicolas Eder <nicolas.eder@lauterbach.com>
-Subject: [PATCH v2 21/29] switching between secure and non-secure memory added
-Date: Fri,  6 Oct 2023 11:06:02 +0200
-Message-Id: <20231006090610.26171-22-nicolas.eder@lauterbach.com>
+Subject: [PATCH v2 22/29] transitioning to unsinged integers in TCP packets
+ and removing MCD-API-specific terms
+Date: Fri,  6 Oct 2023 11:06:03 +0200
+Message-Id: <20231006090610.26171-23-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231006090610.26171-1-nicolas.eder@lauterbach.com>
 References: <20231006090610.26171-1-nicolas.eder@lauterbach.com>
@@ -71,277 +72,277 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: neder <nicolas.eder@lauterbach.com>
 
 ---
- mcdstub/mcdstub.c    | 131 +++++++++++++++++++++++++++----------------
- mcdstub/mcdstub.h    |   4 +-
- target/arm/mcdstub.c |  14 +++++
- target/arm/mcdstub.h |   1 +
- 4 files changed, 100 insertions(+), 50 deletions(-)
+ mcdstub/mcd_shared_defines.h |  8 ++++
+ mcdstub/mcdstub.c            | 74 ++++++++++++++++++++----------------
+ mcdstub/mcdstub.h            | 33 +++++-----------
+ target/arm/mcdstub.c         |  2 +-
+ 4 files changed, 60 insertions(+), 57 deletions(-)
 
+diff --git a/mcdstub/mcd_shared_defines.h b/mcdstub/mcd_shared_defines.h
+index 91d476a555..5cfda4121d 100644
+--- a/mcdstub/mcd_shared_defines.h
++++ b/mcdstub/mcd_shared_defines.h
+@@ -91,4 +91,12 @@
+ #define MCD_BREAKPOINT_WRITE 3
+ #define MCD_BREAKPOINT_RW 4
+ 
++/* trigger data */
++#define MCD_TRIG_ACT_BREAK "check_data_value"
++#define MCD_TRIG_OPT_VALUE "break_on_trigger"
++
++/* register mem space key words */
++#define MCD_GRP_KEYWORD "GPR"
++#define MCD_CP_KEYWORD "CP"
++
+ #endif
 diff --git a/mcdstub/mcdstub.c b/mcdstub/mcdstub.c
-index 3772bda0a1..7d8ce634c8 100644
+index 7d8ce634c8..8e711a0a40 100644
 --- a/mcdstub/mcdstub.c
 +++ b/mcdstub/mcdstub.c
-@@ -548,8 +548,8 @@ int mcd_handle_packet(const char *line_buf)
-             };
-             read_mem_cmd_desc.cmd = (char[2]) { TCP_CHAR_READ_MEMORY, '\0' };
-             strcpy(read_mem_cmd_desc.schema,
--                (char[4]) { ARG_SCHEMA_CORENUM, ARG_SCHEMA_UINT64_T,
--                ARG_SCHEMA_INT, '\0' });
-+                (char[5]) { ARG_SCHEMA_CORENUM, ARG_SCHEMA_INT,
-+                ARG_SCHEMA_UINT64_T, ARG_SCHEMA_INT, '\0' });
-             cmd_parser = &read_mem_cmd_desc;
-         }
-         break;
-@@ -560,8 +560,9 @@ int mcd_handle_packet(const char *line_buf)
-             };
-             write_mem_cmd_desc.cmd = (char[2]) { TCP_CHAR_WRITE_MEMORY, '\0' };
-             strcpy(write_mem_cmd_desc.schema,
--                (char[5]) { ARG_SCHEMA_CORENUM, ARG_SCHEMA_UINT64_T,
--                ARG_SCHEMA_INT, ARG_SCHEMA_HEXDATA, '\0' });
-+                (char[6]) { ARG_SCHEMA_CORENUM, ARG_SCHEMA_INT,
-+                ARG_SCHEMA_UINT64_T, ARG_SCHEMA_INT,
-+                ARG_SCHEMA_HEXDATA, '\0' });
-             cmd_parser = &write_mem_cmd_desc;
-         }
-         break;
-@@ -1194,10 +1195,17 @@ int int_cmp(gconstpointer a, gconstpointer b)
- int mcd_arm_store_mem_spaces(CPUState *cpu, GArray *memspaces)
- {
-     int nr_address_spaces = cpu->num_ases;
-+    uint32_t mem_space_id = 0;
-+
-+    /*
-+     * TODO: atm we can only access physical memory addresses,
-+     * but trace32 needs fake locical spaces to work with
-+    */
+@@ -1303,12 +1303,15 @@ int init_resets(GArray *resets)
  
--    mcd_mem_space_st space1 = {
-+    mem_space_id++;
-+    mcd_mem_space_st non_secure = {
-         .name = "Non Secure",
--        .id = 1,
-+        .id = mem_space_id,
-         .type = 34,
-         .bits_per_mau = 8,
-         .invariance = 1,
-@@ -1205,38 +1213,13 @@ int mcd_arm_store_mem_spaces(CPUState *cpu, GArray *memspaces)
-         .min_addr = 0,
-         .max_addr = -1,
-         .supported_access_options = 0,
-+        .is_secure = false,
-     };
--    g_array_append_vals(memspaces, (gconstpointer)&space1, 1);
--
--    mcd_mem_space_st space2 = {
-+    g_array_append_vals(memspaces, (gconstpointer)&non_secure, 1);
-+    mem_space_id++;
-+    mcd_mem_space_st phys_non_secure = {
-         .name = "Physical (Non Secure)",
--        .id = 2,
--        .type = 18,
--        .bits_per_mau = 8,
--        .invariance = 1,
--        .endian = 1,
--        .min_addr = 0,
--        .max_addr = -1,
--        .supported_access_options = 0,
--    };
--    g_array_append_vals(memspaces, (gconstpointer)&space2, 1);
--
--    if (nr_address_spaces == 2) {
--        mcd_mem_space_st space3 = {
--        .name = "Secure",
--        .id = 3,
--        .type = 34,
--        .bits_per_mau = 8,
--        .invariance = 1,
--        .endian = 1,
--        .min_addr = 0,
--        .max_addr = -1,
--        .supported_access_options = 0,
--    };
--    g_array_append_vals(memspaces, (gconstpointer)&space3, 1);
--    mcd_mem_space_st space4 = {
--        .name = "Physical (Secure)",
--        .id = 4,
-+        .id = mem_space_id,
-         .type = 18,
-         .bits_per_mau = 8,
-         .invariance = 1,
-@@ -1244,14 +1227,44 @@ int mcd_arm_store_mem_spaces(CPUState *cpu, GArray *memspaces)
-         .min_addr = 0,
-         .max_addr = -1,
-         .supported_access_options = 0,
-+        .is_secure = false,
-     };
--    g_array_append_vals(memspaces, (gconstpointer)&space4, 1);
-+    g_array_append_vals(memspaces, (gconstpointer)&phys_non_secure, 1);
-+    if(nr_address_spaces > 1) {
-+        mem_space_id++;
-+        mcd_mem_space_st secure = {
-+            .name = "Secure",
-+            .id = mem_space_id,
-+            .type = 34,
-+            .bits_per_mau = 8,
-+            .invariance = 1,
-+            .endian = 1,
-+            .min_addr = 0,
-+            .max_addr = -1,
-+            .supported_access_options = 0,
-+            .is_secure = true,
-+        };
-+        g_array_append_vals(memspaces, (gconstpointer)&secure, 1);
-+        mem_space_id++;
-+        mcd_mem_space_st phys_secure = {
-+            .name = "Physical (Secure)",
-+            .id = mem_space_id,
-+            .type = 18,
-+            .bits_per_mau = 8,
-+            .invariance = 1,
-+            .endian = 1,
-+            .min_addr = 0,
-+            .max_addr = -1,
-+            .supported_access_options = 0,
-+            .is_secure = true,
-+        };
-+        g_array_append_vals(memspaces, (gconstpointer)&phys_secure, 1);
-     }
--
-     /* TODO: get dynamically how the per (CP15) space is called */
--    mcd_mem_space_st space5 = {
-+    mem_space_id++;
-+    mcd_mem_space_st gpr = {
-         .name = "GPR Registers",
--        .id = 5,
-+        .id = mem_space_id,
-         .type = 1,
-         .bits_per_mau = 8,
-         .invariance = 1,
-@@ -1260,10 +1273,11 @@ int mcd_arm_store_mem_spaces(CPUState *cpu, GArray *memspaces)
-         .max_addr = -1,
-         .supported_access_options = 0,
-     };
--    g_array_append_vals(memspaces, (gconstpointer)&space5, 1);
--    mcd_mem_space_st space6 = {
-+    g_array_append_vals(memspaces, (gconstpointer)&gpr, 1);
-+    mem_space_id++;
-+    mcd_mem_space_st cpr = {
-         .name = "CP15 Registers",
--        .id = 6,
-+        .id = mem_space_id,
-         .type = 1,
-         .bits_per_mau = 8,
-         .invariance = 1,
-@@ -1272,7 +1286,7 @@ int mcd_arm_store_mem_spaces(CPUState *cpu, GArray *memspaces)
-         .max_addr = -1,
-         .supported_access_options = 0,
-     };
--    g_array_append_vals(memspaces, (gconstpointer)&space6, 1);
-+    g_array_append_vals(memspaces, (gconstpointer)&cpr, 1);
+ int init_trigger(mcd_trigger_into_st *trigger)
+ {
+-    trigger->type = (MCD_TRIG_TYPE_IP | MCD_TRIG_TYPE_READ |
+-        MCD_TRIG_TYPE_WRITE | MCD_TRIG_TYPE_RW);
+-    trigger->option = (MCD_TRIG_OPT_DATA_IS_CONDITION);
+-    trigger->action = (MCD_TRIG_ACTION_DBG_DEBUG);
+-    /* there is no specific upper limit for trigger */
+-    trigger->nr_trigger = 0;
++    snprintf(trigger->type, sizeof(trigger->type),
++        "%d,%d,%d,%d", MCD_BREAKPOINT_HW, MCD_BREAKPOINT_READ,
++        MCD_BREAKPOINT_WRITE, MCD_BREAKPOINT_RW);
++    snprintf(trigger->option, sizeof(trigger->option),
++        "%s", MCD_TRIG_OPT_VALUE);
++    snprintf(trigger->action, sizeof(trigger->action),
++        "%s", MCD_TRIG_ACT_BREAK);
++    /* there can be 16 breakpoints and 16 watchpoints each */
++    trigger->nr_trigger = 16;
      return 0;
  }
  
-@@ -2022,10 +2036,20 @@ int mcd_write_memory(CPUState *cpu, hwaddr addr, uint8_t *buf, int len)
- void handle_read_memory(GArray *params, void *user_ctx)
- {
-     uint32_t cpu_id = get_param(params, 0)->cpu_id;
--    uint64_t mem_address = get_param(params, 1)->data_uint64_t;
--    uint32_t len = get_param(params, 2)->data_uint32_t;
-+    uint32_t mem_space_id = get_param(params, 1)->data_uint32_t;
-+    uint64_t mem_address = get_param(params, 2)->data_uint64_t;
-+    uint32_t len = get_param(params, 3)->data_uint32_t;
+@@ -1348,9 +1351,9 @@ void handle_query_cores(GArray *params, void *user_ctx)
+     CPUClass *cc = CPU_GET_CLASS(cpu);
+     gchar *arch = cc->gdb_arch_name(cpu);
  
-     CPUState *cpu = mcd_get_cpu(cpu_id);
-+    /* check if the mem space is secure */
-+    GArray *memspaces = g_list_nth_data(mcdserver_state.all_memspaces, cpu_id);
-+    mcd_mem_space_st space = g_array_index(memspaces, mcd_mem_space_st,
-+        mem_space_id - 1);
-+    if (arm_mcd_set_scr(cpu, space.is_secure)) {
-+        mcd_put_packet(TCP_EXECUTION_ERROR);
-+        return;
-+    }
-+    /* read memory */
-     g_byte_array_set_size(mcdserver_state.mem_buf, len);
-     if (mcd_read_memory(cpu, mem_address, mcdserver_state.mem_buf->data,
-         mcdserver_state.mem_buf->len) != 0) {
-@@ -2040,10 +2064,19 @@ void handle_read_memory(GArray *params, void *user_ctx)
- void handle_write_memory(GArray *params, void *user_ctx)
+-    int nr_cores = cpu->nr_cores;
++    uint32_t nr_cores = cpu->nr_cores;
+     char device_name[] = DEVICE_NAME_TEMPLATE(arch);
+-    g_string_printf(mcdserver_state.str_buf, "%s=%s.%s=%s.%s=%d.",
++    g_string_printf(mcdserver_state.str_buf, "%s=%s.%s=%s.%s=%u.",
+         TCP_ARGUMENT_DEVICE, device_name, TCP_ARGUMENT_CORE, cpu_model,
+         TCP_ARGUMENT_AMOUNT_CORE, nr_cores);
+     mcd_put_strbuf();
+@@ -1576,7 +1579,7 @@ void handle_query_reset_f(GArray *params, void *user_ctx)
+     }
+     /* 2. send data */
+     mcd_reset_st reset = g_array_index(mcdserver_state.resets, mcd_reset_st, 0);
+-    g_string_append_printf(mcdserver_state.str_buf, "%s=%s.%s=%d.",
++    g_string_append_printf(mcdserver_state.str_buf, "%s=%s.%s=%u.",
+         TCP_ARGUMENT_NAME, reset.name, TCP_ARGUMENT_ID, reset.id);
+     mcd_put_strbuf();
+ }
+@@ -1592,13 +1595,13 @@ void handle_query_reset_c(GArray *params, void *user_ctx)
+         /* indicates this is the last packet */
+         g_string_printf(mcdserver_state.str_buf, "0!");
+     } else {
+-        g_string_printf(mcdserver_state.str_buf, "%d!", query_index + 1);
++        g_string_printf(mcdserver_state.str_buf, "%u!", query_index + 1);
+     }
+ 
+     /* 2. send data */
+     mcd_reset_st reset = g_array_index(mcdserver_state.resets,
+         mcd_reset_st, query_index);
+-    g_string_append_printf(mcdserver_state.str_buf, "%s=%s.%s=%d.",
++    g_string_append_printf(mcdserver_state.str_buf, "%s=%s.%s=%u.",
+         TCP_ARGUMENT_NAME, reset.name, TCP_ARGUMENT_ID, reset.id);
+     mcd_put_strbuf();
+ }
+@@ -1652,9 +1655,10 @@ void handle_close_server(GArray *params, void *user_ctx)
+ void handle_query_trigger(GArray *params, void *user_ctx)
  {
-     uint32_t cpu_id = get_param(params, 0)->cpu_id;
--    uint64_t mem_address = get_param(params, 1)->data_uint64_t;
--    uint32_t len = get_param(params, 2)->data_uint32_t;
--
-+    uint32_t mem_space_id = get_param(params, 1)->data_uint32_t;
-+    uint64_t mem_address = get_param(params, 2)->data_uint64_t;
-+    uint32_t len = get_param(params, 3)->data_uint32_t;
-     CPUState *cpu = mcd_get_cpu(cpu_id);
-+    /* check if the mem space is secure */
-+    GArray *memspaces = g_list_nth_data(mcdserver_state.all_memspaces, cpu_id);
-+    mcd_mem_space_st space = g_array_index(memspaces, mcd_mem_space_st,
-+        mem_space_id - 1);
-+    if (arm_mcd_set_scr(cpu, space.is_secure)) {
-+        mcd_put_packet(TCP_EXECUTION_ERROR);
-+        return;
-+    }
-+    /* read memory */
-     mcd_hextomem(mcdserver_state.mem_buf, mcdserver_state.str_buf->str, len);
-     if (mcd_write_memory(cpu, mem_address,
-         mcdserver_state.mem_buf->data, len) != 0) {
+     mcd_trigger_into_st trigger = mcdserver_state.trigger;
+-    g_string_printf(mcdserver_state.str_buf, "%s=%d.%s=%d.%s=%d.%s=%d.",
++    g_string_printf(mcdserver_state.str_buf, "%s=%u.%s=%s.%s=%s.%s=%s.",
+         TCP_ARGUMENT_AMOUNT_TRIGGER, trigger.nr_trigger,
+-        TCP_ARGUMENT_TYPE, trigger.type, TCP_ARGUMENT_OPTION, trigger.option,
++        TCP_ARGUMENT_TYPE, trigger.type,
++        TCP_ARGUMENT_OPTION, trigger.option,
+         TCP_ARGUMENT_ACTION, trigger.action);
+     mcd_put_strbuf();
+ }
+@@ -1714,13 +1718,16 @@ void handle_query_mem_spaces_f(GArray *params, void *user_ctx)
+     /* 3. send data */
+     mcd_mem_space_st space = g_array_index(memspaces, mcd_mem_space_st, 0);
+     g_string_append_printf(mcdserver_state.str_buf,
+-        "%s=%s.%s=%d.%s=%d.%s=%d.%s=%d.%s=%d.%s=%ld.%s=%ld.%s=%d.",
+-        TCP_ARGUMENT_NAME, space.name, TCP_ARGUMENT_ID, space.id,
+-        TCP_ARGUMENT_TYPE, space.type, TCP_ARGUMENT_BITS_PER_MAU,
+-        space.bits_per_mau, TCP_ARGUMENT_INVARIANCE, space.invariance,
+-        TCP_ARGUMENT_ENDIAN, space.endian, TCP_ARGUMENT_MIN, space.min_addr,
+-        TCP_ARGUMENT_MAX, space.max_addr, TCP_ARGUMENT_SUPPORTED_ACCESS_OPTIONS,
+-        space.supported_access_options);
++        "%s=%s.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.%s=%ld.%s=%ld.%s=%u.",
++        TCP_ARGUMENT_NAME, space.name,
++        TCP_ARGUMENT_ID, space.id,
++        TCP_ARGUMENT_TYPE, space.type,
++        TCP_ARGUMENT_BITS_PER_MAU, space.bits_per_mau,
++        TCP_ARGUMENT_INVARIANCE, space.invariance,
++        TCP_ARGUMENT_ENDIAN, space.endian,
++        TCP_ARGUMENT_MIN, space.min_addr,
++        TCP_ARGUMENT_MAX, space.max_addr,
++        TCP_ARGUMENT_SUPPORTED_ACCESS_OPTIONS, space.supported_access_options);
+     mcd_put_strbuf();
+ }
+ 
+@@ -1740,20 +1747,23 @@ void handle_query_mem_spaces_c(GArray *params, void *user_ctx)
+         /* indicates this is the last packet */
+         g_string_printf(mcdserver_state.str_buf, "0!");
+     } else {
+-        g_string_printf(mcdserver_state.str_buf, "%d!", query_index + 1);
++        g_string_printf(mcdserver_state.str_buf, "%u!", query_index + 1);
+     }
+ 
+     /* 3. send the correct memspace */
+     mcd_mem_space_st space = g_array_index(memspaces,
+         mcd_mem_space_st, query_index);
+     g_string_append_printf(mcdserver_state.str_buf,
+-        "%s=%s.%s=%d.%s=%d.%s=%d.%s=%d.%s=%d.%s=%ld.%s=%ld.%s=%d.",
+-        TCP_ARGUMENT_NAME, space.name, TCP_ARGUMENT_ID,
+-        space.id, TCP_ARGUMENT_TYPE, space.type, TCP_ARGUMENT_BITS_PER_MAU,
+-        space.bits_per_mau, TCP_ARGUMENT_INVARIANCE, space.invariance,
+-        TCP_ARGUMENT_ENDIAN, space.endian, TCP_ARGUMENT_MIN, space.min_addr,
+-        TCP_ARGUMENT_MAX, space.max_addr, TCP_ARGUMENT_SUPPORTED_ACCESS_OPTIONS,
+-        space.supported_access_options);
++        "%s=%s.%s=%u.%s=%u.%s=%u.%s=%u.%s=%u.%s=%ld.%s=%ld.%s=%u.",
++        TCP_ARGUMENT_NAME, space.name,
++        TCP_ARGUMENT_ID, space.id,
++        TCP_ARGUMENT_TYPE, space.type,
++        TCP_ARGUMENT_BITS_PER_MAU, space.bits_per_mau,
++        TCP_ARGUMENT_INVARIANCE, space.invariance,
++        TCP_ARGUMENT_ENDIAN, space.endian,
++        TCP_ARGUMENT_MIN, space.min_addr,
++        TCP_ARGUMENT_MAX, space.max_addr,
++        TCP_ARGUMENT_SUPPORTED_ACCESS_OPTIONS, space.supported_access_options);
+     mcd_put_strbuf();
+ }
+ 
+@@ -1774,7 +1784,7 @@ void handle_query_reg_groups_f(GArray *params, void *user_ctx)
+     }
+     /* 3. send data */
+     mcd_reg_group_st group = g_array_index(reggroups, mcd_reg_group_st, 0);
+-    g_string_append_printf(mcdserver_state.str_buf, "%s=%d.%s=%s.",
++    g_string_append_printf(mcdserver_state.str_buf, "%s=%u.%s=%s.",
+         TCP_ARGUMENT_ID, group.id, TCP_ARGUMENT_NAME, group.name);
+     mcd_put_strbuf();
+ }
+@@ -1795,13 +1805,13 @@ void handle_query_reg_groups_c(GArray *params, void *user_ctx)
+         /* indicates this is the last packet */
+         g_string_printf(mcdserver_state.str_buf, "0!");
+     } else {
+-        g_string_printf(mcdserver_state.str_buf, "%d!", query_index + 1);
++        g_string_printf(mcdserver_state.str_buf, "%u!", query_index + 1);
+     }
+ 
+     /* 3. send the correct reggroup */
+     mcd_reg_group_st group = g_array_index(reggroups, mcd_reg_group_st,
+         query_index);
+-    g_string_append_printf(mcdserver_state.str_buf, "%s=%d.%s=%s.",
++    g_string_append_printf(mcdserver_state.str_buf, "%s=%u.%s=%s.",
+         TCP_ARGUMENT_ID, group.id, TCP_ARGUMENT_NAME, group.name);
+     mcd_put_strbuf();
+ }
+@@ -1852,7 +1862,7 @@ void handle_query_regs_c(GArray *params, void *user_ctx)
+         /* indicates this is the last packet */
+         g_string_printf(mcdserver_state.str_buf, "0!");
+     } else {
+-        g_string_printf(mcdserver_state.str_buf, "%d!", query_index + 1);
++        g_string_printf(mcdserver_state.str_buf, "%u!", query_index + 1);
+     }
+ 
+     /* 3. send the correct register */
 diff --git a/mcdstub/mcdstub.h b/mcdstub/mcdstub.h
-index 25475acaf7..f8171cba71 100644
+index f8171cba71..a436551bb1 100644
 --- a/mcdstub/mcdstub.h
 +++ b/mcdstub/mcdstub.h
-@@ -58,7 +58,7 @@ enum {
+@@ -13,22 +13,6 @@
+ #define MCD_TRIG_OPT_DATA_IS_CONDITION 0x00000008
+ #define MCD_TRIG_ACTION_DBG_DEBUG 0x00000001
  
- /* misc */
+-typedef uint32_t mcd_trig_type_et;
+-/* TODO: replace mcd defines with custom layer */
+-enum {
+-    MCD_TRIG_TYPE_UNDEFINED = 0x00000000,
+-    MCD_TRIG_TYPE_IP        = 0x00000001,
+-    MCD_TRIG_TYPE_READ      = 0x00000002,
+-    MCD_TRIG_TYPE_WRITE     = 0x00000004,
+-    MCD_TRIG_TYPE_RW        = 0x00000008,
+-    MCD_TRIG_TYPE_NOCYCLE   = 0x00000010,
+-    MCD_TRIG_TYPE_TRIG_BUS  = 0x00000020,
+-    MCD_TRIG_TYPE_COUNTER   = 0x00000040,
+-    MCD_TRIG_TYPE_CUSTOM    = 0x00000080,
+-    MCD_TRIG_TYPE_CUSTOM_LO = 0x00010000,
+-    MCD_TRIG_TYPE_CUSTOM_HI = 0x40000000,
+-};
+-
+ typedef uint32_t mcd_core_event_et;
+ /* TODO: replace mcd defines with custom layer */
+ enum {
+@@ -60,6 +44,7 @@ enum {
  #define QUERY_TOTAL_NUMBER 12
--#define CMD_SCHEMA_LENGTH 5
-+#define CMD_SCHEMA_LENGTH 6
+ #define CMD_SCHEMA_LENGTH 6
  #define MCD_SYSTEM_NAME "qemu-system"
++#define ARGUMENT_STRING_LENGTH 64
  
  /* tcp query packet values templates */
-@@ -185,6 +185,8 @@ typedef struct mcd_mem_space_st {
-     uint64_t min_addr;
-     uint64_t max_addr;
-     uint32_t supported_access_options;
-+    /* internal */
-+    bool is_secure;
- } mcd_mem_space_st;
+ #define DEVICE_NAME_TEMPLATE(s) "qemu-" #s "-device"
+@@ -126,9 +111,9 @@ typedef struct breakpoint_st {
+ } breakpoint_st;
  
- typedef struct mcd_reg_group_st {
+ typedef struct mcd_trigger_into_st {
+-    uint32_t type;
+-    uint32_t option;
+-    uint32_t action;
++    char type[ARGUMENT_STRING_LENGTH];
++    char option[ARGUMENT_STRING_LENGTH];
++    char action[ARGUMENT_STRING_LENGTH];
+     uint32_t nr_trigger;
+ } mcd_trigger_into_st;
+ 
+@@ -195,15 +180,15 @@ typedef struct mcd_reg_group_st {
+ } mcd_reg_group_st;
+ 
+ typedef struct xml_attrib {
+-    char argument[64];
+-    char value[64];
++    char argument[ARGUMENT_STRING_LENGTH];
++    char value[ARGUMENT_STRING_LENGTH];
+ } xml_attrib;
+ 
+ typedef struct mcd_reg_st {
+     /* xml info */
+-    char name[64];
+-    char group[64];
+-    char type[64];
++    char name[ARGUMENT_STRING_LENGTH];
++    char group[ARGUMENT_STRING_LENGTH];
++    char type[ARGUMENT_STRING_LENGTH];
+     uint32_t bitsize;
+     uint32_t id; /* id used by the mcd interface */
+     uint32_t internal_id; /* id inside reg type */
 diff --git a/target/arm/mcdstub.c b/target/arm/mcdstub.c
-index c0bd5bb545..8456352370 100644
+index 8456352370..3a35d1062d 100644
 --- a/target/arm/mcdstub.c
 +++ b/target/arm/mcdstub.c
-@@ -330,3 +330,17 @@ uint16_t arm_mcd_get_opcode(CPUState *cs, uint32_t n)
-     }
-     return 0;
- }
-+
-+int arm_mcd_set_scr(CPUState *cs, bool secure)
-+{
-+    /* swtiches between secure and non secure mode */
-+    ARMCPU *cpu = ARM_CPU(cs);
-+    CPUARMState *env = &cpu->env;
-+    /* set bit 0 to 1 if non secure, to 0 if secure*/
-+    if (secure) {
-+        env->cp15.scr_el3 &= 0xFFFFFFFE;
-+    } else {
-+        env->cp15.scr_el3 |= 1;
-+    }
-+    return 0;
-+}
-diff --git a/target/arm/mcdstub.h b/target/arm/mcdstub.h
-index 81d67246d8..c3b5c1ae8d 100644
---- a/target/arm/mcdstub.h
-+++ b/target/arm/mcdstub.h
-@@ -16,5 +16,6 @@ int arm_mcd_read_register(CPUState *cs, GByteArray *mem_buf, uint8_t reg_type,
- int arm_mcd_write_register(CPUState *cs, GByteArray *mem_buf, uint8_t reg_type,
-     uint32_t n);
- uint16_t arm_mcd_get_opcode(CPUState *cs, uint32_t n);
-+int arm_mcd_set_scr(CPUState *cs, bool secure);
+@@ -333,7 +333,7 @@ uint16_t arm_mcd_get_opcode(CPUState *cs, uint32_t n)
  
- #endif /* ARM_MCDSTUB_H */
+ int arm_mcd_set_scr(CPUState *cs, bool secure)
+ {
+-    /* swtiches between secure and non secure mode */
++    /* switches between secure and non secure mode */
+     ARMCPU *cpu = ARM_CPU(cs);
+     CPUARMState *env = &cpu->env;
+     /* set bit 0 to 1 if non secure, to 0 if secure*/
 -- 
 2.34.1
 
