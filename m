@@ -2,49 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4117BB401
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58F997BB3E4
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:08:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qognx-00015W-NX; Fri, 06 Oct 2023 05:07:29 -0400
+	id 1qogny-0001Dr-NH; Fri, 06 Oct 2023 05:07:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1qogni-00006q-7l
+ id 1qognk-00007G-JG
  for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:07:18 -0400
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1qogng-00014k-IM
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:07:13 -0400
-Received: (qmail 20040 invoked by uid 484); 6 Oct 2023 09:06:59 -0000
+ id 1qogni-000158-4Q
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:07:16 -0400
+Received: (qmail 20078 invoked by uid 484); 6 Oct 2023 09:07:01 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.146627 secs); 06 Oct 2023 09:06:59 -0000
+ Processed in 0.279629 secs); 06 Oct 2023 09:07:01 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 6 Oct 2023 09:06:58 -0000
+ encrypted SMTP for <qemu-devel@nongnu.org>; 6 Oct 2023 09:07:00 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Christian.Boenig@lauterbach.com,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicolas Eder <nicolas.eder@lauterbach.com>
-Subject: [PATCH v2 27/29] MCD stub entry added to maintainers file
-Date: Fri,  6 Oct 2023 11:06:08 +0200
-Message-Id: <20231006090610.26171-28-nicolas.eder@lauterbach.com>
+Subject: [PATCH v2 28/29] added description to out-commented gdb function
+Date: Fri,  6 Oct 2023 11:06:09 +0200
+Message-Id: <20231006090610.26171-29-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231006090610.26171-1-nicolas.eder@lauterbach.com>
 References: <20231006090610.26171-1-nicolas.eder@lauterbach.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Qmail-Scanner-2.11: added fake Content-Type header
+Content-Type: text/plain
 Received-SPF: pass client-ip=62.154.241.196;
  envelope-from=nicolas.eder@lauterbach.com; helo=smtp1.lauterbach.com
 X-Spam_score_int: -18
@@ -70,29 +71,25 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: neder <nicolas.eder@lauterbach.com>
 
 ---
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ softmmu/cpus.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 81625f036b..b6bc8201bb 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -2832,6 +2832,15 @@ F: tests/tcg/multiarch/gdbstub/
- F: scripts/feature_to_c.sh
- F: scripts/probe-gdb-support.py
- 
-+MCD stub
-+M: Nicolas Eder <nicolas.eder@lauterbach.com>
-+R: Alex Bennée <alex.bennee@linaro.org>
-+S: Maintained
-+F: mcdstub/*
-+F: include/exec/mcdstub.h
-+F: include/mcdstub/*
-+F: target/arm/mcdstub.c
-+
- Memory API
- M: Paolo Bonzini <pbonzini@redhat.com>
- M: Peter Xu <peterx@redhat.com>
+diff --git a/softmmu/cpus.c b/softmmu/cpus.c
+index b1807e6d7b..5d0657bbe5 100644
+--- a/softmmu/cpus.c
++++ b/softmmu/cpus.c
+@@ -306,7 +306,10 @@ void cpu_handle_guest_debug(CPUState *cpu)
+             cpu_single_step(cpu, 0);
+         }
+     } else {
+-        /*gdb_set_stop_cpu(cpu);*/
++        /*
++         * TODO: was gdb_set_stop_cpu(cpu), need to abstract options to
++         * a QOM class.
++         */
+         qemu_system_debug_request();
+         cpu->stopped = true;
+     }
 -- 
 2.34.1
 
