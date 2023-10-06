@@ -2,79 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 509347BB11D
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 07:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D68167BB12C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 07:21:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qod7l-0006L7-QE; Fri, 06 Oct 2023 01:11:41 -0400
+	id 1qodFx-0004p9-D5; Fri, 06 Oct 2023 01:20:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qod7j-0006Ip-7J
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 01:11:39 -0400
-Received: from mail-pf1-x42b.google.com ([2607:f8b0:4864:20::42b])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
- id 1qod7g-0003md-9H
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 01:11:38 -0400
-Received: by mail-pf1-x42b.google.com with SMTP id
- d2e1a72fcca58-692a885f129so1456205b3a.0
- for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 22:11:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696569094; x=1697173894;
- darn=nongnu.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=XNY5obo1lFRY1rzOM4EOFb12ZSNj3/8ms3FBcaRflBM=;
- b=rgncR7yomLvNjudP7oAHqzgjuzDxjZNfeUf48oz1uFZGDZQcBF8MMnb8cdPy2SXNcG
- eYV7EavFokG0QmUcVqAI3j9xvk509zvCrOITokHME/TtijB86+i9Pk11Isec9x8kyKX3
- 65EusaJ3rFkb5wHLTiMfgTy+T91RU5eA5Kn6r0crFcDF2XsgwfSJkBSvcXceaEeQ4lth
- uiVc1w1ZflgsXYpMNZPsr6yExofwgppEK2K8EG63JqFY/u+WM5nvbM6JopwE+qtUMBlp
- f561MiK+g/OblFnCyGnXWQ6zMWhxVc+2iczm34RjcrGpWNgdIGomhnttUWRfOvEP70Xj
- YL5Q==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qodFs-0004ov-SE
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 01:20:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qodFr-0006CX-1d
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 01:20:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696569601;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=FBAxr+vnn+EP39SMj+6cW5VyDDtAVVET7Zf1SxH6FOM=;
+ b=Y8NfOu3dAbpzHjuA96a4TX9g22yWQAj9Hv4hxAqQNHxNL6wG/V/PeJ6dOfoau3TfZJpDiG
+ 1xYCzjXnupqwktLHUkSWCZ5BQ62AIT0CclZiLMhffLE6r5qqDi0hnL+9iUqv2S/zL5qi3/
+ TR7sDzFxS3BLktqMx8vV7Ls+RJu1H4k=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-sIB_U1KcPeKMCNs3k1KaaA-1; Fri, 06 Oct 2023 01:19:59 -0400
+X-MC-Unique: sIB_U1KcPeKMCNs3k1KaaA-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3232c3df248so1142298f8f.3
+ for <qemu-devel@nongnu.org>; Thu, 05 Oct 2023 22:19:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696569094; x=1697173894;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=XNY5obo1lFRY1rzOM4EOFb12ZSNj3/8ms3FBcaRflBM=;
- b=IDUvUGLGBM4hSh7bLlEHT2FVTnRmXD0R5+6LtgI+pBwz/1frR1zDgdj7miuJHbfX5F
- 5g6/Voipi/EnjIpgWIDmPdrChNzAYPgJg8OdCP8vml5z3tp2FboB408ggseRDur8YF6D
- VDPpUbpz9XbEXlqdvpwP0oRzZiauT3hiIcB/CHWMIwIgB2TuMDTp/mF164iaHzMqTKJg
- tX28TBDcX1CIlq1LpG9FEzRy6DCaZkNSWJo4igVWCPCZ/vZeUqssPIA3GIfItmkL7Q2U
- 6lD7jMnx2sXWY4NuYKs6x7jUxIBacLL7Lvp/6x7iqkI8QEvT7gVn17DqSWBu7wo67KLz
- OfEg==
-X-Gm-Message-State: AOJu0Yx2lpTK8vriw3XsGpNCBj4MVDRs0sAeHeY2jkwt7kbc0265r9ON
- dLMmJUEdgQ9NDFPpOw5NITeuzQ==
-X-Google-Smtp-Source: AGHT+IFNj98Wvv8nqMfMxMGWxi75GPaVxxJkJ/LSdE9WNy5dLVN6WAxo1CyXZ+K5J2qtqlmPbTpZSA==
-X-Received: by 2002:a05:6a20:7f96:b0:131:b3fa:eaaa with SMTP id
- d22-20020a056a207f9600b00131b3faeaaamr8371535pzj.61.1696569094350; 
- Thu, 05 Oct 2023 22:11:34 -0700 (PDT)
-Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
- by smtp.gmail.com with UTF8SMTPSA id
- je12-20020a170903264c00b001c74876f018sm2765782plb.18.2023.10.05.22.11.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Thu, 05 Oct 2023 22:11:33 -0700 (PDT)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-To: 
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
- Stefan Weil <sw@weilnetz.de>,
- qemu-devel@nongnu.org (open list:All patches CC here)
-Subject: [PATCH] tap-win32: Remove unnecessary stubs
-Date: Fri,  6 Oct 2023 14:11:26 +0900
-Message-ID: <20231006051127.5429-1-akihiko.odaki@daynix.com>
-X-Mailer: git-send-email 2.42.0
+ d=1e100.net; s=20230601; t=1696569598; x=1697174398;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=FBAxr+vnn+EP39SMj+6cW5VyDDtAVVET7Zf1SxH6FOM=;
+ b=J3una5O4tgbdVVuZ3sFx125p0t/lfQWhYtYi9rQS5qqpkL5A2Ik6UeoxMh1qPUdXzC
+ LgIgPuySEmQn6/9TXzF9Xgv72prQ6pGjpEKgDBlJ2oUyMmRn9f5/SrPqjQVhtm6YJM41
+ LDMo8tTxracXQiV8AZWizrROXkGEUrxuEF/MGB+iWR3R8y6kjrHEzEbX7/4ckai6kPaI
+ FAEG0xDaTpcBzANwGPadnwLHBl13CNdyU+hD1w8166sK9yfGnuiabYGiKcU/Dwj5ZAx5
+ 7Bi0EaXjzLOqlUEh9Jeabsoyg4nOx4cpneJzNAksxrfgIdjP2YnOg0bDUwOVAeuryAXS
+ xjbg==
+X-Gm-Message-State: AOJu0YzoPIsJATuoIqdreMbVtF13DOWwKANHjAgvR6RNfoGf+oyWW/IU
+ Uew32GxblUgdgjRsmg/yGROCvtnQ1Q6dCxZBfTcVhQe2+rfOFR+DIeXE2JIidkZMh39fH+KcC91
+ B6s38n/ubTIi306JZS2oW07g=
+X-Received: by 2002:a5d:48cb:0:b0:322:707e:a9fd with SMTP id
+ p11-20020a5d48cb000000b00322707ea9fdmr5916816wrs.34.1696569598352; 
+ Thu, 05 Oct 2023 22:19:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7Ed8LUyePbGudgdcewZm2XVlNCkZ5RKbTH//oke4npAAMEvS65BpwRUeOV/Fz8+/i+hpQRQ==
+X-Received: by 2002:a5d:48cb:0:b0:322:707e:a9fd with SMTP id
+ p11-20020a5d48cb000000b00322707ea9fdmr5916809wrs.34.1696569598027; 
+ Thu, 05 Oct 2023 22:19:58 -0700 (PDT)
+Received: from redhat.com ([2.52.3.174]) by smtp.gmail.com with ESMTPSA id
+ m8-20020a056000180800b00321773bb933sm724853wrh.77.2023.10.05.22.19.05
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 05 Oct 2023 22:19:28 -0700 (PDT)
+Date: Fri, 6 Oct 2023 01:19:00 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Damien Zammit <damien@zamaudio.com>
+Cc: pbonzini@redhat.com, qemu-devel@nongnu.org
+Subject: Re: [PATCH qemu] timer/i8254: Fix one shot PIT mode
+Message-ID: <20231006011738-mutt-send-email-mst@kernel.org>
+References: <57fad6fa-c27c-b534-c644-1f96318f8972@zamaudio.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::42b;
- envelope-from=akihiko.odaki@daynix.com; helo=mail-pf1-x42b.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <57fad6fa-c27c-b534-c644-1f96318f8972@zamaudio.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,91 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Some of them are only necessary for POSIX systems. The others are
-assigned to function pointers in NetClientInfo that can actually be
-NULL.
+On Fri, Oct 06, 2023 at 02:36:52AM +0000, Damien Zammit wrote:
+> >From: Michael Tokarev <mjt@tls.msk.ru>
+> >26.02.2023 04:58, Damien Zammit wrote:
+> >> Currently, the one-shot (mode 1) PIT expires far too quickly,
+> >> due to the output being set under the wrong logic.
+> >> This change fixes the one-shot PIT mode to behave similarly to mode 0.
+> >> 
+> >> TESTED: using the one-shot PIT mode to calibrate a local apic timer.
+> >
+> >Has this been forgotten, or is it not needed anymore?
+> 
+> This is still required but nobody uses the
+> PIT one-shot mode (probably because it *is* currently broken).
+> 
+> Can it be merged?
+> 
+> Thanks,
+> Damien
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- net/tap-win32.c | 54 -------------------------------------------------
- 1 file changed, 54 deletions(-)
-
-diff --git a/net/tap-win32.c b/net/tap-win32.c
-index f327d62ab0..7edbd71633 100644
---- a/net/tap-win32.c
-+++ b/net/tap-win32.c
-@@ -707,70 +707,16 @@ static void tap_win32_send(void *opaque)
-     }
- }
- 
--static bool tap_has_ufo(NetClientState *nc)
--{
--    return false;
--}
--
--static bool tap_has_vnet_hdr(NetClientState *nc)
--{
--    return false;
--}
--
--int tap_probe_vnet_hdr_len(int fd, int len)
--{
--    return 0;
--}
--
--void tap_fd_set_vnet_hdr_len(int fd, int len)
--{
--}
--
--int tap_fd_set_vnet_le(int fd, int is_le)
--{
--    return -EINVAL;
--}
--
--int tap_fd_set_vnet_be(int fd, int is_be)
--{
--    return -EINVAL;
--}
--
--static void tap_using_vnet_hdr(NetClientState *nc, bool using_vnet_hdr)
--{
--}
--
--static void tap_set_offload(NetClientState *nc, int csum, int tso4,
--                     int tso6, int ecn, int ufo)
--{
--}
--
- struct vhost_net *tap_get_vhost_net(NetClientState *nc)
- {
-     return NULL;
- }
- 
--static bool tap_has_vnet_hdr_len(NetClientState *nc, int len)
--{
--    return false;
--}
--
--static void tap_set_vnet_hdr_len(NetClientState *nc, int len)
--{
--    abort();
--}
--
- static NetClientInfo net_tap_win32_info = {
-     .type = NET_CLIENT_DRIVER_TAP,
-     .size = sizeof(TAPState),
-     .receive = tap_receive,
-     .cleanup = tap_cleanup,
--    .has_ufo = tap_has_ufo,
--    .has_vnet_hdr = tap_has_vnet_hdr,
--    .has_vnet_hdr_len = tap_has_vnet_hdr_len,
--    .using_vnet_hdr = tap_using_vnet_hdr,
--    .set_offload = tap_set_offload,
--    .set_vnet_hdr_len = tap_set_vnet_hdr_len,
- };
- 
- static int tap_win32_init(NetClientState *peer, const char *model,
--- 
-2.42.0
+OK, I tagged it. thanks!
 
 
