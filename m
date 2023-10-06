@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D83D7BB7E4
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 14:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4346C7BB7E6
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 14:41:24 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qok79-0001ei-Cy; Fri, 06 Oct 2023 08:39:32 -0400
+	id 1qok7h-000290-N4; Fri, 06 Oct 2023 08:40:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok72-0001d6-B9
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:24 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok7F-0001lF-Bu
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:38 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok70-0007oI-Lz
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:24 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok74-0007ok-7J
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:36 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id D36BE1F74A;
- Fri,  6 Oct 2023 12:39:20 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C365F1F8A4;
+ Fri,  6 Oct 2023 12:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696595960; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1696595963; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lyPnX1wJ4JI1OFVMxYtIdxKlHRKGrEgKaf8Kmsr9yUo=;
- b=RoC5xX1Xt/qNdqHzEFq5h1Qt77JkyqPKHV7BpS3Pjoq82XO9efBLXLdOSXdEm14LgHUxgC
- 5pze9Hv9XE117iCmKHpM7/s3cQMFtf1VX4EL9+fx6oWQt19OIz4OCzUPKMYj01B5j2WWn/
- nTdmWJvkv/33oRYLmAK6OaAvj6GKr/E=
+ bh=HbmWr/eV8fXIGNrpkGJUUO8mOHIh/diRIjMFbYM3ncY=;
+ b=TbXzrKsiH0CPYH+YFaWMfRXkqPwp6D8HGVoo9zNZ/kaBaIErE8strET0jps66zHucEt1i5
+ 6aXbdL6zRs6+cUCTuyCg3Pp6fCf6lErq0TTIrLXVZkgipDi7o0/Nc/NSJ86M6ZUza9LPfX
+ opkijHSkjhWgbYxq2z3Uv8Zhi+HjILM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696595960;
+ s=susede2_ed25519; t=1696595963;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lyPnX1wJ4JI1OFVMxYtIdxKlHRKGrEgKaf8Kmsr9yUo=;
- b=2SVDBJYU14ivqn5xRh8akvI/jbLur9A/UqX0dvkvzWZvLXWoO9XCWE8bitGkvJFDAQg02B
- imB45lSJKHpAAXAA==
+ bh=HbmWr/eV8fXIGNrpkGJUUO8mOHIh/diRIjMFbYM3ncY=;
+ b=pdcDxYMHWEloe/WJBSmKZUkmy1gJIwOAUGP2i9F7NmIm+3vqGKlW7uWoQm8kD3Woz+5WZ/
+ 6nMw3mmJG4kl6nBg==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 467E913A2E;
- Fri,  6 Oct 2023 12:39:18 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 3E7F813A2E;
+ Fri,  6 Oct 2023 12:39:21 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id kCKFBPb/H2ULIgAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 06 Oct 2023 12:39:18 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id wJnkAvn/H2ULIgAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 06 Oct 2023 12:39:21 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -58,22 +58,22 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 2/9] tests/qtest: Introduce qtest_init_with_env
-Date: Fri,  6 Oct 2023 09:39:03 -0300
-Message-Id: <20231006123910.17759-3-farosas@suse.de>
+Subject: [PATCH v2 3/9] tests/qtest: Allow qtest_get_machines to use an
+ alternate QEMU binary
+Date: Fri,  6 Oct 2023 09:39:04 -0300
+Message-Id: <20231006123910.17759-4-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231006123910.17759-1-farosas@suse.de>
 References: <20231006123910.17759-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,116 +90,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a version of qtest_init() that takes an environment variable
-containing the path of the QEMU binary. This allows tests to use more
-than one QEMU binary.
+We're adding support for using more than one QEMU binary in
+tests. Modify qtest_get_machines() to take an environment variable
+that contains the QEMU binary path.
 
-If no variable is provided or the environment variable does not exist,
-that is not an error. Fallback to using QTEST_QEMU_BINARY.
+Since the function keeps a cache of the machines list in the form of a
+static variable, refresh it any time the environment variable changes.
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/libqtest.c | 26 +++++++++++++++++++-------
- tests/qtest/libqtest.h | 13 +++++++++++++
- 2 files changed, 32 insertions(+), 7 deletions(-)
+ tests/qtest/libqtest.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
 diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 1f971b98e0..88b79cb477 100644
+index 88b79cb477..47c8b6d46f 100644
 --- a/tests/qtest/libqtest.c
 +++ b/tests/qtest/libqtest.c
-@@ -388,7 +388,8 @@ static pid_t qtest_create_process(char *cmd)
- }
- #endif /* _WIN32 */
- 
--static QTestState *G_GNUC_PRINTF(1, 2) qtest_spawn_qemu(const char *fmt, ...)
-+static QTestState *G_GNUC_PRINTF(2, 3) qtest_spawn_qemu(const char *qemu_bin,
-+                                                        const char *fmt, ...)
- {
-     va_list ap;
-     QTestState *s = g_new0(QTestState, 1);
-@@ -398,8 +399,7 @@ static QTestState *G_GNUC_PRINTF(1, 2) qtest_spawn_qemu(const char *fmt, ...)
-     g_autoptr(GString) command = g_string_new("");
- 
-     va_start(ap, fmt);
--    g_string_append_printf(command, CMD_EXEC "%s %s",
--                           qtest_qemu_binary(NULL), tracearg);
-+    g_string_append_printf(command, CMD_EXEC "%s %s", qemu_bin, tracearg);
-     g_string_append_vprintf(command, fmt, ap);
-     va_end(ap);
- 
-@@ -441,7 +441,8 @@ static QTestState *G_GNUC_PRINTF(1, 2) qtest_spawn_qemu(const char *fmt, ...)
-     return s;
- }
- 
--QTestState *qtest_init_without_qmp_handshake(const char *extra_args)
-+static QTestState *qtest_init_internal(const char *qemu_bin,
-+                                       const char *extra_args)
- {
-     QTestState *s;
-     int sock, qmpsock, i;
-@@ -466,7 +467,8 @@ QTestState *qtest_init_without_qmp_handshake(const char *extra_args)
-     sock = init_socket(socket_path);
-     qmpsock = init_socket(qmp_socket_path);
- 
--    s = qtest_spawn_qemu("-qtest unix:%s "
-+    s = qtest_spawn_qemu(qemu_bin,
-+                         "-qtest unix:%s "
-                          "-qtest-log %s "
-                          "-chardev socket,path=%s,id=char0 "
-                          "-mon chardev=char0,mode=control "
-@@ -518,9 +520,14 @@ QTestState *qtest_init_without_qmp_handshake(const char *extra_args)
-     return s;
- }
- 
--QTestState *qtest_init(const char *extra_args)
-+QTestState *qtest_init_without_qmp_handshake(const char *extra_args)
- {
--    QTestState *s = qtest_init_without_qmp_handshake(extra_args);
-+    return qtest_init_internal(qtest_qemu_binary(NULL), extra_args);
-+}
-+
-+QTestState *qtest_init_with_env(const char *var, const char *extra_args)
-+{
-+    QTestState *s = qtest_init_internal(qtest_qemu_binary(var), extra_args);
-     QDict *greeting;
- 
-     /* Read the QMP greeting and then do the handshake */
-@@ -531,6 +538,11 @@ QTestState *qtest_init(const char *extra_args)
-     return s;
- }
- 
-+QTestState *qtest_init(const char *extra_args)
-+{
-+    return qtest_init_with_env(NULL, extra_args);
-+}
-+
- QTestState *qtest_vinitf(const char *fmt, va_list ap)
- {
-     char *args = g_strdup_vprintf(fmt, ap);
-diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index e53e350e3a..eef3a11ca4 100644
---- a/tests/qtest/libqtest.h
-+++ b/tests/qtest/libqtest.h
-@@ -55,6 +55,19 @@ QTestState *qtest_vinitf(const char *fmt, va_list ap) G_GNUC_PRINTF(1, 0);
+@@ -1441,9 +1441,10 @@ struct MachInfo {
+  * Returns an array with pointers to the available machine names.
+  * The terminating entry has the name set to NULL.
   */
- QTestState *qtest_init(const char *extra_args);
+-static struct MachInfo *qtest_get_machines(void)
++static struct MachInfo *qtest_get_machines(const char *var)
+ {
+     static struct MachInfo *machines;
++    static char *qemu_var;
+     QDict *response, *minfo;
+     QList *list;
+     const QListEntry *p;
+@@ -1452,11 +1453,19 @@ static struct MachInfo *qtest_get_machines(void)
+     QTestState *qts;
+     int idx;
  
-+/**
-+ * qtest_init_with_env:
-+ * @var: Environment variable from where to take the QEMU binary
-+ * @extra_args: Other arguments to pass to QEMU.  CAUTION: these
-+ * arguments are subject to word splitting and shell evaluation.
-+ *
-+ * Like qtest_init(), but use a different environment variable for the
-+ * QEMU binary.
-+ *
-+ * Returns: #QTestState instance.
-+ */
-+QTestState *qtest_init_with_env(const char *var, const char *extra_args);
++    if (g_strcmp0(qemu_var, var)) {
++        qemu_var = g_strdup(var);
 +
- /**
-  * qtest_init_without_qmp_handshake:
-  * @extra_args: other arguments to pass to QEMU.  CAUTION: these
++        /* new qemu, clear the cache */
++        g_free(machines);
++        machines = NULL;
++    }
++
+     if (machines) {
+         return machines;
+     }
+ 
+-    qts = qtest_init("-machine none");
++    qts = qtest_init_with_env(qemu_var, "-machine none");
+     response = qtest_qmp(qts, "{ 'execute': 'query-machines' }");
+     g_assert(response);
+     list = qdict_get_qlist(response, "return");
+@@ -1497,7 +1506,7 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+     struct MachInfo *machines;
+     int i;
+ 
+-    machines = qtest_get_machines();
++    machines = qtest_get_machines(NULL);
+ 
+     for (i = 0; machines[i].name != NULL; i++) {
+         /* Ignore machines that cannot be used for qtests */
+@@ -1518,7 +1527,7 @@ bool qtest_has_machine(const char *machine)
+     struct MachInfo *machines;
+     int i;
+ 
+-    machines = qtest_get_machines();
++    machines = qtest_get_machines(NULL);
+ 
+     for (i = 0; machines[i].name != NULL; i++) {
+         if (g_str_equal(machine, machines[i].name) ||
 -- 
 2.35.3
 
