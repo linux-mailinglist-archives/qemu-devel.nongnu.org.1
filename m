@@ -2,86 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F0E87BB2A2
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 09:49:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 182747BB2A6
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 09:50:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qofZR-00036h-OV; Fri, 06 Oct 2023 03:48:25 -0400
+	id 1qofb2-0003lV-FT; Fri, 06 Oct 2023 03:50:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qofZO-00036N-QL
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 03:48:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qofau-0003l4-43
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 03:49:56 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qofZN-0006kf-2I
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 03:48:22 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qofar-00071L-M9
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 03:49:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696578499;
+ s=mimecast20190719; t=1696578591;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=L78QiQ7U8iEcVw6ytSzFgl9vpU4+LmwhoXn5L51h0tE=;
- b=GRmrxWlxg5cM6Mv1Pkvn74RDO9uI3QLzjJ7Ow6CEeiC8PC+ZFafUsamrbAlh6wLPwp/TeB
- MjrwgeEx3hEwD4v1BMP25F1tVnPIM/fAFAzh9ylGmZ9g7Sy2NapPYH3tIEHJHMgF8xJuVT
- 5gmy+NPOeKgkaP3Db3QF3FAGvWYBALw=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LEsJSqn4HI/DGEa8E15sUB8uaMU3fLg021YYdNgr6eI=;
+ b=b1vYCAbE5M4dL0c3PuJIQ1x1AuVl7JlB4noKgHpvbfXn4T//nxXDw177eyYP9eF320Ara/
+ mkyA59wiAXzTtFcvjK1OrBcD29rWkp0gW8yK5Jh+SxZXvcLQcCpOKTiRVRamEvhSf+dXnE
+ CXZIJx5CMcolNhk4fWfbZRHTP90DKp8=
+Received: from mail-yw1-f197.google.com (mail-yw1-f197.google.com
+ [209.85.128.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-471-VaORRc8AORy-D6rLySLD1Q-1; Fri, 06 Oct 2023 03:48:17 -0400
-X-MC-Unique: VaORRc8AORy-D6rLySLD1Q-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9b98bbf130cso153551166b.2
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 00:48:17 -0700 (PDT)
+ us-mta-669-wTg8AADhM7OuruXb-e0A7Q-1; Fri, 06 Oct 2023 03:49:45 -0400
+X-MC-Unique: wTg8AADhM7OuruXb-e0A7Q-1
+Received: by mail-yw1-f197.google.com with SMTP id
+ 00721157ae682-594e1154756so27741987b3.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 00:49:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696578496; x=1697183296;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1696578585; x=1697183385;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=L78QiQ7U8iEcVw6ytSzFgl9vpU4+LmwhoXn5L51h0tE=;
- b=R2TKFsOmNl9Gl9WekKeqxsVHZQlC9iWUbVRy2Akz8Jgk3jUe+EpYEo6EK7gugC+u60
- 4qsyQF1XeI8zV1Df3Z+81lRom7MxXx2o8zS1ZbjFEXJHnwhLh/QKbHy7shozLJu/glfk
- wJj9+1LuNbqQIppx0T47zb2yj1jwky1sP6Lsh2J8S4U5O3LplpsbtuYfK9yNuV8PJ3lT
- YQvTKtGTxOuynuAMLsrzOhqdBM0Mbq09S7Lm8+6BtQr7GzvTEoDdx/zsDUTdxkAyVAIQ
- sG5tHjY1vby+qrBIQxT8QDt4eN/kaaxV+AePMrMcEwXnJv1EeqlQjitq7xKJAbqmFfkd
- fGDg==
-X-Gm-Message-State: AOJu0YzEd4K20ZtW7eigxMb1nF/xdctTVmSsHMkbwcRaAQnmckQ6d2Ow
- vlX9n4bYXkCJCvJFRXrPt6jBA+E+5M0JqW/2LP7QsRa09P0wfTBSWYUzDeKgxEa4ikVFfUew6NU
- XQKivoCpiXJjazQ8=
-X-Received: by 2002:a17:906:cc13:b0:9ae:63bd:a7fe with SMTP id
- ml19-20020a170906cc1300b009ae63bda7femr6177697ejb.10.1696578496577; 
- Fri, 06 Oct 2023 00:48:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcixacUokCdL9AvzNlPwh+be/y6pVOMGbgdSDaFiBFWFBeQHqIQpxIU5kZmnSqxFmcZyRLxg==
-X-Received: by 2002:a17:906:cc13:b0:9ae:63bd:a7fe with SMTP id
- ml19-20020a170906cc1300b009ae63bda7femr6177680ejb.10.1696578496233; 
- Fri, 06 Oct 2023 00:48:16 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ bh=LEsJSqn4HI/DGEa8E15sUB8uaMU3fLg021YYdNgr6eI=;
+ b=sH2LH0KFhTRfZwx6NTyOkt0zqIvEJhbiEZ7jVtH8vkkMl+Ppu8qNI+P8zYOVJYNdCo
+ 9Ud1B2MQrFWK7uY4bbiX0Ff4esgZWGQn4VMqCHjcVfJISHXeAyhvALs7YKzGfqZzeR7n
+ U+3VcsTs9Re1/3X0hmiLtXGPyLZaC5tEct2NKSdN0QotWexfy5Dayt0KkRCel1bQoGyG
+ rodS3IzpUl6zdUJOszWHHs/fgukRv/N4c5fYt02uYbTVnk9/NJ4D7ZvMYTA8neJzwjfa
+ fZ4Hu4CvUL5AXPfH0i9bn9dFHX3cJRYlyxhv4lWtWMmSYbNXvomS9U9XJMq/hqsHSz36
+ rOnQ==
+X-Gm-Message-State: AOJu0YxHF94DCyFsVDoTTsvoEFTRWsXwD2+G+utZkCBZCbth3p7eU2G7
+ yA9hStb9B3zxmoWxhNBK8kiwOkBuTkvbHZMxIgmp5vAquCxl2HiEsY5VjbS9WtnuIbqHrn9BJEI
+ yXdo8+0F7xVRYQxs=
+X-Received: by 2002:a0d:c787:0:b0:59f:7fb9:621a with SMTP id
+ j129-20020a0dc787000000b0059f7fb9621amr7960597ywd.22.1696578585348; 
+ Fri, 06 Oct 2023 00:49:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IERjMRaFv9e8dvwXBttTl3+U8/TESPSbqxD/4+UXxs7+45u0EGMvzJQWkJ7BcOy/NPUp8e+xA==
+X-Received: by 2002:a0d:c787:0:b0:59f:7fb9:621a with SMTP id
+ j129-20020a0dc787000000b0059f7fb9621amr7960581ywd.22.1696578585022; 
+ Fri, 06 Oct 2023 00:49:45 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- dx12-20020a170906a84c00b009b977bea1dcsm2427925ejb.23.2023.10.06.00.48.14
+ n4-20020a0ce544000000b0065b0d9b4ee7sm1177576qvm.20.2023.10.06.00.49.43
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 00:48:15 -0700 (PDT)
-Message-ID: <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
-Date: Fri, 6 Oct 2023 09:48:14 +0200
+ Fri, 06 Oct 2023 00:49:44 -0700 (PDT)
+Message-ID: <86091688-84a1-330c-faf0-2a76d96a536f@redhat.com>
+Date: Fri, 6 Oct 2023 09:49:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [Virtio-fs] (no subject)
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
- =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
- Anton Kuchin <antonkuchin@yandex-team.ru>
-References: <20231004125904.110781-1-hreitz@redhat.com>
- <20231004125904.110781-2-hreitz@redhat.com> <20231005170852.GB1342722@fedora>
- <20231005131352-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH 00/13] misc: Rename 'softmmu' -> 'system'
 Content-Language: en-US
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <20231005131352-mutt-send-email-mst@kernel.org>
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Claudio Fontana <cfontana@suse.de>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org, qemu-riscv@nongnu.org, qemu-ppc@nongnu.org,
+ qemu-s390x@nongnu.org, qemu-arm@nongnu.org
+References: <20231004090629.37473-1-philmd@linaro.org>
+ <ZR1bjpEi5HdFp2xj@redhat.com>
+ <85be2979-c0ca-3eb4-dae9-bbabf256c201@redhat.com>
+ <00b2ec16-162e-9204-3a04-f45e0edeeb15@suse.de>
+ <CABgObfZBTZZvcSPcMSRLWscyEz7B-2h9g28FJx7t7Ggux6E9cA@mail.gmail.com>
+ <ZR1uWXEqcyPxsV3g@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <ZR1uWXEqcyPxsV3g@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -62
 X-Spam_score: -6.3
@@ -90,7 +93,7 @@ X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,61 +109,47 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05.10.23 19:15, Michael S. Tsirkin wrote:
-> On Thu, Oct 05, 2023 at 01:08:52PM -0400, Stefan Hajnoczi wrote:
->> On Wed, Oct 04, 2023 at 02:58:57PM +0200, Hanna Czenczek wrote:
->>> There is no clearly defined purpose for the virtio status byte in
->>> vhost-user: For resetting, we already have RESET_DEVICE; and for virtio
->>> feature negotiation, we have [GS]ET_FEATURES.  With the REPLY_ACK
->>> protocol extension, it is possible for SET_FEATURES to return errors
->>> (SET_PROTOCOL_FEATURES may be called before SET_FEATURES).
+On 04/10/2023 15.53, Daniel P. Berrangé wrote:
+> On Wed, Oct 04, 2023 at 03:49:31PM +0200, Paolo Bonzini wrote:
+>> On Wed, Oct 4, 2023 at 3:41 PM Claudio Fontana <cfontana@suse.de> wrote:
 >>>
->>> As for implementations, SET_STATUS is not widely implemented.  dpdk does
->>> implement it, but only uses it to signal feature negotiation failure.
->>> While it does log reset requests (SET_STATUS 0) as such, it effectively
->>> ignores them, in contrast to RESET_OWNER (which is deprecated, and today
->>> means the same thing as RESET_DEVICE).
->>>
->>> While qemu superficially has support for [GS]ET_STATUS, it does not
->>> forward the guest-set status byte, but instead just makes it up
->>> internally, and actually completely ignores what the back-end returns,
->>> only using it as the template for a subsequent SET_STATUS to add single
->>> bits to it.  Notably, after setting FEATURES_OK, it never reads it back
->>> to see whether the flag is still set, which is the only way in which
->>> dpdk uses the status byte.
->>>
->>> As-is, no front-end or back-end can rely on the other side handling this
->>> field in a useful manner, and it also provides no practical use over
->>> other mechanisms the vhost-user protocol has, which are more clearly
->>> defined.  Deprecate it.
->>>
->>> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
->>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
->>> ---
->>>   docs/interop/vhost-user.rst | 28 +++++++++++++++++++++-------
->>>   1 file changed, 21 insertions(+), 7 deletions(-)
->> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
->
-> SET_STATUS is the only way to signal failure to acknowledge FEATURES_OK.
-> The fact current backends never check errors does not mean they never
-> will. So no, not applying this.
+>>> On 10/4/23 14:37, Thomas Huth wrote:
+>>>> On 04/10/2023 14.33, Daniel P. Berrangé wrote:
+>>>>> Am I mis-understanding what you mean by 'finishes' here, as
+>>>>> I see many references to softmmu remaining
+>>>>> In particular under configs/
+>>>>>
+>>>>> I was also hoping it meant that we'd be changing configure
+>>>>> to allow
+>>>>>
+>>>>>       configure --target-list=x86_64-system
+>>>>>       configure --target-list=x86_64-vm
+>>>>>
+>>>>> for less typing
+>>>>
+>>>> Maybe we should also bikeshed about the naming first... "system" is a quite
+>>>> overloaded word in this context already, and "vm" sounds rather like
+>>>> hardware-accelerated stuff ... what about using something like "sysemu"? Or
+>>>> "fullsys" for "full system emulation" (in contrast to "user space"-only
+>>>> emulation)?
+>>
+>> I agree that changing other remnants should be done right
+>> after this patch, for example $softmmu in configure. Changing
+>> all targets is a very large and very user-visible change, it is
+>> required but it should be planned very well.
+>>
+>> As to the actual target names, I think system is the only
+>> consistent choice since we have --enable/--disable-system
+>> (as pointed out by Claudio) and qemu-system-*.  sysemu
+>> may make a little more sense in the codebase (we have
+>> include/sysemu after all), but maybe that ship has sailed
+>> since we have many occurrences of "system", for example
+>> system_ss and other related sourcesets.
+> 
+> Yep, I agree with that view now, lets stick with 'system'.
 
-Can this not be done with REPLY_ACK?  I.e., with the following message 
-order:
+Ok, convinced, seems like 'system' is likely still the best choice.
 
-1. GET_FEATURES to find out whether VHOST_USER_F_PROTOCOL_FEATURES is 
-present
-2. GET_PROTOCOL_FEATURES to hopefully get VHOST_USER_PROTOCOL_F_REPLY_ACK
-3. SET_PROTOCOL_FEATURES to set VHOST_USER_PROTOCOL_F_REPLY_ACK
-4. SET_FEATURES with need_reply
-
-If not, the problem is that qemu has sent SET_STATUS 0 for a while when 
-the vCPUs are stopped, which generally seems to request a device reset.  
-If we don’t state at least that SET_STATUS 0 is to be ignored, back-ends 
-that will implement SET_STATUS later may break with at least these qemu 
-versions.  But documenting that a particular use of the status byte is 
-to be ignored would be really strange.
-
-Hanna
+  Thomas
 
 
