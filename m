@@ -2,91 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2117BB5F3
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD6D7BB5F4
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:08:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoigD-0001YY-Vc; Fri, 06 Oct 2023 07:07:38 -0400
+	id 1qoigT-0001yi-AV; Fri, 06 Oct 2023 07:07:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qoig4-0001Wb-M6
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:07:28 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qoigQ-0001yR-Nz
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:07:50 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qoig2-00077V-JR
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:07:28 -0400
+ (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
+ id 1qoigP-0007Ah-24
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:07:50 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696590445;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=kflegMjnqCQUoAJNfhGaCAFZAPkne5zzHSYhc3BwE1U=;
- b=Nxb5QoOGw6zW3zy+OUIFRKih3Qtcp3ooqBkW0c7WZ4mM+ZD0yC6g9ECxhR5iJY+XH5XkCs
- QQQey6N0nOvXiFXUA3OVy4qlTPLzsoZ0zcbAEbICb+Yf5Bbwpq9S3griaPlCQv6NO5oI8f
- gV0+vhYqA4bD0dDwTQPceLtVTRPHRTQ=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-650-QeTytZw_PvOysDOE3P48uQ-1; Fri, 06 Oct 2023 07:07:24 -0400
-X-MC-Unique: QeTytZw_PvOysDOE3P48uQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9a1cf3e6c04so169326066b.3
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:07:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696590443; x=1697195243;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=kflegMjnqCQUoAJNfhGaCAFZAPkne5zzHSYhc3BwE1U=;
- b=jI7roi3/UhHIND8AOEjg4mjTvYdkIJKfzGsbswKlP42KggF82i3EXEpjg0sD0IN26D
- caNZh/Pj3q7TT7yXyOOF9K2xcZxwJz2RbhdBSLaenmitfqMwXVHrtjfy6xDirHwQupYO
- qUOLNabCNWU8eylvI8sLjGyoUGorDtyb3NAWFgajW9YgR8mCvnPlrWjca5kld+kEvOCF
- XcWDBqbVzFucP+KwpJj7s9+NCyXzDJ9rzxohcHx7DKkbxghXH4JYjhD7T1J+uqtSvuNu
- sO/g+TlLu/lC6AQWhGXg4WionymgzlLFJbGkwe6IFYjSDb6a4rbvKQWdDQyLFDPIUUwX
- 0Yag==
-X-Gm-Message-State: AOJu0YzAvcQOGUV/79vmFuSzNPmIx6TSKQdGiSzURJ3tpD5gvTkuD/Qb
- r3AxwFqBUpuyaq2HvVgnj4saYJO5qTu4zQ8mDiiZCc019VOhPXK3B46hg46C7y2OxqRjwWEornz
- pnDkKBff6+G01tDU=
-X-Received: by 2002:a17:906:768e:b0:9b2:f38d:c44b with SMTP id
- o14-20020a170906768e00b009b2f38dc44bmr6850924ejm.24.1696590443002; 
- Fri, 06 Oct 2023 04:07:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGprpfizTI3haeikC8sLJat5R5/B75M+prWe3vYir/bF82wnr0X3GmzR7fWaQLkhW21olFHvQ==
-X-Received: by 2002:a17:906:768e:b0:9b2:f38d:c44b with SMTP id
- o14-20020a170906768e00b009b2f38dc44bmr6850918ejm.24.1696590442711; 
- Fri, 06 Oct 2023 04:07:22 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
- [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
- rv18-20020a17090710d200b0099364d9f0e6sm2685019ejb.117.2023.10.06.04.07.21
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 04:07:22 -0700 (PDT)
-Message-ID: <e709856f-2815-5613-1641-8efb87aa87f8@redhat.com>
-Date: Fri, 6 Oct 2023 13:07:21 +0200
+ s=mimecast20190719; t=1696590468;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+ content-type:content-type:in-reply-to:in-reply-to:  references:references;
+ bh=r1A2X3DRHnkezZCoqIfTELZbBShKBtMABNcNwGcyuVY=;
+ b=hSZil3x9gjwzMz9TrHtY0eiSb8xBlZUHppEdPU/j9yY9bjk1ymo4QemY63BhFQXPcJjRu2
+ exL4DqK109lWHET/RTc7czqTz9+ePH/f8jc0zocIV/bOhVBeNxd9OdYEKn1nm84w7jCqt4
+ ypT3OBrP00P/evHNfK1Y+zO+q1U9vrY=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-554-whKW8SQiPfOLG6wNl6Q6zw-1; Fri, 06 Oct 2023 07:07:35 -0400
+X-MC-Unique: whKW8SQiPfOLG6wNl6Q6zw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6D4808007A4;
+ Fri,  6 Oct 2023 11:07:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.38])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 01A4B1054FC0;
+ Fri,  6 Oct 2023 11:07:31 +0000 (UTC)
+Date: Fri, 6 Oct 2023 12:07:29 +0100
+From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Xu <peterx@redhat.com>,
+ Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Cornelia Huck <cohuck@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Michael Roth <michael.roth@amd.com>,
+ isaku.yamahata@gmail.com, Sean Christopherson <seanjc@google.com>,
+ Claudio Fontana <cfontana@suse.de>
+Subject: Re: [RFC PATCH v2 02/21] RAMBlock: Add support of KVM private gmem
+Message-ID: <ZR/qcetI22X/O1aW@redhat.com>
+References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
+ <20230914035117.3285885-3-xiaoyao.li@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 4/5] linux-user/syscall.c: clean up local variable
- shadowing in TARGET_NR_getcpu
-Content-Language: en-US
-To: Laurent Vivier <laurent@vivier.eu>, qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>
-References: <20230925151029.461358-1-laurent@vivier.eu>
- <20230925151029.461358-5-laurent@vivier.eu>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20230925151029.461358-5-laurent@vivier.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20230914035117.3285885-3-xiaoyao.li@intel.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.797, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -99,26 +87,91 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/09/2023 17.10, Laurent Vivier wrote:
-> Fix following warnings:
+On Wed, Sep 13, 2023 at 11:50:58PM -0400, Xiaoyao Li wrote:
+> From: Chao Peng <chao.p.peng@linux.intel.com>
 > 
-> .../linux-user/syscall.c: In function 'do_syscall1':
-> .../linux-user/syscall.c:11180:22: warning: declaration of 'cpu' shadows a previous local [-Wshadow=local]
-> 11180 |             unsigned cpu, node;
->        |                      ^~~
-> .../linux-user/syscall.c:8963:15: note: shadowed declaration is here
->   8963 |     CPUState *cpu = env_cpu(cpu_env);
->        |               ^~~
+> Add KVM gmem support to RAMBlock so both normal hva based memory
+> and kvm gmem fd based private memory can be associated in one RAMBlock.
 > 
-> Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+> Introduce new flag RAM_KVM_GMEM. It calls KVM ioctl to create private
+> gmem for the RAMBlock when it's set.
+> 
+> Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
 > ---
->   linux-user/syscall.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>  accel/kvm/kvm-all.c     | 17 +++++++++++++++++
+>  include/exec/memory.h   |  3 +++
+>  include/exec/ramblock.h |  1 +
+>  include/sysemu/kvm.h    |  2 ++
+>  softmmu/physmem.c       | 18 +++++++++++++++---
+>  5 files changed, 38 insertions(+), 3 deletions(-)
+> 
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 60aacd925393..185ae16d9620 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -4225,3 +4225,20 @@ void query_stats_schemas_cb(StatsSchemaList **result, Error **errp)
+>          query_stats_schema_vcpu(first_cpu, &stats_args);
+>      }
+>  }
+> +
+> +int kvm_create_guest_memfd(uint64_t size, uint64_t flags, Error **errp)
+> +{
+> +    int fd;
+> +    struct kvm_create_guest_memfd gmem = {
+> +        .size = size,
+> +        /* TODO: to decide whether KVM_GUEST_MEMFD_ALLOW_HUGEPAGE is supported */
+> +        .flags = flags,
+> +    };
+> +
+> +    fd = kvm_vm_ioctl(kvm_state, KVM_CREATE_GUEST_MEMFD, &gmem);
+> +    if (fd < 0) {
+> +        error_setg_errno(errp, errno, "%s: error creating kvm gmem\n", __func__);
+> +    }
+> +
+> +    return fd;
+> +}
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index 68284428f87c..227cb2578e95 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -235,6 +235,9 @@ typedef struct IOMMUTLBEvent {
+>  /* RAM is an mmap-ed named file */
+>  #define RAM_NAMED_FILE (1 << 9)
+>  
+> +/* RAM can be private that has kvm gmem backend */
+> +#define RAM_KVM_GMEM    (1 << 10)
+> +
+>  static inline void iommu_notifier_init(IOMMUNotifier *n, IOMMUNotify fn,
+>                                         IOMMUNotifierFlag flags,
+>                                         hwaddr start, hwaddr end,
+> diff --git a/include/exec/ramblock.h b/include/exec/ramblock.h
+> index 69c6a5390293..0d158b3909c9 100644
+> --- a/include/exec/ramblock.h
+> +++ b/include/exec/ramblock.h
+> @@ -41,6 +41,7 @@ struct RAMBlock {
+>      QLIST_HEAD(, RAMBlockNotifier) ramblock_notifiers;
+>      int fd;
+>      uint64_t fd_offset;
+> +    int gmem_fd;
+>      size_t page_size;
+>      /* dirty bitmap used during migration */
+>      unsigned long *bmap;
+
+You're adding a file descriptor to RAMBlock, but I don't see
+anything in this patch that ever calls close(gmem_fd) when the
+RAMBlock is released. Presuambly reclaim_ramblock() needs to
+deal with this ?
 
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+With regards,
+Daniel
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
 
