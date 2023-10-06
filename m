@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E539B7BB8FA
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 15:23:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9460D7BB903
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 15:24:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qokmS-00063l-Ew; Fri, 06 Oct 2023 09:22:12 -0400
+	id 1qokmV-00065n-31; Fri, 06 Oct 2023 09:22:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qokmP-000615-Mj
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:22:09 -0400
-Received: from mail-pl1-x62d.google.com ([2607:f8b0:4864:20::62d])
+ id 1qokmR-00062x-2R
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:22:11 -0400
+Received: from mail-pj1-x102a.google.com ([2607:f8b0:4864:20::102a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qokmM-0003Dy-SP
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:22:08 -0400
-Received: by mail-pl1-x62d.google.com with SMTP id
- d9443c01a7336-1c5c91bec75so16444625ad.3
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 06:22:05 -0700 (PDT)
+ id 1qokmO-0003EZ-Qt
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:22:10 -0400
+Received: by mail-pj1-x102a.google.com with SMTP id
+ 98e67ed59e1d1-2776d882214so1579791a91.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 06:22:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1696598524; x=1697203324; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1696598527; x=1697203327; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KvKZS7XsbHTlH5mCfjOVY2NDos1DmofvmwtvjcTHu6A=;
- b=bh7knsF1aXub7txu/fKMpttiJ9GS+nRfCgIe251hmHUSmpp+/M7piGloHLEFWrt+9f
- lMwvXHCNDmWlJvNZ2StEShM3wg2Pg5FjnVS2QjrGB4U7Aplghnhd27423POc/ku2wCiv
- 8tWOafeKGWWaiKqiISJgLW3UaG7ruDSmbE+9eucJoNhzIMVnRQEYPKNNkHfrCkTR2BjP
- 4L2JwhMx3NCq85Th52MHceJhsXZzzrIspVgbvh5rgQFX/UEYNuiPlRs7nGlAt7XjRKiA
- lxjGVhqK4r4U9KQe296t7Wlz/X0jbCFoNRcuKikgyB3/LlvRc9KWe352fAwXVvMORq1c
- EnCA==
+ bh=5y/dBuqHy/oa9m7Jxo7pCMhDxA4Tb2pKxeV4ExkQA0w=;
+ b=ZCremqsY0yZ8SI8uLsoYNadJy2yj1rVByZcnAXaYaFD+s8eNZrMWzkSaSN1jZZlyhk
+ EvTJoJkDBzQFPfgA+GhCtmSs+bxI2vxWRyOMPwUY2O0ucB1FmVn7bnfGE78lw7OgwSV0
+ 2kbb3a0pRYd+PJrC2rGUxHCG/RjOrmjXxSAsUHWCJKTT810cL8ELLTMqnOETqcn18fcV
+ L0ba9Dk+oHzC/8XpyAM51Qvf2u2QlPJYCW8elM9dOWLAZp4yMgc4FATbUHajOAm7JVXV
+ vz2GOZeX6EfbjGCy7NMmiQlt97XCAHdd4ac3MGCligmJ+gRqC3TYlSBY8DXqeM2vSuEL
+ lpyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696598524; x=1697203324;
+ d=1e100.net; s=20230601; t=1696598527; x=1697203327;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KvKZS7XsbHTlH5mCfjOVY2NDos1DmofvmwtvjcTHu6A=;
- b=nhAh340SmvQ5SEuQQMevg8ZI3X2BfkKefM//+7jcb2qxXfEy0jodMmBcuy0T35U1KS
- nQ4ql7/3Kzvib4yuhOGptt/HRTVyQA3cIl8wbYMhbdHYnBeCV/Fm2sX+up9xhynAHFG7
- qfjrUMYmFdNQRkEeMzgur0JG0eIT70XKY9hFPU8Xney9JXDbvljGKB4Zttp7ZRaiQCmp
- 5NgdW6fq1lt6+CJbteRcH8n8xSNSZYQuAdbTVme+nxWl9+kQB2hB6pl4i8NWgPd9yt3j
- D5fiy4shB/c30CHqXeFncjbhsU7ff9Lv0dHV5S/gImlGpOG03GhFw/KIqu72ob66mLVs
- 2zSA==
-X-Gm-Message-State: AOJu0YyVix6/VkGlpB72SsvRPecSLySq2n88tgsOQyypPJMZRHjdGRjF
- y0znSN9rRjqOj//xQoJRfP47bJC9GqEUIMdQWMA=
-X-Google-Smtp-Source: AGHT+IHLN0pkchy8VcODabrbm1ux3O8JSc46uoLJ7NJawlp+1Smu0XOIhaXdFGsNS1m8OuTHVoNi3w==
-X-Received: by 2002:a17:903:2348:b0:1c5:6dbc:7938 with SMTP id
- c8-20020a170903234800b001c56dbc7938mr8567430plh.69.1696598524177; 
- Fri, 06 Oct 2023 06:22:04 -0700 (PDT)
+ bh=5y/dBuqHy/oa9m7Jxo7pCMhDxA4Tb2pKxeV4ExkQA0w=;
+ b=gc2p4i7dlW2XSzqyNchglY9oHwWOzX3ccJTw61TVZhlo8yN1QKDm1A9w1iUrXmNn8G
+ /niXgE5MbaJxIgeiS3SmzvDNbJEmEJpDxZmihnJpKdnPlVlTEWVSqwCxuUFcnQujLth2
+ iWIRFCZd1Gt9MWTTV0A+of2iW9L3gwUWWro/HbtPNDMyJUhnm2dJtIkglaZl0l2dfTUI
+ rbKGYe198D3MiRZliVRMO7Y+bvNC4uSaJlfSZ4kol7vM/7ap/Ws01KEnwgyLIttCPMI/
+ 01wfDFFEHQqMoJF22HCbW21tItGrUhJyECfGesuTMbiUiWS6GmCihkPIE/0oL0ACSSKF
+ VMNw==
+X-Gm-Message-State: AOJu0YzEH0ELGVCQTw4YyRTOh10qYyTyCQqZ2H4zpm001T5vWWQilcl8
+ tBxWEJ9rJ//1VGMRuhS3J4wrePbu+kAKqDq7H5o=
+X-Google-Smtp-Source: AGHT+IGG0G9JtxcE00GjjE2AGRUcbI1bITetQwY3cCO5XFIvmwSFx/6kb5TYjknEcO4xTRUp5Ndidg==
+X-Received: by 2002:a17:90b:3907:b0:273:e255:2235 with SMTP id
+ ob7-20020a17090b390700b00273e2552235mr6762083pjb.49.1696598527051; 
+ Fri, 06 Oct 2023 06:22:07 -0700 (PDT)
 Received: from grind.. ([177.94.42.196]) by smtp.gmail.com with ESMTPSA id
- c12-20020a170902c1cc00b001c60a548331sm3796669plc.304.2023.10.06.06.22.01
+ c12-20020a170902c1cc00b001c60a548331sm3796669plc.304.2023.10.06.06.22.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 06:22:03 -0700 (PDT)
+ Fri, 06 Oct 2023 06:22:06 -0700 (PDT)
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 To: qemu-devel@nongnu.org
 Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
  liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
  Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH v2 08/10] target/riscv/tcg: add riscv_cpu_write_misa_bit()
-Date: Fri,  6 Oct 2023 10:21:32 -0300
-Message-ID: <20231006132134.1135297-9-dbarboza@ventanamicro.com>
+Subject: [PATCH v2 09/10] target/riscv/tcg: handle MISA bits on profile commit
+Date: Fri,  6 Oct 2023 10:21:33 -0300
+Message-ID: <20231006132134.1135297-10-dbarboza@ventanamicro.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
 References: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62d;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62d.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::102a;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pj1-x102a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -92,94 +92,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We have two instances of the setting/clearing a MISA bit from
-env->misa_ext and env->misa_ext_mask pattern. And the next patch will
-end up adding one more.
+The profile support is handling multi-letter extensions only. Let's add
+support for MISA bits as well.
 
-Create a helper to avoid code repetition.
+We'll go through every known MISA bit. If the user set the bit, doesn't
+matter if to 'true' or 'false', ignore it. If the profile doesn't
+declare the bit as mandatory, ignore it. Otherwise, set or clear the bit
+in env->misa_ext and env->misa_ext_mask depending on whether the profile
+was set to 'true' or 'false'.
 
 Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 ---
- target/riscv/tcg/tcg-cpu.c | 44 ++++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ target/riscv/tcg/tcg-cpu.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 58de4428a9..b1e778913c 100644
+index b1e778913c..d7540274f4 100644
 --- a/target/riscv/tcg/tcg-cpu.c
 +++ b/target/riscv/tcg/tcg-cpu.c
-@@ -42,6 +42,20 @@ static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
+@@ -42,6 +42,12 @@ static bool cpu_cfg_ext_is_user_set(uint32_t ext_offset)
                                   GUINT_TO_POINTER(ext_offset));
  }
  
-+static void riscv_cpu_write_misa_bit(RISCVCPU *cpu, uint32_t bit,
-+                                     bool enabled)
++static bool cpu_misa_ext_is_user_set(uint32_t misa_bit)
 +{
-+    CPURISCVState *env = &cpu->env;
-+
-+    if (enabled) {
-+        env->misa_ext |= bit;
-+        env->misa_ext_mask |= bit;
-+    } else {
-+        env->misa_ext &= ~bit;
-+        env->misa_ext_mask &= ~bit;
-+    }
++    return g_hash_table_contains(misa_ext_user_opts,
++                                 GUINT_TO_POINTER(misa_bit));
 +}
 +
- static void riscv_cpu_synchronize_from_tb(CPUState *cs,
-                                           const TranslationBlock *tb)
+ static void riscv_cpu_write_misa_bit(RISCVCPU *cpu, uint32_t bit,
+                                      bool enabled)
  {
-@@ -700,20 +714,14 @@ static void cpu_set_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
-         return;
-     }
- 
--    if (value) {
--        if (!generic_cpu) {
--            g_autofree char *cpuname = riscv_cpu_get_name(cpu);
--            error_setg(errp, "'%s' CPU does not allow enabling extensions",
--                       cpuname);
--            return;
--        }
--
--        env->misa_ext |= misa_bit;
--        env->misa_ext_mask |= misa_bit;
--    } else {
--        env->misa_ext &= ~misa_bit;
--        env->misa_ext_mask &= ~misa_bit;
-+    if (value && !generic_cpu) {
-+        g_autofree char *cpuname = riscv_cpu_get_name(cpu);
-+        error_setg(errp, "'%s' CPU does not allow enabling extensions",
-+                   cpuname);
-+        return;
-     }
-+
-+    riscv_cpu_write_misa_bit(cpu, misa_bit, value);
- }
- 
- static void cpu_get_misa_ext_cfg(Object *obj, Visitor *v, const char *name,
-@@ -757,7 +765,6 @@ static const RISCVCPUMisaExtConfig misa_ext_cfgs[] = {
-  */
- static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+@@ -283,6 +289,20 @@ static void riscv_cpu_commit_profile(RISCVCPU *cpu, RISCVCPUProfile *profile)
  {
--    CPURISCVState *env = &RISCV_CPU(cpu_obj)->env;
-     bool use_def_vals = riscv_cpu_is_generic(cpu_obj);
      int i;
  
-@@ -778,13 +785,8 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
-                             NULL, (void *)misa_cfg);
-         object_property_set_description(cpu_obj, name, desc);
-         if (use_def_vals) {
--            if (misa_cfg->enabled) {
--                env->misa_ext |= bit;
--                env->misa_ext_mask |= bit;
--            } else {
--                env->misa_ext &= ~bit;
--                env->misa_ext_mask &= ~bit;
--            }
-+            riscv_cpu_write_misa_bit(RISCV_CPU(cpu_obj), bit,
-+                                     misa_cfg->enabled);
-         }
-     }
- }
++    for (i = 0; misa_bits[i] != 0; i++) {
++        uint32_t bit = misa_bits[i];
++
++        if (cpu_misa_ext_is_user_set(bit) || !(profile->misa_ext & bit)) {
++            continue;
++        }
++
++        g_hash_table_insert(misa_ext_user_opts,
++                            GUINT_TO_POINTER(bit),
++                            (gpointer)profile->enabled);
++
++        riscv_cpu_write_misa_bit(cpu, bit, profile->enabled);
++    }
++
+     for (i = 0;; i++) {
+         int ext_offset = profile->ext_offsets[i];
+ 
 -- 
 2.41.0
 
