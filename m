@@ -2,49 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2457BB7E3
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 14:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53A5F7BB7FA
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 14:41:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qok76-0001e6-5w; Fri, 06 Oct 2023 08:39:28 -0400
+	id 1qok7K-0001f4-IY; Fri, 06 Oct 2023 08:39:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok6x-0001ca-BU
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:20 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok70-0001cv-Ko
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:24 -0400
 Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok6v-0007nL-9K
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:18 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok6x-0007nk-Vk
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:21 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id DCE762185E;
- Fri,  6 Oct 2023 12:39:14 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id CEF432186E;
+ Fri,  6 Oct 2023 12:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696595954; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=YT7URwQbub1y7zoRS6TZH5D7H0JKEmfG18hITwkeDX4=;
- b=WD+gor2Q3W5wiqIG1b7WBbZoqJxSyWlo7n6/zVwnzf6iQs3veEOk8MYEsSCf/pzKL6jUfL
- C6+nwYaw4H2CniSjvUUaV1bCQfeahw31nlrNf5w4fuq419ZbQhohdGqxpeJww+Sqc/Hjug
- ETyxtqo1ALSVJVCsR7cqFrAaRkkxUzo=
+ t=1696595957; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=O6eZXUpCJCgXJcHKCCA6q9eaupV07gM00+KlT/9j3Qc=;
+ b=gir6Jr2Ry9xIoNPg489WY+BWuwnIxGUHzoUNfj4Bu/AD+9x/Kkv5FpzcvPcmRo1mryt+6G
+ Wiz3+d32zzw54zSdakE5UkpzOeA50JkpnbPOIm/K3eb1XNLV5hLT1Sr8f5bfMeStbADAU7
+ sbU0VELdRdf/Fz0lAzCilv+1OtQNEbM=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696595954;
+ s=susede2_ed25519; t=1696595957;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version: content-transfer-encoding:content-transfer-encoding;
- bh=YT7URwQbub1y7zoRS6TZH5D7H0JKEmfG18hITwkeDX4=;
- b=D3jTDj/xV3/AXZeiwUGxZZYZRa/KCsI3SYudcYADoc0UPJxzUUDQXYTiFhZISGlcXFCr5K
- Iw04g61iROQGJiCg==
+ mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=O6eZXUpCJCgXJcHKCCA6q9eaupV07gM00+KlT/9j3Qc=;
+ b=iNOTBTXdom8SP9LezzJiLWabKlfKIinDk4UGDuHXq25pqa+ZlPBR+pz8jWkayVfuxbnHxr
+ Wlz2Joes/3+TMABw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id BBC7F13A2E;
- Fri,  6 Oct 2023 12:39:12 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 500CA13A2E;
+ Fri,  6 Oct 2023 12:39:15 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id b7eYIfD/H2ULIgAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 06 Oct 2023 12:39:12 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id SB5MB/P/H2ULIgAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 06 Oct 2023 12:39:15 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -52,11 +56,15 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  =?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Thomas Huth <thuth@redhat.com>
-Subject: [PATCH v2 0/9] tests/migration-test: Allow testing older machine types
-Date: Fri,  6 Oct 2023 09:39:01 -0300
-Message-Id: <20231006123910.17759-1-farosas@suse.de>
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH v2 1/9] tests/qtest: Allow qtest_qemu_binary to use a custom
+ environment variable
+Date: Fri,  6 Oct 2023 09:39:02 -0300
+Message-Id: <20231006123910.17759-2-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20231006123910.17759-1-farosas@suse.de>
+References: <20231006123910.17759-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
@@ -83,74 +91,60 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This adds support for running migration-test with two different QEMU
-versions to test migration compatibility. The tests automatically
-choose the latest machine type supported by both QEMU versions.
+We're adding support for testing migration using two different QEMU
+binaries. We'll provide the second binary in a new environment
+variable.
 
-changes:
+Allow qtest_qemu_binary() to receive the name of the new variable. If
+the new environment variable is not set, that's not an error, we use
+QTEST_QEMU_BINARY as a fallback.
 
-- introduce *_with_env variants of the relevant functions [Daniel, Juan]
+Signed-off-by: Fabiano Rosas <farosas@suse.de>
+---
+ tests/qtest/libqtest.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-- keep the requirement for having the QTEST_QEMU_BINARY always
-  present. qtest_get_arch() is used extensively in the qtest_add*
-  functions. It would be too much churn to pass a different binary
-  into it.
-
-- with this^ we also need to keep the requirement for using only one
-  of SRC|DST. Otherwise it would be confusing to have three binaries
-  listed.
-
-- query the alias to find out the machine types [Daniel]
-
-I haven't looked into the docker part for now. I think Daniel's
-suggestion of QTEST_QEMU_BINARY_SRC='podman run ... qemu-system-foo'
-looks interesting. Do we have the latest release already built in the
-registry at any given point?
-
-Thanks
-
-v1:
-https://lore.kernel.org/r/20231003141932.2367-1-farosas@suse.de
-
-Hi, I had this WIP patch laying around that seems to fit Juan's vision
-about testing older machine types. It is a very rough draft for now,
-but it may be useful for kickstarting the discussion.
-
-With this we can give the tests two different QEMU versions. The test
-picks the older machine type between the two and runs the whole
-migration-test suite.
-
-We'd just need a way to provide the older build. Currently I'm doing
-this by hand.
-
-sample output:
- # Using two different QEMU binaries. Common machine type: pc-i440fx-8.1
- ...
- # Using ./qemu-system-x86_64 (v8.1.0-952-g8a940312a2-dirty) as migration source
- ...
- # Using ../build-8.1.0/qemu-system-x86_64 (v8.1.0-dirty) as migration destination
-
-Let me know what you think.
-
-Fabiano Rosas (9):
-  tests/qtest: Allow qtest_qemu_binary to use a custom environment
-    variable
-  tests/qtest: Introduce qtest_init_with_env
-  tests/qtest: Allow qtest_get_machines to use an alternate QEMU binary
-  tests/qtest: Introduce qtest_has_machine_with_env
-  tests/qtest: Introduce qtest_resolve_machine_alias
-  tests/qtest/migration: Introduce find_common_machine_version
-  tests/qtest/migration: Define a machine for all architectures
-  tests/qtest/migration: Support more than one QEMU binary
-  tests/qtest: Don't print messages from query instances
-
- tests/qtest/libqtest.c          | 86 +++++++++++++++++++++++++++------
- tests/qtest/libqtest.h          | 32 ++++++++++++
- tests/qtest/migration-helpers.c | 24 +++++++++
- tests/qtest/migration-helpers.h |  2 +
- tests/qtest/migration-test.c    | 36 ++++++++++++--
- 5 files changed, 162 insertions(+), 18 deletions(-)
-
+diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
+index b1eba71ffe..1f971b98e0 100644
+--- a/tests/qtest/libqtest.c
++++ b/tests/qtest/libqtest.c
+@@ -336,10 +336,17 @@ void qtest_remove_abrt_handler(void *data)
+     }
+ }
+ 
+-static const char *qtest_qemu_binary(void)
++static const char *qtest_qemu_binary(const char *var)
+ {
+     const char *qemu_bin;
+ 
++    if (var) {
++        qemu_bin = getenv(var);
++        if (qemu_bin) {
++            return qemu_bin;
++        }
++    }
++
+     qemu_bin = getenv("QTEST_QEMU_BINARY");
+     if (!qemu_bin) {
+         fprintf(stderr, "Environment variable QTEST_QEMU_BINARY required\n");
+@@ -392,7 +399,7 @@ static QTestState *G_GNUC_PRINTF(1, 2) qtest_spawn_qemu(const char *fmt, ...)
+ 
+     va_start(ap, fmt);
+     g_string_append_printf(command, CMD_EXEC "%s %s",
+-                           qtest_qemu_binary(), tracearg);
++                           qtest_qemu_binary(NULL), tracearg);
+     g_string_append_vprintf(command, fmt, ap);
+     va_end(ap);
+ 
+@@ -907,7 +914,7 @@ char *qtest_hmp(QTestState *s, const char *fmt, ...)
+ 
+ const char *qtest_get_arch(void)
+ {
+-    const char *qemu = qtest_qemu_binary();
++    const char *qemu = qtest_qemu_binary(NULL);
+     const char *end = strrchr(qemu, '-');
+ 
+     if (!end) {
 -- 
 2.35.3
 
