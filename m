@@ -2,74 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAED77BB635
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:17:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C50F7BB625
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:16:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoinU-0008VY-3r; Fri, 06 Oct 2023 07:15:08 -0400
+	id 1qoinN-0008Mo-LN; Fri, 06 Oct 2023 07:15:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoinO-0008Pn-Bt
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:15:02 -0400
+ id 1qoinJ-0008Hd-Ly
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:57 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoinM-0000NY-Sx
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:15:02 -0400
+ id 1qoinF-0000Ky-4t
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696590900;
+ s=mimecast20190719; t=1696590892;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lqzFG0nl98wuMsJDYYI6DGaasQUrXUt/A59VW574SOI=;
- b=PodaIioQdKn0hlkJBC4k31nCuY1belsP3HAKC7emzBOfCcueT8PL4wBIm41y5AfHg4PqVU
- Ix4ql/2Q+/VL9cUcXVcWBQnFHEAS5CBUM13edNQSVpcqwOMz38vJmByrEPF1oR+tM0FLB/
- ZRu381KDDQ+2YJhnOhUrpVRwXcHLVqo=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=x5mg0EVXMpSp3/p2XABRST0eaTQHLCF3XcJ+1IJpFP4=;
+ b=KYU8wwiRDBuUQq1oU9JPGkJEkcC3Gw+F9v68EsNGIuclzfP/Zj1DLGcsX6g/kuq+VWR8iF
+ +z6kjMqBz/D11baV5dG1WiZvPE8i7gOV8MYGc4Eovr2SkP7Hy03RRzliVoY5/w5pSlSCGz
+ 3dW3SUxZhGiFgAxNUpo/kUhYMRWHR48=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-76-uLBrAO__MpGmMFX49rbTnQ-1; Fri, 06 Oct 2023 07:14:48 -0400
-X-MC-Unique: uLBrAO__MpGmMFX49rbTnQ-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-536294c9526so1706888a12.3
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:48 -0700 (PDT)
+ us-mta-502-oPFZUS_2M_KjrvzL_ku0zA-1; Fri, 06 Oct 2023 07:14:50 -0400
+X-MC-Unique: oPFZUS_2M_KjrvzL_ku0zA-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-99bca0b9234so168883766b.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696590887; x=1697195687;
+ d=1e100.net; s=20230601; t=1696590889; x=1697195689;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=lqzFG0nl98wuMsJDYYI6DGaasQUrXUt/A59VW574SOI=;
- b=n2VGd73FmPNZsCB6U/6X5PnFY2YGGF0UHzOWvTOPUczJqMBU6ePiIifif5VvouIm6d
- vwMHpo9mO79wN3ot5eGfu9puN4UjKzrWj+dfjHHFyhZxvuXMh/r4uyIp2aVXqZKetfqM
- 3+B9q8wrxZnUTnnI0e1eobzJc0vCJG3Jqm0SfqxeRy4rLHh5sde61e+VMIK9ktDoAk/i
- yoU1DYda0XXuqEVCavRBMJw1FnWSLq13wY+BMneWlu44glIh5FWLd/YNZUKO+GlUKAtd
- HuOhmWyhIKlverLXePuC8uq4ZxLcz6ra2VBcnmSLgdcDv60jO91Q9wBanvjVMlzTa45m
- FVOw==
-X-Gm-Message-State: AOJu0YxEPi/8ZyHh0+wSlX/AAR0jS2rjPG3osyOn3fhNhLTNJKaK/QuN
- Lbmkn7CZQSoWnAiqjZx/LOAtI4gg9l2yYCAQbiGGsXfaOabhK+9uP7nr9tntxpZsXGXiOODH/Zx
- J3X7igqrVs6FVrRe0nO/bUyAygm+wd0K2B7yGe2ujg06XarhE8DeagxluWdzgHc4Q+47rbJEm3y
- 8=
-X-Received: by 2002:aa7:c998:0:b0:527:ab3f:4350 with SMTP id
- c24-20020aa7c998000000b00527ab3f4350mr6535778edt.38.1696590887232; 
- Fri, 06 Oct 2023 04:14:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF4V4/JiV3tuC7HIgmPKsNuWtdMVV1QCaUvZGlOwHhJ4xRYSf91iZP0ySNjdHiHa3ue3uIfKA==
-X-Received: by 2002:aa7:c998:0:b0:527:ab3f:4350 with SMTP id
- c24-20020aa7c998000000b00527ab3f4350mr6535761edt.38.1696590886875; 
- Fri, 06 Oct 2023 04:14:46 -0700 (PDT)
+ bh=x5mg0EVXMpSp3/p2XABRST0eaTQHLCF3XcJ+1IJpFP4=;
+ b=Loz9cwDvt9yn1aaLA4lQs5b9MQlPhnw+LAYuPsSpvEOHp2m+9FORlGrT1rOAeNC/8S
+ RPCV4gOlvt+Ns3cKzr/VctWBa8y4NA818z82Qfce3E1xWxomIGjfrQAbJOkgt62RSYYe
+ 0QL+n06VPtkZCocTyskJiFbrpsiqTDEJ2RIbuCJuCzgImwQVlUfaoPTdGbBg03p4ja2d
+ OdTWrD2M1HdgFIpYxN9LvjsRxSZ6Ymja2H6FY6/h+4Me27B4mn0Y3CqpJYYpGFjd/DP9
+ 0vUZaI3RZgSBALk+RjrMtsYhR3igAAOW9c7N13mNXQRrZ5dQgWFw5vHg41Am8OgUKJG4
+ wWdQ==
+X-Gm-Message-State: AOJu0Yy/aK0qyTFsePouPTMy+XnD/imYXs7hksM7xmAcA+yynHpNy1iU
+ Q1dev2MDLOqH1OCWkl6GPiH4f4t4VIH1LLnYMQqOf+Q1vZePu3znK0tbiT+ggXzBiWFI2UxE8eh
+ XMqIfsj8ptaJIcM08iTOEkDz4loJyuxDZdUBgfDVgnXjU8ZF+DjHh46i7sTGQ6sX/aVy6r9vh4a
+ M=
+X-Received: by 2002:a17:906:2257:b0:9a1:680e:8c54 with SMTP id
+ 23-20020a170906225700b009a1680e8c54mr7519323ejr.71.1696590888823; 
+ Fri, 06 Oct 2023 04:14:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvB6h9ao8uWkW0YUfzqlmpViSGBg5sdp1bdNbvndAOzeX6tUnGhk7xxqfSeRW14TytVyIH6g==
+X-Received: by 2002:a17:906:2257:b0:9a1:680e:8c54 with SMTP id
+ 23-20020a170906225700b009a1680e8c54mr7519302ejr.71.1696590888456; 
+ Fri, 06 Oct 2023 04:14:48 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- g11-20020aa7d1cb000000b0052c9f1d3cfasm2420893edp.84.2023.10.06.04.14.46
+ gh18-20020a170906e09200b009786c8249d6sm2741247ejb.175.2023.10.06.04.14.47
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 04:14:46 -0700 (PDT)
+ Fri, 06 Oct 2023 04:14:47 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 18/26] configure: change $softmmu to $system
-Date: Fri,  6 Oct 2023 13:14:04 +0200
-Message-ID: <20231006111412.13130-19-pbonzini@redhat.com>
+Subject: [PULL 19/26] cutils: squelch compiler warnings with custom paths
+Date: Fri,  6 Oct 2023 13:14:05 +0200
+Message-ID: <20231006111412.13130-20-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006111412.13130-1-pbonzini@redhat.com>
 References: <20231006111412.13130-1-pbonzini@redhat.com>
@@ -100,57 +100,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"softmmu" is a deprecated moniker, do the easy change matching
-the variable to the command line option.
+Setting --bindir= to an absolute path that is shorter than the
+prefix causes GCC to complain about array accesses out of bounds.
+The code however is safe, so disable the warning and explain why
+we are doing so.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- configure | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ util/cutils.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/configure b/configure
-index e08127045d0..97a5e8de491 100755
---- a/configure
-+++ b/configure
-@@ -252,7 +252,7 @@ docs="auto"
- EXESUF=""
- prefix="/usr/local"
- qemu_suffix="qemu"
--softmmu="yes"
-+system="yes"
- linux_user=""
- bsd_user=""
- plugins="$default_feature"
-@@ -740,9 +740,9 @@ for opt do
-   ;;
-   --enable-tcg) tcg="enabled"
-   ;;
--  --disable-system) softmmu="no"
-+  --disable-system) system="no"
-   ;;
--  --enable-system) softmmu="yes"
-+  --enable-system) system="yes"
-   ;;
-   --disable-user)
-       linux_user="no" ;
-@@ -864,7 +864,7 @@ else
-         error_exit "user mode emulation not supported on this architecture"
-     fi
- fi
--if [ "$softmmu" = "yes" ]; then
-+if [ "$system" = "yes" ]; then
-     mak_wilds="${mak_wilds} $source_path/configs/targets/*-softmmu.mak"
- fi
+diff --git a/util/cutils.c b/util/cutils.c
+index 25373198adc..3856e304c52 100644
+--- a/util/cutils.c
++++ b/util/cutils.c
+@@ -1012,8 +1012,17 @@ int qemu_pstrcmp0(const char **str1, const char **str2)
+ static inline bool starts_with_prefix(const char *dir)
+ {
+     size_t prefix_len = strlen(CONFIG_PREFIX);
++    /*
++     * dir[prefix_len] is only accessed if the length of dir is
++     * >= prefix_len, so no out of bounds access is possible.
++     */
++#pragma GCC diagnostic push
++#if !defined(__clang__) || __has_warning("-Warray-bounds=")
++#pragma GCC diagnostic ignored "-Warray-bounds="
++#endif
+     return !memcmp(dir, CONFIG_PREFIX, prefix_len) &&
+         (!dir[prefix_len] || G_IS_DIR_SEPARATOR(dir[prefix_len]));
++#pragma GCC diagnostic pop
+ }
  
-@@ -1756,7 +1756,7 @@ for target in $target_list; do
- 
-   case $target in
-     xtensa*-linux-user)
--      # the toolchain is not complete with headers, only build softmmu tests
-+      # the toolchain is not complete with headers, only build system tests
-       continue
-       ;;
-     *-softmmu)
+ /* Return the next path component in dir, and store its length in *p_len.  */
 -- 
 2.41.0
 
