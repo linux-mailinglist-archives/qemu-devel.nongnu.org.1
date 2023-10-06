@@ -2,92 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B2D7BBA3B
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 16:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 871937BBAB1
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 16:47:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qolnQ-00044Z-Tj; Fri, 06 Oct 2023 10:27:16 -0400
+	id 1qom50-0006nE-Ee; Fri, 06 Oct 2023 10:45:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qolnP-00044J-Dy
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:27:15 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qom4x-0006n2-NL
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:45:23 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <peterx@redhat.com>) id 1qolnN-0003GA-NK
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:27:15 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qom4v-00077S-2S
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:45:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696602431;
+ s=mimecast20190719; t=1696603519;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=GHErx43z7h+MFxodRLpA64K+nISp5poS0od1Qqb5WcM=;
- b=CKYsFMYaPWYUH6lALA/T2l1FNyYCSnuT2gBpIKJA9acnRGU9J0rVWgkJC/ATrvD0ibMrjm
- p8ASCHrK8sev1UPvXbOHIZ6DvtuNufXs3X51PA1P33nlGvguCi4KalIQU1F3PGzAiD3YFM
- HRnqn8bqulr+oXwA0jhg+kjTvqqbtuQ=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-124-Bn8nQWhaOWCAwZx_9-p6KQ-1; Fri, 06 Oct 2023 10:27:09 -0400
-X-MC-Unique: Bn8nQWhaOWCAwZx_9-p6KQ-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-7742bd869e4so40353685a.1
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 07:27:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696602428; x=1697207228;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GHErx43z7h+MFxodRLpA64K+nISp5poS0od1Qqb5WcM=;
- b=ZdLZIujxNv5F9fQYoy7lOX8in0H7WAsuxGLHxpioGGpuzfEJ8KE8oG4/eNkfgmGCdQ
- PpQ+uqX5Hm80AHcChFoRB9LjR2QIGB4PUPJgEGWadQNUYl6gZMZ0FEeDJJwcEWGkTOa/
- mSMJSRKELglv00Hb3BpweDm8cITdhFnvlc9uBRwonVGMtNcUB/l7d+MtsGIGlFjFJGWp
- UdhrmcFDbFYS/nZjth/MmnE85Fu/2AUcr3OSXHbSBUa5+ZPxGLlPAt7KMXxRuheB2Z3v
- 7MPrqFaV+K7Y7Lcuc3X2eiFtDA/SOE8E28M58oL5PcRmOs6mDhTVgeWVlMjJvswsigUd
- Vlkw==
-X-Gm-Message-State: AOJu0YyOEP7ERT0froClXjf4JKk0YQ6S5mPsA/Oy1adwXCwOrGH13tbE
- 1yjy4F249mbYUgSVhqeyUlqoossPSK5fpCthX/Pz07pElttxkGEdLcrNKYJ5mJAVko2UcOLHwxU
- g5Hkx0qWRZ9KIQoI=
-X-Received: by 2002:a05:620a:46ac:b0:76d:9234:1db4 with SMTP id
- bq44-20020a05620a46ac00b0076d92341db4mr8997831qkb.7.1696602428507; 
- Fri, 06 Oct 2023 07:27:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH4ONvZIAJz7lIiFivyhv8wWJzcxDrPU5WkgkwRBlXUJlOlcp/niGOMUmq6PDKvy5pigWnxrg==
-X-Received: by 2002:a05:620a:46ac:b0:76d:9234:1db4 with SMTP id
- bq44-20020a05620a46ac00b0076d92341db4mr8997812qkb.7.1696602428148; 
- Fri, 06 Oct 2023 07:27:08 -0700 (PDT)
-Received: from x1n (cpe5c7695f3aee0-cm5c7695f3aede.cpe.net.cable.rogers.com.
- [99.254.144.39]) by smtp.gmail.com with ESMTPSA id
- h23-20020a05620a13f700b00767d6ec578csm1347393qkl.20.2023.10.06.07.27.07
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 07:27:07 -0700 (PDT)
-Date: Fri, 6 Oct 2023 10:27:06 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>,
- Leonardo Bras <leobras@redhat.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Avihai Horon <avihaih@nvidia.com>,
- Yishai Hadas <yishaih@nvidia.com>,
- "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
-Subject: Re: [PATCH 4/5] migration: Provide QMP access to downtime stats
-Message-ID: <ZSAZOhSL2X0AJckQ@x1n>
-References: <20230926161841.98464-1-joao.m.martins@oracle.com>
- <20230926161841.98464-5-joao.m.martins@oracle.com>
- <ZR2cgcj//sAjzOav@x1n>
- <f254478a-2e4d-4e6e-b19f-d5e56099f2a9@oracle.com>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=0msHmLMhDB9eOh7d8vMJI2gMMzuw3Fsi3idR3jjf9kQ=;
+ b=HtUntz4taH3h4A8FllTdBmw/UMH2IcFon6Uxs0Mh8+HMaBZcCFoBnksnZCStskliDxcexg
+ E3tWcI9rRwHz9tlqNLQgJ4a1CE3NQSPBsB3ZubzWV8DVOA1RLxrQFkqKQMi6bZOHhk+W5S
+ pZlz7Gj48lML95GNscGtoW7oCCeEAtM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-106-8MfIRgZ9N8On55_uul-HPg-1; Fri, 06 Oct 2023 10:45:17 -0400
+X-MC-Unique: 8MfIRgZ9N8On55_uul-HPg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6173985A5BE
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 14:45:17 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 4091310EE859
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 14:45:17 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 3499B21E6904; Fri,  6 Oct 2023 16:45:16 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+ =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
+Subject: [v3] Help wanted for enabling -Wshadow=local
+Date: Fri, 06 Oct 2023 16:45:16 +0200
+Message-ID: <87mswvg683.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f254478a-2e4d-4e6e-b19f-d5e56099f2a9@oracle.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=peterx@redhat.com;
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,62 +77,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 06, 2023 at 12:37:15PM +0100, Joao Martins wrote:
-> I added the statistics mainly for observability (e.g. you would grep in the
-> libvirt logs for a non developer and they can understand how downtime is
-> explained). I wasn't specifically thinking about management app using this, just
-> broad access to the metrics.
-> 
-> One can get the same level of observability with a BPF/dtrace/systemtap script,
-> albeit in a less obvious way.
+Local variables shadowing other local variables or parameters make the
+code needlessly hard to understand.  Bugs love to hide in such code.
+Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
+on polling error".
 
-Makes sense.
+Enabling -Wshadow would prevent bugs like this one.  But we have to
+clean up all the offenders first.
 
-> 
-> With respect to motivation: I am doing migration with VFs and sometimes
-> vhost-net, and the downtime/switchover is the only thing that is either
-> non-determinisc or not captured in the migration math. There are some things
-> that aren't accounted (e.g. vhost with enough queues will give you high
-> downtimes),
+Quite a few people responded to my calls for help.  Thank you so much!
 
-Will this be something relevant to loading of the queues?  There used to be
-a work on greatly reducing downtime especially for virtio scenarios over
-multiple queues (and iirc even 1 queue also benefits from that), it wasn't
-merged probably because not enough review:
+I'm collecting patches in my git repo at
+https://repo.or.cz/qemu/armbru.git in branch shadow-next.  All but the
+last two are in a pending pull request.
 
-https://lore.kernel.org/r/20230317081904.24389-1-xuchuangxclwt@bytedance.com
+My test build is down to seven files with warnings.  "[PATCH v2 0/3]
+hexagon: GETPC() and shadowing fixes" takes care of four, but it needs a
+rebase.
 
-Though personally I think that's some direction good to keep exploring at
-least, maybe some slightly enhancement to that series will work for us.
+Remaining three:
 
-> and algorithimally not really possible to account for as one needs
-> to account every possible instruction when we quiesce the guest (or at least
-> that's my understanding).
-> 
-> Just having these metrics, help the developer *and* user see why such downtime
-> is high, and maybe open up window for fixes/bug-reports or where to improve.
-> 
-> Furthermore, hopefully these tracepoints or stats could be a starting point for
-> developers to understand how much downtime is spent in a particular device in
-> Qemu(as a follow-up to this series),
+    In file included from ../hw/display/virtio-gpu-virgl.c:19:
+    ../hw/display/virtio-gpu-virgl.c: In function =E2=80=98virgl_cmd_submit=
+_3d=E2=80=99:
+    /work/armbru/qemu/include/hw/virtio/virtio-gpu.h:228:16: warning: decla=
+ration of =E2=80=98s=E2=80=99 shadows a previous local [-Wshadow=3Dcompatib=
+le-local]
+      228 |         size_t s;                                              =
+         \
+          |                ^
+    ../hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro =E2=
+=80=98VIRTIO_GPU_FILL_CMD=E2=80=99
+      215 |     VIRTIO_GPU_FILL_CMD(cs);
+          |     ^~~~~~~~~~~~~~~~~~~
+    ../hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration is =
+here
+      213 |     size_t s;
+          |            ^
 
-Yes, I was actually expecting that when read the cover letter. :) This also
-makes sense.  One thing worth mention is, the real downtime measured can,
-IMHO, differ on src/dst due to "pre_save" and "post_load" may not really
-doing similar things.  IIUC it can happen that some device sents fast, but
-loads slow.  I'm not sure whether there's reversed use case. Maybe we want
-to capture that on both sides on some metrics?
+    In file included from ../contrib/vhost-user-gpu/virgl.h:18,
+                     from ../contrib/vhost-user-gpu/virgl.c:17:
+    ../contrib/vhost-user-gpu/virgl.c: In function =E2=80=98virgl_cmd_submi=
+t_3d=E2=80=99:
+    ../contrib/vhost-user-gpu/vugpu.h:167:16: warning: declaration of =E2=
+=80=98s=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
+      167 |         size_t s;                                              =
+ \
+          |                ^
+    ../contrib/vhost-user-gpu/virgl.c:203:5: note: in expansion of macro =
+=E2=80=98VUGPU_FILL_CMD=E2=80=99
+      203 |     VUGPU_FILL_CMD(cs);
+          |     ^~~~~~~~~~~~~~
+    ../contrib/vhost-user-gpu/virgl.c:201:12: note: shadowed declaration is=
+ here
+      201 |     size_t s;
+          |            ^
 
-> or allow to implement bounds check limits in switchover limits in way
-> that doesn't violate downtime-limit SLAs (I have a small set of patches
-> for this).
+    ../contrib/vhost-user-gpu/vhost-user-gpu.c: In function =E2=80=98vg_res=
+ource_flush=E2=80=99:
+    ../contrib/vhost-user-gpu/vhost-user-gpu.c:837:29: warning: declaration=
+ of =E2=80=98i=E2=80=99 shadows a previous local [-Wshadow=3Dlocal]
+      837 |             pixman_image_t *i =3D
+          |                             ^
+    ../contrib/vhost-user-gpu/vhost-user-gpu.c:757:9: note: shadowed declar=
+ation is here
+      757 |     int i;
+          |         ^
 
-I assume that decision will always be synchronized between src/dst in some
-way, or guaranteed to be same. But I can wait to read the series first.
+Gerd, Marc-Andr=C3=A9, or anybody else?
 
-Thanks,
-
--- 
-Peter Xu
+More warnings may lurk in code my test build doesn't compile.  Need a
+full CI build with -Wshadow=3Dlocal to find them.  Anybody care to kick
+one off?
 
 
