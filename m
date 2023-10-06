@@ -2,87 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 258DD7BC081
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F21557BC07F
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:40:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qorct-0006Mc-SS; Fri, 06 Oct 2023 16:40:51 -0400
+	id 1qorc1-0005Da-CK; Fri, 06 Oct 2023 16:39:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qorcZ-0006EX-Td
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 16:40:28 -0400
-Received: from mx0b-0031df01.pphosted.com ([205.220.180.131])
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qorc0-0005DO-6J; Fri, 06 Oct 2023 16:39:52 -0400
+Received: from forwardcorp1b.mail.yandex.net
+ ([2a02:6b8:c02:900:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <quic_mathbern@quicinc.com>)
- id 1qorcU-0001Ro-Pg
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 16:40:25 -0400
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 396KXUvY002765; Fri, 6 Oct 2023 20:39:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com;
- h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding :
- content-type; s=qcppdkim1;
- bh=oKyfU+IoikYzKlOcy50ZekR0oS5L7D/+MLdTTNyNVUc=;
- b=MUZwKd+HNChHbQMUj+w0Hofrfgvbv3iSlqQD7tibnEPDBcEY/SdVwfSXIljWbJPt8b4y
- aNFCnn3r789s1up7vFLOpxY9+kFXtDHAl//c6irI3i9WXulEVFMtFqbUHkiReEuKlsoY
- zAi3kpAaRw22sBmm11ZJA51B4IHKk8aydSEcQ2Ds1QzEQqm4L+JO7Ap4mZZI4DkTaVg8
- edEe5Qgply9osymcJsHXLDUrMhBtn1gHXoPNwD1PiLLuMTKTwOBACPCSByy/N5uMnnQB
- kkIJes0sEDJ3Dehl7nflggCEOpJSd/0cZqLuugLAiSkIANSAHNQdul+akP/61Eo8Q+Xw Zw== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tjnddgjbb-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 06 Oct 2023 20:39:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 396KdH8a013251
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Fri, 6 Oct 2023 20:39:17 GMT
-Received: from hu-mathbern-lv.qualcomm.com (10.49.16.6) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.36; Fri, 6 Oct 2023 13:39:17 -0700
-From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-To: <qemu-devel@nongnu.org>
-CC: "Michael S . Tsirkin" <mst@redhat.com>, Peter Maydell
- <peter.maydell@linaro.org>,
- Albert Esteve <aesteve@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Brian Cain <bcain@quicinc.com>
-Subject: [PATCH] hw/display: fix memleak from virtio_add_resource
-Date: Fri, 6 Oct 2023 17:39:01 -0300
-Message-ID: <c61c13f9a0c67dec473bdbfc8789c29ef26c900b.1696624734.git.quic_mathbern@quicinc.com>
-X-Mailer: git-send-email 2.37.2
+ (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
+ id 1qorby-0001Vd-FR; Fri, 06 Oct 2023 16:39:51 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
+ by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id C3FE7615EA;
+ Fri,  6 Oct 2023 23:39:46 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b403::1:3c] (unknown
+ [2a02:6b8:b081:b403::1:3c])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id jdgIhT7OiuQ0-XY1uDTpp; Fri, 06 Oct 2023 23:39:45 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
+ s=default; t=1696624785;
+ bh=6Ty4hkdwZrGvs9Wn/nC/S2Yp5gfHrjfAMAi1St2flSg=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=Ztz4Ggtx/v8GLP63FlyyF/nCsJNUkYTcpiZiuoNs6GkAY8PYAWU9C5ulP87faJgTZ
+ o8FX7JzhPfCMzZcVXDpXYOS4fQa2ENUYUL62Tc2GMZ31ivOC/xTItEsDmhsz8Ls+SK
+ lx/vEDSZMkNFf9FdBT+qGix3T4oN8S6G5KnZAOrc=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
+ dkim=pass header.i=@yandex-team.ru
+Message-ID: <c423bb7c-867d-4b43-b472-2c548628e645@yandex-team.ru>
+Date: Fri, 6 Oct 2023 23:39:45 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: xDAGgHlSpM6YJRF0CfNy1enxLqzFuPjm
-X-Proofpoint-GUID: xDAGgHlSpM6YJRF0CfNy1enxLqzFuPjm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-06_15,2023-10-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1011 mlxscore=0 adultscore=0
- bulkscore=0 mlxlogscore=965 spamscore=0 suspectscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310060156
-Received-SPF: pass client-ip=205.220.180.131;
- envelope-from=quic_mathbern@quicinc.com; helo=mx0b-0031df01.pphosted.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/4] Python: Enable python3.12 support
+Content-Language: en-US
+To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-block@nongnu.org,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20231006195243.3131140-1-jsnow@redhat.com>
+ <20231006195243.3131140-5-jsnow@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20231006195243.3131140-5-jsnow@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,75 +81,79 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When the given uuid is already present in the hash table,
-virtio_add_resource() does not add the passed VirtioSharedObject. In
-this case, free it in the callers to avoid leaking memory. This fixed
-the following `make check` error, when built with --enable-sanitizers:
+On 06.10.23 22:52, John Snow wrote:
+> Python 3.12 has released, so update the test infrastructure to test
+> against this version. Update the configure script to look for it when an
+> explicit Python interpreter isn't chosen.
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> ---
+>   configure                              | 3 ++-
+>   python/setup.cfg                       | 3 ++-
+>   tests/docker/dockerfiles/python.docker | 6 +++++-
+>   3 files changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/configure b/configure
+> index e9a921ffb0..b480a3d6ae 100755
+> --- a/configure
+> +++ b/configure
+> @@ -561,7 +561,8 @@ first_python=
+>   if test -z "${PYTHON}"; then
+>       # A bare 'python' is traditionally python 2.x, but some distros
+>       # have it as python 3.x, so check in both places.
+> -    for binary in python3 python python3.11 python3.10 python3.9 python3.8; do
+> +    for binary in python3 python python3.12 python3.11 \
+> +                          python3.10 python3.9 python3.8; do
+>           if has "$binary"; then
+>               python=$(command -v "$binary")
+>               if check_py_version "$python"; then
+> diff --git a/python/setup.cfg b/python/setup.cfg
+> index 8c67dce457..48668609d3 100644
+> --- a/python/setup.cfg
+> +++ b/python/setup.cfg
+> @@ -18,6 +18,7 @@ classifiers =
+>       Programming Language :: Python :: 3.9
+>       Programming Language :: Python :: 3.10
+>       Programming Language :: Python :: 3.11
+> +    Programming Language :: Python :: 3.12
+>       Typing :: Typed
+>   
+>   [options]
+> @@ -182,7 +183,7 @@ multi_line_output=3
+>   # of python available on your system to run this test.
+>   
+>   [tox:tox]
+> -envlist = py38, py39, py310, py311
+> +envlist = py38, py39, py310, py311, py312
+>   skip_missing_interpreters = true
+>   
+>   [testenv]
+> diff --git a/tests/docker/dockerfiles/python.docker b/tests/docker/dockerfiles/python.docker
+> index 383ccbdc3a..a3c1321190 100644
+> --- a/tests/docker/dockerfiles/python.docker
+> +++ b/tests/docker/dockerfiles/python.docker
+> @@ -11,7 +11,11 @@ ENV PACKAGES \
+>       python3-pip \
+>       python3-tox \
+>       python3-virtualenv \
+> -    python3.10
+> +    python3.10 \
+> +    python3.11 \
+> +    python3.12 \
+> +    python3.8 \
+> +    python3.9
 
-  4/166 qemu:unit / test-virtio-dmabuf   ERROR 1.51s   exit status 1
+Hmm, interesting, how did it work before? Only 3.10 was tested?
 
-  ==7716==ERROR: LeakSanitizer: detected memory leaks
-  Direct leak of 320 byte(s) in 20 object(s) allocated from:
-      #0 0x7f6fc16e3808 in __interceptor_malloc ../../../../src/libsanitizer/asan/asan_malloc_linux.cc:144
-      #1 0x7f6fc1503e98 in g_malloc (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x57e98)
-      #2 0x564d63cafb6b in test_add_invalid_resource ../tests/unit/test-virtio-dmabuf.c:100
-      #3 0x7f6fc152659d  (/lib/x86_64-linux-gnu/libglib-2.0.so.0+0x7a59d)
-  SUMMARY: AddressSanitizer: 320 byte(s) leaked in 20 allocation(s).
+>   
+>   RUN dnf install -y $PACKAGES
+>   RUN rpm -q $PACKAGES | sort > /packages.txt
 
-The changes at virtio_add_resource() itself are not strictly necessary
-for the memleak fix, but they make it more obvious that, on an error
-return, the passed object is not added to the hash.
+weak, I'm unsure about how this all works, I just see that 3.12 is added like others in all hunks except python.docker, but I think adding several python versions to docker should be safe anyway:
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
----
- hw/display/virtio-dmabuf.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/hw/display/virtio-dmabuf.c b/hw/display/virtio-dmabuf.c
-index 4a8e430f3d..3dba4577ca 100644
---- a/hw/display/virtio-dmabuf.c
-+++ b/hw/display/virtio-dmabuf.c
-@@ -29,7 +29,7 @@ static int uuid_equal_func(const void *lhv, const void *rhv)
- 
- static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
- {
--    bool result = false;
-+    bool result = true;
- 
-     g_mutex_lock(&lock);
-     if (resource_uuids == NULL) {
-@@ -39,7 +39,9 @@ static bool virtio_add_resource(QemuUUID *uuid, VirtioSharedObject *value)
-                                                g_free);
-     }
-     if (g_hash_table_lookup(resource_uuids, uuid) == NULL) {
--        result = g_hash_table_insert(resource_uuids, uuid, value);
-+        g_hash_table_insert(resource_uuids, uuid, value);
-+    } else {
-+        result = false;
-     }
-     g_mutex_unlock(&lock);
- 
-@@ -57,6 +59,9 @@ bool virtio_add_dmabuf(QemuUUID *uuid, int udmabuf_fd)
-     vso->type = TYPE_DMABUF;
-     vso->value = GINT_TO_POINTER(udmabuf_fd);
-     result = virtio_add_resource(uuid, vso);
-+    if (!result) {
-+        g_free(vso);
-+    }
- 
-     return result;
- }
-@@ -72,6 +77,9 @@ bool virtio_add_vhost_device(QemuUUID *uuid, struct vhost_dev *dev)
-     vso->type = TYPE_VHOST_DEV;
-     vso->value = dev;
-     result = virtio_add_resource(uuid, vso);
-+    if (!result) {
-+        g_free(vso);
-+    }
- 
-     return result;
- }
 -- 
-2.37.2
+Best regards,
+Vladimir
 
 
