@@ -2,67 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8B07BB68C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:38:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 914447BB6B7
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:42:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoj9C-00053g-9l; Fri, 06 Oct 2023 07:37:34 -0400
+	id 1qoj9D-00054s-0L; Fri, 06 Oct 2023 07:37:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8m-0004yk-L8
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:09 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8o-0004zF-6t
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8h-00006V-4C
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:05 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8h-00006X-9G
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1696592221;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=cNCnM6RelW6FRqtHCtUz0vw/ZVRRzOaHKkAM8cvzZoU=;
- b=PXW9ivoZjGcbyMc3na6itmtldjxqwSc8mau5Ond9zfKY9YjDSdI5SKzJdWURFl1hsAIa1J
- oXlAmhlewqdN70x5kfMb07wLvNSuL3aBXSzPr6KCAgEutnq9Qp0ob8/SK07aHfLRsnIBhX
- TzfQbPbuicOob7xPDZ6ucxPDvOfv9A8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-653-DE3onJFcPT-fFgtBzGZ5UQ-1; Fri, 06 Oct 2023 07:37:00 -0400
-X-MC-Unique: DE3onJFcPT-fFgtBzGZ5UQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ bh=0XhY21QmsLLBiVXGuXCgzmBB9K8MxYLcevoy4YO0rk0=;
+ b=FBknR52YyktRNH3DSebHPnDSx8kfBZ2E6wRaJsog+PSfop5rrWPK6didPoW+KQMzG0qiBd
+ WHZQPY7RdHSsE0VpKC0Le4g5g97bh8OfXYkCQTxbxBdbas/XzW4UoBGQ/vir8KKUSSEuyF
+ f2YQUfLw0SGPThyzGV/yPbiHoAUBR5s=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-342-wtQLLq7eMdWAajxZ6aTfEw-1; Fri, 06 Oct 2023 07:36:59 -0400
+X-MC-Unique: wtQLLq7eMdWAajxZ6aTfEw-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AB15A1C06367;
- Fri,  6 Oct 2023 11:36:59 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AC9B7811E8D
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 11:36:59 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A152492C37;
- Fri,  6 Oct 2023 11:36:59 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 8C67340C6EC1
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 11:36:59 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 6350121E690E; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
+ id 6615821E690F; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com, Thomas Huth <thuth@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/32] audio/ossaudio: Fix compiler warning with -Wshadow
-Date: Fri,  6 Oct 2023 13:36:30 +0200
-Message-ID: <20231006113657.3803180-6-armbru@redhat.com>
+ "Michael S . Tsirkin" <mst@redhat.com>
+Subject: [PULL 06/32] hw/net/vhost_net: Silence compiler warning when
+ compiling with -Wshadow
+Date: Fri,  6 Oct 2023 13:36:31 +0200
+Message-ID: <20231006113657.3803180-7-armbru@redhat.com>
 In-Reply-To: <20231006113657.3803180-1-armbru@redhat.com>
 References: <20231006113657.3803180-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -81,33 +82,43 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Thomas Huth <thuth@redhat.com>
 
-The "err" variable is only used twice in this code, in a very
-local fashion of first assigning it and then checking it in the
-next line. So there is no need to declare this variable a second
-time in the innermost block, we can re-use the variable that is
-declared at the beginning of the function. This fixes the compiler
-warning that occurs with "-Wshadow".
+Rename the innermost local variables to avoid compiler warnings
+with "-Wshadow".
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20231004083900.95856-1-thuth@redhat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Message-ID: <20231004084939.96349-1-thuth@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- audio/ossaudio.c | 1 -
- 1 file changed, 1 deletion(-)
+ hw/net/vhost_net.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/audio/ossaudio.c b/audio/ossaudio.c
-index 3f31852371..c5858284a1 100644
---- a/audio/ossaudio.c
-+++ b/audio/ossaudio.c
-@@ -549,7 +549,6 @@ static int oss_init_out(HWVoiceOut *hw, struct audsettings *as,
-                        hw->size_emul);
-             hw->buf_emul = NULL;
-         } else {
--            int err;
-             int trig = 0;
-             if (ioctl (fd, SNDCTL_DSP_SETTRIGGER, &trig) < 0) {
-                 oss_logerr (errno, "SNDCTL_DSP_SETTRIGGER 0 failed\n");
+diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
+index 57427a3997..e8e1661646 100644
+--- a/hw/net/vhost_net.c
++++ b/hw/net/vhost_net.c
+@@ -313,8 +313,8 @@ fail:
+                 /* Queue might not be ready for start */
+                 continue;
+             }
+-            int r = vhost_net_set_backend(&net->dev, &file);
+-            assert(r >= 0);
++            int ret = vhost_net_set_backend(&net->dev, &file);
++            assert(ret >= 0);
+         }
+     }
+     if (net->nc->info->poll) {
+@@ -629,8 +629,8 @@ err_start:
+     if (net->nc->info->type == NET_CLIENT_DRIVER_TAP) {
+         file.fd = VHOST_FILE_UNBIND;
+         file.index = idx;
+-        int r = vhost_net_set_backend(&net->dev, &file);
+-        assert(r >= 0);
++        int ret = vhost_net_set_backend(&net->dev, &file);
++        assert(ret >= 0);
+     }
+ 
+     vhost_dev_stop(&net->dev, vdev, false);
 -- 
 2.41.0
 
