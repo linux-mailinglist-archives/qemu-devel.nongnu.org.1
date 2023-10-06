@@ -2,76 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6F77BBF97
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 21:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B3977BBFCE
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 21:46:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoqCH-0000vG-F1; Fri, 06 Oct 2023 15:09:13 -0400
+	id 1qoqkC-0000dC-MM; Fri, 06 Oct 2023 15:44:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qoqC8-0000uu-MQ
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 15:09:04 -0400
-Received: from mail-ed1-x52d.google.com ([2a00:1450:4864:20::52d])
+ (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
+ id 1qoqkA-0000cg-I5; Fri, 06 Oct 2023 15:44:14 -0400
+Received: from mail-yb1-xb33.google.com ([2607:f8b0:4864:20::b33])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <wlosh@bsdimp.com>) id 1qoqC5-0005YY-Jb
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 15:09:04 -0400
-Received: by mail-ed1-x52d.google.com with SMTP id
- 4fb4d7f45d1cf-523100882f2so4137796a12.2
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 12:08:58 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
+ id 1qoqk8-0005Zl-UO; Fri, 06 Oct 2023 15:44:14 -0400
+Received: by mail-yb1-xb33.google.com with SMTP id
+ 3f1490d57ef6-d77ad095f13so2702622276.2; 
+ Fri, 06 Oct 2023 12:44:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bsdimp-com.20230601.gappssmtp.com; s=20230601; t=1696619337; x=1697224137;
- darn=nongnu.org; 
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:from:to:cc:subject:date:message-id:reply-to;
- bh=SUXx8T2//uz8UUco5mu2RsPDkxSaSJf8WBC6TYT0VkU=;
- b=xYc1Xh5MU6Xos3fCJnJ3trM9kfjJa8wdpd3kmNO9OYlp0A5gBbbQ9XRFJh8hM5emWr
- GN+q3SsqN/P9lClnIE2BdQVXaza84qNqVS8i1NrE/WamSFRIMwr/EPzrNDpXB/a2D8Zk
- lyPw0dTkXBwPGgnc3ReJZ+pkxGUOWYRfEq3q4GEOkFpdHqjrQdaWcCSYz/HWQrc1aTdR
- fMQ2CtdHOjOZQiYl4wp0t5vjozgEw+vgIAR20/CUQ9O8fp1eOBlPvwvl9wLwqqG0XpWH
- Iae5S6aPq3kDvL1Vi2EiBTv3sWQVH1YjaJNz6bP6sN+CEIWUt7B39kYXpUm2qaVQcdyo
- ipnw==
+ d=gmail.com; s=20230601; t=1696621451; x=1697226251; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=74lPEca/UAU2oWCd/4/zo/d1fg9MPRz7UmeXpNS4ykM=;
+ b=V79k9vsTqLPWTmT69bnST1fvyhr5wMsc0mWzyhYonerwxuahMbaYFJQ6Ys5WnqO0mG
+ cuO0N2MaHL3tPkQ39f3nXRTxs8Yr7XqmSaBrkK22p6LkY/4puP3YW1QM5/ESk7C91mt+
+ 4ecyIeEFnwSi7mWecYmEkkxvQeZtMduw00iYKPb3yOydYj2EaLXhiP52B1aGKP6QL55x
+ WUW+sXdELUzryvEKe1cFpwm3ubmVaFli2lREoDa7GryrS3wk1hnXgPO9tYvDJaMb7nG2
+ hboTAzK/FLu7+43usaiWvEQVS4rbouE614ZEbuoYg1XgjM+9ZLTGzikHZNEBIJoqKpiq
+ x6bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696619337; x=1697224137;
- h=cc:to:subject:message-id:date:from:in-reply-to:references
- :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=SUXx8T2//uz8UUco5mu2RsPDkxSaSJf8WBC6TYT0VkU=;
- b=WAnM561ooAWhEmfIo2nRxNaQwzlYkfdskzXSy8jEbXcBl82xxcc4j8+eRrXdn1j/Sn
- SEkHlRq2dzMnoM/2/FRWlEWCrpg9WfIdmp61H+96CJp4OtXB74/0qStn2aCjwdQ3ZB84
- /eqsFBIZd0gamQ5Mfu5s4e5PsEJhc4I/dYWxTmjD3gDsoOJOEGmIs3iUXoHhlW8O7KuR
- wsK3vr+l8gYEQIEWKIXZJWLCDddCZRATzygjTi9zzJnhoQDTbItsBvOsZcLsEbq8Z6tJ
- ZLcTbhS4RzJzrFPbzU822eSm16dCmZYJ60MVsUQemuJRxQYxPxMwS0lm/pD2ii8XLgLj
- VJwg==
-X-Gm-Message-State: AOJu0YyP48oRviWLhyk89c+mc+NEMYP5rYTdACe0K/L53BbTQgeB2mq3
- bqXjcLDbhM4g6dADyRAtF4YYs/5jZTV9pwMBOiRNLQ==
-X-Google-Smtp-Source: AGHT+IHF0TesG1e5eQCM6RtKwqKe4VQZ+gZvO9k5413a2kA0GnuFo0lojAAGrdUe76uzaVKOomR/27HIJEzcrICdU+c=
-X-Received: by 2002:a05:6402:1357:b0:533:4a9a:b0e6 with SMTP id
- y23-20020a056402135700b005334a9ab0e6mr8646542edw.20.1696619336667; Fri, 06
- Oct 2023 12:08:56 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696621451; x=1697226251;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=74lPEca/UAU2oWCd/4/zo/d1fg9MPRz7UmeXpNS4ykM=;
+ b=o6X4Kg7womGobopI3YNb2c5wc5vkEjMIFm5crHf2eGyKesET6xvj2w7DV4AvSVVeWi
+ 7ZafIZA0SGtOiEgTCEBrycw9PALr+9Moe86OuT2Ymn2Wml8zfcUVygp/iwsRateq8O6X
+ 8Nc89ELYcJh6fnjaangpQEjHcaZIb25hd70nmcWw/oYJ4TQ5reod6I0+XY43fP//R2Zq
+ pAkMCnVPGS4GyELayFl8Zq49G6kNJ2lyMf3KcbtqJ+jLbPQuuL+i3qlXQOVzp3XjJz3h
+ yofD+hjFqBtb0zfHfbIiq1gEyeBNcqqpGxJGvms2UuZ0Uust7J8rAQ/fbuZWIVEcaqEj
+ Ec8w==
+X-Gm-Message-State: AOJu0YxwWEe102yxq6Z9eEKVSTLwubhZeHA2E3kKU0fh5B6tk8DHKtMD
+ uweYvd7mibrARxbdVXwN/G0EjmhAvjClWQnfXJw=
+X-Google-Smtp-Source: AGHT+IG5d0DUaFzkELvBpWrMBjIiWXc50qzMqREzZdUs3T0SM7TFjbyzTHaBkM8SRq+UO7Iv1l/SuNhAgXADXwJq7OY=
+X-Received: by 2002:a25:cb8b:0:b0:d47:47c0:d7c1 with SMTP id
+ b133-20020a25cb8b000000b00d4747c0d7c1mr9978673ybg.62.1696621451003; Fri, 06
+ Oct 2023 12:44:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <87mswvg683.fsf@pond.sub.org>
- <12397ede-8e20-cb55-b759-d2fbf7732f46@redhat.com>
- <884f4d8c-4ee4-3ee2-ff62-5d7166a75adb@redhat.com>
-In-Reply-To: <884f4d8c-4ee4-3ee2-ff62-5d7166a75adb@redhat.com>
-From: Warner Losh <imp@bsdimp.com>
-Date: Fri, 6 Oct 2023 13:08:38 -0600
-Message-ID: <CANCZdfpU1eCM0fatVBuQJW9bLzTZfvp3HNQ=2Kfz9ni90PbmEg@mail.gmail.com>
-Subject: Re: [v3] Help wanted for enabling -Wshadow=local
-To: Thomas Huth <thuth@redhat.com>
-Cc: Markus Armbruster <armbru@redhat.com>,
- QEMU Developers <qemu-devel@nongnu.org>, 
- Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000e1a698060710f818"
-Received-SPF: none client-ip=2a00:1450:4864:20::52d;
- envelope-from=wlosh@bsdimp.com; helo=mail-ed1-x52d.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, HTML_MESSAGE=0.001, RCVD_IN_DNSWL_NONE=-0.0001,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+References: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
+ <20231002085738.369684-16-alexander.ivanov@virtuozzo.com>
+In-Reply-To: <20231002085738.369684-16-alexander.ivanov@virtuozzo.com>
+From: Mike Maslenkin <mike.maslenkin@gmail.com>
+Date: Fri, 6 Oct 2023 22:43:34 +0300
+Message-ID: <CAL77WPCgbWch6TqjBucJJ_MfG2nOFtoA=oT9EbAE+V_kDTfCgA@mail.gmail.com>
+Subject: Re: [PATCH 15/19] parallels: Remove unnecessary data_end field
+To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, den@virtuozzo.com, 
+ stefanha@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com, 
+ hreitz@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b33;
+ envelope-from=mike.maslenkin@gmail.com; helo=mail-yb1-xb33.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -87,302 +87,180 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---000000000000e1a698060710f818
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Oct 6, 2023, 11:55 AM Thomas Huth <thuth@redhat.com> wrote:
-
-> On 06/10/2023 18.18, Thomas Huth wrote:
-> > On 06/10/2023 16.45, Markus Armbruster wrote:
-> >> Local variables shadowing other local variables or parameters make the
-> >> code needlessly hard to understand.  Bugs love to hide in such code.
-> >> Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
-> >> on polling error".
-> >>
-> >> Enabling -Wshadow would prevent bugs like this one.  But we have to
-> >> clean up all the offenders first.
-> >>
-> >> Quite a few people responded to my calls for help.  Thank you so much!
-> >>
-> >> I'm collecting patches in my git repo at
-> >> https://repo.or.cz/qemu/armbru.git in branch shadow-next.  All but the
-> >> last two are in a pending pull request.
-> >>
-> >> My test build is down to seven files with warnings.  "[PATCH v2 0/3]
-> >> hexagon: GETPC() and shadowing fixes" takes care of four, but it needs=
- a
-> >> rebase.
-> >>
-> >> Remaining three:
-> >>
-> >>      In file included from ../hw/display/virtio-gpu-virgl.c:19:
-> >>      ../hw/display/virtio-gpu-virgl.c: In function
-> =E2=80=98virgl_cmd_submit_3d=E2=80=99:
-> >>      /work/armbru/qemu/include/hw/virtio/virtio-gpu.h:228:16: warning:
-> >> declaration of =E2=80=98s=E2=80=99 shadows a previous local [-Wshadow=
-=3Dcompatible-local]
-> >>        228 |         size_t
-> >> s;                                                       \
-> >>            |                ^
-> >>      ../hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of
-> macro
-> >> =E2=80=98VIRTIO_GPU_FILL_CMD=E2=80=99
-> >>        215 |     VIRTIO_GPU_FILL_CMD(cs);
-> >>            |     ^~~~~~~~~~~~~~~~~~~
-> >>      ../hw/display/virtio-gpu-virgl.c:213:12: note: shadowed
-> declaration
-> >> is here
-> >>        213 |     size_t s;
-> >>            |            ^
-> >>
-> >>      In file included from ../contrib/vhost-user-gpu/virgl.h:18,
-> >>                       from ../contrib/vhost-user-gpu/virgl.c:17:
-> >>      ../contrib/vhost-user-gpu/virgl.c: In function
-> =E2=80=98virgl_cmd_submit_3d=E2=80=99:
-> >>      ../contrib/vhost-user-gpu/vugpu.h:167:16: warning: declaration of
-> =E2=80=98s=E2=80=99
-> >> shadows a previous local [-Wshadow=3Dcompatible-local]
-> >>        167 |         size_t
-> >> s;                                               \
-> >>            |                ^
-> >>      ../contrib/vhost-user-gpu/virgl.c:203:5: note: in expansion of
-> macro
-> >> =E2=80=98VUGPU_FILL_CMD=E2=80=99
-> >>        203 |     VUGPU_FILL_CMD(cs);
-> >>            |     ^~~~~~~~~~~~~~
-> >>      ../contrib/vhost-user-gpu/virgl.c:201:12: note: shadowed
-> declaration
-> >> is here
-> >>        201 |     size_t s;
-> >>            |            ^
-> >>
-> >>      ../contrib/vhost-user-gpu/vhost-user-gpu.c: In function
-> >> =E2=80=98vg_resource_flush=E2=80=99:
-> >>      ../contrib/vhost-user-gpu/vhost-user-gpu.c:837:29: warning:
-> >> declaration of =E2=80=98i=E2=80=99 shadows a previous local [-Wshadow=
-=3Dlocal]
-> >>        837 |             pixman_image_t *i =3D
-> >>            |                             ^
-> >>      ../contrib/vhost-user-gpu/vhost-user-gpu.c:757:9: note: shadowed
-> >> declaration is here
-> >>        757 |     int i;
-> >>            |         ^
-> >>
-> >> Gerd, Marc-Andr=C3=A9, or anybody else?
-> >>
-> >> More warnings may lurk in code my test build doesn't compile.  Need a
-> >> full CI build with -Wshadow=3Dlocal to find them.  Anybody care to kic=
-k
-> >> one off?
-> >
-> > I ran a build here (with -Werror enabled, so that it's easier to see
-> where
-> > it breaks):
-> >
-> >   https://gitlab.com/thuth/qemu/-/pipelines/1028023489
-> >
-> > ... but I didn't see any additional spots in the logs beside the ones
-> that
-> > you already listed.
+On Mon, Oct 2, 2023 at 12:01=E2=80=AFPM Alexander Ivanov
+<alexander.ivanov@virtuozzo.com> wrote:
 >
-> After adding two more patches to fix the above warnings, things look
-> pretty
-> good:
+> Since we have used bitmap, field data_end in BDRVParallelsState is
+> redundant and can be removed.
 >
->   https://gitlab.com/thuth/qemu/-/pipelines/1028413030
+> Add parallels_data_end() helper and remove data_end handling.
 >
-> There are just some warnings left in the BSD code, as Warner already
-> mentioned in his reply to v2 of your mail:
+> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+> ---
+>  block/parallels.c | 33 +++++++++++++--------------------
+>  block/parallels.h |  1 -
+>  2 files changed, 13 insertions(+), 21 deletions(-)
 >
->   https://gitlab.com/thuth/qemu/-/jobs/5241420713
-
-
-I think I have fixes for these. I need to merge what just landed into
-bsd-user fork, rebase, test, the apply them to qemu master branch, retest
-and send them off...
-
-My illness has hung on longer than I thought so I'm still behind...
-
-Warner
-
-
->   Thomas
+> diff --git a/block/parallels.c b/block/parallels.c
+> index 48ea5b3f03..80a7171b84 100644
+> --- a/block/parallels.c
+> +++ b/block/parallels.c
+> @@ -265,6 +265,13 @@ static void parallels_free_used_bitmap(BlockDriverSt=
+ate *bs)
+>      g_free(s->used_bmap);
+>  }
 >
+> +static int64_t parallels_data_end(BDRVParallelsState *s)
+> +{
+> +    int64_t data_end =3D s->data_start * BDRV_SECTOR_SIZE;
+> +    data_end +=3D s->used_bmap_size * s->cluster_size;
+> +    return data_end;
+> +}
+> +
+>  int64_t parallels_allocate_host_clusters(BlockDriverState *bs,
+>                                           int64_t *clusters)
+>  {
+> @@ -275,7 +282,7 @@ int64_t parallels_allocate_host_clusters(BlockDriverS=
+tate *bs,
+>
+>      first_free =3D find_first_zero_bit(s->used_bmap, s->used_bmap_size);
+>      if (first_free =3D=3D s->used_bmap_size) {
+> -        host_off =3D s->data_end * BDRV_SECTOR_SIZE;
+> +        host_off =3D parallels_data_end(s);
+>          prealloc_clusters =3D *clusters + s->prealloc_size / s->tracks;
+>          bytes =3D prealloc_clusters * s->cluster_size;
+>
+> @@ -297,9 +304,6 @@ int64_t parallels_allocate_host_clusters(BlockDriverS=
+tate *bs,
+>          s->used_bmap =3D bitmap_zero_extend(s->used_bmap, s->used_bmap_s=
+ize,
+>                                            new_usedsize);
+>          s->used_bmap_size =3D new_usedsize;
+> -        if (host_off + bytes > s->data_end * BDRV_SECTOR_SIZE) {
+> -            s->data_end =3D (host_off + bytes) / BDRV_SECTOR_SIZE;
+> -        }
+>      } else {
+>          next_used =3D find_next_bit(s->used_bmap, s->used_bmap_size, fir=
+st_free);
+>
+> @@ -315,8 +319,7 @@ int64_t parallels_allocate_host_clusters(BlockDriverS=
+tate *bs,
+>           * branch. In the other case we are likely re-using hole. Preall=
+ocate
+>           * the space if required by the prealloc_mode.
+>           */
+> -        if (s->prealloc_mode =3D=3D PRL_PREALLOC_MODE_FALLOCATE &&
+> -                host_off < s->data_end * BDRV_SECTOR_SIZE) {
+> +        if (s->prealloc_mode =3D=3D PRL_PREALLOC_MODE_FALLOCATE) {
+>              ret =3D bdrv_pwrite_zeroes(bs->file, host_off, bytes, 0);
+>              if (ret < 0) {
+>                  return ret;
+> @@ -757,13 +760,7 @@ parallels_check_outside_image(BlockDriverState *bs, =
+BdrvCheckResult *res,
+>          }
+>      }
+>
+> -    if (high_off =3D=3D 0) {
+> -        res->image_end_offset =3D s->data_end << BDRV_SECTOR_BITS;
+> -    } else {
+> -        res->image_end_offset =3D high_off + s->cluster_size;
+> -        s->data_end =3D res->image_end_offset >> BDRV_SECTOR_BITS;
+> -    }
+> -
+> +    res->image_end_offset =3D parallels_data_end(s);
+>      return 0;
+>  }
+>
+> @@ -806,7 +803,6 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckR=
+esult *res,
+>              res->check_errors++;
+>              return ret;
+>          }
+> -        s->data_end =3D res->image_end_offset >> BDRV_SECTOR_BITS;
+>
+>          parallels_free_used_bitmap(bs);
+>          ret =3D parallels_fill_used_bitmap(bs);
+> @@ -1361,8 +1357,7 @@ static int parallels_open(BlockDriverState *bs, QDi=
+ct *options, int flags,
+>      }
+>
+>      s->data_start =3D data_start;
+> -    s->data_end =3D s->data_start;
+> -    if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
+> +    if (s->data_start < (s->header_size >> BDRV_SECTOR_BITS)) {
+>          /*
+>           * There is not enough unused space to fit to block align betwee=
+n BAT
+>           * and actual data. We can't avoid read-modify-write...
+> @@ -1403,11 +1398,10 @@ static int parallels_open(BlockDriverState *bs, Q=
+Dict *options, int flags,
+>
+>      for (i =3D 0; i < s->bat_size; i++) {
+>          sector =3D bat2sect(s, i);
+> -        if (sector + s->tracks > s->data_end) {
+> -            s->data_end =3D sector + s->tracks;
+> +        if (sector + s->tracks > file_nb_sectors) {
+> +            need_check =3D true;
+>          }
+>      }
+> -    need_check =3D need_check || s->data_end > file_nb_sectors;
+>
+>      ret =3D parallels_fill_used_bitmap(bs);
+>      if (ret =3D=3D -ENOMEM) {
+> @@ -1461,7 +1455,6 @@ static int parallels_truncate_unused_clusters(Block=
+DriverState *bs)
+>          end_off =3D (end_off + 1) * s->cluster_size;
+>      }
+>      end_off +=3D s->data_start * BDRV_SECTOR_SIZE;
+> -    s->data_end =3D end_off / BDRV_SECTOR_SIZE;
+>      return bdrv_truncate(bs->file, end_off, true, PREALLOC_MODE_OFF, 0, =
+NULL);
+>  }
+>
+> diff --git a/block/parallels.h b/block/parallels.h
+> index 18b4f8068e..a6a048d890 100644
+> --- a/block/parallels.h
+> +++ b/block/parallels.h
+> @@ -79,7 +79,6 @@ typedef struct BDRVParallelsState {
+>      unsigned int bat_size;
+>
+>      int64_t  data_start;
+> -    int64_t  data_end;
+>      uint64_t prealloc_size;
+>      ParallelsPreallocMode prealloc_mode;
+>
+> --
+> 2.34.1
 >
 
---000000000000e1a698060710f818
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Is it intended behavior?
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Fri, Oct 6, 2023, 11:55 AM Thomas Huth &lt;<a href=
-=3D"mailto:thuth@redhat.com">thuth@redhat.com</a>&gt; wrote:<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #cc=
-c solid;padding-left:1ex">On 06/10/2023 18.18, Thomas Huth wrote:<br>
-&gt; On 06/10/2023 16.45, Markus Armbruster wrote:<br>
-&gt;&gt; Local variables shadowing other local variables or parameters make=
- the<br>
-&gt;&gt; code needlessly hard to understand.=C2=A0 Bugs love to hide in suc=
-h code.<br>
-&gt;&gt; Evidence: &quot;[PATCH v3 1/7] migration/rdma: Fix save_page metho=
-d to fail<br>
-&gt;&gt; on polling error&quot;.<br>
-&gt;&gt;<br>
-&gt;&gt; Enabling -Wshadow would prevent bugs like this one.=C2=A0 But we h=
-ave to<br>
-&gt;&gt; clean up all the offenders first.<br>
-&gt;&gt;<br>
-&gt;&gt; Quite a few people responded to my calls for help.=C2=A0 Thank you=
- so much!<br>
-&gt;&gt;<br>
-&gt;&gt; I&#39;m collecting patches in my git repo at<br>
-&gt;&gt; <a href=3D"https://repo.or.cz/qemu/armbru.git" rel=3D"noreferrer n=
-oreferrer" target=3D"_blank">https://repo.or.cz/qemu/armbru.git</a> in bran=
-ch shadow-next.=C2=A0 All but the<br>
-&gt;&gt; last two are in a pending pull request.<br>
-&gt;&gt;<br>
-&gt;&gt; My test build is down to seven files with warnings.=C2=A0 &quot;[P=
-ATCH v2 0/3]<br>
-&gt;&gt; hexagon: GETPC() and shadowing fixes&quot; takes care of four, but=
- it needs a<br>
-&gt;&gt; rebase.<br>
-&gt;&gt;<br>
-&gt;&gt; Remaining three:<br>
-&gt;&gt;<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 In file included from ../hw/display/virti=
-o-gpu-virgl.c:19:<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../hw/display/virtio-gpu-virgl.c: In func=
-tion =E2=80=98virgl_cmd_submit_3d=E2=80=99:<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 /work/armbru/qemu/include/hw/virtio/virti=
-o-gpu.h:228:16: warning: <br>
-&gt;&gt; declaration of =E2=80=98s=E2=80=99 shadows a previous local [-Wsha=
-dow=3Dcompatible-local]<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 228 |=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 size_t <br>
-&gt;&gt; s;=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 ^<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../hw/display/virtio-gpu-virgl.c:215:5: n=
-ote: in expansion of macro <br>
-&gt;&gt; =E2=80=98VIRTIO_GPU_FILL_CMD=E2=80=99<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 215 |=C2=A0=C2=A0=C2=A0=C2=A0=
- VIRTIO_GPU_FILL_CMD(cs);<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0 ^~~~~~~~~~~~~~~~~~~<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../hw/display/virtio-gpu-virgl.c:213:12: =
-note: shadowed declaration <br>
-&gt;&gt; is here<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 213 |=C2=A0=C2=A0=C2=A0=C2=A0=
- size_t s;<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^<br>
-&gt;&gt;<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 In file included from ../contrib/vhost-us=
-er-gpu/virgl.h:18,<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 from ../contri=
-b/vhost-user-gpu/virgl.c:17:<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../contrib/vhost-user-gpu/virgl.c: In fun=
-ction =E2=80=98virgl_cmd_submit_3d=E2=80=99:<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../contrib/vhost-user-gpu/vugpu.h:167:16:=
- warning: declaration of =E2=80=98s=E2=80=99 <br>
-&gt;&gt; shadows a previous local [-Wshadow=3Dcompatible-local]<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 167 |=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 size_t <br>
-&gt;&gt; s;=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 \<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 ^<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../contrib/vhost-user-gpu/virgl.c:203:5: =
-note: in expansion of macro <br>
-&gt;&gt; =E2=80=98VUGPU_FILL_CMD=E2=80=99<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 203 |=C2=A0=C2=A0=C2=A0=C2=A0=
- VUGPU_FILL_CMD(cs);<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0 ^~~~~~~~~~~~~~<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../contrib/vhost-user-gpu/virgl.c:201:12:=
- note: shadowed declaration <br>
-&gt;&gt; is here<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 201 |=C2=A0=C2=A0=C2=A0=C2=A0=
- size_t s;<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^<br>
-&gt;&gt;<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../contrib/vhost-user-gpu/vhost-user-gpu.=
-c: In function <br>
-&gt;&gt; =E2=80=98vg_resource_flush=E2=80=99:<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../contrib/vhost-user-gpu/vhost-user-gpu.=
-c:837:29: warning: <br>
-&gt;&gt; declaration of =E2=80=98i=E2=80=99 shadows a previous local [-Wsha=
-dow=3Dlocal]<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 837 |=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 pixman_image_t *i =3D<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 ^<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0 ../contrib/vhost-user-gpu/vhost-user-gpu.=
-c:757:9: note: shadowed <br>
-&gt;&gt; declaration is here<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 757 |=C2=A0=C2=A0=C2=A0=C2=A0=
- int i;<br>
-&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^<br>
-&gt;&gt;<br>
-&gt;&gt; Gerd, Marc-Andr=C3=A9, or anybody else?<br>
-&gt;&gt;<br>
-&gt;&gt; More warnings may lurk in code my test build doesn&#39;t compile.=
-=C2=A0 Need a<br>
-&gt;&gt; full CI build with -Wshadow=3Dlocal to find them.=C2=A0 Anybody ca=
-re to kick<br>
-&gt;&gt; one off?<br>
-&gt; <br>
-&gt; I ran a build here (with -Werror enabled, so that it&#39;s easier to s=
-ee where <br>
-&gt; it breaks):<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0<a href=3D"https://gitlab.com/thuth/qemu/-/pipelines/10280=
-23489" rel=3D"noreferrer noreferrer" target=3D"_blank">https://gitlab.com/t=
-huth/qemu/-/pipelines/1028023489</a><br>
-&gt; <br>
-&gt; ... but I didn&#39;t see any additional spots in the logs beside the o=
-nes that <br>
-&gt; you already listed.<br>
-<br>
-After adding two more patches to fix the above warnings, things look pretty=
- <br>
-good:<br>
-<br>
-=C2=A0 <a href=3D"https://gitlab.com/thuth/qemu/-/pipelines/1028413030" rel=
-=3D"noreferrer noreferrer" target=3D"_blank">https://gitlab.com/thuth/qemu/=
--/pipelines/1028413030</a><br>
-<br>
-There are just some warnings left in the BSD code, as Warner already <br>
-mentioned in his reply to v2 of your mail:<br>
-<br>
-=C2=A0 <a href=3D"https://gitlab.com/thuth/qemu/-/jobs/5241420713" rel=3D"n=
-oreferrer noreferrer" target=3D"_blank">https://gitlab.com/thuth/qemu/-/job=
-s/5241420713</a></blockquote></div></div><div dir=3D"auto"><br></div><div d=
-ir=3D"auto">I think I have fixes for these. I need to merge what just lande=
-d into bsd-user fork, rebase, test, the apply them to qemu master branch, r=
-etest and send them off...</div><div dir=3D"auto"><br></div><div dir=3D"aut=
-o">My illness has hung on longer than I thought so I&#39;m still behind...<=
-/div><div dir=3D"auto"><br></div><div dir=3D"auto">Warner=C2=A0</div><div d=
-ir=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc s=
-olid;padding-left:1ex"><br>
-=C2=A0 Thomas<br>
-<br>
-</blockquote></div></div></div>
+Run:
+1. ./qemu-img create -f parallels $TEST_IMG 1T
+2. dd if=3D/dev/zero of=3D$TEST_IMG oseek=3D12  bs=3D1M count=3D128 conv=3D=
+notrunc
+3. ./qemu-img check  $TEST_IMG
+       No errors were found on the image.
+       Image end offset: 150994944
 
---000000000000e1a698060710f818--
+Without this patch `qemu-img check` reports:
+       ERROR space leaked at the end of the image 145752064
+
+      139 leaked clusters were found on the image.
+      This means waste of disk space, but no harm to data.
+      Image end offset: 5242880
+
+Note: there is another issue caused by previous commits exists.
+g_free asserts from parallels_free_used_bitmap() because of
+s->used_bmap is NULL.
+
+To reproduce this crash at revision before or without patch 15/19, run comm=
+ands:
+1. ./qemu-img create -f parallels $TEST_IMG 1T
+2. dd if=3D/dev/zero of=3D$TEST_IMG oseek=3D12  bs=3D1M count=3D128 conv=3D=
+notrunc
+3. ./qemu-img check -r leaks $TEST_IMG
+
+Regards,
+Mike.
 
