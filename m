@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D1797BB628
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:16:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A467BB61A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:15:17 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoinU-0000AT-Si; Fri, 06 Oct 2023 07:15:08 -0400
+	id 1qoinS-0008SZ-3T; Fri, 06 Oct 2023 07:15:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoinF-0008Fe-Ii
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:53 -0400
+ id 1qoinO-0008Pc-3M
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:15:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoin5-0000Jp-Qa
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:53 -0400
+ id 1qoinM-0000NP-8r
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:15:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696590882;
+ s=mimecast20190719; t=1696590899;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=09gHDcSD3eULArN3NZoI14fwVaKeRIz+n+d4TcIpJ3c=;
- b=SKJUT7Vzh4xUNk6LHiWVcWbWlCVqDc5HcEnBp70eqp1KrUv029bcYJJwj+KbuTdEEzgodV
- nyhNrtSF53iD0datAMhqpXHkzdKirvT6e5E/yv9lcuDf5AK5PeQmAWfDpMQj78/Pir8GMP
- dyyV3aLtYujRKbSednvmz6NyVoThzZc=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=mCVCUOq7aVspI9V9Yn5TanbFRt42+uPiRwJWugQqYU4=;
+ b=LbUq93gSpIjDT8oIKIj7QqovCO9heHKrHkfx2g9K88i91dD3oA5RkdXE6wI2apllg9mbTD
+ UCMXhvne9ryDLEJRMlvNzR45Rclw0aE+otp+CLAdb0FCUjgMBS5So4a8xGuP6T29P8zcc6
+ TSsk+YcUv00PrM6a+u248KO0ULr7/2Y=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-x47MB7EjMW2D1pskb4GiiQ-1; Fri, 06 Oct 2023 07:14:41 -0400
-X-MC-Unique: x47MB7EjMW2D1pskb4GiiQ-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9b65d7079faso154473166b.1
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:41 -0700 (PDT)
+ us-mta-522-WoaR15IgMMSlSMQck1vimA-1; Fri, 06 Oct 2023 07:14:43 -0400
+X-MC-Unique: WoaR15IgMMSlSMQck1vimA-1
+Received: by mail-ej1-f72.google.com with SMTP id
+ a640c23a62f3a-99c8bbc902eso169931066b.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696590879; x=1697195679;
+ d=1e100.net; s=20230601; t=1696590881; x=1697195681;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=09gHDcSD3eULArN3NZoI14fwVaKeRIz+n+d4TcIpJ3c=;
- b=JHEtxnkg4+jmcV+9IaCarSERZsSsWwf1xDkMrdW3N1atNUBYvuUY13xdzyzKAoPzg0
- EnTSG9yPhuZb95N3gWeQMyVMwk7dcd4qQB2E075F0pO+q1M97kBY+7uitB3ZuOHEjP46
- wzr5M+GFolfW8T3RBDR8q8M+VTRJuyizijpYqYc9CpVSUA29jhJQSawYkYBn/JICfIYV
- WNgm3NxXZY45YpOkqufYaXa4C8PcsY4+Jd83i7DSLXXa3nAQVK0Uyjlw6vYxVPuQPSYW
- qpokgPItWbDuPGdzt1mApMkqNAPzXPZ7r94vsqJ/iYtPOYRXsHy6wFK44e1i9UTpJMoU
- LJ7w==
-X-Gm-Message-State: AOJu0YwRvMqV8B2MFaThf78ecAnDgLLYc+HiYX+DVTW2UnoRErgnYQ6T
- QgpgXkEgrH+sRhDRF5EZieWLow8G50LFpYX6i/FoHwMxnwM9NzMubbLTtzYHXcUETlFVRqV07Gf
- HERdxtkOieIB5j1gUldgGg8+V7oRkSqXQ0jtGfjk3o3AyQkY07prTLnMgNPhy0QcWKn1UAVxk/P
- k=
-X-Received: by 2002:a17:906:7695:b0:9a9:f042:dec0 with SMTP id
- o21-20020a170906769500b009a9f042dec0mr7678385ejm.38.1696590879664; 
- Fri, 06 Oct 2023 04:14:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEAmyvXar3xi+4IQR21rk/zDPhd+IrilKSf1QJQpqIaicRP5AUmlmuYSc9XkeO4LBu2MWWXew==
-X-Received: by 2002:a17:906:7695:b0:9a9:f042:dec0 with SMTP id
- o21-20020a170906769500b009a9f042dec0mr7678371ejm.38.1696590879332; 
- Fri, 06 Oct 2023 04:14:39 -0700 (PDT)
+ bh=mCVCUOq7aVspI9V9Yn5TanbFRt42+uPiRwJWugQqYU4=;
+ b=JEdwZxa5ssVWoQnwniK3K3gxTSFIFAGoUNBZFAy0NuIFAYxUUE69xa7K1YTVG1WQE3
+ ieKepamokPLN64qctYWJu6lg010iCoBm3NOIyWPZSm+2EdiIdOg1CcFgzqEq4HK4i1c5
+ Qj3iA93betEYVk/NqMa4t6sWk79tt8F08LY45VeK7BaJtTw8tQF+DhFR2VkAtFHxd8nm
+ YjB5EUb2qCtIr6MvVcBl/1wdlhmJxLZ5+8TSH0jVfD6ZE1ITC4HZfz51+3SHqM9uGSt2
+ wx4yQMqddi+yuihkG9FljTpUkqq/AeYDxfeU5ktpd1QhRKx/v2SO+3Qi7gDIWPz6lKFJ
+ j8NA==
+X-Gm-Message-State: AOJu0YwMhozCH66jkbeqqvan3jQigEJ3qIeleoK0Dz8re/6tNJucLjiE
+ oJK9eWj6PiqWdO0SsYiP7xR/hRzUn4bMtMGD9dU9sWbwhzwwf5YfsjFHqfcp7nEVvLwF03SQte/
+ zAEWjXwkc1aWnEEU1HDZlEihZkEPON9CAS72I9lX08WS4bFwpgUiGmRBunidBwO8yQlE8Nmkaze
+ c=
+X-Received: by 2002:a17:907:2722:b0:9b2:7f8c:ac09 with SMTP id
+ d2-20020a170907272200b009b27f8cac09mr6995109ejl.6.1696590881680; 
+ Fri, 06 Oct 2023 04:14:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpOVyhkTOWqQez/VSu34+iTjT2i9mDiBNp2WvXyPjAAmFiQLXs868LfuivVJon/rmqJuwzSQ==
+X-Received: by 2002:a17:907:2722:b0:9b2:7f8c:ac09 with SMTP id
+ d2-20020a170907272200b009b27f8cac09mr6995098ejl.6.1696590881359; 
+ Fri, 06 Oct 2023 04:14:41 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- o12-20020a17090637cc00b0099bc80d5575sm2640330ejc.200.2023.10.06.04.14.38
+ kb4-20020a1709070f8400b009adc81bb544sm2691932ejc.106.2023.10.06.04.14.39
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 04:14:38 -0700 (PDT)
+ Fri, 06 Oct 2023 04:14:40 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 14/26] hw/virtio/meson: Rename softmmu_virtio_ss ->
- system_virtio_ss
-Date: Fri,  6 Oct 2023 13:14:00 +0200
-Message-ID: <20231006111412.13130-15-pbonzini@redhat.com>
+Subject: [PULL 15/26] meson: Rename softmmu_mods -> system_mods
+Date: Fri,  6 Oct 2023 13:14:01 +0200
+Message-ID: <20231006111412.13130-16-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006111412.13130-1-pbonzini@redhat.com>
 References: <20231006111412.13130-1-pbonzini@redhat.com>
@@ -108,62 +107,61 @@ See commit de6cd7599b ("meson: Replace softmmu_ss -> system_ss")
 for rationale.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004090629.37473-11-philmd@linaro.org>
+Message-ID: <20231004090629.37473-12-philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- hw/virtio/meson.build | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ meson.build | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
-index 13e7c6c272b..aad506fe521 100644
---- a/hw/virtio/meson.build
-+++ b/hw/virtio/meson.build
-@@ -1,18 +1,18 @@
--softmmu_virtio_ss = ss.source_set()
--softmmu_virtio_ss.add(files('virtio-bus.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('virtio-pci.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_MMIO', if_true: files('virtio-mmio.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
--softmmu_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
-+system_virtio_ss = ss.source_set()
-+system_virtio_ss.add(files('virtio-bus.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('virtio-pci.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_MMIO', if_true: files('virtio-mmio.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-crypto.c'))
-+system_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK_COMMON', if_true: files('vhost-vsock-common.c'))
-+system_virtio_ss.add(when: 'CONFIG_VIRTIO_IOMMU', if_true: files('virtio-iommu.c'))
-+system_virtio_ss.add(when: 'CONFIG_VHOST_VDPA_DEV', if_true: files('vdpa-dev.c'))
+diff --git a/meson.build b/meson.build
+index 21a1bc03f87..8890dc57480 100644
+--- a/meson.build
++++ b/meson.build
+@@ -3496,7 +3496,7 @@ modinfo_generate = find_program('scripts/modinfo-generate.py')
+ modinfo_files = []
  
- specific_virtio_ss = ss.source_set()
- specific_virtio_ss.add(files('virtio.c'))
- specific_virtio_ss.add(files('virtio-config-io.c', 'virtio-qmp.c'))
+ block_mods = []
+-softmmu_mods = []
++system_mods = []
+ foreach d, list : modules
+   if not (d == 'block' ? have_block : have_system)
+     continue
+@@ -3510,7 +3510,7 @@ foreach d, list : modules
+       if d == 'block'
+         block_mods += sl
+       else
+-        softmmu_mods += sl
++        system_mods += sl
+       endif
+       if module_ss.sources() != []
+         # FIXME: Should use sl.extract_all_objects(recursive: true) as
+@@ -3554,7 +3554,7 @@ foreach d, list : target_modules
+                                 include_directories: target_inc,
+                                 c_args: c_args,
+                                 pic: true)
+-            softmmu_mods += sl
++            system_mods += sl
+             # FIXME: Should use sl.extract_all_objects(recursive: true) too.
+             modinfo_files += custom_target(module_name + '.modinfo',
+                                            output: module_name + '.modinfo',
+@@ -3597,7 +3597,7 @@ block_syms = custom_target('block.syms', output: 'block.syms',
+                              capture: true,
+                              command: [undefsym, nm, '@INPUT@'])
+ qemu_syms = custom_target('qemu.syms', output: 'qemu.syms',
+-                             input: [libqemuutil, softmmu_mods],
++                             input: [libqemuutil, system_mods],
+                              capture: true,
+                              command: [undefsym, nm, '@INPUT@'])
  
- if have_vhost
--  softmmu_virtio_ss.add(files('vhost.c'))
-+  system_virtio_ss.add(files('vhost.c'))
-   specific_virtio_ss.add(files('vhost-backend.c', 'vhost-iova-tree.c'))
-   if have_vhost_user
-     specific_virtio_ss.add(files('vhost-user.c'))
-@@ -21,7 +21,7 @@ if have_vhost
-     specific_virtio_ss.add(files('vhost-vdpa.c', 'vhost-shadow-virtqueue.c'))
-   endif
- else
--  softmmu_virtio_ss.add(files('vhost-stub.c'))
-+  system_virtio_ss.add(files('vhost-stub.c'))
- endif
+@@ -3682,7 +3682,7 @@ common_ss.add(hwcore)
+ ###########
  
- specific_virtio_ss.add(when: 'CONFIG_VIRTIO_BALLOON', if_true: files('virtio-balloon.c'))
-@@ -67,7 +67,7 @@ virtio_pci_ss.add(when: 'CONFIG_VIRTIO_MD', if_true: files('virtio-md-pci.c'))
- 
- specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci_ss)
- 
--system_ss.add_all(when: 'CONFIG_VIRTIO', if_true: softmmu_virtio_ss)
-+system_ss.add_all(when: 'CONFIG_VIRTIO', if_true: system_virtio_ss)
- system_ss.add(when: 'CONFIG_VIRTIO', if_false: files('vhost-stub.c'))
- system_ss.add(when: 'CONFIG_VIRTIO', if_false: files('virtio-stub.c'))
- system_ss.add(when: 'CONFIG_ALL', if_true: files('vhost-stub.c'))
+ emulator_modules = []
+-foreach m : block_mods + softmmu_mods
++foreach m : block_mods + system_mods
+   emulator_modules += shared_module(m.name(),
+                 build_by_default: true,
+                 name_prefix: '',
 -- 
 2.41.0
 
