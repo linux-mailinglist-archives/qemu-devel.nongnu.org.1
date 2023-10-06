@@ -2,62 +2,50 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648317BB762
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 14:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 214787BB779
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 14:20:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qojgG-000218-UC; Fri, 06 Oct 2023 08:11:44 -0400
+	id 1qojnc-00008N-P8; Fri, 06 Oct 2023 08:19:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qojg9-00020q-O9
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:11:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qojnN-0008Uj-JP; Fri, 06 Oct 2023 08:19:05 -0400
+Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qojg8-0000pa-1m
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:11:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696594293;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
- content-transfer-encoding:content-transfer-encoding;
- bh=v2gd5MpBU429xIonrfGZazNkQirLo+MNDAYB2mN1tbQ=;
- b=KOYHuNN+eCd/cQl1VeDE20UVlr+QahZMmll3/caR35J973ONYQ7eVb6s4WPhQT5lc4Xxxu
- tpzON9DozFGq17tdBkdopNUEE5c7rirIgeJZI+HiVSvSokDyYnWezkeWCmgclVALYtQdQn
- kmcMVsBvYsZ81JFojbnAulS5bnV7hH8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-124-t-4CD-DaMOCDCwxPpxof1Q-1; Fri, 06 Oct 2023 08:11:32 -0400
-X-MC-Unique: t-4CD-DaMOCDCwxPpxof1Q-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03C3F3C108DD;
- Fri,  6 Oct 2023 12:11:32 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.195.28])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 1DC8D492C37;
- Fri,  6 Oct 2023 12:11:30 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: qemu-devel@nongnu.org,
-	"Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-trivial@nongnu.org,
-	Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH] libvhost-user: Fix compiler warning with -Wshadow=local
-Date: Fri,  6 Oct 2023 14:11:29 +0200
-Message-ID: <20231006121129.487251-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
+ id 1qojnK-0002xt-Uw; Fri, 06 Oct 2023 08:19:05 -0400
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D6CC144497;
+ Fri,  6 Oct 2023 14:18:52 +0200 (CEST)
+Message-ID: <71e3112d-3d3f-fd55-4099-6765d4f22205@proxmox.com>
+Date: Fri, 6 Oct 2023 14:18:51 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: deadlock when using iothread during backup_clean()
+Content-Language: en-US
+To: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>,
+ Paolo Bonzini <pbonzini@redhat.com>, QEMU Developers <qemu-devel@nongnu.org>
+Cc: Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ John Snow <jsnow@redhat.com>,
+ "open list:Network Block Dev..." <qemu-block@nongnu.org>,
+ Thomas Lamprecht <t.lamprecht@proxmox.com>
+References: <bcbd48da-e4cc-f9c9-000c-6a9f98ca156f@proxmox.com>
+ <dd12f39d-a364-b186-2ad7-04343ea85e3f@redhat.com>
+ <44ff810b-8ec6-0f11-420a-6efa2c7c2475@proxmox.com>
+ <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
+From: Fiona Ebner <f.ebner@proxmox.com>
+In-Reply-To: <2ca4eb06-75c3-7bd8-972b-b37af47743dc@yandex-team.ru>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=94.136.29.106; envelope-from=f.ebner@proxmox.com;
+ helo=proxmox-new.maurer-it.com
+X-Spam_score_int: -46
+X-Spam_score: -4.7
+X-Spam_bar: ----
+X-Spam_report: (-4.7 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-2.797,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -74,47 +62,160 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename shadowing variables to make this code compilable
-with -Wshadow=local.
+Am 04.10.23 um 19:08 schrieb Vladimir Sementsov-Ogievskiy:
+> On 28.09.23 11:06, Fiona Ebner wrote:
+>> For fixing the backup cancel deadlock, I tried the following:
+>>
+>>> diff --git a/blockjob.c b/blockjob.c
+>>> index 58c5d64539..fd6132ebfe 100644
+>>> --- a/blockjob.c
+>>> +++ b/blockjob.c
+>>> @@ -198,7 +198,9 @@ void block_job_remove_all_bdrv(BlockJob *job)
+>>>        * one to make sure that such a concurrent access does not attempt
+>>>        * to process an already freed BdrvChild.
+>>>        */
+>>> +    aio_context_release(job->job.aio_context);
+>>>       bdrv_graph_wrlock(NULL);
+>>> +    aio_context_acquire(job->job.aio_context);
+>>>       while (job->nodes) {
+>>>           GSList *l = job->nodes;
+>>>           BdrvChild *c = l->data;
+>>
+>> but it's not enough unfortunately. And I don't just mean with the later
+>> deadlock during bdrv_close() (via bdrv_cbw_drop()) as mentioned in the
+>> other mail.
+>>
+>> Even when I got lucky and that deadlock didn't trigger by chance or with
+>> an additional change to try and avoid that one
+>>
+>>> diff --git a/block.c b/block.c
+>>> index e7f349b25c..02d2c4e777 100644
+>>> --- a/block.c
+>>> +++ b/block.c
+>>> @@ -5165,7 +5165,7 @@ static void bdrv_close(BlockDriverState *bs)
+>>>           bs->drv = NULL;
+>>>       }
+>>>   -    bdrv_graph_wrlock(NULL);
+>>> +    bdrv_graph_wrlock(bs);
+>>>       QLIST_FOREACH_SAFE(child, &bs->children, next, next) {
+>>>           bdrv_unref_child(bs, child);
+>>>       }
+>>
+>> often guest IO would get completely stuck after canceling the backup.
+>> There's nothing obvious to me in the backtraces at that point, but it
+>> seems the vCPU and main threads running like usual, while the IO thread
+>> is stuck in aio_poll(), i.e. never returns from the __ppoll() call. This
+>> would happen with both, a VirtIO SCSI and a VirtIO block disk and with
+>> both aio=io_uring and aio=threads.
+> 
+> When IO is stuck, it may be helpful to look at bs->tracked_requests list
+> in gdb. If there are requests, each one has field .co, which points to
+> the coroutine of request.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- subprojects/libvhost-user/libvhost-user.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+After the IO was stuck in the guest, I used bdrv_next_all_states() to
+iterate over the states and there's only the bdrv_raw and the
+bdrv_host_device. For both, tracked_requests was empty.
 
-diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-index 051a611da3..ea2822a44c 100644
---- a/subprojects/libvhost-user/libvhost-user.c
-+++ b/subprojects/libvhost-user/libvhost-user.c
-@@ -870,10 +870,10 @@ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
-     for (i = 0; i < dev->nregions; i++) {
-         if (reg_equal(&dev->regions[i], msg_region)) {
-             VuDevRegion *r = &dev->regions[i];
--            void *m = (void *) (uintptr_t) r->mmap_addr;
-+            void *ma = (void *) (uintptr_t) r->mmap_addr;
- 
--            if (m) {
--                munmap(m, r->size + r->mmap_offset);
-+            if (ma) {
-+                munmap(ma, r->size + r->mmap_offset);
-             }
- 
-             /*
-@@ -1005,10 +1005,10 @@ vu_set_mem_table_exec(VuDev *dev, VhostUserMsg *vmsg)
- 
-     for (i = 0; i < dev->nregions; i++) {
-         VuDevRegion *r = &dev->regions[i];
--        void *m = (void *) (uintptr_t) r->mmap_addr;
-+        void *ma = (void *) (uintptr_t) r->mmap_addr;
- 
--        if (m) {
--            munmap(m, r->size + r->mmap_offset);
-+        if (ma) {
-+            munmap(ma, r->size + r->mmap_offset);
-         }
-     }
-     dev->nregions = memory->nregions;
--- 
-2.41.0
+What is also very interesting is that the IO isn't always dead
+immediately. It can be that the fio command still runs with lower speed
+for a while (sometimes even up to about a minute, but most often about
+10-15 seconds or so). During that time, I still can see calls to
+virtio_scsi_handle_cmd() and blk_aio_write_entry(). Then they suddenly stop.
+
+>>
+>> I should also mention I'm using
+>>
+>>> fio --name=file --size=4k --direct=1 --rw=randwrite --bs=4k
+>>> --ioengine=psync --numjobs=5 --runtime=6000 --time_based
+>>
+>> inside the guest during canceling of the backup.
+
+One single time, it got stuck polling while canceling [0]. I usually
+need to do the backup+cancel a few times, because the IO doesn't get
+stuck each time, so this was a subsequent invocation. The reentrancy to
+virtio_scsi_handle_cmd()/etc. seems strange at a first glance. Can that
+be normal?
+
+Best Regards,
+Fiona
+
+[0]:
+
+> Thread 3 (Thread 0x7ff7f28946c0 (LWP 1815909) "qemu-system-x86"):
+> #0  0x00007ff7f5f55136 in __ppoll (fds=0x7ff7e40030c0, nfds=8, timeout=<optimized out>, sigmask=0x0) at ../sysdeps/unix/sysv/linux/ppoll.c:42
+> #1  0x00005587132615ab in qemu_poll_ns (fds=0x7ff7e40030c0, nfds=8, timeout=-1) at ../util/qemu-timer.c:339
+> #2  0x000055871323e8b1 in fdmon_poll_wait (ctx=0x55871598d5e0, ready_list=0x7ff7f288ebe0, timeout=-1) at ../util/fdmon-poll.c:79
+> #3  0x000055871323e1ed in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:670
+> #4  0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ec90) at /home/febner/repos/qemu/block/block-gen.h:43
+> #5  0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
+> #6  0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
+> #7  0x0000558712f697e4 in virtio_scsi_handle_cmd_req_prepare (s=0x558716c049c0, req=0x7ff7e400b650) at ../hw/scsi/virtio-scsi.c:788
+> #8  0x0000558712f699b0 in virtio_scsi_handle_cmd_vq (s=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:831
+> #9  0x0000558712f69bcb in virtio_scsi_handle_cmd (vdev=0x558716c049c0, vq=0x558716c0d2a8) at ../hw/scsi/virtio-scsi.c:867
+> #10 0x0000558712f96812 in virtio_queue_notify_vq (vq=0x558716c0d2a8) at ../hw/virtio/virtio.c:2263
+> #11 0x0000558712f99b75 in virtio_queue_host_notifier_read (n=0x558716c0d31c) at ../hw/virtio/virtio.c:3575
+> #12 0x000055871323d8b5 in aio_dispatch_handler (ctx=0x55871598d5e0, node=0x558716771000) at ../util/aio-posix.c:372
+> #13 0x000055871323d988 in aio_dispatch_ready_handlers (ctx=0x55871598d5e0, ready_list=0x7ff7f288eeb0) at ../util/aio-posix.c:401
+> #14 0x000055871323e3ff in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:723
+> #15 0x0000558713089efa in bdrv_poll_co (s=0x7ff7f288ef60) at /home/febner/repos/qemu/block/block-gen.h:43
+> #16 0x000055871308c362 in blk_is_available (blk=0x55871599e2f0) at block/block-gen.c:1426
+> #17 0x0000558712f6843b in virtio_scsi_ctx_check (s=0x558716c049c0, d=0x55871581cd30) at ../hw/scsi/virtio-scsi.c:290
+> #18 0x0000558712f697e4 in virtio_scsi_handle_cmd_req_prepare (s=0x558716c049c0, req=0x7ff7e401c800) at ../hw/scsi/virtio-scsi.c:788
+> #19 0x0000558712f699b0 in virtio_scsi_handle_cmd_vq (s=0x558716c049c0, vq=0x558716c0d210) at ../hw/scsi/virtio-scsi.c:831
+> #20 0x0000558712f69bcb in virtio_scsi_handle_cmd (vdev=0x558716c049c0, vq=0x558716c0d210) at ../hw/scsi/virtio-scsi.c:867
+> #21 0x0000558712f96812 in virtio_queue_notify_vq (vq=0x558716c0d210) at ../hw/virtio/virtio.c:2263
+> #22 0x0000558712f99b75 in virtio_queue_host_notifier_read (n=0x558716c0d284) at ../hw/virtio/virtio.c:3575
+> #23 0x000055871323d8b5 in aio_dispatch_handler (ctx=0x55871598d5e0, node=0x5587162b5d80) at ../util/aio-posix.c:372
+> #24 0x000055871323d988 in aio_dispatch_ready_handlers (ctx=0x55871598d5e0, ready_list=0x7ff7f288f180) at ../util/aio-posix.c:401
+> #25 0x000055871323e3ff in aio_poll (ctx=0x55871598d5e0, blocking=true) at ../util/aio-posix.c:723
+> #26 0x00005587130878bf in iothread_run (opaque=0x55871563d6b0) at ../iothread.c:63
+> #27 0x00005587132434c0 in qemu_thread_start (args=0x55871598dc70) at ../util/qemu-thread-posix.c:541
+> #28 0x00007ff7f5ee2044 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+> #29 0x00007ff7f5f625fc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+> 
+> Thread 2 (Thread 0x7ff7f31966c0 (LWP 1815908) "qemu-system-x86"):
+> #0  syscall () at ../sysdeps/unix/sysv/linux/x86_64/syscall.S:38
+> #1  0x0000558713243126 in qemu_futex_wait (f=0x558713c963f8 <rcu_call_ready_event>, val=4294967295) at /home/febner/repos/qemu/include/qemu/futex.h:29
+> #2  0x000055871324330d in qemu_event_wait (ev=0x558713c963f8 <rcu_call_ready_event>) at ../util/qemu-thread-posix.c:464
+> #3  0x00005587132506c4 in call_rcu_thread (opaque=0x0) at ../util/rcu.c:278
+> #4  0x00005587132434c0 in qemu_thread_start (args=0x5587156aeaa0) at ../util/qemu-thread-posix.c:541
+> #5  0x00007ff7f5ee2044 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:442
+> #6  0x00007ff7f5f625fc in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:81
+> 
+> Thread 1 (Thread 0x7ff7f33fa340 (LWP 1815907) "qemu-system-x86"):
+> #0  futex_wait (private=0, expected=2, futex_word=0x55871598d640) at ../sysdeps/nptl/futex-internal.h:146
+> #1  __GI___lll_lock_wait (futex=futex@entry=0x55871598d640, private=0) at ./nptl/lowlevellock.c:49
+> #2  0x00007ff7f5ee532a in lll_mutex_lock_optimized (mutex=0x55871598d640) at ./nptl/pthread_mutex_lock.c:48
+> #3  ___pthread_mutex_lock (mutex=0x55871598d640) at ./nptl/pthread_mutex_lock.c:128
+> #4  0x0000558713242772 in qemu_mutex_lock_impl (mutex=0x55871598d640, file=0x55871351bfb9 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:94
+> #5  0x00005587132429a2 in qemu_rec_mutex_lock_impl (mutex=0x55871598d640, file=0x55871351bfb9 "../util/async.c", line=728) at ../util/qemu-thread-posix.c:149
+> #6  0x000055871325c23d in aio_context_acquire (ctx=0x55871598d5e0) at ../util/async.c:728
+> #7  0x00005587130d1956 in bdrv_drain_all_end () at ../block/io.c:567
+> #8  0x00005587130cf1e8 in bdrv_graph_wrlock (bs=0x5587168255f0) at ../block/graph-lock.c:156
+> #9  0x0000558713099c8f in bdrv_close (bs=0x5587168255f0) at ../block.c:5169
+> #10 0x000055871309ad5a in bdrv_delete (bs=0x5587168255f0) at ../block.c:5609
+> #11 0x000055871309df21 in bdrv_unref (bs=0x5587168255f0) at ../block.c:7178
+> #12 0x00005587130ca195 in bdrv_cbw_drop (bs=0x5587168255f0) at ../block/copy-before-write.c:566
+> #13 0x00005587130b8430 in backup_clean (job=0x558716d54210) at ../block/backup.c:105
+> #14 0x00005587130a58b9 in job_clean (job=0x558716d54210) at ../job.c:836
+> #15 0x00005587130a5962 in job_finalize_single_locked (job=0x558716d54210) at ../job.c:863
+> #16 0x00005587130a5c7c in job_completed_txn_abort_locked (job=0x558716d54210) at ../job.c:970
+> #17 0x00005587130a60f5 in job_completed_locked (job=0x558716d54210) at ../job.c:1080
+> #18 0x00005587130a61aa in job_exit (opaque=0x558716d54210) at ../job.c:1103
+> #19 0x000055871325b0cf in aio_bh_call (bh=0x7ff7e4004bd0) at ../util/async.c:169
+> #20 0x000055871325b1ea in aio_bh_poll (ctx=0x55871571a8a0) at ../util/async.c:216
+> #21 0x000055871323da97 in aio_dispatch (ctx=0x55871571a8a0) at ../util/aio-posix.c:423
+> #22 0x000055871325b629 in aio_ctx_dispatch (source=0x55871571a8a0, callback=0x0, user_data=0x0) at ../util/async.c:358
+> #23 0x00007ff7f72bf7a9 in g_main_context_dispatch () from /lib/x86_64-linux-gnu/libglib-2.0.so.0
+> #24 0x000055871325cde4 in glib_pollfds_poll () at ../util/main-loop.c:290
+> #25 0x000055871325ce61 in os_host_main_loop_wait (timeout=1412902959) at ../util/main-loop.c:313
+> #26 0x000055871325cf6f in main_loop_wait (nonblocking=0) at ../util/main-loop.c:592
+> #27 0x0000558712d813de in qemu_main_loop () at ../softmmu/runstate.c:772
+> #28 0x000055871303811b in qemu_default_main () at ../softmmu/main.c:37
+> #29 0x0000558713038151 in main (argc=57, argv=0x7fffd393e828) at ../softmmu/main.c:48
+> (gdb) p ((AioContext*)0x55871598d5e0)->lock
+> $1 = {m = {lock = {__data = {__lock = 2, __count = 2, __owner = 1815909, __nusers = 1, __kind = 1, 
+>         __spins = 0, __elision = 0, __list = {__prev = 0x0, __next = 0x0}}, 
+>       __size = "\002\000\000\000\002\000\000\000e\265\033\000\001\000\000\000\001", '\000' <repeats 22 times>, __align = 8589934594}, file = 0x0, line = 0, initialized = true}}
 
 
