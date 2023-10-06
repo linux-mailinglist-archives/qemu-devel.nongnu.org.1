@@ -2,100 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815027BB8A3
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 15:10:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E947BB8F1
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 15:23:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qokaK-0000Mt-6q; Fri, 06 Oct 2023 09:09:41 -0400
+	id 1qokm9-0005sO-71; Fri, 06 Oct 2023 09:21:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qokaF-0000Ec-01
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:09:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qokaA-0007fL-S3
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:09:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696597770;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Mwh3tk5iPVoDnR7KjsrQoJI9XswsvbuAGwJPZzOo1m4=;
- b=clC0HPeDNEysGyhCjK//q2/tKFob27s32gylfUetjIgM8FKFLAOymOsW7Vd/fPq8m6cea1
- juusHUf+5RvRerlFo27mja5ZN1zy7nBv113wY/QGeNboq1N5b35DTjI7J4R6N3efEGwLyX
- CQ/1GLa8/mPo2Yib6iq2kf8tDz1FD9I=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-uieUTgsOPJyF2CpiRFyPBw-1; Fri, 06 Oct 2023 09:09:18 -0400
-X-MC-Unique: uieUTgsOPJyF2CpiRFyPBw-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-77576c78c11so213206785a.0
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 06:09:18 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qokm1-0005rt-4s
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:21:45 -0400
+Received: from mail-pl1-x630.google.com ([2607:f8b0:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
+ id 1qoklz-00036l-9T
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 09:21:44 -0400
+Received: by mail-pl1-x630.google.com with SMTP id
+ d9443c01a7336-1c871a095ceso17322785ad.2
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 06:21:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ventanamicro.com; s=google; t=1696598501; x=1697203301; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=7cx30TPsSMlthaQY6ArUoO3g4FeF87/3sFYVmmtB7us=;
+ b=SRQGSWXon9HpAoGvRbz99AeILEgFjt+Zto/vUTwz1LYx8wetwf1os8cMb5/uaX33T/
+ hM6ENt1n0s3s8A5nNJM92fcvBTF7TH+hLimLcujl69bFCJMIK3ZiMw0v0ILYGR1ovsvY
+ /bYqpHNQz0RGq//dmDKmZvGdimG+ZqBwA31GWUR0RCd4BJagvwMIje6EtWoAVxKV34jq
+ gtAzSa95a5Gnxvzm9iPJqVb4S2XuQa0damCbbtPXA4/kk5OZFCITqwhqr/0xPJET3vsg
+ Czi4QXDXUfI1bf/L4dn23qJumOcnfZ9WoGR95hqW8lJL8GLI8LS7MFXRxFhzx+9l8aPj
+ UUbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696597758; x=1697202558;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Mwh3tk5iPVoDnR7KjsrQoJI9XswsvbuAGwJPZzOo1m4=;
- b=qECt9m+mzhDAmWeTUZvFajFG7GM0l45tYNxBAp4aptb+MGd2hLScfIVjFK1Xb5eY81
- yR5IE2MpKiXjhjHjXtNKLkxqv6xjIR3SPvXUcXbkAuowKU3jd/sNvgB0VzQyrAJT9XYG
- tUxpzm2lXsI8w2guO08FMwLTv0iZxzlc6jKtyoklfnMoY3FQNLE8hj4AeMyWrjlYxVm+
- n9rWT3i8DzYwV0vRaVFWO4PEu71CIPCjO2W0DuUpQge+PdxoalEYdLBNODGMe1Aqoh42
- 4Aun92QNbVCmZLXAacPxACxVNzk5cLJm4ow3RH5SDQRVuMzr4FdIxZ80ULhdHD2Sb1yA
- 4UDw==
-X-Gm-Message-State: AOJu0Yz7CxeL7xcw53gk8qcQqr+7pxCSGMRAESKKN6LiIsnMFR386FkO
- smaFBybC0BbHjLeG3nzWaAESfFsc6g3DF5R9gjabUVsI2chGUjewwVU/d73HOyVShRi0JI1D2Xp
- Div6vbQ4Ae5U9Dv8=
-X-Received: by 2002:a05:620a:2089:b0:76e:8403:8b2 with SMTP id
- e9-20020a05620a208900b0076e840308b2mr7698768qka.42.1696597757921; 
- Fri, 06 Oct 2023 06:09:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuKSu5D3NyqorNCUFKiPeellxc4b69nybww7ni1ITWxSvFfW2rUEJQz3Ml0CZpt6cEchJCNA==
-X-Received: by 2002:a05:620a:2089:b0:76e:8403:8b2 with SMTP id
- e9-20020a05620a208900b0076e840308b2mr7698744qka.42.1696597757553; 
- Fri, 06 Oct 2023 06:09:17 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- pa25-20020a05620a831900b00772662b7804sm1281124qkn.100.2023.10.06.06.09.13
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 06:09:15 -0700 (PDT)
-Message-ID: <97129e06-3d00-463d-2edf-eb064a54232e@redhat.com>
-Date: Fri, 6 Oct 2023 15:09:12 +0200
+ d=1e100.net; s=20230601; t=1696598501; x=1697203301;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7cx30TPsSMlthaQY6ArUoO3g4FeF87/3sFYVmmtB7us=;
+ b=vj4k2eNYeDgLg0h/nCtUKZkJ0gYwwUX0EVi0skIR4BAVNIxmP7xA7bUmVeAbVQ2KWQ
+ cRAHyimUcNjZsQJc5dGelX7G2rTd+1HQaJ3/308WjLTctvaUczlKhNl0ndGC4GEDa6EU
+ SwA5xWiY9Yaqzj11NRZfN4AKIbO+G3peBk9VM1O3uaB9RzMMtx/kUB5qSPSWZzfRz7r4
+ nOZowaPfnZpj8sDjuQ66LhcyGEPXfG1UkscASa+CuTaSwSs4XtA/CK1s3S5D4qVFdoVF
+ H9l/l7X7F1Q8QsXvXF0R+Qv6SrvI29Xo9rVxNGjvdkjmjeHwd1w5eieSQBwgTImLV4cx
+ iFdg==
+X-Gm-Message-State: AOJu0YzRspsoL0PN819tOla8IMi4SoqU7iYlydgZ+liBKjV+RWrRwRo+
+ vVwyMWW+ZCa5kvahmhJeD7z6Qm1YMtnAX9HKJT0=
+X-Google-Smtp-Source: AGHT+IHSuOYZ6GEP2WJnet++98DRbdtYD/8FLA6G4weOmQokKYKcpWMobjD3kf7vZSWuz9eVbatkkA==
+X-Received: by 2002:a17:903:22cd:b0:1bf:3c10:1d70 with SMTP id
+ y13-20020a17090322cd00b001bf3c101d70mr9368048plg.6.1696598501127; 
+ Fri, 06 Oct 2023 06:21:41 -0700 (PDT)
+Received: from grind.. ([177.94.42.196]) by smtp.gmail.com with ESMTPSA id
+ c12-20020a170902c1cc00b001c60a548331sm3796669plc.304.2023.10.06.06.21.38
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Oct 2023 06:21:40 -0700 (PDT)
+From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+To: qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
+ liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+Subject: [PATCH v2 00/10] riscv: RVA22U64 profile support
+Date: Fri,  6 Oct 2023 10:21:24 -0300
+Message-ID: <20231006132134.1135297-1-dbarboza@ventanamicro.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 07/15] vfio/common: Track whether DMA Translation is
- enabled on the vIOMMU
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>
-References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-8-joao.m.martins@oracle.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <20230622214845.3980-8-joao.m.martins@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
-X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.797, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::630;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x630.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -112,78 +89,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joao,
+Hi,
 
-On 6/22/23 23:48, Joao Martins wrote:
-> vfio_get_group() allocates and fills the group/container/space on
-> success which will store the AddressSpace inside the VFIOSpace struct.
-VFIOAddressSpace
-> Use the newly added pci_device_iommu_get_attr() to see if DMA
-> translation is enabled or not. Assume that by default it is enabled.
-> 
-> Today, this means only intel-iommu supports it.
-> 
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> ---
->  include/hw/vfio/vfio-common.h |  1 +
->  hw/vfio/pci.c                 | 15 ++++++++++++++-
->  2 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-> index eed244f25f34..f41860988d6b 100644
-> --- a/include/hw/vfio/vfio-common.h
-> +++ b/include/hw/vfio/vfio-common.h
-> @@ -70,6 +70,7 @@ typedef struct VFIOMigration {
->  
->  typedef struct VFIOAddressSpace {
->      AddressSpace *as;
-> +    bool no_dma_translation;
->      QLIST_HEAD(, VFIOContainer) containers;
->      QLIST_ENTRY(VFIOAddressSpace) list;
->  } VFIOAddressSpace;
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 73874a94de12..8a98e6ffc480 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2900,6 +2900,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->      VFIOPCIDevice *vdev = VFIO_PCI(pdev);
->      VFIODevice *vbasedev = &vdev->vbasedev;
->      VFIODevice *vbasedev_iter;
-> +    VFIOAddressSpace *space;
->      VFIOGroup *group;
->      char *tmp, *subsys, group_path[PATH_MAX], *group_name;
->      Error *err = NULL;
-> @@ -2907,7 +2908,7 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->      struct stat st;
->      int groupid;
->      int i, ret;
-> -    bool is_mdev;
-> +    bool is_mdev, dma_translation;
->      char uuid[UUID_FMT_LEN];
->      char *name;
->  
-> @@ -2961,6 +2962,18 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->          goto error;
->      }
->  
-> +    space = group->container->space;
-> +
-> +    /*
-> +     * Support for toggling DMA translation is optional.
-> +     * By default, DMA translation is assumed to be enabled i.e.
-> +     * space::no_dma_translation is 0.
-> +     */
-> +    dma_translation = true;
-nit can be set at init.
-> +    pci_device_iommu_get_attr(pdev, IOMMU_ATTR_DMA_TRANSLATION,
-> +                              &dma_translation);> +    space->no_dma_translation = !dma_translation;
-> +
->      QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
->          if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
->              error_setg(errp, "device is already attached");
+Several design changes were made in this version after the reviews and
+feedback in the v1 [1]. The high-level summary is:
 
-Thanks
+- we'll no longer allow users to set profile flags for vendor CPUs. If
+  we're to adhere to the current policy of not allowing users to enable
+  extensions for vendor CPUs, the profile support would become a
+  glorified way of checking if the vendor CPU happens to support a
+  specific profile. If a future vendor CPU supports a profile the CPU
+  can declare it manually in its cpu_init() function, the flag will
+  still be set, but users can't change it;
 
-Eric
+- disabling a profile will now disable all the mandatory extensions from
+  the CPU;
+
+- the profile logic was moved to realize() time in a step we're calling
+  'commit profile'. This allows us to enable/disable profile extensions
+  after considering user input in other individual extensions. The
+  result is that we don't care about the order in which the profile flag
+  was set in comparison with other extensions in the command line, i.e.
+  the following lines are equal:
+
+  -cpu rv64,zicbom=false,rva22u64=true,Zifencei=false
+
+  -cpu rv64,rva22u64=true,zicbom=false,Zifencei=false
+
+  and they mean 'enable the rva22u64 profile while keeping zicbom and
+  Zifencei disabled'.
+
+
+Other minor changes were needed as result of these design changes. E.g.
+we're now having to track MISA extensions set by users (patch 7),
+something that we were doing only for multi-letter extensions.
+
+Changes from v1:
+- patch 6 from v1 ("target/riscv/kvm: add 'rva22u64' flag as unavailable"):
+    - moved up to patch 4
+- patch 5 from v1("target/riscv/tcg-cpu.c: enable profile support for vendor CPUs"):
+    - dropped
+- patch 6 (new):
+  - add riscv_cpu_commit_profile()
+- patch 7 (new):
+  - add user choice hash for MISA extensions
+- patch 9 (new):
+  - handle MISA bits user choice when commiting profiles
+- patch 8 and 10 (new):
+  - helpers to avoid code repetition
+- v1 link: https://lore.kernel.org/qemu-riscv/20230926194951.183767-1-dbarboza@ventanamicro.com/
+
+
+Daniel Henrique Barboza (10):
+  target/riscv/cpu.c: add zicntr extension flag
+  target/riscv/cpu.c: add zihpm extension flag
+  target/riscv: add rva22u64 profile definition
+  target/riscv/kvm: add 'rva22u64' flag as unavailable
+  target/riscv/tcg: add user flag for profile support
+  target/riscv/tcg: commit profiles during realize()
+  target/riscv/tcg: add MISA user options hash
+  target/riscv/tcg: add riscv_cpu_write_misa_bit()
+  target/riscv/tcg: handle MISA bits on profile commit
+  target/riscv/tcg: add hash table insert helpers
+
+ target/riscv/cpu.c         |  29 +++++++
+ target/riscv/cpu.h         |  12 +++
+ target/riscv/cpu_cfg.h     |   2 +
+ target/riscv/kvm/kvm-cpu.c |   7 +-
+ target/riscv/tcg/tcg-cpu.c | 165 +++++++++++++++++++++++++++++++++----
+ 5 files changed, 197 insertions(+), 18 deletions(-)
+
+-- 
+2.41.0
 
 
