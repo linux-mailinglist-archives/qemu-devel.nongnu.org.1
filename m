@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB35D7BB63A
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 887FB7BB62B
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:16:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoinV-0000AL-FJ; Fri, 06 Oct 2023 07:15:09 -0400
+	id 1qoinW-0000F4-Iu; Fri, 06 Oct 2023 07:15:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoinL-0008Kg-Hg
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:59 -0400
+ id 1qoinM-0008Mm-A7
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:15:00 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoinJ-0000MP-Db
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:58 -0400
+ id 1qoinJ-0000Mj-RC
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:15:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696590895;
+ s=mimecast20190719; t=1696590897;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=6OAsxA5U/Cvno5qxaUaVEnzr/FfY4M6hU6vewG0xKvA=;
- b=FA6Sbo3VI94yzVvGvUwP9PYcjcO8Sr4KefMXW8NIa86aJgEe7itMHGkx9xaEnktIiTDtzs
- 88PeD27GTv1cO7x12winBl6BXInlibCNpKBab+ApnOfe2cNSkwoRGDrbe/M72jfWU0Qo4L
- QQ6pXHu7OANghV50ja4E/Mu362sKs1o=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=wxClbUpyEzaOhzjOLMt2mI013puUd8aozGogBdkxNu8=;
+ b=KPfAnFnq1tvNbRcLTZvwyBq/QFMUcvFaAzagnyPpSLi+Ozw3Mi5MHSulhnp56K/enx16jf
+ GT268rSqvT+gVH+1ikZVERJY1lbt/Gak4fNBO9PA+KndGURhPRhiDoj513OdaGPXsJO6b6
+ 10D6WmJzJJkXs9Cwzs0wec2kGnU6YBU=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-481-DRH-HsoZNrS6SPnS4a4QAg-1; Fri, 06 Oct 2023 07:14:53 -0400
-X-MC-Unique: DRH-HsoZNrS6SPnS4a4QAg-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-9ae686dafedso181660066b.3
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:53 -0700 (PDT)
+ us-mta-281-qRa8o3mSNfCC8t1mG35tkA-1; Fri, 06 Oct 2023 07:14:55 -0400
+X-MC-Unique: qRa8o3mSNfCC8t1mG35tkA-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9b274cc9636so178634166b.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696590892; x=1697195692;
+ d=1e100.net; s=20230601; t=1696590894; x=1697195694;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=6OAsxA5U/Cvno5qxaUaVEnzr/FfY4M6hU6vewG0xKvA=;
- b=gu6SW/CmNHYIilsliSEGjZht9JIKkuEZOeFzRJ6Y1EV3rwzDoR7ToPCDkz0oTUIoBP
- QXkqiglR5ViTDE4dILH6WMjfcgUs7biComgIsTmaMaMJqw2oRPBDJh4gJSwyJ0aDOUs6
- osTRhjoi6LC+1FK9yfuDFag+VuuqEN1ITOOWQR3lIm+wpMFjnhVBEjsyS25fzN/f49h6
- RiYH9PFCxfbZypJQ3Qcao2AOOMi8u46S0Ddsl3yAfsNGHrvlT0Ph/qn9Fypj17V74nhS
- r5vpm/CTkF/KCvWhomQyIBYdaO4neO03bJoudsdR0/7NjxT/66dscXfCEZvqVRW6bNbx
- VihA==
-X-Gm-Message-State: AOJu0Yw+8OS8X10IVSjL4obdsUh9GNnWsq3ybHeSoqF0H4/qgdUn8TV6
- dyp2skay/EPlQFlo3rCYNqo54PVfbXG2hMYVwtisKk1Z11r0tjNI3o1aiVQW8v1HMQi/tyqh7fF
- 8poyPQrtqAAZwHjmQ8vAsQIDXcGq2noFtrl5AJLuWYDHdb0+GLlavQ4zzeKSwSk1vDeyx2wTyTK
- E=
-X-Received: by 2002:a17:906:8443:b0:9ae:6632:a8c0 with SMTP id
- e3-20020a170906844300b009ae6632a8c0mr6388940ejy.10.1696590892368; 
- Fri, 06 Oct 2023 04:14:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHMdOs1CqiYsX92+tyoXh2UL9m8OIoQMieiNA93xKedppTe9Ivhzv/HSI/pEtKlL0IUbwkoLw==
-X-Received: by 2002:a17:906:8443:b0:9ae:6632:a8c0 with SMTP id
- e3-20020a170906844300b009ae6632a8c0mr6388931ejy.10.1696590892038; 
- Fri, 06 Oct 2023 04:14:52 -0700 (PDT)
+ bh=wxClbUpyEzaOhzjOLMt2mI013puUd8aozGogBdkxNu8=;
+ b=d0liJ/WjzUKAy74TVKSs4p8oCgIzQB51QWzrs7Zs0qRNmBoU6fKA1Y5iSAq3/5OlYP
+ uckTxZwSKqAQV2FVFMATr8wvZYNHRuh+sHA7pws6yoDGJOMBL2RDvFZrIXJfmUJWPgRi
+ 8x6NYrj/fP7HX6enHKHsLEXVJdnUIaKElt/rUho6AqsR7uINvhNdbUxACY25GfrvmUJZ
+ NQVBkW79oy9LtScP8sj82wMy9I5agjA20pyWr1HerkcVYZGzCEqxsny1FDfCDTLyYLFo
+ 3sI1p9zWOD3OmnkdSqaxhX3+FDoVE9TxyDx0iWboCMFkl/jmvAohOhKqdnPDxuSgc9F3
+ McGg==
+X-Gm-Message-State: AOJu0Yy9Q91qcxADzp4rOqFinxA0tAiFdL09qvK7V7+QS2Xm2oiKXqLl
+ ANmqbFP9A9lTyURH0rk1cz+1jG7bOFp4imkM5U1fKhTTjScTYMu0swuSzdrkICFDZsjiEbWXwVG
+ u8VqRIbTz365Fz5MrOOED2QRgCbh8NN08ynGtPBUg+PRg4SUOi7Rsr40XlBDdNzRQItPM35X73i
+ M=
+X-Received: by 2002:a17:906:3ca1:b0:9b6:5b56:bbe3 with SMTP id
+ b1-20020a1709063ca100b009b65b56bbe3mr5875851ejh.72.1696590894131; 
+ Fri, 06 Oct 2023 04:14:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEtcjtThh5zFAvF9SnN6iPmFZDDSKUteEtv39CwffqddltnLFQOsK+oOqWeOyfG8BphsoYtZQ==
+X-Received: by 2002:a17:906:3ca1:b0:9b6:5b56:bbe3 with SMTP id
+ b1-20020a1709063ca100b009b65b56bbe3mr5875836ejh.72.1696590893752; 
+ Fri, 06 Oct 2023 04:14:53 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- lz11-20020a170906fb0b00b009b97521b58bsm2716767ejb.39.2023.10.06.04.14.50
+ n12-20020a170906378c00b009ade1a4f795sm2670049ejc.168.2023.10.06.04.14.52
  for <qemu-devel@nongnu.org>
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 04:14:51 -0700 (PDT)
+ Fri, 06 Oct 2023 04:14:52 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Subject: [PULL 21/26] audio: disable default backends if -audio/-audiodev is
- used
-Date: Fri,  6 Oct 2023 13:14:07 +0200
-Message-ID: <20231006111412.13130-22-pbonzini@redhat.com>
+Subject: [PULL 22/26] audio: extract audio_define_default
+Date: Fri,  6 Oct 2023 13:14:08 +0200
+Message-ID: <20231006111412.13130-23-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006111412.13130-1-pbonzini@redhat.com>
 References: <20231006111412.13130-1-pbonzini@redhat.com>
@@ -101,120 +100,78 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Match what is done for other options, for example -monitor, and also
-the behavior of QEMU 8.1 (see the "legacy_config" variable).  Require
-the user to specify a backend if one is specified on the command line.
+It will be used soon to define a default audio device from the
+command line.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- audio/audio.c                   | 9 +--------
- audio/audio.h                   | 1 +
- docs/about/removed-features.rst | 3 +++
- system/vl.c                     | 7 +++++++
- 4 files changed, 12 insertions(+), 8 deletions(-)
+ audio/audio.c | 19 ++++++++++++-------
+ audio/audio.h |  1 +
+ 2 files changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/audio/audio.c b/audio/audio.c
-index 98621576d95..67a7e25254d 100644
+index 67a7e25254d..887219e0ce4 100644
 --- a/audio/audio.c
 +++ b/audio/audio.c
-@@ -1688,14 +1688,10 @@ static const VMStateDescription vmstate_audio = {
+@@ -1686,8 +1686,6 @@ static const VMStateDescription vmstate_audio = {
+     }
+ };
  
- static void audio_validate_opts(Audiodev *dev, Error **errp);
- 
--static void audio_create_default_audiodevs(void)
-+void audio_create_default_audiodevs(void)
+-static void audio_validate_opts(Audiodev *dev, Error **errp);
+-
+ void audio_create_default_audiodevs(void)
  {
      const char *drvname = getenv("QEMU_AUDIO_DRV");
+@@ -1706,7 +1704,6 @@ void audio_create_default_audiodevs(void)
+         if (audio_driver_lookup(audio_prio_list[i])) {
+             QDict *dict = qdict_new();
+             Audiodev *dev = NULL;
+-            AudiodevListEntry *e;
+             Visitor *v;
  
--    if (!defaults_enabled()) {
--        return;
--    }
--
-     /* QEMU_AUDIO_DRV=none is used by libqtest.  */
-     if (drvname && !g_str_equal(drvname, "none")) {
-         error_report("Please use -audiodev instead of QEMU_AUDIO_*");
-@@ -1827,9 +1823,6 @@ bool AUD_register_card (const char *name, QEMUSoundCard *card, Error **errp)
-             }
-             card->state = QTAILQ_FIRST(&audio_states);
-         } else {
--            if (QSIMPLEQ_EMPTY(&default_audiodevs)) {
--                audio_create_default_audiodevs();
--            }
-             card->state = audio_init(NULL, errp);
-             if (!card->state) {
-                 if (!QSIMPLEQ_EMPTY(&audiodevs)) {
-diff --git a/audio/audio.h b/audio/audio.h
-index 80f3f92124d..53b1d7e6227 100644
---- a/audio/audio.h
-+++ b/audio/audio.h
-@@ -170,6 +170,7 @@ void audio_sample_from_uint64(void *samples, int pos,
+             qdict_put_str(dict, "driver", audio_prio_list[i]);
+@@ -1717,10 +1714,7 @@ void audio_create_default_audiodevs(void)
+             visit_type_Audiodev(v, NULL, &dev, &error_fatal);
+             visit_free(v);
  
- void audio_define(Audiodev *audio);
- void audio_parse_option(const char *opt);
-+void audio_create_default_audiodevs(void);
- void audio_init_audiodevs(void);
- void audio_help(void);
- 
-diff --git a/docs/about/removed-features.rst b/docs/about/removed-features.rst
-index e83ed087f6b..8a0a8fe0765 100644
---- a/docs/about/removed-features.rst
-+++ b/docs/about/removed-features.rst
-@@ -442,6 +442,9 @@ line using a ``secret`` object instance.
- The ``-audiodev`` and ``-audio`` command line options are now the only
- way to specify audio backend settings.
- 
-+Note that the default audio backend must be configured on the command
-+line if the ``-nodefaults`` options is used.
-+
- Creating vnc without ``audiodev=`` property (removed in 8.2)
- ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
- 
-diff --git a/system/vl.c b/system/vl.c
-index 98e071e63bb..7ca92d4490d 100644
---- a/system/vl.c
-+++ b/system/vl.c
-@@ -184,6 +184,7 @@ static const char *qtest_log;
- static bool opt_one_insn_per_tb;
- 
- static int has_defaults = 1;
-+static int default_audio = 1;
- static int default_serial = 1;
- static int default_parallel = 1;
- static int default_monitor = 1;
-@@ -1327,6 +1328,7 @@ static void qemu_disable_default_devices(void)
-         default_sdcard = 0;
+-            audio_validate_opts(dev, &error_abort);
+-            e = g_new0(AudiodevListEntry, 1);
+-            e->dev = dev;
+-            QSIMPLEQ_INSERT_TAIL(&default_audiodevs, e, next);
++            audio_define_default(dev, &error_abort);
+         }
      }
-     if (!has_defaults) {
-+        default_audio = 0;
-         default_monitor = 0;
-         default_net = 0;
-         default_vga = 0;
-@@ -1963,6 +1965,9 @@ static void qemu_create_early_backends(void)
-      */
-     configure_blockdev(&bdo_queue, machine_class, snapshot);
-     audio_init_audiodevs();
-+    if (default_audio) {
-+        audio_create_default_audiodevs();
-+    }
+ }
+@@ -2165,6 +2159,17 @@ void audio_define(Audiodev *dev)
+     QSIMPLEQ_INSERT_TAIL(&audiodevs, e, next);
  }
  
++void audio_define_default(Audiodev *dev, Error **errp)
++{
++    AudiodevListEntry *e;
++
++    audio_validate_opts(dev, errp);
++
++    e = g_new0(AudiodevListEntry, 1);
++    e->dev = dev;
++    QSIMPLEQ_INSERT_TAIL(&default_audiodevs, e, next);
++}
++
+ void audio_init_audiodevs(void)
+ {
+     AudiodevListEntry *e;
+diff --git a/audio/audio.h b/audio/audio.h
+index 53b1d7e6227..6da5e8f6f0f 100644
+--- a/audio/audio.h
++++ b/audio/audio.h
+@@ -169,6 +169,7 @@ void audio_sample_from_uint64(void *samples, int pos,
+                             uint64_t left, uint64_t right);
  
-@@ -2925,6 +2930,7 @@ void qemu_init(int argc, char **argv)
-                 break;
- #endif
-             case QEMU_OPTION_audiodev:
-+                default_audio = 0;
-                 audio_parse_option(optarg);
-                 break;
-             case QEMU_OPTION_audio: {
-@@ -2933,6 +2939,7 @@ void qemu_init(int argc, char **argv)
-                 Audiodev *dev = NULL;
-                 Visitor *v;
-                 QDict *dict = keyval_parse(optarg, "driver", &help, &error_fatal);
-+                default_audio = 0;
-                 if (help || (qdict_haskey(dict, "driver") &&
-                              is_help_option(qdict_get_str(dict, "driver")))) {
-                     audio_help();
+ void audio_define(Audiodev *audio);
++void audio_define_default(Audiodev *dev, Error **errp);
+ void audio_parse_option(const char *opt);
+ void audio_create_default_audiodevs(void);
+ void audio_init_audiodevs(void);
 -- 
 2.41.0
 
