@@ -2,68 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3318D7BB6AE
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:41:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79BD97BB69C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:40:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoj9M-0005A9-AS; Fri, 06 Oct 2023 07:37:45 -0400
+	id 1qoj9H-000557-BJ; Fri, 06 Oct 2023 07:37:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj96-00054E-Vi
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8t-00050l-Lr
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj92-0000EK-Of
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:26 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8n-00007B-UC
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696592239;
+ s=mimecast20190719; t=1696592222;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=kQ+pT3ow6c+WuoVGzJFiDX22KI3j54JHlCbDNYJLjwE=;
- b=OwaMSJV1Iwybc4yhdPGG8V0+qPCj1pOZps1VbmbcFvr5prR4xbTVP4X1LVXzC84sgi9uTp
- 0QENm4AZkPo3AM6529Cx8brpCmCYxDRf28NF/0D4OlWhMj/0bGkBClFS/pLMIqkfVL6leK
- Eg1jB+ZcQdNjwfRboIkOM6VcDQhkrt0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-418-UuB_B-BbNG25SXr0P506Yg-1; Fri, 06 Oct 2023 07:37:01 -0400
-X-MC-Unique: UuB_B-BbNG25SXr0P506Yg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
+ bh=E0/SmeVkKQwC85Yi9z735skKKvyYk8aaSrlBFMMKON8=;
+ b=cGcp62DKW/hNGMXMM4WlkPkwL5d4ZErAW0KWOH1oFMnOXGBJvA2QRY/A7CppF9VR2BZeuh
+ /Spttx/p8kPRNHyApM1ztcEghKHCTsVlEU6+uPcpeKN29CjIyPco6y0BIpuQ/73hVIMgyQ
+ D7g5CXOhHQfD/IKsLEEkYFe0OqDselI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-57-GUgSinHLNO6mKmG-zgCWcQ-1; Fri, 06 Oct 2023 07:37:01 -0400
+X-MC-Unique: GUgSinHLNO6mKmG-zgCWcQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D3C35101A58B;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8A191C06367;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 956A72156711;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 95DC440C6EA8;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8644C21E6880; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
+ id 8934E21E6882; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 17/32] qom/object_interfaces: Clean up global variable shadowing
-Date: Fri,  6 Oct 2023 13:36:42 +0200
-Message-ID: <20231006113657.3803180-18-armbru@redhat.com>
+Subject: [PULL 18/32] semihosting: Clean up global variable shadowing
+Date: Fri,  6 Oct 2023 13:36:43 +0200
+Message-ID: <20231006113657.3803180-19-armbru@redhat.com>
 In-Reply-To: <20231006113657.3803180-1-armbru@redhat.com>
 References: <20231006113657.3803180-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,143 +85,85 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 Fix:
 
-  qom/object_interfaces.c:262:53: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
-                                                      ^
-  qom/object_interfaces.c:298:46: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  bool user_creatable_add_from_str(const char *optarg, Error **errp)
-                                               ^
-  qom/object_interfaces.c:313:49: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  void user_creatable_process_cmdline(const char *optarg)
+  semihosting/config.c:134:49: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  int qemu_semihosting_config_options(const char *optarg)
                                                   ^
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
   extern char *optarg;                    /* getopt(3) external variables */
                ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004120019.93101-9-philmd@linaro.org>
+Message-ID: <20231004120019.93101-10-philmd@linaro.org>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- include/qom/object_interfaces.h | 16 ++++++++--------
- qom/object_interfaces.c         | 16 ++++++++--------
- 2 files changed, 16 insertions(+), 16 deletions(-)
+ include/semihosting/semihost.h | 2 +-
+ semihosting/config.c           | 8 ++++----
+ stubs/semihost.c               | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/qom/object_interfaces.h b/include/qom/object_interfaces.h
-index 81541e2080..02b11a7ef0 100644
---- a/include/qom/object_interfaces.h
-+++ b/include/qom/object_interfaces.h
-@@ -99,7 +99,7 @@ void user_creatable_add_qapi(ObjectOptions *options, Error **errp);
- 
- /**
-  * user_creatable_parse_str:
-- * @optarg: the object definition string as passed on the command line
-+ * @str: the object definition string as passed on the command line
-  * @errp: if an error occurs, a pointer to an area to store the error
-  *
-  * Parses the option for the user creatable object with a keyval parser and
-@@ -110,14 +110,14 @@ void user_creatable_add_qapi(ObjectOptions *options, Error **errp);
-  * Returns: ObjectOptions on success, NULL when an error occurred (*errp is set
-  * then) or help was printed (*errp is not set).
-  */
--ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp);
-+ObjectOptions *user_creatable_parse_str(const char *str, Error **errp);
- 
- /**
-  * user_creatable_add_from_str:
-- * @optarg: the object definition string as passed on the command line
-+ * @str: the object definition string as passed on the command line
-  * @errp: if an error occurs, a pointer to an area to store the error
-  *
-- * Create an instance of the user creatable object by parsing optarg
-+ * Create an instance of the user creatable object by parsing @str
-  * with a keyval parser and implicit key 'qom-type', converting the
-  * result to ObjectOptions and calling into qmp_object_add().
-  *
-@@ -126,13 +126,13 @@ ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp);
-  * Returns: true when an object was successfully created, false when an error
-  * occurred (*errp is set then) or help was printed (*errp is not set).
-  */
--bool user_creatable_add_from_str(const char *optarg, Error **errp);
-+bool user_creatable_add_from_str(const char *str, Error **errp);
- 
- /**
-  * user_creatable_process_cmdline:
-- * @optarg: the object definition string as passed on the command line
-+ * @cmdline: the object definition string as passed on the command line
-  *
-- * Create an instance of the user creatable object by parsing optarg
-+ * Create an instance of the user creatable object by parsing @cmdline
-  * with a keyval parser and implicit key 'qom-type', converting the
-  * result to ObjectOptions and calling into qmp_object_add().
-  *
-@@ -141,7 +141,7 @@ bool user_creatable_add_from_str(const char *optarg, Error **errp);
-  * This function is only meant to be called during command line parsing.
-  * It exits the process on failure or after printing help.
-  */
--void user_creatable_process_cmdline(const char *optarg);
-+void user_creatable_process_cmdline(const char *cmdline);
- 
- /**
-  * user_creatable_print_help:
-diff --git a/qom/object_interfaces.c b/qom/object_interfaces.c
-index 7d31589b04..e0833c8bfe 100644
---- a/qom/object_interfaces.c
-+++ b/qom/object_interfaces.c
-@@ -259,7 +259,7 @@ static void user_creatable_print_help_from_qdict(QDict *args)
-     }
+diff --git a/include/semihosting/semihost.h b/include/semihosting/semihost.h
+index efd2efa25a..97d2a2ba99 100644
+--- a/include/semihosting/semihost.h
++++ b/include/semihosting/semihost.h
+@@ -66,7 +66,7 @@ const char *semihosting_get_cmdline(void);
+ void semihosting_arg_fallback(const char *file, const char *cmd);
+ /* for vl.c hooks */
+ void qemu_semihosting_enable(void);
+-int qemu_semihosting_config_options(const char *opt);
++int qemu_semihosting_config_options(const char *optstr);
+ void qemu_semihosting_chardev_init(void);
+ void qemu_semihosting_console_init(Chardev *);
+ #endif /* CONFIG_USER_ONLY */
+diff --git a/semihosting/config.c b/semihosting/config.c
+index 8ca569735d..e826457733 100644
+--- a/semihosting/config.c
++++ b/semihosting/config.c
+@@ -131,10 +131,10 @@ void qemu_semihosting_enable(void)
+     semihosting.target = SEMIHOSTING_TARGET_AUTO;
  }
  
--ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
-+ObjectOptions *user_creatable_parse_str(const char *str, Error **errp)
+-int qemu_semihosting_config_options(const char *optarg)
++int qemu_semihosting_config_options(const char *optstr)
  {
-     ERRP_GUARD();
-     QObject *obj;
-@@ -267,14 +267,14 @@ ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
-     Visitor *v;
-     ObjectOptions *options;
+     QemuOptsList *opt_list = qemu_find_opts("semihosting-config");
+-    QemuOpts *opts = qemu_opts_parse_noisily(opt_list, optarg, false);
++    QemuOpts *opts = qemu_opts_parse_noisily(opt_list, optstr, false);
  
--    if (optarg[0] == '{') {
--        obj = qobject_from_json(optarg, errp);
-+    if (str[0] == '{') {
-+        obj = qobject_from_json(str, errp);
-         if (!obj) {
-             return NULL;
-         }
-         v = qobject_input_visitor_new(obj);
+     semihosting.enabled = true;
+ 
+@@ -155,7 +155,7 @@ int qemu_semihosting_config_options(const char *optarg)
+                 semihosting.target = SEMIHOSTING_TARGET_AUTO;
+             } else {
+                 error_report("unsupported semihosting-config %s",
+-                             optarg);
++                             optstr);
+                 return 1;
+             }
+         } else {
+@@ -165,7 +165,7 @@ int qemu_semihosting_config_options(const char *optarg)
+         qemu_opt_foreach(opts, add_semihosting_arg,
+                          &semihosting, NULL);
      } else {
--        QDict *args = keyval_parse(optarg, "qom-type", &help, errp);
-+        QDict *args = keyval_parse(str, "qom-type", &help, errp);
-         if (*errp) {
-             return NULL;
-         }
-@@ -295,12 +295,12 @@ ObjectOptions *user_creatable_parse_str(const char *optarg, Error **errp)
-     return options;
+-        error_report("unsupported semihosting-config %s", optarg);
++        error_report("unsupported semihosting-config %s", optstr);
+         return 1;
+     }
+ 
+diff --git a/stubs/semihost.c b/stubs/semihost.c
+index aad7a70353..b3c61935b3 100644
+--- a/stubs/semihost.c
++++ b/stubs/semihost.c
+@@ -36,7 +36,7 @@ void qemu_semihosting_enable(void)
+ {
  }
  
--bool user_creatable_add_from_str(const char *optarg, Error **errp)
-+bool user_creatable_add_from_str(const char *str, Error **errp)
+-int qemu_semihosting_config_options(const char *optarg)
++int qemu_semihosting_config_options(const char *optstr)
  {
-     ERRP_GUARD();
-     ObjectOptions *options;
- 
--    options = user_creatable_parse_str(optarg, errp);
-+    options = user_creatable_parse_str(str, errp);
-     if (!options) {
-         return false;
-     }
-@@ -310,9 +310,9 @@ bool user_creatable_add_from_str(const char *optarg, Error **errp)
-     return !*errp;
+     return 1;
  }
- 
--void user_creatable_process_cmdline(const char *optarg)
-+void user_creatable_process_cmdline(const char *cmdline)
- {
--    if (!user_creatable_add_from_str(optarg, &error_fatal)) {
-+    if (!user_creatable_add_from_str(cmdline, &error_fatal)) {
-         /* Help was printed */
-         exit(EXIT_SUCCESS);
-     }
 -- 
 2.41.0
 
