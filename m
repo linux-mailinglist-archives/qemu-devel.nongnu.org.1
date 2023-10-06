@@ -2,100 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F077BB372
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3F397BB380
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:50:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qogTQ-0000rJ-07; Fri, 06 Oct 2023 04:46:16 -0400
+	id 1qogX9-0003cz-UG; Fri, 06 Oct 2023 04:50:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogTJ-0000r3-6J
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:46:09 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qogX8-0003cr-F6
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:50:06 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogTG-00047W-C1
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:46:08 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qogX5-0004hH-JZ
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:50:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696581964;
+ s=mimecast20190719; t=1696582202;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=z0fItp18fYNd9dMdqdD4NpZ2uuTmANuaBbmmjM7vTAQ=;
- b=G5G3IlOWNmpZq8OXKXuj5wp2ZaVYhHJodTVu/M6Vj0hIc5PxObOWFxNp9Gm5WQt9eALXXt
- JYXXUv9R03s1ZDUk+vide08FEqsj94d/ath6R7+QqSN8aa4QrOSsgMlayp3j8/Y87bdv9w
- pMTHF5gbsc7cGHj0d5o0c4uVEsiYtJ0=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=+v4NSN0IfKwbnu3ebS9uuykAQPQfdnVh1A/Obwlrp0o=;
+ b=V9YYV7Ch0I54rmUYXM9DZQeFdVdRTDJnHYxOgL2yLgrG92UxV9ZAmFjilQz3YVX39AiG08
+ a3s+Gz2GNBVGNUeEXJJ4lD5wNPoNvJNnX8bBgh/HDWBvhuUTFmP9KTuL4x0BibfPN2MLXq
+ MJJ+lO9lkGhp0gNjT/C9LLedxLsNBp4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-630-V7Pbjz0LPQaH6JV8A0M7Bg-1; Fri, 06 Oct 2023 04:46:03 -0400
-X-MC-Unique: V7Pbjz0LPQaH6JV8A0M7Bg-1
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-775869cf2f5so420914885a.1
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:46:03 -0700 (PDT)
+ us-mta-58-GEhvDtGoPJqJukY5qSOVrA-1; Fri, 06 Oct 2023 04:49:46 -0400
+X-MC-Unique: GEhvDtGoPJqJukY5qSOVrA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-4054743df06so13361065e9.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:49:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696581963; x=1697186763;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1696582185; x=1697186985;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=z0fItp18fYNd9dMdqdD4NpZ2uuTmANuaBbmmjM7vTAQ=;
- b=FLD0//BUNrkWA1QX0o04cykKRxUL5RrZOfG4bjcRcV2kPZm6VFgPUCWr6UGyyr1hGu
- jyNN3Me61o+psaZCN1rnuGk2sfBmWDJrKO7IPC4hAGHfaNFj4+WKLZ41gvaQhemVJ90j
- wAtVH+yksaFtZaNWbiYpEKTBm4kZabkFJPpsa0PdOImPCVbGz5Vy187gWyhjCMBWNZco
- ZkdD0z4YyTK2kanFgzqjUaaDijUlUZCTbqItLo1Vm+h1YyrA5DVaaxfgvQlfBg8lIZFj
- AJ8W/MQ+JfjMidBEasxBbA68eYih/FAiWpIhr7q3FmwrMfrYCTZ2K/FLCalTcSBoBA7Z
- Zy8Q==
-X-Gm-Message-State: AOJu0Yw1cqgHQ7mXVCh8RXEAESsAAN68nVCnbF86Y0GJsPFdRuep1aVD
- pWmAbnEot8YwE/c92Yt+WNocAgU3iXS3rpaNLzzolKjwMRr6W8PeN8AsxE12rmuBYgGanxcBoGc
- vBx368wcHFQCsl8k=
-X-Received: by 2002:a05:620a:171e:b0:76e:f73d:65ae with SMTP id
- az30-20020a05620a171e00b0076ef73d65aemr4899230qkb.6.1696581962778; 
- Fri, 06 Oct 2023 01:46:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcgSmpgzpAdqag8p41Kqka9MUSUZVXgyiW4tPdSaOutb5RxCSJ7mTsyUE8KgSi3WFnrBlJpQ==
-X-Received: by 2002:a05:620a:171e:b0:76e:f73d:65ae with SMTP id
- az30-20020a05620a171e00b0076ef73d65aemr4899211qkb.6.1696581962503; 
- Fri, 06 Oct 2023 01:46:02 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ bh=+v4NSN0IfKwbnu3ebS9uuykAQPQfdnVh1A/Obwlrp0o=;
+ b=OFozH1thuXwmTtwUVUmvQXmV7/9FdGbQRXOGfc9XBy2eOpJSIJHQtnW3XPmlZvxIAu
+ DAZ3cxxV0swBJAoRSQAJqnnZEO9+0pp/qxZ1qsOMlGVO4xvEPTncBDK8dHWWpCD9z/si
+ paAt8NzXN/1+62cVqqfk1oVyGZ1NfWjHyzsLCUYcUV2aEPSES8Q8vhIXzMku+QF8UsCB
+ Io2LqckCWtTl4UCNugHN5E4g4sYpnoyAuvpHYx2qsMMDxJRl/4uCJT9ssixkGR//Fid3
+ fwzvEIvkHsBh91Lf3QaRbAbZC/E9RGsXfn0ypCweLvVW/P5+Bg2r+nEk19OH65YntieW
+ fNqg==
+X-Gm-Message-State: AOJu0YxGq7KdbLjiXeOVhUH+kmOvSS9hxGWw3CFeHfvgndNrWGkdXpOH
+ LDsr/J6N0otXceAYf26NOxhk5CoNGh/1PswPVrvFmAb9Bto/IcAV4QA4uXKtTbSvTfB7ekG8Ilc
+ X2yQygCnMfyCbbjo=
+X-Received: by 2002:a1c:7419:0:b0:405:7b92:453e with SMTP id
+ p25-20020a1c7419000000b004057b92453emr6844429wmc.37.1696582185251; 
+ Fri, 06 Oct 2023 01:49:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBmhuBjOD8nFrokOAWAn4P+OZhAJGEVnDWh7nGa1IPrtvVRZVcddHKcPD+rq5pzv2NL1QWFA==
+X-Received: by 2002:a1c:7419:0:b0:405:7b92:453e with SMTP id
+ p25-20020a1c7419000000b004057b92453emr6844408wmc.37.1696582184814; 
+ Fri, 06 Oct 2023 01:49:44 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:170:ca0a:84b4:d350:99ea:3666])
  by smtp.gmail.com with ESMTPSA id
- q9-20020a0c8cc9000000b0064c9f754794sm1210509qvb.86.2023.10.06.01.45.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 01:46:01 -0700 (PDT)
-Message-ID: <439d42e6-0627-43d1-1a45-dbc92ef83380@redhat.com>
-Date: Fri, 6 Oct 2023 10:45:57 +0200
+ c11-20020a7bc84b000000b0040648217f4fsm5503088wml.39.2023.10.06.01.49.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Oct 2023 01:49:44 -0700 (PDT)
+Date: Fri, 6 Oct 2023 04:49:40 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>, qemu-devel@nongnu.org,
+ virtio-fs@redhat.com,
+ Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+ Anton Kuchin <antonkuchin@yandex-team.ru>
+Subject: Re: [Virtio-fs] [PATCH v4 2/8] vhost-user.rst: Improve
+ [GS]ET_VRING_BASE doc
+Message-ID: <20231006044753-mutt-send-email-mst@kernel.org>
+References: <20231004125904.110781-1-hreitz@redhat.com>
+ <20231004125904.110781-3-hreitz@redhat.com>
+ <20231005173859.GC1342722@fedora>
+ <851b7629-2302-5624-eb81-6839e250991e@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 01/15] hw/pci: Add a pci_setup_iommu_ops() helper
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-2-joao.m.martins@oracle.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <20230622214845.3980-2-joao.m.martins@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <851b7629-2302-5624-eb81-6839e250991e@redhat.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -47
-X-Spam_score: -4.8
-X-Spam_bar: ----
-X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,124 +104,151 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joao,
+On Fri, Oct 06, 2023 at 09:53:53AM +0200, Hanna Czenczek wrote:
+> On 05.10.23 19:38, Stefan Hajnoczi wrote:
+> > On Wed, Oct 04, 2023 at 02:58:58PM +0200, Hanna Czenczek wrote:
+> > > GET_VRING_BASE does not mention that it stops the respective ring.  Fix
+> > > that.
+> > > 
+> > > Furthermore, it is not fully clear what the "base offset" these
+> > > commands' documentation refers to is; an offset could be many things.
+> > > Be more precise and verbose about it, especially given that these
+> > > commands use different payload structures depending on whether the vring
+> > > is split or packed.
+> > > 
+> > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+> > > ---
+> > >   docs/interop/vhost-user.rst | 66 ++++++++++++++++++++++++++++++++++---
+> > >   1 file changed, 62 insertions(+), 4 deletions(-)
+> > > 
+> > > diff --git a/docs/interop/vhost-user.rst b/docs/interop/vhost-user.rst
+> > > index 2f68e67a1a..50f5acebe5 100644
+> > > --- a/docs/interop/vhost-user.rst
+> > > +++ b/docs/interop/vhost-user.rst
+> > > @@ -108,6 +108,37 @@ A vring state description
+> > >   :num: a 32-bit number
+> > > +A vring descriptor index for split virtqueues
+> > > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > > +
+> > > ++-------------+---------------------+
+> > > +| vring index | index in avail ring |
+> > > ++-------------+---------------------+
+> > > +
+> > > +:vring index: 32-bit index of the respective virtqueue
+> > > +
+> > > +:index in avail ring: 32-bit value, of which currently only the lower 16
+> > > +  bits are used:
+> > > +
+> > > +  - Bits 0–15: Next descriptor index in the *Available Ring*
+> > I think we need to say more to make this implementable just by reading
+> > the spec:
+> > 
+> >    Index of the next *Available Ring* descriptor that the back-end will
+> >    process. This is a free-running index that is not wrapped by the ring
+> >    size.
+> 
+> Sure, thanks.
+> 
+> > Feel free to rephrase.
+> > 
+> > > +  - Bits 16–31: Reserved (set to zero)
+> > > +
+> > > +Vring descriptor indices for packed virtqueues
+> > > +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > > +
+> > > ++-------------+--------------------+
+> > > +| vring index | descriptor indices |
+> > > ++-------------+--------------------+
+> > > +
+> > > +:vring index: 32-bit index of the respective virtqueue
+> > > +
+> > > +:descriptor indices: 32-bit value:
+> > > +
+> > > +  - Bits 0–14: Index in the *Available Ring*
+> > Same here.
+> > 
+> > > +  - Bit 15: Driver (Available) Ring Wrap Counter
+> > > +  - Bits 16–30: Index in the *Used Ring*
+> > Same here.
+> > 
+> > > +  - Bit 31: Device (Used) Ring Wrap Counter
+> > > +
+> > >   A vring address description
+> > >   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> > > @@ -1031,18 +1062,45 @@ Front-end message types
+> > >   ``VHOST_USER_SET_VRING_BASE``
+> > >     :id: 10
+> > >     :equivalent ioctl: ``VHOST_SET_VRING_BASE``
+> > > -  :request payload: vring state description
+> > > +  :request payload: vring descriptor index/indices
+> > >     :reply payload: N/A
+> > > -  Sets the base offset in the available vring.
+> > > +  Sets the next index to use for descriptors in this vring:
+> > > +
+> > > +  * For a split virtqueue, sets only the next descriptor index in the
+> > > +    *Available Ring*.  The device is supposed to read the next index in
+> > > +    the *Used Ring* from the respective vring structure in guest memory.
+> > > +
+> > > +  * For a packed virtqueue, both indices are supplied, as they are not
+> > > +    explicitly available in memory.
+> > > +
+> > > +  Consequently, the payload type is specific to the type of virt queue
+> > > +  (*a vring descriptor index for split virtqueues* vs. *vring descriptor
+> > > +  indices for packed virtqueues*).
+> > >   ``VHOST_USER_GET_VRING_BASE``
+> > >     :id: 11
+> > >     :equivalent ioctl: ``VHOST_USER_GET_VRING_BASE``
+> > >     :request payload: vring state description
+> > > -  :reply payload: vring state description
+> > > +  :reply payload: vring descriptor index/indices
+> > > +
+> > > +  Stops the vring and returns the current descriptor index or indices:
+> > > +
+> > > +    * For a split virtqueue, returns only the 16-bit next descriptor
+> > > +      index in the *Available Ring*.  The index in the *Used Ring* is
+> > > +      controlled by the guest driver and can be read from the vring
+> > I find "is controlled by the guest driver" confusing. The device writes
+> > the Used Ring index. The driver only reads it. The device is the active
+> > party here.
+> 
+> Er, good point.  That breaks the whole reasoning.  Then I don’t understand
+> why we do get/set the available ring index and not the used ring index.  Do
+> you know why?
 
-On 6/22/23 23:48, Joao Martins wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
-> 
-> Add a pci_setup_iommu_ops() that uses a newly added structure
-> (PCIIOMMUOps) instead of using PCIIOMMUFunc. The old pci_setup_iommu()
-> that uses PCIIOMMUFunc is still kept for other IOMMUs to get an
-> an address space for a PCI device in vendor specific way.
-double 'an'
-> 
-> In preparation to expand to supplying vIOMMU attributes, add a
-> alternate helper pci_setup_iommu_ops() to setup the PCI device IOMMU.
-> For now the PCIIOMMUOps just defines the address_space, but it will
-> be extended to have another callback.
-> 
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> [joao: Massage commit message and subject, and make it a complementary
-> rather than changing every single consumer of pci_setup_iommu()]
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-> ---
-> v1: https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
-> ---
->  include/hw/pci/pci.h     |  7 +++++++
->  include/hw/pci/pci_bus.h |  1 +
->  hw/pci/pci.c             | 26 +++++++++++++++++++++++---
->  3 files changed, 31 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
-> index e6d0574a2999..f59aef5a329a 100644
-> --- a/include/hw/pci/pci.h
-> +++ b/include/hw/pci/pci.h
-> @@ -368,6 +368,13 @@ typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *, int);
->  AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
->  void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
->  
-> +typedef struct PCIIOMMUOps PCIIOMMUOps;
-> +struct PCIIOMMUOps {
-> +    AddressSpace * (*get_address_space)(PCIBus *bus,
-> +                                void *opaque, int32_t devfn);
-> +};
-> +void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *iommu_ops, void *opaque);
-> +
->  pcibus_t pci_bar_address(PCIDevice *d,
->                           int reg, uint8_t type, pcibus_t size);
->  
-> diff --git a/include/hw/pci/pci_bus.h b/include/hw/pci/pci_bus.h
-> index 56531759578f..fb770b236d69 100644
-> --- a/include/hw/pci/pci_bus.h
-> +++ b/include/hw/pci/pci_bus.h
-> @@ -35,6 +35,7 @@ struct PCIBus {
->      enum PCIBusFlags flags;
->      PCIIOMMUFunc iommu_fn;
->      void *iommu_opaque;
-> +    const PCIIOMMUOps *iommu_ops;
->      uint8_t devfn_min;
->      uint32_t slot_reserved_mask;
->      pci_set_irq_fn set_irq;
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index bf38905b7dc0..4e32c09e81d6 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -2639,7 +2639,15 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
->      PCIBus *iommu_bus = bus;
->      uint8_t devfn = dev->devfn;
->  
-> -    while (iommu_bus && !iommu_bus->iommu_fn && iommu_bus->parent_dev) {
-> +    /*
-> +     * get_address_space() callback is mandatory when iommu uses
-> +     * pci_setup_iommu_ops(), so needs to ensure its presence in
-> +     * the iommu_bus search.
-the fact that it is mandatory should also be documented along with the
-PCIIOMMUOps struct definition and enforced at  pci_setup_iommu_ops()
-removing the need for checking iommu_bus->iommu_ops->get_address_space
-> +     */
-> +    while (iommu_bus &&
-> +           !(iommu_bus->iommu_fn ||
-> +            (iommu_bus->iommu_ops && iommu_bus->iommu_ops->get_address_space)) &&
-> +           iommu_bus->parent_dev) {
->          PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
->  
->          /*
-> @@ -2678,8 +2686,14 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
->  
->          iommu_bus = parent_bus;
->      }
-> -    if (!pci_bus_bypass_iommu(bus) && iommu_bus && iommu_bus->iommu_fn) {
-> -        return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
-> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus) {
-> +        if (iommu_bus->iommu_fn) {
-> +           return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
-> +        } else if (iommu_bus->iommu_ops &&
-> +                   iommu_bus->iommu_ops->get_address_space) {
-> +           return iommu_bus->iommu_ops->get_address_space(bus,
-> +                                           iommu_bus->iommu_opaque, devfn);
-> +        }
->      }
->      return &address_space_memory;
->  }
-> @@ -2690,6 +2704,12 @@ void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
->      bus->iommu_opaque = opaque;
->  }
->  
-> +void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
-> +{
-> +    bus->iommu_ops = ops;
-> +    bus->iommu_opaque = opaque;
-maybe assert if both iommu_fn and iommu_ops are set to make sure the
-conversion is not done partially? If I understand it correctly either of
-those 2 ops should be set and not both.
-> +}
-> +
->  static void pci_dev_get_w64(PCIBus *b, PCIDevice *dev, void *opaque)
->  {
->      Range *range = opaque;
+It's simple. used ring index in memory is controlled by the device and
+reflects device state. device can just read it back to restore.
+available ring index in memory is controlled by driver and does
+not reflect device state.
 
-Thanks
-
-Eric
+> > The sentence can be shortened to omit the "controlled by the guest
+> > driver" part.
+> 
+> I don’t want to shorten it, because I would like to know why we don’t
+> get/set both indices for split virtqueues, too.
+> 
+> Hanna
+> 
+> > > +      structure in memory, so is not covered.
+> > > +
+> > > +    * For a packed virtqueue, neither index is explicitly available to
+> > > +      read from memory, so both indices (as maintained by the device) are
+> > > +      returned.
+> > > +
+> > > +  Consequently, the payload type is specific to the type of virt queue
+> > > +  (*a vring descriptor index for split virtqueues* vs. *vring descriptor
+> > > +  indices for packed virtqueues*).
+> > > -  Get the available vring base offset.
+> > > +  The request payload’s *num* field is currently reserved and must be
+> > > +  set to 0.
+> > >   ``VHOST_USER_SET_VRING_KICK``
+> > >     :id: 12
+> > > -- 
+> > > 2.41.0
+> > > 
+> > > 
+> > > _______________________________________________
+> > > Virtio-fs mailing list
+> > > Virtio-fs@redhat.com
+> > > https://listman.redhat.com/mailman/listinfo/virtio-fs
 
 
