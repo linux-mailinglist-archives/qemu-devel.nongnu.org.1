@@ -2,90 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2A17BBC92
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 18:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2847BBCAB
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 18:27:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qonXL-0007tL-21; Fri, 06 Oct 2023 12:18:48 -0400
+	id 1qone8-0005ej-22; Fri, 06 Oct 2023 12:25:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qonX9-0007sS-MT
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:18:35 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qone3-0005eU-Jz
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:25:43 -0400
+Received: from mgamail.intel.com ([134.134.136.31])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qonX7-0004Yx-IU
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:18:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696609111;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Wsjv94Bi33r59W7rQAxvsWcxQHbabqV9KlUtFlNCRkw=;
- b=Zm8mbPbOSZOsYiRo9hcfviaiNXsOOm82GO9owz9NU6VlVm40or7eibobs5hW2UAlU+qDCr
- MMNFWrCfaHhdAifP/WJ8dFaE66ltu9fTv95myWeP9UHVHqItiUrsfkv7zJauDWXc9jt4Yo
- DggWj2ierBgBhwvnIVAM+oeonC8cPLo=
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
- [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-N3WDZxLkPw6INGWS6fsWPg-1; Fri, 06 Oct 2023 12:18:29 -0400
-X-MC-Unique: N3WDZxLkPw6INGWS6fsWPg-1
-Received: by mail-ot1-f70.google.com with SMTP id
- 46e09a7af769-6c6370774e8so3114336a34.0
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 09:18:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696609109; x=1697213909;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Wsjv94Bi33r59W7rQAxvsWcxQHbabqV9KlUtFlNCRkw=;
- b=kW9Z1cg30SyAZa+/Zr7GQjzqJAsAyQ14Qh44tfMLDM+Mjlu20UqTTjJu8gfklY5uRx
- phMhZAtHRYxrg495qtdclC2oXzxJOKfSTC2f6z0vXkHUeGIruhOXALp1MOAzUWruywZw
- gN5PGZQiJeokV6t13SFK5tAamLMh8S/bn83O/jsqP7m6y1Md/yklRGCDspXqMu+PXmk1
- r5p0wIZZLqsbTvkrLmOKhXKW0Jx7IMe9AN/72WAiVcH7aE1IwXafVL9unszxRntXozpM
- M+5MmhtFPAXQiREisOO1i2QZo2qs0CFfeN5EsJDlrHKMNc54px9M69DPdu5HC2a590y5
- p3rw==
-X-Gm-Message-State: AOJu0YxEhCeRI1WdDr0exXd9ZYxRjhVdfz9yfjUjJpzWZc8BY2FNeg6o
- lmlAMoxu3vOC/F9CXUn8NUCDq+myVhyDsyAT6tX98/fC+9U6QZ4nypIZiwEUwQkJmaiz7S1DNgo
- ideruc3Rgtp3lo6Y=
-X-Received: by 2002:a05:6870:6111:b0:1d0:e0c9:f33d with SMTP id
- s17-20020a056870611100b001d0e0c9f33dmr10174899oae.46.1696609109142; 
- Fri, 06 Oct 2023 09:18:29 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE2ea/NYPdbdc3e7yP4HHu9jtUamHaTrgZbQQkXbhF8WWaDwRkWGBVPuHM6nL1RUhHOx8FB0Q==
-X-Received: by 2002:a05:6870:6111:b0:1d0:e0c9:f33d with SMTP id
- s17-20020a056870611100b001d0e0c9f33dmr10174881oae.46.1696609108877; 
- Fri, 06 Oct 2023 09:18:28 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
- [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
- r2-20020a0ccc02000000b0065cfec43097sm1487458qvk.39.2023.10.06.09.18.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 09:18:28 -0700 (PDT)
-Message-ID: <12397ede-8e20-cb55-b759-d2fbf7732f46@redhat.com>
-Date: Fri, 6 Oct 2023 18:18:25 +0200
+ (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
+ id 1qondy-0006MN-KR
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:25:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1696609538; x=1728145538;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=kGaOmkN7wx/FNRMLNQsW/9Woh6neBgW5Hw506XpfW9A=;
+ b=NqB8ShMl+i9+unMOJDKBFXyR29Jh1sPWN2D2Lv0gFzEzafraRbgjwEGu
+ b5sDRZMnfr3TR8cs9LfEjCccRfpFIr+NMOhPJtmk9/Er+SAxNHU1uwKIs
+ gtuCiEOYT6CheGfMbAYlS5loJxV2UM7ZLQT+7uMOr0aJGOsRGUm772KwD
+ V4ELjYiKbqFW+0CzVJ16s0gjzxsNl0SeRlH2NS03y91qjKkl7EF+/vUD0
+ bdle3+AxhpBNNbOWhdlX8QvXPIazv3cON273q2M/XB23mw1X26Ocvb/5n
+ c7mX90b3d8NI0osQV1swjdlKARidzhPznI7FQAXCwofiahkzv/P1hfyh7 Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="447969952"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; d="scan'208";a="447969952"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+ by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Oct 2023 09:25:34 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="781699510"
+X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; d="scan'208";a="781699510"
+Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
+ ([10.239.160.36])
+ by orsmga008.jf.intel.com with ESMTP; 06 Oct 2023 09:25:29 -0700
+Date: Sat, 7 Oct 2023 00:36:41 +0800
+From: Zhao Liu <zhao1.liu@linux.intel.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Yanan Wang <wangyanan55@huawei.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
+ Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache topo
+ in CPUID.04H
+Message-ID: <ZSA3mfmOz+RZcmct@liuzhao-OptiPlex-7080>
+References: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
+ <20230914072159.1177582-22-zhao1.liu@linux.intel.com>
+ <75ea5477-ca1b-7016-273c-abd6c36f4be4@linaro.org>
+ <ZQQNddiCky/cImAz@liuzhao-OptiPlex-7080>
+ <20231003085516-mutt-send-email-mst@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [v3] Help wanted for enabling -Wshadow=local
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
-References: <87mswvg683.fsf@pond.sub.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <87mswvg683.fsf@pond.sub.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -48
-X-Spam_score: -4.9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231003085516-mutt-send-email-mst@kernel.org>
+Received-SPF: none client-ip=134.134.136.31;
+ envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -42
+X-Spam_score: -4.3
 X-Spam_bar: ----
-X-Spam_report: (-4.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-2.797, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -101,75 +90,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06/10/2023 16.45, Markus Armbruster wrote:
-> Local variables shadowing other local variables or parameters make the
-> code needlessly hard to understand.  Bugs love to hide in such code.
-> Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
-> on polling error".
-> 
-> Enabling -Wshadow would prevent bugs like this one.  But we have to
-> clean up all the offenders first.
-> 
-> Quite a few people responded to my calls for help.  Thank you so much!
-> 
-> I'm collecting patches in my git repo at
-> https://repo.or.cz/qemu/armbru.git in branch shadow-next.  All but the
-> last two are in a pending pull request.
-> 
-> My test build is down to seven files with warnings.  "[PATCH v2 0/3]
-> hexagon: GETPC() and shadowing fixes" takes care of four, but it needs a
-> rebase.
-> 
-> Remaining three:
-> 
->      In file included from ../hw/display/virtio-gpu-virgl.c:19:
->      ../hw/display/virtio-gpu-virgl.c: In function ‘virgl_cmd_submit_3d’:
->      /work/armbru/qemu/include/hw/virtio/virtio-gpu.h:228:16: warning: declaration of ‘s’ shadows a previous local [-Wshadow=compatible-local]
->        228 |         size_t s;                                                       \
->            |                ^
->      ../hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro ‘VIRTIO_GPU_FILL_CMD’
->        215 |     VIRTIO_GPU_FILL_CMD(cs);
->            |     ^~~~~~~~~~~~~~~~~~~
->      ../hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration is here
->        213 |     size_t s;
->            |            ^
-> 
->      In file included from ../contrib/vhost-user-gpu/virgl.h:18,
->                       from ../contrib/vhost-user-gpu/virgl.c:17:
->      ../contrib/vhost-user-gpu/virgl.c: In function ‘virgl_cmd_submit_3d’:
->      ../contrib/vhost-user-gpu/vugpu.h:167:16: warning: declaration of ‘s’ shadows a previous local [-Wshadow=compatible-local]
->        167 |         size_t s;                                               \
->            |                ^
->      ../contrib/vhost-user-gpu/virgl.c:203:5: note: in expansion of macro ‘VUGPU_FILL_CMD’
->        203 |     VUGPU_FILL_CMD(cs);
->            |     ^~~~~~~~~~~~~~
->      ../contrib/vhost-user-gpu/virgl.c:201:12: note: shadowed declaration is here
->        201 |     size_t s;
->            |            ^
-> 
->      ../contrib/vhost-user-gpu/vhost-user-gpu.c: In function ‘vg_resource_flush’:
->      ../contrib/vhost-user-gpu/vhost-user-gpu.c:837:29: warning: declaration of ‘i’ shadows a previous local [-Wshadow=local]
->        837 |             pixman_image_t *i =
->            |                             ^
->      ../contrib/vhost-user-gpu/vhost-user-gpu.c:757:9: note: shadowed declaration is here
->        757 |     int i;
->            |         ^
-> 
-> Gerd, Marc-André, or anybody else?
-> 
-> More warnings may lurk in code my test build doesn't compile.  Need a
-> full CI build with -Wshadow=local to find them.  Anybody care to kick
-> one off?
+Hi Michael,
 
-I ran a build here (with -Werror enabled, so that it's easier to see where 
-it breaks):
+On Tue, Oct 03, 2023 at 08:57:27AM -0400, Michael S. Tsirkin wrote:
+> Date: Tue, 3 Oct 2023 08:57:27 -0400
+> From: "Michael S. Tsirkin" <mst@redhat.com>
+> Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache
+>  topo in CPUID.04H
+> 
+> On Fri, Sep 15, 2023 at 03:53:25PM +0800, Zhao Liu wrote:
+> > Hi Philippe,
+> > 
+> > On Thu, Sep 14, 2023 at 09:41:30AM +0200, Philippe Mathieu-Daud? wrote:
+> > > Date: Thu, 14 Sep 2023 09:41:30 +0200
+> > > From: Philippe Mathieu-Daud? <philmd@linaro.org>
+> > > Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache
+> > >  topo in CPUID.04H
+> > > 
+> > > On 14/9/23 09:21, Zhao Liu wrote:
+> > > > From: Zhao Liu <zhao1.liu@intel.com>
+> > > > 
+> > > > The property x-l2-cache-topo will be used to change the L2 cache
+> > > > topology in CPUID.04H.
+> > > > 
+> > > > Now it allows user to set the L2 cache is shared in core level or
+> > > > cluster level.
+> > > > 
+> > > > If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
+> > > > topology will be overrode by the new topology setting.
+> > > > 
+> > > > Here we expose to user "cluster" instead of "module", to be consistent
+> > > > with "cluster-id" naming.
+> > > > 
+> > > > Since CPUID.04H is used by intel CPUs, this property is available on
+> > > > intel CPUs as for now.
+> > > > 
+> > > > When necessary, it can be extended to CPUID.8000001DH for AMD CPUs.
+> > > > 
+> > > > (Tested the cache topology in CPUID[0x04] leaf with "x-l2-cache-topo=[
+> > > > core|cluster]", and tested the live migration between the QEMUs w/ &
+> > > > w/o this patch series.)
+> > > > 
+> > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> > > > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> > > > ---
+> > > > Changes since v3:
+> > > >   * Add description about test for live migration compatibility. (Babu)
+> > > > 
+> > > > Changes since v1:
+> > > >   * Rename MODULE branch to CPU_TOPO_LEVEL_MODULE to match the previous
+> > > >     renaming changes.
+> > > > ---
+> > > >   target/i386/cpu.c | 34 +++++++++++++++++++++++++++++++++-
+> > > >   target/i386/cpu.h |  2 ++
+> > > >   2 files changed, 35 insertions(+), 1 deletion(-)
+> > > 
+> > > 
+> > > > @@ -8079,6 +8110,7 @@ static Property x86_cpu_properties[] = {
+> > > >                        false),
+> > > >       DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
+> > > >                        true),
+> > > > +    DEFINE_PROP_STRING("x-l2-cache-topo", X86CPU, l2_cache_topo_level),
+> > > 
+> > > We use the 'x-' prefix for unstable features, is it the case here?
+> > 
+> > I thought that if we can have a more general CLI way to define cache
+> > topology in the future, then this option can be removed.
+> > 
+> > I'm not sure if this option could be treated as unstable, what do you
+> > think?
+> > 
+> > 
+> > Thanks,
+> > Zhao
+> 
+> Then, please work on this new generic thing.
+> What we don't want is people relying on unstable options.
+> 
 
-  https://gitlab.com/thuth/qemu/-/pipelines/1028023489
+Okay, I'll remove this option in the next refresh.
 
-... but I didn't see any additional spots in the logs beside the ones that 
-you already listed.
+BTW, about the generic cache topology, what about porting this option to
+smp? Just like:
 
-  Thomas
+-smp cpus=4,sockets=2,cores=2,threads=1, \
+     l3-cache=socket,l2-cache=core,l1-i-cache=core,l1-d-cache=core
 
+From the previous discussion [1] with Jonathan, it seems this format
+could also meet the requirement for ARM.
+
+If you like this, I'll move forward in this direction. ;-)
+
+[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg03997.html
+
+Thanks,
+Zhao
 
 
