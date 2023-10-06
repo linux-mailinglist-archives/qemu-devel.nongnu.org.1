@@ -2,79 +2,64 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A2847BBCAB
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 18:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 253CE7BBD2E
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 18:46:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qone8-0005ej-22; Fri, 06 Oct 2023 12:25:48 -0400
+	id 1qonxH-0001M1-59; Fri, 06 Oct 2023 12:45:35 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qone3-0005eU-Jz
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:25:43 -0400
-Received: from mgamail.intel.com ([134.134.136.31])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qonx9-0001IX-2v
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:45:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <zhao1.liu@linux.intel.com>)
- id 1qondy-0006MN-KR
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:25:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1696609538; x=1728145538;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=kGaOmkN7wx/FNRMLNQsW/9Woh6neBgW5Hw506XpfW9A=;
- b=NqB8ShMl+i9+unMOJDKBFXyR29Jh1sPWN2D2Lv0gFzEzafraRbgjwEGu
- b5sDRZMnfr3TR8cs9LfEjCccRfpFIr+NMOhPJtmk9/Er+SAxNHU1uwKIs
- gtuCiEOYT6CheGfMbAYlS5loJxV2UM7ZLQT+7uMOr0aJGOsRGUm772KwD
- V4ELjYiKbqFW+0CzVJ16s0gjzxsNl0SeRlH2NS03y91qjKkl7EF+/vUD0
- bdle3+AxhpBNNbOWhdlX8QvXPIazv3cON273q2M/XB23mw1X26Ocvb/5n
- c7mX90b3d8NI0osQV1swjdlKARidzhPznI7FQAXCwofiahkzv/P1hfyh7 Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="447969952"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; d="scan'208";a="447969952"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
- by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2023 09:25:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="781699510"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; d="scan'208";a="781699510"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost)
- ([10.239.160.36])
- by orsmga008.jf.intel.com with ESMTP; 06 Oct 2023 09:25:29 -0700
-Date: Sat, 7 Oct 2023 00:36:41 +0800
-From: Zhao Liu <zhao1.liu@linux.intel.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Philippe =?utf-8?B?TWF0aGlldS1EYXVk77+9?= <philmd@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, Zhenyu Wang <zhenyu.z.wang@intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Babu Moger <babu.moger@amd.com>,
- Zhao Liu <zhao1.liu@intel.com>, Yongwei Ma <yongwei.ma@intel.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache topo
- in CPUID.04H
-Message-ID: <ZSA3mfmOz+RZcmct@liuzhao-OptiPlex-7080>
-References: <20230914072159.1177582-1-zhao1.liu@linux.intel.com>
- <20230914072159.1177582-22-zhao1.liu@linux.intel.com>
- <75ea5477-ca1b-7016-273c-abd6c36f4be4@linaro.org>
- <ZQQNddiCky/cImAz@liuzhao-OptiPlex-7080>
- <20231003085516-mutt-send-email-mst@kernel.org>
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qonww-0002pn-2q
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 12:45:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696610712;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=dF63HqZOswrAxqU6QzE+A7t66Lsnn+fI9KFrEfWH7jA=;
+ b=ShysHGLXdRzZrEbPD/nefLQBLtx39jnm4BNJtuQ3/hpEW8fTeFgTBwX0yzWBnTItNdAdnb
+ ToM1EsM/pBaN6Sm2g6gU9c/TFoo//81APX6056O3H/N8tbOPgxqjBkFq24DgPTcQQIriL3
+ ibLVBXuFnDAMJnf18QK9lD5fhd+/Xok=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-599-HOT4RPItN3eldnzrYtVHWA-1; Fri, 06 Oct 2023 12:45:10 -0400
+X-MC-Unique: HOT4RPItN3eldnzrYtVHWA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.3])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 65E80811E92
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 16:45:10 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.195.28])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 7CB3F100650B;
+ Fri,  6 Oct 2023 16:45:09 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH] hw/virtio/virtio-gpu: Fix compiler warning when compiling
+ with -Wshadow
+Date: Fri,  6 Oct 2023 18:45:08 +0200
+Message-ID: <20231006164508.536406-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231003085516-mutt-send-email-mst@kernel.org>
-Received-SPF: none client-ip=134.134.136.31;
- envelope-from=zhao1.liu@linux.intel.com; helo=mgamail.intel.com
-X-Spam_score_int: -42
-X-Spam_score: -4.3
-X-Spam_bar: ----
-X-Spam_report: (-4.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_NONE=0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -90,100 +75,54 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Michael,
+Avoid using trivial variable names in macros, otherwise we get
+the following compiler warning when compiling with -Wshadow=local:
 
-On Tue, Oct 03, 2023 at 08:57:27AM -0400, Michael S. Tsirkin wrote:
-> Date: Tue, 3 Oct 2023 08:57:27 -0400
-> From: "Michael S. Tsirkin" <mst@redhat.com>
-> Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache
->  topo in CPUID.04H
-> 
-> On Fri, Sep 15, 2023 at 03:53:25PM +0800, Zhao Liu wrote:
-> > Hi Philippe,
-> > 
-> > On Thu, Sep 14, 2023 at 09:41:30AM +0200, Philippe Mathieu-Daud? wrote:
-> > > Date: Thu, 14 Sep 2023 09:41:30 +0200
-> > > From: Philippe Mathieu-Daud? <philmd@linaro.org>
-> > > Subject: Re: [PATCH v4 21/21] i386: Add new property to control L2 cache
-> > >  topo in CPUID.04H
-> > > 
-> > > On 14/9/23 09:21, Zhao Liu wrote:
-> > > > From: Zhao Liu <zhao1.liu@intel.com>
-> > > > 
-> > > > The property x-l2-cache-topo will be used to change the L2 cache
-> > > > topology in CPUID.04H.
-> > > > 
-> > > > Now it allows user to set the L2 cache is shared in core level or
-> > > > cluster level.
-> > > > 
-> > > > If user passes "-cpu x-l2-cache-topo=[core|cluster]" then older L2 cache
-> > > > topology will be overrode by the new topology setting.
-> > > > 
-> > > > Here we expose to user "cluster" instead of "module", to be consistent
-> > > > with "cluster-id" naming.
-> > > > 
-> > > > Since CPUID.04H is used by intel CPUs, this property is available on
-> > > > intel CPUs as for now.
-> > > > 
-> > > > When necessary, it can be extended to CPUID.8000001DH for AMD CPUs.
-> > > > 
-> > > > (Tested the cache topology in CPUID[0x04] leaf with "x-l2-cache-topo=[
-> > > > core|cluster]", and tested the live migration between the QEMUs w/ &
-> > > > w/o this patch series.)
-> > > > 
-> > > > Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> > > > Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> > > > ---
-> > > > Changes since v3:
-> > > >   * Add description about test for live migration compatibility. (Babu)
-> > > > 
-> > > > Changes since v1:
-> > > >   * Rename MODULE branch to CPU_TOPO_LEVEL_MODULE to match the previous
-> > > >     renaming changes.
-> > > > ---
-> > > >   target/i386/cpu.c | 34 +++++++++++++++++++++++++++++++++-
-> > > >   target/i386/cpu.h |  2 ++
-> > > >   2 files changed, 35 insertions(+), 1 deletion(-)
-> > > 
-> > > 
-> > > > @@ -8079,6 +8110,7 @@ static Property x86_cpu_properties[] = {
-> > > >                        false),
-> > > >       DEFINE_PROP_BOOL("x-intel-pt-auto-level", X86CPU, intel_pt_auto_level,
-> > > >                        true),
-> > > > +    DEFINE_PROP_STRING("x-l2-cache-topo", X86CPU, l2_cache_topo_level),
-> > > 
-> > > We use the 'x-' prefix for unstable features, is it the case here?
-> > 
-> > I thought that if we can have a more general CLI way to define cache
-> > topology in the future, then this option can be removed.
-> > 
-> > I'm not sure if this option could be treated as unstable, what do you
-> > think?
-> > 
-> > 
-> > Thanks,
-> > Zhao
-> 
-> Then, please work on this new generic thing.
-> What we don't want is people relying on unstable options.
-> 
+In file included from ../../qemu/hw/display/virtio-gpu-virgl.c:19:
+../../home/thuth/devel/qemu/hw/display/virtio-gpu-virgl.c:
+ In function ‘virgl_cmd_submit_3d’:
+../../qemu/include/hw/virtio/virtio-gpu.h:228:16: error: declaration of ‘s’
+ shadows a previous local [-Werror=shadow=compatible-local]
+  228 |         size_t s;
+      |                ^
+../../qemu/hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro
+ ‘VIRTIO_GPU_FILL_CMD’
+  215 |     VIRTIO_GPU_FILL_CMD(cs);
+      |     ^~~~~~~~~~~~~~~~~~~
+../../qemu/hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration
+ is here
+  213 |     size_t s;
+      |            ^
+cc1: all warnings being treated as errors
 
-Okay, I'll remove this option in the next refresh.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ include/hw/virtio/virtio-gpu.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-BTW, about the generic cache topology, what about porting this option to
-smp? Just like:
-
--smp cpus=4,sockets=2,cores=2,threads=1, \
-     l3-cache=socket,l2-cache=core,l1-i-cache=core,l1-d-cache=core
-
-From the previous discussion [1] with Jonathan, it seems this format
-could also meet the requirement for ARM.
-
-If you like this, I'll move forward in this direction. ;-)
-
-[1]: https://lists.gnu.org/archive/html/qemu-devel/2023-08/msg03997.html
-
-Thanks,
-Zhao
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 390c4642b8..8b7e3faf01 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -225,13 +225,13 @@ struct VhostUserGPU {
+ };
+ 
+ #define VIRTIO_GPU_FILL_CMD(out) do {                                   \
+-        size_t s;                                                       \
+-        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
++        size_t s_;                                                      \
++        s_ = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,         \
+                        &out, sizeof(out));                              \
+-        if (s != sizeof(out)) {                                         \
++        if (s_ != sizeof(out)) {                                        \
+             qemu_log_mask(LOG_GUEST_ERROR,                              \
+                           "%s: command size incorrect %zu vs %zu\n",    \
+-                          __func__, s, sizeof(out));                    \
++                          __func__, s_, sizeof(out));                   \
+             return;                                                     \
+         }                                                               \
+     } while (0)
+-- 
+2.41.0
 
 
