@@ -2,66 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267137BBE78
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 811507BBE94
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:17:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qopHh-0001JK-5a; Fri, 06 Oct 2023 14:10:45 -0400
+	id 1qopM5-0007Ar-2H; Fri, 06 Oct 2023 14:15:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qopHe-0001Dt-Ja; Fri, 06 Oct 2023 14:10:42 -0400
-Received: from forwardcorp1a.mail.yandex.net ([178.154.239.72])
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qopM1-0007AB-72; Fri, 06 Oct 2023 14:15:13 -0400
+Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qopHc-0007lE-6X; Fri, 06 Oct 2023 14:10:42 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net
- [IPv6:2a02:6b8:c0f:4c13:0:640:3c7:0])
- by forwardcorp1a.mail.yandex.net (Yandex) with ESMTP id 8042E60B9C;
- Fri,  6 Oct 2023 21:10:34 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:a512::1:22] (unknown
- [2a02:6b8:b081:a512::1:22])
- by mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id WAeapP6Or8c0-2tlADJhZ; Fri, 06 Oct 2023 21:10:33 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696615833;
- bh=Byil5M+tk0imClcoo6eS57TrHmdXqN2HYkci+FILJr0=;
- h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
- b=ngNCXAtHxccNbuTteiiqjmj1u2189BdLuAErIUkSvZwQmJCfa6NG1kefH6wdGBH+a
- wTSX23ryiRFp2uOFkvW1jniQZOrj/ZjD2bbIbamtozkUOKt5IDlzMYekFOVBPwwM82
- ArDWDlTxq5dDhpQrlHo+6ymp6+/72mU8pTDPGyHw=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.vla.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <f210d1fd-5a4e-43a5-b76b-553e74708a5f@yandex-team.ru>
-Date: Fri, 6 Oct 2023 21:10:32 +0300
+ (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
+ id 1qopLx-0000cG-JJ; Fri, 06 Oct 2023 14:15:12 -0400
+Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
+ by isrv.corpit.ru (Postfix) with ESMTP id 69F052845F;
+ Fri,  6 Oct 2023 21:15:10 +0300 (MSK)
+Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
+ by tsrv.corpit.ru (Postfix) with SMTP id 156E72D716;
+ Fri,  6 Oct 2023 21:15:05 +0300 (MSK)
+Received: (nullmailer pid 3297237 invoked by uid 1000);
+ Fri, 06 Oct 2023 18:15:04 -0000
+From: Michael Tokarev <mjt@tls.msk.ru>
+To: qemu-devel@nongnu.org
+Cc: qemu-stable@nongnu.org, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 00/57] Patch Round-up for stable 8.1.2,
+ freeze on 2023-10-14
+Date: Fri,  6 Oct 2023 21:14:34 +0300
+Message-Id: <qemu-stable-8.1.2-20231006191112@cover.tls.msk.ru>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/21] preallocate: Don't poll during permission updates
-Content-Language: en-US
-To: Kevin Wolf <kwolf@redhat.com>
-Cc: qemu-block@nongnu.org, stefanha@redhat.com, eblake@redhat.com,
- eesposit@redhat.com, pbonzini@redhat.com, qemu-devel@nongnu.org,
- "Denis V. Lunev" <den@openvz.org>
-References: <20230911094620.45040-1-kwolf@redhat.com>
- <20230911094620.45040-4-kwolf@redhat.com>
- <969ae041-3c17-475c-919c-5b33cb6d21c5@yandex-team.ru>
- <ZR/LoVGIt3BQ45ek@redhat.com>
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-In-Reply-To: <ZR/LoVGIt3BQ45ek@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=178.154.239.72;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1a.mail.yandex.net
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
+ helo=isrv.corpit.ru
+X-Spam_score_int: -68
+X-Spam_score: -6.9
+X-Spam_bar: ------
+X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,115 +57,147 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.10.23 11:56, Kevin Wolf wrote:
-> Am 05.10.2023 um 21:55 hat Vladimir Sementsov-Ogievskiy geschrieben:
->> On 11.09.23 12:46, Kevin Wolf wrote:
->>> When the permission related BlockDriver callbacks are called, we are in
->>> the middle of an operation traversing the block graph. Polling in such a
->>> place is a very bad idea because the graph could change in unexpected
->>> ways. In the future, callers will also hold the graph lock, which is
->>> likely to turn polling into a deadlock.
->>>
->>> So we need to get rid of calls to functions like bdrv_getlength() or
->>> bdrv_truncate() there as these functions poll internally. They are
->>> currently used so that when no parent has write/resize permissions on
->>> the image any more, the preallocate filter drops the extra preallocated
->>> area in the image file and gives up write/resize permissions itself.
->>>
->>> In order to achieve this without polling in .bdrv_check_perm, don't
->>> immediately truncate the image, but only schedule a BH to do so. The
->>> filter keeps the write/resize permissions a bit longer now until the BH
->>> has executed.
->>>
->>> There is one case in which delaying doesn't work: Reopening the image
->>> read-only. In this case, bs->file will likely be reopened read-only,
->>> too, so keeping write permissions a bit longer on it doesn't work. But
->>> we can already cover this case in preallocate_reopen_prepare() and not
->>> rely on the permission updates for it.
->>
->> Hmm, now I found one more "future" case.
->>
->> I now try to rebase my "[PATCH v7 0/7] blockdev-replace"
->> https://patchew.org/QEMU/20230421114102.884457-1-vsementsov@yandex-team.ru/
->>
->> And it breaks after this commit.
->>
->> By accident, blockdev-replace series uses exactly "preallocate" filter
->> to test insertion/removing of filters. And removing is broken now.
->>
->> Removing is done as follows:
->>
->> 1. We have filter inserted: disk0 -file-> filter -file-> file0
->>
->> 2. blockdev-replace, replaces file child of disk0, so we should get the picture*: disk0 -file-> file0 <-file- filter
->>
->> 3. blockdev-del filter
->>
->>
->> But step [2] fails, as now preallocate filter doesn't drop permissions
->> during the operation (postponing this for a while) and the picture* is
->> impossible. Permission check fails.
->>
->> Hmmm... Any idea how blockdev-replace and preallocate filter should
->> work :) ? Maybe, doing truncation in .drain_begin() will help? Will
->> try
-> 
-> Hm... What preallocate tries to do is really tricky...
-> 
-> Of course, the error is correct, this is an invalid configuration if
-> preallocate can still resize the image. So it would have to truncate the
-> file earlier, but the first time that preallocate knows of the change is
-> already too late to run requests.
-> 
-> Truncating on drain_begin feels more like a hack, but as long as it does
-> the job... Of course, this will have the preallocation truncated away on
-> events that have nothing to do with removing the filter. It's not
-> necessarily a disaster because preallocation is only an optimisation,
-> but it doesn't feel great.
+The following patches are queued for QEMU stable v8.1.2:
 
-Hmm, yes, that's not good.
+  https://gitlab.com/qemu-project/qemu/-/commits/staging-8.1
 
-> 
-> Maybe let's take a step back: Which scenario is the preallocate driver
-> meant for and why do we even need to truncate the image file after
-> removing the filter? I suppose the filter doesn't make sense with raw
-> images because these are fixed size anyway, and pretty much any other
-> image format should be able to tolerate a permanently rounded up file
-> size. As long as you don't write to the preallocated area, it shouldn't
-> take space either on any sane filesystem.
-> 
-> Hmm, actually both VHD and VMDK can have footers, better avoid it with
-> those... But if truncating the image file on close is critical, what do
-> you do on crashes? Maybe preallocate should just not be considered
-> compatible with these formats?
-> 
+Patch freeze is 2023-10-14, and the release is planned for 2023-10-16:
 
-Originally preallocate filter was made to be used with qcow2, on some proprietary storage, where:
+  https://wiki.qemu.org/Planning/8.1
 
-1. Allocating of big chunk works a lot fater than allocating several smaller chunks
-2. Holes are not free and/or file length is not free, so we really want to truncate the file back on close
+Please respond here or CC qemu-stable@nongnu.org on any additional patches
+you think should (or shouldn't) be included in the release.
 
-Den, correct me if I'm wrong.
+The changes which are staging for inclusion, with the original commit hash
+from master branch, are given below the bottom line.
 
-Good thing is that in this scenario we don't need to remove the filter in runtime, so there is no problem.
+This release supposed to finally fix some long-standing issues in 8.1.x series,
+by including commit 0d58c660689f "softmmu: Use async_run_on_cpu in tcg_commit"
+and follow-up series fixing issues in other areas it uncovered, among other
+fixes.
 
+Thanks!
 
-Now I think that the generic solution is just add a new handler .bdrv_pre_replace, so blockdev-replace may work as follows:
+/mjt
 
-drain_begin
+--------------------------------------
+01* 7798f5c576d8 Nicholas Piggin:
+   hw/ppc: Introduce functions for conversion between timebase and 
+   nanoseconds
+02* 47de6c4c2870 Nicholas Piggin:
+   host-utils: Add muldiv64_round_up
+03* eab0888418ab Nicholas Piggin:
+   hw/ppc: Round up the decrementer interval when converting to ns
+04* 8e0a5ac87800 Nicholas Piggin:
+   hw/ppc: Avoid decrementer rounding errors
+05* c8fbc6b9f2f3 Nicholas Piggin:
+   target/ppc: Sign-extend large decrementer to 64-bits
+06* febb71d543a8 Nicholas Piggin:
+   hw/ppc: Always store the decrementer value
+07* 30d0647bcfa9 Nicholas Piggin:
+   hw/ppc: Reset timebase facilities on machine reset
+08* ea62f8a5172c Nicholas Piggin:
+   hw/ppc: Read time only once to perform decrementer write
+09* 2529497cb6b2 Mikulas Patocka:
+   linux-user/hppa: clear the PSW 'N' bit when delivering signals
+10* 5b1270ef1477 Mikulas Patocka:
+   linux-user/hppa: lock both words of function descriptor
+11* 7b165fa16402 Li Zhijian:
+   hw/cxl: Fix CFMW config memory leak
+12* de5bbfc602ef Dmitry Frolov:
+   hw/cxl: Fix out of bound array access
+13* 56d1a022a77e Hanna Czenczek:
+   file-posix: Clear bs->bl.zoned on error
+14* 4b5d80f3d020 Hanna Czenczek:
+   file-posix: Check bs->bl.zoned for zone info
+15* deab5c9a4ed7 Hanna Czenczek:
+   file-posix: Fix zone update in I/O error path
+16* d31b50a15dd2 Hanna Czenczek:
+   file-posix: Simplify raw_co_prw's 'out' zone code
+17* 380448464dd8 Hanna Czenczek:
+   tests/file-io-error: New test
+18* c78edb563942 Anton Johansson:
+   include/exec: Widen tlb_hit/tlb_hit_page()
+19* 32b214384e1e Fabian Vogt:
+   hw/arm/boot: Set SCR_EL3.FGTEn when booting kernel
+20* 903dbefc2b69 Peter Maydell:
+   target/arm: Don't skip MTE checks for LDRT/STRT at EL0
+21* c64023b0ba67 Thomas Huth:
+   meson.build: Make keyutils independent from keyring
+22* 0e5903436de7 Nicholas Piggin:
+   accel/tcg: mttcg remove false-negative halted assertion
+23* 7cfcc79b0ab8 Thomas Huth:
+   hw/scsi/scsi-disk: Disallow block sizes smaller than 512 [CVE-2023-42467]
+24* 0cb9c5880e6b Paolo Bonzini:
+   ui/vnc: fix debug output for invalid audio message
+25* 477b301000d6 Paolo Bonzini:
+   ui/vnc: fix handling of VNC_FEATURE_XVP
+26* cf02f29e1e38 Peter Xu:
+   migration: Fix race that dest preempt thread close too early
+27* 28a8347281e2 Fabiano Rosas:
+   migration: Fix possible race when setting rp_state.error
+28* 639decf52979 Fabiano Rosas:
+   migration: Fix possible races when shutting down the return path
+29* 7478fb0df914 Fabiano Rosas:
+   migration: Fix possible race when shutting down to_dst_file
+30* b3b101157d46 Fabiano Rosas:
+   migration: Remove redundant cleanup of postcopy_qemufile_src
+31* d50f5dc075cb Fabiano Rosas:
+   migration: Consolidate return path closing code
+32* ef796ee93b31 Fabiano Rosas:
+   migration: Replace the return path retry logic
+33* 36e9aab3c569 Fabiano Rosas:
+   migration: Move return path cleanup to main migration thread
+34* 0d58c660689f Richard Henderson:
+   softmmu: Use async_run_on_cpu in tcg_commit
+35* f47a90dacca8 Richard Henderson:
+   accel/tcg: Avoid load of icount_decr if unused
+36* 5d97e9463810 Richard Henderson:
+   accel/tcg: Hoist CF_MEMI_ONLY check outside translation loop
+37* 0ca41ccf1c55 Richard Henderson:
+   accel/tcg: Track current value of can_do_io in the TB
+38* a2f99d484c54 Richard Henderson:
+   accel/tcg: Improve setting of can_do_io at start of TB
+39* 200c1f904f46 Richard Henderson:
+   accel/tcg: Always set CF_LAST_IO with CF_NOIRQ
+40* 18a536f1f8d6 Richard Henderson:
+   accel/tcg: Always require can_do_io
+41* 23fa6f56b33f Bastian Koppelmann:
+   target/tricore: Fix RCPW/RRPW_INSERT insns for width = 0
+42* 35ed01ba5448 Fabiano Rosas:
+   optionrom: Remove build-id section
+43* b86dc5cb0b41 Mark Cave-Ayland:
+   esp: use correct type for esp_dma_enable() in sysbus_esp_gpio_demux()
+44* 77668e4b9bca Mark Cave-Ayland:
+   esp: restrict non-DMA transfer length to that of available data
+45* be2b619a1734 Mark Cave-Ayland:
+   scsi-disk: ensure that FORMAT UNIT commands are terminated
+46 c01196bdddc2 Thomas Huth:
+   subprojects/berkeley-testfloat-3: Update to fix a problem with compiler 
+   warnings
+47 a48b26978a09 Paolo Bonzini:
+   target/i386: generalize operand size "ph" for use in CVTPS2PD
+48 abd41884c530 Paolo Bonzini:
+   target/i386: fix memory operand size for CVTPS2PD
+49 75b773d84c89 Marc-André Lureau:
+   win32: avoid discarding the exception handler
+50 e0288a778473 Laszlo Ersek:
+   hw/display/ramfb: plug slight guest-triggerable leak on mode setting
+51 4f7689f0817a Thomas Huth:
+   chardev/char-pty: Avoid losing bytes when the other side just 
+   (re-)connected
+52 33bc4fa78b06 Richard Henderson:
+   linux-user/hppa: Fix struct target_sigcontext layout
+53 0a7a164bc37b Eugenio Pérez:
+   vdpa net: zero vhost_vdpa iova_tree pointer at cleanup
+54 cbc9ae87b5f6 Eugenio Pérez:
+   vdpa net: fix error message setting virtio status
+55 f1085882d028 Eugenio Pérez:
+   vdpa net: stop probing if cannot set features
+56 845ec38ae157 Eugenio Pérez:
+   vdpa net: follow VirtIO initialization properly at cvq isolation probing
+57 0114c4513095 Akihiko Odaki:
+   amd_iommu: Fix APIC address check
 
-call .bdrv_pre_replace for all affected nodes
-
-do the replace
-
-drain_end
-
-And prellocate filter would do truncation in this .bdrv_pre_replace handler and set some flag, that we have nothing to trunctate (the flag is automatically cleared on .drained_end handler). Then during permission update if we see that nothing-to-truncate flag, we can drop permissions immediately.
-
-But this difficulty may be postponed, and I can just document that preallocate filter doesn't support removing in runtime (and modify the test to use another filter, or just not to remove preallocate filter).
-
--- 
-Best regards,
-Vladimir
-
+(commit(s) marked with * were in previous series and are not resent)
 
