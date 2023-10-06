@@ -2,95 +2,89 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FB2F7BB2F4
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0567BB34A
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:34:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qog4o-0004yI-Mx; Fri, 06 Oct 2023 04:20:50 -0400
+	id 1qogG1-000819-Gb; Fri, 06 Oct 2023 04:32:25 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qog4h-0004uI-C8
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:20:43 -0400
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qogG0-00080u-8A
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:32:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qog4d-0006VZ-Uq
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:20:41 -0400
+ (Exim 4.90_1) (envelope-from <clegoate@redhat.com>)
+ id 1qogFy-0000r9-Iv
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:32:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696580438;
+ s=mimecast20190719; t=1696581142;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=4KhGpVRS5tkS4jTXcC+sNylEj6GJCpAk6LDPCxPVelE=;
- b=HZueEKov/Y7cpWu7Mu6xNC8NaVPwbwK3Wznew6VjAIXoM2KBuPWNYzjviZ9DIWSjrNEWPb
- 1+LbSqAJ1+uNcxO/m/5SKfRpCfj1RuYaPM0vCBy5wbUqpjA6tODaE/cQfrTXajR8VqKsXK
- 4D7ra0lLZs/LbUAbmghbHvIq53HyvE8=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=thuZU2NuYNyj1rVcqQE3VIv3xaIqTVEfxrgbG4vf3KQ=;
+ b=VlAoyv9KaUtiD6d5lT8AAIlVWybvC322jTAVshagcNYSZBjWyqtBduDOiOdoYwmuI6z6Ww
+ jS7w7Eu/HekuWSl5bk8vROfSKTMRq6F7/4+RmIGBgQ5xftweCzaslB27wR15WBGYA874/M
+ IHEttqmyTfRi8fT3kZ8aD9JhYnHWvmc=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-185-FF4zajQ-MKuq0bMYO8frWA-1; Fri, 06 Oct 2023 04:20:27 -0400
-X-MC-Unique: FF4zajQ-MKuq0bMYO8frWA-1
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-66216e7385fso18811376d6.3
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:20:27 -0700 (PDT)
+ us-mta-47-C1ha2C34NkK5MHx3HYRDUw-1; Fri, 06 Oct 2023 04:32:05 -0400
+X-MC-Unique: C1ha2C34NkK5MHx3HYRDUw-1
+Received: by mail-qk1-f197.google.com with SMTP id
+ af79cd13be357-774294bde69so276395185a.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:32:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696580427; x=1697185227;
+ d=1e100.net; s=20230601; t=1696581125; x=1697185925;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=4KhGpVRS5tkS4jTXcC+sNylEj6GJCpAk6LDPCxPVelE=;
- b=j8esGVKIhEKhAAYrO1KYImtlGEaRIHkFLpf0fIjsH5tUlU6b/PUcmcAU5lI1y08vW2
- ZGHpj0wV1nUgUb5Kc0j2I0QzdaIgSKGx7Dp5Ghr4bSaWJxVZi6u2K0pUoDUJP5bszdji
- NM8NLF/vIHjekGcbqg+EyBUu6lpwprVH0msjhNgJJeGz/ZAMKOI1+Y9wX0jY3QLlBeiQ
- fwQ3qswnLh+PR27FzqpoJr2HxEhtZVdzbjYjCWnOSTDMYxi2Ei1IKABfm/RlyFCrqPc9
- SCLDoqCB7YI8jrF2IN/2hKoT6PPbaONi7HS6F4UjgzhuUJs+b9ABiUZIeDWm9ctPxtKS
- HcNw==
-X-Gm-Message-State: AOJu0YxiFDPHP7+k1GhI4jqzapgWpJ9QYcwoQnOGD8nMZ9bolY9WEISh
- rlVs/ofG5oPtMhw2A4MYAFVA+QBMjX08nEox6Pp6rrfFfDg43f52fKj1jMlxT6JOiIqxwswEwxu
- mXzfBT3UKy9/wojw=
-X-Received: by 2002:a05:6214:459d:b0:658:8f94:5921 with SMTP id
- op29-20020a056214459d00b006588f945921mr8948400qvb.59.1696580426522; 
- Fri, 06 Oct 2023 01:20:26 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHu/JfAC/vYYb/xwNjctah7b3GYb0EiV4fD7dbQjqRNSAJDql9kcf9A28DSTiiNUSRV8i7IFw==
-X-Received: by 2002:a05:6214:459d:b0:658:8f94:5921 with SMTP id
- op29-20020a056214459d00b006588f945921mr8948371qvb.59.1696580426252; 
- Fri, 06 Oct 2023 01:20:26 -0700 (PDT)
-Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
+ bh=thuZU2NuYNyj1rVcqQE3VIv3xaIqTVEfxrgbG4vf3KQ=;
+ b=R+3IAiEYTVcSNmmBHkI8lUDw28N6z/PEUUMvegUgxmEkqIDS84mxB1ubDWzbu1OE86
+ uD8BBoXkilfFK37zNlzS5JXa0Trc3gNa9eAncGG0L4bdHYAyR9lnABr3WO70XoARFB5i
+ 8uAZuL4MWvm2ia9RU9XxPvwZkth07aRU7/l89mfOiMnCi9KXZEVC1VdlyiPUamgmKKEJ
+ braANTEvDq4jL+xNEopVwFXiVxYlCW5FnV27qf7OywwiczI1Jz7aOyG8SF6bBvo2t3XV
+ l+Vku7KnQ67YwBeu1+HUfDhgL/xxI1TzUgd/I+F46Ohv7AroLfy16PtYziNbpuSAE3JL
+ OUJg==
+X-Gm-Message-State: AOJu0YzvjxiK4svrupxFQpoup17t5VHaBYnw4pn6S35PlHLyPMA+P533
+ wmihmn00KlXXZZeMuysk2FgYTTjHnRdlqysyf4X5iaARhyft4vrYuAATn8c13bs0vrW7ScztOpy
+ DgcbivGVwiq/YHaQ=
+X-Received: by 2002:a05:620a:240f:b0:772:63b3:2423 with SMTP id
+ d15-20020a05620a240f00b0077263b32423mr7632960qkn.0.1696581124797; 
+ Fri, 06 Oct 2023 01:32:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IETmMtabI7uqCs9Ud/s3KCdjPGHOSiXiUOV0OQyw87cW3qrDqGWgstKWZIbtnafNeuNbMHu2Q==
+X-Received: by 2002:a05:620a:240f:b0:772:63b3:2423 with SMTP id
+ d15-20020a05620a240f00b0077263b32423mr7632945qkn.0.1696581124556; 
+ Fri, 06 Oct 2023 01:32:04 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
  by smtp.gmail.com with ESMTPSA id
- x20-20020a0cda14000000b0064f53943626sm1176522qvj.89.2023.10.06.01.20.23
+ h23-20020a05620a10b700b007758ffab58asm1134543qkk.8.2023.10.06.01.32.02
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 01:20:25 -0700 (PDT)
-Message-ID: <cf6089a4-7eed-4f5d-28df-4ff03389e9e6@redhat.com>
-Date: Fri, 6 Oct 2023 10:20:22 +0200
+ Fri, 06 Oct 2023 01:32:04 -0700 (PDT)
+Message-ID: <d256b67d-dcbe-6eda-7e58-eb9ed74283fc@redhat.com>
+Date: Fri, 6 Oct 2023 10:32:01 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v25 09/21] qapi/s390x/cpu topology: set-cpu-topology qmp
- command
+Subject: Re: [PATCH v2] pc-bios/meson.build: Silent unuseful DTC warnings
 Content-Language: en-US
-To: Nina Schoetterl-Glausch <nsg@linux.ibm.com>, qemu-devel@nongnu.org,
- qemu-s390x@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- David Hildenbrand <david@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Eric Farman <farman@linux.ibm.com>, Eric Blake <eblake@redhat.com>,
- Markus Armbruster <armbru@redhat.com>, Michael Roth <michael.roth@amd.com>
-Cc: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
- <berrange@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>,
- Cleber Rosa <crosa@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, Pierre Morel <pmorel@linux.ibm.com>
-References: <20231005160155.1945588-1-nsg@linux.ibm.com>
- <20231005160155.1945588-10-nsg@linux.ibm.com>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20231005160155.1945588-10-nsg@linux.ibm.com>
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: BALATON Zoltan <balaton@eik.bme.hu>, Paolo Bonzini <pbonzini@redhat.com>, 
+ David Gibson <david@gibson.dropbear.id.au>,
+ "Edgar E . Iglesias" <edgar.iglesias@gmail.com>, qemu-ppc@nongnu.org,
+ Michael Tokarev <mjt@tls.msk.ru>, Peter Maydell <peter.maydell@linaro.org>
+References: <20231006064750.33852-1-philmd@linaro.org>
+ <9fb5e05e-1772-e21b-0f82-56b4e9135c3b@redhat.com>
+ <a1dc7eca-a062-c045-a2a2-39c35e3ceaa2@linaro.org>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clegoate@redhat.com>
+In-Reply-To: <a1dc7eca-a062-c045-a2a2-39c35e3ceaa2@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=clegoate@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -62
 X-Spam_score: -6.3
@@ -115,34 +109,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/10/2023 18.01, Nina Schoetterl-Glausch wrote:
-> From: Pierre Morel <pmorel@linux.ibm.com>
+On 10/6/23 10:18, Philippe Mathieu-Daudé wrote:
+> On 6/10/23 10:13, Cédric Le Goater wrote:
+>> On 10/6/23 08:47, Philippe Mathieu-Daudé wrote:
+>>> QEMU consumes some device tree blobs, so these have been committed
+>>> to the tree in as firmware, along with the device tree source used
+>>> to generate them. We know the blobs are "good enough" to have QEMU
+>>> boot a system, so we don't really maintain and rebuild the sources.
+>>>
+>>> These blobs were generated with older 'dtc' binaries. We use the
+>>> v1.6.1 version since 2021 (commit 962fde57b7 "dtc: Update to version
+>>> 1.6.1").
+>>>
+>>> Since commit 6e0dc9d2a8 ("meson: compile bundled device trees"),
+>>> if dtc binary is available, it is directly used to compile the
+>>> device tree sources. New versions of 'dtc' add checks which display
+>>> warnings or errors. Our sources are a bit old, so dtc v1.6.1 now
+>>> emit the following warnings on a fresh build:
+>>>
+>>>    [163/3414] Generating pc-bios/canyonlands.dts with a custom command
+>>>    pc-bios/canyonlands.dts:47.9-50.4: Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
+> ...
 > 
-> The modification of the CPU attributes are done through a monitor
-> command.
+>>>  From QEMU perspective, these warnings are not really useful. It is
+>>> the responsibility of developers adding DT source/blob to QEMU
+>>> repository to check the source doesn't produce warnings, but as
+>>> long as the blob is useful enough, QEMU can consume it. So these
+>>> warnings don't add any value, instead they are noisy and might
+>>> distract us to focus on important warnings. Better disable them.
+>>>
+>>> 'dtc' provides the '--quiet' option for that:
+>>>
+>>>    $ dtc --help
+>>>    Usage: dtc [options] <input file>
+>>>
+>>>    Options: -[qI:O:o:V:d:R:S:p:a:fb:i:H:sW:E:@AThv]
+>>>      -q, --quiet
+>>>            Quiet: -q suppress warnings, -qq errors, -qqq all
+>>>
+>>> Update meson to disable these unuseful DTC warnings.
+>>
+>>
+>> Why not try fixing the .dts instead ? These still exist under Linux :
+>>
+>>    ./arch/powerpc/boot/dts/canyonlands.dts
+>>    ./arch/powerpc/boot/dts/bamboo.dts
 > 
-> It allows to move the core inside the topology tree to optimize
-> the cache usage in the case the host's hypervisor previously
-> moved the CPU.
-> 
-> The same command allows to modify the CPU attributes modifiers
-> like polarization entitlement and the dedicated attribute to notify
-> the guest if the host admin modified scheduling or dedication of a vCPU.
-> 
-> With this knowledge the guest has the possibility to optimize the
-> usage of the vCPUs.
-> 
-> The command has a feature unstable for the moment.
-> 
-> Signed-off-by: Pierre Morel <pmorel@linux.ibm.com>
-> Reviewed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Co-developed-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> Signed-off-by: Nina Schoetterl-Glausch <nsg@linux.ibm.com>
-> ---
->   qapi/machine-target.json |  42 +++++++++++++
->   hw/s390x/cpu-topology.c  | 132 +++++++++++++++++++++++++++++++++++++++
->   2 files changed, 174 insertions(+)
+> Because QEMU != Linux, and there isn't always overlap between
+> communities?
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+sure but bamboo.dts came from Linux. So this should be safe to update.
+Alex Graf did 10 years ago.
+
+I can not tell for the sam460ex. It is probably safer to keep it as it is.
+
+Sweeping dtc warnings under the rug for all .dts doesn't seem a good idea.
+Should we get rid of the .dts and only keep the .dtb then ?
+
+Thanks,
+
+C.
+
+> 1/ I tried but there isn't much interest:
+> https://lore.kernel.org/qemu-devel/20230914204206.79351-1-philmd@linaro.org/
+> 
+> 2/ Peter and Zoltan raised issue with old firmwares when changing
+> properties such 'stdout-path', see this thread:
+> https://lore.kernel.org/qemu-devel/CAFEAcA-WJ9J1YQunJ+bSG=wnpxh1By+Bf18j2CyV7G0vZ=8b7g@mail.gmail.com/
+
 
 
