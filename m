@@ -2,68 +2,68 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C748A7BB6BA
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E77C77BB6B8
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:42:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoj9H-00056v-Nb; Fri, 06 Oct 2023 07:37:39 -0400
+	id 1qoj9L-00059S-4C; Fri, 06 Oct 2023 07:37:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8q-0004zn-L4
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:13 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8w-00051s-VV
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8m-00007u-9j
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:10 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8t-0000A0-8V
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696592224;
+ s=mimecast20190719; t=1696592232;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=+n7FavU8lRQasqyJ6zeG5ii/6CvqBflzCFUIfyjdja4=;
- b=Qef8mxynfu2Lf9YbP4OVntVCuEAsPq1RocHnHMMKCM3g7KGU/+BOPjwKHOs5ROyTdw3RIi
- blTSDU+LNJ34Hs+JEpDLsgD5EG3jwfRveLrwpkAWyJw8Htmmyysr2OYC+eP5yGkTm4zTRJ
- jBlqpEBoq4NN2yCO0C8c0euN86btBC0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-65-X-hnvj4XOtCa_kcywqJiXA-1; Fri, 06 Oct 2023 07:37:01 -0400
-X-MC-Unique: X-hnvj4XOtCa_kcywqJiXA-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
- [10.11.54.9])
+ bh=B7A1/6yu6677WxLat5yg/pN/jN8LiDjpr3rH9i+lSaQ=;
+ b=RbwaSWx6yu7B5NF8rPPZfhjyYeLIf61AHtY0ujszE5kOzW8ryRqPQ99dk0vLz6moe1WHyY
+ xmOtNjunOEuiSiHb/UbrVZLuI3vIuMH23cuJIpHu84uIZZcBTLq4dLXZHCoT9gscouGu+d
+ 9/qYtr2g9UJsxJx5bF26swlucojNmOg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-388-BFMu70v_N3uHpPxO6vuk9g-1; Fri, 06 Oct 2023 07:37:01 -0400
+X-MC-Unique: BFMu70v_N3uHpPxO6vuk9g-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.6])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA32029A9D42;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAAD8185A797;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 97D2240D1EA;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9A321215671F;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 91BEB21E6885; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
+ id 9483121E6886; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 21/32] util/guest-random: Clean up global variable shadowing
-Date: Fri,  6 Oct 2023 13:36:46 +0200
-Message-ID: <20231006113657.3803180-22-armbru@redhat.com>
+Subject: [PULL 22/32] semihosting/arm-compat: Clean up local variable shadowing
+Date: Fri,  6 Oct 2023 13:36:47 +0200
+Message-ID: <20231006113657.3803180-23-armbru@redhat.com>
 In-Reply-To: <20231006113657.3803180-1-armbru@redhat.com>
 References: <20231006113657.3803180-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -84,66 +84,58 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 Fix:
 
-  util/guest-random.c:90:45: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  int qemu_guest_random_seed_main(const char *optarg, Error **errp)
-                                              ^
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
-  extern char *optarg;                    /* getopt(3) external variables */
-               ^
+  semihosting/arm-compat-semi.c: In function ‘do_common_semihosting’:
+  semihosting/arm-compat-semi.c:379:13: warning: declaration of ‘ret’ shadows a previous local [-Wshadow=local]
+    379 |         int ret, err = 0;
+        |             ^~~
+  semihosting/arm-compat-semi.c:370:14: note: shadowed declaration is here
+    370 |     uint32_t ret;
+        |              ^~~
+  semihosting/arm-compat-semi.c:682:27: warning: declaration of ‘ret’ shadows a previous local [-Wshadow=local]
+    682 |                 abi_ulong ret;
+        |                           ^~~
+  semihosting/arm-compat-semi.c:370:9: note: shadowed declaration is here
+    370 |     int ret;
+        |         ^~~
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004120019.93101-13-philmd@linaro.org>
+Message-ID: <20231004120019.93101-14-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- include/qemu/guest-random.h | 8 ++++----
- util/guest-random.c         | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ semihosting/arm-compat-semi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/qemu/guest-random.h b/include/qemu/guest-random.h
-index 09ff9c2236..5060d49d60 100644
---- a/include/qemu/guest-random.h
-+++ b/include/qemu/guest-random.h
-@@ -13,16 +13,16 @@
- #define QEMU_GUEST_RANDOM_H
+diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
+index 29c5670fdf..ec959b3e01 100644
+--- a/semihosting/arm-compat-semi.c
++++ b/semihosting/arm-compat-semi.c
+@@ -367,7 +367,6 @@ void do_common_semihosting(CPUState *cs)
+     target_ulong ul_ret;
+     char * s;
+     int nr;
+-    uint32_t ret;
+     int64_t elapsed;
  
- /**
-- * qemu_guest_random_seed_main(const char *optarg, Error **errp)
-- * @optarg: a non-NULL pointer to a C string
-+ * qemu_guest_random_seed_main(const char *seedstr, Error **errp)
-+ * @seedstr: a non-NULL pointer to a C string
-  * @errp: an error indicator
-  *
-- * The @optarg value is that which accompanies the -seed argument.
-+ * The @seedstr value is that which accompanies the -seed argument.
-  * This forces qemu_guest_getrandom into deterministic mode.
-  *
-  * Returns 0 on success, < 0 on failure while setting *errp.
-  */
--int qemu_guest_random_seed_main(const char *optarg, Error **errp);
-+int qemu_guest_random_seed_main(const char *seedstr, Error **errp);
+     nr = common_semi_arg(cs, 0) & 0xffffffffU;
+@@ -725,6 +724,9 @@ void do_common_semihosting(CPUState *cs)
  
- /**
-  * qemu_guest_random_seed_thread_part1(void)
-diff --git a/util/guest-random.c b/util/guest-random.c
-index 9465dda085..33607d5ff2 100644
---- a/util/guest-random.c
-+++ b/util/guest-random.c
-@@ -87,11 +87,11 @@ void qemu_guest_random_seed_thread_part2(uint64_t seed)
-     }
- }
+     case TARGET_SYS_EXIT:
+     case TARGET_SYS_EXIT_EXTENDED:
++    {
++        uint32_t ret;
++
+         if (common_semi_sys_exit_extended(cs, nr)) {
+             /*
+              * The A64 version of SYS_EXIT takes a parameter block,
+@@ -752,6 +754,7 @@ void do_common_semihosting(CPUState *cs)
+         }
+         gdb_exit(ret);
+         exit(ret);
++    }
  
--int qemu_guest_random_seed_main(const char *optarg, Error **errp)
-+int qemu_guest_random_seed_main(const char *seedstr, Error **errp)
- {
-     uint64_t seed;
--    if (parse_uint_full(optarg, 0, &seed)) {
--        error_setg(errp, "Invalid seed number: %s", optarg);
-+    if (parse_uint_full(seedstr, 0, &seed)) {
-+        error_setg(errp, "Invalid seed number: %s", seedstr);
-         return -1;
-     } else {
-         deterministic = true;
+     case TARGET_SYS_ELAPSED:
+         elapsed = get_clock() - clock_start;
 -- 
 2.41.0
 
