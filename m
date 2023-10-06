@@ -2,91 +2,100 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E0A7BB371
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F077BB372
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:46:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qogTD-0000qY-Sa; Fri, 06 Oct 2023 04:46:03 -0400
+	id 1qogTQ-0000rJ-07; Fri, 06 Oct 2023 04:46:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qogT8-0000qH-AH
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:46:00 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogTJ-0000r3-6J
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:46:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qogT4-00046X-HO
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:45:57 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogTG-00047W-C1
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:46:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696581953;
+ s=mimecast20190719; t=1696581964;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=8pIdEmtdJJg6CuyB7ctMoU308T+uHaEgo6fkgL2wv6U=;
- b=D9N7UVIW3LY99lVATAA2kaUO6yCITEUP5yOZbB3cP+nNOXGQyXIlKW16camCDzxtpNFXdC
- XV3/SqjlIMRXLY7barGhGy+So1Y5FRD8I1uejadULd9SpnXpih5X8nuNDpaiH2CP1GxMew
- M5p8DXcmzHb8/vd2H5N1mVwn0lWzzm0=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=z0fItp18fYNd9dMdqdD4NpZ2uuTmANuaBbmmjM7vTAQ=;
+ b=G5G3IlOWNmpZq8OXKXuj5wp2ZaVYhHJodTVu/M6Vj0hIc5PxObOWFxNp9Gm5WQt9eALXXt
+ JYXXUv9R03s1ZDUk+vide08FEqsj94d/ath6R7+QqSN8aa4QrOSsgMlayp3j8/Y87bdv9w
+ pMTHF5gbsc7cGHj0d5o0c4uVEsiYtJ0=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-228-HEUy7WqLNkeoCN-8-q0TRw-1; Fri, 06 Oct 2023 04:45:52 -0400
-X-MC-Unique: HEUy7WqLNkeoCN-8-q0TRw-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-99c8bbc902eso158131066b.1
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:45:51 -0700 (PDT)
+ us-mta-630-V7Pbjz0LPQaH6JV8A0M7Bg-1; Fri, 06 Oct 2023 04:46:03 -0400
+X-MC-Unique: V7Pbjz0LPQaH6JV8A0M7Bg-1
+Received: by mail-qk1-f199.google.com with SMTP id
+ af79cd13be357-775869cf2f5so420914885a.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:46:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696581951; x=1697186751;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
+ d=1e100.net; s=20230601; t=1696581963; x=1697186763;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=8pIdEmtdJJg6CuyB7ctMoU308T+uHaEgo6fkgL2wv6U=;
- b=WoPhYj3yWhx7bAAPH/yBhcYhM0lFujxTHezQeZ6brEm96cKhNXwXvULATSJDpI3g6L
- dLHfqE++Z1ZtxcwFvgqfuXats4feSJkA2gMZIWo7XcgUZ+/cS4hr5BK/N2fG9o/mDYpf
- WLBtvwW64qoG9+xlHyL8obxih1lRqDCMC7UztszC6kY6rdmGdBBWfbjrbROpqc47gf62
- TLTbfNemmYZN9iczXp70akrHB3TCOcZ3iIaHPIcb9VhvjiXbxGK8QnEpjCT4T4hM5css
- 0WYZv8X3cAv7dgwSqIlSBaw5h6pLYN6c8WGxa8wN/NGS8CKRs8cOd+FsC6QkLZ0/eRep
- StCg==
-X-Gm-Message-State: AOJu0YywufthwOi0Lzuu2jF6nk0VzSXv3KhLkTviq7xSNJ+bAhhHkeP6
- V9agqYfAjyE846Q8VkyZAVHu62jXYmKOxbVUE1Nfz+cLSYYBic6q2GUVt8z1Vm3uDPmXZ629KI2
- wwsnV80UX2OtCTOw=
-X-Received: by 2002:a17:906:23e2:b0:9ad:7d5c:3d4b with SMTP id
- j2-20020a17090623e200b009ad7d5c3d4bmr6203265ejg.35.1696581950940; 
- Fri, 06 Oct 2023 01:45:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFJjGO5QvgGqqqTVwJzUpVCpmy+5k1Tp5x9H0MveMFw3qmlZ9ThqmvlQleEF0loQoS+M9aAA==
-X-Received: by 2002:a17:906:23e2:b0:9ad:7d5c:3d4b with SMTP id
- j2-20020a17090623e200b009ad7d5c3d4bmr6203252ejg.35.1696581950512; 
- Fri, 06 Oct 2023 01:45:50 -0700 (PDT)
-Received: from redhat.com ([109.253.187.99]) by smtp.gmail.com with ESMTPSA id
- j9-20020a5d4649000000b0031fb91f23e9sm1138327wrs.43.2023.10.06.01.45.48
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 01:45:49 -0700 (PDT)
-Date: Fri, 6 Oct 2023 04:45:46 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
- Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
- Anton Kuchin <antonkuchin@yandex-team.ru>, Yajun Wu <yajunw@nvidia.com>
-Subject: Re: [Virtio-fs] (no subject)
-Message-ID: <20231006043518-mutt-send-email-mst@kernel.org>
-References: <20231004125904.110781-1-hreitz@redhat.com>
- <20231004125904.110781-2-hreitz@redhat.com>
- <20231005170852.GB1342722@fedora>
- <20231005131352-mutt-send-email-mst@kernel.org>
- <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
+ bh=z0fItp18fYNd9dMdqdD4NpZ2uuTmANuaBbmmjM7vTAQ=;
+ b=FLD0//BUNrkWA1QX0o04cykKRxUL5RrZOfG4bjcRcV2kPZm6VFgPUCWr6UGyyr1hGu
+ jyNN3Me61o+psaZCN1rnuGk2sfBmWDJrKO7IPC4hAGHfaNFj4+WKLZ41gvaQhemVJ90j
+ wAtVH+yksaFtZaNWbiYpEKTBm4kZabkFJPpsa0PdOImPCVbGz5Vy187gWyhjCMBWNZco
+ ZkdD0z4YyTK2kanFgzqjUaaDijUlUZCTbqItLo1Vm+h1YyrA5DVaaxfgvQlfBg8lIZFj
+ AJ8W/MQ+JfjMidBEasxBbA68eYih/FAiWpIhr7q3FmwrMfrYCTZ2K/FLCalTcSBoBA7Z
+ Zy8Q==
+X-Gm-Message-State: AOJu0Yw1cqgHQ7mXVCh8RXEAESsAAN68nVCnbF86Y0GJsPFdRuep1aVD
+ pWmAbnEot8YwE/c92Yt+WNocAgU3iXS3rpaNLzzolKjwMRr6W8PeN8AsxE12rmuBYgGanxcBoGc
+ vBx368wcHFQCsl8k=
+X-Received: by 2002:a05:620a:171e:b0:76e:f73d:65ae with SMTP id
+ az30-20020a05620a171e00b0076ef73d65aemr4899230qkb.6.1696581962778; 
+ Fri, 06 Oct 2023 01:46:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEcgSmpgzpAdqag8p41Kqka9MUSUZVXgyiW4tPdSaOutb5RxCSJ7mTsyUE8KgSi3WFnrBlJpQ==
+X-Received: by 2002:a05:620a:171e:b0:76e:f73d:65ae with SMTP id
+ az30-20020a05620a171e00b0076ef73d65aemr4899211qkb.6.1696581962503; 
+ Fri, 06 Oct 2023 01:46:02 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ q9-20020a0c8cc9000000b0064c9f754794sm1210509qvb.86.2023.10.06.01.45.58
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Fri, 06 Oct 2023 01:46:01 -0700 (PDT)
+Message-ID: <439d42e6-0627-43d1-1a45-dbc92ef83380@redhat.com>
+Date: Fri, 6 Oct 2023 10:45:57 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 01/15] hw/pci: Add a pci_setup_iommu_ops() helper
+Content-Language: en-US
+To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
+ Philippe Mathieu-Daude <philmd@linaro.org>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Jason Wang <jasowang@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+References: <20230622214845.3980-1-joao.m.martins@oracle.com>
+ <20230622214845.3980-2-joao.m.martins@oracle.com>
+From: Eric Auger <eauger@redhat.com>
+In-Reply-To: <20230622214845.3980-2-joao.m.martins@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -47
+X-Spam_score: -4.8
+X-Spam_bar: ----
+X-Spam_report: (-4.8 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,80 +111,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 06, 2023 at 09:48:14AM +0200, Hanna Czenczek wrote:
-> On 05.10.23 19:15, Michael S. Tsirkin wrote:
-> > On Thu, Oct 05, 2023 at 01:08:52PM -0400, Stefan Hajnoczi wrote:
-> > > On Wed, Oct 04, 2023 at 02:58:57PM +0200, Hanna Czenczek wrote:
-> > > > There is no clearly defined purpose for the virtio status byte in
-> > > > vhost-user: For resetting, we already have RESET_DEVICE; and for virtio
-> > > > feature negotiation, we have [GS]ET_FEATURES.  With the REPLY_ACK
-> > > > protocol extension, it is possible for SET_FEATURES to return errors
-> > > > (SET_PROTOCOL_FEATURES may be called before SET_FEATURES).
-> > > > 
-> > > > As for implementations, SET_STATUS is not widely implemented.  dpdk does
-> > > > implement it, but only uses it to signal feature negotiation failure.
-> > > > While it does log reset requests (SET_STATUS 0) as such, it effectively
-> > > > ignores them, in contrast to RESET_OWNER (which is deprecated, and today
-> > > > means the same thing as RESET_DEVICE).
-> > > > 
-> > > > While qemu superficially has support for [GS]ET_STATUS, it does not
-> > > > forward the guest-set status byte, but instead just makes it up
-> > > > internally, and actually completely ignores what the back-end returns,
-> > > > only using it as the template for a subsequent SET_STATUS to add single
-> > > > bits to it.  Notably, after setting FEATURES_OK, it never reads it back
-> > > > to see whether the flag is still set, which is the only way in which
-> > > > dpdk uses the status byte.
-> > > > 
-> > > > As-is, no front-end or back-end can rely on the other side handling this
-> > > > field in a useful manner, and it also provides no practical use over
-> > > > other mechanisms the vhost-user protocol has, which are more clearly
-> > > > defined.  Deprecate it.
-> > > > 
-> > > > Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > > > Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
-> > > > ---
-> > > >   docs/interop/vhost-user.rst | 28 +++++++++++++++++++++-------
-> > > >   1 file changed, 21 insertions(+), 7 deletions(-)
-> > > Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> > 
-> > SET_STATUS is the only way to signal failure to acknowledge FEATURES_OK.
-> > The fact current backends never check errors does not mean they never
-> > will. So no, not applying this.
+Hi Joao,
+
+On 6/22/23 23:48, Joao Martins wrote:
+> From: Yi Liu <yi.l.liu@intel.com>
 > 
-> Can this not be done with REPLY_ACK?  I.e., with the following message
-> order:
+> Add a pci_setup_iommu_ops() that uses a newly added structure
+> (PCIIOMMUOps) instead of using PCIIOMMUFunc. The old pci_setup_iommu()
+> that uses PCIIOMMUFunc is still kept for other IOMMUs to get an
+> an address space for a PCI device in vendor specific way.
+double 'an'
 > 
-> 1. GET_FEATURES to find out whether VHOST_USER_F_PROTOCOL_FEATURES is
-> present
-> 2. GET_PROTOCOL_FEATURES to hopefully get VHOST_USER_PROTOCOL_F_REPLY_ACK
-> 3. SET_PROTOCOL_FEATURES to set VHOST_USER_PROTOCOL_F_REPLY_ACK
-> 4. SET_FEATURES with need_reply
+> In preparation to expand to supplying vIOMMU attributes, add a
+> alternate helper pci_setup_iommu_ops() to setup the PCI device IOMMU.
+> For now the PCIIOMMUOps just defines the address_space, but it will
+> be extended to have another callback.
 > 
-> If not, the problem is that qemu has sent SET_STATUS 0 for a while when the
-> vCPUs are stopped, which generally seems to request a device reset.  If we
-> don’t state at least that SET_STATUS 0 is to be ignored, back-ends that will
-> implement SET_STATUS later may break with at least these qemu versions.  But
-> documenting that a particular use of the status byte is to be ignored would
-> be really strange.
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> [joao: Massage commit message and subject, and make it a complementary
+> rather than changing every single consumer of pci_setup_iommu()]
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+> ---
+> v1: https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
+> ---
+>  include/hw/pci/pci.h     |  7 +++++++
+>  include/hw/pci/pci_bus.h |  1 +
+>  hw/pci/pci.c             | 26 +++++++++++++++++++++++---
+>  3 files changed, 31 insertions(+), 3 deletions(-)
 > 
-> Hanna
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index e6d0574a2999..f59aef5a329a 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -368,6 +368,13 @@ typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *, int);
+>  AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
+>  void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
+>  
+> +typedef struct PCIIOMMUOps PCIIOMMUOps;
+> +struct PCIIOMMUOps {
+> +    AddressSpace * (*get_address_space)(PCIBus *bus,
+> +                                void *opaque, int32_t devfn);
+> +};
+> +void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *iommu_ops, void *opaque);
+> +
+>  pcibus_t pci_bar_address(PCIDevice *d,
+>                           int reg, uint8_t type, pcibus_t size);
+>  
+> diff --git a/include/hw/pci/pci_bus.h b/include/hw/pci/pci_bus.h
+> index 56531759578f..fb770b236d69 100644
+> --- a/include/hw/pci/pci_bus.h
+> +++ b/include/hw/pci/pci_bus.h
+> @@ -35,6 +35,7 @@ struct PCIBus {
+>      enum PCIBusFlags flags;
+>      PCIIOMMUFunc iommu_fn;
+>      void *iommu_opaque;
+> +    const PCIIOMMUOps *iommu_ops;
+>      uint8_t devfn_min;
+>      uint32_t slot_reserved_mask;
+>      pci_set_irq_fn set_irq;
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index bf38905b7dc0..4e32c09e81d6 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -2639,7 +2639,15 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>      PCIBus *iommu_bus = bus;
+>      uint8_t devfn = dev->devfn;
+>  
+> -    while (iommu_bus && !iommu_bus->iommu_fn && iommu_bus->parent_dev) {
+> +    /*
+> +     * get_address_space() callback is mandatory when iommu uses
+> +     * pci_setup_iommu_ops(), so needs to ensure its presence in
+> +     * the iommu_bus search.
+the fact that it is mandatory should also be documented along with the
+PCIIOMMUOps struct definition and enforced at  pci_setup_iommu_ops()
+removing the need for checking iommu_bus->iommu_ops->get_address_space
+> +     */
+> +    while (iommu_bus &&
+> +           !(iommu_bus->iommu_fn ||
+> +            (iommu_bus->iommu_ops && iommu_bus->iommu_ops->get_address_space)) &&
+> +           iommu_bus->parent_dev) {
+>          PCIBus *parent_bus = pci_get_bus(iommu_bus->parent_dev);
+>  
+>          /*
+> @@ -2678,8 +2686,14 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>  
+>          iommu_bus = parent_bus;
+>      }
+> -    if (!pci_bus_bypass_iommu(bus) && iommu_bus && iommu_bus->iommu_fn) {
+> -        return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
+> +    if (!pci_bus_bypass_iommu(bus) && iommu_bus) {
+> +        if (iommu_bus->iommu_fn) {
+> +           return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
+> +        } else if (iommu_bus->iommu_ops &&
+> +                   iommu_bus->iommu_ops->get_address_space) {
+> +           return iommu_bus->iommu_ops->get_address_space(bus,
+> +                                           iommu_bus->iommu_opaque, devfn);
+> +        }
+>      }
+>      return &address_space_memory;
+>  }
+> @@ -2690,6 +2704,12 @@ void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque)
+>      bus->iommu_opaque = opaque;
+>  }
+>  
+> +void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *ops, void *opaque)
+> +{
+> +    bus->iommu_ops = ops;
+> +    bus->iommu_opaque = opaque;
+maybe assert if both iommu_fn and iommu_ops are set to make sure the
+conversion is not done partially? If I understand it correctly either of
+those 2 ops should be set and not both.
+> +}
+> +
+>  static void pci_dev_get_w64(PCIBus *b, PCIDevice *dev, void *opaque)
+>  {
+>      Range *range = opaque;
 
-Hmm I guess. Though just following virtio spec seems cleaner to me...
-vhost-user reconfigures the state fully on start. I guess symmetry was the
-point. So I don't see why SET_STATUS 0 has to be ignored.
+Thanks
 
-
-SET_STATUS was introduced by:
-
-commit 923b8921d210763359e96246a58658ac0db6c645
-Author: Yajun Wu <yajunw@nvidia.com>
-Date:   Mon Oct 17 14:44:52 2022 +0800
-
-    vhost-user: Support vhost_dev_start
-
-CC the author.
-
--- 
-MST
+Eric
 
 
