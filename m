@@ -2,100 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A7E7BB38C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:52:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E688A7BB39C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:56:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qogZa-0007fT-Cp; Fri, 06 Oct 2023 04:52:38 -0400
+	id 1qogcW-0000iA-Lw; Fri, 06 Oct 2023 04:55:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogZX-0007f2-Hn
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:52:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qogcR-0000i0-JC
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:55:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogZV-0005LJ-Re
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:52:35 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qogcQ-0006AA-7M
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:55:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696582353;
+ s=mimecast20190719; t=1696582533;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=w7A/ElYGDVGTZwh7spRLEk0QOZ5c31DOxC/dh9PPkUs=;
- b=OEvMy2LBCenx81voPMgMu1MeP3v2HLwc3ZIrwCOo/vONyronYhuCxU+kDiLif2gztdos6k
- t0uVF815ZMaxS0tQ8GgB2T6bSZUFJNZYgTe0xKGrUpUeBHHVraZE/F/kXJobGwj+xMVgav
- h+BikIv73Jyt0ApPicizRk9rPGTvP3g=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-MjhfyXaiMPyXsxs5F0dmLA-1; Fri, 06 Oct 2023 04:52:31 -0400
-X-MC-Unique: MjhfyXaiMPyXsxs5F0dmLA-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-65b0249818dso19495246d6.1
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:52:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696582351; x=1697187151;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=w7A/ElYGDVGTZwh7spRLEk0QOZ5c31DOxC/dh9PPkUs=;
- b=CeadPbMhAhN0yaXoduqjVpZTaYxVMhV+FeVr9NhxUx1zlp6dnIkqRWhkjnly4p72SC
- z1dzqEUnnGk9szYzGlbXNFhlcWey/yDBZ4eWVMwuYtaL9DpsgrTttCSeKXXbIU2u1uHm
- /c65AD7sHfORhOf/1IQUjrgWgE4d3JCHAOX8zfnPkHHD0EF18ui9JivXD/W5yfjGAW94
- LHaiPT5r+5wcTDLRXrymouLNCwQXtMb9PUDq8fVbw/4Kw1btYA9seLvnmMHYI+twq1Zv
- JcLEZt5/AhfmBblcnBbr3n0v0Px4+oeTNfQXbHBRJp7GvwwrMjVlNP+w51etHPnCzqV3
- 0Zdw==
-X-Gm-Message-State: AOJu0YzNdodKBu00bKzC651Rh6Y5z9gaE7RJPikpR9lMs8qRm+JDJnQZ
- 7w0MiiLmO0GuYJ30SBRUH4O2htraDne6r1DK6SVNC8v2aSpVakNYm9k8tWMXDogaJ4ivgR90iLn
- 3ytTIZiWqkFBMhu8=
-X-Received: by 2002:a05:6214:1907:b0:65b:1ad4:ca7e with SMTP id
- er7-20020a056214190700b0065b1ad4ca7emr6875822qvb.56.1696582351466; 
- Fri, 06 Oct 2023 01:52:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGR7u8Txd6Sghh6/Sp6cX++YiMkO06+5W00/bn4GhWdEP8y8fAhyY4ki9pDDO4iqU6AbKgN7Q==
-X-Received: by 2002:a05:6214:1907:b0:65b:1ad4:ca7e with SMTP id
- er7-20020a056214190700b0065b1ad4ca7emr6875800qvb.56.1696582351184; 
- Fri, 06 Oct 2023 01:52:31 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- vv8-20020a05620a562800b007676f3859fasm1146403qkn.30.2023.10.06.01.52.27
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 01:52:30 -0700 (PDT)
-Message-ID: <40b3bd8a-8c59-e61a-14d1-a45dba95a235@redhat.com>
-Date: Fri, 6 Oct 2023 10:52:26 +0200
+ bh=EOvMqYbICyvz30S6H5KGlR4/71Gm0fZFULiLCmI6qY8=;
+ b=iu71JC3bm2pZkr2bvgbd/YXkRmekUv69/8puhaOsyP07BrsMJwNb+IJ69N8nnxmrLpLcAC
+ pAAezucYSFBrrRthgecjbXCABCHIM/zx9kd7pO2cwDGv2tnMdPbG6F4ItT8GR+Q+wX/f1k
+ VRTpNvSlKCyq9ACWTSYs2ADpEJNvaO0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-662-bbq4nHEMOTK2_nZ3fvGbDw-1; Fri, 06 Oct 2023 04:55:30 -0400
+X-MC-Unique: bbq4nHEMOTK2_nZ3fvGbDw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B50793C13513;
+ Fri,  6 Oct 2023 08:55:29 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 032FD2027046;
+ Fri,  6 Oct 2023 08:55:29 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id EA75E21E6904; Fri,  6 Oct 2023 10:55:27 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Michael Tokarev <mjt@tls.msk.ru>
+Cc: Thomas Huth <thuth@redhat.com>,  qemu-devel@nongnu.org,  "Michael S.
+ Tsirkin" <mst@redhat.com>,  qemu-trivial@nongnu.org
+Subject: Re: [PATCH] hw/virtio/vhost: Silence compiler warnings in vhost
+ code when using -Wshadow
+References: <20231004114809.105672-1-thuth@redhat.com>
+ <18f1faab-71f4-4dbd-a319-fcd65721f58b@tls.msk.ru>
+Date: Fri, 06 Oct 2023 10:55:27 +0200
+In-Reply-To: <18f1faab-71f4-4dbd-a319-fcd65721f58b@tls.msk.ru> (Michael
+ Tokarev's message of "Fri, 6 Oct 2023 09:26:50 +0300")
+Message-ID: <87h6n4p1ts.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v4 02/15] hw/pci: Refactor pci_device_iommu_address_space()
-Content-Language: en-US
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-3-joao.m.martins@oracle.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <20230622214845.3980-3-joao.m.martins@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -62
-X-Spam_score: -6.3
-X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -111,68 +81,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Joao,
+Michael Tokarev <mjt@tls.msk.ru> writes:
 
-On 6/22/23 23:48, Joao Martins wrote:
-> From: Yi Liu <yi.l.liu@intel.com>
-> 
-> Refactor pci_device_iommu_address_space() and move the
-> code that fetches the device bus and iommu bus into its
-> own private helper pci_device_get_iommu_bus_devfn().
-> 
-> This is in preparation to introduce pci_device_iommu_get_attr()
-> which will need to use it too.
+> Applied to my trivial-patches tree, thanks!
+>
+> Marcus, you picked up previous patches of this theme, --
+> you can continue this tradition if you like :)
 
-you may add:
-no functional change intended.
-> 
-> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-> [joao: Commit message, and better splitting]
-> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Eric Auger <eric.auger@redhat.com>
-
-Eric
-
-> ---
-> Splitted from v1:
-> https://lore.kernel.org/all/20210302203827.437645-6-yi.l.liu@intel.com/
-> ---
->  hw/pci/pci.c | 16 ++++++++++++++--
->  1 file changed, 14 insertions(+), 2 deletions(-)
-> 
-> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
-> index 4e32c09e81d6..90ae92a43d85 100644
-> --- a/hw/pci/pci.c
-> +++ b/hw/pci/pci.c
-> @@ -2632,8 +2632,8 @@ static void pci_device_class_base_init(ObjectClass *klass, void *data)
->          assert(conventional || pcie || cxl);
->      }
->  }
-> -
-> -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> +static void pci_device_get_iommu_bus_devfn(PCIDevice *dev, PCIBus **pdevbus,
-> +                                           PCIBus **pbus, uint8_t *pdevfn)
->  {
->      PCIBus *bus = pci_get_bus(dev);
->      PCIBus *iommu_bus = bus;
-> @@ -2686,6 +2686,18 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
->  
->          iommu_bus = parent_bus;
->      }
-> +
-> +    *pdevbus = bus;
-> +    *pbus = iommu_bus;
-> +    *pdevfn = devfn;
-> +}
-> +
-> +AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
-> +{
-> +    PCIBus *bus, *iommu_bus;
-> +    uint8_t devfn;
-> +
-> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
->      if (!pci_bus_bypass_iommu(bus) && iommu_bus) {
->          if (iommu_bus->iommu_fn) {
->             return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
+I intend to post a pull request for the -Wshadow patches that have
+R-bys.  I'm also tracking the unreviewed ones, and hope they get
+reviewed.
 
 
