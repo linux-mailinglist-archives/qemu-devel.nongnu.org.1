@@ -2,36 +2,35 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6B27BBE8E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:17:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF767BBE84
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qopMA-0007D5-KP; Fri, 06 Oct 2023 14:15:22 -0400
+	id 1qopMD-0007MW-SL; Fri, 06 Oct 2023 14:15:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qopM2-0007Ae-Jr; Fri, 06 Oct 2023 14:15:14 -0400
+ id 1qopM4-0007BO-BL; Fri, 06 Oct 2023 14:15:16 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qopM0-0000dd-Tz; Fri, 06 Oct 2023 14:15:14 -0400
+ id 1qopM2-0000e2-JJ; Fri, 06 Oct 2023 14:15:16 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id B484D28461;
+ by isrv.corpit.ru (Postfix) with ESMTP id E63FF28462;
  Fri,  6 Oct 2023 21:15:10 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 588DD2D718;
+ by tsrv.corpit.ru (Postfix) with SMTP id 88B992D719;
  Fri,  6 Oct 2023 21:15:05 +0300 (MSK)
-Received: (nullmailer pid 3297245 invoked by uid 1000);
+Received: (nullmailer pid 3297248 invoked by uid 1000);
  Fri, 06 Oct 2023 18:15:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
 Cc: qemu-stable@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
  Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 47/57] target/i386: generalize operand size "ph" for
- use in CVTPS2PD
-Date: Fri,  6 Oct 2023 21:14:36 +0300
-Message-Id: <20231006181504.3297196-2-mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 48/57] target/i386: fix memory operand size for CVTPS2PD
+Date: Fri,  6 Oct 2023 21:14:37 +0300
+Message-Id: <20231006181504.3297196-3-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231006191112@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231006191112@cover.tls.msk.ru>
@@ -61,59 +60,98 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Paolo Bonzini <pbonzini@redhat.com>
 
-CVTPS2PD only loads a half-register for memory, like CVTPH2PS.  It can
-reuse the "ph" packed half-precision size to load a half-register,
-but rename it to "xh" because it is now a variation of "x" (it is not
-used only for half-precision values).
+CVTPS2PD only loads a half-register for memory, unlike the other
+operations under 0x0F 0x5A.  "Unpack" the group into separate
+emission functions instead of using gen_unary_fp_sse.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit a48b26978a090fe1f3f3e54319902d4ab56a6b3a)
+(cherry picked from commit abd41884c530aa025ada253bf1a5bd0c2b808219)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
 diff --git a/target/i386/tcg/decode-new.c.inc b/target/i386/tcg/decode-new.c.inc
-index 8f93a239dd..43c39aad2a 100644
+index 43c39aad2a..0db19cda3b 100644
 --- a/target/i386/tcg/decode-new.c.inc
 +++ b/target/i386/tcg/decode-new.c.inc
-@@ -337,7 +337,7 @@ static const X86OpEntry opcodes_0F38_00toEF[240] = {
-     [0x07] = X86_OP_ENTRY3(PHSUBSW,   V,x,  H,x,   W,x,  vex4 cpuid(SSSE3) mmx avx2_256 p_00_66),
+@@ -805,10 +805,20 @@ static void decode_sse_unary(DisasContext *s, CPUX86State *env, X86OpEntry *entr
+     case 0x51: entry->gen = gen_VSQRT; break;
+     case 0x52: entry->gen = gen_VRSQRT; break;
+     case 0x53: entry->gen = gen_VRCP; break;
+-    case 0x5A: entry->gen = gen_VCVTfp2fp; break;
+     }
+ }
  
-     [0x10] = X86_OP_ENTRY2(PBLENDVB,  V,x,         W,x,  vex4 cpuid(SSE41) avx2_256 p_66),
--    [0x13] = X86_OP_ENTRY2(VCVTPH2PS, V,x,         W,ph, vex11 cpuid(F16C) p_66),
-+    [0x13] = X86_OP_ENTRY2(VCVTPH2PS, V,x,         W,xh, vex11 cpuid(F16C) p_66),
-     [0x14] = X86_OP_ENTRY2(BLENDVPS,  V,x,         W,x,  vex4 cpuid(SSE41) p_66),
-     [0x15] = X86_OP_ENTRY2(BLENDVPD,  V,x,         W,x,  vex4 cpuid(SSE41) p_66),
-     /* Listed incorrectly as type 4 */
-@@ -565,7 +565,7 @@ static const X86OpEntry opcodes_0F3A[256] = {
-     [0x15] = X86_OP_ENTRY3(PEXTRW,     E,w,  V,dq, I,b,  vex5 cpuid(SSE41) zext0 p_66),
-     [0x16] = X86_OP_ENTRY3(PEXTR,      E,y,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
-     [0x17] = X86_OP_ENTRY3(VEXTRACTPS, E,d,  V,dq, I,b,  vex5 cpuid(SSE41) p_66),
--    [0x1d] = X86_OP_ENTRY3(VCVTPS2PH,  W,ph, V,x,  I,b,  vex11 cpuid(F16C) p_66),
-+    [0x1d] = X86_OP_ENTRY3(VCVTPS2PH,  W,xh, V,x,  I,b,  vex11 cpuid(F16C) p_66),
++static void decode_0F5A(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
++{
++    static const X86OpEntry opcodes_0F5A[4] = {
++        X86_OP_ENTRY2(VCVTPS2PD,  V,x,       W,xh, vex2),      /* VCVTPS2PD */
++        X86_OP_ENTRY2(VCVTPD2PS,  V,x,       W,x,  vex2),      /* VCVTPD2PS */
++        X86_OP_ENTRY3(VCVTSS2SD,  V,x,  H,x, W,x,  vex2_rep3), /* VCVTSS2SD */
++        X86_OP_ENTRY3(VCVTSD2SS,  V,x,  H,x, W,x,  vex2_rep3), /* VCVTSD2SS */
++    };
++    *entry = *decode_by_prefix(s, opcodes_0F5A);
++}
++
+ static void decode_0F5B(DisasContext *s, CPUX86State *env, X86OpEntry *entry, uint8_t *b)
+ {
+     static const X86OpEntry opcodes_0F5B[4] = {
+@@ -891,7 +901,7 @@ static const X86OpEntry opcodes_0F[256] = {
  
-     [0x20] = X86_OP_ENTRY4(PINSRB,     V,dq, H,dq, E,b,  vex5 cpuid(SSE41) zext2 p_66),
-     [0x21] = X86_OP_GROUP0(VINSERTPS),
-@@ -1104,7 +1104,7 @@ static bool decode_op_size(DisasContext *s, X86OpEntry *e, X86OpSize size, MemOp
-         *ot = s->vex_l ? MO_256 : MO_128;
-         return true;
+     [0x58] = X86_OP_ENTRY3(VADD,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+     [0x59] = X86_OP_ENTRY3(VMUL,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+-    [0x5a] = X86_OP_GROUP3(sse_unary,  V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2), /* CVTPS2PD */
++    [0x5a] = X86_OP_GROUP0(0F5A),
+     [0x5b] = X86_OP_GROUP0(0F5B),
+     [0x5c] = X86_OP_ENTRY3(VSUB,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+     [0x5d] = X86_OP_ENTRY3(VMIN,       V,x, H,x, W,x, vex2_rep3 p_00_66_f3_f2),
+diff --git a/target/i386/tcg/emit.c.inc b/target/i386/tcg/emit.c.inc
+index 4fe8dec427..45a3e55cbf 100644
+--- a/target/i386/tcg/emit.c.inc
++++ b/target/i386/tcg/emit.c.inc
+@@ -1914,12 +1914,22 @@ static void gen_VCOMI(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+     set_cc_op(s, CC_OP_EFLAGS);
+ }
  
--    case X86_SIZE_ph: /* SSE/AVX packed half precision */
-+    case X86_SIZE_xh: /* SSE/AVX packed half register */
-         *ot = s->vex_l ? MO_128 : MO_64;
-         return true;
+-static void gen_VCVTfp2fp(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++static void gen_VCVTPD2PS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+-    gen_unary_fp_sse(s, env, decode,
+-                     gen_helper_cvtpd2ps_xmm, gen_helper_cvtps2pd_xmm,
+-                     gen_helper_cvtpd2ps_ymm, gen_helper_cvtps2pd_ymm,
+-                     gen_helper_cvtsd2ss, gen_helper_cvtss2sd);
++    if (s->vex_l) {
++        gen_helper_cvtpd2ps_ymm(cpu_env, OP_PTR0, OP_PTR2);
++    } else {
++        gen_helper_cvtpd2ps_xmm(cpu_env, OP_PTR0, OP_PTR2);
++    }
++}
++
++static void gen_VCVTPS2PD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    if (s->vex_l) {
++        gen_helper_cvtps2pd_ymm(cpu_env, OP_PTR0, OP_PTR2);
++    } else {
++        gen_helper_cvtps2pd_xmm(cpu_env, OP_PTR0, OP_PTR2);
++    }
+ }
  
-diff --git a/target/i386/tcg/decode-new.h b/target/i386/tcg/decode-new.h
-index cb6b8bcf67..a542ec1681 100644
---- a/target/i386/tcg/decode-new.h
-+++ b/target/i386/tcg/decode-new.h
-@@ -92,7 +92,7 @@ typedef enum X86OpSize {
-     /* Custom */
-     X86_SIZE_d64,
-     X86_SIZE_f64,
--    X86_SIZE_ph, /* SSE/AVX packed half precision */
-+    X86_SIZE_xh, /* SSE/AVX packed half register */
- } X86OpSize;
+ static void gen_VCVTPS2PH(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+@@ -1936,6 +1946,16 @@ static void gen_VCVTPS2PH(DisasContext *s, CPUX86State *env, X86DecodedInsn *dec
+     }
+ }
  
- typedef enum X86CPUIDFeature {
++static void gen_VCVTSD2SS(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_cvtsd2ss(cpu_env, OP_PTR0, OP_PTR1, OP_PTR2);
++}
++
++static void gen_VCVTSS2SD(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
++{
++    gen_helper_cvtss2sd(cpu_env, OP_PTR0, OP_PTR1, OP_PTR2);
++}
++
+ static void gen_VCVTSI2Sx(DisasContext *s, CPUX86State *env, X86DecodedInsn *decode)
+ {
+     int vec_len = vector_len(s, decode);
 -- 
 2.39.2
 
