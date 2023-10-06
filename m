@@ -2,66 +2,90 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871937BBAB1
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 16:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCADC7BBB16
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 17:01:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qom50-0006nE-Ee; Fri, 06 Oct 2023 10:45:26 -0400
+	id 1qomIo-0000s3-NI; Fri, 06 Oct 2023 10:59:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qom4x-0006n2-NL
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:45:23 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qom4v-00077S-2S
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:45:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696603519;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=0msHmLMhDB9eOh7d8vMJI2gMMzuw3Fsi3idR3jjf9kQ=;
- b=HtUntz4taH3h4A8FllTdBmw/UMH2IcFon6Uxs0Mh8+HMaBZcCFoBnksnZCStskliDxcexg
- E3tWcI9rRwHz9tlqNLQgJ4a1CE3NQSPBsB3ZubzWV8DVOA1RLxrQFkqKQMi6bZOHhk+W5S
- pZlz7Gj48lML95GNscGtoW7oCCeEAtM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-106-8MfIRgZ9N8On55_uul-HPg-1; Fri, 06 Oct 2023 10:45:17 -0400
-X-MC-Unique: 8MfIRgZ9N8On55_uul-HPg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6173985A5BE
- for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 14:45:17 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 4091310EE859
- for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 14:45:17 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 3499B21E6904; Fri,  6 Oct 2023 16:45:16 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9_Lureau?= <marcandre.lureau@redhat.com>
-Subject: [v3] Help wanted for enabling -Wshadow=local
-Date: Fri, 06 Oct 2023 16:45:16 +0200
-Message-ID: <87mswvg683.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qomIh-0000n0-C7
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:59:37 -0400
+Received: from mail-il1-x129.google.com ([2607:f8b0:4864:20::129])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qomIf-0001vr-TU
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 10:59:35 -0400
+Received: by mail-il1-x129.google.com with SMTP id
+ e9e14a558f8ab-3512740906dso9134695ab.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 07:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696604372; x=1697209172; darn=nongnu.org;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=v4ComNysIFGxNy5ZPB6wNyL/49/S5KbmuI6HeAZVc8I=;
+ b=nLQrAwip8r6Rh5AQnCBAaPWZQScmFakL31P7tqgc+HOtwpRs7bKGgSA1byv2Q3oLzT
+ qHIm4ezwUDpGncFuElEoiIOPLbMXCEd5oJJkQMudKpoI1Wjs0MFLiyM6gp1xUVvzmg7q
+ TXvZowT6hneKKad7TK2wNw7PVSjA97L0g9Ru1BshKRE9X8mimb99Br+WeI0b1sOobVk8
+ 2iewrsbP7gEQRN02WX58mQX46k3lTpvCPVQjmp65cwnlyanUAaWVtI06iRAOyF/DMrH4
+ YRLH+zFnJfypbSKpf7YeTrJJIy5y0L7njx7BEPYYSga3RCXbZtCjoRhWvuM4ojY8AD9R
+ uTQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696604372; x=1697209172;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=v4ComNysIFGxNy5ZPB6wNyL/49/S5KbmuI6HeAZVc8I=;
+ b=FCFcWxLExbVHzBqZdJ6ocr7/zDgCPB0lGW13AFElz2v/KV9sj+gz2qBnFSxkvtj24e
+ lC7tvowR6rWhQjrbuydpofzy+OZv5Agm8F4VunVDLyndEpbqaWLFvW0stJKY4klvQ9cy
+ 1jc0hOWthW/Cq8kcJu0rDnY5zh7/UDmfgC7AfF4vTWRaeCmsbH7uUXKt5kialuJ5Gjt5
+ ytPErArhCRHu6hxyCotyls5NOUx3T370Q2w6X1Mhgz/vsFFmEVsK8INWTc4z2uheDkbl
+ Uk+796xpqmt8eNi1Vj4FV7RhHBZKCYfy6fLZqQyMPDyyaxZKIeCBseExbq/yIcUHQU1E
+ jpmg==
+X-Gm-Message-State: AOJu0YwXvfVFeKSLY+TFp18VvPAHmfk9RTDzUfT8Kwso4y79sCvZupWC
+ e5xdzIceQGCj72qHsLE8L3Q=
+X-Google-Smtp-Source: AGHT+IESazpzdA06dUXbkoG+V2c7I6ea/+PzRCE0ONOMNAFzW3KB0FrweWaJw3UgcLFtHOXY5QBYEg==
+X-Received: by 2002:a05:6e02:2165:b0:34b:af03:e2a with SMTP id
+ s5-20020a056e02216500b0034baf030e2amr9473024ilv.31.1696604372364; 
+ Fri, 06 Oct 2023 07:59:32 -0700 (PDT)
+Received: from DESKTOPUU50BPD ([2601:284:8201:81c0:582b:6312:c6b:a6f0])
+ by smtp.gmail.com with ESMTPSA id
+ br13-20020a05663846cd00b0042b62a31349sm449984jab.146.2023.10.06.07.59.30
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Fri, 06 Oct 2023 07:59:30 -0700 (PDT)
+From: <ltaylorsimpson@gmail.com>
+To: "'Brian Cain'" <bcain@quicinc.com>,
+	<qemu-devel@nongnu.org>
+Cc: <armbru@redhat.com>, <richard.henderson@linaro.org>, <philmd@linaro.org>,
+ <peter.maydell@linaro.org>, <quic_mathbern@quicinc.com>,
+ <stefanha@redhat.com>, <ale@rev.ng>, <anjo@rev.ng>,
+ <quic_mliebel@quicinc.com>
+References: <20231005222206.2784853-1-bcain@quicinc.com>
+ <20231005222206.2784853-3-bcain@quicinc.com>
+In-Reply-To: <20231005222206.2784853-3-bcain@quicinc.com>
+Subject: RE: [PATCH v2 2/3] target/hexagon: fix some occurrences of
+ -Wshadow=local
+Date: Fri, 6 Oct 2023 08:59:29 -0600
+Message-ID: <312a01d9f865$b5c0d840$214288c0$@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain;
+	charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQJv0F5Exw0TPnXaZfUwlO9P/EDe8gJbdiv2rv5Ox9A=
+Content-Language: en-us
+Received-SPF: pass client-ip=2607:f8b0:4864:20::129;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x129.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -77,77 +101,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Local variables shadowing other local variables or parameters make the
-code needlessly hard to understand.  Bugs love to hide in such code.
-Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
-on polling error".
 
-Enabling -Wshadow would prevent bugs like this one.  But we have to
-clean up all the offenders first.
 
-Quite a few people responded to my calls for help.  Thank you so much!
-
-I'm collecting patches in my git repo at
-https://repo.or.cz/qemu/armbru.git in branch shadow-next.  All but the
-last two are in a pending pull request.
-
-My test build is down to seven files with warnings.  "[PATCH v2 0/3]
-hexagon: GETPC() and shadowing fixes" takes care of four, but it needs a
-rebase.
-
-Remaining three:
-
-    In file included from ../hw/display/virtio-gpu-virgl.c:19:
-    ../hw/display/virtio-gpu-virgl.c: In function =E2=80=98virgl_cmd_submit=
-_3d=E2=80=99:
-    /work/armbru/qemu/include/hw/virtio/virtio-gpu.h:228:16: warning: decla=
-ration of =E2=80=98s=E2=80=99 shadows a previous local [-Wshadow=3Dcompatib=
-le-local]
-      228 |         size_t s;                                              =
-         \
-          |                ^
-    ../hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro =E2=
-=80=98VIRTIO_GPU_FILL_CMD=E2=80=99
-      215 |     VIRTIO_GPU_FILL_CMD(cs);
-          |     ^~~~~~~~~~~~~~~~~~~
-    ../hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration is =
+> -----Original Message-----
+> From: Brian Cain <bcain@quicinc.com>
+> Sent: Thursday, October 5, 2023 4:22 PM
+> To: qemu-devel@nongnu.org
+> Cc: bcain@quicinc.com; armbru@redhat.com; =
+richard.henderson@linaro.org;
+> philmd@linaro.org; peter.maydell@linaro.org; =
+quic_mathbern@quicinc.com;
+> stefanha@redhat.com; ale@rev.ng; anjo@rev.ng;
+> quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com
+> Subject: [PATCH v2 2/3] target/hexagon: fix some occurrences of -
+> Wshadow=3Dlocal
+>=20
+> Of the changes in this commit, the changes in
+> `HELPER(commit_hvx_stores)()` are less obvious.  They are required =
+because
+> of some macro invocations like SCATTER_OP_WRITE_TO_MEM().
+>=20
+> e.g.:
+>=20
+>     In file included from ../target/hexagon/op_helper.c:31:
+>     ../target/hexagon/mmvec/macros.h:205:18: error: declaration of =
+=E2=80=98i=E2=80=99
+> shadows a previous local [-Werror=3Dshadow=3Dcompatible-local]
+>       205 |         for (int i =3D 0; i < sizeof(MMVector); i +=3D =
+sizeof(TYPE)) { \
+>           |                  ^
+>     ../target/hexagon/op_helper.c:157:17: note: in expansion of macro
+> =E2=80=98SCATTER_OP_WRITE_TO_MEM=E2=80=99
+>       157 |                 SCATTER_OP_WRITE_TO_MEM(uint16_t);
+>           |                 ^~~~~~~~~~~~~~~~~~~~~~~
+>     ../target/hexagon/op_helper.c:135:9: note: shadowed declaration is =
 here
-      213 |     size_t s;
-          |            ^
+>       135 |     int i;
+>           |         ^
+>     In file included from ../target/hexagon/op_helper.c:31:
+>     ../target/hexagon/mmvec/macros.h:204:19: error: declaration of =
+=E2=80=98ra=E2=80=99
+> shadows a previous local [-Werror=3Dshadow=3Dcompatible-local]
+>       204 |         uintptr_t ra =3D GETPC(); \
+>           |                   ^~
+>     ../target/hexagon/op_helper.c:160:17: note: in expansion of macro
+> =E2=80=98SCATTER_OP_WRITE_TO_MEM=E2=80=99
+>       160 |                 SCATTER_OP_WRITE_TO_MEM(uint32_t);
+>           |                 ^~~~~~~~~~~~~~~~~~~~~~~
+>     ../target/hexagon/op_helper.c:134:15: note: shadowed declaration =
+is here
+>       134 |     uintptr_t ra =3D GETPC();
+>           |               ^~
+>=20
+> Reviewed-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Signed-off-by: Brian Cain <bcain@quicinc.com>
+> ---
+>  target/hexagon/imported/alu.idef | 6 +++---
+>  target/hexagon/mmvec/macros.h    | 6 +++---
+>  target/hexagon/op_helper.c       | 9 +++------
+>  target/hexagon/translate.c       | 9 ++++-----
+>  4 files changed, 13 insertions(+), 17 deletions(-)
 
-    In file included from ../contrib/vhost-user-gpu/virgl.h:18,
-                     from ../contrib/vhost-user-gpu/virgl.c:17:
-    ../contrib/vhost-user-gpu/virgl.c: In function =E2=80=98virgl_cmd_submi=
-t_3d=E2=80=99:
-    ../contrib/vhost-user-gpu/vugpu.h:167:16: warning: declaration of =E2=
-=80=98s=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
-      167 |         size_t s;                                              =
- \
-          |                ^
-    ../contrib/vhost-user-gpu/virgl.c:203:5: note: in expansion of macro =
-=E2=80=98VUGPU_FILL_CMD=E2=80=99
-      203 |     VUGPU_FILL_CMD(cs);
-          |     ^~~~~~~~~~~~~~
-    ../contrib/vhost-user-gpu/virgl.c:201:12: note: shadowed declaration is=
- here
-      201 |     size_t s;
-          |            ^
+Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
 
-    ../contrib/vhost-user-gpu/vhost-user-gpu.c: In function =E2=80=98vg_res=
-ource_flush=E2=80=99:
-    ../contrib/vhost-user-gpu/vhost-user-gpu.c:837:29: warning: declaration=
- of =E2=80=98i=E2=80=99 shadows a previous local [-Wshadow=3Dlocal]
-      837 |             pixman_image_t *i =3D
-          |                             ^
-    ../contrib/vhost-user-gpu/vhost-user-gpu.c:757:9: note: shadowed declar=
-ation is here
-      757 |     int i;
-          |         ^
-
-Gerd, Marc-Andr=C3=A9, or anybody else?
-
-More warnings may lurk in code my test build doesn't compile.  Need a
-full CI build with -Wshadow=3Dlocal to find them.  Anybody care to kick
-one off?
 
 
