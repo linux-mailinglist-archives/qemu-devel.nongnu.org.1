@@ -2,58 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5354A7BC03B
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF01D7BC04D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:28:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qorJt-0008G4-IV; Fri, 06 Oct 2023 16:21:09 -0400
+	id 1qorQS-0003zq-BU; Fri, 06 Oct 2023 16:27:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qorJq-0008Dv-Ap; Fri, 06 Oct 2023 16:21:06 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1qorQH-0003q0-Ch; Fri, 06 Oct 2023 16:27:45 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qorJn-0005mT-In; Fri, 06 Oct 2023 16:21:06 -0400
-Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:3a8c:0:640:ec94:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 296766182D;
- Fri,  6 Oct 2023 23:21:01 +0300 (MSK)
-Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b403::1:3c])
- by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id kKgI6e5OrCg0-iM1X41DT; Fri, 06 Oct 2023 23:21:00 +0300
-Precedence: bulk
+ id 1qorQF-00074I-2g; Fri, 06 Oct 2023 16:27:44 -0400
+Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
+ [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id 78CAE60F09;
+ Fri,  6 Oct 2023 23:27:38 +0300 (MSK)
+Received: from [IPV6:2a02:6b8:b081:b403::1:3c] (unknown
+ [2a02:6b8:b081:b403::1:3c])
+ by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
+ ESMTPSA id bRgNbT7Oja60-IL836UHy; Fri, 06 Oct 2023 23:27:37 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696623660;
- bh=cYIUd1vWCV2rSNw0Vd96GaLbaPbVWwVkbM3mnNEKBBU=;
- h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=FHU5Ei4SdLL94jbpG8PbmtMBis2QvywCviG6jmN2kNY1byf5lZ+L6jjdoVQK3Ib9V
- +JUJ2XHdHxrav/iDES39cciETBo8R/YZGC5EitIFyHDUNfH/O1dm9okFDgA1CKsXzi
- w+cWABr3rKv6Dq+3Er60+TUIWHQJomG39MMAeqkQ=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
+ s=default; t=1696624057;
+ bh=gAtq5ihrjnVVcgTvn87cEpJZrGsXPwISIhQp/xhh904=;
+ h=From:In-Reply-To:Cc:Date:References:To:Subject:Message-ID;
+ b=cAHNE5BfR2y6ib6HcZXfVR51IyC52FrexgbL5S6dLj11Y86WnYKskz0C86wP1jdKQ
+ MLeBHxatF4GuAkRxj7UK4m9NkjuHg1u2dKJVv+I3Q6o9WioKXbJr3DRaNVbvaPE4DT
+ J0BHhIObMMYxD6cq6bPQd7hZfKY2oza65RGYtlD8=
+Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: qemu-block@nongnu.org
-Cc: qemu-devel@nongnu.org, eblake@redhat.com, dave@treblig.org,
- armbru@redhat.com, eduardo@habkost.net, berrange@redhat.com,
- pbonzini@redhat.com, hreitz@redhat.com, kwolf@redhat.com,
- raphael.norwitz@nutanix.com, mst@redhat.com, yc-core@yandex-team.ru,
- vsementsov@yandex-team.ru, den-plotnikov@yandex-team.ru,
- daniil.tatianin@yandex.ru
-Subject: [PATCH 4/4] qapi: introduce CONFIG_READ event
-Date: Fri,  6 Oct 2023 23:20:45 +0300
-Message-Id: <20231006202045.1161543-5-vsementsov@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
-References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
+Message-ID: <38f2580c-a31e-4ebb-8fa2-63b1a381e560@yandex-team.ru>
+Date: Fri, 6 Oct 2023 23:27:37 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] Python/iotests: Add type hint for nbd module
+Content-Language: en-US
+To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
+Cc: Hanna Reitz <hreitz@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ Beraldo Leal <bleal@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, qemu-block@nongnu.org,
+ Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
+ <philmd@linaro.org>
+References: <20231006195243.3131140-1-jsnow@redhat.com>
+ <20231006195243.3131140-2-jsnow@redhat.com>
+From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+In-Reply-To: <20231006195243.3131140-2-jsnow@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -64,6 +68,7 @@ X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
+Precedence: list
 List-Id: <qemu-devel.nongnu.org>
 List-Unsubscribe: <https://lists.nongnu.org/mailman/options/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=unsubscribe>
@@ -75,123 +80,22 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Send a new event when guest reads virtio-pci config after
-virtio_notify_config() call.
+On 06.10.23 22:52, John Snow wrote:
+> The test bails gracefully if this module isn't installed, but linters
+> need a little help understanding that. It's enough to just declare the
+> type in this case.
+> 
+> (Fixes pylint complaining about use of an uninitialized variable because
+> it isn't wise enough to understand the notrun call is noreturn.)
+> 
+> Signed-off-by: John Snow <jsnow@redhat.com>
+> Reviewed-by: Eric Blake <eblake@redhat.com>
 
-That's useful to check that guest fetched modified config, for example
-after resizing disk backend.
 
-Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
----
- hw/virtio/virtio-pci.c |  9 +++++++++
- include/monitor/qdev.h |  1 +
- monitor/monitor.c      |  1 +
- qapi/qdev.json         | 22 ++++++++++++++++++++++
- softmmu/qdev-monitor.c |  5 +++++
- 5 files changed, 38 insertions(+)
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 
-diff --git a/hw/virtio/virtio-pci.c b/hw/virtio/virtio-pci.c
-index dd4620462b..f24f8ff03d 100644
---- a/hw/virtio/virtio-pci.c
-+++ b/hw/virtio/virtio-pci.c
-@@ -23,6 +23,7 @@
- #include "hw/boards.h"
- #include "hw/virtio/virtio.h"
- #include "migration/qemu-file-types.h"
-+#include "monitor/qdev.h"
- #include "hw/pci/pci.h"
- #include "hw/pci/pci_bus.h"
- #include "hw/qdev-properties.h"
-@@ -541,6 +542,10 @@ static uint64_t virtio_pci_config_read(void *opaque, hwaddr addr,
-     }
-     addr -= config;
- 
-+    if (vdev->generation > 0) {
-+        qdev_config_read_event(DEVICE(proxy));
-+    }
-+
-     switch (size) {
-     case 1:
-         val = virtio_config_readb(vdev, addr);
-@@ -1728,6 +1733,10 @@ static uint64_t virtio_pci_device_read(void *opaque, hwaddr addr,
-         return UINT64_MAX;
-     }
- 
-+    if (vdev->generation > 0) {
-+        qdev_config_read_event(DEVICE(proxy));
-+    }
-+
-     switch (size) {
-     case 1:
-         val = virtio_config_modern_readb(vdev, addr);
-diff --git a/include/monitor/qdev.h b/include/monitor/qdev.h
-index 949a3672cb..f0b0eab07e 100644
---- a/include/monitor/qdev.h
-+++ b/include/monitor/qdev.h
-@@ -39,6 +39,7 @@ DeviceState *qdev_device_add_from_qdict(const QDict *opts,
- const char *qdev_set_id(DeviceState *dev, char *id, Error **errp);
- 
- void qdev_hotplug_device_on_event(DeviceState *dev);
-+void qdev_config_read_event(DeviceState *dev);
- 
- DeviceAndPath *qdev_new_device_and_path(DeviceState *dev);
- 
-diff --git a/monitor/monitor.c b/monitor/monitor.c
-index 941f87815a..f8aa91b190 100644
---- a/monitor/monitor.c
-+++ b/monitor/monitor.c
-@@ -315,6 +315,7 @@ static MonitorQAPIEventConf monitor_qapi_event_conf[QAPI_EVENT__MAX] = {
-     [QAPI_EVENT_QUORUM_FAILURE]    = { 1000 * SCALE_MS },
-     [QAPI_EVENT_VSERPORT_CHANGE]   = { 1000 * SCALE_MS },
-     [QAPI_EVENT_MEMORY_DEVICE_SIZE_CHANGE] = { 1000 * SCALE_MS },
-+    [QAPI_EVENT_X_CONFIG_READ]   = { 300 * SCALE_MS },
- };
- 
- /*
-diff --git a/qapi/qdev.json b/qapi/qdev.json
-index 2468f8bddf..37a8785b81 100644
---- a/qapi/qdev.json
-+++ b/qapi/qdev.json
-@@ -329,3 +329,25 @@
- # Since: 8.2
- ##
- { 'command': 'x-device-sync-config', 'data': {'id': 'str'} }
-+
-+##
-+# @X_CONFIG_READ:
-+#
-+# Emitted whenever guest reads virtio device config after config change.
-+#
-+# @device: device name
-+#
-+# @path: device path
-+#
-+# Since: 5.0.1-24
-+#
-+# Example:
-+#
-+# <- { "event": "X_CONFIG_READ",
-+#      "data": { "device": "virtio-net-pci-0",
-+#                "path": "/machine/peripheral/virtio-net-pci-0" },
-+#      "timestamp": { "seconds": 1265044230, "microseconds": 450486 } }
-+#
-+##
-+{ 'event': 'X_CONFIG_READ',
-+  'data': { '*device': 'str', 'path': 'str' } }
-diff --git a/softmmu/qdev-monitor.c b/softmmu/qdev-monitor.c
-index b485375049..d0f022e925 100644
---- a/softmmu/qdev-monitor.c
-+++ b/softmmu/qdev-monitor.c
-@@ -1252,3 +1252,8 @@ void qdev_hotplug_device_on_event(DeviceState *dev)
-     dev->device_on_event_sent = true;
-     qapi_event_send_x_device_on(dev->id, dev->canonical_path);
- }
-+
-+void qdev_config_read_event(DeviceState *dev)
-+{
-+    qapi_event_send_x_config_read(dev->id, dev->canonical_path);
-+}
 -- 
-2.34.1
+Best regards,
+Vladimir
 
 
