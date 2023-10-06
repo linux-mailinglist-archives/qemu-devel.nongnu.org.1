@@ -2,57 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23EA37BB17D
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 08:23:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F32177BB183
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 08:26:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoeD9-0005OA-TN; Fri, 06 Oct 2023 02:21:19 -0400
+	id 1qoeDA-0005OB-8A; Fri, 06 Oct 2023 02:21:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=cI0A=FU=redhat.com=clg@ozlabs.org>)
- id 1qoeD5-0005Kj-IQ
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:21:15 -0400
-Received: from gandalf.ozlabs.org ([150.107.74.76])
+ id 1qoeCw-0005Jk-SY
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:21:08 -0400
+Received: from mail.ozlabs.org ([2404:9400:2221:ea00::3]
+ helo=gandalf.ozlabs.org)
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=cI0A=FU=redhat.com=clg@ozlabs.org>)
- id 1qoeD0-00034j-3J
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:21:14 -0400
+ id 1qoeCt-000355-KR
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:21:06 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S1ywp0pQlz4xVW;
- Fri,  6 Oct 2023 17:20:58 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S1ywr3LTRz4xVm;
+ Fri,  6 Oct 2023 17:21:00 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S1ywm20vgz4xS5;
- Fri,  6 Oct 2023 17:20:56 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S1ywp4X2lz4xS5;
+ Fri,  6 Oct 2023 17:20:58 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Eric Auger <eric.auger@redhat.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 19/21] vfio/common: Store the parent container in VFIODevice
-Date: Fri,  6 Oct 2023 08:20:03 +0200
-Message-ID: <20231006062005.1040296-20-clg@redhat.com>
+Subject: [PULL 20/21] vfio/common: Introduce a global VFIODevice list
+Date: Fri,  6 Oct 2023 08:20:04 +0200
+Message-ID: <20231006062005.1040296-21-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006062005.1040296-1-clg@redhat.com>
 References: <20231006062005.1040296-1-clg@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=150.107.74.76;
+Received-SPF: pass client-ip=2404:9400:2221:ea00::3;
  envelope-from=SRS0=cI0A=FU=redhat.com=clg@ozlabs.org; helo=gandalf.ozlabs.org
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9,
- HEADER_FROM_DIFFERENT_DOMAINS=0.25, SPF_HELO_PASS=-0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+X-Spam_score_int: -39
+X-Spam_score: -4.0
+X-Spam_bar: ----
+X-Spam_report: (-4.0 / 5.0 requ) BAYES_00=-1.9,
+ HEADER_FROM_DIFFERENT_DOMAINS=0.25, RCVD_IN_DNSWL_MED=-2.3,
+ SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -70,66 +71,148 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Zhenzhong Duan <zhenzhong.duan@intel.com>
 
-let's store the parent contaienr within the VFIODevice.
-This simplifies the logic in vfio_viommu_preset() and
-brings the benefice to hide the group specificity which
-is useful for IOMMUFD migration.
+Some functions iterate over all the VFIODevices. This is currently
+achieved by iterating over all groups/devices. Let's
+introduce a global list of VFIODevices simplifying that scan.
+
+This will also be useful while migrating to IOMMUFD by hiding the
+group specificity.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-[ clg: Add test on !vbasedev->container in vfio_detach_device() ]
+Suggested-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- include/hw/vfio/vfio-common.h | 1 +
- hw/vfio/common.c              | 8 +++++++-
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ include/hw/vfio/vfio-common.h |  2 ++
+ hw/vfio/common.c              | 45 +++++++++++++++--------------------
+ 2 files changed, 21 insertions(+), 26 deletions(-)
 
 diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
-index 8ca70dd82156e25610fe96917843f334549818fe..bf12e406676e5577ad9454152aec9340666241dc 100644
+index bf12e406676e5577ad9454152aec9340666241dc..54905b9dd4bbb0b2c8bc9b3ee232e539a9a46216 100644
 --- a/include/hw/vfio/vfio-common.h
 +++ b/include/hw/vfio/vfio-common.h
-@@ -132,6 +132,7 @@ typedef struct VFIODevice {
+@@ -131,6 +131,7 @@ typedef struct VFIODeviceOps VFIODeviceOps;
+ typedef struct VFIODevice {
      QLIST_ENTRY(VFIODevice) next;
      QLIST_ENTRY(VFIODevice) container_next;
++    QLIST_ENTRY(VFIODevice) global_next;
      struct VFIOGroup *group;
-+    VFIOContainer *container;
+     VFIOContainer *container;
      char *sysfsdev;
-     char *name;
-     DeviceState *dev;
+@@ -232,6 +233,7 @@ int vfio_kvm_device_del_fd(int fd, Error **errp);
+ 
+ extern const MemoryRegionOps vfio_region_ops;
+ typedef QLIST_HEAD(VFIOGroupList, VFIOGroup) VFIOGroupList;
++typedef QLIST_HEAD(VFIODeviceList, VFIODevice) VFIODeviceList;
+ extern VFIOGroupList vfio_group_list;
+ 
+ bool vfio_mig_active(void);
 diff --git a/hw/vfio/common.c b/hw/vfio/common.c
-index ef9dc7c74713f113a459db61aad7a017e21cf99a..55f8a113ea82afeb9620d46286f04f85dd9e8b54 100644
+index 55f8a113ea82afeb9620d46286f04f85dd9e8b54..95bc50bcda4c44612cda2b0d8e9d5782e31ea4c6 100644
 --- a/hw/vfio/common.c
 +++ b/hw/vfio/common.c
-@@ -184,7 +184,7 @@ void vfio_unblock_multiple_devices_migration(void)
+@@ -48,6 +48,8 @@
  
- bool vfio_viommu_preset(VFIODevice *vbasedev)
+ VFIOGroupList vfio_group_list =
+     QLIST_HEAD_INITIALIZER(vfio_group_list);
++static VFIODeviceList vfio_device_list =
++    QLIST_HEAD_INITIALIZER(vfio_device_list);
+ static QLIST_HEAD(, VFIOAddressSpace) vfio_address_spaces =
+     QLIST_HEAD_INITIALIZER(vfio_address_spaces);
+ 
+@@ -94,18 +96,15 @@ static int vfio_get_dirty_bitmap(VFIOContainer *container, uint64_t iova,
+ 
+ bool vfio_mig_active(void)
  {
--    return vbasedev->group->container->space->as != &address_space_memory;
-+    return vbasedev->container->space->as != &address_space_memory;
- }
+-    VFIOGroup *group;
+     VFIODevice *vbasedev;
  
- static void vfio_set_migration_error(int err)
-@@ -2655,6 +2655,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+-    if (QLIST_EMPTY(&vfio_group_list)) {
++    if (QLIST_EMPTY(&vfio_device_list)) {
+         return false;
      }
  
+-    QLIST_FOREACH(group, &vfio_group_list, next) {
+-        QLIST_FOREACH(vbasedev, &group->device_list, next) {
+-            if (vbasedev->migration_blocker) {
+-                return false;
+-            }
++    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++        if (vbasedev->migration_blocker) {
++            return false;
+         }
+     }
+     return true;
+@@ -120,19 +119,16 @@ static Error *multiple_devices_migration_blocker;
+  */
+ static bool vfio_multiple_devices_migration_is_supported(void)
+ {
+-    VFIOGroup *group;
+     VFIODevice *vbasedev;
+     unsigned int device_num = 0;
+     bool all_support_p2p = true;
+ 
+-    QLIST_FOREACH(group, &vfio_group_list, next) {
+-        QLIST_FOREACH(vbasedev, &group->device_list, next) {
+-            if (vbasedev->migration) {
+-                device_num++;
++    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++        if (vbasedev->migration) {
++            device_num++;
+ 
+-                if (!(vbasedev->migration->mig_flags & VFIO_MIGRATION_P2P)) {
+-                    all_support_p2p = false;
+-                }
++            if (!(vbasedev->migration->mig_flags & VFIO_MIGRATION_P2P)) {
++                all_support_p2p = false;
+             }
+         }
+     }
+@@ -1777,22 +1773,17 @@ bool vfio_get_info_dma_avail(struct vfio_iommu_type1_info *info,
+ 
+ void vfio_reset_handler(void *opaque)
+ {
+-    VFIOGroup *group;
+     VFIODevice *vbasedev;
+ 
+-    QLIST_FOREACH(group, &vfio_group_list, next) {
+-        QLIST_FOREACH(vbasedev, &group->device_list, next) {
+-            if (vbasedev->dev->realized) {
+-                vbasedev->ops->vfio_compute_needs_reset(vbasedev);
+-            }
++    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++        if (vbasedev->dev->realized) {
++            vbasedev->ops->vfio_compute_needs_reset(vbasedev);
+         }
+     }
+ 
+-    QLIST_FOREACH(group, &vfio_group_list, next) {
+-        QLIST_FOREACH(vbasedev, &group->device_list, next) {
+-            if (vbasedev->dev->realized && vbasedev->needs_reset) {
+-                vbasedev->ops->vfio_hot_reset_multi(vbasedev);
+-            }
++    QLIST_FOREACH(vbasedev, &vfio_device_list, next) {
++        if (vbasedev->dev->realized && vbasedev->needs_reset) {
++            vbasedev->ops->vfio_hot_reset_multi(vbasedev);
+         }
+     }
+ }
+@@ -2657,6 +2648,7 @@ int vfio_attach_device(char *name, VFIODevice *vbasedev,
      container = group->container;
-+    vbasedev->container = container;
+     vbasedev->container = container;
      QLIST_INSERT_HEAD(&container->device_list, vbasedev, container_next);
++    QLIST_INSERT_HEAD(&vfio_device_list, vbasedev, global_next);
  
      return ret;
-@@ -2664,7 +2665,12 @@ void vfio_detach_device(VFIODevice *vbasedev)
- {
-     VFIOGroup *group = vbasedev->group;
+ }
+@@ -2669,6 +2661,7 @@ void vfio_detach_device(VFIODevice *vbasedev)
+         return;
+     }
  
-+    if (!vbasedev->container) {
-+        return;
-+    }
-+
++    QLIST_REMOVE(vbasedev, global_next);
      QLIST_REMOVE(vbasedev, container_next);
-+    vbasedev->container = NULL;
+     vbasedev->container = NULL;
      trace_vfio_detach_device(vbasedev->name, group->groupid);
-     vfio_put_base_device(vbasedev);
-     vfio_put_group(group);
 -- 
 2.41.0
 
