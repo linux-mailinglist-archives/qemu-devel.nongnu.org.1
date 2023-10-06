@@ -2,37 +2,39 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AADA97BBE8C
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1C747BBE86
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:16:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qopMJ-0007Uq-PX; Fri, 06 Oct 2023 14:15:31 -0400
+	id 1qopML-0007Xd-5C; Fri, 06 Oct 2023 14:15:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qopMB-0007Lo-UQ; Fri, 06 Oct 2023 14:15:23 -0400
+ id 1qopMD-0007Mb-90; Fri, 06 Oct 2023 14:15:25 -0400
 Received: from isrv.corpit.ru ([86.62.121.231])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qopMA-0000gD-HD; Fri, 06 Oct 2023 14:15:23 -0400
+ id 1qopMB-0000gi-KY; Fri, 06 Oct 2023 14:15:24 -0400
 Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id BA6F928466;
+ by isrv.corpit.ru (Postfix) with ESMTP id E769128467;
  Fri,  6 Oct 2023 21:15:11 +0300 (MSK)
 Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 687D52D71D;
+ by tsrv.corpit.ru (Postfix) with SMTP id 8BD672D71E;
  Fri,  6 Oct 2023 21:15:06 +0300 (MSK)
-Received: (nullmailer pid 3297260 invoked by uid 1000);
+Received: (nullmailer pid 3297263 invoked by uid 1000);
  Fri, 06 Oct 2023 18:15:04 -0000
 From: Michael Tokarev <mjt@tls.msk.ru>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Richard Henderson <richard.henderson@linaro.org>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 52/57] linux-user/hppa: Fix struct target_sigcontext
- layout
-Date: Fri,  6 Oct 2023 21:14:41 +0300
-Message-Id: <20231006181504.3297196-7-mjt@tls.msk.ru>
+Cc: qemu-stable@nongnu.org,
+ =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+ Yanhui Ma <yama@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Lei Yang <leiyang@redhat.com>, Si-Wei Liu <si-wei.liu@oracle.com>,
+ "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
+Subject: [Stable-8.1.2 53/57] vdpa net: zero vhost_vdpa iova_tree pointer at
+ cleanup
+Date: Fri,  6 Oct 2023 21:14:42 +0300
+Message-Id: <20231006181504.3297196-8-mjt@tls.msk.ru>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <qemu-stable-8.1.2-20231006191112@cover.tls.msk.ru>
 References: <qemu-stable-8.1.2-20231006191112@cover.tls.msk.ru>
@@ -61,29 +63,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Eugenio Pérez <eperezma@redhat.com>
 
-Use abi_ullong not uint64_t so that the alignment of the field
-and therefore the layout of the struct is correct.
+Not zeroing it causes a SIGSEGV if the live migration is cancelled, at
+net device restart.
 
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-(cherry picked from commit 33bc4fa78b06fc4e5fe22e5576811a97707e0cc6)
+This is caused because CVQ tries to reuse the iova_tree that is present
+in the first vhost_vdpa device at the end of vhost_vdpa_net_cvq_start.
+As a consequence, it tries to access an iova_tree that has been already
+free.
+
+Fixes: 00ef422e9fbf ("vdpa net: move iova tree creation from init to start")
+Reported-by: Yanhui Ma <yama@redhat.com>
+Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
+Message-Id: <20230913123408.2819185-1-eperezma@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Tested-by: Lei Yang <leiyang@redhat.com>
+Reviewed-by: Si-Wei Liu <si-wei.liu@oracle.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+(cherry picked from commit 0a7a164bc37b4ecbf74466e1e5243d72a768ad06)
 Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
 
-diff --git a/linux-user/hppa/signal.c b/linux-user/hppa/signal.c
-index bda6e54655..ec5f5412d1 100644
---- a/linux-user/hppa/signal.c
-+++ b/linux-user/hppa/signal.c
-@@ -25,7 +25,7 @@
- struct target_sigcontext {
-     abi_ulong sc_flags;
-     abi_ulong sc_gr[32];
--    uint64_t sc_fr[32];
-+    abi_ullong sc_fr[32];
-     abi_ulong sc_iasq[2];
-     abi_ulong sc_iaoq[2];
-     abi_ulong sc_sar;
+diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+index 9795306742..977faeb44b 100644
+--- a/net/vhost-vdpa.c
++++ b/net/vhost-vdpa.c
+@@ -385,6 +385,8 @@ static void vhost_vdpa_net_client_stop(NetClientState *nc)
+     dev = s->vhost_vdpa.dev;
+     if (dev->vq_index + dev->nvqs == dev->vq_index_end) {
+         g_clear_pointer(&s->vhost_vdpa.iova_tree, vhost_iova_tree_delete);
++    } else {
++        s->vhost_vdpa.iova_tree = NULL;
+     }
+ }
+ 
 -- 
 2.39.2
 
