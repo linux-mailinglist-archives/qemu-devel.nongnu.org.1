@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E567BB6C4
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:43:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DB27BB6B3
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:42:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoj9T-0005CS-4t; Fri, 06 Oct 2023 07:37:51 -0400
+	id 1qoj9J-00057o-4z; Fri, 06 Oct 2023 07:37:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8w-00051t-Vc
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:19 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8z-00052v-AG
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:24 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8t-00007c-8O
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:18 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8t-0000Ar-8d
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696592223;
+ s=mimecast20190719; t=1696592234;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=TcMr9UNXIYVFqDWLs8PuAu50D7wm7GFqqHd0XuLYOis=;
- b=fgRPhZdjR/8wkI0PoZ2k+Jbx3DrJvLfvJUbWGTxWwfXl1qXNXJ1Z62ugw5jSG6GJSlapCL
- ij8S09V09lpLqG6D/fkXPd0rggPxaUCxNBxk72NU2qCn9T5IH0cm7jhNxZXL+SF+zt+Bcc
- hhBHq7uaXOQmaixMzbSibH+yWC+91k4=
+ bh=PmF1lPTY/N4yZXnoI95jbT0XyzCg+nV6j51RKZahf70=;
+ b=VuQBsMfbNTj2RPTNVW0d3rgbEb3z3eoyvrKZo86fEelaki7cwT2ieOxHhDIWVy4y/m4Cwa
+ r/zSHdjz1GPLJIeKL/siHJszDYkecoptx2QgpPpmiiXht7tVtulQAuM6zDsnmvhq/DDQJj
+ lCU2EROBQGn7cSe1TxILrgVfpp+UahQ=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-388-nRiQqCyxN2iP440Z7DHFJQ-1; Fri, 06 Oct 2023 07:37:01 -0400
-X-MC-Unique: nRiQqCyxN2iP440Z7DHFJQ-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
+ us-mta-610-FRB752AhO7i51ut9_CXhsQ-1; Fri, 06 Oct 2023 07:37:01 -0400
+X-MC-Unique: FRB752AhO7i51ut9_CXhsQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.2])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D764A811E8D;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8385811E8E;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9B88F1054FC1;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 96C8640C6EC0;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 8C0DD21E6883; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
+ id 8EF3421E6884; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Richard Henderson <richard.henderson@linaro.org>,
- Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PULL 19/32] ui/cocoa: Clean up global variable shadowing
-Date: Fri,  6 Oct 2023 13:36:44 +0200
-Message-ID: <20231006113657.3803180-20-armbru@redhat.com>
+ Eric Blake <eblake@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>
+Subject: [PULL 20/32] util/cutils: Clean up global variable shadowing in
+ get_relocated_path()
+Date: Fri,  6 Oct 2023 13:36:45 +0200
+Message-ID: <20231006113657.3803180-21-armbru@redhat.com>
 In-Reply-To: <20231006113657.3803180-1-armbru@redhat.com>
 References: <20231006113657.3803180-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,38 +86,34 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 Fix:
 
-  ui/cocoa.m:346:20: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-      QemuCocoaView *cocoaView = userInfo;
+  util/cutils.c:1147:17: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      const char *exec_dir = qemu_get_exec_dir();
+                  ^
+  util/cutils.c:1035:20: note: previous declaration is here
+  static const char *exec_dir;
                      ^
-  ui/cocoa.m:342:16: note: previous declaration is here
-  QemuCocoaView *cocoaView;
-                 ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004120019.93101-11-philmd@linaro.org>
+Message-ID: <20231004120019.93101-12-philmd@linaro.org>
+Reviewed-by: Eric Blake <eblake@redhat.com>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Reviewed-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- ui/cocoa.m | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ util/cutils.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/ui/cocoa.m b/ui/cocoa.m
-index 145f42d190..d95276013c 100644
---- a/ui/cocoa.m
-+++ b/ui/cocoa.m
-@@ -343,9 +343,9 @@ - (void) raiseAllKeys;
- 
- static CGEventRef handleTapEvent(CGEventTapProxy proxy, CGEventType type, CGEventRef cgEvent, void *userInfo)
+diff --git a/util/cutils.c b/util/cutils.c
+index 25373198ad..b44718a6a2 100644
+--- a/util/cutils.c
++++ b/util/cutils.c
+@@ -1144,7 +1144,6 @@ char *get_relocated_path(const char *dir)
  {
--    QemuCocoaView *cocoaView = userInfo;
-+    QemuCocoaView *view = userInfo;
-     NSEvent *event = [NSEvent eventWithCGEvent:cgEvent];
--    if ([cocoaView isMouseGrabbed] && [cocoaView handleEvent:event]) {
-+    if ([view isMouseGrabbed] && [view handleEvent:event]) {
-         COCOA_DEBUG("Global events tap: qemu handled the event, capturing!\n");
-         return NULL;
-     }
+     size_t prefix_len = strlen(CONFIG_PREFIX);
+     const char *bindir = CONFIG_BINDIR;
+-    const char *exec_dir = qemu_get_exec_dir();
+     GString *result;
+     int len_dir, len_bindir;
+ 
 -- 
 2.41.0
 
