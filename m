@@ -2,19 +2,19 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0287BB6A5
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA5A7BB6AD
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:41:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoj9L-00059P-3m; Fri, 06 Oct 2023 07:37:43 -0400
+	id 1qoj9I-00057T-Lv; Fri, 06 Oct 2023 07:37:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8w-00051o-Di
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:19 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8u-00050s-8z
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:16 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8q-00008C-Df
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8o-00008K-Ll
  for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  s=mimecast20190719; t=1696592225;
@@ -22,41 +22,40 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CzR+RMIq811dbSevTYmjOhuBh9GlyIdCm7XlyB+I4OM=;
- b=Ox7UCq0cCbu1jCnw/0KNPMy3bPA++oD0eYQHsmVKCBDY24YulQcBmvPhSvOS2qlHeC6YNW
- qNWwZh+oqCPZchQTtqMqsXFj2VgrWDQY5emlTFNspjO6PB1nIdgbiKw1In83sFY/DSLKFi
- gyDmSVNaYAUJLE7upc0FhyeABUpMHCY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-354-aoflsY0cPHOD4_tY0WV8rg-1; Fri, 06 Oct 2023 07:37:00 -0400
-X-MC-Unique: aoflsY0cPHOD4_tY0WV8rg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com
- [10.11.54.2])
+ bh=yyqNIrAV89ZLDcW0VZ3dmJJQ7bbyUqitHtkl6WYqbIg=;
+ b=FkIcl8ZJDH7UoWoKjmTZvxyzHolsHMA8lB6mHOF1Ow73tWVQ+qfd3jsGc5liFWy52Qen6C
+ TQKH77+LN0oHZy42BD0/qnoX6Ftwv0zS2aIceY4qPXZxfAS/auvu+llB8Tq8YY/HFEqokq
+ 4E7Bwc0p019tLf2x2AQ1sXdI6zAKMbk=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-122-V48I8PrHNNiT-_s67WZmYA-1; Fri, 06 Oct 2023 07:37:00 -0400
+X-MC-Unique: V48I8PrHNNiT-_s67WZmYA-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D708629A9D40;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB36F18175A4;
  Fri,  6 Oct 2023 11:36:59 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B5DB540C6EA8;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BAABD47AD4A;
  Fri,  6 Oct 2023 11:36:59 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7A90021E6916; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
+ id 7D5C821E691A; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: stefanha@redhat.com,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Eric Blake <eblake@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>
-Subject: [PULL 13/32] os-posix: Clean up global variable shadowing
-Date: Fri,  6 Oct 2023 13:36:38 +0200
-Message-ID: <20231006113657.3803180-14-armbru@redhat.com>
+Subject: [PULL 14/32] plugins/loader: Clean up global variable shadowing
+Date: Fri,  6 Oct 2023 13:36:39 +0200
+Message-ID: <20231006113657.3803180-15-armbru@redhat.com>
 In-Reply-To: <20231006113657.3803180-1-armbru@redhat.com>
 References: <20231006113657.3803180-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -85,90 +84,63 @@ From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 Fix:
 
-  os-posix.c:103:31: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  bool os_set_runas(const char *optarg)
-                                ^
-  os-posix.c:176:32: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  void os_set_chroot(const char *optarg)
-                                 ^
+  include/qemu/plugin.h:245:54: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static inline void qemu_plugin_opt_parse(const char *optarg,
+                                                       ^
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/getopt.h:77:14: note: previous declaration is here
   extern char *optarg;                    /* getopt(3) external variables */
                ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004120019.93101-5-philmd@linaro.org>
-Reviewed-by: Eric Blake <eblake@redhat.com>
+Message-ID: <20231004120019.93101-6-philmd@linaro.org>
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- include/sysemu/os-posix.h |  4 ++--
- os-posix.c                | 12 ++++++------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ include/qemu/plugin.h | 4 ++--
+ plugins/loader.c      | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/sysemu/os-posix.h b/include/sysemu/os-posix.h
-index 6dfdcbb086..dff32ae185 100644
---- a/include/sysemu/os-posix.h
-+++ b/include/sysemu/os-posix.h
-@@ -49,8 +49,8 @@ void os_setup_signal_handling(void);
- int os_set_daemonize(bool d);
- bool is_daemonized(void);
- void os_daemonize(void);
--bool os_set_runas(const char *optarg);
--void os_set_chroot(const char *optarg);
-+bool os_set_runas(const char *user_id);
-+void os_set_chroot(const char *path);
- void os_setup_post(void);
- int os_mlock(void);
- 
-diff --git a/os-posix.c b/os-posix.c
-index f90dfda9b0..52ef6990ff 100644
---- a/os-posix.c
-+++ b/os-posix.c
-@@ -94,13 +94,13 @@ static uid_t user_uid = (uid_t)-1; /*   -1      -1        >=0    */
- static gid_t user_gid = (gid_t)-1; /*   -1      -1        >=0    */
- 
- /*
-- * Prepare to change user ID. optarg can be one of 3 forms:
-+ * Prepare to change user ID. user_id can be one of 3 forms:
-  *   - a username, in which case user ID will be changed to its uid,
-  *     with primary and supplementary groups set up too;
-  *   - a numeric uid, in which case only the uid will be set;
-  *   - a pair of numeric uid:gid.
-  */
--bool os_set_runas(const char *optarg)
-+bool os_set_runas(const char *user_id)
- {
-     unsigned long lv;
-     const char *ep;
-@@ -108,14 +108,14 @@ bool os_set_runas(const char *optarg)
-     gid_t got_gid;
-     int rc;
- 
--    user_pwd = getpwnam(optarg);
-+    user_pwd = getpwnam(user_id);
-     if (user_pwd) {
-         user_uid = -1;
-         user_gid = -1;
-         return true;
-     }
- 
--    rc = qemu_strtoul(optarg, &ep, 0, &lv);
-+    rc = qemu_strtoul(user_id, &ep, 0, &lv);
-     got_uid = lv; /* overflow here is ID in C99 */
-     if (rc || *ep != ':' || got_uid != lv || got_uid == (uid_t)-1) {
-         return false;
-@@ -173,9 +173,9 @@ static void change_process_uid(void)
- 
- static const char *chroot_dir;
- 
--void os_set_chroot(const char *optarg)
-+void os_set_chroot(const char *path)
- {
--    chroot_dir = optarg;
-+    chroot_dir = path;
+diff --git a/include/qemu/plugin.h b/include/qemu/plugin.h
+index bc0781cab8..7fdc3a4849 100644
+--- a/include/qemu/plugin.h
++++ b/include/qemu/plugin.h
+@@ -50,7 +50,7 @@ static inline void qemu_plugin_add_opts(void)
+     qemu_add_opts(&qemu_plugin_opts);
  }
  
- static void change_root(void)
+-void qemu_plugin_opt_parse(const char *optarg, QemuPluginList *head);
++void qemu_plugin_opt_parse(const char *optstr, QemuPluginList *head);
+ int qemu_plugin_load_list(QemuPluginList *head, Error **errp);
+ 
+ union qemu_plugin_cb_sig {
+@@ -242,7 +242,7 @@ void qemu_plugin_user_postfork(bool is_child);
+ static inline void qemu_plugin_add_opts(void)
+ { }
+ 
+-static inline void qemu_plugin_opt_parse(const char *optarg,
++static inline void qemu_plugin_opt_parse(const char *optstr,
+                                          QemuPluginList *head)
+ {
+     error_report("plugin interface not enabled in this build");
+diff --git a/plugins/loader.c b/plugins/loader.c
+index 809f3f9b13..734c11cae0 100644
+--- a/plugins/loader.c
++++ b/plugins/loader.c
+@@ -140,12 +140,12 @@ static int plugin_add(void *opaque, const char *name, const char *value,
+     return 0;
+ }
+ 
+-void qemu_plugin_opt_parse(const char *optarg, QemuPluginList *head)
++void qemu_plugin_opt_parse(const char *optstr, QemuPluginList *head)
+ {
+     struct qemu_plugin_parse_arg arg;
+     QemuOpts *opts;
+ 
+-    opts = qemu_opts_parse_noisily(qemu_find_opts("plugin"), optarg, true);
++    opts = qemu_opts_parse_noisily(qemu_find_opts("plugin"), optstr, true);
+     if (opts == NULL) {
+         exit(1);
+     }
 -- 
 2.41.0
 
