@@ -2,63 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DAA7BC087
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D98197BC0CA
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:54:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qordH-0006ye-0g; Fri, 06 Oct 2023 16:41:11 -0400
+	id 1qorpK-0005UY-NT; Fri, 06 Oct 2023 16:53:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qord2-0006dX-IG; Fri, 06 Oct 2023 16:40:58 -0400
-Received: from forwardcorp1b.mail.yandex.net ([178.154.239.136])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qord0-0002AY-AG; Fri, 06 Oct 2023 16:40:55 -0400
-Received: from mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- (mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net
- [IPv6:2a02:6b8:c12:201e:0:640:d29a:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id F32B461855;
- Fri,  6 Oct 2023 23:40:50 +0300 (MSK)
-Received: from [IPV6:2a02:6b8:b081:b403::1:3c] (unknown
- [2a02:6b8:b081:b403::1:3c])
- by mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id jdgIhT7OiuQ0-RMgPfQpc; Fri, 06 Oct 2023 23:40:49 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696624849;
- bh=jdy5V254Xd5i5uHocN7dobYI/i9C7WtHGjDeMI9Upe8=;
- h=In-Reply-To:Cc:Date:References:To:From:Subject:Message-ID;
- b=P2rfmi38x7lsWEedZ3aKNmCxpnMltgAhtxdwNkKioIu12GOZdSlgkFuYeAXG8ljBo
- /sfJLnkMd/kGG+ZOVTKAfE5HdMctSoo19+PHfotPKm3L9S5WCJ2Fe3Vcqh9uAVQ3MD
- 9qufQoSq1LxgxzBACiriazO78+ArrsT2qOPyOKvo=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-26.myt.yp-c.yandex.net;
- dkim=pass header.i=@yandex-team.ru
-Message-ID: <52b95c9f-ed22-48e4-ae0e-91acb875c40b@yandex-team.ru>
-Date: Fri, 6 Oct 2023 23:40:49 +0300
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qorpI-0005UC-TW
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 16:53:36 -0400
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qorpF-0005I8-2s
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 16:53:35 -0400
+Received: by mail-wr1-x431.google.com with SMTP id
+ ffacd0b85a97d-3214cdb4b27so2449818f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 13:53:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696625611; x=1697230411; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=kuLACqjs8ut0bAk+buG0eQ4Qk0kx2QAaHMPo4L8iR4E=;
+ b=XtG5/GVNWmpCkcWcMxotOMsdbWKmtW+0Erbp8dgcvC4Ex/p3hLwuhs6Ig3f9e6+jqf
+ Qdz2KsPiZFOvNPzzBQCvpP7Wg2kJZD7gGR3HrmlCSF2WfrCF6ePC8HuHCZ+JpZ4/CP9Q
+ ggpUe/Y6NiWuOrJ1ZajtqTqdYVmjxkQzTEoOJorJJLFici4+LYcHjR5SnwXnf9kHkgj6
+ nzNdnNK5KxB+/Ch8zn802s8PmKgSjeOppAlytEeJyIAMgG1/H3sfMNWDWgmh0qT84arL
+ enm6aU7Esv52grzYqjVikTt2FP6YtWkcTlq68Ibtd23rz8Mb1cKrQtUBML83qJJP9M4W
+ 2nrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696625611; x=1697230411;
+ h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
+ :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=kuLACqjs8ut0bAk+buG0eQ4Qk0kx2QAaHMPo4L8iR4E=;
+ b=i42Nuk/FIKkmsWUYElPausWcihHkTuvMHR1cQX3iFwcSs9KBVgdVaorOs2y8SNIhkW
+ ZNuG6nnDWsLYJD9O/toK1LcUlBkCErivon/jIMQcArnyUupeJP0KGwBCzCHxXXtp3txw
+ 5CLLswmR+fzFg9BXkoYWtkJTxDM4kIK7V4kOA6JOCfo42uU7MTVf4Mu0MOMmBtmADeGX
+ 7lSmf3KnmJsVsejRUn25KNwmjCITAXqFPGuYmPk4dL9J2cHo/pFhjcwhxDceed5wOtjX
+ ENSqxM+hoLzoz2a/P4HxHAW4s18Z1V6Dynpdo/0nPbAr2x0Xq913FLoQM7GwwaCzVNa5
+ Miyw==
+X-Gm-Message-State: AOJu0YzolwaXi3rV9kufn433tIB1kGdQhS2NM1+shZEXVaX09ZE01ckH
+ Ckb0lTO0DU59le+UPl1WPDln3bnHhsCbWH+YBuY=
+X-Google-Smtp-Source: AGHT+IF/d/UJ1gDgG2dN1JSXCu3VEypWRa1ItysOiNjOhIsyPxwuyNrpOu3eYZPdbYi+E4CGF5Ykbg==
+X-Received: by 2002:a5d:4c50:0:b0:31f:dc60:13b5 with SMTP id
+ n16-20020a5d4c50000000b0031fdc6013b5mr8374806wrt.25.1696625610950; 
+ Fri, 06 Oct 2023 13:53:30 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ v7-20020adfedc7000000b003197efd1e7bsm2375432wro.114.2023.10.06.13.53.30
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Fri, 06 Oct 2023 13:53:30 -0700 (PDT)
+Received: from zen (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 2D0371FFBB;
+ Fri,  6 Oct 2023 21:53:30 +0100 (BST)
+References: <20231004125904.110781-1-hreitz@redhat.com>
+ <20231004125904.110781-2-hreitz@redhat.com>
+ <20231005170852.GB1342722@fedora>
+ <20231005131352-mutt-send-email-mst@kernel.org>
+ <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
+ <20231006043518-mutt-send-email-mst@kernel.org>
+ <a8b9d842-0925-38d0-2f0d-f2560bab251b@redhat.com>
+ <20231006051802-mutt-send-email-mst@kernel.org>
+ <a4af0357-12ee-fc7f-e249-239da34409b0@redhat.com>
+ <20231006055229-mutt-send-email-mst@kernel.org>
+ <d9c2d2c4-5ab3-a3f3-8925-155e1c4ff73a@redhat.com>
+ <87il7jg4oe.fsf@linaro.org>
+ <2ba3ef6b-4af1-9c65-f542-bfcc8412e99c@redhat.com>
+User-agent: mu4e 1.11.21; emacs 29.1.50
+From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: Hanna Czenczek <hreitz@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, virtio-fs@redhat.com, Eugenio
+ =?utf-8?Q?P=C3=A9rez?= <eperezma@redhat.com>, Anton Kuchin
+ <antonkuchin@yandex-team.ru>,
+ Yajun Wu <yajunw@nvidia.com>, qemu-devel@nongnu.org
+Subject: Re: [Virtio-fs] (no subject)
+Date: Fri, 06 Oct 2023 21:49:30 +0100
+In-reply-to: <2ba3ef6b-4af1-9c65-f542-bfcc8412e99c@redhat.com>
+Message-ID: <875y3j4gmu.fsf@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] Python: Enable python3.12 support
-Content-Language: en-US
-From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-To: John Snow <jsnow@redhat.com>, qemu-devel@nongnu.org
-Cc: Hanna Reitz <hreitz@redhat.com>,
- Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Huth <thuth@redhat.com>,
- Beraldo Leal <bleal@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, qemu-block@nongnu.org,
- Cleber Rosa <crosa@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-References: <20231006195243.3131140-1-jsnow@redhat.com>
- <20231006195243.3131140-5-jsnow@redhat.com>
- <c423bb7c-867d-4b43-b472-2c548628e645@yandex-team.ru>
-In-Reply-To: <c423bb7c-867d-4b43-b472-2c548628e645@yandex-team.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.136;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::431;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x431.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -81,79 +110,82 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 06.10.23 23:39, Vladimir Sementsov-Ogievskiy wrote:
-> On 06.10.23 22:52, John Snow wrote:
->> Python 3.12 has released, so update the test infrastructure to test
->> against this version. Update the configure script to look for it when an
->> explicit Python interpreter isn't chosen.
+
+Hanna Czenczek <hreitz@redhat.com> writes:
+
+> On 06.10.23 17:17, Alex Benn=C3=A9e wrote:
+>> Hanna Czenczek <hreitz@redhat.com> writes:
 >>
->> Signed-off-by: John Snow <jsnow@redhat.com>
->> ---
->>   configure                              | 3 ++-
->>   python/setup.cfg                       | 3 ++-
->>   tests/docker/dockerfiles/python.docker | 6 +++++-
->>   3 files changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/configure b/configure
->> index e9a921ffb0..b480a3d6ae 100755
->> --- a/configure
->> +++ b/configure
->> @@ -561,7 +561,8 @@ first_python=
->>   if test -z "${PYTHON}"; then
->>       # A bare 'python' is traditionally python 2.x, but some distros
->>       # have it as python 3.x, so check in both places.
->> -    for binary in python3 python python3.11 python3.10 python3.9 python3.8; do
->> +    for binary in python3 python python3.12 python3.11 \
->> +                          python3.10 python3.9 python3.8; do
->>           if has "$binary"; then
->>               python=$(command -v "$binary")
->>               if check_py_version "$python"; then
->> diff --git a/python/setup.cfg b/python/setup.cfg
->> index 8c67dce457..48668609d3 100644
->> --- a/python/setup.cfg
->> +++ b/python/setup.cfg
->> @@ -18,6 +18,7 @@ classifiers =
->>       Programming Language :: Python :: 3.9
->>       Programming Language :: Python :: 3.10
->>       Programming Language :: Python :: 3.11
->> +    Programming Language :: Python :: 3.12
->>       Typing :: Typed
->>   [options]
->> @@ -182,7 +183,7 @@ multi_line_output=3
->>   # of python available on your system to run this test.
->>   [tox:tox]
->> -envlist = py38, py39, py310, py311
->> +envlist = py38, py39, py310, py311, py312
->>   skip_missing_interpreters = true
->>   [testenv]
->> diff --git a/tests/docker/dockerfiles/python.docker b/tests/docker/dockerfiles/python.docker
->> index 383ccbdc3a..a3c1321190 100644
->> --- a/tests/docker/dockerfiles/python.docker
->> +++ b/tests/docker/dockerfiles/python.docker
->> @@ -11,7 +11,11 @@ ENV PACKAGES \
->>       python3-pip \
->>       python3-tox \
->>       python3-virtualenv \
->> -    python3.10
->> +    python3.10 \
->> +    python3.11 \
->> +    python3.12 \
->> +    python3.8 \
->> +    python3.9
-> 
-> Hmm, interesting, how did it work before? Only 3.10 was tested?
-> 
->>   RUN dnf install -y $PACKAGES
->>   RUN rpm -q $PACKAGES | sort > /packages.txt
-> 
-> weak, I'm unsure about how this all works, I just see that 3.12 is added like others in all hunks except python.docker, but I think adding several python versions to docker should be safe anyway:
-> Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
-> 
+>>> On 06.10.23 12:34, Michael S. Tsirkin wrote:
+>>>> On Fri, Oct 06, 2023 at 11:47:55AM +0200, Hanna Czenczek wrote:
+>>>>> On 06.10.23 11:26, Michael S. Tsirkin wrote:
+>>>>>> On Fri, Oct 06, 2023 at 11:15:55AM +0200, Hanna Czenczek wrote:
+>>>>>>> On 06.10.23 10:45, Michael S. Tsirkin wrote:
+>>>>>>>> On Fri, Oct 06, 2023 at 09:48:14AM +0200, Hanna Czenczek wrote:
+>>>>>>>>> On 05.10.23 19:15, Michael S. Tsirkin wrote:
+>>>>>>>>>> On Thu, Oct 05, 2023 at 01:08:52PM -0400, Stefan Hajnoczi wrote:
+>>>>>>>>>>> On Wed, Oct 04, 2023 at 02:58:57PM +0200, Hanna Czenczek wrote:
+>> <snip>
+>>>>> What I=E2=80=99m saying is, 923b8921d21 introduced SET_STATUS calls t=
+hat broke all
+>>>>> devices that would implement them as per virtio spec, and even today =
+it=E2=80=99s
+>>>>> broken for stateful devices.=C2=A0 The mentioned performance issue is=
+ likely
+>>>>> real, but we can=E2=80=99t address it by making up SET_STATUS calls t=
+hat are wrong.
+>>>>>
+>>>>> I concede that I didn=E2=80=99t think about DRIVER_OK.=C2=A0 Personal=
+ly, I would do all
+>>>>> final configuration that would happen upon a DRIVER_OK once the first=
+ vring
+>>>>> is started (i.e. receives a kick).=C2=A0 That has the added benefit o=
+f being
+>>>>> asynchronous because it doesn=E2=80=99t block any vhost-user messages=
+ (which are
+>>>>> synchronous, and thus block downtime).
+>>>>>
+>>>>> Hanna
+>>>> For better or worse kick is per ring. It's out of spec to start rings
+>>>> that were not kicked but I guess you could do configuration ...
+>>>> Seems somewhat asymmetrical though.
+>>> I meant to take the first ring being started as the signal to do the
+>>> global configuration, i.e. not do this once per vring, but once
+>>> globally.
+>>>
+>>>> Let's wait until next week, hopefully Yajun Wu will answer.
+>>> I mean, personally I don=E2=80=99t really care about the whole SET_STAT=
+US
+>>> thing.=C2=A0 It=E2=80=99s clear that it=E2=80=99s broken for stateful d=
+evices.=C2=A0 The fact
+>>> that it took until 6f8be29ec17d to fix it for just any device that
+>>> would implement it according to spec to me is a strong indication that
+>>> nobody does implement it according to spec, and is currently only used
+>>> to signal to some specific back-end that all rings have been set up
+>>> and should be configured in a single block.
+>> I'm certainly using [GS]ET_STATUS for the proposed F_TRANSPORT
+>> extensions where everything is off-loaded to the vhost-user backend.
+>
+> How do these back-ends work with the fact that qemu uses SET_STATUS
+> incorrectly when not offloading?=C2=A0 Do you plan on fixing that?
 
-I meant, r-b is weak, not the patch :)
+Mainly having a common base implementation which does it right and
+having very lightweight derivations for legacy stubs using it. The
+aim is to eliminate the need for QEMU stubs entirely by fully specifying
+the device from the vhost-user API.=20
 
--- 
-Best regards,
-Vladimir
+> (I.e. that we send SET_STATUS 0 when the VM is paused, potentially
+> resetting state that is not recoverable, and that we set DRIVER and
+> DRIVER_OK simultaneously.)
 
+This is QEMU simulating a SET_STATUS rather than the guest triggering
+it?
+
+>
+> Hanna
+
+
+--=20
+Alex Benn=C3=A9e
+Virtualisation Tech Lead @ Linaro
 
