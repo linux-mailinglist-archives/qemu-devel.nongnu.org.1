@@ -2,60 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7007E7BB68E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8B187BB6C6
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:43:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoj9E-000553-5N; Fri, 06 Oct 2023 07:37:36 -0400
+	id 1qoj9Q-0005BR-Il; Fri, 06 Oct 2023 07:37:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8o-0004zI-DC
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:13 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj93-00053A-03
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:26 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8j-00006u-2I
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:09 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8z-0000EG-00
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696592222;
+ s=mimecast20190719; t=1696592239;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=MGDOli7FXeH7i5r+mSGo0hb7GPl8gp7Ho6dYDlXIsy8=;
- b=TZ3iTuXWMuekf6BTyHXKV9+55qI8HoF/+NwKfOAY/IL/rpLzGojViHuCdyQcfY+ojGNAsK
- 9PHju5gIfbf8rZUC0CT7e7l9GSHlFLVyE+xMrH3dCAD0IdY2RdczwZjHrVD7TyO84SgLe8
- ziPxR/75J+bStsiXAmd1W4bZ5/t4ltY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-668-EmZUMq1KMrOAXhZ1HvkgZQ-1; Fri, 06 Oct 2023 07:37:01 -0400
-X-MC-Unique: EmZUMq1KMrOAXhZ1HvkgZQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
+ bh=0dtR46yIS7jXolrgD1WN+gaptLFT0kHhKgLq1QGGCo0=;
+ b=eTOzGT5Sor6ltL5OesStRPoCFl0lojXJ5NOgGCIHBMXc89FyozaTDKH+lxpYxKbO2HUQ7p
+ WyqPZNYv4tg9ig/974DwocfSb5xl2At020q4E0HSf5+eVeURNmA7SklV7j/6Fay3xa/UHq
+ xj9g670dEbk3A1bxDuBDQqzAwz+5OQM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-402-q2-fD7H_NrOTxltfrv0DvQ-1; Fri, 06 Oct 2023 07:37:01 -0400
+X-MC-Unique: q2-fD7H_NrOTxltfrv0DvQ-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EDC2D3827DEC;
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0234811E7E;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id B16DA202696C;
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id BC3F4140E964;
  Fri,  6 Oct 2023 11:37:00 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id A408B21E688D; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
+ id A5A2B21E6890; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: stefanha@redhat.com, Thomas Huth <thuth@redhat.com>,
- Michael Tokarev <mjt@tls.msk.ru>
-Subject: [PULL 27/32] hw/usb: Silence compiler warnings in USB code when
- compiling with -Wshadow
-Date: Fri,  6 Oct 2023 13:36:52 +0200
-Message-ID: <20231006113657.3803180-28-armbru@redhat.com>
+Cc: stefanha@redhat.com, Laurent Vivier <laurent@vivier.eu>,
+ Thomas Huth <thuth@redhat.com>
+Subject: [PULL 28/32] linux-user/flatload: clean up local variable shadowing
+Date: Fri,  6 Oct 2023 13:36:53 +0200
+Message-ID: <20231006113657.3803180-29-armbru@redhat.com>
 In-Reply-To: <20231006113657.3803180-1-armbru@redhat.com>
 References: <20231006113657.3803180-1-armbru@redhat.com>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -80,141 +79,50 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Thomas Huth <thuth@redhat.com>
+From: Laurent Vivier <laurent@vivier.eu>
 
-Rename variables or remove nested definitions where it makes sense,
-so that we can finally compile the USB code with "-Wshadow", too.
+Fix following warnings:
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
-Message-ID: <20231004130822.113343-1-thuth@redhat.com>
-Reviewed-by: Michael Tokarev <mjt@tls.msk.ru>
+.../linux-user/flatload.c: In function 'load_flt_binary':
+.../linux-user/flatload.c:758:23: warning: declaration of 'p' shadows a previous local [-Wshadow=compatible-local]
+  758 |             abi_ulong p;
+      |                       ^
+../../../Projects/qemu/linux-user/flatload.c:722:15: note: shadowed declaration is here
+  722 |     abi_ulong p;
+      |               ^
+
+Signed-off-by: Laurent Vivier <laurent@vivier.eu>
+Message-ID: <20230925151029.461358-2-laurent@vivier.eu>
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 Signed-off-by: Markus Armbruster <armbru@redhat.com>
 ---
- hw/usb/desc.c        |  2 +-
- hw/usb/dev-hub.c     |  8 ++++----
- hw/usb/dev-storage.c |  6 +++---
- hw/usb/hcd-xhci.c    | 10 +++++-----
- hw/usb/host-libusb.c |  2 +-
- 5 files changed, 14 insertions(+), 14 deletions(-)
+ linux-user/flatload.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/hw/usb/desc.c b/hw/usb/desc.c
-index 7f6cc2f99b..f2bdc05a95 100644
---- a/hw/usb/desc.c
-+++ b/hw/usb/desc.c
-@@ -227,7 +227,7 @@ int usb_desc_endpoint(const USBDescEndpoint *ep, int flags,
-     }
- 
-     if (superlen) {
--        USBDescriptor *d = (void *)(dest + bLength);
-+        d = (void *)(dest + bLength);
- 
-         d->bLength                       = 0x06;
-         d->bDescriptorType               = USB_DT_ENDPOINT_COMPANION;
-diff --git a/hw/usb/dev-hub.c b/hw/usb/dev-hub.c
-index a6b50dbc8d..5703e0e826 100644
---- a/hw/usb/dev-hub.c
-+++ b/hw/usb/dev-hub.c
-@@ -402,7 +402,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
-         {
-             unsigned int n = index - 1;
-             USBHubPort *port;
--            USBDevice *dev;
-+            USBDevice *pdev;
- 
-             trace_usb_hub_set_port_feature(s->dev.addr, index,
-                                            feature_name(value));
-@@ -411,7 +411,7 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
-                 goto fail;
+diff --git a/linux-user/flatload.c b/linux-user/flatload.c
+index 4331a11bf0..fdcc4610fa 100644
+--- a/linux-user/flatload.c
++++ b/linux-user/flatload.c
+@@ -755,15 +755,15 @@ int load_flt_binary(struct linux_binprm *bprm, struct image_info *info)
+     /* Update data segment pointers for all libraries */
+     for (i=0; i<MAX_SHARED_LIBS; i++) {
+         if (libinfo[i].loaded) {
+-            abi_ulong p;
+-            p = libinfo[i].start_data;
++            abi_ulong seg;
++            seg = libinfo[i].start_data;
+             for (j=0; j<MAX_SHARED_LIBS; j++) {
+-                p -= 4;
++                seg -= 4;
+                 /* FIXME - handle put_user() failures */
+                 if (put_user_ual(libinfo[j].loaded
+                                  ? libinfo[j].start_data
+                                  : UNLOADED_LIB,
+-                                 p))
++                                 seg))
+                     return -EFAULT;
              }
-             port = &s->ports[n];
--            dev = port->port.dev;
-+            pdev = port->port.dev;
-             switch(value) {
-             case PORT_SUSPEND:
-                 port->wPortStatus |= PORT_STAT_SUSPEND;
-@@ -419,8 +419,8 @@ static void usb_hub_handle_control(USBDevice *dev, USBPacket *p,
-             case PORT_RESET:
-                 usb_hub_port_set(port, PORT_STAT_RESET);
-                 usb_hub_port_clear(port, PORT_STAT_RESET);
--                if (dev && dev->attached) {
--                    usb_device_reset(dev);
-+                if (pdev && pdev->attached) {
-+                    usb_device_reset(pdev);
-                     usb_hub_port_set(port, PORT_STAT_ENABLE);
-                 }
-                 usb_wakeup(s->intr, 0);
-diff --git a/hw/usb/dev-storage.c b/hw/usb/dev-storage.c
-index e3bcffb3e0..a496c811a7 100644
---- a/hw/usb/dev-storage.c
-+++ b/hw/usb/dev-storage.c
-@@ -403,7 +403,7 @@ static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
-     struct usb_msd_cbw cbw;
-     uint8_t devep = p->ep->nr;
-     SCSIDevice *scsi_dev;
--    uint32_t len;
-+    int len;
- 
-     if (s->needs_reset) {
-         p->status = USB_RET_STALL;
-@@ -465,7 +465,7 @@ static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
-                 usb_msd_copy_data(s, p);
-             }
-             if (le32_to_cpu(s->csw.residue)) {
--                int len = p->iov.size - p->actual_length;
-+                len = p->iov.size - p->actual_length;
-                 if (len) {
-                     usb_packet_skip(p, len);
-                     if (len > s->data_len) {
-@@ -526,7 +526,7 @@ static void usb_msd_handle_data(USBDevice *dev, USBPacket *p)
-                 usb_msd_copy_data(s, p);
-             }
-             if (le32_to_cpu(s->csw.residue)) {
--                int len = p->iov.size - p->actual_length;
-+                len = p->iov.size - p->actual_length;
-                 if (len) {
-                     usb_packet_skip(p, len);
-                     if (len > s->data_len) {
-diff --git a/hw/usb/hcd-xhci.c b/hw/usb/hcd-xhci.c
-index 324177ad5d..4b60114207 100644
---- a/hw/usb/hcd-xhci.c
-+++ b/hw/usb/hcd-xhci.c
-@@ -217,10 +217,10 @@ enum {
-     (((data) >> field##_SHIFT) & field##_MASK)
- 
- #define set_field(data, newval, field) do {                     \
--        uint32_t val = *data;                                   \
--        val &= ~(field##_MASK << field##_SHIFT);                \
--        val |= ((newval) & field##_MASK) << field##_SHIFT;      \
--        *data = val;                                            \
-+        uint32_t val_ = *data;                                  \
-+        val_ &= ~(field##_MASK << field##_SHIFT);               \
-+        val_ |= ((newval) & field##_MASK) << field##_SHIFT;     \
-+        *data = val_;                                           \
-     } while (0)
- 
- typedef enum EPType {
-@@ -1894,7 +1894,7 @@ static void xhci_kick_epctx(XHCIEPContext *epctx, unsigned int streamid)
-     }
- 
-     if (epctx->retry) {
--        XHCITransfer *xfer = epctx->retry;
-+        xfer = epctx->retry;
- 
-         trace_usb_xhci_xfer_retry(xfer);
-         assert(xfer->running_retry);
-diff --git a/hw/usb/host-libusb.c b/hw/usb/host-libusb.c
-index f500db85ab..d7060a42d5 100644
---- a/hw/usb/host-libusb.c
-+++ b/hw/usb/host-libusb.c
-@@ -1010,7 +1010,7 @@ static int usb_host_open(USBHostDevice *s, libusb_device *dev, int hostfd)
-          * Speeds are defined in linux/usb/ch9.h, file not included
-          * due to name conflicts.
-          */
--        int rc = ioctl(hostfd, USBDEVFS_GET_SPEED, NULL);
-+        rc = ioctl(hostfd, USBDEVFS_GET_SPEED, NULL);
-         switch (rc) {
-         case 1: /* low */
-             libusb_speed = LIBUSB_SPEED_LOW;
+         }
 -- 
 2.41.0
 
