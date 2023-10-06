@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B469E7BB640
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96EE17BB624
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:16:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoinM-0008Kp-Bm; Fri, 06 Oct 2023 07:15:00 -0400
+	id 1qoinJ-0008Gx-JD; Fri, 06 Oct 2023 07:14:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoinF-0008FW-Hx
+ id 1qoinF-0008FB-Ep
  for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoin5-0000Ji-20
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:53 -0400
+ id 1qoin2-0000JC-6X
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:52 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696590882;
+ s=mimecast20190719; t=1696590879;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0xB3F5N3hazXwUg7/Q8GgLwNzUPETqU4qEAMwqj5k+M=;
- b=SuBu9ttU5dq0Ph+wjGABb2cLZVYwwSyob7Cd27MyRKFhjf/rdewQq9XMpzJHumm9qYnI2t
- U7sz9ZYx0hZCe+IE6pjUJUGZPiotljaClxlrs5YKL2Jv2dV3yxwG172V4Y7nw/5nV5v+A2
- LZ+xjgeF6/VBurJ7Zxb0HZ3XUMg/p8Q=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=l4z5x8Uu4dREQUi7wI/K7/deSe5fP0uIUCLyqAJ6KbM=;
+ b=b0xSSwFO/t8bMyrQehKcp3hGURqYAJhSTtZkIUUXq+ao1XYIt2rWSC27LJe4ga0ybq84cx
+ 87Z+bxcc2AV//8le+ujxXvDoT1vR4psOmBatRnsx5zyUQ3xL1HouCQe7N1l/9ebFoSA8DL
+ Wb+bo1iMEiZkUZSQFa06NSum4eoLyBg=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-197-2Crj_WJ2PxyuoYHUr1mevQ-1; Fri, 06 Oct 2023 07:14:36 -0400
-X-MC-Unique: 2Crj_WJ2PxyuoYHUr1mevQ-1
-Received: by mail-ed1-f72.google.com with SMTP id
- 4fb4d7f45d1cf-533d8a785a5so1817734a12.3
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:35 -0700 (PDT)
+ us-mta-437-YR28VF1-Mj-ckhqw0Xu7wg-1; Fri, 06 Oct 2023 07:14:38 -0400
+X-MC-Unique: YR28VF1-Mj-ckhqw0Xu7wg-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9ae70250ef5so351018966b.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696590874; x=1697195674;
+ d=1e100.net; s=20230601; t=1696590876; x=1697195676;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=0xB3F5N3hazXwUg7/Q8GgLwNzUPETqU4qEAMwqj5k+M=;
- b=GKST/O/S436lMvepHjvLKEaAD1Wd2ZkfPgF/Nklqy+mQzzSp0IcLNTwz4w4061bJJS
- p0y6t9WySjZl8c6wUH5bs5pan1wEmNJmylWR+0oNzCMte/QcYgxgillk2bMaatfOs8wk
- mtL2Q7cF+nOal3+CQ2ks2mR+UlLMm6qE4PAXVC7FT4a+NAB7LJ2PnO7RgS+gRf+O8Lzi
- jDZOR6IbbCOZ8p6UiW09zjD5pH7uYAHA1tG2yMj5dIj7xPjzGagWXzpCEEHL9hSxqwRj
- kj6wIaxsz5aTMYhQlt04M91U+VG5TDgPPb4fAH91st4wWvh4uf5/RbqxZLt/4MoCsJZh
- J8CA==
-X-Gm-Message-State: AOJu0Yx849KLBMS/no8XZ31AD7za6DUbXqKhz5RuFSaRjpNmuIB73jlz
- /2PiubMX7KVrY0g274Am1wjjRKgn7sLNQbMb51U/q3TMdGdt8dT/p3UC0svQ0Cz4EkeAQMO/+/f
- 5mtQVitKTDp5BdfYcKlWUmeVEp895B95CaIzTA5H3cu9UKXt2atR4wPaLDOCrSRgn5XOGZM8ptL
- Q=
-X-Received: by 2002:a05:6402:751:b0:532:c41d:1dcd with SMTP id
- p17-20020a056402075100b00532c41d1dcdmr6173050edy.25.1696590874082; 
- Fri, 06 Oct 2023 04:14:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEQl3cpBuyR+tDJqXaffrd8UHliP01AR8i3bOSKryURqFer18J+DBij4rJEkx8lMRHRLRLS9g==
-X-Received: by 2002:a05:6402:751:b0:532:c41d:1dcd with SMTP id
- p17-20020a056402075100b00532c41d1dcdmr6173035edy.25.1696590873645; 
- Fri, 06 Oct 2023 04:14:33 -0700 (PDT)
+ bh=l4z5x8Uu4dREQUi7wI/K7/deSe5fP0uIUCLyqAJ6KbM=;
+ b=W645sy8b948Ad+q8rTYOga+U01JGlaz1xCKooWElE7GEGQhrF1Rt6COXbve7Da26Wy
+ e/300fkHKWoMAcBI5OKcbahe0PKgf1XkfE+lI3OucKLltGRSuNTzApM4yiFyzYtecEI1
+ k6KxkO/NcK6donG6KhYWA87DqOxydyPWeSs41RPxWAvXNEUuBQuCznBhybFNNhUnJ6DD
+ uFrnSaIaJd4wn25DfIAIKdUj1cutLmNzODOF4zDa4/geCEIpGt5gKTXxzzPPp1fP3Jl+
+ 3de16XogChKqeoKXGv24mLLmFCL7XSKGOiYaoGXCebn4xQYEWWCumOwkePexGBNk2ix8
+ 9X9A==
+X-Gm-Message-State: AOJu0Yx8IeJNVXcHXUrWrCXz5YRlAzwCmEwy1yXD2oSACV2JeIMzV9xx
+ 1iX5dFGKFxGVPQf6wi4OQ4CJw7NAJ+ab0RH5av259DkCPvkhrXCU33wTtBcbzb0zkpsf9qzI8Y+
+ l9Xw2QiqTEGUXciVlWEWtou69XJlzlYNSC1uezevWGX3yQ7zru1MQoQ1NSUyntkgi4Z4zPTztx3
+ c=
+X-Received: by 2002:a17:906:8455:b0:9a2:1e14:86b9 with SMTP id
+ e21-20020a170906845500b009a21e1486b9mr4230291ejy.0.1696590876239; 
+ Fri, 06 Oct 2023 04:14:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHc7VTMooHwElT0J394SoiMCUdgyhX/lrb0nk9OwYbuBrJqUUXSfCQnbOER7z6TGi1M8P84fQ==
+X-Received: by 2002:a17:906:8455:b0:9a2:1e14:86b9 with SMTP id
+ e21-20020a170906845500b009a21e1486b9mr4230283ejy.0.1696590875920; 
+ Fri, 06 Oct 2023 04:14:35 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- g26-20020aa7c59a000000b00530ccd180a3sm2381412edq.97.2023.10.06.04.14.32
+ i25-20020a1709064ed900b009b947aacb4bsm2698889ejv.191.2023.10.06.04.14.34
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 04:14:32 -0700 (PDT)
+ Fri, 06 Oct 2023 04:14:34 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 11/26] gdbstub: Rename 'softmmu' -> 'system'
-Date: Fri,  6 Oct 2023 13:13:57 +0200
-Message-ID: <20231006111412.13130-12-pbonzini@redhat.com>
+Subject: [PULL 12/26] semihosting: Rename softmmu_FOO_user() ->
+ uaccess_FOO_user()
+Date: Fri,  6 Oct 2023 13:13:58 +0200
+Message-ID: <20231006111412.13130-13-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006111412.13130-1-pbonzini@redhat.com>
 References: <20231006111412.13130-1-pbonzini@redhat.com>
@@ -84,8 +85,8 @@ X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -103,111 +104,242 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-We have gdbstub/user.c for user emulation code,
-use gdbstub/system.c for system emulation part.
+Add a check in 'softmmu-uaccess.h' that the header is only
+include in system emulation, and rename it as 'uaccess.h'.
 
-Rename s/softmmu/system/ in meson and few comments.
+Rename the API methods:
+
+  - softmmu_[un]lock_user*() -> uaccess_[un]lock_user*()
+  - softmmu_strlen_user() -> uaccess_strlen_user().
+
+Update a pair of comments.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004090629.37473-8-philmd@linaro.org>
+Message-ID: <20231004090629.37473-9-philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- gdbstub/internals.h             |  4 ++--
- gdbstub/meson.build             | 10 +++++-----
- gdbstub/{softmmu.c => system.c} |  2 +-
- gdbstub/trace-events            |  2 +-
- 4 files changed, 9 insertions(+), 9 deletions(-)
- rename gdbstub/{softmmu.c => system.c} (99%)
+ .../{softmmu-uaccess.h => uaccess.h}          | 24 +++++++++++--------
+ semihosting/arm-compat-semi.c                 |  4 ++--
+ semihosting/config.c                          |  2 +-
+ semihosting/guestfd.c                         |  2 +-
+ semihosting/syscalls.c                        |  2 +-
+ semihosting/uaccess.c                         | 14 +++++------
+ stubs/semihost.c                              |  4 ++--
+ target/m68k/m68k-semi.c                       |  2 +-
+ target/mips/tcg/sysemu/mips-semi.c            |  2 +-
+ target/nios2/nios2-semi.c                     |  2 +-
+ 10 files changed, 31 insertions(+), 27 deletions(-)
+ rename include/semihosting/{softmmu-uaccess.h => uaccess.h} (75%)
 
-diff --git a/gdbstub/internals.h b/gdbstub/internals.h
-index fee243081ff..f7fd1bede50 100644
---- a/gdbstub/internals.h
-+++ b/gdbstub/internals.h
-@@ -103,7 +103,7 @@ static inline int tohex(int v)
- }
- 
- /*
-- * Connection helpers for both softmmu and user backends
-+ * Connection helpers for both system and user backends
+diff --git a/include/semihosting/softmmu-uaccess.h b/include/semihosting/uaccess.h
+similarity index 75%
+rename from include/semihosting/softmmu-uaccess.h
+rename to include/semihosting/uaccess.h
+index 4f08dfc0986..3963eafc3e2 100644
+--- a/include/semihosting/softmmu-uaccess.h
++++ b/include/semihosting/uaccess.h
+@@ -7,8 +7,12 @@
+  * This code is licensed under the GPL
   */
  
- void gdb_put_strbuf(void);
-@@ -229,7 +229,7 @@ void gdb_breakpoint_remove_all(CPUState *cs);
-  * @is_write: is it a write operation
+-#ifndef SEMIHOSTING_SOFTMMU_UACCESS_H
+-#define SEMIHOSTING_SOFTMMU_UACCESS_H
++#ifndef SEMIHOSTING_UACCESS_H
++#define SEMIHOSTING_UACCESS_H
++
++#ifdef CONFIG_USER_ONLY
++#error Cannot include semihosting/uaccess.h from user emulation
++#endif
+ 
+ #include "cpu.h"
+ 
+@@ -42,18 +46,18 @@
+ 
+ #define put_user_ual(arg, p) put_user_u32(arg, p)
+ 
+-void *softmmu_lock_user(CPUArchState *env, target_ulong addr,
++void *uaccess_lock_user(CPUArchState *env, target_ulong addr,
+                         target_ulong len, bool copy);
+-#define lock_user(type, p, len, copy) softmmu_lock_user(env, p, len, copy)
++#define lock_user(type, p, len, copy) uaccess_lock_user(env, p, len, copy)
+ 
+-char *softmmu_lock_user_string(CPUArchState *env, target_ulong addr);
+-#define lock_user_string(p) softmmu_lock_user_string(env, p)
++char *uaccess_lock_user_string(CPUArchState *env, target_ulong addr);
++#define lock_user_string(p) uaccess_lock_user_string(env, p)
+ 
+-void softmmu_unlock_user(CPUArchState *env, void *p,
++void uaccess_unlock_user(CPUArchState *env, void *p,
+                          target_ulong addr, target_ulong len);
+-#define unlock_user(s, args, len) softmmu_unlock_user(env, s, args, len)
++#define unlock_user(s, args, len) uaccess_unlock_user(env, s, args, len)
+ 
+-ssize_t softmmu_strlen_user(CPUArchState *env, target_ulong addr);
+-#define target_strlen(p) softmmu_strlen_user(env, p)
++ssize_t uaccess_strlen_user(CPUArchState *env, target_ulong addr);
++#define target_strlen(p) uaccess_strlen_user(env, p)
+ 
+ #endif /* SEMIHOSTING_SOFTMMU_UACCESS_H */
+diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
+index 564fe17f75c..bb43f012652 100644
+--- a/semihosting/arm-compat-semi.c
++++ b/semihosting/arm-compat-semi.c
+@@ -202,13 +202,13 @@ static LayoutInfo common_semi_find_bases(CPUState *cs)
+  * The semihosting API has no concept of its errno being thread-safe,
+  * as the API design predates SMP CPUs and was intended as a simple
+  * real-hardware set of debug functionality. For QEMU, we make the
+- * errno be per-thread in linux-user mode; in softmmu it is a simple
++ * errno be per-thread in linux-user mode; in system-mode it is a simple
+  * global, and we assume that the guest takes care of avoiding any races.
+  */
+ #ifndef CONFIG_USER_ONLY
+ static target_ulong syscall_err;
+ 
+-#include "semihosting/softmmu-uaccess.h"
++#include "semihosting/uaccess.h"
+ #endif
+ 
+ static inline uint32_t get_swi_errno(CPUState *cs)
+diff --git a/semihosting/config.c b/semihosting/config.c
+index 8ca569735d0..61e4016fc5f 100644
+--- a/semihosting/config.c
++++ b/semihosting/config.c
+@@ -12,7 +12,7 @@
+  * linux-user targets. However in that use case no configuration of
+  * the outputs and command lines is supported.
   *
-  * This function is specialised depending on the mode we are running
-- * in. For softmmu guests we can switch the interpretation of the
-+ * in. For system guests we can switch the interpretation of the
-  * address to a physical address.
-  */
- int gdb_target_memory_rw_debug(CPUState *cs, hwaddr addr,
-diff --git a/gdbstub/meson.build b/gdbstub/meson.build
-index a5a1f4e433f..e5bccba34e5 100644
---- a/gdbstub/meson.build
-+++ b/gdbstub/meson.build
-@@ -1,6 +1,6 @@
- #
- # The main gdbstub still relies on per-build definitions of various
--# types. The bits pushed to softmmu/user.c try to use guest agnostic
-+# types. The bits pushed to system/user.c try to use guest agnostic
- # types such as hwaddr.
- #
+- * The config module is common to all softmmu targets however as vl.c
++ * The config module is common to all system targets however as vl.c
+  * needs to link against the helpers.
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later
+diff --git a/semihosting/guestfd.c b/semihosting/guestfd.c
+index acb86b50ddc..955c2efbd0c 100644
+--- a/semihosting/guestfd.c
++++ b/semihosting/guestfd.c
+@@ -15,7 +15,7 @@
+ #ifdef CONFIG_USER_ONLY
+ #include "qemu.h"
+ #else
+-#include "semihosting/softmmu-uaccess.h"
++#include "semihosting/uaccess.h"
+ #include CONFIG_DEVICES
+ #endif
  
-@@ -12,7 +12,7 @@ gdb_system_ss = ss.source_set()
+diff --git a/semihosting/syscalls.c b/semihosting/syscalls.c
+index d27574a1e2b..4060211d196 100644
+--- a/semihosting/syscalls.c
++++ b/semihosting/syscalls.c
+@@ -15,7 +15,7 @@
+ #ifdef CONFIG_USER_ONLY
+ #include "qemu.h"
+ #else
+-#include "semihosting/softmmu-uaccess.h"
++#include "semihosting/uaccess.h"
+ #endif
  
- # We build two versions of gdbstub, one for each mode
- gdb_user_ss.add(files('gdbstub.c', 'user.c'))
--gdb_system_ss.add(files('gdbstub.c', 'softmmu.c'))
-+gdb_system_ss.add(files('gdbstub.c', 'system.c'))
  
- gdb_user_ss = gdb_user_ss.apply(config_targetos, strict: false)
- gdb_system_ss = gdb_system_ss.apply(config_targetos, strict: false)
-@@ -23,15 +23,15 @@ libgdb_user = static_library('gdb_user',
-                              c_args: '-DCONFIG_USER_ONLY',
-                              build_by_default: false)
+diff --git a/semihosting/uaccess.c b/semihosting/uaccess.c
+index 7505eb6d1ba..5d889f92638 100644
+--- a/semihosting/uaccess.c
++++ b/semihosting/uaccess.c
+@@ -9,9 +9,9 @@
  
--libgdb_softmmu = static_library('gdb_softmmu',
-+libgdb_system = static_library('gdb_system',
-                                 gdb_system_ss.sources() + genh,
-                                 name_suffix: 'fa',
-                                 build_by_default: false)
+ #include "qemu/osdep.h"
+ #include "exec/exec-all.h"
+-#include "semihosting/softmmu-uaccess.h"
++#include "semihosting/uaccess.h"
  
- gdb_user = declare_dependency(link_whole: libgdb_user)
- user_ss.add(gdb_user)
--gdb_softmmu = declare_dependency(link_whole: libgdb_softmmu)
--system_ss.add(gdb_softmmu)
-+gdb_system = declare_dependency(link_whole: libgdb_system)
-+system_ss.add(gdb_system)
- 
- common_ss.add(files('syscalls.c'))
- 
-diff --git a/gdbstub/softmmu.c b/gdbstub/system.c
-similarity index 99%
-rename from gdbstub/softmmu.c
-rename to gdbstub/system.c
-index 9f0b8b54977..189975b1d62 100644
---- a/gdbstub/softmmu.c
-+++ b/gdbstub/system.c
-@@ -104,7 +104,7 @@ static void gdb_chr_event(void *opaque, QEMUChrEvent event)
+-void *softmmu_lock_user(CPUArchState *env, target_ulong addr,
++void *uaccess_lock_user(CPUArchState *env, target_ulong addr,
+                         target_ulong len, bool copy)
+ {
+     void *p = malloc(len);
+@@ -24,7 +24,7 @@ void *softmmu_lock_user(CPUArchState *env, target_ulong addr,
+     return p;
  }
  
- /*
-- * In softmmu mode we stop the VM and wait to send the syscall packet
-+ * In system-mode we stop the VM and wait to send the syscall packet
-  * until notification that the CPU has stopped. This must be done
-  * because if the packet is sent now the reply from the syscall
-  * request could be received while the CPU is still in the running
-diff --git a/gdbstub/trace-events b/gdbstub/trace-events
-index 7bc79a73c42..4fd126a38c1 100644
---- a/gdbstub/trace-events
-+++ b/gdbstub/trace-events
-@@ -28,5 +28,5 @@ gdbstub_err_checksum_invalid(uint8_t ch) "got invalid command checksum digit: 0x
- gdbstub_err_checksum_incorrect(uint8_t expected, uint8_t got) "got command packet with incorrect checksum, expected=0x%02x, received=0x%02x"
- gdbstub_err_unexpected_runpkt(uint8_t ch) "unexpected packet (0x%02x) while target running"
+-ssize_t softmmu_strlen_user(CPUArchState *env, target_ulong addr)
++ssize_t uaccess_strlen_user(CPUArchState *env, target_ulong addr)
+ {
+     int mmu_idx = cpu_mmu_index(env, false);
+     size_t len = 0;
+@@ -72,16 +72,16 @@ ssize_t softmmu_strlen_user(CPUArchState *env, target_ulong addr)
+     }
+ }
  
--# softmmu.c
-+# system.c
- gdbstub_hit_watchpoint(const char *type, int cpu_gdb_index, uint64_t vaddr) "Watchpoint hit, type=\"%s\" cpu=%d, vaddr=0x%" PRIx64 ""
+-char *softmmu_lock_user_string(CPUArchState *env, target_ulong addr)
++char *uaccess_lock_user_string(CPUArchState *env, target_ulong addr)
+ {
+-    ssize_t len = softmmu_strlen_user(env, addr);
++    ssize_t len = uaccess_strlen_user(env, addr);
+     if (len < 0) {
+         return NULL;
+     }
+-    return softmmu_lock_user(env, addr, len + 1, true);
++    return uaccess_lock_user(env, addr, len + 1, true);
+ }
+ 
+-void softmmu_unlock_user(CPUArchState *env, void *p,
++void uaccess_unlock_user(CPUArchState *env, void *p,
+                          target_ulong addr, target_ulong len)
+ {
+     if (len) {
+diff --git a/stubs/semihost.c b/stubs/semihost.c
+index aad7a703532..9343d385d79 100644
+--- a/stubs/semihost.c
++++ b/stubs/semihost.c
+@@ -1,9 +1,9 @@
+ /*
+- * Semihosting Stubs for SoftMMU
++ * Semihosting Stubs for system emulation
+  *
+  * Copyright (c) 2019 Linaro Ltd
+  *
+- * Stubs for SoftMMU targets that don't actually do semihosting.
++ * Stubs for system targets that don't actually do semihosting.
+  *
+  * SPDX-License-Identifier: GPL-2.0-or-later
+  */
+diff --git a/target/m68k/m68k-semi.c b/target/m68k/m68k-semi.c
+index 80cd8d70dbb..b4ffb70f8b7 100644
+--- a/target/m68k/m68k-semi.c
++++ b/target/m68k/m68k-semi.c
+@@ -27,7 +27,7 @@
+ #include "gdbstub/syscalls.h"
+ #include "gdbstub/helpers.h"
+ #include "semihosting/syscalls.h"
+-#include "semihosting/softmmu-uaccess.h"
++#include "semihosting/uaccess.h"
+ #include "hw/boards.h"
+ #include "qemu/log.h"
+ 
+diff --git a/target/mips/tcg/sysemu/mips-semi.c b/target/mips/tcg/sysemu/mips-semi.c
+index f3735df7b9e..cc084eb1a24 100644
+--- a/target/mips/tcg/sysemu/mips-semi.c
++++ b/target/mips/tcg/sysemu/mips-semi.c
+@@ -22,7 +22,7 @@
+ #include "qemu/log.h"
+ #include "gdbstub/syscalls.h"
+ #include "gdbstub/helpers.h"
+-#include "semihosting/softmmu-uaccess.h"
++#include "semihosting/uaccess.h"
+ #include "semihosting/semihost.h"
+ #include "semihosting/console.h"
+ #include "semihosting/syscalls.h"
+diff --git a/target/nios2/nios2-semi.c b/target/nios2/nios2-semi.c
+index 9d0241c758f..0b84fcb6b62 100644
+--- a/target/nios2/nios2-semi.c
++++ b/target/nios2/nios2-semi.c
+@@ -26,7 +26,7 @@
+ #include "gdbstub/syscalls.h"
+ #include "gdbstub/helpers.h"
+ #include "semihosting/syscalls.h"
+-#include "semihosting/softmmu-uaccess.h"
++#include "semihosting/uaccess.h"
+ #include "qemu/log.h"
+ 
+ #define HOSTED_EXIT  0
 -- 
 2.41.0
 
