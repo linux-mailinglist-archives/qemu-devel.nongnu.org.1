@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913177BB7DF
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F497BB7E2
 	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 14:40:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qok7c-0001sL-Lk; Fri, 06 Oct 2023 08:40:00 -0400
+	id 1qok7f-0001y3-21; Fri, 06 Oct 2023 08:40:03 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok7A-0001kY-Eu
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:37 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok7C-0001l6-69
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:38 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok76-0007pF-3G
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:30 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qok79-0007pe-94
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 08:39:33 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id BDC551F74A;
- Fri,  6 Oct 2023 12:39:26 +0000 (UTC)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id ACC312185E;
+ Fri,  6 Oct 2023 12:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696595966; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1696595969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CBZYxTpzwzoUNOB2Lyoa4STF4QMYRPmQcqQlOpnGiDs=;
- b=lk1ramHs0uP0/38ZgQmu046UEjSGwSyzn8pD7Ig4+NOysi3X/J/qFBfrihy2HnJN/CZC16
- Ngs/GW+oMyC2vOk6A2OjQDxX94/F14V9hOPFiFzYy3NSSgIDmh95BHAlTsS0HLIoZtm7lJ
- lM3tttPwfm77jev81tf0m6ClNZf6sao=
+ bh=BMT3FQnXfNg50wT+b2jNKVOw5OmfnFRRqEm3pqYnQ6s=;
+ b=IoCTmVIwKXi2wmjWdmzdDhAF94DId2wrirIalCue53+f5bAjtpEIri24i1HRN/Q5joyCaj
+ qzhDm/UMp7pNgUzPS7/gYjLGPYM1lb5LHy7IqhJCJqFM7GG3kSyVBZ60iISRuU4u10/+G4
+ 4sMHNtF4/ymjY32kODwt+UGjgOvlIsY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696595966;
+ s=susede2_ed25519; t=1696595969;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=CBZYxTpzwzoUNOB2Lyoa4STF4QMYRPmQcqQlOpnGiDs=;
- b=Vq17YiBjCfX8a6IcB3deWa809QMhyzcWPlYO9fp4J212tvpcnweN1ddoQorZcxONc4PEOJ
- XqNeRnFn0TCWWcBA==
+ bh=BMT3FQnXfNg50wT+b2jNKVOw5OmfnFRRqEm3pqYnQ6s=;
+ b=iAlianzxGLvf4gp4yIXtwyeW0g4dIPRg5wsmjgWsMnp3ArNT1GOuH7XUPlv/vgvy3mmQ62
+ kBLjC2gOTyN+zJAw==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 390E613A2E;
- Fri,  6 Oct 2023 12:39:24 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 323E113A2E;
+ Fri,  6 Oct 2023 12:39:27 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 2PRyAfz/H2ULIgAAMHmgww
- (envelope-from <farosas@suse.de>); Fri, 06 Oct 2023 12:39:24 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id mPgKAP//H2ULIgAAMHmgww
+ (envelope-from <farosas@suse.de>); Fri, 06 Oct 2023 12:39:27 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -58,16 +58,16 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
  Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v2 4/9] tests/qtest: Introduce qtest_has_machine_with_env
-Date: Fri,  6 Oct 2023 09:39:05 -0300
-Message-Id: <20231006123910.17759-5-farosas@suse.de>
+Subject: [PATCH v2 5/9] tests/qtest: Introduce qtest_resolve_machine_alias
+Date: Fri,  6 Oct 2023 09:39:06 -0300
+Message-Id: <20231006123910.17759-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231006123910.17759-1-farosas@suse.de>
 References: <20231006123910.17759-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
 X-Spam_bar: ----
@@ -90,66 +90,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a variant of qtest_has_machine() that receives an environment
-variable containing an alternate QEMU binary path.
+The migration tests are being enhanced to test migration between
+different QEMU versions. A requirement of migration is that the
+machine type between source and destination matches, including the
+version.
+
+We cannot hardcode machine types in the tests because those change
+with each release. QEMU provides a machine type alias that has a fixed
+name, but points to the latest machine type at each release.
+
+Add a helper to resolve the alias into the exact machine
+type. E.g. "-machine pc" resolves to "pc-i440fx-8.2"
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- tests/qtest/libqtest.c | 9 +++++++--
- tests/qtest/libqtest.h | 9 +++++++++
- 2 files changed, 16 insertions(+), 2 deletions(-)
+ tests/qtest/libqtest.c | 16 ++++++++++++++++
+ tests/qtest/libqtest.h | 10 ++++++++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/tests/qtest/libqtest.c b/tests/qtest/libqtest.c
-index 47c8b6d46f..c0e4f05979 100644
+index c0e4f05979..f2f1756de1 100644
 --- a/tests/qtest/libqtest.c
 +++ b/tests/qtest/libqtest.c
-@@ -1522,12 +1522,12 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+@@ -1522,6 +1522,22 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
      }
  }
  
--bool qtest_has_machine(const char *machine)
-+bool qtest_has_machine_with_env(const char *var, const char *machine)
- {
-     struct MachInfo *machines;
-     int i;
- 
--    machines = qtest_get_machines(NULL);
-+    machines = qtest_get_machines(var);
- 
-     for (i = 0; machines[i].name != NULL; i++) {
-         if (g_str_equal(machine, machines[i].name) ||
-@@ -1539,6 +1539,11 @@ bool qtest_has_machine(const char *machine)
-     return false;
- }
- 
-+bool qtest_has_machine(const char *machine)
++char *qtest_resolve_machine_alias(const char *var, const char *alias)
 +{
-+    return qtest_has_machine_with_env(NULL, machine);
++    struct MachInfo *machines;
++    int i;
++
++    machines = qtest_get_machines(var);
++
++    for (i = 0; machines[i].name != NULL; i++) {
++        if (machines[i].alias && g_str_equal(alias, machines[i].alias)) {
++            return g_strdup(machines[i].name);
++        }
++    }
++
++    return NULL;
 +}
 +
- bool qtest_has_device(const char *device)
+ bool qtest_has_machine_with_env(const char *var, const char *machine)
  {
-     static QList *list;
+     struct MachInfo *machines;
 diff --git a/tests/qtest/libqtest.h b/tests/qtest/libqtest.h
-index eef3a11ca4..083b2a6520 100644
+index 083b2a6520..75f9310bb0 100644
 --- a/tests/qtest/libqtest.h
 +++ b/tests/qtest/libqtest.h
-@@ -902,6 +902,15 @@ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
-  */
- bool qtest_has_machine(const char *machine);
+@@ -894,6 +894,16 @@ void qtest_qmp_fds_assert_success(QTestState *qts, int *fds, size_t nfds,
+ void qtest_cb_for_every_machine(void (*cb)(const char *machine),
+                                 bool skip_old_versioned);
  
 +/**
-+ * qtest_has_machine_with_env:
++ * qtest_resolve_machine_alias:
 + * @var: Environment variable from where to take the QEMU binary
-+ * @machine: The machine to look for
++ * @alias: The alias to resolve
 + *
-+ * Returns: true if the machine is available in the specified binary.
++ * Returns: the machine type corresponding to the alias if any,
++ * otherwise NULL.
 + */
-+bool qtest_has_machine_with_env(const char *var, const char *machine);
++char *qtest_resolve_machine_alias(const char *var, const char *alias);
 +
  /**
-  * qtest_has_device:
-  * @device: The device to look for
+  * qtest_has_machine:
+  * @machine: The machine to look for
 -- 
 2.35.3
 
