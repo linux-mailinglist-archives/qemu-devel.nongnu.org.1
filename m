@@ -2,77 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF2C7BB384
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:50:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A7E7BB38C
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 10:52:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qogXf-0004N1-Ag; Fri, 06 Oct 2023 04:50:39 -0400
+	id 1qogZa-0007fT-Cp; Fri, 06 Oct 2023 04:52:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qogXc-0004GH-Iu
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:50:36 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogZX-0007f2-Hn
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:52:35 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qogXR-0004ze-Rm
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:50:27 -0400
+ (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qogZV-0005LJ-Re
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 04:52:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696582224;
+ s=mimecast20190719; t=1696582353;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=oVFBhoOVfGrZvdZn25pRgO05TJw3L+qsfL0ARFoUUKE=;
- b=ZdQNMNZz8dmNAmBckK0vvBx/uz4zTvvln8HomkZbKEovQxHlctP7ld+pHKEL5jAR9Gcl2L
- IB1uQyyMIHl1VJ4sFq/hcsCJfg5ainFeTQ2ExJRtbaspqM6vC8PLsPAPArBucSjxVxFzzv
- PWXFIJm3aWmUESLds3I2qs/znZgACts=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=w7A/ElYGDVGTZwh7spRLEk0QOZ5c31DOxC/dh9PPkUs=;
+ b=OEvMy2LBCenx81voPMgMu1MeP3v2HLwc3ZIrwCOo/vONyronYhuCxU+kDiLif2gztdos6k
+ t0uVF815ZMaxS0tQ8GgB2T6bSZUFJNZYgTe0xKGrUpUeBHHVraZE/F/kXJobGwj+xMVgav
+ h+BikIv73Jyt0ApPicizRk9rPGTvP3g=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-376-QPwe02yaP_KjfsJc4W-A0g-1; Fri, 06 Oct 2023 04:50:23 -0400
-X-MC-Unique: QPwe02yaP_KjfsJc4W-A0g-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-7740829f2beso220585685a.2
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:50:23 -0700 (PDT)
+ us-mta-208-MjhfyXaiMPyXsxs5F0dmLA-1; Fri, 06 Oct 2023 04:52:31 -0400
+X-MC-Unique: MjhfyXaiMPyXsxs5F0dmLA-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-65b0249818dso19495246d6.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 01:52:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696582223; x=1697187023;
+ d=1e100.net; s=20230601; t=1696582351; x=1697187151;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=oVFBhoOVfGrZvdZn25pRgO05TJw3L+qsfL0ARFoUUKE=;
- b=TpdLYnKXxkbAscx2f1ZxmvGDBgwzJPNiEXkUg+zmBNfRAi7qAphkjQm/BMoL+EemV+
- +0v8G1GhCItHVt7q3y1CVyV9OQX+101JLjrkkZF6dzb6UAwmQEqWm5tNeEAXHfTrm5gJ
- UV8mnddeUe4+KdhQtL0+CbblbZ6H4moCU7lXGswlbNol6XPZrC0f17AxrBtXqmjVcU5B
- 74fRfsbJDkfIhWsQItkpW6FgUXp/5vn8pmC8nX/Grn92lpsMbaCwT9Rmzz5XdaUhZ5L8
- SSt2biIr6r1YZGStUCIUAODkEZVH+f9ju43CfN+gkq3q3tPIoNBpMdrbpMTI5boyN4Vx
- UEmA==
-X-Gm-Message-State: AOJu0YwHEoJzEc1eNajOOWlGIa/5pwK0Fz6oyZOLVJ/HrxkHz4i/zCK8
- +RImr+6CLf3/82iHG2Yq3JWCir8k+y8CMbFverQZfsQu6z71/maLgbbcUkfmtjMd2RisOB3Dkbq
- U8GEmqJDN1Fo9uNM=
-X-Received: by 2002:a05:620a:4487:b0:775:9a54:a02b with SMTP id
- x7-20020a05620a448700b007759a54a02bmr8236325qkp.64.1696582222886; 
- Fri, 06 Oct 2023 01:50:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IERz+U1hTKFINqrPCr5A57INKflZH56C1H7rwrAUDBz64EPwFQebjCyc+lro6ZIEBwl71uOwA==
-X-Received: by 2002:a05:620a:4487:b0:775:9a54:a02b with SMTP id
- x7-20020a05620a448700b007759a54a02bmr8236310qkp.64.1696582222618; 
- Fri, 06 Oct 2023 01:50:22 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ bh=w7A/ElYGDVGTZwh7spRLEk0QOZ5c31DOxC/dh9PPkUs=;
+ b=CeadPbMhAhN0yaXoduqjVpZTaYxVMhV+FeVr9NhxUx1zlp6dnIkqRWhkjnly4p72SC
+ z1dzqEUnnGk9szYzGlbXNFhlcWey/yDBZ4eWVMwuYtaL9DpsgrTttCSeKXXbIU2u1uHm
+ /c65AD7sHfORhOf/1IQUjrgWgE4d3JCHAOX8zfnPkHHD0EF18ui9JivXD/W5yfjGAW94
+ LHaiPT5r+5wcTDLRXrymouLNCwQXtMb9PUDq8fVbw/4Kw1btYA9seLvnmMHYI+twq1Zv
+ JcLEZt5/AhfmBblcnBbr3n0v0Px4+oeTNfQXbHBRJp7GvwwrMjVlNP+w51etHPnCzqV3
+ 0Zdw==
+X-Gm-Message-State: AOJu0YzNdodKBu00bKzC651Rh6Y5z9gaE7RJPikpR9lMs8qRm+JDJnQZ
+ 7w0MiiLmO0GuYJ30SBRUH4O2htraDne6r1DK6SVNC8v2aSpVakNYm9k8tWMXDogaJ4ivgR90iLn
+ 3ytTIZiWqkFBMhu8=
+X-Received: by 2002:a05:6214:1907:b0:65b:1ad4:ca7e with SMTP id
+ er7-20020a056214190700b0065b1ad4ca7emr6875822qvb.56.1696582351466; 
+ Fri, 06 Oct 2023 01:52:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGR7u8Txd6Sghh6/Sp6cX++YiMkO06+5W00/bn4GhWdEP8y8fAhyY4ki9pDDO4iqU6AbKgN7Q==
+X-Received: by 2002:a05:6214:1907:b0:65b:1ad4:ca7e with SMTP id
+ er7-20020a056214190700b0065b1ad4ca7emr6875800qvb.56.1696582351184; 
+ Fri, 06 Oct 2023 01:52:31 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
  by smtp.gmail.com with ESMTPSA id
- c24-20020a05620a11b800b0076ee973b9a7sm1146377qkk.27.2023.10.06.01.50.20
+ vv8-20020a05620a562800b007676f3859fasm1146403qkn.30.2023.10.06.01.52.27
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 01:50:22 -0700 (PDT)
-Message-ID: <d09a2778-8097-b6a7-b570-7d36bf29d9d5@redhat.com>
-Date: Fri, 6 Oct 2023 10:50:19 +0200
+ Fri, 06 Oct 2023 01:52:30 -0700 (PDT)
+Message-ID: <40b3bd8a-8c59-e61a-14d1-a45dba95a235@redhat.com>
+Date: Fri, 6 Oct 2023 10:52:26 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 01/15] hw/pci: Add a pci_setup_iommu_ops() helper
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 02/15] hw/pci: Refactor pci_device_iommu_address_space()
 Content-Language: en-US
 To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
+ Cedric Le Goater <clg@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
  Philippe Mathieu-Daude <philmd@linaro.org>,
  "Michael S. Tsirkin" <mst@redhat.com>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
@@ -81,14 +81,12 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
  Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
 References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-2-joao.m.martins@oracle.com>
- <18343982-d554-61b4-fb17-b6955245e9b0@redhat.com>
- <db965f35-e568-44bb-9da4-2c2888928eb8@oracle.com>
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <db965f35-e568-44bb-9da4-2c2888928eb8@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ <20230622214845.3980-3-joao.m.martins@oracle.com>
+From: Eric Auger <eauger@redhat.com>
+In-Reply-To: <20230622214845.3980-3-joao.m.martins@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -62
 X-Spam_score: -6.3
@@ -113,71 +111,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/23 10:38, Joao Martins wrote:
-> On 02/10/2023 16:12, Cédric Le Goater wrote:
->> Hello Joao,
->>
->> On 6/22/23 23:48, Joao Martins wrote:
->>> From: Yi Liu <yi.l.liu@intel.com>
->>>
->>> Add a pci_setup_iommu_ops() that uses a newly added structure
->>> (PCIIOMMUOps) instead of using PCIIOMMUFunc. The old pci_setup_iommu()
->>> that uses PCIIOMMUFunc is still kept for other IOMMUs to get an
->>> an address space for a PCI device in vendor specific way.
->>>
->>> In preparation to expand to supplying vIOMMU attributes, add a
->>> alternate helper pci_setup_iommu_ops() to setup the PCI device IOMMU.
->>> For now the PCIIOMMUOps just defines the address_space, but it will
->>> be extended to have another callback.
->>>
->>> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
->>> [joao: Massage commit message and subject, and make it a complementary
->>> rather than changing every single consumer of pci_setup_iommu()]
->>> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
->>> ---
->>> v1: https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
->>> ---
->>>    include/hw/pci/pci.h     |  7 +++++++
->>>    include/hw/pci/pci_bus.h |  1 +
->>>    hw/pci/pci.c             | 26 +++++++++++++++++++++++---
->>>    3 files changed, 31 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
->>> index e6d0574a2999..f59aef5a329a 100644
->>> --- a/include/hw/pci/pci.h
->>> +++ b/include/hw/pci/pci.h
->>> @@ -368,6 +368,13 @@ typedef AddressSpace *(*PCIIOMMUFunc)(PCIBus *, void *,
->>> int);
->>>    AddressSpace *pci_device_iommu_address_space(PCIDevice *dev);
->>>    void pci_setup_iommu(PCIBus *bus, PCIIOMMUFunc fn, void *opaque);
->>>    +typedef struct PCIIOMMUOps PCIIOMMUOps;
->>> +struct PCIIOMMUOps {
->>> +    AddressSpace * (*get_address_space)(PCIBus *bus,
->>> +                                void *opaque, int32_t devfn);
->>> +};
->>> +void pci_setup_iommu_ops(PCIBus *bus, const PCIIOMMUOps *iommu_ops, void
->>> *opaque);
->>> +
->>
->> I think you should first convert all PHBs to PCIIOMMUOps to avoid all the
->> tests as below and adapt pci_setup_iommu_ops() with the new parameter.
->>
-> 
-> OK, that's Yi's original patch:
-> 
-> https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
-> 
-> I went with this one is that 1) it might take eons to get every single IOMMU
-> maintainer ack; and 2) it would allow each IOMMU to move at its own speed
-> specially as I can't test most of the other ones. essentially iterative, rather
-> than invasive change? Does that make sense?
+Hi Joao,
 
-I think it is ok to make global changes to replace a function by a struct
-of ops. This is not major (unless the extra indirection has a major perf
-impact on some platforms). Getting acks from everyone will be difficult
-since some PHBs are orphans.
+On 6/22/23 23:48, Joao Martins wrote:
+> From: Yi Liu <yi.l.liu@intel.com>
+> 
+> Refactor pci_device_iommu_address_space() and move the
+> code that fetches the device bus and iommu bus into its
+> own private helper pci_device_get_iommu_bus_devfn().
+> 
+> This is in preparation to introduce pci_device_iommu_get_attr()
+> which will need to use it too.
 
-C.
+you may add:
+no functional change intended.
+> 
+> Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+> [joao: Commit message, and better splitting]
+> Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
 
+Eric
+
+> ---
+> Splitted from v1:
+> https://lore.kernel.org/all/20210302203827.437645-6-yi.l.liu@intel.com/
+> ---
+>  hw/pci/pci.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
+> 
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index 4e32c09e81d6..90ae92a43d85 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -2632,8 +2632,8 @@ static void pci_device_class_base_init(ObjectClass *klass, void *data)
+>          assert(conventional || pcie || cxl);
+>      }
+>  }
+> -
+> -AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+> +static void pci_device_get_iommu_bus_devfn(PCIDevice *dev, PCIBus **pdevbus,
+> +                                           PCIBus **pbus, uint8_t *pdevfn)
+>  {
+>      PCIBus *bus = pci_get_bus(dev);
+>      PCIBus *iommu_bus = bus;
+> @@ -2686,6 +2686,18 @@ AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+>  
+>          iommu_bus = parent_bus;
+>      }
+> +
+> +    *pdevbus = bus;
+> +    *pbus = iommu_bus;
+> +    *pdevfn = devfn;
+> +}
+> +
+> +AddressSpace *pci_device_iommu_address_space(PCIDevice *dev)
+> +{
+> +    PCIBus *bus, *iommu_bus;
+> +    uint8_t devfn;
+> +
+> +    pci_device_get_iommu_bus_devfn(dev, &bus, &iommu_bus, &devfn);
+>      if (!pci_bus_bypass_iommu(bus) && iommu_bus) {
+>          if (iommu_bus->iommu_fn) {
+>             return iommu_bus->iommu_fn(bus, iommu_bus->iommu_opaque, devfn);
 
 
