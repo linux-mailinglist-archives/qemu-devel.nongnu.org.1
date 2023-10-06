@@ -2,43 +2,43 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019FB7BB3F0
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 193A57BB402
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:11:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qogn6-00083C-3k; Fri, 06 Oct 2023 05:06:36 -0400
+	id 1qogn8-00087C-8W; Fri, 06 Oct 2023 05:06:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1qogmv-00082J-ES
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:06:25 -0400
+ id 1qogmy-00082u-Ja
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:06:29 -0400
 Received: from smtp1.lauterbach.com ([62.154.241.196])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <nicolas.eder@lauterbach.com>)
- id 1qogmr-0000tp-LB
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:06:24 -0400
-Received: (qmail 19469 invoked by uid 484); 6 Oct 2023 09:06:19 -0000
+ id 1qogmu-0000ux-FB
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:06:27 -0400
+Received: (qmail 19491 invoked by uid 484); 6 Oct 2023 09:06:20 -0000
 X-Qmail-Scanner-Diagnostics: from nedpc1.intern.lauterbach.com by
  smtp1.lauterbach.com (envelope-from <nicolas.eder@lauterbach.com>,
  uid 484) with qmail-scanner-2.11 
  (mhr: 1.0. clamdscan: 0.99/21437. spamassassin: 3.4.0.  
  Clear:RC:1(10.2.11.92):. 
- Processed in 0.071756 secs); 06 Oct 2023 09:06:19 -0000
+ Processed in 0.083181 secs); 06 Oct 2023 09:06:20 -0000
 Received: from nedpc1.intern.lauterbach.com
  (Authenticated_SSL:neder@[10.2.11.92])
  (envelope-sender <nicolas.eder@lauterbach.com>)
  by smtp1.lauterbach.com (qmail-ldap-1.03) with TLS_AES_256_GCM_SHA384
- encrypted SMTP for <qemu-devel@nongnu.org>; 6 Oct 2023 09:06:18 -0000
+ encrypted SMTP for <qemu-devel@nongnu.org>; 6 Oct 2023 09:06:19 -0000
 From: Nicolas Eder <nicolas.eder@lauterbach.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Christian.Boenig@lauterbach.com,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Nicolas Eder <nicolas.eder@lauterbach.com>
-Subject: [PATCH v2 06/29] query for registers added
-Date: Fri,  6 Oct 2023 11:05:47 +0200
-Message-Id: <20231006090610.26171-7-nicolas.eder@lauterbach.com>
+Subject: [PATCH v2 07/29] query data preparation improved
+Date: Fri,  6 Oct 2023 11:05:48 +0200
+Message-Id: <20231006090610.26171-8-nicolas.eder@lauterbach.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231006090610.26171-1-nicolas.eder@lauterbach.com>
 References: <20231006090610.26171-1-nicolas.eder@lauterbach.com>
@@ -71,471 +71,545 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 From: neder <nicolas.eder@lauterbach.com>
 
 ---
- mcdstub/internals.h    |  55 +++++--
- mcdstub/mcdstub.c      | 320 ++++++++++++++++++++++++++++++++++++++---
- target/arm/meson.build |   1 +
- 3 files changed, 344 insertions(+), 32 deletions(-)
+ mcdstub/internals.h |  35 +++-
+ mcdstub/mcdstub.c   | 382 ++++++++++++++++++++++----------------------
+ 2 files changed, 215 insertions(+), 202 deletions(-)
 
 diff --git a/mcdstub/internals.h b/mcdstub/internals.h
-index 8df535e92a..45ba1ca8cb 100644
+index 45ba1ca8cb..2f9a768038 100644
 --- a/mcdstub/internals.h
 +++ b/mcdstub/internals.h
-@@ -8,6 +8,8 @@
- 
- #include "exec/cpu-common.h"
- #include "chardev/char.h"
-+// just used for the register xml files
-+#include "exec/gdbstub.h"       /* xml_builtin */
- 
- #define MAX_PACKET_LENGTH 1024
- 
-@@ -19,6 +21,15 @@
+@@ -21,6 +21,11 @@
  #define MCD_TRIG_OPT_DATA_IS_CONDITION 0x00000008
  #define MCD_TRIG_ACTION_DBG_DEBUG 0x00000001
  
-+// GDB stuff thats needed for GDB function, which we use
-+typedef struct GDBRegisterState {
-+    int base_reg;
-+    int num_regs;
-+    gdb_get_reg_cb get_reg;
-+    gdb_set_reg_cb set_reg;
-+    const char *xml;
-+    struct GDBRegisterState *next;
-+} GDBRegisterState;
++// schema defines
++#define ARG_SCHEMA_QRY_HANDLE "q"
++#define ARG_SCHEMA_STRING "s"
++#define ARG_SCHEMA_CORE_NUM "c" 
++
+ // GDB stuff thats needed for GDB function, which we use
+ typedef struct GDBRegisterState {
+     int base_reg;
+@@ -60,17 +65,16 @@ typedef enum MCDThreadIdKind {
  
- /*
-  * struct for an MCD Process, each process can establish one connection
-@@ -75,10 +86,6 @@ enum RSState {
-     RS_IDLE,
-     RS_GETLINE,
-     RS_DATAEND,
--    //RS_GETLINE_ESC,
--    //RS_GETLINE_RLE,
--    //RS_CHKSUM1,
--    //RS_CHKSUM2,
- };
+ typedef union MCDCmdVariant {
+     const char *data;
+-    uint8_t opcode;
+-    unsigned long val_ul;
+-    unsigned long long val_ull;
++    
+     struct {
+         MCDThreadIdKind kind;
+         uint32_t pid;
+         uint32_t tid;
+     } thread_id;
  
- typedef struct MCDState {
-@@ -103,6 +110,7 @@ typedef struct MCDState {
+-    // used to synchronize stub and dll for functions with multiple packets
+-    int index_handle;
++    int query_handle;
++    int cpu_id;
++
+ } MCDCmdVariant;
+ 
+ #define get_param(p, i)    (&g_array_index(p, MCDCmdVariant, i))
+@@ -109,6 +113,7 @@ typedef struct MCDState {
+     int supported_sstep_flags;
  
      // my stuff
++    GArray *memspaces;
      GArray *reggroups;
-+    GArray *registers;
+     GArray *registers;
  } MCDState;
- 
+@@ -116,6 +121,18 @@ typedef struct MCDState {
  /* lives in main mcdstub.c */
-@@ -110,9 +118,34 @@ extern MCDState mcdserver_state;
+ extern MCDState mcdserver_state;
  
++typedef struct mcd_mem_space_st {
++    const char *name;
++    uint32_t id;
++    uint32_t type;
++    uint32_t bits_per_mau;
++    uint8_t invariance;
++    uint32_t endian;
++    uint64_t min_addr;
++    uint64_t max_addr;
++    uint32_t supported_access_options;
++} mcd_mem_space_st;
++
  typedef struct mcd_reg_group_st {
      const char *name;
--    const char *id;
-+    uint32_t id;
- } mcd_reg_group_st;
- 
-+typedef struct xml_attrib {
-+    char argument[64];
-+    char value[64];
-+} xml_attrib;
-+
-+typedef struct mcd_reg_st {
-+    // xml info
-+    char name[64];
-+    char group[64];
-+    char type[64];
-+    uint32_t bitsize;
-+    uint32_t id;
-+    // mcd metadata
-+    uint32_t mcd_reg_group_id;
-+    uint32_t mcd_mem_space_id;
-+    uint32_t mcd_reg_type;
-+    uint32_t mcd_hw_thread_id;
-+    // data for op-code
-+    uint8_t cp;
-+    uint8_t crn;
-+    uint8_t crm;
-+    uint8_t opc0; // <- might not be needed!
-+    uint8_t opc1;
-+    uint8_t opc2;
-+} mcd_reg_st;
- 
- // Inline utility function, convert from int to hex and back
- 
-@@ -139,12 +172,6 @@ static inline int tohex(int v)
-     }
- }
- 
--
--/*old functions
--void mcd_init_mcdserver_state(void);
--int mcd_open_tcp_socket(int tcp_port);
--int mcd_extract_tcp_port_num(const char *in_string, char *out_string);
--*/
- #ifndef _WIN32
- void mcd_sigterm_handler(int signal);
- #endif
-@@ -194,10 +221,16 @@ void mcd_continue(void);
- void handle_query_mem_spaces(GArray *params, void *user_ctx);
+     uint32_t id;
+@@ -213,19 +230,23 @@ void handle_query_cores(GArray *params, void *user_ctx);
+ void handle_query_system(GArray *params, void *user_ctx);
+ CPUState *get_first_cpu_in_process(MCDProcess *process);
+ CPUState *find_cpu(uint32_t thread_id);
+-void handle_core_open(GArray *params, void *user_ctx);
++void handle_open_core(GArray *params, void *user_ctx);
+ void handle_query_reset(GArray *params, void *user_ctx);
+ void handle_detach(GArray *params, void *user_ctx);
+ void handle_query_trigger(GArray *params, void *user_ctx);
+ void mcd_continue(void);
+-void handle_query_mem_spaces(GArray *params, void *user_ctx);
  void handle_query_reg_groups_f(GArray *params, void *user_ctx);
  void handle_query_reg_groups_c(GArray *params, void *user_ctx);
-+void handle_query_regs_f(GArray *params, void *user_ctx);
-+void handle_query_regs_c(GArray *params, void *user_ctx);
++void handle_query_mem_spaces_f(GArray *params, void *user_ctx);
++void handle_query_mem_spaces_c(GArray *params, void *user_ctx);
+ void handle_query_regs_f(GArray *params, void *user_ctx);
+ void handle_query_regs_c(GArray *params, void *user_ctx);
  void handle_init(GArray *params, void *user_ctx);
-+void parse_reg_xml(const char *xml, int size);
+ void parse_reg_xml(const char *xml, int size);
  
++// arm specific functions
++void mcd_arm_store_mem_spaces(int nr_address_spaces);
++
  /* sycall handling */
  void mcd_syscall_reset(void);
  void mcd_disable_syscalls(void);
- 
-+// helpers
-+int int_cmp(gconstpointer a, gconstpointer b);
-+
- #endif /* MCDSTUB_INTERNALS_H */
 diff --git a/mcdstub/mcdstub.c b/mcdstub/mcdstub.c
-index 9817f0893c..81026a42a1 100644
+index 81026a42a1..b3ec3af543 100644
 --- a/mcdstub/mcdstub.c
 +++ b/mcdstub/mcdstub.c
-@@ -8,7 +8,6 @@
- #include "qemu/cutils.h"
- #include "qemu/module.h"
- #include "qemu/error-report.h"
--//#include "trace.h"
- #include "exec/mcdstub.h"
- #include "mcdstub/syscalls.h"
- #include "hw/cpu/cluster.h"
-@@ -31,8 +30,10 @@
- #include "chardev/char-fe.h"
- #include "monitor/monitor.h"
+@@ -2,6 +2,8 @@
+  * This is the main mcdstub. It needs to be complemented by other mcd stubs for each target.
+  */
  
--// just used for the xml_builtin stuff
--//#include "exec/gdbstub.h"       /* xml_builtin */
-+//architecture specific stuff
-+#include "target/arm/mcdstub.h"
++#include "mcd_shared_defines.h"
 +
-+// FIXME: delete the following line and check if it worked
- #include "hw/core/sysemu-cpu-ops.h"
- 
- typedef struct {
-@@ -75,6 +76,15 @@ static const MCDCmdParseEntry mcd_gen_query_table[] = {
-         .cmd = "reggroupc",
-         .schema = "i",
+ //from original gdbstub.c
+ #include "qemu/osdep.h"
+ #include "qemu/ctype.h"
+@@ -64,8 +66,13 @@ static const MCDCmdParseEntry mcd_gen_query_table[] = {
+         .cmd = "trigger",
      },
-+    {
-+        .handler = handle_query_regs_f,
-+        .cmd = "regf",
+     {
+-        .handler = handle_query_mem_spaces,
+-        .cmd = "memory",
++        .handler = handle_query_mem_spaces_f,
++        .cmd = "memoryf",
 +    },
 +    {
-+        .handler = handle_query_regs_c,
-+        .cmd = "regc",
-+        .schema = "i",
-+    },
++        .handler = handle_query_mem_spaces_c,
++        .cmd = "memoryc",
++        .schema = ARG_SCHEMA_QRY_HANDLE,
+     },
+     {
+         .handler = handle_query_reg_groups_f,
+@@ -74,7 +81,7 @@ static const MCDCmdParseEntry mcd_gen_query_table[] = {
+     {
+         .handler = handle_query_reg_groups_c,
+         .cmd = "reggroupc",
+-        .schema = "i",
++        .schema = ARG_SCHEMA_QRY_HANDLE,
+     },
+     {
+         .handler = handle_query_regs_f,
+@@ -83,7 +90,7 @@ static const MCDCmdParseEntry mcd_gen_query_table[] = {
+     {
+         .handler = handle_query_regs_c,
+         .cmd = "regc",
+-        .schema = "i",
++        .schema = ARG_SCHEMA_QRY_HANDLE,
+     },
  };
  
- void mcd_init_mcdserver_state(void)
-@@ -494,21 +504,21 @@ void run_cmd_parser(const char *data, const MCDCmdParseEntry *cmd)
-     }
- }
- 
--int cmd_parse_params(const char *data, const char *schema, GArray *params)
--{
-+int cmd_parse_params(const char *data, const char *schema, GArray *params) {
+@@ -424,20 +431,19 @@ int mcd_handle_packet(const char *line_buf)
+             static const MCDCmdParseEntry gen_query_cmd_desc = {
+                 .handler = handle_gen_query,
+                 .cmd = "q",
+-                .schema = "s"
++                .schema = ARG_SCHEMA_STRING
+             };
+             cmd_parser = &gen_query_cmd_desc;
+         }
+         break;
+     case 'H':
+-        //current alias for open core, later this will probably be a part of the 'i' requests
+         {
+-            static const MCDCmdParseEntry gen_core_open = {
+-                .handler = handle_core_open,
++            static const MCDCmdParseEntry gen_open_core = {
++                .handler = handle_open_core,
+                 .cmd = "H",
+-                .schema = "s"
++                .schema = ARG_SCHEMA_CORE_NUM
+             };
+-            cmd_parser = &gen_core_open;
++            cmd_parser = &gen_open_core;
+         }
+         break;
+     case 'D':
+@@ -508,13 +514,18 @@ int cmd_parse_params(const char *data, const char *schema, GArray *params) {
      MCDCmdVariant this_param;
  
-+    char data_buffer[64] = {0};
-     if (schema[0] == 's') {
+     char data_buffer[64] = {0};
+-    if (schema[0] == 's') {
++    if (schema[0] == atoi(ARG_SCHEMA_STRING)) {
          this_param.data = data;
          g_array_append_val(params, this_param);
      }
-     else if (schema[0] == 'i') {
--        this_param.index_handle = atoi(data);
--    g_array_append_val(params, this_param);
-+        strncat(data_buffer, data, strlen(data));
-+        this_param.index_handle = atoi(data_buffer);
+-    else if (schema[0] == 'i') {
++    else if (schema[0] == atoi(ARG_SCHEMA_QRY_HANDLE)) {
+         strncat(data_buffer, data, strlen(data));
+-        this_param.index_handle = atoi(data_buffer);
++        this_param.query_handle = atoi(data_buffer);
 +        g_array_append_val(params, this_param);
++    }
++    else if (schema[0] == atoi(ARG_SCHEMA_CORE_NUM)) {
++        strncat(data_buffer, data, strlen(data));
++        this_param.cpu_id = atoi(data_buffer);
+         g_array_append_val(params, this_param);
      }
  
-     return 0;
--    
+@@ -618,97 +629,6 @@ void mcd_sigterm_handler(int signal)
+ void mcd_vm_state_change(void *opaque, bool running, RunState state)
+ {
+ 	printf("this calls state_change\n");
+-	/*
+-    CPUState *cpu = mcdserver_state.c_cpu;
+-    g_autoptr(GString) buf = g_string_new(NULL);
+-    g_autoptr(GString) tid = g_string_new(NULL);
+-    const char *type;
+-    int ret;
+-
+-    if (running || mcdserver_state.state == RS_INACTIVE) {
+-        return;
+-    }
+-
+-    //Is there a GDB syscall waiting to be sent?
+-    if (gdb_handled_syscall()) {
+-        return;
+-    }
+-
+-    if (cpu == NULL) {
+-        //No process attached
+-        return;
+-    }
+-
+-    gdb_append_thread_id(cpu, tid);
+-
+-    switch (state) {
+-    case RUN_STATE_DEBUG:
+-        if (cpu->watchpoint_hit) {
+-            switch (cpu->watchpoint_hit->flags & BP_MEM_ACCESS) {
+-            case BP_MEM_READ:
+-                type = "r";
+-                break;
+-            case BP_MEM_ACCESS:
+-                type = "a";
+-                break;
+-            default:
+-                type = "";
+-                break;
+-            }
+-            trace_gdbstub_hit_watchpoint(type,
+-                                         gdb_get_cpu_index(cpu),
+-                                         cpu->watchpoint_hit->vaddr);
+-            g_string_printf(buf, "T%02xthread:%s;%swatch:%" VADDR_PRIx ";",
+-                            GDB_SIGNAL_TRAP, tid->str, type,
+-                            cpu->watchpoint_hit->vaddr);
+-            cpu->watchpoint_hit = NULL;
+-            goto send_packet;
+-        } else {
+-            trace_gdbstub_hit_break();
+-        }
+-        tb_flush(cpu);
+-        ret = GDB_SIGNAL_TRAP;
+-        break;
+-    case RUN_STATE_PAUSED:
+-        trace_gdbstub_hit_paused();
+-        ret = GDB_SIGNAL_INT;
+-        break;
+-    case RUN_STATE_SHUTDOWN:
+-        trace_gdbstub_hit_shutdown();
+-        ret = GDB_SIGNAL_QUIT;
+-        break;
+-    case RUN_STATE_IO_ERROR:
+-        trace_gdbstub_hit_io_error();
+-        ret = GDB_SIGNAL_IO;
+-        break;
+-    case RUN_STATE_WATCHDOG:
+-        trace_gdbstub_hit_watchdog();
+-        ret = GDB_SIGNAL_ALRM;
+-        break;
+-    case RUN_STATE_INTERNAL_ERROR:
+-        trace_gdbstub_hit_internal_error();
+-        ret = GDB_SIGNAL_ABRT;
+-        break;
+-    case RUN_STATE_SAVE_VM:
+-    case RUN_STATE_RESTORE_VM:
+-        return;
+-    case RUN_STATE_FINISH_MIGRATE:
+-        ret = GDB_SIGNAL_XCPU;
+-        break;
+-    default:
+-        trace_gdbstub_hit_unknown(state);
+-        ret = GDB_SIGNAL_UNKNOWN;
+-        break;
+-    }
+-    mcd_set_stop_cpu(cpu);
+-    g_string_printf(buf, "T%02xthread:%s;", ret, tid->str);
+-
+-send_packet:
+-    mcd_put_packet(buf->str);
+-
+-    // disable single step if it was enabled
+-    cpu_single_step(cpu, 0);
+-*/
  }
  
- int process_string_cmd(void *user_ctx, const char *data, const MCDCmdParseEntry *cmds, int num_cmds)
-@@ -885,23 +895,248 @@ CPUState *find_cpu(uint32_t thread_id)
-     return NULL;
+ int mcd_put_packet(const char *buf)
+@@ -726,14 +646,6 @@ void mcd_put_strbuf(void)
+ 
+ int mcd_put_packet_binary(const char *buf, int len, bool dump)
+ {
+-    //int csum, i;
+-    //uint8_t footer[3];
+-
+-	//trace stuff
+-    //if (dump && trace_event_get_state_backends(TRACE_GDBSTUB_IO_BINARYREPLY)) {
+-    //    hexdump(buf, len, trace_gdbstub_io_binaryreply);
+-    //}
+-
+     for(;;) {
+         //super interesting if we want a chekcsum or something like that here!!
+         g_byte_array_set_size(mcdserver_state.last_packet, 0);
+@@ -741,16 +653,7 @@ int mcd_put_packet_binary(const char *buf, int len, bool dump)
+         g_byte_array_append(mcdserver_state.last_packet, (const uint8_t *) buf, len);
+         g_byte_array_append(mcdserver_state.last_packet, (const uint8_t *) "#", 1);
+         g_byte_array_append(mcdserver_state.last_packet, (const uint8_t *) "|", 1);
+-        /*
+-        csum = 0;
+-        for(i = 0; i < len; i++) {
+-            csum += buf[i];
+-        }
+-        footer[0] = '#';
+-        footer[1] = tohex((csum >> 4) & 0xf);
+-        footer[2] = tohex((csum) & 0xf);
+-        g_byte_array_append(mcdserver_state.last_packet, footer, 3);
+-        */
++
+         mcd_put_buffer(mcdserver_state.last_packet->data, mcdserver_state.last_packet->len);
+ 
+         if (mcd_got_immediate_ack()) {
+@@ -1021,23 +924,145 @@ int int_cmp(gconstpointer a, gconstpointer b) {
+     }
  }
  
++void mcd_arm_store_mem_spaces(int nr_address_spaces) {
++    mcd_mem_space_st space1 = {
++        .name = "Non Secure",
++        .id = 1,
++        .type = 34,
++        .bits_per_mau = 8,
++        .invariance = 1,
++        .endian = 1,
++        .min_addr = 0,
++        .max_addr = -1,
++        .supported_access_options = 0,
++    };
++    g_array_append_vals(mcdserver_state.memspaces, (gconstpointer)&space1, 1);
 +
-+void parse_reg_xml(const char *xml, int size) {
-+    // iterates over the complete xml file
-+    int i, j;
-+    int still_to_skip = 0;
-+    char argument[64] = {0};
-+    char value[64] = {0};
-+    bool is_reg = false;
-+    bool is_argument = false;
-+    bool is_value = false;
-+    GArray *reg_data;
++    mcd_mem_space_st space2 = {
++        .name = "Physical (Non Secure)",
++        .id = 2,
++        .type = 18,
++        .bits_per_mau = 8,
++        .invariance = 1,
++        .endian = 1,
++        .min_addr = 0,
++        .max_addr = -1,
++        .supported_access_options = 0,
++    };
++    g_array_append_vals(mcdserver_state.memspaces, (gconstpointer)&space2, 1);
 +
-+    char c;
-+    char *c_ptr;
-+
-+    xml_attrib attribute_j;
-+    const char *argument_j;
-+    const char *value_j;
-+
-+    for (i = 0; i < size; i++) {
-+        c = xml[i];
-+        c_ptr = &c;
-+
-+        if (still_to_skip>0) {
-+            // skip chars unwanted chars
-+            still_to_skip --;
-+            continue;
-+        }
-+
-+        if (strncmp(&xml[i], "<reg", 4)==0) {
-+            // start of a register
-+            still_to_skip = 3;
-+            is_reg = true;
-+            reg_data = g_array_new(false, true, sizeof(xml_attrib));
-+        }
-+        else if (is_reg) {
-+            if (strncmp(&xml[i], "/>", 2)==0) {
-+                // end of register info
-+                still_to_skip = 1;
-+                is_reg = false;
-+
-+                // create empty register
-+                mcd_reg_st my_register = (const struct mcd_reg_st){ 0 };
-+
-+                // add found attribtues
-+                for (j = 0; j<reg_data->len; j++) {
-+                    attribute_j = g_array_index(reg_data, xml_attrib, j);
-+
-+                    argument_j = attribute_j.argument;
-+                    value_j = attribute_j.value;
-+
-+                    if (strcmp(argument_j, "name")==0) {
-+                        strcpy(my_register.name, value_j);
-+                    }
-+                    else if (strcmp(argument_j, "regnum")==0) {
-+                        my_register.id = atoi(value_j);
-+                    }
-+                    else if (strcmp(argument_j, "bitsize")==0) {
-+                        my_register.bitsize = atoi(value_j);
-+                    }
-+                    else if (strcmp(argument_j, "type")==0) {
-+                        strcpy(my_register.type, value_j);
-+                    }
-+                    else if (strcmp(argument_j, "group")==0) {
-+                        strcpy(my_register.group, value_j);
-+                    }
-+                }
-+                // store register
-+                g_array_append_vals(mcdserver_state.registers, (gconstpointer)&my_register, 1);
-+                // free memory
-+                g_array_free(reg_data, false);
-+            }
-+            else {
-+                // store info for register
-+                switch (c) {
-+                    case ' ':
-+                        break;
-+                    case '=':
-+                        is_argument = false;
-+                        break;
-+                    case '"':
-+                        if (is_value) {
-+                            // end of value reached
-+                            is_value = false;
-+                            // store arg-val combo
-+                            xml_attrib current_attribute;
-+                            strcpy(current_attribute.argument, argument);
-+                            strcpy(current_attribute.value, value);
-+                            g_array_append_vals(reg_data, (gconstpointer)&current_attribute, 1);
-+                            memset(argument, 0, sizeof(argument));
-+                            memset(value, 0, sizeof(value));
-+                        }
-+                        else {
-+                            //start of value
-+                            is_value = true;
-+                        }
-+                        break;
-+                    default:
-+                        if (is_argument) {
-+                            strncat(argument, c_ptr, 1);
-+                        }
-+                        else if (is_value) {
-+                            strncat(value, c_ptr, 1);
-+                        }
-+                        else {
-+                            is_argument = true;
-+                            strncat(argument, c_ptr, 1);
-+                        }
-+                        break;
-+                }
-+            }
-+        }
++    if (nr_address_spaces==2) {
++        mcd_mem_space_st space3 = {
++        .name = "Secure",
++        .id = 3,
++        .type = 34,
++        .bits_per_mau = 8,
++        .invariance = 1,
++        .endian = 1,
++        .min_addr = 0,
++        .max_addr = -1,
++        .supported_access_options = 0,
++    };
++    g_array_append_vals(mcdserver_state.memspaces, (gconstpointer)&space3, 1);
++    mcd_mem_space_st space4 = {
++        .name = "Physical (Secure)",
++        .id = 4,
++        .type = 18,
++        .bits_per_mau = 8,
++        .invariance = 1,
++        .endian = 1,
++        .min_addr = 0,
++        .max_addr = -1,
++        .supported_access_options = 0,
++    };
++    g_array_append_vals(mcdserver_state.memspaces, (gconstpointer)&space4, 1);
 +    }
-+}
-+
-+int int_cmp(gconstpointer a, gconstpointer b) {
-+    int a_int = *(int*)a;
-+    int b_int = *(int*)b;
-+    if (a_int == b_int) {
-+        return 0;
-+    }
-+    else {
-+        return 1;
-+    }
++    // TODO: get dynamically how the per (CP15) space is called
++    mcd_mem_space_st space5 = {
++        .name = "GPR Registers",
++        .id = 5,
++        .type = 1,
++        .bits_per_mau = 8,
++        .invariance = 1,
++        .endian = 1,
++        .min_addr = 0,
++        .max_addr = -1,
++        .supported_access_options = 0,
++    };
++    g_array_append_vals(mcdserver_state.memspaces, (gconstpointer)&space5, 1);
++    mcd_mem_space_st space6 = {
++        .name = "CP15 Registers",
++        .id = 6,
++        .type = 1,
++        .bits_per_mau = 8,
++        .invariance = 1,
++        .endian = 1,
++        .min_addr = 0,
++        .max_addr = -1,
++        .supported_access_options = 0,
++    };
++    g_array_append_vals(mcdserver_state.memspaces, (gconstpointer)&space6, 1);
 +}
 +
  void handle_init(GArray *params, void *user_ctx) {
-     CPUState *cpu = mcdserver_state.c_cpu;
+-    CPUState *cpu = mcdserver_state.c_cpu;
++    // the mcdserver is set up and we return the handshake
++    mcd_put_packet("shaking your hand"); 
++}
++
++void handle_query_system(GArray *params, void *user_ctx) {
++    mcd_put_packet("qemu-system");
++}
++
++void handle_query_cores(GArray *params, void *user_ctx) {
++    //TODO: add cluster support: in gdb each inferior (process) handles one cluster we might want to have sth similar here
++
++    // get first cpu
++    CPUState *cpu = mcd_first_attached_cpu();
++    if (!cpu) {
++        return;
++    }
++
++    ObjectClass *oc = object_get_class(OBJECT(cpu));
++    const char *cpu_model = object_class_get_name(oc);
++
++    CPUClass *cc = CPU_GET_CLASS(cpu);
++    gchar *arch = cc->gdb_arch_name(cpu);
++    
++    int nr_cores = cpu->nr_cores;
++
++    g_string_append_printf(mcdserver_state.str_buf, "device=\"qemu-%s-device\",core=\"%s\",nr_cores=\"%d\"", arch, cpu_model, nr_cores);
++    mcd_put_strbuf();
++    g_free(arch);
++}
++
++void handle_open_core(GArray *params, void *user_ctx) {
++    // get the cpu whith the given id
++    uint32_t cpu_id = get_param(params, 0)->cpu_id;
++
++    CPUState *cpu = mcd_get_cpu(cpu_id);
++
      CPUClass *cc = CPU_GET_CLASS(cpu);
  
      gchar *arch = cc->gdb_arch_name(cpu);
  
--    // store reg groups
-+    
++    // TODO: this might cause a memory leak when called a second time -> maybe free the Garray first
++    mcdserver_state.memspaces = g_array_new(false, true, sizeof(mcd_mem_space_st));
++    mcdserver_state.reggroups = g_array_new(false, true, sizeof(mcd_reg_group_st));
++    mcdserver_state.registers = g_array_new(false, true, sizeof(mcd_reg_st));
++
+     
      if (strcmp(arch, "arm")==0) {
-+        // store reg groups
-+        uint32_t current_group_id = 0;
-+
+         // store reg groups
+         uint32_t current_group_id = 0;
+ 
          // at the moment we just assume there are 3 spaces (gpr, per and debug)
-         // TODO: this might cause a memory leak when called a second time -> maybe free the Garray first
-         mcdserver_state.reggroups = g_array_new(false, true, sizeof(mcd_reg_group_st));
+-        // TODO: this might cause a memory leak when called a second time -> maybe free the Garray first
+-        mcdserver_state.reggroups = g_array_new(false, true, sizeof(mcd_reg_group_st));
++        
++        // store mem spaces
++        int nr_address_spaces = cpu->num_ases;
++        mcd_arm_store_mem_spaces(nr_address_spaces);
++        // mem spaces done
++
  
--        mcd_reg_group_st group1 = { .name = "GPR Registers", .id = "1" };
-+        // store the registers themselves
-+        mcdserver_state.registers = g_array_new(false, true, sizeof(mcd_reg_st));
-+        GList *register_numbers = NULL;
-+
-+        const char *xml_filename = NULL;
-+        const char *xml_content = NULL;
-+        const char *name = NULL;
-+        int i;
-+
-+        // 1. check out the core xml file
-+        xml_filename = cc->gdb_core_xml_file;
-+
-+        for (i = 0; ; i++) {
-+                name = xml_builtin[i][0];
-+                if (!name || (strncmp(name, xml_filename, strlen(xml_filename)) == 0 && strlen(name) == strlen(xml_filename)))
-+                break;
-+            }
-+        // without gpr registers we can do nothing
-+        assert(name);
-+        // add group for gpr registers
-+        current_group_id = 1;
-+        mcd_reg_group_st group1 = { .name = "GPR Registers", .id = current_group_id };
-         g_array_append_vals(mcdserver_state.reggroups, (gconstpointer)&group1, 1);
+-        // store the registers themselves
+-        mcdserver_state.registers = g_array_new(false, true, sizeof(mcd_reg_st));
+         GList *register_numbers = NULL;
  
--        mcd_reg_group_st group2 = { .name = "CP15 Registers", .id = "2" };
--        g_array_append_vals(mcdserver_state.reggroups, (gconstpointer)&group2, 1);
-+        // parse xml
-+        xml_content = xml_builtin[i][1];
-+        parse_reg_xml(xml_content, strlen(xml_content));
-+
-+        // 2. iterate over all other xml files
-+        GDBRegisterState *r;
-+        for (r = cpu->gdb_regs; r; r = r->next) {
-+            xml_filename = r->xml;
-+            xml_content = NULL;
-+
-+            // first, check if this is a coprocessor xml
-+
-+            // funciton call
-+            xml_content = arm_mcd_get_dynamic_xml(cpu, xml_filename);
-+            if (xml_content) {
-+                if (strcmp(xml_filename, "system-registers.xml")==0) {
-+                    //these are the coprocessor register
-+                    current_group_id = 2;
-+                    mcd_reg_group_st group2 = { .name = "CP15 Registers", .id = current_group_id };
-+                    g_array_append_vals(mcdserver_state.reggroups, (gconstpointer)&group2, 1);
-+                }
-+                
-+            }
-+            else {
-+                // its not a coprocessor xml -> it is a static xml file
-+                for (i = 0; ; i++) {
-+                    name = xml_builtin[i][0];
-+                    if (!name || (strncmp(name, xml_filename, strlen(xml_filename)) == 0 && strlen(name) == strlen(xml_filename)))
-+                    break;
-+                }
-+                if (name) {
-+                    xml_content = xml_builtin[i][1];
-+                }
-+                else {
-+                    printf("no data found for %s\n", xml_filename);
-+                    continue;
-+                }
-+            }
-+
-+            // parse xml
-+            parse_reg_xml(xml_content, strlen(xml_content));
-+        }
-+        // go over the register array and collect all additional data
-+        mcd_reg_st *current_register;
-+        int id_neg_offset = 0;
-+        int effective_id;
-+        for (i = 0; i < mcdserver_state.registers->len; i++) {
-+            current_register = &(g_array_index(mcdserver_state.registers, mcd_reg_st, i));
-+            // ad an id handle
-+            if (current_register->id) {
-+                // id is already in place
-+                //FIXME: we are missing 10 registers (likely the FPA regs or sth)
-+                int used_id = current_register->id;
-+                register_numbers = g_list_append(register_numbers, &used_id);
-+                id_neg_offset ++;
-+            }
-+            else {
-+                effective_id = i - id_neg_offset;
-+                if (g_list_find_custom(register_numbers, &effective_id, (GCompareFunc)int_cmp)!=NULL) {
-+                    id_neg_offset --;
-+                }
-+                current_register->id = i - id_neg_offset;
-+            }
-+            // sort into correct reg_group and according mem_space
-+            if (strcmp(current_register->group, "cp_regs")==0) {
-+                current_register->mcd_reg_group_id = 2;
-+                current_register->mcd_mem_space_id = 6;
-+                // get info for opcode
-+            }
-+            else {
-+                // gpr register
-+                current_register->mcd_reg_group_id = 1;
-+                current_register->mcd_mem_space_id = 5;
-+            }
-+        }
-+        // free memory
-+        g_list_free(register_numbers);
+         const char *xml_filename = NULL;
+@@ -1140,49 +1165,9 @@ void handle_init(GArray *params, void *user_ctx) {
      }
      else {
          // we don't support other architectures
-@@ -910,7 +1145,7 @@ void handle_init(GArray *params, void *user_ctx) {
+-        assert(1);
++        assert(0);
+     }
      g_free(arch);
- 
-     // the mcdserver is set up and we return the handshake
--    mcd_put_packet("shaking your hand");
-+    mcd_put_packet("shaking your hand"); 
+-
+-    // the mcdserver is set up and we return the handshake
+-    mcd_put_packet("shaking your hand"); 
+-}
+-
+-void handle_query_system(GArray *params, void *user_ctx) {
+-    mcd_put_packet("qemu-system");
+-}
+-
+-void handle_query_cores(GArray *params, void *user_ctx) {
+-    //TODO: add cluster support: in gdb each inferior (process) handles one cluster we might want to have sth similar here
+-
+-    // get first cpu
+-    CPUState *cpu = mcd_first_attached_cpu();
+-    if (!cpu) {
+-        return;
+-    }
+-
+-    ObjectClass *oc = object_get_class(OBJECT(cpu));
+-    const char *cpu_model = object_class_get_name(oc);
+-
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-    gchar *arch = cc->gdb_arch_name(cpu);
+-    
+-    int nr_cores = cpu->nr_cores;
+-
+-    g_string_append_printf(mcdserver_state.str_buf, "device=\"qemu-%s-device\",core=\"%s\",nr_cores=\"%d\"", arch, cpu_model, nr_cores);
+-    mcd_put_strbuf();
+-    g_free(arch);
+-}
+-
+-void handle_core_open(GArray *params, void *user_ctx) {
+-    // get the cpu whith the given id
+-    uint32_t cpu_id = atoi(get_param(params, 0)->data);
+-
+-    CPUState *cpu = mcd_get_cpu(cpu_id);
+-
+-    // select the the cpu as the current cpu for all request from the mcd interface
+-    mcdserver_state.c_cpu = cpu;
+-
  }
  
- void handle_query_system(GArray *params, void *user_ctx) {
-@@ -932,10 +1167,6 @@ void handle_query_cores(GArray *params, void *user_ctx) {
-     CPUClass *cc = CPU_GET_CLASS(cpu);
-     gchar *arch = cc->gdb_arch_name(cpu);
-     
--    //const char *cpu_name = object_get_canonical_path_component(OBJECT(cpu));
--    //int process_id = mcd_get_cpu_pid(cpu);
--    //int cpu_index = cpu->cpu_index;
--    //int cpu_cluster = cpu->cluster_index;
-     int nr_cores = cpu->nr_cores;
+ void handle_query_reset(GArray *params, void *user_ctx) {
+@@ -1235,36 +1220,43 @@ void mcd_continue(void)
+     }
+ }
  
-     g_string_append_printf(mcdserver_state.str_buf, "device=\"qemu-%s-device\",core=\"%s\",nr_cores=\"%d\"", arch, cpu_model, nr_cores);
-@@ -1039,13 +1270,21 @@ void handle_query_mem_spaces(GArray *params, void *user_ctx) {
- 
- void handle_query_reg_groups_f(GArray *params, void *user_ctx) {
-     // send the first reg group
-+    int nb_groups = mcdserver_state.reggroups->len;
+-void handle_query_mem_spaces(GArray *params, void *user_ctx) {
+-    // this returns the address spaces
+-    // first we check if this is an arm architecture
+-    // if it is arm we assume that if there are 2 address spaces, these are secure and non-secure (EL3 and EL0 for 64 bit)
+-    CPUState *cpu = mcdserver_state.c_cpu;
+-    CPUClass *cc = CPU_GET_CLASS(cpu);
+-
+-    int nr_address_spaces = cpu->num_ases;
+-    gchar *arch = cc->gdb_arch_name(cpu);
++void handle_query_mem_spaces_f(GArray *params, void *user_ctx) {
++    // send the first mem space
++    int nb_groups = mcdserver_state.memspaces->len;
 +    if (nb_groups == 1) {
 +        // indicates this is the last packet
 +        g_string_printf(mcdserver_state.str_buf, "0!");
@@ -543,84 +617,70 @@ index 9817f0893c..81026a42a1 100644
 +    else {
 +        g_string_printf(mcdserver_state.str_buf, "1!");
 +    }
-     mcd_reg_group_st group = g_array_index(mcdserver_state.reggroups, mcd_reg_group_st, 0);
--    g_string_printf(mcdserver_state.str_buf, "1!id=%s.name=%s.", group.id, group.name);
-+    g_string_append_printf(mcdserver_state.str_buf, "id=%d.name=%s.", group.id, group.name);
-     mcd_put_strbuf();
- }
++    mcd_mem_space_st space = g_array_index(mcdserver_state.memspaces, mcd_mem_space_st, 0);
++    g_string_append_printf(mcdserver_state.str_buf, "name=%s.id=%d.type=%d.bpm=%d.i=%d.e=%d.min=%ld.max=%ld.sao=%d.",
++        space.name, space.id, space.type, space.bits_per_mau, space.invariance, space.endian,
++        space.min_addr, space.max_addr, space.supported_access_options);
++    mcd_put_strbuf();
++}
  
- void handle_query_reg_groups_c(GArray *params, void *user_ctx) {
--    // this funcitons send all reg groups exept for the first
-+    // this funcitons send all reg groups except for the first
-     // 1. get parameter
-     int query_index = get_param(params, 0)->index_handle;
+-    if (strcmp(arch, "arm")==0) {
+-        // we got secure and non-secure
+-        g_string_printf(mcdserver_state.str_buf, "Non Secure=id:1;type:34;bpm:8;i:1;e:1;min:0;max:-1;sao:0;.");
+-        g_string_append_printf(mcdserver_state.str_buf, "Physical (Non Secure)=id:2;type:18;bpm:8;i:1;e:1;min:0;max:-1;sao:0;.");
+-        if (nr_address_spaces==2) {
+-            g_string_append_printf(mcdserver_state.str_buf, "Secure=id:3;type:34;bpm:8;i:1;e:1;min:0;max:-1;sao:0;.");
+-            g_string_append_printf(mcdserver_state.str_buf, "Physical (Secure)=id:4;type:18;bpm:8;i:1;e:1;min:0;max:-1;sao:0;.");
+-        }
++void handle_query_mem_spaces_c(GArray *params, void *user_ctx) {
++    // this funcitons send all mem spaces except for the first
++    // 1. get parameter
++    int query_index = get_param(params, 0)->query_handle;
  
-@@ -1056,12 +1295,51 @@ void handle_query_reg_groups_c(GArray *params, void *user_ctx) {
-         g_string_printf(mcdserver_state.str_buf, "0!");
+-        // provide register spaces
+-        // TODO: get dynamically how the per (CP15) space is called
+-        g_string_append_printf(mcdserver_state.str_buf, "GPR Registers=id:5;type:1;bpm:64;i:1;e:1;min:0;max:-1;sao:0;.");
+-        g_string_append_printf(mcdserver_state.str_buf, "CP15 Registers=id:6;type:1;bpm:32;i:1;e:1;min:0;max:-1;sao:0;."); //<-- per registers
+-        //g_string_append_printf(mcdserver_state.str_buf, "CP14 Registers=type:1;bpm:32;i:1;e:1;min:0;max:-1;sao:0;."); // <-- debug registers
++    // 2. check weather this was the last mem space
++    int nb_groups = mcdserver_state.memspaces->len;
++    if (query_index+1 == nb_groups) {
++        // indicates this is the last packet
++        g_string_printf(mcdserver_state.str_buf, "0!");
      }
      else {
--        // provides
-         g_string_printf(mcdserver_state.str_buf, "%d!", query_index+1);
-     }
- 
-     // 3. send the correct reggroup
-     mcd_reg_group_st group = g_array_index(mcdserver_state.reggroups, mcd_reg_group_st, query_index);
--    g_string_append_printf(mcdserver_state.str_buf, "id=%s.name=%s.", group.id, group.name);
-+    g_string_append_printf(mcdserver_state.str_buf, "id=%d.name=%s.", group.id, group.name);
-+    mcd_put_strbuf();
-+}
-+
-+void handle_query_regs_f(GArray *params, void *user_ctx) {
-+    // send the first register
-+    int nb_regs = mcdserver_state.registers->len;
-+    if (nb_regs == 1) {
-+        // indicates this is the last packet
-+        g_string_printf(mcdserver_state.str_buf, "0!");
-+    }
-+    else {
-+        g_string_printf(mcdserver_state.str_buf, "1!");
-+    }
-+    mcd_reg_st my_register = g_array_index(mcdserver_state.registers, mcd_reg_st, 0);
-+    g_string_append_printf(mcdserver_state.str_buf, "id=%d.name=%s.size=%d.reggroupid=%d.memspaceid=%d.type=%d.thread=%d.",
-+        my_register.id, my_register.name, my_register.bitsize, my_register.mcd_reg_group_id,
-+        my_register.mcd_mem_space_id, my_register.mcd_reg_type, my_register.mcd_hw_thread_id);
-+    mcd_put_strbuf();
-+}
-+
-+void handle_query_regs_c(GArray *params, void *user_ctx) {
-+    // this funcitons send all registers except for the first
-+    // 1. get parameter
-+    int query_index = get_param(params, 0)->index_handle;
-+
-+    // 2. check weather this was the last register
-+    int nb_regs = mcdserver_state.registers->len;
-+    if (query_index+1 == nb_regs) {
-+        // indicates this is the last packet
-+        g_string_printf(mcdserver_state.str_buf, "0!");
-+    }
-+    else {
+-        // we don't support other architectures
+-        assert(1);
 +        g_string_printf(mcdserver_state.str_buf, "%d!", query_index+1);
-+    }
+     }
+-    g_free(arch);
 +
-+    // 3. send the correct register
-+    mcd_reg_st my_register = g_array_index(mcdserver_state.registers, mcd_reg_st, query_index);
-+    g_string_append_printf(mcdserver_state.str_buf, "id=%d.name=%s.size=%d.reggroupid=%d.memspaceid=%d.type=%d.thread=%d.",
-+        my_register.id, my_register.name, my_register.bitsize, my_register.mcd_reg_group_id,
-+        my_register.mcd_mem_space_id, my_register.mcd_reg_type, my_register.mcd_hw_thread_id);
++    // 3. send the correct memspace
++    mcd_mem_space_st space = g_array_index(mcdserver_state.memspaces, mcd_mem_space_st, query_index);
++    g_string_append_printf(mcdserver_state.str_buf, "name=%s.id=%d.type=%d.bpm=%d.i=%d.e=%d.min=%ld.max=%ld.sao=%d.",
++        space.name, space.id, space.type, space.bits_per_mau, space.invariance, space.endian,
++        space.min_addr, space.max_addr, space.supported_access_options);
      mcd_put_strbuf();
  }
-diff --git a/target/arm/meson.build b/target/arm/meson.build
-index e645e456da..71ff10316f 100644
---- a/target/arm/meson.build
-+++ b/target/arm/meson.build
-@@ -3,6 +3,7 @@ arm_ss.add(files(
-   'cpu.c',
-   'debug_helper.c',
-   'gdbstub.c',
-+  'mcdstub.c',
-   'helper.c',
-   'vfp_helper.c',
- ))
+ 
+@@ -1286,7 +1278,7 @@ void handle_query_reg_groups_f(GArray *params, void *user_ctx) {
+ void handle_query_reg_groups_c(GArray *params, void *user_ctx) {
+     // this funcitons send all reg groups except for the first
+     // 1. get parameter
+-    int query_index = get_param(params, 0)->index_handle;
++    int query_index = get_param(params, 0)->query_handle;
+ 
+     // 2. check weather this was the last reg group
+     int nb_groups = mcdserver_state.reggroups->len;
+@@ -1324,7 +1316,7 @@ void handle_query_regs_f(GArray *params, void *user_ctx) {
+ void handle_query_regs_c(GArray *params, void *user_ctx) {
+     // this funcitons send all registers except for the first
+     // 1. get parameter
+-    int query_index = get_param(params, 0)->index_handle;
++    int query_index = get_param(params, 0)->query_handle;
+ 
+     // 2. check weather this was the last register
+     int nb_regs = mcdserver_state.registers->len;
 -- 
 2.34.1
 
