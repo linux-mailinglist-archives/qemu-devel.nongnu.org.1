@@ -2,86 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C9737BB48E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:52:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D82E67BB49E
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:56:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qohVb-0007qM-9N; Fri, 06 Oct 2023 05:52:35 -0400
+	id 1qohYg-0000Md-Fo; Fri, 06 Oct 2023 05:55:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qohVM-0007nv-Pa
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:52:22 -0400
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qohVL-0004V9-5l
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:52:20 -0400
-Received: by mail-wm1-x32e.google.com with SMTP id
- 5b1f17b1804b1-4065f29e933so18325685e9.1
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 02:52:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696585937; x=1697190737; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=Lkxtq6zBjf5UHtX1+6CZtmIjrMzsgVf/RPnnvqwXTTs=;
- b=xMI4INBz6Kdr164kr8XrH1C+F4KPu4S5PywD+YEUsMDszZe+4FI3L/9D7rJ7vqUdWa
- 9ndQsrKUIX8VJlX1YLmH0lYUT19NO9GYEIJvk4WG+86kqGnCgKu9eYFDKrM6ftrII7jL
- MFM6oOLq9HIWuNINAvpwhEQJVTCprZHmUKQxq5GukS1zouHFj0kqkgM9u+nL7L6eg2R/
- Hw36+fILsID2tUcZr/lWV89XL7430+Jd0wl72XZ4r7kL+wnBICTjGj2jqNF5JteJ9cZA
- EN5FA1r5jPYhEcHKM09DxKvTyv7hmdawcBmUs7djRVTWCwCMXaV9omDlRRJpD+L1X4gr
- LqkA==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qohYO-0000Lj-Tt
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:55:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qohYM-0005ZJ-VS
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:55:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696586126;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=0H2QJ/s3SpBQxhuU4qYU9T8XhzOwpmavpMhuP32cE/c=;
+ b=euv8dvOKAfvtuHoSkaZ6VqgD28Th3DFBM8Xw6aJJ/Wi6WE8UnZOj/rjkuvMjWg7WPzA949
+ hxcFIawDUxjgixuoO4P6MuRULOfIN8UaHXURaDDTtPhKG1TCSOzHI2coPluIm24ufxtgWM
+ 0cU2TKzQWBUVe3avENT+wkQrVx2Mss8=
+Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
+ [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-345-4jXqyiJNNli0g9xjSDx-eg-1; Fri, 06 Oct 2023 05:55:24 -0400
+X-MC-Unique: 4jXqyiJNNli0g9xjSDx-eg-1
+Received: by mail-vk1-f199.google.com with SMTP id
+ 71dfb90a1353d-49a9e67d024so705369e0c.3
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 02:55:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696585937; x=1697190737;
+ d=1e100.net; s=20230601; t=1696586124; x=1697190924;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Lkxtq6zBjf5UHtX1+6CZtmIjrMzsgVf/RPnnvqwXTTs=;
- b=CXWvtGFcrwLyAhbtNF5eKE4bYg1LA6uEqcL+yiL6pQA9lC+r6RMQQFJnb89UEupjC1
- PagUnj9sQlPLEJGV4SMuIhStbh4PWhczQuPuNMYKrzewsna3s9EPbxruRWBRmUCaV/nq
- I+PU41A5xUGCbqMBCUzuImoVgz8/wukYdAJnfTnVjYv6m4A9oHslO8u+HEyX2Vfj3Amg
- SdSaUYOCDSitOkEzsQO6S8+yIY4WyVeIfH9Ylpiol1PpTLo7+Z0U3eBLCnl0udfDElES
- dPlrwrtY7MGB3UBSExWBtR7o83JnkQZ5LrE6aJ5HcUNXSGR+MWyHT9h8/Lxv5CHMEn+O
- L97A==
-X-Gm-Message-State: AOJu0YxkMclzDRN6CQ09ckhsoLFL4k2PS3h3c70aHDpkX/D+1ylVqe0l
- c+qIEfSNko4zk2e8a6Yn6H/mIg==
-X-Google-Smtp-Source: AGHT+IEquhbIMFIvLETwotfiSBewAAhyJHScVnXO+vKM63Ld3huKq39YGhDH3tuvoXKh3ta8hfnzew==
-X-Received: by 2002:a5d:60d2:0:b0:317:6fff:c32b with SMTP id
- x18-20020a5d60d2000000b003176fffc32bmr7107607wrt.53.1696585937554; 
- Fri, 06 Oct 2023 02:52:17 -0700 (PDT)
-Received: from [192.168.69.115] ([176.172.115.173])
+ bh=0H2QJ/s3SpBQxhuU4qYU9T8XhzOwpmavpMhuP32cE/c=;
+ b=eSwBwKjnXOAYkwSVI4i84YpNN4PM/orwusFiNsVymWzMlK/FEZL0LZIsVMelHeV71I
+ wVLYHFknNjN749y6crJPmGke0++4nDcx/l+QgK85UNMfBx/ZmfaYdpVA7oNSSWfwjShs
+ LWvaXNxAiPNqh0E76/H+nJ2NXad3nSoCv3IFJE0i+IPYnzD7kPtRet9rbrV9KZYqkVFA
+ A/odOSDUxp5BRaXjIgnASvQ+LlvfB6vTBKzWV4s3MpeohLN2YSkmaccDJ4nSQ5ZJuQYJ
+ TiW/qAopLcQH95gjtqB4Caap/xVac3VYdWX3I4eXHjNyd9yoWEq64VweLSH0R6EcPBEZ
+ mqgA==
+X-Gm-Message-State: AOJu0Ywp52O9TgIlCLGQryZ8DJz+BKpaZexaPGgPd0661SJplqkFS4Ml
+ U6Vcb0e7E5RaZXVmAQlOR8yG3vtM7AHmOINAn5upBr+ZvaoI+nb4RCQkMl9NXTR/3xMUChW1Cqp
+ i9XX8D0Aq8PLihUo=
+X-Received: by 2002:a1f:a9d0:0:b0:49d:92e0:9cd1 with SMTP id
+ s199-20020a1fa9d0000000b0049d92e09cd1mr7329146vke.11.1696586124019; 
+ Fri, 06 Oct 2023 02:55:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFpKeCYbo0dLxxtag45LyvYtJWdVNdypBb8mIdREbRnpqFz1cM2oeqNV79IzxNYTPw0LITdzw==
+X-Received: by 2002:a1f:a9d0:0:b0:49d:92e0:9cd1 with SMTP id
+ s199-20020a1fa9d0000000b0049d92e09cd1mr7329139vke.11.1696586123644; 
+ Fri, 06 Oct 2023 02:55:23 -0700 (PDT)
+Received: from [10.33.192.205] (nat-pool-str-t.redhat.com. [149.14.88.106])
  by smtp.gmail.com with ESMTPSA id
- g8-20020a5d5408000000b0031c5b380291sm1243032wrv.110.2023.10.06.02.52.16
+ e15-20020ac5c98f000000b0049971fc9efcsm337417vkm.29.2023.10.06.02.55.22
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 02:52:17 -0700 (PDT)
-Message-ID: <50dbbbc6-9893-a9c6-38a6-124973a7f838@linaro.org>
-Date: Fri, 6 Oct 2023 11:52:15 +0200
+ Fri, 06 Oct 2023 02:55:23 -0700 (PDT)
+Message-ID: <6f175ff8-5c23-62ed-a909-4b60fa230545@redhat.com>
+Date: Fri, 6 Oct 2023 11:55:21 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3 13/16] semihosting/arm-compat: Clean up local variable
- shadowing
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] target/ppc: Clean up local variable shadowing in
+ kvm_arch_*_registers()
 Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org,
- Thomas Huth <thuth@redhat.com>
-References: <20231004120019.93101-1-philmd@linaro.org>
- <20231004120019.93101-14-philmd@linaro.org> <87h6n6h93v.fsf@linaro.org>
- <878r8gp0yp.fsf@pond.sub.org>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <878r8gp0yp.fsf@pond.sub.org>
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>, qemu-ppc@nongnu.org,
+ qemu-devel@nongnu.org
+Cc: Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Markus Armbruster <armbru@redhat.com>
+References: <20231006053526.1031252-1-clg@kaod.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20231006053526.1031252-1-clg@kaod.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32e;
- envelope-from=philmd@linaro.org; helo=mail-wm1-x32e.google.com
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -62
 X-Spam_score: -6.3
 X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.219,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -97,65 +103,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 6/10/23 11:14, Markus Armbruster wrote:
-> Alex Bennée <alex.bennee@linaro.org> writes:
+On 06/10/2023 07.35, Cédric Le Goater wrote:
+> Remove extra 'i' variable to fix this warning :
 > 
->> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
->>
->>> Fix:
->>>
->>>    semihosting/arm-compat-semi.c: In function ‘do_common_semihosting’:
->>>    semihosting/arm-compat-semi.c:379:13: warning: declaration of ‘ret’ shadows a previous local [-Wshadow=local]
->>>      379 |         int ret, err = 0;
->>>          |             ^~~
->>>    semihosting/arm-compat-semi.c:370:14: note: shadowed declaration is here
->>>      370 |     uint32_t ret;
->>>          |              ^~~
->>>    semihosting/arm-compat-semi.c:682:27: warning: declaration of ‘ret’
->>> shadows a previous local [-Wshadow=local]
->>>      682 |                 abi_ulong ret;
->>>          |                           ^~~
->>>    semihosting/arm-compat-semi.c:370:9: note: shadowed declaration is here
->>>      370 |     int ret;
->>>          |         ^~~
->>>
->>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
->>> ---
->>>   semihosting/arm-compat-semi.c | 5 ++++-
->>>   1 file changed, 4 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/semihosting/arm-compat-semi.c b/semihosting/arm-compat-semi.c
->>> index 564fe17f75..0033a1e018 100644
->>> --- a/semihosting/arm-compat-semi.c
->>> +++ b/semihosting/arm-compat-semi.c
->>> @@ -367,7 +367,6 @@ void do_common_semihosting(CPUState *cs)
->>>       target_ulong ul_ret;
->>>       char * s;
->>>       int nr;
->>> -    uint32_t ret;
->>>       int64_t elapsed;
->>>   
->>>       nr = common_semi_arg(cs, 0) & 0xffffffffU;
->>> @@ -725,6 +724,9 @@ void do_common_semihosting(CPUState *cs)
->>>   
->>>       case TARGET_SYS_EXIT:
->>>       case TARGET_SYS_EXIT_EXTENDED:
->>> +    {
->>> +        uint32_t ret;
->>> +
->>
->> I suspect this could just as well be an int with an explicit cast for ret = arg1
->> because the consumers are all expecting int anyway.
->>
->> Otherwise:
->>
->> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+>    ../target/ppc/kvm.c: In function ‘kvm_arch_put_registers’:
+>    ../target/ppc/kvm.c:963:13: warning: declaration of ‘i’ shadows a previous local [-Wshadow=compatible-local]
+>      963 |         int i;
+>          |             ^
+>    ../target/ppc/kvm.c:906:9: note: shadowed declaration is here
+>      906 |     int i;
+>          |         ^
+>    ../target/ppc/kvm.c: In function ‘kvm_arch_get_registers’:
+>    ../target/ppc/kvm.c:1265:13: warning: declaration of ‘i’ shadows a previous local [-Wshadow=compatible-local]
+>     1265 |         int i;
+>          |             ^
+>    ../target/ppc/kvm.c:1212:9: note: shadowed declaration is here
+>     1212 |     int i, ret;
+>          |         ^
 > 
-> Philippe, would you like to follow up on Alex's suspicion, or would you
-> like me to queue the patch as is?
+> Signed-off-by: Cédric Le Goater <clg@kaod.org>
+> ---
+>   target/ppc/kvm.c | 4 ----
+>   1 file changed, 4 deletions(-)
 
-Please queue as is. The signed conversion is done here (well
-documented):
-https://lore.kernel.org/qemu-devel/20231005062610.57351-1-philmd@linaro.org/
+Reviewed-by: Thomas Huth <thuth@redhat.com>
 
 
