@@ -2,74 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043C07BB618
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D597BB639
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:17:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoimw-00081o-C3; Fri, 06 Oct 2023 07:14:34 -0400
+	id 1qoinO-0008NV-8Z; Fri, 06 Oct 2023 07:15:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoimu-00081O-UL
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:32 -0400
+ id 1qoinF-0008Fd-IO
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qoimt-0000HT-Gg
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:32 -0400
+ id 1qoin5-0000Jv-RR
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:14:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696590870;
+ s=mimecast20190719; t=1696590883;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=iSaoZDLtMbdcEKV3jUJN3mk/qKz/NtrRlOhHUjSJjMw=;
- b=JHtf/In1j3eie4F6QdYzI96TGALMdrE+ZRC+wXcemdArmcxu23c4rGbxc9nGVrDDGpunTX
- vn/yYgYQlL1PLlTlFEHdzyp4gzaVs7PYQ0rvksOJVpsKJtMq38v/EeuBCeIWHrdo2o4JYD
- sqenTTmA+ng3k8sEurA4yop5dWqWEuQ=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Luqbg0iv9QomaP+bzgEzMOtbMBnMckqWwEvz6p/CP1I=;
+ b=PJAgPUUym1Npc5uxESfcG/cAqvQit8TGcU1vFfLfT4/MeNtAdQnA/ju99THFbFuccyMOqG
+ 6YcKdyhiCJXa5N82vhEplY9qFb/vqS1lKTSIlwhRZENsDE5GJE48KVOS32nwFbwo2kVpaZ
+ doBdybrQYR8mE+z6R8F0LrjOze5j0ws=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-543-CXA96p1iOwuvW8DF3CmAQg-1; Fri, 06 Oct 2023 07:14:24 -0400
-X-MC-Unique: CXA96p1iOwuvW8DF3CmAQg-1
-Received: by mail-ej1-f72.google.com with SMTP id
- a640c23a62f3a-9adc78b386cso172066866b.0
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:24 -0700 (PDT)
+ us-mta-553-u4IS52XhNbyBKvpAH8Gnrg-1; Fri, 06 Oct 2023 07:14:26 -0400
+X-MC-Unique: u4IS52XhNbyBKvpAH8Gnrg-1
+Received: by mail-ed1-f70.google.com with SMTP id
+ 4fb4d7f45d1cf-5344aaf2703so1722151a12.0
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:14:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696590863; x=1697195663;
+ d=1e100.net; s=20230601; t=1696590865; x=1697195665;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iSaoZDLtMbdcEKV3jUJN3mk/qKz/NtrRlOhHUjSJjMw=;
- b=H/AqfUkgOg3VkQRViMugAcfBy+DSoKx7YhsQW+wsaa3fe0nt4Ih131b6QGVi3hL7z4
- usUlf32MvKY73Bqoma0OSwXyz+9fLUARqR1WCelFsWmqug0k3R9yxNEPnvcokEsW2aaC
- khvrBJiIxTIpU0wew99Z2jooPlCQ5P1K6dZUhpGgSepnDVeTkTZSmv+5lckmQzVJW8D8
- zF01CUSNOxBYPsso8JpLB6gki/yhP72T9Fm56oFV73o7KE7QV7sKBic5JosnqiZzAifY
- JFj6vp1WUK4GJ/UMV0yq9QMHuzdXInt+k3RtblSP4hyaE8JxSolisVK8We+OqMlkdT+o
- Wlkg==
-X-Gm-Message-State: AOJu0YxSGrELzfE6isZwkOohU7S53HKbmPE8ENmLztEu2PCv8crBcWpZ
- GXPtlb7LFKzlOXrZqL3UX9GOTiRGnyEOiM7llDhXxx8sy43jIK6F1x3GEOZwjte2fZzL+FEubG2
- dxQqkZImX9Y5rr2XuSbzPQlKv2Udn2/2Td/F+j87SPYktUDxrnWQywBb4epk5dIwecLc0S1C3jz
- Y=
-X-Received: by 2002:a17:906:535e:b0:9ae:42da:803c with SMTP id
- j30-20020a170906535e00b009ae42da803cmr6347058ejo.48.1696590862948; 
- Fri, 06 Oct 2023 04:14:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE8Pieni9yRnUOHlCOcoxL/vGmLh3FxzMJRoClt1hJG1LuLdPQebLuKAaTfQk5wLX183ePFvQ==
-X-Received: by 2002:a17:906:535e:b0:9ae:42da:803c with SMTP id
- j30-20020a170906535e00b009ae42da803cmr6347042ejo.48.1696590862655; 
- Fri, 06 Oct 2023 04:14:22 -0700 (PDT)
+ bh=Luqbg0iv9QomaP+bzgEzMOtbMBnMckqWwEvz6p/CP1I=;
+ b=ZjfZhDcPF2dbDlOOxMOJ7mQ/AsKSneN8YMNzC8fc/O6UamhLvkziqrS3QfdT+neTqS
+ Vqh4vL7VveweqPErZyeO0hyHXtPhyjBY47qmc2BWIU2CeFCQXS38lBeEQGFD204EV0qU
+ D+kRnkuVAk7oMufzXdDVa0V5BvqGOIqCWx/rIseNN5DC7/737lbCZ9qG7evU0zEMkHGZ
+ IDjrsGbr9PxRx2JP0PS/w+tHxRHpjLLSX74NAqnqnA1Mgv1PNjHRxmXnXcAeAFrjCCoD
+ 2yKXpSHe5TnjWD2dZqWcFsbfZBwNaIlEUec7Xfh91u3k+MmO/JxloW8Ky8HvMopA7BK6
+ JarQ==
+X-Gm-Message-State: AOJu0YwcKlc7R3gn5jZEKv7+nNYXayzfNPe6WyFQ1cig+vH7vZvc+F8c
+ q+avc69OW+yom8EZ2TuA5f4mf3yHx9iyPkN3RiZt0hGHde93NCOjqMwnTJ4TAK34tVcDxmRvEeZ
+ IWgMStyZNaCcaYSOGmgofPt/z09LrEmBxtapvUSQsSB5l0VjAscEooSB0Q8MIuY3mG7JRdN4VkW
+ w=
+X-Received: by 2002:a17:906:3156:b0:9b2:b71f:83be with SMTP id
+ e22-20020a170906315600b009b2b71f83bemr6795490eje.1.1696590864900; 
+ Fri, 06 Oct 2023 04:14:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IENoIDExoCWsLsDfPO+yb7q21Hl2/Eum692Y+6IGh+11tg+qpxwOdsZVN6GFqRLpZky63Z0IQ==
+X-Received: by 2002:a17:906:3156:b0:9b2:b71f:83be with SMTP id
+ e22-20020a170906315600b009b2b71f83bemr6795477eje.1.1696590864542; 
+ Fri, 06 Oct 2023 04:14:24 -0700 (PDT)
 Received: from [192.168.10.118] ([2001:b07:6468:f312:4783:a68:c1ee:15c5])
  by smtp.gmail.com with ESMTPSA id
- qx18-20020a170906fcd200b0099bc8bd9066sm2718825ejb.150.2023.10.06.04.14.21
+ op26-20020a170906bcfa00b009b65a834dd6sm2681300ejb.215.2023.10.06.04.14.23
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 04:14:21 -0700 (PDT)
+ Fri, 06 Oct 2023 04:14:23 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 05/26] softmmu/trace-events: Fix a typo
-Date: Fri,  6 Oct 2023 13:13:51 +0200
-Message-ID: <20231006111412.13130-6-pbonzini@redhat.com>
+Subject: [PULL 06/26] travis-ci: Correct invalid mentions of 'softmmu' by
+ 'system'
+Date: Fri,  6 Oct 2023 13:13:52 +0200
+Message-ID: <20231006111412.13130-7-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006111412.13130-1-pbonzini@redhat.com>
 References: <20231006111412.13130-1-pbonzini@redhat.com>
@@ -103,29 +104,35 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Commit 8af3f5c6d6 ("softmmu: add trace point when bdrv_flush_all
-fails") added calls to trace_vm_stop_flush_all() in 'cpus.c'.
-
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004090629.37473-2-philmd@linaro.org>
+Message-ID: <20231004090629.37473-3-philmd@linaro.org>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- softmmu/trace-events | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .travis.yml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/softmmu/trace-events b/softmmu/trace-events
-index 22606dc27b3..69c9044151b 100644
---- a/softmmu/trace-events
-+++ b/softmmu/trace-events
-@@ -21,7 +21,7 @@ flatview_destroy(void *view, void *root) "%p (root %p)"
- flatview_destroy_rcu(void *view, void *root) "%p (root %p)"
- global_dirty_changed(unsigned int bitmask) "bitmask 0x%"PRIx32
+diff --git a/.travis.yml b/.travis.yml
+index b958eca5de1..76859d48da5 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -34,7 +34,7 @@ env:
+     - BASE_CONFIG="--disable-docs --disable-tools"
+     - TEST_BUILD_CMD=""
+     - TEST_CMD="make check V=1"
+-    # This is broadly a list of "mainline" softmmu targets which have support across the major distros
++    # This is broadly a list of "mainline" system targets which have support across the major distros
+     - MAIN_SOFTMMU_TARGETS="aarch64-softmmu,mips64-softmmu,ppc64-softmmu,riscv64-softmmu,s390x-softmmu,x86_64-softmmu"
+     - CCACHE_SLOPPINESS="include_file_ctime,include_file_mtime"
+     - CCACHE_MAXSIZE=1G
+@@ -197,7 +197,7 @@ jobs:
+               $(exit $BUILD_RC);
+           fi
  
--# softmmu.c
-+# cpus.c
- vm_stop_flush_all(int ret) "ret %d"
- 
- # vl.c
+-    - name: "[s390x] GCC (other-softmmu)"
++    - name: "[s390x] GCC (other-system)"
+       arch: s390x
+       dist: focal
+       addons:
 -- 
 2.41.0
 
