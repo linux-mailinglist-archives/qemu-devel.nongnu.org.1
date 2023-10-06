@@ -2,83 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994987BB664
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B3E7BB68B
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:38:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoix7-0008OK-Lz; Fri, 06 Oct 2023 07:25:05 -0400
+	id 1qoj92-00050i-AT; Fri, 06 Oct 2023 07:37:26 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoiwu-0008Kc-DJ
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:24:52 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8j-0004xZ-A5
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qoiwr-0003jS-Tk
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:24:51 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoj8f-00006K-Rj
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:37:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696591483;
+ s=mimecast20190719; t=1696592220;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6e/EMotEwSXSOiI2L39PVpR+XEjPqZDPJaQ//0h1Ctg=;
- b=H9RW3dJuvlnLXXVqyDPi1H2l+qEdjW5FiGCICOyzsykAXF6UW7E7LsT9TVkxjs+/5+yxN1
- li1zHOZTicrNwUz4Q4HUo3goC5FumefEAVE6z6s6ZoSTCQhVO1mH3NEEHId81yEL4dWTFS
- 8yj/MJiJikhZa21C55XqDuqcn/0uTW0=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-225-C3X_1rAQNmaQdEqw8XBAFg-1; Fri, 06 Oct 2023 07:24:42 -0400
-X-MC-Unique: C3X_1rAQNmaQdEqw8XBAFg-1
-Received: by mail-wr1-f70.google.com with SMTP id
- ffacd0b85a97d-323306960e3so1326098f8f.1
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 04:24:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696591481; x=1697196281;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=6e/EMotEwSXSOiI2L39PVpR+XEjPqZDPJaQ//0h1Ctg=;
- b=OKDVgY4HvQE1JGAZ3yhpchp9QAXPHbQiG5N41WSf1KD/qJy+o71FNMuS6ZDo8e+TGQ
- H4YrreaMEHoq6bPM7vEWhJG3z2+2aWLj0FXwZUj8bWbotOsmbRdUMbMQxX39HzCEz2ci
- h0j1QE2efP9bcsxgT/NaSdlFM9KIpuQ2mrZx8+R4QfJQEdt5ysHLFvJH0NHr5uw7tZAi
- zjwUcee3kogzetl+3UYdot9vo71YKyj+3eXIvbLBjOky3jx046C5LTetXAweRNg6UHCb
- KU0/AOts2cQBLY1+jQp6SgPZVb9G1cmpk9aUdd3ZnwKBH3xtrr+e+oDcbTVE0HI7dp/C
- 5dNg==
-X-Gm-Message-State: AOJu0Yy66fb7taexqfkflvikzk2f79TmRFeXp59iqsiFbYidIQAvjxxl
- 2bxuJhGoU42+NxWRnqiWN7lRefW65z95URL/Dcn17j4RHjnS4KcDXdtA2tnEWDgSzatFXl/5c5M
- bmDWx7/o1ewvpPj4=
-X-Received: by 2002:a5d:61ce:0:b0:31a:d8c0:cb8b with SMTP id
- q14-20020a5d61ce000000b0031ad8c0cb8bmr7505645wrv.25.1696591480944; 
- Fri, 06 Oct 2023 04:24:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEirOZC5ZmGtl/95doCwj7iGowOMti0i4kcOZDvVzX3lWoa2NmFNWD4a9L/w4p7TC44/RyTbQ==
-X-Received: by 2002:a5d:61ce:0:b0:31a:d8c0:cb8b with SMTP id
- q14-20020a5d61ce000000b0031ad8c0cb8bmr7505632wrv.25.1696591480597; 
- Fri, 06 Oct 2023 04:24:40 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:170:ca0a:84b4:d350:99ea:3666])
- by smtp.gmail.com with ESMTPSA id
- e14-20020adffd0e000000b00315af025098sm1442485wrr.46.2023.10.06.04.24.37
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 06 Oct 2023 04:24:38 -0700 (PDT)
-Date: Fri, 6 Oct 2023 07:24:34 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Michael Tokarev <mjt@tls.msk.ru>
-Cc: Markus Armbruster <armbru@redhat.com>, Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org, qemu-trivial@nongnu.org
-Subject: Re: [PATCH] hw/virtio/vhost: Silence compiler warnings in vhost code
- when using -Wshadow
-Message-ID: <20231006072416-mutt-send-email-mst@kernel.org>
-References: <20231004114809.105672-1-thuth@redhat.com>
- <18f1faab-71f4-4dbd-a319-fcd65721f58b@tls.msk.ru>
- <87h6n4p1ts.fsf@pond.sub.org>
- <29a2a188-ec5b-452f-be63-92e8f0ec7110@tls.msk.ru>
+ content-transfer-encoding:content-transfer-encoding;
+ bh=Yluy/YwgqNF73NfJJooCpvQpnWBo9Ep+5I4zHk4Zlo8=;
+ b=VRYeNHHt9YOC+bXbBnPyCzlwPz2NUpaH1B24R5b7v0WLvatRFHVHPH7o6yJoLyp3VeLUf1
+ oIuVOMKV3FevUxO+8Rn//KKyB0WJ5QIvQYuI4tunCv96Ec13bjMI8WhTcYNOtfvlKNmUBm
+ 25U/AndEHXxzcM9wCPiL6gLJ1NXdfps=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-7-PBee-99pPSmtV9dwGiKngw-1; Fri, 06 Oct 2023 07:36:58 -0400
+X-MC-Unique: PBee-99pPSmtV9dwGiKngw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F7F4101A590
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 11:36:58 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 532F6202696C
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 11:36:58 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 55F5921E6904; Fri,  6 Oct 2023 13:36:57 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: qemu-devel@nongnu.org
+Cc: stefanha@redhat.com
+Subject: [PULL 00/32] -Wshadow=local patches patches for 2023-10-06
+Date: Fri,  6 Oct 2023 13:36:25 +0200
+Message-ID: <20231006113657.3803180-1-armbru@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <29a2a188-ec5b-452f-be63-92e8f0ec7110@tls.msk.ru>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -102,31 +75,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 06, 2023 at 01:45:51PM +0300, Michael Tokarev wrote:
-> 06.10.2023 11:55, Markus Armbruster пишет:
-> > Michael Tokarev <mjt@tls.msk.ru> writes:
-> > 
-> > > Applied to my trivial-patches tree, thanks!
-> > > 
-> > > Marcus, you picked up previous patches of this theme, --
-> > > you can continue this tradition if you like :)
-> > 
-> > I intend to post a pull request for the -Wshadow patches that have
-> > R-bys.  I'm also tracking the unreviewed ones, and hope they get
-> > reviewed.
-> 
-> Ahh, ok.
-> 
-> I've added my own R-bys for the ones I picked up, and for this one
-> by Thomas too:
-> 
-> Reviewed-By: Michael Tokarev <mjt@tls.msk.ru>
-> 
-> /mjt
+The following changes since commit 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d:
 
-it would be better to deal with all of them in one place tbh.
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2023-10-05 09:01:01 -0400)
+
+are available in the Git repository at:
+
+  https://repo.or.cz/qemu/armbru.git tags/pull-shadow-2023-10-06
+
+for you to fetch changes up to 77c9f177e02dccd8688eba9550a4fb961742a638:
+
+  linux-user/syscall.c: clean up local variable shadowing in xattr syscalls (2023-10-06 13:27:48 +0200)
+
+----------------------------------------------------------------
+-Wshadow=local patches patches for 2023-10-06
+
+----------------------------------------------------------------
+Ani Sinha (1):
+      hw/i386: changes towards enabling -Wshadow=local for x86 machines
+
+Cédric Le Goater (2):
+      target/ppc: Rename variables to avoid local variable shadowing in VUPKPX
+      target/ppc: Clean up local variable shadowing in kvm_arch_*_registers()
+
+Jonathan Cameron (1):
+      hw/cxl: Fix local variable shadowing of cap_hdrs
+
+Laurent Vivier (5):
+      linux-user/flatload: clean up local variable shadowing
+      linux-user/mmap.c: clean up local variable shadowing
+      linux-user/syscall.c: clean up local variable shadowing in do_ioctl_dm()
+      linux-user/syscall.c: clean up local variable shadowing in TARGET_NR_getcpu
+      linux-user/syscall.c: clean up local variable shadowing in xattr syscalls
+
+Philippe Mathieu-Daudé (16):
+      hw/audio/soundhw: Clean up global variable shadowing
+      hw/ide/ahci: Clean up local variable shadowing
+      net/net: Clean up global variable shadowing
+      os-posix: Clean up global variable shadowing
+      plugins/loader: Clean up global variable shadowing
+      qemu-img: Clean up global variable shadowing
+      qemu-io: Clean up global variable shadowing
+      qom/object_interfaces: Clean up global variable shadowing
+      semihosting: Clean up global variable shadowing
+      ui/cocoa: Clean up global variable shadowing
+      util/cutils: Clean up global variable shadowing in get_relocated_path()
+      util/guest-random: Clean up global variable shadowing
+      semihosting/arm-compat: Clean up local variable shadowing
+      softmmu/vl: Clean up global variable shadowing
+      sysemu/tpm: Clean up global variable shadowing
+      trace/control: Clean up global variable shadowing
+
+Song Gao (1):
+      target/loongarch: Clean up local variable shadowing
+
+Thomas Huth (6):
+      audio/ossaudio: Fix compiler warning with -Wshadow
+      hw/net/vhost_net: Silence compiler warning when compiling with -Wshadow
+      hw/virtio/virtio-pci: Avoid compiler warning with -Wshadow
+      hw/virtio/vhost: Silence compiler warnings in vhost code when using -Wshadow
+      dump: Silence compiler warning in dump code when compiling with -Wshadow
+      hw/usb: Silence compiler warnings in USB code when compiling with -Wshadow
+
+ include/hw/audio/soundhw.h      |  2 +-
+ include/net/net.h               |  6 +++---
+ include/qemu/guest-random.h     |  8 ++++----
+ include/qemu/plugin.h           |  4 ++--
+ include/qom/object_interfaces.h | 16 ++++++++--------
+ include/semihosting/semihost.h  |  2 +-
+ include/sysemu/os-posix.h       |  4 ++--
+ include/sysemu/tpm.h            |  2 +-
+ trace/control.h                 |  4 ++--
+ audio/ossaudio.c                |  1 -
+ dump/dump.c                     |  8 ++++----
+ hw/audio/soundhw.c              |  6 +++---
+ hw/cxl/cxl-device-utils.c       |  8 ++++----
+ hw/i386/acpi-microvm.c          |  4 ++--
+ hw/i386/pc.c                    |  1 -
+ hw/i386/x86.c                   |  2 --
+ hw/ide/ahci.c                   |  4 +---
+ hw/loongarch/virt.c             |  2 +-
+ hw/net/vhost_net.c              |  8 ++++----
+ hw/usb/desc.c                   |  2 +-
+ hw/usb/dev-hub.c                |  8 ++++----
+ hw/usb/dev-storage.c            |  6 +++---
+ hw/usb/hcd-xhci.c               | 10 +++++-----
+ hw/usb/host-libusb.c            |  2 +-
+ hw/virtio/vhost.c               |  8 ++++----
+ hw/virtio/virtio-pci.c          | 20 ++++++++++----------
+ linux-user/flatload.c           |  8 ++++----
+ linux-user/mmap.c               |  6 +++---
+ linux-user/syscall.c            | 36 ++++++++++++++++++------------------
+ net/net.c                       | 14 +++++++-------
+ os-posix.c                      | 12 ++++++------
+ plugins/loader.c                |  4 ++--
+ qemu-img.c                      | 22 +++++++++++-----------
+ qemu-io.c                       |  4 ++--
+ qom/object_interfaces.c         | 16 ++++++++--------
+ semihosting/arm-compat-semi.c   |  5 ++++-
+ semihosting/config.c            |  8 ++++----
+ softmmu/tpm.c                   |  6 +++---
+ softmmu/vl.c                    | 26 +++++++++++++-------------
+ stubs/semihost.c                |  2 +-
+ target/ppc/int_helper.c         | 12 ++++++------
+ target/ppc/kvm.c                |  4 ----
+ trace/control.c                 |  4 ++--
+ util/cutils.c                   |  1 -
+ util/guest-random.c             |  6 +++---
+ ui/cocoa.m                      |  4 ++--
+ 46 files changed, 170 insertions(+), 178 deletions(-)
 
 -- 
-MST
+2.41.0
 
 
