@@ -2,34 +2,34 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649F37BB187
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 08:26:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A7EE7BB186
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 08:26:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qoeD6-0005Ka-9f; Fri, 06 Oct 2023 02:21:16 -0400
+	id 1qoeD6-0005Lh-N6; Fri, 06 Oct 2023 02:21:16 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=cI0A=FU=redhat.com=clg@ozlabs.org>)
- id 1qoeCh-0005IL-Uv
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:20:52 -0400
+ id 1qoeCo-0005J2-L6
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:21:04 -0400
 Received: from gandalf.ozlabs.org ([150.107.74.76])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1)
  (envelope-from <SRS0=cI0A=FU=redhat.com=clg@ozlabs.org>)
- id 1qoeCf-00032w-Su
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:20:51 -0400
+ id 1qoeCm-00033e-DS
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 02:20:58 -0400
 Received: from gandalf.ozlabs.org (mail.ozlabs.org
  [IPv6:2404:9400:2221:ea00::3])
- by gandalf.ozlabs.org (Postfix) with ESMTP id 4S1ywb6YJHz4xVK;
- Fri,  6 Oct 2023 17:20:47 +1100 (AEDT)
+ by gandalf.ozlabs.org (Postfix) with ESMTP id 4S1ywf5gjqz4xVR;
+ Fri,  6 Oct 2023 17:20:50 +1100 (AEDT)
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by mail.ozlabs.org (Postfix) with ESMTPSA id 4S1ywY42Mvz4xS5;
- Fri,  6 Oct 2023 17:20:45 +1100 (AEDT)
+ by mail.ozlabs.org (Postfix) with ESMTPSA id 4S1ywc39Q5z4xS5;
+ Fri,  6 Oct 2023 17:20:48 +1100 (AEDT)
 From: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
 To: qemu-devel@nongnu.org
 Cc: Alex Williamson <alex.williamson@redhat.com>,
@@ -37,9 +37,9 @@ Cc: Alex Williamson <alex.williamson@redhat.com>,
  Zhenzhong Duan <zhenzhong.duan@intel.com>,
  Matthew Rosato <mjrosato@linux.ibm.com>,
  =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>
-Subject: [PULL 15/21] vfio/ap: Use vfio_[attach/detach]_device
-Date: Fri,  6 Oct 2023 08:19:59 +0200
-Message-ID: <20231006062005.1040296-16-clg@redhat.com>
+Subject: [PULL 16/21] vfio/ccw: Use vfio_[attach/detach]_device
+Date: Fri,  6 Oct 2023 08:20:00 +0200
+Message-ID: <20231006062005.1040296-17-clg@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231006062005.1040296-1-clg@redhat.com>
 References: <20231006062005.1040296-1-clg@redhat.com>
@@ -71,13 +71,17 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Eric Auger <eric.auger@redhat.com>
 
-Let the vfio-ap device use vfio_attach_device() and
+Let the vfio-ccw device use vfio_attach_device() and
 vfio_detach_device(), hence hiding the details of the used
 IOMMU backend.
 
-We take the opportunity to use g_path_get_basename() which
-is prefered, as suggested by
-3e015d815b ("use g_path_get_basename instead of basename")
+Note that the migration reduces the following trace
+"vfio: subchannel %s has already been attached" (featuring
+cssid.ssid.devid) into "device is already attached"
+
+Also now all the devices have been migrated to use the new
+vfio_attach_device/vfio_detach_device API, let's turn the
+legacy functions into static functions, local to container.c.
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
@@ -85,123 +89,243 @@ Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
 Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 Signed-off-by: Cédric Le Goater <clg@redhat.com>
 ---
- hw/vfio/ap.c | 69 ++++++++++------------------------------------------
- 1 file changed, 13 insertions(+), 56 deletions(-)
+ include/hw/vfio/vfio-common.h |   5 --
+ hw/vfio/ccw.c                 | 122 +++++++++-------------------------
+ hw/vfio/common.c              |  10 +--
+ 3 files changed, 37 insertions(+), 100 deletions(-)
 
-diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
-index 6e21d1da5a7090a6b9c77485d67e8eabc261438f..22e564f4f7f3ef52699a9447b5fd7266901735cb 100644
---- a/hw/vfio/ap.c
-+++ b/hw/vfio/ap.c
-@@ -53,40 +53,6 @@ struct VFIODeviceOps vfio_ap_ops = {
-     .vfio_compute_needs_reset = vfio_ap_compute_needs_reset,
- };
+diff --git a/include/hw/vfio/vfio-common.h b/include/hw/vfio/vfio-common.h
+index 12fbfbc37d466abcd85a838f26567dc0add84de0..c486bdef2adfe77e02f80559005d09426a7634bd 100644
+--- a/include/hw/vfio/vfio-common.h
++++ b/include/hw/vfio/vfio-common.h
+@@ -202,7 +202,6 @@ typedef struct {
+     hwaddr pages;
+ } VFIOBitmap;
  
--static void vfio_ap_put_device(VFIOAPDevice *vapdev)
+-void vfio_put_base_device(VFIODevice *vbasedev);
+ void vfio_disable_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_unmask_single_irqindex(VFIODevice *vbasedev, int index);
+ void vfio_mask_single_irqindex(VFIODevice *vbasedev, int index);
+@@ -220,11 +219,7 @@ void vfio_region_unmap(VFIORegion *region);
+ void vfio_region_exit(VFIORegion *region);
+ void vfio_region_finalize(VFIORegion *region);
+ void vfio_reset_handler(void *opaque);
+-VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp);
+-void vfio_put_group(VFIOGroup *group);
+ struct vfio_device_info *vfio_get_device_info(int fd);
+-int vfio_get_device(VFIOGroup *group, const char *name,
+-                    VFIODevice *vbasedev, Error **errp);
+ int vfio_attach_device(char *name, VFIODevice *vbasedev,
+                        AddressSpace *as, Error **errp);
+ void vfio_detach_device(VFIODevice *vbasedev);
+diff --git a/hw/vfio/ccw.c b/hw/vfio/ccw.c
+index 1e2fce83b084675d90f42777a58eb95b47ccbbae..6ec35fedc9aea1ccde10098a725724faf079e4bb 100644
+--- a/hw/vfio/ccw.c
++++ b/hw/vfio/ccw.c
+@@ -572,88 +572,15 @@ static void vfio_ccw_put_region(VFIOCCWDevice *vcdev)
+     g_free(vcdev->io_region);
+ }
+ 
+-static void vfio_ccw_put_device(VFIOCCWDevice *vcdev)
 -{
--    g_free(vapdev->vdev.name);
--    vfio_put_base_device(&vapdev->vdev);
+-    g_free(vcdev->vdev.name);
+-    vfio_put_base_device(&vcdev->vdev);
 -}
 -
--static VFIOGroup *vfio_ap_get_group(VFIOAPDevice *vapdev, Error **errp)
+-static void vfio_ccw_get_device(VFIOGroup *group, VFIOCCWDevice *vcdev,
+-                                Error **errp)
 -{
--    GError *gerror = NULL;
--    char *symlink, *group_path;
+-    S390CCWDevice *cdev = S390_CCW_DEVICE(vcdev);
+-    char *name = g_strdup_printf("%x.%x.%04x", cdev->hostid.cssid,
+-                                 cdev->hostid.ssid,
+-                                 cdev->hostid.devid);
+-    VFIODevice *vbasedev;
+-
+-    QLIST_FOREACH(vbasedev, &group->device_list, next) {
+-        if (strcmp(vbasedev->name, name) == 0) {
+-            error_setg(errp, "vfio: subchannel %s has already been attached",
+-                       name);
+-            goto out_err;
+-        }
+-    }
+-
+-    /*
+-     * All vfio-ccw devices are believed to operate in a way compatible with
+-     * discarding of memory in RAM blocks, ie. pages pinned in the host are
+-     * in the current working set of the guest driver and therefore never
+-     * overlap e.g., with pages available to the guest balloon driver.  This
+-     * needs to be set before vfio_get_device() for vfio common to handle
+-     * ram_block_discard_disable().
+-     */
+-    vcdev->vdev.ram_block_discard_allowed = true;
+-
+-    if (vfio_get_device(group, cdev->mdevid, &vcdev->vdev, errp)) {
+-        goto out_err;
+-    }
+-
+-    vcdev->vdev.ops = &vfio_ccw_ops;
+-    vcdev->vdev.type = VFIO_DEVICE_TYPE_CCW;
+-    vcdev->vdev.name = name;
+-    vcdev->vdev.dev = DEVICE(vcdev);
+-
+-    return;
+-
+-out_err:
+-    g_free(name);
+-}
+-
+-static VFIOGroup *vfio_ccw_get_group(S390CCWDevice *cdev, Error **errp)
+-{
+-    char *tmp, group_path[PATH_MAX];
+-    ssize_t len;
 -    int groupid;
 -
--    symlink = g_strdup_printf("%s/iommu_group", vapdev->vdev.sysfsdev);
--    group_path = g_file_read_link(symlink, &gerror);
--    g_free(symlink);
+-    tmp = g_strdup_printf("/sys/bus/css/devices/%x.%x.%04x/%s/iommu_group",
+-                          cdev->hostid.cssid, cdev->hostid.ssid,
+-                          cdev->hostid.devid, cdev->mdevid);
+-    len = readlink(tmp, group_path, sizeof(group_path));
+-    g_free(tmp);
 -
--    if (!group_path) {
--        error_setg(errp, "%s: no iommu_group found for %s: %s",
--                   TYPE_VFIO_AP_DEVICE, vapdev->vdev.sysfsdev, gerror->message);
--        g_error_free(gerror);
+-    if (len <= 0 || len >= sizeof(group_path)) {
+-        error_setg(errp, "vfio: no iommu_group found");
 -        return NULL;
 -    }
+-
+-    group_path[len] = 0;
 -
 -    if (sscanf(basename(group_path), "%d", &groupid) != 1) {
 -        error_setg(errp, "vfio: failed to read %s", group_path);
--        g_free(group_path);
 -        return NULL;
 -    }
--
--    g_free(group_path);
 -
 -    return vfio_get_group(groupid, &address_space_memory, errp);
 -}
 -
- static void vfio_ap_req_notifier_handler(void *opaque)
+ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
  {
-     VFIOAPDevice *vapdev = opaque;
-@@ -189,22 +155,15 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
- static void vfio_ap_realize(DeviceState *dev, Error **errp)
- {
-     int ret;
--    char *mdevid;
+-    VFIOGroup *group;
+     S390CCWDevice *cdev = S390_CCW_DEVICE(dev);
+     VFIOCCWDevice *vcdev = VFIO_CCW(cdev);
+     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_GET_CLASS(cdev);
++    VFIODevice *vbasedev = &vcdev->vdev;
      Error *err = NULL;
--    VFIOGroup *vfio_group;
-     APDevice *apdev = AP_DEVICE(dev);
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
-+    VFIODevice *vbasedev = &vapdev->vdev;
++    char *name;
++    int ret;
  
--    vfio_group = vfio_ap_get_group(vapdev, errp);
--    if (!vfio_group) {
--        return;
+     /* Call the class init function for subchannel. */
+     if (cdc->realize) {
+@@ -663,14 +590,31 @@ static void vfio_ccw_realize(DeviceState *dev, Error **errp)
+         }
+     }
+ 
+-    group = vfio_ccw_get_group(cdev, &err);
+-    if (!group) {
+-        goto out_group_err;
 -    }
--
--    vapdev->vdev.ops = &vfio_ap_ops;
--    vapdev->vdev.type = VFIO_DEVICE_TYPE_AP;
--    mdevid = basename(vapdev->vdev.sysfsdev);
--    vapdev->vdev.name = g_strdup_printf("%s", mdevid);
--    vapdev->vdev.dev = dev;
-+    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
-+    vbasedev->ops = &vfio_ap_ops;
-+    vbasedev->type = VFIO_DEVICE_TYPE_AP;
++    name = g_strdup_printf("%x.%x.%04x", vcdev->cdev.hostid.cssid,
++                           vcdev->cdev.hostid.ssid,
++                           vcdev->cdev.hostid.devid);
++    vbasedev->sysfsdev = g_strdup_printf("/sys/bus/css/devices/%s/%s",
++                                         name,
++                                         cdev->mdevid);
++    vbasedev->ops = &vfio_ccw_ops;
++    vbasedev->type = VFIO_DEVICE_TYPE_CCW;
++    vbasedev->name = name;
 +    vbasedev->dev = dev;
  
-     /*
-      * vfio-ap devices operate in a way compatible with discarding of
-@@ -214,9 +173,10 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
-      */
-     vapdev->vdev.ram_block_discard_allowed = true;
- 
--    ret = vfio_get_device(vfio_group, mdevid, &vapdev->vdev, errp);
-+    ret = vfio_attach_device(vbasedev->name, vbasedev,
+-    vfio_ccw_get_device(group, vcdev, &err);
+-    if (err) {
+-        goto out_device_err;
++    /*
++     * All vfio-ccw devices are believed to operate in a way compatible with
++     * discarding of memory in RAM blocks, ie. pages pinned in the host are
++     * in the current working set of the guest driver and therefore never
++     * overlap e.g., with pages available to the guest balloon driver.  This
++     * needs to be set before vfio_get_device() for vfio common to handle
++     * ram_block_discard_disable().
++     */
++    vbasedev->ram_block_discard_allowed = true;
++
++    ret = vfio_attach_device(cdev->mdevid, vbasedev,
 +                             &address_space_memory, errp);
-     if (ret) {
--        goto out_get_dev_err;
-+        goto error;
++    if (ret) {
++        goto out_attach_dev_err;
      }
  
-     vfio_ap_register_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX, &err);
-@@ -228,22 +188,19 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
-         error_report_err(err);
-     }
- 
--    return;
--
--out_get_dev_err:
--    vfio_ap_put_device(vapdev);
--    vfio_put_group(vfio_group);
-+error:
-+    error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
-+    g_free(vbasedev->name);
- }
- 
- static void vfio_ap_unrealize(DeviceState *dev)
- {
-     APDevice *apdev = AP_DEVICE(dev);
-     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
--    VFIOGroup *group = vapdev->vdev.group;
- 
-     vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX);
--    vfio_ap_put_device(vapdev);
+     vfio_ccw_get_region(vcdev, &err);
+@@ -708,10 +652,9 @@ out_irq_notifier_err:
+ out_io_notifier_err:
+     vfio_ccw_put_region(vcdev);
+ out_region_err:
+-    vfio_ccw_put_device(vcdev);
+-out_device_err:
 -    vfio_put_group(group);
-+    vfio_detach_device(&vapdev->vdev);
-+    g_free(vapdev->vdev.name);
+-out_group_err:
++    vfio_detach_device(vbasedev);
++out_attach_dev_err:
++    g_free(vbasedev->name);
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
+     }
+@@ -724,14 +667,13 @@ static void vfio_ccw_unrealize(DeviceState *dev)
+     S390CCWDevice *cdev = S390_CCW_DEVICE(dev);
+     VFIOCCWDevice *vcdev = VFIO_CCW(cdev);
+     S390CCWDeviceClass *cdc = S390_CCW_DEVICE_GET_CLASS(cdev);
+-    VFIOGroup *group = vcdev->vdev.group;
+ 
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_REQ_IRQ_INDEX);
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_CRW_IRQ_INDEX);
+     vfio_ccw_unregister_irq_notifier(vcdev, VFIO_CCW_IO_IRQ_INDEX);
+     vfio_ccw_put_region(vcdev);
+-    vfio_ccw_put_device(vcdev);
+-    vfio_put_group(group);
++    vfio_detach_device(&vcdev->vdev);
++    g_free(vcdev->vdev.name);
+ 
+     if (cdc->unrealize) {
+         cdc->unrealize(cdev);
+diff --git a/hw/vfio/common.c b/hw/vfio/common.c
+index f4c33c9858f5cc2b8245a9725fd660e7898ee760..56cfe94d97779b539dbb15d88f2968c377d16bae 100644
+--- a/hw/vfio/common.c
++++ b/hw/vfio/common.c
+@@ -2335,7 +2335,7 @@ static void vfio_disconnect_container(VFIOGroup *group)
+     }
  }
  
- static Property vfio_ap_properties[] = {
+-VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
++static VFIOGroup *vfio_get_group(int groupid, AddressSpace *as, Error **errp)
+ {
+     VFIOGroup *group;
+     char path[32];
+@@ -2402,7 +2402,7 @@ free_group_exit:
+     return NULL;
+ }
+ 
+-void vfio_put_group(VFIOGroup *group)
++static void vfio_put_group(VFIOGroup *group)
+ {
+     if (!group || !QLIST_EMPTY(&group->device_list)) {
+         return;
+@@ -2447,8 +2447,8 @@ retry:
+     return info;
+ }
+ 
+-int vfio_get_device(VFIOGroup *group, const char *name,
+-                    VFIODevice *vbasedev, Error **errp)
++static int vfio_get_device(VFIOGroup *group, const char *name,
++                           VFIODevice *vbasedev, Error **errp)
+ {
+     g_autofree struct vfio_device_info *info = NULL;
+     int fd;
+@@ -2506,7 +2506,7 @@ int vfio_get_device(VFIOGroup *group, const char *name,
+     return 0;
+ }
+ 
+-void vfio_put_base_device(VFIODevice *vbasedev)
++static void vfio_put_base_device(VFIODevice *vbasedev)
+ {
+     if (!vbasedev->group) {
+         return;
 -- 
 2.41.0
 
