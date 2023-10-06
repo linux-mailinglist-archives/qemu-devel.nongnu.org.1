@@ -2,46 +2,69 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C1A7BBE93
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F027BBED7
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 20:42:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qopMf-00080m-83; Fri, 06 Oct 2023 14:15:54 -0400
+	id 1qoplY-0000s0-2t; Fri, 06 Oct 2023 14:41:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qopMd-0007vk-CV; Fri, 06 Oct 2023 14:15:51 -0400
-Received: from isrv.corpit.ru ([86.62.121.231])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoplT-0000qa-Tu
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 14:41:31 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mjt@tls.msk.ru>)
- id 1qopMb-0000jo-Oe; Fri, 06 Oct 2023 14:15:51 -0400
-Received: from tsrv.corpit.ru (tsrv.tls.msk.ru [192.168.177.2])
- by isrv.corpit.ru (Postfix) with ESMTP id C7BBD2846B;
- Fri,  6 Oct 2023 21:15:12 +0300 (MSK)
-Received: from tls.msk.ru (mjt.wg.tls.msk.ru [192.168.177.130])
- by tsrv.corpit.ru (Postfix) with SMTP id 72C342D722;
- Fri,  6 Oct 2023 21:15:07 +0300 (MSK)
-Received: (nullmailer pid 3297275 invoked by uid 1000);
- Fri, 06 Oct 2023 18:15:04 -0000
-From: Michael Tokarev <mjt@tls.msk.ru>
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qoplN-0007bi-Bu
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 14:41:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696617683;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=NRouWiO/ByfbBTP2+9Old0e5rG+ytuJBjx3d90TjyeM=;
+ b=Tc1NwLO3F6nKDIp7oKHKgTTXsTAwVUSDMowch8exMWAHKNAfXmqhisg8lQURQcDdkYOppK
+ nL6D6DdMsp66H/FlAJmi8Tp7UF+jpi7PUkdgovZibNAsx1SzztCOjnNXXOq59YHcSWUxZW
+ Gm+5tuMm7BCDvyVGy0p/usponMcIoIE=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-639-A0Uzeh6vMLKvhBZFcvH6gw-1; Fri, 06 Oct 2023 14:41:22 -0400
+X-MC-Unique: A0Uzeh6vMLKvhBZFcvH6gw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.4])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C203118153E3
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 18:41:21 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 9F8B52027019
+ for <qemu-devel@nongnu.org>; Fri,  6 Oct 2023 18:41:21 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 8FE2221E6904; Fri,  6 Oct 2023 20:41:20 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: qemu-stable@nongnu.org, Akihiko Odaki <akihiko.odaki@daynix.com>,
- "Michael S . Tsirkin" <mst@redhat.com>, Michael Tokarev <mjt@tls.msk.ru>
-Subject: [Stable-8.1.2 57/57] amd_iommu: Fix APIC address check
-Date: Fri,  6 Oct 2023 21:14:46 +0300
-Message-Id: <20231006181504.3297196-12-mjt@tls.msk.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <qemu-stable-8.1.2-20231006191112@cover.tls.msk.ru>
-References: <qemu-stable-8.1.2-20231006191112@cover.tls.msk.ru>
+Cc: Gerd Hoffmann <kraxel@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
+ <marcandre.lureau@redhat.com>
+Subject: Re: [v3] Help wanted for enabling -Wshadow=local
+References: <87mswvg683.fsf@pond.sub.org>
+Date: Fri, 06 Oct 2023 20:41:20 +0200
+In-Reply-To: <87mswvg683.fsf@pond.sub.org> (Markus Armbruster's message of
+ "Fri, 06 Oct 2023 16:45:16 +0200")
+Message-ID: <874jj3egq7.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=86.62.121.231; envelope-from=mjt@tls.msk.ru;
- helo=isrv.corpit.ru
-X-Spam_score_int: -68
-X-Spam_score: -6.9
-X-Spam_bar: ------
-X-Spam_report: (-6.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_HI=-5,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -58,54 +81,90 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Markus Armbruster <armbru@redhat.com> writes:
 
-An MSI from I/O APIC may not exactly equal to APIC_DEFAULT_ADDRESS. In
-fact, Windows 17763.3650 configures I/O APIC to set the dest_mode bit.
-Cover the range assigned to APIC.
+> Local variables shadowing other local variables or parameters make the
+> code needlessly hard to understand.  Bugs love to hide in such code.
+> Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
+> on polling error".
+>
+> Enabling -Wshadow would prevent bugs like this one.  But we have to
+> clean up all the offenders first.
+>
+> Quite a few people responded to my calls for help.  Thank you so much!
+>
+> I'm collecting patches in my git repo at
+> https://repo.or.cz/qemu/armbru.git in branch shadow-next.  All but the
+> last two are in a pending pull request.
+>
+> My test build is down to seven files with warnings.  "[PATCH v2 0/3]
+> hexagon: GETPC() and shadowing fixes" takes care of four, but it needs a
+> rebase.
+>
+> Remaining three:
+>
+>     In file included from ../hw/display/virtio-gpu-virgl.c:19:
+>     ../hw/display/virtio-gpu-virgl.c: In function =E2=80=98virgl_cmd_subm=
+it_3d=E2=80=99:
+>     /work/armbru/qemu/include/hw/virtio/virtio-gpu.h:228:16: warning: dec=
+laration of =E2=80=98s=E2=80=99 shadows a previous local [-Wshadow=3Dcompat=
+ible-local]
+>       228 |         size_t s;                                            =
+           \
+>           |                ^
+>     ../hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro =
+=E2=80=98VIRTIO_GPU_FILL_CMD=E2=80=99
+>       215 |     VIRTIO_GPU_FILL_CMD(cs);
+>           |     ^~~~~~~~~~~~~~~~~~~
+>     ../hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration i=
+s here
+>       213 |     size_t s;
+>           |            ^
+>
+>     In file included from ../contrib/vhost-user-gpu/virgl.h:18,
+>                      from ../contrib/vhost-user-gpu/virgl.c:17:
+>     ../contrib/vhost-user-gpu/virgl.c: In function =E2=80=98virgl_cmd_sub=
+mit_3d=E2=80=99:
+>     ../contrib/vhost-user-gpu/vugpu.h:167:16: warning: declaration of =E2=
+=80=98s=E2=80=99 shadows a previous local [-Wshadow=3Dcompatible-local]
+>       167 |         size_t s;                                            =
+   \
+>           |                ^
+>     ../contrib/vhost-user-gpu/virgl.c:203:5: note: in expansion of macro =
+=E2=80=98VUGPU_FILL_CMD=E2=80=99
+>       203 |     VUGPU_FILL_CMD(cs);
+>           |     ^~~~~~~~~~~~~~
+>     ../contrib/vhost-user-gpu/virgl.c:201:12: note: shadowed declaration =
+is here
+>       201 |     size_t s;
+>           |            ^
+>
+>     ../contrib/vhost-user-gpu/vhost-user-gpu.c: In function =E2=80=98vg_r=
+esource_flush=E2=80=99:
+>     ../contrib/vhost-user-gpu/vhost-user-gpu.c:837:29: warning: declarati=
+on of =E2=80=98i=E2=80=99 shadows a previous local [-Wshadow=3Dlocal]
+>       837 |             pixman_image_t *i =3D
+>           |                             ^
+>     ../contrib/vhost-user-gpu/vhost-user-gpu.c:757:9: note: shadowed decl=
+aration is here
+>       757 |     int i;
+>           |         ^
+>
+> Gerd, Marc-Andr=C3=A9, or anybody else?
 
-Fixes: 577c470f43 ("x86_iommu/amd: Prepare for interrupt remap support")
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230921114612.40671-1-akihiko.odaki@daynix.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-(cherry picked from commit 0114c4513095598cdf1cd8d7dacdfff757628121)
-Signed-off-by: Michael Tokarev <mjt@tls.msk.ru>
+Thomas posted patches:
 
-diff --git a/hw/i386/amd_iommu.c b/hw/i386/amd_iommu.c
-index 9c77304438..9b7c6e2921 100644
---- a/hw/i386/amd_iommu.c
-+++ b/hw/i386/amd_iommu.c
-@@ -1246,13 +1246,8 @@ static int amdvi_int_remap_msi(AMDVIState *iommu,
-         return -AMDVI_IR_ERR;
-     }
- 
--    if (origin->address & AMDVI_MSI_ADDR_HI_MASK) {
--        trace_amdvi_err("MSI address high 32 bits non-zero when "
--                        "Interrupt Remapping enabled.");
--        return -AMDVI_IR_ERR;
--    }
--
--    if ((origin->address & AMDVI_MSI_ADDR_LO_MASK) != APIC_DEFAULT_ADDRESS) {
-+    if (origin->address < AMDVI_INT_ADDR_FIRST ||
-+        origin->address + sizeof(origin->data) > AMDVI_INT_ADDR_LAST + 1) {
-         trace_amdvi_err("MSI is not from IOAPIC.");
-         return -AMDVI_IR_ERR;
-     }
-diff --git a/hw/i386/amd_iommu.h b/hw/i386/amd_iommu.h
-index 6da893ee57..c5065a3e27 100644
---- a/hw/i386/amd_iommu.h
-+++ b/hw/i386/amd_iommu.h
-@@ -210,8 +210,6 @@
- #define AMDVI_INT_ADDR_FIRST    0xfee00000
- #define AMDVI_INT_ADDR_LAST     0xfeefffff
- #define AMDVI_INT_ADDR_SIZE     (AMDVI_INT_ADDR_LAST - AMDVI_INT_ADDR_FIRST + 1)
--#define AMDVI_MSI_ADDR_HI_MASK  (0xffffffff00000000ULL)
--#define AMDVI_MSI_ADDR_LO_MASK  (0x00000000ffffffffULL)
- 
- /* SB IOAPIC is always on this device in AMD systems */
- #define AMDVI_IOAPIC_SB_DEVID   PCI_BUILD_BDF(0, PCI_DEVFN(0x14, 0))
--- 
-2.39.2
+    [PATCH] hw/virtio/virtio-gpu: Fix compiler warning when compiling with =
+-Wshadow
+    [PATCH] contrib/vhost-user-gpu: Fix compiler warning when compiling wit=
+h -Wshadow
+
+> More warnings may lurk in code my test build doesn't compile.  Need a
+> full CI build with -Wshadow=3Dlocal to find them.  Anybody care to kick
+> one off?
+
+Thomas did; see his reply downthread.
+
+Thank you, Thomas!
 
 
