@@ -2,37 +2,38 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E368A7BC03E
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:22:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E9C7BC03D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 22:22:44 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qorJu-0008GK-2j; Fri, 06 Oct 2023 16:21:10 -0400
+	id 1qorJr-0008Es-US; Fri, 06 Oct 2023 16:21:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qorJp-0008DW-SY; Fri, 06 Oct 2023 16:21:05 -0400
-Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
+ id 1qorJq-0008DZ-0a; Fri, 06 Oct 2023 16:21:06 -0400
+Received: from forwardcorp1c.mail.yandex.net
+ ([2a02:6b8:c03:500:1:45:d181:df01])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qorJm-0005lo-PK; Fri, 06 Oct 2023 16:21:05 -0400
+ id 1qorJm-0005lw-Tz; Fri, 06 Oct 2023 16:21:05 -0400
 Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  [IPv6:2a02:6b8:c12:3a8c:0:640:ec94:0])
- by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id ECD2760EF5;
- Fri,  6 Oct 2023 23:20:57 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id B7F1260EFB;
+ Fri,  6 Oct 2023 23:20:58 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:b403::1:3c])
  by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id kKgI6e5OrCg0-5SR0AWam; Fri, 06 Oct 2023 23:20:57 +0300
+ ESMTPSA id kKgI6e5OrCg0-u47sV36S; Fri, 06 Oct 2023 23:20:58 +0300
 Precedence: bulk
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696623657;
- bh=NWV1lbhEmg15eGI39+WJWuedAPGGFlGPabHWOqVSKrw=;
- h=Message-Id:Date:Cc:Subject:To:From;
- b=MUtS3GB0c4UBGA2EDG3c5bbcYAd+r1ZnYLZRLB6MuhcVrmtVGRRDTr1u3uPkJ13eL
- eJwIHIlxj182hwR7rNc7oQFuooVF5AcNNM6NNONeiWIoZvWSKCb4gi+iIOppycZdN6
- HKiJCxtDMTIHo+i+/mcFXrpLQWs+WmCvrWaDnmhA=
+ s=default; t=1696623658;
+ bh=syAAIAOzDHq5ojU1/sX7mdXQubeQ0DIGcKwtqZmbCE8=;
+ h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
+ b=YtYKqjdFBgqF/pT005LSQWS5AFaPj7zs7RhBIpsUDjJjT9YL8W8bVBg68oahIn1Do
+ Gbt14Kjyc7GE99c1k6W/Myv6xlwLFS9zJT0al4swh9mef1m3ralBqOt9+Wm5I4WX0M
+ 3berNGUVKRfNx3WgwYcEP2zmzgwn2qES2gX367L8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
@@ -43,20 +44,22 @@ Cc: qemu-devel@nongnu.org, eblake@redhat.com, dave@treblig.org,
  raphael.norwitz@nutanix.com, mst@redhat.com, yc-core@yandex-team.ru,
  vsementsov@yandex-team.ru, den-plotnikov@yandex-team.ru,
  daniil.tatianin@yandex.ru
-Subject: [PATCH 0/4] vhost-user-blk: live resize additional APIs
-Date: Fri,  6 Oct 2023 23:20:41 +0300
-Message-Id: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
+Subject: [PATCH 1/4] vhost-user-blk: simplify and fix
+ vhost_user_blk_handle_config_change
+Date: Fri,  6 Oct 2023 23:20:42 +0300
+Message-Id: <20231006202045.1161543-2-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
+References: <20231006202045.1161543-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=178.154.239.200;
+Received-SPF: pass client-ip=2a02:6b8:c03:500:1:45:d181:df01;
  envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -72,50 +75,68 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In vhost-user protocol we have VHOST_USER_BACKEND_CONFIG_CHANGE_MSG,
-which backend may send to notify Qemu, that we should re-read the
-config, and notify the guest.
+Let's not care about what was changed and update the whole config,
+reasons:
 
-Still that's not always convenient: backend may not support this
-message. Also, having QMP command to force config sync is more reliable
-than waiting for notification from external program. It also may be
-helpful for debug/restore: if we have changed disk size, but guest
-doesn't see that, it's good to have a separate QMP command to trigger
-resync of the config.
+1. config->geometry should be updated together with capacity, so we fix
+   a bug.
 
-So, the series proposes two experimental APIs:
+2. Vhost-user protocol doesn't say anything about config change
+   limitation. Silent ignore of changes doesn't seem to be correct.
 
-1. x-device-sync-config command, to trigger config synchronization
+3. vhost-user-vsock reads the whole config
 
-2. X_CONFIG_READ event, which notify management tool that guest read the
-updated config. Of course, that can't guarantee that the guest correctly
-handled the updated config, but it's still better than nothing: for sure
-guest will not show new disk size until it read the updated config. So,
-management tool may wait for this event to report success to the user.
+4. on realize we don't do any checks on retrieved config, so no reason
+   to care here
 
+Also, let's notify guest unconditionally:
 
-The series is based on "[PATCH v8 0/4] pci hotplug tracking": it doesn't
-depend on it, but just modify same files, so I just to avoid extra
-conflicts.
-Based-on: <20231005092926.56231-1-vsementsov@yandex-team.ru>
+1. So does vhost-user-vsock
 
-Vladimir Sementsov-Ogievskiy (4):
-  vhost-user-blk: simplify and fix vhost_user_blk_handle_config_change
-  qapi: introduce device-sync-config
-  qapi: device-sync-config: check runstate
-  qapi: introduce CONFIG_READ event
+2. We are going to reuse the functionality in new cases when we do want
+   to notify the guest unconditionally. So, no reason to create extra
+   branches in the logic.
 
- hw/block/vhost-user-blk.c | 32 ++++++++++++++---------
- hw/virtio/virtio-pci.c    | 18 +++++++++++++
- include/hw/qdev-core.h    |  3 +++
- include/monitor/qdev.h    |  1 +
- include/sysemu/runstate.h |  1 +
- monitor/monitor.c         |  1 +
- qapi/qdev.json            | 36 ++++++++++++++++++++++++++
- softmmu/qdev-monitor.c    | 53 +++++++++++++++++++++++++++++++++++++++
- softmmu/runstate.c        |  5 ++++
- 9 files changed, 138 insertions(+), 12 deletions(-)
+Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
+---
+ hw/block/vhost-user-blk.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index eecf3f7a81..1ee05b46ee 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -93,7 +93,6 @@ static void vhost_user_blk_set_config(VirtIODevice *vdev, const uint8_t *config)
+ static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
+ {
+     int ret;
+-    struct virtio_blk_config blkcfg;
+     VirtIODevice *vdev = dev->vdev;
+     VHostUserBlk *s = VHOST_USER_BLK(dev->vdev);
+     Error *local_err = NULL;
+@@ -102,19 +101,15 @@ static int vhost_user_blk_handle_config_change(struct vhost_dev *dev)
+         return 0;
+     }
+ 
+-    ret = vhost_dev_get_config(dev, (uint8_t *)&blkcfg,
++    ret = vhost_dev_get_config(dev, (uint8_t *)&s->blkcfg,
+                                vdev->config_len, &local_err);
+     if (ret < 0) {
+         error_report_err(local_err);
+         return ret;
+     }
+ 
+-    /* valid for resize only */
+-    if (blkcfg.capacity != s->blkcfg.capacity) {
+-        s->blkcfg.capacity = blkcfg.capacity;
+-        memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
+-        virtio_notify_config(dev->vdev);
+-    }
++    memcpy(dev->vdev->config, &s->blkcfg, vdev->config_len);
++    virtio_notify_config(dev->vdev);
+ 
+     return 0;
+ }
 -- 
 2.34.1
 
