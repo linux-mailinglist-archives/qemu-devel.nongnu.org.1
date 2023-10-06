@@ -2,86 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B637BB463
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 288607BB484
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 11:49:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qohIb-0001yo-4u; Fri, 06 Oct 2023 05:39:09 -0400
+	id 1qohRH-0005Eb-HX; Fri, 06 Oct 2023 05:48:07 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qohIR-0001yX-BM
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:38:59 -0400
-Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qohIO-00009g-Qn
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:38:59 -0400
-Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-3296b3f03e5so233089f8f.2
- for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 02:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696585135; x=1697189935; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uTmsobzK+1o2w4HOgJzSYnT0B5QvJt0VQBzYZ4b59Iw=;
- b=bAi65nahIvFQ8r0TRaODnLKovkTLA/S3wJ160pj31LWIGvi0qO8EYcRZPzGk45Y6tl
- m0778aGbeFqT24MzFk3gCRhprvSUUkLeKNocvx7+c8JpykGV6yOtlRgncuVg4NewBnm6
- I1td2Xy7O7nntuL6+EKFhEyRAZ6Zs1UI38BvKMyoHIS9eKVDmEuOHiw/QEBah6kxgBob
- HFdA7JdGbi+Qs4Lfuz3NSAxLpGsacYxGbNQRMiTimPWGQypXID7czzGQ7EObJhjD5HpS
- kbKvPO2fu1N5rBYGwzVjUdymldQtENxo+1Ta8+BVXukpeF4xwmZwYwWtuhd1ZPMzQwfH
- a1OA==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qohRE-0005EQ-Kg
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:48:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qohRB-0003Yz-JT
+ for qemu-devel@nongnu.org; Fri, 06 Oct 2023 05:48:03 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696585680;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=nlUIOczbLu5JjQVTCcIP+ygsBnLElOD9vnZ1rfnRJIs=;
+ b=fSLvlrXQMctHtT1SpkRYqKoPVn0zv8WJ7Gtujt35yylzKfuY8P6q+F2zb9GVMpSakVMHJT
+ BOXxF9af3GCcSVWzywcGizOcdXhvHS7ptlrEnqGRFxUnI3/ILHcRRptRwxoiZaKoTpj40A
+ eZYo+qxx31h3aOOzQ44RVofPrvIIyUU=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-fpmoT1eAM_S97b-hqxXhpQ-1; Fri, 06 Oct 2023 05:47:58 -0400
+X-MC-Unique: fpmoT1eAM_S97b-hqxXhpQ-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-323334992fbso1408687f8f.1
+ for <qemu-devel@nongnu.org>; Fri, 06 Oct 2023 02:47:58 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696585135; x=1697189935;
+ d=1e100.net; s=20230601; t=1696585677; x=1697190477;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uTmsobzK+1o2w4HOgJzSYnT0B5QvJt0VQBzYZ4b59Iw=;
- b=r2p03oGZ0VaotnuQV6CiH9n9NJkl/CMqCYdwZdsz4oK0ahGJHv5EeytI+G2/znfMOG
- MeR3gVPQm4Fh8QsLCGZeG0fCrmEz5a08Hq/ZAZvn+Gz7yEBCN0kVfQqvVPZWyZgKTv6n
- Q0MSkn4sYdfftQhwuiqHsR4wygH+NSnzH0gwHDQuN4lXnRSNMnrUUMOYJF4T9Ztz2Dd0
- 5abhYgRZ/TNe+eyAkPBj/BEkbWD8x5t7eb5zfE/edKCyFziqMdc36fbxoEt/mV/ceITO
- s/k/APX90Rbhns0wSbQYLYNbr8FtMB3WRRLZ/Kiu00Ulo80m6XnxmVhIJJnqeylpF1au
- je2w==
-X-Gm-Message-State: AOJu0YyDK1idRnQjiPX/kKQp3op7QavSuzkfrGfqGrYfhvybG5h0E7x/
- IMn1fe7riU3S0N+gId6c0j1wzQ==
-X-Google-Smtp-Source: AGHT+IEH1FQrmsn20A7kjLpqlNqPk/Y4tt9kIZWn2yE1O4+rV3RLSbSRSmkUVs2WM4dC5W5KuVMKSg==
-X-Received: by 2002:adf:ed52:0:b0:31f:fa1a:83fb with SMTP id
- u18-20020adfed52000000b0031ffa1a83fbmr6819485wro.7.1696585134971; 
- Fri, 06 Oct 2023 02:38:54 -0700 (PDT)
-Received: from [192.168.69.115] ([176.172.115.173])
+ bh=nlUIOczbLu5JjQVTCcIP+ygsBnLElOD9vnZ1rfnRJIs=;
+ b=hFs2u3g2iU/Hq8149H2hMmA13GR5UF4P3wsg9ofB5SNkVdcyfz42WTeg7zmtTSe/5f
+ /QtiZThycgEg6ybw4K1mSM8+liTqlU1TMbsTN1s+51OAo/KMyRsDBRX0MD2tV3cdmt/k
+ +D/bg1/bGU0kOF7o0nvwhT+Gg43TfiQF1SYfOxV7mRAEgOfSTPKeDUtJNx1U8Nx+04Si
+ yWYC50NLUPxdh5gnT+aWIkqfjipn3GXaQHUYvdgb1pmzOSOW/35LBKIwd9ENdzNIsb5J
+ 0juWUuLrU5gL6osLE5u/v2M64TFW5rdUMwyvk0zZT4rcKq4jsohFCWgDAhv29PFf2/kC
+ N8fQ==
+X-Gm-Message-State: AOJu0YzdUDpJOdImbptb8Gm764MfLBQoOG51GnmusEcZoD7gKdCtykZr
+ +7hNgUPmKSQ2WBFDkOoc7Lt64NCNHJrJZ9sK/aSSytHQdiiZIIxlV8nrr8BnZp08l+CporDW52e
+ B5Mj74RZ5N7/PlGM=
+X-Received: by 2002:a5d:5187:0:b0:31f:ec06:20f with SMTP id
+ k7-20020a5d5187000000b0031fec06020fmr6925523wrv.14.1696585677354; 
+ Fri, 06 Oct 2023 02:47:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHtVvRqeT8Uka+UMgo01XtaGqCcianZNIRj6I8QateuoUXcnh0+DsWeecpGNEHkl5CpixOa5w==
+X-Received: by 2002:a5d:5187:0:b0:31f:ec06:20f with SMTP id
+ k7-20020a5d5187000000b0031fec06020fmr6925510wrv.14.1696585676948; 
+ Fri, 06 Oct 2023 02:47:56 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
+ (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
+ [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
  by smtp.gmail.com with ESMTPSA id
- c14-20020adfed8e000000b00317b0155502sm1227446wro.8.2023.10.06.02.38.53
+ o14-20020a5d4a8e000000b003197b85bad2sm1238918wrq.79.2023.10.06.02.47.55
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 06 Oct 2023 02:38:54 -0700 (PDT)
-Message-ID: <556994f8-c7cf-92c3-f49d-4c37b955c7a4@linaro.org>
-Date: Fri, 6 Oct 2023 11:38:52 +0200
+ Fri, 06 Oct 2023 02:47:56 -0700 (PDT)
+Message-ID: <a4af0357-12ee-fc7f-e249-239da34409b0@redhat.com>
+Date: Fri, 6 Oct 2023 11:47:55 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [RFC PATCH 3/3] docs/about/deprecated: Deprecate the
- qemu-system-i386 binary
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [Virtio-fs] (no subject)
 Content-Language: en-US
-To: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>
-Cc: Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Yanan Wang <wangyanan55@huawei.com>,
- =?UTF-8?Q?Daniel_P_=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
-References: <20230425133851.489283-1-thuth@redhat.com>
- <20230425133851.489283-4-thuth@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230425133851.489283-4-thuth@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
+ =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
+ Anton Kuchin <antonkuchin@yandex-team.ru>, Yajun Wu <yajunw@nvidia.com>
+References: <20231004125904.110781-1-hreitz@redhat.com>
+ <20231004125904.110781-2-hreitz@redhat.com> <20231005170852.GB1342722@fedora>
+ <20231005131352-mutt-send-email-mst@kernel.org>
+ <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
+ <20231006043518-mutt-send-email-mst@kernel.org>
+ <a8b9d842-0925-38d0-2f0d-f2560bab251b@redhat.com>
+ <20231006051802-mutt-send-email-mst@kernel.org>
+From: Hanna Czenczek <hreitz@redhat.com>
+In-Reply-To: <20231006051802-mutt-send-email-mst@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42f;
- envelope-from=philmd@linaro.org; helo=mail-wr1-x42f.google.com
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -62
 X-Spam_score: -6.3
 X-Spam_bar: ------
-X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-4.219,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-6.3 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-4.219, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -98,54 +110,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 25/4/23 15:38, Thomas Huth wrote:
-> Aside from not supporting KVM on 32-bit hosts, the qemu-system-x86_64
-> binary is a proper superset of the qemu-system-i386 binary. And with
-> the 32-bit x86 host support being deprecated now, it is possible to
-> deprecate the qemu-system-i386 binary now, too.
-> 
-> With regards to 32-bit KVM support in the x86 Linux kernel,
-> the developers confirmed that they do not need a recent
-> qemu-system-i386 binary here:
-> 
->   https://lore.kernel.org/kvm/Y%2ffkTs5ajFy0hP1U@google.com/
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+On 06.10.23 11:26, Michael S. Tsirkin wrote:
+> On Fri, Oct 06, 2023 at 11:15:55AM +0200, Hanna Czenczek wrote:
+>> On 06.10.23 10:45, Michael S. Tsirkin wrote:
+>>> On Fri, Oct 06, 2023 at 09:48:14AM +0200, Hanna Czenczek wrote:
+>>>> On 05.10.23 19:15, Michael S. Tsirkin wrote:
+>>>>> On Thu, Oct 05, 2023 at 01:08:52PM -0400, Stefan Hajnoczi wrote:
+>>>>>> On Wed, Oct 04, 2023 at 02:58:57PM +0200, Hanna Czenczek wrote:
+>>>>>>> There is no clearly defined purpose for the virtio status byte in
+>>>>>>> vhost-user: For resetting, we already have RESET_DEVICE; and for virtio
+>>>>>>> feature negotiation, we have [GS]ET_FEATURES.  With the REPLY_ACK
+>>>>>>> protocol extension, it is possible for SET_FEATURES to return errors
+>>>>>>> (SET_PROTOCOL_FEATURES may be called before SET_FEATURES).
+>>>>>>>
+>>>>>>> As for implementations, SET_STATUS is not widely implemented.  dpdk does
+>>>>>>> implement it, but only uses it to signal feature negotiation failure.
+>>>>>>> While it does log reset requests (SET_STATUS 0) as such, it effectively
+>>>>>>> ignores them, in contrast to RESET_OWNER (which is deprecated, and today
+>>>>>>> means the same thing as RESET_DEVICE).
+>>>>>>>
+>>>>>>> While qemu superficially has support for [GS]ET_STATUS, it does not
+>>>>>>> forward the guest-set status byte, but instead just makes it up
+>>>>>>> internally, and actually completely ignores what the back-end returns,
+>>>>>>> only using it as the template for a subsequent SET_STATUS to add single
+>>>>>>> bits to it.  Notably, after setting FEATURES_OK, it never reads it back
+>>>>>>> to see whether the flag is still set, which is the only way in which
+>>>>>>> dpdk uses the status byte.
+>>>>>>>
+>>>>>>> As-is, no front-end or back-end can rely on the other side handling this
+>>>>>>> field in a useful manner, and it also provides no practical use over
+>>>>>>> other mechanisms the vhost-user protocol has, which are more clearly
+>>>>>>> defined.  Deprecate it.
+>>>>>>>
+>>>>>>> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
+>>>>>>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
+>>>>>>> ---
+>>>>>>>     docs/interop/vhost-user.rst | 28 +++++++++++++++++++++-------
+>>>>>>>     1 file changed, 21 insertions(+), 7 deletions(-)
+>>>>>> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>>>>> SET_STATUS is the only way to signal failure to acknowledge FEATURES_OK.
+>>>>> The fact current backends never check errors does not mean they never
+>>>>> will. So no, not applying this.
+>>>> Can this not be done with REPLY_ACK?  I.e., with the following message
+>>>> order:
+>>>>
+>>>> 1. GET_FEATURES to find out whether VHOST_USER_F_PROTOCOL_FEATURES is
+>>>> present
+>>>> 2. GET_PROTOCOL_FEATURES to hopefully get VHOST_USER_PROTOCOL_F_REPLY_ACK
+>>>> 3. SET_PROTOCOL_FEATURES to set VHOST_USER_PROTOCOL_F_REPLY_ACK
+>>>> 4. SET_FEATURES with need_reply
+>>>>
+>>>> If not, the problem is that qemu has sent SET_STATUS 0 for a while when the
+>>>> vCPUs are stopped, which generally seems to request a device reset.  If we
+>>>> don’t state at least that SET_STATUS 0 is to be ignored, back-ends that will
+>>>> implement SET_STATUS later may break with at least these qemu versions.  But
+>>>> documenting that a particular use of the status byte is to be ignored would
+>>>> be really strange.
+>>>>
+>>>> Hanna
+>>> Hmm I guess. Though just following virtio spec seems cleaner to me...
+>>> vhost-user reconfigures the state fully on start.
+>> Not the internal device state, though.  virtiofsd has internal state, and
+>> other devices like vhost-gpu back-ends would probably, too.
+>>
+>> Stefan has recently sent a series
+>> (https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg00709.html) to
+>> put the reset (RESET_DEVICE) into virtio_reset() (when we really need a
+>> reset).
+>>
+>> I really don’t like our current approach with the status byte. Following the
+>> virtio specification to me would mean that the guest directly controls this
+>> byte, which it does not.  qemu makes up values as it deems appropriate, and
+>> this includes sending a SET_STATUS 0 when the guest is just paused, i.e.
+>> when the guest really doesn’t want a device reset.
+>>
+>> That means that qemu does not treat this as a virtio device field (because
+>> that would mean exposing it to the guest driver), but instead treats it as
+>> part of the vhost(-user) protocol.  It doesn’t feel right to me that we use
+>> a virtio-defined feature for communication on the vhost level, i.e. between
+>> front-end and back-end, and not between guest driver and device.  I think
+>> all vhost-level protocol features should be fully defined in the vhost-user
+>> specification, which REPLY_ACK is.
+> Hmm that makes sense. Maybe we should have done what stefan's patch
+> is doing.
+>
+> Do look at the original commit that introduced it to understand why
+> it was added.
 
-Reviewed-by: Daniel P. Berrangé <berrange@redhat.com>
-Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+I don’t understand why this was added to the stop/cont code, though.  If 
+it is time consuming to make these changes, why are they done every time 
+the VM is paused
+and resumed?  It makes sense that this would be done for the initial 
+configuration (where a reset also wouldn’t hurt), but here it seems wrong.
 
-> ---
->   docs/about/deprecated.rst | 16 ++++++++++++++++
->   1 file changed, 16 insertions(+)
-> 
-> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-> index 1ca9dc33d6..c205816c7d 100644
-> --- a/docs/about/deprecated.rst
-> +++ b/docs/about/deprecated.rst
-> @@ -34,6 +34,22 @@ deprecating the build option and no longer defend it in CI. The
->   ``--enable-gcov`` build option remains for analysis test case
->   coverage.
->   
-> +``qemu-system-i386`` binary (since 8.1)
-> +'''''''''''''''''''''''''''''''''''''''
-> +
-> +The ``qemu-system-i386`` binary was mainly useful for running with KVM
-> +on 32-bit x86 hosts, but most Linux distributions already removed their
-> +support for 32-bit x86 kernels, so hardly anybody still needs this. The
-> +``qemu-system-x86_64`` binary is a proper superset and can be used to
-> +run 32-bit guests by selecting a 32-bit CPU model, including KVM support
-> +on x86_64 hosts. Thus users are recommended to reconfigure their systems
-> +to use the ``qemu-system-x86_64`` binary instead. If a 32-bit CPU guest
-> +environment should be enforced, you can switch off the "long mode" CPU
-> +flag with ``-cpu max,lm=off``, or rename/symlink ``qemu-system-x86_64``
-> +to ``qemu-system-i386`` -- QEMU will then run with the 64-bit extensions
-> +disabled.
-> +
-> +
->   System emulator command line arguments
->   --------------------------------------
->   
+(To be clear, a reset in the stop/cont code is wrong, because it breaks 
+stateful devices.)
+
+Also, note the newer commits 6f8be29ec17 and c3716f260bf.  The reset as 
+originally introduced was wrong even for non-stateful devices, because 
+it occurred before we fetched the state (vring indices) so we could 
+restore it later.  I don’t know how 923b8921d21 was tested, but if the 
+back-end used for testing implemented SET_STATUS 0 as a reset, it could 
+not have survived either migration or a stop/cont in general, because 
+the vring indices would have been reset to 0.
+
+What I’m saying is, 923b8921d21 introduced SET_STATUS calls that broke 
+all devices that would implement them as per virtio spec, and even today 
+it’s broken for stateful devices.  The mentioned performance issue is 
+likely real, but we can’t address it by making up SET_STATUS calls that 
+are wrong.
+
+I concede that I didn’t think about DRIVER_OK.  Personally, I would do 
+all final configuration that would happen upon a DRIVER_OK once the 
+first vring is started (i.e. receives a kick).  That has the added 
+benefit of being asynchronous because it doesn’t block any vhost-user 
+messages (which are synchronous, and thus block downtime).
+
+Hanna
+
+>> Now, we could hand full control of the status byte to the guest, and that
+>> would make me content.  But I feel like that doesn’t really work, because
+>> qemu needs to intercept the status byte anyway (it needs to know when there
+>> is a reset, probably wants to know when the device is configured, etc.), so
+>> I don’t think having the status byte in vhost-user really gains us much when
+>> qemu could translate status byte changes to/from other vhost-user commands.
+>>
+>> Hanna
+> well it intercepts it but I think it could pass it on unchanged.
+>
+>
+>>> I guess symmetry was the
+>>> point. So I don't see why SET_STATUS 0 has to be ignored.
+>>>
+>>>
+>>> SET_STATUS was introduced by:
+>>>
+>>> commit 923b8921d210763359e96246a58658ac0db6c645
+>>> Author: Yajun Wu <yajunw@nvidia.com>
+>>> Date:   Mon Oct 17 14:44:52 2022 +0800
+>>>
+>>>       vhost-user: Support vhost_dev_start
+>>>
+>>> CC the author.
+>>>
 
 
