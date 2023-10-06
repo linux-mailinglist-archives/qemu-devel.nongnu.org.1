@@ -2,75 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E797BB690
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:39:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C76067BB69D
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 13:40:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qojAU-0006q1-2v; Fri, 06 Oct 2023 07:38:54 -0400
+	id 1qojAe-0007yW-RH; Fri, 06 Oct 2023 07:39:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qojAL-0006cx-Dl
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:38:47 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
+ id 1qojAa-0007jj-Jv; Fri, 06 Oct 2023 07:39:00 -0400
+Received: from mta-04.yadro.com ([89.207.88.248])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qojAJ-0000YK-2Q
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 07:38:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696592321;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=6LGcRG6sW4PUvUKXRDEwQ2kbjhkASkPuGrdQBg6kcLE=;
- b=e8ipYQeiSOgtqj0meK98cr4cHRYBY73TZsVOFvCuaUZboMTs86/81qe8n41E6KT1yUACtC
- 0i69eLxlSYxiYk3bZpptr0thPVWVDFpbU64nGML1BjPcvpfYnwVLr7aeyrm8pFq9afFmsU
- /P6Jwzr+mg/rSmepPbTGtIY7MG1lsAQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-543-xnCDnnvZOx-LDSh_hFxBjA-1; Fri, 06 Oct 2023 07:38:28 -0400
-X-MC-Unique: xnCDnnvZOx-LDSh_hFxBjA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 61267811E8D;
- Fri,  6 Oct 2023 11:38:28 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 3FA36492C37;
- Fri,  6 Oct 2023 11:38:28 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 43ECD21E6904; Fri,  6 Oct 2023 13:38:27 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michael Tokarev <mjt@tls.msk.ru>,  Thomas Huth <thuth@redhat.com>,
- qemu-devel@nongnu.org,  qemu-trivial@nongnu.org
-Subject: Re: [PATCH] hw/virtio/vhost: Silence compiler warnings in vhost
- code when using -Wshadow
-References: <20231004114809.105672-1-thuth@redhat.com>
- <18f1faab-71f4-4dbd-a319-fcd65721f58b@tls.msk.ru>
- <87h6n4p1ts.fsf@pond.sub.org>
- <29a2a188-ec5b-452f-be63-92e8f0ec7110@tls.msk.ru>
- <20231006072416-mutt-send-email-mst@kernel.org>
-Date: Fri, 06 Oct 2023 13:38:27 +0200
-In-Reply-To: <20231006072416-mutt-send-email-mst@kernel.org> (Michael
- S. Tsirkin's message of "Fri, 6 Oct 2023 07:24:34 -0400")
-Message-ID: <87v8bkj80c.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <vladimir.isaev@syntacore.com>)
+ id 1qojAX-0000ao-Ur; Fri, 06 Oct 2023 07:39:00 -0400
+DKIM-Filter: OpenDKIM Filter v2.11.0 mta-04.yadro.com 78019C0004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-04; t=1696592333;
+ bh=xd4nevTQraENg3y2C/UieqMoauZAq9nyZOI6oSpvr3o=;
+ h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+ b=URfLGtf27h3YWbpia845ibSWf7EgzlRBOaC+rPVMMadx4kyh2+6dcnsaorFqx2mV3
+ NWd1DTaijHeM2wPkwVP4gbif51HirPTpFtjZDv4oc4OdoFkEU3FNH1iI96KiSkpAnM
+ 3+h6bEg2dApR1wGKqJGBO6Yl74UF+joqVSn/AFrZG2n1lYnyocaGEPeS0T7FMFxdPA
+ 6aNAoj1SzJsnLHfsEVWz1F+4z+ZzojY5e4ESN3OBwr1KXeR1B5OSNZdfPPvPcgkYmi
+ I6kslvwmgZcF2P8qfQBswMlGS4pba+xQxkcqP0agxS6hnTDevDHQKWBtbxhdYfVE2X
+ hUV7ubViuNDzQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=syntacore.com;
+ s=mta-03; t=1696592333;
+ bh=xd4nevTQraENg3y2C/UieqMoauZAq9nyZOI6oSpvr3o=;
+ h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+ b=PgQ9W5rOliL8xZmjVnvvp5VwvGve1AKvgLoTIBJyB1Bdebq9udz305ULFZHcQd+s+
+ IDlM/1SItBAeqmAdu2ySYP8IxiBQG8fvjDJCTbyGvZPqwk9g3QqIyW5TBQzlezO4tN
+ kEhBNaFa/hxueHWJmVh34V6q0OVcBF2jGLC+BMlaDb8mtZ9St2+7grv9L6KXR4Tm4n
+ MN3BhHx9BpOSW+4JF5N/jpMBow0VE2hFd3cnLGWjciKRIcR9zqAa4jtFFPa75K071W
+ cf25xTu5x+lgfpf/gTznqFYlKdjLxtHshz7iYD/GCst/GiQBsEjXgTuTXrigdk6KE+
+ jZsmoGhS+iHmg==
+Message-ID: <20e19d9a-c8cd-414d-ba6c-abdafbda0255@syntacore.com>
+Date: Fri, 6 Oct 2023 14:38:50 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] target/riscv: pmp: Clear pmp/smepmp bits on reset
+Content-Language: en-US, ru-RU
+To: Mayuresh Chitale <mchitale@ventanamicro.com>, <qemu-riscv@nongnu.org>,
+ <qemu-devel@nongnu.org>
+CC: Alistair Francis <alistair.francis@wdc.com>
+References: <20230925110946.541019-1-mchitale@ventanamicro.com>
+From: Vladimir Isaev <vladimir.isaev@syntacore.com>
+In-Reply-To: <20230925110946.541019-1-mchitale@ventanamicro.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: T-EXCH-06.corp.yadro.com (172.17.10.110) To
+ S-Exch-01.corp.yadro.com (10.78.5.241)
+Received-SPF: permerror client-ip=89.207.88.248;
+ envelope-from=vladimir.isaev@syntacore.com; helo=mta-04.yadro.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+ T_SPF_PERMERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -86,32 +76,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-"Michael S. Tsirkin" <mst@redhat.com> writes:
+Hi Mayuresh,
 
-> On Fri, Oct 06, 2023 at 01:45:51PM +0300, Michael Tokarev wrote:
->> 06.10.2023 11:55, Markus Armbruster =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
->> > Michael Tokarev <mjt@tls.msk.ru> writes:
->> >=20
->> > > Applied to my trivial-patches tree, thanks!
->> > >=20
->> > > Marcus, you picked up previous patches of this theme, --
->> > > you can continue this tradition if you like :)
->> >=20
->> > I intend to post a pull request for the -Wshadow patches that have
->> > R-bys.  I'm also tracking the unreviewed ones, and hope they get
->> > reviewed.
->>=20
->> Ahh, ok.
->>=20
->> I've added my own R-bys for the ones I picked up, and for this one
->> by Thomas too:
->>=20
->> Reviewed-By: Michael Tokarev <mjt@tls.msk.ru>
->>=20
->> /mjt
->
-> it would be better to deal with all of them in one place tbh.
+25.09.2023 14:09, Mayuresh Chitale wrote:
+> As per the Priv and Smepmp specifications, certain bits such as the 'L'
+> bit of pmp entries and mseccfg.MML can only be cleared upon reset and it
+> is necessary to do so to allow 'M' mode firmware to correctly reinitialize
+> the pmp/smpemp state across reboots.
+> 
+> Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+> ---
+>  target/riscv/cpu.c | 11 +++++++++++
+>  target/riscv/pmp.c | 10 ++++++++++
+>  target/riscv/pmp.h |  1 +
+>  3 files changed, 22 insertions(+)
+> 
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 0fb01788e7..561567651e 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -761,6 +761,17 @@ static void riscv_cpu_reset_hold(Object *obj)
+>      }
+>      /* mmte is supposed to have pm.current hardwired to 1 */
+>      env->mmte |= (EXT_STATUS_INITIAL | MMTE_M_PM_CURRENT);
+> +
+> +    /*
+> +     * Clear mseccfg and unlock all the PMP entries upon reset.
+> +     * This is allowed as per the priv and smepmp specifications
+> +     * and is needed to clear stale entries across reboots.
+> +     */
+> +    if (riscv_cpu_cfg(env)->ext_smepmp) {
+> +        env->mseccfg = 0;
+> +    }
+> +
+> +    pmp_unlock_entries(env);
+>  #endif
+>      env->xl = riscv_cpu_mxl(env);
+>      riscv_cpu_update_mask(env);
+> diff --git a/target/riscv/pmp.c b/target/riscv/pmp.c
+> index f498e414f0..5b14eb511a 100644
+> --- a/target/riscv/pmp.c
+> +++ b/target/riscv/pmp.c
+> @@ -129,6 +129,16 @@ static void pmp_write_cfg(CPURISCVState *env, uint32_t pmp_index, uint8_t val)
+>      }
+>  }
+> 
+> +void pmp_unlock_entries(CPURISCVState *env)
+> +{
+> +    uint32_t pmp_num = pmp_get_num_rules(env);
+> +    int i;
+> +
+> +    for (i = 0; i < pmp_num; i++) {
+> +        env->pmp_state.pmp[i].cfg_reg &= ~PMP_LOCK;
 
-I just sent a pull request.  Thanks for all the reviews!
+According to spec:
 
+Writable PMP registers’ A and L fields are set to 0, unless the
+platform mandates a different reset value for some PMP registers’ A and L fields.
+
+So should we also set PMP_AMATCH_OFF in cfg?
+
+Thank you,
+Vladimir Isaev
+
+> +    }
+> +}
+> +
+>  static void pmp_decode_napot(target_ulong a, target_ulong *sa,
+>                               target_ulong *ea)
+>  {
+> diff --git a/target/riscv/pmp.h b/target/riscv/pmp.h
+> index b296ea1fc6..0ab60fe15f 100644
+> --- a/target/riscv/pmp.h
+> +++ b/target/riscv/pmp.h
+> @@ -82,6 +82,7 @@ void pmp_update_rule_addr(CPURISCVState *env, uint32_t pmp_index);
+>  void pmp_update_rule_nums(CPURISCVState *env);
+>  uint32_t pmp_get_num_rules(CPURISCVState *env);
+>  int pmp_priv_to_page_prot(pmp_priv_t pmp_priv);
+> +void pmp_unlock_entries(CPURISCVState *env);
+> 
+>  #define MSECCFG_MML_ISSET(env) get_field(env->mseccfg, MSECCFG_MML)
+>  #define MSECCFG_MMWP_ISSET(env) get_field(env->mseccfg, MSECCFG_MMWP)
+> --
+> 2.34.1
+> 
+> 
 
