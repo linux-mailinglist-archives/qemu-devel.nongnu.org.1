@@ -2,53 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80D647BBBFE
-	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 17:44:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C62C7BBBF1
+	for <lists+qemu-devel@lfdr.de>; Fri,  6 Oct 2023 17:43:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qomy1-0006gb-3u; Fri, 06 Oct 2023 11:42:17 -0400
+	id 1qomy8-0006hG-GG; Fri, 06 Oct 2023 11:42:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qomxv-0006ev-Ai; Fri, 06 Oct 2023 11:42:11 -0400
-Received: from forwardcorp1b.mail.yandex.net
- ([2a02:6b8:c02:900:1:45:d181:df01])
+ id 1qomxw-0006fP-KG; Fri, 06 Oct 2023 11:42:12 -0400
+Received: from forwardcorp1c.mail.yandex.net ([178.154.239.200])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <vsementsov@yandex-team.ru>)
- id 1qomxo-0003bL-L2; Fri, 06 Oct 2023 11:42:11 -0400
+ id 1qomxr-0003bg-1a; Fri, 06 Oct 2023 11:42:12 -0400
 Received: from mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  (mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net
  [IPv6:2a02:6b8:c12:3a8c:0:640:ec94:0])
- by forwardcorp1b.mail.yandex.net (Yandex) with ESMTP id 87F3E61131;
- Fri,  6 Oct 2023 18:42:01 +0300 (MSK)
+ by forwardcorp1c.mail.yandex.net (Yandex) with ESMTP id EFF255FB38;
+ Fri,  6 Oct 2023 18:42:02 +0300 (MSK)
 Received: from vsementsov-lin.. (unknown [2a02:6b8:b081:a512::1:22])
  by mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net (smtpcorp/Yandex) with
- ESMTPSA id VfbK2W5OrKo0-a23YfkNY; Fri, 06 Oct 2023 18:42:00 +0300
+ ESMTPSA id VfbK2W5OrKo0-ef5MeAqc; Fri, 06 Oct 2023 18:42:02 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
- s=default; t=1696606920;
- bh=LnIpgBWkDUQl3QshcR6oeCKmxsdf4rL+cQcHLbROP50=;
+ s=default; t=1696606922;
+ bh=rthrscgOdGdVxY/sa0vLqb4XPMTxlVr3kNhDUP0YPxo=;
  h=Message-Id:Date:In-Reply-To:Cc:Subject:References:To:From;
- b=m8+gdXCRrqaaylHI709tI12/f2AFa78Bb5CgiJsx/aTPJmSvkDxiOm2oQc9nbSJpv
- s128w/WrMzq0q5sba1XNITI+trabbaSqNPDqI4XLdaTHqTH1NOYkr0nBgqf85uk/LP
- En0rrruLg/PA9grj0elvLD7GOLX56sMIrgFfnD2c=
+ b=uzawRckaDi4vXo1Ej8ehQb8vMFDTTVVGugb7qu/ybqqqRbONyhJ9r1MxJq+ZOOMZd
+ zARXEsR2wW9O38tIUMiXHhAC1ND+8vjexATRVlXHZqM8KfUo/xpIawLr0GroaWRyNx
+ sP4RwEKZ5SHTytVZiN+KoZHTu1XGKqWEu+Jn/jh8=
 Authentication-Results: mail-nwsmtp-smtp-corp-main-62.myt.yp-c.yandex.net;
  dkim=pass header.i=@yandex-team.ru
 From: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 To: qemu-block@nongnu.org
 Cc: qemu-devel@nongnu.org, vsementsov@yandex-team.ru, jsnow@redhat.com,
  crosa@redhat.com, kwolf@redhat.com, hreitz@redhat.com, eblake@redhat.com
-Subject: [PATCH v7 11/15] iotests: drop some extra ** in qmp() call
-Date: Fri,  6 Oct 2023 18:41:21 +0300
-Message-Id: <20231006154125.1068348-12-vsementsov@yandex-team.ru>
+Subject: [PATCH v7 12/15] iotests.py: pause_job(): drop return value
+Date: Fri,  6 Oct 2023 18:41:22 +0300
+Message-Id: <20231006154125.1068348-13-vsementsov@yandex-team.ru>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231006154125.1068348-1-vsementsov@yandex-team.ru>
 References: <20231006154125.1068348-1-vsementsov@yandex-team.ru>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a02:6b8:c02:900:1:45:d181:df01;
- envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1b.mail.yandex.net
+Received-SPF: pass client-ip=178.154.239.200;
+ envelope-from=vsementsov@yandex-team.ru; helo=forwardcorp1c.mail.yandex.net
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -71,349 +70,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-qmp() method supports passing dict (if it doesn't need substituting
-'_' to '-' in keys). So, drop some extra '**' operators.
+The returned value is unused. It's simple to check by command
+
+ git grep -B 3 '\.pause_job('
 
 Signed-off-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 Reviewed-by: Eric Blake <eblake@redhat.com>
 ---
- tests/qemu-iotests/040                        |  4 +-
- tests/qemu-iotests/041                        | 14 +++---
- tests/qemu-iotests/129                        |  2 +-
- tests/qemu-iotests/147                        |  2 +-
- tests/qemu-iotests/155                        |  2 +-
- tests/qemu-iotests/264                        | 12 ++---
- tests/qemu-iotests/295                        |  5 +-
- tests/qemu-iotests/296                        | 15 +++---
- tests/qemu-iotests/tests/migrate-bitmaps-test |  4 +-
- .../tests/mirror-ready-cancel-error           | 50 +++++++++----------
- 10 files changed, 54 insertions(+), 56 deletions(-)
+ tests/qemu-iotests/iotests.py | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tests/qemu-iotests/040 b/tests/qemu-iotests/040
-index e61e7f2433..4b8bf09a5d 100755
---- a/tests/qemu-iotests/040
-+++ b/tests/qemu-iotests/040
-@@ -774,7 +774,7 @@ class TestCommitWithFilters(iotests.QMPTestCase):
-         result = self.vm.qmp('object-add', qom_type='throttle-group', id='tg')
+diff --git a/tests/qemu-iotests/iotests.py b/tests/qemu-iotests/iotests.py
+index 6cc50f0b50..467faca43c 100644
+--- a/tests/qemu-iotests/iotests.py
++++ b/tests/qemu-iotests/iotests.py
+@@ -1338,8 +1338,7 @@ def pause_job(self, job_id='job0', wait=True):
+         result = self.vm.qmp('block-job-pause', device=job_id)
          self.assert_qmp(result, 'return', {})
+         if wait:
+-            return self.pause_wait(job_id)
+-        return result
++            self.pause_wait(job_id)
  
--        result = self.vm.qmp('blockdev-add', **{
-+        result = self.vm.qmp('blockdev-add', {
-                 'node-name': 'top-filter',
-                 'driver': 'throttle',
-                 'throttle-group': 'tg',
-@@ -935,7 +935,7 @@ class TestCommitWithOverriddenBacking(iotests.QMPTestCase):
-         self.vm.launch()
- 
-         # Use base_b instead of base_a as the backing of top
--        result = self.vm.qmp('blockdev-add', **{
-+        result = self.vm.qmp('blockdev-add', {
-                                 'node-name': 'top',
-                                 'driver': iotests.imgfmt,
-                                 'file': {
-diff --git a/tests/qemu-iotests/041 b/tests/qemu-iotests/041
-index 550e4dc391..3aef42aec8 100755
---- a/tests/qemu-iotests/041
-+++ b/tests/qemu-iotests/041
-@@ -236,7 +236,7 @@ class TestSingleBlockdev(TestSingleDrive):
-         args = {'driver': iotests.imgfmt,
-                 'node-name': self.qmp_target,
-                 'file': { 'filename': target_img, 'driver': 'file' } }
--        result = self.vm.qmp("blockdev-add", **args)
-+        result = self.vm.qmp("blockdev-add", args)
-         self.assert_qmp(result, 'return', {})
- 
-     def test_mirror_to_self(self):
-@@ -963,7 +963,7 @@ class TestRepairQuorum(iotests.QMPTestCase):
-         #assemble the quorum block device from the individual files
-         args = { "driver": "quorum", "node-name": "quorum0",
-                  "vote-threshold": 2, "children": [ "img0", "img1", "img2" ] }
--        result = self.vm.qmp("blockdev-add", **args)
-+        result = self.vm.qmp("blockdev-add", args)
-         self.assert_qmp(result, 'return', {})
- 
- 
-@@ -1278,7 +1278,7 @@ class TestReplaces(iotests.QMPTestCase):
-         """
-         Check that we can replace filter nodes.
-         """
--        result = self.vm.qmp('blockdev-add', **{
-+        result = self.vm.qmp('blockdev-add', {
-                                  'driver': 'copy-on-read',
-                                  'node-name': 'filter0',
-                                  'file': {
-@@ -1319,7 +1319,7 @@ class TestFilters(iotests.QMPTestCase):
-         self.vm = iotests.VM().add_device('virtio-scsi,id=vio-scsi')
-         self.vm.launch()
- 
--        result = self.vm.qmp('blockdev-add', **{
-+        result = self.vm.qmp('blockdev-add', {
-                                 'node-name': 'target',
-                                 'driver': iotests.imgfmt,
-                                 'file': {
-@@ -1355,7 +1355,7 @@ class TestFilters(iotests.QMPTestCase):
-         os.remove(backing_img)
- 
-     def test_cor(self):
--        result = self.vm.qmp('blockdev-add', **{
-+        result = self.vm.qmp('blockdev-add', {
-                                 'node-name': 'filter',
-                                 'driver': 'copy-on-read',
-                                 'file': self.filterless_chain
-@@ -1384,7 +1384,7 @@ class TestFilters(iotests.QMPTestCase):
-         assert target_map[1]['depth'] == 0
- 
-     def test_implicit_mirror_filter(self):
--        result = self.vm.qmp('blockdev-add', **self.filterless_chain)
-+        result = self.vm.qmp('blockdev-add', self.filterless_chain)
-         self.assert_qmp(result, 'return', {})
- 
-         # We need this so we can query from above the mirror node
-@@ -1418,7 +1418,7 @@ class TestFilters(iotests.QMPTestCase):
-     def test_explicit_mirror_filter(self):
-         # Same test as above, but this time we give the mirror filter
-         # a node-name so it will not be invisible
--        result = self.vm.qmp('blockdev-add', **self.filterless_chain)
-+        result = self.vm.qmp('blockdev-add', self.filterless_chain)
-         self.assert_qmp(result, 'return', {})
- 
-         # We need this so we can query from above the mirror node
-diff --git a/tests/qemu-iotests/129 b/tests/qemu-iotests/129
-index c75ec62ecf..e1536ee3c3 100755
---- a/tests/qemu-iotests/129
-+++ b/tests/qemu-iotests/129
-@@ -87,7 +87,7 @@ class TestStopWithBlockJob(iotests.QMPTestCase):
-         iotests.qemu_img('create', '-f', iotests.imgfmt, self.overlay_img,
-                          '1G')
- 
--        result = self.vm.qmp('blockdev-add', **{
-+        result = self.vm.qmp('blockdev-add', {
-             'node-name': 'overlay',
-             'driver': iotests.imgfmt,
-             'file': {
-diff --git a/tests/qemu-iotests/147 b/tests/qemu-iotests/147
-index 770b73e2f4..08111c5108 100755
---- a/tests/qemu-iotests/147
-+++ b/tests/qemu-iotests/147
-@@ -58,7 +58,7 @@ class NBDBlockdevAddBase(iotests.QMPTestCase):
-     def client_test(self, filename, address, export=None,
-                     node_name='nbd-blockdev', delete=True):
-         bao = self.blockdev_add_options(address, export, node_name)
--        result = self.vm.qmp('blockdev-add', **bao)
-+        result = self.vm.qmp('blockdev-add', bao)
-         self.assert_qmp(result, 'return', {})
- 
-         found = False
-diff --git a/tests/qemu-iotests/155 b/tests/qemu-iotests/155
-index d3e1b7401e..0c073fd61b 100755
---- a/tests/qemu-iotests/155
-+++ b/tests/qemu-iotests/155
-@@ -110,7 +110,7 @@ class BaseClass(iotests.QMPTestCase):
-                 elif self.target_blockdev_backing:
-                         options['backing'] = self.target_blockdev_backing
- 
--                result = self.vm.qmp('blockdev-add', **options)
-+                result = self.vm.qmp('blockdev-add', options)
-                 self.assert_qmp(result, 'return', {})
- 
-     def tearDown(self):
-diff --git a/tests/qemu-iotests/264 b/tests/qemu-iotests/264
-index 289381e315..d44deb673a 100755
---- a/tests/qemu-iotests/264
-+++ b/tests/qemu-iotests/264
-@@ -49,12 +49,12 @@ class TestNbdReconnect(iotests.QMPTestCase):
-         assert job in ('blockdev-backup', 'blockdev-mirror')
-         with qemu_nbd_popen('-k', nbd_sock, '-f', iotests.imgfmt, disk_b):
-             result = self.vm.qmp('blockdev-add',
--                                 **{'node_name': 'backup0',
--                                    'driver': 'raw',
--                                    'file': {'driver': 'nbd',
--                                             'server': {'type': 'unix',
--                                                        'path': nbd_sock},
--                                             'reconnect-delay': 10}})
-+                                 {'node-name': 'backup0',
-+                                  'driver': 'raw',
-+                                  'file': {'driver': 'nbd',
-+                                           'server': {'type': 'unix',
-+                                                      'path': nbd_sock},
-+                                           'reconnect-delay': 10}})
-             self.assert_qmp(result, 'return', {})
-             result = self.vm.qmp(job, device='drive0',
-                                  sync='full', target='backup0',
-diff --git a/tests/qemu-iotests/295 b/tests/qemu-iotests/295
-index 270ad3999f..8ebe31054c 100755
---- a/tests/qemu-iotests/295
-+++ b/tests/qemu-iotests/295
-@@ -102,8 +102,7 @@ class EncryptionSetupTestCase(iotests.QMPTestCase):
-                 }
-             }
- 
--        result = self.vm.qmp('blockdev-add', **
--            {
-+        result = self.vm.qmp('blockdev-add', {
-                 'driver': iotests.imgfmt,
-                 'node-name': id,
-                 'read-only': read_only,
-@@ -120,7 +119,7 @@ class EncryptionSetupTestCase(iotests.QMPTestCase):
- 
-     # close the encrypted block device
-     def closeImageQmp(self, id):
--        result = self.vm.qmp('blockdev-del', **{ 'node-name': id })
-+        result = self.vm.qmp('blockdev-del', {'node-name': id})
-         self.assert_qmp(result, 'return', {})
- 
-     ###########################################################################
-diff --git a/tests/qemu-iotests/296 b/tests/qemu-iotests/296
-index 19a674c5ae..47d2526b72 100755
---- a/tests/qemu-iotests/296
-+++ b/tests/qemu-iotests/296
-@@ -42,7 +42,7 @@ class Secret:
-         return  [ "secret,id=" + self._id + ",data=" + self._secret]
- 
-     def to_qmp_object(self):
--        return { "qom_type" : "secret", "id": self.id(),
-+        return { "qom-type" : "secret", "id": self.id(),
-                  "data": self.secret() }
- 
- ################################################################################
-@@ -61,9 +61,9 @@ class EncryptionSetupTestCase(iotests.QMPTestCase):
-         # create the secrets and load 'em into the VMs
-         self.secrets = [ Secret(i) for i in range(0, 4) ]
-         for secret in self.secrets:
--            result = self.vm1.qmp("object-add", **secret.to_qmp_object())
-+            result = self.vm1.qmp("object-add", secret.to_qmp_object())
-             self.assert_qmp(result, 'return', {})
--            result = self.vm2.qmp("object-add", **secret.to_qmp_object())
-+            result = self.vm2.qmp("object-add", secret.to_qmp_object())
-             self.assert_qmp(result, 'return', {})
- 
-     # test case shutdown
-@@ -135,15 +135,14 @@ class EncryptionSetupTestCase(iotests.QMPTestCase):
-             result = vm.qmp(command, options=[opts])
-             self.assert_qmp(result, 'return', {})
-         else:
--            result = vm.qmp(command, **opts)
-+            result = vm.qmp(command, opts)
-             self.assert_qmp(result, 'return', {})
- 
- 
-     ###########################################################################
-     # add virtio-blk consumer for a block device
-     def addImageUser(self, vm, id, disk_id, share_rw=False):
--        result = vm.qmp('device_add', **
--            {
-+        result = vm.qmp('device_add', {
-                 'driver': 'virtio-blk',
-                 'id': id,
-                 'drive': disk_id,
-@@ -155,7 +154,7 @@ class EncryptionSetupTestCase(iotests.QMPTestCase):
- 
-     # close the encrypted block device
-     def closeImageQmp(self, vm, id):
--        result = vm.qmp('blockdev-del', **{ 'node-name': id })
-+        result = vm.qmp('blockdev-del', {'node-name': id})
-         self.assert_qmp(result, 'return', {})
- 
-     ###########################################################################
-@@ -174,7 +173,7 @@ class EncryptionSetupTestCase(iotests.QMPTestCase):
-             },
-         }
- 
--        result = vm.qmp('x-blockdev-amend', **args)
-+        result = vm.qmp('x-blockdev-amend', args)
-         iotests.log(result)
-         # Run the job only if it was created
-         event = ('JOB_STATUS_CHANGE',
-diff --git a/tests/qemu-iotests/tests/migrate-bitmaps-test b/tests/qemu-iotests/tests/migrate-bitmaps-test
-index 8668caae1e..eebb256485 100755
---- a/tests/qemu-iotests/tests/migrate-bitmaps-test
-+++ b/tests/qemu-iotests/tests/migrate-bitmaps-test
-@@ -67,7 +67,7 @@ class TestDirtyBitmapMigration(iotests.QMPTestCase):
-         if persistent:
-             params['persistent'] = True
- 
--        result = vm.qmp('block-dirty-bitmap-add', **params)
-+        result = vm.qmp('block-dirty-bitmap-add', params)
-         self.assert_qmp(result, 'return', {})
- 
-     def check_bitmap(self, vm, sha256):
-@@ -256,7 +256,7 @@ class TestDirtyBitmapBackingMigration(iotests.QMPTestCase):
-         self.vm = iotests.VM()
-         self.vm.launch()
- 
--        result = self.vm.qmp('blockdev-add', **blockdev)
-+        result = self.vm.qmp('blockdev-add', blockdev)
-         self.assert_qmp(result, 'return', {})
- 
-         # Check that the bitmaps are there
-diff --git a/tests/qemu-iotests/tests/mirror-ready-cancel-error b/tests/qemu-iotests/tests/mirror-ready-cancel-error
-index 01217459b9..a59e245659 100755
---- a/tests/qemu-iotests/tests/mirror-ready-cancel-error
-+++ b/tests/qemu-iotests/tests/mirror-ready-cancel-error
-@@ -49,12 +49,12 @@ class TestMirrorReadyCancelError(iotests.QMPTestCase):
- 
-     def add_blockdevs(self, once: bool) -> None:
-         res = self.vm.qmp('blockdev-add',
--                          **{'node-name': 'source',
--                             'driver': iotests.imgfmt,
--                             'file': {
--                                 'driver': 'file',
--                                 'filename': source
--                             }})
-+                          {'node-name': 'source',
-+                           'driver': iotests.imgfmt,
-+                           'file': {
-+                               'driver': 'file',
-+                               'filename': source
-+                           }})
-         self.assert_qmp(res, 'return', {})
- 
-         # blkdebug notes:
-@@ -63,25 +63,25 @@ class TestMirrorReadyCancelError(iotests.QMPTestCase):
-         # when the job is about to complete, and we want that one to
-         # fail.
-         res = self.vm.qmp('blockdev-add',
--                          **{'node-name': 'target',
--                             'driver': iotests.imgfmt,
--                             'file': {
--                                 'driver': 'blkdebug',
--                                 'image': {
--                                     'driver': 'file',
--                                     'filename': target
--                                 },
--                                 'set-state': [{
--                                     'event': 'flush_to_disk',
--                                     'state': 1,
--                                     'new_state': 2
--                                 }],
--                                 'inject-error': [{
--                                     'event': 'flush_to_disk',
--                                     'once': once,
--                                     'immediately': True,
--                                     'state': 2
--                                 }]}})
-+                          {'node-name': 'target',
-+                           'driver': iotests.imgfmt,
-+                           'file': {
-+                               'driver': 'blkdebug',
-+                               'image': {
-+                                   'driver': 'file',
-+                                   'filename': target
-+                               },
-+                               'set-state': [{
-+                                   'event': 'flush_to_disk',
-+                                   'state': 1,
-+                                   'new_state': 2
-+                               }],
-+                               'inject-error': [{
-+                                   'event': 'flush_to_disk',
-+                                   'once': once,
-+                                   'immediately': True,
-+                                   'state': 2
-+                               }]}})
-         self.assert_qmp(res, 'return', {})
- 
-     def start_mirror(self) -> None:
+     def case_skip(self, reason):
+         '''Skip this test case'''
 -- 
 2.34.1
 
