@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170777BC7B6
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 14:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E29D37BC7B7
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 14:43:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qp6as-0003zi-5n; Sat, 07 Oct 2023 08:39:42 -0400
+	id 1qp6ao-0003ZY-JS; Sat, 07 Oct 2023 08:39:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6ad-00037U-9v
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 08:39:27 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6ae-00037Y-1R
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 08:39:28 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6ab-0002qI-Ly
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6ac-0002qU-JW
  for qemu-devel@nongnu.org; Sat, 07 Oct 2023 08:39:27 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9b98a699f45so512222166b.3
- for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 05:39:25 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9b27bc8b65eso509321266b.0
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 05:39:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696682364; x=1697287164; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696682365; x=1697287165; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=4OjQQoPINpTboxJ+797J1CZFIdFdJqAWW/PGOUKMDOg=;
- b=TkMOaWPTrbry0d1GoVYJHlnA8s5z14OdM3Pif7/Mun7c3AGFRnAk/laeoulfQdgaD1
- lZifh12vuvm9YVI9/c4bRvtUNiQHGZ/qDYs4f9Dr+A/71CHkqEkbwIXgmn+sMGNKNqWY
- pMxWsbcez4MUspFAo4ukPIZrIj4Ox3VCJH3d6MG+Xx1UYJB8bB/fHcvjxuyE1AnVvU4k
- CdxGe8AKJyeKSieMiwb20+Eb0hKKy89WnAAo1cKXeDJmh+lgLyLL+ZWhkNOiUBABpE9Q
- Qwq+yPky90RM8TJKODBS5ByqPwZvz+cLGU1UXN01ovjcuN4THswYlLBlqaNxtVXWNEZL
- ti9g==
+ bh=c8O26ECq55NzWTV3HBHbSLLDgPj98cdN3Udq2WWAJwg=;
+ b=ANnjPu38U7vnR8XgU+WcTQPHswXklQX7/NqPGf+VgJJSvz1CMKj3rod9nJZr2LE/U3
+ nC/4qmkXvsMGdW1LZLmZghqwq4jjaMFekEoFGJ2y6AxswtrdqQDRWUZUkg06cYQE5U2w
+ F3SmIFuGTKYb02xp1UNZdQkMXdfJkOYtSaLNf01vQ4eXmTfUAr9twM3hMOAN+zwZtTkD
+ W1ahcgyASqXUw76gAd786Wzdxwm/Za+0ev5QZ4tPMchRrM0YZPrWfncJZrK0o4VuZs2r
+ nQn/yN9nPsx4Gc7hioKdkEO6XHfU/U01qOKdtSLy5puTjGltNeL4SYh8QiAPCUZ1dIqL
+ cwRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696682364; x=1697287164;
+ d=1e100.net; s=20230601; t=1696682365; x=1697287165;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=4OjQQoPINpTboxJ+797J1CZFIdFdJqAWW/PGOUKMDOg=;
- b=h4tBt0HNxVAfyooKVxBNf4HGWZvJJp5vtg+Rqr3Wm+qKsX6356+xCrdQmHhMM3/5FT
- Sk9z83xhi74vXoykdXft72Jul9A8msnO1cN5PO0jY9NPaITjBfTIeSRbSdP6pE25jBB6
- NcCxS9a+SPbfkRLQlvUUFdFvyz2kpCV2TDG8RlaNz8me4Up4emLDTL06Q/gVWrjsEIJD
- h1sKKK1WefV/AqcUyWWm7F5ihiACDU07KkKy+10vWU97OgFh+hKM4Cmq8C5VUCHWNuoa
- QHbigvrQShUR+kcRzA9GICvJ7D3nEYni+YtzMdjq4pPktg/ak8pfQKRipl0JclfE58n1
- bC5A==
-X-Gm-Message-State: AOJu0YwvvTNOGtiTJc3w9U5rXdGYuwq/980tYpbprc4imofbiDj2kGzu
- 2zXEkVflcSXvhlF6U9O/gs6rBU/AdiA=
-X-Google-Smtp-Source: AGHT+IF6gwAObMwuGsvNvJHv/Hlsdgb+fRo1Q2Z6avG3JvDPoipL9FZQy+c4sP0K8l4wqq6sKiUekQ==
-X-Received: by 2002:a17:907:75da:b0:9ad:a46c:2936 with SMTP id
- jl26-20020a17090775da00b009ada46c2936mr9590414ejc.8.1696682363948; 
- Sat, 07 Oct 2023 05:39:23 -0700 (PDT)
+ bh=c8O26ECq55NzWTV3HBHbSLLDgPj98cdN3Udq2WWAJwg=;
+ b=A9e8XMts8TmGyA4QpCOteYuODAvflamwqJtdcHBLhqK/omYlm2CuQHC1+qax22QQd8
+ qZxj09xrnxxX44ymQSfb2A534jCcTH8GfB2vCopfLPHTnUhyh0Hyx1usB1QCvHA3Jo8q
+ eLfZutUgCrS9Ey5Y8+ww9BgmtYB2lhNKLlNe5k3Bcx6o4gwYDCVv5S7EnIbjrWZdD6Q5
+ XCpcw2LiP9YdiXlCvjS/X4DBikDmhLzJDiiKFPFT8n9IrudS7YP2l66HM5PdoV/vEm7d
+ zXKMiM9Ohtb8XtvDN+3K8LWbuhsbts3pISrvo80SK4IBQ853+95mSnclcLsgRS8JynKe
+ 8Fww==
+X-Gm-Message-State: AOJu0YzMoSv6w+3XRcJtxPh/tc6EURM1yLOHs0F31Fu4/lUivKDzLMUp
+ qFQAThy32Gd0z3bf2Z5MTnyC03XHImk=
+X-Google-Smtp-Source: AGHT+IE1MQT+Q+mYI2az+RvtRMLAh5ix/YTujvtK5UkZHmTQzULnaMbkzuMM7LN9PBwi0NjS7YrBFw==
+X-Received: by 2002:a17:907:7809:b0:9ae:5be8:ff90 with SMTP id
+ la9-20020a170907780900b009ae5be8ff90mr9515572ejc.68.1696682364870; 
+ Sat, 07 Oct 2023 05:39:24 -0700 (PDT)
 Received: from archlinux.. (pd95eda61.dip0.t-ipconnect.de. [217.94.218.97])
  by smtp.gmail.com with ESMTPSA id
- e27-20020a170906045b00b009b655c43710sm4241401eja.24.2023.10.07.05.39.22
+ e27-20020a170906045b00b009b655c43710sm4241401eja.24.2023.10.07.05.39.24
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 07 Oct 2023 05:39:23 -0700 (PDT)
+ Sat, 07 Oct 2023 05:39:24 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Chuck Zmudzinski <brchuckz@aol.com>,
@@ -66,17 +66,17 @@ Cc: Chuck Zmudzinski <brchuckz@aol.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v8 27/29] hw/isa/piix: Resolve duplicate code regarding PCI
- interrupt wiring
-Date: Sat,  7 Oct 2023 14:38:35 +0200
-Message-ID: <20231007123843.127151-28-shentey@gmail.com>
+Subject: [PATCH v8 28/29] hw/isa/piix: Implement multi-process QEMU support
+ also for PIIX4
+Date: Sat,  7 Oct 2023 14:38:36 +0200
+Message-ID: <20231007123843.127151-29-shentey@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231007123843.127151-1-shentey@gmail.com>
 References: <20231007123843.127151-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=shentey@gmail.com; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=shentey@gmail.com; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,61 +99,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Now that both PIIX3 and PIIX4 use piix_set_irq() to trigger PCI IRQs the wiring
-in the respective realize methods can be shared, too.
+So far multi-process QEMU was only implemented for PIIX3. Move the support into
+the base class to achieve feature parity between both device models.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 ---
- hw/isa/piix.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
+ hw/isa/piix.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
 diff --git a/hw/isa/piix.c b/hw/isa/piix.c
-index 17677c2126..cba2098ca2 100644
+index cba2098ca2..04ebed5b52 100644
 --- a/hw/isa/piix.c
 +++ b/hw/isa/piix.c
-@@ -372,6 +372,8 @@ static void pci_piix_realize(PCIDevice *dev, const char *uhci_type,
-         }
-         qdev_connect_gpio_out(DEVICE(&d->pm), 0, d->isa_irqs_in[9]);
+@@ -374,6 +374,7 @@ static void pci_piix_realize(PCIDevice *dev, const char *uhci_type,
      }
-+
-+    pci_bus_irqs(pci_bus, piix_set_pci_irq, d, PIIX_NUM_PIRQS);
+ 
+     pci_bus_irqs(pci_bus, piix_set_pci_irq, d, PIIX_NUM_PIRQS);
++    pci_bus_set_route_irq_fn(pci_bus, piix_route_intx_pin_to_irq);
  }
  
  static void build_pci_isa_aml(AcpiDevAmlIf *adev, Aml *scope)
-@@ -453,7 +455,6 @@ static const TypeInfo piix_pci_type_info = {
+@@ -454,15 +455,7 @@ static const TypeInfo piix_pci_type_info = {
+ 
  static void piix3_realize(PCIDevice *dev, Error **errp)
  {
-     ERRP_GUARD();
--    PIIXState *piix3 = PIIX_PCI_DEVICE(dev);
-     PCIBus *pci_bus = pci_get_bus(dev);
- 
-     pci_piix_realize(dev, TYPE_PIIX3_USB_UHCI, errp);
-@@ -461,7 +462,6 @@ static void piix3_realize(PCIDevice *dev, Error **errp)
-         return;
-     }
- 
--    pci_bus_irqs(pci_bus, piix_set_pci_irq, piix3, PIIX_NUM_PIRQS);
-     pci_bus_set_route_irq_fn(pci_bus, piix_route_intx_pin_to_irq);
- }
- 
-@@ -492,16 +492,7 @@ static const TypeInfo piix3_info = {
- 
- static void piix4_realize(PCIDevice *dev, Error **errp)
- {
 -    ERRP_GUARD();
--    PIIXState *s = PIIX_PCI_DEVICE(dev);
 -    PCIBus *pci_bus = pci_get_bus(dev);
 -
-     pci_piix_realize(dev, TYPE_PIIX4_USB_UHCI, errp);
+     pci_piix_realize(dev, TYPE_PIIX3_USB_UHCI, errp);
 -    if (*errp) {
 -        return;
 -    }
 -
--    pci_bus_irqs(pci_bus, piix_set_pci_irq, s, PIIX_NUM_PIRQS);
+-    pci_bus_set_route_irq_fn(pci_bus, piix_route_intx_pin_to_irq);
  }
  
- static void piix4_init(Object *obj)
+ static void piix3_init(Object *obj)
 -- 
 2.42.0
 
