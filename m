@@ -2,63 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D26F7BC588
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 09:25:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F77E7BC5EF
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 10:05:28 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qp1ep-000336-1v; Sat, 07 Oct 2023 03:23:27 -0400
+	id 1qp2I4-0000C2-7r; Sat, 07 Oct 2023 04:04:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qp1em-00032h-Eq
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 03:23:24 -0400
-Received: from mail-ej1-f51.google.com ([209.85.218.51])
+ (Exim 4.90_1) (envelope-from <xieyongji@bytedance.com>)
+ id 1qp2Hx-00007L-0V
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 04:03:53 -0400
+Received: from mail-pf1-x431.google.com ([2607:f8b0:4864:20::431])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qp1ej-0004K7-OV
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 03:23:24 -0400
-Received: by mail-ej1-f51.google.com with SMTP id
- a640c23a62f3a-98377c5d53eso506646466b.0
- for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 00:23:20 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <xieyongji@bytedance.com>)
+ id 1qp2Hu-00027b-SU
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 04:03:52 -0400
+Received: by mail-pf1-x431.google.com with SMTP id
+ d2e1a72fcca58-694f3444f94so2427542b3a.2
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 01:03:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=bytedance.com; s=google; t=1696665824; x=1697270624; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=RjwOSRl5Moe97C0ux5uWNNaZO5PoXf/S90zPpk4KeIU=;
+ b=WA7lgiTZkqBmwzM7qOJJdOQGyQsBb4RH9O2QpcdHbaPPyy9bhxmLRB64DAUeaEEOai
+ V3Impo2uwZeZlQ8vVZun0o4zIMeZiOWSFQZn10uDbQCxmgpsDBEdb2losIuCvbpR/M0P
+ hu8/WK8uIB/mICq1a1/N1X3wIiLtiqcwyHbASAI4gdaVN5s/XI/ylM0C4Z8GiVwWDP2o
+ 8nb4VF/yYaBhS0Fki/XCUbXe5ilTXXNX0WzYKRsyAb2QI+gWcbttHFWqyhD4gtt/tJFK
+ KaCxyWRpZTow+E3zDp3r11dO7a/UBsWudZOxU/aEuNO+jCg1iFasvT8RgEGOjrzhXyCN
+ PBJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696663399; x=1697268199;
- h=content-transfer-encoding:mime-version:message-id:date:subject:to
- :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=xXhSTCjdeCDFfiFN3lw42wFJF7AHAFkavX1+BWvFrpU=;
- b=O30oWnGvVPyw80fjx7qd+xv59XlisOWGhp5R95KON6pCguupWHfPpAW2dOi2YIdIdB
- vCBWf2MJX3yopcttyJ0NLXchpID5hxYWY2fUerQX+Rw8HLD70iii8ABOHtKbw0kU/dG0
- Xulm/el3yjnQcpgCzdEdNZL3AUGz/eC7ziMHSE2QDVN6B8GveEcoxvHDgkFDaVcZ/ok0
- sV9osHbwqB3o3fDFs7dyjZNORyE33/mh0bRPy3mBNJXajBdCz4iCWLHdvixJN4TRZqz7
- f8kmMYlwzwbWJruJSADnxXxPfCGJfWNxJciYCkuhvOk3ggheMHNVdbxKCcKKn1H0gOQ2
- UeNg==
-X-Gm-Message-State: AOJu0YwjNMI9AL8pBF4ra2MyZ/DTK55Imu02dNWRNKnyEQdU6bcrB3+P
- x4KNhwSLQzAhhTPlIMicp2FOWAvXnEU=
-X-Google-Smtp-Source: AGHT+IEr402NA9422kmkYIykMhOBVdcRa3xE2lz6gKN6oY70VfFowdNEJd+dg+qQOs93wDRGsWAbUQ==
-X-Received: by 2002:a17:906:31c7:b0:9ae:673a:88c8 with SMTP id
- f7-20020a17090631c700b009ae673a88c8mr9434370ejf.21.1696663399476; 
- Sat, 07 Oct 2023 00:23:19 -0700 (PDT)
-Received: from fedora.. (ip-109-43-176-27.web.vodafone.de. [109.43.176.27])
- by smtp.gmail.com with ESMTPSA id
- fi10-20020a170906da0a00b009ad8796a6aesm3909162ejb.56.2023.10.07.00.23.18
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 07 Oct 2023 00:23:19 -0700 (PDT)
-From: Thomas Huth <huth@tuxfamily.org>
-To: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PATCH] docs/about: Deprecate the 'next-cube' m68k machine
-Date: Sat,  7 Oct 2023 09:23:13 +0200
-Message-ID: <20231007072313.22108-1-huth@tuxfamily.org>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20230601; t=1696665824; x=1697270624;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=RjwOSRl5Moe97C0ux5uWNNaZO5PoXf/S90zPpk4KeIU=;
+ b=rfNdCqYbLehhGr0HN1O18UcwCXOvm/43gs2TXOhCBWFqtutxPXSOsXU22Pzn/cmOXI
+ e64lwnyixOAKqVLqGncEpL1zWTjjf4aNBxxnIWgiffru2/jQqVN3Y5wE6ROU56Z79X2w
+ H9T9OxB6VsyI93UJkZA53zSBwj2Xy7QROxX8LwsVY55MDURbazGbebArBEgnFFPIr5vh
+ pozbi6CUzmrTzdJicQqlMFfFoz+69Tkgtq67Oidpy/JCjwq4Z/77pZoGIqcW09Y68a2l
+ 7/Rx3piIan42IOMVjTkMJClyT5tKPe/kweCRlExTyIe2Ht6ScQ/TiG+CYL9MAkj1MEvW
+ DWcA==
+X-Gm-Message-State: AOJu0YybhrJhc7Xv3BJmSSS8TzFSbHM7m3Lp5IihCqE79l1zsG0KhTKm
+ +O2bv6j1dKcbVU6NPQ8ZhrdMHw7zgU86Gp2X7ddS
+X-Google-Smtp-Source: AGHT+IFL/k6tUIxcQhSfIFVcdaGaXP0LEAAmdhZlqNDatTninRBuBOg4JgeZlmLhdGaYoN69pJsp9nSIDHOY3eVj1Jo=
+X-Received: by 2002:a05:6a20:12c9:b0:15c:b7ba:6a4d with SMTP id
+ v9-20020a056a2012c900b0015cb7ba6a4dmr12125143pzg.50.1696665823777; Sat, 07
+ Oct 2023 01:03:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=209.85.218.51; envelope-from=th.huth@gmail.com;
- helo=mail-ej1-f51.google.com
-X-Spam_score_int: -13
-X-Spam_score: -1.4
-X-Spam_bar: -
-X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
- FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
+References: <20231006120819.480792-1-thuth@redhat.com>
+In-Reply-To: <20231006120819.480792-1-thuth@redhat.com>
+From: Yongji Xie <xieyongji@bytedance.com>
+Date: Sat, 7 Oct 2023 16:03:32 +0800
+Message-ID: <CACycT3vRayGGP2TfN5=Gm+KOkvpfp6iypcQScnj6t1Hs7bJppg@mail.gmail.com>
+Subject: Re: [PATCH] libvduse: Fix compiler warning with -Wshadow=local
+To: Thomas Huth <thuth@redhat.com>
+Cc: qemu devel list <qemu-devel@nongnu.org>, qemu-trivial@nongnu.org, 
+ Markus Armbruster <armbru@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::431;
+ envelope-from=xieyongji@bytedance.com; helo=mail-pf1-x431.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -74,36 +87,18 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The machine is incomplete, and unfortunately the hoped-for improvements
-never happened. So it's maybe best if we mark this machine as deprecated
-and finally remove it again in case it gets into the way of a code
-refactoring or other reasons.
+On Fri, Oct 6, 2023 at 8:08=E2=80=AFPM Thomas Huth <thuth@redhat.com> wrote=
+:
+>
+> No need to declare a new variable with the same name here,
+> we can simple re-use the one from the top of the function.
+> With this change, the file now compiles fine with -Wshadow=3Dlocal.
+>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
+> ---
 
-Signed-off-by: Thomas Huth <huth@tuxfamily.org>
----
- docs/about/deprecated.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Reviewed-by: Xie Yongji <xieyongji@bytedance.com>
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 3b074b9ed4..2f6dadd12f 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -253,6 +253,14 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
- better reflects the way this property affects all random data within
- the device tree blob, not just the ``kaslr-seed`` node.
- 
-+``next-cube`` m68k machine (since 8.2)
-+''''''''''''''''''''''''''''''''''''''
-+
-+The machine never got fully implemented and can only show the firmware prompt.
-+Given the incomplete state and slow progress on improvements, it might get
-+removed again without replacement.
-+
-+
- Backend options
- ---------------
- 
--- 
-2.41.0
-
+Thanks,
+Yongji
 
