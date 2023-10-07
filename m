@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768907BC79C
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 14:39:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B587BC79D
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 14:40:34 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qp6aE-0002pj-4j; Sat, 07 Oct 2023 08:39:02 -0400
+	id 1qp6aG-0002qH-26; Sat, 07 Oct 2023 08:39:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6aD-0002pH-0t
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 08:39:01 -0400
-Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6aE-0002pk-5z
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 08:39:02 -0400
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6aB-0002kC-Cp
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 08:39:00 -0400
-Received: by mail-ed1-x52b.google.com with SMTP id
- 4fb4d7f45d1cf-53447d0241eso5518224a12.3
- for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 05:38:59 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <shentey@gmail.com>) id 1qp6aC-0002kL-Lh
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 08:39:01 -0400
+Received: by mail-ed1-x532.google.com with SMTP id
+ 4fb4d7f45d1cf-533c5d10dc7so5307831a12.3
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 05:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696682337; x=1697287137; darn=nongnu.org;
+ d=gmail.com; s=20230601; t=1696682339; x=1697287139; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=E62xaVnlholKHYeexm9qfp/0DSKJQ1awqntF10iQhp8=;
- b=aDMJ7ElfjHcYx3W5Zltng1cENPuc0kt5Yru0+HNkAJfJgV3RuhrXcMcnS2cH2pjeN1
- NioMEE8+5L3kTqO6k/8ZvW8yi8X16VTEtoKve7GDeq9sNCUmrvEgV1Dh/8YsR4JKgwtZ
- MS3FuX6Uvas6jFROR8tPwx+Z/yLIy61eiiFCMZR0vGNiUaV9tbD0duuJk9FxXJg2X+ZR
- iiiXWzcZuhpo4SWsOLzM4cXQeV3x5muFVKVn1daO2vArYDBteFVC/X+sqXmUBzSWTPBj
- P/+2nEOopNs7QyZZmmmSgi/Z2C0T1BhlCfaHk7bv33wT3RFXbBRvLmKYTtR153AHFkM3
- xHFw==
+ bh=v7lAoYIu+F98xbss/ABuSWEf+mczDZ8b5YL0bkPgc1Y=;
+ b=aEajc4rMeJlrenIliFKDC28YO7fxoL6KzWX+2NiDLbcRtdyj3hJBzWM5Xw85isuWcT
+ GPxMU0aVR+yuZbOqQqxiBqziw28AMERPz/jea3gHVPd5v77GU5j7Yt/q3hngNe/wE6mo
+ poYol4BtwjV6guVNTSzKAWhRQDqfXgCyw3+JIg6gDdkyP3+IYt3mcp3tprFlg3agn5kF
+ y1UERH6cxv6AkasjQX3iU+aDsgDpc4kUvPcUYI3gGUZDaJ+iviMn4JA2avmkCCvepk3n
+ CUYrgwAR3GSWVxTzy+gZRIatU5wEIFtoGbh1aA/ehWjlv06M6tnQTcYibscNyxjudmY9
+ winw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696682337; x=1697287137;
+ d=1e100.net; s=20230601; t=1696682339; x=1697287139;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=E62xaVnlholKHYeexm9qfp/0DSKJQ1awqntF10iQhp8=;
- b=PNHKJlNz4T+4JiPzy8FVWsGdnRTL2gUcaj931xM1DyJWbA3ZUGPKj9aI99ghGMqvgZ
- z5A7OvgY+ydFWhlHMpFW+JNamiDyC5UOTb/0Mc7A+jvAxR90sDBiC++5rR1x4ABSxdx1
- k0ih8srYym6aDhqSfqcF+B+zSvX4n30SpI4u4z2ZZqGLDE2B3C1Ve7FRtglIL/htgIMf
- Ja2Ks++1vab3y6YgmtBWxfo1MYMQ7+Jix0ZMmJ/svuyU4expG2+KLtHRX90k4NdRWKJj
- NJF4uEOt9gCiQtj9WEMSYEc1joiGU29NK/x61F/T0f7vFg7x53ncL0nUhepX36iUQOY8
- 98PQ==
-X-Gm-Message-State: AOJu0YwuGJkp7BMluJc3X+UGXsxoiQfO10ys3/OqqjzX95d3qNOCkFQp
- ROEAunO66yQi+SlOIQXMc5zRhCxGoPI=
-X-Google-Smtp-Source: AGHT+IGDobCav0Aarvg4c5zvbTPSEqlGhiCmpbuqsjZ8/6YEFTIwF/9PNGuCVl7DTuLK4vzgVjxj7Q==
-X-Received: by 2002:a17:906:8465:b0:9ae:6bef:4a54 with SMTP id
- hx5-20020a170906846500b009ae6bef4a54mr9411123ejc.3.1696682337594; 
- Sat, 07 Oct 2023 05:38:57 -0700 (PDT)
+ bh=v7lAoYIu+F98xbss/ABuSWEf+mczDZ8b5YL0bkPgc1Y=;
+ b=a8KELe/G8ctaQsoZq+ToVJ8AlPE9CIUtilwTe0Cy5n3aLkiihHjdhZdz1dCZCAbEnh
+ T4IXokCBmvOPIgjLO8nu0SPhbfLdrJ1ls6FUjM5ZeOk/clGG3/AukasC7p4ueKvHS4oI
+ uxCSy8WBkfnvBlpeKod2VPOCe1YybIwc7pPd6U1QFBEIZDMpqVNfhU3/aAX/hAe9p3oM
+ q7srtp5I+B5FGDophrG5I/68Zgl5AvKdT7eGAYf7Kj347jgZvRT6TQb8sxn6Sxc61QCk
+ YbZtNI9URwAmNv+N4ByheMSVNJj40cHwlz52mLkq1FRW2c/sjxzT6LdkDyTA0khWlkDq
+ 9vBg==
+X-Gm-Message-State: AOJu0Yxe6tkShx4G77RZD5pidb4P0gcDY38B5MQlfzBkXIXtd5A7Y5Rz
+ K2yGFD2pcRS4uEHw6m5jgyqoe16Mc80=
+X-Google-Smtp-Source: AGHT+IEW4PdQXDVg14XZxo4GTC6CwVfUYOW+WDqye4UnG+/mfKbUxOVCKn9B2Qdk6cbh2ok+4jmiIw==
+X-Received: by 2002:a17:907:b1b:b0:9b9:ff16:344c with SMTP id
+ h27-20020a1709070b1b00b009b9ff16344cmr3956244ejl.50.1696682338729; 
+ Sat, 07 Oct 2023 05:38:58 -0700 (PDT)
 Received: from archlinux.. (pd95eda61.dip0.t-ipconnect.de. [217.94.218.97])
  by smtp.gmail.com with ESMTPSA id
- e27-20020a170906045b00b009b655c43710sm4241401eja.24.2023.10.07.05.38.56
+ e27-20020a170906045b00b009b655c43710sm4241401eja.24.2023.10.07.05.38.57
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 07 Oct 2023 05:38:56 -0700 (PDT)
+ Sat, 07 Oct 2023 05:38:58 -0700 (PDT)
 From: Bernhard Beschow <shentey@gmail.com>
 To: qemu-devel@nongnu.org
 Cc: Chuck Zmudzinski <brchuckz@aol.com>,
@@ -66,17 +66,16 @@ Cc: Chuck Zmudzinski <brchuckz@aol.com>,
  Paolo Bonzini <pbonzini@redhat.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Bernhard Beschow <shentey@gmail.com>
-Subject: [PATCH v8 05/29] hw/i386/pc_piix: Wire PIIX3's ISA interrupts by new
- "isa-irqs" property
-Date: Sat,  7 Oct 2023 14:38:13 +0200
-Message-ID: <20231007123843.127151-6-shentey@gmail.com>
+Subject: [PATCH v8 06/29] hw/i386/pc_piix: Remove redundant "piix3" variable
+Date: Sat,  7 Oct 2023 14:38:14 +0200
+Message-ID: <20231007123843.127151-7-shentey@gmail.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231007123843.127151-1-shentey@gmail.com>
 References: <20231007123843.127151-1-shentey@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
- envelope-from=shentey@gmail.com; helo=mail-ed1-x52b.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::532;
+ envelope-from=shentey@gmail.com; helo=mail-ed1-x532.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -99,65 +98,42 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid assigning the private member of struct PIIX3State from outside which goes
-against best QOM practices. Instead, implement best QOM practice by adding an
-"isa-irqs" array property to TYPE_PIIX3_DEVICE and assign it in board code, i.e.
-from outside.
+The variable is never used by its declared type. Eliminate it.
 
 Signed-off-by: Bernhard Beschow <shentey@gmail.com>
 ---
- include/hw/southbridge/piix.h | 2 +-
- hw/i386/pc_piix.c             | 7 ++++++-
- hw/isa/piix3.c                | 2 ++
- 3 files changed, 9 insertions(+), 2 deletions(-)
+ hw/i386/pc_piix.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/southbridge/piix.h b/include/hw/southbridge/piix.h
-index 2317bb7974..bb898c6c88 100644
---- a/include/hw/southbridge/piix.h
-+++ b/include/hw/southbridge/piix.h
-@@ -46,7 +46,7 @@ struct PIIXState {
- #endif
-     uint64_t pic_levels;
- 
--    qemu_irq *pic;
-+    qemu_irq pic[ISA_NUM_IRQS];
- 
-     /* This member isn't used. Just for save/load compatibility */
-     int32_t pci_irq_levels_vmstate[PIIX_NUM_PIRQS];
 diff --git a/hw/i386/pc_piix.c b/hw/i386/pc_piix.c
-index a003923788..4dc7298c15 100644
+index 4dc7298c15..cd6c00c0b3 100644
 --- a/hw/i386/pc_piix.c
 +++ b/hw/i386/pc_piix.c
-@@ -263,10 +263,15 @@ static void pc_init1(MachineState *machine,
+@@ -261,13 +261,11 @@ static void pc_init1(MachineState *machine,
+     gsi_state = pc_gsi_create(&x86ms->gsi, pcmc->pci_enabled);
+ 
      if (pcmc->pci_enabled) {
-         PIIX3State *piix3;
+-        PIIX3State *piix3;
          PCIDevice *pci_dev;
-+        DeviceState *dev;
-+        size_t i;
+         DeviceState *dev;
+         size_t i;
  
          pci_dev = pci_new_multifunction(-1, TYPE_PIIX3_DEVICE);
-         piix3 = PIIX3_PCI_DEVICE(pci_dev);
--        piix3->pic = x86ms->gsi;
-+        dev = DEVICE(pci_dev);
-+        for (i = 0; i < ISA_NUM_IRQS; i++) {
-+            qdev_connect_gpio_out_named(dev, "isa-irqs", i, x86ms->gsi[i]);
-+        }
-         pci_realize_and_unref(pci_dev, pci_bus, &error_fatal);
+-        piix3 = PIIX3_PCI_DEVICE(pci_dev);
+         dev = DEVICE(pci_dev);
+         for (i = 0; i < ISA_NUM_IRQS; i++) {
+             qdev_connect_gpio_out_named(dev, "isa-irqs", i, x86ms->gsi[i]);
+@@ -288,8 +286,8 @@ static void pc_init1(MachineState *machine,
+                          XEN_IOAPIC_NUM_PIRQS);
+         }
  
-         if (xen_enabled()) {
-diff --git a/hw/isa/piix3.c b/hw/isa/piix3.c
-index 7240c91440..c17547a2c0 100644
---- a/hw/isa/piix3.c
-+++ b/hw/isa/piix3.c
-@@ -312,6 +312,8 @@ static void pci_piix3_init(Object *obj)
- {
-     PIIX3State *d = PIIX3_PCI_DEVICE(obj);
- 
-+    qdev_init_gpio_out_named(DEVICE(obj), d->pic, "isa-irqs", ISA_NUM_IRQS);
-+
-     object_initialize_child(obj, "rtc", &d->rtc, TYPE_MC146818_RTC);
- }
- 
+-        piix3_devfn = piix3->dev.devfn;
+-        isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(piix3), "isa.0"));
++        piix3_devfn = pci_dev->devfn;
++        isa_bus = ISA_BUS(qdev_get_child_bus(DEVICE(pci_dev), "isa.0"));
+         rtc_state = ISA_DEVICE(object_resolve_path_component(OBJECT(pci_dev),
+                                                              "rtc"));
+     } else {
 -- 
 2.42.0
 
