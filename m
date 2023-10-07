@@ -2,67 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93EBB7BC549
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 09:00:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D26F7BC588
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 09:25:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qp1Gm-00021L-L4; Sat, 07 Oct 2023 02:58:36 -0400
+	id 1qp1ep-000336-1v; Sat, 07 Oct 2023 03:23:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qp1Gk-00020y-7W
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 02:58:34 -0400
-Received: from mgamail.intel.com ([192.55.52.120])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qp1Gi-0000dY-A7
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 02:58:33 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1696661912; x=1728197912;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=6BDBjyX0kNotqsIS/akAnigZVh6Cv15BNMnub9Pf6hY=;
- b=Uen+lfLBdb92zGcN+2cxNQwHNzEZtxNpy87mNJ3YRA34bQreAdLNEHLm
- EPWBc8CPcyiQQYGiKWbDr1504SlFS2fcH3EZTmIbD6WEmWpiyD2o92XER
- MMm18VuJ8uSwWsf0nMlCUxGf8eznXfEYudWFmd2P/tovTw5uNub+47sfn
- Dtv/h0dEZR1AMD6zje7kxSn1HDNCAvea2qLaQVzErwaCLPg9QD5FS6GWb
- nKOBxAYrBu8GEnMt5XUgXzG3Ci3mRggybEWYb1RlkmmJIvmWJnRHHTMvS
- TPCqy0+5zCNjpHoQgdLhN76cvKYo0mHZjeFKyu/feRhHl4W7c841R/a9V Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="382766365"
-X-IronPort-AV: E=Sophos;i="6.03,205,1694761200"; d="scan'208";a="382766365"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
- by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2023 23:58:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="822766048"
-X-IronPort-AV: E=Sophos;i="6.03,205,1694761200"; d="scan'208";a="822766048"
-Received: from lxy-clx-4s.sh.intel.com ([10.239.48.52])
- by fmsmga004.fm.intel.com with ESMTP; 06 Oct 2023 23:58:23 -0700
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
- David Woodhouse <dwmw@amazon.co.uk>, Xiaoyao Li <xiaoyao.li@intel.com>
-Subject: [PATCH] i386/pc: Drop pc_machine_kvm_type()
-Date: Sat,  7 Oct 2023 02:58:19 -0400
-Message-Id: <20231007065819.27498-1-xiaoyao.li@intel.com>
-X-Mailer: git-send-email 2.34.1
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qp1em-00032h-Eq
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 03:23:24 -0400
+Received: from mail-ej1-f51.google.com ([209.85.218.51])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <th.huth@gmail.com>) id 1qp1ej-0004K7-OV
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 03:23:24 -0400
+Received: by mail-ej1-f51.google.com with SMTP id
+ a640c23a62f3a-98377c5d53eso506646466b.0
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 00:23:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696663399; x=1697268199;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=xXhSTCjdeCDFfiFN3lw42wFJF7AHAFkavX1+BWvFrpU=;
+ b=O30oWnGvVPyw80fjx7qd+xv59XlisOWGhp5R95KON6pCguupWHfPpAW2dOi2YIdIdB
+ vCBWf2MJX3yopcttyJ0NLXchpID5hxYWY2fUerQX+Rw8HLD70iii8ABOHtKbw0kU/dG0
+ Xulm/el3yjnQcpgCzdEdNZL3AUGz/eC7ziMHSE2QDVN6B8GveEcoxvHDgkFDaVcZ/ok0
+ sV9osHbwqB3o3fDFs7dyjZNORyE33/mh0bRPy3mBNJXajBdCz4iCWLHdvixJN4TRZqz7
+ f8kmMYlwzwbWJruJSADnxXxPfCGJfWNxJciYCkuhvOk3ggheMHNVdbxKCcKKn1H0gOQ2
+ UeNg==
+X-Gm-Message-State: AOJu0YwjNMI9AL8pBF4ra2MyZ/DTK55Imu02dNWRNKnyEQdU6bcrB3+P
+ x4KNhwSLQzAhhTPlIMicp2FOWAvXnEU=
+X-Google-Smtp-Source: AGHT+IEr402NA9422kmkYIykMhOBVdcRa3xE2lz6gKN6oY70VfFowdNEJd+dg+qQOs93wDRGsWAbUQ==
+X-Received: by 2002:a17:906:31c7:b0:9ae:673a:88c8 with SMTP id
+ f7-20020a17090631c700b009ae673a88c8mr9434370ejf.21.1696663399476; 
+ Sat, 07 Oct 2023 00:23:19 -0700 (PDT)
+Received: from fedora.. (ip-109-43-176-27.web.vodafone.de. [109.43.176.27])
+ by smtp.gmail.com with ESMTPSA id
+ fi10-20020a170906da0a00b009ad8796a6aesm3909162ejb.56.2023.10.07.00.23.18
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 07 Oct 2023 00:23:19 -0700 (PDT)
+From: Thomas Huth <huth@tuxfamily.org>
+To: qemu-devel@nongnu.org, Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ Laurent Vivier <laurent@vivier.eu>
+Subject: [PATCH] docs/about: Deprecate the 'next-cube' m68k machine
+Date: Sat,  7 Oct 2023 09:23:13 +0200
+Message-ID: <20231007072313.22108-1-huth@tuxfamily.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=192.55.52.120; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -23
-X-Spam_score: -2.4
-X-Spam_bar: --
-X-Spam_report: (-2.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=1, HK_RANDOM_FROM=0.999, RCVD_IN_DNSWL_MED=-2.3,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=209.85.218.51; envelope-from=th.huth@gmail.com;
+ helo=mail-ej1-f51.google.com
+X-Spam_score_int: -13
+X-Spam_score: -1.4
+X-Spam_bar: -
+X-Spam_report: (-1.4 / 5.0 requ) BAYES_00=-1.9, FREEMAIL_FORGED_FROMDOMAIN=0.25,
+ FREEMAIL_FROM=0.001, HEADER_FROM_DIFFERENT_DOMAINS=0.25,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -78,65 +74,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-pc_machine_kvm_type() was introduced by commit e21be724eaf5 ("i386/xen:
-add pc_machine_kvm_type to initialize XEN_EMULATE mode") to do Xen
-specific initialization by utilizing kvm_type method.
+The machine is incomplete, and unfortunately the hoped-for improvements
+never happened. So it's maybe best if we mark this machine as deprecated
+and finally remove it again in case it gets into the way of a code
+refactoring or other reasons.
 
-commit eeedfe6c6316 ("hw/xen: Simplify emulated Xen platform init")
-moves the Xen specific initialization to pc_basic_device_init().
-
-There is no need to keep the PC specific kvm_type() implementation
-anymore. So we'll fallback to kvm_arch_get_default_type(), which
-simply returns 0.
-
-Signed-off-by: Xiaoyao Li <xiaoyao.li@intel.com>
-Reviewed-by: Isaku Yamahata <isaku.yamahata@intel.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Thomas Huth <huth@tuxfamily.org>
 ---
- hw/i386/pc.c         | 5 -----
- include/hw/i386/pc.h | 3 ---
- 2 files changed, 8 deletions(-)
+ docs/about/deprecated.rst | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/hw/i386/pc.c b/hw/i386/pc.c
-index aad7e8ccd1d7..41783b137b9a 100644
---- a/hw/i386/pc.c
-+++ b/hw/i386/pc.c
-@@ -1730,11 +1730,6 @@ static void pc_machine_initfn(Object *obj)
-     cxl_machine_init(obj, &pcms->cxl_devices_state);
- }
+diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+index 3b074b9ed4..2f6dadd12f 100644
+--- a/docs/about/deprecated.rst
++++ b/docs/about/deprecated.rst
+@@ -253,6 +253,14 @@ deprecated; use the new name ``dtb-randomness`` instead. The new name
+ better reflects the way this property affects all random data within
+ the device tree blob, not just the ``kaslr-seed`` node.
  
--int pc_machine_kvm_type(MachineState *machine, const char *kvm_type)
--{
--    return 0;
--}
--
- static void pc_machine_reset(MachineState *machine, ShutdownCause reason)
- {
-     CPUState *cs;
-diff --git a/include/hw/i386/pc.h b/include/hw/i386/pc.h
-index bec38cb92cf7..ad7149cb10b5 100644
---- a/include/hw/i386/pc.h
-+++ b/include/hw/i386/pc.h
-@@ -305,15 +305,12 @@ extern const size_t pc_compat_1_5_len;
- extern GlobalProperty pc_compat_1_4[];
- extern const size_t pc_compat_1_4_len;
++``next-cube`` m68k machine (since 8.2)
++''''''''''''''''''''''''''''''''''''''
++
++The machine never got fully implemented and can only show the firmware prompt.
++Given the incomplete state and slow progress on improvements, it might get
++removed again without replacement.
++
++
+ Backend options
+ ---------------
  
--int pc_machine_kvm_type(MachineState *machine, const char *vm_type);
--
- #define DEFINE_PC_MACHINE(suffix, namestr, initfn, optsfn) \
-     static void pc_machine_##suffix##_class_init(ObjectClass *oc, void *data) \
-     { \
-         MachineClass *mc = MACHINE_CLASS(oc); \
-         optsfn(mc); \
-         mc->init = initfn; \
--        mc->kvm_type = pc_machine_kvm_type; \
-     } \
-     static const TypeInfo pc_machine_type_##suffix = { \
-         .name       = namestr TYPE_MACHINE_SUFFIX, \
-
-base-commit: 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d
 -- 
-2.34.1
+2.41.0
 
 
