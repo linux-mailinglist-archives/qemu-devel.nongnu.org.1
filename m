@@ -2,123 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FB6E7BC9BD
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 22:20:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F13267BC9EC
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 23:19:48 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpDl6-0001Yu-7i; Sat, 07 Oct 2023 16:18:44 -0400
+	id 1qpEgX-00029E-M8; Sat, 07 Oct 2023 17:18:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1qpDl2-0001YE-RA; Sat, 07 Oct 2023 16:18:40 -0400
-Received: from mail-mw2nam12on2060b.outbound.protection.outlook.com
- ([2a01:111:f400:fe5a::60b]
- helo=NAM12-MW2-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpEgT-000292-FS
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 17:18:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ankita@nvidia.com>)
- id 1qpDkx-0005L4-08; Sat, 07 Oct 2023 16:18:40 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=G3RzZTBcTu7wgtOrY2GqZ9HtrdDx9+rgqGHxXNWooh+A6KWe0SoZ9w6pjco7EckvW73klEgFWFv02HrFnQxwsxwmzdKepMxB9hHzc0fMVmSg6RTQqkOfWBk7AwTz9H9tLwSUDYXl2KEWDA1OCQ9dIdE6Kqh4pJisc+OBTutLc7h6iChr7ZTQkFrMMzmlvUPUgFPU0RWV1jjcs8qEEDCl7cGGWoQu9TaiEzcQTC2Ih8OKMWXYoDbk3WT9/RMhyTws29YCei6+FV589WyZBrJMq9zVJXl71q+OQsgMy9OHJiB4Ab/RBUYx5IvKGi295yjqSqtuCyDzyWRT6BRACV5m7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PccgJ8wsn3Bj8I/m52cx/oLKIkdJ094X2846ZnrExIk=;
- b=QEi5gbNwLWGFv8mxAsONPg4273spaNndSCravS55aUFrx4266BOHM7szdKwevp8GeZgawasZpUSlZvEQ2nZhB/qF1iP81381mw4PqpTHCy7AHxS2Ii6OAr+nwt0QKhHqc0jEq4jh9xh0UuzrhezCya9Ii2JJsuPvrnwnPYIoAcbWECAotvQ8oW8Ulmm/rCH6iupbPn4mbXNOxpsPwNob3ijTqzforQwraQDlJv2dB3TorqMm+IYa0pkBzlNnHiukF6BWYnWqA9pepYXJER9ihqnFPEqEUbdTiYU6+Ws9way+Jsb59UbfpOGpZkGwtyD7mx+xQbpnCy2Pas/SkHS6kw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.233) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PccgJ8wsn3Bj8I/m52cx/oLKIkdJ094X2846ZnrExIk=;
- b=AnSwQDLWI60CUUahKdGKSOBj+Bh4h7dVxkhdlyU/uoAq7xrneWIvBMwu2opBsgZHZf8UFBT6ZyGntYpHOYlz+LosxGnNx3M1naYv5Fd9zY99PuRzXlkkrUV7h+n8TpF3AAAwNC6Y+qfgannhXL6zvEixrC2p8roRhyExPY2hZwVGfRK78cEcho4RdAK9BHfqHoEH4gXG76ywbKDHZ1F1tQN9aU0h3WI8henbIci5+1MQRxhsmIIyQjrILcDGhXsbklmr6A9GBSZPl/nCF7Wgts0GNgyg8JFyuVN0z6Dc+1sptSWEGSDb6BZOLWo5QjSGzbFiSv2heyrcBWDi3XrJFQ==
-Received: from PH8PR15CA0018.namprd15.prod.outlook.com (2603:10b6:510:2d2::11)
- by BN9PR12MB5097.namprd12.prod.outlook.com (2603:10b6:408:136::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.43; Sat, 7 Oct
- 2023 20:18:30 +0000
-Received: from SN1PEPF0002BA4C.namprd03.prod.outlook.com
- (2603:10b6:510:2d2:cafe::86) by PH8PR15CA0018.outlook.office365.com
- (2603:10b6:510:2d2::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.34 via Frontend
- Transport; Sat, 7 Oct 2023 20:18:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.233)
- smtp.mailfrom=nvidia.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.233 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.233; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.233) by
- SN1PEPF0002BA4C.mail.protection.outlook.com (10.167.242.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6838.14 via Frontend Transport; Sat, 7 Oct 2023 20:18:28 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Sat, 7 Oct 2023
- 13:18:12 -0700
-Received: from drhqmail202.nvidia.com (10.126.190.181) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Sat, 7 Oct 2023 13:18:11 -0700
-Received: from sgarnayak-dt.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Sat, 7 Oct 2023 13:18:04 -0700
-From: <ankita@nvidia.com>
-To: <ankita@nvidia.com>, <jgg@nvidia.com>, <alex.williamson@redhat.com>,
- <clg@redhat.com>, <shannon.zhaosl@gmail.com>, <peter.maydell@linaro.org>,
- <ani@anisinha.ca>, <berrange@redhat.com>, <eduardo@habkost.net>,
- <imammedo@redhat.com>, <mst@redhat.com>, <eblake@redhat.com>,
- <armbru@redhat.com>, <david@redhat.com>, <gshan@redhat.com>,
- <Jonathan.Cameron@huawei.com>
-CC: <aniketa@nvidia.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <vsethi@nvidia.com>, <acurrid@nvidia.com>,
- <dnigam@nvidia.com>, <udhoke@nvidia.com>, <qemu-arm@nongnu.org>,
- <qemu-devel@nongnu.org>
-Subject: [PATCH v2 3/3] qom: Link multiple numa nodes to device using a new
- object
-Date: Sun, 8 Oct 2023 01:47:40 +0530
-Message-ID: <20231007201740.30335-4-ankita@nvidia.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20231007201740.30335-1-ankita@nvidia.com>
-References: <20231007201740.30335-1-ankita@nvidia.com>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpEgO-0006zU-1D
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 17:18:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696713473;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=dgFH0Bv6V3ZloxVFH3bRC9aukIkzcvNktBvNlx+o/Uc=;
+ b=DXbh8tsBLPeoiH+7F3/9pI2pBzhsUd9gINCM5jUzFB6w5H0FlnFyvJ8LDnEEdMfrNyWpoT
+ xf4OwPLfVkvmaZz6tCkO8nPWKpoWW0EwNCH4CUe+1DWNKzqYHprY8RhT/OnBCQnAzVH2XX
+ lwkuVNQTGO7kais5blbOrLsJYC1vifg=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-435-YF4DLPX2ND2CPOz4NMknZA-1; Sat, 07 Oct 2023 17:17:51 -0400
+X-MC-Unique: YF4DLPX2ND2CPOz4NMknZA-1
+Received: by mail-ed1-f71.google.com with SMTP id
+ 4fb4d7f45d1cf-533c6d0b377so2795732a12.3
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 14:17:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696713470; x=1697318270;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=dgFH0Bv6V3ZloxVFH3bRC9aukIkzcvNktBvNlx+o/Uc=;
+ b=Sx72/c4fD9obMgAbtvviGVzF07uDLIFg18FyQ5C0OTGsGecDErFbVW7VGJFaq4aUb9
+ V3TRAXYFqMfMdfdxqzUDku8jCy81CMInOApWXqFD2ZnfsgkPjpJ/yG8pJwpWQhHJlBB7
+ MDRD2/PxkKU8fo04TdSXHVuk6xqDD8A6WUJgg37f2qSNO+uLKdMXKBVXV8oYF5UNgugY
+ J7C+1XKcZrns4O0AznUSjn4K4Vriehz4Q8RheZGmACgMF9vlO6S6VMTADKeQXWBR14YU
+ 6I1C/oPERP0QeI3Tb5aLfXG5lSwn6rNN0R2a7rzRtYHrP8FAfaF0+HpQuAvp58nHQJ/n
+ Nr4Q==
+X-Gm-Message-State: AOJu0YzHQ9c05yNvX3Rl/ZXnXCXKyLPCR5s1SO+bJ5mG1T2rK3OGDQ9U
+ 1PB//kztvL9+DMUqAbj1iRHNX/SY5+KHDmCmTxlFmE35PfuGGCNE2OU03xDljtt6ChSmsJKo/mc
+ TFe2p6tQkXg8VBCk=
+X-Received: by 2002:aa7:de03:0:b0:52c:84c4:a0bf with SMTP id
+ h3-20020aa7de03000000b0052c84c4a0bfmr10934287edv.30.1696713470685; 
+ Sat, 07 Oct 2023 14:17:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHlJ2PKpC8Chb4JIKE0p+pEClbTX8POBvy5a9c9CzvT/ABRaePpenKFW8ydV86oe972kkSfrQ==
+X-Received: by 2002:aa7:de03:0:b0:52c:84c4:a0bf with SMTP id
+ h3-20020aa7de03000000b0052c84c4a0bfmr10934266edv.30.1696713470140; 
+ Sat, 07 Oct 2023 14:17:50 -0700 (PDT)
+Received: from redhat.com ([2.55.10.88]) by smtp.gmail.com with ESMTPSA id
+ bm15-20020a0564020b0f00b005346925a474sm4288851edb.43.2023.10.07.14.17.46
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 07 Oct 2023 14:17:49 -0700 (PDT)
+Date: Sat, 7 Oct 2023 17:17:44 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Dave Jiang <dave.jiang@intel.com>, thuth@redhat.com,
+ qemu-devel@nongnu.org, peter.maydell@linaro.org,
+ imammedo@redhat.com, anisinha@redhat.com,
+ marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
+ richard.henderson@linaro.org, eduardo@habkost.net,
+ linux-cxl@vger.kernel.org
+Subject: Re: [PATCH v3] hw/cxl: Add QTG _DSM support for ACPI0017 device
+Message-ID: <20231007170145-mutt-send-email-mst@kernel.org>
+References: <20231004180529-mutt-send-email-mst@kernel.org>
+ <169646094762.643966.16021192876985391476.stgit@djiang5-mobl3>
+ <20231004230132-mutt-send-email-mst@kernel.org>
+ <12874c03-7de0-474f-9378-7d3ab8572d8d@intel.com>
+ <20231005122736-mutt-send-email-mst@kernel.org>
+ <20231006130939.00007a69@Huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA4C:EE_|BN9PR12MB5097:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae8ddff0-4101-4dcd-a66e-08dbc77291e2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /jKsTpbBTZ0wjGde6xDvef8r8jt3SBBJwcwP+pYOhDvZ+ZGGYVfA9DI1FbfK71bd291F2mp/AdoXRkk3v5a3IQWlLuTIF8gtHsStEf2vNV1/CmxyNODSC3CHvzeUVAFdKSjwl0M9FZ0StpjuaeaSuketm5T6WWYN6tiEkZx8CKxZgrJzHDnhOpkp3kuDCOQEQM/nNcwlExJO0cdWyDKhS89LDDuE7q13GGMaFTUqexIDQbiM/1Fq1flE93xE9H5bY1IBYTidDi/xLfEyoABxav6BphFkjXDDHlBryn/lVkuFBhD+1HsgaBud/c5elC+2V/4A+6SBJbs5IqmCdSQNW+0zsmMrxm7AE8pAeW8Ka71GmTedZScX2evwxD95KYYx/u7Wuz5cxiPz3DjoBcVNmelU+HziBq1u32vDxHnuHl9dcqKOTjX35lXIIR4U1DB6mGfEEdE+uoeXRVY1OhwhBvy2bw4ecVA5A6KsM2SoVZrJ2+S6wiIg1UHu1phRRGXuu61lr/tmf+p0VBIr7bjn12A7J7iLBnFO7WoIWwXmIm2VhsxnVGLxd0WZntb2uunk3JDeJ0gd12nFijEoGjetVPaKzkRACmjAci3BJHyXKFWizz5y+rfBHm+7w8hb88wwXGix1xYnS5ob6aNJZzn177nj5Jp2eH1zHk9tFSCV7SYr29lJ4Ho14DF0DS5Okkc3cydYO77aNznSMMreqrXIMWFKo7ZrzQ5ksbk63+9MbPhYi+A0fJzPk4C0Rv2/YoCLcuxCCxiR2MEyg7PuGdBuLNJqcd7Nce6jUBr67P/7qT0=
-X-Forefront-Antispam-Report: CIP:216.228.118.233; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:mail.nvidia.com; PTR:dc7edge2.nvidia.com; CAT:NONE;
- SFS:(13230031)(4636009)(376002)(346002)(136003)(396003)(39860400002)(230922051799003)(64100799003)(82310400011)(1800799009)(451199024)(186009)(46966006)(40470700004)(36840700001)(1076003)(40460700003)(40480700001)(36756003)(86362001)(921005)(7636003)(356005)(82740400003)(36860700001)(26005)(426003)(47076005)(336012)(2876002)(7416002)(2906002)(83380400001)(966005)(6666004)(2616005)(478600001)(7696005)(8676002)(4326008)(8936002)(70586007)(70206006)(41300700001)(316002)(5660300002)(110136005)(54906003);
- DIR:OUT; SFP:1101; 
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2023 20:18:28.9400 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae8ddff0-4101-4dcd-a66e-08dbc77291e2
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a; Ip=[216.228.118.233];
- Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF0002BA4C.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN9PR12MB5097
-Received-SPF: softfail client-ip=2a01:111:f400:fe5a::60b;
- envelope-from=ankita@nvidia.com;
- helo=NAM12-MW2-obe.outbound.protection.outlook.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231006130939.00007a69@Huawei.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_PASS=-0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -134,202 +104,358 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Ankit Agrawal <ankita@nvidia.com>
+On Fri, Oct 06, 2023 at 01:09:39PM +0100, Jonathan Cameron wrote:
+> On Thu, 5 Oct 2023 12:32:11 -0400
+> "Michael S. Tsirkin" <mst@redhat.com> wrote:
+> 
+> > On Thu, Oct 05, 2023 at 09:11:15AM -0700, Dave Jiang wrote:
+> > > 
+> > > 
+> > > On 10/4/23 20:36, Michael S. Tsirkin wrote:  
+> > > > 
+> > > > On Wed, Oct 04, 2023 at 04:09:07PM -0700, Dave Jiang wrote:  
+> > > >> Add a simple _DSM call support for the ACPI0017 device to return a fake QTG
+> > > >> ID value of 0 in all cases. The enabling is for _DSM plumbing testing
+> > > >> from the OS.  
+> > > > 
+> > > > 
+> > > > the enabling -> this  
+> > > 
+> > > will update  
+> > > >   
+> > > >>
+> > > >> Following edited for readbility only  
+> > > > 
+> > > > readbility only -> readability  
+> > > 
+> > > will update  
+> > > > 
+> > > >   
+> > > >>
+> > > >> Device (CXLM)
+> > > >> {
+> > > >>     Name (_HID, "ACPI0017")  // _HID: Hardware ID
+> > > >> ...
+> > > >>     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
+> > > >>     {
+> > > >>         If ((Arg0 == ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52")))
+> > > >>         {
+> > > >>             If ((Arg2 == Zero))
+> > > >>             {
+> > > >>                 Return (Buffer (One) { 0x01 })
+> > > >>             }
+> > > >>
+> > > >>             If ((Arg2 == One))  
+> > > >   
+> > > >>             {
+> > > >>                 Return (Package (0x02)
+> > > >>                 {
+> > > >>                     Buffer (0x02)
+> > > >>                     { 0x01, 0x00 },
+> > > >>                     Package (0x01)
+> > > >>                     {
+> > > >>                         Buffer (0x02)
+> > > >>                         { 0x00, 0x00 }
+> > > >>                     }
+> > > >>                 })
+> > > >>             }
+> > > >>         }
+> > > >>     }
+> > > >>
+> > > >> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+> > > >> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > >>
+> > > >> --
+> > > >> v3: Fix output assignment to be BE host friendly. Fix typo in comment.
+> > > >> According to the CXL spec, the DSM output should be 1 WORD to indicate
+> > > >> the max suppoted QTG ID and a package of 0 or more WORDs for the QTG IDs.
+> > > >> In this dummy impementation, we have first WORD with a 1 to indcate max
+> > > >> supprted QTG ID of 1. And second WORD in a package to indicate the QTG
+> > > >> ID of 0.
+> > > >>
+> > > >> v2: Minor edit to drop reference to switches in patch description.
+> > > >> Message-Id: <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
+> > > >> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+> > > >> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > > >> ---
+> > > >>  hw/acpi/cxl.c         |   55 +++++++++++++++++++++++++++++++++++++++++++++++++
+> > > >>  hw/i386/acpi-build.c  |    1 +
+> > > >>  include/hw/acpi/cxl.h |    1 +
+> > > >>  3 files changed, 57 insertions(+)
+> > > >>
+> > > >> diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
+> > > >> index 92b46bc9323b..cce12d5bc81c 100644
+> > > >> --- a/hw/acpi/cxl.c
+> > > >> +++ b/hw/acpi/cxl.c
+> > > >> @@ -30,6 +30,61 @@
+> > > >>  #include "qapi/error.h"
+> > > >>  #include "qemu/uuid.h"
+> > > >>  
+> > > >> +void build_cxl_dsm_method(Aml *dev)
+> > > >> +{
+> > > >> +    Aml *method, *ifctx, *ifctx2;
+> > > >> +
+> > > >> +    method = aml_method("_DSM", 4, AML_SERIALIZED);
+> > > >> +    {
+> > > >> +        Aml *function, *uuid;
+> > > >> +
+> > > >> +        uuid = aml_arg(0);
+> > > >> +        function = aml_arg(2);
+> > > >> +        /* CXL spec v3.0 9.17.3.1 *  
+> > > > 
+> > > > 
+> > > > drop this * please
+> > > >   
+> > > >> , QTG ID _DSM  
+> > > 
+> > > Ooops. git format-patch mangled this and I didn't catch. Will fix
+> > >   
+> > > > 
+> > > > 
+> > > > this is not the name of this paragraph. pls make it match
+> > > > exactly so people can search
+> > > >   
+> > > >> */
+> > > >> +        ifctx = aml_if(aml_equal(
+> > > >> +            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
+> > > >> +
+> > > >> +        /* Function 0, standard DSM query function */
+> > > >> +        ifctx2 = aml_if(aml_equal(function, aml_int(0)));
+> > > >> +        {
+> > > >> +            uint8_t byte_list[1] = { 0x01 }; /* functions 1 only */  
+> > > > 
+> > > > function 1?  
+> > > 
+> > > Yes, will fix
+> > >   
+> > > >   
+> > > >> +
+> > > >> +            aml_append(ifctx2,
+> > > >> +                       aml_return(aml_buffer(sizeof(byte_list), byte_list)));
+> > > >> +        }
+> > > >> +        aml_append(ifctx, ifctx2);
+> > > >> +
+> > > >> +        /*
+> > > >> +         * Function 1
+> > > >> +         * A return value of {1, {0}} indicates that
+> > > >> +         * max supported QTG ID of 1 and recommended QTG is 0.
+> > > >> +         * The values here are faked to simplify emulation.  
+> > > > 
+> > > > again pls quote spec directly do not paraphrase  
+> > > 
+> > > Here it's not paraphrasing from the spec. I'm just describing the dummy value that will be provided.
+> > >   
+> > > >   
+> > > >> +         */
+> > > >> +        ifctx2 = aml_if(aml_equal(function, aml_int(1)));
+> > > >> +        {
+> > > >> +            uint16_t word_list = cpu_to_le16(1);
+> > > >> +            uint16_t word_list2 = 0;
+> > > >> +            Aml *pak, *pak1;
+> > > >> +
+> > > >> +            /*
+> > > >> +             * The return package is a package of a WORD
+> > > >> and another package.
+> > > >> +             * The embedded package contains 0 or more WORDs for the
+> > > >> +             * recommended QTG IDs.  
+> > > > 
+> > > > 
+> > > > 
+> > > > pls quote the spec directly  
+> > > 
+> > > Will do.
+> > >   
+> > > > 
+> > > > what does "a WORD" mean is unclear - do you match what hardware does
+> > > > when you use aml_buffer? pls mention this in commit log, and
+> > > > show actual hardware dump for comparison.  
+> > > The CXL spec says WORD without much qualification. It's a 16bit value AFAICT. I'll add additional comment. Currently I do not have access to actual hardware unfortunately. I'm constructing this purely based on spec description.  
+> > 
+> 
+> WORD does seem to be clearly defined in the ACPI spec as uint16
+> and as this is describing a DSDT blob I think we can safe that
+> it means that.  Also lines up with the fixed sizes in CEDT.
 
-NVIDIA GPU's support MIG (Mult-Instance GPUs) feature [1], which allows
-partitioning of the GPU device resources (including device memory) into
-several (upto 8) isolated instances. Each of the partitioned memory needs
-a dedicated NUMA node to operate. The partitions are not fixed and they
-can be created/deleted at runtime.
+Binary blobs are not really legal as return values of AML though.
+What this patch was doing was a buffer. An alternative
+interpretation would be an integer. Or something else yet ...
 
-Unfortunately Linux OS does not provide a means to dynamically create/destroy
-NUMA nodes and such feature implementation is not expected to be trivial. The
-nodes that OS discovers at the boot time while parsing SRAT remains fixed. So
-we utilize the GI Affinity structures that allows association between nodes
-and devices. Multiple GI structures per BDF is possible, allowing creation of
-multiple nodes by exposing unique PXM in each of these structures.
 
-Introducing a new nvidia-acpi-generic-initiator object, which inherits from
-the generic acpi-generic-initiator object to allow a BDF to be associated with
-more than 1 nodes.
+> > It's not clear buffer is actually word though.
+> > 
+> > Jonathan do you have hardware access?
+> 
+> No.  +CC linux-cxl to see if anyone else has hardware + BIOS with
+> QTG implemented...  There will be lots of implementations soon so I'd make
+> not guarantee they will all interpret this the same.
+> 
+> Aim here is Linux kernel enablement support, and unfortunately that almost
+> always means we are ahead of easy availability of hardware. If it exists
+> its probably prototypes in a lab, in which case no guarantees on the
+> BIOS tables presented...
+> 
+> > 
+> > Also, possible to get clarification from the spec committee?
+> 
+> I'm unclear what we are clarifying.
 
-An admin can provide the range of nodes using numa-node-start and
-numa-node-count and link it to a device by providing its id. The following
-sample creates 8 nodes and link them to the device dev0:
+Let me clarify, below.
 
-        -numa node,nodeid=2 \
-        -numa node,nodeid=3 \
-        -numa node,nodeid=4 \
-        -numa node,nodeid=5 \
-        -numa node,nodeid=6 \
-        -numa node,nodeid=7 \
-        -numa node,nodeid=8 \
-        -numa node,nodeid=9 \
-        -device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
-        -object nvidia-acpi-generic-initiator,id=gi0,device=dev0,numa-node-start=2,numa-node-count=8 \
+>  As I read it current implementation
+> is indeed wrong and I failed to notice this earlier :(
+> 
+> Ultimately data encoding (ACPI 6.5 section 20.2..3 Data Objects Encoding)
+> should I think be
+> 
+> 0x0B 0x00 0x00
+> WordPrefix then data : note if you try a 0x0001 and feed
+> it to iasl it will squash it into a byte instead and indeed if you
+> force the binary to the above it will decode it as 0x0000 but recompile
+> that and you will be back to just
+> 0x00 (as bytes don't need a prefix..)
 
-[1] https://www.nvidia.com/en-in/technologies/multi-instance-gpu
+Exactly. So this is the clarification we seek. ACPI spec
+does mention WordPrefix however only as one of the
+ways to encode an integer, as part of ComputationalData,
+never directly. If CXL requires it to be WordPrefix then
+qemu can do it but tools such as IASL will need to be taught a way
+to force using WordPrefix.
 
-Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
----
- hw/acpi/acpi-generic-initiator.c         | 61 ++++++++++++++++++++++++
- include/hw/acpi/acpi-generic-initiator.h | 12 +++++
- qapi/qom.json                            | 24 +++++++++-
- 3 files changed, 95 insertions(+), 2 deletions(-)
 
-diff --git a/hw/acpi/acpi-generic-initiator.c b/hw/acpi/acpi-generic-initiator.c
-index 1ae79639be..8ef887c3a4 100644
---- a/hw/acpi/acpi-generic-initiator.c
-+++ b/hw/acpi/acpi-generic-initiator.c
-@@ -150,3 +150,64 @@ void build_srat_generic_initiator(GArray *table_data)
-     }
-     g_slist_free(list);
- }
-+
-+static void
-+nvidia_acpi_generic_initiator_set_node_start(Object *obj, Visitor *v,
-+                                             const char *name, void *opaque,
-+                                             Error **errp)
-+{
-+    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
-+    uint32_t value;
-+
-+    if (!visit_type_uint32(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    if (value >= MAX_NODES) {
-+        return;
-+    }
-+
-+    gi->node = value;
-+}
-+
-+static void
-+nvidia_acpi_generic_initiator_set_node_count(Object *obj, Visitor *v,
-+                                             const char *name, void *opaque,
-+                                             Error **errp)
-+{
-+    AcpiGenericInitiator *gi = ACPI_GENERIC_INITIATOR(obj);
-+    uint32_t value;
-+
-+    if (!visit_type_uint32(v, name, &value, errp)) {
-+        return;
-+    }
-+
-+    gi->node_count = value;
-+}
-+
-+static void nvidia_acpi_generic_initiator_class_init(ObjectClass *oc, void *data)
-+{
-+    object_class_property_add(oc, NVIDIA_ACPI_GENERIC_INITIATOR_NODE_START_PROP,
-+                              "uint32", NULL,
-+                              nvidia_acpi_generic_initiator_set_node_start,
-+                              NULL, NULL);
-+    object_class_property_add(oc, NVIDIA_ACPI_GENERIC_INITIATOR_NODE_COUNT_PROP,
-+                              "uint32", NULL,
-+                              nvidia_acpi_generic_initiator_set_node_count,
-+                              NULL, NULL);
-+}
-+
-+static const TypeInfo nvidia_acpi_generic_initiator_info = {
-+    .parent = TYPE_ACPI_GENERIC_INITIATOR,
-+    .name = TYPE_NVIDIA_ACPI_GENERIC_INITIATOR,
-+    .instance_size = sizeof(NvidiaAcpiGenericInitiator),
-+    .class_size = sizeof(NvidiaAcpiGenericInitiatorClass),
-+    .class_init = nvidia_acpi_generic_initiator_class_init,
-+};
-+
-+static void
-+nvidia_acpi_generic_initiator_register_types(void)
-+{
-+    type_register_static(&nvidia_acpi_generic_initiator_info);
-+}
-+type_init(nvidia_acpi_generic_initiator_register_types);
-diff --git a/include/hw/acpi/acpi-generic-initiator.h b/include/hw/acpi/acpi-generic-initiator.h
-index e8e2670309..3e4cf42064 100644
---- a/include/hw/acpi/acpi-generic-initiator.h
-+++ b/include/hw/acpi/acpi-generic-initiator.h
-@@ -9,10 +9,14 @@
- #include "qom/object_interfaces.h"
- 
- #define TYPE_ACPI_GENERIC_INITIATOR "acpi-generic-initiator"
-+#define TYPE_NVIDIA_ACPI_GENERIC_INITIATOR "nvidia-acpi-generic-initiator"
- 
- #define ACPI_GENERIC_INITIATOR_DEVICE_PROP "device"
- #define ACPI_GENERIC_INITIATOR_NODE_PROP "node"
- 
-+#define NVIDIA_ACPI_GENERIC_INITIATOR_NODE_START_PROP "numa-node-start"
-+#define NVIDIA_ACPI_GENERIC_INITIATOR_NODE_COUNT_PROP "numa-node-count"
-+
- typedef struct AcpiGenericInitiator {
-     /* private */
-     Object parent;
-@@ -47,6 +51,14 @@ typedef struct PCIDeviceHandle {
-     uint64_t res1;
- } PCIDeviceHandle;
- 
-+typedef struct NvidiaAcpiGenericInitiator {
-+    AcpiGenericInitiator parent;
-+} NvidiaAcpiGenericInitiator;
-+
-+typedef struct NvidiaAcpiGenericInitiatorClass {
-+        AcpiGenericInitiatorClass parent_class;
-+} NvidiaAcpiGenericInitiatorClass;
-+
- void build_srat_generic_initiator(GArray *table_data);
- 
- #endif
-diff --git a/qapi/qom.json b/qapi/qom.json
-index 86c87a161c..c29ad1388d 100644
---- a/qapi/qom.json
-+++ b/qapi/qom.json
-@@ -793,6 +793,24 @@
- { 'struct': 'AcpiGenericInitiatorProperties',
-   'data': { 'device': 'str', 'node': 'uint32' } }
- 
-+##
-+# @NvidiaAcpiGenericInitiatorProperties:
-+#
-+# Properties for nvidia-acpi-generic-initiator objects.
-+#
-+# @device: the ID of the device to be associated with the nodes
-+#
-+# @numa-node-start: the ID of the numa node
-+#
-+# @numa-node-count: count of the numa nodes assocuated with the device
-+#
-+# Since: 8.0
-+##
-+{ 'struct': 'NvidiaAcpiGenericInitiatorProperties',
-+  'data': { 'device': 'str',
-+            'numa-node-start': 'uint32',
-+            'numa-node-count': 'uint32' } }
-+
- ##
- # @RngProperties:
- #
-@@ -962,7 +980,8 @@
-     'tls-cipher-suites',
-     { 'name': 'x-remote-object', 'features': [ 'unstable' ] },
-     { 'name': 'x-vfio-user-server', 'features': [ 'unstable' ] },
--    'acpi-generic-initiator'
-+    'acpi-generic-initiator',
-+    'nvidia-acpi-generic-initiator'
-   ] }
- 
- ##
-@@ -1030,7 +1049,8 @@
-       'tls-cipher-suites':          'TlsCredsProperties',
-       'x-remote-object':            'RemoteObjectProperties',
-       'x-vfio-user-server':         'VfioUserServerProperties',
--      'acpi-generic-initiator':     'AcpiGenericInitiatorProperties'
-+      'acpi-generic-initiator':     'AcpiGenericInitiatorProperties',
-+      'nvidia-acpi-generic-initiator':     'NvidiaAcpiGenericInitiatorProperties'
-   } }
- 
- ##
--- 
-2.17.1
+> Currently it would be.
+> 0x11     0x05 0x0a 0x02 0x00 0x01
+> BufferOp 
+> 
+> Btw I built a minimal DSDT file to test this and iasl isn't happy with
+> the fact the _DSM doesn't return anything at all if ARG2 isn't 1 or 2.
+> Whilst that's imdef territory as not covered by the CXL spec, we should
+> return 'something' ;)
+> 
+> Anyhow, to do this as per the CXL spec we need an aml_word()
+> that just implements the word case from aml_int()
+> 
+> Chance are that it never matters if we get an ecoding that is
+> only single byte (because the value is small) but who knows what
+> other AML parsers might do.
+> 
+> Something simple like (copy typed from test machine..)
+> 
+> Aml *aml_word(const uint16_t val)
+> {
+>     Aml *var = aml_alloc();
+>     build_append_byte(var->buf, 0x0B);
+>     build_append_int_noprefix(var->buf, val, 2);
+>     return var;
+> }
+> 
+> and one blob in acpi/cxl.c becomes
+> 
+>         ifctx2 = aml_if(aml_equal(function, aml_int(1)));
+>         {
+>              Aml *pak, *pac1;
+> 
+> 	     pak1 = aml_package(1)
+> 	     aml_append(pak1, aml_word(0));
+>              pak = aml_package(2);
+>              aml_append(pack, aml_word(0x1));
+>              aml_append(pak, pak1);
+> 
+>              aml_append(ifctx2, aml_return(pak));
+>         }
+>         aml_append(ifctx, ifctx2);
+> ...
+> 
+>  
+>         }
+> 
+> Give something like
+> If ((Arg2 == One))
+> {
+>     Return (Package (0x02)
+>     {
+>         0x0001,
+>         Package (0x01)
+>         {
+>             0x0000
+>         }
+>     })
+> }
+> 
+> 
+> Binary encoding then clearly uses packages of words.
+> 
+> 12      0b        02         0b    01 00     12    05    01        0b    00 00
+> PkgOp   len       elements   word  0x0001    pkgOp len   elements  word  0x0000
+> 
+> (note I cheated an added a marker in one of the values and didn't decode
+> the whole thing by hand ;)
+
+We could. But I suspect it's a spec bug and they really just meant
+"an integer in the range 0x0 to 0xffff, encoded in any legal way".
+
+
+> > 
+> > >   
+> > > > 
+> > > >   
+> > > >> +             */
+> > > >> +            pak1 = aml_package(1);
+> > > >> +            aml_append(pak1, aml_buffer(sizeof(uint16_t), word_list2));
+> > > >> +            pak = aml_package(2);
+> > > >> +            aml_append(pak, aml_buffer(sizeof(uint16_t), word_list));  
+> > > > 
+> > > > 
+> > > > It does not look like this patch compiles.
+> > > > 
+> > > > So how did you test it?
+> > > > 
+> > > > Please do not post untested patches.
+> > > > 
+> > > > If you do at least minimal testing
+> > > > you would also see failures in bios table test
+> > > > and would follow the procedure described there to
+> > > > post it.  
+> > > 
+> > > Sorry about that. I compiled successfully but did not test.  
+> > 
+> > I don't see how it can compile either. In fact I just applied and build
+> > fails.
+> > 
+> > > The following chunk is tested. However, is it the correct way to do this? The comment is direct spec verbiage. I'm not familiar with constructing ACPI tables in QEMU and tried my best by looking at other ACPI code in QEMU.   
+> > 
+> > To do what? create a buffer with a two byte word?
+> > For example:
+> > 	word = aml_buffer(0, NULL);
+> > 	build_append_int_noprefix(word->buf, 2, 0x1);
+> > 
+> > 
+> > 
+> > but again it is not clear at all what does spec mean.
+> > an integer up to 0xfffff? a buffer as you did? just two bytes?
+> > 
+> > could be any of these.
+> 
+> The best we have in the way of description is the multiple QTG example
+> where it's
+> Package() {2, 1} combined with it being made up of WORDs
+> 
+> whereas in general that will get squashed to a pair of bytes...
+> So I'm thinking WORDs is max size rather than only size but
+> given ambiguity we should encode them as words anyway.
+
+But why, is it suddenly important to be compatible with lots of drivers?
+These are just dummy values after all.
+If the point is for driver development then I would say just use
+aml_int, this will test support for One and Zero opcodes :)
+
+> Note this breaks Dave's current kernel proposal which is assuming
+> a buffer...
+> https://lore.kernel.org/all/168695172301.3031571.9812118774299137032.stgit@djiang5-mobl3/
+> 
+> Hohum. Dave, can you sanity check with the appropriate SSWG person (MN IIRC)
+> I can do it you'd prefer - just let me know.
+> 
+> Jonathan
+> 
 
 
