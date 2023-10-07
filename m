@@ -2,77 +2,159 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE4F7BC719
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 13:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57E457BC73A
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 13:37:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qp5Nx-0006rs-OR; Sat, 07 Oct 2023 07:22:17 -0400
+	id 1qp5bB-0004n2-S5; Sat, 07 Oct 2023 07:35:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qp5Nv-0006rP-Br; Sat, 07 Oct 2023 07:22:15 -0400
-Received: from mail-yb1-xb35.google.com ([2607:f8b0:4864:20::b35])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
- id 1qp5Nt-0003R3-6e; Sat, 07 Oct 2023 07:22:15 -0400
-Received: by mail-yb1-xb35.google.com with SMTP id
- 3f1490d57ef6-d818d65f23cso3238720276.3; 
- Sat, 07 Oct 2023 04:22:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696677731; x=1697282531; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=GuDohRkVG/3P/nHJlBzg+BMiPq2a9sUoKkuYA9jtL3I=;
- b=OAlpBq6YxYfF5iwUNJYuKy4Y/6N3V4KEJYHH7CvWd8W2nibJXiVGE4p3x0GyiTruLK
- 3dwF31yFWOXMrYvNfTEPUUsRM55B1F8CS/D2/ji3BGRguiqOg4cVHW16CnNGOYcL3RgV
- JkLbMtMBrzlZcgJbU85p93QR/B1AB+2s2SsU7CX3w9Wsi9m0fNilMlUe5xMJBR8Eaamv
- uSiIfR3w6ZjUNYjudbrQbSJcP5TFK1eZDHpoPq9DsbWrWrsMEQ1Xyb/HKyMuzw0UthH6
- Efq+o3XwNAVAEXjrOdC5JK9L/mfgBNCLIkWzcl1rgr1kiRPL2sc5wJ6owre2XHwYf0mG
- eqbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696677731; x=1697282531;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=GuDohRkVG/3P/nHJlBzg+BMiPq2a9sUoKkuYA9jtL3I=;
- b=Bn73ZwFEq+hrosmvw00wBLEoQTZ/tjQ392K3iTpnYXgARUyNIXdE1XBcEc0KrRDeUT
- zy6NFT+whBY7tgRVcpEWs6hKmRiamrBm92yXq7voKUyYdUQ9bBIIptox9y4WwiBnAF2L
- H+injdgP8S4ywLSE9jMNM3AaCJ1VjlucJxI7VPeBMtaFfs3ghrCKtlqZsTqz7n5pf317
- GXKsrvdvemaBkJ9vV0TSv+1Znn5A+UoDIWL9YrAvEOTKsyRVLkIv9KgTdzDyCtyGHQlb
- sx/IDRJJTz53a6vFaFI148QTCvj/YL7n3ZdHrqf/Oo3RckTHS3S2RTV0ZydbbOx2JBy4
- 16RA==
-X-Gm-Message-State: AOJu0YwmoBk6Yu4v7rEr2xGOI4osJNNSPhsXpS14x49ymTXX2dcWLI2m
- 5ecFy7GvZ7sW2Ft9HVteB6ow0AONjWubUFm4e60=
-X-Google-Smtp-Source: AGHT+IE2iqDvcWRQ5zcTyh+vfw2rsD0bjGzsGuP8pzooeEvluaK5FsUlxz5ZXv6BUBqgdNa4+oGc9VWHHsvE30J1p8Q=
-X-Received: by 2002:a25:238e:0:b0:d81:b9f0:455e with SMTP id
- j136-20020a25238e000000b00d81b9f0455emr10094053ybj.51.1696677731500; Sat, 07
- Oct 2023 04:22:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1qp5b9-0004mf-V7
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 07:35:56 -0400
+Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
+ id 1qp5b7-0006Sh-BE
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 07:35:55 -0400
+Received: from pps.filterd (m0127842.ppops.net [127.0.0.1])
+ by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
+ 397B3AHP023086; Sat, 7 Oct 2023 04:35:50 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
+ content-type:message-id:date:subject:to:cc:references:from
+ :in-reply-to:mime-version; s=proofpoint20171006; bh=VhLLfXtTcQwQ
+ iGKCl4NOgBaMV4ljWF3O3aetr7OU8fI=; b=RXKz2FrqEQPsEZYWX+0H+Ik/Z9+p
+ LJQttmSsNvWbV1wT23OMH0fWf7NsmeOvC4Vrwn+k3ArrGoxRSbrE5k9tA2RJmWcw
+ YgKCWgjNoSwNoaQ2lePofeaEhSS7+czB6OlCx3ek2DHoE/yxM1rsTbsCmQ5yt5Lz
+ i+3OnA8g8v6hfdF+i/Z8OEVcbSHYFWOK78UanFBCgwEbVrwQnMhlvJp8JgzdAqlK
+ bKE3MMdB7cJIeDSNS5UJMSIs+xUiet7uPkR/kkv5diUuDnyjUM7kQt+Fcw81UNyC
+ Hs4WvwQNeAFi0Y2GHvQh6/oI5+sHckOcLW05x8EyaR0ZIbUH14xwz4GIag==
+Received: from nam12-bn8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12lp2170.outbound.protection.outlook.com [104.47.55.170])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3tek0cypre-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Sat, 07 Oct 2023 04:35:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BhcbeiO1+yNtJULnCaQroZ62PFubO7+xKZ7gd/6iuE6bMimJp4RWBRX2MwpVvrVg58hF4cyA2G+z2tT+i8HTV9VDY6FWISIvHrCE+jZh1h4kBAXTXjfr8E0iH1TLVXS69b4fACZ6rzKOmC8PBzk4KM4M0Q5tisiMOwWsoeoboBePv8zSvtQS//1RN+qy1mpvx/4kuPQs6Qwl6c1hqC3HWRJk8CAUsatOsipjLzKt1IVz4CTDc5B1QX8rtLxfN08ORtVQyW26IWzY2/xrpdTa30wz+/mJUhzCWFQI9d7QlsvIPykoRoTN+CfIgbPr05mmG8iKagOFRQM8nP90R+8myQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=VhLLfXtTcQwQiGKCl4NOgBaMV4ljWF3O3aetr7OU8fI=;
+ b=FN0x+BqNRP7b8YueAMIjLojDfwAZbFZ3EmeIDVpGc2yAqQLx4HidaLwdldFQSZlAxh7WYADl3VvGcLCUaB5osNlCYrBPkqHxgocOPALeFmG9mbqzdVoSBho0yCj+5NSpgBi7/T4mVmancWzTWekhsAl+Mzq+R7r95Zhh/xKKc+NXHAM28kwqkosvTkoSa7CZwGVnhqOx98Ny0CMGn0QKOlyJ7bMS53FD5chh1yTT3r9krKy1OYgGML5D/eSJSOiDDUk8bZ/l4CjtpsrM+8AiBhYtZGTKvnTa/qbYf0+/tZ2lSSr/xpBHIXtOhta/mqzkeg637CIogG9VYs6oHF0VvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
+ dkim=pass header.d=nutanix.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=VhLLfXtTcQwQiGKCl4NOgBaMV4ljWF3O3aetr7OU8fI=;
+ b=up8pchKIgSBDgiO7QBBNEWbUNxz9MlL43+L2bFQ1Hzcc+9j05y+HVwreNARYEO3+aqW9s1A7haAMaTUmVwYwKpuJd0tT/a2tN06wwh76kGZk/PUVJoewqG+Pq5WTUTBsfF9Se5AyhkCgOz23Ml3XMNBu/2FKFG0mJ+XwchzUa25ITI99dKWLQYxZTXVDpVA+uGiov9Beiaqkc4y5vAtM3iayPAR6elOahO7BucKQcyxZxuKz1IwaoAMyIJ/cxMVepreBn6akYYY3v1aN3QiN3JZgXoMgkbSRO8QA6JDhP3vCvGyBaItxT0ftEgQZsVMZeE7TbY7fD7ZdC2XDEDhMrg==
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
+ by DM3PR02MB10276.namprd02.prod.outlook.com (2603:10b6:0:42::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.37; Sat, 7 Oct
+ 2023 11:35:46 +0000
+Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::f13d:ea:118b:b4ae]) by SJ2PR02MB9955.namprd02.prod.outlook.com
+ ([fe80::f13d:ea:118b:b4ae%4]) with mapi id 15.20.6838.039; Sat, 7 Oct 2023
+ 11:35:46 +0000
+Content-Type: multipart/alternative;
+ boundary="------------wfmKdDjQ0f44OPibJs5pcWGA"
+Message-ID: <b9a9b3ff-80ff-4b23-bbd8-996afe40e7d7@nutanix.com>
+Date: Sat, 7 Oct 2023 17:05:40 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 02/10] migration: convert migration 'uri' into
+ 'MigrateAddress'
+Content-Language: en-GB
+To: Fabiano Rosas <farosas@suse.de>, =?UTF-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
+ dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+References: <20231004075851.219173-1-het.gala@nutanix.com>
+ <20231004075851.219173-3-het.gala@nutanix.com> <87jzs2phxb.fsf@suse.de>
+ <ZR2nuqQ7s1D5BweM@redhat.com> <87h6n65kac.fsf@suse.de>
+From: Het Gala <het.gala@nutanix.com>
+In-Reply-To: <87h6n65kac.fsf@suse.de>
+X-ClientProxiedBy: BYAPR07CA0087.namprd07.prod.outlook.com
+ (2603:10b6:a03:12b::28) To SJ2PR02MB9955.namprd02.prod.outlook.com
+ (2603:10b6:a03:55f::16)
 MIME-Version: 1.0
-References: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
- <20231002085738.369684-16-alexander.ivanov@virtuozzo.com>
- <CAL77WPCgbWch6TqjBucJJ_MfG2nOFtoA=oT9EbAE+V_kDTfCgA@mail.gmail.com>
- <f050b078-1f8d-41d1-a469-4f92d4248580@virtuozzo.com>
-In-Reply-To: <f050b078-1f8d-41d1-a469-4f92d4248580@virtuozzo.com>
-From: Mike Maslenkin <mike.maslenkin@gmail.com>
-Date: Sat, 7 Oct 2023 14:21:35 +0300
-Message-ID: <CAL77WPB37-y4GeWXgy2xQ93_riZkR0q50Gs0apqvFoC6kZwDZg@mail.gmail.com>
-Subject: Re: [PATCH 15/19] parallels: Remove unnecessary data_end field
-To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, den@virtuozzo.com, 
- stefanha@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com, 
- hreitz@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::b35;
- envelope-from=mike.maslenkin@gmail.com; helo=mail-yb1-xb35.google.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|DM3PR02MB10276:EE_
+X-MS-Office365-Filtering-Correlation-Id: a54dae0f-25ff-44fa-ac43-08dbc7298b5d
+x-proofpoint-crosstenant: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: KUZd50LU5EOX1hNGuplrIw8o+quz4ePAGgUgOLQl8k9dl6t0jwFwibQu15EI2ewD4nN/ELhr+MgAv67pHo6tOjCEI0y6VCeAO+piMLiHgkI19CVxo+/1HzbJsoMmvFkK8669n8OcHTddodC0X0Q7YAeNhwwFPVH5CGKpzqmshcKOFML6YBzn9WWCvUrp86tHT8np5189luLmaRevWfAtt3rNn48Bq5q9jNy61DPuhkiLfPTAz5dXqUiBfynEHrad4IfxpW8Xv9hp8Oh2Ek337OScpECwb0mKd3WXpbgWWEK9HkUxEbyZbqxoKWLMAK1MoN83xr4jdozp1jWMs+AmKixR7/zH3A25eIaDzXEqr4ao9W+ONitYumIjfMM7WZN8VRM+BZdYVN9WXmUx10sg3IAGG7uNPp0opmfgbpr0+BmvPjpHp17J44hyi/DwEXNvbi/jWZge2vPU9O55BZKZMxHa1AyIygkwzHDTaOiS9BP+fX8ZmjAuAS90FtPHn5WhSDtawby/MsWg6dlAec/qkBCnCs2P6W+GET06bRAkSWk4lsLY4tXTAjGCkv3odCXuSWOZi3b0yMXY6QY0aipjQUO6L52XUrGVG6d+4zeIqSoYkPsFn01KA3+rUP2EqMEgIH3h0osFS5RooIQWVpgpwnNASYtABUy4IBHvjxpT8T/bS/sX6bgJccvoE8Ha97mG
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(136003)(366004)(346002)(376002)(39850400004)(396003)(230922051799003)(64100799003)(186009)(1800799009)(451199024)(66556008)(66476007)(316002)(2616005)(66899024)(66946007)(41300700001)(53546011)(6512007)(6506007)(26005)(36756003)(6666004)(107886003)(6486002)(83380400001)(38100700002)(86362001)(966005)(31696002)(166002)(478600001)(110136005)(33964004)(44832011)(21615005)(2906002)(31686004)(4326008)(8676002)(8936002)(5660300002)(43740500002)(45980500001);
+ DIR:OUT; SFP:1102; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RlNvNGUyV2xxQXByd0gzd1NVVzFMMUZsSUdKMzRnR3c1ekhYR3R3RkoyYVdI?=
+ =?utf-8?B?eWF3Nm9hM1UwZWxMeS9XV2ZpN25PMklxQlU5Unh2aHJvUitQMDJQdGRkd2do?=
+ =?utf-8?B?ZGFiejhreXZJVjkzVVkzYTNDUTBvSThMYmdyWWVNaFJQalpMZ3BMc25TSmNQ?=
+ =?utf-8?B?NXhDT1FLSFBZRWhpdTZ1T3dIeU5TOTVGZlNrMTl1U2N2cFl3T1Vacm9LZzNv?=
+ =?utf-8?B?b1lFam12SUg5aTZwdjFoT2FPSmpnQnhEQzVUSmFoa3BEclZmTVptY3BiRWZM?=
+ =?utf-8?B?SzZBbkphSU1ZTHFkOXNiamlZaHJDTzVTWDRIc3htK2JZMlpOZ2NwdGIyRGhS?=
+ =?utf-8?B?NHM0QlljRGk0c1F5VHdldGxXeHd0M25zT3U2dGZCOUpzdWdRYzd3b3hJQmRS?=
+ =?utf-8?B?TXd3VVkyUUlISlpHbWZLa090U0tYVTlQcFMzdTI4TXYybUtSVnVTZ1ZBeHhm?=
+ =?utf-8?B?UnlteTJFUE91UFRGQ29pQ0RlL2pyM0FNbjZPTEE3ZHgwbG5iZkhUSjBCWGM3?=
+ =?utf-8?B?OUNoWEhETjRLRCs4M0pKQTlJSk9LRHltMmJOeVJLdm4vaXpCNnIyQ0RhOEUr?=
+ =?utf-8?B?Nm1CdFE1V3lRREkvcXlob0NxbTNqcC9LNkc0N09xeml4TlYzWTRkNzBpNDZp?=
+ =?utf-8?B?REhNeHBYQTZOV2hHT2tNcWcxeVdRZW9mejJnakpBZXZaY3cyditYY09vSmwz?=
+ =?utf-8?B?akVBTVRVQnhqZ2pqOFhsRWNEeU43NDRTMHE5dDFxMXFrYnh1bzRYbStkT055?=
+ =?utf-8?B?SlB4QVA2Zll0eUovZnJWb2dYem9iUEpLalhxMUFzWTdHaVFqa3ZidHB2b2gz?=
+ =?utf-8?B?YTJNcFkrMk0wRk1LeG5CWlV2NHI5cFptaUpIL1ZESWxMY1cxcEo3WXZ2dk5B?=
+ =?utf-8?B?S0g0VGNXSVhOMGwxaTVGb09lK1dyUGxDNC8zQkhQY3BpU0xZTjR0b2RoaStB?=
+ =?utf-8?B?YWs1SkpHWm44ZkVJb3BzUTFCUk4yaDVrQmNxbEx2UlFVUjY0akM0bVhxMjZQ?=
+ =?utf-8?B?TWNsRjVoUC9wMTNDb3dodnkrZXV5S0orQ3dQb05zY01mSzlLdndTTEZ2MUoz?=
+ =?utf-8?B?NGFaclpjYmptQ2ZLbUhYbFcxRTIyNm0vWS8wYWdueUloSDUxSGpBR3dySnlH?=
+ =?utf-8?B?WVN6RWNlT1pjcmVKMG1ScjdsSTVkbTRWSVdXb0ttOGdRVmhmSFJNSGhpQk0v?=
+ =?utf-8?B?L2NpSzl5YWJWTVBHY1JGUW8rRTVJWG14eGdKUFFsbnR5RXlqbFJjMnArWnNJ?=
+ =?utf-8?B?RThnZTNtcklJN1E1cGtMMExtZWVPRDRHVmNSNE5JL2xRT005WUFiN01vWDZx?=
+ =?utf-8?B?UHZ4RDF5c2p4KzAxYlJHcnR6MlBLcVUvazE3N1ZKdXArK3JxNXA0ZzIwU3U5?=
+ =?utf-8?B?ZExNL05RTUFDYlh6RXdwVldsSmdqNi9Kd0toUlU1NVlncWtQUWRsaUorVzFx?=
+ =?utf-8?B?QnZnY0NTQ2lkcWx1NmRCdjd6Z2JYam13VFNvRUlKUGRPUCtrMjk2clZNVEFm?=
+ =?utf-8?B?SlhlM1ZVejBPeEttUWhtdHJGOXZLUUxkUnVXeXhycE4rczR1L1k0SjlpRjZr?=
+ =?utf-8?B?ZXFFTlVSSzBRTGdjTnM0bDc5a0U1YkRlSEFRNmlYcld2TGhkS1dkWWZ5TStM?=
+ =?utf-8?B?S2IzeDRheldUN3ZJVVdQVTJxSS9ZdTRzWTA4em5iajRsSGFKUld6QTFzT29L?=
+ =?utf-8?B?L3N0NlY4ZHp6NHpiaFcwbFRibDZaanNMZTJtUnNQTjRUZDhmY1RzVXJpMkV4?=
+ =?utf-8?B?ODhaUVR6U1VvWXpWSWo0TU9CVEhxTEEzTGFqRjNNYlZURUhTT05tWUxZQ3Fp?=
+ =?utf-8?B?eEFCS3NSZ0xyVFZkZHNTYU15dDU5THBvZFJZUXBhT280clVONGU4QSs4ZFp4?=
+ =?utf-8?B?ZlpNK2VpUlYvZjl3TjI4RUdOUkJmYmlGZS9neE1mcFMwbjJ6RjlEMlFTSGxV?=
+ =?utf-8?B?Mm1WaUNZUktlRTNMVVY1dXdvaXZveURzV3lacE1Xd3lLZUhWc3dCaDJMMUwv?=
+ =?utf-8?B?dElqZDRab2NDOGN1S0tkZHFIOWFlaVJnZnF6dDRNMFhJNVFRbmZ0N0ozYkxm?=
+ =?utf-8?B?RkdlaUZ3dUI3ZG9IdG14c3lZVmkzZmhXWmp0dW9NbUpSK1I1bzdvZjBEWi9K?=
+ =?utf-8?Q?jNlo5eOye3s/5jdzglRZ+Ve3W?=
+X-OriginatorOrg: nutanix.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a54dae0f-25ff-44fa-ac43-08dbc7298b5d
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2023 11:35:45.4505 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: adf/JcNPOzZqE8dBP6zV1el3zbafaWWH+RDkAx6A4aTCw8LFz4/LjGUPceGwg2D5cpo2OXAA563A3nW9pGtoPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PR02MB10276
+X-Proofpoint-ORIG-GUID: dRswzVioK1j7dXu9dgTbCMvuKOs0pUVf
+X-Proofpoint-GUID: dRswzVioK1j7dXu9dgTbCMvuKOs0pUVf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-07_09,2023-10-06_01,2023-05-22_02
+X-Proofpoint-Spam-Reason: safe
+Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
+ helo=mx0b-002c1b01.pphosted.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,311 +171,227 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, Oct 7, 2023 at 1:18=E2=80=AFPM Alexander Ivanov
-<alexander.ivanov@virtuozzo.com> wrote:
+--------------wfmKdDjQ0f44OPibJs5pcWGA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+
+On 10/4/2023 11:42 PM, Fabiano Rosas wrote:
+> Daniel P. Berrangé<berrange@redhat.com>  writes:
 >
->
->
-> On 10/6/23 21:43, Mike Maslenkin wrote:
-> > On Mon, Oct 2, 2023 at 12:01=E2=80=AFPM Alexander Ivanov
-> > <alexander.ivanov@virtuozzo.com> wrote:
-> >> Since we have used bitmap, field data_end in BDRVParallelsState is
-> >> redundant and can be removed.
-> >>
-> >> Add parallels_data_end() helper and remove data_end handling.
-> >>
-> >> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-> >> ---
-> >>   block/parallels.c | 33 +++++++++++++--------------------
-> >>   block/parallels.h |  1 -
-> >>   2 files changed, 13 insertions(+), 21 deletions(-)
-> >>
-> >> diff --git a/block/parallels.c b/block/parallels.c
-> >> index 48ea5b3f03..80a7171b84 100644
-> >> --- a/block/parallels.c
-> >> +++ b/block/parallels.c
-> >> @@ -265,6 +265,13 @@ static void parallels_free_used_bitmap(BlockDrive=
-rState *bs)
-> >>       g_free(s->used_bmap);
-> >>   }
-> >>
-> >> +static int64_t parallels_data_end(BDRVParallelsState *s)
-> >> +{
-> >> +    int64_t data_end =3D s->data_start * BDRV_SECTOR_SIZE;
-> >> +    data_end +=3D s->used_bmap_size * s->cluster_size;
-> >> +    return data_end;
-> >> +}
-> >> +
-> >>   int64_t parallels_allocate_host_clusters(BlockDriverState *bs,
-> >>                                            int64_t *clusters)
-> >>   {
-> >> @@ -275,7 +282,7 @@ int64_t parallels_allocate_host_clusters(BlockDriv=
-erState *bs,
-> >>
-> >>       first_free =3D find_first_zero_bit(s->used_bmap, s->used_bmap_si=
-ze);
-> >>       if (first_free =3D=3D s->used_bmap_size) {
-> >> -        host_off =3D s->data_end * BDRV_SECTOR_SIZE;
-> >> +        host_off =3D parallels_data_end(s);
-> >>           prealloc_clusters =3D *clusters + s->prealloc_size / s->trac=
-ks;
-> >>           bytes =3D prealloc_clusters * s->cluster_size;
-> >>
-> >> @@ -297,9 +304,6 @@ int64_t parallels_allocate_host_clusters(BlockDriv=
-erState *bs,
-> >>           s->used_bmap =3D bitmap_zero_extend(s->used_bmap, s->used_bm=
-ap_size,
-> >>                                             new_usedsize);
-> >>           s->used_bmap_size =3D new_usedsize;
-> >> -        if (host_off + bytes > s->data_end * BDRV_SECTOR_SIZE) {
-> >> -            s->data_end =3D (host_off + bytes) / BDRV_SECTOR_SIZE;
-> >> -        }
-> >>       } else {
-> >>           next_used =3D find_next_bit(s->used_bmap, s->used_bmap_size,=
- first_free);
-> >>
-> >> @@ -315,8 +319,7 @@ int64_t parallels_allocate_host_clusters(BlockDriv=
-erState *bs,
-> >>            * branch. In the other case we are likely re-using hole. Pr=
-eallocate
-> >>            * the space if required by the prealloc_mode.
-> >>            */
-> >> -        if (s->prealloc_mode =3D=3D PRL_PREALLOC_MODE_FALLOCATE &&
-> >> -                host_off < s->data_end * BDRV_SECTOR_SIZE) {
-> >> +        if (s->prealloc_mode =3D=3D PRL_PREALLOC_MODE_FALLOCATE) {
-> >>               ret =3D bdrv_pwrite_zeroes(bs->file, host_off, bytes, 0)=
-;
-> >>               if (ret < 0) {
-> >>                   return ret;
-> >> @@ -757,13 +760,7 @@ parallels_check_outside_image(BlockDriverState *b=
-s, BdrvCheckResult *res,
-> >>           }
-> >>       }
-> >>
-> >> -    if (high_off =3D=3D 0) {
-> >> -        res->image_end_offset =3D s->data_end << BDRV_SECTOR_BITS;
-> >> -    } else {
-> >> -        res->image_end_offset =3D high_off + s->cluster_size;
-> >> -        s->data_end =3D res->image_end_offset >> BDRV_SECTOR_BITS;
-> >> -    }
-> >> -
-> >> +    res->image_end_offset =3D parallels_data_end(s);
-> >>       return 0;
-> >>   }
-> >>
-> >> @@ -806,7 +803,6 @@ parallels_check_leak(BlockDriverState *bs, BdrvChe=
-ckResult *res,
-> >>               res->check_errors++;
-> >>               return ret;
-> >>           }
-> >> -        s->data_end =3D res->image_end_offset >> BDRV_SECTOR_BITS;
-> >>
-> >>           parallels_free_used_bitmap(bs);
-> >>           ret =3D parallels_fill_used_bitmap(bs);
-> >> @@ -1361,8 +1357,7 @@ static int parallels_open(BlockDriverState *bs, =
-QDict *options, int flags,
-> >>       }
-> >>
-> >>       s->data_start =3D data_start;
-> >> -    s->data_end =3D s->data_start;
-> >> -    if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
-> >> +    if (s->data_start < (s->header_size >> BDRV_SECTOR_BITS)) {
-> >>           /*
-> >>            * There is not enough unused space to fit to block align be=
-tween BAT
-> >>            * and actual data. We can't avoid read-modify-write...
-> >> @@ -1403,11 +1398,10 @@ static int parallels_open(BlockDriverState *bs=
-, QDict *options, int flags,
-> >>
-> >>       for (i =3D 0; i < s->bat_size; i++) {
-> >>           sector =3D bat2sect(s, i);
-> >> -        if (sector + s->tracks > s->data_end) {
-> >> -            s->data_end =3D sector + s->tracks;
-> >> +        if (sector + s->tracks > file_nb_sectors) {
-> >> +            need_check =3D true;
-> >>           }
-> >>       }
-> >> -    need_check =3D need_check || s->data_end > file_nb_sectors;
-> >>
-> >>       ret =3D parallels_fill_used_bitmap(bs);
-> >>       if (ret =3D=3D -ENOMEM) {
-> >> @@ -1461,7 +1455,6 @@ static int parallels_truncate_unused_clusters(Bl=
-ockDriverState *bs)
-> >>           end_off =3D (end_off + 1) * s->cluster_size;
-> >>       }
-> >>       end_off +=3D s->data_start * BDRV_SECTOR_SIZE;
-> >> -    s->data_end =3D end_off / BDRV_SECTOR_SIZE;
-> >>       return bdrv_truncate(bs->file, end_off, true, PREALLOC_MODE_OFF,=
- 0, NULL);
-> >>   }
-> >>
-> >> diff --git a/block/parallels.h b/block/parallels.h
-> >> index 18b4f8068e..a6a048d890 100644
-> >> --- a/block/parallels.h
-> >> +++ b/block/parallels.h
-> >> @@ -79,7 +79,6 @@ typedef struct BDRVParallelsState {
-> >>       unsigned int bat_size;
-> >>
-> >>       int64_t  data_start;
-> >> -    int64_t  data_end;
-> >>       uint64_t prealloc_size;
-> >>       ParallelsPreallocMode prealloc_mode;
-> >>
-> >> --
-> >> 2.34.1
-> >>
-> > Is it intended behavior?
-> >
-> > Run:
-> > 1. ./qemu-img create -f parallels $TEST_IMG 1T
-> > 2. dd if=3D/dev/zero of=3D$TEST_IMG oseek=3D12  bs=3D1M count=3D128 con=
-v=3Dnotrunc
-> > 3. ./qemu-img check  $TEST_IMG
-> >         No errors were found on the image.
-> >         Image end offset: 150994944
-> >
-> > Without this patch `qemu-img check` reports:
-> >         ERROR space leaked at the end of the image 145752064
-> >
-> >        139 leaked clusters were found on the image.
-> >        This means waste of disk space, but no harm to data.
-> >        Image end offset: 5242880
-> The original intention is do nothing at this point if an image is opened =
-as
-> RO. In the next patch parallels_check_leak() was rewritten to detect
-> unused clusters at the image end.
->
-> But there is a bug: (end_off =3D=3D s->used_bmap_size) case is handled in=
- an
-> incorrect way. Will fix it, thank you.
-> >
-> > Note: there is another issue caused by previous commits exists.
-> > g_free asserts from parallels_free_used_bitmap() because of
-> > s->used_bmap is NULL.
-> Maybe I don't understand your point, but if you meant that g_free() could=
- be
-> called with NULL argument, it's not a problem. GLib Manual says:
->
->     void g_free (/|gpointer
->     <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Basic-Types.php#=
-gpointer>
->     mem|/);
->
->     If /|mem|/ is |NULL|
->     <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Standard-Macros.=
-php#NULL:CAPS>
->     it simply returns, so there is no need to check /|mem|/ against
->     |NULL|
->     <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Standard-Macros.=
-php#NULL:CAPS>
->     before calling this function.
->
-> > To reproduce this crash at revision before or without patch 15/19, run =
-commands:
-> > 1. ./qemu-img create -f parallels $TEST_IMG 1T
-> > 2. dd if=3D/dev/zero of=3D$TEST_IMG oseek=3D12  bs=3D1M count=3D128 con=
-v=3Dnotrunc
-> > 3. ./qemu-img check -r leaks $TEST_IMG
-> Sorry, but I couldn't reproduce it. Reset to 14/19, made the three steps
-> and had such output:
->
->     $ ./qemu-img create -f parallels $TEST_IMG 1T
->     Formatting 'test.img', fmt=3Dparallels size=3D1099511627776
->     cluster_size=3D1048576
->
->     $ dd if=3D/dev/zero of=3D$TEST_IMG seek=3D12  bs=3D1M count=3D128 con=
-v=3Dnotrunc
->     128+0 records in
->     128+0 records out
->     134217728 bytes (134 MB, 128 MiB) copied, 0.0797576 s, 1.7 GB/s
->
->     $ ./qemu-img check -r leaks $TEST_IMG
->     Repairing space leaked at the end of the image 141557760
->     The following inconsistencies were found and repaired:
->
->     135 leaked clusters
->     0 corruptions
->
->     Double checking the fixed image now...
->     No errors were found on the image.
->     Image end offset: 5242880
+>> On Wed, Oct 04, 2023 at 11:43:12AM -0300, Fabiano Rosas wrote:
+>>> Het Gala<het.gala@nutanix.com>  writes:
+>>>
+>>>> This patch parses 'migrate' and 'migrate-incoming' QAPI's 'uri'
+>>>> string containing migration connection related information
+>>>> and stores them inside well defined 'MigrateAddress' struct.
+>>>>
+>>>> Suggested-by: Aravind Retnakaran<aravind.retnakaran@nutanix.com>
+>>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
+>>>> Reviewed-by: Daniel P. Berrangé<berrange@redhat.com>
+>>>> ---
+>>>>   migration/exec.c      |  1 -
+>>>>   migration/exec.h      |  4 ++++
+>>>>   migration/migration.c | 55 +++++++++++++++++++++++++++++++++++++++++++
+>>>>   3 files changed, 59 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/migration/exec.c b/migration/exec.c
+>>>> index 2bf882bbe1..32f5143dfd 100644
+>>>> --- a/migration/exec.c
+>>>> +++ b/migration/exec.c
+>>>> @@ -27,7 +27,6 @@
+>>>>   #include "qemu/cutils.h"
+>>>>   
+>>>>   #ifdef WIN32
+>>>> -const char *exec_get_cmd_path(void);
+>>>>   const char *exec_get_cmd_path(void)
+>>>>   {
+>>>>       g_autofree char *detected_path = g_new(char, MAX_PATH);
+>>>> diff --git a/migration/exec.h b/migration/exec.h
+>>>> index b210ffde7a..736cd71028 100644
+>>>> --- a/migration/exec.h
+>>>> +++ b/migration/exec.h
+>>>> @@ -19,6 +19,10 @@
+>>>>   
+>>>>   #ifndef QEMU_MIGRATION_EXEC_H
+>>>>   #define QEMU_MIGRATION_EXEC_H
+>>>> +
+>>>> +#ifdef WIN32
+>>>> +const char *exec_get_cmd_path(void);
+>>>> +#endif
+>>>>   void exec_start_incoming_migration(const char *host_port, Error **errp);
+>>>>   
+>>>>   void exec_start_outgoing_migration(MigrationState *s, const char *host_port,
+>>>> diff --git a/migration/migration.c b/migration/migration.c
+>>>> index 6d3cf5d5cd..dcbd509d56 100644
+>>>> --- a/migration/migration.c
+>>>> +++ b/migration/migration.c
+>>>> @@ -65,6 +65,7 @@
+>>>>   #include "sysemu/qtest.h"
+>>>>   #include "options.h"
+>>>>   #include "sysemu/dirtylimit.h"
+>>>> +#include "qemu/sockets.h"
+>>>>   
+>>>>   static NotifierList migration_state_notifiers =
+>>>>       NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
+>>>> @@ -427,15 +428,64 @@ void migrate_add_address(SocketAddress *address)
+>>>>                         QAPI_CLONE(SocketAddress, address));
+>>>>   }
+>>>>   
+>>>> +static bool migrate_uri_parse(const char *uri,
+>>>> +                              MigrationAddress **channel,
+>>>> +                              Error **errp)
+>>>> +{
+>>>> +    g_autoptr(MigrationAddress) addr = g_new0(MigrationAddress, 1);
+>>> This cannot be g_autoptr because you're passing it out of scope at the
+>>> end of the function.
+>> It is still good to use g_autoptr to deal with the error paths.
+>>
+>> On the success path though you need   g_steal_pointer(&addr) to
+>> prevent the autofree cleanup running.
+> Ah good point, this has been suggested in an earlier version already, I
+> forgot to mention. We should definitely use g_steal_pointer() whenever
+> the variable goes out of scope.
+Okay. I get the point that g_autoptr helps to deal with freeing of 
+pointer in case error occurs inside the function.
+But I am still trying to figure out why we need g_steal_pointer() ? If 
+you could please explain once again.
+My understanding till now was that if we want to return 'addr' variable 
+as return type, then we would want to make use of g_steal_pointer(&addr) 
+so instead of addr, we pass a temp ptr refrencing to the same location 
+as addr, and then assign addr = NULL. But we are already assigning the 
+memory location where addr was refrencing to 'channel'. Let me know if I 
+am missing something ?
+I think the syntax follows as the second example given here: 
+https://docs.gtk.org/glib/func.steal_pointer.html ?
 
-My comment regarding patch 15 is about 'check' operation is not able
-to detect leaked data anymore.
-So, after this patch I see:
-
-$ ./qemu-img info   leak.bin
-image: leak.bin
-file format: parallels
-virtual size: 1 TiB (1099511627776 bytes)
-disk size: 145 MiB
-Child node '/file':
-    filename: leak.bin
-    protocol type: file
-    file length: 146 MiB (153092096 bytes)
-    disk size: 145 MiB
-
-$ ./qemu-img check -r leaks leak.bin
-No errors were found on the image.
-Image end offset: 153092096
-
-After reverting this patch  'check' reports about:
-ERROR space leaked at the end of the image 148897792
-
-So, after reverting patch 15 I tried to repair such image
-and got abort trap.
-
-I rechecked with downloaded patches, rebuild from scratch and can tell
-that there is no abort on master branch, but it appears after applying
-patches[1-9].
-Obviously It can be debugged and the reason is that
-parallels_fill_used_bitmap() returns after
-
- s->used_bmap_size =3D DIV_ROUND_UP(payload_bytes, s->cluster_size);
-    if (s->used_bmap_size =3D=3D 0) {
-        return 0;
-    }
-
-Because DIV_ROUND_UP(payload_bytes, s->cluster_size); gives a 0;
-
-So subsequent parallels_free_used_bitmap() called from
-parallels_close() causes an assert.
-
-So, the first invocation of parallels_free_used_bitmap is:
-  * frame #0: 0x0000000100091830 qemu-img`parallels_check_leak
-[inlined] parallels_free_used_bitmap(bs=3D0x0000000101011600) at
-parallels.c:263:33 [opt]
-    frame #1: 0x0000000100091830
-qemu-img`parallels_check_leak(bs=3D0x0000000101011600,
-res=3D0x000000016fdff5d8, fix=3DBDRV_FIX_LEAKS, explicit=3Dtrue) at
-parallels.c:811:9 [opt]
-    frame #2: 0x0000000100090d80
-qemu-img`parallels_co_check(bs=3D0x0000000101011600,
-res=3D0x000000016fdff5d8, fix=3DBDRV_FIX_LEAKS) at parallels.c:1014:15
-[opt]
-    frame #3: 0x0000000100014f6c
-qemu-img`bdrv_co_check_entry(opaque=3D0x000000016fdff560) at
-block-gen.c:556:14 [opt]
-
-And the second generates abort from there:
-  * frame #0: 0x000000010008fef8 qemu-img`parallels_close [inlined]
-parallels_free_used_bitmap(bs=3D<unavailable>) at parallels.c:263:33
-[opt]
-    frame #1: 0x000000010008fef8
-qemu-img`parallels_close(bs=3D0x0000000101011600) at parallels.c:1501:5
-[opt]
-    frame #2: 0x0000000100019d3c qemu-img`bdrv_unref [inlined]
-bdrv_close(bs=3D0x0000000101011600) at block.c:5164:13 [opt]
-
-After the first parallels_free_used_bitmap(), there is an actual image
-truncation happens, so there is no payload at the moment of the next
-parallels_fill_used_bitmap(),
-
-PS: there are a chances that some patches were not applied clearly,
-I'll recheck this later.
-It would be nice if it was possible to fetch changes from some repo,
-rather than extracting  it from gmail.
 
 Regards,
-Mike.
+Het Gala
+--------------wfmKdDjQ0f44OPibJs5pcWGA
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 10/4/2023 11:42 PM, Fabiano Rosas
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:87h6n65kac.fsf@suse.de">
+      <pre class="moz-quote-pre" wrap="">Daniel P. Berrangé <a class="moz-txt-link-rfc2396E" href="mailto:berrange@redhat.com">&lt;berrange@redhat.com&gt;</a> writes:
+
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">On Wed, Oct 04, 2023 at 11:43:12AM -0300, Fabiano Rosas wrote:
+</pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
+
+</pre>
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">This patch parses 'migrate' and 'migrate-incoming' QAPI's 'uri'
+string containing migration connection related information
+and stores them inside well defined 'MigrateAddress' struct.
+
+Suggested-by: Aravind Retnakaran <a class="moz-txt-link-rfc2396E" href="mailto:aravind.retnakaran@nutanix.com">&lt;aravind.retnakaran@nutanix.com&gt;</a>
+Signed-off-by: Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a>
+Reviewed-by: Daniel P. Berrangé <a class="moz-txt-link-rfc2396E" href="mailto:berrange@redhat.com">&lt;berrange@redhat.com&gt;</a>
+---
+ migration/exec.c      |  1 -
+ migration/exec.h      |  4 ++++
+ migration/migration.c | 55 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 59 insertions(+), 1 deletion(-)
+
+diff --git a/migration/exec.c b/migration/exec.c
+index 2bf882bbe1..32f5143dfd 100644
+--- a/migration/exec.c
++++ b/migration/exec.c
+@@ -27,7 +27,6 @@
+ #include &quot;qemu/cutils.h&quot;
+ 
+ #ifdef WIN32
+-const char *exec_get_cmd_path(void);
+ const char *exec_get_cmd_path(void)
+ {
+     g_autofree char *detected_path = g_new(char, MAX_PATH);
+diff --git a/migration/exec.h b/migration/exec.h
+index b210ffde7a..736cd71028 100644
+--- a/migration/exec.h
++++ b/migration/exec.h
+@@ -19,6 +19,10 @@
+ 
+ #ifndef QEMU_MIGRATION_EXEC_H
+ #define QEMU_MIGRATION_EXEC_H
++
++#ifdef WIN32
++const char *exec_get_cmd_path(void);
++#endif
+ void exec_start_incoming_migration(const char *host_port, Error **errp);
+ 
+ void exec_start_outgoing_migration(MigrationState *s, const char *host_port,
+diff --git a/migration/migration.c b/migration/migration.c
+index 6d3cf5d5cd..dcbd509d56 100644
+--- a/migration/migration.c
++++ b/migration/migration.c
+@@ -65,6 +65,7 @@
+ #include &quot;sysemu/qtest.h&quot;
+ #include &quot;options.h&quot;
+ #include &quot;sysemu/dirtylimit.h&quot;
++#include &quot;qemu/sockets.h&quot;
+ 
+ static NotifierList migration_state_notifiers =
+     NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
+@@ -427,15 +428,64 @@ void migrate_add_address(SocketAddress *address)
+                       QAPI_CLONE(SocketAddress, address));
+ }
+ 
++static bool migrate_uri_parse(const char *uri,
++                              MigrationAddress **channel,
++                              Error **errp)
++{
++    g_autoptr(MigrationAddress) addr = g_new0(MigrationAddress, 1);
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">
+This cannot be g_autoptr because you're passing it out of scope at the
+end of the function.
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+It is still good to use g_autoptr to deal with the error paths.
+
+On the success path though you need   g_steal_pointer(&amp;addr) to
+prevent the autofree cleanup running.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Ah good point, this has been suggested in an earlier version already, I
+forgot to mention. We should definitely use g_steal_pointer() whenever
+the variable goes out of scope.</pre>
+    </blockquote>
+    Okay. I get the point that g_autoptr helps to deal with freeing of
+    pointer in case error occurs inside the function.<br>
+    But I am still trying to figure out why we need g_steal_pointer() ?
+    If you could please explain once again.<br>
+    My understanding till now was that if we want to return 'addr'
+    variable as return type, then we would want to make use of
+    g_steal_pointer(&amp;addr) so instead of addr, we pass a temp ptr
+    refrencing to the same location as addr, and then assign addr =
+    NULL. But we are already assigning the memory location where addr
+    was refrencing to 'channel'. Let me know if I am missing something ?<br>
+    I think the syntax follows as the second example given here:
+    <a class="moz-txt-link-freetext" href="https://docs.gtk.org/glib/func.steal_pointer.html">https://docs.gtk.org/glib/func.steal_pointer.html</a> ?<br>
+    <p><br>
+    </p>
+    Regards,<br>
+    Het Gala<span style="white-space: pre-wrap">
+</span>
+  </body>
+</html>
+
+--------------wfmKdDjQ0f44OPibJs5pcWGA--
 
