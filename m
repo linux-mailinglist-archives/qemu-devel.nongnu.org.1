@@ -2,71 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450BE7BC227
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 00:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374257BC3E0
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 03:48:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qot7P-0001vb-VC; Fri, 06 Oct 2023 18:16:24 -0400
+	id 1qowPG-0001cz-PW; Fri, 06 Oct 2023 21:47:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
- id 1qot7M-0001vR-3x
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 18:16:21 -0400
-Received: from mgamail.intel.com ([192.198.163.7])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dave.jiang@intel.com>)
- id 1qot7E-0008OJ-Jx
- for qemu-devel@nongnu.org; Fri, 06 Oct 2023 18:16:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1696630572; x=1728166572;
- h=subject:from:to:cc:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=y9nBHhI4ICWumE9p5NoZE4vrDlLV5gGjd5+Fhcwg3VY=;
- b=mf6mO+jXhs8dNyPlayNqeFHRDoQ83SVXbnTSC+fO6oXdmehVwKUtcdvD
- WR7Qnq3iLmeRCg4q4meLImdJsWTG/a68nIqSn2q2jVM/YW7ZtwWIy3jA5
- lWhJBBH1u5acAq6I9vtsH0y8yg3U4lvhxrilE0TM9ja5k01QTj+IqkPTc
- A8veMjZIs0snrtK8CK3S3QdQtBnCjEfUhATMIJ7DAuYBVh6n2S7bAPR1e
- T4OH3vCULypcci1HKSATvyYgLeofoww48xZsLTRFKEQCFXNGWllRnBiiC
- DnTYKI/zhLqn+fW5gBHYLtvv9rg3TD74WaFihsQI/q01JAmhKJwcjzjJn w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="5399353"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; 
-   d="scan'208";a="5399353"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2023 15:15:57 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10855"; a="896030824"
-X-IronPort-AV: E=Sophos;i="6.03,204,1694761200"; d="scan'208";a="896030824"
-Received: from djiang5-mobl3.amr.corp.intel.com (HELO [192.168.1.177])
- ([10.212.13.39])
- by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2023 15:14:24 -0700
-Subject: [PATCH v4] hw/cxl: Add QTG _DSM support for ACPI0017 device
-From: Dave Jiang <dave.jiang@intel.com>
-To: mst@redhat.com
-Cc: thuth@redhat.com, qemu-devel@nongnu.org, peter.maydell@linaro.org,
- Jonathan.Cameron@huawei.com, imammedo@redhat.com, anisinha@redhat.com,
- marcel.apfelbaum@gmail.com, pbonzini@redhat.com,
- richard.henderson@linaro.org, eduardo@habkost.net, dan.j.williams@intel.com,
- linux-cxl@vger.kernel.org
-Date: Fri, 06 Oct 2023 15:15:56 -0700
-Message-ID: <169663055629.1214042.8019806314058171125.stgit@djiang5-mobl3>
-In-Reply-To: <652048e465c8d_ae7e7294e9@dwillia2-xfh.jf.intel.com.notmuch>
-References: <652048e465c8d_ae7e7294e9@dwillia2-xfh.jf.intel.com.notmuch>
-User-Agent: StGit/1.5
+ (Exim 4.90_1) (envelope-from <zhang_youjia@126.com>)
+ id 1qowPC-0001cf-PK; Fri, 06 Oct 2023 21:46:58 -0400
+Received: from m1526.mail.126.com ([220.181.15.26])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <zhang_youjia@126.com>)
+ id 1qowP8-0003zn-Ec; Fri, 06 Oct 2023 21:46:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+ s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
+ Message-ID; bh=AyJ2yz8Au9hqcg1kCW7SWZcZ4OtRzxqpKUIHljgcf2M=; b=O
+ pv+GH3A+rPEsBKsnKS9HPsLe/erRWLi3jm9xKy553YjtYHxGYjKqiGr2GfqjppKg
+ 03KnNrILbAhcCq7OD11nRa5NkyQZsC8CDOrCXAovPlfSoj/RyeusaBIcGpk8OYtd
+ v7NGLNvOLLlKc+nEeiR6AlcUhbm/1hT6Y08ziFPirk=
+Received: from zhang_youjia$126.com ( [111.48.69.246] ) by
+ ajax-webmail-wmsvr26 (Coremail) ; Sat, 7 Oct 2023 09:46:29 +0800 (CST)
+X-Originating-IP: [111.48.69.246]
+Date: Sat, 7 Oct 2023 09:46:29 +0800 (CST)
+From: =?GBK?B?1cXT0bzT?= <zhang_youjia@126.com>
+To: qemu-devel@nongnu.org, qemu-block@nongnu.org, qemu-discuss@nongnu.org
+Cc: tom.leiming@gmail.com, mlevitsk@redhat.com, berto@igalia.com, 
+ kwolf@redhat.com, eblake@redhat.com, mreitz@redhat.com
+Subject: Introduce: Storage stability testing and DATA consistency verifying
+ tools and system
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20230109(dcb5de15)
+ Copyright (c) 2002-2023 www.mailtech.cn 126com
+X-NTES-SC: AL_QuySBPqfvEkj7imRYukWkksUhec7X8S4uvQv3I5TN5E0lCnc8yMlRUdIBGLN4uCfOzqBiCCSdSJwyfhgWqhGb49TBH3PLcYUeJ5Q07PSzogr
+Content-Type: multipart/alternative; 
+ boundary="----=_Part_14043_1921901145.1696643189001"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=192.198.163.7; envelope-from=dave.jiang@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+Message-ID: <71c2e225.f0d.18b07d08909.Coremail.zhang_youjia@126.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: GsqowAD3Hzl2uCBlttQJAA--.13387W
+X-CM-SenderInfo: x2kd0wpb1r3ylld6ij2wof0z/1tbiYAQB1VpEMm2wYwAHsl
+X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+Received-SPF: pass client-ip=220.181.15.26; envelope-from=zhang_youjia@126.com;
+ helo=m1526.mail.126.com
+X-Spam_score_int: 41
+X-Spam_score: 4.1
+X-Spam_bar: ++++
+X-Spam_report: (4.1 / 5.0 requ) BAYES_00=-1.9, CHARSET_FARAWAY_HEADER=3.2,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ FREEMAIL_FROM=0.001, GB_FREEMAIL_DISPTO=0.499, HTML_MESSAGE=0.001,
+ MIME_CHARSET_FARAWAY=2.45, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -82,167 +69,182 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add a simple _DSM call support for the ACPI0017 device to return fake QTG
-ID values of 0 and 1 in all cases. This for _DSM plumbing testing from the OS.
+------=_Part_14043_1921901145.1696643189001
+Content-Type: text/plain; charset=GBK
+Content-Transfer-Encoding: base64
 
-Following edited for readability
+RGVhciBBbGwsCgoKCgpJIGhvcGUgeW91IGFyZSBhbGwgd2VsbC4gSSB3b3VsZCBsaWtlIHRvIGlu
+dHJvZHVjZSBuZXcgdG9vbHMgSSBoYXZlIGRldmVsb3BlZCwgbmFtZWQgIkxCQSB0b29scyIgd2hp
+Y2ggaW5jbHVkaW5nIGhkX3dyaXRlX3ZlcmlmeSAmIGhkX3dyaXRlX3ZlcmlmeV9kdW1wLgoKCgoK
+Z2l0aHViOiBodHRwczovL2dpdGh1Yi5jb20vemhhbmd5b3VqaWEvaGRfd3JpdGVfdmVyaWZ5CgoK
+CgpwZGY6ICBodHRwczovL2dpdGh1Yi5jb20vemhhbmd5b3VqaWEvaGRfd3JpdGVfdmVyaWZ5L0RJ
+U0smTUVNT1JZIHN0YWJpbGl0eSB0ZXN0aW5nIGFuZCBEQVRBIGNvbnNpc3RlbmN5IHZlcmlmeWlu
+ZyB0b29scyBhbmQgc3lzdGVtLnBkZgoKCgoKcHB0OiAgaHR0cHM6Ly9naXRodWIuY29tL3poYW5n
+eW91amlhL2hkX3dyaXRlX3ZlcmlmeS+05rSizsi2qNDUsuLK1NPryv2+3dK71sLQ1NCj0em5pL7f
+us3Ptc2zLnBwdHgKCgoKCmJpbjogIGh0dHBzOi8vZ2l0aHViLmNvbS96aGFuZ3lvdWppYS9oZF93
+cml0ZV92ZXJpZnkvYmluCgoKCgppc286ICBodHRwczovL2dpdGh1Yi5jb20vemhhbmd5b3VqaWEv
+aGRfd3JpdGVfdmVyaWZ5L2lzbwoKCgoKRGF0YSBpcyBhIHZpdGFsIGFzc2V0IGZvciBtYW55IGJ1
+c2luZXNzZXMsIG1ha2luZyBzdG9yYWdlIHN0YWJpbGl0eSBhbmQgZGF0YSBjb25zaXN0ZW5jeSB0
+aGUgbW9zdCBmdW5kYW1lbnRhbCByZXF1aXJlbWVudHMgaW4gc3RvcmFnZSB0ZWNobm9sb2d5IHNj
+ZW5hcmlvcy4KCgoKClRoZSBwdXJwb3NlIG9mIHN0b3JhZ2Ugc3RhYmlsaXR5IHRlc3RpbmcgaXMg
+dG8gZW5zdXJlIHRoYXQgc3RvcmFnZSBkZXZpY2VzIG9yIHN5c3RlbXMgY2FuIG9wZXJhdGUgbm9y
+bWFsbHkgYW5kIHJlbWFpbiBzdGFibGUgb3ZlciB0aW1lLCB3aGlsZSBhbHNvIGhhbmRsaW5nIHZh
+cmlvdXMgYWJub3JtYWwgc2l0dWF0aW9ucyBzdWNoIGFzIHN1ZGRlbiBwb3dlciBvdXRhZ2VzIGFu
+ZCBuZXR3b3JrIGZhaWx1cmVzLiBUaGlzIHRlc3RpbmcgdHlwaWNhbGx5IGluY2x1ZGVzIHN0cmVz
+cyB0ZXN0aW5nLCBsb2FkIHRlc3RpbmcsIGZhdWx0IHRvbGVyYW5jZSB0ZXN0aW5nLCBhbmQgb3Ro
+ZXIgZXZhbHVhdGlvbnMgdG8gYXNzZXNzIHRoZSBwZXJmb3JtYW5jZSBhbmQgcmVsaWFiaWxpdHkg
+b2YgdGhlIHN0b3JhZ2Ugc3lzdGVtLgoKCgoKRGF0YSBjb25zaXN0ZW5jeSBjaGVja2luZyBpcyBk
+ZXNpZ25lZCB0byBlbnN1cmUgdGhhdCB0aGUgZGF0YSBzdG9yZWQgaW4gdGhlIHN5c3RlbSBpcyBh
+Y2N1cmF0ZSBhbmQgY29uc2lzdGVudC4gVGhpcyBtZWFucyB0aGF0IHdoZW5ldmVyIGRhdGEgY2hh
+bmdlcyBvY2N1ciwgYWxsIHJlcGxpY2FzIHNob3VsZCBiZSB1cGRhdGVkIHNpbXVsdGFuZW91c2x5
+IHRvIGF2b2lkIGRhdGEgaW5jb25zaXN0ZW5jeS4gRGF0YSBjb25zaXN0ZW5jeSBjaGVja2luZyB0
+eXBpY2FsbHkgaW52b2x2ZXMgYXNwZWN0cyBzdWNoIGFzIGRhdGEgaW50ZWdyaXR5LCBhY2N1cmFj
+eSwgY29uc2lzdGVuY3ksIGFuZCByZWxpYWJpbGl0eS4KCgoKCkxCQSB0b29scyBhcmUgdmVyeSB1
+c2VmdWwgZm9yIHRlc3RpbmcgU3RvcmFnZSBzdGFiaWxpdHkgYW5kIHZlcmlmeWluZyBEQVRBIGNv
+bnNpc3RlbmN5LCB0aGVyZSBhcmUgbXVjaCBiZXR0ZXIgdGhhbiBGSU8gJiB2ZGJlbmNoJ3MgdmVy
+aWZ5aW5nIGZ1bmN0aW9ucy4KCgoKCkkgYmVsaWV2ZSB0aGF0IExCQSB0b29scyB3aWxsIGhhdmUg
+YSBwb3NpdGl2ZSBpbXBhY3Qgb24gdGhlIGNvbW11bml0eSBhbmQgaGVscCB1c2VycyBoYW5kbGUg
+c3RvcmFnZSBkYXRhIG1vcmUgZWZmZWN0aXZlbHkuIFlvdXIgZmVlZGJhY2sgYW5kIHN1Z2dlc3Rp
+b25zIGFyZSBncmVhdGx5IGFwcHJlY2lhdGVkLCBhbmQgSSBob3BlIHlvdSBjYW4gdHJ5IHVzaW5n
+IExCQSB0b29scyBhbmQgc2hhcmUgeW91ciBleHBlcmllbmNlcyBhbmQgcmVjb21tZW5kYXRpb25z
+LgoKCgoKQmVzdCByZWdhcmRzCgoK
+------=_Part_14043_1921901145.1696643189001
+Content-Type: text/html; charset=GBK
+Content-Transfer-Encoding: base64
 
-Device (CXLM)
-{
-    Name (_HID, "ACPI0017")  // _HID: Hardware ID
-...
-    Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-    {
-        If ((Arg0 == ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52")))
-        {
-            If ((Arg2 == Zero))
-            {
-                Return (Buffer (One) { 0x01 })
-            }
-
-            If ((Arg2 == One))
-            {
-                Return (Package (0x02)
-                {
-                    One,
-                    Package (0x02)
-                    {
-                        Zero,
-                        One
-                    }
-                })
-            }
-        }
-    }
-
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
---
-v4: Change to package of ints rather than buffers. Also moved to 2 QTG IDs
-to improve kernel side testing. Tested on x86 qemu guest against kernel
-QTG ID _DSM parsing code to be upstreamed.
-
-v3: Fix output assignment to be BE host friendly. Fix typo in comment.
-According to the CXL spec, the DSM output should be 1 WORD to indicate
-the max suppoted QTG ID and a package of 0 or more WORDs for the QTG IDs.
-In this dummy impementation, we have first WORD with a 1 to indcate max
-supprted QTG ID of 1. And second WORD in a package to indicate the QTG
-ID of 0.
-
-v2: Minor edit to drop reference to switches in patch description.
-Message-Id: <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
----
- hw/acpi/cxl.c         |   69 +++++++++++++++++++++++++++++++++++++++++++++++++
- hw/i386/acpi-build.c  |    1 +
- include/hw/acpi/cxl.h |    1 +
- 3 files changed, 71 insertions(+)
-
-diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
-index 92b46bc9323b..9cd7905ea25a 100644
---- a/hw/acpi/cxl.c
-+++ b/hw/acpi/cxl.c
-@@ -30,6 +30,75 @@
- #include "qapi/error.h"
- #include "qemu/uuid.h"
- 
-+void build_cxl_dsm_method(Aml *dev)
-+{
-+    Aml *method, *ifctx, *ifctx2;
-+
-+    method = aml_method("_DSM", 4, AML_SERIALIZED);
-+    {
-+        Aml *function, *uuid;
-+
-+        uuid = aml_arg(0);
-+        function = aml_arg(2);
-+        /* CXL spec v3.0 9.17.3.1 _DSM Function for Retrieving QTG ID */
-+        ifctx = aml_if(aml_equal(
-+            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
-+
-+        /* Function 0, standard DSM query function */
-+        ifctx2 = aml_if(aml_equal(function, aml_int(0)));
-+        {
-+            uint8_t byte_list[1] = { 0x01 }; /* function 1 only */
-+
-+            aml_append(ifctx2,
-+                       aml_return(aml_buffer(sizeof(byte_list), byte_list)));
-+        }
-+        aml_append(ifctx, ifctx2);
-+
-+        /*
-+         * Function 1
-+         * Creating a package with static values. The max supported QTG ID will
-+         * be 1 and recommended QTG IDs are 0 and then 1.
-+         * The values here are statically created to simplify emulation. Values
-+         * from a real BIOS would be determined by the performance of all the
-+         * present CXL memory and then assigned.
-+         */
-+        ifctx2 = aml_if(aml_equal(function, aml_int(1)));
-+        {
-+            Aml *pak, *pak1;
-+
-+            /*
-+             * Return: A package containing two elements - a WORD that returns
-+             * the maximum throttling group that the platform supports, and a
-+             * package containing the QTG ID(s) that the platform recommends.
-+             * Package {
-+             *     Max Supported QTG ID
-+             *     Package {QTG Recommendations}
-+             * }
-+             *
-+             * While the SPEC specified WORD that hints at the value being
-+             * 16bit, the ACPI dump of BIOS DSDT table showed that the values
-+             * are integers with no specific size specification. aml_int() will
-+             * be used for the values.
-+             */
-+            pak1 = aml_package(2);
-+            /* Set QTG ID of 0 */
-+            aml_append(pak1, aml_int(0));
-+            /* Set QTG ID of 1 */
-+            aml_append(pak1, aml_int(1));
-+
-+            pak = aml_package(2);
-+            /* Set Max QTG 1 */
-+            aml_append(pak, aml_int(1));
-+            aml_append(pak, pak1);
-+
-+            aml_append(ifctx2, aml_return(pak));
-+        }
-+        aml_append(ifctx, ifctx2);
-+    }
-+    aml_append(method, ifctx);
-+    aml_append(dev, method);
-+}
-+
- static void cedt_build_chbs(GArray *table_data, PXBCXLDev *cxl)
- {
-     PXBDev *pxb = PXB_DEV(cxl);
-diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-index 95199c89008a..692af40b1a75 100644
---- a/hw/i386/acpi-build.c
-+++ b/hw/i386/acpi-build.c
-@@ -1422,6 +1422,7 @@ static void build_acpi0017(Aml *table)
-     method = aml_method("_STA", 0, AML_NOTSERIALIZED);
-     aml_append(method, aml_return(aml_int(0x01)));
-     aml_append(dev, method);
-+    build_cxl_dsm_method(dev);
- 
-     aml_append(scope, dev);
-     aml_append(table, scope);
-diff --git a/include/hw/acpi/cxl.h b/include/hw/acpi/cxl.h
-index acf441888683..8f22c71530d8 100644
---- a/include/hw/acpi/cxl.h
-+++ b/include/hw/acpi/cxl.h
-@@ -25,5 +25,6 @@ void cxl_build_cedt(GArray *table_offsets, GArray *table_data,
-                     BIOSLinker *linker, const char *oem_id,
-                     const char *oem_table_id, CXLState *cxl_state);
- void build_cxl_osc_method(Aml *dev);
-+void build_cxl_dsm_method(Aml *dev);
- 
- #endif
-
+PGRpdiBzdHlsZT0ibGluZS1oZWlnaHQ6MS43O2NvbG9yOiMwMDAwMDA7Zm9udC1zaXplOjE0cHg7
+Zm9udC1mYW1pbHk6QXJpYWwiPjxkaXYgc3R5bGU9ImxpbmUtaGVpZ2h0OiAxLjc7Ij48cCBzdHls
+ZT0ibWFyZ2luOiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFjZT0iUGluZ0ZhbmctU0Mt
+UmVndWxhciI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgYmFja2dyb3VuZC1jb2xvcjog
+cmdiKDI1MywgMjUzLCAyNTQpOyI+RGVhciBBbGwsPC9zcGFuPjwvZm9udD48L3A+PHAgc3R5bGU9
+Im1hcmdpbjogMHB4OyI+PGZvbnQgY29sb3I9IiMwNTA3M2IiIGZhY2U9IlBpbmdGYW5nLVNDLVJl
+Z3VsYXIiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE1cHg7IGJhY2tncm91bmQtY29sb3I6IHJn
+YigyNTMsIDI1MywgMjU0KTsiPjxicj48L3NwYW4+PC9mb250PjwvcD48cCBzdHlsZT0ibWFyZ2lu
+OiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFjZT0iUGluZ0ZhbmctU0MtUmVndWxhciI+
+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgYmFja2dyb3VuZC1jb2xvcjogcmdiKDI1Mywg
+MjUzLCAyNTQpOyI+SSBob3BlIHlvdSBhcmUgYWxsIHdlbGwuIEkgd291bGQgbGlrZSB0byBpbnRy
+b2R1Y2UgbmV3IHRvb2xzIEkgaGF2ZSBkZXZlbG9wZWQsIG5hbWVkICJMQkEgdG9vbHMiIHdoaWNo
+IGluY2x1ZGluZyBoZF93cml0ZV92ZXJpZnkgJmFtcDsgaGRfd3JpdGVfdmVyaWZ5X2R1bXAuPC9z
+cGFuPjwvZm9udD48L3A+PHAgc3R5bGU9Im1hcmdpbjogMHB4OyI+PGZvbnQgY29sb3I9IiMwNTA3
+M2IiIGZhY2U9IlBpbmdGYW5nLVNDLVJlZ3VsYXIiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE1
+cHg7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTMsIDI1MywgMjU0KTsiPjxicj48L3NwYW4+PC9m
+b250PjwvcD48cCBzdHlsZT0ibWFyZ2luOiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFj
+ZT0iUGluZ0ZhbmctU0MtUmVndWxhciI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgd2hp
+dGUtc3BhY2U6IG5vcm1hbDsgYmFja2dyb3VuZC1jb2xvcjogcmdiKDI1MywgMjUzLCAyNTQpOyI+
+PHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSI+CTwvc3Bhbj5naXRodWI6Jm5ic3A7PC9zcGFu
+PjwvZm9udD48dSBzdHlsZT0iY29sb3I6IHJnYig1LCA3LCA1OSk7IGZvbnQtZmFtaWx5OiBQaW5n
+RmFuZy1TQy1SZWd1bGFyOyBmb250LXNpemU6IDE1cHg7Ij48YSBocmVmPSJodHRwczovL2dpdGh1
+Yi5jb20vemhhbmd5b3VqaWEvaGRfd3JpdGVfdmVyaWZ5L2JpbiIgX3NyYz0iaHR0cHM6Ly9naXRo
+dWIuY29tL3poYW5neW91amlhL2hkX3dyaXRlX3ZlcmlmeS9iaW4iPmh0dHBzOi8vZ2l0aHViLmNv
+bS96aGFuZ3lvdWppYS9oZF93cml0ZV92ZXJpZnk8L2E+PC91PjwvcD48cCBzdHlsZT0ibWFyZ2lu
+OiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFjZT0iUGluZ0ZhbmctU0MtUmVndWxhciI+
+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgYmFja2dyb3VuZC1jb2xvcjogcmdiKDI1Mywg
+MjUzLCAyNTQpOyI+PGJyPjwvc3Bhbj48L2ZvbnQ+PC9wPjxwIHN0eWxlPSJtYXJnaW46IDBweDsi
+Pjxmb250IGNvbG9yPSIjMDUwNzNiIiBmYWNlPSJQaW5nRmFuZy1TQy1SZWd1bGFyIj48c3BhbiBz
+dHlsZT0iZm9udC1zaXplOiAxNXB4OyB3aGl0ZS1zcGFjZTogbm9ybWFsOyBiYWNrZ3JvdW5kLWNv
+bG9yOiByZ2IoMjUzLCAyNTMsIDI1NCk7Ij48c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6cHJlIj4J
+PC9zcGFuPnBkZjombmJzcDsmbmJzcDs8L3NwYW4+PC9mb250Pjx1IHN0eWxlPSJjb2xvcjogcmdi
+KDUsIDcsIDU5KTsgZm9udC1mYW1pbHk6IFBpbmdGYW5nLVNDLVJlZ3VsYXI7IGZvbnQtc2l6ZTog
+MTVweDsiPjxhIGhyZWY9Imh0dHBzOi8vZ2l0aHViLmNvbS96aGFuZ3lvdWppYS9oZF93cml0ZV92
+ZXJpZnkvYmluIiBfc3JjPSJodHRwczovL2dpdGh1Yi5jb20vemhhbmd5b3VqaWEvaGRfd3JpdGVf
+dmVyaWZ5L2JpbiI+aHR0cHM6Ly9naXRodWIuY29tL3poYW5neW91amlhL2hkX3dyaXRlX3Zlcmlm
+eTwvYT4vPC91Pjx1IHN0eWxlPSJjb2xvcjogcmdiKDUsIDcsIDU5KTsgZm9udC1mYW1pbHk6IFBp
+bmdGYW5nLVNDLVJlZ3VsYXI7IGZvbnQtc2l6ZTogMTVweDsiPkRJU0smYW1wO01FTU9SWSBzdGFi
+aWxpdHkgdGVzdGluZyBhbmQgREFUQSBjb25zaXN0ZW5jeSB2ZXJpZnlpbmcgdG9vbHMgYW5kIHN5
+c3RlbS5wZGY8L3U+PC9wPjxwIHN0eWxlPSJtYXJnaW46IDBweDsiPjxmb250IGNvbG9yPSIjMDUw
+NzNiIiBmYWNlPSJQaW5nRmFuZy1TQy1SZWd1bGFyIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOiAx
+NXB4OyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjUzLCAyNTMsIDI1NCk7Ij48YnI+PC9zcGFuPjwv
+Zm9udD48L3A+PHAgc3R5bGU9Im1hcmdpbjogMHB4OyI+PGZvbnQgY29sb3I9IiMwNTA3M2IiIGZh
+Y2U9IlBpbmdGYW5nLVNDLVJlZ3VsYXIiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE1cHg7IHdo
+aXRlLXNwYWNlOiBub3JtYWw7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTMsIDI1MywgMjU0KTsi
+PjxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgk8L3NwYW4+cHB0OiZuYnNwOyZuYnNwOzwv
+c3Bhbj48L2ZvbnQ+PHUgc3R5bGU9ImNvbG9yOiByZ2IoNSwgNywgNTkpOyBmb250LWZhbWlseTog
+UGluZ0ZhbmctU0MtUmVndWxhcjsgZm9udC1zaXplOiAxNXB4OyI+PGEgaHJlZj0iaHR0cHM6Ly9n
+aXRodWIuY29tL3poYW5neW91amlhL2hkX3dyaXRlX3ZlcmlmeS+05rSizsi2qNDUsuLK1NPryv2+
+3dK71sLQ1NCj0em5pL7fus3Ptc2zLnBwdHgiIF9zcmM9Imh0dHBzOi8vZ2l0aHViLmNvbS96aGFu
+Z3lvdWppYS9oZF93cml0ZV92ZXJpZnkvtOa0os7ItqjQ1LLiytTT68r9vt3Su9bC0NTQo9HpuaS+
+37rNz7XNsy5wcHR4Ij5odHRwczovL2dpdGh1Yi5jb20vemhhbmd5b3VqaWEvaGRfd3JpdGVfdmVy
+aWZ5L7TmtKLOyLao0NSy4srU0+vK/b7d0rvWwtDU0KPR6bmkvt+6zc+1zbMucHB0eDwvYT4gPC91
+PjwvcD48cCBzdHlsZT0ibWFyZ2luOiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFjZT0i
+UGluZ0ZhbmctU0MtUmVndWxhciI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgYmFja2dy
+b3VuZC1jb2xvcjogcmdiKDI1MywgMjUzLCAyNTQpOyI+PGJyPjwvc3Bhbj48L2ZvbnQ+PC9wPjxw
+IHN0eWxlPSJtYXJnaW46IDBweDsiPjxmb250IGNvbG9yPSIjMDUwNzNiIiBmYWNlPSJQaW5nRmFu
+Zy1TQy1SZWd1bGFyIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOiAxNXB4OyB3aGl0ZS1zcGFjZTog
+bm9ybWFsOyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjUzLCAyNTMsIDI1NCk7Ij48c3BhbiBzdHls
+ZT0id2hpdGUtc3BhY2U6cHJlIj4JPC9zcGFuPmJpbjombmJzcDsmbmJzcDs8L3NwYW4+PC9mb250
+Pjx1IHN0eWxlPSJjb2xvcjogcmdiKDUsIDcsIDU5KTsgZm9udC1mYW1pbHk6IFBpbmdGYW5nLVND
+LVJlZ3VsYXI7IGZvbnQtc2l6ZTogMTVweDsiPjxhIGhyZWY9Imh0dHBzOi8vZ2l0aHViLmNvbS96
+aGFuZ3lvdWppYS9oZF93cml0ZV92ZXJpZnkvYmluIiBfc3JjPSJodHRwczovL2dpdGh1Yi5jb20v
+emhhbmd5b3VqaWEvaGRfd3JpdGVfdmVyaWZ5L2JpbiI+aHR0cHM6Ly9naXRodWIuY29tL3poYW5n
+eW91amlhL2hkX3dyaXRlX3ZlcmlmeS9iaW48L2E+IDwvdT48L3A+PHAgc3R5bGU9Im1hcmdpbjog
+MHB4OyI+PGZvbnQgY29sb3I9IiMwNTA3M2IiIGZhY2U9IlBpbmdGYW5nLVNDLVJlZ3VsYXIiPjxz
+cGFuIHN0eWxlPSJmb250LXNpemU6IDE1cHg7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTMsIDI1
+MywgMjU0KTsiPjxicj48L3NwYW4+PC9mb250PjwvcD48cCBzdHlsZT0ibWFyZ2luOiAwcHg7Ij48
+Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFjZT0iUGluZ0ZhbmctU0MtUmVndWxhciI+PHNwYW4gc3R5
+bGU9ImZvbnQtc2l6ZTogMTVweDsgd2hpdGUtc3BhY2U6IG5vcm1hbDsgYmFja2dyb3VuZC1jb2xv
+cjogcmdiKDI1MywgMjUzLCAyNTQpOyI+PHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSI+CTwv
+c3Bhbj5pc286Jm5ic3A7Jm5ic3A7PC9zcGFuPjwvZm9udD48dSBzdHlsZT0iY29sb3I6IHJnYig1
+LCA3LCA1OSk7IGZvbnQtZmFtaWx5OiBQaW5nRmFuZy1TQy1SZWd1bGFyOyBmb250LXNpemU6IDE1
+cHg7Ij48YSBocmVmPSJodHRwczovL2dpdGh1Yi5jb20vemhhbmd5b3VqaWEvaGRfd3JpdGVfdmVy
+aWZ5L2lzbyIgX3NyYz0iaHR0cHM6Ly9naXRodWIuY29tL3poYW5neW91amlhL2hkX3dyaXRlX3Zl
+cmlmeS9pc28iPmh0dHBzOi8vZ2l0aHViLmNvbS96aGFuZ3lvdWppYS9oZF93cml0ZV92ZXJpZnkv
+aXNvPC9hPiA8L3U+PC9wPjxwIHN0eWxlPSJtYXJnaW46IDBweDsiPjxicj48L3A+PHAgc3R5bGU9
+Im1hcmdpbjogMHB4OyI+PGZvbnQgY29sb3I9IiMwNTA3M2IiIGZhY2U9IlBpbmdGYW5nLVNDLVJl
+Z3VsYXIiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE1cHg7IGJhY2tncm91bmQtY29sb3I6IHJn
+YigyNTMsIDI1MywgMjU0KTsiPkRhdGEgaXMgYSB2aXRhbCBhc3NldCBmb3IgbWFueSBidXNpbmVz
+c2VzLCBtYWtpbmcgc3RvcmFnZSBzdGFiaWxpdHkgYW5kIGRhdGEgY29uc2lzdGVuY3kgdGhlIG1v
+c3QgZnVuZGFtZW50YWwgcmVxdWlyZW1lbnRzIGluIHN0b3JhZ2UgdGVjaG5vbG9neSBzY2VuYXJp
+b3MuPC9zcGFuPjwvZm9udD48L3A+PHAgc3R5bGU9Im1hcmdpbjogMHB4OyI+PGZvbnQgY29sb3I9
+IiMwNTA3M2IiIGZhY2U9IlBpbmdGYW5nLVNDLVJlZ3VsYXIiPjxzcGFuIHN0eWxlPSJmb250LXNp
+emU6IDE1cHg7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTMsIDI1MywgMjU0KTsiPjxicj48L3Nw
+YW4+PC9mb250PjwvcD48cCBzdHlsZT0ibWFyZ2luOiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDcz
+YiIgZmFjZT0iUGluZ0ZhbmctU0MtUmVndWxhciI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVw
+eDsgYmFja2dyb3VuZC1jb2xvcjogcmdiKDI1MywgMjUzLCAyNTQpOyI+VGhlIHB1cnBvc2Ugb2Yg
+c3RvcmFnZSBzdGFiaWxpdHkgdGVzdGluZyBpcyB0byBlbnN1cmUgdGhhdCBzdG9yYWdlIGRldmlj
+ZXMgb3Igc3lzdGVtcyBjYW4gb3BlcmF0ZSBub3JtYWxseSBhbmQgcmVtYWluIHN0YWJsZSBvdmVy
+IHRpbWUsIHdoaWxlIGFsc28gaGFuZGxpbmcgdmFyaW91cyBhYm5vcm1hbCBzaXR1YXRpb25zIHN1
+Y2ggYXMgc3VkZGVuIHBvd2VyIG91dGFnZXMgYW5kIG5ldHdvcmsgZmFpbHVyZXMuIFRoaXMgdGVz
+dGluZyB0eXBpY2FsbHkgaW5jbHVkZXMgc3RyZXNzIHRlc3RpbmcsIGxvYWQgdGVzdGluZywgZmF1
+bHQgdG9sZXJhbmNlIHRlc3RpbmcsIGFuZCBvdGhlciBldmFsdWF0aW9ucyB0byBhc3Nlc3MgdGhl
+IHBlcmZvcm1hbmNlIGFuZCByZWxpYWJpbGl0eSBvZiB0aGUgc3RvcmFnZSBzeXN0ZW0uPC9zcGFu
+PjwvZm9udD48L3A+PHAgc3R5bGU9Im1hcmdpbjogMHB4OyI+PGZvbnQgY29sb3I9IiMwNTA3M2Ii
+IGZhY2U9IlBpbmdGYW5nLVNDLVJlZ3VsYXIiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE1cHg7
+IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTMsIDI1MywgMjU0KTsiPjxicj48L3NwYW4+PC9mb250
+PjwvcD48cCBzdHlsZT0ibWFyZ2luOiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFjZT0i
+UGluZ0ZhbmctU0MtUmVndWxhciI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgYmFja2dy
+b3VuZC1jb2xvcjogcmdiKDI1MywgMjUzLCAyNTQpOyI+RGF0YSBjb25zaXN0ZW5jeSBjaGVja2lu
+ZyBpcyBkZXNpZ25lZCB0byBlbnN1cmUgdGhhdCB0aGUgZGF0YSBzdG9yZWQgaW4gdGhlIHN5c3Rl
+bSBpcyBhY2N1cmF0ZSBhbmQgY29uc2lzdGVudC4gVGhpcyBtZWFucyB0aGF0IHdoZW5ldmVyIGRh
+dGEgY2hhbmdlcyBvY2N1ciwgYWxsIHJlcGxpY2FzIHNob3VsZCBiZSB1cGRhdGVkIHNpbXVsdGFu
+ZW91c2x5IHRvIGF2b2lkIGRhdGEgaW5jb25zaXN0ZW5jeS4gRGF0YSBjb25zaXN0ZW5jeSBjaGVj
+a2luZyB0eXBpY2FsbHkgaW52b2x2ZXMgYXNwZWN0cyBzdWNoIGFzIGRhdGEgaW50ZWdyaXR5LCBh
+Y2N1cmFjeSwgY29uc2lzdGVuY3ksIGFuZCByZWxpYWJpbGl0eS48L3NwYW4+PC9mb250PjwvcD48
+cCBzdHlsZT0ibWFyZ2luOiAwcHg7Ij48Zm9udCBjb2xvcj0iIzA1MDczYiIgZmFjZT0iUGluZ0Zh
+bmctU0MtUmVndWxhciI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZTogMTVweDsgYmFja2dyb3VuZC1j
+b2xvcjogcmdiKDI1MywgMjUzLCAyNTQpOyI+PGJyPjwvc3Bhbj48L2ZvbnQ+PC9wPjxwIHN0eWxl
+PSJtYXJnaW46IDBweDsiPjxmb250IGNvbG9yPSIjMDUwNzNiIiBmYWNlPSJQaW5nRmFuZy1TQy1S
+ZWd1bGFyIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOiAxNXB4OyBiYWNrZ3JvdW5kLWNvbG9yOiBy
+Z2IoMjUzLCAyNTMsIDI1NCk7Ij5MQkEgdG9vbHMgYXJlIHZlcnkgdXNlZnVsIGZvciB0ZXN0aW5n
+IFN0b3JhZ2Ugc3RhYmlsaXR5IGFuZCB2ZXJpZnlpbmcgREFUQSBjb25zaXN0ZW5jeSwgdGhlcmUg
+YXJlIG11Y2ggYmV0dGVyIHRoYW4gRklPICZhbXA7IHZkYmVuY2gncyB2ZXJpZnlpbmcgZnVuY3Rp
+b25zLjwvc3Bhbj48L2ZvbnQ+PC9wPjxwIHN0eWxlPSJtYXJnaW46IDBweDsiPjxmb250IGNvbG9y
+PSIjMDUwNzNiIiBmYWNlPSJQaW5nRmFuZy1TQy1SZWd1bGFyIj48c3BhbiBzdHlsZT0iZm9udC1z
+aXplOiAxNXB4OyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjUzLCAyNTMsIDI1NCk7Ij48YnI+PC9z
+cGFuPjwvZm9udD48L3A+PHAgc3R5bGU9Im1hcmdpbjogMHB4OyI+PGZvbnQgY29sb3I9IiMwNTA3
+M2IiIGZhY2U9IlBpbmdGYW5nLVNDLVJlZ3VsYXIiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6IDE1
+cHg7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTMsIDI1MywgMjU0KTsiPkkgYmVsaWV2ZSB0aGF0
+IExCQSB0b29scyB3aWxsIGhhdmUgYSBwb3NpdGl2ZSBpbXBhY3Qgb24gdGhlIGNvbW11bml0eSBh
+bmQgaGVscCB1c2VycyBoYW5kbGUgc3RvcmFnZSBkYXRhIG1vcmUgZWZmZWN0aXZlbHkuIFlvdXIg
+ZmVlZGJhY2sgYW5kIHN1Z2dlc3Rpb25zIGFyZSBncmVhdGx5IGFwcHJlY2lhdGVkLCBhbmQgSSBo
+b3BlIHlvdSBjYW4gdHJ5IHVzaW5nIExCQSB0b29scyBhbmQgc2hhcmUgeW91ciBleHBlcmllbmNl
+cyBhbmQgcmVjb21tZW5kYXRpb25zLjwvc3Bhbj48L2ZvbnQ+PC9wPjxwIHN0eWxlPSJtYXJnaW46
+IDBweDsiPjxmb250IGNvbG9yPSIjMDUwNzNiIiBmYWNlPSJQaW5nRmFuZy1TQy1SZWd1bGFyIj48
+c3BhbiBzdHlsZT0iZm9udC1zaXplOiAxNXB4OyBiYWNrZ3JvdW5kLWNvbG9yOiByZ2IoMjUzLCAy
+NTMsIDI1NCk7Ij48YnI+PC9zcGFuPjwvZm9udD48L3A+PHAgc3R5bGU9Im1hcmdpbjogMHB4OyI+
+PGZvbnQgY29sb3I9IiMwNTA3M2IiIGZhY2U9IlBpbmdGYW5nLVNDLVJlZ3VsYXIiPjxzcGFuIHN0
+eWxlPSJmb250LXNpemU6IDE1cHg7IGJhY2tncm91bmQtY29sb3I6IHJnYigyNTMsIDI1MywgMjU0
+KTsiPkJlc3QgcmVnYXJkczwvc3Bhbj48L2ZvbnQ+PC9wPjxwIHN0eWxlPSJtYXJnaW46IDBweDsi
+Pjxicj48L3A+PC9kaXY+PC9kaXY+
+------=_Part_14043_1921901145.1696643189001--
 
 
