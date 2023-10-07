@@ -2,135 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A147BC6B6
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 12:20:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A4B7BC6C3
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 12:25:00 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qp4Ot-0002nU-5g; Sat, 07 Oct 2023 06:19:11 -0400
+	id 1qp4TS-00045y-Td; Sat, 07 Oct 2023 06:23:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qp4Om-0002n8-GX; Sat, 07 Oct 2023 06:19:05 -0400
-Received: from mail-he1eur04on070f.outbound.protection.outlook.com
- ([2a01:111:f400:fe0d::70f]
- helo=EUR04-HE1-obe.outbound.protection.outlook.com)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qp4TQ-00045Y-0c; Sat, 07 Oct 2023 06:23:52 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alexander.ivanov@virtuozzo.com>)
- id 1qp4Oj-00080U-Re; Sat, 07 Oct 2023 06:19:04 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IiFyLeOyrpsjhDdyaPwqBrsmGhXqCb/Yh+Q0YeymKh/03G4lfVgXMbBjjUqpFnxOoSHalHZWNdwKqRFsBa9G1SSD6ADj3gMFUQom/TmASr4wKnMFFbEYkBfNN71vOaGvALyWInxCw+E16Mln16cduNALtvmGQG+6jc/VCWCFrY+366/kuJPiA9eXjhuJQ/9c8WmX98apZ+Yuc4aTsL8NSDjwe7o56KAlN4/MafQGrccwc3MH6m1X17D7pcF0rOEzum+OCXDYPi5E8fpZsK5xmi5cGoptuc8Q6DapNGeoxx/+vjuswZfQoKlq4bv77Nhbpxes5gg4SM9yM6LUZ9HfFA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nAyK/NeqsGhaEvKKkQqVanGC+UqBnYzr8OhH0fRtOKY=;
- b=RbnRbpm0fFePEgOLKJZ5Q5jpMCFpaMxs7x2GGWfde+jeBaxIrYV/pcovydqc0nDBgFQtHPzYkDMlkgjQhGJQfbPBY8kRBy1v3UxTuF7U7oe04Q8LtRAw9O4N2o3kwgu1eJgz0XQ6zMpVeyJOOSLBLqWDU0l5r8izBmUX3iMm0wKZ6f4nGstcJhvPMenN+6NY4l3i2UR3IDG49JGBSWMKHS0EeffOH60pAu3pMsddGN4kxJnI6EmNSYKo8I6swCQYNLTwOxsdaPa3/AsGB4Y306Zx28H1dDP4IbQf43aHqihl4bC1WTjzW6/ha0CcsKWmTEBuMdTqg4PW4NYT/ywIlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nAyK/NeqsGhaEvKKkQqVanGC+UqBnYzr8OhH0fRtOKY=;
- b=JBFs/ZyqAAof0/EIDpG45IHXib19kY5vhH0Y7lzSjmq3MVSOqUCs6/8xaKeV37tENhLbNiIHap2ZGPBssjXTQVms+XxBbTnPws2h+1SiqqQ+bZrH7XR8sR63rs+P9Ghveh0qFxMxUNbgYC0DcSOMvcfeZ8ckDjvtAXw25+B5c8pkOUYZuP2xqEUcwIFqmVq/NIG55liecel8wyH/nzM//h3FEPHfEnxHD2Cmk73GZbE64Z65U+vEtGLNxL3ChBQPyJZ0kp1Dt3uHa8HTEZIIUeXeTDZg5nRI9RBiPJuxb9kMRT3bSITBjTnRHD/KAuNWMf4lYZLhmgaF24CauZKReQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=virtuozzo.com;
-Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com (2603:10a6:3:4b::17)
- by DBBPR08MB5883.eurprd08.prod.outlook.com (2603:10a6:10:206::12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.42; Sat, 7 Oct
- 2023 10:18:55 +0000
-Received: from HE1PR0801MB1931.eurprd08.prod.outlook.com
- ([fe80::cefd:987d:e77f:71e0]) by HE1PR0801MB1931.eurprd08.prod.outlook.com
- ([fe80::cefd:987d:e77f:71e0%10]) with mapi id 15.20.6838.040; Sat, 7 Oct 2023
- 10:18:54 +0000
-Message-ID: <f050b078-1f8d-41d1-a469-4f92d4248580@virtuozzo.com>
-Date: Sat, 7 Oct 2023 12:18:43 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 15/19] parallels: Remove unnecessary data_end field
-Content-Language: en-US
-To: Mike Maslenkin <mike.maslenkin@gmail.com>
-Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, den@virtuozzo.com,
- stefanha@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com,
- hreitz@redhat.com
-References: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
- <20231002085738.369684-16-alexander.ivanov@virtuozzo.com>
- <CAL77WPCgbWch6TqjBucJJ_MfG2nOFtoA=oT9EbAE+V_kDTfCgA@mail.gmail.com>
-From: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
-In-Reply-To: <CAL77WPCgbWch6TqjBucJJ_MfG2nOFtoA=oT9EbAE+V_kDTfCgA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VI1PR0102CA0060.eurprd01.prod.exchangelabs.com
- (2603:10a6:803::37) To HE1PR0801MB1931.eurprd08.prod.outlook.com
- (2603:10a6:3:4b::17)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qp4TN-0000SG-Av; Sat, 07 Oct 2023 06:23:51 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id E45C7756BF9;
+ Sat,  7 Oct 2023 12:21:57 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 88A7C748FF4; Sat,  7 Oct 2023 12:21:57 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 8658774632B;
+ Sat,  7 Oct 2023 12:21:57 +0200 (CEST)
+Date: Sat, 7 Oct 2023 12:21:57 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: =?ISO-8859-15?Q?Volker_R=FCmelin?= <vr_qemu@t-online.de>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
+ Rene Engel <ReneEngel80@emailn.de>
+Subject: Re: [PATCH 2/3] hw/pci-host: Add emulation of Mai Logic Articia S
+In-Reply-To: <424b4b93-3cf8-4119-b34f-288bff8a6764@t-online.de>
+Message-ID: <efef56e4-e324-962f-884f-003fa948d169@eik.bme.hu>
+References: <cover.1696542537.git.balaton@eik.bme.hu>
+ <90adfa92df7bf760059924a92deebcd6b32e7f37.1696542537.git.balaton@eik.bme.hu>
+ <424b4b93-3cf8-4119-b34f-288bff8a6764@t-online.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: HE1PR0801MB1931:EE_|DBBPR08MB5883:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9b3616e5-a19e-4bde-8d2a-08dbc71ecef8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: dbp2h6iGZWSu/JaZ2mh2FNCMFGO8vCHwvHqLmaDGRqL+VGm/EELOHUgFqW5QSFUjNnUM2bZm+/VsCO5MQKwcCLNcAXkS8e5cCwXlDA4jdB6r0FCMdtmrMXs1y36zcoWrj7grYRiFfVB/X0IIMhjZrnOjuGC38/qwu2Pxndldm0WMfzdGOO8pvTo0LAIBle+WbWnYJwy+H/AKIp2cUhEeuRH9MoJPcdAwUjiyG31n/ohhmwQ5fBtsN2QSpv+Bw7SxhkUDPsXh0Qm3qEqK/g0PrhJ5hwj3QiMz+WVHUil2uwoJq8sOfsVSvxqErFOKYJ4wl67o6poEapIjmugC6175qokY7ziGjU82fX/6SuKMbVsvZa2G/QNh2H2E0a7LR8nmQaeNJ5dbAHORbv/7DdvnXJb3Qx16fquFZ11AnvT3RW3jiLEoCqk791G5e5FeKImrSSt005yQXvpayckzchH2oFWjr4MPcwkM7dzWL0LLHx1sk2yDZnp8uI/8cZgt3QpF5GCO+Kn6a6tMnH4D12wurzy2ON9SActlqnT/ploJv8piayYkWxtbm6Fi6Aq2NoYOl/qyqNeXzU9u1NK6xn3BTpvQ/rl0qHBqdwSPKa7/V0HbrNeAstipKkR+S9sN5H0ugS62PAImZai3CzCBs0hqjg==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:HE1PR0801MB1931.eurprd08.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(346002)(39840400004)(376002)(396003)(366004)(136003)(230922051799003)(186009)(64100799003)(1800799009)(451199024)(478600001)(8936002)(8676002)(31686004)(4326008)(6512007)(6506007)(6666004)(6486002)(53546011)(6916009)(316002)(41300700001)(2616005)(31696002)(86362001)(38100700002)(26005)(2906002)(36756003)(5660300002)(16799955002)(66476007)(66946007)(66556008)(83380400001)(44832011)(45980500001)(43740500002);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VGNONlFPOTNGczg0SWt0NjFrTlFpdVQ1bFR5eVJvS1J3aUNkWElHUVpEM3gw?=
- =?utf-8?B?dVd0YVZMK2x3c0xUKzJyckh2aHEydGJmMDFidW8wTUllUDVEOHJNYmQ0U3N2?=
- =?utf-8?B?NVkwOEdUSnE5L1lHU1ZJN2VHRTBzeXA1emw4czBWVXNRL2tCVmw2QU14bzFI?=
- =?utf-8?B?bFlEVFQ4V282ODMrS3dJRTRxNXNhT2prZ3R0MWVlUjhFbUFDeXNuWWgyQWhi?=
- =?utf-8?B?L1IySGswRHFQZnpBYk95ay9mUGh5bENUejR4NWtxdk9pcEptRXFydTFpSDBH?=
- =?utf-8?B?Z1pzY1dpNHZuWkRzcWI4M3JvNi9HeXVoUW5ubHpLRmNLcHBYMk5yV3hrek1C?=
- =?utf-8?B?a09vWHMrdFNNak9QZFQxaTVtUW9ScmFEWWc4RlZvanRsU29HN1hac1BqcFZ6?=
- =?utf-8?B?eEprQnhHdzFBeGREUnNJbU80ajhwbjdhTlBUSmRUN0RoR0x3REgxcDlNQzVC?=
- =?utf-8?B?cm0yeVgxUmxUOVBnK3lXUHBGOS8xQVJlcVZOUFRoRktoZ1hDSWc3VkFHWDRy?=
- =?utf-8?B?MWNTRXN4bVhsRFhxWDZKdG54eVpuUWZDWWdiMWV6dmRZcks1NG80bFVid01E?=
- =?utf-8?B?S252Wm8yNVFsWC92RjR5MzJneGJHdGJ2RmpiRTNRY1BUZHpGZUJzSW02dlJJ?=
- =?utf-8?B?eGttdVRkaDZTVnk0aGRZcVQ4VmlQMnphYjFWVXRWTUQ1YUVJWDk1NDJUZWxT?=
- =?utf-8?B?UXRNVDRnbWpVQ25TU01LcXdiSS9zOGR6TkdmaldFR3NlRDl6MHRnMnFyVk0x?=
- =?utf-8?B?OFVSYUpSNDVieDhkOGcxdmdvdGtIZjAzcWR3UThRRmQ1MW5CbkpNQjRBYzJH?=
- =?utf-8?B?OXJqM0xWNWxDUm1qOHVORmk2V2U1WjBwVWUvWnRXQjJBMEJ5RmFLUkZMd0Qr?=
- =?utf-8?B?RFNtOUl0RlBOdmd4RzdxakxlQnZOeGJ0eDFPMVpPTzAwNkFEYmFScUlQT0Z2?=
- =?utf-8?B?TzVYZFMwd1RURVZCcjRQZi9weVFvV3Z2c3Y0SWhOWmtIVXlqSCtpbDM1TThO?=
- =?utf-8?B?VXM2V0llWnlSVzE3WlRxaW15M0JiUzN2T1JQdFNDUGRpckhYUDdFcjUxNkp4?=
- =?utf-8?B?ZXJZMnBTYUZMOEgyZUlXaHNRVUxSTnhHd0F0cTR6M1BZNkFjOS9jdGtQNmZB?=
- =?utf-8?B?emRBU2QwL28xQ2hxdVo5Y0RhRFZXV2tiQWFVcHdoU3hmUWVGdHowVmE0cFBz?=
- =?utf-8?B?cEJzVi9PUHdUNFYxR01VSCtIUE83V2V6SCt1Z2FZMnAzUVlwUEhvYU5sQytn?=
- =?utf-8?B?ZFRnRHM4RXBkU2hPRjN3UHdXSHhxdDU0SGJFZjNCN1ZyK25nZkJaTys4NWVR?=
- =?utf-8?B?dnZXVlZuUW84UkdITGxXSmFMTzZrWTJXc1RyN29JbFJ5d1l5cEcwZlFCbzZX?=
- =?utf-8?B?cTZ6SHRLN2pYdUlEMWswY3FHd2J5KzVXektVVTlrc21nZUhGSEN4WThXQmZ0?=
- =?utf-8?B?Sm9McFEwb2s2Mjhjc0Z3TFlNenZoTzZsVVZaYk55THliUTNPdERabTdGb2Jo?=
- =?utf-8?B?L3RoMHlObnpxWEtJTytVdCt4TWdyWUV1RkFMZEJsZnZOMjV5MjNYSzB3OUhX?=
- =?utf-8?B?ZlFsMW5YV25kdWJINktnU1lXdnF2VE8reTBOenJjdmtuT3RRYkp6dnBHMlNk?=
- =?utf-8?B?dDgxVU9pcTVUM1NiUTk2dVgwYWhHVFlHUU0zMmdubDVWZHBUTVVrZUlwM1Bs?=
- =?utf-8?B?ZWh5NFhLeWNiQndiLzRLNnVaTmUzUVFkMEF6c0NGd3ozWDRadVBWU3UrR3o5?=
- =?utf-8?B?NkNTRlJkc1RUdHlWV0xmUGF1Q2dGK1BGM212QlMxSkdrR0VHN0VhRGZveG56?=
- =?utf-8?B?YUIrdy9wV0FIdTdvZ09qUlpLQkdkODhVY0NMVkdTZGo3NC9iQ3FyZjZjYmhN?=
- =?utf-8?B?Yzh1blVpRDVpUXpIQnplb0Y0L1crUEloandwclZJcmZEWktRTGpSdkRQN09o?=
- =?utf-8?B?SkFINnRaQjhEMWhNZXNIQkVUVUx4L05nZ1ptZUk1TVY4Y25Ka1MrdlM3bGRn?=
- =?utf-8?B?d1M1OEhyb1pJZ1NSakQrYWNBaDc5amVOcW9xc0RhQURzaCt5eENrYkNqejlq?=
- =?utf-8?B?OGJBaHh1Vldsdm9GRlB2RUNLTnpsZEhtZmhnVzlXMm1NYTA0RndKTFZ1WDFy?=
- =?utf-8?B?d3pLMDVSY29pd29qK2k4RFNmZno4WHYrd1I2TnRQMTIrWDNZcnBKcS9tNWZv?=
- =?utf-8?Q?/eGMek605f+dzHJizVNqd0A=3D?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9b3616e5-a19e-4bde-8d2a-08dbc71ecef8
-X-MS-Exchange-CrossTenant-AuthSource: HE1PR0801MB1931.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2023 10:18:54.1289 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Eq8M89MjOTw+JeealbZd99h1TDRB11jvnI6S3ufp5SlkCK+hHXMgr9ncaAIw2WIna8E/DLMLDRfSjmZ0Yv8yQlHr/fS8jHBMJhDKo9jBegg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR08MB5883
-Received-SPF: pass client-ip=2a01:111:f400:fe0d::70f;
- envelope-from=alexander.ivanov@virtuozzo.com;
- helo=EUR04-HE1-obe.outbound.protection.outlook.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_PASS=-0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-661791635-1696674117=:57422"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -147,211 +64,369 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--3866299591-661791635-1696674117=:57422
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8BIT
 
-On 10/6/23 21:43, Mike Maslenkin wrote:
-> On Mon, Oct 2, 2023 at 12:01 PM Alexander Ivanov
-> <alexander.ivanov@virtuozzo.com> wrote:
->> Since we have used bitmap, field data_end in BDRVParallelsState is
->> redundant and can be removed.
+On Fri, 6 Oct 2023, Volker Rümelin wrote:
+> Am 06.10.23 um 00:13 schrieb BALATON Zoltan:
+>> The Articia S is a generic chipset supporting several different CPUs
+>> that were used on some PPC boards. This is a minimal emulation of the
+>> parts needed for emulating the AmigaOne board.
 >>
->> Add parallels_data_end() helper and remove data_end handling.
->>
->> Signed-off-by: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
 >> ---
->>   block/parallels.c | 33 +++++++++++++--------------------
->>   block/parallels.h |  1 -
->>   2 files changed, 13 insertions(+), 21 deletions(-)
->>
->> diff --git a/block/parallels.c b/block/parallels.c
->> index 48ea5b3f03..80a7171b84 100644
->> --- a/block/parallels.c
->> +++ b/block/parallels.c
->> @@ -265,6 +265,13 @@ static void parallels_free_used_bitmap(BlockDriverState *bs)
->>       g_free(s->used_bmap);
->>   }
->>
->> +static int64_t parallels_data_end(BDRVParallelsState *s)
+>>  hw/pci-host/Kconfig           |   5 +
+>>  hw/pci-host/articia.c         | 266 ++++++++++++++++++++++++++++++++++
+>>  hw/pci-host/meson.build       |   2 +
+>>  include/hw/pci-host/articia.h |  17 +++
+>>  4 files changed, 290 insertions(+)
+>>  create mode 100644 hw/pci-host/articia.c
+>>  create mode 100644 include/hw/pci-host/articia.h
+>> diff --git a/hw/pci-host/articia.c b/hw/pci-host/articia.c
+>> new file mode 100644
+>> index 0000000000..80558e1c47
+>> --- /dev/null
+>> +++ b/hw/pci-host/articia.c
+>> @@ -0,0 +1,266 @@
+>> +/*
+>> + * Mai Logic Articia S emulation
+>> + *
+>> + * Copyright (c) 2023 BALATON Zoltan
+>> + *
+>> + * This work is licensed under the GNU GPL license version 2 or later.
+>> + *
+>> + */
+>> +
+>> +#include "qemu/osdep.h"
+>> +#include "qemu/log.h"
+>> +#include "qapi/error.h"
+>> +#include "hw/pci/pci_device.h"
+>> +#include "hw/pci/pci_host.h"
+>> +#include "hw/irq.h"
+>> +#include "hw/i2c/bitbang_i2c.h"
+>> +#include "hw/intc/i8259.h"
+>> +#include "hw/pci-host/articia.h"
+>> +
+>> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaState, ARTICIA)
+>> +
+>> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaHostState, ARTICIA_PCI_HOST)
+>> +struct ArticiaHostState {
+>> +    PCIDevice parent_obj;
+>> +
+>> +    ArticiaState *as;
+>> +};
+>> +
+>> +/* TYPE_ARTICIA */
+>> +
+>> +struct ArticiaState {
+>> +    PCIHostState parent_obj;
+>> +
+>> +    qemu_irq irq[PCI_NUM_PINS];
+>> +    MemoryRegion io;
+>> +    MemoryRegion mem;
+>> +    MemoryRegion reg;
+>> +
+>> +    bitbang_i2c_interface smbus;
+>> +    uint32_t gpio; /* bits 0-7 in, 8-15 out, 16-23 direction (0 in, 1 out) */
+>> +    hwaddr gpio_base;
+>> +    MemoryRegion gpio_reg;
+>> +};
+>> +
+>> +static uint64_t articia_gpio_read(void *opaque, hwaddr addr, unsigned int size)
 >> +{
->> +    int64_t data_end = s->data_start * BDRV_SECTOR_SIZE;
->> +    data_end += s->used_bmap_size * s->cluster_size;
->> +    return data_end;
+>> +    ArticiaState *s = opaque;
+>> +
+>> +    return (s->gpio >> (addr * 8)) & 0xff;
 >> +}
 >> +
->>   int64_t parallels_allocate_host_clusters(BlockDriverState *bs,
->>                                            int64_t *clusters)
->>   {
->> @@ -275,7 +282,7 @@ int64_t parallels_allocate_host_clusters(BlockDriverState *bs,
->>
->>       first_free = find_first_zero_bit(s->used_bmap, s->used_bmap_size);
->>       if (first_free == s->used_bmap_size) {
->> -        host_off = s->data_end * BDRV_SECTOR_SIZE;
->> +        host_off = parallels_data_end(s);
->>           prealloc_clusters = *clusters + s->prealloc_size / s->tracks;
->>           bytes = prealloc_clusters * s->cluster_size;
->>
->> @@ -297,9 +304,6 @@ int64_t parallels_allocate_host_clusters(BlockDriverState *bs,
->>           s->used_bmap = bitmap_zero_extend(s->used_bmap, s->used_bmap_size,
->>                                             new_usedsize);
->>           s->used_bmap_size = new_usedsize;
->> -        if (host_off + bytes > s->data_end * BDRV_SECTOR_SIZE) {
->> -            s->data_end = (host_off + bytes) / BDRV_SECTOR_SIZE;
->> -        }
->>       } else {
->>           next_used = find_next_bit(s->used_bmap, s->used_bmap_size, first_free);
->>
->> @@ -315,8 +319,7 @@ int64_t parallels_allocate_host_clusters(BlockDriverState *bs,
->>            * branch. In the other case we are likely re-using hole. Preallocate
->>            * the space if required by the prealloc_mode.
->>            */
->> -        if (s->prealloc_mode == PRL_PREALLOC_MODE_FALLOCATE &&
->> -                host_off < s->data_end * BDRV_SECTOR_SIZE) {
->> +        if (s->prealloc_mode == PRL_PREALLOC_MODE_FALLOCATE) {
->>               ret = bdrv_pwrite_zeroes(bs->file, host_off, bytes, 0);
->>               if (ret < 0) {
->>                   return ret;
->> @@ -757,13 +760,7 @@ parallels_check_outside_image(BlockDriverState *bs, BdrvCheckResult *res,
->>           }
->>       }
->>
->> -    if (high_off == 0) {
->> -        res->image_end_offset = s->data_end << BDRV_SECTOR_BITS;
->> -    } else {
->> -        res->image_end_offset = high_off + s->cluster_size;
->> -        s->data_end = res->image_end_offset >> BDRV_SECTOR_BITS;
->> -    }
->> -
->> +    res->image_end_offset = parallels_data_end(s);
->>       return 0;
->>   }
->>
->> @@ -806,7 +803,6 @@ parallels_check_leak(BlockDriverState *bs, BdrvCheckResult *res,
->>               res->check_errors++;
->>               return ret;
->>           }
->> -        s->data_end = res->image_end_offset >> BDRV_SECTOR_BITS;
->>
->>           parallels_free_used_bitmap(bs);
->>           ret = parallels_fill_used_bitmap(bs);
->> @@ -1361,8 +1357,7 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
->>       }
->>
->>       s->data_start = data_start;
->> -    s->data_end = s->data_start;
->> -    if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
->> +    if (s->data_start < (s->header_size >> BDRV_SECTOR_BITS)) {
->>           /*
->>            * There is not enough unused space to fit to block align between BAT
->>            * and actual data. We can't avoid read-modify-write...
->> @@ -1403,11 +1398,10 @@ static int parallels_open(BlockDriverState *bs, QDict *options, int flags,
->>
->>       for (i = 0; i < s->bat_size; i++) {
->>           sector = bat2sect(s, i);
->> -        if (sector + s->tracks > s->data_end) {
->> -            s->data_end = sector + s->tracks;
->> +        if (sector + s->tracks > file_nb_sectors) {
->> +            need_check = true;
->>           }
->>       }
->> -    need_check = need_check || s->data_end > file_nb_sectors;
->>
->>       ret = parallels_fill_used_bitmap(bs);
->>       if (ret == -ENOMEM) {
->> @@ -1461,7 +1455,6 @@ static int parallels_truncate_unused_clusters(BlockDriverState *bs)
->>           end_off = (end_off + 1) * s->cluster_size;
->>       }
->>       end_off += s->data_start * BDRV_SECTOR_SIZE;
->> -    s->data_end = end_off / BDRV_SECTOR_SIZE;
->>       return bdrv_truncate(bs->file, end_off, true, PREALLOC_MODE_OFF, 0, NULL);
->>   }
->>
->> diff --git a/block/parallels.h b/block/parallels.h
->> index 18b4f8068e..a6a048d890 100644
->> --- a/block/parallels.h
->> +++ b/block/parallels.h
->> @@ -79,7 +79,6 @@ typedef struct BDRVParallelsState {
->>       unsigned int bat_size;
->>
->>       int64_t  data_start;
->> -    int64_t  data_end;
->>       uint64_t prealloc_size;
->>       ParallelsPreallocMode prealloc_mode;
->>
->> --
->> 2.34.1
->>
-> Is it intended behavior?
+>> +static void articia_gpio_write(void *opaque, hwaddr addr, uint64_t val,
+>> +                               unsigned int size)
+>> +{
+>> +    ArticiaState *s = opaque;
+>> +    uint32_t sh = addr * 8;
+>> +
+>> +    if (addr == 0) {
+>> +        /* in bits read only? */
+>> +        return;
+>> +    }
+>> +
+>> +    if ((s->gpio & (0xff << sh)) != (val & 0xff) << sh) {
+>> +        s->gpio &= ~(0xff << sh | 0xff);
+>> +        s->gpio |= (val & 0xff) << sh;
+>> +        s->gpio |= bitbang_i2c_set(&s->smbus, BITBANG_I2C_SDA,
+>> +                                   s->gpio & BIT(16) ?
+>> +                                   !!(s->gpio & BIT(8)) : 1);
+>> +        if ((s->gpio & BIT(17))) {
+>> +            s->gpio &= ~BIT(0);
+>> +            s->gpio |= bitbang_i2c_set(&s->smbus, BITBANG_I2C_SCL,
+>> +                                       !!(s->gpio & BIT(9)));
+>> +        }
+>> +    }
+>> +}
+>> +
+>> +static const MemoryRegionOps articia_gpio_ops = {
+>> +    .read = articia_gpio_read,
+>> +    .write = articia_gpio_write,
+>> +    .valid.min_access_size = 1,
+>> +    .valid.max_access_size = 1,
+>> +    .endianness = DEVICE_LITTLE_ENDIAN,
+>> +};
+>> +
+>> +static uint64_t articia_reg_read(void *opaque, hwaddr addr, unsigned int size)
+>> +{
+>> +    ArticiaState *s = opaque;
+>> +    uint64_t ret = UINT_MAX;
+>> +
+>> +    switch (addr) {
+>> +    case 0xc00cf8:
+>> +        ret = pci_host_conf_le_ops.read(PCI_HOST_BRIDGE(s), 0, size);
+>> +        break;
+>> +    case 0xe00cfc ... 0xe00cff:
+>> +        ret = pci_host_data_le_ops.read(PCI_HOST_BRIDGE(s), addr - 0xe00cfc, size);
+>> +        break;
+>> +    case 0xf00000:
+>> +        ret = pic_read_irq(isa_pic);
+>> +        break;
+>> +    default:
+>> +        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented register read 0x%"
+>> +                      HWADDR_PRIx " %d\n", __func__, addr, size);
+>> +        break;
+>> +    }
+>> +    return ret;
+>> +}
+>> +
+>> +static void articia_reg_write(void *opaque, hwaddr addr, uint64_t val,
+>> +                              unsigned int size)
+>> +{
+>> +    ArticiaState *s = opaque;
+>> +
+>> +    switch (addr) {
+>> +    case 0xc00cf8:
+>> +        pci_host_conf_le_ops.write(PCI_HOST_BRIDGE(s), 0, val, size);
+>> +        break;
+>> +    case 0xe00cfc ... 0xe00cff:
+>> +        pci_host_data_le_ops.write(PCI_HOST_BRIDGE(s), addr, val, size);
+>> +        break;
+>> +    default:
+>> +        qemu_log_mask(LOG_UNIMP, "%s: Unimplemented register write 0x%"
+>> +                      HWADDR_PRIx " %d <- %"PRIx64"\n", __func__, addr, size, val);
+>> +        break;
+>> +    }
+>> +}
+>> +
+>> +static const MemoryRegionOps articia_reg_ops = {
+>> +    .read = articia_reg_read,
+>> +    .write = articia_reg_write,
+>> +    .valid.min_access_size = 1,
+>> +    .valid.max_access_size = 4,
+>> +    .endianness = DEVICE_LITTLE_ENDIAN,
+>> +};
+>> +
+>> +static void articia_pcihost_set_irq(void *opaque, int n, int level)
+>> +{
+>> +    ArticiaState *s = opaque;
+>> +    qemu_set_irq(s->irq[n], level);
+>> +}
+>> +
+>> +static void articia_realize(DeviceState *dev, Error **errp)
+>> +{
+>> +    ArticiaState *s = ARTICIA(dev);
+>> +    PCIHostState *h = PCI_HOST_BRIDGE(dev);
+>> +    PCIDevice *pdev;
+>> +
+>> +    bitbang_i2c_init(&s->smbus, i2c_init_bus(dev, "smbus"));
+>> +    memory_region_init_io(&s->gpio_reg, OBJECT(s), &articia_gpio_ops, s,
+>> +                          TYPE_ARTICIA, 4);
+>> +
+>> +    memory_region_init(&s->mem, OBJECT(dev), "pci-mem", UINT64_MAX);
+>> +    memory_region_init(&s->io, OBJECT(dev), "pci-io", 0xc00000);
+>> +    memory_region_init_io(&s->reg, OBJECT(s), &articia_reg_ops, s,
+>> +                          TYPE_ARTICIA, 0x1000000);
+>> +    memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
+>> +
+>> +    /* devfn_min is 8 that matches first PCI slot in AmigaOne */
+>> +    h->bus = pci_register_root_bus(dev, NULL, articia_pcihost_set_irq,
+>> +                                   pci_swizzle_map_irq_fn, dev, &s->mem,
+>> +                                   &s->io, PCI_DEVFN(8, 0), 4, TYPE_PCI_BUS);
 >
-> Run:
-> 1. ./qemu-img create -f parallels $TEST_IMG 1T
-> 2. dd if=/dev/zero of=$TEST_IMG oseek=12  bs=1M count=128 conv=notrunc
-> 3. ./qemu-img check  $TEST_IMG
->         No errors were found on the image.
->         Image end offset: 150994944
+> Hi,
 >
-> Without this patch `qemu-img check` reports:
->         ERROR space leaked at the end of the image 145752064
+> pci_swizzle_map_irq_fn() doesn't correctly map all AmigaOne PCI
+> interrupt pin on device to interrupt pin on connector connections.
 >
->        139 leaked clusters were found on the image.
->        This means waste of disk space, but no harm to data.
->        Image end offset: 5242880
-The original intention is do nothing at this point if an image is opened as
-RO. In the next patch parallels_check_leak() was rewritten to detect
-unused clusters at the image end.
+> I found this mapping and I think it's correct. For the VIA Southbridge
+> at 00:07.0 it's the only possible correct mapping. All PCI functions
+> interrupts are connected internally.
 
-But there is a bug: (end_off == s->used_bmap_size) case is handled in an
-incorrect way. Will fix it, thank you.
+I think you're right, thanks a lot for finding this, I'll include this 
+change in v2 but wait a bit more with that if review comes up with 
+something else or R-b tags I can add then.
+
+Regards,
+BALATON Zoltan
+
+> diff --git a/hw/pci-host/articia.c b/hw/pci-host/articia.c
+> index d9f052e3f0..2ad011af9c 100644
+> --- a/hw/pci-host/articia.c
+> +++ b/hw/pci-host/articia.c
+> @@ -138,6 +138,29 @@ static void articia_pcihost_set_irq(void *opaque,
+> int n, int level)
+>      qemu_set_irq(s->irq[n], level);
+>  }
+>  
+> +/*
+> + * AmigaOne SE PCI slot to IRQ routing
+> + *
+> + * repository: https://source.denx.de/u-boot/custodians/u-boot-avr32.git
+> + * refspec: v2010.06
+> + * file: board/MAI/AmigaOneG3SE/articiaS_pci.c
+> + */
+> +static int amigaone_pcihost_bus0_map_irq(PCIDevice *pdev, int pin)
+> +{
+> +    switch(PCI_SLOT(pdev->devfn))
+> +    {
+> +    case 6:     /* On board ethernet */
+> +        return 3;
+> +    case 7:     /* Southbridge */
+> +        return pin;
+> +    default:
+> +        break;
+> +    }
+> +
+> +    /* Slot 1 Device 8, Slot 2 Device 9, Slot 3 Device 10 */
+> +    return pci_swizzle(PCI_SLOT(pdev->devfn), pin);
+> +}
+> +
+>  static void articia_realize(DeviceState *dev, Error **errp)
+>  {
+>      ArticiaState *s = ARTICIA(dev);
+> @@ -155,7 +178,7 @@ static void articia_realize(DeviceState *dev, Error
+> **errp)
+>      memory_region_add_subregion_overlap(&s->reg, 0, &s->io, 1);
+>  
+>      h->bus = pci_register_root_bus(dev, NULL, articia_pcihost_set_irq,
+> -                                   pci_swizzle_map_irq_fn, dev,
+> +                                   amigaone_pcihost_bus0_map_irq, dev,
+>                                     &s->mem, &s->io, 0, 4, TYPE_PCI_BUS);
+>      pdev = pci_create_simple_multifunction(h->bus, PCI_DEVFN(0, 0),
+>                                             TYPE_ARTICIA_PCI_HOST);
 >
-> Note: there is another issue caused by previous commits exists.
-> g_free asserts from parallels_free_used_bitmap() because of
-> s->used_bmap is NULL.
-Maybe I don't understand your point, but if you meant that g_free() could be
-called with NULL argument, it's not a problem. GLib Manual says:
-
-    void g_free (/|gpointer
-    <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Basic-Types.php#gpointer>
-    mem|/);
-
-    If /|mem|/ is |NULL|
-    <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Standard-Macros.php#NULL:CAPS>
-    it simply returns, so there is no need to check /|mem|/ against
-    |NULL|
-    <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Standard-Macros.php#NULL:CAPS>
-    before calling this function.
-
-> To reproduce this crash at revision before or without patch 15/19, run commands:
-> 1. ./qemu-img create -f parallels $TEST_IMG 1T
-> 2. dd if=/dev/zero of=$TEST_IMG oseek=12  bs=1M count=128 conv=notrunc
-> 3. ./qemu-img check -r leaks $TEST_IMG
-Sorry, but I couldn't reproduce it. Reset to 14/19, made the three steps
-and had such output:
-
-    $ ./qemu-img create -f parallels $TEST_IMG 1T
-    Formatting 'test.img', fmt=parallels size=1099511627776
-    cluster_size=1048576
-
-    $ dd if=/dev/zero of=$TEST_IMG seek=12  bs=1M count=128 conv=notrunc
-    128+0 records in
-    128+0 records out
-    134217728 bytes (134 MB, 128 MiB) copied, 0.0797576 s, 1.7 GB/s
-
-    $ ./qemu-img check -r leaks $TEST_IMG
-    Repairing space leaked at the end of the image 141557760
-    The following inconsistencies were found and repaired:
-
-    135 leaked clusters
-    0 corruptions
-
-    Double checking the fixed image now...
-    No errors were found on the image.
-    Image end offset: 5242880
-
-Checked with GCC and Clang.
-> Regards,
-> Mike.
-
--- 
-Best regards,
-Alexander Ivanov
-
+> With best regards,
+> Volker
+>
+>
+>> +    pdev = pci_create_simple_multifunction(h->bus, PCI_DEVFN(0, 0),
+>> +                                           TYPE_ARTICIA_PCI_HOST);
+>> +    ARTICIA_PCI_HOST(pdev)->as = s;
+>> +    pci_create_simple(h->bus, PCI_DEVFN(0, 1), TYPE_ARTICIA_PCI_BRIDGE);
+>> +
+>> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->reg);
+>> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->mem);
+>> +    qdev_init_gpio_out(dev, s->irq, ARRAY_SIZE(s->irq));
+>> +}
+>> +
+>> +static void articia_class_init(ObjectClass *klass, void *data)
+>> +{
+>> +    DeviceClass *dc = DEVICE_CLASS(klass);
+>> +
+>> +    dc->realize = articia_realize;
+>> +    set_bit(DEVICE_CATEGORY_BRIDGE, dc->categories);
+>> +}
+>> +
+>> +/* TYPE_ARTICIA_PCI_HOST */
+>> +
+>> +static void articia_pci_host_cfg_write(PCIDevice *d, uint32_t addr,
+>> +                                       uint32_t val, int len)
+>> +{
+>> +    ArticiaState *s = ARTICIA_PCI_HOST(d)->as;
+>> +
+>> +    pci_default_write_config(d, addr, val, len);
+>> +    switch (addr) {
+>> +    case 0x40:
+>> +        s->gpio_base = val;
+>> +        break;
+>> +    case 0x44:
+>> +        if (val != 0x11) {
+>> +            /* FIXME what do the bits actually mean? */
+>> +            break;
+>> +        }
+>> +        if (memory_region_is_mapped(&s->gpio_reg)) {
+>> +            memory_region_del_subregion(&s->io, &s->gpio_reg);
+>> +        }
+>> +        memory_region_add_subregion(&s->io, s->gpio_base + 0x38, &s->gpio_reg);
+>> +        break;
+>> +    }
+>> +}
+>> +
+>> +static void articia_pci_host_class_init(ObjectClass *klass, void *data)
+>> +{
+>> +    DeviceClass *dc = DEVICE_CLASS(klass);
+>> +    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+>> +
+>> +    k->config_write = articia_pci_host_cfg_write;
+>> +    k->vendor_id = 0x10cc;
+>> +    k->device_id = 0x0660;
+>> +    k->class_id = PCI_CLASS_BRIDGE_HOST;
+>> +    /*
+>> +     * PCI-facing part of the host bridge,
+>> +     * not usable without the host-facing part
+>> +     */
+>> +    dc->user_creatable = false;
+>> +}
+>> +
+>> +/* TYPE_ARTICIA_PCI_BRIDGE */
+>> +
+>> +static void articia_pci_bridge_class_init(ObjectClass *klass, void *data)
+>> +{
+>> +    DeviceClass *dc = DEVICE_CLASS(klass);
+>> +    PCIDeviceClass *k = PCI_DEVICE_CLASS(klass);
+>> +
+>> +    k->vendor_id = 0x10cc;
+>> +    k->device_id = 0x0661;
+>> +    k->class_id = PCI_CLASS_BRIDGE_HOST;
+>> +    /*
+>> +     * PCI-facing part of the host bridge,
+>> +     * not usable without the host-facing part
+>> +     */
+>> +    dc->user_creatable = false;
+>> +}
+>> +
+>> +static const TypeInfo articia_types[] = {
+>> +    {
+>> +        .name          = TYPE_ARTICIA,
+>> +        .parent        = TYPE_PCI_HOST_BRIDGE,
+>> +        .instance_size = sizeof(ArticiaState),
+>> +        .class_init    = articia_class_init,
+>> +    },
+>> +    {
+>> +        .name          = TYPE_ARTICIA_PCI_HOST,
+>> +        .parent        = TYPE_PCI_DEVICE,
+>> +        .instance_size = sizeof(ArticiaHostState),
+>> +        .class_init    = articia_pci_host_class_init,
+>> +        .interfaces = (InterfaceInfo[]) {
+>> +              { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+>> +              { },
+>> +        },
+>> +    },
+>> +    {
+>> +        .name          = TYPE_ARTICIA_PCI_BRIDGE,
+>> +        .parent        = TYPE_PCI_DEVICE,
+>> +        .instance_size = sizeof(PCIDevice),
+>> +        .class_init    = articia_pci_bridge_class_init,
+>> +        .interfaces = (InterfaceInfo[]) {
+>> +              { INTERFACE_CONVENTIONAL_PCI_DEVICE },
+>> +              { },
+>> +        },
+>> +    },
+>> +};
+>> +
+>> +DEFINE_TYPES(articia_types)
+>>
+>
+>
+--3866299591-661791635-1696674117=:57422--
 
