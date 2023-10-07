@@ -2,76 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F257BC945
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 19:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A069E7BC978
+	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 19:56:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpAt5-0003oB-W2; Sat, 07 Oct 2023 13:14:48 -0400
+	id 1qpBWA-00060s-6u; Sat, 07 Oct 2023 13:55:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qpAsw-0003nf-MI
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 13:14:40 -0400
-Received: from mail-pl1-x62f.google.com ([2607:f8b0:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
+ id 1qpBW5-000605-LF; Sat, 07 Oct 2023 13:55:05 -0400
+Received: from mail-yb1-xb2d.google.com ([2607:f8b0:4864:20::b2d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qpAsu-00060k-Hx
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 13:14:38 -0400
-Received: by mail-pl1-x62f.google.com with SMTP id
- d9443c01a7336-1c724577e1fso25977175ad.0
- for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 10:14:35 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mike.maslenkin@gmail.com>)
+ id 1qpBW2-00046K-SF; Sat, 07 Oct 2023 13:55:05 -0400
+Received: by mail-yb1-xb2d.google.com with SMTP id
+ 3f1490d57ef6-d90da64499cso3474733276.0; 
+ Sat, 07 Oct 2023 10:55:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1696698874; x=1697303674; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=NUuYFJR1IAfH5lrvaFKMoLWkNnK1kNklfRB/5SG4LAg=;
- b=muVE1Blh2LbDTJWy1y8KocrhpFerKIFP3AVX+4ZQsiW6IafBWinZY9C5mNbTRagE+N
- 8LUGFcVfZBkKcAMs6cLEawDbMCaQvYZpE8QLcfnvVSQVpB/yUezAwQo69NrAa+6xOYFL
- GR9blfwlJProz1Ft+VZAZctnp/1mDTIhUTXLTTFr1VTDL7aTGCsa4CgpMg8bvbBw4nSh
- m/n57dEB/XyV4S6BtR1syHLXz6hGoVjGxkD5qE8fKc6O6Spr5ZGIcZRdXG0/XLvuJjOx
- QyM60bekklA4Hqbiz9AxDDOCvpSTcDVMOBGFT0MjUhDGtFvR+HxUjkVS7oLq4lsBIC3+
- q4EA==
+ d=gmail.com; s=20230601; t=1696701300; x=1697306100; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vA1CY3pqCWDWa73bWJB56ywJQ1o+AAHsIsnT6+THOgI=;
+ b=LW3kD0uGsLldJ/rTVrGU+MeFxih/+XFwUTYakJL7m2oEHiLgjfi6L6Ki/MjHH496JN
+ c4CR1A7hNHllkdviZeassMuiGi2sPq4w4J6m41c7qfU9vBcSlXkWVVfbmATseHWKZtlE
+ sucnBBMAKQmwVQ9id4q/f5LCQRjeemAXqHFJnSC15/4JAIjA8PkNfWvDqsCmPJB3srxW
+ o8t+31YI60VvsycRp10eJZHGF+Kn1dU30NjsFw5Ho+Ne/zIB+e0pMGO94+ErBc4HzAeN
+ yUa7+rljU0S7IMCBVO81PAGXaAJ0WT1i8U/ZEmha7mbKXQa4RF8WRICQwDR4u5mRXFEc
+ y3rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696698874; x=1697303674;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NUuYFJR1IAfH5lrvaFKMoLWkNnK1kNklfRB/5SG4LAg=;
- b=szbrbLGzkREEfsyKr43p56mIIHR7TIWMVyeLMLuMZctKImbYozo7BG2Zc++gLqhtsF
- 73IW3F82EgasQuWmBTZ2+WMz1a/Gmu2VGHnCzp6xn59zXB33ptwRwbmEStaNjB9syFkG
- GGf11kWoQi+8krMAr82eI4eohhmP6WpayYNPvjUCAZtP3UjqQVGBKcQhNwl3rtuOibOe
- WV4kNb95kGmnGsF9mNbUlve+vv8QKHrdEmzSbnHQEHp3LxJNKq4GFJroeVpclDiMGWju
- nWrSNzKLkt6TLOLDRTVPXF2VoPS2B5+Sw3a1pG0PgPUUquJxBs88q+dc0b7uFRU9k7VX
- FEvw==
-X-Gm-Message-State: AOJu0YwvMFPQzUNoE4gtycYPniluYS4LvDs5qjXvWmYwcyh37KegiaOg
- kziYklwL49Pzn19wmcLmpVN6S3m1mLpMGp/L0pY=
-X-Google-Smtp-Source: AGHT+IG/48wX96jQhNqbPcCV9ilXE3rAwT1nwZ6mW0Ll/qIbH5FWuoY1ZR34tkgVYC1F7jTBgltZtQ==
-X-Received: by 2002:a17:903:1c8:b0:1c8:a63a:2087 with SMTP id
- e8-20020a17090301c800b001c8a63a2087mr431119plh.65.1696698873914; 
- Sat, 07 Oct 2023 10:14:33 -0700 (PDT)
-Received: from grind.. ([177.94.42.196]) by smtp.gmail.com with ESMTPSA id
- ix3-20020a170902f80300b001b06c106844sm6131064plb.151.2023.10.07.10.14.31
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 07 Oct 2023 10:14:33 -0700 (PDT)
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-To: qemu-devel@nongnu.org
-Cc: qemu-riscv@nongnu.org, alistair.francis@wdc.com, bmeng@tinylab.org,
- liweiwei@iscas.ac.cn, zhiwei_liu@linux.alibaba.com, palmer@rivosinc.com,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-Subject: [PATCH] target/riscv: deprecate capital 'Z' CPU properties
-Date: Sat,  7 Oct 2023 14:14:27 -0300
-Message-ID: <20231007171427.1210117-1-dbarboza@ventanamicro.com>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20230601; t=1696701300; x=1697306100;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vA1CY3pqCWDWa73bWJB56ywJQ1o+AAHsIsnT6+THOgI=;
+ b=OL0uA1z0IQH3exY3vLQUAngPwQXIq1ydkH6X1kZuaC1jEfsH8Ja6Mk1qLZ8oFM+sCQ
+ gTAtIQ8lZMF/+qQRGuptRznVjj52QGdQzpRcMIyg0jLeyWiiIT1BzygmSpOP69g1rwF8
+ vA2IRaRf+zGeXyVOoEbLw/686qiBOU6cagerRzVTdoZQO9n8zgzokwU6QtF8Sfyh8pzj
+ zetDfjXjI9ene61HY42CXyq5XVGr4MEr4gDmYIP19UPIsty+X1OW5AZQiFkjMfPOfLDb
+ odHKsDoBPeM9o1PCtMFIXHpkQpUigLwSgS7fxTSms5TBgP4NgJJFO/s1UzO9hP1VKcsf
+ MGkw==
+X-Gm-Message-State: AOJu0YxpC58H5/eXNtfFSzYRd6IRKsKZiktaZkIVTn4nmn60gD4dduxu
+ w257RhWl4KIiirIxLYlbFjYdI847aPORaxxyo3Y=
+X-Google-Smtp-Source: AGHT+IHG2UwMvqC5kWCJ4tFCByyW9icDfXikKwvrHGUIjfk7cW+F7xpDLxUf6t2C2AL1x5JNjV/59h53REmPiAqSIeE=
+X-Received: by 2002:a25:acd2:0:b0:d4a:d2e2:afe0 with SMTP id
+ x18-20020a25acd2000000b00d4ad2e2afe0mr11379905ybd.14.1696701300030; Sat, 07
+ Oct 2023 10:55:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::62f;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x62f.google.com
+References: <20231002085738.369684-1-alexander.ivanov@virtuozzo.com>
+ <20231002085738.369684-16-alexander.ivanov@virtuozzo.com>
+ <CAL77WPCgbWch6TqjBucJJ_MfG2nOFtoA=oT9EbAE+V_kDTfCgA@mail.gmail.com>
+ <f050b078-1f8d-41d1-a469-4f92d4248580@virtuozzo.com>
+ <CAL77WPB37-y4GeWXgy2xQ93_riZkR0q50Gs0apqvFoC6kZwDZg@mail.gmail.com>
+ <9240b820-9d8f-42bc-a4f1-7a69656635a4@virtuozzo.com>
+In-Reply-To: <9240b820-9d8f-42bc-a4f1-7a69656635a4@virtuozzo.com>
+From: Mike Maslenkin <mike.maslenkin@gmail.com>
+Date: Sat, 7 Oct 2023 20:54:24 +0300
+Message-ID: <CAL77WPC4ae+YzxBwNg9jLn93FUAuC8-b3vwzge7ktYBm62_1SQ@mail.gmail.com>
+Subject: Re: [PATCH 15/19] parallels: Remove unnecessary data_end field
+To: Alexander Ivanov <alexander.ivanov@virtuozzo.com>
+Cc: qemu-devel@nongnu.org, qemu-block@nongnu.org, den@virtuozzo.com, 
+ stefanha@redhat.com, vsementsov@yandex-team.ru, kwolf@redhat.com, 
+ hreitz@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::b2d;
+ envelope-from=mike.maslenkin@gmail.com; helo=mail-yb1-xb2d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -89,207 +91,403 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-At this moment there are eleven CPU extension properties that starts
-with capital 'Z': Zifencei, Zicsr, Zihintntl, Zihintpause, Zawrs, Zfa,
-Zfh, Zfhmin, Zve32f, Zve64f and Zve64d. All other extensions are named
-with lower-case letters.
+On Sat, Oct 7, 2023 at 5:30=E2=80=AFPM Alexander Ivanov
+<alexander.ivanov@virtuozzo.com> wrote:
+>
+>
+>
+> On 10/7/23 13:21, Mike Maslenkin wrote:
+> > On Sat, Oct 7, 2023 at 1:18=E2=80=AFPM Alexander Ivanov
+> > <alexander.ivanov@virtuozzo.com>  wrote:
+> >>
+> >> On 10/6/23 21:43, Mike Maslenkin wrote:
+> >>> On Mon, Oct 2, 2023 at 12:01=E2=80=AFPM Alexander Ivanov
+> >>> <alexander.ivanov@virtuozzo.com>  wrote:
+> >>>> Since we have used bitmap, field data_end in BDRVParallelsState is
+> >>>> redundant and can be removed.
+> >>>>
+> >>>> Add parallels_data_end() helper and remove data_end handling.
+> >>>>
+> >>>> Signed-off-by: Alexander Ivanov<alexander.ivanov@virtuozzo.com>
+> >>>> ---
+> >>>>    block/parallels.c | 33 +++++++++++++--------------------
+> >>>>    block/parallels.h |  1 -
+> >>>>    2 files changed, 13 insertions(+), 21 deletions(-)
+> >>>>
+> >>>> diff --git a/block/parallels.c b/block/parallels.c
+> >>>> index 48ea5b3f03..80a7171b84 100644
+> >>>> --- a/block/parallels.c
+> >>>> +++ b/block/parallels.c
+> >>>> @@ -265,6 +265,13 @@ static void parallels_free_used_bitmap(BlockDri=
+verState *bs)
+> >>>>        g_free(s->used_bmap);
+> >>>>    }
+> >>>>
+> >>>> +static int64_t parallels_data_end(BDRVParallelsState *s)
+> >>>> +{
+> >>>> +    int64_t data_end =3D s->data_start * BDRV_SECTOR_SIZE;
+> >>>> +    data_end +=3D s->used_bmap_size * s->cluster_size;
+> >>>> +    return data_end;
+> >>>> +}
+> >>>> +
+> >>>>    int64_t parallels_allocate_host_clusters(BlockDriverState *bs,
+> >>>>                                             int64_t *clusters)
+> >>>>    {
+> >>>> @@ -275,7 +282,7 @@ int64_t parallels_allocate_host_clusters(BlockDr=
+iverState *bs,
+> >>>>
+> >>>>        first_free =3D find_first_zero_bit(s->used_bmap, s->used_bmap=
+_size);
+> >>>>        if (first_free =3D=3D s->used_bmap_size) {
+> >>>> -        host_off =3D s->data_end * BDRV_SECTOR_SIZE;
+> >>>> +        host_off =3D parallels_data_end(s);
+> >>>>            prealloc_clusters =3D *clusters + s->prealloc_size / s->t=
+racks;
+> >>>>            bytes =3D prealloc_clusters * s->cluster_size;
+> >>>>
+> >>>> @@ -297,9 +304,6 @@ int64_t parallels_allocate_host_clusters(BlockDr=
+iverState *bs,
+> >>>>            s->used_bmap =3D bitmap_zero_extend(s->used_bmap, s->used=
+_bmap_size,
+> >>>>                                              new_usedsize);
+> >>>>            s->used_bmap_size =3D new_usedsize;
+> >>>> -        if (host_off + bytes > s->data_end * BDRV_SECTOR_SIZE) {
+> >>>> -            s->data_end =3D (host_off + bytes) / BDRV_SECTOR_SIZE;
+> >>>> -        }
+> >>>>        } else {
+> >>>>            next_used =3D find_next_bit(s->used_bmap, s->used_bmap_si=
+ze, first_free);
+> >>>>
+> >>>> @@ -315,8 +319,7 @@ int64_t parallels_allocate_host_clusters(BlockDr=
+iverState *bs,
+> >>>>             * branch. In the other case we are likely re-using hole.=
+ Preallocate
+> >>>>             * the space if required by the prealloc_mode.
+> >>>>             */
+> >>>> -        if (s->prealloc_mode =3D=3D PRL_PREALLOC_MODE_FALLOCATE &&
+> >>>> -                host_off < s->data_end * BDRV_SECTOR_SIZE) {
+> >>>> +        if (s->prealloc_mode =3D=3D PRL_PREALLOC_MODE_FALLOCATE) {
+> >>>>                ret =3D bdrv_pwrite_zeroes(bs->file, host_off, bytes,=
+ 0);
+> >>>>                if (ret < 0) {
+> >>>>                    return ret;
+> >>>> @@ -757,13 +760,7 @@ parallels_check_outside_image(BlockDriverState =
+*bs, BdrvCheckResult *res,
+> >>>>            }
+> >>>>        }
+> >>>>
+> >>>> -    if (high_off =3D=3D 0) {
+> >>>> -        res->image_end_offset =3D s->data_end << BDRV_SECTOR_BITS;
+> >>>> -    } else {
+> >>>> -        res->image_end_offset =3D high_off + s->cluster_size;
+> >>>> -        s->data_end =3D res->image_end_offset >> BDRV_SECTOR_BITS;
+> >>>> -    }
+> >>>> -
+> >>>> +    res->image_end_offset =3D parallels_data_end(s);
+> >>>>        return 0;
+> >>>>    }
+> >>>>
+> >>>> @@ -806,7 +803,6 @@ parallels_check_leak(BlockDriverState *bs, BdrvC=
+heckResult *res,
+> >>>>                res->check_errors++;
+> >>>>                return ret;
+> >>>>            }
+> >>>> -        s->data_end =3D res->image_end_offset >> BDRV_SECTOR_BITS;
+> >>>>
+> >>>>            parallels_free_used_bitmap(bs);
+> >>>>            ret =3D parallels_fill_used_bitmap(bs);
+> >>>> @@ -1361,8 +1357,7 @@ static int parallels_open(BlockDriverState *bs=
+, QDict *options, int flags,
+> >>>>        }
+> >>>>
+> >>>>        s->data_start =3D data_start;
+> >>>> -    s->data_end =3D s->data_start;
+> >>>> -    if (s->data_end < (s->header_size >> BDRV_SECTOR_BITS)) {
+> >>>> +    if (s->data_start < (s->header_size >> BDRV_SECTOR_BITS)) {
+> >>>>            /*
+> >>>>             * There is not enough unused space to fit to block align=
+ between BAT
+> >>>>             * and actual data. We can't avoid read-modify-write...
+> >>>> @@ -1403,11 +1398,10 @@ static int parallels_open(BlockDriverState *=
+bs, QDict *options, int flags,
+> >>>>
+> >>>>        for (i =3D 0; i < s->bat_size; i++) {
+> >>>>            sector =3D bat2sect(s, i);
+> >>>> -        if (sector + s->tracks > s->data_end) {
+> >>>> -            s->data_end =3D sector + s->tracks;
+> >>>> +        if (sector + s->tracks > file_nb_sectors) {
+> >>>> +            need_check =3D true;
+> >>>>            }
+> >>>>        }
+> >>>> -    need_check =3D need_check || s->data_end > file_nb_sectors;
+> >>>>
+> >>>>        ret =3D parallels_fill_used_bitmap(bs);
+> >>>>        if (ret =3D=3D -ENOMEM) {
+> >>>> @@ -1461,7 +1455,6 @@ static int parallels_truncate_unused_clusters(=
+BlockDriverState *bs)
+> >>>>            end_off =3D (end_off + 1) * s->cluster_size;
+> >>>>        }
+> >>>>        end_off +=3D s->data_start * BDRV_SECTOR_SIZE;
+> >>>> -    s->data_end =3D end_off / BDRV_SECTOR_SIZE;
+> >>>>        return bdrv_truncate(bs->file, end_off, true, PREALLOC_MODE_O=
+FF, 0, NULL);
+> >>>>    }
+> >>>>
+> >>>> diff --git a/block/parallels.h b/block/parallels.h
+> >>>> index 18b4f8068e..a6a048d890 100644
+> >>>> --- a/block/parallels.h
+> >>>> +++ b/block/parallels.h
+> >>>> @@ -79,7 +79,6 @@ typedef struct BDRVParallelsState {
+> >>>>        unsigned int bat_size;
+> >>>>
+> >>>>        int64_t  data_start;
+> >>>> -    int64_t  data_end;
+> >>>>        uint64_t prealloc_size;
+> >>>>        ParallelsPreallocMode prealloc_mode;
+> >>>>
+> >>>> --
+> >>>> 2.34.1
+> >>>>
+> >>> Is it intended behavior?
+> >>>
+> >>> Run:
+> >>> 1. ./qemu-img create -f parallels $TEST_IMG 1T
+> >>> 2. dd if=3D/dev/zero of=3D$TEST_IMG oseek=3D12  bs=3D1M count=3D128 c=
+onv=3Dnotrunc
+> >>> 3. ./qemu-img check  $TEST_IMG
+> >>>          No errors were found on the image.
+> >>>          Image end offset: 150994944
+> >>>
+> >>> Without this patch `qemu-img check` reports:
+> >>>          ERROR space leaked at the end of the image 145752064
+> >>>
+> >>>         139 leaked clusters were found on the image.
+> >>>         This means waste of disk space, but no harm to data.
+> >>>         Image end offset: 5242880
+> >> The original intention is do nothing at this point if an image is open=
+ed as
+> >> RO. In the next patch parallels_check_leak() was rewritten to detect
+> >> unused clusters at the image end.
+> >>
+> >> But there is a bug: (end_off =3D=3D s->used_bmap_size) case is handled=
+ in an
+> >> incorrect way. Will fix it, thank you.
+> >>> Note: there is another issue caused by previous commits exists.
+> >>> g_free asserts from parallels_free_used_bitmap() because of
+> >>> s->used_bmap is NULL.
+> >> Maybe I don't understand your point, but if you meant that g_free() co=
+uld be
+> >> called with NULL argument, it's not a problem. GLib Manual says:
+> >>
+> >>      void g_free (/|gpointer
+> >>      <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Basic-Types.=
+php#gpointer>
+> >>      mem|/);
+> >>
+> >>      If /|mem|/ is|NULL|
+> >>      <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Standard-Mac=
+ros.php#NULL:CAPS>
+> >>      it simply returns, so there is no need to check /|mem|/ against
+> >>      |NULL|
+> >>      <https://www.manpagez.com/html/glib/glib-2.56.0/glib-Standard-Mac=
+ros.php#NULL:CAPS>
+> >>      before calling this function.
+> >>
+> >>> To reproduce this crash at revision before or without patch 15/19, ru=
+n commands:
+> >>> 1. ./qemu-img create -f parallels $TEST_IMG 1T
+> >>> 2. dd if=3D/dev/zero of=3D$TEST_IMG oseek=3D12  bs=3D1M count=3D128 c=
+onv=3Dnotrunc
+> >>> 3. ./qemu-img check -r leaks $TEST_IMG
+> >> Sorry, but I couldn't reproduce it. Reset to 14/19, made the three ste=
+ps
+> >> and had such output:
+> >>
+> >>      $ ./qemu-img create -f parallels $TEST_IMG 1T
+> >>      Formatting 'test.img', fmt=3Dparallels size=3D1099511627776
+> >>      cluster_size=3D1048576
+> >>
+> >>      $ dd if=3D/dev/zero of=3D$TEST_IMG seek=3D12  bs=3D1M count=3D128=
+ conv=3Dnotrunc
+> >>      128+0 records in
+> >>      128+0 records out
+> >>      134217728 bytes (134 MB, 128 MiB) copied, 0.0797576 s, 1.7 GB/s
+> >>
+> >>      $ ./qemu-img check -r leaks $TEST_IMG
+> >>      Repairing space leaked at the end of the image 141557760
+> >>      The following inconsistencies were found and repaired:
+> >>
+> >>      135 leaked clusters
+> >>      0 corruptions
+> >>
+> >>      Double checking the fixed image now...
+> >>      No errors were found on the image.
+> >>      Image end offset: 5242880
+> > My comment regarding patch 15 is about 'check' operation is not able
+> > to detect leaked data anymore.
+> > So, after this patch I see:
+> >
+> > $ ./qemu-img info   leak.bin
+> > image: leak.bin
+> > file format: parallels
+> > virtual size: 1 TiB (1099511627776 bytes)
+> > disk size: 145 MiB
+> > Child node '/file':
+> >      filename: leak.bin
+> >      protocol type: file
+> >      file length: 146 MiB (153092096 bytes)
+> >      disk size: 145 MiB
+> >
+> > $ ./qemu-img check -r leaks leak.bin
+> > No errors were found on the image.
+> > Image end offset: 153092096
+> >
+> > After reverting this patch  'check' reports about:
+> > ERROR space leaked at the end of the image 148897792
+> >
+> > So, after reverting patch 15 I tried to repair such image
+> > and got abort trap.
+> Yes, I understand this part. OK, I think, I could place 16 patch before
+> 15 and
+> leaks would handle in the correct way at any point of the patch sequence.
+> >
+> > I rechecked with downloaded patches, rebuild from scratch and can tell
+> > that there is no abort on master branch, but it appears after applying
+> > patches[1-9].
+> Maybe I do something wrong, but I reset to the top of mainstream, applied
+> 1-9 patches, rebuilt QEMU and didn't see any abort.
+>
+> > Obviously It can be debugged and the reason is that
+> > parallels_fill_used_bitmap() returns after
+> >
+> >   s->used_bmap_size =3D DIV_ROUND_UP(payload_bytes, s->cluster_size);
+> >      if (s->used_bmap_size =3D=3D 0) {
+> >          return 0;
+> >      }
+> >
+> > Because DIV_ROUND_UP(payload_bytes, s->cluster_size); gives a 0;
+> >
+> > So subsequent parallels_free_used_bitmap() called from
+> > parallels_close() causes an assert.
+> >
+> > So, the first invocation of parallels_free_used_bitmap is:
+> >    * frame #0: 0x0000000100091830 qemu-img`parallels_check_leak
+> > [inlined] parallels_free_used_bitmap(bs=3D0x0000000101011600) at
+> > parallels.c:263:33 [opt]
+> >      frame #1: 0x0000000100091830
+> > qemu-img`parallels_check_leak(bs=3D0x0000000101011600,
+> > res=3D0x000000016fdff5d8, fix=3DBDRV_FIX_LEAKS, explicit=3Dtrue) at
+> > parallels.c:811:9 [opt]
+> >      frame #2: 0x0000000100090d80
+> > qemu-img`parallels_co_check(bs=3D0x0000000101011600,
+> > res=3D0x000000016fdff5d8, fix=3DBDRV_FIX_LEAKS) at parallels.c:1014:15
+> > [opt]
+> >      frame #3: 0x0000000100014f6c
+> > qemu-img`bdrv_co_check_entry(opaque=3D0x000000016fdff560) at
+> > block-gen.c:556:14 [opt]
+> >
+> > And the second generates abort from there:
+> >    * frame #0: 0x000000010008fef8 qemu-img`parallels_close [inlined]
+> > parallels_free_used_bitmap(bs=3D<unavailable>) at parallels.c:263:33
+> In this line we have:
+>
+>     BDRVParallelsState *s =3D bs->opaque;
+>
+> So there is only one possibility to abort - incorrect bs. I don't know
+> how it
+> could be possible.
+>
+> > [opt]
+> >      frame #1: 0x000000010008fef8
+> > qemu-img`parallels_close(bs=3D0x0000000101011600) at parallels.c:1501:5
+> > [opt]
+> >      frame #2: 0x0000000100019d3c qemu-img`bdrv_unref [inlined]
+> > bdrv_close(bs=3D0x0000000101011600) at block.c:5164:13 [opt]
+> >
+> > After the first parallels_free_used_bitmap(), there is an actual image
+> > truncation happens, so there is no payload at the moment of the next
+> > parallels_fill_used_bitmap(),
+> >
+> > PS: there are a chances that some patches were not applied clearly,
+> > I'll recheck this later.
+> I just reset to the mainstream top and apply 1-9 patches:
+>
+>     $ git reset --hard 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d
+>     HEAD is now at 2f3913f4b2 Merge tag 'for_upstream' of
+>     https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging
+>     $ git am *.eml
+>     Applying: parallels: Move inactivation code to a separate function
+>     Applying: parallels: Add mark_unused() helper
+>     Applying: parallels: Move host clusters allocation to a separate
+>     function
+>     Applying: parallels: Set data_end value in parallels_check_leak()
+>     Applying: parallels: Recreate used bitmap in parallels_check_leak()
+>     Applying: parallels: Add a note about used bitmap in
+>     parallels_check_duplicate()
+>     Applying: parallels: Create used bitmap even if checks needed
+>     Applying: parallels: Make mark_used() and mark_unused() global functi=
+ons
+>     Applying: parallels: Add dirty bitmaps saving
+>
+> > It would be nice if it was possible to fetch changes from some repo,
+> > rather than extracting  it from gmail.
+> You can fetch it here (branch "parallels") -
+> https://github.com/AlexanderIvanov-Virtuozzo/qemu.git
+> >
+> > Regards,
+> > Mike.
+>
+> --
+> Best regards,
+> Alexander Ivanov
+>
+Thanks for the link. I've fetched your repo and reverted "parallels:
+Remove unnecessary data_end field" as it hides reproduction,
+because it makes 'check' blind for the case we are discussing.
+So the situation is the same:
+1. parallels_open calls parallels_fill_used_bitmap(). A this time file
+size is 145M (i.e leaked clusters are there) and s->used_bmap_size =3D
+139.
+2  Then parallels_co_check()->parallels_check_leak () is invoked.
+     At the first parallels_check_leak calls
+bdrv_co_truncate(offset=3D5242880), that is true as we have only empty
+BAT on the image.
+     At this step image truncated to 5M i.e. contains only empty BAT.
+     So, on line 809 s->data_end =3D 10240 i.e 5M (10240<<9)
+      809:         s->data_end =3D res->image_end_offset >> BDRV_SECTOR_BIT=
+S;
 
-We want all properties to be named with lower-case letters since it's
-consistent with the riscv-isa string that we create in the FDT. Having
-these 11 properties to be exceptions can be confusing.
+      811:        parallels_free_used_bitmap(bs);
+      812:        ret =3D parallels_fill_used_bitmap(bs);
 
-Deprecate all of them. Create their lower-case counterpart to be used as
-maintained CPU properties. When trying to use any deprecated property a
-warning message will be displayed, recommending users to switch to the
-lower-case variant:
+Line 811 invalidates used_bmap and sets used_bmap_size to 0.
+parallels_fill_used_bitmap Invoked on line 812  returns 0, because
+payload_bytes =3D 0 (current file size 5M - s->data_start *
+BDRV_SECTOR_SIZE ),
+and s->used_bmap_size is NOT initialized.
 
-./build/qemu-system-riscv64 -M virt -cpu rv64,Zifencei=true --nographic
-qemu-system-riscv64: warning: CPU property 'Zifencei' is deprecated. Please use 'zifencei' instead
+3. parallels_close() invoked to finish work and exit process.
+   parallels_close() calls  parallels_free_used_bitmap() unconditionally.
 
-This will give users some time to change their scripts before we remove
-the capital 'Z' properties entirely.
+static void parallels_free_used_bitmap(BlockDriverState *bs)
+{
+    BDRVParallelsState *s =3D bs->opaque;
+    s->used_bmap_size =3D 0;
+ASSERT IS HERE >>>>  g_free(s->used_bmap);
+}
 
-Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
----
- docs/about/deprecated.rst  | 23 ++++++++++++++++++++++
- target/riscv/cpu.c         | 39 +++++++++++++++++++++++++++-----------
- target/riscv/cpu.h         |  1 +
- target/riscv/tcg/tcg-cpu.c | 31 +++++++++++++++++++++++++++++-
- 4 files changed, 82 insertions(+), 12 deletions(-)
+The fix is trivial...
 
-diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
-index 694b878f36..331f10f930 100644
---- a/docs/about/deprecated.rst
-+++ b/docs/about/deprecated.rst
-@@ -378,6 +378,29 @@ of generic CPUs: rv32 and rv64 as default CPUs and 'max' as a feature complete
- CPU for both 32 and 64 bit builds. Users are then discouraged to use the 'any'
- CPU type starting in 8.2.
- 
-+RISC-V CPU properties which start with with capital 'Z' (since 8.2)
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+All RISC-V CPU properties which start with capital 'Z' are being deprecated
-+starting in 8.2. The reason is that they were wrongly added with capital 'Z'
-+in the past. CPU properties were later added with lower-case names, which
-+is the format we want to use from now on.
-+
-+Users which try to use these deprecated properties will receive a warning
-+recommending to switch to their stable counterparts:
-+
-+- "Zifencei" should be replaced with "zifencei"
-+- "Zicsr" should be replaced with "zicsr"
-+- "Zihintntl" should be replaced with "zihintntl"
-+- "Zihintpause" should be replaced with "zihintpause"
-+- "Zawrs" should be replaced with "zawrs"
-+- "Zfa" should be replaced with "zfa"
-+- "Zfh" should be replaced with "zfh"
-+- "Zfhmin" should be replaced with "zfhmin"
-+- "Zve32f" should be replaced with "zve32f"
-+- "Zve64f" should be replaced with "zve64f"
-+- "Zve64d" should be replaced with "zve64d"
-+
- Block device options
- ''''''''''''''''''''
- 
-diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-index 521bb88538..1cdc3d2609 100644
---- a/target/riscv/cpu.c
-+++ b/target/riscv/cpu.c
-@@ -1246,17 +1246,17 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
- const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
-     /* Defaults for standard extensions */
-     MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
--    MULTI_EXT_CFG_BOOL("Zifencei", ext_ifencei, true),
--    MULTI_EXT_CFG_BOOL("Zicsr", ext_icsr, true),
--    MULTI_EXT_CFG_BOOL("Zihintntl", ext_zihintntl, true),
--    MULTI_EXT_CFG_BOOL("Zihintpause", ext_zihintpause, true),
--    MULTI_EXT_CFG_BOOL("Zawrs", ext_zawrs, true),
--    MULTI_EXT_CFG_BOOL("Zfa", ext_zfa, true),
--    MULTI_EXT_CFG_BOOL("Zfh", ext_zfh, false),
--    MULTI_EXT_CFG_BOOL("Zfhmin", ext_zfhmin, false),
--    MULTI_EXT_CFG_BOOL("Zve32f", ext_zve32f, false),
--    MULTI_EXT_CFG_BOOL("Zve64f", ext_zve64f, false),
--    MULTI_EXT_CFG_BOOL("Zve64d", ext_zve64d, false),
-+    MULTI_EXT_CFG_BOOL("zifencei", ext_ifencei, true),
-+    MULTI_EXT_CFG_BOOL("zicsr", ext_icsr, true),
-+    MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
-+    MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
-+    MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
-+    MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
-+    MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
-+    MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
-+    MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
-+    MULTI_EXT_CFG_BOOL("zve64f", ext_zve64f, false),
-+    MULTI_EXT_CFG_BOOL("zve64d", ext_zve64d, false),
-     MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
- 
-     MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
-@@ -1349,6 +1349,23 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-+/* Deprecated entries marked for future removal */
-+const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[] = {
-+    MULTI_EXT_CFG_BOOL("Zifencei", ext_ifencei, true),
-+    MULTI_EXT_CFG_BOOL("Zicsr", ext_icsr, true),
-+    MULTI_EXT_CFG_BOOL("Zihintntl", ext_zihintntl, true),
-+    MULTI_EXT_CFG_BOOL("Zihintpause", ext_zihintpause, true),
-+    MULTI_EXT_CFG_BOOL("Zawrs", ext_zawrs, true),
-+    MULTI_EXT_CFG_BOOL("Zfa", ext_zfa, true),
-+    MULTI_EXT_CFG_BOOL("Zfh", ext_zfh, false),
-+    MULTI_EXT_CFG_BOOL("Zfhmin", ext_zfhmin, false),
-+    MULTI_EXT_CFG_BOOL("Zve32f", ext_zve32f, false),
-+    MULTI_EXT_CFG_BOOL("Zve64f", ext_zve64f, false),
-+    MULTI_EXT_CFG_BOOL("Zve64d", ext_zve64d, false),
-+
-+    DEFINE_PROP_END_OF_LIST(),
-+};
-+
- Property riscv_cpu_options[] = {
-     DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
- 
-diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
-index 3f11e69223..e98f5de32e 100644
---- a/target/riscv/cpu.h
-+++ b/target/riscv/cpu.h
-@@ -722,6 +722,7 @@ typedef struct RISCVCPUMultiExtConfig {
- extern const RISCVCPUMultiExtConfig riscv_cpu_extensions[];
- extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
- extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
-+extern const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[];
- extern Property riscv_cpu_options[];
- 
- typedef struct isa_ext_data {
-diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
-index 08b806dc07..00676593f7 100644
---- a/target/riscv/tcg/tcg-cpu.c
-+++ b/target/riscv/tcg/tcg-cpu.c
-@@ -732,6 +732,25 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
-     }
- }
- 
-+static bool cpu_ext_is_deprecated(const char *ext_name)
-+{
-+    return isupper(ext_name[0]);
-+}
-+
-+/*
-+ * String will be allocated in the heap. Caller is responsible
-+ * for freeing it.
-+ */
-+static char *cpu_ext_to_lower(const char *ext_name)
-+{
-+    char *ret = g_malloc0(strlen(ext_name) + 1);
-+
-+    strcpy(ret, ext_name);
-+    ret[0] = tolower(ret[0]);
-+
-+    return ret;
-+}
-+
- static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
-                                   void *opaque, Error **errp)
- {
-@@ -744,6 +763,13 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
-         return;
-     }
- 
-+    if (cpu_ext_is_deprecated(multi_ext_cfg->name)) {
-+        g_autofree char *lower = cpu_ext_to_lower(multi_ext_cfg->name);
-+
-+        warn_report("CPU property '%s' is deprecated. Please use '%s' instead",
-+                    multi_ext_cfg->name, lower);
-+    }
-+
-     g_hash_table_insert(multi_ext_user_opts,
-                         GUINT_TO_POINTER(multi_ext_cfg->offset),
-                         (gpointer)value);
-@@ -777,13 +803,14 @@ static void cpu_add_multi_ext_prop(Object *cpu_obj,
-                                    const RISCVCPUMultiExtConfig *multi_cfg)
- {
-     bool generic_cpu = riscv_cpu_is_generic(cpu_obj);
-+    bool deprecated_ext = cpu_ext_is_deprecated(multi_cfg->name);
- 
-     object_property_add(cpu_obj, multi_cfg->name, "bool",
-                         cpu_get_multi_ext_cfg,
-                         cpu_set_multi_ext_cfg,
-                         NULL, (void *)multi_cfg);
- 
--    if (!generic_cpu) {
-+    if (!generic_cpu || deprecated_ext) {
-         return;
-     }
- 
-@@ -826,6 +853,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
-     riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_vendor_exts);
-     riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_experimental_exts);
- 
-+    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
-+
-     for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
-         qdev_property_add_static(DEVICE(obj), prop);
-     }
--- 
-2.41.0
+if (s->used_bmap_size) {
+   g_free(s->used_bmap);
+   s->used_bmap_size =3D 0;
+}
 
+PS: I retuned to your HEAD. Killed gdb thus made image marked is
+incorrectly closed.
+But 'qemu-img check' only removed  incorrectly closed flags and didn't
+remove leaked clusters.
+
+Regards,
+Mike.
 
