@@ -2,95 +2,71 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4187BC9EF
-	for <lists+qemu-devel@lfdr.de>; Sat,  7 Oct 2023 23:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A387BCB65
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 03:11:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpErm-0004vU-5k; Sat, 07 Oct 2023 17:29:42 -0400
+	id 1qpIJ4-0000W8-V9; Sat, 07 Oct 2023 21:10:06 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpErk-0004uM-QM
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 17:29:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpErj-0000vV-AG
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 17:29:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696714178;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=o9VmlhS1qm0PWSEfbbNLTaZ2THw4LfYgk1tJdqY/4CA=;
- b=gh32/sviIM0bX4g5+0vnz4KlP5bWy8J1+rlXP6uNOJxinBVAmCd9CHIXVD76RWzjfgxeE2
- BsRhB6t96iluhHRuO4H7sitVgagD7BjP0NUvkBiD0fsGQSTjl+h3tRpHy/apv2lwr0XY7K
- QmKB2U+C+YF20hRMPQdffqZZq3paBJo=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-wMxKyiEgO2q7QLWHi_fTlA-1; Sat, 07 Oct 2023 17:29:36 -0400
-X-MC-Unique: wMxKyiEgO2q7QLWHi_fTlA-1
-Received: by mail-ed1-f70.google.com with SMTP id
- 4fb4d7f45d1cf-50daa85e940so2565898a12.0
- for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 14:29:36 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696714175; x=1697318975;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=o9VmlhS1qm0PWSEfbbNLTaZ2THw4LfYgk1tJdqY/4CA=;
- b=gytC25DjSxFE71lV5lPF+9tSqut4eagDALlVsC5q29ltHlAOPdH/QqQmnveKLwsNbe
- O1jevj1kTLliZMkfj+Pq0vjpsSG1pgrrH1IarjCMtHMva7SToNUw8y3Ab+J7n6us6dN5
- QIDj8L2SI5e5LRFwrgYGCiJLaseA1AX2PMtQSiQ7c4/raNvXTH7O6HP6f9ZwE/0W8mp2
- oibW9f+1rjDqZJtJj+G9xw+F+DcTk0+FJ5fkoy1mG5AvnFucImiCvbE9n1glxY9RaL2Y
- IXK46oP4GeRpOBGAEByJb2MOtVHmMUsK+UtU0ZyyPWS7BQ7c3SulZD2RHkkXJHJZvMkF
- MHRA==
-X-Gm-Message-State: AOJu0YxhtdJuwD/xzgClv8IB4Eqi0PC44a5+Z6OCKUAIssiqnIWDgsrF
- K2otMLRpC+gUPaG0TSYDo7xZxlZvnSBE1i/xIfuEtgmdGmmDZbm1FNzVWrqrmvf8ei1u+nEfoRx
- px1PkfFtKV2HMrM4=
-X-Received: by 2002:aa7:c695:0:b0:523:4acb:7f41 with SMTP id
- n21-20020aa7c695000000b005234acb7f41mr10439324edq.14.1696714175722; 
- Sat, 07 Oct 2023 14:29:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEpm3frAg7BAVTEdJzN+v/M1d8aPXLP5eN8PIcYmByXu9UjergQkclT/vYTBtV3oEW9IX/dvw==
-X-Received: by 2002:aa7:c695:0:b0:523:4acb:7f41 with SMTP id
- n21-20020aa7c695000000b005234acb7f41mr10439314edq.14.1696714175429; 
- Sat, 07 Oct 2023 14:29:35 -0700 (PDT)
-Received: from redhat.com ([2.55.10.88]) by smtp.gmail.com with ESMTPSA id
- l25-20020aa7c319000000b0053441519ed5sm4244114edq.88.2023.10.07.14.29.24
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 07 Oct 2023 14:29:34 -0700 (PDT)
-Date: Sat, 7 Oct 2023 17:29:09 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Hanna Czenczek <hreitz@redhat.com>
-Cc: virtio-fs@redhat.com,
- Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
- Anton Kuchin <antonkuchin@yandex-team.ru>, qemu-devel@nongnu.org,
- Stefan Hajnoczi <stefanha@redhat.com>
-Subject: Re: [Virtio-fs] [PATCH v4 2/8] vhost-user.rst: Improve
- [GS]ET_VRING_BASE doc
-Message-ID: <20231007172809-mutt-send-email-mst@kernel.org>
-References: <20231004125904.110781-1-hreitz@redhat.com>
- <20231004125904.110781-3-hreitz@redhat.com>
- <20231005173859.GC1342722@fedora>
- <851b7629-2302-5624-eb81-6839e250991e@redhat.com>
- <20231006044753-mutt-send-email-mst@kernel.org>
- <483bedcf-9c55-6977-f82c-5ce611ca5769@redhat.com>
- <3523c3c6-cd0c-947d-cf84-d648ef813f66@redhat.com>
+ (Exim 4.90_1) (envelope-from <lichao@loongson.cn>)
+ id 1qpIIz-0000VN-Gm
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 21:10:03 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lichao@loongson.cn>) id 1qpIIo-0005tH-EX
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 21:09:53 -0400
+Received: from loongson.cn (unknown [10.40.24.149])
+ by gateway (Coremail) with SMTP id _____8BxpPBTASJlwOkvAA--.26592S3;
+ Sun, 08 Oct 2023 09:09:40 +0800 (CST)
+Received: from [10.40.24.149] (unknown [10.40.24.149])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8BxbNxTASJlNnoaAA--.56007S3; 
+ Sun, 08 Oct 2023 09:09:39 +0800 (CST)
+Content-Type: multipart/alternative;
+ boundary="------------U9oR1eCOnFDyad0eYOeTNO91"
+Message-ID: <56be5657-8c37-126d-2626-a24fce49be50@loongson.cn>
+Date: Sun, 8 Oct 2023 09:09:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3523c3c6-cd0c-947d-cf84-d648ef813f66@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: On integrating LoongArch EDK2 firmware into QEMU build process
+To: WANG Xuerui <i.qemu@xen0n.name>, maobibo <maobibo@loongson.cn>,
+ qemu-devel <qemu-devel@nongnu.org>
+Cc: Song Gao <gaosong@loongson.cn>, =?UTF-8?B?5p2o5bCP5aif?=
+ <yangxiaojuan@loongson.cn>
+References: <1f1d3d9f-c3df-4f29-df66-886410994cc3@xen0n.name>
+ <67517424-0f32-09f8-6446-53f71ebd59b5@loongson.cn>
+ <89c67ba0-5152-4b03-b0be-19ba97bfac4c@xen0n.name>
+From: Chao Li <lichao@loongson.cn>
+In-Reply-To: <89c67ba0-5152-4b03-b0be-19ba97bfac4c@xen0n.name>
+X-CM-TRANSID: AQAAf8BxbNxTASJlNnoaAA--.56007S3
+X-CM-SenderInfo: xolfxt3r6o00pqjv00gofq/1tbiAQASCGUgwCUKLQABsd
+X-Coremail-Antispam: 1Uk129KBj93XoW7uF43AF1ruw4rZryxXF1fuFX_yoW5JFy7pr
+ 4fua13tr4kGFW8Kw1kCw47uFZavrn5GrW5Jw15GryDCwnIgFn2vry0qFs8CFy7Grn3t3yj
+ gFWjvw4kAa1DZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnRJUUUkKb4IE77IF4wAF
+ F20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r
+ 1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAF
+ wI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67
+ AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x2
+ 0xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1lYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx
+ 0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCjr7xv
+ wVCIw2I0I7xG6c02F41lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2
+ IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r106r1rMI8I3I0E7480Y4vE14v2
+ 6r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
+ AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IY
+ s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr
+ 0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1njjDUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=lichao@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -24
+X-Spam_score: -2.5
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
+ NICE_REPLY_A=-0.644, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -106,68 +82,170 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 06, 2023 at 03:58:44PM +0200, Hanna Czenczek wrote:
-> On 06.10.23 15:55, Hanna Czenczek wrote:
-> > On 06.10.23 10:49, Michael S. Tsirkin wrote:
-> > > On Fri, Oct 06, 2023 at 09:53:53AM +0200, Hanna Czenczek wrote:
-> > > > On 05.10.23 19:38, Stefan Hajnoczi wrote:
-> > > > > On Wed, Oct 04, 2023 at 02:58:58PM +0200, Hanna Czenczek wrote:
-> 
-> [...]
-> 
-> > > > >    ``VHOST_USER_GET_VRING_BASE``
-> > > > >      :id: 11
-> > > > >      :equivalent ioctl: ``VHOST_USER_GET_VRING_BASE``
-> > > > >      :request payload: vring state description
-> > > > > -  :reply payload: vring state description
-> > > > > +  :reply payload: vring descriptor index/indices
-> > > > > +
-> > > > > +  Stops the vring and returns the current descriptor index
-> > > > > or indices:
-> > > > > +
-> > > > > +    * For a split virtqueue, returns only the 16-bit next descriptor
-> > > > > +      index in the *Available Ring*.  The index in the *Used Ring* is
-> > > > > +      controlled by the guest driver and can be read from the vring
-> > > > > I find "is controlled by the guest driver" confusing. The
-> > > > > device writes
-> > > > > the Used Ring index. The driver only reads it. The device is
-> > > > > the active
-> > > > > party here.
-> > > > Er, good point.  That breaks the whole reasoning.  Then I don’t
-> > > > understand
-> > > > why we do get/set the available ring index and not the used ring
-> > > > index.  Do
-> > > > you know why?
-> > > It's simple. used ring index in memory is controlled by the device and
-> > > reflects device state.
-> > 
-> > Exactly, it’s device state, that’s why I thought the front-end needs to
-> > ensure its read and restored around the reset we currently have in
-> > vhost_dev_stop()/start().
-> > 
-> > > device can just read it back to restore.
-> > 
-> > I find it strange that the device is supposed to read its own state from
-> > memory.
-> > 
-> > > available ring index in memory is controlled by driver and does
-> > > not reflect device state.
-> > 
-> > Why can’t the device read the available index from memory?  That value
-> > is put into memory by the driver precisely so the device can read it
-> > from there.
-> 
-> Ah, wait, is the idea that the device may have an internal available index
-> counter that reflects what descriptor it has already fetched? I.e. this
-> index will lag behind the one in memory, and the difference are new
-> descriptors that the device still needs to read? If that internal counter is
-> the index that’s get/set here, then yes, that makes a lot of sense.
-> 
-> Hanna
+This is a multi-part message in MIME format.
+--------------U9oR1eCOnFDyad0eYOeTNO91
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Exactly. And this gets eventually written out as used index.
+Hi Xuerui,
 
--- 
-MST
+     Sorry for late reply. In fact the EDK2 repo is ready for submit, in 
+a few days I will commit the patch set in kilaterlee/edk2 repo and 
+execute the EDK2 CI testing. I will notify some people to review them, 
+you are also welcome to review the patch set. And then, I'll submit the 
+formal version patch to the EDK2 devel community.
+
+
+Thanks,
+Chao
+在 2023/10/1 04:16, WANG Xuerui 写道:
+> On 3/31/23 08:54, maobibo wrote:
+>> Xuerui,
+>>
+>> Thanks for your mail, it is a good suggestion. Now we are planing to 
+>> move LoongArch uefi bios from edk2-platform to edk2 repo, so that 
+>> uefi bios supporting LoongArch can be auto compiled and uploaded to 
+>> qemu repo. Only that process is somwhat slow since lacking of hands, 
+>> however we are doing this.
+>
+> Pinging: a few months have passed, and it seems this work is stalled? 
+> Given the LoongArch Linux KVM support is about to land in v6.7, it may 
+> be time to prepare the firmware and QEMU side of things, so users 
+> would no longer have to manually acquire the firmware blobs whenever 
+> they fire up their VMs.
+>
+>>
+>> Regards
+>> Bibo, Mao
+>>
+>> 在 2023/3/30 22:06, WANG Xuerui 写道:
+>>> Hi,
+>>>
+>>> Recently there are reportedly increased general interest in trying 
+>>> out LoongArch on top of QEMU, among both end users and 
+>>> organizations; and the EDK2 firmware port is fully upstreamed since 
+>>> the stable202211 version, and a build suitable for QEMU is already 
+>>> possible with Platform/Loongson/LoongArchQemuPkg in edk2-platforms. 
+>>> I think providing pre-built LoongArch firmware would make it much 
+>>> easier to dabble in system emulation, helping those users. (They 
+>>> currently have to pull a blob from yangxiaojuan/qemu-binary, and 
+>>> remember to pair certain version of QEMU with certain revision of 
+>>> the firmware blob. I'm also one of the users who can't remember 
+>>> which version to use, but I can always build my own; imagine the 
+>>> difficulty an end user would face!)
+>>>
+>>> So I tried to add a LoongArch build to the list stored in roms/, but 
+>>> discovered that edk2-platforms seems not included, because all other 
+>>> platforms' EDK2 packages are directly under the main edk2 repo.
+>>>
+>>> The question is: is integrating a platform package from 
+>>> edk2-platforms okay under the current build system, so we can 
+>>> arrange to provide edk2-platforms also as a submodule and go ahead? 
+>>> Or do we (the LoongArch firmware community) have to change the code 
+>>> organization to make necessary parts available in the main edk2 repo?
+>>>
+>>> CC-ing target/loongarch maintainers from Loongson too as you may 
+>>> have more information.
+>>
+--------------U9oR1eCOnFDyad0eYOeTNO91
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p><font size="2">Hi Xuerui,</font></p>
+    <p><font size="2">    Sorry for late reply. In fact the EDK2 repo is
+        ready for submit, in a few days I will commit the patch set in
+        kilaterlee/edk2 repo and execute the EDK2 CI testing. I will
+        notify some people to review them, you are also welcome to
+        review the patch set. And then, I'll submit the formal version
+        patch to the EDK2 devel community.</font></p>
+    <div class="moz-signature"
+      signature-switch-id="18b8a24a-8ce6-4aca-a108-921eeebcd5e9"><br>
+      <div
+        style="width:15%;height:1px;background-color:grey;transform:scaleY(0.3)"></div>
+      <div style="color:grey;font-size:11px">Thanks,<br>
+        Chao<br>
+      </div>
+    </div>
+    <div class="moz-cite-prefix">在 2023/10/1 04:16, WANG Xuerui 写道:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:89c67ba0-5152-4b03-b0be-19ba97bfac4c@xen0n.name">On
+      3/31/23 08:54, maobibo wrote:
+      <br>
+      <blockquote type="cite">Xuerui,
+        <br>
+        <br>
+        Thanks for your mail, it is a good suggestion. Now we are
+        planing to move LoongArch uefi bios from edk2-platform to edk2
+        repo, so that uefi bios supporting LoongArch can be auto
+        compiled and uploaded to qemu repo. Only that process is somwhat
+        slow since lacking of hands, however we are doing this.
+        <br>
+      </blockquote>
+      <br>
+      Pinging: a few months have passed, and it seems this work is
+      stalled? Given the LoongArch Linux KVM support is about to land in
+      v6.7, it may be time to prepare the firmware and QEMU side of
+      things, so users would no longer have to manually acquire the
+      firmware blobs whenever they fire up their VMs.
+      <br>
+      <br>
+      <blockquote type="cite">
+        <br>
+        Regards
+        <br>
+        Bibo, Mao
+        <br>
+        <br>
+        在 2023/3/30 22:06, WANG Xuerui 写道:
+        <br>
+        <blockquote type="cite">Hi,
+          <br>
+          <br>
+          Recently there are reportedly increased general interest in
+          trying out LoongArch on top of QEMU, among both end users and
+          organizations; and the EDK2 firmware port is fully upstreamed
+          since the stable202211 version, and a build suitable for QEMU
+          is already possible with Platform/Loongson/LoongArchQemuPkg in
+          edk2-platforms. I think providing pre-built LoongArch firmware
+          would make it much easier to dabble in system emulation,
+          helping those users. (They currently have to pull a blob from
+          yangxiaojuan/qemu-binary, and remember to pair certain version
+          of QEMU with certain revision of the firmware blob. I'm also
+          one of the users who can't remember which version to use, but
+          I can always build my own; imagine the difficulty an end user
+          would face!)
+          <br>
+          <br>
+          So I tried to add a LoongArch build to the list stored in
+          roms/, but discovered that edk2-platforms seems not included,
+          because all other platforms' EDK2 packages are directly under
+          the main edk2 repo.
+          <br>
+          <br>
+          The question is: is integrating a platform package from
+          edk2-platforms okay under the current build system, so we can
+          arrange to provide edk2-platforms also as a submodule and go
+          ahead? Or do we (the LoongArch firmware community) have to
+          change the code organization to make necessary parts available
+          in the main edk2 repo?
+          <br>
+          <br>
+          CC-ing target/loongarch maintainers from Loongson too as you
+          may have more information.
+          <br>
+        </blockquote>
+        <br>
+      </blockquote>
+    </blockquote>
+  </body>
+</html>
+
+--------------U9oR1eCOnFDyad0eYOeTNO91--
 
 
