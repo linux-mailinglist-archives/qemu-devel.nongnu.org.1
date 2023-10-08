@@ -2,61 +2,86 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C99A7BCC9E
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 08:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1A57BCCA3
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 08:26:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpND3-0008BE-HN; Sun, 08 Oct 2023 02:24:13 -0400
+	id 1qpNER-0003Ji-DC; Sun, 08 Oct 2023 02:25:39 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpND0-0008AN-W9
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:24:11 -0400
-Received: from mout.kundenserver.de ([212.227.126.187])
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpNEO-00032R-JR
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:25:36 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpNCz-0007qC-AD
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:24:10 -0400
-Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1M2ep5-1qsOHQ0msx-004BHv; Sun, 08
- Oct 2023 08:24:07 +0200
-From: Laurent Vivier <laurent@vivier.eu>
-To: qemu-devel@nongnu.org
-Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 20/20] mac_via: extend timer calibration hack to work with A/UX
-Date: Sun,  8 Oct 2023 08:23:49 +0200
-Message-ID: <20231008062349.2733552-21-laurent@vivier.eu>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231008062349.2733552-1-laurent@vivier.eu>
-References: <20231008062349.2733552-1-laurent@vivier.eu>
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpNEM-0008Ir-1X
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:25:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696746332;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=5ISXmeF+35VFO3PjG9dcF/hvSun6X2pxpQXcv2gcWX4=;
+ b=MwIK0usOmGH8IyuAjRQeMwkjwftBX+Q9YcvyDtALuVm3LGBcgoqHpVJd7KjfwD6988m6Mi
+ qx1rB3lkGrPiOMdzlq5ikUiiSiYvN/pX6X89W07u/5YEGx7s0mqjvGsr1yO9YCSYbLyYED
+ OL1tzdJPtQOFZufJHcAKsWh9+9vL5Bk=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644--BLL01SoMQmuosaer4N10Q-1; Sun, 08 Oct 2023 02:25:25 -0400
+X-MC-Unique: -BLL01SoMQmuosaer4N10Q-1
+Received: by mail-ed1-f69.google.com with SMTP id
+ 4fb4d7f45d1cf-53342507b7fso2670151a12.3
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 23:25:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696746324; x=1697351124;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=5ISXmeF+35VFO3PjG9dcF/hvSun6X2pxpQXcv2gcWX4=;
+ b=RCEOxE21RhfwXe036ygH2he3c7wLGNBhQlfb23N1qTREA6Ok9eY5pSoKGdGOcLDm41
+ Uhb9qYQgCOAjV5LXNG7/0G+A9skwEMIW/FAr1S898C4OMetDlIAP9hDJEY4LbGs9Sr8E
+ pTMjI0KGYeBcK16XT49WkBdQfgFx6i53sY+Sv0Aff0g/87eCX6CWCWHYlAp8jZ9SabD0
+ DjA6gMwwyp9kN1ZQYcUIxwjl8+lf4TSLjleX9ODCCNAk7RVn1fBDAKqMlZo52lGNEO3u
+ G17ETn9+RMAl4wI40ZhqyD0jXu3YDNhHJ2YqYaF2lwnHDoJSbUYG3Dh3PDTgKz4gmhW6
+ eKLg==
+X-Gm-Message-State: AOJu0Yykh75ctY+xW3RavX4unFiNn+k5s1EZLyfrflkOYRgFTxeV28b5
+ Sq1rWWsKWsyBnSSrlEj7rHDL+XsnfS9RwF8eZppDXnGu/fDhyrcANwjN/WIQY3LSpl1lR7JOpmI
+ Wn2HkvRCFpZdus3w=
+X-Received: by 2002:a05:6402:b35:b0:530:7ceb:334 with SMTP id
+ bo21-20020a0564020b3500b005307ceb0334mr10495468edb.3.1696746324672; 
+ Sat, 07 Oct 2023 23:25:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHSR+yIKVmB2lZqcm2angrWuX/J40utyoNQuGaZ4Ivt/be+V/kjWmnGQcIVUAzG/BDexVp+6A==
+X-Received: by 2002:a05:6402:b35:b0:530:7ceb:334 with SMTP id
+ bo21-20020a0564020b3500b005307ceb0334mr10495461edb.3.1696746324412; 
+ Sat, 07 Oct 2023 23:25:24 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:1f6:d74e:e6b1:da81:860a:5e9e])
+ by smtp.gmail.com with ESMTPSA id
+ w10-20020a056402128a00b0053404772535sm4689922edv.81.2023.10.07.23.25.22
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sat, 07 Oct 2023 23:25:23 -0700 (PDT)
+Date: Sun, 8 Oct 2023 02:25:20 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+ "open list:All patches CC here" <qemu-devel@nongnu.org>
+Subject: Re: [PATCH 1/6] tap: Fix virtio-net header buffer size
+Message-ID: <20231008022442-mutt-send-email-mst@kernel.org>
+References: <20231008052917.145245-1-akihiko.odaki@daynix.com>
+ <20231008052917.145245-2-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:muxX34OZPlG+tVM/KErZKWneQNQtd7qKzYRCqKlq+ZtowYKTrUz
- dv7BnJpnSZvnJocMVMLjK5fJQ40GsKQmyoXeM/hennNymblbO7kPjs6BQK8RsQNOmuVZy1n
- kfmUhdsgh2JE9iPnkQ8zzxReGCDsiJfNHr+0nY9iRHDaMp5Qxwk/Zux39Gn3HJoboKRtgyu
- YA9QXUyNQM7F/53fWELhg==
-UI-OutboundReport: notjunk:1;M01:P0:5uwZ6rjD1r0=;Vxq0cRCaJFKq24MqyCO1RHFgs3U
- 3kXbJ+slURz1pJEmw8XlfVx57j4/AEKF6SWmtRBF8mRVaIhCmwnRWkyCUXUbRxsoGZ8Q4fVHX
- 3uqWOBgRm2NGJsNQ9aEwfA53LpKbuYEJUggI6JeBr0zB8/fyUDR78OkrcexYuaeC1IvPVuBJJ
- GxAWFRXI1RLCQkFL/z2CW1lyq/XODfuQ2fWZfWUohPOt9S9xR+rB0lLw/MJDAbsQesF/Md+s2
- vQRWryttvhCbCKBkSP1g8fgAxS5hWTuaaS2DETjO+8yrwW3Cy6F9zC0hYgem1lzRC0sYQQTu6
- g6dKMW6lAc83iiPrPQC+S+ZVvL97w/YI4inFZvByiRrPfoVrcWEvcQogqghBYGQzXJgQlV9p/
- xaT4sEUbllMiwup5g4vckK4u3lGzv518ufcMsYztxEEmVHAy7Bv5+hPrtkwwnYrMPA9DgsJa3
- pNRTrhqWxWxD92eOHjwdHHnZMQGxXAGd1xUEefiiABqpMHlknzhK2bh96uUC+AbcvJ1WdL5cJ
- vQxWWG4MuAZm9Cglnkq37qvss57V59tVmNj0HQPjtIOcArkDhyLO7Z702hNOLSMDbpLNMaiat
- 9b/fwknrXapkEXWy3WDWAHWzv9MjWC2MmF7xDJ0ri+6lBFoSytZ0GCuUyinCqp9sI6yYWZdyy
- yns5eWUDYO7Mb6bj5fqUKPyCpxtL981TM84T+Ey2j1n7PMKvbpvdX24qZ2w/CGKbtg+8W+xm+
- LrYEiHKjRhx0FBIvnJb2DbZwBviG0MEBvazxXGCFmOvUBDhRuPGxoO5huyQUhSo7wMkVG66jR
- Zl5o8tE3e2FUxTP4X81O3fEufrAdAB5aWzNPcb+WQKf0mZ4uo0WCDKm0PRpkUbPgpaXhrSBTe
- emaFz2ZcDyRfZEg==
-Received-SPF: none client-ip=212.227.126.187; envelope-from=laurent@vivier.eu;
- helo=mout.kundenserver.de
-X-Spam_score_int: -22
-X-Spam_score: -2.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231008052917.145245-2-akihiko.odaki@daynix.com>
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H2=-0.376, SPF_HELO_NONE=0.001,
- SPF_NONE=0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -72,105 +97,45 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+On Sun, Oct 08, 2023 at 02:29:10PM +0900, Akihiko Odaki wrote:
+> The largest possible virtio-net header is struct virtio_net_hdr_v1_hash.
+> 
+> Fixes: fbbdbddec0 ("tap: allow extended virtio header with hash info")
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The A/UX timer calibration loop runs continuously until 2 consecutive iterations
-differ by at least 0x492 timer ticks. Modern hosts execute the timer calibration
-loop so fast that this situation never occurs causing a hang on boot.
+This thread is malformed BTW: cover letter seems to be
+missing on list.
 
-Use a similar method to Shoebill which is to randomly add 0x500 to the T2
-counter value during calibration to enable it to eventually succeed.
 
-Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Message-ID: <20231004083806.757242-21-mark.cave-ayland@ilande.co.uk>
-Signed-off-by: Laurent Vivier <laurent@vivier.eu>
----
- hw/misc/mac_via.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
-
-diff --git a/hw/misc/mac_via.c b/hw/misc/mac_via.c
-index 500ece5872bd..b6206ef73ca7 100644
---- a/hw/misc/mac_via.c
-+++ b/hw/misc/mac_via.c
-@@ -983,6 +983,44 @@ static void via1_timer_calibration_hack(MOS6522Q800VIA1State *v1s, int addr,
-             /* Looks like there has been a reset? */
-             v1s->timer_hack_state = 1;
-         }
-+
-+        if (addr == VIA_REG_T2CL && val == 0xf0) {
-+            /* VIA_REG_T2CL: low byte of counter (A/UX) */
-+            v1s->timer_hack_state = 5;
-+        }
-+        break;
-+    case 5:
-+        if (addr == VIA_REG_T2CH && val == 0x3c) {
-+            /*
-+             * VIA_REG_T2CH: high byte of counter (A/UX). We are now extremely
-+             * likely to be in the A/UX timer calibration routine, so move to
-+             * the next state where we enable the calibration hack.
-+             */
-+            v1s->timer_hack_state = 6;
-+        } else if ((addr == VIA_REG_IER && val == 0x20) ||
-+                   addr == VIA_REG_T2CH) {
-+            /* We're doing something else with the timer, not calibration */
-+            v1s->timer_hack_state = 0;
-+        }
-+        break;
-+    case 6:
-+        if ((addr == VIA_REG_IER && val == 0x20) || addr == VIA_REG_T2CH) {
-+            /* End of A/UX timer calibration routine, or another write */
-+            v1s->timer_hack_state = 7;
-+        } else {
-+            v1s->timer_hack_state = 0;
-+        }
-+        break;
-+    case 7:
-+        /*
-+         * This is the normal post-calibration timer state once both the
-+         * MacOS toolbox and A/UX have been calibrated, until we see a write
-+         * to VIA_REG_PCR to suggest a reset
-+         */
-+        if (addr == VIA_REG_PCR && val == 0x22) {
-+            /* Looks like there has been a reset? */
-+            v1s->timer_hack_state = 1;
-+        }
-         break;
-     default:
-         g_assert_not_reached();
-@@ -998,6 +1036,7 @@ static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
-     MOS6522Q800VIA1State *s = MOS6522_Q800_VIA1(opaque);
-     MOS6522State *ms = MOS6522(s);
-     uint64_t ret;
-+    int64_t now;
- 
-     addr = (addr >> 9) & 0xf;
-     ret = mos6522_read(ms, addr, size);
-@@ -1007,6 +1046,23 @@ static uint64_t mos6522_q800_via1_read(void *opaque, hwaddr addr, unsigned size)
-         /* Quadra 800 Id */
-         ret = (ret & ~VIA1A_CPUID_MASK) | VIA1A_CPUID_Q800;
-         break;
-+    case VIA_REG_T2CH:
-+        if (s->timer_hack_state == 6) {
-+            /*
-+             * The A/UX timer calibration loop runs continuously until 2
-+             * consecutive iterations differ by at least 0x492 timer ticks.
-+             * Modern hosts execute the timer calibration loop so fast that
-+             * this situation never occurs causing a hang on boot. Use a
-+             * similar method to Shoebill which is to randomly add 0x500 to
-+             * the T2 counter value during calibration to enable it to
-+             * eventually succeed.
-+             */
-+            now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
-+            if (now & 1) {
-+                ret += 0x5;
-+            }
-+        }
-+        break;
-     }
-     return ret;
- }
--- 
-2.41.0
+> ---
+>  net/tap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/tap.c b/net/tap.c
+> index c6639d9f20..ea46feeaa8 100644
+> --- a/net/tap.c
+> +++ b/net/tap.c
+> @@ -118,7 +118,7 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
+>      TAPState *s = DO_UPCAST(TAPState, nc, nc);
+>      const struct iovec *iovp = iov;
+>      struct iovec iov_copy[iovcnt + 1];
+> -    struct virtio_net_hdr_mrg_rxbuf hdr = { };
+> +    struct virtio_net_hdr_v1_hash hdr = { };
+>  
+>      if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
+>          iov_copy[0].iov_base = &hdr;
+> @@ -136,7 +136,7 @@ static ssize_t tap_receive_raw(NetClientState *nc, const uint8_t *buf, size_t si
+>      TAPState *s = DO_UPCAST(TAPState, nc, nc);
+>      struct iovec iov[2];
+>      int iovcnt = 0;
+> -    struct virtio_net_hdr_mrg_rxbuf hdr = { };
+> +    struct virtio_net_hdr_v1_hash hdr = { };
+>  
+>      if (s->host_vnet_hdr_len) {
+>          iov[iovcnt].iov_base = &hdr;
+> -- 
+> 2.42.0
+> 
+> 
 
 
