@@ -2,85 +2,59 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68EA17BCC8F
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 08:21:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 191977BCC91
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 08:24:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpNAN-0007Hd-4R; Sun, 08 Oct 2023 02:21:27 -0400
+	id 1qpNCo-00083P-UO; Sun, 08 Oct 2023 02:23:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpNAL-0007HH-4K
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:21:25 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpNCm-00082g-MR
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:23:56 -0400
+Received: from mout.kundenserver.de ([212.227.17.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpNAI-0006sY-MI
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:21:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696746081;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=6sIVJuObwJwztZISAUMT5FXXXqfMAbiWeyXa9z1lMWY=;
- b=fMgpH7XJwQ3ede/nuAgLcsEuoXcYq5z8jxQRxCvhmSuSgAutQ+6Rbtq8QVSTb6N7EzjUWl
- ETP/rR4VcFZutRcKBLbnUArmQLn4logne5f+Eo1oGvSH2y8QVZ2cP8JPLnhwyQUEw2MhDl
- 0ZqV7lx1/ZBU1qJqNLbUj2YVvM4KBRc=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-L1jmg706P024QfQT53qcKg-1; Sun, 08 Oct 2023 02:21:19 -0400
-X-MC-Unique: L1jmg706P024QfQT53qcKg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9adc78b386cso280630466b.0
- for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 23:21:19 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696746078; x=1697350878;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6sIVJuObwJwztZISAUMT5FXXXqfMAbiWeyXa9z1lMWY=;
- b=Ci2ZhkaOE1yV7Dw0VZ4NBdSObe5quS7qtRe3UgBIwVzgQofyhNhB6KENkP126VHAQN
- W51HPvq3YdGQhgsHau2fK/0dGsJOQx5vOClBpr7fhVpckhCptN8DKlioI1GDZNzC87Zi
- WtDJrX56+zP6Cr4szxgkWTuxb6ZZ4l3Hcv54nWehASCV74SgE3ZjNtaIMlrTfyT+37JS
- 1Eyetg9DiEd1L44KAEgdatI9f2oyKiY0N8W7VhWQrke3zF0D6kennERIRSr5mKDVOaOq
- QCynvUa3RbLhG6Y/Au00XdLYsjbtWRdrYwquGMLHqs7So+HwnS0QCJdR+Fx75C3bTRUl
- PmeQ==
-X-Gm-Message-State: AOJu0Yw0nQUl9tIP+DlphAVHiRp/yDhCYX016PtMKdQtnkNbi4hPqzrk
- kkgizDRGJXKJXhIrWaPjz/NZ42eY4utpmfd7UTWC4sfLFwymp4AXOb5EH95jC1DiDTOmKA1oCoR
- xVNkCAiq3/FuDDTE=
-X-Received: by 2002:a17:906:9c1:b0:9b2:89ec:d701 with SMTP id
- r1-20020a17090609c100b009b289ecd701mr11701199eje.27.1696746078598; 
- Sat, 07 Oct 2023 23:21:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IH3aZ/ookFhPqBrCTk+Y3lAJQ5r0AhJyhXrb/n1dygiKVuOpkNlS576VVwBMnbF70HU3/94zA==
-X-Received: by 2002:a17:906:9c1:b0:9b2:89ec:d701 with SMTP id
- r1-20020a17090609c100b009b289ecd701mr11701194eje.27.1696746078402; 
- Sat, 07 Oct 2023 23:21:18 -0700 (PDT)
-Received: from redhat.com ([2a02:14f:1f6:d74e:e6b1:da81:860a:5e9e])
- by smtp.gmail.com with ESMTPSA id
- g7-20020a1709067c4700b0099bd1a78ef5sm5137351ejp.74.2023.10.07.23.21.16
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sat, 07 Oct 2023 23:21:17 -0700 (PDT)
-Date: Sun, 8 Oct 2023 02:21:13 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, qemu-trivial@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH] libvhost-user: Fix compiler warning with -Wshadow=local
-Message-ID: <20231008022107-mutt-send-email-mst@kernel.org>
-References: <20231006121129.487251-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpNCk-0007jP-QX
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:23:56 -0400
+Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue107
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1M1qfu-1qrZ431qgK-002GrQ; Sun, 08
+ Oct 2023 08:23:51 +0200
+From: Laurent Vivier <laurent@vivier.eu>
+To: qemu-devel@nongnu.org
+Cc: Laurent Vivier <laurent@vivier.eu>
+Subject: [PULL 00/20] Q800 for 8.2 patches
+Date: Sun,  8 Oct 2023 08:23:29 +0200
+Message-ID: <20231008062349.2733552-1-laurent@vivier.eu>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231006121129.487251-1-thuth@redhat.com>
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:BeVYl1syj6+V9L82i9eff+60f78rkKxoYqRGVfQY2ShHIQ2LMR/
+ 7IW8pAoY7M7X24GzMCeVgb3nvDWvX5KHE3xVutyv/7GdZfE1p8reXIWVCFIkYHuHpeeNYd0
+ 0+OLga8EAqzVCT8W+7NI4G8xFWnBBKzlPnkWQXOsgiqwFxq4/BHMOIRGT6NQT/12M1ihi/j
+ ULJJJ8c5D+U3Wdu81XJXg==
+UI-OutboundReport: notjunk:1;M01:P0:WRVg0pL2DO4=;Y9ZK6jAClBlpVNAADk1H9J70mtE
+ xrVNzRSd4WNwnkSQmVuMjqAWTc5VEhKAaYU6Eib8dASYo/aKedE4t6coe+5VLUvin2STpCpHg
+ sHhiAXvryZczFfwGrOyVVdaJFH9YMJ7E6bSrRfly63TX6FtCb7etSGFzC2pykyPPM6p7rP6mX
+ sn3ezx0B9FydqBfKZt1Iclq5G7/evOK2/3QJ0P04xe48OzWQJOIzwblYdSqrdhAk+hT5cSUQ1
+ DWsM4UE9yvod9IUf7tP7Kxan0p6E3MbD7Se0kyLsQErtHdjucMA9t4X0UB+A1TZc+JSoo90J0
+ IwqmBsg1SCm7nhQqhaLvNINYsCpPI9ikJzH55tddomqg14b5aVyY0hzevIKZksStGQecb87dT
+ g51cZpMg8GugiwtdzADnybamMTJnX8NzcdPyMzZS8HX3f4uujH6jzZru1kNXckjEKhLB2JY8k
+ tDHkod7ZBcf/IRD4Ukgzg4dn98pAS76tRrT4K96nVrSwoBuScqgI3Xqa2Uy58eSx8zwKWQDdV
+ txijXFLtSTlc/yCKEyPdjz0MdIxXFtSGxGe/DJCWct3kzoTcMPgaUvaVpgfF5goHm7TFdsjdo
+ PYu6xZg7pHyP0/18bCucWXD3TZSKJcnyRKFaHDfsUVw/az2TDG736YcDUntYnGOjUGhM+Ely0
+ fk8HT6drP0bE/gAGIFybuOc8xp0xrrhg/rfZPOiPPMpLZ7HNZWaeculI6mPzq3XSo9hjHKJ2F
+ /vkJCvzZHUtP5ElzQr2HxhWEd4R11s4AqKeO4LM+ww9g/Yp/YZn8/83NSo7dsT38UnGoB9JXg
+ 0rsW13d3mLUsD359DrerdNpB9zpjnWy5rItTuaPg71cY697RHMDQRQcXuKPtEYAilzYSdHjCP
+ cOrLe1wv818yQxg==
+Received-SPF: none client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
+ helo=mout.kundenserver.de
+X-Spam_score_int: -22
+X-Spam_score: -2.3
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.376, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,51 +70,85 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Fri, Oct 06, 2023 at 02:11:29PM +0200, Thomas Huth wrote:
-> Rename shadowing variables to make this code compilable
-> with -Wshadow=local.
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
+The following changes since commit 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d:
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2023-10-05 09:01:01 -0400)
 
-> ---
->  subprojects/libvhost-user/libvhost-user.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
-> 
-> diff --git a/subprojects/libvhost-user/libvhost-user.c b/subprojects/libvhost-user/libvhost-user.c
-> index 051a611da3..ea2822a44c 100644
-> --- a/subprojects/libvhost-user/libvhost-user.c
-> +++ b/subprojects/libvhost-user/libvhost-user.c
-> @@ -870,10 +870,10 @@ vu_rem_mem_reg(VuDev *dev, VhostUserMsg *vmsg) {
->      for (i = 0; i < dev->nregions; i++) {
->          if (reg_equal(&dev->regions[i], msg_region)) {
->              VuDevRegion *r = &dev->regions[i];
-> -            void *m = (void *) (uintptr_t) r->mmap_addr;
-> +            void *ma = (void *) (uintptr_t) r->mmap_addr;
->  
-> -            if (m) {
-> -                munmap(m, r->size + r->mmap_offset);
-> +            if (ma) {
-> +                munmap(ma, r->size + r->mmap_offset);
->              }
->  
->              /*
-> @@ -1005,10 +1005,10 @@ vu_set_mem_table_exec(VuDev *dev, VhostUserMsg *vmsg)
->  
->      for (i = 0; i < dev->nregions; i++) {
->          VuDevRegion *r = &dev->regions[i];
-> -        void *m = (void *) (uintptr_t) r->mmap_addr;
-> +        void *ma = (void *) (uintptr_t) r->mmap_addr;
->  
-> -        if (m) {
-> -            munmap(m, r->size + r->mmap_offset);
-> +        if (ma) {
-> +            munmap(ma, r->size + r->mmap_offset);
->          }
->      }
->      dev->nregions = memory->nregions;
-> -- 
-> 2.41.0
+are available in the Git repository at:
+
+  https://github.com/vivier/qemu-m68k.git tags/q800-for-8.2-pull-request
+
+for you to fetch changes up to b4d3a83b89fba814613f7ead6b6ea92e0b2c3cd8:
+
+  mac_via: extend timer calibration hack to work with A/UX (2023-10-06 10:33:43 +0200)
+
+----------------------------------------------------------------
+Pull request q800 20231008
+
+add support for booting:
+  - MacOS 7.1 - 8.1, with or without virtual memory enabled
+  - A/UX 3.0.1
+  - NetBSD 9.3
+  - Linux (via EMILE)
+
+----------------------------------------------------------------
+
+Mark Cave-Ayland (20):
+  q800-glue.c: convert to Resettable interface
+  q800: add djMEMC memory controller
+  q800: add machine id register
+  q800: implement additional machine id bits on VIA1 port A
+  q800: add IOSB subsystem
+  q800: allow accesses to RAM area even if less memory is available
+  audio: add Apple Sound Chip (ASC) emulation
+  asc: generate silence if FIFO empty but engine still running
+  q800: add Apple Sound Chip (ASC) audio to machine
+  q800: add easc bool machine class property to switch between ASC and
+    EASC
+  swim: add trace events for IWM and ISM registers
+  swim: split into separate IWM and ISM register blocks
+  swim: update IWM/ISM register block decoding
+  mac_via: work around underflow in TimeDBRA timing loop in SETUPTIMEK
+  mac_via: workaround NetBSD ADB bus enumeration issue
+  mac_via: implement ADB_STATE_IDLE state if shift register in input
+    mode
+  mac_via: always clear ADB interrupt when switching to A/UX mode
+  q800: add ESCC alias at 0xc000
+  q800: add alias for MacOS toolbox ROM at 0x40000000
+  mac_via: extend timer calibration hack to work with A/UX
+
+ MAINTAINERS                 |   6 +
+ include/hw/audio/asc.h      |  86 +++++
+ include/hw/block/swim.h     |  21 +-
+ include/hw/m68k/q800-glue.h |   4 +-
+ include/hw/m68k/q800.h      |  11 +
+ include/hw/misc/djmemc.h    |  30 ++
+ include/hw/misc/iosb.h      |  25 ++
+ include/hw/misc/mac_via.h   |   3 +
+ hw/audio/asc.c              | 727 ++++++++++++++++++++++++++++++++++++
+ hw/block/swim.c             | 261 ++++++++-----
+ hw/m68k/q800-glue.c         |  18 +-
+ hw/m68k/q800.c              | 138 ++++++-
+ hw/misc/djmemc.c            | 135 +++++++
+ hw/misc/iosb.c              | 133 +++++++
+ hw/misc/mac_via.c           | 234 +++++++++++-
+ hw/audio/Kconfig            |   3 +
+ hw/audio/meson.build        |   1 +
+ hw/audio/trace-events       |  10 +
+ hw/block/trace-events       |   8 +
+ hw/m68k/Kconfig             |   3 +
+ hw/misc/Kconfig             |   6 +
+ hw/misc/meson.build         |   2 +
+ hw/misc/trace-events        |  10 +
+ 23 files changed, 1769 insertions(+), 106 deletions(-)
+ create mode 100644 include/hw/audio/asc.h
+ create mode 100644 include/hw/misc/djmemc.h
+ create mode 100644 include/hw/misc/iosb.h
+ create mode 100644 hw/audio/asc.c
+ create mode 100644 hw/misc/djmemc.c
+ create mode 100644 hw/misc/iosb.c
+
+-- 
+2.41.0
 
 
