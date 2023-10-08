@@ -2,51 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6DC7BCE00
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 13:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 830B27BCE3D
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 13:41:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpRgZ-0002px-QU; Sun, 08 Oct 2023 07:10:59 -0400
+	id 1qpS8A-0000ZU-E5; Sun, 08 Oct 2023 07:39:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpRgX-0002pb-8E; Sun, 08 Oct 2023 07:10:57 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpRgU-0004sp-MC; Sun, 08 Oct 2023 07:10:56 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 59AB774632B;
- Sun,  8 Oct 2023 13:08:59 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 4278E7456A7; Sun,  8 Oct 2023 13:08:58 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 408DE745681;
- Sun,  8 Oct 2023 13:08:58 +0200 (CEST)
-Date: Sun, 8 Oct 2023 13:08:58 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH 1/3] via-ide: Fix legacy mode emulation
-In-Reply-To: <33347356-be91-4dde-8535-5a59ee1c80f1@ilande.co.uk>
-Message-ID: <a7821bf0-5d1f-ddda-f408-f4cd0432ddbf@eik.bme.hu>
-References: <cover.1696542537.git.balaton@eik.bme.hu>
- <12ce9caa682545cd43318c4679530202140117c0.1696542537.git.balaton@eik.bme.hu>
- <33347356-be91-4dde-8535-5a59ee1c80f1@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpS83-0000YV-38
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 07:39:23 -0400
+Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpS80-0003Rq-Kn
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 07:39:22 -0400
+Received: by mail-ej1-x62e.google.com with SMTP id
+ a640c23a62f3a-9b9faf05f51so386576366b.2
+ for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 04:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696765158; x=1697369958; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=BE2Zl2W/41pxXEop0ddPmO4Xpt+rXCIJhPcbT3/SKVM=;
+ b=wlS2W1bWkGiulU4g4po0HTd5B2J6V2R33C99kCfmVFcrayh72Vt1hgkE3yEwfQr8+b
+ Hgr0F9z/79jC5q/kEg7glrzvFqcTrAQN8Y6WtP5QmX4uIabtwqIW57hkJ9UQc2ZDjWDY
+ 3pwJSeJ27olUD8IlTgvEjtzePt7ZXDZc67Xzo6yM1aVUw5wQr4wmUyRvS7keeSg5iMKk
+ oCt5eKzLhB+zTJ4AJ8v8o98si5gBRFk9SBXaMc+tOVraCdYKZcYYo3lPrd/tanXJfQ19
+ c9wMcViTtmpt0aG3IUbf6STY+9dhl+mNptuRfR7ChWBNEDRBHLkZZeNdqrdzAAKSZhSz
+ gesg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696765158; x=1697369958;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=BE2Zl2W/41pxXEop0ddPmO4Xpt+rXCIJhPcbT3/SKVM=;
+ b=CTV1f2xaD6M9kzpAMH6sraot5ZWncV3nl8wFQl3u65SDMPynU2WbLXKG5sT7Nyqmw0
+ jsBM9Ayew8Uag5gaAQHf2Wt1VU5WyztZpe2QImjQrrod1MZuoCYptQJ4VHfGtA3i0crX
+ 8qtxjEjSRUd2rsTQTRrbrAfdZN1hHrCPwlCFhdh8kFPttBQmWbzn5qwe/zl8/Ty5B0Tj
+ xfFbdp7ijf6mcjb+6bkc3Kz8MA7A2w0a3PQdmKEh4DUyTh6i8bN4xOZ7a1c/v2sEoeJi
+ Xhr2WODbmqt9XiHo1Zv35VTwhcWakmpe5dCSV3I/GzZsr6Y5R7W+P83KSGpYgAgyOidV
+ 2mHw==
+X-Gm-Message-State: AOJu0YwNaOf7Xccr1gxARMtsfwb82RNH9cOtFOW442A4c9Ip9CkwcU3z
+ ewE7nhJEA5Ztdzn96smRcypcdQ==
+X-Google-Smtp-Source: AGHT+IHvgy4LcoA/6545hxwMkEyYEXyMbRQFDKBFYVgpEGZCGqbLZ4z8vVqw/qRJ/WQZhacFmnnM3w==
+X-Received: by 2002:a17:907:77c5:b0:9ad:e180:16e3 with SMTP id
+ kz5-20020a17090777c500b009ade18016e3mr11598305ejc.37.1696765158338; 
+ Sun, 08 Oct 2023 04:39:18 -0700 (PDT)
+Received: from [192.168.69.115] (4rc44-h01-176-171-215-42.dsl.sta.abo.bbox.fr.
+ [176.171.215.42]) by smtp.gmail.com with ESMTPSA id
+ n25-20020a170906841900b0099d9dee8108sm5582689ejx.149.2023.10.08.04.39.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 08 Oct 2023 04:39:17 -0700 (PDT)
+Message-ID: <bb34f0ec-06b4-c635-dce9-385c3b87c57e@linaro.org>
+Date: Sun, 8 Oct 2023 13:39:16 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII; format=flowed
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v3 03/10] migration: Refactor error handling in source
+ return path
+Content-Language: en-US
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Fabiano Rosas <farosas@suse.de>,
+ Juan Quintela <quintela@redhat.com>, Markus Armbruster <armbru@redhat.com>
+References: <20231004220240.167175-1-peterx@redhat.com>
+ <20231004220240.167175-4-peterx@redhat.com>
+ <f60f3687-d778-3d8e-41f6-39fbcad8f0f8@linaro.org> <ZR7e3cmxCH9LAdnS@x1n>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <ZR7e3cmxCH9LAdnS@x1n>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.818,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -63,169 +96,265 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, 8 Oct 2023, Mark Cave-Ayland wrote:
-> On 05/10/2023 23:13, BALATON Zoltan wrote:
->
->> The initial value for BARs were set in reset method for emulating
->> legacy mode at start but this does not work because PCI code resets
->> BARs after calling device reset method.
->
-> This is certainly something I've noticed when testing previous versions of 
-> the VIA patches. Perhaps it's worth a separate thread to the PCI devs?
+On 5/10/23 18:05, Peter Xu wrote:
+> On Thu, Oct 05, 2023 at 08:11:33AM +0200, Philippe Mathieu-Daudé wrote:
+>> Hi Peter,
+>>
+>> On 5/10/23 00:02, Peter Xu wrote:
+>>> rp_state.error was a boolean used to show error happened in return path
+>>> thread.  That's not only duplicating error reporting (migrate_set_error),
+>>> but also not good enough in that we only do error_report() and set it to
+>>> true, we never can keep a history of the exact error and show it in
+>>> query-migrate.
+>>>
+>>> To make this better, a few things done:
+>>>
+>>>     - Use error_setg() rather than error_report() across the whole lifecycle
+>>>       of return path thread, keeping the error in an Error*.
+>>>
+>>>     - Use migrate_set_error() to apply that captured error to the global
+>>>       migration object when error occured in this thread.
+>>>
+>>>     - With above, no need to have mark_source_rp_bad(), remove it, alongside
+>>>       with rp_state.error itself.
+>>>
+>>> Signed-off-by: Peter Xu <peterx@redhat.com>
+>>> ---
+>>>    migration/migration.h  |   1 -
+>>>    migration/ram.h        |   5 +-
+>>>    migration/migration.c  | 123 ++++++++++++++++++-----------------------
+>>>    migration/ram.c        |  41 +++++++-------
+>>>    migration/trace-events |   4 +-
+>>>    5 files changed, 79 insertions(+), 95 deletions(-)
+>>
+>>
+>>> -int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block)
+>>> +int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+>>>    {
+>>>        int ret = -EINVAL;
+>>>        /* from_dst_file is always valid because we're within rp_thread */
+>>
+>>
+>>> @@ -4193,16 +4194,16 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block)
+>>>        ret = qemu_file_get_error(file);
+>>>        if (ret || size != local_size) {
+>>> -        error_report("%s: read bitmap failed for ramblock '%s': %d"
+>>> -                     " (size 0x%"PRIx64", got: 0x%"PRIx64")",
+>>> -                     __func__, block->idstr, ret, local_size, size);
+>>> +        error_setg(errp, "read bitmap failed for ramblock '%s': %d"
+>>> +                   " (size 0x%"PRIx64", got: 0x%"PRIx64")",
+>>> +                   block->idstr, ret, local_size, size);
+>>>            ret = -EIO;
+>>>            goto out;
+>>>        }
+>>>        if (end_mark != RAMBLOCK_RECV_BITMAP_ENDING) {
+>>> -        error_report("%s: ramblock '%s' end mark incorrect: 0x%"PRIx64,
+>>> -                     __func__, block->idstr, end_mark);
+>>> +        error_setg(errp, "ramblock '%s' end mark incorrect: 0x%"PRIx64,
+>>> +                   block->idstr, end_mark);
+>>>            ret = -EINVAL;
+>>>            goto out;
+>>>        }
+>>
+>> This function returns -EIO/-EINVAL errors, propagated to its 2 callers
+>>   - migrate_handle_rp_recv_bitmap()
+>>   - migrate_handle_rp_resume_ack()
+> 
+> It was only called in migrate_handle_rp_recv_bitmap(), but I think I see
+> what you meant..
+> 
+>> which are only used in source_return_path_thread() where the return
+>> value is only checked as boolean.
+>>
+>> Could we simplify them returning a boolean (which is the pattern with
+>> functions taking an Error** as last parameter)?
+> 
+> Yes, with errp passed in, the "int" retcode is slightly duplicated.  I can
+> add one more patch on top of this as further cleanup, as below.
+> 
+> Thanks,
+> 
+> ===8<===
+>  From b1052befd72beb129012afddf5647339fe4e257c Mon Sep 17 00:00:00 2001
+> From: Peter Xu <peterx@redhat.com>
+> Date: Thu, 5 Oct 2023 12:03:44 -0400
+> Subject: [PATCH] migration: Change ram_dirty_bitmap_reload() retval to bool
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: 8bit
+> 
+> Now we have a Error** passed into the return path thread stack, which is
+> even clearer than an int retval.  Change ram_dirty_bitmap_reload() and the
+> callers to use a bool instead to replace errnos.
+> 
+> Suggested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Peter Xu <peterx@redhat.com>
+> ---
+>   migration/ram.h       |  2 +-
+>   migration/migration.c | 18 +++++++++---------
+>   migration/ram.c       | 24 +++++++++++-------------
+>   3 files changed, 21 insertions(+), 23 deletions(-)
+> 
+> diff --git a/migration/ram.h b/migration/ram.h
+> index 14ed666d58..af0290f8ab 100644
+> --- a/migration/ram.h
+> +++ b/migration/ram.h
+> @@ -72,7 +72,7 @@ void ramblock_recv_bitmap_set(RAMBlock *rb, void *host_addr);
+>   void ramblock_recv_bitmap_set_range(RAMBlock *rb, void *host_addr, size_t nr);
+>   int64_t ramblock_recv_bitmap_send(QEMUFile *file,
+>                                     const char *block_name);
+> -int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *rb, Error **errp);
+> +bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *rb, Error **errp);
+>   bool ramblock_page_is_discarded(RAMBlock *rb, ram_addr_t start);
+>   void postcopy_preempt_shutdown_file(MigrationState *s);
+>   void *postcopy_preempt_thread(void *opaque);
+> diff --git a/migration/migration.c b/migration/migration.c
+> index 1a7f214fcf..e7375810be 100644
+> --- a/migration/migration.c
+> +++ b/migration/migration.c
+> @@ -1837,29 +1837,29 @@ static void migrate_handle_rp_req_pages(MigrationState *ms, const char* rbname,
+>       ram_save_queue_pages(rbname, start, len, errp);
+>   }
+>   
+> -static int migrate_handle_rp_recv_bitmap(MigrationState *s, char *block_name,
+> -                                         Error **errp)
+> +static bool migrate_handle_rp_recv_bitmap(MigrationState *s, char *block_name,
+> +                                          Error **errp)
+>   {
+>       RAMBlock *block = qemu_ram_block_by_name(block_name);
+>   
+>       if (!block) {
+>           error_setg(errp, "MIG_RP_MSG_RECV_BITMAP has invalid block name '%s'",
+>                      block_name);
+> -        return -EINVAL;
+> +        return false;
+>       }
+>   
+>       /* Fetch the received bitmap and refresh the dirty bitmap */
+>       return ram_dirty_bitmap_reload(s, block, errp);
+>   }
+>   
+> -static int migrate_handle_rp_resume_ack(MigrationState *s,
+> -                                        uint32_t value, Error **errp)
+> +static bool migrate_handle_rp_resume_ack(MigrationState *s,
+> +                                         uint32_t value, Error **errp)
+>   {
+>       trace_source_return_path_thread_resume_ack(value);
+>   
+>       if (value != MIGRATION_RESUME_ACK_VALUE) {
+>           error_setg(errp, "illegal resume_ack value %"PRIu32, value);
+> -        return -1;
+> +        return false;
+>       }
+>   
+>       /* Now both sides are active. */
+> @@ -1869,7 +1869,7 @@ static int migrate_handle_rp_resume_ack(MigrationState *s,
+>       /* Notify send thread that time to continue send pages */
+>       migration_rp_kick(s);
+>   
+> -    return 0;
+> +    return true;
+>   }
+>   
+>   /*
+> @@ -2021,14 +2021,14 @@ static void *source_return_path_thread(void *opaque)
+>               }
+>               /* Format: len (1B) + idstr (<255B). This ends the idstr. */
+>               buf[buf[0] + 1] = '\0';
+> -            if (migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1), &err)) {
+> +            if (!migrate_handle_rp_recv_bitmap(ms, (char *)(buf + 1), &err)) {
+>                   goto out;
+>               }
+>               break;
+>   
+>           case MIG_RP_MSG_RESUME_ACK:
+>               tmp32 = ldl_be_p(buf);
+> -            if (migrate_handle_rp_resume_ack(ms, tmp32, &err)) {
+> +            if (!migrate_handle_rp_resume_ack(ms, tmp32, &err)) {
+>                   goto out;
+>               }
+>               break;
+> diff --git a/migration/ram.c b/migration/ram.c
+> index 2565f53f5c..982fbbeee1 100644
+> --- a/migration/ram.c
+> +++ b/migration/ram.c
+> @@ -4157,23 +4157,25 @@ static int ram_dirty_bitmap_sync_all(MigrationState *s, RAMState *rs)
+>    * Read the received bitmap, revert it as the initial dirty bitmap.
+>    * This is only used when the postcopy migration is paused but wants
+>    * to resume from a middle point.
+> + *
+> + * Returns true if succeeded, false for errors.
+>    */
+> -int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+> +bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+>   {
+> -    int ret = -EINVAL;
+>       /* from_dst_file is always valid because we're within rp_thread */
+>       QEMUFile *file = s->rp_state.from_dst_file;
+>       unsigned long *le_bitmap, nbits = block->used_length >> TARGET_PAGE_BITS;
+>       uint64_t local_size = DIV_ROUND_UP(nbits, 8);
+>       uint64_t size, end_mark;
+>       RAMState *rs = ram_state;
+> +    bool result = false;
+>   
+>       trace_ram_dirty_bitmap_reload_begin(block->idstr);
+>   
+>       if (s->state != MIGRATION_STATUS_POSTCOPY_RECOVER) {
+>           error_setg(errp, "Reload bitmap in incorrect state %s",
+>                      MigrationStatus_str(s->state));
+> -        return -EINVAL;
+> +        return false;
+>       }
+>   
+>       /*
+> @@ -4191,26 +4193,22 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+>       if (size != local_size) {
+>           error_setg(errp, "ramblock '%s' bitmap size mismatch (0x%"PRIx64
+>                      " != 0x%"PRIx64")", block->idstr, size, local_size);
+> -        ret = -EINVAL;
+>           goto out;
+>       }
+>   
+>       size = qemu_get_buffer(file, (uint8_t *)le_bitmap, local_size);
+>       end_mark = qemu_get_be64(file);
+>   
+> -    ret = qemu_file_get_error(file);
+> -    if (ret || size != local_size) {
+> -        error_setg(errp, "read bitmap failed for ramblock '%s': %d"
+> -                   " (size 0x%"PRIx64", got: 0x%"PRIx64")",
+> -                   block->idstr, ret, local_size, size);
+> -        ret = -EIO;
+> +    if (qemu_file_get_error(file) || size != local_size) {
+> +        error_setg(errp, "read bitmap failed for ramblock '%s': "
+> +                   "(size 0x%"PRIx64", got: 0x%"PRIx64")",
+> +                   block->idstr, local_size, size);
+>           goto out;
+>       }
+>   
+>       if (end_mark != RAMBLOCK_RECV_BITMAP_ENDING) {
+>           error_setg(errp, "ramblock '%s' end mark incorrect: 0x%"PRIx64,
+>                      block->idstr, end_mark);
+> -        ret = -EINVAL;
+>           goto out;
+>       }
+>   
+> @@ -4243,10 +4241,10 @@ int ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+>        */
+>       migration_rp_kick(s);
+>   
+> -    ret = 0;
+> +    result = true;
+>   out:
+>       g_free(le_bitmap);
+> -    return ret;
+> +    return result;
+>   }
+>   
+>   static int ram_resume_prepare(MigrationState *s, void *opaque)
 
-I think I brought up this back then but was told current PCI code won't 
-change and since that could break everything else that makes sense so this 
-is something that we should take as given and accomodate that.
+Yes, exactly what I meant. For the embedded patch:
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
->> Additionally the values
->> written to BARs were also wrong.
->
-> I don't believe this is correct: according to the datasheet the values on 
-> reset are the ones given in the current reset code, so even if the reset 
-> function is overridden at a later data during PCI bus reset, I would leave 
-> these for now since it is a different issue.
-
-Those values are missing the IO space bit for one so they can't be correct 
-as a BAR value no matter what the datasheet says. And since they are 
-ineffective now I think it's best to remove them to avoid confusion.
-
->> Move setting the BARs to a callback on writing the PCI config regsiter
->> that sets the compatibility mode (which firmwares needing this mode
->> seem to do) and fix their values to program it to use legacy port
->> numbers. As noted in a comment, we only do this when the BARs were
->> unset before, because logs from real machine show this is how real
->> chip works, even if it contradicts the data sheet which is not very
->> clear about this.
->> 
->> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->> ---
->>   hw/ide/via.c | 35 ++++++++++++++++++++++++++++++-----
->>   1 file changed, 30 insertions(+), 5 deletions(-)
->> 
->> diff --git a/hw/ide/via.c b/hw/ide/via.c
->> index fff23803a6..8186190207 100644
->> --- a/hw/ide/via.c
->> +++ b/hw/ide/via.c
->> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
->>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
->>                    PCI_STATUS_DEVSEL_MEDIUM);
->>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
->> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
->> 20-23h */
->>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
->>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
->> @@ -159,6 +154,35 @@ static void via_ide_reset(DeviceState *dev)
->>       pci_set_long(pci_conf + 0xc0, 0x00020001);
->>   }
->>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
->> +                              uint32_t val, int len)
->> +{
->> +    pci_default_write_config(pd, addr, val, len);
->> +    /*
->> +     * Only set BARs if they are unset. Logs from real hardware show that
->> +     * writing class_prog to enable compatibility mode after BARs were set
->> +     * (possibly by firmware) it will use ports set by BARs not ISA ports
->> +     * (e.g. pegasos2 Linux does this and calls it non-100% native mode).
->
-> Can you remind me again where the references are to non-100% native mode? The 
-> only thing I can find in Linux is 
-> https://github.com/torvalds/linux/blob/master/arch/powerpc/platforms/chrp/pci.c#L360 
-> but that simply forces a switch to legacy mode, with no mention of "non-100% 
-> native mode".
-
-It was discussed somewhere in the via-ide thread we had when this was last 
-touched for pegasos2 in March 2020. Basically the non-100% native mode is 
-when ports are set by BARs but IRQs are still hard coded to 14-15. Linux 
-can work with all 3 possible modes: legacy (both ports and IRQs are hard 
-coded to ISA values), native (using BARs and PCI config 0x3c for a single 
-interrupt for both channels, vt82c686 data sheet does not document this 
-but vt8231 has a comment saying native mode only) and non-100% native mode 
-where BARs are effective to set port addresses but IRQs don't respect 0x3c 
-but use 14-15 as in legacy mode. Some machines only work in non-100% 
-native mode such as pegasos2 and Linux has some quirks for this. Other 
-OSes running on this machine work with what the firmware has set up and 
-can't work with anything else so we need to emulate what those OSes want 
-(which matches real hardware) because Linux can usually cope anyway. On 
-pegasso2 MorphOS uses BARs but expects IRQ 14-15 which is what the 
-firmware also sets up by setting mode to native in the PCI config of the 
-IDE func yet IRQs are fixed at 14-15. Linux forces its driver to use 
-legacy interrupts by setting mode back to legacy but it still uses BARs 
-and this is what it calls non-100% native mode. On amigaone firmware sets 
-legacy mode and AmigaOS does not change this but uses it with legacy ports 
-and IRQs. Linux finds the same and uses legacy mode on amigaone.
-
->> +     * But if 0x8a is written after reset without setting BARs then we 
->> want
->> +     * legacy ports (this is done by AmigaOne firmware for example).
->> +     */
->
-> What should happen here is that writing 0x8a should *always* switch to legacy 
-> mode, so the BARs are unused...
-
-Yes, but as we've found before that can't be emulated in QEMU due to ISA 
-emulation being static and only allows adding ports but not removing them 
-later so we can't switch between legacy ISA and PCI here so we use the 
-BARs for legacy ports as well to emulate that. The reason we only do this 
-if BARs are not yet set is because Linux changes this back to legacy mode 
-on pegasos2 but still uses BARs as shown in boot logs from real hardware 
-so it seems BARs take priority over legacy mode on real chip and Linux 
-only uses the mode reg to decide what IRQs to use. On amigaone firmware 
-writes 0x8a right after reset in which case we want legacy mode so this 
-works for both machines.
-
->> +    if (addr == PCI_CLASS_PROG && val == 0x8a &&
->> +        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
->> +        PCI_BASE_ADDRESS_SPACE_IO) {
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +        /* BMIBA: 20-23h */
->> +        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
->> +                     | PCI_BASE_ADDRESS_SPACE_IO);
->> +    }
->> +}
->
-> ... but what you're doing here is effectively forcing the PCI BARs to the 
-> legacy addresses. The reason we know this is because that is why you have the 
-> off-by-2 error in BARs 1 and 3.
->
-> I could live with this approach for now if you're willing to adjust the 
-> comments accordingly clarifying that forcing the PCI BARs to the legacy 
-> addresses is a hack to be replaced in future with proper legacy ioports. At 
-> some point I will revive my PoC series on top of Bernhard's last series that 
-> implements this properly.
-
-That's fair enoough, I can try to clarify thid more in the comments and 
-commit message. I'll try to come up with something for v2.
-
-Regards,
-BALATON Zoltan
-
->>   static void via_ide_realize(PCIDevice *dev, Error **errp)
->>   {
->>       PCIIDEState *d = PCI_IDE(dev);
->> @@ -221,6 +245,7 @@ static void via_ide_class_init(ObjectClass *klass, void 
->> *data)
->>       /* Reason: only works as function of VIA southbridge */
->>       dc->user_creatable = false;
->>   +    k->config_write = via_ide_cfg_write;
->>       k->realize = via_ide_realize;
->>       k->exit = via_ide_exitfn;
->>       k->vendor_id = PCI_VENDOR_ID_VIA;
->
->
-> ATB,
->
-> Mark.
->
->
->
+One step further is to use g_autofree for le_bitmap to remove this
+annoying 'out' label. I'll send the patch.
 
