@@ -2,63 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B447BCCAC
+	by mail.lfdr.de (Postfix) with ESMTPS id ABEB57BCCAA
 	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 08:27:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpNCs-00085n-Mh; Sun, 08 Oct 2023 02:24:02 -0400
+	id 1qpNCu-00086i-9B; Sun, 08 Oct 2023 02:24:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpNCp-00083l-7w
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:23:59 -0400
-Received: from mout.kundenserver.de ([217.72.192.74])
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpNCs-000864-LY
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:24:02 -0400
+Received: from mout.kundenserver.de ([212.227.17.10])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpNCn-0007kh-Et
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:23:58 -0400
+ (Exim 4.90_1) (envelope-from <laurent@vivier.eu>) id 1qpNCo-0007lF-9r
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 02:24:02 -0400
 Received: from quad ([82.142.8.70]) by mrelayeu.kundenserver.de (mreue107
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1N0F9t-1rlTzx3v4J-00xHyB; Sun, 08
- Oct 2023 08:23:55 +0200
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1N4Q8u-1rY1b3247q-011Qp4; Sun, 08
+ Oct 2023 08:23:56 +0200
 From: Laurent Vivier <laurent@vivier.eu>
 To: qemu-devel@nongnu.org
 Cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Laurent Vivier <laurent@vivier.eu>
-Subject: [PULL 06/20] q800: allow accesses to RAM area even if less memory is
- available
-Date: Sun,  8 Oct 2023 08:23:35 +0200
-Message-ID: <20231008062349.2733552-7-laurent@vivier.eu>
+ Laurent Vivier <laurent@vivier.eu>,
+ =?UTF-8?q?Volker=20R=C3=BCmelin?= <vr_qemu@t-online.de>
+Subject: [PULL 07/20] audio: add Apple Sound Chip (ASC) emulation
+Date: Sun,  8 Oct 2023 08:23:36 +0200
+Message-ID: <20231008062349.2733552-8-laurent@vivier.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231008062349.2733552-1-laurent@vivier.eu>
 References: <20231008062349.2733552-1-laurent@vivier.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:c1upbkwUH4goI9U/W/eC0rJ7zWjvdUKkrn3UkDFXYssYouDQArr
- xbtuC2suGB6fCrObZzn3XB1KGOI9Rea3mEY/p19lOkEpRho7fon9VahfWYlfYseeWBmP4ZX
- j7xx93JqOQZp2QWXIylH5yRZTCbxJyaDwByQsrSpaQcvAyvcRf6XZ2F0BTXmqynxSKawAqV
- xxhJuN7RqDKb9GONq8Zkw==
-UI-OutboundReport: notjunk:1;M01:P0:K4wCtnu2NCE=;xxJzv/a414yqd7UwKmKn/qJofUQ
- IqJ7HVQDISeTJPEOFBWbpducjqzCcxzL5C+ocgOzQWIcvzgiQc2BH8ORvu3qhu55VAGQpQIV6
- 0FyA7grQHm8+yZG+h030AMdypTtl6gViczbIOsoxumYgbJr3VdJ9uF6SlXtroxkY3l6/AZpU2
- fO873p3lzXNr62CZaozCRbUsraiBJ6sCLLMz1pl6+spwoCIHiwbUMqifKcEAwYnDW5Sx7p8Hi
- rOrDkDw/K+Ad6UaPXbWKzSHZxZHhShhGGiQ+uUkLOqsnWn6n98LwmIMrmIZBeELLU+o8U1Eoz
- hi0aCnXV4pS29Zo+agAmLagtXtFzvotc6QTOXJIz1n3d0CqTTo5JqgJRtOlJcQRiTvdwnh905
- PMr2cEDoKi8yI7x3p11lzAT49J09y9IJIBHpeSUyl3gyLa0QTtaSYj6hWm3AsuFq3KzzJn4U8
- V0Tf0N9wNdXsgwyvL2hhRO9PPi7LgChX7Ko/zAdUIG5//xg9tybuQ6a67/KYTgiN+mkA3gnrA
- 7mZawGZG5KclBJhhIqd5hrD2uTx4rOWkkiUHKzEM8xC5wVq7WcO4V7URZYmACNWETtX+I1Dth
- ENB44HEdUbdRYnR+mCpLUIPpKhfK79dQGRvTCP+D2QIPQG22nUALmErvvNvul+0FTW9PbzSY3
- VPQy3cg3valZnUUh7YnCeTUwLOgusN/1fuIsDF8LqpXQebmjydZIShw/9QbpCvEQRnI39Id0s
- n0N1SFESORXgN00yM6dQUiVoC0ygvyBiZQOgeTxqn1ljzt/kvwxOivuWhj+aDckHrwRQu9Xg9
- hV8POIjDYodygJA6ScV0IZLsbLI8ddFhpME1LVqALokaKnXY/jEKQVIlLNfVwl9xSY6qXQpqi
- xoVs1ILCdWPHYLA==
-Received-SPF: none client-ip=217.72.192.74; envelope-from=laurent@vivier.eu;
+X-Provags-ID: V03:K1:qIPBYzOyOQNFkdgLuR6q5ue1AtRwETjM0ClHpTD05wHJX9YGthW
+ CCgau5237JN/QS6QLfgjXqHVUc0m1ngILrp4gOAr4s+P1LzFfxlrx4gHti/O0YcnXadKTYz
+ soTFe7yZmIsGvK38o8V1c8QnBAvNcurQ22evlPuYdplVzq2qFDfhll5fUDgPZvN2ospzkR8
+ BxzgWijgdgTVZ2ifsEVkA==
+UI-OutboundReport: notjunk:1;M01:P0:6+JbaCdDOiM=;naIeHUpfpdkcYAvVxNLCU0F9ql1
+ JxJgYoKis35P6aEC48ahhi6GTrxC8h+/aLPkf9mv2GQK06bKpvKD/9dLaN8WJVBTnxMGOlB90
+ TxIDRSMwRykyl+T9uABeCLfvqNrFb6JZXv/9i0QP/9j+/5NgiNQh+GvmJbyLRaVMprT3Wl5zp
+ QiTAU1MBrg+omQagSygGi1J/65b5l6ENEJ/XIXhXaXiPS/DvkME5VTzVzFZ7OTaa6nAY2zQpi
+ b+6UnkYk5okG+TADHg6EJffy6NCPHlbqzEFEENQS5Su2hEoZ4MaPfmeKRDf9jsXlFyqjPfeHa
+ 23MOBRbdhift7AD59ON4e6mmNNihDv0+MkQ9+i94woTA6vWBSITWh8IXLrXo8cBz3qj1lyeII
+ EkkaqBCPZ9/dJUcGohGW+uBGOJbdtKz8U9DVkXSyWkTWUfpxy3MZAQhhJX0YfGvCeDXnkEqkk
+ rFIZulQEUePISmRH/2JLq1aoiyPg5gEn+uYjEiSl5HsuM35Bzca4S7e3stlbxFvjqpYSP/5K3
+ 6o2pNvy2G6A4vlN/0+1aWjmMAEowRVT55vUlivBEziZV5k2WT0xUupn504TO2/iaqx3SwL0vI
+ P4nZPy5c5y/UhUqZgs5k/qe4yqGwoOESr5vzAQtLN1+83L4ytYU54a7uLzy5rjiE6ixhEFvD7
+ xeEXjMZ7RbcfDd3tXZWhXsDPblv+lUuAl1V5tXNTHyriZ7Ia97WsMkKTT7tK7M8EkUc/pi9RL
+ eVIqQH8hDLsiH2QQc0jN+9QFqQHGfIaTcU8bRG96ztkfQThkCUNiUz8FkSzHKrSfAUESkd6VU
+ 50dupCdbvSYGepwcLCQ5EDconyDesAwZdnSh1XIRfyjv7B/LD1BIuL+2rfKLNMGB64OpA6z2q
+ FHb/jmeDX8w8pyw==
+Received-SPF: none client-ip=212.227.17.10; envelope-from=laurent@vivier.eu;
  helo=mout.kundenserver.de
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
- RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_score_int: -22
+X-Spam_score: -2.3
+X-Spam_bar: --
+X-Spam_report: (-2.3 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_NONE=-0.0001,
+ RCVD_IN_MSPIKE_H2=-0.376, SPF_HELO_NONE=0.001,
  SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -77,89 +76,912 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
-MacOS attempts a series of writes and reads over the entire RAM area in order
-to determine the amount of RAM within the machine. Allow accesses to the
-entire RAM area ignoring writes and always reading zero for areas where there
-is no physical RAM installed to allow MacOS to detect the memory size without
-faulting.
+The Apple Sound Chip was primarily used by the Macintosh II to generate sound
+in hardware which was previously handled by the toolbox ROM with software
+interrupts.
 
+Implement both the standard ASC and also the enhanced ASC (EASC) functionality
+which is used in the Quadra 800.
+
+Note that whilst real ASC hardware uses AUDIO_FORMAT_S8, this implementation uses
+AUDIO_FORMAT_U8 instead because AUDIO_FORMAT_S8 is rarely used and not supported
+by some audio backends like PulseAudio and DirectSound when played directly with
+-audiodev out.mixing-engine=off.
+
+Co-developed-by: Laurent Vivier <laurent@vivier.eu>
+Co-developed-by: Volker Rümelin <vr_qemu@t-online.de>
 Signed-off-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Laurent Vivier <laurent@vivier.eu>
-Message-ID: <20231004083806.757242-7-mark.cave-ayland@ilande.co.uk>
+Message-ID: <20231004083806.757242-8-mark.cave-ayland@ilande.co.uk>
 Signed-off-by: Laurent Vivier <laurent@vivier.eu>
 ---
- include/hw/m68k/q800.h |  1 +
- hw/m68k/q800.c         | 30 +++++++++++++++++++++++++++++-
- 2 files changed, 30 insertions(+), 1 deletion(-)
+ MAINTAINERS            |   2 +
+ include/hw/audio/asc.h |  84 +++++
+ hw/audio/asc.c         | 708 +++++++++++++++++++++++++++++++++++++++++
+ hw/audio/Kconfig       |   3 +
+ hw/audio/meson.build   |   1 +
+ hw/audio/trace-events  |  10 +
+ hw/m68k/Kconfig        |   1 +
+ 7 files changed, 809 insertions(+)
+ create mode 100644 include/hw/audio/asc.h
+ create mode 100644 hw/audio/asc.c
 
-diff --git a/include/hw/m68k/q800.h b/include/hw/m68k/q800.h
-index 98097165d954..04e4e0bce35a 100644
---- a/include/hw/m68k/q800.h
-+++ b/include/hw/m68k/q800.h
-@@ -60,6 +60,7 @@ struct Q800MachineState {
-     MacfbNubusState macfb;
-     DJMEMCState djmemc;
-     IOSBState iosb;
-+    MemoryRegion ramio;
-     MemoryRegion macio;
-     MemoryRegion macio_alias;
-     MemoryRegion machine_id;
-diff --git a/hw/m68k/q800.c b/hw/m68k/q800.c
-index 081b95e9cf66..3209309173f3 100644
---- a/hw/m68k/q800.c
-+++ b/hw/m68k/q800.c
-@@ -86,6 +86,9 @@
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 38fc8e0a22b8..ac865c4e5932 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1231,6 +1231,7 @@ F: hw/display/macfb.c
+ F: hw/block/swim.c
+ F: hw/misc/djmemc.c
+ F: hw/misc/iosb.c
++F: hw/audio/asc.c
+ F: hw/m68k/bootinfo.h
+ F: include/standard-headers/asm-m68k/bootinfo.h
+ F: include/standard-headers/asm-m68k/bootinfo-mac.h
+@@ -1242,6 +1243,7 @@ F: include/hw/m68k/q800.h
+ F: include/hw/m68k/q800-glue.h
+ F: include/hw/misc/djmemc.h
+ F: include/hw/misc/iosb.h
++F: include/hw/audio/asc.h
  
- #define MAC_CLOCK  3686418
- 
-+/* Size of whole RAM area */
-+#define RAM_SIZE              0x40000000
+ virt
+ M: Laurent Vivier <laurent@vivier.eu>
+diff --git a/include/hw/audio/asc.h b/include/hw/audio/asc.h
+new file mode 100644
+index 000000000000..d9412815c324
+--- /dev/null
++++ b/include/hw/audio/asc.h
+@@ -0,0 +1,84 @@
++/*
++ * QEMU Apple Sound Chip emulation
++ *
++ * Apple Sound Chip (ASC) 344S0063
++ * Enhanced Apple Sound Chip (EASC) 343S1063
++ *
++ * Copyright (c) 2012-2018 Laurent Vivier <laurent@vivier.eu>
++ * Copyright (c) 2022 Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
 +
- /*
-  * Slot 0x9 is reserved for use by the in-built framebuffer whilst only
-  * slots 0xc, 0xd and 0xe physically exist on the Quadra 800
-@@ -218,6 +221,27 @@ static const MemoryRegionOps machine_id_ops = {
-     },
- };
- 
-+static uint64_t ramio_read(void *opaque, hwaddr addr, unsigned size)
++#ifndef HW_AUDIO_ASC_H
++#define HW_AUDIO_ASC_H
++
++#include "qemu/osdep.h"
++#include "hw/sysbus.h"
++#include "audio/audio.h"
++
++#define ASC_FREQ 22257
++
++enum {
++    ASC_TYPE_ASC    = 0,  /* original discrete Apple Sound Chip */
++    ASC_TYPE_EASC   = 1   /* discrete Enhanced Apple Sound Chip */
++};
++
++#define ASC_FIFO_OFFSET    0x0
++#define ASC_FIFO_SIZE      0x400
++
++#define ASC_REG_OFFSET     0x800
++#define ASC_REG_SIZE       0x60
++
++#define ASC_EXTREG_OFFSET  0xf00
++#define ASC_EXTREG_SIZE    0x20
++
++typedef struct ASCFIFOState {
++    int index;
++
++    MemoryRegion mem_fifo;
++    uint8_t fifo[ASC_FIFO_SIZE];
++    uint8_t int_status;
++
++    int cnt;
++    int wptr;
++    int rptr;
++
++    MemoryRegion mem_extregs;
++    uint8_t extregs[ASC_EXTREG_SIZE];
++
++    int xa_cnt;
++    uint8_t xa_val;
++    uint8_t xa_flags;
++    int16_t xa_last[2];
++} ASCFIFOState;
++
++struct ASCState {
++    SysBusDevice parent_obj;
++
++    uint8_t type;
++    MemoryRegion asc;
++    MemoryRegion mem_fifo;
++    MemoryRegion mem_regs;
++    MemoryRegion mem_extregs;
++
++    QEMUSoundCard card;
++    SWVoiceOut *voice;
++    uint8_t *mixbuf;
++    int samples;
++    int shift;
++
++    /* Time when we were last able to generate samples */
++    int64_t fifo_empty_ns;
++
++    qemu_irq irq;
++
++    ASCFIFOState fifos[2];
++
++    uint8_t regs[ASC_REG_SIZE];
++};
++
++#define TYPE_ASC "apple-sound-chip"
++OBJECT_DECLARE_SIMPLE_TYPE(ASCState, ASC)
++
++#endif
+diff --git a/hw/audio/asc.c b/hw/audio/asc.c
+new file mode 100644
+index 000000000000..9084708eafab
+--- /dev/null
++++ b/hw/audio/asc.c
+@@ -0,0 +1,708 @@
++/*
++ * QEMU Apple Sound Chip emulation
++ *
++ * Apple Sound Chip (ASC) 344S0063
++ * Enhanced Apple Sound Chip (EASC) 343S1063
++ *
++ * Copyright (c) 2012-2018 Laurent Vivier <laurent@vivier.eu>
++ * Copyright (c) 2022 Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
++ *
++ * SPDX-License-Identifier: GPL-2.0-or-later
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/timer.h"
++#include "hw/sysbus.h"
++#include "hw/irq.h"
++#include "audio/audio.h"
++#include "hw/audio/asc.h"
++#include "hw/qdev-properties.h"
++#include "migration/vmstate.h"
++#include "trace.h"
++
++/*
++ * Linux doesn't provide information about ASC, see arch/m68k/mac/macboing.c
++ * and arch/m68k/include/asm/mac_asc.h
++ *
++ * best information is coming from MAME:
++ *   https://github.com/mamedev/mame/blob/master/src/devices/sound/asc.h
++ *   https://github.com/mamedev/mame/blob/master/src/devices/sound/asc.cpp
++ *   Emulation by R. Belmont
++ * or MESS:
++ *   http://mess.redump.net/mess/driver_info/easc
++ *
++ *     0x800: VERSION
++ *     0x801: MODE
++ *            1=FIFO mode,
++ *            2=wavetable mode
++ *     0x802: CONTROL
++ *            bit 0=analog or PWM output,
++ *                1=stereo/mono,
++ *                7=processing time exceeded
++ *     0x803: FIFO MODE
++ *            bit 7=clear FIFO,
++ *            bit 1="non-ROM companding",
++ *            bit 0="ROM companding")
++ *     0x804: FIFO IRQ STATUS
++ *            bit 0=ch A 1/2 full,
++ *                1=ch A full,
++ *                2=ch B 1/2 full,
++ *                3=ch B full)
++ *     0x805: WAVETABLE CONTROL
++ *            bits 0-3 wavetables 0-3 start
++ *     0x806: VOLUME
++ *            bits 2-4 = 3 bit internal ASC volume,
++ *            bits 5-7 = volume control sent to Sony sound chip
++ *     0x807: CLOCK RATE
++ *            0 = Mac 22257 Hz,
++ *            1 = undefined,
++ *            2 = 22050 Hz,
++ *            3 = 44100 Hz
++ *     0x80a: PLAY REC A
++ *     0x80f: TEST
++ *            bits 6-7 = digital test,
++ *            bits 4-5 = analog test
++ *     0x810: WAVETABLE 0 PHASE
++ *            big-endian 9.15 fixed-point, only 24 bits valid
++ *     0x814: WAVETABLE 0 INCREMENT
++ *            big-endian 9.15 fixed-point, only 24 bits valid
++ *     0x818: WAVETABLE 1 PHASE
++ *     0x81C: WAVETABLE 1 INCREMENT
++ *     0x820: WAVETABLE 2 PHASE
++ *     0x824: WAVETABLE 2 INCREMENT
++ *     0x828: WAVETABLE 3 PHASE
++ *     0x82C: WAVETABLE 3 INCREMENT
++ *     0x830: UNKNOWN START
++ *            NetBSD writes Wavetable data here (are there more
++ *            wavetables/channels than we know about?)
++ *     0x857: UNKNOWN END
++ */
++
++#define ASC_SIZE           0x2000
++
++enum {
++    ASC_VERSION     = 0x00,
++    ASC_MODE        = 0x01,
++    ASC_CONTROL     = 0x02,
++    ASC_FIFOMODE    = 0x03,
++    ASC_FIFOIRQ     = 0x04,
++    ASC_WAVECTRL    = 0x05,
++    ASC_VOLUME      = 0x06,
++    ASC_CLOCK       = 0x07,
++    ASC_PLAYRECA    = 0x0a,
++    ASC_TEST        = 0x0f,
++    ASC_WAVETABLE   = 0x10
++};
++
++#define ASC_FIFO_STATUS_HALF_FULL      1
++#define ASC_FIFO_STATUS_FULL_EMPTY     2
++
++#define ASC_EXTREGS_FIFOCTRL           0x8
++#define ASC_EXTREGS_INTCTRL            0x9
++#define ASC_EXTREGS_CDXA_DECOMP_FILT   0x10
++
++#define ASC_FIFO_CYCLE_TIME            ((NANOSECONDS_PER_SECOND / ASC_FREQ) * \
++                                        0x400)
++
++static void asc_raise_irq(ASCState *s)
 +{
-+    return 0x0;
++    qemu_set_irq(s->irq, 1);
 +}
 +
-+static void ramio_write(void *opaque, hwaddr addr, uint64_t val,
-+                        unsigned size)
++static void asc_lower_irq(ASCState *s)
 +{
++    qemu_set_irq(s->irq, 0);
++}
++
++static uint8_t asc_fifo_get(ASCFIFOState *fs)
++{
++    ASCState *s = container_of(fs, ASCState, fifos[fs->index]);
++    bool fifo_half_irq_enabled = fs->extregs[ASC_EXTREGS_INTCTRL] & 1;
++    uint8_t val;
++
++    assert(fs->cnt);
++
++    val = fs->fifo[fs->rptr];
++    trace_asc_fifo_get('A' + fs->index, fs->rptr, fs->cnt, val);
++
++    fs->rptr++;
++    fs->rptr &= 0x3ff;
++    fs->cnt--;
++
++    if (fs->cnt <= 0x1ff) {
++        /* FIFO less than half full */
++        fs->int_status |= ASC_FIFO_STATUS_HALF_FULL;
++    } else {
++        /* FIFO more than half full */
++        fs->int_status &= ~ASC_FIFO_STATUS_HALF_FULL;
++    }
++
++    if (fs->cnt == 0x1ff && fifo_half_irq_enabled) {
++        /* Raise FIFO half full IRQ */
++        asc_raise_irq(s);
++    }
++
++    if (fs->cnt == 0) {
++        /* Raise FIFO empty IRQ */
++        fs->int_status |= ASC_FIFO_STATUS_FULL_EMPTY;
++        asc_raise_irq(s);
++    }
++
++    return val;
++}
++
++static int generate_fifo(ASCState *s, int maxsamples)
++{
++    int64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
++    uint8_t *buf = s->mixbuf;
++    int i, wcount = 0;
++
++    while (wcount < maxsamples) {
++        uint8_t val;
++        int16_t d, f0, f1;
++        int32_t t;
++        int shift, filter;
++        bool hasdata = false;
++
++        for (i = 0; i < 2; i++) {
++            ASCFIFOState *fs = &s->fifos[i];
++
++            switch (fs->extregs[ASC_EXTREGS_FIFOCTRL] & 0x83) {
++            case 0x82:
++                /*
++                 * CD-XA BRR mode: decompress 15 bytes into 28 16-bit
++                 * samples
++                 */
++                if (!fs->cnt) {
++                    val = 0x80;
++                    break;
++                }
++
++                if (fs->xa_cnt == -1) {
++                    /* Start of packet, get flags */
++                    fs->xa_flags = asc_fifo_get(fs);
++                    fs->xa_cnt = 0;
++                }
++
++                shift = fs->xa_flags & 0xf;
++                filter = fs->xa_flags >> 4;
++                f0 = (int8_t)fs->extregs[ASC_EXTREGS_CDXA_DECOMP_FILT +
++                                 (filter << 1) + 1];
++                f1 = (int8_t)fs->extregs[ASC_EXTREGS_CDXA_DECOMP_FILT +
++                                 (filter << 1)];
++
++                if ((fs->xa_cnt & 1) == 0) {
++                    if (!fs->cnt) {
++                        val = 0x80;
++                        break;
++                    }
++
++                    fs->xa_val = asc_fifo_get(fs);
++                    d = (fs->xa_val & 0xf) << 12;
++                } else {
++                    d = (fs->xa_val & 0xf0) << 8;
++                }
++                t = (d >> shift) + (((fs->xa_last[0] * f0) +
++                                     (fs->xa_last[1] * f1) + 32) >> 6);
++                if (t < -32768) {
++                    t = -32768;
++                } else if (t > 32767) {
++                    t = 32767;
++                }
++
++                /*
++                 * CD-XA BRR generates 16-bit signed output, so convert to
++                 * 8-bit before writing to buffer. Does real hardware do the
++                 * same?
++                 */
++                val = (uint8_t)(t / 256) ^ 0x80;
++                hasdata = true;
++                fs->xa_cnt++;
++
++                fs->xa_last[1] = fs->xa_last[0];
++                fs->xa_last[0] = (int16_t)t;
++
++                if (fs->xa_cnt == 28) {
++                    /* End of packet */
++                    fs->xa_cnt = -1;
++                }
++                break;
++
++            default:
++                /* fallthrough */
++            case 0x80:
++                /* Raw mode */
++                if (fs->cnt) {
++                    val = asc_fifo_get(fs);
++                    hasdata = true;
++                } else {
++                    val = 0x80;
++                }
++                break;
++            }
++
++            buf[wcount * 2 + i] = val;
++        }
++
++        if (!hasdata) {
++            break;
++        }
++
++        wcount++;
++    }
++
++    /*
++     * MacOS (un)helpfully leaves the FIFO engine running even when it has
++     * finished writing out samples, but still expects the FIFO empty
++     * interrupts to be generated for each FIFO cycle (without these interrupts
++     * MacOS will freeze)
++     */
++    if (s->fifos[0].cnt == 0 && s->fifos[1].cnt == 0) {
++        if (!s->fifo_empty_ns) {
++            /* FIFO has completed first empty cycle */
++            s->fifo_empty_ns = now;
++        } else if (now > (s->fifo_empty_ns + ASC_FIFO_CYCLE_TIME)) {
++            /* FIFO has completed entire cycle with no data */
++            s->fifos[0].int_status |= ASC_FIFO_STATUS_HALF_FULL |
++                                      ASC_FIFO_STATUS_FULL_EMPTY;
++            s->fifos[1].int_status |= ASC_FIFO_STATUS_HALF_FULL |
++                                      ASC_FIFO_STATUS_FULL_EMPTY;
++            s->fifo_empty_ns = now;
++            asc_raise_irq(s);
++        }
++    } else {
++        /* FIFO contains data, reset empty time */
++        s->fifo_empty_ns = 0;
++    }
++
++    return wcount;
++}
++
++static int generate_wavetable(ASCState *s, int maxsamples)
++{
++    uint8_t *buf = s->mixbuf;
++    int channel, count = 0;
++
++    while (count < maxsamples) {
++        uint32_t left = 0, right = 0;
++        uint8_t sample;
++
++        for (channel = 0; channel < 4; channel++) {
++            ASCFIFOState *fs = &s->fifos[channel >> 1];
++            int chanreg = ASC_WAVETABLE + (channel << 3);
++            uint32_t phase, incr, offset;
++
++            phase = ldl_be_p(&s->regs[chanreg]);
++            incr = ldl_be_p(&s->regs[chanreg + sizeof(uint32_t)]);
++
++            phase += incr;
++            offset = (phase >> 15) & 0x1ff;
++            sample = fs->fifo[0x200 * (channel >> 1) + offset];
++
++            stl_be_p(&s->regs[chanreg], phase);
++
++            left += sample;
++            right += sample;
++        }
++
++        buf[count * 2] = left >> 2;
++        buf[count * 2 + 1] = right >> 2;
++
++        count++;
++    }
++
++    return count;
++}
++
++static void asc_out_cb(void *opaque, int free_b)
++{
++    ASCState *s = opaque;
++    int samples, generated;
++
++    if (free_b == 0) {
++        return;
++    }
++
++    samples = MIN(s->samples, free_b >> s->shift);
++
++    switch (s->regs[ASC_MODE] & 3) {
++    default:
++        /* Off */
++        generated = 0;
++        break;
++    case 1:
++        /* FIFO mode */
++        generated = generate_fifo(s, samples);
++        break;
++    case 2:
++        /* Wave table mode */
++        generated = generate_wavetable(s, samples);
++        break;
++    }
++
++    if (!generated) {
++        return;
++    }
++
++    AUD_write(s->voice, s->mixbuf, generated << s->shift);
++}
++
++static uint64_t asc_fifo_read(void *opaque, hwaddr addr,
++                              unsigned size)
++{
++    ASCFIFOState *fs = opaque;
++
++    trace_asc_read_fifo('A' + fs->index, addr, size, fs->fifo[addr]);
++    return fs->fifo[addr];
++}
++
++static void asc_fifo_write(void *opaque, hwaddr addr, uint64_t value,
++                           unsigned size)
++{
++    ASCFIFOState *fs = opaque;
++    ASCState *s = container_of(fs, ASCState, fifos[fs->index]);
++    bool fifo_half_irq_enabled = fs->extregs[ASC_EXTREGS_INTCTRL] & 1;
++
++    trace_asc_write_fifo('A' + fs->index, addr, size, fs->wptr, fs->cnt, value);
++
++    if (s->regs[ASC_MODE] == 1) {
++        fs->fifo[fs->wptr++] = value;
++        fs->wptr &= 0x3ff;
++        fs->cnt++;
++
++        if (fs->cnt <= 0x1ff) {
++            /* FIFO less than half full */
++            fs->int_status |= ASC_FIFO_STATUS_HALF_FULL;
++        } else {
++            /* FIFO at least half full */
++            fs->int_status &= ~ASC_FIFO_STATUS_HALF_FULL;
++        }
++
++        if (fs->cnt == 0x200 && fifo_half_irq_enabled) {
++            /* Raise FIFO half full interrupt */
++            asc_raise_irq(s);
++        }
++
++        if (fs->cnt == 0x3ff) {
++            /* Raise FIFO full interrupt */
++            fs->int_status |= ASC_FIFO_STATUS_FULL_EMPTY;
++            asc_raise_irq(s);
++        }
++    } else {
++        fs->fifo[addr] = value;
++    }
 +    return;
 +}
 +
-+static const MemoryRegionOps ramio_ops = {
-+    .read = ramio_read,
-+    .write = ramio_write,
-+    .endianness = DEVICE_BIG_ENDIAN,
-+    .valid = {
++static const MemoryRegionOps asc_fifo_ops = {
++    .read = asc_fifo_read,
++    .write = asc_fifo_write,
++    .impl = {
 +        .min_access_size = 1,
-+        .max_access_size = 4,
++        .max_access_size = 1,
++    },
++    .endianness = DEVICE_BIG_ENDIAN,
++};
++
++static void asc_fifo_reset(ASCFIFOState *fs);
++
++static uint64_t asc_read(void *opaque, hwaddr addr,
++                         unsigned size)
++{
++    ASCState *s = opaque;
++    uint64_t prev, value;
++
++    switch (addr) {
++    case ASC_VERSION:
++        switch (s->type) {
++        default:
++        case ASC_TYPE_ASC:
++            value = 0;
++            break;
++        case ASC_TYPE_EASC:
++            value = 0xb0;
++            break;
++        }
++        break;
++    case ASC_FIFOIRQ:
++        prev = (s->fifos[0].int_status & 0x3) |
++                (s->fifos[1].int_status & 0x3) << 2;
++
++        s->fifos[0].int_status = 0;
++        s->fifos[1].int_status = 0;
++        asc_lower_irq(s);
++        value = prev;
++        break;
++    default:
++        value = s->regs[addr];
++        break;
++    }
++
++    trace_asc_read_reg(addr, size, value);
++    return value;
++}
++
++static void asc_write(void *opaque, hwaddr addr, uint64_t value,
++                      unsigned size)
++{
++    ASCState *s = opaque;
++
++    switch (addr) {
++    case ASC_MODE:
++        value &= 3;
++        if (value != s->regs[ASC_MODE]) {
++            asc_fifo_reset(&s->fifos[0]);
++            asc_fifo_reset(&s->fifos[1]);
++            asc_lower_irq(s);
++            if (value != 0) {
++                AUD_set_active_out(s->voice, 1);
++            } else {
++                AUD_set_active_out(s->voice, 0);
++            }
++        }
++        break;
++    case ASC_FIFOMODE:
++        if (value & 0x80) {
++            asc_fifo_reset(&s->fifos[0]);
++            asc_fifo_reset(&s->fifos[1]);
++            asc_lower_irq(s);
++        }
++        break;
++    case ASC_WAVECTRL:
++        break;
++    case ASC_VOLUME:
++        {
++            int vol = (value & 0xe0);
++
++            AUD_set_volume_out(s->voice, 0, vol, vol);
++            break;
++        }
++    }
++
++    trace_asc_write_reg(addr, size, value);
++    s->regs[addr] = value;
++}
++
++static const MemoryRegionOps asc_regs_ops = {
++    .read = asc_read,
++    .write = asc_write,
++    .endianness = DEVICE_BIG_ENDIAN,
++    .impl = {
++        .min_access_size = 1,
++        .max_access_size = 1,
++    }
++};
++
++static uint64_t asc_ext_read(void *opaque, hwaddr addr,
++                             unsigned size)
++{
++    ASCFIFOState *fs = opaque;
++    uint64_t value;
++
++    value = fs->extregs[addr];
++
++    trace_asc_read_extreg('A' + fs->index, addr, size, value);
++    return value;
++}
++
++static void asc_ext_write(void *opaque, hwaddr addr, uint64_t value,
++                          unsigned size)
++{
++    ASCFIFOState *fs = opaque;
++
++    trace_asc_write_extreg('A' + fs->index, addr, size, value);
++
++    fs->extregs[addr] = value;
++}
++
++static const MemoryRegionOps asc_extregs_ops = {
++    .read = asc_ext_read,
++    .write = asc_ext_write,
++    .impl = {
++        .min_access_size = 1,
++        .max_access_size = 1,
++    },
++    .endianness = DEVICE_BIG_ENDIAN,
++};
++
++static int asc_post_load(void *opaque, int version)
++{
++    ASCState *s = ASC(opaque);
++
++    if (s->regs[ASC_MODE] != 0) {
++        AUD_set_active_out(s->voice, 1);
++    }
++
++    return 0;
++}
++
++static const VMStateDescription vmstate_asc_fifo = {
++    .name = "apple-sound-chip.fifo",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .fields = (VMStateField[]) {
++        VMSTATE_UINT8_ARRAY(fifo, ASCFIFOState, ASC_FIFO_SIZE),
++        VMSTATE_UINT8(int_status, ASCFIFOState),
++        VMSTATE_INT32(cnt, ASCFIFOState),
++        VMSTATE_INT32(wptr, ASCFIFOState),
++        VMSTATE_INT32(rptr, ASCFIFOState),
++        VMSTATE_UINT8_ARRAY(extregs, ASCFIFOState, ASC_EXTREG_SIZE),
++        VMSTATE_INT32(xa_cnt, ASCFIFOState),
++        VMSTATE_UINT8(xa_val, ASCFIFOState),
++        VMSTATE_UINT8(xa_flags, ASCFIFOState),
++        VMSTATE_INT16_ARRAY(xa_last, ASCFIFOState, 2),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static const VMStateDescription vmstate_asc = {
++    .name = "apple-sound-chip",
++    .version_id = 0,
++    .minimum_version_id = 0,
++    .post_load = asc_post_load,
++    .fields = (VMStateField[]) {
++        VMSTATE_STRUCT_ARRAY(fifos, ASCState, 2, 0, vmstate_asc_fifo,
++                             ASCFIFOState),
++        VMSTATE_UINT8_ARRAY(regs, ASCState, ASC_REG_SIZE),
++        VMSTATE_INT64(fifo_empty_ns, ASCState),
++        VMSTATE_END_OF_LIST()
++    }
++};
++
++static void asc_fifo_reset(ASCFIFOState *fs)
++{
++    fs->wptr = 0;
++    fs->rptr = 0;
++    fs->cnt = 0;
++    fs->xa_cnt = -1;
++    fs->int_status = 0;
++}
++
++static void asc_fifo_init(ASCFIFOState *fs, int index)
++{
++    ASCState *s = container_of(fs, ASCState, fifos[index]);
++    char *name;
++
++    fs->index = index;
++    name = g_strdup_printf("asc.fifo%c", 'A' + index);
++    memory_region_init_io(&fs->mem_fifo, OBJECT(s), &asc_fifo_ops, fs,
++                          name, ASC_FIFO_SIZE);
++    g_free(name);
++
++    name = g_strdup_printf("asc.extregs%c", 'A' + index);
++    memory_region_init_io(&fs->mem_extregs, OBJECT(s), &asc_extregs_ops,
++                          fs, name, ASC_EXTREG_SIZE);
++    g_free(name);
++}
++
++static void asc_reset_hold(Object *obj)
++{
++    ASCState *s = ASC(obj);
++
++    AUD_set_active_out(s->voice, 0);
++
++    memset(s->regs, 0, sizeof(s->regs));
++    asc_fifo_reset(&s->fifos[0]);
++    asc_fifo_reset(&s->fifos[1]);
++    s->fifo_empty_ns = 0;
++
++    if (s->type == ASC_TYPE_ASC) {
++        /* FIFO half full IRQs enabled by default */
++        s->fifos[0].extregs[ASC_EXTREGS_INTCTRL] = 1;
++        s->fifos[1].extregs[ASC_EXTREGS_INTCTRL] = 1;
++    }
++}
++
++static void asc_unrealize(DeviceState *dev)
++{
++    ASCState *s = ASC(dev);
++
++    g_free(s->mixbuf);
++
++    AUD_remove_card(&s->card);
++}
++
++static void asc_realize(DeviceState *dev, Error **errp)
++{
++    ASCState *s = ASC(dev);
++    struct audsettings as;
++
++    if (!AUD_register_card("Apple Sound Chip", &s->card, errp)) {
++        return;
++    }
++
++    as.freq = ASC_FREQ;
++    as.nchannels = 2;
++    as.fmt = AUDIO_FORMAT_U8;
++    as.endianness = AUDIO_HOST_ENDIANNESS;
++
++    s->voice = AUD_open_out(&s->card, s->voice, "asc.out", s, asc_out_cb,
++                            &as);
++    s->shift = 1;
++    s->samples = AUD_get_buffer_size_out(s->voice) >> s->shift;
++    s->mixbuf = g_malloc0(s->samples << s->shift);
++
++    /* Add easc registers if required */
++    if (s->type == ASC_TYPE_EASC) {
++        memory_region_add_subregion(&s->asc, ASC_EXTREG_OFFSET,
++                                    &s->fifos[0].mem_extregs);
++        memory_region_add_subregion(&s->asc,
++                                    ASC_EXTREG_OFFSET + ASC_EXTREG_SIZE,
++                                    &s->fifos[1].mem_extregs);
++    }
++}
++
++static void asc_init(Object *obj)
++{
++    ASCState *s = ASC(obj);
++    SysBusDevice *sbd = SYS_BUS_DEVICE(obj);
++
++    memory_region_init(&s->asc, OBJECT(obj), "asc", ASC_SIZE);
++
++    asc_fifo_init(&s->fifos[0], 0);
++    asc_fifo_init(&s->fifos[1], 1);
++
++    memory_region_add_subregion(&s->asc, ASC_FIFO_OFFSET,
++                                &s->fifos[0].mem_fifo);
++    memory_region_add_subregion(&s->asc,
++                                ASC_FIFO_OFFSET + ASC_FIFO_SIZE,
++                                &s->fifos[1].mem_fifo);
++
++    memory_region_init_io(&s->mem_regs, OBJECT(obj), &asc_regs_ops, s,
++                          "asc.regs", ASC_REG_SIZE);
++    memory_region_add_subregion(&s->asc, ASC_REG_OFFSET, &s->mem_regs);
++
++    sysbus_init_irq(sbd, &s->irq);
++    sysbus_init_mmio(sbd, &s->asc);
++}
++
++static Property asc_properties[] = {
++    DEFINE_AUDIO_PROPERTIES(ASCState, card),
++    DEFINE_PROP_UINT8("asctype", ASCState, type, ASC_TYPE_ASC),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void asc_class_init(ObjectClass *oc, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(oc);
++    ResettableClass *rc = RESETTABLE_CLASS(oc);
++
++    dc->realize = asc_realize;
++    dc->unrealize = asc_unrealize;
++    set_bit(DEVICE_CATEGORY_SOUND, dc->categories);
++    dc->vmsd = &vmstate_asc;
++    device_class_set_props(dc, asc_properties);
++    rc->phases.hold = asc_reset_hold;
++}
++
++static const TypeInfo asc_info_types[] = {
++    {
++        .name = TYPE_ASC,
++        .parent = TYPE_SYS_BUS_DEVICE,
++        .instance_size = sizeof(ASCState),
++        .instance_init = asc_init,
++        .class_init = asc_class_init,
 +    },
 +};
 +
- static void q800_machine_init(MachineState *machine)
- {
-     Q800MachineState *m = Q800_MACHINE(machine);
-@@ -262,7 +286,11 @@ static void q800_machine_init(MachineState *machine)
-     qemu_register_reset(main_cpu_reset, &m->cpu);
++DEFINE_TYPES(asc_info_types)
+diff --git a/hw/audio/Kconfig b/hw/audio/Kconfig
+index e76c69ca7e7f..d0993514a18b 100644
+--- a/hw/audio/Kconfig
++++ b/hw/audio/Kconfig
+@@ -47,3 +47,6 @@ config PL041
  
-     /* RAM */
--    memory_region_add_subregion(get_system_memory(), 0, machine->ram);
-+    memory_region_init_io(&m->ramio, OBJECT(machine), &ramio_ops, &m->ramio,
-+                          "ram", RAM_SIZE);
-+    memory_region_add_subregion(get_system_memory(), 0x0, &m->ramio);
+ config CS4231
+     bool
 +
-+    memory_region_add_subregion(&m->ramio, 0, machine->ram);
++config ASC
++    bool
+diff --git a/hw/audio/meson.build b/hw/audio/meson.build
+index d0fda1009ed6..8805322f5c8b 100644
+--- a/hw/audio/meson.build
++++ b/hw/audio/meson.build
+@@ -1,6 +1,7 @@
+ system_ss.add(files('soundhw.c'))
+ system_ss.add(when: 'CONFIG_AC97', if_true: files('ac97.c'))
+ system_ss.add(when: 'CONFIG_ADLIB', if_true: files('fmopl.c', 'adlib.c'))
++system_ss.add(when: 'CONFIG_ASC', if_true: files('asc.c'))
+ system_ss.add(when: 'CONFIG_CS4231', if_true: files('cs4231.c'))
+ system_ss.add(when: 'CONFIG_CS4231A', if_true: files('cs4231a.c'))
+ system_ss.add(when: 'CONFIG_ES1370', if_true: files('es1370.c'))
+diff --git a/hw/audio/trace-events b/hw/audio/trace-events
+index 4dec48a4fd5e..89ef2996e511 100644
+--- a/hw/audio/trace-events
++++ b/hw/audio/trace-events
+@@ -17,3 +17,13 @@ via_ac97_codec_write(uint8_t addr, uint16_t val) "0x%x <- 0x%x"
+ via_ac97_sgd_fetch(uint32_t curr, uint32_t addr, char stop, char eol, char flag, uint32_t len) "curr=0x%x addr=0x%x %c%c%c len=%d"
+ via_ac97_sgd_read(uint64_t addr, unsigned size, uint64_t val) "0x%"PRIx64" %d -> 0x%"PRIx64
+ via_ac97_sgd_write(uint64_t addr, unsigned size, uint64_t val) "0x%"PRIx64" %d <- 0x%"PRIx64
++
++# asc.c
++asc_read_fifo(const char fifo, int reg, unsigned size, uint64_t value) "fifo %c reg=0x%03x size=%u value=0x%"PRIx64
++asc_read_reg(int reg, unsigned size, uint64_t value) "reg=0x%03x size=%u value=0x%"PRIx64
++asc_read_extreg(const char fifo, int reg, unsigned size, uint64_t value) "fifo %c reg=0x%03x size=%u value=0x%"PRIx64
++asc_fifo_get(const char fifo, int rptr, int cnt, uint64_t value) "fifo %c rptr=0x%x cnt=0x%x value=0x%"PRIx64
++asc_write_fifo(const char fifo, int reg, unsigned size, int wrptr, int cnt, uint64_t value) "fifo %c reg=0x%03x size=%u wptr=0x%x cnt=0x%x value=0x%"PRIx64
++asc_write_reg(int reg, unsigned size, uint64_t value) "reg=0x%03x size=%u value=0x%"PRIx64
++asc_write_extreg(const char fifo, int reg, unsigned size, uint64_t value) "fifo %c reg=0x%03x size=%u value=0x%"PRIx64
++asc_update_irq(int irq, int a, int b) "set IRQ to %d (A: 0x%x B: 0x%x)"
+diff --git a/hw/m68k/Kconfig b/hw/m68k/Kconfig
+index 64fa70a0db72..d88741ec9d1c 100644
+--- a/hw/m68k/Kconfig
++++ b/hw/m68k/Kconfig
+@@ -25,6 +25,7 @@ config Q800
+     select OR_IRQ
+     select DJMEMC
+     select IOSB
++    select ASC
  
-     /*
-      * Create container for all IO devices
+ config M68K_VIRT
+     bool
 -- 
 2.41.0
 
