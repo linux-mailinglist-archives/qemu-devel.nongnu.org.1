@@ -2,70 +2,78 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A387BCB65
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 03:11:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 110987BCB99
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 03:36:56 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpIJ4-0000W8-V9; Sat, 07 Oct 2023 21:10:06 -0400
+	id 1qpIhe-00081X-Qt; Sat, 07 Oct 2023 21:35:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lichao@loongson.cn>)
- id 1qpIIz-0000VN-Gm
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 21:10:03 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <lichao@loongson.cn>) id 1qpIIo-0005tH-EX
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 21:09:53 -0400
-Received: from loongson.cn (unknown [10.40.24.149])
- by gateway (Coremail) with SMTP id _____8BxpPBTASJlwOkvAA--.26592S3;
- Sun, 08 Oct 2023 09:09:40 +0800 (CST)
-Received: from [10.40.24.149] (unknown [10.40.24.149])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8BxbNxTASJlNnoaAA--.56007S3; 
- Sun, 08 Oct 2023 09:09:39 +0800 (CST)
-Content-Type: multipart/alternative;
- boundary="------------U9oR1eCOnFDyad0eYOeTNO91"
-Message-ID: <56be5657-8c37-126d-2626-a24fce49be50@loongson.cn>
-Date: Sun, 8 Oct 2023 09:09:39 +0800
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qpIhb-00081J-2u
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 21:35:27 -0400
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <yin31149@gmail.com>)
+ id 1qpIhQ-0001Fp-Tx
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 21:35:26 -0400
+Received: by mail-lf1-x12c.google.com with SMTP id
+ 2adb3069b0e04-50435a9f800so4419766e87.2
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 18:35:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696728914; x=1697333714; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=fUH2OirCBs16S0uy9Zjjfnreaal+GFmGPDQ+dvt+h8E=;
+ b=lYQB0A5NUvNWX3l/iTe6tnTndyZwF/hEKJLaFnleiy9yRxKtnLOHNth+Zo265F77Hs
+ lX9VGRzuwiuzhdFdiFmuU4fgGlKyQjMrNHUGVHOF+kd4ws2QBh3R2zA5Xfx1/vpcCM+W
+ SXtcYq/tRWt/1qw+2kpnOteEGlPUzeLwjr2KTE12jadnYrNoyb1hHtvuixxbQNP1SEJH
+ w+Xz7KQTgroWJzSJNwKU4HR0R1LoqNYVUg6lKZdtYhRhR/7Ztf/CxNZL/cjsXLzGOLw/
+ VfaADUKZHaEswIvzXuM1Cm3hTVnQoksR4ygwqLMpGLAdMJLIEcQfXI09KIyQ2p/aTg/4
+ CxGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696728914; x=1697333714;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=fUH2OirCBs16S0uy9Zjjfnreaal+GFmGPDQ+dvt+h8E=;
+ b=EjBKxG0pi0OMxeu3Z+04qFHYkltt+GyPgfmqaC3mHZqzASmgxYf55eD1vdE6g7TGJf
+ LmPY0H1FoizNLLkM4TzlRIdDb/oPP9YCuIxauAjR23YBCxdg2VG6SgsGuiSIoBTyGhYP
+ vmURM479vUCFqXv0U9zIX9Eh/0wfExFb/EwqSmoMCUsPd+jNqaBaCDdj/LCzMnIq0TBh
+ EiOM8vMUNNnzI5xbaetZQ3Tuy+mnSeF4MA3c6xAhoc8cWMC/sJD8F2tdL6bZKdRS49mu
+ k2hc4jlWspqEjsXvYBteQHGKKo+9xEl06QTLCM7KSK0V9jUVJ3aQbrgorV9gTsrGIltd
+ zjSA==
+X-Gm-Message-State: AOJu0YyaoHD36wjarVRAQXitFvxhxydxisd8MpdkayU2AKNphqaA+wpw
+ nfxYstlnDTotv9EvLUl2G2HLqkWU+ObvVVWnlQEEnZruqFLnqdC2
+X-Google-Smtp-Source: AGHT+IHNepTPig18thLQ1N2UxctYwIuZyZXoDO2QmhELxoP/X3D8P8ZUqUy2sgJlvo+xzKsD8dV8zQFQ4D9CRNCTwBc=
+X-Received: by 2002:ac2:4ec7:0:b0:503:317b:8b7c with SMTP id
+ p7-20020ac24ec7000000b00503317b8b7cmr7756090lfr.9.1696728913480; Sat, 07 Oct
+ 2023 18:35:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: On integrating LoongArch EDK2 firmware into QEMU build process
-To: WANG Xuerui <i.qemu@xen0n.name>, maobibo <maobibo@loongson.cn>,
- qemu-devel <qemu-devel@nongnu.org>
-Cc: Song Gao <gaosong@loongson.cn>, =?UTF-8?B?5p2o5bCP5aif?=
- <yangxiaojuan@loongson.cn>
-References: <1f1d3d9f-c3df-4f29-df66-886410994cc3@xen0n.name>
- <67517424-0f32-09f8-6446-53f71ebd59b5@loongson.cn>
- <89c67ba0-5152-4b03-b0be-19ba97bfac4c@xen0n.name>
-From: Chao Li <lichao@loongson.cn>
-In-Reply-To: <89c67ba0-5152-4b03-b0be-19ba97bfac4c@xen0n.name>
-X-CM-TRANSID: AQAAf8BxbNxTASJlNnoaAA--.56007S3
-X-CM-SenderInfo: xolfxt3r6o00pqjv00gofq/1tbiAQASCGUgwCUKLQABsd
-X-Coremail-Antispam: 1Uk129KBj93XoW7uF43AF1ruw4rZryxXF1fuFX_yoW5JFy7pr
- 4fua13tr4kGFW8Kw1kCw47uFZavrn5GrW5Jw15GryDCwnIgFn2vry0qFs8CFy7Grn3t3yj
- gFWjvw4kAa1DZFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnRJUUUkKb4IE77IF4wAF
- F20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r
- 1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAF
- wI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67
- AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x2
- 0xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1lYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx
- 0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwCjr7xv
- wVCIw2I0I7xG6c02F41lc7I2V7IY0VAS07AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2
- IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r106r1rMI8I3I0E7480Y4vE14v2
- 6r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67
- AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IY
- s7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr
- 0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU1njjDUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=lichao@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -24
-X-Spam_score: -2.5
-X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, HTML_MESSAGE=0.001,
- NICE_REPLY_A=-0.644, SPF_HELO_NONE=0.001,
+References: <cover.1693287885.git.yin31149@gmail.com>
+ <13b3a36cc33c443a47525957ea38e80594d90595.1693287885.git.yin31149@gmail.com>
+ <CAJaqyWf-jE79jq33FJM8HU=nAjq4qAd+TLHu6Xxt8SS-xYWbJw@mail.gmail.com>
+In-Reply-To: <CAJaqyWf-jE79jq33FJM8HU=nAjq4qAd+TLHu6Xxt8SS-xYWbJw@mail.gmail.com>
+From: Hawkins Jiawei <yin31149@gmail.com>
+Date: Sun, 8 Oct 2023 09:35:01 +0800
+Message-ID: <CAKrof1O372z2dRocUzNFhQbHRqwCuuLsp2+UDiJQdRBz_rbsxA@mail.gmail.com>
+Subject: Re: [PATCH v4 3/8] vhost: Expose vhost_svq_available_slots()
+To: Eugenio Perez Martin <eperezma@redhat.com>
+Cc: jasowang@redhat.com, mst@redhat.com, qemu-devel@nongnu.org, 
+ leiyang@redhat.com, 18801353760@163.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::12c;
+ envelope-from=yin31149@gmail.com; helo=mail-lf1-x12c.google.com
+X-Spam_score_int: -17
+X-Spam_score: -1.8
+X-Spam_bar: -
+X-Spam_report: (-1.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ FREEMAIL_ENVFROM_END_DIGIT=0.25, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,170 +90,123 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-This is a multi-part message in MIME format.
---------------U9oR1eCOnFDyad0eYOeTNO91
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-
-Hi Xuerui,
-
-     Sorry for late reply. In fact the EDK2 repo is ready for submit, in 
-a few days I will commit the patch set in kilaterlee/edk2 repo and 
-execute the EDK2 CI testing. I will notify some people to review them, 
-you are also welcome to review the patch set. And then, I'll submit the 
-formal version patch to the EDK2 devel community.
-
-
-Thanks,
-Chao
-在 2023/10/1 04:16, WANG Xuerui 写道:
-> On 3/31/23 08:54, maobibo wrote:
->> Xuerui,
+=E5=9C=A8 2023/10/4 01:44, Eugenio Perez Martin =E5=86=99=E9=81=93:
+> On Tue, Aug 29, 2023 at 7:55=E2=80=AFAM Hawkins Jiawei <yin31149@gmail.co=
+m> wrote:
 >>
->> Thanks for your mail, it is a good suggestion. Now we are planing to 
->> move LoongArch uefi bios from edk2-platform to edk2 repo, so that 
->> uefi bios supporting LoongArch can be auto compiled and uploaded to 
->> qemu repo. Only that process is somwhat slow since lacking of hands, 
->> however we are doing this.
+>> Next patches in this series will delay the polling
+>> and checking of buffers until either the SVQ is
+>> full or control commands shadow buffers are full,
+>> no longer perform an immediate poll and check of
+>> the device's used buffers for each CVQ state load command.
+>>
+>> To achieve this, this patch exposes
+>> vhost_svq_available_slots() and introduces a helper function,
+>> allowing QEMU to know whether the SVQ is full.
+>>
+>> Signed-off-by: Hawkins Jiawei <yin31149@gmail.com>
+>> Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+>> ---
+>>   hw/virtio/vhost-shadow-virtqueue.c | 2 +-
+>>   hw/virtio/vhost-shadow-virtqueue.h | 1 +
+>>   net/vhost-vdpa.c                   | 9 +++++++++
+>>   3 files changed, 11 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/hw/virtio/vhost-shadow-virtqueue.c b/hw/virtio/vhost-shadow=
+-virtqueue.c
+>> index e731b1d2ea..fc5f408f77 100644
+>> --- a/hw/virtio/vhost-shadow-virtqueue.c
+>> +++ b/hw/virtio/vhost-shadow-virtqueue.c
+>> @@ -66,7 +66,7 @@ bool vhost_svq_valid_features(uint64_t features, Error=
+ **errp)
+>>    *
+>>    * @svq: The svq
+>>    */
+>> -static uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *s=
+vq)
+>> +uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq)
+>>   {
+>>       return svq->num_free;
+>>   }
+>> diff --git a/hw/virtio/vhost-shadow-virtqueue.h b/hw/virtio/vhost-shadow=
+-virtqueue.h
+>> index 5bce67837b..19c842a15b 100644
+>> --- a/hw/virtio/vhost-shadow-virtqueue.h
+>> +++ b/hw/virtio/vhost-shadow-virtqueue.h
+>> @@ -114,6 +114,7 @@ typedef struct VhostShadowVirtqueue {
+>>
+>>   bool vhost_svq_valid_features(uint64_t features, Error **errp);
+>>
+>> +uint16_t vhost_svq_available_slots(const VhostShadowVirtqueue *svq);
+>>   void vhost_svq_push_elem(VhostShadowVirtqueue *svq,
+>>                            const VirtQueueElement *elem, uint32_t len);
+>>   int vhost_svq_add(VhostShadowVirtqueue *svq, const struct iovec *out_s=
+g,
 >
-> Pinging: a few months have passed, and it seems this work is stalled? 
-> Given the LoongArch Linux KVM support is about to land in v6.7, it may 
-> be time to prepare the firmware and QEMU side of things, so users 
-> would no longer have to manually acquire the firmware blobs whenever 
-> they fire up their VMs.
+> I think it is ok to split this export in its own patch. If you decide
+> to do it that way, you can add my Acked-by.
+
+I will split this in its own patch, thanks for your suggestion!
+
 >
+>> diff --git a/net/vhost-vdpa.c b/net/vhost-vdpa.c
+>> index a875767ee9..e6342b213f 100644
+>> --- a/net/vhost-vdpa.c
+>> +++ b/net/vhost-vdpa.c
+>> @@ -620,6 +620,13 @@ static ssize_t vhost_vdpa_net_cvq_add(VhostVDPAStat=
+e *s,
+>>       return vhost_svq_poll(svq, 1);
+>>   }
 >>
->> Regards
->> Bibo, Mao
+>> +/* Convenience wrapper to get number of available SVQ descriptors */
+>> +static uint16_t vhost_vdpa_net_svq_available_slots(VhostVDPAState *s)
+>> +{
+>> +    VhostShadowVirtqueue *svq =3D g_ptr_array_index(s->vhost_vdpa.shado=
+w_vqs, 0);
+>
+> This is not really generic enough for all VhostVDPAState, as dataplane
+> ones have two svqs.
+>
+> I think the best is to just inline the function in the caller, as
+> there is only one, isn't it? If not, would it work to just replace
+> _net_ by _cvq_ or similar?
+>
+
+Yes, there should be only one user for this function, I will inline
+the function in the caller.
+
+>> +    return vhost_svq_available_slots(svq);
+>> +}
+>> +
+>>   static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAState *s, uint8_t clas=
+s,
+>>                                          uint8_t cmd, const struct iovec=
+ *data_sg,
+>>                                          size_t data_num)
+>> @@ -640,6 +647,8 @@ static ssize_t vhost_vdpa_net_load_cmd(VhostVDPAStat=
+e *s, uint8_t class,
+>>       };
 >>
->> 在 2023/3/30 22:06, WANG Xuerui 写道:
->>> Hi,
->>>
->>> Recently there are reportedly increased general interest in trying 
->>> out LoongArch on top of QEMU, among both end users and 
->>> organizations; and the EDK2 firmware port is fully upstreamed since 
->>> the stable202211 version, and a build suitable for QEMU is already 
->>> possible with Platform/Loongson/LoongArchQemuPkg in edk2-platforms. 
->>> I think providing pre-built LoongArch firmware would make it much 
->>> easier to dabble in system emulation, helping those users. (They 
->>> currently have to pull a blob from yangxiaojuan/qemu-binary, and 
->>> remember to pair certain version of QEMU with certain revision of 
->>> the firmware blob. I'm also one of the users who can't remember 
->>> which version to use, but I can always build my own; imagine the 
->>> difficulty an end user would face!)
->>>
->>> So I tried to add a LoongArch build to the list stored in roms/, but 
->>> discovered that edk2-platforms seems not included, because all other 
->>> platforms' EDK2 packages are directly under the main edk2 repo.
->>>
->>> The question is: is integrating a platform package from 
->>> edk2-platforms okay under the current build system, so we can 
->>> arrange to provide edk2-platforms also as a submodule and go ahead? 
->>> Or do we (the LoongArch firmware community) have to change the code 
->>> organization to make necessary parts available in the main edk2 repo?
->>>
->>> CC-ing target/loongarch maintainers from Loongson too as you may 
->>> have more information.
+>>       assert(data_size < vhost_vdpa_net_cvq_cmd_page_len() - sizeof(ctrl=
+));
+>> +    /* Each CVQ command has one out descriptor and one in descriptor */
+>> +    assert(vhost_vdpa_net_svq_available_slots(s) >=3D 2);
 >>
---------------U9oR1eCOnFDyad0eYOeTNO91
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+>
+> I think we should remove this assertion. By the end of the series
+> there is an "if" checks explicitly for the opposite condition, and
+> flushing the queue in that case, so the code can never reach it.
+>
 
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><font size="2">Hi Xuerui,</font></p>
-    <p><font size="2">    Sorry for late reply. In fact the EDK2 repo is
-        ready for submit, in a few days I will commit the patch set in
-        kilaterlee/edk2 repo and execute the EDK2 CI testing. I will
-        notify some people to review them, you are also welcome to
-        review the patch set. And then, I'll submit the formal version
-        patch to the EDK2 devel community.</font></p>
-    <div class="moz-signature"
-      signature-switch-id="18b8a24a-8ce6-4aca-a108-921eeebcd5e9"><br>
-      <div
-        style="width:15%;height:1px;background-color:grey;transform:scaleY(0.3)"></div>
-      <div style="color:grey;font-size:11px">Thanks,<br>
-        Chao<br>
-      </div>
-    </div>
-    <div class="moz-cite-prefix">在 2023/10/1 04:16, WANG Xuerui 写道:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:89c67ba0-5152-4b03-b0be-19ba97bfac4c@xen0n.name">On
-      3/31/23 08:54, maobibo wrote:
-      <br>
-      <blockquote type="cite">Xuerui,
-        <br>
-        <br>
-        Thanks for your mail, it is a good suggestion. Now we are
-        planing to move LoongArch uefi bios from edk2-platform to edk2
-        repo, so that uefi bios supporting LoongArch can be auto
-        compiled and uploaded to qemu repo. Only that process is somwhat
-        slow since lacking of hands, however we are doing this.
-        <br>
-      </blockquote>
-      <br>
-      Pinging: a few months have passed, and it seems this work is
-      stalled? Given the LoongArch Linux KVM support is about to land in
-      v6.7, it may be time to prepare the firmware and QEMU side of
-      things, so users would no longer have to manually acquire the
-      firmware blobs whenever they fire up their VMs.
-      <br>
-      <br>
-      <blockquote type="cite">
-        <br>
-        Regards
-        <br>
-        Bibo, Mao
-        <br>
-        <br>
-        在 2023/3/30 22:06, WANG Xuerui 写道:
-        <br>
-        <blockquote type="cite">Hi,
-          <br>
-          <br>
-          Recently there are reportedly increased general interest in
-          trying out LoongArch on top of QEMU, among both end users and
-          organizations; and the EDK2 firmware port is fully upstreamed
-          since the stable202211 version, and a build suitable for QEMU
-          is already possible with Platform/Loongson/LoongArchQemuPkg in
-          edk2-platforms. I think providing pre-built LoongArch firmware
-          would make it much easier to dabble in system emulation,
-          helping those users. (They currently have to pull a blob from
-          yangxiaojuan/qemu-binary, and remember to pair certain version
-          of QEMU with certain revision of the firmware blob. I'm also
-          one of the users who can't remember which version to use, but
-          I can always build my own; imagine the difficulty an end user
-          would face!)
-          <br>
-          <br>
-          So I tried to add a LoongArch build to the list stored in
-          roms/, but discovered that edk2-platforms seems not included,
-          because all other platforms' EDK2 packages are directly under
-          the main edk2 repo.
-          <br>
-          <br>
-          The question is: is integrating a platform package from
-          edk2-platforms okay under the current build system, so we can
-          arrange to provide edk2-platforms also as a submodule and go
-          ahead? Or do we (the LoongArch firmware community) have to
-          change the code organization to make necessary parts available
-          in the main edk2 repo?
-          <br>
-          <br>
-          CC-ing target/loongarch maintainers from Loongson too as you
-          may have more information.
-          <br>
-        </blockquote>
-        <br>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
+Yes, you are right. I will remove this assertion.
 
---------------U9oR1eCOnFDyad0eYOeTNO91--
+Thanks!
 
+
+>>       /* pack the CVQ command header */
+>>       memcpy(s->cvq_cmd_out_buffer, &ctrl, sizeof(ctrl));
+>> --
+>> 2.25.1
+>>
+>
 
