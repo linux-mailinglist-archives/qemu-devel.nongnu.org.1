@@ -2,80 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2147BCD72
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC437BCD75
 	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 11:14:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpPqP-0001nv-2y; Sun, 08 Oct 2023 05:13:01 -0400
+	id 1qpPqS-0001oz-Gv; Sun, 08 Oct 2023 05:13:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qpPqN-0001nN-J3
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 05:12:59 -0400
-Received: from mail-pl1-x62e.google.com ([2607:f8b0:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qpPqQ-0001oQ-AS
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 05:13:02 -0400
+Received: from mail-oa1-x29.google.com ([2001:4860:4864:20::29])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qpPqK-0002Dr-ME
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 05:12:59 -0400
-Received: by mail-pl1-x62e.google.com with SMTP id
- d9443c01a7336-1c61bde0b4bso30754515ad.3
- for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 02:12:56 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <fengli@smartx.com>) id 1qpPqO-0002F9-JZ
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 05:13:02 -0400
+Received: by mail-oa1-x29.google.com with SMTP id
+ 586e51a60fabf-1dd0526b5easo2665156fac.2
+ for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 02:13:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1696756375; x=1697361175;
+ d=smartx-com.20230601.gappssmtp.com; s=20230601; t=1696756379; x=1697361179;
  darn=nongnu.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=KtjO1lS5KyQU3h+Hf7ZgeU0iuEx8e6d6jY/0St+hkG8=;
- b=v5cXyPRQkFpnHlsmB8Dn1Anoie+sHD0D8sUyHFT6/zzzKfF2uu9HSbwfB0n92453R4
- 7pYCQyPdxgNsorhuCiWKIwuF4Rfh9cjHE8g2AKyZYuZ90sVTVXhAqHb87RodAvpVBDZZ
- HibNppArgOM2o6PAc5s5xFlco8I4SUVbpiVCqvnTOCiUCqMkMMBITt3bHC++6zftqHTR
- 8yJ8EN8xXGucgRBVtyNV+7ub3lTJo84QXJIL4ZFhouWUWlOfzSRYi9FclbOo7Vuh2XMI
- oJXFo9AMmh6WRelJILre/CCWg9YeVHdzLcvNyGqcgrjOSQZWHY9bSSKtssxDh9L5VpoX
- 3g4A==
+ bh=flzDQE1QokZHW+hOGv8gceXlgLhnm4s9nj6hmmZpjyU=;
+ b=kd4nd0bz7nwvnO8riBuxItF5pYns0BqmyEyEAXwB8QlO3uBSk9VZ/V4qA/l6xvM0Xj
+ bqHOTdhxzwG6xAe+Cw5wT2CywZRETTVKwhNBxd2UozOKl3i4fssFwyFkkje56FCHycgw
+ jt0dYuwfTW7EkKFxbDOUTEhwV8Y7/gXW6MscchLuewDITMzWiDHRIITii5jj+1vhU4Ta
+ AIh5FdcpbnrDQ/3mKAWmh1zR1t5xLWHgXcKXmjZ9hbVuHt/WVMcX71KAr1djK+vLkyFu
+ bRPZ6x14H3Ajd9xdWcM8Qfz0p2Wy9wYstm7csslKTItGPpiO6DtzC+QLwdx4+0tMAiB7
+ U6NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696756375; x=1697361175;
+ d=1e100.net; s=20230601; t=1696756379; x=1697361179;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=KtjO1lS5KyQU3h+Hf7ZgeU0iuEx8e6d6jY/0St+hkG8=;
- b=u5RabmRf2uR4DK8WvTFqbQQIyibHv7b9OIBmdGgbKAyVHrlzBdpFuGCWlkvEMEXSbJ
- qElPnIQn5XLe8/09mLrEcogDFzTeEuXilFVlCYpllbiTPumOlL+FAG+05abAAzS3OFpb
- B+esoTVXjRgzE8IPlWv+C6yAl3vnTUggV3TNxfMymNVqkXFX12EVHg1Fn94yUUZfRcbM
- wvh8JSILj0LgMNU1y2viJQ0VtaH8+xmE8Gjp/iwWW/Hcike/9EUBC3vf4ALj9k2FGF0k
- S9lmC1RTZL1n7g8Skjn9jCecyF/ZB8wnHFoscLLvUwYsVYslErSrPD0VFq8/cfcY/0PU
- HmyQ==
-X-Gm-Message-State: AOJu0Yz0jJK1QuKkb9YllpWiHCZsh/w2ZjqLvtuTJwsDvkduUL42CPBn
- ddBjSLIvQUeDQuE/Ll7ksfUXAw==
-X-Google-Smtp-Source: AGHT+IG8t8Y8W45PdvoJOlZM5uJkz7QgMahd7vmW1LTACA67FyV2QbQRKM888LaQiM+tsDTfzKZP4Q==
-X-Received: by 2002:a17:903:2611:b0:1c6:2fc0:9626 with SMTP id
- jd17-20020a170903261100b001c62fc09626mr11866290plb.6.1696756375321; 
- Sun, 08 Oct 2023 02:12:55 -0700 (PDT)
+ bh=flzDQE1QokZHW+hOGv8gceXlgLhnm4s9nj6hmmZpjyU=;
+ b=ia9swhfO4xBNn88clKIR96xgqnBObU6kqTAvBS1sAraDcAGp0KpPq+AmpUTRkSNrJY
+ cdJSlrIbIbDKiPE0J1I+k1aj8JIx1TliT/jnLdFYt8arP1GjUrplIBDWWZ1s+kD6pdra
+ DiQflJfRAFXb7cu5YFJghAzlp56RHOkOt+OQv1VhR8yMRbfJ2LNk1eE8DI3Ny7dw4yEE
+ 6qizIRNtLkAik6MgPR6DStPl+hW9bnyJn9CLPdwNFtBN1rZ+ZK/RINtl46ZoOAAqGZDy
+ q9POCOnPY6vH70zSd0JpfboagPedB59HAr6vhiCdjuZ/qTcfPAn4CY0S7YVddbHruNff
+ f9Iw==
+X-Gm-Message-State: AOJu0YzC1hr08QVt9AxtOutLOGGYbSxOboNeRnRTU55iwkl+v911lmYb
+ CvPVKef7jM+noDjmnRNXEQa6Kg==
+X-Google-Smtp-Source: AGHT+IH3e7RcEtzZbdxvibUthCX9bMwDv9vVMTT4YRhgCPI//2hDfJbgomWS/BmuQvpGBbJ2ZgOYhg==
+X-Received: by 2002:a05:6870:898c:b0:1d7:1533:6869 with SMTP id
+ f12-20020a056870898c00b001d715336869mr14792038oaq.31.1696756379070; 
+ Sun, 08 Oct 2023 02:12:59 -0700 (PDT)
 Received: from 64217.gitgo.cc ([8.210.91.195])
  by smtp.gmail.com with ESMTPSA id
- e8-20020a17090301c800b001b8a3e2c241sm7118084plh.14.2023.10.08.02.12.51
+ e8-20020a17090301c800b001b8a3e2c241sm7118084plh.14.2023.10.08.02.12.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Oct 2023 02:12:54 -0700 (PDT)
+ Sun, 08 Oct 2023 02:12:58 -0700 (PDT)
 From: Li Feng <fengli@smartx.com>
 To: Markus Armbruster <armbru@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>,
  Raphael Norwitz <raphael.norwitz@nutanix.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, Kevin Wolf <kwolf@redhat.com>,
- Hanna Reitz <hreitz@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
- Fam Zheng <fam@euphon.net>,
+ Kevin Wolf <kwolf@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Fam Zheng <fam@euphon.net>,
  =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
  Viresh Kumar <viresh.kumar@linaro.org>,
  qemu-block@nongnu.org (open list:Block layer core),
  qemu-devel@nongnu.org (open list:All patches CC here)
 Cc: Li Feng <fengli@smartx.com>
-Subject: [PATCH v7 1/5] vhost-user-common: send get_inflight_fd once
-Date: Sun,  8 Oct 2023 17:12:01 +0800
-Message-ID: <20231008091220.870171-2-fengli@smartx.com>
+Subject: [PATCH v7 2/5] vhost: move and rename the conn retry times
+Date: Sun,  8 Oct 2023 17:12:02 +0800
+Message-ID: <20231008091220.870171-3-fengli@smartx.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231008091220.870171-1-fengli@smartx.com>
 References: <20231008091220.870171-1-fengli@smartx.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: none client-ip=2607:f8b0:4864:20::62e;
- envelope-from=fengli@smartx.com; helo=mail-pl1-x62e.google.com
+Received-SPF: none client-ip=2001:4860:4864:20::29;
+ envelope-from=fengli@smartx.com; helo=mail-oa1-x29.google.com
 X-Spam_score_int: -18
 X-Spam_score: -1.9
 X-Spam_bar: -
@@ -97,85 +97,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Currently the get_inflight_fd will be sent every time the device is started, and
-the backend will allocate shared memory to save the inflight state. If the
-backend finds that it receives the second get_inflight_fd, it will release the
-previous shared memory, which breaks inflight working logic.
-
-This patch is a preparation for the following patches.
+Multiple devices need this macro, move it to a common header.
 
 Signed-off-by: Li Feng <fengli@smartx.com>
 Reviewed-by: Raphael Norwitz <raphael.norwitz@nutanix.com>
 ---
- hw/scsi/vhost-scsi-common.c | 37 ++++++++++++++++++-------------------
- 1 file changed, 18 insertions(+), 19 deletions(-)
+ hw/block/vhost-user-blk.c   | 4 +---
+ hw/virtio/vhost-user-gpio.c | 3 +--
+ include/hw/virtio/vhost.h   | 2 ++
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/hw/scsi/vhost-scsi-common.c b/hw/scsi/vhost-scsi-common.c
-index a06f01af26..a61cd0e907 100644
---- a/hw/scsi/vhost-scsi-common.c
-+++ b/hw/scsi/vhost-scsi-common.c
-@@ -52,20 +52,28 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
+diff --git a/hw/block/vhost-user-blk.c b/hw/block/vhost-user-blk.c
+index eecf3f7a81..3c69fa47d5 100644
+--- a/hw/block/vhost-user-blk.c
++++ b/hw/block/vhost-user-blk.c
+@@ -32,8 +32,6 @@
+ #include "sysemu/sysemu.h"
+ #include "sysemu/runstate.h"
  
-     vsc->dev.acked_features = vdev->guest_features;
+-#define REALIZE_CONNECTION_RETRIES 3
+-
+ static const int user_feature_bits[] = {
+     VIRTIO_BLK_F_SIZE_MAX,
+     VIRTIO_BLK_F_SEG_MAX,
+@@ -482,7 +480,7 @@ static void vhost_user_blk_device_realize(DeviceState *dev, Error **errp)
+     s->inflight = g_new0(struct vhost_inflight, 1);
+     s->vhost_vqs = g_new0(struct vhost_virtqueue, s->num_queues);
  
--    assert(vsc->inflight == NULL);
--    vsc->inflight = g_new0(struct vhost_inflight, 1);
--    ret = vhost_dev_get_inflight(&vsc->dev,
--                                 vs->conf.virtqueue_size,
--                                 vsc->inflight);
-+    ret = vhost_dev_prepare_inflight(&vsc->dev, vdev);
-     if (ret < 0) {
--        error_report("Error get inflight: %d", -ret);
-+        error_report("Error setting inflight format: %d", -ret);
-         goto err_guest_notifiers;
-     }
+-    retries = REALIZE_CONNECTION_RETRIES;
++    retries = VU_REALIZE_CONN_RETRIES;
+     assert(!*errp);
+     do {
+         if (*errp) {
+diff --git a/hw/virtio/vhost-user-gpio.c b/hw/virtio/vhost-user-gpio.c
+index 3d7fae3984..fc784e4213 100644
+--- a/hw/virtio/vhost-user-gpio.c
++++ b/hw/virtio/vhost-user-gpio.c
+@@ -15,7 +15,6 @@
+ #include "standard-headers/linux/virtio_ids.h"
+ #include "trace.h"
  
--    ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
--    if (ret < 0) {
--        error_report("Error set inflight: %d", -ret);
--        goto err_guest_notifiers;
-+    if (vsc->inflight) {
-+        if (!vsc->inflight->addr) {
-+            ret = vhost_dev_get_inflight(&vsc->dev,
-+                                        vs->conf.virtqueue_size,
-+                                        vsc->inflight);
-+            if (ret < 0) {
-+                error_report("Error getting inflight: %d", -ret);
-+                goto err_guest_notifiers;
-+            }
-+        }
+-#define REALIZE_CONNECTION_RETRIES 3
+ #define VHOST_NVQS 2
+ 
+ /* Features required from VirtIO */
+@@ -365,7 +364,7 @@ static void vu_gpio_device_realize(DeviceState *dev, Error **errp)
+     qemu_chr_fe_set_handlers(&gpio->chardev, NULL, NULL, vu_gpio_event, NULL,
+                              dev, NULL, true);
+ 
+-    retries = REALIZE_CONNECTION_RETRIES;
++    retries = VU_REALIZE_CONN_RETRIES;
+     g_assert(!*errp);
+     do {
+         if (*errp) {
+diff --git a/include/hw/virtio/vhost.h b/include/hw/virtio/vhost.h
+index 6a173cb9fa..ca3131b1af 100644
+--- a/include/hw/virtio/vhost.h
++++ b/include/hw/virtio/vhost.h
+@@ -8,6 +8,8 @@
+ #define VHOST_F_DEVICE_IOTLB 63
+ #define VHOST_USER_F_PROTOCOL_FEATURES 30
+ 
++#define VU_REALIZE_CONN_RETRIES 3
 +
-+        ret = vhost_dev_set_inflight(&vsc->dev, vsc->inflight);
-+        if (ret < 0) {
-+            error_report("Error setting inflight: %d", -ret);
-+            goto err_guest_notifiers;
-+        }
-     }
+ /* Generic structures common for any vhost based device. */
  
-     ret = vhost_dev_start(&vsc->dev, vdev, true);
-@@ -85,9 +93,6 @@ int vhost_scsi_common_start(VHostSCSICommon *vsc)
-     return ret;
- 
- err_guest_notifiers:
--    g_free(vsc->inflight);
--    vsc->inflight = NULL;
--
-     k->set_guest_notifiers(qbus->parent, vsc->dev.nvqs, false);
- err_host_notifiers:
-     vhost_dev_disable_notifiers(&vsc->dev, vdev);
-@@ -111,12 +116,6 @@ void vhost_scsi_common_stop(VHostSCSICommon *vsc)
-     }
-     assert(ret >= 0);
- 
--    if (vsc->inflight) {
--        vhost_dev_free_inflight(vsc->inflight);
--        g_free(vsc->inflight);
--        vsc->inflight = NULL;
--    }
--
-     vhost_dev_disable_notifiers(&vsc->dev, vdev);
- }
- 
+ struct vhost_inflight {
 -- 
 2.41.0
 
