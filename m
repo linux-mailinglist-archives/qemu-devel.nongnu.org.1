@@ -2,85 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E966F7BCC5B
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 07:29:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B3837BCC65
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 07:31:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpMKf-0003MY-JP; Sun, 08 Oct 2023 01:28:01 -0400
+	id 1qpMMs-0004Fc-Vr; Sun, 08 Oct 2023 01:30:22 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qpMKd-0003MD-KK
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 01:27:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jasowang@redhat.com>)
- id 1qpMKc-0006X0-88
- for qemu-devel@nongnu.org; Sun, 08 Oct 2023 01:27:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696742877;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Hr7T1ZkDawWvtjDrdIneKcvzMEjpeZm7SKe5BPaAeio=;
- b=Xh5LiUMYCeAGajGK1rOJ/3zUvqjrCBpEJvz810eZoh8v9IG9V31jY2hTtkPJW+9eArh1gi
- Sk8Jl7MtDN2RAesBg8zbwGPBh5RgQYCZkLvV7UdU1j5E1BUJpEvlnvE5hKgX5Vx3VBjfwC
- nrpQURDNxNaWmlVFqoEk9Geev5EOXQo=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-651-p-Qc9by2NSqyRDpy-bBCBw-1; Sun, 08 Oct 2023 01:27:51 -0400
-X-MC-Unique: p-Qc9by2NSqyRDpy-bBCBw-1
-Received: by mail-lf1-f69.google.com with SMTP id
- 2adb3069b0e04-5068bf0b425so1406779e87.0
- for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 22:27:50 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qpMMR-00045f-KH
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 01:29:52 -0400
+Received: from mail-pl1-x633.google.com ([2607:f8b0:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <akihiko.odaki@daynix.com>)
+ id 1qpMMC-00074b-At
+ for qemu-devel@nongnu.org; Sun, 08 Oct 2023 01:29:49 -0400
+Received: by mail-pl1-x633.google.com with SMTP id
+ d9443c01a7336-1c77449a6daso30249115ad.0
+ for <qemu-devel@nongnu.org>; Sat, 07 Oct 2023 22:29:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1696742974; x=1697347774;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=2/drKQsw3H/n//rOXbeBtEedeUYZ8/NjLqaNPEt5EN8=;
+ b=JxCbcNDehM3OMMOuJLrwVWgqJqCS5mGDiXX140iGa7JSuMsaEq6DHV1SRrxM5d+r+D
+ xLRvoJxRbNGy2HB1r7fr9TZATlIDztYwIoWoxzlh/yjWLtz+4pjKw79dHooDYT8n7dXK
+ uFTZePqD1n9SuntmNHDS2q0SP1FaNKP0PrnCvgRHMEh2YeOi/GDk3Msfks//6LNbvx3e
+ tHe0Zf4I+KXtFMFZojIvQhJKcAV7XUAUeFU/ZVPCtwBaWvHbTiEoBNkrqQj0c+4DIFmM
+ 6YmRjo2eH0PuILhAad29s59qES4+nOCVAxTcUps/FPqrV97keOxSvlLCTtp7xsLe1EJl
+ Cqjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696742869; x=1697347669;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ d=1e100.net; s=20230601; t=1696742974; x=1697347774;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Hr7T1ZkDawWvtjDrdIneKcvzMEjpeZm7SKe5BPaAeio=;
- b=TxoKDOvaFpEdVjsAOSXl5/SpnaOCwh208rwifwPUqsfML0bpiVz4Jcioge1m8q2GOZ
- h9lKCXI2ywBu39/g1LPBiCk1tuLMm1UtX8/4SIYaJ3moDLMPUUpwClM+OG3yXBwGQHI1
- jRuYJNVIWXrbMi9YdhfpTBuCmZEgbf5MGC43FObNcHXL3Ly8jQf/Tgwg0gFvCncuYJGk
- JwFZ4IEzNUjVTE8IcT5aVlWkR2VgVOCYbolRvh14aregLRMhe94GKndxqJvFwjpsC2Ix
- 1iL7Aj6IvFbPm+ch+Jcuh5aFhqRbs22DcE3x4IRpAxLqfnP2zMpkO4aiMMT0yBd/afIO
- MHTg==
-X-Gm-Message-State: AOJu0Yz7Hww/UqtccqP3GjdYjSK9vBH5S1FCHwJooJgo9+RfAtr4EE/i
- fjGkLlrOZOKFV1pIabq30LNw5o6XMKp3Gwp4/a35tviozhlWybsDVldyM7XKzlI4eTY1KNkC7VZ
- X59WbcZ/FXf4JOOMwuKA/1jv1mtX5pVg=
-X-Received: by 2002:a05:6512:39d0:b0:504:51e9:89a2 with SMTP id
- k16-20020a05651239d000b0050451e989a2mr15625757lfu.32.1696742869644; 
- Sat, 07 Oct 2023 22:27:49 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFRscR506okY7xwG1XImUKUol7kSiOvFx26DTqoqggKCVYoZybrCUD14IvLUIa7G2eL0QbAjoygf7Mvz0cMxPs=
-X-Received: by 2002:a05:6512:39d0:b0:504:51e9:89a2 with SMTP id
- k16-20020a05651239d000b0050451e989a2mr15625748lfu.32.1696742869357; Sat, 07
- Oct 2023 22:27:49 -0700 (PDT)
+ bh=2/drKQsw3H/n//rOXbeBtEedeUYZ8/NjLqaNPEt5EN8=;
+ b=Z0G8cjvv5jp1LhmPjnnQ+jkf504igYqY34s0MctycNT/Eu8Jl/wAM+fdmrc5Hq3T1Z
+ yneuZPGib6vkYA9Hs/wzjdPUdtew2/yY/66S5jAkKX2Qy0YKM0U+xrcp25eguhIsaWRr
+ ss0pq9M3iThC6qq2h2cm/+QQOH/qjqS7Lxm5pU5Y889zTwqOM2otmEDloBz555H/vJ2J
+ NnHFKqTKOKRW6Rj3sEb3xkEBXcwNMRnf6hGpEMkNNifbdgxW4GTyQJ4Z4Fgci1wmp9wJ
+ H73wwZvMayIMp3qye8UbYsqvH8PS7JHn12xho43lWGXSc/et8z3m7W7mGtIr6FE49k3H
+ GCMg==
+X-Gm-Message-State: AOJu0YyBJWl9x2oPKeZzlxqK86ZiP2ZTZFN+6reahww2nHDzZGHQLq6F
+ szFkfg7BelpqBTk1WPzCGHE+V+E1HOBKEkpo00b2nA==
+X-Google-Smtp-Source: AGHT+IEQxdetCTUBD1OJuZnJ72hzCK3+yX+anzmZsNun0PZBLFZtRl9woAb4WtId43dE2PEIyE7viA==
+X-Received: by 2002:a17:902:eb4c:b0:1bd:bbc3:c87b with SMTP id
+ i12-20020a170902eb4c00b001bdbbc3c87bmr11225303pli.41.1696742974688; 
+ Sat, 07 Oct 2023 22:29:34 -0700 (PDT)
+Received: from localhost ([2400:4050:a840:1e00:78d2:b862:10a7:d486])
+ by smtp.gmail.com with UTF8SMTPSA id
+ p17-20020a170902ead100b001c7373769basm6889383pld.88.2023.10.07.22.29.33
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sat, 07 Oct 2023 22:29:34 -0700 (PDT)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+To: 
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>, Jason Wang <jasowang@redhat.com>,
+ qemu-devel@nongnu.org (open list:All patches CC here)
+Subject: [PATCH 1/6] tap: Fix virtio-net header buffer size
+Date: Sun,  8 Oct 2023 14:29:10 +0900
+Message-ID: <20231008052917.145245-2-akihiko.odaki@daynix.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231008052917.145245-1-akihiko.odaki@daynix.com>
+References: <20231008052917.145245-1-akihiko.odaki@daynix.com>
 MIME-Version: 1.0
-References: <20231004084939.96349-1-thuth@redhat.com>
- <20231004045724-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20231004045724-mutt-send-email-mst@kernel.org>
-From: Jason Wang <jasowang@redhat.com>
-Date: Sun, 8 Oct 2023 13:27:38 +0800
-Message-ID: <CACGkMEvfUDzDvor6TjcF8-2wbymgNKxvn77gUM8KuiAb5Ndi7g@mail.gmail.com>
-Subject: Re: [PATCH] hw/net/vhost_net: Silence compiler warning when compiling
- with -Wshadow
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Thomas Huth <thuth@redhat.com>, qemu-devel@nongnu.org, 
- Markus Armbruster <armbru@redhat.com>, qemu-trivial@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=jasowang@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+Received-SPF: none client-ip=2607:f8b0:4864:20::633;
+ envelope-from=akihiko.odaki@daynix.com; helo=mail-pl1-x633.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,56 +92,37 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Wed, Oct 4, 2023 at 4:57=E2=80=AFPM Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->
-> On Wed, Oct 04, 2023 at 10:49:39AM +0200, Thomas Huth wrote:
-> > Rename the innermost local variables to avoid compiler warnings
-> > with "-Wshadow".
-> >
-> > Signed-off-by: Thomas Huth <thuth@redhat.com>
->
-> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+The largest possible virtio-net header is struct virtio_net_hdr_v1_hash.
 
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fixes: fbbdbddec0 ("tap: allow extended virtio header with hash info")
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+ net/tap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks
-
->
-> feel free to merge
->
-> > ---
-> >  hw/net/vhost_net.c | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/hw/net/vhost_net.c b/hw/net/vhost_net.c
-> > index 57427a3997..e8e1661646 100644
-> > --- a/hw/net/vhost_net.c
-> > +++ b/hw/net/vhost_net.c
-> > @@ -313,8 +313,8 @@ fail:
-> >                  /* Queue might not be ready for start */
-> >                  continue;
-> >              }
-> > -            int r =3D vhost_net_set_backend(&net->dev, &file);
-> > -            assert(r >=3D 0);
-> > +            int ret =3D vhost_net_set_backend(&net->dev, &file);
-> > +            assert(ret >=3D 0);
-> >          }
-> >      }
-> >      if (net->nc->info->poll) {
-> > @@ -629,8 +629,8 @@ err_start:
-> >      if (net->nc->info->type =3D=3D NET_CLIENT_DRIVER_TAP) {
-> >          file.fd =3D VHOST_FILE_UNBIND;
-> >          file.index =3D idx;
-> > -        int r =3D vhost_net_set_backend(&net->dev, &file);
-> > -        assert(r >=3D 0);
-> > +        int ret =3D vhost_net_set_backend(&net->dev, &file);
-> > +        assert(ret >=3D 0);
-> >      }
-> >
-> >      vhost_dev_stop(&net->dev, vdev, false);
-> > --
-> > 2.41.0
->
+diff --git a/net/tap.c b/net/tap.c
+index c6639d9f20..ea46feeaa8 100644
+--- a/net/tap.c
++++ b/net/tap.c
+@@ -118,7 +118,7 @@ static ssize_t tap_receive_iov(NetClientState *nc, const struct iovec *iov,
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+     const struct iovec *iovp = iov;
+     struct iovec iov_copy[iovcnt + 1];
+-    struct virtio_net_hdr_mrg_rxbuf hdr = { };
++    struct virtio_net_hdr_v1_hash hdr = { };
+ 
+     if (s->host_vnet_hdr_len && !s->using_vnet_hdr) {
+         iov_copy[0].iov_base = &hdr;
+@@ -136,7 +136,7 @@ static ssize_t tap_receive_raw(NetClientState *nc, const uint8_t *buf, size_t si
+     TAPState *s = DO_UPCAST(TAPState, nc, nc);
+     struct iovec iov[2];
+     int iovcnt = 0;
+-    struct virtio_net_hdr_mrg_rxbuf hdr = { };
++    struct virtio_net_hdr_v1_hash hdr = { };
+ 
+     if (s->host_vnet_hdr_len) {
+         iov[iovcnt].iov_base = &hdr;
+-- 
+2.42.0
 
 
