@@ -2,70 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8B67BCBF3
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 05:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB657BCC38
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 07:12:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpKw8-0001md-2J; Sat, 07 Oct 2023 23:58:36 -0400
+	id 1qpM4H-0000eR-Eo; Sun, 08 Oct 2023 01:11:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
- id 1qpKw5-0001mF-41
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 23:58:33 -0400
-Received: from mail.loongson.cn ([114.242.206.163])
- by eggs.gnu.org with esmtp (Exim 4.90_1)
- (envelope-from <gaosong@loongson.cn>) id 1qpKw1-0003FU-QY
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 23:58:32 -0400
-Received: from loongson.cn (unknown [10.20.42.239])
- by gateway (Coremail) with SMTP id _____8CxtPDYKCJlw_MvAA--.27369S3;
- Sun, 08 Oct 2023 11:58:16 +0800 (CST)
-Received: from [10.20.42.239] (unknown [10.20.42.239])
- by localhost.localdomain (Coremail) with SMTP id
- AQAAf8Axm+TVKCJlWpcaAA--.58310S3; 
- Sun, 08 Oct 2023 11:58:15 +0800 (CST)
-Subject: Re: [PATCH] target/loongarch: fix ASXE flag conflict
-To: Richard Henderson <richard.henderson@linaro.org>, Jiajie Chen <c@jia.je>, 
- qemu-devel@nongnu.org
-Cc: git@xen0n.name, Xiaojuan Yang <yangxiaojuan@loongson.cn>
-References: <20230930112837.1871691-1-c@jia.je>
- <8c7e0e7f-9196-cc91-be1e-ce0b02fb4db9@linaro.org>
-From: gaosong <gaosong@loongson.cn>
-Message-ID: <e55469ee-6879-ee4b-b7aa-095372cf7f75@loongson.cn>
-Date: Sun, 8 Oct 2023 11:58:12 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
-MIME-Version: 1.0
-In-Reply-To: <8c7e0e7f-9196-cc91-be1e-ce0b02fb4db9@linaro.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+ (Exim 4.90_1) (envelope-from <research_trasio@irq.a4lg.com>)
+ id 1qpM4E-0000eF-55; Sun, 08 Oct 2023 01:11:02 -0400
+Received: from mail-sender-0.a4lg.com ([2401:2500:203:30b:4000:6bfe:4757:0])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <research_trasio@irq.a4lg.com>)
+ id 1qpM47-0001nx-IT; Sun, 08 Oct 2023 01:11:01 -0400
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+ by mail-sender-0.a4lg.com (Postfix) with ESMTPSA id 74940300089;
+ Sun,  8 Oct 2023 05:10:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=irq.a4lg.com;
+ s=2017s01; t=1696741843;
+ bh=BFQ22wCzs7mj8IPfQNhRwYLL+TJAoLgzGgXT9z57Z6o=;
+ h=Message-ID:Date:Mime-Version:Subject:To:References:Cc:From:
+ In-Reply-To:Content-Type:Content-Transfer-Encoding;
+ b=V6T28PJMF4CnqSpmTWwifwi/YhXGnGiWZbTAyzHOuex0UzktmwlnO7EZv8y42sGYG
+ NTKmo/4XLgGXVm39GTFI8mdkEfiqYWfu/kBcZ9lZI/MkJ0oPMb83O61nAcuZIMo2Vv
+ BEvszYe0Mzm+fRUVLQtwKoGsrvOQdvLpdpRJXX8Q=
+Message-ID: <197ccae9-18c6-4ef3-8662-98b8c8ee2446@irq.a4lg.com>
+Date: Sun, 8 Oct 2023 14:10:41 +0900
+Mime-Version: 1.0
+Subject: Re: [PATCH] target/riscv: deprecate capital 'Z' CPU properties
+To: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+References: <20231007171427.1210117-1-dbarboza@ventanamicro.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Axm+TVKCJlWpcaAA--.58310S3
-X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Cw15Jr15trWfuw1kuFWrtFc_yoW8GrW3pa
- yxCFy5tFW0grZ7K397W3Z5WFn5Wr4fGw47Xw1fWFWvkFZ8JrnYqa40q390gF4Duay8ZryU
- ZF15Gw1rZF4DW3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
- sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
- 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
- IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
- e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
- 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
- xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
- 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
- 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
- AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
- F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
- 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
- xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
- 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
- VUUUUUU==
-Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
- helo=mail.loongson.cn
-X-Spam_score_int: -24
-X-Spam_score: -2.5
+Cc: "open list:RISC-V" <qemu-riscv@nongnu.org>,
+ "qemu-devel@nongnu.org Developers" <qemu-devel@nongnu.org>
+From: Tsukasa OI <research_trasio@irq.a4lg.com>
+In-Reply-To: <20231007171427.1210117-1-dbarboza@ventanamicro.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2401:2500:203:30b:4000:6bfe:4757:0;
+ envelope-from=research_trasio@irq.a4lg.com; helo=mail-sender-0.a4lg.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
 X-Spam_bar: --
-X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.644,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -81,41 +63,219 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-在 2023/9/30 下午11:46, Richard Henderson 写道:
-> On 9/30/23 04:28, Jiajie Chen wrote:
->> HW_FLAGS_EUEN_ASXE acccidentally conflicts with HW_FLAGS_CRMD_PG,
->> enabling LASX instructions even when CSR_EUEN.ASXE=0.
->>
->> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1907 >> Signed-off-by: Jiajie Chen <c@jia.je>
->> ---
->>   target/loongarch/cpu.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
->> index f125a8e49b..79ad79a289 100644
->> --- a/target/loongarch/cpu.h
->> +++ b/target/loongarch/cpu.h
->> @@ -462,7 +462,7 @@ static inline void set_pc(CPULoongArchState *env, 
->> uint64_t value)
->>   #define HW_FLAGS_CRMD_PG    R_CSR_CRMD_PG_MASK   /* 0x10 */
->>   #define HW_FLAGS_EUEN_FPE   0x04
->>   #define HW_FLAGS_EUEN_SXE   0x08
->> -#define HW_FLAGS_EUEN_ASXE  0x10
->> +#define HW_FLAGS_EUEN_ASXE  0x40
->>   #define HW_FLAGS_VA32       0x20
->>   static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, 
->> vaddr *pc,
-> 
-> Better to put all defines in bit order, otherwise it will be easy to 
-> make the same mistake again.
->  > With that,
-> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-> 
-> 
-> r
-Reviewed-by: Song Gao <gaosong@loongson.cn>
+That's great!
 
-Thanks.
-Song Gao
+I submitted a patch set to deal with the exact problem:
 
+<https://lists.gnu.org/archive/html/qemu-riscv/2022-05/msg00227.html>
+<https://lists.gnu.org/archive/html/qemu-riscv/2022-05/msg00411.html>
+
+But this one is simpler than mine (and also fits to the latest QEMU).
+
+I support this patch set and want it to be merged.
+
+Thanks,
+Tsukasa
+
+On 2023/10/08 2:14, Daniel Henrique Barboza wrote:
+> At this moment there are eleven CPU extension properties that starts
+> with capital 'Z': Zifencei, Zicsr, Zihintntl, Zihintpause, Zawrs, Zfa,
+> Zfh, Zfhmin, Zve32f, Zve64f and Zve64d. All other extensions are named
+> with lower-case letters.
+> 
+> We want all properties to be named with lower-case letters since it's
+> consistent with the riscv-isa string that we create in the FDT. Having
+> these 11 properties to be exceptions can be confusing.
+> 
+> Deprecate all of them. Create their lower-case counterpart to be used as
+> maintained CPU properties. When trying to use any deprecated property a
+> warning message will be displayed, recommending users to switch to the
+> lower-case variant:
+> 
+> ./build/qemu-system-riscv64 -M virt -cpu rv64,Zifencei=true --nographic
+> qemu-system-riscv64: warning: CPU property 'Zifencei' is deprecated. Please use 'zifencei' instead
+> 
+> This will give users some time to change their scripts before we remove
+> the capital 'Z' properties entirely.
+> 
+> Signed-off-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> ---
+>  docs/about/deprecated.rst  | 23 ++++++++++++++++++++++
+>  target/riscv/cpu.c         | 39 +++++++++++++++++++++++++++-----------
+>  target/riscv/cpu.h         |  1 +
+>  target/riscv/tcg/tcg-cpu.c | 31 +++++++++++++++++++++++++++++-
+>  4 files changed, 82 insertions(+), 12 deletions(-)
+> 
+> diff --git a/docs/about/deprecated.rst b/docs/about/deprecated.rst
+> index 694b878f36..331f10f930 100644
+> --- a/docs/about/deprecated.rst
+> +++ b/docs/about/deprecated.rst
+> @@ -378,6 +378,29 @@ of generic CPUs: rv32 and rv64 as default CPUs and 'max' as a feature complete
+>  CPU for both 32 and 64 bit builds. Users are then discouraged to use the 'any'
+>  CPU type starting in 8.2.
+>  
+> +RISC-V CPU properties which start with with capital 'Z' (since 8.2)
+> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> +
+> +All RISC-V CPU properties which start with capital 'Z' are being deprecated
+> +starting in 8.2. The reason is that they were wrongly added with capital 'Z'
+> +in the past. CPU properties were later added with lower-case names, which
+> +is the format we want to use from now on.
+> +
+> +Users which try to use these deprecated properties will receive a warning
+> +recommending to switch to their stable counterparts:
+> +
+> +- "Zifencei" should be replaced with "zifencei"
+> +- "Zicsr" should be replaced with "zicsr"
+> +- "Zihintntl" should be replaced with "zihintntl"
+> +- "Zihintpause" should be replaced with "zihintpause"
+> +- "Zawrs" should be replaced with "zawrs"
+> +- "Zfa" should be replaced with "zfa"
+> +- "Zfh" should be replaced with "zfh"
+> +- "Zfhmin" should be replaced with "zfhmin"
+> +- "Zve32f" should be replaced with "zve32f"
+> +- "Zve64f" should be replaced with "zve64f"
+> +- "Zve64d" should be replaced with "zve64d"
+> +
+>  Block device options
+>  ''''''''''''''''''''
+>  
+> diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> index 521bb88538..1cdc3d2609 100644
+> --- a/target/riscv/cpu.c
+> +++ b/target/riscv/cpu.c
+> @@ -1246,17 +1246,17 @@ const char *riscv_get_misa_ext_description(uint32_t bit)
+>  const RISCVCPUMultiExtConfig riscv_cpu_extensions[] = {
+>      /* Defaults for standard extensions */
+>      MULTI_EXT_CFG_BOOL("sscofpmf", ext_sscofpmf, false),
+> -    MULTI_EXT_CFG_BOOL("Zifencei", ext_ifencei, true),
+> -    MULTI_EXT_CFG_BOOL("Zicsr", ext_icsr, true),
+> -    MULTI_EXT_CFG_BOOL("Zihintntl", ext_zihintntl, true),
+> -    MULTI_EXT_CFG_BOOL("Zihintpause", ext_zihintpause, true),
+> -    MULTI_EXT_CFG_BOOL("Zawrs", ext_zawrs, true),
+> -    MULTI_EXT_CFG_BOOL("Zfa", ext_zfa, true),
+> -    MULTI_EXT_CFG_BOOL("Zfh", ext_zfh, false),
+> -    MULTI_EXT_CFG_BOOL("Zfhmin", ext_zfhmin, false),
+> -    MULTI_EXT_CFG_BOOL("Zve32f", ext_zve32f, false),
+> -    MULTI_EXT_CFG_BOOL("Zve64f", ext_zve64f, false),
+> -    MULTI_EXT_CFG_BOOL("Zve64d", ext_zve64d, false),
+> +    MULTI_EXT_CFG_BOOL("zifencei", ext_ifencei, true),
+> +    MULTI_EXT_CFG_BOOL("zicsr", ext_icsr, true),
+> +    MULTI_EXT_CFG_BOOL("zihintntl", ext_zihintntl, true),
+> +    MULTI_EXT_CFG_BOOL("zihintpause", ext_zihintpause, true),
+> +    MULTI_EXT_CFG_BOOL("zawrs", ext_zawrs, true),
+> +    MULTI_EXT_CFG_BOOL("zfa", ext_zfa, true),
+> +    MULTI_EXT_CFG_BOOL("zfh", ext_zfh, false),
+> +    MULTI_EXT_CFG_BOOL("zfhmin", ext_zfhmin, false),
+> +    MULTI_EXT_CFG_BOOL("zve32f", ext_zve32f, false),
+> +    MULTI_EXT_CFG_BOOL("zve64f", ext_zve64f, false),
+> +    MULTI_EXT_CFG_BOOL("zve64d", ext_zve64d, false),
+>      MULTI_EXT_CFG_BOOL("sstc", ext_sstc, true),
+>  
+>      MULTI_EXT_CFG_BOOL("smstateen", ext_smstateen, false),
+> @@ -1349,6 +1349,23 @@ const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[] = {
+>      DEFINE_PROP_END_OF_LIST(),
+>  };
+>  
+> +/* Deprecated entries marked for future removal */
+> +const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[] = {
+> +    MULTI_EXT_CFG_BOOL("Zifencei", ext_ifencei, true),
+> +    MULTI_EXT_CFG_BOOL("Zicsr", ext_icsr, true),
+> +    MULTI_EXT_CFG_BOOL("Zihintntl", ext_zihintntl, true),
+> +    MULTI_EXT_CFG_BOOL("Zihintpause", ext_zihintpause, true),
+> +    MULTI_EXT_CFG_BOOL("Zawrs", ext_zawrs, true),
+> +    MULTI_EXT_CFG_BOOL("Zfa", ext_zfa, true),
+> +    MULTI_EXT_CFG_BOOL("Zfh", ext_zfh, false),
+> +    MULTI_EXT_CFG_BOOL("Zfhmin", ext_zfhmin, false),
+> +    MULTI_EXT_CFG_BOOL("Zve32f", ext_zve32f, false),
+> +    MULTI_EXT_CFG_BOOL("Zve64f", ext_zve64f, false),
+> +    MULTI_EXT_CFG_BOOL("Zve64d", ext_zve64d, false),
+> +
+> +    DEFINE_PROP_END_OF_LIST(),
+> +};
+> +
+>  Property riscv_cpu_options[] = {
+>      DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
+>  
+> diff --git a/target/riscv/cpu.h b/target/riscv/cpu.h
+> index 3f11e69223..e98f5de32e 100644
+> --- a/target/riscv/cpu.h
+> +++ b/target/riscv/cpu.h
+> @@ -722,6 +722,7 @@ typedef struct RISCVCPUMultiExtConfig {
+>  extern const RISCVCPUMultiExtConfig riscv_cpu_extensions[];
+>  extern const RISCVCPUMultiExtConfig riscv_cpu_vendor_exts[];
+>  extern const RISCVCPUMultiExtConfig riscv_cpu_experimental_exts[];
+> +extern const RISCVCPUMultiExtConfig riscv_cpu_deprecated_exts[];
+>  extern Property riscv_cpu_options[];
+>  
+>  typedef struct isa_ext_data {
+> diff --git a/target/riscv/tcg/tcg-cpu.c b/target/riscv/tcg/tcg-cpu.c
+> index 08b806dc07..00676593f7 100644
+> --- a/target/riscv/tcg/tcg-cpu.c
+> +++ b/target/riscv/tcg/tcg-cpu.c
+> @@ -732,6 +732,25 @@ static void riscv_cpu_add_misa_properties(Object *cpu_obj)
+>      }
+>  }
+>  
+> +static bool cpu_ext_is_deprecated(const char *ext_name)
+> +{
+> +    return isupper(ext_name[0]);
+> +}
+> +
+> +/*
+> + * String will be allocated in the heap. Caller is responsible
+> + * for freeing it.
+> + */
+> +static char *cpu_ext_to_lower(const char *ext_name)
+> +{
+> +    char *ret = g_malloc0(strlen(ext_name) + 1);
+> +
+> +    strcpy(ret, ext_name);
+> +    ret[0] = tolower(ret[0]);
+> +
+> +    return ret;
+> +}
+> +
+>  static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+>                                    void *opaque, Error **errp)
+>  {
+> @@ -744,6 +763,13 @@ static void cpu_set_multi_ext_cfg(Object *obj, Visitor *v, const char *name,
+>          return;
+>      }
+>  
+> +    if (cpu_ext_is_deprecated(multi_ext_cfg->name)) {
+> +        g_autofree char *lower = cpu_ext_to_lower(multi_ext_cfg->name);
+> +
+> +        warn_report("CPU property '%s' is deprecated. Please use '%s' instead",
+> +                    multi_ext_cfg->name, lower);
+> +    }
+> +
+>      g_hash_table_insert(multi_ext_user_opts,
+>                          GUINT_TO_POINTER(multi_ext_cfg->offset),
+>                          (gpointer)value);
+> @@ -777,13 +803,14 @@ static void cpu_add_multi_ext_prop(Object *cpu_obj,
+>                                     const RISCVCPUMultiExtConfig *multi_cfg)
+>  {
+>      bool generic_cpu = riscv_cpu_is_generic(cpu_obj);
+> +    bool deprecated_ext = cpu_ext_is_deprecated(multi_cfg->name);
+>  
+>      object_property_add(cpu_obj, multi_cfg->name, "bool",
+>                          cpu_get_multi_ext_cfg,
+>                          cpu_set_multi_ext_cfg,
+>                          NULL, (void *)multi_cfg);
+>  
+> -    if (!generic_cpu) {
+> +    if (!generic_cpu || deprecated_ext) {
+>          return;
+>      }
+>  
+> @@ -826,6 +853,8 @@ static void riscv_cpu_add_user_properties(Object *obj)
+>      riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_vendor_exts);
+>      riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_experimental_exts);
+>  
+> +    riscv_cpu_add_multiext_prop_array(obj, riscv_cpu_deprecated_exts);
+> +
+>      for (Property *prop = riscv_cpu_options; prop && prop->name; prop++) {
+>          qdev_property_add_static(DEVICE(obj), prop);
+>      }
 
