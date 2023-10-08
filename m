@@ -2,85 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B8D37BCBCD
-	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 05:01:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8B67BCBF3
+	for <lists+qemu-devel@lfdr.de>; Sun,  8 Oct 2023 05:59:52 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpK1C-0006Tf-JN; Sat, 07 Oct 2023 22:59:46 -0400
+	id 1qpKw8-0001md-2J; Sat, 07 Oct 2023 23:58:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qpK1A-0006TX-O8
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 22:59:44 -0400
-Received: from mgamail.intel.com ([134.134.136.65])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <xiaoyao.li@intel.com>)
- id 1qpK18-0007WT-Dk
- for qemu-devel@nongnu.org; Sat, 07 Oct 2023 22:59:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1696733982; x=1728269982;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=JY61nxrnTIgPfkug6sU6RVyQBMUpJyqCJ0YRGP8Yq7w=;
- b=Gp+PmuF9FnzLdSeX+7ILJCb+XnVOLldiQ8HsjDySvDMC45bkUWLjI40/
- x2VUiT/Qz46PveQf2TOgiCZR4sTokwFtg1iIVi2n2WzmG8Tz55GLAwOAe
- WYSfTQcfeHfgwkZxakbEEAjc9WUV4rQkRUvMjRLZLJHXXnoH44mofPQl4
- To03sjietwnf/poCuR7jo5lAOs+C83ppNOYnwqO4spnDcEqkvTDpokNKa
- JL2JRU6liipZEaIDCU6xQqyiHXun8fW8vKMzcu9244d2UKui/PhxuCAFn
- /HJrSk090fNerINq6eAmgr+gioLHcVae7khmT3C6SHl64eEEgqfN32MSG Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10856"; a="387839841"
-X-IronPort-AV: E=Sophos;i="6.03,207,1694761200"; d="scan'208";a="387839841"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
- by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2023 19:59:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10856"; a="787812956"
-X-IronPort-AV: E=Sophos;i="6.03,207,1694761200"; d="scan'208";a="787812956"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.93.19.128])
- ([10.93.19.128])
- by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2023 19:59:30 -0700
-Message-ID: <5334cca3-6e96-7771-0ca4-de124ed40176@intel.com>
-Date: Sun, 8 Oct 2023 10:59:27 +0800
+ (Exim 4.90_1) (envelope-from <gaosong@loongson.cn>)
+ id 1qpKw5-0001mF-41
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 23:58:33 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <gaosong@loongson.cn>) id 1qpKw1-0003FU-QY
+ for qemu-devel@nongnu.org; Sat, 07 Oct 2023 23:58:32 -0400
+Received: from loongson.cn (unknown [10.20.42.239])
+ by gateway (Coremail) with SMTP id _____8CxtPDYKCJlw_MvAA--.27369S3;
+ Sun, 08 Oct 2023 11:58:16 +0800 (CST)
+Received: from [10.20.42.239] (unknown [10.20.42.239])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Axm+TVKCJlWpcaAA--.58310S3; 
+ Sun, 08 Oct 2023 11:58:15 +0800 (CST)
+Subject: Re: [PATCH] target/loongarch: fix ASXE flag conflict
+To: Richard Henderson <richard.henderson@linaro.org>, Jiajie Chen <c@jia.je>, 
+ qemu-devel@nongnu.org
+Cc: git@xen0n.name, Xiaojuan Yang <yangxiaojuan@loongson.cn>
+References: <20230930112837.1871691-1-c@jia.je>
+ <8c7e0e7f-9196-cc91-be1e-ce0b02fb4db9@linaro.org>
+From: gaosong <gaosong@loongson.cn>
+Message-ID: <e55469ee-6879-ee4b-b7aa-095372cf7f75@loongson.cn>
+Date: Sun, 8 Oct 2023 11:58:12 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.15.1
-Subject: Re: [RFC PATCH v2 02/21] RAMBlock: Add support of KVM private gmem
+In-Reply-To: <8c7e0e7f-9196-cc91-be1e-ce0b02fb4db9@linaro.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-To: David Hildenbrand <david@redhat.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Peter Xu <peterx@redhat.com>, =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?=
- <philmd@linaro.org>, Cornelia Huck <cohuck@redhat.com>,
- =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>
-Cc: qemu-devel@nongnu.org, kvm@vger.kernel.org,
- Michael Roth <michael.roth@amd.com>, isaku.yamahata@gmail.com,
- Sean Christopherson <seanjc@google.com>, Claudio Fontana <cfontana@suse.de>
-References: <20230914035117.3285885-1-xiaoyao.li@intel.com>
- <20230914035117.3285885-3-xiaoyao.li@intel.com>
- <678bf0bf-57e7-a596-1ddf-6d0b47cd8677@redhat.com>
- <6eeb5568-2faa-85c3-8f42-ed6317ea376c@intel.com>
- <998a0ef6-a74c-feec-eca2-644aee91f27b@redhat.com>
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <998a0ef6-a74c-feec-eca2-644aee91f27b@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=134.134.136.65; envelope-from=xiaoyao.li@intel.com;
- helo=mgamail.intel.com
-X-Spam_score_int: -29
-X-Spam_score: -3.0
-X-Spam_bar: ---
-X-Spam_report: (-3.0 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HK_RANDOM_ENVFROM=0.999, HK_RANDOM_FROM=0.999, NICE_REPLY_A=-0.644,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: AQAAf8Axm+TVKCJlWpcaAA--.58310S3
+X-CM-SenderInfo: 5jdr20tqj6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7Cw15Jr15trWfuw1kuFWrtFc_yoW8GrW3pa
+ yxCFy5tFW0grZ7K397W3Z5WFn5Wr4fGw47Xw1fWFWvkFZ8JrnYqa40q390gF4Duay8ZryU
+ ZF15Gw1rZF4DW3gCm3ZEXasCq-sJn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7ZEXa
+ sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+ 0xBIdaVrnRJUUUv2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+ IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+ e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+ 0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+ xVW8Jr0_Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx
+ 1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv
+ 67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07
+ AlzVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02
+ F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw
+ 1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7Cj
+ xVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r
+ 1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8cz
+ VUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163; envelope-from=gaosong@loongson.cn;
+ helo=mail.loongson.cn
+X-Spam_score_int: -24
+X-Spam_score: -2.5
+X-Spam_bar: --
+X-Spam_report: (-2.5 / 5.0 requ) BAYES_00=-1.9, NICE_REPLY_A=-0.644,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -96,48 +81,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/22/2023 3:08 PM, David Hildenbrand wrote:
-> On 22.09.23 02:22, Xiaoyao Li wrote:
->> On 9/21/2023 4:55 PM, David Hildenbrand wrote:
->>> On 14.09.23 05:50, Xiaoyao Li wrote:
->>>> From: Chao Peng <chao.p.peng@linux.intel.com>
->>>>
->>>> Add KVM gmem support to RAMBlock so both normal hva based memory
->>>> and kvm gmem fd based private memory can be associated in one RAMBlock.
->>>>
->>>> Introduce new flag RAM_KVM_GMEM. It calls KVM ioctl to create private
->>>> gmem for the RAMBlock when it's set.
->>>
->>>
->>> But who sets RAM_KVM_GMEM and when?
+在 2023/9/30 下午11:46, Richard Henderson 写道:
+> On 9/30/23 04:28, Jiajie Chen wrote:
+>> HW_FLAGS_EUEN_ASXE acccidentally conflicts with HW_FLAGS_CRMD_PG,
+>> enabling LASX instructions even when CSR_EUEN.ASXE=0.
 >>
->> The answer is in the next patch. When `private` property of memory
->> backend is set to true, it will pass RAM_KVM_GMEM flag to
->> memory_region_init_ram_*()
+>> Closes: https://gitlab.com/qemu-project/qemu/-/issues/1907 >> Signed-off-by: Jiajie Chen <c@jia.je>
+>> ---
+>>   target/loongarch/cpu.h | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/target/loongarch/cpu.h b/target/loongarch/cpu.h
+>> index f125a8e49b..79ad79a289 100644
+>> --- a/target/loongarch/cpu.h
+>> +++ b/target/loongarch/cpu.h
+>> @@ -462,7 +462,7 @@ static inline void set_pc(CPULoongArchState *env, 
+>> uint64_t value)
+>>   #define HW_FLAGS_CRMD_PG    R_CSR_CRMD_PG_MASK   /* 0x10 */
+>>   #define HW_FLAGS_EUEN_FPE   0x04
+>>   #define HW_FLAGS_EUEN_SXE   0x08
+>> -#define HW_FLAGS_EUEN_ASXE  0x10
+>> +#define HW_FLAGS_EUEN_ASXE  0x40
+>>   #define HW_FLAGS_VA32       0x20
+>>   static inline void cpu_get_tb_cpu_state(CPULoongArchState *env, 
+>> vaddr *pc,
 > 
-> Okay, assuming that patch (and property) will go away, I assume this 
-> flag can also go away, right?
+> Better to put all defines in bit order, otherwise it will be easy to 
+> make the same mistake again.
+>  > With that,
+> Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 > 
+> 
+> r
+Reviewed-by: Song Gao <gaosong@loongson.cn>
 
-If dropping the flag RAM_KVM_GMEM, it seems we need go back to the 
-approach of rfc v1[1][2], that allocating gmem inside .region_add() 
-callback. Is it accepted by you?
-
-Another option is allocating gmem inside ram_block_add() by checking the 
-vm_type (it looks hacky for me). What's your opinion on this option?
-
-One more option is, we keep the RAM_KVM_GMEM as this patch, and change 
-"private" property of memory backend into "need_kvm_gmem" field (make it 
-not user settable) and "need_kvm_gmem" field will be set to true in 
-tdx_kvm_init() specific cgs initialization function.
-
-
-[1] 
-https://lore.kernel.org/qemu-devel/a154c33d-b24d-b713-0dc0-027d54f2340f@redhat.com/
-[2] 
-https://lore.kernel.org/qemu-devel/20230731162201.271114-10-xiaoyao.li@intel.com/
-
-
-
+Thanks.
+Song Gao
 
 
