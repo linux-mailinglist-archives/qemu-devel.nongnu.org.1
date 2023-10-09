@@ -2,53 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FBC87BE9F7
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 20:44:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C806F7BE9F6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 20:44:29 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpvEH-0007fY-Ep; Mon, 09 Oct 2023 14:43:45 -0400
+	id 1qpvEL-0007gn-6u; Mon, 09 Oct 2023 14:43:49 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpvEF-0007ey-NY
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:43:43 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpvEI-0007fw-JU
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:43:46 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpvEE-0000mq-7N
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:43:43 -0400
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpvEH-0000nL-16
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:43:46 -0400
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id 259421F390;
- Mon,  9 Oct 2023 18:43:41 +0000 (UTC)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id B48A81F38D;
+ Mon,  9 Oct 2023 18:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696877021; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ t=1696877023; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QsCvIjXfKnHMN1cb/Cl4zVpz7bH5qr8lGFAlyAjW/ko=;
- b=y4mVEF8UwZ4UrnE5JBIMv7Ey5MzzQqXGGjzJQeja49O8EcwI2oEXc6dqYXOZCT48v+bmlk
- uBS3nwtEdFyzKPpTlFlXekVWSRUoFC5jy9laQAaMmhoMTjtfYP08hPLVyQXcb4Uz+naTjT
- z5wPpkaP4pxHKyph/Shcwe+/knBh/BA=
+ bh=+6DtYIBIKXIIAG12wBUaJfL9grCmQLGHkvwNS8pZV40=;
+ b=IwXjSk0CfQEshPBl0O1XZRkNed1gibFowilTZ4/jX4Fo/lV/rb8pCEka2aRcxZf1lB8NDx
+ AYpZRLD+Gb2pTtuZutYTzJ2zvzv0li4f/tHjy/5+bdLDHvle+Z5sevRu/DwT9VdAEvnXdX
+ qP1n8kyKX3u5w+kvozz5G7bG+8H7dKo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696877021;
+ s=susede2_ed25519; t=1696877023;
  h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
  mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=QsCvIjXfKnHMN1cb/Cl4zVpz7bH5qr8lGFAlyAjW/ko=;
- b=0LrTRAQjub196bfCk3ItNiXgn6EmsOtr0f3MzlL3QtbqUFd81uSkepJ8QSxOjMUV/V6dyB
- z+JbA6knmbISRsBg==
+ bh=+6DtYIBIKXIIAG12wBUaJfL9grCmQLGHkvwNS8pZV40=;
+ b=CaA//KYv/AxzzDnmjRet+h1wICvOqNsnwMyj4AzUGoxLzxBj0wBH5dq5ye7YT8YmT7JZSY
+ RR8DVYmG2UvNY8DQ==
 Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
  (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F423313586;
- Mon,  9 Oct 2023 18:43:38 +0000 (UTC)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 8FFAA13586;
+ Mon,  9 Oct 2023 18:43:41 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id MHMKL9pJJGWFEgAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 18:43:38 +0000
+ by imap2.suse-dmz.suse.de with ESMTPSA id QD9HFt1JJGWFEgAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 18:43:41 +0000
 From: Fabiano Rosas <farosas@suse.de>
 To: qemu-devel@nongnu.org
 Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
@@ -56,16 +56,16 @@ Cc: Juan Quintela <quintela@redhat.com>, Peter Xu <peterx@redhat.com>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  Thomas Huth <thuth@redhat.com>, John Snow <jsnow@redhat.com>,
  Cleber Rosa <crosa@redhat.com>
-Subject: [PATCH v2 4/6] migration: Fix analyze-migration.py when ignore-shared
- is used
-Date: Mon,  9 Oct 2023 15:43:24 -0300
-Message-Id: <20231009184326.15777-5-farosas@suse.de>
+Subject: [PATCH v2 5/6] migration: Fix analyze-migration read operation
+ signedness
+Date: Mon,  9 Oct 2023 15:43:25 -0300
+Message-Id: <20231009184326.15777-6-farosas@suse.de>
 X-Mailer: git-send-email 2.35.3
 In-Reply-To: <20231009184326.15777-1-farosas@suse.de>
 References: <20231009184326.15777-1-farosas@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=195.135.220.29; envelope-from=farosas@suse.de;
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
  helo=smtp-out2.suse.de
 X-Spam_score_int: -43
 X-Spam_score: -4.4
@@ -89,70 +89,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The script is currently broken when the x-ignore-shared capability is
-used:
+The migration code uses unsigned values for 16, 32 and 64-bit
+operations. Fix the script to do the same.
+
+This was causing an issue when parsing the migration stream generated
+on the ppc64 target because one of instance_ids was larger than the
+32bit signed maximum:
 
 Traceback (most recent call last):
-  File "./scripts/analyze-migration.py", line 656, in <module>
+  File "/home/fabiano/kvm/qemu/build/scripts/analyze-migration.py", line 658, in <module>
     dump.read(dump_memory = args.memory)
-  File "./scripts/analyze-migration.py", line 593, in read
-    section.read()
-  File "./scripts/analyze-migration.py", line 163, in read
-    self.name = self.file.readstr(len = namelen)
-  File "./scripts/analyze-migration.py", line 53, in readstr
-    return self.readvar(len).decode('utf-8')
-UnicodeDecodeError: 'utf-8' codec can't decode byte 0x82 in position 55: invalid start byte
-
-We're currently adding data to the middle of the ram section depending
-on the presence of the capability. As a consequence, any code loading
-the ram section needs to know about capabilities so it can interpret
-the stream.
-
-Skip the byte that's added when x-ignore-shared is used to fix the
-script.
+  File "/home/fabiano/kvm/qemu/build/scripts/analyze-migration.py", line 592, in read
+    classdesc = self.section_classes[section_key]
+KeyError: ('spapr_iommu', -2147483648)
 
 Signed-off-by: Fabiano Rosas <farosas@suse.de>
 ---
- scripts/analyze-migration.py | 5 +++++
- 1 file changed, 5 insertions(+)
+ scripts/analyze-migration.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/scripts/analyze-migration.py b/scripts/analyze-migration.py
-index c700fed64d..56ab04dd2d 100755
+index 56ab04dd2d..de506cb8bf 100755
 --- a/scripts/analyze-migration.py
 +++ b/scripts/analyze-migration.py
-@@ -123,6 +123,7 @@ def __init__(self, file, version_id, ramargs, section_key):
-         self.TARGET_PAGE_SIZE = ramargs['page_size']
-         self.dump_memory = ramargs['dump_memory']
-         self.write_memory = ramargs['write_memory']
-+        self.ignore_shared = ramargs['ignore_shared']
-         self.sizeinfo = collections.OrderedDict()
-         self.data = collections.OrderedDict()
-         self.data['section sizes'] = self.sizeinfo
-@@ -169,6 +170,8 @@ def read(self):
-                         f.truncate(0)
-                         f.truncate(len)
-                         self.files[self.name] = f
-+                    if self.ignore_shared:
-+                        mr_addr = self.file.read64()
-                 flags &= ~self.RAM_SAVE_FLAG_MEM_SIZE
+@@ -38,13 +38,13 @@ def __init__(self, filename):
+         self.file = open(self.filename, "rb")
  
-             if flags & self.RAM_SAVE_FLAG_COMPRESS:
-@@ -572,6 +575,7 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
-         ramargs['page_size'] = self.vmsd_desc['page_size']
-         ramargs['dump_memory'] = dump_memory
-         ramargs['write_memory'] = write_memory
-+        ramargs['ignore_shared'] = False
-         self.section_classes[('ram',0)][1] = ramargs
+     def read64(self):
+-        return int.from_bytes(self.file.read(8), byteorder='big', signed=True)
++        return int.from_bytes(self.file.read(8), byteorder='big', signed=False)
  
-         while True:
-@@ -582,6 +586,7 @@ def read(self, desc_only = False, dump_memory = False, write_memory = False):
-                 config_desc = self.vmsd_desc.get('configuration')
-                 section = ConfigurationSection(file, config_desc)
-                 section.read()
-+                ramargs['ignore_shared'] = section.has_capability('x-ignore-shared')
-             elif section_type == self.QEMU_VM_SECTION_START or section_type == self.QEMU_VM_SECTION_FULL:
-                 section_id = file.read32()
-                 name = file.readstr()
+     def read32(self):
+-        return int.from_bytes(self.file.read(4), byteorder='big', signed=True)
++        return int.from_bytes(self.file.read(4), byteorder='big', signed=False)
+ 
+     def read16(self):
+-        return int.from_bytes(self.file.read(2), byteorder='big', signed=True)
++        return int.from_bytes(self.file.read(2), byteorder='big', signed=False)
+ 
+     def read8(self):
+         return int.from_bytes(self.file.read(1), byteorder='big', signed=True)
 -- 
 2.35.3
 
