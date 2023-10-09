@@ -2,105 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595727BE4CA
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD437BE4FB
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:36:19 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpsE1-0007PM-FQ; Mon, 09 Oct 2023 11:31:17 -0400
+	id 1qpsHc-0000Mg-IS; Mon, 09 Oct 2023 11:35:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qpsDD-0007F9-1k; Mon, 09 Oct 2023 11:30:28 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qpsHR-0000K9-Ep; Mon, 09 Oct 2023 11:34:50 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qpsD9-0003xN-LN; Mon, 09 Oct 2023 11:30:26 -0400
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399FRptV028067; Mon, 9 Oct 2023 15:30:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=QfDOV5f2KMT9v/+XQtuxJQ3jk6F0qhOPBVJXc0FXSDw=;
- b=dcMXOeWMSznd/SgM1BuZvp1aY+W0C/sUswtW4Br1FbSMY/feGr7ThwtfNRxuyvCKjlwm
- 6peBbDcNlbPd++8F/qIIbFs3mD4Sk/eyhV1oPfMwGQv20lZLkqdFhUDWNQBK9QF3xeml
- q4n/irppHCD/KNDUf7tMrDFEGzzy/gay3wEa0Kr5XnHJarKt4lcYLThDD6S1MshO04MQ
- 8MYkXE58iT4SwG5Npbqdn0lTIc4915XNEzZ7kfEYeZJRrJe1wRQxeGy+v8xZoSx46khX
- wpOgMKaHikwWT46C8Dxo8DHhUMRT0eSFWyckqlG+csQC3Vp10edIn4GTwUkKQozKPeJj vA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmm66r3jn-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 15:30:09 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 399FSAum029939;
- Mon, 9 Oct 2023 15:30:09 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmm66r3hh-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 15:30:09 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399DnhcA024487; Mon, 9 Oct 2023 15:30:08 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkhnsa7ce-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 15:30:08 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 399FU7qw58524132
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Oct 2023 15:30:07 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 3F0C258062;
- Mon,  9 Oct 2023 15:30:07 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9153E58068;
- Mon,  9 Oct 2023 15:30:06 +0000 (GMT)
-Received: from [9.61.164.107] (unknown [9.61.164.107])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Oct 2023 15:30:06 +0000 (GMT)
-Message-ID: <d6b88c83-18a1-43eb-9561-d61826488004@linux.ibm.com>
-Date: Mon, 9 Oct 2023 10:30:06 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/10] hw/fsi: Update MAINTAINER list
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qpsHP-0004jQ-2O; Mon, 09 Oct 2023 11:34:49 -0400
+Received: from lhrpeml100006.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S430x4bLbz67V3m;
+ Mon,  9 Oct 2023 23:31:45 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml100006.china.huawei.com (7.191.160.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 9 Oct 2023 16:34:43 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Mon, 9 Oct 2023 16:34:43 +0100
+To: David Hildenbrand <david@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "philmd@linaro.org"
+ <philmd@linaro.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V3 01/10] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Thread-Topic: [PATCH V3 01/10] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+Thread-Index: AQHZ+qPnrJn3/z1SYEi9OUvIaCcfXrBBUAWAgAAepOCAAAAuAIAAHeyg///1vICAABGbcA==
+Date: Mon, 9 Oct 2023 15:34:42 +0000
+Message-ID: <feb5459ddf5d463587353185a334780f@huawei.com>
+References: <20231009112812.10612-1-salil.mehta@huawei.com>
+ <20231009112812.10612-2-salil.mehta@huawei.com>
+ <a02eae26-6018-6f5c-1b82-e6061544022b@redhat.com>
+ <63f8e47efcd045b1b8481f6fd427c4b1@huawei.com>
+ <ae2e0fc1-7967-2bae-e4fa-b4d886ba4671@redhat.com>
+ <0c972e213f9a46c3a595dc7f933046aa@huawei.com>
+ <792f9f38-6031-1269-109e-941d2ecaddf9@redhat.com>
+In-Reply-To: <792f9f38-6031-1269-109e-941d2ecaddf9@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20230908222859.3381003-1-ninad@linux.ibm.com>
- <20230908222859.3381003-11-ninad@linux.ibm.com>
- <cd44fbf6-135b-3ffb-0af4-d38381ce79cc@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <cd44fbf6-135b-3ffb-0af4-d38381ce79cc@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: T0GMAO6u3-n17WyPqRjLdVEn5CMjjFt4
-X-Proofpoint-ORIG-GUID: R8uttdY8ODFTf1BdQWEUeb0ipR7R6054
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_13,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0
- adultscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0 mlxscore=0
- clxscore=1015 malwarescore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310090128
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=ninad@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.154.91]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,71 +94,60 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
-
-On 9/11/23 07:33, Cédric Le Goater wrote:
-> On 9/9/23 00:28, Ninad Palsule wrote:
->> Added maintainer for IBM FSI model
->>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> ---
->> V4:
->>    - Added separate commit for MAINTAINER change.
->> ---
->>   MAINTAINERS | 22 ++++++++++++++++++++++
->>   1 file changed, 22 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index 6111b6b4d9..285f3a3bc9 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -3395,6 +3395,28 @@ F: tests/qtest/adm1272-test.c
->>   F: tests/qtest/max34451-test.c
->>   F: tests/qtest/isl_pmbus_vr-test.c
->>   +FSI
->> +M: Ninad Palsule <ninad@linux.ibm.com>
->> +S: Maintained
->
-> Excellent !
-Thanks!
->
->> +F: hw/fsi/aspeed-apb2opb.c
->> +F: hw/fsi/cfam.c
->> +F: hw/fsi/fsi.c
->> +F: hw/fsi/fsi-slave.c
->> +F: hw/fsi/opb.c
->> +F: hw/fsi/engine-scratchpad.c
->> +F: hw/fsi/fsi-master.c
->> +F: hw/fsi/lbus.c
->
-> This would work the same :
->
-> hw/fsi/*
-> include/hw/fsi/*
-
-Fixed.
-
-Thanks for the review.
-
-~ Ninad
-
->
->> +F: include/hw/fsi/aspeed-apb2opb.h
->> +F: include/hw/fsi/cfam.h
->> +F: include/hw/fsi/fsi.h
->> +F: include/hw/fsi/fsi-slave.h
->> +F: include/hw/fsi/opb.h
->> +F: include/hw/fsi/engine-scratchpad.h
->> +F: include/hw/fsi/fsi-master.h
->> +F: include/hw/fsi/lbus.h
->> +F: docs/specs/fsi.rst
->> +F: tests/qtest/fsi-test.c
->> +
->>   Firmware schema specifications
->>   M: Philippe Mathieu-Daudé <philmd@linaro.org>
->>   R: Daniel P. Berrange <berrange@redhat.com>
->
+PiBGcm9tOiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCj4gU2VudDogTW9u
+ZGF5LCBPY3RvYmVyIDksIDIwMjMgNDoyMSBQTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1l
+aHRhQGh1YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+IGFybUBub25n
+bnUub3JnDQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBK
+b25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFs
+aXNpQGtlcm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5k
+ZXJzb25AbGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxp
+bnV4LmRldjsgcGhpbG1kQGxpbmFyby5vcmc7DQo+IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xp
+dmVyLnVwdG9uQGxpbnV4LmRldjsgcGJvbnppbmlAcmVkaGF0LmNvbTsNCj4gbXN0QHJlZGhhdC5j
+b207IHdpbGxAa2VybmVsLm9yZzsgZ3NoYW5AcmVkaGF0LmNvbTsgcmFmYWVsQGtlcm5lbC5vcmc7
+DQo+IGFsZXguYmVubmVlQGxpbmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFy
+cmVuQG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207
+DQo+IHZpc2hudUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNv
+bTsNCj4gbWlndWVsLmx1aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1
+a2VxaWFuDQo+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2Fu
+Z3hpb25nZmVuZzJAaHVhd2VpLmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1
+YXdlaS5jb20+OyBqaWFrZXJuZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsg
+bGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+
+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjMgMDEvMTBdIGFjY2VsL2t2bTogRXh0cmFjdCBjb21tb24g
+S1ZNIHZDUFUNCj4ge2NyZWF0aW9uLHBhcmtpbmd9IGNvZGUNCj4gDQo+ID4NCj4gPj4NCj4gPj4g
+a3ZtX3ByZWNyZWF0ZV92Y3B1DQo+ID4NCj4gPiBwcmUtY3JlYXRpb24gaXMgdmVyeSBtdWNoIHNw
+ZWNpZmljIHRvIEFSTSByaWdodCBub3cuIEkgYW0gbm90IHN1cmUNCj4gPiBpZiBpdCBpcyByaWdo
+dCB0byBoYXZlIGFuIEFQSSB3aXRoIHRoaXMgbmFtZSBpbiB0aGUgY29kZSB3aGljaCBpcw0KPiA+
+IGNvbW1vbiB0byBvdGhlciBhcmNoaXRlY3R1cmVzLg0KPiANCj4gSSBkb24ndCBsaWtlIGV4cG9z
+aW5nIHRoZSBjb25jZXB0IG9mICJwYXJraW5nIiBDUFVzIGV4dGVybmFsbHksIHdoaWNoIGlzDQo+
+IHNvIGZhciBoYW5kbGVkIGNvbXBsZXRlbHkgaW50ZXJuYWxseS4NCg0KDQpJIHVuZGVyc3RhbmQg
+eW91ciBwb2ludCBvZiB2aWV3LiBUaGVyZSBpcyBhIHN1YnRsZSBkaWZmZXJlbmNlIGluIHRoZQ0K
+d2F5IHBhcmtpbmcgbG9naWMgaGFzIGJlZW4gdXNlZCB0aWxsIG5vdywgc2F5IGluIHg4NiB3b3Js
+ZCBhbmQgaG93IGl0DQppcyBiZWluZyB1c2VkIGluIHRoZSBBUk0gaW4gdGhlIFJGQyBwYXRjaGVz
+IGJlaW5nIHByb3Bvc2VkLiBBRkFJQ1MsIGluDQp4ODYgd29ybGQgd2UgaGF2ZSBhIGxpYmVydHkg
+dG8gZGVsYXkgdGhlIGNyZWF0aW9uIG9mIHRoZSB2Q1BVcyBpbiBLVk0NCmZvciB0aGUgZmlyc3Qg
+dGltZSBidXQgb25jZSB0aGV5IGFyZSBjcmVhdGVkIGNhbm5vdCBiZSBkZXN0cm95ZWQgaW4gdGhl
+DQpLVk0gc28gYXJlICh1bilwYXJrZWQgZm9yIHN1YnNlcXVlbnQgdXNlIGR1cmluZyBob3QodW4p
+cGx1Zy4NCg0KQmVjYXVzZSBvZiB0aGUgQVJNIENQVSBhcmNoaXRlY3R1cmUgbGltaXRhdGlvbnMg
+YW5kIHRoYXQgb2YgR0lDLCB3ZQ0KYXJlIG5vdCBhbGxvd2VkIHRvIGRvIHRoaXMuIEhlbmNlLCB3
+ZSBoYXZlIHRvIHByZS1jcmVhdGUgYWxsIHRoZQ0KS1ZNIHZDUFVzIGFuZCBzaXplIFZHSUMgZHVy
+aW5nIGluaXRpYWxpemF0aW9uLiBTaW5jZSBzb21lIG9mIHRoZQ0KS1ZNIHZDUFVzIHdvbnQgaGF2
+ZSBhbnkgUU9NIENQVSBvYmplY3RzIGJlY2F1c2UgdGhleSBhcmUNCid5ZXQtdG8tYmUtcGx1Z2dl
+ZCcgc28gbmVlZCB0byBiZSBwYXJrZWQuIEhlbmNlLCB3ZSByZXF1aXJlIHRoYXQNCmNvbW1vbiBw
+YXJraW5nIGxvZ2ljLg0KDQoNCg0KPiANCj4gWy4uLl0NCj4gDQo+ID4NCj4gPg0KPiA+PiBrdm1f
+Y3JlYXRlX3ZjcHUNCj4gPj4ga3ZtX2Rlc3Ryb3lfdmNwdQ0KPiA+Pg0KPiA+PiBPbmUgY291bGQg
+ZXZlbiBtYWtlIGt2bV9jcmVhdGVfdmNwdSgpIGZhaWwgb24gQVJNIGlmIHRoZSBWQ1BVIGhhc24n
+dA0KPiA+PiBiZWVuIHByZS1jcmVhdGVkLg0KPiA+DQo+ID4gUmlnaHQgbm93LCB3ZSBhYm9ydCB0
+aGUgQ1BVIGluaXRpYWxpemF0aW9uIHByb2Nlc3MgaWYgdGhpcyBoYXBwZW5zLiBJDQo+ID4gYW0g
+cGxhbm5pbmcgdG8gY2hhbmdlIGFib3J0KCkgaW50byAnZmF0YWxfZXJyb3InIGluIFJGQyBWMyB0
+aG91Z2guDQo+ID4NCj4gPg0KPiA+DQo+ID4+DQo+ID4+IE9yIGRpZCBJIGdldCBpdCBhbGwgd3Jv
+bmc/IDopDQo+ID4NCj4gPiBJIHdvbid0IHNheSB0aGF0IGl0IGlzIGp1c3QgYW5vdGhlciBwb2lu
+dCBvZiB2aWV3IHdoaWNoIGlzIGFic29sdXRlbHkNCj4gPiBmaW5lLiBCdXQgSSB3b3VsZCBsaWtl
+IHRvIHN0aWNrIHRvIGN1cnJlbnQgQVBJcy4NCj4gDQo+IE5vIHJlYWxseSBzdHJvbmcgb3Bpbmlv
+biwgSSB3b3VsZG4ndCBkbyBpdCB0aGF0IHdheS4gSSdsbCBsZXQgb3RoZXJzDQo+IGNoaW1lIGlu
+IGlmIHRoZXkgaGF2ZSBhbiBvcGluaW9uLg0KDQpPaywgVGhhbmtzLg0KDQpTYWxpbC4NCg==
 
