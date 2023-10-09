@@ -2,73 +2,85 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 098A17BD865
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B36FE7BD872
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:24:39 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpnMZ-0008Sb-SU; Mon, 09 Oct 2023 06:19:47 -0400
+	id 1qpnQg-00015Q-5I; Mon, 09 Oct 2023 06:24:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qpnMX-0008Rm-K4
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:19:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <lersek@redhat.com>) id 1qpnMW-0003Cw-0t
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:19:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696846782;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RctZLroMUuzUYum4BmOzrwm/C1rlQhx1L8n5D8uGyqs=;
- b=TTDONexDPsJ6T0Aw62U7tdr0OttHrM4SJXYaFhO0wiiYQconshMudeTZEm2xgRLrp0CsL4
- OGjFrbvPhPMomQThEXeCIlFAdOeA4I73LR2LjobTtzPe9Zca39l6IMeie/buIRXc/2pokT
- PzjQGY+zjhlq4hD3eziH+alrkeB8Ow8=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-256-ef85GoKaNumd6UN1K3mnJg-1; Mon, 09 Oct 2023 06:19:34 -0400
-X-MC-Unique: ef85GoKaNumd6UN1K3mnJg-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com
- [10.11.54.4])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2DA581C0514A;
- Mon,  9 Oct 2023 10:19:34 +0000 (UTC)
-Received: from [10.39.192.114] (unknown [10.39.192.114])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 460BF2026D37;
- Mon,  9 Oct 2023 10:19:32 +0000 (UTC)
-Message-ID: <a9f3a4e4-5084-897c-a9de-df80f5302e76@redhat.com>
-Date: Mon, 9 Oct 2023 12:19:31 +0200
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpnQe-00015F-QW
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:24:00 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpnQd-0004Ce-7l
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:24:00 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9b2f73e3af3so745869266b.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 03:23:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696847037; x=1697451837; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=0Z4b7G/SFwIVi2v7PRX9eW9qQChjcCs5lp5d1EpGb1w=;
+ b=hacTN2aG81o0Z5gos8WZlH9kWISu+ohwVDJaurF/Hbyb9cuKkZ7an3PezNsTuFMdey
+ PCc1HkYhWHC3FnNRrHOUZYTtL0sqDK1YoGL3JHpYhNa29BPQ5MN6kr6bOtcU7u7M1iZW
+ 0O1snIMTROsIj8yhUzmWQZVvnZT47WNsGErdrlBV8jJ16zn/7GGnyCpL8LJh8/7lcsuD
+ A0x0P9uye56dawLOwNuxza/xdP6ol5HIBv35ydPf1AIkMbyKe1Aj5L8s4EwRsDK2P7qs
+ XaWpl6c2i/JulnjyDZzuHFSlMcX+Qh/KhSOHixusg4kM0Te6QnP4YKDca03nAaHlMC7I
+ XxAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696847037; x=1697451837;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=0Z4b7G/SFwIVi2v7PRX9eW9qQChjcCs5lp5d1EpGb1w=;
+ b=ZBKKM5L4DQuTm2i5mv2MMvyNe2lmur4Kp5Pf0PSvsbOSQS5vXDveMypKZE8kiBQwYr
+ CuM/bAwERwhkwEWVJWuh0B0hDOSgFgGD6NN/zXje8W7zIRkvmDh9IwI6fuQC73LzrabW
+ hmMXC5DwlBXNek9ttb3XIDRGorqtkKrXH+CrGAN2V/ysk/7kO9n5gFIMulb9jOrvusly
+ ZWuj+gaiy1HL7sICURjJk6LHL4W+C2p8EvGD3jSvrzEx3ZouWfh9faixiKuB3TumFXXe
+ F8p0zR/X/pSB7d9ck+7nxZQsJxHqxnv9qMzzPKd7+IywClfIfUUdvHMC2CLiUgtWLU6f
+ bA+A==
+X-Gm-Message-State: AOJu0YzzAHe9s4RwvyQqGbxIJMi7jyyXQ/sIM6K05fQB5MNqZg+NE0Aa
+ 82UgOmhXxlS+T78rXMrwDKAPNA==
+X-Google-Smtp-Source: AGHT+IGCHaZ7CExS0iXpMkqikxd3bS7ftbCsbm1Gp6Mo1hvuKHUS+f5JwWdK+owLNKA6yUP7NQs5MQ==
+X-Received: by 2002:a17:906:1097:b0:9ae:4878:1172 with SMTP id
+ u23-20020a170906109700b009ae48781172mr14149491eju.7.1696847037487; 
+ Mon, 09 Oct 2023 03:23:57 -0700 (PDT)
+Received: from [192.168.69.115]
+ (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
+ by smtp.gmail.com with ESMTPSA id
+ jp20-20020a170906f75400b0099bcb44493fsm6610096ejb.147.2023.10.09.03.23.56
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 03:23:57 -0700 (PDT)
+Message-ID: <87bc3f73-f3d5-0431-6339-6d8c978b89c4@linaro.org>
+Date: Mon, 9 Oct 2023 12:23:55 +0200
 MIME-Version: 1.0
-Subject: Re: [PATCH v5 3/3] hw/vfio: add ramfb migration support
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2] target/riscv: Use a direct cast for better performance
 Content-Language: en-US
-To: marcandre.lureau@redhat.com, qemu-devel@nongnu.org
-Cc: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-References: <20231009063247.119333-1-marcandre.lureau@redhat.com>
- <20231009063247.119333-4-marcandre.lureau@redhat.com>
-From: Laszlo Ersek <lersek@redhat.com>
-In-Reply-To: <20231009063247.119333-4-marcandre.lureau@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=lersek@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+To: "Richard W.M. Jones" <rjones@redhat.com>, qemu-devel@nongnu.org
+Cc: qemu-riscv@nongnu.org, palmer@dabbelt.com, alistair.francis@wdc.com,
+ bin.meng@windriver.com, liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com,
+ zhiwei_liu@linux.alibaba.com, pbonzini@redhat.com
+References: <20231008215147.3362612-1-rjones@redhat.com>
+ <20231008215147.3362612-2-rjones@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231008215147.3362612-2-rjones@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.818,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -84,180 +96,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/9/23 08:32, marcandre.lureau@redhat.com wrote:
-> From: Marc-André Lureau <marcandre.lureau@redhat.com>
+Hi Richard,
+
+On 8/10/23 23:50, Richard W.M. Jones wrote:
+> RISCV_CPU(cs) uses a checked cast.  When QOM cast debugging is enabled
+> this adds about 5% total overhead when emulating RV64 on x86-64 host.
 > 
-> Add a "VFIODisplay" subsection whenever "x-ramfb-migrate" is turned on.
+> Using a RISC-V guest with 16 vCPUs, 16 GB of guest RAM, virtio-blk
+> disk.  The guest has a copy of the qemu source tree.  The test
+> involves compiling the qemu source tree with 'make clean; time make -j16'.
 > 
-> Turn it off by default on machines <= 8.1 for compatibility reasons.
+> Before making this change the compile step took 449 & 447 seconds over
+> two consecutive runs.
 > 
-> Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-> Reviewed-by: Laszlo Ersek <lersek@redhat.com>
+> After making this change, 428 & 422 seconds.
+> 
+> The saving is about 5%.
+> 
+> Thanks: Paolo Bonzini
+> Signed-off-by: Richard W.M. Jones <rjones@redhat.com>
+> Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 > ---
->  hw/vfio/pci.h     |  3 +++
->  hw/core/machine.c |  1 +
->  hw/vfio/display.c | 21 +++++++++++++++++++++
->  hw/vfio/pci.c     | 44 ++++++++++++++++++++++++++++++++++++++++++++
->  stubs/ramfb.c     |  2 ++
->  5 files changed, 71 insertions(+)
+>   target/riscv/cpu_helper.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-> index 2d836093a8..fd06695542 100644
-> --- a/hw/vfio/pci.h
-> +++ b/hw/vfio/pci.h
-> @@ -173,6 +173,7 @@ struct VFIOPCIDevice {
->      bool no_kvm_ioeventfd;
->      bool no_vfio_ioeventfd;
->      bool enable_ramfb;
-> +    OnOffAuto ramfb_migrate;
->      bool defer_kvm_irq_routing;
->      bool clear_parent_atomics_on_exit;
->      VFIODisplay *dpy;
-> @@ -226,4 +227,6 @@ void vfio_display_reset(VFIOPCIDevice *vdev);
->  int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
->  void vfio_display_finalize(VFIOPCIDevice *vdev);
->  
-> +extern const VMStateDescription vfio_display_vmstate;
-> +
->  #endif /* HW_VFIO_VFIO_PCI_H */
-> diff --git a/hw/core/machine.c b/hw/core/machine.c
-> index 6305f2d7a4..05aef2cf9f 100644
-> --- a/hw/core/machine.c
-> +++ b/hw/core/machine.c
-> @@ -35,6 +35,7 @@
->  GlobalProperty hw_compat_8_1[] = {
->      { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
->      { "ramfb", "x-migrate", "off" },
-> +    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" }
->  };
->  const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
->  
-> diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-> index bec864f482..2739ba56ec 100644
-> --- a/hw/vfio/display.c
-> +++ b/hw/vfio/display.c
-> @@ -542,3 +542,24 @@ void vfio_display_finalize(VFIOPCIDevice *vdev)
->      vfio_display_edid_exit(vdev->dpy);
->      g_free(vdev->dpy);
->  }
-> +
-> +static bool migrate_needed(void *opaque)
-> +{
-> +    VFIODisplay *dpy = opaque;
-> +    bool ramfb_exists = dpy->ramfb != NULL;
-> +
-> +    /* see vfio_display_migration_needed() */
-> +    assert(ramfb_exists);
-> +    return ramfb_exists;
-> +}
-> +
-> +const VMStateDescription vfio_display_vmstate = {
-> +    .name = "VFIODisplay",
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .needed = migrate_needed,
-> +    .fields = (VMStateField[]) {
-> +        VMSTATE_STRUCT_POINTER(ramfb, VFIODisplay, ramfb_vmstate, RAMFBState),
-> +        VMSTATE_END_OF_LIST(),
-> +    }
-> +};
-> diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-> index 3b2ca3c24c..e44ed21180 100644
-> --- a/hw/vfio/pci.c
-> +++ b/hw/vfio/pci.c
-> @@ -2608,6 +2608,32 @@ static bool vfio_msix_present(void *opaque, int version_id)
->      return msix_present(pdev);
->  }
->  
-> +static bool vfio_display_migration_needed(void *opaque)
-> +{
-> +    VFIOPCIDevice *vdev = opaque;
-> +
+> diff --git a/target/riscv/cpu_helper.c b/target/riscv/cpu_helper.c
+> index 3a02079290..479d9863ae 100644
+> --- a/target/riscv/cpu_helper.c
+> +++ b/target/riscv/cpu_helper.c
+> @@ -66,7 +66,11 @@ void cpu_get_tb_cpu_state(CPURISCVState *env, vaddr *pc,
+>                             uint64_t *cs_base, uint32_t *pflags)
+>   {
+>       CPUState *cs = env_cpu(env);
+> -    RISCVCPU *cpu = RISCV_CPU(cs);
+
+You might want to use:
+
+        RISCVCPU *cpu =  env_archcpu(env);
+
+Other occurences in target/riscv/internals.h.
+
 > +    /*
-> +     * We need to migrate the VFIODisplay object if ramfb *migration* was
-> +     * explicitly requested (in which case we enforced both ramfb=on and
-> +     * display=on), or ramfb migration was left at the default "auto"
-> +     * setting, and *ramfb* was explicitly requested (in which case we
-> +     * enforced display=on).
+> +     * Using the checked cast RISCV_CPU(cs) imposes ~ 5% overhead when
+> +     * QOM cast debugging is enabled, so use a direct cast instead.
 > +     */
-> +    return vdev->ramfb_migrate == ON_OFF_AUTO_ON ||
-> +        (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO && vdev->enable_ramfb);
-> +}
-> +
-> +const VMStateDescription vmstate_vfio_display = {
-> +    .name = "VFIOPCIDevice/VFIODisplay",
-> +    .version_id = 1,
-> +    .minimum_version_id = 1,
-> +    .needed = vfio_display_migration_needed,
-> +    .fields = (VMStateField[]){
-> +        VMSTATE_STRUCT_POINTER(dpy, VFIOPCIDevice, vfio_display_vmstate, VFIODisplay),
-> +        VMSTATE_END_OF_LIST()
-> +    }
-> +};
-> +
->  const VMStateDescription vmstate_vfio_pci_config = {
->      .name = "VFIOPCIDevice",
->      .version_id = 1,
-> @@ -2616,6 +2642,10 @@ const VMStateDescription vmstate_vfio_pci_config = {
->          VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
->          VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
->          VMSTATE_END_OF_LIST()
-> +    },
-> +    .subsections = (const VMStateDescription*[]) {
-> +        &vmstate_vfio_display,
-> +        NULL
->      }
->  };
->  
-> @@ -3271,6 +3301,19 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
->          }
->      }
->  
-> +    if (vdev->ramfb_migrate == ON_OFF_AUTO_ON && !vdev->enable_ramfb) {
-> +        warn_report("x-ramfb-migrate=on but ramfb=off");
-> +        vdev->ramfb_migrate = ON_OFF_AUTO_OFF;
-
-the warning could give a hint about the resultant action taken (i.e.,
-forcing off x-ramfb-migrate), but don't repost just for that; it's a nit.
-
-My R-b stands.
-
-Thanks
-Laszlo
-
-> +    }
-> +    if (vbasedev->enable_migration == ON_OFF_AUTO_OFF) {
-> +        if (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO) {
-> +            vdev->ramfb_migrate = ON_OFF_AUTO_OFF;
-> +        } else if (vdev->ramfb_migrate == ON_OFF_AUTO_ON) {
-> +            error_setg(errp, "x-ramfb-migrate requires enable-migration");
-> +            goto out_deregister;
-> +        }
-> +    }
-> +
->      if (!pdev->failover_pair_id) {
->          if (!vfio_migration_realize(vbasedev, errp)) {
->              goto out_deregister;
-> @@ -3484,6 +3527,7 @@ static const TypeInfo vfio_pci_dev_info = {
->  
->  static Property vfio_pci_dev_nohotplug_properties[] = {
->      DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
-> +    DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate, ON_OFF_AUTO_AUTO),
->      DEFINE_PROP_END_OF_LIST(),
->  };
->  
-> diff --git a/stubs/ramfb.c b/stubs/ramfb.c
-> index 48143f3354..cf64733b10 100644
-> --- a/stubs/ramfb.c
-> +++ b/stubs/ramfb.c
-> @@ -2,6 +2,8 @@
->  #include "qapi/error.h"
->  #include "hw/display/ramfb.h"
->  
-> +const VMStateDescription ramfb_vmstate = {};
-> +
->  void ramfb_display_update(QemuConsole *con, RAMFBState *s)
->  {
->  }
+> +    RISCVCPU *cpu = (RISCVCPU *)cs;
+>       RISCVExtStatus fs, vs;
+>       uint32_t flags = 0;
+>   
 
 
