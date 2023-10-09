@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743E57BDC5F
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ADE67BDC66
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:41:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qppYI-0005bl-Mo; Mon, 09 Oct 2023 08:40:02 -0400
+	id 1qppZc-0006RC-8g; Mon, 09 Oct 2023 08:41:24 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qppYF-0005bM-Ps
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:39:59 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qppZX-0006Py-9R
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:41:19 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qppYE-0005mk-5B
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:39:59 -0400
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qppZN-00066j-L3
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:41:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696855197;
+ s=mimecast20190719; t=1696855269;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=7wq9nD9ZTllgCEzkcIUGxen7ub2aHjlb3OByNkJyYQw=;
- b=gwjuxKrQcrWsDNJaysC+RzEqAwom/2IycYf5A1j9H1bL8HJvFXmsMu3ljr/vxanYq9QmDJ
- hl6LXBbihZHbbubiQo1wIzQRkq//KTZ4VF8+tqvyTjdwJ4UPglmNVbSMFrOXe3GRL7JvRf
- 3TKmogi0KnFy5MYlklLFdqS7OVXoAMw=
+ bh=aBbqRJuie/RtASpOPm/E+liHMmFG9vTLSCLZqZvxUqo=;
+ b=QNbrj6iQGGwqfYFtRCJsB8Hno4ZY11dRyknqy0qzmF7QmbqE1yjeA2E8f0xcwi4cG0Gi9+
+ BLh+swfrr3KJMnsqn9O9uNkXlTaeaXXX5kBI1sB3w9Z5oqr5GehavRmXGzlJuP5//DawEf
+ 2Pl5lbQDnp7zhCWOg78MLF4jH0wjr+4=
 Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
  by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-596-y7eWINRiNw6D2LYSHp2VkQ-1; Mon, 09 Oct 2023 08:39:55 -0400
-X-MC-Unique: y7eWINRiNw6D2LYSHp2VkQ-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
+ us-mta-606-sbXQx99aPIWxPyB_delydA-1; Mon, 09 Oct 2023 08:41:07 -0400
+X-MC-Unique: sbXQx99aPIWxPyB_delydA-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 59CF138116E3
- for <qemu-devel@nongnu.org>; Mon,  9 Oct 2023 12:39:55 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 294C83C025D0;
+ Mon,  9 Oct 2023 12:41:07 +0000 (UTC)
 Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 39BA5140EBB7
- for <qemu-devel@nongnu.org>; Mon,  9 Oct 2023 12:39:55 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 094D7C0FE2D;
+ Mon,  9 Oct 2023 12:41:07 +0000 (UTC)
 Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 448A221E6904; Mon,  9 Oct 2023 14:39:54 +0200 (CEST)
+ id 0D76021E6904; Mon,  9 Oct 2023 14:41:06 +0200 (CEST)
 From: Markus Armbruster <armbru@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,  =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,  qemu-devel@nongnu.org,  Gerd Hoffmann
- <kraxel@redhat.com>
-Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
- compiling with -Wshadow
-References: <20231009083726.30301-1-thuth@redhat.com>
- <20231009074333-mutt-send-email-mst@kernel.org>
- <59c76034-62d5-c94c-8b3b-fa206768ee1d@redhat.com>
-Date: Mon, 09 Oct 2023 14:39:54 +0200
-In-Reply-To: <59c76034-62d5-c94c-8b3b-fa206768ee1d@redhat.com> (Thomas Huth's
- message of "Mon, 9 Oct 2023 14:05:22 +0200")
-Message-ID: <87cyxo2cmd.fsf@pond.sub.org>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] system/vl: Use global &bdo_queue in configure_blockdev()
+References: <20231009093152.51270-1-philmd@linaro.org>
+ <87sf6k2isd.fsf@pond.sub.org>
+ <9cd1675b-22a4-ee2a-fde0-bb87c7c5bd26@linaro.org>
+Date: Mon, 09 Oct 2023 14:41:06 +0200
+In-Reply-To: <9cd1675b-22a4-ee2a-fde0-bb87c7c5bd26@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 9 Oct 2023 13:54:50
+ +0200")
+Message-ID: <878r8c2ckd.fsf@pond.sub.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -83,46 +83,31 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Thomas Huth <thuth@redhat.com> writes:
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> On 09/10/2023 13.45, Michael S. Tsirkin wrote:
->> On Mon, Oct 09, 2023 at 10:37:25AM +0200, Thomas Huth wrote:
->>> Rename some variables to avoid compiler warnings when compiling
->>> with -Wshadow=local.
+> On 9/10/23 12:26, Markus Armbruster wrote:
+>> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+>>=20
+>>> Commit d11bf9bf0f ("vl: Factor configure_blockdev() out of main()")
+>>> passed &bdo_queue as argument, but this isn't really necessary since
+>>> there is only one call, so we still use the global variable.
 >>>
->>> Signed-off-by: Thomas Huth <thuth@redhat.com>
->>> ---
->>>   v2: Renamed the variable to something more unique
+>>> Dropping the &bdo_queue argument allows to silence this global shadow
+>>> warning:
 >>>
->>>   contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
->>>   contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
->>>   2 files changed, 7 insertions(+), 7 deletions(-)
->>>
->>> diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
->>> index 509b679f03..654c392fbb 100644
->>> --- a/contrib/vhost-user-gpu/vugpu.h
->>> +++ b/contrib/vhost-user-gpu/vugpu.h
->>> @@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
->>>   };
->>>     #define VUGPU_FILL_CMD(out) do {                                \
->>> -        size_t s;                                               \
->>> -        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
->>> +        size_t vugpufillcmd_s_ =                                \
->>> +            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
->>>                          &out, sizeof(out));                      \
->>> -        if (s != sizeof(out)) {                                 \
->>> +        if (vugpufillcmd_s_ != sizeof(out)) {                   \
->>>               g_critical("%s: command size incorrect %zu vs %zu", \
->>> -                       __func__, s, sizeof(out));               \
->>> +                       __func__, vugpufillcmd_s_, sizeof(out)); \
->>>               return;                                             \
->>>           }                                                       \
->>>       } while (0)
->> I think I prefer VUGPU_FILL_CMD_s or VUGPU_FILL_CMD_s_ - makes it clear
->> it's related to a macro.
+>>>    softmmu/vl.c:678:54: error: declaration shadows a variable in the gl=
+obal scope [-Werror,-Wshadow]
+>>>    static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
+>>>                                                         ^
+>>>    softmmu/vl.c:172:29: note: previous declaration is here
+>>>    static BlockdevOptionsQueue bdo_queue =3D QSIMPLEQ_HEAD_INITIALIZER(=
+bdo_queue);
+>> Not sure this is an improvement.  Up to Paolo, I guess.
 >
-> I have to say that I don't like that ... it's a variable after all, and naming it with capital letters looks rather confusing that helpful to me. I think it should be enough to have the underscore at the end here to make it unique enough.
+> Any alternative suggestion? I'm looking at enabling -Wshadow with Clang
+> to avoid Clang users not getting the -Wshadow=3Dlocal warnings until a
+> maintainer test their patches on CI.
 
-Concur.  Plenty of precedence in the tree.
+Rename to @bdos?
 
 
