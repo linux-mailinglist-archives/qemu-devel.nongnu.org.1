@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFFE7BD7A3
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84EED7BD788
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:48:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmql-000095-Bc; Mon, 09 Oct 2023 05:46:55 -0400
+	id 1qpmqm-0000BG-AN; Mon, 09 Oct 2023 05:46:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qpmqS-0008R8-0X; Mon, 09 Oct 2023 05:46:36 -0400
+ id 1qpmqT-0008Rp-EA; Mon, 09 Oct 2023 05:46:37 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qpmqP-0005Zi-8s; Mon, 09 Oct 2023 05:46:35 -0400
+ id 1qpmqQ-0005Zr-V0; Mon, 09 Oct 2023 05:46:37 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id B4E1844933;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id E54BB44948;
  Mon,  9 Oct 2023 11:46:24 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
@@ -25,10 +25,9 @@ Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
  jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
  alexander.ivanov@virtuozzo.com
-Subject: [PATCH v2 08/10] blockjob: query driver-specific info via a new
- 'query' driver method
-Date: Mon,  9 Oct 2023 11:46:17 +0200
-Message-Id: <20231009094619.469668-9-f.ebner@proxmox.com>
+Subject: [PATCH v2 09/10] mirror: return mirror-specific information upon query
+Date: Mon,  9 Oct 2023 11:46:18 +0200
+Message-Id: <20231009094619.469668-10-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009094619.469668-1-f.ebner@proxmox.com>
 References: <20231009094619.469668-1-f.ebner@proxmox.com>
@@ -56,53 +55,91 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+To start out, only actively-synced is returned.
+
+For example, this is useful for jobs that started out in background
+mode and switched to active mode. Once actively-synced is true, it's
+clear that the mode switch has been completed. Note that completion of
+the switch might happen much earlier, e.g. if the switch happens
+before the job is ready, once all background operations have finished.
+It's assumed that whether the disks are actively-synced or not is more
+interesting than whether the mode switch completed. That information
+can still be added if required in the future.
+
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
 
-No changes in v2.
+Changes in v2:
+    * udpate QEMU version in QAPI
+    * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
+      doc comments to conform to current conventions"))
 
- blockjob.c                   | 4 ++++
- include/block/blockjob_int.h | 5 +++++
- 2 files changed, 9 insertions(+)
+ block/mirror.c       | 10 ++++++++++
+ qapi/block-core.json | 16 +++++++++++++++-
+ 2 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/blockjob.c b/blockjob.c
-index f8cf6e58e2..7e8cfad0fd 100644
---- a/blockjob.c
-+++ b/blockjob.c
-@@ -376,6 +376,7 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
- {
-     BlockJobInfo *info;
-     uint64_t progress_current, progress_total;
-+    const BlockJobDriver *drv = block_job_driver(job);
- 
-     GLOBAL_STATE_CODE();
- 
-@@ -405,6 +406,9 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
-                         g_strdup(error_get_pretty(job->job.err)) :
-                         g_strdup(strerror(-job->job.ret));
-     }
-+    if (drv->query) {
-+        drv->query(job, info);
-+    }
-     return info;
+diff --git a/block/mirror.c b/block/mirror.c
+index 83aa4176c2..33b72ec5e5 100644
+--- a/block/mirror.c
++++ b/block/mirror.c
+@@ -1267,6 +1267,15 @@ static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
+     s->copy_mode = MIRROR_COPY_MODE_WRITE_BLOCKING;
  }
  
-diff --git a/include/block/blockjob_int.h b/include/block/blockjob_int.h
-index f604985315..4ab88b3c97 100644
---- a/include/block/blockjob_int.h
-+++ b/include/block/blockjob_int.h
-@@ -72,6 +72,11 @@ struct BlockJobDriver {
-      * Change the @job's options according to @opts.
-      */
-     void (*change)(BlockJob *job, BlockJobChangeOptions *opts, Error **errp);
++static void mirror_query(BlockJob *job, BlockJobInfo *info)
++{
++    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
 +
-+    /*
-+     * Query information specific to this kind of block job.
-+     */
-+    void (*query)(BlockJob *job, BlockJobInfo *info);
++    info->u.mirror = (BlockJobInfoMirror) {
++        .actively_synced = s->actively_synced,
++    };
++}
++
+ static const BlockJobDriver mirror_job_driver = {
+     .job_driver = {
+         .instance_size          = sizeof(MirrorBlockJob),
+@@ -1282,6 +1291,7 @@ static const BlockJobDriver mirror_job_driver = {
+     },
+     .drained_poll           = mirror_drained_poll,
+     .change                 = mirror_change,
++    .query                  = mirror_query,
  };
  
- /*
+ static const BlockJobDriver commit_active_job_driver = {
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index 950542b735..35d67410cc 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -1352,6 +1352,20 @@
+ { 'enum': 'MirrorCopyMode',
+   'data': ['background', 'write-blocking'] }
+ 
++##
++# @BlockJobInfoMirror:
++#
++# Information specific to mirror block jobs.
++#
++# @actively-synced: Whether the source is actively synced to the
++#     target, i.e. same data and new writes are done synchronously to
++#     both.
++#
++# Since 8.2
++##
++{ 'struct': 'BlockJobInfoMirror',
++  'data': { 'actively-synced': 'bool' } }
++
+ ##
+ # @BlockJobInfo:
+ #
+@@ -1403,7 +1417,7 @@
+            'auto-finalize': 'bool', 'auto-dismiss': 'bool',
+            '*error': 'str' },
+   'discriminator': 'type',
+-  'data': {} }
++  'data': { 'mirror': 'BlockJobInfoMirror' } }
+ 
+ ##
+ # @query-block-jobs:
 -- 
 2.39.2
 
