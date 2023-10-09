@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0547BE6C7
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9F27BE6C6
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:44:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptM0-0000aN-5z; Mon, 09 Oct 2023 12:43:36 -0400
+	id 1qptM1-0000pe-G0; Mon, 09 Oct 2023 12:43:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJs-0005Cd-Mu
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:32 -0400
-Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
+ id 1qptJx-0005IS-FE
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:35 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJe-0001UN-0P
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:24 -0400
-Received: by mail-wr1-x434.google.com with SMTP id
- ffacd0b85a97d-32003aae100so3534515f8f.0
+ id 1qptJe-0001Uc-4W
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:25 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-406618d080eso45689115e9.2
  for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1696869668; x=1697474468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=a52wocQYp8F3YgwPFsZoycBHm5iiCFaISrIdWEZjgl0=;
- b=PJFplBfXMh1OFG9xJg1xLUpyf9jR0JWT5dY25dlIUuCCqGrm20V4SBCKJiV+G6zZxS
- 8llEwM1MMi0HTU6tTeUlqoXDwZ8u6P+pXBHFtFWzlb19LuPJHmVAFz6i+RExnow5EoL3
- g5EEF69K2C2fK+QJ/mcM0HeBTH9N6uJApVmA+H3UGPN+J0Kg+CHgh5ci78Vf+trYJYx2
- bmGhUPiX4dRYSj4HbAIB+rYrh3c8VKNQFlDrbNf9e7eJkfVPu2+3fBjrD/gQI9Qt0g7N
- UVAp4y6zLJMMDv9sdrTEpAoCTjJIFsgy43ds8d06ee3oP1FahiFAonM9/GFWrB7Lzy8P
- EE2A==
+ bh=zh7N0HFTIxBax5KXX0zczKhvUC5xK1l1PfGLSBYFHwc=;
+ b=PwcDzxltD5YR3ShAQzhz1eilmfTYm+45rVXlqOy5QEK22HJ6XkKQg6F/fwvpa0lFhQ
+ r4EnyvkmDC0sEQcNLlpbpOFo5Ucb+AnkUbfTfCfpEA7lbpmwTNdzb2uUlCsFiL6H06cf
+ 4g3XWhP9r6dlYIeJimRqK2FuXmfr/QQ3mluXWvgGflcH7f9F/gerNLzzD7BfdqGKwDa0
+ vxCynn1Hf0BCWK8mvwkjt/wiWdQAQWvh3g3pmXMbYvDL7jpRNGt0t/lee76Ahw78N/SA
+ YPmoQ60Ce5N0OYuPjULpVZmd0fNE2WPqxXEpYvE1OGj2tXHuz47wrl6CbWsNUX3+fJ3N
+ JPpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1696869668; x=1697474468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=a52wocQYp8F3YgwPFsZoycBHm5iiCFaISrIdWEZjgl0=;
- b=PWnihTGTIIUH3VcqqUIUP/Pb64tIbfMcouHe5RxIu10kSSlvpWvMMnCUfra+IaXLlA
- YDoyJW5hd52YxSi17921HiKwTkEwkOlxa0lbZif/EmT0KJiO4vgGTj125zEcxw9AoKUG
- TR63mGeHl9XKTesrZW6olsVayjP3yt6OVc6I0jm6aTWe8kzTNmsRxoT6lu+gOgmdqV7z
- tSEFr7skV9XfOVEQM2F+Lv3SdyM8zCj94Nm1vfxnqTQy7KfxmWeOaIOnQDW35tFqGGva
- uEwFvdg6fdZ6MAtEdXkCaHDdNXhpJ2pKdmbsxMCczBbZzLibVbRvSYkHjUe3P+okgyBq
- swlA==
-X-Gm-Message-State: AOJu0YywJ/9iQTwzmwANuRFTd94R4iepuu5N2t5uhjYpE2N+R4U8elMv
- wRtkIFv1jvyOxd3JZvUcsDgv6w==
-X-Google-Smtp-Source: AGHT+IFPOfPRxnx2cUUcZmv8TW/gt/S5tNKXvRyQKbl2j/5SKIaoyIq5dvsTBrYNDSHTqMFdgwi4mQ==
-X-Received: by 2002:a05:6000:1a45:b0:31f:f8a7:a26c with SMTP id
- t5-20020a0560001a4500b0031ff8a7a26cmr11611057wry.25.1696869668067; 
+ bh=zh7N0HFTIxBax5KXX0zczKhvUC5xK1l1PfGLSBYFHwc=;
+ b=P65HRzrgfs3PT2EgvLh/KbOGb94FGSrykHiySqf8nk3d+VP+B4QU6JmxsTWaYJcWtW
+ pb9ffyi44qNc+bTAnTDl2GABjEE2SrK5yICpAiv9BKCIh9OZSXuJaskpRP6u8zqlTbyy
+ 9JAXG90q3SMlKauZzwS5mjcKHpHu68U7cl8m0MUyq74DLMw57mEpVpHZlwJXjrD9b9aH
+ 9BKLBmEdLJB8X1T6DUcnEu6v//a2fQKvf9AP2AigWEtQA2Gi7JT1/HCJ0LOSJqyPCRRs
+ ILmx2O/7Uc9aO23s3PdzIDugzrW8PAXk3HbaTvqw8GTnAqrNfpfU6fAUrH+4wQul2zf4
+ DA/Q==
+X-Gm-Message-State: AOJu0Yx2THfDpBjCt1nbdCWrXHXXPYnsYm64YZsSSNJu0rWJD7agdG+C
+ MLHHmJ2teSjbjokFtmzZv1/fOQ==
+X-Google-Smtp-Source: AGHT+IEfvpth34gShkKuZ4bLW33Yj6ccahuIdxlYiCiJmwuZcXoUGwKBzSDnzJA3mFDUg19ehbM0Hg==
+X-Received: by 2002:a05:600c:2317:b0:406:6964:7e96 with SMTP id
+ 23-20020a05600c231700b0040669647e96mr13462745wmo.13.1696869668212; 
  Mon, 09 Oct 2023 09:41:08 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- g7-20020a056000118700b003143c9beeaesm10076058wrx.44.2023.10.09.09.41.06
+ v10-20020a05600c470a00b00407460234f9sm6145168wmo.21.2023.10.09.09.41.06
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:41:06 -0700 (PDT)
+ Mon, 09 Oct 2023 09:41:07 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id A33B61FFBF;
+ by zen.linaroharston (Postfix) with ESMTP id BDDBC1FFC0;
  Mon,  9 Oct 2023 17:41:05 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -89,17 +89,18 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 04/25] gitlab: shuffle some targets and reduce avocado noise
-Date: Mon,  9 Oct 2023 17:40:43 +0100
-Message-Id: <20231009164104.369749-5-alex.bennee@linaro.org>
+Subject: [PATCH 05/25] tests/docker: make docker engine choice entirely
+ configure driven
+Date: Mon,  9 Oct 2023 17:40:44 +0100
+Message-Id: <20231009164104.369749-6-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::434;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x434.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,106 +123,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We move a couple of targets out of the avocado runs because there are
-no tests to run. Tricore already has some coverage.  The cris target
-only really has check-tcg tests but its getting harder to find
-anything that packages the compiler.
+Since 0b1a649047 (tests/docker: use direct RUNC call to build
+containers) we ended up with the potential for the remaining docker.py
+script calls to deviate from the direct RUNC calls. Fix this by
+dropping the use of ENGINE in the makefile and rely entirely on what
+we detect at configure time.
 
-To reduce the noise of CANCEL messages we also set AVOCADO_TAGS
-appropriately so we filter down the number of tests we attempt.
+We also tweak the RUNC detection so podman users can still run things
+from the source tree.
 
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 ---
 v2
-  - minor commit reword, no longer attempt to keep cris going
+  - add RUNC stanza suggested by Paolo
 ---
- .gitlab-ci.d/buildtest.yml | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ configure                     | 1 -
+ tests/docker/Makefile.include | 9 +++------
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/.gitlab-ci.d/buildtest.yml b/.gitlab-ci.d/buildtest.yml
-index aee9101507..25af1bc41e 100644
---- a/.gitlab-ci.d/buildtest.yml
-+++ b/.gitlab-ci.d/buildtest.yml
-@@ -30,6 +30,7 @@ avocado-system-alpine:
-   variables:
-     IMAGE: alpine
-     MAKE_CHECK_ARGS: check-avocado
-+    AVOCADO_TAGS: arch:avr arch:loongarch64 arch:mips64 arch:mipsel
+diff --git a/configure b/configure
+index e08127045d..707132a3ae 100755
+--- a/configure
++++ b/configure
+@@ -1694,7 +1694,6 @@ if test -n "$gdb_bin"; then
+ fi
  
- build-system-ubuntu:
-   extends:
-@@ -40,8 +41,7 @@ build-system-ubuntu:
-   variables:
-     IMAGE: ubuntu2204
-     CONFIGURE_ARGS: --enable-docs
--    TARGETS: alpha-softmmu cris-softmmu hppa-softmmu
--      microblazeel-softmmu mips64el-softmmu
-+    TARGETS: alpha-softmmu microblazeel-softmmu mips64el-softmmu
-     MAKE_CHECK_ARGS: check-build
+ if test "$container" != no; then
+-    echo "ENGINE=$container" >> $config_host_mak
+     echo "RUNC=$runc" >> $config_host_mak
+ fi
+ echo "SUBDIRS=$subdirs" >> $config_host_mak
+diff --git a/tests/docker/Makefile.include b/tests/docker/Makefile.include
+index dfabafab92..ab68b2dbad 100644
+--- a/tests/docker/Makefile.include
++++ b/tests/docker/Makefile.include
+@@ -16,9 +16,8 @@ DOCKER_DEFAULT_REGISTRY := registry.gitlab.com/qemu-project/qemu
+ endif
+ DOCKER_REGISTRY := $(if $(REGISTRY),$(REGISTRY),$(DOCKER_DEFAULT_REGISTRY))
  
- check-system-ubuntu:
-@@ -61,6 +61,7 @@ avocado-system-ubuntu:
-   variables:
-     IMAGE: ubuntu2204
-     MAKE_CHECK_ARGS: check-avocado
-+    AVOCADO_TAGS: arch:alpha arch:microblaze arch:mips64el
+-RUNC ?= docker
+-ENGINE ?= auto
+-DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(ENGINE)
++RUNC ?= $(if $(shell command -v docker), docker, podman)
++DOCKER_SCRIPT=$(SRC_PATH)/tests/docker/docker.py --engine $(RUNC)
  
- build-system-debian:
-   extends:
-@@ -72,7 +73,7 @@ build-system-debian:
-     IMAGE: debian-amd64
-     CONFIGURE_ARGS: --with-coroutine=sigaltstack
-     TARGETS: arm-softmmu i386-softmmu riscv64-softmmu sh4eb-softmmu
--      sparc-softmmu xtensaeb-softmmu
-+      sparc-softmmu xtensa-softmmu
-     MAKE_CHECK_ARGS: check-build
+ CUR_TIME := $(shell date +%Y-%m-%d-%H.%M.%S.$$$$)
+ DOCKER_SRC_COPY := $(BUILD_DIR)/docker-src.$(CUR_TIME)
+@@ -158,7 +157,7 @@ $(foreach i,$(filter-out $(DOCKER_PARTIAL_IMAGES),$(DOCKER_IMAGES)), \
+ )
  
- check-system-debian:
-@@ -92,6 +93,7 @@ avocado-system-debian:
-   variables:
-     IMAGE: debian-amd64
-     MAKE_CHECK_ARGS: check-avocado
-+    AVOCADO_TAGS: arch:arm arch:i386 arch:riscv64 arch:sh4 arch:sparc arch:xtensa
+ docker:
+-	@echo 'Build QEMU and run tests inside Docker or Podman containers'
++	@echo 'Build QEMU and run tests inside $(RUNC) containers'
+ 	@echo
+ 	@echo 'Available targets:'
+ 	@echo
+@@ -198,8 +197,6 @@ docker:
+ 	@echo '    EXECUTABLE=<path>    Include executable in image.'
+ 	@echo '    EXTRA_FILES="<path> [... <path>]"'
+ 	@echo '                         Include extra files in image.'
+-	@echo '    ENGINE=auto/docker/podman'
+-	@echo '                         Specify which container engine to run.'
+ 	@echo '    REGISTRY=url         Cache builds from registry (default:$(DOCKER_REGISTRY))'
  
- crash-test-debian:
-   extends: .native_test_job_template
-@@ -114,7 +116,7 @@ build-system-fedora:
-   variables:
-     IMAGE: fedora
-     CONFIGURE_ARGS: --disable-gcrypt --enable-nettle --enable-docs
--    TARGETS: tricore-softmmu microblaze-softmmu mips-softmmu
-+    TARGETS: microblaze-softmmu mips-softmmu
-       xtensa-softmmu m68k-softmmu riscv32-softmmu ppc-softmmu sparc64-softmmu
-     MAKE_CHECK_ARGS: check-build
- 
-@@ -135,6 +137,8 @@ avocado-system-fedora:
-   variables:
-     IMAGE: fedora
-     MAKE_CHECK_ARGS: check-avocado
-+    AVOCADO_TAGS: arch:microblaze arch:mips arch:xtensa arch:m68k
-+      arch:riscv32 arch:ppc arch:sparc64
- 
- crash-test-fedora:
-   extends: .native_test_job_template
-@@ -180,6 +184,8 @@ avocado-system-centos:
-   variables:
-     IMAGE: centos8
-     MAKE_CHECK_ARGS: check-avocado
-+    AVOCADO_TAGS: arch:ppc64 arch:or1k arch:390x arch:x86_64 arch:rx
-+      arch:sh4 arch:nios2
- 
- build-system-opensuse:
-   extends:
-@@ -209,6 +215,7 @@ avocado-system-opensuse:
-   variables:
-     IMAGE: opensuse-leap
-     MAKE_CHECK_ARGS: check-avocado
-+    AVOCADO_TAGS: arch:s390x arch:x86_64 arch:aarch64
- 
- 
- # This jobs explicitly disable TCG (--disable-tcg), KVM is detected by
+ docker-help: docker
 -- 
 2.39.2
 
