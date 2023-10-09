@@ -2,158 +2,98 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A337BDF13
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3887BE072
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:40:22 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpqG6-0006N9-KT; Mon, 09 Oct 2023 09:25:18 -0400
+	id 1qpqSt-0002Sk-0Y; Mon, 09 Oct 2023 09:38:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qpqG4-0006Mn-TX
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:25:17 -0400
-Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qpqSo-0002SF-Mb
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:38:26 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qpqFz-0006D1-C8
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:25:16 -0400
-Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
- by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 3992QesN017937; Mon, 9 Oct 2023 06:25:08 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
- content-type:message-id:date:subject:to:cc:references:from
- :in-reply-to:mime-version; s=proofpoint20171006; bh=JTDx6wfNdOmA
- s33yVxDtDWRQG9YTb2KYUXo9b60OyqI=; b=tF212OijJBtTFYNbGYM4LH85DSu3
- 62dd0x6Wddnw1SDjlCidVctNNr1UJUcd6NIa0NPoSMNoFGotD3ndWNXpAgkBKUB/
- FncWOP+R8y8JtpAH1v85f3nNxBjf7mcap0+59wMG9IhDXTuE8Ybt4j5TW6ri82Af
- w8VPF824VIKZStcmbbNG/AmdCaTJp8SJrumJ7YPnrnr7QBJSWFGJTngoOpwr9JMU
- O2LHR4PCzSsMkzln/j0ljffcZjWlm+RgS9is0014/EAnloq3Cc1y2spdNjw1YSRB
- gYwq9zCi7b3GVxMtWsQtvsv+kUfx9hW9R47frqGkmQwGKEqFZBIezk/SYg==
-Received: from nam12-mw2-obe.outbound.protection.outlook.com
- (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3tkhv02n17-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 06:25:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SJxdpOYrmhXD7FIFSoLoGPM32i0M9uJ//2GminDuTQvIMJBFJ4JAm1dhDnrPxhgoJmK3+4Mu/2NI3FuECQPohv2w49N9Xv1zjyIl7RW9bNF90jNYq85ja3E2RxjBvLIZP69p5WmOjbZ8P8G/WEFVuu34Sr3Y0s9IwSbYmlGjIQd/bMT4JEfFadqSZSxqZZuoDDe9f3eRSIy257sc3BlyuptsCxwYRJrTPu6jUKaVHB3fr7LrN3TWoFZPk33MOuyHkrUC/hqGB0ywmRYazX913Dd5gdk6xtbF6hVHhg3Pn9shxYigUAPN+QyB/XqS9gv7AnYvq8R6u8vSTxA3kcmDOA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JTDx6wfNdOmAs33yVxDtDWRQG9YTb2KYUXo9b60OyqI=;
- b=QR7/rNhN5M6RfXb7Tn6WwVhxMvtXEsuwWIXQQQdvWfqzlem31cPeH0lpDvNhz2mq83BswNG70gqME/4FW4Hkd2+K2CbvDgI6XQcQ2F33JOYsxOKAXm9063/+gvHM5XapbJF7Ht5LVoD7zEVNLOozzUN7REI7SvbHs/lOqRTXJZdwRdFSvr5ajW0OT7zKoQ4kKh+qxSNrCjVW+aYQYnkqrUjHkPzJY/KK242TAyHoGzfl8AdiQyMzv9whOttJXXgJQMO97anqxJvr///29neXRb0wKLi8VNXMoXkXUxQdC61dpJ6k3zFtE+7q7WDVR1Q7FQhzBG6FixTA+rcLdOAg/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
- dkim=pass header.d=nutanix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JTDx6wfNdOmAs33yVxDtDWRQG9YTb2KYUXo9b60OyqI=;
- b=bnsx3LEW3Fx/EpSGjgEan+lD1PIzZ2tP4auHYaoJ0NYDwi6U1W0+7/M9eABrtcuQzbrZnRRNgDNB/pfbpQjniq8ZkX/YXyi6LqSO1mFBn9aRXUjikGWXJUnWBR/oRnpPuERow6VHvbIBODFDvwipWDUxgV9Co0OU1lqeZqjtJyV/oLawA33Bc8DSr0s295J8FVxzO1C117G4ooStdlJ49qmU6fnY9DmAu260VdLVveHl8CnucC8QWfjoJ9SwipRuybmiJggdbhbU91Q3LzHzqzXcjnezepFYw2FjCU9BT9n+BASStRNfJoA+6BKWeZimiHPA+YD/S+sAqeoZlRvznw==
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by SJ0PR02MB7360.namprd02.prod.outlook.com (2603:10b6:a03:29a::9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.36; Mon, 9 Oct
- 2023 13:25:04 +0000
-Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::f13d:ea:118b:b4ae]) by SJ2PR02MB9955.namprd02.prod.outlook.com
- ([fe80::f13d:ea:118b:b4ae%4]) with mapi id 15.20.6863.032; Mon, 9 Oct 2023
- 13:25:04 +0000
-Content-Type: multipart/alternative;
- boundary="------------0SXbD2JaoV9gVBxQJjZASuPS"
-Message-ID: <2a15e4a0-2a07-44d1-8e75-f9081ba4375d@nutanix.com>
-Date: Mon, 9 Oct 2023 18:55:02 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 00/10] migration: Modify 'migrate' and
- 'migrate-incoming' QAPI commands for migration
-Content-Language: en-GB
-To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
-Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
- pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-References: <20231004075851.219173-1-het.gala@nutanix.com>
- <871qea5x7w.fsf@suse.de> <ec1a8f2e-ec10-46e2-1a2c-1ae593080ad4@nutanix.com>
- <87sf6qpjrz.fsf@suse.de> <875y3mpfn7.fsf@suse.de>
-From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <875y3mpfn7.fsf@suse.de>
-X-ClientProxiedBy: SJ0PR03CA0351.namprd03.prod.outlook.com
- (2603:10b6:a03:39c::26) To SJ2PR02MB9955.namprd02.prod.outlook.com
- (2603:10b6:a03:55f::16)
+ (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
+ id 1qpqSm-0000J8-FE
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:38:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696858703;
+ h=from:from:reply-to:reply-to:subject:subject:date:date:
+ message-id:message-id:to:to:cc:mime-version:mime-version:
+ content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=6AFKsCtRKrhmnvcZUe7D/972F0fezllu6CGOgGJa8lg=;
+ b=NZYE1nAaZp8W8iHTpHq1r7zLBBdaCdkborAqVAZsib1dcZM3hvMXsJkCqq6jbIgccs808u
+ EdY35thtGUryyupGAC/JwRS68FsvvNXDzEFubuciigO+bv+5oZQQeKxDNstnxRFZ0wmEos
+ 2xCBtZx0cvqmDP1gQ5gTOn5KBTs2eJU=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-683-7xx9vmNaN7ytqT5aIfnqaQ-1; Mon, 09 Oct 2023 09:38:21 -0400
+X-MC-Unique: 7xx9vmNaN7ytqT5aIfnqaQ-1
+Received: by mail-qv1-f72.google.com with SMTP id
+ 6a1803df08f44-65afd7515aaso56588056d6.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 06:38:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696858701; x=1697463501;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=6AFKsCtRKrhmnvcZUe7D/972F0fezllu6CGOgGJa8lg=;
+ b=Bfpmccbq+iaG4tfdLRUzoacb1riFhhiNc/JvxFew42jj69OoWUJmRrOzz2tdurt0YX
+ YAH+FGJo8g+icw0JJ1L4UHSCnpMwLBPbP1yISiwhkooEp2rdA1nc72tRcL+klGE2OUD6
+ 7VuVbsGP3eu2cpvQuu/jfkm89ETlxzTUmVxu2EOll32FTCmE426kIxy+YoupQoPuHj5w
+ 4TyWDwrBq+X+GyE0uepriKPplIDW0qJMgWRxxF0sDUsPzjjZITPhBqZ/5zyuqGFUMlOS
+ PvrlnqQrBEpFpYEPOLoRzYIPTTjUrWgKSYRiV6UN9BIw/ZBD9XR5p53qHEFcQuPiN4iC
+ bo0A==
+X-Gm-Message-State: AOJu0Yxo2tQqgsm1jvkPOckwit0d/EC74ohtjhSG5SuiTbHIbGJngF26
+ Z0TncAPzDZem1V4yH8g5y00RVKAeTc6jL50fFbBrOq5BvKWQ4GPV1K5p87aBlSeutVBP5R2uoTq
+ P1RT8SSJ5TG6P890=
+X-Received: by 2002:a05:6214:4808:b0:649:af66:e828 with SMTP id
+ pa8-20020a056214480800b00649af66e828mr16899644qvb.45.1696858701258; 
+ Mon, 09 Oct 2023 06:38:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF91JOhCdXPk7RG65ed4kpMV+xFA/5HF8Nguc1gFsCjC8tIqeu35jxDrCdDFEu1dwLgIFw44A==
+X-Received: by 2002:a05:6214:4808:b0:649:af66:e828 with SMTP id
+ pa8-20020a056214480800b00649af66e828mr16899616qvb.45.1696858700948; 
+ Mon, 09 Oct 2023 06:38:20 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
+ ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ by smtp.gmail.com with ESMTPSA id
+ b16-20020a0ccd10000000b0065b1768556bsm3787530qvm.108.2023.10.09.06.38.17
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 06:38:20 -0700 (PDT)
+Message-ID: <db6558c2-750d-43ad-b9ff-f5a031b91686@redhat.com>
+Date: Mon, 9 Oct 2023 15:38:15 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|SJ0PR02MB7360:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32d23950-23d5-4e6d-43a5-08dbc8cb258a
-x-proofpoint-crosstenant: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: rVQI9HR0RZXmYYv8L+ZjNeFJLTDXWSQB8FrnPSB+bovwYYVwpf9UucTRitlz1sxH7C3dMstGXqaGZ2PEL/paUzNgiYkwVD7C2zebmoHPpNdCdy5y3sJ2EJV+UB03UwX9HEu+nYDusIzZPZEHeq5mvDpEpu03a6si2jM0HeGrKChqn03FfbnduGceav6AxSA77pdr46DuoijodlYFEaL+KzMU5tZR36GOQnvDwdM+s8o/xjOSwL1xqgQp30Fm0gN8UHR5e9PlfOiFfEDiETHmlF6SyX6Mb4Ruspfo/MM5mTVWyQlkY8F1u79wY+5/86eW7q26M4hhcs8mvkphiABu8IaXXdP/lTWYb3ikrapR/v2CgCjct97/cNqAgddJhGAA8zb02niQkgrNuk+h3APUwElIFToN2BhJEPPTlFSF33g9b9lpeQWncfm63MQg0lcCgZidcWQnNrwboS3lg8la+zcSMtZxqQItv4G+FnNszZbxi7PSZXBVq+v//PK623E30+Xw5eMMpYVQZ0uIWxnQyRYEtMHSjuABldoO6CWgnFWMo9tjVPqytfbeqclPQDCwfl5e/1tj5xkFGwI4CIczr/l50MCE1CGBkdH8H7+pEO7ocTVdAv2jCWuuO6/dv1AUx5lwVTkzGcHWQyeaLnzI0w==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(346002)(39860400002)(396003)(366004)(230922051799003)(64100799003)(1800799009)(451199024)(186009)(33964004)(31686004)(26005)(2616005)(53546011)(86362001)(31696002)(36756003)(166002)(38100700002)(107886003)(83380400001)(4326008)(2906002)(30864003)(478600001)(6506007)(8936002)(8676002)(6512007)(44832011)(316002)(6486002)(41300700001)(966005)(66946007)(5660300002)(66476007)(66556008)(43740500002)(45980500001);
- DIR:OUT; SFP:1102; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YjdFSHJQQjUvMUJtUHdneWlIb3lmMGZNVkdrK25ieFlYcjhjTVFkWWtuR1J2?=
- =?utf-8?B?aE54U0tYdEFsL3hwVldQY3hzZzcyUXdnL0diUUNid3VZTlkyelNodExSMHlQ?=
- =?utf-8?B?NjZ3cHVWMVozQUZzTUswd21pcmQ2eDZqNEh0TFJyZkVqb1hpTUQ2dUlQcEJt?=
- =?utf-8?B?TjF0YjRUSnNQRkh4VFRBZFVVQ3Y0NytCc0hsYWRXYlZuTm1EZitXNnRaMGxp?=
- =?utf-8?B?bmxVc0YyRnhuQWszNHptQzNDRitvNjlQcUhUV2RwaVFqNnk2UjZYcHpzQlR3?=
- =?utf-8?B?d1FZV05pODB6bEtRbFA5SThhU1poL0dkTUlGZzBMdWJxcEwwRWxaKzgzSUlZ?=
- =?utf-8?B?eVdUZ1ZMUDk5S0pUaFo5RzN5TVVaRzZSa2Y2eFZQMmczay92UzR2ek1Uby9x?=
- =?utf-8?B?UExXaHV4Ym0zZG9LZXhFNVY0V1l1S2gvMDB0cFZhUEV6ZEIrem40ZkF0bFZN?=
- =?utf-8?B?dkdoQ0UvVWl6ZVg3cHZvMFJKOCtWdXY3NzYyUU1ibW5abnFZUVdtWXdnL1dE?=
- =?utf-8?B?MkZBWXNYakNNZEVRVXBtZXU0dnRJclI2ZEFjL3JRTmp4Mlc3eEVkc083Z29N?=
- =?utf-8?B?ZGVYemJSUnpWU2JCR24xQnNBRmF4Nms5UksvWnFKZmQwSUV3YXo1MmxSK3Z2?=
- =?utf-8?B?eFZXYTUva2lwN0ZaM2dmcXI1cEJjbGhhRTlYd2RtWHNwZEJqTVN0OFhUTm0w?=
- =?utf-8?B?R0JPaEdhOWQ4dHJiMWZCT1A1THp3cWZpM0xIK3dzTUVDV1RXYU1tS0tPTGJj?=
- =?utf-8?B?Q0RQckhnMGh6WW03YzRjTldEQ0JNbk5icXRYRUgwSGpvKzdkakVtNjA0SXRS?=
- =?utf-8?B?d0RRZGt1dkdqVlRyZVZzZ0diTHNiRHVjM0lUSW5sT0REazBDOVdqVEQvTFda?=
- =?utf-8?B?QnV6Z0xqcFc3blRsM01ZQVdqdUhRTEZ6ODlBZytYZ29qd0ZPbTNENTBwQjNq?=
- =?utf-8?B?R24yK1JUVHlIMkxseXRTUkRnVHRLb21GTFFCYU5lSHBvaVQ3eFF4UXBUL0c5?=
- =?utf-8?B?S0lzV3NWcVJ2bDB2R3JKZ1drVkw5c2k4cENLc3VuN0FvcnAwTTlUNTB5aXdw?=
- =?utf-8?B?cFh4ZWJPcWdNWitDZUIrS2FsZklLL3BmSGlyeStJOWhrUGdaNll1SWIrQXJB?=
- =?utf-8?B?NFdVYnZZcE5sL0JVcU5uUTl1RzBpWjNFcmFsS284L3RWNHdOR3RXb2l5eVNY?=
- =?utf-8?B?akRsaS9zNTllZE9sRG5XTmNRM1JCMHpXNmJLbzVFUmxVS0ZCQWZULzdmWks0?=
- =?utf-8?B?N2xQZXU0bUhILzFWKzEvRnJoWHBxQXdWU3N6T0d0UXlKVE9tcGxuUE1VR2Fq?=
- =?utf-8?B?cTl0NEVUc2pLcnJpZTJPTE9ZTzQ0d2ROTGlHT0VjVkZ5M2x1NGJzVFZlM1Y2?=
- =?utf-8?B?L0tVRlJqZHNOMCtTM09DcW1mOVhYd0ZzblhzZnNlamxNL1drbk83NnVyQ3px?=
- =?utf-8?B?MXhST0xpQ0pENDJnbTFuKzhtRHpkWEl2a0J2Q1RXK3pKTmdwalRSblQ1Z0Jr?=
- =?utf-8?B?TUxFL2lvMmQ2RDVUMERwUHpNYW1haTNHQks2emtDdjVZK2Z4RkpickNrSm9q?=
- =?utf-8?B?ZkVwaHIrWUtIeG1lRXJ6Zjg4VXNiRTRZVy9PTGRrenhLMzRGeExaRnpUbXBY?=
- =?utf-8?B?eTRrMGl3TWQ0U1VyRVNWUG03Ynpmd1RwR1BYM3FvM0w3WU5ybU11VVVGYnlF?=
- =?utf-8?B?c0Vza2UvcXNFdGQ1VkhQL1QrbWUxTkRUYk53MXNhVG1JR1RwcGVMc0lKdk9C?=
- =?utf-8?B?Ym5XLzQ3Q055TWc2L3YzRWUrL3VwMVptQUFlNXZDL1JyazhwYS9lUUJsdkFN?=
- =?utf-8?B?QlN0UjVsNmIrcXdlbGIzOTFjZ3Y4d3FjOXNEQmZWTVNINVFKRGJINlM5c1hO?=
- =?utf-8?B?SVRuM2tqQjIzZlVmNWRCeHpiV3VpTitYRDFpWkdqMzNKcnYvU0orTEVkRk13?=
- =?utf-8?B?Y0NtWjhORFFiVnJEbE9RNGFacWMyYWdkdXRuankrTFV6TGdqV0FTSmIxeHJJ?=
- =?utf-8?B?NUF0V29GRWY2UUNMUy8yQjdGT0o2SDJodVJrL0RhUlIzSHMwVldjVGR2bEVv?=
- =?utf-8?B?b3AxU2FmdWt5ZlBESmx0a2NCaEtLdDUyUXlVR2dZeE5uejdJYThPNFJ2czVs?=
- =?utf-8?Q?FznaMkahAP+CsQsFejb26vc5O?=
-X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32d23950-23d5-4e6d-43a5-08dbc8cb258a
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 13:25:03.8266 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1k3+ltxHIAvUck92rdkjplwb02w2TP7BYyIPGJIx4OF5NnVAegVJ6tYmZE8LHk7g4A0/QuxqnVKB3nfAusodag==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB7360
-X-Proofpoint-ORIG-GUID: 87-Mw22j1ciWcOXcCwSPJZwxo6JRCMy4
-X-Proofpoint-GUID: 87-Mw22j1ciWcOXcCwSPJZwxo6JRCMy4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_11,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Reason: safe
-Received-SPF: pass client-ip=148.163.155.12; envelope-from=het.gala@nutanix.com;
- helo=mx0b-002c1b01.pphosted.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5 00/15] Prerequisite changes for IOMMUFD support
+Content-Language: en-US
+To: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>,
+ eric.auger.pro@gmail.com, qemu-devel@nongnu.org, zhenzhong.duan@intel.com,
+ alex.williamson@redhat.com, jgg@nvidia.com, nicolinc@nvidia.com,
+ joao.m.martins@oracle.com, peterx@redhat.com, kevin.tian@intel.com,
+ yi.l.liu@intel.com, yi.y.sun@intel.com, chao.p.peng@intel.com,
+ mjrosato@linux.ibm.com, aik@ozlabs.ru
+References: <20231009091035.433329-1-eric.auger@redhat.com>
+ <36abdd20-bb57-309a-d0b9-74f969455d13@redhat.com>
+From: Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <36abdd20-bb57-309a-d0b9-74f969455d13@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.129.124;
+ envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- HTML_MESSAGE=0.001, SPF_HELO_NONE=0.001,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -167,246 +107,183 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-To: eric.auger@redhat.com
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---------------0SXbD2JaoV9gVBxQJjZASuPS
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
 
-On 10/4/2023 9:02 PM, Fabiano Rosas wrote:
-> Fabiano Rosas<farosas@suse.de>  writes:
->
->> Het Gala<het.gala@nutanix.com>  writes:
+On 10/9/23 14:58, Cédric Le Goater wrote:
+> On 10/9/23 11:09, Eric Auger wrote:
+>> Hi All,
 >>
->>> On 04/10/23 7:03 pm, Fabiano Rosas wrote:
->>>> Het Gala<het.gala@nutanix.com>  writes:
->>>>
->>>>> This is v11 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
->>>>> for upstream review.
->>>>>
->>>>> Update: Daniel has reviewed all patches and is okay with them. Markus has also
->>>>>           given Acked-by tag for patches related to QAPI syntax change.
->>>>> Fabiano, Juan and other migration maintainers, let me know if there are still
->>>>> improvements to be made in this patchset series.
->>>>>
->>>>> Link to previous upstream community patchset links:
->>>>> v1:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&e=
->>>>> v2:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&e=
->>>>> v3:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&e=
->>>>> v4:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&e=
->>>>> v5:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&e=
->>>>> v6:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&e=
->>>>> v7:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&e=
->>>>> v8:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&e=
->>>>> v9:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&e=
->>>>> v10:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&e=
->>>>>
->>>>> v10 -> v11 changelog:
->>>>> -------------------
->>>>> - Resolved make check errors as its been almost two months since v10
->>>>>     version of this patchset series went out. Till date migration workflow
->>>>>     might have changed which caused make check errors.
->>>> Sorry, there must be a misunderstanding here. This series still has
->>>> problems. Just look at patch 6 that adds the "channel-type" parameter and
->>>> patch 10 that uses "channeltype" in the test (without hyphen). This
->>>> cannot work.
->>> Ack. I will change that.
->>>> There's also several instances of g_autoptr being used incorrectly. I
->>>> could comment on every patch individually, but this series cannot have
->>>> passed make check.
->>> Are we allowed to run the make checks ? I am not aware from where these
->>> failures are arising. It would be helpful if you could point out to me
->>> where g_autoptr is incorrectly used ?
->> I mean just the project's make check command:
+>> This is the v5 respin of the IOMMUFD prerequisite series.
+>> This applies on top of vfio-next:
+>> https://github.com/legoater/qemu/, branch vfio-next.
 >>
->> cd build/
->> ../configure
->> make -j$(nproc)
->> make -j$(nproc) check
-Yes, I got it now. Thanks
->>>> Please resend this with the issues fixed and drop the Reviewed-bys from
->>>> the affected patches.
->>> How to verify which are the affected patches here ?
->> I'll comment in each patch individually.
-> Done.
+>> Per Cédric's suggestion, the IOMMUFD patchset v1[1] is now split
+>> into two series, this prerequisite series and the new IOMMUFD backend
+>> introduction support series. Hopefully this will ease the review.
+>>    The main purpose of this series is to make "common.c" group agnostic:
+>> all group related code are moved into container.c. Then we are prepared
+>> for next series, abstract base container, adding new backend, etc.
+>>
+>> This series can be found at
+>> https://github.com/eauger/qemu/tree/prereq_v5
+>> previous: https://github.com/eauger/qemu/tree/prereq_v4
+>>
+>> Test done:
+>> - PCI device were tested
+>> - device hotplug test
+>> - with or without vIOMMU
+>> - VFIO migration with a E800 net card(no dirty sync support) passthrough
+>> - platform and ccw were only compile-tested due to environment limit
+>>
+>> Zhenzhong, Yi, Eric
+>>
+>> [1]
+>> https://lore.kernel.org/all/20230830103754.36461-1-zhenzhong.duan@intel.com/t/#u
 >
-> We had some double-frees when using g_autoptr in structures that are
-> nested into another. The qapi code already descends and frees the
-> children.
+> Applied to vfio-next in replacement of v4.
+
+thank you and sorry for the setback
+
+Eric
 >
-> There were also issues with allocating memory and later overwriting the
-> pointers.
+> Thanks
 >
-> This might still not put us in the most correct situation regarding
-> memory, but I think it will at least get make check passing. Feel free
-> to investigate the errors with make check and propose alternative
-> solutions. It has been a while since I looked at this series, I might
-> have missed something further.
-Yes, for now I have tried to address all the comments made in the 
-individual patches and tried to fix issue of pointer overwriting 
-wherever I could spot, also double frees in the hmp code workflow. By 
-doing this, I have passed all the make checks, but if there are places 
-which needs to be re-looked for the above issues you mentioned, please 
-let me know.
->> We'll also have to add compatibility with the new file: URI that's
->> included in the latest migration pull request. I'll add comments on
->> where I think we'll need to add code to support that feature.
-> I'll actually defer here until you post your series with the
-> fixes. It'll probably be easier if I just send individual additions to
-> your patches.
+> C.
+>
+>
+>>
+>> Changelog:
+>>
+>> v5:
+>> - ap: fix missing return
+>> - ccw: remove vbasedev->sysfsdev g_strdup_printf(), remove name local
+>> var
+>> - container.c: restored !vbasedev->container check in
+>> vfio_detach_device()
+>> - pci.c: removed vbasedev->name deallocation in error path as this is
+>>    handled in instance_finalize function
+>>
+>> v4:
+>> - include qemu/error-report.h in helpers.c
+>> - in ap.c, fix the wrongly added
+>>    vfio_detach_device(vbasedev) and g_free(vbasedev->name);
+>>    also added error_prepend
+>> - simplified vbasedev setting in ccw.c
+>> - vfio_detach_device: dropped check on
+>>    !vbasedev->container
+>> - container.c: restore dropped comment
+>>
+>> v3:
+>> - rebased on vfio-next as suggested by Cedric
+>> - added vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
+>> - collected Cedric's R-b
+>> - Fix some error paths in vfio/cpi which now properly detach the device
+>>    and also free the vbasedev->name
+>> - Fix vfio/ccw migration (hopefully) [Matthew inputs]
+>> - Split [PATCH v2 11/12] vfio/common: Introduce two kinds of VFIO
+>> device lists
+>>    into 3 patches
+>>
+>> v2:
+>> - Refine patch description per Eric
+>> - return errno and errp in vfio_kvm_device_[add/del]_fd per Eric
+>> - make memory listener register/deregister in seperate patch per Eric
+>> - Include the .h file first per Cédric
+>> - Add trace event in vfio_attach_device per Cédric
+>> - drop the change to vfio_viommu_preset by refactor per Cédric
+>> - Introduce global VFIO device list and per container list per Alex
+>>
+>> Note changelog below are from full IOMMUFD series:
+>>
+>> v1:
+>> - Alloc hwpt instead of using auto hwpt
+>> - elaborate iommufd code per Nicolin
+>> - consolidate two patches and drop as.c
+>> - typo error fix and function rename
+>>
+>> rfcv4:
+>> - rebase on top of v8.0.3
+>> - Add one patch from Yi which is about vfio device add in kvm
+>> - Remove IOAS_COPY optimization and focus on functions in this patchset
+>> - Fix wrong name issue reported and fix suggested by Matthew
+>> - Fix compilation issue reported and fix sugggsted by Nicolin
+>> - Use query_dirty_bitmap callback to replace get_dirty_bitmap for better
+>> granularity
+>> - Add dev_iter_next() callback to avoid adding so many callback
+>>    at container scope, add VFIODevice.hwpt to support that
+>> - Restore all functions back to common from container whenever possible,
+>>    mainly migration and reset related functions
+>> - Add --enable/disable-iommufd config option, enabled by default in
+>> linux
+>> - Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
+>> - Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
+>> - vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to
+>> remove
+>> redundant code
+>> - Add FD passing support for vfio device backed by IOMMUFD
+>> - Fix hot unplug resource leak issue in vfio_legacy_detach_device()
+>> - Fix FD leak in vfio_get_devicefd()
+>>
+>> rfcv3:
+>> - rebase on top of v7.2.0
+>> - Fix the compilation with CONFIG_IOMMUFD unset by using true classes
+>> for
+>>    VFIO backends
+>> - Fix use after free in error path, reported by Alister
+>> - Split common.c in several steps to ease the review
+>>
+>> rfcv2:
+>> - remove the first three patches of rfcv1
+>> - add open cdev helper suggested by Jason
+>> - remove the QOMification of the VFIOContainer and simply use
+>> standard ops
+>> (David)
+>> - add "-object iommufd" suggested by Alex
+>>
+>>
+>> Eric Auger (7):
+>>    scripts/update-linux-headers: Add iommufd.h
+>>    vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
+>>    vfio/common: Introduce vfio_container_add|del_section_window()
+>>    vfio/pci: Introduce vfio_[attach/detach]_device
+>>    vfio/platform: Use vfio_[attach/detach]_device
+>>    vfio/ap: Use vfio_[attach/detach]_device
+>>    vfio/ccw: Use vfio_[attach/detach]_device
+>>
+>> Yi Liu (2):
+>>    vfio/common: Move IOMMU agnostic helpers to a separate file
+>>    vfio/common: Move legacy VFIO backend code into separate container.c
+>>
+>> Zhenzhong Duan (6):
+>>    linux-headers: Add iommufd.h
+>>    vfio/common: Extract out vfio_kvm_device_[add/del]_fd
+>>    vfio/common: Move VFIO reset handler registration to a group agnostic
+>>      function
+>>    vfio/common: Introduce a per container device list
+>>    vfio/common: Store the parent container in VFIODevice
+>>    vfio/common: Introduce a global VFIODevice list
+>>
+>>   include/hw/vfio/vfio-common.h   |   60 +-
+>>   linux-headers/linux/iommufd.h   |  444 ++++++++
+>>   hw/vfio/ap.c                    |   67 +-
+>>   hw/vfio/ccw.c                   |  117 +-
+>>   hw/vfio/common.c                | 1851 ++-----------------------------
+>>   hw/vfio/container.c             | 1161 +++++++++++++++++++
+>>   hw/vfio/helpers.c               |  612 ++++++++++
+>>   hw/vfio/pci.c                   |   66 +-
+>>   hw/vfio/platform.c              |   43 +-
+>>   hw/vfio/meson.build             |    2 +
+>>   hw/vfio/trace-events            |    4 +-
+>>   scripts/update-linux-headers.sh |    3 +-
+>>   12 files changed, 2456 insertions(+), 1974 deletions(-)
+>>   create mode 100644 linux-headers/linux/iommufd.h
+>>   create mode 100644 hw/vfio/container.c
+>>   create mode 100644 hw/vfio/helpers.c
+>>
+>
 
-Ack, thanks for reviewing patches and giving valuable feedback. Sending 
-new patchset series within sometime.
-
-Regards,
-Het Gala
---------------0SXbD2JaoV9gVBxQJjZASuPS
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 10/4/2023 9:02 PM, Fabiano Rosas
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:875y3mpfn7.fsf@suse.de">
-      <pre class="moz-quote-pre" wrap="">Fabiano Rosas <a class="moz-txt-link-rfc2396E" href="mailto:farosas@suse.de">&lt;farosas@suse.de&gt;</a> writes:
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
-
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">On 04/10/23 7:03 pm, Fabiano Rosas wrote:
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
-
-</pre>
-            <blockquote type="cite">
-              <pre class="moz-quote-pre" wrap="">This is v11 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
-for upstream review.
-
-Update: Daniel has reviewed all patches and is okay with them. Markus has also
-         given Acked-by tag for patches related to QAPI syntax change.
-Fabiano, Juan and other migration maintainers, let me know if there are still
-improvements to be made in this patchset series.
-
-Link to previous upstream community patchset links:
-v1: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&amp;e=</a>
-v2: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&amp;e=</a>
-v3: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&amp;e=</a>
-v4: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&amp;e=</a>
-v5: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&amp;e=</a>
-v6: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&amp;e=</a>
-v7: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&amp;e=</a>
-v8: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&amp;e=</a>
-v9: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&amp;e=</a>
-v10: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&amp;e=</a>
-
-v10 -&gt; v11 changelog:
--------------------
-- Resolved make check errors as its been almost two months since v10
-   version of this patchset series went out. Till date migration workflow
-   might have changed which caused make check errors.
-</pre>
-            </blockquote>
-            <pre class="moz-quote-pre" wrap="">Sorry, there must be a misunderstanding here. This series still has
-problems. Just look at patch 6 that adds the &quot;channel-type&quot; parameter and
-patch 10 that uses &quot;channeltype&quot; in the test (without hyphen). This
-cannot work.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Ack. I will change that.
-</pre>
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">There's also several instances of g_autoptr being used incorrectly. I
-could comment on every patch individually, but this series cannot have
-passed make check.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">Are we allowed to run the make checks ? I am not aware from where these 
-failures are arising. It would be helpful if you could point out to me 
-where g_autoptr is incorrectly used ?
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-I mean just the project's make check command:
-
-cd build/
-../configure
-make -j$(nproc)
-make -j$(nproc) check</pre>
-      </blockquote>
-    </blockquote>
-    Yes, I got it now. Thanks<span style="white-space: pre-wrap">
-</span>
-    <blockquote type="cite" cite="mid:875y3mpfn7.fsf@suse.de">
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <blockquote type="cite">
-            <pre class="moz-quote-pre" wrap="">Please resend this with the issues fixed and drop the Reviewed-bys from
-the affected patches.
-</pre>
-          </blockquote>
-          <pre class="moz-quote-pre" wrap="">How to verify which are the affected patches here ?
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">
-I'll comment in each patch individually.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-Done.
-
-We had some double-frees when using g_autoptr in structures that are
-nested into another. The qapi code already descends and frees the
-children.
-
-There were also issues with allocating memory and later overwriting the
-pointers.
-
-This might still not put us in the most correct situation regarding
-memory, but I think it will at least get make check passing. Feel free
-to investigate the errors with make check and propose alternative
-solutions. It has been a while since I looked at this series, I might
-have missed something further.</pre>
-    </blockquote>
-    Yes, for now I have tried to address all the comments made in the
-    individual patches and tried to fix issue of pointer overwriting
-    wherever I could spot, also double frees in the hmp code workflow.
-    By doing this, I have passed all the make checks, but if there are
-    places which needs to be re-looked for the above issues you
-    mentioned, please let me know.<span style="white-space: pre-wrap">
-</span>
-    <blockquote type="cite" cite="mid:875y3mpfn7.fsf@suse.de">
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">We'll also have to add compatibility with the new file: URI that's
-included in the latest migration pull request. I'll add comments on
-where I think we'll need to add code to support that feature.
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-I'll actually defer here until you post your series with the
-fixes. It'll probably be easier if I just send individual additions to
-your patches.</pre>
-    </blockquote>
-    <p>Ack, thanks for reviewing patches and giving valuable feedback.
-      Sending new patchset series within sometime.</p>
-    <p><span style="white-space: pre-wrap">
-</span></p>
-    <span style="white-space: pre-wrap">Regards,</span><br>
-    <span style="white-space: pre-wrap">Het Gala
-</span>
-  </body>
-</html>
-
---------------0SXbD2JaoV9gVBxQJjZASuPS--
 
