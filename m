@@ -2,67 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6577BD365
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6832B7BD38E
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:36:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpjpX-0007ZB-6i; Mon, 09 Oct 2023 02:33:27 -0400
+	id 1qpjsJ-0001Uj-E9; Mon, 09 Oct 2023 02:36:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qpjpI-0007Qe-CL
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:33:13 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qpjsF-0001UT-Dv
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:36:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@redhat.com>)
- id 1qpjpE-0004Jx-AX
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:33:11 -0400
+ (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
+ id 1qpjsD-00059q-90
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:36:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696833187;
+ s=mimecast20190719; t=1696833372;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=sknTPDX5xEZQD4Dp2Q2kubZlqkQG0jZQDmkWj8MF5Os=;
- b=cHxIFacUgtIDLpY75r5+qHMqqPmCDv50Mav7fYWmFhNnRkbpn3i+0Fy8ojLXMv/OdthAA5
- Oj112ldlvBitACCeV4/Izg0HmlU1UK1aDIasWDT+wTgmC4AgPygYHQmBfPyAafeFVWC1Rf
- nkUXFvyz1S8ku35h379Lo6tdw1cGoTY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-63-dybJrIB4MVOUX-ip73y0OA-1; Mon, 09 Oct 2023 02:33:03 -0400
-X-MC-Unique: dybJrIB4MVOUX-ip73y0OA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com
- [10.11.54.3])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DE8931C068D7;
- Mon,  9 Oct 2023 06:33:02 +0000 (UTC)
-Received: from localhost (unknown [10.39.208.4])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 96BEC10F1BEA;
- Mon,  9 Oct 2023 06:33:01 +0000 (UTC)
-From: marcandre.lureau@redhat.com
+ to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=fYfkMdX59AWcVLnAUTuZDi1wc4FaOoBuIDdpCosH28g=;
+ b=SaRcs6F0MCNXH1kh4FcCJJBLeVvLSaGLmsgPz0750AL8Dd1EZ24nSoBPp1C7FHLiluFDRM
+ QWYvveIedjRj0jO7SNIzIHTHLmDUNuaCbLnNu5aVz+SoyrbqT0+KJRYiXbVJ9hfvh3A8z/
+ WX/rq4VOCzfBY7/Gj2fHpVwsbpLnxE0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-313-_17HKtpHM52il98lW_2Slw-1; Mon, 09 Oct 2023 02:36:00 -0400
+X-MC-Unique: _17HKtpHM52il98lW_2Slw-1
+Received: by mail-wr1-f71.google.com with SMTP id
+ ffacd0b85a97d-32661ca30d9so2791792f8f.0
+ for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 23:36:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696833359; x=1697438159;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=fYfkMdX59AWcVLnAUTuZDi1wc4FaOoBuIDdpCosH28g=;
+ b=D/13GBm1z3rL+6lCOT+PeDvyzTwxSE25IkWcyj17NYuUqlXKKlQCMh+ob8iIVCn4hS
+ FA6poKFqSA8xniLf8EQA4jX1+xDjERJrG/+z9Rlm2Fi9CmHWDjn7BbmFl+tis+jlDnHK
+ TcpGocNlMdWDDOR5oYInogcCyyrFvNA9EJaiocz8fwsxBylvQFDBqc8DW25TjgjP1NC9
+ FNocuEX6V8a/TB0BMMVWP7sWXKQyjA0aN2MiieVgmnYnZ+k2NdMQJUeUpo5gXMmvwWvL
+ azic9+A9NW8+vpw7JZZ6ek0tB87dqH/m4sPQEZuxZPCEomH8QQIwk/CpM5hH8Xt8tDDt
+ tAhw==
+X-Gm-Message-State: AOJu0Ywxhh6DS989OsJYjWErWe5P2bX5yrnKtuEAHsUGq32lv2IQHZGq
+ eZtARdz5AnLBza4sTf60OptF1WJyKIEkoM/J/DvEBEBKi5XOB0r3k2lXkjs+SR62QdPj9IjKNm8
+ Qjo4RIZU4i70t6TPPleCeKlm2pJmzO1ugpduxxwyA1Z6iUzCPdywIORz6cOlVHfBHoVoZqg4qby
+ 8=
+X-Received: by 2002:adf:f28b:0:b0:321:67f4:8bd7 with SMTP id
+ k11-20020adff28b000000b0032167f48bd7mr12121948wro.32.1696833359105; 
+ Sun, 08 Oct 2023 23:35:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGKrH5DZqCAHq0XhYSXCTpi3EKRW0oPV08hI6uybadFJmEmadGsHThunOXctIfKqbX20qJc2Q==
+X-Received: by 2002:adf:f28b:0:b0:321:67f4:8bd7 with SMTP id
+ k11-20020adff28b000000b0032167f48bd7mr12121933wro.32.1696833358672; 
+ Sun, 08 Oct 2023 23:35:58 -0700 (PDT)
+Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ by smtp.gmail.com with ESMTPSA id
+ m15-20020adfe94f000000b0031984b370f2sm8568986wrn.47.2023.10.08.23.35.57
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 08 Oct 2023 23:35:57 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@redhat.com>, lersek@redhat.com,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH v5 3/3] hw/vfio: add ramfb migration support
-Date: Mon,  9 Oct 2023 10:32:47 +0400
-Message-ID: <20231009063247.119333-4-marcandre.lureau@redhat.com>
-In-Reply-To: <20231009063247.119333-1-marcandre.lureau@redhat.com>
-References: <20231009063247.119333-1-marcandre.lureau@redhat.com>
+Cc: phildmd@linaro.org
+Subject: [PULL v2 00/25] Audio, source reorg, HVF changes for 2023-10-06
+Date: Mon,  9 Oct 2023 08:35:54 +0200
+Message-ID: <20231009063556.72450-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
-Received-SPF: pass client-ip=170.10.129.124;
- envelope-from=marcandre.lureau@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=pbonzini@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -86,171 +98,229 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marc-André Lureau <marcandre.lureau@redhat.com>
+The following changes since commit 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d:
 
-Add a "VFIODisplay" subsection whenever "x-ramfb-migrate" is turned on.
+  Merge tag 'for_upstream' of https://git.kernel.org/pub/scm/virt/kvm/mst/qemu into staging (2023-10-05 09:01:01 -0400)
 
-Turn it off by default on machines <= 8.1 for compatibility reasons.
+are available in the Git repository at:
 
-Signed-off-by: Marc-André Lureau <marcandre.lureau@redhat.com>
-Reviewed-by: Laszlo Ersek <lersek@redhat.com>
----
- hw/vfio/pci.h     |  3 +++
- hw/core/machine.c |  1 +
- hw/vfio/display.c | 21 +++++++++++++++++++++
- hw/vfio/pci.c     | 44 ++++++++++++++++++++++++++++++++++++++++++++
- stubs/ramfb.c     |  2 ++
- 5 files changed, 71 insertions(+)
+  https://gitlab.com/bonzini/qemu.git tags/for-upstream
 
-diff --git a/hw/vfio/pci.h b/hw/vfio/pci.h
-index 2d836093a8..fd06695542 100644
---- a/hw/vfio/pci.h
-+++ b/hw/vfio/pci.h
-@@ -173,6 +173,7 @@ struct VFIOPCIDevice {
-     bool no_kvm_ioeventfd;
-     bool no_vfio_ioeventfd;
-     bool enable_ramfb;
-+    OnOffAuto ramfb_migrate;
-     bool defer_kvm_irq_routing;
-     bool clear_parent_atomics_on_exit;
-     VFIODisplay *dpy;
-@@ -226,4 +227,6 @@ void vfio_display_reset(VFIOPCIDevice *vdev);
- int vfio_display_probe(VFIOPCIDevice *vdev, Error **errp);
- void vfio_display_finalize(VFIOPCIDevice *vdev);
- 
-+extern const VMStateDescription vfio_display_vmstate;
-+
- #endif /* HW_VFIO_VFIO_PCI_H */
-diff --git a/hw/core/machine.c b/hw/core/machine.c
-index 6305f2d7a4..05aef2cf9f 100644
---- a/hw/core/machine.c
-+++ b/hw/core/machine.c
-@@ -35,6 +35,7 @@
- GlobalProperty hw_compat_8_1[] = {
-     { TYPE_PCI_BRIDGE, "x-pci-express-writeable-slt-bug", "true" },
-     { "ramfb", "x-migrate", "off" },
-+    { "vfio-pci-nohotplug", "x-ramfb-migrate", "off" }
- };
- const size_t hw_compat_8_1_len = G_N_ELEMENTS(hw_compat_8_1);
- 
-diff --git a/hw/vfio/display.c b/hw/vfio/display.c
-index bec864f482..2739ba56ec 100644
---- a/hw/vfio/display.c
-+++ b/hw/vfio/display.c
-@@ -542,3 +542,24 @@ void vfio_display_finalize(VFIOPCIDevice *vdev)
-     vfio_display_edid_exit(vdev->dpy);
-     g_free(vdev->dpy);
- }
-+
-+static bool migrate_needed(void *opaque)
-+{
-+    VFIODisplay *dpy = opaque;
-+    bool ramfb_exists = dpy->ramfb != NULL;
-+
-+    /* see vfio_display_migration_needed() */
-+    assert(ramfb_exists);
-+    return ramfb_exists;
-+}
-+
-+const VMStateDescription vfio_display_vmstate = {
-+    .name = "VFIODisplay",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = migrate_needed,
-+    .fields = (VMStateField[]) {
-+        VMSTATE_STRUCT_POINTER(ramfb, VFIODisplay, ramfb_vmstate, RAMFBState),
-+        VMSTATE_END_OF_LIST(),
-+    }
-+};
-diff --git a/hw/vfio/pci.c b/hw/vfio/pci.c
-index 3b2ca3c24c..e44ed21180 100644
---- a/hw/vfio/pci.c
-+++ b/hw/vfio/pci.c
-@@ -2608,6 +2608,32 @@ static bool vfio_msix_present(void *opaque, int version_id)
-     return msix_present(pdev);
- }
- 
-+static bool vfio_display_migration_needed(void *opaque)
-+{
-+    VFIOPCIDevice *vdev = opaque;
-+
-+    /*
-+     * We need to migrate the VFIODisplay object if ramfb *migration* was
-+     * explicitly requested (in which case we enforced both ramfb=on and
-+     * display=on), or ramfb migration was left at the default "auto"
-+     * setting, and *ramfb* was explicitly requested (in which case we
-+     * enforced display=on).
-+     */
-+    return vdev->ramfb_migrate == ON_OFF_AUTO_ON ||
-+        (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO && vdev->enable_ramfb);
-+}
-+
-+const VMStateDescription vmstate_vfio_display = {
-+    .name = "VFIOPCIDevice/VFIODisplay",
-+    .version_id = 1,
-+    .minimum_version_id = 1,
-+    .needed = vfio_display_migration_needed,
-+    .fields = (VMStateField[]){
-+        VMSTATE_STRUCT_POINTER(dpy, VFIOPCIDevice, vfio_display_vmstate, VFIODisplay),
-+        VMSTATE_END_OF_LIST()
-+    }
-+};
-+
- const VMStateDescription vmstate_vfio_pci_config = {
-     .name = "VFIOPCIDevice",
-     .version_id = 1,
-@@ -2616,6 +2642,10 @@ const VMStateDescription vmstate_vfio_pci_config = {
-         VMSTATE_PCI_DEVICE(pdev, VFIOPCIDevice),
-         VMSTATE_MSIX_TEST(pdev, VFIOPCIDevice, vfio_msix_present),
-         VMSTATE_END_OF_LIST()
-+    },
-+    .subsections = (const VMStateDescription*[]) {
-+        &vmstate_vfio_display,
-+        NULL
-     }
- };
- 
-@@ -3271,6 +3301,19 @@ static void vfio_realize(PCIDevice *pdev, Error **errp)
-         }
-     }
- 
-+    if (vdev->ramfb_migrate == ON_OFF_AUTO_ON && !vdev->enable_ramfb) {
-+        warn_report("x-ramfb-migrate=on but ramfb=off");
-+        vdev->ramfb_migrate = ON_OFF_AUTO_OFF;
-+    }
-+    if (vbasedev->enable_migration == ON_OFF_AUTO_OFF) {
-+        if (vdev->ramfb_migrate == ON_OFF_AUTO_AUTO) {
-+            vdev->ramfb_migrate = ON_OFF_AUTO_OFF;
-+        } else if (vdev->ramfb_migrate == ON_OFF_AUTO_ON) {
-+            error_setg(errp, "x-ramfb-migrate requires enable-migration");
-+            goto out_deregister;
-+        }
-+    }
-+
-     if (!pdev->failover_pair_id) {
-         if (!vfio_migration_realize(vbasedev, errp)) {
-             goto out_deregister;
-@@ -3484,6 +3527,7 @@ static const TypeInfo vfio_pci_dev_info = {
- 
- static Property vfio_pci_dev_nohotplug_properties[] = {
-     DEFINE_PROP_BOOL("ramfb", VFIOPCIDevice, enable_ramfb, false),
-+    DEFINE_PROP_ON_OFF_AUTO("x-ramfb-migrate", VFIOPCIDevice, ramfb_migrate, ON_OFF_AUTO_AUTO),
-     DEFINE_PROP_END_OF_LIST(),
- };
- 
-diff --git a/stubs/ramfb.c b/stubs/ramfb.c
-index 48143f3354..cf64733b10 100644
---- a/stubs/ramfb.c
-+++ b/stubs/ramfb.c
-@@ -2,6 +2,8 @@
- #include "qapi/error.h"
- #include "hw/display/ramfb.h"
- 
-+const VMStateDescription ramfb_vmstate = {};
-+
- void ramfb_display_update(QemuConsole *con, RAMFBState *s)
- {
- }
+for you to fetch changes up to 912eef205ae9ccfd477c343a51a7c2dcfae2ba43:
+
+  audio, qtest: get rid of QEMU_AUDIO_DRV (2023-10-08 21:08:27 +0200)
+
+----------------------------------------------------------------
+* util/log: re-allow switching away from stderr log file
+* finish audio configuration rework
+* cleanup HVF stubs
+* remove more mentions of softmmu
+----------------------------------------------------------------
+
+v1->v2: fixed conflicts, moved system/timers-state.h to
+        include/sysemu/cpu-timers-internal.h
+
+Fiona Ebner (1):
+      util/log: re-allow switching away from stderr log file
+
+Paolo Bonzini (9):
+      configure: change $softmmu to $system
+      cutils: squelch compiler warnings with custom paths
+      audio: error hints need a trailing \n
+      audio: disable default backends if -audio/-audiodev is used
+      audio: extract audio_define_default
+      audio: extend -audio to allow creating a default backend
+      audio: do not use first -audiodev as default audio device
+      audio: reintroduce default audio backend for VNC
+      audio, qtest: get rid of QEMU_AUDIO_DRV
+
+Philippe Mathieu-Daudé (15):
+      target/i386/hvf: Remove unused includes in 'hvf-i386.h'
+      sysemu/kvm: Restrict hvf_get_supported_cpuid() to x86 targets
+      target/i386: Check for USER_ONLY definition instead of SOFTMMU one
+      softmmu/trace-events: Fix a typo
+      travis-ci: Correct invalid mentions of 'softmmu' by 'system'
+      cpu: Correct invalid mentions of 'softmmu' by 'system-mode'
+      fuzz: Correct invalid mentions of 'softmmu' by 'system'
+      tcg: Correct invalid mentions of 'softmmu' by 'system-mode'
+      accel: Rename accel_softmmu* -> accel_system*
+      gdbstub: Rename 'softmmu' -> 'system'
+      semihosting: Rename softmmu_FOO_user() -> uaccess_FOO_user()
+      target/i386: Rename i386_softmmu_kvm_ss -> i386_kvm_ss
+      meson: Rename softmmu_mods -> system_mods
+      meson: Rename target_softmmu_arch -> target_system_arch
+      system: Rename softmmu/ directory as system/
+
+ .travis.yml                                        |  4 +-
+ MAINTAINERS                                        | 42 +++++------
+ accel/{accel-softmmu.c => accel-system.c}          |  6 +-
+ accel/{accel-softmmu.h => accel-system.h}          |  6 +-
+ accel/accel-target.c                               |  2 +-
+ accel/meson.build                                  |  2 +-
+ accel/stubs/meson.build                            | 10 +--
+ accel/tcg/icount-common.c                          |  2 +-
+ accel/tcg/user-exec.c                              |  2 +-
+ audio/audio.c                                      | 85 +++++++++-------------
+ audio/audio.h                                      |  3 +
+ configure                                          | 10 +--
+ cpu-target.c                                       |  2 +-
+ docs/about/deprecated.rst                          |  6 --
+ docs/about/removed-features.rst                    | 20 ++++-
+ docs/devel/build-system.rst                        |  4 +-
+ docs/devel/qtest.rst                               |  2 +-
+ docs/devel/testing.rst                             |  2 +-
+ gdbstub/internals.h                                |  4 +-
+ gdbstub/meson.build                                | 10 +--
+ gdbstub/{softmmu.c => system.c}                    |  2 +-
+ gdbstub/trace-events                               |  2 +-
+ hw/core/cpu-common.c                               |  4 +-
+ include/qemu/atomic128.h                           |  4 +-
+ .../semihosting/{softmmu-uaccess.h => uaccess.h}   | 24 +++---
+ .../sysemu/cpu-timers-internal.h                   |  0
+ include/sysemu/hvf.h                               |  3 -
+ include/sysemu/runstate-action.h                   |  2 +-
+ include/tcg/tcg-op-common.h                        |  2 +-
+ meson.build                                        | 22 +++---
+ qemu-options.hx                                    | 29 ++++++--
+ scripts/checkpatch.pl                              |  2 +-
+ scripts/coverity-scan/COMPONENTS.md                |  2 +-
+ scripts/get_maintainer.pl                          |  2 +-
+ scripts/oss-fuzz/build.sh                          |  6 +-
+ semihosting/arm-compat-semi.c                      |  4 +-
+ semihosting/config.c                               |  2 +-
+ semihosting/guestfd.c                              |  2 +-
+ semihosting/syscalls.c                             |  2 +-
+ semihosting/uaccess.c                              | 14 ++--
+ softmmu/trace.h                                    |  1 -
+ stubs/semihost.c                                   |  4 +-
+ {softmmu => system}/arch_init.c                    |  0
+ {softmmu => system}/async-teardown.c               |  0
+ {softmmu => system}/balloon.c                      |  0
+ {softmmu => system}/bootdevice.c                   |  0
+ {softmmu => system}/cpu-throttle.c                 |  0
+ {softmmu => system}/cpu-timers.c                   |  2 +-
+ {softmmu => system}/cpus.c                         |  0
+ {softmmu => system}/datadir.c                      |  0
+ {softmmu => system}/device_tree.c                  |  0
+ {softmmu => system}/dirtylimit.c                   |  0
+ {softmmu => system}/dma-helpers.c                  |  0
+ {softmmu => system}/globals.c                      |  0
+ {softmmu => system}/ioport.c                       |  0
+ {softmmu => system}/main.c                         |  0
+ {softmmu => system}/memory.c                       |  2 +-
+ {softmmu => system}/memory_mapping.c               |  0
+ {softmmu => system}/meson.build                    |  0
+ {softmmu => system}/physmem.c                      |  6 +-
+ {softmmu => system}/qdev-monitor.c                 |  0
+ {softmmu => system}/qemu-seccomp.c                 |  0
+ {softmmu => system}/qtest.c                        |  0
+ {softmmu => system}/rtc.c                          |  0
+ {softmmu => system}/runstate-action.c              |  0
+ {softmmu => system}/runstate-hmp-cmds.c            |  0
+ {softmmu => system}/runstate.c                     |  0
+ {softmmu => system}/tpm-hmp-cmds.c                 |  0
+ {softmmu => system}/tpm.c                          |  0
+ {softmmu => system}/trace-events                   |  2 +-
+ system/trace.h                                     |  1 +
+ {softmmu => system}/vl.c                           | 34 ++++++---
+ {softmmu => system}/watchpoint.c                   |  0
+ target/alpha/meson.build                           |  2 +-
+ target/arm/meson.build                             |  2 +-
+ target/avr/meson.build                             |  2 +-
+ target/cris/meson.build                            |  2 +-
+ target/hppa/meson.build                            |  2 +-
+ target/i386/cpu.c                                  |  3 +-
+ target/i386/hvf/hvf-cpu.c                          |  1 +
+ target/i386/hvf/hvf-i386.h                         |  6 +-
+ target/i386/hvf/x86_cpuid.c                        |  1 +
+ target/i386/kvm/meson.build                        | 10 +--
+ target/i386/meson.build                            |  2 +-
+ target/i386/tcg/misc_helper.c                      |  2 +-
+ target/i386/tcg/translate.c                        |  6 +-
+ target/loongarch/meson.build                       |  2 +-
+ target/m68k/m68k-semi.c                            |  2 +-
+ target/m68k/meson.build                            |  2 +-
+ target/microblaze/meson.build                      |  2 +-
+ target/mips/meson.build                            |  2 +-
+ target/mips/tcg/sysemu/mips-semi.c                 |  2 +-
+ target/nios2/meson.build                           |  2 +-
+ target/nios2/nios2-semi.c                          |  2 +-
+ target/openrisc/meson.build                        |  2 +-
+ target/ppc/meson.build                             |  2 +-
+ target/riscv/meson.build                           |  2 +-
+ target/riscv/vector_helper.c                       |  2 +-
+ target/rx/meson.build                              |  2 +-
+ target/s390x/meson.build                           |  2 +-
+ target/sh4/meson.build                             |  2 +-
+ target/sparc/meson.build                           |  2 +-
+ target/tricore/meson.build                         |  2 +-
+ target/xtensa/meson.build                          |  2 +-
+ tcg/aarch64/tcg-target.c.inc                       |  4 +-
+ tcg/arm/tcg-target.c.inc                           |  2 +-
+ tcg/i386/tcg-target.c.inc                          |  2 +-
+ tcg/loongarch64/tcg-target.c.inc                   |  4 +-
+ tcg/meson.build                                    |  6 +-
+ tcg/mips/tcg-target.c.inc                          |  4 +-
+ tcg/ppc/tcg-target.c.inc                           |  4 +-
+ tcg/region.c                                       |  4 +-
+ tcg/riscv/tcg-target.c.inc                         |  4 +-
+ tcg/s390x/tcg-target.c.inc                         |  4 +-
+ tcg/sparc64/tcg-target.c.inc                       |  4 +-
+ tcg/tcg.c                                          | 11 +--
+ tests/qtest/fuzz/fuzz.c                            |  2 +-
+ tests/qtest/fuzz/fuzz.h                            |  4 +-
+ tests/qtest/libqtest.c                             |  4 +-
+ tests/tcg/Makefile.target                          |  2 +-
+ tests/tcg/multiarch/gdbstub/interrupt.py           |  2 +-
+ tests/tcg/multiarch/gdbstub/memory.py              |  2 +-
+ tests/tcg/multiarch/system/memory.c                |  4 +-
+ tests/tcg/s390x/pgm-specification-softmmu.S        |  2 +-
+ tests/tcg/s390x/pgm-specification.mak              |  2 +-
+ tests/tcg/s390x/softmmu.ld                         |  2 +-
+ tests/tcg/xtensa/Makefile.softmmu-target           |  2 +-
+ tests/tcg/xtensaeb/Makefile.softmmu-target         |  2 +-
+ tests/unit/meson.build                             |  2 +-
+ ui/vnc.c                                           |  2 +
+ util/cutils.c                                      |  9 +++
+ util/log.c                                         |  2 +
+ 132 files changed, 305 insertions(+), 276 deletions(-)
+ rename accel/{accel-softmmu.c => accel-system.c} (96%)
+ rename accel/{accel-softmmu.h => accel-system.h} (77%)
+ rename gdbstub/{softmmu.c => system.c} (99%)
+ rename include/semihosting/{softmmu-uaccess.h => uaccess.h} (75%)
+ rename softmmu/timers-state.h => include/sysemu/cpu-timers-internal.h (100%)
+ delete mode 100644 softmmu/trace.h
+ rename {softmmu => system}/arch_init.c (100%)
+ rename {softmmu => system}/async-teardown.c (100%)
+ rename {softmmu => system}/balloon.c (100%)
+ rename {softmmu => system}/bootdevice.c (100%)
+ rename {softmmu => system}/cpu-throttle.c (100%)
+ rename {softmmu => system}/cpu-timers.c (99%)
+ rename {softmmu => system}/cpus.c (100%)
+ rename {softmmu => system}/datadir.c (100%)
+ rename {softmmu => system}/device_tree.c (100%)
+ rename {softmmu => system}/dirtylimit.c (100%)
+ rename {softmmu => system}/dma-helpers.c (100%)
+ rename {softmmu => system}/globals.c (100%)
+ rename {softmmu => system}/ioport.c (100%)
+ rename {softmmu => system}/main.c (100%)
+ rename {softmmu => system}/memory.c (99%)
+ rename {softmmu => system}/memory_mapping.c (100%)
+ rename {softmmu => system}/meson.build (100%)
+ rename {softmmu => system}/physmem.c (99%)
+ rename {softmmu => system}/qdev-monitor.c (100%)
+ rename {softmmu => system}/qemu-seccomp.c (100%)
+ rename {softmmu => system}/qtest.c (100%)
+ rename {softmmu => system}/rtc.c (100%)
+ rename {softmmu => system}/runstate-action.c (100%)
+ rename {softmmu => system}/runstate-hmp-cmds.c (100%)
+ rename {softmmu => system}/runstate.c (100%)
+ rename {softmmu => system}/tpm-hmp-cmds.c (100%)
+ rename {softmmu => system}/tpm.c (100%)
+ rename {softmmu => system}/trace-events (99%)
+ create mode 100644 system/trace.h
+ rename {softmmu => system}/vl.c (99%)
+ rename {softmmu => system}/watchpoint.c (100%)
 -- 
 2.41.0
 
