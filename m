@@ -2,79 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91FF27BE174
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E33847BE1C3
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:54:06 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpqdk-0000D0-H2; Mon, 09 Oct 2023 09:49:44 -0400
+	id 1qpqhU-0002DW-KK; Mon, 09 Oct 2023 09:53:36 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpqdh-0000Bs-Oo; Mon, 09 Oct 2023 09:49:41 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qpqhP-0002D3-VX
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:53:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpqdd-0002IE-DA; Mon, 09 Oct 2023 09:49:41 -0400
-Received: from lhrpeml500002.china.huawei.com (unknown [172.18.147.201])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S40hp1157z6K5xy;
- Mon,  9 Oct 2023 21:47:38 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 9 Oct 2023 14:49:32 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 9 Oct 2023 14:49:32 +0100
-To: David Hildenbrand <david@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "philmd@linaro.org"
- <philmd@linaro.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Topic: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
-Thread-Index: AQHZ+qP+4EmuUazzyEe6jhCYlq8By7BBUIQAgAAoLOA=
-Date: Mon, 9 Oct 2023 13:49:32 +0000
-Message-ID: <08840ea0a68e46b1a9d98d1e3544f43b@huawei.com>
-References: <20231009112812.10612-1-salil.mehta@huawei.com>
- <20231009112812.10612-4-salil.mehta@huawei.com>
- <8a80612f-07d3-6302-31f9-232d9ce393a1@redhat.com>
-In-Reply-To: <8a80612f-07d3-6302-31f9-232d9ce393a1@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.154.91]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qpqhN-00031S-AE
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:53:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696859608;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=KbRHnsGS0MU4y6CetQ6Ns1K2c2JN3RKE4/KDDBT2F2Q=;
+ b=MAFVMesVEoJfqVX5Z7g0GDVAQ5MZMQS/NIsj0oRdcgo/N7t72bj7sTp360TIlbfnAmnHR7
+ gI2tqNUZg8NYZlYEhkBc8CmL7UQ0/jwJtSdUomvrSOZRE+eko3D5ulUhSuP1FREWriiSE0
+ l0ny1yl+raG9vAAy7EieX9QkuK9lmIo=
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com
+ [209.85.160.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-616-rYTikLYKMVqtBvHbJglwKg-1; Mon, 09 Oct 2023 09:53:21 -0400
+X-MC-Unique: rYTikLYKMVqtBvHbJglwKg-1
+Received: by mail-oa1-f69.google.com with SMTP id
+ 586e51a60fabf-1e1ad195cbbso6719663fac.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 06:53:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696859601; x=1697464401;
+ h=content-transfer-encoding:in-reply-to:from:references:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=KbRHnsGS0MU4y6CetQ6Ns1K2c2JN3RKE4/KDDBT2F2Q=;
+ b=pFzRJBeJW6ZddkQYCxDG2iYLateASlAKmfCQ33AbcmLWI3gviAmzgLlo/1Pl942QXm
+ J45d/CIsT7PMp1vDX9SDC6VtPW14n1kTDetZDodZ0lMGbCWpGAuDi1dXdoLHtGzbnIor
+ 23Z9OrZDgRJEdLB5eh/YHVJLKXpxYFjdxaZJ72+xPzkESSkxNkKZ1klRZn77W7cFqsU7
+ aqoRcOvhj3iLiU5NHErHHHGXEQYjGLAtjbelXpIHYMUx1mUtyBotKb+hyWhvu0wD0GlY
+ 1bxwl/F163Dxg56mV9Wz99Qf01v41Tbj1LGwg7W5YxvAjTRp23EAskalOBrTvmkddQAe
+ /17Q==
+X-Gm-Message-State: AOJu0YwZCJy2cH2cJ88iRClCjtLrQPa8Bu6jRlBSGGuMR7b4J5A/yqdh
+ WGKSDhMHVbVvO1zuQ+FUhSQWl/LrxIAaiIKfil5IVvI+0A0ryow+bPtMbzJWd6NLWanuTvO87Pc
+ xmh/+2u/UQ81FSM0=
+X-Received: by 2002:a05:6870:d202:b0:1bf:7b3:5116 with SMTP id
+ g2-20020a056870d20200b001bf07b35116mr18090589oac.47.1696859600927; 
+ Mon, 09 Oct 2023 06:53:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGC/hwFxurcrRDYkEaZ2MRU7R5YyjVN5lzVbAF+zN5zHp9mKarTpGIrgm5rkcdudVUtbCuN0g==
+X-Received: by 2002:a05:6870:d202:b0:1bf:7b3:5116 with SMTP id
+ g2-20020a056870d20200b001bf07b35116mr18090559oac.47.1696859600598; 
+ Mon, 09 Oct 2023 06:53:20 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
+ ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
+ by smtp.gmail.com with ESMTPSA id
+ a12-20020a0cb34c000000b00668bb8be252sm3850828qvf.60.2023.10.09.06.53.18
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 06:53:20 -0700 (PDT)
+Message-ID: <e24a6c44-950e-f48e-4eb6-175f676d8c5a@redhat.com>
+Date: Mon, 9 Oct 2023 15:53:17 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v5 00/15] Prerequisite changes for IOMMUFD support
+Content-Language: en-US
+To: eric.auger@redhat.com, eric.auger.pro@gmail.com, qemu-devel@nongnu.org,
+ zhenzhong.duan@intel.com, alex.williamson@redhat.com, jgg@nvidia.com,
+ nicolinc@nvidia.com, joao.m.martins@oracle.com, peterx@redhat.com,
+ kevin.tian@intel.com, yi.l.liu@intel.com, yi.y.sun@intel.com,
+ chao.p.peng@intel.com, mjrosato@linux.ibm.com, aik@ozlabs.ru
+References: <20231009091035.433329-1-eric.auger@redhat.com>
+ <36abdd20-bb57-309a-d0b9-74f969455d13@redhat.com>
+ <db6558c2-750d-43ad-b9ff-f5a031b91686@redhat.com>
+From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
+In-Reply-To: <db6558c2-750d-43ad-b9ff-f5a031b91686@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=clg@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -88,52 +103,194 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCj4gU2VudDogTW9u
-ZGF5LCBPY3RvYmVyIDksIDIwMjMgMToyMyBQTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1l
-aHRhQGh1YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+IGFybUBub25n
-bnUub3JnDQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBK
-b25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFs
-aXNpQGtlcm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5k
-ZXJzb25AbGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxp
-bnV4LmRldjsgcGhpbG1kQGxpbmFyby5vcmc7DQo+IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xp
-dmVyLnVwdG9uQGxpbnV4LmRldjsgcGJvbnppbmlAcmVkaGF0LmNvbTsNCj4gbXN0QHJlZGhhdC5j
-b207IHdpbGxAa2VybmVsLm9yZzsgZ3NoYW5AcmVkaGF0LmNvbTsgcmFmYWVsQGtlcm5lbC5vcmc7
-DQo+IGFsZXguYmVubmVlQGxpbmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFy
-cmVuQG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207
-DQo+IHZpc2hudUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNv
-bTsNCj4gbWlndWVsLmx1aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1
-a2VxaWFuDQo+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2Fu
-Z3hpb25nZmVuZzJAaHVhd2VpLmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1
-YXdlaS5jb20+OyBqaWFrZXJuZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsg
-bGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+
-IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjMgMDMvMTBdIGh3L2FjcGk6IEFkZCBBQ1BJIENQVSBob3Rw
-bHVnIGluaXQgc3R1Yg0KPiANCj4gT24gMDkuMTAuMjMgMTM6MjgsIFNhbGlsIE1laHRhIHdyb3Rl
-Og0KPiA+IEFDUEkgQ1BVIGhvdHBsdWcgcmVsYXRlZCBpbml0aWFsaXphdGlvbiBzaG91bGQgb25s
-eSBoYXBwZW4gaWYNCj4gQUNQSV9DUFVfSE9UUExVRw0KPiA+IHN1cHBvcnQgaGFzIGJlZW4gZW5h
-YmxlZCBmb3IgcGFydGljdWxhciBhcmNoaXRlY3R1cmUuIEFkZA0KPiBjcHVfaG90cGx1Z19od19p
-bml0KCkNCj4gPiBzdHViIHRvIGF2b2lkIGNvbXBpbGF0aW9uIGJyZWFrLg0KPiA+DQo+ID4gU2ln
-bmVkLW9mZi1ieTogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+ID4gUmV2
-aWV3ZWQtYnk6IEpvbmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4N
-Cj4gPiBSZXZpZXdlZC1ieTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gPiAtLS0N
-Cj4gPiAgIGh3L2FjcGkvYWNwaS1jcHUtaG90cGx1Zy1zdHViLmMgfCA2ICsrKysrKw0KPiA+ICAg
-MSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2h3
-L2FjcGkvYWNwaS1jcHUtaG90cGx1Zy1zdHViLmMgYi9ody9hY3BpL2FjcGktY3B1LWhvdHBsdWct
-DQo+IHN0dWIuYw0KPiA+IGluZGV4IDNmYzRiMTRjMjYuLmM2YzYxYmI5Y2QgMTAwNjQ0DQo+ID4g
-LS0tIGEvaHcvYWNwaS9hY3BpLWNwdS1ob3RwbHVnLXN0dWIuYw0KPiA+ICsrKyBiL2h3L2FjcGkv
-YWNwaS1jcHUtaG90cGx1Zy1zdHViLmMNCj4gPiBAQCAtMTksNiArMTksMTIgQEAgdm9pZCBsZWdh
-Y3lfYWNwaV9jcHVfaG90cGx1Z19pbml0KE1lbW9yeVJlZ2lvbg0KPiAqcGFyZW50LCBPYmplY3Qg
-Km93bmVyLA0KPiA+ICAgICAgIHJldHVybjsNCj4gPiAgIH0NCj4gPg0KPiA+ICt2b2lkIGNwdV9o
-b3RwbHVnX2h3X2luaXQoTWVtb3J5UmVnaW9uICphcywgT2JqZWN0ICpvd25lciwNCj4gPiArICAg
-ICAgICAgICAgICAgICAgICAgICAgIENQVUhvdHBsdWdTdGF0ZSAqc3RhdGUsIGh3YWRkciBiYXNl
-X2FkZHIpDQo+ID4gK3sNCj4gPiArICAgIHJldHVybjsNCj4gPiArfQ0KPiANCj4gV2hpbGUgYXQg
-aXQsIGNhbiB3ZSBwcmVmaXggdGhhdCBmdW5jdGlvbiB3aXRoIGFjcGk/DQoNCkkgY2FuIGRvIHRo
-YXQgYnV0IGl0IGhhcyB0byBiZSBkb25lIGF0IG90aGVyIHBsYWNlcyBhcyB3ZWxsDQpzdWNoIGFz
-IGluIGh3L2FjcGkvY3B1X2hvdHBsdWcuYyA8YWNwaV9zd2l0Y2hfdG9fbW9kZXJuX2NwaHAoKT4N
-Cg0KSG9wZSB0aGlzIGlzIG5vdCBhbiBleHRyYW5lb3VzIGNoYW5nZSB0byB0aGlzIHBhdGNoLXNl
-dD8NCg0KVGhhbmtzDQpTYWxpbC4NCg0KDQoNCg==
+On 10/9/23 15:38, Eric Auger wrote:
+> 
+> 
+> On 10/9/23 14:58, Cédric Le Goater wrote:
+>> On 10/9/23 11:09, Eric Auger wrote:
+>>> Hi All,
+>>>
+>>> This is the v5 respin of the IOMMUFD prerequisite series.
+>>> This applies on top of vfio-next:
+>>> https://github.com/legoater/qemu/, branch vfio-next.
+>>>
+>>> Per Cédric's suggestion, the IOMMUFD patchset v1[1] is now split
+>>> into two series, this prerequisite series and the new IOMMUFD backend
+>>> introduction support series. Hopefully this will ease the review.
+>>>     The main purpose of this series is to make "common.c" group agnostic:
+>>> all group related code are moved into container.c. Then we are prepared
+>>> for next series, abstract base container, adding new backend, etc.
+>>>
+>>> This series can be found at
+>>> https://github.com/eauger/qemu/tree/prereq_v5
+>>> previous: https://github.com/eauger/qemu/tree/prereq_v4
+>>>
+>>> Test done:
+>>> - PCI device were tested
+>>> - device hotplug test
+>>> - with or without vIOMMU
+>>> - VFIO migration with a E800 net card(no dirty sync support) passthrough
+>>> - platform and ccw were only compile-tested due to environment limit
+>>>
+>>> Zhenzhong, Yi, Eric
+>>>
+>>> [1]
+>>> https://lore.kernel.org/all/20230830103754.36461-1-zhenzhong.duan@intel.com/t/#u
+>>
+>> Applied to vfio-next in replacement of v4.
+> 
+> thank you and sorry for the setback
+
+np. This is to be expected. The scope is quite large and we should try
+to secure the prerequisite changes before introducing the new IOMMUFD
+backend. Let's give vfio-next good testing this week.
+
+Thanks,
+
+C.
+
+
+> 
+> Eric
+>>
+>> Thanks
+>>
+>> C.
+>>
+>>
+>>>
+>>> Changelog:
+>>>
+>>> v5:
+>>> - ap: fix missing return
+>>> - ccw: remove vbasedev->sysfsdev g_strdup_printf(), remove name local
+>>> var
+>>> - container.c: restored !vbasedev->container check in
+>>> vfio_detach_device()
+>>> - pci.c: removed vbasedev->name deallocation in error path as this is
+>>>     handled in instance_finalize function
+>>>
+>>> v4:
+>>> - include qemu/error-report.h in helpers.c
+>>> - in ap.c, fix the wrongly added
+>>>     vfio_detach_device(vbasedev) and g_free(vbasedev->name);
+>>>     also added error_prepend
+>>> - simplified vbasedev setting in ccw.c
+>>> - vfio_detach_device: dropped check on
+>>>     !vbasedev->container
+>>> - container.c: restore dropped comment
+>>>
+>>> v3:
+>>> - rebased on vfio-next as suggested by Cedric
+>>> - added vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
+>>> - collected Cedric's R-b
+>>> - Fix some error paths in vfio/cpi which now properly detach the device
+>>>     and also free the vbasedev->name
+>>> - Fix vfio/ccw migration (hopefully) [Matthew inputs]
+>>> - Split [PATCH v2 11/12] vfio/common: Introduce two kinds of VFIO
+>>> device lists
+>>>     into 3 patches
+>>>
+>>> v2:
+>>> - Refine patch description per Eric
+>>> - return errno and errp in vfio_kvm_device_[add/del]_fd per Eric
+>>> - make memory listener register/deregister in seperate patch per Eric
+>>> - Include the .h file first per Cédric
+>>> - Add trace event in vfio_attach_device per Cédric
+>>> - drop the change to vfio_viommu_preset by refactor per Cédric
+>>> - Introduce global VFIO device list and per container list per Alex
+>>>
+>>> Note changelog below are from full IOMMUFD series:
+>>>
+>>> v1:
+>>> - Alloc hwpt instead of using auto hwpt
+>>> - elaborate iommufd code per Nicolin
+>>> - consolidate two patches and drop as.c
+>>> - typo error fix and function rename
+>>>
+>>> rfcv4:
+>>> - rebase on top of v8.0.3
+>>> - Add one patch from Yi which is about vfio device add in kvm
+>>> - Remove IOAS_COPY optimization and focus on functions in this patchset
+>>> - Fix wrong name issue reported and fix suggested by Matthew
+>>> - Fix compilation issue reported and fix sugggsted by Nicolin
+>>> - Use query_dirty_bitmap callback to replace get_dirty_bitmap for better
+>>> granularity
+>>> - Add dev_iter_next() callback to avoid adding so many callback
+>>>     at container scope, add VFIODevice.hwpt to support that
+>>> - Restore all functions back to common from container whenever possible,
+>>>     mainly migration and reset related functions
+>>> - Add --enable/disable-iommufd config option, enabled by default in
+>>> linux
+>>> - Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
+>>> - Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
+>>> - vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to
+>>> remove
+>>> redundant code
+>>> - Add FD passing support for vfio device backed by IOMMUFD
+>>> - Fix hot unplug resource leak issue in vfio_legacy_detach_device()
+>>> - Fix FD leak in vfio_get_devicefd()
+>>>
+>>> rfcv3:
+>>> - rebase on top of v7.2.0
+>>> - Fix the compilation with CONFIG_IOMMUFD unset by using true classes
+>>> for
+>>>     VFIO backends
+>>> - Fix use after free in error path, reported by Alister
+>>> - Split common.c in several steps to ease the review
+>>>
+>>> rfcv2:
+>>> - remove the first three patches of rfcv1
+>>> - add open cdev helper suggested by Jason
+>>> - remove the QOMification of the VFIOContainer and simply use
+>>> standard ops
+>>> (David)
+>>> - add "-object iommufd" suggested by Alex
+>>>
+>>>
+>>> Eric Auger (7):
+>>>     scripts/update-linux-headers: Add iommufd.h
+>>>     vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
+>>>     vfio/common: Introduce vfio_container_add|del_section_window()
+>>>     vfio/pci: Introduce vfio_[attach/detach]_device
+>>>     vfio/platform: Use vfio_[attach/detach]_device
+>>>     vfio/ap: Use vfio_[attach/detach]_device
+>>>     vfio/ccw: Use vfio_[attach/detach]_device
+>>>
+>>> Yi Liu (2):
+>>>     vfio/common: Move IOMMU agnostic helpers to a separate file
+>>>     vfio/common: Move legacy VFIO backend code into separate container.c
+>>>
+>>> Zhenzhong Duan (6):
+>>>     linux-headers: Add iommufd.h
+>>>     vfio/common: Extract out vfio_kvm_device_[add/del]_fd
+>>>     vfio/common: Move VFIO reset handler registration to a group agnostic
+>>>       function
+>>>     vfio/common: Introduce a per container device list
+>>>     vfio/common: Store the parent container in VFIODevice
+>>>     vfio/common: Introduce a global VFIODevice list
+>>>
+>>>    include/hw/vfio/vfio-common.h   |   60 +-
+>>>    linux-headers/linux/iommufd.h   |  444 ++++++++
+>>>    hw/vfio/ap.c                    |   67 +-
+>>>    hw/vfio/ccw.c                   |  117 +-
+>>>    hw/vfio/common.c                | 1851 ++-----------------------------
+>>>    hw/vfio/container.c             | 1161 +++++++++++++++++++
+>>>    hw/vfio/helpers.c               |  612 ++++++++++
+>>>    hw/vfio/pci.c                   |   66 +-
+>>>    hw/vfio/platform.c              |   43 +-
+>>>    hw/vfio/meson.build             |    2 +
+>>>    hw/vfio/trace-events            |    4 +-
+>>>    scripts/update-linux-headers.sh |    3 +-
+>>>    12 files changed, 2456 insertions(+), 1974 deletions(-)
+>>>    create mode 100644 linux-headers/linux/iommufd.h
+>>>    create mode 100644 hw/vfio/container.c
+>>>    create mode 100644 hw/vfio/helpers.c
+>>>
+>>
+> 
+
 
