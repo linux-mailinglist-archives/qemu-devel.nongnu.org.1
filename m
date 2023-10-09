@@ -2,84 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D45A7BE539
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:44:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E937BE538
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:43:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpsPa-00037i-13; Mon, 09 Oct 2023 11:43:14 -0400
+	id 1qpsQ4-0003Xr-4w; Mon, 09 Oct 2023 11:43:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpsPS-00036c-Ie; Mon, 09 Oct 2023 11:43:06 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpsPL-00063a-KI; Mon, 09 Oct 2023 11:43:05 -0400
-Received: from lhrpeml100002.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S43CN4r4mz6K6Y6;
- Mon,  9 Oct 2023 23:40:48 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml100002.china.huawei.com (7.191.160.241) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 9 Oct 2023 16:42:43 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 9 Oct 2023 16:42:43 +0100
-To: David Hildenbrand <david@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "philmd@linaro.org"
- <philmd@linaro.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V3 04/10] hw/acpi: Init GED framework with cpu hotplug
- events
-Thread-Topic: [PATCH V3 04/10] hw/acpi: Init GED framework with cpu hotplug
- events
-Thread-Index: AQHZ+qQKlc9E+oOc5kSBsTtattk5ybBBUZ0AgAAt45D///AqgIAAKSug
-Date: Mon, 9 Oct 2023 15:42:42 +0000
-Message-ID: <3bdad41c31764fd3b10f5e6564ffbd58@huawei.com>
-References: <20231009112812.10612-1-salil.mehta@huawei.com>
- <20231009112812.10612-5-salil.mehta@huawei.com>
- <794b07a3-6004-23e2-189a-f76952751112@redhat.com>
- <0e9c23f079ac417687c8261739ea22f2@huawei.com>
- <11e7cf3f-e733-1109-4b8d-918ba445eeea@redhat.com>
-In-Reply-To: <11e7cf3f-e733-1109-4b8d-918ba445eeea@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.154.91]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpsQ1-0003Ww-So
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:43:41 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpsPv-0006Am-TZ
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:43:40 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-9ada2e6e75fso856721966b.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 08:43:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696866208; x=1697471008; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=1Lqlop1lTg6fmHhv9QV2Uy7vWb9gqoDPYBxKHVz5S40=;
+ b=yiLGn4ztnaCjpA5g+eJckLMmMspmCdUp0KdS9XgA31Dq5n1bkENgWPJOoT8+zlgsXO
+ X7HzEhBhek1n/OX5lOsFf70FcUeujdcGyzajZ0Nt90arqCLp+gaKW4LWDTeiAC5Ie3nC
+ Nvf07rnj3oaQZwT/3ZvfPvngFYxUrHcuubKtSAcY0TY3yFoKxMzBvrnvSA4uzDhAfmG0
+ DtoR25EVJKdzbxTgAN/m2i29AFdoEzUmw+PU1ku6m4QCZh6IUQx3Dd+4r5W7MxHiSuno
+ cnMrT/zUgo2JGyVNkUo0kf0+qipnSNXRprreMxyAJSFR8DhBG8tzAeM6c+qsfoK9TtX0
+ KABQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696866208; x=1697471008;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=1Lqlop1lTg6fmHhv9QV2Uy7vWb9gqoDPYBxKHVz5S40=;
+ b=hR2v5JXMj3tYFNzDXyEzS/lvvDkPP4lAsPn+v4ZOhghR8123Qj+hg8ZFrh+VTWNlus
+ iuDPChDPVoa4yRkJ6t/FF+vL21uJdvpmmggeboSF0FvpcZAG5CGCYlgPg3G1LWDFwbMT
+ 6SL/hPVIoOqSHM8/ATQ4HSf+R9a6QwMLu49/h02HPGO2tiKQEhkDz8SbuwBZd81X6+MF
+ Xi5/2w8IBE0zJYeK+0UYwPmZcgn2d7XxZD7kkeDWeiq+tG4NbA4IPLqEvElRUkn/euCg
+ ZHv3MWDy57q/vxVvLiF3d8DsKWDzIc7UEMkVCrrYcFttPVlW29t6J+s9kLYyPym9KyDa
+ /IVQ==
+X-Gm-Message-State: AOJu0YwDB1n/dVcpT76hN+zKzyZbS5STqZBZRFBMgoR2eOrJvdu9IRxe
+ htESZ7UEXAB2mhUA6tJKoqOxHQ==
+X-Google-Smtp-Source: AGHT+IGinWR8EgeWNrFfj9jeU45VO+LIbOHEIKPulc1Cck6CvpDqrna3MgTKaBi47IRJ97IisPmNZw==
+X-Received: by 2002:a17:907:720b:b0:9a1:f4e8:87b9 with SMTP id
+ dr11-20020a170907720b00b009a1f4e887b9mr17120231ejc.45.1696866208322; 
+ Mon, 09 Oct 2023 08:43:28 -0700 (PDT)
+Received: from [192.168.69.115]
+ (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
+ by smtp.gmail.com with ESMTPSA id
+ sd23-20020a170906ce3700b009b2b9af0784sm6835300ejb.110.2023.10.09.08.43.26
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 08:43:27 -0700 (PDT)
+Message-ID: <b4074e1b-63b0-e37a-dfc6-688c7480cca5@linaro.org>
+Date: Mon, 9 Oct 2023 17:43:25 +0200
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 3/6] hw/display/vga: Clean up global variable shadowing
+Content-Language: en-US
+To: Ani Sinha <anisinha@redhat.com>
+Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost
+ <eduardo@habkost.net>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ qemu-s390x@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Yanan Wang <wangyanan55@huawei.com>, David Hildenbrand <david@redhat.com>,
+ Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>, Thomas Huth
+ <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+References: <20231009094747.54240-1-philmd@linaro.org>
+ <20231009094747.54240-4-philmd@linaro.org>
+ <333F6764-343E-428B-AB57-76542780083A@redhat.com>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <333F6764-343E-428B-AB57-76542780083A@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -49
+X-Spam_score: -5.0
+X-Spam_bar: -----
+X-Spam_report: (-5.0 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
+ DKIM_SIGNED=0.1, NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,97 +101,58 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCj4gU2VudDogTW9u
-ZGF5LCBPY3RvYmVyIDksIDIwMjMgMzoxNCBQTQ0KPiANCj4gT24gMDkuMTAuMjMgMTY6MTIsIFNh
-bGlsIE1laHRhIHdyb3RlOg0KPiA+PiBGcm9tOiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVk
-aGF0LmNvbT4NCj4gPj4gU2VudDogTW9uZGF5LCBPY3RvYmVyIDksIDIwMjMgMToyNyBQTQ0KPiA+
-PiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+OyBxZW11LWRldmVsQG5v
-bmdudS5vcmc7IHFlbXUtYXJtQG5vbmdudS5vcmcNCj4gPj4gQ2M6IG1hekBrZXJuZWwub3JnOyBq
-ZWFuLXBoaWxpcHBlQGxpbmFyby5vcmc7IEpvbmF0aGFuIENhbWVyb24NCj4gPj4gPGpvbmF0aGFu
-LmNhbWVyb25AaHVhd2VpLmNvbT47IGxwaWVyYWxpc2lAa2VybmVsLm9yZzsNCj4gPj4gcGV0ZXIu
-bWF5ZGVsbEBsaW5hcm8ub3JnOyByaWNoYXJkLmhlbmRlcnNvbkBsaW5hcm8ub3JnOw0KPiA+PiBp
-bWFtbWVkb0ByZWRoYXQuY29tOyBhbmRyZXcuam9uZXNAbGludXguZGV2OyBwaGlsbWRAbGluYXJv
-Lm9yZzsNCj4gPj4gZXJpYy5hdWdlckByZWRoYXQuY29tOyBvbGl2ZXIudXB0b25AbGludXguZGV2
-OyBwYm9uemluaUByZWRoYXQuY29tOw0KPiA+PiBtc3RAcmVkaGF0LmNvbTsgd2lsbEBrZXJuZWwu
-b3JnOyBnc2hhbkByZWRoYXQuY29tOyByYWZhZWxAa2VybmVsLm9yZzsNCj4gPj4gYWxleC5iZW5u
-ZWVAbGluYXJvLm9yZzsgbGludXhAYXJtbGludXgub3JnLnVrOw0KPiA+PiBkYXJyZW5Ab3MuYW1w
-ZXJlY29tcHV0aW5nLmNvbTsgaWxra2FAb3MuYW1wZXJlY29tcHV0aW5nLmNvbTsNCj4gPj4gdmlz
-aG51QG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGthcmwuaGV1YmF1bUBvcmFjbGUuY29tOw0KPiA+
-PiBtaWd1ZWwubHVpc0BvcmFjbGUuY29tOyBzYWxpbC5tZWh0YUBvcG5zcmMubmV0OyB6aHVrZXFp
-YW4NCj4gPj4gPHpodWtlcWlhbjFAaHVhd2VpLmNvbT47IHdhbmd4aW9uZ2ZlbmcgKEMpIDx3YW5n
-eGlvbmdmZW5nMkBodWF3ZWkuY29tPjsNCj4gPj4gd2FuZ3lhbmFuIChZKSA8d2FuZ3lhbmFuNTVA
-aHVhd2VpLmNvbT47IGppYWtlcm5lbDJAZ21haWwuY29tOw0KPiA+PiBtYW9iaWJvQGxvb25nc29u
-LmNuOyBsaXhpYW5nbGFpQGxvb25nc29uLmNuOyBMaW51eGFybQ0KPiA8bGludXhhcm1AaHVhd2Vp
-LmNvbT4NCj4gPj4gU3ViamVjdDogUmU6IFtQQVRDSCBWMyAwNC8xMF0gaHcvYWNwaTogSW5pdCBH
-RUQgZnJhbWV3b3JrIHdpdGggY3B1IGhvdHBsdWcNCj4gPj4gZXZlbnRzDQo+ID4+DQo+ID4+IE9u
-IDA5LjEwLjIzIDEzOjI4LCBTYWxpbCBNZWh0YSB3cm90ZToNCj4gPj4+IEFDUEkgR0VEKGFzIGRl
-c2NyaWJlZCBpbiB0aGUgQUNQSSA2LjIgc3BlYykgY2FuIGJlIHVzZWQgdG8gZ2VuZXJhdGUgQUNQ
-SQ0KPiA+PiBldmVudHMNCj4gPj4+IHdoZW4gT1NQTS9ndWVzdCByZWNlaXZlcyBhbiBpbnRlcnJ1
-cHQgbGlzdGVkIGluIHRoZSBfQ1JTIG9iamVjdCBvZiBHRUQuDQo+ID4+IE9TUE0NCj4gPj4+IHRo
-ZW4gbWFwcyBvciBkZW11bHRpcGxleGVzIHRoZSBldmVudCBieSBldmFsdWF0aW5nIF9FVlQgbWV0
-aG9kLg0KPiA+Pj4NCj4gPj4+IFRoaXMgY2hhbmdlIGFkZHMgdGhlIHN1cHBvcnQgb2YgY3B1IGhv
-dHBsdWcgZXZlbnQgaW5pdGlhbGl6YXRpb24gaW4gdGhlDQo+ID4+PiBleGlzdGluZyBHRUQgZnJh
-bWV3b3JrLg0KPiA+Pj4NCj4gPj4+IENvLWRldmVsb3BlZC1ieTogS2VxaWFuIFpodSA8emh1a2Vx
-aWFuMUBodWF3ZWkuY29tPg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogS2VxaWFuIFpodSA8emh1a2Vx
-aWFuMUBodWF3ZWkuY29tPg0KPiA+Pj4gU2lnbmVkLW9mZi1ieTogU2FsaWwgTWVodGEgPHNhbGls
-Lm1laHRhQGh1YXdlaS5jb20+DQo+ID4+PiBSZXZpZXdlZC1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8
-Sm9uYXRoYW4uQ2FtZXJvbkBodWF3ZWkuY29tPg0KPiA+Pj4gUmV2aWV3ZWQtYnk6IEdhdmluIFNo
-YW4gPGdzaGFuQHJlZGhhdC5jb20+DQo+ID4+PiAtLS0NCj4gPj4+ICAgIGh3L2FjcGkvZ2VuZXJp
-Y19ldmVudF9kZXZpY2UuYyAgICAgICAgIHwgOCArKysrKysrKw0KPiA+Pj4gICAgaW5jbHVkZS9o
-dy9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmggfCA1ICsrKysrDQo+ID4+PiAgICAyIGZpbGVz
-IGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKykNCj4gPj4+DQo+ID4+PiBkaWZmIC0tZ2l0IGEvaHcv
-YWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5jDQo+ID4+IGIvaHcvYWNwaS9nZW5lcmljX2V2ZW50
-X2RldmljZS5jDQo+ID4+PiBpbmRleCBhM2QzMTYzMWZlLi5kMmZhMWQwZTRhIDEwMDY0NA0KPiA+
-Pj4gLS0tIGEvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2RldmljZS5jDQo+ID4+PiArKysgYi9ody9h
-Y3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmMNCj4gPj4+IEBAIC0yNSw2ICsyNSw3IEBAIHN0YXRp
-YyBjb25zdCB1aW50MzJfdCBnZWRfc3VwcG9ydGVkX2V2ZW50c1tdID0gew0KPiA+Pj4gICAgICAg
-IEFDUElfR0VEX01FTV9IT1RQTFVHX0VWVCwNCj4gPj4+ICAgICAgICBBQ1BJX0dFRF9QV1JfRE9X
-Tl9FVlQsDQo+ID4+PiAgICAgICAgQUNQSV9HRURfTlZESU1NX0hPVFBMVUdfRVZULA0KPiA+Pj4g
-KyAgICBBQ1BJX0dFRF9DUFVfSE9UUExVR19FVlQsDQo+ID4+PiAgICB9Ow0KPiA+Pj4NCj4gPj4+
-ICAgIC8qDQo+ID4+PiBAQCAtNDAwLDYgKzQwMSwxMyBAQCBzdGF0aWMgdm9pZCBhY3BpX2dlZF9p
-bml0Zm4oT2JqZWN0ICpvYmopDQo+ID4+PiAgICAgICAgbWVtb3J5X3JlZ2lvbl9pbml0X2lvKCZn
-ZWRfc3QtPnJlZ3MsIG9iaiwgJmdlZF9yZWdzX29wcywgZ2VkX3N0LA0KPiA+Pj4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBUWVBFX0FDUElfR0VEICItcmVncyIsDQo+IEFDUElfR0VEX1JF
-R19DT1VOVCk7DQo+ID4+PiAgICAgICAgc3lzYnVzX2luaXRfbW1pbyhzYmQsICZnZWRfc3QtPnJl
-Z3MpOw0KPiA+Pj4gKw0KPiA+Pj4gKyAgICBzLT5jcHVocC5kZXZpY2UgPSBPQkpFQ1Qocyk7DQo+
-ID4+PiArICAgIG1lbW9yeV9yZWdpb25faW5pdCgmcy0+Y29udGFpbmVyX2NwdWhwLCBPQkpFQ1Qo
-ZGV2KSwgImNwdWhwDQo+ID4+IGNvbnRhaW5lciIsDQo+ID4+PiArICAgICAgICAgICAgICAgICAg
-ICAgICBBQ1BJX0NQVV9IT1RQTFVHX1JFR19MRU4pOw0KPiA+Pj4gKyAgICBzeXNidXNfaW5pdF9t
-bWlvKFNZU19CVVNfREVWSUNFKGRldiksICZzLT5jb250YWluZXJfY3B1aHApOw0KPiA+Pj4gKyAg
-ICBjcHVfaG90cGx1Z19od19pbml0KCZzLT5jb250YWluZXJfY3B1aHAsIE9CSkVDVChkZXYpLA0K
-PiA+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgICZzLT5jcHVocF9zdGF0ZSwgMCk7DQo+ID4+
-PiAgICB9DQo+ID4+Pg0KPiA+Pj4gICAgc3RhdGljIHZvaWQgYWNwaV9nZWRfY2xhc3NfaW5pdChP
-YmplY3RDbGFzcyAqY2xhc3MsIHZvaWQgKmRhdGEpDQo+ID4+PiBkaWZmIC0tZ2l0IGEvaW5jbHVk
-ZS9ody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmgNCj4gPj4gYi9pbmNsdWRlL2h3L2FjcGkv
-Z2VuZXJpY19ldmVudF9kZXZpY2UuaA0KPiA+Pj4gaW5kZXggZDgzMWJiZDg4OS4uZDBhNWE0M2Fi
-ZiAxMDA2NDQNCj4gPj4+IC0tLSBhL2luY2x1ZGUvaHcvYWNwaS9nZW5lcmljX2V2ZW50X2Rldmlj
-ZS5oDQo+ID4+PiArKysgYi9pbmNsdWRlL2h3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuaA0K
-PiA+Pj4gQEAgLTYwLDYgKzYwLDcgQEANCj4gPj4+ICAgICNkZWZpbmUgSFdfQUNQSV9HRU5FUklD
-X0VWRU5UX0RFVklDRV9IDQo+ID4+Pg0KPiA+Pj4gICAgI2luY2x1ZGUgImh3L3N5c2J1cy5oIg0K
-PiA+Pj4gKyNpbmNsdWRlICJody9hY3BpL2NwdV9ob3RwbHVnLmgiDQo+ID4+PiAgICAjaW5jbHVk
-ZSAiaHcvYWNwaS9tZW1vcnlfaG90cGx1Zy5oIg0KPiA+Pj4gICAgI2luY2x1ZGUgImh3L2FjcGkv
-Z2hlcy5oIg0KPiA+Pj4gICAgI2luY2x1ZGUgInFvbS9vYmplY3QuaCINCj4gPj4+IEBAIC05Nyw2
-ICs5OCw3IEBAIE9CSkVDVF9ERUNMQVJFX1NJTVBMRV9UWVBFKEFjcGlHZWRTdGF0ZSwgQUNQSV9H
-RUQpDQo+ID4+PiAgICAjZGVmaW5lIEFDUElfR0VEX01FTV9IT1RQTFVHX0VWVCAgIDB4MQ0KPiA+
-Pj4gICAgI2RlZmluZSBBQ1BJX0dFRF9QV1JfRE9XTl9FVlQgICAgICAweDINCj4gPj4+ICAgICNk
-ZWZpbmUgQUNQSV9HRURfTlZESU1NX0hPVFBMVUdfRVZUIDB4NA0KPiA+Pj4gKyNkZWZpbmUgQUNQ
-SV9HRURfQ1BVX0hPVFBMVUdfRVZUICAgIDB4OA0KPiA+Pj4NCj4gPj4+ICAgIHR5cGVkZWYgc3Ry
-dWN0IEdFRFN0YXRlIHsNCj4gPj4+ICAgICAgICBNZW1vcnlSZWdpb24gZXZ0Ow0KPiA+Pj4gQEAg
-LTEwOCw2ICsxMTAsOSBAQCBzdHJ1Y3QgQWNwaUdlZFN0YXRlIHsNCj4gPj4+ICAgICAgICBTeXNC
-dXNEZXZpY2UgcGFyZW50X29iajsNCj4gPj4+ICAgICAgICBNZW1Ib3RwbHVnU3RhdGUgbWVtaHBf
-c3RhdGU7DQo+ID4+PiAgICAgICAgTWVtb3J5UmVnaW9uIGNvbnRhaW5lcl9tZW1ocDsNCj4gPj4+
-ICsgICAgQ1BVSG90cGx1Z1N0YXRlIGNwdWhwX3N0YXRlOw0KPiA+Pj4gKyAgICBNZW1vcnlSZWdp
-b24gY29udGFpbmVyX2NwdWhwOw0KPiA+Pj4gKyAgICBBY3BpQ3B1SG90cGx1ZyBjcHVocDsNCj4g
-Pj4NCj4gPj4gQW0gSSB3cm9uZyBvciBpcyB0aGF0IG1lbWJlciBjb21wbGV0ZWx5IHVudXNlZC91
-bmluaXRpYWxpemVkPw0KPiA+DQo+ID4gTm8gaXQgaXMgbm90LiBQbGVhc2UgY2hlY2sgYmVsb3cg
-Y2hhbmdlIGluIGFjcGlfZ2VkX2luaXRmbigpDQo+ID4NCj4gPiArICAgIHMtPmNwdWhwLmRldmlj
-ZSA9IE9CSkVDVChzKTsNCj4gDQo+IE5vdCB0aGUgYmVzdCBvZiBteSBtb25kYXlzLCBzb3JyeSBm
-b3IgdGhhdC4NCj4gDQo+IFJldmlld2VkLWJ5OiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVk
-aGF0LmNvbT4NCg0KTm8gaXNzdWVzIGF0IGFsbC4gVGhhbmtzIGZvciB0YWtpbmcgdGltZSB0byBy
-ZXZpZXcgdGhpcy4NCg0KQmVzdCByZWdhcmRzDQpTYWxpbC4NCg0K
+On 9/10/23 16:11, Ani Sinha wrote:
+> 
+> 
+>> On 09-Oct-2023, at 3:17 PM, Philippe Mathieu-Daudé <philmd@linaro.org> wrote:
+>>
+>> Fix:
+>>
+>>   hw/display/vga.c:2307:29: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>>                 MemoryRegion *address_space_io, bool init_vga_ports)
+>>                             ^
+>>   include/exec/address-spaces.h:35:21: note: previous declaration is here
+>>   extern AddressSpace address_space_io;
+>>                       ^
+>>
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> hw/display/vga_int.h | 2 +-
+>> hw/display/vga.c     | 6 +++---
+>> 2 files changed, 4 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/hw/display/vga_int.h b/hw/display/vga_int.h
+>> index 7cf0d11201..94949d8a0c 100644
+>> --- a/hw/display/vga_int.h
+>> +++ b/hw/display/vga_int.h
+>> @@ -157,7 +157,7 @@ static inline int c6_to_8(int v)
+>> }
+>>
+>> bool vga_common_init(VGACommonState *s, Object *obj, Error **errp);
+>> -void vga_init(VGACommonState *s, Object *obj, MemoryRegion *address_space,
+>> +void vga_init(VGACommonState *s, Object *obj, MemoryRegion *io,
+>>                MemoryRegion *address_space_io, bool init_vga_ports);
+> 
+> Ok here you are replacing *address_space with *io but …
+> 
+>> MemoryRegion *vga_init_io(VGACommonState *s, Object *obj,
+>>                            const MemoryRegionPortio **vga_ports,
+>> diff --git a/hw/display/vga.c b/hw/display/vga.c
+>> index 37557c3442..bb4cd240ec 100644
+>> --- a/hw/display/vga.c
+>> +++ b/hw/display/vga.c
+>> @@ -2304,7 +2304,7 @@ MemoryRegion *vga_init_io(VGACommonState *s, Object *obj,
+>> }
+>>
+>> void vga_init(VGACommonState *s, Object *obj, MemoryRegion *address_space,
+>> -              MemoryRegion *address_space_io, bool init_vga_ports)
+>> +              MemoryRegion *io, bool init_vga_ports)
+> 
+> Here you replace *address_space_io with *io? This does not look right.
+
+Yeah this is totally wrong, sorry...
+
 
