@@ -2,87 +2,109 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6BB7BE651
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:25:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E3497BE6C4
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:44:14 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpt41-00067Y-V9; Mon, 09 Oct 2023 12:25:02 -0400
+	id 1qptLv-0008I3-QS; Mon, 09 Oct 2023 12:43:33 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpt40-00067M-DC
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:25:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpt3y-0005FN-EJ
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:25:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696868697;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=d0q/Gr/oTxZt58a0GZqqkI78SsxEf8/h5cBCHpeUazA=;
- b=frjVBPaXXiU2xAVuCpuwdjL31wbSaD2euKHpI2fS531f3/vu2/BDHz3BqRpadtjed/X6yi
- KDwcGHynoZPu5KxAMuP5xIk2DkXJmJhKom1ojnH9ILdvqJ7CP4mNMRLTnVn3UOljCeHp4+
- zR9ETKWVpQSsAU+DX61s1RN3Jg2VxE8=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-528-SdOd_KbuNWOw13dY8J5i4A-1; Mon, 09 Oct 2023 12:24:46 -0400
-X-MC-Unique: SdOd_KbuNWOw13dY8J5i4A-1
-Received: by mail-ej1-f70.google.com with SMTP id
- a640c23a62f3a-94f7a2b21fdso353951066b.2
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:24:46 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qptJl-00055T-Gp
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:20 -0400
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
+ id 1qptJb-0001S9-Uz
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:17 -0400
+Received: by mail-wm1-x333.google.com with SMTP id
+ 5b1f17b1804b1-4064867903cso47823425e9.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696869666; x=1697474466; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=1gVOQLrPCY4wB2HQtNdBWWNkWkP/1peRGEfdhoM/8Os=;
+ b=MQsFAgGT3MAfH49SZB7QHUedjfKnYm6K7A7aSQjy2YiZ6d0lrPo8eZBdodlZd2RhcK
+ tdngc50sncS0Z4wH1gLpVXiGiHKjSv180na6iBYObkyaEXwufRB1ErdpbjR4w82MrYOE
+ dO3MSALjbca7DuINr4JKxPh24fFRtVCkMP8ZORtPCKjRJHFdAWZzifXXOFNdOCBzKx9T
+ G7ibwGaxoWNQMwptTs8itvlCeE/vI2nfcE8OWbtkaH7mMXiIWdoVZfjIkOraGKAjquAt
+ NYG58YruVLR93ZoXfonRAaQAliMeY72weVH0o/r8+M5gXrIkNw8yLonFNqkAsMmvd6x+
+ nOnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696868685; x=1697473485;
- h=in-reply-to:content-transfer-encoding:content-disposition
- :mime-version:references:message-id:subject:cc:to:from:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=d0q/Gr/oTxZt58a0GZqqkI78SsxEf8/h5cBCHpeUazA=;
- b=JJq5TGmYkWgK6E2MT/Oh6K16sAg8F3KR/El5k1fmc007FZMCLVw7JLmcnKhbDVtiB0
- SCpDGuqKdsDtDZl7YWyMUEuPioqiO/HaEg5/YCX2CX/NtpGEIcIIkmHzks0raBltA3AW
- sAu9x5K7tqji3KMvKsk3cCyeaOYF+LjTqwMrOTQs1XxGpaLblu08uk+RlaT/roSXRweJ
- 00XpuU4JCLcZMZSOCL5MCQK1P2HUUteC1T7x2ZxWF+24BBVYBf0O7jqmAj4r+p5BibpV
- F4JL0FaqXEVryN8ue0fcKrP4DBNwl0D5Lu/r8QyMyxegKrZNhpfmllrH7TUQkVlDc9k4
- TirQ==
-X-Gm-Message-State: AOJu0YxguHLnUfrG4/T00OflU6f8EaSY5UmRfU0OkuXiQGNPINZuDG51
- O4ARB1W32JcO9DZEfVXaCqDJEh441y8nvclruq2SmM8i3rOLRVe6916NGHr5tbgqzi5eoW1fi3I
- olRji5feDkcER0b4=
-X-Received: by 2002:a17:907:270a:b0:9b2:b749:ff93 with SMTP id
- w10-20020a170907270a00b009b2b749ff93mr14560365ejk.24.1696868685247; 
- Mon, 09 Oct 2023 09:24:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEUPRsGk4vQ7WLiechnSIwGMdfCRkrevCdsXxhsrOcT1kkxawxffCvIiwUtPjfDa/fWsO/ZtQ==
-X-Received: by 2002:a17:907:270a:b0:9b2:b749:ff93 with SMTP id
- w10-20020a170907270a00b009b2b749ff93mr14560345ejk.24.1696868684918; 
- Mon, 09 Oct 2023 09:24:44 -0700 (PDT)
-Received: from redhat.com ([2.55.57.209]) by smtp.gmail.com with ESMTPSA id
- x20-20020a170906299400b00997c1d125fasm7021961eje.170.2023.10.09.09.24.35
+ d=1e100.net; s=20230601; t=1696869666; x=1697474466;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=1gVOQLrPCY4wB2HQtNdBWWNkWkP/1peRGEfdhoM/8Os=;
+ b=g5BebKVUujRApgdh7T220v/Q1HCewVseWZ90wafb6FIDbjgudI165ALP/Bo/qVHrjV
+ c1EyCr+IuhvKjp5N4itB1Phwy5ct7jN7w1ivTNT/6op5BR11d0TF512AyGt88jkSD4b4
+ jkywXzNg8PtF/1sBGKMnc5xLpd/4hfZPGgMGIQ0akKKvsz5kqlirZQ/Vbs6YjmkdkZjD
+ Z9skcQdnNmf7U/oBX8DZbExX3UHvbY6olpA1fvZ1g9Ew7NiDqKaSlgOCVcRoJat92GpK
+ aax9q1hVHNrChBR0y0tuTGxt8IyOqEyHHvkyxWnoySy/6vocXcrEsvTQ6gIZU/XywI4A
+ 5/2Q==
+X-Gm-Message-State: AOJu0YzNQExrq5bSxSFcJRzL+z1ezF9xds/18py8+7PhZ92t1tKAUMz8
+ cVWLG0+N5N2T7mJbFvRrlwEZPQ==
+X-Google-Smtp-Source: AGHT+IG+hrdsQ7T/BH1U7hdIc+QPHt8fNOZ68l7Fq5gvQ+ZNEa1Av2ONy2XHFBZMtwuMyxAfjgqQ8A==
+X-Received: by 2002:a1c:770d:0:b0:406:5463:8f74 with SMTP id
+ t13-20020a1c770d000000b0040654638f74mr14904585wmi.24.1696869665957; 
+ Mon, 09 Oct 2023 09:41:05 -0700 (PDT)
+Received: from zen.linaroharston ([85.9.250.243])
+ by smtp.gmail.com with ESMTPSA id
+ k22-20020a7bc416000000b00404719b05b5sm11668259wmi.27.2023.10.09.09.41.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:24:38 -0700 (PDT)
-Date: Mon, 9 Oct 2023 12:24:31 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: Gerd Hoffmann <kraxel@redhat.com>, qemu-devel@nongnu.org,
- Markus Armbruster <armbru@redhat.com>
-Subject: Re: [PATCH v2] hw/virtio/virtio-gpu: Fix compiler warning when
- compiling with -Wshadow
-Message-ID: <20231009122356-mutt-send-email-mst@kernel.org>
-References: <20231009084559.41427-1-thuth@redhat.com>
+ Mon, 09 Oct 2023 09:41:05 -0700 (PDT)
+Received: from zen.linaroharston (localhost [127.0.0.1])
+ by zen.linaroharston (Postfix) with ESMTP id 0F3E81FFBB;
+ Mon,  9 Oct 2023 17:41:05 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
+ Brad Smith <brad@comstyle.com>, Radoslaw Biernacki <rad@semihalf.com>,
+ David Hildenbrand <david@redhat.com>, Cleber Rosa <crosa@redhat.com>,
+ Ilya Leoshkevich <iii@linux.ibm.com>, qemu-riscv@nongnu.org,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Alexandre Iooss <erdnaxe@crans.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
+ Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
+ John Snow <jsnow@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ qemu-arm@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Beraldo Leal <bleal@redhat.com>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>,
+ Mahmoud Mandour <ma.mandourr@gmail.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Song Gao <gaosong@loongson.cn>,
+ Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/25] October maintainer omnibus pre-PR (tests, gdbstub,
+ plugins)
+Date: Mon,  9 Oct 2023 17:40:39 +0100
+Message-Id: <20231009164104.369749-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231009084559.41427-1-thuth@redhat.com>
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=mst@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::333;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -98,61 +120,124 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 10:45:59AM +0200, Thomas Huth wrote:
-> Avoid using trivial variable names in macros, otherwise we get
-> the following compiler warning when compiling with -Wshadow=local:
-> 
-> In file included from ../../qemu/hw/display/virtio-gpu-virgl.c:19:
-> ../../home/thuth/devel/qemu/hw/display/virtio-gpu-virgl.c:
->  In function ‘virgl_cmd_submit_3d’:
-> ../../qemu/include/hw/virtio/virtio-gpu.h:228:16: error: declaration of ‘s’
->  shadows a previous local [-Werror=shadow=compatible-local]
->   228 |         size_t s;
->       |                ^
-> ../../qemu/hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro
->  ‘VIRTIO_GPU_FILL_CMD’
->   215 |     VIRTIO_GPU_FILL_CMD(cs);
->       |     ^~~~~~~~~~~~~~~~~~~
-> ../../qemu/hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration
->  is here
->   213 |     size_t s;
->       |            ^
-> cc1: all warnings being treated as errors
-> 
-> Signed-off-by: Thomas Huth <thuth@redhat.com>
-> ---
->  v2: Renamed the variable to something even less trivial
-> 
->  include/hw/virtio/virtio-gpu.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+Hi,
 
-Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+This wraps up my current testing, gdbstub and plugin trees in an
+attempt to do my part to reduce the qemu-devel fire hose. It is pretty
+much the same as the September tree except:
 
-Apropos why is this header not in include/hw/display/
+  - dropped RFC patches
+  - dropped CRIS deprecation patches
+  - dropped makefile dependency tweaks
+  - tweaked RUNC as per Paolo's suggestion
+  - used later version of Marcin's sbsa-ref changes
+  - added a FLAKY_TEST removal
+  - added tags as appropriate
 
-> diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-> index 390c4642b8..4739fa4689 100644
-> --- a/include/hw/virtio/virtio-gpu.h
-> +++ b/include/hw/virtio/virtio-gpu.h
-> @@ -225,13 +225,13 @@ struct VhostUserGPU {
->  };
->  
->  #define VIRTIO_GPU_FILL_CMD(out) do {                                   \
-> -        size_t s;                                                       \
-> -        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
-> +        size_t virtiogpufillcmd_s_ =                                    \
-> +            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
->                         &out, sizeof(out));                              \
-> -        if (s != sizeof(out)) {                                         \
-> +        if (virtiogpufillcmd_s_ != sizeof(out)) {                       \
->              qemu_log_mask(LOG_GUEST_ERROR,                              \
->                            "%s: command size incorrect %zu vs %zu\n",    \
-> -                          __func__, s, sizeof(out));                    \
-> +                          __func__, virtiogpufillcmd_s_, sizeof(out));  \
->              return;                                                     \
->          }                                                               \
->      } while (0)
-> -- 
-> 2.41.0
+Now I'm using the pre-PR subject to give people a last chance to
+object before I roll a proper pull request later this week.
+
+The following still could do with review:
+
+  contrib/plugins: fix coverity warning in hotblocks
+  contrib/plugins: fix coverity warning in lockstep
+  contrib/plugins: fix coverity warning in cache
+  configure: remove gcc version suffixes
+  configure: allow user to override docker engine
+  tests/docker: make docker engine choice entirely configure driven
+  tests/avocado: remove flaky test marking for test_sbsaref_edk2_firmware
+
+Akihiko Odaki (12):
+  gdbstub: Fix target_xml initialization
+  gdbstub: Fix target.xml response
+  plugins: Check if vCPU is realized
+  contrib/plugins: Use GRWLock in execlog
+  gdbstub: Introduce GDBFeature structure
+  target/arm: Move the reference to arm-core.xml
+  hw/core/cpu: Return static value with gdb_arch_name()
+  gdbstub: Use g_markup_printf_escaped()
+  target/arm: Remove references to gdb_has_xml
+  target/ppc: Remove references to gdb_has_xml
+  gdbstub: Remove gdb_has_xml variable
+  gdbstub: Replace gdb_regs with an array
+
+Alex Bennée (9):
+  tests/avocado: remove flaky test marking for
+    test_sbsaref_edk2_firmware
+  tests/lcitool: add swtpm to the package list
+  gitlab: shuffle some targets and reduce avocado noise
+  tests/docker: make docker engine choice entirely configure driven
+  configure: allow user to override docker engine
+  configure: remove gcc version suffixes
+  contrib/plugins: fix coverity warning in cache
+  contrib/plugins: fix coverity warning in lockstep
+  contrib/plugins: fix coverity warning in hotblocks
+
+Marcin Juszkiewicz (1):
+  tests/avocado: update firmware to enable OpenBSD test on sbsa-ref
+
+Matt Borgerson (1):
+  plugins: Set final instruction count in plugin_gen_tb_end
+
+Richard Henderson (2):
+  accel/tcg: Add plugin_enabled to DisasContextBase
+  target/sh4: Disable decode_gusa when plugins enabled
+
+ MAINTAINERS                                   |  2 +-
+ configure                                     | 13 ++-
+ meson.build                                   |  2 +-
+ gdbstub/internals.h                           |  2 -
+ include/exec/gdbstub.h                        | 17 ++--
+ include/exec/plugin-gen.h                     |  4 +-
+ include/exec/translator.h                     |  2 +
+ include/hw/core/cpu.h                         |  4 +-
+ target/ppc/internal.h                         |  2 +-
+ accel/tcg/plugin-gen.c                        |  6 +-
+ accel/tcg/translator.c                        |  3 +-
+ contrib/plugins/cache.c                       | 18 ++--
+ contrib/plugins/execlog.c                     | 16 ++--
+ contrib/plugins/hotblocks.c                   |  2 +-
+ contrib/plugins/lockstep.c                    | 13 ++-
+ gdbstub/gdbstub.c                             | 95 +++++++++----------
+ gdbstub/softmmu.c                             |  2 +-
+ plugins/core.c                                |  2 +-
+ stubs/gdbstub.c                               |  6 +-
+ target/arm/cpu.c                              |  9 +-
+ target/arm/cpu64.c                            |  4 +-
+ target/arm/gdbstub.c                          | 32 +------
+ target/i386/cpu.c                             |  6 +-
+ target/loongarch/cpu.c                        |  8 +-
+ target/ppc/gdbstub.c                          | 24 +----
+ target/riscv/cpu.c                            |  6 +-
+ target/s390x/cpu.c                            |  4 +-
+ target/sh4/translate.c                        | 41 +++++---
+ target/tricore/cpu.c                          |  4 +-
+ .gitlab-ci.d/buildtest.yml                    | 15 ++-
+ .gitlab-ci.d/cirrus/macos-12.vars             |  2 +-
+ scripts/feature_to_c.py                       | 48 ++++++++++
+ scripts/feature_to_c.sh                       | 69 --------------
+ tests/avocado/machine_aarch64_sbsaref.py      | 71 +++++++++++---
+ tests/docker/Makefile.include                 |  9 +-
+ tests/docker/dockerfiles/alpine.docker        |  1 +
+ tests/docker/dockerfiles/centos8.docker       |  1 +
+ .../dockerfiles/debian-amd64-cross.docker     |  1 +
+ tests/docker/dockerfiles/debian-amd64.docker  |  1 +
+ .../dockerfiles/debian-arm64-cross.docker     |  1 +
+ .../dockerfiles/debian-armhf-cross.docker     |  1 +
+ .../dockerfiles/debian-ppc64el-cross.docker   |  1 +
+ .../dockerfiles/debian-s390x-cross.docker     |  1 +
+ .../dockerfiles/fedora-win32-cross.docker     |  1 +
+ .../dockerfiles/fedora-win64-cross.docker     |  1 +
+ tests/docker/dockerfiles/fedora.docker        |  1 +
+ tests/docker/dockerfiles/opensuse-leap.docker |  1 +
+ tests/docker/dockerfiles/ubuntu2204.docker    |  1 +
+ tests/lcitool/libvirt-ci                      |  2 +-
+ tests/lcitool/projects/qemu.yml               |  1 +
+ 50 files changed, 305 insertions(+), 274 deletions(-)
+ create mode 100755 scripts/feature_to_c.py
+ delete mode 100644 scripts/feature_to_c.sh
+
+-- 
+2.39.2
 
 
