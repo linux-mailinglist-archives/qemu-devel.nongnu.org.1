@@ -2,61 +2,72 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A26E57BD490
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 09:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 464CB7BD491
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 09:45:09 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpkwb-00062K-4s; Mon, 09 Oct 2023 03:44:51 -0400
+	id 1qpkvk-0005V1-Mn; Mon, 09 Oct 2023 03:43:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <janne.karhunen@gmail.com>)
- id 1qpkwT-00060G-EK; Mon, 09 Oct 2023 03:44:41 -0400
-Received: from mail-lj1-x22a.google.com ([2a00:1450:4864:20::22a])
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qpkvi-0005UZ-OM; Mon, 09 Oct 2023 03:43:54 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <janne.karhunen@gmail.com>)
- id 1qpkwR-0007od-Lm; Mon, 09 Oct 2023 03:44:41 -0400
-Received: by mail-lj1-x22a.google.com with SMTP id
- 38308e7fff4ca-2c00df105f8so52864341fa.2; 
- Mon, 09 Oct 2023 00:44:38 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
+ id 1qpkvg-0007kL-Tp; Mon, 09 Oct 2023 03:43:54 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-533cbbd0153so7221299a12.0; 
+ Mon, 09 Oct 2023 00:43:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696837476; x=1697442276; darn=nongnu.org;
- h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
- :date:message-id:reply-to;
- bh=P2twXwE4VFcpf1LjW0cdZu7HpEYkQOkBrrLfPXtrlNw=;
- b=M5YJuP9h1R4Us0zcx6GUR0654COMzev4XE/1RPj5aCHXNRHrR3KatlpqA42DFB/z81
- F87xAA+x6xVh/Wj8Bthl/I2V9ZV/ickVk4fPGhjVveeuf+Fc6AJoXNl8ykT/CGv/i/IF
- nnuiabAFUCmftW7IZ2O/pS6ssr/PmlsebOWClTxIIjyIg2S3LeqJYSh7rRs1qSgTsv7t
- CQ7hscqEA4ZOomicYNfbsOdWLadd97blrZJY9n84+vKb+eImrgRMe8a8gWlZZyK54jTD
- fXKK2hG/qFtufG/bDpFrI4v3PJJKRzTsCU2D/Z9Lz2YFD1uxF2xaKvh3JZSFKFdnCW+/
- y/fA==
+ d=gmail.com; s=20230601; t=1696837430; x=1697442230; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=WPyTY+fdVze7+Hd0DVsRzPfhK7CvUUyJ47HStWmraGA=;
+ b=NjuK62BSZQynE+P50Ox2ab/LdSo2q5L9Mkl94/NBGbzXTJuZTgf5DHsOS4TRQrIQwl
+ PNi4i6/q/o1QCNUUUN8kU2uNRA+4JKnhCjjvisVyQKHTAzdDMsCYQ6fYIDzs7XGqd7br
+ pc80s84qmUZGT+69aQIAnkHcZkggAhrpjxcOxICyP3fjIcoRmdrbLZ2JkM99vhuwSPuA
+ WaDafQtMUIkHtdbFI2SdmZ/AjDO9q0Mmg3+7NmRHmamQAz8mqccKHPYgO0Vde7fj/JZP
+ 9BdV3stuN1I0t3MPTDKkFqn3hS+3El0HS9r6CsDYqsopJ10+LDhd+ggR/ABCE1cQhk7A
+ 6aWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696837476; x=1697442276;
- h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
- :from:to:cc:subject:date:message-id:reply-to;
- bh=P2twXwE4VFcpf1LjW0cdZu7HpEYkQOkBrrLfPXtrlNw=;
- b=etU/v0t0ZQCrBmri3wzGn8ScNFTzmgVw/HEZdClK/ovimbfxSkzoNsYuOIDo7JyxST
- hWiHnqXU4nQSAX8EyXxHLk7SLdFJAau62Dn43XF0Sqs+1dPP9QhDMHNBMrlzl3oMv8LF
- wkQTiqFx8aYL0pYL/jwWEExa+L/I5jZCQaDJew6pe7uG4s7uEKyzStQDHFnPJMcv568i
- 3jX1Xj5s1P0WFUS+SYs2qvJickeVidTdLMgF2O55ih2ZD4q+jTqnqFmIisJJ0NWHXe3T
- gNUc5g366maCkotmt9oLoHBnpQ3UJssvAaQjLr81ReqsO8Pl7/J1r4KPuEwOHWUzwE1P
- lLkA==
-X-Gm-Message-State: AOJu0YzHMO+n7GdP8jOxaVOTs8JnHG45dn/esoLika1+FzZ9V/MEUWpY
- 8kQ2jz5NClFqhM7PI3oK/YseF4sjff4tPo+lnRi3vE+ywFo=
-X-Google-Smtp-Source: AGHT+IGXn9lr3GN+A+odtboOBdWuH5KsVnO03lPR0CGU7nGXzYMVZktWKUgX7Fl9qNzidgQBdRPi97SENDDyBC6lpMY=
-X-Received: by 2002:a05:6512:32cd:b0:4fa:f96c:745f with SMTP id
- f13-20020a05651232cd00b004faf96c745fmr14167478lfg.38.1696837475966; Mon, 09
- Oct 2023 00:44:35 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696837430; x=1697442230;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=WPyTY+fdVze7+Hd0DVsRzPfhK7CvUUyJ47HStWmraGA=;
+ b=UF/I0QZzMnFE/eiBPH/IFPUnYcXMEKxC6INRKoir3V0W0PL10543Qs+GP8hsHrHEL3
+ N0HLfTYAerkgxHE1RY9RMFufGgX0A8ej382ZioIr70QQoA3g6dTtHK/70pt4baUNSq7w
+ wH2gHKPTfA35Xs3n2WGuZ8TYaCjGx/t+MqZ2wq2cZmPjjZCTc/kQYmjHQQbFrrBerLoG
+ ZZBIQv97DNM9dPhsUFgcvyXbnwb/2q8T1LqsjKVNNfao8NyPQPYfPiWz07U4lBfeAoWm
+ 6s5BKC+ENNFcpwhU+9PmSkjgOyIDpxPjSgxaZqiTpIzGFa+A4L80QvLGE9u26IlXaR7V
+ KonA==
+X-Gm-Message-State: AOJu0YzzuyeGmklxgATyAye7ZnykGf5x7Lm/x1jLl2vab0clTz/253Dd
+ 5853GbiCZkyBJjEy1kisgP5CyHmFTMH4zM3i74A=
+X-Google-Smtp-Source: AGHT+IHUzZIXjGq35yh33kWC7Awytzvz54iGeKpbzEH2nL9vbanOjUrOo/4CHUrcJl6B9gvBKPFAxf4CmH6GT4zhk74=
+X-Received: by 2002:a17:906:8465:b0:9b7:2e2d:9bc3 with SMTP id
+ hx5-20020a170906846500b009b72e2d9bc3mr14221558ejc.9.1696837429793; Mon, 09
+ Oct 2023 00:43:49 -0700 (PDT)
 MIME-Version: 1.0
-From: Janne Karhunen <janne.karhunen@gmail.com>
-Date: Mon, 9 Oct 2023 10:43:07 +0300
-Message-ID: <CAE=NcrYLpeemYwiT+460n41SKkNpBPXrnrZ92ti3Q3mo3p5jOA@mail.gmail.com>
-Subject: virtio via external shared ram
-To: qemu-devel@nongnu.org
-Cc: qemu-arm@nongnu.org
+References: <20230918095313.5492-1-faithilikerun@gmail.com>
+ <20230918095313.5492-4-faithilikerun@gmail.com>
+ <grw7r46o3mkaszignhfexvdquamlau3ycazdiz26lpfs4jiepv@etfjsofexr5x>
+In-Reply-To: <grw7r46o3mkaszignhfexvdquamlau3ycazdiz26lpfs4jiepv@etfjsofexr5x>
+From: Sam Li <faithilikerun@gmail.com>
+Date: Mon, 9 Oct 2023 15:43:21 +0800
+Message-ID: <CAAAx-8+eA9GKR4rvpHzqLEzqbHKpyV1d3xPDcftcWDuGeizKfw@mail.gmail.com>
+Subject: Re: [PATCH v4 3/4] qcow2: add zoned emulation capability
+To: Eric Blake <eblake@redhat.com>
+Cc: qemu-devel@nongnu.org, dmitry.fomichev@wdc.com, 
+ Markus Armbruster <armbru@redhat.com>, dlemoal@kernel.org,
+ Hanna Reitz <hreitz@redhat.com>, 
+ stefanha@redhat.com, hare@suse.de, Kevin Wolf <kwolf@redhat.com>,
+ qemu-block@nongnu.org
 Content-Type: text/plain; charset="UTF-8"
-Received-SPF: pass client-ip=2a00:1450:4864:20::22a;
- envelope-from=janne.karhunen@gmail.com; helo=mail-lj1-x22a.google.com
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -79,46 +90,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+Eric Blake <eblake@redhat.com> =E4=BA=8E2023=E5=B9=B49=E6=9C=8829=E6=97=A5=
+=E5=91=A8=E4=BA=94 03:17=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Mon, Sep 18, 2023 at 05:53:12PM +0800, Sam Li wrote:
+> > By adding zone operations and zoned metadata, the zoned emulation
+> > capability enables full emulation support of zoned device using
+> > a qcow2 file. The zoned device metadata includes zone type,
+> > zoned device state and write pointer of each zone, which is stored
+> > to an array of unsigned integers.
+> >
+> > Each zone of a zoned device makes state transitions following
+> > the zone state machine. The zone state machine mainly describes
+> > five states, IMPLICIT OPEN, EXPLICIT OPEN, FULL, EMPTY and CLOSED.
+> > READ ONLY and OFFLINE states will generally be affected by device
+> > internal events. The operations on zones cause corresponding state
+> > changing.
+> >
+> > Zoned devices have a limit on zone resources, which puts constraints on
+> > write operations into zones.
+> >
+> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
+> > ---
+> >  block/qcow2.c          | 709 ++++++++++++++++++++++++++++++++++++++++-
+> >  block/qcow2.h          |   2 +
+> >  block/trace-events     |   2 +
+> >  docs/interop/qcow2.txt |   6 +
+> >  4 files changed, 717 insertions(+), 2 deletions(-)
+>
+> You may want to look at scripts/git.orderfile; putting spec changes
+> (docs/*) first in your output before implementation is generally
+> beneficial to reviewers.
+>
+> > +++ b/docs/interop/qcow2.txt
+> > @@ -367,6 +367,12 @@ The fields of the zoned extension are:
+> >                      The maximal number of 512-byte sectors of a zone
+> >                      append request that can be issued to the device.
+> >
+> > +          36 - 43:  zonedmeta_offset
+> > +                    The offset of zoned metadata structure in the file=
+ in bytes.
+>
+> For the spec to be useful, you also need to add a section describing
+> the layout of the zoned metadata structure actually is.
+>
+> > +
+> > +          44 - 51:  zonedmeta_size
+> > +                    The size of zoned metadata in bytes.
+> > +
+>
+> Can the zoned metadata structure ever occupy more than 4G, or can this
+> field be sized at 4 bytes instead of 8?
 
-I have created an experimental setup for Linux where all the virtio
-data structures and traffic can be allocated by the guest from a ram
-blob outside of the guest default ram space. That ram blob can be
-hotplugged to the guest or defined via the guests device tree.This is
-done as some hypervisors, including tdx/sev/pkvm and others, would
-probably benefit from a simple security policy that removes all
-set_memory_{encrypted,decrypted} calls to open up the guest dma memory
-in fragments that are not only likely to leak information due to the
-widespread use of the DMA API but also slow things down for no obvious
-reason. From the hypervisors point of view the fragmented shadow page
-table space is also an unnecessary slowdown and a source of memory
-waste.
+The zoned metadata is the write pointers of all zones. The size of it
+is nr_zones (uint32_t) * write_pointer size (uint64_t). So it will not
+occupy more than 4G. But it still need more than 4 bytes.
 
-I have seen forks of SWIOTLB that do similar things, but fundamentally
-they are still SWIOTLB behind the curtains and as such unusable for
-low latency / high bandwidth applications due to bouncing (copying)
-data back and forth into those external buffers. The setup I have
-created can act as virtio as it was designed to be, a zero copy data
-transport path.
-
-A trial integration into QEMU could probably look something like this
-(in virt.c):
-
-..
-    emem_map = mmap(NULL, EMEM_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED
-| MAP_SYNC, fd, 0);
-    memory_region_init_ram_ptr(sr, OBJECT(machine), "ext-mem",
-EMEM_SIZE, emem_map);
-..
-    emem = g_new(MemoryRegion, 1);
-    memory_region_add_subregion_overlap(sysmem, emem_physaddr, emem, 1000);
-..
-
-So the question I have is that did I understand the qemu RAM model
-correctly and would something like that lead to known issues
-somewhere?
-
-
---
-Janne
+>
+> --
+> Eric Blake, Principal Software Engineer
+> Red Hat, Inc.
+> Virtualization:  qemu.org | libguestfs.org
+>
 
