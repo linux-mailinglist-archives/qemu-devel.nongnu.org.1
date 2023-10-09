@@ -2,44 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45317BEC30
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 23:02:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BF6A7BEC48
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 23:05:41 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpxNG-0001VA-A1; Mon, 09 Oct 2023 17:01:10 -0400
+	id 1qpxR0-0002fu-7W; Mon, 09 Oct 2023 17:05:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1qpxNC-0001UI-1b
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 17:01:06 -0400
-Received: from todd.t-8ch.de ([2a01:4f8:c010:41de::1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thomas@t-8ch.de>) id 1qpxN6-0003Dz-GI
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 17:01:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=t-8ch.de; s=mail;
- t=1696885251; bh=uiVWNzjdCokE8dNBEIIm7+8Gpd09KaZjEqqclp7nMJk=;
- h=From:To:Cc:Subject:Date:From;
- b=bsrK3g4FWqlfz1q7leeGFSypqxWLVbOGIdJkD8NWonTmaZ4mMwmCRQRlVq9z+CLOy
- clDP9MqBsSPcN2ksaUAWgbL5Cid1ZOsK8mBc1Cb0uuR96+lL4FLLrFs5wj97gjwfIe
- F4d2HjgeuthvEkIwskuW3C4oxthQMu3ipRD3eHKI=
-From: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>
-To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas@t-8ch.de>,
- Xiaojuan Yang <yangxiaojuan@loongson.cn>, Song Gao <gaosong@loongson.cn>
-Subject: [PATCH] hw/loongarch: remove global loaderparams variable
-Date: Mon,  9 Oct 2023 23:00:17 +0200
-Message-ID: <20231009210018.249776-1-thomas@t-8ch.de>
-X-Mailer: git-send-email 2.42.0
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpxQx-0002fg-ER
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 17:05:00 -0400
+Received: from smtp-out1.suse.de ([195.135.220.28])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpxQv-0003fb-PY
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 17:04:59 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 45E4C21861;
+ Mon,  9 Oct 2023 21:04:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696885496; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pP9On0eEbe4UCCiW3SmPcI4luSe8zysiphXuL/j2bH8=;
+ b=QK6V0AFf7Y37krdMeM6FP6lfnnQ/n1Wppr+2UH14ShJ4cciSz9Sq9Xow8saDTdVe0TV06l
+ IVJ6VAOofU8nlc7MV8+jRRQoA5EN93uuBJTAMtKifg9lSiJ8/laGINlYDKNIvkcqt35goj
+ 6d7oULXYhOSLMTrBJJ9ZeDfgqM1/n78=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696885496;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=pP9On0eEbe4UCCiW3SmPcI4luSe8zysiphXuL/j2bH8=;
+ b=4VTe4VLEX8g4AABEyu+yd7LKlE1RwHtgK/17+95qJn8OijsUQb+hPisyd/i8gleV9XAje4
+ bn7+G9xNPWnz15Bg==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CA92E13905;
+ Mon,  9 Oct 2023 21:04:55 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 0QLuJPdqJGXxTQAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 21:04:55 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, qemu-devel@nongnu.org
+Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
+ pbonzini@redhat.com, berrange@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com, Het Gala <het.gala@nutanix.com>
+Subject: Re: [PATCH v12 00/10] migration: Modify 'migrate' and
+ 'migrate-incoming' QAPI commands for migration
+In-Reply-To: <20231009143615.86825-1-het.gala@nutanix.com>
+References: <20231009143615.86825-1-het.gala@nutanix.com>
+Date: Mon, 09 Oct 2023 18:04:53 -0300
+Message-ID: <87wmvvjymi.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a01:4f8:c010:41de::1;
- envelope-from=thomas@t-8ch.de; helo=todd.t-8ch.de
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -56,150 +88,43 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Passing the struct around explicitly makes the control-flow more
-obvious.
+Het Gala <het.gala@nutanix.com> writes:
 
-Signed-off-by: Thomas Weißschuh <thomas@t-8ch.de>
----
- hw/loongarch/virt.c | 50 ++++++++++++++++++++++++---------------------
- 1 file changed, 27 insertions(+), 23 deletions(-)
+> This is v12 patchset of modified 'migrate' and 'migrate-incoming' QAPI de=
+sign
+> for upstream review.
+>
+> Would like to thank all the maintainers that actively participated in the=
+ v11
+> patchset discussion and gave insightful suggestions to improve the patche=
+s.
+>
+> Link to previous upstream community patchset links:
+> v1: https://lists.gnu.org/archive/html/qemu-devel/2022-12/msg04339.html
+> v2: https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg02106.html
+> v3: https://lists.gnu.org/archive/html/qemu-devel/2023-02/msg02473.html
+> v4: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg03064.html
+> v5: https://lists.gnu.org/archive/html/qemu-devel/2023-05/msg04845.html
+> v6: https://lists.gnu.org/archive/html/qemu-devel/2023-06/msg01251.html
+> v7: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02027.html
+> v8: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg02770.html
+> v9: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg04216.html
+> v10: https://lists.gnu.org/archive/html/qemu-devel/2023-07/msg05022.html
+> v11: https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg00740.html
+>
+> v11 -> v12 changelog:
+> -------------------
+> - Resolved double-freeing when using g_autoptr in structures that are
+>   nested into another.
+> - Overwriting of pointers to an existing allocated memory is solved at
+>   various places.
+> - Use of g_autoptr caused make check errors in non-error path while going
+>   out of scope inside function. Added g_steal_pointer() in the non-error
+>   paths wherever required.
 
-diff --git a/hw/loongarch/virt.c b/hw/loongarch/virt.c
-index 2629128aeda4..ea7eb408c071 100644
---- a/hw/loongarch/virt.c
-+++ b/hw/loongarch/virt.c
-@@ -47,6 +47,13 @@
- #include "qemu/error-report.h"
- 
- 
-+struct loaderparams {
-+    uint64_t ram_size;
-+    const char *kernel_filename;
-+    const char *kernel_cmdline;
-+    const char *initrd_filename;
-+};
-+
- static void virt_flash_create(LoongArchMachineState *lams)
- {
-     DeviceState *dev = qdev_new(TYPE_PFLASH_CFI01);
-@@ -411,24 +418,17 @@ static const MemoryRegionOps loongarch_virt_pm_ops = {
-     }
- };
- 
--static struct _loaderparams {
--    uint64_t ram_size;
--    const char *kernel_filename;
--    const char *kernel_cmdline;
--    const char *initrd_filename;
--} loaderparams;
--
- static uint64_t cpu_loongarch_virt_to_phys(void *opaque, uint64_t addr)
- {
-     return addr & MAKE_64BIT_MASK(0, TARGET_PHYS_ADDR_SPACE_BITS);
- }
- 
--static int64_t load_kernel_info(void)
-+static int64_t load_kernel_info(const struct loaderparams *loaderparams)
- {
-     uint64_t kernel_entry, kernel_low, kernel_high;
-     ssize_t kernel_size;
- 
--    kernel_size = load_elf(loaderparams.kernel_filename, NULL,
-+    kernel_size = load_elf(loaderparams->kernel_filename, NULL,
-                            cpu_loongarch_virt_to_phys, NULL,
-                            &kernel_entry, &kernel_low,
-                            &kernel_high, NULL, 0,
-@@ -436,7 +436,7 @@ static int64_t load_kernel_info(void)
- 
-     if (kernel_size < 0) {
-         error_report("could not load kernel '%s': %s",
--                     loaderparams.kernel_filename,
-+                     loaderparams->kernel_filename,
-                      load_elf_strerror(kernel_size));
-         exit(1);
-     }
-@@ -728,7 +728,8 @@ static void reset_load_elf(void *opaque)
-     }
- }
- 
--static void fw_cfg_add_kernel_info(FWCfgState *fw_cfg)
-+static void fw_cfg_add_kernel_info(const struct loaderparams *loaderparams,
-+                                   FWCfgState *fw_cfg)
- {
-     /*
-      * Expose the kernel, the command line, and the initrd in fw_cfg.
-@@ -737,36 +738,38 @@ static void fw_cfg_add_kernel_info(FWCfgState *fw_cfg)
-      */
-     load_image_to_fw_cfg(fw_cfg,
-                          FW_CFG_KERNEL_SIZE, FW_CFG_KERNEL_DATA,
--                         loaderparams.kernel_filename,
-+                         loaderparams->kernel_filename,
-                          false);
- 
--    if (loaderparams.initrd_filename) {
-+    if (loaderparams->initrd_filename) {
-         load_image_to_fw_cfg(fw_cfg,
-                              FW_CFG_INITRD_SIZE, FW_CFG_INITRD_DATA,
--                             loaderparams.initrd_filename, false);
-+                             loaderparams->initrd_filename, false);
-     }
- 
--    if (loaderparams.kernel_cmdline) {
-+    if (loaderparams->kernel_cmdline) {
-         fw_cfg_add_i32(fw_cfg, FW_CFG_CMDLINE_SIZE,
--                       strlen(loaderparams.kernel_cmdline) + 1);
-+                       strlen(loaderparams->kernel_cmdline) + 1);
-         fw_cfg_add_string(fw_cfg, FW_CFG_CMDLINE_DATA,
--                          loaderparams.kernel_cmdline);
-+                          loaderparams->kernel_cmdline);
-     }
- }
- 
--static void loongarch_firmware_boot(LoongArchMachineState *lams)
-+static void loongarch_firmware_boot(LoongArchMachineState *lams,
-+                                    const struct loaderparams *loaderparams)
- {
--    fw_cfg_add_kernel_info(lams->fw_cfg);
-+    fw_cfg_add_kernel_info(loaderparams, lams->fw_cfg);
- }
- 
--static void loongarch_direct_kernel_boot(LoongArchMachineState *lams)
-+static void loongarch_direct_kernel_boot(LoongArchMachineState *lams,
-+                                         const struct loaderparams *loaderparams)
- {
-     MachineState *machine = MACHINE(lams);
-     int64_t kernel_addr = 0;
-     LoongArchCPU *lacpu;
-     int i;
- 
--    kernel_addr = load_kernel_info();
-+    kernel_addr = load_kernel_info(loaderparams);
-     if (!machine->firmware) {
-         for (i = 0; i < machine->smp.cpus; i++) {
-             lacpu = LOONGARCH_CPU(qemu_get_cpu(i));
-@@ -793,6 +796,7 @@ static void loongarch_init(MachineState *machine)
-     MachineClass *mc = MACHINE_GET_CLASS(machine);
-     CPUState *cpu;
-     char *ramName = NULL;
-+    struct loaderparams loaderparams;
- 
-     if (!cpu_model) {
-         cpu_model = LOONGARCH_CPU_TYPE_NAME("la464");
-@@ -898,9 +902,9 @@ static void loongarch_init(MachineState *machine)
-     /* load the kernel. */
-     if (loaderparams.kernel_filename) {
-         if (lams->bios_loaded) {
--            loongarch_firmware_boot(lams);
-+            loongarch_firmware_boot(lams, &loaderparams);
-         } else {
--            loongarch_direct_kernel_boot(lams);
-+            loongarch_direct_kernel_boot(lams, &loaderparams);
-         }
-     }
-     fdt_add_flash_node(lams);
+Please run make check before sending:
+=E2=96=B6 242/355 qcow2 181  FAIL
 
-base-commit: 2f3913f4b2ad74baeb5a6f1d36efbd9ecdf1057d
--- 
-2.42.0
-
+You can also push your code to your gitlab and run a pipeline with the
+branch.
 
