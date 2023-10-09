@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A91A7BEBC5
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 22:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FACB7BEBC9
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 22:40:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpx38-0002x9-49; Mon, 09 Oct 2023 16:40:22 -0400
+	id 1qpx3R-0003kS-Vt; Mon, 09 Oct 2023 16:40:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpx2y-0002ju-Vj; Mon, 09 Oct 2023 16:40:13 -0400
+ id 1qpx3O-0003aU-2r; Mon, 09 Oct 2023 16:40:38 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpx2u-0007V3-Mw; Mon, 09 Oct 2023 16:40:09 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.207])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S49pR3rrnz6K6xF;
- Tue, 10 Oct 2023 04:38:07 +0800 (CST)
+ id 1qpx3M-0007Xg-E1; Mon, 09 Oct 2023 16:40:37 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S49rk07wSz67hvQ;
+ Tue, 10 Oct 2023 04:40:06 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.126.175.116) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 9 Oct 2023 21:39:41 +0100
+ 15.1.2507.31; Mon, 9 Oct 2023 21:40:03 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,15 +38,15 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: [PATCH V4 09/10] gdbstub: Add helper function to unregister GDB
- register space
-Date: Mon, 9 Oct 2023 21:36:00 +0100
-Message-ID: <20231009203601.17584-10-salil.mehta@huawei.com>
+Subject: [PATCH V4 10/10] target/arm/kvm: Write CPU state back to KVM on reset
+Date: Mon, 9 Oct 2023 21:36:01 +0100
+Message-ID: <20231009203601.17584-11-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20231009203601.17584-1-salil.mehta@huawei.com>
 References: <20231009203601.17584-1-salil.mehta@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.126.175.116]
 X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
  lhrpeml500001.china.huawei.com (7.191.163.213)
@@ -76,57 +76,51 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Add common function to help unregister the GDB Register Space. This shall be
-done in context to the CPU unrealization.
+From: Jean-Philippe Brucker <jean-philippe@linaro.org>
 
+When a KVM vCPU is reset following a PSCI CPU_ON call, its power state
+is not synchronized with KVM at the moment. Because the vCPU is not
+marked dirty, we miss the call to kvm_arch_put_registers() that writes
+to KVM's MP_STATE. Force mp_state synchronization.
+
+Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
 ---
- gdbstub/gdbstub.c      | 15 +++++++++++++++
- include/exec/gdbstub.h |  5 +++++
- 2 files changed, 20 insertions(+)
+ target/arm/kvm.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index 349d348c7b..97b89e2d00 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -491,6 +491,21 @@ void gdb_register_coprocessor(CPUState *cpu,
-     }
+diff --git a/target/arm/kvm.c b/target/arm/kvm.c
+index b66b936a95..8cb70b9e7c 100644
+--- a/target/arm/kvm.c
++++ b/target/arm/kvm.c
+@@ -642,11 +642,12 @@ void kvm_arm_cpu_post_load(ARMCPU *cpu)
+ void kvm_arm_reset_vcpu(ARMCPU *cpu)
+ {
+     int ret;
++    CPUState *cs = CPU(cpu);
+ 
+     /* Re-init VCPU so that all registers are set to
+      * their respective reset values.
+      */
+-    ret = kvm_arm_vcpu_init(CPU(cpu));
++    ret = kvm_arm_vcpu_init(cs);
+     if (ret < 0) {
+         fprintf(stderr, "kvm_arm_vcpu_init failed: %s\n", strerror(-ret));
+         abort();
+@@ -663,6 +664,11 @@ void kvm_arm_reset_vcpu(ARMCPU *cpu)
+      * for the same reason we do so in kvm_arch_get_registers().
+      */
+     write_list_to_cpustate(cpu);
++    /*
++     * Ensure we call kvm_arch_put_registers(). The vCPU isn't marked dirty if
++     * it was parked in KVM and is now booting from a PSCI CPU_ON call.
++     */
++    cs->vcpu_dirty = true;
  }
  
-+void gdb_unregister_coprocessor_all(CPUState *cpu)
-+{
-+    GDBRegisterState *s, *p;
-+
-+    p = cpu->gdb_regs;
-+    while (p) {
-+        s = p;
-+        p = p->next;
-+        /* s->xml is static const char so isn't freed */
-+        g_free(s);
-+    }
-+    cpu->gdb_regs = NULL;
-+    cpu->gdb_num_g_regs = 0;
-+}
-+
- static void gdb_process_breakpoint_remove_all(GDBProcess *p)
- {
-     CPUState *cpu = gdb_get_first_cpu_in_process(p);
-diff --git a/include/exec/gdbstub.h b/include/exec/gdbstub.h
-index 16a139043f..7d1368d377 100644
---- a/include/exec/gdbstub.h
-+++ b/include/exec/gdbstub.h
-@@ -27,6 +27,11 @@ typedef int (*gdb_set_reg_cb)(CPUArchState *env, uint8_t *buf, int reg);
- void gdb_register_coprocessor(CPUState *cpu,
-                               gdb_get_reg_cb get_reg, gdb_set_reg_cb set_reg,
-                               int num_regs, const char *xml, int g_pos);
-+/**
-+ * gdb_unregister_coprocessor_all() - unregisters supplemental set of registers
-+ * @cpu - the CPU associated with registers
-+ */
-+void gdb_unregister_coprocessor_all(CPUState *cpu);
- 
- /**
-  * gdbserver_start: start the gdb server
+ /*
 -- 
 2.34.1
 
