@@ -2,105 +2,81 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33F17BE882
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 19:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AC67BE8D1
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 20:01:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpuGL-0006I2-Bb; Mon, 09 Oct 2023 13:41:49 -0400
+	id 1qpuYY-0003b4-7Y; Mon, 09 Oct 2023 14:00:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qpuGI-0006HK-Io; Mon, 09 Oct 2023 13:41:46 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qpuGF-00072F-SS; Mon, 09 Oct 2023 13:41:46 -0400
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399HU3fS032020; Mon, 9 Oct 2023 17:41:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=jP5OUX+uO77L4bHDyJ8k5kqv4t/x7SsjU46Z2AB+iTs=;
- b=ALiqv7JDS3xSVbEE9X1nSedQ1TrFJ57irp3rbBcVNRQIwXZbIF1R+8VYJ0+gVoQiwktA
- rZbmiagzLQEn4ej+FvRfYG8d1qqdADGd/opuVLXc/4AIInPmGIaM6SQ+wcbyN/7RfBxw
- jJh4IxdInNX48H2vft9Q4Ge17pdg2h1cy1aQkst0gQ0nZuUHlcIaBat/WSzkMZiULajp
- bgpttifUaDZE5dDp+PISiYWRc4ZndPMqhZ6YMEwCL3w0oQ2AKu0H2lu/CYgvSl06QYgc
- gNTcoFeVYZy9IOEhZFDcoESQ9czQuWDJ6rM+uDXeML5R2Dh8vfhvnz+7GFmOq+kbxxDP wA== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmnykrcvk-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 17:41:28 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 399HV8hp006617;
- Mon, 9 Oct 2023 17:41:26 GMT
-Received: from ppma13.dal12v.mail.ibm.com
- (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmnykrck8-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 17:41:26 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
- by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399G3VIc001146; Mon, 9 Oct 2023 17:36:49 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
- by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkkvjj8er-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 17:36:49 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 399HancT58065298
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Oct 2023 17:36:49 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 2D45958051;
- Mon,  9 Oct 2023 17:36:49 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id CAEFC5805A;
- Mon,  9 Oct 2023 17:36:48 +0000 (GMT)
-Received: from [9.61.164.107] (unknown [9.61.164.107])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Oct 2023 17:36:48 +0000 (GMT)
-Message-ID: <565bf568-9dc9-4cb3-8ae5-eabe1bb80430@linux.ibm.com>
-Date: Mon, 9 Oct 2023 12:36:48 -0500
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1qpuYD-0003aV-A0
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:00:17 -0400
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
+ id 1qpuYA-0001ox-RB
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:00:16 -0400
+Received: by mail-lj1-x235.google.com with SMTP id
+ 38308e7fff4ca-2c189dabcc3so56498821fa.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 11:00:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696874412; x=1697479212;
+ darn=nongnu.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ukjb7ovOix+Twpj8N4DFVSTEbuk9EJgFiLy9dZ5dPIE=;
+ b=x4iKqTh5Xrhxa/sjNgy/TlK8xFdBObHB3ax/QwLu8N2Z0cyzZhWKVQwHw3PCgj9YOn
+ WDvx1mM58Jl5fbavPQ6zJC7nNpq63RkvYYxEI3CVy6PnZHAplEwVar++SASo97UWBxVo
+ Oy+vSJZUJoG8KGuf+/1udi4vPUX5YM9i8YCR07OKk6BDtaz6/1btfO+Jk3iglgcfLQgd
+ czEWTPkASrd6LA+UO/COC+KSa7OUnfmvgCEItw4SJJCR3rud/EFVW/GeA4edI/kxpJbs
+ cIoc1+MDVegg/utHB5nuDP3kkLQTDyCRWFfeQ45TvWglIvJoV6VVpVK63TtwqUs27srr
+ Wmcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696874412; x=1697479212;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ukjb7ovOix+Twpj8N4DFVSTEbuk9EJgFiLy9dZ5dPIE=;
+ b=s1REccRlU71sXBzAsZCY9s/jF5YUDmuEe6V56kEZZZOg2ZHjcqggeyf9cvewvjKu0y
+ 5/Kg9fu5V1VF86ieHrJPvTjIh5QGD/Hok/rwnmw224k9ecQ4tiQMKrrNDkwGh30Lpyt6
+ Rhqn4mvgqxa3H2Gn4rCGZT2Ru3LGbwg42FnU8ph0TUeOBsGeUCZWsIp+vKfuO2lqle1p
+ z8vPYtDfZMz0p/ob9KbH41RUd3dJftfJ7/tbDsK4cmmlWRLgbZIVdkL+f2dNAyvQ+Emm
+ vYzHwCJd7GTgE4mZqh1QLAMxjahvYcyiddJSSnUP5Me7eLEox13NMkh1NGbPpyxF05bY
+ nhuA==
+X-Gm-Message-State: AOJu0YwNgJJeZ52SQrTLSqgpQiz3UPvBY4hCoeiy6Wdl0y+Nj3PuugUn
+ 4IjNg8AfLaXg1tNKMIj4wNAHRFK+V0WmSxp3tEG0Qw==
+X-Google-Smtp-Source: AGHT+IFpRs8m2i/5dHU78slvv79TWspPQ9Z+X08ZAVuLTiwgf2NNkEFE4w6xzktqZ1pebru2K2mxEOMMF/BOX0d88es=
+X-Received: by 2002:a05:6512:ba6:b0:503:2877:67d3 with SMTP id
+ b38-20020a0565120ba600b00503287767d3mr15801829lfv.67.1696874411499; Mon, 09
+ Oct 2023 11:00:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 02/10] hw/fsi: Introduce IBM's scratchpad
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20230908222859.3381003-1-ninad@linux.ibm.com>
- <20230908222859.3381003-3-ninad@linux.ibm.com>
- <b40b9fd5-7fbb-92c6-747f-839a1ca2a0c1@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <b40b9fd5-7fbb-92c6-747f-839a1ca2a0c1@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: FFc_2etOzNZoe7ANyCrSGl4S35FLt7jS
-X-Proofpoint-GUID: COyrz0KzZikObbjkwlevtARjoOvKChMW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_15,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- bulkscore=0 clxscore=1015 adultscore=0 spamscore=0 impostorscore=0
- suspectscore=0 mlxlogscore=957 malwarescore=0 lowpriorityscore=0
- phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310090144
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+References: <20231003125107.34859-1-rbradford@rivosinc.com>
+ <20231003125107.34859-3-rbradford@rivosinc.com>
+ <CAHBxVyHYJjvADsHPCJeheU4_8s1=DfyeApPyV8QpuPnTm2F=Gw@mail.gmail.com>
+ <d2a170aeb3f05614c3801c1819afbbddc3ff4f37.camel@rivosinc.com>
+ <CAKmqyKNrmnUTHxx_wYe0V6sL0M10hkwOGYakGw1E6pu17YyMKQ@mail.gmail.com>
+In-Reply-To: <CAKmqyKNrmnUTHxx_wYe0V6sL0M10hkwOGYakGw1E6pu17YyMKQ@mail.gmail.com>
+From: Atish Kumar Patra <atishp@rivosinc.com>
+Date: Mon, 9 Oct 2023 11:00:00 -0700
+Message-ID: <CAHBxVyEO4bPLKM4d90mhM9k33hf2L2zdFk7qDtenv3-2d8YNfg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] target/riscv: Support discontinuous PMU counters
+To: Alistair Francis <alistair23@gmail.com>
+Cc: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org,
+ qemu-riscv@nongnu.org, 
+ palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
+ liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2a00:1450:4864:20::235;
+ envelope-from=atishp@rivosinc.com; helo=mail-lj1-x235.google.com
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,215 +93,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+On Sun, Oct 8, 2023 at 5:58=E2=80=AFPM Alistair Francis <alistair23@gmail.c=
+om> wrote:
+>
+> On Wed, Oct 4, 2023 at 7:36=E2=80=AFPM Rob Bradford <rbradford@rivosinc.c=
+om> wrote:
+> >
+> > Hi Atish,
+> >
+> > On Tue, 2023-10-03 at 13:25 -0700, Atish Kumar Patra wrote:
+> > > On Tue, Oct 3, 2023 at 5:51=E2=80=AFAM Rob Bradford <rbradford@rivosi=
+nc.com>
+> > > wrote:
+> > > >
+> > > > There is no requirement that the enabled counters in the platform
+> > > > are
+> > > > continuously numbered. Add a "pmu-mask" property that, if
+> > > > specified, can
+> > > > be used to specify the enabled PMUs. In order to avoid ambiguity if
+> > > > "pmu-mask" is specified then "pmu-num" must also match the number
+> > > > of
+> > > > bits set in the mask.
+> > > >
+> > > > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
+> > > > ---
+> > > >  target/riscv/cpu.c     |  1 +
+> > > >  target/riscv/cpu_cfg.h |  1 +
+> > > >  target/riscv/pmu.c     | 15 +++++++++++++--
+> > > >  3 files changed, 15 insertions(+), 2 deletions(-)
+> > > >
+> > > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
+> > > > index 9d79c20c1a..b89b006a76 100644
+> > > > --- a/target/riscv/cpu.c
+> > > > +++ b/target/riscv/cpu.c
+> > > > @@ -1817,6 +1817,7 @@ static void
+> > > > riscv_cpu_add_misa_properties(Object *cpu_obj)
+> > > >  static Property riscv_cpu_extensions[] =3D {
+> > > >      /* Defaults for standard extensions */
+> > > >      DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
+> > > > +    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, 0),
+> > > >      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf,
+> > > > false),
+> > > >      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
+> > > >      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
+> > > > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
+> > > > index 0e6a0f245c..40f7d970bc 100644
+> > > > --- a/target/riscv/cpu_cfg.h
+> > > > +++ b/target/riscv/cpu_cfg.h
+> > > > @@ -124,6 +124,7 @@ struct RISCVCPUConfig {
+> > > >      bool ext_XVentanaCondOps;
+> > > >
+> > > >      uint8_t pmu_num;
+> > > > +    uint32_t pmu_mask;
+> > > >      char *priv_spec;
+> > > >      char *user_spec;
+> > > >      char *bext_spec;
+> > > > diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
+> > > > index 13801ccb78..f97e25a1f6 100644
+> > > > --- a/target/riscv/pmu.c
+> > > > +++ b/target/riscv/pmu.c
+> > > > @@ -437,6 +437,13 @@ int riscv_pmu_setup_timer(CPURISCVState *env,
+> > > > uint64_t value, uint32_t ctr_idx)
+> > > >  void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
+> > > >  {
+> > > >      uint8_t pmu_num =3D cpu->cfg.pmu_num;
+> > > > +    uint32_t pmu_mask =3D cpu->cfg.pmu_mask;
+> > > > +
+> > > > +    if (pmu_mask && ctpop32(pmu_mask) !=3D pmu_num) {
+> > > > +        error_setg(errp, "Mismatch between number of enabled
+> > > > counters in "
+> > > > +                         "\"pmu-mask\" and \"pmu-num\"");
+> > > > +        return;
+> > > > +    }
+> > > >
+> > >
+> > > Is that necessary for the default case? I am thinking of marking
+> > > pmu-num as deprecated and pmu-mask
+> > > as the preferred way of doing things as it is more flexible. There is
+> > > no real benefit carrying both.
+> > > The default pmu-mask value will change in that case.
+> > > We can just overwrite pmu-num with ctpop32(pmu_mask) if pmu-mask is
+> > > available. Thoughts ?
+> > >
+> >
+> > I agree it makes sense to me that there is only one way for the user to
+> > adjust the PMU count. However i'm not sure how we can handle the
+> > transition if we choose to deprecate "pmu-num".
+> >
+> > If we change the default "pmu-mask" to MAKE_32BIT_MASK(3, 16) then that
+> > value in the config will always be set - you propose that we overwrite
+> > "pmu-num" with the popcount of that property. But that will break if
+>
+> Couldn't we deprecate "pmu-num" and then throw an error if both are
+> set? Then we can migrate away from "pmu-num"
+>
 
-On 9/11/23 07:19, Cédric Le Goater wrote:
-> On 9/9/23 00:28, Ninad Palsule wrote:
->> This is a part of patchset where IBM's Flexible Service Interface is
->> introduced.
->>
->> The LBUS device is embeded inside the scratchpad. The scratchpad
->> provides a non-functional registers. There is a 1-1 relation between
->> scratchpad and LBUS devices. Each LBUS device has 1K memory mapped in
->> the LBUS.
->
->
-> The commit log is a bit confusing.
+Yeah. pmu-num should be only available as a command line property and
+marked deprecated.
+If only pmu-num is set, it gets converted to a mask and throws a warning
+that this is a deprecated property.
+If only the pmu-mask is set, nothing additional is needed. These
+patches are sufficient.
+If nothing is set, the pmu-mask will be set to MAKE_32BIT_MASK(3, 16).
+If a CPU init code uses pmu-num, we should change it to mask. The upstream =
+code
+doesn't have any other usage. Any downstream user will have to move
+away from pmu-num
+once this series is merged.
 
-I have improved it in my next patch. Please check and let me know.
-
-Thanks for the review.
-
-~Ninad
-
+> Alistair
 >
-> C.
->
->
->>
->> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> ---
->> v2:
->> - Incorporated Joel's review comments.
->> ---
->>   hw/fsi/Kconfig                     |   4 ++
->>   hw/fsi/engine-scratchpad.c         | 100 +++++++++++++++++++++++++++++
->>   hw/fsi/meson.build                 |   1 +
->>   include/hw/fsi/engine-scratchpad.h |  33 ++++++++++
->>   4 files changed, 138 insertions(+)
->>   create mode 100644 hw/fsi/engine-scratchpad.c
->>   create mode 100644 include/hw/fsi/engine-scratchpad.h
->>
->> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
->> index 687449e14e..2a9c49f2c9 100644
->> --- a/hw/fsi/Kconfig
->> +++ b/hw/fsi/Kconfig
->> @@ -1,2 +1,6 @@
->> +config SCRATCHPAD
->> +    bool
->> +    select LBUS
->> +
->>   config LBUS
->>       bool
->> diff --git a/hw/fsi/engine-scratchpad.c b/hw/fsi/engine-scratchpad.c
->> new file mode 100644
->> index 0000000000..15a8f8cc66
->> --- /dev/null
->> +++ b/hw/fsi/engine-scratchpad.c
->> @@ -0,0 +1,100 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM scratchpad engine
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +
->> +#include "qapi/error.h"
->> +#include "qemu/log.h"
->> +
->> +#include "hw/fsi/engine-scratchpad.h"
->> +
->> +static uint64_t scratchpad_read(void *opaque, hwaddr addr, unsigned 
->> size)
->> +{
->> +    ScratchPad *s = SCRATCHPAD(opaque);
->> +
->> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
->> +                  __func__, addr, size);
->> +
->> +    if (addr) {
->> +        qemu_log_mask(LOG_GUEST_ERROR,
->> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for 
->> %u\n",
->> +                      __func__, addr, size);
->> +        return 0;
->> +    }
->> +
->> +    return s->reg;
->> +}
->> +
->> +static void scratchpad_write(void *opaque, hwaddr addr, uint64_t data,
->> +                                 unsigned size)
->> +{
->> +    ScratchPad *s = SCRATCHPAD(opaque);
->> +
->> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=%d "
->> +                  "value=%"PRIx64"\n", __func__, addr, size, data);
->> +
->> +    if (addr) {
->> +        qemu_log_mask(LOG_GUEST_ERROR,
->> +                      "%s: Out of bounds write: 0x%"HWADDR_PRIx" for 
->> %u\n",
->> +                      __func__, addr, size);
->> +        return;
->> +    }
->> +
->> +    s->reg = data;
->> +}
->> +
->> +static const struct MemoryRegionOps scratchpad_ops = {
->> +    .read = scratchpad_read,
->> +    .write = scratchpad_write,
->> +    .endianness = DEVICE_BIG_ENDIAN,
->> +};
->> +
->> +static void scratchpad_realize(DeviceState *dev, Error **errp)
->> +{
->> +    LBusDevice *ldev = LBUS_DEVICE(dev);
->> +
->> +    memory_region_init_io(&ldev->iomem, OBJECT(ldev), &scratchpad_ops,
->> +                          ldev, TYPE_SCRATCHPAD, 0x400);
->> +}
->> +
->> +static void scratchpad_reset(DeviceState *dev)
->> +{
->> +    ScratchPad *s = SCRATCHPAD(dev);
->> +
->> +    s->reg = 0;
->> +}
->> +
->> +static void scratchpad_class_init(ObjectClass *klass, void *data)
->> +{
->> +    DeviceClass *dc = DEVICE_CLASS(klass);
->> +    LBusDeviceClass *ldc = LBUS_DEVICE_CLASS(klass);
->> +
->> +    dc->realize = scratchpad_realize;
->> +    dc->reset = scratchpad_reset;
->> +
->> +    ldc->config =
->> +          ENGINE_CONFIG_NEXT            /* valid */
->> +        | 0x00010000                    /* slots */
->> +        | 0x00001000                    /* version */
->> +        | ENGINE_CONFIG_TYPE_SCRATCHPAD /* type */
->> +        | 0x00000007;                   /* crc */
->> +}
->> +
->> +static const TypeInfo scratchpad_info = {
->> +    .name = TYPE_SCRATCHPAD,
->> +    .parent = TYPE_LBUS_DEVICE,
->> +    .instance_size = sizeof(ScratchPad),
->> +    .class_init = scratchpad_class_init,
->> +    .class_size = sizeof(LBusDeviceClass),
->> +};
->> +
->> +static void scratchpad_register_types(void)
->> +{
->> +    type_register_static(&scratchpad_info);
->> +}
->> +
->> +type_init(scratchpad_register_types);
->> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
->> index e1007d5fea..f90e09ddab 100644
->> --- a/hw/fsi/meson.build
->> +++ b/hw/fsi/meson.build
->> @@ -1 +1,2 @@
->>   system_ss.add(when: 'CONFIG_LBUS', if_true: files('lbus.c'))
->> +system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: 
->> files('engine-scratchpad.c'))
->> diff --git a/include/hw/fsi/engine-scratchpad.h 
->> b/include/hw/fsi/engine-scratchpad.h
->> new file mode 100644
->> index 0000000000..63bf89ac5a
->> --- /dev/null
->> +++ b/include/hw/fsi/engine-scratchpad.h
->> @@ -0,0 +1,33 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM scratchpad engne
->> + */
->> +#ifndef FSI_ENGINE_SCRATCHPAD_H
->> +#define FSI_ENGINE_SCRATCHPAD_H
->> +
->> +#include "qemu/bitops.h"
->> +
->> +#include "hw/fsi/lbus.h"
->> +
->> +#define ENGINE_CONFIG_NEXT              BE_BIT(0)
->> +#define ENGINE_CONFIG_VPD               BE_BIT(1)
->> +#define ENGINE_CONFIG_SLOTS             BE_GENMASK(8, 15)
->> +#define ENGINE_CONFIG_VERSION           BE_GENMASK(16, 19)
->> +#define ENGINE_CONFIG_TYPE              BE_GENMASK(20, 27)
->> +#define   ENGINE_CONFIG_TYPE_PEEK       (0x02 << 4)
->> +#define   ENGINE_CONFIG_TYPE_FSI        (0x03 << 4)
->> +#define   ENGINE_CONFIG_TYPE_SCRATCHPAD (0x06 << 4)
->> +#define ENGINE_CONFIG_CRC              BE_GENMASK(28, 31)
->> +
->> +#define TYPE_SCRATCHPAD "scratchpad"
->> +#define SCRATCHPAD(obj) OBJECT_CHECK(ScratchPad, (obj), 
->> TYPE_SCRATCHPAD)
->> +
->> +typedef struct ScratchPad {
->> +        LBusDevice parent;
->> +
->> +        uint32_t reg;
->> +} ScratchPad;
->> +
->> +#endif /* FSI_ENGINE_SCRATCHPAD_H */
->
+> > the user has an existing setup that changes the value of "pmu-num"
+> > (either as a property at runtime or in the CPU init code).
+> >
+> > One option would be to not make the mask configurable as property and
+> > make choosing the layout of the counters something that the specialised
+> > CPU init can choose to do.
+> >
+> > Cheers,
+> >
+> > Rob
+> >
+> > > >      if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
+> > > >          error_setg(errp, "Number of counters exceeds maximum
+> > > > available");
+> > > > @@ -449,6 +456,10 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
+> > > > **errp)
+> > > >          return;
+> > > >      }
+> > > >
+> > > > -    /* Create a bitmask of available programmable counters */
+> > > > -    cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
+> > > > +    /* Create a bitmask of available programmable counters if none
+> > > > supplied */
+> > > > +    if (pmu_mask) {
+> > > > +        cpu->pmu_avail_ctrs =3D pmu_mask;
+> > > > +    } else {
+> > > > +        cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
+> > > > +    }
+> > > >  }
+> > > > --
+> > > > 2.41.0
+> > > >
+> >
+> >
 
