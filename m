@@ -2,65 +2,56 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536527BD545
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:33:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 278EF7BD55A
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:38:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qplgo-0005JU-Dy; Mon, 09 Oct 2023 04:32:34 -0400
+	id 1qpllp-00072P-1f; Mon, 09 Oct 2023 04:37:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qplgm-0005Hl-Ud
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:32:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplln-00071n-6z
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:37:43 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <berrange@redhat.com>)
- id 1qplgl-0000VH-2m
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:32:32 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplll-0001kW-MM
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:37:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696840349;
- h=from:from:reply-to:reply-to:subject:subject:date:date:
- message-id:message-id:to:to:cc:cc:mime-version:mime-version:
- content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=oV2qeWKhGtahxPQFRTzJMNNy9fxuV7526nbdg4Trw0A=;
- b=eRN5/Ig3jqVfNHQAYNaFhgSMWmF8cEid1P0KzPKrkxK/hqtJFgl0780VtwMdtQOKi4h228
- UmPZf2jhuUOA9dZ73WXoTRg+kVtjdtjvpTdIPOn68I9Pc+91YwJ+fCf0FbSvkVMOpSbAM0
- qq3Jj9UpCK4i6ggO5q0zmmaNInSNggM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-244-r-LeOhyJNlaR-0y7CHRTUg-1; Mon, 09 Oct 2023 04:32:11 -0400
-X-MC-Unique: r-LeOhyJNlaR-0y7CHRTUg-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com
- [10.11.54.10])
+ s=mimecast20190719; t=1696840660;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=/lz86oE0J2Pi8F+Oi/gEX4kdk9mCx7n4qEF91OApOLI=;
+ b=IgGn4oIlSPdnQOCxhSbBwM5VDsN6so7+OydGVVwbHg0dJQ8VKPd6M1uNU8oBdnyN0Y5UFe
+ 7BGCQejMGFymYbYoVoAUl3fzXOxshkC7PH0TQGtp2ji5Rjv1YBnMJQKsWm6OYpgbCytWVg
+ MXa0DwluFXJtlmBm6SyX0UvE8kCUT38=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-218-N-PZzRxJOrqxRfVXVXSEvQ-1; Mon, 09 Oct 2023 04:37:28 -0400
+X-MC-Unique: N-PZzRxJOrqxRfVXVXSEvQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.8])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 568E5810BD9;
- Mon,  9 Oct 2023 08:32:11 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.42])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 9174E400F36;
- Mon,  9 Oct 2023 08:32:10 +0000 (UTC)
-Date: Mon, 9 Oct 2023 09:32:07 +0100
-From: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To: Thomas Huth <thuth@redhat.com>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>,
- =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: Re: [PATCH 0/2] topic: meson: add more compiler hardening flags
-Message-ID: <ZSO6h395Tut6Roqv@redhat.com>
-References: <20231005173812.966264-1-berrange@redhat.com>
- <62196cb3-72e4-5db2-c0c4-ec1e74c8d432@redhat.com>
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAF061C0BB42
+ for <qemu-devel@nongnu.org>; Mon,  9 Oct 2023 08:37:27 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.39.193.172])
+ by smtp.corp.redhat.com (Postfix) with ESMTP id CE7F1C154CF;
+ Mon,  9 Oct 2023 08:37:26 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
+Cc: Gerd Hoffmann <kraxel@redhat.com>,
+	Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
+ compiling with -Wshadow
+Date: Mon,  9 Oct 2023 10:37:25 +0200
+Message-ID: <20231009083726.30301-1-thuth@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <62196cb3-72e4-5db2-c0c4-ec1e74c8d432@redhat.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=berrange@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
@@ -81,48 +72,69 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 09:21:01AM +0200, Thomas Huth wrote:
-> On 05/10/2023 19.38, Daniel P. Berrangé wrote:
-> ...
-> > 
-> > I also tested enabling -ftrapv, to change signed integer
-> > overflow from wrapping, to trapping instead. This exposed a
-> > bug in the string-input-visitor which overflows when parsing
-> > ranges, and exposed the test-int128 code as (harmlessly)
-> > overflowing during its testing. Both can be fixed, but I'm
-> > not entirely sure whether -ftrapv is viable or not. I was
-> > wondering about TCG and whether it has a need to intentionally
-> > allow integer overflow for any of its instruction emulation
-> > requirements ?
-> I'm not an expert when it comes to this question, but as far as I
-> understood, we are using -fwrapv (with "w", not "t") on purpose, see
-> meson.build:
-> 
-> # We use -fwrapv to tell the compiler that we require a C dialect where
-> # left shift of signed integers is well defined and has the expected
-> # 2s-complement style results. (Both clang and gcc agree that it
-> # provides these semantics.)
-> 
-> And according to the man-page of gcc:
-> 
->  The options -ftrapv and -fwrapv override each other,
->  so using -ftrapv -fwrapv on the command-line results
->  in -fwrapv being effective.
-> 
-> If I got that right, this means you cannot use -ftrapv with QEMU.
+Rename some variables to avoid compiler warnings when compiling
+with -Wshadow=local.
 
-Opps, I didn't notice we had -fwrapv in our flags, that is clearly
-mutually exclusive with -ftrapv, so nothing further to do here.
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ v2: Renamed the variable to something more unique
 
-With regards,
-Daniel
+ contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
+ contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
+index 509b679f03..654c392fbb 100644
+--- a/contrib/vhost-user-gpu/vugpu.h
++++ b/contrib/vhost-user-gpu/vugpu.h
+@@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
+ };
+ 
+ #define VUGPU_FILL_CMD(out) do {                                \
+-        size_t s;                                               \
+-        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
++        size_t vugpufillcmd_s_ =                                \
++            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
+                        &out, sizeof(out));                      \
+-        if (s != sizeof(out)) {                                 \
++        if (vugpufillcmd_s_ != sizeof(out)) {                   \
+             g_critical("%s: command size incorrect %zu vs %zu", \
+-                       __func__, s, sizeof(out));               \
++                       __func__, vugpufillcmd_s_, sizeof(out)); \
+             return;                                             \
+         }                                                       \
+     } while (0)
+diff --git a/contrib/vhost-user-gpu/vhost-user-gpu.c b/contrib/vhost-user-gpu/vhost-user-gpu.c
+index aa304475a0..bb41758e34 100644
+--- a/contrib/vhost-user-gpu/vhost-user-gpu.c
++++ b/contrib/vhost-user-gpu/vhost-user-gpu.c
+@@ -834,7 +834,7 @@ vg_resource_flush(VuGpu *g,
+                 .width = width,
+                 .height = height,
+             };
+-            pixman_image_t *i =
++            pixman_image_t *img =
+                 pixman_image_create_bits(pixman_image_get_format(res->image),
+                                          msg->payload.update.width,
+                                          msg->payload.update.height,
+@@ -842,11 +842,11 @@ vg_resource_flush(VuGpu *g,
+                                                       payload.update.data),
+                                          width * bpp);
+             pixman_image_composite(PIXMAN_OP_SRC,
+-                                   res->image, NULL, i,
++                                   res->image, NULL, img,
+                                    extents->x1, extents->y1,
+                                    0, 0, 0, 0,
+                                    width, height);
+-            pixman_image_unref(i);
++            pixman_image_unref(img);
+             vg_send_msg(g, msg, -1);
+             g_free(msg);
+         }
 -- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
+2.41.0
 
 
