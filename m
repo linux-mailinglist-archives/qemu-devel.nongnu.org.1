@@ -2,100 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8792E7BE176
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:50:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91FF27BE174
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:50:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpqeR-0000fn-A8; Mon, 09 Oct 2023 09:50:27 -0400
+	id 1qpqdk-0000D0-H2; Mon, 09 Oct 2023 09:49:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qpqeL-0000c5-CC
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:50:21 -0400
-Received: from mail-wm1-x335.google.com ([2a00:1450:4864:20::335])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qpqeI-0002Yp-Fs
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:50:21 -0400
-Received: by mail-wm1-x335.google.com with SMTP id
- 5b1f17b1804b1-405417465aaso43782765e9.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 06:50:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696859416; x=1697464216; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=TIXU1tIQfEO5O4jUROwjakCAV+8cGPWt76AAUbUDMJI=;
- b=MdxRT1EawZ/vHCvJe1/zN9KeMZ/cyrN5HJCbi2FIUDRkRdnjpaiKrSF3iqbEIzYLcH
- B7htkMHIO0aOC1QmizDDf+UPlfmQgY8B9blF4GPPmtlx5moCSWiIOD5z/DJK+AxSDLVp
- DZ7/7iIkfTr6ikBF7xTGofk8y779eTwWDjbWbB5oJQWICWE25cUCjO14DUgAF4nK8BIZ
- R8P2zlO26kalncgwKnf0VVCGLTq9Gjdr++m3T2U1IVIq9ndCCqdMxXpauj7V2INJoGxL
- t7gr6ParVya7cjvCEv1lNOLW1jPg01Qoz7Mk+CQautcPcXSr/92pN2jaaMR8yxYk1fxz
- S9Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696859416; x=1697464216;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=TIXU1tIQfEO5O4jUROwjakCAV+8cGPWt76AAUbUDMJI=;
- b=M1QJJ+nhEgub0Ml9bquXXEA1GD00bYD1t0QfztIxQDWgC8xXh3jZ6B7gQ1vKq00uas
- /rfu0aiqSF9+Tp+K5JFoweAVJmQ73f9qptqnL1LuMDoias1J2WN6hB5Og4/idHKalQY3
- 1/2ofTOH/Zsa52hBXbkXWA+8xLRmTSTMek4F1DBHuvOioStLEPNIhYVaRXG3r6XrUSv4
- Fqz4x3FBfYV7yqPaG1E09iEZ0DGS8J/MhkIGMz2aSPHDabIbR8IHRoOgdfvApekGFS5X
- oAt8lRfNLReJHprLT5ig4RzDrJ2o64fCkAf6jurwOiaIsQa6gvvfacuKRZHo9e2GINMc
- h3KQ==
-X-Gm-Message-State: AOJu0Yy7P4Md2J3QGNKSxaLr//PNP7LDjGo8FlcnnxjnXKZ2G8i+deD6
- bzAT6PeTIux8Gme844+Mxlr+6w==
-X-Google-Smtp-Source: AGHT+IEVhIH71AodAEIucEd9qbS7iDCWL1mReVuiXKr1JQFxn14KUgY6h951RMqbE/sWxj0s4OKOeg==
-X-Received: by 2002:a05:600c:2116:b0:405:4743:de12 with SMTP id
- u22-20020a05600c211600b004054743de12mr14152968wml.21.1696859415864; 
- Mon, 09 Oct 2023 06:50:15 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- l9-20020a1c7909000000b00401b242e2e6sm13504537wme.47.2023.10.09.06.50.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 06:50:15 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id C87621FFBB;
- Mon,  9 Oct 2023 14:50:14 +0100 (BST)
-References: <20231009095937.195728-1-alex.bennee@linaro.org>
- <20231009095937.195728-3-alex.bennee@linaro.org>
- <29j9y.3s4zl7gjb21@linaro.org>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-Cc: qemu-devel@nongnu.org, =?utf-8?Q?Marc-Andr=C3=A9?= Lureau
- <marcandre.lureau@redhat.com>,
- Erik Schilling <erik.schilling@linaro.org>, Fam Zheng <fam@euphon.net>,
- Mathieu Poirier <mathieu.poirier@linaro.org>, Gerd Hoffmann
- <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>, Stefan Hajnoczi
- <stefanha@redhat.com>, Kevin Wolf <kwolf@redhat.com>, Eric Blake
- <eblake@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-block@nongnu.org, Eduardo Habkost <eduardo@habkost.net>, Paolo
- Bonzini <pbonzini@redhat.com>, Mark Cave-Ayland
- <mark.cave-ayland@ilande.co.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
- virtio-fs@redhat.com, Gonglei <arei.gonglei@huawei.com>, Markus Armbruster
- <armbru@redhat.com>, Jason Wang <jasowang@redhat.com>, Raphael Norwitz
- <raphael.norwitz@nutanix.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-Subject: Re: [PATCH v4 2/6] hw/virtio: derive vhost-user-rng from
- vhost-user-base
-Date: Mon, 09 Oct 2023 14:48:50 +0100
-In-reply-to: <29j9y.3s4zl7gjb21@linaro.org>
-Message-ID: <87y1gbq50p.fsf@linaro.org>
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qpqdh-0000Bs-Oo; Mon, 09 Oct 2023 09:49:41 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qpqdd-0002IE-DA; Mon, 09 Oct 2023 09:49:41 -0400
+Received: from lhrpeml500002.china.huawei.com (unknown [172.18.147.201])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S40hp1157z6K5xy;
+ Mon,  9 Oct 2023 21:47:38 +0800 (CST)
+Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
+ lhrpeml500002.china.huawei.com (7.191.160.78) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 9 Oct 2023 14:49:32 +0100
+Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
+ lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
+ Mon, 9 Oct 2023 14:49:32 +0100
+To: David Hildenbrand <david@redhat.com>, "qemu-devel@nongnu.org"
+ <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
+ <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
+ <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
+ <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "philmd@linaro.org"
+ <philmd@linaro.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
+ <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "will@kernel.org"
+ <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
+ <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
+ <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
+ <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+Subject: RE: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
+Thread-Topic: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
+Thread-Index: AQHZ+qP+4EmuUazzyEe6jhCYlq8By7BBUIQAgAAoLOA=
+Date: Mon, 9 Oct 2023 13:49:32 +0000
+Message-ID: <08840ea0a68e46b1a9d98d1e3544f43b@huawei.com>
+References: <20231009112812.10612-1-salil.mehta@huawei.com>
+ <20231009112812.10612-4-salil.mehta@huawei.com>
+ <8a80612f-07d3-6302-31f9-232d9ce393a1@redhat.com>
+In-Reply-To: <8a80612f-07d3-6302-31f9-232d9ce393a1@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.48.154.91]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::335;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x335.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -108,88 +88,52 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-Manos Pitsidianakis <manos.pitsidianakis@linaro.org> writes:
-
-> On Mon, 09 Oct 2023 12:59, Alex Benn=C3=A9e <alex.bennee@linaro.org> wrot=
-e:
->>diff --git a/hw/virtio/meson.build b/hw/virtio/meson.build
->>index 51c3f97c2d..d0b963199c 100644
->>--- a/hw/virtio/meson.build
->>+++ b/hw/virtio/meson.build
->>@@ -18,8 +18,15 @@ if have_vhost
->>     # fixme - this really should be generic
->>     specific_virtio_ss.add(files('vhost-user.c'))
->>     system_virtio_ss.add(files('vhost-user-base.c'))
->>+
->>+    # MMIO Stubs
->>     system_virtio_ss.add(files('vhost-user-device.c'))
->>+    system_virtio_ss.add(when: 'CONFIG_VHOST_USER_RNG', if_true: files('=
-vhost-user-rng.c'))
->>+
->>+    # PCI Stubs
->>     system_virtio_ss.add(when: 'CONFIG_VIRTIO_PCI', if_true: files('vhos=
-t-user-device-pci.c'))
->>+    system_virtio_ss.add(when: ['CONFIG_VIRTIO_PCI', 'CONFIG_VHOST_USER_=
-RNG'],
->>+                         if_true: files('vhost-user-rng-pci.c'))
->
-> Is there a reason why the target was moved to system_virtio_ss from
-> virtio_pci_ss?
-
-So we build it once, virtio_pci_ss is still:
-
-  specific_virtio_ss.add_all(when: 'CONFIG_VIRTIO_PCI', if_true: virtio_pci=
-_ss)
-
-which means we build it once for every target which is overkill.
-
->
->>   endif
->>   if have_vhost_vdpa
->>     system_virtio_ss.add(files('vhost-vdpa.c'))
->>@@ -34,10 +41,8 @@ specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_FS', i=
-f_true: files('vhost-user-
->> specific_virtio_ss.add(when: 'CONFIG_VIRTIO_PMEM', if_true: files('virti=
-o-pmem.c'))
->> specific_virtio_ss.add(when: 'CONFIG_VHOST_VSOCK', if_true: files('vhost=
--vsock.c'))
->> specific_virtio_ss.add(when: 'CONFIG_VHOST_USER_VSOCK', if_true: files('=
-vhost-user-vsock.c'))
->>-specific_virtio_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio=
--rng.c'))
->
-> Was this accidental? It's not added anywhere else, only deleted.
-
-Oops yes. Didn't mean to delete the in-tree emulation. Will fix.
-
->
->> @@ -57,7 +61,6 @@ virtio_pci_ss.add(when: 'CONFIG_VHOST_USER_FS',
->> if_true: files('vhost-user-fs-pc
->> virtio_pci_ss.add(when: 'CONFIG_VIRTIO_CRYPTO', if_true: files('virtio-c=
-rypto-pci.c'))
->> virtio_pci_ss.add(when: 'CONFIG_VIRTIO_INPUT_HOST', if_true: files('virt=
-io-input-host-pci.c'))
->> virtio_pci_ss.add(when: 'CONFIG_VIRTIO_INPUT', if_true: files('virtio-in=
-put-pci.c'))
->>-virtio_pci_ss.add(when: 'CONFIG_VIRTIO_RNG', if_true: files('virtio-rng-=
-pci.c'))
->> virtio_pci_ss.add(when: 'CONFIG_VIRTIO_BALLOON', if_true: files('virtio-=
-balloon-pci.c'))
->> virtio_pci_ss.add(when: 'CONFIG_VIRTIO_9P', if_true: files('virtio-9p-pc=
-i.c'))
->> virtio_pci_ss.add(when: 'CONFIG_VIRTIO_SCSI', if_true: files('virtio-scs=
-i-pci.c'))
->
-> Same here
->
-> Manos
-
-
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+PiBGcm9tOiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCj4gU2VudDogTW9u
+ZGF5LCBPY3RvYmVyIDksIDIwMjMgMToyMyBQTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1l
+aHRhQGh1YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+IGFybUBub25n
+bnUub3JnDQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBK
+b25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFs
+aXNpQGtlcm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5k
+ZXJzb25AbGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxp
+bnV4LmRldjsgcGhpbG1kQGxpbmFyby5vcmc7DQo+IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xp
+dmVyLnVwdG9uQGxpbnV4LmRldjsgcGJvbnppbmlAcmVkaGF0LmNvbTsNCj4gbXN0QHJlZGhhdC5j
+b207IHdpbGxAa2VybmVsLm9yZzsgZ3NoYW5AcmVkaGF0LmNvbTsgcmFmYWVsQGtlcm5lbC5vcmc7
+DQo+IGFsZXguYmVubmVlQGxpbmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFy
+cmVuQG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207
+DQo+IHZpc2hudUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNv
+bTsNCj4gbWlndWVsLmx1aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1
+a2VxaWFuDQo+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2Fu
+Z3hpb25nZmVuZzJAaHVhd2VpLmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1
+YXdlaS5jb20+OyBqaWFrZXJuZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsg
+bGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+
+IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjMgMDMvMTBdIGh3L2FjcGk6IEFkZCBBQ1BJIENQVSBob3Rw
+bHVnIGluaXQgc3R1Yg0KPiANCj4gT24gMDkuMTAuMjMgMTM6MjgsIFNhbGlsIE1laHRhIHdyb3Rl
+Og0KPiA+IEFDUEkgQ1BVIGhvdHBsdWcgcmVsYXRlZCBpbml0aWFsaXphdGlvbiBzaG91bGQgb25s
+eSBoYXBwZW4gaWYNCj4gQUNQSV9DUFVfSE9UUExVRw0KPiA+IHN1cHBvcnQgaGFzIGJlZW4gZW5h
+YmxlZCBmb3IgcGFydGljdWxhciBhcmNoaXRlY3R1cmUuIEFkZA0KPiBjcHVfaG90cGx1Z19od19p
+bml0KCkNCj4gPiBzdHViIHRvIGF2b2lkIGNvbXBpbGF0aW9uIGJyZWFrLg0KPiA+DQo+ID4gU2ln
+bmVkLW9mZi1ieTogU2FsaWwgTWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+ID4gUmV2
+aWV3ZWQtYnk6IEpvbmF0aGFuIENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4N
+Cj4gPiBSZXZpZXdlZC1ieTogR2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gPiAtLS0N
+Cj4gPiAgIGh3L2FjcGkvYWNwaS1jcHUtaG90cGx1Zy1zdHViLmMgfCA2ICsrKysrKw0KPiA+ICAg
+MSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2h3
+L2FjcGkvYWNwaS1jcHUtaG90cGx1Zy1zdHViLmMgYi9ody9hY3BpL2FjcGktY3B1LWhvdHBsdWct
+DQo+IHN0dWIuYw0KPiA+IGluZGV4IDNmYzRiMTRjMjYuLmM2YzYxYmI5Y2QgMTAwNjQ0DQo+ID4g
+LS0tIGEvaHcvYWNwaS9hY3BpLWNwdS1ob3RwbHVnLXN0dWIuYw0KPiA+ICsrKyBiL2h3L2FjcGkv
+YWNwaS1jcHUtaG90cGx1Zy1zdHViLmMNCj4gPiBAQCAtMTksNiArMTksMTIgQEAgdm9pZCBsZWdh
+Y3lfYWNwaV9jcHVfaG90cGx1Z19pbml0KE1lbW9yeVJlZ2lvbg0KPiAqcGFyZW50LCBPYmplY3Qg
+Km93bmVyLA0KPiA+ICAgICAgIHJldHVybjsNCj4gPiAgIH0NCj4gPg0KPiA+ICt2b2lkIGNwdV9o
+b3RwbHVnX2h3X2luaXQoTWVtb3J5UmVnaW9uICphcywgT2JqZWN0ICpvd25lciwNCj4gPiArICAg
+ICAgICAgICAgICAgICAgICAgICAgIENQVUhvdHBsdWdTdGF0ZSAqc3RhdGUsIGh3YWRkciBiYXNl
+X2FkZHIpDQo+ID4gK3sNCj4gPiArICAgIHJldHVybjsNCj4gPiArfQ0KPiANCj4gV2hpbGUgYXQg
+aXQsIGNhbiB3ZSBwcmVmaXggdGhhdCBmdW5jdGlvbiB3aXRoIGFjcGk/DQoNCkkgY2FuIGRvIHRo
+YXQgYnV0IGl0IGhhcyB0byBiZSBkb25lIGF0IG90aGVyIHBsYWNlcyBhcyB3ZWxsDQpzdWNoIGFz
+IGluIGh3L2FjcGkvY3B1X2hvdHBsdWcuYyA8YWNwaV9zd2l0Y2hfdG9fbW9kZXJuX2NwaHAoKT4N
+Cg0KSG9wZSB0aGlzIGlzIG5vdCBhbiBleHRyYW5lb3VzIGNoYW5nZSB0byB0aGlzIHBhdGNoLXNl
+dD8NCg0KVGhhbmtzDQpTYWxpbC4NCg0KDQoNCg==
 
