@@ -2,105 +2,53 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0867BDD04
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:02:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D28EB7BDD0F
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:03:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpptw-0004tk-BH; Mon, 09 Oct 2023 09:02:24 -0400
+	id 1qppui-0006zw-BQ; Mon, 09 Oct 2023 09:03:12 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qppte-0004W3-9n
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:02:07 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qppuc-0006zS-PG; Mon, 09 Oct 2023 09:03:06 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <clg@redhat.com>) id 1qpptc-0002Ik-Gf
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:02:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696856523;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=/Nh7cET3A+CC0BjflUqO1FbDssazI7KcjGNe75mn9OI=;
- b=Air2xdD07vsgi6gTCnSfTKrStqMHCloMGaSBm8eULWG4jndPGz/QrEBgWr5ReuvAKyx+ad
- d04LpegzAAj5ILCtj1Fm0178KRAFjNTKWYq/qQZmwmyf43FW9YM8txXdU/8nfDaD4JY/fS
- U62Urr4Mawf7VQHsWWexe5N0LchhdOk=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-191-wz9hKl2hPKeLlH9JOHFX3w-1; Mon, 09 Oct 2023 09:02:02 -0400
-X-MC-Unique: wz9hKl2hPKeLlH9JOHFX3w-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-65b0d478deaso58138546d6.2
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 06:02:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696856521; x=1697461321;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=/Nh7cET3A+CC0BjflUqO1FbDssazI7KcjGNe75mn9OI=;
- b=k8wvnD5ot/tWA8EkLayCXdMZRq1xTfad7bDK+tljTIL7nEdtLZH8HRM+IICCV5TTy5
- eiZoWlnUOfC9ELcbxjEmAI2e//MXPhvpEb9CavQje9ABPgo9grDxOpTaA7TBe+jJNmBS
- jv0pfdtxvyrzWIbdZAAS2zk9ACOseMbU6xLMfmIucg6zBBSTAYXEoKhoU3qIny4OO2HU
- 3wvW3CDCPKNkepFNaaC3TgV9iKZZVZ1UMx0vibJqu2aFEGWr1wfU9YsY0DfrtVPve6Iy
- JwxA6xQkjQ9lC+9zTF2JJm7GoQdRn73JTzOz7IDGjOWqoLh+3Eznmos5EPYOvJJ3+QzF
- tBBg==
-X-Gm-Message-State: AOJu0YzGOiIGAWt6xrwPxNA2hW/m+m3Xfj0CCPVctOEq7VOhFes9TzdZ
- vWlNJlXwR8q80prIa/qePf6dzbli7zGbUPBOqHOuUACoTJb8jN101OEAnWsQLTTTMNBWRDAwp6J
- 595Pl6zEnTOhjzp90o9xqE2M=
-X-Received: by 2002:a0c:cc01:0:b0:64f:50c2:d57a with SMTP id
- r1-20020a0ccc01000000b0064f50c2d57amr15865084qvk.28.1696856521518; 
- Mon, 09 Oct 2023 06:02:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IECGdar6lg6tzJw2OtECFpsp1uTad6eMHITNqgm8OR0C5ld0qPeblJNk0HVKDxRsfivI2MgZw==
-X-Received: by 2002:a0c:cc01:0:b0:64f:50c2:d57a with SMTP id
- r1-20020a0ccc01000000b0064f50c2d57amr15865064qvk.28.1696856521284; 
- Mon, 09 Oct 2023 06:02:01 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:280:24f0:9db0:474c:ff43:9f5c?
- ([2a01:e0a:280:24f0:9db0:474c:ff43:9f5c])
- by smtp.gmail.com with ESMTPSA id
- q17-20020a05620a039100b0077412ca0ae1sm3494098qkm.65.2023.10.09.06.01.58
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 06:02:00 -0700 (PDT)
-Message-ID: <c560109e-3c0a-9968-d558-c5d8136921db@redhat.com>
-Date: Mon, 9 Oct 2023 15:01:57 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qppuW-0002Od-Bg; Mon, 09 Oct 2023 09:03:06 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 77DD27456AC;
+ Mon,  9 Oct 2023 15:02:04 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 117DA7456A7; Mon,  9 Oct 2023 15:02:04 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 0FDB6745681;
+ Mon,  9 Oct 2023 15:02:04 +0200 (CEST)
+Date: Mon, 9 Oct 2023 15:02:04 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH 1/3] via-ide: Fix legacy mode emulation
+In-Reply-To: <4F17AF6B-22A5-4574-A3C0-40538F298CD5@gmail.com>
+Message-ID: <1616da62-b55e-2bb1-2d1c-02adbcd1c0c0@eik.bme.hu>
+References: <cover.1696542537.git.balaton@eik.bme.hu>
+ <12ce9caa682545cd43318c4679530202140117c0.1696542537.git.balaton@eik.bme.hu>
+ <33347356-be91-4dde-8535-5a59ee1c80f1@ilande.co.uk>
+ <a7821bf0-5d1f-ddda-f408-f4cd0432ddbf@eik.bme.hu>
+ <4F17AF6B-22A5-4574-A3C0-40538F298CD5@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 01/15] hw/pci: Add a pci_setup_iommu_ops() helper
-To: Joao Martins <joao.m.martins@oracle.com>, qemu-devel@nongnu.org
-Cc: Alex Williamson <alex.williamson@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- Philippe Mathieu-Daude <philmd@linaro.org>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Jason Wang <jasowang@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eduardo Habkost <eduardo@habkost.net>, Avihai Horon <avihaih@nvidia.com>,
- Jason Gunthorpe <jgg@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
-References: <20230622214845.3980-1-joao.m.martins@oracle.com>
- <20230622214845.3980-2-joao.m.martins@oracle.com>
- <18343982-d554-61b4-fb17-b6955245e9b0@redhat.com>
- <db965f35-e568-44bb-9da4-2c2888928eb8@oracle.com>
- <d09a2778-8097-b6a7-b570-7d36bf29d9d5@redhat.com>
- <4f3eccb0-a3ff-4acf-a849-d54ee8d66eaf@oracle.com>
- <bcf861f4-50a7-495c-3497-87454fc99492@redhat.com>
- <648aad32-cd8c-4a78-9ade-76c900baa6f9@oracle.com>
-Content-Language: en-US
-From: =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@redhat.com>
-In-Reply-To: <648aad32-cd8c-4a78-9ade-76c900baa6f9@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=clg@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ boundary="3866299591-863251880-1696856524=:71180"
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,66 +65,129 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 10/6/23 19:59, Joao Martins wrote:
-> On 06/10/2023 18:09, Cédric Le Goater wrote:
->>>> Getting acks from everyone will be difficultsince some PHBs are orphans.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--3866299591-863251880-1696856524=:71180
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+On Mon, 9 Oct 2023, Bernhard Beschow wrote:
+> Am 8. Oktober 2023 11:08:58 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sun, 8 Oct 2023, Mark Cave-Ayland wrote:
+>>> On 05/10/2023 23:13, BALATON Zoltan wrote:
 >>>
->>> [...] This is what gets me a bit hesitant
+>>>> The initial value for BARs were set in reset method for emulating
+>>>> legacy mode at start but this does not work because PCI code resets
+>>>> BARs after calling device reset method.
+>>>
+>>> This is certainly something I've noticed when testing previous versions of the VIA patches. Perhaps it's worth a separate thread to the PCI devs?
 >>
->> orphans shouldn't be an issue, nor the PPC emulated machines. We will see
->> what other maintainers have to say.
-> 
-> How about this as a compromise: to have a separate patch at the end of the
-> series that converts every other PHB? This way the rest can iterate, while we
-> await maintainers feedback without potentially blocking everything else.
+>> I think I brought up this back then but was told current PCI code won't change and since that could break everything else that makes sense so this is something that we should take as given and accomodate that.
+>>
+>>>> Additionally the values
+>>>> written to BARs were also wrong.
+>>>
+>>> I don't believe this is correct: according to the datasheet the values on reset are the ones given in the current reset code, so even if the reset function is overridden at a later data during PCI bus reset, I would leave these for now since it is a different issue.
+>>
+>> Those values are missing the IO space bit for one so they can't be correct as a BAR value no matter what the datasheet says. And since they are ineffective now I think it's best to remove them to avoid confusion.
+>>
+>>>> Move setting the BARs to a callback on writing the PCI config regsiter
+>>>> that sets the compatibility mode (which firmwares needing this mode
+>>>> seem to do) and fix their values to program it to use legacy port
+>>>> numbers. As noted in a comment, we only do this when the BARs were
+>>>> unset before, because logs from real machine show this is how real
+>>>> chip works, even if it contradicts the data sheet which is not very
+>>>> clear about this.
+>>>>
+>>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>>> ---
+>>>>   hw/ide/via.c | 35 ++++++++++++++++++++++++++++++-----
+>>>>   1 file changed, 30 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/hw/ide/via.c b/hw/ide/via.c
+>>>> index fff23803a6..8186190207 100644
+>>>> --- a/hw/ide/via.c
+>>>> +++ b/hw/ide/via.c
+>>>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
+>>>>       pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+>>>>                    PCI_STATUS_DEVSEL_MEDIUM);
+>>>>   -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+>>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+>>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+>>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+>>>> -    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
+>>>>       pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+>>>>         /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+>>>> @@ -159,6 +154,35 @@ static void via_ide_reset(DeviceState *dev)
+>>>>       pci_set_long(pci_conf + 0xc0, 0x00020001);
+>>>>   }
+>>>>   +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
+>>>> +                              uint32_t val, int len)
+>>>> +{
+>>>> +    pci_default_write_config(pd, addr, val, len);
+>>>> +    /*
+>>>> +     * Only set BARs if they are unset. Logs from real hardware show that
+>>>> +     * writing class_prog to enable compatibility mode after BARs were set
+>>>> +     * (possibly by firmware) it will use ports set by BARs not ISA ports
+>>>> +     * (e.g. pegasos2 Linux does this and calls it non-100% native mode).
+>>>
+>>> Can you remind me again where the references are to non-100% native mode? The only thing I can find in Linux is https://github.com/torvalds/linux/blob/master/arch/powerpc/platforms/chrp/pci.c#L360 but that simply forces a switch to legacy mode, with no mention of "non-100% native mode".
+>>
+>> It was discussed somewhere in the via-ide thread we had when this was last touched for pegasos2 in March 2020. Basically the non-100% native mode is when ports are set by BARs but IRQs are still hard coded to 14-15. Linux can work with all 3 possible modes: legacy (both ports and IRQs are hard coded to ISA values), native (using BARs and PCI config 0x3c for a single interrupt for both channels, vt82c686 data sheet does not document this but vt8231 has a comment saying native mode only) and non-100% native mode where BARs are effective to set port addresses but IRQs don't respect 0x3c but use 14-15 as in legacy mode. Some machines only work in non-100% native mode such as pegasos2 and Linux has some quirks for this. Other OSes running on this machine work with what the firmware has set up and can't work with anything else so we need to emulate what those OSes want (which matches real hardware) because Linux can usually cope anyway. On pegasso2 MorphOS uses BARs but expects IRQ 14-1
+ 5 which is what the firmware also sets up by setting mode to native in the PCI config of the IDE func yet IRQs are fixed at 14-15. Linux forces its driver to use legacy interrupts by setting mode back to legacy but it still uses BARs and this is what it calls non-100% native mode. On amigaone firmware sets legacy mode and AmigaOS does not change this but uses it with legacy ports and IRQs. Linux finds the same and uses legacy mode on amigaone.
+>>
+>>>> +     * But if 0x8a is written after reset without setting BARs then we want
+>>>> +     * legacy ports (this is done by AmigaOne firmware for example).
+>>>> +     */
+>>>
+>>> What should happen here is that writing 0x8a should *always* switch to legacy mode, so the BARs are unused...
+>>
+>> Yes, but as we've found before that can't be emulated in QEMU due to ISA emulation being static and only allows adding ports but not removing them later so we can't switch between legacy ISA and PCI here so we use the BARs for legacy ports as well to emulate that. The reason we only do this if BARs are not yet set is because Linux changes this back to legacy mode on pegasos2 but still uses BARs
+>
+> Just curious: How can you tell the difference in real hardware whether 
+> "raw" IO ports vs. BARs mapped to IO space are used?
 
-In patch [1], impacted files are :
+Not sure what you mean but if you see ports not matching legacy ports then 
+you can be fairly sure they are BARs. The chip may internally implement 
+legacy mode by just fixing BARs at legacy values (the same as this patch 
+does) but the data sheet does not tell how it works so we don't know that.
 
-* PCIIOMMUFunc -> PCIIOMMUOps change in models
+>> as shown in boot logs from real hardware
+>
+> Could you provide links to such logs? That would be very helpful to have 
+> -- even in the code -- for documentation.
 
-   hw/ppc/spapr_pci.c       (David)  R-b
-   hw/i386/intel_iommu.c    (Peter Xu) R-b
-   hw/arm/smmu-common.c     (Eric)
-   hw/virtio/virtio-iommu.c (Eric)
-   hw/pci-host/pnv_phb3.c   (Cédric)
-   hw/pci-host/pnv_phb4.c   (Cédric)
-   hw/pci-host/designware.c (Peter M.)
-   hw/pci-host/prep.c       (Hervé)
-   hw/pci-host/sabre.c      (Mark)
-   hw/s390x/s390-pci-bus.c  (Thomas)
-   hw/alpha/typhoon.c       (Richard)
-   hw/hppa/dino.c           (Richard)
+I think if you don't believe me you can just try the emulated pegasos2 
+with its original firmware and see how it configures the IDE device then 
+boot Linux with that and see how it detects that. The relevant lines in 
+the Linux dmesg are:
 
-* Common PCI
+[    0.066337] pci 0000:00:0c.1: Fixing VIA IDE, force legacy mode on
 
-   hw/pci/pci.c             (Michael)
-   include/hw/pci/pci.h     (Michael)
-   include/hw/pci/pci_bus.h (Michael)
+[    0.514351] pata_via 0000:00:0c.1: version 0.3.4
+[    0.536431] scsi0 : pata_via
+[    0.557917] scsi1 : pata_via
+[    0.558249] ata1: PATA max UDMA/100 cmd 0x1000 ctl 0x100c bmdma 0x1020 irq 14
+[    0.558272] ata2: PATA max UDMA/100 cmd 0x1010 ctl 0x101c bmdma 0x1028 irq 15
 
-* Orphans
-  
-   hw/i386/amd_iommu.c      (Orphan)
-   hw/ppc/ppc440_pcix.c     (Orphan)
-   hw/pci-host/ppce500.c    (Orphan)
+These are from real machine but emulated one shold do the same with 
+original firmware. The comments near the IDE fixup in Linux source is 
+misleading as it says the controller only works in legacy mode but what it 
+should say is that it uses legacy interrupts even in native mode as seen 
+from the above logs. The ports are still as mapped by BARs but IRQs aren't 
+the 9 that the firmware writes to 0x3c PCI config reg for all devices but 
+14-15 as in legacy mode. This is the non-100% native mode that I think 
+older Linux versions printed in this case and what's MorphOS and AmigaOS 
+expect so happen on pegasos2 irrespective of what's in the device tree. 
+Also the forcing legacy mode quirk in Linux may only edit the device tree 
+so the driver uses legacy interrupts, I'm not sure, it's been a while I've 
+looked at this and it was already discussed to death back when I've added 
+the pegasos2 machine so I don't want to get back to that again. This patch 
+is tested to allow amigaone to work while not breaking pegasos2 so I'd go 
+with this for now.
 
-I will add my R-b on the PPC parts I maintain. The rest doesn't seem it
-would raise issues and if so, it should be quick to have since the change
-is simple.
-
-[1] https://lore.kernel.org/all/20210302203827.437645-5-yi.l.liu@intel.com/
-
-> 
-> Also, one other patch I'll add to this series at the end is this one:
-> 
-> https://lore.kernel.org/qemu-devel/20230908120521.50903-1-joao.m.martins@oracle.com/
-> 
-> This way the vIOMMU series is a complete thing for old and new guests, as
-> opposed to just new.
-
-Ok good. Let's have it.
-
-Thanks,
-
-C.
-
+Regards,
+BALATON Zoltan
+--3866299591-863251880-1696856524=:71180--
 
