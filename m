@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629687BE6C8
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:44:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D27ED7BE6D5
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:45:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptLJ-000748-Uk; Mon, 09 Oct 2023 12:42:56 -0400
+	id 1qptKW-0006Bq-6O; Mon, 09 Oct 2023 12:42:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJx-0005Ia-Ec
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:34 -0400
-Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
+ id 1qptJq-0005Bw-Vx
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:33 -0400
+Received: from mail-wr1-x432.google.com ([2a00:1450:4864:20::432])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJc-0001SG-NG
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:26 -0400
-Received: by mail-wr1-x430.google.com with SMTP id
- ffacd0b85a97d-3231df68584so4416795f8f.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:07 -0700 (PDT)
+ id 1qptJd-0001UB-Dx
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:21 -0400
+Received: by mail-wr1-x432.google.com with SMTP id
+ ffacd0b85a97d-32487efc319so4553105f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696869666; x=1697474466; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696869668; x=1697474468; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=iMC4+hjgqKV/lGIlu49d0i7qAAR9ydClgNpOgYzMG7M=;
- b=uEW343fYgkdW6T3MoD7ssr7O+A96nALvALy4Lsj/lTr8y3RmeiwzI/jKAASz6emuEZ
- kLzH/UT6hrz+9jdPM0JHKa+tEsbyZj1Q/sddxXHio5GxCaLGpveiewJln4ypWE0RVbUG
- pldhjC4UZ79R7o6g9c66MiA2De1AgaxmQM2eM4GLVlHNwxVZyKXwnGlptg4lx56nXUn+
- w1jgH5l4QWnrlBhZ9DjGP5wk0Q7SsGqFhJI1ak9u0OX4/4lr8sncz52Yeazd6hL59Eci
- 7eTPCLvo87hQNMTqiPrk3Zty7/I+8suSpdjxUSovaZXe66PgxK5jO2FoqMHcJ0BVO9Ht
- JZRg==
+ bh=xV3BG4Srg5Y6VlVNbacPBEYIMzi3RrER9K0pSz3VkxM=;
+ b=eF3apVqq8Ng5x3HHsV4PHv31k7V0oFlnnjQFxUAxIQik1J+YJ+QKNCIGpYN9NRKrD5
+ fQ33QxIeCAp63MS0uRFn3YFrSCbu6vCFmg2oF+8qjhAdXzPKEVrR0DifEJd0eygmdbCT
+ ObHB7xvmeAn9nhDwnTU0Jg3Ujzjv3rnIcZOkJ83oXkIPPpgRhxaR+4MR2fD3b716nflr
+ tkkJHz+OYpMzotjh77ufiEiG+XT9Z2NDExNMzRjZ6Flpo1REwdevtPmA/JgagtU5GuVG
+ tZUpdVxjFcvb0dnXAKoO01ewqdVz/Gxsh/CYf5rtV4xnqt3ieJj1XWqmgQLEF0rXgcY5
+ Mhjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696869666; x=1697474466;
+ d=1e100.net; s=20230601; t=1696869668; x=1697474468;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=iMC4+hjgqKV/lGIlu49d0i7qAAR9ydClgNpOgYzMG7M=;
- b=hYMO+gpVRNrlDjZg7SJA3lLPGRs9TfsiQdEJ+F/zmn+J0Ck0+RwAGJtTDQd6i+mhfA
- SBxpwyPf+viDmiyJD2SRYutTCnZKCvzDrR2ZY88GJJrKPKibgDJA5LB+QULng5v0BgxE
- GGUHGMZylcgnssI32/RDJkkno2aZpK7uj+ei/xClSFL1I+qkg0bJs3by4n5BtwLbhV1c
- iO88GhNPXbbd/JlWQ5utaA9Rp/AbkkxQXbUwQSZpJs9gnpkUsKaIAUXAyaoyWqQZJXZq
- wTYpEMyT1QZ4+OVPJ1BjKp+aVfwkVXK82TbkmGMbxnonBiTVO4HTj3A5L1jeQM9xGEL7
- KIxw==
-X-Gm-Message-State: AOJu0YwpfY6erd1FfGv82sqHuesZHJ9V/t5xCw8+RUWJ/hsJawqqx5MT
- IXM+qe5AMDghSdAIqeuYP8FPRQ==
-X-Google-Smtp-Source: AGHT+IH31b/0gr8HcbvDnjm/6vwisrud7OWBxu+v3XPyqQjKUEamxGlEjQDgHz2lUIWLEI/VaR3hKQ==
-X-Received: by 2002:a5d:4d12:0:b0:316:efb9:101d with SMTP id
- z18-20020a5d4d12000000b00316efb9101dmr14167048wrt.25.1696869666151; 
- Mon, 09 Oct 2023 09:41:06 -0700 (PDT)
+ bh=xV3BG4Srg5Y6VlVNbacPBEYIMzi3RrER9K0pSz3VkxM=;
+ b=WBedcez1I0TITELLfG5qycW7+CT60xM731YT2O7/FQu1kd6my/Qvw364CgCvVhmbcP
+ EaP4Wp3y3S1YHq/Heib6C3zN604dBi/bRCIAcOeEWcR5Y19Q19PP8n0Ehy7J96uscOHo
+ tT8Dk4/msal2wc4yzV6IQTqyTKmys5gjZlMYV/65L8AW9+KY8MTPTS+ua3f19gbpISXS
+ oYoa6dC8R1XaveBzz0DGmiOdE9Hqa23dmxy7NGDpb4VJ9n90LltRk52uMMRu/WPThadQ
+ 5owrwh8NdTbHE42khrfVNxQ1vUFxlS1nWJTpMl5GkGiBidCq/vyIMWpCJ1LO1UVihTmu
+ 1NDw==
+X-Gm-Message-State: AOJu0YzhKlmMYvadmJmxV6a1iEf/j5RK97GXW4/Zn0gIts0qIbXJArOY
+ HCuTrnkkh93M5N7T4HsWqq1Qag==
+X-Google-Smtp-Source: AGHT+IFC51Vu8VXrrK/+1vJLgLMr+v+quykmAChEzmAYsCctp7+nGso2awQsaSJ968wZLfjo2BzydQ==
+X-Received: by 2002:adf:a19d:0:b0:329:6b8e:c16 with SMTP id
+ u29-20020adfa19d000000b003296b8e0c16mr7005776wru.35.1696869667711; 
+ Mon, 09 Oct 2023 09:41:07 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- v16-20020a1cf710000000b003fefaf299b6sm11623199wmh.38.2023.10.09.09.41.05
+ q14-20020adfcb8e000000b003296b488961sm9530042wrh.31.2023.10.09.09.41.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:41:05 -0700 (PDT)
+ Mon, 09 Oct 2023 09:41:06 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 2B0161FFBC;
+ by zen.linaroharston (Postfix) with ESMTP id 4707B1FFBD;
  Mon,  9 Oct 2023 17:41:05 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -89,25 +89,25 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 01/25] tests/avocado: update firmware to enable OpenBSD test
- on sbsa-ref
-Date: Mon,  9 Oct 2023 17:40:40 +0100
-Message-Id: <20231009164104.369749-2-alex.bennee@linaro.org>
+Subject: [PATCH 02/25] tests/avocado: remove flaky test marking for
+ test_sbsaref_edk2_firmware
+Date: Mon,  9 Oct 2023 17:40:41 +0100
+Message-Id: <20231009164104.369749-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::430;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::432;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x432.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -123,136 +123,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+After testing locally I decided to revert a5754847e0 (tests/avocado: Disable the
+test_sbsaref_edk2_firmware by default) as the test seems pretty
+stable:
 
-Update prebuilt firmware images:
-- Neoverse V1/N2 cpu support
-- non-secure EL2 virtual timer
-- XHCI controller in DSDT
+   env QEMU_TEST_FLAKY_TESTS=1 retry.py -n 50 -c -- \
+     ./tests/venv/bin/avocado run \
+     ./tests/avocado/machine_aarch64_sbsaref.py:Aarch64SbsarefMachine.test_sbsaref_edk2_firmware
 
-With those changes we can now run OpenBSD as part of sbsa-ref tests.
+yields:
 
-Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Message-Id: <20230927120050.210187-2-marcin.juszkiewicz@linaro.org>
-[AJB: fix whitespace and longline]
+  Results summary:
+  0: 50 times (100.00%), avg time 2.064 (0.04 varience/0.19 deviation)
+  Ran command 50 times, 50 passes
+
+Maybe f0ec14c78c (tests/avocado: Fix console data loss) has made it
+more reliable?
+
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Cc: Thomas Huth <thuth@redhat.com>
 ---
- tests/avocado/machine_aarch64_sbsaref.py | 70 ++++++++++++++++++++----
- 1 file changed, 60 insertions(+), 10 deletions(-)
+ tests/avocado/machine_aarch64_sbsaref.py | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
-index a794245e7e..b272053eaf 100644
+index b272053eaf..bdd1efc768 100644
 --- a/tests/avocado/machine_aarch64_sbsaref.py
 +++ b/tests/avocado/machine_aarch64_sbsaref.py
-@@ -28,33 +28,33 @@ def fetch_firmware(self):
-         """
-         Flash volumes generated using:
- 
--        - Fedora GNU Toolchain version 13.1.1 20230511 (Red Hat 13.1.1-2)
-+        - Fedora GNU Toolchain version 13.2.1 20230728 (Red Hat 13.2.1-1)
- 
-         - Trusted Firmware-A
--          https://github.com/ARM-software/arm-trusted-firmware/tree/c0d8ee38
-+          https://github.com/ARM-software/arm-trusted-firmware/tree/7c3ff62d
- 
-         - Tianocore EDK II
-           https://github.com/tianocore/edk2/tree/0f9283429dd4
--          https://github.com/tianocore/edk2-non-osi/tree/f0bb00937ad6
--          https://github.com/tianocore/edk2-platforms/tree/7880b92e2a04
-+          https://github.com/tianocore/edk2/tree/ad1c0394b177
-+          https://github.com/tianocore/edk2-platforms/tree/d03a60523a60
-         """
- 
-         # Secure BootRom (TF-A code)
-         fs0_xz_url = (
--            "https://fileserver.linaro.org/s/HrYMCjP7MEccjRP/"
-+            "https://fileserver.linaro.org/s/rE43RJyTfxPtBkc/"
-             "download/SBSA_FLASH0.fd.xz"
+@@ -75,7 +75,6 @@ def fetch_firmware(self):
+             "sbsa-ref",
          )
--        fs0_xz_hash = "447eff64a90b84ce47703c6ec41fbfc25befaaea"
-+        fs0_xz_hash = "cdb8e4ffdaaa79292b7b465693f9e5fae6b7062d"
-         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash)
-         archive.extract(tar_xz_path, self.workdir)
-         fs0_path = os.path.join(self.workdir, "SBSA_FLASH0.fd")
  
-         # Non-secure rom (UEFI and EFI variables)
-         fs1_xz_url = (
--            "https://fileserver.linaro.org/s/t8foNnMPz74DZZy/"
-+            "https://fileserver.linaro.org/s/AGWPDXbcqJTKS4R/"
-             "download/SBSA_FLASH1.fd.xz"
-         )
--        fs1_xz_hash = "13a9a262953787c7fc5a9155dfaa26e703631e02"
-+        fs1_xz_hash = "411155ae6984334714dff08d5d628178e790c875"
-         tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash)
-         archive.extract(tar_xz_path, self.workdir)
-         fs1_path = os.path.join(self.workdir, "SBSA_FLASH1.fd")
-@@ -144,7 +144,7 @@ def test_sbsaref_alpine_linux_cortex_a57(self):
- 
-     def test_sbsaref_alpine_linux_neoverse_n1(self):
+-    @skipUnless(os.getenv('QEMU_TEST_FLAKY_TESTS'), 'Test is not reliable')
+     def test_sbsaref_edk2_firmware(self):
          """
--        :avocado: tags=cpu:max
-+        :avocado: tags=cpu:neoverse-n1
-         """
-         self.boot_alpine_linux("neoverse-n1")
- 
-@@ -152,4 +152,54 @@ def test_sbsaref_alpine_linux_max(self):
-         """
-         :avocado: tags=cpu:max
-         """
--        self.boot_alpine_linux("max,pauth-impdef=on")
-+        self.boot_alpine_linux("max")
-+
-+
-+    # This tests the whole boot chain from EFI to Userspace
-+    # We only boot a whole OS for the current top level CPU and GIC
-+    # Other test profiles should use more minimal boots
-+    def boot_openbsd73(self, cpu):
-+        self.fetch_firmware()
-+
-+        img_url = (
-+            "https://cdn.openbsd.org/pub/OpenBSD/7.3/arm64/miniroot73.img"
-+        )
-+
-+        img_hash = "7fc2c75401d6f01fbfa25f4953f72ad7d7c18650056d30755c44b9c129b707e5"
-+        img_path = self.fetch_asset(img_url, algorithm="sha256", asset_hash=img_hash)
-+
-+        self.vm.set_console()
-+        self.vm.add_args(
-+            "-cpu",
-+            cpu,
-+            "-drive",
-+            f"file={img_path},format=raw",
-+            "-device",
-+            "virtio-rng-pci,rng=rng0",
-+            "-object",
-+            "rng-random,id=rng0,filename=/dev/urandom",
-+        )
-+
-+        self.vm.launch()
-+        wait_for_console_pattern(self,
-+                                 "Welcome to the OpenBSD/arm64"
-+                                 " 7.3 installation program.")
-+
-+    def test_sbsaref_openbsd73_cortex_a57(self):
-+        """
-+        :avocado: tags=cpu:cortex-a57
-+        """
-+        self.boot_openbsd73("cortex-a57")
-+
-+    def test_sbsaref_openbsd73_neoverse_n1(self):
-+        """
-+        :avocado: tags=cpu:neoverse-n1
-+        """
-+        self.boot_openbsd73("neoverse-n1")
-+
-+    def test_sbsaref_openbsd73_max(self):
-+        """
-+        :avocado: tags=cpu:max
-+        """
-+        self.boot_openbsd73("max")
-+
+         :avocado: tags=cpu:cortex-a57
 -- 
 2.39.2
 
