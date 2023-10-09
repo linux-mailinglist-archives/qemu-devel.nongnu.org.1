@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A427BD9E3
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E717BD9DF
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:31:32 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpoTU-0000zf-96; Mon, 09 Oct 2023 07:31:00 -0400
+	id 1qpoTU-0000yS-1N; Mon, 09 Oct 2023 07:31:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpoSn-0000fL-UL; Mon, 09 Oct 2023 07:30:18 -0400
+ id 1qpoT3-0000mZ-Fn; Mon, 09 Oct 2023 07:30:34 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpoSl-0000qe-5N; Mon, 09 Oct 2023 07:30:17 -0400
+ id 1qpoSz-0000sB-K7; Mon, 09 Oct 2023 07:30:31 -0400
 Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S3xZk1JRhz67frD;
- Mon,  9 Oct 2023 19:27:10 +0800 (CST)
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S3xb34Cl4z67GC8;
+ Mon,  9 Oct 2023 19:27:27 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.48.154.91) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 9 Oct 2023 12:29:46 +0100
+ 15.1.2507.31; Mon, 9 Oct 2023 12:30:06 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,16 +38,14 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: [PATCH V3 02/10] hw/acpi: Move CPU ctrl-dev MMIO region len macro to
- common header file
-Date: Mon, 9 Oct 2023 12:28:04 +0100
-Message-ID: <20231009112812.10612-3-salil.mehta@huawei.com>
+Subject: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
+Date: Mon, 9 Oct 2023 12:28:05 +0100
+Message-ID: <20231009112812.10612-4-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20231009112812.10612-1-salil.mehta@huawei.com>
 References: <20231009112812.10612-1-salil.mehta@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Originating-IP: [10.48.154.91]
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  lhrpeml500001.china.huawei.com (7.191.163.213)
@@ -77,50 +75,34 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-CPU ctrl-dev MMIO region length could be used in ACPI GED and various other
-architecture specific places. Move ACPI_CPU_HOTPLUG_REG_LEN macro to more
-appropriate common header file.
+ACPI CPU hotplug related initialization should only happen if ACPI_CPU_HOTPLUG
+support has been enabled for particular architecture. Add cpu_hotplug_hw_init()
+stub to avoid compilation break.
 
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 ---
- hw/acpi/cpu.c                 | 2 +-
- include/hw/acpi/cpu_hotplug.h | 2 ++
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-index 19c154d78f..45defdc0e2 100644
---- a/hw/acpi/cpu.c
-+++ b/hw/acpi/cpu.c
-@@ -1,12 +1,12 @@
- #include "qemu/osdep.h"
- #include "migration/vmstate.h"
- #include "hw/acpi/cpu.h"
-+#include "hw/acpi/cpu_hotplug.h"
- #include "qapi/error.h"
- #include "qapi/qapi-events-acpi.h"
- #include "trace.h"
- #include "sysemu/numa.h"
+diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
+index 3fc4b14c26..c6c61bb9cd 100644
+--- a/hw/acpi/acpi-cpu-hotplug-stub.c
++++ b/hw/acpi/acpi-cpu-hotplug-stub.c
+@@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
+     return;
+ }
  
--#define ACPI_CPU_HOTPLUG_REG_LEN 12
- #define ACPI_CPU_SELECTOR_OFFSET_WR 0
- #define ACPI_CPU_FLAGS_OFFSET_RW 4
- #define ACPI_CPU_CMD_OFFSET_WR 5
-diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
-index 3b932abbbb..48b291e45e 100644
---- a/include/hw/acpi/cpu_hotplug.h
-+++ b/include/hw/acpi/cpu_hotplug.h
-@@ -19,6 +19,8 @@
- #include "hw/hotplug.h"
- #include "hw/acpi/cpu.h"
- 
-+#define ACPI_CPU_HOTPLUG_REG_LEN 12
++void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
++                         CPUHotplugState *state, hwaddr base_addr)
++{
++    return;
++}
 +
- typedef struct AcpiCpuHotplug {
-     Object *device;
-     MemoryRegion io;
+ void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
+ {
+     return;
 -- 
 2.34.1
 
