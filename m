@@ -2,91 +2,101 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 016A67BDAA0
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC41D7BDAA2
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:05:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpoyc-0002vw-In; Mon, 09 Oct 2023 08:03:10 -0400
+	id 1qpp0M-0003kn-0D; Mon, 09 Oct 2023 08:04:58 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qpoyR-0002qy-A2
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:03:00 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qpp09-0003kS-To
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:04:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qpoyJ-0006cy-9p
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:02:59 -0400
+ (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
+ id 1qpp07-0006wi-1B
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:04:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696852970;
+ s=mimecast20190719; t=1696853080;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=pUwhWc3FpVAzAcwD8P3CxCpQ9BklIsWaDkwIVOEn9pU=;
- b=ay8bW4xxPgtaJPIRD+awsB6KWjyQbaJsL0BGC/qpkYkbofn23LxyYUTg83xC/awUrFq1wm
- rsXrQDzRETtELSZaOFKsz9gw9BiA5F8y6xDZh54goPfFsIAu/dODTBoZP6m3HECf24ZWEn
- OANrY5hTkw87g98L8YseRXmXXFIXdCg=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=C3qiDUoAVwzks2EZXjU0fajl4ZP3ck6fKVLvm4RTV4o=;
+ b=V8b0Rq/OzGJdjlEkkBG256MVUu8C09JNeAq3QStIJr7YHFJlJBnIxsODaaT+wgJlNgZ/jO
+ av2X/LOq5LMdoD6+iol9t7Zt4NpiPLLAAaehLnvzGzjjzBWTbXCskP8cNwKXu1jVPlv5U3
+ uya835xhvOiZxgTbbQbMmWyhNLtzxk0=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-578-p1oJxtZPPwmDsksICxtHfg-1; Mon, 09 Oct 2023 08:02:48 -0400
-X-MC-Unique: p1oJxtZPPwmDsksICxtHfg-1
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-774105e8c7fso561427885a.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:02:48 -0700 (PDT)
+ us-mta-41-PCBfxb0QNuyYaubN3qyPag-1; Mon, 09 Oct 2023 08:04:39 -0400
+X-MC-Unique: PCBfxb0QNuyYaubN3qyPag-1
+Received: by mail-pl1-f197.google.com with SMTP id
+ d9443c01a7336-1c73637061eso30831815ad.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:04:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696852967; x=1697457767;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=pUwhWc3FpVAzAcwD8P3CxCpQ9BklIsWaDkwIVOEn9pU=;
- b=E6e2fgzAWqAHeSHua2jfdgiFSgOPqLAY3njNZpd7RgyELcTN4Km5XIs+mao7+mAc7u
- ueJLjzIaQ3le2IgkiPQQlpzr1Iz6Qkz1AEpj0uEW+0C3v1fbhVnNP4Tfay4bTaZAC4mk
- VdFNMyva5A0hJ+lZgA+RE92IZI4xzs5OVHflJS8Xb1LGUWJkm1wiQ+elHT0Z6CGSG4ma
- y5NTdtTpONzm+y6d/765AVO2sfZ+MFkfSo7Oz962w4u9w506Sp2dgSpcMur6KcAp49bw
- dJaWNqig72g2JBkcu6UzhQLHq6KCZAj/7+hPcc9nn2u37cq/1Zhxc27PC03aSjaThdnH
- 9mdQ==
-X-Gm-Message-State: AOJu0YwSehn61CGgRG4S4WTQSoLbWXr4cEcGJpPts64YEC2EReFz7F/V
- +6pkigWE6+DSc5NRVO8IhsDXBgAS+bX0V8zHSIEVmSIsaWI6PYKohvS9b/jbKMtSXQY4fwmZGnd
- yCmq9d9Ct1qdVlyLbsQzIgi4=
-X-Received: by 2002:a37:ac01:0:b0:774:1641:d60f with SMTP id
- e1-20020a37ac01000000b007741641d60fmr16437543qkm.41.1696852967178; 
- Mon, 09 Oct 2023 05:02:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGfBx/TKNOkDoHmH17kgZUFbr1G4XVpd/t1I257iUdLGG+KvkfdZVELGh2HM0IseYMkhufKTg==
-X-Received: by 2002:a37:ac01:0:b0:774:1641:d60f with SMTP id
- e1-20020a37ac01000000b007741641d60fmr16437511qkm.41.1696852966782; 
- Mon, 09 Oct 2023 05:02:46 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+ d=1e100.net; s=20230601; t=1696853078; x=1697457878;
+ h=to:references:message-id:content-transfer-encoding:cc:date
+ :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=C3qiDUoAVwzks2EZXjU0fajl4ZP3ck6fKVLvm4RTV4o=;
+ b=fyIK2SkeaV1K/PI05PpGHHuOdncjNuNeZ3DuiUOAxgXg3vefInwBypuI9TVD/L/Kxn
+ oeHLGqXQM3TwfxHFQiWhyTrw0zc/ypvb/zmkIrL1afX9JeyMHbKyTFy1rr3Ov8KoQVxg
+ a9+LImHWWJsyN/WZQ4gcFKLsigU2RWFWoZiA3MktmEK7CiEmZI4iZAR6QY4VhojalMxb
+ zY9omfRK/EtaGkwwXvbnrQD1DejkC/YuV++O+kz7hg6C1y4lx2U6r8/WyNkKBpr8Gzsk
+ N74dJB+y3yWlbfD1OSGamVHv5ZxuTW+ZWprZEuWzDsYph+XqnAE+8UT9LvspdGz1P25E
+ 5U4A==
+X-Gm-Message-State: AOJu0Yyet7TbGSmATERo3U9WzUXbd0s4qraoIadmFKgiPDKy5/Clcy7g
+ iJKLRd2Wyg0JTqwaL5lJOo5aCZ5tIGlRZs7u47oE6Yycm1PH/KxIpc68NUU3UklT985IDQH2Fhc
+ ID+eTFRZjsImoRXA=
+X-Received: by 2002:a17:902:cecb:b0:1c3:411c:9b7d with SMTP id
+ d11-20020a170902cecb00b001c3411c9b7dmr15045321plg.57.1696853078446; 
+ Mon, 09 Oct 2023 05:04:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFEivBazZ1wxwTKm4CCQwTcWJ/YVBjrLg/pSeFru2drPsQG7sjLM/kAArFWU+MZ53wg9rU9Yg==
+X-Received: by 2002:a17:902:cecb:b0:1c3:411c:9b7d with SMTP id
+ d11-20020a170902cecb00b001c3411c9b7dmr15045272plg.57.1696853077977; 
+ Mon, 09 Oct 2023 05:04:37 -0700 (PDT)
+Received: from smtpclient.apple ([115.96.136.216])
  by smtp.gmail.com with ESMTPSA id
- f26-20020a05620a12fa00b007758aad4b64sm3466944qkl.9.2023.10.09.05.02.45
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 05:02:46 -0700 (PDT)
-Message-ID: <5c772303-ccbd-7b58-1da2-ba41fcae6d3a@redhat.com>
-Date: Mon, 9 Oct 2023 14:02:44 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: vIOMMU - PCI pass through to Layer 2 VMs (Nested Virtualization)
-Content-Language: en-US
-To: Markus Frank <m.frank@proxmox.com>, qemu-devel@nongnu.org
-References: <d969606d-79bf-4ba1-849a-f2e819aaf274@proxmox.com>
- <278fd0fd-a81d-6da5-e903-71f002e17ab5@redhat.com>
- <7a056242-6d7a-4ebc-8bc4-e75dcd8ebdc7@proxmox.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <7a056242-6d7a-4ebc-8bc4-e75dcd8ebdc7@proxmox.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=eauger@redhat.com;
+ b19-20020a170902ed1300b001c737950e4dsm9395616pld.2.2023.10.09.05.04.32
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 09 Oct 2023 05:04:37 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
+Subject: Re: [PATCH 4/6] hw/acpi/pcihp: Clean up global variable shadowing in
+ acpi_pcihp_init()
+From: Ani Sinha <anisinha@redhat.com>
+In-Reply-To: <20231009094747.54240-5-philmd@linaro.org>
+Date: Mon, 9 Oct 2023 17:34:30 +0530
+Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
+ Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
+ Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Igor Mammedov <imammedo@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
+ David Hildenbrand <david@redhat.com>, Eric Farman <farman@linux.ibm.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Markus Armbruster <armbru@redhat.com>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
+ Gerd Hoffmann <kraxel@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <7F32844A-EAF0-4891-A89D-8903DD3E325B@redhat.com>
+References: <20231009094747.54240-1-philmd@linaro.org>
+ <20231009094747.54240-5-philmd@linaro.org>
+To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+X-Mailer: Apple Mail (2.3696.120.41.1.4)
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -5
+X-Spam_score: -0.6
+X-Spam_bar: /
+X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=no autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,93 +112,76 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
-On 10/9/23 12:25, Markus Frank wrote:
-> Hi Eric,
-> 
-> thanks for the quick answer.
-> 
-> On 10/9/23 11:29, Eric Auger wrote:
->> Hi Markus,
->>
->> On 10/9/23 09:06, Markus Frank wrote:
->>> Hello,
->>>
->>> I have already sent this email to qemu-discuss but I did not get a
->>> reply.
->>> https://lists.nongnu.org/archive/html/qemu-discuss/2023-09/msg00034.html
->>> Maybe someone here could help me and reply to this email or the one on
->>> qemu-discuss?
->>>
->>> I would like to pass through PCI devices to Layer-2 VMs via Nested
->>> Virtualization.
->>>
->>> Is there current documentation for this topic somewhere?
->>>
->>> I used these parameters:
->>> -machine ...,kernel-irqchip=split
->>> -device intel-iommu
->>>
->>> With these parameters PCI pass through to L2-VMs worked fine.
->>>
->>>
->>> Now I come to the part where I get confused.
->>>
->>> https://wiki.qemu.org/Features/VT-d#With_Virtio_Devices
->>> Is this documentation relevant for PCI pass through? Do I need DMAR for
->>> virtio devices?
->> If you just want the host assigned devices to be protected by the
->> viommu, you don't need to add iommu_platform=on along with the
->> virtio-pci device>>
->>> And there is also the virtio-iommu device where I also could use the
->>> i440fx chipset.
->>> https://michael2012z.medium.com/virtio-iommu-789369049443
->>
->> you can use virtio-iommu with q35 machine.
-> Yes I know. I meant that intel-iommu does not support i440fx and
-> virtio-iommu does.
 
->>>
->>> When adding "-device virtio-iommu-pci" pci pass through also works
->>> but I get "kvm: virtio_iommu_translate no mapping for 0x1002030f000 for
->>> sid=240"
->>> when starting qemu. What could that mean?
->> Normally you shouldn't get any such error. This means there is no
->> mapping programmed by the iommu-driver for this requester id (0x240) and
->> this iova=0x1002030f000. But if I understand correctly this does not
->> prevent your device from working, correct?
-> Yes. I didn't notice any problems. How could I find out what the
-> requester id 0x240 refers to?
-on your guest issue lspci and look at the end points BDF that matches
-0x240.
->>>
->>> What do these parameters
->>> "disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on"
->>> actually do? When do I need them and on which virtio devices?
->> you need them if you want your virtio devices to be protected by the
->> viommu. Otherwise the viommu is bypassed.
-> Okay, so iommu_platform=on is more of a decision you should make per
-> virtio-pci device.
-> So simplified the advantage is more isolation and the disadvantage is
-> less performance?
-yes setting iommu_platform forces the driver to use the DMA API.
 
-Eric
->>>
->>> And which device should I rather use: virtio-iommu or intel-iommu?
->> Both should be working. virtio-iommu is more recent and less used in
->> production than intel-iommu though.
->>
->> Thanks
->>
->> Eric
->>>
->>> Thanks in advance,
->>> Markus
->>>
->>>
->>
->>
-> 
+> On 09-Oct-2023, at 3:17 PM, Philippe Mathieu-Daud=C3=A9 =
+<philmd@linaro.org> wrote:
+>=20
+> Fix:
+>=20
+>  hw/acpi/pcihp.c:499:36: error: declaration shadows a variable in the =
+global scope [-Werror,-Wshadow]
+>                       MemoryRegion *address_space_io,
+>                                     ^
+>  include/exec/address-spaces.h:35:21: note: previous declaration is =
+here
+>  extern AddressSpace address_space_io;
+>                      ^
+>=20
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+
+Reviewed-by: Ani Sinha <anisinha@redhat.com>
+
+
+> ---
+> include/hw/acpi/pcihp.h | 2 +-
+> hw/acpi/pcihp.c         | 5 ++---
+> 2 files changed, 3 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
+> index ef59810c17..ac21a95913 100644
+> --- a/include/hw/acpi/pcihp.h
+> +++ b/include/hw/acpi/pcihp.h
+> @@ -56,7 +56,7 @@ typedef struct AcpiPciHpState {
+> } AcpiPciHpState;
+>=20
+> void acpi_pcihp_init(Object *owner, AcpiPciHpState *, PCIBus *root,
+> -                     MemoryRegion *address_space_io, uint16_t =
+io_base);
+> +                     MemoryRegion *io, uint16_t io_base);
+>=20
+> bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus);
+> void acpi_pcihp_device_pre_plug_cb(HotplugHandler *hotplug_dev,
+> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
+> index cdd6f775a1..4f75c873e2 100644
+> --- a/hw/acpi/pcihp.c
+> +++ b/hw/acpi/pcihp.c
+> @@ -496,8 +496,7 @@ static const MemoryRegionOps acpi_pcihp_io_ops =3D =
+{
+> };
+>=20
+> void acpi_pcihp_init(Object *owner, AcpiPciHpState *s, PCIBus =
+*root_bus,
+> -                     MemoryRegion *address_space_io,
+> -                     uint16_t io_base)
+> +                     MemoryRegion *io, uint16_t io_base)
+> {
+>     s->io_len =3D ACPI_PCIHP_SIZE;
+>     s->io_base =3D io_base;
+> @@ -506,7 +505,7 @@ void acpi_pcihp_init(Object *owner, AcpiPciHpState =
+*s, PCIBus *root_bus,
+>=20
+>     memory_region_init_io(&s->io, owner, &acpi_pcihp_io_ops, s,
+>                           "acpi-pci-hotplug", s->io_len);
+> -    memory_region_add_subregion(address_space_io, s->io_base, =
+&s->io);
+> +    memory_region_add_subregion(io, s->io_base, &s->io);
+>=20
+>     object_property_add_uint16_ptr(owner, ACPI_PCIHP_IO_BASE_PROP, =
+&s->io_base,
+>                                    OBJ_PROP_FLAG_READ);
+> --=20
+> 2.41.0
+>=20
 
 
