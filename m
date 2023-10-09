@@ -2,96 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0DE7BDA3E
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A28E7BDA3C
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:47:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpohu-0003O9-4Q; Mon, 09 Oct 2023 07:45:54 -0400
+	id 1qpohx-0003TL-L2; Mon, 09 Oct 2023 07:45:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qpohk-0003JB-MY
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:44 -0400
-Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qpohi-0003gp-7i
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:44 -0400
-Received: by mail-pl1-x634.google.com with SMTP id
- d9443c01a7336-1c877f27e8fso35136275ad.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:45:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1696851939; x=1697456739; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=PPonpOK0od+dn5EFgbrIZZ8JVanHxWrm5XlWfzQyIbo=;
- b=GcILGU+XHmS32ta+F7gtbc/CIndHGNjmdAeLTW6/6J63SD/48x9DsM7lYVEhuV89ut
- 5+RRRokFVHB7ky5/USZZzKvQQO8Dtp8dz4aXveb01zqv3JZsTRTOWOjVm7xv2HwuENWM
- HVTPas+BQ0pNreru96eh8DW/azu5dbC/ydIgdLm039OE+gf7LFo63yXA9qvxViRsp64i
- yooBMbVt9Ac8m+O5LsHfRnfZzo+ekMv6GazxI+YNewOBU6Kyiiiy2N1hkxVVXXF7gODD
- gSNPcQ5BhfD+4SxfFR9XXixgRKMMZkx+038zxUKsjus6Mf0AbpZ/IT6gFFlibTFzVrls
- CLeQ==
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpoht-0003Pb-TX
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:54 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpohr-0003i7-3w
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696851947;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=3p5LYjpHy/lcn1IuFH3k5hW/a9mM/RPxNGvmqoT/I6A=;
+ b=Tvaxy83lCQcnlg4563Yzl89C176VLfpV7C8dX+J7+K70YYdRxnvxEgm6EnHkkypAf5+qxe
+ noWiKtCTNH26to02R2NKKlcXUDWFEk94/IDQPdGTz/AIsZ/f0lMJy+mzU6Df/YcRSPbk0n
+ A1drgMmtgAAaa68qWhoxIEpvHyWvKvo=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-441-8epl6VuqNBGPMMQe5VTwEg-1; Mon, 09 Oct 2023 07:45:46 -0400
+X-MC-Unique: 8epl6VuqNBGPMMQe5VTwEg-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-9b274cc9636so362733866b.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:45:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696851939; x=1697456739;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=PPonpOK0od+dn5EFgbrIZZ8JVanHxWrm5XlWfzQyIbo=;
- b=iRbzsyM/6IAZaQBObxrd5tluBkOM7mWICM8JihU/7q9yoOvSnBt91dTUydecZl2K//
- CrHTr38WoJpwwmzLU0VWoHbc+C+7GojGY9Mcf5VC3/XJPgtxWwDGz3BOYw/j82ACob85
- SvetneUimkK1xpP+CfgSqW7rV0onnC/1CzecZyeZ9M1mqztGz3SWUmuPLKmVJ580qlN/
- W1SZ2SYwbci+MJQJCGABGuij9uIoMdSNcfQmTLUu81cK+4ftEgMVgFzI5Ctd3ALJW9EE
- lpEQV3CIRailSUozHuCjsfDLHoBlZ0CaQT0+TfuGneeoYDmw4GGivrNwNd7dk+FvWfTt
- QLrg==
-X-Gm-Message-State: AOJu0YyGksIHjgZFy72P8R4+F6UUmasqKvTur6k9LdaOuG7iVkvP4TkN
- LasViuzDiJMHNsR1Xp1UpoDT/Ldk2MTObQvn74s=
-X-Google-Smtp-Source: AGHT+IGZ6nRJh5cL/AJ65Cu/iAshCY1yyfIOOSuuAcRqsRKkmOTcnt3nfwzquMfKtjJ0Y7ilSI4loQ==
-X-Received: by 2002:a17:902:9a44:b0:1be:384:7b29 with SMTP id
- x4-20020a1709029a4400b001be03847b29mr13899958plv.34.1696851939335; 
- Mon, 09 Oct 2023 04:45:39 -0700 (PDT)
-Received: from [192.168.68.108] ([177.94.42.196])
+ d=1e100.net; s=20230601; t=1696851945; x=1697456745;
+ h=in-reply-to:content-disposition:mime-version:references:message-id
+ :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=3p5LYjpHy/lcn1IuFH3k5hW/a9mM/RPxNGvmqoT/I6A=;
+ b=V6CHGhJ9tfufyLwQSE4xveqozrJDwaTtuNbd7eD/qaQj6KGXWZ47kXKEsEjEZeklO5
+ VUjObrY5ECmR+MDwOfzTHF4qz3TXscpTXBM+oYNYJ/0yKO6KsZqiR5ELnEUxdLDI5bra
+ 9dS+ZcRMbplGaIKFGMCIjHXcfxFMD4OxMwA6EB5n3+4koqaqZgpEbyMJTHU3/myw8ZEz
+ Jdtf2G/YDAQ2+JmxVn4fnUip15MqZMMb0Ji5kiWzk0NtK44EEZlWrr/6p1XuNTgz1I/0
+ s9+hTh6M3iYZZLirhbJQWn6+JGrrYDpOjCRvvwBH2QPyRXaIuR5tIMWyHiDfZBLm5I8H
+ /ZfQ==
+X-Gm-Message-State: AOJu0YwcKkhE9zhulQC+a69KIovRCjCnC1KvCUbN+aVpOvhyrP2upaC2
+ B0+hO7zTXxZCgk1k36E8j1dxrMMn+pugJuQYpVT2MUYyv3V3KMo6iN+ci1FLsGgcfB+gZs9e+CK
+ VTY4KHhsGPRuKrbXk50xXsqw=
+X-Received: by 2002:a17:906:8a73:b0:9a1:e758:fc73 with SMTP id
+ hy19-20020a1709068a7300b009a1e758fc73mr12603230ejc.67.1696851945116; 
+ Mon, 09 Oct 2023 04:45:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCJfgsBjBXo7Tsx3vgAH73kWqyQ3kuB/RZ35xJLHAOrjcWACBYzBbpvRp3j7tPO3e2oa4QFg==
+X-Received: by 2002:a17:906:8a73:b0:9a1:e758:fc73 with SMTP id
+ hy19-20020a1709068a7300b009a1e758fc73mr12603219ejc.67.1696851944769; 
+ Mon, 09 Oct 2023 04:45:44 -0700 (PDT)
+Received: from redhat.com ([2a02:14f:16f:5caf:857a:f352:c1fc:cf50])
  by smtp.gmail.com with ESMTPSA id
- y7-20020a17090322c700b001c726147a46sm9340195plg.234.2023.10.09.04.45.33
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 04:45:38 -0700 (PDT)
-Message-ID: <7e31c247-23a2-41b9-bd25-86a21f06e819@ventanamicro.com>
-Date: Mon, 9 Oct 2023 08:45:33 -0300
+ gt26-20020a170906f21a00b0099bcf9c2ec6sm6626821ejb.75.2023.10.09.04.45.41
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Oct 2023 04:45:43 -0700 (PDT)
+Date: Mon, 9 Oct 2023 07:45:39 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: =?iso-8859-1?Q?Marc-Andr=E9?= Lureau <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
+ compiling with -Wshadow
+Message-ID: <20231009074333-mutt-send-email-mst@kernel.org>
+References: <20231009083726.30301-1-thuth@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] target/ppc: Use env_archcpu() in
- helper_book3s_msgsndp()
-Content-Language: en-US
-To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
- Bin Meng <bin.meng@windriver.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Cameron Esfahani <dirty@apple.com>, qemu-ppc@nongnu.org,
- qemu-riscv@nongnu.org, Max Filippov <jcmvbkbc@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
- <clg@kaod.org>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Nicholas Piggin <npiggin@gmail.com>
-References: <20231009110239.66778-1-philmd@linaro.org>
- <20231009110239.66778-2-philmd@linaro.org>
-From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231009110239.66778-2-philmd@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x634.google.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231009083726.30301-1-thuth@redhat.com>
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -107,34 +98,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 10/9/23 08:02, Philippe Mathieu-Daudé wrote:
-> When CPUArchState* is available (here CPUPPCState*), we
-> can use the fast env_archcpu() macro to get ArchCPU* (here
-> PowerPCCPU*). The QOM cast POWERPC_CPU() macro will be
-> slower when building with --enable-qom-cast-debug.
+On Mon, Oct 09, 2023 at 10:37:25AM +0200, Thomas Huth wrote:
+> Rename some variables to avoid compiler warnings when compiling
+> with -Wshadow=local.
 > 
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Signed-off-by: Thomas Huth <thuth@redhat.com>
 > ---
->   target/ppc/excp_helper.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  v2: Renamed the variable to something more unique
 > 
-> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
-> index 7926114d5c..a42743a3e0 100644
-> --- a/target/ppc/excp_helper.c
-> +++ b/target/ppc/excp_helper.c
-> @@ -3136,7 +3136,7 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
->   void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
->   {
->       CPUState *cs = env_cpu(env);
-> -    PowerPCCPU *cpu = POWERPC_CPU(cs);
-> +    PowerPCCPU *cpu = env_archcpu(env);
+>  contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
+>  contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
+>  2 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
+> index 509b679f03..654c392fbb 100644
+> --- a/contrib/vhost-user-gpu/vugpu.h
+> +++ b/contrib/vhost-user-gpu/vugpu.h
+> @@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
+>  };
+>  
+>  #define VUGPU_FILL_CMD(out) do {                                \
+> -        size_t s;                                               \
+> -        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
+> +        size_t vugpufillcmd_s_ =                                \
+> +            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
+>                         &out, sizeof(out));                      \
+> -        if (s != sizeof(out)) {                                 \
+> +        if (vugpufillcmd_s_ != sizeof(out)) {                   \
+>              g_critical("%s: command size incorrect %zu vs %zu", \
+> -                       __func__, s, sizeof(out));               \
+> +                       __func__, vugpufillcmd_s_, sizeof(out)); \
+>              return;                                             \
+>          }                                                       \
+>      } while (0)
 
+I think I prefer VUGPU_FILL_CMD_s or VUGPU_FILL_CMD_s_ - makes it clear
+it's related to a macro.
 
-Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
+> diff --git a/contrib/vhost-user-gpu/vhost-user-gpu.c b/contrib/vhost-user-gpu/vhost-user-gpu.c
+> index aa304475a0..bb41758e34 100644
+> --- a/contrib/vhost-user-gpu/vhost-user-gpu.c
+> +++ b/contrib/vhost-user-gpu/vhost-user-gpu.c
+> @@ -834,7 +834,7 @@ vg_resource_flush(VuGpu *g,
+>                  .width = width,
+>                  .height = height,
+>              };
+> -            pixman_image_t *i =
+> +            pixman_image_t *img =
+>                  pixman_image_create_bits(pixman_image_get_format(res->image),
+>                                           msg->payload.update.width,
+>                                           msg->payload.update.height,
+> @@ -842,11 +842,11 @@ vg_resource_flush(VuGpu *g,
+>                                                        payload.update.data),
+>                                           width * bpp);
+>              pixman_image_composite(PIXMAN_OP_SRC,
+> -                                   res->image, NULL, i,
+> +                                   res->image, NULL, img,
+>                                     extents->x1, extents->y1,
+>                                     0, 0, 0, 0,
+>                                     width, height);
+> -            pixman_image_unref(i);
+> +            pixman_image_unref(img);
+>              vg_send_msg(g, msg, -1);
+>              g_free(msg);
+>          }
+> -- 
+> 2.41.0
 
->       CPUState *ccs;
->       uint32_t nr_threads = cs->nr_threads;
->       int ttir = rb & PPC_BITMASK(57, 63);
 
