@@ -2,111 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95CC7BE6E3
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F63A7BE700
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:51:12 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptPS-0004OO-OV; Mon, 09 Oct 2023 12:47:10 -0400
+	id 1qptTC-0006wS-5O; Mon, 09 Oct 2023 12:51:02 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptOt-0003BP-M6
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:41 -0400
-Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qptSg-0006iB-Dk
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:50:41 -0400
+Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptOi-0003VV-WA
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:30 -0400
-Received: by mail-wm1-x32a.google.com with SMTP id
- 5b1f17b1804b1-405497850dbso44438845e9.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696869972; x=1697474772; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=6tkbJLFSKCFqBt7eF2KdGUHAT+NPxj+IrJR+AQ70tYE=;
- b=gEPQOFgw6dKwgtTEQ9yulODQCWAXuTWPL+7uRcgBQZF/79MclLHI1M0+rpZ9XROpA5
- m+hbLUrwTUILYo1/di4SSAW3V9nn5HUpX/xwcXzCpyy0/zDqmpB4njTQqCBoL/4c+2qQ
- b25gNrxbpAgH0abvd0dd4ftG148D1BOEifGlWyRrm/WaWg3XZ9kxjV41k4bklyIriT3a
- jLGXO5DvyxidagQ+8ygKVooUqLj3veElresb6WOE2JYQyaVS9yZHC1TG9FzyrccXXb5i
- L9HR9NptkjujN5DHLoo/a3NoYUINZA7P7XT6BAFJs13dRgylkpQbbcrdGraENPFeNuX2
- F0kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696869972; x=1697474772;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=6tkbJLFSKCFqBt7eF2KdGUHAT+NPxj+IrJR+AQ70tYE=;
- b=g8bu7Y2Vx2HdKnq3OJnMNYQAqzjSk3KqYATwBZsXJ0S8h2SfTGYFaTyy7XnW7oc07C
- JmT7q/R8lH9AZfklvawQUGQ3JC/78jeiFlEW7M94+9ATZRpcu2YBzvsFVGYeLLchBRXY
- P/Q+oUN/81ZljN79Ro1owTVY5ApIoD2cQdX6AUY4HFOkJCTin047TnCv55SBFKtimAse
- KI+cwdQIBq5V/xB0atZsjVnR6e1KU8S3rcsWNWD5s6Eddx5rVUK6cI7f25OREWI53Uvj
- 186aRSN6ma8rvn/nOEWfvc9h200VyHqkBnrR08e+9/A54/CIutVmzgzC/EMvN4QmOE1+
- 2alw==
-X-Gm-Message-State: AOJu0YxOdfdqcu9G5cUe/twF3XnTdwzWN8O4Wij9HbymZAsBsu4BlQdl
- 9bnCvTGWYkdyJgqu8YbbTyqWXA==
-X-Google-Smtp-Source: AGHT+IHZJ3e+XH3QUR/HfE+G2KEXXVVPur/X2H6IVt+cLncEkTEfjNCKzXsdR1U3LLXERWjDzWPGug==
-X-Received: by 2002:a05:600c:2054:b0:3fe:687a:abb8 with SMTP id
- p20-20020a05600c205400b003fe687aabb8mr14478186wmg.7.1696869972151; 
- Mon, 09 Oct 2023 09:46:12 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- n16-20020a05600c3b9000b0040684abb623sm14062506wms.24.2023.10.09.09.46.11
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:46:11 -0700 (PDT)
-Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 122C11FFD0;
- Mon,  9 Oct 2023 17:41:08 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
- =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Bastian Koppelmann <kbastian@mail.uni-paderborn.de>,
- Brad Smith <brad@comstyle.com>, Radoslaw Biernacki <rad@semihalf.com>,
- David Hildenbrand <david@redhat.com>, Cleber Rosa <crosa@redhat.com>,
- Ilya Leoshkevich <iii@linux.ibm.com>, qemu-riscv@nongnu.org,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Alexandre Iooss <erdnaxe@crans.org>, Nicholas Piggin <npiggin@gmail.com>,
- Bin Meng <bin.meng@windriver.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Eduardo Habkost <eduardo@habkost.net>,
- Alistair Francis <alistair.francis@wdc.com>, qemu-ppc@nongnu.org,
- John Snow <jsnow@redhat.com>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- qemu-arm@nongnu.org, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- Peter Maydell <peter.maydell@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Beraldo Leal <bleal@redhat.com>,
- Yoshinori Sato <ysato@users.sourceforge.jp>,
- Mahmoud Mandour <ma.mandourr@gmail.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Song Gao <gaosong@loongson.cn>,
- Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
- =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 25/25] contrib/plugins: fix coverity warning in hotblocks
-Date: Mon,  9 Oct 2023 17:41:04 +0100
-Message-Id: <20231009164104.369749-26-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
-References: <20231009164104.369749-1-alex.bennee@linaro.org>
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qptSU-00050l-FF
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:50:20 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out1.suse.de (Postfix) with ESMTPS id 508E421885;
+ Mon,  9 Oct 2023 16:50:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696870211; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yRZ2PsMNVS+CUwYEFGzSwichCql74f0vXhRTYueFjis=;
+ b=Q8oBl/l2U/d8FzdC0bkXU2GZuW0PGfU0kbo6mRHgfQEx+d+bqGh/eeb/DxzWVlzFXOXG5X
+ 0ows3nootRYuQZ3nm91SURImV22e0Zs8vjWifeespXNrQH+SdIsunkKWz9IwLsUkhKrHia
+ QT/GhLoo2STRKG3szCy3761NY6jzTKE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696870211;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ in-reply-to:in-reply-to:references:references;
+ bh=yRZ2PsMNVS+CUwYEFGzSwichCql74f0vXhRTYueFjis=;
+ b=BrQ4ajFuKtRjrkJTGfik8lTEsOQRDBMDg6VQt1eNhMmKXuKLh/bM3d3cy057oaVohdCRTp
+ oGzds1O/L7tKQoCw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D6D3F13905;
+ Mon,  9 Oct 2023 16:50:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id KSvmJ0IvJGVKXAAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 16:50:10 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Peter Xu <peterx@redhat.com>
+Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
+Subject: Re: [PATCH v3 10/10] tests/migration-test: Add a test for postcopy
+ hangs during RECOVER
+In-Reply-To: <87zg0wenkg.fsf@suse.de>
+References: <20231004220240.167175-1-peterx@redhat.com>
+ <20231004220240.167175-11-peterx@redhat.com> <87edi9fbh5.fsf@suse.de>
+ <878r8hfavf.fsf@suse.de> <ZR8iwwOeXWI+x9YX@x1n> <875y3kg4hv.fsf@suse.de>
+ <ZR8uMcN5WwA2kC9k@x1n> <87zg0wenkg.fsf@suse.de>
+Date: Mon, 09 Oct 2023 13:50:08 -0300
+Message-ID: <87wmvveo5b.fsf@suse.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+Content-Type: text/plain
+Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
+ helo=smtp-out1.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -122,30 +85,107 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity complains that we have an unbalance use of mutex leading to
-potential deadlocks.
+Fabiano Rosas <farosas@suse.de> writes:
 
-Fixes: CID 1519048
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- contrib/plugins/hotblocks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> Peter Xu <peterx@redhat.com> writes:
+>
+>> On Thu, Oct 05, 2023 at 06:10:20PM -0300, Fabiano Rosas wrote:
+>>> Peter Xu <peterx@redhat.com> writes:
+>>> 
+>>> > On Thu, Oct 05, 2023 at 10:37:56AM -0300, Fabiano Rosas wrote:
+>>> >> >> +    /*
+>>> >> >> +     * Make sure both QEMU instances will go into RECOVER stage, then test
+>>> >> >> +     * kicking them out using migrate-pause.
+>>> >> >> +     */
+>>> >> >> +    wait_for_postcopy_status(from, "postcopy-recover");
+>>> >> >> +    wait_for_postcopy_status(to, "postcopy-recover");
+>>> >> >
+>>> >> > Is this wait out of place? I think we're trying to resume too fast after
+>>> >> > migrate_recover():
+>>> >> >
+>>> >> > # {
+>>> >> > #     "error": {
+>>> >> > #         "class": "GenericError",
+>>> >> > #         "desc": "Cannot resume if there is no paused migration"
+>>> >> > #     }
+>>> >> > # }
+>>> >> >
+>>> >> 
+>>> >> Ugh, sorry about the long lines:
+>>> >> 
+>>> >> {
+>>> >>     "error": {
+>>> >>         "class": "GenericError",
+>>> >>         "desc": "Cannot resume if there is no paused migration"
+>>> >>     }
+>>> >> }
+>>> >
+>>> > Sorry I didn't get you here.  Could you elaborate your question?
+>>> >
+>>> 
+>>> The test is sometimes failing with the above message.
+>>> 
+>>> But indeed my question doesn't make sense. I forgot migrate_recover
+>>> happens on the destination. Nevermind.
+>>> 
+>>> The bug is still present nonetheless. We're going into migrate_prepare
+>>> in some state other than POSTCOPY_PAUSED.
+>>
+>> Oh I see.  Interestingly I cannot reproduce on my host, just like last
+>> time..
+>>
+>> What is your setup for running the test?  Anything special?  Here's my
+>> cmdline:
+>
+> The crudest oneliner:
+>
+> for i in $(seq 1 9999); do echo "$i ============="; \
+> QTEST_QEMU_BINARY=./qemu-system-x86_64 \
+> ./tests/qtest/migration-test -r /x86_64/migration/postcopy/recovery || break ; done
+>
+> I suspect my system has something specific to it that affects the timing
+> of the tests. But I have no idea what it could be.
+>
+> $ lscpu       
+> Architecture:            x86_64      
+>   CPU op-mode(s):        32-bit, 64-bit
+>   Address sizes:         39 bits physical, 48 bits virtual
+>   Byte Order:            Little Endian
+> CPU(s):                  16
+>   On-line CPU(s) list:   0-15
+> Vendor ID:               GenuineIntel
+>   Model name:            11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz
+>     CPU family:          6
+>     Model:               141
+>     Thread(s) per core:  2
+>     Core(s) per socket:  8
+>     Socket(s):           1
+>     Stepping:            1
+>     CPU max MHz:         4800.0000
+>     CPU min MHz:         800.0000
+>     BogoMIPS:            4992.00
+>
+>>
+>> $ cat reproduce.sh 
+>> index=$1
+>> loop=0
+>>
+>> while :; do
+>>         echo "Starting loop=$loop..."
+>>         QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test -p /x86_64/migration/postcopy/recovery/double-failures
+>>         if [[ $? != 0 ]]; then
+>>                 echo "index $index REPRODUCED (loop=$loop) !"
+>>                 break
+>>         fi
+>>         loop=$(( loop + 1 ))
+>> done
+>>
+>> Survives 200+ loops and kept going.
+>>
+>> However I think I saw what's wrong here, could you help try below fixup?
+>>
+>
+> Sure. I won't get to it until tomorrow though.
 
-diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
-index 6b74d25fea..4de1b13494 100644
---- a/contrib/plugins/hotblocks.c
-+++ b/contrib/plugins/hotblocks.c
-@@ -69,8 +69,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
-         }
- 
-         g_list_free(it);
--        g_mutex_unlock(&lock);
-     }
-+    g_mutex_unlock(&lock);
- 
-     qemu_plugin_outs(report->str);
- }
--- 
-2.39.2
-
+It seems to have fixed the issue. 3500 iterations and still going.
 
