@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2857BE6E4
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:47:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403307BE6E6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:48:43 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptPN-0003qX-HF; Mon, 09 Oct 2023 12:47:05 -0400
+	id 1qptPX-0004s9-Om; Mon, 09 Oct 2023 12:47:15 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptOu-0003BS-Dp
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:52 -0400
-Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
+ id 1qptPH-0003Ri-Gy
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:47:01 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptOk-0003VQ-3M
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:34 -0400
-Received: by mail-wm1-x330.google.com with SMTP id
- 5b1f17b1804b1-4064867903cso47900265e9.2
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:14 -0700 (PDT)
+ id 1qptOl-0003X0-F3
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:58 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3248e90f032so4718428f8f.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696869972; x=1697474772; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696869974; x=1697474774; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=e5StG+rhxOIhMaXsnxTS3HFTjNGO8160fFaP+7NtskE=;
- b=HDCSE4lMeW6mi1SD6Bat9CQhsT8IWC1hw/KZeTQ4YVDEfSgfGZt1vM4QS8iEtK0HYq
- YB2WZjHwfqwY6wEOesYLkdkx+YAkiI2od3w/7Fn3lCf4yOIvmPqk2tbLMNDWdtT4eUtR
- kTZLNoi9l9bBMLvQS1Jqblbply9+5ifHN7dN/mLkanrKdj8rdgdqtGDoJ14vjD8W9wfj
- nz+9xQO3Ulr1mqOqLrJXocTl8AT+uKslKaZhpgmvdOSGxAkjrpC8ScrQp4ZH1LkPTxiy
- +E9YOOMF9FDfsLs4CDyPTk2yeCZL7dQ35+q2GM0Gl5LmlAocaGPUBU8jaNJ/jY/COCG7
- Iu2Q==
+ bh=2rjltn9M+XXAIv6I9KIZqs861Zafbf86k+j+c8/sLis=;
+ b=PmwVZoChq7YroltJUmKbcaVmPxkvnXuGyo85zP/J+kGJCzu5Z05kuYogSwpG7h7C7A
+ 1lN/Q4lu6rtDGcktzEIHh4AyoLau6XRVNBGqX34XjTUjqbiTUm44SnOO6Zg+k3xRMpoJ
+ k0YwGMWeQiFfy+fiNrzhUol+qN5gF0eBk2p5fkypOCn24//CPDps7E5YjOgCGyABhrwy
+ 9fUjDyGdILq3N7txhCMQrMWIuTABNXlr5+YkYuX9r/YQQwqzOilBgbbtL6KirULDUNlf
+ 6wSRPLytlJlPS/6jJLhXXpYd+q5w8K1HOlr/Yf5Gydr3lrO7iyCgSbtwofVQ28xz2Sim
+ eJoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696869972; x=1697474772;
+ d=1e100.net; s=20230601; t=1696869974; x=1697474774;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=e5StG+rhxOIhMaXsnxTS3HFTjNGO8160fFaP+7NtskE=;
- b=X1YOrEeSD09v6IOWnnHOgrwEnoRICI/ldQexwCW9pUHBj4Gtysy/EAigwPl5RRoGcQ
- SW8obH88PgCINUmtjMqgJ3ojogstf6sgczZe0JNlMYknarkdz/haAhiu+75RXCEEtSD8
- /q7/bKA0tDpQTTKpbkiT/TM0x91kpYMaay5XjsietbBWZ1+Dk+wQK+OxLitvun0wsT91
- C6pC+UyW2aVstvI+dDqKtMZSCZ47sBN9vr+pyOIknrjGtplrACuAE124R5pIxAAEGZF8
- DThliMH8hl47ochsvUCrbNfN9RjVEWUG0sjsc826pVaIwroXDl1lWjOFcNgSmkH+7ssU
- rmDg==
-X-Gm-Message-State: AOJu0Yz7JB/JDyHSrlpAAIRRzniLAsRlkZVS8FH8QKPfnxOphAHIECwx
- U5+nG5ZVK++AnEVjlxO5trTGZ0+0fuokHOTbIm8=
-X-Google-Smtp-Source: AGHT+IGt3rG52toScdPKwaFZdST+tt6KfdXW4DMaQwkSGNmirI047WxBMGlleTcnfRunYPz+aiz9DQ==
-X-Received: by 2002:a1c:ed17:0:b0:406:7d74:a29e with SMTP id
- l23-20020a1ced17000000b004067d74a29emr14087044wmh.19.1696869971896; 
- Mon, 09 Oct 2023 09:46:11 -0700 (PDT)
+ bh=2rjltn9M+XXAIv6I9KIZqs861Zafbf86k+j+c8/sLis=;
+ b=TjVZZoQi80XsnWdQ29b2vDHMMWYmOjO0Pk0eIk5PzuFN3JRFWAeb6s8S80ET+Q8kD0
+ 80/9tpyeSR4yhpng5BW8RZCKIXxYrNUtkmCBHYaiMle9E6TXbS9mFTqQSlYZO/Q9s/vj
+ FNoTIK7Oltr/RP6z4Tsu7+84NznMibzS9dwjgpmjuKIAGCqIoAG8HBx1fRSUKitLQrKu
+ M1MN6N9j/6aKRGQbiu0kdG11wKjD05nWEi7WDg71Eg6QRLmS9/nLq7RzQiCzOObMFthY
+ B+8YkGmAJ7IuP9aqWp0eUT4CaPaSkkg9gb+Io43a075paXHAyuF4Qw4TSFrqTS7S2rFD
+ EpIA==
+X-Gm-Message-State: AOJu0YyYkbJFTF+bWr+UvSfTOvKhDWA7XYMEpGCo8w2yJ9lzzwVQxtcq
+ WJAHrRk1trxP+/EhwHlOLv5dZg==
+X-Google-Smtp-Source: AGHT+IHvYVP6ggxyRMNblubV/NESfR3QHoZbN7ZpRFlI2XVeB1yP0VZX12OJv0X4ALSUED/ED8S/0Q==
+X-Received: by 2002:adf:e892:0:b0:31f:a503:c05c with SMTP id
+ d18-20020adfe892000000b0031fa503c05cmr14688817wrm.38.1696869973891; 
+ Mon, 09 Oct 2023 09:46:13 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- m16-20020a7bca50000000b004064ac107cfsm11787284wml.39.2023.10.09.09.46.11
+ h11-20020a056000000b00b00325a59b2080sm10147151wrx.97.2023.10.09.09.46.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:46:11 -0700 (PDT)
+ Mon, 09 Oct 2023 09:46:13 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 9D8CB1FFCD;
+ by zen.linaroharston (Postfix) with ESMTP id BC80A1FFCE;
  Mon,  9 Oct 2023 17:41:07 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,18 +88,20 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Song Gao <gaosong@loongson.cn>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 21/25] target/sh4: Disable decode_gusa when plugins enabled
-Date: Mon,  9 Oct 2023 17:41:00 +0100
-Message-Id: <20231009164104.369749-22-alex.bennee@linaro.org>
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Matt Borgerson <contact@mborgerson.com>
+Subject: [PATCH 22/25] plugins: Set final instruction count in
+ plugin_gen_tb_end
+Date: Mon,  9 Oct 2023 17:41:01 +0100
+Message-Id: <20231009164104.369749-23-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::330;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x330.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,82 +124,80 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Richard Henderson <richard.henderson@linaro.org>
+From: Matt Borgerson <contact@mborgerson.com>
 
-Signed-off-by: Richard Henderson <richard.henderson@linaro.org>
-Message-Id: <20230824181233.1568795-3-richard.henderson@linaro.org>
-[AJB: fixed s/cpu_env/tcg_env/ during re-base]
+Translation logic may partially decode an instruction, then abort and
+remove the instruction from the TB. This can happen for example when an
+instruction spans two pages. In this case, plugins may get an incorrect
+result when calling qemu_plugin_tb_n_insns to query for the number of
+instructions in the TB. This patch updates plugin_gen_tb_end to set the
+final instruction count.
+
+Signed-off-by: Matt Borgerson <contact@mborgerson.com>
+[AJB: added g_assert to defed API]
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <CADc=-s5RwGViNTR-h5cq3np673W3RRFfhr4vCGJp0EoDUxvhog@mail.gmail.com>
 ---
- target/sh4/translate.c | 41 +++++++++++++++++++++++++++++------------
- 1 file changed, 29 insertions(+), 12 deletions(-)
+ include/exec/plugin-gen.h | 4 ++--
+ accel/tcg/plugin-gen.c    | 6 +++++-
+ accel/tcg/translator.c    | 2 +-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/target/sh4/translate.c b/target/sh4/translate.c
-index cbd8dfc02f..220a06bdce 100644
---- a/target/sh4/translate.c
-+++ b/target/sh4/translate.c
-@@ -1816,6 +1816,18 @@ static void decode_opc(DisasContext * ctx)
- }
+diff --git a/include/exec/plugin-gen.h b/include/exec/plugin-gen.h
+index 52828781bc..c4552b5061 100644
+--- a/include/exec/plugin-gen.h
++++ b/include/exec/plugin-gen.h
+@@ -20,7 +20,7 @@ struct DisasContextBase;
  
- #ifdef CONFIG_USER_ONLY
-+/*
-+ * Restart with the EXCLUSIVE bit set, within a TB run via
-+ * cpu_exec_step_atomic holding the exclusive lock.
-+ */
-+static void gen_restart_exclusive(DisasContext *ctx)
-+{
-+    ctx->envflags |= TB_FLAG_GUSA_EXCLUSIVE;
-+    gen_save_cpu_state(ctx, false);
-+    gen_helper_exclusive(tcg_env);
-+    ctx->base.is_jmp = DISAS_NORETURN;
-+}
+ bool plugin_gen_tb_start(CPUState *cpu, const struct DisasContextBase *db,
+                          bool supress);
+-void plugin_gen_tb_end(CPUState *cpu);
++void plugin_gen_tb_end(CPUState *cpu, size_t num_insns);
+ void plugin_gen_insn_start(CPUState *cpu, const struct DisasContextBase *db);
+ void plugin_gen_insn_end(void);
+ 
+@@ -42,7 +42,7 @@ void plugin_gen_insn_start(CPUState *cpu, const struct DisasContextBase *db)
+ static inline void plugin_gen_insn_end(void)
+ { }
+ 
+-static inline void plugin_gen_tb_end(CPUState *cpu)
++static inline void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
+ { }
+ 
+ static inline void plugin_gen_disable_mem_helpers(void)
+diff --git a/accel/tcg/plugin-gen.c b/accel/tcg/plugin-gen.c
+index d31c9993ea..39b3c9351f 100644
+--- a/accel/tcg/plugin-gen.c
++++ b/accel/tcg/plugin-gen.c
+@@ -866,10 +866,14 @@ void plugin_gen_insn_end(void)
+  * do any clean-up here and make sure things are reset in
+  * plugin_gen_tb_start.
+  */
+-void plugin_gen_tb_end(CPUState *cpu)
++void plugin_gen_tb_end(CPUState *cpu, size_t num_insns)
+ {
+     struct qemu_plugin_tb *ptb = tcg_ctx->plugin_tb;
+ 
++    /* translator may have removed instructions, update final count */
++    g_assert(num_insns <= ptb->n);
++    ptb->n = num_insns;
 +
- /* For uniprocessors, SH4 uses optimistic restartable atomic sequences.
-    Upon an interrupt, a real kernel would simply notice magic values in
-    the registers and reset the PC to the start of the sequence.
-@@ -2149,12 +2161,7 @@ static void decode_gusa(DisasContext *ctx, CPUSH4State *env)
-     qemu_log_mask(LOG_UNIMP, "Unrecognized gUSA sequence %08x-%08x\n",
-                   pc, pc_end);
+     /* collect instrumentation requests */
+     qemu_plugin_tb_trans_cb(cpu, ptb);
  
--    /* Restart with the EXCLUSIVE bit set, within a TB run via
--       cpu_exec_step_atomic holding the exclusive lock.  */
--    ctx->envflags |= TB_FLAG_GUSA_EXCLUSIVE;
--    gen_save_cpu_state(ctx, false);
--    gen_helper_exclusive(tcg_env);
--    ctx->base.is_jmp = DISAS_NORETURN;
-+    gen_restart_exclusive(ctx);
+diff --git a/accel/tcg/translator.c b/accel/tcg/translator.c
+index c5da7b32a5..575b9812ad 100644
+--- a/accel/tcg/translator.c
++++ b/accel/tcg/translator.c
+@@ -210,7 +210,7 @@ void translator_loop(CPUState *cpu, TranslationBlock *tb, int *max_insns,
+     gen_tb_end(tb, cflags, icount_start_insn, db->num_insns);
  
-     /* We're not executing an instruction, but we must report one for the
-        purposes of accounting within the TB.  We might as well report the
-@@ -2242,12 +2249,22 @@ static void sh4_tr_translate_insn(DisasContextBase *dcbase, CPUState *cs)
- #ifdef CONFIG_USER_ONLY
-     if (unlikely(ctx->envflags & TB_FLAG_GUSA_MASK)
-         && !(ctx->envflags & TB_FLAG_GUSA_EXCLUSIVE)) {
--        /* We're in an gUSA region, and we have not already fallen
--           back on using an exclusive region.  Attempt to parse the
--           region into a single supported atomic operation.  Failure
--           is handled within the parser by raising an exception to
--           retry using an exclusive region.  */
--        decode_gusa(ctx, env);
-+        /*
-+         * We're in an gUSA region, and we have not already fallen
-+         * back on using an exclusive region.  Attempt to parse the
-+         * region into a single supported atomic operation.  Failure
-+         * is handled within the parser by raising an exception to
-+         * retry using an exclusive region.
-+         *
-+         * Parsing the region in one block conflicts with plugins,
-+         * so always use exclusive mode if plugins enabled.
-+         */
-+        if (ctx->base.plugin_enabled) {
-+            gen_restart_exclusive(ctx);
-+            ctx->base.pc_next += 2;
-+        } else {
-+            decode_gusa(ctx, env);
-+        }
-         return;
+     if (plugin_enabled) {
+-        plugin_gen_tb_end(cpu);
++        plugin_gen_tb_end(cpu, db->num_insns);
      }
- #endif
+ 
+     /* The disas_log hook may use these values rather than recompute.  */
 -- 
 2.39.2
 
