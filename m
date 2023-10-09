@@ -2,70 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5695B7BDE74
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:19:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A337BDF13
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:26:10 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpq9K-0004QJ-6z; Mon, 09 Oct 2023 09:18:18 -0400
+	id 1qpqG6-0006N9-KT; Mon, 09 Oct 2023 09:25:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qpq9H-0004Q9-0N
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:18:16 -0400
+ id 1qpqG4-0006Mn-TX
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:25:17 -0400
 Received: from mx0b-002c1b01.pphosted.com ([148.163.155.12])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <het.gala@nutanix.com>)
- id 1qpq9C-00054x-Eh
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:18:14 -0400
-Received: from pps.filterd (m0127843.ppops.net [127.0.0.1])
+ id 1qpqFz-0006D1-C8
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:25:16 -0400
+Received: from pps.filterd (m0127844.ppops.net [127.0.0.1])
  by mx0b-002c1b01.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id
- 399Co7UF010562; Mon, 9 Oct 2023 06:18:01 -0700
+ 3992QesN017937; Mon, 9 Oct 2023 06:25:08 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com; h=
  content-type:message-id:date:subject:to:cc:references:from
- :in-reply-to:mime-version; s=proofpoint20171006; bh=5MXJ/s8TtjS+
- Gmvh6ZzrlF8t9HriAICYt++zNDsCjZk=; b=es/zvs84Fky843Z5w6ey84okbf+Z
- RqzgZRDK51+m+bmPRN6sWC4Cp2nCx8NELEqaXMmfi5e2Fep2UdXj8DA7S+wvrqr9
- mrtJhzKGMPPfutYWS7LmdsyBy3X58O/w7Whj5S/upBLvkjBQCXX+xBmdE0I/RrVH
- 5urx0ZDFimPo9bh4MG7R2Zw2DGYVZBRJa9uLRyxSS3jZE9QHAQWgXUGPvcxO2hg2
- zv6t2yOvXA3f59LsWXwTziWh3cFCQBNLeEfZJv+qeV7A7O/+qS693VfUsiyBQ0uh
- 6IBOQF7OXkPey/TKPRsE7MZaP5VCpfd9tlS8KpC1/nJT/ai/pH/Z4Jb5DA==
-Received: from nam12-bn8-obe.outbound.protection.outlook.com
- (mail-bn8nam12lp2169.outbound.protection.outlook.com [104.47.55.169])
- by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3tkj0qtkyb-1
+ :in-reply-to:mime-version; s=proofpoint20171006; bh=JTDx6wfNdOmA
+ s33yVxDtDWRQG9YTb2KYUXo9b60OyqI=; b=tF212OijJBtTFYNbGYM4LH85DSu3
+ 62dd0x6Wddnw1SDjlCidVctNNr1UJUcd6NIa0NPoSMNoFGotD3ndWNXpAgkBKUB/
+ FncWOP+R8y8JtpAH1v85f3nNxBjf7mcap0+59wMG9IhDXTuE8Ybt4j5TW6ri82Af
+ w8VPF824VIKZStcmbbNG/AmdCaTJp8SJrumJ7YPnrnr7QBJSWFGJTngoOpwr9JMU
+ O2LHR4PCzSsMkzln/j0ljffcZjWlm+RgS9is0014/EAnloq3Cc1y2spdNjw1YSRB
+ gYwq9zCi7b3GVxMtWsQtvsv+kUfx9hW9R47frqGkmQwGKEqFZBIezk/SYg==
+Received: from nam12-mw2-obe.outbound.protection.outlook.com
+ (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
+ by mx0b-002c1b01.pphosted.com (PPS) with ESMTPS id 3tkhv02n17-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 06:18:01 -0700 (PDT)
+ Mon, 09 Oct 2023 06:25:08 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eoNhzoeT0csITXb2PjiAUb3RT+7ejAxr4ggkNMYDQTRXUgdjYzVsI5u32jEKXPIXGKE6/A3EE1TVDPPawGJqGszTHVPROJXlLalAdmXwbxmtj0a4MMJ1W+rYupU8lCJFNLXILSTE7JK7xJUsExsTguFqthzMz3qlSHVZCOe9na9H8km0Hyu0Z2WvLdrkWgWxjmubFPIORWjI5pPciL/2Lv4FZx4zytjdDQNrIA3TsGgCuwsJHA71UgGOoQwJOtGkO7SL7aAKCCXz0oegvWl3NZ11PMp9X+HxjS91xtvNDxyfie0Np/osudgRebl5H7XOX4S8EvOeBFcvAUM+otS3Lw==
+ b=SJxdpOYrmhXD7FIFSoLoGPM32i0M9uJ//2GminDuTQvIMJBFJ4JAm1dhDnrPxhgoJmK3+4Mu/2NI3FuECQPohv2w49N9Xv1zjyIl7RW9bNF90jNYq85ja3E2RxjBvLIZP69p5WmOjbZ8P8G/WEFVuu34Sr3Y0s9IwSbYmlGjIQd/bMT4JEfFadqSZSxqZZuoDDe9f3eRSIy257sc3BlyuptsCxwYRJrTPu6jUKaVHB3fr7LrN3TWoFZPk33MOuyHkrUC/hqGB0ywmRYazX913Dd5gdk6xtbF6hVHhg3Pn9shxYigUAPN+QyB/XqS9gv7AnYvq8R6u8vSTxA3kcmDOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5MXJ/s8TtjS+Gmvh6ZzrlF8t9HriAICYt++zNDsCjZk=;
- b=khhY0dumHzFwQejTo29H8VHkPGyKh3Cd5RMcvagjRfdZOIgIdyJfxyBrj0Fo85TcMJETTowdfRu7mxrvA6PAcedVcgj7rCXIyobv9lF1XdBjqwFZe3ZDYiqJh1AR3S9YoybD1roqbg0Tj51Nq0FkOrLJP9X3NOQUEPuGdYtBZoStJvoZpaqwF3ZBDQPXkwf5dcBldST13SYYuyvLcY9yiapcywZYSaCdeMVrJWsiWBB8LPpTRLaXoK/0qqCUxM2jONwGrri6HWA3APcZJDGgt0IJEuKF0flXk/j72ZIsr6DDATzI++i65i/fulcUZ7hKgbFUx6Z1HFQ+07aROignNA==
+ bh=JTDx6wfNdOmAs33yVxDtDWRQG9YTb2KYUXo9b60OyqI=;
+ b=QR7/rNhN5M6RfXb7Tn6WwVhxMvtXEsuwWIXQQQdvWfqzlem31cPeH0lpDvNhz2mq83BswNG70gqME/4FW4Hkd2+K2CbvDgI6XQcQ2F33JOYsxOKAXm9063/+gvHM5XapbJF7Ht5LVoD7zEVNLOozzUN7REI7SvbHs/lOqRTXJZdwRdFSvr5ajW0OT7zKoQ4kKh+qxSNrCjVW+aYQYnkqrUjHkPzJY/KK242TAyHoGzfl8AdiQyMzv9whOttJXXgJQMO97anqxJvr///29neXRb0wKLi8VNXMoXkXUxQdC61dpJ6k3zFtE+7q7WDVR1Q7FQhzBG6FixTA+rcLdOAg/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nutanix.com; dmarc=pass action=none header.from=nutanix.com;
  dkim=pass header.d=nutanix.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nutanix.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5MXJ/s8TtjS+Gmvh6ZzrlF8t9HriAICYt++zNDsCjZk=;
- b=tVVMgRJNFJSPrXbh1n4ohWs4Fl/xUgGmrxh2MF/x/kpbKGg5GhSkPiAd/HzI2rGI+KRbAeYLGxN1QeWoCc7D4aJ4n72bo0XbRyYV1YUELdcbe+nN1p8MuAvCgjwdWvmV81VSJ0gesqdv4PxkHL0pj7L499gWwXC+A4Rg3eWAmEq1FRq5T5Ltau9dVF7clj+yjxO10olszxde0PwZ8b/T4VyoS6t8VYvv3s8G/ka9lKBEyY+EHkXholsXqIUWsVGWSG0gE35tpJvmvOQtlAoZwMev0njFwW5es005+I4JHWrEywtzb0RtZMwwSAAqeXc/kE5AQo7fEhk0bWCLV1n1Cg==
+ bh=JTDx6wfNdOmAs33yVxDtDWRQG9YTb2KYUXo9b60OyqI=;
+ b=bnsx3LEW3Fx/EpSGjgEan+lD1PIzZ2tP4auHYaoJ0NYDwi6U1W0+7/M9eABrtcuQzbrZnRRNgDNB/pfbpQjniq8ZkX/YXyi6LqSO1mFBn9aRXUjikGWXJUnWBR/oRnpPuERow6VHvbIBODFDvwipWDUxgV9Co0OU1lqeZqjtJyV/oLawA33Bc8DSr0s295J8FVxzO1C117G4ooStdlJ49qmU6fnY9DmAu260VdLVveHl8CnucC8QWfjoJ9SwipRuybmiJggdbhbU91Q3LzHzqzXcjnezepFYw2FjCU9BT9n+BASStRNfJoA+6BKWeZimiHPA+YD/S+sAqeoZlRvznw==
 Received: from SJ2PR02MB9955.namprd02.prod.outlook.com (2603:10b6:a03:55f::16)
- by SN7PR02MB9302.namprd02.prod.outlook.com (2603:10b6:806:34d::19)
+ by SJ0PR02MB7360.namprd02.prod.outlook.com (2603:10b6:a03:29a::9)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6838.43; Mon, 9 Oct
- 2023 13:17:58 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6863.36; Mon, 9 Oct
+ 2023 13:25:04 +0000
 Received: from SJ2PR02MB9955.namprd02.prod.outlook.com
  ([fe80::f13d:ea:118b:b4ae]) by SJ2PR02MB9955.namprd02.prod.outlook.com
  ([fe80::f13d:ea:118b:b4ae%4]) with mapi id 15.20.6863.032; Mon, 9 Oct 2023
- 13:17:58 +0000
+ 13:25:04 +0000
 Content-Type: multipart/alternative;
- boundary="------------d0BitAF6b7JW51tqgjLjAYNs"
-Message-ID: <9afc363b-537f-441c-a960-83d6478a65fb@nutanix.com>
-Date: Mon, 9 Oct 2023 18:47:56 +0530
+ boundary="------------0SXbD2JaoV9gVBxQJjZASuPS"
+Message-ID: <2a15e4a0-2a07-44d1-8e75-f9081ba4375d@nutanix.com>
+Date: Mon, 9 Oct 2023 18:55:02 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 10/10] migration: modify test_multifd_tcp_none() to
- use new QAPI syntax.
+Subject: Re: [PATCH v11 00/10] migration: Modify 'migrate' and
+ 'migrate-incoming' QAPI commands for migration
 Content-Language: en-GB
 To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
 Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
@@ -73,74 +73,75 @@ Cc: prerna.saxena@nutanix.com, quintela@redhat.com, dgilbert@redhat.com,
  eblake@redhat.com, manish.mishra@nutanix.com,
  aravind.retnakaran@nutanix.com
 References: <20231004075851.219173-1-het.gala@nutanix.com>
- <20231004075851.219173-11-het.gala@nutanix.com> <878r8ipfy1.fsf@suse.de>
+ <871qea5x7w.fsf@suse.de> <ec1a8f2e-ec10-46e2-1a2c-1ae593080ad4@nutanix.com>
+ <87sf6qpjrz.fsf@suse.de> <875y3mpfn7.fsf@suse.de>
 From: Het Gala <het.gala@nutanix.com>
-In-Reply-To: <878r8ipfy1.fsf@suse.de>
-X-ClientProxiedBy: BYAPR07CA0069.namprd07.prod.outlook.com
- (2603:10b6:a03:60::46) To SJ2PR02MB9955.namprd02.prod.outlook.com
+In-Reply-To: <875y3mpfn7.fsf@suse.de>
+X-ClientProxiedBy: SJ0PR03CA0351.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::26) To SJ2PR02MB9955.namprd02.prod.outlook.com
  (2603:10b6:a03:55f::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|SN7PR02MB9302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ffe2fd3-beb9-4cb8-584a-08dbc8ca27eb
+X-MS-TrafficTypeDiagnostic: SJ2PR02MB9955:EE_|SJ0PR02MB7360:EE_
+X-MS-Office365-Filtering-Correlation-Id: 32d23950-23d5-4e6d-43a5-08dbc8cb258a
 x-proofpoint-crosstenant: true
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 6xR1LJ/jcE1lj7SwdZ22whPsv9DnJP1+1I0OFTfhLvjXHI8/PLYvNIstkOcxIiIjR6JXUtY/ZeKjSMlGIE0P7PgpBPw96IfDoKvJrUq2zjXq7MtlM7JKQdrDw/bFmPcUuVcyhjVsbFf6FsLdLscFZyWzyPXK1DUt51+Ki441dWFQWpz0srzEPu+sbVvr0hysuVV6l/qVffFM8way3qw0yxJlcsEPx2MBzQfQePU4YWhaxmcZVAJX1RQz3iFhBFuL4Vr91Knjte9HO3drBybNtqJ1zCy9O18GaMvytFx4IzBVGqZwZHGEX3fG6s+/KJZUQ7W+4EXFlXLG5XvDQVs0Mx+lLTLUQB8b59d8CPiC8NXs0bDV1U+7zBGE5PVECrUnnsZK5nAcTO0UcUTT6klciN8Z0c2SGLo6motqlzWTh7NOe8epGcQGELEykyV6RfUGuCFqBZ2Tr8mkq3vZq87ocWRT0DTP8V84NambC+pFMzYES5EsVMgXpe7btpRmkuDIinWamZbs6mQsnQuJ5DPnPzpr27nuwLCU5/A7uwI1v2EhG0ng7ZPGHwup7S898/jw1I5oOODpOy/+K2gq0QnBLTQz3g924vHsRxveQj/4z58BC411w+N7rnfrmcB9NPVV5kx+alFnRQnbpH//L545RQ==
+X-Microsoft-Antispam-Message-Info: rVQI9HR0RZXmYYv8L+ZjNeFJLTDXWSQB8FrnPSB+bovwYYVwpf9UucTRitlz1sxH7C3dMstGXqaGZ2PEL/paUzNgiYkwVD7C2zebmoHPpNdCdy5y3sJ2EJV+UB03UwX9HEu+nYDusIzZPZEHeq5mvDpEpu03a6si2jM0HeGrKChqn03FfbnduGceav6AxSA77pdr46DuoijodlYFEaL+KzMU5tZR36GOQnvDwdM+s8o/xjOSwL1xqgQp30Fm0gN8UHR5e9PlfOiFfEDiETHmlF6SyX6Mb4Ruspfo/MM5mTVWyQlkY8F1u79wY+5/86eW7q26M4hhcs8mvkphiABu8IaXXdP/lTWYb3ikrapR/v2CgCjct97/cNqAgddJhGAA8zb02niQkgrNuk+h3APUwElIFToN2BhJEPPTlFSF33g9b9lpeQWncfm63MQg0lcCgZidcWQnNrwboS3lg8la+zcSMtZxqQItv4G+FnNszZbxi7PSZXBVq+v//PK623E30+Xw5eMMpYVQZ0uIWxnQyRYEtMHSjuABldoO6CWgnFWMo9tjVPqytfbeqclPQDCwfl5e/1tj5xkFGwI4CIczr/l50MCE1CGBkdH8H7+pEO7ocTVdAv2jCWuuO6/dv1AUx5lwVTkzGcHWQyeaLnzI0w==
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SJ2PR02MB9955.namprd02.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(136003)(376002)(396003)(39860400002)(366004)(346002)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(107886003)(6512007)(33964004)(53546011)(6506007)(478600001)(2616005)(6486002)(2906002)(83380400001)(8676002)(66946007)(5660300002)(44832011)(66556008)(41300700001)(4326008)(8936002)(66476007)(316002)(38100700002)(26005)(36756003)(31696002)(86362001)(31686004)(43740500002)(45980500001);
+ SFS:(13230031)(136003)(376002)(346002)(39860400002)(396003)(366004)(230922051799003)(64100799003)(1800799009)(451199024)(186009)(33964004)(31686004)(26005)(2616005)(53546011)(86362001)(31696002)(36756003)(166002)(38100700002)(107886003)(83380400001)(4326008)(2906002)(30864003)(478600001)(6506007)(8936002)(8676002)(6512007)(44832011)(316002)(6486002)(41300700001)(966005)(66946007)(5660300002)(66476007)(66556008)(43740500002)(45980500001);
  DIR:OUT; SFP:1102; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UXVzbVgvQlVOdUJrSU9uY3ZadlZNbjFENDNzWG9OcTUwOXBrZ1Z1MzVOTit5?=
- =?utf-8?B?OUNLb0VSVmFzWWJDM2o2MkNiN0NMaGRsTVBKNHJCK2pUSTQ2eFo2OFJSVWxV?=
- =?utf-8?B?TlE1ekpaT1FDR0dqWnRvL0xyeHU2b015bFc1LzU3QTlxdXhybXVURFllU2Ez?=
- =?utf-8?B?N3crd2xPemQyMDVFaTQ4TjdDME0waHc1d2c3amJyM2RBaERHWlB4U0R2RlQy?=
- =?utf-8?B?Vkc1M0ZNMFBnenVXcnlTMUNsbHJzbTVkNjFjNUN2V3FpenpjWTcvMEg0dXVL?=
- =?utf-8?B?d2dKZ1RpVGFLTjVGZDZBWWpOcG9FdXkwOE5pUnIzM3hCQUQ0N245RitYZVg2?=
- =?utf-8?B?b05rUy9UUnNMdWVUdWdLWDVTMDZEdmVwcTFJZzNqRFNtUXAwZTJ3ZWl3U2Rl?=
- =?utf-8?B?ZEJnSitIbzRxSERxV1E0UFhERTJ3U3BJUlcveUhTdUF2VGlxZWdHMlJ6V01Q?=
- =?utf-8?B?eXZUQ0s1RGdnZmRPUDY1MlVIVVJJcW5wMzgySG10cVdld1J4M0dNSmtQYzZF?=
- =?utf-8?B?UmdVR0ZOUEwzcnBEUFZmOW9pdi9wYUhFTjQwTE16cHFFWHZvcTY2UWllb29R?=
- =?utf-8?B?OVB0bFIzVXlaNW95ZHRMTDY4UXdCNkdabGdpSnpNSFg1VWNIbnFrMDZyeFpS?=
- =?utf-8?B?bzBwY2t0NzRmOGJTT1A5ZUxQWWcrbHJQVkRueWV4QnFIMllJTFpLay9yQUdw?=
- =?utf-8?B?SVZRTDZBYVdjczdPYURGNU5EVVIvWTRSZTU1eWp0SW03ZzUxbTlaandWZk5J?=
- =?utf-8?B?Sm5HaXFqeDVCbnlabkFxUDZvc0djblgwZVIzUUt0RVNFcGp4WGEyNno2NC9k?=
- =?utf-8?B?ZU1JRFNzQy8xRGJLTFBGM1dydUhqd3pZVXVFTUR2RkczN1Z1V0tnUGNibits?=
- =?utf-8?B?NE1DMkNYVVFCQm0ra0lXelJJcHZvN1JTdElxZ2hmem1qWjMrdE1BbWtXOXFR?=
- =?utf-8?B?cXc2bHdpYy9rMUpxa0xlY3l0VGpXV0kzSkh2TTR5RnVKSFhHYVlveXpYd0cv?=
- =?utf-8?B?Tm5hMmFWKzdMeldKTG1hWWQvZHk2Q2ZrOStQZnRldC9EUUNTdk5NMUh0RnpT?=
- =?utf-8?B?TU9mcTRxVGU4SEx4ZmxDTHhJd2NvRXAyZmorY2wySVBTQXhOdWxYdEUxM3ZT?=
- =?utf-8?B?K2psbVh4aGY3c0RTZVNlRTc3Rk5ZWHpsQWNqbTNWOHRvL1JCRGVNUXVpZXo3?=
- =?utf-8?B?UEM5UGcvL1NLRmxUTFpQTGdwK1ZrekpZMGNQRmUraEFOdEFCZlhoUS83Rzg0?=
- =?utf-8?B?QXh4VzNoMjBMWkxiN0lPQTVhNGpGaGMwSE1lOE1nUkJZclVJaXFlVTFLeWhn?=
- =?utf-8?B?cmFSOWxYZmxBWU9KVWlaYmE4VG4yZlNnWXFGRjFqRnNMSFJEWmRDS1gvY1pP?=
- =?utf-8?B?VVBZYkpiNEFtYWptWmZZTktSUnE5bkkxN3cwZTJJS1o5YmdGSmtocnh4bUxD?=
- =?utf-8?B?SHB2QkVydkZvU2FWSysyTzh1VEF0NDZnVHdwa3NienZnNGNPdEtSUDVWSmhY?=
- =?utf-8?B?aFRYSFhTYUVsaThNUWNkcU5hZ2RjdERmRzN0enRJMGliWVVheldKUUJ2THFO?=
- =?utf-8?B?VVFrNFZQaXQwMi9PYlVGM2hEK0Vkem9XRi9ialBkL28wRzVxTnZIU0xndzZx?=
- =?utf-8?B?YW41VENoRFkrQ0EyWUYxV0UvUnNROEJNbmxIbjVKTlB4RDJqTUhQcjZuTXFV?=
- =?utf-8?B?VFJCU3V3a3JMc1RoRmxabGhFaHdlY1hac3E2eGZkWisrak1yWVBQeHBuWG1s?=
- =?utf-8?B?L0tPc0NqUkdmMWxqaUtUbkpxeGFndTQvQ2FtV3lNNFNjSmhtSG82RlZ2SXMr?=
- =?utf-8?B?N0M3UkJwZ3dnajBNektQRDd1RlJOT0RIK1kxRFh4dWQrWnpVdUhlckhVbDFO?=
- =?utf-8?B?OXdTTUc5dFFSLzlTNXJxc0ZMOXVxZFBFZTdTRit0QUFJQ2xHUURtSW5VWStS?=
- =?utf-8?B?SDg1Tk5VOS9CVjZQNHZxVlF4WkJMZ2dCaS8xRENyaGpCNkl1SDh4TFREQmNl?=
- =?utf-8?B?RVhzaVF1b2FZdFFmc0Vkdk1wdEMrNFlqbDlZMW1JN0xaZk9qaHI0c0RHanlE?=
- =?utf-8?B?WDR6aEJZQWk1TWVaQnJSYSs4YytSRjZMUnp5SjRaS3ZldElrL1YxZll3b0g3?=
- =?utf-8?Q?NepRru6/guloIizJEdHPReXh9?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YjdFSHJQQjUvMUJtUHdneWlIb3lmMGZNVkdrK25ieFlYcjhjTVFkWWtuR1J2?=
+ =?utf-8?B?aE54U0tYdEFsL3hwVldQY3hzZzcyUXdnL0diUUNid3VZTlkyelNodExSMHlQ?=
+ =?utf-8?B?NjZ3cHVWMVozQUZzTUswd21pcmQ2eDZqNEh0TFJyZkVqb1hpTUQ2dUlQcEJt?=
+ =?utf-8?B?TjF0YjRUSnNQRkh4VFRBZFVVQ3Y0NytCc0hsYWRXYlZuTm1EZitXNnRaMGxp?=
+ =?utf-8?B?bmxVc0YyRnhuQWszNHptQzNDRitvNjlQcUhUV2RwaVFqNnk2UjZYcHpzQlR3?=
+ =?utf-8?B?d1FZV05pODB6bEtRbFA5SThhU1poL0dkTUlGZzBMdWJxcEwwRWxaKzgzSUlZ?=
+ =?utf-8?B?eVdUZ1ZMUDk5S0pUaFo5RzN5TVVaRzZSa2Y2eFZQMmczay92UzR2ek1Uby9x?=
+ =?utf-8?B?UExXaHV4Ym0zZG9LZXhFNVY0V1l1S2gvMDB0cFZhUEV6ZEIrem40ZkF0bFZN?=
+ =?utf-8?B?dkdoQ0UvVWl6ZVg3cHZvMFJKOCtWdXY3NzYyUU1ibW5abnFZUVdtWXdnL1dE?=
+ =?utf-8?B?MkZBWXNYakNNZEVRVXBtZXU0dnRJclI2ZEFjL3JRTmp4Mlc3eEVkc083Z29N?=
+ =?utf-8?B?ZGVYemJSUnpWU2JCR24xQnNBRmF4Nms5UksvWnFKZmQwSUV3YXo1MmxSK3Z2?=
+ =?utf-8?B?eFZXYTUva2lwN0ZaM2dmcXI1cEJjbGhhRTlYd2RtWHNwZEJqTVN0OFhUTm0w?=
+ =?utf-8?B?R0JPaEdhOWQ4dHJiMWZCT1A1THp3cWZpM0xIK3dzTUVDV1RXYU1tS0tPTGJj?=
+ =?utf-8?B?Q0RQckhnMGh6WW03YzRjTldEQ0JNbk5icXRYRUgwSGpvKzdkakVtNjA0SXRS?=
+ =?utf-8?B?d0RRZGt1dkdqVlRyZVZzZ0diTHNiRHVjM0lUSW5sT0REazBDOVdqVEQvTFda?=
+ =?utf-8?B?QnV6Z0xqcFc3blRsM01ZQVdqdUhRTEZ6ODlBZytYZ29qd0ZPbTNENTBwQjNq?=
+ =?utf-8?B?R24yK1JUVHlIMkxseXRTUkRnVHRLb21GTFFCYU5lSHBvaVQ3eFF4UXBUL0c5?=
+ =?utf-8?B?S0lzV3NWcVJ2bDB2R3JKZ1drVkw5c2k4cENLc3VuN0FvcnAwTTlUNTB5aXdw?=
+ =?utf-8?B?cFh4ZWJPcWdNWitDZUIrS2FsZklLL3BmSGlyeStJOWhrUGdaNll1SWIrQXJB?=
+ =?utf-8?B?NFdVYnZZcE5sL0JVcU5uUTl1RzBpWjNFcmFsS284L3RWNHdOR3RXb2l5eVNY?=
+ =?utf-8?B?akRsaS9zNTllZE9sRG5XTmNRM1JCMHpXNmJLbzVFUmxVS0ZCQWZULzdmWks0?=
+ =?utf-8?B?N2xQZXU0bUhILzFWKzEvRnJoWHBxQXdWU3N6T0d0UXlKVE9tcGxuUE1VR2Fq?=
+ =?utf-8?B?cTl0NEVUc2pLcnJpZTJPTE9ZTzQ0d2ROTGlHT0VjVkZ5M2x1NGJzVFZlM1Y2?=
+ =?utf-8?B?L0tVRlJqZHNOMCtTM09DcW1mOVhYd0ZzblhzZnNlamxNL1drbk83NnVyQ3px?=
+ =?utf-8?B?MXhST0xpQ0pENDJnbTFuKzhtRHpkWEl2a0J2Q1RXK3pKTmdwalRSblQ1Z0Jr?=
+ =?utf-8?B?TUxFL2lvMmQ2RDVUMERwUHpNYW1haTNHQks2emtDdjVZK2Z4RkpickNrSm9q?=
+ =?utf-8?B?ZkVwaHIrWUtIeG1lRXJ6Zjg4VXNiRTRZVy9PTGRrenhLMzRGeExaRnpUbXBY?=
+ =?utf-8?B?eTRrMGl3TWQ0U1VyRVNWUG03Ynpmd1RwR1BYM3FvM0w3WU5ybU11VVVGYnlF?=
+ =?utf-8?B?c0Vza2UvcXNFdGQ1VkhQL1QrbWUxTkRUYk53MXNhVG1JR1RwcGVMc0lKdk9C?=
+ =?utf-8?B?Ym5XLzQ3Q055TWc2L3YzRWUrL3VwMVptQUFlNXZDL1JyazhwYS9lUUJsdkFN?=
+ =?utf-8?B?QlN0UjVsNmIrcXdlbGIzOTFjZ3Y4d3FjOXNEQmZWTVNINVFKRGJINlM5c1hO?=
+ =?utf-8?B?SVRuM2tqQjIzZlVmNWRCeHpiV3VpTitYRDFpWkdqMzNKcnYvU0orTEVkRk13?=
+ =?utf-8?B?Y0NtWjhORFFiVnJEbE9RNGFacWMyYWdkdXRuankrTFV6TGdqV0FTSmIxeHJJ?=
+ =?utf-8?B?NUF0V29GRWY2UUNMUy8yQjdGT0o2SDJodVJrL0RhUlIzSHMwVldjVGR2bEVv?=
+ =?utf-8?B?b3AxU2FmdWt5ZlBESmx0a2NCaEtLdDUyUXlVR2dZeE5uejdJYThPNFJ2czVs?=
+ =?utf-8?Q?FznaMkahAP+CsQsFejb26vc5O?=
 X-OriginatorOrg: nutanix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ffe2fd3-beb9-4cb8-584a-08dbc8ca27eb
+X-MS-Exchange-CrossTenant-Network-Message-Id: 32d23950-23d5-4e6d-43a5-08dbc8cb258a
 X-MS-Exchange-CrossTenant-AuthSource: SJ2PR02MB9955.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 13:17:58.3458 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Oct 2023 13:25:03.8266 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bb047546-786f-4de1-bd75-24e5b6f79043
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oo7P3DTre07oTBjp+Qq5WdP6xJ7iw6KXXkKPQq2wnEGoEixtMBYfzXWzI75JvSWbrlJB4NzpsTU2GSAMNK0BkQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR02MB9302
-X-Proofpoint-GUID: k3Izc2Vf6YtX8-JyrlqwfmM2llIRUKdT
-X-Proofpoint-ORIG-GUID: k3Izc2Vf6YtX8-JyrlqwfmM2llIRUKdT
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1k3+ltxHIAvUck92rdkjplwb02w2TP7BYyIPGJIx4OF5NnVAegVJ6tYmZE8LHk7g4A0/QuxqnVKB3nfAusodag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR02MB7360
+X-Proofpoint-ORIG-GUID: 87-Mw22j1ciWcOXcCwSPJZwxo6JRCMy4
+X-Proofpoint-GUID: 87-Mw22j1ciWcOXcCwSPJZwxo6JRCMy4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-10-09_11,2023-10-09_01,2023-05-22_02
@@ -169,50 +170,101 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
---------------d0BitAF6b7JW51tqgjLjAYNs
+--------------0SXbD2JaoV9gVBxQJjZASuPS
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 
-On 10/4/2023 8:55 PM, Fabiano Rosas wrote:
-> Het Gala<het.gala@nutanix.com>  writes:
+On 10/4/2023 9:02 PM, Fabiano Rosas wrote:
+> Fabiano Rosas<farosas@suse.de>  writes:
 >
->> modify multifd tcp common test to incorporate the new QAPI
->> syntax defined.
+>> Het Gala<het.gala@nutanix.com>  writes:
 >>
->> Suggested-by: Aravind Retnakaran<aravind.retnakaran@nutanix.com>
->> Signed-off-by: Het Gala<het.gala@nutanix.com>
->> Reviewed-by: Daniel P. Berrangé<berrange@redhat.com>
->> ---
->>   tests/qtest/migration-test.c | 7 ++++++-
->>   1 file changed, 6 insertions(+), 1 deletion(-)
+>>> On 04/10/23 7:03 pm, Fabiano Rosas wrote:
+>>>> Het Gala<het.gala@nutanix.com>  writes:
+>>>>
+>>>>> This is v11 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
+>>>>> for upstream review.
+>>>>>
+>>>>> Update: Daniel has reviewed all patches and is okay with them. Markus has also
+>>>>>           given Acked-by tag for patches related to QAPI syntax change.
+>>>>> Fabiano, Juan and other migration maintainers, let me know if there are still
+>>>>> improvements to be made in this patchset series.
+>>>>>
+>>>>> Link to previous upstream community patchset links:
+>>>>> v1:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&e=
+>>>>> v2:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&e=
+>>>>> v3:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&e=
+>>>>> v4:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&e=
+>>>>> v5:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&e=
+>>>>> v6:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&e=
+>>>>> v7:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&e=
+>>>>> v8:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&e=
+>>>>> v9:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&e=
+>>>>> v10:https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&d=DwIBAg&c=s883GpUCOChKOHiocYtGcg&r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&e=
+>>>>>
+>>>>> v10 -> v11 changelog:
+>>>>> -------------------
+>>>>> - Resolved make check errors as its been almost two months since v10
+>>>>>     version of this patchset series went out. Till date migration workflow
+>>>>>     might have changed which caused make check errors.
+>>>> Sorry, there must be a misunderstanding here. This series still has
+>>>> problems. Just look at patch 6 that adds the "channel-type" parameter and
+>>>> patch 10 that uses "channeltype" in the test (without hyphen). This
+>>>> cannot work.
+>>> Ack. I will change that.
+>>>> There's also several instances of g_autoptr being used incorrectly. I
+>>>> could comment on every patch individually, but this series cannot have
+>>>> passed make check.
+>>> Are we allowed to run the make checks ? I am not aware from where these
+>>> failures are arising. It would be helpful if you could point out to me
+>>> where g_autoptr is incorrectly used ?
+>> I mean just the project's make check command:
 >>
->> diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
->> index 46f1c275a2..246cab6451 100644
->> --- a/tests/qtest/migration-test.c
->> +++ b/tests/qtest/migration-test.c
->> @@ -2205,7 +2205,12 @@ test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
->>   
->>       /* Start incoming migration from the 1st socket */
->>       qtest_qmp_assert_success(to, "{ 'execute': 'migrate-incoming',"
->> -                             "  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}");
->> +                             "  'arguments': { "
->> +                             "      'channels': [ { 'channeltype': 'main',"
-> channel-type
-Ack.
+>> cd build/
+>> ../configure
+>> make -j$(nproc)
+>> make -j$(nproc) check
+Yes, I got it now. Thanks
+>>>> Please resend this with the issues fixed and drop the Reviewed-bys from
+>>>> the affected patches.
+>>> How to verify which are the affected patches here ?
+>> I'll comment in each patch individually.
+> Done.
 >
->> +                             "      'addr': { 'transport': 'socket',"
->> +                             "                'type': 'inet',"
->> +                             "                'host': '127.0.0.1',"
->> +                             "                'port': '0' } } ] } }");
->>   
->>       return NULL;
->>   }
+> We had some double-frees when using g_autoptr in structures that are
+> nested into another. The qapi code already descends and frees the
+> children.
+>
+> There were also issues with allocating memory and later overwriting the
+> pointers.
+>
+> This might still not put us in the most correct situation regarding
+> memory, but I think it will at least get make check passing. Feel free
+> to investigate the errors with make check and propose alternative
+> solutions. It has been a while since I looked at this series, I might
+> have missed something further.
+Yes, for now I have tried to address all the comments made in the 
+individual patches and tried to fix issue of pointer overwriting 
+wherever I could spot, also double frees in the hmp code workflow. By 
+doing this, I have passed all the make checks, but if there are places 
+which needs to be re-looked for the above issues you mentioned, please 
+let me know.
+>> We'll also have to add compatibility with the new file: URI that's
+>> included in the latest migration pull request. I'll add comments on
+>> where I think we'll need to add code to support that feature.
+> I'll actually defer here until you post your series with the
+> fixes. It'll probably be easier if I just send individual additions to
+> your patches.
+
+Ack, thanks for reviewing patches and giving valuable feedback. Sending 
+new patchset series within sometime.
+
 Regards,
 Het Gala
---------------d0BitAF6b7JW51tqgjLjAYNs
+--------------0SXbD2JaoV9gVBxQJjZASuPS
 Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 <!DOCTYPE html><html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -220,60 +272,141 @@ Content-Transfer-Encoding: 8bit
   <body>
     <p><br>
     </p>
-    <div class="moz-cite-prefix">On 10/4/2023 8:55 PM, Fabiano Rosas
+    <div class="moz-cite-prefix">On 10/4/2023 9:02 PM, Fabiano Rosas
       wrote:<br>
     </div>
-    <blockquote type="cite" cite="mid:878r8ipfy1.fsf@suse.de">
-      <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
+    <blockquote type="cite" cite="mid:875y3mpfn7.fsf@suse.de">
+      <pre class="moz-quote-pre" wrap="">Fabiano Rosas <a class="moz-txt-link-rfc2396E" href="mailto:farosas@suse.de">&lt;farosas@suse.de&gt;</a> writes:
 
 </pre>
       <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">modify multifd tcp common test to incorporate the new QAPI
-syntax defined.
+        <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
 
-Suggested-by: Aravind Retnakaran <a class="moz-txt-link-rfc2396E" href="mailto:aravind.retnakaran@nutanix.com">&lt;aravind.retnakaran@nutanix.com&gt;</a>
-Signed-off-by: Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a>
-Reviewed-by: Daniel P. Berrangé <a class="moz-txt-link-rfc2396E" href="mailto:berrange@redhat.com">&lt;berrange@redhat.com&gt;</a>
----
- tests/qtest/migration-test.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/tests/qtest/migration-test.c b/tests/qtest/migration-test.c
-index 46f1c275a2..246cab6451 100644
---- a/tests/qtest/migration-test.c
-+++ b/tests/qtest/migration-test.c
-@@ -2205,7 +2205,12 @@ test_migrate_precopy_tcp_multifd_start_common(QTestState *from,
- 
-     /* Start incoming migration from the 1st socket */
-     qtest_qmp_assert_success(to, &quot;{ 'execute': 'migrate-incoming',&quot;
--                             &quot;  'arguments': { 'uri': 'tcp:127.0.0.1:0' }}&quot;);
-+                             &quot;  'arguments': { &quot;
-+                             &quot;      'channels': [ { 'channeltype': 'main',&quot;
 </pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">On 04/10/23 7:03 pm, Fabiano Rosas wrote:
+</pre>
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">Het Gala <a class="moz-txt-link-rfc2396E" href="mailto:het.gala@nutanix.com">&lt;het.gala@nutanix.com&gt;</a> writes:
+
+</pre>
+            <blockquote type="cite">
+              <pre class="moz-quote-pre" wrap="">This is v11 patchset of modified 'migrate' and 'migrate-incoming' QAPI design
+for upstream review.
+
+Update: Daniel has reviewed all patches and is okay with them. Markus has also
+         given Acked-by tag for patches related to QAPI syntax change.
+Fabiano, Juan and other migration maintainers, let me know if there are still
+improvements to be made in this patchset series.
+
+Link to previous upstream community patchset links:
+v1: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2022-2D12_msg04339.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=jsRvKRy1JOiy05KX1CtLqWN1su5XNmKPKuJTSx5sZpU&amp;e=</a>
+v2: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02106.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=mzt3n5PD1QclHfpZEh-VMoLkkwT8xqjPYN-1r7MOly0&amp;e=</a>
+v3: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D02_msg02473.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=fa9W71JU6-3xZrjLH7AmElgqwJGUkPeQv3P7n6EXxOM&amp;e=</a>
+v4: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg03064.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=Xr1y3EvBzEtWT9O1fVNapCb3WnD-aWR8UeXv6J6gZQM&amp;e=</a>
+v5: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D05_msg04845.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=OtK10W2Z0DobrktRfTCMYPxbcMaaZ6f6qoA65D4RG_A&amp;e=</a>
+v6: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D06_msg01251.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=XH-4qFQgdkAKmRsa9DuqaZgJMvGUi1p4-s05AsAEYRo&amp;e=</a>
+v7: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02027.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=RwvfliI4wLm7S0TKl5RMku-gSSE-5fZPYH0MkzJdoPw&amp;e=</a>
+v8: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg02770.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=BZsKBJGVPDWXwGgb2-fAnS9pWzTYuLzI92TmuWBcB3k&amp;e=</a>
+v9: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg04216.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=YcWFU9I2u-R6QbVjweZ3lFvJlllm-i9o5_jtLBxC_oc&amp;e=</a>
+v10: <a class="moz-txt-link-freetext" href="https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&amp;e=">https://urldefense.proofpoint.com/v2/url?u=https-3A__lists.gnu.org_archive_html_qemu-2Ddevel_2023-2D07_msg05022.html&amp;d=DwIBAg&amp;c=s883GpUCOChKOHiocYtGcg&amp;r=-qwZZzrw4EKSsq0BK7MBd3wW1WEpXmJeng3ZUT5uBCg&amp;m=xuVA--dLVo9lijpitqSt7EOEzBGpEvigXGCb9p_MIk0xmhQZ8bPasLgZ2aOlEBcz&amp;s=JQt63Ikbz21vmsLmSensQu8zknGuS9bls-IFpndor78&amp;e=</a>
+
+v10 -&gt; v11 changelog:
+-------------------
+- Resolved make check errors as its been almost two months since v10
+   version of this patchset series went out. Till date migration workflow
+   might have changed which caused make check errors.
+</pre>
+            </blockquote>
+            <pre class="moz-quote-pre" wrap="">Sorry, there must be a misunderstanding here. This series still has
+problems. Just look at patch 6 that adds the &quot;channel-type&quot; parameter and
+patch 10 that uses &quot;channeltype&quot; in the test (without hyphen). This
+cannot work.
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">Ack. I will change that.
+</pre>
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">There's also several instances of g_autoptr being used incorrectly. I
+could comment on every patch individually, but this series cannot have
+passed make check.
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">Are we allowed to run the make checks ? I am not aware from where these 
+failures are arising. It would be helpful if you could point out to me 
+where g_autoptr is incorrectly used ?
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+I mean just the project's make check command:
+
+cd build/
+../configure
+make -j$(nproc)
+make -j$(nproc) check</pre>
       </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-channel-type</pre>
     </blockquote>
-    Ack.<br>
-    <blockquote type="cite" cite="mid:878r8ipfy1.fsf@suse.de">
-      <pre class="moz-quote-pre" wrap="">
-
-</pre>
+    Yes, I got it now. Thanks<span style="white-space: pre-wrap">
+</span>
+    <blockquote type="cite" cite="mid:875y3mpfn7.fsf@suse.de">
       <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">+                             &quot;      'addr': { 'transport': 'socket',&quot;
-+                             &quot;                'type': 'inet',&quot;
-+                             &quot;                'host': '127.0.0.1',&quot;
-+                             &quot;                'port': '0' } } ] } }&quot;);
- 
-     return NULL;
- }</pre>
+        <blockquote type="cite">
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">Please resend this with the issues fixed and drop the Reviewed-bys from
+the affected patches.
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">How to verify which are the affected patches here ?
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+I'll comment in each patch individually.
+</pre>
       </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Done.
+
+We had some double-frees when using g_autoptr in structures that are
+nested into another. The qapi code already descends and frees the
+children.
+
+There were also issues with allocating memory and later overwriting the
+pointers.
+
+This might still not put us in the most correct situation regarding
+memory, but I think it will at least get make check passing. Feel free
+to investigate the errors with make check and propose alternative
+solutions. It has been a while since I looked at this series, I might
+have missed something further.</pre>
     </blockquote>
-    Regards,<br>
-    Het Gala<span style="white-space: pre-wrap">
+    Yes, for now I have tried to address all the comments made in the
+    individual patches and tried to fix issue of pointer overwriting
+    wherever I could spot, also double frees in the hmp code workflow.
+    By doing this, I have passed all the make checks, but if there are
+    places which needs to be re-looked for the above issues you
+    mentioned, please let me know.<span style="white-space: pre-wrap">
+</span>
+    <blockquote type="cite" cite="mid:875y3mpfn7.fsf@suse.de">
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">We'll also have to add compatibility with the new file: URI that's
+included in the latest migration pull request. I'll add comments on
+where I think we'll need to add code to support that feature.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+I'll actually defer here until you post your series with the
+fixes. It'll probably be easier if I just send individual additions to
+your patches.</pre>
+    </blockquote>
+    <p>Ack, thanks for reviewing patches and giving valuable feedback.
+      Sending new patchset series within sometime.</p>
+    <p><span style="white-space: pre-wrap">
+</span></p>
+    <span style="white-space: pre-wrap">Regards,</span><br>
+    <span style="white-space: pre-wrap">Het Gala
 </span>
   </body>
 </html>
 
---------------d0BitAF6b7JW51tqgjLjAYNs--
+--------------0SXbD2JaoV9gVBxQJjZASuPS--
 
