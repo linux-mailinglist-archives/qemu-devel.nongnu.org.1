@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F4B7BD928
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C71587BD929
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:03:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpo2q-0006bV-H3; Mon, 09 Oct 2023 07:03:30 -0400
+	id 1qpo2z-0006ep-Tz; Mon, 09 Oct 2023 07:03:37 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2e-0006Ol-97
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:16 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2i-0006Pn-BV
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:22 -0400
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2b-0003PR-PT
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:16 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-9a645e54806so748323966b.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:03:10 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2e-0003QZ-Tl
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:19 -0400
+Received: by mail-ej1-x62d.google.com with SMTP id
+ a640c23a62f3a-9b29186e20aso752256966b.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:03:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696849389; x=1697454189; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696849395; x=1697454195; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=V78g9jhuJwuu3XH3up4N6OXq/ULujlSA7fdJ/xZ8gEw=;
- b=RQ+OULPH/jae5EyalmRTnYY2y1PiomgrGPnqS9QRDVRwhNGbHHVNLNO9zXYjqKi+JU
- iGgzNmxuB1AzEgVTORIrJEpi1nrp4xBbETy+ayZ86ps1ahUpBsAOOPtniDcy6i7Gqk7F
- xUZkOw74yUFLOZ5CGiwccuQFKzBSs9r6dnn/r5a8T2wpk9zD5c4xVuIZaCQiU/r3tm2/
- J1ODZVBudu3nkq0um1gBtN8CeCEskWBpxpoCqsOsFgnTAeQkNKJy7ZtpivrT9rIEe1Of
- aK6/gU62yuNeRWOGX+KQnVlsdcBt1YDgK4InnM3f0FRSh4akkBK0NqVZCMMr7drPjomD
- /tYg==
+ bh=1+J1wI69+igLibXDQf0PHgHIzLfY8D41JYZfyX16+G8=;
+ b=ecKA4V1F9DPFs2cwjQ8AZKNzG4WOYVOH9X1FZpaV4IShxeIXvgSeDINqWXqYU8N/bq
+ Lx5Qd0nQfPmG7MmfQmYO96C45YrDzxFuFxUYRc4VFXrg8otxwpYjRP9hymX7vntH3BfI
+ /ibdVEnZDFTMpVDi25+7p+hsOZAHp2TYOXfmKepyt8bHJAFrTmHr0CO6D8pCwzFtJXnm
+ XaLPjI3Cvnpo8QLaPGrS6/drLMWgSMrtfFGRQdzA2ZOrp7VL4Ba8JN20H1T4zWL1qOFH
+ RLXYQEKdVvQKnqaHewoUAJK93xXY4USRW5a0kF2krnJdxT2kgw+VHICVQs7qSo1zkwRZ
+ N8jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696849389; x=1697454189;
+ d=1e100.net; s=20230601; t=1696849395; x=1697454195;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=V78g9jhuJwuu3XH3up4N6OXq/ULujlSA7fdJ/xZ8gEw=;
- b=SJMZQpUZO6DJdqOXZGfOByqcaQcVEpMmm3YubkdMlC8m1DammS5uh96hv16pD+Cd7D
- doIJs9/LD8AptlafzcRltO0dGc+VqsBtD9q//w7FiX8Aw/T6odGpDk0ZfykwbbLN76El
- GulaX+FNdkI+WUa0UqJs3jnZtJiM9JzWk3zemT7inZ0He2QOdnOT+ZNJtyViowLej23D
- a8buvcMkwSZe4aQ7IJbi2sweu6dQJhdeKVjTo+P4Nse+hYRyYdZunE5mToU+kzzvIx2/
- dd3a5oSkDqlyl5rqECT6QuuLY5TD8bYLJ7vckBhzS45VEiThCI/FRZ4yOHkRa1YfYSNS
- tkfw==
-X-Gm-Message-State: AOJu0Yxx4bBDw9S3CAC/aKW7iw8nwamNw5SduW+Gidl6xJ0Zs1YVp9rQ
- Ex8BUGEQvEsvTwh3sGE4XMsDOBRN+R0oIA+DJd8=
-X-Google-Smtp-Source: AGHT+IEcNwxVZqRuOS5msdhnG1M0Nje61e749+OicUXZAaRVWxzCHpr70xl3BdSEcOOgS8SbhCgXWA==
-X-Received: by 2002:a17:907:763b:b0:9ad:c132:b93b with SMTP id
- jy27-20020a170907763b00b009adc132b93bmr12534458ejc.5.1696849388833; 
- Mon, 09 Oct 2023 04:03:08 -0700 (PDT)
+ bh=1+J1wI69+igLibXDQf0PHgHIzLfY8D41JYZfyX16+G8=;
+ b=MwLwpSsAEZ4R5qbuUV9ekHR65asazgb4a1eOnb9cv0ZBXmID2nFL0vV/9BZpOIOOUM
+ W+5xKofbJYeKKK2irgFkPlc9Q0QwEI0CWCqi94xKGunJhnCyTHT0G75E2jNsuhWUQXKO
+ hy5iiJHtDSNXOIdgp0IZCeI3WxhkDGAVf9TaqrSUBZg7VhOkP3tnoQdiyslzzu8eCtjx
+ R8HdBNjs+l5tj+vZvtk0GYBWAy4R+odEq2mNQ5zqfV8dAsXuP4Cv+Ek/2miJ/PNRyaMQ
+ GyJlAKuBc4OFSO/khTG4FoCnyc+opHhzaVDb1ktthDdLI19t9B7D6stYquXpi6DY6UD2
+ GWcg==
+X-Gm-Message-State: AOJu0YzRJ+QC3W4RZyAEVCRmBkf/KVm8rypG+hLFH4DBjvW5rlf+uifZ
+ 2ykclSDaf6vlowj3nR0y+vxF9haZ9naYonjlaOw=
+X-Google-Smtp-Source: AGHT+IEnwQIfXK0PSpcUquHgDcrZc+NXC/pJVOCtuYwXpIu5y20njwFFRWuyfel+p9KZo0y0JdqV8Q==
+X-Received: by 2002:a17:906:3081:b0:9ae:73ca:bbad with SMTP id
+ 1-20020a170906308100b009ae73cabbadmr13579817ejv.43.1696849395170; 
+ Mon, 09 Oct 2023 04:03:15 -0700 (PDT)
 Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
  [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
- u16-20020a1709064ad000b009ae54585aebsm6489905ejt.89.2023.10.09.04.03.06
+ n17-20020a170906379100b009b957d5237asm6543236ejc.80.2023.10.09.04.03.13
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 09 Oct 2023 04:03:08 -0700 (PDT)
+ Mon, 09 Oct 2023 04:03:14 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
@@ -71,25 +71,24 @@ Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 4/6] target/xtensa: Use env_archcpu() in
- update_c[compare|count]()
-Date: Mon,  9 Oct 2023 13:02:37 +0200
-Message-ID: <20231009110239.66778-5-philmd@linaro.org>
+Subject: [PATCH 5/6] target/i386/hvf: Use x86_cpu in simulate_[rdmsr|wrmsr]()
+Date: Mon,  9 Oct 2023 13:02:38 +0200
+Message-ID: <20231009110239.66778-6-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231009110239.66778-1-philmd@linaro.org>
 References: <20231009110239.66778-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -105,38 +104,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When CPUArchState* is available (here CPUXtensaState*), we
-can use the fast env_archcpu() macro to get ArchCPU* (here
-XtensaCPU*). The QOM cast XTENSA_CPU() macro will be slower
-when building with --enable-qom-cast-debug.
+We already have 'x86_cpu = X86_CPU(cpu)'. Use the variable
+instead of doing another QOM cast with X86_CPU().
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/xtensa/op_helper.c | 4 ++--
+ target/i386/hvf/x86_emu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/xtensa/op_helper.c b/target/xtensa/op_helper.c
-index 7bb8cd6726..496754ba57 100644
---- a/target/xtensa/op_helper.c
-+++ b/target/xtensa/op_helper.c
-@@ -37,7 +37,7 @@
- 
- void HELPER(update_ccount)(CPUXtensaState *env)
- {
--    XtensaCPU *cpu = XTENSA_CPU(env_cpu(env));
-+    XtensaCPU *cpu = env_archcpu(env);
-     uint64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
- 
-     env->ccount_time = now;
-@@ -58,7 +58,7 @@ void HELPER(wsr_ccount)(CPUXtensaState *env, uint32_t v)
- 
- void HELPER(update_ccompare)(CPUXtensaState *env, uint32_t i)
- {
--    XtensaCPU *cpu = XTENSA_CPU(env_cpu(env));
-+    XtensaCPU *cpu = env_archcpu(env);
-     uint64_t dcc;
- 
-     qatomic_and(&env->sregs[INTSET],
+diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
+index ccda568478..af1f205ecf 100644
+--- a/target/i386/hvf/x86_emu.c
++++ b/target/i386/hvf/x86_emu.c
+@@ -676,7 +676,7 @@ void simulate_rdmsr(struct CPUState *cpu)
+         val = rdtscp() + rvmcs(cpu->accel->fd, VMCS_TSC_OFFSET);
+         break;
+     case MSR_IA32_APICBASE:
+-        val = cpu_get_apic_base(X86_CPU(cpu)->apic_state);
++        val = cpu_get_apic_base(x86_cpu->apic_state);
+         break;
+     case MSR_IA32_UCODE_REV:
+         val = x86_cpu->ucode_rev;
+@@ -776,7 +776,7 @@ void simulate_wrmsr(struct CPUState *cpu)
+     case MSR_IA32_TSC:
+         break;
+     case MSR_IA32_APICBASE:
+-        cpu_set_apic_base(X86_CPU(cpu)->apic_state, data);
++        cpu_set_apic_base(x86_cpu->apic_state, data);
+         break;
+     case MSR_FSBASE:
+         wvmcs(cpu->accel->fd, VMCS_GUEST_FS_BASE, data);
 -- 
 2.41.0
 
