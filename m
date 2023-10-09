@@ -2,46 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F4A7BD673
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450877BD688
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:13:54 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmId-0002sK-At; Mon, 09 Oct 2023 05:11:39 -0400
+	id 1qpmIg-0003TV-C0; Mon, 09 Oct 2023 05:11:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qpmIH-0002di-0B
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:11:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ id 1qpmIR-0002hb-Ld
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:11:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qpmIC-0007iY-Tc
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:11:14 -0400
+ id 1qpmIM-0007jP-0s
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:11:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696842670;
+ s=mimecast20190719; t=1696842679;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=bQQEXWT3qHDbUqa3AIV9/W/8oo0uS5FWv+Q8mrDU9so=;
- b=cV1UIA59/kFdVdKkwABbMMkkkmiGi199qRL4jHByi5TtJajKf9OmI6wxC9RvsqOMVBtIcT
- Z/s+cFDADxnXH9NCK5ZFO38P3kOMVRYhkgMrrlRXkWQTY89s9X97nefGGwfmP8upq2LDTM
- VXm+lRRtDkPG5trTiduI1/3KHyjbHw8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-617-nJ54hWFGOC2vd8zeWPdK2Q-1; Mon, 09 Oct 2023 05:11:06 -0400
-X-MC-Unique: nJ54hWFGOC2vd8zeWPdK2Q-1
+ bh=IQQgNBpOZuD30p7JI86IgkqyN0mb0WljUZl8rx4JGfo=;
+ b=dlbsZrFWMwaBRI7n+9R9aLEWrCS80AEYGAdVjRk8CzAD0mUkw9z9W3w+IUGgEURKj8JvD5
+ zbky1CwUZpIg4dHThCWtAM7tA6ayIc4Pw8LHmsIYUejLJPzwOAfAM++8+0Q2QMftmTlhnz
+ flsetb5T5ycK/yiqBwxYOETwfAixN0U=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-386-KNzt3XeuOv6kPsEWdzPiBA-1; Mon, 09 Oct 2023 05:11:09 -0400
+X-MC-Unique: KNzt3XeuOv6kPsEWdzPiBA-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7B50681114B;
- Mon,  9 Oct 2023 09:11:05 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BC81C29ABA08;
+ Mon,  9 Oct 2023 09:11:08 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.172])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BB92C167F8;
- Mon,  9 Oct 2023 09:11:02 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id C24DA63F6C;
+ Mon,  9 Oct 2023 09:11:05 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  zhenzhong.duan@intel.com, alex.williamson@redhat.com, clg@redhat.com,
@@ -49,23 +49,22 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com,
  aik@ozlabs.ru
-Subject: [PATCH v5 08/15] vfio/platform: Use vfio_[attach/detach]_device
-Date: Mon,  9 Oct 2023 11:09:10 +0200
-Message-ID: <20231009091035.433329-9-eric.auger@redhat.com>
+Subject: [PATCH v5 09/15] vfio/ap: Use vfio_[attach/detach]_device
+Date: Mon,  9 Oct 2023 11:09:11 +0200
+Message-ID: <20231009091035.433329-10-eric.auger@redhat.com>
 In-Reply-To: <20231009091035.433329-1-eric.auger@redhat.com>
 References: <20231009091035.433329-1-eric.auger@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
-Received-SPF: pass client-ip=170.10.129.124;
+Received-SPF: pass client-ip=170.10.133.124;
  envelope-from=eric.auger@redhat.com; helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -82,102 +81,148 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Let the vfio-platform device use vfio_attach_device() and
+Let the vfio-ap device use vfio_attach_device() and
 vfio_detach_device(), hence hiding the details of the used
 IOMMU backend.
 
-Drop the trace event for vfio-platform as we have similar
-one in vfio_attach_device.
+We take the opportunity to use g_path_get_basename() which
+is prefered, as suggested by
+3e015d815b ("use g_path_get_basename instead of basename")
 
 Signed-off-by: Eric Auger <eric.auger@redhat.com>
 Signed-off-by: Yi Liu <yi.l.liu@intel.com>
 Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-Reviewed-by: Cédric Le Goater <clg@redhat.com>
----
- hw/vfio/platform.c   | 43 +++----------------------------------------
- hw/vfio/trace-events |  1 -
- 2 files changed, 3 insertions(+), 41 deletions(-)
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
 
-diff --git a/hw/vfio/platform.c b/hw/vfio/platform.c
-index 5af73f9287..8e3d4ac458 100644
---- a/hw/vfio/platform.c
-+++ b/hw/vfio/platform.c
-@@ -529,12 +529,7 @@ static VFIODeviceOps vfio_platform_ops = {
-  */
- static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
- {
--    VFIOGroup *group;
--    VFIODevice *vbasedev_iter;
--    char *tmp, group_path[PATH_MAX], *group_name;
--    ssize_t len;
-     struct stat st;
+---
+
+v4 -> v5:
+- restore the 'return' before the error label
+
+v3 -> v4:
+- Removed vfio_detach_device(vbasedev) and g_free(vbasedev->name);
+  which do not match the intent
+- added error_prepend
+
+v2 -> v3:
+- Mention g_path_get_basename in commit message and properly free
+  vbasedev->name, call vfio_detach_device
+---
+ hw/vfio/ap.c | 67 ++++++++++------------------------------------------
+ 1 file changed, 13 insertions(+), 54 deletions(-)
+
+diff --git a/hw/vfio/ap.c b/hw/vfio/ap.c
+index 6e21d1da5a..f870f51ffa 100644
+--- a/hw/vfio/ap.c
++++ b/hw/vfio/ap.c
+@@ -53,40 +53,6 @@ struct VFIODeviceOps vfio_ap_ops = {
+     .vfio_compute_needs_reset = vfio_ap_compute_needs_reset,
+ };
+ 
+-static void vfio_ap_put_device(VFIOAPDevice *vapdev)
+-{
+-    g_free(vapdev->vdev.name);
+-    vfio_put_base_device(&vapdev->vdev);
+-}
+-
+-static VFIOGroup *vfio_ap_get_group(VFIOAPDevice *vapdev, Error **errp)
+-{
+-    GError *gerror = NULL;
+-    char *symlink, *group_path;
 -    int groupid;
+-
+-    symlink = g_strdup_printf("%s/iommu_group", vapdev->vdev.sysfsdev);
+-    group_path = g_file_read_link(symlink, &gerror);
+-    g_free(symlink);
+-
+-    if (!group_path) {
+-        error_setg(errp, "%s: no iommu_group found for %s: %s",
+-                   TYPE_VFIO_AP_DEVICE, vapdev->vdev.sysfsdev, gerror->message);
+-        g_error_free(gerror);
+-        return NULL;
+-    }
+-
+-    if (sscanf(basename(group_path), "%d", &groupid) != 1) {
+-        error_setg(errp, "vfio: failed to read %s", group_path);
+-        g_free(group_path);
+-        return NULL;
+-    }
+-
+-    g_free(group_path);
+-
+-    return vfio_get_group(groupid, &address_space_memory, errp);
+-}
+-
+ static void vfio_ap_req_notifier_handler(void *opaque)
+ {
+     VFIOAPDevice *vapdev = opaque;
+@@ -189,22 +155,15 @@ static void vfio_ap_unregister_irq_notifier(VFIOAPDevice *vapdev,
+ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+ {
      int ret;
+-    char *mdevid;
+     Error *err = NULL;
+-    VFIOGroup *vfio_group;
+     APDevice *apdev = AP_DEVICE(dev);
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
++    VFIODevice *vbasedev = &vapdev->vdev;
  
-     /* @sysfsdev takes precedence over @host */
-@@ -557,47 +552,15 @@ static int vfio_base_device_init(VFIODevice *vbasedev, Error **errp)
-         return -errno;
-     }
+-    vfio_group = vfio_ap_get_group(vapdev, errp);
+-    if (!vfio_group) {
+-        return;
+-    }
+-
+-    vapdev->vdev.ops = &vfio_ap_ops;
+-    vapdev->vdev.type = VFIO_DEVICE_TYPE_AP;
+-    mdevid = basename(vapdev->vdev.sysfsdev);
+-    vapdev->vdev.name = g_strdup_printf("%s", mdevid);
+-    vapdev->vdev.dev = dev;
++    vbasedev->name = g_path_get_basename(vbasedev->sysfsdev);
++    vbasedev->ops = &vfio_ap_ops;
++    vbasedev->type = VFIO_DEVICE_TYPE_AP;
++    vbasedev->dev = dev;
  
--    tmp = g_strdup_printf("%s/iommu_group", vbasedev->sysfsdev);
--    len = readlink(tmp, group_path, sizeof(group_path));
--    g_free(tmp);
--
--    if (len < 0 || len >= sizeof(group_path)) {
--        ret = len < 0 ? -errno : -ENAMETOOLONG;
--        error_setg_errno(errp, -ret, "no iommu_group found");
--        return ret;
--    }
--
--    group_path[len] = 0;
--
--    group_name = basename(group_path);
--    if (sscanf(group_name, "%d", &groupid) != 1) {
--        error_setg_errno(errp, errno, "failed to read %s", group_path);
--        return -errno;
--    }
--
--    trace_vfio_platform_base_device_init(vbasedev->name, groupid);
--
--    group = vfio_get_group(groupid, &address_space_memory, errp);
--    if (!group) {
--        return -ENOENT;
--    }
--
--    QLIST_FOREACH(vbasedev_iter, &group->device_list, next) {
--        if (strcmp(vbasedev_iter->name, vbasedev->name) == 0) {
--            error_setg(errp, "device is already attached");
--            vfio_put_group(group);
--            return -EBUSY;
--        }
--    }
--    ret = vfio_get_device(group, vbasedev->name, vbasedev, errp);
+     /*
+      * vfio-ap devices operate in a way compatible with discarding of
+@@ -214,9 +173,10 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
+      */
+     vapdev->vdev.ram_block_discard_allowed = true;
+ 
+-    ret = vfio_get_device(vfio_group, mdevid, &vapdev->vdev, errp);
 +    ret = vfio_attach_device(vbasedev->name, vbasedev,
 +                             &address_space_memory, errp);
      if (ret) {
--        vfio_put_group(group);
-         return ret;
+-        goto out_get_dev_err;
++        goto error;
      }
  
-     ret = vfio_populate_device(vbasedev, errp);
-     if (ret) {
--        vfio_put_group(group);
-+        vfio_detach_device(vbasedev);
-     }
+     vfio_ap_register_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX, &err);
+@@ -230,20 +190,19 @@ static void vfio_ap_realize(DeviceState *dev, Error **errp)
  
-     return ret;
-diff --git a/hw/vfio/trace-events b/hw/vfio/trace-events
-index 8ac13eb106..0eb2387cf2 100644
---- a/hw/vfio/trace-events
-+++ b/hw/vfio/trace-events
-@@ -121,7 +121,6 @@ vfio_get_dirty_bitmap(int fd, uint64_t iova, uint64_t size, uint64_t bitmap_size
- vfio_iommu_map_dirty_notify(uint64_t iova_start, uint64_t iova_end) "iommu dirty @ 0x%"PRIx64" - 0x%"PRIx64
+     return;
  
- # platform.c
--vfio_platform_base_device_init(char *name, int groupid) "%s belongs to group #%d"
- vfio_platform_realize(char *name, char *compat) "vfio device %s, compat = %s"
- vfio_platform_eoi(int pin, int fd) "EOI IRQ pin %d (fd=%d)"
- vfio_platform_intp_mmap_enable(int pin) "IRQ #%d still active, stay in slow path"
+-out_get_dev_err:
+-    vfio_ap_put_device(vapdev);
+-    vfio_put_group(vfio_group);
++error:
++    error_prepend(errp, VFIO_MSG_PREFIX, vbasedev->name);
++    g_free(vbasedev->name);
+ }
+ 
+ static void vfio_ap_unrealize(DeviceState *dev)
+ {
+     APDevice *apdev = AP_DEVICE(dev);
+     VFIOAPDevice *vapdev = VFIO_AP_DEVICE(apdev);
+-    VFIOGroup *group = vapdev->vdev.group;
+ 
+     vfio_ap_unregister_irq_notifier(vapdev, VFIO_AP_REQ_IRQ_INDEX);
+-    vfio_ap_put_device(vapdev);
+-    vfio_put_group(group);
++    vfio_detach_device(&vapdev->vdev);
++    g_free(vapdev->vdev.name);
+ }
+ 
+ static Property vfio_ap_properties[] = {
 -- 
 2.41.0
 
