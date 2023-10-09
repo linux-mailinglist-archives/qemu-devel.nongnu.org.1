@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FA707BE6DD
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B960B7BE6DA
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:45:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptM3-00011Q-JX; Mon, 09 Oct 2023 12:43:40 -0400
+	id 1qptML-0002DX-74; Mon, 09 Oct 2023 12:43:57 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptK5-0005QI-Nx
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:38 -0400
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+ id 1qptK8-0005WY-BJ
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:40 -0400
+Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJi-0001Ym-5G
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:37 -0400
-Received: by mail-wm1-x332.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso47858485e9.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:12 -0700 (PDT)
+ id 1qptJi-0001Zb-GH
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:40 -0400
+Received: by mail-wm1-x334.google.com with SMTP id
+ 5b1f17b1804b1-4054f790190so46130775e9.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696869671; x=1697474471; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696869672; x=1697474472; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=afBvhFP6609M8IIBIfYpGDboWuF4PMsRTHYI59b4V3Q=;
- b=rErH+6+0l/ISFuO0OexmgT1kCYMLzyk65gpd9n3pBI2bxbkWccpqEpVWDYZ2Z66eCM
- DeJS4iv3CwGTaPrlLICCVZp+7wky0ghFr/JoqMQmbIjIsv4gcDeHP4ZhWvMhNSyZ7P3n
- 4DPadmPvsxlVnAY7BDQ5EpHlgEgmfJBaaxu397FHI8yaRYoeIZjqbwRL0KteRr25/vMw
- TgFEgeTwceDmGtIxlyyllNt5li2bxObLvWYAzQlktW2K2JZLkawQ2Z++cFPZFDgjP1hH
- KTH4qg0+7H4MJs1d3dHCXHbPZkbM1qRQYa+TDuy5CO7RShUMl27qjVRsTqu8YXM3ZytX
- XizA==
+ bh=bHq5bIYTwX4KI919eN/k0HIJh2GL06+mtrfpk9KLLYo=;
+ b=impcdhpOyXeD8kWDzSueYCXvqsGMhfaFS7Yu4M+4j85kacwo8pqAXh5WnWYxRwkQon
+ Q+bvg1eJsLCH5BIq3HS9Wb/Jq+uEz41OOSVhcGBgdI1DC3juMkeXEcHEMgJBs99Kggbi
+ qx4H7RB9d5lTvGm3ycBaXbRe0rKZj/Ir3SnNKL2j0mTXAy52hMKBR7+NlVOVlUyB/k90
+ zIuAhi1f/IleJcF9CgWfwP47MVe3+p7PY3u2lSXLkVCGEkLfzV5LJvGakmiHgNJiGivW
+ 0BXXt6zhBr1e+c+2SB7yjGnt1LQ+2oJFiLwTPslgw4PHx0kOTmFC+9Wi88o5ePouiRba
+ wMfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696869671; x=1697474471;
+ d=1e100.net; s=20230601; t=1696869672; x=1697474472;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=afBvhFP6609M8IIBIfYpGDboWuF4PMsRTHYI59b4V3Q=;
- b=TYGL2NThFMp34Vay3hhckFzxNc26+hBXcz2YmzpJ+VHkgbsrMZXQQC7vg4Mc0n472j
- pXXNfWEqnneQOVNQrwemIjh5xGWvB7OnR5D3CVpLyWhZFuln0CEk30FNyMFNtVg3Iawd
- U9EV7EwXvDPV1z2i7SI+lvCRM7D0klZ2n5NfUjgBoC76ArKgYRz0U+5ftwIDsHNXL/Zj
- dmbHqW8X+fz3q2ZLUQBh1+bzeyLVLQfjjNKoB7LjoaCSL+2Dwt1jrKizNewW6zL1LUwa
- Ozi/JuiyZpLuwfMu8l4sJ3+gXTWmPO5AH3x2qSQHBG5+yEZvUEMNypZPR6+6elZRQNaH
- RhRw==
-X-Gm-Message-State: AOJu0YxFnCbKkn8WLCp7RUCni+UMEXiuYosZvM17iXl/+O0kb0Q5yjry
- G4s1qj1dIS3rxuL7dS+B7z/Wsg==
-X-Google-Smtp-Source: AGHT+IFgxGrx+X4uoHTxWDjGTegwrSLm6y12Mg63MWId7xQUDVdFnzrgoqqSoNFfwsvsNzZRFelteQ==
-X-Received: by 2002:a5d:4d8c:0:b0:323:36a3:8ca with SMTP id
- b12-20020a5d4d8c000000b0032336a308camr14258615wru.28.1696869671541; 
- Mon, 09 Oct 2023 09:41:11 -0700 (PDT)
+ bh=bHq5bIYTwX4KI919eN/k0HIJh2GL06+mtrfpk9KLLYo=;
+ b=TteLTHv8NVuQvZv0i+mHCr7nbtYiE2RUoTluKFDjJbXXDEB3t86jpZRJDSRn2l88h2
+ LmKNxyCgaXpxGP5GcIX6k3hk72ZoaTRULZm/tLNgG8IuYlEyQcdF7HKz3xdE9VEvcmXA
+ NnOsRz9fR6OZoYfQWkYhlyb56Gz+UGbr9urU12/b494mxF7mGV2+D9iyeEfQruw4wM0p
+ 4CgUcHl6fnLufSCiHeGTaYEhH8ZXx8CzxMLN2CGqdEcdWYN8+aSZFp2HNLu6gkoqGfrF
+ 0umHL1Ex379HkNy8LPmn6Pt61Q1YaFfDF2WyIChYuYwuu6K5ycJZ8nuBtE/+Rry8rjIG
+ AIcQ==
+X-Gm-Message-State: AOJu0YxmKEBdVsQPELEXOzqoJ0M5OQ7gkBsbY2+qK4m1BogBaqxtzcJN
+ dcNSA1YBD4lcLzO+pikSXGRVLg==
+X-Google-Smtp-Source: AGHT+IGFqUJc5Eez0Xh0cM2KEpTkdA7SS2nYeIal+8810QO4fBi59ybU0A2OxJw7IfsZksHMjGvfKA==
+X-Received: by 2002:a7b:cb8c:0:b0:406:517f:ac71 with SMTP id
+ m12-20020a7bcb8c000000b00406517fac71mr13937205wmi.29.1696869672593; 
+ Mon, 09 Oct 2023 09:41:12 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- n20-20020adf8b14000000b003296b62d413sm9694532wra.82.2023.10.09.09.41.07
+ a4-20020a05600c224400b003fe2b081661sm13974906wmm.30.2023.10.09.09.41.08
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:41:07 -0700 (PDT)
+ Mon, 09 Oct 2023 09:41:11 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 446EA1FFBC;
+ by zen.linaroharston (Postfix) with ESMTP id 5CE991FFC4;
  Mon,  9 Oct 2023 17:41:06 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -90,17 +90,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 10/25] plugins: Check if vCPU is realized
-Date: Mon,  9 Oct 2023 17:40:49 +0100
-Message-Id: <20231009164104.369749-11-alex.bennee@linaro.org>
+Subject: [PATCH 11/25] contrib/plugins: Use GRWLock in execlog
+Date: Mon,  9 Oct 2023 17:40:50 +0100
+Message-Id: <20231009164104.369749-12-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::332;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x332.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::334;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x334.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -125,32 +125,87 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-The created member of CPUState tells if the vCPU thread is started, and
-will be always false for the user space emulation that manages threads
-independently. Use the realized member of DeviceState, which is valid
-for both of the system and user space emulation.
+execlog had the following comment:
+> As we could have multiple threads trying to do this we need to
+> serialise the expansion under a lock. Threads accessing already
+> created entries can continue without issue even if the ptr array
+> gets reallocated during resize.
 
-Fixes: 54cb65d858 ("plugin: add core code")
+However, when the ptr array gets reallocated, the other threads may have
+a stale reference to the old buffer. This results in use-after-free.
+
+Use GRWLock to properly fix this issue.
+
+Fixes: 3d7caf145e ("contrib/plugins: add execlog to log instruction execution and memory access")
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230912224107.29669-4-akihiko.odaki@daynix.com>
+Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230912224107.29669-5-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- plugins/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ contrib/plugins/execlog.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/plugins/core.c b/plugins/core.c
-index 3c4e26c7ed..fcd33a2bff 100644
---- a/plugins/core.c
-+++ b/plugins/core.c
-@@ -64,7 +64,7 @@ static void plugin_cpu_update__locked(gpointer k, gpointer v, gpointer udata)
-     CPUState *cpu = container_of(k, CPUState, cpu_index);
-     run_on_cpu_data mask = RUN_ON_CPU_HOST_ULONG(*plugin.mask);
+diff --git a/contrib/plugins/execlog.c b/contrib/plugins/execlog.c
+index 7129d526f8..82dc2f584e 100644
+--- a/contrib/plugins/execlog.c
++++ b/contrib/plugins/execlog.c
+@@ -19,7 +19,7 @@ QEMU_PLUGIN_EXPORT int qemu_plugin_version = QEMU_PLUGIN_VERSION;
  
--    if (cpu->created) {
-+    if (DEVICE(cpu)->realized) {
-         async_run_on_cpu(cpu, plugin_cpu_update__async, mask);
-     } else {
-         plugin_cpu_update__async(cpu, mask);
+ /* Store last executed instruction on each vCPU as a GString */
+ static GPtrArray *last_exec;
+-static GMutex expand_array_lock;
++static GRWLock expand_array_lock;
+ 
+ static GPtrArray *imatches;
+ static GArray *amatches;
+@@ -28,18 +28,16 @@ static GArray *amatches;
+  * Expand last_exec array.
+  *
+  * As we could have multiple threads trying to do this we need to
+- * serialise the expansion under a lock. Threads accessing already
+- * created entries can continue without issue even if the ptr array
+- * gets reallocated during resize.
++ * serialise the expansion under a lock.
+  */
+ static void expand_last_exec(int cpu_index)
+ {
+-    g_mutex_lock(&expand_array_lock);
++    g_rw_lock_writer_lock(&expand_array_lock);
+     while (cpu_index >= last_exec->len) {
+         GString *s = g_string_new(NULL);
+         g_ptr_array_add(last_exec, s);
+     }
+-    g_mutex_unlock(&expand_array_lock);
++    g_rw_lock_writer_unlock(&expand_array_lock);
+ }
+ 
+ /**
+@@ -51,8 +49,10 @@ static void vcpu_mem(unsigned int cpu_index, qemu_plugin_meminfo_t info,
+     GString *s;
+ 
+     /* Find vCPU in array */
++    g_rw_lock_reader_lock(&expand_array_lock);
+     g_assert(cpu_index < last_exec->len);
+     s = g_ptr_array_index(last_exec, cpu_index);
++    g_rw_lock_reader_unlock(&expand_array_lock);
+ 
+     /* Indicate type of memory access */
+     if (qemu_plugin_mem_is_store(info)) {
+@@ -80,10 +80,14 @@ static void vcpu_insn_exec(unsigned int cpu_index, void *udata)
+     GString *s;
+ 
+     /* Find or create vCPU in array */
++    g_rw_lock_reader_lock(&expand_array_lock);
+     if (cpu_index >= last_exec->len) {
++        g_rw_lock_reader_unlock(&expand_array_lock);
+         expand_last_exec(cpu_index);
++        g_rw_lock_reader_lock(&expand_array_lock);
+     }
+     s = g_ptr_array_index(last_exec, cpu_index);
++    g_rw_lock_reader_unlock(&expand_array_lock);
+ 
+     /* Print previous instruction in cache */
+     if (s->len) {
 -- 
 2.39.2
 
