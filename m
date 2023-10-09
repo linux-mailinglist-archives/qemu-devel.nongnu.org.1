@@ -2,62 +2,84 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB1977BE535
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 707FA7BE537
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:43:57 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpsNQ-0002Gr-T6; Mon, 09 Oct 2023 11:41:00 -0400
+	id 1qpsP4-0002yH-SC; Mon, 09 Oct 2023 11:42:42 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qpsNN-0002GZ-Ql
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:40:57 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <jonathan.cameron@huawei.com>)
- id 1qpsNL-0005tW-3S
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:40:57 -0400
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S438209Sfz684Xd;
- Mon,  9 Oct 2023 23:37:54 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 9 Oct
- 2023 16:40:51 +0100
-Date: Mon, 9 Oct 2023 16:40:50 +0100
-To: "Michael S. Tsirkin" <mst@redhat.com>
-CC: Dave Jiang <dave.jiang@intel.com>, <thuth@redhat.com>,
- <qemu-devel@nongnu.org>, <peter.maydell@linaro.org>, <imammedo@redhat.com>,
- <anisinha@redhat.com>, <marcel.apfelbaum@gmail.com>, <pbonzini@redhat.com>,
- <richard.henderson@linaro.org>, <eduardo@habkost.net>,
- <linux-cxl@vger.kernel.org>
-Subject: Re: [PATCH v3] hw/cxl: Add QTG _DSM support for ACPI0017 device
-Message-ID: <20231009164050.00000f7d@Huawei.com>
-In-Reply-To: <20231007170145-mutt-send-email-mst@kernel.org>
-References: <20231004180529-mutt-send-email-mst@kernel.org>
- <169646094762.643966.16021192876985391476.stgit@djiang5-mobl3>
- <20231004230132-mutt-send-email-mst@kernel.org>
- <12874c03-7de0-474f-9378-7d3ab8572d8d@intel.com>
- <20231005122736-mutt-send-email-mst@kernel.org>
- <20231006130939.00007a69@Huawei.com>
- <20231007170145-mutt-send-email-mst@kernel.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpsOs-0002qf-VI
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:42:38 -0400
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpsOg-00060B-Gu
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:42:29 -0400
+Received: by mail-ej1-x631.google.com with SMTP id
+ a640c23a62f3a-9b98a699f45so791496166b.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 08:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696866131; x=1697470931; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=rWZCwOZYscrw8dxHQIhyBz0e+KNg7KBY8wsd9k22CKM=;
+ b=MimuD69ywIHojewV9QpO5vrAqEMeUJOFIPoaHo4Q70lQWvJwi1yzXbhUndJK51FmBr
+ H+qOQ4hWiGoR5eS35mfamj9qEYfBNAGQa+GcgTCeVq/ffth9IKLak+gOcYkthCMZcWMi
+ zdqcU0n0x6TnAMIbyurPvBx6NtHw4aA7YeSsjr/4OhMgTZkf7MeIY31qzU20A7FvcFXi
+ 4EIN/XIu8cEXa7LRFsAEV1sT95ugrk8oRFa4FTvHTNc7WiWe0u4Tt2Fm+4Brebk/hW+K
+ s0k19PI5AXlJP53/ESS3RRl1SZeoOTm6Q7fHIkf6tOsP7w0QcGI3i3OKhySpa2Q0nZp0
+ KsyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696866131; x=1697470931;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=rWZCwOZYscrw8dxHQIhyBz0e+KNg7KBY8wsd9k22CKM=;
+ b=UrZoYDzQcNnNWa8W6UDtGfHhGoxcps4KfFxQZ6qgJrojQ4S4t3AL2bjtFfBO5GZoZY
+ JNbERTsWzJvsygxWHPhzSHSrBGawpBiwgNRddXcY9MAg91D1PSJXIM3Ef2NAmtukCBAD
+ sVHKlBmZG8hdC8MwzH3gA/tMrGUdaZFZ08di23J/rTWg6tcMpeYzJcaIqUgRctOslEcq
+ eJmeZi9jNS1h78TYJQXaHqfVlclpO9HHDpAVj5WE3iLnRDEO/ttSOiRSLGNAN1uCffNK
+ pVC8ewquzSEAsZTZ/SCtYrGa5rUKlJDVPn8t3bjF8lLupfTrI3YsrvnUImy8G9qcExso
+ su/A==
+X-Gm-Message-State: AOJu0Yx4diviZDb2gCtkuUceRdAPHn48vjHMkuKazHqSUbzB9m0qDo5j
+ 8lGRalyZ/Pytqv0/yu/ThDfO1Q==
+X-Google-Smtp-Source: AGHT+IGTrIDYr3elkjuRj3GQSKSxxqK3ZMj05TqPIdYsLEgNENwoCFjnoGtsWN3ycLTaHq4OfCoVcg==
+X-Received: by 2002:a17:906:1dd:b0:9ae:540c:90ef with SMTP id
+ 29-20020a17090601dd00b009ae540c90efmr13905367ejj.18.1696866130659; 
+ Mon, 09 Oct 2023 08:42:10 -0700 (PDT)
+Received: from [192.168.69.115]
+ (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
+ by smtp.gmail.com with ESMTPSA id
+ dx8-20020a170906a84800b0099cbfee34e3sm6844789ejb.196.2023.10.09.08.42.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 08:42:10 -0700 (PDT)
+Message-ID: <bd91f495-296a-a791-63bd-7827228af4e9@linaro.org>
+Date: Mon, 9 Oct 2023 17:42:08 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.227.76]
-X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=jonathan.cameron@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
-X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] migration: Use g_autofree to simplify
+ ram_dirty_bitmap_reload()
+Content-Language: en-US
+To: Fabiano Rosas <farosas@suse.de>, qemu-devel@nongnu.org
+Cc: Leonardo Bras <leobras@redhat.com>, Markus Armbruster
+ <armbru@redhat.com>, Peter Xu <peterx@redhat.com>,
+ Juan Quintela <quintela@redhat.com>
+References: <20231008114001.95348-1-philmd@linaro.org> <871qe3g7gn.fsf@suse.de>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <871qe3g7gn.fsf@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::631;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x631.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -71,382 +93,32 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-From:  Jonathan Cameron via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sat, 7 Oct 2023 17:17:44 -0400
-"Michael S. Tsirkin" <mst@redhat.com> wrote:
+On 9/10/23 17:07, Fabiano Rosas wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+>> ---
+>> Based-on: <ZR7e3cmxCH9LAdnS@x1n>
+>> ---
+>>   migration/ram.c | 15 ++++++---------
+>>   1 file changed, 6 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/migration/ram.c b/migration/ram.c
+>> index 982fbbeee1..4cb948cfd0 100644
+>> --- a/migration/ram.c
+>> +++ b/migration/ram.c
+>> @@ -4164,11 +4164,11 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RAMBlock *block, Error **errp)
+>>   {
+>>       /* from_dst_file is always valid because we're within rp_thread */
+>>       QEMUFile *file = s->rp_state.from_dst_file;
+>> -    unsigned long *le_bitmap, nbits = block->used_length >> TARGET_PAGE_BITS;
+>> +    unsigned long *le_bitmap = NULL;
+> 
+> Aren't you missing the actual g_autofree here?
 
-> On Fri, Oct 06, 2023 at 01:09:39PM +0100, Jonathan Cameron wrote:
-> > On Thu, 5 Oct 2023 12:32:11 -0400
-> > "Michael S. Tsirkin" <mst@redhat.com> wrote:
-> >   
-> > > On Thu, Oct 05, 2023 at 09:11:15AM -0700, Dave Jiang wrote:  
-> > > > 
-> > > > 
-> > > > On 10/4/23 20:36, Michael S. Tsirkin wrote:    
-> > > > > 
-> > > > > On Wed, Oct 04, 2023 at 04:09:07PM -0700, Dave Jiang wrote:    
-> > > > >> Add a simple _DSM call support for the ACPI0017 device to return a fake QTG
-> > > > >> ID value of 0 in all cases. The enabling is for _DSM plumbing testing
-> > > > >> from the OS.    
-> > > > > 
-> > > > > 
-> > > > > the enabling -> this    
-> > > > 
-> > > > will update    
-> > > > >     
-> > > > >>
-> > > > >> Following edited for readbility only    
-> > > > > 
-> > > > > readbility only -> readability    
-> > > > 
-> > > > will update    
-> > > > > 
-> > > > >     
-> > > > >>
-> > > > >> Device (CXLM)
-> > > > >> {
-> > > > >>     Name (_HID, "ACPI0017")  // _HID: Hardware ID
-> > > > >> ...
-> > > > >>     Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
-> > > > >>     {
-> > > > >>         If ((Arg0 == ToUUID ("f365f9a6-a7de-4071-a66a-b40c0b4f8e52")))
-> > > > >>         {
-> > > > >>             If ((Arg2 == Zero))
-> > > > >>             {
-> > > > >>                 Return (Buffer (One) { 0x01 })
-> > > > >>             }
-> > > > >>
-> > > > >>             If ((Arg2 == One))    
-> > > > >     
-> > > > >>             {
-> > > > >>                 Return (Package (0x02)
-> > > > >>                 {
-> > > > >>                     Buffer (0x02)
-> > > > >>                     { 0x01, 0x00 },
-> > > > >>                     Package (0x01)
-> > > > >>                     {
-> > > > >>                         Buffer (0x02)
-> > > > >>                         { 0x00, 0x00 }
-> > > > >>                     }
-> > > > >>                 })
-> > > > >>             }
-> > > > >>         }
-> > > > >>     }
-> > > > >>
-> > > > >> Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-> > > > >> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > > > >>
-> > > > >> --
-> > > > >> v3: Fix output assignment to be BE host friendly. Fix typo in comment.
-> > > > >> According to the CXL spec, the DSM output should be 1 WORD to indicate
-> > > > >> the max suppoted QTG ID and a package of 0 or more WORDs for the QTG IDs.
-> > > > >> In this dummy impementation, we have first WORD with a 1 to indcate max
-> > > > >> supprted QTG ID of 1. And second WORD in a package to indicate the QTG
-> > > > >> ID of 0.
-> > > > >>
-> > > > >> v2: Minor edit to drop reference to switches in patch description.
-> > > > >> Message-Id: <20230904161847.18468-3-Jonathan.Cameron@huawei.com>
-> > > > >> Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > >> Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> > > > >> ---
-> > > > >>  hw/acpi/cxl.c         |   55 +++++++++++++++++++++++++++++++++++++++++++++++++
-> > > > >>  hw/i386/acpi-build.c  |    1 +
-> > > > >>  include/hw/acpi/cxl.h |    1 +
-> > > > >>  3 files changed, 57 insertions(+)
-> > > > >>
-> > > > >> diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
-> > > > >> index 92b46bc9323b..cce12d5bc81c 100644
-> > > > >> --- a/hw/acpi/cxl.c
-> > > > >> +++ b/hw/acpi/cxl.c
-> > > > >> @@ -30,6 +30,61 @@
-> > > > >>  #include "qapi/error.h"
-> > > > >>  #include "qemu/uuid.h"
-> > > > >>  
-> > > > >> +void build_cxl_dsm_method(Aml *dev)
-> > > > >> +{
-> > > > >> +    Aml *method, *ifctx, *ifctx2;
-> > > > >> +
-> > > > >> +    method = aml_method("_DSM", 4, AML_SERIALIZED);
-> > > > >> +    {
-> > > > >> +        Aml *function, *uuid;
-> > > > >> +
-> > > > >> +        uuid = aml_arg(0);
-> > > > >> +        function = aml_arg(2);
-> > > > >> +        /* CXL spec v3.0 9.17.3.1 *    
-> > > > > 
-> > > > > 
-> > > > > drop this * please
-> > > > >     
-> > > > >> , QTG ID _DSM    
-> > > > 
-> > > > Ooops. git format-patch mangled this and I didn't catch. Will fix
-> > > >     
-> > > > > 
-> > > > > 
-> > > > > this is not the name of this paragraph. pls make it match
-> > > > > exactly so people can search
-> > > > >     
-> > > > >> */
-> > > > >> +        ifctx = aml_if(aml_equal(
-> > > > >> +            uuid, aml_touuid("F365F9A6-A7DE-4071-A66A-B40C0B4F8E52")));
-> > > > >> +
-> > > > >> +        /* Function 0, standard DSM query function */
-> > > > >> +        ifctx2 = aml_if(aml_equal(function, aml_int(0)));
-> > > > >> +        {
-> > > > >> +            uint8_t byte_list[1] = { 0x01 }; /* functions 1 only */    
-> > > > > 
-> > > > > function 1?    
-> > > > 
-> > > > Yes, will fix
-> > > >     
-> > > > >     
-> > > > >> +
-> > > > >> +            aml_append(ifctx2,
-> > > > >> +                       aml_return(aml_buffer(sizeof(byte_list), byte_list)));
-> > > > >> +        }
-> > > > >> +        aml_append(ifctx, ifctx2);
-> > > > >> +
-> > > > >> +        /*
-> > > > >> +         * Function 1
-> > > > >> +         * A return value of {1, {0}} indicates that
-> > > > >> +         * max supported QTG ID of 1 and recommended QTG is 0.
-> > > > >> +         * The values here are faked to simplify emulation.    
-> > > > > 
-> > > > > again pls quote spec directly do not paraphrase    
-> > > > 
-> > > > Here it's not paraphrasing from the spec. I'm just describing the dummy value that will be provided.
-> > > >     
-> > > > >     
-> > > > >> +         */
-> > > > >> +        ifctx2 = aml_if(aml_equal(function, aml_int(1)));
-> > > > >> +        {
-> > > > >> +            uint16_t word_list = cpu_to_le16(1);
-> > > > >> +            uint16_t word_list2 = 0;
-> > > > >> +            Aml *pak, *pak1;
-> > > > >> +
-> > > > >> +            /*
-> > > > >> +             * The return package is a package of a WORD
-> > > > >> and another package.
-> > > > >> +             * The embedded package contains 0 or more WORDs for the
-> > > > >> +             * recommended QTG IDs.    
-> > > > > 
-> > > > > 
-> > > > > 
-> > > > > pls quote the spec directly    
-> > > > 
-> > > > Will do.
-> > > >     
-> > > > > 
-> > > > > what does "a WORD" mean is unclear - do you match what hardware does
-> > > > > when you use aml_buffer? pls mention this in commit log, and
-> > > > > show actual hardware dump for comparison.    
-> > > > The CXL spec says WORD without much qualification. It's a 16bit value AFAICT. I'll add additional comment. Currently I do not have access to actual hardware unfortunately. I'm constructing this purely based on spec description.    
-> > >   
-> > 
-> > WORD does seem to be clearly defined in the ACPI spec as uint16
-> > and as this is describing a DSDT blob I think we can safe that
-> > it means that.  Also lines up with the fixed sizes in CEDT.  
-> 
-> Binary blobs are not really legal as return values of AML though.
-> What this patch was doing was a buffer. An alternative
-> interpretation would be an integer. Or something else yet ...
-
-Yes. On taking another look, what was here definitely seems wrong.
-
-> 
-> 
-> > > It's not clear buffer is actually word though.
-> > > 
-> > > Jonathan do you have hardware access?  
-> > 
-> > No.  +CC linux-cxl to see if anyone else has hardware + BIOS with
-> > QTG implemented...  There will be lots of implementations soon so I'd make
-> > not guarantee they will all interpret this the same.
-> > 
-> > Aim here is Linux kernel enablement support, and unfortunately that almost
-> > always means we are ahead of easy availability of hardware. If it exists
-> > its probably prototypes in a lab, in which case no guarantees on the
-> > BIOS tables presented...
-> >   
-> > > 
-> > > Also, possible to get clarification from the spec committee?  
-> > 
-> > I'm unclear what we are clarifying.  
-> 
-> Let me clarify, below.
-> 
-> >  As I read it current implementation
-> > is indeed wrong and I failed to notice this earlier :(
-> > 
-> > Ultimately data encoding (ACPI 6.5 section 20.2..3 Data Objects Encoding)
-> > should I think be
-> > 
-> > 0x0B 0x00 0x00
-> > WordPrefix then data : note if you try a 0x0001 and feed
-> > it to iasl it will squash it into a byte instead and indeed if you
-> > force the binary to the above it will decode it as 0x0000 but recompile
-> > that and you will be back to just
-> > 0x00 (as bytes don't need a prefix..)  
-> 
-> Exactly. So this is the clarification we seek. ACPI spec
-> does mention WordPrefix however only as one of the
-> ways to encode an integer, as part of ComputationalData,
-> never directly. If CXL requires it to be WordPrefix then
-> qemu can do it but tools such as IASL will need to be taught a way
-> to force using WordPrefix.
-
-Agreed.
-
-> 
-> 
-> > Currently it would be.
-> > 0x11     0x05 0x0a 0x02 0x00 0x01
-> > BufferOp 
-> > 
-> > Btw I built a minimal DSDT file to test this and iasl isn't happy with
-> > the fact the _DSM doesn't return anything at all if ARG2 isn't 1 or 2.
-> > Whilst that's imdef territory as not covered by the CXL spec, we should
-> > return 'something' ;)
-> > 
-> > Anyhow, to do this as per the CXL spec we need an aml_word()
-> > that just implements the word case from aml_int()
-> > 
-> > Chance are that it never matters if we get an ecoding that is
-> > only single byte (because the value is small) but who knows what
-> > other AML parsers might do.
-> > 
-> > Something simple like (copy typed from test machine..)
-> > 
-> > Aml *aml_word(const uint16_t val)
-> > {
-> >     Aml *var = aml_alloc();
-> >     build_append_byte(var->buf, 0x0B);
-> >     build_append_int_noprefix(var->buf, val, 2);
-> >     return var;
-> > }
-> > 
-> > and one blob in acpi/cxl.c becomes
-> > 
-> >         ifctx2 = aml_if(aml_equal(function, aml_int(1)));
-> >         {
-> >              Aml *pak, *pac1;
-> > 
-> > 	     pak1 = aml_package(1)
-> > 	     aml_append(pak1, aml_word(0));
-> >              pak = aml_package(2);
-> >              aml_append(pack, aml_word(0x1));
-> >              aml_append(pak, pak1);
-> > 
-> >              aml_append(ifctx2, aml_return(pak));
-> >         }
-> >         aml_append(ifctx, ifctx2);
-> > ...
-> > 
-> >  
-> >         }
-> > 
-> > Give something like
-> > If ((Arg2 == One))
-> > {
-> >     Return (Package (0x02)
-> >     {
-> >         0x0001,
-> >         Package (0x01)
-> >         {
-> >             0x0000
-> >         }
-> >     })
-> > }
-> > 
-> > 
-> > Binary encoding then clearly uses packages of words.
-> > 
-> > 12      0b        02         0b    01 00     12    05    01        0b    00 00
-> > PkgOp   len       elements   word  0x0001    pkgOp len   elements  word  0x0000
-> > 
-> > (note I cheated an added a marker in one of the values and didn't decode
-> > the whole thing by hand ;)  
-> 
-> We could. But I suspect it's a spec bug and they really just meant
-> "an integer in the range 0x0 to 0xffff, encoded in any legal way".
-
-I suspect you are correct.  We all love filing errata docs..
-*sigh* Hopefully Dave will do it ;)
-
-
-> 
-> 
-> > >   
-> > > >     
-> > > > > 
-> > > > >     
-> > > > >> +             */
-> > > > >> +            pak1 = aml_package(1);
-> > > > >> +            aml_append(pak1, aml_buffer(sizeof(uint16_t), word_list2));
-> > > > >> +            pak = aml_package(2);
-> > > > >> +            aml_append(pak, aml_buffer(sizeof(uint16_t), word_list));    
-> > > > > 
-> > > > > 
-> > > > > It does not look like this patch compiles.
-> > > > > 
-> > > > > So how did you test it?
-> > > > > 
-> > > > > Please do not post untested patches.
-> > > > > 
-> > > > > If you do at least minimal testing
-> > > > > you would also see failures in bios table test
-> > > > > and would follow the procedure described there to
-> > > > > post it.    
-> > > > 
-> > > > Sorry about that. I compiled successfully but did not test.    
-> > > 
-> > > I don't see how it can compile either. In fact I just applied and build
-> > > fails.
-> > >   
-> > > > The following chunk is tested. However, is it the correct way to do this? The comment is direct spec verbiage. I'm not familiar with constructing ACPI tables in QEMU and tried my best by looking at other ACPI code in QEMU.     
-> > > 
-> > > To do what? create a buffer with a two byte word?
-> > > For example:
-> > > 	word = aml_buffer(0, NULL);
-> > > 	build_append_int_noprefix(word->buf, 2, 0x1);
-> > > 
-> > > 
-> > > 
-> > > but again it is not clear at all what does spec mean.
-> > > an integer up to 0xfffff? a buffer as you did? just two bytes?
-> > > 
-> > > could be any of these.  
-> > 
-> > The best we have in the way of description is the multiple QTG example
-> > where it's
-> > Package() {2, 1} combined with it being made up of WORDs
-> > 
-> > whereas in general that will get squashed to a pair of bytes...
-> > So I'm thinking WORDs is max size rather than only size but
-> > given ambiguity we should encode them as words anyway.  
-> 
-> But why, is it suddenly important to be compatible with lots of drivers?
-> These are just dummy values after all.
-> If the point is for driver development then I would say just use
-> aml_int, this will test support for One and Zero opcodes :)
-
-Works for me ;)
-
-> 
-> > Note this breaks Dave's current kernel proposal which is assuming
-> > a buffer...
-> > https://lore.kernel.org/all/168695172301.3031571.9812118774299137032.stgit@djiang5-mobl3/
-> > 
-> > Hohum. Dave, can you sanity check with the appropriate SSWG person (MN IIRC)
-> > I can do it you'd prefer - just let me know.
-> > 
-> > Jonathan
-> >   
-> 
-> 
+Argh 🤦🏻 sorry...
 
 
