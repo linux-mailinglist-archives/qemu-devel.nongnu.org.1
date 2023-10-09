@@ -2,61 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3497BE6C4
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 629687BE6C8
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:44:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptLv-0008I3-QS; Mon, 09 Oct 2023 12:43:33 -0400
+	id 1qptLJ-000748-Uk; Mon, 09 Oct 2023 12:42:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJl-00055T-Gp
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:20 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+ id 1qptJx-0005Ia-Ec
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:34 -0400
+Received: from mail-wr1-x430.google.com ([2a00:1450:4864:20::430])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJb-0001S9-Uz
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:17 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-4064867903cso47823425e9.2
+ id 1qptJc-0001SG-NG
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:26 -0400
+Received: by mail-wr1-x430.google.com with SMTP id
+ ffacd0b85a97d-3231df68584so4416795f8f.1
  for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1696869666; x=1697474466; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=1gVOQLrPCY4wB2HQtNdBWWNkWkP/1peRGEfdhoM/8Os=;
- b=MQsFAgGT3MAfH49SZB7QHUedjfKnYm6K7A7aSQjy2YiZ6d0lrPo8eZBdodlZd2RhcK
- tdngc50sncS0Z4wH1gLpVXiGiHKjSv180na6iBYObkyaEXwufRB1ErdpbjR4w82MrYOE
- dO3MSALjbca7DuINr4JKxPh24fFRtVCkMP8ZORtPCKjRJHFdAWZzifXXOFNdOCBzKx9T
- G7ibwGaxoWNQMwptTs8itvlCeE/vI2nfcE8OWbtkaH7mMXiIWdoVZfjIkOraGKAjquAt
- NYG58YruVLR93ZoXfonRAaQAliMeY72weVH0o/r8+M5gXrIkNw8yLonFNqkAsMmvd6x+
- nOnA==
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=iMC4+hjgqKV/lGIlu49d0i7qAAR9ydClgNpOgYzMG7M=;
+ b=uEW343fYgkdW6T3MoD7ssr7O+A96nALvALy4Lsj/lTr8y3RmeiwzI/jKAASz6emuEZ
+ kLzH/UT6hrz+9jdPM0JHKa+tEsbyZj1Q/sddxXHio5GxCaLGpveiewJln4ypWE0RVbUG
+ pldhjC4UZ79R7o6g9c66MiA2De1AgaxmQM2eM4GLVlHNwxVZyKXwnGlptg4lx56nXUn+
+ w1jgH5l4QWnrlBhZ9DjGP5wk0Q7SsGqFhJI1ak9u0OX4/4lr8sncz52Yeazd6hL59Eci
+ 7eTPCLvo87hQNMTqiPrk3Zty7/I+8suSpdjxUSovaZXe66PgxK5jO2FoqMHcJ0BVO9Ht
+ JZRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1696869666; x=1697474466;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=1gVOQLrPCY4wB2HQtNdBWWNkWkP/1peRGEfdhoM/8Os=;
- b=g5BebKVUujRApgdh7T220v/Q1HCewVseWZ90wafb6FIDbjgudI165ALP/Bo/qVHrjV
- c1EyCr+IuhvKjp5N4itB1Phwy5ct7jN7w1ivTNT/6op5BR11d0TF512AyGt88jkSD4b4
- jkywXzNg8PtF/1sBGKMnc5xLpd/4hfZPGgMGIQ0akKKvsz5kqlirZQ/Vbs6YjmkdkZjD
- Z9skcQdnNmf7U/oBX8DZbExX3UHvbY6olpA1fvZ1g9Ew7NiDqKaSlgOCVcRoJat92GpK
- aax9q1hVHNrChBR0y0tuTGxt8IyOqEyHHvkyxWnoySy/6vocXcrEsvTQ6gIZU/XywI4A
- 5/2Q==
-X-Gm-Message-State: AOJu0YzNQExrq5bSxSFcJRzL+z1ezF9xds/18py8+7PhZ92t1tKAUMz8
- cVWLG0+N5N2T7mJbFvRrlwEZPQ==
-X-Google-Smtp-Source: AGHT+IG+hrdsQ7T/BH1U7hdIc+QPHt8fNOZ68l7Fq5gvQ+ZNEa1Av2ONy2XHFBZMtwuMyxAfjgqQ8A==
-X-Received: by 2002:a1c:770d:0:b0:406:5463:8f74 with SMTP id
- t13-20020a1c770d000000b0040654638f74mr14904585wmi.24.1696869665957; 
- Mon, 09 Oct 2023 09:41:05 -0700 (PDT)
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=iMC4+hjgqKV/lGIlu49d0i7qAAR9ydClgNpOgYzMG7M=;
+ b=hYMO+gpVRNrlDjZg7SJA3lLPGRs9TfsiQdEJ+F/zmn+J0Ck0+RwAGJtTDQd6i+mhfA
+ SBxpwyPf+viDmiyJD2SRYutTCnZKCvzDrR2ZY88GJJrKPKibgDJA5LB+QULng5v0BgxE
+ GGUHGMZylcgnssI32/RDJkkno2aZpK7uj+ei/xClSFL1I+qkg0bJs3by4n5BtwLbhV1c
+ iO88GhNPXbbd/JlWQ5utaA9Rp/AbkkxQXbUwQSZpJs9gnpkUsKaIAUXAyaoyWqQZJXZq
+ wTYpEMyT1QZ4+OVPJ1BjKp+aVfwkVXK82TbkmGMbxnonBiTVO4HTj3A5L1jeQM9xGEL7
+ KIxw==
+X-Gm-Message-State: AOJu0YwpfY6erd1FfGv82sqHuesZHJ9V/t5xCw8+RUWJ/hsJawqqx5MT
+ IXM+qe5AMDghSdAIqeuYP8FPRQ==
+X-Google-Smtp-Source: AGHT+IH31b/0gr8HcbvDnjm/6vwisrud7OWBxu+v3XPyqQjKUEamxGlEjQDgHz2lUIWLEI/VaR3hKQ==
+X-Received: by 2002:a5d:4d12:0:b0:316:efb9:101d with SMTP id
+ z18-20020a5d4d12000000b00316efb9101dmr14167048wrt.25.1696869666151; 
+ Mon, 09 Oct 2023 09:41:06 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- k22-20020a7bc416000000b00404719b05b5sm11668259wmi.27.2023.10.09.09.41.05
+ v16-20020a1cf710000000b003fefaf299b6sm11623199wmh.38.2023.10.09.09.41.05
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
  Mon, 09 Oct 2023 09:41:05 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 0F3E81FFBB;
+ by zen.linaroharston (Postfix) with ESMTP id 2B0161FFBC;
  Mon,  9 Oct 2023 17:41:05 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -88,16 +89,18 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 00/25] October maintainer omnibus pre-PR (tests, gdbstub,
- plugins)
-Date: Mon,  9 Oct 2023 17:40:39 +0100
-Message-Id: <20231009164104.369749-1-alex.bennee@linaro.org>
+Subject: [PATCH 01/25] tests/avocado: update firmware to enable OpenBSD test
+ on sbsa-ref
+Date: Mon,  9 Oct 2023 17:40:40 +0100
+Message-Id: <20231009164104.369749-2-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
+References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::430;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x430.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -120,123 +123,136 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi,
+From: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 
-This wraps up my current testing, gdbstub and plugin trees in an
-attempt to do my part to reduce the qemu-devel fire hose. It is pretty
-much the same as the September tree except:
+Update prebuilt firmware images:
+- Neoverse V1/N2 cpu support
+- non-secure EL2 virtual timer
+- XHCI controller in DSDT
 
-  - dropped RFC patches
-  - dropped CRIS deprecation patches
-  - dropped makefile dependency tweaks
-  - tweaked RUNC as per Paolo's suggestion
-  - used later version of Marcin's sbsa-ref changes
-  - added a FLAKY_TEST removal
-  - added tags as appropriate
+With those changes we can now run OpenBSD as part of sbsa-ref tests.
 
-Now I'm using the pre-PR subject to give people a last chance to
-object before I roll a proper pull request later this week.
+Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Message-Id: <20230927120050.210187-2-marcin.juszkiewicz@linaro.org>
+[AJB: fix whitespace and longline]
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ tests/avocado/machine_aarch64_sbsaref.py | 70 ++++++++++++++++++++----
+ 1 file changed, 60 insertions(+), 10 deletions(-)
 
-The following still could do with review:
-
-  contrib/plugins: fix coverity warning in hotblocks
-  contrib/plugins: fix coverity warning in lockstep
-  contrib/plugins: fix coverity warning in cache
-  configure: remove gcc version suffixes
-  configure: allow user to override docker engine
-  tests/docker: make docker engine choice entirely configure driven
-  tests/avocado: remove flaky test marking for test_sbsaref_edk2_firmware
-
-Akihiko Odaki (12):
-  gdbstub: Fix target_xml initialization
-  gdbstub: Fix target.xml response
-  plugins: Check if vCPU is realized
-  contrib/plugins: Use GRWLock in execlog
-  gdbstub: Introduce GDBFeature structure
-  target/arm: Move the reference to arm-core.xml
-  hw/core/cpu: Return static value with gdb_arch_name()
-  gdbstub: Use g_markup_printf_escaped()
-  target/arm: Remove references to gdb_has_xml
-  target/ppc: Remove references to gdb_has_xml
-  gdbstub: Remove gdb_has_xml variable
-  gdbstub: Replace gdb_regs with an array
-
-Alex Bennée (9):
-  tests/avocado: remove flaky test marking for
-    test_sbsaref_edk2_firmware
-  tests/lcitool: add swtpm to the package list
-  gitlab: shuffle some targets and reduce avocado noise
-  tests/docker: make docker engine choice entirely configure driven
-  configure: allow user to override docker engine
-  configure: remove gcc version suffixes
-  contrib/plugins: fix coverity warning in cache
-  contrib/plugins: fix coverity warning in lockstep
-  contrib/plugins: fix coverity warning in hotblocks
-
-Marcin Juszkiewicz (1):
-  tests/avocado: update firmware to enable OpenBSD test on sbsa-ref
-
-Matt Borgerson (1):
-  plugins: Set final instruction count in plugin_gen_tb_end
-
-Richard Henderson (2):
-  accel/tcg: Add plugin_enabled to DisasContextBase
-  target/sh4: Disable decode_gusa when plugins enabled
-
- MAINTAINERS                                   |  2 +-
- configure                                     | 13 ++-
- meson.build                                   |  2 +-
- gdbstub/internals.h                           |  2 -
- include/exec/gdbstub.h                        | 17 ++--
- include/exec/plugin-gen.h                     |  4 +-
- include/exec/translator.h                     |  2 +
- include/hw/core/cpu.h                         |  4 +-
- target/ppc/internal.h                         |  2 +-
- accel/tcg/plugin-gen.c                        |  6 +-
- accel/tcg/translator.c                        |  3 +-
- contrib/plugins/cache.c                       | 18 ++--
- contrib/plugins/execlog.c                     | 16 ++--
- contrib/plugins/hotblocks.c                   |  2 +-
- contrib/plugins/lockstep.c                    | 13 ++-
- gdbstub/gdbstub.c                             | 95 +++++++++----------
- gdbstub/softmmu.c                             |  2 +-
- plugins/core.c                                |  2 +-
- stubs/gdbstub.c                               |  6 +-
- target/arm/cpu.c                              |  9 +-
- target/arm/cpu64.c                            |  4 +-
- target/arm/gdbstub.c                          | 32 +------
- target/i386/cpu.c                             |  6 +-
- target/loongarch/cpu.c                        |  8 +-
- target/ppc/gdbstub.c                          | 24 +----
- target/riscv/cpu.c                            |  6 +-
- target/s390x/cpu.c                            |  4 +-
- target/sh4/translate.c                        | 41 +++++---
- target/tricore/cpu.c                          |  4 +-
- .gitlab-ci.d/buildtest.yml                    | 15 ++-
- .gitlab-ci.d/cirrus/macos-12.vars             |  2 +-
- scripts/feature_to_c.py                       | 48 ++++++++++
- scripts/feature_to_c.sh                       | 69 --------------
- tests/avocado/machine_aarch64_sbsaref.py      | 71 +++++++++++---
- tests/docker/Makefile.include                 |  9 +-
- tests/docker/dockerfiles/alpine.docker        |  1 +
- tests/docker/dockerfiles/centos8.docker       |  1 +
- .../dockerfiles/debian-amd64-cross.docker     |  1 +
- tests/docker/dockerfiles/debian-amd64.docker  |  1 +
- .../dockerfiles/debian-arm64-cross.docker     |  1 +
- .../dockerfiles/debian-armhf-cross.docker     |  1 +
- .../dockerfiles/debian-ppc64el-cross.docker   |  1 +
- .../dockerfiles/debian-s390x-cross.docker     |  1 +
- .../dockerfiles/fedora-win32-cross.docker     |  1 +
- .../dockerfiles/fedora-win64-cross.docker     |  1 +
- tests/docker/dockerfiles/fedora.docker        |  1 +
- tests/docker/dockerfiles/opensuse-leap.docker |  1 +
- tests/docker/dockerfiles/ubuntu2204.docker    |  1 +
- tests/lcitool/libvirt-ci                      |  2 +-
- tests/lcitool/projects/qemu.yml               |  1 +
- 50 files changed, 305 insertions(+), 274 deletions(-)
- create mode 100755 scripts/feature_to_c.py
- delete mode 100644 scripts/feature_to_c.sh
-
+diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+index a794245e7e..b272053eaf 100644
+--- a/tests/avocado/machine_aarch64_sbsaref.py
++++ b/tests/avocado/machine_aarch64_sbsaref.py
+@@ -28,33 +28,33 @@ def fetch_firmware(self):
+         """
+         Flash volumes generated using:
+ 
+-        - Fedora GNU Toolchain version 13.1.1 20230511 (Red Hat 13.1.1-2)
++        - Fedora GNU Toolchain version 13.2.1 20230728 (Red Hat 13.2.1-1)
+ 
+         - Trusted Firmware-A
+-          https://github.com/ARM-software/arm-trusted-firmware/tree/c0d8ee38
++          https://github.com/ARM-software/arm-trusted-firmware/tree/7c3ff62d
+ 
+         - Tianocore EDK II
+           https://github.com/tianocore/edk2/tree/0f9283429dd4
+-          https://github.com/tianocore/edk2-non-osi/tree/f0bb00937ad6
+-          https://github.com/tianocore/edk2-platforms/tree/7880b92e2a04
++          https://github.com/tianocore/edk2/tree/ad1c0394b177
++          https://github.com/tianocore/edk2-platforms/tree/d03a60523a60
+         """
+ 
+         # Secure BootRom (TF-A code)
+         fs0_xz_url = (
+-            "https://fileserver.linaro.org/s/HrYMCjP7MEccjRP/"
++            "https://fileserver.linaro.org/s/rE43RJyTfxPtBkc/"
+             "download/SBSA_FLASH0.fd.xz"
+         )
+-        fs0_xz_hash = "447eff64a90b84ce47703c6ec41fbfc25befaaea"
++        fs0_xz_hash = "cdb8e4ffdaaa79292b7b465693f9e5fae6b7062d"
+         tar_xz_path = self.fetch_asset(fs0_xz_url, asset_hash=fs0_xz_hash)
+         archive.extract(tar_xz_path, self.workdir)
+         fs0_path = os.path.join(self.workdir, "SBSA_FLASH0.fd")
+ 
+         # Non-secure rom (UEFI and EFI variables)
+         fs1_xz_url = (
+-            "https://fileserver.linaro.org/s/t8foNnMPz74DZZy/"
++            "https://fileserver.linaro.org/s/AGWPDXbcqJTKS4R/"
+             "download/SBSA_FLASH1.fd.xz"
+         )
+-        fs1_xz_hash = "13a9a262953787c7fc5a9155dfaa26e703631e02"
++        fs1_xz_hash = "411155ae6984334714dff08d5d628178e790c875"
+         tar_xz_path = self.fetch_asset(fs1_xz_url, asset_hash=fs1_xz_hash)
+         archive.extract(tar_xz_path, self.workdir)
+         fs1_path = os.path.join(self.workdir, "SBSA_FLASH1.fd")
+@@ -144,7 +144,7 @@ def test_sbsaref_alpine_linux_cortex_a57(self):
+ 
+     def test_sbsaref_alpine_linux_neoverse_n1(self):
+         """
+-        :avocado: tags=cpu:max
++        :avocado: tags=cpu:neoverse-n1
+         """
+         self.boot_alpine_linux("neoverse-n1")
+ 
+@@ -152,4 +152,54 @@ def test_sbsaref_alpine_linux_max(self):
+         """
+         :avocado: tags=cpu:max
+         """
+-        self.boot_alpine_linux("max,pauth-impdef=on")
++        self.boot_alpine_linux("max")
++
++
++    # This tests the whole boot chain from EFI to Userspace
++    # We only boot a whole OS for the current top level CPU and GIC
++    # Other test profiles should use more minimal boots
++    def boot_openbsd73(self, cpu):
++        self.fetch_firmware()
++
++        img_url = (
++            "https://cdn.openbsd.org/pub/OpenBSD/7.3/arm64/miniroot73.img"
++        )
++
++        img_hash = "7fc2c75401d6f01fbfa25f4953f72ad7d7c18650056d30755c44b9c129b707e5"
++        img_path = self.fetch_asset(img_url, algorithm="sha256", asset_hash=img_hash)
++
++        self.vm.set_console()
++        self.vm.add_args(
++            "-cpu",
++            cpu,
++            "-drive",
++            f"file={img_path},format=raw",
++            "-device",
++            "virtio-rng-pci,rng=rng0",
++            "-object",
++            "rng-random,id=rng0,filename=/dev/urandom",
++        )
++
++        self.vm.launch()
++        wait_for_console_pattern(self,
++                                 "Welcome to the OpenBSD/arm64"
++                                 " 7.3 installation program.")
++
++    def test_sbsaref_openbsd73_cortex_a57(self):
++        """
++        :avocado: tags=cpu:cortex-a57
++        """
++        self.boot_openbsd73("cortex-a57")
++
++    def test_sbsaref_openbsd73_neoverse_n1(self):
++        """
++        :avocado: tags=cpu:neoverse-n1
++        """
++        self.boot_openbsd73("neoverse-n1")
++
++    def test_sbsaref_openbsd73_max(self):
++        """
++        :avocado: tags=cpu:max
++        """
++        self.boot_openbsd73("max")
++
 -- 
 2.39.2
 
