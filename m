@@ -2,55 +2,51 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA237BED95
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 23:50:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1627BED9F
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 23:54:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpy7b-0007kP-1B; Mon, 09 Oct 2023 17:49:03 -0400
+	id 1qpyBn-0000Z6-2w; Mon, 09 Oct 2023 17:53:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qpy7U-0007jJ-45; Mon, 09 Oct 2023 17:48:56 -0400
+ id 1qpyBl-0000Ya-En
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 17:53:21 -0400
 Received: from mail.ilande.co.uk ([2001:41c9:1:41f::167])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qpy7Q-0005RZ-Gc; Mon, 09 Oct 2023 17:48:55 -0400
+ id 1qpyBY-0006Aj-4w
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 17:53:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
  d=ilande.co.uk; s=20220518; h=Subject:Content-Transfer-Encoding:Content-Type:
  In-Reply-To:From:References:Cc:To:MIME-Version:Date:Message-ID:Sender:
  Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
  :Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
  List-Subscribe:List-Post:List-Owner:List-Archive;
- bh=WEbORx4VII+RIER1jiqaGmebIkg1SACs2qhMwCJeeNM=; b=d+VsK2ouCVTutQxlrOiPYnq2GO
- P/eNJKUnd9WlC4oEcbYtplHs34ElXXX6PqWqJJihBP3SC7QJf9+SsQz8xBKMxQ++KPSmw2PkFVPvo
- Vp9muKLoRkS3DUTQPgD5FS0VJROLyf6O9IvEiiNNI5mxjhDdYtRzOcL7ykYdwSi4IbuXrTgEfIyRU
- 2cgJhBO2HbgIju96JkpW5lTdbratzzEHJYDiLXCR/LSqjNjZ+yvAiRqnJiDc0k07gWi+gitrc17nQ
- JYe+8st3zxlBDm20y22RDhvvgo329vQChHm0jQ6sg6SBTovnlXXY3hPY30Xj1aPRQupZ6HfUzhbat
- agPvNpn2Ukqg/5OdjU0yC21mSug9e11fIODrnvL6WPVgYtVpT2xsqNozIFmISfgsab1/sDOvgZD4z
- 8jcTRxvEZiG1ak7XJIFYXfIvICfZ6PNutRTFyjdXD61iCGgM8kA2wAo+ceKPwcvCkfz5mWaZ5HdKT
- qfkyJFJc+j46XRoD4STvr5NWlfRS+mZw6vgBgK7Qs4H1QnnyTAuSginUYtBo6CiIueItA5A1oCj3F
- 8B6eOQrVfuwedAlqTEp+9/PjyHpayElaz3uE6EYX8bdgB2IQwElma8x8LOkQZXukKNUb/svgWbttB
- +wZKOZIioLds67DEPdWZIvHyHVQbXL7t2TTGnY1QM=;
+ bh=Wfmqd6CwruCqxgT7+kbIbaqxGLL4jt8PLuIDRWU6MQg=; b=neXUQt3rAUZaajC++DAv+KgB5a
+ itAQGFT1nc9r+/C/vwgLn5QFMc0pIIAeAFnePEm6gzRxmyvPuHeF51LzXqukvqWC+Ht2gBoKpa6eT
+ VoVrPDhv/pBX+FSC7ta2rY3R9HSe41FEqDRFyztja/eHgS61W6V/82klKBi1z72F7pmXKGiw3euna
+ 99KbYn6KkwMoiztkY5SFkx/cVr98e2xzQsAdh2OEfYe4nbA455N46sZZcUomZyAm1FvBBE0Qe60r0
+ B/pm5L8e2oHVzSttBbxSLRIHp6F0HSDtd8Rm8KlmIuOftNDpAYYHgVHc2k8khxYtBZsBT61n5udT5
+ RWkOTwKcLkdrslXa02Yg3e2WvbjFAYju9tppZPN/5vnYpMG8txkNvvOOxS2XuKJlXH9mEVGb4yZuj
+ ZyABM+Sar2kNKVrauHQrakSK8ZNkYY6NheG5CoiXnpOeFY4ckojoLpFL+6eGDAhnjNGKGfluWce95
+ w3NP8O+CPGMo6WDC41mqW2A7pZzeL8eJOmEP2lXM34VepxKocgoaJkVAhE5S/wZcl2rTLfPNoHU3A
+ EjVT2Ux8L7HEB6v6zsnkFMMI/EPMVRQNAnBuCmCeY4lI41hl2sapRQ+XY8EYShlpmVwPMaUGBqv0p
+ +5gmdx7Fy57WXx7Ack+d46K2lKd8t4n5PlUj2QBOo=;
 Received: from [2a00:23c4:8baf:fd00:bd92:8220:89aa:44b7]
  by mail.ilande.co.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.92) (envelope-from <mark.cave-ayland@ilande.co.uk>)
- id 1qpy7H-0005yo-Ro; Mon, 09 Oct 2023 22:48:47 +0100
-Message-ID: <2636ec4a-749c-4fcf-81fa-99a2faf48ec3@ilande.co.uk>
-Date: Mon, 9 Oct 2023 22:48:43 +0100
+ id 1qpyBR-00061H-US; Mon, 09 Oct 2023 22:53:05 +0100
+Message-ID: <52b540c1-b625-48b7-b927-ce690a71f104@ilande.co.uk>
+Date: Mon, 9 Oct 2023 22:52:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: Artyom Tarasenko <atar4qemu@gmail.com>
+References: <20231009092434.50356-1-philmd@linaro.org>
 Content-Language: en-US
-To: BALATON Zoltan <balaton@eik.bme.hu>
-Cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org,
- Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-References: <cover.1696542537.git.balaton@eik.bme.hu>
- <90adfa92df7bf760059924a92deebcd6b32e7f37.1696542537.git.balaton@eik.bme.hu>
- <29142019-2a88-4621-8767-58668113d8c7@ilande.co.uk>
- <819b5705-96d7-0c64-11ea-924198f936c3@eik.bme.hu>
 From: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  xsBNBFQJuzwBCADAYvxrwUh1p/PvUlNFwKosVtVHHplgWi5p29t58QlOUkceZG0DBYSNqk93
@@ -76,12 +72,12 @@ Autocrypt: addr=mark.cave-ayland@ilande.co.uk; keydata=
  Ir6VauZs5Gp25XLrL6bh/SL8aK0BX6y79m5nhfKI1/6qtzHAjtMAjqy8ChPvOqVVVqmGUzFg
  KPsrrIoklWcYHXPyMLj9afispPVR8e0tMKvxzFBWzrWX1mzljbBlnV2n8BIwVXWNbgwpHSsj
  imgcU9TTGC5qd9g=
-In-Reply-To: <819b5705-96d7-0c64-11ea-924198f936c3@eik.bme.hu>
+In-Reply-To: <20231009092434.50356-1-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a00:23c4:8baf:fd00:bd92:8220:89aa:44b7
 X-SA-Exim-Mail-From: mark.cave-ayland@ilande.co.uk
-Subject: Re: [PATCH 2/3] hw/pci-host: Add emulation of Mai Logic Articia S
+Subject: Re: [PATCH] target/sparc: Clean up global variable shadowing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on mail.ilande.co.uk)
 Received-SPF: pass client-ip=2001:41c9:1:41f::167;
@@ -107,118 +103,51 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 08/10/2023 19:08, BALATON Zoltan wrote:
+On 09/10/2023 10:24, Philippe Mathieu-Daudé wrote:
 
-> On Sun, 8 Oct 2023, Mark Cave-Ayland wrote:
->> On 05/10/2023 23:13, BALATON Zoltan wrote:
->>
->>> The Articia S is a generic chipset supporting several different CPUs
->>> that were used on some PPC boards. This is a minimal emulation of the
->>> parts needed for emulating the AmigaOne board.
->>>
->>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>> ---
->>>   hw/pci-host/Kconfig           |   5 +
->>>   hw/pci-host/articia.c         | 266 ++++++++++++++++++++++++++++++++++
->>>   hw/pci-host/meson.build       |   2 +
->>>   include/hw/pci-host/articia.h |  17 +++
->>>   4 files changed, 290 insertions(+)
->>>   create mode 100644 hw/pci-host/articia.c
->>>   create mode 100644 include/hw/pci-host/articia.h
->>>
->>> diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
->>> index a07070eddf..33014c80a4 100644
->>> --- a/hw/pci-host/Kconfig
->>> +++ b/hw/pci-host/Kconfig
->>> @@ -73,6 +73,11 @@ config SH_PCI
->>>       bool
->>>       select PCI
->>>   +config ARTICIA
->>> +    bool
->>> +    select PCI
->>> +    select I8259
->>> +
->>>   config MV64361
->>>       bool
->>>       select PCI
->>> diff --git a/hw/pci-host/articia.c b/hw/pci-host/articia.c
->>> new file mode 100644
->>> index 0000000000..80558e1c47
->>> --- /dev/null
->>> +++ b/hw/pci-host/articia.c
->>> @@ -0,0 +1,266 @@
->>> +/*
->>> + * Mai Logic Articia S emulation
->>> + *
->>> + * Copyright (c) 2023 BALATON Zoltan
->>> + *
->>> + * This work is licensed under the GNU GPL license version 2 or later.
->>> + *
->>> + */
->>> +
->>> +#include "qemu/osdep.h"
->>> +#include "qemu/log.h"
->>> +#include "qapi/error.h"
->>> +#include "hw/pci/pci_device.h"
->>> +#include "hw/pci/pci_host.h"
->>> +#include "hw/irq.h"
->>> +#include "hw/i2c/bitbang_i2c.h"
->>> +#include "hw/intc/i8259.h"
->>> +#include "hw/pci-host/articia.h"
->>> +
->>> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaState, ARTICIA)
->>> +
->>> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaHostState, ARTICIA_PCI_HOST)
->>> +struct ArticiaHostState {
->>> +    PCIDevice parent_obj;
->>> +
->>> +    ArticiaState *as;
->>> +};
->>> +
->>> +/* TYPE_ARTICIA */
->>> +
->>> +struct ArticiaState {
->>> +    PCIHostState parent_obj;
->>> +
->>> +    qemu_irq irq[PCI_NUM_PINS];
->>> +    MemoryRegion io;
->>> +    MemoryRegion mem;
->>> +    MemoryRegion reg;
->>> +
->>> +    bitbang_i2c_interface smbus;
->>> +    uint32_t gpio; /* bits 0-7 in, 8-15 out, 16-23 direction (0 in, 1 out) */
->>> +    hwaddr gpio_base;
->>> +    MemoryRegion gpio_reg;
->>> +};
->>
->> These types above should be in the header file and not in the C file, as per our 
->> current QOM guidelines.
+> Fix:
 > 
-> I don't think there's such a guideline, at least I did not find any mention of it in 
-> style and qom docs. It was necessary to move some type declarations to headers for 
-> types that are embedded in other objects because C needs the struct size for that, 
-> but I don't think that should be a general thing when it's not needed.
+>    target/sparc/translate.c:2823:66: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>    static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
+>                                                                     ^
+>    include/tcg/tcg.h:579:17: note: previous declaration is here
+>    extern TCGv_env tcg_env;
+>                    ^
 > 
-> The reason for that is that moving these to the header exposes internal object 
-> structure to users that should not need to know that so it breaks object 
-> encapsulation and also needs moving a bunch of includes to the header which then 
-> makes the users of this type also include those headers when they don't really need 
-> them but only need the type defines to instantiate the object and that's all they 
-> should have access to. So I think declaring types in the header should only be done 
-> for types that aren't full devices and are meant to be embedded as part of another 
-> device or a SoC but otherwise it's better to keep implementation closed and local to 
-> the object and not expose it unless really needed, that's why these are here.
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
+>   target/sparc/translate.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
 > 
-> If you insist I can move these but I don't think there's really such recommendation 
-> and I don't think that's a good idea because of the above.
+> diff --git a/target/sparc/translate.c b/target/sparc/translate.c
+> index f92ff80ac8..26ed371109 100644
+> --- a/target/sparc/translate.c
+> +++ b/target/sparc/translate.c
+> @@ -2820,19 +2820,19 @@ static void gen_fmovq(DisasContext *dc, DisasCompare *cmp, int rd, int rs)
+>   }
+>   
+>   #ifndef CONFIG_USER_ONLY
+> -static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env tcg_env)
+> +static void gen_load_trap_state_at_tl(TCGv_ptr r_tsptr, TCGv_env env)
+>   {
+>       TCGv_i32 r_tl = tcg_temp_new_i32();
+>   
+>       /* load env->tl into r_tl */
+> -    tcg_gen_ld_i32(r_tl, tcg_env, offsetof(CPUSPARCState, tl));
+> +    tcg_gen_ld_i32(r_tl, env, offsetof(CPUSPARCState, tl));
+>   
+>       /* tl = [0 ... MAXTL_MASK] where MAXTL_MASK must be power of 2 */
+>       tcg_gen_andi_i32(r_tl, r_tl, MAXTL_MASK);
+>   
+>       /* calculate offset to current trap state from env->ts, reuse r_tl */
+>       tcg_gen_muli_i32(r_tl, r_tl, sizeof (trap_state));
+> -    tcg_gen_addi_ptr(r_tsptr, tcg_env, offsetof(CPUSPARCState, ts));
+> +    tcg_gen_addi_ptr(r_tsptr, env, offsetof(CPUSPARCState, ts));
+>   
+>       /* tsptr = env->ts[env->tl & MAXTL_MASK] */
+>       {
 
-Maybe it was something that was missed out of the recent documentation updates, but 
-you can clearly see this has been the standard pattern for some time, including for 
-recent devices such as the xlnx-versal. If there are any devices that don't follow 
-this pattern then it is likely because they are based on older code.
-
-If you disagree with this, then start a new thread on qemu-devel with a new proposal 
-and if everyone is agreement then that will be become the new standard.
+Reviewed-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
 
 
 ATB,
