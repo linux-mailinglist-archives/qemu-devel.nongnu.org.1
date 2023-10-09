@@ -2,99 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50257BD7D0
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF887BD7F2
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:05:50 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpn3N-0006YD-O8; Mon, 09 Oct 2023 05:59:57 -0400
+	id 1qpn6x-0003B8-IM; Mon, 09 Oct 2023 06:03:41 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qpn3I-0006W2-Ll
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:59:53 -0400
-Received: from mail-wm1-x331.google.com ([2a00:1450:4864:20::331])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpn6H-00032d-O7
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:02:59 -0400
+Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qpn3A-00081s-Go
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:59:52 -0400
-Received: by mail-wm1-x331.google.com with SMTP id
- 5b1f17b1804b1-4053c6f0db8so39625505e9.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 02:59:42 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpn6G-00007s-5u
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:02:57 -0400
+Received: by mail-wm1-x32b.google.com with SMTP id
+ 5b1f17b1804b1-405361bb9f7so39467575e9.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 03:02:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696845582; x=1697450382; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=AJso+7/SyOzlPSfGsjFdKvvog0Z+6+yUR2hdcAwaBfc=;
- b=BfXsAS1yLf7PWlcK5eW9WMiTiYS/Bpqf7hupxQVJiKNxGoT3kfYYBoOE5qNd/shnZw
- WiZCz4stA4BTN4cqSKAzjvWDe1vy27W6wSMFgmhCMEgeHftt+km5Xwws3A72tgtn8D92
- lhj/LJ+ACu4f1eMOoctsZtGZahNDwivPoBOB6uyGm2wDY3Z0gTxYpavu6Pv8BWvM3wfe
- YdzkdDuXXF9Cztq/kST13ZsqAeXie7db1XuVsMtKPdOWFiXtG3R3h4T0WU38FZRqZEP/
- fTc440OK/7j/1+RSd360sjtk3rk/zRbKlPw73WGJ0Q6b7Xn9XTk+d2g/EH6UjoQIExSB
- 9Z/Q==
+ d=linaro.org; s=google; t=1696845774; x=1697450574; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=KNu5WskARX8t8uiglt34aaZEs4+GnJbim8ACZvASM0Y=;
+ b=tXyoQvhkfD2Wf38ehOsdKFvomMms6DhkvoYTz4E2Gx2bPaXF4egALMXxY1SYhWPiFe
+ +P4ejsy5TueuAtfS9qUjlej8UOE3eNtNwaPOyIe455iFuQCCFYzNY30uCa7GcsAoZ7M3
+ pSwBagpbXbRnPuYfhAG3UXxmiSDHs1Xuneb3MiRma04Z62JeUDuxtlgP//VnLVl4s1iF
+ KvGq7lyVsGd0aZi39msvgswS02Y4vtPBzZXybmHVhxTpXMcOo4qPyICzw9NqYBjx9E9t
+ uGZ+J1qk7f94eO34S82kkuQRwjqVIo2r7zj8SwxNPGViXtimgHEpA2cKMaSKFoTqL/1V
+ iegQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696845582; x=1697450382;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=AJso+7/SyOzlPSfGsjFdKvvog0Z+6+yUR2hdcAwaBfc=;
- b=Fro6xf8mR7CaU3ggO6cv/04TnadgBNDeYETw6jQjPBK2ebB4NhpW9nsArZCEACcJ/H
- C/Svf8yqdN3k57RugAS6j/cbdyAOD0KySjQDoZjSPjda75PIQXgMUnX+3oNEfcz+2EsM
- Wm38PTUOcuez4fKddKmARyDKGYeDJG6XUSnCl7v+wRrNTQbDyDzCgK6mojEw7ULf6xlW
- Rb4E9zcdKJ3cdtx7EzYB+TuVbhSVUOypHqtpaMJ3vmfdsOkIJ6b363WQ2+oSOyTLUbMb
- pGtg0wbTr/X98mj9yechd7QBEA+MN6htVKnYrBfQ+4w5+sJ2NDk9z+c55Gpve8XT9+Wt
- ylTw==
-X-Gm-Message-State: AOJu0YxXpEg6el2FN0ZkV3iMEOPei5aXQsBz2jBQFi9bEE/RNK2lmm3v
- l4/BLseNAUG+gHoBVg2NXrxhTQ==
-X-Google-Smtp-Source: AGHT+IHIB3GMWmvvvfK6rgpZdV/gO0cMpR8mFDzuZzytA0h5Wb4qnN2DHerTFBXlAVsZnwKG/gdZoA==
-X-Received: by 2002:a05:600c:684:b0:406:8496:bd8c with SMTP id
- a4-20020a05600c068400b004068496bd8cmr12735162wmn.20.1696845581748; 
- Mon, 09 Oct 2023 02:59:41 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
- by smtp.gmail.com with ESMTPSA id
- u7-20020a7bc047000000b004063cced50bsm10735289wmc.23.2023.10.09.02.59.39
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 02:59:41 -0700 (PDT)
-Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id EC7331FFC1;
- Mon,  9 Oct 2023 10:59:38 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+ d=1e100.net; s=20230601; t=1696845774; x=1697450574;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=KNu5WskARX8t8uiglt34aaZEs4+GnJbim8ACZvASM0Y=;
+ b=ptDSRbVZ1p04UlwRzdSXPtsU9qJT8Y1UKkT46ceTNlkuDn3nEgml76Zl9ItxLNIMpD
+ ON9ahTd8nD5607G7Wfe7uSFRSJaeHtHTtZZNrxajQ45EJ9dMY88s2ilXxX4vVErkJxCZ
+ e1Ani1nNoLu6QnXGDhao0wKGFKsWIp912TsU0iO9UQchY9dWkTeDk359IAbBF8buY7/Q
+ 0Go3wKQvQ+UdAVPMOzLbux7gJ8Zq+ifdbPJgSDWAglkmlZAIvqdVsBiQuEPdsMvEGRzD
+ Unxy+Cu6nxT0aF4sfsG8auSEZB0BTOZ/og0sslOm78tV62amnEYiQnQWH5GdmA6UamID
+ bGog==
+X-Gm-Message-State: AOJu0YyV6Rd6VcjqVHvTRSe0IbAwgmLn4r56n3Z4eWhD8lFrLIRtTba6
+ 3QKzVts0MzmAoCZgVMucAFApz8sfb0nGD4Utu9A=
+X-Google-Smtp-Source: AGHT+IFWM5+CPXvfbvoxyJmzXh58S45SE0RPsyJt6Kkp58zLCqV+OdcFb/Hx7DgR85nvymsZMrzaJw==
+X-Received: by 2002:a1c:4b07:0:b0:405:3ca1:f6ba with SMTP id
+ y7-20020a1c4b07000000b004053ca1f6bamr12278207wma.3.1696845774603; 
+ Mon, 09 Oct 2023 03:02:54 -0700 (PDT)
+Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
+ [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
+ n20-20020adf8b14000000b003296b62d413sm8723513wra.82.2023.10.09.03.02.53
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 09 Oct 2023 03:02:54 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
-Cc: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- Erik Schilling <erik.schilling@linaro.org>, Fam Zheng <fam@euphon.net>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
- Stefan Hajnoczi <stefanha@redhat.com>,
- =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
- Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
- Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Viresh Kumar <viresh.kumar@linaro.org>, virtio-fs@redhat.com,
- "Gonglei (Arei)" <arei.gonglei@huawei.com>,
- Markus Armbruster <armbru@redhat.com>, Jason Wang <jasowang@redhat.com>,
- Raphael Norwitz <raphael.norwitz@nutanix.com>,
- =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>
-Subject: [PATCH v4 6/6] docs/system: add a basic enumeration of vhost-user
- devices
-Date: Mon,  9 Oct 2023 10:59:37 +0100
-Message-Id: <20231009095937.195728-7-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231009095937.195728-1-alex.bennee@linaro.org>
-References: <20231009095937.195728-1-alex.bennee@linaro.org>
+Cc: qemu-arm@nongnu.org, Alberto Garcia <berto@igalia.com>,
+ Hao Wu <wuhaotsh@google.com>, Kevin Wolf <kwolf@redhat.com>,
+ Thomas Huth <thuth@redhat.com>, Laurent Vivier <lvivier@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, qemu-block@nongnu.org,
+ John Snow <jsnow@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Fam Zheng <fam@euphon.net>, Tyrone Ting <kfting@nuvoton.com>,
+ Markus Armbruster <armbru@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH 00/10] tests: Clean up global variables shadowing
+Date: Mon,  9 Oct 2023 12:02:41 +0200
+Message-ID: <20231009100251.56019-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::331;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x331.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32b;
+ envelope-from=philmd@linaro.org; helo=mail-wm1-x32b.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -110,81 +94,36 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Make it clear the vhost-user-device is intended for expert use only.
+Clean up global variables shadowing in tests/
+in order to be able to use -Wshadow with Clang.
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Philippe Mathieu-Daudé (10):
+  system/qtest: Clean up global variable shadowing in
+    qtest_server_init()
+  tests/throttle: Clean up global variable shadowing
+  tests/virtio-scsi: Clean up global variable shadowing
+  tests/cdrom-test: Clean up global variable shadowing in
+    prepare_image()
+  tests/hd-geo-test: Clean up global variable shadowing
+  tests/rtl8139: Clean up global variable shadowing
+  tests/npcm7xx_adc: Clean up global variable shadowing
+  tests/aio: Clean up global variable shadowing
+  tests/aio-multithread: Clean up global variable shadowing
+  tests/coroutine: Clean up global variable shadowing
 
----
-v2
-  - make clear vhost-user-device for expert use
----
- docs/system/devices/vhost-user-rng.rst |  2 ++
- docs/system/devices/vhost-user.rst     | 41 ++++++++++++++++++++++++++
- 2 files changed, 43 insertions(+)
+ softmmu/qtest.c                   | 16 ++++++++--------
+ tests/qtest/cdrom-test.c          |  6 +++---
+ tests/qtest/hd-geo-test.c         | 12 ++++++++----
+ tests/qtest/npcm7xx_adc-test.c    | 14 +++++++-------
+ tests/qtest/rtl8139-test.c        | 12 ++++++------
+ tests/qtest/virtio-scsi-test.c    |  2 +-
+ tests/unit/test-aio-multithread.c | 16 ++++++++--------
+ tests/unit/test-aio.c             |  4 ++--
+ tests/unit/test-coroutine.c       | 12 ++++++------
+ tests/unit/test-throttle.c        |  1 -
+ 10 files changed, 49 insertions(+), 46 deletions(-)
 
-diff --git a/docs/system/devices/vhost-user-rng.rst b/docs/system/devices/vhost-user-rng.rst
-index a145d4105c..ead1405326 100644
---- a/docs/system/devices/vhost-user-rng.rst
-+++ b/docs/system/devices/vhost-user-rng.rst
-@@ -1,3 +1,5 @@
-+.. _vhost_user_rng:
-+
- QEMU vhost-user-rng - RNG emulation
- ===================================
- 
-diff --git a/docs/system/devices/vhost-user.rst b/docs/system/devices/vhost-user.rst
-index a80e95a48a..0f9eec3f00 100644
---- a/docs/system/devices/vhost-user.rst
-+++ b/docs/system/devices/vhost-user.rst
-@@ -15,6 +15,47 @@ to the guest. The code is mostly boilerplate although each device has
- a ``chardev`` option which specifies the ID of the ``--chardev``
- device that connects via a socket to the vhost-user *daemon*.
- 
-+Each device will have an virtio-mmio and virtio-pci variant. See your
-+platform details for what sort of virtio bus to use.
-+
-+.. list-table:: vhost-user devices
-+  :widths: 20 20 60
-+  :header-rows: 1
-+
-+  * - Device
-+    - Type
-+    - Notes
-+  * - vhost-user-device
-+    - Generic Development Device
-+    - You must manually specify ``virtio-id`` and the correct ``num_vqs``. Intended for expert use.
-+  * - vhost-user-blk
-+    - Block storage
-+    -
-+  * - vhost-user-fs
-+    - File based storage driver
-+    - See https://gitlab.com/virtio-fs/virtiofsd
-+  * - vhost-user-scsi
-+    - SCSI based storage
-+    - See contrib/vhost-user/scsi
-+  * - vhost-user-gpio
-+    - Proxy gpio pins to host
-+    - See https://github.com/rust-vmm/vhost-device
-+  * - vhost-user-i2c
-+    - Proxy i2c devices to host
-+    - See https://github.com/rust-vmm/vhost-device
-+  * - vhost-user-input
-+    - Generic input driver
-+    - See contrib/vhost-user-input
-+  * - vhost-user-rng
-+    - Entropy driver
-+    - :ref:`vhost_user_rng`
-+  * - vhost-user-gpu
-+    - GPU driver
-+    -
-+  * - vhost-user-vsock
-+    - Socket based communication
-+    - See https://github.com/rust-vmm/vhost-device
-+
- vhost-user daemon
- =================
- 
 -- 
-2.39.2
+2.41.0
 
 
