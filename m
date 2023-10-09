@@ -2,65 +2,65 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4EC7BE645
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:24:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7937BE646
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:24:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpt1z-0004OM-Ne; Mon, 09 Oct 2023 12:22:55 -0400
+	id 1qpt2P-0004Vf-Qs; Mon, 09 Oct 2023 12:23:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpt1w-0004NW-7F
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:22:53 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpt2O-0004VU-K7
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:23:20 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpt1u-0004pr-Uv
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:22:51 -0400
+ (Exim 4.90_1) (envelope-from <mst@redhat.com>) id 1qpt2N-0004yG-5f
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:23:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696868570;
+ s=mimecast20190719; t=1696868598;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=rMdWteBtwuomK48Cg0YckEzg6lLeJTeFzxkgqdswAOY=;
- b=NlhU9D+owte66wZF+jTvOJ7nHZdeMrdM3C033eDNb+ni1m+i3pDBIoGejDCzi6gCk0Ae/J
- vFmnwmMEyJsof7Rd3dnoxut2uj7ZtXAtudqiou03PiBTw8KEo3EOHHDW1WrllzxiHZNrGf
- ofzP2V/7dr0seKg3c/Xf0S9X0jZyY3k=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=Ftn60ogtZKvUd1i4IEbbgz7zv3XYWLxo5QGDZ8HmIeo=;
+ b=Z7ICc3luT+udUpocaR+HnvdUd7ptgu4vxWHuGP+Q6BTaxlsyf8efqF0oUAIRTpuUkKuJtX
+ gfh3PHEfc6zM7IsTLsiRkkmL8cN/QV8+Uebj3Dhw6RozIXGHRgcnnPYHMZj8XMpFCkOn5l
+ 3qPVqGCM7NGENDSwqJeKShFogHaJgFg=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-593-5GrtQu9AOUKBgS4WMQ3yWw-1; Mon, 09 Oct 2023 12:22:27 -0400
-X-MC-Unique: 5GrtQu9AOUKBgS4WMQ3yWw-1
-Received: by mail-wr1-f69.google.com with SMTP id
- ffacd0b85a97d-32006e08483so3074954f8f.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:22:26 -0700 (PDT)
+ us-mta-567-5b6OGXDVOpuqvoTHvTS-NQ-1; Mon, 09 Oct 2023 12:23:07 -0400
+X-MC-Unique: 5b6OGXDVOpuqvoTHvTS-NQ-1
+Received: by mail-ej1-f69.google.com with SMTP id
+ a640c23a62f3a-9b65c46bca8so365575366b.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:23:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696868546; x=1697473346;
+ d=1e100.net; s=20230601; t=1696868586; x=1697473386;
  h=in-reply-to:content-transfer-encoding:content-disposition
  :mime-version:references:message-id:subject:cc:to:from:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=rMdWteBtwuomK48Cg0YckEzg6lLeJTeFzxkgqdswAOY=;
- b=FSHKjh2IcMMb8dLHl/nfrBh8Pe/PRB2vonLOe3+Tz4DgoZhtEW9Q4vtyoxQk06EKLd
- XP0opdPspVqDlOFgEPsZ3urK2J4VUYMAKl2WJ3VatpvARZoMU1lWe0Z54P34rAOxWwlJ
- 84ntwbGK0jF+1a/XCpIwVM/UdJktDL3qKDvg2fHRovRCOERYT6ZvLPTicleb7cN1/tha
- kgSXOozTVaxRIVZdM9NShQhlLfms228hDr1yA5O0fjJ1G8hsc/t1eOoh7M6i3y/dkCEZ
- C94Xx2+ZEjNoE26bxrXa+6MoKXYpyJrExzEZX7044rDaj95L22Mf7hlB9SXU3ZiMCoSU
- 2jaQ==
-X-Gm-Message-State: AOJu0YxnwhYxcUOvopIM1HExF0qFZH2J1w9/9dSdUfxEtdCj4cL0IfEY
- U9qzsYRO81k5LcvG48rsprA4PRLZb98L4iPXcsFPzZwv1m5pe7mOLzmFVNj0PNoPVzC/vv5Etyy
- LjoY0LyEKxsoh40w=
-X-Received: by 2002:a5d:4d8c:0:b0:323:36a3:8ca with SMTP id
- b12-20020a5d4d8c000000b0032336a308camr14218947wru.28.1696868545804; 
- Mon, 09 Oct 2023 09:22:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEzNYBCGGD+1A97M1i8ZRZd8ufUjNMl3KqVaMgdi3N2ryiz9Gn0Ic4EyYbDMFefmQ6kEHweqw==
-X-Received: by 2002:a5d:4d8c:0:b0:323:36a3:8ca with SMTP id
- b12-20020a5d4d8c000000b0032336a308camr14218917wru.28.1696868545455; 
- Mon, 09 Oct 2023 09:22:25 -0700 (PDT)
+ bh=Ftn60ogtZKvUd1i4IEbbgz7zv3XYWLxo5QGDZ8HmIeo=;
+ b=rqhdlrm5zce8zeJ3GScfjqrEdw5Y/r5eDU/NQ1lNHo9HHBhO4PCL+r1d8ROIgkugws
+ TpN78fDcfuWgAbtASsLsVaNxwsoo0+tk0jVGYN4m6TggDTfFQzQvC13QX2mBjGntNKkQ
+ QYftBB86IQK3n7wxyd4lnXIfzjf6LSaFhM3y0dwzdRN1v/8zLGgMv3x6/dAoTbFGexKt
+ 6cpyoTJZZygL3NJ53VkY0l8sX/ioXD50X6i0ABIMznbFtRg7Ht7qsLvricjoq/tqFFRf
+ KwTtCLwpRiSKrICxxR1yaaGGthu5jFhf/1IuPoc5rk8p4qGqMopT/DK/TCZymlD/iRtp
+ QLKQ==
+X-Gm-Message-State: AOJu0YwHCmo1UDyT+RdObIBshj4G0JpnkDWTVYwPEzMETlHpNVG4h1uQ
+ ZGmRQZkwgzfion+2BE8UC8cDZzkp+MJ05mWgV3MElwz8e2D9e0hmppN7EwQL9EgeaJ+k772IFw1
+ 3UdTpCIZH4r89mv0=
+X-Received: by 2002:a17:907:7798:b0:9a9:f14a:22dc with SMTP id
+ ky24-20020a170907779800b009a9f14a22dcmr14508439ejc.8.1696868586247; 
+ Mon, 09 Oct 2023 09:23:06 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH3OG2lcxqR5MVVz292K+e9FmsoGXN3FpjP1aM65I3RPSBKHLzOYE9S8EaZjjQgRT13vfpPtQ==
+X-Received: by 2002:a17:907:7798:b0:9a9:f14a:22dc with SMTP id
+ ky24-20020a170907779800b009a9f14a22dcmr14508403ejc.8.1696868585900; 
+ Mon, 09 Oct 2023 09:23:05 -0700 (PDT)
 Received: from redhat.com ([2.55.57.209]) by smtp.gmail.com with ESMTPSA id
- v4-20020aa7d9c4000000b0052284228e3bsm6297066eds.8.2023.10.09.09.22.20
+ u18-20020a1709064ad200b0099d0a8ccb5fsm6973775ejt.152.2023.10.09.09.23.01
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:22:24 -0700 (PDT)
-Date: Mon, 9 Oct 2023 12:22:18 -0400
+ Mon, 09 Oct 2023 09:23:05 -0700 (PDT)
+Date: Mon, 9 Oct 2023 12:22:58 -0400
 From: "Michael S. Tsirkin" <mst@redhat.com>
 To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
 Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
@@ -74,16 +74,16 @@ Cc: qemu-devel@nongnu.org, Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: Re: [PATCH 4/6] hw/acpi/pcihp: Clean up global variable shadowing in
- acpi_pcihp_init()
-Message-ID: <20231009122157-mutt-send-email-mst@kernel.org>
+Subject: Re: [PATCH 5/6] hw/pci: Clean up global variable shadowing of
+ address_space_io variable
+Message-ID: <20231009122253-mutt-send-email-mst@kernel.org>
 References: <20231009094747.54240-1-philmd@linaro.org>
- <20231009094747.54240-5-philmd@linaro.org>
+ <20231009094747.54240-6-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231009094747.54240-5-philmd@linaro.org>
+In-Reply-To: <20231009094747.54240-6-philmd@linaro.org>
 Received-SPF: pass client-ip=170.10.129.124; envelope-from=mst@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
@@ -108,61 +108,134 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 11:47:44AM +0200, Philippe Mathieu-Daudé wrote:
+On Mon, Oct 09, 2023 at 11:47:45AM +0200, Philippe Mathieu-Daudé wrote:
 > Fix:
 > 
->   hw/acpi/pcihp.c:499:36: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
->                        MemoryRegion *address_space_io,
->                                      ^
+>   hw/pci/pci.c:504:54: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>                                          MemoryRegion *address_space_io,
+>                                                        ^
+>   hw/pci/pci.c:533:38: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>                          MemoryRegion *address_space_io,
+>                                        ^
+>   hw/pci/pci.c:543:40: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>                            MemoryRegion *address_space_io,
+>                                          ^
+>   hw/pci/pci.c:590:45: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>                                 MemoryRegion *address_space_io,
+>                                               ^
 >   include/exec/address-spaces.h:35:21: note: previous declaration is here
 >   extern AddressSpace address_space_io;
 >                       ^
 > 
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
 
 > ---
->  include/hw/acpi/pcihp.h | 2 +-
->  hw/acpi/pcihp.c         | 5 ++---
->  2 files changed, 3 insertions(+), 4 deletions(-)
+>  include/hw/pci/pci.h |  9 +++------
+>  hw/pci/pci.c         | 25 +++++++++----------------
+>  2 files changed, 12 insertions(+), 22 deletions(-)
 > 
-> diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
-> index ef59810c17..ac21a95913 100644
-> --- a/include/hw/acpi/pcihp.h
-> +++ b/include/hw/acpi/pcihp.h
-> @@ -56,7 +56,7 @@ typedef struct AcpiPciHpState {
->  } AcpiPciHpState;
+> diff --git a/include/hw/pci/pci.h b/include/hw/pci/pci.h
+> index b70a0b95ff..ea5aff118b 100644
+> --- a/include/hw/pci/pci.h
+> +++ b/include/hw/pci/pci.h
+> @@ -279,12 +279,10 @@ bool pci_bus_is_express(const PCIBus *bus);
 >  
->  void acpi_pcihp_init(Object *owner, AcpiPciHpState *, PCIBus *root,
-> -                     MemoryRegion *address_space_io, uint16_t io_base);
-> +                     MemoryRegion *io, uint16_t io_base);
+>  void pci_root_bus_init(PCIBus *bus, size_t bus_size, DeviceState *parent,
+>                         const char *name,
+> -                       MemoryRegion *address_space_mem,
+> -                       MemoryRegion *address_space_io,
+> +                       MemoryRegion *mem, MemoryRegion *io,
+>                         uint8_t devfn_min, const char *typename);
+>  PCIBus *pci_root_bus_new(DeviceState *parent, const char *name,
+> -                         MemoryRegion *address_space_mem,
+> -                         MemoryRegion *address_space_io,
+> +                         MemoryRegion *mem, MemoryRegion *io,
+>                           uint8_t devfn_min, const char *typename);
+>  void pci_root_bus_cleanup(PCIBus *bus);
+>  void pci_bus_irqs(PCIBus *bus, pci_set_irq_fn set_irq,
+> @@ -304,8 +302,7 @@ int pci_swizzle_map_irq_fn(PCIDevice *pci_dev, int pin);
+>  PCIBus *pci_register_root_bus(DeviceState *parent, const char *name,
+>                                pci_set_irq_fn set_irq, pci_map_irq_fn map_irq,
+>                                void *irq_opaque,
+> -                              MemoryRegion *address_space_mem,
+> -                              MemoryRegion *address_space_io,
+> +                              MemoryRegion *mem, MemoryRegion *io,
+>                                uint8_t devfn_min, int nirq,
+>                                const char *typename);
+>  void pci_unregister_root_bus(PCIBus *bus);
+> diff --git a/hw/pci/pci.c b/hw/pci/pci.c
+> index b0d21bf43a..7d09e1a39d 100644
+> --- a/hw/pci/pci.c
+> +++ b/hw/pci/pci.c
+> @@ -500,15 +500,14 @@ bool pci_bus_bypass_iommu(PCIBus *bus)
+>  }
 >  
->  bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus);
->  void acpi_pcihp_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-> index cdd6f775a1..4f75c873e2 100644
-> --- a/hw/acpi/pcihp.c
-> +++ b/hw/acpi/pcihp.c
-> @@ -496,8 +496,7 @@ static const MemoryRegionOps acpi_pcihp_io_ops = {
->  };
->  
->  void acpi_pcihp_init(Object *owner, AcpiPciHpState *s, PCIBus *root_bus,
-> -                     MemoryRegion *address_space_io,
-> -                     uint16_t io_base)
-> +                     MemoryRegion *io, uint16_t io_base)
+>  static void pci_root_bus_internal_init(PCIBus *bus, DeviceState *parent,
+> -                                       MemoryRegion *address_space_mem,
+> -                                       MemoryRegion *address_space_io,
+> +                                       MemoryRegion *mem, MemoryRegion *io,
+>                                         uint8_t devfn_min)
 >  {
->      s->io_len = ACPI_PCIHP_SIZE;
->      s->io_base = io_base;
-> @@ -506,7 +505,7 @@ void acpi_pcihp_init(Object *owner, AcpiPciHpState *s, PCIBus *root_bus,
+>      assert(PCI_FUNC(devfn_min) == 0);
+>      bus->devfn_min = devfn_min;
+>      bus->slot_reserved_mask = 0x0;
+> -    bus->address_space_mem = address_space_mem;
+> -    bus->address_space_io = address_space_io;
+> +    bus->address_space_mem = mem;
+> +    bus->address_space_io = io;
+>      bus->flags |= PCI_BUS_IS_ROOT;
 >  
->      memory_region_init_io(&s->io, owner, &acpi_pcihp_io_ops, s,
->                            "acpi-pci-hotplug", s->io_len);
-> -    memory_region_add_subregion(address_space_io, s->io_base, &s->io);
-> +    memory_region_add_subregion(io, s->io_base, &s->io);
+>      /* host bridge */
+> @@ -529,25 +528,21 @@ bool pci_bus_is_express(const PCIBus *bus)
 >  
->      object_property_add_uint16_ptr(owner, ACPI_PCIHP_IO_BASE_PROP, &s->io_base,
->                                     OBJ_PROP_FLAG_READ);
+>  void pci_root_bus_init(PCIBus *bus, size_t bus_size, DeviceState *parent,
+>                         const char *name,
+> -                       MemoryRegion *address_space_mem,
+> -                       MemoryRegion *address_space_io,
+> +                       MemoryRegion *mem, MemoryRegion *io,
+>                         uint8_t devfn_min, const char *typename)
+>  {
+>      qbus_init(bus, bus_size, typename, parent, name);
+> -    pci_root_bus_internal_init(bus, parent, address_space_mem,
+> -                               address_space_io, devfn_min);
+> +    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min);
+>  }
+>  
+>  PCIBus *pci_root_bus_new(DeviceState *parent, const char *name,
+> -                         MemoryRegion *address_space_mem,
+> -                         MemoryRegion *address_space_io,
+> +                         MemoryRegion *mem, MemoryRegion *io,
+>                           uint8_t devfn_min, const char *typename)
+>  {
+>      PCIBus *bus;
+>  
+>      bus = PCI_BUS(qbus_new(typename, parent, name));
+> -    pci_root_bus_internal_init(bus, parent, address_space_mem,
+> -                               address_space_io, devfn_min);
+> +    pci_root_bus_internal_init(bus, parent, mem, io, devfn_min);
+>      return bus;
+>  }
+>  
+> @@ -586,15 +581,13 @@ void pci_bus_irqs_cleanup(PCIBus *bus)
+>  PCIBus *pci_register_root_bus(DeviceState *parent, const char *name,
+>                                pci_set_irq_fn set_irq, pci_map_irq_fn map_irq,
+>                                void *irq_opaque,
+> -                              MemoryRegion *address_space_mem,
+> -                              MemoryRegion *address_space_io,
+> +                              MemoryRegion *mem, MemoryRegion *io,
+>                                uint8_t devfn_min, int nirq,
+>                                const char *typename)
+>  {
+>      PCIBus *bus;
+>  
+> -    bus = pci_root_bus_new(parent, name, address_space_mem,
+> -                           address_space_io, devfn_min, typename);
+> +    bus = pci_root_bus_new(parent, name, mem, io, devfn_min, typename);
+>      pci_bus_irqs(bus, set_irq, irq_opaque, nirq);
+>      pci_bus_map_irqs(bus, map_irq);
+>      return bus;
 > -- 
 > 2.41.0
 
