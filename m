@@ -2,81 +2,80 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FF17BE23A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 16:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 964D17BE23C
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 16:14:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpqzy-0000jO-K9; Mon, 09 Oct 2023 10:12:42 -0400
+	id 1qpr11-00029U-W4; Mon, 09 Oct 2023 10:13:48 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpqzs-0000Wa-Tz; Mon, 09 Oct 2023 10:12:36 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpqzp-00070q-NK; Mon, 09 Oct 2023 10:12:36 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.206])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S41B417jpz6D8Wq;
- Mon,  9 Oct 2023 22:09:32 +0800 (CST)
-Received: from lhrpeml500001.china.huawei.com (7.191.163.213) by
- lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 9 Oct 2023 15:12:29 +0100
-Received: from lhrpeml500001.china.huawei.com ([7.191.163.213]) by
- lhrpeml500001.china.huawei.com ([7.191.163.213]) with mapi id 15.01.2507.031; 
- Mon, 9 Oct 2023 15:12:29 +0100
-To: David Hildenbrand <david@redhat.com>, "qemu-devel@nongnu.org"
- <qemu-devel@nongnu.org>, "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
-CC: "maz@kernel.org" <maz@kernel.org>, "jean-philippe@linaro.org"
- <jean-philippe@linaro.org>, Jonathan Cameron <jonathan.cameron@huawei.com>,
- "lpieralisi@kernel.org" <lpieralisi@kernel.org>, "peter.maydell@linaro.org"
- <peter.maydell@linaro.org>, "richard.henderson@linaro.org"
- <richard.henderson@linaro.org>, "imammedo@redhat.com" <imammedo@redhat.com>,
- "andrew.jones@linux.dev" <andrew.jones@linux.dev>, "philmd@linaro.org"
- <philmd@linaro.org>, "eric.auger@redhat.com" <eric.auger@redhat.com>,
- "oliver.upton@linux.dev" <oliver.upton@linux.dev>, "pbonzini@redhat.com"
- <pbonzini@redhat.com>, "mst@redhat.com" <mst@redhat.com>, "will@kernel.org"
- <will@kernel.org>, "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
- <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
- "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
- "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
- "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
- "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
- "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>, "miguel.luis@oracle.com"
- <miguel.luis@oracle.com>, "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
- zhukeqian <zhukeqian1@huawei.com>, "wangxiongfeng (C)"
- <wangxiongfeng2@huawei.com>, "wangyanan (Y)" <wangyanan55@huawei.com>,
- "jiakernel2@gmail.com" <jiakernel2@gmail.com>, "maobibo@loongson.cn"
- <maobibo@loongson.cn>, "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
- Linuxarm <linuxarm@huawei.com>
-Subject: RE: [PATCH V3 04/10] hw/acpi: Init GED framework with cpu hotplug
- events
-Thread-Topic: [PATCH V3 04/10] hw/acpi: Init GED framework with cpu hotplug
- events
-Thread-Index: AQHZ+qQKlc9E+oOc5kSBsTtattk5ybBBUZ0AgAAt45A=
-Date: Mon, 9 Oct 2023 14:12:29 +0000
-Message-ID: <0e9c23f079ac417687c8261739ea22f2@huawei.com>
-References: <20231009112812.10612-1-salil.mehta@huawei.com>
- <20231009112812.10612-5-salil.mehta@huawei.com>
- <794b07a3-6004-23e2-189a-f76952751112@redhat.com>
-In-Reply-To: <794b07a3-6004-23e2-189a-f76952751112@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.48.154.91]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpr0z-00029J-RI
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:13:45 -0400
+Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpr0x-00078j-SK
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:13:45 -0400
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by smtp-out2.suse.de (Postfix) with ESMTPS id C8EA91F390;
+ Mon,  9 Oct 2023 14:13:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+ t=1696860818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wmqkR7zzRLJDQUUsc/nHiJJJuI3byOQb8Sn3/uNQfhM=;
+ b=RYQOMqqAfLzKrxEs9d6q35/khTSzaKZUpO+cFpPxqtDEC146dz38OpljtI/Sc96PxdMltj
+ qpseDlIV5vJRlD8zMz5ggjZb8jUmHkMHtsF4qcmLY1gX/SIgZneVNPrPpfHZ9aREbHHfWC
+ O47SE3epHMEHCiXQi/U1PSH6v6aVS9Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+ s=susede2_ed25519; t=1696860818;
+ h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+ mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=wmqkR7zzRLJDQUUsc/nHiJJJuI3byOQb8Sn3/uNQfhM=;
+ b=VysIp0I1AdMhyMO0+oQj0DnlgAvG6dnVvxb7oCqSY2oda+hEmKcD0g88hwjBfPqCGarq/r
+ W6kH+4oFzcs3zmBA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+ (No client certificate requested)
+ by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5B56C13905;
+ Mon,  9 Oct 2023 14:13:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+ by imap2.suse-dmz.suse.de with ESMTPSA id 95LnCZIKJGW/BgAAMHmgww
+ (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 14:13:38 +0000
+From: Fabiano Rosas <farosas@suse.de>
+To: Het Gala <het.gala@nutanix.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>
+Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
+ dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
+ eblake@redhat.com, manish.mishra@nutanix.com,
+ aravind.retnakaran@nutanix.com
+Subject: Re: [PATCH v11 02/10] migration: convert migration 'uri' into
+ 'MigrateAddress'
+In-Reply-To: <b9a9b3ff-80ff-4b23-bbd8-996afe40e7d7@nutanix.com>
+References: <20231004075851.219173-1-het.gala@nutanix.com>
+ <20231004075851.219173-3-het.gala@nutanix.com> <87jzs2phxb.fsf@suse.de>
+ <ZR2nuqQ7s1D5BweM@redhat.com> <87h6n65kac.fsf@suse.de>
+ <b9a9b3ff-80ff-4b23-bbd8-996afe40e7d7@nutanix.com>
+Date: Mon, 09 Oct 2023 11:13:35 -0300
+Message-ID: <87a5srg9yo.fsf@suse.de>
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
-Received-SPF: pass client-ip=185.176.79.56;
- envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
-X-Spam_score_int: -41
-X-Spam_score: -4.2
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
+ helo=smtp-out2.suse.de
+X-Spam_score_int: -43
+X-Spam_score: -4.4
 X-Spam_bar: ----
-X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
- RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,87 +89,128 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
-Reply-to:  Salil Mehta <salil.mehta@huawei.com>
-From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-PiBGcm9tOiBEYXZpZCBIaWxkZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT4NCj4gU2VudDogTW9u
-ZGF5LCBPY3RvYmVyIDksIDIwMjMgMToyNyBQTQ0KPiBUbzogU2FsaWwgTWVodGEgPHNhbGlsLm1l
-aHRhQGh1YXdlaS5jb20+OyBxZW11LWRldmVsQG5vbmdudS5vcmc7IHFlbXUtDQo+IGFybUBub25n
-bnUub3JnDQo+IENjOiBtYXpAa2VybmVsLm9yZzsgamVhbi1waGlsaXBwZUBsaW5hcm8ub3JnOyBK
-b25hdGhhbiBDYW1lcm9uDQo+IDxqb25hdGhhbi5jYW1lcm9uQGh1YXdlaS5jb20+OyBscGllcmFs
-aXNpQGtlcm5lbC5vcmc7DQo+IHBldGVyLm1heWRlbGxAbGluYXJvLm9yZzsgcmljaGFyZC5oZW5k
-ZXJzb25AbGluYXJvLm9yZzsNCj4gaW1hbW1lZG9AcmVkaGF0LmNvbTsgYW5kcmV3LmpvbmVzQGxp
-bnV4LmRldjsgcGhpbG1kQGxpbmFyby5vcmc7DQo+IGVyaWMuYXVnZXJAcmVkaGF0LmNvbTsgb2xp
-dmVyLnVwdG9uQGxpbnV4LmRldjsgcGJvbnppbmlAcmVkaGF0LmNvbTsNCj4gbXN0QHJlZGhhdC5j
-b207IHdpbGxAa2VybmVsLm9yZzsgZ3NoYW5AcmVkaGF0LmNvbTsgcmFmYWVsQGtlcm5lbC5vcmc7
-DQo+IGFsZXguYmVubmVlQGxpbmFyby5vcmc7IGxpbnV4QGFybWxpbnV4Lm9yZy51azsNCj4gZGFy
-cmVuQG9zLmFtcGVyZWNvbXB1dGluZy5jb207IGlsa2thQG9zLmFtcGVyZWNvbXB1dGluZy5jb207
-DQo+IHZpc2hudUBvcy5hbXBlcmVjb21wdXRpbmcuY29tOyBrYXJsLmhldWJhdW1Ab3JhY2xlLmNv
-bTsNCj4gbWlndWVsLmx1aXNAb3JhY2xlLmNvbTsgc2FsaWwubWVodGFAb3Buc3JjLm5ldDsgemh1
-a2VxaWFuDQo+IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+OyB3YW5neGlvbmdmZW5nIChDKSA8d2Fu
-Z3hpb25nZmVuZzJAaHVhd2VpLmNvbT47DQo+IHdhbmd5YW5hbiAoWSkgPHdhbmd5YW5hbjU1QGh1
-YXdlaS5jb20+OyBqaWFrZXJuZWwyQGdtYWlsLmNvbTsNCj4gbWFvYmlib0Bsb29uZ3Nvbi5jbjsg
-bGl4aWFuZ2xhaUBsb29uZ3Nvbi5jbjsgTGludXhhcm0gPGxpbnV4YXJtQGh1YXdlaS5jb20+DQo+
-IFN1YmplY3Q6IFJlOiBbUEFUQ0ggVjMgMDQvMTBdIGh3L2FjcGk6IEluaXQgR0VEIGZyYW1ld29y
-ayB3aXRoIGNwdSBob3RwbHVnDQo+IGV2ZW50cw0KPiANCj4gT24gMDkuMTAuMjMgMTM6MjgsIFNh
-bGlsIE1laHRhIHdyb3RlOg0KPiA+IEFDUEkgR0VEKGFzIGRlc2NyaWJlZCBpbiB0aGUgQUNQSSA2
-LjIgc3BlYykgY2FuIGJlIHVzZWQgdG8gZ2VuZXJhdGUgQUNQSQ0KPiBldmVudHMNCj4gPiB3aGVu
-IE9TUE0vZ3Vlc3QgcmVjZWl2ZXMgYW4gaW50ZXJydXB0IGxpc3RlZCBpbiB0aGUgX0NSUyBvYmpl
-Y3Qgb2YgR0VELg0KPiBPU1BNDQo+ID4gdGhlbiBtYXBzIG9yIGRlbXVsdGlwbGV4ZXMgdGhlIGV2
-ZW50IGJ5IGV2YWx1YXRpbmcgX0VWVCBtZXRob2QuDQo+ID4NCj4gPiBUaGlzIGNoYW5nZSBhZGRz
-IHRoZSBzdXBwb3J0IG9mIGNwdSBob3RwbHVnIGV2ZW50IGluaXRpYWxpemF0aW9uIGluIHRoZQ0K
-PiA+IGV4aXN0aW5nIEdFRCBmcmFtZXdvcmsuDQo+ID4NCj4gPiBDby1kZXZlbG9wZWQtYnk6IEtl
-cWlhbiBaaHUgPHpodWtlcWlhbjFAaHVhd2VpLmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBLZXFp
-YW4gWmh1IDx6aHVrZXFpYW4xQGh1YXdlaS5jb20+DQo+ID4gU2lnbmVkLW9mZi1ieTogU2FsaWwg
-TWVodGEgPHNhbGlsLm1laHRhQGh1YXdlaS5jb20+DQo+ID4gUmV2aWV3ZWQtYnk6IEpvbmF0aGFu
-IENhbWVyb24gPEpvbmF0aGFuLkNhbWVyb25AaHVhd2VpLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTog
-R2F2aW4gU2hhbiA8Z3NoYW5AcmVkaGF0LmNvbT4NCj4gPiAtLS0NCj4gPiAgIGh3L2FjcGkvZ2Vu
-ZXJpY19ldmVudF9kZXZpY2UuYyAgICAgICAgIHwgOCArKysrKysrKw0KPiA+ICAgaW5jbHVkZS9o
-dy9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmggfCA1ICsrKysrDQo+ID4gICAyIGZpbGVzIGNo
-YW5nZWQsIDEzIGluc2VydGlvbnMoKykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9ody9hY3BpL2dl
-bmVyaWNfZXZlbnRfZGV2aWNlLmMNCj4gYi9ody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmMN
-Cj4gPiBpbmRleCBhM2QzMTYzMWZlLi5kMmZhMWQwZTRhIDEwMDY0NA0KPiA+IC0tLSBhL2h3L2Fj
-cGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuYw0KPiA+ICsrKyBiL2h3L2FjcGkvZ2VuZXJpY19ldmVu
-dF9kZXZpY2UuYw0KPiA+IEBAIC0yNSw2ICsyNSw3IEBAIHN0YXRpYyBjb25zdCB1aW50MzJfdCBn
-ZWRfc3VwcG9ydGVkX2V2ZW50c1tdID0gew0KPiA+ICAgICAgIEFDUElfR0VEX01FTV9IT1RQTFVH
-X0VWVCwNCj4gPiAgICAgICBBQ1BJX0dFRF9QV1JfRE9XTl9FVlQsDQo+ID4gICAgICAgQUNQSV9H
-RURfTlZESU1NX0hPVFBMVUdfRVZULA0KPiA+ICsgICAgQUNQSV9HRURfQ1BVX0hPVFBMVUdfRVZU
-LA0KPiA+ICAgfTsNCj4gPg0KPiA+ICAgLyoNCj4gPiBAQCAtNDAwLDYgKzQwMSwxMyBAQCBzdGF0
-aWMgdm9pZCBhY3BpX2dlZF9pbml0Zm4oT2JqZWN0ICpvYmopDQo+ID4gICAgICAgbWVtb3J5X3Jl
-Z2lvbl9pbml0X2lvKCZnZWRfc3QtPnJlZ3MsIG9iaiwgJmdlZF9yZWdzX29wcywgZ2VkX3N0LA0K
-PiA+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBUWVBFX0FDUElfR0VEICItcmVncyIsIEFD
-UElfR0VEX1JFR19DT1VOVCk7DQo+ID4gICAgICAgc3lzYnVzX2luaXRfbW1pbyhzYmQsICZnZWRf
-c3QtPnJlZ3MpOw0KPiA+ICsNCj4gPiArICAgIHMtPmNwdWhwLmRldmljZSA9IE9CSkVDVChzKTsN
-Cj4gPiArICAgIG1lbW9yeV9yZWdpb25faW5pdCgmcy0+Y29udGFpbmVyX2NwdWhwLCBPQkpFQ1Qo
-ZGV2KSwgImNwdWhwDQo+IGNvbnRhaW5lciIsDQo+ID4gKyAgICAgICAgICAgICAgICAgICAgICAg
-QUNQSV9DUFVfSE9UUExVR19SRUdfTEVOKTsNCj4gPiArICAgIHN5c2J1c19pbml0X21taW8oU1lT
-X0JVU19ERVZJQ0UoZGV2KSwgJnMtPmNvbnRhaW5lcl9jcHVocCk7DQo+ID4gKyAgICBjcHVfaG90
-cGx1Z19od19pbml0KCZzLT5jb250YWluZXJfY3B1aHAsIE9CSkVDVChkZXYpLA0KPiA+ICsgICAg
-ICAgICAgICAgICAgICAgICAgICAmcy0+Y3B1aHBfc3RhdGUsIDApOw0KPiA+ICAgfQ0KPiA+DQo+
-ID4gICBzdGF0aWMgdm9pZCBhY3BpX2dlZF9jbGFzc19pbml0KE9iamVjdENsYXNzICpjbGFzcywg
-dm9pZCAqZGF0YSkNCj4gPiBkaWZmIC0tZ2l0IGEvaW5jbHVkZS9ody9hY3BpL2dlbmVyaWNfZXZl
-bnRfZGV2aWNlLmgNCj4gYi9pbmNsdWRlL2h3L2FjcGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuaA0K
-PiA+IGluZGV4IGQ4MzFiYmQ4ODkuLmQwYTVhNDNhYmYgMTAwNjQ0DQo+ID4gLS0tIGEvaW5jbHVk
-ZS9ody9hY3BpL2dlbmVyaWNfZXZlbnRfZGV2aWNlLmgNCj4gPiArKysgYi9pbmNsdWRlL2h3L2Fj
-cGkvZ2VuZXJpY19ldmVudF9kZXZpY2UuaA0KPiA+IEBAIC02MCw2ICs2MCw3IEBADQo+ID4gICAj
-ZGVmaW5lIEhXX0FDUElfR0VORVJJQ19FVkVOVF9ERVZJQ0VfSA0KPiA+DQo+ID4gICAjaW5jbHVk
-ZSAiaHcvc3lzYnVzLmgiDQo+ID4gKyNpbmNsdWRlICJody9hY3BpL2NwdV9ob3RwbHVnLmgiDQo+
-ID4gICAjaW5jbHVkZSAiaHcvYWNwaS9tZW1vcnlfaG90cGx1Zy5oIg0KPiA+ICAgI2luY2x1ZGUg
-Imh3L2FjcGkvZ2hlcy5oIg0KPiA+ICAgI2luY2x1ZGUgInFvbS9vYmplY3QuaCINCj4gPiBAQCAt
-OTcsNiArOTgsNyBAQCBPQkpFQ1RfREVDTEFSRV9TSU1QTEVfVFlQRShBY3BpR2VkU3RhdGUsIEFD
-UElfR0VEKQ0KPiA+ICAgI2RlZmluZSBBQ1BJX0dFRF9NRU1fSE9UUExVR19FVlQgICAweDENCj4g
-PiAgICNkZWZpbmUgQUNQSV9HRURfUFdSX0RPV05fRVZUICAgICAgMHgyDQo+ID4gICAjZGVmaW5l
-IEFDUElfR0VEX05WRElNTV9IT1RQTFVHX0VWVCAweDQNCj4gPiArI2RlZmluZSBBQ1BJX0dFRF9D
-UFVfSE9UUExVR19FVlQgICAgMHg4DQo+ID4NCj4gPiAgIHR5cGVkZWYgc3RydWN0IEdFRFN0YXRl
-IHsNCj4gPiAgICAgICBNZW1vcnlSZWdpb24gZXZ0Ow0KPiA+IEBAIC0xMDgsNiArMTEwLDkgQEAg
-c3RydWN0IEFjcGlHZWRTdGF0ZSB7DQo+ID4gICAgICAgU3lzQnVzRGV2aWNlIHBhcmVudF9vYmo7
-DQo+ID4gICAgICAgTWVtSG90cGx1Z1N0YXRlIG1lbWhwX3N0YXRlOw0KPiA+ICAgICAgIE1lbW9y
-eVJlZ2lvbiBjb250YWluZXJfbWVtaHA7DQo+ID4gKyAgICBDUFVIb3RwbHVnU3RhdGUgY3B1aHBf
-c3RhdGU7DQo+ID4gKyAgICBNZW1vcnlSZWdpb24gY29udGFpbmVyX2NwdWhwOw0KPiA+ICsgICAg
-QWNwaUNwdUhvdHBsdWcgY3B1aHA7DQo+IA0KPiBBbSBJIHdyb25nIG9yIGlzIHRoYXQgbWVtYmVy
-IGNvbXBsZXRlbHkgdW51c2VkL3VuaW5pdGlhbGl6ZWQ/DQoNCk5vIGl0IGlzIG5vdC4gUGxlYXNl
-IGNoZWNrIGJlbG93IGNoYW5nZSBpbiBhY3BpX2dlZF9pbml0Zm4oKQ0KDQorICAgIHMtPmNwdWhw
-LmRldmljZSA9IE9CSkVDVChzKTsNCg0KDQpUaGFua3MNClNhbGlsLg0K
+Het Gala <het.gala@nutanix.com> writes:
+
+> On 10/4/2023 11:42 PM, Fabiano Rosas wrote:
+>> Daniel P. Berrang=C3=A9<berrange@redhat.com>  writes:
+>>
+>>> On Wed, Oct 04, 2023 at 11:43:12AM -0300, Fabiano Rosas wrote:
+>>>> Het Gala<het.gala@nutanix.com>  writes:
+>>>>
+>>>>> This patch parses 'migrate' and 'migrate-incoming' QAPI's 'uri'
+>>>>> string containing migration connection related information
+>>>>> and stores them inside well defined 'MigrateAddress' struct.
+>>>>>
+>>>>> Suggested-by: Aravind Retnakaran<aravind.retnakaran@nutanix.com>
+>>>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
+>>>>> Reviewed-by: Daniel P. Berrang=C3=A9<berrange@redhat.com>
+>>>>> ---
+>>>>>   migration/exec.c      |  1 -
+>>>>>   migration/exec.h      |  4 ++++
+>>>>>   migration/migration.c | 55 ++++++++++++++++++++++++++++++++++++++++=
++++
+>>>>>   3 files changed, 59 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/migration/exec.c b/migration/exec.c
+>>>>> index 2bf882bbe1..32f5143dfd 100644
+>>>>> --- a/migration/exec.c
+>>>>> +++ b/migration/exec.c
+>>>>> @@ -27,7 +27,6 @@
+>>>>>   #include "qemu/cutils.h"
+>>>>>=20=20=20
+>>>>>   #ifdef WIN32
+>>>>> -const char *exec_get_cmd_path(void);
+>>>>>   const char *exec_get_cmd_path(void)
+>>>>>   {
+>>>>>       g_autofree char *detected_path =3D g_new(char, MAX_PATH);
+>>>>> diff --git a/migration/exec.h b/migration/exec.h
+>>>>> index b210ffde7a..736cd71028 100644
+>>>>> --- a/migration/exec.h
+>>>>> +++ b/migration/exec.h
+>>>>> @@ -19,6 +19,10 @@
+>>>>>=20=20=20
+>>>>>   #ifndef QEMU_MIGRATION_EXEC_H
+>>>>>   #define QEMU_MIGRATION_EXEC_H
+>>>>> +
+>>>>> +#ifdef WIN32
+>>>>> +const char *exec_get_cmd_path(void);
+>>>>> +#endif
+>>>>>   void exec_start_incoming_migration(const char *host_port, Error **e=
+rrp);
+>>>>>=20=20=20
+>>>>>   void exec_start_outgoing_migration(MigrationState *s, const char *h=
+ost_port,
+>>>>> diff --git a/migration/migration.c b/migration/migration.c
+>>>>> index 6d3cf5d5cd..dcbd509d56 100644
+>>>>> --- a/migration/migration.c
+>>>>> +++ b/migration/migration.c
+>>>>> @@ -65,6 +65,7 @@
+>>>>>   #include "sysemu/qtest.h"
+>>>>>   #include "options.h"
+>>>>>   #include "sysemu/dirtylimit.h"
+>>>>> +#include "qemu/sockets.h"
+>>>>>=20=20=20
+>>>>>   static NotifierList migration_state_notifiers =3D
+>>>>>       NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
+>>>>> @@ -427,15 +428,64 @@ void migrate_add_address(SocketAddress *address)
+>>>>>                         QAPI_CLONE(SocketAddress, address));
+>>>>>   }
+>>>>>=20=20=20
+>>>>> +static bool migrate_uri_parse(const char *uri,
+>>>>> +                              MigrationAddress **channel,
+>>>>> +                              Error **errp)
+>>>>> +{
+>>>>> +    g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
+>>>> This cannot be g_autoptr because you're passing it out of scope at the
+>>>> end of the function.
+>>> It is still good to use g_autoptr to deal with the error paths.
+>>>
+>>> On the success path though you need   g_steal_pointer(&addr) to
+>>> prevent the autofree cleanup running.
+>> Ah good point, this has been suggested in an earlier version already, I
+>> forgot to mention. We should definitely use g_steal_pointer() whenever
+>> the variable goes out of scope.
+> Okay. I get the point that g_autoptr helps to deal with freeing of=20
+> pointer in case error occurs inside the function.
+
+Yes, but note g_autoptr will free the memory any time the variable goes
+out of scope, i.e. any time we return from the function. Even when
+there's no error and we actually want that memory to still be around for
+the callers to use.
+
+> But I am still trying to figure out why we need g_steal_pointer() ? If=20
+> you could please explain once again.
+> My understanding till now was that if we want to return 'addr' variable=20
+> as return type, then we would want to make use of g_steal_pointer(&addr)=
+=20
+> so instead of addr, we pass a temp ptr refrencing to the same location=20
+> as addr, and then assign addr =3D NULL. But we are already assigning the=
+=20
+> memory location where addr was refrencing to 'channel'. Let me know if I=
+=20
+> am missing something ?
+
+So now 'channel' points to the memory you allocated at the start of the
+function with g_new0. When the function returns, g_autoptr has no idea
+that someone is still using that memory, so it will just free it.
+
+Whenever you want a chunk of memory to be accessed across function calls
+like that you need to steal the reference. After stealing, the pointer
+that was registered with g_autoptr (in this case 'addr') now points to
+nothing and the pointer that was returned/assigned is a different one
+that isn't known by any cleanup functions.
+
+Note that after g_steal_pointer, that memory now becomes responsibility
+of whatever piece of code owns that pointer. In this case,
+qemu_start_incoming_migration() and qmp_migrate(). Those two functions
+will have to free the memory once they are done with it. Or do the
+g_autoptr/g_steal_pointer trick once more.
+
+> I think the syntax follows as the second example given here:=20
+> https://docs.gtk.org/glib/func.steal_pointer.html ?
+
+Yep, that's it.
 
