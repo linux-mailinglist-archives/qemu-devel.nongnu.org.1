@@ -2,28 +2,30 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5F67BEB03
+	by mail.lfdr.de (Postfix) with ESMTPS id 1858A7BEB02
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 21:56:13 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpwLN-00014n-LF; Mon, 09 Oct 2023 15:55:09 -0400
+	id 1qpwLM-000140-US; Mon, 09 Oct 2023 15:55:08 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpwLM-000144-2e; Mon, 09 Oct 2023 15:55:08 -0400
+ id 1qpwLK-00013W-JA; Mon, 09 Oct 2023 15:55:06 -0400
 Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpwLH-0005DI-Va; Mon, 09 Oct 2023 15:55:07 -0400
+ id 1qpwLH-0005DJ-V6; Mon, 09 Oct 2023 15:55:06 -0400
 Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id ED24E748FF4;
- Mon,  9 Oct 2023 21:54:06 +0200 (CEST)
+ by localhost (Postfix) with SMTP id 3DF767571FE;
+ Mon,  9 Oct 2023 21:54:07 +0200 (CEST)
 Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id DA8197456A7; Mon,  9 Oct 2023 21:54:04 +0200 (CEST)
-Message-Id: <cover.1696880742.git.balaton@eik.bme.hu>
+ id ECA7C74632B; Mon,  9 Oct 2023 21:54:05 +0200 (CEST)
+Message-Id: <f27e2af1a17e62ead8eda1e9e417f0f87f9c65f5.1696880742.git.balaton@eik.bme.hu>
+In-Reply-To: <cover.1696880742.git.balaton@eik.bme.hu>
+References: <cover.1696880742.git.balaton@eik.bme.hu>
 From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 0/3] Add emulation of AmigaOne XE board
+Subject: [PATCH v2 1/3] via-ide: Fix legacy mode emulation
 To: qemu-devel@nongnu.org,
     qemu-ppc@nongnu.org
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -31,7 +33,7 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
  philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
  Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
  Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Date: Mon,  9 Oct 2023 21:54:04 +0200 (CEST)
+Date: Mon,  9 Oct 2023 21:54:05 +0200 (CEST)
 X-Spam-Probability: 8%
 Received-SPF: pass client-ip=2001:738:2001:2001::2001;
  envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
@@ -55,33 +57,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Changes in v2:
-- Update comment and commit message in patch 1 (Mark)
-- Fix irq mapping in patch 2 (Volker)
+The initial value for BARs were set in reset method for emulating
+legacy mode at start but this does not work because PCI code resets
+BARs after calling device reset method. Remove this ineffective
+default to avoid confusion.
 
-Regards,
-BALATON Zoltan
+Instead move setting the BARs to a callback on writing the PCI config
+regsiter that sets legacy mode (which firmwares needing this mode seem
+to do) and fix their values to program it to use legacy port numbers
+in this case. This does not fully emulate what the data sheet says
+(which is not very clear on this) but it implements enogh to allow
+both modes as used by firmwares of machines we emulate.
 
-BALATON Zoltan (3):
-  via-ide: Fix legacy mode emulation
-  hw/pci-host: Add emulation of Mai Logic Articia S
-  hw/ppc: Add emulation of AmigaOne XE board
+Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+---
+ hw/ide/via.c | 41 ++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 36 insertions(+), 5 deletions(-)
 
- MAINTAINERS                             |   8 +
- configs/devices/ppc-softmmu/default.mak |   1 +
- hw/ide/via.c                            |  41 +++-
- hw/pci-host/Kconfig                     |   5 +
- hw/pci-host/articia.c                   | 293 ++++++++++++++++++++++++
- hw/pci-host/meson.build                 |   2 +
- hw/ppc/Kconfig                          |   7 +
- hw/ppc/amigaone.c                       | 164 +++++++++++++
- hw/ppc/meson.build                      |   2 +
- include/hw/pci-host/articia.h           |  17 ++
- 10 files changed, 535 insertions(+), 5 deletions(-)
- create mode 100644 hw/pci-host/articia.c
- create mode 100644 hw/ppc/amigaone.c
- create mode 100644 include/hw/pci-host/articia.h
-
+diff --git a/hw/ide/via.c b/hw/ide/via.c
+index fff23803a6..43e8af8d69 100644
+--- a/hw/ide/via.c
++++ b/hw/ide/via.c
+@@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
+     pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+                  PCI_STATUS_DEVSEL_MEDIUM);
+ 
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+-    pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 20-23h */
+     pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+ 
+     /* IDE chip enable, IDE configuration 1/2, IDE FIFO Configuration*/
+@@ -159,6 +154,41 @@ static void via_ide_reset(DeviceState *dev)
+     pci_set_long(pci_conf + 0xc0, 0x00020001);
+ }
+ 
++static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
++                              uint32_t val, int len)
++{
++    pci_default_write_config(pd, addr, val, len);
++    /*
++     * Bits 0 and 2 of the PCI programming interface register select between
++     * legacy and native mode for the two IDE channels. We don't emulate this
++     * because we cannot easily switch between ISA and PCI in QEMU so instead
++     * when guest selects legacy mode we set the PCI BARs to legacy ports which
++     * works the same. We also don't care about setting each channel separately
++     * as no guest is known to do or need that. We only do this when BARs are
++     * unset when writing this register as logs from real hardware show that
++     * setting legacy mode after BARs were set it will still use ports set by
++     * BARs not ISA ports (e.g. pegasos2 Linux does this after firmware set
++     * native mode and programmed BARs and calls it non-100% native mode).
++     * But if 0x8a is written righr after reset without setting BARs then we
++     * want legacy ports (this is done by the AmigaOne firmware).
++     */
++    if (addr == PCI_CLASS_PROG && val == 0x8a &&
++        pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
++        PCI_BASE_ADDRESS_SPACE_IO) {
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++        /* BMIBA: 20-23h */
++        pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
++                     | PCI_BASE_ADDRESS_SPACE_IO);
++    }
++}
++
+ static void via_ide_realize(PCIDevice *dev, Error **errp)
+ {
+     PCIIDEState *d = PCI_IDE(dev);
+@@ -221,6 +251,7 @@ static void via_ide_class_init(ObjectClass *klass, void *data)
+     /* Reason: only works as function of VIA southbridge */
+     dc->user_creatable = false;
+ 
++    k->config_write = via_ide_cfg_write;
+     k->realize = via_ide_realize;
+     k->exit = via_ide_exitfn;
+     k->vendor_id = PCI_VENDOR_ID_VIA;
 -- 
 2.30.9
 
