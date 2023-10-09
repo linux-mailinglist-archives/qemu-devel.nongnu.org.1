@@ -2,82 +2,107 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AC67BE8D1
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 20:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0EF7BE9D8
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 20:40:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpuYY-0003b4-7Y; Mon, 09 Oct 2023 14:00:38 -0400
+	id 1qpv9Z-0006Bk-3J; Mon, 09 Oct 2023 14:38:53 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1qpuYD-0003aV-A0
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:00:17 -0400
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <atishp@rivosinc.com>)
- id 1qpuYA-0001ox-RB
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 14:00:16 -0400
-Received: by mail-lj1-x235.google.com with SMTP id
- 38308e7fff4ca-2c189dabcc3so56498821fa.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 11:00:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1696874412; x=1697479212;
- darn=nongnu.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=Ukjb7ovOix+Twpj8N4DFVSTEbuk9EJgFiLy9dZ5dPIE=;
- b=x4iKqTh5Xrhxa/sjNgy/TlK8xFdBObHB3ax/QwLu8N2Z0cyzZhWKVQwHw3PCgj9YOn
- WDvx1mM58Jl5fbavPQ6zJC7nNpq63RkvYYxEI3CVy6PnZHAplEwVar++SASo97UWBxVo
- Oy+vSJZUJoG8KGuf+/1udi4vPUX5YM9i8YCR07OKk6BDtaz6/1btfO+Jk3iglgcfLQgd
- czEWTPkASrd6LA+UO/COC+KSa7OUnfmvgCEItw4SJJCR3rud/EFVW/GeA4edI/kxpJbs
- cIoc1+MDVegg/utHB5nuDP3kkLQTDyCRWFfeQ45TvWglIvJoV6VVpVK63TtwqUs27srr
- Wmcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696874412; x=1697479212;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=Ukjb7ovOix+Twpj8N4DFVSTEbuk9EJgFiLy9dZ5dPIE=;
- b=s1REccRlU71sXBzAsZCY9s/jF5YUDmuEe6V56kEZZZOg2ZHjcqggeyf9cvewvjKu0y
- 5/Kg9fu5V1VF86ieHrJPvTjIh5QGD/Hok/rwnmw224k9ecQ4tiQMKrrNDkwGh30Lpyt6
- Rhqn4mvgqxa3H2Gn4rCGZT2Ru3LGbwg42FnU8ph0TUeOBsGeUCZWsIp+vKfuO2lqle1p
- z8vPYtDfZMz0p/ob9KbH41RUd3dJftfJ7/tbDsK4cmmlWRLgbZIVdkL+f2dNAyvQ+Emm
- vYzHwCJd7GTgE4mZqh1QLAMxjahvYcyiddJSSnUP5Me7eLEox13NMkh1NGbPpyxF05bY
- nhuA==
-X-Gm-Message-State: AOJu0YwNgJJeZ52SQrTLSqgpQiz3UPvBY4hCoeiy6Wdl0y+Nj3PuugUn
- 4IjNg8AfLaXg1tNKMIj4wNAHRFK+V0WmSxp3tEG0Qw==
-X-Google-Smtp-Source: AGHT+IFpRs8m2i/5dHU78slvv79TWspPQ9Z+X08ZAVuLTiwgf2NNkEFE4w6xzktqZ1pebru2K2mxEOMMF/BOX0d88es=
-X-Received: by 2002:a05:6512:ba6:b0:503:2877:67d3 with SMTP id
- b38-20020a0565120ba600b00503287767d3mr15801829lfv.67.1696874411499; Mon, 09
- Oct 2023 11:00:11 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qpv9Q-0006BJ-0A; Mon, 09 Oct 2023 14:38:45 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <mglenn@mamboa4.aus.stglabs.ibm.com>)
+ id 1qpv9L-00005Y-Ew; Mon, 09 Oct 2023 14:38:43 -0400
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 399IVGAI028169; Mon, 9 Oct 2023 18:38:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=from : to : cc : subject
+ : date : message-id : mime-version : content-type :
+ content-transfer-encoding; s=pp1;
+ bh=j2S52mLGrKJvIGkBGbe+K2J+Bm3ctRed79e8trSYmH8=;
+ b=MRSaH4hNTMGoXaqhT83VB2He5SnlpuMN4l70SpWZEFXF/5ZvGddKT5XeBpXHbvPM+t2t
+ j3MaNVkscoXvcU0X996b1+2Y2n0K0SaPvY26RFEuFtAN/t8x8zQDvG2ovrscmL7TUbyi
+ 3GPqDVhCo+eNMGpNFswbIXA8t/ujPwLR968+3jei1oQe7iNknNhP06Nvyh0W8SPcEfIG
+ uE+4gciOgHQvisuMdLs4HDEXSQZxadhe5W3jnqvBvmTd5A82rbKVkl9gOkkF3uX6QwVu
+ 1zW7qbNDMLtFV1OH0h9tJmoKGSAf/84X6Ooo4WsDrguKDWT6Kt/rJ1i6/xsDM96leXbq sA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmpr70dtn-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Oct 2023 18:38:17 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 399IVV7w030616;
+ Mon, 9 Oct 2023 18:38:16 GMT
+Received: from ppma21.wdc07v.mail.ibm.com
+ (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmpr70dqq-5
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Oct 2023 18:38:16 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 399HKBkh025891; Mon, 9 Oct 2023 18:06:15 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+ by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkjnn2spf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Oct 2023 18:06:15 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com
+ [10.39.53.233])
+ by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 399I6EtQ1770038
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 9 Oct 2023 18:06:14 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 0B4E95804E;
+ Mon,  9 Oct 2023 18:06:14 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id C93965803F;
+ Mon,  9 Oct 2023 18:06:13 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (unknown [9.3.84.87])
+ by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+ Mon,  9 Oct 2023 18:06:13 +0000 (GMT)
+Received: from mamboa4.aus.stglabs.ibm.com (localhost [127.0.0.1])
+ by mamboa4.aus.stglabs.ibm.com (Postfix) with ESMTPS id E152816A07CE;
+ Mon,  9 Oct 2023 13:06:12 -0500 (CDT)
+Received: (from mglenn@localhost)
+ by mamboa4.aus.stglabs.ibm.com (8.15.2/8.15.2/Submit) id 399I6C162687797;
+ Mon, 9 Oct 2023 13:06:12 -0500
+From: Glenn Miles <milesg@linux.vnet.ibm.com>
+To: qemu-ppc@nongnu.org
+Cc: =?UTF-8?q?C=C3=A9dric=20Le=20Goater?= <clg@kaod.org>,
+ qemu-devel@nongnu.org, npiggin@gmail.com, fbarrat@linux.ibm.com,
+ Glenn Miles <milesg@linux.vnet.ibm.com>
+Subject: [PATCH] ppc/pnv: Add an I2C master controller model
+Date: Mon,  9 Oct 2023 13:05:39 -0500
+Message-Id: <20231009180539.2686698-1-milesg@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20231003125107.34859-1-rbradford@rivosinc.com>
- <20231003125107.34859-3-rbradford@rivosinc.com>
- <CAHBxVyHYJjvADsHPCJeheU4_8s1=DfyeApPyV8QpuPnTm2F=Gw@mail.gmail.com>
- <d2a170aeb3f05614c3801c1819afbbddc3ff4f37.camel@rivosinc.com>
- <CAKmqyKNrmnUTHxx_wYe0V6sL0M10hkwOGYakGw1E6pu17YyMKQ@mail.gmail.com>
-In-Reply-To: <CAKmqyKNrmnUTHxx_wYe0V6sL0M10hkwOGYakGw1E6pu17YyMKQ@mail.gmail.com>
-From: Atish Kumar Patra <atishp@rivosinc.com>
-Date: Mon, 9 Oct 2023 11:00:00 -0700
-Message-ID: <CAHBxVyEO4bPLKM4d90mhM9k33hf2L2zdFk7qDtenv3-2d8YNfg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] target/riscv: Support discontinuous PMU counters
-To: Alistair Francis <alistair23@gmail.com>
-Cc: Rob Bradford <rbradford@rivosinc.com>, qemu-devel@nongnu.org,
- qemu-riscv@nongnu.org, 
- palmer@dabbelt.com, alistair.francis@wdc.com, bin.meng@windriver.com, 
- liweiwei@iscas.ac.cn, dbarboza@ventanamicro.com, zhiwei_liu@linux.alibaba.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::235;
- envelope-from=atishp@rivosinc.com; helo=mail-lj1-x235.google.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: BcaA_QKrV0fRiqt8BBuqm34YCjvIt3PO
+X-Proofpoint-ORIG-GUID: e8PE2h-HASbAN5A5tX3_TUXg0mJy1G-r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-09_17,2023-10-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxscore=0 phishscore=0
+ priorityscore=1501 clxscore=1011 malwarescore=0 suspectscore=0
+ impostorscore=0 adultscore=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310090152
+Received-SPF: none client-ip=148.163.156.1;
+ envelope-from=mglenn@mamboa4.aus.stglabs.ibm.com;
+ helo=mx0a-001b2d01.pphosted.com
+X-Spam_score_int: -19
+X-Spam_score: -2.0
+X-Spam_bar: --
+X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -93,148 +118,857 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Sun, Oct 8, 2023 at 5:58=E2=80=AFPM Alistair Francis <alistair23@gmail.c=
-om> wrote:
->
-> On Wed, Oct 4, 2023 at 7:36=E2=80=AFPM Rob Bradford <rbradford@rivosinc.c=
-om> wrote:
-> >
-> > Hi Atish,
-> >
-> > On Tue, 2023-10-03 at 13:25 -0700, Atish Kumar Patra wrote:
-> > > On Tue, Oct 3, 2023 at 5:51=E2=80=AFAM Rob Bradford <rbradford@rivosi=
-nc.com>
-> > > wrote:
-> > > >
-> > > > There is no requirement that the enabled counters in the platform
-> > > > are
-> > > > continuously numbered. Add a "pmu-mask" property that, if
-> > > > specified, can
-> > > > be used to specify the enabled PMUs. In order to avoid ambiguity if
-> > > > "pmu-mask" is specified then "pmu-num" must also match the number
-> > > > of
-> > > > bits set in the mask.
-> > > >
-> > > > Signed-off-by: Rob Bradford <rbradford@rivosinc.com>
-> > > > ---
-> > > >  target/riscv/cpu.c     |  1 +
-> > > >  target/riscv/cpu_cfg.h |  1 +
-> > > >  target/riscv/pmu.c     | 15 +++++++++++++--
-> > > >  3 files changed, 15 insertions(+), 2 deletions(-)
-> > > >
-> > > > diff --git a/target/riscv/cpu.c b/target/riscv/cpu.c
-> > > > index 9d79c20c1a..b89b006a76 100644
-> > > > --- a/target/riscv/cpu.c
-> > > > +++ b/target/riscv/cpu.c
-> > > > @@ -1817,6 +1817,7 @@ static void
-> > > > riscv_cpu_add_misa_properties(Object *cpu_obj)
-> > > >  static Property riscv_cpu_extensions[] =3D {
-> > > >      /* Defaults for standard extensions */
-> > > >      DEFINE_PROP_UINT8("pmu-num", RISCVCPU, cfg.pmu_num, 16),
-> > > > +    DEFINE_PROP_UINT32("pmu-mask", RISCVCPU, cfg.pmu_mask, 0),
-> > > >      DEFINE_PROP_BOOL("sscofpmf", RISCVCPU, cfg.ext_sscofpmf,
-> > > > false),
-> > > >      DEFINE_PROP_BOOL("Zifencei", RISCVCPU, cfg.ext_ifencei, true),
-> > > >      DEFINE_PROP_BOOL("Zicsr", RISCVCPU, cfg.ext_icsr, true),
-> > > > diff --git a/target/riscv/cpu_cfg.h b/target/riscv/cpu_cfg.h
-> > > > index 0e6a0f245c..40f7d970bc 100644
-> > > > --- a/target/riscv/cpu_cfg.h
-> > > > +++ b/target/riscv/cpu_cfg.h
-> > > > @@ -124,6 +124,7 @@ struct RISCVCPUConfig {
-> > > >      bool ext_XVentanaCondOps;
-> > > >
-> > > >      uint8_t pmu_num;
-> > > > +    uint32_t pmu_mask;
-> > > >      char *priv_spec;
-> > > >      char *user_spec;
-> > > >      char *bext_spec;
-> > > > diff --git a/target/riscv/pmu.c b/target/riscv/pmu.c
-> > > > index 13801ccb78..f97e25a1f6 100644
-> > > > --- a/target/riscv/pmu.c
-> > > > +++ b/target/riscv/pmu.c
-> > > > @@ -437,6 +437,13 @@ int riscv_pmu_setup_timer(CPURISCVState *env,
-> > > > uint64_t value, uint32_t ctr_idx)
-> > > >  void riscv_pmu_init(RISCVCPU *cpu, Error **errp)
-> > > >  {
-> > > >      uint8_t pmu_num =3D cpu->cfg.pmu_num;
-> > > > +    uint32_t pmu_mask =3D cpu->cfg.pmu_mask;
-> > > > +
-> > > > +    if (pmu_mask && ctpop32(pmu_mask) !=3D pmu_num) {
-> > > > +        error_setg(errp, "Mismatch between number of enabled
-> > > > counters in "
-> > > > +                         "\"pmu-mask\" and \"pmu-num\"");
-> > > > +        return;
-> > > > +    }
-> > > >
-> > >
-> > > Is that necessary for the default case? I am thinking of marking
-> > > pmu-num as deprecated and pmu-mask
-> > > as the preferred way of doing things as it is more flexible. There is
-> > > no real benefit carrying both.
-> > > The default pmu-mask value will change in that case.
-> > > We can just overwrite pmu-num with ctpop32(pmu_mask) if pmu-mask is
-> > > available. Thoughts ?
-> > >
-> >
-> > I agree it makes sense to me that there is only one way for the user to
-> > adjust the PMU count. However i'm not sure how we can handle the
-> > transition if we choose to deprecate "pmu-num".
-> >
-> > If we change the default "pmu-mask" to MAKE_32BIT_MASK(3, 16) then that
-> > value in the config will always be set - you propose that we overwrite
-> > "pmu-num" with the popcount of that property. But that will break if
->
-> Couldn't we deprecate "pmu-num" and then throw an error if both are
-> set? Then we can migrate away from "pmu-num"
->
+From: Cédric Le Goater <clg@kaod.org>
 
-Yeah. pmu-num should be only available as a command line property and
-marked deprecated.
-If only pmu-num is set, it gets converted to a mask and throws a warning
-that this is a deprecated property.
-If only the pmu-mask is set, nothing additional is needed. These
-patches are sufficient.
-If nothing is set, the pmu-mask will be set to MAKE_32BIT_MASK(3, 16).
-If a CPU init code uses pmu-num, we should change it to mask. The upstream =
-code
-doesn't have any other usage. Any downstream user will have to move
-away from pmu-num
-once this series is merged.
+Not supported :
 
-> Alistair
->
-> > the user has an existing setup that changes the value of "pmu-num"
-> > (either as a property at runtime or in the CPU init code).
-> >
-> > One option would be to not make the mask configurable as property and
-> > make choosing the layout of the counters something that the specialised
-> > CPU init can choose to do.
-> >
-> > Cheers,
-> >
-> > Rob
-> >
-> > > >      if (pmu_num > (RV_MAX_MHPMCOUNTERS - 3)) {
-> > > >          error_setg(errp, "Number of counters exceeds maximum
-> > > > available");
-> > > > @@ -449,6 +456,10 @@ void riscv_pmu_init(RISCVCPU *cpu, Error
-> > > > **errp)
-> > > >          return;
-> > > >      }
-> > > >
-> > > > -    /* Create a bitmask of available programmable counters */
-> > > > -    cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
-> > > > +    /* Create a bitmask of available programmable counters if none
-> > > > supplied */
-> > > > +    if (pmu_mask) {
-> > > > +        cpu->pmu_avail_ctrs =3D pmu_mask;
-> > > > +    } else {
-> > > > +        cpu->pmu_avail_ctrs =3D MAKE_32BIT_MASK(3, pmu_num);
-> > > > +    }
-> > > >  }
-> > > > --
-> > > > 2.41.0
-> > > >
-> >
-> >
+ . 10 bit addresses
+ . multimaster
+ . slave
+
+Signed-off-by: Cédric Le Goater <clg@kaod.org>
+Signed-off-by: Glenn Miles <milesg@linux.vnet.ibm.com>
+[milesg: fixed formatting warning]
+---
+ hw/ppc/meson.build         |   1 +
+ hw/ppc/pnv.c               |  26 ++
+ hw/ppc/pnv_i2c.c           | 678 +++++++++++++++++++++++++++++++++++++
+ include/hw/ppc/pnv_chip.h  |   4 +
+ include/hw/ppc/pnv_i2c.h   |  39 +++
+ include/hw/ppc/pnv_xscom.h |   3 +
+ 6 files changed, 751 insertions(+)
+ create mode 100644 hw/ppc/pnv_i2c.c
+ create mode 100644 include/hw/ppc/pnv_i2c.h
+
+diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
+index 7c2c52434a..87b756a701 100644
+--- a/hw/ppc/meson.build
++++ b/hw/ppc/meson.build
+@@ -43,6 +43,7 @@ ppc_ss.add(when: 'CONFIG_POWERNV', if_true: files(
+   'pnv.c',
+   'pnv_xscom.c',
+   'pnv_core.c',
++  'pnv_i2c.c',
+   'pnv_lpc.c',
+   'pnv_psi.c',
+   'pnv_occ.c',
+diff --git a/hw/ppc/pnv.c b/hw/ppc/pnv.c
+index eb54f93986..32b6d9889d 100644
+--- a/hw/ppc/pnv.c
++++ b/hw/ppc/pnv.c
+@@ -1438,6 +1438,10 @@ static void pnv_chip_power9_instance_init(Object *obj)
+         object_initialize_child(obj, "pec[*]", &chip9->pecs[i],
+                                 TYPE_PNV_PHB4_PEC);
+     }
++
++    for (i = 0; i < PNV9_CHIP_MAX_I2C; i++) {
++        object_initialize_child(obj, "i2c[*]", &chip9->i2c[i], TYPE_PNV_I2C);
++    }
+ }
+ 
+ static void pnv_chip_quad_realize_one(PnvChip *chip, PnvQuad *eq,
+@@ -1510,6 +1514,7 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+     PnvChip *chip = PNV_CHIP(dev);
+     Pnv9Psi *psi9 = &chip9->psi;
+     Error *local_err = NULL;
++    int i;
+ 
+     /* XSCOM bridge is first */
+     pnv_xscom_realize(chip, PNV9_XSCOM_SIZE, &local_err);
+@@ -1613,6 +1618,27 @@ static void pnv_chip_power9_realize(DeviceState *dev, Error **errp)
+         error_propagate(errp, local_err);
+         return;
+     }
++
++    /*
++     * I2C
++     * TODO: The number of busses is specific to each platform
++     */
++    for (i = 0; i < PNV9_CHIP_MAX_I2C; i++) {
++        Object *obj =  OBJECT(&chip9->i2c[i]);
++
++        object_property_set_int(obj, "engine", i + 1, &error_fatal);
++        object_property_set_int(obj, "num-busses", 1, &error_fatal);
++        object_property_set_link(obj, "chip", OBJECT(chip), &error_abort);
++        if (!qdev_realize(DEVICE(obj), NULL, errp)) {
++            return;
++        }
++        pnv_xscom_add_subregion(chip, PNV9_XSCOM_I2CM_BASE +
++                               chip9->i2c[i].engine * PNV9_XSCOM_I2CM_SIZE,
++                                &chip9->i2c[i].xscom_regs);
++        qdev_connect_gpio_out(DEVICE(&chip9->i2c[i]), 0,
++                              qdev_get_gpio_in(DEVICE(&chip9->psi),
++                                               PSIHB9_IRQ_SBE_I2C));
++    }
+ }
+ 
+ static uint32_t pnv_chip_power9_xscom_pcba(PnvChip *chip, uint64_t addr)
+diff --git a/hw/ppc/pnv_i2c.c b/hw/ppc/pnv_i2c.c
+new file mode 100644
+index 0000000000..8c191912bf
+--- /dev/null
++++ b/hw/ppc/pnv_i2c.c
+@@ -0,0 +1,678 @@
++/*
++ * QEMU PowerPC PowerNV Processor I2C model
++ *
++ * Copyright (c) 2019-2021, IBM Corporation.
++ *
++ * This code is licensed under the GPL version 2 or later. See the
++ * COPYING file in the top-level directory.
++ */
++
++#include "qemu/osdep.h"
++#include "qemu/module.h"
++#include "qemu/log.h"
++#include "sysemu/reset.h"
++
++#include "hw/irq.h"
++#include "hw/qdev-properties.h"
++
++#include "hw/ppc/pnv.h"
++#include "hw/ppc/pnv_chip.h"
++#include "hw/ppc/pnv_i2c.h"
++#include "hw/ppc/pnv_xscom.h"
++#include "hw/ppc/fdt.h"
++
++#include <libfdt.h>
++
++/* I2C FIFO register */
++#define I2C_FIFO_REG                    0x4
++#define I2C_FIFO                        PPC_BITMASK(0, 7)
++
++/* I2C command register */
++#define I2C_CMD_REG                     0x5
++#define I2C_CMD_WITH_START              PPC_BIT(0)
++#define I2C_CMD_WITH_ADDR               PPC_BIT(1)
++#define I2C_CMD_READ_CONT               PPC_BIT(2)
++#define I2C_CMD_WITH_STOP               PPC_BIT(3)
++#define I2C_CMD_INTR_STEERING           PPC_BITMASK(6, 7) /* P9 */
++#define   I2C_CMD_INTR_STEER_HOST       1
++#define   I2C_CMD_INTR_STEER_OCC        2
++#define I2C_CMD_DEV_ADDR                PPC_BITMASK(8, 14)
++#define I2C_CMD_READ_NOT_WRITE          PPC_BIT(15)
++#define I2C_CMD_LEN_BYTES               PPC_BITMASK(16, 31)
++#define I2C_MAX_TFR_LEN                 0xfff0ull
++
++/* I2C mode register */
++#define I2C_MODE_REG                    0x6
++#define I2C_MODE_BIT_RATE_DIV           PPC_BITMASK(0, 15)
++#define I2C_MODE_PORT_NUM               PPC_BITMASK(16, 21)
++#define I2C_MODE_ENHANCED               PPC_BIT(28)
++#define I2C_MODE_DIAGNOSTIC             PPC_BIT(29)
++#define I2C_MODE_PACING_ALLOW           PPC_BIT(30)
++#define I2C_MODE_WRAP                   PPC_BIT(31)
++
++/* I2C watermark register */
++#define I2C_WATERMARK_REG               0x7
++#define I2C_WATERMARK_HIGH              PPC_BITMASK(16, 19)
++#define I2C_WATERMARK_LOW               PPC_BITMASK(24, 27)
++
++/*
++ * I2C interrupt mask and condition registers
++ *
++ * NB: The function of 0x9 and 0xa changes depending on whether you're reading
++ *     or writing to them. When read they return the interrupt condition bits
++ *     and on writes they update the interrupt mask register.
++ *
++ *  The bit definitions are the same for all the interrupt registers.
++ */
++#define I2C_INTR_MASK_REG               0x8
++
++#define I2C_INTR_RAW_COND_REG           0x9 /* read */
++#define I2C_INTR_MASK_OR_REG            0x9 /* write*/
++
++#define I2C_INTR_COND_REG               0xa /* read */
++#define I2C_INTR_MASK_AND_REG           0xa /* write */
++
++#define I2C_INTR_ALL                    PPC_BITMASK(16, 31)
++#define I2C_INTR_INVALID_CMD            PPC_BIT(16)
++#define I2C_INTR_LBUS_PARITY_ERR        PPC_BIT(17)
++#define I2C_INTR_BKEND_OVERRUN_ERR      PPC_BIT(18)
++#define I2C_INTR_BKEND_ACCESS_ERR       PPC_BIT(19)
++#define I2C_INTR_ARBT_LOST_ERR          PPC_BIT(20)
++#define I2C_INTR_NACK_RCVD_ERR          PPC_BIT(21)
++#define I2C_INTR_DATA_REQ               PPC_BIT(22)
++#define I2C_INTR_CMD_COMP               PPC_BIT(23)
++#define I2C_INTR_STOP_ERR               PPC_BIT(24)
++#define I2C_INTR_I2C_BUSY               PPC_BIT(25)
++#define I2C_INTR_NOT_I2C_BUSY           PPC_BIT(26)
++#define I2C_INTR_SCL_EQ_1               PPC_BIT(28)
++#define I2C_INTR_SCL_EQ_0               PPC_BIT(29)
++#define I2C_INTR_SDA_EQ_1               PPC_BIT(30)
++#define I2C_INTR_SDA_EQ_0               PPC_BIT(31)
++
++/* I2C status register */
++#define I2C_RESET_I2C_REG               0xb /* write */
++#define I2C_RESET_ERRORS                0xc
++#define I2C_STAT_REG                    0xb /* read */
++#define I2C_STAT_INVALID_CMD            PPC_BIT(0)
++#define I2C_STAT_LBUS_PARITY_ERR        PPC_BIT(1)
++#define I2C_STAT_BKEND_OVERRUN_ERR      PPC_BIT(2)
++#define I2C_STAT_BKEND_ACCESS_ERR       PPC_BIT(3)
++#define I2C_STAT_ARBT_LOST_ERR          PPC_BIT(4)
++#define I2C_STAT_NACK_RCVD_ERR          PPC_BIT(5)
++#define I2C_STAT_DATA_REQ               PPC_BIT(6)
++#define I2C_STAT_CMD_COMP               PPC_BIT(7)
++#define I2C_STAT_STOP_ERR               PPC_BIT(8)
++#define I2C_STAT_UPPER_THRS             PPC_BITMASK(9, 15)
++#define I2C_STAT_ANY_I2C_INTR           PPC_BIT(16)
++#define I2C_STAT_PORT_HISTORY_BUSY      PPC_BIT(19)
++#define I2C_STAT_SCL_INPUT_LEVEL        PPC_BIT(20)
++#define I2C_STAT_SDA_INPUT_LEVEL        PPC_BIT(21)
++#define I2C_STAT_PORT_BUSY              PPC_BIT(22)
++#define I2C_STAT_INTERFACE_BUSY         PPC_BIT(23)
++#define I2C_STAT_FIFO_ENTRY_COUNT       PPC_BITMASK(24, 31)
++
++#define I2C_STAT_ANY_ERR (I2C_STAT_INVALID_CMD | I2C_STAT_LBUS_PARITY_ERR | \
++                          I2C_STAT_BKEND_OVERRUN_ERR | \
++                          I2C_STAT_BKEND_ACCESS_ERR | I2C_STAT_ARBT_LOST_ERR | \
++                          I2C_STAT_NACK_RCVD_ERR | I2C_STAT_STOP_ERR)
++
++
++#define I2C_INTR_ACTIVE \
++        ((I2C_STAT_ANY_ERR >> 16) | I2C_INTR_CMD_COMP | I2C_INTR_DATA_REQ)
++
++/* Pseudo-status used for timeouts */
++#define I2C_STAT_PSEUDO_TIMEOUT         PPC_BIT(63)
++
++/* I2C extended status register */
++#define I2C_EXTD_STAT_REG               0xc
++#define I2C_EXTD_STAT_FIFO_SIZE         PPC_BITMASK(0, 7)
++#define I2C_EXTD_STAT_MSM_CURSTATE      PPC_BITMASK(11, 15)
++#define I2C_EXTD_STAT_SCL_IN_SYNC       PPC_BIT(16)
++#define I2C_EXTD_STAT_SDA_IN_SYNC       PPC_BIT(17)
++#define I2C_EXTD_STAT_S_SCL             PPC_BIT(18)
++#define I2C_EXTD_STAT_S_SDA             PPC_BIT(19)
++#define I2C_EXTD_STAT_M_SCL             PPC_BIT(20)
++#define I2C_EXTD_STAT_M_SDA             PPC_BIT(21)
++#define I2C_EXTD_STAT_HIGH_WATER        PPC_BIT(22)
++#define I2C_EXTD_STAT_LOW_WATER         PPC_BIT(23)
++#define I2C_EXTD_STAT_I2C_BUSY          PPC_BIT(24)
++#define I2C_EXTD_STAT_SELF_BUSY         PPC_BIT(25)
++#define I2C_EXTD_STAT_I2C_VERSION       PPC_BITMASK(27, 31)
++
++/* I2C residual front end/back end length */
++#define I2C_RESIDUAL_LEN_REG            0xd
++#define I2C_RESIDUAL_FRONT_END          PPC_BITMASK(0, 15)
++#define I2C_RESIDUAL_BACK_END           PPC_BITMASK(16, 31)
++
++/* Port busy register */
++#define I2C_PORT_BUSY_REG               0xe
++#define I2C_SET_S_SCL_REG               0xd
++#define I2C_RESET_S_SCL_REG             0xf
++#define I2C_SET_S_SDA_REG               0x10
++#define I2C_RESET_S_SDA_REG             0x11
++
++#define PNV_I2C_FIFO_SIZE 8
++
++static I2CBus *pnv_i2c_get_bus(PnvI2C *i2c)
++{
++    uint8_t port = GETFIELD(I2C_MODE_PORT_NUM, i2c->regs[I2C_MODE_REG]);
++
++    if (port >= i2c->num_busses) {
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: invalid bus number %d/%d\n", port,
++                      i2c->num_busses);
++        return NULL;
++    }
++    return i2c->busses[port];
++}
++
++static void pnv_i2c_update_irq(PnvI2C *i2c)
++{
++    I2CBus *bus = pnv_i2c_get_bus(i2c);
++    bool recv = !!(i2c->regs[I2C_CMD_REG] & I2C_CMD_READ_NOT_WRITE);
++    uint16_t front_end = GETFIELD(I2C_RESIDUAL_FRONT_END,
++                                  i2c->regs[I2C_RESIDUAL_LEN_REG]);
++    uint16_t back_end = GETFIELD(I2C_RESIDUAL_BACK_END,
++                                 i2c->regs[I2C_RESIDUAL_LEN_REG]);
++    uint8_t fifo_count = GETFIELD(I2C_STAT_FIFO_ENTRY_COUNT,
++                                   i2c->regs[I2C_STAT_REG]);
++    uint8_t fifo_free = PNV_I2C_FIFO_SIZE - fifo_count;
++
++    if (i2c_bus_busy(bus)) {
++        i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_DATA_REQ;
++
++        if (recv) {
++            if (fifo_count >=
++                GETFIELD(I2C_WATERMARK_HIGH, i2c->regs[I2C_WATERMARK_REG])) {
++                i2c->regs[I2C_EXTD_STAT_REG] |= I2C_EXTD_STAT_HIGH_WATER;
++            } else {
++                i2c->regs[I2C_EXTD_STAT_REG] &= ~I2C_EXTD_STAT_HIGH_WATER;
++            }
++
++            if (((i2c->regs[I2C_EXTD_STAT_REG] & I2C_EXTD_STAT_HIGH_WATER) &&
++                 fifo_count != 0) || front_end == 0) {
++                i2c->regs[I2C_STAT_REG] |= I2C_STAT_DATA_REQ;
++            }
++        } else {
++            if (fifo_count <=
++                GETFIELD(I2C_WATERMARK_LOW, i2c->regs[I2C_WATERMARK_REG])) {
++                i2c->regs[I2C_EXTD_STAT_REG] |= I2C_EXTD_STAT_LOW_WATER;
++            } else {
++                i2c->regs[I2C_EXTD_STAT_REG] &= ~I2C_EXTD_STAT_LOW_WATER;
++            }
++
++            if (back_end > 0 &&
++                (fifo_free >= back_end ||
++                 (i2c->regs[I2C_EXTD_STAT_REG] & I2C_EXTD_STAT_LOW_WATER))) {
++                i2c->regs[I2C_STAT_REG] |= I2C_STAT_DATA_REQ;
++            }
++        }
++
++        if (back_end == 0 && front_end == 0) {
++            i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_DATA_REQ;
++            i2c->regs[I2C_STAT_REG] |= I2C_STAT_CMD_COMP;
++
++            if (i2c->regs[I2C_CMD_REG] & I2C_CMD_WITH_STOP) {
++                i2c_end_transfer(bus);
++                i2c->regs[I2C_EXTD_STAT_REG] &=
++                    ~(I2C_EXTD_STAT_I2C_BUSY | I2C_EXTD_STAT_SELF_BUSY);
++            }
++        } else {
++            i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_CMD_COMP;
++        }
++    }
++
++    /*
++     * Status and interrupt registers have nearly the same layout.
++     */
++    i2c->regs[I2C_INTR_RAW_COND_REG] = i2c->regs[I2C_STAT_REG] >> 16;
++    i2c->regs[I2C_INTR_COND_REG] =
++        i2c->regs[I2C_INTR_RAW_COND_REG] & i2c->regs[I2C_INTR_MASK_REG];
++
++    qemu_set_irq(i2c->psi_irq, i2c->regs[I2C_INTR_COND_REG] != 0);
++}
++
++static void pnv_i2c_fifo_update_count(PnvI2C *i2c)
++{
++    uint64_t stat = i2c->regs[I2C_STAT_REG];
++
++    i2c->regs[I2C_STAT_REG] = SETFIELD(I2C_STAT_FIFO_ENTRY_COUNT, stat,
++                                       fifo8_num_used(&i2c->fifo));
++}
++
++static void pnv_i2c_frontend_update(PnvI2C *i2c)
++{
++    uint64_t residual_end = i2c->regs[I2C_RESIDUAL_LEN_REG];
++    uint16_t front_end = GETFIELD(I2C_RESIDUAL_FRONT_END, residual_end);
++
++    i2c->regs[I2C_RESIDUAL_LEN_REG] =
++        SETFIELD(I2C_RESIDUAL_FRONT_END, residual_end, front_end - 1);
++}
++
++static void pnv_i2c_fifo_flush(PnvI2C *i2c)
++{
++    I2CBus *bus = pnv_i2c_get_bus(i2c);
++    uint8_t data;
++    int ret;
++
++    if (!i2c_bus_busy(bus)) {
++        return;
++    }
++
++    if (i2c->regs[I2C_CMD_REG] & I2C_CMD_READ_NOT_WRITE) {
++        if (fifo8_is_full(&i2c->fifo)) {
++            return;
++        }
++
++        data = i2c_recv(bus);
++        fifo8_push(&i2c->fifo, data);
++    } else {
++        if (fifo8_is_empty(&i2c->fifo)) {
++            return;
++        }
++
++        data = fifo8_pop(&i2c->fifo);
++        ret = i2c_send(bus, data);
++        if (ret) {
++            i2c->regs[I2C_STAT_REG] |= I2C_STAT_NACK_RCVD_ERR;
++            i2c_end_transfer(bus);
++        }
++    }
++
++    pnv_i2c_fifo_update_count(i2c);
++    pnv_i2c_frontend_update(i2c);
++}
++
++static void pnv_i2c_handle_cmd(PnvI2C *i2c, uint64_t val)
++{
++    I2CBus *bus = pnv_i2c_get_bus(i2c);
++    uint8_t addr = GETFIELD(I2C_CMD_DEV_ADDR, val);
++    int recv = !!(val & I2C_CMD_READ_NOT_WRITE);
++    uint32_t len_bytes = GETFIELD(I2C_CMD_LEN_BYTES, val);
++
++    if (!(val & I2C_CMD_WITH_START) && !(val & I2C_CMD_WITH_ADDR) &&
++        !(val & I2C_CMD_WITH_STOP) && !len_bytes) {
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: invalid command 0x%"PRIx64"\n",
++                      val);
++        return;
++    }
++
++    if (!(i2c->regs[I2C_STAT_REG] & I2C_STAT_CMD_COMP)) {
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: command in progress\n");
++        return;
++    }
++
++    if (!bus) {
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: invalid port\n");
++        return;
++    }
++
++    i2c->regs[I2C_RESIDUAL_LEN_REG] =
++        SETFIELD(I2C_RESIDUAL_FRONT_END, 0ull, len_bytes) |
++        SETFIELD(I2C_RESIDUAL_BACK_END, 0ull, len_bytes);
++
++    if (val & I2C_CMD_WITH_START) {
++        if (i2c_start_transfer(bus, addr, recv)) {
++            i2c->regs[I2C_STAT_REG] |= I2C_STAT_NACK_RCVD_ERR;
++        } else {
++            i2c->regs[I2C_EXTD_STAT_REG] |=
++                (I2C_EXTD_STAT_I2C_BUSY | I2C_EXTD_STAT_SELF_BUSY);
++            pnv_i2c_fifo_flush(i2c);
++        }
++    }
++}
++
++static void pnv_i2c_backend_update(PnvI2C *i2c)
++{
++    uint64_t residual_end = i2c->regs[I2C_RESIDUAL_LEN_REG];
++    uint16_t back_end = GETFIELD(I2C_RESIDUAL_BACK_END, residual_end);
++
++    if (!back_end) {
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_BKEND_ACCESS_ERR;
++        return;
++    }
++
++    i2c->regs[I2C_RESIDUAL_LEN_REG] =
++        SETFIELD(I2C_RESIDUAL_BACK_END, residual_end, back_end - 1);
++}
++
++static void pnv_i2c_fifo_in(PnvI2C *i2c)
++{
++    uint8_t data = GETFIELD(I2C_FIFO, i2c->regs[I2C_FIFO_REG]);
++    I2CBus *bus = pnv_i2c_get_bus(i2c);
++
++    if (!i2c_bus_busy(bus)) {
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: no command in progress\n");
++        return;
++    }
++
++    if (i2c->regs[I2C_CMD_REG] & I2C_CMD_READ_NOT_WRITE) {
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: read command in progress\n");
++        return;
++    }
++
++    if (fifo8_is_full(&i2c->fifo)) {
++        if (!(i2c->regs[I2C_MODE_REG] & I2C_MODE_PACING_ALLOW)) {
++            i2c->regs[I2C_STAT_REG] |= I2C_STAT_BKEND_OVERRUN_ERR;
++        }
++        return;
++    }
++
++    fifo8_push(&i2c->fifo, data);
++    pnv_i2c_fifo_update_count(i2c);
++    pnv_i2c_backend_update(i2c);
++    pnv_i2c_fifo_flush(i2c);
++}
++
++static void pnv_i2c_fifo_out(PnvI2C *i2c)
++{
++    uint8_t data;
++    I2CBus *bus = pnv_i2c_get_bus(i2c);
++
++    if (!i2c_bus_busy(bus)) {
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: no command in progress\n");
++        return;
++    }
++
++    if (!(i2c->regs[I2C_CMD_REG] & I2C_CMD_READ_NOT_WRITE)) {
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: write command in progress\n");
++        return;
++    }
++
++    if (fifo8_is_empty(&i2c->fifo)) {
++        if (!(i2c->regs[I2C_MODE_REG] & I2C_MODE_PACING_ALLOW)) {
++            i2c->regs[I2C_STAT_REG] |= I2C_STAT_BKEND_OVERRUN_ERR;
++        }
++        return;
++    }
++
++    data = fifo8_pop(&i2c->fifo);
++
++    i2c->regs[I2C_FIFO_REG] = SETFIELD(I2C_FIFO, 0ull, data);
++    pnv_i2c_fifo_update_count(i2c);
++    pnv_i2c_backend_update(i2c);
++}
++
++static uint64_t pnv_i2c_xscom_read(void *opaque, hwaddr addr,
++                                   unsigned size)
++{
++    PnvI2C *i2c = PNV_I2C(opaque);
++    uint32_t offset = addr >> 3;
++    uint64_t val = -1;
++    int i;
++
++    switch (offset) {
++    case I2C_STAT_REG:
++        val = i2c->regs[offset];
++        break;
++
++    case I2C_FIFO_REG:
++        pnv_i2c_fifo_out(i2c);
++        val = i2c->regs[offset];
++        break;
++
++    case I2C_PORT_BUSY_REG: /* compute busy bit for each port  */
++        val = 0;
++        for (i = 0; i < i2c->num_busses; i++) {
++            val |= i2c_bus_busy(i2c->busses[i]) << i;
++        }
++        break;
++
++    case I2C_CMD_REG:
++    case I2C_MODE_REG:
++    case I2C_WATERMARK_REG:
++    case I2C_INTR_MASK_REG:
++    case I2C_INTR_RAW_COND_REG:
++    case I2C_INTR_COND_REG:
++    case I2C_EXTD_STAT_REG:
++    case I2C_RESIDUAL_LEN_REG:
++        val = i2c->regs[offset];
++        break;
++    default:
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: read at register: 0x%"
++                      HWADDR_PRIx "\n", addr >> 3);
++    }
++
++    pnv_i2c_update_irq(i2c);
++
++    return val;
++}
++
++static void pnv_i2c_xscom_write(void *opaque, hwaddr addr,
++                                uint64_t val, unsigned size)
++{
++    PnvI2C *i2c = PNV_I2C(opaque);
++    uint32_t offset = addr >> 3;
++
++    switch (offset) {
++    case I2C_MODE_REG:
++        i2c->regs[offset] = val;
++        if (i2c_bus_busy(pnv_i2c_get_bus(i2c))) {
++            i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++            qemu_log_mask(LOG_GUEST_ERROR, "I2C: command in progress\n");
++        }
++        break;
++
++    case I2C_CMD_REG:
++        i2c->regs[offset] = val;
++        pnv_i2c_handle_cmd(i2c, val);
++        break;
++
++    case I2C_FIFO_REG:
++        i2c->regs[offset] = val;
++        pnv_i2c_fifo_in(i2c);
++        break;
++
++    case I2C_WATERMARK_REG:
++        i2c->regs[offset] = val;
++        break;
++
++    case I2C_RESET_I2C_REG:
++        i2c->regs[I2C_MODE_REG] = 0;
++        i2c->regs[I2C_CMD_REG] = 0;
++        i2c->regs[I2C_WATERMARK_REG] = 0;
++        i2c->regs[I2C_INTR_MASK_REG] = 0;
++        i2c->regs[I2C_INTR_COND_REG] = 0;
++        i2c->regs[I2C_INTR_RAW_COND_REG] = 0;
++        i2c->regs[I2C_STAT_REG] = 0;
++        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
++        i2c->regs[I2C_EXTD_STAT_REG] &=
++            (I2C_EXTD_STAT_FIFO_SIZE | I2C_EXTD_STAT_I2C_VERSION);
++        break;
++
++    case I2C_RESET_ERRORS:
++        i2c->regs[I2C_STAT_REG] &= ~I2C_STAT_ANY_ERR;
++        i2c->regs[I2C_RESIDUAL_LEN_REG] = 0;
++        i2c->regs[I2C_EXTD_STAT_REG] &=
++            (I2C_EXTD_STAT_FIFO_SIZE | I2C_EXTD_STAT_I2C_VERSION);
++        fifo8_reset(&i2c->fifo);
++        break;
++
++    case I2C_INTR_MASK_REG:
++        i2c->regs[offset] = val;
++        break;
++
++    case I2C_INTR_MASK_OR_REG:
++        i2c->regs[I2C_INTR_MASK_REG] |= val;
++        break;
++
++    case I2C_INTR_MASK_AND_REG:
++        i2c->regs[I2C_INTR_MASK_REG] &= val;
++        break;
++
++    case I2C_PORT_BUSY_REG:
++    case I2C_SET_S_SCL_REG:
++    case I2C_RESET_S_SCL_REG:
++    case I2C_SET_S_SDA_REG:
++    case I2C_RESET_S_SDA_REG:
++        i2c->regs[offset] = val;
++        break;
++    default:
++        i2c->regs[I2C_STAT_REG] |= I2C_STAT_INVALID_CMD;
++        qemu_log_mask(LOG_GUEST_ERROR, "I2C: write at register: 0x%"
++                      HWADDR_PRIx " val=0x%"PRIx64"\n", addr >> 3, val);
++    }
++
++    pnv_i2c_update_irq(i2c);
++}
++
++static const MemoryRegionOps pnv_i2c_xscom_ops = {
++    .read = pnv_i2c_xscom_read,
++    .write = pnv_i2c_xscom_write,
++    .valid.min_access_size = 8,
++    .valid.max_access_size = 8,
++    .impl.min_access_size = 8,
++    .impl.max_access_size = 8,
++    .endianness = DEVICE_BIG_ENDIAN,
++};
++
++static int pnv_i2c_bus_dt_xscom(PnvI2C *i2c, void *fdt,
++                                int offset, int index)
++{
++    char *name;
++    int i2c_bus_offset;
++    const char i2c_compat[] =
++        "ibm,opal-i2c\0ibm,power8-i2c-port\0ibm,power9-i2c-port";
++    char *i2c_port_name;
++
++    name = g_strdup_printf("i2c-bus@%x", index);
++    i2c_bus_offset = fdt_add_subnode(fdt, offset, name);
++    _FDT(i2c_bus_offset);
++    g_free(name);
++
++    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "reg", index)));
++    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "#address-cells", 1)));
++    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "#size-cells", 0)));
++    _FDT(fdt_setprop(fdt, i2c_bus_offset, "compatible", i2c_compat,
++                     sizeof(i2c_compat)));
++    _FDT((fdt_setprop_cell(fdt, i2c_bus_offset, "bus-frequency", 400000)));
++
++    i2c_port_name = g_strdup_printf("p8_%08x_e%dp%d", i2c->chip->chip_id,
++                                    i2c->engine, index);
++    _FDT(fdt_setprop_string(fdt, i2c_bus_offset, "ibm,port-name",
++                            i2c_port_name));
++    g_free(i2c_port_name);
++
++    return 0;
++}
++
++#define XSCOM_BUS_FREQUENCY 466500000
++#define I2C_CLOCK_FREQUENCY (XSCOM_BUS_FREQUENCY / 4)
++
++static int pnv_i2c_dt_xscom(PnvXScomInterface *dev, void *fdt,
++                            int offset)
++{
++    PnvI2C *i2c = PNV_I2C(dev);
++    char *name;
++    int i2c_offset;
++    const char i2c_compat[] = "ibm,power8-i2cm\0ibm,power9-i2cm";
++    uint32_t i2c_pcba = PNV9_XSCOM_I2CM_BASE +
++        i2c->engine * PNV9_XSCOM_I2CM_SIZE;
++    uint32_t reg[2] = {
++        cpu_to_be32(i2c_pcba),
++        cpu_to_be32(PNV9_XSCOM_I2CM_SIZE)
++    };
++    int i;
++
++    name = g_strdup_printf("i2cm@%x", i2c_pcba);
++    i2c_offset = fdt_add_subnode(fdt, offset, name);
++    _FDT(i2c_offset);
++    g_free(name);
++
++    _FDT(fdt_setprop(fdt, i2c_offset, "reg", reg, sizeof(reg)));
++
++    _FDT((fdt_setprop_cell(fdt, i2c_offset, "#address-cells", 1)));
++    _FDT((fdt_setprop_cell(fdt, i2c_offset, "#size-cells", 0)));
++    _FDT(fdt_setprop(fdt, i2c_offset, "compatible", i2c_compat,
++                     sizeof(i2c_compat)));
++    _FDT((fdt_setprop_cell(fdt, i2c_offset, "chip-engine#", i2c->engine)));
++    _FDT((fdt_setprop_cell(fdt, i2c_offset, "clock-frequency",
++                           I2C_CLOCK_FREQUENCY)));
++
++    for (i = 0; i < i2c->num_busses; i++) {
++        pnv_i2c_bus_dt_xscom(i2c, fdt, i2c_offset, i);
++    }
++    return 0;
++}
++
++static void pnv_i2c_reset(void *dev)
++{
++    PnvI2C *i2c = PNV_I2C(dev);
++
++    memset(i2c->regs, 0, sizeof(i2c->regs));
++
++    i2c->regs[I2C_STAT_REG] = I2C_STAT_CMD_COMP;
++    i2c->regs[I2C_EXTD_STAT_REG] =
++        SETFIELD(I2C_EXTD_STAT_FIFO_SIZE, 0ull, PNV_I2C_FIFO_SIZE) |
++        SETFIELD(I2C_EXTD_STAT_I2C_VERSION, 0ull, 23); /* last version */
++
++    fifo8_reset(&i2c->fifo);
++}
++
++static void pnv_i2c_realize(DeviceState *dev, Error **errp)
++{
++    PnvI2C *i2c = PNV_I2C(dev);
++    int i;
++
++    assert(i2c->chip);
++
++    pnv_xscom_region_init(&i2c->xscom_regs, OBJECT(i2c), &pnv_i2c_xscom_ops,
++                          i2c, "xscom-i2c", PNV9_XSCOM_I2CM_SIZE);
++
++    i2c->busses = g_new(I2CBus *, i2c->num_busses);
++    for (i = 0; i < i2c->num_busses; i++) {
++        char name[32];
++
++        snprintf(name, sizeof(name), TYPE_PNV_I2C ".%d", i);
++        i2c->busses[i] = i2c_init_bus(dev, name);
++    }
++
++    fifo8_create(&i2c->fifo, PNV_I2C_FIFO_SIZE);
++
++    qemu_register_reset(pnv_i2c_reset, dev);
++
++    qdev_init_gpio_out(DEVICE(dev), &i2c->psi_irq, 1);
++}
++
++static Property pnv_i2c_properties[] = {
++    DEFINE_PROP_LINK("chip", PnvI2C, chip, TYPE_PNV_CHIP, PnvChip *),
++    DEFINE_PROP_UINT32("engine", PnvI2C, engine, 1),
++    DEFINE_PROP_UINT32("num-busses", PnvI2C, num_busses, 1),
++    DEFINE_PROP_END_OF_LIST(),
++};
++
++static void pnv_i2c_class_init(ObjectClass *klass, void *data)
++{
++    DeviceClass *dc = DEVICE_CLASS(klass);
++    PnvXScomInterfaceClass *xscomc = PNV_XSCOM_INTERFACE_CLASS(klass);
++
++    xscomc->dt_xscom = pnv_i2c_dt_xscom;
++
++    dc->desc = "PowerNV I2C";
++    dc->realize = pnv_i2c_realize;
++    device_class_set_props(dc, pnv_i2c_properties);
++}
++
++static const TypeInfo pnv_i2c_info = {
++    .name          = TYPE_PNV_I2C,
++    .parent        = TYPE_DEVICE,
++    .instance_size = sizeof(PnvI2C),
++    .class_init    = pnv_i2c_class_init,
++    .interfaces    = (InterfaceInfo[]) {
++        { TYPE_PNV_XSCOM_INTERFACE },
++        { }
++    }
++};
++
++static void pnv_i2c_register_types(void)
++{
++    type_register_static(&pnv_i2c_info);
++}
++
++type_init(pnv_i2c_register_types);
+diff --git a/include/hw/ppc/pnv_chip.h b/include/hw/ppc/pnv_chip.h
+index 53e1d921d7..3bbe2783c9 100644
+--- a/include/hw/ppc/pnv_chip.h
++++ b/include/hw/ppc/pnv_chip.h
+@@ -9,6 +9,7 @@
+ #include "hw/ppc/pnv_psi.h"
+ #include "hw/ppc/pnv_sbe.h"
+ #include "hw/ppc/pnv_xive.h"
++#include "hw/ppc/pnv_i2c.h"
+ #include "hw/sysbus.h"
+ 
+ OBJECT_DECLARE_TYPE(PnvChip, PnvChipClass,
+@@ -86,6 +87,9 @@ struct Pnv9Chip {
+ 
+ #define PNV9_CHIP_MAX_PEC 3
+     PnvPhb4PecState pecs[PNV9_CHIP_MAX_PEC];
++
++#define PNV9_CHIP_MAX_I2C 3
++    PnvI2C      i2c[PNV9_CHIP_MAX_I2C];
+ };
+ 
+ /*
+diff --git a/include/hw/ppc/pnv_i2c.h b/include/hw/ppc/pnv_i2c.h
+new file mode 100644
+index 0000000000..8bb5ecf6bc
+--- /dev/null
++++ b/include/hw/ppc/pnv_i2c.h
+@@ -0,0 +1,39 @@
++/*
++ * QEMU PowerPC PowerNV Processor I2C model
++ *
++ * Copyright (c) 2019-2021, IBM Corporation.
++ *
++ * This code is licensed under the GPL version 2 or later. See the
++ * COPYING file in the top-level directory.
++ */
++
++#ifndef PPC_PNV_I2C_H
++#define PPC_PNV_I2C_H
++
++#include "hw/ppc/pnv.h"
++#include "hw/i2c/i2c.h"
++#include "qemu/fifo8.h"
++
++#define TYPE_PNV_I2C "pnv-i2c"
++#define PNV_I2C(obj) OBJECT_CHECK(PnvI2C, (obj), TYPE_PNV_I2C)
++
++#define PNV_I2C_REGS 0x20
++
++typedef struct PnvI2C {
++    DeviceState parent;
++
++    struct PnvChip *chip;
++
++    qemu_irq psi_irq;
++
++    uint64_t regs[PNV_I2C_REGS];
++    uint32_t engine;
++    uint32_t num_busses;
++    I2CBus **busses;
++
++    MemoryRegion xscom_regs;
++
++    Fifo8 fifo;
++} PnvI2C;
++
++#endif /* PPC_PNV_I2C_H */
+diff --git a/include/hw/ppc/pnv_xscom.h b/include/hw/ppc/pnv_xscom.h
+index 9bc6463547..0c8b873c4c 100644
+--- a/include/hw/ppc/pnv_xscom.h
++++ b/include/hw/ppc/pnv_xscom.h
+@@ -90,6 +90,9 @@ struct PnvXScomInterfaceClass {
+     ((uint64_t)(((core) & 0x1C) + 0x40) << 22)
+ #define PNV9_XSCOM_EQ_SIZE        0x100000
+ 
++#define PNV9_XSCOM_I2CM_BASE      0xa0000
++#define PNV9_XSCOM_I2CM_SIZE      0x1000
++
+ #define PNV9_XSCOM_OCC_BASE       PNV_XSCOM_OCC_BASE
+ #define PNV9_XSCOM_OCC_SIZE       0x8000
+ 
+-- 
+2.31.1
+
 
