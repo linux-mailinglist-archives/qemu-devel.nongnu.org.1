@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DBC37BD7A4
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B5F7BD798
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:49:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmtF-0003Ht-Pk; Mon, 09 Oct 2023 05:49:30 -0400
+	id 1qpmsz-0002Mq-E0; Mon, 09 Oct 2023 05:49:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpms3-0001sk-1X
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:48:17 -0400
-Received: from mail-ed1-x530.google.com ([2a00:1450:4864:20::530])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpms7-0001wL-Hf
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:48:24 -0400
+Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpmrw-0005xX-8K
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:48:14 -0400
-Received: by mail-ed1-x530.google.com with SMTP id
- 4fb4d7f45d1cf-533f193fc8dso7490490a12.2
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 02:48:05 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpms1-0005yI-1m
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:48:19 -0400
+Received: by mail-ej1-x636.google.com with SMTP id
+ a640c23a62f3a-99c1c66876aso784349466b.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 02:48:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696844883; x=1697449683; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696844890; x=1697449690; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=QjIFUd9EeYCQO/H7VS1vP3CjmTEJO6hAfPQ2q7h2ewE=;
- b=Sw4h7STNnHObyngFRp7jim4pUrqYPwGpm4PG3VMD8WRDKYpT0aFXYd60ZBtY/tJTdQ
- 9MossDNHTCposqOs1ieDtMSxlly/g7XE4av5EeTYILDUrTkHCoS9rFHCvcUDgwKKCyOr
- 4Elk7+JyK8IiXFwPYhASSF2hv10tapsc5N10eVETFwZGwRw1HtgP3R8MGnnwe8RLZVVy
- 4Yr9RLMsvz3I3Gkwy7bPG6uQxBNeQyJGL7mt3+vRIFkTJBVKI1WAIN/grdko8FosZOhy
- I+kVDyvBlY6LBbwCiZTADK3xjAbImMe1mQgo9Ga6HjsAWOrr51j8SocqWUKvqD1n7pQ+
- BzGw==
+ bh=kTqd6Z2Np7lV/f6CqV3RTrP/+37x/Q8ZcMxW6GyXvyM=;
+ b=GodJik7ZZUXsEGY82lt+oEYSiFVxFNOKCvV4q8tJwod13q/JMdvOPc12nalxNN4Fyx
+ nL0keWEOobRHBvnpphfMjLztwsNS83Ku5izhet30jvAuzMsR4Xg7Qs1FrbA9ijL2AeVa
+ Le1a0eesXyF4Ysdrc4Fxf93D4EDc1kJWgiU8WDyC/QHObY3ekwAx2VQBVXjeadHadznY
+ VhHtdH4iUdNqO9QKFKciV0W1uaO2HGPSTw6AxITWLHYqizQmoVyzfhMyYf7VpUaLphXR
+ Stn4UJOfK/Ax8yZ5+2ur6vXP/r2ulMiYOMld0KqgSjYWU/ex+jblQU8mxipgHXnda2ud
+ E57Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696844883; x=1697449683;
+ d=1e100.net; s=20230601; t=1696844890; x=1697449690;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=QjIFUd9EeYCQO/H7VS1vP3CjmTEJO6hAfPQ2q7h2ewE=;
- b=fGxKh8jUuob07m+Zn5kX31jIaWkDKJEEncLDD5wAFSe0oUF0X/41i0ynhQqzlq/aly
- 0M6cZpZjTjdtIYOAwsnC+dAftABc9MHjAIMN6NK4HXvS2pW16yQaQReAjlfpGkjmehqZ
- 5dJf21GuR/qUUG6wfTGu7mTFZ8mrn8M6S0kQT/ndHQt6eawYHp2XPRycTOu4OasGyA+k
- Liz52BbrzOW6a+E+7XiVkIZ77lAPiabKRoSGWB30ZFf9EAWV/MEcfM9UeHA1fQNOP2nD
- 951YmJgr7l+GrnyWAd2f2MgvgXVVh/+pp5bh3xswtnH9Q2+usvTz5kTi+8hDxbhhILId
- J8Gw==
-X-Gm-Message-State: AOJu0YxSwq0he/UOev94Roz6EbVLv3sUFDqfbB0flMDpcWAozC8Wf20g
- nXFxneKXf3S+7/kPiANxCQgPziyhpWGDjTfgRlg=
-X-Google-Smtp-Source: AGHT+IEm2DRPRDfWQHvmrSSWZMmgFL7UgZ9trMFcE9MEG9SakFoNT4n+VXWcl8OBMCCEpNomcP0qpA==
-X-Received: by 2002:a05:6402:355:b0:523:d51:bb2 with SMTP id
- r21-20020a056402035500b005230d510bb2mr11341808edw.15.1696844883379; 
- Mon, 09 Oct 2023 02:48:03 -0700 (PDT)
+ bh=kTqd6Z2Np7lV/f6CqV3RTrP/+37x/Q8ZcMxW6GyXvyM=;
+ b=XnbgFPMvb3MqCXv1nIwlJMnrQ6/KvDmie7Sc/2BfEjUgq5VkRw4MoELwPe8mcpwKDe
+ lJRSCcn1aXgjFWBkhq60hWQ3XruCUoW9O3Fi5A5fWJSTvJNZ7KiFX6whLljuUrcjCidT
+ T5MqvXdrWZT5VzhCh7rEQX9DcZwn8TMuBVDOTR1umkHhCaYvLNUAw1AkOLE7Z1OFQw0B
+ 25ildHPbZPbKkqYjZ9CDeBpNolENMewoFMgjl6+A1uyuwMwqssCroVl7zb7FzIN1shOS
+ yCFsO79ULSu5hosGCh/wX/YCmQqSDndabuMTCoS3fGw2Q9mRAtnb0g5cFcAGFZTI6IQM
+ jqBQ==
+X-Gm-Message-State: AOJu0YxyL0Bh0Az+SCLW8A1+Fc0XnAUmOPkdnEgnc1BWG8Euv4YcF4HR
+ yD7/GxEH33QYAlN+RW0CgSDpyHGU8J4DQpu4MgY=
+X-Google-Smtp-Source: AGHT+IHe2hQdtHDW+3OHr0mq9HxFD2PTUlIdCyT5n6qN7VgZUjNNcJuaHxVuxq9UBBhrs9kLUgOZLQ==
+X-Received: by 2002:a17:906:8467:b0:9ae:62ec:f4a1 with SMTP id
+ hx7-20020a170906846700b009ae62ecf4a1mr12693439ejc.33.1696844889715; 
+ Mon, 09 Oct 2023 02:48:09 -0700 (PDT)
 Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
  [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
- c25-20020aa7d619000000b0053622a35665sm5802067edr.66.2023.10.09.02.48.01
+ t27-20020a1709063e5b00b009a168ab6ee2sm6516527eji.164.2023.10.09.02.48.07
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 09 Oct 2023 02:48:03 -0700 (PDT)
+ Mon, 09 Oct 2023 02:48:09 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Eduardo Habkost <eduardo@habkost.net>,
@@ -68,25 +68,24 @@ Cc: Eduardo Habkost <eduardo@habkost.net>,
  Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
  Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
  Gerd Hoffmann <kraxel@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Subject: [PATCH 2/6] hw/loader: Clean up global variable shadowing in
- rom_add_file()
-Date: Mon,  9 Oct 2023 11:47:42 +0200
-Message-ID: <20231009094747.54240-3-philmd@linaro.org>
+Subject: [PATCH 3/6] hw/display/vga: Clean up global variable shadowing
+Date: Mon,  9 Oct 2023 11:47:43 +0200
+Message-ID: <20231009094747.54240-4-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231009094747.54240-1-philmd@linaro.org>
 References: <20231009094747.54240-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::530;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x530.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::636;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x636.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ T_SPF_TEMPERROR=0.01 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,54 +103,58 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 Fix:
 
-  hw/core/loader.c:1073:27: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-                       bool option_rom, MemoryRegion *mr,
+  hw/display/vga.c:2307:29: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+                MemoryRegion *address_space_io, bool init_vga_ports)
                             ^
-  include/sysemu/sysemu.h:57:22: note: previous declaration is here
-  extern QEMUOptionRom option_rom[MAX_OPTION_ROMS];
-                       ^
+  include/exec/address-spaces.h:35:21: note: previous declaration is here
+  extern AddressSpace address_space_io;
+                      ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- include/hw/loader.h | 2 +-
- hw/core/loader.c    | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ hw/display/vga_int.h | 2 +-
+ hw/display/vga.c     | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/hw/loader.h b/include/hw/loader.h
-index c4c14170ea..8685e27334 100644
---- a/include/hw/loader.h
-+++ b/include/hw/loader.h
-@@ -272,7 +272,7 @@ void pstrcpy_targphys(const char *name,
+diff --git a/hw/display/vga_int.h b/hw/display/vga_int.h
+index 7cf0d11201..94949d8a0c 100644
+--- a/hw/display/vga_int.h
++++ b/hw/display/vga_int.h
+@@ -157,7 +157,7 @@ static inline int c6_to_8(int v)
+ }
  
- ssize_t rom_add_file(const char *file, const char *fw_dir,
-                      hwaddr addr, int32_t bootindex,
--                     bool option_rom, MemoryRegion *mr, AddressSpace *as);
-+                     bool has_option_rom, MemoryRegion *mr, AddressSpace *as);
- MemoryRegion *rom_add_blob(const char *name, const void *blob, size_t len,
-                            size_t max_len, hwaddr addr,
-                            const char *fw_file_name,
-diff --git a/hw/core/loader.c b/hw/core/loader.c
-index 4dd5a71fb7..7f0cbfb214 100644
---- a/hw/core/loader.c
-+++ b/hw/core/loader.c
-@@ -1070,7 +1070,7 @@ static void *rom_set_mr(Rom *rom, Object *owner, const char *name, bool ro)
+ bool vga_common_init(VGACommonState *s, Object *obj, Error **errp);
+-void vga_init(VGACommonState *s, Object *obj, MemoryRegion *address_space,
++void vga_init(VGACommonState *s, Object *obj, MemoryRegion *io,
+               MemoryRegion *address_space_io, bool init_vga_ports);
+ MemoryRegion *vga_init_io(VGACommonState *s, Object *obj,
+                           const MemoryRegionPortio **vga_ports,
+diff --git a/hw/display/vga.c b/hw/display/vga.c
+index 37557c3442..bb4cd240ec 100644
+--- a/hw/display/vga.c
++++ b/hw/display/vga.c
+@@ -2304,7 +2304,7 @@ MemoryRegion *vga_init_io(VGACommonState *s, Object *obj,
+ }
  
- ssize_t rom_add_file(const char *file, const char *fw_dir,
-                      hwaddr addr, int32_t bootindex,
--                     bool option_rom, MemoryRegion *mr,
-+                     bool has_option_rom, MemoryRegion *mr,
-                      AddressSpace *as)
+ void vga_init(VGACommonState *s, Object *obj, MemoryRegion *address_space,
+-              MemoryRegion *address_space_io, bool init_vga_ports)
++              MemoryRegion *io, bool init_vga_ports)
  {
-     MachineClass *mc = MACHINE_GET_CLASS(qdev_get_machine());
-@@ -1139,7 +1139,7 @@ ssize_t rom_add_file(const char *file, const char *fw_dir,
-                  basename);
-         snprintf(devpath, sizeof(devpath), "/rom@%s", fw_file_name);
- 
--        if ((!option_rom || mc->option_rom_has_mr) && mc->rom_file_has_mr) {
-+        if ((!has_option_rom || mc->option_rom_has_mr) && mc->rom_file_has_mr) {
-             data = rom_set_mr(rom, OBJECT(fw_cfg), devpath, true);
-         } else {
-             data = rom->data;
+     MemoryRegion *vga_io_memory;
+     const MemoryRegionPortio *vga_ports, *vbe_ports;
+@@ -2324,10 +2324,10 @@ void vga_init(VGACommonState *s, Object *obj, MemoryRegion *address_space,
+     if (init_vga_ports) {
+         portio_list_init(&s->vga_port_list, obj, vga_ports, s, "vga");
+         portio_list_set_flush_coalesced(&s->vga_port_list);
+-        portio_list_add(&s->vga_port_list, address_space_io, 0x3b0);
++        portio_list_add(&s->vga_port_list, io, 0x3b0);
+     }
+     if (vbe_ports) {
+         portio_list_init(&s->vbe_port_list, obj, vbe_ports, s, "vbe");
+-        portio_list_add(&s->vbe_port_list, address_space_io, 0x1ce);
++        portio_list_add(&s->vbe_port_list, io, 0x1ce);
+     }
+ }
 -- 
 2.41.0
 
