@@ -2,81 +2,103 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28B97BDCEA
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:55:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D52BD7BDCF2
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:59:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpplo-0005Xp-VR; Mon, 09 Oct 2023 08:54:00 -0400
+	id 1qpppG-0000G8-Df; Mon, 09 Oct 2023 08:57:34 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qppln-0005X9-9n
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:53:59 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpppE-0000Ft-NV
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:57:32 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <rjones@redhat.com>) id 1qppll-0000aN-EB
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:53:59 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpppD-0001JN-CE
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:57:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696856036;
+ s=mimecast20190719; t=1696856250;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=0r9ewgTsFIQHpkLpuDb+1vMuNEf+WCs5hSFB4QbUeFg=;
- b=gTGnseab7uBtdqxHD+UTjQzNFhyS20zpJ7zMY1n1NjGWHRt7oeoeEhDLIAKtS0DmIH6rOT
- 0ATgQlVSEyOPsbfvD7O8iFu8p4nzPwqWKjHUmpkbH6WSWvcqNi+uVpAi8MU/khSi7OxD6Y
- Mv2RBlulJMkYS9QHXpGe1ya9qCneWrs=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-582-6r6QAPYANT2JHmUTIqCZ9w-1; Mon, 09 Oct 2023 08:53:53 -0400
-X-MC-Unique: 6r6QAPYANT2JHmUTIqCZ9w-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com
- [10.11.54.6])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B2EEF29AA3BD;
- Mon,  9 Oct 2023 12:53:52 +0000 (UTC)
-Received: from localhost (unknown [10.42.28.165])
- by smtp.corp.redhat.com (Postfix) with ESMTP id 6BEAE215670B;
- Mon,  9 Oct 2023 12:53:52 +0000 (UTC)
-Date: Mon, 9 Oct 2023 13:53:51 +0100
-From: "Richard W.M. Jones" <rjones@redhat.com>
-To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
- Weiwei Li <liweiwei@iscas.ac.cn>, qemu-s390x@nongnu.org,
- Ilya Leoshkevich <iii@linux.ibm.com>, Bin Meng <bin.meng@windriver.com>,
- Alistair Francis <alistair.francis@wdc.com>,
- Cameron Esfahani <dirty@apple.com>, qemu-ppc@nongnu.org,
- Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
- qemu-riscv@nongnu.org, Max Filippov <jcmvbkbc@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>,
- Palmer Dabbelt <palmer@dabbelt.com>,
- =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
- Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
-Message-ID: <20231009125351.GS7636@redhat.com>
-References: <20231009110239.66778-1-philmd@linaro.org>
- <20231009110239.66778-3-philmd@linaro.org>
+ bh=qo8iiOB+UxWwxastfmcSl9Amta4/SGZ9A5ncrD+jtHA=;
+ b=Pzq1ja16E5ILJileyIpjvurq+Zlpj6/9+zoA9HAw13hM1cBeE2A0P0gzci3TlSThOoLEpB
+ D73z92pBnT7f2dBFBbMZXekmfgJ88VSUbTMatpRLqf1wf772tzwEPBv2SbgAA2Fof0YVsg
+ XfIRf7C6rF2ZXyQhK4GrcGshaVTOHcM=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-500-hAHvyXo4PGC_k3LqP3UQKA-1; Mon, 09 Oct 2023 08:57:19 -0400
+X-MC-Unique: hAHvyXo4PGC_k3LqP3UQKA-1
+Received: by mail-wm1-f70.google.com with SMTP id
+ 5b1f17b1804b1-406c6de2cfdso25957265e9.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:57:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696856238; x=1697461038;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qo8iiOB+UxWwxastfmcSl9Amta4/SGZ9A5ncrD+jtHA=;
+ b=XfUpWmTTuTwKzz7MPd4Jdd6GTAqoLbPWKGZHipjYj+NJIk49JhRb1+tB4DQMqwdt/b
+ gIuCJjyyOkehZqJDHm5BU5rZS5d+ODKoh+hCGrFFLAfnijFJnFMvDw6vbZYoc8J1i9E7
+ 7DWtMMnBX6yvbdrIDgwhp0SyQw/bjsID870JpEOLsBg9T2G9935x9Af2dowXwjdcA3MJ
+ H6Q+bHGbPtzvEq2ZDoSa9PELOd7FEmwldQbOLICgaytKGud4ILZSvrhXfVykB8bJ4PhW
+ i3m0g8f3rt+wKg3oy36i0u6LRx+UCUeqMUcncp73sttRqbFlBxy5bcFMRofiS77ulEKF
+ BSSQ==
+X-Gm-Message-State: AOJu0YzQeC7AHTd8hslZlZzAFn+9GUxM2QB+ZDlCb8jGbtITSxWpEdIU
+ sz10uo4eOCNbJqZNGF0scrON85mOGBHeAlWEnjNhtJp0JP68ClhhTwv9pgdiVlno+FhM6OH6X3k
+ Rio7CvT8RDp9Gsec=
+X-Received: by 2002:a05:600c:259:b0:401:b204:3b8d with SMTP id
+ 25-20020a05600c025900b00401b2043b8dmr14588371wmj.27.1696856238017; 
+ Mon, 09 Oct 2023 05:57:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFR+VeQGP0PGQYfDILUYl9tS2hpZDs8ue/69+KbZen3PuDTptwpLNbLe/xROQvPjhuT8lJkeA==
+X-Received: by 2002:a05:600c:259:b0:401:b204:3b8d with SMTP id
+ 25-20020a05600c025900b00401b2043b8dmr14588346wmj.27.1696856237574; 
+ Mon, 09 Oct 2023 05:57:17 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c733:6400:ae10:4bb7:9712:8548?
+ (p200300cbc7336400ae104bb797128548.dip0.t-ipconnect.de.
+ [2003:cb:c733:6400:ae10:4bb7:9712:8548])
+ by smtp.gmail.com with ESMTPSA id
+ v15-20020a5d4b0f000000b00325aca09ad1sm9665801wrq.24.2023.10.09.05.57.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 05:57:16 -0700 (PDT)
+Message-ID: <10a2b2f6-a52f-a8cd-83cc-8f3b71cbf7f7@redhat.com>
+Date: Mon, 9 Oct 2023 14:57:15 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231009110239.66778-3-philmd@linaro.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=rjones@redhat.com;
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 3/3] qom: Link multiple numa nodes to device using a
+ new object
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, ankita@nvidia.com
+Cc: jgg@nvidia.com, alex.williamson@redhat.com, clg@redhat.com,
+ shannon.zhaosl@gmail.com, peter.maydell@linaro.org, ani@anisinha.ca,
+ berrange@redhat.com, eduardo@habkost.net, imammedo@redhat.com,
+ mst@redhat.com, eblake@redhat.com, armbru@redhat.com, gshan@redhat.com,
+ aniketa@nvidia.com, cjia@nvidia.com, kwankhede@nvidia.com,
+ targupta@nvidia.com, vsethi@nvidia.com, acurrid@nvidia.com,
+ dnigam@nvidia.com, udhoke@nvidia.com, qemu-arm@nongnu.org,
+ qemu-devel@nongnu.org
+References: <20231007201740.30335-1-ankita@nvidia.com>
+ <20231007201740.30335-4-ankita@nvidia.com>
+ <20231009133048.00003535@Huawei.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20231009133048.00003535@Huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -92,65 +114,53 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, Oct 09, 2023 at 01:02:35PM +0200, Philippe Mathieu-Daudé wrote:
-> When CPUArchState* is available (here CPURISCVState*), we
-> can use the fast env_archcpu() macro to get ArchCPU* (here
-> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
-> when building with --enable-qom-cast-debug.
+On 09.10.23 14:30, Jonathan Cameron wrote:
+> On Sun, 8 Oct 2023 01:47:40 +0530
+> <ankita@nvidia.com> wrote:
 > 
-> Inspired-by: Richard W.M. Jones <rjones@redhat.com>
-> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-> ---
->  target/riscv/internals.h | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>> From: Ankit Agrawal <ankita@nvidia.com>
+>>
+>> NVIDIA GPU's support MIG (Mult-Instance GPUs) feature [1], which allows
+>> partitioning of the GPU device resources (including device memory) into
+>> several (upto 8) isolated instances. Each of the partitioned memory needs
+>> a dedicated NUMA node to operate. The partitions are not fixed and they
+>> can be created/deleted at runtime.
+>>
+>> Unfortunately Linux OS does not provide a means to dynamically create/destroy
+>> NUMA nodes and such feature implementation is not expected to be trivial. The
+>> nodes that OS discovers at the boot time while parsing SRAT remains fixed. So
+>> we utilize the GI Affinity structures that allows association between nodes
+>> and devices. Multiple GI structures per BDF is possible, allowing creation of
+>> multiple nodes by exposing unique PXM in each of these structures.
+>>
+>> Introducing a new nvidia-acpi-generic-initiator object, which inherits from
+>> the generic acpi-generic-initiator object to allow a BDF to be associated with
+>> more than 1 nodes.
+>>
+>> An admin can provide the range of nodes using numa-node-start and
+>> numa-node-count and link it to a device by providing its id. The following
+>> sample creates 8 nodes and link them to the device dev0:
+>>
+>>          -numa node,nodeid=2 \
+>>          -numa node,nodeid=3 \
+>>          -numa node,nodeid=4 \
+>>          -numa node,nodeid=5 \
+>>          -numa node,nodeid=6 \
+>>          -numa node,nodeid=7 \
+>>          -numa node,nodeid=8 \
+>>          -numa node,nodeid=9 \
+>>          -device vfio-pci-nohotplug,host=0009:01:00.0,bus=pcie.0,addr=04.0,rombar=0,id=dev0 \
+>>          -object nvidia-acpi-generic-initiator,id=gi0,device=dev0,numa-node-start=2,numa-node-count=8 \
 > 
-> diff --git a/target/riscv/internals.h b/target/riscv/internals.h
-> index b5f823c7ec..8239ae83cc 100644
-> --- a/target/riscv/internals.h
-> +++ b/target/riscv/internals.h
-> @@ -87,7 +87,7 @@ enum {
->  static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
->  {
->      /* the value is sign-extended instead of NaN-boxing for zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->          return (int32_t)f;
->      } else {
->          return f | MAKE_64BIT_MASK(32, 32);
-> @@ -97,7 +97,7 @@ static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
->  static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
->  {
->      /* Disable NaN-boxing check when enable zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->          return (uint32_t)f;
->      }
->  
-> @@ -113,7 +113,7 @@ static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
->  static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
->  {
->      /* the value is sign-extended instead of NaN-boxing for zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->          return (int16_t)f;
->      } else {
->          return f | MAKE_64BIT_MASK(16, 48);
-> @@ -123,7 +123,7 @@ static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
->  static inline float16 check_nanbox_h(CPURISCVState *env, uint64_t f)
->  {
->      /* Disable nanbox check when enable zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->          return (uint16_t)f;
->      }
+> If you go this way, use an array of references to the numa nodes instead of a start and number.
+> There is no obvious reason why they should be contiguous that I can see.
 
-Reviewed-by: Richard W.M. Jones <rjones@redhat.com>
+Right, a uint16List should do.
+
 
 -- 
-Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
-Read my programming and virtualization blog: http://rwmj.wordpress.com
-Fedora Windows cross-compiler. Compile Windows programs, test, and
-build Windows installers. Over 100 libraries supported.
-http://fedoraproject.org/wiki/MinGW
+Cheers,
+
+David / dhildenb
 
 
