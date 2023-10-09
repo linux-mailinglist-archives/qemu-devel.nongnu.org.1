@@ -2,64 +2,60 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B0E7BD595
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8937BD61C
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:03:46 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qplu9-0000CA-IQ; Mon, 09 Oct 2023 04:46:21 -0400
+	id 1qpm9z-0002Hy-3d; Mon, 09 Oct 2023 05:02:43 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplu3-0000Ba-K5
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:46:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplu2-0003St-1r
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:46:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696841172;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=1B0u+UfC1gMHAKNIWlo1uUL0Pp/WvI+e98ZtzaG2Zgc=;
- b=XTN2fV7ptu9gv7PW+JzgKzLOFnXJ5mJVCWkGgk4SNCJ6XOUvYz+GouOqEh4OyWeEzZ4HQ8
- hZ47qFRQhCj0tTHCnzXre7A/xnp/gyYOI5RvBsSPMCjYuJFpCVK0TyoIyssE81JBzak3aH
- 2/5ZkVjmT9C6gRDPKubzE4aygiV+Usg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-93-5mdvUrnvNOaKRv41WdL6Jg-1; Mon, 09 Oct 2023 04:46:01 -0400
-X-MC-Unique: 5mdvUrnvNOaKRv41WdL6Jg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B799681B13F
- for <qemu-devel@nongnu.org>; Mon,  9 Oct 2023 08:46:00 +0000 (UTC)
-Received: from thuth-p1g4.redhat.com (unknown [10.39.193.172])
- by smtp.corp.redhat.com (Postfix) with ESMTP id D0D5F140E962;
- Mon,  9 Oct 2023 08:45:59 +0000 (UTC)
-From: Thomas Huth <thuth@redhat.com>
-To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2] hw/virtio/virtio-gpu: Fix compiler warning when compiling
- with -Wshadow
-Date: Mon,  9 Oct 2023 10:45:59 +0200
-Message-ID: <20231009084559.41427-1-thuth@redhat.com>
+ (Exim 4.90_1) (envelope-from <lixianglai@loongson.cn>)
+ id 1qpm9p-0002E6-34
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:02:33 -0400
+Received: from mail.loongson.cn ([114.242.206.163])
+ by eggs.gnu.org with esmtp (Exim 4.90_1)
+ (envelope-from <lixianglai@loongson.cn>) id 1qpm9e-0005zm-8y
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:02:32 -0400
+Received: from loongson.cn (unknown [10.2.5.185])
+ by gateway (Coremail) with SMTP id _____8BxY_CUwSNlhz0wAA--.27171S3;
+ Mon, 09 Oct 2023 17:02:12 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.185])
+ by localhost.localdomain (Coremail) with SMTP id
+ AQAAf8Dx_y+TwSNlDW4cAA--.59991S2; 
+ Mon, 09 Oct 2023 17:02:11 +0800 (CST)
+From: xianglai li <lixianglai@loongson.cn>
+To: qemu-devel@nongnu.org,
+	kvm@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, Cornelia Huck <cohuck@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?q?Daniel=20P=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
+ Thomas Huth <thuth@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Peter Maydell <peter.maydell@linaro.org>, Bibo Mao <maobibo@loongson.cn>,
+ Song Gao <gaosong@loongson.cn>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>
+Subject: [PATCH RFC v4 0/9] Add loongarch kvm accel support
+Date: Mon,  9 Oct 2023 17:01:28 +0800
+Message-Id: <cover.1696841645.git.lixianglai@loongson.cn>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+X-CM-TRANSID: AQAAf8Dx_y+TwSNlDW4cAA--.59991S2
+X-CM-SenderInfo: 5ol0xt5qjotxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+ ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+ nUUI43ZEXa7xR_UUUUUUUUU==
+Received-SPF: pass client-ip=114.242.206.163;
+ envelope-from=lixianglai@loongson.cn; helo=mail.loongson.cn
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -75,56 +71,112 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Avoid using trivial variable names in macros, otherwise we get
-the following compiler warning when compiling with -Wshadow=local:
+This series add loongarch kvm support, mainly implement
+some interfaces used by kvm such as kvm_arch_get/set_regs,
+kvm_arch_handle_exit, kvm_loongarch_set_interrupt, etc.
 
-In file included from ../../qemu/hw/display/virtio-gpu-virgl.c:19:
-../../home/thuth/devel/qemu/hw/display/virtio-gpu-virgl.c:
- In function ‘virgl_cmd_submit_3d’:
-../../qemu/include/hw/virtio/virtio-gpu.h:228:16: error: declaration of ‘s’
- shadows a previous local [-Werror=shadow=compatible-local]
-  228 |         size_t s;
-      |                ^
-../../qemu/hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro
- ‘VIRTIO_GPU_FILL_CMD’
-  215 |     VIRTIO_GPU_FILL_CMD(cs);
-      |     ^~~~~~~~~~~~~~~~~~~
-../../qemu/hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration
- is here
-  213 |     size_t s;
-      |            ^
-cc1: all warnings being treated as errors
+Currently, we are able to boot LoongArch KVM Linux Guests.
+In loongarch VM, mmio devices and iocsr devices are emulated
+in user space such as APIC, IPI, pci devices, etc, other
+hardwares such as MMU, timer and csr are emulated in kernel.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- v2: Renamed the variable to something even less trivial
+It is based on temporarily unaccepted linux kvm:
+https://github.com/loongson/linux-loongarch-kvm
+And We will remove the RFC flag until the linux kvm patches
+are merged.
 
- include/hw/virtio/virtio-gpu.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+The running environment of LoongArch virt machine:
+1. Get the linux source by the above mentioned link.
+   git checkout kvm-loongarch
+   make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu- loongson3_defconfig
+   make ARCH=loongarch CROSS_COMPILE=loongarch64-unknown-linux-gnu-
+2. Get the qemu source: https://github.com/loongson/qemu
+   git checkout kvm-loongarch
+   ./configure --target-list="loongarch64-softmmu"  --enable-kvm
+   make
+3. Get uefi bios of LoongArch virt machine:
+   Link: https://github.com/tianocore/edk2-platforms/tree/master/Platform/Loongson/LoongArchQemuPkg#readme
+4. Also you can access the binary files we have already build:
+   https://github.com/yangxiaojuan-loongson/qemu-binary
 
-diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
-index 390c4642b8..4739fa4689 100644
---- a/include/hw/virtio/virtio-gpu.h
-+++ b/include/hw/virtio/virtio-gpu.h
-@@ -225,13 +225,13 @@ struct VhostUserGPU {
- };
- 
- #define VIRTIO_GPU_FILL_CMD(out) do {                                   \
--        size_t s;                                                       \
--        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
-+        size_t virtiogpufillcmd_s_ =                                    \
-+            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
-                        &out, sizeof(out));                              \
--        if (s != sizeof(out)) {                                         \
-+        if (virtiogpufillcmd_s_ != sizeof(out)) {                       \
-             qemu_log_mask(LOG_GUEST_ERROR,                              \
-                           "%s: command size incorrect %zu vs %zu\n",    \
--                          __func__, s, sizeof(out));                    \
-+                          __func__, virtiogpufillcmd_s_, sizeof(out));  \
-             return;                                                     \
-         }                                                               \
-     } while (0)
+The command to boot loongarch virt machine:
+   $ qemu-system-loongarch64 -machine virt -m 4G -cpu la464 \
+   -smp 1 -bios QEMU_EFI.fd -kernel vmlinuz.efi -initrd ramdisk \
+   -serial stdio   -monitor telnet:localhost:4495,server,nowait \
+   -append "root=/dev/ram rdinit=/sbin/init console=ttyS0,115200" \
+   --nographic
+
+Changes for RFC v4:
+1. Added function interfaces kvm_loongarch_get_cpucfg and
+kvm_loongarch_put_cpucfg for passing the value of vcpu cfg to kvm.
+Move the macro definition KVM_IOC_CSRID from kvm.c to kvm.h.
+2.Delete the duplicate CSR_CPUID field in CPUArchState.
+3.Add kvm_arch_get_default_type function in kvm.c.
+4.Disable LSX,LASX in cpucfg2 in KVM. And disable LBT in cpucfg2 in KVM.
+
+Changes for RFC v3:
+1. Move the init mp_state to KVM_MP_STATE_RUNNABLE function into kvm.c.
+2. Fix some unstandard code problems in kvm_get/set_regs_ioctl, such as
+sort loongarch to keep alphabetic ordering in meson.build, gpr[0] should
+be always 0, remove unnecessary inline statement, etc.
+3. Rename the counter_value variable to kvm_state_counter in cpu_env,
+and add comments for it to explain the meaning.
+
+Changes for RFC v2:
+1. Mark the "Add KVM headers for loongarch" patch as a placeholder,
+as we will use the update-linux-headers.sh to generate the kvm headers
+when the linux loongarch KVM patch series are accepted.
+2. Remove the DPRINTF macro in kvm.c and use trace events to replace
+it, we add some trace functions such as trace_kvm_handle_exit,
+trace_kvm_set_intr, trace_kvm_failed_get_csr, etc.
+3. Remove the unused functions in kvm_stub.c and move stub function into
+the suitable patch.
+
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Cornelia Huck <cohuck@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Marc-André Lureau" <marcandre.lureau@redhat.com>
+Cc: "Daniel P. Berrangé" <berrange@redhat.com>
+Cc: Thomas Huth <thuth@redhat.com>
+Cc: "Philippe Mathieu-Daudé" <philmd@linaro.org>
+Cc: Richard Henderson <richard.henderson@linaro.org>
+Cc: Peter Maydell <peter.maydell@linaro.org>
+Cc: Bibo Mao <maobibo@loongson.cn>
+Cc: Song Gao <gaosong@loongson.cn>
+Cc: Xiaojuan Yang <yangxiaojuan@loongson.cn>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>
+
+Tianrui Zhao (9):
+  linux-headers: Add KVM headers for loongarch
+  target/loongarch: Define some kvm_arch interfaces
+  target/loongarch: Supplement vcpu env initial when vcpu reset
+  target/loongarch: Implement kvm get/set registers
+  target/loongarch: Implement kvm_arch_init function
+  target/loongarch: Implement kvm_arch_init_vcpu
+  target/loongarch: Implement kvm_arch_handle_exit
+  target/loongarch: Implement set vcpu intr for kvm
+  target/loongarch: Add loongarch kvm into meson build
+
+ linux-headers/asm-loongarch/kvm.h | 100 +++++
+ linux-headers/linux/kvm.h         |   9 +
+ meson.build                       |   3 +
+ target/loongarch/cpu.c            |  23 +-
+ target/loongarch/cpu.h            |   6 +-
+ target/loongarch/kvm-stub.c       |  11 +
+ target/loongarch/kvm.c            | 594 ++++++++++++++++++++++++++++++
+ target/loongarch/kvm_loongarch.h  |  13 +
+ target/loongarch/meson.build      |   1 +
+ target/loongarch/trace-events     |  17 +
+ target/loongarch/trace.h          |   1 +
+ 11 files changed, 772 insertions(+), 6 deletions(-)
+ create mode 100644 linux-headers/asm-loongarch/kvm.h
+ create mode 100644 target/loongarch/kvm-stub.c
+ create mode 100644 target/loongarch/kvm.c
+ create mode 100644 target/loongarch/kvm_loongarch.h
+ create mode 100644 target/loongarch/trace-events
+ create mode 100644 target/loongarch/trace.h
+
 -- 
-2.41.0
+2.39.1
 
 
