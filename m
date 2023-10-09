@@ -2,65 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485787BDA3D
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0DE7BDA3E
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:47:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpohk-0003GP-Hb; Mon, 09 Oct 2023 07:45:44 -0400
+	id 1qpohu-0003O9-4Q; Mon, 09 Oct 2023 07:45:54 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qpohV-0003Dj-1N
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:29 -0400
-Received: from mail-pl1-x631.google.com ([2607:f8b0:4864:20::631])
+ id 1qpohk-0003JB-MY
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:44 -0400
+Received: from mail-pl1-x634.google.com ([2607:f8b0:4864:20::634])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <dbarboza@ventanamicro.com>)
- id 1qpohK-0003SS-Tj
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:26 -0400
-Received: by mail-pl1-x631.google.com with SMTP id
- d9443c01a7336-1c888b3a25aso24762825ad.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:45:18 -0700 (PDT)
+ id 1qpohi-0003gp-7i
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:45:44 -0400
+Received: by mail-pl1-x634.google.com with SMTP id
+ d9443c01a7336-1c877f27e8fso35136275ad.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ventanamicro.com; s=google; t=1696851917; x=1697456717; darn=nongnu.org;
+ d=ventanamicro.com; s=google; t=1696851939; x=1697456739; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=zKb2aKX4CLD6Ew2M9iC0C3mSXpMGaBVquPB3fmU9qD4=;
- b=RU14rrqVN8UNaY+hdPgR1Inp4UfRs1YipEIcZRLAXZEs2GIqK4R8ag5lIut0whfJ5q
- VJZEOJFZr+SP/C/KvD/TH+kJ/3fuNSROy1n7oy8rmo1QnnlsVQqe4v+uFjp35J93ti8v
- oZjrKRqF72Qz9lnbjaNIxcHneNt/rv5DekVjJ3QSWVx+B8eGYTOHzcaSWYS3tUYy8Ea6
- demTeh6bqEQaS6zC6dl0jeFdvf9mBu+33OGMt6LHu/9iodDVyScpjFStZwtBJ836Mc0P
- UpKQbptN1DSF/vPvRQmK45ER56w3SXFwD5JZ/V5Ao76erG2YAxlFR819OQIcb/AjdIPS
- cOvg==
+ bh=PPonpOK0od+dn5EFgbrIZZ8JVanHxWrm5XlWfzQyIbo=;
+ b=GcILGU+XHmS32ta+F7gtbc/CIndHGNjmdAeLTW6/6J63SD/48x9DsM7lYVEhuV89ut
+ 5+RRRokFVHB7ky5/USZZzKvQQO8Dtp8dz4aXveb01zqv3JZsTRTOWOjVm7xv2HwuENWM
+ HVTPas+BQ0pNreru96eh8DW/azu5dbC/ydIgdLm039OE+gf7LFo63yXA9qvxViRsp64i
+ yooBMbVt9Ac8m+O5LsHfRnfZzo+ekMv6GazxI+YNewOBU6Kyiiiy2N1hkxVVXXF7gODD
+ gSNPcQ5BhfD+4SxfFR9XXixgRKMMZkx+038zxUKsjus6Mf0AbpZ/IT6gFFlibTFzVrls
+ CLeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696851917; x=1697456717;
+ d=1e100.net; s=20230601; t=1696851939; x=1697456739;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=zKb2aKX4CLD6Ew2M9iC0C3mSXpMGaBVquPB3fmU9qD4=;
- b=c3nukjhVdIbtfVMVodOZ0fwPJoy6+7njlHSSJnqB2pBykkPOhGDGhVNF1tTpgVPuCM
- M8Jej4XVImweNsWlCI1IwYC+xq7Zglzvtkc1fjrTWtP+EGf/9+XEj1G5zH3XM0hYkgh6
- alNNLC8yBK8gqAEV1MgLXzEtJmMqRkKbyQJg0kwX60e9myHCdPnJVxFYJT/U24D6Ouk9
- mlcv0Li2iIgXJvircFx2xS1ZR36zGy+OXjUCykpP1SJVgRplPMKzlu3zCN+ZmphKk0Hp
- VfVX4G/2q4KyBJfp0liH9VBwfYV70FxGX5uMaHdL15rdXUKXNFu9eCZvHRmcbtrLmGzY
- GvXw==
-X-Gm-Message-State: AOJu0YzdQ5t09OAD7kteQAFSAyGoe/7u7STomdEXntgbgff2uuMRtwRv
- Koc0SWMTZ5C6Sr2Tja5AhaUPeQ==
-X-Google-Smtp-Source: AGHT+IFa11AjuUkJnTUTXxtXatdTIen7b5LmmZ1n4unasP9q5vSj87A1+L224A2pwsWeTmflCO8YNw==
-X-Received: by 2002:a17:903:32c3:b0:1c6:1d3d:b412 with SMTP id
- i3-20020a17090332c300b001c61d3db412mr14206454plr.30.1696851917311; 
- Mon, 09 Oct 2023 04:45:17 -0700 (PDT)
+ bh=PPonpOK0od+dn5EFgbrIZZ8JVanHxWrm5XlWfzQyIbo=;
+ b=iRbzsyM/6IAZaQBObxrd5tluBkOM7mWICM8JihU/7q9yoOvSnBt91dTUydecZl2K//
+ CrHTr38WoJpwwmzLU0VWoHbc+C+7GojGY9Mcf5VC3/XJPgtxWwDGz3BOYw/j82ACob85
+ SvetneUimkK1xpP+CfgSqW7rV0onnC/1CzecZyeZ9M1mqztGz3SWUmuPLKmVJ580qlN/
+ W1SZ2SYwbci+MJQJCGABGuij9uIoMdSNcfQmTLUu81cK+4ftEgMVgFzI5Ctd3ALJW9EE
+ lpEQV3CIRailSUozHuCjsfDLHoBlZ0CaQT0+TfuGneeoYDmw4GGivrNwNd7dk+FvWfTt
+ QLrg==
+X-Gm-Message-State: AOJu0YyGksIHjgZFy72P8R4+F6UUmasqKvTur6k9LdaOuG7iVkvP4TkN
+ LasViuzDiJMHNsR1Xp1UpoDT/Ldk2MTObQvn74s=
+X-Google-Smtp-Source: AGHT+IGZ6nRJh5cL/AJ65Cu/iAshCY1yyfIOOSuuAcRqsRKkmOTcnt3nfwzquMfKtjJ0Y7ilSI4loQ==
+X-Received: by 2002:a17:902:9a44:b0:1be:384:7b29 with SMTP id
+ x4-20020a1709029a4400b001be03847b29mr13899958plv.34.1696851939335; 
+ Mon, 09 Oct 2023 04:45:39 -0700 (PDT)
 Received: from [192.168.68.108] ([177.94.42.196])
  by smtp.gmail.com with ESMTPSA id
- y7-20020a17090322c700b001c726147a46sm9340195plg.234.2023.10.09.04.45.12
+ y7-20020a17090322c700b001c726147a46sm9340195plg.234.2023.10.09.04.45.33
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 04:45:16 -0700 (PDT)
-Message-ID: <62989764-b943-4223-9da9-c6d77d69ef86@ventanamicro.com>
-Date: Mon, 9 Oct 2023 08:45:10 -0300
+ Mon, 09 Oct 2023 04:45:38 -0700 (PDT)
+Message-ID: <7e31c247-23a2-41b9-bd25-86a21f06e819@ventanamicro.com>
+Date: Mon, 9 Oct 2023 08:45:33 -0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
+Subject: Re: [PATCH 1/6] target/ppc: Use env_archcpu() in
+ helper_book3s_msgsndp()
 Content-Language: en-US
 To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  qemu-devel@nongnu.org
@@ -75,16 +76,15 @@ Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
  <clg@kaod.org>, Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
  Richard Henderson <richard.henderson@linaro.org>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- "Richard W . M . Jones" <rjones@redhat.com>
+ Nicholas Piggin <npiggin@gmail.com>
 References: <20231009110239.66778-1-philmd@linaro.org>
- <20231009110239.66778-3-philmd@linaro.org>
+ <20231009110239.66778-2-philmd@linaro.org>
 From: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
-In-Reply-To: <20231009110239.66778-3-philmd@linaro.org>
+In-Reply-To: <20231009110239.66778-2-philmd@linaro.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2607:f8b0:4864:20::631;
- envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x631.google.com
+Received-SPF: pass client-ip=2607:f8b0:4864:20::634;
+ envelope-from=dbarboza@ventanamicro.com; helo=mail-pl1-x634.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -110,59 +110,31 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 
 On 10/9/23 08:02, Philippe Mathieu-Daudé wrote:
-> When CPUArchState* is available (here CPURISCVState*), we
+> When CPUArchState* is available (here CPUPPCState*), we
 > can use the fast env_archcpu() macro to get ArchCPU* (here
-> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
-> when building with --enable-qom-cast-debug.
+> PowerPCCPU*). The QOM cast POWERPC_CPU() macro will be
+> slower when building with --enable-qom-cast-debug.
 > 
-> Inspired-by: Richard W.M. Jones <rjones@redhat.com>
 > Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 > ---
+>   target/ppc/excp_helper.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/target/ppc/excp_helper.c b/target/ppc/excp_helper.c
+> index 7926114d5c..a42743a3e0 100644
+> --- a/target/ppc/excp_helper.c
+> +++ b/target/ppc/excp_helper.c
+> @@ -3136,7 +3136,7 @@ void helper_book3s_msgclrp(CPUPPCState *env, target_ulong rb)
+>   void helper_book3s_msgsndp(CPUPPCState *env, target_ulong rb)
+>   {
+>       CPUState *cs = env_cpu(env);
+> -    PowerPCCPU *cpu = POWERPC_CPU(cs);
+> +    PowerPCCPU *cpu = env_archcpu(env);
+
 
 Reviewed-by: Daniel Henrique Barboza <dbarboza@ventanamicro.com>
 
-
->   target/riscv/internals.h | 8 ++++----
->   1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/target/riscv/internals.h b/target/riscv/internals.h
-> index b5f823c7ec..8239ae83cc 100644
-> --- a/target/riscv/internals.h
-> +++ b/target/riscv/internals.h
-> @@ -87,7 +87,7 @@ enum {
->   static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
->   {
->       /* the value is sign-extended instead of NaN-boxing for zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->           return (int32_t)f;
->       } else {
->           return f | MAKE_64BIT_MASK(32, 32);
-> @@ -97,7 +97,7 @@ static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
->   static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
->   {
->       /* Disable NaN-boxing check when enable zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->           return (uint32_t)f;
->       }
->   
-> @@ -113,7 +113,7 @@ static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
->   static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
->   {
->       /* the value is sign-extended instead of NaN-boxing for zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->           return (int16_t)f;
->       } else {
->           return f | MAKE_64BIT_MASK(16, 48);
-> @@ -123,7 +123,7 @@ static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
->   static inline float16 check_nanbox_h(CPURISCVState *env, uint64_t f)
->   {
->       /* Disable nanbox check when enable zfinx */
-> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
-> +    if (env_archcpu(env)->cfg.ext_zfinx) {
->           return (uint16_t)f;
->       }
->   
+>       CPUState *ccs;
+>       uint32_t nr_threads = cs->nr_threads;
+>       int ttir = rb & PPC_BITMASK(57, 63);
 
