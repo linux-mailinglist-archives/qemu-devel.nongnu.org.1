@@ -2,75 +2,74 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 695097BDB9D
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:22:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B68557BDBA9
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:23:25 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qppGc-0003NV-E4; Mon, 09 Oct 2023 08:21:46 -0400
+	id 1qppHr-0004f0-Vr; Mon, 09 Oct 2023 08:23:04 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qppGa-0003MV-GT
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:21:44 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qppHp-0004eQ-57
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:23:01 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qppGZ-0002KJ-0J
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:21:44 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qppHm-0002SH-Aj
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:23:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696854102;
+ s=mimecast20190719; t=1696854176;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2bZXzUGcxBYinFudKQFkuxnigBSI9gHMfNXLyVDqtV8=;
- b=Uewjd1kgt+Rpx0BA3MRTBTtTcFTB9uV1bi6niNafnzDdW5xmI1qlWRG9+GXDhhJ56ZbFhL
- mg1W3qa43Bi49b1D13rJ8RQDUzJVVoiMAk0pA0qptl1fvh2vXASQYydqHwYNKnL+pX3yqY
- TICLUcyhUvZvgug5zfOzQ+ThFJUjm5s=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=uEpEKIcndJ+QJ3qnnKHjn6/D4+pUwlcjD6PqX45pKzw=;
+ b=ZmHGmrfKvBl6WFu+FibMEwPyrEG06PZjzLO5kjtYj00z6nhDDLatW+pPBvATuK8OSJb94r
+ 0iXntLBZIb0BAh7J4F1KkxitRxAxkiehZSUTxPGbcSy+DgIhVuyDFTHA/IyKF+7kFbHOFQ
+ yNjRdkMNG+BmnADmem6waNvfzz0cg2E=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-90-kJK9bGJaP7ugJxglFbmbAg-1; Mon, 09 Oct 2023 08:21:36 -0400
-X-MC-Unique: kJK9bGJaP7ugJxglFbmbAg-1
-Received: by mail-wm1-f69.google.com with SMTP id
- 5b1f17b1804b1-40647c6f71dso33828425e9.2
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:21:35 -0700 (PDT)
+ us-mta-563-WWqeVvQtOv-XRJ6e6CTa7w-1; Mon, 09 Oct 2023 08:22:38 -0400
+X-MC-Unique: WWqeVvQtOv-XRJ6e6CTa7w-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-326f05ed8f9so3305857f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:22:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696854095; x=1697458895;
+ d=1e100.net; s=20230601; t=1696854157; x=1697458957;
  h=content-transfer-encoding:in-reply-to:organization:from:references
  :cc:to:content-language:subject:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=2bZXzUGcxBYinFudKQFkuxnigBSI9gHMfNXLyVDqtV8=;
- b=jsprNWKBHDuTuFHkwGdegdTkZobO/CxOXsaoq7WZ4iBXDSyvpe6fakR8BD0ag8ja6/
- 969gditsx3rc4W94vRWpN/ZPz5LwqNL6TdA7WZZ0QpyLNw8KYNOFHwkZ2nyRCikthvCS
- KI3T4paGksBDB0BvIY37HZN7zQDHl1eHLRR1RBmQFVQbsafHFKUpk4jBDM5+6r0bXmyp
- 0pfXct6vVlmvv/L1wo+iIlqkNLClzjfmtz0TWZW+HhD3lVtpYhJRihzGEcfUqvNutZVs
- HniuEOn9uzusF1yrvMBhr+cju36UiDSkSWUWcLwl8XTLDyvWfjiGo7IcYXS/A1LHx42D
- UNBw==
-X-Gm-Message-State: AOJu0YxKRE/rEdeH5T/9SBUkPDo63imzW1AC0AS9+GIp4nq+vTDexX49
- PzSuOFweFWHwX21YAFv2R6DzHLer2cmovPrYWUGNZ8nrwfY0KzViQMRRQaoycqDnVvsKwk0Wc1/
- QkJ3h2bVwTtsIh7w=
-X-Received: by 2002:adf:f08f:0:b0:325:cafe:a687 with SMTP id
- n15-20020adff08f000000b00325cafea687mr15113769wro.51.1696854094720; 
- Mon, 09 Oct 2023 05:21:34 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHjrZ7VRrGIMf2Rg/AsCekX/ybtgrNDOF770M67iVHstIR07sTVG5FV5281eBAUqxyf8jfIfg==
-X-Received: by 2002:adf:f08f:0:b0:325:cafe:a687 with SMTP id
- n15-20020adff08f000000b00325cafea687mr15113741wro.51.1696854094301; 
- Mon, 09 Oct 2023 05:21:34 -0700 (PDT)
+ bh=uEpEKIcndJ+QJ3qnnKHjn6/D4+pUwlcjD6PqX45pKzw=;
+ b=iseLgllLUh2K7+0SBxAWfKS2+spNBAk4O701we8k8EDA7uvnW+UjDme3xJvYL/rAQx
+ DdD8FH+khcuppcvzzORoikV/B8VAxQDmwR97Cs73iYvw+8QCeuRToLYRjNkU9lpL5HKn
+ xhRq86H8FKjQNmS2m4xJ4Nc31MPHBF8NlMxHsnU3xfhNNZYSen+2wJu4trZOXyh1Gdh8
+ 5yXBq5mvgnKz6raNajqgv9SIxdYWovjYbzFdeKAVBoLyV+606blIkTsZcCK3ej6QtFsn
+ og6Zg4V135bZ0MhNZU8x32l7SE/QuKuIBMVSfQheEggxrFEzBYTESiH5NwAQR8DXFCa8
+ klUQ==
+X-Gm-Message-State: AOJu0YwnzaWvD6zN37hDCN+GAXV+tYZGfHKNVqV9wr2TqNybESFXAr6V
+ wKhxEPf4MNF1MB+YbDzZ+wxnDZFfDYyWguWyhb7BfQnJ4G58r8NUIs/oA8ZQfTXYz4rQ/jHIIzI
+ lRkVzzpJaDCSI4sIpcMXKwDQ=
+X-Received: by 2002:a5d:60d1:0:b0:31f:d8ba:c997 with SMTP id
+ x17-20020a5d60d1000000b0031fd8bac997mr13335944wrt.41.1696854156816; 
+ Mon, 09 Oct 2023 05:22:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF5ecHiTMY/BqM+z9AcKw1hAfrydNGiTMnrYlx58wh1wUXNdSm8w8GQUMBsNVAdX1np3G+b5Q==
+X-Received: by 2002:a5d:60d1:0:b0:31f:d8ba:c997 with SMTP id
+ x17-20020a5d60d1000000b0031fd8bac997mr13335923wrt.41.1696854156395; 
+ Mon, 09 Oct 2023 05:22:36 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c733:6400:ae10:4bb7:9712:8548?
  (p200300cbc7336400ae104bb797128548.dip0.t-ipconnect.de.
  [2003:cb:c733:6400:ae10:4bb7:9712:8548])
  by smtp.gmail.com with ESMTPSA id
- x3-20020a5d4903000000b0031fa870d4b3sm9431127wrq.60.2023.10.09.05.21.32
+ k7-20020a5d66c7000000b0031fd849e797sm9502071wrw.105.2023.10.09.05.22.34
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 05:21:33 -0700 (PDT)
-Message-ID: <3380adbe-fbbe-797f-19c2-76aa2e4cfe30@redhat.com>
-Date: Mon, 9 Oct 2023 14:21:32 +0200
+ Mon, 09 Oct 2023 05:22:35 -0700 (PDT)
+Message-ID: <8a80612f-07d3-6302-31f9-232d9ce393a1@redhat.com>
+Date: Mon, 9 Oct 2023 14:22:34 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH V3 02/10] hw/acpi: Move CPU ctrl-dev MMIO region len macro
- to common header file
+Subject: Re: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
 Content-Language: en-US
 To: Salil Mehta <salil.mehta@huawei.com>, qemu-devel@nongnu.org,
  qemu-arm@nongnu.org
@@ -86,20 +85,20 @@ Cc: maz@kernel.org, jean-philippe@linaro.org, jonathan.cameron@huawei.com,
  wangxiongfeng2@huawei.com, wangyanan55@huawei.com, jiakernel2@gmail.com,
  maobibo@loongson.cn, lixianglai@loongson.cn, linuxarm@huawei.com
 References: <20231009112812.10612-1-salil.mehta@huawei.com>
- <20231009112812.10612-3-salil.mehta@huawei.com>
+ <20231009112812.10612-4-salil.mehta@huawei.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <20231009112812.10612-3-salil.mehta@huawei.com>
+In-Reply-To: <20231009112812.10612-4-salil.mehta@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
 X-Spam_bar: -----
 X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
@@ -118,52 +117,32 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 09.10.23 13:28, Salil Mehta wrote:
-> CPU ctrl-dev MMIO region length could be used in ACPI GED and various other
-> architecture specific places. Move ACPI_CPU_HOTPLUG_REG_LEN macro to more
-> appropriate common header file.
+> ACPI CPU hotplug related initialization should only happen if ACPI_CPU_HOTPLUG
+> support has been enabled for particular architecture. Add cpu_hotplug_hw_init()
+> stub to avoid compilation break.
 > 
 > Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
-> Reviewed-by: Alex Bennée <alex.bennee@linaro.org>
 > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Reviewed-by: Gavin Shan <gshan@redhat.com>
 > ---
->   hw/acpi/cpu.c                 | 2 +-
->   include/hw/acpi/cpu_hotplug.h | 2 ++
->   2 files changed, 3 insertions(+), 1 deletion(-)
+>   hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/hw/acpi/cpu.c b/hw/acpi/cpu.c
-> index 19c154d78f..45defdc0e2 100644
-> --- a/hw/acpi/cpu.c
-> +++ b/hw/acpi/cpu.c
-> @@ -1,12 +1,12 @@
->   #include "qemu/osdep.h"
->   #include "migration/vmstate.h"
->   #include "hw/acpi/cpu.h"
-> +#include "hw/acpi/cpu_hotplug.h"
->   #include "qapi/error.h"
->   #include "qapi/qapi-events-acpi.h"
->   #include "trace.h"
->   #include "sysemu/numa.h"
+> diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
+> index 3fc4b14c26..c6c61bb9cd 100644
+> --- a/hw/acpi/acpi-cpu-hotplug-stub.c
+> +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
+> @@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
+>       return;
+>   }
 >   
-> -#define ACPI_CPU_HOTPLUG_REG_LEN 12
->   #define ACPI_CPU_SELECTOR_OFFSET_WR 0
->   #define ACPI_CPU_FLAGS_OFFSET_RW 4
->   #define ACPI_CPU_CMD_OFFSET_WR 5
-> diff --git a/include/hw/acpi/cpu_hotplug.h b/include/hw/acpi/cpu_hotplug.h
-> index 3b932abbbb..48b291e45e 100644
-> --- a/include/hw/acpi/cpu_hotplug.h
-> +++ b/include/hw/acpi/cpu_hotplug.h
-> @@ -19,6 +19,8 @@
->   #include "hw/hotplug.h"
->   #include "hw/acpi/cpu.h"
->   
-> +#define ACPI_CPU_HOTPLUG_REG_LEN 12
-> +
->   typedef struct AcpiCpuHotplug {
->       Object *device;
->       MemoryRegion io;
+> +void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+> +                         CPUHotplugState *state, hwaddr base_addr)
+> +{
+> +    return;
+> +}
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+While at it, can we prefix that function with acpi?
 
 -- 
 Cheers,
