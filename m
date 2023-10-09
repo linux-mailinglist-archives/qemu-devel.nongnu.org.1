@@ -2,106 +2,176 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0477BD50E
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F05FF7BD530
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:26:51 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qplYI-0003HJ-I1; Mon, 09 Oct 2023 04:23:46 -0400
+	id 1qplag-0004CG-Op; Mon, 09 Oct 2023 04:26:14 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qplYE-0003GY-6R; Mon, 09 Oct 2023 04:23:42 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qplae-0004Bx-HF
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:26:12 -0400
+Received: from mgamail.intel.com ([192.55.52.120])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
- id 1qplYB-0007Td-JB; Mon, 09 Oct 2023 04:23:41 -0400
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3998Krot021507; Mon, 9 Oct 2023 08:23:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=rF73r+CUYggiJVioylNqkoYh07A/B1saLT4DGPenDDU=;
- b=e9vQ6GOciXDHhSeSIv3mIZz1FOhDNUCIG8X2fv6nZ9Z83bZPTyNfN9cAdxUEuvVfyT4r
- xp/uGiS+b7ceFV6RLeqGwZ9e4tDKMKOW06CuG/fcvU73oUKLhCz28zh5Mfi3K7QTB2h+
- BZHEeS9ZN5f60pQErJC36xMpCXtuM1LLfYSz0RdCrxM2RYH8N67CQx4FKSvKKJA9MleO
- hxfLsPQQc6DIYw2HCi7WaPuktznmO7TUXT1YmyRH2Kc7vjpHByiKIScJXskbN1dNbq9P
- GoCww6EQ3CbILAB1ikro45MQHP0yy+hiXbZdGPZm9Bk5AZVt6QSnbxoCurxHr9qykp1l hg== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmdx283dr-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 08:23:33 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3998LTLo023568;
- Mon, 9 Oct 2023 08:23:32 GMT
-Received: from ppma22.wdc07v.mail.ibm.com
- (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmdx283dg-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 08:23:32 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 3995PdH7028182; Mon, 9 Oct 2023 08:23:31 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkj1xqtwj-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 08:23:31 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
- [10.39.53.232])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 3998NUPK5833270
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Oct 2023 08:23:30 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 898E658043;
- Mon,  9 Oct 2023 08:23:30 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 219B358059;
- Mon,  9 Oct 2023 08:23:27 +0000 (GMT)
-Received: from [9.109.242.129] (unknown [9.109.242.129])
- by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Oct 2023 08:23:26 +0000 (GMT)
-Message-ID: <a10dc8c5-a992-87b4-4a93-30f41cf90ec6@linux.ibm.com>
-Date: Mon, 9 Oct 2023 13:53:25 +0530
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH RESEND 11/15] ppc: spapr: Implement nested PAPR hcall -
- H_GUEST_[GET|SET]_STATE
+ (Exim 4.90_1) (envelope-from <zhenzhong.duan@intel.com>)
+ id 1qplaa-0007zb-Jm
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:26:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1696839968; x=1728375968;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=DTCnyLFnTm6ibAjME6BzDjx8epXe8gBu3G5qC2wpYhI=;
+ b=Za8LPjjlSbk5UK7eujuDjlZhQJZbIfxeZSfRGRpFyNG0ZR0Ly2knmgsF
+ DbLZnsWKLkZkMHduqrRK8LLzZDcoQB8U12NV7INjDAhZYney6C9yoZo2L
+ OxFgkHHPxrIGIB66AyB+iELiw5Io+l0U0vOnufJ3LeA+GtEHrWtEQuXfI
+ PIiPnlhHut2EcRsaV0cn1DB7sdR1ovf1+4MzvlL6HyT+vs5e3Ewypzbzz
+ xG4sm6UggZh1SnQbr/79XlMcSS205tFaz3F3QfpeYV7iA4Ais7LS2vCyZ
+ UWz3t5ntbhvf3F5pKrr4+6Vblp8NTOA20BmfXXdeMp+59F2faJWdFk8uE w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10857"; a="382971780"
+X-IronPort-AV: E=Sophos;i="6.03,209,1694761200"; d="scan'208";a="382971780"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+ by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2023 01:26:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10857"; a="729593699"
+X-IronPort-AV: E=Sophos;i="6.03,209,1694761200"; d="scan'208";a="729593699"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orsmga006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 09 Oct 2023 01:26:04 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Mon, 9 Oct 2023 01:26:04 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Mon, 9 Oct 2023 01:26:04 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.168)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Mon, 9 Oct 2023 01:26:02 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hyKr6zkZfL9rzmboVNMVB36JXMqZ1xRWrnaVqSf05ocOyOQgM09R/XDs/7w3uGTY/+bB6SbLYh1xE3TQMBg7fm0GHY4MWhejoUMn3Uj/gK/yhaNzpWSiyA8UUcIpNyPstZKQX7K+zxpEpuB9IImKmhOd1f2nXFG8ehYxOFbyCh8Vln1qmLvbWEUVWrUc3ajQeWaK5LLoxleW24rdUXMPyGcCdTCDYZhuOmQGOeOIjrETpu7NDsh63hBe2SsLHbnU8De4M3+PR1ReqghGBZDHW7sR5XnsUO32o/jjeXGzfYX9Ng9b1/WV/KXBZfI8tPoNPECRsm8/P2U4mA3eQCdM6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DTCnyLFnTm6ibAjME6BzDjx8epXe8gBu3G5qC2wpYhI=;
+ b=Uqqa1QmQfHqagbEzR5i8XJt1XoD58dYDBOMrFYRh8dQfdBYwL2g7siBOgZn/QqMB46COj8mFFnenndJzziBCsJ7dC5fvLLkqvcSG5O9Sv98LUlL7jxTBpfyPlFEzOM4u46yAnoYEVij74YzqQE+NJ15B+6Nh3j7K1gBIQDlHjMDm8vZgZTwwUyjF/V5ZjI06ncxQAZs/5fuS+AzOF2wqI22VkhfsbOs+bMWWQlqKSjpiM0B4vfORqOQmbu4RF/dkgUbpkQiVB2OmFkSkshCMBDVVPKCa6ZlrwdQqO2V8RNlDx8a0K92kUY6Z0A9//u+OWe622ho5FwnB+Gp9+rm/5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6722.namprd11.prod.outlook.com (2603:10b6:510:1ae::15)
+ by DM4PR11MB7327.namprd11.prod.outlook.com (2603:10b6:8:105::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6813.28; Mon, 9 Oct
+ 2023 08:25:59 +0000
+Received: from PH7PR11MB6722.namprd11.prod.outlook.com
+ ([fe80::2cfd:ca55:d42a:e46a]) by PH7PR11MB6722.namprd11.prod.outlook.com
+ ([fe80::2cfd:ca55:d42a:e46a%3]) with mapi id 15.20.6863.032; Mon, 9 Oct 2023
+ 08:25:59 +0000
+From: "Duan, Zhenzhong" <zhenzhong.duan@intel.com>
+To: "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "eric.auger.pro@gmail.com" <eric.auger.pro@gmail.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>, "alex.williamson@redhat.com"
+ <alex.williamson@redhat.com>, "clg@redhat.com" <clg@redhat.com>,
+ "jgg@nvidia.com" <jgg@nvidia.com>, "nicolinc@nvidia.com"
+ <nicolinc@nvidia.com>, "Martins, Joao" <joao.m.martins@oracle.com>,
+ "peterx@redhat.com" <peterx@redhat.com>, "Tian, Kevin"
+ <kevin.tian@intel.com>, "Liu, Yi L" <yi.l.liu@intel.com>, "Sun, Yi Y"
+ <yi.y.sun@intel.com>, "Peng, Chao P" <chao.p.peng@intel.com>,
+ "mjrosato@linux.ibm.com" <mjrosato@linux.ibm.com>, "aik@ozlabs.ru"
+ <aik@ozlabs.ru>
+Subject: RE: [PATCH v4 10/15] vfio/ccw: Use vfio_[attach/detach]_device
+Thread-Topic: [PATCH v4 10/15] vfio/ccw: Use vfio_[attach/detach]_device
+Thread-Index: AQHZ9tnw8//L3Tx/I0evXiAMnZMSkrA/ryVQgACBngCAAH3+IIAAdNMAgAACAJA=
+Date: Mon, 9 Oct 2023 08:25:59 +0000
+Message-ID: <PH7PR11MB6722EE017A05685E2408A8D692CEA@PH7PR11MB6722.namprd11.prod.outlook.com>
+References: <20231004154518.334760-1-eric.auger@redhat.com>
+ <20231004154518.334760-11-eric.auger@redhat.com>
+ <PH7PR11MB67220561760B1AE2DB9277AA92CFA@PH7PR11MB6722.namprd11.prod.outlook.com>
+ <4ac0b36c-bf7e-4f00-52f2-1499e75413e7@redhat.com>
+ <PH7PR11MB67224BDF9E0837B921827C9892CEA@PH7PR11MB6722.namprd11.prod.outlook.com>
+ <74d56985-3573-e01f-b6b4-5fc7829ddfc8@redhat.com>
+In-Reply-To: <74d56985-3573-e01f-b6b4-5fc7829ddfc8@redhat.com>
+Accept-Language: en-US
 Content-Language: en-US
-To: Nicholas Piggin <npiggin@gmail.com>, danielhb413@gmail.com,
- qemu-ppc@nongnu.org
-Cc: qemu-devel@nongnu.org, mikey@neuling.org, vaibhav@linux.ibm.com,
- jniethe5@gmail.com, sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com
-References: <20230906043333.448244-1-harshpb@linux.ibm.com>
- <20230906043333.448244-12-harshpb@linux.ibm.com>
- <CVCD8OCRI1FI.19OOXLKWHGZ00@wheely>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <CVCD8OCRI1FI.19OOXLKWHGZ00@wheely>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: sNOsJf135utMr5vDLYKHDQuSQElncrNP
-X-Proofpoint-GUID: o7D0U1pDSQPTc0p1NWUdJAkIV3UifocZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_07,2023-10-06_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 phishscore=0
- impostorscore=0 suspectscore=0 spamscore=0 bulkscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 malwarescore=0 adultscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
- definitions=main-2310090070
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -37
-X-Spam_score: -3.8
-X-Spam_bar: ---
-X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.818,
- RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6722:EE_|DM4PR11MB7327:EE_
+x-ms-office365-filtering-correlation-id: 97cf267b-2a0b-4c79-a99b-08dbc8a15e13
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: V3nzWuqxDM7dyOSEYo0XPn2o9AXEi8Ti+lNe73YK19dX0ixgngDERroTZ7o0F1rpjg8rPNyFIAvq7mL810hzOYBUI/YZ70Z8nocSkuu4ANigeFvH6vlJBrWa5EFv9UDm0sxkpQkjwTHMAsLWNhCl3eLQpPemN+uY/BLXzVxqzMoooQ7ecCUKSCT6tDW9NZTOP3maC0vFwNWmEhEkCDw1LzkOojDIswa0pamAd0uWerOxt2Ac29aPbNcYNIu/3ZgmponIe78r409BzEouaJtNgBJ+Pjso0m8wTKp7I2J6rPvDgQ1EoV4xz701UOa39Mb3N6QlMH0FpwILE+lGY7Em7ZQwDPlWVVb4uZnG8y6LfLMBdMyyX1OfEovnO9OaU4tGG2eByhzJtJBtnRfyECb3R4cvYBzUOEop875zU1N30MgwmhimUbe2/2rNTeSu+a1OtOiOCdQ58s92Buem2z6OYsh//YQYPlG8elh3AQpQrmeRUJP283VRjeVsPnbkydiiQmyB0NcsfLaiiGAn5jHOLopLIeiGdKV9Mpib72LolmNm73UBh00WrqfPuMLdKvRuQ/Mu/DHZ6ObWhaHF6nsvUMfeGqPfN5yYqtEc5bWG0RVUaDJ9oUOmeO7x3ymuRZTd97q3M4d7ukYoeuK1cUuxbJhgRpSn6zd0Sf9jAHsiqnj29kkRWDAe1mM8h5kglhzn
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6722.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230031)(366004)(376002)(39860400002)(346002)(136003)(396003)(230922051799003)(64100799003)(186009)(451199024)(1800799009)(41300700001)(33656002)(122000001)(52536014)(55016003)(7416002)(2906002)(38100700002)(86362001)(38070700005)(5660300002)(8676002)(8936002)(316002)(83380400001)(82960400001)(45080400002)(110136005)(66946007)(478600001)(9686003)(26005)(71200400001)(7696005)(6506007)(76116006)(64756008)(53546011)(966005)(921005)(66476007)(66446008)(66556008)(13296009);
+ DIR:OUT; SFP:1102; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?QUx4VGN0anJOeUVjZTlCdi9KaHRhOVpwVi9JOVNMS0c4YXlYZlA4UjZadGI5?=
+ =?utf-8?B?M3pHNlRuL0R2VVZCeDVnR3BVTjVQQmVzUWF6RGhTeUwvT3JTRnErYWdjTzRh?=
+ =?utf-8?B?ZldlaFB6VWNsUEVvVmlya3FqRlQ0LytEWVVKN2o2WHhFNUsyb2FFbGNwRVdJ?=
+ =?utf-8?B?NGxzLzBZVW1KbkZsZVF4d1d4K3Arc3RBS0RDcmpCaDV5RWd0ZGZ5OHhkTytH?=
+ =?utf-8?B?ell1NW1XSHNSQys0RlVMRzZrZGJLc0J3blNOK1VlLzZDMVp0NXV3UDVZSVBF?=
+ =?utf-8?B?bkx4Z2FxREwvMVJ6NW1nSEpYYlBGcGxuYkQ4MDFyVktPRkJPMnU3TXJrUDNa?=
+ =?utf-8?B?Z1hQS3VCTit4blRNS2RDa0Q1aEQ2a1dMMWE2bkp4SGxCTDA5NEtnZUtheFRL?=
+ =?utf-8?B?eG5PQlh2ZUFEZHZpcWZpcyt4MnBDYi9IZ0ZiUGdLQTNPYWhGQ3RTZ0ZtNFJL?=
+ =?utf-8?B?NERVNitrOFAxMDdUdXk5MWkycDJBZzBvdU5JZlZUSWVKRUVHYW1nUkE3dVRD?=
+ =?utf-8?B?OEVjdFFwSk5JZ0tIclVGdElRMVI5ek5RU1ZBMFFnNU8wY1lWK2ZCU08rZlk3?=
+ =?utf-8?B?cmpWSzRXK2o0YWRNd2NORVFCSkVkcVdFRUE5YUdUVkpWRXhObDMyRlBJWDBw?=
+ =?utf-8?B?MVhNN2NZd0JpSXNUcXZ3VXI2azl4VW0yRkVLc3pKc3dQRkgwWVh1UVJ1SHcx?=
+ =?utf-8?B?anYwaG1pb3dOaHhUcjVEK3BYblRFYkFPbUFGc3kvNVlCSzU2aytnM2FLNFJC?=
+ =?utf-8?B?bTRoczZIQ3dOZEN6QURHVjZUYlVKMDBTMHVLY0plNGJKelN1VTlXOXF0dGhW?=
+ =?utf-8?B?UHMyQThqeUdlSmt5dEdMMU5FdGUxaURLaGxPUFpYakJWcHYxQW5YcThPL0Ex?=
+ =?utf-8?B?Uyt0VlYzQS9VZ2wzUm9IWGVReUlxMHpGcGJ3OTE1aU1SZG9qYTRDSUxIMTZn?=
+ =?utf-8?B?U21PTnE1dVc2VURhSHNUeU5PU0JvNlh0aEVDY2xtMWZGN0VldkM2aDVyd2hF?=
+ =?utf-8?B?ckFWZTdhTXJVN2ZEVEo2d2IzVGNGUGNBSzRHT3p0bTBRUmZseENlaUNqODlx?=
+ =?utf-8?B?cnlSMmw1elFlMnJEK2VTcU91UHVkOC9IY0NscDhZTDBoOEJEVEVtZTZjRUtM?=
+ =?utf-8?B?NHBRYlJYWWRMSXRNY0U4NktobTEwUS8xbTdLNm5YbjRpSGp4OWd0TTBlZlpO?=
+ =?utf-8?B?b0Y5RkxKOW9WUHphRkpBY1pqUkJiby8yYW9VQkhHeURHSDNCWW8xUTBFRERE?=
+ =?utf-8?B?bzRTUnVRMEJCTklkZjVFRk5wdVlDNHFqK0ZBTDgzNnMzMFAvY3ZqMVRJS09w?=
+ =?utf-8?B?ZmhDak5DNmJrU3NJSEpzZjFFWHpxRlYxWE5mSC9iSmI4L2xBdk5UTDAvekhp?=
+ =?utf-8?B?Ry9oQ2VFWGN0WnZGSmwyMjdmNHcyUGY0U2NnZ0poSDRwcml4Y3FXb2Z3cExi?=
+ =?utf-8?B?MW9naTdqbkYyWGJtMkNuRDErSzhnMjVvMCswRG1BOU93Rk1Ta3NsRTd0SkpS?=
+ =?utf-8?B?SFVtaTdKZ1VZemVsTjlCV0VrWi95TzI2RTlGTnl2ZDNpWjFZMnQ3VGtBaVlN?=
+ =?utf-8?B?UkRXOWU4RVVDVWwvRmFwU3ZiYVI0YXFXMFVva0x3S0ltcG9hYjdkYS85aUlu?=
+ =?utf-8?B?YkozTkovdG9XUWw3b0xvd0ZMb1ZFUEVKN1hvQmcvdnFrVVlFZmdDT3pwYVo2?=
+ =?utf-8?B?QTZqbmtqQTBNVU9jT2p1c0w4d1ZWdlRacTUxaUFJQTc2Vzdka3JmNHVTT3pL?=
+ =?utf-8?B?UnR2T3o5b1BXdVJZQjVuUXZMMWRxZlFUeG8xejh2SkVEcDIrTVZndHZ1eXk3?=
+ =?utf-8?B?bmRqNmhEWEs2WjV3RGpEWitVSW5jTnlDK1hidURmemlTTGpyY0YxVzIvbjRx?=
+ =?utf-8?B?OStOWjZQc0MzaXdBWUdEWFpLcnJKVFVvcVlwYWJpaGRPT0hKM0xUR1J5czZ3?=
+ =?utf-8?B?VHdJSGo1Wjc2SDBmcWtyVkdHTXdLYXVMUFgwM1dlYThYdVdjTk9DWXp0aDY2?=
+ =?utf-8?B?RkxkanpLcDhQMkRiUlRaVXRraC91bUdvelRjaXB0V2sxSUVlMVRISk5VeEEx?=
+ =?utf-8?B?TS9HRFpiZUJKQ1ZGNGNWb2pjVjhLK3ZtTWdHc2wxSFVJc3pZeWJaM2ZYdEZQ?=
+ =?utf-8?Q?Ut5lWoIFZ4C7Ps1LHYlUWTmEL?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6722.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97cf267b-2a0b-4c79-a99b-08dbc8a15e13
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2023 08:25:59.6589 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DkBQnvjisUfhBmHnMG5dOd1C0qP2GAzIiNWpbORkbx9MRvO9iNkln31m22kDeN4fehLOjt4ZfGXOMfDdfCvkQtPXAIzJAPUF3gEUSFyjSbo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7327
+X-OriginatorOrg: intel.com
+Received-SPF: pass client-ip=192.55.52.120;
+ envelope-from=zhenzhong.duan@intel.com; helo=mgamail.intel.com
+X-Spam_score_int: -43
+X-Spam_score: -4.4
+X-Spam_bar: ----
+X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -118,446 +188,203 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-
-
-On 9/7/23 09:00, Nicholas Piggin wrote:
-> On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
->> L1 can reuest to get/set state of any of the supported Guest State
->> Buffer (GSB) elements using h_guest_[get|set]_state hcalls.
->> These hcalls needs to do some necessary validation check for each
->> get/set request based on the flags passed and operation supported.
->>
->> Signed-off-by: Michael Neuling <mikey@neuling.org>
->> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
->> ---
->>   hw/ppc/spapr_nested.c         | 267 ++++++++++++++++++++++++++++++++++
->>   include/hw/ppc/spapr_nested.h |  22 +++
->>   2 files changed, 289 insertions(+)
->>
->> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
->> index 6fbb1bcb02..498e7286fa 100644
->> --- a/hw/ppc/spapr_nested.c
->> +++ b/hw/ppc/spapr_nested.c
->> @@ -897,6 +897,138 @@ void init_nested(void)
->>       }
->>   }
->>   
->> +static struct guest_state_element *guest_state_element_next(
->> +    struct guest_state_element *element,
->> +    int64_t *len,
->> +    int64_t *num_elements)
->> +{
->> +    uint16_t size;
->> +
->> +    /* size is of element->value[] only. Not whole guest_state_element */
->> +    size = be16_to_cpu(element->size);
->> +
->> +    if (len) {
->> +        *len -= size + offsetof(struct guest_state_element, value);
->> +    }
->> +
->> +    if (num_elements) {
->> +        *num_elements -= 1;
->> +    }
->> +
->> +    return (struct guest_state_element *)(element->value + size);
->> +}
->> +
->> +static
->> +struct guest_state_element_type *guest_state_element_type_find(uint16_t id)
->> +{
->> +    int i;
->> +
->> +    for (i = 0; i < ARRAY_SIZE(guest_state_element_types); i++)
->> +        if (id == guest_state_element_types[i].id) {
->> +            return &guest_state_element_types[i];
->> +        }
->> +
->> +    return NULL;
->> +}
->> +
->> +static void print_element(struct guest_state_element *element,
->> +                          struct guest_state_request *gsr)
->> +{
->> +    printf("id:0x%04x size:0x%04x %s ",
->> +           be16_to_cpu(element->id), be16_to_cpu(element->size),
->> +           gsr->flags & GUEST_STATE_REQUEST_SET ? "set" : "get");
->> +    printf("buf:0x%016lx ...\n", be64_to_cpu(*(uint64_t *)element->value));
-> 
-> No printfs. These could be GUEST_ERROR qemu logs if anything, make
-> sure they're relatively well formed messages if you keep them, i.e.,
-> something a Linux/KVM developer could understand what went wrong.
-> I.e., no __func__ which is internal to QEMU, use "H_GUEST_GET_STATE"
-> etc. Ditto for all the rest of the printfs.
-> 
-
-Sure, changing to qemu_log_mask(LOG_GUEST_ERROR, "h_guest_%s_state ..."
-
->> +}
->> +
->> +static bool guest_state_request_check(struct guest_state_request *gsr)
->> +{
->> +    int64_t num_elements, len = gsr->len;
->> +    struct guest_state_buffer *gsb = gsr->gsb;
->> +    struct guest_state_element *element;
->> +    struct guest_state_element_type *type;
->> +    uint16_t id, size;
->> +
->> +    /* gsb->num_elements = 0 == 32 bits long */
->> +    assert(len >= 4);
-> 
-> I haven't looked closely, but can the guest can't crash the
-> host with malformed requests here?
-> 
-The GSB communication is happening between L1 host and L0 only.
-L2 guest doesnt participate and remains unaware of this state exchange.
-Hence, Only L1 with malformed request can crash itself, not L2.
-
-> This API is pretty complicated, make sure you sanitize all inputs
-> carefully, as early as possible, and without too deep a call and
-> control flow chain from the API entry point.
-> 
-
-Noted.
-
-> 
->> +
->> +    num_elements = be32_to_cpu(gsb->num_elements);
->> +    element = gsb->elements;
->> +    len -= sizeof(gsb->num_elements);
->> +
->> +    /* Walk the buffer to validate the length */
->> +    while (num_elements) {
->> +
->> +        id = be16_to_cpu(element->id);
->> +        size = be16_to_cpu(element->size);
->> +
->> +        if (false) {
->> +            print_element(element, gsr);
->> +        }
->> +        /* buffer size too small */
->> +        if (len < 0) {
->> +            return false;
->> +        }
->> +
->> +        type = guest_state_element_type_find(id);
->> +        if (!type) {
->> +            printf("%s: Element ID %04x unknown\n", __func__, id);
->> +            print_element(element, gsr);
->> +            return false;
->> +        }
->> +
->> +        if (id == GSB_HV_VCPU_IGNORED_ID) {
->> +            goto next_element;
->> +        }
->> +
->> +        if (size != type->size) {
->> +            printf("%s: Size mismatch. Element ID:%04x. Size Exp:%i Got:%i\n",
->> +                   __func__, id, type->size, size);
->> +            print_element(element, gsr);
->> +            return false;
->> +        }
->> +
->> +        if ((type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY) &&
->> +            (gsr->flags & GUEST_STATE_REQUEST_SET)) {
->> +            printf("%s: trying to set a read-only Element ID:%04x.\n",
->> +                   __func__, id);
->> +            return false;
->> +        }
->> +
->> +        if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE) {
->> +            /* guest wide element type */
->> +            if (!(gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE)) {
->> +                printf("%s: trying to set a guest wide Element ID:%04x.\n",
->> +                       __func__, id);
->> +                return false;
->> +            }
->> +        } else {
->> +            /* thread wide element type */
->> +            if (gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE) {
->> +                printf("%s: trying to set a thread wide Element ID:%04x.\n",
->> +                       __func__, id);
->> +                return false;
->> +            }
->> +        }
->> +next_element:
->> +        element = guest_state_element_next(element, &len, &num_elements);
->> +
->> +    }
->> +    return true;
->> +}
->> +
->> +static bool is_gsr_invalid(struct guest_state_request *gsr,
->> +                                   struct guest_state_element *element,
->> +                                   struct guest_state_element_type *type)
->> +{
->> +    if ((gsr->flags & GUEST_STATE_REQUEST_SET) &&
->> +        (*(uint64_t *)(element->value) & ~(type->mask))) {
->> +        print_element(element, gsr);
->> +        printf("L1 can't set reserved bits (allowed mask: 0x%08lx)\n",
->> +               type->mask);
->> +        return true;
->> +    }
->> +    return false;
->> +}
->>   
->>   static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
->>                                                SpaprMachineState *spapr,
->> @@ -1108,6 +1240,139 @@ static target_ulong h_guest_create_vcpu(PowerPCCPU *cpu,
->>       return H_SUCCESS;
->>   }
->>   
->> +static target_ulong getset_state(SpaprMachineStateNestedGuest *guest,
->> +                                 uint64_t vcpuid,
->> +                                 struct guest_state_request *gsr)
->> +{
->> +    void *ptr;
->> +    uint16_t id;
->> +    struct guest_state_element *element;
->> +    struct guest_state_element_type *type;
->> +    int64_t lenleft, num_elements;
->> +
->> +    lenleft = gsr->len;
->> +
->> +    if (!guest_state_request_check(gsr)) {
->> +        return H_P3;
->> +    }
->> +
->> +    num_elements = be32_to_cpu(gsr->gsb->num_elements);
->> +    element = gsr->gsb->elements;
->> +    /* Process the elements */
->> +    while (num_elements) {
->> +        type = NULL;
->> +        /* Debug print before doing anything */
->> +        if (false) {
->> +            print_element(element, gsr);
->> +        }
->> +
->> +        id = be16_to_cpu(element->id);
->> +        if (id == GSB_HV_VCPU_IGNORED_ID) {
->> +            goto next_element;
->> +        }
->> +
->> +        type = guest_state_element_type_find(id);
->> +        assert(type);
->> +
->> +        /* Get pointer to guest data to get/set */
->> +        if (type->location && type->copy) {
->> +            ptr = type->location(guest, vcpuid);
->> +            assert(ptr);
->> +            if (!~(type->mask) && is_gsr_invalid(gsr, element, type)) {
->> +                return H_INVALID_ELEMENT_VALUE;
->> +            }
->> +            type->copy(ptr + type->offset, element->value,
->> +                       gsr->flags & GUEST_STATE_REQUEST_SET ? true : false);
->> +        }
->> +
->> +next_element:
->> +        element = guest_state_element_next(element, &lenleft, &num_elements);
->> +    }
->> +
->> +    return H_SUCCESS;
->> +}
->> +
->> +static target_ulong map_and_getset_state(PowerPCCPU *cpu,
->> +                                         SpaprMachineStateNestedGuest *guest,
->> +                                         uint64_t vcpuid,
->> +                                         struct guest_state_request *gsr)
->> +{
->> +    target_ulong rc;
->> +    int64_t lenleft, len;
->> +    bool is_write;
->> +
->> +    assert(gsr->len < (1024 * 1024)); /* sanity check */
-> 
-> Use a #define for this, make sure guest can't crash host.
-
-Defined a macro GSB_MAX_BUF_SIZE for this and moving check to caller.
-As explained earlier, nested guest cant crash the host as get/set is
-happening only between L1 and L0. L2 doesnt participate.
-
->> +
->> +    lenleft = len = gsr->len;
-> 
-> Why lenleft? Can't you just check gsr->len like you do gsr->gsb?
-
-My bad, updated.
-
-> 
->> +    gsr->gsb = address_space_map(CPU(cpu)->as, gsr->buf, (uint64_t *)&len,
->> +                                 false, MEMTXATTRS_UNSPECIFIED);
-> 
-> So it's a read-only memory access to gsr->buf? Even for the set?
-
-Hmm, actually set_state should need RO access, get_state would need RW
-access to the provided buffer. However, not sure if there is bug in
-these routines as it has been working like this for now. I shall update
-and re-validate.
-
-> 
->> +    if (!gsr->gsb) {
->> +        rc = H_P3;
->> +        goto out1;
->> +    }
->> +
->> +    if (len != lenleft) {
->> +        rc = H_P3;
->> +        goto out1;
->> +    }
->> +
->> +    rc = getset_state(guest, vcpuid, gsr);
->> +
->> +out1:
->> +    is_write = (rc == H_SUCCESS) ? len : 0;
->> +    address_space_unmap(CPU(cpu)->as, gsr->gsb, len, is_write, false);
-> 
-> I don't think this is right, you want to specify the length of memory
-> you actually accessed, even if there was some error.
-> 
-> Over-specifying I think would be okay. So I think just use len.
-
-Hmm, we are specifying len as expected, it's the is_write arg wrongly
-set. I think this got carried forward from existing code as a typo as I
-see most of the unmaps in spapr_exit_nested are passing last two args
-unexpectedly. I shall update this call as appropriate for now and bugs
-in existing code can be fixed in separate patches.
-
-> 
-> 
->> +    return rc;
->> +}
->> +
->> +static target_ulong h_guest_getset_state(PowerPCCPU *cpu,
->> +                                         SpaprMachineState *spapr,
->> +                                         target_ulong *args,
->> +                                         bool set)
->> +{
->> +    target_ulong flags = args[0];
->> +    target_ulong lpid = args[1];
->> +    target_ulong vcpuid = args[2];
->> +    target_ulong buf = args[3];
->> +    target_ulong buflen = args[4];
->> +    struct guest_state_request gsr;
->> +    SpaprMachineStateNestedGuest *guest;
->> +
->> +    guest = spapr_get_nested_guest(spapr, lpid);
->> +    if (!guest) {
->> +        return H_P2;
->> +    }
->> +    gsr.buf = buf;
->> +    gsr.len = buflen;
->> +    gsr.flags = 0;
-> 
-> Not a big fan of packaging up some args into a structure,
-> especially if it's pretty static to a file and no need to be
-> carried around with some data. Do you even need this gsr
-> thing?
-
-IMHO, it makes sense to keep related meta-data together for a guest 
-state request in this case. It also helps reducing the number of args 
-being passed to multiple helper routines down the path, each of which 
-may use one or more of its members. If you have strong objections for 
-better reasons, I am willing to revisit this.
-
-> 
->> +    if (flags & H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
->> +        gsr.flags |= GUEST_STATE_REQUEST_GUEST_WIDE;
->> +    }
->> +    if (flags & !H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
->> +        return H_PARAMETER; /* flag not supported yet */
->> +    }
->> +
->> +    if (set) {
->> +        gsr.flags |= GUEST_STATE_REQUEST_SET;
->> +    }
->> +    return map_and_getset_state(cpu, guest, vcpuid, &gsr);
->> +}
->> +
->> +static target_ulong h_guest_set_state(PowerPCCPU *cpu,
->> +                                      SpaprMachineState *spapr,
->> +                                      target_ulong opcode,
->> +                                      target_ulong *args)
->> +{
->> +    return h_guest_getset_state(cpu, spapr, args, true);
->> +}
->> +
->> +static target_ulong h_guest_get_state(PowerPCCPU *cpu,
->> +                                      SpaprMachineState *spapr,
->> +                                      target_ulong opcode,
->> +                                      target_ulong *args)
->> +{
->> +    return h_guest_getset_state(cpu, spapr, args, false);
->> +}
->> +
->>   void spapr_register_nested(void)
->>   {
->>       spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
->> @@ -1122,6 +1387,8 @@ void spapr_register_nested_phyp(void)
->>       spapr_register_hypercall(H_GUEST_SET_CAPABILITIES, h_guest_set_capabilities);
->>       spapr_register_hypercall(H_GUEST_CREATE          , h_guest_create);
->>       spapr_register_hypercall(H_GUEST_CREATE_VCPU     , h_guest_create_vcpu);
->> +    spapr_register_hypercall(H_GUEST_SET_STATE       , h_guest_set_state);
->> +    spapr_register_hypercall(H_GUEST_GET_STATE       , h_guest_get_state);
->>   }
->>   
->>   #else
->> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
->> index 3c0d6a486e..eaee624b87 100644
->> --- a/include/hw/ppc/spapr_nested.h
->> +++ b/include/hw/ppc/spapr_nested.h
->> @@ -206,6 +206,9 @@
->>   #define HVMASK_MSR            0xEBFFFFFFFFBFEFFF
->>   #define HVMASK_HDEXCR         0x00000000FFFFFFFF
->>   #define HVMASK_TB_OFFSET      0x000000FFFFFFFFFF
->> +#define H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE 0x8000000000000000 /* BE in GSB */
->> +#define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
->> +#define GUEST_STATE_REQUEST_SET              0x2
->>   
->>   #define GUEST_STATE_ELEMENT(i, sz, s, f, ptr, c) { \
->>       .id = (i),                                     \
->> @@ -336,6 +339,25 @@ struct guest_state_element_type {
->>       uint64_t mask;
->>   };
->>   
->> +struct guest_state_element {
->> +    uint16_t id;   /* Big Endian */
->> +    uint16_t size; /* Big Endian */
->> +    uint8_t value[]; /* Big Endian (based on size above) */
->> +} QEMU_PACKED;
->> +
->> +struct guest_state_buffer {
->> +    uint32_t num_elements; /* Big Endian */
->> +    struct guest_state_element elements[];
->> +} QEMU_PACKED;
-> 
-> I think it's probably enough to add one comment saying the PAPR
-> API numbers are all in BE format. This is actually expected of PAPR
-> so it goes without saying really, but the nested HV API actually had
-> some things in guest endian format so it's worth calling out.
-> 
-> Actually maybe single out the nested HV structures as different. I
-> don't know if the upstream code actually handles endian properly...
-> 
-
-Sure, removing all BE related comments for now for changes in this series.
-
-regards,
-Harsh
-
-> Thanks,
-> Nick
-> 
->> +
->> +/* Actuall buffer plus some metadata about the request */
->> +struct guest_state_request {
->> +    struct guest_state_buffer *gsb;
->> +    int64_t buf;
->> +    int64_t len;
->> +    uint16_t flags;
->> +};
->> +
->>   /*
->>    * Register state for entering a nested guest with H_ENTER_NESTED.
->>    * New member must be added at the end.
-> 
+SGkgRXJpYywNCg0KPi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+RnJvbTogcWVtdS1kZXZl
+bC1ib3VuY2VzK3poZW56aG9uZy5kdWFuPWludGVsLmNvbUBub25nbnUub3JnIDxxZW11LQ0KPmRl
+dmVsLWJvdW5jZXMremhlbnpob25nLmR1YW49aW50ZWwuY29tQG5vbmdudS5vcmc+IE9uIEJlaGFs
+ZiBPZiBFcmljDQo+QXVnZXINCj5TZW50OiBNb25kYXksIE9jdG9iZXIgOSwgMjAyMyA0OjE1IFBN
+DQo+U3ViamVjdDogUmU6IFtQQVRDSCB2NCAxMC8xNV0gdmZpby9jY3c6IFVzZSB2ZmlvX1thdHRh
+Y2gvZGV0YWNoXV9kZXZpY2UNCj4NCj5IaSBaaGVuemhvbmcsDQo+DQo+T24gMTAvOS8yMyAwMzoy
+NSwgRHVhbiwgWmhlbnpob25nIHdyb3RlOg0KPj4NCj4+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2Ut
+LS0tLQ0KPj4+IEZyb206IEVyaWMgQXVnZXIgPGVyaWMuYXVnZXJAcmVkaGF0LmNvbT4NCj4+PiBT
+ZW50OiBNb25kYXksIE9jdG9iZXIgOSwgMjAyMyAxOjQ2IEFNDQo+Pj4gU3ViamVjdDogUmU6IFtQ
+QVRDSCB2NCAxMC8xNV0gdmZpby9jY3c6IFVzZSB2ZmlvX1thdHRhY2gvZGV0YWNoXV9kZXZpY2UN
+Cj4+Pg0KPj4+IEhpIFpoZW56aG9uZywNCj4+PiBPbiAxMC84LzIzIDEyOjIxLCBEdWFuLCBaaGVu
+emhvbmcgd3JvdGU6DQo+Pj4+IEhpIEVyaWMsDQo+Pj4+DQo+Pj4+PiAtLS0tLU9yaWdpbmFsIE1l
+c3NhZ2UtLS0tLQ0KPj4+Pj4gRnJvbTogRXJpYyBBdWdlciA8ZXJpYy5hdWdlckByZWRoYXQuY29t
+Pg0KPj4+Pj4gU2VudDogV2VkbmVzZGF5LCBPY3RvYmVyIDQsIDIwMjMgMTE6NDQgUE0NCj4+Pj4+
+IFN1YmplY3Q6IFtQQVRDSCB2NCAxMC8xNV0gdmZpby9jY3c6IFVzZSB2ZmlvX1thdHRhY2gvZGV0
+YWNoXV9kZXZpY2UNCj4+Pj4+DQo+Pj4+PiBMZXQgdGhlIHZmaW8tY2N3IGRldmljZSB1c2UgdmZp
+b19hdHRhY2hfZGV2aWNlKCkgYW5kDQo+Pj4+PiB2ZmlvX2RldGFjaF9kZXZpY2UoKSwgaGVuY2Ug
+aGlkaW5nIHRoZSBkZXRhaWxzIG9mIHRoZSB1c2VkDQo+Pj4+PiBJT01NVSBiYWNrZW5kLg0KPj4+
+Pj4NCj4+Pj4+IE5vdGUgdGhhdCB0aGUgbWlncmF0aW9uIHJlZHVjZXMgdGhlIGZvbGxvd2luZyB0
+cmFjZQ0KPj4+Pj4gInZmaW86IHN1YmNoYW5uZWwgJXMgaGFzIGFscmVhZHkgYmVlbiBhdHRhY2hl
+ZCIgKGZlYXR1cmluZw0KPj4+Pj4gY3NzaWQuc3NpZC5kZXZpZCkgaW50byAiZGV2aWNlIGlzIGFs
+cmVhZHkgYXR0YWNoZWQiDQo+Pj4+Pg0KPj4+Pj4gQWxzbyBub3cgYWxsIHRoZSBkZXZpY2VzIGhh
+dmUgYmVlbiBtaWdyYXRlZCB0byB1c2UgdGhlIG5ldw0KPj4+Pj4gdmZpb19hdHRhY2hfZGV2aWNl
+L3ZmaW9fZGV0YWNoX2RldmljZSBBUEksIGxldCdzIHR1cm4gdGhlDQo+Pj4+PiBsZWdhY3kgZnVu
+Y3Rpb25zIGludG8gc3RhdGljIGZ1bmN0aW9ucywgbG9jYWwgdG8gY29udGFpbmVyLmMuDQo+Pj4+
+Pg0KPj4+Pj4gU2lnbmVkLW9mZi1ieTogRXJpYyBBdWdlciA8ZXJpYy5hdWdlckByZWRoYXQuY29t
+Pg0KPj4+Pj4gU2lnbmVkLW9mZi1ieTogWWkgTGl1IDx5aS5sLmxpdUBpbnRlbC5jb20+DQo+Pj4+
+PiBTaWduZWQtb2ZmLWJ5OiBaaGVuemhvbmcgRHVhbiA8emhlbnpob25nLmR1YW5AaW50ZWwuY29t
+Pg0KPj4+Pj4gUmV2aWV3ZWQtYnk6IE1hdHRoZXcgUm9zYXRvIDxtanJvc2F0b0BsaW51eC5pYm0u
+Y29tPg0KPj4+Pj4NCj4+Pj4+IC0tLQ0KPj4+Pj4NCj4+Pj4+IHYzOg0KPj4+Pj4gLSBzaW1wbGlm
+aWVkIHZiYXNlZGV2LT5kZXYgc2V0dGluZw0KPj4+Pj4NCj4+Pj4+IHYyIC0+IHYzOg0KPj4+Pj4g
+LSBIb3BlZnVsbHkgZml4IGNvbmZ1c2lvbiBiZXRlZW4gdmJhc2VkZXYtPm5hbWUsIG1kZXZpZCBh
+bmQgc3lzZnNkZXYNCj4+Pj4+ICB3aGlsZSBrZWVwaW5nIGludG8gYWNjb3VudCBNYXR0aGV3J3Mg
+Y29tbWVudA0KPj4+Pj4gIGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3FlbXUtZGV2ZWwvNmUwNGFi
+OGYtZGM4NC1lOWMyLWRlZWEtDQo+Pj4+PiAyYjZiMzE2NzhiNTNAbGludXguaWJtLmNvbS8NCj4+
+Pj4+IC0tLQ0KPj4+Pj4gaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29tbW9uLmggfCAgIDUgLS0NCj4+
+Pj4+IGh3L3ZmaW8vY2N3LmMgICAgICAgICAgICAgICAgIHwgMTIyICsrKysrKysrKy0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0NCj4+Pj4+IGh3L3ZmaW8vY29tbW9uLmMgICAgICAgICAgICAgIHwg
+IDEwICstLQ0KPj4+Pj4gMyBmaWxlcyBjaGFuZ2VkLCAzNyBpbnNlcnRpb25zKCspLCAxMDAgZGVs
+ZXRpb25zKC0pDQo+Pj4+Pg0KPj4+Pj4gZGlmZiAtLWdpdCBhL2luY2x1ZGUvaHcvdmZpby92Zmlv
+LWNvbW1vbi5oIGIvaW5jbHVkZS9ody92ZmlvL3ZmaW8tDQo+Y29tbW9uLmgNCj4+Pj4+IGluZGV4
+IDEyZmJmYmMzN2QuLmM0ODZiZGVmMmEgMTAwNjQ0DQo+Pj4+PiAtLS0gYS9pbmNsdWRlL2h3L3Zm
+aW8vdmZpby1jb21tb24uaA0KPj4+Pj4gKysrIGIvaW5jbHVkZS9ody92ZmlvL3ZmaW8tY29tbW9u
+LmgNCj4+Pj4+IEBAIC0yMDIsNyArMjAyLDYgQEAgdHlwZWRlZiBzdHJ1Y3Qgew0KPj4+Pj4gICAg
+IGh3YWRkciBwYWdlczsNCj4+Pj4+IH0gVkZJT0JpdG1hcDsNCj4+Pj4+DQo+Pj4+PiAtdm9pZCB2
+ZmlvX3B1dF9iYXNlX2RldmljZShWRklPRGV2aWNlICp2YmFzZWRldik7DQo+Pj4+PiB2b2lkIHZm
+aW9fZGlzYWJsZV9pcnFpbmRleChWRklPRGV2aWNlICp2YmFzZWRldiwgaW50IGluZGV4KTsNCj4+
+Pj4+IHZvaWQgdmZpb191bm1hc2tfc2luZ2xlX2lycWluZGV4KFZGSU9EZXZpY2UgKnZiYXNlZGV2
+LCBpbnQgaW5kZXgpOw0KPj4+Pj4gdm9pZCB2ZmlvX21hc2tfc2luZ2xlX2lycWluZGV4KFZGSU9E
+ZXZpY2UgKnZiYXNlZGV2LCBpbnQgaW5kZXgpOw0KPj4+Pj4gQEAgLTIyMCwxMSArMjE5LDcgQEAg
+dm9pZCB2ZmlvX3JlZ2lvbl91bm1hcChWRklPUmVnaW9uICpyZWdpb24pOw0KPj4+Pj4gdm9pZCB2
+ZmlvX3JlZ2lvbl9leGl0KFZGSU9SZWdpb24gKnJlZ2lvbik7DQo+Pj4+PiB2b2lkIHZmaW9fcmVn
+aW9uX2ZpbmFsaXplKFZGSU9SZWdpb24gKnJlZ2lvbik7DQo+Pj4+PiB2b2lkIHZmaW9fcmVzZXRf
+aGFuZGxlcih2b2lkICpvcGFxdWUpOw0KPj4+Pj4gLVZGSU9Hcm91cCAqdmZpb19nZXRfZ3JvdXAo
+aW50IGdyb3VwaWQsIEFkZHJlc3NTcGFjZSAqYXMsIEVycm9yICoqZXJycCk7DQo+Pj4+PiAtdm9p
+ZCB2ZmlvX3B1dF9ncm91cChWRklPR3JvdXAgKmdyb3VwKTsNCj4+Pj4+IHN0cnVjdCB2ZmlvX2Rl
+dmljZV9pbmZvICp2ZmlvX2dldF9kZXZpY2VfaW5mbyhpbnQgZmQpOw0KPj4+Pj4gLWludCB2Zmlv
+X2dldF9kZXZpY2UoVkZJT0dyb3VwICpncm91cCwgY29uc3QgY2hhciAqbmFtZSwNCj4+Pj4+IC0g
+ICAgICAgICAgICAgICAgICAgIFZGSU9EZXZpY2UgKnZiYXNlZGV2LCBFcnJvciAqKmVycnApOw0K
+Pj4+Pj4gaW50IHZmaW9fYXR0YWNoX2RldmljZShjaGFyICpuYW1lLCBWRklPRGV2aWNlICp2YmFz
+ZWRldiwNCj4+Pj4+ICAgICAgICAgICAgICAgICAgICAgICAgQWRkcmVzc1NwYWNlICphcywgRXJy
+b3IgKiplcnJwKTsNCj4+Pj4+IHZvaWQgdmZpb19kZXRhY2hfZGV2aWNlKFZGSU9EZXZpY2UgKnZi
+YXNlZGV2KTsNCj4+Pj4+IGRpZmYgLS1naXQgYS9ody92ZmlvL2Njdy5jIGIvaHcvdmZpby9jY3cu
+Yw0KPj4+Pj4gaW5kZXggMWUyZmNlODNiMC4uNmVjMzVmZWRjOSAxMDA2NDQNCj4+Pj4+IC0tLSBh
+L2h3L3ZmaW8vY2N3LmMNCj4+Pj4+ICsrKyBiL2h3L3ZmaW8vY2N3LmMNCj4+Pj4+IEBAIC01NzIs
+ODggKzU3MiwxNSBAQCBzdGF0aWMgdm9pZCB2ZmlvX2Njd19wdXRfcmVnaW9uKFZGSU9DQ1dEZXZp
+Y2UNCj4+Pj4+ICp2Y2RldikNCj4+Pj4+ICAgICBnX2ZyZWUodmNkZXYtPmlvX3JlZ2lvbik7DQo+
+Pj4+PiB9DQo+Pj4+Pg0KPj4+Pj4gLXN0YXRpYyB2b2lkIHZmaW9fY2N3X3B1dF9kZXZpY2UoVkZJ
+T0NDV0RldmljZSAqdmNkZXYpDQo+Pj4+PiAtew0KPj4+Pj4gLSAgICBnX2ZyZWUodmNkZXYtPnZk
+ZXYubmFtZSk7DQo+Pj4+PiAtICAgIHZmaW9fcHV0X2Jhc2VfZGV2aWNlKCZ2Y2Rldi0+dmRldik7
+DQo+Pj4+PiAtfQ0KPj4+Pj4gLQ0KPj4+Pj4gLXN0YXRpYyB2b2lkIHZmaW9fY2N3X2dldF9kZXZp
+Y2UoVkZJT0dyb3VwICpncm91cCwgVkZJT0NDV0RldmljZQ0KPip2Y2RldiwNCj4+Pj4+IC0gICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIEVycm9yICoqZXJycCkNCj4+Pj4+IC17DQo+Pj4+
+PiAtICAgIFMzOTBDQ1dEZXZpY2UgKmNkZXYgPSBTMzkwX0NDV19ERVZJQ0UodmNkZXYpOw0KPj4+
+Pj4gLSAgICBjaGFyICpuYW1lID0gZ19zdHJkdXBfcHJpbnRmKCIleC4leC4lMDR4IiwgY2Rldi0+
+aG9zdGlkLmNzc2lkLA0KPj4+Pj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNk
+ZXYtPmhvc3RpZC5zc2lkLA0KPj4+Pj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IGNkZXYtPmhvc3RpZC5kZXZpZCk7DQo+Pj4+PiAtICAgIFZGSU9EZXZpY2UgKnZiYXNlZGV2Ow0K
+Pj4+Pj4gLQ0KPj4+Pj4gLSAgICBRTElTVF9GT1JFQUNIKHZiYXNlZGV2LCAmZ3JvdXAtPmRldmlj
+ZV9saXN0LCBuZXh0KSB7DQo+Pj4+PiAtICAgICAgICBpZiAoc3RyY21wKHZiYXNlZGV2LT5uYW1l
+LCBuYW1lKSA9PSAwKSB7DQo+Pj4+PiAtICAgICAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAidmZp
+bzogc3ViY2hhbm5lbCAlcyBoYXMgYWxyZWFkeSBiZWVuIGF0dGFjaGVkIiwNCj4+Pj4+IC0gICAg
+ICAgICAgICAgICAgICAgICAgIG5hbWUpOw0KPj4+Pj4gLSAgICAgICAgICAgIGdvdG8gb3V0X2Vy
+cjsNCj4+Pj4+IC0gICAgICAgIH0NCj4+Pj4+IC0gICAgfQ0KPj4+Pj4gLQ0KPj4+Pj4gLSAgICAv
+Kg0KPj4+Pj4gLSAgICAgKiBBbGwgdmZpby1jY3cgZGV2aWNlcyBhcmUgYmVsaWV2ZWQgdG8gb3Bl
+cmF0ZSBpbiBhIHdheSBjb21wYXRpYmxlIHdpdGgNCj4+Pj4+IC0gICAgICogZGlzY2FyZGluZyBv
+ZiBtZW1vcnkgaW4gUkFNIGJsb2NrcywgaWUuIHBhZ2VzIHBpbm5lZCBpbiB0aGUgaG9zdCBhcmUN
+Cj4+Pj4+IC0gICAgICogaW4gdGhlIGN1cnJlbnQgd29ya2luZyBzZXQgb2YgdGhlIGd1ZXN0IGRy
+aXZlciBhbmQgdGhlcmVmb3JlIG5ldmVyDQo+Pj4+PiAtICAgICAqIG92ZXJsYXAgZS5nLiwgd2l0
+aCBwYWdlcyBhdmFpbGFibGUgdG8gdGhlIGd1ZXN0IGJhbGxvb24gZHJpdmVyLiAgVGhpcw0KPj4+
+Pj4gLSAgICAgKiBuZWVkcyB0byBiZSBzZXQgYmVmb3JlIHZmaW9fZ2V0X2RldmljZSgpIGZvciB2
+ZmlvIGNvbW1vbiB0byBoYW5kbGUNCj4+Pj4+IC0gICAgICogcmFtX2Jsb2NrX2Rpc2NhcmRfZGlz
+YWJsZSgpLg0KPj4+Pj4gLSAgICAgKi8NCj4+Pj4+IC0gICAgdmNkZXYtPnZkZXYucmFtX2Jsb2Nr
+X2Rpc2NhcmRfYWxsb3dlZCA9IHRydWU7DQo+Pj4+PiAtDQo+Pj4+PiAtICAgIGlmICh2ZmlvX2dl
+dF9kZXZpY2UoZ3JvdXAsIGNkZXYtPm1kZXZpZCwgJnZjZGV2LT52ZGV2LCBlcnJwKSkgew0KPj4+
+Pj4gLSAgICAgICAgZ290byBvdXRfZXJyOw0KPj4+Pj4gLSAgICB9DQo+Pj4+PiAtDQo+Pj4+PiAt
+ICAgIHZjZGV2LT52ZGV2Lm9wcyA9ICZ2ZmlvX2Njd19vcHM7DQo+Pj4+PiAtICAgIHZjZGV2LT52
+ZGV2LnR5cGUgPSBWRklPX0RFVklDRV9UWVBFX0NDVzsNCj4+Pj4+IC0gICAgdmNkZXYtPnZkZXYu
+bmFtZSA9IG5hbWU7DQo+Pj4+PiAtICAgIHZjZGV2LT52ZGV2LmRldiA9IERFVklDRSh2Y2Rldik7
+DQo+Pj4+PiAtDQo+Pj4+PiAtICAgIHJldHVybjsNCj4+Pj4+IC0NCj4+Pj4+IC1vdXRfZXJyOg0K
+Pj4+Pj4gLSAgICBnX2ZyZWUobmFtZSk7DQo+Pj4+PiAtfQ0KPj4+Pj4gLQ0KPj4+Pj4gLXN0YXRp
+YyBWRklPR3JvdXAgKnZmaW9fY2N3X2dldF9ncm91cChTMzkwQ0NXRGV2aWNlICpjZGV2LCBFcnJv
+cg0KPioqZXJycCkNCj4+Pj4+IC17DQo+Pj4+PiAtICAgIGNoYXIgKnRtcCwgZ3JvdXBfcGF0aFtQ
+QVRIX01BWF07DQo+Pj4+PiAtICAgIHNzaXplX3QgbGVuOw0KPj4+Pj4gLSAgICBpbnQgZ3JvdXBp
+ZDsNCj4+Pj4+IC0NCj4+Pj4+IC0gICAgdG1wID0NCj4+PiBnX3N0cmR1cF9wcmludGYoIi9zeXMv
+YnVzL2Nzcy9kZXZpY2VzLyV4LiV4LiUwNHgvJXMvaW9tbXVfZ3JvdXAiLA0KPj4+Pj4gLSAgICAg
+ICAgICAgICAgICAgICAgICAgICAgY2Rldi0+aG9zdGlkLmNzc2lkLCBjZGV2LT5ob3N0aWQuc3Np
+ZCwNCj4+Pj4+IC0gICAgICAgICAgICAgICAgICAgICAgICAgIGNkZXYtPmhvc3RpZC5kZXZpZCwg
+Y2Rldi0+bWRldmlkKTsNCj4+Pj4+IC0gICAgbGVuID0gcmVhZGxpbmsodG1wLCBncm91cF9wYXRo
+LCBzaXplb2YoZ3JvdXBfcGF0aCkpOw0KPj4+Pj4gLSAgICBnX2ZyZWUodG1wKTsNCj4+Pj4+IC0N
+Cj4+Pj4+IC0gICAgaWYgKGxlbiA8PSAwIHx8IGxlbiA+PSBzaXplb2YoZ3JvdXBfcGF0aCkpIHsN
+Cj4+Pj4+IC0gICAgICAgIGVycm9yX3NldGcoZXJycCwgInZmaW86IG5vIGlvbW11X2dyb3VwIGZv
+dW5kIik7DQo+Pj4+PiAtICAgICAgICByZXR1cm4gTlVMTDsNCj4+Pj4+IC0gICAgfQ0KPj4+Pj4g
+LQ0KPj4+Pj4gLSAgICBncm91cF9wYXRoW2xlbl0gPSAwOw0KPj4+Pj4gLQ0KPj4+Pj4gLSAgICBp
+ZiAoc3NjYW5mKGJhc2VuYW1lKGdyb3VwX3BhdGgpLCAiJWQiLCAmZ3JvdXBpZCkgIT0gMSkgew0K
+Pj4+Pj4gLSAgICAgICAgZXJyb3Jfc2V0ZyhlcnJwLCAidmZpbzogZmFpbGVkIHRvIHJlYWQgJXMi
+LCBncm91cF9wYXRoKTsNCj4+Pj4+IC0gICAgICAgIHJldHVybiBOVUxMOw0KPj4+Pj4gLSAgICB9
+DQo+Pj4+PiAtDQo+Pj4+PiAtICAgIHJldHVybiB2ZmlvX2dldF9ncm91cChncm91cGlkLCAmYWRk
+cmVzc19zcGFjZV9tZW1vcnksIGVycnApOw0KPj4+Pj4gLX0NCj4+Pj4+IC0NCj4+Pj4+IHN0YXRp
+YyB2b2lkIHZmaW9fY2N3X3JlYWxpemUoRGV2aWNlU3RhdGUgKmRldiwgRXJyb3IgKiplcnJwKQ0K
+Pj4+Pj4gew0KPj4+Pj4gLSAgICBWRklPR3JvdXAgKmdyb3VwOw0KPj4+Pj4gICAgIFMzOTBDQ1dE
+ZXZpY2UgKmNkZXYgPSBTMzkwX0NDV19ERVZJQ0UoZGV2KTsNCj4+Pj4+ICAgICBWRklPQ0NXRGV2
+aWNlICp2Y2RldiA9IFZGSU9fQ0NXKGNkZXYpOw0KPj4+Pj4gICAgIFMzOTBDQ1dEZXZpY2VDbGFz
+cyAqY2RjID0gUzM5MF9DQ1dfREVWSUNFX0dFVF9DTEFTUyhjZGV2KTsNCj4+Pj4+ICsgICAgVkZJ
+T0RldmljZSAqdmJhc2VkZXYgPSAmdmNkZXYtPnZkZXY7DQo+Pj4+PiAgICAgRXJyb3IgKmVyciA9
+IE5VTEw7DQo+Pj4+PiArICAgIGNoYXIgKm5hbWU7DQo+Pj4+PiArICAgIGludCByZXQ7DQo+Pj4+
+Pg0KPj4+Pj4gICAgIC8qIENhbGwgdGhlIGNsYXNzIGluaXQgZnVuY3Rpb24gZm9yIHN1YmNoYW5u
+ZWwuICovDQo+Pj4+PiAgICAgaWYgKGNkYy0+cmVhbGl6ZSkgew0KPj4+Pj4gQEAgLTY2MywxNCAr
+NTkwLDMxIEBAIHN0YXRpYyB2b2lkIHZmaW9fY2N3X3JlYWxpemUoRGV2aWNlU3RhdGUgKmRldiwN
+Cj5FcnJvcg0KPj4+Pj4gKiplcnJwKQ0KPj4+Pj4gICAgICAgICB9DQo+Pj4+PiAgICAgfQ0KPj4+
+Pj4NCj4+Pj4+IC0gICAgZ3JvdXAgPSB2ZmlvX2Njd19nZXRfZ3JvdXAoY2RldiwgJmVycik7DQo+
+Pj4+PiAtICAgIGlmICghZ3JvdXApIHsNCj4+Pj4+IC0gICAgICAgIGdvdG8gb3V0X2dyb3VwX2Vy
+cjsNCj4+Pj4+IC0gICAgfQ0KPj4+Pj4gKyAgICBuYW1lID0gZ19zdHJkdXBfcHJpbnRmKCIleC4l
+eC4lMDR4IiwgdmNkZXYtPmNkZXYuaG9zdGlkLmNzc2lkLA0KPj4+Pj4gKyAgICAgICAgICAgICAg
+ICAgICAgICAgICAgIHZjZGV2LT5jZGV2Lmhvc3RpZC5zc2lkLA0KPj4+Pj4gKyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgIHZjZGV2LT5jZGV2Lmhvc3RpZC5kZXZpZCk7DQo+Pj4+PiArICAgIHZi
+YXNlZGV2LT5zeXNmc2RldiA9IGdfc3RyZHVwX3ByaW50ZigiL3N5cy9idXMvY3NzL2RldmljZXMv
+JXMvJXMiLA0KPj4+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+bmFtZSwNCj4+Pj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGNk
+ZXYtPm1kZXZpZCk7DQo+Pj4+IEhvcGluZyBub3QgbGF0ZSBmb3IgeW91IHRvIGluY2x1ZGUgdGhp
+cyBpbiB2NS4NCj4+Pj4gSSB0aGluayBubyBuZWVkIHRvIHJlLWFzc2lnbiBzeXNmc2RldiBhcyBp
+dCdzIGEgdXNlciBwcm9wZXJ0eSwgd2UnZCBiZXR0ZXIgdG8NCj4+Pj4ga2VlcCB0aGUgb3JpZ2lu
+YWwgdXNlciB2YWx1ZS4gQWxzbyBsb29rcyBhIG1lbW9yeSBsZWFrIGhlcmUuDQo+Pj4gT0sgSSBy
+ZW1vdmVkIGl0Lg0KPj4+Pj4gKyAgICB2YmFzZWRldi0+b3BzID0gJnZmaW9fY2N3X29wczsNCj4+
+Pj4+ICsgICAgdmJhc2VkZXYtPnR5cGUgPSBWRklPX0RFVklDRV9UWVBFX0NDVzsNCj4+Pj4+ICsg
+ICAgdmJhc2VkZXYtPm5hbWUgPSBuYW1lOw0KPj4+PiBUaGVyZSB3aWxsIGJlIGEgcG90ZW50aWFs
+IGZhaWx1cmUgd2hlbiBhIHNlY29uZCBtZGV2IGRldmljZSB1bmRlcg0KPj4+PiBzYW1lIGNzc2lk
+LnNzaWQuZGV2aWQgYXR0YWNoZWQuIFdlIGNhbiB1c2UgY2Rldi0+bWRldmlkIGFzIG5hbWUuDQo+
+Pj4gQnV0IHRoaXMgbWF0aGVzIHZmaW9fY2N3X2dldF9kZXZpY2UoKSBleGlzdGluZyBjb2RlIHdo
+ZXJlDQo+Pj4gdmNkZXYtPnZkZXYubmFtZSA9IG5hbWU7IGFuZA0KPj4+IG5hbWUgPSBnX3N0cmR1
+cF9wcmludGYoIiV4LiV4LiUwNHgiLCBjZGV2LT5ob3N0aWQuY3NzaWQsDQo+Pj4gwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBj
+ZGV2LT5ob3N0aWQuc3NpZCwNCj4+PiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNkZXYtPmhvc3RpZC5kZXZpZCk7DQo+PiBJ
+IHN1c3BlY3QgdGhpcyBpcyBhIGJ1ZyBvZiB0aGUgZXhpc3RpbmcgY29kZS4NCj5UaGVuIEkgd291
+bGQgcHJlZmVyIHdlIGZpeCBpdCBzZXBhcmF0ZWx5LiBUaGlzIHBhdGNoIG1pZ3JhdGVzIHRoZQ0K
+PmV4aXN0aW5nIGNvZGUgd2l0aG91dCBmdW5jdGlvbmFsIGNoYW5nZSBpbnRlbmRlZC4NCg0KT0ss
+IG1ha2Ugc2Vuc2UuIEknbGwgZG8gdGhhdCBhZnRlciB5b3VyIHY1IGdldCBpbi4NCg0KPg0KPj4N
+Cj4+PiBjZGV2LT5tZGV2aWQgaXMgcGFzc2VkIGFzIGZpcnN0IGFyZyBvZiB2ZmlvX2F0dGFjaF9k
+ZXZpY2UoKSBpbnN0ZWFkIC4NCj4+IHZmaW9fYXR0YWNoX2RldmljZSgpIHVzZXMgY2Rldi0+bWRl
+dmlkIHRvIGdldCBkZXZpY2UgRkQsIG5vdGhpbmcgbW9yZS4NCj4+DQo+PiBJZiB3ZSB1c2UgY3Nz
+aWQuc3NpZC5kZXZpZCBhcyBuYW1lLCB0aGVuIGRpZmZlcmVudCBtZGV2IHVuZGVyIHNhbWUNCj5j
+c3NpZC5zc2lkLmRldmlkIHdpbGwgaGF2ZSBzYW1lIG5hbWUsIGFuZCB0aGUgc2Vjb25kIG1kZXYg
+YXR0YWNobWVudCB3aWxsIGZhaWwgdG8NCj5hdHRhY2ggaW4gdmZpb19hdHRhY2hfZGV2aWNlKCk6
+DQo+Pg0KPj4gICAgIFFMSVNUX0ZPUkVBQ0godmJhc2VkZXZfaXRlciwgJmdyb3VwLT5kZXZpY2Vf
+bGlzdCwgbmV4dCkgew0KPj4gICAgICAgICBpZiAoc3RyY21wKHZiYXNlZGV2X2l0ZXItPm5hbWUs
+IHZiYXNlZGV2LT5uYW1lKSA9PSAwKSB7DQo+PiAgICAgICAgICAgICBlcnJvcl9zZXRnKGVycnAs
+ICJkZXZpY2UgaXMgYWxyZWFkeSBhdHRhY2hlZCIpOw0KPj4gICAgICAgICAgICAgdmZpb19wdXRf
+Z3JvdXAoZ3JvdXApOw0KPj4gICAgICAgICAgICAgcmV0dXJuIC1FQlVTWTsNCj4+ICAgICAgICAg
+fQ0KPj4gICAgIH0NCj5JIGdldCB5b3VyIHBvaW50IGJ1dCB0aGlzIGNvbnZlcnNpb24gbWF0Y2hl
+cyB0aGUgZXhpc3RpbmcNCj52ZmlvX2Njd19nZXRfZGV2aWNlKCkgY29kZToNCj7CoMKgwqAgY2hh
+ciAqbmFtZSA9IGdfc3RyZHVwX3ByaW50ZigiJXguJXguJTA0eCIsIGNkZXYtPmhvc3RpZC5jc3Np
+ZCwNCj7CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIGNkZXYtPmhvc3RpZC5zc2lkLA0KPsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2Rldi0+aG9zdGlkLmRl
+dmlkKTsNCj7CoMKgwqAgVkZJT0RldmljZSAqdmJhc2VkZXY7DQo+DQo+wqDCoMKgIFFMSVNUX0ZP
+UkVBQ0godmJhc2VkZXYsICZncm91cC0+ZGV2aWNlX2xpc3QsIG5leHQpIHsNCj7CoMKgwqDCoMKg
+wqDCoCBpZiAoc3RyY21wKHZiYXNlZGV2LT5uYW1lLCBuYW1lKSA9PSAwKSB7DQo+wqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCBlcnJvcl9zZXRnKGVycnAsICJ2ZmlvOiBzdWJjaGFubmVsICVzIGhhcyBh
+bHJlYWR5IGJlZW4NCj5hdHRhY2hlZCIsDQo+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgbmFtZSk7DQo+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnb3RvIG91dF9l
+cnI7DQo+wqDCoMKgwqDCoMKgwqAgfQ0KPsKgwqDCoCB9DQo+DQo+Pg0KPj4+IGkgdGhpbmsgdGhp
+cyBhbHNvIG1hdGNoZXMNCj4+Pg0KPmh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC9QSDdQUjEx
+TUI2NzIyMkREMjgyRjk4RTAzMDk1RkJBOEE5MkMxQUBQSA0KPj4+IDdQUjExTUI2NzIyLm5hbXBy
+ZDExLnByb2Qub3V0bG9vay5jb20vDQo+Pj4gbm8/DQo+PiBJdCBkb2Vzbid0IG1hdGNoIHdoYXQg
+TWF0dGV3IHN1Z2dlc3RlZDogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVtdS0NCj5kZXZlbC82
+ZTA0YWI4Zi1kYzg0LWU5YzItZGVlYS0yYjZiMzE2NzhiNTNAbGludXguaWJtLmNvbS8NCj50aGlz
+IHdhcyBSRkMgdjMuIEF0IHRoYXQgdGltZSB3ZSBkaWQgbm90IHBhc3MgYW55ICJuYW1lIiBhcmcg
+dG8NCj4NCj52ZmlvX2F0dGFjaF9kZXZpY2UoVkZJT0RldmljZSAqdmJhc2VkZXYsIEFkZHJlc3NT
+cGFjZSAqYXMsIEVycm9yICoqZXJycCkNCj5hbmQgdmJhc2VkZXYtPm5hbWUgd2FzIHVzZWQgd2hl
+biBjYWxsaW5nIHZmaW9fZ2V0X2RldmljZSgpIHdoaWxlIHdlIG5vdw0KPnVzZSBjZGV2LT5tZGV2
+aWQuIEJlc2lkZXMgTWF0dGV3IHJhbiBzb21lIGJhc2ljIHRlc3RzIG9uIFBBVENIIHYzOg0KPmh0
+dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8zM2I3ODAzYy1mMjMxLWQ0ZmItZDlkOS0NCj4yNmEw
+OTdhODllOTNAcmVkaGF0LmNvbS8NCj5TbyBJIHdvdWxkIGJlIHRlbXB0ZWQgdG8gbGVhdmUgaXQg
+YXMgaXMgKHdpdGhvdXQgdGhlIHN5c2ZzZGV2IG92ZXJ3cml0ZQ0KPndoaWNoIGNhbWUgZnJvbSBN
+YXR0ZXcncyBzdWdnZXN0aW9uIGluDQo+aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvcWVtdS1kZXZl
+bC82ZTA0YWI4Zi1kYzg0LWU5YzItZGVlYS0NCj4yYjZiMzE2NzhiNTNAbGludXguaWJtLmNvbS8N
+Cj4pLiBUaGFua3MgRXJpYw0KDQpPSywgdGhlbiBnbyBhaGVhZC4NCg0KVGhhbmtzDQpaaGVuemhv
+bmcNCg==
 
