@@ -2,77 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D96D7BE3E6
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B63D7BE3FC
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 17:10:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qprrE-0006AC-2J; Mon, 09 Oct 2023 11:07:44 -0400
+	id 1qprtM-0007OS-OS; Mon, 09 Oct 2023 11:09:56 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qprrC-00064r-6w
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:07:42 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qprtK-0007NE-PK
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:09:54 -0400
+Received: from mail-ed1-x52b.google.com ([2a00:1450:4864:20::52b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qprrA-0008JZ-Lw
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:07:41 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 49D1621883;
- Mon,  9 Oct 2023 15:07:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696864059; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZORS+/lCs/RBg5I2IkjeVCkwDT8HleXLeWdRqY+2uO4=;
- b=GthseVeVf1R1a7EoIw204WMej7lZDA/4OH7b+kDej6IJBd72zNrWWD7Nx3hUJKRg19n+Uu
- ZBG/QK2P0ICuPl4lFbi9rHhMIcUBZc/YdGKZJ/6iUYkB0F3xK3MD+CX4i2jZoGgWWsv/ry
- G0lgg9P0QMfM/yInTQikTZWHMoeN7JA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696864059;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=ZORS+/lCs/RBg5I2IkjeVCkwDT8HleXLeWdRqY+2uO4=;
- b=C14aH0fW5ZZZdRlvIK2T0PqrBf0j6eoFgBqRJ1bwrivjcslpBB1ELR6K6qmcpErvYXuuHf
- EtwQC4UnTS5X8GCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id CFE1513905;
- Mon,  9 Oct 2023 15:07:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id r4nEJToXJGV1JQAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 15:07:38 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- qemu-devel@nongnu.org
-Cc: Leonardo Bras <leobras@redhat.com>, Markus Armbruster
- <armbru@redhat.com>, Peter Xu <peterx@redhat.com>, Juan Quintela
- <quintela@redhat.com>, Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?=
- <philmd@linaro.org>
-Subject: Re: [PATCH] migration: Use g_autofree to simplify
- ram_dirty_bitmap_reload()
-In-Reply-To: <20231008114001.95348-1-philmd@linaro.org>
-References: <20231008114001.95348-1-philmd@linaro.org>
-Date: Mon, 09 Oct 2023 12:07:36 -0300
-Message-ID: <871qe3g7gn.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qprtJ-0000Es-6R
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 11:09:54 -0400
+Received: by mail-ed1-x52b.google.com with SMTP id
+ 4fb4d7f45d1cf-53808d5b774so8389660a12.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 08:09:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696864191; x=1697468991; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=NldQiTWA5sMVywFdcvGk4DI6HBcviGKaPNWPOAI7ABo=;
+ b=wbKYxpdlD1O1EZ70ukkG6S+O+kz9V+aeuaxLMhXcM5UM5dsqDQrBid65JhvNxod1LU
+ JCprzrrVTETJbMqP2C+7ryMcLh7YSry0Glk7s6vOCrEQQgOArREckbaifBGjt78yThOf
+ h9037giOi1DbgxxWDf8r6HdELYTi2MgGiMQ0DEap8HtBSkKNIC+poNqwLiuvzrCrIiwg
+ FRarhrVM7J5ps8yhYWx/FefgI4axHXx6p6RJB6w5QCEFKRAYk8iA6yPPq/GF9/bQbitb
+ en5bowodv5VV3/Loudom5sj7kPR6XlT2D5IPgClZktBT0LmvgodMRoV1SQjpXv0RBKNq
+ qxFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696864191; x=1697468991;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=NldQiTWA5sMVywFdcvGk4DI6HBcviGKaPNWPOAI7ABo=;
+ b=JCwoYbjFsADltnEZ3hsAljnRZtiH7Y8uYk8b71qokc5TjKJtWDruo2oUs3yBFdTuIs
+ RstqBcjrrsEz5mgIaBylFopWV3e/u7ASmURy6ZMgYPd8YnkEhpZbvHRofy5kPLfTtsVV
+ +4kgi7xxqniHieML7iJaWcA3QeNlNsOboBnVENKm2uqVY4am5E7VfASQuqy8qcz+DLwf
+ tWhq4GSweQ14jGE6QnZ/MtOq3MebFBYqbZ269H0NDt2MyTpluRh+aNRgR7UTXaLJVp22
+ LwvUrVUUDMI/OKZauOan1arxMUvPQx0jH1olF3TWj/5rF/OKZwi0iiLo/LRLc08t1aJF
+ ekyg==
+X-Gm-Message-State: AOJu0YyFMVauXx12J/6vud6mWRJrp2HJteSx3aAQR0oUGXlmrCaZ/Uo/
+ rc+BhX2j9oL9nB6l0NGl5vCn8w==
+X-Google-Smtp-Source: AGHT+IHQ27FjElR7d5mwjgma7Xr1e662z4pYTF7K7YI3KbhnnjFWGYlmg9ucmRkwxS0hlFOhZQGOWA==
+X-Received: by 2002:aa7:c255:0:b0:536:e814:360c with SMTP id
+ y21-20020aa7c255000000b00536e814360cmr14174772edo.4.1696864191113; 
+ Mon, 09 Oct 2023 08:09:51 -0700 (PDT)
+Received: from [192.168.69.115]
+ (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
+ by smtp.gmail.com with ESMTPSA id
+ l16-20020a056402125000b00536159c6c45sm6114967edw.15.2023.10.09.08.09.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 08:09:50 -0700 (PDT)
+Message-ID: <0052d92a-b712-63ff-5e3d-668787f0213c@linaro.org>
+Date: Mon, 9 Oct 2023 17:09:48 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=195.135.220.28; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 1/1] tests/avocado: update firmware to enable OpenBSD
+ test on sbsa-ref
+Content-Language: en-US
+To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-arm@nongnu.org
+Cc: qemu-devel@nongnu.org, Beraldo Leal <bleal@redhat.com>,
+ Wainer dos Santos Moschetta <wainersm@redhat.com>,
+ Leif Lindholm <quic_llindhol@quicinc.com>,
+ Peter Maydell <peter.maydell@linaro.org>,
+ Radoslaw Biernacki <rad@semihalf.com>, Cleber Rosa <crosa@redhat.com>,
+ =?UTF-8?Q?Alex_Benn=c3=a9e?= <alex.bennee@linaro.org>
+References: <20230927120050.210187-1-marcin.juszkiewicz@linaro.org>
+ <20230927120050.210187-2-marcin.juszkiewicz@linaro.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20230927120050.210187-2-marcin.juszkiewicz@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::52b;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x52b.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -89,76 +100,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
-
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On 27/9/23 14:00, Marcin Juszkiewicz wrote:
+> Update prebuilt firmware images:
+> - Neoverse V1/N2 cpu support
+> - non-secure EL2 virtual timer
+> - XHCI controller in DSDT
+> 
+> With those changes we can now run OpenBSD as part of sbsa-ref tests.
+> 
+> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
 > ---
-> Based-on: <ZR7e3cmxCH9LAdnS@x1n>
-> ---
->  migration/ram.c | 15 ++++++---------
->  1 file changed, 6 insertions(+), 9 deletions(-)
->
-> diff --git a/migration/ram.c b/migration/ram.c
-> index 982fbbeee1..4cb948cfd0 100644
-> --- a/migration/ram.c
-> +++ b/migration/ram.c
-> @@ -4164,11 +4164,11 @@ bool ram_dirty_bitmap_reload(MigrationState *s, R=
-AMBlock *block, Error **errp)
->  {
->      /* from_dst_file is always valid because we're within rp_thread */
->      QEMUFile *file =3D s->rp_state.from_dst_file;
-> -    unsigned long *le_bitmap, nbits =3D block->used_length >> TARGET_PAG=
-E_BITS;
-> +    unsigned long *le_bitmap =3D NULL;
+>   tests/avocado/machine_aarch64_sbsaref.py | 68 ++++++++++++++++++++----
+>   1 file changed, 58 insertions(+), 10 deletions(-)
+> 
+> diff --git a/tests/avocado/machine_aarch64_sbsaref.py b/tests/avocado/machine_aarch64_sbsaref.py
+> index a794245e7e..2d683d4f6a 100644
+> --- a/tests/avocado/machine_aarch64_sbsaref.py
+> +++ b/tests/avocado/machine_aarch64_sbsaref.py
+> @@ -28,33 +28,33 @@ def fetch_firmware(self):
 
-Aren't you missing the actual g_autofree here?
 
-> +    unsigned long nbits =3D block->used_length >> TARGET_PAGE_BITS;
->      uint64_t local_size =3D DIV_ROUND_UP(nbits, 8);
->      uint64_t size, end_mark;
->      RAMState *rs =3D ram_state;
-> -    bool result =3D false;
->=20=20
->      trace_ram_dirty_bitmap_reload_begin(block->idstr);
->=20=20
-> @@ -4193,7 +4193,7 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RAM=
-Block *block, Error **errp)
->      if (size !=3D local_size) {
->          error_setg(errp, "ramblock '%s' bitmap size mismatch (0x%"PRIx64
->                     " !=3D 0x%"PRIx64")", block->idstr, size, local_size);
-> -        goto out;
-> +        return false;
->      }
->=20=20
->      size =3D qemu_get_buffer(file, (uint8_t *)le_bitmap, local_size);
-> @@ -4203,13 +4203,13 @@ bool ram_dirty_bitmap_reload(MigrationState *s, R=
-AMBlock *block, Error **errp)
->          error_setg(errp, "read bitmap failed for ramblock '%s': "
->                     "(size 0x%"PRIx64", got: 0x%"PRIx64")",
->                     block->idstr, local_size, size);
-> -        goto out;
-> +        return false;
->      }
->=20=20
->      if (end_mark !=3D RAMBLOCK_RECV_BITMAP_ENDING) {
->          error_setg(errp, "ramblock '%s' end mark incorrect: 0x%"PRIx64,
->                     block->idstr, end_mark);
-> -        goto out;
-> +        return false;
->      }
->=20=20
->      /*
-> @@ -4241,10 +4241,7 @@ bool ram_dirty_bitmap_reload(MigrationState *s, RA=
-MBlock *block, Error **errp)
->       */
->      migration_rp_kick(s);
->=20=20
-> -    result =3D true;
-> -out:
-> -    g_free(le_bitmap);
-> -    return result;
-> +    return true;
->  }
->=20=20
->  static int ram_resume_prepare(MigrationState *s, void *opaque)
+> +    def test_sbsaref_openbsd73_max(self):
+> +        """
+> +        :avocado: tags=cpu:max
+> +        """
+> +        self.boot_openbsd73("max")
+> +
+
+FWIW:
+
+Applying: tests/avocado: update firmware to enable OpenBSD test on sbsa-ref
+patch:113: new blank line at EOF.
++
+warning: 1 line adds whitespace errors.
+
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
 
