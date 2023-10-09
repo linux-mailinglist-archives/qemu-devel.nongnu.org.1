@@ -2,73 +2,77 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F63A7BE700
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:51:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D4517BE702
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:52:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptTC-0006wS-5O; Mon, 09 Oct 2023 12:51:02 -0400
+	id 1qptTm-0007jG-5F; Mon, 09 Oct 2023 12:51:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qptSg-0006iB-Dk
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:50:41 -0400
-Received: from smtp-out1.suse.de ([2001:67c:2178:6::1c])
+ (Exim 4.90_1) (envelope-from <luoyonggang@gmail.com>)
+ id 1qptTk-0007im-5F; Mon, 09 Oct 2023 12:51:36 -0400
+Received: from mail-pf1-x42d.google.com ([2607:f8b0:4864:20::42d])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qptSU-00050l-FF
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:50:20 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out1.suse.de (Postfix) with ESMTPS id 508E421885;
- Mon,  9 Oct 2023 16:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696870211; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yRZ2PsMNVS+CUwYEFGzSwichCql74f0vXhRTYueFjis=;
- b=Q8oBl/l2U/d8FzdC0bkXU2GZuW0PGfU0kbo6mRHgfQEx+d+bqGh/eeb/DxzWVlzFXOXG5X
- 0ows3nootRYuQZ3nm91SURImV22e0Zs8vjWifeespXNrQH+SdIsunkKWz9IwLsUkhKrHia
- QT/GhLoo2STRKG3szCy3761NY6jzTKE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696870211;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- in-reply-to:in-reply-to:references:references;
- bh=yRZ2PsMNVS+CUwYEFGzSwichCql74f0vXhRTYueFjis=;
- b=BrQ4ajFuKtRjrkJTGfik8lTEsOQRDBMDg6VQt1eNhMmKXuKLh/bM3d3cy057oaVohdCRTp
- oGzds1O/L7tKQoCw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id D6D3F13905;
- Mon,  9 Oct 2023 16:50:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id KSvmJ0IvJGVKXAAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 16:50:10 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Peter Xu <peterx@redhat.com>
-Cc: qemu-devel@nongnu.org, Juan Quintela <quintela@redhat.com>
-Subject: Re: [PATCH v3 10/10] tests/migration-test: Add a test for postcopy
- hangs during RECOVER
-In-Reply-To: <87zg0wenkg.fsf@suse.de>
-References: <20231004220240.167175-1-peterx@redhat.com>
- <20231004220240.167175-11-peterx@redhat.com> <87edi9fbh5.fsf@suse.de>
- <878r8hfavf.fsf@suse.de> <ZR8iwwOeXWI+x9YX@x1n> <875y3kg4hv.fsf@suse.de>
- <ZR8uMcN5WwA2kC9k@x1n> <87zg0wenkg.fsf@suse.de>
-Date: Mon, 09 Oct 2023 13:50:08 -0300
-Message-ID: <87wmvveo5b.fsf@suse.de>
+ (Exim 4.90_1) (envelope-from <luoyonggang@gmail.com>)
+ id 1qptTi-0005DU-AL; Mon, 09 Oct 2023 12:51:35 -0400
+Received: by mail-pf1-x42d.google.com with SMTP id
+ d2e1a72fcca58-690fe10b6a4so3855314b3a.3; 
+ Mon, 09 Oct 2023 09:51:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696870291; x=1697475091; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9YTlTK2ZJYbpojQknIylpsZ9v984f/ty25tpdC20tm0=;
+ b=lbyX2ivP5AZso7ces/Inaa8YZTiYJe+SlcysVbiXkUX/Y1Vtv+x1hHeyspFyk7Ysk8
+ sFSnTKeCc+qzyLd96aF+eP6rbksstDgXImrzmK//Q2U9hAAgA2zZPKL5PBbwhKHOogRG
+ ZeXRG8voS/HhEOM0FSp/gDUKX1VqE5n6llEH22336czeYmZfzDzbbgL8BKSiIgmq+b0B
+ tXz/tqoqfveTfNLvwsVKjk/+8wnLgascU/fGuM3F8pCEOcND6Ty/dFnw0xezqY924tab
+ PNNoKuY9j1TmRAOkaLlispczmqPDYjGdz0TsucKfe/o7ZVW9nsav6FufOrNy+W8pvxqL
+ ajNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696870291; x=1697475091;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9YTlTK2ZJYbpojQknIylpsZ9v984f/ty25tpdC20tm0=;
+ b=YBZ5IPWhlsmmLk4wm3qz+qm8h+BOPEP423DmgTClcVAD4Qb5HiI3sPVFc2qyr0yoad
+ hB/QDSOdehQ5cZI9J3xNZKOCbH2lP2GNPtSqoDDENcIyHLt+kvLYA3NOdJiMIAPNlZ5g
+ LE0YVP7EUvzwDlSSLJbBO5yG7lr/gBH9a52njZjXOh4yeLwTp7cQ/U64NfJL1OyZbokS
+ asFngY16nppsj/AdIIwdyy8pSWBVlDNALyugzrWro19ADXUBucxxkXcGvckrrlxeqqAY
+ slFG2jZCTnlW639s3o2J35WO5C0Zvoab63mhQtjjR1/RJ/jMrNNtyuxb0RBSb6DZUgkd
+ UFLg==
+X-Gm-Message-State: AOJu0Ywuu6MdAr835SUkyU/8L7jMscYjzrqbRbuy7rruaHghjASLiI0p
+ FIivX5xHsmX0WvsW/AuOnryldNTBa9vIMw==
+X-Google-Smtp-Source: AGHT+IGNn5nC5QkVDdOiKCY7S7ZZ4HSb2f9jP4W5yXq4uY+x5bHJPKwVf8v3tvymhFBUzmmY80Occg==
+X-Received: by 2002:a05:6a00:22c9:b0:690:2ecd:a593 with SMTP id
+ f9-20020a056a0022c900b006902ecda593mr20262127pfj.26.1696870291423; 
+ Mon, 09 Oct 2023 09:51:31 -0700 (PDT)
+Received: from localhost.localdomain ([103.94.185.75])
+ by smtp.googlemail.com with ESMTPSA id
+ a21-20020a62bd15000000b00693498a846esm6589539pff.80.2023.10.09.09.51.26
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Oct 2023 09:51:29 -0700 (PDT)
+From: Yonggang Luo <luoyonggang@gmail.com>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+ John Snow <jsnow@redhat.com>, Thomas Huth <thuth@redhat.com>,
+ qemu-trivial@nongnu.org, Yonggang Luo <luoyonggang@gmail.com>
+Subject: [PATCH] Revert "configure: Add workaround for ccache and clang"
+Date: Tue, 10 Oct 2023 00:51:13 +0800
+Message-Id: <20231009165113.498-1-luoyonggang@gmail.com>
+X-Mailer: git-send-email 2.39.0.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain
-Received-SPF: pass client-ip=2001:67c:2178:6::1c; envelope-from=farosas@suse.de;
- helo=smtp-out1.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42d;
+ envelope-from=luoyonggang@gmail.com; helo=mail-pf1-x42d.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -85,107 +89,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Fabiano Rosas <farosas@suse.de> writes:
+This reverts commit fd0e60530f10078f488fa3e9591cc7db5732989c.
 
-> Peter Xu <peterx@redhat.com> writes:
->
->> On Thu, Oct 05, 2023 at 06:10:20PM -0300, Fabiano Rosas wrote:
->>> Peter Xu <peterx@redhat.com> writes:
->>> 
->>> > On Thu, Oct 05, 2023 at 10:37:56AM -0300, Fabiano Rosas wrote:
->>> >> >> +    /*
->>> >> >> +     * Make sure both QEMU instances will go into RECOVER stage, then test
->>> >> >> +     * kicking them out using migrate-pause.
->>> >> >> +     */
->>> >> >> +    wait_for_postcopy_status(from, "postcopy-recover");
->>> >> >> +    wait_for_postcopy_status(to, "postcopy-recover");
->>> >> >
->>> >> > Is this wait out of place? I think we're trying to resume too fast after
->>> >> > migrate_recover():
->>> >> >
->>> >> > # {
->>> >> > #     "error": {
->>> >> > #         "class": "GenericError",
->>> >> > #         "desc": "Cannot resume if there is no paused migration"
->>> >> > #     }
->>> >> > # }
->>> >> >
->>> >> 
->>> >> Ugh, sorry about the long lines:
->>> >> 
->>> >> {
->>> >>     "error": {
->>> >>         "class": "GenericError",
->>> >>         "desc": "Cannot resume if there is no paused migration"
->>> >>     }
->>> >> }
->>> >
->>> > Sorry I didn't get you here.  Could you elaborate your question?
->>> >
->>> 
->>> The test is sometimes failing with the above message.
->>> 
->>> But indeed my question doesn't make sense. I forgot migrate_recover
->>> happens on the destination. Nevermind.
->>> 
->>> The bug is still present nonetheless. We're going into migrate_prepare
->>> in some state other than POSTCOPY_PAUSED.
->>
->> Oh I see.  Interestingly I cannot reproduce on my host, just like last
->> time..
->>
->> What is your setup for running the test?  Anything special?  Here's my
->> cmdline:
->
-> The crudest oneliner:
->
-> for i in $(seq 1 9999); do echo "$i ============="; \
-> QTEST_QEMU_BINARY=./qemu-system-x86_64 \
-> ./tests/qtest/migration-test -r /x86_64/migration/postcopy/recovery || break ; done
->
-> I suspect my system has something specific to it that affects the timing
-> of the tests. But I have no idea what it could be.
->
-> $ lscpu       
-> Architecture:            x86_64      
->   CPU op-mode(s):        32-bit, 64-bit
->   Address sizes:         39 bits physical, 48 bits virtual
->   Byte Order:            Little Endian
-> CPU(s):                  16
->   On-line CPU(s) list:   0-15
-> Vendor ID:               GenuineIntel
->   Model name:            11th Gen Intel(R) Core(TM) i7-11850H @ 2.50GHz
->     CPU family:          6
->     Model:               141
->     Thread(s) per core:  2
->     Core(s) per socket:  8
->     Socket(s):           1
->     Stepping:            1
->     CPU max MHz:         4800.0000
->     CPU min MHz:         800.0000
->     BogoMIPS:            4992.00
->
->>
->> $ cat reproduce.sh 
->> index=$1
->> loop=0
->>
->> while :; do
->>         echo "Starting loop=$loop..."
->>         QTEST_QEMU_BINARY=./qemu-system-x86_64 ./tests/qtest/migration-test -p /x86_64/migration/postcopy/recovery/double-failures
->>         if [[ $? != 0 ]]; then
->>                 echo "index $index REPRODUCED (loop=$loop) !"
->>                 break
->>         fi
->>         loop=$(( loop + 1 ))
->> done
->>
->> Survives 200+ loops and kept going.
->>
->> However I think I saw what's wrong here, could you help try below fixup?
->>
->
-> Sure. I won't get to it until tomorrow though.
+According to https://peter.eisentraut.org/blog/2014/12/01/ccache-and-clang-part-3
+it's already fixed in new version of ccache
 
-It seems to have fixed the issue. 3500 iterations and still going.
+According to https://ccache.dev/manual/4.8.html#config_run_second_cpp
+CCACHE_CPP2 are default to true for new version ccache
+
+Signed-off-by: Yonggang Luo <luoyonggang@gmail.com>
+---
+ configure | 32 --------------------------------
+ 1 file changed, 32 deletions(-)
+
+diff --git a/configure b/configure
+index e08127045d..3f8dd94b50 100755
+--- a/configure
++++ b/configure
+@@ -1161,34 +1161,6 @@ EOF
+   fi
+ fi
+ 
+-########################################
+-# check if ccache is interfering with
+-# semantic analysis of macros
+-
+-unset CCACHE_CPP2
+-ccache_cpp2=no
+-cat > $TMPC << EOF
+-static const int Z = 1;
+-#define fn() ({ Z; })
+-#define TAUT(X) ((X) == Z)
+-#define PAREN(X, Y) (X == Y)
+-#define ID(X) (X)
+-int main(void)
+-{
+-    int x = 0, y = 0;
+-    x = ID(x);
+-    x = fn();
+-    fn();
+-    if (PAREN(x, y)) return 0;
+-    if (TAUT(Z)) return 0;
+-    return 0;
+-}
+-EOF
+-
+-if ! compile_object "-Werror"; then
+-    ccache_cpp2=yes
+-fi
+-
+ ##########################################
+ # functions to probe cross compilers
+ 
+@@ -1722,10 +1694,6 @@ if test "$default_targets" = "yes"; then
+   echo "CONFIG_DEFAULT_TARGETS=y" >> $config_host_mak
+ fi
+ 
+-if test "$ccache_cpp2" = "yes"; then
+-  echo "export CCACHE_CPP2=y" >> $config_host_mak
+-fi
+-
+ # contrib/plugins configuration
+ echo "# Automatically generated by configure - do not modify" > contrib/plugins/$config_host_mak
+ echo "SRC_PATH=$source_path/contrib/plugins" >> contrib/plugins/$config_host_mak
+-- 
+2.39.0.windows.1
+
 
