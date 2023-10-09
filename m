@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8C67BD30F
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2D5C7BD31D
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:12:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpjTD-00067Y-NW; Mon, 09 Oct 2023 02:10:23 -0400
+	id 1qpjV5-0006ww-Aq; Mon, 09 Oct 2023 02:12:19 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjTC-000661-3k
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:10:22 -0400
-Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjV4-0006wd-AI
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:12:18 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjTA-00009X-Bu
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:10:21 -0400
-Received: by mail-ej1-x62b.google.com with SMTP id
- a640c23a62f3a-99c3d3c3db9so682110066b.3
- for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 23:10:19 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjV1-0000ex-G3
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:12:18 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-533c8f8f91dso7217064a12.0
+ for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 23:12:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696831818; x=1697436618; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696831933; x=1697436733; darn=nongnu.org;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=XWdPdOs7mx57SjWq3066JLzCN01TLQELOyLYiY/Ghzg=;
- b=OcJqZX8T6F9P0HSvXRm3yOcgmf6cgGx4dWlpUfwmg18v5m5igYZ6iz70WabWqnNPoG
- nyXtylwM0cwzSjtAbq4LPOvP0+p7j+mYvhEbANcESNKaBTNR7dOCKFRm2xgyLXB8ZNos
- 77xDao5Ljp2ygNG3YFXLmE1jQPUwOenwn51ArgG/0ySzZeLBT/U0bqgNmySeOxQSsePp
- SlFUa3bbhcBHA8/TxkrkJSwLQUz8wRoJ5rtM/Jnj94WMfyI5baPkMc+O6fJDaLh9C//1
- P6Lo+N1HKEa6caO/00fzToH35EE7oPJ5EDg/jwqj1Qv6NGI1uiDNYrV0J7vxRUEraLdW
- jw0Q==
+ bh=vXC4vjRurkWAquiFqYJbLTG9LUebIfAgebLC0Y3e+3I=;
+ b=zy8OZb1udnRYiRX/5E013QMRvG40yoztSyUMJMpJIAIHFdlvAHPzRy15jJATf5zmUa
+ 1j4V5Rr4nfCby36iYAMaaoWW7geAO6JJ8iWYpVme8IsfhPNZnhwJyOwBC5677ekDRQ0N
+ V4h40ho0yN5odg2WDh6mz3uISgPqfE4HQdNFS4dMJQ3zy4qmB9/3yJXwbXvG0oHRaLYw
+ kRRz2lyX2FysAcRpa2FYgggo0svrQbMaZdBnbF7nkod2jp1TDiDxUQLDJSj+njIQdwvI
+ EPbCTULDk0OJVwE9gfgzETAijYipPwJWMQM98rQ8a6QqnbSxhqooqfD94JRxwquzhCNQ
+ +IpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696831818; x=1697436618;
+ d=1e100.net; s=20230601; t=1696831933; x=1697436733;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=XWdPdOs7mx57SjWq3066JLzCN01TLQELOyLYiY/Ghzg=;
- b=e8qTivF5+Hf+UrzhDyFt175Ic1awdsJNvsFF7Uq4WB1FAEkoGkI0CTAQBOceIQRqD+
- 0NETOOJ8PVSnzMES8oY8IYxxpczaKX7cgyKJBckrNMoQQ/Wgcm5Fmjsz5yqFy/yBiA1Z
- pmnKKLox4lpMrPmoShydDTK0dDCpW/6To1a2YKW5Ywo84LLrz4LVmlUx+lvxFZeT96d9
- Sx0cdlLOuseN7ZVZuysoBt3ZzTDm327FJzKHrA5TMO36Oj6QrqlkZNKuOjUd/V95aq2r
- QSRUgV0sYXhed9Sn0zc5lKtE762CHE9me7Y/bXKSbiVewr1+Dw62e7/T6kKHDBCYguOE
- dXNA==
-X-Gm-Message-State: AOJu0YxYY3wQK7xo50PjF414FSXT/7xVFBiB+9hJ8q45d1LeQKNj1p8H
- DWueCu2MR0PHPLbD1eheEasDRA==
-X-Google-Smtp-Source: AGHT+IHumSgXDgDq5Mkpr0qzW1Xcjl84nK3WP83lycjdfKpwzPzzvK8UkZ3ABd4bf2q9DCztbu7NPg==
-X-Received: by 2002:a17:906:5198:b0:9aa:25f5:8d93 with SMTP id
- y24-20020a170906519800b009aa25f58d93mr11896837ejk.49.1696831817930; 
- Sun, 08 Oct 2023 23:10:17 -0700 (PDT)
+ bh=vXC4vjRurkWAquiFqYJbLTG9LUebIfAgebLC0Y3e+3I=;
+ b=R9GsWCknJf/Vwk7zWpPqQRlVQ4wOP8oDzLouJkwumeAdAa1iRx5KM4ojXzW/8fpPgw
+ 9gTk/QriwpR/7Pf1VqdwCz6Rx62iNjhhcicQpwVsC80x5IRQXbKhb9J2NgUn6/YQYH7b
+ cVmb6olFygfMgBrYK61fgTLRaPGDe6rNAoHiDyP1MZSPw5039Rg9gL7pO9qfaem9iEqo
+ 9IQcCBbCYXMPdL3jc6NB4eexuaWE/Wnwckl5d9UfVvvHgYRmP/2OfGuIiRnlEZwg11Hv
+ ULTq7Ea14EUPTv6XcGOcOGx0C/ClKgAKvD14y5jisaWFFHKH/MocViMCENW6pnLUho2p
+ uLiw==
+X-Gm-Message-State: AOJu0YynJ92nmziLAh1IJtHCtS1x+XNQTg+Qkjo/2Q7dT3KhpkBPNCHI
+ Jk6sT3lx+PTGsGYje18ZzK8l4g==
+X-Google-Smtp-Source: AGHT+IEoD8BNuxhD2yMUM3oRlMLVtbZuewVYl0weUgcJqEqyzuwG2AsX+EkO9Pj0fRcv63Cm/q4Vvg==
+X-Received: by 2002:aa7:c248:0:b0:534:6b51:83a3 with SMTP id
+ y8-20020aa7c248000000b005346b5183a3mr13570130edo.1.1696831933438; 
+ Sun, 08 Oct 2023 23:12:13 -0700 (PDT)
 Received: from [192.168.69.115]
  (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
  by smtp.gmail.com with ESMTPSA id
- v24-20020a1709067d9800b009b2c5363ebasm6277441ejo.26.2023.10.08.23.10.16
+ y20-20020aa7d514000000b00537708be5c6sm5764043edq.73.2023.10.08.23.12.12
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 08 Oct 2023 23:10:17 -0700 (PDT)
-Message-ID: <c4536580-6757-7cc0-170f-f20fb0ad6e6f@linaro.org>
-Date: Mon, 9 Oct 2023 08:10:15 +0200
+ Sun, 08 Oct 2023 23:12:13 -0700 (PDT)
+Message-ID: <c36a2922-7cfe-1099-7ceb-e4780f4c63f5@linaro.org>
+Date: Mon, 9 Oct 2023 08:12:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v3 1/3] target/hexagon: move GETPC() calls to top level
- helpers
+Subject: Re: [PATCH v3 2/3] target/hexagon: fix some occurrences of
+ -Wshadow=local
 Content-Language: en-US
 To: Brian Cain <bcain@quicinc.com>, qemu-devel@nongnu.org
 Cc: armbru@redhat.com, richard.henderson@linaro.org,
  peter.maydell@linaro.org, quic_mathbern@quicinc.com, stefanha@redhat.com,
  ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com
 References: <20231008220945.983643-1-bcain@quicinc.com>
- <20231008220945.983643-2-bcain@quicinc.com>
+ <20231008220945.983643-3-bcain@quicinc.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231008220945.983643-2-bcain@quicinc.com>
+In-Reply-To: <20231008220945.983643-3-bcain@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -98,45 +98,48 @@ Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 On 9/10/23 00:09, Brian Cain wrote:
-> From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Of the changes in this commit, the changes in `HELPER(commit_hvx_stores)()`
+> are less obvious.  They are required because of some macro invocations like
+> SCATTER_OP_WRITE_TO_MEM().
 > 
-> As docs/devel/loads-stores.rst states:
+> e.g.:
 > 
->    ``GETPC()`` should be used with great care: calling
->    it in other functions that are *not* the top level
->    ``HELPER(foo)`` will cause unexpected behavior. Instead, the
->    value of ``GETPC()`` should be read from the helper and passed
->    if needed to the functions that the helper calls.
+>      In file included from ../target/hexagon/op_helper.c:31:
+>      ../target/hexagon/mmvec/macros.h:205:18: error: declaration of ‘i’ shadows a previous local [-Werror=shadow=compatible-local]
+>        205 |         for (int i = 0; i < sizeof(MMVector); i += sizeof(TYPE)) { \
+>            |                  ^
+>      ../target/hexagon/op_helper.c:157:17: note: in expansion of macro ‘SCATTER_OP_WRITE_TO_MEM’
+>        157 |                 SCATTER_OP_WRITE_TO_MEM(uint16_t);
+>            |                 ^~~~~~~~~~~~~~~~~~~~~~~
+>      ../target/hexagon/op_helper.c:135:9: note: shadowed declaration is here
+>        135 |     int i;
+>            |         ^
+>      In file included from ../target/hexagon/op_helper.c:31:
+>      ../target/hexagon/mmvec/macros.h:204:19: error: declaration of ‘ra’ shadows a previous local [-Werror=shadow=compatible-local]
+>        204 |         uintptr_t ra = GETPC(); \
+>            |                   ^~
+>      ../target/hexagon/op_helper.c:160:17: note: in expansion of macro ‘SCATTER_OP_WRITE_TO_MEM’
+>        160 |                 SCATTER_OP_WRITE_TO_MEM(uint32_t);
+>            |                 ^~~~~~~~~~~~~~~~~~~~~~~
+>      ../target/hexagon/op_helper.c:134:15: note: shadowed declaration is here
+>        134 |     uintptr_t ra = GETPC();
+>            |               ^~
 > 
-> Let's fix the GETPC() usage in Hexagon, making sure it's always called
-> from top level helpers and passed down to the places where it's
-> needed. There are a few snippets where that is not currently the case:
-> 
-> - probe_store(), which is only called from two helpers, so it's easy to
->    move GETPC() up.
-> 
-> - mem_load*() functions, which are also called directly from helpers,
->    but through the MEM_LOAD*() set of macros. Note that this are only
->    used when compiling with --disable-hexagon-idef-parser.
-> 
->    In this case, we also take this opportunity to simplify the code,
->    unifying the mem_load*() functions.
-> 
-> - HELPER(probe_hvx_stores), when called from another helper, ends up
->    using its own GETPC() expansion instead of the top level caller.
-> 
-> Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
-> Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
-> Message-Id: <2c74c3696946edba7cc5b2942cf296a5af532052.1689070412.git.quic_mathbern@quicinc.com>-ne
-
-Again suspicious '-ne' trailing.
-
-> Reviewed-by: Brian Cain <bcain@quicinc.com>
+> Reviewed-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 > Signed-off-by: Brian Cain <bcain@quicinc.com>
 > ---
->   target/hexagon/macros.h    | 19 +++++-----
->   target/hexagon/op_helper.c | 75 +++++++++++++++-----------------------
->   target/hexagon/op_helper.h |  9 -----
->   3 files changed, 38 insertions(+), 65 deletions(-)
+>   target/hexagon/imported/alu.idef |  6 +++---
+>   target/hexagon/mmvec/macros.h    |  2 +-
+>   target/hexagon/op_helper.c       |  9 +++------
+>   target/hexagon/translate.c       | 10 +++++-----
+>   4 files changed, 12 insertions(+), 15 deletions(-)
+
+No change since v2:
+https://lore.kernel.org/qemu-devel/45707b6e-6835-421f-e89b-6c1b0c50e35f@linaro.org/
+
+Please carry reviewer tags so we don't re-review patches.
+
+Again,
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
 
