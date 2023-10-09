@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A220F7BE6E2
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:47:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C95CC7BE6E3
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:47:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptPa-0005Ne-C4; Mon, 09 Oct 2023 12:47:18 -0400
+	id 1qptPS-0004OO-OV; Mon, 09 Oct 2023 12:47:10 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptPC-0003JD-PP
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:59 -0400
-Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
+ id 1qptOt-0003BP-M6
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:41 -0400
+Received: from mail-wm1-x32a.google.com ([2a00:1450:4864:20::32a])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptOl-0003Xa-Dj
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:50 -0400
-Received: by mail-wr1-x42e.google.com with SMTP id
- ffacd0b85a97d-3296b49c546so2831952f8f.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:15 -0700 (PDT)
+ id 1qptOi-0003VV-WA
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:30 -0400
+Received: by mail-wm1-x32a.google.com with SMTP id
+ 5b1f17b1804b1-405497850dbso44438845e9.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696869975; x=1697474775; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696869972; x=1697474772; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=mAyYQkrKbWdgjPeSFpAKf8LHOxPMb7ttiO+d+H3EETQ=;
- b=J5Lr0jclW7J339kIM66DlxNeLzBa14n1qo/PBMaOl7bsS/yXRn5HTmqlsmNAxv3W3X
- zJsN4TNXJpddqyAfjfSlhP6HeWThSqZpTrrCZX2ucIrOqGMsnaui8L8/DA4yA0Vu/r9P
- M6bksoVSx8CYFS3zgaXaV44EJZ5fY+Dp9agVP9UZNuEwmNwqI2x2p+msvC0luwHe3igG
- VQ1xjqLT4txAGAbGuo+onm7vGMcMdx3VyJa97gRaxtJnfTCYXEtBl6p4VBYXekTzMF5Q
- jf3gqth3dkBEqlt2239J1f8K8RwIUnFFZsvAQrv2HeKFcxaLwqkcY7cZRzDrYp230fRg
- eexw==
+ bh=6tkbJLFSKCFqBt7eF2KdGUHAT+NPxj+IrJR+AQ70tYE=;
+ b=gEPQOFgw6dKwgtTEQ9yulODQCWAXuTWPL+7uRcgBQZF/79MclLHI1M0+rpZ9XROpA5
+ m+hbLUrwTUILYo1/di4SSAW3V9nn5HUpX/xwcXzCpyy0/zDqmpB4njTQqCBoL/4c+2qQ
+ b25gNrxbpAgH0abvd0dd4ftG148D1BOEifGlWyRrm/WaWg3XZ9kxjV41k4bklyIriT3a
+ jLGXO5DvyxidagQ+8ygKVooUqLj3veElresb6WOE2JYQyaVS9yZHC1TG9FzyrccXXb5i
+ L9HR9NptkjujN5DHLoo/a3NoYUINZA7P7XT6BAFJs13dRgylkpQbbcrdGraENPFeNuX2
+ F0kQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696869975; x=1697474775;
+ d=1e100.net; s=20230601; t=1696869972; x=1697474772;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=mAyYQkrKbWdgjPeSFpAKf8LHOxPMb7ttiO+d+H3EETQ=;
- b=rPCCLZjrKUTLPwIc5Be6xMAqhrSzQNOiMRtHAOjxhOGvxJbTHJEfwQ27z1t1ykGOko
- Pgtj5TEqhaxSqOA0jTDB0M1ZMaoKaavMucLUQcqixnykCA01fNi2DIa7XpjJ5C4kNj8G
- 2dmpuxtOsgPFHBVHuzjvZGO6vmMBczXoVkrOem09DVL836svomBmEYrkZO6pLGgVl1Sr
- mYpELJw1tzKOeYQ67hpUYL6eJXuVFUnf9c2/Azs1FVakLajchg3vIIfQoRmcMxVaxQ17
- QPk4PlyejHWWzP72A2FqfV+RG4xoQCx57Gjn802lSrO6JwHPU3yN3WNy6CBdScxFMnYw
- hG4g==
-X-Gm-Message-State: AOJu0Yz7TyhiNVr3JmyY6KUfLO/UgSwcoIXIEhUCfFjmIgyYN5zU1FXc
- TDzcNhCFOj77NAztY38Vd7oNcQ==
-X-Google-Smtp-Source: AGHT+IHod6U6EmD0nkVFnhvY4XK4tB1NiixxHOl20O7cWXHyguHNdEJPEGeH5hB5HvD2bZ31su0fHQ==
-X-Received: by 2002:adf:b34a:0:b0:329:6c6a:c733 with SMTP id
- k10-20020adfb34a000000b003296c6ac733mr7480553wrd.58.1696869974897; 
- Mon, 09 Oct 2023 09:46:14 -0700 (PDT)
+ bh=6tkbJLFSKCFqBt7eF2KdGUHAT+NPxj+IrJR+AQ70tYE=;
+ b=g8bu7Y2Vx2HdKnq3OJnMNYQAqzjSk3KqYATwBZsXJ0S8h2SfTGYFaTyy7XnW7oc07C
+ JmT7q/R8lH9AZfklvawQUGQ3JC/78jeiFlEW7M94+9ATZRpcu2YBzvsFVGYeLLchBRXY
+ P/Q+oUN/81ZljN79Ro1owTVY5ApIoD2cQdX6AUY4HFOkJCTin047TnCv55SBFKtimAse
+ KI+cwdQIBq5V/xB0atZsjVnR6e1KU8S3rcsWNWD5s6Eddx5rVUK6cI7f25OREWI53Uvj
+ 186aRSN6ma8rvn/nOEWfvc9h200VyHqkBnrR08e+9/A54/CIutVmzgzC/EMvN4QmOE1+
+ 2alw==
+X-Gm-Message-State: AOJu0YxOdfdqcu9G5cUe/twF3XnTdwzWN8O4Wij9HbymZAsBsu4BlQdl
+ 9bnCvTGWYkdyJgqu8YbbTyqWXA==
+X-Google-Smtp-Source: AGHT+IHZJ3e+XH3QUR/HfE+G2KEXXVVPur/X2H6IVt+cLncEkTEfjNCKzXsdR1U3LLXERWjDzWPGug==
+X-Received: by 2002:a05:600c:2054:b0:3fe:687a:abb8 with SMTP id
+ p20-20020a05600c205400b003fe687aabb8mr14478186wmg.7.1696869972151; 
+ Mon, 09 Oct 2023 09:46:12 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- t11-20020a5d534b000000b003232380ffd5sm10082444wrv.106.2023.10.09.09.46.12
+ n16-20020a05600c3b9000b0040684abb623sm14062506wms.24.2023.10.09.09.46.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:46:13 -0700 (PDT)
+ Mon, 09 Oct 2023 09:46:11 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id ED3E71FFCF;
- Mon,  9 Oct 2023 17:41:07 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 122C11FFD0;
+ Mon,  9 Oct 2023 17:41:08 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
@@ -89,17 +89,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 24/25] contrib/plugins: fix coverity warning in lockstep
-Date: Mon,  9 Oct 2023 17:41:03 +0100
-Message-Id: <20231009164104.369749-25-alex.bennee@linaro.org>
+Subject: [PATCH 25/25] contrib/plugins: fix coverity warning in hotblocks
+Date: Mon,  9 Oct 2023 17:41:04 +0100
+Message-Id: <20231009164104.369749-26-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::32a;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32a.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,61 +122,29 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity complains that e don't check for a truncation when copying in
-the path. Bail if we can't copy the whole path into sockaddr.
+Coverity complains that we have an unbalance use of mutex leading to
+potential deadlocks.
 
-Fixes: CID 1519045
-Fixes: CID 1519046
+Fixes: CID 1519048
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/lockstep.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ contrib/plugins/hotblocks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
-index 682b11feb2..f0cb8792c6 100644
---- a/contrib/plugins/lockstep.c
-+++ b/contrib/plugins/lockstep.c
-@@ -245,6 +245,7 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
- static bool setup_socket(const char *path)
- {
-     struct sockaddr_un sockaddr;
-+    const gsize pathlen = sizeof(sockaddr.sun_path) - 1;
-     int fd;
+diff --git a/contrib/plugins/hotblocks.c b/contrib/plugins/hotblocks.c
+index 6b74d25fea..4de1b13494 100644
+--- a/contrib/plugins/hotblocks.c
++++ b/contrib/plugins/hotblocks.c
+@@ -69,8 +69,8 @@ static void plugin_exit(qemu_plugin_id_t id, void *p)
+         }
  
-     fd = socket(AF_UNIX, SOCK_STREAM, 0);
-@@ -254,7 +255,11 @@ static bool setup_socket(const char *path)
+         g_list_free(it);
+-        g_mutex_unlock(&lock);
      }
++    g_mutex_unlock(&lock);
  
-     sockaddr.sun_family = AF_UNIX;
--    g_strlcpy(sockaddr.sun_path, path, sizeof(sockaddr.sun_path) - 1);
-+    if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
-+        perror("bad path");
-+        return false;
-+    }
-+
-     if (bind(fd, (struct sockaddr *)&sockaddr, sizeof(sockaddr)) < 0) {
-         perror("bind socket");
-         close(fd);
-@@ -287,6 +292,7 @@ static bool connect_socket(const char *path)
- {
-     int fd;
-     struct sockaddr_un sockaddr;
-+    const gsize pathlen = sizeof(sockaddr.sun_path) - 1;
- 
-     fd = socket(AF_UNIX, SOCK_STREAM, 0);
-     if (fd < 0) {
-@@ -295,7 +301,10 @@ static bool connect_socket(const char *path)
-     }
- 
-     sockaddr.sun_family = AF_UNIX;
--    g_strlcpy(sockaddr.sun_path, path, sizeof(sockaddr.sun_path) - 1);
-+    if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
-+        perror("bad path");
-+        return false;
-+    }
- 
-     if (connect(fd, (struct sockaddr *)&sockaddr, sizeof(sockaddr)) < 0) {
-         perror("failed to connect");
+     qemu_plugin_outs(report->str);
+ }
 -- 
 2.39.2
 
