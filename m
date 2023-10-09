@@ -2,87 +2,76 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FD797BD70C
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:30:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8482F7BD713
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:32:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmac-0003J3-LE; Mon, 09 Oct 2023 05:30:14 -0400
+	id 1qpmcP-0004BP-ND; Mon, 09 Oct 2023 05:32:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qpmaQ-0003IW-4v
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:30:03 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <eauger@redhat.com>) id 1qpmaI-0002Ko-Kx
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:30:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696843792;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=Z8v6oUB9R0ut9RCLkxUxysZibQ9n9Oodas9HRKEGuEg=;
- b=Y5pUQFvjeDQDsqsJ06UsMrf6Cqae1zGfiyibQ8rT9D9CzaF+64nL2tuHc+GE7iiWHhLNNX
- MUXpPbwTVqurlSu6aV89xs0iT6DI3Z9Fl0jRbA9AnNzSKqTuflJsogEAT0rD1v69y6Da3B
- WDsNoi9+wHj26dxr+kV5ShCQQAsON3M=
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
- [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-433-laeMiuoTO8CDx5JkdmYHTA-1; Mon, 09 Oct 2023 05:29:41 -0400
-X-MC-Unique: laeMiuoTO8CDx5JkdmYHTA-1
-Received: by mail-qk1-f198.google.com with SMTP id
- af79cd13be357-77576c78c11so518217085a.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 02:29:41 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpmcJ-0004Az-Cg
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:31:59 -0400
+Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpmcH-0002nU-F4
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:31:58 -0400
+Received: by mail-ed1-x531.google.com with SMTP id
+ 4fb4d7f45d1cf-53808d5b774so7714937a12.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 02:31:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696843914; x=1697448714; darn=nongnu.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=mabujDx0DSImp/RgYxObckqCXl/9gkN8GQesN9V0wGU=;
+ b=k+LYp5qHrb6ghSSMlfR94IwANtYj4Gkb+dgcWdx4MnS78YY55qoaPlRdzwZCcCzbch
+ PJLOE2hdlcrC2NuyLFC8pjzYnLdHKStYvT7mKh21fKK1KfScIcrW+mrt5IVHtIVmg14J
+ q0ZSta+doBzBgn5S2e71A2aqCwdLHOnQ1iHufavWE3/UMo/SboFRMKw+LlQJb0c947iK
+ JSwJ1b+4nZkqBO33fNwF0UfIYOloThe+puqTWjmiOZxlTRowxAYIj/+0PyNQqHgXCmAz
+ X78uEYbyNaW/FoeqnvFBxlVBK/VMP6iEUT6P543v7zcwtTSJcRbbI3EwG56oqD8K8Uip
+ a0sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696843780; x=1697448580;
- h=content-transfer-encoding:in-reply-to:from:references:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Z8v6oUB9R0ut9RCLkxUxysZibQ9n9Oodas9HRKEGuEg=;
- b=OwnGHGN9YlqnzlMmCLik5Jn5vUSktiA7EgulWK1LYxt133u8NbTCeNpVR7BD+c7oTK
- 89SunTNRm0YkOvWUB+5IiS7yrwXu2T/CHCRSzYjXnE04aKjKYscJXLqcIRHKx70kv7WR
- HYf6TcyyUMZgEkOjp/59zYm5wZEnV0WDSX/0UH4W6H/XH9aU50yBXt8poJU5Omzh8NFR
- a5fQEcVp1aglf7M9aGpCtFW+AJhJN7XN35XfmHdvzyoVmghGPtDcj10RzZ5aukj+Gtmt
- bELx62ovFOK74UwJhyFknSYTkeva7ZsA1LOe0xR/bp+6jAL6k4JCDfRKWQqjQ0+Shd6v
- 4XcA==
-X-Gm-Message-State: AOJu0YwUCb37sDc6ZNtFVZcaxokNxwQMB1jKYn4mStcqh2W6lM4lSSaS
- Oov6HcuFskWQwqcze+yVgSKDUiuVQEnSX9uqR6PI3wz1m4uJKSSstk35fevUjcGaM8/+ZO2FUv8
- dtZMbAyUNA49FU1vkQRd67Iw=
-X-Received: by 2002:a05:620a:47b6:b0:765:9391:13e7 with SMTP id
- dt54-20020a05620a47b600b00765939113e7mr14571094qkb.49.1696843780089; 
- Mon, 09 Oct 2023 02:29:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFD33pSrCNhMAbgbEP/3l2jCsKlFn8MXdUK8XMB2Kq05ZlhAyE5GSRanENg4DyeGqXGa1ex2A==
-X-Received: by 2002:a05:620a:47b6:b0:765:9391:13e7 with SMTP id
- dt54-20020a05620a47b600b00765939113e7mr14571087qkb.49.1696843779734; 
- Mon, 09 Oct 2023 02:29:39 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874?
- ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
- by smtp.gmail.com with ESMTPSA id
- d2-20020a05620a158200b00767d4a3f4d9sm3400675qkk.29.2023.10.09.02.29.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 02:29:39 -0700 (PDT)
-Message-ID: <278fd0fd-a81d-6da5-e903-71f002e17ab5@redhat.com>
-Date: Mon, 9 Oct 2023 11:29:36 +0200
+ d=1e100.net; s=20230601; t=1696843914; x=1697448714;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=mabujDx0DSImp/RgYxObckqCXl/9gkN8GQesN9V0wGU=;
+ b=ucDHm3GnrdNvtPjfAoBLWzcIkgP15uxwmzGrqxLabbH2VTNMJD+x4MlMXavkY364LI
+ /V9wTRS8EGcUNbglN3y9SEkW9GwC3QhfrOm/5B+sJV1JiTCTymMcaG44aSgu6fQfUcJv
+ rmfFSRxQwhjFsed7TjPpfGAVszWmH3LCQWGcovuSs9onvTyq5fOwNYhsuuJod8fMHv5z
+ 5XWzsxHQ6GfELsQ5Z1fQnhnYgqdi4ySAIBiRiF7M7C92FG4Ki3qblfSjb5nGQRIV9aMu
+ b4raQwsyI0nJTFfSAuj+mXnD3oAgZK2+KrpYSknx52kmx5YHVosddiM2dThPzj9MIyHX
+ YqLw==
+X-Gm-Message-State: AOJu0YytbQZUcVMLB64GvdNND//snd08sXW1G4ydnENLascUWtQHyG5w
+ 3L1LKHXio5Ld1Tn5+erOwj2uyBczNR2xmS5UI+Y=
+X-Google-Smtp-Source: AGHT+IHxVlzTMthc6YwYqbWY/VRzxjdyt2Fhmliqx4wRDD7X4jTEo6/pzBGu5DN+qOQ1QRKKKG4yXA==
+X-Received: by 2002:a50:ed14:0:b0:52f:a162:f4c4 with SMTP id
+ j20-20020a50ed14000000b0052fa162f4c4mr12692315eds.18.1696843914506; 
+ Mon, 09 Oct 2023 02:31:54 -0700 (PDT)
+Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
+ [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
+ s21-20020aa7d795000000b0053613c8312bsm5907295edq.42.2023.10.09.02.31.53
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Mon, 09 Oct 2023 02:31:54 -0700 (PDT)
+From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Subject: [PATCH] system/vl: Use global &bdo_queue in configure_blockdev()
+Date: Mon,  9 Oct 2023 11:31:52 +0200
+Message-ID: <20231009093152.51270-1-philmd@linaro.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: vIOMMU - PCI pass through to Layer 2 VMs (Nested Virtualization)
-Content-Language: en-US
-To: Markus Frank <m.frank@proxmox.com>, qemu-devel@nongnu.org
-References: <d969606d-79bf-4ba1-849a-f2e819aaf274@proxmox.com>
-From: Eric Auger <eauger@redhat.com>
-In-Reply-To: <d969606d-79bf-4ba1-849a-f2e819aaf274@proxmox.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=eauger@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
-X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.818, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::531;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x531.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -99,69 +88,73 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Markus,
+Commit d11bf9bf0f ("vl: Factor configure_blockdev() out of main()")
+passed &bdo_queue as argument, but this isn't really necessary since
+there is only one call, so we still use the global variable.
 
-On 10/9/23 09:06, Markus Frank wrote:
-> Hello,
-> 
-> I have already sent this email to qemu-discuss but I did not get a reply.
-> https://lists.nongnu.org/archive/html/qemu-discuss/2023-09/msg00034.html
-> Maybe someone here could help me and reply to this email or the one on
-> qemu-discuss?
-> 
-> I would like to pass through PCI devices to Layer-2 VMs via Nested
-> Virtualization.
-> 
-> Is there current documentation for this topic somewhere?
-> 
-> I used these parameters:
-> -machine ...,kernel-irqchip=split
-> -device intel-iommu
-> 
-> With these parameters PCI pass through to L2-VMs worked fine.
-> 
-> 
-> Now I come to the part where I get confused.
-> 
-> https://wiki.qemu.org/Features/VT-d#With_Virtio_Devices
-> Is this documentation relevant for PCI pass through? Do I need DMAR for
-> virtio devices?
-If you just want the host assigned devices to be protected by the
-viommu, you don't need to add iommu_platform=on along with the
-virtio-pci devices.
-> 
-> And there is also the virtio-iommu device where I also could use the
-> i440fx chipset.
-> https://michael2012z.medium.com/virtio-iommu-789369049443
+Dropping the &bdo_queue argument allows to silence this global shadow
+warning:
 
-you can use virtio-iommu with q35 machine.
-> 
-> When adding "-device virtio-iommu-pci" pci pass through also works
-> but I get "kvm: virtio_iommu_translate no mapping for 0x1002030f000 for
-> sid=240"
-> when starting qemu. What could that mean?
-Normally you shouldn't get any such error. This means there is no
-mapping programmed by the iommu-driver for this requester id (0x240) and
-this iova=0x1002030f000. But if I understand correctly this does not
-prevent your device from working, correct?
-> 
-> What do these parameters
-> "disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on"
-> actually do? When do I need them and on which virtio devices?
-you need them if you want your virtio devices to be protected by the
-viommu. Otherwise the viommu is bypassed.
-> 
-> And which device should I rather use: virtio-iommu or intel-iommu?
-Both should be working. virtio-iommu is more recent and less used in
-production than intel-iommu though.
+  softmmu/vl.c:678:54: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+  static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
+                                                       ^
+  softmmu/vl.c:172:29: note: previous declaration is here
+  static BlockdevOptionsQueue bdo_queue = QSIMPLEQ_HEAD_INITIALIZER(bdo_queue);
+                              ^
 
-Thanks
+Remove a spurious empty line.
 
-Eric
-> 
-> Thanks in advance,
-> Markus
-> 
-> 
+Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+---
+ softmmu/vl.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/softmmu/vl.c b/softmmu/vl.c
+index 98e071e63b..bc283b9fd4 100644
+--- a/softmmu/vl.c
++++ b/softmmu/vl.c
+@@ -674,8 +674,7 @@ static void default_drive(int enable, int snapshot, BlockInterfaceType type,
+ 
+ }
+ 
+-static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
+-                               MachineClass *machine_class, int snapshot)
++static void configure_blockdev(MachineClass *machine_class, int snapshot)
+ {
+     /*
+      * If the currently selected machine wishes to override the
+@@ -688,10 +687,10 @@ static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
+     }
+ 
+     /* open the virtual block devices */
+-    while (!QSIMPLEQ_EMPTY(bdo_queue)) {
+-        BlockdevOptionsQueueEntry *bdo = QSIMPLEQ_FIRST(bdo_queue);
++    while (!QSIMPLEQ_EMPTY(&bdo_queue)) {
++        BlockdevOptionsQueueEntry *bdo = QSIMPLEQ_FIRST(&bdo_queue);
+ 
+-        QSIMPLEQ_REMOVE_HEAD(bdo_queue, entry);
++        QSIMPLEQ_REMOVE_HEAD(&bdo_queue, entry);
+         loc_push_restore(&bdo->loc);
+         qmp_blockdev_add(bdo->bdo, &error_fatal);
+         loc_pop(&bdo->loc);
+@@ -712,7 +711,6 @@ static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
+                   CDROM_OPTS);
+     default_drive(default_floppy, snapshot, IF_FLOPPY, 0, FD_OPTS);
+     default_drive(default_sdcard, snapshot, IF_SD, 0, SD_OPTS);
+-
+ }
+ 
+ static QemuOptsList qemu_smp_opts = {
+@@ -1961,7 +1959,7 @@ static void qemu_create_early_backends(void)
+      * Note: we need to create audio and block backends before
+      * setting machine properties, so they can be referred to.
+      */
+-    configure_blockdev(&bdo_queue, machine_class, snapshot);
++    configure_blockdev(machine_class, snapshot);
+     audio_init_audiodevs();
+ }
+ 
+-- 
+2.41.0
 
 
