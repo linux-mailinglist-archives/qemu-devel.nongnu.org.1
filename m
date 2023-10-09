@@ -2,92 +2,92 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 515D07BD492
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 09:45:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31AB87BD4A6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 09:51:07 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpkw5-0005b7-HJ; Mon, 09 Oct 2023 03:44:17 -0400
+	id 1qpl1w-0008JR-GC; Mon, 09 Oct 2023 03:50:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpkw3-0005ad-CA
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 03:44:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpl1u-0008JF-ID
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 03:50:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpkw1-0007mM-Lp
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 03:44:15 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpl1o-0000n0-QT
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 03:50:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696837452;
+ s=mimecast20190719; t=1696837811;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=qd+nGieuTTmF5lmD6sldutAp20u8I2pBoODFswtZSx0=;
- b=PukFpgIVsH1uMvsrEflTPaqKYg6+K40EfqOn7BzQtrasrODjzRu2F8Kucb+b58XnNXMCFw
- m6Hh7xCy+itmkY5606W+RMkqJXmJ8iNaLhWzYjoRp8EPoEGprNvINgsIulEzDoKv+E9+pi
- k96jsKPOOPRiow6nlj7Lzkj6dX1GQMI=
-Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
- [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=E250/fwGkAG2JroWI0zpyyjXnY+04kK6EaQhRiw0jZY=;
+ b=AjrRRqDRxOvQ2lqUeqcwFimh2ILy6XH0N8KfD9FraAOLCqAuM9c9X2XoEJo/a8kBcZhOMm
+ RwqTGVUASUE6rBHMf1lWALHz/2+HMRIatVBItPiw3A8srFUGnEMBOWFiD3hNaHR36tk1TI
+ VWaUs8usRW+iE63q9cE1b7dZAcbE4L0=
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com
+ [209.85.221.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-VxdRzs89O_CFT8zBrrl3xQ-1; Mon, 09 Oct 2023 03:44:11 -0400
-X-MC-Unique: VxdRzs89O_CFT8zBrrl3xQ-1
-Received: by mail-qt1-f199.google.com with SMTP id
- d75a77b69052e-41b19dc9ee4so11422401cf.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 00:44:11 -0700 (PDT)
+ us-mta-605-JyLDAVTDPgaOewRMC05Jfw-1; Mon, 09 Oct 2023 03:50:09 -0400
+X-MC-Unique: JyLDAVTDPgaOewRMC05Jfw-1
+Received: by mail-vk1-f197.google.com with SMTP id
+ 71dfb90a1353d-49a90eb1396so2072038e0c.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 00:50:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696837451; x=1697442251;
+ d=1e100.net; s=20230601; t=1696837809; x=1697442609;
  h=content-transfer-encoding:in-reply-to:from:references:cc:to
  :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=qd+nGieuTTmF5lmD6sldutAp20u8I2pBoODFswtZSx0=;
- b=qfJt6Eib/Ozi2upBvUfoJmuZJAzlZafmzrbF30+WWKhLo1k95xeu1kIFIoOOduWxKK
- 5YuOaRAIfXXyyKIEu483zx7p6LtFLcy0DzGDZPlUSHUkZDN2RnEvcH7isZ25XUb3VGIO
- RPIz34AH3WcjHdXr2es70KiURy8Sqo13HGnfjxqiLKd7vwvtYE7mgyQSPJjZFt1FXV/8
- MHUC+Kg4402YMcWEQV/QLncj2LslzsBjoe4XRFZvXfKL2D2egeNAL1pD12f1Ux3sPmgS
- nWnxzhauikGZo93e4Fq+OguJVw4CDv46p8/1jofwonZ1w6fJYK93m3IGAwQvCOPENegY
- uTZg==
-X-Gm-Message-State: AOJu0Yw0ihEcEq8JnssQA5USdKHoST8JY/iEpeHEObqH+m4X01WyoEKr
- 6zLQnS2vtPQ0oZDxzENcPsII2nREbom8kcFzze4UXh+zrRxfRMFo/uuk/3SAiBf+egdw+WWLw0D
- 9/tx0AM4nDLkryoU=
-X-Received: by 2002:a05:622a:1787:b0:410:9626:f0bf with SMTP id
- s7-20020a05622a178700b004109626f0bfmr16185670qtk.13.1696837451039; 
- Mon, 09 Oct 2023 00:44:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGHrU+HMuRzqYJChh1ceuO25FvOX74+nUAcm6JXqZG8bDkVctKMjewSHpplm63BJSZS9gQBfw==
-X-Received: by 2002:a05:622a:1787:b0:410:9626:f0bf with SMTP id
- s7-20020a05622a178700b004109626f0bfmr16185660qtk.13.1696837450693; 
- Mon, 09 Oct 2023 00:44:10 -0700 (PDT)
+ bh=E250/fwGkAG2JroWI0zpyyjXnY+04kK6EaQhRiw0jZY=;
+ b=j72RMO/GZ07WoYVM1fRLXUOxvFIWp7loMDZeCOVb59YzbgtYmWyGGYWi0AzX9p9L6r
+ 7aWCy1hajsyedsTV9QPrf4nztfGfMaUNvtQuDcIIz7qcTS5yh1gqsBwVRCBdsEUzVJ/0
+ /Rnt/tOlLUBOyKmmT+ul6DNmxSU5NvMTJ9IugoCAZ+Z+9b0T6lMR8Cr1TOUQL1y/g5C8
+ Sv9SGJkCWwTVgmPuYQX7TiY+gqmIopnlgjbo+BbSECXypVOr/0+H+T6r88fYWNtLVCK/
+ YD3MuS0xunxB7yVqXEfY8C2gP/FxNIGLyEvf3Irb6rUZtfcRSQcLCy6Qb8ENJsypuF9i
+ VanA==
+X-Gm-Message-State: AOJu0Yxz9jg4ddxO1Utw2zkAE8deImOGA5SEzNOfd4CdVBaVIhxr0uIb
+ Ywf5wvITOMt8crwNKyn9spBBEKuZvpjt93irCYwLmbVQ1uTwMWUOgfgVvfT6nzOztevPS7V0SCm
+ /NF0unv/sVwvfViE=
+X-Received: by 2002:a1f:cb45:0:b0:49a:b737:4dfa with SMTP id
+ b66-20020a1fcb45000000b0049ab7374dfamr9713949vkg.4.1696837809131; 
+ Mon, 09 Oct 2023 00:50:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHiLcUt4FZiV10h4MfuMNtmK+df0Zea2zKzTEGqtPhx2NBCZ0iZMGQ13l4MlyB99Ocvgl7fdw==
+X-Received: by 2002:a1f:cb45:0:b0:49a:b737:4dfa with SMTP id
+ b66-20020a1fcb45000000b0049ab7374dfamr9713932vkg.4.1696837808799; 
+ Mon, 09 Oct 2023 00:50:08 -0700 (PDT)
 Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
  [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
- l25-20020ac84cd9000000b004181c32dcc3sm3491272qtv.16.2023.10.09.00.44.09
+ t10-20020a0ca68a000000b00668eb252523sm3634878qva.63.2023.10.09.00.50.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 00:44:10 -0700 (PDT)
-Message-ID: <c28a1d44-8e7e-a351-8efa-28566e9fc306@redhat.com>
-Date: Mon, 9 Oct 2023 09:44:07 +0200
+ Mon, 09 Oct 2023 00:50:08 -0700 (PDT)
+Message-ID: <d628587a-8b21-7ca8-111e-9603e860c3c6@redhat.com>
+Date: Mon, 9 Oct 2023 09:50:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 2/2] meson: mitigate against use of uninitialize stack for
- exploits
+Subject: Re: [v3] Help wanted for enabling -Wshadow=local
 Content-Language: en-US
-To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
- qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-References: <20231005173812.966264-1-berrange@redhat.com>
- <20231005173812.966264-3-berrange@redhat.com>
+To: Warner Losh <imp@bsdimp.com>
+Cc: Markus Armbruster <armbru@redhat.com>,
+ QEMU Developers <qemu-devel@nongnu.org>, Gerd Hoffmann <kraxel@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>
+References: <87mswvg683.fsf@pond.sub.org>
+ <12397ede-8e20-cb55-b759-d2fbf7732f46@redhat.com>
+ <884f4d8c-4ee4-3ee2-ff62-5d7166a75adb@redhat.com>
+ <CANCZdfpU1eCM0fatVBuQJW9bLzTZfvp3HNQ=2Kfz9ni90PbmEg@mail.gmail.com>
 From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20231005173812.966264-3-berrange@redhat.com>
+In-Reply-To: <CANCZdfpU1eCM0fatVBuQJW9bLzTZfvp3HNQ=2Kfz9ni90PbmEg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
 X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.818, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01,
+ NICE_REPLY_A=-1.818, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
  RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -105,58 +105,128 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 05/10/2023 19.38, Daniel P. Berrangé wrote:
-> When variables are used without being initialized, there is potential
-> to take advantage of data that was pre-existing on the stack from an
-> earlier call, to drive an exploit.
+On 06/10/2023 21.08, Warner Losh wrote:
 > 
-> It is good practice to always initialize variables, and the compiler
-> can warn about flaws when -Wuninitialized is present. This warning,
-> however, is by no means foolproof with its output varying depending
-> on compiler version and which optimizations are enabled.
 > 
-> The -ftrivial-auto-var-init option can be used to tell the compiler
-> to always initialize all variables. This increases the security and
-> predictability of the program, closing off certain attack vectors,
-> reducing the risk of unsafe memory disclosure.
+> On Fri, Oct 6, 2023, 11:55 AM Thomas Huth <thuth@redhat.com 
+> <mailto:thuth@redhat.com>> wrote:
 > 
-> While the option takes several possible values, using 'zero' is
-> considered to be the  option that is likely to lead to semantically
-> correct or safe behaviour[1]. eg sizes/indexes are not likely to
-> lead to out-of-bounds accesses when initialized to zero. Pointers
-> are less likely to point something useful if initialized to zero.
+>     On 06/10/2023 18.18, Thomas Huth wrote:
+>      > On 06/10/2023 16.45, Markus Armbruster wrote:
+>      >> Local variables shadowing other local variables or parameters make the
+>      >> code needlessly hard to understand.  Bugs love to hide in such code.
+>      >> Evidence: "[PATCH v3 1/7] migration/rdma: Fix save_page method to fail
+>      >> on polling error".
+>      >>
+>      >> Enabling -Wshadow would prevent bugs like this one.  But we have to
+>      >> clean up all the offenders first.
+>      >>
+>      >> Quite a few people responded to my calls for help.  Thank you so much!
+>      >>
+>      >> I'm collecting patches in my git repo at
+>      >> https://repo.or.cz/qemu/armbru.git
+>     <https://repo.or.cz/qemu/armbru.git> in branch shadow-next.  All but the
+>      >> last two are in a pending pull request.
+>      >>
+>      >> My test build is down to seven files with warnings.  "[PATCH v2 0/3]
+>      >> hexagon: GETPC() and shadowing fixes" takes care of four, but it needs a
+>      >> rebase.
+>      >>
+>      >> Remaining three:
+>      >>
+>      >>      In file included from ../hw/display/virtio-gpu-virgl.c:19:
+>      >>      ../hw/display/virtio-gpu-virgl.c: In function
+>     ‘virgl_cmd_submit_3d’:
+>      >>      /work/armbru/qemu/include/hw/virtio/virtio-gpu.h:228:16: warning:
+>      >> declaration of ‘s’ shadows a previous local [-Wshadow=compatible-local]
+>      >>        228 |         size_t
+>      >> s;                                                       \
+>      >>            |                ^
+>      >>      ../hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of
+>     macro
+>      >> ‘VIRTIO_GPU_FILL_CMD’
+>      >>        215 |     VIRTIO_GPU_FILL_CMD(cs);
+>      >>            |     ^~~~~~~~~~~~~~~~~~~
+>      >>      ../hw/display/virtio-gpu-virgl.c:213:12: note: shadowed
+>     declaration
+>      >> is here
+>      >>        213 |     size_t s;
+>      >>            |            ^
+>      >>
+>      >>      In file included from ../contrib/vhost-user-gpu/virgl.h:18,
+>      >>                       from ../contrib/vhost-user-gpu/virgl.c:17:
+>      >>      ../contrib/vhost-user-gpu/virgl.c: In function
+>     ‘virgl_cmd_submit_3d’:
+>      >>      ../contrib/vhost-user-gpu/vugpu.h:167:16: warning: declaration
+>     of ‘s’
+>      >> shadows a previous local [-Wshadow=compatible-local]
+>      >>        167 |         size_t
+>      >> s;                                               \
+>      >>            |                ^
+>      >>      ../contrib/vhost-user-gpu/virgl.c:203:5: note: in expansion of
+>     macro
+>      >> ‘VUGPU_FILL_CMD’
+>      >>        203 |     VUGPU_FILL_CMD(cs);
+>      >>            |     ^~~~~~~~~~~~~~
+>      >>      ../contrib/vhost-user-gpu/virgl.c:201:12: note: shadowed
+>     declaration
+>      >> is here
+>      >>        201 |     size_t s;
+>      >>            |            ^
+>      >>
+>      >>      ../contrib/vhost-user-gpu/vhost-user-gpu.c: In function
+>      >> ‘vg_resource_flush’:
+>      >>      ../contrib/vhost-user-gpu/vhost-user-gpu.c:837:29: warning:
+>      >> declaration of ‘i’ shadows a previous local [-Wshadow=local]
+>      >>        837 |             pixman_image_t *i =
+>      >>            |                             ^
+>      >>      ../contrib/vhost-user-gpu/vhost-user-gpu.c:757:9: note: shadowed
+>      >> declaration is here
+>      >>        757 |     int i;
+>      >>            |         ^
+>      >>
+>      >> Gerd, Marc-André, or anybody else?
+>      >>
+>      >> More warnings may lurk in code my test build doesn't compile.  Need a
+>      >> full CI build with -Wshadow=local to find them.  Anybody care to kick
+>      >> one off?
+>      >
+>      > I ran a build here (with -Werror enabled, so that it's easier to see
+>     where
+>      > it breaks):
+>      >
+>      > https://gitlab.com/thuth/qemu/-/pipelines/1028023489
+>     <https://gitlab.com/thuth/qemu/-/pipelines/1028023489>
+>      >
+>      > ... but I didn't see any additional spots in the logs beside the ones
+>     that
+>      > you already listed.
 > 
-> Even with -ftrivial-auto-var-init=zero set, GCC will still issue
-> warnings with -Wuninitialized if it discovers a problem, so we are
-> not loosing diagnostics for developers, just hardening runtime
-> behaviour and making QEMU behave more predictably in case of hitting
-> bad codepaths.
+>     After adding two more patches to fix the above warnings, things look pretty
+>     good:
 > 
-> [1] https://lists.llvm.org/pipermail/cfe-dev/2020-April/065221.html
-> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
-> ---
->   meson.build | 5 +++++
->   1 file changed, 5 insertions(+)
+>     https://gitlab.com/thuth/qemu/-/pipelines/1028413030
+>     <https://gitlab.com/thuth/qemu/-/pipelines/1028413030>
 > 
-> diff --git a/meson.build b/meson.build
-> index 2003ca1ba4..19faea8d30 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -442,6 +442,11 @@ hardening_flags = [
->       # upon its return. This makes it harder to assemble
->       # ROP gadgets into something usable
->       '-fzero-call-used-regs=used-gpr',
-> +
-> +    # Initialize all stack variables to zero. This makes
-> +    # it harder to take advantage of uninitialized stack
-> +    # data to drive exploits
-> +    '-ftrivial-var-auto-init=zero',
->   ]
+>     There are just some warnings left in the BSD code, as Warner already
+>     mentioned in his reply to v2 of your mail:
+> 
+>     https://gitlab.com/thuth/qemu/-/jobs/5241420713
+>     <https://gitlab.com/thuth/qemu/-/jobs/5241420713>
+> 
+> 
+> I think I have fixes for these. I need to merge what just landed into 
+> bsd-user fork, rebase, test, the apply them to qemu master branch, retest 
+> and send them off...
+> 
+> My illness has hung on longer than I thought so I'm still behind...
 
-I was a little bit torn about using =zero when I first read your patch, but 
-after looking at [1], I tend now also tend to agree that =zero is likely the 
-best choice. So from my side:
+Get well soon again! ... and no worries about the -Wshadow=local patches in 
+the BSD code, there is no hurry - The BSDs are using Clang by default, so 
+that option won't get enabled by default there anyway yet - I had to switch 
+to GCC in the CI pipeline to trigger those, and I guess only very few people 
+will use GCC to compile QEMU on FreeBSD.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+  Thomas
 
 
