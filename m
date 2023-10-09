@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548CB7BD7A2
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:51:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BADC7BD792
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:49:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmqi-000093-Ga; Mon, 09 Oct 2023 05:46:52 -0400
+	id 1qpmrL-0000Nw-8v; Mon, 09 Oct 2023 05:47:31 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qpmqT-0008Rn-AV; Mon, 09 Oct 2023 05:46:37 -0400
+ id 1qpmqn-0000EV-NV; Mon, 09 Oct 2023 05:46:58 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qpmqQ-0005Zs-UY; Mon, 09 Oct 2023 05:46:37 -0400
+ id 1qpmqm-0005aa-5m; Mon, 09 Oct 2023 05:46:57 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D48B64493A;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id EADFA4494C;
  Mon,  9 Oct 2023 11:46:24 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
@@ -25,9 +25,9 @@ Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
  jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
  alexander.ivanov@virtuozzo.com
-Subject: [PATCH v2 05/10] mirror: implement mirror_change method
-Date: Mon,  9 Oct 2023 11:46:14 +0200
-Message-Id: <20231009094619.469668-6-f.ebner@proxmox.com>
+Subject: [PATCH v2 06/10] qapi/block-core: use JobType for BlockJobInfo's type
+Date: Mon,  9 Oct 2023 11:46:15 +0200
+Message-Id: <20231009094619.469668-7-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009094619.469668-1-f.ebner@proxmox.com>
 References: <20231009094619.469668-1-f.ebner@proxmox.com>
@@ -55,100 +55,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-which allows switching the @copy-mode from 'background' to
-'write-blocking'.
+In preparation to turn BlockJobInfo into a union with @type as the
+discriminator. That requires it to be an enum.
 
-This is useful for management applications, so they can start out in
-background mode to avoid limiting guest write speed and switch to
-active mode when certain criteria are fulfilled.
+No functional change is intended.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
+Reviewed-by: Vladimir Sementsov-Ogievskiy <vsementsov@yandex-team.ru>
 ---
 
-Changes in v2:
-    * update QEMU version in QAPI
-    * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
-      doc comments to conform to current conventions"))
-    * drop drained section and disable dirty bitmap call. It's already
-      disabled, because the bitmap is now attached to the filter and
-      set in bdrv_mirror_top_do_write(). See the earlier patch
-      "block/mirror: move dirty bitmap to filter"
+No changes in v2.
 
- block/mirror.c       | 22 ++++++++++++++++++++++
- qapi/block-core.json | 13 ++++++++++++-
- 2 files changed, 34 insertions(+), 1 deletion(-)
+ block/monitor/block-hmp-cmds.c | 4 ++--
+ blockjob.c                     | 2 +-
+ qapi/block-core.json           | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/block/mirror.c b/block/mirror.c
-index b84de56734..83aa4176c2 100644
---- a/block/mirror.c
-+++ b/block/mirror.c
-@@ -1246,6 +1246,27 @@ static bool commit_active_cancel(Job *job, bool force)
-     return force || !job_is_ready(job);
- }
+diff --git a/block/monitor/block-hmp-cmds.c b/block/monitor/block-hmp-cmds.c
+index ca2599de44..f9f87e5c47 100644
+--- a/block/monitor/block-hmp-cmds.c
++++ b/block/monitor/block-hmp-cmds.c
+@@ -843,7 +843,7 @@ void hmp_info_block_jobs(Monitor *mon, const QDict *qdict)
+     }
  
-+static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
-+                          Error **errp)
-+{
-+    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
-+    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
-+
-+    if (s->copy_mode == change_opts->copy_mode) {
-+        return;
-+    }
-+
-+    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
-+        error_setg(errp, "Cannot switch away from copy mode 'write-blocking'");
-+        return;
-+    }
-+
-+    assert(s->copy_mode == MIRROR_COPY_MODE_BACKGROUND &&
-+           change_opts->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING);
-+
-+    s->copy_mode = MIRROR_COPY_MODE_WRITE_BLOCKING;
-+}
-+
- static const BlockJobDriver mirror_job_driver = {
-     .job_driver = {
-         .instance_size          = sizeof(MirrorBlockJob),
-@@ -1260,6 +1281,7 @@ static const BlockJobDriver mirror_job_driver = {
-         .cancel                 = mirror_cancel,
-     },
-     .drained_poll           = mirror_drained_poll,
-+    .change                 = mirror_change,
- };
+     while (list) {
+-        if (strcmp(list->value->type, "stream") == 0) {
++        if (list->value->type == JOB_TYPE_STREAM) {
+             monitor_printf(mon, "Streaming device %s: Completed %" PRId64
+                            " of %" PRId64 " bytes, speed limit %" PRId64
+                            " bytes/s\n",
+@@ -855,7 +855,7 @@ void hmp_info_block_jobs(Monitor *mon, const QDict *qdict)
+             monitor_printf(mon, "Type %s, device %s: Completed %" PRId64
+                            " of %" PRId64 " bytes, speed limit %" PRId64
+                            " bytes/s\n",
+-                           list->value->type,
++                           JobType_str(list->value->type),
+                            list->value->device,
+                            list->value->offset,
+                            list->value->len,
+diff --git a/blockjob.c b/blockjob.c
+index d53bc775d2..f8cf6e58e2 100644
+--- a/blockjob.c
++++ b/blockjob.c
+@@ -388,7 +388,7 @@ BlockJobInfo *block_job_query_locked(BlockJob *job, Error **errp)
+                           &progress_total);
  
- static const BlockJobDriver commit_active_job_driver = {
+     info = g_new0(BlockJobInfo, 1);
+-    info->type      = g_strdup(job_type_str(&job->job));
++    info->type      = job_type(&job->job);
+     info->device    = g_strdup(job->job.id);
+     info->busy      = job->job.busy;
+     info->paused    = job->job.pause_count > 0;
 diff --git a/qapi/block-core.json b/qapi/block-core.json
-index c6f31a9399..01427c259a 100644
+index 01427c259a..a19718a69f 100644
 --- a/qapi/block-core.json
 +++ b/qapi/block-core.json
-@@ -3044,6 +3044,17 @@
- { 'command': 'block-job-finalize', 'data': { 'id': 'str' },
-   'allow-preconfig': true }
- 
-+##
-+# @BlockJobChangeOptionsMirror:
-+#
-+# @copy-mode: Switch to this copy mode. Currenlty, only the switch
-+#     from 'background' to 'write-blocking' is implemented.
-+#
-+# Since: 8.2
-+##
-+{ 'struct': 'BlockJobChangeOptionsMirror',
-+  'data': { 'copy-mode' : 'MirrorCopyMode' } }
-+
+@@ -1396,7 +1396,7 @@
+ # Since: 1.1
  ##
- # @BlockJobChangeOptions:
- #
-@@ -3058,7 +3069,7 @@
- { 'union': 'BlockJobChangeOptions',
-   'base': { 'id': 'str', 'type': 'JobType' },
-   'discriminator': 'type',
--  'data': {} }
-+  'data': { 'mirror': 'BlockJobChangeOptionsMirror' } }
- 
- ##
- # @block-job-change:
+ { 'struct': 'BlockJobInfo',
+-  'data': {'type': 'str', 'device': 'str', 'len': 'int',
++  'data': {'type': 'JobType', 'device': 'str', 'len': 'int',
+            'offset': 'int', 'busy': 'bool', 'paused': 'bool', 'speed': 'int',
+            'io-status': 'BlockDeviceIoStatus', 'ready': 'bool',
+            'status': 'JobStatus',
 -- 
 2.39.2
 
