@@ -2,78 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 464CB7BD491
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 09:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 515D07BD492
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 09:45:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpkvk-0005V1-Mn; Mon, 09 Oct 2023 03:43:56 -0400
+	id 1qpkw5-0005b7-HJ; Mon, 09 Oct 2023 03:44:17 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qpkvi-0005UZ-OM; Mon, 09 Oct 2023 03:43:54 -0400
-Received: from mail-ed1-x531.google.com ([2a00:1450:4864:20::531])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <faithilikerun@gmail.com>)
- id 1qpkvg-0007kL-Tp; Mon, 09 Oct 2023 03:43:54 -0400
-Received: by mail-ed1-x531.google.com with SMTP id
- 4fb4d7f45d1cf-533cbbd0153so7221299a12.0; 
- Mon, 09 Oct 2023 00:43:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696837430; x=1697442230; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=WPyTY+fdVze7+Hd0DVsRzPfhK7CvUUyJ47HStWmraGA=;
- b=NjuK62BSZQynE+P50Ox2ab/LdSo2q5L9Mkl94/NBGbzXTJuZTgf5DHsOS4TRQrIQwl
- PNi4i6/q/o1QCNUUUN8kU2uNRA+4JKnhCjjvisVyQKHTAzdDMsCYQ6fYIDzs7XGqd7br
- pc80s84qmUZGT+69aQIAnkHcZkggAhrpjxcOxICyP3fjIcoRmdrbLZ2JkM99vhuwSPuA
- WaDafQtMUIkHtdbFI2SdmZ/AjDO9q0Mmg3+7NmRHmamQAz8mqccKHPYgO0Vde7fj/JZP
- 9BdV3stuN1I0t3MPTDKkFqn3hS+3El0HS9r6CsDYqsopJ10+LDhd+ggR/ABCE1cQhk7A
- 6aWg==
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpkw3-0005ad-CA
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 03:44:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpkw1-0007mM-Lp
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 03:44:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696837452;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=qd+nGieuTTmF5lmD6sldutAp20u8I2pBoODFswtZSx0=;
+ b=PukFpgIVsH1uMvsrEflTPaqKYg6+K40EfqOn7BzQtrasrODjzRu2F8Kucb+b58XnNXMCFw
+ m6Hh7xCy+itmkY5606W+RMkqJXmJ8iNaLhWzYjoRp8EPoEGprNvINgsIulEzDoKv+E9+pi
+ k96jsKPOOPRiow6nlj7Lzkj6dX1GQMI=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-618-VxdRzs89O_CFT8zBrrl3xQ-1; Mon, 09 Oct 2023 03:44:11 -0400
+X-MC-Unique: VxdRzs89O_CFT8zBrrl3xQ-1
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-41b19dc9ee4so11422401cf.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 00:44:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696837430; x=1697442230;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=WPyTY+fdVze7+Hd0DVsRzPfhK7CvUUyJ47HStWmraGA=;
- b=UF/I0QZzMnFE/eiBPH/IFPUnYcXMEKxC6INRKoir3V0W0PL10543Qs+GP8hsHrHEL3
- N0HLfTYAerkgxHE1RY9RMFufGgX0A8ej382ZioIr70QQoA3g6dTtHK/70pt4baUNSq7w
- wH2gHKPTfA35Xs3n2WGuZ8TYaCjGx/t+MqZ2wq2cZmPjjZCTc/kQYmjHQQbFrrBerLoG
- ZZBIQv97DNM9dPhsUFgcvyXbnwb/2q8T1LqsjKVNNfao8NyPQPYfPiWz07U4lBfeAoWm
- 6s5BKC+ENNFcpwhU+9PmSkjgOyIDpxPjSgxaZqiTpIzGFa+A4L80QvLGE9u26IlXaR7V
- KonA==
-X-Gm-Message-State: AOJu0YzzuyeGmklxgATyAye7ZnykGf5x7Lm/x1jLl2vab0clTz/253Dd
- 5853GbiCZkyBJjEy1kisgP5CyHmFTMH4zM3i74A=
-X-Google-Smtp-Source: AGHT+IHUzZIXjGq35yh33kWC7Awytzvz54iGeKpbzEH2nL9vbanOjUrOo/4CHUrcJl6B9gvBKPFAxf4CmH6GT4zhk74=
-X-Received: by 2002:a17:906:8465:b0:9b7:2e2d:9bc3 with SMTP id
- hx5-20020a170906846500b009b72e2d9bc3mr14221558ejc.9.1696837429793; Mon, 09
- Oct 2023 00:43:49 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696837451; x=1697442251;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=qd+nGieuTTmF5lmD6sldutAp20u8I2pBoODFswtZSx0=;
+ b=qfJt6Eib/Ozi2upBvUfoJmuZJAzlZafmzrbF30+WWKhLo1k95xeu1kIFIoOOduWxKK
+ 5YuOaRAIfXXyyKIEu483zx7p6LtFLcy0DzGDZPlUSHUkZDN2RnEvcH7isZ25XUb3VGIO
+ RPIz34AH3WcjHdXr2es70KiURy8Sqo13HGnfjxqiLKd7vwvtYE7mgyQSPJjZFt1FXV/8
+ MHUC+Kg4402YMcWEQV/QLncj2LslzsBjoe4XRFZvXfKL2D2egeNAL1pD12f1Ux3sPmgS
+ nWnxzhauikGZo93e4Fq+OguJVw4CDv46p8/1jofwonZ1w6fJYK93m3IGAwQvCOPENegY
+ uTZg==
+X-Gm-Message-State: AOJu0Yw0ihEcEq8JnssQA5USdKHoST8JY/iEpeHEObqH+m4X01WyoEKr
+ 6zLQnS2vtPQ0oZDxzENcPsII2nREbom8kcFzze4UXh+zrRxfRMFo/uuk/3SAiBf+egdw+WWLw0D
+ 9/tx0AM4nDLkryoU=
+X-Received: by 2002:a05:622a:1787:b0:410:9626:f0bf with SMTP id
+ s7-20020a05622a178700b004109626f0bfmr16185670qtk.13.1696837451039; 
+ Mon, 09 Oct 2023 00:44:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGHrU+HMuRzqYJChh1ceuO25FvOX74+nUAcm6JXqZG8bDkVctKMjewSHpplm63BJSZS9gQBfw==
+X-Received: by 2002:a05:622a:1787:b0:410:9626:f0bf with SMTP id
+ s7-20020a05622a178700b004109626f0bfmr16185660qtk.13.1696837450693; 
+ Mon, 09 Oct 2023 00:44:10 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
+ [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
+ l25-20020ac84cd9000000b004181c32dcc3sm3491272qtv.16.2023.10.09.00.44.09
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 00:44:10 -0700 (PDT)
+Message-ID: <c28a1d44-8e7e-a351-8efa-28566e9fc306@redhat.com>
+Date: Mon, 9 Oct 2023 09:44:07 +0200
 MIME-Version: 1.0
-References: <20230918095313.5492-1-faithilikerun@gmail.com>
- <20230918095313.5492-4-faithilikerun@gmail.com>
- <grw7r46o3mkaszignhfexvdquamlau3ycazdiz26lpfs4jiepv@etfjsofexr5x>
-In-Reply-To: <grw7r46o3mkaszignhfexvdquamlau3ycazdiz26lpfs4jiepv@etfjsofexr5x>
-From: Sam Li <faithilikerun@gmail.com>
-Date: Mon, 9 Oct 2023 15:43:21 +0800
-Message-ID: <CAAAx-8+eA9GKR4rvpHzqLEzqbHKpyV1d3xPDcftcWDuGeizKfw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/4] qcow2: add zoned emulation capability
-To: Eric Blake <eblake@redhat.com>
-Cc: qemu-devel@nongnu.org, dmitry.fomichev@wdc.com, 
- Markus Armbruster <armbru@redhat.com>, dlemoal@kernel.org,
- Hanna Reitz <hreitz@redhat.com>, 
- stefanha@redhat.com, hare@suse.de, Kevin Wolf <kwolf@redhat.com>,
- qemu-block@nongnu.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::531;
- envelope-from=faithilikerun@gmail.com; helo=mail-ed1-x531.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 2/2] meson: mitigate against use of uninitialize stack for
+ exploits
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?= <berrange@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20231005173812.966264-1-berrange@redhat.com>
+ <20231005173812.966264-3-berrange@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20231005173812.966264-3-berrange@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.818, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -90,66 +105,58 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Eric Blake <eblake@redhat.com> =E4=BA=8E2023=E5=B9=B49=E6=9C=8829=E6=97=A5=
-=E5=91=A8=E4=BA=94 03:17=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Mon, Sep 18, 2023 at 05:53:12PM +0800, Sam Li wrote:
-> > By adding zone operations and zoned metadata, the zoned emulation
-> > capability enables full emulation support of zoned device using
-> > a qcow2 file. The zoned device metadata includes zone type,
-> > zoned device state and write pointer of each zone, which is stored
-> > to an array of unsigned integers.
-> >
-> > Each zone of a zoned device makes state transitions following
-> > the zone state machine. The zone state machine mainly describes
-> > five states, IMPLICIT OPEN, EXPLICIT OPEN, FULL, EMPTY and CLOSED.
-> > READ ONLY and OFFLINE states will generally be affected by device
-> > internal events. The operations on zones cause corresponding state
-> > changing.
-> >
-> > Zoned devices have a limit on zone resources, which puts constraints on
-> > write operations into zones.
-> >
-> > Signed-off-by: Sam Li <faithilikerun@gmail.com>
-> > ---
-> >  block/qcow2.c          | 709 ++++++++++++++++++++++++++++++++++++++++-
-> >  block/qcow2.h          |   2 +
-> >  block/trace-events     |   2 +
-> >  docs/interop/qcow2.txt |   6 +
-> >  4 files changed, 717 insertions(+), 2 deletions(-)
->
-> You may want to look at scripts/git.orderfile; putting spec changes
-> (docs/*) first in your output before implementation is generally
-> beneficial to reviewers.
->
-> > +++ b/docs/interop/qcow2.txt
-> > @@ -367,6 +367,12 @@ The fields of the zoned extension are:
-> >                      The maximal number of 512-byte sectors of a zone
-> >                      append request that can be issued to the device.
-> >
-> > +          36 - 43:  zonedmeta_offset
-> > +                    The offset of zoned metadata structure in the file=
- in bytes.
->
-> For the spec to be useful, you also need to add a section describing
-> the layout of the zoned metadata structure actually is.
->
-> > +
-> > +          44 - 51:  zonedmeta_size
-> > +                    The size of zoned metadata in bytes.
-> > +
->
-> Can the zoned metadata structure ever occupy more than 4G, or can this
-> field be sized at 4 bytes instead of 8?
+On 05/10/2023 19.38, Daniel P. Berrangé wrote:
+> When variables are used without being initialized, there is potential
+> to take advantage of data that was pre-existing on the stack from an
+> earlier call, to drive an exploit.
+> 
+> It is good practice to always initialize variables, and the compiler
+> can warn about flaws when -Wuninitialized is present. This warning,
+> however, is by no means foolproof with its output varying depending
+> on compiler version and which optimizations are enabled.
+> 
+> The -ftrivial-auto-var-init option can be used to tell the compiler
+> to always initialize all variables. This increases the security and
+> predictability of the program, closing off certain attack vectors,
+> reducing the risk of unsafe memory disclosure.
+> 
+> While the option takes several possible values, using 'zero' is
+> considered to be the  option that is likely to lead to semantically
+> correct or safe behaviour[1]. eg sizes/indexes are not likely to
+> lead to out-of-bounds accesses when initialized to zero. Pointers
+> are less likely to point something useful if initialized to zero.
+> 
+> Even with -ftrivial-auto-var-init=zero set, GCC will still issue
+> warnings with -Wuninitialized if it discovers a problem, so we are
+> not loosing diagnostics for developers, just hardening runtime
+> behaviour and making QEMU behave more predictably in case of hitting
+> bad codepaths.
+> 
+> [1] https://lists.llvm.org/pipermail/cfe-dev/2020-April/065221.html
+> Signed-off-by: Daniel P. Berrangé <berrange@redhat.com>
+> ---
+>   meson.build | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/meson.build b/meson.build
+> index 2003ca1ba4..19faea8d30 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -442,6 +442,11 @@ hardening_flags = [
+>       # upon its return. This makes it harder to assemble
+>       # ROP gadgets into something usable
+>       '-fzero-call-used-regs=used-gpr',
+> +
+> +    # Initialize all stack variables to zero. This makes
+> +    # it harder to take advantage of uninitialized stack
+> +    # data to drive exploits
+> +    '-ftrivial-var-auto-init=zero',
+>   ]
 
-The zoned metadata is the write pointers of all zones. The size of it
-is nr_zones (uint32_t) * write_pointer size (uint64_t). So it will not
-occupy more than 4G. But it still need more than 4 bytes.
+I was a little bit torn about using =zero when I first read your patch, but 
+after looking at [1], I tend now also tend to agree that =zero is likely the 
+best choice. So from my side:
 
->
-> --
-> Eric Blake, Principal Software Engineer
-> Red Hat, Inc.
-> Virtualization:  qemu.org | libguestfs.org
->
+Reviewed-by: Thomas Huth <thuth@redhat.com>
+
 
