@@ -2,72 +2,66 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADE67BDC66
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:41:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC6A7BDCA6
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:45:02 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qppZc-0006RC-8g; Mon, 09 Oct 2023 08:41:24 -0400
+	id 1qppcQ-0007mN-EG; Mon, 09 Oct 2023 08:44:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qppZX-0006Py-9R
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:41:19 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qppc8-0007ls-3u
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:44:01 -0400
+Received: from out30-100.freemail.mail.aliyun.com ([115.124.30.100])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qppZN-00066j-L3
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:41:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696855269;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=aBbqRJuie/RtASpOPm/E+liHMmFG9vTLSCLZqZvxUqo=;
- b=QNbrj6iQGGwqfYFtRCJsB8Hno4ZY11dRyknqy0qzmF7QmbqE1yjeA2E8f0xcwi4cG0Gi9+
- BLh+swfrr3KJMnsqn9O9uNkXlTaeaXXX5kBI1sB3w9Z5oqr5GehavRmXGzlJuP5//DawEf
- 2Pl5lbQDnp7zhCWOg78MLF4jH0wjr+4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-606-sbXQx99aPIWxPyB_delydA-1; Mon, 09 Oct 2023 08:41:07 -0400
-X-MC-Unique: sbXQx99aPIWxPyB_delydA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 294C83C025D0;
- Mon,  9 Oct 2023 12:41:07 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 094D7C0FE2D;
- Mon,  9 Oct 2023 12:41:07 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 0D76021E6904; Mon,  9 Oct 2023 14:41:06 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] system/vl: Use global &bdo_queue in configure_blockdev()
-References: <20231009093152.51270-1-philmd@linaro.org>
- <87sf6k2isd.fsf@pond.sub.org>
- <9cd1675b-22a4-ee2a-fde0-bb87c7c5bd26@linaro.org>
-Date: Mon, 09 Oct 2023 14:41:06 +0200
-In-Reply-To: <9cd1675b-22a4-ee2a-fde0-bb87c7c5bd26@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 9 Oct 2023 13:54:50
- +0200")
-Message-ID: <878r8c2ckd.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <zhiwei_liu@linux.alibaba.com>)
+ id 1qppc0-0006PT-Vr
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:43:56 -0400
+X-Alimail-AntiSpam: AC=PASS; BC=-1|-1; BR=01201311R191e4; CH=green; DM=||false|;
+ DS=||; FP=0|-1|-1|-1|0|-1|-1|-1; HT=ay29a033018046051;
+ MF=zhiwei_liu@linux.alibaba.com; NM=1; PH=DS; RN=21; SR=0;
+ TI=SMTPD_---0VtokhTr_1696855418; 
+Received: from 30.221.98.57(mailfrom:zhiwei_liu@linux.alibaba.com
+ fp:SMTPD_---0VtokhTr_1696855418) by smtp.aliyun-inc.com;
+ Mon, 09 Oct 2023 20:43:40 +0800
+Message-ID: <8e8b6cef-efbf-42ac-975c-b523dc24a531@linux.alibaba.com>
+Date: Mon, 9 Oct 2023 20:42:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] target/riscv: Use env_archcpu() in [check_]nanbox()
+Content-Language: en-US
+To: =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ qemu-devel@nongnu.org
+Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
+ qemu-s390x@nongnu.org, Ilya Leoshkevich <iii@linux.ibm.com>,
+ Bin Meng <bin.meng@windriver.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Cameron Esfahani <dirty@apple.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>, qemu-riscv@nongnu.org,
+ Max Filippov <jcmvbkbc@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, =?UTF-8?Q?C=C3=A9dric_Le_Goater?=
+ <clg@kaod.org>, Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ "Richard W . M . Jones" <rjones@redhat.com>
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-3-philmd@linaro.org>
+From: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
+In-Reply-To: <20231009110239.66778-3-philmd@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=115.124.30.100;
+ envelope-from=zhiwei_liu@linux.alibaba.com;
+ helo=out30-100.freemail.mail.aliyun.com
+X-Spam_score_int: -98
+X-Spam_score: -9.9
+X-Spam_bar: ---------
+X-Spam_report: (-9.9 / 5.0 requ) BAYES_00=-1.9, ENV_AND_HDR_SPF_MATCH=-0.5,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001, SPF_PASS=-0.001,
+ UNPARSEABLE_RELAY=0.001,
+ USER_IN_DEF_SPF_WL=-7.5 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,31 +77,66 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-> On 9/10/23 12:26, Markus Armbruster wrote:
->> Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
->>=20
->>> Commit d11bf9bf0f ("vl: Factor configure_blockdev() out of main()")
->>> passed &bdo_queue as argument, but this isn't really necessary since
->>> there is only one call, so we still use the global variable.
->>>
->>> Dropping the &bdo_queue argument allows to silence this global shadow
->>> warning:
->>>
->>>    softmmu/vl.c:678:54: error: declaration shadows a variable in the gl=
-obal scope [-Werror,-Wshadow]
->>>    static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
->>>                                                         ^
->>>    softmmu/vl.c:172:29: note: previous declaration is here
->>>    static BlockdevOptionsQueue bdo_queue =3D QSIMPLEQ_HEAD_INITIALIZER(=
-bdo_queue);
->> Not sure this is an improvement.  Up to Paolo, I guess.
+On 2023/10/9 19:02, Philippe Mathieu-Daudé wrote:
+> When CPUArchState* is available (here CPURISCVState*), we
+> can use the fast env_archcpu() macro to get ArchCPU* (here
+> RISCVCPU*). The QOM cast RISCV_CPU() macro will be slower
+> when building with --enable-qom-cast-debug.
 >
-> Any alternative suggestion? I'm looking at enabling -Wshadow with Clang
-> to avoid Clang users not getting the -Wshadow=3Dlocal warnings until a
-> maintainer test their patches on CI.
+> Inspired-by: Richard W.M. Jones <rjones@redhat.com>
+> Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
-Rename to @bdos?
+Reviewed-by: LIU Zhiwei <zhiwei_liu@linux.alibaba.com>
 
+By the way, does the community has the plan to support heterogeneous 
+architecture cpus in one soc?
+If so, maybe we have to do this qom cast somewhere.
+
+Zhiwei
+
+> ---
+>   target/riscv/internals.h | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/target/riscv/internals.h b/target/riscv/internals.h
+> index b5f823c7ec..8239ae83cc 100644
+> --- a/target/riscv/internals.h
+> +++ b/target/riscv/internals.h
+> @@ -87,7 +87,7 @@ enum {
+>   static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
+>   {
+>       /* the value is sign-extended instead of NaN-boxing for zfinx */
+> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
+> +    if (env_archcpu(env)->cfg.ext_zfinx) {
+>           return (int32_t)f;
+>       } else {
+>           return f | MAKE_64BIT_MASK(32, 32);
+> @@ -97,7 +97,7 @@ static inline uint64_t nanbox_s(CPURISCVState *env, float32 f)
+>   static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
+>   {
+>       /* Disable NaN-boxing check when enable zfinx */
+> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
+> +    if (env_archcpu(env)->cfg.ext_zfinx) {
+>           return (uint32_t)f;
+>       }
+>   
+> @@ -113,7 +113,7 @@ static inline float32 check_nanbox_s(CPURISCVState *env, uint64_t f)
+>   static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
+>   {
+>       /* the value is sign-extended instead of NaN-boxing for zfinx */
+> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
+> +    if (env_archcpu(env)->cfg.ext_zfinx) {
+>           return (int16_t)f;
+>       } else {
+>           return f | MAKE_64BIT_MASK(16, 48);
+> @@ -123,7 +123,7 @@ static inline uint64_t nanbox_h(CPURISCVState *env, float16 f)
+>   static inline float16 check_nanbox_h(CPURISCVState *env, uint64_t f)
+>   {
+>       /* Disable nanbox check when enable zfinx */
+> -    if (RISCV_CPU(env_cpu(env))->cfg.ext_zfinx) {
+> +    if (env_archcpu(env)->cfg.ext_zfinx) {
+>           return (uint16_t)f;
+>       }
+>   
 
