@@ -2,22 +2,22 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D914A7BD79F
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 548CB7BD7A2
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:51:05 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmqe-0008WU-3x; Mon, 09 Oct 2023 05:46:48 -0400
+	id 1qpmqi-000093-Ga; Mon, 09 Oct 2023 05:46:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qpmqQ-0008QU-Uq; Mon, 09 Oct 2023 05:46:36 -0400
+ id 1qpmqT-0008Rn-AV; Mon, 09 Oct 2023 05:46:37 -0400
 Received: from proxmox-new.maurer-it.com ([94.136.29.106])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <f.ebner@proxmox.com>)
- id 1qpmqM-0005Ym-Ii; Mon, 09 Oct 2023 05:46:34 -0400
+ id 1qpmqQ-0005Zs-UY; Mon, 09 Oct 2023 05:46:37 -0400
 Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 9DEB5445AA;
+ by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D48B64493A;
  Mon,  9 Oct 2023 11:46:24 +0200 (CEST)
 From: Fiona Ebner <f.ebner@proxmox.com>
 To: qemu-devel@nongnu.org
@@ -25,9 +25,9 @@ Cc: qemu-block@nongnu.org, armbru@redhat.com, eblake@redhat.com,
  hreitz@redhat.com, kwolf@redhat.com, vsementsov@yandex-team.ru,
  jsnow@redhat.com, den@virtuozzo.com, t.lamprecht@proxmox.com,
  alexander.ivanov@virtuozzo.com
-Subject: [PATCH v2 04/10] block/mirror: determine copy_to_target only once
-Date: Mon,  9 Oct 2023 11:46:13 +0200
-Message-Id: <20231009094619.469668-5-f.ebner@proxmox.com>
+Subject: [PATCH v2 05/10] mirror: implement mirror_change method
+Date: Mon,  9 Oct 2023 11:46:14 +0200
+Message-Id: <20231009094619.469668-6-f.ebner@proxmox.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009094619.469668-1-f.ebner@proxmox.com>
 References: <20231009094619.469668-1-f.ebner@proxmox.com>
@@ -55,109 +55,100 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-In preparation to allow changing the copy_mode via QMP. When running
-in an iothread, it could be that copy_mode is changed from the main
-thread in between reading copy_mode in bdrv_mirror_top_pwritev() and
-reading copy_mode in bdrv_mirror_top_do_write(), so they might end up
-disagreeing about whether copy_to_target is true or false. Avoid that
-scenario by determining copy_to_target only once and passing it to
-bdrv_mirror_top_do_write() as an argument.
+which allows switching the @copy-mode from 'background' to
+'write-blocking'.
+
+This is useful for management applications, so they can start out in
+background mode to avoid limiting guest write speed and switch to
+active mode when certain criteria are fulfilled.
 
 Signed-off-by: Fiona Ebner <f.ebner@proxmox.com>
 ---
 
-New in v2.
+Changes in v2:
+    * update QEMU version in QAPI
+    * update indentation in QAPI (like in a937b6aa73 ("qapi: Reformat
+      doc comments to conform to current conventions"))
+    * drop drained section and disable dirty bitmap call. It's already
+      disabled, because the bitmap is now attached to the filter and
+      set in bdrv_mirror_top_do_write(). See the earlier patch
+      "block/mirror: move dirty bitmap to filter"
 
- block/mirror.c | 41 ++++++++++++++++++-----------------------
- 1 file changed, 18 insertions(+), 23 deletions(-)
+ block/mirror.c       | 22 ++++++++++++++++++++++
+ qapi/block-core.json | 13 ++++++++++++-
+ 2 files changed, 34 insertions(+), 1 deletion(-)
 
 diff --git a/block/mirror.c b/block/mirror.c
-index 0ed54754e2..8992c09172 100644
+index b84de56734..83aa4176c2 100644
 --- a/block/mirror.c
 +++ b/block/mirror.c
-@@ -1463,21 +1463,21 @@ bdrv_mirror_top_preadv(BlockDriverState *bs, int64_t offset, int64_t bytes,
-     return bdrv_co_preadv(bs->backing, offset, bytes, qiov, flags);
+@@ -1246,6 +1246,27 @@ static bool commit_active_cancel(Job *job, bool force)
+     return force || !job_is_ready(job);
  }
  
-+static bool should_copy_to_target(MirrorBDSOpaque *s)
++static void mirror_change(BlockJob *job, BlockJobChangeOptions *opts,
++                          Error **errp)
 +{
-+    return s->job && s->job->ret >= 0 &&
-+        !job_is_cancelled(&s->job->common.job) &&
-+        s->job->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING;
++    MirrorBlockJob *s = container_of(job, MirrorBlockJob, common);
++    BlockJobChangeOptionsMirror *change_opts = &opts->u.mirror;
++
++    if (s->copy_mode == change_opts->copy_mode) {
++        return;
++    }
++
++    if (s->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING) {
++        error_setg(errp, "Cannot switch away from copy mode 'write-blocking'");
++        return;
++    }
++
++    assert(s->copy_mode == MIRROR_COPY_MODE_BACKGROUND &&
++           change_opts->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING);
++
++    s->copy_mode = MIRROR_COPY_MODE_WRITE_BLOCKING;
 +}
 +
- static int coroutine_fn GRAPH_RDLOCK
- bdrv_mirror_top_do_write(BlockDriverState *bs, MirrorMethod method,
--                         uint64_t offset, uint64_t bytes, QEMUIOVector *qiov,
--                         int flags)
-+                         bool copy_to_target, uint64_t offset, uint64_t bytes,
-+                         QEMUIOVector *qiov, int flags)
- {
-     MirrorOp *op = NULL;
-     MirrorBDSOpaque *s = bs->opaque;
-     int ret = 0;
--    bool copy_to_target = false;
--
--    if (s->job) {
--        copy_to_target = s->job->ret >= 0 &&
--                         !job_is_cancelled(&s->job->common.job) &&
--                         s->job->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING;
--    }
+ static const BlockJobDriver mirror_job_driver = {
+     .job_driver = {
+         .instance_size          = sizeof(MirrorBlockJob),
+@@ -1260,6 +1281,7 @@ static const BlockJobDriver mirror_job_driver = {
+         .cancel                 = mirror_cancel,
+     },
+     .drained_poll           = mirror_drained_poll,
++    .change                 = mirror_change,
+ };
  
-     if (copy_to_target) {
-         op = active_write_prepare(s->job, offset, bytes);
-@@ -1523,17 +1523,10 @@ static int coroutine_fn GRAPH_RDLOCK
- bdrv_mirror_top_pwritev(BlockDriverState *bs, int64_t offset, int64_t bytes,
-                         QEMUIOVector *qiov, BdrvRequestFlags flags)
- {
--    MirrorBDSOpaque *s = bs->opaque;
-     QEMUIOVector bounce_qiov;
-     void *bounce_buf;
-     int ret = 0;
--    bool copy_to_target = false;
--
--    if (s->job) {
--        copy_to_target = s->job->ret >= 0 &&
--                         !job_is_cancelled(&s->job->common.job) &&
--                         s->job->copy_mode == MIRROR_COPY_MODE_WRITE_BLOCKING;
--    }
-+    bool copy_to_target = should_copy_to_target(bs->opaque);
+ static const BlockJobDriver commit_active_job_driver = {
+diff --git a/qapi/block-core.json b/qapi/block-core.json
+index c6f31a9399..01427c259a 100644
+--- a/qapi/block-core.json
++++ b/qapi/block-core.json
+@@ -3044,6 +3044,17 @@
+ { 'command': 'block-job-finalize', 'data': { 'id': 'str' },
+   'allow-preconfig': true }
  
-     if (copy_to_target) {
-         /* The guest might concurrently modify the data to write; but
-@@ -1550,8 +1543,8 @@ bdrv_mirror_top_pwritev(BlockDriverState *bs, int64_t offset, int64_t bytes,
-         flags &= ~BDRV_REQ_REGISTERED_BUF;
-     }
++##
++# @BlockJobChangeOptionsMirror:
++#
++# @copy-mode: Switch to this copy mode. Currenlty, only the switch
++#     from 'background' to 'write-blocking' is implemented.
++#
++# Since: 8.2
++##
++{ 'struct': 'BlockJobChangeOptionsMirror',
++  'data': { 'copy-mode' : 'MirrorCopyMode' } }
++
+ ##
+ # @BlockJobChangeOptions:
+ #
+@@ -3058,7 +3069,7 @@
+ { 'union': 'BlockJobChangeOptions',
+   'base': { 'id': 'str', 'type': 'JobType' },
+   'discriminator': 'type',
+-  'data': {} }
++  'data': { 'mirror': 'BlockJobChangeOptionsMirror' } }
  
--    ret = bdrv_mirror_top_do_write(bs, MIRROR_METHOD_COPY, offset, bytes, qiov,
--                                   flags);
-+    ret = bdrv_mirror_top_do_write(bs, MIRROR_METHOD_COPY, copy_to_target,
-+                                   offset, bytes, qiov, flags);
- 
-     if (copy_to_target) {
-         qemu_iovec_destroy(&bounce_qiov);
-@@ -1574,15 +1567,17 @@ static int coroutine_fn GRAPH_RDLOCK
- bdrv_mirror_top_pwrite_zeroes(BlockDriverState *bs, int64_t offset,
-                               int64_t bytes, BdrvRequestFlags flags)
- {
--    return bdrv_mirror_top_do_write(bs, MIRROR_METHOD_ZERO, offset, bytes, NULL,
--                                    flags);
-+    bool copy_to_target = should_copy_to_target(bs->opaque);
-+    return bdrv_mirror_top_do_write(bs, MIRROR_METHOD_ZERO, copy_to_target,
-+                                    offset, bytes, NULL, flags);
- }
- 
- static int coroutine_fn GRAPH_RDLOCK
- bdrv_mirror_top_pdiscard(BlockDriverState *bs, int64_t offset, int64_t bytes)
- {
--    return bdrv_mirror_top_do_write(bs, MIRROR_METHOD_DISCARD, offset, bytes,
--                                    NULL, 0);
-+    bool copy_to_target = should_copy_to_target(bs->opaque);
-+    return bdrv_mirror_top_do_write(bs, MIRROR_METHOD_DISCARD, copy_to_target,
-+                                    offset, bytes, NULL, 0);
- }
- 
- static void bdrv_mirror_top_refresh_filename(BlockDriverState *bs)
+ ##
+ # @block-job-change:
 -- 
 2.39.2
 
