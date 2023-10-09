@@ -2,79 +2,105 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B7A7BD65C
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA33F7BD687
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:13:53 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmH2-0001jE-Lh; Mon, 09 Oct 2023 05:10:00 -0400
+	id 1qpmKf-0001uq-0H; Mon, 09 Oct 2023 05:13:45 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpmH0-0001iJ-2Y
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:09:58 -0400
-Received: from mail-ej1-x629.google.com ([2a00:1450:4864:20::629])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpmGy-0007PO-Lo
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:09:57 -0400
-Received: by mail-ej1-x629.google.com with SMTP id
- a640c23a62f3a-9a6190af24aso750774566b.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 02:09:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696842595; x=1697447395; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zDyH1gKuZJCM1RphwPpjmEjyYLrUqVd//97ztF5U5xs=;
- b=uoLTNra4SNhNVazNoDc6anpcRjmhiS10f6Wl5tAAMlE8w3MZ8WmHH50xGju2U/Vi3N
- hkeNd/pOjvxpL1ca+JLMJr+BEgJz9pak2OL4V+urszStkhJGj+by/Gqn4zSfmY9yF/Qo
- 7/le4Q0cuna+o94Fik16PegiYSe7JRYWh8tYRz7M15DwuW2PVsfCu7koJsG+s15pds5s
- PxMa/pRaX43vnNwprOkeGEApOidufFzGAFdn8RurZMZSIRu0jIah7c2eQRR0rgSIePcE
- J0rrNNt8/crPX/9xqJs8imapkR/+5vSP32hk7BfLisfmyu0riJks+L1Oq7bnZCKdwHki
- Zdhg==
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qpmKb-0001dB-3T
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:13:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qpmKZ-0007xh-DD
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:13:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696842818;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=ABO1ssmOf/yxp2UqU5hYWT8EihQdB3rO6TA7kl/rMis=;
+ b=GTAgtL7KIjnoi4DZApUK/U4hzX7VsJnk7TLz1yyI2WkRJHgqsajqAyaJl9Smriu6ONEb1s
+ O/UhPp02xNS/bQf4cmHQ8lcoHWUHJmbyVUMzgYjbwXvaNqlqRDow3J4aemo++2WzFZ4F+4
+ nbEIMj2A/CXZYmdmbKkG5xWtDV6/GVk=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-217-rnmrDuvqPFa_UlXr6sbjFQ-1; Mon, 09 Oct 2023 05:13:37 -0400
+X-MC-Unique: rnmrDuvqPFa_UlXr6sbjFQ-1
+Received: by mail-ej1-f71.google.com with SMTP id
+ a640c23a62f3a-993eeb3a950so309909566b.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 02:13:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696842595; x=1697447395;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zDyH1gKuZJCM1RphwPpjmEjyYLrUqVd//97ztF5U5xs=;
- b=f6n1YPz6vwOM4CLRkEeWbwiCln5rveGRtXq54JNfYl3AuE2e6ElgV/Kbqk8+Md6VwV
- a1K2b5DTlsUjRpWHpiJ5xVuf+I4FnrrxGDlejDsJ/O+ey+ICp8CSOM1jEBQSycJh13yH
- SeskuOuqI4PexCZBoZAeDPmnV6LnyQS6EL5hVhtcAxFD9kulYj7qnrz39C3PKD6Dz+X7
- iMcbZQ3+7abd1ogILvwyNyfLyx++iTdYJ7W/V1GC18xfHvtZM584R4hEk/SUmhLyndcd
- LDzfGmRXqDCulJNAPClSmf0iFGqNzOGjvKNf8Aq8sGmtR8Pm3aB3o46ASNZLubJaoZrk
- H5cQ==
-X-Gm-Message-State: AOJu0YzN4fEQtslj0efNpHH3//JfVOR9YMRtLiSB6XYIuAsONVJQSTHY
- VH7uyR/K6TEVrDzzz/yKwXf4F3ZdZoGk+WHWtIE=
-X-Google-Smtp-Source: AGHT+IHLpm0YUtvULY4qLlhf3SyegjYEGJcLOX1OQsvecCpmvkolRm32YwlSUpUyZXIALM4aVqaBJA==
-X-Received: by 2002:a17:906:5341:b0:9b8:7709:6360 with SMTP id
- j1-20020a170906534100b009b877096360mr14960773ejo.40.1696842594752; 
- Mon, 09 Oct 2023 02:09:54 -0700 (PDT)
-Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
- [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
- p8-20020a170906b20800b009a1b857e3a5sm6469180ejz.54.2023.10.09.02.09.53
- (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 09 Oct 2023 02:09:54 -0700 (PDT)
-From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Alistair Francis <alistair.francis@wdc.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Paolo Bonzini <pbonzini@redhat.com>, qemu-trivial@nongnu.org,
- Like Xu <like.xu@linux.intel.com>, Eduardo Habkost <eduardo@habkost.net>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH] cpus: Remove unused smp_cores/smp_threads declarations
-Date: Mon,  9 Oct 2023 11:09:52 +0200
-Message-ID: <20231009090952.48207-1-philmd@linaro.org>
-X-Mailer: git-send-email 2.41.0
+ d=1e100.net; s=20230601; t=1696842815; x=1697447615;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=ABO1ssmOf/yxp2UqU5hYWT8EihQdB3rO6TA7kl/rMis=;
+ b=CEM3J3lBGh51J8RZHXRBq3ldRx5k94VY4uOaQucpaSpHo52c908C2gyaNp5D7bhMUP
+ euqKuFdwzGSbFMhlZ8BrykE/rOxuVxUdTIj1lGni95Tr8yqe0LwqFJOleLwrP3vPahAw
+ okpg6mfDyn+G7wfTFpJVhJJFJC0JtQAsni0YhTwDAmJZOFf4BAgtSM41i+ogDUAvxUNo
+ gn8WVhMXYlPujHvIWS+IlSgzuspp6bd92V/3XGqFiJ1Vsw++a5C2jUhHAejvk9bhiTSJ
+ ej4rY6bKqJ9OYR9CilCbCtHREd1q21p6Ppi8f6c5p9aN8SgrqSk4P0e2N0lOyb9sEPvt
+ Q62A==
+X-Gm-Message-State: AOJu0YzzYwj7j7vxow3AIE1TBU+IS2kBhQTRTkzSaNfpjvqptO6UItgP
+ mKwo8OyQIe0qgInThUur+xeTasXqGNWibVyo4B08Aq8SZwBSZo1jDRTwXvkLgzwDsatMRIW3yG1
+ oBKFsMJ7G60UYBtJRbg6DYws=
+X-Received: by 2002:a17:906:30d6:b0:9ad:a4bd:dc67 with SMTP id
+ b22-20020a17090630d600b009ada4bddc67mr10912598ejb.50.1696842815741; 
+ Mon, 09 Oct 2023 02:13:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEQWIllm1FsHRmJ7hvKTtgZwxQRNcY24qwB9Bq944KT4i/yQ1IpdO1mAwEExLj/wzNUO3qEeA==
+X-Received: by 2002:a17:906:30d6:b0:9ad:a4bd:dc67 with SMTP id
+ b22-20020a17090630d600b009ada4bddc67mr10912577ejb.50.1696842815353; 
+ Mon, 09 Oct 2023 02:13:35 -0700 (PDT)
+Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
+ (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
+ [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
+ by smtp.gmail.com with ESMTPSA id
+ i11-20020a170906a28b00b009737b8d47b6sm6465450ejz.203.2023.10.09.02.13.34
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 02:13:34 -0700 (PDT)
+Message-ID: <e19eb113-89b1-92ed-3375-8bc93c1ff39c@redhat.com>
+Date: Mon, 9 Oct 2023 11:13:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [Virtio-fs] (no subject)
+Content-Language: en-US
+From: Hanna Czenczek <hreitz@redhat.com>
+To: Yajun Wu <yajunw@nvidia.com>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
+ =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
+ Anton Kuchin <antonkuchin@yandex-team.ru>, parav@nvidia.com,
+ maxime.coquelin@redhat.com, =?UTF-8?Q?Alex_Benn=c3=a9e?=
+ <alex.bennee@linaro.org>
+References: <20231004125904.110781-1-hreitz@redhat.com>
+ <20231004125904.110781-2-hreitz@redhat.com> <20231005170852.GB1342722@fedora>
+ <20231005131352-mutt-send-email-mst@kernel.org>
+ <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
+ <20231006043518-mutt-send-email-mst@kernel.org>
+ <a8b9d842-0925-38d0-2f0d-f2560bab251b@redhat.com>
+ <20231006051802-mutt-send-email-mst@kernel.org>
+ <a4af0357-12ee-fc7f-e249-239da34409b0@redhat.com>
+ <20231006055229-mutt-send-email-mst@kernel.org>
+ <e35f9f71-8d9d-6250-cbaa-70412b5a1149@nvidia.com>
+ <3f28b1a4-d618-39df-57e6-6152f61cac6e@redhat.com>
+ <8f3694c1-48d4-f34b-8f91-3bc217182ffa@redhat.com>
+In-Reply-To: <8f3694c1-48d4-f34b-8f91-3bc217182ffa@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::629;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x629.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-1.818, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
+ RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -91,33 +117,89 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Commit a5e0b33119 ("vl.c: Replace smp global variables
-with smp machine properties") removed the last uses of
-the smp_cores / smp_threads variables but forgot to
-remove their declarations. Do it now.
+On 09.10.23 11:07, Hanna Czenczek wrote:
+> On 09.10.23 10:21, Hanna Czenczek wrote:
+>> On 07.10.23 04:22, Yajun Wu wrote:
+>
+> [...]
+>
+>>> The main motivation of adding VHOST_USER_SET_STATUS is to let 
+>>> backend DPDK know
+>>> when DRIVER_OK bit is valid. It's an indication of all VQ 
+>>> configuration has sent,
+>>> otherwise DPDK has to rely on first queue pair is ready, then 
+>>> receiving/applying
+>>> VQ configuration one by one.
+>>>
+>>> During live migration, configuring VQ one by one is very time 
+>>> consuming.
+>>
+>> One question I have here is why it wasn’t then introduced in the live 
+>> migration code, but in the general VM stop/cont code instead. It does 
+>> seem time-consuming to do this every time the VM is paused and resumed.
+>>
+>>> For VIRTIO
+>>> net vDPA, HW needs to know how many VQs are enabled to set 
+>>> RSS(Receive-Side Scaling).
+>>>
+>>> If you don’t want SET_STATUS message, backend can remove protocol 
+>>> feature bit
+>>> VHOST_USER_PROTOCOL_F_STATUS.
+>>
+>> The problem isn’t back-ends that don’t want the message, the problem 
+>> is that qemu uses the message wrongly, which prevents well-behaving 
+>> back-ends from implementing the message.
+>>
+>>> DPDK is ignoring SET_STATUS 0, but using GET_VRING_BASE to do device 
+>>> close/reset.
+>>
+>> So the right thing to do for back-ends is to announce STATUS support 
+>> and then not implement it correctly?
+>>
+>> GET_VRING_BASE should not reset the close or reset the device, by the 
+>> way.  It should stop that one vring, not more.  We have a 
+>> RESET_DEVICE command for resetting.
+>>
+>>> I'm not involved in discussion about adding SET_STATUS in Vhost 
+>>> protocol. This feature
+>>> is essential for vDPA(same as vhost-vdpa implements 
+>>> VHOST_VDPA_SET_STATUS).
+>>
+>> So from what I gather from your response is that there is only a 
+>> single use for SET_STATUS, which is the DRIVER_OK bit.  If so, 
+>> documenting that all other bits are to be ignored by both back-end 
+>> and front-end would be fine by me.
+>>
+>> I’m not fully serious about that suggestion, but I hear the strong 
+>> implication that nothing but DRIVER_OK was of any concern, and this 
+>> is really important to note when we talk about the status of the 
+>> STATUS feature in vhost today.  It seems to me now that it was not 
+>> intended to be the virtio-level status byte, but just a DRIVER_OK 
+>> signalling path from front-end to back-end.  That makes it a 
+>> vhost-level protocol feature to me.
+>
+> On second thought, it just is a pure vhost-level protocol feature, and 
+> has nothing to do with the virtio status byte as-is.  The only stated 
+> purpose is for the front-end to send DRIVER_OK after migration, but 
+> migration is transparent to the guest, so the guest would never change 
+> the status byte during migration.  Therefore, if this feature is 
+> essential, we will never be able to have a status byte that is 
+> transparently shared between guest and back-end device, i.e. the 
+> virtio status byte.
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
----
- include/sysemu/cpus.h | 7 -------
- 1 file changed, 7 deletions(-)
+On third thought, scratch that.  The guest wouldn’t set it, but 
+naturally, after migration, the front-end will need to restore the 
+status byte from the source, so the front-end will always need to set 
+it, even if it were otherwise used controlled only by the guest and the 
+back-end device.  So technically, this doesn’t prevent such a use case.  
+(In practice, it isn’t controlled by the guest right now, but that could 
+be fixed.)
 
-diff --git a/include/sysemu/cpus.h b/include/sysemu/cpus.h
-index 0535a4c68a..b4a566cfe7 100644
---- a/include/sysemu/cpus.h
-+++ b/include/sysemu/cpus.h
-@@ -50,11 +50,4 @@ void cpu_synchronize_all_post_reset(void);
- void cpu_synchronize_all_post_init(void);
- void cpu_synchronize_all_pre_loadvm(void);
- 
--#ifndef CONFIG_USER_ONLY
--/* vl.c */
--/* *-user doesn't have configurable SMP topology */
--extern int smp_cores;
--extern int smp_threads;
--#endif
--
- #endif
--- 
-2.41.0
+> Cc-ing Alex on this mail, because to me, this seems like an important 
+> detail when he plans on using the byte in the future. If we need a 
+> virtio status byte, I can’t see how we could use the existing F_STATUS 
+> for it.
+>
+> Hanna
 
 
