@@ -2,102 +2,106 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E897BD509
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0477BD50E
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:24:21 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qplWk-0002Xb-Ar; Mon, 09 Oct 2023 04:22:10 -0400
+	id 1qplYI-0003HJ-I1; Mon, 09 Oct 2023 04:23:46 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qplWa-0002X4-9J
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:22:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qplYE-0003GY-6R; Mon, 09 Oct 2023 04:23:42 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <hreitz@redhat.com>) id 1qplWX-0007HB-SZ
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:21:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696839716;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=JIFS6mxABGWPpIYq+ZT6QmDcFOhxm0fPteNW+Tq2cjU=;
- b=CXHLyV4Y7wL8c57ogGpDkMfg8aXD7zQnNAtGdUHWuqRChWx7DDdI2TM/wYmuIeYwcsEMBv
- UTKPqblkgCt6ivTRaKg8jV8o48IHq5iOTSQWnyF+XUVNLgF+DjnHx9VO+Mx62hV5L6Vlve
- qEWulp1j81fz6UBazztaecxfn1okpjU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-s1Vh3gQrM7OME7vJ7zY_lg-1; Mon, 09 Oct 2023 04:21:55 -0400
-X-MC-Unique: s1Vh3gQrM7OME7vJ7zY_lg-1
-Received: by mail-ej1-f71.google.com with SMTP id
- a640c23a62f3a-9b2e030e4caso570333266b.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 01:21:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696839714; x=1697444514;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=JIFS6mxABGWPpIYq+ZT6QmDcFOhxm0fPteNW+Tq2cjU=;
- b=Io/6Cnlm/e8Wjx1MCzTFStzd1OSAZy2Ttyjjqla2PFwz1+0+n6ST40yHRsRI+qD69Z
- 4iuuHgMNDDe8ZY4L83J3Zp34qb0MZFnlKAyQ+G0riVCtLiv3vErLqCZpsDeEiXnKsUhE
- s+EkQfu+/0tnPbhrhiSUNnwR8+PEwXkHGwCDuP/oo9X85ut7aR0HSDMKjQyPxUNpJBYS
- z+a26bB6JQBnbNfnFH62DEepPWM7IxeunMxcKacbkInIP2J37prcK2HdUndcUZ0TKEeG
- XzJQijYMk2pGN/NPKNzu16dolRLQDu4u4XC0xuIDAqm5/3/RWVqxOfHQjnS5pEptTOVm
- t1+A==
-X-Gm-Message-State: AOJu0Yxq6gwknfM00pRUd4ypXi3tvMT+KH9OIr90tHGBYHvSq55cE5HD
- RSEunz+N1zur0KGpYxgE1MNIQZIp+2c0iWkxK1I+SUAPHIfK0wa5jAPJzfJM+u7CtVsJdeVt+jp
- fODBHmUTPLiKOwH8=
-X-Received: by 2002:a17:906:b80c:b0:9a2:295a:9bbc with SMTP id
- dv12-20020a170906b80c00b009a2295a9bbcmr8329866ejb.37.1696839714141; 
- Mon, 09 Oct 2023 01:21:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGtFyX/z3hS4s/RLPRWRJzZRR0l+W/UYCQxadnTq20bXoSOlfKm27RPNkWzsxil6jw/tTKocA==
-X-Received: by 2002:a17:906:b80c:b0:9a2:295a:9bbc with SMTP id
- dv12-20020a170906b80c00b009a2295a9bbcmr8329847ejb.37.1696839713618; 
- Mon, 09 Oct 2023 01:21:53 -0700 (PDT)
-Received: from ?IPV6:2003:cf:d708:66e5:a5d0:fe92:2899:7179?
- (p200300cfd70866e5a5d0fe9228997179.dip0.t-ipconnect.de.
- [2003:cf:d708:66e5:a5d0:fe92:2899:7179])
- by smtp.gmail.com with ESMTPSA id
- h13-20020a17090619cd00b009ae587ce135sm6415816ejd.223.2023.10.09.01.21.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 01:21:52 -0700 (PDT)
-Message-ID: <3f28b1a4-d618-39df-57e6-6152f61cac6e@redhat.com>
-Date: Mon, 9 Oct 2023 10:21:51 +0200
+ (Exim 4.90_1) (envelope-from <harshpb@linux.ibm.com>)
+ id 1qplYB-0007Td-JB; Mon, 09 Oct 2023 04:23:41 -0400
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3998Krot021507; Mon, 9 Oct 2023 08:23:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
+ h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=rF73r+CUYggiJVioylNqkoYh07A/B1saLT4DGPenDDU=;
+ b=e9vQ6GOciXDHhSeSIv3mIZz1FOhDNUCIG8X2fv6nZ9Z83bZPTyNfN9cAdxUEuvVfyT4r
+ xp/uGiS+b7ceFV6RLeqGwZ9e4tDKMKOW06CuG/fcvU73oUKLhCz28zh5Mfi3K7QTB2h+
+ BZHEeS9ZN5f60pQErJC36xMpCXtuM1LLfYSz0RdCrxM2RYH8N67CQx4FKSvKKJA9MleO
+ hxfLsPQQc6DIYw2HCi7WaPuktznmO7TUXT1YmyRH2Kc7vjpHByiKIScJXskbN1dNbq9P
+ GoCww6EQ3CbILAB1ikro45MQHP0yy+hiXbZdGPZm9Bk5AZVt6QSnbxoCurxHr9qykp1l hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmdx283dr-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Oct 2023 08:23:33 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+ by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3998LTLo023568;
+ Mon, 9 Oct 2023 08:23:32 GMT
+Received: from ppma22.wdc07v.mail.ibm.com
+ (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+ by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmdx283dg-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Oct 2023 08:23:32 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+ by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
+ 3995PdH7028182; Mon, 9 Oct 2023 08:23:31 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+ by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkj1xqtwj-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Mon, 09 Oct 2023 08:23:31 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com
+ [10.39.53.232])
+ by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
+ 3998NUPK5833270
+ (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+ Mon, 9 Oct 2023 08:23:30 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 898E658043;
+ Mon,  9 Oct 2023 08:23:30 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+ by IMSVA (Postfix) with ESMTP id 219B358059;
+ Mon,  9 Oct 2023 08:23:27 +0000 (GMT)
+Received: from [9.109.242.129] (unknown [9.109.242.129])
+ by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+ Mon,  9 Oct 2023 08:23:26 +0000 (GMT)
+Message-ID: <a10dc8c5-a992-87b4-4a93-30f41cf90ec6@linux.ibm.com>
+Date: Mon, 9 Oct 2023 13:53:25 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [Virtio-fs] (no subject)
+ Thunderbird/102.14.0
+Subject: Re: [PATCH RESEND 11/15] ppc: spapr: Implement nested PAPR hcall -
+ H_GUEST_[GET|SET]_STATE
 Content-Language: en-US
-To: Yajun Wu <yajunw@nvidia.com>, "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, virtio-fs@redhat.com,
- =?UTF-8?Q?Eugenio_P=c3=a9rez?= <eperezma@redhat.com>,
- Anton Kuchin <antonkuchin@yandex-team.ru>, parav@nvidia.com,
- maxime.coquelin@redhat.com
-References: <20231004125904.110781-1-hreitz@redhat.com>
- <20231004125904.110781-2-hreitz@redhat.com> <20231005170852.GB1342722@fedora>
- <20231005131352-mutt-send-email-mst@kernel.org>
- <00272da3-0a48-5544-6ba8-5dfde00be241@redhat.com>
- <20231006043518-mutt-send-email-mst@kernel.org>
- <a8b9d842-0925-38d0-2f0d-f2560bab251b@redhat.com>
- <20231006051802-mutt-send-email-mst@kernel.org>
- <a4af0357-12ee-fc7f-e249-239da34409b0@redhat.com>
- <20231006055229-mutt-send-email-mst@kernel.org>
- <e35f9f71-8d9d-6250-cbaa-70412b5a1149@nvidia.com>
-From: Hanna Czenczek <hreitz@redhat.com>
-In-Reply-To: <e35f9f71-8d9d-6250-cbaa-70412b5a1149@nvidia.com>
+To: Nicholas Piggin <npiggin@gmail.com>, danielhb413@gmail.com,
+ qemu-ppc@nongnu.org
+Cc: qemu-devel@nongnu.org, mikey@neuling.org, vaibhav@linux.ibm.com,
+ jniethe5@gmail.com, sbhat@linux.ibm.com, kconsul@linux.vnet.ibm.com
+References: <20230906043333.448244-1-harshpb@linux.ibm.com>
+ <20230906043333.448244-12-harshpb@linux.ibm.com>
+ <CVCD8OCRI1FI.19OOXLKWHGZ00@wheely>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <CVCD8OCRI1FI.19OOXLKWHGZ00@wheely>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=hreitz@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -38
-X-Spam_score: -3.9
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: sNOsJf135utMr5vDLYKHDQuSQElncrNP
+X-Proofpoint-GUID: o7D0U1pDSQPTc0p1NWUdJAkIV3UifocZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-09_07,2023-10-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=999 phishscore=0
+ impostorscore=0 suspectscore=0 spamscore=0 bulkscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 malwarescore=0 adultscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310090070
+Received-SPF: pass client-ip=148.163.158.5; envelope-from=harshpb@linux.ibm.com;
+ helo=mx0b-001b2d01.pphosted.com
+X-Spam_score_int: -37
+X-Spam_score: -3.8
 X-Spam_bar: ---
-X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- NICE_REPLY_A=-1.818, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01,
- RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
+X-Spam_report: (-3.8 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.818,
+ RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -114,279 +118,446 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 07.10.23 04:22, Yajun Wu wrote:
->
-> On 10/6/2023 6:34 PM, Michael S. Tsirkin wrote:
->> External email: Use caution opening links or attachments
+
+
+On 9/7/23 09:00, Nicholas Piggin wrote:
+> On Wed Sep 6, 2023 at 2:33 PM AEST, Harsh Prateek Bora wrote:
+>> L1 can reuest to get/set state of any of the supported Guest State
+>> Buffer (GSB) elements using h_guest_[get|set]_state hcalls.
+>> These hcalls needs to do some necessary validation check for each
+>> get/set request based on the flags passed and operation supported.
 >>
+>> Signed-off-by: Michael Neuling <mikey@neuling.org>
+>> Signed-off-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+>> ---
+>>   hw/ppc/spapr_nested.c         | 267 ++++++++++++++++++++++++++++++++++
+>>   include/hw/ppc/spapr_nested.h |  22 +++
+>>   2 files changed, 289 insertions(+)
 >>
->> On Fri, Oct 06, 2023 at 11:47:55AM +0200, Hanna Czenczek wrote:
->>> On 06.10.23 11:26, Michael S. Tsirkin wrote:
->>>> On Fri, Oct 06, 2023 at 11:15:55AM +0200, Hanna Czenczek wrote:
->>>>> On 06.10.23 10:45, Michael S. Tsirkin wrote:
->>>>>> On Fri, Oct 06, 2023 at 09:48:14AM +0200, Hanna Czenczek wrote:
->>>>>>> On 05.10.23 19:15, Michael S. Tsirkin wrote:
->>>>>>>> On Thu, Oct 05, 2023 at 01:08:52PM -0400, Stefan Hajnoczi wrote:
->>>>>>>>> On Wed, Oct 04, 2023 at 02:58:57PM +0200, Hanna Czenczek wrote:
->>>>>>>>>> There is no clearly defined purpose for the virtio status 
->>>>>>>>>> byte in
->>>>>>>>>> vhost-user: For resetting, we already have RESET_DEVICE; and 
->>>>>>>>>> for virtio
->>>>>>>>>> feature negotiation, we have [GS]ET_FEATURES. With the REPLY_ACK
->>>>>>>>>> protocol extension, it is possible for SET_FEATURES to return 
->>>>>>>>>> errors
->>>>>>>>>> (SET_PROTOCOL_FEATURES may be called before SET_FEATURES).
->>>>>>>>>>
->>>>>>>>>> As for implementations, SET_STATUS is not widely 
->>>>>>>>>> implemented.  dpdk does
->>>>>>>>>> implement it, but only uses it to signal feature negotiation 
->>>>>>>>>> failure.
->>>>>>>>>> While it does log reset requests (SET_STATUS 0) as such, it 
->>>>>>>>>> effectively
->>>>>>>>>> ignores them, in contrast to RESET_OWNER (which is 
->>>>>>>>>> deprecated, and today
->>>>>>>>>> means the same thing as RESET_DEVICE).
->>>>>>>>>>
->>>>>>>>>> While qemu superficially has support for [GS]ET_STATUS, it 
->>>>>>>>>> does not
->>>>>>>>>> forward the guest-set status byte, but instead just makes it up
->>>>>>>>>> internally, and actually completely ignores what the back-end 
->>>>>>>>>> returns,
->>>>>>>>>> only using it as the template for a subsequent SET_STATUS to 
->>>>>>>>>> add single
->>>>>>>>>> bits to it.  Notably, after setting FEATURES_OK, it never 
->>>>>>>>>> reads it back
->>>>>>>>>> to see whether the flag is still set, which is the only way 
->>>>>>>>>> in which
->>>>>>>>>> dpdk uses the status byte.
->>>>>>>>>>
->>>>>>>>>> As-is, no front-end or back-end can rely on the other side 
->>>>>>>>>> handling this
->>>>>>>>>> field in a useful manner, and it also provides no practical 
->>>>>>>>>> use over
->>>>>>>>>> other mechanisms the vhost-user protocol has, which are more 
->>>>>>>>>> clearly
->>>>>>>>>> defined.  Deprecate it.
->>>>>>>>>>
->>>>>>>>>> Suggested-by: Stefan Hajnoczi <stefanha@redhat.com>
->>>>>>>>>> Signed-off-by: Hanna Czenczek <hreitz@redhat.com>
->>>>>>>>>> ---
->>>>>>>>>>      docs/interop/vhost-user.rst | 28 
->>>>>>>>>> +++++++++++++++++++++-------
->>>>>>>>>>      1 file changed, 21 insertions(+), 7 deletions(-)
->>>>>>>>> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
->>>>>>>> SET_STATUS is the only way to signal failure to acknowledge 
->>>>>>>> FEATURES_OK.
->>>>>>>> The fact current backends never check errors does not mean they 
->>>>>>>> never
->>>>>>>> will. So no, not applying this.
->>>>>>> Can this not be done with REPLY_ACK?  I.e., with the following 
->>>>>>> message
->>>>>>> order:
->>>>>>>
->>>>>>> 1. GET_FEATURES to find out whether 
->>>>>>> VHOST_USER_F_PROTOCOL_FEATURES is
->>>>>>> present
->>>>>>> 2. GET_PROTOCOL_FEATURES to hopefully get 
->>>>>>> VHOST_USER_PROTOCOL_F_REPLY_ACK
->>>>>>> 3. SET_PROTOCOL_FEATURES to set VHOST_USER_PROTOCOL_F_REPLY_ACK
->>>>>>> 4. SET_FEATURES with need_reply
->>>>>>>
->>>>>>> If not, the problem is that qemu has sent SET_STATUS 0 for a 
->>>>>>> while when the
->>>>>>> vCPUs are stopped, which generally seems to request a device 
->>>>>>> reset.  If we
->>>>>>> don’t state at least that SET_STATUS 0 is to be ignored, 
->>>>>>> back-ends that will
->>>>>>> implement SET_STATUS later may break with at least these qemu 
->>>>>>> versions.  But
->>>>>>> documenting that a particular use of the status byte is to be 
->>>>>>> ignored would
->>>>>>> be really strange.
->>>>>>>
->>>>>>> Hanna
->>>>>> Hmm I guess. Though just following virtio spec seems cleaner to 
->>>>>> me...
->>>>>> vhost-user reconfigures the state fully on start.
->>>>> Not the internal device state, though.  virtiofsd has internal 
->>>>> state, and
->>>>> other devices like vhost-gpu back-ends would probably, too.
->>>>>
->>>>> Stefan has recently sent a series
->>>>> (https://lists.nongnu.org/archive/html/qemu-devel/2023-10/msg00709.html) 
->>>>> to
->>>>> put the reset (RESET_DEVICE) into virtio_reset() (when we really 
->>>>> need a
->>>>> reset).
->>>>>
->>>>> I really don’t like our current approach with the status byte. 
->>>>> Following the
->>>>> virtio specification to me would mean that the guest directly 
->>>>> controls this
->>>>> byte, which it does not.  qemu makes up values as it deems 
->>>>> appropriate, and
->>>>> this includes sending a SET_STATUS 0 when the guest is just 
->>>>> paused, i.e.
->>>>> when the guest really doesn’t want a device reset.
->>>>>
->>>>> That means that qemu does not treat this as a virtio device field 
->>>>> (because
->>>>> that would mean exposing it to the guest driver), but instead 
->>>>> treats it as
->>>>> part of the vhost(-user) protocol.  It doesn’t feel right to me 
->>>>> that we use
->>>>> a virtio-defined feature for communication on the vhost level, 
->>>>> i.e. between
->>>>> front-end and back-end, and not between guest driver and device.  
->>>>> I think
->>>>> all vhost-level protocol features should be fully defined in the 
->>>>> vhost-user
->>>>> specification, which REPLY_ACK is.
->>>> Hmm that makes sense. Maybe we should have done what stefan's patch
->>>> is doing.
->>>>
->>>> Do look at the original commit that introduced it to understand why
->>>> it was added.
->>> I don’t understand why this was added to the stop/cont code, 
->>> though.  If it
->>> is time consuming to make these changes, why are they done every 
->>> time the VM
->>> is paused
->>> and resumed?  It makes sense that this would be done for the initial
->>> configuration (where a reset also wouldn’t hurt), but here it seems 
->>> wrong.
->>>
->>> (To be clear, a reset in the stop/cont code is wrong, because it breaks
->>> stateful devices.)
->>>
->>> Also, note the newer commits 6f8be29ec17 and c3716f260bf.  The reset as
->>> originally introduced was wrong even for non-stateful devices, 
->>> because it
->>> occurred before we fetched the state (vring indices) so we could 
->>> restore it
->>> later.  I don’t know how 923b8921d21 was tested, but if the back-end 
->>> used
->>> for testing implemented SET_STATUS 0 as a reset, it could not have 
->>> survived
->>> either migration or a stop/cont in general, because the vring 
->>> indices would
->>> have been reset to 0.
->>>
->>> What I’m saying is, 923b8921d21 introduced SET_STATUS calls that 
->>> broke all
->>> devices that would implement them as per virtio spec, and even today 
->>> it’s
->>> broken for stateful devices.  The mentioned performance issue is likely
->>> real, but we can’t address it by making up SET_STATUS calls that are 
->>> wrong.
->>>
->>> I concede that I didn’t think about DRIVER_OK.  Personally, I would 
->>> do all
->>> final configuration that would happen upon a DRIVER_OK once the 
->>> first vring
->>> is started (i.e. receives a kick).  That has the added benefit of being
->>> asynchronous because it doesn’t block any vhost-user messages (which 
->>> are
->>> synchronous, and thus block downtime).
->>>
->>> Hanna
->>
->> For better or worse kick is per ring. It's out of spec to start rings
->> that were not kicked but I guess you could do configuration ...
->> Seems somewhat asymmetrical though.
->>
->> Let's wait until next week, hopefully Yajun Wu will answer.
-> The main motivation of adding VHOST_USER_SET_STATUS is to let backend 
-> DPDK know
-> when DRIVER_OK bit is valid. It's an indication of all VQ 
-> configuration has sent,
-> otherwise DPDK has to rely on first queue pair is ready, then 
-> receiving/applying
-> VQ configuration one by one.
->
-> During live migration, configuring VQ one by one is very time consuming.
+>> diff --git a/hw/ppc/spapr_nested.c b/hw/ppc/spapr_nested.c
+>> index 6fbb1bcb02..498e7286fa 100644
+>> --- a/hw/ppc/spapr_nested.c
+>> +++ b/hw/ppc/spapr_nested.c
+>> @@ -897,6 +897,138 @@ void init_nested(void)
+>>       }
+>>   }
+>>   
+>> +static struct guest_state_element *guest_state_element_next(
+>> +    struct guest_state_element *element,
+>> +    int64_t *len,
+>> +    int64_t *num_elements)
+>> +{
+>> +    uint16_t size;
+>> +
+>> +    /* size is of element->value[] only. Not whole guest_state_element */
+>> +    size = be16_to_cpu(element->size);
+>> +
+>> +    if (len) {
+>> +        *len -= size + offsetof(struct guest_state_element, value);
+>> +    }
+>> +
+>> +    if (num_elements) {
+>> +        *num_elements -= 1;
+>> +    }
+>> +
+>> +    return (struct guest_state_element *)(element->value + size);
+>> +}
+>> +
+>> +static
+>> +struct guest_state_element_type *guest_state_element_type_find(uint16_t id)
+>> +{
+>> +    int i;
+>> +
+>> +    for (i = 0; i < ARRAY_SIZE(guest_state_element_types); i++)
+>> +        if (id == guest_state_element_types[i].id) {
+>> +            return &guest_state_element_types[i];
+>> +        }
+>> +
+>> +    return NULL;
+>> +}
+>> +
+>> +static void print_element(struct guest_state_element *element,
+>> +                          struct guest_state_request *gsr)
+>> +{
+>> +    printf("id:0x%04x size:0x%04x %s ",
+>> +           be16_to_cpu(element->id), be16_to_cpu(element->size),
+>> +           gsr->flags & GUEST_STATE_REQUEST_SET ? "set" : "get");
+>> +    printf("buf:0x%016lx ...\n", be64_to_cpu(*(uint64_t *)element->value));
+> 
+> No printfs. These could be GUEST_ERROR qemu logs if anything, make
+> sure they're relatively well formed messages if you keep them, i.e.,
+> something a Linux/KVM developer could understand what went wrong.
+> I.e., no __func__ which is internal to QEMU, use "H_GUEST_GET_STATE"
+> etc. Ditto for all the rest of the printfs.
+> 
 
-One question I have here is why it wasn’t then introduced in the live 
-migration code, but in the general VM stop/cont code instead. It does 
-seem time-consuming to do this every time the VM is paused and resumed.
+Sure, changing to qemu_log_mask(LOG_GUEST_ERROR, "h_guest_%s_state ..."
 
-> For VIRTIO
-> net vDPA, HW needs to know how many VQs are enabled to set 
-> RSS(Receive-Side Scaling).
->
-> If you don’t want SET_STATUS message, backend can remove protocol 
-> feature bit
-> VHOST_USER_PROTOCOL_F_STATUS.
+>> +}
+>> +
+>> +static bool guest_state_request_check(struct guest_state_request *gsr)
+>> +{
+>> +    int64_t num_elements, len = gsr->len;
+>> +    struct guest_state_buffer *gsb = gsr->gsb;
+>> +    struct guest_state_element *element;
+>> +    struct guest_state_element_type *type;
+>> +    uint16_t id, size;
+>> +
+>> +    /* gsb->num_elements = 0 == 32 bits long */
+>> +    assert(len >= 4);
+> 
+> I haven't looked closely, but can the guest can't crash the
+> host with malformed requests here?
+> 
+The GSB communication is happening between L1 host and L0 only.
+L2 guest doesnt participate and remains unaware of this state exchange.
+Hence, Only L1 with malformed request can crash itself, not L2.
 
-The problem isn’t back-ends that don’t want the message, the problem is 
-that qemu uses the message wrongly, which prevents well-behaving 
-back-ends from implementing the message.
+> This API is pretty complicated, make sure you sanitize all inputs
+> carefully, as early as possible, and without too deep a call and
+> control flow chain from the API entry point.
+> 
 
-> DPDK is ignoring SET_STATUS 0, but using GET_VRING_BASE to do device 
-> close/reset.
+Noted.
 
-So the right thing to do for back-ends is to announce STATUS support and 
-then not implement it correctly?
+> 
+>> +
+>> +    num_elements = be32_to_cpu(gsb->num_elements);
+>> +    element = gsb->elements;
+>> +    len -= sizeof(gsb->num_elements);
+>> +
+>> +    /* Walk the buffer to validate the length */
+>> +    while (num_elements) {
+>> +
+>> +        id = be16_to_cpu(element->id);
+>> +        size = be16_to_cpu(element->size);
+>> +
+>> +        if (false) {
+>> +            print_element(element, gsr);
+>> +        }
+>> +        /* buffer size too small */
+>> +        if (len < 0) {
+>> +            return false;
+>> +        }
+>> +
+>> +        type = guest_state_element_type_find(id);
+>> +        if (!type) {
+>> +            printf("%s: Element ID %04x unknown\n", __func__, id);
+>> +            print_element(element, gsr);
+>> +            return false;
+>> +        }
+>> +
+>> +        if (id == GSB_HV_VCPU_IGNORED_ID) {
+>> +            goto next_element;
+>> +        }
+>> +
+>> +        if (size != type->size) {
+>> +            printf("%s: Size mismatch. Element ID:%04x. Size Exp:%i Got:%i\n",
+>> +                   __func__, id, type->size, size);
+>> +            print_element(element, gsr);
+>> +            return false;
+>> +        }
+>> +
+>> +        if ((type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_READ_ONLY) &&
+>> +            (gsr->flags & GUEST_STATE_REQUEST_SET)) {
+>> +            printf("%s: trying to set a read-only Element ID:%04x.\n",
+>> +                   __func__, id);
+>> +            return false;
+>> +        }
+>> +
+>> +        if (type->flags & GUEST_STATE_ELEMENT_TYPE_FLAG_GUEST_WIDE) {
+>> +            /* guest wide element type */
+>> +            if (!(gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE)) {
+>> +                printf("%s: trying to set a guest wide Element ID:%04x.\n",
+>> +                       __func__, id);
+>> +                return false;
+>> +            }
+>> +        } else {
+>> +            /* thread wide element type */
+>> +            if (gsr->flags & GUEST_STATE_REQUEST_GUEST_WIDE) {
+>> +                printf("%s: trying to set a thread wide Element ID:%04x.\n",
+>> +                       __func__, id);
+>> +                return false;
+>> +            }
+>> +        }
+>> +next_element:
+>> +        element = guest_state_element_next(element, &len, &num_elements);
+>> +
+>> +    }
+>> +    return true;
+>> +}
+>> +
+>> +static bool is_gsr_invalid(struct guest_state_request *gsr,
+>> +                                   struct guest_state_element *element,
+>> +                                   struct guest_state_element_type *type)
+>> +{
+>> +    if ((gsr->flags & GUEST_STATE_REQUEST_SET) &&
+>> +        (*(uint64_t *)(element->value) & ~(type->mask))) {
+>> +        print_element(element, gsr);
+>> +        printf("L1 can't set reserved bits (allowed mask: 0x%08lx)\n",
+>> +               type->mask);
+>> +        return true;
+>> +    }
+>> +    return false;
+>> +}
+>>   
+>>   static target_ulong h_guest_get_capabilities(PowerPCCPU *cpu,
+>>                                                SpaprMachineState *spapr,
+>> @@ -1108,6 +1240,139 @@ static target_ulong h_guest_create_vcpu(PowerPCCPU *cpu,
+>>       return H_SUCCESS;
+>>   }
+>>   
+>> +static target_ulong getset_state(SpaprMachineStateNestedGuest *guest,
+>> +                                 uint64_t vcpuid,
+>> +                                 struct guest_state_request *gsr)
+>> +{
+>> +    void *ptr;
+>> +    uint16_t id;
+>> +    struct guest_state_element *element;
+>> +    struct guest_state_element_type *type;
+>> +    int64_t lenleft, num_elements;
+>> +
+>> +    lenleft = gsr->len;
+>> +
+>> +    if (!guest_state_request_check(gsr)) {
+>> +        return H_P3;
+>> +    }
+>> +
+>> +    num_elements = be32_to_cpu(gsr->gsb->num_elements);
+>> +    element = gsr->gsb->elements;
+>> +    /* Process the elements */
+>> +    while (num_elements) {
+>> +        type = NULL;
+>> +        /* Debug print before doing anything */
+>> +        if (false) {
+>> +            print_element(element, gsr);
+>> +        }
+>> +
+>> +        id = be16_to_cpu(element->id);
+>> +        if (id == GSB_HV_VCPU_IGNORED_ID) {
+>> +            goto next_element;
+>> +        }
+>> +
+>> +        type = guest_state_element_type_find(id);
+>> +        assert(type);
+>> +
+>> +        /* Get pointer to guest data to get/set */
+>> +        if (type->location && type->copy) {
+>> +            ptr = type->location(guest, vcpuid);
+>> +            assert(ptr);
+>> +            if (!~(type->mask) && is_gsr_invalid(gsr, element, type)) {
+>> +                return H_INVALID_ELEMENT_VALUE;
+>> +            }
+>> +            type->copy(ptr + type->offset, element->value,
+>> +                       gsr->flags & GUEST_STATE_REQUEST_SET ? true : false);
+>> +        }
+>> +
+>> +next_element:
+>> +        element = guest_state_element_next(element, &lenleft, &num_elements);
+>> +    }
+>> +
+>> +    return H_SUCCESS;
+>> +}
+>> +
+>> +static target_ulong map_and_getset_state(PowerPCCPU *cpu,
+>> +                                         SpaprMachineStateNestedGuest *guest,
+>> +                                         uint64_t vcpuid,
+>> +                                         struct guest_state_request *gsr)
+>> +{
+>> +    target_ulong rc;
+>> +    int64_t lenleft, len;
+>> +    bool is_write;
+>> +
+>> +    assert(gsr->len < (1024 * 1024)); /* sanity check */
+> 
+> Use a #define for this, make sure guest can't crash host.
 
-GET_VRING_BASE should not reset the close or reset the device, by the 
-way.  It should stop that one vring, not more.  We have a RESET_DEVICE 
-command for resetting.
+Defined a macro GSB_MAX_BUF_SIZE for this and moving check to caller.
+As explained earlier, nested guest cant crash the host as get/set is
+happening only between L1 and L0. L2 doesnt participate.
 
-> I'm not involved in discussion about adding SET_STATUS in Vhost 
-> protocol. This feature
-> is essential for vDPA(same as vhost-vdpa implements 
-> VHOST_VDPA_SET_STATUS).
+>> +
+>> +    lenleft = len = gsr->len;
+> 
+> Why lenleft? Can't you just check gsr->len like you do gsr->gsb?
 
-So from what I gather from your response is that there is only a single 
-use for SET_STATUS, which is the DRIVER_OK bit.  If so, documenting that 
-all other bits are to be ignored by both back-end and front-end would be 
-fine by me.
+My bad, updated.
 
-I’m not fully serious about that suggestion, but I hear the strong 
-implication that nothing but DRIVER_OK was of any concern, and this is 
-really important to note when we talk about the status of the STATUS 
-feature in vhost today.  It seems to me now that it was not intended to 
-be the virtio-level status byte, but just a DRIVER_OK signalling path 
-from front-end to back-end.  That makes it a vhost-level protocol 
-feature to me.
+> 
+>> +    gsr->gsb = address_space_map(CPU(cpu)->as, gsr->buf, (uint64_t *)&len,
+>> +                                 false, MEMTXATTRS_UNSPECIFIED);
+> 
+> So it's a read-only memory access to gsr->buf? Even for the set?
 
-Hanna
+Hmm, actually set_state should need RO access, get_state would need RW
+access to the provided buffer. However, not sure if there is bug in
+these routines as it has been working like this for now. I shall update
+and re-validate.
 
->
+> 
+>> +    if (!gsr->gsb) {
+>> +        rc = H_P3;
+>> +        goto out1;
+>> +    }
+>> +
+>> +    if (len != lenleft) {
+>> +        rc = H_P3;
+>> +        goto out1;
+>> +    }
+>> +
+>> +    rc = getset_state(guest, vcpuid, gsr);
+>> +
+>> +out1:
+>> +    is_write = (rc == H_SUCCESS) ? len : 0;
+>> +    address_space_unmap(CPU(cpu)->as, gsr->gsb, len, is_write, false);
+> 
+> I don't think this is right, you want to specify the length of memory
+> you actually accessed, even if there was some error.
+> 
+> Over-specifying I think would be okay. So I think just use len.
+
+Hmm, we are specifying len as expected, it's the is_write arg wrongly
+set. I think this got carried forward from existing code as a typo as I
+see most of the unmaps in spapr_exit_nested are passing last two args
+unexpectedly. I shall update this call as appropriate for now and bugs
+in existing code can be fixed in separate patches.
+
+> 
+> 
+>> +    return rc;
+>> +}
+>> +
+>> +static target_ulong h_guest_getset_state(PowerPCCPU *cpu,
+>> +                                         SpaprMachineState *spapr,
+>> +                                         target_ulong *args,
+>> +                                         bool set)
+>> +{
+>> +    target_ulong flags = args[0];
+>> +    target_ulong lpid = args[1];
+>> +    target_ulong vcpuid = args[2];
+>> +    target_ulong buf = args[3];
+>> +    target_ulong buflen = args[4];
+>> +    struct guest_state_request gsr;
+>> +    SpaprMachineStateNestedGuest *guest;
+>> +
+>> +    guest = spapr_get_nested_guest(spapr, lpid);
+>> +    if (!guest) {
+>> +        return H_P2;
+>> +    }
+>> +    gsr.buf = buf;
+>> +    gsr.len = buflen;
+>> +    gsr.flags = 0;
+> 
+> Not a big fan of packaging up some args into a structure,
+> especially if it's pretty static to a file and no need to be
+> carried around with some data. Do you even need this gsr
+> thing?
+
+IMHO, it makes sense to keep related meta-data together for a guest 
+state request in this case. It also helps reducing the number of args 
+being passed to multiple helper routines down the path, each of which 
+may use one or more of its members. If you have strong objections for 
+better reasons, I am willing to revisit this.
+
+> 
+>> +    if (flags & H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
+>> +        gsr.flags |= GUEST_STATE_REQUEST_GUEST_WIDE;
+>> +    }
+>> +    if (flags & !H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE) {
+>> +        return H_PARAMETER; /* flag not supported yet */
+>> +    }
+>> +
+>> +    if (set) {
+>> +        gsr.flags |= GUEST_STATE_REQUEST_SET;
+>> +    }
+>> +    return map_and_getset_state(cpu, guest, vcpuid, &gsr);
+>> +}
+>> +
+>> +static target_ulong h_guest_set_state(PowerPCCPU *cpu,
+>> +                                      SpaprMachineState *spapr,
+>> +                                      target_ulong opcode,
+>> +                                      target_ulong *args)
+>> +{
+>> +    return h_guest_getset_state(cpu, spapr, args, true);
+>> +}
+>> +
+>> +static target_ulong h_guest_get_state(PowerPCCPU *cpu,
+>> +                                      SpaprMachineState *spapr,
+>> +                                      target_ulong opcode,
+>> +                                      target_ulong *args)
+>> +{
+>> +    return h_guest_getset_state(cpu, spapr, args, false);
+>> +}
+>> +
+>>   void spapr_register_nested(void)
+>>   {
+>>       spapr_register_hypercall(KVMPPC_H_SET_PARTITION_TABLE, h_set_ptbl);
+>> @@ -1122,6 +1387,8 @@ void spapr_register_nested_phyp(void)
+>>       spapr_register_hypercall(H_GUEST_SET_CAPABILITIES, h_guest_set_capabilities);
+>>       spapr_register_hypercall(H_GUEST_CREATE          , h_guest_create);
+>>       spapr_register_hypercall(H_GUEST_CREATE_VCPU     , h_guest_create_vcpu);
+>> +    spapr_register_hypercall(H_GUEST_SET_STATE       , h_guest_set_state);
+>> +    spapr_register_hypercall(H_GUEST_GET_STATE       , h_guest_get_state);
+>>   }
+>>   
+>>   #else
+>> diff --git a/include/hw/ppc/spapr_nested.h b/include/hw/ppc/spapr_nested.h
+>> index 3c0d6a486e..eaee624b87 100644
+>> --- a/include/hw/ppc/spapr_nested.h
+>> +++ b/include/hw/ppc/spapr_nested.h
+>> @@ -206,6 +206,9 @@
+>>   #define HVMASK_MSR            0xEBFFFFFFFFBFEFFF
+>>   #define HVMASK_HDEXCR         0x00000000FFFFFFFF
+>>   #define HVMASK_TB_OFFSET      0x000000FFFFFFFFFF
+>> +#define H_GUEST_GETSET_STATE_FLAG_GUEST_WIDE 0x8000000000000000 /* BE in GSB */
+>> +#define GUEST_STATE_REQUEST_GUEST_WIDE       0x1
+>> +#define GUEST_STATE_REQUEST_SET              0x2
+>>   
+>>   #define GUEST_STATE_ELEMENT(i, sz, s, f, ptr, c) { \
+>>       .id = (i),                                     \
+>> @@ -336,6 +339,25 @@ struct guest_state_element_type {
+>>       uint64_t mask;
+>>   };
+>>   
+>> +struct guest_state_element {
+>> +    uint16_t id;   /* Big Endian */
+>> +    uint16_t size; /* Big Endian */
+>> +    uint8_t value[]; /* Big Endian (based on size above) */
+>> +} QEMU_PACKED;
+>> +
+>> +struct guest_state_buffer {
+>> +    uint32_t num_elements; /* Big Endian */
+>> +    struct guest_state_element elements[];
+>> +} QEMU_PACKED;
+> 
+> I think it's probably enough to add one comment saying the PAPR
+> API numbers are all in BE format. This is actually expected of PAPR
+> so it goes without saying really, but the nested HV API actually had
+> some things in guest endian format so it's worth calling out.
+> 
+> Actually maybe single out the nested HV structures as different. I
+> don't know if the upstream code actually handles endian properly...
+> 
+
+Sure, removing all BE related comments for now for changes in this series.
+
+regards,
+Harsh
+
 > Thanks,
-> Yajun
->>
->>>>> Now, we could hand full control of the status byte to the guest, 
->>>>> and that
->>>>> would make me content.  But I feel like that doesn’t really work, 
->>>>> because
->>>>> qemu needs to intercept the status byte anyway (it needs to know 
->>>>> when there
->>>>> is a reset, probably wants to know when the device is configured, 
->>>>> etc.), so
->>>>> I don’t think having the status byte in vhost-user really gains us 
->>>>> much when
->>>>> qemu could translate status byte changes to/from other vhost-user 
->>>>> commands.
->>>>>
->>>>> Hanna
->>>> well it intercepts it but I think it could pass it on unchanged.
->>>>
->>>>
->>>>>> I guess symmetry was the
->>>>>> point. So I don't see why SET_STATUS 0 has to be ignored.
->>>>>>
->>>>>>
->>>>>> SET_STATUS was introduced by:
->>>>>>
->>>>>> commit 923b8921d210763359e96246a58658ac0db6c645
->>>>>> Author: Yajun Wu <yajunw@nvidia.com>
->>>>>> Date:   Mon Oct 17 14:44:52 2022 +0800
->>>>>>
->>>>>>        vhost-user: Support vhost_dev_start
->>>>>>
->>>>>> CC the author.
->>>>>>
->
-
+> Nick
+> 
+>> +
+>> +/* Actuall buffer plus some metadata about the request */
+>> +struct guest_state_request {
+>> +    struct guest_state_buffer *gsb;
+>> +    int64_t buf;
+>> +    int64_t len;
+>> +    uint16_t flags;
+>> +};
+>> +
+>>   /*
+>>    * Register state for entering a nested guest with H_ENTER_NESTED.
+>>    * New member must be added at the end.
+> 
 
