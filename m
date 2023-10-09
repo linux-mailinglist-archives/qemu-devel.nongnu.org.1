@@ -2,55 +2,94 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF037BEDA8
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 23:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07B527BEE25
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 00:13:26 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpyGf-0001kW-Tz; Mon, 09 Oct 2023 17:58:25 -0400
+	id 1qpyTg-0003rk-VY; Mon, 09 Oct 2023 18:11:52 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpyGd-0001k0-6Z; Mon, 09 Oct 2023 17:58:23 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpyGa-00073e-MY; Mon, 09 Oct 2023 17:58:22 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 0EB317456AC;
- Mon,  9 Oct 2023 23:57:25 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 791007456A7; Mon,  9 Oct 2023 23:57:24 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
- by zero.eik.bme.hu (Postfix) with ESMTP id 7368E745681;
- Mon,  9 Oct 2023 23:57:24 +0200 (CEST)
-Date: Mon, 9 Oct 2023 23:57:24 +0200 (CEST)
-From: BALATON Zoltan <balaton@eik.bme.hu>
-To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
-cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Subject: Re: [PATCH 2/3] hw/pci-host: Add emulation of Mai Logic Articia S
-In-Reply-To: <2636ec4a-749c-4fcf-81fa-99a2faf48ec3@ilande.co.uk>
-Message-ID: <9a16138a-ae25-8eb2-0cae-c5782803f636@eik.bme.hu>
-References: <cover.1696542537.git.balaton@eik.bme.hu>
- <90adfa92df7bf760059924a92deebcd6b32e7f37.1696542537.git.balaton@eik.bme.hu>
- <29142019-2a88-4621-8767-58668113d8c7@ilande.co.uk>
- <819b5705-96d7-0c64-11ea-924198f936c3@eik.bme.hu>
- <2636ec4a-749c-4fcf-81fa-99a2faf48ec3@ilande.co.uk>
+ (Exim 4.90_1) (envelope-from <roman@roolebo.dev>) id 1qpyTf-0003r2-32
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 18:11:51 -0400
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <roman@roolebo.dev>) id 1qpyTa-0001mh-Ip
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 18:11:50 -0400
+Received: by mail-lf1-x136.google.com with SMTP id
+ 2adb3069b0e04-50308217223so6239825e87.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 15:11:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=roolebo.dev; s=mail; t=1696889503; x=1697494303; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=nJy0hce/YrY23lL4GVCRdbFPgnpYuOHyHRvZoD67NIs=;
+ b=Qp+JFLxd31Zbcwwv0scwQzvZVl6DRYKk0rFcRmpYhOEphGCbpWGm/2V6jRnkaPelLd
+ YM5xDAgmSsevpuK1CZVDdI1DOLuBxTL4Fp/kDYVbtm3u1vVRTvfKwR9Tx9uKRVRJmQtE
+ Ge35mMpUC9MKTil1N85QR8XNOgyBkIi3e4suoOzU8+05ZYnRw5Dnx15nCWi6WGO2EFTq
+ WcAuLFELR5o642HIIXOU1Hch+1pf/RrspXotELwu6K3rlGOHY4P2gzjScDFDcJfTWdGo
+ an6agRozInWRA8ocI/DnLsS2I3hDk0CAZZTeOzg9LMuTa9+LbZskFxwlhvJ0gBduFYxn
+ rotg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696889503; x=1697494303;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=nJy0hce/YrY23lL4GVCRdbFPgnpYuOHyHRvZoD67NIs=;
+ b=vMsnlBAMjFiwagOgzG3CfEKxXiirB51juRdem1VDZeJLkc6vXNhfD1pWH5ACJ9kUxg
+ 4ZFt+Opa3zoTtvdvqbiLvqEWvWxXs9hom4626VlCLokuRd2+KVWjPjig8OVBQ+wjCBcX
+ aybbbNBfLq9OzcbPAU9yYgqOkron6umKGOq2qg2z69raCIS5cjcQaD6MaebwWlOwqtso
+ Z/rgORUIxqz8Ow02A85XFFum7rFZ63uDHlgAZ6KbGe66yodVJ1TnBHb5YMxHLBukxODM
+ R6sIV4M9t5LPP/Nx4ywMWQGjip2dv+CTPLROPQF6YohanTE3MbTjkUhG38vuKTYXmd5/
+ RCow==
+X-Gm-Message-State: AOJu0Yy/s0ImeVRTik5X+CqoGatZSVnsCYfQOAPhuupJThBOHcOcz42T
+ e24MZDP8sT//XNADI+c71BwNTA==
+X-Google-Smtp-Source: AGHT+IEQZJ6+hZs6o+jHiOoe2HZ60A/G1wZUI4gX36JdY+mej1GgSheBuqpnr1bggyP0p8HRwIvWqQ==
+X-Received: by 2002:a05:6512:250c:b0:503:1b83:e352 with SMTP id
+ be12-20020a056512250c00b005031b83e352mr17216392lfb.52.1696889503024; 
+ Mon, 09 Oct 2023 15:11:43 -0700 (PDT)
+Received: from localhost (95-25-87-177.broadband.corbina.ru. [95.25.87.177])
+ by smtp.gmail.com with ESMTPSA id
+ m23-20020ac24257000000b0050420eff124sm1553302lfl.152.2023.10.09.15.11.42
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Oct 2023 15:11:42 -0700 (PDT)
+Date: Tue, 10 Oct 2023 01:11:41 +0300
+From: Roman Bolshakov <roman@roolebo.dev>
+To: Philippe =?iso-8859-1?Q?Mathieu-Daud=E9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org, David Hildenbrand <david@redhat.com>,
+ Weiwei Li <liweiwei@iscas.ac.cn>, qemu-s390x@nongnu.org,
+ Ilya Leoshkevich <iii@linux.ibm.com>, Bin Meng <bin.meng@windriver.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Cameron Esfahani <dirty@apple.com>, qemu-ppc@nongnu.org,
+ Daniel Henrique Barboza <dbarboza@ventanamicro.com>,
+ qemu-riscv@nongnu.org, Max Filippov <jcmvbkbc@gmail.com>,
+ Daniel Henrique Barboza <danielhb413@gmail.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ =?iso-8859-1?Q?C=E9dric?= Le Goater <clg@kaod.org>,
+ Liu Zhiwei <zhiwei_liu@linux.alibaba.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
+ Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH 5/6] target/i386/hvf: Use x86_cpu in
+ simulate_[rdmsr|wrmsr]()
+Message-ID: <ZSR6nS2k1n8PGjTc@roolebo.dev>
+References: <20231009110239.66778-1-philmd@linaro.org>
+ <20231009110239.66778-6-philmd@linaro.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed;
- boundary="3866299591-116294312-1696888644=:30885"
-X-Spam-Probability: 9%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231009110239.66778-6-philmd@linaro.org>
+Received-SPF: none client-ip=2a00:1450:4864:20::136;
+ envelope-from=roman@roolebo.dev; helo=mail-lf1-x136.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_NONE=0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -66,148 +105,15 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Oct 09, 2023 at 01:02:38PM +0200, Philippe Mathieu-Daud� wrote:
+> We already have 'x86_cpu = X86_CPU(cpu)'. Use the variable
+> instead of doing another QOM cast with X86_CPU().
+> 
+> Signed-off-by: Philippe Mathieu-Daud� <philmd@linaro.org>
 
---3866299591-116294312-1696888644=:30885
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Reviewed-by: Roman Bolshakov <roman@roolebo.dev>
 
-On Mon, 9 Oct 2023, Mark Cave-Ayland wrote:
-> On 08/10/2023 19:08, BALATON Zoltan wrote:
->> On Sun, 8 Oct 2023, Mark Cave-Ayland wrote:
->>> On 05/10/2023 23:13, BALATON Zoltan wrote:
->>> 
->>>> The Articia S is a generic chipset supporting several different CPUs
->>>> that were used on some PPC boards. This is a minimal emulation of the
->>>> parts needed for emulating the AmigaOne board.
->>>> 
->>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
->>>> ---
->>>>   hw/pci-host/Kconfig           |   5 +
->>>>   hw/pci-host/articia.c         | 266 ++++++++++++++++++++++++++++++++++
->>>>   hw/pci-host/meson.build       |   2 +
->>>>   include/hw/pci-host/articia.h |  17 +++
->>>>   4 files changed, 290 insertions(+)
->>>>   create mode 100644 hw/pci-host/articia.c
->>>>   create mode 100644 include/hw/pci-host/articia.h
->>>> 
->>>> diff --git a/hw/pci-host/Kconfig b/hw/pci-host/Kconfig
->>>> index a07070eddf..33014c80a4 100644
->>>> --- a/hw/pci-host/Kconfig
->>>> +++ b/hw/pci-host/Kconfig
->>>> @@ -73,6 +73,11 @@ config SH_PCI
->>>>       bool
->>>>       select PCI
->>>>   +config ARTICIA
->>>> +    bool
->>>> +    select PCI
->>>> +    select I8259
->>>> +
->>>>   config MV64361
->>>>       bool
->>>>       select PCI
->>>> diff --git a/hw/pci-host/articia.c b/hw/pci-host/articia.c
->>>> new file mode 100644
->>>> index 0000000000..80558e1c47
->>>> --- /dev/null
->>>> +++ b/hw/pci-host/articia.c
->>>> @@ -0,0 +1,266 @@
->>>> +/*
->>>> + * Mai Logic Articia S emulation
->>>> + *
->>>> + * Copyright (c) 2023 BALATON Zoltan
->>>> + *
->>>> + * This work is licensed under the GNU GPL license version 2 or later.
->>>> + *
->>>> + */
->>>> +
->>>> +#include "qemu/osdep.h"
->>>> +#include "qemu/log.h"
->>>> +#include "qapi/error.h"
->>>> +#include "hw/pci/pci_device.h"
->>>> +#include "hw/pci/pci_host.h"
->>>> +#include "hw/irq.h"
->>>> +#include "hw/i2c/bitbang_i2c.h"
->>>> +#include "hw/intc/i8259.h"
->>>> +#include "hw/pci-host/articia.h"
->>>> +
->>>> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaState, ARTICIA)
->>>> +
->>>> +OBJECT_DECLARE_SIMPLE_TYPE(ArticiaHostState, ARTICIA_PCI_HOST)
->>>> +struct ArticiaHostState {
->>>> +    PCIDevice parent_obj;
->>>> +
->>>> +    ArticiaState *as;
->>>> +};
->>>> +
->>>> +/* TYPE_ARTICIA */
->>>> +
->>>> +struct ArticiaState {
->>>> +    PCIHostState parent_obj;
->>>> +
->>>> +    qemu_irq irq[PCI_NUM_PINS];
->>>> +    MemoryRegion io;
->>>> +    MemoryRegion mem;
->>>> +    MemoryRegion reg;
->>>> +
->>>> +    bitbang_i2c_interface smbus;
->>>> +    uint32_t gpio; /* bits 0-7 in, 8-15 out, 16-23 direction (0 in, 1 
->>>> out) */
->>>> +    hwaddr gpio_base;
->>>> +    MemoryRegion gpio_reg;
->>>> +};
->>> 
->>> These types above should be in the header file and not in the C file, as 
->>> per our current QOM guidelines.
->> 
->> I don't think there's such a guideline, at least I did not find any mention 
->> of it in style and qom docs. It was necessary to move some type 
->> declarations to headers for types that are embedded in other objects 
->> because C needs the struct size for that, but I don't think that should be 
->> a general thing when it's not needed.
->> 
->> The reason for that is that moving these to the header exposes internal 
->> object structure to users that should not need to know that so it breaks 
->> object encapsulation and also needs moving a bunch of includes to the 
->> header which then makes the users of this type also include those headers 
->> when they don't really need them but only need the type defines to 
->> instantiate the object and that's all they should have access to. So I 
->> think declaring types in the header should only be done for types that 
->> aren't full devices and are meant to be embedded as part of another device 
->> or a SoC but otherwise it's better to keep implementation closed and local 
->> to the object and not expose it unless really needed, that's why these are 
->> here.
->> 
->> If you insist I can move these but I don't think there's really such 
->> recommendation and I don't think that's a good idea because of the above.
->
-> Maybe it was something that was missed out of the recent documentation 
-> updates, but you can clearly see this has been the standard pattern for some 
-> time, including for recent devices such as the xlnx-versal. If there are any 
-> devices that don't follow this pattern then it is likely because they are 
-> based on older code.
->
-> If you disagree with this, then start a new thread on qemu-devel with a new 
-> proposal and if everyone is agreement then that will be become the new 
-> standard.
-
-I think you should start a thread with a patch to style or qom docs about 
-this to document this standard and if that's accepted then I also accept 
-it as a real recommendation as my understanding of it was as above that it 
-was needed for some deviecs to allow embedding them but not a general 
-recommendation for all devices and I don't think it should be beacuse of 
-braeaking encapsulation and introduces a lot of unneded includes so I'd 
-keep it to those devices where it'e really needed which is what the docs 
-currently say.
-
-But I also said I can change this if you insist as for just this devices 
-only used once it does not matter much so I take that as you still want 
-this chnage so I can send another version but wait for the opinion of the 
-maintainers if they want anything else changed so I cah do all remaining 
-changes in next version.
-
+--
 Regards,
-BALATON Zoltan
---3866299591-116294312-1696888644=:30885--
+Roman
 
