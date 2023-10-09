@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278EF7BD55A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:38:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B0E7BD595
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 10:47:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpllp-00072P-1f; Mon, 09 Oct 2023 04:37:45 -0400
+	id 1qplu9-0000CA-IQ; Mon, 09 Oct 2023 04:46:21 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplln-00071n-6z
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:37:43 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplu3-0000Ba-K5
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:46:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplll-0001kW-MM
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:37:42 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qplu2-0003St-1r
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 04:46:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696840660;
+ s=mimecast20190719; t=1696841172;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding;
- bh=/lz86oE0J2Pi8F+Oi/gEX4kdk9mCx7n4qEF91OApOLI=;
- b=IgGn4oIlSPdnQOCxhSbBwM5VDsN6so7+OydGVVwbHg0dJQ8VKPd6M1uNU8oBdnyN0Y5UFe
- 7BGCQejMGFymYbYoVoAUl3fzXOxshkC7PH0TQGtp2ji5Rjv1YBnMJQKsWm6OYpgbCytWVg
- MXa0DwluFXJtlmBm6SyX0UvE8kCUT38=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-218-N-PZzRxJOrqxRfVXVXSEvQ-1; Mon, 09 Oct 2023 04:37:28 -0400
-X-MC-Unique: N-PZzRxJOrqxRfVXVXSEvQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com
- [10.11.54.8])
+ bh=1B0u+UfC1gMHAKNIWlo1uUL0Pp/WvI+e98ZtzaG2Zgc=;
+ b=XTN2fV7ptu9gv7PW+JzgKzLOFnXJ5mJVCWkGgk4SNCJ6XOUvYz+GouOqEh4OyWeEzZ4HQ8
+ hZ47qFRQhCj0tTHCnzXre7A/xnp/gyYOI5RvBsSPMCjYuJFpCVK0TyoIyssE81JBzak3aH
+ 2/5ZkVjmT9C6gRDPKubzE4aygiV+Usg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-93-5mdvUrnvNOaKRv41WdL6Jg-1; Mon, 09 Oct 2023 04:46:01 -0400
+X-MC-Unique: 5mdvUrnvNOaKRv41WdL6Jg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.7])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DAF061C0BB42
- for <qemu-devel@nongnu.org>; Mon,  9 Oct 2023 08:37:27 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B799681B13F
+ for <qemu-devel@nongnu.org>; Mon,  9 Oct 2023 08:46:00 +0000 (UTC)
 Received: from thuth-p1g4.redhat.com (unknown [10.39.193.172])
- by smtp.corp.redhat.com (Postfix) with ESMTP id CE7F1C154CF;
- Mon,  9 Oct 2023 08:37:26 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id D0D5F140E962;
+ Mon,  9 Oct 2023 08:45:59 +0000 (UTC)
 From: Thomas Huth <thuth@redhat.com>
-To: =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>, qemu-devel@nongnu.org
-Cc: Gerd Hoffmann <kraxel@redhat.com>,
-	Markus Armbruster <armbru@redhat.com>
-Subject: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
- compiling with -Wshadow
-Date: Mon,  9 Oct 2023 10:37:25 +0200
-Message-ID: <20231009083726.30301-1-thuth@redhat.com>
+To: Gerd Hoffmann <kraxel@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ qemu-devel@nongnu.org
+Cc: Markus Armbruster <armbru@redhat.com>
+Subject: [PATCH v2] hw/virtio/virtio-gpu: Fix compiler warning when compiling
+ with -Wshadow
+Date: Mon,  9 Oct 2023 10:45:59 +0200
+Message-ID: <20231009084559.41427-1-thuth@redhat.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=thuth@redhat.com;
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
  SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -75,65 +75,55 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename some variables to avoid compiler warnings when compiling
-with -Wshadow=local.
+Avoid using trivial variable names in macros, otherwise we get
+the following compiler warning when compiling with -Wshadow=local:
+
+In file included from ../../qemu/hw/display/virtio-gpu-virgl.c:19:
+../../home/thuth/devel/qemu/hw/display/virtio-gpu-virgl.c:
+ In function ‘virgl_cmd_submit_3d’:
+../../qemu/include/hw/virtio/virtio-gpu.h:228:16: error: declaration of ‘s’
+ shadows a previous local [-Werror=shadow=compatible-local]
+  228 |         size_t s;
+      |                ^
+../../qemu/hw/display/virtio-gpu-virgl.c:215:5: note: in expansion of macro
+ ‘VIRTIO_GPU_FILL_CMD’
+  215 |     VIRTIO_GPU_FILL_CMD(cs);
+      |     ^~~~~~~~~~~~~~~~~~~
+../../qemu/hw/display/virtio-gpu-virgl.c:213:12: note: shadowed declaration
+ is here
+  213 |     size_t s;
+      |            ^
+cc1: all warnings being treated as errors
 
 Signed-off-by: Thomas Huth <thuth@redhat.com>
 ---
- v2: Renamed the variable to something more unique
+ v2: Renamed the variable to something even less trivial
 
- contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
- contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ include/hw/virtio/virtio-gpu.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
-index 509b679f03..654c392fbb 100644
---- a/contrib/vhost-user-gpu/vugpu.h
-+++ b/contrib/vhost-user-gpu/vugpu.h
-@@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
+diff --git a/include/hw/virtio/virtio-gpu.h b/include/hw/virtio/virtio-gpu.h
+index 390c4642b8..4739fa4689 100644
+--- a/include/hw/virtio/virtio-gpu.h
++++ b/include/hw/virtio/virtio-gpu.h
+@@ -225,13 +225,13 @@ struct VhostUserGPU {
  };
  
- #define VUGPU_FILL_CMD(out) do {                                \
--        size_t s;                                               \
--        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
-+        size_t vugpufillcmd_s_ =                                \
-+            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
-                        &out, sizeof(out));                      \
--        if (s != sizeof(out)) {                                 \
-+        if (vugpufillcmd_s_ != sizeof(out)) {                   \
-             g_critical("%s: command size incorrect %zu vs %zu", \
--                       __func__, s, sizeof(out));               \
-+                       __func__, vugpufillcmd_s_, sizeof(out)); \
-             return;                                             \
-         }                                                       \
+ #define VIRTIO_GPU_FILL_CMD(out) do {                                   \
+-        size_t s;                                                       \
+-        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
++        size_t virtiogpufillcmd_s_ =                                    \
++            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,          \
+                        &out, sizeof(out));                              \
+-        if (s != sizeof(out)) {                                         \
++        if (virtiogpufillcmd_s_ != sizeof(out)) {                       \
+             qemu_log_mask(LOG_GUEST_ERROR,                              \
+                           "%s: command size incorrect %zu vs %zu\n",    \
+-                          __func__, s, sizeof(out));                    \
++                          __func__, virtiogpufillcmd_s_, sizeof(out));  \
+             return;                                                     \
+         }                                                               \
      } while (0)
-diff --git a/contrib/vhost-user-gpu/vhost-user-gpu.c b/contrib/vhost-user-gpu/vhost-user-gpu.c
-index aa304475a0..bb41758e34 100644
---- a/contrib/vhost-user-gpu/vhost-user-gpu.c
-+++ b/contrib/vhost-user-gpu/vhost-user-gpu.c
-@@ -834,7 +834,7 @@ vg_resource_flush(VuGpu *g,
-                 .width = width,
-                 .height = height,
-             };
--            pixman_image_t *i =
-+            pixman_image_t *img =
-                 pixman_image_create_bits(pixman_image_get_format(res->image),
-                                          msg->payload.update.width,
-                                          msg->payload.update.height,
-@@ -842,11 +842,11 @@ vg_resource_flush(VuGpu *g,
-                                                       payload.update.data),
-                                          width * bpp);
-             pixman_image_composite(PIXMAN_OP_SRC,
--                                   res->image, NULL, i,
-+                                   res->image, NULL, img,
-                                    extents->x1, extents->y1,
-                                    0, 0, 0, 0,
-                                    width, height);
--            pixman_image_unref(i);
-+            pixman_image_unref(img);
-             vg_send_msg(g, msg, -1);
-             g_free(msg);
-         }
 -- 
 2.41.0
 
