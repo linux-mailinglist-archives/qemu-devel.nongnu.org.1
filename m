@@ -2,79 +2,79 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD5A7BD30D
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:10:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8C67BD30F
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:10:36 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpjSU-0005Wa-7f; Mon, 09 Oct 2023 02:09:38 -0400
+	id 1qpjTD-00067Y-NW; Mon, 09 Oct 2023 02:10:23 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjSQ-0005WL-Fb
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:09:34 -0400
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjTC-000661-3k
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:10:22 -0400
+Received: from mail-ej1-x62b.google.com ([2a00:1450:4864:20::62b])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjSO-0008JM-Uf
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:09:34 -0400
-Received: by mail-ej1-x62e.google.com with SMTP id
- a640c23a62f3a-9b9faf05f51so466294666b.2
- for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 23:09:32 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjTA-00009X-Bu
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:10:21 -0400
+Received: by mail-ej1-x62b.google.com with SMTP id
+ a640c23a62f3a-99c3d3c3db9so682110066b.3
+ for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 23:10:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696831771; x=1697436571; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=linaro.org; s=google; t=1696831818; x=1697436618; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :from:to:cc:subject:date:message-id:reply-to;
- bh=Zm3vhcWfiG1SXdvRbaygXn3NXZYIuE9nYz3CmZSpjQg=;
- b=w87U8jzCCz/4uezWSD0x5M7ToNn3iKoe4F4bmlKgPue9vFUoOBCojcYMxOGSa5Ygf6
- tdQznKShhKC8UBNsG9LKxmhPWdHIRYnPMN4ng1zh1XojOtS8lxvGdIjwdKRgf2sZWPQk
- DyLBTCbu9NrDiaeg8/Lc4uQc3BDRxkTRROsS2oSRtY0IChZiIDRZ5oJp7GRM3WPmlYea
- 3mqFC3cSlAocDu1EMAlomDfSWBd+SVbp/v6TZk7c3gNcagDT2bWtzGk/dgcMg2V9z3Hc
- SNyMrMhu2/AsjP0CJCgI+EcmQhT4ffPUK9rB4roSnpeOhODbSSFBT2f5/mw7MYk8E8WP
- B+Rw==
+ bh=XWdPdOs7mx57SjWq3066JLzCN01TLQELOyLYiY/Ghzg=;
+ b=OcJqZX8T6F9P0HSvXRm3yOcgmf6cgGx4dWlpUfwmg18v5m5igYZ6iz70WabWqnNPoG
+ nyXtylwM0cwzSjtAbq4LPOvP0+p7j+mYvhEbANcESNKaBTNR7dOCKFRm2xgyLXB8ZNos
+ 77xDao5Ljp2ygNG3YFXLmE1jQPUwOenwn51ArgG/0ySzZeLBT/U0bqgNmySeOxQSsePp
+ SlFUa3bbhcBHA8/TxkrkJSwLQUz8wRoJ5rtM/Jnj94WMfyI5baPkMc+O6fJDaLh9C//1
+ P6Lo+N1HKEa6caO/00fzToH35EE7oPJ5EDg/jwqj1Qv6NGI1uiDNYrV0J7vxRUEraLdW
+ jw0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696831771; x=1697436571;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:user-agent:mime-version:date:message-id
+ d=1e100.net; s=20230601; t=1696831818; x=1697436618;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=Zm3vhcWfiG1SXdvRbaygXn3NXZYIuE9nYz3CmZSpjQg=;
- b=aVBPX/f91/nJ7BdIYvB1wOJvGTkE5knCNQ+vD96UwvCccGmQpersjmMKs31iHFk/4i
- 2rk6blXIOSIzcq40K8L3d0KqQbTi8VRYWbH1Arod4r7ZKqtLAuYiwjdYKUxK924dLdDZ
- 45Xj8lV/+nK9G4FiS2eSFFwC8/B3vntQySGIP+QfA0J9ZZ0r+CLT31kIYw8ztUIDMDUR
- /Wpm+4X1Hi6sLxh48/F8MpIks3VzqW82PWuU8gTBhOMJtK5S0DpgbcdcGgoGB1gDuv0f
- sCIXnQ4Nch2MkUypk7/O7FMSdS/ayUlwqEqpYxZZ6+nlu320Kvhf+K3NrK+thVkg2PKz
- GvRw==
-X-Gm-Message-State: AOJu0YzF0XQ3zWEKwzLE43br46Xom7fmCfpKJ+edqkjn3AM/AWVYYojV
- uirpG1iriE2ylW7ugnJ9tZlPuA==
-X-Google-Smtp-Source: AGHT+IG/zynIL8hsNZKXZ7/0sdyIgyVAMsE/K2T/pHU32UYXfqbwqq8HiIYuKghDYYzt6UW1YGyeJQ==
-X-Received: by 2002:a17:907:7804:b0:9ae:52fb:2202 with SMTP id
- la4-20020a170907780400b009ae52fb2202mr13111534ejc.40.1696831771225; 
- Sun, 08 Oct 2023 23:09:31 -0700 (PDT)
+ bh=XWdPdOs7mx57SjWq3066JLzCN01TLQELOyLYiY/Ghzg=;
+ b=e8qTivF5+Hf+UrzhDyFt175Ic1awdsJNvsFF7Uq4WB1FAEkoGkI0CTAQBOceIQRqD+
+ 0NETOOJ8PVSnzMES8oY8IYxxpczaKX7cgyKJBckrNMoQQ/Wgcm5Fmjsz5yqFy/yBiA1Z
+ pmnKKLox4lpMrPmoShydDTK0dDCpW/6To1a2YKW5Ywo84LLrz4LVmlUx+lvxFZeT96d9
+ Sx0cdlLOuseN7ZVZuysoBt3ZzTDm327FJzKHrA5TMO36Oj6QrqlkZNKuOjUd/V95aq2r
+ QSRUgV0sYXhed9Sn0zc5lKtE762CHE9me7Y/bXKSbiVewr1+Dw62e7/T6kKHDBCYguOE
+ dXNA==
+X-Gm-Message-State: AOJu0YxYY3wQK7xo50PjF414FSXT/7xVFBiB+9hJ8q45d1LeQKNj1p8H
+ DWueCu2MR0PHPLbD1eheEasDRA==
+X-Google-Smtp-Source: AGHT+IHumSgXDgDq5Mkpr0qzW1Xcjl84nK3WP83lycjdfKpwzPzzvK8UkZ3ABd4bf2q9DCztbu7NPg==
+X-Received: by 2002:a17:906:5198:b0:9aa:25f5:8d93 with SMTP id
+ y24-20020a170906519800b009aa25f58d93mr11896837ejk.49.1696831817930; 
+ Sun, 08 Oct 2023 23:10:17 -0700 (PDT)
 Received: from [192.168.69.115]
  (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
  by smtp.gmail.com with ESMTPSA id
- t8-20020a17090616c800b009a1be9c29d7sm6422005ejd.179.2023.10.08.23.09.29
+ v24-20020a1709067d9800b009b2c5363ebasm6277441ejo.26.2023.10.08.23.10.16
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sun, 08 Oct 2023 23:09:30 -0700 (PDT)
-Message-ID: <48c5233c-c294-f50d-a438-f7f6a63c113b@linaro.org>
-Date: Mon, 9 Oct 2023 08:09:28 +0200
+ Sun, 08 Oct 2023 23:10:17 -0700 (PDT)
+Message-ID: <c4536580-6757-7cc0-170f-f20fb0ad6e6f@linaro.org>
+Date: Mon, 9 Oct 2023 08:10:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
+Subject: Re: [PATCH v3 1/3] target/hexagon: move GETPC() calls to top level
+ helpers
+Content-Language: en-US
 To: Brian Cain <bcain@quicinc.com>, qemu-devel@nongnu.org
 Cc: armbru@redhat.com, richard.henderson@linaro.org,
  peter.maydell@linaro.org, quic_mathbern@quicinc.com, stefanha@redhat.com,
- ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com,
- Thomas Huth <thuth@redhat.com>
-References: <20231005222206.2784853-1-bcain@quicinc.com>
- <20231005222206.2784853-4-bcain@quicinc.com>
-Content-Language: en-US
+ ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com
+References: <20231008220945.983643-1-bcain@quicinc.com>
+ <20231008220945.983643-2-bcain@quicinc.com>
 From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231005222206.2784853-4-bcain@quicinc.com>
+In-Reply-To: <20231008220945.983643-2-bcain@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62e;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62e.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62b;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62b.google.com
 X-Spam_score_int: -38
 X-Spam_score: -3.9
 X-Spam_bar: ---
@@ -97,57 +97,46 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Brian,
-
-On 6/10/23 00:22, Brian Cain wrote:
-> The typedef `vaddr` is shadowed by `vaddr` identifiers, so we rename the
-> identifiers to avoid shadowing the type name.
-
-This one surprises me, since we have other occurences:
-
-include/exec/memory.h:751:bool memory_get_xlat_addr(IOMMUTLBEntry 
-*iotlb, void **vaddr,
-	include/qemu/plugin.h:199:void qemu_plugin_vcpu_mem_cb(CPUState *cpu, 
-uint64_t vaddr,
-target/arm/internals.h:643:G_NORETURN void 
-arm_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
-target/i386/tcg/helper-tcg.h:70:G_NORETURN void 
-handle_unaligned_access(CPUX86State *env, vaddr vaddr,
-...
-
-$ git grep -w vaddr, | wc -l
-      207
-
-What is the error/warning like?
-
-> The global `cpu_env` is shadowed by local `cpu_env` arguments, so we
-> rename the function arguments to avoid shadowing the global.
+On 9/10/23 00:09, Brian Cain wrote:
+> From: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
 > 
+> As docs/devel/loads-stores.rst states:
+> 
+>    ``GETPC()`` should be used with great care: calling
+>    it in other functions that are *not* the top level
+>    ``HELPER(foo)`` will cause unexpected behavior. Instead, the
+>    value of ``GETPC()`` should be read from the helper and passed
+>    if needed to the functions that the helper calls.
+> 
+> Let's fix the GETPC() usage in Hexagon, making sure it's always called
+> from top level helpers and passed down to the places where it's
+> needed. There are a few snippets where that is not currently the case:
+> 
+> - probe_store(), which is only called from two helpers, so it's easy to
+>    move GETPC() up.
+> 
+> - mem_load*() functions, which are also called directly from helpers,
+>    but through the MEM_LOAD*() set of macros. Note that this are only
+>    used when compiling with --disable-hexagon-idef-parser.
+> 
+>    In this case, we also take this opportunity to simplify the code,
+>    unifying the mem_load*() functions.
+> 
+> - HELPER(probe_hvx_stores), when called from another helper, ends up
+>    using its own GETPC() expansion instead of the top level caller.
+> 
+> Signed-off-by: Matheus Tavares Bernardino <quic_mathbern@quicinc.com>
+> Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+> Message-Id: <2c74c3696946edba7cc5b2942cf296a5af532052.1689070412.git.quic_mathbern@quicinc.com>-ne
+
+Again suspicious '-ne' trailing.
+
+> Reviewed-by: Brian Cain <bcain@quicinc.com>
 > Signed-off-by: Brian Cain <bcain@quicinc.com>
 > ---
->   target/hexagon/genptr.c                 | 56 ++++++++++++-------------
->   target/hexagon/genptr.h                 | 18 ++++----
->   target/hexagon/mmvec/system_ext_mmvec.c |  4 +-
->   target/hexagon/mmvec/system_ext_mmvec.h |  2 +-
->   target/hexagon/op_helper.c              |  4 +-
->   5 files changed, 42 insertions(+), 42 deletions(-)
-> 
-> diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c
-> index 217bc7bb5a..11377ac92b 100644
-> --- a/target/hexagon/genptr.c
-> +++ b/target/hexagon/genptr.c
-> @@ -334,28 +334,28 @@ void gen_set_byte_i64(int N, TCGv_i64 result, TCGv src)
->       tcg_gen_deposit_i64(result, result, src64, N * 8, 8);
->   }
->   
-> -static inline void gen_load_locked4u(TCGv dest, TCGv vaddr, int mem_index)
-> +static inline void gen_load_locked4u(TCGv dest, TCGv v_addr, int mem_index)
->   {
-> -    tcg_gen_qemu_ld_tl(dest, vaddr, mem_index, MO_TEUL);
-> -    tcg_gen_mov_tl(hex_llsc_addr, vaddr);
-> +    tcg_gen_qemu_ld_tl(dest, v_addr, mem_index, MO_TEUL);
-> +    tcg_gen_mov_tl(hex_llsc_addr, v_addr);
->       tcg_gen_mov_tl(hex_llsc_val, dest);
->   }
+>   target/hexagon/macros.h    | 19 +++++-----
+>   target/hexagon/op_helper.c | 75 +++++++++++++++-----------------------
+>   target/hexagon/op_helper.h |  9 -----
+>   3 files changed, 38 insertions(+), 65 deletions(-)
 
 
