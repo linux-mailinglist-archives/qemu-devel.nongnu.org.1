@@ -2,105 +2,55 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 445CA7BEE2E
-	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 00:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 585087BEE41
+	for <lists+qemu-devel@lfdr.de>; Tue, 10 Oct 2023 00:25:45 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpyYa-00059H-7x; Mon, 09 Oct 2023 18:16:56 -0400
+	id 1qpyg2-0006xR-8z; Mon, 09 Oct 2023 18:24:38 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qpyYU-00056U-RB; Mon, 09 Oct 2023 18:16:52 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5])
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qpyfy-0006xD-WD; Mon, 09 Oct 2023 18:24:35 -0400
+Received: from zero.eik.bme.hu ([2001:738:2001:2001::2001])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <ninad@linux.ibm.com>)
- id 1qpyYR-0002YR-Gl; Mon, 09 Oct 2023 18:16:50 -0400
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399MEfBa020683; Mon, 9 Oct 2023 22:16:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=I4My2XPOIp21n4ExWhzB+P2xip2TXEj3f59v7dnse4c=;
- b=opuGtm2vqtbPKqVB6P+7ffnFBgsfP87pd/Ewlw44teq7FPBE3b94/r2+2wNkHdtBr1xY
- 6iJNVgAZjz7zbyZlDzVM7jLuRmkXEkBsNmR/+QZPjKn6G98ZKd1CjTVf7rQK8w0gij+3
- xPhyF+S7Fz0KrQEQYoZTbT+rb++6fRJ94ySVZQBoZziXnWMXjvgr51xD8nChwYpyX/r+
- uJdoGXlBI3yWJacJhC74SZZ4gUeGdi1kB49nJOnasVXzAxErSr5POrF6sLshEzKw61hN
- trP/AJ0h3cZBUSrzIM09TVrQvCCpg2neITeHWaKjaI2aFq17X9K8xAotn7E0GzwYQVx8 4g== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmt5082r2-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 22:16:33 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 399MFJWL024354;
- Mon, 9 Oct 2023 22:16:33 GMT
-Received: from ppma12.dal12v.mail.ibm.com
- (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmt5082q3-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 22:16:33 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
- by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399LmjDZ024465; Mon, 9 Oct 2023 22:16:32 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
- by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkhnscdnt-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 22:16:32 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com
- [10.241.53.101])
- by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 399MGVDl8127172
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Oct 2023 22:16:31 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id BE02D58051;
- Mon,  9 Oct 2023 22:16:31 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 512795805E;
- Mon,  9 Oct 2023 22:16:31 +0000 (GMT)
-Received: from [9.61.164.107] (unknown [9.61.164.107])
- by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Oct 2023 22:16:31 +0000 (GMT)
-Message-ID: <1b460c52-809b-45ae-b3bc-24b5180d1c8a@linux.ibm.com>
-Date: Mon, 9 Oct 2023 17:16:31 -0500
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qpyfv-0003wo-Gr; Mon, 09 Oct 2023 18:24:34 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id CC3C774632B;
+ Tue, 10 Oct 2023 00:23:35 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 54BB27456AC; Tue, 10 Oct 2023 00:23:35 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 4FF477456A7;
+ Tue, 10 Oct 2023 00:23:35 +0200 (CEST)
+Date: Tue, 10 Oct 2023 00:23:35 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+cc: qemu-devel@nongnu.org, qemu-ppc@nongnu.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>, 
+ Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH 1/3] via-ide: Fix legacy mode emulation
+In-Reply-To: <881c3003-9e20-4f35-961e-976134b1afc7@ilande.co.uk>
+Message-ID: <72722073-0dc5-9936-1dcb-0d39760c5918@eik.bme.hu>
+References: <cover.1696542537.git.balaton@eik.bme.hu>
+ <12ce9caa682545cd43318c4679530202140117c0.1696542537.git.balaton@eik.bme.hu>
+ <33347356-be91-4dde-8535-5a59ee1c80f1@ilande.co.uk>
+ <a7821bf0-5d1f-ddda-f408-f4cd0432ddbf@eik.bme.hu>
+ <881c3003-9e20-4f35-961e-976134b1afc7@ilande.co.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/10] hw/fsi: Introduce IBM's cfam,fsi-slave
-Content-Language: en-US
-To: =?UTF-8?Q?C=C3=A9dric_Le_Goater?= <clg@kaod.org>, qemu-devel@nongnu.org,
- peter.maydell@linaro.org, andrew@aj.id.au, joel@jms.id.au,
- pbonzini@redhat.com, marcandre.lureau@redhat.com, berrange@redhat.com,
- thuth@redhat.com, philmd@linaro.org, lvivier@redhat.com
-Cc: qemu-arm@nongnu.org
-References: <20230908222859.3381003-1-ninad@linux.ibm.com>
- <20230908222859.3381003-4-ninad@linux.ibm.com>
- <7be690fa-f277-e6d2-0f8f-e81e83008b6a@kaod.org>
-From: Ninad Palsule <ninad@linux.ibm.com>
-In-Reply-To: <7be690fa-f277-e6d2-0f8f-e81e83008b6a@kaod.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 5R1dg6d46NYMatUprD51wr1EsCW500xv
-X-Proofpoint-GUID: zzOQuNr2MgWCoRR2aMi7tKla2GTnYReS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_20,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501
- lowpriorityscore=0 mlxscore=0 malwarescore=0 phishscore=0 spamscore=0
- impostorscore=0 clxscore=1015 mlxlogscore=999 adultscore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310090176
-Received-SPF: pass client-ip=148.163.158.5; envelope-from=ninad@linux.ibm.com;
- helo=mx0b-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
-X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+Content-Type: multipart/mixed;
+ BOUNDARY="3866299591-1334490387-1696888249=:30885"
+Content-ID: <76e1ed10-f701-9ba5-2629-5732d71cabff@eik.bme.hu>
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=2001:738:2001:2001::2001;
+ envelope-from=balaton@eik.bme.hu; helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -117,620 +67,320 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hello Cedric,
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Thanks for the review.
+--3866299591-1334490387-1696888249=:30885
+Content-Type: text/plain; CHARSET=ISO-8859-15; format=flowed
+Content-Transfer-Encoding: 8BIT
+Content-ID: <20a135b3-96de-1ff5-79b1-88a5eb488461@eik.bme.hu>
 
-On 9/11/23 07:19, Cédric Le Goater wrote:
-> On 9/9/23 00:28, Ninad Palsule wrote:
->> This is a part of patchset where IBM's Flexible Service Interface is
->> introduced.
->>
->> The Common FRU Access Macro (CFAM), an address space containing
->> various "engines" that drive accesses on busses internal and external
->> to the POWER chip. Examples include the SBEFIFO and I2C masters. The
->> engines hang off of an internal Local Bus (LBUS) which is described
->> by the CFAM configuration block.
->>
->> The FSI slave: The slave is the terminal point of the FSI bus for
->> FSI symbols addressed to it. Slaves can be cascaded off of one
->> another. The slave's configuration registers appear in address space
->> of the CFAM to which it is attached.
->>
->> Signed-off-by: Andrew Jeffery <andrew@aj.id.au>
->> Signed-off-by: Cédric Le Goater <clg@kaod.org>
->> Signed-off-by: Ninad Palsule <ninad@linux.ibm.com>
->> ---
->> v2:
->> - Incorporated Joel's review comments.
->> v3:
->> - Incorporated Thomas Huth's review comments.
->> ---
->>   hw/fsi/Kconfig             |   9 ++
->>   hw/fsi/cfam.c              | 238 +++++++++++++++++++++++++++++++++++++
->>   hw/fsi/fsi-slave.c         | 109 +++++++++++++++++
->>   hw/fsi/meson.build         |   2 +
->>   hw/fsi/trace-events        |   5 +
->>   include/hw/fsi/cfam.h      |  61 ++++++++++
->>   include/hw/fsi/fsi-slave.h |  29 +++++
->>   7 files changed, 453 insertions(+)
->>   create mode 100644 hw/fsi/cfam.c
->>   create mode 100644 hw/fsi/fsi-slave.c
->>   create mode 100644 hw/fsi/trace-events
->>   create mode 100644 include/hw/fsi/cfam.h
->>   create mode 100644 include/hw/fsi/fsi-slave.h
->>
->> diff --git a/hw/fsi/Kconfig b/hw/fsi/Kconfig
->> index 2a9c49f2c9..087980be22 100644
->> --- a/hw/fsi/Kconfig
->> +++ b/hw/fsi/Kconfig
->> @@ -1,3 +1,12 @@
->> +config CFAM
->> +    bool
->> +    select FSI
->> +    select SCRATCHPAD
->> +    select LBUS
->> +
->> +config FSI
->> +    bool
->> +
->>   config SCRATCHPAD
->>       bool
->>       select LBUS
->> diff --git a/hw/fsi/cfam.c b/hw/fsi/cfam.c
->> new file mode 100644
->> index 0000000000..9a9e65d33f
->> --- /dev/null
->> +++ b/hw/fsi/cfam.c
->> @@ -0,0 +1,238 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM Common FRU Access Macro
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +
->> +#include "qapi/error.h"
->> +#include "qemu/log.h"
->> +#include "trace.h"
->> +
->> +#include "hw/fsi/bits.h"
->> +#include "hw/fsi/cfam.h"
->> +#include "hw/fsi/engine-scratchpad.h"
->> +
->> +#include "hw/qdev-properties.h"
->> +
->> +#define TO_REG(x)                          ((x) >> 2)
->> +
->> +#define CFAM_ENGINE_CONFIG                  TO_REG(0x04)
->> +
->> +#define CFAM_CONFIG_CHIP_ID                TO_REG(0x00)
->> +#define CFAM_CONFIG_CHIP_ID_P9             0xc0022d15
->> +#define   CFAM_CONFIG_CHIP_ID_BREAK        0xc0de0000
->> +
->> +static uint64_t cfam_config_read(void *opaque, hwaddr addr, unsigned 
->> size)
->> +{
->> +    CFAMConfig *config;
->> +    CFAMState *cfam;
->> +    LBusNode *node;
->> +    int i;
->> +
->> +    config = CFAM_CONFIG(opaque);
->> +    cfam = container_of(config, CFAMState, config);
->> +
->> +    trace_cfam_config_read(addr, size);
->> +
->> +    assert(size == 4);
->> +    assert(!(addr & 3));
+On Mon, 9 Oct 2023, Mark Cave-Ayland wrote:
+> On 08/10/2023 12:08, BALATON Zoltan wrote:
 >
+>> On Sun, 8 Oct 2023, Mark Cave-Ayland wrote:
+>>> On 05/10/2023 23:13, BALATON Zoltan wrote:
+>>> 
+>>>> The initial value for BARs were set in reset method for emulating
+>>>> legacy mode at start but this does not work because PCI code resets
+>>>> BARs after calling device reset method.
+>>> 
+>>> This is certainly something I've noticed when testing previous versions of 
+>>> the VIA patches. Perhaps it's worth a separate thread to the PCI devs?
+>> 
+>> I think I brought up this back then but was told current PCI code won't 
+>> change and since that could break everything else that makes sense so this 
+>> is something that we should take as given and accomodate that.
 >
-> These checks are useless if the MemoryRegionOps is defined accordingly.
-Good suggestion. Updated MemoryRegionOps registration and removed these 
-asserts.
+> I don't remember the details of that thread, but that's not too much of an 
+> issue here as the values won't be used.
 >
->> +
->> +    switch (addr) {
->> +    case 0x00:
->> +        return CFAM_CONFIG_CHIP_ID_P9;
->> +    case 0x04:
->> +        return ENGINE_CONFIG_NEXT
->> +            | 0x00010000                    /* slots */
->> +            | 0x00001000                    /* version */
->> +            | ENGINE_CONFIG_TYPE_PEEK   /* type */
->> +            | 0x0000000c;                   /* crc */
->> +    case 0x08:
->> +        return ENGINE_CONFIG_NEXT
->> +            | 0x00010000                    /* slots */
->> +            | 0x00005000                    /* version */
->> +            | ENGINE_CONFIG_TYPE_FSI    /* type */
->> +            | 0x0000000a;                   /* crc */
->> +        break;
->> +    default:
->> +        /* FIXME: Improve this */
+>>>> Additionally the values
+>>>> written to BARs were also wrong.
+>>> 
+>>> I don't believe this is correct: according to the datasheet the values on 
+>>> reset are the ones given in the current reset code, so even if the reset 
+>>> function is overridden at a later data during PCI bus reset, I would leave 
+>>> these for now since it is a different issue.
+>> 
+>> Those values are missing the IO space bit for one so they can't be correct 
+>> as a BAR value no matter what the datasheet says. And since they are 
+>> ineffective now I think it's best to remove them to avoid confusion.
 >
-> This looks hacky. What is it suppose to do ?
-Yes, This is kind of work in progress. Looks like it is expecting 
-address 0xc onwards devices and if we find any device then it will 
-return config data for that device otherwise its a bad things and sends 
-a break to reset.
->
->
->> +        i = 0xc;
->> +        QLIST_FOREACH(node, &cfam->lbus.devices, next) {
->> +            if (i == addr) {
->> +                return LBUS_DEVICE_GET_CLASS(node->ldev)->config;
->> +            }
->> +            i += size;
->> +        }
->> +
->> +        if (i == addr) {
->> +            return 0;
->> +        }
->> +
->> +        /*
->> +         * As per FSI specification, This is a magic value at 
->> address 0 of
->> +         * given FSI port. This causes FSI master to send BREAK 
->> command for
->> +         * initialization and recovery.
->> +         */
->> +        return 0xc0de0000;
->
-> we could use a definition.
-Fixed
->
->> +    }
->> +}
->> +
->> +static void cfam_config_write(void *opaque, hwaddr addr, uint64_t data,
->> +                                 unsigned size)
->> +{
->> +    CFAMConfig *s = CFAM_CONFIG(opaque);
->> +
->> +    trace_cfam_config_write(addr, size, data);
->> +
->> +    assert(size == 4);
->> +    assert(!(addr & 3));
->
-> These checks are useless if the MemoryRegionOps is defined accordingly.
-Removed.
->
->> +
->> +    switch (TO_REG(addr)) {
->> +    case CFAM_CONFIG_CHIP_ID:
->> +    case CFAM_CONFIG_CHIP_ID + 4:
->> +        if (data == CFAM_CONFIG_CHIP_ID_BREAK) {
->> +            bus_cold_reset(qdev_get_parent_bus(DEVICE(s)));
->> +        }
->> +    break;
->> +    default:
->> +        qemu_log_mask(LOG_GUEST_ERROR, "%s: Not implemented: 0x%"
->> +                      HWADDR_PRIx" for %u\n",
->> +                      __func__, addr, size);
->> +    }
->> +}
->> +
->> +static const struct MemoryRegionOps cfam_config_ops = {
->> +    .read = cfam_config_read,
->> +    .write = cfam_config_write,
->> +    .endianness = DEVICE_BIG_ENDIAN,
->> +};
->> +
->> +static void cfam_config_realize(DeviceState *dev, Error **errp)
->> +{
->> +    CFAMConfig *s = CFAM_CONFIG(dev);
->> +
->> +    memory_region_init_io(&s->iomem, OBJECT(s), &cfam_config_ops, s,
->> +                          TYPE_CFAM_CONFIG, 0x400);
->> +}
->> +
->> +static void cfam_config_reset(DeviceState *dev)
->> +{
->> +    /* Config is read-only */
->> +}
->
-> Simply remove.
-Removed.
->
->
->> +
->> +static void cfam_config_class_init(ObjectClass *klass, void *data)
->> +{
->> +    DeviceClass *dc = DEVICE_CLASS(klass);
->> +    dc->bus_type = TYPE_LBUS;
->> +    dc->realize = cfam_config_realize;
->> +    dc->reset = cfam_config_reset;
->> +}
->> +
->> +static const TypeInfo cfam_config_info = {
->> +    .name = TYPE_CFAM_CONFIG,
->> +    .parent = TYPE_DEVICE,
->> +    .instance_size = sizeof(CFAMConfig),
->> +    .class_init = cfam_config_class_init,
->> +};
->> +
->> +static uint64_t cfam_unimplemented_read(void *opaque, hwaddr addr,
->> +                                        unsigned size)
->> +{
->> +    trace_cfam_unimplemented_read(addr, size);
->> +
->> +    return 0;
->> +}
->> +
->> +static void cfam_unimplemented_write(void *opaque, hwaddr addr, 
->> uint64_t data,
->> +                                     unsigned size)
->> +{
->> +    trace_cfam_unimplemented_write(addr, size, data);
->> +}
->> +
->> +static const struct MemoryRegionOps cfam_unimplemented_ops = {
->> +    .read = cfam_unimplemented_read,
->> +    .write = cfam_unimplemented_write,
->> +    .endianness = DEVICE_BIG_ENDIAN,
->> +};
->> +
->> +static void cfam_realize(DeviceState *dev, Error **errp)
->> +{
->> +    CFAMState *cfam = CFAM(dev);
->> +    FSISlaveState *slave = FSI_SLAVE(dev);
->> +    Error *err = NULL;
->> +
->> +    /* Each slave has a 2MiB address space */
->> +    memory_region_init_io(&cfam->mr, OBJECT(cfam), 
->> &cfam_unimplemented_ops,
->> +                          cfam, TYPE_CFAM, 2 * 1024 * 1024);
->> +    address_space_init(&cfam->as, &cfam->mr, TYPE_CFAM);
->> +
->> +    qbus_init(&cfam->lbus, sizeof(cfam->lbus), TYPE_LBUS,
->> +                        DEVICE(cfam), NULL);
->
-> shouldn't that be in the cfam_init routine ? not sure.
-I think we need bus init here because we need to create scratchpad by 
-default.
->
->> + lbus_create_device(&cfam->lbus, TYPE_SCRATCHPAD, 0);
->> +
->> +    object_property_set_bool(OBJECT(&cfam->config), "realized", 
->> true, &err);> +    if (err) {
->> +        error_propagate(errp, err);
->> +        return;
->> +    }
->> +    qdev_set_parent_bus(DEVICE(&cfam->config), BUS(&cfam->lbus), 
->> &error_abort);
->
-> why isn't cfam->config created with lbus_create_device() ?
-cfam owns the bus hence setting parent should be done in cfam.
->
->
->> + object_property_set_bool(OBJECT(&cfam->lbus), "realized", true, &err);
->> +    if (err) {
->> +        error_propagate(errp, err);
->> +        return;
->> +    }
->> +
->> +    memory_region_add_subregion(&cfam->mr, 0, &cfam->config.iomem);
->> +    /* memory_region_add_subregion(&cfam->mr, 0x800, 
->> &cfam->lbus.peek.iomem); */
->> +    memory_region_add_subregion(&cfam->mr, 0x800, &slave->iomem);
->> +    memory_region_add_subregion(&cfam->mr, 0xc00, &cfam->lbus.mr);
->> +}
->> +
->> +static void cfam_reset(DeviceState *dev)
->> +{
->> +    /* TODO: Figure out how inherited reset works */
->> +    qemu_log_mask(LOG_UNIMP, "%s: Not implemented yet.\n", __func__);
->> +}
->
-> Simply remove for now.
-Removed.
->
->> +
->> +static void cfam_init(Object *o)
->> +{
->> +    CFAMState *s = CFAM(o);
->> +
->> +    object_initialize_child(o, TYPE_CFAM_CONFIG, &s->config, 
->> TYPE_CFAM_CONFIG);
->> +}
->> +
->> +static void cfam_finalize(Object *o)
->> +{
->> +    CFAMState *s = CFAM(o);
->> +
->> +    address_space_destroy(&s->as);
->> +}
->> +
->> +static void cfam_class_init(ObjectClass *klass, void *data)
->> +{
->> +    DeviceClass *dc = DEVICE_CLASS(klass);
->> +    dc->bus_type = TYPE_FSI_BUS;
->> +    dc->realize = cfam_realize;
->> +    dc->reset = cfam_reset;
->> +}
->> +
->> +static const TypeInfo cfam_info = {
->> +    .name = TYPE_CFAM,
->> +    .parent = TYPE_FSI_SLAVE,
->> +    .instance_init = cfam_init,
->> +    .instance_finalize = cfam_finalize,
->> +    .instance_size = sizeof(CFAMState),
->> +    .class_init = cfam_class_init,
->> +};
->> +
->> +static void cfam_register_types(void)
->> +{
->> +    type_register_static(&cfam_config_info);
->> +    type_register_static(&cfam_info);
->> +}
->> +
->> +type_init(cfam_register_types);
->> diff --git a/hw/fsi/fsi-slave.c b/hw/fsi/fsi-slave.c
->> new file mode 100644
->> index 0000000000..10df5b243f
->> --- /dev/null
->> +++ b/hw/fsi/fsi-slave.c
->> @@ -0,0 +1,109 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM Flexible Service Interface slave
->> + */
->> +
->> +#include "qemu/osdep.h"
->> +
->> +#include "qemu/bitops.h"
->> +#include "qapi/error.h"
->> +#include "qemu/log.h"
->> +
->> +#include "hw/fsi/fsi-slave.h"
->> +
->> +#define TO_REG(x)                               ((x) >> 2)
->> +
->> +#define FSI_SMODE               TO_REG(0x00)
->> +#define   FSI_SMODE_WSTART      BE_BIT(0)
->> +#define   FSI_SMODE_AUX_EN      BE_BIT(1)
->> +#define   FSI_SMODE_SLAVE_ID    BE_GENMASK(6, 7)
->> +#define   FSI_SMODE_ECHO_DELAY  BE_GENMASK(8, 11)
->> +#define   FSI_SMODE_SEND_DELAY  BE_GENMASK(12, 15)
->> +#define   FSI_SMODE_LBUS_DIV    BE_GENMASK(20, 23)
->> +#define   FSI_SMODE_BRIEF_LEFT  BE_GENMASK(24, 27)
->> +#define   FSI_SMODE_BRIEF_RIGHT BE_GENMASK(28, 31)
->> +
->> +#define FSI_SDMA                TO_REG(0x04)
->> +#define FSI_SISC                TO_REG(0x08)
->> +#define FSI_SCISC               TO_REG(0x08)
->> +#define FSI_SISM                TO_REG(0x0c)
->> +#define FSI_SISS                TO_REG(0x10)
->> +#define FSI_SSISM               TO_REG(0x10)
->> +#define FSI_SCISM               TO_REG(0x14)
->> +
->> +static uint64_t fsi_slave_read(void *opaque, hwaddr addr, unsigned 
->> size)
->> +{
->> +    FSISlaveState *s = FSI_SLAVE(opaque);
->> +
->> +    qemu_log_mask(LOG_UNIMP, "%s: read @0x%" HWADDR_PRIx " size=%d\n",
->> +                  __func__, addr, size);
->
-> This is a trace event
-Made it trace event.
->
->> +    if (addr + size > sizeof(s->regs)) {
->> +        qemu_log_mask(LOG_GUEST_ERROR,
->> +                      "%s: Out of bounds read: 0x%"HWADDR_PRIx" for 
->> %u\n",
->> +                      __func__, addr, size);
->
-> I don't think this check is necessary if the MMIO region is sized 
-> correctly.
-I think it is nice to have because even if address is aligned we don't 
-want it to be beyond limit.
->
->> +        return 0;
->> +    }
->> +
->> +    return s->regs[TO_REG(addr)];
->> +}
->> +
->> +static void fsi_slave_write(void *opaque, hwaddr addr, uint64_t data,
->> +                                 unsigned size)
->> +{
->> +    FSISlaveState *s = FSI_SLAVE(opaque);
->> +
->> +    qemu_log_mask(LOG_UNIMP, "%s: write @0x%" HWADDR_PRIx " size=%d "
->> +                  "value=%"PRIx64"\n", __func__, addr, size, data);
->
-> This is a trace event
-Converted to trace event.
->
->> +    if (addr + size > sizeof(s->regs)) {
->> +        qemu_log_mask(LOG_GUEST_ERROR,
->> +                      "%s: Out of bounds write: 0x%"HWADDR_PRIx" for 
->> %u\n",
->> +                      __func__, addr, size);
->> +        return;
->> +    }
->> +
->> +    s->regs[TO_REG(addr)] = data;
->> +}
->> +
->> +static const struct MemoryRegionOps fsi_slave_ops = {
->> +    .read = fsi_slave_read,
->> +    .write = fsi_slave_write,
->> +    .endianness = DEVICE_BIG_ENDIAN,
->> +};
->> +
->> +static void fsi_slave_init(Object *o)
->> +{
->> +    FSISlaveState *s = FSI_SLAVE(o);
->> +
->> +    memory_region_init_io(&s->iomem, OBJECT(s), &fsi_slave_ops,
->> +                          s, TYPE_FSI_SLAVE, 0x400);
->> +}
->> +
->> +static void fsi_slave_reset(DeviceState *dev)
->> +{
->> +    /* FIXME */
->> +}
->
-> Simply remove the reset for now.
+> Maybe, or perhaps just fix up the missing IO space bit and add a comment 
+> pointing out these are the defaults, but currently they are erased on PCI bus 
+> reset? I have found it useful to have the values around to save having to 
+> reference the datasheet.
 
-Removed.
+The data sheet does not list the io space bits so fixing that would lead 
+to values not matching data sheet any more. Also the defaults in the data 
+sheet don't make much sense even with io space but as some of them match 
+legacy ports while others don't. I can either drop this hunk leaving the 
+current values there or add a FIXME comment saying they are ineffective 
+but because they are overwritten (either by PCI code now or firmware/guest 
+later) I think it's best to remove them any maybe only bring them back if 
+we find they would be needed for any guest and what would be the correct 
+default valuss here. I don't trust the data sheet on that and getting it 
+from real hardware is also not really possible because the firmware could 
+have overwritten them by the time you can get them. So I don't think 
+keeping these here would help anybody, just cause confusion.
 
-~Ninad
+>>>> Move setting the BARs to a callback on writing the PCI config regsiter
+>>>> that sets the compatibility mode (which firmwares needing this mode
+>>>> seem to do) and fix their values to program it to use legacy port
+>>>> numbers. As noted in a comment, we only do this when the BARs were
+>>>> unset before, because logs from real machine show this is how real
+>>>> chip works, even if it contradicts the data sheet which is not very
+>>>> clear about this.
+>>>> 
+>>>> Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
+>>>> ---
+>>>> � hw/ide/via.c | 35 ++++++++++++++++++++++++++++++-----
+>>>> � 1 file changed, 30 insertions(+), 5 deletions(-)
+>>>> 
+>>>> diff --git a/hw/ide/via.c b/hw/ide/via.c
+>>>> index fff23803a6..8186190207 100644
+>>>> --- a/hw/ide/via.c
+>>>> +++ b/hw/ide/via.c
+>>>> @@ -132,11 +132,6 @@ static void via_ide_reset(DeviceState *dev)
+>>>> ����� pci_set_word(pci_conf + PCI_STATUS, PCI_STATUS_FAST_BACK |
+>>>> ������������������ PCI_STATUS_DEVSEL_MEDIUM);
+>>>> � -��� pci_set_long(pci_conf + PCI_BASE_ADDRESS_0, 0x000001f0);
+>>>> -��� pci_set_long(pci_conf + PCI_BASE_ADDRESS_1, 0x000003f4);
+>>>> -��� pci_set_long(pci_conf + PCI_BASE_ADDRESS_2, 0x00000170);
+>>>> -��� pci_set_long(pci_conf + PCI_BASE_ADDRESS_3, 0x00000374);
+>>>> -��� pci_set_long(pci_conf + PCI_BASE_ADDRESS_4, 0x0000cc01); /* BMIBA: 
+>>>> 20-23h */
+>>>> ����� pci_set_long(pci_conf + PCI_INTERRUPT_LINE, 0x0000010e);
+>>>> ������� /* IDE chip enable, IDE configuration 1/2, IDE FIFO 
+>>>> Configuration*/
+>>>> @@ -159,6 +154,35 @@ static void via_ide_reset(DeviceState *dev)
+>>>> ����� pci_set_long(pci_conf + 0xc0, 0x00020001);
+>>>> � }
+>>>> � +static void via_ide_cfg_write(PCIDevice *pd, uint32_t addr,
+>>>> +����������������������������� uint32_t val, int len)
+>>>> +{
+>>>> +��� pci_default_write_config(pd, addr, val, len);
+>>>> +��� /*
+>>>> +���� * Only set BARs if they are unset. Logs from real hardware show 
+>>>> that
+>>>> +���� * writing class_prog to enable compatibility mode after BARs were 
+>>>> set
+>>>> +���� * (possibly by firmware) it will use ports set by BARs not ISA 
+>>>> ports
+>>>> +���� * (e.g. pegasos2 Linux does this and calls it non-100% native 
+>>>> mode).
+>>> 
+>>> Can you remind me again where the references are to non-100% native mode? 
+>>> The only thing I can find in Linux is 
+>>> https://github.com/torvalds/linux/blob/master/arch/powerpc/platforms/chrp/pci.c#L360 
+>>> but that simply forces a switch to legacy mode, with no mention of 
+>>> "non-100% native mode".
+>> 
+>> It was discussed somewhere in the via-ide thread we had when this was last 
+>> touched for pegasos2 in March 2020. Basically the non-100% native mode is 
+>> when ports are set by BARs but IRQs are still hard coded to 14-15. Linux 
+>> can work with all 3 possible modes: legacy (both ports and IRQs are hard 
+>> coded to ISA values), native (using BARs and PCI config 0x3c for a single 
+>> interrupt for both channels, vt82c686 data sheet does not document this but 
+>> vt8231 has a comment saying native mode only) and non-100% native mode 
+>> where BARs are effective to set port addresses but IRQs don't respect 0x3c 
+>> but use 14-15 as in legacy mode. Some machines only work in non-100% native 
+>> mode such as pegasos2 and Linux has some quirks for this. Other OSes 
+>> running on this machine work with what the firmware has set up and can't 
+>> work with anything else so we need to emulate what those OSes want (which 
+>> matches real hardware) because Linux can usually cope anyway. On pegasso2 
+>> MorphOS uses BARs but expects IRQ 14-15 which is what the firmware also 
+>> sets up by setting mode to native in the PCI config of the IDE func yet 
+>> IRQs are fixed at 14-15. Linux forces its driver to use legacy interrupts 
+>> by setting mode back to legacy but it still uses BARs and this is what it 
+>> calls non-100% native mode. On amigaone firmware sets legacy mode and 
+>> AmigaOS does not change this but uses it with legacy ports and IRQs. Linux 
+>> finds the same and uses legacy mode on amigaone.
+>
+> Thanks for summarising: there have been a number of threads and changes over 
+> the years, so it is easy to lose track of where things are. From the above 
+> then everything except MorphOS that explicitly sets legacy/native mode should 
+> just work?
 
+No, everything but Linux (i.e. MorphOS and AmigaOS) only work with 
+behaviour matching real hardware which is BARs + legacy interrupts. Linux 
+may work with other settings but it also has fix ups to detect and work 
+with the non-100% native mode as on real hardware. (I think this non-100% 
+native mode was used hy the older Linus via ata driver before it was 
+ported to libata and became pata_via as I remember seeing these in older 
+logs but not in newer ones any more which just list IRQs and port numbers 
+from which you can tell it's neither the legacy nor the native mode 
+described in the data sheet but a mix between the two.)
+
+> Just to double check I don't think we ever managed to get the PCI 
+> configuration information from real hardware to confirm how the hardware 
+> thinks it is set? Is it possible to dump the PCI config space of the PCI-ISA 
+> bridge and the VIA IDE from a real Pegasos2 booted into Smart Firmware? You 
+> can get the information using the Forth below:
 >
->> +
->> +static void fsi_slave_class_init(ObjectClass *klass, void *data)
->> +{
->> +    DeviceClass *dc = DEVICE_CLASS(klass);
->> +    dc->reset = fsi_slave_reset;
->> +}
->> +
->> +static const TypeInfo fsi_slave_info = {
->> +    .name = TYPE_FSI_SLAVE,
->> +    .parent = TYPE_DEVICE,
->> +    .instance_init = fsi_slave_init,
->> +    .instance_size = sizeof(FSISlaveState),
->> +    .class_init = fsi_slave_class_init,
->> +};
->> +
->> +static void fsi_slave_register_types(void)
->> +{
->> +    type_register_static(&fsi_slave_info);
->> +}
->> +
->> +type_init(fsi_slave_register_types);
->> diff --git a/hw/fsi/meson.build b/hw/fsi/meson.build
->> index f90e09ddab..5600502b33 100644
->> --- a/hw/fsi/meson.build
->> +++ b/hw/fsi/meson.build
->> @@ -1,2 +1,4 @@
->>   system_ss.add(when: 'CONFIG_LBUS', if_true: files('lbus.c'))
->>   system_ss.add(when: 'CONFIG_SCRATCHPAD', if_true: 
->> files('engine-scratchpad.c'))
->> +system_ss.add(when: 'CONFIG_CFAM', if_true: files('cfam.c'))
->> +system_ss.add(when: 'CONFIG_FSI', if_true: files('fsi-slave.c'))
->> diff --git a/hw/fsi/trace-events b/hw/fsi/trace-events
->> new file mode 100644
->> index 0000000000..2f1b4f8a54
->> --- /dev/null
->> +++ b/hw/fsi/trace-events
->> @@ -0,0 +1,5 @@
->> +cfam_config_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 " size=%d"
->> +cfam_config_write(uint64_t addr, uint32_t size, uint64_t data) 
->> "@0x%" PRIx64 " size=%d value=0x%"PRIx64
->> +
->> +cfam_unimplemented_read(uint64_t addr, uint32_t size) "@0x%" PRIx64 
->> " size=%d"
->> +cfam_unimplemented_write(uint64_t addr, uint32_t size, uint64_t 
->> data) "@0x%" PRIx64 " size=%d value=0x%"PRIx64
->> diff --git a/include/hw/fsi/cfam.h b/include/hw/fsi/cfam.h
->> new file mode 100644
->> index 0000000000..af9f88cb22
->> --- /dev/null
->> +++ b/include/hw/fsi/cfam.h
->> @@ -0,0 +1,61 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM Common FRU Access Macro
->> + */
->> +#ifndef FSI_CFAM_H
->> +#define FSI_CFAM_H
->> +
->> +#include "exec/memory.h"
->> +
->> +#include "hw/fsi/fsi-slave.h"
->> +#include "hw/fsi/lbus.h"
->> +
->> +#define TYPE_FSI_BUS "fsi.bus"
->> +
->> +#define TYPE_CFAM "cfam"
->> +#define CFAM(obj) OBJECT_CHECK(CFAMState, (obj), TYPE_CFAM)
->> +
->> +#define CFAM_NR_REGS ((0x2e0 >> 2) + 1)
->> +
->> +#define TYPE_CFAM_CONFIG "cfam.config"
->> +#define CFAM_CONFIG(obj) \
->> +    OBJECT_CHECK(CFAMConfig, (obj), TYPE_CFAM_CONFIG)
->> +/* P9-ism */
->> +#define CFAM_CONFIG_NR_REGS 0x28
->> +
->> +typedef struct CFAMState CFAMState;
->> +
->> +/* TODO: Generalise this accommodate different CFAM configurations */
->> +typedef struct CFAMConfig {
->> +    DeviceState parent;
->> +
->> +    MemoryRegion iomem;
->> +} CFAMConfig;
->> +
->> +#define TYPE_CFAM_PEEK "cfam.peek"
->> +#define CFAM_PEEK(obj) \
->> +    OBJECT_CHECK(CFAMPeek, (obj), TYPE_CFAM_PEEK)
->> +#define CFAM_PEEK_NR_REGS ((0x130 >> 2) + 1)
->> +
->> +typedef struct CFAMPeek {
->> +    DeviceState parent;
->> +
->> +    MemoryRegion iomem;
->> +} CFAMPeek;
->> +
->> +struct CFAMState {
->> +    /* < private > */
->> +    FSISlaveState parent;
->> +
->> +    MemoryRegion mr;
->> +    AddressSpace as;
->> +
->> +    CFAMConfig config;
->> +    CFAMPeek peek;
->> +
->> +    LBus lbus;
->> +};
->> +
->> +#endif /* FSI_CFAM_H */
->> diff --git a/include/hw/fsi/fsi-slave.h b/include/hw/fsi/fsi-slave.h
->> new file mode 100644
->> index 0000000000..bff807ff20
->> --- /dev/null
->> +++ b/include/hw/fsi/fsi-slave.h
->> @@ -0,0 +1,29 @@
->> +/*
->> + * SPDX-License-Identifier: GPL-2.0-or-later
->> + * Copyright (C) 2023 IBM Corp.
->> + *
->> + * IBM Flexible Service Interface slave
->> + */
->> +#ifndef FSI_FSI_SLAVE_H
->> +#define FSI_FSI_SLAVE_H
->> +
->> +#include "exec/memory.h"
->> +#include "hw/qdev-core.h"
->> +
->> +#include "hw/fsi/lbus.h"
->> +
->> +#include <stdint.h>
->> +
->> +#define TYPE_FSI_SLAVE "fsi.slave"
->> +#define FSI_SLAVE(obj) \
->> +    OBJECT_CHECK(FSISlaveState, (obj), TYPE_FSI_SLAVE)
->> +#define FSI_SLAVE_CONTROL_NR_REGS ((0x40 >> 2) + 1)
->> +
->> +typedef struct FSISlaveState {
->> +    DeviceState parent;
->> +
->> +    MemoryRegion iomem;
->> +    uint32_t regs[FSI_SLAVE_CONTROL_NR_REGS];
->> +} FSISlaveState;
->> +
->> +#endif /* FSI_FSI_H */
 >
+> : dump-single-config ( addr )
+>  dup 100 + swap do i u. " : " type i " config-b@" $call-parent u. cr loop
+> ;
+>
+> " /pci@80000000/isa@C" open-dev to my-self
+> 800 c * 100 0 * + dump-single-config cr cr
+> 800 c * 100 1 * + dump-single-config cr cr
+
+I don't have dumps from firmware but got an lspci output from Linux from 
+real pegasos2 which says:
+
+0000:00:0c.1 IDE interface: VIA Technologies, Inc. VT82C586A/B/VT82C686/A/B/VT823x/A/C PIPC Bus Master IDE (rev 06) (prog-if 8a [Master SecP PriP])
+         Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+         Status: Cap+ 66MHz- UDF- FastB2B+ ParErr- DEVSEL=medium >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+         Latency: 0
+         Interrupt: pin ? routed to IRQ 14
+         Region 0: [virtual] I/O ports at 1000 [size=8]
+         Region 1: [virtual] I/O ports at 100c [size=4]
+         Region 2: [virtual] I/O ports at 1010 [size=8]
+         Region 3: [virtual] I/O ports at 101c [size=4]
+         Region 4: I/O ports at 1020 [size=16]
+         Capabilities: [c0] Power Management version 2
+                 Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA PME(D0-,D1-,D2-,D3hot-,D3cold-)
+                 Status: D0 NoSoftRst- PME-Enable- DSel=0 DScale=0 PME-
+         Kernel driver in use: pata_via
+
+This says prog_if is 0x8a (probably set by Linux fixup as firmware sets it 
+to native) but still uses BARs for ports and legacy interrupts although 
+only says 14 above but in dmesg it listed interruts for the channels as 
+quoted in reply to Bernhard. Also got /proc infos from same machine that 
+says:
+
+/proc/ioports:   00001000-00001007 : 0000:00:0c.1
+/proc/ioports:     00001000-00001007 : pata_via
+/proc/ioports:   0000100c-0000100f : 0000:00:0c.1
+/proc/ioports:     0000100c-0000100f : pata_via
+/proc/ioports:   00001010-00001017 : 0000:00:0c.1
+/proc/ioports:     00001010-00001017 : pata_via
+/proc/ioports:   0000101c-0000101f : 0000:00:0c.1
+/proc/ioports:     0000101c-0000101f : pata_via
+/proc/ioports:   00001020-0000102f : 0000:00:0c.1
+/proc/ioports:     00001020-0000102f : pata_via
+
+/proc/interrupts:  14:       1847     i8259  14 Level     pata_via
+/proc/interrupts:  15:       1210     i8259  15 Level     pata_via
+
+So what other proof you still need to believe this is how it works on real 
+machine?
+
+> With the corresponding MorphOS debug log that will help to confirm the 
+> routing being used. Also it would be useful to get the output of any MorphOS 
+> program that can dump the current kernel IRQ routing configuration.
+
+MorphOS does not give much debug logs but it works currenntly as well as 
+AmigaOS and Linux so what we have now is good enough and this patch does 
+not break that.
+
+> The reason for wanting to double-check this now is because my work with the 
+> Mac q800 machine showed that both legacy and modern IRQ routing worked, so it 
+> would be good to confirm exactly what IRQ is currently active on real 
+> hardware.
+
+What does q800 has to do with VT8231 and pegaos2? These are totally 
+different hardware and software designed by separate people so other than 
+you were looking at both there's no connection to consider between these.
+
+>>>> +���� * But if 0x8a is written after reset without setting BARs then we 
+>>>> want
+>>>> +���� * legacy ports (this is done by AmigaOne firmware for example).
+>>>> +���� */
+>>> 
+>>> What should happen here is that writing 0x8a should *always* switch to 
+>>> legacy mode, so the BARs are unused...
+>> 
+>> Yes, but as we've found before that can't be emulated in QEMU due to ISA 
+>> emulation being static and only allows adding ports but not removing them 
+>> later
+>
+> Fortunately this bug has been fixed, so it should now be possible using 
+> portio_list_*() functions: see 
+> https://gitlab.com/qemu-project/qemu/-/commit/690705ca0b0f1ed24a34ccd14c9866fbe47c69a6. 
+> With that (and a bit of refactoring to allow the sharing of the IDE ioport 
+> list) I was able to switch between compatibility and native modes at will in 
+> my PoC. Once that is working then it doesn't matter if the default BARs 
+> aren't set correctly.
+
+Great but maybe that's not needed because firmware and guests usually 
+configure this once at boot then use it with that setting without ever 
+switching it again so this simple patch allows that to work without 
+breaking what's there and tested already so I'd like this to be merged 
+first with the amigaone machine then if you want to rewrite it later to 
+emulate the chip more closely then we have at least two test cases with 
+pegasos2 and amigaone to verify evertyhing still works correctly. But 
+since this patch allows all guests to boot it may be a waste of time to 
+try to patch this emulation further to add functionality that won't be 
+used by anything. But if it keeps working like this patch does and still 
+boots the guests this one allows I don't care that much about that.
+
+Regards,
+BALATON Zoltan
+
+>> so we can't switch between legacy ISA and PCI here so we use the BARs for 
+>> legacy ports as well to emulate that. The reason we only do this if BARs 
+>> are not yet set is because Linux changes this back to legacy mode on 
+>> pegasos2 but still uses BARs as shown in boot logs from real hardware so it 
+>> seems BARs take priority over legacy mode on real chip and Linux only uses 
+>> the mode reg to decide what IRQs to use. On amigaone firmware writes 0x8a 
+>> right after reset in which case we want legacy mode so this works for both 
+>> machines.
+>> 
+>>>> +��� if (addr == PCI_CLASS_PROG && val == 0x8a &&
+>>>> +������� pci_get_long(pd->config + PCI_BASE_ADDRESS_0) ==
+>>>> +������� PCI_BASE_ADDRESS_SPACE_IO) {
+>>>> +������� pci_set_long(pd->config + PCI_BASE_ADDRESS_0, 0x1f0
+>>>> +�������������������� | PCI_BASE_ADDRESS_SPACE_IO);
+>>>> +������� pci_set_long(pd->config + PCI_BASE_ADDRESS_1, 0x3f6
+>>>> +�������������������� | PCI_BASE_ADDRESS_SPACE_IO);
+>>>> +������� pci_set_long(pd->config + PCI_BASE_ADDRESS_2, 0x170
+>>>> +�������������������� | PCI_BASE_ADDRESS_SPACE_IO);
+>>>> +������� pci_set_long(pd->config + PCI_BASE_ADDRESS_3, 0x376
+>>>> +�������������������� | PCI_BASE_ADDRESS_SPACE_IO);
+>>>> +������� /* BMIBA: 20-23h */
+>>>> +������� pci_set_long(pd->config + PCI_BASE_ADDRESS_4, 0xcc00
+>>>> +�������������������� | PCI_BASE_ADDRESS_SPACE_IO);
+>>>> +��� }
+>>>> +}
+>>> 
+>>> ... but what you're doing here is effectively forcing the PCI BARs to the 
+>>> legacy addresses. The reason we know this is because that is why you have 
+>>> the off-by-2 error in BARs 1 and 3.
+>>> 
+>>> I could live with this approach for now if you're willing to adjust the 
+>>> comments accordingly clarifying that forcing the PCI BARs to the legacy 
+>>> addresses is a hack to be replaced in future with proper legacy ioports. 
+>>> At some point I will revive my PoC series on top of Bernhard's last series 
+>>> that implements this properly.
+>> 
+>> That's fair enoough, I can try to clarify thid more in the comments and 
+>> commit message. I'll try to come up with something for v2.
+>> 
+>> Regards,
+>> BALATON Zoltan
+>> 
+>>>> � static void via_ide_realize(PCIDevice *dev, Error **errp)
+>>>> � {
+>>>> ����� PCIIDEState *d = PCI_IDE(dev);
+>>>> @@ -221,6 +245,7 @@ static void via_ide_class_init(ObjectClass *klass, 
+>>>> void *data)
+>>>> ����� /* Reason: only works as function of VIA southbridge */
+>>>> ����� dc->user_creatable = false;
+>>>> � +��� k->config_write = via_ide_cfg_write;
+>>>> ����� k->realize = via_ide_realize;
+>>>> ����� k->exit = via_ide_exitfn;
+>>>> ����� k->vendor_id = PCI_VENDOR_ID_VIA;
+>
+>
+> ATB,
+>
+> Mark.
+>
+>
+>
+--3866299591-1334490387-1696888249=:30885--
 
