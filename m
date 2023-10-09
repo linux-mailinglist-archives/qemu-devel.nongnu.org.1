@@ -2,101 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC41D7BDAA2
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:05:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F0F7BDAAD
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:06:27 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpp0M-0003kn-0D; Mon, 09 Oct 2023 08:04:58 -0400
+	id 1qpp1D-000502-Sd; Mon, 09 Oct 2023 08:05:51 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qpp09-0003kS-To
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:04:46 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpp18-0004e3-6u
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:05:47 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <anisinha@redhat.com>)
- id 1qpp07-0006wi-1B
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:04:45 -0400
+ (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpp16-0007KL-1R
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:05:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696853080;
+ s=mimecast20190719; t=1696853143;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=C3qiDUoAVwzks2EZXjU0fajl4ZP3ck6fKVLvm4RTV4o=;
- b=V8b0Rq/OzGJdjlEkkBG256MVUu8C09JNeAq3QStIJr7YHFJlJBnIxsODaaT+wgJlNgZ/jO
- av2X/LOq5LMdoD6+iol9t7Zt4NpiPLLAAaehLnvzGzjjzBWTbXCskP8cNwKXu1jVPlv5U3
- uya835xhvOiZxgTbbQbMmWyhNLtzxk0=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=c7HipwnD7mZzeF01bQBOZpKdKkUqoTw3zU0e9zcjkvM=;
+ b=c1XL7UA876cCgJp08XScLO4lRdqkvIlalMGlS6LXc0C4IyzTpRbEYLwJxziZSEziTDyN2c
+ Q7rASW2nZfIQrTfHv8yH6zdi6zRsjP1OgXwaICWL8ABSs1jEIiiXzwkMwsLKqlLC8Av2Bb
+ BpXOD6/xybyeW0kcTazUlnuQr2H+WS8=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-41-PCBfxb0QNuyYaubN3qyPag-1; Mon, 09 Oct 2023 08:04:39 -0400
-X-MC-Unique: PCBfxb0QNuyYaubN3qyPag-1
-Received: by mail-pl1-f197.google.com with SMTP id
- d9443c01a7336-1c73637061eso30831815ad.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:04:39 -0700 (PDT)
+ us-mta-523-PgJ_lZYqPmyblk8fw_tAmw-1; Mon, 09 Oct 2023 08:05:26 -0400
+X-MC-Unique: PgJ_lZYqPmyblk8fw_tAmw-1
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-65afa60d118so55895376d6.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:05:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696853078; x=1697457878;
- h=to:references:message-id:content-transfer-encoding:cc:date
- :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=C3qiDUoAVwzks2EZXjU0fajl4ZP3ck6fKVLvm4RTV4o=;
- b=fyIK2SkeaV1K/PI05PpGHHuOdncjNuNeZ3DuiUOAxgXg3vefInwBypuI9TVD/L/Kxn
- oeHLGqXQM3TwfxHFQiWhyTrw0zc/ypvb/zmkIrL1afX9JeyMHbKyTFy1rr3Ov8KoQVxg
- a9+LImHWWJsyN/WZQ4gcFKLsigU2RWFWoZiA3MktmEK7CiEmZI4iZAR6QY4VhojalMxb
- zY9omfRK/EtaGkwwXvbnrQD1DejkC/YuV++O+kz7hg6C1y4lx2U6r8/WyNkKBpr8Gzsk
- N74dJB+y3yWlbfD1OSGamVHv5ZxuTW+ZWprZEuWzDsYph+XqnAE+8UT9LvspdGz1P25E
- 5U4A==
-X-Gm-Message-State: AOJu0Yyet7TbGSmATERo3U9WzUXbd0s4qraoIadmFKgiPDKy5/Clcy7g
- iJKLRd2Wyg0JTqwaL5lJOo5aCZ5tIGlRZs7u47oE6Yycm1PH/KxIpc68NUU3UklT985IDQH2Fhc
- ID+eTFRZjsImoRXA=
-X-Received: by 2002:a17:902:cecb:b0:1c3:411c:9b7d with SMTP id
- d11-20020a170902cecb00b001c3411c9b7dmr15045321plg.57.1696853078446; 
- Mon, 09 Oct 2023 05:04:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFEivBazZ1wxwTKm4CCQwTcWJ/YVBjrLg/pSeFru2drPsQG7sjLM/kAArFWU+MZ53wg9rU9Yg==
-X-Received: by 2002:a17:902:cecb:b0:1c3:411c:9b7d with SMTP id
- d11-20020a170902cecb00b001c3411c9b7dmr15045272plg.57.1696853077977; 
- Mon, 09 Oct 2023 05:04:37 -0700 (PDT)
-Received: from smtpclient.apple ([115.96.136.216])
- by smtp.gmail.com with ESMTPSA id
- b19-20020a170902ed1300b001c737950e4dsm9395616pld.2.2023.10.09.05.04.32
- (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
- Mon, 09 Oct 2023 05:04:37 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.120.41.1.4\))
-Subject: Re: [PATCH 4/6] hw/acpi/pcihp: Clean up global variable shadowing in
- acpi_pcihp_init()
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <20231009094747.54240-5-philmd@linaro.org>
-Date: Mon, 9 Oct 2023 17:34:30 +0530
-Cc: qemu-devel <qemu-devel@nongnu.org>, Eduardo Habkost <eduardo@habkost.net>,
- Christian Borntraeger <borntraeger@linux.ibm.com>, qemu-s390x@nongnu.org,
- Paolo Bonzini <pbonzini@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- Igor Mammedov <imammedo@redhat.com>, Yanan Wang <wangyanan55@huawei.com>,
- David Hildenbrand <david@redhat.com>, Eric Farman <farman@linux.ibm.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Markus Armbruster <armbru@redhat.com>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- Thomas Huth <thuth@redhat.com>, Halil Pasic <pasic@linux.ibm.com>,
- Gerd Hoffmann <kraxel@redhat.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7F32844A-EAF0-4891-A89D-8903DD3E325B@redhat.com>
-References: <20231009094747.54240-1-philmd@linaro.org>
- <20231009094747.54240-5-philmd@linaro.org>
-To: =?utf-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-X-Mailer: Apple Mail (2.3696.120.41.1.4)
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=anisinha@redhat.com;
+ d=1e100.net; s=20230601; t=1696853125; x=1697457925;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=c7HipwnD7mZzeF01bQBOZpKdKkUqoTw3zU0e9zcjkvM=;
+ b=obReq/1iUp5r9R6KQ7ONuuhemcfmztjH3PYbF7jaipapHnkvmcU/n5ADtbRQ+EweYa
+ ZGjDO/FcoW2QOKPGch7g7uyD7TDkfkP+7DRspOKp1g4eQm4JnHTXc/WZublKF1rZx6Mv
+ l3/bZUKKjVApfZvYFO7nLZuUgViEOsdIUO0bpqp0+soZhoeDbhnNeBV+i8PRAlOaBjju
+ o+sgUT9F1SJtWxOD4I3cgJArg6wN6g0NpoIUwsECL2heuxvmqMYw1N/h8FYb9ka7DS8k
+ eLQ6EEOetFuGoEgBrxIpszuZaQVudkZz9i8WbsGcIHx78x2Fo54bE6OGgiH7GAwAZuMU
+ JA0w==
+X-Gm-Message-State: AOJu0Yznn2qit2Qkus6i7vGAfr3BCJRyemLElVYzkE3Y/0hWKfBmsw0h
+ vmt56RW/MuosNANJK1+sJ9edQRz9zhR+NU+1KHRVh+LIcH6FwG6Xwt6huabfnBTPx21Jag97amD
+ D4UDGc8GdXC8cUlU=
+X-Received: by 2002:a05:6214:b84:b0:656:3046:986b with SMTP id
+ fe4-20020a0562140b8400b006563046986bmr13891874qvb.10.1696853125652; 
+ Mon, 09 Oct 2023 05:05:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGLNKDsRbz5lB3aFpWNdv+z2Nflh5QdprErlJWZpSIVQyRD7vjCoDz/mQY1KBCdaph0aHYWhg==
+X-Received: by 2002:a05:6214:b84:b0:656:3046:986b with SMTP id
+ fe4-20020a0562140b8400b006563046986bmr13891830qvb.10.1696853124705; 
+ Mon, 09 Oct 2023 05:05:24 -0700 (PDT)
+Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
+ [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
+ l17-20020a0ce091000000b0062ffbf23c22sm1685606qvk.131.2023.10.09.05.05.23
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 05:05:24 -0700 (PDT)
+Message-ID: <59c76034-62d5-c94c-8b3b-fa206768ee1d@redhat.com>
+Date: Mon, 9 Oct 2023 14:05:22 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
+ compiling with -Wshadow
+Content-Language: en-US
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
+ qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
+ Markus Armbruster <armbru@redhat.com>
+References: <20231009083726.30301-1-thuth@redhat.com>
+ <20231009074333-mutt-send-email-mst@kernel.org>
+From: Thomas Huth <thuth@redhat.com>
+In-Reply-To: <20231009074333-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -5
-X-Spam_score: -0.6
-X-Spam_bar: /
-X-Spam_report: (-0.6 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001, RCVD_IN_MSPIKE_WL=0.001,
- RCVD_IN_SORBS_WEB=1.5, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -112,76 +104,49 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 09/10/2023 13.45, Michael S. Tsirkin wrote:
+> On Mon, Oct 09, 2023 at 10:37:25AM +0200, Thomas Huth wrote:
+>> Rename some variables to avoid compiler warnings when compiling
+>> with -Wshadow=local.
+>>
+>> Signed-off-by: Thomas Huth <thuth@redhat.com>
+>> ---
+>>   v2: Renamed the variable to something more unique
+>>
+>>   contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
+>>   contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
+>>   2 files changed, 7 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
+>> index 509b679f03..654c392fbb 100644
+>> --- a/contrib/vhost-user-gpu/vugpu.h
+>> +++ b/contrib/vhost-user-gpu/vugpu.h
+>> @@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
+>>   };
+>>   
+>>   #define VUGPU_FILL_CMD(out) do {                                \
+>> -        size_t s;                                               \
+>> -        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
+>> +        size_t vugpufillcmd_s_ =                                \
+>> +            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
+>>                          &out, sizeof(out));                      \
+>> -        if (s != sizeof(out)) {                                 \
+>> +        if (vugpufillcmd_s_ != sizeof(out)) {                   \
+>>               g_critical("%s: command size incorrect %zu vs %zu", \
+>> -                       __func__, s, sizeof(out));               \
+>> +                       __func__, vugpufillcmd_s_, sizeof(out)); \
+>>               return;                                             \
+>>           }                                                       \
+>>       } while (0)
+> 
+> I think I prefer VUGPU_FILL_CMD_s or VUGPU_FILL_CMD_s_ - makes it clear
+> it's related to a macro.
 
+I have to say that I don't like that ... it's a variable after all, and 
+naming it with capital letters looks rather confusing that helpful to me. I 
+think it should be enough to have the underscore at the end here to make it 
+unique enough.
 
-> On 09-Oct-2023, at 3:17 PM, Philippe Mathieu-Daud=C3=A9 =
-<philmd@linaro.org> wrote:
->=20
-> Fix:
->=20
->  hw/acpi/pcihp.c:499:36: error: declaration shadows a variable in the =
-global scope [-Werror,-Wshadow]
->                       MemoryRegion *address_space_io,
->                                     ^
->  include/exec/address-spaces.h:35:21: note: previous declaration is =
-here
->  extern AddressSpace address_space_io;
->                      ^
->=20
-> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-
-Reviewed-by: Ani Sinha <anisinha@redhat.com>
-
-
-> ---
-> include/hw/acpi/pcihp.h | 2 +-
-> hw/acpi/pcihp.c         | 5 ++---
-> 2 files changed, 3 insertions(+), 4 deletions(-)
->=20
-> diff --git a/include/hw/acpi/pcihp.h b/include/hw/acpi/pcihp.h
-> index ef59810c17..ac21a95913 100644
-> --- a/include/hw/acpi/pcihp.h
-> +++ b/include/hw/acpi/pcihp.h
-> @@ -56,7 +56,7 @@ typedef struct AcpiPciHpState {
-> } AcpiPciHpState;
->=20
-> void acpi_pcihp_init(Object *owner, AcpiPciHpState *, PCIBus *root,
-> -                     MemoryRegion *address_space_io, uint16_t =
-io_base);
-> +                     MemoryRegion *io, uint16_t io_base);
->=20
-> bool acpi_pcihp_is_hotpluggbale_bus(AcpiPciHpState *s, BusState *bus);
-> void acpi_pcihp_device_pre_plug_cb(HotplugHandler *hotplug_dev,
-> diff --git a/hw/acpi/pcihp.c b/hw/acpi/pcihp.c
-> index cdd6f775a1..4f75c873e2 100644
-> --- a/hw/acpi/pcihp.c
-> +++ b/hw/acpi/pcihp.c
-> @@ -496,8 +496,7 @@ static const MemoryRegionOps acpi_pcihp_io_ops =3D =
-{
-> };
->=20
-> void acpi_pcihp_init(Object *owner, AcpiPciHpState *s, PCIBus =
-*root_bus,
-> -                     MemoryRegion *address_space_io,
-> -                     uint16_t io_base)
-> +                     MemoryRegion *io, uint16_t io_base)
-> {
->     s->io_len =3D ACPI_PCIHP_SIZE;
->     s->io_base =3D io_base;
-> @@ -506,7 +505,7 @@ void acpi_pcihp_init(Object *owner, AcpiPciHpState =
-*s, PCIBus *root_bus,
->=20
->     memory_region_init_io(&s->io, owner, &acpi_pcihp_io_ops, s,
->                           "acpi-pci-hotplug", s->io_len);
-> -    memory_region_add_subregion(address_space_io, s->io_base, =
-&s->io);
-> +    memory_region_add_subregion(io, s->io_base, &s->io);
->=20
->     object_property_add_uint16_ptr(owner, ACPI_PCIHP_IO_BASE_PROP, =
-&s->io_base,
->                                    OBJ_PROP_FLAG_READ);
-> --=20
-> 2.41.0
->=20
+  Thomas
 
 
