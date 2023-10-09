@@ -2,80 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964D17BE23C
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 16:14:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBC607BE245
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 16:14:33 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpr11-00029U-W4; Mon, 09 Oct 2023 10:13:48 -0400
+	id 1qpr1R-0002WD-3I; Mon, 09 Oct 2023 10:14:13 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpr0z-00029J-RI
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:13:45 -0400
-Received: from smtp-out2.suse.de ([2001:67c:2178:6::1d])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <farosas@suse.de>) id 1qpr0x-00078j-SK
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:13:45 -0400
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by smtp-out2.suse.de (Postfix) with ESMTPS id C8EA91F390;
- Mon,  9 Oct 2023 14:13:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
- t=1696860818; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpr1O-0002VR-Po
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:14:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpr1N-0007CX-2K
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:14:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696860848;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=wmqkR7zzRLJDQUUsc/nHiJJJuI3byOQb8Sn3/uNQfhM=;
- b=RYQOMqqAfLzKrxEs9d6q35/khTSzaKZUpO+cFpPxqtDEC146dz38OpljtI/Sc96PxdMltj
- qpseDlIV5vJRlD8zMz5ggjZb8jUmHkMHtsF4qcmLY1gX/SIgZneVNPrPpfHZ9aREbHHfWC
- O47SE3epHMEHCiXQi/U1PSH6v6aVS9Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
- s=susede2_ed25519; t=1696860818;
- h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
- mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=wmqkR7zzRLJDQUUsc/nHiJJJuI3byOQb8Sn3/uNQfhM=;
- b=VysIp0I1AdMhyMO0+oQj0DnlgAvG6dnVvxb7oCqSY2oda+hEmKcD0g88hwjBfPqCGarq/r
- W6kH+4oFzcs3zmBA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
- (No client certificate requested)
- by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5B56C13905;
- Mon,  9 Oct 2023 14:13:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
- by imap2.suse-dmz.suse.de with ESMTPSA id 95LnCZIKJGW/BgAAMHmgww
- (envelope-from <farosas@suse.de>); Mon, 09 Oct 2023 14:13:38 +0000
-From: Fabiano Rosas <farosas@suse.de>
-To: Het Gala <het.gala@nutanix.com>, =?utf-8?Q?Daniel_P=2E_Berrang=C3=A9?=
- <berrange@redhat.com>
-Cc: qemu-devel@nongnu.org, prerna.saxena@nutanix.com, quintela@redhat.com,
- dgilbert@redhat.com, pbonzini@redhat.com, armbru@redhat.com,
- eblake@redhat.com, manish.mishra@nutanix.com,
- aravind.retnakaran@nutanix.com
-Subject: Re: [PATCH v11 02/10] migration: convert migration 'uri' into
- 'MigrateAddress'
-In-Reply-To: <b9a9b3ff-80ff-4b23-bbd8-996afe40e7d7@nutanix.com>
-References: <20231004075851.219173-1-het.gala@nutanix.com>
- <20231004075851.219173-3-het.gala@nutanix.com> <87jzs2phxb.fsf@suse.de>
- <ZR2nuqQ7s1D5BweM@redhat.com> <87h6n65kac.fsf@suse.de>
- <b9a9b3ff-80ff-4b23-bbd8-996afe40e7d7@nutanix.com>
-Date: Mon, 09 Oct 2023 11:13:35 -0300
-Message-ID: <87a5srg9yo.fsf@suse.de>
+ bh=h9SaR8WLJqfcT2+oNA6lH0kqikCMQzTxDsyxXSA5XVc=;
+ b=iYq55u7jkjApcUldmtZwpi2cHWksqmGIgN5f/uNjkedNynlCglOtvFXFFw1i172/i9oKvz
+ VwBoY1rWJkoywmIXPbA6fZMVYSYEQsdDkZbEKwAR2nq9z4vNAjL20xwnni8tDRfN26O6KH
+ TV/zAjqX774Yqy22bNvffo1NYLog4EA=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-249-6no6DcNBNKqoEQYxFMYb_A-1; Mon, 09 Oct 2023 10:14:07 -0400
+X-MC-Unique: 6no6DcNBNKqoEQYxFMYb_A-1
+Received: by mail-wr1-f70.google.com with SMTP id
+ ffacd0b85a97d-3231fceb811so3346881f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 07:14:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696860846; x=1697465646;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h9SaR8WLJqfcT2+oNA6lH0kqikCMQzTxDsyxXSA5XVc=;
+ b=v1Rw2WF3PecjLOgnjoH9yX3Gh7HOWi5IeyxdUeymxGw2D7n0LhZkk2IT8DdTbSbaW6
+ tT9YOZjl05Y7b/DO0LTOGiiQxA3+q6qA8lSVE9YT0wdZEShhDsZos5+UqBLvU0jOqjLg
+ ymFqae9lElA1sWwjxblhSlcaCo2FAOIv8MB4foJqVpfpG6Aer33sg+Qk92X75HPLdPNm
+ g0TphQ2qEa2LbX62U43jWCDbt0aeoPfdzIFutw8g26Xhy5m3JhYechHBbHGivOqRJIcn
+ jXYGdwepHSjIJH4isJQOlV8YrCeACyxbG4pYmEiplxBkPIxYlSCxOVvXw0YkE7vR9Dkf
+ hVZg==
+X-Gm-Message-State: AOJu0YzuJRCVIssveA+Amr0dNjadUNWuGnBHap2HkNSjmmZXZV8Pb9hv
+ 0VK0ffaB2oV73+iKlsQoYQlQjl+ZwfkIfz1tSwj28qXDnYp1fKOa9a3KSeS136bPIfRN76EpWuU
+ zuXjBeaxrqijUmsM=
+X-Received: by 2002:a5d:4990:0:b0:313:e971:53af with SMTP id
+ r16-20020a5d4990000000b00313e97153afmr14464681wrq.32.1696860845987; 
+ Mon, 09 Oct 2023 07:14:05 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGEJPmJbL/Rnac4+fXTFwCLFHqKn0dkDprekMMBnZEi73yjSndsywH4oQDweabVPEIlA0DaXg==
+X-Received: by 2002:a5d:4990:0:b0:313:e971:53af with SMTP id
+ r16-20020a5d4990000000b00313e97153afmr14464663wrq.32.1696860845565; 
+ Mon, 09 Oct 2023 07:14:05 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c733:6400:ae10:4bb7:9712:8548?
+ (p200300cbc7336400ae104bb797128548.dip0.t-ipconnect.de.
+ [2003:cb:c733:6400:ae10:4bb7:9712:8548])
+ by smtp.gmail.com with ESMTPSA id
+ p4-20020a5d68c4000000b003232f167df5sm9785589wrw.108.2023.10.09.07.14.03
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 07:14:05 -0700 (PDT)
+Message-ID: <11e7cf3f-e733-1109-4b8d-918ba445eeea@redhat.com>
+Date: Mon, 9 Oct 2023 16:14:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2001:67c:2178:6::1d; envelope-from=farosas@suse.de;
- helo=smtp-out2.suse.de
-X-Spam_score_int: -43
-X-Spam_score: -4.4
-X-Spam_bar: ----
-X-Spam_report: (-4.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_MED=-2.3, SPF_HELO_NONE=0.001,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH V3 04/10] hw/acpi: Init GED framework with cpu hotplug
+ events
+Content-Language: en-US
+To: Salil Mehta <salil.mehta@huawei.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+Cc: "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
+ "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>,
+ "miguel.luis@oracle.com" <miguel.luis@oracle.com>,
+ "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>,
+ "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
+ "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>,
+ "maobibo@loongson.cn" <maobibo@loongson.cn>,
+ "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+References: <20231009112812.10612-1-salil.mehta@huawei.com>
+ <20231009112812.10612-5-salil.mehta@huawei.com>
+ <794b07a3-6004-23e2-189a-f76952751112@redhat.com>
+ <0e9c23f079ac417687c8261739ea22f2@huawei.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <0e9c23f079ac417687c8261739ea22f2@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H4=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -92,125 +138,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Het Gala <het.gala@nutanix.com> writes:
-
-> On 10/4/2023 11:42 PM, Fabiano Rosas wrote:
->> Daniel P. Berrang=C3=A9<berrange@redhat.com>  writes:
+On 09.10.23 16:12, Salil Mehta wrote:
+>> From: David Hildenbrand <david@redhat.com>
+>> Sent: Monday, October 9, 2023 1:27 PM
+>> To: Salil Mehta <salil.mehta@huawei.com>; qemu-devel@nongnu.org; qemu-
+>> arm@nongnu.org
+>> Cc: maz@kernel.org; jean-philippe@linaro.org; Jonathan Cameron
+>> <jonathan.cameron@huawei.com>; lpieralisi@kernel.org;
+>> peter.maydell@linaro.org; richard.henderson@linaro.org;
+>> imammedo@redhat.com; andrew.jones@linux.dev; philmd@linaro.org;
+>> eric.auger@redhat.com; oliver.upton@linux.dev; pbonzini@redhat.com;
+>> mst@redhat.com; will@kernel.org; gshan@redhat.com; rafael@kernel.org;
+>> alex.bennee@linaro.org; linux@armlinux.org.uk;
+>> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+>> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+>> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+>> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+>> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+>> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.com>
+>> Subject: Re: [PATCH V3 04/10] hw/acpi: Init GED framework with cpu hotplug
+>> events
 >>
->>> On Wed, Oct 04, 2023 at 11:43:12AM -0300, Fabiano Rosas wrote:
->>>> Het Gala<het.gala@nutanix.com>  writes:
->>>>
->>>>> This patch parses 'migrate' and 'migrate-incoming' QAPI's 'uri'
->>>>> string containing migration connection related information
->>>>> and stores them inside well defined 'MigrateAddress' struct.
->>>>>
->>>>> Suggested-by: Aravind Retnakaran<aravind.retnakaran@nutanix.com>
->>>>> Signed-off-by: Het Gala<het.gala@nutanix.com>
->>>>> Reviewed-by: Daniel P. Berrang=C3=A9<berrange@redhat.com>
->>>>> ---
->>>>>   migration/exec.c      |  1 -
->>>>>   migration/exec.h      |  4 ++++
->>>>>   migration/migration.c | 55 ++++++++++++++++++++++++++++++++++++++++=
-+++
->>>>>   3 files changed, 59 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/migration/exec.c b/migration/exec.c
->>>>> index 2bf882bbe1..32f5143dfd 100644
->>>>> --- a/migration/exec.c
->>>>> +++ b/migration/exec.c
->>>>> @@ -27,7 +27,6 @@
->>>>>   #include "qemu/cutils.h"
->>>>>=20=20=20
->>>>>   #ifdef WIN32
->>>>> -const char *exec_get_cmd_path(void);
->>>>>   const char *exec_get_cmd_path(void)
->>>>>   {
->>>>>       g_autofree char *detected_path =3D g_new(char, MAX_PATH);
->>>>> diff --git a/migration/exec.h b/migration/exec.h
->>>>> index b210ffde7a..736cd71028 100644
->>>>> --- a/migration/exec.h
->>>>> +++ b/migration/exec.h
->>>>> @@ -19,6 +19,10 @@
->>>>>=20=20=20
->>>>>   #ifndef QEMU_MIGRATION_EXEC_H
->>>>>   #define QEMU_MIGRATION_EXEC_H
->>>>> +
->>>>> +#ifdef WIN32
->>>>> +const char *exec_get_cmd_path(void);
->>>>> +#endif
->>>>>   void exec_start_incoming_migration(const char *host_port, Error **e=
-rrp);
->>>>>=20=20=20
->>>>>   void exec_start_outgoing_migration(MigrationState *s, const char *h=
-ost_port,
->>>>> diff --git a/migration/migration.c b/migration/migration.c
->>>>> index 6d3cf5d5cd..dcbd509d56 100644
->>>>> --- a/migration/migration.c
->>>>> +++ b/migration/migration.c
->>>>> @@ -65,6 +65,7 @@
->>>>>   #include "sysemu/qtest.h"
->>>>>   #include "options.h"
->>>>>   #include "sysemu/dirtylimit.h"
->>>>> +#include "qemu/sockets.h"
->>>>>=20=20=20
->>>>>   static NotifierList migration_state_notifiers =3D
->>>>>       NOTIFIER_LIST_INITIALIZER(migration_state_notifiers);
->>>>> @@ -427,15 +428,64 @@ void migrate_add_address(SocketAddress *address)
->>>>>                         QAPI_CLONE(SocketAddress, address));
->>>>>   }
->>>>>=20=20=20
->>>>> +static bool migrate_uri_parse(const char *uri,
->>>>> +                              MigrationAddress **channel,
->>>>> +                              Error **errp)
->>>>> +{
->>>>> +    g_autoptr(MigrationAddress) addr =3D g_new0(MigrationAddress, 1);
->>>> This cannot be g_autoptr because you're passing it out of scope at the
->>>> end of the function.
->>> It is still good to use g_autoptr to deal with the error paths.
+>> On 09.10.23 13:28, Salil Mehta wrote:
+>>> ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI
+>> events
+>>> when OSPM/guest receives an interrupt listed in the _CRS object of GED.
+>> OSPM
+>>> then maps or demultiplexes the event by evaluating _EVT method.
 >>>
->>> On the success path though you need   g_steal_pointer(&addr) to
->>> prevent the autofree cleanup running.
->> Ah good point, this has been suggested in an earlier version already, I
->> forgot to mention. We should definitely use g_steal_pointer() whenever
->> the variable goes out of scope.
-> Okay. I get the point that g_autoptr helps to deal with freeing of=20
-> pointer in case error occurs inside the function.
+>>> This change adds the support of cpu hotplug event initialization in the
+>>> existing GED framework.
+>>>
+>>> Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+>>> Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
+>>> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>> ---
+>>>    hw/acpi/generic_event_device.c         | 8 ++++++++
+>>>    include/hw/acpi/generic_event_device.h | 5 +++++
+>>>    2 files changed, 13 insertions(+)
+>>>
+>>> diff --git a/hw/acpi/generic_event_device.c
+>> b/hw/acpi/generic_event_device.c
+>>> index a3d31631fe..d2fa1d0e4a 100644
+>>> --- a/hw/acpi/generic_event_device.c
+>>> +++ b/hw/acpi/generic_event_device.c
+>>> @@ -25,6 +25,7 @@ static const uint32_t ged_supported_events[] = {
+>>>        ACPI_GED_MEM_HOTPLUG_EVT,
+>>>        ACPI_GED_PWR_DOWN_EVT,
+>>>        ACPI_GED_NVDIMM_HOTPLUG_EVT,
+>>> +    ACPI_GED_CPU_HOTPLUG_EVT,
+>>>    };
+>>>
+>>>    /*
+>>> @@ -400,6 +401,13 @@ static void acpi_ged_initfn(Object *obj)
+>>>        memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
+>>>                              TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
+>>>        sysbus_init_mmio(sbd, &ged_st->regs);
+>>> +
+>>> +    s->cpuhp.device = OBJECT(s);
+>>> +    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp
+>> container",
+>>> +                       ACPI_CPU_HOTPLUG_REG_LEN);
+>>> +    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
+>>> +    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
+>>> +                        &s->cpuhp_state, 0);
+>>>    }
+>>>
+>>>    static void acpi_ged_class_init(ObjectClass *class, void *data)
+>>> diff --git a/include/hw/acpi/generic_event_device.h
+>> b/include/hw/acpi/generic_event_device.h
+>>> index d831bbd889..d0a5a43abf 100644
+>>> --- a/include/hw/acpi/generic_event_device.h
+>>> +++ b/include/hw/acpi/generic_event_device.h
+>>> @@ -60,6 +60,7 @@
+>>>    #define HW_ACPI_GENERIC_EVENT_DEVICE_H
+>>>
+>>>    #include "hw/sysbus.h"
+>>> +#include "hw/acpi/cpu_hotplug.h"
+>>>    #include "hw/acpi/memory_hotplug.h"
+>>>    #include "hw/acpi/ghes.h"
+>>>    #include "qom/object.h"
+>>> @@ -97,6 +98,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+>>>    #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
+>>>    #define ACPI_GED_PWR_DOWN_EVT      0x2
+>>>    #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
+>>> +#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
+>>>
+>>>    typedef struct GEDState {
+>>>        MemoryRegion evt;
+>>> @@ -108,6 +110,9 @@ struct AcpiGedState {
+>>>        SysBusDevice parent_obj;
+>>>        MemHotplugState memhp_state;
+>>>        MemoryRegion container_memhp;
+>>> +    CPUHotplugState cpuhp_state;
+>>> +    MemoryRegion container_cpuhp;
+>>> +    AcpiCpuHotplug cpuhp;
+>>
+>> Am I wrong or is that member completely unused/uninitialized?
+> 
+> No it is not. Please check below change in acpi_ged_initfn()
+> 
+> +    s->cpuhp.device = OBJECT(s);
 
-Yes, but note g_autoptr will free the memory any time the variable goes
-out of scope, i.e. any time we return from the function. Even when
-there's no error and we actually want that memory to still be around for
-the callers to use.
+Not the best of my mondays, sorry for that.
 
-> But I am still trying to figure out why we need g_steal_pointer() ? If=20
-> you could please explain once again.
-> My understanding till now was that if we want to return 'addr' variable=20
-> as return type, then we would want to make use of g_steal_pointer(&addr)=
-=20
-> so instead of addr, we pass a temp ptr refrencing to the same location=20
-> as addr, and then assign addr =3D NULL. But we are already assigning the=
-=20
-> memory location where addr was refrencing to 'channel'. Let me know if I=
-=20
-> am missing something ?
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-So now 'channel' points to the memory you allocated at the start of the
-function with g_new0. When the function returns, g_autoptr has no idea
-that someone is still using that memory, so it will just free it.
+-- 
+Cheers,
 
-Whenever you want a chunk of memory to be accessed across function calls
-like that you need to steal the reference. After stealing, the pointer
-that was registered with g_autoptr (in this case 'addr') now points to
-nothing and the pointer that was returned/assigned is a different one
-that isn't known by any cleanup functions.
+David / dhildenb
 
-Note that after g_steal_pointer, that memory now becomes responsibility
-of whatever piece of code owns that pointer. In this case,
-qemu_start_incoming_migration() and qmp_migrate(). Those two functions
-will have to free the memory once they are done with it. Or do the
-g_autoptr/g_steal_pointer trick once more.
-
-> I think the syntax follows as the second example given here:=20
-> https://docs.gtk.org/glib/func.steal_pointer.html ?
-
-Yep, that's it.
 
