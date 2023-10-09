@@ -2,46 +2,75 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB877BD8E5
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB0F7BD8EE
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:47:11 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpnjB-00019B-Bf; Mon, 09 Oct 2023 06:43:09 -0400
+	id 1qpnmS-0001zV-CE; Mon, 09 Oct 2023 06:46:32 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qpniw-00018u-It
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:42:55 -0400
-Received: from relay5-d.mail.gandi.net ([2001:4b98:dc4:8::225])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <i.maximets@ovn.org>)
- id 1qpnim-0007ol-BI
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:42:54 -0400
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0EDAE1C0005;
- Mon,  9 Oct 2023 10:42:35 +0000 (UTC)
-From: Ilya Maximets <i.maximets@ovn.org>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
- David Hildenbrand <david@redhat.com>,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Ilya Maximets <i.maximets@ovn.org>
-Subject: [PATCH] memory: initialize 'fv' in MemoryRegionCache to make Coverity
- happy
-Date: Mon,  9 Oct 2023 12:43:21 +0200
-Message-ID: <20231009104322.3085887-1-i.maximets@ovn.org>
-X-Mailer: git-send-email 2.41.0
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qpnmQ-0001zG-K3
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:46:30 -0400
+Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
+ id 1qpnmN-0000Hh-Rr
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:46:30 -0400
+Received: by mail-qt1-x82c.google.com with SMTP id
+ d75a77b69052e-419628fb297so27211801cf.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 03:46:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696848386; x=1697453186; darn=nongnu.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=T/RDb+PJzO4WFOyHv3KfkPgGEpGcD6jSC0jA9WB0gm0=;
+ b=EQUDMJv1g4wMyJerJHFfUCfw4o4/9Utut0EfYDOHQXWZM4gmABqm+gVAYi291hXpal
+ AUJ8X0CHhCxfTOeCICyoF3mlDXiknAU0rOrAn26zjjgmeB4qzKaqmLpWhTxV0S8fpJwr
+ HtiGgXp8CHxgfR7dHd8lvCGrFwwz97+m1d5j+dJ5NgF9v9igL4y/cZJgR0NMPZPkx5En
+ CXaErBbQxkQ+pjsp/3V+J3/41V1kEw+Z8lZscGStuH3jH2nXoNv3aDz+d/hO36iMeuyf
+ X+NTBP1VmvNxUCtto9s9YOsAKJpb8gFbaMdFHePvLfv/OKNZ3pEXucISEmxlA60ByxZi
+ kpJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696848386; x=1697453186;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=T/RDb+PJzO4WFOyHv3KfkPgGEpGcD6jSC0jA9WB0gm0=;
+ b=MQbVW9WRvCI7Mn0My/bS+sjB3CBOx3WoK6gYB9M0J2QFJyG+VVcRelf02VZ8YSMotv
+ XapXCHZYDmxeKAkAUvrqz4In8RPeCbh4D938vuSUDqJUEdaSqnTUh6brTwR8gAJJXt3x
+ KZpnlMhlDZ40u8HS1EljeWJwn1IdyvlRRk6+k59ZB1C6/CXXMAuv7pw3LP7mv3wcrY4I
+ E5l401M8XGesIeRlkouqMV6Hc0lR97r6fCpo10IOtbJkBIRy3Nnm9kqnVG6Az35kkPYP
+ ML/DJOHVe/c/RNBICWp5/k3r7Eup0AMqOMCtGUFe8Nqu48Fe+5fQ++ZTnXdCfg5nohtZ
+ E3eA==
+X-Gm-Message-State: AOJu0YyTHFQ7/8dQDbicNPknrlit5cE0i2PQjLTrzR1uFZNLPzs9Oxiq
+ rn+Xmkimx2UmiReag77z1bSynbcvKHFkYDGGdBc=
+X-Google-Smtp-Source: AGHT+IHiATBAVl/rGGtDV31sIWeMFl4RuknoRPMr1Mgnv/2UE1K24lFb5juJMiIYQUPs1Y5ClWoziRotMeYkHH5Nl7s=
+X-Received: by 2002:a05:622a:156:b0:413:5dbd:a926 with SMTP id
+ v22-20020a05622a015600b004135dbda926mr20375890qtw.2.1696848386207; Mon, 09
+ Oct 2023 03:46:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: i.maximets@ovn.org
-Received-SPF: neutral client-ip=2001:4b98:dc4:8::225;
- envelope-from=i.maximets@ovn.org; helo=relay5-d.mail.gandi.net
-X-Spam_score_int: -10
-X-Spam_score: -1.1
-X-Spam_bar: -
-X-Spam_report: (-1.1 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_PASS=-0.001,
- SPF_NEUTRAL=0.779 autolearn=no autolearn_force=no
+References: <20231005125815.66082-1-pbonzini@redhat.com>
+In-Reply-To: <20231005125815.66082-1-pbonzini@redhat.com>
+From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
+Date: Mon, 9 Oct 2023 14:46:14 +0400
+Message-ID: <CAJ+F1C+39sVV+LoTE-F_-_q8GZ7q0PNvPaOMxJAUjGTH9NwPkg@mail.gmail.com>
+Subject: Re: [PATCH 0/7] audio: redo default audio backend creation
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: qemu-devel@nongnu.org, balaton@eik.bme.hu, berrange@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
+ envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -57,61 +86,67 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity scan reports multiple false-positive "defects" for the
-following series of actions in virtio.c:
+On Thu, Oct 5, 2023 at 5:01=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
+wrote:
+>
+> Currently, AUD_register_card picks the audio backend from either:
+>
+> - the first audiodev that was created
+>
+> - the audio_prio_list[] array, which can be customized at
+>   configure time
+>
+> This series instead extends -audio to define a default audio
+> backend if no "model" is used.  This preserves simple command line
+> use where a single "-audio" option applies to all audio devices
+> and captures, and also uses a single QAPI-based configuration
+> syntax for both -audio and -audiodev.
+>
+> The current hack to use the first -audiodev as a default audio
+> device is removed.  For migration purposes, the first audiodev
+> is suggested in case of an error:
+>
+>   ./qemu-system-x86_64 -device sb16 -audiodev pa,id=3Ddefault
+>   qemu-system-x86_64: -device sb16: no default audio driver available
+>   Perhaps you wanted to set audiodev=3Ddefault?
+>
+> VNC is changed to reintroduce use of the default audio backend;
+> still, compared to before the cleanup effort this will not be
+> enabled if -nodefaults is use, which is an improvement as it
+> removes magic.
+>
+> Paolo
+>
+>
+> Paolo Bonzini (7):
+>   audio: error hints need a trailing \n
+>   audio: disable default backends if -audio/-audiodev is used
+>   audio: extract audio_define_default
+>   audio: extend -audio to allow creating a default backend
+>   audio: do not use first -audiodev as default audio device
+>   audio: reintroduce default audio backend for VNC
+>   audio, qtest: get rid of QEMU_AUDIO_DRV
+>
 
-  MemoryRegionCache indirect_desc_cache;
-  address_space_cache_init_empty(&indirect_desc_cache);
-  address_space_cache_destroy(&indirect_desc_cache);
+Series:
+Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
 
-For some reason it's unable to recognize the dependency between 'mrs.mr'
-and 'fv' and insists that '!mrs.mr' check in address_space_cache_destroy
-may take a 'false' branch, even though it is explicitly initialized to
-NULL in the address_space_cache_init_empty():
+>  audio/audio.c                   | 85 +++++++++++++--------------------
+>  audio/audio.h                   |  3 ++
+>  docs/about/deprecated.rst       |  6 ---
+>  docs/about/removed-features.rst | 14 ++++--
+>  qemu-options.hx                 | 29 +++++++----
+>  system/vl.c                     | 34 ++++++++-----
+>  tests/qtest/libqtest.c          |  4 +-
+>  ui/vnc.c                        |  2 +
+>  8 files changed, 93 insertions(+), 84 deletions(-)
+>
+> --
+> 2.41.0
+>
+>
 
-  *** CID 1522371:  Memory - illegal accesses  (UNINIT)
-  /qemu/hw/virtio/virtio.c: 1627 in virtqueue_split_pop()
-  1621         }
-  1622
-  1623         vq->inuse++;
-  1624
-  1625         trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
-  1626     done:
-  >>>     CID 1522371:  Memory - illegal accesses  (UNINIT)
-  >>>     Using uninitialized value "indirect_desc_cache.fv" when
-  >>>     calling "address_space_cache_destroy".
-  1627         address_space_cache_destroy(&indirect_desc_cache);
-  1628
-  1629         return elem;
-  1630
-  1631     err_undo_map:
-  1632         virtqueue_undo_map_desc(out_num, in_num, iov);
 
-  ** CID 1522370:  Memory - illegal accesses  (UNINIT)
-
-Instead of trying to silence these false positive reports in 4
-different places, initializing 'fv' as well, as this doesn't result
-in any noticeable performance impact.
-
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
----
- include/exec/memory.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/include/exec/memory.h b/include/exec/memory.h
-index c99842d2fc..1ce80c4e82 100644
---- a/include/exec/memory.h
-+++ b/include/exec/memory.h
-@@ -2770,6 +2770,8 @@ int64_t address_space_cache_init(MemoryRegionCache *cache,
- static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
- {
-     cache->mrs.mr = NULL;
-+    /* There is no real need to initialize fv, but it makes Coverity happy. */
-+    cache->fv = NULL;
- }
- 
- /**
--- 
-2.41.0
-
+--=20
+Marc-Andr=C3=A9 Lureau
 
