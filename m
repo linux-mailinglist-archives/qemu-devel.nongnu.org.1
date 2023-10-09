@@ -2,45 +2,46 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35F57BD66F
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E1F7BD67E
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 11:12:59 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpmI5-0002Ql-5F; Mon, 09 Oct 2023 05:11:05 -0400
+	id 1qpmHx-0002Pg-Li; Mon, 09 Oct 2023 05:10:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qpmHx-0002Pz-C3
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:10:57 -0400
+ id 1qpmHs-0002PI-4b
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:10:53 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <eric.auger@redhat.com>)
- id 1qpmHv-0007gc-CQ
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:10:57 -0400
+ id 1qpmHq-0007g8-D6
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 05:10:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696842653;
+ s=mimecast20190719; t=1696842649;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=EqCtGt5AXaWt2jDZiVdXgTe993Zvb1VTVy/rtn53qdQ=;
- b=K9z9k9vIIc8cdbDzFQ9p+eCsfGn6Q672jtoJs63SNKl6hzPe8d67igRCJNIBGHmHfTKs0J
- MmWfODVEjHoSJmXjP3kMkNI39v1CN8vGUtJidvgcY5UI8YJwYYSClM9TzA1ruBhQs2tiP1
- euR1/9aY+jjKHTDFAni8wdAd3Ktck2g=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-564-br3zNs29Ofi-uXqADQN_Lw-1; Mon, 09 Oct 2023 05:10:41 -0400
-X-MC-Unique: br3zNs29Ofi-uXqADQN_Lw-1
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=enlKXaRQu5SX27obj18gmcC/3sFvPnRBg/0SxsDMH8g=;
+ b=Q52uMCpahv1FRlXnwJLny7uImrQMoVGeeg5ZjaLIbvUuwX2YdrjQdjyY4zkQGnjqmUTWt+
+ PtFwrADhqDaWbFkwzmPJ9x7P7f8HF1YmBDca+jqLhrPY+/upPUYdS52idSqG579HbXXmgi
+ MOOAyrA3GaUQwgAhIVHMN9apV1YPQyU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-638-pmrJSnadPMydGHhsVrMz1A-1; Mon, 09 Oct 2023 05:10:44 -0400
+X-MC-Unique: pmrJSnadPMydGHhsVrMz1A-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com
  [10.11.54.5])
  (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
  (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id E38B929AB45D;
- Mon,  9 Oct 2023 09:10:40 +0000 (UTC)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA3EC858F19;
+ Mon,  9 Oct 2023 09:10:43 +0000 (UTC)
 Received: from laptop.redhat.com (unknown [10.39.192.172])
- by smtp.corp.redhat.com (Postfix) with ESMTP id BBC6363F50;
- Mon,  9 Oct 2023 09:10:37 +0000 (UTC)
+ by smtp.corp.redhat.com (Postfix) with ESMTP id 3404763F50;
+ Mon,  9 Oct 2023 09:10:41 +0000 (UTC)
 From: Eric Auger <eric.auger@redhat.com>
 To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  zhenzhong.duan@intel.com, alex.williamson@redhat.com, clg@redhat.com,
@@ -48,9 +49,11 @@ To: eric.auger.pro@gmail.com, eric.auger@redhat.com, qemu-devel@nongnu.org,
  peterx@redhat.com, kevin.tian@intel.com, yi.l.liu@intel.com,
  yi.y.sun@intel.com, chao.p.peng@intel.com, mjrosato@linux.ibm.com,
  aik@ozlabs.ru
-Subject: [PATCH v5 00/15] Prerequisite changes for IOMMUFD support
-Date: Mon,  9 Oct 2023 11:09:02 +0200
-Message-ID: <20231009091035.433329-1-eric.auger@redhat.com>
+Subject: [PATCH v5 01/15] scripts/update-linux-headers: Add iommufd.h
+Date: Mon,  9 Oct 2023 11:09:03 +0200
+Message-ID: <20231009091035.433329-2-eric.auger@redhat.com>
+In-Reply-To: <20231009091035.433329-1-eric.auger@redhat.com>
+References: <20231009091035.433329-1-eric.auger@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -79,156 +82,30 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi All,
+Update the script to import iommufd.h
 
-This is the v5 respin of the IOMMUFD prerequisite series.
-This applies on top of vfio-next:
-https://github.com/legoater/qemu/, branch vfio-next.
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Reviewed-by: Cédric Le Goater <clg@redhat.com>
+---
+ scripts/update-linux-headers.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Per Cédric's suggestion, the IOMMUFD patchset v1[1] is now split
-into two series, this prerequisite series and the new IOMMUFD backend
-introduction support series. Hopefully this will ease the review.
-  
-The main purpose of this series is to make "common.c" group agnostic:
-all group related code are moved into container.c. Then we are prepared
-for next series, abstract base container, adding new backend, etc.
-
-This series can be found at
-https://github.com/eauger/qemu/tree/prereq_v5
-previous: https://github.com/eauger/qemu/tree/prereq_v4
-
-Test done:
-- PCI device were tested
-- device hotplug test
-- with or without vIOMMU
-- VFIO migration with a E800 net card(no dirty sync support) passthrough
-- platform and ccw were only compile-tested due to environment limit
-
-Zhenzhong, Yi, Eric
-
-[1] https://lore.kernel.org/all/20230830103754.36461-1-zhenzhong.duan@intel.com/t/#u
-
-Changelog:
-
-v5:
-- ap: fix missing return
-- ccw: remove vbasedev->sysfsdev g_strdup_printf(), remove name local var
-- container.c: restored !vbasedev->container check in vfio_detach_device()
-- pci.c: removed vbasedev->name deallocation in error path as this is
-  handled in instance_finalize function
-
-v4:
-- include qemu/error-report.h in helpers.c
-- in ap.c, fix the wrongly added
-  vfio_detach_device(vbasedev) and g_free(vbasedev->name);
-  also added error_prepend
-- simplified vbasedev setting in ccw.c
-- vfio_detach_device: dropped check on
-  !vbasedev->container
-- container.c: restore dropped comment
-
-v3:
-- rebased on vfio-next as suggested by Cedric
-- added vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
-- collected Cedric's R-b
-- Fix some error paths in vfio/cpi which now properly detach the device
-  and also free the vbasedev->name
-- Fix vfio/ccw migration (hopefully) [Matthew inputs]
-- Split [PATCH v2 11/12] vfio/common: Introduce two kinds of VFIO device lists
-  into 3 patches
-
-v2:
-- Refine patch description per Eric
-- return errno and errp in vfio_kvm_device_[add/del]_fd per Eric
-- make memory listener register/deregister in seperate patch per Eric
-- Include the .h file first per Cédric
-- Add trace event in vfio_attach_device per Cédric
-- drop the change to vfio_viommu_preset by refactor per Cédric
-- Introduce global VFIO device list and per container list per Alex
-
-Note changelog below are from full IOMMUFD series:
-
-v1:
-- Alloc hwpt instead of using auto hwpt
-- elaborate iommufd code per Nicolin
-- consolidate two patches and drop as.c
-- typo error fix and function rename
-
-rfcv4:
-- rebase on top of v8.0.3
-- Add one patch from Yi which is about vfio device add in kvm
-- Remove IOAS_COPY optimization and focus on functions in this patchset
-- Fix wrong name issue reported and fix suggested by Matthew
-- Fix compilation issue reported and fix sugggsted by Nicolin
-- Use query_dirty_bitmap callback to replace get_dirty_bitmap for better
-granularity
-- Add dev_iter_next() callback to avoid adding so many callback
-  at container scope, add VFIODevice.hwpt to support that
-- Restore all functions back to common from container whenever possible,
-  mainly migration and reset related functions
-- Add --enable/disable-iommufd config option, enabled by default in linux
-- Remove VFIODevice.hwpt_next as it's redundant with VFIODevice.next
-- Adapt new VFIO_DEVICE_PCI_HOT_RESET uAPI for IOMMUFD backed device
-- vfio_kvm_device_add/del_group call vfio_kvm_device_add/del_fd to remove
-redundant code
-- Add FD passing support for vfio device backed by IOMMUFD
-- Fix hot unplug resource leak issue in vfio_legacy_detach_device()
-- Fix FD leak in vfio_get_devicefd()
-
-rfcv3:
-- rebase on top of v7.2.0
-- Fix the compilation with CONFIG_IOMMUFD unset by using true classes for
-  VFIO backends
-- Fix use after free in error path, reported by Alister
-- Split common.c in several steps to ease the review
-
-rfcv2:
-- remove the first three patches of rfcv1
-- add open cdev helper suggested by Jason
-- remove the QOMification of the VFIOContainer and simply use standard ops
-(David)
-- add "-object iommufd" suggested by Alex
-
-
-Eric Auger (7):
-  scripts/update-linux-headers: Add iommufd.h
-  vfio/common: Propagate KVM_SET_DEVICE_ATTR error if any
-  vfio/common: Introduce vfio_container_add|del_section_window()
-  vfio/pci: Introduce vfio_[attach/detach]_device
-  vfio/platform: Use vfio_[attach/detach]_device
-  vfio/ap: Use vfio_[attach/detach]_device
-  vfio/ccw: Use vfio_[attach/detach]_device
-
-Yi Liu (2):
-  vfio/common: Move IOMMU agnostic helpers to a separate file
-  vfio/common: Move legacy VFIO backend code into separate container.c
-
-Zhenzhong Duan (6):
-  linux-headers: Add iommufd.h
-  vfio/common: Extract out vfio_kvm_device_[add/del]_fd
-  vfio/common: Move VFIO reset handler registration to a group agnostic
-    function
-  vfio/common: Introduce a per container device list
-  vfio/common: Store the parent container in VFIODevice
-  vfio/common: Introduce a global VFIODevice list
-
- include/hw/vfio/vfio-common.h   |   60 +-
- linux-headers/linux/iommufd.h   |  444 ++++++++
- hw/vfio/ap.c                    |   67 +-
- hw/vfio/ccw.c                   |  117 +-
- hw/vfio/common.c                | 1851 ++-----------------------------
- hw/vfio/container.c             | 1161 +++++++++++++++++++
- hw/vfio/helpers.c               |  612 ++++++++++
- hw/vfio/pci.c                   |   66 +-
- hw/vfio/platform.c              |   43 +-
- hw/vfio/meson.build             |    2 +
- hw/vfio/trace-events            |    4 +-
- scripts/update-linux-headers.sh |    3 +-
- 12 files changed, 2456 insertions(+), 1974 deletions(-)
- create mode 100644 linux-headers/linux/iommufd.h
- create mode 100644 hw/vfio/container.c
- create mode 100644 hw/vfio/helpers.c
-
+diff --git a/scripts/update-linux-headers.sh b/scripts/update-linux-headers.sh
+index 35a64bb501..34295c0fe5 100755
+--- a/scripts/update-linux-headers.sh
++++ b/scripts/update-linux-headers.sh
+@@ -161,7 +161,8 @@ done
+ rm -rf "$output/linux-headers/linux"
+ mkdir -p "$output/linux-headers/linux"
+ for header in const.h stddef.h kvm.h vfio.h vfio_ccw.h vfio_zdev.h vhost.h \
+-              psci.h psp-sev.h userfaultfd.h memfd.h mman.h nvme_ioctl.h vduse.h; do
++              psci.h psp-sev.h userfaultfd.h memfd.h mman.h nvme_ioctl.h \
++              vduse.h iommufd.h; do
+     cp "$tmpdir/include/linux/$header" "$output/linux-headers/linux"
+ done
+ 
 -- 
 2.41.0
 
