@@ -2,91 +2,126 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECBE7BE1C4
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:54:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DE07BE1EA
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:55:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpqhy-0002KH-6o; Mon, 09 Oct 2023 09:54:06 -0400
+	id 1qpqjY-0003fh-AS; Mon, 09 Oct 2023 09:55:44 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qpqhw-0002Jf-Dc
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:54:04 -0400
-Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qpqhu-000361-US
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:54:04 -0400
-Received: by mail-wr1-x435.google.com with SMTP id
- ffacd0b85a97d-3296b49c546so2647351f8f.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 06:54:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696859641; x=1697464441; darn=nongnu.org;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:from:to:cc:subject:date
- :message-id:reply-to;
- bh=93P4wrt8Sqzr65tCG6kDPp9nrZuI4UR3Orj0wdhmH6k=;
- b=xH96V3Trhso90K5vSGbcRhq4dKStxyu8cPv1u4Mn0U02Oj7ddUu+TTIItTAs2ZHVwx
- gIiFPV1n09BA3F5q0UP8M9IlhrX1VnZlzHnZm8uoP4CwnqO0QRBDARvn/hGlpgMQZoRq
- xWRr2MfJ/CzK4I8bQ9xRHpedrT4M52mOOwmlBnIYu7mPxqMyyACm7ttYLf25DZjHYIga
- gZz7mX+zlnl85Gd1kluZwL0G+MYhoh2fMM0qsOGsN2P/Yt9R0XbKfmb5qbdeEVdiLTvC
- +0ZAtfEtwBXTXSgNUlsESGJHGp/3ddnTE3Mpg01dR0ZONZOWj1m5Fyu/B1d8gLFMHpjs
- jXbg==
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpqjT-0003fK-05
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:55:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpqjI-0003P3-Je
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:55:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696859727;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=N6twfO3yqRgTzT5YQZu6+KoQxXtSnswIhfjKrGDya4o=;
+ b=PvUy9rLjDMAcAhtFuu9zvhGpeD3wfLaBagsTEvWP0taAXdrFs49OSTvlxWlOaAw5cMVvql
+ 0Yy+LdDdE/bXIssl8O2WhB0DLCB41TLProiog6wN9bD5/BlSeg1azaVaZBOdMwo8iNZucd
+ 3ZwZa+4Oi9G+XHg5OnXCfJ08jMRei/4=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-694-XUd7-pTUO5mtbRn52CKk9w-1; Mon, 09 Oct 2023 09:55:25 -0400
+X-MC-Unique: XUd7-pTUO5mtbRn52CKk9w-1
+Received: by mail-wm1-f71.google.com with SMTP id
+ 5b1f17b1804b1-3f5df65fa35so29096905e9.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 06:55:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696859641; x=1697464441;
- h=content-transfer-encoding:mime-version:message-id:in-reply-to:date
- :subject:cc:to:from:user-agent:references:x-gm-message-state:from:to
- :cc:subject:date:message-id:reply-to;
- bh=93P4wrt8Sqzr65tCG6kDPp9nrZuI4UR3Orj0wdhmH6k=;
- b=jFDqcKrgajMUN5sCaKGRqQQB01czlIyNQRi6SIoUV7O2c+y0KwsQPnHWcIN3O2u9+z
- v90z+6E01FrZ7ACp7mPIpQK7bnSzvjAlO/0No4NaUsR4fTjFq/QPVi5cLLWP91vTvwYF
- zVN+k6or55EETMeoyMOSRthAvZ8OGSn0sdNGFd3QQ85HbV25lEGKZoB8yOWA2NWO3Fcf
- k2XUS0yISYJ3KU+wYeTszbhhYi3eADI684cmrrCP3XlpEq6Cd6xOb99DVlXL+igoJYNF
- nSGbCq1C52S0t+LDNCFos3Ni4aorb/m1mHnN5yzC4iWJ9jhhFdTFohnJoSdUd9HN4Ckk
- 9QMg==
-X-Gm-Message-State: AOJu0YzjwNHn1bD+t/vgg3B1qAiod+DynbtjIjbDrMMaDdV1C9B5O5fZ
- ZEIux/Yxq4yeJzkNrD0Z1CBluA==
-X-Google-Smtp-Source: AGHT+IG7rgudlqiII+aKCtM+PP1BvfVyBY5nwOzZDGpgVOEOdVcMTz9Wfodf08f4gCEyJzw31wn/aw==
-X-Received: by 2002:a5d:6a8e:0:b0:323:36f1:c256 with SMTP id
- s14-20020a5d6a8e000000b0032336f1c256mr13466018wru.11.1696859641214; 
- Mon, 09 Oct 2023 06:54:01 -0700 (PDT)
-Received: from zen.linaroharston ([85.9.250.243])
+ d=1e100.net; s=20230601; t=1696859724; x=1697464524;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=N6twfO3yqRgTzT5YQZu6+KoQxXtSnswIhfjKrGDya4o=;
+ b=gNqZDLAfIcacgskuOgNEz6ThIteEV5hcev7Y6/Xa5VSM8pI6XZbCHzj1ldHHOSW9oK
+ +v6IK3DnCPaV16rzwxWyTsvIWmkRA+PqebB6t9/KEKn8yIhBWtPCV+3nVplM+xkThUNA
+ kOjZDefYkazwdriKrY/UbUbUfNwg1VYYtbNMCxsK0rUz9o9dYnI/YWE/HpnN+/0gGqJW
+ lvXuppDHt6e6tVfdtGRxUKUKzAp3TJoaavYjXCX0m47TtDkM/HkiojWnDGy9YcIS4oGQ
+ FRd16K1AggHCLpoRQ9zjUQhcTtd11S9LGvEhuYYTcyKD/5o8S5TNElXY7WtsFTxPnDYL
+ xNMw==
+X-Gm-Message-State: AOJu0YyWY9HcCruVBSfbRPrxcO4GFnnOImY1i+2XrWTz+GW47PV6rOP5
+ kt4JClXUnAC+HLR4K+6i50rvVvsS3fdSN6Lsdt5RZXI7skUwk9YVHRfujMgvxDBbmEA1bJIzDla
+ +6a/dUE6kAlMfJs0=
+X-Received: by 2002:a7b:cd0a:0:b0:405:3ae6:2400 with SMTP id
+ f10-20020a7bcd0a000000b004053ae62400mr13924597wmj.23.1696859724334; 
+ Mon, 09 Oct 2023 06:55:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHO+3d3CFoj/QLUfXveEwtSADGsDs2xIoiwsrE0KXDxlCyyyGlMt9g4zBfKNQv5xyfcwKqocA==
+X-Received: by 2002:a7b:cd0a:0:b0:405:3ae6:2400 with SMTP id
+ f10-20020a7bcd0a000000b004053ae62400mr13924566wmj.23.1696859723919; 
+ Mon, 09 Oct 2023 06:55:23 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c733:6400:ae10:4bb7:9712:8548?
+ (p200300cbc7336400ae104bb797128548.dip0.t-ipconnect.de.
+ [2003:cb:c733:6400:ae10:4bb7:9712:8548])
  by smtp.gmail.com with ESMTPSA id
- g7-20020adfe407000000b003232d122dbfsm9791415wrm.66.2023.10.09.06.54.00
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 06:54:00 -0700 (PDT)
-Received: from zen (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id 58B021FFBB;
- Mon,  9 Oct 2023 14:54:00 +0100 (BST)
-References: <20230927120050.210187-1-marcin.juszkiewicz@linaro.org>
- <20230927120050.210187-2-marcin.juszkiewicz@linaro.org>
-User-agent: mu4e 1.11.22; emacs 29.1.50
-From: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
-Cc: qemu-arm@nongnu.org, qemu-devel@nongnu.org, Beraldo Leal
- <bleal@redhat.com>, Wainer dos Santos Moschetta <wainersm@redhat.com>,
- Leif Lindholm <quic_llindhol@quicinc.com>, Peter Maydell
- <peter.maydell@linaro.org>, Radoslaw Biernacki <rad@semihalf.com>,
- Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>, Cleber Rosa
- <crosa@redhat.com>
-Subject: Re: [PATCH v2 1/1] tests/avocado: update firmware to enable OpenBSD
- test on sbsa-ref
-Date: Mon, 09 Oct 2023 14:53:37 +0100
-In-reply-to: <20230927120050.210187-2-marcin.juszkiewicz@linaro.org>
-Message-ID: <87ttqzq4uf.fsf@linaro.org>
+ l17-20020a1ced11000000b0040588d85b3asm13447466wmh.15.2023.10.09.06.55.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 06:55:23 -0700 (PDT)
+Message-ID: <be019441-793f-bbf1-2b7e-aa32005ead80@redhat.com>
+Date: Mon, 9 Oct 2023 15:55:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2a00:1450:4864:20::435;
- envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x435.google.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
+Content-Language: en-US
+To: Salil Mehta <salil.mehta@huawei.com>,
+ "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
+ "qemu-arm@nongnu.org" <qemu-arm@nongnu.org>
+Cc: "maz@kernel.org" <maz@kernel.org>,
+ "jean-philippe@linaro.org" <jean-philippe@linaro.org>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ "lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+ "peter.maydell@linaro.org" <peter.maydell@linaro.org>,
+ "richard.henderson@linaro.org" <richard.henderson@linaro.org>,
+ "imammedo@redhat.com" <imammedo@redhat.com>,
+ "andrew.jones@linux.dev" <andrew.jones@linux.dev>,
+ "philmd@linaro.org" <philmd@linaro.org>,
+ "eric.auger@redhat.com" <eric.auger@redhat.com>,
+ "oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>, "mst@redhat.com"
+ <mst@redhat.com>, "will@kernel.org" <will@kernel.org>,
+ "gshan@redhat.com" <gshan@redhat.com>, "rafael@kernel.org"
+ <rafael@kernel.org>, "alex.bennee@linaro.org" <alex.bennee@linaro.org>,
+ "linux@armlinux.org.uk" <linux@armlinux.org.uk>,
+ "darren@os.amperecomputing.com" <darren@os.amperecomputing.com>,
+ "ilkka@os.amperecomputing.com" <ilkka@os.amperecomputing.com>,
+ "vishnu@os.amperecomputing.com" <vishnu@os.amperecomputing.com>,
+ "karl.heubaum@oracle.com" <karl.heubaum@oracle.com>,
+ "miguel.luis@oracle.com" <miguel.luis@oracle.com>,
+ "salil.mehta@opnsrc.net" <salil.mehta@opnsrc.net>,
+ zhukeqian <zhukeqian1@huawei.com>,
+ "wangxiongfeng (C)" <wangxiongfeng2@huawei.com>,
+ "wangyanan (Y)" <wangyanan55@huawei.com>,
+ "jiakernel2@gmail.com" <jiakernel2@gmail.com>,
+ "maobibo@loongson.cn" <maobibo@loongson.cn>,
+ "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
+ Linuxarm <linuxarm@huawei.com>
+References: <20231009112812.10612-1-salil.mehta@huawei.com>
+ <20231009112812.10612-4-salil.mehta@huawei.com>
+ <8a80612f-07d3-6302-31f9-232d9ce393a1@redhat.com>
+ <08840ea0a68e46b1a9d98d1e3544f43b@huawei.com>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <08840ea0a68e46b1a9d98d1e3544f43b@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
+ RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,21 +137,72 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
+On 09.10.23 15:49, Salil Mehta wrote:
+>> From: David Hildenbrand <david@redhat.com>
+>> Sent: Monday, October 9, 2023 1:23 PM
+>> To: Salil Mehta <salil.mehta@huawei.com>; qemu-devel@nongnu.org; qemu-
+>> arm@nongnu.org
+>> Cc: maz@kernel.org; jean-philippe@linaro.org; Jonathan Cameron
+>> <jonathan.cameron@huawei.com>; lpieralisi@kernel.org;
+>> peter.maydell@linaro.org; richard.henderson@linaro.org;
+>> imammedo@redhat.com; andrew.jones@linux.dev; philmd@linaro.org;
+>> eric.auger@redhat.com; oliver.upton@linux.dev; pbonzini@redhat.com;
+>> mst@redhat.com; will@kernel.org; gshan@redhat.com; rafael@kernel.org;
+>> alex.bennee@linaro.org; linux@armlinux.org.uk;
+>> darren@os.amperecomputing.com; ilkka@os.amperecomputing.com;
+>> vishnu@os.amperecomputing.com; karl.heubaum@oracle.com;
+>> miguel.luis@oracle.com; salil.mehta@opnsrc.net; zhukeqian
+>> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
+>> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
+>> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.com>
+>> Subject: Re: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
+>>
+>> On 09.10.23 13:28, Salil Mehta wrote:
+>>> ACPI CPU hotplug related initialization should only happen if
+>> ACPI_CPU_HOTPLUG
+>>> support has been enabled for particular architecture. Add
+>> cpu_hotplug_hw_init()
+>>> stub to avoid compilation break.
+>>>
+>>> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
+>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>> Reviewed-by: Gavin Shan <gshan@redhat.com>
+>>> ---
+>>>    hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
+>>>    1 file changed, 6 insertions(+)
+>>>
+>>> diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-
+>> stub.c
+>>> index 3fc4b14c26..c6c61bb9cd 100644
+>>> --- a/hw/acpi/acpi-cpu-hotplug-stub.c
+>>> +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
+>>> @@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion
+>> *parent, Object *owner,
+>>>        return;
+>>>    }
+>>>
+>>> +void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+>>> +                         CPUHotplugState *state, hwaddr base_addr)
+>>> +{
+>>> +    return;
+>>> +}
+>>
+>> While at it, can we prefix that function with acpi?
+> 
+> I can do that but it has to be done at other places as well
+> such as in hw/acpi/cpu_hotplug.c <acpi_switch_to_modern_cphp()>
+> 
 
-Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org> writes:
+$ git grep cpu_hotplug_hw_init
+hw/acpi/cpu.c:void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+hw/acpi/cpu_hotplug.c:    cpu_hotplug_hw_init(parent, gpe_cpu->device, cpuhp_state, io_port);
+include/hw/acpi/cpu.h:void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
 
-> Update prebuilt firmware images:
-> - Neoverse V1/N2 cpu support
-> - non-secure EL2 virtual timer
-> - XHCI controller in DSDT
->
-> With those changes we can now run OpenBSD as part of sbsa-ref tests.
->
-> Signed-off-by: Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>
+Might want to do that as a separate patch, agreed.
 
-Queued to maintainer/october-omnibus, thanks.
+-- 
+Cheers,
 
---=20
-Alex Benn=C3=A9e
-Virtualisation Tech Lead @ Linaro
+David / dhildenb
+
 
