@@ -2,74 +2,73 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6DE07BE1EA
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 15:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F117BE230
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 16:12:40 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpqjY-0003fh-AS; Mon, 09 Oct 2023 09:55:44 -0400
+	id 1qpqyc-000814-4o; Mon, 09 Oct 2023 10:11:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpqjT-0003fK-05
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:55:39 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpqyZ-00080d-Et
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:11:15 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpqjI-0003P3-Je
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 09:55:37 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpqyX-0006mf-F5
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 10:11:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696859727;
+ s=mimecast20190719; t=1696860672;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=N6twfO3yqRgTzT5YQZu6+KoQxXtSnswIhfjKrGDya4o=;
- b=PvUy9rLjDMAcAhtFuu9zvhGpeD3wfLaBagsTEvWP0taAXdrFs49OSTvlxWlOaAw5cMVvql
- 0Yy+LdDdE/bXIssl8O2WhB0DLCB41TLProiog6wN9bD5/BlSeg1azaVaZBOdMwo8iNZucd
- 3ZwZa+4Oi9G+XHg5OnXCfJ08jMRei/4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=LxlXWmITfzST20kPRPo6Pmoy2PQ26O72HSJaXVgs8lQ=;
+ b=SQcJjC1TEgbJH7nDBZbO5obD4PGImV1l0WsiVcCvZwzBu7L4iWTuXX4VHtc7aP1tdMTCwU
+ G8dDulLisGbej9Bh7PScwAVHB4wgAorMbPnMvzofK64i5JXQ9JdFE17s3K1bOE6k55aloY
+ WSXR55WWVrpo1KH1zA4Lk/DN0pJAm1k=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-XUd7-pTUO5mtbRn52CKk9w-1; Mon, 09 Oct 2023 09:55:25 -0400
-X-MC-Unique: XUd7-pTUO5mtbRn52CKk9w-1
-Received: by mail-wm1-f71.google.com with SMTP id
- 5b1f17b1804b1-3f5df65fa35so29096905e9.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 06:55:25 -0700 (PDT)
+ us-mta-344-ZcZv_TKYOCiqExiOB2a_8A-1; Mon, 09 Oct 2023 10:11:10 -0400
+X-MC-Unique: ZcZv_TKYOCiqExiOB2a_8A-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32172e3679bso3220883f8f.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 07:11:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696859724; x=1697464524;
- h=content-transfer-encoding:in-reply-to:organization:from:references
- :cc:to:content-language:subject:user-agent:mime-version:date
+ d=1e100.net; s=20230601; t=1696860669; x=1697465469;
+ h=content-transfer-encoding:in-reply-to:subject:organization:from
+ :references:cc:to:content-language:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=N6twfO3yqRgTzT5YQZu6+KoQxXtSnswIhfjKrGDya4o=;
- b=gNqZDLAfIcacgskuOgNEz6ThIteEV5hcev7Y6/Xa5VSM8pI6XZbCHzj1ldHHOSW9oK
- +v6IK3DnCPaV16rzwxWyTsvIWmkRA+PqebB6t9/KEKn8yIhBWtPCV+3nVplM+xkThUNA
- kOjZDefYkazwdriKrY/UbUbUfNwg1VYYtbNMCxsK0rUz9o9dYnI/YWE/HpnN+/0gGqJW
- lvXuppDHt6e6tVfdtGRxUKUKzAp3TJoaavYjXCX0m47TtDkM/HkiojWnDGy9YcIS4oGQ
- FRd16K1AggHCLpoRQ9zjUQhcTtd11S9LGvEhuYYTcyKD/5o8S5TNElXY7WtsFTxPnDYL
- xNMw==
-X-Gm-Message-State: AOJu0YyWY9HcCruVBSfbRPrxcO4GFnnOImY1i+2XrWTz+GW47PV6rOP5
- kt4JClXUnAC+HLR4K+6i50rvVvsS3fdSN6Lsdt5RZXI7skUwk9YVHRfujMgvxDBbmEA1bJIzDla
- +6a/dUE6kAlMfJs0=
-X-Received: by 2002:a7b:cd0a:0:b0:405:3ae6:2400 with SMTP id
- f10-20020a7bcd0a000000b004053ae62400mr13924597wmj.23.1696859724334; 
- Mon, 09 Oct 2023 06:55:24 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHO+3d3CFoj/QLUfXveEwtSADGsDs2xIoiwsrE0KXDxlCyyyGlMt9g4zBfKNQv5xyfcwKqocA==
-X-Received: by 2002:a7b:cd0a:0:b0:405:3ae6:2400 with SMTP id
- f10-20020a7bcd0a000000b004053ae62400mr13924566wmj.23.1696859723919; 
- Mon, 09 Oct 2023 06:55:23 -0700 (PDT)
+ bh=LxlXWmITfzST20kPRPo6Pmoy2PQ26O72HSJaXVgs8lQ=;
+ b=UTRFvGNnZto30fXc/ONtrRjRbuHTR9HayGaGvrQhakx0ppCjdJUKjJ7C1pXXowlJr6
+ MC4oVhA8skiyIYkmOJQX3Rzpe4/Cwo6kcsGR8vWGmpUymIkkBl81bGImUwRFdcCiCMb9
+ 8+G4s9wDZi56oa6q+gXH67W49GXBxqcuGQXgWvAdDEFvI4WV1QsthKrtevYs93S2llJn
+ dyxWRQecAO0P0mowcHDuhVMKlGYXw0kcQfk+xMfEd5OsxvpKCG+JhzKpkWyEHij6dEuW
+ PLxVuNRY9CSZxzVPqth7mjSPydzwjnIAw1HOoDrCmnvyz03xKu5VgdoosytTkQMvQm1d
+ bg9w==
+X-Gm-Message-State: AOJu0YyPrX23Rd4+McvDRK7MNfe2FOXUnwVX3uw1XOkNW8u10F0ji6g6
+ F2Umu9VOfFOrKeS6hh5+vPtiqqOwc8sQYQQGSCyLu45RoVYkhkMwpAzVFIDd5lXi3o2BszKoJWM
+ 3UBznKVl4wMpNhDGhU0GFoYI=
+X-Received: by 2002:a5d:46cf:0:b0:31f:8e7c:6ebe with SMTP id
+ g15-20020a5d46cf000000b0031f8e7c6ebemr12959046wrs.5.1696860669656; 
+ Mon, 09 Oct 2023 07:11:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGPc5rTWDo84dwa8Pl2iguI9Ib++hH+6jY9LRoCLkmOwVDi8JGu0GVWjlicFoxQRhFc++2umg==
+X-Received: by 2002:a5d:46cf:0:b0:31f:8e7c:6ebe with SMTP id
+ g15-20020a5d46cf000000b0031f8e7c6ebemr12959014wrs.5.1696860669084; 
+ Mon, 09 Oct 2023 07:11:09 -0700 (PDT)
 Received: from ?IPV6:2003:cb:c733:6400:ae10:4bb7:9712:8548?
  (p200300cbc7336400ae104bb797128548.dip0.t-ipconnect.de.
  [2003:cb:c733:6400:ae10:4bb7:9712:8548])
  by smtp.gmail.com with ESMTPSA id
- l17-20020a1ced11000000b0040588d85b3asm13447466wmh.15.2023.10.09.06.55.22
+ b3-20020adff243000000b0031431fb40fasm9819678wrp.89.2023.10.09.07.11.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 06:55:23 -0700 (PDT)
-Message-ID: <be019441-793f-bbf1-2b7e-aa32005ead80@redhat.com>
-Date: Mon, 9 Oct 2023 15:55:21 +0200
+ Mon, 09 Oct 2023 07:11:08 -0700 (PDT)
+Message-ID: <ae2e0fc1-7967-2bae-e4fa-b4d886ba4671@redhat.com>
+Date: Mon, 9 Oct 2023 16:11:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
 Content-Language: en-US
 To: Salil Mehta <salil.mehta@huawei.com>,
  "qemu-devel@nongnu.org" <qemu-devel@nongnu.org>,
@@ -104,12 +103,14 @@ Cc: "maz@kernel.org" <maz@kernel.org>,
  "lixianglai@loongson.cn" <lixianglai@loongson.cn>,
  Linuxarm <linuxarm@huawei.com>
 References: <20231009112812.10612-1-salil.mehta@huawei.com>
- <20231009112812.10612-4-salil.mehta@huawei.com>
- <8a80612f-07d3-6302-31f9-232d9ce393a1@redhat.com>
- <08840ea0a68e46b1a9d98d1e3544f43b@huawei.com>
+ <20231009112812.10612-2-salil.mehta@huawei.com>
+ <a02eae26-6018-6f5c-1b82-e6061544022b@redhat.com>
+ <63f8e47efcd045b1b8481f6fd427c4b1@huawei.com>
 From: David Hildenbrand <david@redhat.com>
 Organization: Red Hat
-In-Reply-To: <08840ea0a68e46b1a9d98d1e3544f43b@huawei.com>
+Subject: Re: [PATCH V3 01/10] accel/kvm: Extract common KVM vCPU
+ {creation,parking} code
+In-Reply-To: <63f8e47efcd045b1b8481f6fd427c4b1@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: pass client-ip=170.10.133.124; envelope-from=david@redhat.com;
@@ -121,7 +122,7 @@ X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
  DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  NICE_REPLY_A=-3.339, RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001,
  RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -137,11 +138,13 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09.10.23 15:49, Salil Mehta wrote:
+On 09.10.23 15:42, Salil Mehta wrote:
+> Hi David,
+> Thanks for the review.
+> 
 >> From: David Hildenbrand <david@redhat.com>
->> Sent: Monday, October 9, 2023 1:23 PM
->> To: Salil Mehta <salil.mehta@huawei.com>; qemu-devel@nongnu.org; qemu-
->> arm@nongnu.org
+>> Sent: Monday, October 9, 2023 1:21 PM
+>> To: Salil Mehta <salil.mehta@huawei.com>; qemu-devel@nongnu.org; qemu-arm@nongnu.org
 >> Cc: maz@kernel.org; jean-philippe@linaro.org; Jonathan Cameron
 >> <jonathan.cameron@huawei.com>; lpieralisi@kernel.org;
 >> peter.maydell@linaro.org; richard.henderson@linaro.org;
@@ -155,50 +158,112 @@ On 09.10.23 15:49, Salil Mehta wrote:
 >> <zhukeqian1@huawei.com>; wangxiongfeng (C) <wangxiongfeng2@huawei.com>;
 >> wangyanan (Y) <wangyanan55@huawei.com>; jiakernel2@gmail.com;
 >> maobibo@loongson.cn; lixianglai@loongson.cn; Linuxarm <linuxarm@huawei.com>
->> Subject: Re: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
+>> Subject: Re: [PATCH V3 01/10] accel/kvm: Extract common KVM vCPU
+>> {creation,parking} code
 >>
 >> On 09.10.23 13:28, Salil Mehta wrote:
->>> ACPI CPU hotplug related initialization should only happen if
->> ACPI_CPU_HOTPLUG
->>> support has been enabled for particular architecture. Add
->> cpu_hotplug_hw_init()
->>> stub to avoid compilation break.
+>>> KVM vCPU creation is done once during the initialization of the VM when Qemu
+>>> thread is spawned. This is common to all the architectures.
+>>>
+>>> Hot-unplug of vCPU results in destruction of the vCPU object in QOM but the
+>>> corresponding KVM vCPU object in the Host KVM is not destroyed and its
+>>> representative KVM vCPU object/context in Qemu is parked.
+>>>
+>>> Refactor common logic so that some APIs could be reused by vCPU Hotplug code.
 >>>
 >>> Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
->>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>> Reviewed-by: Gavin Shan <gshan@redhat.com>
->>> ---
->>>    hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
->>>    1 file changed, 6 insertions(+)
->>>
->>> diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-
->> stub.c
->>> index 3fc4b14c26..c6c61bb9cd 100644
->>> --- a/hw/acpi/acpi-cpu-hotplug-stub.c
->>> +++ b/hw/acpi/acpi-cpu-hotplug-stub.c
->>> @@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion
->> *parent, Object *owner,
->>>        return;
->>>    }
->>>
->>> +void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
->>> +                         CPUHotplugState *state, hwaddr base_addr)
->>> +{
->>> +    return;
->>> +}
 >>
->> While at it, can we prefix that function with acpi?
+>> [...]
+>>
+>>>
+>>>    int kvm_init_vcpu(CPUState *cpu, Error **errp)
+>>> @@ -395,19 +434,14 @@ int kvm_init_vcpu(CPUState *cpu, Error **errp)
+>>>
+>>>        trace_kvm_init_vcpu(cpu->cpu_index, kvm_arch_vcpu_id(cpu));
+>>>
+>>> -    ret = kvm_get_vcpu(s, kvm_arch_vcpu_id(cpu));
+>>> +    ret = kvm_create_vcpu(cpu);
+>>>        if (ret < 0) {
+>>> -        error_setg_errno(errp, -ret, "kvm_init_vcpu: kvm_get_vcpu failed (%lu)",
+>>> +        error_setg_errno(errp, -ret,
+>>> +                         "kvm_init_vcpu: kvm_create_vcpu failed (%lu)",
+>>
+>> Unrelated change.
 > 
-> I can do that but it has to be done at other places as well
-> such as in hw/acpi/cpu_hotplug.c <acpi_switch_to_modern_cphp()>
 > 
+> It is related. I think you missed kvm_get_vcpu -> kvm_create_vcpu change
+> in the string.
 
-$ git grep cpu_hotplug_hw_init
-hw/acpi/cpu.c:void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-hw/acpi/cpu_hotplug.c:    cpu_hotplug_hw_init(parent, gpe_cpu->device, cpuhp_state, io_port);
-include/hw/acpi/cpu.h:void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
+Indeed, I did :)
 
-Might want to do that as a separate patch, agreed.
+> 
+> 
+>>>                             kvm_arch_vcpu_id(cpu));
+>>>            goto err;
+>>>        }
+>>>
+>>> -    cpu->kvm_fd = ret;
+>>> -    cpu->kvm_state = s;
+>>> -    cpu->vcpu_dirty = true;
+>>> -    cpu->dirty_pages = 0;
+>>> -    cpu->throttle_us_per_full = 0;
+>>> -
+>>>        mmap_size = kvm_ioctl(s, KVM_GET_VCPU_MMAP_SIZE, 0);
+>>>        if (mmap_size < 0) {
+>>>            ret = mmap_size;
+>>> diff --git a/accel/kvm/trace-events b/accel/kvm/trace-events
+>>> index 399aaeb0ec..08e2dc253f 100644
+>>> --- a/accel/kvm/trace-events
+>>> +++ b/accel/kvm/trace-events
+>>> @@ -9,6 +9,10 @@ kvm_device_ioctl(int fd, int type, void *arg) "dev fd %d, type 0x%x, arg %p"
+>>>    kvm_failed_reg_get(uint64_t id, const char *msg) "Warning: Unable to retrieve ONEREG %" PRIu64 " from KVM: %s"
+>>>    kvm_failed_reg_set(uint64_t id, const char *msg) "Warning: Unable to set ONEREG %" PRIu64 " to KVM: %s"
+>>>    kvm_init_vcpu(int cpu_index, unsigned long arch_cpu_id) "index: %d id: %lu"
+>>> +kvm_create_vcpu(int cpu_index, unsigned long arch_cpu_id) "creating KVM cpu: cpu_index: %d arch vcpu-id: %lu"
+>>> +kvm_get_vcpu(unsigned long arch_cpu_id) "unparking KVM vcpu: arch vcpu-id: %lu"
+>>> +kvm_destroy_vcpu(int cpu_index, unsigned long arch_cpu_id) "destroy vcpu: cpu_index: %d arch vcpu-id: %lu"
+>>> +kvm_park_vcpu(int cpu_index, unsigned long arch_cpu_id) "parking KVM vcpu: cpu_index: %d arch vcpu-id: %lu"
+>>
+>> It's a bit confusing that there is now
+>>
+>> 1) create (create new or return parked)
+>> 2) destroy (cleanup + park)
+>> 3) park (park only)
+>>
+>> Why would one use 2) instead of 3) or the other way around? But I
+>> suspect that kvm_destroy_vcpu() is only supposed to be a KVM-internal
+>> helper ...
+> 
+> kvm_destroy_vcpu is more than just parking:
+> 
+> 1. Arch destroy vcpu
+> 2. Unmap cpu->kvm_run
+> 3. Parking logic
+> 
+> To support virtual CPU Hotplug on ARM platforms we pre-create all
+> the KVM vCPUs but their corresponding Qemu threads are not spawned
+> (and hence cpu->kvm_run is not mapped). Unplugged vCPUs remains
+> parked in the list. Hence, only step-3 is required.
+
+IIUC, your current flow is going to be
+
+1) Create
+2) Park
+3) Create [which ends up reusing the parked VCPU]
+4) Destroy [when unplugging the CPU]
+
+If that's the case, that API really is suboptimal.
+
+What speaks against an API that models 1) and 2) in a single step
+
+kvm_precreate_vcpu
+kvm_create_vcpu
+kvm_destroy_vcpu
+
+One could even make kvm_create_vcpu() fail on ARM if the VCPU hasn't 
+been pre-created.
+
+Or did I get it all wrong? :)
 
 -- 
 Cheers,
