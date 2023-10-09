@@ -2,104 +2,91 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4B67BEA37
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 20:59:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 938067BEA38
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 21:00:37 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpvSL-0006bI-PS; Mon, 09 Oct 2023 14:58:17 -0400
+	id 1qpvUB-0007RM-BT; Mon, 09 Oct 2023 15:00:11 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qpvSJ-0006aw-8h; Mon, 09 Oct 2023 14:58:15 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <farman@linux.ibm.com>)
- id 1qpvSH-0003TY-5y; Mon, 09 Oct 2023 14:58:15 -0400
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399IlNig031386; Mon, 9 Oct 2023 18:58:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com;
- h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=gIDH4KnjooV7MDzo3JNLyVbJg0F9mwPBPGkgV5yXSyM=;
- b=ZJa2/MNOMLosShevxVf9XJXedNAx7oaKLstxFvsvQ7po64la6ZZXSy8UrnZ3FSlAnke/
- puvf6Jk0kx865VoybHDkeP9vqt+ir4oEIxOixvEd1ikz+H8PN1fvQRTba+aEAaI3flAR
- jtBirlt13x7tpgx6Dl6xcYdrZPfgDTD/vhe0zV8fA8bY0thsxLRrtzVccY7NRiPOziSb
- TSKJFq32jToFT0loyAkUi4oCQYYFRmDN9yQhHZ7p5wgJeS17MA4coEt0dIOVCilv9rOc
- RX4Mlzafzmz8TMShOl9JXaGjUavPTWyqU32Iw51eUINH/QoP5k0Zq6LpX51SZdkPquLB ig== 
-Received: from pps.reinject (localhost [127.0.0.1])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmq3t0a41-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 18:58:08 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
- by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 399IvmPv013845;
- Mon, 9 Oct 2023 18:58:08 GMT
-Received: from ppma21.wdc07v.mail.ibm.com
- (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
- by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tmq3t0a1c-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 18:58:08 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
- by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id
- 399HGm3f025927; Mon, 9 Oct 2023 18:58:06 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
- by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkjnn328e-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 09 Oct 2023 18:58:06 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com
- [10.241.53.100])
- by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id
- 399Iw5Ki21692828
- (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
- Mon, 9 Oct 2023 18:58:05 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 9D7DB58059;
- Mon,  9 Oct 2023 18:58:05 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
- by IMSVA (Postfix) with ESMTP id 71EFB58058;
- Mon,  9 Oct 2023 18:58:04 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown
- [9.61.123.191]) by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
- Mon,  9 Oct 2023 18:58:04 +0000 (GMT)
-Message-ID: <d34762a121f76d7c837ea405d464ce391bee25b2.camel@linux.ibm.com>
-Subject: Re: [PATCH 3/3] vfio/ccw: Remove redundant definition of TYPE_VFIO_CCW
-From: Eric Farman <farman@linux.ibm.com>
-To: Zhenzhong Duan <zhenzhong.duan@intel.com>, qemu-devel@nongnu.org
-Cc: alex.williamson@redhat.com, clg@redhat.com, thuth@redhat.com,
- akrowiak@linux.ibm.com, pasic@linux.ibm.com, jjherne@linux.ibm.com,
- mjrosato@linux.ibm.com, borntraeger@linux.ibm.com, aik@ozlabs.ru,
- eric.auger@redhat.com, yi.l.liu@intel.com, chao.p.peng@intel.com,
- qemu-s390x@nongnu.org
-Date: Mon, 09 Oct 2023 14:58:04 -0400
-In-Reply-To: <20231009022048.35475-4-zhenzhong.duan@intel.com>
-References: <20231009022048.35475-1-zhenzhong.duan@intel.com>
- <20231009022048.35475-4-zhenzhong.duan@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qpvU5-0007R7-9w
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 15:00:05 -0400
+Received: from mail-il1-x135.google.com ([2607:f8b0:4864:20::135])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <ltaylorsimpson@gmail.com>)
+ id 1qpvU3-0003fg-3E
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 15:00:05 -0400
+Received: by mail-il1-x135.google.com with SMTP id
+ e9e14a558f8ab-3528bc102adso18708795ab.2
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 11:59:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1696877997; x=1697482797; darn=nongnu.org;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:from:to:cc:subject:date:message-id:reply-to;
+ bh=V9rfMQWcblwUB1eURUHn2a43Owaw14w8a2AufeEwUhY=;
+ b=Zpu8VoMJpVhC2r4zoqhVokyF87wGHcXA5izBGH6weHututiAJo7N31OaGxZQgXRw7J
+ 4K+ODt1ldovK5rzrhrI/s76JXnHkLpFcxjLvVVwXOE5X6m+ISfrshPw6xeQc+4PaYaTR
+ 7pHsmGfFR4szD/9o2PWoh0E6Mo9yWhvR69ARpxEoLs4gkBhenWicf+T8/RleKUVv+Nny
+ CsA5SUeETzln4oV8LZGV+Ek0ADnaqQdkSK+c5kVFT4i0QQn2ZiI+gNphGvBGCHbVhRJK
+ yTbnnmQWLiFufbmXXI0hANgMeN2IMnG/BbILEP3p3oxxIdvwFAvSAQ5fRqBS8FbPdAE8
+ p2Lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696877997; x=1697482797;
+ h=content-language:thread-index:content-transfer-encoding
+ :mime-version:message-id:date:subject:in-reply-to:references:cc:to
+ :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=V9rfMQWcblwUB1eURUHn2a43Owaw14w8a2AufeEwUhY=;
+ b=IVOlZnsjmEeoXw9v6sffJgoGyvHf2e3wE2rQzq9LCt/3F0/KFJBC52nfX7Jx+QfvSA
+ vwImol7xWvToxLtQ5AIjhZR+E3Z/cFf13XowAMrztHVy9lh4NKt+0LvDi7msbXye5vdA
+ mSG0ocGuT8mHHqbItElmsxEUw/xRQ6nWJBmdbzyhqjfDi5C7BT4lYGjCoiPBXsLpL79h
+ 4jlDsV7rOUBkM2WajYA3EfNZsXTs7+6aIeIp0pGdNbCN/OXqcjmtCGRa7tZrmMsnrid7
+ tIPLv80MJTi7+Ho1I/X8aWgU3lwKBSzu2QJqBELp+XFVAlAcGCXctIvvDS4XSjBRB2OD
+ Qtrw==
+X-Gm-Message-State: AOJu0YxeAMU/x+6e27iquZ2pftsaDr2PwrwbIDt8eEp6+rLds30DfMwB
+ BbhCijUhBpLWE0hDNCYLNkQ=
+X-Google-Smtp-Source: AGHT+IEkSx4hcLia5GPL5Jcxlq9aSYNgVThWq7TvgT0+F+xq5PeMh3BBgXRmg97yhxb6cOUyohUk5w==
+X-Received: by 2002:a05:6e02:e0c:b0:351:1d53:c789 with SMTP id
+ a12-20020a056e020e0c00b003511d53c789mr15863863ilk.8.1696877997448; 
+ Mon, 09 Oct 2023 11:59:57 -0700 (PDT)
+Received: from DESKTOPUU50BPD ([2601:284:8201:81c0:582b:6312:c6b:a6f0])
+ by smtp.gmail.com with ESMTPSA id
+ r22-20020a028816000000b004301f422fbdsm2239411jai.178.2023.10.09.11.59.53
+ (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+ Mon, 09 Oct 2023 11:59:55 -0700 (PDT)
+From: <ltaylorsimpson@gmail.com>
+To: "'Brian Cain'" <bcain@quicinc.com>,
+	<qemu-devel@nongnu.org>
+Cc: <armbru@redhat.com>, <richard.henderson@linaro.org>, <philmd@linaro.org>,
+ <peter.maydell@linaro.org>,
+ "'Matheus Bernardino \(QUIC\)'" <quic_mathbern@quicinc.com>,
+ <stefanha@redhat.com>, <ale@rev.ng>, <anjo@rev.ng>,
+ "'Marco Liebel \(QUIC\)'" <quic_mliebel@quicinc.com>
+References: <20231005222206.2784853-1-bcain@quicinc.com>
+ <20231005222206.2784853-4-bcain@quicinc.com>
+ <316e01d9f86e$401f62b0$c05e2810$@gmail.com>
+ <SN6PR02MB42059CEC773018D164164A86B8CFA@SN6PR02MB4205.namprd02.prod.outlook.com>
+In-Reply-To: <SN6PR02MB42059CEC773018D164164A86B8CFA@SN6PR02MB4205.namprd02.prod.outlook.com>
+Subject: RE: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
+Date: Mon, 9 Oct 2023 12:59:53 -0600
+Message-ID: <05d501d9fae2$ca7553e0$5f5ffba0$@gmail.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cojEcwTczAuVk0KGAlUQmxxH-AswpHf8
-X-Proofpoint-GUID: HEaN7Eroqjf6SYevQWrJMQzX4S9YQjsA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-09_17,2023-10-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=742 mlxscore=0
- lowpriorityscore=0 priorityscore=1501 suspectscore=0 adultscore=0
- clxscore=1011 phishscore=0 spamscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310090155
-Received-SPF: pass client-ip=148.163.156.1; envelope-from=farman@linux.ibm.com;
- helo=mx0a-001b2d01.pphosted.com
-X-Spam_score_int: -19
-X-Spam_score: -2.0
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQJv0F5Exw0TPnXaZfUwlO9P/EDe8gDs17xJAQAzRToBfYS0vq76z8dA
+Content-Language: en-us
+Received-SPF: pass client-ip=2607:f8b0:4864:20::135;
+ envelope-from=ltaylorsimpson@gmail.com; helo=mail-il1-x135.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
 X-Spam_bar: --
-X-Spam_report: (-2.0 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_EF=-0.1, RCVD_IN_MSPIKE_H4=0.001,
- RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -116,30 +103,117 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Mon, 2023-10-09 at 10:20 +0800, Zhenzhong Duan wrote:
-> No functional changes.
+
+
+> -----Original Message-----
+> From: Brian Cain <bcain@quicinc.com>
+> Sent: Sunday, October 8, 2023 7:50 AM
+> To: ltaylorsimpson@gmail.com; qemu-devel@nongnu.org
+> Cc: armbru@redhat.com; richard.henderson@linaro.org; =
+philmd@linaro.org;
+> peter.maydell@linaro.org; Matheus Bernardino (QUIC)
+> <quic_mathbern@quicinc.com>; stefanha@redhat.com; ale@rev.ng;
+> anjo@rev.ng; Marco Liebel (QUIC) <quic_mliebel@quicinc.com>
+> Subject: RE: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
 >=20
-> Signed-off-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
-
-I see Cedric has already queued this, but FWIW:
-
-Reviewed-by: Eric Farman <farman@linux.ibm.com>
-
-> ---
-> =C2=A0include/hw/s390x/vfio-ccw.h | 2 --
-> =C2=A01 file changed, 2 deletions(-)
 >=20
-> diff --git a/include/hw/s390x/vfio-ccw.h b/include/hw/s390x/vfio-
-> ccw.h
-> index 63a909eb7e..4209d27657 100644
-> --- a/include/hw/s390x/vfio-ccw.h
-> +++ b/include/hw/s390x/vfio-ccw.h
-> @@ -22,6 +22,4 @@
-> =C2=A0#define TYPE_VFIO_CCW "vfio-ccw"
-> =C2=A0OBJECT_DECLARE_SIMPLE_TYPE(VFIOCCWDevice, VFIO_CCW)
-> =C2=A0
-> -#define TYPE_VFIO_CCW "vfio-ccw"
-> -
-> =C2=A0#endif
+>=20
+> > -----Original Message-----
+> > From: ltaylorsimpson@gmail.com <ltaylorsimpson@gmail.com>
+> > Sent: Friday, October 6, 2023 11:01 AM
+> > To: Brian Cain <bcain@quicinc.com>; qemu-devel@nongnu.org
+> > Cc: armbru@redhat.com; richard.henderson@linaro.org;
+> > philmd@linaro.org; peter.maydell@linaro.org; Matheus Bernardino =
+(QUIC)
+> > <quic_mathbern@quicinc.com>; stefanha@redhat.com; ale@rev.ng;
+> > anjo@rev.ng; Marco Liebel (QUIC) <quic_mliebel@quicinc.com>
+> > Subject: RE: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
+> >
+> > WARNING: This email originated from outside of Qualcomm. Please be
+> > wary of any links or attachments, and do not enable macros.
+> >
+> > > -----Original Message-----
+> > > From: Brian Cain <bcain@quicinc.com>
+> > > Sent: Thursday, October 5, 2023 4:22 PM
+> > > To: qemu-devel@nongnu.org
+> > > Cc: bcain@quicinc.com; armbru@redhat.com;
+> > > richard.henderson@linaro.org; philmd@linaro.org;
+> > > peter.maydell@linaro.org; quic_mathbern@quicinc.com;
+> > > stefanha@redhat.com; ale@rev.ng; anjo@rev.ng;
+> > > quic_mliebel@quicinc.com; ltaylorsimpson@gmail.com
+> > > Subject: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
+> > >
+> > > The typedef `vaddr` is shadowed by `vaddr` identifiers, so we =
+rename
+> > > the identifiers to avoid shadowing the type name.
+> > >
+> > > The global `cpu_env` is shadowed by local `cpu_env` arguments, so =
+we
+> > > rename the function arguments to avoid shadowing the global.
+> > >
+> > > Signed-off-by: Brian Cain <bcain@quicinc.com>
+> > > ---
+> > >  target/hexagon/genptr.c                 | 56 =
+++++++++++++-------------
+> > >  target/hexagon/genptr.h                 | 18 ++++----
+> > >  target/hexagon/mmvec/system_ext_mmvec.c |  4 +-
+> > > target/hexagon/mmvec/system_ext_mmvec.h |  2 +-
+> > >  target/hexagon/op_helper.c              |  4 +-
+> > >  5 files changed, 42 insertions(+), 42 deletions(-)
+> > >
+> > > diff --git a/target/hexagon/genptr.c b/target/hexagon/genptr.c =
+index
+> > > 217bc7bb5a..11377ac92b 100644
+> > > --- a/target/hexagon/genptr.c
+> > > +++ b/target/hexagon/genptr.c
+> > > @@ -334,28 +334,28 @@ void gen_set_byte_i64(int N, TCGv_i64 =
+result,
+> > TCGv
+> > > src)
+> > >      tcg_gen_deposit_i64(result, result, src64, N * 8, 8);  }
+> > >
+> > > -static inline void gen_load_locked4u(TCGv dest, TCGv vaddr, int
+> > > mem_index)
+> > > +static inline void gen_load_locked4u(TCGv dest, TCGv v_addr, int
+> > > +mem_index)
+> >
+> > I'd recommend moving both the type and the arg name to the new line,
+> > also indent the new line.
+> > static inline void gen_load_locked4u(TCGv dest, TCGv v_addr,
+> >                                                                   =
+int
+> > mem_index)
+> >
+> >
+> I could be mistaken but AFAICT none of these lines are wrapped in the =
+way
+> they're quoted above  in my patch (nor the baseline).  I don't think =
+any of
+> these lines exceed 80 columns, so they shouldn't need wrapping, =
+either.
+>=20
+> I double checked how it's displayed at the archive
+> https://lists.gnu.org/archive/html/qemu-devel/2023-10/msg01667.html to
+> make sure that it wasn't a misconfiguration of my mailer.  For another
+> perspective - refer to the commit used to create this patch:
+> https://github.com/quic/qemu/commit/7f20565d403d16337ab6d69ee663121
+> a3eef71e6
+>=20
+> Is your review comment that "these lines should be wrapped and when =
+you
+> do, make sure you do it like this"?  Or "if you are going to wrap =
+them, wrap
+> them like this"?  Or something else?
+
+Yes.  It looked like some adding the v_ would sometimes put the line =
+over the 80 character size.
+If so, wrap them as described.  If not, no wrapping is needed.
+
+
+>=20
+> > Otherwise,
+> > Reviewed-by: Taylor Simpson <ltaylorsimpson@gmail.com>
+> >
+
 
 
