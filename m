@@ -2,27 +2,27 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E717BD9DF
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:31:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2A57BD9E4
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:32:04 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpoTU-0000yS-1N; Mon, 09 Oct 2023 07:31:00 -0400
+	id 1qpoTV-00015L-Uh; Mon, 09 Oct 2023 07:31:01 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpoT3-0000mZ-Fn; Mon, 09 Oct 2023 07:30:34 -0400
+ id 1qpoTI-0000vH-LV; Mon, 09 Oct 2023 07:30:55 -0400
 Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
- id 1qpoSz-0000sB-K7; Mon, 09 Oct 2023 07:30:31 -0400
-Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.200])
- by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S3xb34Cl4z67GC8;
- Mon,  9 Oct 2023 19:27:27 +0800 (CST)
+ id 1qpoTH-0000wH-1e; Mon, 09 Oct 2023 07:30:48 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S3xcd242tz6K5lV;
+ Mon,  9 Oct 2023 19:28:49 +0800 (CST)
 Received: from A190218597.china.huawei.com (10.48.154.91) by
  lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Mon, 9 Oct 2023 12:30:06 +0100
+ 15.1.2507.31; Mon, 9 Oct 2023 12:30:25 +0100
 To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
 CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
@@ -38,9 +38,9 @@ CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
  <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
  <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
  <linuxarm@huawei.com>
-Subject: [PATCH V3 03/10] hw/acpi: Add ACPI CPU hotplug init stub
-Date: Mon, 9 Oct 2023 12:28:05 +0100
-Message-ID: <20231009112812.10612-4-salil.mehta@huawei.com>
+Subject: [PATCH V3 04/10] hw/acpi: Init GED framework with cpu hotplug events
+Date: Mon, 9 Oct 2023 12:28:06 +0100
+Message-ID: <20231009112812.10612-5-salil.mehta@huawei.com>
 X-Mailer: git-send-email 2.8.3
 In-Reply-To: <20231009112812.10612-1-salil.mehta@huawei.com>
 References: <20231009112812.10612-1-salil.mehta@huawei.com>
@@ -75,34 +75,79 @@ From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-ACPI CPU hotplug related initialization should only happen if ACPI_CPU_HOTPLUG
-support has been enabled for particular architecture. Add cpu_hotplug_hw_init()
-stub to avoid compilation break.
+ACPI GED(as described in the ACPI 6.2 spec) can be used to generate ACPI events
+when OSPM/guest receives an interrupt listed in the _CRS object of GED. OSPM
+then maps or demultiplexes the event by evaluating _EVT method.
 
+This change adds the support of cpu hotplug event initialization in the
+existing GED framework.
+
+Co-developed-by: Keqian Zhu <zhukeqian1@huawei.com>
+Signed-off-by: Keqian Zhu <zhukeqian1@huawei.com>
 Signed-off-by: Salil Mehta <salil.mehta@huawei.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Gavin Shan <gshan@redhat.com>
 ---
- hw/acpi/acpi-cpu-hotplug-stub.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ hw/acpi/generic_event_device.c         | 8 ++++++++
+ include/hw/acpi/generic_event_device.h | 5 +++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/hw/acpi/acpi-cpu-hotplug-stub.c b/hw/acpi/acpi-cpu-hotplug-stub.c
-index 3fc4b14c26..c6c61bb9cd 100644
---- a/hw/acpi/acpi-cpu-hotplug-stub.c
-+++ b/hw/acpi/acpi-cpu-hotplug-stub.c
-@@ -19,6 +19,12 @@ void legacy_acpi_cpu_hotplug_init(MemoryRegion *parent, Object *owner,
-     return;
+diff --git a/hw/acpi/generic_event_device.c b/hw/acpi/generic_event_device.c
+index a3d31631fe..d2fa1d0e4a 100644
+--- a/hw/acpi/generic_event_device.c
++++ b/hw/acpi/generic_event_device.c
+@@ -25,6 +25,7 @@ static const uint32_t ged_supported_events[] = {
+     ACPI_GED_MEM_HOTPLUG_EVT,
+     ACPI_GED_PWR_DOWN_EVT,
+     ACPI_GED_NVDIMM_HOTPLUG_EVT,
++    ACPI_GED_CPU_HOTPLUG_EVT,
+ };
+ 
+ /*
+@@ -400,6 +401,13 @@ static void acpi_ged_initfn(Object *obj)
+     memory_region_init_io(&ged_st->regs, obj, &ged_regs_ops, ged_st,
+                           TYPE_ACPI_GED "-regs", ACPI_GED_REG_COUNT);
+     sysbus_init_mmio(sbd, &ged_st->regs);
++
++    s->cpuhp.device = OBJECT(s);
++    memory_region_init(&s->container_cpuhp, OBJECT(dev), "cpuhp container",
++                       ACPI_CPU_HOTPLUG_REG_LEN);
++    sysbus_init_mmio(SYS_BUS_DEVICE(dev), &s->container_cpuhp);
++    cpu_hotplug_hw_init(&s->container_cpuhp, OBJECT(dev),
++                        &s->cpuhp_state, 0);
  }
  
-+void cpu_hotplug_hw_init(MemoryRegion *as, Object *owner,
-+                         CPUHotplugState *state, hwaddr base_addr)
-+{
-+    return;
-+}
-+
- void acpi_cpu_ospm_status(CPUHotplugState *cpu_st, ACPIOSTInfoList ***list)
- {
-     return;
+ static void acpi_ged_class_init(ObjectClass *class, void *data)
+diff --git a/include/hw/acpi/generic_event_device.h b/include/hw/acpi/generic_event_device.h
+index d831bbd889..d0a5a43abf 100644
+--- a/include/hw/acpi/generic_event_device.h
++++ b/include/hw/acpi/generic_event_device.h
+@@ -60,6 +60,7 @@
+ #define HW_ACPI_GENERIC_EVENT_DEVICE_H
+ 
+ #include "hw/sysbus.h"
++#include "hw/acpi/cpu_hotplug.h"
+ #include "hw/acpi/memory_hotplug.h"
+ #include "hw/acpi/ghes.h"
+ #include "qom/object.h"
+@@ -97,6 +98,7 @@ OBJECT_DECLARE_SIMPLE_TYPE(AcpiGedState, ACPI_GED)
+ #define ACPI_GED_MEM_HOTPLUG_EVT   0x1
+ #define ACPI_GED_PWR_DOWN_EVT      0x2
+ #define ACPI_GED_NVDIMM_HOTPLUG_EVT 0x4
++#define ACPI_GED_CPU_HOTPLUG_EVT    0x8
+ 
+ typedef struct GEDState {
+     MemoryRegion evt;
+@@ -108,6 +110,9 @@ struct AcpiGedState {
+     SysBusDevice parent_obj;
+     MemHotplugState memhp_state;
+     MemoryRegion container_memhp;
++    CPUHotplugState cpuhp_state;
++    MemoryRegion container_cpuhp;
++    AcpiCpuHotplug cpuhp;
+     GEDState ged_state;
+     uint32_t ged_event_bitmap;
+     qemu_irq irq;
 -- 
 2.34.1
 
