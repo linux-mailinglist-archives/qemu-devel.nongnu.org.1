@@ -2,62 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8162F7BE6D1
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:44:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A220F7BE6E2
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:47:35 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptMQ-0002X6-OK; Mon, 09 Oct 2023 12:44:02 -0400
+	id 1qptPa-0005Ne-C4; Mon, 09 Oct 2023 12:47:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptKF-0005of-5n
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:47 -0400
-Received: from mail-wm1-x32d.google.com ([2a00:1450:4864:20::32d])
+ id 1qptPC-0003JD-PP
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:59 -0400
+Received: from mail-wr1-x42e.google.com ([2a00:1450:4864:20::42e])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptJj-0001bM-Ga
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:41:46 -0400
-Received: by mail-wm1-x32d.google.com with SMTP id
- 5b1f17b1804b1-40566f8a093so44170565e9.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:41:15 -0700 (PDT)
+ id 1qptOl-0003Xa-Dj
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:50 -0400
+Received: by mail-wr1-x42e.google.com with SMTP id
+ ffacd0b85a97d-3296b49c546so2831952f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696869674; x=1697474474; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696869975; x=1697474775; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=SQaKCCtPdCExPYstQ0NllKjLPtp/IcVgNdDW/2dG2tw=;
- b=NE8ompUW6GgsAgWOO72/RgzPIQ6pQyPmamEeqmKAppzqJ9KKV3F2Qa5PreMGRyM+Ij
- nzv+5TtXFRJcSqDj1HWWFDfZzpLNYG/88PhStLlkltHxR/ecz7Bo2U9uZbWHAM6LMnuS
- e3mV7/XZLalUMxXjKNpTM3HhBdUXyEPdeimKlPvNTR+j0l1E7z7ws8nqOMp+uQFxlvte
- JLQscbD5u87UFQhbFi/csdjKYHeF0DShQ/8LraoIfLab3a9gE78jVDVkHnDLVzCTk16p
- gu5AhYbvg3hZ/IZMbSIEek8yXSKQ6RbX3ZlHTVjVgfTGsNFVDHco2rqVK8hwZB+a9h+u
- ajGg==
+ bh=mAyYQkrKbWdgjPeSFpAKf8LHOxPMb7ttiO+d+H3EETQ=;
+ b=J5Lr0jclW7J339kIM66DlxNeLzBa14n1qo/PBMaOl7bsS/yXRn5HTmqlsmNAxv3W3X
+ zJsN4TNXJpddqyAfjfSlhP6HeWThSqZpTrrCZX2ucIrOqGMsnaui8L8/DA4yA0Vu/r9P
+ M6bksoVSx8CYFS3zgaXaV44EJZ5fY+Dp9agVP9UZNuEwmNwqI2x2p+msvC0luwHe3igG
+ VQ1xjqLT4txAGAbGuo+onm7vGMcMdx3VyJa97gRaxtJnfTCYXEtBl6p4VBYXekTzMF5Q
+ jf3gqth3dkBEqlt2239J1f8K8RwIUnFFZsvAQrv2HeKFcxaLwqkcY7cZRzDrYp230fRg
+ eexw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696869674; x=1697474474;
+ d=1e100.net; s=20230601; t=1696869975; x=1697474775;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=SQaKCCtPdCExPYstQ0NllKjLPtp/IcVgNdDW/2dG2tw=;
- b=pUQdtDEwnt2f+4fTss2qJK3QLBgdU4zsNe1HAjL1utd6s9mbs6675ib5Ej9y4U9Gpi
- 8NalSkndd1m0xmWmmgLA73jfr7DG9CDMXl9dVDWWrUSBWAD8/XhR3psW0ObVh3TUJkK0
- yQyPik6nl/OYtF70uswgJnxDCU0rJjwF0Uen5IpU50Dzv/HVr7JMWOEhsWm74TosJkNT
- hBfThmBMu0Gl+mDAutPt/72X4bFrybFcrw6oNxC8dPu1B5avIiojPdeYH81qKnzFaRqQ
- tnArmauBDoqXoDsRXI0bNY/kZXrOlvXj59PZoyryO2Hd7Z33ySyT+2KPGrcdlnQnmBp+
- iq8g==
-X-Gm-Message-State: AOJu0YzyTBhUwLT1moNkbZRHOLoJ/En1AEy0IXcpaOCIykHOtJGLUk+g
- h/qQVW9IrX4P/mwDjbrChiXM9w==
-X-Google-Smtp-Source: AGHT+IHM2CYEhLRn6igwx5Zj7Km+x/QT2Gzuuk+SwZDSsJZg+w4BxF3aVLup1v7ul5ctwWB+ghWSrQ==
-X-Received: by 2002:a05:600c:210b:b0:405:1dbd:f77 with SMTP id
- u11-20020a05600c210b00b004051dbd0f77mr13591872wml.31.1696869674023; 
- Mon, 09 Oct 2023 09:41:14 -0700 (PDT)
+ bh=mAyYQkrKbWdgjPeSFpAKf8LHOxPMb7ttiO+d+H3EETQ=;
+ b=rPCCLZjrKUTLPwIc5Be6xMAqhrSzQNOiMRtHAOjxhOGvxJbTHJEfwQ27z1t1ykGOko
+ Pgtj5TEqhaxSqOA0jTDB0M1ZMaoKaavMucLUQcqixnykCA01fNi2DIa7XpjJ5C4kNj8G
+ 2dmpuxtOsgPFHBVHuzjvZGO6vmMBczXoVkrOem09DVL836svomBmEYrkZO6pLGgVl1Sr
+ mYpELJw1tzKOeYQ67hpUYL6eJXuVFUnf9c2/Azs1FVakLajchg3vIIfQoRmcMxVaxQ17
+ QPk4PlyejHWWzP72A2FqfV+RG4xoQCx57Gjn802lSrO6JwHPU3yN3WNy6CBdScxFMnYw
+ hG4g==
+X-Gm-Message-State: AOJu0Yz7TyhiNVr3JmyY6KUfLO/UgSwcoIXIEhUCfFjmIgyYN5zU1FXc
+ TDzcNhCFOj77NAztY38Vd7oNcQ==
+X-Google-Smtp-Source: AGHT+IHod6U6EmD0nkVFnhvY4XK4tB1NiixxHOl20O7cWXHyguHNdEJPEGeH5hB5HvD2bZ31su0fHQ==
+X-Received: by 2002:adf:b34a:0:b0:329:6c6a:c733 with SMTP id
+ k10-20020adfb34a000000b003296c6ac733mr7480553wrd.58.1696869974897; 
+ Mon, 09 Oct 2023 09:46:14 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- m7-20020a05600c280700b004047ac770d1sm13913102wmb.8.2023.10.09.09.41.09
+ t11-20020a5d534b000000b003232380ffd5sm10082444wrv.106.2023.10.09.09.46.12
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:41:11 -0700 (PDT)
+ Mon, 09 Oct 2023 09:46:13 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id D4BE31FFBD;
+ by zen.linaroharston (Postfix) with ESMTP id ED3E71FFCF;
  Mon,  9 Oct 2023 17:41:07 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -89,17 +89,17 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  Marcin Juszkiewicz <marcin.juszkiewicz@linaro.org>, qemu-s390x@nongnu.org,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 23/25] contrib/plugins: fix coverity warning in cache
-Date: Mon,  9 Oct 2023 17:41:02 +0100
-Message-Id: <20231009164104.369749-24-alex.bennee@linaro.org>
+Subject: [PATCH 24/25] contrib/plugins: fix coverity warning in lockstep
+Date: Mon,  9 Oct 2023 17:41:03 +0100
+Message-Id: <20231009164104.369749-25-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::32d;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::42e;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wr1-x42e.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
@@ -122,53 +122,61 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Coverity complains that appends_stats_line can be fed a 0 leading
-to the undefined behaviour of a divide by 0.
+Coverity complains that e don't check for a truncation when copying in
+the path. Bail if we can't copy the whole path into sockaddr.
 
-Fixes: CID 1519044
-Fixes: CID 1519047
+Fixes: CID 1519045
+Fixes: CID 1519046
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- contrib/plugins/cache.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ contrib/plugins/lockstep.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/contrib/plugins/cache.c b/contrib/plugins/cache.c
-index 4fca3edd07..9e7ade3b37 100644
---- a/contrib/plugins/cache.c
-+++ b/contrib/plugins/cache.c
-@@ -535,15 +535,13 @@ static void caches_free(Cache **caches)
-     }
- }
- 
--static void append_stats_line(GString *line, uint64_t l1_daccess,
--                              uint64_t l1_dmisses, uint64_t l1_iaccess,
--                              uint64_t l1_imisses,  uint64_t l2_access,
--                              uint64_t l2_misses)
-+static void append_stats_line(GString *line,
-+                              uint64_t l1_daccess, uint64_t l1_dmisses,
-+                              uint64_t l1_iaccess, uint64_t l1_imisses,
-+                              uint64_t l2_access, uint64_t l2_misses)
+diff --git a/contrib/plugins/lockstep.c b/contrib/plugins/lockstep.c
+index 682b11feb2..f0cb8792c6 100644
+--- a/contrib/plugins/lockstep.c
++++ b/contrib/plugins/lockstep.c
+@@ -245,6 +245,7 @@ static void vcpu_tb_trans(qemu_plugin_id_t id, struct qemu_plugin_tb *tb)
+ static bool setup_socket(const char *path)
  {
--    double l1_dmiss_rate, l1_imiss_rate, l2_miss_rate;
--
--    l1_dmiss_rate = ((double) l1_dmisses) / (l1_daccess) * 100.0;
--    l1_imiss_rate = ((double) l1_imisses) / (l1_iaccess) * 100.0;
-+    double l1_dmiss_rate = ((double) l1_dmisses) / (l1_daccess) * 100.0;
-+    double l1_imiss_rate = ((double) l1_imisses) / (l1_iaccess) * 100.0;
+     struct sockaddr_un sockaddr;
++    const gsize pathlen = sizeof(sockaddr.sun_path) - 1;
+     int fd;
  
-     g_string_append_printf(line, "%-14" PRIu64 " %-12" PRIu64 " %9.4lf%%"
-                            "  %-14" PRIu64 " %-12" PRIu64 " %9.4lf%%",
-@@ -554,8 +552,8 @@ static void append_stats_line(GString *line, uint64_t l1_daccess,
-                            l1_imisses,
-                            l1_iaccess ? l1_imiss_rate : 0.0);
+     fd = socket(AF_UNIX, SOCK_STREAM, 0);
+@@ -254,7 +255,11 @@ static bool setup_socket(const char *path)
+     }
  
--    if (use_l2) {
--        l2_miss_rate =  ((double) l2_misses) / (l2_access) * 100.0;
-+    if (l2_access && l2_misses) {
-+        double l2_miss_rate =  ((double) l2_misses) / (l2_access) * 100.0;
-         g_string_append_printf(line,
-                                "  %-12" PRIu64 " %-11" PRIu64 " %10.4lf%%",
-                                l2_access,
+     sockaddr.sun_family = AF_UNIX;
+-    g_strlcpy(sockaddr.sun_path, path, sizeof(sockaddr.sun_path) - 1);
++    if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
++        perror("bad path");
++        return false;
++    }
++
+     if (bind(fd, (struct sockaddr *)&sockaddr, sizeof(sockaddr)) < 0) {
+         perror("bind socket");
+         close(fd);
+@@ -287,6 +292,7 @@ static bool connect_socket(const char *path)
+ {
+     int fd;
+     struct sockaddr_un sockaddr;
++    const gsize pathlen = sizeof(sockaddr.sun_path) - 1;
+ 
+     fd = socket(AF_UNIX, SOCK_STREAM, 0);
+     if (fd < 0) {
+@@ -295,7 +301,10 @@ static bool connect_socket(const char *path)
+     }
+ 
+     sockaddr.sun_family = AF_UNIX;
+-    g_strlcpy(sockaddr.sun_path, path, sizeof(sockaddr.sun_path) - 1);
++    if (g_strlcpy(sockaddr.sun_path, path, pathlen) >= pathlen) {
++        perror("bad path");
++        return false;
++    }
+ 
+     if (connect(fd, (struct sockaddr *)&sockaddr, sizeof(sockaddr)) < 0) {
+         perror("failed to connect");
 -- 
 2.39.2
 
