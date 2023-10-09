@@ -2,91 +2,88 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D1F7BD38F
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:36:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D56777BD3B7
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 08:44:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpjsN-0001Vc-UU; Mon, 09 Oct 2023 02:36:23 -0400
+	id 1qpjz4-0004Vc-5W; Mon, 09 Oct 2023 02:43:18 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qpjsK-0001VP-SN
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:36:20 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <pbonzini@redhat.com>)
- id 1qpjsH-0005AB-Qu
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:36:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696833376;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version: content-type:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=5o2F2Ky1I8kI2VcUFpNdTqoJo2KiT6I4V0rTqASTSuE=;
- b=gCLceMLBZ2G6cJgF2O1jQ4y2ZmpMuLUyPjdxvZg/Ted6gQA4SMFcdzzieV27xh2Sg9WZiN
- nXbFXZPK4BhasXRSBOolgzj4S5LM5MlfpZHo/AAYQqYvSiSkwejCkyzwhxobpCJBc4A9mb
- xXTa+UqwjoN0UtgwwKANGNTp1sZj7Uc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-jo-hr5Z2Nj272cQMtu_NCw-1; Mon, 09 Oct 2023 02:36:04 -0400
-X-MC-Unique: jo-hr5Z2Nj272cQMtu_NCw-1
-Received: by mail-wm1-f70.google.com with SMTP id
- 5b1f17b1804b1-405535740d2so27087115e9.3
- for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 23:36:04 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjz1-0004VN-Bd
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:43:15 -0400
+Received: from mail-ej1-x630.google.com ([2a00:1450:4864:20::630])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpjyv-0005zG-TP
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 02:43:15 -0400
+Received: by mail-ej1-x630.google.com with SMTP id
+ a640c23a62f3a-9b64b98656bso702956366b.0
+ for <qemu-devel@nongnu.org>; Sun, 08 Oct 2023 23:43:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696833788; x=1697438588; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=TTyDaamtNrrjBHfWRxXnpWF2gt0yHGMNP7oqLm/HbE8=;
+ b=EZElrx+clfBLMSo6ul+uNu0Sma3bcTr1SnWAxqEXRE1xlrJfk5pcsfDuiiGKFV9Yy4
+ +GG/o/qay5P3SNw6/ah1yU0BiQV1Z03Ua4leIulzzd1goFGlVCmlq1ltfsN5v9rrQQow
+ tSB+c6G68Y+uqrgTTT+3nqI00HCb8ni0PtCq/WFF+Vq+SwyntgxteuxhWXCQ+bhGiTJP
+ miZLftW+H61vcoGjBiSG2hYkpJLU+imhXuCJfiUL7RUiVC3fpRhJUc11BNKniTPLP55x
+ 8hyCBRoCsmKxgi1CfBQXXZcjOJ8b7gHIsGNYotTsy6IsFs8/0eJBzo96gndTGEjmvS1J
+ ULug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696833363; x=1697438163;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=5o2F2Ky1I8kI2VcUFpNdTqoJo2KiT6I4V0rTqASTSuE=;
- b=A12aNnoSFLyLR94HggZhf0MZPwtaEIpLN4bqRunMSVatBBI3WTFXNnDt9PKaaBtwe+
- Fjgn8qvHMoPIBc9JQ0ONcFBFpZ74LHTnVmX++l17a0cTkuQwrXbyR28OAZnHZT5ARlVw
- /WHrCYEuoeHOSd0L1Ny7vMo3Y+IZHxXxmpHJCQIUYK/xJgRiPorEGhMqRL/a+zKQBix6
- jakUsEQ5uAYFnSlW3t7UxuBplB8XOYGVGAqCUC+CL7FIHw3WJH+UaQK9fpG1eRA+sIio
- V+EDozwEL3hIMaxKTlNgfdB5C2sAvu+3GDrSf3dhlMVsC0Hwapq/8TmFBM0AF3CHJ9rb
- p/GA==
-X-Gm-Message-State: AOJu0YzyaeeVO9FHSDg/nOIIYsdGgsh1wMTf+DmRsdGI05PPzV+qLFTC
- VhIghcyqw6wbHGZA8xvdfIbnbv9uFw7bSW/hxYXYnQabTFaItb0vO9gNA6VmnDi/s23jg00hqpZ
- daPY9a8tUvbEFRViXVkTjVaAHfQmRRWxrVTrA3d3qHANZA15wc8SwSPYzmyNsJLioPYunyCSfQ7
- E=
-X-Received: by 2002:a1c:7c17:0:b0:401:2ee0:7558 with SMTP id
- x23-20020a1c7c17000000b004012ee07558mr12297391wmc.32.1696833362715; 
- Sun, 08 Oct 2023 23:36:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFe47bGmlntrn19jCFsLTx34dMLKrQsHeibqzeVQkXWB39kluJDQowBA0qWty3tn/UrQevfHw==
-X-Received: by 2002:a1c:7c17:0:b0:401:2ee0:7558 with SMTP id
- x23-20020a1c7c17000000b004012ee07558mr12297375wmc.32.1696833362346; 
- Sun, 08 Oct 2023 23:36:02 -0700 (PDT)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:5e2c:eb9a:a8b6:fd3e])
+ d=1e100.net; s=20230601; t=1696833788; x=1697438588;
+ h=content-transfer-encoding:in-reply-to:references:cc:to:from
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=TTyDaamtNrrjBHfWRxXnpWF2gt0yHGMNP7oqLm/HbE8=;
+ b=UAGjQOkzXwEnsPO4vvR6v0aMD2yHd36orub4EbIfbqB2nz+eILtGx5sSRczDQmwZqd
+ Aya1mHuQrxyOm5udMebzOx8eDGcWa6UVza4soqL6lBJgTI5OhxZzXqrfQXg6toE4JQ58
+ xy0KSQTppKdMgY+ih9vv4JKt6vfzi4SXsE464EyYJRuTWRbeBy0mjEtkqHIdCbOuWjVW
+ SsLtuHm9V2tdo0AORxLmhp8fhgMGJn9Fxl9oUE0SSav4OXqYak5gceopWKO6RIxx7mAy
+ OJbnsT0hhHuNfghrDEXjUU+50Ad+nqEJVgAIvx06oJiP02wAjoy4dEi6Ile9wssEIWlx
+ FUZQ==
+X-Gm-Message-State: AOJu0YzVitWXj6JMqL5AvLb90U0iyinS8MLpR5fkR6DOpR6rDIdM0Xtg
+ DMF1KPup2sW+8tHz6exantS6Ew==
+X-Google-Smtp-Source: AGHT+IFJvBzvwDb3WvMEw8ip3PAM7ixIKV3qBl8Yy/tPDCA9/e8/UKqM6s9Ua6h+/7Z557YXiXzsUQ==
+X-Received: by 2002:a17:906:5a6b:b0:9a1:e8c0:7e2e with SMTP id
+ my43-20020a1709065a6b00b009a1e8c07e2emr12708486ejc.14.1696833787993; 
+ Sun, 08 Oct 2023 23:43:07 -0700 (PDT)
+Received: from [192.168.69.115]
+ (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
  by smtp.gmail.com with ESMTPSA id
- u22-20020a05600c00d600b00405ee9dc69esm12427746wmm.18.2023.10.08.23.36.01
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 08 Oct 2023 23:36:01 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: qemu-devel@nongnu.org
-Cc: phildmd@linaro.org,
- =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PULL 16/25] system: Rename softmmu/ directory as system/
-Date: Mon,  9 Oct 2023 08:35:56 +0200
-Message-ID: <20231009063556.72450-3-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231009063556.72450-1-pbonzini@redhat.com>
-References: <20231009063556.72450-1-pbonzini@redhat.com>
+ y23-20020a1709064b1700b009aa292a2df2sm6281610eju.217.2023.10.08.23.43.06
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 08 Oct 2023 23:43:07 -0700 (PDT)
+Message-ID: <187100e7-a516-4024-1739-a08c630d76f3@linaro.org>
+Date: Mon, 9 Oct 2023 08:43:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH v2 3/3] target/hexagon: avoid shadowing globals
+Content-Language: en-US
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+To: Brian Cain <bcain@quicinc.com>, qemu-devel@nongnu.org
+Cc: armbru@redhat.com, richard.henderson@linaro.org,
+ peter.maydell@linaro.org, quic_mathbern@quicinc.com, stefanha@redhat.com,
+ ale@rev.ng, anjo@rev.ng, quic_mliebel@quicinc.com, ltaylorsimpson@gmail.com,
+ Thomas Huth <thuth@redhat.com>, =?UTF-8?Q?Daniel_P=2e_Berrang=c3=a9?=
+ <berrange@redhat.com>
+References: <20231005222206.2784853-1-bcain@quicinc.com>
+ <20231005222206.2784853-4-bcain@quicinc.com>
+ <48c5233c-c294-f50d-a438-f7f6a63c113b@linaro.org>
+In-Reply-To: <48c5233c-c294-f50d-a438-f7f6a63c113b@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=pbonzini@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::630;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x630.google.com
+X-Spam_score_int: -38
+X-Spam_score: -3.9
+X-Spam_bar: ---
+X-Spam_report: (-3.9 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-1.818,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -102,532 +99,70 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-From: Philippe Mathieu-Daudé <philmd@linaro.org>
+On 9/10/23 08:09, Philippe Mathieu-Daudé wrote:
+> Hi Brian,
+> 
+> On 6/10/23 00:22, Brian Cain wrote:
+>> The typedef `vaddr` is shadowed by `vaddr` identifiers, so we rename the
+>> identifiers to avoid shadowing the type name.
+> 
+> This one surprises me, since we have other occurences:
+> 
+> include/exec/memory.h:751:bool memory_get_xlat_addr(IOMMUTLBEntry 
+> *iotlb, void **vaddr,
+>      include/qemu/plugin.h:199:void qemu_plugin_vcpu_mem_cb(CPUState 
+> *cpu, uint64_t vaddr,
+> target/arm/internals.h:643:G_NORETURN void 
+> arm_cpu_do_unaligned_access(CPUState *cs, vaddr vaddr,
+> target/i386/tcg/helper-tcg.h:70:G_NORETURN void 
+> handle_unaligned_access(CPUX86State *env, vaddr vaddr,
+> ...
+> 
+> $ git grep -w vaddr, | wc -l
+>       207
+> 
+> What is the error/warning like?
 
-The softmmu/ directory contains files specific to system
-emulation. Rename it as system/. Update meson rules, the
-MAINTAINERS file and all the documentation and comments.
+OK I could reproduce, I suppose you are building with Clang which
+doesn't support shadow-local so you get global warnings too (as
+mentioned in this patch subject...):
 
-Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Message-ID: <20231004090629.37473-14-philmd@linaro.org>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- MAINTAINERS                                   | 42 +++++++++----------
- accel/tcg/icount-common.c                     |  2 +-
- docs/devel/qtest.rst                          |  2 +-
- .../sysemu/cpu-timers-internal.h              |  0
- include/sysemu/runstate-action.h              |  2 +-
- meson.build                                   |  8 ++--
- scripts/checkpatch.pl                         |  2 +-
- scripts/coverity-scan/COMPONENTS.md           |  2 +-
- scripts/get_maintainer.pl                     |  2 +-
- scripts/oss-fuzz/build.sh                     |  6 +--
- softmmu/trace.h                               |  1 -
- {softmmu => system}/arch_init.c               |  0
- {softmmu => system}/async-teardown.c          |  0
- {softmmu => system}/balloon.c                 |  0
- {softmmu => system}/bootdevice.c              |  0
- {softmmu => system}/cpu-throttle.c            |  0
- {softmmu => system}/cpu-timers.c              |  2 +-
- {softmmu => system}/cpus.c                    |  0
- {softmmu => system}/datadir.c                 |  0
- {softmmu => system}/device_tree.c             |  0
- {softmmu => system}/dirtylimit.c              |  0
- {softmmu => system}/dma-helpers.c             |  0
- {softmmu => system}/globals.c                 |  0
- {softmmu => system}/ioport.c                  |  0
- {softmmu => system}/main.c                    |  0
- {softmmu => system}/memory.c                  |  0
- {softmmu => system}/memory_mapping.c          |  0
- {softmmu => system}/meson.build               |  0
- {softmmu => system}/physmem.c                 |  6 ++-
- {softmmu => system}/qdev-monitor.c            |  0
- {softmmu => system}/qemu-seccomp.c            |  0
- {softmmu => system}/qtest.c                   |  0
- {softmmu => system}/rtc.c                     |  0
- {softmmu => system}/runstate-action.c         |  0
- {softmmu => system}/runstate-hmp-cmds.c       |  0
- {softmmu => system}/runstate.c                |  0
- {softmmu => system}/tpm-hmp-cmds.c            |  0
- {softmmu => system}/tpm.c                     |  0
- {softmmu => system}/trace-events              |  0
- system/trace.h                                |  1 +
- {softmmu => system}/vl.c                      |  0
- {softmmu => system}/watchpoint.c              |  0
- tests/unit/meson.build                        |  2 +-
- 43 files changed, 41 insertions(+), 39 deletions(-)
- rename softmmu/timers-state.h => include/sysemu/cpu-timers-internal.h (100%)
- delete mode 100644 softmmu/trace.h
- rename {softmmu => system}/arch_init.c (100%)
- rename {softmmu => system}/async-teardown.c (100%)
- rename {softmmu => system}/balloon.c (100%)
- rename {softmmu => system}/bootdevice.c (100%)
- rename {softmmu => system}/cpu-throttle.c (100%)
- rename {softmmu => system}/cpu-timers.c (99%)
- rename {softmmu => system}/cpus.c (100%)
- rename {softmmu => system}/datadir.c (100%)
- rename {softmmu => system}/device_tree.c (100%)
- rename {softmmu => system}/dirtylimit.c (100%)
- rename {softmmu => system}/dma-helpers.c (100%)
- rename {softmmu => system}/globals.c (100%)
- rename {softmmu => system}/ioport.c (100%)
- rename {softmmu => system}/main.c (100%)
- rename {softmmu => system}/memory.c (100%)
- rename {softmmu => system}/memory_mapping.c (100%)
- rename {softmmu => system}/meson.build (100%)
- rename {softmmu => system}/physmem.c (99%)
- rename {softmmu => system}/qdev-monitor.c (100%)
- rename {softmmu => system}/qemu-seccomp.c (100%)
- rename {softmmu => system}/qtest.c (100%)
- rename {softmmu => system}/rtc.c (100%)
- rename {softmmu => system}/runstate-action.c (100%)
- rename {softmmu => system}/runstate-hmp-cmds.c (100%)
- rename {softmmu => system}/runstate.c (100%)
- rename {softmmu => system}/tpm-hmp-cmds.c (100%)
- rename {softmmu => system}/tpm.c (100%)
- rename {softmmu => system}/trace-events (100%)
- create mode 100644 system/trace.h
- rename {softmmu => system}/vl.c (100%)
- rename {softmmu => system}/watchpoint.c (100%)
+In file included from ../../gdbstub/trace.h:1,
+                  from ../../gdbstub/softmmu.c:30:
+trace/trace-gdbstub.h: In function '_nocheck__trace_gdbstub_hit_watchpoint':
+trace/trace-gdbstub.h:903:106: error: declaration of 'vaddr' shadows a 
+global declaration [-Werror=shadow]
+   903 | static inline void _nocheck__trace_gdbstub_hit_watchpoint(const 
+char * type, int cpu_gdb_index, uint64_t vaddr)
+       | 
+                                 ~~~~~~~~~^~~~~
+In file included from include/sysemu/accel-ops.h:13,
+                  from include/sysemu/cpus.h:4,
+                  from ../../gdbstub/softmmu.c:21:
+include/exec/cpu-common.h:21:18: note: shadowed declaration is here
+    21 | typedef uint64_t vaddr;
+       |                  ^~~~~
+trace/trace-gdbstub.h: In function 'trace_gdbstub_hit_watchpoint':
+trace/trace-gdbstub.h:923:96: error: declaration of 'vaddr' shadows a 
+global declaration [-Werror=shadow]
+   923 | static inline void trace_gdbstub_hit_watchpoint(const char * 
+type, int cpu_gdb_index, uint64_t vaddr)
+       | 
+                       ~~~~~~~~~^~~~~
+include/exec/cpu-common.h:21:18: note: shadowed declaration is here
+    21 | typedef uint64_t vaddr;
+       |                  ^~~~~
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index ea91f9e8048..a5ce4c08562 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -137,8 +137,8 @@ Overall TCG CPUs
- M: Richard Henderson <richard.henderson@linaro.org>
- R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
--F: softmmu/cpus.c
--F: softmmu/watchpoint.c
-+F: system/cpus.c
-+F: system/watchpoint.c
- F: cpu-common.c
- F: cpu-target.c
- F: page-vary-target.c
-@@ -2108,7 +2108,7 @@ S: Maintained
- F: docs/interop/virtio-balloon-stats.rst
- F: hw/virtio/virtio-balloon*.c
- F: include/hw/virtio/virtio-balloon.h
--F: softmmu/balloon.c
-+F: system/balloon.c
- F: include/sysemu/balloon.h
- 
- virtio-9p
-@@ -2795,7 +2795,7 @@ Device Tree
- M: Alistair Francis <alistair.francis@wdc.com>
- R: David Gibson <david@gibson.dropbear.id.au>
- S: Maintained
--F: softmmu/device_tree.c
-+F: system/device_tree.c
- F: include/sysemu/device_tree.h
- 
- Dump
-@@ -2851,11 +2851,11 @@ F: include/exec/memory.h
- F: include/exec/ram_addr.h
- F: include/exec/ramblock.h
- F: include/sysemu/memory_mapping.h
--F: softmmu/dma-helpers.c
--F: softmmu/ioport.c
--F: softmmu/memory.c
--F: softmmu/memory_mapping.c
--F: softmmu/physmem.c
-+F: system/dma-helpers.c
-+F: system/ioport.c
-+F: system/memory.c
-+F: system/memory_mapping.c
-+F: system/physmem.c
- F: include/exec/memory-internal.h
- F: scripts/coccinelle/memory-region-housekeeping.cocci
- 
-@@ -2908,12 +2908,12 @@ F: include/sysemu/runstate.h
- F: include/sysemu/runstate-action.h
- F: util/main-loop.c
- F: util/qemu-timer.c
--F: softmmu/vl.c
--F: softmmu/main.c
--F: softmmu/cpus.c
--F: softmmu/cpu-throttle.c
--F: softmmu/cpu-timers.c
--F: softmmu/runstate*
-+F: system/vl.c
-+F: system/main.c
-+F: system/cpus.c
-+F: system/cpu-throttle.c
-+F: system/cpu-timers.c
-+F: system/runstate*
- F: qapi/run-state.json
- 
- Read, Copy, Update (RCU)
-@@ -3087,7 +3087,7 @@ F: qapi/qom.json
- F: qapi/qdev.json
- F: scripts/coccinelle/qom-parent-type.cocci
- F: scripts/qom-cast-macro-clean-cocci-gen.py
--F: softmmu/qdev-monitor.c
-+F: system/qdev-monitor.c
- F: stubs/qdev.c
- F: qom/
- F: tests/unit/check-qom-interface.c
-@@ -3121,7 +3121,7 @@ M: Thomas Huth <thuth@redhat.com>
- M: Laurent Vivier <lvivier@redhat.com>
- R: Paolo Bonzini <pbonzini@redhat.com>
- S: Maintained
--F: softmmu/qtest.c
-+F: system/qtest.c
- F: accel/qtest/
- F: tests/qtest/
- F: docs/devel/qgraph.rst
-@@ -3197,7 +3197,7 @@ F: scripts/simpletrace.py
- TPM
- M: Stefan Berger <stefanb@linux.ibm.com>
- S: Maintained
--F: softmmu/tpm*
-+F: system/tpm*
- F: hw/tpm/*
- F: include/hw/acpi/tpm.h
- F: include/sysemu/tpm*
-@@ -3242,7 +3242,7 @@ F: migration/rdma*
- Migration dirty limit and dirty page rate
- M: Hyman Huang <yong.huang@smartx.com>
- S: Maintained
--F: softmmu/dirtylimit.c
-+F: system/dirtylimit.c
- F: include/sysemu/dirtylimit.h
- F: migration/dirtyrate.c
- F: migration/dirtyrate.h
-@@ -3266,7 +3266,7 @@ F: scripts/xml-preprocess*
- Seccomp
- M: Daniel P. Berrange <berrange@redhat.com>
- S: Odd Fixes
--F: softmmu/qemu-seccomp.c
-+F: system/qemu-seccomp.c
- F: include/sysemu/seccomp.h
- F: tests/unit/test-seccomp.c
- 
-@@ -3685,7 +3685,7 @@ T: git https://github.com/stefanha/qemu.git block
- Bootdevice
- M: Gonglei <arei.gonglei@huawei.com>
- S: Maintained
--F: softmmu/bootdevice.c
-+F: system/bootdevice.c
- 
- Quorum
- M: Alberto Garcia <berto@igalia.com>
-diff --git a/accel/tcg/icount-common.c b/accel/tcg/icount-common.c
-index 0bf5bb5e21b..ec57192be82 100644
---- a/accel/tcg/icount-common.c
-+++ b/accel/tcg/icount-common.c
-@@ -37,7 +37,7 @@
- #include "hw/core/cpu.h"
- #include "sysemu/cpu-timers.h"
- #include "sysemu/cpu-throttle.h"
--#include "softmmu/timers-state.h"
-+#include "sysemu/cpu-timers-internal.h"
- 
- /*
-  * ICOUNT: Instruction Counter
-diff --git a/docs/devel/qtest.rst b/docs/devel/qtest.rst
-index 0455aa06ab2..c5b8546b3eb 100644
---- a/docs/devel/qtest.rst
-+++ b/docs/devel/qtest.rst
-@@ -81,7 +81,7 @@ which you can run manually.
- QTest Protocol
- --------------
- 
--.. kernel-doc:: softmmu/qtest.c
-+.. kernel-doc:: system/qtest.c
-    :doc: QTest Protocol
- 
- 
-diff --git a/softmmu/timers-state.h b/include/sysemu/cpu-timers-internal.h
-similarity index 100%
-rename from softmmu/timers-state.h
-rename to include/sysemu/cpu-timers-internal.h
-diff --git a/include/sysemu/runstate-action.h b/include/sysemu/runstate-action.h
-index cff45a047bf..db4e3099ae5 100644
---- a/include/sysemu/runstate-action.h
-+++ b/include/sysemu/runstate-action.h
-@@ -11,7 +11,7 @@
- 
- #include "qapi/qapi-commands-run-state.h"
- 
--/* in softmmu/runstate-action.c */
-+/* in system/runstate-action.c */
- extern RebootAction reboot_action;
- extern ShutdownAction shutdown_action;
- extern PanicAction panic_action;
-diff --git a/meson.build b/meson.build
-index 167cb70956a..79aef19bdce 100644
---- a/meson.build
-+++ b/meson.build
-@@ -3291,7 +3291,7 @@ if have_system
-     'hw/gpio',
-     'migration',
-     'net',
--    'softmmu',
-+    'system',
-     'ui',
-     'hw/remote',
-   ]
-@@ -3418,7 +3418,7 @@ endif
- common_ss.add(files('cpu-common.c'))
- specific_ss.add(files('cpu-target.c'))
- 
--subdir('softmmu')
-+subdir('system')
- 
- # Work around a gcc bug/misfeature wherein constant propagation looks
- # through an alias:
-@@ -3797,14 +3797,14 @@ foreach target : target_dirs
-     execs = [{
-       'name': 'qemu-system-' + target_name,
-       'win_subsystem': 'console',
--      'sources': files('softmmu/main.c'),
-+      'sources': files('system/main.c'),
-       'dependencies': []
-     }]
-     if targetos == 'windows' and (sdl.found() or gtk.found())
-       execs += [{
-         'name': 'qemu-system-' + target_name + 'w',
-         'win_subsystem': 'windows',
--        'sources': files('softmmu/main.c'),
-+        'sources': files('system/main.c'),
-         'dependencies': []
-       }]
-     endif
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 1ad9ccb74ba..6e4100d2a41 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -466,7 +466,7 @@ sub top_of_kernel_tree {
- 	my @tree_check = (
- 		"COPYING", "MAINTAINERS", "Makefile",
- 		"README.rst", "docs", "VERSION",
--		"linux-user", "softmmu"
-+		"linux-user", "system"
- 	);
- 
- 	foreach my $check (@tree_check) {
-diff --git a/scripts/coverity-scan/COMPONENTS.md b/scripts/coverity-scan/COMPONENTS.md
-index 883da95aff2..0e62f10aad3 100644
---- a/scripts/coverity-scan/COMPONENTS.md
-+++ b/scripts/coverity-scan/COMPONENTS.md
-@@ -148,7 +148,7 @@ tcg
-   ~ (/qemu)?(/accel/tcg|/replay|/tcg)/.*
- 
- sysemu
--  ~ (/qemu)?(/softmmu/.*|/accel/.*)
-+  ~ (/qemu)?(/system/.*|/accel/.*)
- 
- (headers)
-   ~ (/qemu)?(/include/.*)
-diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
-index e5499b94b4f..02fa828100e 100755
---- a/scripts/get_maintainer.pl
-+++ b/scripts/get_maintainer.pl
-@@ -796,7 +796,7 @@ sub top_of_tree {
-         && (-d "${lk_path}docs")
-         && (-f "${lk_path}VERSION")
-         && (-d "${lk_path}linux-user/")
--        && (-d "${lk_path}softmmu/")) {
-+        && (-d "${lk_path}system/")) {
- 	return 1;
-     }
-     return 0;
-diff --git a/scripts/oss-fuzz/build.sh b/scripts/oss-fuzz/build.sh
-index 3bda0d72c72..5238f833435 100755
---- a/scripts/oss-fuzz/build.sh
-+++ b/scripts/oss-fuzz/build.sh
-@@ -43,10 +43,10 @@ EXTRA_CFLAGS="$CFLAGS -U __OPTIMIZE__"
- if ! { [ -e "./COPYING" ] &&
-    [ -e "./MAINTAINERS" ] &&
-    [ -e "./Makefile" ] &&
--   [ -e "./docs" ] &&
-+   [ -d "./docs" ] &&
-    [ -e "./VERSION" ] &&
--   [ -e "./linux-user" ] &&
--   [ -e "./softmmu" ];} ; then
-+   [ -d "./linux-user" ] &&
-+   [ -d "./system" ];} ; then
-     fatal "Please run the script from the top of the QEMU tree"
- fi
- 
-diff --git a/softmmu/trace.h b/softmmu/trace.h
-deleted file mode 100644
-index 2ad10115726..00000000000
---- a/softmmu/trace.h
-+++ /dev/null
-@@ -1 +0,0 @@
--#include "trace/trace-softmmu.h"
-diff --git a/softmmu/arch_init.c b/system/arch_init.c
-similarity index 100%
-rename from softmmu/arch_init.c
-rename to system/arch_init.c
-diff --git a/softmmu/async-teardown.c b/system/async-teardown.c
-similarity index 100%
-rename from softmmu/async-teardown.c
-rename to system/async-teardown.c
-diff --git a/softmmu/balloon.c b/system/balloon.c
-similarity index 100%
-rename from softmmu/balloon.c
-rename to system/balloon.c
-diff --git a/softmmu/bootdevice.c b/system/bootdevice.c
-similarity index 100%
-rename from softmmu/bootdevice.c
-rename to system/bootdevice.c
-diff --git a/softmmu/cpu-throttle.c b/system/cpu-throttle.c
-similarity index 100%
-rename from softmmu/cpu-throttle.c
-rename to system/cpu-throttle.c
-diff --git a/softmmu/cpu-timers.c b/system/cpu-timers.c
-similarity index 99%
-rename from softmmu/cpu-timers.c
-rename to system/cpu-timers.c
-index 117408cb83a..7452d97b673 100644
---- a/softmmu/cpu-timers.c
-+++ b/system/cpu-timers.c
-@@ -36,7 +36,7 @@
- #include "hw/core/cpu.h"
- #include "sysemu/cpu-timers.h"
- #include "sysemu/cpu-throttle.h"
--#include "timers-state.h"
-+#include "sysemu/cpu-timers-internal.h"
- 
- /* clock and ticks */
- 
-diff --git a/softmmu/cpus.c b/system/cpus.c
-similarity index 100%
-rename from softmmu/cpus.c
-rename to system/cpus.c
-diff --git a/softmmu/datadir.c b/system/datadir.c
-similarity index 100%
-rename from softmmu/datadir.c
-rename to system/datadir.c
-diff --git a/softmmu/device_tree.c b/system/device_tree.c
-similarity index 100%
-rename from softmmu/device_tree.c
-rename to system/device_tree.c
-diff --git a/softmmu/dirtylimit.c b/system/dirtylimit.c
-similarity index 100%
-rename from softmmu/dirtylimit.c
-rename to system/dirtylimit.c
-diff --git a/softmmu/dma-helpers.c b/system/dma-helpers.c
-similarity index 100%
-rename from softmmu/dma-helpers.c
-rename to system/dma-helpers.c
-diff --git a/softmmu/globals.c b/system/globals.c
-similarity index 100%
-rename from softmmu/globals.c
-rename to system/globals.c
-diff --git a/softmmu/ioport.c b/system/ioport.c
-similarity index 100%
-rename from softmmu/ioport.c
-rename to system/ioport.c
-diff --git a/softmmu/main.c b/system/main.c
-similarity index 100%
-rename from softmmu/main.c
-rename to system/main.c
-diff --git a/softmmu/memory.c b/system/memory.c
-similarity index 100%
-rename from softmmu/memory.c
-rename to system/memory.c
-diff --git a/softmmu/memory_mapping.c b/system/memory_mapping.c
-similarity index 100%
-rename from softmmu/memory_mapping.c
-rename to system/memory_mapping.c
-diff --git a/softmmu/meson.build b/system/meson.build
-similarity index 100%
-rename from softmmu/meson.build
-rename to system/meson.build
-diff --git a/softmmu/physmem.c b/system/physmem.c
-similarity index 99%
-rename from softmmu/physmem.c
-rename to system/physmem.c
-index 309653c7221..edc3ed8ab90 100644
---- a/softmmu/physmem.c
-+++ b/system/physmem.c
-@@ -2301,8 +2301,10 @@ RAMBlock *qemu_ram_block_by_name(const char *name)
-     return NULL;
- }
- 
--/* Some of the softmmu routines need to translate from a host pointer
--   (typically a TLB entry) back to a ram offset.  */
-+/*
-+ * Some of the system routines need to translate from a host pointer
-+ * (typically a TLB entry) back to a ram offset.
-+ */
- ram_addr_t qemu_ram_addr_from_host(void *ptr)
- {
-     RAMBlock *block;
-diff --git a/softmmu/qdev-monitor.c b/system/qdev-monitor.c
-similarity index 100%
-rename from softmmu/qdev-monitor.c
-rename to system/qdev-monitor.c
-diff --git a/softmmu/qemu-seccomp.c b/system/qemu-seccomp.c
-similarity index 100%
-rename from softmmu/qemu-seccomp.c
-rename to system/qemu-seccomp.c
-diff --git a/softmmu/qtest.c b/system/qtest.c
-similarity index 100%
-rename from softmmu/qtest.c
-rename to system/qtest.c
-diff --git a/softmmu/rtc.c b/system/rtc.c
-similarity index 100%
-rename from softmmu/rtc.c
-rename to system/rtc.c
-diff --git a/softmmu/runstate-action.c b/system/runstate-action.c
-similarity index 100%
-rename from softmmu/runstate-action.c
-rename to system/runstate-action.c
-diff --git a/softmmu/runstate-hmp-cmds.c b/system/runstate-hmp-cmds.c
-similarity index 100%
-rename from softmmu/runstate-hmp-cmds.c
-rename to system/runstate-hmp-cmds.c
-diff --git a/softmmu/runstate.c b/system/runstate.c
-similarity index 100%
-rename from softmmu/runstate.c
-rename to system/runstate.c
-diff --git a/softmmu/tpm-hmp-cmds.c b/system/tpm-hmp-cmds.c
-similarity index 100%
-rename from softmmu/tpm-hmp-cmds.c
-rename to system/tpm-hmp-cmds.c
-diff --git a/softmmu/tpm.c b/system/tpm.c
-similarity index 100%
-rename from softmmu/tpm.c
-rename to system/tpm.c
-diff --git a/softmmu/trace-events b/system/trace-events
-similarity index 100%
-rename from softmmu/trace-events
-rename to system/trace-events
-diff --git a/system/trace.h b/system/trace.h
-new file mode 100644
-index 00000000000..cd0136dcdc1
---- /dev/null
-+++ b/system/trace.h
-@@ -0,0 +1 @@
-+#include "trace/trace-system.h"
-diff --git a/softmmu/vl.c b/system/vl.c
-similarity index 100%
-rename from softmmu/vl.c
-rename to system/vl.c
-diff --git a/softmmu/watchpoint.c b/system/watchpoint.c
-similarity index 100%
-rename from softmmu/watchpoint.c
-rename to system/watchpoint.c
-diff --git a/tests/unit/meson.build b/tests/unit/meson.build
-index 1977b302e2f..f33ae64b8dc 100644
---- a/tests/unit/meson.build
-+++ b/tests/unit/meson.build
-@@ -59,7 +59,7 @@ if have_system or have_tools
-   }
- 
-   if seccomp.found()
--    tests += {'test-seccomp': ['../../softmmu/qemu-seccomp.c', seccomp]}
-+    tests += {'test-seccomp': ['../../system/qemu-seccomp.c', seccomp]}
-   endif
- endif
- 
--- 
-2.41.0
+Clang users got confused by this, IIUC Markus and Thomas idea is
+to only enable these warnings for GCC, enforcing them for Clang
+users via CI (until Clang get this option supported). Personally
+I'd rather enable the warning once for all, waiting for Clang
+support (or clean/enable global shadowing for GCC too).
 
+See this thread:
+https://lore.kernel.org/qemu-devel/11abc551-188e-85c0-fe55-b2b58d35105d@redhat.com/
+
+Regards,
+
+Phil.
 
