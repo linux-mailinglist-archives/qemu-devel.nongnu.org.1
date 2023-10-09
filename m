@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A057A7BD7EA
+	by mail.lfdr.de (Postfix) with ESMTPS id 182D47BD7E9
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:04:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpn7F-0003rF-SQ; Mon, 09 Oct 2023 06:03:57 -0400
+	id 1qpn7H-00040F-AA; Mon, 09 Oct 2023 06:03:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpn7C-0003nQ-H6
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:03:54 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpn7F-0003uB-2F
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:03:57 -0400
 Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpn77-0000I4-LU
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:03:54 -0400
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpn7C-0000Im-4Z
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:03:56 -0400
 Received: by mail-wr1-x42f.google.com with SMTP id
- ffacd0b85a97d-323ef9a8b59so4140096f8f.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 03:03:48 -0700 (PDT)
+ ffacd0b85a97d-327be5fe4beso3952376f8f.3
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 03:03:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696845827; x=1697450627; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696845832; x=1697450632; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=j5BNGs+G3EOO05KikjnRTYDtKwetCUKmXOLb4daofrU=;
- b=qfbbI8yY8NqDqpTFU+Q0fKIRBefTR95t+xv8lSMJNuXM5bOZLA/wKOQgh1SutgezcJ
- ZQehS0at/51Tsq0c3w5NdIc7wgTqcwv98meR9oBYUGmTXfNy5tYMZDHI96d8MyjJMzD+
- NmYfEoyPea9/Hcgfz90JIyirbMgnv9cDwswcIxiui3rfGMAyzJtr9R6StzrB6GhiT42V
- M53BmAeLf16KmoXUVFXt+aCy34XUzfIO5lJor9sa9DOE2ZLDceUPySlfhYO+zNmQrMVl
- HsDq0PW7Si/l8LZusI1Xb3eQ6gtPlBKWQvoeLNG/VVdjQWSsLKAyLTtiRN8DSNzV7Ibz
- bSSg==
+ bh=yM3tQ6WCStP5GxgcqqxDxvp5O7sg3JFTcxjMkWzVHZg=;
+ b=G4U1KfQCJyhWiPQBVyEuh7xX0UYNW+SmaGsAIL4ks0WZNNFKV4umm9c+USn5nsmT25
+ npSi1o0RR89dLmUBVd8l4b9DCS5tRshEnEGWNuXHIh/ajgkI7qEtpRb9ujHyeo4fZ0ef
+ mfCQE1eUt7169TM8rYYKtgF3JZkYfK0xUGwC9KMzgc6kYkrwz4tVfB4iaWjKM3w8qHPn
+ zvuBefJ9hN1SoA6LmNZ0ifAAHo8ZiYxcS72OlWyZuib4kNbUGOifiXYoBGudKsAebYnu
+ kASbaKC/MOmL95yAMx8X302Mm1+UAIMFskXqQlKfvZWTrmDrIhJR9L+saJ/S/NXxh/oL
+ ostw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696845827; x=1697450627;
+ d=1e100.net; s=20230601; t=1696845832; x=1697450632;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=j5BNGs+G3EOO05KikjnRTYDtKwetCUKmXOLb4daofrU=;
- b=EPI1q9gFDZrWiv1TTzaDXgYF5RPXtnoHxy8kEFnGzoGVKn22gT2kirrq+qZVlKg20f
- Op1SYhfxmm5NMdpi9sBvkK56jCGJHbtUPbVKzse25vjh8pDQcDyvBVi4PVClhpuqsz4i
- VFlM5apLAEecY/Tkh8b8tQXe7BKnR5nkS8Mf6nyvaha7dG8H/J09OF7kk0XpN8JsiIVJ
- yw2M8kX3eUMmV/QD05XqG9GWFr6zEbp9pRGx3nowFPhi0n9oFQAJGYeDsQtCqq2/pQUv
- 3jy5Ev0hNKxLnyreo5UwCyVXOoF0OEvvNM1KyAtCVVuWP7wsZAfr651tKX8m3mFpyeSL
- /m3w==
-X-Gm-Message-State: AOJu0YwLpfhQeNA+IG0wE8G9rbWRIuTBdYdFEFx1vaNry221AHAo0VSF
- lg5wXkSL7taS+0n2C34fKevdvxj78edafdPK09M=
-X-Google-Smtp-Source: AGHT+IE9YxLEt/muh86Gc/XBMo0gh/LWmufACvCNy3aaAS8ORrFjEU9a/xwBtwxGUPG8lCCYEZfjAw==
-X-Received: by 2002:a05:6000:186c:b0:321:6779:944d with SMTP id
- d12-20020a056000186c00b003216779944dmr19360377wri.47.1696845826765; 
- Mon, 09 Oct 2023 03:03:46 -0700 (PDT)
+ bh=yM3tQ6WCStP5GxgcqqxDxvp5O7sg3JFTcxjMkWzVHZg=;
+ b=JZndEEAb6Nlf+3PBpufMKFFCJ1F3T+uEaa2G5bLGDjt5kh4ULlU7T289y5iaY+cdNi
+ maIDO3L8GZXezvCW+IWPqOcvP3xpIzrH5go8OzaFI5unozALdNNrmb1LpRa/0l+KJPPi
+ s/TVf3IFFvlx5qS9W1x3M9WJgoTUKp52xtOmQ5C67SRfs/p/olDkOLzPCNe/j3VyGo7H
+ CZnAzprQ253FzlSuf8GUSWtnTn69t6qpil6MmFY7Y5GTcH5SlN9ecDOai6dzx3bLI088
+ hrrRfDUjJIsBtBDldrlGSFmCRGFwpfHJT9uW9gElQgst8j7dbFI+TZwL6IuZIDoc3ac9
+ NcqQ==
+X-Gm-Message-State: AOJu0YyDF87WI5R4vTmL60JCMTWDASvoSrclr764/8kiLjB1BSd+gu4a
+ Ei4xswATOLNKyS6Ds0cIDYk3un+zg+R2TLDTah4=
+X-Google-Smtp-Source: AGHT+IF65qL4ZzIe5cmY4tQWwVR6r7XKPdAwA10ajUQ6cq890S3wLuV3NsCVlAQzzxqO9LnOEeb5WQ==
+X-Received: by 2002:adf:e9d0:0:b0:31f:f432:b541 with SMTP id
+ l16-20020adfe9d0000000b0031ff432b541mr13007184wrn.69.1696845832575; 
+ Mon, 09 Oct 2023 03:03:52 -0700 (PDT)
 Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
  [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
- z3-20020adfec83000000b0032327b70ef6sm9238656wrn.70.2023.10.09.03.03.45
+ b5-20020a056000054500b00326dd5486dcsm9172575wrf.107.2023.10.09.03.03.51
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 09 Oct 2023 03:03:46 -0700 (PDT)
+ Mon, 09 Oct 2023 03:03:52 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: qemu-arm@nongnu.org, Alberto Garcia <berto@igalia.com>,
@@ -64,10 +64,9 @@ Cc: qemu-arm@nongnu.org, Alberto Garcia <berto@igalia.com>,
  Fam Zheng <fam@euphon.net>, Tyrone Ting <kfting@nuvoton.com>,
  Markus Armbruster <armbru@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 09/10] tests/aio-multithread: Clean up global variable
- shadowing
-Date: Mon,  9 Oct 2023 12:02:50 +0200
-Message-ID: <20231009100251.56019-10-philmd@linaro.org>
+Subject: [PATCH 10/10] tests/coroutine: Clean up global variable shadowing
+Date: Mon,  9 Oct 2023 12:02:51 +0200
+Message-ID: <20231009100251.56019-11-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231009100251.56019-1-philmd@linaro.org>
 References: <20231009100251.56019-1-philmd@linaro.org>
@@ -98,71 +97,77 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Rename the argument to avoid:
+Rename the global variable to avoid:
 
-  tests/unit/test-aio-multithread.c:226:37: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static void test_multi_co_mutex(int threads, int seconds)
-                                      ^
-  tests/unit/test-aio-multithread.c:401:34: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
-  static void test_multi_mutex(int threads, int seconds)
-                                   ^
-  tests/unit/test-aio-multithread.c:24:18: note: previous declaration is here
-  static IOThread *threads[NUM_CONTEXTS];
-                   ^
+  tests/unit/test-coroutine.c:430:11: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      bool *done = opaque;
+            ^
+  tests/unit/test-coroutine.c:438:10: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+      bool done = false;
+           ^
+  tests/unit/test-coroutine.c:198:12: note: previous declaration is here
+  static int done;
+             ^
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- tests/unit/test-aio-multithread.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tests/unit/test-coroutine.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/tests/unit/test-aio-multithread.c b/tests/unit/test-aio-multithread.c
-index 08d4570ccb..d587f20667 100644
---- a/tests/unit/test-aio-multithread.c
-+++ b/tests/unit/test-aio-multithread.c
-@@ -223,7 +223,7 @@ static void coroutine_fn test_multi_co_mutex_entry(void *opaque)
-     qatomic_dec(&running);
+diff --git a/tests/unit/test-coroutine.c b/tests/unit/test-coroutine.c
+index b0d21d673a..29695cbdcb 100644
+--- a/tests/unit/test-coroutine.c
++++ b/tests/unit/test-coroutine.c
+@@ -195,7 +195,7 @@ static void test_no_dangling_access(void)
  }
  
--static void test_multi_co_mutex(int threads, int seconds)
-+static void test_multi_co_mutex(unsigned ctx_num, int seconds)
+ static bool locked;
+-static int done;
++static int done_count;
+ 
+ static void coroutine_fn mutex_fn(void *opaque)
  {
-     int i;
- 
-@@ -233,9 +233,9 @@ static void test_multi_co_mutex(int threads, int seconds)
-     now_stopping = false;
- 
-     create_aio_contexts();
--    assert(threads <= NUM_CONTEXTS);
--    running = threads;
--    for (i = 0; i < threads; i++) {
-+    assert(ctx_num <= NUM_CONTEXTS);
-+    running = ctx_num;
-+    for (i = 0; i < ctx_num; i++) {
-         Coroutine *co1 = qemu_coroutine_create(test_multi_co_mutex_entry, NULL);
-         aio_co_schedule(ctx[i], co1);
-     }
-@@ -398,7 +398,7 @@ static void test_multi_mutex_entry(void *opaque)
-     qatomic_dec(&running);
+@@ -206,7 +206,7 @@ static void coroutine_fn mutex_fn(void *opaque)
+     qemu_coroutine_yield();
+     locked = false;
+     qemu_co_mutex_unlock(m);
+-    done++;
++    done_count++;
  }
  
--static void test_multi_mutex(int threads, int seconds)
-+static void test_multi_mutex(unsigned ctx_num, int seconds)
- {
-     int i;
+ static void coroutine_fn lockable_fn(void *opaque)
+@@ -218,7 +218,7 @@ static void coroutine_fn lockable_fn(void *opaque)
+     qemu_coroutine_yield();
+     locked = false;
+     qemu_lockable_unlock(x);
+-    done++;
++    done_count++;
+ }
  
-@@ -408,9 +408,9 @@ static void test_multi_mutex(int threads, int seconds)
-     now_stopping = false;
+ static void do_test_co_mutex(CoroutineEntry *entry, void *opaque)
+@@ -226,7 +226,7 @@ static void do_test_co_mutex(CoroutineEntry *entry, void *opaque)
+     Coroutine *c1 = qemu_coroutine_create(entry, opaque);
+     Coroutine *c2 = qemu_coroutine_create(entry, opaque);
  
-     create_aio_contexts();
--    assert(threads <= NUM_CONTEXTS);
--    running = threads;
--    for (i = 0; i < threads; i++) {
-+    assert(ctx_num <= NUM_CONTEXTS);
-+    running = ctx_num;
-+    for (i = 0; i < ctx_num; i++) {
-         Coroutine *co1 = qemu_coroutine_create(test_multi_mutex_entry, NULL);
-         aio_co_schedule(ctx[i], co1);
-     }
+-    done = 0;
++    done_count = 0;
+     qemu_coroutine_enter(c1);
+     g_assert(locked);
+     qemu_coroutine_enter(c2);
+@@ -235,11 +235,11 @@ static void do_test_co_mutex(CoroutineEntry *entry, void *opaque)
+      * terminates.
+      */
+     qemu_coroutine_enter(c1);
+-    g_assert_cmpint(done, ==, 1);
++    g_assert_cmpint(done_count, ==, 1);
+     g_assert(locked);
+ 
+     qemu_coroutine_enter(c2);
+-    g_assert_cmpint(done, ==, 2);
++    g_assert_cmpint(done_count, ==, 2);
+     g_assert(!locked);
+ }
+ 
 -- 
 2.41.0
 
