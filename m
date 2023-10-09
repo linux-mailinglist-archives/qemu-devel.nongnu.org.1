@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13D4A7BD92E
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:04:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F4B7BD928
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:03:55 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpo2o-0006XG-Bx; Mon, 09 Oct 2023 07:03:26 -0400
+	id 1qpo2q-0006bV-H3; Mon, 09 Oct 2023 07:03:30 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2c-0006MK-1D
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:15 -0400
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2e-0006Ol-97
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:16 -0400
+Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2S-0003OO-8x
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:11 -0400
-Received: by mail-ed1-x535.google.com with SMTP id
- 4fb4d7f45d1cf-5362bcc7026so7758666a12.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:03:03 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2b-0003PR-PT
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:16 -0400
+Received: by mail-ej1-x62f.google.com with SMTP id
+ a640c23a62f3a-9a645e54806so748323966b.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:03:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696849382; x=1697454182; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696849389; x=1697454189; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=/xL54zgpI4nEx7Yl6kW+m7mCJYstREJ1f9hvJxDP1UE=;
- b=avMliAXbQLZgauO4GnN8+8MXtBsJX1/xEE576ipv6ITdbcaMiobQbD+skZ/Hkoon+v
- VooEb4c8AlGiEIf/p1YmsdYUqvOeKGEU8Db11tw+wrrBQn/vKrrKR5i9ROLW4ZBlDXx+
- cD8zW2k6nN4cowAqj1p+PEt7PwfS+Yw6r9bW9wIKwXpYkeT+Bdsj27kwzk72p/85OrQt
- s2Rctyw2LujFEheeCwNQ+oN3/G7N62tp05f5Q0v/y6NQT74mdO8OXqUB4SBLhlWiS7Wv
- SEQuax3T/aoR7zGS+VGbTuBWdHmFCw5fALN5EPzye3G1iqgjMkX+vLn5ZNgWIqcHA7JR
- o16A==
+ bh=V78g9jhuJwuu3XH3up4N6OXq/ULujlSA7fdJ/xZ8gEw=;
+ b=RQ+OULPH/jae5EyalmRTnYY2y1PiomgrGPnqS9QRDVRwhNGbHHVNLNO9zXYjqKi+JU
+ iGgzNmxuB1AzEgVTORIrJEpi1nrp4xBbETy+ayZ86ps1ahUpBsAOOPtniDcy6i7Gqk7F
+ xUZkOw74yUFLOZ5CGiwccuQFKzBSs9r6dnn/r5a8T2wpk9zD5c4xVuIZaCQiU/r3tm2/
+ J1ODZVBudu3nkq0um1gBtN8CeCEskWBpxpoCqsOsFgnTAeQkNKJy7ZtpivrT9rIEe1Of
+ aK6/gU62yuNeRWOGX+KQnVlsdcBt1YDgK4InnM3f0FRSh4akkBK0NqVZCMMr7drPjomD
+ /tYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696849382; x=1697454182;
+ d=1e100.net; s=20230601; t=1696849389; x=1697454189;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=/xL54zgpI4nEx7Yl6kW+m7mCJYstREJ1f9hvJxDP1UE=;
- b=hSv+2bUt3GssOREquXDWm1Xc3KbiY0+cu6ZlXYFAkjee8gkfrygPQUXYPV47hRVa2w
- ZhsuEJVm2Q4YIFnuRsHehAJNXdPmUFukOuM86kUlWNjMknM8TRNBT+EU5jZv2FQPWDp3
- YX3Lvo9EnSYWYuW21UjgIDbxWG31V2DbxAgSPMHYAWH0mH+6kqCCqqTVI+Cfqs5YCAGD
- Bwsu+1bQXT42zKcOx93bLkVyL6C72cxC3nOfqPqt08GcRK0Z8sYf55HbXS2ioeWz3d6T
- y7e62/wN6GD9PBf/e4EYJ2/Lkct4r5pCluw5oLkXqtDXORB7HJsdhvFQJ7lV1DbKgWLl
- tuUA==
-X-Gm-Message-State: AOJu0Yw794Q8t4p6dlk8v/xq7EBqVF4hz3ic4hoytqs37E4zZ78+RfoI
- A9dCGi/LRGAf+5oCp/hdT1DIlPU16aVh0+wO4Go=
-X-Google-Smtp-Source: AGHT+IEefebTk5Qmy9jCOLkszVMi9NaRJRvfEmB0R/xOj91bCWL6pVDZYQ6gcYX6EXYLDpHaKqT/EQ==
-X-Received: by 2002:a05:6402:28a:b0:538:8d4:2077 with SMTP id
- l10-20020a056402028a00b0053808d42077mr12461170edv.13.1696849382603; 
- Mon, 09 Oct 2023 04:03:02 -0700 (PDT)
+ bh=V78g9jhuJwuu3XH3up4N6OXq/ULujlSA7fdJ/xZ8gEw=;
+ b=SJMZQpUZO6DJdqOXZGfOByqcaQcVEpMmm3YubkdMlC8m1DammS5uh96hv16pD+Cd7D
+ doIJs9/LD8AptlafzcRltO0dGc+VqsBtD9q//w7FiX8Aw/T6odGpDk0ZfykwbbLN76El
+ GulaX+FNdkI+WUa0UqJs3jnZtJiM9JzWk3zemT7inZ0He2QOdnOT+ZNJtyViowLej23D
+ a8buvcMkwSZe4aQ7IJbi2sweu6dQJhdeKVjTo+P4Nse+hYRyYdZunE5mToU+kzzvIx2/
+ dd3a5oSkDqlyl5rqECT6QuuLY5TD8bYLJ7vckBhzS45VEiThCI/FRZ4yOHkRa1YfYSNS
+ tkfw==
+X-Gm-Message-State: AOJu0Yxx4bBDw9S3CAC/aKW7iw8nwamNw5SduW+Gidl6xJ0Zs1YVp9rQ
+ Ex8BUGEQvEsvTwh3sGE4XMsDOBRN+R0oIA+DJd8=
+X-Google-Smtp-Source: AGHT+IEcNwxVZqRuOS5msdhnG1M0Nje61e749+OicUXZAaRVWxzCHpr70xl3BdSEcOOgS8SbhCgXWA==
+X-Received: by 2002:a17:907:763b:b0:9ad:c132:b93b with SMTP id
+ jy27-20020a170907763b00b009adc132b93bmr12534458ejc.5.1696849388833; 
+ Mon, 09 Oct 2023 04:03:08 -0700 (PDT)
 Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
  [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
- j17-20020aa7c411000000b0053635409213sm6014873edq.34.2023.10.09.04.03.00
+ u16-20020a1709064ad000b009ae54585aebsm6489905ejt.89.2023.10.09.04.03.06
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 09 Oct 2023 04:03:02 -0700 (PDT)
+ Mon, 09 Oct 2023 04:03:08 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
@@ -71,24 +71,25 @@ Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 3/6] target/s390x: Use env_archcpu() in handle_diag_308()
-Date: Mon,  9 Oct 2023 13:02:36 +0200
-Message-ID: <20231009110239.66778-4-philmd@linaro.org>
+Subject: [PATCH 4/6] target/xtensa: Use env_archcpu() in
+ update_c[compare|count]()
+Date: Mon,  9 Oct 2023 13:02:37 +0200
+Message-ID: <20231009110239.66778-5-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231009110239.66778-1-philmd@linaro.org>
 References: <20231009110239.66778-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::535;
- envelope-from=philmd@linaro.org; helo=mail-ed1-x535.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,29 +105,38 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-When CPUArchState* is available (here CPUS390XState*), we
+When CPUArchState* is available (here CPUXtensaState*), we
 can use the fast env_archcpu() macro to get ArchCPU* (here
-S390CPU*). The QOM cast S390_CPU() macro will be slower when
-building with --enable-qom-cast-debug.
+XtensaCPU*). The QOM cast XTENSA_CPU() macro will be slower
+when building with --enable-qom-cast-debug.
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/s390x/diag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ target/xtensa/op_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/target/s390x/diag.c b/target/s390x/diag.c
-index 8ce18e08f3..27ffd48576 100644
---- a/target/s390x/diag.c
-+++ b/target/s390x/diag.c
-@@ -77,7 +77,7 @@ void handle_diag_308(CPUS390XState *env, uint64_t r1, uint64_t r3, uintptr_t ra)
+diff --git a/target/xtensa/op_helper.c b/target/xtensa/op_helper.c
+index 7bb8cd6726..496754ba57 100644
+--- a/target/xtensa/op_helper.c
++++ b/target/xtensa/op_helper.c
+@@ -37,7 +37,7 @@
+ 
+ void HELPER(update_ccount)(CPUXtensaState *env)
  {
-     bool valid;
-     CPUState *cs = env_cpu(env);
--    S390CPU *cpu = S390_CPU(cs);
-+    S390CPU *cpu = env_archcpu(env);
-     uint64_t addr =  env->regs[r1];
-     uint64_t subcode = env->regs[r3];
-     IplParameterBlock *iplb;
+-    XtensaCPU *cpu = XTENSA_CPU(env_cpu(env));
++    XtensaCPU *cpu = env_archcpu(env);
+     uint64_t now = qemu_clock_get_ns(QEMU_CLOCK_VIRTUAL);
+ 
+     env->ccount_time = now;
+@@ -58,7 +58,7 @@ void HELPER(wsr_ccount)(CPUXtensaState *env, uint32_t v)
+ 
+ void HELPER(update_ccompare)(CPUXtensaState *env, uint32_t i)
+ {
+-    XtensaCPU *cpu = XTENSA_CPU(env_cpu(env));
++    XtensaCPU *cpu = env_archcpu(env);
+     uint64_t dcc;
+ 
+     qatomic_and(&env->sregs[INTSET],
 -- 
 2.41.0
 
