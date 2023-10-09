@@ -2,82 +2,52 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F38A7BD96A
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B11417BD97A
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:23:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpoI9-0001ky-P7; Mon, 09 Oct 2023 07:19:18 -0400
+	id 1qpoLj-0003TF-Tp; Mon, 09 Oct 2023 07:22:59 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpoI4-0001kY-D8
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:19:12 -0400
-Received: from mail-ej1-x62f.google.com ([2a00:1450:4864:20::62f])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpoI2-0006qN-ID
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:19:12 -0400
-Received: by mail-ej1-x62f.google.com with SMTP id
- a640c23a62f3a-98377c5d53eso759572566b.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:19:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696850348; x=1697455148; darn=nongnu.org;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=uM24XXHNOlojaGvihP4K0iwPL3Q5ePeZkzDc4bGG7nI=;
- b=N2PN12L9DqwBmTMjNNpxOOF26ZDNA4fl1fHFU32Nl7ih4MezzaRdexKKEpWYXpWOpZ
- ywr7bcdIE9kXwr11hh4E3jBGSubSPKemM/z7P2w5FpDWcNucPO/pbHASpMJAkXCA8arO
- 8FQclz1yfjbe/obl4voBGFXSdogNUkFYEKTmvrOF5St2ONkMn+N7poMS1e9x4vFlWqpb
- yr6ryC1e21JRxcwoDj5XMGgg+Atp9opRMSZd31/wksmcn7tCcPyMygNcb/4gQvMwT8uO
- OUsmRasqm0HXeCrTeV5iQFPXnV5tEeN340YpnJD3bQjlKajJ84RsgCoq8ITAmXPnmXIS
- 3OqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696850348; x=1697455148;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=uM24XXHNOlojaGvihP4K0iwPL3Q5ePeZkzDc4bGG7nI=;
- b=oWwCNMykcnGYhzlEqVPXjbebeCjBtwOkMtjexb5U93jzVwfp3Y3lvh/6xcBDrzL8FJ
- hZgNkZWVZy/0Y09MF82mDFe1U9YOeO+0JvbTXJ1REF1gX4hGSlxsH2s38aLPt5rzEsTL
- 6KsQE6qCKgsIfXSBvZ1JIr+4iW5Fu++dgpzWPP5bimNdksVXlfbkD5zEZGzSnwvLOH9i
- Py6hAVA6i3VrIJ9A3hIksPUFj3dAt7y2e37tOCz3vwh06ZgBxyBntddN/eF4NS/iw1Bi
- HI/jLo8v8HBQm2jxjrg6BOAbcrUHaDVv5RKYeWbHjAySwEjeHhTPv20Jl0brImnvFJ6q
- 4Pvw==
-X-Gm-Message-State: AOJu0YyP6gaZm7GtTmsJzEO8nHTB9iVH8vuOPGUqPspyxa3HElXnTDpA
- 8DyGwkSTPLsLeXa5UCnS0lwMPQ==
-X-Google-Smtp-Source: AGHT+IFDjrdkjafiAsaVDm0qoAv+L9PRXXn3eP6/f+7wmvpVIF5q3/ADLRdKOAk2ekoN149YmHTWdA==
-X-Received: by 2002:a17:906:3ca1:b0:9ad:e4e1:1476 with SMTP id
- b1-20020a1709063ca100b009ade4e11476mr10181885ejh.77.1696850348468; 
- Mon, 09 Oct 2023 04:19:08 -0700 (PDT)
-Received: from [192.168.69.115]
- (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
- by smtp.gmail.com with ESMTPSA id
- j17-20020a170906831100b0098e78ff1a87sm6519291ejx.120.2023.10.09.04.19.07
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 04:19:08 -0700 (PDT)
-Message-ID: <78921033-d8f5-d736-0437-b805e78c1a55@linaro.org>
-Date: Mon, 9 Oct 2023 13:19:06 +0200
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qpoLh-0003Sy-W3; Mon, 09 Oct 2023 07:22:58 -0400
+Received: from zero.eik.bme.hu ([152.66.115.2])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+ (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
+ id 1qpoLg-0007me-F6; Mon, 09 Oct 2023 07:22:57 -0400
+Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
+ by localhost (Postfix) with SMTP id 958D5757234;
+ Mon,  9 Oct 2023 13:22:02 +0200 (CEST)
+Received: by zero.eik.bme.hu (Postfix, from userid 432)
+ id 5A810757206; Mon,  9 Oct 2023 13:22:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+ by zero.eik.bme.hu (Postfix) with ESMTP id 580447571FE;
+ Mon,  9 Oct 2023 13:22:02 +0200 (CEST)
+Date: Mon, 9 Oct 2023 13:22:02 +0200 (CEST)
+From: BALATON Zoltan <balaton@eik.bme.hu>
+To: Bernhard Beschow <shentey@gmail.com>
+cc: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>, qemu-devel@nongnu.org, 
+ qemu-ppc@nongnu.org, Nicholas Piggin <npiggin@gmail.com>, 
+ Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org, 
+ philmd@linaro.org, Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
+Subject: Re: [PATCH 1/3] via-ide: Fix legacy mode emulation
+In-Reply-To: <3E7FF238-D512-4AC7-AF6B-C03C22E8FFED@gmail.com>
+Message-ID: <c0c762fa-8b2b-9851-51ba-92507ca059a7@eik.bme.hu>
+References: <cover.1696542537.git.balaton@eik.bme.hu>
+ <12ce9caa682545cd43318c4679530202140117c0.1696542537.git.balaton@eik.bme.hu>
+ <33347356-be91-4dde-8535-5a59ee1c80f1@ilande.co.uk>
+ <a7821bf0-5d1f-ddda-f408-f4cd0432ddbf@eik.bme.hu>
+ <3E7FF238-D512-4AC7-AF6B-C03C22E8FFED@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.1
-Subject: Re: [PATCH] qapi: Belatedly update CompatPolicy documentation for
- unstable
-Content-Language: en-US
-To: Markus Armbruster <armbru@redhat.com>, qemu-devel@nongnu.org
-Cc: eblake@redhat.com
-References: <20231009110449.4015601-1-armbru@redhat.com>
-From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20231009110449.4015601-1-armbru@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62f;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62f.google.com
-X-Spam_score_int: -53
-X-Spam_score: -5.4
-X-Spam_bar: -----
-X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
- RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Probability: 9%
+Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
+ helo=zero.eik.bme.hu
+X-Spam_score_int: -18
+X-Spam_score: -1.9
+X-Spam_bar: -
+X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
@@ -94,34 +64,41 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 9/10/23 13:04, Markus Armbruster wrote:
-> Commit 57df0dff1a1 (qapi: Extend -compat to set policy for unstable
-> interfaces) neglected to update the "Limitation" paragraph to mention
+On Mon, 9 Oct 2023, Bernhard Beschow wrote:
+> Am 8. Oktober 2023 11:08:58 UTC schrieb BALATON Zoltan <balaton@eik.bme.hu>:
+>> On Sun, 8 Oct 2023, Mark Cave-Ayland wrote:
+>>> On 05/10/2023 23:13, BALATON Zoltan wrote:
+>>>
+>>>> The initial value for BARs were set in reset method for emulating
+>>>> legacy mode at start but this does not work because PCI code resets
+>>>> BARs after calling device reset method.
+>>>
+>>> This is certainly something I've noticed when testing previous versions of the VIA patches. Perhaps it's worth a separate thread to the PCI devs?
+>>
+>> I think I brought up this back then but was told current PCI code won't change and since that could break everything else that makes sense so this is something that we should take as given and accomodate that.
+>
+> Why not play safe like:
+> 1. add a class property such as `reset_bar_addrs[PCI_NUM_REGIONS]`
+> 2. set all elements to zero in `pci_device_class_init()`
+> 3. respect `reset_bar_addrs` in `pci_reset_regions()`
+> 4. assign the proper reset addresses of TYPE_VIA_IDE in `via_ide_class_init()`
+>
+> That would pretty obviously preserve the behavior of existing device 
+> models while allowing TYPE_VIA_IDE to be reset properly. It would also 
+> perform the main part of the workaround in the code that exhibits the 
+> limitation, so the code could potentially be simplified at some point 
+> without impacting all PCI device models.
 
-With retrospective, 'experimental' seems more meaningful. Anyway,
-too  late.
+That's a lot of complication for setting some values that will be 
+overwritten first thing after reset. Either the guest sets native mode and 
+writes the BARs itself so the reset values don't matter or it sets legacy 
+mode when the workaround has to set legacy ports (that strangely don't 
+match the reset values of the BARs) so sticking to those reset values 
+makes no sense to me as it does not help to run any guest just makes the 
+code more complex and harder to understand for no reason. So the patch 
+with clarified comment as Mark asked should do for now. I'll send that in 
+v2 later.
 
-> feature 'unstable' in addition to feature 'deprecated'.  Do that now.
-> 
-> Signed-off-by: Markus Armbruster <armbru@redhat.com>
-> ---
->   qapi/compat.json | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/qapi/compat.json b/qapi/compat.json
-> index f4c19837eb..42034d9368 100644
-> --- a/qapi/compat.json
-> +++ b/qapi/compat.json
-> @@ -43,8 +43,8 @@
->   # This is intended for testing users of the management interfaces.
->   #
->   # Limitation: covers only syntactic aspects of QMP, i.e. stuff tagged
-> -# with feature 'deprecated'.  We may want to extend it to cover
-> -# semantic aspects and CLI.
-> +# with feature 'deprecated' or 'unstable'.  We may want to extend it
-> +# to cover semantic aspects and CLI.
-
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-
-
+Regards,
+BALATON Zoltan
 
