@@ -2,84 +2,87 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F0F7BDAAD
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAC07BDAAF
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 14:07:03 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpp1D-000502-Sd; Mon, 09 Oct 2023 08:05:51 -0400
+	id 1qpp1p-0006HW-L4; Mon, 09 Oct 2023 08:06:29 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpp18-0004e3-6u
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:05:47 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpp1n-0006Cm-AM
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:06:27 -0400
 Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <thuth@redhat.com>) id 1qpp16-0007KL-1R
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:05:45 -0400
+ (Exim 4.90_1) (envelope-from <david@redhat.com>) id 1qpp1l-0007PS-Mt
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 08:06:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696853143;
+ s=mimecast20190719; t=1696853184;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=c7HipwnD7mZzeF01bQBOZpKdKkUqoTw3zU0e9zcjkvM=;
- b=c1XL7UA876cCgJp08XScLO4lRdqkvIlalMGlS6LXc0C4IyzTpRbEYLwJxziZSEziTDyN2c
- Q7rASW2nZfIQrTfHv8yH6zdi6zRsjP1OgXwaICWL8ABSs1jEIiiXzwkMwsLKqlLC8Av2Bb
- BpXOD6/xybyeW0kcTazUlnuQr2H+WS8=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ bh=RaBBDfKRsIGmx6/f95RNJjHmQcYKAWu4Z1/oOBkirIo=;
+ b=CGX9lOntGhgDViOytW4baPidIpp1HcdKtXz9XADRvc2DCAGPYTILgjX8pY+WdlPI1YIE59
+ lbYWQebYeFGgEO5z7ZAdSHfxPy/2NMB3kU5l4VWgTiio7AYvwrtyVEY9FDPQJngrzei6CG
+ B9KD8RDn+rTfiYs1cX0jJmSsnNd9CGs=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-523-PgJ_lZYqPmyblk8fw_tAmw-1; Mon, 09 Oct 2023 08:05:26 -0400
-X-MC-Unique: PgJ_lZYqPmyblk8fw_tAmw-1
-Received: by mail-qv1-f69.google.com with SMTP id
- 6a1803df08f44-65afa60d118so55895376d6.0
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:05:26 -0700 (PDT)
+ us-mta-35-p7JSoWSYPS-kBrGyTXOVaQ-1; Mon, 09 Oct 2023 08:06:23 -0400
+X-MC-Unique: p7JSoWSYPS-kBrGyTXOVaQ-1
+Received: by mail-wr1-f72.google.com with SMTP id
+ ffacd0b85a97d-32686c75f8fso3214815f8f.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 05:06:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696853125; x=1697457925;
- h=content-transfer-encoding:in-reply-to:from:references:cc:to
- :content-language:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=c7HipwnD7mZzeF01bQBOZpKdKkUqoTw3zU0e9zcjkvM=;
- b=obReq/1iUp5r9R6KQ7ONuuhemcfmztjH3PYbF7jaipapHnkvmcU/n5ADtbRQ+EweYa
- ZGjDO/FcoW2QOKPGch7g7uyD7TDkfkP+7DRspOKp1g4eQm4JnHTXc/WZublKF1rZx6Mv
- l3/bZUKKjVApfZvYFO7nLZuUgViEOsdIUO0bpqp0+soZhoeDbhnNeBV+i8PRAlOaBjju
- o+sgUT9F1SJtWxOD4I3cgJArg6wN6g0NpoIUwsECL2heuxvmqMYw1N/h8FYb9ka7DS8k
- eLQ6EEOetFuGoEgBrxIpszuZaQVudkZz9i8WbsGcIHx78x2Fo54bE6OGgiH7GAwAZuMU
- JA0w==
-X-Gm-Message-State: AOJu0Yznn2qit2Qkus6i7vGAfr3BCJRyemLElVYzkE3Y/0hWKfBmsw0h
- vmt56RW/MuosNANJK1+sJ9edQRz9zhR+NU+1KHRVh+LIcH6FwG6Xwt6huabfnBTPx21Jag97amD
- D4UDGc8GdXC8cUlU=
-X-Received: by 2002:a05:6214:b84:b0:656:3046:986b with SMTP id
- fe4-20020a0562140b8400b006563046986bmr13891874qvb.10.1696853125652; 
- Mon, 09 Oct 2023 05:05:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGLNKDsRbz5lB3aFpWNdv+z2Nflh5QdprErlJWZpSIVQyRD7vjCoDz/mQY1KBCdaph0aHYWhg==
-X-Received: by 2002:a05:6214:b84:b0:656:3046:986b with SMTP id
- fe4-20020a0562140b8400b006563046986bmr13891830qvb.10.1696853124705; 
- Mon, 09 Oct 2023 05:05:24 -0700 (PDT)
-Received: from [192.168.0.5] (ip-109-43-176-27.web.vodafone.de.
- [109.43.176.27]) by smtp.gmail.com with ESMTPSA id
- l17-20020a0ce091000000b0062ffbf23c22sm1685606qvk.131.2023.10.09.05.05.23
+ d=1e100.net; s=20230601; t=1696853182; x=1697457982;
+ h=content-transfer-encoding:in-reply-to:organization:from:references
+ :cc:to:content-language:subject:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=RaBBDfKRsIGmx6/f95RNJjHmQcYKAWu4Z1/oOBkirIo=;
+ b=Yd4N25F9jWEXLEniK5ARTvo5wjjY92iE4sKwdl3THG3aTqJqgEdPgJkO3/HVXK3++Q
+ 22P2JekG9xc7wBB0SsH9GhwS7nVmRwbz/OWr/NaRK2nd98EvbpVzWUHAbeDBlxCX4uHg
+ 9ZR8gFIHsezg99x5W4iuqsezLI5UA7RhjxdUUNfrevDgswPp7hjEGPLZiDn8mSx84R3L
+ qtFdLLlQEQnUM+2sXm/MzxdSroqpWFMvXxCWqjm94PaDO9SUG1zquToe/havhdCnz5W3
+ jIy7rBfrJg/67ymYQ1Jr1vFESLuIw+krwmZj8wKEUkw5Kme2Ux4qH1WR0iT5MsMTDX16
+ gXMQ==
+X-Gm-Message-State: AOJu0YyB2Q3SkZGUQ6ikUS+0vCREnO/aIjRnzJPbehFVOLrMX8eHOs74
+ +qtEB1lgZKbL0Cpth9C0BlZxLAJl8RDuYbOVDwz20G/8Z4T1ITaMWg5Mm4Pxk7fzdUjHVRwmJIg
+ 3AZOnoW6pKSuj5ZQ=
+X-Received: by 2002:adf:e852:0:b0:315:9e1b:4ea6 with SMTP id
+ d18-20020adfe852000000b003159e1b4ea6mr12931573wrn.58.1696853182032; 
+ Mon, 09 Oct 2023 05:06:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbldICPehREYFZOhEmXusOZpkfbjnMa7Vk9hA3Kdz3FYraV/rvml5ntWkoT7ReFybJqXabfw==
+X-Received: by 2002:adf:e852:0:b0:315:9e1b:4ea6 with SMTP id
+ d18-20020adfe852000000b003159e1b4ea6mr12931519wrn.58.1696853180866; 
+ Mon, 09 Oct 2023 05:06:20 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c733:6400:ae10:4bb7:9712:8548?
+ (p200300cbc7336400ae104bb797128548.dip0.t-ipconnect.de.
+ [2003:cb:c733:6400:ae10:4bb7:9712:8548])
+ by smtp.gmail.com with ESMTPSA id
+ t2-20020a5d6902000000b003250aec5e97sm9612447wru.4.2023.10.09.05.06.19
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 09 Oct 2023 05:05:24 -0700 (PDT)
-Message-ID: <59c76034-62d5-c94c-8b3b-fa206768ee1d@redhat.com>
-Date: Mon, 9 Oct 2023 14:05:22 +0200
+ Mon, 09 Oct 2023 05:06:20 -0700 (PDT)
+Message-ID: <c997692c-1b30-c336-067e-ca293a5ba970@redhat.com>
+Date: Mon, 9 Oct 2023 14:06:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH v2] contrib/vhost-user-gpu: Fix compiler warning when
- compiling with -Wshadow
+Subject: Re: [PATCH] memory: initialize 'fv' in MemoryRegionCache to make
+ Coverity happy
 Content-Language: en-US
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: =?UTF-8?Q?Marc-Andr=c3=a9_Lureau?= <marcandre.lureau@redhat.com>,
- qemu-devel@nongnu.org, Gerd Hoffmann <kraxel@redhat.com>,
- Markus Armbruster <armbru@redhat.com>
-References: <20231009083726.30301-1-thuth@redhat.com>
- <20231009074333-mutt-send-email-mst@kernel.org>
-From: Thomas Huth <thuth@redhat.com>
-In-Reply-To: <20231009074333-mutt-send-email-mst@kernel.org>
+To: Ilya Maximets <i.maximets@ovn.org>, "Michael S. Tsirkin" <mst@redhat.com>
+Cc: qemu-devel@nongnu.org, Stefan Hajnoczi <stefanha@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+References: <20231009104322.3085887-1-i.maximets@ovn.org>
+From: David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20231009104322.3085887-1-i.maximets@ovn.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=170.10.129.124; envelope-from=thuth@redhat.com;
+Received-SPF: pass client-ip=170.10.129.124; envelope-from=david@redhat.com;
  helo=us-smtp-delivery-124.mimecast.com
 X-Spam_score_int: -53
 X-Spam_score: -5.4
@@ -104,49 +107,71 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On 09/10/2023 13.45, Michael S. Tsirkin wrote:
-> On Mon, Oct 09, 2023 at 10:37:25AM +0200, Thomas Huth wrote:
->> Rename some variables to avoid compiler warnings when compiling
->> with -Wshadow=local.
->>
->> Signed-off-by: Thomas Huth <thuth@redhat.com>
->> ---
->>   v2: Renamed the variable to something more unique
->>
->>   contrib/vhost-user-gpu/vugpu.h          | 8 ++++----
->>   contrib/vhost-user-gpu/vhost-user-gpu.c | 6 +++---
->>   2 files changed, 7 insertions(+), 7 deletions(-)
->>
->> diff --git a/contrib/vhost-user-gpu/vugpu.h b/contrib/vhost-user-gpu/vugpu.h
->> index 509b679f03..654c392fbb 100644
->> --- a/contrib/vhost-user-gpu/vugpu.h
->> +++ b/contrib/vhost-user-gpu/vugpu.h
->> @@ -164,12 +164,12 @@ struct virtio_gpu_ctrl_command {
->>   };
->>   
->>   #define VUGPU_FILL_CMD(out) do {                                \
->> -        size_t s;                                               \
->> -        s = iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
->> +        size_t vugpufillcmd_s_ =                                \
->> +            iov_to_buf(cmd->elem.out_sg, cmd->elem.out_num, 0,  \
->>                          &out, sizeof(out));                      \
->> -        if (s != sizeof(out)) {                                 \
->> +        if (vugpufillcmd_s_ != sizeof(out)) {                   \
->>               g_critical("%s: command size incorrect %zu vs %zu", \
->> -                       __func__, s, sizeof(out));               \
->> +                       __func__, vugpufillcmd_s_, sizeof(out)); \
->>               return;                                             \
->>           }                                                       \
->>       } while (0)
+On 09.10.23 12:43, Ilya Maximets wrote:
+> Coverity scan reports multiple false-positive "defects" for the
+> following series of actions in virtio.c:
 > 
-> I think I prefer VUGPU_FILL_CMD_s or VUGPU_FILL_CMD_s_ - makes it clear
-> it's related to a macro.
+>    MemoryRegionCache indirect_desc_cache;
+>    address_space_cache_init_empty(&indirect_desc_cache);
+>    address_space_cache_destroy(&indirect_desc_cache);
+> 
+> For some reason it's unable to recognize the dependency between 'mrs.mr'
+> and 'fv' and insists that '!mrs.mr' check in address_space_cache_destroy
+> may take a 'false' branch, even though it is explicitly initialized to
+> NULL in the address_space_cache_init_empty():
+> 
+>    *** CID 1522371:  Memory - illegal accesses  (UNINIT)
+>    /qemu/hw/virtio/virtio.c: 1627 in virtqueue_split_pop()
+>    1621         }
+>    1622
+>    1623         vq->inuse++;
+>    1624
+>    1625         trace_virtqueue_pop(vq, elem, elem->in_num, elem->out_num);
+>    1626     done:
+>    >>>     CID 1522371:  Memory - illegal accesses  (UNINIT)
+>    >>>     Using uninitialized value "indirect_desc_cache.fv" when
+>    >>>     calling "address_space_cache_destroy".
+>    1627         address_space_cache_destroy(&indirect_desc_cache);
 
-I have to say that I don't like that ... it's a variable after all, and 
-naming it with capital letters looks rather confusing that helpful to me. I 
-think it should be enough to have the underscore at the end here to make it 
-unique enough.
+Yeah, it doesn't even care about what that function actually does, just 
+that it is called with a datastructure that is partially uninitialized.
 
-  Thomas
+>    1628
+>    1629         return elem;
+>    1630
+>    1631     err_undo_map:
+>    1632         virtqueue_undo_map_desc(out_num, in_num, iov);
+> 
+>    ** CID 1522370:  Memory - illegal accesses  (UNINIT)
+> 
+> Instead of trying to silence these false positive reports in 4
+> different places, initializing 'fv' as well, as this doesn't result
+> in any noticeable performance impact.
+> 
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
+>   include/exec/memory.h | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/exec/memory.h b/include/exec/memory.h
+> index c99842d2fc..1ce80c4e82 100644
+> --- a/include/exec/memory.h
+> +++ b/include/exec/memory.h
+> @@ -2770,6 +2770,8 @@ int64_t address_space_cache_init(MemoryRegionCache *cache,
+>   static inline void address_space_cache_init_empty(MemoryRegionCache *cache)
+>   {
+>       cache->mrs.mr = NULL;
+> +    /* There is no real need to initialize fv, but it makes Coverity happy. */
+> +    cache->fv = NULL;
+>   }
+>   
+>   /**
+
+Reviewed-by: David Hildenbrand <david@redhat.com>
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
