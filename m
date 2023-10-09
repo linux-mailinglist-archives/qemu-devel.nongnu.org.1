@@ -2,58 +2,58 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71587BD929
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:03:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C76F7BD92B
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:04:31 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpo2z-0006ep-Tz; Mon, 09 Oct 2023 07:03:37 -0400
+	id 1qpo32-0006vD-Gh; Mon, 09 Oct 2023 07:03:40 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2i-0006Pn-BV
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:22 -0400
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2p-0006df-2n
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:27 -0400
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2e-0003QZ-Tl
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:19 -0400
-Received: by mail-ej1-x62d.google.com with SMTP id
- a640c23a62f3a-9b29186e20aso752256966b.2
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:03:16 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpo2m-0003SG-4H
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:03:26 -0400
+Received: by mail-ed1-x529.google.com with SMTP id
+ 4fb4d7f45d1cf-53b8f8c6b1fso2683984a12.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:03:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696849395; x=1697454195; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696849402; x=1697454202; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=1+J1wI69+igLibXDQf0PHgHIzLfY8D41JYZfyX16+G8=;
- b=ecKA4V1F9DPFs2cwjQ8AZKNzG4WOYVOH9X1FZpaV4IShxeIXvgSeDINqWXqYU8N/bq
- Lx5Qd0nQfPmG7MmfQmYO96C45YrDzxFuFxUYRc4VFXrg8otxwpYjRP9hymX7vntH3BfI
- /ibdVEnZDFTMpVDi25+7p+hsOZAHp2TYOXfmKepyt8bHJAFrTmHr0CO6D8pCwzFtJXnm
- XaLPjI3Cvnpo8QLaPGrS6/drLMWgSMrtfFGRQdzA2ZOrp7VL4Ba8JN20H1T4zWL1qOFH
- RLXYQEKdVvQKnqaHewoUAJK93xXY4USRW5a0kF2krnJdxT2kgw+VHICVQs7qSo1zkwRZ
- N8jg==
+ bh=w1sigiR4LmduP3UlaMwnqexR3h3qqvWr4C29unZHhf0=;
+ b=feS1yhHpaN/5U+Bw8svx9lFsQu4zG4Pk9bQtg/uP6dh6UWQQbueHoO6WjIxoXKQ81m
+ UotfSriSUVNh4pHFndcupqUB0qFSKe96CO6xYrC03V5P4kKiReO60S2jNbUYHaXDQw/H
+ Uq1kT5HS0H6BG07jmpq0AVTLaQog1A7f1LeeCgdwQHfVf0PUmPKwZEt7FQvNqaY9hdb0
+ /9mA+acRi0JETuSmZlyvhhAe+PKZq5IgLo0Hw5OBYO2B2Est2VQOCntJ0+9YK7jXimdC
+ MrBxW+SKhurn2E2p4M328xMIM+Bm5TXoWKOOU+PS74+Js4VJS2BPzxmK27l4737L0ZJO
+ 6tRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696849395; x=1697454195;
+ d=1e100.net; s=20230601; t=1696849402; x=1697454202;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=1+J1wI69+igLibXDQf0PHgHIzLfY8D41JYZfyX16+G8=;
- b=MwLwpSsAEZ4R5qbuUV9ekHR65asazgb4a1eOnb9cv0ZBXmID2nFL0vV/9BZpOIOOUM
- W+5xKofbJYeKKK2irgFkPlc9Q0QwEI0CWCqi94xKGunJhnCyTHT0G75E2jNsuhWUQXKO
- hy5iiJHtDSNXOIdgp0IZCeI3WxhkDGAVf9TaqrSUBZg7VhOkP3tnoQdiyslzzu8eCtjx
- R8HdBNjs+l5tj+vZvtk0GYBWAy4R+odEq2mNQ5zqfV8dAsXuP4Cv+Ek/2miJ/PNRyaMQ
- GyJlAKuBc4OFSO/khTG4FoCnyc+opHhzaVDb1ktthDdLI19t9B7D6stYquXpi6DY6UD2
- GWcg==
-X-Gm-Message-State: AOJu0YzRJ+QC3W4RZyAEVCRmBkf/KVm8rypG+hLFH4DBjvW5rlf+uifZ
- 2ykclSDaf6vlowj3nR0y+vxF9haZ9naYonjlaOw=
-X-Google-Smtp-Source: AGHT+IEnwQIfXK0PSpcUquHgDcrZc+NXC/pJVOCtuYwXpIu5y20njwFFRWuyfel+p9KZo0y0JdqV8Q==
-X-Received: by 2002:a17:906:3081:b0:9ae:73ca:bbad with SMTP id
- 1-20020a170906308100b009ae73cabbadmr13579817ejv.43.1696849395170; 
- Mon, 09 Oct 2023 04:03:15 -0700 (PDT)
+ bh=w1sigiR4LmduP3UlaMwnqexR3h3qqvWr4C29unZHhf0=;
+ b=aWh9tqG/KlZQnEb0Y1U/IGYJb83cydniLvEscwnMxnC9jbs8d8jAcOdptpOVWngchN
+ xlG/0aNzypv9aPEEzj/rYOjRmH3Xhj98GZkKM0Glo2WquTIIveWV6PmzgFFpAP4C5RjZ
+ ZKk3RYhLkgCUky/pTT/7OfPNRGJz1IC8+FUPJoqEAxnPSpqwAmIpdOk78AJmYrjMwj3P
+ mrn7OX+96IEccsKMJlx8vLzB7PLqalPUtGUsQ1D4TxGZKzI/0O/HzqKoLbcAJ4ECQ0Rl
+ u+zhAdhEqiIgS6lez446kGvDPIxqOXdpiE4Ap2VeGQ0dIT5g/RScCwSXew3mEi4HbU15
+ DuhQ==
+X-Gm-Message-State: AOJu0YwVS50p8CRAmwOW5p6TlCXn84wwWydWCHs3I5mX3l863Sp7LMpx
+ FlD5F0Q+v3uaQ+J3Ch+H35JKU/QQqqfnzW13LeM=
+X-Google-Smtp-Source: AGHT+IGTB5TvG49uVveL5d3xAMI/z69k2NeO2JEO2Qp2YaFn1vMnclHMmnkxW7Dx7nIMpam3RZLDhQ==
+X-Received: by 2002:a05:6402:1adb:b0:538:7787:2d62 with SMTP id
+ ba27-20020a0564021adb00b0053877872d62mr14085875edb.1.1696849401649; 
+ Mon, 09 Oct 2023 04:03:21 -0700 (PDT)
 Received: from m1x-phil.lan (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr.
  [176.170.217.185]) by smtp.gmail.com with ESMTPSA id
- n17-20020a170906379100b009b957d5237asm6543236ejc.80.2023.10.09.04.03.13
+ f22-20020a056402151600b0052febc781bfsm6010828edw.36.2023.10.09.04.03.19
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Mon, 09 Oct 2023 04:03:14 -0700 (PDT)
+ Mon, 09 Oct 2023 04:03:21 -0700 (PDT)
 From: =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
@@ -71,24 +71,24 @@ Cc: David Hildenbrand <david@redhat.com>, Weiwei Li <liweiwei@iscas.ac.cn>,
  Thomas Huth <thuth@redhat.com>, Roman Bolshakov <rbolshakov@ddn.com>,
  Nicholas Piggin <npiggin@gmail.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Subject: [PATCH 5/6] target/i386/hvf: Use x86_cpu in simulate_[rdmsr|wrmsr]()
-Date: Mon,  9 Oct 2023 13:02:38 +0200
-Message-ID: <20231009110239.66778-6-philmd@linaro.org>
+Subject: [PATCH 6/6] target/i386: Use env_archcpu() in simulate_[rdmsr/wrmsr]()
+Date: Mon,  9 Oct 2023 13:02:39 +0200
+Message-ID: <20231009110239.66778-7-philmd@linaro.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231009110239.66778-1-philmd@linaro.org>
 References: <20231009110239.66778-1-philmd@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::62d;
- envelope-from=philmd@linaro.org; helo=mail-ej1-x62d.google.com
+Received-SPF: pass client-ip=2a00:1450:4864:20::529;
+ envelope-from=philmd@linaro.org; helo=mail-ed1-x529.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
  DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -104,36 +104,114 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-We already have 'x86_cpu = X86_CPU(cpu)'. Use the variable
-instead of doing another QOM cast with X86_CPU().
+When CPUArchState* is available (here CPUX86State*), we can
+use the fast env_archcpu() macro to get ArchCPU* (here X86CPU*).
+The QOM cast X86_CPU() macro will be slower when building with
+--enable-qom-cast-debug.
+
+Pass CPUX86State* as argument to simulate_rdmsr / simulate_wrmsr
+instead of a CPUState* to avoid an extra cast.
+
+simulate_rdmsr/simulate_rdmsr(CPUX86State
 
 Signed-off-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 ---
- target/i386/hvf/x86_emu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+RFC: Not even build-tested.
+---
+ target/i386/hvf/x86_emu.h |  4 ++--
+ target/i386/hvf/hvf.c     |  4 ++--
+ target/i386/hvf/x86_emu.c | 21 ++++++++++-----------
+ 3 files changed, 14 insertions(+), 15 deletions(-)
 
+diff --git a/target/i386/hvf/x86_emu.h b/target/i386/hvf/x86_emu.h
+index 640da90b30..4b846ba80e 100644
+--- a/target/i386/hvf/x86_emu.h
++++ b/target/i386/hvf/x86_emu.h
+@@ -29,8 +29,8 @@ bool exec_instruction(CPUX86State *env, struct x86_decode *ins);
+ void load_regs(struct CPUState *cpu);
+ void store_regs(struct CPUState *cpu);
+ 
+-void simulate_rdmsr(struct CPUState *cpu);
+-void simulate_wrmsr(struct CPUState *cpu);
++void simulate_rdmsr(CPUX86State *env);
++void simulate_wrmsr(CPUX86State *env);
+ 
+ target_ulong read_reg(CPUX86State *env, int reg, int size);
+ void write_reg(CPUX86State *env, int reg, target_ulong val, int size);
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index cb2cd0b02f..20b9ca3ef5 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -591,9 +591,9 @@ int hvf_vcpu_exec(CPUState *cpu)
+         {
+             load_regs(cpu);
+             if (exit_reason == EXIT_REASON_RDMSR) {
+-                simulate_rdmsr(cpu);
++                simulate_rdmsr(env);
+             } else {
+-                simulate_wrmsr(cpu);
++                simulate_wrmsr(env);
+             }
+             env->eip += ins_len;
+             store_regs(cpu);
 diff --git a/target/i386/hvf/x86_emu.c b/target/i386/hvf/x86_emu.c
-index ccda568478..af1f205ecf 100644
+index af1f205ecf..b1f8a685d1 100644
 --- a/target/i386/hvf/x86_emu.c
 +++ b/target/i386/hvf/x86_emu.c
-@@ -676,7 +676,7 @@ void simulate_rdmsr(struct CPUState *cpu)
-         val = rdtscp() + rvmcs(cpu->accel->fd, VMCS_TSC_OFFSET);
+@@ -663,11 +663,10 @@ static void exec_lods(CPUX86State *env, struct x86_decode *decode)
+     env->eip += decode->len;
+ }
+ 
+-void simulate_rdmsr(struct CPUState *cpu)
++void simulate_rdmsr(CPUX86State *env)
+ {
+-    X86CPU *x86_cpu = X86_CPU(cpu);
+-    CPUX86State *env = &x86_cpu->env;
+-    CPUState *cs = env_cpu(env);
++    X86CPU *x86_cpu = env_archcpu(env);
++    CPUState *cpu = env_cpu(env);
+     uint32_t msr = ECX(env);
+     uint64_t val = 0;
+ 
+@@ -746,8 +745,8 @@ void simulate_rdmsr(struct CPUState *cpu)
+         val = env->mtrr_deftype;
          break;
-     case MSR_IA32_APICBASE:
--        val = cpu_get_apic_base(X86_CPU(cpu)->apic_state);
-+        val = cpu_get_apic_base(x86_cpu->apic_state);
+     case MSR_CORE_THREAD_COUNT:
+-        val = cs->nr_threads * cs->nr_cores; /* thread count, bits 15..0 */
+-        val |= ((uint32_t)cs->nr_cores << 16); /* core count, bits 31..16 */
++        val = cpu->nr_threads * cpu->nr_cores;  /* thread count, bits 15..0 */
++        val |= ((uint32_t)cpu->nr_cores << 16); /* core count, bits 31..16 */
          break;
-     case MSR_IA32_UCODE_REV:
-         val = x86_cpu->ucode_rev;
-@@ -776,7 +776,7 @@ void simulate_wrmsr(struct CPUState *cpu)
-     case MSR_IA32_TSC:
-         break;
-     case MSR_IA32_APICBASE:
--        cpu_set_apic_base(X86_CPU(cpu)->apic_state, data);
-+        cpu_set_apic_base(x86_cpu->apic_state, data);
-         break;
-     case MSR_FSBASE:
-         wvmcs(cpu->accel->fd, VMCS_GUEST_FS_BASE, data);
+     default:
+         /* fprintf(stderr, "%s: unknown msr 0x%x\n", __func__, msr); */
+@@ -761,14 +760,14 @@ void simulate_rdmsr(struct CPUState *cpu)
+ 
+ static void exec_rdmsr(CPUX86State *env, struct x86_decode *decode)
+ {
+-    simulate_rdmsr(env_cpu(env));
++    simulate_rdmsr(env);
+     env->eip += decode->len;
+ }
+ 
+-void simulate_wrmsr(struct CPUState *cpu)
++void simulate_wrmsr(CPUX86State *env)
+ {
+-    X86CPU *x86_cpu = X86_CPU(cpu);
+-    CPUX86State *env = &x86_cpu->env;
++    X86CPU *x86_cpu = env_archcpu(env);
++    CPUState *cpu = env_cpu(env);
+     uint32_t msr = ECX(env);
+     uint64_t data = ((uint64_t)EDX(env) << 32) | EAX(env);
+ 
+@@ -856,7 +855,7 @@ void simulate_wrmsr(struct CPUState *cpu)
+ 
+ static void exec_wrmsr(CPUX86State *env, struct x86_decode *decode)
+ {
+-    simulate_wrmsr(env_cpu(env));
++    simulate_wrmsr(env);
+     env->eip += decode->len;
+ }
+ 
 -- 
 2.41.0
 
