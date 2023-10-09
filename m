@@ -2,45 +2,70 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DA6C7BD87C
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 565967BD880
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:27:47 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpnSf-000298-VY; Mon, 09 Oct 2023 06:26:06 -0400
+	id 1qpnTy-0002pg-Pb; Mon, 09 Oct 2023 06:27:27 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.frank@proxmox.com>)
- id 1qpnS0-0001xA-OW
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:25:28 -0400
-Received: from proxmox-new.maurer-it.com ([94.136.29.106])
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qpnTX-0002kx-3X
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:26:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <m.frank@proxmox.com>)
- id 1qpnRs-0004Qq-J6
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:25:21 -0400
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
- by proxmox-new.maurer-it.com (Proxmox) with ESMTP id D5D264344A;
- Mon,  9 Oct 2023 12:25:11 +0200 (CEST)
-Message-ID: <7a056242-6d7a-4ebc-8bc4-e75dcd8ebdc7@proxmox.com>
-Date: Mon, 9 Oct 2023 12:25:10 +0200
+ (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qpnTR-0004xB-2D
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:26:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+ s=mimecast20190719; t=1696847211;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=5RZUQNkHU0bawLwcUs5NMVoQx/eoygF1TS/VGrR/BH8=;
+ b=Pd4CXIomuHAb4YHKwinOP4ZNSsy1S76ck3/MR46HogKT5HD5FoEIEdsdJPAq813ER9D721
+ fVqcV3zyQUtNbJwZQgbLcJNP0Ax+wsYk/0K39IBU5WWchQ+j3xrFQ+7JZk7YhXmGLq6pWn
+ /uiSwr7CTcCtEYprapQgUqxhjE/s1Uk=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-126-X28nbePSMx-6M29KJg4Hpg-1; Mon, 09 Oct 2023 06:26:43 -0400
+X-MC-Unique: X28nbePSMx-6M29KJg4Hpg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com
+ [10.11.54.9])
+ (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+ (No client certificate requested)
+ by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 475A829ABA02;
+ Mon,  9 Oct 2023 10:26:43 +0000 (UTC)
+Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
+ by smtp.corp.redhat.com (Postfix) with ESMTPS id 25CEB492B16;
+ Mon,  9 Oct 2023 10:26:43 +0000 (UTC)
+Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
+ id 1A06921E6904; Mon,  9 Oct 2023 12:26:42 +0200 (CEST)
+From: Markus Armbruster <armbru@redhat.com>
+To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc: qemu-devel@nongnu.org,  Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] system/vl: Use global &bdo_queue in configure_blockdev()
+References: <20231009093152.51270-1-philmd@linaro.org>
+Date: Mon, 09 Oct 2023 12:26:42 +0200
+In-Reply-To: <20231009093152.51270-1-philmd@linaro.org> ("Philippe
+ =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 9 Oct 2023 11:31:52
+ +0200")
+Message-ID: <87sf6k2isd.fsf@pond.sub.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: vIOMMU - PCI pass through to Layer 2 VMs (Nested Virtualization)
-Content-Language: en-US
-To: Eric Auger <eauger@redhat.com>, qemu-devel@nongnu.org
-References: <d969606d-79bf-4ba1-849a-f2e819aaf274@proxmox.com>
- <278fd0fd-a81d-6da5-e903-71f002e17ab5@redhat.com>
-From: Markus Frank <m.frank@proxmox.com>
-In-Reply-To: <278fd0fd-a81d-6da5-e903-71f002e17ab5@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: pass client-ip=94.136.29.106; envelope-from=m.frank@proxmox.com;
- helo=proxmox-new.maurer-it.com
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
+ helo=us-smtp-delivery-124.mimecast.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
+ DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=-0.01, RCVD_IN_MSPIKE_WL=-0.01,
+ SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -56,79 +81,27 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Hi Eric,
+Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
 
-thanks for the quick answer.
+> Commit d11bf9bf0f ("vl: Factor configure_blockdev() out of main()")
+> passed &bdo_queue as argument, but this isn't really necessary since
+> there is only one call, so we still use the global variable.
+>
+> Dropping the &bdo_queue argument allows to silence this global shadow
+> warning:
+>
+>   softmmu/vl.c:678:54: error: declaration shadows a variable in the globa=
+l scope [-Werror,-Wshadow]
+>   static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
+>                                                        ^
+>   softmmu/vl.c:172:29: note: previous declaration is here
+>   static BlockdevOptionsQueue bdo_queue =3D QSIMPLEQ_HEAD_INITIALIZER(bdo=
+_queue);
 
-On 10/9/23 11:29, Eric Auger wrote:
-> Hi Markus,
-> 
-> On 10/9/23 09:06, Markus Frank wrote:
->> Hello,
->>
->> I have already sent this email to qemu-discuss but I did not get a reply.
->> https://lists.nongnu.org/archive/html/qemu-discuss/2023-09/msg00034.html
->> Maybe someone here could help me and reply to this email or the one on
->> qemu-discuss?
->>
->> I would like to pass through PCI devices to Layer-2 VMs via Nested
->> Virtualization.
->>
->> Is there current documentation for this topic somewhere?
->>
->> I used these parameters:
->> -machine ...,kernel-irqchip=split
->> -device intel-iommu
->>
->> With these parameters PCI pass through to L2-VMs worked fine.
->>
->>
->> Now I come to the part where I get confused.
->>
->> https://wiki.qemu.org/Features/VT-d#With_Virtio_Devices
->> Is this documentation relevant for PCI pass through? Do I need DMAR for
->> virtio devices?
-> If you just want the host assigned devices to be protected by the
-> viommu, you don't need to add iommu_platform=on along with the
-> virtio-pci device>>
->> And there is also the virtio-iommu device where I also could use the
->> i440fx chipset.
->> https://michael2012z.medium.com/virtio-iommu-789369049443
-> 
-> you can use virtio-iommu with q35 machine.
-Yes I know. I meant that intel-iommu does not support i440fx and virtio-iommu does.
->>
->> When adding "-device virtio-iommu-pci" pci pass through also works
->> but I get "kvm: virtio_iommu_translate no mapping for 0x1002030f000 for
->> sid=240"
->> when starting qemu. What could that mean?
-> Normally you shouldn't get any such error. This means there is no
-> mapping programmed by the iommu-driver for this requester id (0x240) and
-> this iova=0x1002030f000. But if I understand correctly this does not
-> prevent your device from working, correct?
-Yes. I didn't notice any problems. How could I find out what the requester id 0x240 refers to?
->>
->> What do these parameters
->> "disable-legacy=on,disable-modern=off,iommu_platform=on,ats=on"
->> actually do? When do I need them and on which virtio devices?
-> you need them if you want your virtio devices to be protected by the
-> viommu. Otherwise the viommu is bypassed.
-Okay, so iommu_platform=on is more of a decision you should make per virtio-pci device.
-So simplified the advantage is more isolation and the disadvantage is less performance?
->>
->> And which device should I rather use: virtio-iommu or intel-iommu?
-> Both should be working. virtio-iommu is more recent and less used in
-> production than intel-iommu though.
-> 
-> Thanks
-> 
-> Eric
->>
->> Thanks in advance,
->> Markus
->>
->>
-> 
-> 
+Not sure this is an improvement.  Up to Paolo, I guess.
+
+> Remove a spurious empty line.
+>
+> Signed-off-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
 
 
