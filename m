@@ -2,46 +2,62 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3AEE7BEB04
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 21:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADFE7BEBBA
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 22:38:23 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpwLb-00019K-MP; Mon, 09 Oct 2023 15:55:23 -0400
+	id 1qpwzx-00051L-0s; Mon, 09 Oct 2023 16:37:05 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpwLY-00017C-Ub; Mon, 09 Oct 2023 15:55:20 -0400
-Received: from zero.eik.bme.hu ([152.66.115.2])
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qpwzr-00050b-QD; Mon, 09 Oct 2023 16:36:59 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <balaton@eik.bme.hu>)
- id 1qpwLI-0005Df-4b; Mon, 09 Oct 2023 15:55:20 -0400
-Received: from zero.eik.bme.hu (blah.eik.bme.hu [152.66.115.182])
- by localhost (Postfix) with SMTP id 55B8C75724D;
- Mon,  9 Oct 2023 21:54:09 +0200 (CEST)
-Received: by zero.eik.bme.hu (Postfix, from userid 432)
- id 0DB67757248; Mon,  9 Oct 2023 21:54:08 +0200 (CEST)
-Message-Id: <bf8b0aa148adeb15c49e2c993ce27c27b2370edd.1696880742.git.balaton@eik.bme.hu>
-In-Reply-To: <cover.1696880742.git.balaton@eik.bme.hu>
-References: <cover.1696880742.git.balaton@eik.bme.hu>
-From: BALATON Zoltan <balaton@eik.bme.hu>
-Subject: [PATCH v2 3/3] hw/ppc: Add emulation of AmigaOne XE board
-To: qemu-devel@nongnu.org,
-    qemu-ppc@nongnu.org
-Cc: Nicholas Piggin <npiggin@gmail.com>,
- Daniel Henrique Barboza <danielhb413@gmail.com>, clg@kaod.org,
- philmd@linaro.org, Bernhard Beschow <shentey@gmail.com>,
- Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
- Rene Engel <ReneEngel80@emailn.de>, vr_qemu@t-online.de
-Date: Mon,  9 Oct 2023 21:54:08 +0200 (CEST)
-X-Spam-Probability: 10%
-Received-SPF: pass client-ip=152.66.115.2; envelope-from=balaton@eik.bme.hu;
- helo=zero.eik.bme.hu
-X-Spam_score_int: -18
-X-Spam_score: -1.9
-X-Spam_bar: -
-X-Spam_report: (-1.9 / 5.0 requ) BAYES_00=-1.9, SPF_HELO_NONE=0.001,
- T_SPF_TEMPERROR=0.01 autolearn=ham autolearn_force=no
+ (Exim 4.90_1) (envelope-from <salil.mehta@huawei.com>)
+ id 1qpwzn-0006xa-U2; Mon, 09 Oct 2023 16:36:59 -0400
+Received: from lhrpeml500001.china.huawei.com (unknown [172.18.147.226])
+ by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S49mZ4RHKz67bgN;
+ Tue, 10 Oct 2023 04:36:30 +0800 (CST)
+Received: from A190218597.china.huawei.com (10.126.175.116) by
+ lhrpeml500001.china.huawei.com (7.191.163.213) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Mon, 9 Oct 2023 21:36:27 +0100
+To: <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+CC: <salil.mehta@huawei.com>, <maz@kernel.org>, <jean-philippe@linaro.org>,
+ <jonathan.cameron@huawei.com>, <lpieralisi@kernel.org>,
+ <peter.maydell@linaro.org>, <richard.henderson@linaro.org>,
+ <imammedo@redhat.com>, <andrew.jones@linux.dev>, <david@redhat.com>,
+ <philmd@linaro.org>, <eric.auger@redhat.com>, <oliver.upton@linux.dev>,
+ <pbonzini@redhat.com>, <mst@redhat.com>, <will@kernel.org>,
+ <gshan@redhat.com>, <rafael@kernel.org>, <alex.bennee@linaro.org>,
+ <linux@armlinux.org.uk>, <darren@os.amperecomputing.com>,
+ <ilkka@os.amperecomputing.com>, <vishnu@os.amperecomputing.com>,
+ <karl.heubaum@oracle.com>, <miguel.luis@oracle.com>,
+ <salil.mehta@opnsrc.net>, <zhukeqian1@huawei.com>,
+ <wangxiongfeng2@huawei.com>, <wangyanan55@huawei.com>,
+ <jiakernel2@gmail.com>, <maobibo@loongson.cn>, <lixianglai@loongson.cn>,
+ <linuxarm@huawei.com>
+Subject: [PATCH V4 00/10] Add architecture agnostic code to support vCPU
+ Hotplug
+Date: Mon, 9 Oct 2023 21:35:51 +0100
+Message-ID: <20231009203601.17584-1-salil.mehta@huawei.com>
+X-Mailer: git-send-email 2.8.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.126.175.116]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ lhrpeml500001.china.huawei.com (7.191.163.213)
+X-CFilter-Loop: Reflected
+Received-SPF: pass client-ip=185.176.79.56;
+ envelope-from=salil.mehta@huawei.com; helo=frasgout.his.huawei.com
+X-Spam_score_int: -41
+X-Spam_score: -4.2
+X-Spam_bar: ----
+X-Spam_report: (-4.2 / 5.0 requ) BAYES_00=-1.9, RCVD_IN_DNSWL_MED=-2.3,
+ RCVD_IN_MSPIKE_H5=0.001, RCVD_IN_MSPIKE_WL=0.001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -54,266 +70,99 @@ List-Post: <mailto:qemu-devel@nongnu.org>
 List-Help: <mailto:qemu-devel-request@nongnu.org?subject=help>
 List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
  <mailto:qemu-devel-request@nongnu.org?subject=subscribe>
+Reply-to:  Salil Mehta <salil.mehta@huawei.com>
+From:  Salil Mehta via <qemu-devel@nongnu.org>
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-The AmigaOne is a rebranded MAI Teron board that uses U-Boot firmware
-with patches to support AmigaOS and is very similar to pegasos2 so can
-be easily emulated sharing most code with pegasos2. The reason to
-emulate it is that AmigaOS comes in different versions for AmigaOne
-and PegasosII which only have drivers for one machine and firmware so
-these only run on the specific machine. Adding this board allows
-another AmigaOS version to be used reusing already existing peagasos2
-emulation. (The AmigaOne was the first of these boards so likely most
-widespread which then inspired Pegasos that was later replaced with
-PegasosII due to problems with Articia S, so these have a lot of
-similarity. Pegasos mainly ran MorphOS while the PegasosII version of
-AmigaOS was added later and therefore less common than the AmigaOne
-version.)
+Virtual CPU hotplug support is being added across various architectures[1][3].
+This series adds various code bits common across all architectures:
 
-Signed-off-by: BALATON Zoltan <balaton@eik.bme.hu>
----
- MAINTAINERS                             |   8 ++
- configs/devices/ppc-softmmu/default.mak |   1 +
- hw/ppc/Kconfig                          |   7 +
- hw/ppc/amigaone.c                       | 164 ++++++++++++++++++++++++
- hw/ppc/meson.build                      |   2 +
- 5 files changed, 182 insertions(+)
- create mode 100644 hw/ppc/amigaone.c
+1. vCPU creation and Parking code refactor [Patch 1]
+2. Update ACPI GED framework to support vCPU Hotplug [Patch 4,6,7]
+3. ACPI CPUs AML code change [Patch 5]
+4. Helper functions to support unrealization of CPU objects [Patch 8,9]
+5. Misc [Patch 2,3,10]
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7f0e20fde6..03f908c153 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1490,6 +1490,14 @@ F: hw/pci-host/mv64361.c
- F: hw/pci-host/mv643xx.h
- F: include/hw/pci-host/mv64361.h
- 
-+amigaone
-+M: BALATON Zoltan <balaton@eik.bme.hu>
-+L: qemu-ppc@nongnu.org
-+S: Maintained
-+F: hw/ppc/amigaone.c
-+F: hw/pci-host/articia.c
-+F: include/hw/pci-host/articia.h
-+
- Virtual Open Firmware (VOF)
- M: Alexey Kardashevskiy <aik@ozlabs.ru>
- R: David Gibson <david@gibson.dropbear.id.au>
-diff --git a/configs/devices/ppc-softmmu/default.mak b/configs/devices/ppc-softmmu/default.mak
-index a887f5438b..b85fd2bcd7 100644
---- a/configs/devices/ppc-softmmu/default.mak
-+++ b/configs/devices/ppc-softmmu/default.mak
-@@ -14,6 +14,7 @@ CONFIG_SAM460EX=y
- CONFIG_MAC_OLDWORLD=y
- CONFIG_MAC_NEWWORLD=y
- 
-+CONFIG_AMIGAONE=y
- CONFIG_PEGASOS2=y
- 
- # For PReP
-diff --git a/hw/ppc/Kconfig b/hw/ppc/Kconfig
-index 5dfbf47ef5..56f0475a8e 100644
---- a/hw/ppc/Kconfig
-+++ b/hw/ppc/Kconfig
-@@ -69,6 +69,13 @@ config SAM460EX
-     select USB_OHCI
-     select FDT_PPC
- 
-+config AMIGAONE
-+    bool
-+    imply ATI_VGA
-+    select ARTICIA
-+    select VT82C686
-+    select SMBUS_EEPROM
-+
- config PEGASOS2
-     bool
-     imply ATI_VGA
-diff --git a/hw/ppc/amigaone.c b/hw/ppc/amigaone.c
-new file mode 100644
-index 0000000000..3589924c8a
---- /dev/null
-+++ b/hw/ppc/amigaone.c
-@@ -0,0 +1,164 @@
-+/*
-+ * QEMU Eyetech AmigaOne/Mai Logic Teron emulation
-+ *
-+ * Copyright (c) 2023 BALATON Zoltan
-+ *
-+ * This work is licensed under the GNU GPL license version 2 or later.
-+ *
-+ */
-+
-+#include "qemu/osdep.h"
-+#include "qemu/units.h"
-+#include "qemu/datadir.h"
-+#include "qemu/log.h"
-+#include "qemu/error-report.h"
-+#include "qapi/error.h"
-+#include "hw/ppc/ppc.h"
-+#include "hw/boards.h"
-+#include "hw/loader.h"
-+#include "hw/pci-host/articia.h"
-+#include "hw/isa/vt82c686.h"
-+#include "hw/ide/pci.h"
-+#include "hw/i2c/smbus_eeprom.h"
-+#include "hw/ppc/ppc.h"
-+#include "sysemu/reset.h"
-+#include "kvm_ppc.h"
-+
-+#define BUS_FREQ_HZ 100000000
-+
-+/*
-+ * Firmware binary available at
-+ * https://www.hyperion-entertainment.com/index.php/downloads?view=files&parent=28
-+ * then "tail -c 524288 updater.image >u-boot-amigaone.bin"
-+ *
-+ * BIOS emulator in firmware cannot run QEMU vgabios and hangs on it, use
-+ * -device VGA,romfile=VGABIOS-lgpl-latest.bin
-+ * from http://www.nongnu.org/vgabios/ instead.
-+ */
-+#define PROM_FILENAME "u-boot-amigaone.bin"
-+#define PROM_ADDR 0xfff00000
-+#define PROM_SIZE (512 * KiB)
-+
-+static void amigaone_cpu_reset(void *opaque)
-+{
-+    PowerPCCPU *cpu = opaque;
-+
-+    cpu_reset(CPU(cpu));
-+    cpu_ppc_tb_reset(&cpu->env);
-+}
-+
-+static void fix_spd_data(uint8_t *spd)
-+{
-+    uint32_t bank_size = 4 * MiB * spd[31];
-+    uint32_t rows = bank_size / spd[13] / spd[17];
-+    spd[3] = ctz32(rows) - spd[4];
-+}
-+
-+static void amigaone_init(MachineState *machine)
-+{
-+    PowerPCCPU *cpu;
-+    CPUPPCState *env;
-+    MemoryRegion *rom, *pci_mem, *mr;
-+    const char *fwname = machine->firmware ?: PROM_FILENAME;
-+    char *filename;
-+    ssize_t sz;
-+    PCIBus *pci_bus;
-+    Object *via;
-+    DeviceState *dev;
-+    I2CBus *i2c_bus;
-+    uint8_t *spd_data;
-+    int i;
-+
-+    /* init CPU */
-+    cpu = POWERPC_CPU(cpu_create(machine->cpu_type));
-+    env = &cpu->env;
-+    if (PPC_INPUT(env) != PPC_FLAGS_INPUT_6xx) {
-+        error_report("Incompatible CPU, only 6xx bus supported");
-+        exit(1);
-+    }
-+    cpu_ppc_tb_init(env, BUS_FREQ_HZ / 4);
-+    qemu_register_reset(amigaone_cpu_reset, cpu);
-+
-+    /* RAM */
-+    if (machine->ram_size > 2 * GiB) {
-+        error_report("RAM size more than 2 GiB is not supported");
-+        exit(1);
-+    }
-+    memory_region_add_subregion(get_system_memory(), 0, machine->ram);
-+    if (machine->ram_size < 1 * GiB + 32 * KiB) {
-+        /* Firmware uses this area for startup */
-+        mr = g_new(MemoryRegion, 1);
-+        memory_region_init_ram(mr, NULL, "init-cache", 32 * KiB, &error_fatal);
-+        memory_region_add_subregion(get_system_memory(), 0x40000000, mr);
-+    }
-+
-+    /* allocate and load firmware */
-+    filename = qemu_find_file(QEMU_FILE_TYPE_BIOS, fwname);
-+    if (!filename) {
-+        error_report("Could not find firmware '%s'", fwname);
-+        exit(1);
-+    }
-+    rom = g_new(MemoryRegion, 1);
-+    memory_region_init_rom(rom, NULL, "rom", PROM_SIZE, &error_fatal);
-+    memory_region_add_subregion(get_system_memory(), PROM_ADDR, rom);
-+    sz = load_image_targphys(filename, PROM_ADDR, PROM_SIZE);
-+    if (sz <= 0 || sz > PROM_SIZE) {
-+        error_report("Could not load firmware '%s'", filename);
-+        exit(1);
-+    }
-+    g_free(filename);
-+
-+    /* Articia S */
-+    dev = sysbus_create_simple(TYPE_ARTICIA, 0xfe000000, NULL);
-+
-+    i2c_bus = I2C_BUS(qdev_get_child_bus(dev, "smbus"));
-+    if (machine->ram_size > 512 * MiB) {
-+        spd_data = spd_data_generate(SDR, machine->ram_size / 2);
-+    } else {
-+        spd_data = spd_data_generate(SDR, machine->ram_size);
-+    }
-+    fix_spd_data(spd_data);
-+    smbus_eeprom_init_one(i2c_bus, 0x51, spd_data);
-+    if (machine->ram_size > 512 * MiB) {
-+        smbus_eeprom_init_one(i2c_bus, 0x52, spd_data);
-+    }
-+
-+    pci_mem = sysbus_mmio_get_region(SYS_BUS_DEVICE(dev), 1);
-+    mr = g_new(MemoryRegion, 1);
-+    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-low", pci_mem,
-+                             0, 0x1000000);
-+    memory_region_add_subregion(get_system_memory(), 0xfd000000, mr);
-+    mr = g_new(MemoryRegion, 1);
-+    memory_region_init_alias(mr, OBJECT(dev), "pci-mem-high", pci_mem,
-+                             0x80000000, 0x7d000000);
-+    memory_region_add_subregion(get_system_memory(), 0x80000000, mr);
-+    pci_bus = PCI_BUS(qdev_get_child_bus(dev, "pci.0"));
-+
-+    /* VIA VT82c686B South Bridge (multifunction PCI device) */
-+    via = OBJECT(pci_create_simple_multifunction(pci_bus, PCI_DEVFN(7, 0),
-+                                                 TYPE_VT82C686B_ISA));
-+    object_property_add_alias(OBJECT(machine), "rtc-time",
-+                              object_resolve_path_component(via, "rtc"),
-+                              "date");
-+    qdev_connect_gpio_out(DEVICE(via), 0,
-+                          qdev_get_gpio_in(DEVICE(cpu), PPC6xx_INPUT_INT));
-+    for (i = 0; i < PCI_NUM_PINS; i++) {
-+        qdev_connect_gpio_out(dev, i, qdev_get_gpio_in_named(DEVICE(via),
-+                                                             "pirq", i));
-+    }
-+    pci_ide_create_devs(PCI_DEVICE(object_resolve_path_component(via, "ide")));
-+    pci_vga_init(pci_bus);
-+}
-+
-+static void amigaone_machine_init(MachineClass *mc)
-+{
-+    mc->desc = "Eyetech AmigaOne/Mai Logic Teron";
-+    mc->init = amigaone_init;
-+    mc->block_default_type = IF_IDE;
-+    mc->default_cpu_type = POWERPC_CPU_TYPE_NAME("7457_v1.2");
-+    mc->default_display = "std";
-+    mc->default_ram_id = "ram";
-+    mc->default_ram_size = 128 * MiB;
-+}
-+
-+DEFINE_MACHINE("amigaone", amigaone_machine_init)
-diff --git a/hw/ppc/meson.build b/hw/ppc/meson.build
-index 7c2c52434a..0f76f4cce4 100644
---- a/hw/ppc/meson.build
-+++ b/hw/ppc/meson.build
-@@ -81,6 +81,8 @@ ppc_ss.add(when: 'CONFIG_E500', if_true: files(
- ))
- # PowerPC 440 Xilinx ML507 reference board.
- ppc_ss.add(when: 'CONFIG_VIRTEX', if_true: files('virtex_ml507.c'))
-+# a1xe
-+ppc_ss.add(when: 'CONFIG_AMIGAONE', if_true: files('amigaone.c'))
- # Pegasos2
- ppc_ss.add(when: 'CONFIG_PEGASOS2', if_true: files('pegasos2.c'))
- 
+
+Repository:
+
+[*] https://github.com/salil-mehta/qemu.git virt-cpuhp-armv8/rfc-v2.common.v4
+
+
+Revision History:
+
+RFC V3 -> RFC V4
+1. Addressed David Hilderbrand's comments
+   - Fixed the wrong doc comment of kvm_park_vcpu API prototype
+   - Added Reviewed-by tags for patches {2,4}
+Link: https://lore.kernel.org/qemu-devel/20231009112812.10612-1-salil.mehta@huawei.com/
+
+RFC V2 -> RFC V3
+1. Addressed Jonathan Cameron's comments
+   - Fixed 'vcpu-id' type wrongly changed from 'unsigned long' to 'integer'
+   - Removed unnecessary use of variable 'vcpu_id' in kvm_park_vcpu
+   - Updated [Patch V2 03/10] commit-log with details of ACPI_CPU_SCAN_METHOD macro
+   - Updated [Patch V2 05/10] commit-log with details of conditional event handler method
+   - Added Reviewed-by tags for patches {2,3,4,6,7}
+2. Addressed Gavin Shan's comments
+   - Remove unnecessary use of variable 'vcpu_id' in kvm_par_vcpu
+   - Fixed return value in kvm_get_vcpu from -1 to -ENOENT
+   - Reset the value of 'gdb_num_g_regs' in gdb_unregister_coprocessor_all
+   - Fixed the kvm_{create,park}_vcpu prototypes docs
+   - Added Reviewed-by tags for patches {2,3,4,5,6,7,9,10}
+3. Addressed one earlier missed comment by Alex Bennée in RFC V1
+   - Added traces instead of DPRINTF in the newly added and some existing functions
+Link: https://lore.kernel.org/qemu-devel/20230930001933.2660-1-salil.mehta@huawei.com/
+
+RFC V1 -> RFC V2
+1. Addressed Alex Bennée's comments
+   - Refactored the kvm_create_vcpu logic to get rid of goto
+   - Added the docs for kvm_{create,park}_vcpu prototypes
+   - Splitted the gdbstub and AddressSpace destruction change into separate patches
+   - Added Reviewed-by tags for patches {2,10}
+Link: https://lore.kernel.org/qemu-devel/20230929124304.13672-1-salil.mehta@huawei.com/
+
+References:
+
+[1] https://lore.kernel.org/qemu-devel/20230926100436.28284-1-salil.mehta@huawei.com/
+[2] https://lore.kernel.org/all/20230913163823.7880-1-james.morse@arm.com/
+[3] https://lore.kernel.org/qemu-devel/cover.1695697701.git.lixianglai@loongson.cn/
+
+
+Jean-Philippe Brucker (1):
+  target/arm/kvm: Write CPU state back to KVM on reset
+
+Salil Mehta (9):
+  accel/kvm: Extract common KVM vCPU {creation,parking} code
+  hw/acpi: Move CPU ctrl-dev MMIO region len macro to common header file
+  hw/acpi: Add ACPI CPU hotplug init stub
+  hw/acpi: Init GED framework with CPU hotplug events
+  hw/acpi: Update CPUs AML with cpu-(ctrl)dev change
+  hw/acpi: Update GED _EVT method AML with CPU scan
+  hw/acpi: Update ACPI GED framework to support vCPU Hotplug
+  physmem: Add helper function to destroy CPU AddressSpace
+  gdbstub: Add helper function to unregister GDB register space
+
+ accel/kvm/kvm-all.c                    | 64 ++++++++++++++++++++------
+ accel/kvm/trace-events                 |  4 ++
+ gdbstub/gdbstub.c                      | 15 ++++++
+ hw/acpi/acpi-cpu-hotplug-stub.c        |  6 +++
+ hw/acpi/cpu.c                          | 27 +++++++----
+ hw/acpi/generic_event_device.c         | 22 +++++++++
+ hw/i386/acpi-build.c                   |  2 +-
+ include/exec/cpu-common.h              |  8 ++++
+ include/exec/gdbstub.h                 |  5 ++
+ include/hw/acpi/cpu.h                  |  5 +-
+ include/hw/acpi/cpu_hotplug.h          |  4 ++
+ include/hw/acpi/generic_event_device.h |  5 ++
+ include/hw/core/cpu.h                  |  1 +
+ include/sysemu/kvm.h                   | 16 +++++++
+ softmmu/physmem.c                      | 25 ++++++++++
+ target/arm/kvm.c                       |  8 +++-
+ 16 files changed, 189 insertions(+), 28 deletions(-)
+
 -- 
-2.30.9
+2.34.1
 
 
