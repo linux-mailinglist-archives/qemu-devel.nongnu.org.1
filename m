@@ -2,72 +2,83 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C4307BDA3F
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F7557BDA71
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:56:15 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpoit-00040J-Ou; Mon, 09 Oct 2023 07:46:55 -0400
+	id 1qpoqi-0007sz-DM; Mon, 09 Oct 2023 07:55:00 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qpoiU-0003oq-7p
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:46:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124])
- by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <armbru@redhat.com>) id 1qpoiS-0003lq-SH
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:46:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
- s=mimecast20190719; t=1696851987;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=I2jsKEKqZJG4LgL+yiUjMVkBDFOSa2RDSJm4MD8k5Jk=;
- b=ifb6UduoTkRFAtkwiX0OAoA5dqV+EPdsi1waI9LmuuiNj2Bz362vERSGLkZfLKaXA48Jau
- hgd99kBSy5TV0e/Gb7tlq5aQVFlJ7jnnvCWEuikVuVvZOeykMsT7pHw7zcM1lM89xa/cKY
- Vu41fPFOsTlt/syviGgJPJ91j+937hE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-106-66dTgu8QPUWp3Y7T7eTWZw-1; Mon, 09 Oct 2023 07:46:23 -0400
-X-MC-Unique: 66dTgu8QPUWp3Y7T7eTWZw-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com
- [10.11.54.7])
- (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
- (No client certificate requested)
- by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A42E7802C1A;
- Mon,  9 Oct 2023 11:46:23 +0000 (UTC)
-Received: from blackfin.pond.sub.org (unknown [10.39.192.25])
- by smtp.corp.redhat.com (Postfix) with ESMTPS id 83AA6140EBB7;
- Mon,  9 Oct 2023 11:46:23 +0000 (UTC)
-Received: by blackfin.pond.sub.org (Postfix, from userid 1000)
- id 7441921E6904; Mon,  9 Oct 2023 13:46:22 +0200 (CEST)
-From: Markus Armbruster <armbru@redhat.com>
-To: Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc: qemu-devel@nongnu.org,  eblake@redhat.com
-Subject: Re: [PATCH] qapi: Belatedly update CompatPolicy documentation for
- unstable
-References: <20231009110449.4015601-1-armbru@redhat.com>
- <78921033-d8f5-d736-0437-b805e78c1a55@linaro.org>
-Date: Mon, 09 Oct 2023 13:46:22 +0200
-In-Reply-To: <78921033-d8f5-d736-0437-b805e78c1a55@linaro.org> ("Philippe
- =?utf-8?Q?Mathieu-Daud=C3=A9=22's?= message of "Mon, 9 Oct 2023 13:19:06
- +0200")
-Message-ID: <875y3g10j5.fsf@pond.sub.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpoqf-0007sl-UR
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:54:58 -0400
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
+ by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+ (Exim 4.90_1) (envelope-from <philmd@linaro.org>) id 1qpoqe-00051T-Ae
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 07:54:57 -0400
+Received: by mail-ej1-x633.google.com with SMTP id
+ a640c23a62f3a-9a6190af24aso779671766b.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 04:54:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1696852493; x=1697457293; darn=nongnu.org;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=+JMv02NfetdExOBZ28bzgpWm0YsoWYoOUAnbmb6sjN0=;
+ b=jKs9yD8/L2uDebw7aq5zri4JUS6jBBojVGIDBrKA2ESCceX6p+/BE3LLZh14zJpjLR
+ f0JtcjSiIhH3qOjm59LW5wt/wrYjLROmC20DbQNIB5M4u6NxJFc84GluK4nZAhGIHyjH
+ hRN3V5S4ec0I9KNnX7kEL1vmCwSYtAR6p/E/5nmxKmRL4BZG3FTKkY9nSRByzIdN9dIf
+ 9VQ3GNOzp6AwezC1Wn0H5vC9jsyTrFnh2cziojvpSsQXtbXukhrCLapgc6RppJ3LsTKX
+ YrRYLz9pFC1KMeLwwhDqp9z7Iv51mh1Qy0bIKy+5zonfZe/ttnCuABEydDB0BQCofdgQ
+ 4TYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1696852493; x=1697457293;
+ h=content-transfer-encoding:in-reply-to:from:references:cc:to
+ :content-language:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=+JMv02NfetdExOBZ28bzgpWm0YsoWYoOUAnbmb6sjN0=;
+ b=C3NysoW9VJZy0iy+q04keKaYI8JDxwHRnhn+OwDxQhHKeg+rzI0wX/rddRdw/hrtn5
+ 595wNQMIRIfj4f5CXwc4LjKYRPzNKrNTejE9GECH9Y8GH3FI9wXJ0vW2t51mPZDcJEBc
+ jcOXbLx/SK3JmBW4ugHJVUYqHRx1qsd7I1cxXiDpKB/JOiNFEOZP0O6glOSKYdT6Z8Va
+ 5vH/aTBhxgXSViyjM9s/FdnXWcdTpGZHXYTuOJ2XV3wDmNHRDIludnQxemOsdkg3wi74
+ 4EUw3AYIrdxKBQHEWV+EuQEm1tbKSlKysYflM6MJTC4oF5znfW99STSjlUo1aZEKwC4J
+ jSGQ==
+X-Gm-Message-State: AOJu0Yze1dA8JM8EurossImGT4/eeWD7Is1jOIkgjm2YTWXvAFgHRvLD
+ X9gj8+IO2ze03HTy1nTHAbAzGlwSyNXvu5f1fJE=
+X-Google-Smtp-Source: AGHT+IGLCTyboqYhBhHnI46dznkw1yzFhd9LJrTFIANdlAmmgBo9gS62zATRXxykNPgXVrdnB/gpHg==
+X-Received: by 2002:a17:907:2715:b0:9b2:babd:cd44 with SMTP id
+ w21-20020a170907271500b009b2babdcd44mr13094038ejk.44.1696852492941; 
+ Mon, 09 Oct 2023 04:54:52 -0700 (PDT)
+Received: from [192.168.69.115]
+ (thr44-h01-176-170-217-185.dsl.sta.abo.bbox.fr. [176.170.217.185])
+ by smtp.gmail.com with ESMTPSA id
+ n2-20020a1709061d0200b009a0955a7ad0sm6573794ejh.128.2023.10.09.04.54.51
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 09 Oct 2023 04:54:52 -0700 (PDT)
+Message-ID: <9cd1675b-22a4-ee2a-fde0-bb87c7c5bd26@linaro.org>
+Date: Mon, 9 Oct 2023 13:54:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
-Received-SPF: pass client-ip=170.10.133.124; envelope-from=armbru@redhat.com;
- helo=us-smtp-delivery-124.mimecast.com
-X-Spam_score_int: -20
-X-Spam_score: -2.1
-X-Spam_bar: --
-X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIMWL_WL_HIGH=-0.001,
- DKIM_SIGNED=0.1, DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
- RCVD_IN_DNSWL_NONE=-0.0001, RCVD_IN_MSPIKE_H3=0.001, RCVD_IN_MSPIKE_WL=0.001,
- SPF_HELO_NONE=0.001, SPF_PASS=-0.001 autolearn=ham autolearn_force=no
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] system/vl: Use global &bdo_queue in configure_blockdev()
+Content-Language: en-US
+To: Markus Armbruster <armbru@redhat.com>
+Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>
+References: <20231009093152.51270-1-philmd@linaro.org>
+ <87sf6k2isd.fsf@pond.sub.org>
+From: =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <87sf6k2isd.fsf@pond.sub.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: pass client-ip=2a00:1450:4864:20::633;
+ envelope-from=philmd@linaro.org; helo=mail-ej1-x633.google.com
+X-Spam_score_int: -53
+X-Spam_score: -5.4
+X-Spam_bar: -----
+X-Spam_report: (-5.4 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, NICE_REPLY_A=-3.339,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -83,38 +94,25 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org> writes:
+On 9/10/23 12:26, Markus Armbruster wrote:
+> Philippe Mathieu-Daudé <philmd@linaro.org> writes:
+> 
+>> Commit d11bf9bf0f ("vl: Factor configure_blockdev() out of main()")
+>> passed &bdo_queue as argument, but this isn't really necessary since
+>> there is only one call, so we still use the global variable.
+>>
+>> Dropping the &bdo_queue argument allows to silence this global shadow
+>> warning:
+>>
+>>    softmmu/vl.c:678:54: error: declaration shadows a variable in the global scope [-Werror,-Wshadow]
+>>    static void configure_blockdev(BlockdevOptionsQueue *bdo_queue,
+>>                                                         ^
+>>    softmmu/vl.c:172:29: note: previous declaration is here
+>>    static BlockdevOptionsQueue bdo_queue = QSIMPLEQ_HEAD_INITIALIZER(bdo_queue);
+> 
+> Not sure this is an improvement.  Up to Paolo, I guess.
 
-> On 9/10/23 13:04, Markus Armbruster wrote:
->> Commit 57df0dff1a1 (qapi: Extend -compat to set policy for unstable
->> interfaces) neglected to update the "Limitation" paragraph to mention
->
-> With retrospective, 'experimental' seems more meaningful. Anyway,
-> too  late.
-
-Experiments are a major use for interfaces without stability promise,
-but there's also debugging aids and such.
-
->> feature 'unstable' in addition to feature 'deprecated'.  Do that now.
->> Signed-off-by: Markus Armbruster <armbru@redhat.com>
->> ---
->>   qapi/compat.json | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->> diff --git a/qapi/compat.json b/qapi/compat.json
->> index f4c19837eb..42034d9368 100644
->> --- a/qapi/compat.json
->> +++ b/qapi/compat.json
->> @@ -43,8 +43,8 @@
->>   # This is intended for testing users of the management interfaces.
->>   #
->>   # Limitation: covers only syntactic aspects of QMP, i.e. stuff tagged
->> -# with feature 'deprecated'.  We may want to extend it to cover
->> -# semantic aspects and CLI.
->> +# with feature 'deprecated' or 'unstable'.  We may want to extend it
->> +# to cover semantic aspects and CLI.
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
-
-Thanks!
-
+Any alternative suggestion? I'm looking at enabling -Wshadow with Clang
+to avoid Clang users not getting the -Wshadow=local warnings until a
+maintainer test their patches on CI.
 
