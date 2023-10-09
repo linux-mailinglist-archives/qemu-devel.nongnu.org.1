@@ -2,63 +2,63 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED49E7BE6EA
+	by mail.lfdr.de (Postfix) with ESMTPS id 011027BE6EB
 	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 18:49:49 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qptPZ-0005DB-DU; Mon, 09 Oct 2023 12:47:17 -0400
+	id 1qptPc-0005W1-P5; Mon, 09 Oct 2023 12:47:20 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptP3-0003E0-CY
+ id 1qptP1-0003Dr-QV
  for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:55 -0400
-Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
+Received: from mail-wm1-x32c.google.com ([2a00:1450:4864:20::32c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
  (Exim 4.90_1) (envelope-from <alex.bennee@linaro.org>)
- id 1qptOk-0003Xo-Ok
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:44 -0400
-Received: by mail-wm1-x333.google.com with SMTP id
- 5b1f17b1804b1-40566f89f6eso47937655e9.3
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:16 -0700 (PDT)
+ id 1qptOk-0003Vz-3S
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 12:46:38 -0400
+Received: by mail-wm1-x32c.google.com with SMTP id
+ 5b1f17b1804b1-406619b53caso43669395e9.1
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 09:46:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1696869975; x=1697474775; darn=nongnu.org;
+ d=linaro.org; s=google; t=1696869973; x=1697474773; darn=nongnu.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=BaWzj6TOawybEbZLkphNAwpwFijNfIuoCtyzRhLAt7Q=;
- b=iUI60xtkpw4burOise8ES76WJJV8hA6xDxAUAOYqoU+c8QvQ5+rtCCs4EK3LLNuySq
- 0+nm6B+BzUJjWsl1h0sd2BVoJtKGxVHIGjx+U+llU3plLwYkWJMsu0V4wCzkgzyzvXN6
- +xzCukTAl9lUJizcmsquB9DJbaVJaHYDgXIK9ZdT4pwMrgoZsCDD9yilqG7MYjYmnHSy
- FRCP9j50egevjdHC5oMMiQ4rXgtFr7ad1MTC7vB2vXWZZNPkjRh+tsME7oXj5yepvQA1
- FycO1jWkfYlO4jRqE99F7Anz9+fUJcwS01XbtY/N49Fb+RQLdbtayAx2xzZJFmLOmkGb
- +I6Q==
+ bh=VWYhOQMznQlDFerIuEfFly6GjEqfzxxsRGSOgMHMHjQ=;
+ b=B1S01vsqV3ds4VPMz0moge7l9PDi7dmPCEtIX5Mz15oqpKERvHdC/yiStZ3MCRh4wi
+ +MWs+Wf3u5iEAZypYYi6SMxugZkNHNghLmj+xPcHeWdgt1WUAERDTgq/zxR0PbNeiFUc
+ D9hZWBqnhNeKhPpRTN1TSMczfUlMMd1kYN8hj5sdF24ENHbT0NJE5DIJuzv5zvqpOB6k
+ hZYPY9wuDLZat/4STwgQdxeY6l6heTj2ED9vWhvBlNbFRMe24+sbKb4X7DPpVpnwKC61
+ gQLysqcK65by1KD9a2uDR4vFBzkDY/rqkRfHwgmvwInN19bE6zuPkDp8tdGI7yybj9Aj
+ MbvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696869975; x=1697474775;
+ d=1e100.net; s=20230601; t=1696869973; x=1697474773;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=BaWzj6TOawybEbZLkphNAwpwFijNfIuoCtyzRhLAt7Q=;
- b=axRWjrkdzc1n8MUSmIfXc9A1RO4evti6gExgPrgvfqH6mh7wH86TkNgLzBwkkYLINJ
- yU8qh+2kHZ5ZrYtlNkYVqDnLzW1WAfu2kBBsl11Ak4YqU06Sf6ForWJXX5vMQPByd2IZ
- FSzaTXIqmjGYmCkYZsXMwWSb8PkzfQdJlk50oCoMVzWEpBkyF9U9iW7tszhQYhxKY12R
- Y4ffZ22fXH9/a5saZtpwAl8VOhz1nDK9wcd4p2QGDyb2L2o/i0Gv+oz28WdCKtNtWFc3
- zTfg7dDKKWyctGXKFdpkYWuGFq4WIBhg6NHZkZ0WHJ04NHm8hczAJL3j/pBKppZt1MNo
- XSKQ==
-X-Gm-Message-State: AOJu0YzcgLXJ+Gc49myj1b1koExjHw/2xPjAy0rlWA1Uv7L+Yfr3cv1+
- THDx1h4TAeJL7vV23XIDx/gapQ==
-X-Google-Smtp-Source: AGHT+IFV54SZNsdcdbrjjQOtqZjj6ZFdvv1SUKNKVCOYz2G/PhmdkpaAKFWxA1tkw59KreqSPGkI+g==
-X-Received: by 2002:a05:600c:2298:b0:3fb:a100:2581 with SMTP id
- 24-20020a05600c229800b003fba1002581mr14279362wmf.14.1696869975132; 
- Mon, 09 Oct 2023 09:46:15 -0700 (PDT)
+ bh=VWYhOQMznQlDFerIuEfFly6GjEqfzxxsRGSOgMHMHjQ=;
+ b=uOecl0fUlfxoXmWVEtLJztjX0Up3FNbm8tKAGetWI0m8lCTqS2ALa3Gr5dWsiytmgG
+ wRr8kVqYDspHQrKJZuE2y/8bq5dFFDUCd9PcFqhpxlXo1ios1EEze7dh8G3YfoyiWfcW
+ 8mgDyn/3fT0EkwoaQJSJCy6IDv9QS+mWY5ZJ98OmKedBQu7o4/dOJrj5JdbStvOHpacB
+ MRvQVf2pkbRGnKFem5N9KPXQpyxOM+whAzK4QCSkFYyLKeon5/iPvnNNsH9O/8TUT+Q5
+ tlX5y2ehHcFCLn+7GMQL7zNMOsBl2ykCzEC3LM1RwGfCPm/J1Ya+EsHD7ga5Kr2VxaLg
+ dtUw==
+X-Gm-Message-State: AOJu0Yy0lvJZouVGZUUgryTx/bYzRrdr58IcWbATrfyrHEKGwrN0ruFX
+ Dx5MGdXfH9Pr/WSu71SRuX8F/w==
+X-Google-Smtp-Source: AGHT+IFDo1mXfvOFFQQGZsFStyZ0Mbpg00kojG/B3T3b+ezfFFXNs8Fh4fnFJ8f+KtWcZo0no5J/XA==
+X-Received: by 2002:a05:600c:231a:b0:3fe:f667:4e4c with SMTP id
+ 26-20020a05600c231a00b003fef6674e4cmr14363217wmo.12.1696869973250; 
+ Mon, 09 Oct 2023 09:46:13 -0700 (PDT)
 Received: from zen.linaroharston ([85.9.250.243])
  by smtp.gmail.com with ESMTPSA id
- e24-20020a05600c219800b004013797efb6sm13936639wme.9.2023.10.09.09.46.12
+ v16-20020a1cf710000000b003fefaf299b6sm11633283wmh.38.2023.10.09.09.46.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 09 Oct 2023 09:46:13 -0700 (PDT)
+ Mon, 09 Oct 2023 09:46:11 -0700 (PDT)
 Received: from zen.linaroharston (localhost [127.0.0.1])
- by zen.linaroharston (Postfix) with ESMTP id E9CD81FFC7;
- Mon,  9 Oct 2023 17:41:06 +0100 (BST)
+ by zen.linaroharston (Postfix) with ESMTP id 0DA6B1FFC8;
+ Mon,  9 Oct 2023 17:41:07 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
 Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
@@ -90,23 +90,24 @@ Cc: Thomas Huth <thuth@redhat.com>, Xiaojuan Yang <yangxiaojuan@loongson.cn>,
  =?UTF-8?q?Marc-Andr=C3=A9=20Lureau?= <marcandre.lureau@redhat.com>,
  =?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
  Akihiko Odaki <akihiko.odaki@daynix.com>
-Subject: [PATCH 15/25] gdbstub: Use g_markup_printf_escaped()
-Date: Mon,  9 Oct 2023 17:40:54 +0100
-Message-Id: <20231009164104.369749-16-alex.bennee@linaro.org>
+Subject: [PATCH 16/25] target/arm: Remove references to gdb_has_xml
+Date: Mon,  9 Oct 2023 17:40:55 +0100
+Message-Id: <20231009164104.369749-17-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231009164104.369749-1-alex.bennee@linaro.org>
 References: <20231009164104.369749-1-alex.bennee@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass client-ip=2a00:1450:4864:20::333;
- envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x333.google.com
-X-Spam_score_int: -16
-X-Spam_score: -1.7
-X-Spam_bar: -
-X-Spam_report: (-1.7 / 5.0 requ) BAYES_00=-1.9, DKIM_INVALID=0.1,
- DKIM_SIGNED=0.1, RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
- SPF_PASS=-0.001 autolearn=no autolearn_force=no
+Received-SPF: pass client-ip=2a00:1450:4864:20::32c;
+ envelope-from=alex.bennee@linaro.org; helo=mail-wm1-x32c.google.com
+X-Spam_score_int: -20
+X-Spam_score: -2.1
+X-Spam_bar: --
+X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
+ RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
+ SPF_PASS=-0.001 autolearn=unavailable autolearn_force=no
 X-Spam_action: no action
 X-BeenThere: qemu-devel@nongnu.org
 X-Mailman-Version: 2.1.29
@@ -124,70 +125,67 @@ Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-g_markup_printf_escaped() is a safer alternative to simple printf() as
-it automatically escapes values.
+GDB has XML support since 6.7 which was released in 2007.
+It's time to remove support for old GDB versions without XML support.
 
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Message-Id: <20230912224107.29669-9-akihiko.odaki@daynix.com>
+Acked-by: Alex Bennée <alex.bennee@linaro.org>
+Message-Id: <20230912224107.29669-10-akihiko.odaki@daynix.com>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 ---
- gdbstub/gdbstub.c | 36 +++++++++++++++++++++---------------
- 1 file changed, 21 insertions(+), 15 deletions(-)
+ target/arm/gdbstub.c | 32 ++------------------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
-diff --git a/gdbstub/gdbstub.c b/gdbstub/gdbstub.c
-index a20169c27b..3dc847f835 100644
---- a/gdbstub/gdbstub.c
-+++ b/gdbstub/gdbstub.c
-@@ -373,28 +373,34 @@ static const char *get_feature_xml(const char *p, const char **newp,
-     if (strncmp(p, "target.xml", len) == 0) {
-         if (!process->target_xml) {
-             GDBRegisterState *r;
--            GString *xml = g_string_new("<?xml version=\"1.0\"?>");
-+            g_autoptr(GPtrArray) xml = g_ptr_array_new_with_free_func(g_free);
- 
--            g_string_append(xml,
--                            "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
--                            "<target>");
-+            g_ptr_array_add(
-+                xml,
-+                g_strdup("<?xml version=\"1.0\"?>"
-+                         "<!DOCTYPE target SYSTEM \"gdb-target.dtd\">"
-+                         "<target>"));
- 
-             if (cc->gdb_arch_name) {
--                g_string_append_printf(xml,
--                                       "<architecture>%s</architecture>",
--                                       cc->gdb_arch_name(cpu));
-+                g_ptr_array_add(
-+                    xml,
-+                    g_markup_printf_escaped("<architecture>%s</architecture>",
-+                                            cc->gdb_arch_name(cpu)));
-             }
--            g_string_append(xml, "<xi:include href=\"");
--            g_string_append(xml, cc->gdb_core_xml_file);
--            g_string_append(xml, "\"/>");
-+            g_ptr_array_add(
-+                xml,
-+                g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-+                                        cc->gdb_core_xml_file));
-             for (r = cpu->gdb_regs; r; r = r->next) {
--                g_string_append(xml, "<xi:include href=\"");
--                g_string_append(xml, r->xml);
--                g_string_append(xml, "\"/>");
-+                g_ptr_array_add(
-+                    xml,
-+                    g_markup_printf_escaped("<xi:include href=\"%s\"/>",
-+                                            r->xml));
-             }
--            g_string_append(xml, "</target>");
-+            g_ptr_array_add(xml, g_strdup("</target>"));
-+            g_ptr_array_add(xml, NULL);
- 
--            process->target_xml = g_string_free(xml, false);
-+            process->target_xml = g_strjoinv(NULL, (void *)xml->pdata);
-         }
-         return process->target_xml;
+diff --git a/target/arm/gdbstub.c b/target/arm/gdbstub.c
+index 8fc8351df7..b7ace24bfc 100644
+--- a/target/arm/gdbstub.c
++++ b/target/arm/gdbstub.c
+@@ -46,21 +46,7 @@ int arm_cpu_gdb_read_register(CPUState *cs, GByteArray *mem_buf, int n)
+         /* Core integer register.  */
+         return gdb_get_reg32(mem_buf, env->regs[n]);
      }
+-    if (n < 24) {
+-        /* FPA registers.  */
+-        if (gdb_has_xml()) {
+-            return 0;
+-        }
+-        return gdb_get_zeroes(mem_buf, 12);
+-    }
+-    switch (n) {
+-    case 24:
+-        /* FPA status register.  */
+-        if (gdb_has_xml()) {
+-            return 0;
+-        }
+-        return gdb_get_reg32(mem_buf, 0);
+-    case 25:
++    if (n == 25) {
+         /* CPSR, or XPSR for M-profile */
+         if (arm_feature(env, ARM_FEATURE_M)) {
+             return gdb_get_reg32(mem_buf, xpsr_read(env));
+@@ -100,21 +86,7 @@ int arm_cpu_gdb_write_register(CPUState *cs, uint8_t *mem_buf, int n)
+         env->regs[n] = tmp;
+         return 4;
+     }
+-    if (n < 24) { /* 16-23 */
+-        /* FPA registers (ignored).  */
+-        if (gdb_has_xml()) {
+-            return 0;
+-        }
+-        return 12;
+-    }
+-    switch (n) {
+-    case 24:
+-        /* FPA status register (ignored).  */
+-        if (gdb_has_xml()) {
+-            return 0;
+-        }
+-        return 4;
+-    case 25:
++    if (n == 25) {
+         /* CPSR, or XPSR for M-profile */
+         if (arm_feature(env, ARM_FEATURE_M)) {
+             /*
 -- 
 2.39.2
 
