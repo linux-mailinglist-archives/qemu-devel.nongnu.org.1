@@ -2,73 +2,93 @@ Return-Path: <qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org>
 X-Original-To: lists+qemu-devel@lfdr.de
 Delivered-To: lists+qemu-devel@lfdr.de
 Received: from lists.gnu.org (lists.gnu.org [209.51.188.17])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB0F7BD8EE
-	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 12:47:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A997BD91C
+	for <lists+qemu-devel@lfdr.de>; Mon,  9 Oct 2023 13:00:38 +0200 (CEST)
 Received: from localhost ([::1] helo=lists1p.gnu.org)
 	by lists.gnu.org with esmtp (Exim 4.90_1)
 	(envelope-from <qemu-devel-bounces@nongnu.org>)
-	id 1qpnmS-0001zV-CE; Mon, 09 Oct 2023 06:46:32 -0400
+	id 1qpnyf-0004Mj-U4; Mon, 09 Oct 2023 06:59:09 -0400
 Received: from eggs.gnu.org ([2001:470:142:3::10])
  by lists.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qpnmQ-0001zG-K3
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:46:30 -0400
-Received: from mail-qt1-x82c.google.com ([2607:f8b0:4864:20::82c])
+ (Exim 4.90_1) (envelope-from <viresh.kumar@linaro.org>)
+ id 1qpnyd-0004MB-Fd
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:59:07 -0400
+Received: from mail-pf1-x42c.google.com ([2607:f8b0:4864:20::42c])
  by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
- (Exim 4.90_1) (envelope-from <marcandre.lureau@gmail.com>)
- id 1qpnmN-0000Hh-Rr
- for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:46:30 -0400
-Received: by mail-qt1-x82c.google.com with SMTP id
- d75a77b69052e-419628fb297so27211801cf.1
- for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 03:46:27 -0700 (PDT)
+ (Exim 4.90_1) (envelope-from <viresh.kumar@linaro.org>)
+ id 1qpnyb-00028k-Rw
+ for qemu-devel@nongnu.org; Mon, 09 Oct 2023 06:59:07 -0400
+Received: by mail-pf1-x42c.google.com with SMTP id
+ d2e1a72fcca58-690b7cb71aeso3182120b3a.0
+ for <qemu-devel@nongnu.org>; Mon, 09 Oct 2023 03:59:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1696848386; x=1697453186; darn=nongnu.org;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=T/RDb+PJzO4WFOyHv3KfkPgGEpGcD6jSC0jA9WB0gm0=;
- b=EQUDMJv1g4wMyJerJHFfUCfw4o4/9Utut0EfYDOHQXWZM4gmABqm+gVAYi291hXpal
- AUJ8X0CHhCxfTOeCICyoF3mlDXiknAU0rOrAn26zjjgmeB4qzKaqmLpWhTxV0S8fpJwr
- HtiGgXp8CHxgfR7dHd8lvCGrFwwz97+m1d5j+dJ5NgF9v9igL4y/cZJgR0NMPZPkx5En
- CXaErBbQxkQ+pjsp/3V+J3/41V1kEw+Z8lZscGStuH3jH2nXoNv3aDz+d/hO36iMeuyf
- X+NTBP1VmvNxUCtto9s9YOsAKJpb8gFbaMdFHePvLfv/OKNZ3pEXucISEmxlA60ByxZi
- kpJw==
+ d=linaro.org; s=google; t=1696849144; x=1697453944; darn=nongnu.org;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=yd5kWI84EmbioTxJcr7Sa3qdzXv/L7GnZ6Yf4TmaOis=;
+ b=TSffbhvrbYb9vDx3YyAzQpgaZDcstWTzLYzTTJMFRNhBBpuLcls3nsfPWdpgn5oh+d
+ YGvExnZnWVK1qQtOoI+NTMas5Azn4lUEfbMyZqnOoQlB+0HB/hPRULnyrdSaxf4PDmkW
+ pOxqx57L2cox3aegjquUfP0kKX9cbr16spi3yc30oHG/gHLNc0tTW8pJDIxmbd7necq8
+ G72ruIPqzow1zsnr4AGDDbAw4vnqC8ZUwLJHE+NrTIBEHX969X2vzlXdxmKOIuQvDRrp
+ 3NPXTcun6ReEkhN6PXgh2ExHlBdaL6SG84+CJAoZ7Vn11c5O0YfAfNdOOQvhv+wTa7gU
+ VtJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1696848386; x=1697453186;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=T/RDb+PJzO4WFOyHv3KfkPgGEpGcD6jSC0jA9WB0gm0=;
- b=MQbVW9WRvCI7Mn0My/bS+sjB3CBOx3WoK6gYB9M0J2QFJyG+VVcRelf02VZ8YSMotv
- XapXCHZYDmxeKAkAUvrqz4In8RPeCbh4D938vuSUDqJUEdaSqnTUh6brTwR8gAJJXt3x
- KZpnlMhlDZ40u8HS1EljeWJwn1IdyvlRRk6+k59ZB1C6/CXXMAuv7pw3LP7mv3wcrY4I
- E5l401M8XGesIeRlkouqMV6Hc0lR97r6fCpo10IOtbJkBIRy3Nnm9kqnVG6Az35kkPYP
- ML/DJOHVe/c/RNBICWp5/k3r7Eup0AMqOMCtGUFe8Nqu48Fe+5fQ++ZTnXdCfg5nohtZ
- E3eA==
-X-Gm-Message-State: AOJu0YyTHFQ7/8dQDbicNPknrlit5cE0i2PQjLTrzR1uFZNLPzs9Oxiq
- rn+Xmkimx2UmiReag77z1bSynbcvKHFkYDGGdBc=
-X-Google-Smtp-Source: AGHT+IHiATBAVl/rGGtDV31sIWeMFl4RuknoRPMr1Mgnv/2UE1K24lFb5juJMiIYQUPs1Y5ClWoziRotMeYkHH5Nl7s=
-X-Received: by 2002:a05:622a:156:b0:413:5dbd:a926 with SMTP id
- v22-20020a05622a015600b004135dbda926mr20375890qtw.2.1696848386207; Mon, 09
- Oct 2023 03:46:26 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1696849144; x=1697453944;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=yd5kWI84EmbioTxJcr7Sa3qdzXv/L7GnZ6Yf4TmaOis=;
+ b=v2H9L0G2Bx4L0/4EJ/pY1UyR69C0xPnwod2BtoEaQxeInv58IUtcoyOu052HfQGft8
+ QVKraIgGA7TuY3WkqQnc0iARBeN7YW9IlrJKM5s43Br14U48vH5YJW2qp1hTRaGkAHi0
+ O+EwGm50Zuzf5ss/CMCq3vfT1gDwOnpG8bsEFLeisM9uP50PhT/tmpvpOrgrhDLopQPt
+ rjJ8+cO5q2gFh0SCgcQb+pwWSX/LafySEK1K4DEzThAGgRDjFJuHibQ1WyS4mxr3flWc
+ JkYHuMJs8ovAgqbTpzY9GQUU/KJ9cG3w79TZH5mDZVsTe3TUYcZDnSABKANEfXpBg7Pm
+ a0qw==
+X-Gm-Message-State: AOJu0YxpPd8cKJtpEsjO+x4sU8N4chPnYEQ7W3z7TwczLd45SOVDBTYj
+ lJMEbULvaOBZzfxxrmG+yCwBWg==
+X-Google-Smtp-Source: AGHT+IHtCV44pfL0jdiJVBMfV8KP/jVkvOgEOzQsd8F7GDUlpBNt6exEKL65j7x2N53/BA1Rm6s1wQ==
+X-Received: by 2002:a05:6a00:1791:b0:68f:ce6a:8685 with SMTP id
+ s17-20020a056a00179100b0068fce6a8685mr19073620pfg.14.1696849143846; 
+ Mon, 09 Oct 2023 03:59:03 -0700 (PDT)
+Received: from localhost ([122.172.81.92]) by smtp.gmail.com with ESMTPSA id
+ r4-20020a62e404000000b00690d9901ce5sm6119542pfh.102.2023.10.09.03.59.02
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 09 Oct 2023 03:59:03 -0700 (PDT)
+Date: Mon, 9 Oct 2023 16:29:01 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org,
+ =?utf-8?Q?Marc-Andr=C3=A9?= Lureau <marcandre.lureau@redhat.com>,
+ Erik Schilling <erik.schilling@linaro.org>, Fam Zheng <fam@euphon.net>,
+ Mathieu Poirier <mathieu.poirier@linaro.org>,
+ Gerd Hoffmann <kraxel@redhat.com>, Hanna Reitz <hreitz@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>,
+ Kevin Wolf <kwolf@redhat.com>, Eric Blake <eblake@redhat.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>, qemu-block@nongnu.org,
+ Eduardo Habkost <eduardo@habkost.net>, Paolo Bonzini <pbonzini@redhat.com>,
+ Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>,
+ virtio-fs@redhat.com, "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+ Markus Armbruster <armbru@redhat.com>, Jason Wang <jasowang@redhat.com>,
+ Raphael Norwitz <raphael.norwitz@nutanix.com>,
+ Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+Subject: Re: [PATCH v4 3/6] hw/virtio: derive vhost-user-gpio from
+ vhost-user-base
+Message-ID: <20231009105901.lmtexbfbcf5rnvch@vireshk-i7>
+References: <20231009095937.195728-1-alex.bennee@linaro.org>
+ <20231009095937.195728-4-alex.bennee@linaro.org>
 MIME-Version: 1.0
-References: <20231005125815.66082-1-pbonzini@redhat.com>
-In-Reply-To: <20231005125815.66082-1-pbonzini@redhat.com>
-From: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@gmail.com>
-Date: Mon, 9 Oct 2023 14:46:14 +0400
-Message-ID: <CAJ+F1C+39sVV+LoTE-F_-_q8GZ7q0PNvPaOMxJAUjGTH9NwPkg@mail.gmail.com>
-Subject: Re: [PATCH 0/7] audio: redo default audio backend creation
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: qemu-devel@nongnu.org, balaton@eik.bme.hu, berrange@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Received-SPF: pass client-ip=2607:f8b0:4864:20::82c;
- envelope-from=marcandre.lureau@gmail.com; helo=mail-qt1-x82c.google.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231009095937.195728-4-alex.bennee@linaro.org>
+Received-SPF: pass client-ip=2607:f8b0:4864:20::42c;
+ envelope-from=viresh.kumar@linaro.org; helo=mail-pf1-x42c.google.com
 X-Spam_score_int: -20
 X-Spam_score: -2.1
 X-Spam_bar: --
 X-Spam_report: (-2.1 / 5.0 requ) BAYES_00=-1.9, DKIM_SIGNED=0.1,
- DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, FREEMAIL_FROM=0.001,
+ DKIM_VALID=-0.1, DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1,
  RCVD_IN_DNSWL_NONE=-0.0001, SPF_HELO_NONE=0.001,
  SPF_PASS=-0.001 autolearn=ham autolearn_force=no
 X-Spam_action: no action
@@ -86,67 +106,35 @@ List-Subscribe: <https://lists.nongnu.org/mailman/listinfo/qemu-devel>,
 Errors-To: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 Sender: qemu-devel-bounces+lists+qemu-devel=lfdr.de@nongnu.org
 
-On Thu, Oct 5, 2023 at 5:01=E2=80=AFPM Paolo Bonzini <pbonzini@redhat.com> =
-wrote:
->
-> Currently, AUD_register_card picks the audio backend from either:
->
-> - the first audiodev that was created
->
-> - the audio_prio_list[] array, which can be customized at
->   configure time
->
-> This series instead extends -audio to define a default audio
-> backend if no "model" is used.  This preserves simple command line
-> use where a single "-audio" option applies to all audio devices
-> and captures, and also uses a single QAPI-based configuration
-> syntax for both -audio and -audiodev.
->
-> The current hack to use the first -audiodev as a default audio
-> device is removed.  For migration purposes, the first audiodev
-> is suggested in case of an error:
->
->   ./qemu-system-x86_64 -device sb16 -audiodev pa,id=3Ddefault
->   qemu-system-x86_64: -device sb16: no default audio driver available
->   Perhaps you wanted to set audiodev=3Ddefault?
->
-> VNC is changed to reintroduce use of the default audio backend;
-> still, compared to before the cleanup effort this will not be
-> enabled if -nodefaults is use, which is an improvement as it
-> removes magic.
->
-> Paolo
->
->
-> Paolo Bonzini (7):
->   audio: error hints need a trailing \n
->   audio: disable default backends if -audio/-audiodev is used
->   audio: extract audio_define_default
->   audio: extend -audio to allow creating a default backend
->   audio: do not use first -audiodev as default audio device
->   audio: reintroduce default audio backend for VNC
->   audio, qtest: get rid of QEMU_AUDIO_DRV
->
+On 09-10-23, 10:59, Alex Bennée wrote:
+> Now the new base class supports config handling we can take advantage
+> and make vhost-user-gpio a much simpler boilerplate wrapper. Also as
+> this doesn't require any target specific hacks we only need to build
+> the stubs once.
+> 
+> Message-Id: <20230418162140.373219-12-alex.bennee@linaro.org>
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> Acked-by: Mark Cave-Ayland <mark.cave-ayland@ilande.co.uk>
+> 
+> ---
+> v2
+>   - use new vhost-user-base
+>   - move build to common code
+> v3
+>   - fix inadvertent double link
+> v4
+>   - merge conflict
+>   - update includes
+> ---
+>  include/hw/virtio/vhost-user-gpio.h |  23 +-
+>  hw/virtio/vhost-user-gpio.c         | 407 ++--------------------------
+>  hw/virtio/meson.build               |   5 +-
+>  3 files changed, 22 insertions(+), 413 deletions(-)
 
-Series:
-Reviewed-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+Looks nice. Thanks.
 
->  audio/audio.c                   | 85 +++++++++++++--------------------
->  audio/audio.h                   |  3 ++
->  docs/about/deprecated.rst       |  6 ---
->  docs/about/removed-features.rst | 14 ++++--
->  qemu-options.hx                 | 29 +++++++----
->  system/vl.c                     | 34 ++++++++-----
->  tests/qtest/libqtest.c          |  4 +-
->  ui/vnc.c                        |  2 +
->  8 files changed, 93 insertions(+), 84 deletions(-)
->
-> --
-> 2.41.0
->
->
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
 
-
---=20
-Marc-Andr=C3=A9 Lureau
+-- 
+viresh
 
